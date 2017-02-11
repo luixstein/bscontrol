@@ -28,6 +28,7 @@ Partial Class Catalogo_Clientes
         Me.tsbNuevo = New System.Windows.Forms.ToolStripButton()
         Me.tsbEditar = New System.Windows.Forms.ToolStripButton()
         Me.tsbGrabar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbEliminar = New System.Windows.Forms.ToolStripButton()
         Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimirListado = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
@@ -117,7 +118,7 @@ Partial Class Catalogo_Clientes
         Me.lblDisplayNumCuenta = New System.Windows.Forms.Label()
         Me.txtNumeroCuenta = New System.Windows.Forms.TextBox()
         Me.lblDisplayMetodoPago = New System.Windows.Forms.Label()
-        Me.btnEliminarCliente = New System.Windows.Forms.Button()
+        Me.BtnGeneraCuentaContableDolares = New System.Windows.Forms.Button()
         Me.tsMenu.SuspendLayout()
         Me.gBoxInformacion.SuspendLayout()
         Me.gbDatosVentas.SuspendLayout()
@@ -136,7 +137,7 @@ Partial Class Catalogo_Clientes
         'tsMenu
         '
         Me.tsMenu.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbEditar, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimirListado, Me.tsbSalir})
+        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbEditar, Me.tsbGrabar, Me.tsbEliminar, Me.tsbCancelar, Me.tsbImprimirListado, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(1518, 27)
@@ -166,6 +167,14 @@ Partial Class Catalogo_Clientes
         Me.tsbGrabar.Name = "tsbGrabar"
         Me.tsbGrabar.Size = New System.Drawing.Size(78, 24)
         Me.tsbGrabar.Text = "&Grabar"
+        '
+        'tsbEliminar
+        '
+        Me.tsbEliminar.Image = CType(resources.GetObject("tsbEliminar.Image"), System.Drawing.Image)
+        Me.tsbEliminar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbEliminar.Name = "tsbEliminar"
+        Me.tsbEliminar.Size = New System.Drawing.Size(87, 24)
+        Me.tsbEliminar.Text = "Eliminar"
         '
         'tsbCancelar
         '
@@ -686,6 +695,7 @@ Partial Class Catalogo_Clientes
         '
         'gbCuentasContables
         '
+        Me.gbCuentasContables.Controls.Add(Me.BtnGeneraCuentaContableDolares)
         Me.gbCuentasContables.Controls.Add(Me.lblDisplayCuentaConDolares)
         Me.gbCuentasContables.Controls.Add(Me.txtCuentaContableDolares)
         Me.gbCuentasContables.Controls.Add(Me.lblCuentaContable)
@@ -694,7 +704,7 @@ Partial Class Catalogo_Clientes
         Me.gbCuentasContables.Margin = New System.Windows.Forms.Padding(4)
         Me.gbCuentasContables.Name = "gbCuentasContables"
         Me.gbCuentasContables.Padding = New System.Windows.Forms.Padding(4)
-        Me.gbCuentasContables.Size = New System.Drawing.Size(431, 81)
+        Me.gbCuentasContables.Size = New System.Drawing.Size(431, 120)
         Me.gbCuentasContables.TabIndex = 3
         Me.gbCuentasContables.TabStop = False
         Me.gbCuentasContables.Text = "Datos contables :"
@@ -773,7 +783,7 @@ Partial Class Catalogo_Clientes
         Me.gbCxc.Controls.Add(Me.txtLimiteCredito)
         Me.gbCxc.Controls.Add(Me.lblDisplayDiasPlazo)
         Me.gbCxc.Controls.Add(Me.txtDiasPlazo)
-        Me.gbCxc.Location = New System.Drawing.Point(552, 274)
+        Me.gbCxc.Location = New System.Drawing.Point(552, 313)
         Me.gbCxc.Margin = New System.Windows.Forms.Padding(4)
         Me.gbCxc.Name = "gbCxc"
         Me.gbCxc.Padding = New System.Windows.Forms.Padding(4)
@@ -826,7 +836,7 @@ Partial Class Catalogo_Clientes
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssLabel, Me.tssLabelEstado})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 732)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 764)
         Me.StatusStripEstado.Name = "StatusStripEstado"
         Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
         Me.StatusStripEstado.Size = New System.Drawing.Size(1518, 25)
@@ -852,7 +862,7 @@ Partial Class Catalogo_Clientes
         '
         Me.gbFechaAlta.Controls.Add(Me.DpFecha)
         Me.gbFechaAlta.Controls.Add(Me.lblDisplayFechaAlta)
-        Me.gbFechaAlta.Location = New System.Drawing.Point(552, 362)
+        Me.gbFechaAlta.Location = New System.Drawing.Point(552, 401)
         Me.gbFechaAlta.Margin = New System.Windows.Forms.Padding(4)
         Me.gbFechaAlta.Name = "gbFechaAlta"
         Me.gbFechaAlta.Padding = New System.Windows.Forms.Padding(4)
@@ -896,7 +906,7 @@ Partial Class Catalogo_Clientes
         Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
         Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
-        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(512, 694)
+        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(512, 726)
         Me.gBoxBusquedaRapida.TabIndex = 7
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
@@ -958,7 +968,7 @@ Partial Class Catalogo_Clientes
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
         Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(494, 609)
+        Me.Grid.Size = New System.Drawing.Size(494, 638)
         Me.Grid.TabIndex = 114
         '
         'txtFiltro
@@ -977,7 +987,7 @@ Partial Class Catalogo_Clientes
         Me.gbCorreo.Controls.Add(Me.Label1)
         Me.gbCorreo.Controls.Add(Me.lblDisplayCorreoCliente)
         Me.gbCorreo.Controls.Add(Me.txtCorreoCliente)
-        Me.gbCorreo.Location = New System.Drawing.Point(552, 423)
+        Me.gbCorreo.Location = New System.Drawing.Point(552, 462)
         Me.gbCorreo.Margin = New System.Windows.Forms.Padding(4)
         Me.gbCorreo.Name = "gbCorreo"
         Me.gbCorreo.Padding = New System.Windows.Forms.Padding(4)
@@ -1038,7 +1048,7 @@ Partial Class Catalogo_Clientes
         Me.gbMetodoPago.Controls.Add(Me.lblDisplayNumCuenta)
         Me.gbMetodoPago.Controls.Add(Me.txtNumeroCuenta)
         Me.gbMetodoPago.Controls.Add(Me.lblDisplayMetodoPago)
-        Me.gbMetodoPago.Location = New System.Drawing.Point(552, 580)
+        Me.gbMetodoPago.Location = New System.Drawing.Point(552, 619)
         Me.gbMetodoPago.Margin = New System.Windows.Forms.Padding(4)
         Me.gbMetodoPago.Name = "gbMetodoPago"
         Me.gbMetodoPago.Padding = New System.Windows.Forms.Padding(4)
@@ -1131,21 +1141,20 @@ Partial Class Catalogo_Clientes
         Me.lblDisplayMetodoPago.TabIndex = 8
         Me.lblDisplayMetodoPago.Text = "Método de pago :"
         '
-        'btnEliminarCliente
+        'BtnGeneraCuentaContableDolares
         '
-        Me.btnEliminarCliente.Location = New System.Drawing.Point(420, 635)
-        Me.btnEliminarCliente.Name = "btnEliminarCliente"
-        Me.btnEliminarCliente.Size = New System.Drawing.Size(113, 28)
-        Me.btnEliminarCliente.TabIndex = 16
-        Me.btnEliminarCliente.Text = "Eliminar"
-        Me.btnEliminarCliente.UseVisualStyleBackColor = True
+        Me.BtnGeneraCuentaContableDolares.Location = New System.Drawing.Point(153, 80)
+        Me.BtnGeneraCuentaContableDolares.Name = "BtnGeneraCuentaContableDolares"
+        Me.BtnGeneraCuentaContableDolares.Size = New System.Drawing.Size(168, 23)
+        Me.BtnGeneraCuentaContableDolares.TabIndex = 75
+        Me.BtnGeneraCuentaContableDolares.Text = "Generar cuenta"
+        Me.BtnGeneraCuentaContableDolares.UseVisualStyleBackColor = True
         '
         'Catalogo_Clientes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1518, 757)
-        Me.Controls.Add(Me.btnEliminarCliente)
+        Me.ClientSize = New System.Drawing.Size(1518, 789)
         Me.Controls.Add(Me.gbMetodoPago)
         Me.Controls.Add(Me.gbCorreo)
         Me.Controls.Add(Me.gBoxBusquedaRapida)
@@ -1284,5 +1293,6 @@ Partial Class Catalogo_Clientes
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents TxtCodigoAlmacen As System.Windows.Forms.TextBox
     Friend WithEvents LblAlmacenCliente As System.Windows.Forms.Label
-    Friend WithEvents btnEliminarCliente As System.Windows.Forms.Button
+    Friend WithEvents tsbEliminar As System.Windows.Forms.ToolStripButton
+    Friend WithEvents BtnGeneraCuentaContableDolares As System.Windows.Forms.Button
 End Class

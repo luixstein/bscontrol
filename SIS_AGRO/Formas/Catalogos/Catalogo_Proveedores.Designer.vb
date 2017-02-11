@@ -75,13 +75,13 @@ Partial Class Catalogo_Proveedores
         Me.tsbNuevo = New System.Windows.Forms.ToolStripButton()
         Me.tsbEditar = New System.Windows.Forms.ToolStripButton()
         Me.tsbGrabar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbEliminar = New System.Windows.Forms.ToolStripButton()
         Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimirListado = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.btnEliminaProveedor = New System.Windows.Forms.Button()
         Me.gBoxInformacion.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
@@ -92,7 +92,6 @@ Partial Class Catalogo_Proveedores
         '
         'gBoxInformacion
         '
-        Me.gBoxInformacion.Controls.Add(Me.btnEliminaProveedor)
         Me.gBoxInformacion.Controls.Add(Me.btnGenerarCuentaDolares)
         Me.gBoxInformacion.Controls.Add(Me.txtCURP)
         Me.gBoxInformacion.Controls.Add(Me.Label2)
@@ -617,7 +616,7 @@ Partial Class Catalogo_Proveedores
         'tsMenu
         '
         Me.tsMenu.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbEditar, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimirListado, Me.tsbSalir})
+        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbEditar, Me.tsbGrabar, Me.tsbEliminar, Me.tsbCancelar, Me.tsbImprimirListado, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(1189, 27)
@@ -647,6 +646,14 @@ Partial Class Catalogo_Proveedores
         Me.tsbGrabar.Name = "tsbGrabar"
         Me.tsbGrabar.Size = New System.Drawing.Size(78, 24)
         Me.tsbGrabar.Text = "&Grabar"
+        '
+        'tsbEliminar
+        '
+        Me.tsbEliminar.Image = CType(resources.GetObject("tsbEliminar.Image"), System.Drawing.Image)
+        Me.tsbEliminar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbEliminar.Name = "tsbEliminar"
+        Me.tsbEliminar.Size = New System.Drawing.Size(87, 24)
+        Me.tsbEliminar.Text = "Eliminar"
         '
         'tsbCancelar
         '
@@ -693,15 +700,6 @@ Partial Class Catalogo_Proveedores
         '
         Me.tssLabelEstado.Name = "tssLabelEstado"
         Me.tssLabelEstado.Size = New System.Drawing.Size(0, 20)
-        '
-        'btnEliminaProveedor
-        '
-        Me.btnEliminaProveedor.Location = New System.Drawing.Point(476, 20)
-        Me.btnEliminaProveedor.Name = "btnEliminaProveedor"
-        Me.btnEliminaProveedor.Size = New System.Drawing.Size(104, 23)
-        Me.btnEliminaProveedor.TabIndex = 150
-        Me.btnEliminaProveedor.Text = "Eliminar"
-        Me.btnEliminaProveedor.UseVisualStyleBackColor = True
         '
         'Catalogo_Proveedores
         '
@@ -790,5 +788,5 @@ Partial Class Catalogo_Proveedores
     Friend WithEvents CboEstatusFiltro As System.Windows.Forms.ComboBox
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents btnGenerarCuentaDolares As System.Windows.Forms.Button
-    Friend WithEvents btnEliminaProveedor As System.Windows.Forms.Button
+    Friend WithEvents tsbEliminar As System.Windows.Forms.ToolStripButton
 End Class

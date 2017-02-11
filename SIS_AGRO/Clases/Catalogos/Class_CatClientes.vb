@@ -952,6 +952,36 @@ Public Class Class_CatClientes
         Return Resultado
     End Function
 
+    Public Function EstablecerCuentaContableDolares() As Boolean
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_CAT_CLIENTES_CREA_CUENTA_CONTABLE_DOLARES"
+
+            sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_CLIENTE.ToUpper
+            sqlParametro = .Parameters.Add("@NOMBRE_CLIENTE", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._NOMBRE_CLIENTE.ToUpper
+            sqlParametro = .Parameters.Add("@PLAZA", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._PLAZA.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CUENTA_CONTABLE", SqlDbType.NVarChar, 20) : sqlParametro.Value = ""
+
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, "EstablecerCuentaContableDolares", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
+    End Function
+
     'Public Function EstablecerCuentaContable() As Boolean
     '    Dim bResultado As Boolean = False
     '    Dim cmd As New SqlCommand

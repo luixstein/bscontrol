@@ -307,7 +307,7 @@ Public Class Catalogo_Proveedores
         oElementos = Nothing
     End Sub
 
-    Private Sub btnEliminaProveedor_Click(sender As Object, e As EventArgs) Handles btnEliminaProveedor.Click
+    Private Sub tsbEliminar_Click(sender As Object, e As EventArgs) Handles tsbEliminar.Click
         Dim sMsg As String = ""
         sMsg = "Deseas eliminar el " & Me.msgElemento & " : " & Me.TxtCodProveedor.Text & " ?"
         If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
@@ -333,6 +333,7 @@ Public Class Catalogo_Proveedores
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
                 Me.tsbCancelar.Enabled = True
+                Me.tsbEliminar.Enabled = False
 
                 Me.TxtCodProveedor.Enabled = False
                 Me.TxtNomProveedor.Enabled = True
@@ -352,7 +353,6 @@ Public Class Catalogo_Proveedores
                 Me.txtContactoNombre.Enabled = True
                 Me.txtContactoTelefonoCelular.Enabled = True
                 Me.CboEstatus.Enabled = False
-                Me.btnEliminaProveedor.Enabled = False
 
                 Me.InicializaElemento()
 
@@ -364,6 +364,7 @@ Public Class Catalogo_Proveedores
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
                 Me.tsbCancelar.Enabled = True
+                Me.tsbEliminar.Enabled = True
 
                 Me.TxtCodProveedor.Enabled = False
                 Me.TxtNomProveedor.Enabled = True
@@ -386,7 +387,6 @@ Public Class Catalogo_Proveedores
                 If txtLEN(Me.txtCuentaContableDolares.Text) = False Then
                     Me.btnGenerarCuentaDolares.Enabled = True
                 End If
-                Me.btnEliminaProveedor.Enabled = True
 
             Case enumEstados.CONSULTA
                 Me.gBoxInformacion.Enabled = False
@@ -396,7 +396,7 @@ Public Class Catalogo_Proveedores
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = False
                 Me.tsbCancelar.Enabled = False
-                Me.btnEliminaProveedor.Enabled = False
+                Me.tsbEliminar.Enabled = False
                 Me.txtFiltro.Focus()
                 Me.CboEstatusFiltro.SelectedIndex = 0
         End Select

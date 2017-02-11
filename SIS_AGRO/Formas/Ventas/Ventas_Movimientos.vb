@@ -3175,6 +3175,35 @@ busca_serie:
         End Try
     End Function
 
+    Private Function ValidadGridSeries() As Boolean
+        Dim bResultado As Boolean = False
+        Dim RenglonRepetido As Integer
+        Dim sRepetido As Boolean = False
+
+        For i = 1 To Me.GridSeries.Rows - 1
+            If (txtLEN(Me.GridSeries.Cell(i, Me.igySerieCodigo).Text) = True) And sRepetido = False Then
+                For z = i + 1 To Me.GridSeries.Rows - (i + 1)
+                    If Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text = Me.GridSeries.Cell(z, Me.igySerieIdInventarioLotesCostos).Text Then
+                        sRepetido = True
+                        RenglonRepetido = z
+                        Exit For
+                    End If
+                Next
+            Else
+                Exit For
+            End If
+        Next
+
+        If sRepetido = True Then
+            MsgBox("Hay una serie repetida " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text & " en: " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " en el renglón " & RenglonRepetido, MsgBoxStyle.Exclamation)
+            Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
+            Return bResultado
+        End If
+
+        bResultado = True
+        Return bResultado
+    End Function
+
 #End Region
 
 End Class

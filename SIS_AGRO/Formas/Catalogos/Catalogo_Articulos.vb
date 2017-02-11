@@ -122,7 +122,7 @@ Public Class Catalogo_Articulos
         End If
     End Sub
 
-    Private Sub btnEliminaArticulo_Click(sender As Object, e As EventArgs) Handles btnEliminaArticulo.Click
+    Private Sub tsbEliminar_Click(sender As Object, e As EventArgs) Handles tsbEliminar.Click
         Dim sMsg As String = ""
         If Usuario.PERMISO_CAT_ARTICULOS = "0" Then
             MsgBox("No tiene permiso para realizar este movimiento.", MsgBoxStyle.Exclamation, Me.Name)
@@ -169,6 +169,7 @@ Public Class Catalogo_Articulos
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
                 Me.tsbCancelar.Enabled = True
+                Me.tsbEliminar.Enabled = False
 
                 Me.TxtCodArticulo.Enabled = True
                 Me.TxtDescripcion.Enabled = True
@@ -179,7 +180,6 @@ Public Class Catalogo_Articulos
                 Me.cboLinea.Enabled = True
                 Me.CboFamilia.Enabled = True
                 Me.TxtPrecio.Enabled = True
-                Me.btnEliminaArticulo.Enabled = False
 
                 Me.InicializaElemento()
 
@@ -191,6 +191,7 @@ Public Class Catalogo_Articulos
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
                 Me.tsbCancelar.Enabled = True
+                Me.tsbEliminar.Enabled = True
 
                 Me.TxtCodArticulo.Enabled = False
                 Me.TxtDescripcion.Enabled = True
@@ -201,7 +202,6 @@ Public Class Catalogo_Articulos
                 Me.cboLinea.Enabled = True
                 Me.CboFamilia.Enabled = True
                 Me.TxtPrecio.Enabled = True
-                Me.btnEliminaArticulo.Enabled = True
 
             Case enumEstados.CONSULTA
                 Me.gBoxInformacion.Enabled = False
@@ -211,7 +211,7 @@ Public Class Catalogo_Articulos
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = False
                 Me.tsbCancelar.Enabled = False
-                Me.btnEliminaArticulo.Enabled = False
+                Me.tsbEliminar.Enabled = False
                 Me.txtFiltro.Focus()
                 Me.CboEstatusFiltro.SelectedIndex = 0
 

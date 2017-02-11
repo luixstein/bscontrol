@@ -10,15 +10,15 @@ Public Class Class_ProyectoSiembra
     Private _ID_CON_EJERCICIO As String
     Private _ORDEN As String
     Private _CODIGO_CULTIVO As String
-    Private _FECHA_SIEMBRA As Date
-    Private _FECHA_CORTE As Date
+    Private _FECHA_SIEMBRA As String
+    Private _FECHA_CORTE As String
     Private _HECTAREAS_SEMBRADAS As String
     Private _PRODUCCION_ESTIMADA As String
     Private _PRESUPUESTO_TOTAL_POR_HECTAREA_DOLARES As String
     Private _PRESUPUESTO_COSTO_UNITARIO_PRODUCCION As String
     Private _PRESUPUESTO_COSTO_UNITARIO_CORTE_EMPAQUE_DOLARES As String
     Private _PRESUPUESTO_COSTO_UNITARIO_TOTAL As String
-    Private _FECHA_FIN_TEMPORADA As Date
+    Private _FECHA_FIN_TEMPORADA As String
     Private _ID_PROYECTO As String
     Private _CODIGO_CENTRO_COSTO As String
     Private _CODIGO_CENTRO_COSTO_ORIGEN As String
@@ -80,20 +80,20 @@ Public Class Class_ProyectoSiembra
         End Set
     End Property
 
-    Public Property FECHA_SIEMBRA() As Date
+    Public Property FECHA_SIEMBRA() As String
         Get
             Return Me._FECHA_SIEMBRA
         End Get
-        Set(ByVal Value As Date)
+        Set(ByVal Value As String)
             Me._FECHA_SIEMBRA = Value
         End Set
     End Property
 
-    Public Property FECHA_CORTE() As Date
+    Public Property FECHA_CORTE() As String
         Get
             Return Me._FECHA_CORTE
         End Get
-        Set(ByVal Value As Date)
+        Set(ByVal Value As String)
             Me._FECHA_CORTE = Value
         End Set
     End Property
@@ -152,11 +152,11 @@ Public Class Class_ProyectoSiembra
         End Set
     End Property
 
-    Public Property FECHA_FIN_TEMPORADA() As Date
+    Public Property FECHA_FIN_TEMPORADA() As String
         Get
             Return Me._FECHA_FIN_TEMPORADA
         End Get
-        Set(ByVal Value As Date)
+        Set(ByVal Value As String)
             Me._FECHA_FIN_TEMPORADA = Value
         End Set
     End Property
@@ -274,10 +274,10 @@ Public Class Class_ProyectoSiembra
             sqlParametro = .Parameters.Add("@ID_CON_EJERCICIO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._ID_CON_EJERCICIO)
             sqlParametro = .Parameters.Add("@ORDEN", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._ORDEN)
             sqlParametro = .Parameters.Add("@CODIGO_CULTIVO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_CULTIVO)
-            sqlParametro = .Parameters.Add("@FECHA_SIEMBRA", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_SIEMBRA
-            sqlParametro = .Parameters.Add("@FECHA_CORTE", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_CORTE
+            sqlParametro = .Parameters.Add("@FECHA_SIEMBRA", SqlDbType.DateTime) : sqlParametro.Value = CDate(Me._FECHA_SIEMBRA)
+            sqlParametro = .Parameters.Add("@FECHA_CORTE", SqlDbType.DateTime) : sqlParametro.Value = CDate(Me._FECHA_CORTE)
             sqlParametro = .Parameters.Add("@HECTAREAS_SEMBRADAS", SqlDbType.Decimal) : sqlParametro.Value = CDec(Me._HECTAREAS_SEMBRADAS)
-            sqlParametro = .Parameters.Add("@FECHA_FIN_TEMPORADA", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_FIN_TEMPORADA
+            sqlParametro = .Parameters.Add("@FECHA_FIN_TEMPORADA", SqlDbType.DateTime) : sqlParametro.Value = CDate(Me._FECHA_FIN_TEMPORADA)
             sqlParametro = .Parameters.Add("@ID_PROYECTO", SqlDbType.Int) : sqlParametro.Value = 0 'El Id se incrementa automaticamente en el stored
             sqlParametro = .Parameters.Add("@CODIGO_CENTRO_COSTO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_CENTRO_COSTO)
             sqlParametro = .Parameters.Add("@CODIGO_CENTRO_COSTO_ORIGEN", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_CENTRO_COSTO_ORIGEN)
@@ -311,10 +311,10 @@ Public Class Class_ProyectoSiembra
             sqlParametro = .Parameters.Add("@ID_CON_EJERCICIO", SqlDbType.SmallInt) : sqlParametro.Value = Me._ID_CON_EJERCICIO
             sqlParametro = .Parameters.Add("@ORDEN", SqlDbType.SmallInt) : sqlParametro.Value = Me._ORDEN
             sqlParametro = .Parameters.Add("@CODIGO_CULTIVO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CULTIVO
-            sqlParametro = .Parameters.Add("@FECHA_SIEMBRA", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_SIEMBRA
-            sqlParametro = .Parameters.Add("@FECHA_CORTE", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_CORTE
+            sqlParametro = .Parameters.Add("@FECHA_SIEMBRA", SqlDbType.DateTime) : sqlParametro.Value = CDate(Me._FECHA_SIEMBRA)
+            sqlParametro = .Parameters.Add("@FECHA_CORTE", SqlDbType.DateTime) : sqlParametro.Value = CDate(Me._FECHA_CORTE)
             sqlParametro = .Parameters.Add("@HECTAREAS_SEMBRADAS", SqlDbType.Decimal) : sqlParametro.Value = Me._HECTAREAS_SEMBRADAS
-            sqlParametro = .Parameters.Add("@FECHA_FIN_TEMPORADA", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_FIN_TEMPORADA
+            sqlParametro = .Parameters.Add("@FECHA_FIN_TEMPORADA", SqlDbType.DateTime) : sqlParametro.Value = CDate(Me._FECHA_FIN_TEMPORADA)
             sqlParametro = .Parameters.Add("@ID_PROYECTO", SqlDbType.Int) : sqlParametro.Value = Me._ID_PROYECTO
             sqlParametro = .Parameters.Add("@CODIGO_CENTRO_COSTO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CENTRO_COSTO
             sqlParametro = .Parameters.Add("@CODIGO_CENTRO_COSTO_ORIGEN", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CENTRO_COSTO_ORIGEN
@@ -375,15 +375,15 @@ Public Class Class_ProyectoSiembra
                     Me._ID_CON_EJERCICIO = "" & dReader("ID_CON_EJERCICIO")
                     Me._ORDEN = "" & dReader("ORDEN")
                     Me._CODIGO_CULTIVO = "" & dReader("CODIGO_CULTIVO")
-                    Me._FECHA_SIEMBRA = dReader("FECHA_SIEMBRA")
-                    Me._FECHA_CORTE = dReader("FECHA_CORTE")
+                    Me._FECHA_SIEMBRA = "" & dReader("FECHA_SIEMBRA")
+                    Me._FECHA_CORTE = "" & dReader("FECHA_CORTE")
                     Me._HECTAREAS_SEMBRADAS = "" & dReader("HECTAREAS_SEMBRADAS")
                     Me._PRODUCCION_ESTIMADA = "" & dReader("PRODUCCION_ESTIMADA")
                     Me._PRESUPUESTO_TOTAL_POR_HECTAREA_DOLARES = "" & dReader("PRESUPUESTO_TOTAL_POR_HECTAREA_DOLARES")
                     Me._PRESUPUESTO_COSTO_UNITARIO_PRODUCCION = "" & dReader("PRESUPUESTO_COSTO_UNITARIO_PRODUCCION")
                     Me._PRESUPUESTO_COSTO_UNITARIO_CORTE_EMPAQUE_DOLARES = "" & dReader("PRESUPUESTO_COSTO_UNITARIO_CORTE_EMPAQUE_DOLARES")
                     Me._PRESUPUESTO_COSTO_UNITARIO_TOTAL = "" & dReader("PRESUPUESTO_COSTO_UNITARIO_TOTAL")
-                    Me._FECHA_FIN_TEMPORADA = dReader("FECHA_FIN_TEMPORADA")
+                    Me._FECHA_FIN_TEMPORADA = "" & dReader("FECHA_FIN_TEMPORADA")
                     Me._ID_PROYECTO = "" & dReader("ID_PROYECTO")
                     Me._CODIGO_CENTRO_COSTO = "" & dReader("CODIGO_CENTRO_COSTO")
                     Me._CODIGO_CENTRO_COSTO_ORIGEN = "" & dReader("CODIGO_CENTRO_COSTO_ORIGEN")

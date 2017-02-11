@@ -29,9 +29,11 @@ Public Class ProyectoSiembra
 
 #Region "Opciones"
     Private Sub tsbNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbNuevo.Click
-        Dim oProyectoSiembraEdicion As New ProyectoSiembraEdicion()
-        oProyectoSiembraEdicion.Agregar = True
-        oProyectoSiembraEdicion.Show()
+        Dim agregar As Boolean = True
+        Dim oProyectoSiembraEdicion As New ProyectoSiembraEdicion("Nuevo", agregar)
+        oProyectoSiembraEdicion.ShowDialog()
+        oProyectoSiembraEdicion.Dispose()
+        Me.DesplegarElementosGrid()
 
     End Sub
 
@@ -155,38 +157,11 @@ Public Class ProyectoSiembra
     End Sub
 
     Private Sub AbrirEditorProyecto()
-        Dim oProyectoSiembraEdicion As New ProyectoSiembraEdicion
-        oProyectoSiembraEdicion.DesplegarEjercicios()
-        oProyectoSiembraEdicion.Agregar = False
-        oProyectoSiembraEdicion.txtIdProyecto.Text = Me.Grid1.CurrentRow.Cells("ID_PROYECTO").Value.ToString
-        oProyectoSiembraEdicion.CboEjercicio.SelectedValue = Me.CboEjercicio.SelectedValue
-        oProyectoSiembraEdicion.TxtOrden.Text = Me.Grid1.CurrentRow.Cells("ORDEN").Value.ToString
-        oProyectoSiembraEdicion.TxtCodCultivo.Text = Me.Grid1.CurrentRow.Cells("CODIGO_CULTIVO").Value.ToString
-        oProyectoSiembraEdicion.LblCultivo.Text = Me.Grid1.CurrentRow.Cells("NOMBRE_CULTIVO").Value.ToString
-        oProyectoSiembraEdicion.TxtCodCentroCostoOrigen.Text = Me.Grid1.CurrentRow.Cells("CODIGO_CENTRO_COSTO_ORIGEN").Value.ToString
-        oProyectoSiembraEdicion.TxtCodCentroCosto.Text = Me.Grid1.CurrentRow.Cells("CODIGO_CENTRO_COSTO").Value.ToString
-        oProyectoSiembraEdicion.txtCodLote.Text = Me.Grid1.CurrentRow.Cells("CODIGO_LOTE").Value.ToString
-        oProyectoSiembraEdicion.lblNombreLote.Text = Me.Grid1.CurrentRow.Cells("NOMBRE_LOTE").Value.ToString
-        oProyectoSiembraEdicion.TxtHectareasSembradas.Text = Me.Grid1.CurrentRow.Cells("HECTAREAS_SEMBRADAS").Value.ToString
-
-        If txtLEN(Me.Grid1.CurrentRow.Cells("FECHA_SIEMBRA").Value.ToString) Then
-            oProyectoSiembraEdicion.dtFechaSiembra.Value = DateTime.Parse(Me.Grid1.CurrentRow.Cells("FECHA_SIEMBRA").Value.ToString)
-        Else
-            oProyectoSiembraEdicion.chkbFechaSiembra.Checked = True
-        End If
-
-        If txtLEN(Me.Grid1.CurrentRow.Cells("FECHA_CORTE").Value.ToString) Then
-            oProyectoSiembraEdicion.dtFechaSiembra.Value = DateTime.Parse(Me.Grid1.CurrentRow.Cells("FECHA_CORTE").Value.ToString)
-        Else
-            oProyectoSiembraEdicion.ChkbFechaCorte.Checked = True
-        End If
-
-        If txtLEN(Me.Grid1.CurrentRow.Cells("FECHA_FIN_TEMPORADA").Value.ToString) Then
-            oProyectoSiembraEdicion.dtFechaSiembra.Value = DateTime.Parse(Me.Grid1.CurrentRow.Cells("FECHA_FIN_TEMPORADA").Value.ToString)
-        Else
-            oProyectoSiembraEdicion.chkbFechaFin.Checked = True
-        End If
-        oProyectoSiembraEdicion.Show()
+        Dim agregar As Boolean = False
+        Dim oProyectoSiembraEdicion As New ProyectoSiembraEdicion(Me.Grid1.CurrentRow.Cells("ID_PROYECTO").Value.ToString, agregar)
+        oProyectoSiembraEdicion.ShowDialog()
+        oProyectoSiembraEdicion.Dispose()
+        Me.DesplegarElementosGrid()
     End Sub
 
     Private Sub Elimina()

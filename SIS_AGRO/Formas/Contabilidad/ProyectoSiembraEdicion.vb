@@ -16,7 +16,6 @@ Public Class ProyectoSiembraEdicion
 
     Private Estado As enumEstados
     Private oProyectoSiembra As New Class_ProyectoSiembra
-    Public Agregar As Boolean = False
 
     Private Enum enumEstados
         NUEVO
@@ -51,28 +50,19 @@ Public Class ProyectoSiembraEdicion
 
 #Region "Eventos"
     Private Sub Prpoyecto_siembra_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        If Agregar = True Then
-            Me.Inicializa()
-            Me.Estado = enumEstados.NUEVO
-            Me.Cambia_Estado()
-        Else
-            Dim oCentroCosto As New Class_CatCentroCostos
+        'Dim oCentroCosto As New Class_CatCentroCostos
 
-            If txtLEN(Me.TxtCodCentroCostoOrigen.Text) = True Then
-                oCentroCosto.CODIGO_CENTRO_COSTO = CInt(Me.TxtCodCentroCostoOrigen.Text)
-                oCentroCosto.Consultar()
-                Me.LblCentroCostoOrigen.Text = oCentroCosto.NOMBRE_CENTRO_COSTO
-            End If
+        'If txtLEN(Me.TxtCodCentroCostoOrigen.Text) = True Then
+        '    oCentroCosto.CODIGO_CENTRO_COSTO = CInt(Me.TxtCodCentroCostoOrigen.Text)
+        '    oCentroCosto.Consultar()
+        '    Me.LblCentroCostoOrigen.Text = oCentroCosto.NOMBRE_CENTRO_COSTO
+        'End If
 
-            If txtLEN(Me.TxtCodCentroCosto.Text) = True Then
-                oCentroCosto.CODIGO_CENTRO_COSTO = CInt(Me.TxtCodCentroCosto.Text)
-                oCentroCosto.Consultar()
-                Me.LblCentroCosto.Text = oCentroCosto.NOMBRE_CENTRO_COSTO
-            End If
-            Me.Estado = enumEstados.EDICION
-            Me.Cambia_Estado()
-        End If
-        
+        'If txtLEN(Me.TxtCodCentroCosto.Text) = True Then
+        '    oCentroCosto.CODIGO_CENTRO_COSTO = CInt(Me.TxtCodCentroCosto.Text)
+        '    oCentroCosto.Consultar()
+        '    Me.LblCentroCosto.Text = oCentroCosto.NOMBRE_CENTRO_COSTO
+        'End If
     End Sub
 
     Private Sub CboEjercicio_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CboEjercicio.SelectedIndexChanged
@@ -250,6 +240,27 @@ Buscar:
 
 #Region "Métodos y procedimientos"
 
+    Public Sub New(ByVal idProyecto As String, ByVal Agregar As Boolean)
+        InitializeComponent()
+
+        Me.Inicializa()
+
+        If Agregar = False Then
+            Me.txtIdProyecto.Text = idProyecto
+
+            If Me.Consultar() Then
+                Me.Estado = enumEstados.EDICION
+                Me.Cambia_Estado()
+            Else
+                Me.Close()
+            End If
+        Else
+            Me.Estado = enumEstados.NUEVO
+            Me.Cambia_Estado()
+        End If
+        
+    End Sub
+
     Private Sub Cambia_Estado()
         Try
             Select Case Me.Estado
@@ -300,46 +311,80 @@ Buscar:
             Me.TxtCodCentroCosto.Text = ""
             Me.TxtHectareasSembradas.Text = ""
             Me.txtCodLote.Text = ""
+            Me.DesplegarEjercicios()
 
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
         End Try
     End Sub
 
-    'Public Sub LlenaElemento(ByVal id_Proyecto As String)
-    '    Me.oProyectoSiembra.ID_PROYECTO = id_Proyecto
-    '    If Me.oProyectoSiembra.Consultar Then
-    '        With Me.oProyectoSiembra
-    '            'Me.txtIdProyecto.Text = .ID_PROYECTO.ToString
-    '            Me.CboEjercicio.SelectedValue = CInt(.ID_CON_EJERCICIO)
-    '            Me.TxtOrden.Text = .ORDEN
-    '            Me.TxtCodCultivo.Text = .CODIGO_CULTIVO
-    '            Me.TxtCodCentroCostoOrigen.Text = .CODIGO_CENTRO_COSTO_ORIGEN
-    '            Me.TxtCodCentroCosto.Text = .CODIGO_CENTRO_COSTO
-    '            Me.TxtHectareasSembradas.Text = .HECTAREAS_SEMBRADAS
+    Public Function Consultar() As Boolean
+        Dim bResultado As Boolean = False
+        Try
+            Me.oProyectoSiembra.ID_PROYECTO = Me.txtIdProyecto.Text
+            If Me.oProyectoSiembra.Consultar Then
+                With Me.oProyectoSiembra
+                    Me.txtIdProyecto.Text = .ID_PROYECTO.ToString
+                    Me.CboEjercicio.SelectedValue = CInt(.ID_CON_EJERCICIO)
+                    Me.TxtOrden.Text = .ORDEN
+                    Me.TxtCodCultivo.Text = .CODIGO_CULTIVO
+                    Me.TxtCodCentroCostoOrigen.Text = .CODIGO_CENTRO_COSTO_ORIGEN
+                    Me.TxtCodCentroCosto.Text = .CODIGO_CENTRO_COSTO
+                    Me.TxtHectareasSembradas.Text = .HECTAREAS_SEMBRADAS
+                    Me.txtCodLote.Text = .CODIGO_LOTE.ToString
 
-    '            If txtLEN(.FECHA_SIEMBRA.ToString) Then
-    '                Me.dtFechaSiembra.Value = CDate(.FECHA_SIEMBRA)
-    '            Else
-    '                Me.chkbFechaSiembra.Checked = True
-    '            End If
+                    If txtLEN(.FECHA_SIEMBRA.ToString) Then
+                        Me.dtFechaSiembra.Value = CDate(.FECHA_SIEMBRA)
+                    Else
+                        Me.chkbFechaSiembra.Checked = True
+                    End If
 
-    '            If txtLEN(.FECHA_CORTE.ToString) Then
-    '                Me.dtFechaCorte.Value = CDate(.FECHA_CORTE)
-    '            Else
-    '                Me.ChkbFechaCorte.Checked = True
-    '            End If
+                    If txtLEN(.FECHA_CORTE.ToString) Then
+                        Me.dtFechaCorte.Value = CDate(.FECHA_CORTE)
+                    Else
+                        Me.ChkbFechaCorte.Checked = True
+                    End If
 
-    '            If txtLEN(.FECHA_FIN_TEMPORADA.ToString) Then
-    '                Me.dtFechaFin.Value = CDate(.FECHA_FIN_TEMPORADA)
-    '            Else
-    '                Me.chkbFechaFin.Checked = True
-    '            End If
+                    If txtLEN(.FECHA_FIN_TEMPORADA.ToString) Then
+                        Me.dtFechaFin.Value = CDate(.FECHA_FIN_TEMPORADA)
+                    Else
+                        Me.chkbFechaFin.Checked = True
+                    End If
 
+                    bResultado = True
+                End With
 
-    '        End With
-    '    End If
-    'End Sub
+                Dim oCentroCosto As New Class_CatCentroCostos
+                oCentroCosto.CODIGO_CENTRO_COSTO = CInt(Me.TxtCodCentroCosto.Text)
+                oCentroCosto.Consultar()
+                Me.LblCentroCosto.Text = oCentroCosto.NOMBRE_CENTRO_COSTO
+
+                If txtLEN(Me.TxtCodCentroCostoOrigen.Text) = True Then
+                    oCentroCosto.CODIGO_CENTRO_COSTO = CInt(Me.TxtCodCentroCostoOrigen.Text)
+                    oCentroCosto.Consultar()
+                    Me.LblCentroCostoOrigen.Text = oCentroCosto.NOMBRE_CENTRO_COSTO
+                End If
+
+                Dim oCultivo As New Class_CatCultivos
+                oCultivo.CODIGO_CULTIVO = Me.TxtCodCultivo.Text
+                If oCultivo.Consultar() Then
+                    Me.LblCultivo.Text = oCultivo.NOMBRE_CULTIVO.ToString
+                End If
+
+                Dim oLote As New Class_CatLotes
+                oLote.Codigo_Lote = Me.txtCodLote.Text
+                If oLote.Consultar() Then
+                    Me.lblNombreLote.Text = oLote.Nombre_Lote.ToString
+                End If
+
+            End If
+
+            Return bResultado
+
+        Catch ex As Exception
+            HandleError(Me.Name, "Consultar", ex)
+        End Try
+    End Function
 
     Private Sub Grabar_Elemento()
         Dim Grabado As Boolean = False
@@ -366,21 +411,21 @@ Buscar:
                         .HECTAREAS_SEMBRADAS = Me.TxtHectareasSembradas.Text
 
                         If Me.chkbFechaSiembra.Checked Then
-                            .FECHA_SIEMBRA = CDate("01/01/1900")
+                            .FECHA_SIEMBRA = "01/01/1900"
                         Else
-                            .FECHA_SIEMBRA = Me.dtFechaSiembra.Value
+                            .FECHA_SIEMBRA = Me.dtFechaSiembra.Value.ToString
                         End If
 
                         If Me.ChkbFechaCorte.Checked Then
-                            .FECHA_CORTE = CDate("01/01/1900")
+                            .FECHA_CORTE = "01/01/1900"
                         Else
-                            .FECHA_CORTE = Me.dtFechaCorte.Value
+                            .FECHA_CORTE = Me.dtFechaCorte.Value.ToString
                         End If
 
                         If Me.chkbFechaFin.Checked Then
-                            .FECHA_FIN_TEMPORADA = CDate("01/01/1900")
+                            .FECHA_FIN_TEMPORADA = "01/01/1900"
                         Else
-                            .FECHA_FIN_TEMPORADA = Me.dtFechaFin.Value
+                            .FECHA_FIN_TEMPORADA = Me.dtFechaFin.Value.ToString
                         End If
 
                         If Len(Me.TxtCodCentroCostoOrigen.Text) < 1 Then

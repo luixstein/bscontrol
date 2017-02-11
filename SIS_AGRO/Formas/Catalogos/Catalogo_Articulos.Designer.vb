@@ -52,13 +52,13 @@ Partial Class Catalogo_Articulos
         Me.tsbNuevo = New System.Windows.Forms.ToolStripButton()
         Me.tsbEditar = New System.Windows.Forms.ToolStripButton()
         Me.tsbGrabar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbEliminar = New System.Windows.Forms.ToolStripButton()
         Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimirListado = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.btnEliminaArticulo = New System.Windows.Forms.Button()
         Me.gBoxInformacion.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -71,7 +71,6 @@ Partial Class Catalogo_Articulos
         Me.gBoxInformacion.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.gBoxInformacion.Controls.Add(Me.btnEliminaArticulo)
         Me.gBoxInformacion.Controls.Add(Me.chkEsSerializable)
         Me.gBoxInformacion.Controls.Add(Me.chkImpuesto)
         Me.gBoxInformacion.Controls.Add(Me.chkInventariable)
@@ -369,7 +368,7 @@ Partial Class Catalogo_Articulos
         'tsMenu
         '
         Me.tsMenu.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbEditar, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimirListado, Me.tsbSalir})
+        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbEditar, Me.tsbGrabar, Me.tsbEliminar, Me.tsbCancelar, Me.tsbImprimirListado, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(1131, 27)
@@ -399,6 +398,14 @@ Partial Class Catalogo_Articulos
         Me.tsbGrabar.Name = "tsbGrabar"
         Me.tsbGrabar.Size = New System.Drawing.Size(78, 24)
         Me.tsbGrabar.Text = "&Grabar"
+        '
+        'tsbEliminar
+        '
+        Me.tsbEliminar.Image = CType(resources.GetObject("tsbEliminar.Image"), System.Drawing.Image)
+        Me.tsbEliminar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbEliminar.Name = "tsbEliminar"
+        Me.tsbEliminar.Size = New System.Drawing.Size(87, 24)
+        Me.tsbEliminar.Text = "Eliminar"
         '
         'tsbCancelar
         '
@@ -445,15 +452,6 @@ Partial Class Catalogo_Articulos
         '
         Me.tssLabelEstado.Name = "tssLabelEstado"
         Me.tssLabelEstado.Size = New System.Drawing.Size(0, 20)
-        '
-        'btnEliminaArticulo
-        '
-        Me.btnEliminaArticulo.Location = New System.Drawing.Point(390, 22)
-        Me.btnEliminaArticulo.Name = "btnEliminaArticulo"
-        Me.btnEliminaArticulo.Size = New System.Drawing.Size(130, 23)
-        Me.btnEliminaArticulo.TabIndex = 139
-        Me.btnEliminaArticulo.Text = "Eliminar"
-        Me.btnEliminaArticulo.UseVisualStyleBackColor = True
         '
         'Catalogo_Articulos
         '
@@ -519,5 +517,5 @@ Partial Class Catalogo_Articulos
     Friend WithEvents chkEsSerializable As System.Windows.Forms.CheckBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents CboEstatusFiltro As System.Windows.Forms.ComboBox
-    Friend WithEvents btnEliminaArticulo As System.Windows.Forms.Button
+    Friend WithEvents tsbEliminar As System.Windows.Forms.ToolStripButton
 End Class

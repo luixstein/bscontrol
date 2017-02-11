@@ -127,7 +127,7 @@ Public Class Catalogo_Clientes
         oElementos = Nothing
     End Sub
 
-    Private Sub btnEliminarCliente_Click(sender As Object, e As EventArgs) Handles btnEliminarCliente.Click
+    Private Sub tsbEliminar_Click(sender As Object, e As EventArgs) Handles tsbEliminar.Click
         Dim sMsg As String = ""
         If Usuario.PERMISO_CAT_CLIENTES = "0" Then
             MsgBox("No tiene permiso para realizar este movimiento.", MsgBoxStyle.Exclamation, Me.Name)
@@ -135,12 +135,13 @@ Public Class Catalogo_Clientes
             Me.Cambia_Estado()
             Exit Sub
         End If
-        
+
         sMsg = "Deseas eliminar el " & Me.msgElemento & " : " & Me.txtCodigoCliente.Text & "?"
         If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
             Me.Elimina_Elemento()
         End If
     End Sub
+
 #End Region
 
 #Region "Eventos de objetos"
@@ -207,6 +208,10 @@ Public Class Catalogo_Clientes
         '    'Me.cboZona.SelectedValue = Me.cboTipoMercado.SelectedValue.ToString
         '    Me.cboTipoMercado.SelectedValue = Me.cboZona.SelectedValue.ToString
         'End If
+    End Sub
+
+    Private Sub BtnGeneraCuentaContableDolares_Click(sender As Object, e As EventArgs) Handles BtnGeneraCuentaContableDolares.Click
+        Me.GeneraCuentaContableDolares()
     End Sub
 #End Region
 
@@ -440,6 +445,7 @@ busca:
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = True
                     Me.tsbCancelar.Enabled = True
+                    Me.tsbEliminar.Enabled = False
 
                     Me.txtCodigoCliente.Enabled = False
                     Me.TxtNombreCliente.Enabled = True
@@ -456,7 +462,8 @@ busca:
                     Me.txtLocalidad.Enabled = True
                     Me.txtPais.Enabled = True
                     'Me.txtCuentaContable.Enabled = True
-                    Me.txtCuentaContableDolares.Enabled = True
+                    Me.txtCuentaContableDolares.Enabled = False
+                    Me.BtnGeneraCuentaContableDolares.Enabled = False
                     Me.txtDiasPlazo.Enabled = True
                     Me.txtLimiteCredito.Enabled = True
                     Me.txtCorreoCliente.Enabled = True
@@ -474,7 +481,6 @@ busca:
                     Me.cboNombreXML.Enabled = True
                     Me.chkPermitirVentaCredito.Enabled = True
                     Me.TxtCodigoAlmacen.Enabled = True
-                    Me.btnEliminarCliente.Enabled = False
 
                     Me.InicializaElemento()
 
@@ -488,6 +494,7 @@ busca:
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = True
                     Me.tsbCancelar.Enabled = True
+                    Me.tsbEliminar.Enabled = True
 
                     Me.txtCodigoCliente.Enabled = False
                     Me.TxtNombreCliente.Enabled = True
@@ -503,7 +510,8 @@ busca:
                     Me.txtColonia.Enabled = True
                     Me.txtLocalidad.Enabled = True
                     Me.txtPais.Enabled = True
-                    Me.txtCuentaContableDolares.Enabled = True
+                    Me.txtCuentaContableDolares.Enabled = False
+                    Me.BtnGeneraCuentaContableDolares.Enabled = False
                     Me.txtDiasPlazo.Enabled = True
                     Me.txtLimiteCredito.Enabled = True
                     Me.chkPermitirVentaCredito.Enabled = True
@@ -521,7 +529,10 @@ busca:
                     Me.cboVendedor.Enabled = True
                     Me.cboNombreXML.Enabled = True
                     Me.TxtCodigoAlmacen.Enabled = True
-                    Me.btnEliminarCliente.Enabled = True
+
+                    If txtLEN(Me.txtCuentaContableDolares.Text) = False Then
+                        Me.BtnGeneraCuentaContableDolares.Enabled = True
+                    End If
 
                     Me.TxtNombreCliente.Focus()
 
@@ -530,6 +541,7 @@ busca:
                     Me.tsbEditar.Enabled = True
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = True
+                    Me.tsbEliminar.Enabled = False
 
                     Me.cboTipoMercado.Enabled = False
                     Me.txtCodigoCliente.Enabled = False
@@ -547,6 +559,7 @@ busca:
                     Me.txtLocalidad.Enabled = False
                     Me.txtPais.Enabled = False
                     Me.txtCuentaContableDolares.Enabled = False
+                    Me.BtnGeneraCuentaContableDolares.Enabled = False
                     Me.txtDiasPlazo.Enabled = False
                     Me.txtLimiteCredito.Enabled = False
                     Me.tssLabelEstado.Text = "Consultando"
@@ -565,7 +578,6 @@ busca:
                     Me.cboNombreXML.Enabled = False
                     Me.chkPermitirVentaCredito.Enabled = False
                     Me.TxtCodigoAlmacen.Enabled = False
-                    Me.btnEliminarCliente.Enabled = False
                     Me.txtFiltro.Focus()
                     Me.CboEstatusFiltro.SelectedIndex = 0
             End Select
@@ -814,6 +826,34 @@ busca:
             oElemento = Nothing
         End Try
 
+    End Sub
+
+    Private Sub GeneraCuentaContableDolares()
+        Dim generado As Boolean = False
+        Try
+            With oClientes
+                .CODIGO_CLIENTE = Me.txtCodigoCliente.Text
+                .NOMBRE_CLIENTE = Me.TxtNombreCliente.Text
+
+                If .EstablecerCuentaContableDolares() Then
+                    generado = True
+                End If
+
+                If generado Then
+                    MsgBox("Cuenta contable en dolares creada satisfactoriamente.", MsgBoxStyle.Information)
+                    Me.Estado = enumEstados.CONSULTA
+                    Me.Cambia_Estado()
+                    DesplegarElementos()
+                End If
+            End With
+
+        Catch ex As Exception
+            HandleError(Me.Name, "GeneraCuentaContableDolares", ex)
+            Me.Estado = enumEstados.CONSULTA
+            Me.Cambia_Estado()
+        Finally
+            oClientes = Nothing
+        End Try
     End Sub
 
     Private Sub Elimina_Elemento()
@@ -1066,4 +1106,5 @@ busca:
 
 #End Region
 
+    
 End Class
