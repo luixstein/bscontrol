@@ -1,0 +1,3 @@
+﻿Public Class Cat_Nomina_TipoPercepciones
+
+End Class

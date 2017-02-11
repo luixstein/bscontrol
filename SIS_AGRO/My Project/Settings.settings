@@ -1,0 +1,66 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="My" GeneratedClassName="MySettings" UseMySettingsClassName="true">
+  <Profiles />
+  <Settings>
+    <Setting Name="Ruta" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\BsControl</Value>
+    </Setting>
+    <Setting Name="Usuario" Type="System.String" Scope="User">
+      <Value Profile="(Default)">dba</Value>
+    </Setting>
+    <Setting Name="Mostrar_Imagen_de_Fondo" Type="System.String" Scope="User">
+      <Value Profile="(Default)">NO</Value>
+    </Setting>
+    <Setting Name="ImpresoraEtiquetas" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Generic / Text Only</Value>
+    </Setting>
+    <Setting Name="MostrarEmpresas" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="ModoSistema" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Normal</Value>
+    </Setting>
+    <Setting Name="MostrarModoSistema" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="PrecargarLogins" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="BaseDatos1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">AGRINET_LAND_TEST</Value>
+    </Setting>
+    <Setting Name="BaseDatos2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">AGRINET_LAND_S</Value>
+    </Setting>
+    <Setting Name="BaseDatos3" Type="System.String" Scope="User">
+      <Value Profile="(Default)">AGRINET_LAND_TEST</Value>
+    </Setting>
+    <Setting Name="Servidor1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">PCSISTEMASJORGE\SQL14</Value>
+    </Setting>
+    <Setting Name="Servidor2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">PCSISTEMASJORGE\SQL14</Value>
+    </Setting>
+    <Setting Name="Servidor3" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DANIEL-PC\SQL14</Value>
+    </Setting>
+    <Setting Name="MostrarServidores" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="AliasServidor1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">LOCAL</Value>
+    </Setting>
+    <Setting Name="AliasServidor2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">S</Value>
+    </Setting>
+    <Setting Name="AliasServidor3" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DANIEL</Value>
+    </Setting>
+    <Setting Name="BaseDatos" Type="System.String" Scope="User">
+      <Value Profile="(Default)">AGRICONTROL_BIOLOGOS</Value>
+    </Setting>
+    <Setting Name="Servidor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">PCSISTEMASJORGE\SQL14</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

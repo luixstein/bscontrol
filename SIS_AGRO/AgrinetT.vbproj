@@ -1,0 +1,2116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4E7442CF-F067-4A05-8830-05D1DA95091F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>BsControl.My.MyApplication</StartupObject>
+    <RootNamespace>BsControl</RootNamespace>
+    <AssemblyName>BsControl</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>BsControl.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>BsControl.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="cfdi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Pack cfdi\cfdi_dll_7\cfdi_dll\cfdi\bin\Release\cfdi.dll</HintPath>
+    </Reference>
+    <Reference Include="co32, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Users\AidaC\Desktop\Pack cfdi\cfdi_dll\testDLL\bin\Release\co32.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=12.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Enterprise.Framework, Version=12.0.1100.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="CrystalDecisions.Enterprise.InfoStore, Version=12.0.1100.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=12.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=12.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=12.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="FlexCell, Version=3.2.0.0, Culture=neutral, PublicKeyToken=6f86587eb70ee309, processorArchitecture=MSIL" />
+    <Reference Include="Interop.BarTender, Version=10.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>bin\Debug\Interop.BarTender.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Agrinet\SIS_AGRO\bin\Debug\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>bin\Release\Microsoft.Office.Interop.Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Vbe.Interop, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>bin\Release\Microsoft.Vbe.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic.PowerPacks, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Microsoft.VisualBasic.PowerPacks.dll</HintPath>
+    </Reference>
+    <Reference Include="Office, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>bin\Release\Office.dll</HintPath>
+    </Reference>
+    <Reference Include="PTI_dll, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Users\AidaC\Desktop\Jorge9 Pti\Fuentes y archivos\PTI_dll.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="ThoughtWorks.QRCode, Version=1.0.4275.39497, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Users\AidaC\Desktop\Pack cfdi\cfdi_dll\testDLL\bin\Release\ThoughtWorks.QRCode.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="Clases\Administracion\Class_Sis_Administracion_Clientes.vb" />
+    <Compile Include="Clases\Bancos\Class_Conciliacion_Bancaria.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatAgenciaAduanales.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatAlmacenes.vb" />
+    <Compile Include="Clases\Catalogos\Class_Catalogos.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatArticulos.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatBancos.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatCajasTransportes.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatVehiculos.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatCategorias.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatChoferes.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatClientes.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatConceptoCostosProduccion.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatConceptoFleteEquipo.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatConceptoGastoEmpaqueEmbarque.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatConceptos.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatCuentas.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatCuentasBancarias.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatMonedas.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatTiposCambio.vb" />
+    <Compile Include="Clases\Catalogos\Class_SisTiposProveedores.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatTiposCategorias.vb" />
+    <Compile Include="Clases\Catalogos\Class_CXPCatalogoConceptosPagos.vb" />
+    <Compile Include="Clases\Catalogos\Class_VentasCatGastos.vb" />
+    <Compile Include="Clases\Catalogos\Class_VentasCatContratos.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatCultivos.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatDistribuidores.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatDocumentos.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatEmbarcadores.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatEmpaques.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatEnvases.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatEstatus.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatEstatusVentas.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatEtiquetas.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatFamilias.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatLineas.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatLineasTransportes.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatLotes.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatLugaresEntrega.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatMarcasTransportes.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatMedioPago.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatNegociantesCxc.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatProductores.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatProductosAgricolasFormulasEmpaque.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatProductosMastronardi.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatTamaños.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatTiendasSoriana.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatTiposContabilidad.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatTiposEnvases.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatTiposMercados.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatTiposNegociaciones.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatTiposTamaños.vb" />
+    <Compile Include="Clases\Catalogos\Class_VwCatCentrosCostosyDeudoresDiversos.vb" />
+    <Compile Include="Clases\Catalogos\Class_VWCatDeudoresDiversos.vb" />
+    <Compile Include="Clases\Catalogos\Nomina\Class_CatTrabajadores.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatTransportes.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatVendedores.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatZonas.vb" />
+    <Compile Include="Clases\Catalogos\Class_Cat_IVAS.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatProveedores.vb" />
+    <Compile Include="Clases\Catalogos\Class_Cat_tiposDocumentos.vb" />
+    <Compile Include="Clases\Catalogos\Class_CFD_CatMetodosPago.vb" />
+    <Compile Include="Clases\Catalogos\Class_SisContabilidadParametros.vb" />
+    <Compile Include="Clases\Catalogos\Class_sisEmpresa.vb" />
+    <Compile Include="Clases\Catalogos\Class_SisModulos.vb" />
+    <Compile Include="Clases\Catalogos\Class_SisPlazas.vb" />
+    <Compile Include="Clases\Catalogos\Class_SisTiposDocumentos.vb" />
+    <Compile Include="Clases\Catalogos\Class_sisUsuarios.vb" />
+    <Compile Include="Clases\Catalogos\Class_TiposMercados.vb" />
+    <Compile Include="Clases\Catalogos\Class_VentasCatSemanas.vb" />
+    <Compile Include="Clases\Catalogos\Class_VentasSemanales.vb" />
+    <Compile Include="Clases\Catalogos\Nomina\Class_CatActividades.vb" />
+    <Compile Include="Clases\Catalogos\Nomina\Class_CatAreas.vb" />
+    <Compile Include="Clases\Catalogos\Nomina\Class_CatCentroCostos.vb" />
+    <Compile Include="Clases\Catalogos\Nomina\Class_CatConceptosActividades.vb" />
+    <Compile Include="Clases\Catalogos\Nomina\Class_CatPuestos.vb" />
+    <Compile Include="Clases\Catalogos\Nomina\Class_CatPuntoPago.vb" />
+    <Compile Include="Clases\Catalogos\Nomina\Class_CatTipoDeducciones.vb" />
+    <Compile Include="Clases\Catalogos\Nomina\Class_CatPercepcion.vb" />
+    <Compile Include="Clases\Catalogos\Nomina\Class_CatTipoPercepcion.vb" />
+    <Compile Include="Clases\Catalogos\Nomina\Class_CatUnidadMedicaFamiliar.vb" />
+    <Compile Include="Clases\Catalogos\Class_SisEmpresaNomina.vb" />
+    <Compile Include="Clases\CentrosCostos\Class_Centros_Costos_Global.vb" />
+    <Compile Include="Clases\Contabilidad\Class_ProyectoSiembra.vb" />
+    <Compile Include="Clases\Compras\Class_Compras_Detalle.vb" />
+    <Compile Include="Clases\Compras\Class_Compras_Global.vb" />
+    <Compile Include="Clases\Contabilidad\Class_Contabilidad_Ejercicios.vb" />
+    <Compile Include="Clases\Contabilidad\Class_Contabilidad_IVA_Acreditable_Detalle.vb" />
+    <Compile Include="Clases\Contabilidad\Class_Contabilidad_IVA_Acreditable_Global.vb" />
+    <Compile Include="Clases\Contabilidad\Class_AuxiliarMayor.vb" />
+    <Compile Include="Clases\Contabilidad\Class_Contabilidad_ListaFacturasRecibidas.vb" />
+    <Compile Include="Clases\Contabilidad\Class_Contabilidad_Poliza_Detalle.vb" />
+    <Compile Include="Clases\Contabilidad\Class_Contabilidad_Poliza_Global.vb" />
+    <Compile Include="Clases\Contabilidad\Class_Contabilidad_Reportes.vb" />
+    <Compile Include="Clases\Contabilidad\Class_Contabilidad_RP_Global_Poliza.vb" />
+    <Compile Include="Clases\Contabilidad\Class_Contabilidad_Saldos_Cuentas.vb" />
+    <Compile Include="Clases\CXC\Class_Bancos_CXC.vb" />
+    <Compile Include="Clases\CXC\Class_CXC_Afecta_Documentos.vb" />
+    <Compile Include="Clases\CXC\Class_CXC_Descuento.vb" />
+    <Compile Include="Clases\CXC\Class_CXC_Seguimientos.vb" />
+    <Compile Include="Clases\CXP\Class_Bancos_CXP.vb" />
+    <Compile Include="Clases\CXP\Class_CXP_Afecta_Documentos.vb" />
+    <Compile Include="Clases\CXP\Class_CXP_Autorizacion.vb" />
+    <Compile Include="Clases\CXP\Class_CXP_Descuento.vb" />
+    <Compile Include="Clases\Embarques\Class_Embarques_BultosEmpacados.vb" />
+    <Compile Include="Clases\Embarques\Class_Embarques_CajasProducidas.vb" />
+    <Compile Include="Clases\Embarques\Class_Embarques_CambiaPrecios.vb" />
+    <Compile Include="Clases\Embarques\Class_Embarques_CapturaDiariaProduccion.vb" />
+    <Compile Include="Clases\Embarques\Class_Embarques_ConfiguracionEquivalenciasEnvases.vb" />
+    <Compile Include="Clases\Embarques\Class_Embarques_ConfiguracionPesoEnvase.vb" />
+    <Compile Include="Clases\Embarques\Class_Embarques_EmbarqueDetalle.vb" />
+    <Compile Include="Clases\Embarques\Class_Embarques_EmbarqueGlobal.vb" />
+    <Compile Include="Clases\Embarques\Class_Embarques_MastronardiCambiaPrecios.vb" />
+    <Compile Include="Clases\Embarques\Class_Embarques_PaletsDetalle.vb" />
+    <Compile Include="Clases\Embarques\Class_Embarques_PaletsGlobal.vb" />
+    <Compile Include="Clases\Embarques\Class_Embarques_PTI.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\Addenda\Class_CatAddenda.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\Addenda\iArticulo.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\Addenda\iArticulos.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\Addenda\cAddenda.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\Addenda\iRemision.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\Addenda\iPedidos.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\Addenda\Xml.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cComprobante.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\Class_CFDI_cce_ComercioExterior.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\Class_CFDI_cce_Destinatario.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\Class_CFDI_cce_Emisor.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\Class_CFDI_cce_Mercancia.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\Class_CFDI_cce_Mercancias.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\Class_CFDI_cce_Receptor.vb" />
+    <Compile Include="Clases\Inventarios\Class_Inventarios_Lotes_Series.vb" />
+    <Compile Include="Clases\Nomina\Class_NominaDeduccionesDetalle.vb" />
+    <Compile Include="Clases\Nomina\Class_NominaDeduccionesGlobal.vb" />
+    <Compile Include="Clases\Nomina\Class_NominaDia.vb" />
+    <Compile Include="Clases\Nomina\Class_NominaListado.vb" />
+    <Compile Include="Clases\Nomina\Class_NominaHoja.vb" />
+    <Compile Include="Clases\Nomina\Class_NominaHojaPercepciones.vb" />
+    <Compile Include="Clases\Nomina\Class_NominaMovimientoSua.vb" />
+    <Compile Include="Clases\Nomina\Class_NominaSemana.vb" />
+    <Compile Include="Clases\Nomina\Class_NominaTemporada.vb" />
+    <Compile Include="Clases\Nomina\Class_Nomina_SUA.vb" />
+    <Compile Include="Clases\Utilerias\Class_Imagenes.vb" />
+    <Compile Include="dsTrabajadores.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsTrabajadores.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="dsTrabajadores.vb">
+      <DependentUpon>dsTrabajadores.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Administracion\Sis_administracion_clientes.Designer.vb">
+      <DependentUpon>Sis_administracion_clientes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Administracion\Sis_administracion_clientes.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Vehiculos.Designer.vb">
+      <DependentUpon>Catalogo_Vehiculos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Vehiculos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Categorias.Designer.vb">
+      <DependentUpon>Catalogo_Categorias.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Categorias.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Clientes_ActualizaCorreo.designer.vb">
+      <DependentUpon>Catalogo_Clientes_ActualizaCorreo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Clientes_ActualizaCorreo.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Conceptos.Designer.vb">
+      <DependentUpon>Catalogo_Conceptos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Conceptos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Conceptos_Fletes_Equipo.Designer.vb">
+      <DependentUpon>Catalogo_Conceptos_Fletes_Equipo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Conceptos_Fletes_Equipo.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Conceptos_GastosEmbarqueEmpaque.designer.vb">
+      <DependentUpon>Catalogo_Conceptos_GastosEmbarqueEmpaque.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Conceptos_GastosEmbarqueEmpaque.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Concepto_Costos_Produccion.Designer.vb">
+      <DependentUpon>Catalogo_Concepto_Costos_Produccion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Concepto_Costos_Produccion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Cultivos.Designer.vb">
+      <DependentUpon>Catalogo_Cultivos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Cultivos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Lugares_Entrega.designer.vb">
+      <DependentUpon>Catalogo_Lugares_Entrega.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Lugares_Entrega.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Negociantes_Cxc.Designer.vb">
+      <DependentUpon>Catalogo_Negociantes_Cxc.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Negociantes_Cxc.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_TiposEnvases.designer.vb">
+      <DependentUpon>Catalogo_TiposEnvases.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_TiposEnvases.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_TiposTamaños.designer.vb">
+      <DependentUpon>Catalogo_TiposTamaños.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_TiposTamaños.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Sis_Tipos_Proveedores.Designer.vb">
+      <DependentUpon>Sis_Tipos_Proveedores.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Sis_Tipos_Proveedores.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Tipos_Categorias.Designer.vb">
+      <DependentUpon>Catalogo_Tipos_Categorias.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Tipos_Categorias.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_NominaPuestos.designer.vb">
+      <DependentUpon>Cat_NominaPuestos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_NominaPuestos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_Actividades.designer.vb">
+      <DependentUpon>Cat_Nomina_Actividades.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_Actividades.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_Areas.designer.vb">
+      <DependentUpon>Cat_Nomina_Areas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_Areas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_CentroCosto.designer.vb">
+      <DependentUpon>Cat_Nomina_CentroCosto.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_CentroCosto.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_ConceptosActividades.Designer.vb">
+      <DependentUpon>Cat_Nomina_ConceptosActividades.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_ConceptosActividades.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_Puestos.designer.vb">
+      <DependentUpon>Cat_Nomina_Puestos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_Puestos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_PuntoPago.designer.vb">
+      <DependentUpon>Cat_Nomina_PuntoPago.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_PuntoPago.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_TipoDeducciones.designer.vb">
+      <DependentUpon>Cat_Nomina_TipoDeducciones.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_TipoDeducciones.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_Percepciones.designer.vb">
+      <DependentUpon>Cat_Nomina_Percepciones.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_Percepciones.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_TipoPercepcion.designer.vb">
+      <DependentUpon>Cat_Nomina_TipoPercepcion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_TipoPercepcion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_TipoPercepciones.designer.vb">
+      <DependentUpon>Cat_Nomina_TipoPercepciones.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_TipoPercepciones.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_Trabajadores.designer.vb">
+      <DependentUpon>Cat_Nomina_Trabajadores.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_Trabajadores.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_UnidadMedicaFamiliar.designer.vb">
+      <DependentUpon>Cat_Nomina_UnidadMedicaFamiliar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_UnidadMedicaFamiliar.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CentrosCostos\FrmCostosEdicion.Designer.vb">
+      <DependentUpon>FrmCostosEdicion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CentrosCostos\FrmCostosEdicion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CentrosCostos\FrmPolizaCostos.Designer.vb">
+      <DependentUpon>FrmPolizaCostos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CentrosCostos\FrmPolizaCostos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CentrosCostos\Reportes\RptCentrosCostosNavegador.Designer.vb">
+      <DependentUpon>RptCentrosCostosNavegador.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CentrosCostos\Reportes\RptCentrosCostosNavegador.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Compras\Compras_Movimientos.designer.vb">
+      <DependentUpon>Compras_Movimientos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Compras\Compras_Movimientos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Comparativas_Financieras.Designer.vb">
+      <DependentUpon>Frm_Contabilidad_Comparativas_Financieras.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Comparativas_Financieras.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_ConceptosINEGI.designer.vb">
+      <DependentUpon>Frm_Contabilidad_ConceptosINEGI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_ConceptosINEGI.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Costo_corte_acarreo_empaque_embarque.Designer.vb">
+      <DependentUpon>Frm_Contabilidad_Costo_corte_acarreo_empaque_embarque.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Costo_corte_acarreo_empaque_embarque.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_NavegadorPresupuestos.Designer.vb">
+      <DependentUpon>Frm_Contabilidad_NavegadorPresupuestos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_NavegadorPresupuestos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Proyecto_presupuesto.Designer.vb">
+      <DependentUpon>Frm_Proyecto_presupuesto.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Proyecto_presupuesto.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Frm_AbrirCerrar_Ejercicio.Designer.vb">
+      <DependentUpon>Frm_AbrirCerrar_Ejercicio.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Frm_AbrirCerrar_Ejercicio.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Frm_Contabilidad_Captura_Polizas.designer.vb">
+      <DependentUpon>Frm_Contabilidad_Captura_Polizas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Frm_Contabilidad_Captura_Polizas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CXC\Consultas\Rpt_CXC_AuxClientes.Designer.vb">
+      <DependentUpon>Rpt_CXC_AuxClientes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXC\Consultas\Rpt_CXC_AuxClientes.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CXC\Consultas\Rpt_CXC_Descuentos.designer.vb">
+      <DependentUpon>Rpt_CXC_Descuentos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXC\Consultas\Rpt_CXC_Descuentos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CXC\Frm_CXC_Seguimientos.Designer.vb">
+      <DependentUpon>Frm_CXC_Seguimientos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXC\Frm_CXC_Seguimientos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CXC\Consultas\Rpt_CXC_Documentos.designer.vb">
+      <DependentUpon>Rpt_CXC_Documentos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXC\Consultas\Rpt_CXC_Documentos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CXC\Frm_CXC_Descuentos.designer.vb">
+      <DependentUpon>Frm_CXC_Descuentos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXC\Frm_CXC_Descuentos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CXP\Consultas\Rpt_CXP_SaldosProveedores.designer.vb">
+      <DependentUpon>Rpt_CXP_SaldosProveedores.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXP\Consultas\Rpt_CXP_SaldosProveedores.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CXP\Frm_CXP_Autorizaciones.Designer.vb">
+      <DependentUpon>Frm_CXP_Autorizaciones.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXP\Frm_CXP_Autorizaciones.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CXP\Frm_CXP_ControlPagos.Designer.vb">
+      <DependentUpon>Frm_CXP_ControlPagos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXP\Frm_CXP_ControlPagos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CXP\Frm_CXP_Descuentos.Designer.vb">
+      <DependentUpon>Frm_CXP_Descuentos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXP\Frm_CXP_Descuentos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CXP\Frm_CXP_PagosCobrados.Designer.vb">
+      <DependentUpon>Frm_CXP_PagosCobrados.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXP\Frm_CXP_PagosCobrados.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CXP\Frm_CXP_Revision.Designer.vb">
+      <DependentUpon>Frm_CXP_Revision.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXP\Frm_CXP_Revision.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Embarques_CambiaPrecios.designer.vb">
+      <DependentUpon>Frm_Embarques_CambiaPrecios.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Embarques_CambiaPrecios.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Embarques_CapturaCajasProducidas.Designer.vb">
+      <DependentUpon>Frm_Embarques_CapturaCajasProducidas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Embarques_CapturaCajasProducidas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Embarques_CapturaDiariaProduccion.designer.vb">
+      <DependentUpon>Frm_Embarques_CapturaDiariaProduccion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Embarques_CapturaDiariaProduccion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Embarques_Captura_Embarque.designer.vb">
+      <DependentUpon>Frm_Embarques_Captura_Embarque.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Embarques_Captura_Embarque.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Embarques_ConfiguracionEquivalenciasEnvases.designer.vb">
+      <DependentUpon>Frm_Embarques_ConfiguracionEquivalenciasEnvases.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Embarques_ConfiguracionEquivalenciasEnvases.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Embarques_ConfiguracionPesoEnvase.designer.vb">
+      <DependentUpon>Frm_Embarques_ConfiguracionPesoEnvase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Embarques_ConfiguracionPesoEnvase.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Embarques_Etiquetas.designer.vb">
+      <DependentUpon>Frm_Embarques_Etiquetas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Embarques_Etiquetas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Embarques_Etiquetas_Palets.designer.vb">
+      <DependentUpon>Frm_Embarques_Etiquetas_Palets.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Embarques_Etiquetas_Palets.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Embarques_CambiaPreciosPalets.Designer.vb">
+      <DependentUpon>Frm_Embarques_CambiaPreciosPalets.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Embarques_CambiaPreciosPalets.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_CostoEmpaque.Designer.vb">
+      <DependentUpon>Rpt_Embarques_CostoEmpaque.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_CostoEmpaque.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_Embarque.designer.vb">
+      <DependentUpon>Rpt_Embarques_Embarque.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_Embarque.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_EmpaqueVsProduccion.Designer.vb">
+      <DependentUpon>Rpt_Embarques_EmpaqueVsProduccion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_EmpaqueVsProduccion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_Empaque_Y_Embarque.Designer.vb">
+      <DependentUpon>Rpt_Embarques_Empaque_Y_Embarque.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_Empaque_Y_Embarque.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_FletesNoGenerados.Designer.vb">
+      <DependentUpon>Rpt_Embarques_FletesNoGenerados.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_FletesNoGenerados.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_GlobalDetalle.designer.vb">
+      <DependentUpon>Rpt_Embarques_GlobalDetalle.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_GlobalDetalle.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_Produccion_Estimada.designer.vb">
+      <DependentUpon>Rpt_Embarques_Produccion_Estimada.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_Produccion_Estimada.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_ResumenVentas.designer.vb">
+      <DependentUpon>Rpt_Embarques_ResumenVentas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_ResumenVentas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_Saldo_Flete.designer.vb">
+      <DependentUpon>Rpt_Embarques_Saldo_Flete.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_Saldo_Flete.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_SinSalidaEmpaque.designer.vb">
+      <DependentUpon>Rpt_Embarques_SinSalidaEmpaque.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_SinSalidaEmpaque.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_VentasEstimadaArticulo.designer.vb">
+      <DependentUpon>Rpt_Embarques_VentasEstimadaArticulo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_VentasEstimadaArticulo.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_VentasNacionalesEstimadas.designer.vb">
+      <DependentUpon>Rpt_Embarques_VentasNacionalesEstimadas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_VentasNacionalesEstimadas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Resumen_Empaque_y_Embarque.designer.vb">
+      <DependentUpon>Rpt_Resumen_Empaque_y_Embarque.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Resumen_Empaque_y_Embarque.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_VentasNetasPorCultivo.designer.vb">
+      <DependentUpon>Rpt_VentasNetasPorCultivo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_VentasNetasPorCultivo.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_AgrupadoArticulo.designer.vb">
+      <DependentUpon>Rpt_Embarques_AgrupadoArticulo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Reportes\Rpt_Embarques_AgrupadoArticulo.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Factura_Electronica\Addenda\Frm_AgregaAddenda.Designer.vb">
+      <DependentUpon>Frm_AgregaAddenda.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Factura_Electronica\Addenda\Frm_AgregaAddenda.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CentrosCostos\InventariosDetalleCuentasContables.Designer.vb">
+      <DependentUpon>InventariosDetalleCuentasContables.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CentrosCostos\InventariosDetalleCuentasContables.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\ProyectoSiembraEdicion.designer.vb">
+      <DependentUpon>ProyectoSiembraEdicion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\ProyectoSiembraEdicion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\ProyectoSiembra.designer.vb">
+      <DependentUpon>ProyectoSiembra.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\ProyectoSiembra.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Nomina\AfiliacionIMSS\Frm_Nomina_AltaBajaIntegracionSUA.Designer.vb">
+      <DependentUpon>Frm_Nomina_AltaBajaIntegracionSUA.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Nomina\AfiliacionIMSS\Frm_Nomina_AltaBajaIntegracionSUA.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Nomina\AfiliacionIMSS\Frm_Nomina_ControlSUA.Designer.vb">
+      <DependentUpon>Frm_Nomina_ControlSUA.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Nomina\AfiliacionIMSS\Frm_Nomina_ControlSUA.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Nomina\AfiliacionIMSS\Frm_Nomina_TrabajadorAdicional.Designer.vb">
+      <DependentUpon>Frm_Nomina_TrabajadorAdicional.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Nomina\AfiliacionIMSS\Frm_Nomina_TrabajadorAdicional.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Nomina\AfiliacionIMSS\Frm_NumeroSeguro.Designer.vb">
+      <DependentUpon>Frm_NumeroSeguro.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Nomina\AfiliacionIMSS\Frm_NumeroSeguro.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Nomina\Frm_Nomina_Aguinaldos.Designer.vb">
+      <DependentUpon>Frm_Nomina_Aguinaldos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Nomina\Frm_Nomina_Aguinaldos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Nomina\Frm_Nomina_CapturaHoja.designer.vb">
+      <DependentUpon>Frm_Nomina_CapturaHoja.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Nomina\Frm_Nomina_CapturaHoja.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Nomina\Frm_Nomina_CapturaPercepciones.designer.vb">
+      <DependentUpon>Frm_Nomina_CapturaPercepciones.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Nomina\Frm_Nomina_CapturaPercepciones.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Nomina\Frm_Nomina_Configuracion.Designer.vb">
+      <DependentUpon>Frm_Nomina_Configuracion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Nomina\Frm_Nomina_Configuracion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Nomina\AfiliacionIMSS\Frm_Nomina_EdicionSUA.Designer.vb">
+      <DependentUpon>Frm_Nomina_EdicionSUA.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Nomina\AfiliacionIMSS\Frm_Nomina_EdicionSUA.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Nomina\Frm_Nomina_Credenciales.Designer.vb">
+      <DependentUpon>Frm_Nomina_Credenciales.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Nomina\Frm_Nomina_Credenciales.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Nomina\Frm_Nomina_Deducciones.Designer.vb">
+      <DependentUpon>Frm_Nomina_Deducciones.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Nomina\Frm_Nomina_Deducciones.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Nomina\Frm_Nomina_Generada.Designer.vb">
+      <DependentUpon>Frm_Nomina_Generada.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Nomina\Frm_Nomina_Generada.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Nomina\Reportes\Frm_Nomina_NavegadorCostosPresupuesto.Designer.vb">
+      <DependentUpon>Frm_Nomina_NavegadorCostosPresupuesto.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Nomina\Reportes\Frm_Nomina_NavegadorCostosPresupuesto.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Rpt_CentroCostos.Designer.vb">
+      <DependentUpon>Rpt_CentroCostos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Rpt_CentroCostos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Nomina\Reportes\Rpt_Nomina_Listado.designer.vb">
+      <DependentUpon>Rpt_Nomina_Listado.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Nomina\Reportes\Rpt_Nomina_Listado.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Nomina\Reportes\Rpt_Nomina_Detalle.Designer.vb">
+      <DependentUpon>Rpt_Nomina_Detalle.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Nomina\Reportes\Rpt_Nomina_Detalle.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Nomina\SincronizaXMLAsistencia.designer.vb">
+      <DependentUpon>SincronizaXMLAsistencia.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Nomina\SincronizaXMLAsistencia.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Nomina\SincronizaXMLNomina.designer.vb">
+      <DependentUpon>SincronizaXMLNomina.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Nomina\SincronizaXMLNomina.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Sistema\AppMenuReportes.designer.vb">
+      <DependentUpon>AppMenuReportes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Sistema\AppMenuReportes.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Sistema\ConfiguracionUsuarios.designer.vb">
+      <DependentUpon>ConfiguracionUsuarios.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Sistema\ConfiguracionUsuarios.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Utilerias\frmEmbarquesMasivos.designer.vb">
+      <DependentUpon>frmEmbarquesMasivos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Utilerias\frmEmbarquesMasivos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Utilerias\Frm_Monitor_CFDi.Designer.vb">
+      <DependentUpon>Frm_Monitor_CFDi.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Utilerias\Frm_Monitor_CFDi.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Utilerias\ModoSistema.designer.vb">
+      <DependentUpon>ModoSistema.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Utilerias\ModoSistema.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Utilerias\SeleccionEmpresa.designer.vb">
+      <DependentUpon>SeleccionEmpresa.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Utilerias\SeleccionEmpresa.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Utilerias\UtileriasGeneraInformeMensual.Designer.vb">
+      <DependentUpon>UtileriasGeneraInformeMensual.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Utilerias\UtileriasGeneraInformeMensual.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Ventas\Consultas\Rpt_Ventas_Global.designer.vb">
+      <DependentUpon>Rpt_Ventas_Global.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Ventas\Consultas\Rpt_Ventas_Global.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Ventas\Consultas\Rpt_Ventas_ProductosVendidos.designer.vb">
+      <DependentUpon>Rpt_Ventas_ProductosVendidos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Ventas\Consultas\Rpt_Ventas_ProductosVendidos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Ventas\Consultas\Rpt_Ventas_TopTenProductos.Designer.vb">
+      <DependentUpon>Rpt_Ventas_TopTenProductos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Ventas\Consultas\Rpt_Ventas_TopTenProductos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Ventas\Frm_EnviaFacturaElectronicas.Designer.vb">
+      <DependentUpon>Frm_EnviaFacturaElectronicas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Ventas\Frm_EnviaFacturaElectronicas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Ventas\Consultas\Rpt_Q_ComparativosVenta.Designer.vb">
+      <DependentUpon>Rpt_Q_ComparativosVenta.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Ventas\Consultas\Rpt_Q_ComparativosVenta.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Ventas\VentasSeleccionaTipoFactura.Designer.vb">
+      <DependentUpon>VentasSeleccionaTipoFactura.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Ventas\VentasSeleccionaTipoFactura.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Ventas\Ventas_Movimientos.designer.vb">
+      <DependentUpon>Ventas_Movimientos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Ventas\Ventas_Movimientos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Ventas\Ventas_Semanales.Designer.vb">
+      <DependentUpon>Ventas_Semanales.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Ventas\Ventas_Semanales.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulos\Addenda.vb" />
+    <Compile Include="Modulos\FacturacionElectronica.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iConcepto.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iConceptos.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iEmisor.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iEmisorDomFis.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iEmisorDomicilioFiscal.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iEmisorExpedidoEn.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iImpuestos.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iReceptor.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iReceptorDomicilio.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iTraslado.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iTraslados.vb" />
+    <Compile Include="Clases\Inventarios\Class_Inventarios_Detalle.vb" />
+    <Compile Include="Clases\Inventarios\Class_Inventarios_Global.vb" />
+    <Compile Include="Clases\Utilerias\Class_UtileriasFirmaElectronicaCancelacion.vb" />
+    <Compile Include="Clases\Utilerias\Class_find.vb" />
+    <Compile Include="Clases\Utilerias\Class_GridBusqueda.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Clases\Utilerias\Class_Menu.vb" />
+    <Compile Include="Clases\Utilerias\Class_Reporte.vb" />
+    <Compile Include="Clases\Ventas\Class_Ventas_Detalle.vb" />
+    <Compile Include="Clases\Ventas\Class_Ventas_Global.vb" />
+    <Compile Include="Formas\Catalogos\Catalogo_AgenciaAduanas.designer.vb">
+      <DependentUpon>Catalogo_AgenciaAduanas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_AgenciaAduanas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Almacenes.designer.vb">
+      <DependentUpon>Catalogo_Almacenes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Almacenes.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Articulos.Designer.vb">
+      <DependentUpon>Catalogo_Articulos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Articulos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_CajasTransportes.designer.vb">
+      <DependentUpon>Catalogo_CajasTransportes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_CajasTransportes.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Choferes.designer.vb">
+      <DependentUpon>Catalogo_Choferes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Choferes.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Clientes.Designer.vb">
+      <DependentUpon>Catalogo_Clientes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Clientes.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Cuentas_Bancarias.designer.vb">
+      <DependentUpon>Catalogo_Cuentas_Bancarias.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Cuentas_Bancarias.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Distribuidores.designer.vb">
+      <DependentUpon>Catalogo_Distribuidores.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Distribuidores.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Embarcadores.designer.vb">
+      <DependentUpon>Catalogo_Embarcadores.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Embarcadores.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Empaques.Designer.vb">
+      <DependentUpon>Catalogo_Empaques.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Empaques.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Envases.designer.vb">
+      <DependentUpon>Catalogo_Envases.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Envases.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Etiquetas.Designer.vb">
+      <DependentUpon>Catalogo_Etiquetas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Etiquetas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Familias.Designer.vb">
+      <DependentUpon>Catalogo_Familias.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Familias.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Folios_Documentos.Designer.vb">
+      <DependentUpon>Catalogo_Folios_Documentos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Folios_Documentos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Lineas.designer.vb">
+      <DependentUpon>Catalogo_Lineas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Lineas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Lineas_Transportes.designer.vb">
+      <DependentUpon>Catalogo_Lineas_Transportes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Lineas_Transportes.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Lotes.Designer.vb">
+      <DependentUpon>Catalogo_Lotes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Lotes.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Marcas_Transportes.designer.vb">
+      <DependentUpon>Catalogo_Marcas_Transportes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Marcas_Transportes.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Productores.designer.vb">
+      <DependentUpon>Catalogo_Productores.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Productores.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Productos_Agricolas.designer.vb">
+      <DependentUpon>Catalogo_Productos_Agricolas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Productos_Agricolas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Proveedores.Designer.vb">
+      <DependentUpon>Catalogo_Proveedores.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Proveedores.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Tamaños.Designer.vb">
+      <DependentUpon>Catalogo_Tamaños.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Tamaños.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Transportes.designer.vb">
+      <DependentUpon>Catalogo_Transportes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Transportes.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Vendedores.Designer.vb">
+      <DependentUpon>Catalogo_Vendedores.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Vendedores.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Zonas.Designer.vb">
+      <DependentUpon>Catalogo_Zonas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Zonas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Cuentas_Contables.designer.vb">
+      <DependentUpon>Catalogo_Cuentas_Contables.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Cuentas_Contables.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Bancos.designer.vb">
+      <DependentUpon>Catalogo_Bancos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Bancos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Compras\Consultas\Rpt_Compras_Global.Designer.vb">
+      <DependentUpon>Rpt_Compras_Global.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Compras\Consultas\Rpt_Compras_Global.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Auxiliar_Mayor.designer.vb">
+      <DependentUpon>Frm_Contabilidad_Auxiliar_Mayor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Auxiliar_Mayor.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_contabilidad_Estados_Financieros.designer.vb">
+      <DependentUpon>Frm_contabilidad_Estados_Financieros.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_contabilidad_Estados_Financieros.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Busqueda_Polizas.designer.vb">
+      <DependentUpon>Frm_Contabilidad_Busqueda_Polizas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Busqueda_Polizas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Costos_Produccion.designer.vb">
+      <DependentUpon>Frm_Contabilidad_Costos_Produccion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Costos_Produccion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Estado_Resultados.designer.vb">
+      <DependentUpon>Frm_Contabilidad_Estado_Resultados.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Estado_Resultados.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Global_Polizas.designer.vb">
+      <DependentUpon>Frm_Contabilidad_Global_Polizas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Global_Polizas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_IVA_Acreditable.designer.vb">
+      <DependentUpon>Frm_Contabilidad_IVA_Acreditable.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_IVA_Acreditable.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Polizas_Egresos.designer.vb">
+      <DependentUpon>Frm_Contabilidad_Polizas_Egresos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Polizas_Egresos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Balanza_Analiticas_Mayor.designer.vb">
+      <DependentUpon>Frm_Contabilidad_Balanza_Analiticas_Mayor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Balanza_Analiticas_Mayor.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Saldos_CCON.designer.vb">
+      <DependentUpon>Frm_Contabilidad_Saldos_CCON.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Saldos_CCON.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Contabilidad_Periodos.designer.vb">
+      <DependentUpon>Contabilidad_Periodos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Contabilidad_Periodos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Frm_Contabilidad_IVA_Acreditable_Detalle.Designer.vb">
+      <DependentUpon>Frm_Contabilidad_IVA_Acreditable_Detalle.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Frm_Contabilidad_IVA_Acreditable_Detalle.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Frm_Contabilidad_IVA_Acreditable_Global.Designer.vb">
+      <DependentUpon>Frm_Contabilidad_IVA_Acreditable_Global.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\Frm_Contabilidad_IVA_Acreditable_Global.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\UtileriasGeneraContraseñaCancelarMovimientosMesesPasados.Designer.vb">
+      <DependentUpon>UtileriasGeneraContraseñaCancelarMovimientosMesesPasados.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\UtileriasGeneraContraseñaCancelarMovimientosMesesPasados.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CXC\Frm_CXC_AplicacionDocumentos.designer.vb">
+      <DependentUpon>Frm_CXC_AplicacionDocumentos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXC\Frm_CXC_AplicacionDocumentos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CXC\Frm_CXC_Pagos.designer.vb">
+      <DependentUpon>Frm_CXC_Pagos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXC\Frm_CXC_Pagos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CXP\Consultas\Rpt_Cxp_Auxiliar_proveedor.Designer.vb">
+      <DependentUpon>Rpt_Cxp_Auxiliar_proveedor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXP\Consultas\Rpt_Cxp_Auxiliar_proveedor.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CXP\Consultas\Rpt_Cxp_Comprueba_Saldos.Designer.vb">
+      <DependentUpon>Rpt_Cxp_Comprueba_Saldos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXP\Consultas\Rpt_Cxp_Comprueba_Saldos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CXP\Consultas\Rpt_Cxp_Detalle_Cheques_Transferencias.designer.vb">
+      <DependentUpon>Rpt_Cxp_Detalle_Cheques_Transferencias.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXP\Consultas\Rpt_Cxp_Detalle_Cheques_Transferencias.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CXP\Frm_CXP_Aplicacion_Documentos.designer.vb">
+      <DependentUpon>Frm_CXP_Aplicacion_Documentos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXP\Frm_CXP_Aplicacion_Documentos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CXP\Frm_CXP_Pagos_Acreedores.designer.vb">
+      <DependentUpon>Frm_CXP_Pagos_Acreedores.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXP\Frm_CXP_Pagos_Acreedores.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Embarques_ArmadoPalets.designer.vb">
+      <DependentUpon>Frm_Embarques_ArmadoPalets.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Embarques_ArmadoPalets.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Embarques_EntradaSobrante.designer.vb">
+      <DependentUpon>Frm_Embarques_EntradaSobrante.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Embarques_EntradaSobrante.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Imprimir_Embarques.designer.vb">
+      <DependentUpon>Frm_Imprimir_Embarques.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Embarques\Frm_Imprimir_Embarques.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Inventarios\Inventarios_Movimientos.designer.vb">
+      <DependentUpon>Inventarios_Movimientos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Inventarios\Inventarios_Movimientos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Inventarios\Reportes\Rpt_Inventarios_Global.Designer.vb">
+      <DependentUpon>Rpt_Inventarios_Global.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Inventarios\Reportes\Rpt_Inventarios_Global.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Inventarios\Reportes\Rpt_Inventario_Auxiliar_Articulo.Designer.vb">
+      <DependentUpon>Rpt_Inventario_Auxiliar_Articulo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Inventarios\Reportes\Rpt_Inventario_Auxiliar_Articulo.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Inventarios\Reportes\Rpt_Inventario_Existencias.designer.vb">
+      <DependentUpon>Rpt_Inventario_Existencias.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Inventarios\Reportes\Rpt_Inventario_Existencias.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Inventarios\Reportes\Rpt_Inventario_Lotes_costos.Designer.vb">
+      <DependentUpon>Rpt_Inventario_Lotes_costos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Inventarios\Reportes\Rpt_Inventario_Lotes_costos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Sistema\AppMenu.designer.vb">
+      <DependentUpon>AppMenu.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Sistema\AppMenu.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Sistema\BusquedaVisual.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Sistema\LoginForm.designer.vb">
+      <DependentUpon>LoginForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Sistema\LoginForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Sistema\Reporte.Designer.vb">
+      <DependentUpon>Reporte.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Sistema\Reporte.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Utilerias\Busqueda_General.Designer.vb">
+      <DependentUpon>Busqueda_General.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Utilerias\Busqueda_General.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Utilerias\Frm_Contraseña_Cambio_Periodo.designer.vb">
+      <DependentUpon>Frm_Contraseña_Cambio_Periodo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Utilerias\Frm_Contraseña_Cambio_Periodo.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Utilerias\Servidor.Designer.vb">
+      <DependentUpon>Servidor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Utilerias\Servidor.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Utilerias\UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo.Designer.vb">
+      <DependentUpon>UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Utilerias\UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Ventas\Ventas_Modifica_Precios.Designer.vb">
+      <DependentUpon>Ventas_Modifica_Precios.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Ventas\Ventas_Modifica_Precios.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulos\Mod_Grid.vb" />
+    <Compile Include="Modulos\Mod_main.vb" />
+    <Compile Include="Modulos\Mod_Uti.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="rptCredenciales.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptCredenciales.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Service References\wsSorianaProduccion\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Formas\Administracion\Sis_administracion_clientes.resx">
+      <DependentUpon>Sis_administracion_clientes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_AgenciaAduanas.resx">
+      <DependentUpon>Catalogo_AgenciaAduanas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Almacenes.resx">
+      <DependentUpon>Catalogo_Almacenes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Articulos.resx">
+      <DependentUpon>Catalogo_Articulos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_CajasTransportes.resx">
+      <DependentUpon>Catalogo_CajasTransportes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Vehiculos.resx">
+      <DependentUpon>Catalogo_Vehiculos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Categorias.resx">
+      <DependentUpon>Catalogo_Categorias.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Choferes.resx">
+      <DependentUpon>Catalogo_Choferes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Clientes.resx">
+      <DependentUpon>Catalogo_Clientes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Clientes_ActualizaCorreo.resx">
+      <DependentUpon>Catalogo_Clientes_ActualizaCorreo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Conceptos.resx">
+      <DependentUpon>Catalogo_Conceptos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Conceptos_Fletes_Equipo.resx">
+      <DependentUpon>Catalogo_Conceptos_Fletes_Equipo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Conceptos_GastosEmbarqueEmpaque.resx">
+      <DependentUpon>Catalogo_Conceptos_GastosEmbarqueEmpaque.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Concepto_Costos_Produccion.resx">
+      <DependentUpon>Catalogo_Concepto_Costos_Produccion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Cuentas_Bancarias.resx">
+      <DependentUpon>Catalogo_Cuentas_Bancarias.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Cultivos.resx">
+      <DependentUpon>Catalogo_Cultivos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Distribuidores.resx">
+      <DependentUpon>Catalogo_Distribuidores.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Embarcadores.resx">
+      <DependentUpon>Catalogo_Embarcadores.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Empaques.resx">
+      <DependentUpon>Catalogo_Empaques.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Envases.resx">
+      <DependentUpon>Catalogo_Envases.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Etiquetas.resx">
+      <DependentUpon>Catalogo_Etiquetas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Familias.resx">
+      <DependentUpon>Catalogo_Familias.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Folios_Documentos.resx">
+      <DependentUpon>Catalogo_Folios_Documentos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Lineas.resx">
+      <DependentUpon>Catalogo_Lineas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Lineas_Transportes.resx">
+      <DependentUpon>Catalogo_Lineas_Transportes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Lotes.resx">
+      <DependentUpon>Catalogo_Lotes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Lugares_Entrega.resx">
+      <DependentUpon>Catalogo_Lugares_Entrega.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Marcas_Transportes.resx">
+      <DependentUpon>Catalogo_Marcas_Transportes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Negociantes_Cxc.resx">
+      <DependentUpon>Catalogo_Negociantes_Cxc.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Productores.resx">
+      <DependentUpon>Catalogo_Productores.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Productos_Agricolas.resx">
+      <DependentUpon>Catalogo_Productos_Agricolas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Proveedores.resx">
+      <DependentUpon>Catalogo_Proveedores.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Tamaños.resx">
+      <DependentUpon>Catalogo_Tamaños.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_TiposEnvases.resx">
+      <DependentUpon>Catalogo_TiposEnvases.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_TiposTamaños.resx">
+      <DependentUpon>Catalogo_TiposTamaños.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Sis_Tipos_Proveedores.resx">
+      <DependentUpon>Sis_Tipos_Proveedores.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Tipos_Categorias.resx">
+      <DependentUpon>Catalogo_Tipos_Categorias.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Transportes.resx">
+      <DependentUpon>Catalogo_Transportes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Vendedores.resx">
+      <DependentUpon>Catalogo_Vendedores.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Zonas.resx">
+      <DependentUpon>Catalogo_Zonas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Cuentas_Contables.resx">
+      <DependentUpon>Catalogo_Cuentas_Contables.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Bancos.resx">
+      <DependentUpon>Catalogo_Bancos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Nomina\Cat_NominaPuestos.resx">
+      <DependentUpon>Cat_NominaPuestos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Nomina\Cat_Nomina_Actividades.resx">
+      <DependentUpon>Cat_Nomina_Actividades.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Nomina\Cat_Nomina_Areas.resx">
+      <DependentUpon>Cat_Nomina_Areas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Nomina\Cat_Nomina_CentroCosto.resx">
+      <DependentUpon>Cat_Nomina_CentroCosto.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Nomina\Cat_Nomina_ConceptosActividades.resx">
+      <DependentUpon>Cat_Nomina_ConceptosActividades.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Nomina\Cat_Nomina_Puestos.resx">
+      <DependentUpon>Cat_Nomina_Puestos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Nomina\Cat_Nomina_PuntoPago.resx">
+      <DependentUpon>Cat_Nomina_PuntoPago.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Nomina\Cat_Nomina_TipoDeducciones.resx">
+      <DependentUpon>Cat_Nomina_TipoDeducciones.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Nomina\Cat_Nomina_Percepciones.resx">
+      <DependentUpon>Cat_Nomina_Percepciones.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Nomina\Cat_Nomina_TipoPercepcion.resx">
+      <DependentUpon>Cat_Nomina_TipoPercepcion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Nomina\Cat_Nomina_TipoPercepciones.resx">
+      <DependentUpon>Cat_Nomina_TipoPercepciones.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Nomina\Cat_Nomina_Trabajadores.resx">
+      <DependentUpon>Cat_Nomina_Trabajadores.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Nomina\Cat_Nomina_UnidadMedicaFamiliar.resx">
+      <DependentUpon>Cat_Nomina_UnidadMedicaFamiliar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CentrosCostos\FrmCostosEdicion.resx">
+      <DependentUpon>FrmCostosEdicion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CentrosCostos\FrmPolizaCostos.resx">
+      <DependentUpon>FrmPolizaCostos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CentrosCostos\Reportes\RptCentrosCostosNavegador.resx">
+      <DependentUpon>RptCentrosCostosNavegador.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Compras\Compras_Movimientos.resx">
+      <DependentUpon>Compras_Movimientos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Compras\Consultas\Rpt_Compras_Global.resx">
+      <DependentUpon>Rpt_Compras_Global.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Auxiliar_Mayor.resx">
+      <DependentUpon>Frm_Contabilidad_Auxiliar_Mayor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Comparativas_Financieras.resx">
+      <DependentUpon>Frm_Contabilidad_Comparativas_Financieras.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_ConceptosINEGI.resx">
+      <DependentUpon>Frm_Contabilidad_ConceptosINEGI.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Costo_corte_acarreo_empaque_embarque.resx">
+      <DependentUpon>Frm_Contabilidad_Costo_corte_acarreo_empaque_embarque.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\Consultas\Frm_contabilidad_Estados_Financieros.resx">
+      <DependentUpon>Frm_contabilidad_Estados_Financieros.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Busqueda_Polizas.resx">
+      <DependentUpon>Frm_Contabilidad_Busqueda_Polizas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Costos_Produccion.resx">
+      <DependentUpon>Frm_Contabilidad_Costos_Produccion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Estado_Resultados.resx">
+      <DependentUpon>Frm_Contabilidad_Estado_Resultados.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Global_Polizas.resx">
+      <DependentUpon>Frm_Contabilidad_Global_Polizas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_IVA_Acreditable.resx">
+      <DependentUpon>Frm_Contabilidad_IVA_Acreditable.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_NavegadorPresupuestos.resx">
+      <DependentUpon>Frm_Contabilidad_NavegadorPresupuestos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Polizas_Egresos.resx">
+      <DependentUpon>Frm_Contabilidad_Polizas_Egresos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Balanza_Analiticas_Mayor.resx">
+      <DependentUpon>Frm_Contabilidad_Balanza_Analiticas_Mayor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Saldos_CCON.resx">
+      <DependentUpon>Frm_Contabilidad_Saldos_CCON.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\Consultas\Frm_Proyecto_presupuesto.resx">
+      <DependentUpon>Frm_Proyecto_presupuesto.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\Contabilidad_Periodos.resx">
+      <DependentUpon>Contabilidad_Periodos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\Frm_AbrirCerrar_Ejercicio.resx">
+      <DependentUpon>Frm_AbrirCerrar_Ejercicio.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\Frm_Contabilidad_Captura_Polizas.resx">
+      <DependentUpon>Frm_Contabilidad_Captura_Polizas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\Frm_Contabilidad_IVA_Acreditable_Detalle.resx">
+      <DependentUpon>Frm_Contabilidad_IVA_Acreditable_Detalle.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\Frm_Contabilidad_IVA_Acreditable_Global.resx">
+      <DependentUpon>Frm_Contabilidad_IVA_Acreditable_Global.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\UtileriasGeneraContraseñaCancelarMovimientosMesesPasados.resx">
+      <DependentUpon>UtileriasGeneraContraseñaCancelarMovimientosMesesPasados.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXC\Consultas\Rpt_CXC_AuxClientes.resx">
+      <DependentUpon>Rpt_CXC_AuxClientes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXC\Consultas\Rpt_CXC_Descuentos.resx">
+      <DependentUpon>Rpt_CXC_Descuentos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXC\Consultas\Rpt_CXC_Documentos.resx">
+      <DependentUpon>Rpt_CXC_Documentos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXC\Frm_CXC_AplicacionDocumentos.resx">
+      <DependentUpon>Frm_CXC_AplicacionDocumentos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXC\Frm_CXC_Descuentos.resx">
+      <DependentUpon>Frm_CXC_Descuentos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXC\Frm_CXC_Pagos.resx">
+      <DependentUpon>Frm_CXC_Pagos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXC\Frm_CXC_Seguimientos.resx">
+      <DependentUpon>Frm_CXC_Seguimientos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXP\Consultas\Rpt_Cxp_Auxiliar_proveedor.resx">
+      <DependentUpon>Rpt_Cxp_Auxiliar_proveedor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXP\Consultas\Rpt_Cxp_Comprueba_Saldos.resx">
+      <DependentUpon>Rpt_Cxp_Comprueba_Saldos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXP\Consultas\Rpt_Cxp_Detalle_Cheques_Transferencias.resx">
+      <DependentUpon>Rpt_Cxp_Detalle_Cheques_Transferencias.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXP\Consultas\Rpt_CXP_SaldosProveedores.resx">
+      <DependentUpon>Rpt_CXP_SaldosProveedores.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXP\Frm_CXP_Aplicacion_Documentos.resx">
+      <DependentUpon>Frm_CXP_Aplicacion_Documentos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXP\Frm_CXP_Autorizaciones.resx">
+      <DependentUpon>Frm_CXP_Autorizaciones.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXP\Frm_CXP_ControlPagos.resx">
+      <DependentUpon>Frm_CXP_ControlPagos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXP\Frm_CXP_Descuentos.resx">
+      <DependentUpon>Frm_CXP_Descuentos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXP\Frm_CXP_PagosCobrados.resx">
+      <DependentUpon>Frm_CXP_PagosCobrados.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXP\Frm_CXP_Pagos_Acreedores.resx">
+      <DependentUpon>Frm_CXP_Pagos_Acreedores.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXP\Frm_CXP_Revision.resx">
+      <DependentUpon>Frm_CXP_Revision.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Frm_Embarques_ArmadoPalets.resx">
+      <DependentUpon>Frm_Embarques_ArmadoPalets.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Frm_Embarques_CambiaPrecios.resx">
+      <DependentUpon>Frm_Embarques_CambiaPrecios.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Frm_Embarques_CambiaPreciosPalets.resx">
+      <DependentUpon>Frm_Embarques_CambiaPreciosPalets.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Frm_Embarques_CapturaCajasProducidas.resx">
+      <DependentUpon>Frm_Embarques_CapturaCajasProducidas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Frm_Embarques_CapturaDiariaProduccion.resx">
+      <DependentUpon>Frm_Embarques_CapturaDiariaProduccion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Frm_Embarques_Captura_Embarque.resx">
+      <DependentUpon>Frm_Embarques_Captura_Embarque.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Frm_Embarques_ConfiguracionEquivalenciasEnvases.resx">
+      <DependentUpon>Frm_Embarques_ConfiguracionEquivalenciasEnvases.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Frm_Embarques_ConfiguracionPesoEnvase.resx">
+      <DependentUpon>Frm_Embarques_ConfiguracionPesoEnvase.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Frm_Embarques_EntradaSobrante.resx">
+      <DependentUpon>Frm_Embarques_EntradaSobrante.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Frm_Embarques_Etiquetas.resx">
+      <DependentUpon>Frm_Embarques_Etiquetas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Frm_Embarques_Etiquetas_Palets.resx">
+      <DependentUpon>Frm_Embarques_Etiquetas_Palets.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Frm_Imprimir_Embarques.resx">
+      <DependentUpon>Frm_Imprimir_Embarques.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Reportes\Rpt_Embarques_CostoEmpaque.resx">
+      <DependentUpon>Rpt_Embarques_CostoEmpaque.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Reportes\Rpt_Embarques_Embarque.resx">
+      <DependentUpon>Rpt_Embarques_Embarque.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Reportes\Rpt_Embarques_EmpaqueVsProduccion.resx">
+      <DependentUpon>Rpt_Embarques_EmpaqueVsProduccion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Reportes\Rpt_Embarques_Empaque_Y_Embarque.resx">
+      <DependentUpon>Rpt_Embarques_Empaque_Y_Embarque.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Reportes\Rpt_Embarques_FletesNoGenerados.resx">
+      <DependentUpon>Rpt_Embarques_FletesNoGenerados.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Reportes\Rpt_Embarques_GlobalDetalle.resx">
+      <DependentUpon>Rpt_Embarques_GlobalDetalle.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Reportes\Rpt_Embarques_Produccion_Estimada.resx">
+      <DependentUpon>Rpt_Embarques_Produccion_Estimada.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Reportes\Rpt_Embarques_ResumenVentas.resx">
+      <DependentUpon>Rpt_Embarques_ResumenVentas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Reportes\Rpt_Embarques_Saldo_Flete.resx">
+      <DependentUpon>Rpt_Embarques_Saldo_Flete.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Reportes\Rpt_Embarques_SinSalidaEmpaque.resx">
+      <DependentUpon>Rpt_Embarques_SinSalidaEmpaque.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Reportes\Rpt_Embarques_VentasEstimadaArticulo.resx">
+      <DependentUpon>Rpt_Embarques_VentasEstimadaArticulo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Reportes\Rpt_Embarques_VentasNacionalesEstimadas.resx">
+      <DependentUpon>Rpt_Embarques_VentasNacionalesEstimadas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Reportes\Rpt_Resumen_Empaque_y_Embarque.resx">
+      <DependentUpon>Rpt_Resumen_Empaque_y_Embarque.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Reportes\Rpt_VentasNetasPorCultivo.resx">
+      <DependentUpon>Rpt_VentasNetasPorCultivo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Embarques\Reportes\Rpt_Embarques_AgrupadoArticulo.resx">
+      <DependentUpon>Rpt_Embarques_AgrupadoArticulo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Factura_Electronica\Addenda\Frm_AgregaAddenda.resx">
+      <DependentUpon>Frm_AgregaAddenda.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CentrosCostos\InventariosDetalleCuentasContables.resx">
+      <DependentUpon>InventariosDetalleCuentasContables.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Inventarios\Inventarios_Movimientos.resx">
+      <DependentUpon>Inventarios_Movimientos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Inventarios\Reportes\Rpt_Inventarios_Global.resx">
+      <DependentUpon>Rpt_Inventarios_Global.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Inventarios\Reportes\Rpt_Inventario_Auxiliar_Articulo.resx">
+      <DependentUpon>Rpt_Inventario_Auxiliar_Articulo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Inventarios\Reportes\Rpt_Inventario_Existencias.resx">
+      <DependentUpon>Rpt_Inventario_Existencias.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Inventarios\Reportes\Rpt_Inventario_Lotes_costos.resx">
+      <DependentUpon>Rpt_Inventario_Lotes_costos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\ProyectoSiembraEdicion.resx">
+      <DependentUpon>ProyectoSiembraEdicion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\ProyectoSiembra.resx">
+      <DependentUpon>ProyectoSiembra.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Nomina\AfiliacionIMSS\Frm_Nomina_AltaBajaIntegracionSUA.resx">
+      <DependentUpon>Frm_Nomina_AltaBajaIntegracionSUA.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Nomina\AfiliacionIMSS\Frm_Nomina_ControlSUA.resx">
+      <DependentUpon>Frm_Nomina_ControlSUA.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Nomina\AfiliacionIMSS\Frm_Nomina_TrabajadorAdicional.resx">
+      <DependentUpon>Frm_Nomina_TrabajadorAdicional.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Nomina\AfiliacionIMSS\Frm_NumeroSeguro.resx">
+      <DependentUpon>Frm_NumeroSeguro.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Nomina\Frm_Nomina_Aguinaldos.resx">
+      <DependentUpon>Frm_Nomina_Aguinaldos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Nomina\Frm_Nomina_CapturaHoja.resx">
+      <DependentUpon>Frm_Nomina_CapturaHoja.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Nomina\Frm_Nomina_CapturaPercepciones.resx">
+      <DependentUpon>Frm_Nomina_CapturaPercepciones.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Nomina\Frm_Nomina_Configuracion.resx">
+      <DependentUpon>Frm_Nomina_Configuracion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Nomina\AfiliacionIMSS\Frm_Nomina_EdicionSUA.resx">
+      <DependentUpon>Frm_Nomina_EdicionSUA.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Nomina\Frm_Nomina_Credenciales.resx">
+      <DependentUpon>Frm_Nomina_Credenciales.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Nomina\Frm_Nomina_Deducciones.resx">
+      <DependentUpon>Frm_Nomina_Deducciones.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Nomina\Frm_Nomina_Generada.resx">
+      <DependentUpon>Frm_Nomina_Generada.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Nomina\Reportes\Frm_Nomina_NavegadorCostosPresupuesto.resx">
+      <DependentUpon>Frm_Nomina_NavegadorCostosPresupuesto.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\Consultas\Rpt_CentroCostos.resx">
+      <DependentUpon>Rpt_CentroCostos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Nomina\Reportes\Rpt_Nomina_Listado.resx">
+      <DependentUpon>Rpt_Nomina_Listado.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Nomina\Reportes\Rpt_Nomina_Detalle.resx">
+      <DependentUpon>Rpt_Nomina_Detalle.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Nomina\SincronizaXMLAsistencia.resx">
+      <DependentUpon>SincronizaXMLAsistencia.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Nomina\SincronizaXMLNomina.resx">
+      <DependentUpon>SincronizaXMLNomina.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Sistema\AppMenu.resx">
+      <DependentUpon>AppMenu.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Sistema\AppMenuReportes.resx">
+      <DependentUpon>AppMenuReportes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Sistema\BusquedaVisual.resx">
+      <DependentUpon>BusquedaVisual.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Sistema\ConfiguracionUsuarios.resx">
+      <DependentUpon>ConfiguracionUsuarios.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Sistema\LoginForm.resx">
+      <DependentUpon>LoginForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Sistema\Reporte.resx">
+      <DependentUpon>Reporte.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Utilerias\Busqueda_General.resx">
+      <DependentUpon>Busqueda_General.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Utilerias\frmEmbarquesMasivos.resx">
+      <DependentUpon>frmEmbarquesMasivos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Utilerias\Frm_Contraseña_Cambio_Periodo.resx">
+      <DependentUpon>Frm_Contraseña_Cambio_Periodo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Utilerias\Frm_Monitor_CFDi.resx">
+      <DependentUpon>Frm_Monitor_CFDi.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Utilerias\ModoSistema.resx">
+      <DependentUpon>ModoSistema.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Utilerias\SeleccionEmpresa.resx">
+      <DependentUpon>SeleccionEmpresa.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Utilerias\Servidor.resx">
+      <DependentUpon>Servidor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Utilerias\UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo.resx">
+      <DependentUpon>UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Utilerias\UtileriasGeneraInformeMensual.resx">
+      <DependentUpon>UtileriasGeneraInformeMensual.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Ventas\Consultas\Rpt_Ventas_Global.resx">
+      <DependentUpon>Rpt_Ventas_Global.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Ventas\Consultas\Rpt_Ventas_ProductosVendidos.resx">
+      <DependentUpon>Rpt_Ventas_ProductosVendidos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Ventas\Consultas\Rpt_Ventas_TopTenProductos.resx">
+      <DependentUpon>Rpt_Ventas_TopTenProductos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Ventas\Frm_EnviaFacturaElectronicas.resx">
+      <DependentUpon>Frm_EnviaFacturaElectronicas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Ventas\Consultas\Rpt_Q_ComparativosVenta.resx">
+      <DependentUpon>Rpt_Q_ComparativosVenta.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Ventas\VentasSeleccionaTipoFactura.resx">
+      <DependentUpon>VentasSeleccionaTipoFactura.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Ventas\Ventas_Modifica_Precios.resx">
+      <DependentUpon>Ventas_Modifica_Precios.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Ventas\Ventas_Movimientos.resx">
+      <DependentUpon>Ventas_Movimientos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Ventas\Ventas_Semanales.resx">
+      <DependentUpon>Ventas_Semanales.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rptCredenciales.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptCredenciales1.vb</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ClassDiagram3.cd" />
+    <None Include="ClassDiagram4.cd" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Service References\wsSorianaProduccion\wseDocRecibo.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="micoffice\782.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
+    <None Include="dsTrabajadores.xsc">
+      <DependentUpon>dsTrabajadores.xsd</DependentUpon>
+    </None>
+    <None Include="dsTrabajadores.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsTrabajadores.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="dsTrabajadores.xss">
+      <DependentUpon>dsTrabajadores.xsd</DependentUpon>
+    </None>
+    <None Include="micoffice\096.ico" />
+    <None Include="My Project\app.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="CHILKATCERTIFICATELib">
+      <Guid>{2138BF27-7383-435B-A6F5-89B1DEAB2130}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="CHILKATRSALib">
+      <Guid>{67172FE4-D401-4305-822B-C26F7F43A897}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="CRYSTALGRIDLib">
+      <Guid>{3DD52656-E718-4064-BA0F-22E6F63AE2E8}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="MSXML2">
+      <Guid>{F5078F18-C551-11D3-89B9-0000F81FE221}</Guid>
+      <VersionMajor>6</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="stdole">
+      <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3924545A-F8E2-475A-B1A4-05175BC41E50}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Imagenes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\wsSorianaProduccion\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\wsSorianaProduccion\wseDocRecibo.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\wsSorianaProduccion\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\wsSorianaProduccion\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\wsSorianaProduccion\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="IconoPral.ico" />
+    <Content Include="icono.ico" />
+    <None Include="Resources\alb.jpg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
