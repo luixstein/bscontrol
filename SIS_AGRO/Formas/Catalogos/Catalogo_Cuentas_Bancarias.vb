@@ -212,6 +212,7 @@ Public Class Catalogo_Cuentas_Bancarias
                 Me.TxtIDCuenta.Enabled = False
                 Me.TxtNombreCuenta.Enabled = True
                 Me.CboEstatus.Enabled = False
+                Me.txtCuentaContableDolares.Enabled = False
 
                 Me.InicializaElemento()
 
@@ -225,6 +226,7 @@ Public Class Catalogo_Cuentas_Bancarias
                 Me.tsbCancelar.Enabled = True
                 Me.TxtCodigoProveedor.Enabled = False
                 Me.txtCuentaContable.Enabled = False
+                Me.txtCuentaContableDolares.Enabled = False
 
 
                 Me.TxtIDCuenta.Enabled = False
@@ -239,6 +241,7 @@ Public Class Catalogo_Cuentas_Bancarias
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = False
                 Me.tsbCancelar.Enabled = False
+                Me.cboEstatusFiltro.SelectedIndex = 0
                 'If Me.Run Then
                 '    If Me.lstbElementos.SelectedIndex < 0 Then
                 '        Me.lstbElementos.SelectedIndex = 0
@@ -555,7 +558,7 @@ Public Class Catalogo_Cuentas_Bancarias
         Me.Grid.DataSource = Nothing
 
         With Me.Grid
-            .DataSource = oElementos.ObtenerElementosFiltro(Me.txtFiltro.Text)
+            .DataSource = oElementos.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
             .Columns("ID_CUENTA_BANCARIA").Width = 150
             .Columns("NOMBRE_CUENTA_BANCARIA").Width = 200
         End With
@@ -570,11 +573,22 @@ Public Class Catalogo_Cuentas_Bancarias
             Me.Grid.DataSource = Nothing
 
             With Me.Grid
-                .DataSource = oElementosFiltro.ObtenerElementosFiltro(Me.txtFiltro.Text)
+                .DataSource = oElementosFiltro.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
                 .Columns("ID_CUENTA_BANCARIA").Width = 150
                 .Columns("NOMBRE_CUENTA_BANCARIA").Width = 200
             End With
         End If
+    End Sub
+
+    Private Sub CboEstatusFiltro_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboEstatusFiltro.SelectedIndexChanged
+        Dim oElementos As New Class_CatCuentasBancarias
+        Me.Grid.DataSource = Nothing
+
+        With Me.Grid
+            .DataSource = oElementos.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
+            .Columns("ID_CUENTA_BANCARIA").Width = 150
+            .Columns("NOMBRE_CUENTA_BANCARIA").Width = 200
+        End With
     End Sub
 #End Region
 

@@ -407,9 +407,9 @@ Public Class Class_CatCuentasBancarias
         Return dTable
     End Function
 
-    Public Function ObtenerElementosFiltro(ByVal Filtro As String) As System.Data.DataTable
+    Public Function ObtenerElementosFiltro(ByVal Filtro As String, ByVal Estatus As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dA As New SqlDataAdapter("SELECT ID_CUENTA_BANCARIA,NOMBRE_CUENTA_BANCARIA FROM CAT_CUENTAS_BANCARIAS WHERE NOMBRE_CUENTA_BANCARIA LIKE '" & Filtro.ToString & "%' ORDER BY NOMBRE_CUENTA_BANCARIA", Me._Conexion)
+        Dim dA As New SqlDataAdapter("SELECT ID_CUENTA_BANCARIA,NOMBRE_CUENTA_BANCARIA FROM CAT_CUENTAS_BANCARIAS WHERE NOMBRE_CUENTA_BANCARIA LIKE '" & Filtro.ToString & "%' AND ESTATUS_CUENTA_BANCARIA='" & Estatus & "' ORDER BY NOMBRE_CUENTA_BANCARIA", Me._Conexion)
         Try
             dA.Fill(dTable)
         Catch ex As Exception

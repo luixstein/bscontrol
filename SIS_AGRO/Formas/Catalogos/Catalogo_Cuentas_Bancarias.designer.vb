@@ -35,6 +35,7 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.cMenuStripAccion = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.tStripMenuItemEditar = New System.Windows.Forms.ToolStripMenuItem()
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
+        Me.Grid = New System.Windows.Forms.DataGridView()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.TxtIDCuenta = New System.Windows.Forms.TextBox()
         Me.LblDisplayCodCultivo = New System.Windows.Forms.Label()
@@ -70,14 +71,15 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TxtSucursal = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.Grid = New System.Windows.Forms.DataGridView()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.cboEstatusFiltro = New System.Windows.Forms.ComboBox()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.cMenuStripAccion.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
+        CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gBoxInformacion.SuspendLayout()
-        CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'tsMenu
@@ -167,7 +169,7 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
         Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.Name = "txtFiltro"
-        Me.txtFiltro.Size = New System.Drawing.Size(495, 22)
+        Me.txtFiltro.Size = New System.Drawing.Size(351, 22)
         Me.txtFiltro.TabIndex = 0
         '
         'cMenuStripAccion
@@ -175,13 +177,13 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.cMenuStripAccion.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.cMenuStripAccion.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tStripMenuItemEditar})
         Me.cMenuStripAccion.Name = "ContextMenuStrip1"
-        Me.cMenuStripAccion.Size = New System.Drawing.Size(124, 30)
+        Me.cMenuStripAccion.Size = New System.Drawing.Size(122, 30)
         '
         'tStripMenuItemEditar
         '
         Me.tStripMenuItemEditar.Image = CType(resources.GetObject("tStripMenuItemEditar.Image"), System.Drawing.Image)
         Me.tStripMenuItemEditar.Name = "tStripMenuItemEditar"
-        Me.tStripMenuItemEditar.Size = New System.Drawing.Size(123, 26)
+        Me.tStripMenuItemEditar.Size = New System.Drawing.Size(121, 26)
         Me.tStripMenuItemEditar.Text = "&Editar"
         '
         'gBoxBusquedaRapida
@@ -189,6 +191,8 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.gBoxBusquedaRapida.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.gBoxBusquedaRapida.Controls.Add(Me.cboEstatusFiltro)
+        Me.gBoxBusquedaRapida.Controls.Add(Me.Label8)
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(439, 34)
@@ -199,6 +203,22 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.gBoxBusquedaRapida.TabIndex = 1
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
+        '
+        'Grid
+        '
+        Me.Grid.AllowUserToAddRows = False
+        Me.Grid.AllowUserToDeleteRows = False
+        Me.Grid.AllowUserToResizeColumns = False
+        Me.Grid.AllowUserToResizeRows = False
+        Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.Grid.Location = New System.Drawing.Point(8, 53)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
+        Me.Grid.Name = "Grid"
+        Me.Grid.ReadOnly = True
+        Me.Grid.RowHeadersVisible = False
+        Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.Grid.Size = New System.Drawing.Size(496, 494)
+        Me.Grid.TabIndex = 109
         '
         'ErrorProvider
         '
@@ -574,21 +594,28 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.Label2.TabIndex = 91
         Me.Label2.Text = ".."
         '
-        'Grid
+        'Label8
         '
-        Me.Grid.AllowUserToAddRows = False
-        Me.Grid.AllowUserToDeleteRows = False
-        Me.Grid.AllowUserToResizeColumns = False
-        Me.Grid.AllowUserToResizeRows = False
-        Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Grid.Location = New System.Drawing.Point(8, 73)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
-        Me.Grid.Name = "Grid"
-        Me.Grid.ReadOnly = True
-        Me.Grid.RowHeadersVisible = False
-        Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(495, 463)
-        Me.Grid.TabIndex = 109
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(367, 26)
+        Me.Label8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(63, 17)
+        Me.Label8.TabIndex = 110
+        Me.Label8.Text = "Estatus :"
+        '
+        'cboEstatusFiltro
+        '
+        Me.cboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboEstatusFiltro.FormattingEnabled = True
+        Me.cboEstatusFiltro.IntegralHeight = False
+        Me.cboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
+        Me.cboEstatusFiltro.Location = New System.Drawing.Point(429, 23)
+        Me.cboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboEstatusFiltro.MaxLength = 1
+        Me.cboEstatusFiltro.Name = "cboEstatusFiltro"
+        Me.cboEstatusFiltro.Size = New System.Drawing.Size(75, 24)
+        Me.cboEstatusFiltro.TabIndex = 265
         '
         'Catalogo_Cuentas_Bancarias
         '
@@ -612,10 +639,10 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.cMenuStripAccion.ResumeLayout(False)
         Me.gBoxBusquedaRapida.ResumeLayout(False)
         Me.gBoxBusquedaRapida.PerformLayout()
+        CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gBoxInformacion.ResumeLayout(False)
         Me.gBoxInformacion.PerformLayout()
-        CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -670,4 +697,6 @@ Partial Public Class Catalogo_Cuentas_Bancarias
     Friend WithEvents LblCodigoProveedor As System.Windows.Forms.Label
     Friend WithEvents LblNombreProveedor As System.Windows.Forms.Label
     Friend WithEvents Grid As System.Windows.Forms.DataGridView
+    Friend WithEvents cboEstatusFiltro As System.Windows.Forms.ComboBox
+    Friend WithEvents Label8 As System.Windows.Forms.Label
 End Class
