@@ -57,6 +57,7 @@ Public Class Catalogo_Articulos
         ' Add any initialization after the InitializeComponent() call.
 
         Try
+            Me.LblNombreUnidad.Visible = False
             Me.msgElemento = "Articulo"
             Me.msgElementos = "Articulos"
             Me.Run = False
