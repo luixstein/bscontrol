@@ -224,6 +224,7 @@ Public Class Catalogo_Articulos
         Me.TxtDescripcion.Text = ""
         Me.CboEstatus.Text = "A"
         Me.TxtUnidadVenta.Text = ""
+        Me.LblNombreUnidad.Text = ""
         Me.TxtPrecio.Text = "0.00"
         Me.CboFamilia.SelectedIndex = 0
         Me.cboLinea.SelectedIndex = 0
@@ -267,7 +268,8 @@ Public Class Catalogo_Articulos
                     Me.TxtCodArticulo.Text = .CODIGO_ARTICULO.ToString
                     Me.TxtDescripcion.Text = .DESCRIPCION.ToString
                     Me.CboEstatus.Text = .Estatus
-                    Me.TxtUnidadVenta.Text = .UNIDAD_VENTA
+                    Me.TxtUnidadVenta.Text = .CODIGO_UNIDAD_VENTA
+                    Me.LblNombreUnidad.Text = .NOMBRE_UNIDAD
                     Me.chkInventariable.Checked = CBool(.INVENTARIABLE.ToString)
                     Me.chkImpuesto.Checked = CBool(.TIENE_IMPUESTO.ToString)
                     Me.cboLinea.SelectedValue = .CODIGO_LINEA
@@ -303,7 +305,8 @@ Public Class Catalogo_Articulos
                         .Codigo_Articulo = Me.TxtCodArticulo.Text
                         .Descripcion = Me.TxtDescripcion.Text
                         .Estatus = Me.CboEstatus.Text
-                        .Unidad_Venta = Me.TxtUnidadVenta.Text
+                        .UNIDAD_VENTA = ""
+                        .CODIGO_UNIDAD_VENTA = Me.TxtUnidadVenta.Text
                         .Protegido = "0"
                         .Inventariable = Convert.ToInt32(Me.chkInventariable.Checked).ToString
                         .Tiene_impuesto = Convert.ToInt32(Me.chkImpuesto.Checked).ToString
@@ -555,6 +558,23 @@ Public Class Catalogo_Articulos
     End Sub
 
     Private Sub TxtUnidadVenta_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtUnidadVenta.KeyDown
+        Dim oUnidad As New Class_CatUnidadesVenta
+        Select Case e.KeyCode
+            Case Keys.F6
+busqueda_Visual:
+                Me.TxtUnidadVenta.Text = oUnidad.BusquedaVisual_PorDescripcion()
+                Dim sql As New Class_find("SELECT NOMBRE_UNIDAD_VENTA FROM CAT_UNIDADES_VENTA WHERE CODIGO_UNIDAD_VENTA='" & Me.TxtUnidadVenta.Text & "' ")
+                Me.LblNombreUnidad.Text = sql.Result1.ToString
+
+            Case Keys.Return
+                oUnidad.Codigo_Unidad_Venta = Me.TxtUnidadVenta.Text
+                If oUnidad.Consultar = False Then
+                    GoTo busqueda_Visual
+                Else
+                    Me.LblNombreUnidad.Text = oUnidad.Nombre_Unidad_Venta
+                End If
+        End Select
+        oUnidad = Nothing
         txtTAB(e)
     End Sub
 

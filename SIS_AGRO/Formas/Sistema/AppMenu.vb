@@ -1443,4 +1443,12 @@ Public Class AppMenu
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
     End Sub
+
+    Private Sub UnidadesDeVentaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UnidadesDeVentaToolStripMenuItem.Click
+        Dim Child As New Catalogo_UnidadesVenta
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
 End Class
