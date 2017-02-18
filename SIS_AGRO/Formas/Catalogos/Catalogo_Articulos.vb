@@ -268,7 +268,7 @@ Public Class Catalogo_Articulos
                     Me.TxtCodArticulo.Text = .CODIGO_ARTICULO.ToString
                     Me.TxtDescripcion.Text = .DESCRIPCION.ToString
                     Me.CboEstatus.Text = .Estatus
-                    Me.TxtUnidadVenta.Text = .CODIGO_UNIDAD_VENTA
+                    Me.TxtUnidadVenta.Text = .UNIDAD_VENTA
                     Me.LblNombreUnidad.Text = .NOMBRE_UNIDAD
                     Me.chkInventariable.Checked = CBool(.INVENTARIABLE.ToString)
                     Me.chkImpuesto.Checked = CBool(.TIENE_IMPUESTO.ToString)
@@ -288,9 +288,7 @@ Public Class Catalogo_Articulos
         Dim oElemento As New Class_CatArticulos
         Dim Grabado As Boolean = False
 
-        If txtLEN(Me.TxtDescripcion.Text) = False Then
-            MsgBox("Asígne la descripción del artículo.", MsgBoxStyle.Exclamation, Me.Text)
-            Me.TxtDescripcion.Focus()
+        If Validar() = False Then
             Exit Sub
         End If
 
@@ -305,9 +303,9 @@ Public Class Catalogo_Articulos
                         .Codigo_Articulo = Me.TxtCodArticulo.Text
                         .Descripcion = Me.TxtDescripcion.Text
                         .Estatus = Me.CboEstatus.Text
-                        .UNIDAD_VENTA = ""
-                        .CODIGO_UNIDAD_VENTA = Me.TxtUnidadVenta.Text
-                        .Protegido = "0"
+                        .UNIDAD_VENTA = Me.TxtUnidadVenta.Text
+                        .CODIGO_UNIDAD_VENTA = "NA"
+                        .PROTEGIDO = "0"
                         .Inventariable = Convert.ToInt32(Me.chkInventariable.Checked).ToString
                         .Tiene_impuesto = Convert.ToInt32(Me.chkImpuesto.Checked).ToString
                         .Codigo_Linea = Me.cboLinea.SelectedValue.ToString
@@ -371,6 +369,25 @@ Public Class Catalogo_Articulos
             oElemento = Nothing
         End Try
     End Sub
+
+    Private Function Validar() As Boolean
+        Dim bResultado As Boolean = False
+
+        If txtLEN(Me.TxtDescripcion.Text) = False Then
+            MsgBox("Asígne la descripción del artículo.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.TxtDescripcion.Focus()
+            Exit Function
+        End If
+
+        If txtLEN(Me.TxtUnidadVenta.Text) = False Then
+            MsgBox("Ingrese la unidad de venta.", MsgBoxStyle.Exclamation)
+            Me.TxtUnidadVenta.Focus()
+            Return bResultado
+        End If
+
+        bResultado = True
+        Return bResultado
+    End Function
 
 #End Region
 
@@ -469,7 +486,7 @@ Public Class Catalogo_Articulos
             TxtPrecio.Focus()
         End If
     End Sub
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtDescripcion.KeyPress
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtDescripcion.KeyPress, TxtUnidadVenta.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -558,24 +575,27 @@ Public Class Catalogo_Articulos
     End Sub
 
     Private Sub TxtUnidadVenta_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtUnidadVenta.KeyDown
-        Dim oUnidad As New Class_CatUnidadesVenta
-        Select Case e.KeyCode
-            Case Keys.F6
-busqueda_Visual:
-                Me.TxtUnidadVenta.Text = oUnidad.BusquedaVisual_PorDescripcion()
-                Dim sql As New Class_find("SELECT NOMBRE_UNIDAD_VENTA FROM CAT_UNIDADES_VENTA WHERE CODIGO_UNIDAD_VENTA='" & Me.TxtUnidadVenta.Text & "' ")
-                Me.LblNombreUnidad.Text = sql.Result1.ToString
+        '        Dim oUnidad As New Class_CatUnidadesVenta
+        '        Select Case e.KeyCode
+        '            Case Keys.F6
+        'busqueda_Visual:
+        '                Me.TxtUnidadVenta.Text = oUnidad.BusquedaVisual_PorDescripcion()
+        '                Dim sql As New Class_find("SELECT NOMBRE_UNIDAD_VENTA FROM CAT_UNIDADES_VENTA WHERE CODIGO_UNIDAD_VENTA='" & Me.TxtUnidadVenta.Text & "' ")
+        '                Me.LblNombreUnidad.Text = sql.Result1.ToString
 
-            Case Keys.Return
-                oUnidad.Codigo_Unidad_Venta = Me.TxtUnidadVenta.Text
-                If oUnidad.Consultar = False Then
-                    GoTo busqueda_Visual
-                Else
-                    Me.LblNombreUnidad.Text = oUnidad.Nombre_Unidad_Venta
-                End If
-        End Select
-        oUnidad = Nothing
-        txtTAB(e)
+        '            Case Keys.Return
+        '                oUnidad.Codigo_Unidad_Venta = Me.TxtUnidadVenta.Text
+        '                If oUnidad.Consultar = False Then
+        '                    GoTo busqueda_Visual
+        '                Else
+        '                    Me.LblNombreUnidad.Text = oUnidad.Nombre_Unidad_Venta
+        '                End If
+        '        End Select
+        '        oUnidad = Nothing
+        '        txtTAB(e)
+        If e.KeyCode = Keys.Return Then
+            SendKeys.Send("{TAB}")
+        End If
     End Sub
 
     Private Sub chkInventariable_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs)

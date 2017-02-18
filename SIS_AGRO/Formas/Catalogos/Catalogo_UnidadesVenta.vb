@@ -221,6 +221,11 @@ Public Class Catalogo_UnidadesVenta
 
     Private Sub Grabar_Elemento()
         Dim Grabado As Boolean = False
+
+        If Validar() = False Then
+            Exit Sub
+        End If
+
         Select Case Me.Estado
             Case enumEstados.NUEVO, enumEstados.EDICION
                 Try
@@ -258,6 +263,25 @@ Public Class Catalogo_UnidadesVenta
                 End Try
         End Select
     End Sub
+
+    Private Function Validar() As Boolean
+        Dim bResultado As Boolean = False
+
+        If txtLEN(Me.TxtCodigo.Text) = False Then
+            MsgBox("Ingrese el codigo de unidad de venta.", MsgBoxStyle.Exclamation)
+            Me.TxtCodigo.Focus()
+            Return bResultado
+        End If
+
+        If txtLEN(Me.TxtNombre.Text) = False Then
+            MsgBox("Ingrese el nombre de la unidad de venta.", MsgBoxStyle.Exclamation)
+            Me.TxtNombre.Focus()
+            Return bResultado
+        End If
+
+        bResultado = True
+        Return bResultado
+    End Function
 
 #End Region
 
