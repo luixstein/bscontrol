@@ -116,6 +116,7 @@ Buscar:
         Dim StrFiltros As String = ""
         Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
+        Dim FormatoReporte As String = ""
         Try
 
             oClientes = New Class_CatClientes(Me.txtCodigoCliente.Text)
@@ -130,7 +131,15 @@ Buscar:
                 Exit Sub
             End If
 
-            oReporte = New Class_Reporte("RPT_CXC_AUXILIAR_CLIENTES", Rpt)
+            If Me.rbtAuxiliar.Checked Then
+                FormatoReporte = "RPT_CXC_AUXILIAR_CLIENTES"
+            End If
+
+            If Me.rbtAnalisis.Checked Then
+                FormatoReporte = "RPT_CXC_ANALISIS_SALDOS_CLIENTE"
+            End If
+
+            oReporte = New Class_Reporte(FormatoReporte, Rpt)
 
             If Not oReporte.RptCargado Then
                 Exit Sub
