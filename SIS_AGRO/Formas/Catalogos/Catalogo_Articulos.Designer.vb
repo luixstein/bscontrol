@@ -59,6 +59,7 @@ Partial Class Catalogo_Articulos
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.LblNombreUnidad = New System.Windows.Forms.Label()
         Me.gBoxInformacion.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -71,6 +72,7 @@ Partial Class Catalogo_Articulos
         Me.gBoxInformacion.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.gBoxInformacion.Controls.Add(Me.LblNombreUnidad)
         Me.gBoxInformacion.Controls.Add(Me.chkEsSerializable)
         Me.gBoxInformacion.Controls.Add(Me.chkImpuesto)
         Me.gBoxInformacion.Controls.Add(Me.chkInventariable)
@@ -248,7 +250,7 @@ Partial Class Catalogo_Articulos
         '
         Me.TxtUnidadVenta.Location = New System.Drawing.Point(129, 234)
         Me.TxtUnidadVenta.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtUnidadVenta.MaxLength = 10
+        Me.TxtUnidadVenta.MaxLength = 20
         Me.TxtUnidadVenta.Name = "TxtUnidadVenta"
         Me.TxtUnidadVenta.Size = New System.Drawing.Size(91, 22)
         Me.TxtUnidadVenta.TabIndex = 2
@@ -453,6 +455,16 @@ Partial Class Catalogo_Articulos
         Me.tssLabelEstado.Name = "tssLabelEstado"
         Me.tssLabelEstado.Size = New System.Drawing.Size(0, 20)
         '
+        'LblNombreUnidad
+        '
+        Me.LblNombreUnidad.AutoSize = True
+        Me.LblNombreUnidad.Location = New System.Drawing.Point(228, 237)
+        Me.LblNombreUnidad.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNombreUnidad.Name = "LblNombreUnidad"
+        Me.LblNombreUnidad.Size = New System.Drawing.Size(16, 17)
+        Me.LblNombreUnidad.TabIndex = 139
+        Me.LblNombreUnidad.Text = "_"
+        '
         'Catalogo_Articulos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -518,4 +530,5 @@ Partial Class Catalogo_Articulos
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents CboEstatusFiltro As System.Windows.Forms.ComboBox
     Friend WithEvents tsbEliminar As System.Windows.Forms.ToolStripButton
+    Friend WithEvents LblNombreUnidad As System.Windows.Forms.Label
 End Class

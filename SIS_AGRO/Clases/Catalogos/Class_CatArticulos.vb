@@ -32,6 +32,8 @@ Public Class Class_CatArticulos
     Private _CODIGO_BARRAS_PTI_13 As String = ""
     Private _CODIGO_BARRAS_PTI_14 As String = ""
     Private _ES_SERIALIZABLE As Boolean
+    Private _CODIGO_UNIDAD_VENTA As String
+    Private _NOMBRE_UNIDAD As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -263,6 +265,24 @@ Public Class Class_CatArticulos
         End Set
     End Property
 
+    Public Property CODIGO_UNIDAD_VENTA() As String
+        Get
+            Return Me._CODIGO_UNIDAD_VENTA
+        End Get
+        Set(ByVal VALUE As String)
+            Me._CODIGO_UNIDAD_VENTA = VALUE
+        End Set
+    End Property
+
+    Public Property NOMBRE_UNIDAD() As String
+        Get
+            Return Me._NOMBRE_UNIDAD
+        End Get
+        Set(ByVal VALUE As String)
+            Me._NOMBRE_UNIDAD = VALUE
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -379,6 +399,7 @@ Public Class Class_CatArticulos
             sqlParametro = .Parameters.Add("@CODIGO_ETIQUETA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ETIQUETA
             sqlParametro = .Parameters.Add("@RANGO_PIEZAS", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._RANGO_PIEZAS
             sqlParametro = .Parameters.Add("@ES_SERIALIZABLE", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._ES_SERIALIZABLE)
+            sqlParametro = .Parameters.Add("@CODIGO_UNIDAD_VENTA", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CODIGO_UNIDAD_VENTA.ToUpper
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = "1"
 
             Try
@@ -429,6 +450,7 @@ Public Class Class_CatArticulos
             sqlParametro = .Parameters.Add("@CODIGO_ETIQUETA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ETIQUETA
             sqlParametro = .Parameters.Add("@RANGO_PIEZAS", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._RANGO_PIEZAS
             sqlParametro = .Parameters.Add("@ES_SERIALIZABLE", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._ES_SERIALIZABLE)
+            sqlParametro = .Parameters.Add("@CODIGO_UNIDAD_VENTA", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CODIGO_UNIDAD_VENTA.ToUpper
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = "0"
 
             Try
@@ -552,6 +574,9 @@ Public Class Class_CatArticulos
                     Me._ES_SERIALIZABLE = CBool(dReader("ES_SERIALIZABLE").ToString)
 
                     Me._TIPO_CONTROL_INVENTARIO = IIf(Me._ES_SERIALIZABLE = True, "SER", IIf(Me._INVENTARIABLE = "1", "INV", "NIV")).ToString
+
+                    Me._CODIGO_UNIDAD_VENTA = "" & dReader("CODIGO_UNIDAD_VENTA").ToString()
+                    Me._NOMBRE_UNIDAD = "" & dReader("NOMBRE_UNIDAD").ToString()
 
                     bResultado = True
                 End If
@@ -746,6 +771,34 @@ Public Class Class_CatArticulos
             End If
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "BusquedaVisual_PorDescripcion", ex)
+        End Try
+        Return Resultado
+    End Function
+
+    Public Function BusquedaVisual_PorDescripcion_conExistencias(ByVal sAlmacen As String) As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de Articulos por Descripción."
+        f.sCampo = "A.DESCRIPCION"
+        f.sOrder = "A.DESCRIPCION"
+        f.sTable = "CAT_ARTICULOS"
+        f.sQl = "SELECT A.CODIGO_ARTICULO,A.DESCRIPCION,F.NOMBRE_FAMILIA,I.EXISTENCIA,CASE WHEN A.ES_SERIALIZABLE='1' THEN 'ES SERIADO' ELSE '' END " & _
+        "FROM CAT_ARTICULOS A " & _
+        "INNER JOIN CAT_FAMILIAS F ON(A.CODIGO_FAMILIA=F.CODIGO_FAMILIA) " & _
+        "LEFT JOIN CAT_CULTIVOS C ON (A.CODIGO_CULTIVO=C.CODIGO_CULTIVO) " & _
+        "LEFT JOIN INVENTARIO_EXISTENCIA_ARTICULOS I ON(I.CODIGO_ARTICULO=A.CODIGO_ARTICULO AND I.CODIGO_ALMACEN='" & sAlmacen & "') " & _
+        "WHERE A.PROTEGIDO=0 AND A.ESTATUS='A' AND (C.CODIGO_PLAZA=" & Usuario.Codigo_Plaza.ToString & " OR A.CODIGO_CULTIVO IS NULL) AND "
+
+        f.arrayWidthColumns = New Integer() {150, 500, 250}
+        f.Inicia("")
+        f.ShowDialog()
+
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "BusquedaVisual_PorDescripcion_conExistencias", ex)
         End Try
         Return Resultado
     End Function

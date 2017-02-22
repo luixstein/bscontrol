@@ -2697,7 +2697,7 @@ BuscaArticulos:
                     Select Case Columna
                         Case Me.igyCodigo 'Columna del Codigo de Articulo
                             oArticulos = New Class_CatArticulos
-                            StrCod = oArticulos.BusquedaVisual_PorDescripcion()
+                            StrCod = oArticulos.BusquedaVisual_PorDescripcion_conExistencias(Me.CboAlmacen.SelectedValue.ToString)
                             If txtLEN(StrCod) = True Then
                                 Me.Grid.Cell(Renglon, Me.igyCodigo).Text = StrCod
                                 GoTo LlenaLinea
