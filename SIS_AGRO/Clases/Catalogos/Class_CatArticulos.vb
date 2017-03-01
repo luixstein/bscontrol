@@ -575,8 +575,9 @@ Public Class Class_CatArticulos
 
                     Me._TIPO_CONTROL_INVENTARIO = IIf(Me._ES_SERIALIZABLE = True, "SER", IIf(Me._INVENTARIABLE = "1", "INV", "NIV")).ToString
 
-                    Me._CODIGO_UNIDAD_VENTA = "" & dReader("CODIGO_UNIDAD_VENTA").ToString()
-                    Me._NOMBRE_UNIDAD = "" & dReader("NOMBRE_UNIDAD").ToString()
+                    '------------------------------------------------------------------------Estos campos se crearon en la base de datos pero aun no se utilizaran
+                    'Me._CODIGO_UNIDAD_VENTA = "" & dReader("CODIGO_UNIDAD_VENTA").ToString()
+                    'Me._NOMBRE_UNIDAD = "" & dReader("NOMBRE_UNIDAD").ToString()
 
                     bResultado = True
                 End If
