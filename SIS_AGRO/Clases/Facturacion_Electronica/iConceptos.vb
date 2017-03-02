@@ -4,7 +4,7 @@ Friend Class iConceptos
 	Implements System.Collections.IEnumerable
 	Dim Partidas As Collection
 	
-	Public Function Add(ByVal cantidad As String, ByVal descripcion As String, ByVal importe As String, ByVal unidad As String, ByVal valorUnitario As String) As iConcepto
+    Public Function Add(ByVal cantidad As String, ByVal descripcion As String, ByVal importe As String, ByVal unidad As String, ByVal valorUnitario As String, Optional ByVal noIdentificacion As String = "") As iConcepto
         Dim objObjeto As New iConcepto
         Try
             objObjeto.cantidad = cantidad
@@ -12,13 +12,14 @@ Friend Class iConceptos
             objObjeto.importe = importe
             objObjeto.unidad = unidad
             objObjeto.valorUnitario = valorUnitario
+            objObjeto.noIdentificacion = noIdentificacion
 
             Partidas.Add(objObjeto, "N" & Partidas.Count + 1 & CStr(descripcion))
         Catch ex As Exception
             HandleError("iConceptos", "Add", ex)
         End Try
         Return objObjeto
-	End Function
+    End Function
 	
 	Public Sub RemoveAll()
 		Partidas = New Collection
