@@ -1123,7 +1123,13 @@ buscar_acreedor:
                 .ABONO_CUENTA_BENEFICIARIO = Convert.ToInt32(Me.ckbAbonoCuentaBeneficiario.Checked).ToString
                 .TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text)
                 .TOTAL_DOLARES = valorNumerico(Me.txtImporteDolares.Text)
-                .CODIGO_CONCEPTO_PAGO_CXP = Me.cboTipoPago.SelectedValue.ToString
+
+                If Me.ModoPago = enumModoPago.PROVEEDOR Then
+                    .CODIGO_CONCEPTO_PAGO_CXP = Me.cboTipoPago.SelectedValue.ToString
+                Else
+                    .CODIGO_CONCEPTO_PAGO_CXP = 0
+                End If
+
                 .Inserta_Global()
 
                 Me.TxtFolio.Text = .FOLIO_BANCO
@@ -1326,10 +1332,12 @@ buscar_acreedor:
                 End If
             End If
 
-            If Me.cboTipoPago.SelectedIndex = -1 Then
-                MsgBox("Asígne el tipo de pago.", MsgBoxStyle.Exclamation, sProcedure)
-                Me.cboTipoPago.Focus()
-                Return False
+            If Me.ModoPago = enumModoPago.PROVEEDOR Then
+                If Me.cboTipoPago.SelectedIndex = -1 Then
+                    MsgBox("Asígne el tipo de pago.", MsgBoxStyle.Exclamation, sProcedure)
+                    Me.cboTipoPago.Focus()
+                    Return False
+                End If
             End If
 
             bResultado = True
