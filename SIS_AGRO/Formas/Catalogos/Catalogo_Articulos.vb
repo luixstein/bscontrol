@@ -270,7 +270,7 @@ Public Class Catalogo_Articulos
                     Me.TxtDescripcion.Text = .DESCRIPCION.ToString
                     Me.CboEstatus.Text = .Estatus
                     Me.TxtUnidadVenta.Text = .UNIDAD_VENTA
-                    Me.LblNombreUnidad.Text = .NOMBRE_UNIDAD
+                    'Me.LblNombreUnidad.Text = .NOMBRE_UNIDAD
                     Me.chkInventariable.Checked = CBool(.INVENTARIABLE.ToString)
                     Me.chkImpuesto.Checked = CBool(.TIENE_IMPUESTO.ToString)
                     Me.cboLinea.SelectedValue = .CODIGO_LINEA
@@ -305,7 +305,7 @@ Public Class Catalogo_Articulos
                         .Descripcion = Me.TxtDescripcion.Text
                         .Estatus = Me.CboEstatus.Text
                         .UNIDAD_VENTA = Me.TxtUnidadVenta.Text
-                        .CODIGO_UNIDAD_VENTA = "NA"
+                        '.CODIGO_UNIDAD_VENTA = "NA"
                         .PROTEGIDO = "0"
                         .Inventariable = Convert.ToInt32(Me.chkInventariable.Checked).ToString
                         .Tiene_impuesto = Convert.ToInt32(Me.chkImpuesto.Checked).ToString
