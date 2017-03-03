@@ -1,5 +1,4 @@
-﻿
-Option Strict On
+﻿Option Strict On
 
 Imports CrystalDecisions.CrystalReports.Engine
 Imports CrystalDecisions.Shared
@@ -2835,10 +2834,11 @@ buscaCentrosCostos:
 
             Me.ConsultarCliente()
 
-            Me.cboMetodoPago.SelectedValue = "99" '99=Otros
-
             Me.chkImprimirDolares.Checked = True
             Me.txtTipoCambio.Text = Me._TipoCambioPorEmbarqueExtranjero.ToString
+
+            Me.cboMetodoPago.SelectedValue = "NA" '99=Otros
+            Me.txtNumCuenta.Text = ""
 
             dTabla = Me._oEmbarqueExtranjero.ObtenerDetalleFacturaEmbarqueExtranjero(Me._TipoCambioPorEmbarqueExtranjero)
 

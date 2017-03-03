@@ -888,7 +888,6 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._CODIGO_ESTADO_SAT = dReader("CODIGO_ESTADO_SAT")
                     Me._CODIGO_MUNICIPIO_SAT = dReader("CODIGO_MUNICIPIO_SAT")
 
-
                     Me._GTIN_BASE = "" & dReader("GTIN_BASE").ToString
                     Me._CODIGO_EMPRESA_ASIGNADO_POR_MASTRONARDI = "" & dReader("CODIGO_EMPRESA_ASIGNADO_POR_MASTRONARDI").ToString
                     Me._CODIGO_CONCEPTO_COSTO_PRODUCCION = "" & dReader("CODIGO_CONCEPTO_COSTO_PRODUCCION").ToString
