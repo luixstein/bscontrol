@@ -29,6 +29,8 @@ Public Class Class_Ventas_Detalle
     Private _ES_PRODUCTO_KILOS As String
     Private _CODIGO_CENTRO_COSTO As String
     Private _LISTA_SERIES As String
+    Private _PRECIO_USD As Double
+    Private _IMPORTE_USD As Double
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -253,6 +255,24 @@ Public Class Class_Ventas_Detalle
             Me._LISTA_SERIES = Value
         End Set
     End Property
+
+    Public Property PRECIO_USD() As Double
+        Get
+            Return Me._PRECIO_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._PRECIO_USD = Value
+        End Set
+    End Property
+
+    Public Property IMPORTE_USD() As Double
+        Get
+            Return Me._IMPORTE_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._IMPORTE_USD = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -283,7 +303,7 @@ Public Class Class_Ventas_Detalle
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         Me._QuerySelect = "Select * from VENTA_DETALLE where "
         Me._QueryOrder = " Order by ID_VENTA_DETALLE"
-    End Sub                                                         'Inicializa al objeto.
+    End Sub
 
     Protected Overrides Sub Finalize()
         'Me._Conexion.Dispose()
@@ -326,6 +346,8 @@ Public Class Class_Ventas_Detalle
             sqlParametro = .Parameters.Add("@ES_PRODUCTO_KILOS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ES_PRODUCTO_KILOS
             sqlParametro = .Parameters.Add("@CODIGO_CENTRO_COSTO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_CENTRO_COSTO)
             sqlParametro = .Parameters.Add("@LISTA_SERIES", SqlDbType.NVarChar, -1) : sqlParametro.Value = Me._LISTA_SERIES
+            sqlParametro = .Parameters.Add("@PRECIO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._PRECIO_USD
+            sqlParametro = .Parameters.Add("@IMPORTE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPORTE_USD
 
             Try
                 Me._Conexion.Open()

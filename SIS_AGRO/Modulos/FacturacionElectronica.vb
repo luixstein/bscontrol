@@ -5,17 +5,14 @@ Imports cfdi
 Imports System.Data
 Imports System.Data.SqlClient
 Imports System.Xml.XmlDocument
-
+Imports System.IO
 
 Module FacturacionElectronica
-	
-	Private Const nombreModulo As String = "FacturacionElectronica"
+
+    Private Const nombreModulo As String = "FacturacionElectronica"
     Public Const CK_KEY As String = "RSAT34MB34N_2637664B634J" ' "RSAT34MB34N_2637664B634J"  '"123456"
 
     Private oComprobante As New cComprobante
-    'Private oVenta As New Class_Ventas_Global
-    'Private oCliente As New Class_CatClientes
-    'Private oDescuento As New Class_CXC_Descuento
 
     Private sCarpetaCertificados As String = ""
     'Private tPlazaFacturaElectronica As Plaza
@@ -25,7 +22,7 @@ Module FacturacionElectronica
     Private _Conexion As New SqlConnection(Empresa_Sistema.conexion)
 #End Region
 
-    Enum TipoComprobante
+    Public Enum TipoComprobante
         FACTURA_VENTA
         NOTA_CREDITO_CXC
     End Enum
@@ -42,10 +39,9 @@ Module FacturacionElectronica
 
         Dim FacturaO As MSXML2.IXMLDOMNode
         Dim Factura As MSXML2.IXMLDOMNode
-        Dim CKCert As New CHILKATCERTIFICATELib.ChilkatCert
         'Dim fElectronica As FacturaElectronica
 
-        Dim Fecha_Documento ', dFechaServidor As Date
+        Dim Fecha_Documento
         'Dim sSerie As String = Left(sFolioFacturaSistema, 3).ToString
         'Dim iFolioNumerico As Integer = sFolioFacturaSistema.Substring(4, Len(sFolioFacturaSistema) - 4)
 
@@ -95,32 +91,13 @@ Module FacturacionElectronica
             Factura.attributes.getNamedItem("certificado").text = Cert.Certificado
             Factura.attributes.getNamedItem("sello").text = ""
 
-            'CKCert.LoadFromFile(sFelectronicaArchivoCERLocal)
-
-            'Dim sqlResult As New Class_find("SELECT GETDATE()")
-            'dFechaServidor = CDate(sqlResult.Result1)
-            'If CKCert.ValidTo < dFechaServidor Then
-            '    MsgBox("El certificado caducó el día " & Format(CKCert.ValidFrom, "dd-MMM-yyyy") & ".", vbExclamation, sProcedure)
-            '    Exit Function
-            'End If
-
-            ''CKCert.ValidFrom AND CKCert.ValidFrom
-            'If Fecha_Documento < CDate(Format(CKCert.ValidFrom, "yyyy-MM-dd")) And Fecha_Documento > CDate(Format(CKCert.ValidTo, "yyyy-MM-dd")) Then
-            '    MsgBox("Los sellos han expirado, avíse al depto de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-            '    Exit Function
-            'End If
-
-            'Factura.attributes.getNamedItem("noCertificado").text = FormatearSerie(CKCert.SerialNumber)
-            'Factura.attributes.getNamedItem("certificado").text = Mid(CKCert.GetEncoded(), 1, Len(CKCert.GetEncoded()) - 2)
-            'Factura.attributes.getNamedItem("sello").text = ""
-
-            Dim docXml As Xml.XmlDocument = New Xml.XmlDocument
+            Dim docXml As New Xml.XmlDocument
             docXml.LoadXml(Factura.xml)
 
             docXml.Save(sRutaXML)
 
             If ConvierteXMLUTF8(sRutaXML) = False Then
-                MsgBox("Fallo UTF-8. y Falta timbrar", MsgBoxStyle.Exclamation, sProcedure)
+                MsgBox("Error al tratar de convertir el archivo xml a UTF-8 y falta aún timbrar.", MsgBoxStyle.Exclamation, sProcedure)
                 Exit Function
             End If
 
@@ -165,17 +142,68 @@ Module FacturacionElectronica
 
         Return bResultado
     End Function
+    Public Function GestionaCertificado(ByVal FechaDocumento As Date) As Certificado
+        Dim CKCert As New CHILKATCERTIFICATELib.ChilkatCert, dFechaServidor As Date
+        Dim c As Certificado
+        Const sProcedure As String = "GestionaCertificado"
+
+        c.noCertificado = ""
+        c.Certificado = ""
+        c.CertificadoValido = False
+
+        Try
+            If CKCert.LoadFromFile(sFelectronicaArchivoCERLocal) = 0 Then
+                MsgBox("No se logró cargar el certificado : " & vbCrLf & sFelectronicaArchivoCERLocal, vbExclamation, sProcedure)
+                Return c
+            End If
+
+            Dim sqlResult As New Class_find("SELECT GETDATE()")
+            dFechaServidor = CDate(sqlResult.Result1)
+            If CKCert.ValidTo < dFechaServidor Then
+                MsgBox("El certificado caducó el día " & Format(CKCert.ValidFrom, "dd-MMM-yyyy") & ".", vbExclamation, sProcedure)
+                Return c
+            End If
+
+            'CKCert.ValidFrom AND CKCert.ValidFrom
+            If FechaDocumento < CDate(Format(CKCert.ValidFrom, "yyyy-MM-dd")) And FechaDocumento > CDate(Format(CKCert.ValidTo, "yyyy-MM-dd")) Then
+                MsgBox("Los sellos han expirado, avíse al depto de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                Return c
+            End If
+
+            c.noCertificado = FormatearSerie(CKCert.SerialNumber)
+            c.Certificado = Mid(CKCert.GetEncoded(), 1, Len(CKCert.GetEncoded()) - 2)
+            c.CertificadoValido = True
+        Catch ex As Exception
+            HandleError(_Nombre_Catalogo, sProcedure, ex)
+        End Try
+        Return c
+    End Function
 
     Public Function CancelarCFDIVenta(ByVal oVenta As Class_Ventas_Global, ByVal TipoComprobante As TipoComprobante) As Boolean
-        Return CancelarCFDI(oVenta.FOLIO_VENTA, oVenta.SERIE, oVenta.FOLIO_NUMERICO, oVenta.FOLIO_FISCAL_SAT, oVenta.TIMBRADO_CFDI, TipoComprobante)
+        Dim bResultado As Boolean = False
+        Const sProcedure As String = "CancelarCFDIVenta"
+        Try
+            bResultado = CancelarCFDI(oVenta.FOLIO_VENTA, oVenta.SERIE, oVenta.FOLIO_NUMERICO, oVenta.FOLIO_FISCAL_SAT, oVenta.TIMBRADO_CFDI, TipoComprobante)
+        Catch ex As Exception
+            HandleError(_Nombre_Catalogo, sProcedure, ex)
+        End Try
+        Return bResultado
     End Function
 
     Public Function CancelarCFDIDescuento(ByVal oDescuento As Class_CXC_Descuento, ByVal TipoComprobante As TipoComprobante) As Boolean
-        Return CancelarCFDI(oDescuento.FOLIO_DESCUENTO, oDescuento.SERIE, oDescuento.FOLIO_NUMERICO, oDescuento.FOLIO_FISCAL_SAT, oDescuento.TIMBRADO_CFDI, TipoComprobante)
+        Dim bResultado As Boolean
+        Const sProcedure As String = "CancelarCFDIDescuento"
+        Try
+            bResultado = CancelarCFDI(oDescuento.FOLIO_DESCUENTO, oDescuento.SERIE, oDescuento.FOLIO_NUMERICO, oDescuento.FOLIO_FISCAL_SAT, oDescuento.TIMBRADO_CFDI, TipoComprobante)
+        Catch ex As Exception
+            HandleError(_Nombre_Catalogo, sProcedure, ex)
+        End Try
+        Return bResultado
     End Function
 
     Private Function CancelarCFDI(ByVal sFolioDocumentoSistema As String, ByVal sSerie As String, ByVal iFolioNumerico As Integer, ByVal sFolioFiscalSat As String, ByVal sDocumentoYaEstaTimbrado As String, ByVal sTipoComprobante As TipoComprobante) As Boolean
         Dim bResultado As Boolean = False
+        Const sProcedure As String = "CancelarCFDI"
         Dim ArchivoXmlAcuseCancelacion As String = sFelectronicaCarpetaXmlsAcusesCancelacion & "\AcuseCancelacion_" & sFolioDocumentoSistema & ".xml" ' "la ruta de los xml de acuses de cancelacion"
         Dim sUUID As String = "" ' "el folio del sat del documento"
         Dim sXml As String = ""
@@ -184,6 +212,10 @@ Module FacturacionElectronica
         Dim sAcuseCancelacion As String = ""
 
         Try
+            If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "ERNESTOA" Or Usuario.Codigo_Usuario = 1 Then
+                MsgBox("Las computadoras de sistemas no deben cancelar timbres documentos.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
 
             Using cfd As New clsCFDI(Empresa_Sistema.BaseDatos, Empresa_Sistema.Servidor, sFelectronicaArchivoPFX, _
                                     Decrypt(Empresa_Sistema.FELECTRONICA_CONTRASENIA_PFX, "ex8"), _
@@ -221,13 +253,14 @@ Module FacturacionElectronica
             End Using
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, "CancelarCFDI", ex)
+            HandleError(_Nombre_Catalogo, sProcedure, ex)
         End Try
 
         Return bResultado
     End Function
 
     Private Function GrabaCancelacionYAcuseXML(ByVal sFolioFacturaSistema As String, ByRef sAcuseCancelacionXML As String, ByVal sTipoComprobanteElectronico As TipoComprobante) As Boolean
+        Dim bResultado As Boolean = False
         Try
             Dim cmd As New SqlCommand
             Dim sqlParametro As SqlParameter
@@ -257,17 +290,19 @@ Module FacturacionElectronica
                 .ExecuteNonQuery()
             End With
             cmd = Nothing
+            bResultado = True
 
             _Conexion.Close()
 
-            Return True
         Catch ex As Exception
             _Conexion.Close()
             HandleError(_Nombre_Catalogo, "GrabaCancelacionYAcuseXML", ex)
         End Try
+        Return bResultado
     End Function
 
     Private Function DescartarTimbrado(ByVal sFolio As String, ByVal sTipoComprobanteElectronico As String) As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -282,7 +317,7 @@ Module FacturacionElectronica
             Try
                 _Conexion.Open()
                 .ExecuteNonQuery()
-                Return True
+                bResultado = True
             Catch ex As Exception
                 HandleError(_Nombre_Catalogo, "DescartarTimbrado", ex)
             Finally
@@ -291,6 +326,7 @@ Module FacturacionElectronica
                 sqlParametro = Nothing
             End Try
         End With
+        Return bResultado
     End Function
 
     Private Function ConvierteXMLUTF8(ByVal sRutaXML As String) As Boolean
@@ -305,11 +341,38 @@ Module FacturacionElectronica
         End Try
     End Function
 
+    Public Function ConvierteUTF8(ByVal sArchivoXML As String) As Boolean
+        Dim bResultado As Boolean = False
+        Try
+            Dim rAutomatico As StreamReader, sTexto As String
+
+            rAutomatico = New StreamReader(sArchivoXML, True)
+
+            'Se tiene que leer, si no, no da el encode que realmente tiene.
+            sTexto = rAutomatico.ReadToEnd
+            rAutomatico.Close()
+            rAutomatico.Dispose()
+
+            Dim sw As New StreamWriter(sArchivoXML, False, System.Text.Encoding.UTF8) 'MyEncoding)
+            sw.Write(sTexto)
+
+            sw.Close()
+            sw.Dispose()
+
+            bResultado = True
+        Catch ex As Exception
+            HandleError(_Nombre_Catalogo, "ConvierteUTF8", ex)
+        End Try
+
+        Return bResultado
+    End Function
+
     Private Function GrabaCadenaOriginalYSelloComprobanteElectronico(ByRef fElectronica As clsCFDI, ByVal sTipoComprobanteElectronico As String) As Boolean
+        Dim bResultado As Boolean = False
+        Const sProcedure As String = "GrabaCadenaOriginalYSelloComprobanteElectronico"
         Try
             Dim cmd As New SqlCommand
             Dim sqlParametro As SqlParameter
-            Const sProcedure As String = "GrabaCadenaOriginalYSelloComprobanteElectronico"
 
             With cmd
                 .Connection = _Conexion
@@ -345,15 +408,16 @@ Module FacturacionElectronica
                 .ExecuteNonQuery()
             End With
             cmd = Nothing
+            bResultado = True
 
             _Conexion.Close()
-
-            Return True
 
         Catch ex As Exception
             _Conexion.Close()
-            HandleError(_Nombre_Catalogo, "GrabaCadenaOriginalYSelloComprobanteElectronico", ex)
+            HandleError(_Nombre_Catalogo, sProcedure, ex)
         End Try
+
+        Return bResultado
     End Function
 
     Private Function FormatearSerie(ByVal serie As String) As String
@@ -390,6 +454,7 @@ Module FacturacionElectronica
 
     Public Function GestionaExistanCertificadosFacturaElectronica() As Boolean
         Dim bResultado As Boolean = False
+        Const sProcedure As String = "GestionaExistanCertificadosFacturaElectronica"
         Dim sNombreServidor As String
         Dim sCarpetaTrabajoServer, sCarpetaTrabajoLocal As String
         Dim sCarpetaDB As String
@@ -402,7 +467,6 @@ Module FacturacionElectronica
         Dim sFelectronicaArchivoPFXServidor As String
         Dim sFelectronicaCbbImagenServidor As String
 
-        Const sProcedure As String = "GestionaExistanCertificadosFacturaElectronica"
         Try
             sNombreServidor = Split(My.Settings.Servidor, "\")(0)
             sCarpetaTrabajoServer = "\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & Empresa_Sistema.FELECTRONICA_CARPETA_TRABAJO
@@ -462,71 +526,72 @@ Module FacturacionElectronica
 
             sFelectronicaArchivoCERLocal = sCarpetaCertificados & "\" & Empresa_Sistema.FELECTRONICA_CER
             sFelectronicaArchivoKEYLocal = sCarpetaCertificados & "\" & Empresa_Sistema.FELECTRONICA_KEY
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
             If Len(Dir(sFelectronicaArchivoCadenaOriginalLocal)) = 0 Then
                 If Len(Dir(sCadenaOriginalServer)) = 0 OrElse Copiar_Archivo(sCadenaOriginalServer, sFelectronicaArchivoCadenaOriginalLocal) = False Then
-                    MsgBox("No existe en el servidor el archivo de la cadena original, no se podrán generar facturas eletrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                    MsgBox("No existe en el servidor el archivo de la cadena original, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
                     Exit Function
                 End If
             End If
 
             If Len(Dir(sFelectronicaArchivoCERLocal)) = 0 Then
                 If Len(Dir(sCerServer)) = 0 OrElse Copiar_Archivo(sCerServer, sFelectronicaArchivoCERLocal) = False Then
-                    MsgBox("No existe en el servidor el archivo .cer, no se podrán generar facturas eletrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                    MsgBox("No existe en el servidor el archivo .cer, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
                     Exit Function
                 End If
             End If
             If Len(Dir(sFelectronicaArchivoKEYLocal)) = 0 Then
                 If Len(Dir(sKeyServer)) = 0 OrElse Copiar_Archivo(sKeyServer, sFelectronicaArchivoKEYLocal) = False Then
-                    MsgBox("No existe en el servidor el archivo .key, no se podrán generar facturas eletrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                    MsgBox("No existe en el servidor el archivo .key, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
                     Exit Function
                 End If
             End If
             If Len(Dir(sFelectronicaConvierteUTF8Local)) = 0 Then
                 If Len(Dir(sFelectronicaConvierteUTF8Servidor)) = 0 OrElse Copiar_Archivo(sFelectronicaConvierteUTF8Servidor, sFelectronicaConvierteUTF8Local) = False Then
-                    MsgBox("No existe en el servidor el archivo para convertir el XML a UTF8, no se podrán generar facturas eletrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                    MsgBox("No existe en el servidor el archivo para convertir el XML a UTF8, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
                     Exit Function
                 End If
             End If
 
             If Len(Dir(sFelectronicaArchivoPFX)) = 0 Then
                 If Len(Dir(sFelectronicaArchivoPFXServidor)) = 0 OrElse Copiar_Archivo(sFelectronicaArchivoPFXServidor, sFelectronicaArchivoPFX) = False Then
-                    MsgBox("No existe en el servidor el archivo .pfx, no se podrán generar facturas eletrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                    MsgBox("No existe en el servidor el archivo .pfx, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
                     Exit Function
                 End If
             End If
 
             If Len(Dir(sDllCfdiArchivo)) = 0 Then
                 If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCfdi)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCfdi, sDllCfdiArchivo) = False Then
-                    MsgBox("No existe en el servidor el archivo Cfdi.dll, no se podrán generar facturas eletrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                    MsgBox("No existe en el servidor el archivo Cfdi.dll, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
                     Exit Function
                 End If
             End If
 
             If Len(Dir(sDllCo32Archivo)) = 0 Then
                 If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCo32)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCo32, sDllCo32Archivo) = False Then
-                    MsgBox("No existe en el servidor el archivo Co32.dll, no se podrán generar facturas eletrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                    MsgBox("No existe en el servidor el archivo Co32.dll, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
                     Exit Function
                 End If
             End If
 
             If Len(Dir(sDllIonicZipArchivo)) = 0 Then
                 If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllIonicZip)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & sDllIonicZip, sDllIonicZipArchivo) = False Then
-                    MsgBox("No existe en el servidor el archivo Ionic.Zip.dll, no se podrán generar facturas eletrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                    MsgBox("No existe en el servidor el archivo Ionic.Zip.dll, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
                     Exit Function
                 End If
             End If
 
             If Len(Dir(sDllQRCodeArchivo)) = 0 Then
                 If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllQRCode)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllQRCode, sDllQRCodeArchivo) = False Then
-                    MsgBox("No existe en el servidor el archivo ThoughtWorks.QRCode.dll, no se podrán generar facturas eletrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                    MsgBox("No existe en el servidor el archivo ThoughtWorks.QRCode.dll, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
                     Exit Function
                 End If
             End If
 
             If Len(Dir(sFelectronicaCbbImagen)) = 0 Then
                 If Len(Dir(sFelectronicaCbbImagenServidor)) = 0 OrElse Copiar_Archivo(sFelectronicaCbbImagenServidor, sFelectronicaCbbImagen) = False Then
-                    MsgBox("No existe en el servidor el archivo Cbb.jpg, no se podrán generar facturas eletrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                    MsgBox("No existe en el servidor el archivo Cbb.jpg, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
                     Exit Function
                 End If
             End If
@@ -545,6 +610,7 @@ Module FacturacionElectronica
     End Function
 
     Public Function fElectronicaValidaArchivosCertificadoLocal(ByVal sArchivoCer As String, ByVal sArchivoKey As String, ByVal sContraseñaClavePrivada As String) As Boolean
+        Dim bResultado As Boolean = False
         Const sProcedure As String = "fElectronicaValidaArchivosCertificadoLocal"
 
         Try
@@ -565,16 +631,17 @@ Module FacturacionElectronica
                 Exit Function
             End If
 
-            Return True
+            bResultado = True
 
         Catch ex As Exception
             HandleError(_Nombre_Catalogo, sProcedure, ex)
         End Try
+        Return bResultado
     End Function
 
-    Public Function GeneraFacturaElectronica(ByVal oVenta As Class_Ventas_Global, ByVal bMostrarMensaje As Boolean, ByVal sRutaXML As String, ByVal bGenerarComplementoComercioExterior As Boolean) As Boolean
-        Dim bResultado As Boolean = False
+    Public Function GeneraFacturaElectronica(ByVal oVenta As Class_Ventas_Global, ByVal bMostrarMensaje As Boolean, ByVal sRutaXML As String) As Boolean
         Const sProcedure As String = "GeneraFacturaElectronica"
+        Dim bResultado As Boolean = False
         Dim sVentaPublicoGeneral As String
         Dim sPlaza As String
         'Dim idFactura As Integer
@@ -588,7 +655,7 @@ Module FacturacionElectronica
             Cfd.xmlnscfdi = "http://www.sat.gob.mx/cfd/3"
             Cfd.xsischemaLocation = "http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd"
 
-            Cfd.version = Empresa_Sistema.VERSION_ESQUEMA_CFD '2.3
+            Cfd.version = Empresa_Sistema.VERSION_ESQUEMA_CFD
             'sFolio = sReplace(sFolio)
 
             'Dim sqlResult As New Class_find("SELECT SERIE,NUMERO_APROBACION,ANIO_APROBACION FROM CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS WHERE IDCATALOGO_FOLIO_FELECTRONICA=(SELECT IDCATALOGO_FOLIO_FELECTRONICA FROM VENTA_GLOBAL WHERE FOLIO_VENTA='" & oVenta.FOLIO_VENTA & "')")
@@ -613,12 +680,11 @@ Module FacturacionElectronica
             '    Exit Function
             'End If
 
-            'If fElectronicaValidaArchivosCertificadoLocal(oVenta.FELECTRONICA_CER , oVenta.FELECTRONICA_KEY, oVenta.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA) = False Then
             If fElectronicaValidaArchivosCertificadoLocal(oVenta.FELECTRONICA_CER, oVenta.FELECTRONICA_KEY, oVenta.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA) = False Then
                 Exit Function
             End If
 
-            'idFactura = oVenta.ID_VENTA_GLOBAL
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Datos globales''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Cfd.sFolioFacturaSistema = oVenta.FOLIO_VENTA
 
             sVentaPublicoGeneral = oVenta.ES_VENTA_PUBLICO_GENERAL
@@ -631,53 +697,390 @@ Module FacturacionElectronica
             Cfd.formaDePago = "PAGO EN UNA SOLA EXHIBICION"
             Cfd.condicionesDePago = oVenta.CONDICIONES_DE_PAGO
 
-            Cfd.Descuento = Format(oVenta.DESCUENTO, "#0.00")
-            Cfd.Impuestos.Traslados.USADO = True 'si uso el trasladado
+            If oVenta.TIPO_DE_CAMBIO > 0 Then
+                Cfd.Moneda = "USD"
+                Cfd.TipoCambio = oVenta.TIPO_DE_CAMBIO
+            Else
+                Cfd.Moneda = "MXN"
+            End If
 
-            'CFD
-            'Cfd.metodoDePago = oVenta.NOMBRE_METODO_PAGO
             Cfd.metodoDePago = oVenta.CODIGO_METODO_PAGO
 
-            Dim oMetodoPago As New Class_CFD_CatMetodosPago
-            oMetodoPago = New Class_CFD_CatMetodosPago(oVenta.CODIGO_METODO_PAGO)
+            Dim oMetodoPago As New Class_CFD_CatMetodosPago(oVenta.CODIGO_METODO_PAGO)
             If oMetodoPago.REQUIERE_NUMERO_CUENTA_PAGO = 1 Then
                 Cfd.sRequiereNumPago = oMetodoPago.REQUIERE_NUMERO_CUENTA_PAGO
                 Cfd.NumCtaPago = oVenta.NUMERO_CUENTA_PAGO.ToString
             End If
 
             Cfd.Regimen = oVenta.NOMBRE_REGIMEN_FISCAL
+            Cfd.Impuestos.Traslados.USADO = True 'si uso el trasladado
 
-            If sVentaPublicoGeneral = "1" Then
-                'No se desglosa el iva(por ello subtotal=total y se manda un impuesto en cero)
-                Cfd.subTotal = Format(oVenta.TOTAL, "#0.00")
-                Cfd.total = Format(oVenta.TOTAL, "#0.00")
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Totales'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            If oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True And oVenta.IMPUESTO > 0 Then
+                MsgBox("No esta soportado actualmente por este sistema que lo embarques extranjeros lleven impuestos.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
+                Cfd.Descuento = Format(oVenta.DESCUENTO_USD, "#0.00")
+                Cfd.subTotal = Format(oVenta.TOTAL_DOLARES, "#0.00") 'Nota aquí van
+                Cfd.total = Format(0, "#0.00")
                 Cfd.Impuestos.Traslados.Add("IVA", Format(0, "#0.00"), Format(0, "#0.00"))
             Else
-                Cfd.subTotal = Format(oVenta.SUBTOTAL, "#0.00")
-                Cfd.total = Format(oVenta.TOTAL, "#0.00")
+                Cfd.Descuento = Format(oVenta.DESCUENTO, "#0.00")
 
-                'Cfd.total = Format(27536.18, "#0.00") 'sobreescribirlo a mano
-
-                If oVenta.IMPUESTO = 0 Then
+                If sVentaPublicoGeneral = "1" Then
+                    'No se desglosa el iva(por ello subtotal=total y se manda un impuesto en cero)
+                    Cfd.subTotal = Format(oVenta.TOTAL, "#0.00")
+                    Cfd.total = Format(oVenta.TOTAL, "#0.00")
                     Cfd.Impuestos.Traslados.Add("IVA", Format(0, "#0.00"), Format(0, "#0.00"))
                 Else
-                    '0
-                    Dim Impuesto As New Class_find("SELECT 1 FROM VENTA_DETALLE WHERE FOLIO_VENTA='" & oVenta.FOLIO_VENTA & "' AND IMPUESTO_PORCENTAJE=0")
-                    If txtLEN(Impuesto.Result1) = True Then
+                    Cfd.subTotal = Format(oVenta.SUBTOTAL, "#0.00")
+                    Cfd.total = Format(oVenta.TOTAL, "#0.00")
+
+                    If oVenta.IMPUESTO = 0 Then
                         Cfd.Impuestos.Traslados.Add("IVA", Format(0, "#0.00"), Format(0, "#0.00"))
+                    Else
+                        '0
+                        Dim Impuesto As New Class_find("SELECT 1 FROM VENTA_DETALLE WHERE FOLIO_VENTA='" & oVenta.FOLIO_VENTA & "' AND IMPUESTO_PORCENTAJE=0")
+                        If txtLEN(Impuesto.Result1) = True Then
+                            Cfd.Impuestos.Traslados.Add("IVA", Format(0, "#0.00"), Format(0, "#0.00"))
+                        End If
+                        '16
+                        Cfd.Impuestos.Traslados.Add("IVA", Format(IIf(oVenta.IMPUESTO_PORCENTAJE > 0, oVenta.IMPUESTO_PORCENTAJE, 0), "#0.00"), Format(oVenta.IMPUESTO, "#0.00"))
                     End If
-                    '16
-                    Cfd.Impuestos.Traslados.Add("IVA", Format(IIf(oVenta.IMPUESTO_PORCENTAJE > 0, oVenta.IMPUESTO_PORCENTAJE, 0), "#0.00"), Format(oVenta.IMPUESTO, "#0.00"))
+                End If
+
+                If oVenta.RETENCION > 0 Then
+                    Cfd.Impuestos.Retenciones.Add("IVA", "0", Format(oVenta.RETENCION, "#0.00")) 'escribirlo a mano
                 End If
             End If
 
-            If oVenta.RETENCION > 0 Then
-                Cfd.Impuestos.Retenciones.Add("IVA", "0", Format(oVenta.RETENCION, "#0.00")) 'escribirlo a mano
-            End If
-
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Cfd.Emisor'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Cfd.Emisor.nombre = fElectronicaValidaCampo(Empresa_Sistema.NOMBRE_EMPRESA)
             Cfd.Emisor.rfc = fElectronicaValidaCampo(Empresa_Sistema.RFC)
 
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Cfd.Emisor.DomicilioFiscal''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            Cfd.Emisor.DomicilioFiscal.calle = fElectronicaValidaCampo(Empresa_Sistema.CALLE)
+            Cfd.Emisor.DomicilioFiscal.noExterior = fElectronicaValidaCampo(Empresa_Sistema.NUMERO_EXTERIOR)
+            Cfd.Emisor.DomicilioFiscal.noInterior = fElectronicaValidaCampo(Empresa_Sistema.NUMERO_INTERIOR)
+            Cfd.Emisor.DomicilioFiscal.codigoPostal = fElectronicaValidaCampo(Empresa_Sistema.CODIGO_POSTAL)
+
+            If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
+                'Nota, si es con factura de embarque extranjero, estos datos en vez de ir con texto libre van con item de los catálogos proporcionados por el sat.
+                If txtLEN(Empresa_Sistema.CODIGO_COLONIA_SAT) = True Then
+                    Cfd.Emisor.DomicilioFiscal.colonia = fElectronicaValidaCampo(Empresa_Sistema.CODIGO_COLONIA_SAT)
+                End If
+                If txtLEN(Empresa_Sistema.CODIGO_LOCALIDAD_SAT) = True Then
+                    Cfd.Emisor.DomicilioFiscal.localidad = fElectronicaValidaCampo(Empresa_Sistema.CODIGO_LOCALIDAD_SAT)
+                End If
+                If txtLEN(Empresa_Sistema.CODIGO_MUNICIPIO_SAT) = True Then
+                    Cfd.Emisor.DomicilioFiscal.municipio = fElectronicaValidaCampo(Empresa_Sistema.CODIGO_MUNICIPIO_SAT)
+                End If
+                If txtLEN(Empresa_Sistema.CODIGO_ESTADO_SAT) = True Then
+                    Cfd.Emisor.DomicilioFiscal.estado = fElectronicaValidaCampo(Empresa_Sistema.CODIGO_ESTADO_SAT)
+                End If
+                If txtLEN(Empresa_Sistema.CODIGO_PAIS_SAT) = True Then
+                    Cfd.Emisor.DomicilioFiscal.pais = fElectronicaValidaCampo(Empresa_Sistema.CODIGO_PAIS_SAT)
+                End If
+            Else 'Factura normal
+                Cfd.Emisor.DomicilioFiscal.colonia = fElectronicaValidaCampo(Empresa_Sistema.COLONIA)
+                Cfd.Emisor.DomicilioFiscal.localidad = fElectronicaValidaCampo(Empresa_Sistema.LOCALIDAD)
+                Cfd.Emisor.DomicilioFiscal.municipio = fElectronicaValidaCampo(Empresa_Sistema.CIUDAD)
+                Cfd.Emisor.DomicilioFiscal.estado = fElectronicaValidaCampo(Empresa_Sistema.ESTADO)
+                Cfd.Emisor.DomicilioFiscal.pais = fElectronicaValidaCampo(Empresa_Sistema.PAIS)
+            End If
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Cfd.Emisor.ExpedidoEn''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            If sPlaza <> Usuario.Codigo_Plaza Then
+                If sPlaza <> Plaza.CODIGO_PLAZA Then 'Si ya estaba cargada la plaza de la factura, no se cargará de nuevo para evitar consultas.
+                    'UPGRADE_WARNING: Couldn't resolve default property of object tPlazaFacturaElectronica. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
+                    'tPlazaFacturaElectronica = CargaPlazaParametro(sPlaza)
+                End If
+            Else
+                'UPGRADE_WARNING: Couldn't resolve default property of object tPlazaFacturaElectronica. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
+                'tPlazaFacturaElectronica = Plaza.CODIGO_PLAZA 'Plaza ya cargada en el inicio de sesión del usuario.
+            End If
+
+            Cfd.Emisor.ExpedidoEn.USADO = True 'si es usado diferente lugar de expedición se pondra la información, en este caso dejaremos la misma
+            Cfd.Emisor.ExpedidoEn.calle = fElectronicaValidaCampo(Plaza.CALLE)
+            Cfd.Emisor.ExpedidoEn.noExterior = fElectronicaValidaCampo(Plaza.NUMERO_EXTERIOR)
+            Cfd.Emisor.ExpedidoEn.noInterior = fElectronicaValidaCampo(Plaza.NUMERO_INTERIOR)
+            Cfd.Emisor.ExpedidoEn.codigoPostal = fElectronicaValidaCampo(Plaza.CODIGO_POSTAL)
+
+            If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
+                'Nota, si es con factura de embarque extranjero, estos datos en vez de ir con texto libre van con item de los catálogos proporcionados por el sat.
+                If txtLEN(Plaza.CODIGO_COLONIA_SAT) = True Then
+                    Cfd.Emisor.ExpedidoEn.colonia = fElectronicaValidaCampo(Plaza.CODIGO_COLONIA_SAT)
+                End If
+                If txtLEN(Plaza.CODIGO_LOCALIDAD_SAT) = True Then
+                    Cfd.Emisor.ExpedidoEn.localidad = fElectronicaValidaCampo(Plaza.CODIGO_LOCALIDAD_SAT)
+                End If
+                If txtLEN(Plaza.CODIGO_MUNICIPIO_SAT) = True Then
+                    Cfd.Emisor.ExpedidoEn.municipio = fElectronicaValidaCampo(Plaza.CODIGO_MUNICIPIO_SAT)
+                End If
+                If txtLEN(Plaza.CODIGO_ESTADO_SAT) = True Then
+                    Cfd.Emisor.ExpedidoEn.estado = fElectronicaValidaCampo(Plaza.CODIGO_ESTADO_SAT)
+                End If
+                If txtLEN(Plaza.CODIGO_PAIS_SAT) = True Then
+                    Cfd.Emisor.ExpedidoEn.pais = fElectronicaValidaCampo(Plaza.CODIGO_PAIS_SAT)
+                End If
+            Else
+                Cfd.Emisor.ExpedidoEn.colonia = fElectronicaValidaCampo(Plaza.COLONIA)
+                Cfd.Emisor.ExpedidoEn.localidad = fElectronicaValidaCampo(Plaza.LOCALIDAD)
+                Cfd.Emisor.ExpedidoEn.municipio = fElectronicaValidaCampo(Plaza.CIUDAD)
+                Cfd.Emisor.ExpedidoEn.estado = fElectronicaValidaCampo(Plaza.ESTADO)
+                Cfd.Emisor.ExpedidoEn.pais = fElectronicaValidaCampo(Plaza.PAIS)
+            End If
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            'CFD
+            Cfd.LugarExpedicion = fElectronicaValidaCampo(Plaza.CIUDAD) & ", " & fElectronicaValidaCampo(Plaza.ESTADO)
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Cfd.Receptor'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            Dim oCliente As New Class_CatClientes(oVenta.CODIGO_CLIENTE.ToString)
+
+            If oCliente.Existe = False Then
+                MsgBox("Cliente no encontrado.", MsgBoxStyle.Exclamation, nombreModulo)
+                Exit Function
+            End If
+
+            If sVentaPublicoGeneral = "1" Then
+                Cfd.Receptor.nombre = "PUBLICO GENERAL"
+                Cfd.Receptor.rfc = Empresa_Sistema.RFC_VENTA_PUBLICO_GENERAL
+                With Cfd.Receptor.Domicilio
+                    .calle = "DOMICILIO CONOCIDO"
+                    .noExterior = "S/N"
+                    .noInterior = ""
+                    .colonia = "CENTRO"
+                    .localidad = fElectronicaValidaCampo(Plaza.LOCALIDAD)
+                    .municipio = fElectronicaValidaCampo(Plaza.CIUDAD)
+                    .estado = fElectronicaValidaCampo(Plaza.ESTADO)
+                    .pais = fElectronicaValidaCampo(Empresa_Sistema.PAIS)
+                    .codigoPostal = "00000"
+                End With
+            Else
+                Cfd.Receptor.nombre = fElectronicaValidaCampo(oCliente.NOMBRE_CLIENTE)
+                Cfd.Receptor.rfc = fElectronicaValidaCampo(oCliente.RFC)
+                With Cfd.Receptor.Domicilio
+                    .calle = fElectronicaValidaCampo(oCliente.CALLE)
+                    .noExterior = fElectronicaValidaCampo(oCliente.NUMERO_EXTERIOR)
+                    .noInterior = fElectronicaValidaCampo(oCliente.NUMERO_INTERIOR)
+                    .colonia = fElectronicaValidaCampo(oCliente.COLONIA)
+                    .localidad = fElectronicaValidaCampo(oCliente.LOCALIDAD)
+
+                    If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
+                        .municipio = fElectronicaValidaCampo(oCliente.CIUDAD) 'Al ser extranjero no hay catálogo de municipios, se usa el txt abierto
+                        'Nota, si es con factura de embarque extranjero, estos datos en vez de ir con texto libre van con item de los catálogos proporcionados por el sat.
+                        .estado = fElectronicaValidaCampo(oCliente.CODIGO_ESTADO_SAT)
+                        .pais = fElectronicaValidaCampo(oCliente.CODIGO_PAIS_SAT)
+                    Else
+                        If oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
+                            .municipio = fElectronicaValidaCampo(oCliente.CIUDAD) 'Al ser extranjero no hay catalogo de municipios y se teclea manual.
+                        Else
+                            If txtLEN(oCliente.CODIGO_MUNICIPIO) = False And txtLEN(oCliente.CIUDAD) = True Then 'Tiene escrita la ciudad(municipio) a mano y no calza con ninguna del catálogo del sat, se forza a que falle
+                                .municipio = "."
+                            Else
+                                .municipio = fElectronicaValidaCampo(oCliente.NOMBRE_MUNICIPIO) 'Nota en la validacion se pregunta por oCliente.CIUDAD que es escrito a mano, pero se usa el nombre del catálogo del sat, igual con estado y pais
+                            End If
+
+                        End If
+
+                        If txtLEN(oCliente.CODIGO_ESTADO_SAT) = False And txtLEN(oCliente.ESTADO) = True Then 'Tiene escrito el estado mano y no calza con ninguno del catálogo del sat, se forza a que falle
+                            .estado = "."
+                        Else
+                            .estado = fElectronicaValidaCampo(oCliente.NOMBRE_ESTADO) 'Ver nota de municipio
+                        End If
+
+                        If txtLEN(oCliente.CODIGO_PAIS_SAT) = False And txtLEN(oCliente.PAIS) = True Then 'Tiene escrito el pais mano y no calza con ninguno del catálogo del sat, se forza a que falle
+                            .pais = "."
+                        Else
+                            .pais = fElectronicaValidaCampo(oCliente.NOMBRE_PAIS) 'Ver nota de municipio
+                        End If
+                    End If
+
+                    .codigoPostal = fElectronicaValidaCampo(oCliente.CODIGO_POSTAL.ToString)
+                End With
+            End If
+
+            'El 2do parámetro es la combinación de dos validaciones, porque puede ser factura extranjera, y otra cosa es que tenga complemento CCE.
+            If ValidaDatoFacturaElectronica(Cfd, Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True) = False Then
+                Exit Function
+            End If
+            ' _Conexion.Close()
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Conceptos''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            For Each row As DataRow In oVenta.ObtenerDetalle.Rows
+                If row("ES_PRODUCTO_KILOS") = "0" Then
+                    If oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
+                        dPrecio = valorNumerico(row("PRECIO_USD"))
+                        drImporte = valorNumerico(row("IMPORTE_USD"))
+                    Else
+                        If sVentaPublicoGeneral = "1" Then
+                            dPrecio = valorNumerico(row("PRECIO")) + valorNumerico(row("IMPUESTO_IMPORTE")) 'ojo si es publico gral  no desglosar iva
+                        Else
+                            dPrecio = valorNumerico(row("PRECIO"))
+                        End If
+
+                        drImporte = valorNumerico(row("CANTIDAD")) * dPrecio
+                        Call Redondear(drImporte, Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                    End If
+
+                    Cfd.Conceptos.Add(row("CANTIDAD"), fElectronicaValidaCampo(row("DESCRIPCION").ToString), CStr(drImporte), row("UNIDAD_VENTA").ToString, CStr(dPrecio), row("CODIGO_ARTICULO").ToString)
+                Else
+                    'Si elprecio o la cantidad es cero no dejar sellar
+                    If valorNumerico(row("PRECIO_KILOS")) = 0 Or valorNumerico(row("CANTIDAD_KILOS")) = 0 Then
+                        Exit Function
+                    End If
+
+                    If sVentaPublicoGeneral = "1" Then
+                        'dPrecio = valorNumerico(row("PRECIO_KILOS")) (+ (valorNumerico(row("IMPUESTO_IMPORTE")/valorNumerico(row("CANTIDAD_KILOS"))) 'ojo si es publico gral  no desglosar iva
+                        dPrecio = valorNumerico(row("PRECIO_KILOS")) + valorNumerico(row("IMPUESTO_IMPORTE")) 'ojo si es publico gral  no desglosar iva
+                    Else
+                        dPrecio = valorNumerico(row("PRECIO_KILOS"))
+                    End If
+
+                    drImporte = valorNumerico(row("CANTIDAD_KILOS")) * dPrecio
+
+                    Call Redondear(drImporte, Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                    Cfd.Conceptos.Add(row("CANTIDAD_KILOS"), fElectronicaValidaCampo(row("DESCRIPCION").ToString), CStr(drImporte), row("UNIDAD_VENTA").ToString, CStr(dPrecio), row("CODIGO_ARTICULO").ToString)
+                End If
+            Next
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''CCE COMPLEMENTO COMERCIO EXTERIOR''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            Dim sXmlComercioExterior As String = ""
+
+            'Alguna pregunta que se fije si la empresa lo tiene activado y si el documento es de tipo embarque extranjero
+            If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
+                'If bGenerarComplementoComercioExterior = True Then
+                sXmlComercioExterior = oVenta.GeneraXmlComercioExterior
+
+                If txtLEN(sXmlComercioExterior) = False Then
+                    Return False 'Abortamos
+                End If
+            End If
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            If Cfd.Sellar(sRutaXML, cComprobante.TipoComprobante.FACTURA_VENTA, True, sXmlComercioExterior, oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO) = True Then
+                bResultado = True
+                If bMostrarMensaje = True Then
+                    MsgBox("Factura timbrada satisfactoriamente.", MsgBoxStyle.Information, sProcedure) 'se quito, solo marca error en caso de no sellar desde facturacion , en el grabar
+                End If
+            End If
+
+        Catch ex As Exception
+            _Conexion.Close()
+            HandleError(_Nombre_Catalogo, sProcedure, ex)
+        Finally
+            Cfd = New cComprobante 'vaciar el comprobante
+        End Try
+
+        Return bResultado
+    End Function
+
+    Public Function GeneraNotaCreditoCXCElectronica(ByVal oDescuento As Class_CXC_Descuento, ByVal bMostrarMensaje As Boolean, ByVal sRutaXML As String) As Boolean
+        Const sProcedure As String = "GeneraNotaCreditoCXCElectronica"
+        Dim bResultado As Boolean = False
+        Dim sVentaPublicoGeneral, sEsPorDevolucion As String
+        Dim sPlaza As String
+
+        Dim Cfd As New cComprobante
+        Try
+            Cfd.xmlns = "http://www.sat.gob.mx/cfd/3"
+            Cfd.xmlnsxsi = "http://www.w3.org/2001/XMLSchema-instance"
+            Cfd.xmlnscfdi = "http://www.sat.gob.mx/cfd/3"
+            Cfd.xsischemaLocation = "http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd"
+
+            Cfd.version = Empresa_Sistema.VERSION_ESQUEMA_CFD
+
+            'sFolio = sReplace(sFolio)
+            'Dim sqlResult As New Class_find("SELECT SERIE,NUMERO_APROBACION,ANIO_APROBACION FROM CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS WHERE IDCATALOGO_FOLIO_FELECTRONICA=(SELECT IDCATALOGO_FOLIO_FELECTRONICA FROM CXC_DESCUENTOS_GLOBAL WHERE FOLIO_DESCUENTO='" & sFolio & "')")
+            'If txtLEN(sqlResult.Result1) = False Then
+            '    MsgBox("No se encontro el numero de aprobación,serie y año de aprobación de la factura.", MsgBoxStyle.Exclamation, "GeneraFacturaElectronica")
+            '    Exit Function
+            'End If
+
+            Cfd.serie = fElectronicaValidaCampo(oDescuento.SERIE)
+            'Cfd.serie = fElectronicaValidaCampo(sqlResult.Result1)
+            'Cfd.noAprobacion = fElectronicaValidaCampo(sqlResult.Result2)
+            'Cfd.anoAprobacion = fElectronicaValidaCampo(sqlResult.Result3)
+
+            Cfd.noCertificado = "" 'Solo de muestra despues se obtendra el Numero de Certificado
+            Cfd.certificado = "" 'Solo de muestra despues se obtendra el Certificado
+            Cfd.sello = "" 'Solo de muestra despues se obtendra el Sello
+
+            'oDescuento = New Class_CXC_Descuento(sFolio)
+            'If oDescuento.Existe = False Then
+            '    MsgBox("Error al consultar el documento, no se encontró favor de revisar que exista.", MsgBoxStyle.Exclamation, "Búsqueda de Folios")
+            '    Exit Function
+            'End If
+
+            If fElectronicaValidaArchivosCertificadoLocal(oDescuento.FELECTRONICA_CER, oDescuento.FELECTRONICA_KEY, oDescuento.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA) = False Then
+                Exit Function
+            End If
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Datos globales''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            'idFactura = oDescuento.ID_CXC_DESCUENTOS_GLOBAL
+            Cfd.sFolioFacturaSistema = oDescuento.FOLIO_DESCUENTO
+
+            sVentaPublicoGeneral = oDescuento.ES_VENTA_PUBLICO_GENERAL
+            sPlaza = oDescuento.CODIGO_PLAZA
+            sEsPorDevolucion = oDescuento.ES_POR_DEVOLUCION
+
+            'Agregamos los datos totales y Generales
+            Cfd.Folio = oDescuento.FOLIO_NUMERICO
+            Cfd.fecha = Format(oDescuento.FECHA, "yyyy-MM-dd") & "T" & Format(oDescuento.FECHA, "HH:mm:ss")
+            Cfd.tipoDeComprobante = "egreso"
+            Cfd.formaDePago = "PAGO EN UNA SOLA EXHIBICION"
+
+            Cfd.Descuento = Format(0, "#0.00")
+
+            If oDescuento.TIPO_DE_CAMBIO > 0 Then
+                Cfd.Moneda = "USD"
+                Cfd.TipoCambio = oDescuento.TIPO_DE_CAMBIO
+            Else
+                Cfd.Moneda = "MXN"
+            End If
+            Cfd.Impuestos.Traslados.USADO = True 'si uso el trasladado
+
+            Cfd.metodoDePago = oDescuento.CODIGO_METODO_PAGO
+
+            Cfd.Regimen = oDescuento.NOMBRE_REGIMEN_FISCAL
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            If sVentaPublicoGeneral = "1" Then
+                'No se desglosa el iva(por ello subtotal=total y se manda un impuesto en cero)
+                Cfd.subTotal = Format(oDescuento.TOTAL, "#0.00")
+                Cfd.total = Format(oDescuento.TOTAL, "#0.00")
+                Cfd.Impuestos.Traslados.Add("IVA", Format(0, "#0.00"), Format(0, "#0.00"))
+            Else
+                Cfd.subTotal = Format(oDescuento.SUBTOTAL, "#0.00")
+                Cfd.total = Format(oDescuento.TOTAL, "#0.00")
+
+                If oDescuento.IVA = 0 Then
+                    Cfd.Impuestos.Traslados.Add("IVA", Format(0, "#0.00"), Format(0, "#0.00"))
+                Else
+                    Dim Impuesto As New Class_find("SELECT 1 FROM CXC_DESCUENTOS_GLOBAL D INNER JOIN CXC_DESCUENTOS_DETALLE CD ON (D.FOLIO_DESCUENTO=CD.FOLIO_DESCUENTO) " & _
+                    "INNER JOIN CXC_GLOBAL G ON (CD.FOLIO_CXC=G.FOLIO_CXC) INNER JOIN VENTA_DETALLE VD ON(G.FOLIO_REFERENCIA=VD.FOLIO_VENTA) " & _
+                    "WHERE D.FOLIO_DESCUENTO='" & oDescuento.FOLIO_DESCUENTO & "' AND VD.IMPUESTO_PORCENTAJE=0 ")
+
+                    If txtLEN(Impuesto.Result1) = True Then
+                        Cfd.Impuestos.Traslados.Add("IVA", Format(0, "#0.00"), Format(0, "#0.00"))
+                    End If
+                    '16 IMPUESTO_PORCENTAJE
+                    Cfd.Impuestos.Traslados.Add("IVA", Format(IIf(oDescuento.IVA > 0, oDescuento.IMPUESTO_PORCENTAJE, 0), "#0.00"), Format(oDescuento.IVA, "#0.00")) 'corregir, crerar campo impuesto_poercentaje, y no poner fijo 16
+                End If
+            End If
+
+            If oDescuento.RETENCION > 0 Then
+                Cfd.Impuestos.Retenciones.Add("IVA", "0", Format(oDescuento.RETENCION, "#0.00"))
+            End If
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Cfd.Emisor'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            Cfd.Emisor.nombre = fElectronicaValidaCampo(Empresa_Sistema.NOMBRE_EMPRESA)
+            Cfd.Emisor.rfc = fElectronicaValidaCampo(Empresa_Sistema.RFC)
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Cfd.Emisor.DomicilioFiscal''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Cfd.Emisor.DomicilioFiscal.calle = fElectronicaValidaCampo(Empresa_Sistema.CALLE)
             Cfd.Emisor.DomicilioFiscal.noExterior = fElectronicaValidaCampo(Empresa_Sistema.NUMERO_EXTERIOR)
             Cfd.Emisor.DomicilioFiscal.noInterior = fElectronicaValidaCampo(Empresa_Sistema.NUMERO_INTERIOR)
@@ -688,6 +1091,7 @@ Module FacturacionElectronica
             Cfd.Emisor.DomicilioFiscal.pais = fElectronicaValidaCampo(Empresa_Sistema.PAIS)
             Cfd.Emisor.DomicilioFiscal.codigoPostal = fElectronicaValidaCampo(Empresa_Sistema.CODIGO_POSTAL)
 
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Cfd.Emisor.ExpedidoEn''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             If sPlaza <> Usuario.Codigo_Plaza Then
                 If sPlaza <> Plaza.CODIGO_PLAZA Then 'Si ya estaba cargada la plaza de la factura, no se cargará de nuevo para evitar consultas.
                     'UPGRADE_WARNING: Couldn't resolve default property of object tPlazaFacturaElectronica. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
@@ -708,11 +1112,11 @@ Module FacturacionElectronica
             Cfd.Emisor.ExpedidoEn.estado = fElectronicaValidaCampo(Plaza.ESTADO)
             Cfd.Emisor.ExpedidoEn.pais = fElectronicaValidaCampo(Plaza.PAIS)
             Cfd.Emisor.ExpedidoEn.codigoPostal = fElectronicaValidaCampo(Plaza.CODIGO_POSTAL)
-
             'CFD
             Cfd.LugarExpedicion = fElectronicaValidaCampo(Plaza.CIUDAD) & ", " & fElectronicaValidaCampo(Plaza.ESTADO)
 
-            Dim oCliente As New Class_CatClientes(oVenta.CODIGO_CLIENTE.ToString)
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Cfd.Receptor'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            Dim oCliente As New Class_CatClientes(oDescuento.CODIGO_CLIENTE.ToString)
 
             If oCliente.Existe = False Then
                 MsgBox("Cliente no encontrado.", MsgBoxStyle.Exclamation, nombreModulo)
@@ -722,88 +1126,95 @@ Module FacturacionElectronica
             If sVentaPublicoGeneral = "1" Then
                 Cfd.Receptor.nombre = "PUBLICO GENERAL"
                 Cfd.Receptor.rfc = Empresa_Sistema.RFC_VENTA_PUBLICO_GENERAL
-                Cfd.Receptor.Domicilio.calle = "DOMICILIO CONOCIDO"
-                Cfd.Receptor.Domicilio.noExterior = "S/N"
-                Cfd.Receptor.Domicilio.noInterior = ""
-                Cfd.Receptor.Domicilio.colonia = "CENTRO"
-                Cfd.Receptor.Domicilio.localidad = fElectronicaValidaCampo(Plaza.LOCALIDAD)
-                Cfd.Receptor.Domicilio.municipio = fElectronicaValidaCampo(Plaza.CIUDAD)
-                Cfd.Receptor.Domicilio.estado = fElectronicaValidaCampo(Plaza.ESTADO)
-                Cfd.Receptor.Domicilio.pais = fElectronicaValidaCampo(Empresa_Sistema.PAIS)
-                Cfd.Receptor.Domicilio.codigoPostal = "00000"
+                With Cfd.Receptor.Domicilio
+                    .calle = "DOMICILIO CONOCIDO"
+                    .noExterior = "S/N"
+                    .noInterior = ""
+                    .colonia = "CENTRO"
+                    .localidad = fElectronicaValidaCampo(Plaza.LOCALIDAD)
+                    .municipio = fElectronicaValidaCampo(Plaza.CIUDAD)
+                    .estado = fElectronicaValidaCampo(Plaza.ESTADO)
+                    .pais = fElectronicaValidaCampo(Empresa_Sistema.PAIS)
+                    .codigoPostal = "00000"
+                End With
             Else
                 Cfd.Receptor.nombre = fElectronicaValidaCampo(oCliente.NOMBRE_CLIENTE)
                 Cfd.Receptor.rfc = fElectronicaValidaCampo(oCliente.RFC)
-                Cfd.Receptor.Domicilio.calle = fElectronicaValidaCampo(oCliente.CALLE)
+                With Cfd.Receptor.Domicilio
+                    .calle = fElectronicaValidaCampo(oCliente.CALLE)
+                    .noExterior = fElectronicaValidaCampo(oCliente.NUMERO_EXTERIOR)
+                    .noInterior = fElectronicaValidaCampo(oCliente.NUMERO_INTERIOR)
+                    .colonia = fElectronicaValidaCampo(oCliente.COLONIA)
+                    .localidad = fElectronicaValidaCampo(oCliente.LOCALIDAD)
 
-                If txtLEN(oCliente.NUMERO_EXTERIOR.Trim) = True Then
-                    Cfd.Receptor.Domicilio.noExterior = fElectronicaValidaCampo(oCliente.NUMERO_EXTERIOR)
-                    Cfd.Receptor.Domicilio.noInterior = fElectronicaValidaCampo(oCliente.NUMERO_INTERIOR)
-                End If
+                    'Ahora estos 3 campos se forzan a que calzen con los catálogos del sat para estandarizar.
+                    '.municipio = fElectronicaValidaCampo(oCliente.CIUDAD)
+                    '.estado = fElectronicaValidaCampo(oCliente.ESTADO)
+                    '.pais = fElectronicaValidaCampo(oCliente.PAIS)
 
-                Cfd.Receptor.Domicilio.colonia = fElectronicaValidaCampo(oCliente.COLONIA)
-                Cfd.Receptor.Domicilio.localidad = fElectronicaValidaCampo(oCliente.CIUDAD)
-                Cfd.Receptor.Domicilio.municipio = fElectronicaValidaCampo(oCliente.LOCALIDAD) 'fElectronicaValidaCampo(Empty & rst1!CIUDAD)
-                Cfd.Receptor.Domicilio.estado = fElectronicaValidaCampo(oCliente.ESTADO)
-                Cfd.Receptor.Domicilio.pais = fElectronicaValidaCampo(oCliente.PAIS)
-                Cfd.Receptor.Domicilio.codigoPostal = fElectronicaValidaCampo(oCliente.CODIGO_POSTAL.ToString)
+                    If txtLEN(oCliente.CODIGO_MUNICIPIO) = False And txtLEN(oCliente.CIUDAD) = True Then 'Tiene escrita la ciudad(municipio) a mano y no calza con ninguna del catálogo del sat, se forza a que falle
+                        .municipio = "."
+                    Else
+                        .municipio = fElectronicaValidaCampo(oCliente.NOMBRE_MUNICIPIO) 'Nota en la validacion se pregunta por oCliente.CIUDAD que es escrito a mano, pero se usa el nombre del catálogo del sat, igual con estado y pais
+                    End If
+
+                    If txtLEN(oCliente.CODIGO_ESTADO_SAT) = False And txtLEN(oCliente.ESTADO) = True Then 'Tiene escrito el estado mano y no calza con ninguno del catálogo del sat, se forza a que falle
+                        .estado = "."
+                    Else
+                        .estado = fElectronicaValidaCampo(oCliente.NOMBRE_ESTADO) 'Ver nota de municipio
+                    End If
+
+                    If txtLEN(oCliente.CODIGO_PAIS_SAT) = False And txtLEN(oCliente.PAIS) = True Then 'Tiene escrito el pais mano y no calza con ninguno del catálogo del sat, se forza a que falle
+                        .pais = "."
+                    Else
+                        .pais = fElectronicaValidaCampo(oCliente.NOMBRE_PAIS) 'Ver nota de municipio
+                    End If
+
+                    .codigoPostal = fElectronicaValidaCampo(oCliente.CODIGO_POSTAL.ToString)
+                End With
             End If
 
             If ValidaDatoFacturaElectronica(Cfd) = False Then
                 Exit Function
             End If
-            ' _Conexion.Close()
+            '_Conexion.Close()
 
-            For Each row As DataRow In oVenta.ObtenerDetalle.Rows
-                If row("ES_PRODUCTO_KILOS") = "0" Then
-                    If sVentaPublicoGeneral = "1" Then
-                        dPrecio = valorNumerico(row("PRECIO")) + valorNumerico(row("IMPUESTO_IMPORTE")) 'ojo si es publico gral  no desglosar iva
-                    Else
-                        dPrecio = valorNumerico(row("PRECIO"))
-                    End If
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Conceptos''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            'Dim tArticulos As DataTable
+            'tArticulos = oDescuento.ObtenerDetalle
+            'If sEsPorDevolucion = "1" Then
+            'Aqui crearemos un ciclo para integrar los conceptos que tenga la factura
+            'For Each row As DataRow In tArticulos.Rows
+            '    'If sVentaPublicoGeneral = "1" Then
+            '    '    dPrecio = valorNumerico(row("IMPORTE")) + valorNumerico(row("IMPUESTO_IMPORTE")) 'ojo si es publico gral  no desglosar iva
+            '    'Else
+            '    dDescuento = valorNumerico(row("DESCUENTO"))
+            '    'End If
 
-                    drImporte = valorNumerico(row("CANTIDAD")) * dPrecio
-                    Call Redondear(drImporte, Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                    Cfd.Conceptos.Add(row("CANTIDAD"), fElectronicaValidaCampo(row("DESCRIPCION")), CStr(drImporte), row("UNIDAD_VENTA"), CStr(dPrecio))
-                Else
-                    'Si elprecio o la cantidad es cero no dejar sellar
-                    If valorNumerico(row("PRECIO_KILOS")) = 0 Or valorNumerico(row("CANTIDAD_KILOS")) = 0 Then
-                        Exit Function
-                    End If
+            '    drImporte = valorNumerico(row("IMPORTE"))
+            '    Call Redondear(drImporte, Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            '    Cfd.Conceptos.Add(row("IMPORTE"), fElectronicaValidaCampo(row("IMPORTE")), CStr(drImporte), row("DESCUENTO"), CStr(dDescuento))
+            'Next
+            Cfd.Conceptos.Add("1.00", fElectronicaValidaCampo(oDescuento.CONCEPTO1), oDescuento.SUBTOTAL, "No aplica", oDescuento.SUBTOTAL)
+            'Else 'Entonces es una nota de crédito directa.
+            '    '    'CDF
+            '    If sVentaPublicoGeneral = "1" Then
+            '        Cfd.Conceptos.Add("1.00", fElectronicaValidaCampo(tArticulos.Columns("DESCRIPCION").ToString), row("total").ToString, "No aplica", row("total").ToString)
+            '    Else
+            '        Cfd.Conceptos.Add("1.00", fElectronicaValidaCampo(tArticulos.Columns("DESCRIPCION").ToString), row("subTotal").ToString, "No aplica", row("subTotal").ToString)
+            '        'Cfd.Conceptos.Add("1.00", fElectronicaValidaCampo(rst!Concepto), rst!subTotal, "No aplica", rst!subTotal)
+            '    End If
+            'End If
+            '------------------------------------------------------------------------------------------------------------------------------------------------
 
-                    If sVentaPublicoGeneral = "1" Then
-                        'dPrecio = valorNumerico(row("PRECIO_KILOS")) (+ (valorNumerico(row("IMPUESTO_IMPORTE")/valorNumerico(row("CANTIDAD_KILOS"))) 'ojo si es publico gral  no desglosar iva
-                        dPrecio = valorNumerico(row("PRECIO_KILOS")) + valorNumerico(row("IMPUESTO_IMPORTE")) 'ojo si es publico gral  no desglosar iva
-                    Else
-                        dPrecio = valorNumerico(row("PRECIO_KILOS"))
-                    End If
-
-                    drImporte = valorNumerico(row("CANTIDAD_KILOS")) * dPrecio
-
-                    Call Redondear(drImporte, Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                    Cfd.Conceptos.Add(row("CANTIDAD_KILOS"), fElectronicaValidaCampo(row("DESCRIPCION")), CStr(drImporte), row("UNIDAD_VENTA"), CStr(dPrecio))
-                End If
-            Next
-
-            Dim sXmlComercioExterior As String = ""
-
-            If bGenerarComplementoComercioExterior = True Then
-                sXmlComercioExterior = oVenta.GeneraXmlComercioExterior
-
-                If txtLEN(sXmlComercioExterior) = False Then
-                    Return False 'Abortamos
-                End If
-            End If
-
-            If Cfd.Sellar(sRutaXML, cComprobante.TipoComprobante.FACTURA_VENTA, True, sXmlComercioExterior) = True Then
+            If Cfd.Sellar(sRutaXML, cComprobante.TipoComprobante.NOTA_CREDITO_CXC, True) = True Then
                 bResultado = True
                 If bMostrarMensaje = True Then
-                    MsgBox("Factura sellada satisfactoriamente.", MsgBoxStyle.Information, sProcedure) 'se quito, solo marca error en caso de no sellar desde facturacion , en el grabar
+                    MsgBox("Nota de crédito timbrada satisfactoriamente.", MsgBoxStyle.Information, sProcedure) 'se quito, solo marca error en caso de no sellar desde facturacion , en el grabar
                 End If
             End If
 
         Catch ex As Exception
-            _Conexion.Close()
             HandleError(_Nombre_Catalogo, sProcedure, ex)
         Finally
             Cfd = New cComprobante 'vaciar el comprobante
@@ -842,6 +1253,7 @@ Module FacturacionElectronica
     End Function
 
     Public Function ValidaHuecosFoliosElectronicosVenta(ByVal iMes As Short, ByRef iAño As Short) As Boolean
+        Dim bResultado As Boolean = False
         Dim bAbortar As Boolean
         Try
             Dim cmd As New SqlCommand
@@ -859,7 +1271,6 @@ Module FacturacionElectronica
 
                 _Conexion.Open()
                 dReader = .ExecuteReader()
-
             End With
 
             If dReader.Read = True Then
@@ -871,7 +1282,7 @@ Module FacturacionElectronica
             cmd = Nothing
 
             If bAbortar = False Then
-                Return True
+                bResultado = True
             End If
             _Conexion.Close()
 
@@ -879,9 +1290,11 @@ Module FacturacionElectronica
             HandleError(_Nombre_Catalogo, "ValidaHuecosFoliosElectronicosVenta", ex)
             _Conexion.Close()
         End Try
+        Return bResultado
     End Function
 
     Public Function ValidaHuecosFoliosElectronicosNotasCreditoCXC(ByVal iMes As Short, ByRef iAño As Short) As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim dReader As SqlDataReader
         Dim sqlParametro As SqlParameter, i As Integer = 0
@@ -911,14 +1324,16 @@ Module FacturacionElectronica
             cmd = Nothing
 
             If bAbortar = False Then
-                Return True
+                bResultado = True
             End If
         Catch ex As Exception
             HandleError(_Nombre_Catalogo, "ValidaHuecosFoliosElectronicosNotasCreditoCXC", ex)
         End Try
+        Return bResultado
     End Function
 
     Public Function GeneraInformeMensual(ByRef strPort As String, ByRef iMes As Short, ByRef iAño As Short) As Boolean
+        Dim bResultado As Boolean = False
         Dim NúmeroArchivo As Object
         Dim sArchivo As String
         Dim strSerie, strCadena As String
@@ -1060,315 +1475,119 @@ Module FacturacionElectronica
             '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
             FileClose(NúmeroArchivo) ' Cierra el archivo.
-            GeneraInformeMensual = True
+            bResultado = True
 
             MsgBox("El archivo fue generado con éxito en la My.Settings.Ruta: " & strPort, MsgBoxStyle.Information, "Generación de informe de CFD")
 
-            Exit Function
         Catch ex As Exception
             HandleError(_Nombre_Catalogo, "GeneraInformeMensual", ex)
         End Try
+        Return bResultado
     End Function
 
-    Private Function ValidaDatoFacturaElectronica(ByRef Cfd As cComprobante) As Boolean
-        Dim bInvalido As Boolean
+    Private Function ValidaDatoFacturaElectronica(ByRef Cfd As cComprobante, Optional ByVal bValidarDatosXComplementoComercioExterior As Boolean = False) As Boolean
         Try
             If txtLEN(Cfd.Receptor.nombre) = False Or Cfd.Receptor.nombre = "." Then
                 MsgBox("El dato ''Nombre'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, nombreModulo)
-                bInvalido = True
+                Return False
             ElseIf txtLEN(Cfd.Receptor.rfc) = False Or Cfd.Receptor.rfc = "." Then
                 MsgBox("El dato ''RFC'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, nombreModulo)
-                bInvalido = True
-            ElseIf txtLEN(Cfd.Receptor.Domicilio.calle) = False Or Cfd.Receptor.Domicilio.calle = "." Then
-                MsgBox("El dato ''Calle'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, nombreModulo)
-                bInvalido = True
-            ElseIf (Cfd.Receptor.Domicilio.noExterior <> Nothing And txtLEN(Cfd.Receptor.Domicilio.noExterior) = False) Or Cfd.Receptor.Domicilio.noExterior = "." Then
-                MsgBox("El dato ''Número exterior'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, nombreModulo)
-                bInvalido = True
-            ElseIf txtLEN(Cfd.Receptor.Domicilio.municipio) = False Or Cfd.Receptor.Domicilio.municipio = "." Then
-                MsgBox("El dato ''Municipio'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, nombreModulo)
-                bInvalido = True
-            ElseIf txtLEN(Cfd.Receptor.Domicilio.estado) = False Or Cfd.Receptor.Domicilio.estado = "." Then
-                MsgBox("El dato ''Estado'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, nombreModulo)
-                bInvalido = True
+                Return False
+                'ElseIf txtLEN(Cfd.Receptor.Domicilio.calle) = False Or Cfd.Receptor.Domicilio.calle = "." Then
+                '    MsgBox("El dato ''Calle'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, nombreModulo)
+                '    Return False
+                'ElseIf (Cfd.Receptor.Domicilio.noExterior <> Nothing And txtLEN(Cfd.Receptor.Domicilio.noExterior) = False) Or Cfd.Receptor.Domicilio.noExterior = "." Then
+                '    MsgBox("El dato ''Número exterior'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, nombreModulo)
+                '    Return False
+                'ElseIf txtLEN(Cfd.Receptor.Domicilio.municipio) = False Or Cfd.Receptor.Domicilio.municipio = "." Then
+                '    MsgBox("El dato ''Municipio/Ciudad'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, nombreModulo)
+                '    Return False
+                'ElseIf txtLEN(Cfd.Receptor.Domicilio.estado) = False Or Cfd.Receptor.Domicilio.estado = "." Then
+                '    MsgBox("El dato ''Estado'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, nombreModulo)
+                '    Return False
             ElseIf txtLEN(Cfd.Receptor.Domicilio.pais) = False Or Cfd.Receptor.Domicilio.pais = "." Then
                 MsgBox("El dato ''País'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, nombreModulo)
-                bInvalido = True
-            ElseIf txtLEN(Cfd.Receptor.Domicilio.codigoPostal) = False Or Cfd.Receptor.Domicilio.codigoPostal = "." Then
-                MsgBox("El dato ''Código postal'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, nombreModulo)
-                bInvalido = True
+                Return False
+                'ElseIf txtLEN(Cfd.Receptor.Domicilio.codigoPostal) = False Or Cfd.Receptor.Domicilio.codigoPostal = "." Then
+                '    MsgBox("El dato ''Código postal'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, nombreModulo)
+                '    Return False
+            End If
+
+            If bValidarDatosXComplementoComercioExterior = True Then
+                Dim oPais As New Class_CatPaises(Cfd.Receptor.Domicilio.pais)
+                If oPais.Existe = False OrElse Cfd.Receptor.Domicilio.pais = "MEX" Then
+                    MsgBox("Receptor.Domicilio.pais - La clave en el atributo [pais] debe existir en el catálogo c_pais y debe ser diferente de {MEX}.", MsgBoxStyle.Exclamation, nombreModulo)
+                    Return False
+                End If
+                Dim oEstado As New Class_SisEstados(Cfd.Receptor.Domicilio.estado, Cfd.Receptor.Domicilio.pais)
+                If oEstado.Existe = False Then
+                    MsgBox("Receptor.Domicilio.estado - Si la clave de país es {ZZZ} o la clave del país no existe en la columna c_Pais del catálogo c_Estado, se podrá registrar texto libremente. " & vbCrLf & _
+                           "En otro caso, debe contener una clave del catálogo c_Estado, donde la columna clave de país sea igual a la clave de país registrada en el atributo [pais].", MsgBoxStyle.Exclamation, nombreModulo)
+                    Return False
+                End If
+            End If
+
+            'Estos antes los pedia obligatoriamente, ahora si están como opcionales, para los cfdi al extranjero, sólo validamos que no tengan un punto a secas.
+            If Cfd.Receptor.Domicilio.calle = "." Then
+                MsgBox("El dato ''Calle'' del cliente esta mal capturado(puede dejarlo en blanco).", MsgBoxStyle.Exclamation, nombreModulo)
+                Return False
+            ElseIf Cfd.Receptor.Domicilio.noExterior = "." Then
+                MsgBox("El dato ''Número exterior'' del cliente esta mal capturado(puede dejarlo en blanco).", MsgBoxStyle.Exclamation, nombreModulo)
+                Return False
+            ElseIf Cfd.Receptor.Domicilio.municipio = "." Then
+                MsgBox("El dato ''Municipio/Ciudad'' del cliente esta mal capturado(puede dejarlo en blanco).", MsgBoxStyle.Exclamation, nombreModulo)
+                Return False
+            ElseIf Cfd.Receptor.Domicilio.estado = "." Then
+                MsgBox("El dato ''Estado'' del cliente esta mal capturado(puede dejarlo en blanco).", MsgBoxStyle.Exclamation, nombreModulo)
+                Return False
+            ElseIf Cfd.Receptor.Domicilio.codigoPostal = "." Then
+                MsgBox("El dato ''Código postal'' del cliente esta mal capturado(puede dejarlo en blanco).", MsgBoxStyle.Exclamation, nombreModulo)
+                Return False
             End If
 
             'Cfd.Receptor.Domicilio.colonia = fElectronicaValidaCampo(Empty & rst1!colonia)
             'Cfd.Receptor.Domicilio.localidad = fElectronicaValidaCampo(Empty & rst1!CIUDAD)
 
-            If bInvalido = False Then
-                ValidaDatoFacturaElectronica = True
-            End If
+            Return True
 
         Catch ex As Exception
             HandleError(_Nombre_Catalogo, "ValidaDatoFacturaElectronica", ex)
         End Try
     End Function
 
-    Public Function GeneraNotaCreditoCXCElectronica(ByVal oDescuento As Class_CXC_Descuento, ByVal bMostrarMensaje As Boolean, ByVal sRutaXML As String) As Boolean
-        Dim bResultado As Boolean = False
-        Const sProcedure As String = "GeneraNotaCreditoCXCElectronica"
-        Dim sVentaPublicoGeneral, sEsPorDevolucion As String
-        Dim sPlaza As String
-        'Dim drImporte, dDescuento As Double
-
-        Dim Cfd As New cComprobante
-        Try
-            Cfd.xmlns = "http://www.sat.gob.mx/cfd/3"
-            Cfd.xmlnsxsi = "http://www.w3.org/2001/XMLSchema-instance"
-            Cfd.xmlnscfdi = "http://www.sat.gob.mx/cfd/3"
-            Cfd.xsischemaLocation = "http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd"
-
-            Cfd.version = Empresa_Sistema.VERSION_ESQUEMA_CFD '2.3
-
-            'sFolio = sReplace(sFolio)
-            'Dim sqlResult As New Class_find("SELECT SERIE,NUMERO_APROBACION,ANIO_APROBACION FROM CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS WHERE IDCATALOGO_FOLIO_FELECTRONICA=(SELECT IDCATALOGO_FOLIO_FELECTRONICA FROM CXC_DESCUENTOS_GLOBAL WHERE FOLIO_DESCUENTO='" & sFolio & "')")
-            'If txtLEN(sqlResult.Result1) = False Then
-            '    MsgBox("No se encontro el numero de aprobación,serie y año de aprobación de la factura.", MsgBoxStyle.Exclamation, "GeneraFacturaElectronica")
-            '    Exit Function
-            'End If
-
-            Cfd.serie = fElectronicaValidaCampo(oDescuento.SERIE)
-            'Cfd.serie = fElectronicaValidaCampo(sqlResult.Result1)
-            'Cfd.noAprobacion = fElectronicaValidaCampo(sqlResult.Result2)
-            'Cfd.anoAprobacion = fElectronicaValidaCampo(sqlResult.Result3)
-
-            Cfd.noCertificado = "" 'Solo de muestra despues se obtendra el Numero de Certificado
-            Cfd.certificado = "" 'Solo de muestra despues se obtendra el Certificado
-            Cfd.sello = "" 'Solo de muestra despues se obtendra el Sello
-
-            'oDescuento = New Class_CXC_Descuento(sFolio)
-            'If oDescuento.Existe = False Then
-            '    MsgBox("Error al consultar el documento, no se encontró favor de revisar que exista.", MsgBoxStyle.Exclamation, "Búsqueda de Folios")
-            '    Exit Function
-            'End If
-
-            If fElectronicaValidaArchivosCertificadoLocal(oDescuento.FELECTRONICA_CER, oDescuento.FELECTRONICA_KEY, oDescuento.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA) = False Then
-                Exit Function
-            End If
-
-            'idFactura = oDescuento.ID_CXC_DESCUENTOS_GLOBAL
-            Cfd.sFolioFacturaSistema = oDescuento.FOLIO_DESCUENTO
-
-            sVentaPublicoGeneral = oDescuento.ES_VENTA_PUBLICO_GENERAL
-            sPlaza = oDescuento.CODIGO_PLAZA
-            sEsPorDevolucion = oDescuento.ES_POR_DEVOLUCION
-
-            'Agregamos los datos totales y Generales
-            Cfd.Folio = oDescuento.FOLIO_NUMERICO
-            Cfd.fecha = Format(oDescuento.FECHA, "yyyy-MM-dd") & "T" & Format(oDescuento.FECHA, "HH:mm:ss")
-            Cfd.tipoDeComprobante = "egreso"
-            Cfd.formaDePago = "PAGO EN UNA SOLA EXHIBICION"
-
-            Cfd.Descuento = Format(0, "#0.00") 'rst!Descuento
-            Cfd.Impuestos.Traslados.USADO = True 'si uso el trasladado
-
-            'CFD
-            'Cfd.metodoDePago = oDescuento.NOMBRE_METODO_PAGO
-            Cfd.metodoDePago = oDescuento.CODIGO_METODO_PAGO
-
-            Cfd.Regimen = oDescuento.NOMBRE_REGIMEN_FISCAL
-
-            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            If sVentaPublicoGeneral = "1" Then
-                'No se desglosa el iva(por ello subtotal=total y se manda un impuesto en cero)
-                Cfd.subTotal = Format(oDescuento.TOTAL, "#0.00")
-                Cfd.total = Format(oDescuento.TOTAL, "#0.00")
-                Cfd.Impuestos.Traslados.Add("IVA", Format(0, "#0.00"), Format(0, "#0.00"))
-            Else
-                Cfd.subTotal = Format(oDescuento.SUBTOTAL, "#0.00")
-                Cfd.total = Format(oDescuento.TOTAL, "#0.00")
-
-                If oDescuento.IVA = 0 Then
-                    Cfd.Impuestos.Traslados.Add("IVA", Format(0, "#0.00"), Format(0, "#0.00"))
-                Else
-                    'QaxCDX 0
-                    Dim Impuesto As New Class_find("SELECT 1 FROM CXC_DESCUENTOS_GLOBAL D INNER JOIN CXC_DESCUENTOS_DETALLE CD ON (D.FOLIO_DESCUENTO=CD.FOLIO_DESCUENTO) " & _
-                    "INNER JOIN CXC_GLOBAL G ON (CD.FOLIO_CXC=G.FOLIO_CXC) INNER JOIN VENTA_DETALLE VD ON(G.FOLIO_REFERENCIA=VD.FOLIO_VENTA) " & _
-                    "WHERE D.FOLIO_DESCUENTO='" & oDescuento.FOLIO_DESCUENTO & "' AND VD.IMPUESTO_PORCENTAJE=0 ")
-
-                    If txtLEN(Impuesto.Result1) = True Then
-                        Cfd.Impuestos.Traslados.Add("IVA", Format(0, "#0.00"), Format(0, "#0.00"))
-                    End If
-                    '16 IMPUESTO_PORCENTAJE
-                    Cfd.Impuestos.Traslados.Add("IVA", Format(IIf(oDescuento.IVA > 0, oDescuento.IMPUESTO_PORCENTAJE, 0), "#0.00"), Format(oDescuento.IVA, "#0.00")) 'corregir, crerar campo impuesto_poercentaje, y no poner fijo 16
-                End If
-            End If
-
-            'Datos del Emisor
-            If oDescuento.RETENCION > 0 Then
-                Cfd.Impuestos.Retenciones.Add("IVA", "0", Format(oDescuento.RETENCION, "#0.00"))
-            End If
-            Cfd.Emisor.nombre = fElectronicaValidaCampo(Empresa_Sistema.NOMBRE_EMPRESA)
-            Cfd.Emisor.rfc = fElectronicaValidaCampo(Empresa_Sistema.RFC)
-
-            Cfd.Emisor.DomicilioFiscal.calle = fElectronicaValidaCampo(Empresa_Sistema.CALLE)
-            Cfd.Emisor.DomicilioFiscal.noExterior = fElectronicaValidaCampo(Empresa_Sistema.NUMERO_EXTERIOR)
-            Cfd.Emisor.DomicilioFiscal.noInterior = fElectronicaValidaCampo(Empresa_Sistema.NUMERO_INTERIOR)
-            Cfd.Emisor.DomicilioFiscal.colonia = fElectronicaValidaCampo(Empresa_Sistema.COLONIA)
-            Cfd.Emisor.DomicilioFiscal.localidad = fElectronicaValidaCampo(Empresa_Sistema.LOCALIDAD)
-            Cfd.Emisor.DomicilioFiscal.municipio = fElectronicaValidaCampo(Empresa_Sistema.CIUDAD)
-            Cfd.Emisor.DomicilioFiscal.estado = fElectronicaValidaCampo(Empresa_Sistema.ESTADO)
-            Cfd.Emisor.DomicilioFiscal.pais = fElectronicaValidaCampo(Empresa_Sistema.PAIS)
-            Cfd.Emisor.DomicilioFiscal.codigoPostal = fElectronicaValidaCampo(Empresa_Sistema.CODIGO_POSTAL)
-
-            If sPlaza <> Usuario.Codigo_Plaza Then
-                If sPlaza <> Plaza.CODIGO_PLAZA Then 'Si ya estaba cargada la plaza de la factura, no se cargará de nuevo para evitar consultas.
-                    'UPGRADE_WARNING: Couldn't resolve default property of object tPlazaFacturaElectronica. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-                    'tPlazaFacturaElectronica = CargaPlazaParametro(sPlaza)
-                End If
-            Else
-                'UPGRADE_WARNING: Couldn't resolve default property of object tPlazaFacturaElectronica. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-                'tPlazaFacturaElectronica = Plaza.CODIGO_PLAZA 'Plaza ya cargada en el inicio de sesión del usuario.
-            End If
-
-            Cfd.Emisor.ExpedidoEn.USADO = True 'si es usado diferente lugar de expedición se pondra la información, en este caso dejaremos la misma
-            Cfd.Emisor.ExpedidoEn.calle = fElectronicaValidaCampo(Plaza.CALLE)
-            Cfd.Emisor.ExpedidoEn.noExterior = fElectronicaValidaCampo(Plaza.NUMERO_EXTERIOR)
-            Cfd.Emisor.ExpedidoEn.noInterior = fElectronicaValidaCampo(Plaza.NUMERO_INTERIOR)
-            Cfd.Emisor.ExpedidoEn.colonia = fElectronicaValidaCampo(Plaza.COLONIA)
-            Cfd.Emisor.ExpedidoEn.localidad = fElectronicaValidaCampo(Plaza.LOCALIDAD)
-            Cfd.Emisor.ExpedidoEn.municipio = fElectronicaValidaCampo(Plaza.CIUDAD)
-            Cfd.Emisor.ExpedidoEn.estado = fElectronicaValidaCampo(Plaza.ESTADO)
-            Cfd.Emisor.ExpedidoEn.pais = fElectronicaValidaCampo(Plaza.PAIS)
-            Cfd.Emisor.ExpedidoEn.codigoPostal = fElectronicaValidaCampo(Plaza.CODIGO_POSTAL)
-            'CFD
-            Cfd.LugarExpedicion = fElectronicaValidaCampo(Plaza.CIUDAD) & ", " & fElectronicaValidaCampo(Plaza.ESTADO)
-
-            Dim oCliente As New Class_CatClientes(oDescuento.CODIGO_CLIENTE.ToString)
-
-            If oCliente.Existe = False Then
-                MsgBox("Cliente no encontrado.", MsgBoxStyle.Exclamation, nombreModulo)
-                Exit Function
-            End If
-
-            If sVentaPublicoGeneral = "1" Then
-                Cfd.Receptor.nombre = "PUBLICO GENERAL"
-                Cfd.Receptor.rfc = Empresa_Sistema.RFC_VENTA_PUBLICO_GENERAL
-                Cfd.Receptor.Domicilio.calle = "DOMICILIO CONOCIDO"
-                Cfd.Receptor.Domicilio.noExterior = "S/N"
-                Cfd.Receptor.Domicilio.noInterior = ""
-                Cfd.Receptor.Domicilio.colonia = "CENTRO"
-                Cfd.Receptor.Domicilio.localidad = fElectronicaValidaCampo(Plaza.LOCALIDAD)
-                Cfd.Receptor.Domicilio.municipio = fElectronicaValidaCampo(Plaza.CIUDAD)
-                Cfd.Receptor.Domicilio.estado = fElectronicaValidaCampo(Plaza.ESTADO)
-                Cfd.Receptor.Domicilio.pais = fElectronicaValidaCampo(Empresa_Sistema.PAIS)
-                Cfd.Receptor.Domicilio.codigoPostal = "00000"
-            Else
-                Cfd.Receptor.nombre = fElectronicaValidaCampo(oCliente.NOMBRE_CLIENTE)
-                Cfd.Receptor.rfc = fElectronicaValidaCampo(oCliente.RFC)
-                Cfd.Receptor.Domicilio.calle = fElectronicaValidaCampo(oCliente.CALLE)
-                Cfd.Receptor.Domicilio.noExterior = fElectronicaValidaCampo(oCliente.NUMERO_EXTERIOR)
-                Cfd.Receptor.Domicilio.noInterior = fElectronicaValidaCampo(oCliente.NUMERO_INTERIOR)
-                Cfd.Receptor.Domicilio.colonia = fElectronicaValidaCampo(oCliente.COLONIA)
-                Cfd.Receptor.Domicilio.localidad = fElectronicaValidaCampo(oCliente.CIUDAD)
-                Cfd.Receptor.Domicilio.municipio = fElectronicaValidaCampo(oCliente.LOCALIDAD) 'fElectronicaValidaCampo(Empty & rst1!CIUDAD)
-                Cfd.Receptor.Domicilio.estado = fElectronicaValidaCampo(oCliente.ESTADO)
-                Cfd.Receptor.Domicilio.pais = fElectronicaValidaCampo(oCliente.PAIS)
-                Cfd.Receptor.Domicilio.codigoPostal = fElectronicaValidaCampo(oCliente.CODIGO_POSTAL.ToString)
-            End If
-
-            'Dim oMetodoPago As New Class_CFD_CatMetodosPago
-            'oMetodoPago = New Class_CFD_CatMetodosPago(oDescuento.CODIGO_METODO_PAGO)
-            'If oMetodoPago.REQUIERE_NUMERO_CUENTA_PAGO = 1 Then
-            '    Cfd.sRequiereNumPago = oMetodoPago.REQUIERE_NUMERO_CUENTA_PAGO
-            '    Cfd.NumCtaPago = oDescuento.NUMERO_CUENTA_PAGO.ToString
-            'End If
-
-            If ValidaDatoFacturaElectronica(Cfd) = False Then
-                Exit Function
-            End If
-            '_Conexion.Close()
-
-            'Dim tArticulos As DataTable
-            'tArticulos = oDescuento.ObtenerDetalle
-            '''''''''''''''''''''''''''''''''CONCEPTOS''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            'If sEsPorDevolucion = "1" Then
-            'Aqui crearemos un ciclo para integrar los conceptos que tenga la factura
-            'For Each row As DataRow In tArticulos.Rows
-            '    'If sVentaPublicoGeneral = "1" Then
-            '    '    dPrecio = valorNumerico(row("IMPORTE")) + valorNumerico(row("IMPUESTO_IMPORTE")) 'ojo si es publico gral  no desglosar iva
-            '    'Else
-            '    dDescuento = valorNumerico(row("DESCUENTO"))
-            '    'End If
-
-            '    drImporte = valorNumerico(row("IMPORTE"))
-            '    Call Redondear(drImporte, Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            '    Cfd.Conceptos.Add(row("IMPORTE"), fElectronicaValidaCampo(row("IMPORTE")), CStr(drImporte), row("DESCUENTO"), CStr(dDescuento))
-            'Next
-            Cfd.Conceptos.Add("1.00", fElectronicaValidaCampo(oDescuento.CONCEPTO1), oDescuento.SUBTOTAL, "No aplica", oDescuento.SUBTOTAL)
-            'Else 'Entonces es una nota de crédito directa.
-            '    '    'CDF
-            '    If sVentaPublicoGeneral = "1" Then
-            '        Cfd.Conceptos.Add("1.00", fElectronicaValidaCampo(tArticulos.Columns("DESCRIPCION").ToString), row("total").ToString, "No aplica", row("total").ToString)
-            '    Else
-            '        Cfd.Conceptos.Add("1.00", fElectronicaValidaCampo(tArticulos.Columns("DESCRIPCION").ToString), row("subTotal").ToString, "No aplica", row("subTotal").ToString)
-            '        'Cfd.Conceptos.Add("1.00", fElectronicaValidaCampo(rst!Concepto), rst!subTotal, "No aplica", rst!subTotal)
-            '    End If
-            'End If
-            '------------------------------------------------------------------------------------------------------------------------------------------------
-
-            If Cfd.Sellar(sRutaXML, cComprobante.TipoComprobante.NOTA_CREDITO_CXC, True) = True Then
-                bResultado = True
-                If bMostrarMensaje = True Then
-                    MsgBox("Documento sellado satisfactoriamente.", MsgBoxStyle.Information, sProcedure) 'se quito, solo marca error en caso de no sellar desde facturacion , en el grabar
-                End If
-            End If
-
-        Catch ex As Exception
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
-        Finally
-            Cfd = New cComprobante 'vaciar el comprobante
-        End Try
-
-        Return bResultado
-    End Function
-
-    Private Function ConvierteFechaTipoXML(ByVal sFechaXML As String) As Date
+    Public Function ConvierteFechaTipoXML(ByVal sFechaXML As String) As Date
         Return CDate(Replace(sFechaXML, "T", " "))
     End Function
-
-    Public Function GestionaCertificado(ByVal FechaDocumento As Date) As Certificado
-        Dim CKCert As New CHILKATCERTIFICATELib.ChilkatCert, dFechaServidor As Date
-        Dim c As Certificado
-        Const sProcedure As String = "GestionaCertificado"
-
-        c.noCertificado = ""
-        c.Certificado = ""
-        c.CertificadoValido = False
-
+    Public Function GestionaFechaCertificadoCFD() As String
+        Dim sMensaje As String = ""
         Try
-            If CKCert.LoadFromFile(sFelectronicaArchivoCERLocal) = 0 Then
-                MsgBox("No se logró cargar el certificado : " & vbCrLf & sFelectronicaArchivoCERLocal, vbExclamation, sProcedure)
-                Return c
-            End If
+            Dim CKCert As New CHILKATCERTIFICATELib.ChilkatCert, dFechaServidor As Date, dFechaCertificado As Date, iDias As Integer
+
+            CKCert.LoadFromFile(sFelectronicaArchivoCERLocal)
 
             Dim sqlResult As New Class_find("SELECT GETDATE()")
             dFechaServidor = CDate(sqlResult.Result1)
-            If CKCert.ValidTo < dFechaServidor Then
-                MsgBox("El certificado caducó el día " & Format(CKCert.ValidFrom, "dd-MMM-yyyy") & ".", vbExclamation, sProcedure)
-                Return c
-            End If
 
-            'CKCert.ValidFrom AND CKCert.ValidFrom
-            If FechaDocumento < CDate(Format(CKCert.ValidFrom, "yyyy-MM-dd")) And FechaDocumento > CDate(Format(CKCert.ValidTo, "yyyy-MM-dd")) Then
-                MsgBox("Los sellos han expirado, avíse al depto de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                Return c
-            End If
+            dFechaCertificado = CDate(CKCert.ValidTo)
 
-            c.noCertificado = FormatearSerie(CKCert.SerialNumber)
-            c.Certificado = Mid(CKCert.GetEncoded(), 1, Len(CKCert.GetEncoded()) - 2)
-            c.CertificadoValido = True
+            iDias = DateDiff("D", dFechaServidor, dFechaCertificado)
+
+            Select Case iDias
+                Case 1 To 15
+                    sMensaje = "Atención !!!, quedan " & iDias & " dias para que caduque el certificado que sirve para sellar facturas. Tiene que generar un nuevo CSD a la brevedad"
+                Case Is <= 0
+                    sMensaje = "Atención !!!, el certificado que sirve para sellar facturas está caducado."
+                Case Else
+                    sMensaje = ""
+            End Select
+
+            CKCert = Nothing
+
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(_Nombre_Catalogo, "GestionaFechaCertificadoCFD", ex)
         End Try
-        Return c
+
+        Return sMensaje
     End Function
 
 #Region "CODIGO ANTIGUO"
@@ -1962,38 +2181,6 @@ Module FacturacionElectronica
     '    End Try
     '            rs = Nothing
     'End Function
-
-    Public Function GestionaFechaCertificadoCFD() As String
-        Dim sMensaje As String = ""
-        Try
-            Dim CKCert As New CHILKATCERTIFICATELib.ChilkatCert, dFechaServidor As Date, dFechaCertificado As Date, iDias As Integer
-
-            CKCert.LoadFromFile(sFelectronicaArchivoCERLocal)
-
-            Dim sqlResult As New Class_find("SELECT GETDATE()")
-            dFechaServidor = CDate(sqlResult.Result1)
-
-            dFechaCertificado = CDate(CKCert.ValidTo)
-
-            iDias = DateDiff("D", dFechaServidor, dFechaCertificado)
-
-            Select Case iDias
-                Case 1 To 15
-                    sMensaje = "Atención !!!, quedan " & iDias & " dias para que caduque el certificado que sirve para sellar facturas. Tiene que generar un nuevo CSD a la brevedad"
-                Case Is <= 0
-                    sMensaje = "Atención !!!, el certificado que sirve para sellar facturas está caducado."
-                Case Else
-                    sMensaje = ""
-            End Select
-
-            CKCert = Nothing
-
-        Catch ex As Exception
-            HandleError(_Nombre_Catalogo, "GestionaFechaCertificadoCFD", ex)
-        End Try
-
-        Return sMensaje
-    End Function
 
 #End Region
 

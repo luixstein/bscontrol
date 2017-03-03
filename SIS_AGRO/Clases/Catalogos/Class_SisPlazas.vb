@@ -30,6 +30,11 @@ Public Class Class_SisPlazas
     Private _CODIGO_POSTAL As String
     Private _TELEFONO As String
     Private _VALIDAR_FECHA_VENTAS As String
+    Private _CODIGO_COLONIA_SAT As String
+    Private _CODIGO_LOCALIDAD_SAT As String
+    Private _CODIGO_MUNICIPIO As String
+    Private _CODIGO_ESTADO As String
+    Private _CODIGO_PAIS_SAT As String
 
     Private _CODIGO_ESTADO_NUMERICO As Integer
     Private _CODIGO_CLIENTES_EXPORTACION As String
@@ -49,6 +54,8 @@ Public Class Class_SisPlazas
 
 #Region "Campos ligados a la tabla"
     Private _NOMBRE_EJERCICIO As String
+    Private _CODIGO_ESTADO_SAT As String
+    Private _CODIGO_MUNICIPIO_SAT As String
 #End Region
 
 #Region "Campos públicos"
@@ -205,6 +212,35 @@ Public Class Class_SisPlazas
             Return Me._VALIDAR_FECHA_VENTAS
         End Get
     End Property
+    Public ReadOnly Property CODIGO_COLONIA_SAT() As String
+        Get
+            Return Me._CODIGO_COLONIA_SAT
+        End Get
+    End Property
+
+    Public ReadOnly Property CODIGO_LOCALIDAD_SAT() As String
+        Get
+            Return Me._CODIGO_LOCALIDAD_SAT
+        End Get
+    End Property
+
+    Public ReadOnly Property CODIGO_MUNICIPIO() As String
+        Get
+            Return Me._CODIGO_MUNICIPIO
+        End Get
+    End Property
+
+    Public ReadOnly Property CODIGO_ESTADO() As String
+        Get
+            Return Me._CODIGO_ESTADO
+        End Get
+    End Property
+
+    Public ReadOnly Property CODIGO_PAIS_SAT() As String
+        Get
+            Return Me._CODIGO_PAIS_SAT
+        End Get
+    End Property
 
     Public ReadOnly Property CODIGO_ESTADO_NUMERICO() As Integer
         Get
@@ -265,6 +301,17 @@ Public Class Class_SisPlazas
             Return Me._NOMBRE_EJERCICIO
         End Get
     End Property
+    Public ReadOnly Property CODIGO_ESTADO_SAT() As String
+        Get
+            Return Me._CODIGO_ESTADO_SAT
+        End Get
+    End Property
+
+    Public ReadOnly Property CODIGO_MUNICIPIO_SAT() As String
+        Get
+            Return Me._CODIGO_MUNICIPIO_SAT
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedades públicos"
@@ -310,7 +357,7 @@ Public Class Class_SisPlazas
         Me._QueryOrder = " Order by NOMBRE_PLAZA"
 
         Me.oSisPlazaNomina = New Class_SisEmpresaNomina(Empresa_Sistema.conexion)
-    End Sub    'Inicializa al objeto.
+    End Sub
 
     Public Sub New(ByVal iCODPlaza As Integer)
         Me.New()
@@ -330,23 +377,22 @@ Public Class Class_SisPlazas
     End Sub
 #End Region
 
-#Region "Opciones"
-
-#End Region
-
 #Region "Métodos y procedimientos"
 
-
     Public Overrides Function Actualizar() As Boolean
+        MsgBox("No desarrollado.", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
+    End Function
 
-    End Function                        'Actualiza un elemento del catálogo.
-
-    ''' <summary>
-    ''' Carga al objeto con todos los datos del registro.
-    ''' </summary>
-    ''' 
     Public Overrides Function Consultar() As Boolean
-        Dim cmd As New SqlCommand(Me._QuerySelect & " Where P.CODIGO_PLAZA=" & CODIGO_PLAZA, Me._Conexion)
+        Dim bResultado As Boolean = False
+        'Dim cmd As New SqlCommand(Me._QuerySelect & " Where P.CODIGO_PLAZA=" & CODIGO_PLAZA, Me._Conexion)
+
+        Dim cmd As New SqlCommand("SELECT P.*,J.NOMBRE_EJERCICIO,E.CODIGO_ESTADO_SAT,M.CODIGO_MUNICIPIO_SAT " & _
+                                  "FROM SIS_PLAZAS P " & _
+                                  "INNER JOIN CON_EJERCICIOS J ON(P.ID_CON_EJERCICIO=J.ID_CON_EJERCICIO) " & _
+                                  "LEFT JOIN SIS_ESTADOS E ON(P.CODIGO_ESTADO=E.CODIGO_ESTADO) " & _
+                                  "LEFT JOIN CAT_MUNICIPIOS M ON(P.CODIGO_MUNICIPIO=M.CODIGO_MUNICIPIO) " & _
+                                  "WHERE P.CODIGO_PLAZA=" & CODIGO_PLAZA, Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -376,6 +422,14 @@ Public Class Class_SisPlazas
                     Me._PAIS = "" & dReader("PAIS").ToString
                     Me._CODIGO_POSTAL = "" & dReader("CODIGO_POSTAL").ToString
                     Me._TELEFONO = "" & dReader("TELEFONO").ToString
+                    Me._CODIGO_COLONIA_SAT = "" & dReader("CODIGO_COLONIA_SAT").ToString
+                    Me._CODIGO_LOCALIDAD_SAT = "" & dReader("CODIGO_LOCALIDAD_SAT").ToString
+                    Me._CODIGO_MUNICIPIO = "" & dReader("CODIGO_MUNICIPIO").ToString
+                    Me._CODIGO_ESTADO = "" & dReader("CODIGO_ESTADO").ToString
+                    Me._CODIGO_PAIS_SAT = "" & dReader("CODIGO_PAIS_SAT").ToString
+
+                    Me._CODIGO_ESTADO_SAT = "" & dReader("CODIGO_ESTADO_SAT").ToString
+                    Me._CODIGO_MUNICIPIO_SAT = "" & dReader("CODIGO_MUNICIPIO_SAT").ToString
 
                     Me._VALIDAR_FECHA_VENTAS = "" & dReader("VALIDAR_FECHA_VENTAS").ToString
                     Me._CODIGO_ESTADO_NUMERICO = CInt(dReader("CODIGO_ESTADO_NUMERICO"))
@@ -388,7 +442,7 @@ Public Class Class_SisPlazas
                     Me._NOMBRE_EJERCICIO = "" & dReader("NOMBRE_EJERCICIO").ToString
                     Me._CUENTA_DESCUENTOS_REBAJAS_NACIONALES = "" & dReader("CUENTA_DESCUENTOS_REBAJAS_NACIONALES").ToString
 
-                    Consultar = True
+                    bResultado = True
                 End If
                 dReader.Close()
             Catch ex As Exception
@@ -398,12 +452,12 @@ Public Class Class_SisPlazas
                 cmd.Dispose()
             End Try
         End With
+        Return bResultado
     End Function
 
     Public Overrides Function Insertar() As Boolean
-
-    End Function                          'Inserta un elemento al catálogo.
-
+        MsgBox("No desarrollado.", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
+    End Function
 
     ''' <summary>
     ''' Devuelve un datatable con todos los registros de la tabla
@@ -423,9 +477,9 @@ Public Class Class_SisPlazas
 
     Public Function ObtenerElementosParaReporte() As System.Data.DataTable
         Dim dTable As New DataTable, dRow As DataRow
-        Dim dsCaDocumentos As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
+        Dim da As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
         Try
-            dsCaDocumentos.Fill(dTable)
+            da.Fill(dTable)
             dRow = dTable.NewRow
             dRow("CODIGO_PLAZA") = 0
             dRow("NOMBRE_PLAZA") = "TODOS"
@@ -433,7 +487,7 @@ Public Class Class_SisPlazas
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementosParaReporte", ex)
         Finally
-            dsCaDocumentos.Dispose()
+            da.Dispose()
         End Try
         Return dTable
     End Function
@@ -502,31 +556,35 @@ Public Class Class_SisPlazas
     End Function
 
     Public Function ValidarPeriodoTrabajo(ByVal dtFecha As Date) As Boolean
-        Dim ValidaPeriodo As New Class_find("SELECT 1,ESTATUS_EJERCICIO,NOMBRE_EJERCICIO FROM CON_EJERCICIOS WHERE ID_CON_EJERCICIO=" & Plaza.ID_CON_EJERCICIO & _
-                " AND (CAST('" & Format(dtFecha, "yyyy-dd-MM") & "' AS DATETIME) BETWEEN '" & Format(Plaza.FECHA_INICIO, "yyyy-dd-MM") & "' AND '" & Format(Plaza.FECHA_FINAL, "yyyy-dd-MM") & "')")
-        'SE AGREGÓ EL CAST A LA FECHA PARA EVITAR LA COMPRACION DE STRING PORQUE EL SQL NO DISTINGUE QUE SE COMPARABA CON FECHAS
+        Try
+            Dim ValidaPeriodo As New Class_find("SELECT 1,ESTATUS_EJERCICIO,NOMBRE_EJERCICIO FROM CON_EJERCICIOS WHERE ID_CON_EJERCICIO=" & Plaza.ID_CON_EJERCICIO & _
+                    " AND (CAST('" & Format(dtFecha, "yyyy-dd-MM") & "' AS DATETIME) BETWEEN '" & Format(Plaza.FECHA_INICIO, "yyyy-dd-MM") & "' AND '" & Format(Plaza.FECHA_FINAL, "yyyy-dd-MM") & "')")
+            'SE AGREGÓ EL CAST A LA FECHA PARA EVITAR LA COMPRACION DE STRING PORQUE EL SQL NO DISTINGUE QUE SE COMPARABA CON FECHAS
 
-        If ValidaPeriodo.Result1.Length = 0 Then
-            MsgBox("La fecha esta fuera del periodo de trabajo.", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
-            Exit Function
-        End If
+            If ValidaPeriodo.Result1.Length = 0 Then
+                MsgBox("La fecha esta fuera del periodo de trabajo.", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
+                Return False
+            End If
 
-        If ValidaPeriodo.Result2.ToString <> "A" Then
-            MsgBox("El ejercicio " & ValidaPeriodo.Result3.ToString & " no esta abierto .", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
-            Exit Function
-        End If
+            If ValidaPeriodo.Result2.ToString <> "A" Then
+                MsgBox("El ejercicio " & ValidaPeriodo.Result3.ToString & " no esta abierto .", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
+                Return False
+            End If
 
-        ValidarPeriodoTrabajo = True
+            Return True
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ValidarPeriodoTrabajo", ex)
+        End Try
     End Function
 
     Public Sub ActualizaNombreEjercicio()
-        Dim sql As Class_find
-        sql = New Class_find("SELECT NOMBRE_EJERCICIO FROM CON_EJERCICIOS WHERE ID_CON_EJERCICIO=" & Me.ID_CON_EJERCICIO)
+        Dim sql As New Class_find("SELECT NOMBRE_EJERCICIO FROM CON_EJERCICIOS WHERE ID_CON_EJERCICIO=" & Me.ID_CON_EJERCICIO)
         Me._NOMBRE_EJERCICIO = sql.Result1
         sql = Nothing
     End Sub
 
     Public Function ActualizaFechas() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -543,7 +601,7 @@ Public Class Class_SisPlazas
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                ActualizaFechas = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me.Nombre_Catalogo, "ActualizaFechas", ex)
             Finally
@@ -552,40 +610,10 @@ Public Class Class_SisPlazas
                 sqlParametro = Nothing
             End Try
         End With
+        Return bResultado
     End Function
 
-
 #End Region
-
-#Region "Eventos de objetos"
-
-
-#Region "Eventos de la lista de elementos"
-
-#End Region
-
-#Region " Eventos de TxtFiltro"
-
-#End Region
-
-#Region "Eventos Genericos"
-
-#End Region
-
-
-#Region "Keydown específicos"
-
-
-#End Region
-
-#Region "Validating específicos"
-
-#End Region
-
-
-
-#End Region
-
 
 End Class
 

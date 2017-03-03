@@ -174,12 +174,13 @@ Public Class Ventas_Movimientos
 
     Private Sub tsbSellarFacturaElectronica_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSellarFacturaElectronica.Click
         If Me.oVenta.TIMBRADO_CFDI = "0" Then
-            If Me.GeneraFacturaElectronicaLocal(True) = True Then
-                Me.oVenta.ExportarAPdf()
+            If Me.oVenta.GeneraFacturaElectronica(True, True) = True Then
                 Me.Consultar()
+            Else
+                MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, Me.Text)
             End If
         Else
-            MsgBox("El documento ya esta timbrado.", MsgBoxStyle.Exclamation, Me.Text)
+            MsgBox("El documento ya esta timbrado", MsgBoxStyle.Exclamation, Me.Text)
         End If
     End Sub
 
@@ -1403,9 +1404,8 @@ Buscar:
                 End If
 
                 If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
-                    If Me.GeneraFacturaElectronicaLocal(False) = True Then
-                        Me.oVenta.ExportarAPdf()
-                    End If
+                    Me.oVenta = New Class_Ventas_Global(Me.txtFolio.Text) 'Refrescar documento para evitar algún error por dato no cargado.
+                    Me.oVenta.GeneraFacturaElectronica(False, True)
                 End If
 
                 If Me.sTipoVenta = "SCR" Or sTipoVenta = "SCF" Then 'SUSTITUCION DE COTIZACION A REMISION O FACTURA
@@ -1454,32 +1454,32 @@ Buscar:
         Return bResultado
     End Function
 
-    Private Function GeneraFacturaElectronicaLocal(ByVal bMensajes As Boolean) As Boolean
-        Dim bResultado As Boolean = False
-        Dim sRutaXML As String
-        Try
-            'sRutaXML = sFelectronicaCarpetaXMLPDF & "\" & Me.txtFolio.Text & ".xml"
-            sRutaXML = sFelectronicaCarpetaXMLSinTimbrar & "\" & Me.txtFolio.Text & ".xml"
+    'Private Function GeneraFacturaElectronicaLocal(ByVal bMensajes As Boolean) As Boolean
+    '    Dim bResultado As Boolean = False
+    '    Dim sRutaXML As String
+    '    Try
+    '        'sRutaXML = sFelectronicaCarpetaXMLPDF & "\" & Me.txtFolio.Text & ".xml"
+    '        sRutaXML = sFelectronicaCarpetaXMLSinTimbrar & "\" & Me.txtFolio.Text & ".xml"
 
-            oVenta = New Class_Ventas_Global(Me.txtFolio.Text)
-            If oVenta.TIMBRADO_CFDI = "0" Then
-                If GeneraFacturaElectronica(Me.oVenta, bMensajes, sRutaXML, False) = False Then
-                    'MsgBox "moverle aqui cuando ya se vaya a poner el complemento en el timbre usar esta linea en vez de la anterior !!! "
-                    MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, Me.Text)
-                Else
-                    bResultado = True
-                    'ExportaFormatoVentaPDF(Me.txtFolio.Text, "F")
-                End If
-                'Else
-                '    Me.RecuperarFacturaElectronicaLocal(bMensajes)
-            End If
+    '        oVenta = New Class_Ventas_Global(Me.txtFolio.Text)
+    '        If oVenta.TIMBRADO_CFDI = "0" Then
+    '            If GeneraFacturaElectronica(Me.oVenta, bMensajes, sRutaXML, False) = False Then
+    '                'MsgBox "moverle aqui cuando ya se vaya a poner el complemento en el timbre usar esta linea en vez de la anterior !!! "
+    '                MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, Me.Text)
+    '            Else
+    '                bResultado = True
+    '                'ExportaFormatoVentaPDF(Me.txtFolio.Text, "F")
+    '            End If
+    '            'Else
+    '            '    Me.RecuperarFacturaElectronicaLocal(bMensajes)
+    '        End If
 
-        Catch ex As Exception
-            HandleError(Me.Name, "GeneraFacturaElectronicaLocal", ex)
-        End Try
+    '    Catch ex As Exception
+    '        HandleError(Me.Name, "GeneraFacturaElectronicaLocal", ex)
+    '    End Try
 
-        Return bResultado
-    End Function
+    '    Return bResultado
+    'End Function
 
     'Private Function RecuperarFacturaElectronicaLocal(ByVal bMensajes As Boolean) As Boolean
     '    Dim sRutaXML As String
@@ -1925,10 +1925,10 @@ CANCELAR:
                 For i = 1 To .Rows - 1
                     If Len(.Cell(i, Me.igySeriePosicion).Text) > 0 Then
                         If Len(.Cell(i, Me.igySerieIdInventarioLotesCostos).Text) > 0 Then
-                        dExistencia = oInventarios.ExistenciaLoteSerie(.Cell(i, Me.igySerieIdInventarioLotesCostos).Text)
-                        If dExistencia < 1 Then
-                            MsgBox("El Artículo " & .Cell(i, Me.igySerieDescripcion).Text & " con la serie " & .Cell(i, Me.igySerieNumeroSerie).Text & " no tiene suficiente existencia.", MsgBoxStyle.Exclamation, sProcedure)
-                            Return False
+                            dExistencia = oInventarios.ExistenciaLoteSerie(.Cell(i, Me.igySerieIdInventarioLotesCostos).Text)
+                            If dExistencia < 1 Then
+                                MsgBox("El Artículo " & .Cell(i, Me.igySerieDescripcion).Text & " con la serie " & .Cell(i, Me.igySerieNumeroSerie).Text & " no tiene suficiente existencia.", MsgBoxStyle.Exclamation, sProcedure)
+                                Return False
                             End If
                         End If
                     End If
