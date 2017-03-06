@@ -926,7 +926,7 @@ Public Class Class_Compras_Global
                     Me._SALDO_IMPUESTO = CDbl(dReader("SALDO_IMPUESTO"))
 
                     Me._TOTAL_DOLARES = CDbl(dReader("TOTAL_DOLARES"))
-                    Me._SALDO_DOLARES = CDbl(dReader("SALDO_IMPUESTO"))
+                    Me._SALDO_DOLARES = CDbl(dReader("SALDO_DOLARES"))
 
                     Me._CODIGO_MONEDA = dReader("CODIGO_MONEDA").ToString
                     Me._SUBTOTAL_USD = CDbl(dReader("SUBTOTAL_USD"))
