@@ -282,7 +282,7 @@ Public Class Catalogo_Cuentas_Bancarias
     Private Sub DesplegarElementos()
         Dim oElementos As New Class_CatCuentasBancarias
         With Me.Grid
-            .DataSource = oElementos.ObtenerElementosN
+            .DataSource = oElementos.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
             .Columns("ID_CUENTA_BANCARIA").Width = 150
             .Columns("NOMBRE_CUENTA_BANCARIA").Width = 200
         End With
@@ -334,6 +334,8 @@ Public Class Catalogo_Cuentas_Bancarias
                 If txtLEN(Me.txtCuentaContableDolares.Text) Then
                     Dim sql2 As New Class_find("SELECT NOMBRE_CUENTA From CON_CAT_CUENTAS Where CUENTA_CONTABLE='" & Me.txtCuentaContableDolares.Text & "'")
                     Me.LblCuentaDolares.Text = sql2.Result1
+                Else
+                    Me.LblCuentaDolares.Text = ""
                 End If
 
                 Me.CboCodigoMoneda.SelectedValue = .CODIGO_MONEDA
