@@ -1120,7 +1120,7 @@ buscar_acreedor:
                 If Me.ModoPago = enumModoPago.PROVEEDOR Then
                     .CODIGO_CONCEPTO_PAGO_CXP = Me.cboTipoPago.SelectedValue.ToString
                 Else
-                    .CODIGO_CONCEPTO_PAGO_CXP = 0
+                    .CODIGO_CONCEPTO_PAGO_CXP = 1
                 End If
 
                 .Inserta_Global()
