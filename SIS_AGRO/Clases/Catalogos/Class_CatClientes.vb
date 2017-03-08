@@ -542,7 +542,6 @@ Public Class Class_CatClientes
     End Sub
 #End Region
 
-
 #Region "Métodos y procedimientos"
 
     Public Overrides Function Actualizar() As Boolean

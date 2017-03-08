@@ -84,6 +84,10 @@ Partial Class Catalogo_Clientes
         Me.lblCuentaContable = New System.Windows.Forms.Label()
         Me.txtCuentaContable = New System.Windows.Forms.TextBox()
         Me.gbDomicilio = New System.Windows.Forms.GroupBox()
+        Me.cboPais = New System.Windows.Forms.ComboBox()
+        Me.cboMunicipio = New System.Windows.Forms.ComboBox()
+        Me.txtCiudad = New System.Windows.Forms.TextBox()
+        Me.lblDisplayCiudad = New System.Windows.Forms.Label()
         Me.gbCxc = New System.Windows.Forms.GroupBox()
         Me.lblDisplayLimiteCredito = New System.Windows.Forms.Label()
         Me.txtLimiteCredito = New System.Windows.Forms.TextBox()
@@ -117,10 +121,6 @@ Partial Class Catalogo_Clientes
         Me.lblDisplayNumCuenta = New System.Windows.Forms.Label()
         Me.txtNumeroCuenta = New System.Windows.Forms.TextBox()
         Me.lblDisplayMetodoPago = New System.Windows.Forms.Label()
-        Me.lblDisplayCiudad = New System.Windows.Forms.Label()
-        Me.txtCiudad = New System.Windows.Forms.TextBox()
-        Me.cboMunicipio = New System.Windows.Forms.ComboBox()
-        Me.cboPais = New System.Windows.Forms.ComboBox()
         Me.tsMenu.SuspendLayout()
         Me.gBoxInformacion.SuspendLayout()
         Me.gbDatosVentas.SuspendLayout()
@@ -422,7 +422,7 @@ Partial Class Catalogo_Clientes
         Me.txtCalle.MaxLength = 100
         Me.txtCalle.Name = "txtCalle"
         Me.txtCalle.Size = New System.Drawing.Size(312, 20)
-        Me.txtCalle.TabIndex = 0
+        Me.txtCalle.TabIndex = 4
         '
         'lblDisplayNumExterior
         '
@@ -439,7 +439,7 @@ Partial Class Catalogo_Clientes
         Me.txtNumeroExterior.MaxLength = 20
         Me.txtNumeroExterior.Name = "txtNumeroExterior"
         Me.txtNumeroExterior.Size = New System.Drawing.Size(102, 20)
-        Me.txtNumeroExterior.TabIndex = 1
+        Me.txtNumeroExterior.TabIndex = 5
         '
         'lblDisplayNumInterior
         '
@@ -456,7 +456,7 @@ Partial Class Catalogo_Clientes
         Me.txtNumeroInterior.MaxLength = 20
         Me.txtNumeroInterior.Name = "txtNumeroInterior"
         Me.txtNumeroInterior.Size = New System.Drawing.Size(102, 20)
-        Me.txtNumeroInterior.TabIndex = 2
+        Me.txtNumeroInterior.TabIndex = 6
         '
         'lblDisplayColonia
         '
@@ -473,7 +473,7 @@ Partial Class Catalogo_Clientes
         Me.txtColonia.MaxLength = 50
         Me.txtColonia.Name = "txtColonia"
         Me.txtColonia.Size = New System.Drawing.Size(312, 20)
-        Me.txtColonia.TabIndex = 3
+        Me.txtColonia.TabIndex = 7
         '
         'lblDisplayLocalidad
         '
@@ -490,7 +490,7 @@ Partial Class Catalogo_Clientes
         Me.txtLocalidad.MaxLength = 50
         Me.txtLocalidad.Name = "txtLocalidad"
         Me.txtLocalidad.Size = New System.Drawing.Size(312, 20)
-        Me.txtLocalidad.TabIndex = 5
+        Me.txtLocalidad.TabIndex = 8
         '
         'lblDisplayEstado
         '
@@ -510,7 +510,7 @@ Partial Class Catalogo_Clientes
         Me.cboEstado.MaxLength = 80
         Me.cboEstado.Name = "cboEstado"
         Me.cboEstado.Size = New System.Drawing.Size(313, 21)
-        Me.cboEstado.TabIndex = 6
+        Me.cboEstado.TabIndex = 1
         '
         'lblDisplayPais
         '
@@ -528,7 +528,7 @@ Partial Class Catalogo_Clientes
         Me.txtPais.Name = "txtPais"
         Me.txtPais.ReadOnly = True
         Me.txtPais.Size = New System.Drawing.Size(160, 20)
-        Me.txtPais.TabIndex = 7
+        Me.txtPais.TabIndex = 10
         '
         'lblDisplayCP
         '
@@ -545,7 +545,7 @@ Partial Class Catalogo_Clientes
         Me.txtCodigoPostal.MaxLength = 10
         Me.txtCodigoPostal.Name = "txtCodigoPostal"
         Me.txtCodigoPostal.Size = New System.Drawing.Size(130, 20)
-        Me.txtCodigoPostal.TabIndex = 8
+        Me.txtCodigoPostal.TabIndex = 9
         '
         'gbDatosVentas
         '
@@ -648,7 +648,7 @@ Partial Class Catalogo_Clientes
         'BtnGeneraCuentaContableDolares
         '
         Me.BtnGeneraCuentaContableDolares.Location = New System.Drawing.Point(115, 65)
-        Me.BtnGeneraCuentaContableDolares.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.BtnGeneraCuentaContableDolares.Margin = New System.Windows.Forms.Padding(2)
         Me.BtnGeneraCuentaContableDolares.Name = "BtnGeneraCuentaContableDolares"
         Me.BtnGeneraCuentaContableDolares.Size = New System.Drawing.Size(126, 19)
         Me.BtnGeneraCuentaContableDolares.TabIndex = 75
@@ -718,6 +718,46 @@ Partial Class Catalogo_Clientes
         Me.gbDomicilio.TabIndex = 1
         Me.gbDomicilio.TabStop = False
         Me.gbDomicilio.Text = "Domicilio :"
+        '
+        'cboPais
+        '
+        Me.cboPais.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboPais.FormattingEnabled = True
+        Me.cboPais.Items.AddRange(New Object() {"A", "B"})
+        Me.cboPais.Location = New System.Drawing.Point(78, 18)
+        Me.cboPais.MaxLength = 80
+        Me.cboPais.Name = "cboPais"
+        Me.cboPais.Size = New System.Drawing.Size(147, 21)
+        Me.cboPais.TabIndex = 0
+        '
+        'cboMunicipio
+        '
+        Me.cboMunicipio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboMunicipio.FormattingEnabled = True
+        Me.cboMunicipio.Items.AddRange(New Object() {"A", "B"})
+        Me.cboMunicipio.Location = New System.Drawing.Point(77, 71)
+        Me.cboMunicipio.MaxLength = 80
+        Me.cboMunicipio.Name = "cboMunicipio"
+        Me.cboMunicipio.Size = New System.Drawing.Size(175, 21)
+        Me.cboMunicipio.TabIndex = 2
+        '
+        'txtCiudad
+        '
+        Me.txtCiudad.Location = New System.Drawing.Point(258, 71)
+        Me.txtCiudad.MaxLength = 50
+        Me.txtCiudad.Name = "txtCiudad"
+        Me.txtCiudad.ReadOnly = True
+        Me.txtCiudad.Size = New System.Drawing.Size(132, 20)
+        Me.txtCiudad.TabIndex = 3
+        '
+        'lblDisplayCiudad
+        '
+        Me.lblDisplayCiudad.AutoSize = True
+        Me.lblDisplayCiudad.Location = New System.Drawing.Point(7, 75)
+        Me.lblDisplayCiudad.Name = "lblDisplayCiudad"
+        Me.lblDisplayCiudad.Size = New System.Drawing.Size(46, 13)
+        Me.lblDisplayCiudad.TabIndex = 101
+        Me.lblDisplayCiudad.Text = "Ciudad :"
         '
         'gbCxc
         '
@@ -864,7 +904,7 @@ Partial Class Catalogo_Clientes
         '
         Me.rbtCodigoCliente.AutoSize = True
         Me.rbtCodigoCliente.Location = New System.Drawing.Point(100, 15)
-        Me.rbtCodigoCliente.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.rbtCodigoCliente.Margin = New System.Windows.Forms.Padding(2)
         Me.rbtCodigoCliente.Name = "rbtCodigoCliente"
         Me.rbtCodigoCliente.Size = New System.Drawing.Size(92, 17)
         Me.rbtCodigoCliente.TabIndex = 116
@@ -876,7 +916,7 @@ Partial Class Catalogo_Clientes
         Me.rbtNombreCliente.AutoSize = True
         Me.rbtNombreCliente.Checked = True
         Me.rbtNombreCliente.Location = New System.Drawing.Point(6, 15)
-        Me.rbtNombreCliente.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.rbtNombreCliente.Margin = New System.Windows.Forms.Padding(2)
         Me.rbtNombreCliente.Name = "rbtNombreCliente"
         Me.rbtNombreCliente.Size = New System.Drawing.Size(62, 17)
         Me.rbtNombreCliente.TabIndex = 115
@@ -1051,46 +1091,6 @@ Partial Class Catalogo_Clientes
         Me.lblDisplayMetodoPago.Size = New System.Drawing.Size(91, 13)
         Me.lblDisplayMetodoPago.TabIndex = 8
         Me.lblDisplayMetodoPago.Text = "Método de pago :"
-        '
-        'lblDisplayCiudad
-        '
-        Me.lblDisplayCiudad.AutoSize = True
-        Me.lblDisplayCiudad.Location = New System.Drawing.Point(7, 75)
-        Me.lblDisplayCiudad.Name = "lblDisplayCiudad"
-        Me.lblDisplayCiudad.Size = New System.Drawing.Size(46, 13)
-        Me.lblDisplayCiudad.TabIndex = 101
-        Me.lblDisplayCiudad.Text = "Ciudad :"
-        '
-        'txtCiudad
-        '
-        Me.txtCiudad.Location = New System.Drawing.Point(258, 71)
-        Me.txtCiudad.MaxLength = 50
-        Me.txtCiudad.Name = "txtCiudad"
-        Me.txtCiudad.ReadOnly = True
-        Me.txtCiudad.Size = New System.Drawing.Size(132, 20)
-        Me.txtCiudad.TabIndex = 4
-        '
-        'cboMunicipio
-        '
-        Me.cboMunicipio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboMunicipio.FormattingEnabled = True
-        Me.cboMunicipio.Items.AddRange(New Object() {"A", "B"})
-        Me.cboMunicipio.Location = New System.Drawing.Point(77, 71)
-        Me.cboMunicipio.MaxLength = 80
-        Me.cboMunicipio.Name = "cboMunicipio"
-        Me.cboMunicipio.Size = New System.Drawing.Size(175, 21)
-        Me.cboMunicipio.TabIndex = 110
-        '
-        'cboPais
-        '
-        Me.cboPais.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboPais.FormattingEnabled = True
-        Me.cboPais.Items.AddRange(New Object() {"A", "B"})
-        Me.cboPais.Location = New System.Drawing.Point(78, 18)
-        Me.cboPais.MaxLength = 80
-        Me.cboPais.Name = "cboPais"
-        Me.cboPais.Size = New System.Drawing.Size(147, 21)
-        Me.cboPais.TabIndex = 111
         '
         'Catalogo_Clientes
         '

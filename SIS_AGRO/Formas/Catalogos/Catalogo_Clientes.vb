@@ -241,6 +241,23 @@ Public Class Catalogo_Clientes
     '    txtNoBeep(e)
     'End Sub
 
+    Private Sub txt_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtRfc.KeyDown, txtPais.KeyDown, txtNumeroTelefono.KeyDown, _
+    txtNumeroInterior.KeyDown, txtNumeroExterior.KeyDown, txtNumeroCelular.KeyDown, TxtNombreCliente.KeyDown, txtLocalidad.KeyDown, txtLimiteCredito.KeyDown, txtDiasPlazo.KeyDown, txtCurp.KeyDown, _
+    txtColonia.KeyDown, txtCodigoPostal.KeyDown, txtCodigoCliente.KeyDown, txtCalle.KeyDown, DpFecha.KeyDown, chkPermitirVentaCredito.KeyDown, cboZona.KeyDown, cboVendedor.KeyDown, cboTipoPersona.KeyDown, _
+    cboTipoMercado.KeyDown, CboEstatus.KeyDown, cboEstado.KeyDown, cboMetodoPago.KeyDown, txtNumeroCuenta.KeyDown, txtCiudad.KeyDown, txtCorreoCliente.KeyDown, cboMetodoPagoDlls.KeyDown, txtNumeroCuentaDolares.KeyDown, _
+    txtNumeroRegistroIdentificadorExtranjero.KeyDown, cboPais.KeyDown, cboMunicipio.KeyDown
+        txtTAB(e)
+    End Sub
+
+    Private Sub txt_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtRfc.KeyPress, _
+    txtPais.KeyPress, txtNumeroTelefono.KeyPress, txtNumeroInterior.KeyPress, txtNumeroExterior.KeyPress, txtNumeroCelular.KeyPress, TxtNombreCliente.KeyPress, _
+    txtLocalidad.KeyPress, txtLimiteCredito.KeyPress, txtDiasPlazo.KeyPress, txtCurp.KeyPress, txtCuentaContableDolares.KeyPress, txtCuentaContable.KeyPress, _
+    txtColonia.KeyPress, txtCodigoPostal.KeyPress, txtCodigoCliente.KeyPress, txtCiudad.KeyPress, txtCalle.KeyPress, DpFecha.KeyPress, chkPermitirVentaCredito.KeyPress, _
+    cboZona.KeyPress, cboVendedor.KeyPress, cboTipoPersona.KeyPress, cboTipoMercado.KeyPress, CboEstatus.KeyPress, cboEstado.KeyPress, txtCorreoCliente.KeyPress, _
+    cboMetodoPago.KeyPress, cboMetodoPagoDlls.KeyPress, txtNumeroRegistroIdentificadorExtranjero.KeyPress, cboPais.KeyPress, cboMunicipio.KeyPress
+        txtNoBeep(e)
+    End Sub
+
     Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtNumeroCuentaDolares.KeyPress, TxtCodigoAlmacen.KeyPress
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
@@ -1210,6 +1227,5 @@ busca:
     End Sub
 
 #End Region
-
 
 End Class
