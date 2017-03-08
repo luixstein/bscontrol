@@ -95,13 +95,6 @@ Public Class Frm_CXP_Pagos_Acreedores
     'End Property
 #End Region
 
-#Region "Constructor"
-    Public Sub New()
-        ' This call is required by the Windows Form Designer.
-        InitializeComponent()
-    End Sub
-#End Region
-
 #Region "Opciones"
     Private Sub tsbNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbNuevo.Click
         Me.Inicializa()
@@ -2012,12 +2005,19 @@ buscar_acreedor:
             Me.TxtCuentaBancaria.Enabled = False
             Me.oBancosCXP.CODIGO_DOCUMENTO = Me.CmbDocumento.SelectedValue.ToString
 
-            Select Case Me.oBancosCXP.CODIGO_DOCUMENTO
-                Case "CHB1", "CHB2"
+            Select Case Microsoft.VisualBasic.Left(Me.oBancosCXP.CODIGO_DOCUMENTO, 3)
+                Case "CHB"
                     Me.TxtFolio.Text = Me.oBancosCXP.GeneraFolioCheque(CInt(valorNumerico(Me.TxtCuentaBancaria.Text)))
-                Case "TRB1", "TRB2"
+                Case Else
                     Me.TxtFolio.Text = Me.oBancosCXP.GeneraFolio()
             End Select
+
+            'Select Case Me.oBancosCXP.CODIGO_DOCUMENTO
+            '    Case "CHB1", "CHB2"
+            '        Me.TxtFolio.Text = Me.oBancosCXP.GeneraFolioCheque(CInt(valorNumerico(Me.TxtCuentaBancaria.Text)))
+            '    Case "TRB1", "TRB2"
+            '        Me.TxtFolio.Text = Me.oBancosCXP.GeneraFolio()
+            'End Select
 
             Return True
 
@@ -2041,8 +2041,8 @@ buscar_acreedor:
                             Me.cboTipoPago.Enabled = True
                             Me.lblDisplayTipoPago.Enabled = True
                         Case enumModoPago.ACREEDOR
-                            Me.CmbDocumento.Enabled = False
-                            Me.cboTipoPago.Enabled = False
+                            Me.CmbDocumento.Enabled = True ' False
+                            Me.cboTipoPago.Visible = False
                             Me.lblDisplayTipoPago.Enabled = False
                     End Select
 

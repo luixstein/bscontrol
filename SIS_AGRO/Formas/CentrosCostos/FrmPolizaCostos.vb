@@ -380,7 +380,7 @@ Public Class FrmPolizaCostos
             With Me.GridCostos
                 For i = 1 To .Rows - 1
                     If .Cell(i, Me.iGyCuentaContable).Text <> "" And valorNumerico(.Cell(i, Me.iGyImporte).Text) <> 0 Then
-                        sListaCostos = sListaCostos & "@FOLIO_MOVIMIENTO," & i & "," & .Cell(i, Me.iGyCodigoCentroCosto).Text & "," & .Cell(i, Me.iGyCodigoCategoria).Text & "," & .Cell(i, Me.iGyCodigoConcepto).Text & ",0," & _
+                        sListaCostos = sListaCostos & "@FOLIO_MOVIMIENTO," & i & "," & .Cell(i, Me.iGyCodigoCentroCosto).Text & "," & .Cell(i, Me.iGyCodigoCategoria).Text & "," & .Cell(i, Me.iGyCodigoConcepto).Text & ",0,1," & _
                         .Cell(i, Me.iGyImporte).Text & "," & .Cell(i, Me.iGyCuentaContable).Text & "|"
                     End If
                 Next i
