@@ -281,7 +281,7 @@ Public Class Catalogo_Zonas
 
                                 End If
                             Case enumEstados.EDICION
-                                .Agregar = "1"
+                                .Agregar = "0"
                                 If .Actualizar() Then
                                     Grabado = True
                                     Me.Estado = enumEstados.CONSULTA
