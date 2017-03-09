@@ -107,7 +107,7 @@ Module FacturacionElectronica
             Else
                 Using cfd As New clsCFDI(sRutaXML, Empresa_Sistema.BaseDatos, Empresa_Sistema.Servidor, _
                                   sFelectronicaArchivoPFX, Decrypt(Empresa_Sistema.FELECTRONICA_CONTRASENIA_PFX, "ex8"), _
-                                  Empresa_Sistema.FELECTRONICA_USER_WS, Empresa_Sistema.FELECTRONICA_PASS_WS)
+                                  Empresa_Sistema.FELECTRONICA_USER_WS, Empresa_Sistema.FELECTRONICA_PASS_WS, True)
 
                     If txtLEN(cfd.RecuperarTimbrePorSerieFolio(sSerie, iFolioNumerico, Empresa_Sistema.RFC, sFelectronicaCbbImagen)) = True Then
                         If cfd.Recuperado = True Then
@@ -121,7 +121,7 @@ Module FacturacionElectronica
                         cfd.Sellar()
                         If cfd.Sellado = True Then
                             Dim sRutaXMLTimbrado As String = sFelectronicaCarpetaXmlsTimbrados & "\" & sFolioDocumentoSistema & ".xml"
-                            cfd.Timbrar(sRutaXMLTimbrado, sFelectronicaCbbImagen)
+                            cfd.Timbrar(sRutaXMLTimbrado, sFelectronicaCbbImagen, True)
                             If cfd.Timbrado = True Then
                                 'sFolioFacturaSistema, cfd.XmlTimbrado.ToString,
                                 If GrabaCadenaOriginalYSelloComprobanteElectronico(cfd, tipoComprobante) = True Then
@@ -244,7 +244,7 @@ Module FacturacionElectronica
                 End If
 
                 'Cancelar timbre
-                cfd.CancelarTimbre(Empresa_Sistema.RFC, sUUID, ArchivoXmlAcuseCancelacion)
+                cfd.CancelarTimbre(Empresa_Sistema.RFC, sUUID, ArchivoXmlAcuseCancelacion, True)
 
                 If cfd.Cancelado = True Then
                     bResultado = True 'Marcamos true sin hacer lo del acuse, porque no es importante grabarlo

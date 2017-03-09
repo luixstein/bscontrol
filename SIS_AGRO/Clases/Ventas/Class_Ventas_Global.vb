@@ -1638,7 +1638,6 @@ Public Class Class_Ventas_Global
             da.Dispose()
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerPresentaciones", ex)
-
         End Try
         Return dTabla
     End Function
@@ -2065,6 +2064,7 @@ Public Class Class_Ventas_Global
         End Try
         Return bResultado
     End Function
+
 #End Region
 
 End Class

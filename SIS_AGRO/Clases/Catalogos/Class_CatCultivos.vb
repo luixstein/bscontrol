@@ -16,6 +16,7 @@ Public Class Class_CatCultivos
     Private _ALIAS_EXTRANJERO As String
     Private _CUENTA_CONTABLE_BASE As String
     Private _CODIGO_PLAZA As Integer
+    Private _FRACCION_ARANCELARIA As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -116,6 +117,15 @@ Public Class Class_CatCultivos
         End Set
     End Property
 
+    Public Property FRACCION_ARANCELARIA() As String
+        Get
+            Return Me._FRACCION_ARANCELARIA
+        End Get
+        Set(ByVal Value As String)
+            Me._FRACCION_ARANCELARIA = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -170,9 +180,9 @@ Public Class Class_CatCultivos
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         Me._QuerySelect = "SELECT CODIGO_CULTIVO,NOMBRE_CULTIVO,CUENTA_CONTABLE_COSTOS_DIRECTOS_PRODUCCION,CUENTA_CONTABLE_PREDIO," & _
-        "ALIAS_NACIONAL,ALIAS_EXTRANJERO, CUENTA_CONTABLE_BASE,CODIGO_PLAZA FROM CAT_CULTIVOS"
+        "ALIAS_NACIONAL,ALIAS_EXTRANJERO, CUENTA_CONTABLE_BASE,CODIGO_PLAZA,FRACCION_ARANCELARIA FROM CAT_CULTIVOS"
         Me._QueryOrder = " ORDER BY NOMBRE_CULTIVO"
-    End Sub                                                         'Inicializa al objeto.
+    End Sub
 
     Protected Overrides Sub Finalize()
         'Me._Conexion.Dispose()
@@ -198,6 +208,7 @@ Public Class Class_CatCultivos
             sqlParametro = .Parameters.Add("@ALIAS_EXTRANJERO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._ALIAS_EXTRANJERO.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Plaza
             sqlParametro = .Parameters.Add("@ES_GENERICO", SqlDbType.Char, 1) : sqlParametro.Value = Me._ES_GENERICO.ToString
+            sqlParametro = .Parameters.Add("@FRACCION_ARANCELARIA", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._FRACCION_ARANCELARIA.ToUpper
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "1"
 
             Try
@@ -214,7 +225,7 @@ Public Class Class_CatCultivos
             End Try
         End With
         Return bResultado
-    End Function                          'Inserta un elemento al catálogo.
+    End Function
 
     Public Overrides Function Actualizar() As Boolean
         Dim bResultado As Boolean = False
@@ -233,6 +244,7 @@ Public Class Class_CatCultivos
             sqlParametro = .Parameters.Add("@ALIAS_EXTRANJERO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._ALIAS_EXTRANJERO.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Plaza
             sqlParametro = .Parameters.Add("@ES_GENERICO", SqlDbType.Char, 1) : sqlParametro.Value = Me._ES_GENERICO.ToString
+            sqlParametro = .Parameters.Add("@FRACCION_ARANCELARIA", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._FRACCION_ARANCELARIA.ToUpper
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "0"
 
             Try
@@ -248,7 +260,7 @@ Public Class Class_CatCultivos
             End Try
         End With
         Return bResultado
-    End Function                        'Actualiza un elemento del catálogo.
+    End Function
 
     Public Overrides Function Consultar() As Boolean
         Dim bResultado As Boolean = False
@@ -269,6 +281,8 @@ Public Class Class_CatCultivos
                     Me._ALIAS_EXTRANJERO = "" & dReader("ALIAS_EXTRANJERO").ToString()
                     Me._CUENTA_CONTABLE_COSTOS_DIRECTOS_PRODUCCION = "" & dReader("CUENTA_CONTABLE_COSTOS_DIRECTOS_PRODUCCION").ToString()
                     Me._CODIGO_PLAZA = CInt(dReader("CODIGO_PLAZA").ToString)
+                    Me._FRACCION_ARANCELARIA = "" & dReader("FRACCION_ARANCELARIA").ToString()
+
                     bResultado = True
                 End If
                 dReader.Close()

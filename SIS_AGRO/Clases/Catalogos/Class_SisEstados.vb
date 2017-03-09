@@ -9,8 +9,8 @@ Public Class Class_SisEstados
     Private _CODIGO_ESTADO As String
     Private _NOMBRE_ESTADO As String
     Private _CODIGO_ESTADO_NUMERICO As String
-    Private _NOMBRE_ESTADO_SUA As String
-    Private _CODIGO_ESTADO_BANAMEX As String
+    'Private _NOMBRE_ESTADO_SUA As String
+    'Private _CODIGO_ESTADO_BANAMEX As String
     Private _CODIGO_PAIS_SAT As String
     Private _CODIGO_ESTADO_SAT As String
     'Private _ESTATUS As String
@@ -59,17 +59,17 @@ Public Class Class_SisEstados
         End Get
     End Property
 
-    Public ReadOnly Property NOMBRE_ESTADO_SUA() As String
-        Get
-            Return Me._NOMBRE_ESTADO_SUA
-        End Get
-    End Property
+    'Public ReadOnly Property NOMBRE_ESTADO_SUA() As String
+    '    Get
+    '        Return Me._NOMBRE_ESTADO_SUA
+    '    End Get
+    'End Property
 
-    Public ReadOnly Property CODIGO_ESTADO_BANAMEX() As String
-        Get
-            Return Me._CODIGO_ESTADO_BANAMEX
-        End Get
-    End Property
+    'Public ReadOnly Property CODIGO_ESTADO_BANAMEX() As String
+    '    Get
+    '        Return Me._CODIGO_ESTADO_BANAMEX
+    '    End Get
+    'End Property
 
     Public ReadOnly Property CODIGO_PAIS_SAT() As String
         Get
@@ -176,7 +176,7 @@ Public Class Class_SisEstados
 #Region "Métodos y procedimientos"
     Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand("SELECT CODIGO_ESTADO,NOMBRE_ESTADO,CODIGO_ESTADO_NUMERICO,NOMBRE_ESTADO_SUA,CODIGO_ESTADO_BANAMEX,CODIGO_PAIS_SAT,CODIGO_ESTADO_SAT " & _
+        Dim cmd As New SqlCommand("SELECT CODIGO_ESTADO,NOMBRE_ESTADO,CODIGO_ESTADO_NUMERICO,/*NOMBRE_ESTADO_SUA,CODIGO_ESTADO_BANAMEX*/,CODIGO_PAIS_SAT,CODIGO_ESTADO_SAT " & _
                                   "FROM SIS_ESTADOS " & _
                                   "WHERE CODIGO_ESTADO='" & sReplace(Me._CODIGO_ESTADO) & "'", Me._Conexion)
         Dim dReader As SqlDataReader
@@ -191,8 +191,8 @@ Public Class Class_SisEstados
                     Me._CODIGO_ESTADO = "" & dReader("CODIGO_ESTADO")
                     Me._NOMBRE_ESTADO = Trim("" & dReader("NOMBRE_ESTADO").ToString)
                     Me._CODIGO_ESTADO_NUMERICO = "" & dReader("CODIGO_ESTADO_NUMERICO")
-                    Me._NOMBRE_ESTADO_SUA = Trim("" & dReader("NOMBRE_ESTADO_SUA").ToString)
-                    Me._CODIGO_ESTADO_BANAMEX = "" & dReader("CODIGO_ESTADO_BANAMEX")
+                    'Me._NOMBRE_ESTADO_SUA = Trim("" & dReader("NOMBRE_ESTADO_SUA").ToString)
+                    'Me._CODIGO_ESTADO_BANAMEX = "" & dReader("CODIGO_ESTADO_BANAMEX")
                     Me._CODIGO_PAIS_SAT = "" & dReader("CODIGO_PAIS_SAT")
                     Me._CODIGO_ESTADO_SAT = "" & dReader("CODIGO_ESTADO_SAT")
                     'Me.ESTATUS = "" & dReader("ESTATUS").ToString
@@ -212,7 +212,7 @@ Public Class Class_SisEstados
 
     Public Function ConsultarConCodigoTipoSAT() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand("SELECT CODIGO_ESTADO,NOMBRE_ESTADO,CODIGO_ESTADO_NUMERICO,NOMBRE_ESTADO_SUA,CODIGO_ESTADO_BANAMEX,CODIGO_PAIS_SAT,CODIGO_ESTADO_SAT " & _
+        Dim cmd As New SqlCommand("SELECT CODIGO_ESTADO,NOMBRE_ESTADO,CODIGO_ESTADO_NUMERICO,/*NOMBRE_ESTADO_SUA,CODIGO_ESTADO_BANAMEX,*/CODIGO_PAIS_SAT,CODIGO_ESTADO_SAT " & _
                                   "FROM SIS_ESTADOS " & _
                                   "WHERE CODIGO_ESTADO_SAT='" & sReplace(Me._CODIGO_ESTADO_SAT) & "' AND CODIGO_PAIS_SAT='" & sReplace(Me._CODIGO_PAIS_SAT) & "'", Me._Conexion)
         Dim dReader As SqlDataReader
@@ -227,8 +227,8 @@ Public Class Class_SisEstados
                     Me._CODIGO_ESTADO = "" & dReader("CODIGO_ESTADO")
                     Me._NOMBRE_ESTADO = Trim("" & dReader("NOMBRE_ESTADO").ToString)
                     Me._CODIGO_ESTADO_NUMERICO = "" & dReader("CODIGO_ESTADO_NUMERICO")
-                    Me._NOMBRE_ESTADO_SUA = Trim("" & dReader("NOMBRE_ESTADO_SUA").ToString)
-                    Me._CODIGO_ESTADO_BANAMEX = "" & dReader("CODIGO_ESTADO_BANAMEX")
+                    'Me._NOMBRE_ESTADO_SUA = Trim("" & dReader("NOMBRE_ESTADO_SUA").ToString)
+                    'Me._CODIGO_ESTADO_BANAMEX = "" & dReader("CODIGO_ESTADO_BANAMEX")
                     Me._CODIGO_PAIS_SAT = "" & dReader("CODIGO_PAIS_SAT")
                     Me._CODIGO_ESTADO_SAT = "" & dReader("CODIGO_ESTADO_SAT")
                     'Me.ESTATUS = "" & dReader("ESTATUS").ToString
