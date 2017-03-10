@@ -399,7 +399,7 @@ Public Class Class_CatArticulos
             sqlParametro = .Parameters.Add("@CODIGO_ETIQUETA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ETIQUETA
             sqlParametro = .Parameters.Add("@RANGO_PIEZAS", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._RANGO_PIEZAS
             sqlParametro = .Parameters.Add("@ES_SERIALIZABLE", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._ES_SERIALIZABLE)
-            'sqlParametro = .Parameters.Add("@CODIGO_UNIDAD_VENTA", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CODIGO_UNIDAD_VENTA.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_UNIDAD_VENTA", SqlDbType.NVarChar, 20) : sqlParametro.Value = "NA" ' Me._CODIGO_UNIDAD_VENTA.ToUpper
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = "1"
 
             Try
@@ -451,6 +451,7 @@ Public Class Class_CatArticulos
             sqlParametro = .Parameters.Add("@RANGO_PIEZAS", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._RANGO_PIEZAS
             sqlParametro = .Parameters.Add("@ES_SERIALIZABLE", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._ES_SERIALIZABLE)
             'sqlParametro = .Parameters.Add("@CODIGO_UNIDAD_VENTA", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CODIGO_UNIDAD_VENTA.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_UNIDAD_VENTA", SqlDbType.NVarChar, 20) : sqlParametro.Value = "NA" ' Me._CODIGO_UNIDAD_VENTA.ToUpper
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = "0"
 
             Try
