@@ -118,6 +118,7 @@ Partial Class Frm_Embarques_Captura_Embarque
         Me.btnCambiarPrecios = New System.Windows.Forms.Button()
         Me.btnCancelarFactura = New System.Windows.Forms.Button()
         Me.btnFacturar = New System.Windows.Forms.Button()
+        Me.btnTimbrarFactura = New System.Windows.Forms.Button()
         Me.tsMenu.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.gbGrid.SuspendLayout()
@@ -929,9 +930,9 @@ Partial Class Frm_Embarques_Captura_Embarque
         Me.gbGrid.Controls.Add(Me.TxtTotalImporte)
         Me.gbGrid.Controls.Add(Me.TxtTotalPeso)
         Me.gbGrid.Controls.Add(Me.lblTotales)
-        Me.gbGrid.Location = New System.Drawing.Point(467, 29)
+        Me.gbGrid.Location = New System.Drawing.Point(467, 51)
         Me.gbGrid.Name = "gbGrid"
-        Me.gbGrid.Size = New System.Drawing.Size(539, 611)
+        Me.gbGrid.Size = New System.Drawing.Size(539, 560)
         Me.gbGrid.TabIndex = 1
         Me.gbGrid.TabStop = False
         '
@@ -955,7 +956,7 @@ Partial Class Frm_Embarques_Captura_Embarque
         '
         'txtTotalBultos
         '
-        Me.txtTotalBultos.Location = New System.Drawing.Point(137, 547)
+        Me.txtTotalBultos.Location = New System.Drawing.Point(137, 522)
         Me.txtTotalBultos.Name = "txtTotalBultos"
         Me.txtTotalBultos.ReadOnly = True
         Me.txtTotalBultos.Size = New System.Drawing.Size(100, 20)
@@ -964,7 +965,7 @@ Partial Class Frm_Embarques_Captura_Embarque
         '
         'TxtTotalImporte
         '
-        Me.TxtTotalImporte.Location = New System.Drawing.Point(343, 547)
+        Me.TxtTotalImporte.Location = New System.Drawing.Point(343, 522)
         Me.TxtTotalImporte.Name = "TxtTotalImporte"
         Me.TxtTotalImporte.ReadOnly = True
         Me.TxtTotalImporte.Size = New System.Drawing.Size(100, 20)
@@ -973,7 +974,7 @@ Partial Class Frm_Embarques_Captura_Embarque
         '
         'TxtTotalPeso
         '
-        Me.TxtTotalPeso.Location = New System.Drawing.Point(243, 547)
+        Me.TxtTotalPeso.Location = New System.Drawing.Point(243, 522)
         Me.TxtTotalPeso.Name = "TxtTotalPeso"
         Me.TxtTotalPeso.ReadOnly = True
         Me.TxtTotalPeso.Size = New System.Drawing.Size(94, 20)
@@ -983,7 +984,7 @@ Partial Class Frm_Embarques_Captura_Embarque
         'lblTotales
         '
         Me.lblTotales.AutoSize = True
-        Me.lblTotales.Location = New System.Drawing.Point(34, 551)
+        Me.lblTotales.Location = New System.Drawing.Point(34, 526)
         Me.lblTotales.Name = "lblTotales"
         Me.lblTotales.Size = New System.Drawing.Size(48, 13)
         Me.lblTotales.TabIndex = 321
@@ -1027,7 +1028,7 @@ Partial Class Frm_Embarques_Captura_Embarque
         '
         'btnConsultarSalida
         '
-        Me.btnConsultarSalida.Location = New System.Drawing.Point(875, 6)
+        Me.btnConsultarSalida.Location = New System.Drawing.Point(876, 0)
         Me.btnConsultarSalida.Name = "btnConsultarSalida"
         Me.btnConsultarSalida.Size = New System.Drawing.Size(124, 23)
         Me.btnConsultarSalida.TabIndex = 360
@@ -1036,9 +1037,9 @@ Partial Class Frm_Embarques_Captura_Embarque
         '
         'btnCambiarPrecios
         '
-        Me.btnCambiarPrecios.Location = New System.Drawing.Point(745, 6)
+        Me.btnCambiarPrecios.Location = New System.Drawing.Point(745, 2)
         Me.btnCambiarPrecios.Name = "btnCambiarPrecios"
-        Me.btnCambiarPrecios.Size = New System.Drawing.Size(124, 23)
+        Me.btnCambiarPrecios.Size = New System.Drawing.Size(127, 23)
         Me.btnCambiarPrecios.TabIndex = 361
         Me.btnCambiarPrecios.Text = "Cambiar precios"
         Me.btnCambiarPrecios.UseVisualStyleBackColor = True
@@ -1046,7 +1047,7 @@ Partial Class Frm_Embarques_Captura_Embarque
         'btnCancelarFactura
         '
         Me.btnCancelarFactura.Enabled = False
-        Me.btnCancelarFactura.Location = New System.Drawing.Point(619, 6)
+        Me.btnCancelarFactura.Location = New System.Drawing.Point(619, 28)
         Me.btnCancelarFactura.Name = "btnCancelarFactura"
         Me.btnCancelarFactura.Size = New System.Drawing.Size(120, 23)
         Me.btnCancelarFactura.TabIndex = 367
@@ -1056,18 +1057,29 @@ Partial Class Frm_Embarques_Captura_Embarque
         'btnFacturar
         '
         Me.btnFacturar.Enabled = False
-        Me.btnFacturar.Location = New System.Drawing.Point(493, 6)
+        Me.btnFacturar.Location = New System.Drawing.Point(493, 29)
         Me.btnFacturar.Name = "btnFacturar"
         Me.btnFacturar.Size = New System.Drawing.Size(120, 23)
         Me.btnFacturar.TabIndex = 365
         Me.btnFacturar.Text = "Facturar"
         Me.btnFacturar.UseVisualStyleBackColor = True
         '
+        'btnTimbrarFactura
+        '
+        Me.btnTimbrarFactura.Enabled = False
+        Me.btnTimbrarFactura.Location = New System.Drawing.Point(745, 28)
+        Me.btnTimbrarFactura.Name = "btnTimbrarFactura"
+        Me.btnTimbrarFactura.Size = New System.Drawing.Size(127, 23)
+        Me.btnTimbrarFactura.TabIndex = 368
+        Me.btnTimbrarFactura.Text = "Timbrar factura"
+        Me.btnTimbrarFactura.UseVisualStyleBackColor = True
+        '
         'Frm_Embarques_Captura_Embarque
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1012, 676)
+        Me.Controls.Add(Me.btnTimbrarFactura)
         Me.Controls.Add(Me.btnCancelarFactura)
         Me.Controls.Add(Me.btnFacturar)
         Me.Controls.Add(Me.btnCambiarPrecios)
@@ -1187,4 +1199,5 @@ Partial Class Frm_Embarques_Captura_Embarque
     Friend WithEvents lblDisplayFolioFactura As Label
     Friend WithEvents cboEmpaque As System.Windows.Forms.ComboBox
     Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents btnTimbrarFactura As System.Windows.Forms.Button
 End Class

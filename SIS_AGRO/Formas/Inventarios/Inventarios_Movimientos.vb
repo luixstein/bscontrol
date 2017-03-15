@@ -1203,7 +1203,7 @@ BuscarCuentas:
 
     Private Function GeneraFolio() As Boolean
         Try
-            Dim sFolio As String
+            Dim sFolio As String = ""
             If Me.CboAlmacen.Items.Count = 0 Or Me.CboDocumento.Items.Count = 0 Then
                 Exit Function
             End If
