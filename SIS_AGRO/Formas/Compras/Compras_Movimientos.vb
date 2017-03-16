@@ -11,6 +11,7 @@ Imports System.Windows.Forms
 Imports System.Collections
 Imports System.Collections.Generic
 Imports CrystalDecisions.CrystalReports.Engine
+Imports System.IO
 
 Public Class Compras_Movimientos
     Private oCompras As New Class_Compras_Global
@@ -148,6 +149,10 @@ Public Class Compras_Movimientos
 
     Private Sub btnSeries_Click(sender As Object, e As EventArgs) Handles btnSeries.Click
         Me.Series()
+    End Sub
+
+    Private Sub btnSeleccionarArchivoSeries_Click(sender As Object, e As EventArgs) Handles btnSeleccionarArchivoSeries.Click
+        Me.GestionaArchivoSeries()
     End Sub
 #End Region
 
@@ -458,7 +463,7 @@ Buscar:
             Me.LblPoliza.Text = ""
 
             Me.TxtSubTotal.Text = FormatImporteContable(0)
-            Me.TxtIVA.Text = FormatImporteContable(0)
+            Me.txtIVA.Text = FormatImporteContable(0)
             Me.TxtRetencion.Text = FormatImporteContable(0)
             Me.txtTotal.Text = FormatImporteContable(0)
             Me.txtSaldoMXP.Text = FormatImporteContable(0)
@@ -707,6 +712,7 @@ Buscar:
                         Me.btnActualizaConcepto.Visible = False
                         Me.txtIVA.Enabled = True
                         Me.btnSeries.Enabled = True
+                        Me.btnSeleccionarArchivoSeries.Enabled = True
 
                         Me.tsslEstado.Text = "Estado: Agregando nuevo movimiento"
                         Me.tsslElaboro.Visible = False : Me.tsslElaboro.Text = ""
@@ -747,6 +753,7 @@ Buscar:
                         Me.btnActualizaConcepto.Visible = False
                         Me.txtIVA.Enabled = True
                         Me.btnSeries.Enabled = False
+                        Me.btnSeleccionarArchivoSeries.Enabled = False
 
                         Me.tsslEstado.Text = "Estado: Agregando nuevo movimiento"
                         Me.tsslElaboro.Visible = False : Me.tsslElaboro.Text = ""
@@ -790,6 +797,7 @@ Buscar:
                     Me.btnActualizaConcepto.Visible = False
                     Me.txtIVA.Enabled = True
                     Me.btnSeries.Enabled = False
+                    Me.btnSeleccionarArchivoSeries.Enabled = False
 
                     Me.tsslEstado.Text = "Estado: Consultando movimiento"
                     Me.tsslElaboro.Visible = True : Me.tsslElaboro.Text = "Elaboró: " + Me.oCompras.NOMBRE_USUARIO_GRABO.ToUpper + " el " + Format(Me.DtpFecha.Value, "dd/MMM/yy").ToUpper
@@ -832,6 +840,7 @@ Buscar:
 
                     Me.txtIVA.Enabled = False
                     Me.btnSeries.Enabled = False
+                    Me.btnSeleccionarArchivoSeries.Enabled = False
 
                     Me.tsslEstado.Text = "Estado: Consultando movimiento"
                     Me.tsslElaboro.Visible = True : Me.tsslElaboro.Text = "Elaboró: " + Me.oCompras.NOMBRE_USUARIO_GRABO.ToUpper + " el " + Format(Me.DtpFecha.Value, "dd/MMM/yy").ToUpper
@@ -870,6 +879,7 @@ Buscar:
                     Me.btnActualizaConcepto.Visible = False
                     Me.txtIVA.Enabled = False
                     Me.btnSeries.Enabled = False
+                    Me.btnSeleccionarArchivoSeries.Enabled = False
 
                     Me.tsslEstado.Text = "Estado: Consultando movimiento"
                     Me.tsslElaboro.Visible = True : Me.tsslElaboro.Text = "Elaboró: " + Me.oCompras.NOMBRE_USUARIO_GRABO.ToUpper + " el " + Format(Me.DtpFecha.Value, "dd/MMM/yy").ToUpper
@@ -929,7 +939,7 @@ Buscar:
                 .PLAZO = CInt(Me.txtPlazo.Text)
                 .FECHA_VENCIMIENTO = Me.dtpFechaVencimiento.Value
                 .SUBTOTAL = valorNumerico(Me.TxtSubTotal.Text)
-                .IMPUESTO = valorNumerico(Me.TxtIVA.Text)
+                .IMPUESTO = valorNumerico(Me.txtIVA.Text)
                 .TOTAL = valorNumerico(Me.txtTotal.Text)
                 .RETENCION = valorNumerico(Me.TxtRetencion.Text)
                 .IMPUESTO_PORCENTAJE = dPorcentajeIVAGlobal
@@ -2495,6 +2505,96 @@ BuscarCuentas:
         Catch ex As Exception
             HandleError(Me.Name, "ValidaNumerosSerie", ex)
         End Try
+    End Function
+
+    Private Function CantidadArticulosSerie(ByVal sCodigoArticulo As String) As Integer
+        Dim iArticulosEncontrados As Integer = 0
+        Try
+            For i = 1 To Me.GridSeries.Rows - 1
+                If Me.GridSeries.Cell(i, Me.igySerieCodigo).Text = sCodigoArticulo Then
+                    iArticulosEncontrados += 1
+                End If
+            Next
+        Catch ex As Exception
+            HandleError(Me.Name, "CantidadArticulosSerie", ex)
+        End Try
+        Return iArticulosEncontrados
+    End Function
+
+    Private Function GestionaArchivoSeries() As Boolean
+        Dim bResultado As Boolean = False
+        Dim sRutaArchivo As String = "", sTextLine As String = "", sArticulo As String = "", iRenglon As Integer = 0
+        Dim iSeriesEstablecidas As Integer = 0, iArticulosEncontrados As Integer = 0, i As Integer = 1, iEstablecidos As Integer = 0
+        Try
+            'iRenglon = Me.GridSeries.ActiveCell.Row
+            iRenglon = Me.GridSeries.Selection.FirstRow
+
+            If iRenglon = 0 Then
+                MsgBox("Seleccione un artículo en la pantalla de series.", MsgBoxStyle.Exclamation, Me.Text)
+                Return False
+            End If
+
+            sArticulo = Me.GridSeries.Cell(iRenglon, Me.igySerieCodigo).Text
+
+            If txtLEN(sArticulo) = False Then
+                MsgBox("Seleccione un artículo en la pantalla de series.", MsgBoxStyle.Exclamation, Me.Text)
+                Return False
+            End If
+
+            sRutaArchivo = Me.Seleccionar
+
+            If txtLEN(sRutaArchivo) = False Then
+                Return False
+            End If
+
+            iArticulosEncontrados = Me.CantidadArticulosSerie(sArticulo)
+
+            Using reader As StreamReader = New StreamReader(sRutaArchivo)
+                sTextLine = reader.ReadLine
+
+                Do While (Not sTextLine Is Nothing) Or Not (iEstablecidos <= iArticulosEncontrados)
+                    If txtLEN(sTextLine) = True Then
+                        For i = i To Me.GridSeries.Rows - 1
+                            If Me.GridSeries.Cell(i, Me.igySerieCodigo).Text = sArticulo Then
+                                Me.GridSeries.Cell(i, Me.igySerieNumeroSerie).Text = sTextLine
+                                iEstablecidos += 1
+                                i += 1
+                                Exit For
+                            End If
+                        Next
+                    End If
+                    sTextLine = reader.ReadLine
+                Loop
+            End Using
+
+        Catch ex As Exception
+            HandleError(Me.Name, "GestionaArchivoSeries", ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Private Function Seleccionar() As String
+        Dim sRutaArchivo As String = ""
+        Try
+            With OpenFileDialog1
+                '.InitialDirectory = Me.txtRutaArchivo.Text
+                .Filter = "txt files (*.txt)|*.txt"
+                '.FilterIndex = 2
+                .RestoreDirectory = True
+                .FileName = ""
+                .Multiselect = False
+                .DefaultExt = ".txt"
+
+                If .ShowDialog() = DialogResult.OK Then
+                    sRutaArchivo = .FileName
+                End If
+
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "Seleccionar", ex)
+        End Try
+        Return sRutaArchivo
     End Function
 #End Region
 

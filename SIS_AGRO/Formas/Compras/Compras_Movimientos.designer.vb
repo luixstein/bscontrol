@@ -108,6 +108,8 @@ Partial Class Compras_Movimientos
         Me.btnSeries = New System.Windows.Forms.Button()
         Me.txtSaldoUSD = New System.Windows.Forms.TextBox()
         Me.lblDisplaySaldoUSD = New System.Windows.Forms.Label()
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+        Me.btnSeleccionarArchivoSeries = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
@@ -948,11 +950,26 @@ Partial Class Compras_Movimientos
         Me.lblDisplaySaldoUSD.TabIndex = 382
         Me.lblDisplaySaldoUSD.Text = "Saldo USD :"
         '
+        'OpenFileDialog1
+        '
+        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
+        '
+        'btnSeleccionarArchivoSeries
+        '
+        Me.btnSeleccionarArchivoSeries.Enabled = False
+        Me.btnSeleccionarArchivoSeries.Location = New System.Drawing.Point(49, 506)
+        Me.btnSeleccionarArchivoSeries.Name = "btnSeleccionarArchivoSeries"
+        Me.btnSeleccionarArchivoSeries.Size = New System.Drawing.Size(165, 32)
+        Me.btnSeleccionarArchivoSeries.TabIndex = 383
+        Me.btnSeleccionarArchivoSeries.Text = "Seleccionar archivo con series"
+        Me.btnSeleccionarArchivoSeries.UseVisualStyleBackColor = True
+        '
         'Compras_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1029, 570)
+        Me.Controls.Add(Me.btnSeleccionarArchivoSeries)
         Me.Controls.Add(Me.txtSaldoUSD)
         Me.Controls.Add(Me.lblDisplaySaldoUSD)
         Me.Controls.Add(Me.btnSeries)
@@ -1077,4 +1094,6 @@ Partial Class Compras_Movimientos
     Friend WithEvents btnSeries As System.Windows.Forms.Button
     Friend WithEvents txtSaldoUSD As System.Windows.Forms.TextBox
     Friend WithEvents lblDisplaySaldoUSD As System.Windows.Forms.Label
+    Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents btnSeleccionarArchivoSeries As System.Windows.Forms.Button
 End Class
