@@ -46,10 +46,17 @@ Public Class Class_CatClientes
     Private _NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO As String
     Private _CODIGO_ALMACEN As String
     Private _AGREGAR As String
+    Private _CODIGO_MUNICIPIO As String
+    Private _CODIGO_ESTADO As String
+    Private _CODIGO_ESTADO_SAT As String
+    Private _CODIGO_PAIS_SAT As String
 #End Region
 
 #Region "Campos ligados a la tabla"
     Private _Existe As Boolean
+    Private _NOMBRE_MUNICIPIO As String
+    Private _NOMBRE_ESTADO As String
+    Private _NOMBRE_PAIS As String
 #End Region
 
 #Region "Campos públicos"
@@ -397,9 +404,58 @@ Public Class Class_CatClientes
             Me._CODIGO_ALMACEN = Value
         End Set
     End Property
+    Public Property CODIGO_MUNICIPIO() As String
+        Get
+            Return Me._CODIGO_MUNICIPIO
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_MUNICIPIO = Value
+        End Set
+    End Property
+
+    Public Property CODIGO_ESTADO() As String
+        Get
+            Return Me._CODIGO_ESTADO
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_ESTADO = Value
+        End Set
+    End Property
+
+    Public Property CODIGO_PAIS_SAT() As String
+        Get
+            Return Me._CODIGO_PAIS_SAT
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_PAIS_SAT = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
+    Public ReadOnly Property CODIGO_ESTADO_SAT() As String
+        Get
+            Return Me._CODIGO_ESTADO_SAT
+        End Get
+    End Property
+
+    Public ReadOnly Property NOMBRE_MUNICIPIO() As String
+        Get
+            Return Me._NOMBRE_MUNICIPIO
+        End Get
+    End Property
+
+    Public ReadOnly Property NOMBRE_ESTADO() As String
+        Get
+            Return Me._NOMBRE_ESTADO
+        End Get
+    End Property
+
+    Public ReadOnly Property NOMBRE_PAIS() As String
+        Get
+            Return Me._NOMBRE_PAIS
+        End Get
+    End Property
 
 #End Region
 
@@ -453,13 +509,18 @@ Public Class Class_CatClientes
         Me._Nombre_Reporte = "RPT_CAT_CLIENTES.rpt"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE,Estatus,RFC,TIPO_PERSONA,CURP,TELEFONO,CELULAR, " & _
-        "CALLE,NUMERO_EXTERIOR,NUMERO_INTERIOR,COLONIA,CIUDAD,LOCALIDAD,ESTADO,PAIS,CODIGO_POSTAL,CODIGO_ZONA, " & _
-        "CODIGO_VENDEDOR,CUENTA_CONTABLE,CUENTA_CONTABLE_DOLARES,LIMITE_CREDITO,DIAS_PLAZO,SALDO,PERMITIR_VENTA_CREDITO, " & _
-        "FECHA_ALTA,PLAZA,CORREO_CLIENTE,CODIGO_METODO_PAGO,NUMERO_CUENTA_PAGO,CODIGO_METODO_PAGO_DOLARES,NUMERO_CUENTA_PAGO_DOLARES,CODIGO_TIPO_MERCADO,FORMATO_NOMBRE_XML,NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO,CODIGO_ALMACEN " & _
-        "FROM CAT_CLIENTES"
-        Me._QueryOrder = " ORDER BY NOMBRE_CLIENTE"
-    End Sub                                                         'Inicializa al objeto.
+        Me._QuerySelect = "SELECT C.CODIGO_CLIENTE,C.NOMBRE_CLIENTE,C.Estatus,C.RFC,C.TIPO_PERSONA,C.CURP,C.TELEFONO,C.CELULAR, " & _
+        "C.CALLE,C.NUMERO_EXTERIOR,C.NUMERO_INTERIOR,C.COLONIA,C.CIUDAD,C.LOCALIDAD,C.ESTADO,C.PAIS,C.CODIGO_POSTAL,C.CODIGO_ZONA, " & _
+        "C.CODIGO_VENDEDOR,C.CUENTA_CONTABLE,C.CUENTA_CONTABLE_DOLARES,C.LIMITE_CREDITO,C.DIAS_PLAZO,C.SALDO,C.PERMITIR_VENTA_CREDITO, " & _
+        "C.FECHA_ALTA,C.PLAZA,C.CORREO_CLIENTE,C.CODIGO_METODO_PAGO,C.NUMERO_CUENTA_PAGO,C.CODIGO_METODO_PAGO_DOLARES,C.NUMERO_CUENTA_PAGO_DOLARES,C.CODIGO_TIPO_MERCADO,C.FORMATO_NOMBRE_XML," & _
+        "C.CODIGO_ALMACEN, " & _
+        "C.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO,C.CODIGO_MUNICIPIO,C.CODIGO_ESTADO,E.CODIGO_ESTADO_SAT,C.CODIGO_PAIS_SAT,M.NOMBRE_MUNICIPIO,E.NOMBRE_ESTADO,P.NOMBRE_PAIS " & _
+        "FROM CAT_CLIENTES C " & _
+        "LEFT JOIN CAT_MUNICIPIOS M ON(C.CODIGO_MUNICIPIO=M.CODIGO_MUNICIPIO) " & _
+        "LEFT JOIN SIS_ESTADOS E ON(C.CODIGO_ESTADO=E.CODIGO_ESTADO) " & _
+        "LEFT JOIN CAT_PAISES P ON(C.CODIGO_PAIS_SAT=P.CODIGO_PAIS_SAT)"
+        Me._QueryOrder = " ORDER BY C.NOMBRE_CLIENTE"
+    End Sub
 
     Public Sub New(ByVal sCodigoCliente As String)
         Me.New()
@@ -479,10 +540,6 @@ Public Class Class_CatClientes
         'Me._Conexion.Dispose()
         MyBase.Finalize()
     End Sub
-#End Region
-
-#Region "Opciones"
-
 #End Region
 
 #Region "Métodos y procedimientos"
@@ -530,6 +587,9 @@ Public Class Class_CatClientes
             sqlParametro = .Parameters.Add("@FORMATO_NOMBRE_XML", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._FORMATO_NOMBRE_XML.ToString
             sqlParametro = .Parameters.Add("@NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO.ToString
             sqlParametro = .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_ALMACEN.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_MUNICIPIO", SqlDbType.SmallInt) : sqlParametro.Value = Me.CODIGO_MUNICIPIO.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_ESTADO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me.CODIGO_ESTADO.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_PAIS_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me.CODIGO_PAIS_SAT.ToString
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._AGREGAR.ToString
             Try
                 Me._Conexion.Open()
@@ -594,6 +654,14 @@ Public Class Class_CatClientes
                     Me._FORMATO_NOMBRE_XML = Trim("" & dReader("FORMATO_NOMBRE_XML").ToString)
                     Me._NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO = Trim("" & dReader("NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO").ToString)
                     Me._CODIGO_ALMACEN = Trim("" & dReader("CODIGO_ALMACEN").ToString)
+                    Me._CODIGO_MUNICIPIO = Trim("" & dReader("CODIGO_MUNICIPIO").ToString)
+                    Me._CODIGO_ESTADO = Trim("" & dReader("CODIGO_ESTADO").ToString)
+                    Me._CODIGO_ESTADO_SAT = Trim("" & dReader("CODIGO_ESTADO_SAT").ToString)
+                    Me._CODIGO_PAIS_SAT = Trim("" & dReader("CODIGO_PAIS_SAT").ToString)
+
+                    Me._NOMBRE_MUNICIPIO = Trim("" & dReader("NOMBRE_MUNICIPIO").ToString)
+                    Me._NOMBRE_ESTADO = Trim("" & dReader("NOMBRE_ESTADO").ToString)
+                    Me._NOMBRE_PAIS = Trim("" & dReader("NOMBRE_PAIS").ToString)
                     bResultado = True
                 End If
                 dReader.Close()
@@ -650,6 +718,9 @@ Public Class Class_CatClientes
             sqlParametro = .Parameters.Add("@FORMATO_NOMBRE_XML", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._FORMATO_NOMBRE_XML.ToString
             sqlParametro = .Parameters.Add("@NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO.ToString
             sqlParametro = .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_ALMACEN.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_MUNICIPIO", SqlDbType.SmallInt) : sqlParametro.Value = Me.CODIGO_MUNICIPIO.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_ESTADO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me.CODIGO_ESTADO.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_PAIS_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me.CODIGO_PAIS_SAT.ToString
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._AGREGAR.ToString
             Try
                 Me._Conexion.Open()
@@ -879,7 +950,7 @@ Public Class Class_CatClientes
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             End If
         Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcion", ex)
+            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcionSinFiltroZona", ex)
         End Try
         Return Resultado
     End Function
@@ -925,7 +996,7 @@ Public Class Class_CatClientes
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             End If
         Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcion", ex)
+            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcionZona", ex)
         End Try
         Return Resultado
     End Function

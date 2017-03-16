@@ -24,6 +24,12 @@ Public NotInheritable Class Class_sisEmpresa
     Private _LOCALIDAD As String
     Private _PAIS As String
     Private _CODIGO_POSTAL As String
+    Private _CODIGO_COLONIA_SAT As String
+    Private _CODIGO_LOCALIDAD_SAT As String
+    Private _CODIGO_MUNICIPIO As String
+    Private _CODIGO_ESTADO As String
+    Private _CODIGO_PAIS_SAT As String
+    Private _CURP As String
 
     Private _Decimales_Para_Redondear As Integer
     Private _DECIMALES_CONTABILIDAD As Integer
@@ -81,6 +87,7 @@ Public NotInheritable Class Class_sisEmpresa
     Private _FELECTRONICA_USER_WS As String
     Private _FELECTRONICA_PASS_WS As String
     Private _FELECTRONICA_TIPO_CFD As String
+    Private _FELECTRONICA_CCE_HABILITADO As Boolean
 
     'AddendaSoriana
     Private _CODIGO_PROVEDOR_SORIANA As String
@@ -101,6 +108,8 @@ Public NotInheritable Class Class_sisEmpresa
     Private _Id_Dia_Actual As Integer
     Private _Fecha_Dia_Actual As Date
     Private _Tipo_Contabilidad As String
+    Private _CODIGO_ESTADO_SAT As String
+    Private _CODIGO_MUNICIPIO_SAT As String
 #End Region
 
 #Region "Campos públicos"
@@ -224,6 +233,41 @@ Public NotInheritable Class Class_sisEmpresa
     Public ReadOnly Property CODIGO_POSTAL() As String
         Get
             Return Me._CODIGO_POSTAL
+        End Get
+    End Property
+    Public ReadOnly Property CODIGO_COLONIA_SAT() As String
+        Get
+            Return Me._CODIGO_COLONIA_SAT
+        End Get
+    End Property
+
+    Public ReadOnly Property CODIGO_LOCALIDAD_SAT() As String
+        Get
+            Return Me._CODIGO_LOCALIDAD_SAT
+        End Get
+    End Property
+
+    Public ReadOnly Property CODIGO_MUNICIPIO() As String
+        Get
+            Return Me._CODIGO_MUNICIPIO
+        End Get
+    End Property
+
+    Public ReadOnly Property CODIGO_ESTADO() As String
+        Get
+            Return Me._CODIGO_ESTADO
+        End Get
+    End Property
+
+    Public ReadOnly Property CODIGO_PAIS_SAT() As String
+        Get
+            Return Me._CODIGO_PAIS_SAT
+        End Get
+    End Property
+
+    Public ReadOnly Property CURP() As String
+        Get
+            Return Me._CURP
         End Get
     End Property
 
@@ -505,6 +549,12 @@ Public NotInheritable Class Class_sisEmpresa
         End Get
     End Property
 
+    Public ReadOnly Property FELECTRONICA_CCE_HABILITADO() As Boolean
+        Get
+            Return Me._FELECTRONICA_CCE_HABILITADO
+        End Get
+    End Property
+
     Public ReadOnly Property CODIGO_PRODUCTOR_HAPPY() As String
         Get
             Return Me._CODIGO_PRODUCTOR_HAPPY
@@ -534,6 +584,17 @@ Public NotInheritable Class Class_sisEmpresa
         Set(ByVal value As String)
             _Tipo_Contabilidad = value
         End Set
+    End Property
+    Public ReadOnly Property CODIGO_ESTADO_SAT() As String
+        Get
+            Return Me._CODIGO_ESTADO_SAT
+        End Get
+    End Property
+
+    Public ReadOnly Property CODIGO_MUNICIPIO_SAT() As String
+        Get
+            Return Me._CODIGO_MUNICIPIO_SAT
+        End Get
     End Property
 
 #End Region
@@ -735,6 +796,7 @@ Public NotInheritable Class Class_sisEmpresa
 
 #Region "Métodos y procedimientos"
     Public Overrides Function Actualizar() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         Dim cn As New SqlConnection(conexion)
@@ -753,7 +815,7 @@ Public NotInheritable Class Class_sisEmpresa
             Try
                 cn.Open()
                 .ExecuteNonQuery()
-                Actualizar = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
             Finally
@@ -764,7 +826,8 @@ Public NotInheritable Class Class_sisEmpresa
             End Try
 
         End With
-    End Function                        'Actualiza un elemento del catálogo.
+        Return bResultado
+    End Function
 
     Public Overrides Function Insertar() As Boolean
 
@@ -773,7 +836,10 @@ Public NotInheritable Class Class_sisEmpresa
     Public Overrides Function Consultar() As Boolean
         Dim bResultado As Boolean = False
         Dim cn As New SqlConnection(_Conexion)
-        Dim cmd As New SqlCommand("SELECT * FROM SIS_EMPRESA", cn)
+        Dim cmd As New SqlCommand("SELECT S.*,E.CODIGO_ESTADO_SAT,M.CODIGO_MUNICIPIO_SAT " & _
+                                  "FROM SIS_EMPRESA S " & _
+                                  "LEFT JOIN SIS_ESTADOS E ON(S.CODIGO_ESTADO=E.CODIGO_ESTADO) " & _
+                                  "LEFT JOIN CAT_MUNICIPIOS M ON(S.CODIGO_MUNICIPIO=M.CODIGO_MUNICIPIO)", cn)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -812,12 +878,15 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._LOCALIDAD = dReader("LOCALIDAD")
                     Me._PAIS = dReader("PAIS")
                     Me._CODIGO_POSTAL = dReader("CODIGO_POSTAL")
-                    Me._FELECTRONICA_ACTIVA = dReader("FELECTRONICA_ACTIVA")
-                    Me._FELECTRONICA_CARPETA_TRABAJO = dReader("FELECTRONICA_CARPETA_TRABAJO")
-                    Me._FELECTRONICA_CADENA_ORIGINAL = dReader("FELECTRONICA_CADENA_ORIGINAL")
-                    Me._FELECTRONICA_KEY = dReader("FELECTRONICA_KEY")
-                    Me._FELECTRONICA_CER = dReader("FELECTRONICA_CER")
-                    Me._FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA = IIf(txtLEN("" & dReader("FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA")) = True, Decrypt("" & dReader("FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA"), "r7"), "")
+                    Me._CODIGO_COLONIA_SAT = "" & dReader("CODIGO_COLONIA_SAT")
+                    Me._CODIGO_LOCALIDAD_SAT = "" & dReader("CODIGO_LOCALIDAD_SAT")
+                    Me._CODIGO_MUNICIPIO = "" & dReader("CODIGO_MUNICIPIO")
+                    Me._CODIGO_ESTADO = "" & dReader("CODIGO_ESTADO")
+                    Me._CODIGO_PAIS_SAT = "" & dReader("CODIGO_PAIS_SAT")
+                    Me._CURP = "" & dReader("CURP")
+
+                    Me._CODIGO_ESTADO_SAT = dReader("CODIGO_ESTADO_SAT")
+                    Me._CODIGO_MUNICIPIO_SAT = dReader("CODIGO_MUNICIPIO_SAT")
 
                     Me._GTIN_BASE = "" & dReader("GTIN_BASE").ToString
                     Me._CODIGO_EMPRESA_ASIGNADO_POR_MASTRONARDI = "" & dReader("CODIGO_EMPRESA_ASIGNADO_POR_MASTRONARDI").ToString
@@ -830,7 +899,6 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._CUENTA_CONTABLE_CONTRA_CUENTA_DOLARES = "" & dReader("CUENTA_CONTABLE_CONTRA_CUENTA_DOLARES").ToString
                     Me._CUENTA_CONTABLE_PROVEEDORES_CONTRA_CUENTA_DOLARES = "" & dReader("CUENTA_CONTABLE_PROVEEDORES_CONTRA_CUENTA_DOLARES").ToString
 
-                    'CFD
                     Me._CODIGO_REGIMEN_FISCAL = CInt(dReader("CODIGO_REGIMEN_FISCAL"))
                     Me._VERSION_ESQUEMA_CFD = "" & dReader("VERSION_ESQUEMA_CFD").ToString
                     Me._NUMERO_CLIENTE_BANCO = "" & dReader("NUMERO_CLIENTE_BANCO").ToString
@@ -840,12 +908,18 @@ Public NotInheritable Class Class_sisEmpresa
                     'Me._CODIGO_CONCEPTO_FLETE_EQUIPO = "" & dReader("CODIGO_CONCEPTO_FLETE_EQUIPO").ToString
                     Me._CODIGO_PROVEDOR_SORIANA = "" & dReader("CODIGO_PROVEDOR_SORIANA").ToString
                     Me._CODIGO_CLIENTE_SORIANA = "" & dReader("CODIGO_CLIENTE_SORIANA").ToString
-                    'CFDi
+                    Me._FELECTRONICA_ACTIVA = dReader("FELECTRONICA_ACTIVA")
+                    Me._FELECTRONICA_CARPETA_TRABAJO = dReader("FELECTRONICA_CARPETA_TRABAJO")
+                    Me._FELECTRONICA_CADENA_ORIGINAL = dReader("FELECTRONICA_CADENA_ORIGINAL")
+                    Me._FELECTRONICA_KEY = dReader("FELECTRONICA_KEY")
+                    Me._FELECTRONICA_CER = dReader("FELECTRONICA_CER")
+                    Me._FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA = IIf(txtLEN("" & dReader("FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA")) = True, Decrypt("" & dReader("FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA"), "r7"), "")
                     Me._FELECTRONICA_PFX = "" & dReader("FELECTRONICA_PFX").ToString
                     Me._FELECTRONICA_CONTRASENIA_PFX = "" & dReader("FELECTRONICA_CONTRASENIA_PFX").ToString
                     Me._FELECTRONICA_USER_WS = "" & dReader("FELECTRONICA_USER_WS").ToString
                     Me._FELECTRONICA_PASS_WS = "" & dReader("FELECTRONICA_PASS_WS").ToString
                     Me._FELECTRONICA_TIPO_CFD = "" & dReader("FELECTRONICA_TIPO_CFD").ToString
+                    Me._FELECTRONICA_CCE_HABILITADO = CBool(dReader("FELECTRONICA_CCE_HABILITADO").ToString)
 
                     Me._CODIGO_PRODUCTOR_SALIDA_INVENTARIABLE_AUTOMATICA = "" & dReader("CODIGO_PRODUCTOR_SALIDA_INVENTARIABLE_AUTOMATICA").ToString
                     Me._CODIGO_PRODUCTOR_HAPPY = "" & dReader("CODIGO_PRODUCTOR_HAPPY").ToString
@@ -870,16 +944,14 @@ Public NotInheritable Class Class_sisEmpresa
 
     Public Overrides Function ObtenerElementos() As DataTable
         Dim dTable As New DataTable
-        Dim dsSisEmpresa As New SqlDataAdapter(Me._QuerySelect, Me._Conexion)
+        Dim da As New SqlDataAdapter(Me._QuerySelect, Me._Conexion)
         Try
-            dsSisEmpresa.Fill(dTable)
-
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
         Finally
-            dsSisEmpresa.Dispose()
+            da.Dispose()
         End Try
-
         Return dTable
     End Function
 
@@ -924,18 +996,18 @@ Public NotInheritable Class Class_sisEmpresa
 
     Public Function ObtenDocumentosSinTimbrar() As DataTable
         Dim dTable As New DataTable 'AND LEN(VERSION_ESQUEMA_XML)=0 
-        Dim dsSisEmpresa As New SqlDataAdapter("SELECT FOLIO_VENTA FOLIO,CODIGO_DOCUMENTO TIPO,FECHA_SERVIDOR,'NO ESTA TIMBRADO' PROBLEMA,case when (72-DATEDIFF(HOUR,FECHA_SERVIDOR, GETDATE()))>0 then 72-DATEDIFF(HOUR,FECHA_SERVIDOR, GETDATE()) else 0 end TIEMPO_RESTANTE " & _
+        Dim da As New SqlDataAdapter("SELECT FOLIO_VENTA FOLIO,CODIGO_DOCUMENTO TIPO,FECHA_SERVIDOR,'NO ESTA TIMBRADO' PROBLEMA,case when (72-DATEDIFF(HOUR,FECHA_SERVIDOR, GETDATE()))>0 then 72-DATEDIFF(HOUR,FECHA_SERVIDOR, GETDATE()) else 0 end TIEMPO_RESTANTE " & _
                                                "FROM VENTA_GLOBAL WHERE ES_FACTURA_ELECTRONICA='1' AND TIMBRADO_DESCARTADO='0' AND FECHA_SERVIDOR>'2013-24-12' AND ESTATUS_VENTA='A' AND LEN(FOLIO_FISCAL_SAT)=0 AND LEN(SELLO_SAT)=0" & _
                                                "UNION ALL " & _
                                                "SELECT FOLIO_DESCUENTO FOLIO,'NCG_CXC' + CAST(CODIGO_PLAZA AS NVARCHAR) TIPO,FECHA_SERVIDOR,'NO ESTA TIMBRADO' PROBLEMA,case when (72-DATEDIFF(HOUR,FECHA_SERVIDOR, GETDATE()))>0 then 72-DATEDIFF(HOUR,FECHA_SERVIDOR, GETDATE()) else 0 end TIEMPO_RESTANTE " & _
                                                "FROM CXC_DESCUENTOS_GLOBAL WHERE ES_COMPROBANTE_ELECTRONICO='1' AND TIMBRADO_DESCARTADO='0' AND FECHA_SERVIDOR>'2013-24-12' AND ESTATUS_DESCUENTO='A'  AND LEN(FOLIO_FISCAL_SAT)=0 AND LEN(SELLO_SAT)=0", Me._Conexion)
         Try
-            dsSisEmpresa.Fill(dTable)
+            da.Fill(dTable)
 
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenDocumentosSinTimbrar", ex)
         Finally
-            dsSisEmpresa.Dispose()
+            da.Dispose()
         End Try
 
         Return dTable
@@ -943,18 +1015,18 @@ Public NotInheritable Class Class_sisEmpresa
 
     Public Function ObtenDocumentosCanceladosSinTimbrar() As DataTable
         Dim dTable As New DataTable 'AND LEN(VERSION_ESQUEMA_XML)=0 
-        Dim dsSisEmpresa As New SqlDataAdapter("SELECT FOLIO_VENTA FOLIO,'FACTURA' TIPO,FECHA_SERVIDOR,'NO ESTA TIMBRADO' PROBLEMA,case when (72-DATEDIFF(HOUR,FECHA_SERVIDOR, GETDATE()))>0 then 72-DATEDIFF(HOUR,FECHA_SERVIDOR, GETDATE()) else 0 end TIEMPO_RESTANTE " & _
+        Dim da As New SqlDataAdapter("SELECT FOLIO_VENTA FOLIO,'FACTURA' TIPO,FECHA_SERVIDOR,'NO ESTA TIMBRADO' PROBLEMA,case when (72-DATEDIFF(HOUR,FECHA_SERVIDOR, GETDATE()))>0 then 72-DATEDIFF(HOUR,FECHA_SERVIDOR, GETDATE()) else 0 end TIEMPO_RESTANTE " & _
                                                "FROM VENTA_GLOBAL WHERE ES_FACTURA_ELECTRONICA='1' AND TIMBRADO_DESCARTADO='0' AND FECHA_SERVIDOR>'2013-24-12'   AND ESTATUS_VENTA='C' AND ESTATUS_CANCELACION_CFDI='0' " & _
                                                "UNION ALL " & _
                                                "SELECT FOLIO_DESCUENTO FOLIO,'NOTA DE CREDITO' TIPO,FECHA_SERVIDOR,'NO ESTA TIMBRADO' PROBLEMA,case when (72-DATEDIFF(HOUR,FECHA_SERVIDOR, GETDATE()))>0 then 72-DATEDIFF(HOUR,FECHA_SERVIDOR, GETDATE()) else 0 end TIEMPO_RESTANTE " & _
                                                "FROM CXC_DESCUENTOS_GLOBAL WHERE ES_COMPROBANTE_ELECTRONICO='1' AND TIMBRADO_DESCARTADO='0' AND FECHA_SERVIDOR>'2013-24-12' AND ESTATUS_DESCUENTO='C' AND ESTATUS_CANCELACION_CFDI='0' ", Me._Conexion)
         Try
-            dsSisEmpresa.Fill(dTable)
+            da.Fill(dTable)
 
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenDocumentosSinTimbrar", ex)
         Finally
-            dsSisEmpresa.Dispose()
+            da.Dispose()
         End Try
 
         Return dTable

@@ -1,5 +1,4 @@
-﻿
-Option Strict On
+﻿Option Strict On
 
 Imports CrystalDecisions.CrystalReports.Engine
 Imports CrystalDecisions.Shared
@@ -53,6 +52,8 @@ Public Class Ventas_Movimientos
     Private igyEsProductoKilos As Short = 15
     Private igyCodigoCentroCosto As Short = 16
     Private igyNombreCentroCosto As Short = 17
+    Private igyPrecioUSD As Short = 18
+    Private igyImporteUSD As Short = 19
 #End Region
 
 #Region "Columnas grid series"
@@ -174,12 +175,13 @@ Public Class Ventas_Movimientos
 
     Private Sub tsbSellarFacturaElectronica_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSellarFacturaElectronica.Click
         If Me.oVenta.TIMBRADO_CFDI = "0" Then
-            If Me.GeneraFacturaElectronicaLocal(True) = True Then
-                Me.oVenta.ExportarAPdf()
+            If Me.oVenta.GeneraFacturaElectronica(True, True) = True Then
                 Me.Consultar()
+            Else
+                MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, Me.Text)
             End If
         Else
-            MsgBox("El documento ya esta timbrado.", MsgBoxStyle.Exclamation, Me.Text)
+            MsgBox("El documento ya esta timbrado", MsgBoxStyle.Exclamation, Me.Text)
         End If
     End Sub
 
@@ -249,9 +251,9 @@ Buscar:
 
                 If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
                     If Me.chkVentaPublicoGeneral.Checked = False Then
-                        If Me.ValidarDatosCliente() = False Then
-                            Exit Sub
-                        End If
+                        'If Me.ValidarDatosCliente() = False Then
+                        '    Exit Sub
+                        'End If
                     End If
                 End If
 
@@ -433,13 +435,30 @@ Buscar:
     End Sub
 
     Private Sub chkImprimirDolares_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkImprimirDolares.CheckedChanged
-        If Me.chkImprimirDolares.Checked = True Then
-            Me.gbDolares.Visible = True
-            Me.txtTipoCambio.Enabled = True
-        Else
-            Me.gbDolares.Visible = False
-            Me.txtTipoCambio.Enabled = False
-        End If
+        Dim ocliente As Class_CatClientes
+        Try
+            If Me.chkImprimirDolares.Checked = True Then
+                Me.gbDolares.Visible = True
+                Me.txtTipoCambio.Enabled = True
+
+                If txtLEN(Me.TxtCliente.Text) = True Then
+                    ocliente = New Class_CatClientes(Me.TxtCliente.Text)
+                    Me.cboMetodoPago.SelectedValue = ocliente.CODIGO_METODO_PAGO_DOLARES
+                    Me.txtNumCuenta.Text = ocliente.NUMERO_CUENTA_PAGO_DOLARES.ToString
+                End If
+            Else
+                Me.gbDolares.Visible = False
+                Me.txtTipoCambio.Enabled = False
+
+                If txtLEN(Me.TxtCliente.Text) = True Then
+                    ocliente = New Class_CatClientes(Me.TxtCliente.Text)
+                    Me.cboMetodoPago.SelectedValue = ocliente.CODIGO_METODO_PAGO
+                    Me.txtNumCuenta.Text = ocliente.NUMERO_CUENTA_PAGO.ToString
+                End If
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, "chkImprimirDolares_CheckedChanged", ex)
+        End Try
     End Sub
 
     Private Sub txtNumCuenta_KeyDown(sender As Object, e As KeyEventArgs) Handles txtNumCuenta.KeyDown
@@ -701,7 +720,7 @@ Buscar:
     Private Sub FormateaGrid()
         Try
             Me.Grid.AutoRedraw = False
-            Me.Grid.Cols = 18
+            Me.Grid.Cols = 20
 
             Me.Grid.Column(Me.igyCodigo).Width = 75
             Me.Grid.Column(Me.igyDescripcion).Width = 250
@@ -1222,20 +1241,21 @@ Buscar:
 
             If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
                 If Me.chkVentaPublicoGeneral.Checked = False Then
-                    If Me.ValidarDatosCliente() = True Then
-                        If Me.oVenta.EsClienteDeContado(Me.oCliente.CUENTA_CONTABLE, Me.oCliente.CODIGO_ZONA.ToString) = True Then
-                            'If MsgBox("El sistema le generará una cuenta contable, ya no le podrá vender como público general, desea continuar?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Grabar") = MsgBoxResult.No Then
-                            '    Return False
-                            'End If
+                    '02Mar17, ya no se validaran datos del cliente desde aqui sino dentro de la fac electronica.
+                    'If Me.ValidarDatosCliente() = True Then
+                    '    If Me.oVenta.EsClienteDeContado(Me.oCliente.CUENTA_CONTABLE, Me.oCliente.CODIGO_ZONA.ToString) = True Then
+                    '        'If MsgBox("El sistema le generará una cuenta contable, ya no le podrá vender como público general, desea continuar?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Grabar") = MsgBoxResult.No Then
+                    '        '    Return False
+                    '        'End If
 
-                            'If Me.oCliente.EstablecerCuentaContable = False Then
-                            '    MsgBox("No se pudo establecer la nueva cuenta contable de venta al cliente, avíse al departamento de sistemas.", MsgBoxStyle.Exclamation, Me.Text)
-                            '    Return False
-                            'End If
-                        End If
-                    Else
-                        Return False
-                    End If
+                    '        'If Me.oCliente.EstablecerCuentaContable = False Then
+                    '        '    MsgBox("No se pudo establecer la nueva cuenta contable de venta al cliente, avíse al departamento de sistemas.", MsgBoxStyle.Exclamation, Me.Text)
+                    '        '    Return False
+                    '        'End If
+                    '    End If
+                    'Else
+                    '    Return False
+                    'End If
                 Else
                     If Me.oVenta.EsClienteDeContado(Me.oCliente.CUENTA_CONTABLE, Me.oCliente.CODIGO_ZONA.ToString) = False Then
                         MsgBox("El cliente no tiene asígnada una cuenta contable de contado, no se le puede vender como público general.", MsgBoxStyle.Exclamation, Me.Text)
@@ -1252,27 +1272,32 @@ Buscar:
                 .CODIGO_CLIENTE = Me.TxtCliente.Text.ToUpper
                 .CODIGO_DOCUMENTO = Me.CboDocumento.SelectedValue.ToString
                 .CODIGO_VENDEDOR = CInt(Me.cboVendedor.SelectedValue.ToString)
+
                 .SUBTOTAL = valorNumerico(Me.lblSubtotal.Text)
                 .IMPUESTO = valorNumerico(Me.lblImpuesto.Text)
 
                 If Me._EsPorEmbarqueExtranjero = True Then
                     .DESCUENTO = valorNumerico(Me.lblTotal.Text) 'Se invierten los valores para forzar a un total 0 usd porque es en consignacion
-                    .TOTAL = 0
-                Else
+                    .TOTAL = 0 'Se invierten los valores para forzar a un total 0 usd porque es en consignacion
+                    .SUBTOTAL_USD = valorNumerico(Me.lblTotalDolares.Text)
+                    .DESCUENTO_USD = valorNumerico(Me.lblTotalDolares.Text)
+                Else 'En facturas normales
                     .DESCUENTO = 0
                     .TOTAL = valorNumerico(Me.lblTotal.Text)
+                    .SUBTOTAL_USD = 0 'No aplica en facturas normales aunque estén en usd
+                    .DESCUENTO_USD = 0 'No aplica en facturas normales aunque estén en usd
                 End If
 
-                .SALDO = valorNumerico(Me.lblSaldo.Text)
-                .COSTO = 0
-                .CODIGO_USUARIO_GRABO = Usuario.Codigo_Usuario
-                .FOLIO_REFERENCIA = Me.TxtReferencia.Text.ToUpper
                 If Me.chkImprimirDolares.Checked = True Then
                     .TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text)
                     .TOTAL_DOLARES = valorNumerico(Me.lblTotalDolares.Text)
                 Else
                     .TIPO_DE_CAMBIO = 0
                 End If
+
+                .COSTO = 0
+                .CODIGO_USUARIO_GRABO = Usuario.Codigo_Usuario
+                .FOLIO_REFERENCIA = Me.TxtReferencia.Text.ToUpper
                 .CODIGO_ALMACEN = Me.CboAlmacen.SelectedValue.ToString
                 .CONCEPTO = Me.TxtConcepto.Text.ToUpper
                 .CODIGO_PLAZA = Plaza.CODIGO_PLAZA
@@ -1298,25 +1323,9 @@ Buscar:
 
                 .ES_VENTA_PUBLICO_GENERAL = Convert.ToInt32(Me.chkVentaPublicoGeneral.Checked).ToString
                 .FOLIO_EMBARQUE = Me.txtFolioEmbarque.Text.ToUpper
-                'CFD
-                If Me.chkImprimirDolares.Checked = True Then
-                    If Me.chkVentaPublicoGeneral.Checked = True Then
-                        'Dim ocliente As New Class_CatClientes()
-                        'ocliente = New Class_CatClientes(Me.TxtCliente.Text)
-                        '.CODIGO_METODO_PAGO = ocliente.CODIGO_METODO_PAGO_DOLARES
-                        '.NUMERO_CUENTA_PAGO = ocliente.NUMERO_CUENTA_PAGO_DOLARES.ToString
-                        .CODIGO_METODO_PAGO = Me.cboMetodoPago.SelectedValue.ToString
-                        .NUMERO_CUENTA_PAGO = Me.txtNumCuenta.Text
-                    Else
-                        Dim ocliente As New Class_CatClientes()
-                        ocliente = New Class_CatClientes(Me.TxtCliente.Text)
-                        .CODIGO_METODO_PAGO = ocliente.CODIGO_METODO_PAGO_DOLARES
-                        .NUMERO_CUENTA_PAGO = ocliente.NUMERO_CUENTA_PAGO_DOLARES.ToString
-                    End If
-                Else
-                    .CODIGO_METODO_PAGO = Me.cboMetodoPago.SelectedValue.ToString
-                    .NUMERO_CUENTA_PAGO = Me.txtNumCuenta.Text
-                End If
+
+                .CODIGO_METODO_PAGO = Me.cboMetodoPago.SelectedValue.ToString
+                .NUMERO_CUENTA_PAGO = Me.txtNumCuenta.Text
 
                 If Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.SUSTITUYENDO Then
                     If .Insertar = False Then
@@ -1373,6 +1382,9 @@ Buscar:
 
                         .oVentasDetalle.LISTA_SERIES = sListaSeries
 
+                        .oVentasDetalle.PRECIO_USD = valorNumerico(Me.Grid.Cell(i, Me.igyPrecioUSD).Text)
+                        .oVentasDetalle.IMPORTE_USD = valorNumerico(Me.Grid.Cell(i, Me.igyImporteUSD).Text)
+
                         If .oVentasDetalle.GrabaRenglon = False Then
                             MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Text)
                             Exit Function
@@ -1402,9 +1414,8 @@ Buscar:
                 End If
 
                 If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
-                    If Me.GeneraFacturaElectronicaLocal(False) = True Then
-                        Me.oVenta.ExportarAPdf()
-                    End If
+                    Me.oVenta = New Class_Ventas_Global(Me.txtFolio.Text) 'Refrescar documento para evitar algún error por dato no cargado.
+                    Me.oVenta.GeneraFacturaElectronica(False, True)
                 End If
 
                 If Me.sTipoVenta = "SCR" Or sTipoVenta = "SCF" Then 'SUSTITUCION DE COTIZACION A REMISION O FACTURA
@@ -1453,32 +1464,32 @@ Buscar:
         Return bResultado
     End Function
 
-    Private Function GeneraFacturaElectronicaLocal(ByVal bMensajes As Boolean) As Boolean
-        Dim bResultado As Boolean = False
-        Dim sRutaXML As String
-        Try
-            'sRutaXML = sFelectronicaCarpetaXMLPDF & "\" & Me.txtFolio.Text & ".xml"
-            sRutaXML = sFelectronicaCarpetaXMLSinTimbrar & "\" & Me.txtFolio.Text & ".xml"
+    'Private Function GeneraFacturaElectronicaLocal(ByVal bMensajes As Boolean) As Boolean
+    '    Dim bResultado As Boolean = False
+    '    Dim sRutaXML As String
+    '    Try
+    '        'sRutaXML = sFelectronicaCarpetaXMLPDF & "\" & Me.txtFolio.Text & ".xml"
+    '        sRutaXML = sFelectronicaCarpetaXMLSinTimbrar & "\" & Me.txtFolio.Text & ".xml"
 
-            oVenta = New Class_Ventas_Global(Me.txtFolio.Text)
-            If oVenta.TIMBRADO_CFDI = "0" Then
-                If GeneraFacturaElectronica(Me.oVenta, bMensajes, sRutaXML, False) = False Then
-                    'MsgBox "moverle aqui cuando ya se vaya a poner el complemento en el timbre usar esta linea en vez de la anterior !!! "
-                    MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, Me.Text)
-                Else
-                    bResultado = True
-                    'ExportaFormatoVentaPDF(Me.txtFolio.Text, "F")
-                End If
-                'Else
-                '    Me.RecuperarFacturaElectronicaLocal(bMensajes)
-            End If
+    '        oVenta = New Class_Ventas_Global(Me.txtFolio.Text)
+    '        If oVenta.TIMBRADO_CFDI = "0" Then
+    '            If GeneraFacturaElectronica(Me.oVenta, bMensajes, sRutaXML, False) = False Then
+    '                'MsgBox "moverle aqui cuando ya se vaya a poner el complemento en el timbre usar esta linea en vez de la anterior !!! "
+    '                MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, Me.Text)
+    '            Else
+    '                bResultado = True
+    '                'ExportaFormatoVentaPDF(Me.txtFolio.Text, "F")
+    '            End If
+    '            'Else
+    '            '    Me.RecuperarFacturaElectronicaLocal(bMensajes)
+    '        End If
 
-        Catch ex As Exception
-            HandleError(Me.Name, "GeneraFacturaElectronicaLocal", ex)
-        End Try
+    '    Catch ex As Exception
+    '        HandleError(Me.Name, "GeneraFacturaElectronicaLocal", ex)
+    '    End Try
 
-        Return bResultado
-    End Function
+    '    Return bResultado
+    'End Function
 
     'Private Function RecuperarFacturaElectronicaLocal(ByVal bMensajes As Boolean) As Boolean
     '    Dim sRutaXML As String
@@ -1716,14 +1727,19 @@ CANCELAR:
             '    End If
             'Next i
 
-            Dim oMentodoPago As New Class_CFD_CatMetodosPago(Me.cboMetodoPago.SelectedValue.ToString)
+            Dim oMetodoPago As New Class_CFD_CatMetodosPago(Me.cboMetodoPago.SelectedValue.ToString)
 
-            If oMentodoPago.REQUIERE_NUMERO_CUENTA_PAGO = 1 Then
+            If oMetodoPago.REQUIERE_NUMERO_CUENTA_PAGO = 1 Then
                 If txtLEN(Me.txtNumCuenta.Text) = False Then
                     If MsgBox("El método de pago seleccionado requiere número de cuenta de pago. Esta seguro de dejarlo en blanco ?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Me.Text) = MsgBoxResult.No Then
                         Exit Function
                     End If
                 End If
+            End If
+
+            If oMetodoPago.ESTATUS = "B" Then
+                MsgBox("El método de pago tiene estatus baja.", MsgBoxStyle.Exclamation, sProcedure)
+                Exit Function
             End If
 
             If sTipoVenta <> "NM" Then
@@ -1749,20 +1765,14 @@ CANCELAR:
                 If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
                     If Me.SiTieneCuentaContable() = False Then
                         MsgBox("Asígne la cuenta contable a todos los renglones.", MsgBoxStyle.Exclamation, sProcedure)
-                        Exit Function
+                        Return False
                     End If
 
                     If Me.ValidaCuentaContable = False Then
                         MsgBox("Cuenta contable inválida.", MsgBoxStyle.Exclamation, sProcedure)
-                        Exit Function
+                        Return False
                     End If
                 End If
-            End If
-
-            Dim oMetodoPago As New Class_CFD_CatMetodosPago(Me.cboMetodoPago.SelectedValue.ToString)
-            If oMentodoPago.ESTATUS = "B" Then
-                MsgBox("El método de pago tiene estatus baja.", MsgBoxStyle.Exclamation, sProcedure)
-                Exit Function
             End If
 
             Return True
@@ -1924,10 +1934,10 @@ CANCELAR:
                 For i = 1 To .Rows - 1
                     If Len(.Cell(i, Me.igySeriePosicion).Text) > 0 Then
                         If Len(.Cell(i, Me.igySerieIdInventarioLotesCostos).Text) > 0 Then
-                        dExistencia = oInventarios.ExistenciaLoteSerie(.Cell(i, Me.igySerieIdInventarioLotesCostos).Text)
-                        If dExistencia < 1 Then
-                            MsgBox("El Artículo " & .Cell(i, Me.igySerieDescripcion).Text & " con la serie " & .Cell(i, Me.igySerieNumeroSerie).Text & " no tiene suficiente existencia.", MsgBoxStyle.Exclamation, sProcedure)
-                            Return False
+                            dExistencia = oInventarios.ExistenciaLoteSerie(.Cell(i, Me.igySerieIdInventarioLotesCostos).Text)
+                            If dExistencia < 1 Then
+                                MsgBox("El Artículo " & .Cell(i, Me.igySerieDescripcion).Text & " con la serie " & .Cell(i, Me.igySerieNumeroSerie).Text & " no tiene suficiente existencia.", MsgBoxStyle.Exclamation, sProcedure)
+                                Return False
                             End If
                         End If
                     End If
@@ -2227,7 +2237,7 @@ CANCELAR:
                 Dim dView As New Data.DataView(Me.dTablaMetodosPago, IIf(bSoloActivos = True, "ESTATUS='A'", "").ToString, "NOMBRE_METODO_PAGO", DataViewRowState.CurrentRows)
                 .DataSource = dView
                 If dView.Count > 0 Then
-                    .SelectedValue = "01" '01=EFECTIVO
+                    .SelectedValue = "NA" '01=EFECTIVO
                 End If
             End With
         Catch ex As Exception
@@ -2320,7 +2330,14 @@ CANCELAR:
             If valorNumerico(Me.txtTipoCambio.Text) > 0 Then
                 Me.lblSubtotalDolares.Text = FormatImporteContable(Redondear(valorNumerico(Me.lblSubtotal.Text) / valorNumerico(Me.txtTipoCambio.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD))
                 Me.lblImpuestoDolares.Text = FormatImporteContable(Redondear(valorNumerico(Me.lblImpuesto.Text) / valorNumerico(Me.txtTipoCambio.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD))
-                Me.lblTotalDolares.Text = FormatImporteContable(Redondear(valorNumerico(Me.lblTotal.Text) / valorNumerico(Me.txtTipoCambio.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD))
+
+                If Not Me._oEmbarqueExtranjero Is Nothing Then
+                    'Es por embarque extranjero, la columna se calculó desde que se obtuvieron los renglones y se debe hacer por siuma directa para no tener diferencias de decimales.
+                    Me.lblTotalDolares.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImporteUSD), Empresa_Sistema.DECIMALES_CONTABILIDAD))
+                Else
+                    Me.lblTotalDolares.Text = FormatImporteContable(Redondear(valorNumerico(Me.lblTotal.Text) / valorNumerico(Me.txtTipoCambio.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD))
+                End If
+
             End If
 
         Catch ex As Exception
@@ -2834,10 +2851,11 @@ buscaCentrosCostos:
 
             Me.ConsultarCliente()
 
-            Me.cboMetodoPago.SelectedValue = "99" '99=Otros
-
             Me.chkImprimirDolares.Checked = True
             Me.txtTipoCambio.Text = Me._TipoCambioPorEmbarqueExtranjero.ToString
+
+            Me.cboMetodoPago.SelectedValue = "NA" '99=Otros
+            Me.txtNumCuenta.Text = ""
 
             dTabla = Me._oEmbarqueExtranjero.ObtenerDetalleFacturaEmbarqueExtranjero(Me._TipoCambioPorEmbarqueExtranjero)
 
@@ -2855,12 +2873,13 @@ buscaCentrosCostos:
                                 "0.00" & Chr(9) &
                                 "0.00" & Chr(9) &
                                 Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + dRow("CUENTA_CONTABLE_BASE").ToString & Chr(9) &
-                "" & Chr(9) &
-                "" & Chr(9) &
-                "" & Chr(9) &
-                "0" & Chr(9) &
-                "SIN DEFINIR" & Chr(9)
-                )
+                                "" & Chr(9) &
+                                "" & Chr(9) &
+                                "" & Chr(9) &
+                                "0" & Chr(9) &
+                                "SIN DEFINIR" & Chr(9) & _
+                                dRow("PRECIO_USD").ToString & Chr(9) & _
+                                dRow("IMPORTE_USD").ToString)
 
             Next
 

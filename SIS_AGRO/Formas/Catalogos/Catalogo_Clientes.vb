@@ -99,9 +99,9 @@ Public Class Catalogo_Clientes
 
         Select Case Me.Estado
             Case enumEstados.EDICION
-                sMsg = " grabar las modificaciones del " & Me.msgElemento & " : " & Me.txtCodigoCliente.Text
+                sMsg = " grabar las modificaciones del " & Me.msgElemento & " : " & Me.TxtNombreCliente.Text
             Case enumEstados.NUEVO
-                sMsg = " agregar el " & Me.msgElemento & " : " & Me.txtCodigoCliente.Text
+                sMsg = " agregar el " & Me.msgElemento & " : " & Me.TxtNombreCliente.Text
         End Select
         sMsg = "Deseas " & sMsg & " ?"
         If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
@@ -213,6 +213,14 @@ Public Class Catalogo_Clientes
     Private Sub BtnGeneraCuentaContableDolares_Click(sender As Object, e As EventArgs) Handles BtnGeneraCuentaContableDolares.Click
         Me.GeneraCuentaContableDolares()
     End Sub
+
+    Private Sub cboPais_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPais.SelectedIndexChanged
+        Me.DesplegarEstados()
+    End Sub
+
+    Private Sub cboEstado_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboEstado.SelectedIndexChanged
+        Me.DesplegarMunicipios()
+    End Sub
 #End Region
 
 #Region "Eventos Genericos"
@@ -232,6 +240,23 @@ Public Class Catalogo_Clientes
 
     '    txtNoBeep(e)
     'End Sub
+
+    Private Sub txt_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtRfc.KeyDown, txtPais.KeyDown, txtNumeroTelefono.KeyDown, _
+    txtNumeroInterior.KeyDown, txtNumeroExterior.KeyDown, txtNumeroCelular.KeyDown, TxtNombreCliente.KeyDown, txtLocalidad.KeyDown, txtLimiteCredito.KeyDown, txtDiasPlazo.KeyDown, txtCurp.KeyDown, _
+    txtColonia.KeyDown, txtCodigoPostal.KeyDown, txtCodigoCliente.KeyDown, txtCalle.KeyDown, DpFecha.KeyDown, chkPermitirVentaCredito.KeyDown, cboZona.KeyDown, cboVendedor.KeyDown, cboTipoPersona.KeyDown, _
+    cboTipoMercado.KeyDown, CboEstatus.KeyDown, cboEstado.KeyDown, cboMetodoPago.KeyDown, txtNumeroCuenta.KeyDown, txtCiudad.KeyDown, txtCorreoCliente.KeyDown, cboMetodoPagoDlls.KeyDown, txtNumeroCuentaDolares.KeyDown, _
+    txtNumeroRegistroIdentificadorExtranjero.KeyDown, cboPais.KeyDown, cboMunicipio.KeyDown
+        txtTAB(e)
+    End Sub
+
+    Private Sub txt_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtRfc.KeyPress, _
+    txtPais.KeyPress, txtNumeroTelefono.KeyPress, txtNumeroInterior.KeyPress, txtNumeroExterior.KeyPress, txtNumeroCelular.KeyPress, TxtNombreCliente.KeyPress, _
+    txtLocalidad.KeyPress, txtLimiteCredito.KeyPress, txtDiasPlazo.KeyPress, txtCurp.KeyPress, txtCuentaContableDolares.KeyPress, txtCuentaContable.KeyPress, _
+    txtColonia.KeyPress, txtCodigoPostal.KeyPress, txtCodigoCliente.KeyPress, txtCiudad.KeyPress, txtCalle.KeyPress, DpFecha.KeyPress, chkPermitirVentaCredito.KeyPress, _
+    cboZona.KeyPress, cboVendedor.KeyPress, cboTipoPersona.KeyPress, cboTipoMercado.KeyPress, CboEstatus.KeyPress, cboEstado.KeyPress, txtCorreoCliente.KeyPress, _
+    cboMetodoPago.KeyPress, cboMetodoPagoDlls.KeyPress, txtNumeroRegistroIdentificadorExtranjero.KeyPress, cboPais.KeyPress, cboMunicipio.KeyPress
+        txtNoBeep(e)
+    End Sub
 
     Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtNumeroCuentaDolares.KeyPress, TxtCodigoAlmacen.KeyPress
         txtSoloNumerosEnteros(e)
@@ -424,9 +449,10 @@ busca:
 
 #Region "Métodos y procedimientos"
     Private Sub Catalogo_Clientes_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.CargaEstados()
-        Me.CargaVendedores()
-        Me.CargaZonas()
+        Me.DesplegarPaises()
+        'Me.DesplegarEstados()
+        Me.DesplegarVendedores()
+        Me.DesplegarZonas()
         Me.DesplegarTiposMercados()
         Me.DesplegarElementos()
         Me.DesplegarMetodoPago()
@@ -461,6 +487,9 @@ busca:
                     Me.txtColonia.Enabled = True
                     Me.txtLocalidad.Enabled = True
                     Me.txtPais.Enabled = True
+                    Me.cboPais.Enabled = True
+                    Me.cboEstado.Enabled = True
+                    Me.cboMunicipio.Enabled = True
                     'Me.txtCuentaContable.Enabled = True
                     Me.txtCuentaContableDolares.Enabled = False
                     Me.BtnGeneraCuentaContableDolares.Enabled = False
@@ -510,6 +539,9 @@ busca:
                     Me.txtColonia.Enabled = True
                     Me.txtLocalidad.Enabled = True
                     Me.txtPais.Enabled = True
+                    Me.cboPais.Enabled = True
+                    Me.cboEstado.Enabled = True
+                    Me.cboMunicipio.Enabled = True
                     Me.txtCuentaContableDolares.Enabled = False
                     Me.BtnGeneraCuentaContableDolares.Enabled = False
                     Me.txtDiasPlazo.Enabled = True
@@ -558,6 +590,9 @@ busca:
                     Me.txtColonia.Enabled = False
                     Me.txtLocalidad.Enabled = False
                     Me.txtPais.Enabled = False
+                    Me.cboPais.Enabled = False
+                    Me.cboEstado.Enabled = False
+                    Me.cboMunicipio.Enabled = False
                     Me.txtCuentaContableDolares.Enabled = False
                     Me.BtnGeneraCuentaContableDolares.Enabled = False
                     Me.txtDiasPlazo.Enabled = False
@@ -611,6 +646,9 @@ busca:
             Me.txtCorreoCliente.Text = ""
             Me.txtNumeroCuenta.Text = ""
             Me.txtNumeroCuentaDolares.Text = ""
+            Me.cboPais.SelectedIndex = -1
+            Me.cboEstado.SelectedIndex = -1
+            Me.cboMunicipio.SelectedIndex = -1
 
             Me.CboEstatus.SelectedItem = "A"
             Me.cboEstado.SelectedValue = "SIN"
@@ -690,7 +728,8 @@ busca:
 
         Try
             If txtLEN(Me.TxtNombreCliente.Text) = False Then
-                MsgBox("Asígne el nombre del cliente", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("Asígne el nombre del cliente.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.TxtNombreCliente.Focus()
                 Exit Sub
             End If
 
@@ -699,12 +738,26 @@ busca:
 
                 For n = 0 To UBound(tabla, 1)
                     If IsEmailSyntaxValid(tabla(n)) = False Then
-                        MsgBox("El correo del cliente es invalido, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+                        MsgBox("El correo del cliente es inválido, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
                         Me.txtCorreoCliente.Focus()
                         Exit Sub
                     End If
                 Next
 
+            End If
+
+            If Me.cboPais.SelectedIndex = -1 Then
+                MsgBox("Seleccione por favor el pais del cliente.", MsgBoxStyle.Exclamation, Me.Name)
+                Me.cboPais.Focus()
+                Return
+            End If
+
+            If Me.cboPais.SelectedValue.ToString <> "MEX" Then
+                If Me.cboEstado.SelectedIndex = -1 Then
+                    MsgBox("Seleccione por favor el estado del cliente(es obligatorio si es pais<>mexico).", MsgBoxStyle.Exclamation, Me.Name)
+                    Me.cboEstado.Focus()
+                    Return
+                End If
             End If
 
             If Me.cboMetodoPago.SelectedValue Is Nothing Then
@@ -717,12 +770,12 @@ busca:
 
             If oMetodoPago.REQUIERE_NUMERO_CUENTA_PAGO = 1 Then
                 If txtLEN(Me.txtNumeroCuenta.Text) = False Then
-                    MsgBox("El metodo de pago requiere numero de cuenta, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+                    MsgBox("El método de pago requiere número de cuenta, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
                     Me.txtNumeroCuenta.Focus()
                     Exit Sub
                 Else
                     If Len(Me.txtNumeroCuenta.Text) <> 4 Then
-                        MsgBox("El numero de cuenta debe ser de 4 caracteres, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+                        MsgBox("El número de cuenta debe ser de 4 caracteres, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
                         Me.txtNumeroCuenta.Focus()
                         Exit Sub
                     End If
@@ -740,12 +793,12 @@ busca:
 
                 If oMetodoPago.REQUIERE_NUMERO_CUENTA_PAGO = 1 Then
                     If txtLEN(Me.txtNumeroCuentaDolares.Text) = False Then
-                        MsgBox("El metodo de pago requiere numero de cuenta dólares, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+                        MsgBox("El método de pago requiere número de cuenta dólares, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
                         Me.txtNumeroCuentaDolares.Focus()
                         Exit Sub
                     Else
                         If Len(Me.txtNumeroCuentaDolares.Text) <> 4 Then
-                            MsgBox("El numero de cuenta dólares debe ser de 4 caracteres, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+                            MsgBox("El número de cuenta dólares debe ser de 4 caracteres, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
                             Me.txtNumeroCuentaDolares.Focus()
                             Exit Sub
                         End If
@@ -795,6 +848,18 @@ busca:
                         .FORMATO_NOMBRE_XML = Me.cboNombreXML.Text
                         .NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO = Me.txtNumeroRegistroIdentificadorExtranjero.Text.Trim
                         .CODIGO_ALMACEN = Me.TxtCodigoAlmacen.Text
+                        .CODIGO_PAIS_SAT = Me.cboPais.SelectedValue.ToString
+                        If Me.cboEstado.SelectedIndex <> -1 Then
+                            .CODIGO_ESTADO = Me.cboEstado.SelectedValue.ToString
+                        Else
+                            .CODIGO_ESTADO = ""
+                        End If
+
+                        If Me.cboMunicipio.SelectedIndex <> -1 Then
+                            .CODIGO_MUNICIPIO = Me.cboMunicipio.SelectedValue.ToString
+                        Else
+                            .CODIGO_MUNICIPIO = "0"
+                        End If
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -812,7 +877,7 @@ busca:
                         MsgBox(Me.msgElemento & " Grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
                         Me.Estado = enumEstados.CONSULTA
                         Me.Cambia_Estado()
-                        DesplegarElementos()
+                        Me.DesplegarElementos()
 
                     End With
 
@@ -902,26 +967,7 @@ busca:
         Me.cboTipoPersona.Items.Add("FISICA")
     End Function
 
-    Private Sub CargaEstados()
-        Try
-            Dim oElementos As New Class_CatClientes
-            With Me.cboEstado
-                .DisplayMember = "NOMBRE_ESTADO"
-                .ValueMember = "NOMBRE_ESTADO"
-                Dim dView As New Data.DataView(oElementos.ObtenerEstadosParaCatalogoClientes)
-                dView.Sort = "NOMBRE_ESTADO"
-                .DataSource = dView
-                'Mejor forzar no seleccione ninguno, por si dan de alta del extranjero, no se vaya a quedar como sinaloa.
-                'If dView.Count > 0 Then
-                '    .SelectedValue = "SL"
-                'End If
-            End With
-        Catch ex As Exception
-            HandleError(Me.Name, "CargaEstados", ex)
-        End Try
-    End Sub
-
-    Private Sub CargaZonas()
+    Private Sub DesplegarZonas()
         Try
             Dim oElementos As New Class_CatZonas
             With Me.cboZona
@@ -935,7 +981,7 @@ busca:
                 End If
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "CargaZonas", ex)
+            HandleError(Me.Name, "DesplegarZonas", ex)
         End Try
     End Sub
 
@@ -957,7 +1003,7 @@ busca:
         End Try
     End Sub
 
-    Private Sub CargaVendedores()
+    Private Sub DesplegarVendedores()
         Try
             Dim oElementos As New Class_CatVendedores
             With Me.cboVendedor
@@ -971,7 +1017,7 @@ busca:
                 End If
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "CargaVendedores", ex)
+            HandleError(Me.Name, "DesplegarVendedores", ex)
         End Try
     End Sub
 
@@ -1004,13 +1050,25 @@ busca:
                     Me.txtColonia.Text = .COLONIA
                     Me.txtLocalidad.Text = .LOCALIDAD
                     Me.txtPais.Text = .PAIS
+                    'Me.cboEstado.SelectedValue = .ESTADO
+
+                    If txtLEN(.CODIGO_PAIS_SAT) = True Then
+                        Me.cboPais.SelectedValue = .CODIGO_PAIS_SAT
+
+                        If txtLEN(.CODIGO_ESTADO) = True Then
+                            Me.cboEstado.SelectedValue = .CODIGO_ESTADO
+
+                            If txtLEN(.CODIGO_MUNICIPIO) = True Then
+                                Me.cboMunicipio.SelectedValue = .CODIGO_MUNICIPIO
+                            End If
+                        End If
+                    End If
                     Me.txtCuentaContable.Text = .CUENTA_CONTABLE
                     Me.txtCuentaContableDolares.Text = .CUENTA_CONTABLE_DOLARES
                     Me.txtDiasPlazo.Text = .DIAS_PLAZO.ToString
                     Me.txtLimiteCredito.Text = FormatImporteContable(CDbl(.LIMITE_CREDITO.ToString), True)
 
                     Me.CboEstatus.Text = .Estatus
-                    Me.cboEstado.SelectedValue = .ESTADO
                     Me.cboVendedor.SelectedValue = .CODIGO_VENDEDOR
                     Me.cboZona.SelectedValue = .CODIGO_ZONA
                     Me.txtCorreoCliente.Text = .CORREO_CLIENTE.ToString
@@ -1104,7 +1162,70 @@ busca:
         End Try
     End Sub
 
+    Private Sub DesplegarPaises()
+        Try
+            Me.cboEstado.DataSource = Nothing
+            Me.cboMunicipio.DataSource = Nothing
+            Dim oElementos As New Class_CatPaises
+            With Me.cboPais
+                .DisplayMember = "NOMBRE_PAIS"
+                .ValueMember = "CODIGO_PAIS_SAT"
+                Dim dView As New Data.DataView(oElementos.ObtenerElementos)
+                dView.Sort = "NOMBRE_PAIS"
+                .DataSource = dView
+                .SelectedIndex = -1
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarPaises", ex)
+        End Try
+    End Sub
+
+    Private Sub DesplegarEstados()
+        Try
+            Me.cboEstado.DataSource = Nothing
+            Me.cboMunicipio.DataSource = Nothing
+            If Me.cboPais.SelectedIndex = -1 Then
+                Return
+            End If
+            Dim oElementos As New Class_SisEstados
+            With Me.cboEstado
+                .DisplayMember = "NOMBRE_ESTADO"
+                .ValueMember = "CODIGO_ESTADO"
+                Dim dView As New Data.DataView(oElementos.ObtenerElementos(Me.cboPais.SelectedValue.ToString))
+                dView.Sort = "NOMBRE_ESTADO"
+                .DataSource = dView
+                .SelectedIndex = -1
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarEstados", ex)
+        End Try
+    End Sub
+
+    Private Sub DesplegarMunicipios()
+        Try
+            Me.cboMunicipio.DataSource = Nothing
+            If Me.cboEstado.SelectedIndex = -1 Then
+                Return
+            End If
+            Dim oElementos As New Class_CatMunicipios
+            With Me.cboMunicipio
+                .DisplayMember = "NOMBRE_MUNICIPIO"
+                .ValueMember = "CODIGO_MUNICIPIO"
+                Dim dView As New Data.DataView(oElementos.ObtenerElementos(Me.cboEstado.SelectedValue.ToString))
+                dView.Sort = "NOMBRE_MUNICIPIO"
+                .DataSource = dView
+                .SelectedIndex = -1
+            End With
+            If Me.cboMunicipio.Items.Count = 0 Then
+                Me.txtCiudad.ReadOnly = False
+            Else
+                Me.txtCiudad.ReadOnly = True
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarMunicipios", ex)
+        End Try
+    End Sub
+
 #End Region
 
-    
 End Class

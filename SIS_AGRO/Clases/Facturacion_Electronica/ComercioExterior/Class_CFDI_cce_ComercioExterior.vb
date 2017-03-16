@@ -152,7 +152,7 @@ Friend Class Class_CFDI_cce_ComercioExterior
                 Dim NdDomicilioDestinatario As MSXML2.IXMLDOMElement
                 NdDomicilioDestinatario = Doc.createNode(MSXML2.tagDOMNodeType.NODE_ELEMENT, "cce:Domicilio", xmlns)
 
-                If txtLEN(Me.Destinatario.Domicilio.NumeroExterior) = True Then
+                If txtLEN(Me.Destinatario.Domicilio.Calle) = True Then
                     NdDomicilioDestinatario.setAttribute("Calle", Me.Destinatario.Domicilio.Calle)
                 Else
                     MsgBox("El valor de Destinatario.Domicilio.Calle es un dato requerido.", MsgBoxStyle.Exclamation, Me.NombreClase)

@@ -105,6 +105,10 @@ Public Class Frm_Embarques_Captura_Embarque
     Private Sub btnConsultarSalida_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnConsultarSalida.Click
         Me.ConsultarSalida()
     End Sub
+
+    Private Sub btnTimbrarFactura_Click(sender As Object, e As EventArgs) Handles btnTimbrarFactura.Click
+        Me.TimbrarFactura()
+    End Sub
 #End Region
 
 #Region "Eventos de objetos"
@@ -537,7 +541,9 @@ Buscar:
             Me.GeneraFolio()
 
             Me.btnFacturar.Enabled = False
+            Me.btnCancelarFactura.Enabled = False
             'Me.btnExportarArchivos.Enabled = False
+            Me.btnTimbrarFactura.Enabled = False
 
             If Me.oDocumento.CODIGO_MERCADO = "E" Then
                 Me.GeneraFolioAARC()
@@ -1115,11 +1121,18 @@ Buscar:
             Me.btnFacturar.Text = "Facturar"
             Me.btnFacturar.Enabled = False
             Me.btnCancelarFactura.Enabled = False
+            Me.btnTimbrarFactura.Enabled = False
 
             If Me.oEmbarque.FACTURA_GENERADA = True Then
                 Me.btnFacturar.Enabled = True
                 Me.btnFacturar.Text = "Ver factura"
                 'Me.btnExportarArchivos.Enabled = True
+
+                Dim oVenta As New Class_Ventas_Global(Me.oEmbarque.FOLIO_VENTA)
+
+                If oVenta.TIMBRADO_CFDI = "0" Then
+                    Me.btnTimbrarFactura.Enabled = True
+                End If
 
                 Me.Cambia_Estado(enumEstados.FACTURADO) 'Se bloquea con este modo al embarque(no se le pueden hacer modificaciones)
             End If
@@ -1135,7 +1148,7 @@ Buscar:
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-            Dim sql1 As New Class_find("SELECT  COUNT(*)  " &
+            Dim sql1 As New Class_find("SELECT COUNT(*) " & _
                   "FROM VW_EMB_EMBARQUE_DETALLE_EXTENDIDO WHERE FOLIO_EMBARQUE='" & Me.oEmbarque.FOLIO_EMBARQUE & "' AND GENERARA_SALIDA=1 AND SALIDA_EMPAQUE_GENERADA=0")
             If valorNumerico(sql1.Result1) < 1 Then
                 Me.BtnGeneraSalida.Enabled = False
@@ -2121,6 +2134,11 @@ BuscaPalet:
                 End If
 
                 oVenta = New Class_Ventas_Global(Me.oEmbarque.FOLIO_VENTA)
+
+                If oVenta.TIMBRADO_CFDI = "0" Then
+                    MsgBox("Advertencia. La factura no esta timbrada.", MsgBoxStyle.Exclamation, Me.Text)
+                End If
+
                 oVenta.Imprimir()
                 oVenta = Nothing
 
@@ -2130,7 +2148,7 @@ BuscaPalet:
             'Por protección se valida esto(aunque el botón seguramente estará bloqueado desde el consultar).
             'If Me.oEmbarque.ES_FACTURA_EMBARQUE_EXTRANJERO = False Then
             If txtLEN(Me.oEmbarque.CODIGO_TIPO_DOCUMENTO_FACTURA_EMBARQUE_EXTRANJERO) = False Then
-                MsgBox("Sólo embarques al extranjero se pueden facturar desde esta pantalla. " & vbCrLf &
+                MsgBox("Sólo embarques al extranjero se pueden facturar desde esta pantalla. " & vbCrLf & _
                        "Los nacionales se hacen directamente en la pantalla de facturación.", MsgBoxStyle.Exclamation, Me.Text)
                 Return False
             End If
@@ -2174,6 +2192,45 @@ BuscaPalet:
         Return bResultado
     End Function
 
+    Private Function TimbrarFactura() As Boolean
+        Dim bResultado As Boolean = False
+        Dim sProcedure As String = "TimbrarFactura"
+        Dim oVenta As Class_Ventas_Global
+
+        Try
+            Me.oEmbarque = New Class_Embarques_EmbarqueGlobal(Me.txtFolioEmbarque.Text, Me.cboDocumento.SelectedValue.ToString)
+
+            'Si el embarque ya esta facturado mostramos la impresión en pantalla de la factura.
+            If Me.oEmbarque.FACTURA_GENERADA = True Then
+
+                If txtLEN(Me.oEmbarque.FOLIO_VENTA) = False Then
+                    MsgBox("El embarque no tiene registrado el folio de la factura.", MsgBoxStyle.Exclamation, Me.Text)
+                    Return False
+                End If
+
+                oVenta = New Class_Ventas_Global(Me.oEmbarque.FOLIO_VENTA)
+                If oVenta.Existe = False Then
+                    Return False
+                End If
+
+                If oVenta.TIMBRADO_CFDI = "1" Then
+                    MsgBox("La factura ya esta timbrada.", vbExclamation, sProcedure)
+                    Return False  'Salimos
+                Else
+                    bResultado = oVenta.GeneraFacturaElectronica(True, True)
+                End If
+
+                If bResultado = True Then
+                    Me.btnTimbrarFactura.Enabled = False
+                End If
+            End If
+
+        Catch ex As Exception
+            HandleError(Me.Name, "TimbrarFactura", ex)
+        End Try
+
+        Return bResultado
+    End Function
 
     Private Function GestionaCancelarFactura() As Boolean
         Dim bResultado As Boolean = False
@@ -2185,7 +2242,7 @@ BuscaPalet:
             'Por protección se valida esto(aunque el botón seguramente estará bloqueado desde el consultar).
             'If Me.oEmbarque.ES_FACTURA_EMBARQUE_EXTRANJERO = False Then
             If txtLEN(Me.oEmbarque.CODIGO_TIPO_DOCUMENTO_FACTURA_EMBARQUE_EXTRANJERO) = False Then
-                MsgBox("Sólo embarques al extranjero se les puede cancelar la facturar desde esta pantalla. " & vbCrLf &
+                MsgBox("Sólo embarques al extranjero se les puede cancelar la facturar desde esta pantalla. " & vbCrLf & _
                        "Los nacionales se hacen directamente en la pantalla de facturación.", MsgBoxStyle.Exclamation, Me.Text)
                 Return False
             End If

@@ -60,7 +60,7 @@ Public Class Rpt_Q_ComparativosVenta
             .DisplayMember = "UNIDAD_VENTA"
             .ValueMember = "UNIDAD_VENTA"
 
-            Dim dView As New Data.DataView(oElementos.ObtenerPrecentaciones)
+            Dim dView As New Data.DataView(oElementos.ObtenerPresentaciones)
             dView.Sort = "UNIDAD_VENTA"
             .DataSource = dView
             .Text = "TODOS"

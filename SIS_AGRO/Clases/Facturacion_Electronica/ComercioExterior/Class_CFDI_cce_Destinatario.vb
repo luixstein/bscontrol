@@ -6,7 +6,7 @@ Friend Class Class_CFDI_cce_Destinatario
     Public Rfc As String
     Public Curp As String
     Public Nombre As String
-    Public Domicilio As ClassCFDI_cce_DestinatarioDomicilio
+    Public Domicilio As New ClassCFDI_cce_DestinatarioDomicilio
 End Class
 
 Friend Class ClassCFDI_cce_DestinatarioDomicilio

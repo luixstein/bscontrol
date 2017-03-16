@@ -161,6 +161,7 @@ Public Class Catalogo_Cultivos
         Me.TxtAliasNacional.Text = ""
         Me.TxtAliasExtranjero.Text = ""
         Me.TxtObservacion1.Text = ""
+        Me.txtFraccionArancelaria.Text = ""
     End Sub
 
     Private Sub DesplegarElementos()
@@ -170,33 +171,33 @@ Public Class Catalogo_Cultivos
             .Columns("CODIGO_CULTIVO").Width = 30
             .Columns("NOMBRE_CULTIVO").Width = 350
         End With
-
     End Sub
 
     Private Sub LlenaElemento(ByVal iCodigo_Elemento As String)
         Dim oElemento As New Class_CatCultivos
         oElemento.Codigo_Cultivo = iCodigo_Elemento
-        If oElemento.Consultar Then
+        If oElemento.Consultar = True Then
             With oElemento
-                Me.TxtCodCultivo.Text = .CODIGO_CULTIVO.ToString
-                Me.TxtNomCultivo.Text = .NOMBRE_CULTIVO.ToString
-                Me.txtCuentaPredio.Text = .CUENTA_CONTABLE_PREDIO.ToString
-                Me.TxtAliasExtranjero.Text = .ALIAS_EXTRANJERO.ToString
-                Me.TxtAliasNacional.Text = .ALIAS_NACIONAL.ToString
-                Me.TxtObservacion1.Text = .CUENTA_CONTABLE_COSTOS_DIRECTOS_PRODUCCION.ToString
+                Me.TxtCodCultivo.Text = .CODIGO_CULTIVO
+                Me.TxtNomCultivo.Text = .NOMBRE_CULTIVO
+                Me.txtCuentaPredio.Text = .CUENTA_CONTABLE_PREDIO
+                Me.TxtAliasExtranjero.Text = .ALIAS_EXTRANJERO
+                Me.TxtAliasNacional.Text = .ALIAS_NACIONAL
+                Me.TxtObservacion1.Text = .CUENTA_CONTABLE_COSTOS_DIRECTOS_PRODUCCION
+                Me.txtFraccionArancelaria.Text = .FRACCION_ARANCELARIA
             End With
         End If
         oElemento = Nothing
     End Sub
 
-    Private Sub Grabar_Elemento()
+    Private Function Grabar_Elemento() As Boolean
         Dim oElemento As New Class_CatCultivos
-        Dim Grabado As Boolean = False
+        Dim bResultado As Boolean = False
 
         If txtLEN(Me.TxtNomCultivo.Text) = False Then
             MsgBox("Asígne el nombre del cultivo", MsgBoxStyle.Exclamation, Me.Text)
             Me.TxtNomCultivo.Focus()
-            Exit Sub
+            Return False
         End If
 
         Select Case Me.Estado
@@ -211,22 +212,22 @@ Public Class Catalogo_Cultivos
                         .ALIAS_NACIONAL = Me.TxtAliasNacional.Text.ToUpper
                         '.CUENTA_CONTABLE_COSTOS_DIRECTOS_PRODUCCION = Me.TxtObservacion1.Text.ToUpper
                         .ES_GENERICO = Convert.ToInt32(Me.ckbGenerico.Checked).ToString
+                        .FRACCION_ARANCELARIA = Me.txtFraccionArancelaria.Text
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 If .Insertar() Then
-                                    Grabado = True
+                                    bResultado = True
                                     Me.Estado = enumEstados.CONSULTA
                                 End If
                             Case enumEstados.EDICION
-
                                 If .Actualizar() Then
-                                    Grabado = True
+                                    bResultado = True
                                     Me.Estado = enumEstados.CONSULTA
                                 End If
                         End Select
 
-                        If Grabado = True Then
+                        If bResultado = True Then
                             MsgBox(Me.msgElemento & " Grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
                             Me.Refrescar()
                             Me.Cambia_Estado()
@@ -241,7 +242,9 @@ Public Class Catalogo_Cultivos
                     oElemento = Nothing
                 End Try
         End Select
-    End Sub
+
+        Return bResultado
+    End Function
 
 #End Region
 
@@ -277,7 +280,8 @@ Public Class Catalogo_Cultivos
     'End Sub
 #End Region
 #End Region
-#Region " Eventos de TxtFiltro"
+
+#Region "Eventos de TxtFiltro"
     Private Sub txtFiltro_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFiltro.TextChanged
         Dim oElementos As New Class_CatCultivos
         Me.Grid.DataSource = Nothing
@@ -308,7 +312,7 @@ Public Class Catalogo_Cultivos
 
 #Region "Eventos Genericos"
     Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtNomCultivo.KeyPress, _
-    txtCuentaPredio.KeyPress, TxtAliasNacional.KeyPress, TxtAliasExtranjero.KeyPress, TxtObservacion1.KeyPress
+    txtCuentaPredio.KeyPress, TxtAliasNacional.KeyPress, TxtAliasExtranjero.KeyPress, TxtObservacion1.KeyPress, txtFraccionArancelaria.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -385,6 +389,14 @@ Public Class Catalogo_Cultivos
                 Me.TxtAliasNacional.Focus()
         End Select
     End Sub
+
+    Private Sub txtFraccionArancelaria_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtFraccionArancelaria.KeyDown
+        Select Case e.KeyCode
+            Case Keys.Return
+                txtTAB(e)
+        End Select
+    End Sub
+
 #Region "Validating específicos"
 
 #End Region
@@ -394,4 +406,5 @@ Public Class Catalogo_Cultivos
     End Sub
 
 #End Region
+
 End Class

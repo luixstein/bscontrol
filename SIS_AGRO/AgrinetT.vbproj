@@ -64,11 +64,11 @@
   <ItemGroup>
     <Reference Include="cfdi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Pack cfdi\cfdi_dll_7\cfdi_dll\cfdi\bin\Release\cfdi.dll</HintPath>
+      <HintPath>bin\Debug\cfdi.dll</HintPath>
     </Reference>
     <Reference Include="co32, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Users\AidaC\Desktop\Pack cfdi\cfdi_dll\testDLL\bin\Release\co32.dll</HintPath>
+      <HintPath>bin\Debug\co32.dll</HintPath>
     </Reference>
     <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=12.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="CrystalDecisions.Enterprise.Framework, Version=12.0.1100.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
@@ -160,6 +160,8 @@
     <Compile Include="Clases\Catalogos\Class_CatArticulos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatBancos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatCajasTransportes.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatMunicipios.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatPaises.vb" />
     <Compile Include="Clases\Catalogos\Class_CatVehiculos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatCategorias.vb" />
     <Compile Include="Clases\Catalogos\Class_CatChoferes.vb" />
@@ -173,6 +175,7 @@
     <Compile Include="Clases\Catalogos\Class_CatMonedas.vb" />
     <Compile Include="Clases\Catalogos\Class_CatTiposCambio.vb" />
     <Compile Include="Clases\Catalogos\Class_Cat_UnidadesVenta.vb" />
+    <Compile Include="Clases\Catalogos\Class_SisEstados.vb" />
     <Compile Include="Clases\Catalogos\Class_SisTiposProveedores.vb" />
     <Compile Include="Clases\Catalogos\Class_CatTiposCategorias.vb" />
     <Compile Include="Clases\Catalogos\Class_CXPCatalogoConceptosPagos.vb" />

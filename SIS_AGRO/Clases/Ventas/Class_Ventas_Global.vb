@@ -61,6 +61,8 @@ Public Class Class_Ventas_Global
     Private _FOLIO_EMBARQUE As String
     Private _TOTAL_DOLARES As Double
     Private _SALDO_DOLARES As Double
+    Private _SUBTOTAL_USD As Double
+    Private _DESCUENTO_USD As Double
     Private _VENTA_TOTAL As Double
     Private _CONDICIONES_DE_PAGO As String
     'CFD
@@ -95,6 +97,7 @@ Public Class Class_Ventas_Global
     Private _FELECTRONICA_CER As String
     Private _FELECTRONICA_KEY As String
     Private _FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA As String
+    Private _ES_FACTURA_EMBARQUE_EXTRANJERO As Boolean = False
 #End Region
 
 #Region "Campos públicos"
@@ -524,6 +527,23 @@ Public Class Class_Ventas_Global
             Me._SALDO_DOLARES = Value
         End Set
     End Property
+    Public Property SUBTOTAL_USD() As Double
+        Get
+            Return Me._SUBTOTAL_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._SUBTOTAL_USD = Value
+        End Set
+    End Property
+
+    Public Property DESCUENTO_USD() As Double
+        Get
+            Return Me._DESCUENTO_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._DESCUENTO_USD = Value
+        End Set
+    End Property
 
     Public Property VENTA_TOTAL() As Double
         Get
@@ -687,6 +707,11 @@ Public Class Class_Ventas_Global
             Return Me._FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA
         End Get
     End Property
+    Public ReadOnly Property ES_FACTURA_EMBARQUE_EXTRANJERO() As Boolean
+        Get
+            Return Me._ES_FACTURA_EMBARQUE_EXTRANJERO
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedades públicos"
@@ -715,18 +740,18 @@ Public Class Class_Ventas_Global
 
         Me._Conexion = New SqlConnection(Empresa_Sistema.conexion)
 
-        Me._QuerySelect = "SELECT G.* " &
-            ",U1.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO,U2.NOMBRE_USUARIO NOMBRE_USUARIO_CANCELO,CFD.FELECTRONICA_CER,CFD.FELECTRONICA_KEY,CFD.CONTRASEÑA, " &
-            "MP.NOMBRE_METODO_PAGO,RF.NOMBRE_REGIMEN_FISCAL,CFFE.SERIE," &
-            "(SELECT MAX(FOLIO_EMBARQUE) FROM EMB_EMBARQUE_GLOBAL WHERE FOLIO_VENTA=G.FOLIO_VENTA) FOLIO_EMBARQUE,DOC.NOMBRE_FORMATO " &
-            "FROM VENTA_GLOBAL G " &
-            "INNER JOIN CFD_CAT_METODOS_PAGO MP ON(G.CODIGO_METODO_PAGO=MP.CODIGO_METODO_PAGO) " &
-            "INNER JOIN CDF_CAT_TIPOS_REGIMENES_FISCALES RF ON(G.CODIGO_REGIMEN_FISCAL=RF.CODIGO_REGIMEN_FISCAL) " &
-            "INNER JOIN SIS_USUARIOS U1 ON(G.CODIGO_USUARIO_GRABO=U1.CODIGO_USUARIO) " &
-            "LEFT JOIN SIS_USUARIOS U2 ON(G.CODIGO_USUARIO_CANCELO=U2.CODIGO_USUARIO) " &
-            "LEFT JOIN SIS_CFD_CATALOGO_CERTIFICADOS CFD ON(G.ID_SIS_CFD_CATALOGO_CERTIFICADOS=CFD.ID_SIS_CFD_CATALOGO_CERTIFICADOS) " &
-            "LEFT JOIN CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS CFFE ON(G.IDCATALOGO_FOLIO_FELECTRONICA=CFFE.IDCATALOGO_FOLIO_FELECTRONICA)" &
-            "INNER JOIN SIS_CAT_DOCUMENTOS DOC ON(G.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO)"
+        Me._QuerySelect = "SELECT G.* " & _
+            ",U1.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO,U2.NOMBRE_USUARIO NOMBRE_USUARIO_CANCELO,CFD.FELECTRONICA_CER,CFD.FELECTRONICA_KEY,CFD.CONTRASEÑA, " & _
+            "MP.NOMBRE_METODO_PAGO,RF.NOMBRE_REGIMEN_FISCAL,CFFE.SERIE," & _
+            "(SELECT MAX(FOLIO_EMBARQUE) FROM EMB_EMBARQUE_GLOBAL WHERE FOLIO_VENTA=G.FOLIO_VENTA) FOLIO_EMBARQUE,DOC.NOMBRE_FORMATO,DOC.ES_FACTURA_EMBARQUE_EXTRANJERO " & _
+            "FROM VENTA_GLOBAL G " & _
+            "INNER JOIN CFD_CAT_METODOS_PAGO MP ON(G.CODIGO_METODO_PAGO=MP.CODIGO_METODO_PAGO) " & _
+            "INNER JOIN CDF_CAT_TIPOS_REGIMENES_FISCALES RF ON(G.CODIGO_REGIMEN_FISCAL=RF.CODIGO_REGIMEN_FISCAL) " & _
+            "INNER JOIN SIS_USUARIOS U1 ON(G.CODIGO_USUARIO_GRABO=U1.CODIGO_USUARIO) " & _
+            "LEFT JOIN SIS_USUARIOS U2 ON(G.CODIGO_USUARIO_CANCELO=U2.CODIGO_USUARIO) " & _
+            "LEFT JOIN SIS_CFD_CATALOGO_CERTIFICADOS CFD ON(G.ID_SIS_CFD_CATALOGO_CERTIFICADOS=CFD.ID_SIS_CFD_CATALOGO_CERTIFICADOS) " & _
+            "LEFT JOIN CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS CFFE ON(G.IDCATALOGO_FOLIO_FELECTRONICA=CFFE.IDCATALOGO_FOLIO_FELECTRONICA)" & _
+            "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(G.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) "
 
         Me._QueryOrder = " ORDER BY G.FOLIO_VENTA"
         oVentasDetalle = New Class_Ventas_Detalle
@@ -848,9 +873,10 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@ES_VENTA_PUBLICO_GENERAL", SqlDbType.NVarChar, 1) : sqlParametro.Value = "" & Me._ES_VENTA_PUBLICO_GENERAL
             'sqlParametro = .Parameters.Add("@FOLIO_EMBARQUE", SqlDbType.NVarChar, 15) : sqlParametro.Value = "" & Me._FOLIO_EMBARQUE
             sqlParametro = .Parameters.Add("@TOTAL_DOLARES", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_DOLARES
-            'CFD
             sqlParametro = .Parameters.Add("@CODIGO_METODO_PAGO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_METODO_PAGO
             sqlParametro = .Parameters.Add("@NUMERO_CUENTA_PAGO", SqlDbType.NVarChar, 40) : sqlParametro.Value = "" & Me._NUMERO_CUENTA_PAGO
+            sqlParametro = .Parameters.Add("@SUBTOTAL_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL_USD
+            sqlParametro = .Parameters.Add("@DESCUENTO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._DESCUENTO_USD
 
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "INSERTAR"
             Try
@@ -922,8 +948,8 @@ Public Class Class_Ventas_Global
                 cmd.Dispose()
                 sqlParametro = Nothing
             End Try
-            Return bResultado
         End With
+        Return bResultado
     End Function
 
     Public Function Cancelar() As Boolean
@@ -973,7 +999,7 @@ Public Class Class_Ventas_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Cancelar", ex)
+                HandleError(Me._Nombre_Catalogo, "ActualizaPrecioTotalGlobal", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -1040,6 +1066,8 @@ Public Class Class_Ventas_Global
                     Me._TIPO_VENTA = "" & dReader("TIPO_VENTA").ToString()
                     Me._SALDO_DOLARES = CDec(dReader("SALDO_DOLARES"))
                     Me._TOTAL_DOLARES = CDec(dReader("TOTAL_DOLARES"))
+                    Me._SUBTOTAL_USD = CDec(dReader("SUBTOTAL_USD"))
+                    Me._DESCUENTO_USD = CDec(dReader("DESCUENTO_USD"))
                     Me._ES_VENTA_PUBLICO_GENERAL = "" & dReader("ES_VENTA_PUBLICO_GENERAL").ToString()
                     Me._FOLIO_EMBARQUE = "" & dReader("FOLIO_EMBARQUE").ToString()
                     'CDF
@@ -1070,6 +1098,7 @@ Public Class Class_Ventas_Global
                     Me._VERSION_ESQUEMA_XML = "" & dReader("VERSION_ESQUEMA_XML").ToString
                     Me._SERIE = "" & Trim(dReader("SERIE").ToString)
                     Me._TIENE_COMPLEMENTO_COMERCIO_EXTERIOR = CBool(dReader("TIENE_COMPLEMENTO_COMERCIO_EXTERIOR").ToString)
+                    Me._ES_FACTURA_EMBARQUE_EXTRANJERO = CBool(dReader("ES_FACTURA_EMBARQUE_EXTRANJERO"))
 
                     Me._Nombre_Formato = "" & Trim(dReader("NOMBRE_FORMATO").ToString)
 
@@ -1095,7 +1124,7 @@ Public Class Class_Ventas_Global
             sSQL = "SELECT R.CODIGO_ARTICULO, " & _
                 "CASE WHEN A.ES_SERIALIZABLE = '1' THEN 'SER' WHEN A.INVENTARIABLE= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO, " & _
                 "R.DESCRIPCION,R.CANTIDAD,R.PRECIO,R.UNIDAD_VENTA,ISNULL(R.CANTIDAD_KILOS,0) CANTIDAD_KILOS,ISNULL(R.PRECIO_KILOS,0) PRECIO_KILOS,R.IMPUESTO_PORCENTAJE,R.IMPORTE,ISNULL(R.IMPORTE_KILOS,0) IMPORTE_KILOS," &
-                "R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_VENTA_DETALLE,R.ES_PRODUCTO_KILOS,R.CODIGO_CENTRO_COSTO, CC.NOMBRE_CENTRO_COSTO  " &
+                "R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_VENTA_DETALLE,R.ES_PRODUCTO_KILOS,R.CODIGO_CENTRO_COSTO, CC.NOMBRE_CENTRO_COSTO,R.PRECIO_USD,R.IMPORTE_USD  " &
                 "FROM VENTA_DETALLE R " & _
                 "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
                 "INNER JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO = CC.CODIGO_CENTRO_COSTO) " & _
@@ -1142,13 +1171,14 @@ Public Class Class_Ventas_Global
         Dim sSQL As String
 
         Try
-            sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,ISNULL(V.FRACCION_ARANCELARIA,'')FRACCION_ARANCELARIA,R.CANTIDAD,ROUND(R.PRECIO/G.TIPO_DE_CAMBIO,2) PRECIO_USD,(R.CANTIDAD*R.PRECIO)/G.TIPO_DE_CAMBIO IMPORTE_USD, " &
-                "ISNULL(V.NOMBRE_CULTIVO,'') NOMBRE_CULTIVO " &
-                "FROM VENTA_DETALLE R " &
-                "INNER JOIN VENTA_GLOBAL G ON(R.FOLIO_VENTA=G.FOLIO_VENTA) " &
-                "LEFT JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
-                "LEFT JOIN CAT_CULTIVOS V ON(A.CODIGO_CULTIVO=V.CODIGO_CULTIVO) " &
-                "WHERE G.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' " &
+            'sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,ISNULL(V.FRACCION_ARANCELARIA,'')FRACCION_ARANCELARIA,R.CANTIDAD,ROUND(R.PRECIO/G.TIPO_DE_CAMBIO,2) PRECIO_USD,(R.CANTIDAD*R.PRECIO)/G.TIPO_DE_CAMBIO IMPORTE_USD, " & _
+            sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,ISNULL(V.FRACCION_ARANCELARIA,'')FRACCION_ARANCELARIA,R.CANTIDAD,PRECIO_USD,IMPORTE_USD, " & _
+                "ISNULL(V.NOMBRE_CULTIVO,'') NOMBRE_CULTIVO " & _
+                "FROM VENTA_DETALLE R " & _
+                "INNER JOIN VENTA_GLOBAL G ON(R.FOLIO_VENTA=G.FOLIO_VENTA) " & _
+                "LEFT JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
+                "LEFT JOIN CAT_CULTIVOS V ON(A.CODIGO_CULTIVO=V.CODIGO_CULTIVO) " & _
+                "WHERE G.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' " & _
                 "ORDER BY R.DESCRIPCION"
 
             da = New SqlDataAdapter(sSQL, Me._Conexion)
@@ -1210,7 +1240,7 @@ Public Class Class_Ventas_Global
     End Function
 
     Public Function EsClienteDeContado(ByVal sCuentaContable As String, ByVal sCodigoZona As String) As Boolean
-        Dim Resultado As String = "", bResultado As Boolean = False
+        Dim bResultado As Boolean = False
         Try
             Dim sSql As String = ""
 
@@ -1374,7 +1404,7 @@ Public Class Class_Ventas_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "AfectaSustitucion", ex)
+                HandleError(Me._Nombre_Catalogo, "AfectaSustitucionRemision", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -1432,7 +1462,7 @@ Public Class Class_Ventas_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "AfectaSustitucion", ex)
+                HandleError(Me._Nombre_Catalogo, "DesafectaSustitucionCotizacion", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -1462,7 +1492,7 @@ Public Class Class_Ventas_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "AfectaSustitucion", ex)
+                HandleError(Me._Nombre_Catalogo, "DesafectaSustitucionRemision", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -1490,7 +1520,7 @@ Public Class Class_Ventas_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "AfectaSustitucion", ex)
+                HandleError(Me._Nombre_Catalogo, "ConsumeReglas", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -1510,16 +1540,16 @@ Public Class Class_Ventas_Global
         Dim sSQL As String
 
         Try
-            sSQL = "SELECT CASE WHEN G.ES_VENTA_PUBLICO_GENERAL='1' THEN '" & Empresa_Sistema.RFC_VENTA_PUBLICO_GENERAL & "' ELSE CTE.RFC END rfc,G.FOLIO_NUMERICO,G.FECHA,G.TOTAL,G.IMPUESTO,G.ESTATUS_VENTA,FE.SERIE,FE.NUMERO_APROBACION,FE.ANIO_APROBACION,G.SELLO_DIGITAL " &
-                    "FROM VENTA_GLOBAL G INNER JOIN CAT_CLIENTES CTE ON(G.CODIGO_CLIENTE=CTE.CODIGO_CLIENTE) INNER JOIN CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS FE ON(G.IDCATALOGO_FOLIO_FELECTRONICA=FE.IDCATALOGO_FOLIO_FELECTRONICA) " &
-                    "WHERE G.CODIGO_DOCUMENTO IN(SELECT CODIGO_DOCUMENTO FROM VW_SIS_CAT_DOCUMENTOS_EXTENDIDO WHERE AFECTA_CONTABILIDAD='1' AND AFECTA_INVENTARIOS='1' AND AFECTA_CXC='1') AND G.ES_FACTURA_ELECTRONICA='1' " &
+            sSQL = "SELECT CASE WHEN G.ES_VENTA_PUBLICO_GENERAL='1' THEN '" & Empresa_Sistema.RFC_VENTA_PUBLICO_GENERAL & "' ELSE CTE.RFC END rfc,G.FOLIO_NUMERICO,G.FECHA,G.TOTAL,G.IMPUESTO,G.ESTATUS_VENTA,FE.SERIE,FE.NUMERO_APROBACION,FE.ANIO_APROBACION,G.SELLO_DIGITAL " & _
+                    "FROM VENTA_GLOBAL G INNER JOIN CAT_CLIENTES CTE ON(G.CODIGO_CLIENTE=CTE.CODIGO_CLIENTE) INNER JOIN CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS FE ON(G.IDCATALOGO_FOLIO_FELECTRONICA=FE.IDCATALOGO_FOLIO_FELECTRONICA) " & _
+                    "WHERE G.CODIGO_DOCUMENTO IN(SELECT CODIGO_DOCUMENTO FROM VW_SIS_CAT_DOCUMENTOS_EXTENDIDO WHERE AFECTA_CONTABILIDAD='1' AND AFECTA_INVENTARIOS='1' AND AFECTA_CXC='1') AND G.ES_FACTURA_ELECTRONICA='1' " & _
                     "AND YEAR(G.FECHA)=" & iAño & " AND MONTH(G.FECHA)=" & iMes & " ORDER BY G.CODIGO_PLAZA,G.FOLIO_NUMERICO "
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
             da.Dispose()
 
         Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "ObtenerDetalle", ex)
+            HandleError(Me.Nombre_Catalogo, "ObtenerFacturasMesAño", ex)
         End Try
 
         Return dTabla
@@ -1530,16 +1560,16 @@ Public Class Class_Ventas_Global
         Dim sSQL As String
 
         Try
-            sSQL = "SELECT CASE WHEN G.ES_VENTA_PUBLICO_GENERAL='1' THEN '" & Empresa_Sistema.RFC_VENTA_PUBLICO_GENERAL & "' ELSE CTE.RFC END RFC,G.FOLIO_NUMERICO,G.FECHA,G.TOTAL,G.IMPUESTO,G.ESTATUS_VENTA,FE.SERIE,FE.NUMERO_APROBACION,FE.ANIO_APROBACION,G.SELLO_DIGITAL " &
-                    "FROM VENTA_GLOBAL G INNER JOIN CAT_CLIENTES CTE ON(G.CODIGO_CLIENTE=CTE.CODIGO_CLIENTE) INNER JOIN CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS FE ON(G.IDCATALOGO_FOLIO_FELECTRONICA=FE.IDCATALOGO_FOLIO_FELECTRONICA) " &
-                    "WHERE G.CODIGO_DOCUMENTO IN(SELECT CODIGO_DOCUMENTO FROM VW_SIS_CAT_DOCUMENTOS_EXTENDIDO WHERE AFECTA_CONTABILIDAD='1' AND AFECTA_INVENTARIOS='1' AND AFECTA_CXC='1') AND G.ES_FACTURA_ELECTRONICA='1' " &
+            sSQL = "SELECT CASE WHEN G.ES_VENTA_PUBLICO_GENERAL='1' THEN '" & Empresa_Sistema.RFC_VENTA_PUBLICO_GENERAL & "' ELSE CTE.RFC END RFC,G.FOLIO_NUMERICO,G.FECHA,G.TOTAL,G.IMPUESTO,G.ESTATUS_VENTA,FE.SERIE,FE.NUMERO_APROBACION,FE.ANIO_APROBACION,G.SELLO_DIGITAL " & _
+                    "FROM VENTA_GLOBAL G INNER JOIN CAT_CLIENTES CTE ON(G.CODIGO_CLIENTE=CTE.CODIGO_CLIENTE) INNER JOIN CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS FE ON(G.IDCATALOGO_FOLIO_FELECTRONICA=FE.IDCATALOGO_FOLIO_FELECTRONICA) " & _
+                    "WHERE G.CODIGO_DOCUMENTO IN(SELECT CODIGO_DOCUMENTO FROM VW_SIS_CAT_DOCUMENTOS_EXTENDIDO WHERE AFECTA_CONTABILIDAD='1' AND AFECTA_INVENTARIOS='1' AND AFECTA_CXC='1') AND G.ES_FACTURA_ELECTRONICA='1' " & _
                     "AND G.ESTATUS_VENTA='C' AND YEAR(G.FECHA_DE_CANCELACION)=" & iAño & " AND MONTH(G.FECHA_DE_CANCELACION)=" & iMes & " ORDER BY G.CODIGO_PLAZA,G.FOLIO_NUMERICO "
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
             da.Dispose()
 
         Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "ObtenerDetalle", ex)
+            HandleError(Me._Nombre_Catalogo, "ObtenerFacturasCanceladasMesAño", ex)
         End Try
 
         Return dTabla
@@ -1552,8 +1582,8 @@ Public Class Class_Ventas_Global
         f.sCampo = "CODIGO_CLIENTE"
         f.sOrder = "FECHA"
         f.sTable = "VENTA_GLOBAL"
-        f.sQl = "SELECT V.FOLIO_VENTA,N.NOMBRE_TIPO_NEGOCIACION,V.FECHA,V.TOTAL FROM VENTA_GLOBAL V " &
-        "INNER JOIN VENTAS_CAT_TIPOS_NEGOCIACION N ON(V.CODIGO_TIPO_NEGOCIACION=N.CODIGO_TIPO_NEGOCIACION) " &
+        f.sQl = "SELECT V.FOLIO_VENTA,N.NOMBRE_TIPO_NEGOCIACION,V.FECHA,V.TOTAL FROM VENTA_GLOBAL V " & _
+        "INNER JOIN VENTAS_CAT_TIPOS_NEGOCIACION N ON(V.CODIGO_TIPO_NEGOCIACION=N.CODIGO_TIPO_NEGOCIACION) " & _
         "WHERE V.CODIGO_CLIENTE='" & sCodigoCliente.ToString & "' AND V.CODIGO_TIPO_NEGOCIACION=2 And "
 
         f.Inicia("")
@@ -1563,7 +1593,7 @@ Public Class Class_Ventas_Global
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             End If
         Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorCliente", ex)
+            HandleError(Me._Nombre_Catalogo, "BusquedaVisual_PorCliente", ex)
         End Try
         Return Resultado
     End Function
@@ -1595,21 +1625,19 @@ Public Class Class_Ventas_Global
     '    End Try
     'End Function
 
-    Public Function ObtenerPrecentaciones() As DataTable
+    Public Function ObtenerPresentaciones() As DataTable
         Dim dTabla As New DataTable, da As SqlDataAdapter
         Dim sSQL As String
 
         Try
-            sSQL = "SELECT DISTINCT(A.UNIDAD_VENTA) UNIDAD_VENTA FROM VENTA_DETALLE R INNER JOIN VW_CAT_PRODUCTOS_AGRICOLAS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO)" &
+            sSQL = "SELECT DISTINCT(A.UNIDAD_VENTA) UNIDAD_VENTA FROM VENTA_DETALLE R INNER JOIN VW_CAT_PRODUCTOS_AGRICOLAS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO)" & _
                    "UNION SELECT 'BTO'"
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
             dTabla.Rows.Add("TODOS")
             da.Dispose()
         Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "ObtenerPrecentaciones", ex)
-        Finally
-
+            HandleError(Me._Nombre_Catalogo, "ObtenerPresentaciones", ex)
         End Try
         Return dTabla
     End Function
@@ -1909,7 +1937,7 @@ Public Class Class_Ventas_Global
                 .Subdivision = "0"
 
                 .Observaciones = ""
-                .TipoCambioUSD = Format(Me._TIPO_DE_CAMBIO, "######.00")
+                .TipoCambioUSD = Format(Me._TIPO_DE_CAMBIO, "######.0000")
                 .TotalUSD = Format(Me._TOTAL_DOLARES, "######.00")
 
                 .bTieneEmisor = False
@@ -1917,6 +1945,12 @@ Public Class Class_Ventas_Global
                 .Receptor.NumRegIdTrib = oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO
 
                 .bTieneDestinatario = False
+                'Estos se habilitarian si se llevara destinatario
+                '.Destinatario.NumRegIdTrib = oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO
+                '.Destinatario.Domicilio.Calle = oCliente.CALLE
+                '.Destinatario.Domicilio.Estado = oCliente.CODIGO_ESTADO_SAT
+                '.Destinatario.Domicilio.Pais = oCliente.PAIS
+                '.Destinatario.Domicilio.CodigoPostal = oCliente.CODIGO_POSTAL
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
                 'Ciclo a los artículos
@@ -2002,6 +2036,35 @@ Public Class Class_Ventas_Global
 
         Return bResultado
     End Function
+
+    Public Function GeneraFacturaElectronica(ByVal bMensajes As Boolean, ByVal bGenerarPDF As Boolean) As Boolean
+        Dim bResultado As Boolean = False
+        Dim sProcedure As String = "GeneraFacturaElectronica"
+        Dim sRutaXML As String
+
+        Try
+            sRutaXML = sFelectronicaCarpetaXMLPDF & "\" & Me._FOLIO_VENTA & ".xml"
+
+            If Me._TIMBRADO_CFDI = "0" Then
+                If FacturacionElectronica.GeneraFacturaElectronica(Me, bMensajes, sRutaXML) = False Then
+                    MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+                Else
+                    bResultado = True
+                    If bGenerarPDF = True Then
+                        Me.ExportarAPdf()
+                    End If
+                End If
+                'Else
+                '    Me.RecuperarFacturaElectronicaLocal(bMensajes)
+            Else
+                MsgBox("La factura ya esta timbrada.", vbExclamation, sProcedure)
+            End If
+        Catch ex As Exception
+            HandleError(_Nombre_Catalogo, "GeneraFacturaElectronica", ex)
+        End Try
+        Return bResultado
+    End Function
+
 #End Region
 
 End Class
