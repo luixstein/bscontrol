@@ -489,6 +489,8 @@ Buscar:
             Me.oFormaDetalleCuentas = Nothing 'New InventariosDetalleCuentasContables
 
             Me.dtSeries = New DataTable("Series")
+
+            Me.TabControl1.SelectedIndex = 0
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
         End Try
@@ -2380,6 +2382,8 @@ BuscarCuentas:
 
             Me.FormateaGridSeries()
 
+            Me.TabControl1.SelectedIndex = 1
+
         Catch ex As Exception
             HandleError(Me.Name, "PrepararSeries", ex)
         End Try
@@ -2613,6 +2617,8 @@ BuscarCuentas:
         Dim RenglonRepetido As Integer
 
         Try
+            Me.dtSeries.AcceptChanges()
+
             For i = 1 To Me.GridSeries.Rows - 1
                 If txtLEN(Me.GridSeries.Cell(i, Me.igySerieCodigo).Text) = True Then
                     For z = i + 1 To Me.GridSeries.Rows - 1
@@ -2640,6 +2646,8 @@ BuscarCuentas:
     Private Function HaySeriesConExistenciasMismoArticulo() As Boolean
         Dim bResultado As Boolean = False, sListaSeries As String = ""
         Try
+            'Me.GridSeries.AutoValidate = Windows.Forms.AutoValidate.EnablePreventFocusChange
+
             If Me.dtSeries.Rows.Count > 0 Then
                 For Each dRow In Me.dtSeries.Select("")
                     sListaSeries = sListaSeries & dRow("CODIGO_ARTICULO").ToString & "," & dRow("NUMERO_SERIE").ToString & "|"
