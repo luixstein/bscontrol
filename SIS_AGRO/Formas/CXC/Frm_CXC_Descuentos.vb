@@ -227,9 +227,9 @@ Buscar:
                     Me.LblCliente.Text = Me.oCliente.NOMBRE_CLIENTE
                     Me.TxtCodigoCliente.Enabled = False
                     If Me.ckbVentaPublicoGeneral.Checked = False Then
-                        If Me.ValidarDatosCliente() = False Then
-                            Exit Sub
-                        End If
+                        'If Me.ValidarDatosCliente() = False Then
+                        '    Exit Sub
+                        'End If
                     End If
                     Me.dtFecha.Focus()
                 End If
@@ -1122,11 +1122,11 @@ Buscar:
                 Me.LblCliente.Text = oCliente.NOMBRE_CLIENTE.ToString
             End If
 
-            If Me.ckbVentaPublicoGeneral.Checked = False Then
-                If Me.ValidarDatosCliente() = False Then
-                    Exit Function
-                End If
-            End If
+            'If Me.ckbVentaPublicoGeneral.Checked = False Then
+            '    If Me.ValidarDatosCliente() = False Then
+            '        Exit Function
+            '    End If
+            'End If
 
             If txtLEN(Me.TxtConcepto.Text) = False Then
                 MsgBox("Asigne un concepto de descuento.", MsgBoxStyle.Exclamation, Me.Nombre_Modulo)
