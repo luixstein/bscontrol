@@ -1601,6 +1601,35 @@ Public Class Class_Compras_Global
         End With
         Return bResultado
     End Function
+
+    Public Function HaySeriesConExistenciasMismoArticulo(ByVal sListaSeries As String) As String
+        Dim sResultado As String = ""
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_COMPRAS_VALIDA_HAY_EXISTENCIAS_SERIES_MISMOS_ARTICULOS"
+
+            sqlParametro = .Parameters.Add("@LISTA", SqlDbType.NVarChar, -1) : sqlParametro.Value = sListaSeries
+            sqlParametro = .Parameters.Add("@RESULTADO", SqlDbType.NVarChar, -1) : sqlParametro.Value = "" : sqlParametro.Direction = ParameterDirection.InputOutput
+
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                sResultado = "" & .Parameters("@RESULTADO").Value.ToString
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, "HaySeriesConExistenciasMismoArticulo", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return sResultado
+    End Function
+
 #End Region
 
 End Class

@@ -148,7 +148,7 @@ Public Class Compras_Movimientos
     End Sub
 
     Private Sub btnSeries_Click(sender As Object, e As EventArgs) Handles btnSeries.Click
-        Me.Series()
+        Me.PrepararSeries()
     End Sub
 
     Private Sub btnSeleccionarArchivoSeries_Click(sender As Object, e As EventArgs) Handles btnSeleccionarArchivoSeries.Click
@@ -1654,8 +1654,19 @@ Buscar:
             '    End If
             'Next
 
+            'Nota aqui no se pregunta antes si hay rows en dtSeries, porque puede ser que no e hayan dado al botón, en la siguiente validación si.
             If Me.ValidaNumerosSerie = False Then
                 Return False
+            End If
+
+            If IsNothing(Me.dtSeries) = False AndAlso Me.dtSeries.Rows.Count > 0 Then
+                If Me.HaySeriesRepetidas = True Then
+                    Return False
+                End If
+
+                If Me.HaySeriesConExistenciasMismoArticulo = True Then
+                    Return False
+                End If
             End If
 
             Return True
@@ -2324,7 +2335,7 @@ BuscarCuentas:
         End Try
     End Function
 
-    Private Sub Series()
+    Private Sub PrepararSeries()
         Try
             'Dim iUnidades As Integer
 
@@ -2370,7 +2381,7 @@ BuscarCuentas:
             Me.FormateaGridSeries()
 
         Catch ex As Exception
-            HandleError(Me.Name, "Series", ex)
+            HandleError(Me.Name, "PrepararSeries", ex)
         End Try
     End Sub
 
@@ -2538,6 +2549,7 @@ BuscarCuentas:
 
             If txtLEN(sArticulo) = False Then
                 MsgBox("Seleccione un artículo en la pantalla de series.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.TabPage2.Focus()
                 Return False
             End If
 
@@ -2595,6 +2607,60 @@ BuscarCuentas:
             HandleError(Me.Name, "Seleccionar", ex)
         End Try
         Return sRutaArchivo
+    End Function
+
+    Private Function HaySeriesRepetidas() As Boolean
+        Dim RenglonRepetido As Integer
+
+        Try
+            For i = 1 To Me.GridSeries.Rows - 1
+                If txtLEN(Me.GridSeries.Cell(i, Me.igySerieCodigo).Text) = True Then
+                    For z = i + 1 To Me.GridSeries.Rows - 1
+                        If Me.GridSeries.Cell(i, Me.igySerieNumeroSerie).Text = Me.GridSeries.Cell(z, Me.igySerieNumeroSerie).Text Then
+                            RenglonRepetido = z
+
+                            MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text & _
+                                   " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf & _
+                                   "", MsgBoxStyle.Exclamation)
+                            Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
+
+                            Return True
+
+                        End If
+                    Next
+                End If
+            Next
+        Catch ex As Exception
+            HandleError(Me.Name, "HaySeriesRepetidas", ex)
+        End Try
+
+        Return False
+    End Function
+
+    Private Function HaySeriesConExistenciasMismoArticulo() As Boolean
+        Dim bResultado As Boolean = False, sListaSeries As String = ""
+        Try
+            If Me.dtSeries.Rows.Count > 0 Then
+                For Each dRow In Me.dtSeries.Select("")
+                    sListaSeries = sListaSeries & dRow("CODIGO_ARTICULO").ToString & "," & dRow("NUMERO_SERIE").ToString & "|"
+                Next
+                If txtLEN(sListaSeries) = True Then
+                    sListaSeries = sListaSeries.Substring(0, sListaSeries.Length - 1) 'Para quitarle el último pipe que sale sobrando.
+                End If
+
+                Dim sResultado As String = Me.oCompras.HaySeriesConExistenciasMismoArticulo(sListaSeries)
+
+                If txtLEN(sResultado) = True Then
+                    MsgBox("Hay existencias con las mismas series de los siguientes artículos : " & vbCrLf & sResultado, vbExclamation, Me.Text)
+                    Return True
+                End If
+
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, "HaySeriesConExistenciasMismoArticulo", ex)
+        End Try
+
+        Return False
     End Function
 #End Region
 
