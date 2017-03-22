@@ -372,12 +372,13 @@ Buscar:
                             "0.00" & Chr(9) &
                             "0.00" & Chr(9) &
                             "0.00" & Chr(9) &
-                            Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + dRow("CUENTA_CONTABLE_BASE").ToString & Chr(9) &
+                            Plaza.CUENTA_CONTABLE_VENTAS.ToString & Chr(9) &
                             "" & Chr(9) &
                             "" & Chr(9) &
                             "" & Chr(9) &
                             "0" & Chr(9) &
                             "SIN DEFINIR" & Chr(9))
+                            'Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + dRow("CUENTA_CONTABLE_BASE").ToString & Chr(9) & 'En agr esta así, pero aquí la cuenta es general
 
                             'sSQL = "SELECT D.CODIGO_ARTICULO,MAX(A.DESCRIPCION) DESCRIPCION,SUM(D.CANTIDAD_BULTOS_DETALLE) CANTIDAD_BULTOS_DETALLE,D.PRECIO_UNIDAD_BULTO, " &
                             '"MAX(A.UNIDAD_VENTA) UNIDAD,0 CANTIDAD_KILOS,0 PRECIO_KILOS,0 IMPUESTO_PORCENTAJE,SUM(D.IMPORTE_BULTOS_DETALLE) IMPORTE_BULTOS_DETALLE,0 IMPORTE_KILOS,MAX(A.CODIGO_CULTIVO) CODIGO_CULTIVO, " &
@@ -827,6 +828,14 @@ Buscar:
             Else
                 Me.Grid.Column(Me.igyCuentaContable).Visible = False
                 Me.Grid.Column(Me.igyNombreCentroCosto).Visible = False
+            End If
+
+            If Me._EsPorEmbarqueExtranjero = True Then
+                Me.Grid.Column(Me.igyPrecioUSD).Visible = True
+                Me.Grid.Column(Me.igyImporteUSD).Visible = True
+            Else
+                Me.Grid.Column(Me.igyPrecioUSD).Visible = False
+                Me.Grid.Column(Me.igyImporteUSD).Visible = False
             End If
 
             Dim i As Integer
@@ -2467,11 +2476,13 @@ CANCELAR:
             For I = 1 To Me.Grid.Rows - 1
                 Dim oArticulos = New Class_CatArticulos(Me.Grid.Cell(I, Me.igyCodigo).Text)
                 If oArticulos.Existe = True Then
-                    If txtLEN(oArticulos.CODIGO_CULTIVO) = True Then
-                        Me.Grid.Cell(I, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + "00" + oArticulos.CODIGO_CULTIVO.ToString
-                    Else
-                        Me.Grid.Cell(I, Me.igyCuentaContable).Text = ""
-                    End If
+                    Me.Grid.Cell(I, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString
+                    'If txtLEN(oArticulos.CODIGO_CULTIVO) = True Then
+                    '    'Me.Grid.Cell(I, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + "00" + oArticulos.CODIGO_CULTIVO.ToString 'En agr esta así, pero aquí la cuenta es general
+                    '    Me.Grid.Cell(I, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString
+                    'Else
+                    '    Me.Grid.Cell(I, Me.igyCuentaContable).Text = ""
+                    'End If
                 End If
             Next
 
@@ -2595,14 +2606,14 @@ LlenaLinea:
                                     End If
 
                                     If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
-                                        If txtLEN(oArticulos.CODIGO_CULTIVO) = True Then
-                                            Dim Sql As Class_find
-                                            Sql = New Class_find("SELECT CUENTA_CONTABLE_BASE FROM CAT_CULTIVOS Where CODIGO_CULTIVO='" & oArticulos.CODIGO_CULTIVO.ToString & "' AND CODIGO_PLAZA=" & Usuario.Codigo_Plaza)
+                                        'If txtLEN(oArticulos.CODIGO_CULTIVO) = True Then
+                                        'Dim Sql As New Class_find("SELECT CUENTA_CONTABLE_BASE FROM CAT_CULTIVOS Where CODIGO_CULTIVO='" & oArticulos.CODIGO_CULTIVO.ToString & "' AND CODIGO_PLAZA=" & Usuario.Codigo_Plaza)
 
-                                            Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + Sql.Result1
-                                        Else
-                                            Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = ""
-                                        End If
+                                            'Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + Sql.Result1 'En agr esta así, pero aquí la cuenta es general
+                                            Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString
+                                        'Else
+                                        ' Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = ""
+                                        'End If
                                     End If
 
                                     Me.Grid.Column(Me.igyDescripcion).Locked = True
@@ -2881,7 +2892,7 @@ buscaCentrosCostos:
                                 "0.00" & Chr(9) &
                                 "0.00" & Chr(9) &
                                 "0.00" & Chr(9) &
-                                Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + dRow("CUENTA_CONTABLE_BASE").ToString & Chr(9) &
+                                Plaza.CUENTA_CONTABLE_VENTAS.ToString & Chr(9) &
                                 "" & Chr(9) &
                                 "" & Chr(9) &
                                 "" & Chr(9) &
@@ -2889,7 +2900,7 @@ buscaCentrosCostos:
                                 "SIN DEFINIR" & Chr(9) & _
                                 dRow("PRECIO_USD").ToString & Chr(9) & _
                                 dRow("IMPORTE_USD").ToString)
-
+                'Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + dRow("CUENTA_CONTABLE_BASE").ToString & Chr(9) & 'En agr esta así, pero aquí la cuenta es general
             Next
 
             'Private igyCodigo As Short = 1
