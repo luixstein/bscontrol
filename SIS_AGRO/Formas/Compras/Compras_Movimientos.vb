@@ -2446,7 +2446,7 @@ BuscarCuentas:
             Select Case e.KeyCode
                 Case Keys.Return
                     If Columna = Me.igySerieNumeroSerie Then
-                        If Renglon + 1 <= Me.Grid.Rows Then
+                        If Renglon + 1 < Me.GridSeries.Rows Then
                             Me.GridSeries.Cell(Renglon + 1, Me.igySerieDescripcion).SetFocus()
                         Else
                             Me.GridSeries.Cell(1, Me.igySerieDescripcion).SetFocus()

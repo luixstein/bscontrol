@@ -206,7 +206,7 @@ Public Class Ventas_Movimientos
     End Sub
 
     Private Sub btnSeries_Click(sender As Object, e As EventArgs) Handles btnSeries.Click
-        Me.Series()
+        Me.PrepararSeries()
     End Sub
 #End Region
 
@@ -701,6 +701,9 @@ Buscar:
             Me.dtSeries = New DataTable("Series")
 
             'Me.bEsReferencia = False
+
+            Me.TabControl1.SelectedIndex = 0
+
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
         End Try
@@ -1229,6 +1232,8 @@ Buscar:
                 End If
             End If
 
+            Me.dtSeries.AcceptChanges()
+
             Me.Totales()
 
             If Me.ValidarVenta() = False Then
@@ -1752,10 +1757,14 @@ CANCELAR:
                 If Me.ValidarCentrosCostos = False Then
                     Return False
                 End If
+            End If
 
-                If Me.ValidaNumerosSerie = False Then
-                    Return False
-                End If
+            If Me.ValidaNumerosSerie = False Then
+                Return False
+            End If
+
+            If Me.HaySeriesRepetidas = True Then
+                Return False
             End If
 
             If Me.oDocumento.AFECTA_INVENTARIOS = True Then
@@ -2910,7 +2919,7 @@ buscaCentrosCostos:
         Return bResultado
     End Function
 
-    Private Sub Series()
+    Private Sub PrepararSeries()
         Try
             'Dim iUnidades As Integer
 
@@ -2958,8 +2967,10 @@ buscaCentrosCostos:
 
             Me.FormateaGridSeries()
 
+            Me.TabControl1.SelectedIndex = 1
+
         Catch ex As Exception
-            HandleError(Me.Name, "Series", ex)
+            HandleError(Me.Name, "PrepararSeries", ex)
         End Try
     End Sub
 
@@ -3049,7 +3060,9 @@ busca_serie:
                             sCodigoArticulo = .Cell(Renglon, Me.igySerieCodigo).Text
                             sLote = oSerie.BusquedaVisual(sCodigoArticulo, Me.CboAlmacen.SelectedValue.ToString)
                             If txtLEN(sLote) = True Then
-                                Me.EstableceSerie(Renglon, sLote)
+                                If RepiteSerie(Renglon, sLote) = False Then
+                                    Me.EstableceSerie(Renglon, sLote)
+                                End If
                             End If
                         End If
 
@@ -3126,6 +3139,65 @@ busca_serie:
         Catch ex As Exception
             HandleError(Me.Name, "EstableceSerie", ex)
         End Try
+    End Function
+
+    Private Function RepiteSerie(ByVal Renglon As Integer, ByVal ID_INVENTARIO_LOTES_COSTOS As String) As Boolean
+        Dim RenglonRepetido As Integer
+        Try
+            Me.dtSeries.AcceptChanges()
+
+            For i = 1 To Me.GridSeries.Rows - 1
+                If i <> Renglon Then
+                    If txtLEN(Me.GridSeries.Cell(i, Me.igySerieCodigo).Text) = True Then
+                        If ID_INVENTARIO_LOTES_COSTOS = Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text Then
+                            RenglonRepetido = i
+
+                            MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text & _
+                                   " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf & _
+                                   "", MsgBoxStyle.Exclamation)
+                            Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
+
+                            Return True
+
+                        End If
+
+                    End If
+                End If
+
+            Next
+        Catch ex As Exception
+            HandleError(Me.Name, "RepiteSerie", ex)
+        End Try
+    End Function
+
+    Private Function HaySeriesRepetidas() As Boolean
+        Dim RenglonRepetido As Integer
+
+        Try
+            Me.dtSeries.AcceptChanges()
+
+            For i = 1 To Me.GridSeries.Rows - 1
+                If txtLEN(Me.GridSeries.Cell(i, Me.igySerieCodigo).Text) = True Then
+                    For z = i + 1 To Me.GridSeries.Rows - 1
+                        If Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text = Me.GridSeries.Cell(z, Me.igySerieIdInventarioLotesCostos).Text Then
+                            RenglonRepetido = z
+
+                            MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text & _
+                                   " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf & _
+                                   "", MsgBoxStyle.Exclamation)
+                            Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
+
+                            Return True
+
+                        End If
+                    Next
+                End If
+            Next
+        Catch ex As Exception
+            HandleError(Me.Name, "HaySeriesRepetidas", ex)
+        End Try
+
+        Return False
     End Function
 
     Private Function ValidaNumerosSerie() As Boolean
