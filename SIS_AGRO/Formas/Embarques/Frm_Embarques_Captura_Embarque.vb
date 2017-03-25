@@ -870,6 +870,8 @@ Buscar:
             Exit Function
         End If
 
+        Me.Totales()
+
         If Me.ValidarEmbarque() = False Then
             Exit Function
         End If
@@ -1811,6 +1813,7 @@ LlenaLinea:
                             Me.Grid.Cell(Renglon, Me.igyGenerarSalida).Text = sql.Result5
 
                             If Me.ValidarPalet(Renglon, Me.Grid.Cell(Renglon, Me.igyCodigoPalet).Text) = False Then
+                                Me.Totales() 'Se debe recalcular porque se eliminó el renglón repetido.
                                 Exit Sub
                             End If
 
