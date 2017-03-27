@@ -1116,7 +1116,7 @@ Public Class Class_Ventas_Global
         Return bResultado
     End Function
 
-    Public Function ObtenerDetalle() As DataTable
+    Public Function ObtenerDetalle(Optional ByVal bSinComentarios As Boolean = True) As DataTable
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
 
@@ -1129,6 +1129,7 @@ Public Class Class_Ventas_Global
                 "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
                 "INNER JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO = CC.CODIGO_CENTRO_COSTO) " & _
                 "WHERE R.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' " & _
+                IIf(bSinComentarios = True, " AND R.CODIGO_ARTICULO<>'-' ", " ").ToString & _
                 "ORDER BY R.ID_VENTA_DETALLE"
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
