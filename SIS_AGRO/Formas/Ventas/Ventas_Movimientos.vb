@@ -2130,12 +2130,12 @@ CANCELAR:
     End Function
 
     Private Function ValidarCentrosCostos() As Boolean
-        Const sProcedure As String = "ValidaCuentasContables"
+        Const sProcedure As String = "ValidarCentrosCostos"
         Try
             Dim i As Integer
             With Me.Grid
                 For i = 1 To .Rows - 1
-                    If txtLEN(.Cell(i, Me.igyCodigo).Text) = True Then
+                    If txtLEN(.Cell(i, Me.igyCodigo).Text) = True AndAlso Me.Grid.Cell(i, Me.igyCodigo).Text <> "-" Then
                         If txtLEN(.Cell(i, Me.igyNombreCentroCosto).Text) = False Then
                             MsgBox("Asígne el centro de costos del renglón: " & i & " .", MsgBoxStyle.Exclamation, sProcedure)
                             Return False
@@ -2988,7 +2988,7 @@ buscaCentrosCostos:
             Dim dRow As DataRow
 
             For i = 1 To Me.Grid.Rows - 1
-                If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True AndAlso CInt(Me.Grid.Cell(i, Me.igyCantidad).Text) > 0 Then
+                If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True AndAlso Me.Grid.Cell(i, Me.igyCodigo).Text <> "-" AndAlso CInt(Me.Grid.Cell(i, Me.igyCantidad).Text) > 0 Then
                     Dim oArticulo As New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
                     If oArticulo.Existe = True AndAlso oArticulo.ES_SERIALIZABLE = True AndAlso oArticulo.INVENTARIABLE = "1" Then
                         For j = 1 To CInt(Me.Grid.Cell(i, Me.igyCantidad).Text)
@@ -3163,7 +3163,7 @@ busca_serie:
         Dim iArticulosEncontrados As Integer = 0
         Try
             For i = 1 To Me.GridSeries.Rows - 1
-                If Me.GridSeries.Cell(i, Me.igySerieCodigo).Text = sCodigoArticulo AndAlso txtLEN(Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text) = False Then
+                If Me.GridSeries.Cell(i, Me.igySerieCodigo).Text = sCodigoArticulo AndAlso Me.Grid.Cell(i, Me.igyCodigo).Text <> "-" AndAlso txtLEN(Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text) = False Then
                     iArticulosEncontrados += 1
                 End If
             Next
@@ -3258,7 +3258,7 @@ busca_serie:
             Dim dRow As DataRow, i As Integer
 
             For i = 1 To Me.Grid.Rows - 1
-                If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True AndAlso CInt(Me.Grid.Cell(i, Me.igyCantidad).Text) > 0 Then
+                If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True AndAlso Me.Grid.Cell(i, Me.igyCodigo).Text <> "-" AndAlso CInt(Me.Grid.Cell(i, Me.igyCantidad).Text) > 0 Then
                     Dim oArticulo As New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
                     If oArticulo.Existe = True AndAlso oArticulo.ES_SERIALIZABLE = True AndAlso oArticulo.INVENTARIABLE = "1" Then
                         For j = 1 To CInt(Me.Grid.Cell(i, Me.igyCantidad).Text)

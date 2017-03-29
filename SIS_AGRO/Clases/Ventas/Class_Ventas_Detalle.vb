@@ -339,7 +339,7 @@ Public Class Class_Ventas_Detalle
             sqlParametro = .Parameters.Add("@IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPORTE
             sqlParametro = .Parameters.Add("@ID_ORIGEN", SqlDbType.Int) : sqlParametro.Value = Me._ID_ORIGEN
             sqlParametro = .Parameters.Add("@CUENTA_CONTABLE", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE
-            sqlParametro = .Parameters.Add("@COMENTARIO", SqlDbType.NVarChar, 60) : sqlParametro.Value = Me._COMENTARIO
+            sqlParametro = .Parameters.Add("@COMENTARIO", SqlDbType.NVarChar, 500) : sqlParametro.Value = Me._COMENTARIO
             sqlParametro = .Parameters.Add("@CANTIDAD_KILOS", SqlDbType.Decimal) : sqlParametro.Value = "" & Me._CANTIDAD_KILOS
             sqlParametro = .Parameters.Add("@PRECIO_KILOS", SqlDbType.Decimal) : sqlParametro.Value = Me._PRECIO_KILOS
             sqlParametro = .Parameters.Add("@IMPORTE_KILOS", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPORTE_KILOS
