@@ -716,7 +716,7 @@ Public Class Class_Bancos_CXC
             .CommandText = "MP_BANCOS_CXC_CANCELA"
 
             sqlParametro = .Parameters.Add("@FOLIO_BANCO", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_BANCO
-            sqlParametro = .Parameters.Add("@CODIGO_USUARIO_CANCELO", SqlDbType.NVarChar, 1) : sqlParametro.Value = Usuario.Codigo_Usuario
+            sqlParametro = .Parameters.Add("@CODIGO_USUARIO_CANCELO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
             sqlParametro = .Parameters.Add("@FECHA_CANCELACION", SqlDbType.DateTime) : sqlParametro.Value = Me.FECHA_DE_CANCELACION
 
             Try
