@@ -50,6 +50,7 @@ Public Class Class_CatClientes
     Private _CODIGO_ESTADO As String
     Private _CODIGO_ESTADO_SAT As String
     Private _CODIGO_PAIS_SAT As String
+    Private _ES_CONTRIBUYENTE_IEPS As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -430,6 +431,16 @@ Public Class Class_CatClientes
             Me._CODIGO_PAIS_SAT = Value
         End Set
     End Property
+
+    Public Property ES_CONTRIBUYENTE_IEPS() As String
+        Get
+            Return Me._ES_CONTRIBUYENTE_IEPS
+        End Get
+        Set(ByVal Value As String)
+            Me._ES_CONTRIBUYENTE_IEPS = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -587,9 +598,10 @@ Public Class Class_CatClientes
             sqlParametro = .Parameters.Add("@FORMATO_NOMBRE_XML", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._FORMATO_NOMBRE_XML.ToString
             sqlParametro = .Parameters.Add("@NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO.ToString
             sqlParametro = .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_ALMACEN.ToString
-            sqlParametro = .Parameters.Add("@CODIGO_MUNICIPIO", SqlDbType.SmallInt) : sqlParametro.Value = Me.CODIGO_MUNICIPIO.ToString
-            sqlParametro = .Parameters.Add("@CODIGO_ESTADO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me.CODIGO_ESTADO.ToString
-            sqlParametro = .Parameters.Add("@CODIGO_PAIS_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me.CODIGO_PAIS_SAT.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_MUNICIPIO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_MUNICIPIO.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_ESTADO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ESTADO.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_PAIS_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_PAIS_SAT.ToString
+            sqlParametro = .Parameters.Add("@ES_CONTRIBUYENTE_IEPS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ES_CONTRIBUYENTE_IEPS.ToString
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._AGREGAR.ToString
             Try
                 Me._Conexion.Open()
@@ -658,6 +670,7 @@ Public Class Class_CatClientes
                     Me._CODIGO_ESTADO = Trim("" & dReader("CODIGO_ESTADO").ToString)
                     Me._CODIGO_ESTADO_SAT = Trim("" & dReader("CODIGO_ESTADO_SAT").ToString)
                     Me._CODIGO_PAIS_SAT = Trim("" & dReader("CODIGO_PAIS_SAT").ToString)
+                    Me._ES_CONTRIBUYENTE_IEPS = Trim("" & dReader("ES_CONTRIBUYENTE_IEPS").ToString)
 
                     Me._NOMBRE_MUNICIPIO = Trim("" & dReader("NOMBRE_MUNICIPIO").ToString)
                     Me._NOMBRE_ESTADO = Trim("" & dReader("NOMBRE_ESTADO").ToString)
@@ -718,15 +731,17 @@ Public Class Class_CatClientes
             sqlParametro = .Parameters.Add("@FORMATO_NOMBRE_XML", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._FORMATO_NOMBRE_XML.ToString
             sqlParametro = .Parameters.Add("@NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO.ToString
             sqlParametro = .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_ALMACEN.ToString
-            sqlParametro = .Parameters.Add("@CODIGO_MUNICIPIO", SqlDbType.SmallInt) : sqlParametro.Value = Me.CODIGO_MUNICIPIO.ToString
-            sqlParametro = .Parameters.Add("@CODIGO_ESTADO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me.CODIGO_ESTADO.ToString
-            sqlParametro = .Parameters.Add("@CODIGO_PAIS_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me.CODIGO_PAIS_SAT.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_MUNICIPIO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_MUNICIPIO.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_ESTADO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ESTADO.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_PAIS_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_PAIS_SAT.ToString
+            sqlParametro = .Parameters.Add("@ES_CONTRIBUYENTE_IEPS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ES_CONTRIBUYENTE_IEPS.ToString
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._AGREGAR.ToString
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
+
                 HandleError(Me._Nombre_Catalogo, "Insertar", ex)
             Finally
                 Me._Conexion.Close()
