@@ -25,10 +25,14 @@ Public Class Class_Ventas_Global
     Private _CODIGO_CLIENTE As String
     Private _CODIGO_DOCUMENTO As String
     Private _CODIGO_VENDEDOR As Integer
+
     Private _SUBTOTAL As Double
+    Private _DESCUENTO As Double
+    Private _IEPS_TOTAL_DESGLOSADO As Double
+    Private _IEPS_TOTAL_YA_INCLUIDO As Double
     Private _IMPUESTO As Double
     Private _TOTAL As Double
-    Private _DESCUENTO As Double
+
     Private _SALDO As Double
     Private _COSTO As Double
     Private _ESTATUS_VENTA As String
@@ -216,6 +220,33 @@ Public Class Class_Ventas_Global
         End Set
     End Property
 
+    Public Property IEPS_TOTAL_DESGLOSADO() As Double
+        Get
+            Return Me._IEPS_TOTAL_DESGLOSADO
+        End Get
+        Set(ByVal Value As Double)
+            Me._IEPS_TOTAL_DESGLOSADO = Value
+        End Set
+    End Property
+
+    Public Property IEPS_TOTAL_YA_INCLUIDO() As Double
+        Get
+            Return Me._IEPS_TOTAL_YA_INCLUIDO
+        End Get
+        Set(ByVal Value As Double)
+            Me._IEPS_TOTAL_YA_INCLUIDO = Value
+        End Set
+    End Property
+
+    Public Property DESCUENTO() As Double
+        Get
+            Return Me._DESCUENTO
+        End Get
+        Set(ByVal Value As Double)
+            Me._DESCUENTO = Value
+        End Set
+    End Property
+
     Public Property IMPUESTO() As Double
         Get
             Return Me._IMPUESTO
@@ -234,14 +265,7 @@ Public Class Class_Ventas_Global
         End Set
     End Property
 
-    Public Property DESCUENTO() As Double
-        Get
-            Return Me._DESCUENTO
-        End Get
-        Set(ByVal Value As Double)
-            Me._DESCUENTO = Value
-        End Set
-    End Property
+
 
     Public Property SALDO() As Double
         Get
@@ -527,6 +551,7 @@ Public Class Class_Ventas_Global
             Me._SALDO_DOLARES = Value
         End Set
     End Property
+
     Public Property SUBTOTAL_USD() As Double
         Get
             Return Me._SUBTOTAL_USD
@@ -818,7 +843,8 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@CODIGO_METODO_PAGO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_METODO_PAGO
             'sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL
             sqlParametro = .Parameters.Add("@NUMERO_CUENTA_PAGO", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._NUMERO_CUENTA_PAGO
-
+            sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO
+            sqlParametro = .Parameters.Add("@IEPS_TOTAL_YA_INCLUIDO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_YA_INCLUIDO
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "ACTUALIZAR"
 
             Try
@@ -877,7 +903,8 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@NUMERO_CUENTA_PAGO", SqlDbType.NVarChar, 40) : sqlParametro.Value = "" & Me._NUMERO_CUENTA_PAGO
             sqlParametro = .Parameters.Add("@SUBTOTAL_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL_USD
             sqlParametro = .Parameters.Add("@DESCUENTO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._DESCUENTO_USD
-
+            sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO
+            sqlParametro = .Parameters.Add("@IEPS_TOTAL_YA_INCLUIDO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_YA_INCLUIDO
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "INSERTAR"
             Try
                 Me._Conexion.Open()
@@ -1101,6 +1128,9 @@ Public Class Class_Ventas_Global
                     Me._ES_FACTURA_EMBARQUE_EXTRANJERO = CBool(dReader("ES_FACTURA_EMBARQUE_EXTRANJERO"))
 
                     Me._Nombre_Formato = "" & Trim(dReader("NOMBRE_FORMATO").ToString)
+
+                    Me._IEPS_TOTAL_DESGLOSADO = CDbl(dReader("IEPS_TOTAL_DESGLOSADO"))
+                    Me._IEPS_TOTAL_YA_INCLUIDO = CDbl(dReader("IEPS_TOTAL_YA_INCLUIDO"))
 
                     bResultado = True
                 End If

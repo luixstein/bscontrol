@@ -44,6 +44,7 @@ Public Class Class_CatArticulos
     Private _DESCRIPCION_EXTRANJERA_PARTE_1 As String
     Private _DESCRIPCION_EXTRANJERA_PARTE_2 As String
     Private _TIPO_CONTROL_INVENTARIO As String
+    Private _IEPS_PORCENTAJE As Decimal
 #End Region
 
 #Region "Campos públicos"
@@ -298,7 +299,6 @@ Public Class Class_CatArticulos
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
-
     Public ReadOnly Property DESCRIPCION_EXTRANJERA_PARTE_1() As String
         Get
             Return Me._DESCRIPCION_EXTRANJERA_PARTE_1
@@ -314,6 +314,12 @@ Public Class Class_CatArticulos
     Public ReadOnly Property TIPO_CONTROL_INVENTARIO() As String
         Get
             Return Me._TIPO_CONTROL_INVENTARIO
+        End Get
+    End Property
+
+    Public ReadOnly Property IEPS_PORCENTAJE() As Decimal
+        Get
+            Return Me._IEPS_PORCENTAJE
         End Get
     End Property
 #End Region
@@ -591,6 +597,7 @@ Public Class Class_CatArticulos
                     Me._TIPO_CONTROL_INVENTARIO = IIf(Me._ES_SERIALIZABLE = True, "SER", IIf(Me._INVENTARIABLE = "1", "INV", "NIV")).ToString
 
                     Me._GRADO_TOXICIDAD = "" & dReader("GRADO_TOXICIDAD").ToString
+                    Me._IEPS_PORCENTAJE = CDec("" & dReader("IEPS_PORCENTAJE").ToString)
 
                     '------------------------------------------------------------------------Estos campos se crearon en la base de datos pero aun no se utilizaran
                     'Me._CODIGO_UNIDAD_VENTA = "" & dReader("CODIGO_UNIDAD_VENTA").ToString()

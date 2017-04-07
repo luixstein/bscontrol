@@ -31,6 +31,13 @@ Public Class Class_Ventas_Detalle
     Private _LISTA_SERIES As String
     Private _PRECIO_USD As Double
     Private _IMPORTE_USD As Double
+
+    Private _IEPS_PORCENTAJE As Double
+    Private _IEPS_UNITARIO As Double
+    Private _IEPS_IMPORTE As Double
+    Private _BASE_IEPS As Double
+    Private _BASE_IVA As Double
+    Private _PRECIO_TOTAL As Double
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -273,6 +280,61 @@ Public Class Class_Ventas_Detalle
             Me._IMPORTE_USD = Value
         End Set
     End Property
+
+    Public Property IEPS_PORCENTAJE() As Double
+        Get
+            Return Me._IEPS_PORCENTAJE
+        End Get
+        Set(ByVal Value As Double)
+            Me._IEPS_PORCENTAJE = Value
+        End Set
+    End Property
+
+    Public Property IEPS_UNITARIO() As Double
+        Get
+            Return Me._IEPS_UNITARIO
+        End Get
+        Set(ByVal Value As Double)
+            Me._IEPS_UNITARIO = Value
+        End Set
+    End Property
+
+    Public Property IEPS_IMPORTE() As Double
+        Get
+            Return Me._IEPS_IMPORTE
+        End Get
+        Set(ByVal Value As Double)
+            Me._IEPS_IMPORTE = Value
+        End Set
+    End Property
+
+    Public Property BASE_IEPS() As Double
+        Get
+            Return Me._BASE_IEPS
+        End Get
+        Set(ByVal Value As Double)
+            Me._BASE_IEPS = Value
+        End Set
+    End Property
+
+    Public Property BASE_IVA() As Double
+        Get
+            Return Me._BASE_IVA
+        End Get
+        Set(ByVal Value As Double)
+            Me._BASE_IVA = Value
+        End Set
+    End Property
+
+    Public Property PRECIO_TOTAL() As Double
+        Get
+            Return Me._PRECIO_TOTAL
+        End Get
+        Set(ByVal Value As Double)
+            Me._PRECIO_TOTAL = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -348,6 +410,12 @@ Public Class Class_Ventas_Detalle
             sqlParametro = .Parameters.Add("@LISTA_SERIES", SqlDbType.NVarChar, -1) : sqlParametro.Value = Me._LISTA_SERIES
             sqlParametro = .Parameters.Add("@PRECIO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._PRECIO_USD
             sqlParametro = .Parameters.Add("@IMPORTE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPORTE_USD
+            sqlParametro = .Parameters.Add("@IEPS_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_PORCENTAJE
+            sqlParametro = .Parameters.Add("@IEPS_UNITARIO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_UNITARIO
+            sqlParametro = .Parameters.Add("@IEPS_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_IMPORTE
+            sqlParametro = .Parameters.Add("@BASE_IEPS", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IEPS
+            sqlParametro = .Parameters.Add("@BASE_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IVA
+            sqlParametro = .Parameters.Add("@PRECIO_TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._PRECIO_TOTAL
 
             Try
                 Me._Conexion.Open()
