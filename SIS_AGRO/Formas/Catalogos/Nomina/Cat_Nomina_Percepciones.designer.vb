@@ -27,6 +27,7 @@ Partial Class Cat_Nomina_CatPercepciones
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
+        Me.Grid = New System.Windows.Forms.DataGridView()
         Me.txtFiltro = New System.Windows.Forms.TextBox()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
         Me.lblReembolsable = New System.Windows.Forms.Label()
@@ -45,12 +46,11 @@ Partial Class Cat_Nomina_CatPercepciones
         Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimirListado = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
-        Me.Grid = New System.Windows.Forms.DataGridView()
         Me.StatusStripEstado.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
+        CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gBoxInformacion.SuspendLayout()
         Me.tsMenu.SuspendLayout()
-        CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'StatusStripEstado
@@ -83,20 +83,36 @@ Partial Class Cat_Nomina_CatPercepciones
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(441, 34)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(436, 510)
         Me.gBoxBusquedaRapida.TabIndex = 10
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
+        '
+        'Grid
+        '
+        Me.Grid.AllowUserToAddRows = False
+        Me.Grid.AllowUserToDeleteRows = False
+        Me.Grid.AllowUserToResizeColumns = False
+        Me.Grid.AllowUserToResizeRows = False
+        Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.Grid.Location = New System.Drawing.Point(8, 53)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
+        Me.Grid.Name = "Grid"
+        Me.Grid.ReadOnly = True
+        Me.Grid.RowHeadersVisible = False
+        Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.Grid.Size = New System.Drawing.Size(419, 449)
+        Me.Grid.TabIndex = 114
         '
         'txtFiltro
         '
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.Name = "txtFiltro"
         Me.txtFiltro.Size = New System.Drawing.Size(419, 22)
         Me.txtFiltro.TabIndex = 0
@@ -115,9 +131,9 @@ Partial Class Cat_Nomina_CatPercepciones
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayCodPercepcion)
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigoPercepcion)
         Me.gBoxInformacion.Location = New System.Drawing.Point(16, 34)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Size = New System.Drawing.Size(413, 510)
         Me.gBoxInformacion.TabIndex = 9
         Me.gBoxInformacion.TabStop = False
@@ -139,7 +155,7 @@ Partial Class Cat_Nomina_CatPercepciones
         Me.cmbReembolsable.FormattingEnabled = True
         Me.cmbReembolsable.Items.AddRange(New Object() {"SI", "NO"})
         Me.cmbReembolsable.Location = New System.Drawing.Point(175, 82)
-        Me.cmbReembolsable.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cmbReembolsable.Margin = New System.Windows.Forms.Padding(4)
         Me.cmbReembolsable.MaxLength = 1
         Me.cmbReembolsable.Name = "cmbReembolsable"
         Me.cmbReembolsable.Size = New System.Drawing.Size(75, 24)
@@ -167,7 +183,7 @@ Partial Class Cat_Nomina_CatPercepciones
         'TxtNombrePercepcion
         '
         Me.TxtNombrePercepcion.Location = New System.Drawing.Point(175, 49)
-        Me.TxtNombrePercepcion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtNombrePercepcion.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNombrePercepcion.MaxLength = 50
         Me.TxtNombrePercepcion.Name = "TxtNombrePercepcion"
         Me.TxtNombrePercepcion.Size = New System.Drawing.Size(229, 22)
@@ -187,12 +203,12 @@ Partial Class Cat_Nomina_CatPercepciones
         '
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
-        Me.CboEstatus.Items.AddRange(New Object() {"A", "B"})
+        Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.CboEstatus.Location = New System.Drawing.Point(175, 117)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(75, 24)
+        Me.CboEstatus.Size = New System.Drawing.Size(99, 24)
         Me.CboEstatus.TabIndex = 12
         '
         'LblDisplayCodPercepcion
@@ -208,7 +224,7 @@ Partial Class Cat_Nomina_CatPercepciones
         'TxtCodigoPercepcion
         '
         Me.TxtCodigoPercepcion.Location = New System.Drawing.Point(175, 16)
-        Me.TxtCodigoPercepcion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodigoPercepcion.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigoPercepcion.MaxLength = 0
         Me.TxtCodigoPercepcion.Name = "TxtCodigoPercepcion"
         Me.TxtCodigoPercepcion.Size = New System.Drawing.Size(75, 22)
@@ -272,22 +288,6 @@ Partial Class Cat_Nomina_CatPercepciones
         Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
         Me.tsbSalir.Text = "&Salir"
         '
-        'Grid
-        '
-        Me.Grid.AllowUserToAddRows = False
-        Me.Grid.AllowUserToDeleteRows = False
-        Me.Grid.AllowUserToResizeColumns = False
-        Me.Grid.AllowUserToResizeRows = False
-        Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Grid.Location = New System.Drawing.Point(8, 53)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
-        Me.Grid.Name = "Grid"
-        Me.Grid.ReadOnly = True
-        Me.Grid.RowHeadersVisible = False
-        Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(419, 449)
-        Me.Grid.TabIndex = 114
-        '
         'Cat_Nomina_CatPercepciones
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -299,7 +299,7 @@ Partial Class Cat_Nomina_CatPercepciones
         Me.Controls.Add(Me.tsMenu)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Cat_Nomina_CatPercepciones"
         Me.Text = "Catalogo percepciones"
@@ -307,11 +307,11 @@ Partial Class Cat_Nomina_CatPercepciones
         Me.StatusStripEstado.PerformLayout()
         Me.gBoxBusquedaRapida.ResumeLayout(False)
         Me.gBoxBusquedaRapida.PerformLayout()
+        CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gBoxInformacion.ResumeLayout(False)
         Me.gBoxInformacion.PerformLayout()
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()
-        CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

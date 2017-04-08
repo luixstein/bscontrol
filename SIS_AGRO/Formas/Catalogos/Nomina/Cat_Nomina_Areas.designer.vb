@@ -34,6 +34,7 @@ Partial Class Cat_Nomina_Areas
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
+        Me.Grid = New System.Windows.Forms.DataGridView()
         Me.txtFiltro = New System.Windows.Forms.TextBox()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
         Me.ckbCalcularSindicato = New System.Windows.Forms.CheckBox()
@@ -45,12 +46,11 @@ Partial Class Cat_Nomina_Areas
         Me.CboEstatus = New System.Windows.Forms.ComboBox()
         Me.LblDisplayCodArea = New System.Windows.Forms.Label()
         Me.TxtCodigoArea = New System.Windows.Forms.TextBox()
-        Me.Grid = New System.Windows.Forms.DataGridView()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
-        Me.gBoxInformacion.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.gBoxInformacion.SuspendLayout()
         Me.SuspendLayout()
         '
         'tsMenu
@@ -141,20 +141,36 @@ Partial Class Cat_Nomina_Areas
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(441, 33)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(359, 514)
         Me.gBoxBusquedaRapida.TabIndex = 10
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
+        '
+        'Grid
+        '
+        Me.Grid.AllowUserToAddRows = False
+        Me.Grid.AllowUserToDeleteRows = False
+        Me.Grid.AllowUserToResizeColumns = False
+        Me.Grid.AllowUserToResizeRows = False
+        Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.Grid.Location = New System.Drawing.Point(8, 53)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
+        Me.Grid.Name = "Grid"
+        Me.Grid.ReadOnly = True
+        Me.Grid.RowHeadersVisible = False
+        Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.Grid.Size = New System.Drawing.Size(341, 453)
+        Me.Grid.TabIndex = 113
         '
         'txtFiltro
         '
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.Name = "txtFiltro"
         Me.txtFiltro.Size = New System.Drawing.Size(341, 22)
         Me.txtFiltro.TabIndex = 0
@@ -173,9 +189,9 @@ Partial Class Cat_Nomina_Areas
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayCodArea)
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigoArea)
         Me.gBoxInformacion.Location = New System.Drawing.Point(16, 33)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Size = New System.Drawing.Size(413, 514)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
@@ -185,7 +201,7 @@ Partial Class Cat_Nomina_Areas
         '
         Me.ckbCalcularSindicato.AutoSize = True
         Me.ckbCalcularSindicato.Location = New System.Drawing.Point(168, 87)
-        Me.ckbCalcularSindicato.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ckbCalcularSindicato.Margin = New System.Windows.Forms.Padding(4)
         Me.ckbCalcularSindicato.Name = "ckbCalcularSindicato"
         Me.ckbCalcularSindicato.Size = New System.Drawing.Size(18, 17)
         Me.ckbCalcularSindicato.TabIndex = 2
@@ -223,7 +239,7 @@ Partial Class Cat_Nomina_Areas
         'TxtNombreArea
         '
         Me.TxtNombreArea.Location = New System.Drawing.Point(168, 52)
-        Me.TxtNombreArea.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtNombreArea.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNombreArea.MaxLength = 50
         Me.TxtNombreArea.Name = "TxtNombreArea"
         Me.TxtNombreArea.Size = New System.Drawing.Size(229, 22)
@@ -243,12 +259,12 @@ Partial Class Cat_Nomina_Areas
         '
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
-        Me.CboEstatus.Items.AddRange(New Object() {"A", "B"})
+        Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.CboEstatus.Location = New System.Drawing.Point(168, 116)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(75, 24)
+        Me.CboEstatus.Size = New System.Drawing.Size(92, 24)
         Me.CboEstatus.TabIndex = 3
         '
         'LblDisplayCodArea
@@ -264,27 +280,11 @@ Partial Class Cat_Nomina_Areas
         'TxtCodigoArea
         '
         Me.TxtCodigoArea.Location = New System.Drawing.Point(168, 16)
-        Me.TxtCodigoArea.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodigoArea.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigoArea.MaxLength = 0
         Me.TxtCodigoArea.Name = "TxtCodigoArea"
         Me.TxtCodigoArea.Size = New System.Drawing.Size(75, 22)
         Me.TxtCodigoArea.TabIndex = 0
-        '
-        'Grid
-        '
-        Me.Grid.AllowUserToAddRows = False
-        Me.Grid.AllowUserToDeleteRows = False
-        Me.Grid.AllowUserToResizeColumns = False
-        Me.Grid.AllowUserToResizeRows = False
-        Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Grid.Location = New System.Drawing.Point(8, 53)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
-        Me.Grid.Name = "Grid"
-        Me.Grid.ReadOnly = True
-        Me.Grid.RowHeadersVisible = False
-        Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(341, 453)
-        Me.Grid.TabIndex = 113
         '
         'Cat_Nomina_Areas
         '
@@ -297,7 +297,7 @@ Partial Class Cat_Nomina_Areas
         Me.Controls.Add(Me.tsMenu)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Cat_Nomina_Areas"
         Me.Text = "Cátalogo de áreas"
@@ -307,9 +307,9 @@ Partial Class Cat_Nomina_Areas
         Me.StatusStripEstado.PerformLayout()
         Me.gBoxBusquedaRapida.ResumeLayout(False)
         Me.gBoxBusquedaRapida.PerformLayout()
+        CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gBoxInformacion.ResumeLayout(False)
         Me.gBoxInformacion.PerformLayout()
-        CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

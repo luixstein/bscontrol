@@ -24,6 +24,8 @@ Partial Class Cat_Nomina_CentroCosto
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Cat_Nomina_CentroCosto))
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
+        Me.CboEstatusFiltro = New System.Windows.Forms.ComboBox()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.Grid = New System.Windows.Forms.DataGridView()
         Me.txtFiltro = New System.Windows.Forms.TextBox()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
@@ -51,8 +53,6 @@ Partial Class Cat_Nomina_CentroCosto
         Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimirListado = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.CboEstatusFiltro = New System.Windows.Forms.ComboBox()
         Me.gBoxBusquedaRapida.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gBoxInformacion.SuspendLayout()
@@ -70,13 +70,35 @@ Partial Class Cat_Nomina_CentroCosto
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(559, 33)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(603, 527)
         Me.gBoxBusquedaRapida.TabIndex = 18
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
+        '
+        'CboEstatusFiltro
+        '
+        Me.CboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboEstatusFiltro.FormattingEnabled = True
+        Me.CboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
+        Me.CboEstatusFiltro.Location = New System.Drawing.Point(537, 23)
+        Me.CboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboEstatusFiltro.MaxLength = 1
+        Me.CboEstatusFiltro.Name = "CboEstatusFiltro"
+        Me.CboEstatusFiltro.Size = New System.Drawing.Size(58, 24)
+        Me.CboEstatusFiltro.TabIndex = 99
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(466, 28)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(63, 17)
+        Me.Label1.TabIndex = 114
+        Me.Label1.Text = "Estatus :"
         '
         'Grid
         '
@@ -86,7 +108,7 @@ Partial Class Cat_Nomina_CentroCosto
         Me.Grid.AllowUserToResizeRows = False
         Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.Grid.Location = New System.Drawing.Point(8, 54)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid.Name = "Grid"
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
@@ -99,7 +121,7 @@ Partial Class Cat_Nomina_CentroCosto
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFiltro.Location = New System.Drawing.Point(8, 25)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.MaxLength = 80
         Me.txtFiltro.Name = "txtFiltro"
         Me.txtFiltro.Size = New System.Drawing.Size(450, 22)
@@ -124,9 +146,9 @@ Partial Class Cat_Nomina_CentroCosto
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayCodUnidadMedica)
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigoCentroCosto)
         Me.gBoxInformacion.Location = New System.Drawing.Point(16, 33)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Size = New System.Drawing.Size(535, 527)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
@@ -200,7 +222,7 @@ Partial Class Cat_Nomina_CentroCosto
         'txtCuentaContable
         '
         Me.txtCuentaContable.Location = New System.Drawing.Point(137, 82)
-        Me.txtCuentaContable.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCuentaContable.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCuentaContable.MaxLength = 20
         Me.txtCuentaContable.Name = "txtCuentaContable"
         Me.txtCuentaContable.Size = New System.Drawing.Size(381, 22)
@@ -229,7 +251,7 @@ Partial Class Cat_Nomina_CentroCosto
         'TxtNombreCentroCosto
         '
         Me.TxtNombreCentroCosto.Location = New System.Drawing.Point(137, 49)
-        Me.TxtNombreCentroCosto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtNombreCentroCosto.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNombreCentroCosto.MaxLength = 80
         Me.TxtNombreCentroCosto.Name = "TxtNombreCentroCosto"
         Me.TxtNombreCentroCosto.Size = New System.Drawing.Size(381, 22)
@@ -249,12 +271,12 @@ Partial Class Cat_Nomina_CentroCosto
         '
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
-        Me.CboEstatus.Items.AddRange(New Object() {"A", "B"})
+        Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.CboEstatus.Location = New System.Drawing.Point(175, 140)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(75, 24)
+        Me.CboEstatus.Size = New System.Drawing.Size(90, 24)
         Me.CboEstatus.TabIndex = 3
         '
         'LblDisplayCodUnidadMedica
@@ -270,7 +292,7 @@ Partial Class Cat_Nomina_CentroCosto
         'TxtCodigoCentroCosto
         '
         Me.TxtCodigoCentroCosto.Location = New System.Drawing.Point(137, 17)
-        Me.TxtCodigoCentroCosto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodigoCentroCosto.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigoCentroCosto.MaxLength = 0
         Me.TxtCodigoCentroCosto.Name = "TxtCodigoCentroCosto"
         Me.TxtCodigoCentroCosto.Size = New System.Drawing.Size(91, 22)
@@ -356,28 +378,6 @@ Partial Class Cat_Nomina_CentroCosto
         Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
         Me.tsbSalir.Text = "&Salir"
         '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(466, 28)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(63, 17)
-        Me.Label1.TabIndex = 114
-        Me.Label1.Text = "Estatus :"
-        '
-        'CboEstatusFiltro
-        '
-        Me.CboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CboEstatusFiltro.FormattingEnabled = True
-        Me.CboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
-        Me.CboEstatusFiltro.Location = New System.Drawing.Point(537, 23)
-        Me.CboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4)
-        Me.CboEstatusFiltro.MaxLength = 1
-        Me.CboEstatusFiltro.Name = "CboEstatusFiltro"
-        Me.CboEstatusFiltro.Size = New System.Drawing.Size(58, 24)
-        Me.CboEstatusFiltro.TabIndex = 99
-        '
         'Cat_Nomina_CentroCosto
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -388,7 +388,7 @@ Partial Class Cat_Nomina_CentroCosto
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.tsMenu)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Cat_Nomina_CentroCosto"
         Me.Text = "Catálogo de centros de  costos"

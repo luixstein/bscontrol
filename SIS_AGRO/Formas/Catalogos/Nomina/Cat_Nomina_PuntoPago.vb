@@ -146,7 +146,7 @@ Public Class Cat_Nomina_PuntoPago
     Private Sub InicializaElemento()
         Me.TxtCodigoPuntoPago.Text = ""
         Me.TxtNombrePuntoPago.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
         Me.cboGeneraDenominacion.Text = "NO"
         Me.txtDesde.Text = ""
         Me.txtHasta.Text = ""
@@ -174,7 +174,11 @@ Public Class Cat_Nomina_PuntoPago
                 Me.txtHasta.Text = .HASTA.ToString
                 Me.txtCodigoSiguiente.Text = .CODIGO_TRABAJADOR_SIGUIENTE.ToString
                 Me.cboGeneraDenominacion.Text = IIf(.GENERA_EFECTIVO_DENOMINACIONES.ToString = "1", "SI", "NO").ToString
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
             End With
         End If
     End Sub
@@ -192,7 +196,7 @@ Public Class Cat_Nomina_PuntoPago
                         .DESDE = Me.txtDesde.Text
                         .HASTA = Me.txtHasta.Text
                         .CODIGO_TRABAJADOR_SIGUIENTE = Me.txtCodigoSiguiente.Text
-                        .Estatus = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         .GENERA_EFECTIVO_DENOMINACIONES = IIf(Me.cboGeneraDenominacion.Text = "SI", "1", "0").ToString
 
                         Select Case Me.Estado

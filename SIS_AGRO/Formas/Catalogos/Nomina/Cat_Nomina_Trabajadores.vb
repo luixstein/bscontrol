@@ -337,7 +337,7 @@ Public Class Cat_Nomina_Trabajadores
             Me.txtSueldo.Text = ""
             Me.txtRfc.Text = ""
             Me.txtCurp.Text = ""
-            Me.CboEstatus.SelectedItem = "A"
+            Me.CboEstatus.SelectedIndex = 0
 
             Me.ckbPagoTarjeta.Checked = False
             Me.txtNumTarjeta.Text = ""
@@ -663,7 +663,7 @@ Public Class Cat_Nomina_Trabajadores
                         .CURP = Me.txtCurp.Text
                         .CODIGO_MAYORDOMO = Me.txtCodigoMayordomo.Text
                         .SUELDO_DIARIO = CDbl(Me.txtSueldo.Text)
-                        .ESTATUS_TRABAJADOR = Me.CboEstatus.Text
+                        .ESTATUS_TRABAJADOR = Strings.Left(Me.CboEstatus.Text, 1)
                         .RECIBE_PAGO_TARJETA_BANCARIA = Convert.ToInt32(Me.ckbPagoTarjeta.Checked).ToString
                         .NUMERO_TARJETA_BANCARIA = Me.txtNumTarjeta.Text
                         .CODIGO_BANCO_PAGO_TARJETA = Me.txtCodigoBanco.Text
@@ -790,7 +790,11 @@ Public Class Cat_Nomina_Trabajadores
                 Me.txtSueldo.Text = FormatImporteContable(valorNumerico(.SUELDO_DIARIO.ToString), True)
                 Me.txtRfc.Text = .RFC
                 Me.txtCurp.Text = .CURP
-                Me.CboEstatus.Text = .ESTATUS_TRABAJADOR
+                If .ESTATUS_TRABAJADOR = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
                 Me.ckbPagoTarjeta.Checked = CBool(.RECIBE_PAGO_TARJETA_BANCARIA)
                 Me.txtNumTarjeta.Text = .NUMERO_TARJETA_BANCARIA
                 Me.txtCodigoBanco.Text = .CODIGO_BANCO_PAGO_TARJETA

@@ -24,6 +24,7 @@ Partial Class Cat_Nomina_Actividades
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Cat_Nomina_Actividades))
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.lblCostoJornal = New System.Windows.Forms.Label()
         Me.txtCostoJornal = New System.Windows.Forms.TextBox()
         Me.txtCodigoSubActividad = New System.Windows.Forms.TextBox()
         Me.txtCodigoConcepto = New System.Windows.Forms.TextBox()
@@ -49,7 +50,6 @@ Partial Class Cat_Nomina_Actividades
         Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimirListado = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
-        Me.lblCostoJornal = New System.Windows.Forms.Label()
         Me.gBoxInformacion.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -82,6 +82,15 @@ Partial Class Cat_Nomina_Actividades
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
+        '
+        'lblCostoJornal
+        '
+        Me.lblCostoJornal.AutoSize = True
+        Me.lblCostoJornal.Location = New System.Drawing.Point(15, 173)
+        Me.lblCostoJornal.Name = "lblCostoJornal"
+        Me.lblCostoJornal.Size = New System.Drawing.Size(87, 17)
+        Me.lblCostoJornal.TabIndex = 122
+        Me.lblCostoJornal.Text = "Costo jornal:"
         '
         'txtCostoJornal
         '
@@ -162,12 +171,12 @@ Partial Class Cat_Nomina_Actividades
         '
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
-        Me.CboEstatus.Items.AddRange(New Object() {"A", "B"})
+        Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.CboEstatus.Location = New System.Drawing.Point(145, 127)
         Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(75, 24)
+        Me.CboEstatus.Size = New System.Drawing.Size(96, 24)
         Me.CboEstatus.TabIndex = 2
         '
         'LblDisplayCodActividad
@@ -319,15 +328,6 @@ Partial Class Cat_Nomina_Actividades
         Me.tsbSalir.Name = "tsbSalir"
         Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
         Me.tsbSalir.Text = "&Salir"
-        '
-        'lblCostoJornal
-        '
-        Me.lblCostoJornal.AutoSize = True
-        Me.lblCostoJornal.Location = New System.Drawing.Point(15, 173)
-        Me.lblCostoJornal.Name = "lblCostoJornal"
-        Me.lblCostoJornal.Size = New System.Drawing.Size(87, 17)
-        Me.lblCostoJornal.TabIndex = 122
-        Me.lblCostoJornal.Text = "Costo jornal:"
         '
         'Cat_Nomina_Actividades
         '

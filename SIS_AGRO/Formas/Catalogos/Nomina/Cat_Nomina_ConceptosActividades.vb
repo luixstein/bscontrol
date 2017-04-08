@@ -148,7 +148,7 @@ Public Class Cat_Nomina_ConceptosActividades
     Private Sub InicializaElemento()
         Me.TxtCodigoActividad.Text = ""
         Me.TxtConceptoActividad.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -188,7 +188,11 @@ Public Class Cat_Nomina_ConceptosActividades
                 Me.TxtCodigoActividad.Text = sCodigo.Substring(Len(sCodigo) - 3).ToString
                 Me.TxtConceptoActividad.Text = .NOMBRE_CONCEPTO_ACTIVIDAD.ToString
                 Me.DesplegarElementosSubActividad()
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
 
             End With
         End If
@@ -209,7 +213,7 @@ Public Class Cat_Nomina_ConceptosActividades
                     With Me.oActividad
                         .CODIGO_CONCEPTO_ACTIVIDAD = Me.TxtCodigoActividad.Text
                         .NOMBRE_CONCEPTO_ACTIVIDAD = Me.TxtConceptoActividad.Text
-                        .Estatus = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 If .Insertar() Then

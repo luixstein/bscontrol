@@ -46,16 +46,16 @@ Partial Class Cat_Nomina_PuntoPago
         Me.LblDisplayCodPuntoPago = New System.Windows.Forms.Label()
         Me.TxtCodigoPuntoPago = New System.Windows.Forms.TextBox()
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
+        Me.Grid = New System.Windows.Forms.DataGridView()
         Me.txtFiltro = New System.Windows.Forms.TextBox()
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.Grid = New System.Windows.Forms.DataGridView()
         Me.tsMenu.SuspendLayout()
         Me.gBoxInformacion.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
-        Me.StatusStripEstado.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.StatusStripEstado.SuspendLayout()
         Me.SuspendLayout()
         '
         'tsMenu
@@ -135,9 +135,9 @@ Partial Class Cat_Nomina_PuntoPago
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayCodPuntoPago)
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigoPuntoPago)
         Me.gBoxInformacion.Location = New System.Drawing.Point(16, 34)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Size = New System.Drawing.Size(413, 514)
         Me.gBoxInformacion.TabIndex = 5
         Me.gBoxInformacion.TabStop = False
@@ -156,7 +156,7 @@ Partial Class Cat_Nomina_PuntoPago
         'txtCodigoSiguiente
         '
         Me.txtCodigoSiguiente.Location = New System.Drawing.Point(175, 124)
-        Me.txtCodigoSiguiente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCodigoSiguiente.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCodigoSiguiente.MaxLength = 0
         Me.txtCodigoSiguiente.Name = "txtCodigoSiguiente"
         Me.txtCodigoSiguiente.Size = New System.Drawing.Size(75, 22)
@@ -178,7 +178,7 @@ Partial Class Cat_Nomina_PuntoPago
         Me.cboGeneraDenominacion.FormattingEnabled = True
         Me.cboGeneraDenominacion.Items.AddRange(New Object() {"SI", "NO"})
         Me.cboGeneraDenominacion.Location = New System.Drawing.Point(175, 156)
-        Me.cboGeneraDenominacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboGeneraDenominacion.Margin = New System.Windows.Forms.Padding(4)
         Me.cboGeneraDenominacion.MaxLength = 1
         Me.cboGeneraDenominacion.Name = "cboGeneraDenominacion"
         Me.cboGeneraDenominacion.Size = New System.Drawing.Size(75, 24)
@@ -187,7 +187,7 @@ Partial Class Cat_Nomina_PuntoPago
         'txtHasta
         '
         Me.txtHasta.Location = New System.Drawing.Point(300, 90)
-        Me.txtHasta.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtHasta.Margin = New System.Windows.Forms.Padding(4)
         Me.txtHasta.MaxLength = 0
         Me.txtHasta.Name = "txtHasta"
         Me.txtHasta.Size = New System.Drawing.Size(103, 22)
@@ -206,7 +206,7 @@ Partial Class Cat_Nomina_PuntoPago
         'txtDesde
         '
         Me.txtDesde.Location = New System.Drawing.Point(175, 90)
-        Me.txtDesde.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtDesde.Margin = New System.Windows.Forms.Padding(4)
         Me.txtDesde.MaxLength = 0
         Me.txtDesde.Name = "txtDesde"
         Me.txtDesde.Size = New System.Drawing.Size(101, 22)
@@ -234,7 +234,7 @@ Partial Class Cat_Nomina_PuntoPago
         'TxtNombrePuntoPago
         '
         Me.TxtNombrePuntoPago.Location = New System.Drawing.Point(175, 60)
-        Me.TxtNombrePuntoPago.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtNombrePuntoPago.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNombrePuntoPago.MaxLength = 50
         Me.TxtNombrePuntoPago.Name = "TxtNombrePuntoPago"
         Me.TxtNombrePuntoPago.Size = New System.Drawing.Size(229, 22)
@@ -254,12 +254,12 @@ Partial Class Cat_Nomina_PuntoPago
         '
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
-        Me.CboEstatus.Items.AddRange(New Object() {"A", "B"})
+        Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.CboEstatus.Location = New System.Drawing.Point(175, 190)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(75, 24)
+        Me.CboEstatus.Size = New System.Drawing.Size(101, 24)
         Me.CboEstatus.TabIndex = 12
         '
         'LblDisplayCodPuntoPago
@@ -275,7 +275,7 @@ Partial Class Cat_Nomina_PuntoPago
         'TxtCodigoPuntoPago
         '
         Me.TxtCodigoPuntoPago.Location = New System.Drawing.Point(175, 28)
-        Me.TxtCodigoPuntoPago.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodigoPuntoPago.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigoPuntoPago.MaxLength = 0
         Me.TxtCodigoPuntoPago.Name = "TxtCodigoPuntoPago"
         Me.TxtCodigoPuntoPago.Size = New System.Drawing.Size(75, 22)
@@ -289,20 +289,36 @@ Partial Class Cat_Nomina_PuntoPago
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(441, 34)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(396, 514)
         Me.gBoxBusquedaRapida.TabIndex = 6
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
+        '
+        'Grid
+        '
+        Me.Grid.AllowUserToAddRows = False
+        Me.Grid.AllowUserToDeleteRows = False
+        Me.Grid.AllowUserToResizeColumns = False
+        Me.Grid.AllowUserToResizeRows = False
+        Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.Grid.Location = New System.Drawing.Point(8, 53)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
+        Me.Grid.Name = "Grid"
+        Me.Grid.ReadOnly = True
+        Me.Grid.RowHeadersVisible = False
+        Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.Grid.Size = New System.Drawing.Size(379, 453)
+        Me.Grid.TabIndex = 113
         '
         'txtFiltro
         '
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.Name = "txtFiltro"
         Me.txtFiltro.Size = New System.Drawing.Size(379, 22)
         Me.txtFiltro.TabIndex = 0
@@ -329,22 +345,6 @@ Partial Class Cat_Nomina_PuntoPago
         Me.tssLabelEstado.Name = "tssLabelEstado"
         Me.tssLabelEstado.Size = New System.Drawing.Size(0, 20)
         '
-        'Grid
-        '
-        Me.Grid.AllowUserToAddRows = False
-        Me.Grid.AllowUserToDeleteRows = False
-        Me.Grid.AllowUserToResizeColumns = False
-        Me.Grid.AllowUserToResizeRows = False
-        Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Grid.Location = New System.Drawing.Point(8, 53)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
-        Me.Grid.Name = "Grid"
-        Me.Grid.ReadOnly = True
-        Me.Grid.RowHeadersVisible = False
-        Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(379, 453)
-        Me.Grid.TabIndex = 113
-        '
         'Cat_Nomina_PuntoPago
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -355,7 +355,7 @@ Partial Class Cat_Nomina_PuntoPago
         Me.Controls.Add(Me.gBoxInformacion)
         Me.Controls.Add(Me.tsMenu)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Cat_Nomina_PuntoPago"
         Me.Text = "Catálgo de puntos de pagos"
@@ -365,9 +365,9 @@ Partial Class Cat_Nomina_PuntoPago
         Me.gBoxInformacion.PerformLayout()
         Me.gBoxBusquedaRapida.ResumeLayout(False)
         Me.gBoxBusquedaRapida.PerformLayout()
+        CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.StatusStripEstado.ResumeLayout(False)
         Me.StatusStripEstado.PerformLayout()
-        CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

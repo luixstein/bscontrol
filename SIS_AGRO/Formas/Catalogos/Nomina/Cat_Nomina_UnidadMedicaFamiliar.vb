@@ -148,7 +148,7 @@ Public Class Cat_Nomina_UnidadMedicaFamiliar
     Private Sub InicializaElemento()
         Me.TxtCodigoUnidadMedica.Text = ""
         Me.TxtNombreUnidadMedica.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -167,7 +167,7 @@ Public Class Cat_Nomina_UnidadMedicaFamiliar
                 sCodigo = "000" + iCodigo_Elemento
                 Me.TxtCodigoUnidadMedica.Text = sCodigo.Substring(Len(sCodigo) - 3).ToString
                 Me.TxtNombreUnidadMedica.Text = .NOMBRE_UNIDAD_MEDICA_FAMILIAR.ToString
-                Me.CboEstatus.Text = .Estatus
+                Me.CboEstatus.Text = Strings.Left(Me.CboEstatus.Text, 1)
             End With
         End If
     End Sub
@@ -181,7 +181,11 @@ Public Class Cat_Nomina_UnidadMedicaFamiliar
                     With Me.oUnidadMedica
                         .CODIGO_UNIDAD_MEDICA_FAMILIAR = CInt(Me.TxtCodigoUnidadMedica.Text)
                         .NOMBRE_UNIDAD_MEDICA_FAMILIAR = Me.TxtNombreUnidadMedica.Text
-                        .Estatus = Me.CboEstatus.Text
+                        If .Estatus = "A" Then
+                            Me.CboEstatus.SelectedIndex = 0
+                        Else
+                            Me.CboEstatus.SelectedIndex = 1
+                        End If
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 If .Insertar() Then

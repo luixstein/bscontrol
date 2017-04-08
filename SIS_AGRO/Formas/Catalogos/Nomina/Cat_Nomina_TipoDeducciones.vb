@@ -146,7 +146,7 @@ Public Class Cat_Nomina_TipoDeducciones
     Private Sub InicializaElemento()
         Me.TxtCodigoTipoDeduccion.Text = ""
         Me.TxtNombreTipoDeduccion.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -166,7 +166,12 @@ Public Class Cat_Nomina_TipoDeducciones
                 sCodigo = "0000" + iCodigo_Elemento
                 Me.TxtCodigoTipoDeduccion.Text = sCodigo.Substring(Len(sCodigo) - 4)
                 Me.TxtNombreTipoDeduccion.Text = .NOMBRE_TIPO_DEDUCCION.ToString
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
+
             End With
         End If
     End Sub
@@ -186,7 +191,7 @@ Public Class Cat_Nomina_TipoDeducciones
                     With Me.oTipoDeduccion
                         .CODIGO_TIPO_DEDUCCION = CInt(Me.TxtCodigoTipoDeduccion.Text)
                         .NOMBRE_TIPO_DEDUCCION = Me.TxtNombreTipoDeduccion.Text
-                        .Estatus = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 If .Insertar() Then

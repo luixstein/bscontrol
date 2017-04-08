@@ -183,7 +183,7 @@ Public Class Cat_Nomina_Actividades
     Private Sub InicializaElemento()
         Me.TxtCodigoActividad.Text = ""
         Me.TxtNombreActividad.Text = ""
-        Me.CboEstatus.Text = "A"""
+        Me.CboEstatus.SelectedIndex = 0
         Me.txtCodigoSubActividad.Text = ""
         Me.txtCostoJornal.Text = ""
     End Sub
@@ -204,11 +204,17 @@ Public Class Cat_Nomina_Actividades
                 'sCodigo = "000" + iCodigo_Elemento
                 'Me.TxtCodigoActividad.Text = sCodigo.Substring(Len(sCodigo) - 3).ToString
                 Me.TxtNombreActividad.Text = .NOMBRE_ACTIVIDAD.ToString
-                Me.CboEstatus.Text = .ESTATUS_ACTIVIDAD.ToString
                 Me.txtCodigoConcepto.Text = .CODIGO_CONCEPTO_ACTIVIDAD.ToString
                 Me.txtCodigoSubActividad.Text = .CODIGO_SUB_ACTIVIDAD.ToString
                 Me.TxtCodigoActividad.Text = .CODIGO_ACTIVIDAD.ToString
                 Me.txtCostoJornal.Text = .COSTO_JORNAL.ToString
+
+                If .ESTATUS_ACTIVIDAD = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
+
             End With
         End If
     End Sub
@@ -228,7 +234,7 @@ Public Class Cat_Nomina_Actividades
                     With Me.oActividad
                         .CODIGO_ACTIVIDAD = CInt(Me.TxtCodigoActividad.Text)
                         .NOMBRE_ACTIVIDAD = Me.TxtNombreActividad.Text
-                        .ESTATUS_ACTIVIDAD = Me.CboEstatus.Text
+                        .ESTATUS_ACTIVIDAD = Strings.Left(Me.CboEstatus.Text, 1)
                         .CODIGO_CONCEPTO_ACTIVIDAD = Me.txtCodigoConcepto.Text
                         .CODIGO_SUB_ACTIVIDAD = Me.txtCodigoSubActividad.Text
                         If Len(Me.txtCostoJornal.Text) > 0 Then

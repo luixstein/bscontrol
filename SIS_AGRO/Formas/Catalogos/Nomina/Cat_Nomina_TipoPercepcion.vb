@@ -146,7 +146,7 @@ Public Class Cat_Nomina_TipoPercepcion
     Private Sub InicializaElemento()
         Me.TxtCodigoPercepcion.Text = ""
         Me.TxtNombrePercepcion.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -166,7 +166,11 @@ Public Class Cat_Nomina_TipoPercepcion
                 sCodigo = "0000" + iCodigo_Elemento
                 Me.TxtCodigoPercepcion.Text = sCodigo.Substring(Len(sCodigo) - 4)
                 Me.TxtNombrePercepcion.Text = .NOMBRE_TIPO_PERCEPCION.ToString
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
             End With
         End If
     End Sub
@@ -181,7 +185,7 @@ Public Class Cat_Nomina_TipoPercepcion
                     With Me.oPercepcion
                         .CODIGO_TIPO_PERCEPCION = CInt(Me.TxtCodigoPercepcion.Text)
                         .NOMBRE_TIPO_PERCEPCION = Me.TxtNombrePercepcion.Text
-                        .Estatus = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 If .Insertar() Then

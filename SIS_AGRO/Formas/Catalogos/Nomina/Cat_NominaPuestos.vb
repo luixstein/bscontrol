@@ -146,7 +146,7 @@ Public Class Cat_NominaPuestos
     Private Sub InicializaElemento()
         Me.TxtCodigoPuesto.Text = ""
         Me.TxtNombrePuesto.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -166,7 +166,11 @@ Public Class Cat_NominaPuestos
                 sCodigo = "0000" + iCodigo_Elemento
                 Me.TxtCodigoPuesto.Text = sCodigo.Substring(Len(sCodigo) - 4)
                 Me.TxtNombrePuesto.Text = .NOMBRE_PUESTO.ToString
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
             End With
         End If
     End Sub
@@ -181,7 +185,7 @@ Public Class Cat_NominaPuestos
                     With Me.oPuesto
                         .CODIGO_PUESTO = CInt(Me.TxtCodigoPuesto.Text)
                         .NOMBRE_PUESTO = Me.TxtNombrePuesto.Text
-                        .Estatus = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 If .Insertar() Then

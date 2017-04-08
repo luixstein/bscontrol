@@ -146,7 +146,7 @@ Public Class Cat_Nomina_Areas
     Private Sub InicializaElemento()
         Me.TxtCodigoArea.Text = ""
         Me.TxtNombreArea.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.selectedindex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -166,7 +166,12 @@ Public Class Cat_Nomina_Areas
                 Me.TxtCodigoArea.Text = sCodigo.Substring(Len(sCodigo) - 4)
                 Me.TxtNombreArea.Text = .NOMBRE_AREA.ToString
                 Me.ckbCalcularSindicato.Checked = CBool(.CALCULA_SINDICATO)
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
+
             End With
         End If
     End Sub
@@ -181,7 +186,7 @@ Public Class Cat_Nomina_Areas
                         .CODIGO_AREA = CInt(Me.TxtCodigoArea.Text)
                         .NOMBRE_AREA = Me.TxtNombreArea.Text
                         .CALCULA_SINDICATO = Convert.ToInt32(Me.ckbCalcularSindicato.Checked).ToString
-                        .Estatus = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 If .Insertar() Then

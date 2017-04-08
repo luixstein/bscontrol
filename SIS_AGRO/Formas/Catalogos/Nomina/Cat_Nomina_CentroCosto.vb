@@ -152,7 +152,7 @@ Public Class Cat_Nomina_CentroCosto
         Me.TxtNombreCentroCosto.Text = ""
         Me.txtCuentaContable.Text = ""
         Me.lblCuenta.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -189,7 +189,11 @@ Public Class Cat_Nomina_CentroCosto
                 Me.txtCuentaContable.Text = .CUENTA_CONTABLE.ToString
                 Dim oCuentaContable = New Class_CatCuentas(.CUENTA_CONTABLE)
                 Me.lblCuenta.Text = oCuentaContable.NOMBRE_CUENTA
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
                 Me.chkContabilizarporactividad.Checked = CBool(.CONTABILIZAR_POR_ACTIVIDAD.ToString)
                 If (.CODIGO_CULTIVO = "") Then
                     Me.cboCultivo.SelectedValue = 0
@@ -216,7 +220,7 @@ Public Class Cat_Nomina_CentroCosto
                         .CODIGO_CENTRO_COSTO = CInt(Me.TxtCodigoCentroCosto.Text)
                         .NOMBRE_CENTRO_COSTO = Me.TxtNombreCentroCosto.Text
                         .CUENTA_CONTABLE = Me.txtCuentaContable.Text
-                        .Estatus = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         .CODIGO_CULTIVO = CodigoCultivo
                         .CONTABILIZAR_POR_ACTIVIDAD = CBool(Me.chkContabilizarporactividad.Checked)
                         Select Case Me.Estado

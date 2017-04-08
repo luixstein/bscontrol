@@ -144,7 +144,7 @@ Public Class Cat_Nomina_CatPercepciones
     Private Sub InicializaElemento()
         Me.TxtCodigoPercepcion.Text = ""
         Me.TxtNombrePercepcion.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -169,7 +169,11 @@ Public Class Cat_Nomina_CatPercepciones
                 Else
                     Me.cmbReembolsable.Text = "NO"
                 End If
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
             End With
         End If
     End Sub
@@ -189,7 +193,7 @@ Public Class Cat_Nomina_CatPercepciones
                         Else
                             .REEMBOLSABLE = "0"
                         End If
-                        .Estatus = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 If .Insertar() Then
