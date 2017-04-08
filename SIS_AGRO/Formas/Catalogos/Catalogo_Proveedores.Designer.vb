@@ -441,12 +441,12 @@ Partial Class Catalogo_Proveedores
         '
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
-        Me.CboEstatus.Items.AddRange(New Object() {"A", "B"})
+        Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.CboEstatus.Location = New System.Drawing.Point(147, 650)
         Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(75, 24)
+        Me.CboEstatus.Size = New System.Drawing.Size(95, 24)
         Me.CboEstatus.TabIndex = 17
         '
         'LblDisplayCodProveedor

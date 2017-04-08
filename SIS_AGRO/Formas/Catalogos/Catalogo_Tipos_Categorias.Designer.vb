@@ -32,6 +32,8 @@ Partial Class Catalogo_Tipos_Categorias
         Me.tsbImprimirListado = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.cboEstatusFiltro = New System.Windows.Forms.ComboBox()
         Me.Grid = New System.Windows.Forms.DataGridView()
         Me.txtFiltro = New System.Windows.Forms.TextBox()
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
@@ -46,8 +48,6 @@ Partial Class Catalogo_Tipos_Categorias
         Me.LblCodigo = New System.Windows.Forms.Label()
         Me.TxtCodigo = New System.Windows.Forms.TextBox()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
-        Me.cboEstatusFiltro = New System.Windows.Forms.ComboBox()
-        Me.Label1 = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -121,13 +121,35 @@ Partial Class Catalogo_Tipos_Categorias
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(439, 34)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(557, 395)
         Me.gBoxBusquedaRapida.TabIndex = 26
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(429, 26)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(63, 17)
+        Me.Label1.TabIndex = 92
+        Me.Label1.Text = "Estatus :"
+        '
+        'cboEstatusFiltro
+        '
+        Me.cboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboEstatusFiltro.FormattingEnabled = True
+        Me.cboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
+        Me.cboEstatusFiltro.Location = New System.Drawing.Point(501, 21)
+        Me.cboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboEstatusFiltro.MaxLength = 1
+        Me.cboEstatusFiltro.Name = "cboEstatusFiltro"
+        Me.cboEstatusFiltro.Size = New System.Drawing.Size(47, 24)
+        Me.cboEstatusFiltro.TabIndex = 92
         '
         'Grid
         '
@@ -137,7 +159,7 @@ Partial Class Catalogo_Tipos_Categorias
         Me.Grid.AllowUserToResizeRows = False
         Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.Grid.Location = New System.Drawing.Point(8, 53)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid.Name = "Grid"
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
@@ -150,7 +172,7 @@ Partial Class Catalogo_Tipos_Categorias
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.Name = "txtFiltro"
         Me.txtFiltro.Size = New System.Drawing.Size(413, 22)
         Me.txtFiltro.TabIndex = 0
@@ -187,9 +209,9 @@ Partial Class Catalogo_Tipos_Categorias
         Me.gBoxInformacion.Controls.Add(Me.LblCodigo)
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigo)
         Me.gBoxInformacion.Location = New System.Drawing.Point(16, 34)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Size = New System.Drawing.Size(413, 395)
         Me.gBoxInformacion.TabIndex = 27
         Me.gBoxInformacion.TabStop = False
@@ -217,7 +239,7 @@ Partial Class Catalogo_Tipos_Categorias
         'TxtNombre
         '
         Me.TxtNombre.Location = New System.Drawing.Point(103, 50)
-        Me.TxtNombre.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtNombre.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNombre.MaxLength = 50
         Me.TxtNombre.Name = "TxtNombre"
         Me.TxtNombre.Size = New System.Drawing.Size(301, 22)
@@ -237,12 +259,12 @@ Partial Class Catalogo_Tipos_Categorias
         '
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
-        Me.CboEstatus.Items.AddRange(New Object() {"A", "B"})
+        Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.CboEstatus.Location = New System.Drawing.Point(101, 82)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(75, 24)
+        Me.CboEstatus.Size = New System.Drawing.Size(98, 24)
         Me.CboEstatus.TabIndex = 2
         '
         'LblCodigo
@@ -258,7 +280,7 @@ Partial Class Catalogo_Tipos_Categorias
         'TxtCodigo
         '
         Me.TxtCodigo.Location = New System.Drawing.Point(101, 18)
-        Me.TxtCodigo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodigo.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigo.MaxLength = 4
         Me.TxtCodigo.Name = "TxtCodigo"
         Me.TxtCodigo.Size = New System.Drawing.Size(75, 22)
@@ -267,28 +289,6 @@ Partial Class Catalogo_Tipos_Categorias
         'ErrorProvider
         '
         Me.ErrorProvider.ContainerControl = Me
-        '
-        'cboEstatusFiltro
-        '
-        Me.cboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboEstatusFiltro.FormattingEnabled = True
-        Me.cboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
-        Me.cboEstatusFiltro.Location = New System.Drawing.Point(501, 21)
-        Me.cboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4)
-        Me.cboEstatusFiltro.MaxLength = 1
-        Me.cboEstatusFiltro.Name = "cboEstatusFiltro"
-        Me.cboEstatusFiltro.Size = New System.Drawing.Size(47, 24)
-        Me.cboEstatusFiltro.TabIndex = 92
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(429, 26)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(63, 17)
-        Me.Label1.TabIndex = 92
-        Me.Label1.Text = "Estatus :"
         '
         'Catalogo_Tipos_Categorias
         '
@@ -300,7 +300,7 @@ Partial Class Catalogo_Tipos_Categorias
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.gBoxInformacion)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Tipos_Categorias"
         Me.Text = "Catálogo tipos categorias"

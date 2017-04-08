@@ -239,7 +239,7 @@ Public Class Catalogo_Productos_Agricolas
         Try
             Me.TxtCodArticulo.Text = ""
             Me.TxtDescripcion.Text = ""
-            Me.CboEstatus.Text = "A"
+            Me.CboEstatus.SelectedIndex = 0
             Me.TxtPrecio.Text = "0.00"
             Me.TxtPeso.Text = "0.00"
             Me.TxtRangoPiezas.Text = ""
@@ -447,7 +447,11 @@ Public Class Catalogo_Productos_Agricolas
                 With oElemento
                     Me.TxtCodArticulo.Text = .CODIGO_ARTICULO.ToString
                     Me.TxtDescripcion.Text = .DESCRIPCION.ToString
-                    Me.CboEstatus.Text = .Estatus
+                    If .Estatus = "A" Then
+                        Me.CboEstatus.SelectedIndex = 0
+                    Else
+                        Me.CboEstatus.SelectedIndex = 1
+                    End If
                     Me.TxtPrecio.Text = .PRECIO.ToString
                     Me.TxtPeso.Text = .PESO.ToString
                     Me.TxtCantidadBultosXPalet.Text = .CANTIDAD_BULTOS_POR_PALET.ToString
@@ -569,7 +573,7 @@ Public Class Catalogo_Productos_Agricolas
                     With oElemento
                         .CODIGO_ARTICULO = Me.TxtCodArticulo.Text
                         .DESCRIPCION = Me.TxtDescripcion.Text
-                        .Estatus = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         .UNIDAD_VENTA = Me.cboUnidadVenta.Text '"BTO" 
                         .PROTEGIDO = "0"
                         .INVENTARIABLE = "0"

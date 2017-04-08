@@ -650,7 +650,7 @@ busca:
             Me.cboEstado.SelectedIndex = -1
             Me.cboMunicipio.SelectedIndex = -1
 
-            Me.CboEstatus.SelectedItem = "A"
+            Me.CboEstatus.SelectedIndex = 0
             Me.cboEstado.SelectedValue = "SIN"
             Me.cboTipoPersona.SelectedItem = "MORAL"
             Me.cboZona.SelectedValue = Plaza.CODIGO_ZONA_PRINCIPAL
@@ -812,7 +812,7 @@ busca:
                     With oElemento
                         .CODIGO_CLIENTE = Me.txtCodigoCliente.Text
                         .NOMBRE_CLIENTE = Me.TxtNombreCliente.Text
-                        .Status = Me.CboEstatus.Text
+                        .Status = Strings.Left(Me.CboEstatus.Text, 1)
                         .RFC = Me.txtRfc.Text
                         If Me.cboTipoPersona.Text = "MORAL" Then
                             .TIPO_PERSONA = "M"
@@ -1068,7 +1068,11 @@ busca:
                     Me.txtDiasPlazo.Text = .DIAS_PLAZO.ToString
                     Me.txtLimiteCredito.Text = FormatImporteContable(CDbl(.LIMITE_CREDITO.ToString), True)
 
-                    Me.CboEstatus.Text = .Estatus
+                    If .Estatus = "A" Then
+                        Me.CboEstatus.SelectedIndex = 0
+                    Else
+                        Me.CboEstatus.SelectedIndex = 1
+                    End If
                     Me.cboVendedor.SelectedValue = .CODIGO_VENDEDOR
                     Me.cboZona.SelectedValue = .CODIGO_ZONA
                     Me.txtCorreoCliente.Text = .CORREO_CLIENTE.ToString

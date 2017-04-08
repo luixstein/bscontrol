@@ -35,6 +35,8 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.cMenuStripAccion = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.tStripMenuItemEditar = New System.Windows.Forms.ToolStripMenuItem()
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
+        Me.cboEstatusFiltro = New System.Windows.Forms.ComboBox()
+        Me.Label8 = New System.Windows.Forms.Label()
         Me.Grid = New System.Windows.Forms.DataGridView()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.TxtIDCuenta = New System.Windows.Forms.TextBox()
@@ -71,8 +73,6 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TxtSucursal = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.Label8 = New System.Windows.Forms.Label()
-        Me.cboEstatusFiltro = New System.Windows.Forms.ComboBox()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.cMenuStripAccion.SuspendLayout()
@@ -150,7 +150,7 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssLabel, Me.tssLabelEstado})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 602)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 632)
         Me.StatusStripEstado.Name = "StatusStripEstado"
         Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
         Me.StatusStripEstado.Size = New System.Drawing.Size(968, 25)
@@ -177,13 +177,13 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.cMenuStripAccion.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.cMenuStripAccion.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tStripMenuItemEditar})
         Me.cMenuStripAccion.Name = "ContextMenuStrip1"
-        Me.cMenuStripAccion.Size = New System.Drawing.Size(122, 30)
+        Me.cMenuStripAccion.Size = New System.Drawing.Size(124, 30)
         '
         'tStripMenuItemEditar
         '
         Me.tStripMenuItemEditar.Image = CType(resources.GetObject("tStripMenuItemEditar.Image"), System.Drawing.Image)
         Me.tStripMenuItemEditar.Name = "tStripMenuItemEditar"
-        Me.tStripMenuItemEditar.Size = New System.Drawing.Size(121, 26)
+        Me.tStripMenuItemEditar.Size = New System.Drawing.Size(123, 26)
         Me.tStripMenuItemEditar.Text = "&Editar"
         '
         'gBoxBusquedaRapida
@@ -199,10 +199,33 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
         Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
-        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(512, 561)
+        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(512, 591)
         Me.gBoxBusquedaRapida.TabIndex = 1
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
+        '
+        'cboEstatusFiltro
+        '
+        Me.cboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboEstatusFiltro.FormattingEnabled = True
+        Me.cboEstatusFiltro.IntegralHeight = False
+        Me.cboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
+        Me.cboEstatusFiltro.Location = New System.Drawing.Point(429, 23)
+        Me.cboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboEstatusFiltro.MaxLength = 1
+        Me.cboEstatusFiltro.Name = "cboEstatusFiltro"
+        Me.cboEstatusFiltro.Size = New System.Drawing.Size(75, 24)
+        Me.cboEstatusFiltro.TabIndex = 265
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(367, 26)
+        Me.Label8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(63, 17)
+        Me.Label8.TabIndex = 110
+        Me.Label8.Text = "Estatus :"
         '
         'Grid
         '
@@ -217,7 +240,7 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
         Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(496, 494)
+        Me.Grid.Size = New System.Drawing.Size(496, 530)
         Me.Grid.TabIndex = 109
         '
         'ErrorProvider
@@ -248,12 +271,12 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.IntegralHeight = False
-        Me.CboEstatus.Items.AddRange(New Object() {"A", "B"})
+        Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.CboEstatus.Location = New System.Drawing.Point(150, 512)
         Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(75, 24)
+        Me.CboEstatus.Size = New System.Drawing.Size(103, 24)
         Me.CboEstatus.TabIndex = 12
         '
         'LblEstatus
@@ -326,7 +349,7 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
         Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
-        Me.gBoxInformacion.Size = New System.Drawing.Size(421, 561)
+        Me.gBoxInformacion.Size = New System.Drawing.Size(421, 591)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
@@ -508,7 +531,7 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(177, 544)
+        Me.Label5.Location = New System.Drawing.Point(177, 550)
         Me.Label5.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(48, 17)
@@ -519,7 +542,7 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         'TxtSaldo
         '
         Me.TxtSaldo.Enabled = False
-        Me.TxtSaldo.Location = New System.Drawing.Point(236, 531)
+        Me.TxtSaldo.Location = New System.Drawing.Point(236, 547)
         Me.TxtSaldo.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtSaldo.MaxLength = 50
         Me.TxtSaldo.Name = "TxtSaldo"
@@ -594,34 +617,11 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.Label2.TabIndex = 91
         Me.Label2.Text = ".."
         '
-        'Label8
-        '
-        Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(367, 26)
-        Me.Label8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(63, 17)
-        Me.Label8.TabIndex = 110
-        Me.Label8.Text = "Estatus :"
-        '
-        'cboEstatusFiltro
-        '
-        Me.cboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboEstatusFiltro.FormattingEnabled = True
-        Me.cboEstatusFiltro.IntegralHeight = False
-        Me.cboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
-        Me.cboEstatusFiltro.Location = New System.Drawing.Point(429, 23)
-        Me.cboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4)
-        Me.cboEstatusFiltro.MaxLength = 1
-        Me.cboEstatusFiltro.Name = "cboEstatusFiltro"
-        Me.cboEstatusFiltro.Size = New System.Drawing.Size(75, 24)
-        Me.cboEstatusFiltro.TabIndex = 265
-        '
         'Catalogo_Cuentas_Bancarias
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(968, 627)
+        Me.ClientSize = New System.Drawing.Size(968, 657)
         Me.Controls.Add(Me.tsMenu)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.gBoxInformacion)

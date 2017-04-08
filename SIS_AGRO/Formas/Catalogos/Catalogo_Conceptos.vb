@@ -200,7 +200,7 @@ Public Class Catalogo_Conceptos
     Private Sub InicializaElemento()
         Me.TxtCodigo.Text = ""
         Me.TxtNombre.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -218,7 +218,11 @@ Public Class Catalogo_Conceptos
             With Me.oConcepto
                 Me.TxtCodigo.Text = .Codigo_Concepto.ToString
                 Me.TxtNombre.Text = .Nombre_Concepto.ToString
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
             End With
         End If
     End Sub
@@ -231,7 +235,7 @@ Public Class Catalogo_Conceptos
                     With Me.oConcepto
                         .Codigo_Concepto = Me.TxtCodigo.Text
                         .Nombre_Concepto = Me.TxtNombre.Text
-                        .Estatus = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 If .Insertar() Then

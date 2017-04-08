@@ -178,7 +178,7 @@ Public Class Catalogo_Productores
         Me.TxtTelefono.Text = ""
         Me.TxtFax.Text = ""
         Me.txtCodigoPostal.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -206,6 +206,11 @@ Public Class Catalogo_Productores
                 Me.TxtTelefono.Text = .TELEFONO.ToString
                 Me.TxtFax.Text = .FAX.ToString
                 Me.txtCodigoPostal.Text = .CODIGO_POSTAL
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
 
             End With
         End If
@@ -237,7 +242,7 @@ Public Class Catalogo_Productores
                         .TELEFONO = Me.TxtTelefono.Text.ToUpper
                         .FAX = Me.TxtFax.Text.ToUpper
                         .CODIGO_POSTAL = Me.txtCodigoPostal.Text.ToUpper
-                        .Estatus = Me.CboEstatus.Text.ToUpper
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO

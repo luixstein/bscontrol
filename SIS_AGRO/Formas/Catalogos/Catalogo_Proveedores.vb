@@ -421,7 +421,7 @@ Public Class Catalogo_Proveedores
             'Me.cboTipoProveedor.SelectedIndex = 0
             Me.txtContactoNombre.Text = ""
             Me.txtContactoTelefonoCelular.Text = ""
-            Me.CboEstatus.Text = "A"
+            Me.CboEstatus.SelectedIndex = 0
             Me.lblCuenta.Text = ""
             Me.lblCuentaContabledolares.Text = ""
             Me.txtCuentaContable.Enabled = False
@@ -463,7 +463,11 @@ Public Class Catalogo_Proveedores
                 Me.cboTipoProveedor.SelectedValue = .Codigo_Tipo_Proveedor.ToString
                 Me.txtContactoNombre.Text = .Contacto.ToString
                 Me.txtContactoTelefonoCelular.Text = .Contacto_Telefono_Celular.ToString
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
 
                 Dim sql As New Class_find("Select NOMBRE_CUENTA From CON_CAT_CUENTAS Where CUENTA_CONTABLE='" & Me.txtCuentaContable.Text & "' ")
                 Me.lblCuenta.Text = sql.Result1
@@ -583,7 +587,7 @@ Public Class Catalogo_Proveedores
                         .Codigo_Tipo_Proveedor = Me.cboTipoProveedor.SelectedValue.ToString
                         .Contacto = Me.txtContactoNombre.Text.ToUpper
                         .Contacto_Telefono_Celular = Me.txtContactoTelefonoCelular.Text
-                        .ESTATUS = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         .CODIGO_PLAZA = Usuario.Codigo_Plaza
                         .CURP = Me.txtCURP.Text.ToUpper
 

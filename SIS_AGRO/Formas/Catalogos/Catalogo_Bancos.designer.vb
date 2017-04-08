@@ -31,6 +31,7 @@ Partial Class Catalogo_Bancos
         Me.tsbImprimirListado = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
+        Me.Grid = New System.Windows.Forms.DataGridView()
         Me.txtFiltro = New System.Windows.Forms.TextBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -51,13 +52,12 @@ Partial Class Catalogo_Bancos
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.Grid = New System.Windows.Forms.DataGridView()
         Me.tsMenu.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
+        CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.gBoxInformacion.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
-        CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'tsMenu
@@ -126,20 +126,36 @@ Partial Class Catalogo_Bancos
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(455, 49)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(495, 318)
         Me.gBoxBusquedaRapida.TabIndex = 9
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
+        '
+        'Grid
+        '
+        Me.Grid.AllowUserToAddRows = False
+        Me.Grid.AllowUserToDeleteRows = False
+        Me.Grid.AllowUserToResizeColumns = False
+        Me.Grid.AllowUserToResizeRows = False
+        Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.Grid.Location = New System.Drawing.Point(8, 59)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
+        Me.Grid.Name = "Grid"
+        Me.Grid.ReadOnly = True
+        Me.Grid.RowHeadersVisible = False
+        Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.Grid.Size = New System.Drawing.Size(477, 251)
+        Me.Grid.TabIndex = 111
         '
         'txtFiltro
         '
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.Name = "txtFiltro"
         Me.txtFiltro.Size = New System.Drawing.Size(477, 22)
         Me.txtFiltro.TabIndex = 0
@@ -156,9 +172,9 @@ Partial Class Catalogo_Bancos
         Me.GroupBox1.Controls.Add(Me.Label5)
         Me.GroupBox1.Controls.Add(Me.txtCodigoBanco)
         Me.GroupBox1.Location = New System.Drawing.Point(16, 49)
-        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Size = New System.Drawing.Size(413, 318)
         Me.GroupBox1.TabIndex = 11
         Me.GroupBox1.TabStop = False
@@ -186,7 +202,7 @@ Partial Class Catalogo_Bancos
         'txtNombreBanco
         '
         Me.txtNombreBanco.Location = New System.Drawing.Point(121, 50)
-        Me.txtNombreBanco.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtNombreBanco.Margin = New System.Windows.Forms.Padding(4)
         Me.txtNombreBanco.MaxLength = 50
         Me.txtNombreBanco.Name = "txtNombreBanco"
         Me.txtNombreBanco.Size = New System.Drawing.Size(283, 22)
@@ -207,12 +223,12 @@ Partial Class Catalogo_Bancos
         '
         Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Items.AddRange(New Object() {"A", "B"})
+        Me.ComboBox1.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.ComboBox1.Location = New System.Drawing.Point(121, 82)
-        Me.ComboBox1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ComboBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.ComboBox1.MaxLength = 1
         Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(75, 24)
+        Me.ComboBox1.Size = New System.Drawing.Size(85, 24)
         Me.ComboBox1.TabIndex = 12
         Me.ComboBox1.Visible = False
         '
@@ -229,7 +245,7 @@ Partial Class Catalogo_Bancos
         'txtCodigoBanco
         '
         Me.txtCodigoBanco.Location = New System.Drawing.Point(121, 18)
-        Me.txtCodigoBanco.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCodigoBanco.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCodigoBanco.MaxLength = 0
         Me.txtCodigoBanco.Name = "txtCodigoBanco"
         Me.txtCodigoBanco.Size = New System.Drawing.Size(75, 22)
@@ -247,9 +263,9 @@ Partial Class Catalogo_Bancos
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayCodCultivo)
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigoLinea)
         Me.gBoxInformacion.Location = New System.Drawing.Point(16, 49)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Size = New System.Drawing.Size(413, 318)
         Me.gBoxInformacion.TabIndex = 10
         Me.gBoxInformacion.TabStop = False
@@ -277,7 +293,7 @@ Partial Class Catalogo_Bancos
         'TxtNombreLinea
         '
         Me.TxtNombreLinea.Location = New System.Drawing.Point(121, 50)
-        Me.TxtNombreLinea.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtNombreLinea.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNombreLinea.MaxLength = 50
         Me.TxtNombreLinea.Name = "TxtNombreLinea"
         Me.TxtNombreLinea.Size = New System.Drawing.Size(283, 22)
@@ -299,7 +315,7 @@ Partial Class Catalogo_Bancos
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"A", "B"})
         Me.CboEstatus.Location = New System.Drawing.Point(121, 82)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(75, 24)
@@ -318,7 +334,7 @@ Partial Class Catalogo_Bancos
         'TxtCodigoLinea
         '
         Me.TxtCodigoLinea.Location = New System.Drawing.Point(121, 18)
-        Me.TxtCodigoLinea.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodigoLinea.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigoLinea.MaxLength = 0
         Me.TxtCodigoLinea.Name = "TxtCodigoLinea"
         Me.TxtCodigoLinea.Size = New System.Drawing.Size(75, 22)
@@ -346,22 +362,6 @@ Partial Class Catalogo_Bancos
         Me.tssLabelEstado.Name = "tssLabelEstado"
         Me.tssLabelEstado.Size = New System.Drawing.Size(0, 20)
         '
-        'Grid
-        '
-        Me.Grid.AllowUserToAddRows = False
-        Me.Grid.AllowUserToDeleteRows = False
-        Me.Grid.AllowUserToResizeColumns = False
-        Me.Grid.AllowUserToResizeRows = False
-        Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Grid.Location = New System.Drawing.Point(8, 59)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
-        Me.Grid.Name = "Grid"
-        Me.Grid.ReadOnly = True
-        Me.Grid.RowHeadersVisible = False
-        Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(477, 251)
-        Me.Grid.TabIndex = 111
-        '
         'Catalogo_Bancos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -373,7 +373,7 @@ Partial Class Catalogo_Bancos
         Me.Controls.Add(Me.gBoxInformacion)
         Me.Controls.Add(Me.tsMenu)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Bancos"
         Me.Text = "Bancos"
@@ -381,13 +381,13 @@ Partial Class Catalogo_Bancos
         Me.tsMenu.PerformLayout()
         Me.gBoxBusquedaRapida.ResumeLayout(False)
         Me.gBoxBusquedaRapida.PerformLayout()
+        CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.gBoxInformacion.ResumeLayout(False)
         Me.gBoxInformacion.PerformLayout()
         Me.StatusStripEstado.ResumeLayout(False)
         Me.StatusStripEstado.PerformLayout()
-        CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

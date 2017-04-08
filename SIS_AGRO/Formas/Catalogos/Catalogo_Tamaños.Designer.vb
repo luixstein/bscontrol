@@ -45,15 +45,15 @@ Partial Class Catalogo_Tamaños
         Me.LblCodigo = New System.Windows.Forms.Label()
         Me.TxtCodigo = New System.Windows.Forms.TextBox()
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
+        Me.Grid = New System.Windows.Forms.DataGridView()
         Me.txtFiltro = New System.Windows.Forms.TextBox()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
-        Me.Grid = New System.Windows.Forms.DataGridView()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.gBoxInformacion.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
-        CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'tsMenu
@@ -148,9 +148,9 @@ Partial Class Catalogo_Tamaños
         Me.gBoxInformacion.Controls.Add(Me.LblCodigo)
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigo)
         Me.gBoxInformacion.Location = New System.Drawing.Point(16, 34)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Size = New System.Drawing.Size(413, 395)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
@@ -173,7 +173,7 @@ Partial Class Catalogo_Tamaños
         Me.CboTipoTamaño.FormattingEnabled = True
         Me.CboTipoTamaño.Items.AddRange(New Object() {"A", "B"})
         Me.CboTipoTamaño.Location = New System.Drawing.Point(103, 116)
-        Me.CboTipoTamaño.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboTipoTamaño.Margin = New System.Windows.Forms.Padding(4)
         Me.CboTipoTamaño.MaxLength = 1
         Me.CboTipoTamaño.Name = "CboTipoTamaño"
         Me.CboTipoTamaño.Size = New System.Drawing.Size(301, 24)
@@ -202,7 +202,7 @@ Partial Class Catalogo_Tamaños
         'TxtNombre
         '
         Me.TxtNombre.Location = New System.Drawing.Point(103, 50)
-        Me.TxtNombre.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtNombre.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNombre.MaxLength = 50
         Me.TxtNombre.Name = "TxtNombre"
         Me.TxtNombre.Size = New System.Drawing.Size(301, 22)
@@ -222,12 +222,12 @@ Partial Class Catalogo_Tamaños
         '
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
-        Me.CboEstatus.Items.AddRange(New Object() {"A", "B"})
+        Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.CboEstatus.Location = New System.Drawing.Point(103, 82)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(75, 24)
+        Me.CboEstatus.Size = New System.Drawing.Size(93, 24)
         Me.CboEstatus.TabIndex = 3
         '
         'LblCodigo
@@ -243,7 +243,7 @@ Partial Class Catalogo_Tamaños
         'TxtCodigo
         '
         Me.TxtCodigo.Location = New System.Drawing.Point(101, 18)
-        Me.TxtCodigo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodigo.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigo.MaxLength = 2
         Me.TxtCodigo.Name = "TxtCodigo"
         Me.TxtCodigo.Size = New System.Drawing.Size(75, 22)
@@ -254,27 +254,13 @@ Partial Class Catalogo_Tamaños
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(439, 34)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(557, 395)
         Me.gBoxBusquedaRapida.TabIndex = 18
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
-        '
-        'txtFiltro
-        '
-        Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
-        Me.txtFiltro.Name = "txtFiltro"
-        Me.txtFiltro.Size = New System.Drawing.Size(540, 22)
-        Me.txtFiltro.TabIndex = 0
-        '
-        'ErrorProvider
-        '
-        Me.ErrorProvider.ContainerControl = Me
         '
         'Grid
         '
@@ -292,6 +278,20 @@ Partial Class Catalogo_Tamaños
         Me.Grid.Size = New System.Drawing.Size(539, 334)
         Me.Grid.TabIndex = 115
         '
+        'txtFiltro
+        '
+        Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtFiltro.Name = "txtFiltro"
+        Me.txtFiltro.Size = New System.Drawing.Size(540, 22)
+        Me.txtFiltro.TabIndex = 0
+        '
+        'ErrorProvider
+        '
+        Me.ErrorProvider.ContainerControl = Me
+        '
         'Catalogo_Tamaños
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -302,7 +302,7 @@ Partial Class Catalogo_Tamaños
         Me.Controls.Add(Me.gBoxInformacion)
         Me.Controls.Add(Me.gBoxBusquedaRapida)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Tamaños"
         Me.Text = "Catalogo tamaños"
@@ -314,8 +314,8 @@ Partial Class Catalogo_Tamaños
         Me.gBoxInformacion.PerformLayout()
         Me.gBoxBusquedaRapida.ResumeLayout(False)
         Me.gBoxBusquedaRapida.PerformLayout()
-        CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

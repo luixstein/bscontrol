@@ -199,7 +199,7 @@ Public Class Catalogo_Conceptos_GastosEmbarqueEmpaque
     Private Sub InicializaElemento()
         Me.TxtCodigo.Text = ""
         Me.TxtNombre.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -217,7 +217,11 @@ Public Class Catalogo_Conceptos_GastosEmbarqueEmpaque
             With Me.oConcepto
                 Me.TxtCodigo.Text = .CODIGO_CONCEPTO_GASTOS_EMBARQUE_EMPAQUE.ToString
                 Me.TxtNombre.Text = .NOMBRE_CONCEPTO_GASTOS_EMBARQUE_EMPAQUE.ToString
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
             End With
         End If
     End Sub
@@ -230,7 +234,7 @@ Public Class Catalogo_Conceptos_GastosEmbarqueEmpaque
                     With Me.oConcepto
                         .CODIGO_CONCEPTO_GASTOS_EMBARQUE_EMPAQUE = Me.TxtCodigo.Text
                         .NOMBRE_CONCEPTO_GASTOS_EMBARQUE_EMPAQUE = Me.TxtNombre.Text
-                        .Estatus = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 If .Insertar() Then

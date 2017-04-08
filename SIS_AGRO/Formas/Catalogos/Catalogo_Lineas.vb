@@ -155,7 +155,7 @@ Public Class Catalogo_Lineas
     Private Sub InicializaElemento()
         Me.TxtCodigoLinea.Text = ""
         Me.TxtNombreLinea.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -173,7 +173,11 @@ Public Class Catalogo_Lineas
             With Me.oLineas
                 Me.TxtCodigoLinea.Text = .Codigo_Linea.ToString
                 Me.TxtNombreLinea.Text = .Nombre_Linea.ToString
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
                 Me.txtCodigoConcepto.Text = .CODIGO_CONCEPTO
                 Dim oConceptos As New Class_CatConceptos
                 oConceptos.Codigo_Concepto = Me.txtCodigoConcepto.Text
@@ -192,7 +196,7 @@ Public Class Catalogo_Lineas
                     With Me.oLineas
                         .Codigo_Linea = Me.TxtCodigoLinea.Text
                         .Nombre_Linea = Me.TxtNombreLinea.Text
-                        .Estatus = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         .CODIGO_CONCEPTO = Me.txtCodigoConcepto.Text
                         Select Case Me.Estado
                             Case enumEstados.NUEVO

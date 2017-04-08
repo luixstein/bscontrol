@@ -205,7 +205,7 @@ Public Class Catalogo_Empaques
     Private Sub InicializaElemento()
         Me.TxtCodigo.Text = ""
         Me.TxtNombre.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -224,7 +224,11 @@ Public Class Catalogo_Empaques
                 Me.TxtCodigo.Text = .Codigo_Empaque.ToString
                 Me.TxtNombre.Text = .Nombre_Empaque.ToString
                 Me.CboAlmacen.SelectedValue = .Codigo_Almacen
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
                 Me.txtCodigoCentroCosto.Text = .Codigo_Centro_Costo
             End With
             Dim oCentroCostos As New Class_CatCentroCostos
@@ -244,7 +248,7 @@ Public Class Catalogo_Empaques
                         .Codigo_Empaque = Me.TxtCodigo.Text
                         .Nombre_Empaque = Me.TxtNombre.Text
                         .Codigo_Almacen = Me.CboAlmacen.SelectedValue.ToString
-                        .Estatus = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         .Codigo_Centro_Costo = Me.txtCodigoCentroCosto.Text
                         Select Case Me.Estado
                             Case enumEstados.NUEVO

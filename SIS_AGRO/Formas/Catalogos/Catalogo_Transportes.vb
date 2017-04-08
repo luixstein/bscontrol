@@ -172,7 +172,7 @@ Public Class Catalogo_transportes
         Me.TxtSerie.Text = ""
         Me.txtScac.Text = ""
         Me.TxtFda.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -210,6 +210,11 @@ Public Class Catalogo_transportes
                 Me.TxtSerie.Text = .SERIE.ToString
                 Me.txtScac.Text = .SCAC.ToString
                 Me.TxtFda.Text = .FDA.ToString
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
 
             End With
         End If
@@ -251,7 +256,7 @@ Public Class Catalogo_transportes
                         .PLACA = Me.txtPlaca.Text.ToUpper
                         .SCAC = Me.txtScac.Text.ToUpper
                         .FDA = Me.TxtFda.Text.ToUpper
-                        .Estatus = Me.CboEstatus.Text.ToUpper
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
 
                         Select Case Me.Estado
 

@@ -204,7 +204,7 @@ Public Class Catalogo_Familias
     Private Sub InicializaElemento()
         Me.TxtCodigoFamilia.Text = ""
         Me.TxtNombreFamilia.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -223,7 +223,11 @@ Public Class Catalogo_Familias
             With Me.oFamilias
                 Me.TxtCodigoFamilia.Text = .Codigo_Familia.ToString
                 Me.TxtNombreFamilia.Text = .Nombre_Familia.ToString
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
                 Me.txtCodigoCategoria.Text = .CODIGO_CATEGORIA
             End With
             Dim oCategoria As New Class_CatCategorias
@@ -245,7 +249,7 @@ Public Class Catalogo_Familias
 
                                 .Codigo_Familia = Me.TxtCodigoFamilia.Text
                                 .Nombre_Familia = Me.TxtNombreFamilia.Text
-                                .Estatus = Me.CboEstatus.Text
+                                .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                                 .CODIGO_CATEGORIA = Me.txtCodigoCategoria.Text
 
                                 If .Insertar() Then

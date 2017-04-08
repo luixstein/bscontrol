@@ -151,7 +151,7 @@ Public Class Catalogo_AgenciaAduanas
         Me.TxtNombreAgenciaAduanal.Text = ""
         Me.txtClaveAgenciaAduanal.Text = ""
         Me.cboNacionalidad.Text = "MEXICANA"
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -178,7 +178,7 @@ Public Class Catalogo_AgenciaAduanas
                     Me.cboNacionalidad.Text = "ESTADOUNIDENSE"
                 End If
                 Me.cboNacionalidad.Text = .NACIONAL.ToString
-                Me.CboEstatus.Text = .Estatus
+                Me.CboEstatus.Text = Strings.Left(Me.CboEstatus.Text, 1)
             End With
         End If
         oElemento = Nothing
@@ -207,7 +207,12 @@ Public Class Catalogo_AgenciaAduanas
                         Else
                             .NACIONAL = "0"
                         End If
-                        .Estatus = Me.CboEstatus.Text
+
+                        If .Estatus = "A" Then
+                            Me.CboEstatus.SelectedIndex = 0
+                        Else
+                            Me.CboEstatus.SelectedIndex = 1
+                        End If
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO

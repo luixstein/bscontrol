@@ -34,6 +34,7 @@ Partial Class Catalogo_AgenciaAduanas
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
+        Me.Grid = New System.Windows.Forms.DataGridView()
         Me.txtFiltro = New System.Windows.Forms.TextBox()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
         Me.lblCveAgenciaAduanal = New System.Windows.Forms.Label()
@@ -47,12 +48,11 @@ Partial Class Catalogo_AgenciaAduanas
         Me.CboEstatus = New System.Windows.Forms.ComboBox()
         Me.LblDisplayCodCultivo = New System.Windows.Forms.Label()
         Me.TxtCodigoAgenciaAduanal = New System.Windows.Forms.TextBox()
-        Me.Grid = New System.Windows.Forms.DataGridView()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
-        Me.gBoxInformacion.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.gBoxInformacion.SuspendLayout()
         Me.SuspendLayout()
         '
         'tsMenu
@@ -143,20 +143,36 @@ Partial Class Catalogo_AgenciaAduanas
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(439, 34)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(391, 633)
         Me.gBoxBusquedaRapida.TabIndex = 7
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
+        '
+        'Grid
+        '
+        Me.Grid.AllowUserToAddRows = False
+        Me.Grid.AllowUserToDeleteRows = False
+        Me.Grid.AllowUserToResizeColumns = False
+        Me.Grid.AllowUserToResizeRows = False
+        Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.Grid.Location = New System.Drawing.Point(8, 50)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
+        Me.Grid.Name = "Grid"
+        Me.Grid.ReadOnly = True
+        Me.Grid.RowHeadersVisible = False
+        Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.Grid.Size = New System.Drawing.Size(373, 575)
+        Me.Grid.TabIndex = 110
         '
         'txtFiltro
         '
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.Name = "txtFiltro"
         Me.txtFiltro.Size = New System.Drawing.Size(373, 22)
         Me.txtFiltro.TabIndex = 0
@@ -177,9 +193,9 @@ Partial Class Catalogo_AgenciaAduanas
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayCodCultivo)
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigoAgenciaAduanal)
         Me.gBoxInformacion.Location = New System.Drawing.Point(16, 34)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Size = New System.Drawing.Size(413, 633)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
@@ -198,7 +214,7 @@ Partial Class Catalogo_AgenciaAduanas
         'txtClaveAgenciaAduanal
         '
         Me.txtClaveAgenciaAduanal.Location = New System.Drawing.Point(121, 82)
-        Me.txtClaveAgenciaAduanal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtClaveAgenciaAduanal.Margin = New System.Windows.Forms.Padding(4)
         Me.txtClaveAgenciaAduanal.MaxLength = 80
         Me.txtClaveAgenciaAduanal.Name = "txtClaveAgenciaAduanal"
         Me.txtClaveAgenciaAduanal.Size = New System.Drawing.Size(283, 22)
@@ -219,7 +235,7 @@ Partial Class Catalogo_AgenciaAduanas
         Me.cboNacionalidad.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboNacionalidad.FormattingEnabled = True
         Me.cboNacionalidad.Location = New System.Drawing.Point(121, 123)
-        Me.cboNacionalidad.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboNacionalidad.Margin = New System.Windows.Forms.Padding(4)
         Me.cboNacionalidad.MaxLength = 1
         Me.cboNacionalidad.Name = "cboNacionalidad"
         Me.cboNacionalidad.Size = New System.Drawing.Size(283, 24)
@@ -247,7 +263,7 @@ Partial Class Catalogo_AgenciaAduanas
         'TxtNombreAgenciaAduanal
         '
         Me.TxtNombreAgenciaAduanal.Location = New System.Drawing.Point(121, 50)
-        Me.TxtNombreAgenciaAduanal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtNombreAgenciaAduanal.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNombreAgenciaAduanal.MaxLength = 80
         Me.TxtNombreAgenciaAduanal.Name = "TxtNombreAgenciaAduanal"
         Me.TxtNombreAgenciaAduanal.Size = New System.Drawing.Size(283, 22)
@@ -267,12 +283,12 @@ Partial Class Catalogo_AgenciaAduanas
         '
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
-        Me.CboEstatus.Items.AddRange(New Object() {"A", "B"})
+        Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.CboEstatus.Location = New System.Drawing.Point(121, 156)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(75, 24)
+        Me.CboEstatus.Size = New System.Drawing.Size(89, 24)
         Me.CboEstatus.TabIndex = 4
         '
         'LblDisplayCodCultivo
@@ -288,27 +304,11 @@ Partial Class Catalogo_AgenciaAduanas
         'TxtCodigoAgenciaAduanal
         '
         Me.TxtCodigoAgenciaAduanal.Location = New System.Drawing.Point(121, 18)
-        Me.TxtCodigoAgenciaAduanal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodigoAgenciaAduanal.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigoAgenciaAduanal.MaxLength = 0
         Me.TxtCodigoAgenciaAduanal.Name = "TxtCodigoAgenciaAduanal"
         Me.TxtCodigoAgenciaAduanal.Size = New System.Drawing.Size(75, 22)
         Me.TxtCodigoAgenciaAduanal.TabIndex = 0
-        '
-        'Grid
-        '
-        Me.Grid.AllowUserToAddRows = False
-        Me.Grid.AllowUserToDeleteRows = False
-        Me.Grid.AllowUserToResizeColumns = False
-        Me.Grid.AllowUserToResizeRows = False
-        Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Grid.Location = New System.Drawing.Point(8, 50)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
-        Me.Grid.Name = "Grid"
-        Me.Grid.ReadOnly = True
-        Me.Grid.RowHeadersVisible = False
-        Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(373, 575)
-        Me.Grid.TabIndex = 110
         '
         'Catalogo_AgenciaAduanas
         '
@@ -320,7 +320,7 @@ Partial Class Catalogo_AgenciaAduanas
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.tsMenu)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_AgenciaAduanas"
         Me.Text = "Catálogo de agencias de aduanas"
@@ -330,9 +330,9 @@ Partial Class Catalogo_AgenciaAduanas
         Me.StatusStripEstado.PerformLayout()
         Me.gBoxBusquedaRapida.ResumeLayout(False)
         Me.gBoxBusquedaRapida.PerformLayout()
+        CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gBoxInformacion.ResumeLayout(False)
         Me.gBoxInformacion.PerformLayout()
-        CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

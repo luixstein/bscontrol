@@ -142,7 +142,7 @@ Public Class Catalogo_Marcas_Transportes
     Private Sub InicializaElemento()
         Me.TxtCodigoMarcaTransporte.Text = ""
         Me.TxtMarcaTransporte.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -162,7 +162,11 @@ Public Class Catalogo_Marcas_Transportes
             With oElemento
                 Me.TxtCodigoMarcaTransporte.Text = .CODIGO_MARCA.ToString
                 Me.TxtMarcaTransporte.Text = .MARCA.ToString
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
             End With
         End If
         oElemento = Nothing
@@ -185,7 +189,7 @@ Public Class Catalogo_Marcas_Transportes
                     With oElemento
                         .CODIGO_MARCA = Me.TxtCodigoMarcaTransporte.Text
                         .MARCA = Me.TxtMarcaTransporte.Text
-                        .Estatus = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO

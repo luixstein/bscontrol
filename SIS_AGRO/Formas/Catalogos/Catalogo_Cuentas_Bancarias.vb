@@ -340,7 +340,11 @@ Public Class Catalogo_Cuentas_Bancarias
 
                 Me.CboCodigoMoneda.SelectedValue = .CODIGO_MONEDA
                 Me.TxtFormatoReporte.Text = .NOMBRE_FORMATO
-                Me.CboEstatus.Text = .ESTATUS_CUENTA_BANCARIA
+                If .ESTATUS_CUENTA_BANCARIA = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
             End With
 
         End If
@@ -417,7 +421,7 @@ Public Class Catalogo_Cuentas_Bancarias
                         .CUENTA_CONTABLE_PESOS = Me.txtCuentaContable.Text
                         .CUENTA_CONTABLE_DOLARES = Me.txtCuentaContableDolares.Text
                         .NOMBRE_FORMATO = Me.TxtFormatoReporte.Text
-                        .ESTATUS_CUENTA_BANCARIA = Me.CboEstatus.Text
+                        .ESTATUS_CUENTA_BANCARIA = Strings.Left(Me.CboEstatus.Text, 1)
                         .CODIGO_PROVEEDOR = Me.TxtCodigoProveedor.Text
                         .CODIGO_MONEDA = (Me.CboCodigoMoneda.SelectedValue).ToString
                         Select Case Me.Estado

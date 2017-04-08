@@ -208,7 +208,7 @@ Public Class Catalogo_TiposEnvases
     Private Sub InicializaElemento()
         Me.TxtCodigoTipoEnvase.Text = ""
         Me.TxtNombreTipoEnvase.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -231,7 +231,11 @@ Public Class Catalogo_TiposEnvases
             With Me.oTipoEnvase
                 Me.TxtCodigoTipoEnvase.Text = .CODIGO_TIPO_ENVASE.ToString
                 Me.TxtNombreTipoEnvase.Text = .NOMBRE_TIPO_ENVASE.ToString
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
             End With
         End If
     End Sub
@@ -246,7 +250,7 @@ Public Class Catalogo_TiposEnvases
                     With Me.oTipoEnvase
                         .CODIGO_TIPO_ENVASE = Me.TxtCodigoTipoEnvase.Text
                         .NOMBRE_TIPO_ENVASE = Me.TxtNombreTipoEnvase.Text
-                        .Estatus = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 If .Insertar() Then

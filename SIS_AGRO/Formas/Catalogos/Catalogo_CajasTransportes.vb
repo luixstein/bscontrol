@@ -153,7 +153,7 @@ Public Class Catalogo_CajasTransportes
         Me.TxtCodCajaTransporte.Text = ""
         Me.TxtNomCaja.Text = ""
         Me.txtPlaca.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -174,7 +174,12 @@ Public Class Catalogo_CajasTransportes
                 Me.TxtCodCajaTransporte.Text = .CODIGO_CAJA.ToString
                 Me.TxtNomCaja.Text = .NOMBRE_CAJA.ToString
                 Me.txtPlaca.Text = .PLACA.ToString
-                Me.CboEstatus.SelectedValue = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
+
             End With
         End If
         oElemento = Nothing
@@ -198,7 +203,7 @@ Public Class Catalogo_CajasTransportes
                         .CODIGO_CAJA = Me.TxtCodCajaTransporte.Text.ToUpper
                         .NOMBRE_CAJA = Me.TxtNomCaja.Text.ToUpper
                         .PLACA = Me.txtPlaca.Text.ToUpper
-                        .Estatus = Me.CboEstatus.Text.ToUpper
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO

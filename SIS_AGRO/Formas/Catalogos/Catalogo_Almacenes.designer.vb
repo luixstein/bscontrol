@@ -35,6 +35,8 @@ Partial Public Class Catalogo_Almacenes
         Me.cMenuStripAccion = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.tStripMenuItemEditar = New System.Windows.Forms.ToolStripMenuItem()
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.cboEstatusFiltro = New System.Windows.Forms.ComboBox()
         Me.Grid = New System.Windows.Forms.DataGridView()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.TxtCodigoAlmacen = New System.Windows.Forms.TextBox()
@@ -48,8 +50,6 @@ Partial Public Class Catalogo_Almacenes
         Me.txtCuentaContable = New System.Windows.Forms.TextBox()
         Me.lblDisplayCuentaContable = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.cboEstatusFiltro = New System.Windows.Forms.ComboBox()
-        Me.Label1 = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.cMenuStripAccion.SuspendLayout()
@@ -154,13 +154,13 @@ Partial Public Class Catalogo_Almacenes
         Me.cMenuStripAccion.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.cMenuStripAccion.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tStripMenuItemEditar})
         Me.cMenuStripAccion.Name = "ContextMenuStrip1"
-        Me.cMenuStripAccion.Size = New System.Drawing.Size(124, 30)
+        Me.cMenuStripAccion.Size = New System.Drawing.Size(122, 30)
         '
         'tStripMenuItemEditar
         '
         Me.tStripMenuItemEditar.Image = CType(resources.GetObject("tStripMenuItemEditar.Image"), System.Drawing.Image)
         Me.tStripMenuItemEditar.Name = "tStripMenuItemEditar"
-        Me.tStripMenuItemEditar.Size = New System.Drawing.Size(123, 26)
+        Me.tStripMenuItemEditar.Size = New System.Drawing.Size(121, 26)
         Me.tStripMenuItemEditar.Text = "&Editar"
         '
         'gBoxBusquedaRapida
@@ -180,6 +180,28 @@ Partial Public Class Catalogo_Almacenes
         Me.gBoxBusquedaRapida.TabIndex = 1
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(246, 26)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(63, 17)
+        Me.Label1.TabIndex = 216
+        Me.Label1.Text = "Estatus :"
+        '
+        'cboEstatusFiltro
+        '
+        Me.cboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboEstatusFiltro.FormattingEnabled = True
+        Me.cboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
+        Me.cboEstatusFiltro.Location = New System.Drawing.Point(317, 21)
+        Me.cboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboEstatusFiltro.MaxLength = 1
+        Me.cboEstatusFiltro.Name = "cboEstatusFiltro"
+        Me.cboEstatusFiltro.Size = New System.Drawing.Size(40, 24)
+        Me.cboEstatusFiltro.TabIndex = 216
         '
         'Grid
         '
@@ -224,12 +246,12 @@ Partial Public Class Catalogo_Almacenes
         '
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
-        Me.CboEstatus.Items.AddRange(New Object() {"A", "B"})
+        Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.CboEstatus.Location = New System.Drawing.Point(144, 133)
         Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(75, 24)
+        Me.CboEstatus.Size = New System.Drawing.Size(88, 24)
         Me.CboEstatus.TabIndex = 3
         '
         'LblEstatus
@@ -322,28 +344,6 @@ Partial Public Class Catalogo_Almacenes
         Me.Label2.Size = New System.Drawing.Size(241, 16)
         Me.Label2.TabIndex = 91
         Me.Label2.Text = ".."
-        '
-        'cboEstatusFiltro
-        '
-        Me.cboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboEstatusFiltro.FormattingEnabled = True
-        Me.cboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
-        Me.cboEstatusFiltro.Location = New System.Drawing.Point(317, 21)
-        Me.cboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4)
-        Me.cboEstatusFiltro.MaxLength = 1
-        Me.cboEstatusFiltro.Name = "cboEstatusFiltro"
-        Me.cboEstatusFiltro.Size = New System.Drawing.Size(40, 24)
-        Me.cboEstatusFiltro.TabIndex = 216
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(246, 26)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(63, 17)
-        Me.Label1.TabIndex = 216
-        Me.Label1.Text = "Estatus :"
         '
         'Catalogo_Almacenes
         '

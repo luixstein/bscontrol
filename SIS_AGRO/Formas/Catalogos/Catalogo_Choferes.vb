@@ -155,7 +155,7 @@ Public Class Catalogo_Choferes
         Me.txtRfc.Text = ""
         Me.txtDomicilio.Text = ""
         Me.txtTelefono.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -179,7 +179,11 @@ Public Class Catalogo_Choferes
                 Me.txtVisa.Text = .VISA.ToString
                 Me.txtRfc.Text = .RFC.ToString
                 Me.txtDomicilio.Text = .DOMICILIO.ToString
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
                 Me.txtTelefono.Text = .TELEFONO.ToString
             End With
         End If
@@ -213,7 +217,7 @@ Public Class Catalogo_Choferes
                         .VISA = Me.txtVisa.Text
                         .RFC = Me.txtRfc.Text
                         .DOMICILIO = Me.txtDomicilio.Text
-                        .Estatus = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         .TELEFONO = Me.txtTelefono.Text
 
                         Select Case Me.Estado

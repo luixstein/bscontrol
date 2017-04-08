@@ -241,7 +241,7 @@ Public Class Catalogo_Vendedores
     Private Sub InicializaElemento()
         Me.TxtIDVendedor.Text = ""
         Me.TxtNombreVendedor.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
         Me.cboCategorias.SelectedValue = -1
     End Sub
 
@@ -280,7 +280,11 @@ Public Class Catalogo_Vendedores
             With oElemento
                 Me.TxtIDVendedor.Text = .Codigo_Vendedor.ToString
                 Me.TxtNombreVendedor.Text = .Nombre_Vendedor.ToString
-                Me.CboEstatus.Text = .Status
+                If .Status = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
                 If .Codigo_Categoria = "" Then
                     Me.cboCategorias.Selectedindex = -1
                 Else
@@ -302,7 +306,7 @@ Public Class Catalogo_Vendedores
                     With oElemento
                         .Codigo_Vendedor = CInt(0 & Me.TxtIDVendedor.Text)
                         .Nombre_Vendedor = Me.TxtNombreVendedor.Text
-                        .Status = Me.CboEstatus.Text
+                        .Status = Strings.Left(Me.CboEstatus.Text, 1)
                         If Me.cboCategorias.SelectedIndex > -1 Then
                             .Codigo_Categoria = Me.cboCategorias.SelectedValue.ToString
                         Else

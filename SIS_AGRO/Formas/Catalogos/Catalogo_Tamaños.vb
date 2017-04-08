@@ -202,7 +202,7 @@ Public Class Catalogo_Tamaños
         Me.TxtCodigo.Text = ""
         Me.TxtNombre.Text = ""
         Me.CboTipoTamaño.SelectedIndex = -1
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -239,7 +239,11 @@ Public Class Catalogo_Tamaños
                 If IsDBNull(.Codigo_tipo_Tamaño) = False Then
                     Me.CboTipoTamaño.SelectedValue = .Codigo_tipo_Tamaño
                 End If
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
             End With
         End If
     End Sub
@@ -263,7 +267,7 @@ Public Class Catalogo_Tamaños
                         .Codigo_Tamaño = Me.TxtCodigo.Text
                         .Nombre_Tamaño = Me.TxtNombre.Text
                         .Codigo_tipo_Tamaño = iTipoTamaño
-                        .Estatus = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 If .Insertar() Then

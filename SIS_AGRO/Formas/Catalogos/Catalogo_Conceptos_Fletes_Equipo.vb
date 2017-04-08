@@ -198,7 +198,7 @@ Public Class Catalogo_Conceptos_Fletes_Equipo
     Private Sub InicializaElemento()
         Me.TxtCodigo.Text = ""
         Me.TxtNombre.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -216,7 +216,11 @@ Public Class Catalogo_Conceptos_Fletes_Equipo
             With Me.oConcepto
                 Me.TxtCodigo.Text = .Codigo_Concepto_flete_equipo.ToString
                 Me.TxtNombre.Text = .Nombre_Concepto_flete_equipo.ToString
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
             End With
         End If
     End Sub
@@ -229,7 +233,7 @@ Public Class Catalogo_Conceptos_Fletes_Equipo
                     With Me.oConcepto
                         .Codigo_Concepto_flete_equipo = Me.TxtCodigo.Text
                         .Nombre_Concepto_flete_equipo = Me.TxtNombre.Text
-                        .Estatus = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 If .Insertar() Then

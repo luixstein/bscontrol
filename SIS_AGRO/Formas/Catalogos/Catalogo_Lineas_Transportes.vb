@@ -143,7 +143,7 @@ Public Class Catalogo_Lineas_Transportes
         Me.TxtCodigoLineaTransporte.Text = ""
         Me.TxtNombreLineaTransporte.Text = ""
         Me.txtCuentaContableFlete.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -167,7 +167,12 @@ Public Class Catalogo_Lineas_Transportes
                 Me.txtCuentaContableFlete.Text = .CUENTA_CONTABLE_FLETERO.ToString
                 oCuentaContableFlete = New Class_CatCuentas(.CUENTA_CONTABLE_FLETERO.ToString)
                 Me.LblCuentaFlete.Text = oCuentaContableFlete.NOMBRE_CUENTA
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
+
             End With
         End If
         oElemento = Nothing
@@ -191,7 +196,7 @@ Public Class Catalogo_Lineas_Transportes
                         .CODIGO_LINEA_TRANSPORTE = Me.TxtCodigoLineaTransporte.Text
                         .NOMBRE_LINEA_TRANSPORTE = Me.TxtNombreLineaTransporte.Text
                         .CUENTA_CONTABLE_FLETERO = Me.txtCuentaContableFlete.Text
-                        .Estatus = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO

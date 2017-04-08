@@ -205,7 +205,7 @@ Public Class Catalogo_Almacenes
         Me.TxtNombreAlmacen.Text = ""
         Me.txtCuentaContable.Text = ""
         Me.LblCuenta.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -231,7 +231,12 @@ Public Class Catalogo_Almacenes
 
                 sql = Nothing
 
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
+
             End With
         End If
     End Sub
@@ -267,8 +272,7 @@ Public Class Catalogo_Almacenes
                                 .Codigo_Almacen = Me.TxtCodigoAlmacen.Text
                                 .Nombre_Almacen = Me.TxtNombreAlmacen.Text
                                 '.Cuenta_Contable = Me.txtCuentaContable.Text
-                                .Estatus = Me.CboEstatus.Text
-
+                                .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                                 If .Insertar() Then
                                     Grabado = True
                                     Me.Estado = enumEstados.CONSULTA

@@ -50,16 +50,16 @@ Partial Class Catalogo_Distribuidores
         Me.LblDisplayNomProveedor = New System.Windows.Forms.Label()
         Me.TxtNomDistribuidor = New System.Windows.Forms.TextBox()
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
+        Me.Grid = New System.Windows.Forms.DataGridView()
         Me.txtFiltro = New System.Windows.Forms.TextBox()
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.Grid = New System.Windows.Forms.DataGridView()
         Me.tsMenu.SuspendLayout()
         Me.gBoxInformacion.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
-        Me.StatusStripEstado.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.StatusStripEstado.SuspendLayout()
         Me.SuspendLayout()
         '
         'tsMenu
@@ -141,9 +141,9 @@ Partial Class Catalogo_Distribuidores
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayNomProveedor)
         Me.gBoxInformacion.Controls.Add(Me.TxtNomDistribuidor)
         Me.gBoxInformacion.Location = New System.Drawing.Point(16, 34)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Size = New System.Drawing.Size(539, 372)
         Me.gBoxInformacion.TabIndex = 4
         Me.gBoxInformacion.TabStop = False
@@ -163,18 +163,18 @@ Partial Class Catalogo_Distribuidores
         '
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
-        Me.CboEstatus.Items.AddRange(New Object() {"A", "B"})
+        Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.CboEstatus.Location = New System.Drawing.Point(147, 293)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(75, 24)
+        Me.CboEstatus.Size = New System.Drawing.Size(95, 24)
         Me.CboEstatus.TabIndex = 157
         '
         'TxtObservacion3
         '
         Me.TxtObservacion3.Location = New System.Drawing.Point(147, 261)
-        Me.TxtObservacion3.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtObservacion3.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtObservacion3.MaxLength = 120
         Me.TxtObservacion3.Name = "TxtObservacion3"
         Me.TxtObservacion3.Size = New System.Drawing.Size(373, 22)
@@ -183,7 +183,7 @@ Partial Class Catalogo_Distribuidores
         'TxtObservacion2
         '
         Me.TxtObservacion2.Location = New System.Drawing.Point(147, 228)
-        Me.TxtObservacion2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtObservacion2.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtObservacion2.MaxLength = 120
         Me.TxtObservacion2.Name = "TxtObservacion2"
         Me.TxtObservacion2.Size = New System.Drawing.Size(373, 22)
@@ -212,7 +212,7 @@ Partial Class Catalogo_Distribuidores
         'TxtObservacion1
         '
         Me.TxtObservacion1.Location = New System.Drawing.Point(147, 194)
-        Me.TxtObservacion1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtObservacion1.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtObservacion1.MaxLength = 120
         Me.TxtObservacion1.Name = "TxtObservacion1"
         Me.TxtObservacion1.Size = New System.Drawing.Size(373, 22)
@@ -231,7 +231,7 @@ Partial Class Catalogo_Distribuidores
         'TxtEstado
         '
         Me.TxtEstado.Location = New System.Drawing.Point(147, 161)
-        Me.TxtEstado.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtEstado.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtEstado.MaxLength = 120
         Me.TxtEstado.Name = "TxtEstado"
         Me.TxtEstado.Size = New System.Drawing.Size(373, 22)
@@ -240,7 +240,7 @@ Partial Class Catalogo_Distribuidores
         'TxtCiudad
         '
         Me.TxtCiudad.Location = New System.Drawing.Point(147, 128)
-        Me.TxtCiudad.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCiudad.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCiudad.MaxLength = 120
         Me.TxtCiudad.Name = "TxtCiudad"
         Me.TxtCiudad.Size = New System.Drawing.Size(373, 22)
@@ -269,7 +269,7 @@ Partial Class Catalogo_Distribuidores
         'txtDomicilio
         '
         Me.txtDomicilio.Location = New System.Drawing.Point(147, 95)
-        Me.txtDomicilio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtDomicilio.Margin = New System.Windows.Forms.Padding(4)
         Me.txtDomicilio.MaxLength = 120
         Me.txtDomicilio.Name = "txtDomicilio"
         Me.txtDomicilio.Size = New System.Drawing.Size(373, 22)
@@ -288,7 +288,7 @@ Partial Class Catalogo_Distribuidores
         'TxtCodDistribuidor
         '
         Me.TxtCodDistribuidor.Location = New System.Drawing.Point(147, 28)
-        Me.TxtCodDistribuidor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodDistribuidor.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodDistribuidor.MaxLength = 8
         Me.TxtCodDistribuidor.Name = "TxtCodDistribuidor"
         Me.TxtCodDistribuidor.Size = New System.Drawing.Size(95, 22)
@@ -317,7 +317,7 @@ Partial Class Catalogo_Distribuidores
         'TxtNomDistribuidor
         '
         Me.TxtNomDistribuidor.Location = New System.Drawing.Point(147, 62)
-        Me.TxtNomDistribuidor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtNomDistribuidor.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNomDistribuidor.MaxLength = 120
         Me.TxtNomDistribuidor.Name = "TxtNomDistribuidor"
         Me.TxtNomDistribuidor.Size = New System.Drawing.Size(373, 22)
@@ -328,20 +328,36 @@ Partial Class Catalogo_Distribuidores
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(563, 34)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(409, 372)
         Me.gBoxBusquedaRapida.TabIndex = 5
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
+        '
+        'Grid
+        '
+        Me.Grid.AllowUserToAddRows = False
+        Me.Grid.AllowUserToDeleteRows = False
+        Me.Grid.AllowUserToResizeColumns = False
+        Me.Grid.AllowUserToResizeRows = False
+        Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.Grid.Location = New System.Drawing.Point(8, 53)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
+        Me.Grid.Name = "Grid"
+        Me.Grid.ReadOnly = True
+        Me.Grid.RowHeadersVisible = False
+        Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.Grid.Size = New System.Drawing.Size(380, 311)
+        Me.Grid.TabIndex = 111
         '
         'txtFiltro
         '
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.Name = "txtFiltro"
         Me.txtFiltro.Size = New System.Drawing.Size(380, 22)
         Me.txtFiltro.TabIndex = 0
@@ -368,22 +384,6 @@ Partial Class Catalogo_Distribuidores
         Me.tssLabelEstado.Name = "tssLabelEstado"
         Me.tssLabelEstado.Size = New System.Drawing.Size(0, 20)
         '
-        'Grid
-        '
-        Me.Grid.AllowUserToAddRows = False
-        Me.Grid.AllowUserToDeleteRows = False
-        Me.Grid.AllowUserToResizeColumns = False
-        Me.Grid.AllowUserToResizeRows = False
-        Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Grid.Location = New System.Drawing.Point(8, 53)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
-        Me.Grid.Name = "Grid"
-        Me.Grid.ReadOnly = True
-        Me.Grid.RowHeadersVisible = False
-        Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(380, 311)
-        Me.Grid.TabIndex = 111
-        '
         'Catalogo_Distribuidores
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -393,7 +393,7 @@ Partial Class Catalogo_Distribuidores
         Me.Controls.Add(Me.gBoxBusquedaRapida)
         Me.Controls.Add(Me.gBoxInformacion)
         Me.Controls.Add(Me.tsMenu)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Distribuidores"
         Me.Text = "Catálogo de distribuidores"
@@ -403,9 +403,9 @@ Partial Class Catalogo_Distribuidores
         Me.gBoxInformacion.PerformLayout()
         Me.gBoxBusquedaRapida.ResumeLayout(False)
         Me.gBoxBusquedaRapida.PerformLayout()
+        CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.StatusStripEstado.ResumeLayout(False)
         Me.StatusStripEstado.PerformLayout()
-        CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

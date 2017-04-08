@@ -36,7 +36,7 @@ Public Class Catalogo_Embarcadores
             Me.Cambia_Estado()
             Me.CargaEstados()
             Me.cboEstado.SelectedValue = "SIN"
-            Me.CboEstatus.Text = "A"
+            Me.CboEstatus.SelectedIndex = 0
         Catch ex As Exception
             HandleError(Me.Name, "New", ex)
         End Try
@@ -187,7 +187,7 @@ Public Class Catalogo_Embarcadores
         Me.txtRepresentante.Text = ""
         Me.txtRfcRepresentante.Text = ""
         Me.txtFda.Text = ""
-        Me.CboEstatus.SelectedItem = "A"
+        Me.CboEstatus.SelectedIndex = 0
         Me.cboEstado.SelectedValue = "SIN"
     End Sub
 
@@ -220,7 +220,12 @@ Public Class Catalogo_Embarcadores
                 Me.txtRepresentante.Text = .REPRESENTANTE
                 Me.txtRfcRepresentante.Text = .RFC_REPRESENTANTE
                 Me.txtFda.Text = .FDA
-                Me.CboEstatus.SelectedText = .Estatus
+                Me.cboEstado.SelectedValue = .ESTADO
+                If .Status = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
             End With
         End If
         oElemento = Nothing
@@ -255,7 +260,7 @@ Public Class Catalogo_Embarcadores
                         .REPRESENTANTE = Me.txtRepresentante.Text
                         .RFC_REPRESENTANTE = Me.txtRfcRepresentante.Text
                         .FDA = Me.txtFda.Text
-                        .Status = Me.CboEstatus.Text
+                        .Status = Strings.Left(Me.CboEstatus.Text, 1)
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO

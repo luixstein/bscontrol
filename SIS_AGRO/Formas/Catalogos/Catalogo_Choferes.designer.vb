@@ -34,6 +34,7 @@ Partial Class Catalogo_Choferes
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
+        Me.Grid = New System.Windows.Forms.DataGridView()
         Me.txtFiltro = New System.Windows.Forms.TextBox()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
         Me.lblDisplayTelefono = New System.Windows.Forms.Label()
@@ -53,12 +54,11 @@ Partial Class Catalogo_Choferes
         Me.CboEstatus = New System.Windows.Forms.ComboBox()
         Me.LblDisplayCodCultivo = New System.Windows.Forms.Label()
         Me.TxtCodigoChofer = New System.Windows.Forms.TextBox()
-        Me.Grid = New System.Windows.Forms.DataGridView()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
-        Me.gBoxInformacion.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.gBoxInformacion.SuspendLayout()
         Me.SuspendLayout()
         '
         'tsMenu
@@ -149,20 +149,36 @@ Partial Class Catalogo_Choferes
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(428, 28)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(419, 590)
         Me.gBoxBusquedaRapida.TabIndex = 1
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
+        '
+        'Grid
+        '
+        Me.Grid.AllowUserToAddRows = False
+        Me.Grid.AllowUserToDeleteRows = False
+        Me.Grid.AllowUserToResizeColumns = False
+        Me.Grid.AllowUserToResizeRows = False
+        Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.Grid.Location = New System.Drawing.Point(13, 53)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
+        Me.Grid.Name = "Grid"
+        Me.Grid.ReadOnly = True
+        Me.Grid.RowHeadersVisible = False
+        Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.Grid.Size = New System.Drawing.Size(397, 529)
+        Me.Grid.TabIndex = 111
         '
         'txtFiltro
         '
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFiltro.Location = New System.Drawing.Point(13, 23)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.Name = "txtFiltro"
         Me.txtFiltro.Size = New System.Drawing.Size(397, 22)
         Me.txtFiltro.TabIndex = 0
@@ -189,9 +205,9 @@ Partial Class Catalogo_Choferes
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayCodCultivo)
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigoChofer)
         Me.gBoxInformacion.Location = New System.Drawing.Point(9, 28)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Size = New System.Drawing.Size(411, 590)
         Me.gBoxInformacion.TabIndex = 2
         Me.gBoxInformacion.TabStop = False
@@ -210,7 +226,7 @@ Partial Class Catalogo_Choferes
         'txtTelefono
         '
         Me.txtTelefono.Location = New System.Drawing.Point(121, 210)
-        Me.txtTelefono.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtTelefono.Margin = New System.Windows.Forms.Padding(4)
         Me.txtTelefono.MaxLength = 80
         Me.txtTelefono.Name = "txtTelefono"
         Me.txtTelefono.Size = New System.Drawing.Size(284, 22)
@@ -229,7 +245,7 @@ Partial Class Catalogo_Choferes
         'txtDomicilio
         '
         Me.txtDomicilio.Location = New System.Drawing.Point(121, 178)
-        Me.txtDomicilio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtDomicilio.Margin = New System.Windows.Forms.Padding(4)
         Me.txtDomicilio.MaxLength = 80
         Me.txtDomicilio.Name = "txtDomicilio"
         Me.txtDomicilio.Size = New System.Drawing.Size(284, 22)
@@ -248,7 +264,7 @@ Partial Class Catalogo_Choferes
         'txtRfc
         '
         Me.txtRfc.Location = New System.Drawing.Point(121, 146)
-        Me.txtRfc.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtRfc.Margin = New System.Windows.Forms.Padding(4)
         Me.txtRfc.MaxLength = 80
         Me.txtRfc.Name = "txtRfc"
         Me.txtRfc.Size = New System.Drawing.Size(284, 22)
@@ -267,7 +283,7 @@ Partial Class Catalogo_Choferes
         'txtVisa
         '
         Me.txtVisa.Location = New System.Drawing.Point(121, 116)
-        Me.txtVisa.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtVisa.Margin = New System.Windows.Forms.Padding(4)
         Me.txtVisa.MaxLength = 80
         Me.txtVisa.Name = "txtVisa"
         Me.txtVisa.Size = New System.Drawing.Size(284, 22)
@@ -286,7 +302,7 @@ Partial Class Catalogo_Choferes
         'txtLiciencia
         '
         Me.txtLiciencia.Location = New System.Drawing.Point(121, 87)
-        Me.txtLiciencia.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtLiciencia.Margin = New System.Windows.Forms.Padding(4)
         Me.txtLiciencia.MaxLength = 80
         Me.txtLiciencia.Name = "txtLiciencia"
         Me.txtLiciencia.Size = New System.Drawing.Size(284, 22)
@@ -314,7 +330,7 @@ Partial Class Catalogo_Choferes
         'TxtNombreChofer
         '
         Me.TxtNombreChofer.Location = New System.Drawing.Point(121, 55)
-        Me.TxtNombreChofer.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtNombreChofer.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNombreChofer.MaxLength = 80
         Me.TxtNombreChofer.Name = "TxtNombreChofer"
         Me.TxtNombreChofer.Size = New System.Drawing.Size(284, 22)
@@ -334,12 +350,12 @@ Partial Class Catalogo_Choferes
         '
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
-        Me.CboEstatus.Items.AddRange(New Object() {"A", "B"})
+        Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.CboEstatus.Location = New System.Drawing.Point(121, 240)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(75, 24)
+        Me.CboEstatus.Size = New System.Drawing.Size(87, 24)
         Me.CboEstatus.TabIndex = 7
         '
         'LblDisplayCodCultivo
@@ -355,27 +371,11 @@ Partial Class Catalogo_Choferes
         'TxtCodigoChofer
         '
         Me.TxtCodigoChofer.Location = New System.Drawing.Point(121, 23)
-        Me.TxtCodigoChofer.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodigoChofer.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigoChofer.MaxLength = 0
         Me.TxtCodigoChofer.Name = "TxtCodigoChofer"
         Me.TxtCodigoChofer.Size = New System.Drawing.Size(75, 22)
         Me.TxtCodigoChofer.TabIndex = 0
-        '
-        'Grid
-        '
-        Me.Grid.AllowUserToAddRows = False
-        Me.Grid.AllowUserToDeleteRows = False
-        Me.Grid.AllowUserToResizeColumns = False
-        Me.Grid.AllowUserToResizeRows = False
-        Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Grid.Location = New System.Drawing.Point(13, 53)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
-        Me.Grid.Name = "Grid"
-        Me.Grid.ReadOnly = True
-        Me.Grid.RowHeadersVisible = False
-        Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(397, 529)
-        Me.Grid.TabIndex = 111
         '
         'Catalogo_Choferes
         '
@@ -387,7 +387,7 @@ Partial Class Catalogo_Choferes
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.tsMenu)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Choferes"
         Me.Text = "Catálogo de choferes"
@@ -397,9 +397,9 @@ Partial Class Catalogo_Choferes
         Me.StatusStripEstado.PerformLayout()
         Me.gBoxBusquedaRapida.ResumeLayout(False)
         Me.gBoxBusquedaRapida.PerformLayout()
+        CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gBoxInformacion.ResumeLayout(False)
         Me.gBoxInformacion.PerformLayout()
-        CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

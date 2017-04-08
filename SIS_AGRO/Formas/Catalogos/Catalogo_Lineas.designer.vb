@@ -35,6 +35,8 @@ Partial Public Class Catalogo_Lineas
         Me.cMenuStripAccion = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.tStripMenuItemEditar = New System.Windows.Forms.ToolStripMenuItem()
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.cboEstatusFiltro = New System.Windows.Forms.ComboBox()
         Me.Grid = New System.Windows.Forms.DataGridView()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.TxtCodigoLinea = New System.Windows.Forms.TextBox()
@@ -48,8 +50,6 @@ Partial Public Class Catalogo_Lineas
         Me.txtCodigoConcepto = New System.Windows.Forms.TextBox()
         Me.lblCodigoConcepto = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.cboEstatusFiltro = New System.Windows.Forms.ComboBox()
-        Me.Label1 = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.cMenuStripAccion.SuspendLayout()
@@ -181,6 +181,28 @@ Partial Public Class Catalogo_Lineas
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
         '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(283, 26)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(63, 17)
+        Me.Label1.TabIndex = 93
+        Me.Label1.Text = "Estatus :"
+        '
+        'cboEstatusFiltro
+        '
+        Me.cboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboEstatusFiltro.FormattingEnabled = True
+        Me.cboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
+        Me.cboEstatusFiltro.Location = New System.Drawing.Point(354, 21)
+        Me.cboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboEstatusFiltro.MaxLength = 1
+        Me.cboEstatusFiltro.Name = "cboEstatusFiltro"
+        Me.cboEstatusFiltro.Size = New System.Drawing.Size(49, 24)
+        Me.cboEstatusFiltro.TabIndex = 93
+        '
         'Grid
         '
         Me.Grid.AllowUserToAddRows = False
@@ -224,12 +246,12 @@ Partial Public Class Catalogo_Lineas
         '
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
-        Me.CboEstatus.Items.AddRange(New Object() {"A", "B"})
+        Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.CboEstatus.Location = New System.Drawing.Point(101, 82)
         Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(75, 24)
+        Me.CboEstatus.Size = New System.Drawing.Size(102, 24)
         Me.CboEstatus.TabIndex = 12
         '
         'LblEstatus
@@ -321,28 +343,6 @@ Partial Public Class Catalogo_Lineas
         Me.Label2.Size = New System.Drawing.Size(241, 16)
         Me.Label2.TabIndex = 91
         Me.Label2.Text = ".."
-        '
-        'cboEstatusFiltro
-        '
-        Me.cboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboEstatusFiltro.FormattingEnabled = True
-        Me.cboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
-        Me.cboEstatusFiltro.Location = New System.Drawing.Point(354, 21)
-        Me.cboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4)
-        Me.cboEstatusFiltro.MaxLength = 1
-        Me.cboEstatusFiltro.Name = "cboEstatusFiltro"
-        Me.cboEstatusFiltro.Size = New System.Drawing.Size(49, 24)
-        Me.cboEstatusFiltro.TabIndex = 93
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(283, 26)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(63, 17)
-        Me.Label1.TabIndex = 93
-        Me.Label1.Text = "Estatus :"
         '
         'Catalogo_Lineas
         '

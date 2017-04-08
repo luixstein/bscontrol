@@ -148,7 +148,7 @@ Public Class Catalogo_Bancos
     Private Sub InicializaElemento()
         Me.TxtCodigoBanco.Text = ""
         Me.TxtNombreBanco.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -166,7 +166,12 @@ Public Class Catalogo_Bancos
             With Me.oBancos
                 Me.TxtCodigoBanco.Text = .CODIGO_BANCO.ToString
                 Me.TxtNombreBanco.Text = .NOMBRE_BANCO.ToString
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
+
             End With
         End If
     End Sub
@@ -180,7 +185,7 @@ Public Class Catalogo_Bancos
                     With Me.oBancos
                         .CODIGO_BANCO = Me.TxtCodigoBanco.Text
                         .NOMBRE_BANCO = Me.TxtNombreBanco.Text
-                        .Estatus = "A" ' Me.CboEstatus.Text
+                        .Estatus = "A" 'Strings.Left(Me.CboEstatus.Text, 1)
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO

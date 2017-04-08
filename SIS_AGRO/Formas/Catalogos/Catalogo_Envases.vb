@@ -206,7 +206,7 @@ Public Class Catalogo_Envases
         Me.TxtCodigo.Text = ""
         Me.TxtNombre.Text = ""
         Me.CboTipoEnvase.SelectedIndex = -1
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -244,7 +244,11 @@ Public Class Catalogo_Envases
                 If IsDBNull(.CODIGO_TIPO_ENVASE) = False Then
                     Me.CboTipoEnvase.SelectedValue = .CODIGO_TIPO_ENVASE
                 End If
-                Me.CboEstatus.Text = .Estatus
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
                 'Me.txtCantidadBultosPorPalet.Text = .Cantidad_Bultos_Por_Palet.ToString
             End With
         End If
@@ -281,7 +285,7 @@ Public Class Catalogo_Envases
                         .Codigo_Envase = Me.TxtCodigo.Text
                         .Nombre_Envase = Me.TxtNombre.Text
                         .CODIGO_TIPO_ENVASE = iTipoEnvase
-                        .Estatus = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         '.Cantidad_Bultos_Por_Palet = CInt(Me.txtCantidadBultosPorPalet.Text)
                         Select Case Me.Estado
                             Case enumEstados.NUEVO

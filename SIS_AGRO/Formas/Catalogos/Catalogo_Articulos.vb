@@ -223,7 +223,7 @@ Public Class Catalogo_Articulos
     Private Sub InicializaElemento()
         Me.TxtCodArticulo.Text = ""
         Me.TxtDescripcion.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
         Me.TxtUnidadVenta.Text = ""
         Me.LblNombreUnidad.Text = ""
         Me.TxtPrecio.Text = "0.00"
@@ -268,7 +268,11 @@ Public Class Catalogo_Articulos
                 With oElemento
                     Me.TxtCodArticulo.Text = .CODIGO_ARTICULO.ToString
                     Me.TxtDescripcion.Text = .DESCRIPCION.ToString
-                    Me.CboEstatus.Text = .Estatus
+                    If .Estatus = "A" Then
+                        Me.CboEstatus.SelectedIndex = 0
+                    Else
+                        Me.CboEstatus.SelectedIndex = 1
+                    End If
                     Me.TxtUnidadVenta.Text = .UNIDAD_VENTA
                     'Me.LblNombreUnidad.Text = .NOMBRE_UNIDAD
                     Me.chkInventariable.Checked = CBool(.INVENTARIABLE.ToString)
@@ -303,7 +307,7 @@ Public Class Catalogo_Articulos
                     With oElemento
                         .Codigo_Articulo = Me.TxtCodArticulo.Text
                         .Descripcion = Me.TxtDescripcion.Text
-                        .Estatus = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         .UNIDAD_VENTA = Me.TxtUnidadVenta.Text
                         '.CODIGO_UNIDAD_VENTA = "NA"
                         .PROTEGIDO = "0"

@@ -66,8 +66,8 @@ Partial Class Catalogo_Embarcadores
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
-        Me.txtFiltro = New System.Windows.Forms.TextBox()
         Me.Grid = New System.Windows.Forms.DataGridView()
+        Me.txtFiltro = New System.Windows.Forms.TextBox()
         Me.tsMenu.SuspendLayout()
         Me.gBoxInformacion.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
@@ -167,9 +167,9 @@ Partial Class Catalogo_Embarcadores
         Me.gBoxInformacion.Controls.Add(Me.lblCodigo)
         Me.gBoxInformacion.Controls.Add(Me.txtCodigoEmbarcador)
         Me.gBoxInformacion.Location = New System.Drawing.Point(16, 34)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Size = New System.Drawing.Size(547, 625)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
@@ -198,7 +198,7 @@ Partial Class Catalogo_Embarcadores
         'txtFda
         '
         Me.txtFda.Location = New System.Drawing.Point(119, 452)
-        Me.txtFda.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFda.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFda.MaxLength = 10
         Me.txtFda.Name = "txtFda"
         Me.txtFda.Size = New System.Drawing.Size(172, 22)
@@ -217,7 +217,7 @@ Partial Class Catalogo_Embarcadores
         'txtRfcRepresentante
         '
         Me.txtRfcRepresentante.Location = New System.Drawing.Point(205, 417)
-        Me.txtRfcRepresentante.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtRfcRepresentante.Margin = New System.Windows.Forms.Padding(4)
         Me.txtRfcRepresentante.MaxLength = 13
         Me.txtRfcRepresentante.Name = "txtRfcRepresentante"
         Me.txtRfcRepresentante.Size = New System.Drawing.Size(328, 22)
@@ -236,7 +236,7 @@ Partial Class Catalogo_Embarcadores
         'txtRepresentante
         '
         Me.txtRepresentante.Location = New System.Drawing.Point(205, 380)
-        Me.txtRepresentante.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtRepresentante.Margin = New System.Windows.Forms.Padding(4)
         Me.txtRepresentante.MaxLength = 15
         Me.txtRepresentante.Name = "txtRepresentante"
         Me.txtRepresentante.Size = New System.Drawing.Size(328, 22)
@@ -255,7 +255,7 @@ Partial Class Catalogo_Embarcadores
         'TxtFax
         '
         Me.TxtFax.Location = New System.Drawing.Point(119, 311)
-        Me.TxtFax.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtFax.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtFax.MaxLength = 15
         Me.TxtFax.Name = "TxtFax"
         Me.TxtFax.Size = New System.Drawing.Size(171, 22)
@@ -264,7 +264,7 @@ Partial Class Catalogo_Embarcadores
         'txtDomicilio
         '
         Me.txtDomicilio.Location = New System.Drawing.Point(119, 138)
-        Me.txtDomicilio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtDomicilio.Margin = New System.Windows.Forms.Padding(4)
         Me.txtDomicilio.MaxLength = 50
         Me.txtDomicilio.Name = "txtDomicilio"
         Me.txtDomicilio.Size = New System.Drawing.Size(415, 22)
@@ -293,7 +293,7 @@ Partial Class Catalogo_Embarcadores
         'txtCodigoPostal
         '
         Me.txtCodigoPostal.Location = New System.Drawing.Point(119, 346)
-        Me.txtCodigoPostal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCodigoPostal.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCodigoPostal.MaxLength = 10
         Me.txtCodigoPostal.Name = "txtCodigoPostal"
         Me.txtCodigoPostal.Size = New System.Drawing.Size(172, 22)
@@ -302,7 +302,7 @@ Partial Class Catalogo_Embarcadores
         'txtCiudad
         '
         Me.txtCiudad.Location = New System.Drawing.Point(119, 172)
-        Me.txtCiudad.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCiudad.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCiudad.MaxLength = 50
         Me.txtCiudad.Name = "txtCiudad"
         Me.txtCiudad.Size = New System.Drawing.Size(415, 22)
@@ -324,7 +324,7 @@ Partial Class Catalogo_Embarcadores
         Me.cboEstado.FormattingEnabled = True
         Me.cboEstado.Items.AddRange(New Object() {"A", "B"})
         Me.cboEstado.Location = New System.Drawing.Point(119, 207)
-        Me.cboEstado.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboEstado.Margin = New System.Windows.Forms.Padding(4)
         Me.cboEstado.MaxLength = 1
         Me.cboEstado.Name = "cboEstado"
         Me.cboEstado.Size = New System.Drawing.Size(416, 24)
@@ -353,7 +353,7 @@ Partial Class Catalogo_Embarcadores
         'txtNumeroCelular
         '
         Me.txtNumeroCelular.Location = New System.Drawing.Point(119, 276)
-        Me.txtNumeroCelular.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtNumeroCelular.Margin = New System.Windows.Forms.Padding(4)
         Me.txtNumeroCelular.MaxLength = 15
         Me.txtNumeroCelular.Name = "txtNumeroCelular"
         Me.txtNumeroCelular.Size = New System.Drawing.Size(171, 22)
@@ -372,7 +372,7 @@ Partial Class Catalogo_Embarcadores
         'txtNumeroTelefono
         '
         Me.txtNumeroTelefono.Location = New System.Drawing.Point(119, 242)
-        Me.txtNumeroTelefono.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtNumeroTelefono.Margin = New System.Windows.Forms.Padding(4)
         Me.txtNumeroTelefono.MaxLength = 15
         Me.txtNumeroTelefono.Name = "txtNumeroTelefono"
         Me.txtNumeroTelefono.Size = New System.Drawing.Size(172, 22)
@@ -381,7 +381,7 @@ Partial Class Catalogo_Embarcadores
         'txtCurp
         '
         Me.txtCurp.Location = New System.Drawing.Point(361, 103)
-        Me.txtCurp.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCurp.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCurp.MaxLength = 30
         Me.txtCurp.Name = "txtCurp"
         Me.txtCurp.Size = New System.Drawing.Size(172, 22)
@@ -400,7 +400,7 @@ Partial Class Catalogo_Embarcadores
         'txtRfc
         '
         Me.txtRfc.Location = New System.Drawing.Point(119, 103)
-        Me.txtRfc.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtRfc.Margin = New System.Windows.Forms.Padding(4)
         Me.txtRfc.MaxLength = 13
         Me.txtRfc.Name = "txtRfc"
         Me.txtRfc.Size = New System.Drawing.Size(171, 22)
@@ -428,7 +428,7 @@ Partial Class Catalogo_Embarcadores
         'TxtNombreEmbarcador
         '
         Me.TxtNombreEmbarcador.Location = New System.Drawing.Point(119, 69)
-        Me.TxtNombreEmbarcador.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtNombreEmbarcador.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNombreEmbarcador.MaxLength = 80
         Me.TxtNombreEmbarcador.Name = "TxtNombreEmbarcador"
         Me.TxtNombreEmbarcador.Size = New System.Drawing.Size(415, 22)
@@ -448,12 +448,12 @@ Partial Class Catalogo_Embarcadores
         '
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
-        Me.CboEstatus.Items.AddRange(New Object() {"A", "B"})
+        Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.CboEstatus.Location = New System.Drawing.Point(119, 485)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(75, 24)
+        Me.CboEstatus.Size = New System.Drawing.Size(92, 24)
         Me.CboEstatus.TabIndex = 13
         '
         'lblCodigo
@@ -469,7 +469,7 @@ Partial Class Catalogo_Embarcadores
         'txtCodigoEmbarcador
         '
         Me.txtCodigoEmbarcador.Location = New System.Drawing.Point(119, 34)
-        Me.txtCodigoEmbarcador.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCodigoEmbarcador.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCodigoEmbarcador.MaxLength = 6
         Me.txtCodigoEmbarcador.Name = "txtCodigoEmbarcador"
         Me.txtCodigoEmbarcador.Size = New System.Drawing.Size(171, 22)
@@ -502,23 +502,13 @@ Partial Class Catalogo_Embarcadores
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(573, 34)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(409, 625)
         Me.gBoxBusquedaRapida.TabIndex = 131
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
-        '
-        'txtFiltro
-        '
-        Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
-        Me.txtFiltro.Name = "txtFiltro"
-        Me.txtFiltro.Size = New System.Drawing.Size(393, 22)
-        Me.txtFiltro.TabIndex = 0
         '
         'Grid
         '
@@ -536,6 +526,16 @@ Partial Class Catalogo_Embarcadores
         Me.Grid.Size = New System.Drawing.Size(393, 564)
         Me.Grid.TabIndex = 111
         '
+        'txtFiltro
+        '
+        Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtFiltro.Name = "txtFiltro"
+        Me.txtFiltro.Size = New System.Drawing.Size(393, 22)
+        Me.txtFiltro.TabIndex = 0
+        '
         'Catalogo_Embarcadores
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -546,7 +546,7 @@ Partial Class Catalogo_Embarcadores
         Me.Controls.Add(Me.gBoxInformacion)
         Me.Controls.Add(Me.tsMenu)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Embarcadores"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent

@@ -169,7 +169,7 @@ Public Class Catalogo_Distribuidores
         Me.TxtObservacion1.Text = ""
         Me.TxtObservacion2.Text = ""
         Me.TxtObservacion3.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -190,7 +190,11 @@ Public Class Catalogo_Distribuidores
                 Me.TxtCodDistribuidor.Text = .CODIGO_DISTRIBUIDOR.ToString
                 Me.TxtNomDistribuidor.Text = .NOMBRE_DISTRIBUIDOR.ToString
                 Me.txtDomicilio.Text = .DOMICILIO.ToString
-                Me.TxtEstado.Text = .ESTADO.ToString
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
                 Me.TxtCiudad.Text = .CIUDAD.ToString
                 Me.TxtObservacion1.Text = .OBSERVACION1
                 Me.TxtObservacion2.Text = .OBSERVACION2.ToString
@@ -224,7 +228,7 @@ Public Class Catalogo_Distribuidores
                         .OBSERVACION1 = Me.TxtObservacion1.Text.ToUpper
                         .OBSERVACION2 = Me.TxtObservacion2.Text.ToUpper
                         .OBSERVACION3 = Me.TxtObservacion3.Text.ToUpper
-                        .Estatus = Me.CboEstatus.Text.ToUpper
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
