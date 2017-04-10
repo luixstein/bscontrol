@@ -2096,6 +2096,25 @@ Public Class Class_Ventas_Global
         Return bResultado
     End Function
 
+    Public Function ObtenerImpuestosIEPS() As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String
+
+        Try
+            sSQL = "SELECT R.IEPS_PORCENTAJE,SUM(R.IEPS_IMPORTE) SUMA_IEPS_IMPORTE " & _
+                        "FROM VENTA_GLOBAL G INNER JOIN VENTA_DETALLE R ON(G.FOLIO_VENTA=R.FOLIO_VENTA) " & _
+                        "WHERE G.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' AND R.IEPS_PORCENTAJE>0 " & _
+                        "GROUP BY R.IEPS_PORCENTAJE ORDER BY R.IEPS_PORCENTAJE"
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtenerImpuestosIEPS", ex)
+        End Try
+        Return dTabla
+    End Function
+
 #End Region
 
 End Class

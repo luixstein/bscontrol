@@ -1,4 +1,5 @@
 ﻿Option Strict On
+
 Imports System.Data
 Imports System.Data.SqlClient
 Imports CrystalDecisions.CrystalReports.Engine
@@ -663,6 +664,7 @@ busca:
             Me.DpFecha.Value = Now
             Me.txtNumeroRegistroIdentificadorExtranjero.Text = ""
             Me.TxtCodigoAlmacen.Text = ""
+            Me.chkEsContribuyenteIEPS.Checked = False
         Catch ex As Exception
             HandleError(Me.Name, "InicializaElemento", ex)
         End Try
@@ -770,9 +772,10 @@ busca:
 
             If oMetodoPago.REQUIERE_NUMERO_CUENTA_PAGO = 1 Then
                 If txtLEN(Me.txtNumeroCuenta.Text) = False Then
-                    MsgBox("El método de pago requiere número de cuenta, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
-                    Me.txtNumeroCuenta.Focus()
-                    Exit Sub
+                    'Actualmente es opcional
+                    'MsgBox("El método de pago requiere número de cuenta, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+                    'Me.txtNumeroCuenta.Focus()
+                    'Exit Sub
                 Else
                     If Len(Me.txtNumeroCuenta.Text) <> 4 Then
                         MsgBox("El número de cuenta debe ser de 4 caracteres, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
@@ -782,11 +785,11 @@ busca:
                 End If
             End If
 
-            If Me.cboMetodoPagoDlls.SelectedValue Is Nothing Then
-                MsgBox("Seleccione el método de pago en dólares.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.cboMetodoPagoDlls.Focus()
-                Return
-            End If
+            'If Me.cboMetodoPagoDlls.SelectedValue Is Nothing Then
+            '    MsgBox("Seleccione el método de pago en dólares.", MsgBoxStyle.Exclamation, Me.Text)
+            '    Me.cboMetodoPagoDlls.Focus()
+            '    Return
+            'End If
 
             If Not (Me.cboMetodoPagoDlls.SelectedValue Is Nothing) Then
                 oMetodoPago = New Class_CFD_CatMetodosPago(Me.cboMetodoPagoDlls.SelectedValue.ToString)
@@ -842,7 +845,11 @@ busca:
                         .CORREO_CLIENTE = Me.txtCorreoCliente.Text
                         .CODIGO_METODO_PAGO = Me.cboMetodoPago.SelectedValue.ToString
                         .NUMERO_CUENTA_PAGO = Me.txtNumeroCuenta.Text
-                        .CODIGO_METODO_PAGO_DOLARES = Me.cboMetodoPagoDlls.SelectedValue.ToString
+                        If Not (Me.cboMetodoPagoDlls.SelectedValue Is Nothing) Then
+                            .CODIGO_METODO_PAGO_DOLARES = Me.cboMetodoPagoDlls.SelectedValue.ToString
+                        Else
+                            .CODIGO_METODO_PAGO_DOLARES = ""
+                        End If
                         .NUMERO_CUENTA_PAGO_DOLARES = Me.txtNumeroCuentaDolares.Text
                         .CODIGO_TIPO_MERCADO = Me.cboTipoMercado.SelectedValue.ToString
                         .FORMATO_NOMBRE_XML = Me.cboNombreXML.Text
@@ -860,6 +867,8 @@ busca:
                         Else
                             .CODIGO_MUNICIPIO = "0"
                         End If
+
+                        .ES_CONTRIBUYENTE_IEPS = Convert.ToInt32(Me.chkEsContribuyenteIEPS.Checked).ToString
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -1096,6 +1105,7 @@ busca:
                     Me.cboNombreXML.SelectedValue = .FORMATO_NOMBRE_XML
                     Me.txtNumeroRegistroIdentificadorExtranjero.Text = .NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO
                     Me.TxtCodigoAlmacen.Text = .CODIGO_ALMACEN
+                    Me.chkEsContribuyenteIEPS.Checked = CBool(.ES_CONTRIBUYENTE_IEPS)
 
                 End With
 

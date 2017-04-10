@@ -160,6 +160,7 @@
     <Compile Include="Clases\Catalogos\Class_CatArticulos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatBancos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatCajasTransportes.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatGradosToxicidad.vb" />
     <Compile Include="Clases\Catalogos\Class_CatMunicipios.vb" />
     <Compile Include="Clases\Catalogos\Class_CatPaises.vb" />
     <Compile Include="Clases\Catalogos\Class_CatVehiculos.vb" />
