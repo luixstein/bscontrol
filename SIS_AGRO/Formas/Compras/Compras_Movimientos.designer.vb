@@ -110,6 +110,8 @@ Partial Class Compras_Movimientos
         Me.lblDisplaySaldoUSD = New System.Windows.Forms.Label()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.btnSeleccionarArchivoSeries = New System.Windows.Forms.Button()
+        Me.txtIEPS = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
@@ -964,11 +966,32 @@ Partial Class Compras_Movimientos
         Me.btnSeleccionarArchivoSeries.Text = "Seleccionar archivo con series"
         Me.btnSeleccionarArchivoSeries.UseVisualStyleBackColor = True
         '
+        'txtIEPS
+        '
+        Me.txtIEPS.Location = New System.Drawing.Point(917, 449)
+        Me.txtIEPS.MaxLength = 80
+        Me.txtIEPS.Name = "txtIEPS"
+        Me.txtIEPS.ReadOnly = True
+        Me.txtIEPS.Size = New System.Drawing.Size(100, 20)
+        Me.txtIEPS.TabIndex = 385
+        Me.txtIEPS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(853, 452)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(37, 13)
+        Me.Label4.TabIndex = 384
+        Me.Label4.Text = "IEPS :"
+        '
         'Compras_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1029, 570)
+        Me.Controls.Add(Me.txtIEPS)
+        Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.btnSeleccionarArchivoSeries)
         Me.Controls.Add(Me.txtSaldoUSD)
         Me.Controls.Add(Me.lblDisplaySaldoUSD)
@@ -1096,4 +1119,6 @@ Partial Class Compras_Movimientos
     Friend WithEvents lblDisplaySaldoUSD As System.Windows.Forms.Label
     Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
     Friend WithEvents btnSeleccionarArchivoSeries As System.Windows.Forms.Button
+    Friend WithEvents txtIEPS As System.Windows.Forms.TextBox
+    Friend WithEvents Label4 As System.Windows.Forms.Label
 End Class

@@ -23,6 +23,7 @@ Public Class Class_Compras_Global
     Private _PLAZO As Integer
     Private _FECHA_VENCIMIENTO As Date
     Private _SUBTOTAL As Double
+    Private _IEPS_TOTAL_DESGLOSADO As Double
     Private _IMPUESTO As Double
     Private _TOTAL As Double
     Private _RETENCION As Double
@@ -207,6 +208,15 @@ Public Class Class_Compras_Global
         End Get
         Set(ByVal Value As Double)
             Me._SUBTOTAL = Value
+        End Set
+    End Property
+
+    Public Property IEPS_TOTAL_DESGLOSADO() As Double
+        Get
+            Return Me._IEPS_TOTAL_DESGLOSADO
+        End Get
+        Set(ByVal Value As Double)
+            Me._IEPS_TOTAL_DESGLOSADO = Value
         End Set
     End Property
 
@@ -564,6 +574,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@PLAZO", SqlDbType.Int) : sqlParametro.Value = Me._PLAZO
             sqlParametro = .Parameters.Add("@FECHA_VENCIMIENTO", SqlDbType.DateTime) : sqlParametro.Value = "" & Me._FECHA_VENCIMIENTO
             sqlParametro = .Parameters.Add("@SUBTOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL
+            sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO
             sqlParametro = .Parameters.Add("@IMPUESTO", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO
             sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL
             sqlParametro = .Parameters.Add("@RETENCION", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION
@@ -612,6 +623,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@PLAZO", SqlDbType.Int) : sqlParametro.Value = Me._PLAZO
             sqlParametro = .Parameters.Add("@FECHA_VENCIMIENTO", SqlDbType.DateTime) : sqlParametro.Value = "" & Me._FECHA_VENCIMIENTO
             sqlParametro = .Parameters.Add("@SUBTOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL
+            sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO
             sqlParametro = .Parameters.Add("@IMPUESTO", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO
             sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL
             sqlParametro = .Parameters.Add("@RETENCION", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION
@@ -663,6 +675,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@PLAZO", SqlDbType.Int) : sqlParametro.Value = Me._PLAZO
             sqlParametro = .Parameters.Add("@FECHA_VENCIMIENTO", SqlDbType.DateTime) : sqlParametro.Value = "" & Me._FECHA_VENCIMIENTO
             sqlParametro = .Parameters.Add("@SUBTOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL
+            sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO
             sqlParametro = .Parameters.Add("@IMPUESTO", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO
             sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL
             sqlParametro = .Parameters.Add("@RETENCION", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION
@@ -899,6 +912,7 @@ Public Class Class_Compras_Global
                     Me._PLAZO = CInt(dReader("PLAZO"))
                     Me._FECHA_VENCIMIENTO = CDate(dReader("FECHA_VENCIMIENTO"))
                     Me._SUBTOTAL = CDbl(dReader("SUBTOTAL"))
+                    Me._IEPS_TOTAL_DESGLOSADO = CDbl(dReader("IEPS_TOTAL_DESGLOSADO"))
                     Me._IMPUESTO = CDbl(dReader("IMPUESTO"))
                     Me._IMPUESTO_PORCENTAJE = CDbl(dReader("IMPUESTO_PORCENTAJE"))
                     Me._TOTAL = CDbl(dReader("TOTAL"))
