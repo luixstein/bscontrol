@@ -951,6 +951,7 @@ Buscar:
                 .PLAZO = CInt(Me.txtPlazo.Text)
                 .FECHA_VENCIMIENTO = Me.dtpFechaVencimiento.Value
                 .SUBTOTAL = valorNumerico(Me.TxtSubTotal.Text)
+                .IEPS_TOTAL_DESGLOSADO = valorNumerico(Me.txtIEPS.Text)
                 .IMPUESTO = valorNumerico(Me.txtIVA.Text)
                 .TOTAL = valorNumerico(Me.txtTotal.Text)
                 .RETENCION = valorNumerico(Me.TxtRetencion.Text)
@@ -989,6 +990,13 @@ Buscar:
                         .oComprasDetalle.IMPUESTO_PORCENTAJE = valorNumerico(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text)
                         .oComprasDetalle.IMPUESTO_IMPORTE = Val(Me.Grid.Cell(i, Me.igyImpuestoImporte).Text)
                         .oComprasDetalle.IMPORTE = Val(Me.Grid.Cell(i, Me.igyImporte).Text)
+
+                        .oComprasDetalle.IEPS_PORCENTAJE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
+                        .oComprasDetalle.IEPS_UNITARIO = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text)
+                        .oComprasDetalle.IEPS_IMPORTE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_IMPORTE).Text)
+                        .oComprasDetalle.BASE_IEPS = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IEPS).Text)
+                        .oComprasDetalle.BASE_IVA = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IVA).Text)
+
                         If .oComprasDetalle.GrabaRenglonOrdenCompra() = False Then
                             MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Text)
                             Exit Function
@@ -1082,6 +1090,12 @@ Buscar:
                         End If
 
                         .oComprasDetalle.LISTA_SERIES = sListaSeries
+
+                        .oComprasDetalle.IEPS_PORCENTAJE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
+                        .oComprasDetalle.IEPS_UNITARIO = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text)
+                        .oComprasDetalle.IEPS_IMPORTE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_IMPORTE).Text)
+                        .oComprasDetalle.BASE_IEPS = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IEPS).Text)
+                        .oComprasDetalle.BASE_IVA = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IVA).Text)
 
                         If .oComprasDetalle.GrabaRenglonCompra() = False Then
                             MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Text)
@@ -1236,7 +1250,7 @@ Buscar:
 
                 If bEsReferencia = False Then 'Estos datos no tienen que llenarse si se esta aplicando una oc(jalando a una co)
                     Me.TxtSubTotal.Text = FormatImporteContable(Me.oCompras.SUBTOTAL)
-                    Me.txtIEPS.Text.Text = FormatImporteContable(Me.oCompras.ie)
+                    Me.txtIEPS.Text = FormatImporteContable(Me.oCompras.IEPS_TOTAL_DESGLOSADO)
                     Me.txtIVA.Text = FormatImporteContable(Me.oCompras.IMPUESTO)
                     Me.TxtRetencion.Text = FormatImporteContable(Me.oCompras.RETENCION)
                     Me.txtTotal.Text = FormatImporteContable(Me.oCompras.TOTAL)
@@ -1798,7 +1812,7 @@ Buscar:
                 'End If
             End If
 
-            Me.txtTotal.Text = FormatImporteContable((valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.txtIVA.Text)) - valorNumerico(Me.TxtRetencion.Text))
+            Me.txtTotal.Text = FormatImporteContable((valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.txtIEPS.Text) + valorNumerico(Me.txtIVA.Text)) - valorNumerico(Me.TxtRetencion.Text))
 
             Me.TotalesUSD()
 
@@ -1964,7 +1978,7 @@ LlenaLinea:
                     Select Case Columna
                         Case Me.igyImpuestoPorcentaje
                             If Me.Grid.Rows = Renglon + 1 Then Me.Grid.Rows = Me.Grid.Rows + 1
-                            Me.Grid.Cell(Renglon + 1, Me.iGyIDAdicional).Text = (CInt(Me.Grid.Cell(Renglon, Me.iGyIDAdicional).Text) + 1).ToString
+                            Me.Grid.Cell(Renglon + 1, Me.iGyIDAdicional).Text = (valorNumerico(Me.Grid.Cell(Renglon, Me.iGyIDAdicional).Text) + 1).ToString
                     End Select
 
                     Me.Totales(True)
