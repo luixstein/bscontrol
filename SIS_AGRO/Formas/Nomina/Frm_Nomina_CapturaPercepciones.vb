@@ -1177,7 +1177,7 @@ RegenerarPoliza:
                     Child.Dispose()
 
                 Case "Desaplicar nómina"
-                    If MsgBox("Esta seguro de querer desaplicar la nómina?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Me.Text) = MsgBoxResult.No Then
+                    If MsgBox("Esta seguro de querer desaplicar la nómina?" & vbCrLf & "(Esto no va desaplicar descuentos ya hechos a los trabajadores)", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Me.Text) = MsgBoxResult.No Then
                         Exit Sub
                     End If
                     Me.oSemana.DesaplicarNomina()
