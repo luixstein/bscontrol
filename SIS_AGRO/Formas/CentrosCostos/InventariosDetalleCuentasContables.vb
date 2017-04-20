@@ -326,11 +326,19 @@ buscar:
             Else 'No se esta consultando uno previo
 
                 Dim oArticulo As New Class_CatArticulos(Me._CodigoArticulo)
-                Dim oFamilia As New Class_CatFamilias(oArticulo.CODIGO_FAMILIA)
-                Dim oLinea As New Class_CatLineas(oArticulo.CODIGO_LINEA)
 
-                Me.cboCategoria.SelectedValue = oFamilia.CODIGO_CATEGORIA
-                Me.cboConcepto.SelectedValue = oLinea.CODIGO_CONCEPTO
+                Dim oFamilia As Class_CatFamilias
+                Dim oLinea As Class_CatLineas
+
+                If txtLEN(oArticulo.CODIGO_FAMILIA) = True Then
+                    oFamilia = New Class_CatFamilias(oArticulo.CODIGO_FAMILIA)
+                    Me.cboCategoria.SelectedValue = oFamilia.CODIGO_CATEGORIA
+                End If
+
+                If txtLEN(oArticulo.CODIGO_LINEA) = True Then
+                    oLinea = New Class_CatLineas(oArticulo.CODIGO_LINEA)
+                    Me.cboConcepto.SelectedValue = oLinea.CODIGO_CONCEPTO
+                End If
 
                 Me.CreaTablaVacia()
                 Me.ArticuloNuevo()
@@ -782,11 +790,19 @@ buscar:
                 'Me.SeleccionaConceptoProduccion()
 
                 Dim oArticulo As New Class_CatArticulos(Me._CodigoArticulo)
-                Dim oFamilia As New Class_CatFamilias(oArticulo.CODIGO_FAMILIA)
-                Dim oLinea As New Class_CatLineas(oArticulo.CODIGO_LINEA)
 
-                Me.cboCategoria.SelectedValue = oFamilia.CODIGO_CATEGORIA
-                Me.cboConcepto.SelectedValue = oLinea.CODIGO_CONCEPTO
+                Dim oFamilia As Class_CatFamilias
+                Dim oLinea As Class_CatLineas
+
+                If txtLEN(oArticulo.CODIGO_FAMILIA) = True Then
+                    oFamilia = New Class_CatFamilias(oArticulo.CODIGO_FAMILIA)
+                    Me.cboCategoria.SelectedValue = oFamilia.CODIGO_CATEGORIA
+                End If
+
+                If txtLEN(oArticulo.CODIGO_LINEA) = True Then
+                    oLinea = New Class_CatLineas(oArticulo.CODIGO_LINEA)
+                    Me.cboConcepto.SelectedValue = oLinea.CODIGO_CONCEPTO
+                End If
 
             End If
             dT.AcceptChanges()

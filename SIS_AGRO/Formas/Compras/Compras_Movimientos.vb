@@ -2288,6 +2288,7 @@ BuscarCuentas:
                 .Importe = valorNumerico(Me.Grid.Cell(iRenglon, Me.igyImporte).Text)
                 .txtArticulo.Text = Me.Grid.Cell(iRenglon, Me.igyDescripcion).Text
                 .txtCantidad.Text = Me.Grid.Cell(iRenglon, Me.igyCantidad).Text
+                .txtCosto.Text = Me.Grid.Cell(iRenglon, Me.igyPrecio).Text
                 .txtImporte.Text = FormatImporteContable(.Importe, False)
                 .CodigoArticulo = Me.Grid.Cell(iRenglon, Me.igyCodigo).Text
                 .ShowDialog()
