@@ -60,11 +60,8 @@ Partial Class Catalogo_Articulos
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
-<<<<<<< HEAD
-=======
         Me.cboGradoToxicidad = New System.Windows.Forms.ComboBox()
         Me.lblDisplayGradoToxicidad = New System.Windows.Forms.Label()
->>>>>>> ieps_ventas
         Me.gBoxInformacion.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -107,16 +104,9 @@ Partial Class Catalogo_Articulos
         'LblNombreUnidad
         '
         Me.LblNombreUnidad.AutoSize = True
-<<<<<<< HEAD
-        Me.LblNombreUnidad.Location = New System.Drawing.Point(228, 237)
-        Me.LblNombreUnidad.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblNombreUnidad.Name = "LblNombreUnidad"
-        Me.LblNombreUnidad.Size = New System.Drawing.Size(16, 17)
-=======
         Me.LblNombreUnidad.Location = New System.Drawing.Point(171, 193)
         Me.LblNombreUnidad.Name = "LblNombreUnidad"
         Me.LblNombreUnidad.Size = New System.Drawing.Size(13, 13)
->>>>>>> ieps_ventas
         Me.LblNombreUnidad.TabIndex = 139
         Me.LblNombreUnidad.Text = "_"
         '
@@ -220,20 +210,11 @@ Partial Class Catalogo_Articulos
         '
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
-<<<<<<< HEAD
-        Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
-        Me.CboEstatus.Location = New System.Drawing.Point(129, 430)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
-        Me.CboEstatus.MaxLength = 1
-        Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(95, 24)
-=======
         Me.CboEstatus.Items.AddRange(New Object() {"A", "B"})
         Me.CboEstatus.Location = New System.Drawing.Point(97, 349)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(57, 21)
->>>>>>> ieps_ventas
         Me.CboEstatus.TabIndex = 9
         '
         'LblDisplayCodArticulo
@@ -461,8 +442,6 @@ Partial Class Catalogo_Articulos
         Me.tssLabelEstado.Name = "tssLabelEstado"
         Me.tssLabelEstado.Size = New System.Drawing.Size(0, 17)
         '
-<<<<<<< HEAD
-=======
         'cboGradoToxicidad
         '
         Me.cboGradoToxicidad.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
@@ -482,7 +461,6 @@ Partial Class Catalogo_Articulos
         Me.lblDisplayGradoToxicidad.TabIndex = 141
         Me.lblDisplayGradoToxicidad.Text = "Grado toxicidad :"
         '
->>>>>>> ieps_ventas
         'Catalogo_Articulos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
