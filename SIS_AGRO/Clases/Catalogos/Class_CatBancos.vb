@@ -209,7 +209,7 @@ Public Class Class_CatBancos
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_BANCOS_GRABA"
 
-            sqlParametro = .Parameters.Add("@CODIGO_BANCO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_BANCO
+            sqlParametro = .Parameters.Add("@CODIGO_BANCO", SqlDbType.NVarChar, 4) : sqlParametro.Value = "0" 'El codigo de genera automaticamente
             sqlParametro = .Parameters.Add("@NOMBRE_BANCO", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._NOMBRE_BANCO.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS_BANCO", SqlDbType.Char, 1) : sqlParametro.Value = "A" 'Me._ESTATUS
             sqlParametro = .Parameters.Add("@PROTEGIDO", SqlDbType.Char, 1) : sqlParametro.Value = "0"
@@ -306,6 +306,19 @@ Public Class Class_CatBancos
             HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcion", ex)
         End Try
         Return Resultado
+    End Function
+
+    Public Function codigoSiguiente() As Integer
+        Dim iCodigo As Integer
+        Try
+            Dim sql As New Class_find("SELECT MAX(CAST(CODIGO_BANCO AS smallint)) FROM CAT_BANCOS WHERE CODIGO_BANCO <> 'NA'")
+            iCodigo = CInt(sql.Result1) + 1
+            Return iCodigo
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "codigoSiguiente", ex)
+        End Try
+
     End Function
 #End Region
 

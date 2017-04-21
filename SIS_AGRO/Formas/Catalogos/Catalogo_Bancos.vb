@@ -111,10 +111,11 @@ Public Class Catalogo_Bancos
                 Me.tsbGrabar.Enabled = True
                 Me.tsbCancelar.Enabled = True
 
-                Me.txtCodigoBanco.Enabled = True
+                Me.txtCodigoBanco.Enabled = False
                 Me.txtNombreBanco.Enabled = True
                 'Me.CboEstatus.Enabled = False
                 Me.InicializaElemento()
+                Me.txtCodigoBanco.Text = oBancos.codigoSiguiente.ToString
                 Me.txtCodigoBanco.Focus()
 
             Case enumEstados.EDICION
