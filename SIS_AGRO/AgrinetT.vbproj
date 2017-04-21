@@ -918,10 +918,10 @@
     <Compile Include="Formas\Utilerias\ModoSistema.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Formas\Utilerias\SeleccionEmpresa.designer.vb">
+    <Compile Include="Formas\Sistema\SeleccionEmpresa.designer.vb">
       <DependentUpon>SeleccionEmpresa.vb</DependentUpon>
     </Compile>
-    <Compile Include="Formas\Utilerias\SeleccionEmpresa.vb">
+    <Compile Include="Formas\Sistema\SeleccionEmpresa.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Utilerias\UtileriasGeneraInformeMensual.Designer.vb">
@@ -1383,10 +1383,10 @@
     <Compile Include="Formas\Utilerias\Frm_Contraseña_Cambio_Periodo.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Formas\Utilerias\Servidor.Designer.vb">
+    <Compile Include="Formas\Sistema\Servidor.Designer.vb">
       <DependentUpon>Servidor.vb</DependentUpon>
     </Compile>
-    <Compile Include="Formas\Utilerias\Servidor.vb">
+    <Compile Include="Formas\Sistema\Servidor.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Utilerias\UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo.Designer.vb">
@@ -1930,10 +1930,10 @@
     <EmbeddedResource Include="Formas\Utilerias\ModoSistema.resx">
       <DependentUpon>ModoSistema.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Formas\Utilerias\SeleccionEmpresa.resx">
+    <EmbeddedResource Include="Formas\Sistema\SeleccionEmpresa.resx">
       <DependentUpon>SeleccionEmpresa.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Formas\Utilerias\Servidor.resx">
+    <EmbeddedResource Include="Formas\Sistema\Servidor.resx">
       <DependentUpon>Servidor.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Utilerias\UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo.resx">

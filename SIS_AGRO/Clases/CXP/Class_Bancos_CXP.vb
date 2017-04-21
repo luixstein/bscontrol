@@ -891,7 +891,7 @@ Public Class Class_Bancos_CXP
         Return bResultado
     End Function
 
-    Public Function GeneraPoliza() As Boolean
+    Public Function GeneraPoliza(ByVal sCodigoListaFacturasRecibidas As String) As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -902,6 +902,7 @@ Public Class Class_Bancos_CXP
             .CommandText = "MP_CONTABILIDAD_ASIENTO_REPETITIVO_PAGO_BANCO"
 
             sqlParametro = .Parameters.Add("@FOLIO_BANCO", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_BANCO
+            sqlParametro = .Parameters.Add("@CODIGO_LISTA_FACTURAS_RECIBIDAS", SqlDbType.NVarChar, 2) : sqlParametro.Value = sCodigoListaFacturasRecibidas
 
             Try
                 Me._Conexion.Open()

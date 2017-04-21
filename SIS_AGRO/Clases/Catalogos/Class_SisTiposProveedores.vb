@@ -10,6 +10,7 @@ Public Class Class_SisTiposProveedores
     Private _Codigo_Tipo_Proveedor As String
     Private _Nombre_Tipo_Proveedor As String
     Private _Cuenta_Contable As String
+    Private _ELEGIBLE_CATALOGO_PROVEEDORES As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -63,6 +64,12 @@ Public Class Class_SisTiposProveedores
         Set(ByVal Value As String)
             Me._Cuenta_Contable = Value
         End Set
+    End Property
+
+    Public ReadOnly Property ELEGIBLE_CATALOGO_PROVEEDORES() As Boolean
+        Get
+            Return Me._ELEGIBLE_CATALOGO_PROVEEDORES
+        End Get
     End Property
 #End Region
 
@@ -118,9 +125,9 @@ Public Class Class_SisTiposProveedores
         Me._Nombre_Reporte = "RPT_CAT_TIPOS_PROVEEDORES.rpt"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "Select Codigo_tipo_proveedor,Nombre_Tipo_Proveedor From SIS_TIPOS_PROVEEDORES"
-        Me._QueryOrder = " Order by Nombre_Tipo_Proveedor"
-    End Sub                                                         'Inicializa al objeto.
+        Me._QuerySelect = "SELECT CODIGO_TIPO_PROVEEDOR,NOMBRE_TIPO_PROVEEDOR FROM SIS_TIPOS_PROVEEDORES"
+        Me._QueryOrder = " ORDER BY NOMBRE_TIPO_PROVEEDOR"
+    End Sub
 
     Public Sub New(ByVal sCodigoTipoProveedor As String)
         Me.New()
@@ -128,7 +135,6 @@ Public Class Class_SisTiposProveedores
             Me._Codigo_Tipo_Proveedor = sCodigoTipoProveedor
             If Me.Consultar = True Then
                 Me._Existe = True
-
             End If
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "New", ex)
@@ -141,13 +147,10 @@ Public Class Class_SisTiposProveedores
     End Sub
 #End Region
 
-#Region "Opciones"
-
-#End Region
-
 #Region "Métodos y procedimientos"
 
     Public Overrides Function Insertar() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -163,7 +166,7 @@ Public Class Class_SisTiposProveedores
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                Insertar = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "Insertar", ex)
             Finally
@@ -171,11 +174,12 @@ Public Class Class_SisTiposProveedores
                 cmd.Dispose()
                 sqlParametro = Nothing
             End Try
-
         End With
-    End Function                          'Inserta un elemento al catálogo.
+        Return bResultado
+    End Function
 
     Public Overrides Function Actualizar() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -191,7 +195,7 @@ Public Class Class_SisTiposProveedores
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                Actualizar = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
             Finally
@@ -199,11 +203,12 @@ Public Class Class_SisTiposProveedores
                 cmd.Dispose()
                 sqlParametro = Nothing
             End Try
-
         End With
-    End Function                        'Actualiza un elemento del catálogo.
+        Return bResultado
+    End Function
 
     Public Overrides Function Consultar() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand("Select * from SIS_TIPOS_PROVEEDORES Where Codigo_TIPO_PROVEEDOR='" & Replace(Me._Codigo_Tipo_Proveedor, "'", "''") & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
@@ -217,7 +222,8 @@ Public Class Class_SisTiposProveedores
                     Me._Codigo_Tipo_Proveedor = "" & dReader("CODIGO_TIPO_PROVEEDOR").ToString
                     Me._Nombre_Tipo_Proveedor = Trim("" & dReader("NOMBRE_TIPO_PROVEEDOR").ToString)
                     Me._Cuenta_Contable = "" & dReader("CUENTA_CONTABLE")
-                    Consultar = True
+                    Me._ELEGIBLE_CATALOGO_PROVEEDORES = CBool(dReader("ELEGIBLE_CATALOGO_PROVEEDORES"))
+                    bResultado = True
                 End If
                 dReader.Close()
             Catch ex As Exception
@@ -227,8 +233,8 @@ Public Class Class_SisTiposProveedores
                 cmd.Dispose()
             End Try
         End With
-
-    End Function        'Consulta un elemento del catálogo.
+        Return bResultado
+    End Function
 
     Public Overrides Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
@@ -245,27 +251,27 @@ Public Class Class_SisTiposProveedores
 
     Public Function ObtenerElementosParaReportes() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dsCAT_Lineas As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
+        Dim da As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
         Try
-            dsCAT_Lineas.Fill(dTable)
+            da.Fill(dTable)
             dTable.Rows.Add("T", "TODOS")
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementosParaReportes", ex)
         Finally
-            dsCAT_Lineas.Dispose()
+            da.Dispose()
         End Try
         Return dTable
     End Function
 
     Public Function ObtenerElementosFiltro(ByVal Filtro As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dA As New SqlDataAdapter("SELECT CODIGO_TIPO_PROVEEDOR, NOMBRE_TIPO_PROVEEDOR FROM SIS_TIPOS_PROVEEDORES WHERE NOMBRE_TIPO_PROVEEDOR LIKE '" & Filtro.ToString & "%' ORDER BY NOMBRE_TIPO_PROVEEDOR", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_TIPO_PROVEEDOR, NOMBRE_TIPO_PROVEEDOR FROM SIS_TIPOS_PROVEEDORES WHERE NOMBRE_TIPO_PROVEEDOR LIKE '" & Filtro.ToString & "%' ORDER BY NOMBRE_TIPO_PROVEEDOR", Me._Conexion)
         Try
-            dA.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementosFiltro", ex)
         Finally
-            dA.Dispose()
+            da.Dispose()
         End Try
         Return dTable
     End Function
@@ -322,35 +328,6 @@ Public Class Class_SisTiposProveedores
         End Try
         Return iTipoProveedor
     End Function
-
-#End Region
-
-#Region "Eventos de objetos"
-
-
-#Region "Eventos de la lista de elementos"
-
-#End Region
-
-#Region " Eventos de TxtFiltro"
-
-#End Region
-
-#Region "Eventos Genericos"
-
-#End Region
-
-
-#Region "Keydown específicos"
-
-
-#End Region
-
-#Region "Validating específicos"
-
-#End Region
-
-
 
 #End Region
 

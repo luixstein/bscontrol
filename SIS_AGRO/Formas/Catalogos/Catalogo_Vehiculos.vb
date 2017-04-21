@@ -4,7 +4,7 @@ Imports System.Data.SqlClient
 Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Catalogo_Vehiculos
-    Private oCategoria As New Class_CatVehiculos
+    Private oVehiculo As New Class_CatVehiculos
 
 #Region "Campos"
 
@@ -109,12 +109,6 @@ Public Class Catalogo_Vehiculos
     Private Sub tsbNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbNuevo.Click
         Me.Estado = enumEstados.NUEVO
         Me.Cambia_Estado()
-        If CInt(Me.oCategoria.CodigoSiguiente) < 1 Then
-            Me.TxtCodigo.Text = "1"
-        Else
-            Me.TxtCodigo.Text = Me.oCategoria.CodigoSiguiente
-        End If
-
     End Sub
 
     Private Sub tsbEditar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbEditar.Click
@@ -126,13 +120,13 @@ Public Class Catalogo_Vehiculos
         Dim sMsg As String = ""
         Select Case Me.Estado
             Case enumEstados.EDICION
-                sMsg = " grabar las modificaciones del " & Me.msgElemento & " : " & Me.TxtCodigo.Text
+                sMsg = "grabar las modificaciones del " & Me.msgElemento & " : " & Me.TxtCodigo.Text
             Case enumEstados.NUEVO
-                sMsg = " agregar el " & Me.msgElemento & " : " & Me.TxtCodigo.Text
+                sMsg = "agregar el " & Me.msgElemento & " : " & Me.TxtCodigo.Text
         End Select
         sMsg = "Deseas " & sMsg & " ?"
         If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
-            Call Grabar_Elemento()
+            Me.Grabar_Elemento()
         End If
     End Sub
 
@@ -147,7 +141,7 @@ Public Class Catalogo_Vehiculos
     End Sub
 
     Private Sub tsbImprimirListado_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbImprimirListado.Click
-        Me.oCategoria.Imprimir_Listado()
+        Me.oVehiculo.Imprimir_Listado()
     End Sub
 #End Region
 
@@ -206,7 +200,7 @@ Public Class Catalogo_Vehiculos
 
     Private Sub DesplegarElementos()
         With Me.Grid
-            .DataSource = oCategoria.ObtenerElementos
+            .DataSource = oVehiculo.ObtenerElementos
             .Columns("CODIGO_VEHICULO").Width = 30
             .Columns("NOMBRE_VEHICULO").Width = 200
         End With
@@ -214,9 +208,9 @@ Public Class Catalogo_Vehiculos
     End Sub
 
     Private Sub LlenaElemento(ByVal sCodigo_Elemento As String)
-        Me.oCategoria.Codigo_Vehiculo = sCodigo_Elemento
-        If Me.oCategoria.Consultar Then
-            With Me.oCategoria
+        Me.oVehiculo.Codigo_Vehiculo = sCodigo_Elemento
+        If Me.oVehiculo.Consultar Then
+            With Me.oVehiculo
                 Me.TxtCodigo.Text = .Codigo_Vehiculo.ToString
                 Me.TxtNombre.Text = .Nombre_Vehiculo.ToString
             End With
@@ -228,8 +222,8 @@ Public Class Catalogo_Vehiculos
         Select Case Me.Estado
             Case enumEstados.NUEVO, enumEstados.EDICION
                 Try
-                    With Me.oCategoria
-                        .Codigo_Vehiculo = Me.TxtCodigo.Text
+                    With Me.oVehiculo
+                        .Codigo_Vehiculo = valorNumerico(Me.TxtCodigo.Text).ToString
                         .Nombre_Vehiculo = Me.TxtNombre.Text
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -244,15 +238,15 @@ Public Class Catalogo_Vehiculos
                         End Select
 
                         Me.Estado = enumEstados.CONSULTA
-                        If Grabado Then
-                            MsgBox(Me.msgElemento & " Grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
+                        If Grabado = True Then
+                            MsgBox(Me.msgElemento & " grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
                             Me.Refrescar()
                             Me.Cambia_Estado()
                         End If
 
                     End With
                 Catch ex As Exception
-                    HandleError(Me.Name, "Grabar", ex)
+                    HandleError(Me.Name, "Grabar_Elemento", ex)
                     Me.Estado = enumEstados.CONSULTA
                     Me.Cambia_Estado()
                 Finally

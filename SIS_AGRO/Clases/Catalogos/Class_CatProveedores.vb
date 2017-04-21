@@ -26,6 +26,7 @@ Public Class Class_CatProveedores
     Private _CONTACTO_TELEFONO_CELULAR As String
     Private _CODIGO_PLAZA As Integer
     Private _CURP As String
+    Private _PROTEGIDO As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -219,6 +220,11 @@ Public Class Class_CatProveedores
         End Set
     End Property
 
+    Public ReadOnly Property PROTEGIDO() As Boolean
+        Get
+            Return Me._PROTEGIDO
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -455,6 +461,7 @@ Public Class Class_CatProveedores
                     Me._CONTACTO_TELEFONO_CELULAR = dReader("CONTACTO_TELEFONO_CELULAR").ToString()
                     Me._CODIGO_PLAZA = Convert.ToInt32(dReader("CODIGO_PLAZA"))
                     Me._CURP = "" & dReader("CURP").ToString()
+                    Me._PROTEGIDO = CBool(dReader("PROTEGIDO").ToString())
 
                     If txtLEN(dReader("ID_CUENTA_BANCARIA").ToString()) = True Then
                         Me._CuentaBancaria = New Class_CatCuentasBancarias(CInt(dReader("ID_CUENTA_BANCARIA").ToString()))
@@ -478,13 +485,13 @@ Public Class Class_CatProveedores
     ''' </summary>
     Public Overrides Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim ds As New SqlDataAdapter("SELECT CODIGO_PROVEEDOR,NOMBRE_PROVEEDOR FROM CAT_PROVEEDORES WHERE CODIGO_PLAZA=" & Usuario.Codigo_Plaza & " ORDER BY NOMBRE_PROVEEDOR", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_PROVEEDOR,NOMBRE_PROVEEDOR FROM CAT_PROVEEDORES WHERE CODIGO_PLAZA=" & Usuario.Codigo_Plaza & " ORDER BY NOMBRE_PROVEEDOR", Me._Conexion)
         Try
-            ds.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
         Finally
-            ds.Dispose()
+            da.Dispose()
         End Try
         Return dTable
 
@@ -492,13 +499,13 @@ Public Class Class_CatProveedores
 
     Public Function ObtenerElementosFiltro(ByVal Filtro As String, ByVal Estatus As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dA As New SqlDataAdapter("SELECT CODIGO_PROVEEDOR, NOMBRE_PROVEEDOR FROM CAT_PROVEEDORES WHERE NOMBRE_PROVEEDOR LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & Estatus & "' ORDER BY NOMBRE_PROVEEDOR", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_PROVEEDOR, NOMBRE_PROVEEDOR FROM CAT_PROVEEDORES WHERE NOMBRE_PROVEEDOR LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & Estatus & "' ORDER BY NOMBRE_PROVEEDOR", Me._Conexion)
         Try
-            dA.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementosFiltro", ex)
         Finally
-            dA.Dispose()
+            da.Dispose()
         End Try
         Return dTable
 
@@ -506,26 +513,26 @@ Public Class Class_CatProveedores
 
     Public Function ObtenerElementosFiltroCodigo(ByVal Filtro As String, ByVal Estatus As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dA As New SqlDataAdapter("SELECT CODIGO_PROVEEDOR, NOMBRE_PROVEEDOR FROM CAT_PROVEEDORES WHERE CODIGO_PROVEEDOR LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & Estatus & "' ORDER BY CODIGO_PROVEEDOR", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_PROVEEDOR, NOMBRE_PROVEEDOR FROM CAT_PROVEEDORES WHERE CODIGO_PROVEEDOR LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & Estatus & "' ORDER BY CODIGO_PROVEEDOR", Me._Conexion)
         Try
-            dA.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementosFiltroCodigo", ex)
         Finally
-            dA.Dispose()
+            da.Dispose()
         End Try
         Return dTable
     End Function
 
     Public Function ObtenerTiposProveedores() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim ds As New SqlDataAdapter("SELECT CODIGO_TIPO_PROVEEDOR,NOMBRE_TIPO_PROVEEDOR FROM SIS_TIPOS_PROVEEDORES ORDER BY NOMBRE_TIPO_PROVEEDOR", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_TIPO_PROVEEDOR,NOMBRE_TIPO_PROVEEDOR,ELEGIBLE_CATALOGO_PROVEEDORES FROM SIS_TIPOS_PROVEEDORES ORDER BY NOMBRE_TIPO_PROVEEDOR", Me._Conexion)
         Try
-            ds.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerTiposProveedores", ex)
         Finally
-            ds.Dispose()
+            da.Dispose()
         End Try
         Return dTable
     End Function
@@ -622,7 +629,6 @@ Public Class Class_CatProveedores
             sqlParametro = .Parameters.Add("@NOMBRE_CUENTA_CONTABLE", SqlDbType.NVarChar, 120) : sqlParametro.Value = Me._NOMBRE_PROVEEDOR.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_PROVEEDOR", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._CODIGO_PROVEEDOR.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PLAZA
-
 
             Try
                 Me._Conexion.Open()

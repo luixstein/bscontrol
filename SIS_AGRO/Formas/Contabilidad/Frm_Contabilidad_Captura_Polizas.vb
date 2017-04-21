@@ -197,41 +197,44 @@ Public Class Frm_Contabilidad_Captura_Polizas
 
 #Region "Eventos"
     Private Sub Frm_Contabilidad_Captura_Polizas_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-
-        If Me._ChildParaGrabar = True Then
-            Me.InicializaChild()
-            Dim i As Integer
-            'InicializaGrid()
-            For i = 1 To Me.Grid1.Rows - 1
-                If Len(Me.Grid1.Cell(i, Me.iGyNombreCuenta).Text) > 0 Then
-                    Dim sql As New Class_find("Select DBO.FN_CONTABILIDAD_NOMBRE_CUENTA_NIVELES_COMPLETOS(CUENTA_CONTABLE),NATURALEZA_CONTABLE,ESMAYOR From CON_CAT_CUENTAS Where CUENTA_CONTABLE='" & Me.Grid1.Cell(i, Me.iGyCUENTA_CONTABLE_PESOS).Text & "'")
-                    If sql.Result1 <> "" Then
-                        Me.Grid1.Cell(i, Me.iGyNombreCuenta).Text = sql.Result1
-                        Me.Grid1.Cell(i, Me.iGyNaturaleza).Text = sql.Result2
+        Try
+            If Me._ChildParaGrabar = True Then
+                Me.InicializaChild()
+                Dim i As Integer
+                'InicializaGrid()
+                For i = 1 To Me.Grid1.Rows - 1
+                    If txtLEN(Me.Grid1.Cell(i, Me.iGyNombreCuenta).Text) = True Then
+                        Dim sql As New Class_find("Select DBO.FN_CONTABILIDAD_NOMBRE_CUENTA_NIVELES_COMPLETOS(CUENTA_CONTABLE) NOMBRE_CUENTA,NATURALEZA_CONTABLE,ESMAYOR " & _
+                                                  "FROM CON_CAT_CUENTAS Where CUENTA_CONTABLE='" & Me.Grid1.Cell(i, Me.iGyCUENTA_CONTABLE_PESOS).Text & "'")
+                        If sql.Result1 <> "" Then
+                            Me.Grid1.Cell(i, Me.iGyNombreCuenta).Text = sql.Result1
+                            Me.Grid1.Cell(i, Me.iGyNaturaleza).Text = sql.Result2
+                        End If
+                        sql = Nothing
                     End If
-                    sql = Nothing
-                End If
-            Next i
-            FormateaGrid()
-            Totales()
-            Me.Grid1.Focus()
-        Else
-            Me.DesplegarTipoDocumento()
-            Me.DesplegarDocumentosProveedor()
-            Me.CmbDocumento.SelectedValue = "D"
-            Inicializa()
-            Me.Cambia_Estado(enumEstados.NUEVO)
-            If Me._FolioPolizaConsultaExterior.Length > 0 Then
-                Me.TxtFolio.Text = Me._FolioPolizaConsultaExterior
-                Me.Consultar()
-                If Me.oPoliza.CODIGO_TIPO_DOCUMENTO = "E" Then
-                    'Me.gpbFacturasRecibidas.Visible = True
-                    Me.CboFacturasRecibidas.SelectedValue = Me.oPoliza.CODIGO_LISTA_FACTURAS_RECIBIDAS
-                    'Me.gpbFacturasRecibidas.Enabled = False
+                Next i
+                Me.FormateaGrid()
+                Me.Totales()
+                Me.Grid1.Focus()
+            Else
+                Me.DesplegarTipoDocumento()
+                Me.DesplegarDocumentosProveedor()
+                Me.CmbDocumento.SelectedValue = "D"
+                Me.Inicializa()
+                Me.Cambia_Estado(enumEstados.NUEVO)
+                If Me._FolioPolizaConsultaExterior.Length > 0 Then
+                    Me.TxtFolio.Text = Me._FolioPolizaConsultaExterior
+                    Me.Consultar()
+                    If Me.oPoliza.CODIGO_TIPO_DOCUMENTO = "E" Then
+                        'Me.gpbFacturasRecibidas.Visible = True
+                        Me.CboFacturasRecibidas.SelectedValue = Me.oPoliza.CODIGO_LISTA_FACTURAS_RECIBIDAS
+                        'Me.gpbFacturasRecibidas.Enabled = False
+                    End If
                 End If
             End If
-        End If
-
+        Catch ex As Exception
+            HandleError(Me.Name, "Frm_Contabilidad_Captura_Polizas_Load", ex)
+        End Try
     End Sub
 
     Private Sub CmbDocumento_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmbDocumento.SelectedIndexChanged
@@ -1168,6 +1171,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
                 Case "N"
                     MsgBox("La póliza no existe.", MsgBoxStyle.Exclamation, Me.Text)
                     Return False
+
                 Case "G"
                     'No hay restricciones
                     If txtLEN(Me.lblFolioOrigen.Text) = True Then
@@ -1186,7 +1190,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
                     End If
 
                     If txtLEN(Me.oPoliza.FOLIO_CONTRAPOLIZA) = True Then
-                        If MsgBox("La póliza tiene una contrapoliza desea cancelar ambas pólizas. " & Me.TxtFolio.Text & " y " & Me.oPoliza.FOLIO_CONTRAPOLIZA.ToString & " ?", vbYesNo Or vbQuestion, Me.Text) = MsgBoxResult.No Then
+                        If MsgBox("La póliza tiene una contrapóliza, desea cancelar ambas pólizas. " & Me.TxtFolio.Text & " y " & Me.oPoliza.FOLIO_CONTRAPOLIZA.ToString & " ?", vbYesNo Or vbQuestion, Me.Text) = MsgBoxResult.No Then
                             Return False
                         End If
                         Me.oPoliza.FECHA = Me.DtpFecha.Value
@@ -1195,6 +1199,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
                         Me.oPoliza.FECHA = Me.DtpFecha.Value
                         bResultado = Me.oPoliza.Cancelar()
                     End If
+
                 Case "A"
 
                     If txtLEN(Me.lblFolioOrigen.Text) = True Then
@@ -1214,7 +1219,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
 
                     'Si la póliza tiene contrapóliza
                     If txtLEN(Me.oPoliza.FOLIO_CONTRAPOLIZA) = True Then
-                        If MsgBox("La póliza tiene una contrapoliza, desea cancelar ambas pólizas : " & Me.TxtFolio.Text & " y " & Me.oPoliza.FOLIO_CONTRAPOLIZA.ToString & " ?", vbYesNo Or vbQuestion, Me.Text) = MsgBoxResult.No Then
+                        If MsgBox("La póliza tiene una contrapóliza, desea cancelar ambas pólizas : " & Me.TxtFolio.Text & " y " & Me.oPoliza.FOLIO_CONTRAPOLIZA.ToString & " ?", vbYesNo Or vbQuestion, Me.Text) = MsgBoxResult.No Then
                             Return False
                         End If
                         Me.oPoliza.FECHA = Me.DtpFecha.Value
@@ -1226,6 +1231,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
                         Me.oPoliza.FECHA = Me.DtpFecha.Value
                         bResultado = Me.oPoliza.Cancelar()
                     End If
+
                 Case "C"
                     MsgBox("La pólizas canceladas no se pueden volver a cancelar.", MsgBoxStyle.Exclamation, Me.Text)
                     Return False
@@ -1249,28 +1255,28 @@ Public Class Frm_Contabilidad_Captura_Polizas
             Me.oPoliza = New Class_Contabilidad_Poliza_Global(sFolio)
 
             If MsgBox("Desea reactivar la póliza " & Me.TxtFolio.Text & " ?", vbYesNo Or vbQuestion, Me.Text) = MsgBoxResult.No Then
-                Exit Function
+                Return False
             End If
 
             If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CmbDocumento.SelectedValue.ToString & Usuario.Codigo_Plaza) = False Then
                 MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, Me.Text)
-                Exit Function
+                Return False
             End If
 
             If Plaza.ValidarPeriodoTrabajo(Me.DtpFecha.Value) = False Then
-                Exit Function
+                Return False
             End If
 
             Select Case Me.LblCodigoEstatus.Text
                 Case "N"
                     MsgBox("La póliza no existe.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    Return False
                 Case "G"
                     MsgBox("Sólo las pólizas canceladas se pueden reactivar.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    Return False
                 Case "A"
                     MsgBox("Sólo las pólizas canceladas se pueden reactivar.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    Return False
                 Case "C"
                     If txtLEN(Me.oPoliza.FOLIO_CONTRAPOLIZA) = True Then
                         MsgBox("Las pólizas con contrapólizas no pueden reactivarse.", MsgBoxStyle.Exclamation, Me.Text)
@@ -1500,7 +1506,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
             Next i
             If dTotalAbonos <> dTotalCargos Then
                 MsgBox("Las cuentas '6000' de orden no cuadran.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+                Return False
             End If
 
             bResultado = True
@@ -1819,7 +1825,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
 
             Me.oPoliza = New Class_Contabilidad_Poliza_Global(Me.txtImportarPoliza.Text)
             If Me.oPoliza.Existe = False Then
-                MsgBox("Las pólizas no existe. Favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("La póliza no existe. Favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.txtImportarPoliza.Focus()
                 Exit Sub
             End If
@@ -1832,7 +1838,6 @@ Public Class Frm_Contabilidad_Captura_Polizas
             For Each dRow As DataRow In dTabla.Rows
                 Me.Grid1.AddItem(dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("NOMBRE_CUENTA").ToString & Chr(9) & dRow("CONCEPTO").ToString & Chr(9) & dRow("NATURALEZA_CONTABLE").ToString & Chr(9) & dRow("CARGO").ToString & Chr(9) &
                     dRow("ABONO").ToString & Chr(9) & dRow("CODIGO_CENTRO_COSTO").ToString & Chr(9) & dRow("NOMBRE_CENTRO_COSTO").ToString & Chr(9))
-
             Next
 
             Me.FormateaGrid()

@@ -806,14 +806,6 @@ Public Class AppMenu
         Child.Show()
     End Sub
 
-    Private Sub CentrosDeCostosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CentrosDeCostosToolStripMenuItem.Click
-        Dim Child As New Cat_Nomina_CentroCosto
-        Child.MdiParent = Me
-        m_ChildFormNumber += 1
-        Child.StartPosition = FormStartPosition.CenterScreen
-        Child.Show()
-    End Sub
-
     Private Sub PuestosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PuestosToolStripMenuItem.Click
         Dim Child As New Cat_NominaPuestos
         Child.MdiParent = Me
@@ -1345,27 +1337,6 @@ Public Class AppMenu
         Child.Show()
     End Sub
 
-    Private Sub CategoriasToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CategoriasToolStripMenuItem.Click
-        Dim Child As New Catalogo_Categorias
-        Child.MdiParent = Me
-        m_ChildFormNumber += 1
-        Child.Show()
-    End Sub
-
-    Private Sub ConceptosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConceptosToolStripMenuItem.Click
-        Dim Child As New Catalogo_Conceptos
-        Child.MdiParent = Me
-        m_ChildFormNumber += 1
-        Child.Show()
-    End Sub
-
-    Private Sub TipoDeCategoriasToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TipoDeCategoriasToolStripMenuItem.Click
-        Dim Child As New Catalogo_Tipos_Categorias
-        Child.MdiParent = Me
-        m_ChildFormNumber += 1
-        Child.Show()
-    End Sub
-
     Private Sub NavegadorDeCostosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NavegadorDeCostosToolStripMenuItem.Click
         Dim Child As New RptCentrosCostosNavegador
         Child.MdiParent = Me
@@ -1389,13 +1360,6 @@ Public Class AppMenu
 
     Private Sub TiposProveedoresToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TiposProveedoresToolStripMenuItem.Click
         Dim Child As New Sis_Tipos_Proveedores
-        Child.MdiParent = Me
-        m_ChildFormNumber += 1
-        Child.Show()
-    End Sub
-
-    Private Sub VehículosToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles VehículosToolStripMenuItem.Click
-        Dim Child As New Catalogo_Vehiculos
         Child.MdiParent = Me
         m_ChildFormNumber += 1
         Child.Show()
@@ -1429,13 +1393,6 @@ Public Class AppMenu
         ChildCXP.Show()
     End Sub
 
-    Private Sub ProyectoSiembraToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ProyectoSiembraToolStripMenuItem.Click
-        Dim Child As New ProyectoSiembra
-        Child.MdiParent = Me
-        m_ChildFormNumber += 1
-        Child.Show()
-    End Sub
-
     Private Sub EmbarqueDetalleToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EmbarqueDetalleToolStripMenuItem.Click
         Dim Child As New Rpt_Embarques_GlobalDetalle
         Child.MdiParent = Me
@@ -1446,6 +1403,49 @@ Public Class AppMenu
 
     Private Sub UnidadesDeVentaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UnidadesDeVentaToolStripMenuItem.Click
         Dim Child As New Catalogo_UnidadesVenta
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub TipoDeCategoriasToolStripMenuItem_Click_1(sender As Object, e As EventArgs) Handles TipoDeCategoriasToolStripMenuItem.Click
+        Dim Child As New Catalogo_Tipos_Categorias
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub ProyectoSiembraToolStripMenuItem_Click_1(sender As Object, e As EventArgs) Handles ProyectoSiembraToolStripMenuItem.Click
+        Dim Child As New ProyectoSiembra
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub VehículosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles VehículosToolStripMenuItem.Click
+        Dim Child As New Catalogo_Vehiculos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub CategoriasToolStripMenuItem_Click_1(sender As Object, e As EventArgs) Handles CategoriasToolStripMenuItem.Click
+        Dim Child As New Catalogo_Categorias
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub ConceptosToolStripMenuItem_Click_1(sender As Object, e As EventArgs) Handles ConceptosToolStripMenuItem.Click
+        Dim Child As New Catalogo_Conceptos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub CentrosDeCostosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CentrosDeCostosToolStripMenuItem.Click
+        Dim Child As New Cat_Nomina_CentroCosto
         Child.MdiParent = Me
         m_ChildFormNumber += 1
         Child.StartPosition = FormStartPosition.CenterScreen

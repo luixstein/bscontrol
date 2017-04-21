@@ -6,6 +6,8 @@ Imports CrystalDecisions.CrystalReports.Engine
 Public Class Catalogo_Proveedores
     Private oProveedores As New Class_CatProveedores
 
+    Private dtTiposProveedores As DataTable
+
 #Region "Campos"
 
 
@@ -249,6 +251,10 @@ Public Class Catalogo_Proveedores
             Me.Cambia_Estado()
             Me.DesplegarElementos()
             Me.Run = True
+
+            Dim oTP As New Class_CatProveedores
+            Me.dtTiposProveedores = oTP.ObtenerTiposProveedores()
+
         Catch ex As Exception
             HandleError(Me.Name, "New", ex)
         End Try
@@ -259,8 +265,6 @@ Public Class Catalogo_Proveedores
         'Me._Conexion.Dispose()
         MyBase.Finalize()
     End Sub
-
-
 #End Region
 
 #Region "Opciones"
@@ -318,89 +322,92 @@ Public Class Catalogo_Proveedores
 
 #Region "Métodos y procedimientos"
     Private Sub Refrescar()
-
         Me.DesplegarElementos()
-
     End Sub
 
     Private Sub Cambia_Estado()
-        Select Case Me.Estado
-            Case enumEstados.NUEVO
-                Me.gBoxInformacion.Enabled = True
-                Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Agregando nuevo " & Me.msgElemento
-                Me.tsbNuevo.Enabled = False
-                Me.tsbEditar.Enabled = False
-                Me.tsbGrabar.Enabled = True
-                Me.tsbCancelar.Enabled = True
-                Me.tsbEliminar.Enabled = False
+        Try
+            Select Case Me.Estado
+                Case enumEstados.NUEVO
+                    Me.gBoxInformacion.Enabled = True
+                    Me.gBoxBusquedaRapida.Enabled = False
+                    Me.tssLabelEstado.Text = "Agregando nuevo " & Me.msgElemento
+                    Me.tsbNuevo.Enabled = False
+                    Me.tsbEditar.Enabled = False
+                    Me.tsbGrabar.Enabled = True
+                    Me.tsbCancelar.Enabled = True
+                    Me.tsbEliminar.Enabled = False
 
-                Me.TxtCodProveedor.Enabled = False
-                Me.TxtNomProveedor.Enabled = True
-                Me.txtDomicilio.Enabled = True
-                Me.txtRFC.Enabled = True
-                Me.txtTelefono.Enabled = True
-                Me.txtCelular.Enabled = True
-                Me.txtCorreoElectronico.Enabled = True
-                Me.txtFax.Enabled = True
-                Me.TxtPlazo.Enabled = True
-                Me.txtSaldo.Enabled = False
-                Me.DTPFechaApertura.Enabled = False
-                Me.txtCuentaContable.Enabled = False
-                Me.txtCuentaContableDolares.Enabled = False
-                Me.btnGenerarCuentaDolares.Enabled = False
-                Me.cboTipoProveedor.Enabled = True
-                Me.txtContactoNombre.Enabled = True
-                Me.txtContactoTelefonoCelular.Enabled = True
-                Me.CboEstatus.Enabled = False
+                    Me.TxtCodProveedor.Enabled = False
+                    Me.TxtNomProveedor.Enabled = True
+                    Me.txtDomicilio.Enabled = True
+                    Me.txtRFC.Enabled = True
+                    Me.txtTelefono.Enabled = True
+                    Me.txtCelular.Enabled = True
+                    Me.txtCorreoElectronico.Enabled = True
+                    Me.txtFax.Enabled = True
+                    Me.TxtPlazo.Enabled = True
+                    Me.txtSaldo.Enabled = False
+                    Me.DTPFechaApertura.Enabled = False
+                    Me.txtCuentaContable.Enabled = False
+                    Me.txtCuentaContableDolares.Enabled = False
+                    Me.btnGenerarCuentaDolares.Enabled = False
+                    Me.cboTipoProveedor.Enabled = True
+                    Me.txtContactoNombre.Enabled = True
+                    Me.txtContactoTelefonoCelular.Enabled = True
+                    Me.CboEstatus.Enabled = False
 
-                Me.InicializaElemento()
+                    Me.InicializaElemento()
+                    Me.DesplegaTiposProveedores(True)
 
-            Case enumEstados.EDICION
-                Me.gBoxInformacion.Enabled = True
-                Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Edición"
-                Me.tsbNuevo.Enabled = False
-                Me.tsbEditar.Enabled = False
-                Me.tsbGrabar.Enabled = True
-                Me.tsbCancelar.Enabled = True
-                Me.tsbEliminar.Enabled = True
+                Case enumEstados.EDICION
+                    Me.gBoxInformacion.Enabled = True
+                    Me.gBoxBusquedaRapida.Enabled = False
+                    Me.tssLabelEstado.Text = "Edición"
+                    Me.tsbNuevo.Enabled = False
+                    Me.tsbEditar.Enabled = False
+                    Me.tsbGrabar.Enabled = True
+                    Me.tsbCancelar.Enabled = True
+                    Me.tsbEliminar.Enabled = True
 
-                Me.TxtCodProveedor.Enabled = False
-                Me.TxtNomProveedor.Enabled = True
-                Me.txtDomicilio.Enabled = True
-                Me.txtRFC.Enabled = True
-                Me.txtTelefono.Enabled = True
-                Me.txtCelular.Enabled = True
-                Me.txtCorreoElectronico.Enabled = True
-                Me.txtFax.Enabled = True
-                Me.TxtPlazo.Enabled = True
-                Me.txtSaldo.Enabled = False
-                Me.DTPFechaApertura.Enabled = False
-                Me.txtCuentaContable.Enabled = False
-                Me.txtCuentaContableDolares.Enabled = False
-                Me.btnGenerarCuentaDolares.Enabled = False
-                Me.cboTipoProveedor.Enabled = False
-                Me.txtContactoNombre.Enabled = True
-                Me.txtContactoTelefonoCelular.Enabled = True
-                Me.CboEstatus.Enabled = True
-                If txtLEN(Me.txtCuentaContableDolares.Text) = False Then
-                    Me.btnGenerarCuentaDolares.Enabled = True
-                End If
+                    Me.TxtCodProveedor.Enabled = False
+                    Me.TxtNomProveedor.Enabled = True
+                    Me.txtDomicilio.Enabled = True
+                    Me.txtRFC.Enabled = True
+                    Me.txtTelefono.Enabled = True
+                    Me.txtCelular.Enabled = True
+                    Me.txtCorreoElectronico.Enabled = True
+                    Me.txtFax.Enabled = True
+                    Me.TxtPlazo.Enabled = True
+                    Me.txtSaldo.Enabled = False
+                    Me.DTPFechaApertura.Enabled = False
+                    Me.txtCuentaContable.Enabled = False
+                    Me.txtCuentaContableDolares.Enabled = False
+                    Me.btnGenerarCuentaDolares.Enabled = False
+                    Me.cboTipoProveedor.Enabled = False
+                    Me.txtContactoNombre.Enabled = True
+                    Me.txtContactoTelefonoCelular.Enabled = True
+                    Me.CboEstatus.Enabled = True
+                    If txtLEN(Me.txtCuentaContableDolares.Text) = False Then
+                        Me.btnGenerarCuentaDolares.Enabled = True
+                    End If
 
-            Case enumEstados.CONSULTA
-                Me.gBoxInformacion.Enabled = False
-                Me.gBoxBusquedaRapida.Enabled = True
-                Me.tssLabelEstado.Text = "Consulta"
-                Me.tsbNuevo.Enabled = True
-                Me.tsbEditar.Enabled = False
-                Me.tsbGrabar.Enabled = False
-                Me.tsbCancelar.Enabled = False
-                Me.tsbEliminar.Enabled = False
-                Me.txtFiltro.Focus()
-                Me.CboEstatusFiltro.SelectedIndex = 0
-        End Select
-        Application.DoEvents()
+                Case enumEstados.CONSULTA
+                    Me.gBoxInformacion.Enabled = False
+                    Me.gBoxBusquedaRapida.Enabled = True
+                    Me.tssLabelEstado.Text = "Consulta"
+                    Me.tsbNuevo.Enabled = True
+                    Me.tsbEditar.Enabled = False
+                    Me.tsbGrabar.Enabled = False
+                    Me.tsbCancelar.Enabled = False
+                    Me.tsbEliminar.Enabled = False
+                    Me.txtFiltro.Focus()
+                    Me.CboEstatusFiltro.SelectedIndex = 0
+            End Select
+            Application.DoEvents()
+        Catch ex As Exception
+            HandleError(Me.Name, "Cambia_Estado", ex)
+        End Try
     End Sub
 
     Private Sub InicializaElemento()
@@ -425,6 +432,7 @@ Public Class Catalogo_Proveedores
             Me.lblCuenta.Text = ""
             Me.lblCuentaContabledolares.Text = ""
             Me.txtCuentaContable.Enabled = False
+            Me.chkProtegido.Checked = False
 
             'Me.TxtCodProveedor.Text = Me.oProveedores.CodigoSiguiente
         Catch ex As Exception
@@ -433,81 +441,95 @@ Public Class Catalogo_Proveedores
     End Sub
 
     Private Sub DesplegarElementos()
-        Dim oElementos As New Class_CatProveedores
-        With Me.Grid
-            .DataSource = oElementos.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.CboEstatusFiltro.Text)
-            .Columns("CODIGO_PROVEEDOR").Width = 70
-            .Columns("NOMBRE_PROVEEDOR").Width = 350
-        End With
-
+        Try
+            Dim oElementos As New Class_CatProveedores
+            With Me.Grid
+                .DataSource = oElementos.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.CboEstatusFiltro.Text)
+                .Columns("CODIGO_PROVEEDOR").Width = 70
+                .Columns("NOMBRE_PROVEEDOR").Width = 350
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarElementos", ex)
+        End Try
     End Sub
 
     Private Sub LlenaElemento(ByVal iCodigo_Elemento As String)
-        Dim oElemento As New Class_CatProveedores
-        oElemento.Codigo_Proveedor = iCodigo_Elemento
-        If oElemento.Consultar Then
-            With oElemento
-                Me.TxtCodProveedor.Text = .Codigo_Proveedor.ToString
-                Me.TxtNomProveedor.Text = .Nombre_Proveedor.ToString
-                Me.txtDomicilio.Text = .Domicilio.ToString
-                Me.txtRFC.Text = .RFC.ToString
-                Me.txtTelefono.Text = .Telefono.ToString
-                Me.txtCelular.Text = .Celular.ToString
-                Me.txtCorreoElectronico.Text = .Correo_Electronico.ToString
-                Me.txtFax.Text = .Fax.ToString
-                Me.TxtPlazo.Text = .Plazo.ToString
-                Me.txtSaldo.Text = .Saldo.ToString
-                Me.DTPFechaApertura.Text = .FECHA_ALTA.ToString("s")
-                Me.txtCuentaContable.Text = .CUENTA_CONTABLE.ToString
-                Me.txtCuentaContableDolares.Text = .CUENTA_CONTABLE_DOLARES.ToString
-                Me.cboTipoProveedor.SelectedValue = .Codigo_Tipo_Proveedor.ToString
-                Me.txtContactoNombre.Text = .Contacto.ToString
-                Me.txtContactoTelefonoCelular.Text = .Contacto_Telefono_Celular.ToString
-                If .Estatus = "A" Then
-                    Me.CboEstatus.SelectedIndex = 0
-                Else
-                    Me.CboEstatus.SelectedIndex = 1
+        Try
+            Dim oElemento As New Class_CatProveedores
+            oElemento.Codigo_Proveedor = iCodigo_Elemento
+            If oElemento.Consultar = True Then
+                With oElemento
+                    Me.TxtCodProveedor.Text = .Codigo_Proveedor
+                    Me.TxtNomProveedor.Text = .Nombre_Proveedor
+                    Me.txtDomicilio.Text = .Domicilio
+                    Me.txtRFC.Text = .RFC
+                    Me.txtCURP.Text = .CURP
+                    Me.txtTelefono.Text = .Telefono
+                    Me.txtCelular.Text = .Celular
+                    Me.txtCorreoElectronico.Text = .Correo_Electronico
+                    Me.txtFax.Text = .Fax
+                    Me.TxtPlazo.Text = .Plazo.ToString
+                    Me.txtSaldo.Text = .Saldo.ToString
+                    Me.DTPFechaApertura.Text = .FECHA_ALTA.ToString("s")
+                    Me.txtCuentaContable.Text = .CUENTA_CONTABLE
+                    Me.txtCuentaContableDolares.Text = .CUENTA_CONTABLE_DOLARES
+                    Me.cboTipoProveedor.SelectedValue = .Codigo_Tipo_Proveedor
+                    Me.txtContactoNombre.Text = .Contacto
+                    Me.txtContactoTelefonoCelular.Text = .Contacto_Telefono_Celular
+                    If .Estatus = "A" Then
+                        Me.CboEstatus.SelectedIndex = 0
+                    Else
+                        Me.CboEstatus.SelectedIndex = 1
+                    End If
+
+                    Dim sql As New Class_find("Select NOMBRE_CUENTA From CON_CAT_CUENTAS Where CUENTA_CONTABLE='" & Me.txtCuentaContable.Text & "' ")
+                    Me.lblCuenta.Text = sql.Result1
+
+                    sql = New Class_find("Select NOMBRE_CUENTA From CON_CAT_CUENTAS Where CUENTA_CONTABLE='" & Me.txtCuentaContableDolares.Text & "' ")
+                    Me.lblCuentaContabledolares.Text = sql.Result1
+
+                    Me.chkProtegido.Checked = .PROTEGIDO
+                End With
+
+                If txtLEN(Me.txtCuentaContableDolares.Text) = False Then
+                    Me.btnGenerarCuentaDolares.Enabled = True
                 End If
-
-                Dim sql As New Class_find("Select NOMBRE_CUENTA From CON_CAT_CUENTAS Where CUENTA_CONTABLE='" & Me.txtCuentaContable.Text & "' ")
-                Me.lblCuenta.Text = sql.Result1
-
-                sql = New Class_find("Select NOMBRE_CUENTA From CON_CAT_CUENTAS Where CUENTA_CONTABLE='" & Me.txtCuentaContableDolares.Text & "' ")
-                Me.lblCuentaContabledolares.Text = sql.Result1
-
-            End With
-
-            If txtLEN(Me.txtCuentaContableDolares.Text) = False Then
-                Me.btnGenerarCuentaDolares.Enabled = True
             End If
-        End If
-        oElemento = Nothing
+            oElemento = Nothing
+        Catch ex As Exception
+            HandleError(Me.Name, "LlenaElemento", ex)
+        End Try
     End Sub
 
     Private Sub Grabar_Elemento()
         Dim oElemento As New Class_CatProveedores
         Dim Grabado As Boolean = False
 
+        If Me.chkProtegido.Checked = True Then
+            MsgBox("Este proveedor esta protegido, no es posible modificarlo directamente.", MsgBoxStyle.Exclamation, Me.Text)
+            Return
+        End If
+
         If txtLEN(Me.TxtNomProveedor.Text) = False Then
-            MsgBox("Asígne el nombre del proveedor", MsgBoxStyle.Exclamation, Me.Text)
+            MsgBox("Asígne el nombre del proveedor.", MsgBoxStyle.Exclamation, Me.Text)
             Me.TxtNomProveedor.Focus()
             Exit Sub
         End If
 
         If txtLEN(Me.txtDomicilio.Text) = False Then
-            MsgBox("Asígne el domicilio del proveedor", MsgBoxStyle.Exclamation, Me.Text)
+            MsgBox("Asígne el domicilio del proveedor.", MsgBoxStyle.Exclamation, Me.Text)
             Me.txtDomicilio.Focus()
             Exit Sub
         End If
 
         If txtLEN(Me.txtRFC.Text) = False Then
-            MsgBox("Asígne el RFC del proveedor", MsgBoxStyle.Exclamation, Me.Text)
+            MsgBox("Asígne el RFC del proveedor.", MsgBoxStyle.Exclamation, Me.Text)
             Me.txtRFC.Focus()
             Exit Sub
         End If
 
         If txtLEN(Me.TxtPlazo.Text) = False Then
-            MsgBox("Asígne el plazo del proveedor", MsgBoxStyle.Exclamation, Me.Text)
+            MsgBox("Asígne el plazo del proveedor.", MsgBoxStyle.Exclamation, Me.Text)
             Me.TxtPlazo.Focus()
             Exit Sub
         End If
@@ -548,7 +570,7 @@ Public Class Catalogo_Proveedores
             oCuentas.CUENTA_CONTABLE = Me.txtCuentaContableDolares.Text
 
             If oCuentas.Consultar() = False Then
-                MsgBox("La cuenta contable en dolares no existe.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("La cuenta contable en dólares no existe.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.txtCuentaContableDolares.Focus()
                 Exit Sub
             End If
@@ -560,10 +582,16 @@ Public Class Catalogo_Proveedores
             'End If
 
             If oCuentas.isCuentaContableValida(Me.txtCuentaContableDolares.Text) = False Then
-                MsgBox("La cuenta contable en dolares debe de ser de operación.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("La cuenta contable en dólares debe de ser de operación.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.txtCuentaContable.Focus()
                 Exit Sub
             End If
+        End If
+
+        Dim oTipo As New Class_SisTiposProveedores(Me.cboTipoProveedor.SelectedValue.ToString)
+        If oTipo.ELEGIBLE_CATALOGO_PROVEEDORES = False Then
+            MsgBox("El tipo de proveedor seleccionado es inválido para utilizar", MsgBoxStyle.Exclamation, Me.Text)
+            Return
         End If
 
         Select Case Me.Estado
@@ -667,7 +695,6 @@ Public Class Catalogo_Proveedores
                     Me.Estado = enumEstados.CONSULTA
                     Me.Cambia_Estado()
                 End If
-
             End With
 
         Catch ex As Exception
@@ -680,23 +707,45 @@ Public Class Catalogo_Proveedores
     End Sub
 
     Public Function ValidarCuentaTipoProveedor() As Boolean
-        Dim sCuentaContable As String
-        Dim sql As New Class_find("SELECT CUENTA_CONTABLE, NOMBRE_TIPO_PROVEEDOR FROM SIS_TIPOS_PROVEEDORES WHERE CODIGO_TIPO_PROVEEDOR='" & Me.cboTipoProveedor.SelectedValue.ToString & "' ")
+        Try
+            Dim sCuentaContable As String
+            Dim sql As New Class_find("SELECT CUENTA_CONTABLE, NOMBRE_TIPO_PROVEEDOR FROM SIS_TIPOS_PROVEEDORES WHERE CODIGO_TIPO_PROVEEDOR='" & Me.cboTipoProveedor.SelectedValue.ToString & "' ")
 
-        sCuentaContable = Me.txtCuentaContable.Text.Substring(0, 4)
-        If txtLEN(sql.Result1) = True Then
-            If sCuentaContable <> sql.Result1 Then
-                MsgBox("La cuenta contable del " & sql.Result2.ToString & " debe iniciar con " & sql.Result1.ToString & ".", MsgBoxStyle.Exclamation, Me.Text)
-                Me.txtCuentaContable.Focus()
-                Exit Function
+            sCuentaContable = Me.txtCuentaContable.Text.Substring(0, 4)
+            If txtLEN(sql.Result1) = True Then
+                If sCuentaContable <> sql.Result1 Then
+                    MsgBox("La cuenta contable del " & sql.Result2.ToString & " debe iniciar con " & sql.Result1.ToString & ".", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.txtCuentaContable.Focus()
+                    Return False
+                End If
             End If
-        End If
-        ValidarCuentaTipoProveedor = True
+            Return True
+        Catch ex As Exception
+            HandleError(Me.Name, "ValidarCuentaTipoProveedor", ex)
+        End Try
     End Function
+
+    Private Sub DesplegaTiposProveedores(ByVal bMostrarSoloPermitidos As Boolean)
+        With Me.cboTipoProveedor
+            .DisplayMember = "NOMBRE_TIPO_PROVEEDOR"
+            .ValueMember = "CODIGO_TIPO_PROVEEDOR"
+            Dim sFiltro As String = ""
+            If bMostrarSoloPermitidos = True Then
+                sFiltro = "ELEGIBLE_CATALOGO_PROVEEDORES='1'"
+            End If
+            Dim dView As New Data.DataView(Me.dtTiposProveedores, sFiltro, "NOMBRE_TIPO_PROVEEDOR", DataViewRowState.CurrentRows)
+            dView.Sort = "NOMBRE_TIPO_PROVEEDOR"
+            .DataSource = dView
+            If dView.Count > 0 Then
+                .SelectedValue = "3" '3=PROVEEDOR NACIONAL
+            End If
+        End With
+    End Sub
 
 #End Region
 
 #Region "Eventos de objetos"
+
 #Region "Eventos de la lista de elementos"
     Private Sub Grid_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles Grid.CellClick
         Me.LlenaElemento(Me.Grid.CurrentRow.Cells("CODIGO_PROVEEDOR").Value.ToString)
@@ -824,7 +873,6 @@ Public Class Catalogo_Proveedores
     End Sub
 #End Region
 
-
 #Region "Keydown específicos"
 
 #End Region
@@ -837,24 +885,8 @@ Public Class Catalogo_Proveedores
         Refrescar()
     End Sub
 
-#End Region
-
     Private Sub Catalogo_Articulos_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        DesplegaTiposProveedores()
-    End Sub
-
-    Private Sub DesplegaTiposProveedores()
-        Dim oElementos As New Class_CatProveedores
-        With Me.cboTipoProveedor
-            .DisplayMember = "NOMBRE_TIPO_PROVEEDOR"
-            .ValueMember = "CODIGO_TIPO_PROVEEDOR"
-            Dim dView As New Data.DataView(oElementos.ObtenerTiposProveedores)
-            dView.Sort = "NOMBRE_TIPO_PROVEEDOR"
-            .DataSource = dView
-            If dView.Count > 0 Then
-                .SelectedIndex = 0
-            End If
-        End With
+        Me.DesplegaTiposProveedores(False)
     End Sub
 
     Private Sub TxtCodProveedor_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodProveedor.KeyDown
@@ -1094,4 +1126,7 @@ busqueda_Visual:
     Private Sub btnGenerarCuentaDolares_Click(sender As Object, e As EventArgs) Handles btnGenerarCuentaDolares.Click
         GrabaCuentaContableDolares()
     End Sub
+
+#End Region
+
 End Class

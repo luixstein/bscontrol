@@ -1203,7 +1203,7 @@ buscar_acreedor:
                 End If
             End If
 
-            Me.oBancosCXP.GeneraPoliza()
+            Me.oBancosCXP.GeneraPoliza(Me.CboFacturasRecibidas.SelectedValue.ToString)
 
         Catch ex As Exception
             HandleError(Me.Name, "Grabar", ex)

@@ -535,28 +535,32 @@ Module FacturacionElectronica
                 End If
             End If
 
-            If Len(Dir(sFelectronicaArchivoCERLocal)) = 0 Then
-                If Len(Dir(sCerServer)) = 0 OrElse Copiar_Archivo(sCerServer, sFelectronicaArchivoCERLocal) = False Then
-                    MsgBox("No existe en el servidor el archivo .cer, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                    Exit Function
+            If Path.GetFileNameWithoutExtension(sFelectronicaArchivoCERLocal) <> "FALTA" Then 'Si ya esta habilitada la felec, pero no se tiene aún el certificado se salta el buscar el cer,key y pfx
+                If Len(Dir(sFelectronicaArchivoCERLocal)) = 0 Then
+                    If Len(Dir(sCerServer)) = 0 OrElse Copiar_Archivo(sCerServer, sFelectronicaArchivoCERLocal) = False Then
+                        MsgBox("No existe en el servidor el archivo .cer, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                        Exit Function
+                    End If
                 End If
-            End If
-            If Len(Dir(sFelectronicaArchivoKEYLocal)) = 0 Then
-                If Len(Dir(sKeyServer)) = 0 OrElse Copiar_Archivo(sKeyServer, sFelectronicaArchivoKEYLocal) = False Then
-                    MsgBox("No existe en el servidor el archivo .key, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                    Exit Function
+
+                If Len(Dir(sFelectronicaArchivoKEYLocal)) = 0 Then
+                    If Len(Dir(sKeyServer)) = 0 OrElse Copiar_Archivo(sKeyServer, sFelectronicaArchivoKEYLocal) = False Then
+                        MsgBox("No existe en el servidor el archivo .key, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                        Exit Function
+                    End If
                 End If
-            End If
-            If Len(Dir(sFelectronicaConvierteUTF8Local)) = 0 Then
-                If Len(Dir(sFelectronicaConvierteUTF8Servidor)) = 0 OrElse Copiar_Archivo(sFelectronicaConvierteUTF8Servidor, sFelectronicaConvierteUTF8Local) = False Then
-                    MsgBox("No existe en el servidor el archivo para convertir el XML a UTF8, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                    Exit Function
+
+                If Len(Dir(sFelectronicaArchivoPFX)) = 0 Then
+                    If Len(Dir(sFelectronicaArchivoPFXServidor)) = 0 OrElse Copiar_Archivo(sFelectronicaArchivoPFXServidor, sFelectronicaArchivoPFX) = False Then
+                        MsgBox("No existe en el servidor el archivo .pfx, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                        Exit Function
+                    End If
                 End If
             End If
 
-            If Len(Dir(sFelectronicaArchivoPFX)) = 0 Then
-                If Len(Dir(sFelectronicaArchivoPFXServidor)) = 0 OrElse Copiar_Archivo(sFelectronicaArchivoPFXServidor, sFelectronicaArchivoPFX) = False Then
-                    MsgBox("No existe en el servidor el archivo .pfx, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+            If Len(Dir(sFelectronicaConvierteUTF8Local)) = 0 Then
+                If Len(Dir(sFelectronicaConvierteUTF8Servidor)) = 0 OrElse Copiar_Archivo(sFelectronicaConvierteUTF8Servidor, sFelectronicaConvierteUTF8Local) = False Then
+                    MsgBox("No existe en el servidor el archivo para convertir el XML a UTF8, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
                     Exit Function
                 End If
             End If

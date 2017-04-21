@@ -27,6 +27,7 @@ Partial Class Servidor
         Me.btnAceptar = New System.Windows.Forms.Button()
         Me.btnSistemaDirecto = New System.Windows.Forms.Button()
         Me.btnSistemaDirectoSol = New System.Windows.Forms.Button()
+        Me.btnSistemaDirectoComer1 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Label1
@@ -76,11 +77,22 @@ Partial Class Servidor
         Me.btnSistemaDirectoSol.UseVisualStyleBackColor = True
         Me.btnSistemaDirectoSol.Visible = False
         '
+        'btnSistemaDirectoComer1
+        '
+        Me.btnSistemaDirectoComer1.Location = New System.Drawing.Point(74, 45)
+        Me.btnSistemaDirectoComer1.Name = "btnSistemaDirectoComer1"
+        Me.btnSistemaDirectoComer1.Size = New System.Drawing.Size(28, 23)
+        Me.btnSistemaDirectoComer1.TabIndex = 5
+        Me.btnSistemaDirectoComer1.Text = "..."
+        Me.btnSistemaDirectoComer1.UseVisualStyleBackColor = True
+        Me.btnSistemaDirectoComer1.Visible = False
+        '
         'Servidor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(273, 80)
+        Me.Controls.Add(Me.btnSistemaDirectoComer1)
         Me.Controls.Add(Me.btnSistemaDirectoSol)
         Me.Controls.Add(Me.btnSistemaDirecto)
         Me.Controls.Add(Me.btnAceptar)
@@ -101,4 +113,5 @@ Partial Class Servidor
     Friend WithEvents btnAceptar As System.Windows.Forms.Button
     Friend WithEvents btnSistemaDirecto As System.Windows.Forms.Button
     Friend WithEvents btnSistemaDirectoSol As System.Windows.Forms.Button
+    Friend WithEvents btnSistemaDirectoComer1 As System.Windows.Forms.Button
 End Class

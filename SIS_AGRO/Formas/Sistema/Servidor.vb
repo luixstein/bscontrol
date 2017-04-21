@@ -1,0 +1,168 @@
+﻿Option Explicit On
+
+Public Class Servidor
+
+    Private Sub Servidor_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Try
+            If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "AREACREDITO" Then
+                Me.btnSistemaDirecto.Visible = True
+                Me.btnSistemaDirectoSol.Visible = True
+                Me.btnSistemaDirectoComer1.Visible = True
+                'bSistemaDirecto = True
+            End If
+
+            'If My.Settings.Servidor1.Length > 0 Then
+            '    Me.cboServerName.Items.Add(My.Settings.Servidor1)
+            'End If
+            'If My.Settings.Servidor2.Length > 0 Then
+            '    Me.cboServerName.Items.Add(My.Settings.Servidor2)
+            'End If
+            'If My.Settings.Servidor3.Length > 0 Then
+            '    Me.cboServerName.Items.Add(My.Settings.Servidor3)
+            'End If
+
+            Dim dt As DataTable = New DataTable("Tabla")
+
+            dt.Columns.Add("Servidor")
+            dt.Columns.Add("AliasServidor")
+
+            Dim dr As DataRow
+
+            If My.Settings.Servidor1.Length > 0 Then
+                dr = dt.NewRow()
+                dr("Servidor") = My.Settings.Servidor1
+                dr("AliasServidor") = My.Settings.AliasServidor1
+                dt.Rows.Add(dr)
+            End If
+            If My.Settings.Servidor2.Length > 0 Then
+                dr = dt.NewRow()
+                dr("Servidor") = My.Settings.Servidor2
+                dr("AliasServidor") = My.Settings.AliasServidor2
+                dt.Rows.Add(dr)
+            End If
+            If My.Settings.Servidor3.Length > 0 Then
+                dr = dt.NewRow()
+                dr("Servidor") = My.Settings.Servidor3
+                dr("AliasServidor") = My.Settings.AliasServidor3
+                dt.Rows.Add(dr)
+            End If
+            If My.Settings.Servidor4.Length > 0 Then
+                dr = dt.NewRow()
+                dr("Servidor") = My.Settings.Servidor4
+                dr("AliasServidor") = My.Settings.AliasServidor4
+                dt.Rows.Add(dr)
+            End If
+
+            Me.cboServerName.DataSource = dt
+            Me.cboServerName.ValueMember = "Servidor"
+            Me.cboServerName.DisplayMember = "AliasServidor"
+
+            'Me.cboServerName.Text = My.Settings.Servidor
+        Catch ex As Exception
+            HandleError(Me.Name, "Servidor_Load", ex)
+        End Try
+    End Sub
+
+    Private Sub cboServerName_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboServerName.KeyDown
+        If e.KeyCode = Keys.Return Then
+            Me.AbrirLogin()
+        End If
+    End Sub
+
+    Private Sub btnAceptar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAceptar.Click
+        Me.AbrirLogin()
+    End Sub
+
+    Private Sub AbrirLogin()
+        Try
+            Me.Hide()
+            My.Settings.Servidor = Me.cboServerName.SelectedValue.ToString
+            My.Settings.Save()
+            My.Settings.Reload()
+
+            If Me.cboServerName.SelectedValue.ToString = My.Settings.Servidor1 Then
+                'If My.Settings.MostrarEmpresas = "1" Then
+                '    Dim f As New SeleccionEmpresa
+                '    f.ShowDialog()
+                '    f.Dispose()
+                'Else
+                My.Settings.BaseDatos = My.Settings.BaseDatos1
+                'End If
+            ElseIf Me.cboServerName.SelectedValue.ToString = My.Settings.Servidor2 Then
+                'If My.Settings.MostrarEmpresas = "1" Then
+                '    Dim f As New SeleccionEmpresa
+                '    f.ShowDialog()
+                '    f.Dispose()
+                'Else
+                My.Settings.BaseDatos = My.Settings.BaseDatos2
+
+                If My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "AREACREDITO" Then
+                    My.Settings.BaseDatos = "AGROCONTROL_BIOLOGOS"
+                End If
+
+
+                'End If
+            ElseIf Me.cboServerName.SelectedValue.ToString = My.Settings.Servidor3 Then
+                'If My.Settings.MostrarEmpresas = "1" Then
+                '    Dim f As New SeleccionEmpresa
+                '    f.ShowDialog()
+                '    f.Dispose()
+                'Else
+                My.Settings.BaseDatos = My.Settings.BaseDatos3
+                'End If
+            ElseIf Me.cboServerName.SelectedValue.ToString = My.Settings.Servidor4 Then
+                'If My.Settings.MostrarEmpresas = "1" Then
+                '    Dim f As New SeleccionEmpresa
+                '    f.ShowDialog()
+                '    f.Dispose()
+                'Else
+                My.Settings.BaseDatos = My.Settings.BaseDatos4
+                'End If
+            End If
+
+            My.Settings.Save()
+            My.Settings.Reload()
+
+        Catch ex As Exception
+            HandleError(Me.Name, "AbrirLogin", ex)
+        End Try
+    End Sub
+
+    Private Sub btnSistemaDirecto_Click(sender As Object, e As EventArgs) Handles btnSistemaDirecto.Click
+        bSistemaDirecto = True
+        Select My.Computer.Name
+            Case "PCSISTEMASJORGE"
+                Me.cboServerName.SelectedValue = "PCSISTEMASJORGE\SQL14"
+                My.Settings.Servidor1 = "PCSISTEMASJORGE\SQL14"
+                My.Settings.BaseDatos1 = "AGRINET_LAND_TEST"
+            Case "ERNESTOA"
+                Me.cboServerName.SelectedValue = "ERNESTOA"
+        End Select
+        Me.AbrirLogin()
+    End Sub
+
+    Private Sub btnSistemaDirectoSol_Click(sender As Object, e As EventArgs) Handles btnSistemaDirectoSol.Click
+        bSistemaDirecto = True
+        Select Case My.Computer.Name
+            Case "PCSISTEMASJORGE"
+                Me.cboServerName.SelectedValue = "PCSISTEMASJORGE\SQL14"
+                My.Settings.BaseDatos1 = "AGRINET_LAND_S"
+            Case "ERNESTOA"
+                Me.cboServerName.SelectedValue = "ERNESTOA"
+        End Select
+        Me.AbrirLogin()
+    End Sub
+
+    Private Sub btnSistemaDirectoComer1_Click(sender As Object, e As EventArgs) Handles btnSistemaDirectoComer1.Click
+        bSistemaDirecto = True
+        Select Case My.Computer.Name
+            Case "PCSISTEMASJORGE"
+                Me.cboServerName.SelectedValue = "PCSISTEMASJORGE\SQL12"
+                My.Settings.Servidor1 = "PCSISTEMASJORGE\SQL12"
+                My.Settings.BaseDatos1 = "COMER1"
+            Case "ERNESTOA"
+                Me.cboServerName.SelectedValue = "ERNESTOA"
+        End Select
+        Me.AbrirLogin()
+    End Sub
+End Class

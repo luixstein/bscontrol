@@ -99,28 +99,25 @@ Public Class Catalogo_Articulos
 
     Private Sub tsbGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbGrabar.Click
         Dim sMsg As String = ""
-        If Len(TxtUnidadVenta.Text) > 1 Then
-            If Usuario.PERMISO_CAT_ARTICULOS = "0" Then
-                MsgBox("No tiene permiso para realizar este movimiento.", MsgBoxStyle.Exclamation, Me.Name)
-                Me.Estado = enumEstados.CONSULTA
-                Me.Cambia_Estado()
-                Exit Sub
-            End If
 
-            Select Case Me.Estado
-                Case enumEstados.EDICION
-                    sMsg = " grabar las modificaciones del articulo : " & Me.TxtCodArticulo.Text
-                Case enumEstados.NUEVO
-                    sMsg = " agregar el articulo : " & Me.TxtCodArticulo.Text
-            End Select
-            sMsg = "Deseas " & sMsg & " ?"
-            If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
-                Me.Grabar_Elemento()
-            End If
-        Else
-            MsgBox("Especifique la Unidad de venta", MsgBoxStyle.Exclamation, Me.Name)
-            TxtUnidadVenta.Focus()
+        If Usuario.PERMISO_CAT_ARTICULOS = "0" Then
+            MsgBox("No tiene permiso para realizar este movimiento.", MsgBoxStyle.Exclamation, Me.Name)
+            Me.Estado = enumEstados.CONSULTA
+            Me.Cambia_Estado()
+            Exit Sub
         End If
+
+        Select Case Me.Estado
+            Case enumEstados.EDICION
+                sMsg = " grabar las modificaciones del artículo : " & Me.TxtDescripcion.Text
+            Case enumEstados.NUEVO
+                sMsg = " agregar el artículo : " & Me.TxtDescripcion.Text
+        End Select
+        sMsg = "Deseas" & sMsg & " ?"
+        If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
+            Me.Grabar_Elemento()
+        End If
+
     End Sub
 
     Private Sub tsbEliminar_Click(sender As Object, e As EventArgs) Handles tsbEliminar.Click
@@ -227,8 +224,12 @@ Public Class Catalogo_Articulos
         Me.TxtUnidadVenta.Text = ""
         Me.LblNombreUnidad.Text = ""
         Me.TxtPrecio.Text = "0.00"
-        Me.CboFamilia.SelectedIndex = 0
-        Me.cboLinea.SelectedIndex = 0
+        If Me.CboFamilia.Items.Count > 0 Then
+            Me.CboFamilia.SelectedIndex = 0
+        End If
+        If Me.cboLinea.Items.Count > 0 Then
+            Me.cboLinea.SelectedIndex = 0
+        End If
         Me.chkInventariable.Checked = True
         Me.rbtDescripcion.Checked = True
     End Sub
@@ -293,7 +294,7 @@ Public Class Catalogo_Articulos
         Dim oElemento As New Class_CatArticulos
         Dim Grabado As Boolean = False
 
-        If Validar() = False Then
+        If Me.Validar() = False Then
             Exit Sub
         End If
 
@@ -379,15 +380,27 @@ Public Class Catalogo_Articulos
         Dim bResultado As Boolean = False
 
         If txtLEN(Me.TxtDescripcion.Text) = False Then
-            MsgBox("Asígne la descripción del artículo.", MsgBoxStyle.Exclamation, Me.Text)
+            MsgBox("Captúre la descripción del artículo.", MsgBoxStyle.Exclamation, Me.Text)
             Me.TxtDescripcion.Focus()
             Exit Function
         End If
 
         If txtLEN(Me.TxtUnidadVenta.Text) = False Then
-            MsgBox("Ingrese la unidad de venta.", MsgBoxStyle.Exclamation)
+            MsgBox("Captúre la unidad de venta.", MsgBoxStyle.Exclamation)
             Me.TxtUnidadVenta.Focus()
             Return bResultado
+        End If
+
+        If Me.CboFamilia.SelectedIndex = -1 Then
+            MsgBox("Seleccione por favor la familia del artículo.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.CboFamilia.Focus()
+            Return False
+        End If
+
+        If Me.cboLinea.SelectedIndex = -1 Then
+            MsgBox("Seleccione por favor la línea del artículo.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.cboLinea.Focus()
+            Return False
         End If
 
         bResultado = True

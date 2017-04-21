@@ -2102,11 +2102,11 @@ BuscarCuentas:
                                     MsgBox("La cuenta contable del renglón : " & i & " es de mayor.", MsgBoxStyle.Exclamation, sProcedure)
                                     Return False
                                 End If
-                                If (Me.Grid.Cell(i, Me.igyCuentaContable).Text Like Empresa_Sistema.CUENTA_CONTABLE_ALMACENES & "*") = False Then
-                                    MsgBox("La cuenta para los artículos inventariables debe de empezar con " & Empresa_Sistema.CUENTA_CONTABLE_ALMACENES & "." & vbCrLf & _
-                                           "Revíse el renglón #" & i, MsgBoxStyle.Exclamation, Me.Text)
-                                    Return False
-                                End If
+                                'If (Me.Grid.Cell(i, Me.igyCuentaContable).Text Like Empresa_Sistema.CUENTA_CONTABLE_ALMACENES & "*") = False Then
+                                '    MsgBox("La cuenta para los artículos inventariables debe de empezar con " & Empresa_Sistema.CUENTA_CONTABLE_ALMACENES & "." & vbCrLf & _
+                                '           "Revíse el renglón #" & i, MsgBoxStyle.Exclamation, Me.Text)
+                                '    Return False
+                                'End If
                             End If
 
                         Else

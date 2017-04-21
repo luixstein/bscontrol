@@ -290,6 +290,42 @@ Namespace My
                 Me("Servidor") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("PCSISTEMASJORGE\SQL12")>  _
+        Public Property Servidor4() As String
+            Get
+                Return CType(Me("Servidor4"),String)
+            End Get
+            Set
+                Me("Servidor4") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("C1")>  _
+        Public Property AliasServidor4() As String
+            Get
+                Return CType(Me("AliasServidor4"),String)
+            End Get
+            Set
+                Me("AliasServidor4") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("COMER1")>  _
+        Public Property BaseDatos4() As String
+            Get
+                Return CType(Me("BaseDatos4"),String)
+            End Get
+            Set
+                Me("BaseDatos4") = value
+            End Set
+        End Property
     End Class
 End Namespace
 
