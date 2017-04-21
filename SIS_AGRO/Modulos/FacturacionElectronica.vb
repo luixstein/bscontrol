@@ -720,8 +720,8 @@ Module FacturacionElectronica
             Cfd.Impuestos.Traslados.USADO = True 'si uso el trasladado
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Totales'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            If oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True And oVenta.IMPUESTO > 0 Then
-                MsgBox("No esta soportado actualmente por este sistema que lo embarques extranjeros lleven impuestos.", MsgBoxStyle.Exclamation, sProcedure)
+            If oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True And (oVenta.IMPUESTO > 0 Or oVenta.IEPS_TOTAL_DESGLOSADO > 0 Or oVenta.IEPS_TOTAL_YA_INCLUIDO > 0) Then
+                MsgBox("No esta soportado actualmente por este sistema que lo embarques extranjeros lleven impuestos iva/ieps.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
 
@@ -733,31 +733,38 @@ Module FacturacionElectronica
             Else
                 Cfd.Descuento = Format(oVenta.DESCUENTO, "#0.00")
 
-                If sVentaPublicoGeneral = "1" Then
-                    'No se desglosa el iva(por ello subtotal=total y se manda un impuesto en cero)
-                    Cfd.subTotal = Format(oVenta.TOTAL, "#0.00")
-                    Cfd.total = Format(oVenta.TOTAL, "#0.00")
+                'If sVentaPublicoGeneral = "1" Then
+                '    'No se desglosa el iva(por ello subtotal=total y se manda un impuesto en cero)
+                '    Cfd.subTotal = Format(oVenta.TOTAL, "#0.00")
+                '    Cfd.total = Format(oVenta.TOTAL, "#0.00")
+                '    Cfd.Impuestos.Traslados.Add("IVA", Format(0, "#0.00"), Format(0, "#0.00"))
+                'Else
+                Cfd.subTotal = Format(oVenta.SUBTOTAL, "#0.00")
+                Cfd.total = Format(oVenta.TOTAL, "#0.00")
+
+                If oVenta.IMPUESTO = 0 Then
                     Cfd.Impuestos.Traslados.Add("IVA", Format(0, "#0.00"), Format(0, "#0.00"))
                 Else
-                    Cfd.subTotal = Format(oVenta.SUBTOTAL, "#0.00")
-                    Cfd.total = Format(oVenta.TOTAL, "#0.00")
-
-                    If oVenta.IMPUESTO = 0 Then
+                    '0
+                    Dim Impuesto As New Class_find("SELECT 1 FROM VENTA_DETALLE WHERE FOLIO_VENTA='" & oVenta.FOLIO_VENTA & "' AND IMPUESTO_PORCENTAJE=0")
+                    If txtLEN(Impuesto.Result1) = True Then
                         Cfd.Impuestos.Traslados.Add("IVA", Format(0, "#0.00"), Format(0, "#0.00"))
-                    Else
-                        '0
-                        Dim Impuesto As New Class_find("SELECT 1 FROM VENTA_DETALLE WHERE FOLIO_VENTA='" & oVenta.FOLIO_VENTA & "' AND IMPUESTO_PORCENTAJE=0")
-                        If txtLEN(Impuesto.Result1) = True Then
-                            Cfd.Impuestos.Traslados.Add("IVA", Format(0, "#0.00"), Format(0, "#0.00"))
-                        End If
-                        '16
-                        Cfd.Impuestos.Traslados.Add("IVA", Format(IIf(oVenta.IMPUESTO_PORCENTAJE > 0, oVenta.IMPUESTO_PORCENTAJE, 0), "#0.00"), Format(oVenta.IMPUESTO, "#0.00"))
                     End If
+                    '16
+                    Cfd.Impuestos.Traslados.Add("IVA", Format(IIf(oVenta.IMPUESTO_PORCENTAJE > 0, oVenta.IMPUESTO_PORCENTAJE, 0), "#0.00"), Format(oVenta.IMPUESTO, "#0.00"))
+                End If
+                'End If
+
+                If oVenta.IEPS_TOTAL_DESGLOSADO > 0 Then 'Si es desglosado agregamos los nodos, si no, como van incluidos en precio y subtotal, entonces no se agregan.
+                    For Each dRow In oVenta.ObtenerImpuestosIEPS.Rows
+                        Cfd.Impuestos.Traslados.Add("IEPS", Format(dRow("IEPS_PORCENTAJE"), "#0.00"), Format(dRow("SUMA_IEPS_IMPORTE"), "#0.00"))
+                    Next
                 End If
 
                 If oVenta.RETENCION > 0 Then
                     Cfd.Impuestos.Retenciones.Add("IVA", "0", Format(oVenta.RETENCION, "#0.00")) 'escribirlo a mano
                 End If
+
             End If
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Cfd.Emisor'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -916,40 +923,40 @@ Module FacturacionElectronica
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Conceptos''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             For Each row As DataRow In oVenta.ObtenerDetalle.Rows
-                If row("ES_PRODUCTO_KILOS") = "0" Then
-                    If oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
-                        dPrecio = valorNumerico(row("PRECIO_USD"))
-                        drImporte = valorNumerico(row("IMPORTE_USD"))
-                    Else
-                        If sVentaPublicoGeneral = "1" Then
-                            dPrecio = valorNumerico(row("PRECIO")) + valorNumerico(row("IMPUESTO_IMPORTE")) 'ojo si es publico gral  no desglosar iva
-                        Else
-                            dPrecio = valorNumerico(row("PRECIO"))
-                        End If
-
-                        drImporte = valorNumerico(row("CANTIDAD")) * dPrecio
-                        Call Redondear(drImporte, Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                    End If
-
-                    Cfd.Conceptos.Add(row("CANTIDAD"), fElectronicaValidaCampo(row("DESCRIPCION").ToString), CStr(drImporte), row("UNIDAD_VENTA").ToString, CStr(dPrecio), row("CODIGO_ARTICULO").ToString)
+                'If row("ES_PRODUCTO_KILOS") = "0" Then
+                If oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
+                    dPrecio = valorNumerico(row("PRECIO_USD"))
+                    drImporte = valorNumerico(row("IMPORTE_USD"))
                 Else
-                    'Si elprecio o la cantidad es cero no dejar sellar
-                    If valorNumerico(row("PRECIO_KILOS")) = 0 Or valorNumerico(row("CANTIDAD_KILOS")) = 0 Then
-                        Exit Function
-                    End If
+                    'If sVentaPublicoGeneral = "1" Then
+                    'dPrecio = valorNumerico(row("PRECIO")) + valorNumerico(row("IMPUESTO_IMPORTE")) 'ojo si es publico gral  no desglosar iva
+                    'Else
+                    dPrecio = valorNumerico(row("PRECIO"))
+                    'End If
 
-                    If sVentaPublicoGeneral = "1" Then
-                        'dPrecio = valorNumerico(row("PRECIO_KILOS")) (+ (valorNumerico(row("IMPUESTO_IMPORTE")/valorNumerico(row("CANTIDAD_KILOS"))) 'ojo si es publico gral  no desglosar iva
-                        dPrecio = valorNumerico(row("PRECIO_KILOS")) + valorNumerico(row("IMPUESTO_IMPORTE")) 'ojo si es publico gral  no desglosar iva
-                    Else
-                        dPrecio = valorNumerico(row("PRECIO_KILOS"))
-                    End If
-
-                    drImporte = valorNumerico(row("CANTIDAD_KILOS")) * dPrecio
-
+                    drImporte = valorNumerico(row("CANTIDAD")) * dPrecio
                     Call Redondear(drImporte, Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                    Cfd.Conceptos.Add(row("CANTIDAD_KILOS"), fElectronicaValidaCampo(row("DESCRIPCION").ToString), CStr(drImporte), row("UNIDAD_VENTA").ToString, CStr(dPrecio), row("CODIGO_ARTICULO").ToString)
                 End If
+
+                Cfd.Conceptos.Add(row("CANTIDAD"), fElectronicaValidaCampo(row("DESCRIPCION").ToString), CStr(drImporte), row("UNIDAD_VENTA").ToString, CStr(dPrecio), row("CODIGO_ARTICULO").ToString)
+                'Else
+                '    'Si elprecio o la cantidad es cero no dejar sellar
+                '    If valorNumerico(row("PRECIO_KILOS")) = 0 Or valorNumerico(row("CANTIDAD_KILOS")) = 0 Then
+                '        Exit Function
+                '    End If
+
+                '    'If sVentaPublicoGeneral = "1" Then
+                '    'dPrecio = valorNumerico(row("PRECIO_KILOS")) (+ (valorNumerico(row("IMPUESTO_IMPORTE")/valorNumerico(row("CANTIDAD_KILOS"))) 'ojo si es publico gral  no desglosar iva
+                '    'dPrecio = valorNumerico(row("PRECIO_KILOS")) + valorNumerico(row("IMPUESTO_IMPORTE")) 'ojo si es publico gral  no desglosar iva
+                '    'Else
+                '    dPrecio = valorNumerico(row("PRECIO_KILOS"))
+                '    'End If
+
+                '    drImporte = valorNumerico(row("CANTIDAD_KILOS")) * dPrecio
+
+                '    Call Redondear(drImporte, Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                '    Cfd.Conceptos.Add(row("CANTIDAD_KILOS"), fElectronicaValidaCampo(row("DESCRIPCION").ToString), CStr(drImporte), row("UNIDAD_VENTA").ToString, CStr(dPrecio), row("CODIGO_ARTICULO").ToString)
+                'End If
             Next
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''CCE COMPLEMENTO COMERCIO EXTERIOR''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -1054,29 +1061,29 @@ Module FacturacionElectronica
             Cfd.Regimen = oDescuento.NOMBRE_REGIMEN_FISCAL
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            If sVentaPublicoGeneral = "1" Then
-                'No se desglosa el iva(por ello subtotal=total y se manda un impuesto en cero)
-                Cfd.subTotal = Format(oDescuento.TOTAL, "#0.00")
-                Cfd.total = Format(oDescuento.TOTAL, "#0.00")
+            'If sVentaPublicoGeneral = "1" Then
+            '    'No se desglosa el iva(por ello subtotal=total y se manda un impuesto en cero)
+            '    Cfd.subTotal = Format(oDescuento.TOTAL, "#0.00")
+            '    Cfd.total = Format(oDescuento.TOTAL, "#0.00")
+            '    Cfd.Impuestos.Traslados.Add("IVA", Format(0, "#0.00"), Format(0, "#0.00"))
+            'Else
+            Cfd.subTotal = Format(oDescuento.SUBTOTAL, "#0.00")
+            Cfd.total = Format(oDescuento.TOTAL, "#0.00")
+
+            If oDescuento.IVA = 0 Then
                 Cfd.Impuestos.Traslados.Add("IVA", Format(0, "#0.00"), Format(0, "#0.00"))
             Else
-                Cfd.subTotal = Format(oDescuento.SUBTOTAL, "#0.00")
-                Cfd.total = Format(oDescuento.TOTAL, "#0.00")
+                Dim Impuesto As New Class_find("SELECT 1 FROM CXC_DESCUENTOS_GLOBAL D INNER JOIN CXC_DESCUENTOS_DETALLE CD ON (D.FOLIO_DESCUENTO=CD.FOLIO_DESCUENTO) " & _
+                "INNER JOIN CXC_GLOBAL G ON (CD.FOLIO_CXC=G.FOLIO_CXC) INNER JOIN VENTA_DETALLE VD ON(G.FOLIO_REFERENCIA=VD.FOLIO_VENTA) " & _
+                "WHERE D.FOLIO_DESCUENTO='" & oDescuento.FOLIO_DESCUENTO & "' AND VD.IMPUESTO_PORCENTAJE=0 ")
 
-                If oDescuento.IVA = 0 Then
+                If txtLEN(Impuesto.Result1) = True Then
                     Cfd.Impuestos.Traslados.Add("IVA", Format(0, "#0.00"), Format(0, "#0.00"))
-                Else
-                    Dim Impuesto As New Class_find("SELECT 1 FROM CXC_DESCUENTOS_GLOBAL D INNER JOIN CXC_DESCUENTOS_DETALLE CD ON (D.FOLIO_DESCUENTO=CD.FOLIO_DESCUENTO) " & _
-                    "INNER JOIN CXC_GLOBAL G ON (CD.FOLIO_CXC=G.FOLIO_CXC) INNER JOIN VENTA_DETALLE VD ON(G.FOLIO_REFERENCIA=VD.FOLIO_VENTA) " & _
-                    "WHERE D.FOLIO_DESCUENTO='" & oDescuento.FOLIO_DESCUENTO & "' AND VD.IMPUESTO_PORCENTAJE=0 ")
-
-                    If txtLEN(Impuesto.Result1) = True Then
-                        Cfd.Impuestos.Traslados.Add("IVA", Format(0, "#0.00"), Format(0, "#0.00"))
-                    End If
-                    '16 IMPUESTO_PORCENTAJE
-                    Cfd.Impuestos.Traslados.Add("IVA", Format(IIf(oDescuento.IVA > 0, oDescuento.IMPUESTO_PORCENTAJE, 0), "#0.00"), Format(oDescuento.IVA, "#0.00")) 'corregir, crerar campo impuesto_poercentaje, y no poner fijo 16
                 End If
+                '16 IMPUESTO_PORCENTAJE
+                Cfd.Impuestos.Traslados.Add("IVA", Format(IIf(oDescuento.IVA > 0, oDescuento.IMPUESTO_PORCENTAJE, 0), "#0.00"), Format(oDescuento.IVA, "#0.00")) 'corregir, crerar campo impuesto_poercentaje, y no poner fijo 16
             End If
+            'End If
 
             If oDescuento.RETENCION > 0 Then
                 Cfd.Impuestos.Retenciones.Add("IVA", "0", Format(oDescuento.RETENCION, "#0.00"))
@@ -1184,6 +1191,8 @@ Module FacturacionElectronica
             '_Conexion.Close()
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Conceptos''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            '!!!NOTA, cuando se hagan las dev ya no considerar lo de diferenciar entre pco gral o no !!!!!!!
+
             'Dim tArticulos As DataTable
             'tArticulos = oDescuento.ObtenerDetalle
             'If sEsPorDevolucion = "1" Then

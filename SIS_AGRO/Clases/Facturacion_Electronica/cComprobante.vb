@@ -1,14 +1,21 @@
 Option Strict Off
 Option Explicit On
+
 Imports System.Data
 Imports System.Data.SqlClient
 Imports System.Math
 
 Friend Class cComprobante
+
+#Region "Campos de sistema"
+    Public nombreClase As String = "cComprobante"
     Public xmlns As String
     Public xmlnsxsi As String
     Public xsischemaLocation As String
     Public xmlnscfdi As String
+#End Region
+
+#Region "Campos"
     Public version As String
     Public serie As String
     Public Folio As String
@@ -26,17 +33,20 @@ Friend Class cComprobante
     Public noCertificado As String
     Public certificado As String
     Public sello As String
-    'CFD
     Public metodoDePago As String
     Public Regimen As String
     Public LugarExpedicion As String
     Public NumCtaPago As String
+#End Region
 
+#Region "Nodos"
     Public Emisor As iEmisor
     Public Receptor As iReceptor
     Public Conceptos As iConceptos
     Public Impuestos As iImpuestos
+#End Region
 
+#Region "Auxiliares"
     Public sFolioFacturaSistema As String
     Public sRequiereNumPago As String
 
@@ -47,21 +57,21 @@ Friend Class cComprobante
         FACTURA_VENTA
         NOTA_CREDITO_CXC
     End Enum
+#End Region
 
-    'UPGRADE_NOTE: CLASS_INITIALIZE was upgraded to CLASS_INITIALIZE_Renamed. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"'
-    Private Sub Class_Initialize_Renamed()
+#Region "Constructor y destructor"
+    Public Sub New()
+        MyBase.New()
+
         Emisor = New iEmisor
         Receptor = New iReceptor
         Conceptos = New iConceptos
         Impuestos = New iImpuestos
         AnexoNodo = "cfdi:"
     End Sub
+#End Region
 
-    Public Sub New()
-        MyBase.New()
-        Class_Initialize_Renamed()
-    End Sub
-
+#Region "Métodos y procedimientos"
     Public Function Sellar(ByVal sRutaXML As String, ByVal TipoComprobante As TipoComprobante, ByVal bMostrarUnidadVenta As Boolean, Optional ByVal XmlComplementoComercioExterior As String = "", _
                            Optional ByVal EsPorEmbarqueExtranjero As Boolean = False) As Boolean
         Dim bResultado As Boolean = False
@@ -81,24 +91,6 @@ Friend Class cComprobante
             'UPGRADE_WARNING: Couldn't resolve default property of object version. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
             Doc.appendChild(version)
 
-            'Dim cokenoCertificado As String, cokeCertificado As String, cokeSello As String
-
-            '    cokenoCertificado = "00001000000102088326"
-
-            '    cokeCertificado = "" & _
-            ''    "MIIEEjCCAvqgAwIBAgIUMDAwMDEwMDAwMDAxMDIwODgzMjYwDQYJKoZIhvcNAQEFBQAwggE2MTgwNgYDVQQDDC9BLkMuIGRlbCBTZXJ2aWNpbyBkZSBBZG1pbmlzdHJhY2nDs24gVHJpYnV0YXJpYTE" & _
-            ''    "vMC0GA1UECgwmU2VydmljaW8gZGUgQWRtaW5pc3RyYWNpw7NuIFRyaWJ1dGFyaWExHzAdBgkqhkiG9w0BCQEWEGFjb2RzQHNhdC5nb2IubXgxJjAkBgNVBAkMHUF2LiBIaWRhbGdvIDc3LCBDb2wuIE" & _
-            ''    "d1ZXJyZXJvMQ4wDAYDVQQRDAUwNjMwMDELMAkGA1UEBhMCTVgxGTAXBgNVBAgMEERpc3RyaXRvIEZlZGVyYWwxEzARBgNVBAcMCkN1YXVodGVtb2MxMzAxBgkqhkiG9w0BCQIMJFJlc3BvbnNhYmxlO" & _
-            ''    "iBGZXJuYW5kbyBNYXJ0w61uZXogQ29zczAeFw0xMDEwMTgxNjMzNDNaFw0xMjEwMTcxNjMzNDNaMIGyMRwwGgYDVQQDExNQQVFBIFNDIERFIFJMIERFIENWMRwwGgYDVQQpExNQQVFBIFNDIERFIFJM" & _
-            ''    "IERFIENWMRwwGgYDVQQKExNQQVFBIFNDIERFIFJMIERFIENWMSUwIwYDVQQtExxQQVEwNjA3MjZUOTMgLyBMQVJMNzQwODMxRFg4MR4wHAYDVQQFExUgLyBMQVJMNzQwODMxSFNMUkRTMDgxDzANBgN" & _
-            ''    "VBAsTBlVOSURBRDCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEArHYdQF9GkuGWVQpN8V+JaaxOjLk+b0t2h5lv1RL5KGtwX9Cbz+L9Yrx7D8Ryv/NQO7QvjpXN9K3HjmbIthkDVpVct9KGXtEhnW" & _
-            ''    "dFixD0nVctMu01tGHBoFyhh3lzOU0FCEz1I99mBxlnxwnsfVWPLMSFc9Xu6V7YDlV+hHN3JWUCAwEAAaMdMBswDAYDVR0TAQH/BAIwADALBgNVHQ8EBAMCBsAwDQYJKoZIhvcNAQEFBQADggEBADZ6a" & _
-            ''    "iTvuq8WOEbz0kQTCdfNrA91S9q+il7uea+0XIABqvz/B2JogXBE2rRn0+t8gxetEfno7CmomNpR7GBlMETmBI5puplYc5P0wZxgkRQA6BFfPfyWFO2Tles1glW9Qi9cMQ9vrifnpamnGUaQlwc4pgAQ" & _
-            ''    "Eo+q8kjtX/kaFi5X9eDMs8jcJDWIn0GEQCWP+Ok19dae2vajz3D4r2jn1daMNWDxkhewK9Sycbil3k/5Cx0hQGRbDhpeUgXgLdbTBoWL3qKXQJWU4rfzAQ0wS3s9NM+vDe32Yy2gRr9yT3VTEm4m0hA" & _
-            ''    "Gwpmew4q9m4baprDFD9uUJfHyWwribO/IJrA="
-
-            '    cokeSello = "kunreTGjYOtiPA4m8s/AqXxil8ltVHzSZMmIofnGAHmdO1SO0uQK9hOYNdYTVKiS3PO3QBrwsInRu2DDELeHhR42ACTTGbjIuyjnGQiZYWe0NoKIdGQ5PruWhg9Ibln3u7kg1XsRBO1qD4ZZZiLM8CWVk2pkThl6/fL0KLnr7Vo="
-            '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
             Dim dSumaImportes As Double = 0
 
             If EsPorEmbarqueExtranjero = True Then
@@ -440,7 +432,7 @@ Friend Class cComprobante
             End If
 
         Catch ex As Exception
-            HandleError("Comprobante", "Sellar", ex)
+            HandleError(Me.nombreClase, "Sellar", ex)
         End Try
 
         Return bResultado
@@ -449,7 +441,7 @@ Friend Class cComprobante
     Private Function TotalImpuestosTransladados() As String
         Dim sResultado As String = ""
         Dim i As Short
-        Dim dTotal As Double
+        Dim dTotal As Double = 0
         Try
             'barrer coleccion de trasladados
             For i = 1 To Me.Impuestos.Traslados.Count
@@ -457,9 +449,11 @@ Friend Class cComprobante
             Next
             sResultado = Format(dTotal, "#0.00")
         Catch ex As Exception
-            HandleError("Comprobante", "TotalImpuestosTransladados", ex)
+            HandleError(Me.nombreClase, "TotalImpuestosTransladados", ex)
         End Try
         Return sResultado
     End Function
+
+#End Region
 
 End Class

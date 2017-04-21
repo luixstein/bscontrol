@@ -23,6 +23,7 @@ Public Class Class_Compras_Global
     Private _PLAZO As Integer
     Private _FECHA_VENCIMIENTO As Date
     Private _SUBTOTAL As Double
+    Private _IEPS_TOTAL_DESGLOSADO As Double
     Private _IMPUESTO As Double
     Private _TOTAL As Double
     Private _RETENCION As Double
@@ -207,6 +208,15 @@ Public Class Class_Compras_Global
         End Get
         Set(ByVal Value As Double)
             Me._SUBTOTAL = Value
+        End Set
+    End Property
+
+    Public Property IEPS_TOTAL_DESGLOSADO() As Double
+        Get
+            Return Me._IEPS_TOTAL_DESGLOSADO
+        End Get
+        Set(ByVal Value As Double)
+            Me._IEPS_TOTAL_DESGLOSADO = Value
         End Set
     End Property
 
@@ -564,6 +574,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@PLAZO", SqlDbType.Int) : sqlParametro.Value = Me._PLAZO
             sqlParametro = .Parameters.Add("@FECHA_VENCIMIENTO", SqlDbType.DateTime) : sqlParametro.Value = "" & Me._FECHA_VENCIMIENTO
             sqlParametro = .Parameters.Add("@SUBTOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL
+            sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO
             sqlParametro = .Parameters.Add("@IMPUESTO", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO
             sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL
             sqlParametro = .Parameters.Add("@RETENCION", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION
@@ -612,6 +623,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@PLAZO", SqlDbType.Int) : sqlParametro.Value = Me._PLAZO
             sqlParametro = .Parameters.Add("@FECHA_VENCIMIENTO", SqlDbType.DateTime) : sqlParametro.Value = "" & Me._FECHA_VENCIMIENTO
             sqlParametro = .Parameters.Add("@SUBTOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL
+            sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO
             sqlParametro = .Parameters.Add("@IMPUESTO", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO
             sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL
             sqlParametro = .Parameters.Add("@RETENCION", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION
@@ -663,6 +675,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@PLAZO", SqlDbType.Int) : sqlParametro.Value = Me._PLAZO
             sqlParametro = .Parameters.Add("@FECHA_VENCIMIENTO", SqlDbType.DateTime) : sqlParametro.Value = "" & Me._FECHA_VENCIMIENTO
             sqlParametro = .Parameters.Add("@SUBTOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL
+            sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO
             sqlParametro = .Parameters.Add("@IMPUESTO", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO
             sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL
             sqlParametro = .Parameters.Add("@RETENCION", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION
@@ -899,6 +912,7 @@ Public Class Class_Compras_Global
                     Me._PLAZO = CInt(dReader("PLAZO"))
                     Me._FECHA_VENCIMIENTO = CDate(dReader("FECHA_VENCIMIENTO"))
                     Me._SUBTOTAL = CDbl(dReader("SUBTOTAL"))
+                    Me._IEPS_TOTAL_DESGLOSADO = CDbl(dReader("IEPS_TOTAL_DESGLOSADO"))
                     Me._IMPUESTO = CDbl(dReader("IMPUESTO"))
                     Me._IMPUESTO_PORCENTAJE = CDbl(dReader("IMPUESTO_PORCENTAJE"))
                     Me._TOTAL = CDbl(dReader("TOTAL"))
@@ -956,7 +970,8 @@ Public Class Class_Compras_Global
                 "(SELECT ID_ADICIONAL,MAX(CUENTA_CONTABLE) FROM CENTRO_COSTOS_MOVIMIENTOS_DETALLE WHERE FOLIO_MOVIMIENTO='" & Me._FOLIO_COMPRA & "' GROUP BY FOLIO_MOVIMIENTO,ID_ADICIONAL) " & _
                 "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.CANTIDAD,R.PRECIO,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_COMPRA_DETALLE, " & _
                 "CASE WHEN DC.CUENTA_CONTABLE IS NOT NULL THEN 'Tiene detalle -->>' ELSE C.NOMBRE_CUENTA END NOMBRE_CUENTA, " & _
-                "'' Boton,R.ID_ADICIONAL " & _
+                "'' Boton,R.ID_ADICIONAL, " & _
+                "R.IEPS_PORCENTAJE,R.IEPS_PORCENTAJE,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA " & _
                 "FROM COMPRA_DETALLE R " & _
                 "LEFT JOIN CON_CAT_CUENTAS C ON(R.CUENTA_CONTABLE=C.CUENTA_CONTABLE) " & _
                 "LEFT JOIN DC ON(R.ID_ADICIONAL=DC.ID_ADICIONAL) " & _
@@ -975,12 +990,13 @@ Public Class Class_Compras_Global
     Public Function ObtenerDetalleOrdenCompra() As DataTable
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
-        sSQL = "SELECT CODIGO_ARTICULO,DESCRIPCION,DISPONIBLE,PRECIO,UNIDAD_VENTA,IMPUESTO_PORCENTAJE,IMPORTE,CUENTA_CONTABLE,IMPUESTO_IMPORTE,ID_COMPRA_DETALLE, " & _
-            "'' NOMBRE_CUENTA,'' Boton,ROW_NUMBER() OVER(ORDER BY ID_COMPRA_DETALLE) ID_ADICIONAL " & _
-            "FROM COMPRA_DETALLE " & _
-            "WHERE FOLIO_COMPRA = '" & Me._FOLIO_COMPRA & "' " & _
-            "AND DISPONIBLE>0 " & _
-            "ORDER BY ID_COMPRA_DETALLE " 'NOTA NO SE DEBE ORDENAR POR DESCRIPCION PORQUE NOS VA MOVER EL IDADICIONAL PARA LO DEL CENTRO DE COSTOS
+        sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.DISPONIBLE,R.PRECIO,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_COMPRA_DETALLE, " & _
+            "'' NOMBRE_CUENTA,'' Boton,ROW_NUMBER() OVER(ORDER BY R.ID_COMPRA_DETALLE) ID_ADICIONAL, " & _
+            "R.IEPS_PORCENTAJE,R.IEPS_PORCENTAJE,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA " & _
+            "FROM COMPRA_DETALLE R " & _
+            "WHERE R.FOLIO_COMPRA = '" & Me._FOLIO_COMPRA & "' " & _
+            "AND R.DISPONIBLE>0 " & _
+            "ORDER BY R.ID_COMPRA_DETALLE " 'NOTA NO SE DEBE ORDENAR POR DESCRIPCION PORQUE NOS VA MOVER EL IDADICIONAL PARA LO DEL CENTRO DE COSTOS
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)

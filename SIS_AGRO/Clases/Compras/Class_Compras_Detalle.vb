@@ -22,6 +22,12 @@ Public Class Class_Compras_Detalle
     Private _CUENTA_CONTABLE As String
     Private _ID_ADICIONAL As Integer = 0
     Private _LISTA_SERIES As String
+
+    Private _IEPS_PORCENTAJE As Double
+    Private _IEPS_UNITARIO As Double
+    Private _IEPS_IMPORTE As Double
+    Private _BASE_IEPS As Double
+    Private _BASE_IVA As Double
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -179,6 +185,50 @@ Public Class Class_Compras_Detalle
         End Set
     End Property
 
+    Public Property IEPS_PORCENTAJE() As Double
+        Get
+            Return Me._IEPS_PORCENTAJE
+        End Get
+        Set(ByVal Value As Double)
+            Me._IEPS_PORCENTAJE = Value
+        End Set
+    End Property
+
+    Public Property IEPS_UNITARIO() As Double
+        Get
+            Return Me._IEPS_UNITARIO
+        End Get
+        Set(ByVal Value As Double)
+            Me._IEPS_UNITARIO = Value
+        End Set
+    End Property
+
+    Public Property IEPS_IMPORTE() As Double
+        Get
+            Return Me._IEPS_IMPORTE
+        End Get
+        Set(ByVal Value As Double)
+            Me._IEPS_IMPORTE = Value
+        End Set
+    End Property
+
+    Public Property BASE_IEPS() As Double
+        Get
+            Return Me._BASE_IEPS
+        End Get
+        Set(ByVal Value As Double)
+            Me._BASE_IEPS = Value
+        End Set
+    End Property
+
+    Public Property BASE_IVA() As Double
+        Get
+            Return Me._BASE_IVA
+        End Get
+        Set(ByVal Value As Double)
+            Me._BASE_IVA = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -246,13 +296,18 @@ Public Class Class_Compras_Detalle
             sqlParametro = .Parameters.Add("@IMPUESTO_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_PORCENTAJE
             sqlParametro = .Parameters.Add("@IMPUESTO_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_IMPORTE
             sqlParametro = .Parameters.Add("@IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPORTE
+            sqlParametro = .Parameters.Add("@IEPS_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_PORCENTAJE
+            sqlParametro = .Parameters.Add("@IEPS_UNITARIO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_UNITARIO
+            sqlParametro = .Parameters.Add("@IEPS_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_IMPORTE
+            sqlParametro = .Parameters.Add("@BASE_IEPS", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IEPS
+            sqlParametro = .Parameters.Add("@BASE_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IVA
 
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
                 GrabaRenglonOrdenCompra = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "GrabaRenglon", ex)
+                HandleError(Me._Nombre_Catalogo, "GrabaRenglonOrdenCompra", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -286,6 +341,11 @@ Public Class Class_Compras_Detalle
             sqlParametro = .Parameters.Add("@ID_ADICIONAL", SqlDbType.Int) : sqlParametro.Value = Me._ID_ADICIONAL
             sqlParametro = .Parameters.Add("@ID_COMPRA_DETALLE", SqlDbType.Int) : sqlParametro.Value = Me._ID_COMPRA_DETALLE : sqlParametro.Direction = ParameterDirection.Output
             sqlParametro = .Parameters.Add("@LISTA_SERIES", SqlDbType.NVarChar, -1) : sqlParametro.Value = Me._LISTA_SERIES
+            sqlParametro = .Parameters.Add("@IEPS_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_PORCENTAJE
+            sqlParametro = .Parameters.Add("@IEPS_UNITARIO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_UNITARIO
+            sqlParametro = .Parameters.Add("@IEPS_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_IMPORTE
+            sqlParametro = .Parameters.Add("@BASE_IEPS", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IEPS
+            sqlParametro = .Parameters.Add("@BASE_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IVA
 
             Try
                 Me._Conexion.Open()
@@ -295,7 +355,7 @@ Public Class Class_Compras_Detalle
 
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "GrabaRenglon", ex)
+                HandleError(Me._Nombre_Catalogo, "GrabaRenglonCompra", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()

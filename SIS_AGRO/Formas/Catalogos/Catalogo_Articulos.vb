@@ -261,6 +261,23 @@ Public Class Catalogo_Articulos
         End Try
     End Sub
 
+    Private Sub DesplegarGradosToxicidad()
+        Try
+            Dim oElementos As New Class_CatGradosToxicidad
+            With Me.cboGradoToxicidad
+                .DisplayMember = "DESCRIPCION"
+                .ValueMember = "GRADO_TOXICIDAD"
+                Dim dView As New Data.DataView(oElementos.ObtenerElementos)
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedIndex = 0
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarGradosToxicidad", ex)
+        End Try
+    End Sub
+
     Private Sub LlenaElemento(ByVal iCodigo_Elemento As String)
         Try
             Dim oElemento As New Class_CatArticulos
@@ -282,6 +299,7 @@ Public Class Catalogo_Articulos
                     Me.TxtPrecio.Text = .PRECIO.ToString
                     Me.CboFamilia.SelectedValue = .CODIGO_FAMILIA
                     Me.chkEsSerializable.Checked = .ES_SERIALIZABLE
+                    Me.cboGradoToxicidad.SelectedValue = .GRADO_TOXICIDAD
                 End With
             End If
             oElemento = Nothing
@@ -318,6 +336,7 @@ Public Class Catalogo_Articulos
                         .Codigo_Familia = Me.CboFamilia.SelectedValue.ToString
                         .PRECIO = Convert.ToDecimal(Me.TxtPrecio.Text)
                         .ES_SERIALIZABLE = Me.chkEsSerializable.Checked
+                        .GRADO_TOXICIDAD = Me.cboGradoToxicidad.SelectedValue.ToString
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -410,6 +429,7 @@ Public Class Catalogo_Articulos
 #End Region
 
 #Region "Eventos de objetos"
+
 #Region "Eventos de la lista de elementos"
     Private Sub Grid_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles Grid.CellClick
         Me.LlenaElemento(Me.Grid.CurrentRow.Cells("CODIGO_ARTICULO").Value.ToString)
@@ -441,7 +461,7 @@ Public Class Catalogo_Articulos
     'End Sub
 #End Region
 
-#Region " Eventos de TxtFiltro y CboEstatusFiltro"
+#Region "Eventos de TxtFiltro y CboEstatusFiltro"
     Private Sub txtFiltro_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFiltro.TextChanged
         Dim oElementos As New Class_CatArticulos
         Me.Grid.DataSource = Nothing
@@ -457,10 +477,12 @@ Public Class Catalogo_Articulos
             .Columns("CODIGO_ARTICULO").Width = 80
         End With
     End Sub
+
     Private Sub txtFiltro_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFiltro.KeyPress
         txtNoBeep(e)
         txtNoComilla(e)
     End Sub
+
     Private Sub txtFiltro_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtFiltro.KeyDown
         Dim oElementosFiltro As New Class_CatArticulos
         If e.KeyCode = Keys.Down Or e.KeyCode = Keys.Return Or e.KeyCode = Keys.Back Then
@@ -477,6 +499,7 @@ Public Class Catalogo_Articulos
             End With
         End If
     End Sub
+
     Private Sub CboEstatusFiltro_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CboEstatusFiltro.SelectedIndexChanged
         Dim oElementos As New Class_CatArticulos
         Me.Grid.DataSource = Nothing
@@ -495,16 +518,11 @@ Public Class Catalogo_Articulos
 #End Region
 
 #Region "Eventos Genericos"
-
     Private Sub CboEstatus_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboEstatus.KeyDown
-        If e.KeyCode = Keys.Return Then
-            tsbGrabar.PerformClick()
-        End If
-        If e.KeyCode = Keys.Escape Then
-            TxtPrecio.Focus()
-        End If
+        txtTAB(e)
     End Sub
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtDescripcion.KeyPress, TxtUnidadVenta.KeyPress
+
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtDescripcion.KeyPress, TxtUnidadVenta.KeyPress, cboLinea.KeyPress, CboFamilia.KeyPress, cboGradoToxicidad.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -539,7 +557,6 @@ Public Class Catalogo_Articulos
     End Sub
 #End Region
 
-
 #Region "Keydown específicos"
 
 #End Region
@@ -558,6 +575,7 @@ Public Class Catalogo_Articulos
         Me.DesplegarLineas()
         Me.DesplegarFamilias()
         Me.DesplegarElementos()
+        Me.DesplegarGradosToxicidad()
     End Sub
 
     Private Sub DesplegarLineas()
@@ -630,14 +648,13 @@ Public Class Catalogo_Articulos
 
     Private Sub TxtPrecio_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtPrecio.KeyDown
         If e.KeyCode = Keys.Enter Then
-            Me.tsbGrabar.PerformClick()
+            txtTAB(e)
         End If
     End Sub
 
     Private Sub TxtPrecio_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtPrecio.KeyPress
-        If InStr(1, "0123456789." & Chr(8), e.KeyChar) = 0 Then
-            e.KeyChar = CChar("")
-        End If
+        txtSoloNumerosDecimales(e, Me.TxtPrecio.Text)
+        txtNoBeep(e)
     End Sub
 
     Private Sub CboFamilia_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboFamilia.KeyDown
@@ -652,4 +669,7 @@ Public Class Catalogo_Articulos
         Me.txtFiltro.Focus()
     End Sub
 
+    Private Sub cboGradoToxicidad_KeyDown(sender As Object, e As KeyEventArgs) Handles cboGradoToxicidad.KeyDown
+        Me.tsbGrabar.PerformClick()
+    End Sub
 End Class

@@ -32,8 +32,10 @@ Public Class Class_CatArticulos
     Private _CODIGO_BARRAS_PTI_13 As String = ""
     Private _CODIGO_BARRAS_PTI_14 As String = ""
     Private _ES_SERIALIZABLE As Boolean
+    Private _GRADO_TOXICIDAD As String
     'Private _CODIGO_UNIDAD_VENTA As String
     'Private _NOMBRE_UNIDAD As String
+
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -42,6 +44,7 @@ Public Class Class_CatArticulos
     Private _DESCRIPCION_EXTRANJERA_PARTE_1 As String
     Private _DESCRIPCION_EXTRANJERA_PARTE_2 As String
     Private _TIPO_CONTROL_INVENTARIO As String
+    Private _IEPS_PORCENTAJE As Decimal
 #End Region
 
 #Region "Campos públicos"
@@ -265,6 +268,16 @@ Public Class Class_CatArticulos
         End Set
     End Property
 
+    Public Property GRADO_TOXICIDAD() As String
+        Get
+            Return Me._GRADO_TOXICIDAD
+        End Get
+        Set(value As String)
+            Me._GRADO_TOXICIDAD = value
+        End Set
+    End Property
+
+
     'Public Property CODIGO_UNIDAD_VENTA() As String
     '    Get
     '        Return Me._CODIGO_UNIDAD_VENTA
@@ -286,7 +299,6 @@ Public Class Class_CatArticulos
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
-
     Public ReadOnly Property DESCRIPCION_EXTRANJERA_PARTE_1() As String
         Get
             Return Me._DESCRIPCION_EXTRANJERA_PARTE_1
@@ -302,6 +314,12 @@ Public Class Class_CatArticulos
     Public ReadOnly Property TIPO_CONTROL_INVENTARIO() As String
         Get
             Return Me._TIPO_CONTROL_INVENTARIO
+        End Get
+    End Property
+
+    Public ReadOnly Property IEPS_PORCENTAJE() As Decimal
+        Get
+            Return Me._IEPS_PORCENTAJE
         End Get
     End Property
 #End Region
@@ -400,6 +418,7 @@ Public Class Class_CatArticulos
             sqlParametro = .Parameters.Add("@RANGO_PIEZAS", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._RANGO_PIEZAS
             sqlParametro = .Parameters.Add("@ES_SERIALIZABLE", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._ES_SERIALIZABLE)
             sqlParametro = .Parameters.Add("@CODIGO_UNIDAD_VENTA", SqlDbType.NVarChar, 20) : sqlParametro.Value = "NA" ' Me._CODIGO_UNIDAD_VENTA.ToUpper
+            sqlParametro = .Parameters.Add("@GRADO_TOXICIDAD", SqlDbType.SmallInt) : sqlParametro.Value = Me._GRADO_TOXICIDAD
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = "1"
 
             Try
@@ -452,6 +471,7 @@ Public Class Class_CatArticulos
             sqlParametro = .Parameters.Add("@ES_SERIALIZABLE", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._ES_SERIALIZABLE)
             'sqlParametro = .Parameters.Add("@CODIGO_UNIDAD_VENTA", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CODIGO_UNIDAD_VENTA.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_UNIDAD_VENTA", SqlDbType.NVarChar, 20) : sqlParametro.Value = "NA" ' Me._CODIGO_UNIDAD_VENTA.ToUpper
+            sqlParametro = .Parameters.Add("@GRADO_TOXICIDAD", SqlDbType.SmallInt) : sqlParametro.Value = Me._GRADO_TOXICIDAD
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = "0"
 
             Try
@@ -575,6 +595,9 @@ Public Class Class_CatArticulos
                     Me._ES_SERIALIZABLE = CBool(dReader("ES_SERIALIZABLE").ToString)
 
                     Me._TIPO_CONTROL_INVENTARIO = IIf(Me._ES_SERIALIZABLE = True, "SER", IIf(Me._INVENTARIABLE = "1", "INV", "NIV")).ToString
+
+                    Me._GRADO_TOXICIDAD = "" & dReader("GRADO_TOXICIDAD").ToString
+                    Me._IEPS_PORCENTAJE = CDec("" & dReader("IEPS_PORCENTAJE").ToString)
 
                     '------------------------------------------------------------------------Estos campos se crearon en la base de datos pero aun no se utilizaran
                     'Me._CODIGO_UNIDAD_VENTA = "" & dReader("CODIGO_UNIDAD_VENTA").ToString()

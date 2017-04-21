@@ -14,32 +14,11 @@ Imports CrystalDecisions.CrystalReports.Engine
 Imports System.IO
 
 Public Class Compras_Movimientos
+
+#Region "Campos privados"
     Private oCompras As New Class_Compras_Global
     Private oProveedores As New Class_CatProveedores
     Private oDocumento As New Class_CatDocumentos
-
-#Region "Columnas grid compras"
-    Private igyCodigo As Short = 1
-    Private igyDescripcion As Short = 2
-    Private igyCantidad As Short = 3
-    Private igyPrecio As Short = 4
-    Private igyUnidad As Short = 5
-    Private igyImpuestoPorcentaje As Short = 6
-    Private igyImporte As Short = 7
-    Private igyCuentaContable As Short = 8
-    Private igyImpuestoImporte As Short = 9
-    Private igyIdArticulo As Short = 10
-    Private iGyNombreCuentaContable As Integer = 11
-    Private iGyBoton As Integer = 12
-    Private iGyIDAdicional As Integer = 13
-#End Region
-
-#Region "Columnas grid series"
-    Private igySeriePosicion As Short = 1
-    Private igySerieCodigo As Short = 2
-    Private igySerieDescripcion As Short = 3
-    Private igySerieNumeroSerie As Short = 4
-#End Region
 
     Private bDocumentosCargados As Boolean
     Private bEsReferencia As Boolean
@@ -61,6 +40,36 @@ Public Class Compras_Movimientos
     Private oFormaDetalleCuentas As InventariosDetalleCuentasContables
 
     Private dtSeries As DataTable
+#End Region
+
+#Region "Columnas grid compras"
+    Private igyCodigo As Short = 1
+    Private igyDescripcion As Short = 2
+    Private igyCantidad As Short = 3
+    Private igyPrecio As Short = 4
+    Private igyUnidad As Short = 5
+    Private igyImpuestoPorcentaje As Short = 6
+    Private igyImporte As Short = 7
+    Private igyCuentaContable As Short = 8
+    Private igyImpuestoImporte As Short = 9
+    Private igyIdArticulo As Short = 10
+    Private iGyNombreCuentaContable As Integer = 11
+    Private iGyBoton As Integer = 12
+    Private iGyIDAdicional As Integer = 13
+
+    Private igyIEPS_PORCENTAJE As Short = 14
+    Private igyIEPS_UNITARIO As Short = 15
+    Private igyIEPS_IMPORTE As Short = 16
+    Private igyBASE_IEPS As Short = 17
+    Private igyBASE_IVA As Short = 18
+#End Region
+
+#Region "Columnas grid series"
+    Private igySeriePosicion As Short = 1
+    Private igySerieCodigo As Short = 2
+    Private igySerieDescripcion As Short = 3
+    Private igySerieNumeroSerie As Short = 4
+#End Region
 
 #Region "Propiedades"
     Public WriteOnly Property ConsultaExterior() As Boolean
@@ -463,6 +472,7 @@ Buscar:
             Me.LblPoliza.Text = ""
 
             Me.TxtSubTotal.Text = FormatImporteContable(0)
+            Me.txtIEPS.Text = FormatImporteContable(0)
             Me.txtIVA.Text = FormatImporteContable(0)
             Me.TxtRetencion.Text = FormatImporteContable(0)
             Me.txtTotal.Text = FormatImporteContable(0)
@@ -561,7 +571,7 @@ Buscar:
                 .FixedRowColStyle = FlexCell.FixedRowColStyleEnum.Flat
 
                 .Rows = 2
-                .Cols = 14
+                .Cols = 19
 
                 .Column(Me.igyCodigo).Width = 75
                 .Column(Me.igyDescripcion).Width = 250
@@ -941,6 +951,7 @@ Buscar:
                 .PLAZO = CInt(Me.txtPlazo.Text)
                 .FECHA_VENCIMIENTO = Me.dtpFechaVencimiento.Value
                 .SUBTOTAL = valorNumerico(Me.TxtSubTotal.Text)
+                .IEPS_TOTAL_DESGLOSADO = valorNumerico(Me.txtIEPS.Text)
                 .IMPUESTO = valorNumerico(Me.txtIVA.Text)
                 .TOTAL = valorNumerico(Me.txtTotal.Text)
                 .RETENCION = valorNumerico(Me.TxtRetencion.Text)
@@ -979,6 +990,13 @@ Buscar:
                         .oComprasDetalle.IMPUESTO_PORCENTAJE = valorNumerico(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text)
                         .oComprasDetalle.IMPUESTO_IMPORTE = Val(Me.Grid.Cell(i, Me.igyImpuestoImporte).Text)
                         .oComprasDetalle.IMPORTE = Val(Me.Grid.Cell(i, Me.igyImporte).Text)
+
+                        .oComprasDetalle.IEPS_PORCENTAJE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
+                        .oComprasDetalle.IEPS_UNITARIO = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text)
+                        .oComprasDetalle.IEPS_IMPORTE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_IMPORTE).Text)
+                        .oComprasDetalle.BASE_IEPS = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IEPS).Text)
+                        .oComprasDetalle.BASE_IVA = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IVA).Text)
+
                         If .oComprasDetalle.GrabaRenglonOrdenCompra() = False Then
                             MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Text)
                             Exit Function
@@ -1072,6 +1090,12 @@ Buscar:
                         End If
 
                         .oComprasDetalle.LISTA_SERIES = sListaSeries
+
+                        .oComprasDetalle.IEPS_PORCENTAJE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
+                        .oComprasDetalle.IEPS_UNITARIO = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text)
+                        .oComprasDetalle.IEPS_IMPORTE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_IMPORTE).Text)
+                        .oComprasDetalle.BASE_IEPS = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IEPS).Text)
+                        .oComprasDetalle.BASE_IVA = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IVA).Text)
 
                         If .oComprasDetalle.GrabaRenglonCompra() = False Then
                             MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Text)
@@ -1226,6 +1250,7 @@ Buscar:
 
                 If bEsReferencia = False Then 'Estos datos no tienen que llenarse si se esta aplicando una oc(jalando a una co)
                     Me.TxtSubTotal.Text = FormatImporteContable(Me.oCompras.SUBTOTAL)
+                    Me.txtIEPS.Text = FormatImporteContable(Me.oCompras.IEPS_TOTAL_DESGLOSADO)
                     Me.txtIVA.Text = FormatImporteContable(Me.oCompras.IMPUESTO)
                     Me.TxtRetencion.Text = FormatImporteContable(Me.oCompras.RETENCION)
                     Me.txtTotal.Text = FormatImporteContable(Me.oCompras.TOTAL)
@@ -1721,25 +1746,56 @@ Buscar:
 
     Private Sub Totales(Optional ByVal bIva As Boolean = False)
         Try
-            Dim I As Integer
+            Dim i As Integer
             Dim dCantidad As Double, dPrecio As Double, dPorcentajeIVA As Double, dImporte As Double
-            For I = 1 To Me.Grid.Rows - 1
-                If txtLEN(Me.Grid.Cell(I, Me.igyCantidad).Text) = True Then
-                    dCantidad = valorNumerico(Me.Grid.Cell(I, Me.igyCantidad).Text)
-                    dPrecio = valorNumerico(Me.Grid.Cell(I, Me.igyPrecio).Text)
-                    dPorcentajeIVA = valorNumerico(Me.Grid.Cell(I, Me.igyImpuestoPorcentaje).Text)
-                    If dCantidad > 0 Then
-                        dImporte = Redondear((dPrecio * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                        Me.Grid.Cell(I, Me.igyImporte).Text = dImporte.ToString
-                        Me.Grid.Cell(I, Me.igyImpuestoImporte).Text = Redondear(dImporte * ((dPorcentajeIVA / 100)), Empresa_Sistema.DECIMALES_CONTABILIDAD).ToString
-                    Else
-                        Me.Grid.Cell(I, Me.igyImporte).Text = "0"
-                        Me.Grid.Cell(I, Me.igyImpuestoImporte).Text = "0"
-                    End If
+            Dim dIEPS_PORCENTAJE As Double = 0, dIEPS_UNITARIO As Double = 0, dIEPS_IMPORTE As Double = 0, dBASE_IEPS As Double = 0, dBASE_IVA As Double = 0, dPRECIO_TOTAL As Double = 0, dIVA_IMPORTE As Double = 0
+
+            Me.TxtSubTotal.Text = FormatImporteContable(0)
+            Me.txtIEPS.Text = FormatImporteContable(0)
+            Me.txtIVA.Text = FormatImporteContable(0)
+            Me.txtTotal.Text = FormatImporteContable(0)
+
+            Me.TxtSubTotalUSD.Text = FormatImporteContable(0)
+            Me.txtIVAUSD.Text = FormatImporteContable(0)
+            Me.txtTotalUSD.Text = FormatImporteContable(0)
+
+            For i = 1 To Me.Grid.Rows - 1
+                If txtLEN(Me.Grid.Cell(i, Me.igyCantidad).Text) = True Then
+                    dCantidad = valorNumerico(Me.Grid.Cell(i, Me.igyCantidad).Text)
+                    dPrecio = valorNumerico(Me.Grid.Cell(i, Me.igyPrecio).Text)
+                    dPorcentajeIVA = valorNumerico(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text)
+
+                    dIEPS_PORCENTAJE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
+                    dIEPS_UNITARIO = Redondear(dPrecio * (dIEPS_PORCENTAJE / 100), 4)
+                    dBASE_IEPS = Redondear((dPrecio * dCantidad), 2)
+                    dIEPS_IMPORTE = Redondear(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2)
+                    dBASE_IVA = dIEPS_IMPORTE + dBASE_IEPS
+                    dIVA_IMPORTE = Redondear(dBASE_IVA * ((dPorcentajeIVA / 100)), 2)
+
+                    dImporte = Redondear((dPrecio * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD) 'no hacemos nada con este valor de momento
+
+                    Me.Grid.Cell(i, Me.igyImporte).Text = dImporte.ToString
+                    Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text = dIEPS_UNITARIO.ToString
+                    Me.Grid.Cell(i, Me.igyBASE_IEPS).Text = dBASE_IEPS.ToString
+                    Me.Grid.Cell(i, Me.igyIEPS_IMPORTE).Text = dIEPS_IMPORTE.ToString
+                    Me.Grid.Cell(i, Me.igyBASE_IVA).Text = dBASE_IVA.ToString
+                    Me.Grid.Cell(i, Me.igyImpuestoImporte).Text = dIVA_IMPORTE.ToString
+
+                    'If dCantidad > 0 Then
+                    '    dImporte = Redondear((dPrecio * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                    '    Me.Grid.Cell(i, Me.igyImporte).Text = dImporte.ToString
+                    '    Me.Grid.Cell(i, Me.igyImpuestoImporte).Text = Redondear(dImporte * ((dPorcentajeIVA / 100)), Empresa_Sistema.DECIMALES_CONTABILIDAD).ToString
+                    'Else
+                    '    Me.Grid.Cell(i, Me.igyImporte).Text = "0"
+                    '    Me.Grid.Cell(i, Me.igyImpuestoImporte).Text = "0"
+                    'End If
                 End If
-            Next I
+            Next i
 
             Me.TxtSubTotal.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImporte), Empresa_Sistema.DECIMALES_CONTABILIDAD))
+
+            Me.txtIEPS.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyIEPS_IMPORTE), Empresa_Sistema.DECIMALES_CONTABILIDAD))
+
             Me.lblIVAcalculado.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImpuestoImporte), Empresa_Sistema.DECIMALES_CONTABILIDAD))
 
             If bIva = False Then
@@ -1756,7 +1812,7 @@ Buscar:
                 'End If
             End If
 
-            Me.txtTotal.Text = FormatImporteContable((valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.txtIVA.Text)) - valorNumerico(Me.TxtRetencion.Text))
+            Me.txtTotal.Text = FormatImporteContable((valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.txtIEPS.Text) + valorNumerico(Me.txtIVA.Text)) - valorNumerico(Me.TxtRetencion.Text))
 
             Me.TotalesUSD()
 
@@ -1858,9 +1914,10 @@ LlenaLinea:
                                         Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Text = "0"
                                     End If
 
-
                                     Me.Grid.Column(Me.igyDescripcion).Locked = True
                                     Me.Grid.Column(Me.igyUnidad).Locked = True
+
+                                    Me.Grid.Cell(Renglon, Me.igyIEPS_PORCENTAJE).Text = oArticulos.IEPS_PORCENTAJE.ToString
                                 End If
                             End If
 
@@ -1921,7 +1978,7 @@ LlenaLinea:
                     Select Case Columna
                         Case Me.igyImpuestoPorcentaje
                             If Me.Grid.Rows = Renglon + 1 Then Me.Grid.Rows = Me.Grid.Rows + 1
-                            Me.Grid.Cell(Renglon + 1, Me.iGyIDAdicional).Text = (CInt(Me.Grid.Cell(Renglon, Me.iGyIDAdicional).Text) + 1).ToString
+                            Me.Grid.Cell(Renglon + 1, Me.iGyIDAdicional).Text = (valorNumerico(Me.Grid.Cell(Renglon, Me.iGyIDAdicional).Text) + 1).ToString
                     End Select
 
                     Me.Totales(True)
