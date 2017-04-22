@@ -35,9 +35,6 @@
     <Setting Name="BaseDatos3" Type="System.String" Scope="User">
       <Value Profile="(Default)">AGRINET_LAND_TEST</Value>
     </Setting>
-    <Setting Name="Servidor1" Type="System.String" Scope="User">
-      <Value Profile="(Default)">areacredito\SQL12</Value>
-    </Setting>
     <Setting Name="Servidor2" Type="System.String" Scope="User">
       <Value Profile="(Default)">PCSISTEMASJORGE\SQL14</Value>
     </Setting>
@@ -70,6 +67,9 @@
     </Setting>
     <Setting Name="BaseDatos4" Type="System.String" Scope="User">
       <Value Profile="(Default)">COMER1</Value>
+    </Setting>
+    <Setting Name="Servidor1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">PCSISTEMASJORGE\SQL14</Value>
     </Setting>
   </Settings>
 </SettingsFile>
