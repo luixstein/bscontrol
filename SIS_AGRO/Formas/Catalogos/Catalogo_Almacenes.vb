@@ -167,6 +167,7 @@ Public Class Catalogo_Almacenes
 
                 Me.TxtCodigoAlmacen.Enabled = False
                 Me.TxtNombreAlmacen.Enabled = True
+                Me.txtCodigoZona.Enabled = True
                 Me.CboEstatus.Enabled = False
                 Me.InicializaElemento()
                 Me.TxtCodigoAlmacen.Focus()
@@ -183,6 +184,7 @@ Public Class Catalogo_Almacenes
                 Me.TxtCodigoAlmacen.Enabled = False
                 Me.TxtNombreAlmacen.Enabled = True
                 Me.CboEstatus.Enabled = True
+                Me.txtCodigoZona.Enabled = True
                 Me.TxtNombreAlmacen.Focus()
 
             Case enumEstados.CONSULTA
@@ -205,6 +207,8 @@ Public Class Catalogo_Almacenes
         Me.TxtNombreAlmacen.Text = ""
         Me.txtCuentaContable.Text = ""
         Me.LblCuenta.Text = ""
+        Me.txtCodigoZona.Text = ""
+        Me.lblNombreZona.Text = ""
         Me.CboEstatus.SelectedIndex = 0
     End Sub
 
@@ -228,8 +232,17 @@ Public Class Catalogo_Almacenes
                 Else
                     LblCuenta.Text = sql.Result1
                 End If
-
                 sql = Nothing
+
+                Me.txtCodigoZona.Text = .Codigo_Zona
+                sql = New Class_find("Select NOMBRE_ZONA From CAT_ZONAS Where CODIGO_ZONA='" & txtCodigoZona.Text & "' ")
+                If sql.Result1 = "" Then
+                Else
+                    lblNombreZona.Text = sql.Result1
+                End If
+                sql = Nothing
+
+
 
                 If .Estatus = "A" Then
                     Me.CboEstatus.SelectedIndex = 0
@@ -242,9 +255,7 @@ Public Class Catalogo_Almacenes
     End Sub
 
     Private Sub Grabar_Elemento()
-        If txtLEN(Me.TxtNombreAlmacen.Text) = False Then
-            MsgBox("Asígne nombre al almacen", MsgBoxStyle.Exclamation, Me.Text)
-            Me.TxtNombreAlmacen.Focus()
+        If Validar() = False Then
             Exit Sub
         End If
 
@@ -273,6 +284,7 @@ Public Class Catalogo_Almacenes
                                 .Nombre_Almacen = Me.TxtNombreAlmacen.Text
                                 '.Cuenta_Contable = Me.txtCuentaContable.Text
                                 .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
+                                .Codigo_Zona = Me.txtCodigoZona.Text
                                 If .Insertar() Then
                                     Grabado = True
                                     Me.Estado = enumEstados.CONSULTA
@@ -314,6 +326,33 @@ Public Class Catalogo_Almacenes
                 End Try
         End Select
     End Sub
+
+    Private Function Validar() As Boolean
+        Dim bResultado As Boolean = False
+
+        If txtLEN(Me.TxtNombreAlmacen.Text) = False Then
+            MsgBox("Asígne nombre al almacen", MsgBoxStyle.Exclamation, Me.Text)
+            Me.TxtNombreAlmacen.Focus()
+            Return bResultado
+        End If
+
+        If txtLEN(Me.txtCodigoZona.Text) = False Then
+            MsgBox("Asígne un codigo de zona.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.txtCodigoZona.Focus()
+            Return bResultado
+        Else
+            Dim sql1 As New Class_find("SELECT CODIGO_ZONA FROM CAT_ZONAS WHERE CODIGO_ZONA='" & Me.txtCodigoZona.Text & "' ")
+
+            If txtLEN(sql1.Result1) = False Then
+                MsgBox("El codígo de Zona no existe.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtCodigoZona.Focus()
+                Return bResultado
+            End If
+        End If
+
+        bResultado = True
+        Return bResultado
+    End Function
 
 #End Region
 
@@ -426,7 +465,24 @@ Public Class Catalogo_Almacenes
 
 
 #Region "Keydown específicos"
-
+    Private Sub TxtCodigoZona_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCodigoZona.KeyDown
+        Dim oZonas As New Class_CatZonas
+        Select Case e.KeyCode
+            Case Keys.F6
+busca:
+                Me.txtCodigoZona.Text = oZonas.BusquedaVisual_PorDescripcion
+                oZonas.Codigo_Zona = CInt(Me.txtCodigoZona.Text)
+                oZonas.Consultar()
+                Me.lblNombreZona.Text = oZonas.Nombre_Zona
+            Case Keys.Enter
+                oZonas.Codigo_Zona = CInt(Me.txtCodigoZona.Text)
+                If oZonas.Consultar() = False Then
+                    GoTo busca
+                End If
+                Me.lblNombreZona.Text = oZonas.Nombre_Zona
+        End Select
+        txtTAB(e)
+    End Sub
 #End Region
 
 #Region "Validating específicos"

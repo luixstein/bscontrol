@@ -10,6 +10,7 @@ Public Class Class_CatAlmacenes
     Private _Codigo_Almacen As String
     Private _Nombre_Almacen As String
     Private _Cuenta_Contable As String
+    Private _Codigo_zona As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -60,6 +61,15 @@ Public Class Class_CatAlmacenes
         Get
             Return Me._Cuenta_Contable
         End Get
+    End Property
+
+    Public Property CODIGO_ZONA() As String
+        Get
+            Return Me._Codigo_zona
+        End Get
+        Set(ByVal Value As String)
+            Me._Codigo_zona = Value
+        End Set
     End Property
 #End Region
 
@@ -143,9 +153,9 @@ Public Class Class_CatAlmacenes
 
             sqlParametro = .Parameters.Add("@Codigo_Almacen", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._Codigo_Almacen.ToUpper
             sqlParametro = .Parameters.Add("@Nombre_Almacen", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._Nombre_Almacen.ToString.ToUpper
-            'sqlParametro = .Parameters.Add("@CUENTA_CONTABLE", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._Cuenta_Contable
             sqlParametro = .Parameters.Add("@Estatus", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.Char, 1) : sqlParametro.Value = Usuario.Codigo_Plaza
+            sqlParametro = .Parameters.Add("@CODIGO_ZONA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._Codigo_zona
             sqlParametro = .Parameters.Add("@Agregar", SqlDbType.Char, 1) : sqlParametro.Value = "1"
 
             Try
@@ -178,6 +188,7 @@ Public Class Class_CatAlmacenes
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToString.ToUpper
             'sqlParametro = .Parameters.Add("@CUENTA_CONTABLE", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._Cuenta_Contable
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.Char, 1) : sqlParametro.Value = Usuario.Codigo_Plaza
+            sqlParametro = .Parameters.Add("@CODIGO_ZONA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._Codigo_zona
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "0"
 
             Try
@@ -211,6 +222,7 @@ Public Class Class_CatAlmacenes
                     Me._Nombre_Almacen = Trim("" & dReader("NOMBRE_ALMACEN").ToString)
                     Me._Cuenta_Contable = Trim("" & dReader("CUENTA_CONTABLE").ToString)
                     Me.Estatus = "" & dReader("ESTATUS").ToString
+                    Me._Codigo_zona = "" & dReader("CODIGO_ZONA").ToString
                     bResultado = True
                 End If
                 dReader.Close()

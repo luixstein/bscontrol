@@ -288,6 +288,14 @@ Public Class Class_CatVendedores
         End Try
         Return Resultado
     End Function
+
+    Public Function codigoSiguiente() As Integer
+        Dim iCodigo As Integer
+        Dim sql As New Class_find("SELECT ISNULL(MAX(CODIGO_VENDEDOR),'') FROM CAT_VENDEDORES")
+
+        iCodigo = CInt(sql.Result1) + 1
+        Return iCodigo
+    End Function
 #End Region
 
 End Class
