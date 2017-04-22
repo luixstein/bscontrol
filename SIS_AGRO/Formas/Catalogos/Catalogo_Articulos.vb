@@ -231,9 +231,17 @@ Public Class Catalogo_Articulos
         Me.rbtDescripcion.Checked = True
         If Me.CboFamilia.Items.Count > 0 Then
             Me.CboFamilia.SelectedIndex = 0
+        Else
+            MsgBox("No existen elementos en el catalogo de Familias.", MsgBoxStyle.Exclamation)
+            Me.Estado = enumEstados.CONSULTA
+            Me.Cambia_Estado()
         End If
         If Me.cboLinea.Items.Count > 0 Then
             Me.cboLinea.SelectedIndex = 0
+        Else
+            MsgBox("No existen elementos en el catalogo de Lineas.", MsgBoxStyle.Exclamation)
+            Me.Estado = enumEstados.CONSULTA
+            Me.Cambia_Estado()
         End If
     End Sub
 
