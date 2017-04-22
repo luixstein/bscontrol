@@ -123,13 +123,13 @@ Public Class Catalogo_Tipos_Categorias
         Dim sMsg As String = ""
         Select Case Me.Estado
             Case enumEstados.EDICION
-                sMsg = " grabar las modificaciones del " & Me.msgElemento & " : " & Me.TxtCodigo.Text
+                sMsg = " grabar las modificaciones del " & Me.msgElemento & " : " & Me.TxtNombre.Text
             Case enumEstados.NUEVO
-                sMsg = " agregar el " & Me.msgElemento & " : " & Me.TxtCodigo.Text
+                sMsg = " agregar el " & Me.msgElemento & " : " & Me.TxtNombre.Text
         End Select
         sMsg = "Deseas " & sMsg & " ?"
         If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
-            Call Grabar_Elemento()
+            Me.Grabar_Elemento()
         End If
     End Sub
 
@@ -230,6 +230,19 @@ Public Class Catalogo_Tipos_Categorias
 
     Private Sub Grabar_Elemento()
         Dim Grabado As Boolean = False
+
+        If txtLEN(Me.TxtCodigo.Text) = False Then
+            MsgBox("Captúre el código del tipo de la categoría.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.TxtCodigo.Focus()
+            Return
+        End If
+
+        If txtLEN(Me.TxtNombre.Text) = False Then
+            MsgBox("Captúre el nombre del tipo de la categoría.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.TxtNombre.Focus()
+            Return
+        End If
+
         Select Case Me.Estado
             Case enumEstados.NUEVO, enumEstados.EDICION
                 Try
@@ -249,9 +262,9 @@ Public Class Catalogo_Tipos_Categorias
                                 End If
                         End Select
 
-                        Me.Estado = enumEstados.CONSULTA
-                        If Grabado Then
-                            MsgBox(Me.msgElemento & " Grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
+                        If Grabado = True Then
+                            MsgBox(Me.msgElemento & " grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
+                            Me.Estado = enumEstados.CONSULTA
                             Me.Refrescar()
                             Me.Cambia_Estado()
                         End If
@@ -292,10 +305,12 @@ Public Class Catalogo_Tipos_Categorias
             .Columns("NOMBRE_TIPO_CATEGORIA").Width = 200
         End With
     End Sub
+
     Private Sub txtFiltro_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFiltro.KeyPress
         txtNoBeep(e)
         txtNoComilla(e)
     End Sub
+
     Private Sub txtFiltro_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtFiltro.KeyDown
         If e.KeyCode = Keys.Down Or e.KeyCode = Keys.Return Or e.KeyCode = Keys.Back Then
             Me.Grid.DataSource = Nothing
@@ -377,5 +392,4 @@ Public Class Catalogo_Tipos_Categorias
 
 #End Region
 
-    
 End Class
