@@ -3,6 +3,7 @@ Imports System.Data
 Imports System.Data.SqlClient
 Imports CrystalDecisions.CrystalReports.Engine
 Public Class Catalogo_Vendedores
+    Dim oVentas As new Class_CatVendedores
 
 #Region "Campos"
 
@@ -123,7 +124,6 @@ Public Class Catalogo_Vendedores
             Estado = enumEstados.CONSULTA
             Me.Cambia_Estado()
             Me.DesplegarElementos()
-            Me.DesplegarCategorias()
             Me.Run = True
         Catch ex As Exception
             HandleError(Me.Name, "New", ex)
@@ -141,6 +141,7 @@ Public Class Catalogo_Vendedores
 
 #Region "Opciones"
     Private Sub tsbNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbNuevo.Click
+
         Me.Estado = enumEstados.NUEVO
         Me.Cambia_Estado()
     End Sub
@@ -164,7 +165,7 @@ Public Class Catalogo_Vendedores
                 Call Grabar_Elemento()
             End If
         End If
-        
+
     End Sub
 
     Private Sub tsbCancelar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbCancelar.Click
@@ -189,7 +190,6 @@ Public Class Catalogo_Vendedores
     Private Sub Refrescar()
 
         Me.DesplegarElementos()
-        Me.DesplegarCategorias()
 
     End Sub
 
@@ -207,8 +207,10 @@ Public Class Catalogo_Vendedores
                 Me.TxtIDVendedor.Enabled = False
                 Me.TxtNombreVendedor.Enabled = True
                 Me.CboEstatus.Enabled = False
+                Me.txtCodigoCategoria.Enabled = True
 
                 Me.InicializaElemento()
+                Me.TxtIDVendedor.Text = oVentas.codigoSiguiente.ToString
                 TxtNombreVendedor.Focus()
             Case enumEstados.EDICION
                 Me.gBoxInformacion.Enabled = True
@@ -223,6 +225,7 @@ Public Class Catalogo_Vendedores
                 Me.TxtIDVendedor.Enabled = False
                 Me.TxtNombreVendedor.Enabled = True
                 Me.CboEstatus.Enabled = True
+                Me.txtCodigoCategoria.Enabled = True
                 TxtNombreVendedor.Focus()
 
             Case enumEstados.CONSULTA
@@ -242,7 +245,8 @@ Public Class Catalogo_Vendedores
         Me.TxtIDVendedor.Text = ""
         Me.TxtNombreVendedor.Text = ""
         Me.CboEstatus.SelectedIndex = 0
-        Me.cboCategorias.SelectedValue = -1
+        Me.txtCodigoCategoria.Text = ""
+        Me.LblNombreCategoria.Text = ""
     End Sub
 
 
@@ -254,23 +258,6 @@ Public Class Catalogo_Vendedores
             .Columns("NOMBRE_VENDEDOR").Width = 300
         End With
 
-    End Sub
-
-    Private Sub DesplegarCategorias()
-        Dim oCategorias As New Class_CatCategorias
-        With Me.cboCategorias
-            .DisplayMember = "NOMBRE_CATEGORIA"
-
-            .ValueMember = "CODIGO_CATEGORIA"
-
-            Dim dView As New Data.DataView(oCategorias.ObtenerElementos)
-            dView.Sort = "NOMBRE_CATEGORIA"
-            .DataSource = dView
-            If dView.Count > 0 Then
-                .SelectedIndex = 0
-            End If
-            .SelectedValue = -1
-        End With
     End Sub
 
     Private Sub LlenaElemento(ByVal iCodigo_Elemento As Integer)
@@ -285,11 +272,7 @@ Public Class Catalogo_Vendedores
                 Else
                     Me.CboEstatus.SelectedIndex = 1
                 End If
-                If .Codigo_Categoria = "" Then
-                    Me.cboCategorias.Selectedindex = -1
-                Else
-                    Me.cboCategorias.SelectedValue = CInt(.Codigo_Categoria)
-                End If
+                Me.txtCodigoCategoria.Text = .Codigo_Categoria
 
             End With
         End If
@@ -304,14 +287,10 @@ Public Class Catalogo_Vendedores
                 oElemento = New Class_CatVendedores
                 Try
                     With oElemento
-                        .Codigo_Vendedor = CInt(0 & Me.TxtIDVendedor.Text)
+                        .Codigo_Vendedor = CInt(Me.TxtIDVendedor.Text)
                         .Nombre_Vendedor = Me.TxtNombreVendedor.Text
                         .Status = Strings.Left(Me.CboEstatus.Text, 1)
-                        If Me.cboCategorias.SelectedIndex > -1 Then
-                            .Codigo_Categoria = Me.cboCategorias.SelectedValue.ToString
-                        Else
-                            .Codigo_Categoria = "-1"
-                        End If
+                        .Codigo_Categoria = Me.txtCodigoCategoria.Text
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -349,17 +328,19 @@ Public Class Catalogo_Vendedores
 
     Private Function ValidarCategoria() As Boolean
         Try
-            If Me.cboCategorias.SelectedIndex > -1 Then
-                Dim sql As New Class_find("SELECT 1 FROM CAT_CATEGORIAS WHERE CODIGO_CATEGORIA =" & Me.cboCategorias.SelectedValue.ToString & " AND ESTATUS='A'")
+            If txtLEN(Me.txtCodigoCategoria.Text) = True Then
+                Dim sql As New Class_find("SELECT 1 FROM CAT_CATEGORIAS WHERE CODIGO_CATEGORIA =" & Me.txtCodigoCategoria.Text & " AND ESTATUS='A'")
                 If sql.Result1 = "1" Then
                     Return True
                 Else
                     MsgBox("La categoria debe de tener estatus A", MsgBoxStyle.Exclamation)
-                    Me.cboCategorias.Focus()
+                    Me.txtCodigoCategoria.Focus()
                     Exit Function
                 End If
             Else
-                Return True
+                MsgBox("Ingrese un codigo de Categoria.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtCodigoCategoria.Focus()
+                Exit Function
             End If
 
         Catch ex As Exception
@@ -437,7 +418,7 @@ Public Class Catalogo_Vendedores
             tsbGrabar.PerformClick()
         End If
     End Sub
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombreVendedor.KeyPress
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombreVendedor.KeyPress, txtCodigoCategoria.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -452,7 +433,7 @@ Public Class Catalogo_Vendedores
         End If
     End Sub
 
-    Private Sub cbo_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboCategorias.KeyDown
+    Private Sub cbo_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
         If e.KeyCode = Keys.Return Then
             Select Case Me.Estado
                 Case enumEstados.EDICION
@@ -482,7 +463,24 @@ Public Class Catalogo_Vendedores
 
 
 #Region "Keydown específicos"
-
+    Private Sub TxtCodigoCategoria_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCodigoCategoria.KeyDown
+        Dim oCategorias As New Class_CatCategorias
+        Select Case e.KeyCode
+            Case Keys.F6
+busca:
+                Me.txtCodigoCategoria.Text = oCategorias.BusquedaVisual_PorDescripcion
+                oCategorias.Codigo_Categoria = Me.txtCodigoCategoria.Text
+                oCategorias.Consultar()
+                Me.LblNombreCategoria.Text = oCategorias.Nombre_Categoria
+            Case Keys.Enter
+                oCategorias.Codigo_Categoria = Me.txtCodigoCategoria.Text
+                If oCategorias.Consultar() = False Then
+                    GoTo busca
+                End If
+                Me.LblNombreCategoria.Text = oCategorias.Nombre_Categoria
+        End Select
+        txtTAB(e)
+    End Sub
 #End Region
 
 #Region "Validating específicos"
