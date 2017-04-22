@@ -223,14 +223,18 @@ Public Class Catalogo_Articulos
     Private Sub InicializaElemento()
         Me.TxtCodArticulo.Text = ""
         Me.TxtDescripcion.Text = ""
-        Me.CboEstatus.Text = "A"
+        Me.CboEstatus.SelectedIndex = 0
         Me.TxtUnidadVenta.Text = ""
         Me.LblNombreUnidad.Text = ""
         Me.TxtPrecio.Text = "0.00"
-        Me.CboFamilia.SelectedIndex = 0
-        Me.cboLinea.SelectedIndex = 0
         Me.chkInventariable.Checked = True
         Me.rbtDescripcion.Checked = True
+        If Me.CboFamilia.Items.Count > 0 Then
+            Me.CboFamilia.SelectedIndex = 0
+        End If
+        If Me.cboLinea.Items.Count > 0 Then
+            Me.cboLinea.SelectedIndex = 0
+        End If
     End Sub
 
     Private Sub DesplegarElementos()
@@ -285,7 +289,11 @@ Public Class Catalogo_Articulos
                 With oElemento
                     Me.TxtCodArticulo.Text = .CODIGO_ARTICULO.ToString
                     Me.TxtDescripcion.Text = .DESCRIPCION.ToString
-                    Me.CboEstatus.Text = .Estatus
+                    If .Estatus = "A" Then
+                        Me.CboEstatus.SelectedIndex = 0
+                    Else
+                        Me.CboEstatus.SelectedIndex = 1
+                    End If
                     Me.TxtUnidadVenta.Text = .UNIDAD_VENTA
                     'Me.LblNombreUnidad.Text = .NOMBRE_UNIDAD
                     Me.chkInventariable.Checked = CBool(.INVENTARIABLE.ToString)
@@ -321,7 +329,7 @@ Public Class Catalogo_Articulos
                     With oElemento
                         .Codigo_Articulo = Me.TxtCodArticulo.Text
                         .Descripcion = Me.TxtDescripcion.Text
-                        .Estatus = Me.CboEstatus.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         .UNIDAD_VENTA = Me.TxtUnidadVenta.Text
                         '.CODIGO_UNIDAD_VENTA = "NA"
                         .PROTEGIDO = "0"
@@ -403,6 +411,18 @@ Public Class Catalogo_Articulos
             MsgBox("Ingrese la unidad de venta.", MsgBoxStyle.Exclamation)
             Me.TxtUnidadVenta.Focus()
             Return bResultado
+        End If
+
+        If Me.CboFamilia.SelectedIndex = -1 Then
+            MsgBox("Seleccione por favor una familia del artículo.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.CboFamilia.Focus()
+            Return False
+        End If
+
+        If Me.cboLinea.SelectedIndex = -1 Then
+            MsgBox("Seleccione por favor una linea del artículo.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.cboLinea.Focus()
+            Return False
         End If
 
         bResultado = True
