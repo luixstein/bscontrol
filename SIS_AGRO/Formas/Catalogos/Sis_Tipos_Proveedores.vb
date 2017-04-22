@@ -188,7 +188,7 @@ Public Class Sis_Tipos_Proveedores
                 Me.gBoxInformacion.Enabled = False
                 Me.gBoxBusquedaRapida.Enabled = True
                 Me.tssLabelEstado.Text = "Consulta"
-                Me.tsbNuevo.Enabled = True
+                Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = False
                 Me.tsbCancelar.Enabled = False
