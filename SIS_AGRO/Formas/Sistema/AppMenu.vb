@@ -1329,7 +1329,7 @@ Public Class AppMenu
         Child.Show()
     End Sub
 
-    Private Sub ActividadesToolStripMenuItem_Click_1(sender As Object, e As EventArgs) Handles ActividadesToolStripMenuItem.Click
+    Private Sub ActividadesToolStripMenuItem_Click_1(sender As Object, e As EventArgs)
         Dim Child As New Cat_Nomina_Actividades
         Child.MdiParent = Me
         m_ChildFormNumber += 1

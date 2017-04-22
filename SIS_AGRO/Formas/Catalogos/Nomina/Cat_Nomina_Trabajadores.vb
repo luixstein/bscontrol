@@ -107,9 +107,9 @@ Public Class Cat_Nomina_Trabajadores
 
         Select Case Me.Estado
             Case enumEstados.EDICION
-                sMsg = " grabar las modificaciones del " & Me.msgElemento & " : " & Me.txtCodigoTrabajador.Text
+                sMsg = "grabar las modificaciones del " & Me.msgElemento & " : " & Me.txtCodigoTrabajador.Text
             Case enumEstados.NUEVO
-                sMsg = " agregar el " & Me.msgElemento & " : " & Me.txtCodigoTrabajador.Text
+                sMsg = "agregar el " & Me.msgElemento & " : " & Me.txtCodigoTrabajador.Text
         End Select
         sMsg = "Deseas " & sMsg & " ?"
         'If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
@@ -321,7 +321,7 @@ Public Class Cat_Nomina_Trabajadores
                 Me.tssLabelEstado.Text = "Consultando"
 
         End Select
-        Application.DoEvents()
+        'Application.DoEvents()
     End Sub
 
     Private Sub InicializaElemento()
@@ -373,223 +373,245 @@ Public Class Cat_Nomina_Trabajadores
     End Sub
 
     Private Function Validar() As Boolean
-
-        If txtLEN(Me.TxtNombreTrabajador.Text) = False Then
-            MsgBox("Asígne el nombre del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
-            Me.TxtNombreTrabajador.Focus()
-            Exit Function
-        End If
-
-        If txtLEN(Me.txtApellidoPaterno.Text) = False Then
-            MsgBox("Asígne el apellido paterno al trabajado.", MsgBoxStyle.Exclamation, Me.Text)
-            Me.txtApellidoPaterno.Focus()
-            Exit Function
-        End If
-
-        Me.TxtNombreTrabajador.Text = Me.TxtNombreTrabajador.Text.TrimEnd()
-        Me.txtApellidoPaterno.Text = Me.txtApellidoPaterno.Text.TrimEnd()
-        Me.txtApellidoMaterno.Text = Me.txtApellidoMaterno.Text.TrimEnd()
-
-        Me.TxtNombreTrabajador.Text = Me.TxtNombreTrabajador.Text.Trim()
-        Me.txtApellidoPaterno.Text = Me.txtApellidoPaterno.Text.Trim()
-        Me.txtApellidoMaterno.Text = Me.txtApellidoMaterno.Text.Trim()
-
-        Me.TxtNombreTrabajador.Text = Me.TxtNombreTrabajador.Text.Replace("   ", " ")
-        Me.txtApellidoPaterno.Text = Me.txtApellidoPaterno.Text.Replace("   ", " ")
-        Me.txtApellidoMaterno.Text = Me.txtApellidoMaterno.Text.Replace("   ", " ")
-
-        Me.TxtNombreTrabajador.Text = Me.TxtNombreTrabajador.Text.Replace("  ", " ")
-        Me.txtApellidoPaterno.Text = Me.txtApellidoPaterno.Text.Replace("  ", " ")
-        Me.txtApellidoMaterno.Text = Me.txtApellidoMaterno.Text.Replace("  ", " ")
-
-        Dim sql1 As New Class_find("SELECT DATEDIFF(DAY,CAST('" & Format(Me.dtpFechaNacimiento.Value, "yyyy-dd-MM") & "' AS DATETIME),CAST('" & Format(Now, "yyyy-dd-MM") & "' AS DATETIME))/365.00 ")
-        If valorNumerico(sql1.Result1) < Plaza.oSisPlazaNomina.NOMINA_EDAD_MINIMA_TRABAJADORES Then
-            MsgBox("La edad trabajador debe ser mayor a 16 años.", MsgBoxStyle.Exclamation, Me.Text)
-            Me.dtpFechaNacimiento.Focus()
-            Exit Function
-        End If
-
-        If txtLEN(Me.txtRfc.Text) = False Then
-            MsgBox("Asígne el RFC al trabajador.", MsgBoxStyle.Exclamation, Me.Text)
-            Me.txtRfc.Focus()
-            Exit Function
-        End If
-
-        If txtLEN(Me.txtCurp.Text) = False Then
-            MsgBox("Asígne el CURP al trabajador.", MsgBoxStyle.Exclamation, Me.Text)
-            Me.txtCurp.Focus()
-            Exit Function
-        ElseIf Len(Me.txtCurp.Text) <> 18 Then
-            MsgBox("El CURP del trabajador es incorrecto, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
-            Me.txtCurp.Focus()
-            Exit Function
-        End If
-
-        If txtLEN(Me.txtSueldo.Text) = False Then
-            Me.txtSueldo.Text = "0"
-        Else
-            If valorNumerico(Me.txtSueldo.Text) < 0 Then
-                MsgBox("El sueldo del trabajador de no debe ser menor a 0.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.txtSueldo.Focus()
-                Exit Function
-            End If
-        End If
-
-        'Aunque no este checado el pago de tarjeta si le escribieron que la completen a 16
-        If txtLEN(Me.txtNumTarjeta.Text) = True Then
-            If Len(Me.txtNumTarjeta.Text) < 16 Then
-                MsgBox("Asígne los 16 dígitos de la tarjeta.", MsgBoxStyle.Exclamation, Me.Text)
+        Try
+            If txtLEN(Me.TxtNombreTrabajador.Text) = False Then
+                MsgBox("Asígne el nombre del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.TxtNombreTrabajador.Focus()
                 Exit Function
             End If
 
-            If ValidaTarjetaBancaria(Me.txtNumTarjeta.Text) = False Then
-                If MsgBox("El número de tarjeta parece estar incorrecto, desea grabarlo así de todas formas?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Me.Text) = MsgBoxResult.No Then
+            If txtLEN(Me.txtApellidoPaterno.Text) = False Then
+                MsgBox("Asígne el apellido paterno al trabajador.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtApellidoPaterno.Focus()
+                Exit Function
+            End If
+
+            Me.TxtNombreTrabajador.Text = Me.TxtNombreTrabajador.Text.TrimEnd()
+            Me.txtApellidoPaterno.Text = Me.txtApellidoPaterno.Text.TrimEnd()
+            Me.txtApellidoMaterno.Text = Me.txtApellidoMaterno.Text.TrimEnd()
+
+            Me.TxtNombreTrabajador.Text = Me.TxtNombreTrabajador.Text.Trim()
+            Me.txtApellidoPaterno.Text = Me.txtApellidoPaterno.Text.Trim()
+            Me.txtApellidoMaterno.Text = Me.txtApellidoMaterno.Text.Trim()
+
+            Me.TxtNombreTrabajador.Text = Me.TxtNombreTrabajador.Text.Replace("   ", " ")
+            Me.txtApellidoPaterno.Text = Me.txtApellidoPaterno.Text.Replace("   ", " ")
+            Me.txtApellidoMaterno.Text = Me.txtApellidoMaterno.Text.Replace("   ", " ")
+
+            Me.TxtNombreTrabajador.Text = Me.TxtNombreTrabajador.Text.Replace("  ", " ")
+            Me.txtApellidoPaterno.Text = Me.txtApellidoPaterno.Text.Replace("  ", " ")
+            Me.txtApellidoMaterno.Text = Me.txtApellidoMaterno.Text.Replace("  ", " ")
+
+            Dim sql1 As New Class_find("SELECT DATEDIFF(DAY,CAST('" & Format(Me.dtpFechaNacimiento.Value, "yyyy-dd-MM") & "' AS DATETIME),CAST('" & Format(Now, "yyyy-dd-MM") & "' AS DATETIME))/365.00 ")
+            If valorNumerico(sql1.Result1) < Plaza.oSisPlazaNomina.NOMINA_EDAD_MINIMA_TRABAJADORES Then
+                MsgBox("La edad trabajador debe ser mayor a 16 años.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.dtpFechaNacimiento.Focus()
+                Exit Function
+            End If
+
+            If txtLEN(Me.txtSueldo.Text) = False Then
+                Me.txtSueldo.Text = "0"
+            Else
+                If valorNumerico(Me.txtSueldo.Text) < 0 Then
+                    MsgBox("El sueldo del trabajador de no debe ser menor a 0.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.txtSueldo.Focus()
                     Exit Function
                 End If
             End If
-        End If
 
-        If Me.ckbPagoTarjeta.Checked = True Then
-            'Va poder quedar en blanco
-            'If txtLEN(Me.txtNumTarjeta.Text) = False Then
-            '    MsgBox("Asígne el número de tarjeta del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
+            If Me.cboArea.SelectedIndex = -1 Then
+                MsgBox("Seleccione el area del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.cboArea.Focus()
+                Return False
+            End If
+
+            If Me.cboPuesto.SelectedIndex = -1 Then
+                MsgBox("Seleccione el puesto del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.cboPuesto.Focus()
+                Return False
+            End If
+
+            If Me.cboPuntoPago.SelectedIndex = -1 Then
+                MsgBox("Seleccione el punto de pago del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.cboPuntoPago.Focus()
+                Return False
+            End If
+
+            'Aunque no este checado el pago de tarjeta si le escribieron que la completen a 16
+            If txtLEN(Me.txtNumTarjeta.Text) = True Then
+                If Len(Me.txtNumTarjeta.Text) < 16 Then
+                    MsgBox("Asígne los 16 dígitos de la tarjeta.", MsgBoxStyle.Exclamation, Me.Text)
+                    Exit Function
+                End If
+
+                If ValidaTarjetaBancaria(Me.txtNumTarjeta.Text) = False Then
+                    If MsgBox("El número de tarjeta parece estar incorrecto, desea grabarlo así de todas formas?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Me.Text) = MsgBoxResult.No Then
+                        Exit Function
+                    End If
+                End If
+            End If
+
+            If Me.ckbPagoTarjeta.Checked = True Then
+                'Va poder quedar en blanco
+                'If txtLEN(Me.txtNumTarjeta.Text) = False Then
+                '    MsgBox("Asígne el número de tarjeta del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
+                '    Exit Function
+                'End If
+
+                If txtLEN(Me.txtNumeroCuentaBanco.Text) = False Then
+                    MsgBox("Asígne el número de cuenta.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.txtNumeroCuentaBanco.Focus()
+                    Exit Function
+                End If
+
+                If txtLEN(Me.txtNumeroTrabajadorBanco.Text) = False Then
+                    MsgBox("Asígne el número de trabajador en el banco.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.txtNumeroTrabajadorBanco.Focus()
+                    Exit Function
+                End If
+
+                If txtLEN(Me.txtCodigoBanco.Text) = False Then
+                    MsgBox("Asígne el código del banco de la tarjeta del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.txtCodigoBanco.Focus()
+                    Exit Function
+                Else
+                    Dim sql As New Class_find("SELECT 1 FROM CAT_BANCOS WHERE CODIGO_BANCO='" & Me.txtCodigoBanco.Text & "' AND ESTATUS_BANCO='A' AND PROTEGIDO='0'")
+                    If sql.Result1 = "" Then
+                        MsgBox("El código de banco que intenta buscar no existe o esta dado de baja, favor de intentar con otro código.", MsgBoxStyle.Critical, "Validación de Bancos")
+                        Me.LblBanco.Text = ""
+                        Me.txtCodigoBanco.Focus()
+                        Exit Function
+                    End If
+                End If
+            End If
+
+            'If txtLEN(Me.txtDomicilioCalle.Text) = False Then
+            '    MsgBox("Asígne el nombre de la calle del domicilio del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
             '    Exit Function
             'End If
 
-            If txtLEN(Me.txtNumeroCuentaBanco.Text) = False Then
-                MsgBox("Asígne el número de cuenta.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.txtNumeroCuentaBanco.Focus()
+            'If txtLEN(Me.txtDomicilioNumero.Text) = False Then
+            '    MsgBox("Asígne el nombre de la calle del domicilio del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
+            '    Exit Function
+            'End If
+
+            'If txtLEN(Me.txtDomicilioNumero.Text) = False Then
+            '    MsgBox("Asígne el número del domicilio del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
+            '    Exit Function
+            'End If
+
+            'If txtLEN(Me.txtDomicilioCodigoPostal.Text) = False Then
+            '    MsgBox("Asígne el código postal del domicilio del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
+            '    Exit Function
+            'End If
+
+            'If txtLEN(Me.txtDomicilioColonia.Text) = False Then
+            '    MsgBox("Asígne el nombre de la colonia del domicilio del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
+            '    Exit Function
+            'End If
+
+            'If txtLEN(Me.txtDomicilioCiudad.Text) = False Then
+            '    MsgBox("Asígne el nombre de la cuidad del domicilio del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
+            '    Exit Function
+            'End If
+
+            'If txtLEN(Me.txtDomicilioLocalidad.Text) = False Then
+            '    MsgBox("Asígne el nombre de la localidad del domicilio del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
+            '    Exit Function
+            'End If
+
+            If txtLEN(Me.cboDomicilioEstado.SelectedValue.ToString) = False Then
+                MsgBox("Seleccione un estado del domicilio del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
                 Exit Function
             End If
 
-            If txtLEN(Me.txtNumeroTrabajadorBanco.Text) = False Then
-                MsgBox("Asígne el número de trabajador en el banco.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.txtNumeroTrabajadorBanco.Focus()
-                Exit Function
-            End If
-
-            If txtLEN(Me.txtCodigoBanco.Text) = False Then
-                MsgBox("Asígne el código del banco de la tarjeta del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.txtCodigoBanco.Focus()
-                Exit Function
-            Else
-                Dim sql As New Class_find("SELECT 1 FROM CAT_BANCOS WHERE CODIGO_BANCO='" & Me.txtCodigoBanco.Text & "' AND ESTATUS_BANCO='A' AND PROTEGIDO='0'")
-                If sql.Result1 = "" Then
-                    MsgBox("El código de banco que intenta buscar no existe o esta dado de baja, favor de intentar con otro código.", MsgBoxStyle.Critical, "Validación de Bancos")
-                    Me.LblBanco.Text = ""
-                    Me.txtCodigoBanco.Focus()
+            If txtLEN(Me.txtNombrePadre.Text) = True Then
+                If Me.Validar_Caracteres(Me.txtNombrePadre.Text) = False Then
+                    MsgBox("El nombre del padre del trabajador esta incorrecto.", MsgBoxStyle.Exclamation, Me.Text)
                     Exit Function
                 End If
             End If
-        End If
 
-        'If txtLEN(Me.txtDomicilioCalle.Text) = False Then
-        '    MsgBox("Asígne el nombre de la calle del domicilio del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
-        '    Exit Function
-        'End If
-
-        'If txtLEN(Me.txtDomicilioNumero.Text) = False Then
-        '    MsgBox("Asígne el nombre de la calle del domicilio del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
-        '    Exit Function
-        'End If
-
-        'If txtLEN(Me.txtDomicilioNumero.Text) = False Then
-        '    MsgBox("Asígne el número del domicilio del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
-        '    Exit Function
-        'End If
-
-        'If txtLEN(Me.txtDomicilioCodigoPostal.Text) = False Then
-        '    MsgBox("Asígne el código postal del domicilio del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
-        '    Exit Function
-        'End If
-
-        'If txtLEN(Me.txtDomicilioColonia.Text) = False Then
-        '    MsgBox("Asígne el nombre de la colonia del domicilio del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
-        '    Exit Function
-        'End If
-
-        'If txtLEN(Me.txtDomicilioCiudad.Text) = False Then
-        '    MsgBox("Asígne el nombre de la cuidad del domicilio del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
-        '    Exit Function
-        'End If
-
-        'If txtLEN(Me.txtDomicilioLocalidad.Text) = False Then
-        '    MsgBox("Asígne el nombre de la localidad del domicilio del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
-        '    Exit Function
-        'End If
-
-        If txtLEN(Me.cboDomicilioEstado.SelectedValue.ToString) = False Then
-            MsgBox("Seleccione un estado del domicilio del trabajador.", MsgBoxStyle.Exclamation, Me.Text)
-            Exit Function
-        End If
-
-        If txtLEN(Me.txtNombrePadre.Text) = True Then
-            If Me.Validar_Caracteres(Me.txtNombrePadre.Text) = False Then
-                MsgBox("El nombre del padre del trabajador esta incorrecto.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+            If txtLEN(Me.txtNombreMadre.Text) = True Then
+                If Me.Validar_Caracteres(Me.txtNombreMadre.Text) = False Then
+                    MsgBox("El nombre de la madre del trabajador esta incorrecto.", MsgBoxStyle.Exclamation, Me.Text)
+                    Exit Function
+                End If
             End If
-        End If
 
-        If txtLEN(Me.txtNombreMadre.Text) = True Then
-            If Me.Validar_Caracteres(Me.txtNombreMadre.Text) = False Then
-                MsgBox("El nombre de la madre del trabajador esta incorrecto.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+            If txtLEN(Me.txtNumIMSS.Text) = True Then
+                If Len(Me.txtNumIMSS.Text) <> 11 Then
+                    MsgBox("El número de IMSS del trabajador es incorrecto, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+                    Exit Function
+                End If
+
+                Dim sql2 As New Class_find("SELECT 1 FROM NOMINA_CAT_TRABAJADORES WHERE NUMERO_REGISTRO_IMSS='" & Me.txtNumIMSS.Text & "' AND CODIGO_TRABAJADOR<>'" & Me.txtCodigoTrabajador.Text & "' AND ID_NOMINA_TEMPORADA=" & Me.cboIdTemporada.SelectedValue.ToString)
+                If sql2.Result1 = "1" Then
+                    MsgBox("El número de registro de IMSS ya existe.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.txtNumIMSS.Focus()
+                    Exit Function
+                End If
+
+                Dim sNumIMSS As String
+
+                sNumIMSS = Strings.Right(Me.txtNumIMSS.Text, 1)
+                'sNumIMSS = Strings.Left(Me.txtNumIMSS.Text, 10)
+
+                If sNumIMSS <> Me.DVIMSS(Me.txtNumIMSS.Text) Then
+                    MsgBox("El número de registro de IMSS esta incorrecto, favor de verificarlo.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.txtNumIMSS.Focus()
+                    Exit Function
+                End If
+                'Me.txtNumIMSS.Text = sNumIMSS.Substring(Len(sNumIMSS) - 10) & Me.DVIMSS(sNumIMSS)
+
+                Dim sNumIMSSyy As String = Me.txtNumIMSS.Text.Substring(4, Me.txtNumIMSS.Text.Length - 5 - 4)
+
+                If sNumIMSSyy <> Format(Me.dtpFechaNacimiento.Value, "yy") Then
+                    MsgBox("El número de registro de IMSS esta incorrecto, favor de verificarlo.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.txtNumIMSS.Focus()
+                    Exit Function
+                End If
+
             End If
-        End If
 
-        If txtLEN(Me.txtNumIMSS.Text) = True Then
-            If Len(Me.txtNumIMSS.Text) <> 11 Then
-                MsgBox("El número de IMSS del trabajador es incorrecto, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+            Dim SQL3 As New Class_find("SELECT 1 FROM NOMINA_CAT_TRABAJADORES WHERE NOMBRE_TRABAJADOR='" & Me.TxtNombreTrabajador.Text & "' AND APELLIDO_PATERNO='" & Me.txtApellidoPaterno.Text & "' AND APELLIDO_MATERNO='" & Me.txtApellidoMaterno.Text & "' AND FECHA_NACIMIENTO='" & Format(Me.dtpFechaNacimiento.Value, "yyyy-dd-MM").ToString & "' AND CODIGO_TRABAJADOR<>'" & Me.txtCodigoTrabajador.Text & "' ")
+            If SQL3.Result1 = "1" Then
+                MsgBox("Ya existe un trabajador con el mismo nombre,apellidos y fecha de nacimiento, no es posible repetirlo.", MsgBoxStyle.Exclamation, Me.Text)
                 Exit Function
             End If
 
-            Dim sql2 As New Class_find("SELECT 1 FROM NOMINA_CAT_TRABAJADORES WHERE NUMERO_REGISTRO_IMSS='" & Me.txtNumIMSS.Text & "' AND CODIGO_TRABAJADOR<>'" & Me.txtCodigoTrabajador.Text & "' AND ID_NOMINA_TEMPORADA=" & Me.cboIdTemporada.SelectedValue.ToString)
-            If sql2.Result1 = "1" Then
-                MsgBox("El número de registro de IMSS ya existe.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.txtNumIMSS.Focus()
+            Dim sql4 As New Class_find("SELECT 1 FROM NOMINA_CAT_TRABAJADORES WHERE NOMBRE_TRABAJADOR='" & Me.TxtNombreTrabajador.Text & "' AND APELLIDO_PATERNO='" & Me.txtApellidoPaterno.Text & "' AND APELLIDO_MATERNO='" & Me.txtApellidoMaterno.Text & "' AND CODIGO_TRABAJADOR<>'" & Me.txtCodigoTrabajador.Text & "' ")
+            If sql4.Result1 = "1" Then
+                If MsgBox("Ya existe un trabajador con el mismo nombre, apellidos pero con fecha de nacimiento diferente, esta seguro de grabarlo?", CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.No Then
+                    Exit Function
+                End If
+            End If
+
+            'Me.cboUnidadMedicaFamiliar.SelectedValue.ToString()
+            Me.txtRfc.Text = Me.RFC(Me.txtApellidoPaterno.Text, Me.txtApellidoMaterno.Text, Me.TxtNombreTrabajador.Text, dtpFechaNacimiento.Value)
+            Me.txtCurp.Text = Me.CURP(Me.txtApellidoPaterno.Text, Me.txtApellidoMaterno.Text, Me.TxtNombreTrabajador.Text, dtpFechaNacimiento.Value)
+
+            If txtLEN(Me.txtRfc.Text) = False Then
+                MsgBox("Asígne el RFC al trabajador.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtRfc.Focus()
                 Exit Function
             End If
 
-            Dim sNumIMSS As String
-
-            sNumIMSS = Strings.Right(Me.txtNumIMSS.Text, 1)
-            'sNumIMSS = Strings.Left(Me.txtNumIMSS.Text, 10)
-
-            If sNumIMSS <> Me.DVIMSS(Me.txtNumIMSS.Text) Then
-                MsgBox("El número de registro de IMSS esta incorrecto, favor de verificarlo.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.txtNumIMSS.Focus()
+            If txtLEN(Me.txtCurp.Text) = False Then
+                MsgBox("Asígne el CURP al trabajador.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtCurp.Focus()
                 Exit Function
-            End If
-            'Me.txtNumIMSS.Text = sNumIMSS.Substring(Len(sNumIMSS) - 10) & Me.DVIMSS(sNumIMSS)
-
-            Dim sNumIMSSyy As String = Me.txtNumIMSS.Text.Substring(4, Me.txtNumIMSS.Text.Length - 5 - 4)
-
-            If sNumIMSSyy <> Format(Me.dtpFechaNacimiento.Value, "yy") Then
-                MsgBox("El número de registro de IMSS esta incorrecto, favor de verificarlo.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.txtNumIMSS.Focus()
+            ElseIf Len(Me.txtCurp.Text) <> 18 Then
+                MsgBox("El CURP del trabajador es incorrecto, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtCurp.Focus()
                 Exit Function
             End If
 
-        End If
+            Return True
 
-        Dim SQL3 As New Class_find("SELECT 1 FROM NOMINA_CAT_TRABAJADORES WHERE NOMBRE_TRABAJADOR='" & Me.TxtNombreTrabajador.Text & "' AND APELLIDO_PATERNO='" & Me.txtApellidoPaterno.Text & "' AND APELLIDO_MATERNO='" & Me.txtApellidoMaterno.Text & "' AND FECHA_NACIMIENTO='" & Format(Me.dtpFechaNacimiento.Value, "yyyy-dd-MM").ToString & "' AND CODIGO_TRABAJADOR<>'" & Me.txtCodigoTrabajador.Text & "' ")
-        If SQL3.Result1 = "1" Then
-            MsgBox("Ya existe un trabajador con el mismo nombre,apellidos y fecha de nacimiento, no es posible repetirlo.", MsgBoxStyle.Exclamation, Me.Text)
-            Exit Function
-        End If
-
-        Dim sql4 As New Class_find("SELECT 1 FROM NOMINA_CAT_TRABAJADORES WHERE NOMBRE_TRABAJADOR='" & Me.TxtNombreTrabajador.Text & "' AND APELLIDO_PATERNO='" & Me.txtApellidoPaterno.Text & "' AND APELLIDO_MATERNO='" & Me.txtApellidoMaterno.Text & "' AND CODIGO_TRABAJADOR<>'" & Me.txtCodigoTrabajador.Text & "' ")
-        If sql4.Result1 = "1" Then
-            If MsgBox("Ya existe un trabajador con el mismo nombre, apellidos pero con fecha de nacimiento diferente, esta seguro de grabarlo?", CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.No Then
-                Exit Function
-            End If
-        End If
-
-        'Me.cboUnidadMedicaFamiliar.SelectedValue.ToString()
-        Me.txtRfc.Text = Me.RFC(Me.txtApellidoPaterno.Text, Me.txtApellidoMaterno.Text, Me.TxtNombreTrabajador.Text, dtpFechaNacimiento.Value)
-        Me.txtCurp.Text = Me.CURP(Me.txtApellidoPaterno.Text, Me.txtApellidoMaterno.Text, Me.TxtNombreTrabajador.Text, dtpFechaNacimiento.Value)
-
-        Validar = True
+        Catch ex As Exception
+            HandleError(Me.Name, "Validar", ex)
+        End Try
     End Function
 
     Private Function DVIMSS(ByVal CADENA As String) As String
@@ -711,13 +733,13 @@ Public Class Cat_Nomina_Trabajadores
                             End If
                         End If
 
-                        MsgBox(Me.msgElemento & " Grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
+                        MsgBox(Me.msgElemento & " grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
                         Me.Cambia_Estado(enumEstados.CONSULTA)
                         Me.DesplegarElementos()
 
                     End With
                 Catch ex As Exception
-                    HandleError(Me.Name, "Grabar", ex)
+                    HandleError(Me.Name, "Grabar_Elemento", ex)
                 Finally
                     oElemento = Nothing
                 End Try
@@ -822,12 +844,12 @@ Public Class Cat_Nomina_Trabajadores
                 Me.txtNumeroCuentaBanco.Text = .NUMERO_CUENTA_BANCO
             End With
 
-            Dim sFoto As String = Plaza.oSisPlazaNomina.NOMINA_RUTA_FOTOS_TRABAJADORES.ToString & "\" & Me.txtCodigoTrabajador.Text & ".jpg"
-            If File.Exists(sFoto) Then 'C:\agrinet\Nomina\Fotos_Trabajadores
-                Me.pbFotoTrabajador.Image = System.Drawing.Image.FromFile(sFoto)
-            Else
-                Me.pbFotoTrabajador.Image = Nothing
-            End If
+            'Dim sFoto As String = Plaza.oSisPlazaNomina.NOMINA_RUTA_FOTOS_TRABAJADORES.ToString & "\" & Me.txtCodigoTrabajador.Text & ".jpg"
+            'If File.Exists(sFoto) Then 'C:\agrinet\Nomina\Fotos_Trabajadores
+            '    Me.pbFotoTrabajador.Image = System.Drawing.Image.FromFile(sFoto)
+            'Else
+            '    Me.pbFotoTrabajador.Image = Nothing
+            'End If
 
         End If
         Consultar = True
@@ -1495,6 +1517,7 @@ Public Class Cat_Nomina_Trabajadores
             End If
 
             If txtLEN(Me.txtApellidoPaterno.Text) = False Then
+                Me.txtApellidoPaterno.Focus()
                 Exit Sub
             End If
 

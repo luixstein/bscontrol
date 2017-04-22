@@ -166,16 +166,21 @@ Public Class Cat_Nomina_ConceptosActividades
             .ValueMember = "CODIGO_ACTIVIDAD"
             Dim dView As Data.DataView
             If Me.Run = False Then
-                dView = New Data.DataView(oSubActividades.ObtenerElementosSubActividades(Me.Grid.Item(0, 1).Value.ToString)) 'Envia el primer codigo_concepto_actividad de la lista del grid
+                If Me.Grid.Rows.Count > 0 Then
+                    dView = New Data.DataView(oSubActividades.ObtenerElementosSubActividades(Me.Grid.Item(0, 1).Value.ToString)) 'Envia el primer codigo_concepto_actividad de la lista del grid
+                End If
             Else
                 dView = New Data.DataView(oSubActividades.ObtenerElementosSubActividades(Me.Grid.CurrentRow.Cells("CODIGO_CONCEPTO_ACTIVIDAD").Value.ToString))
             End If
 
-            dView.Sort = "NOMBRE_ACTIVIDAD"
-            .DataSource = dView
-            If dView.Count > 0 Then
-                .SelectedIndex = -1
+            If IsNothing(dView) = False Then
+                dView.Sort = "NOMBRE_ACTIVIDAD"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedIndex = -1
+                End If
             End If
+
         End With
     End Sub
 

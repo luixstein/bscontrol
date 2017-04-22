@@ -142,7 +142,7 @@ Partial Class Cat_Nomina_Trabajadores
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbEditar, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimirListado, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1379, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1034, 27)
         Me.tsMenu.TabIndex = 1
         Me.tsMenu.Text = "tsMenu"
         '
@@ -151,7 +151,7 @@ Partial Class Cat_Nomina_Trabajadores
         Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
         Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbNuevo.Name = "tsbNuevo"
-        Me.tsbNuevo.Size = New System.Drawing.Size(76, 24)
+        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
         Me.tsbNuevo.Text = "&Nuevo"
         '
         'tsbEditar
@@ -159,7 +159,7 @@ Partial Class Cat_Nomina_Trabajadores
         Me.tsbEditar.Image = CType(resources.GetObject("tsbEditar.Image"), System.Drawing.Image)
         Me.tsbEditar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbEditar.Name = "tsbEditar"
-        Me.tsbEditar.Size = New System.Drawing.Size(72, 24)
+        Me.tsbEditar.Size = New System.Drawing.Size(61, 24)
         Me.tsbEditar.Text = "&Editar"
         '
         'tsbGrabar
@@ -167,7 +167,7 @@ Partial Class Cat_Nomina_Trabajadores
         Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
         Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbGrabar.Name = "tsbGrabar"
-        Me.tsbGrabar.Size = New System.Drawing.Size(78, 24)
+        Me.tsbGrabar.Size = New System.Drawing.Size(66, 24)
         Me.tsbGrabar.Text = "&Grabar"
         '
         'tsbCancelar
@@ -175,7 +175,7 @@ Partial Class Cat_Nomina_Trabajadores
         Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
         Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbCancelar.Name = "tsbCancelar"
-        Me.tsbCancelar.Size = New System.Drawing.Size(90, 24)
+        Me.tsbCancelar.Size = New System.Drawing.Size(77, 24)
         Me.tsbCancelar.Text = "&Cancelar"
         '
         'tsbImprimirListado
@@ -183,7 +183,7 @@ Partial Class Cat_Nomina_Trabajadores
         Me.tsbImprimirListado.Image = CType(resources.GetObject("tsbImprimirListado.Image"), System.Drawing.Image)
         Me.tsbImprimirListado.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbImprimirListado.Name = "tsbImprimirListado"
-        Me.tsbImprimirListado.Size = New System.Drawing.Size(139, 24)
+        Me.tsbImprimirListado.Size = New System.Drawing.Size(115, 24)
         Me.tsbImprimirListado.Text = "&Imprimir listado"
         '
         'tsbSalir
@@ -191,30 +191,29 @@ Partial Class Cat_Nomina_Trabajadores
         Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
         Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
+        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
         Me.tsbSalir.Text = "&Salir"
         '
         'StatusStripEstado
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssLabel, Me.tssLabelEstado})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 791)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 641)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1379, 25)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1034, 22)
         Me.StatusStripEstado.TabIndex = 16
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
         'tssLabel
         '
         Me.tssLabel.Name = "tssLabel"
-        Me.tssLabel.Size = New System.Drawing.Size(61, 20)
+        Me.tssLabel.Size = New System.Drawing.Size(48, 17)
         Me.tssLabel.Text = "Estado :"
         '
         'tssLabelEstado
         '
         Me.tssLabelEstado.Name = "tssLabelEstado"
-        Me.tssLabelEstado.Size = New System.Drawing.Size(0, 20)
+        Me.tssLabelEstado.Size = New System.Drawing.Size(0, 17)
         '
         'gbDatosGenerales
         '
@@ -237,31 +236,27 @@ Partial Class Cat_Nomina_Trabajadores
         Me.gbDatosGenerales.Controls.Add(Me.TxtNombreTrabajador)
         Me.gbDatosGenerales.Controls.Add(Me.lblDisplayCodigo)
         Me.gbDatosGenerales.Controls.Add(Me.txtCodigoTrabajador)
-        Me.gbDatosGenerales.Location = New System.Drawing.Point(9, 28)
-        Me.gbDatosGenerales.Margin = New System.Windows.Forms.Padding(4)
+        Me.gbDatosGenerales.Location = New System.Drawing.Point(7, 23)
         Me.gbDatosGenerales.Name = "gbDatosGenerales"
-        Me.gbDatosGenerales.Padding = New System.Windows.Forms.Padding(4)
-        Me.gbDatosGenerales.Size = New System.Drawing.Size(439, 297)
+        Me.gbDatosGenerales.Size = New System.Drawing.Size(329, 241)
         Me.gbDatosGenerales.TabIndex = 0
         Me.gbDatosGenerales.TabStop = False
         Me.gbDatosGenerales.Text = "Datos generales"
         '
         'btnSiguiente
         '
-        Me.btnSiguiente.Location = New System.Drawing.Point(355, 21)
-        Me.btnSiguiente.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnSiguiente.Location = New System.Drawing.Point(266, 17)
         Me.btnSiguiente.Name = "btnSiguiente"
-        Me.btnSiguiente.Size = New System.Drawing.Size(68, 26)
+        Me.btnSiguiente.Size = New System.Drawing.Size(51, 21)
         Me.btnSiguiente.TabIndex = 372
         Me.btnSiguiente.Text = ">>"
         Me.btnSiguiente.UseVisualStyleBackColor = True
         '
         'btnAnterior
         '
-        Me.btnAnterior.Location = New System.Drawing.Point(283, 21)
-        Me.btnAnterior.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnAnterior.Location = New System.Drawing.Point(212, 17)
         Me.btnAnterior.Name = "btnAnterior"
-        Me.btnAnterior.Size = New System.Drawing.Size(68, 26)
+        Me.btnAnterior.Size = New System.Drawing.Size(51, 21)
         Me.btnAnterior.TabIndex = 371
         Me.btnAnterior.Text = "<<"
         Me.btnAnterior.UseVisualStyleBackColor = True
@@ -269,10 +264,9 @@ Partial Class Cat_Nomina_Trabajadores
         'lblDisplayIdNominaTemporada
         '
         Me.lblDisplayIdNominaTemporada.AutoSize = True
-        Me.lblDisplayIdNominaTemporada.Location = New System.Drawing.Point(8, 60)
-        Me.lblDisplayIdNominaTemporada.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayIdNominaTemporada.Location = New System.Drawing.Point(6, 49)
         Me.lblDisplayIdNominaTemporada.Name = "lblDisplayIdNominaTemporada"
-        Me.lblDisplayIdNominaTemporada.Size = New System.Drawing.Size(99, 17)
+        Me.lblDisplayIdNominaTemporada.Size = New System.Drawing.Size(75, 13)
         Me.lblDisplayIdNominaTemporada.TabIndex = 127
         Me.lblDisplayIdNominaTemporada.Text = "Id temporada :"
         '
@@ -280,11 +274,10 @@ Partial Class Cat_Nomina_Trabajadores
         '
         Me.cboIdTemporada.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboIdTemporada.FormattingEnabled = True
-        Me.cboIdTemporada.Location = New System.Drawing.Point(133, 57)
-        Me.cboIdTemporada.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboIdTemporada.Location = New System.Drawing.Point(100, 46)
         Me.cboIdTemporada.MaxLength = 1
         Me.cboIdTemporada.Name = "cboIdTemporada"
-        Me.cboIdTemporada.Size = New System.Drawing.Size(140, 24)
+        Me.cboIdTemporada.Size = New System.Drawing.Size(106, 21)
         Me.cboIdTemporada.TabIndex = 1
         '
         'cboEstadoNacimiento
@@ -292,87 +285,78 @@ Partial Class Cat_Nomina_Trabajadores
         Me.cboEstadoNacimiento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboEstadoNacimiento.FormattingEnabled = True
         Me.cboEstadoNacimiento.Items.AddRange(New Object() {"A", "B"})
-        Me.cboEstadoNacimiento.Location = New System.Drawing.Point(155, 255)
-        Me.cboEstadoNacimiento.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboEstadoNacimiento.Location = New System.Drawing.Point(116, 207)
         Me.cboEstadoNacimiento.MaxLength = 80
         Me.cboEstadoNacimiento.Name = "cboEstadoNacimiento"
-        Me.cboEstadoNacimiento.Size = New System.Drawing.Size(267, 24)
+        Me.cboEstadoNacimiento.Size = New System.Drawing.Size(201, 21)
         Me.cboEstadoNacimiento.TabIndex = 7
         '
         'lblDisplayEstadoNacimiento
         '
         Me.lblDisplayEstadoNacimiento.AutoSize = True
-        Me.lblDisplayEstadoNacimiento.Location = New System.Drawing.Point(8, 258)
-        Me.lblDisplayEstadoNacimiento.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayEstadoNacimiento.Location = New System.Drawing.Point(6, 210)
         Me.lblDisplayEstadoNacimiento.Name = "lblDisplayEstadoNacimiento"
-        Me.lblDisplayEstadoNacimiento.Size = New System.Drawing.Size(137, 17)
+        Me.lblDisplayEstadoNacimiento.Size = New System.Drawing.Size(104, 13)
         Me.lblDisplayEstadoNacimiento.TabIndex = 111
         Me.lblDisplayEstadoNacimiento.Text = "Edo. de nacimiento :"
         '
         'dtpFechaNacimiento
         '
         Me.dtpFechaNacimiento.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtpFechaNacimiento.Location = New System.Drawing.Point(133, 223)
-        Me.dtpFechaNacimiento.Margin = New System.Windows.Forms.Padding(4)
+        Me.dtpFechaNacimiento.Location = New System.Drawing.Point(100, 181)
         Me.dtpFechaNacimiento.Name = "dtpFechaNacimiento"
-        Me.dtpFechaNacimiento.Size = New System.Drawing.Size(191, 22)
+        Me.dtpFechaNacimiento.Size = New System.Drawing.Size(144, 20)
         Me.dtpFechaNacimiento.TabIndex = 6
         '
         'lblDisplayFecha
         '
         Me.lblDisplayFecha.AutoSize = True
-        Me.lblDisplayFecha.Location = New System.Drawing.Point(8, 226)
-        Me.lblDisplayFecha.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayFecha.Location = New System.Drawing.Point(6, 184)
         Me.lblDisplayFecha.Name = "lblDisplayFecha"
-        Me.lblDisplayFecha.Size = New System.Drawing.Size(86, 17)
+        Me.lblDisplayFecha.Size = New System.Drawing.Size(67, 13)
         Me.lblDisplayFecha.TabIndex = 124
         Me.lblDisplayFecha.Text = "Fecha nac. :"
         '
         'lblDisplayApellidoMaterno
         '
         Me.lblDisplayApellidoMaterno.AutoSize = True
-        Me.lblDisplayApellidoMaterno.Location = New System.Drawing.Point(8, 158)
-        Me.lblDisplayApellidoMaterno.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayApellidoMaterno.Location = New System.Drawing.Point(6, 128)
         Me.lblDisplayApellidoMaterno.Name = "lblDisplayApellidoMaterno"
-        Me.lblDisplayApellidoMaterno.Size = New System.Drawing.Size(122, 17)
+        Me.lblDisplayApellidoMaterno.Size = New System.Drawing.Size(91, 13)
         Me.lblDisplayApellidoMaterno.TabIndex = 123
         Me.lblDisplayApellidoMaterno.Text = "Apellido materno :"
         '
         'txtApellidoMaterno
         '
-        Me.txtApellidoMaterno.Location = New System.Drawing.Point(133, 154)
-        Me.txtApellidoMaterno.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtApellidoMaterno.Location = New System.Drawing.Point(100, 125)
         Me.txtApellidoMaterno.MaxLength = 50
         Me.txtApellidoMaterno.Name = "txtApellidoMaterno"
-        Me.txtApellidoMaterno.Size = New System.Drawing.Size(287, 22)
+        Me.txtApellidoMaterno.Size = New System.Drawing.Size(216, 20)
         Me.txtApellidoMaterno.TabIndex = 4
         '
         'lblDisplayApellidoPaterno
         '
         Me.lblDisplayApellidoPaterno.AutoSize = True
-        Me.lblDisplayApellidoPaterno.Location = New System.Drawing.Point(8, 126)
-        Me.lblDisplayApellidoPaterno.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayApellidoPaterno.Location = New System.Drawing.Point(6, 102)
         Me.lblDisplayApellidoPaterno.Name = "lblDisplayApellidoPaterno"
-        Me.lblDisplayApellidoPaterno.Size = New System.Drawing.Size(119, 17)
+        Me.lblDisplayApellidoPaterno.Size = New System.Drawing.Size(89, 13)
         Me.lblDisplayApellidoPaterno.TabIndex = 121
         Me.lblDisplayApellidoPaterno.Text = "Apellido paterno :"
         '
         'txtApellidoPaterno
         '
-        Me.txtApellidoPaterno.Location = New System.Drawing.Point(133, 122)
-        Me.txtApellidoPaterno.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtApellidoPaterno.Location = New System.Drawing.Point(100, 99)
         Me.txtApellidoPaterno.MaxLength = 50
         Me.txtApellidoPaterno.Name = "txtApellidoPaterno"
-        Me.txtApellidoPaterno.Size = New System.Drawing.Size(287, 22)
+        Me.txtApellidoPaterno.Size = New System.Drawing.Size(216, 20)
         Me.txtApellidoPaterno.TabIndex = 3
         '
         'lblDisplaySexo
         '
         Me.lblDisplaySexo.AutoSize = True
-        Me.lblDisplaySexo.Location = New System.Drawing.Point(8, 193)
-        Me.lblDisplaySexo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplaySexo.Location = New System.Drawing.Point(6, 157)
         Me.lblDisplaySexo.Name = "lblDisplaySexo"
-        Me.lblDisplaySexo.Size = New System.Drawing.Size(47, 17)
+        Me.lblDisplaySexo.Size = New System.Drawing.Size(37, 13)
         Me.lblDisplaySexo.TabIndex = 119
         Me.lblDisplaySexo.Text = "Sexo :"
         '
@@ -380,67 +364,60 @@ Partial Class Cat_Nomina_Trabajadores
         '
         Me.cboSexo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboSexo.FormattingEnabled = True
-        Me.cboSexo.Location = New System.Drawing.Point(133, 190)
-        Me.cboSexo.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboSexo.Location = New System.Drawing.Point(100, 154)
         Me.cboSexo.MaxLength = 1
         Me.cboSexo.Name = "cboSexo"
-        Me.cboSexo.Size = New System.Drawing.Size(140, 24)
+        Me.cboSexo.Size = New System.Drawing.Size(106, 21)
         Me.cboSexo.TabIndex = 5
         '
         'Label2
         '
-        Me.Label2.Location = New System.Drawing.Point(161, -140)
-        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label2.Location = New System.Drawing.Point(121, -114)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(241, 16)
+        Me.Label2.Size = New System.Drawing.Size(181, 13)
         Me.Label2.TabIndex = 91
         Me.Label2.Text = ".."
         '
         'LblDisplayNombre
         '
         Me.LblDisplayNombre.AutoSize = True
-        Me.LblDisplayNombre.Location = New System.Drawing.Point(8, 94)
-        Me.LblDisplayNombre.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayNombre.Location = New System.Drawing.Point(6, 76)
         Me.LblDisplayNombre.Name = "LblDisplayNombre"
-        Me.LblDisplayNombre.Size = New System.Drawing.Size(66, 17)
+        Me.LblDisplayNombre.Size = New System.Drawing.Size(50, 13)
         Me.LblDisplayNombre.TabIndex = 74
         Me.LblDisplayNombre.Text = "Nombre :"
         '
         'TxtNombreTrabajador
         '
-        Me.TxtNombreTrabajador.Location = New System.Drawing.Point(133, 90)
-        Me.TxtNombreTrabajador.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtNombreTrabajador.Location = New System.Drawing.Point(100, 73)
         Me.TxtNombreTrabajador.MaxLength = 50
         Me.TxtNombreTrabajador.Name = "TxtNombreTrabajador"
-        Me.TxtNombreTrabajador.Size = New System.Drawing.Size(288, 22)
+        Me.TxtNombreTrabajador.Size = New System.Drawing.Size(217, 20)
         Me.TxtNombreTrabajador.TabIndex = 2
         '
         'lblDisplayCodigo
         '
         Me.lblDisplayCodigo.AutoSize = True
-        Me.lblDisplayCodigo.Location = New System.Drawing.Point(8, 26)
-        Me.lblDisplayCodigo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayCodigo.Location = New System.Drawing.Point(6, 21)
         Me.lblDisplayCodigo.Name = "lblDisplayCodigo"
-        Me.lblDisplayCodigo.Size = New System.Drawing.Size(60, 17)
+        Me.lblDisplayCodigo.Size = New System.Drawing.Size(46, 13)
         Me.lblDisplayCodigo.TabIndex = 8
         Me.lblDisplayCodigo.Text = "Código :"
         '
         'txtCodigoTrabajador
         '
-        Me.txtCodigoTrabajador.Location = New System.Drawing.Point(133, 22)
-        Me.txtCodigoTrabajador.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtCodigoTrabajador.Location = New System.Drawing.Point(100, 18)
         Me.txtCodigoTrabajador.MaxLength = 10
         Me.txtCodigoTrabajador.Name = "txtCodigoTrabajador"
-        Me.txtCodigoTrabajador.Size = New System.Drawing.Size(140, 22)
+        Me.txtCodigoTrabajador.Size = New System.Drawing.Size(106, 20)
         Me.txtCodigoTrabajador.TabIndex = 0
         '
         'LblDisplayEstatus
         '
         Me.LblDisplayEstatus.AutoSize = True
-        Me.LblDisplayEstatus.Location = New System.Drawing.Point(251, 150)
-        Me.LblDisplayEstatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayEstatus.Location = New System.Drawing.Point(188, 122)
         Me.LblDisplayEstatus.Name = "LblDisplayEstatus"
-        Me.LblDisplayEstatus.Size = New System.Drawing.Size(63, 17)
+        Me.LblDisplayEstatus.Size = New System.Drawing.Size(48, 13)
         Me.LblDisplayEstatus.TabIndex = 22
         Me.LblDisplayEstatus.Text = "Estatus :"
         '
@@ -449,11 +426,10 @@ Partial Class Cat_Nomina_Trabajadores
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
-        Me.CboEstatus.Location = New System.Drawing.Point(316, 145)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboEstatus.Location = New System.Drawing.Point(237, 118)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(104, 24)
+        Me.CboEstatus.Size = New System.Drawing.Size(79, 21)
         Me.CboEstatus.TabIndex = 5
         '
         'gBoxBusquedaRapida
@@ -463,11 +439,9 @@ Partial Class Cat_Nomina_Trabajadores
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
-        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(939, 34)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
+        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(704, 28)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
-        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(432, 751)
+        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(324, 610)
         Me.gBoxBusquedaRapida.TabIndex = 2
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
@@ -479,42 +453,38 @@ Partial Class Cat_Nomina_Trabajadores
         Me.Grid.AllowUserToResizeColumns = False
         Me.Grid.AllowUserToResizeRows = False
         Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Grid.Location = New System.Drawing.Point(8, 53)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
+        Me.Grid.Location = New System.Drawing.Point(6, 43)
         Me.Grid.Name = "Grid"
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
         Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(415, 690)
+        Me.Grid.Size = New System.Drawing.Size(311, 561)
         Me.Grid.TabIndex = 113
         '
         'txtFiltro
         '
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtFiltro.Location = New System.Drawing.Point(6, 19)
         Me.txtFiltro.Name = "txtFiltro"
-        Me.txtFiltro.Size = New System.Drawing.Size(415, 22)
+        Me.txtFiltro.Size = New System.Drawing.Size(312, 20)
         Me.txtFiltro.TabIndex = 0
         '
         'lblDisplayEstado
         '
         Me.lblDisplayEstado.AutoSize = True
-        Me.lblDisplayEstado.Location = New System.Drawing.Point(8, 209)
-        Me.lblDisplayEstado.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayEstado.Location = New System.Drawing.Point(6, 170)
         Me.lblDisplayEstado.Name = "lblDisplayEstado"
-        Me.lblDisplayEstado.Size = New System.Drawing.Size(60, 17)
+        Me.lblDisplayEstado.Size = New System.Drawing.Size(46, 13)
         Me.lblDisplayEstado.TabIndex = 104
         Me.lblDisplayEstado.Text = "Estado :"
         '
         'lblDisplayLocalidad
         '
         Me.lblDisplayLocalidad.AutoSize = True
-        Me.lblDisplayLocalidad.Location = New System.Drawing.Point(8, 177)
-        Me.lblDisplayLocalidad.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayLocalidad.Location = New System.Drawing.Point(6, 144)
         Me.lblDisplayLocalidad.Name = "lblDisplayLocalidad"
-        Me.lblDisplayLocalidad.Size = New System.Drawing.Size(77, 17)
+        Me.lblDisplayLocalidad.Size = New System.Drawing.Size(59, 13)
         Me.lblDisplayLocalidad.TabIndex = 103
         Me.lblDisplayLocalidad.Text = "Localidad :"
         '
@@ -523,116 +493,104 @@ Partial Class Cat_Nomina_Trabajadores
         Me.cboDomicilioEstado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboDomicilioEstado.FormattingEnabled = True
         Me.cboDomicilioEstado.Items.AddRange(New Object() {"A", "B"})
-        Me.cboDomicilioEstado.Location = New System.Drawing.Point(167, 206)
-        Me.cboDomicilioEstado.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboDomicilioEstado.Location = New System.Drawing.Point(125, 167)
         Me.cboDomicilioEstado.MaxLength = 80
         Me.cboDomicilioEstado.Name = "cboDomicilioEstado"
-        Me.cboDomicilioEstado.Size = New System.Drawing.Size(267, 24)
+        Me.cboDomicilioEstado.Size = New System.Drawing.Size(201, 21)
         Me.cboDomicilioEstado.TabIndex = 6
         '
         'txtDomicilioLocalidad
         '
-        Me.txtDomicilioLocalidad.Location = New System.Drawing.Point(168, 174)
-        Me.txtDomicilioLocalidad.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtDomicilioLocalidad.Location = New System.Drawing.Point(126, 141)
         Me.txtDomicilioLocalidad.MaxLength = 50
         Me.txtDomicilioLocalidad.Name = "txtDomicilioLocalidad"
-        Me.txtDomicilioLocalidad.Size = New System.Drawing.Size(267, 22)
+        Me.txtDomicilioLocalidad.Size = New System.Drawing.Size(201, 20)
         Me.txtDomicilioLocalidad.TabIndex = 5
         '
         'lblDisplayCiudad
         '
         Me.lblDisplayCiudad.AutoSize = True
-        Me.lblDisplayCiudad.Location = New System.Drawing.Point(8, 145)
-        Me.lblDisplayCiudad.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayCiudad.Location = New System.Drawing.Point(6, 118)
         Me.lblDisplayCiudad.Name = "lblDisplayCiudad"
-        Me.lblDisplayCiudad.Size = New System.Drawing.Size(60, 17)
+        Me.lblDisplayCiudad.Size = New System.Drawing.Size(46, 13)
         Me.lblDisplayCiudad.TabIndex = 101
         Me.lblDisplayCiudad.Text = "Ciudad :"
         '
         'txtDomicilioCiudad
         '
-        Me.txtDomicilioCiudad.Location = New System.Drawing.Point(168, 142)
-        Me.txtDomicilioCiudad.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtDomicilioCiudad.Location = New System.Drawing.Point(126, 115)
         Me.txtDomicilioCiudad.MaxLength = 50
         Me.txtDomicilioCiudad.Name = "txtDomicilioCiudad"
-        Me.txtDomicilioCiudad.Size = New System.Drawing.Size(267, 22)
+        Me.txtDomicilioCiudad.Size = New System.Drawing.Size(201, 20)
         Me.txtDomicilioCiudad.TabIndex = 4
         '
         'txtDomicilioCodigoPostal
         '
-        Me.txtDomicilioCodigoPostal.Location = New System.Drawing.Point(167, 80)
-        Me.txtDomicilioCodigoPostal.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtDomicilioCodigoPostal.Location = New System.Drawing.Point(125, 65)
         Me.txtDomicilioCodigoPostal.MaxLength = 10
         Me.txtDomicilioCodigoPostal.Name = "txtDomicilioCodigoPostal"
-        Me.txtDomicilioCodigoPostal.Size = New System.Drawing.Size(135, 22)
+        Me.txtDomicilioCodigoPostal.Size = New System.Drawing.Size(102, 20)
         Me.txtDomicilioCodigoPostal.TabIndex = 2
         Me.txtDomicilioCodigoPostal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'lblDisplayColonia
         '
         Me.lblDisplayColonia.AutoSize = True
-        Me.lblDisplayColonia.Location = New System.Drawing.Point(8, 113)
-        Me.lblDisplayColonia.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayColonia.Location = New System.Drawing.Point(6, 92)
         Me.lblDisplayColonia.Name = "lblDisplayColonia"
-        Me.lblDisplayColonia.Size = New System.Drawing.Size(63, 17)
+        Me.lblDisplayColonia.Size = New System.Drawing.Size(48, 13)
         Me.lblDisplayColonia.TabIndex = 99
         Me.lblDisplayColonia.Text = "Colonia :"
         '
         'lblDisplayCodigoPostal
         '
         Me.lblDisplayCodigoPostal.AutoSize = True
-        Me.lblDisplayCodigoPostal.Location = New System.Drawing.Point(8, 84)
-        Me.lblDisplayCodigoPostal.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayCodigoPostal.Location = New System.Drawing.Point(6, 68)
         Me.lblDisplayCodigoPostal.Name = "lblDisplayCodigoPostal"
-        Me.lblDisplayCodigoPostal.Size = New System.Drawing.Size(83, 17)
+        Me.lblDisplayCodigoPostal.Size = New System.Drawing.Size(63, 13)
         Me.lblDisplayCodigoPostal.TabIndex = 109
         Me.lblDisplayCodigoPostal.Text = "Cód postal :"
         '
         'txtDomicilioColonia
         '
-        Me.txtDomicilioColonia.Location = New System.Drawing.Point(168, 110)
-        Me.txtDomicilioColonia.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtDomicilioColonia.Location = New System.Drawing.Point(126, 89)
         Me.txtDomicilioColonia.MaxLength = 50
         Me.txtDomicilioColonia.Name = "txtDomicilioColonia"
-        Me.txtDomicilioColonia.Size = New System.Drawing.Size(267, 22)
+        Me.txtDomicilioColonia.Size = New System.Drawing.Size(201, 20)
         Me.txtDomicilioColonia.TabIndex = 3
         '
         'lblDisplayNumero
         '
         Me.lblDisplayNumero.AutoSize = True
-        Me.lblDisplayNumero.Location = New System.Drawing.Point(8, 52)
-        Me.lblDisplayNumero.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayNumero.Location = New System.Drawing.Point(6, 42)
         Me.lblDisplayNumero.Name = "lblDisplayNumero"
-        Me.lblDisplayNumero.Size = New System.Drawing.Size(66, 17)
+        Me.lblDisplayNumero.Size = New System.Drawing.Size(50, 13)
         Me.lblDisplayNumero.TabIndex = 95
         Me.lblDisplayNumero.Text = "Número :"
         '
         'txtDomicilioNumero
         '
-        Me.txtDomicilioNumero.Location = New System.Drawing.Point(168, 48)
-        Me.txtDomicilioNumero.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtDomicilioNumero.Location = New System.Drawing.Point(126, 39)
         Me.txtDomicilioNumero.MaxLength = 50
         Me.txtDomicilioNumero.Name = "txtDomicilioNumero"
-        Me.txtDomicilioNumero.Size = New System.Drawing.Size(135, 22)
+        Me.txtDomicilioNumero.Size = New System.Drawing.Size(102, 20)
         Me.txtDomicilioNumero.TabIndex = 1
         Me.txtDomicilioNumero.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'txtDomicilioCalle
         '
-        Me.txtDomicilioCalle.Location = New System.Drawing.Point(168, 16)
-        Me.txtDomicilioCalle.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtDomicilioCalle.Location = New System.Drawing.Point(126, 13)
         Me.txtDomicilioCalle.MaxLength = 50
         Me.txtDomicilioCalle.Name = "txtDomicilioCalle"
-        Me.txtDomicilioCalle.Size = New System.Drawing.Size(267, 22)
+        Me.txtDomicilioCalle.Size = New System.Drawing.Size(201, 20)
         Me.txtDomicilioCalle.TabIndex = 0
         '
         'lblDisplayCalle
         '
         Me.lblDisplayCalle.AutoSize = True
-        Me.lblDisplayCalle.Location = New System.Drawing.Point(8, 20)
-        Me.lblDisplayCalle.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayCalle.Location = New System.Drawing.Point(6, 16)
         Me.lblDisplayCalle.Name = "lblDisplayCalle"
-        Me.lblDisplayCalle.Size = New System.Drawing.Size(47, 17)
+        Me.lblDisplayCalle.Size = New System.Drawing.Size(36, 13)
         Me.lblDisplayCalle.TabIndex = 93
         Me.lblDisplayCalle.Text = "Calle :"
         '
@@ -652,11 +610,9 @@ Partial Class Cat_Nomina_Trabajadores
         Me.gbDomicilio.Controls.Add(Me.cboDomicilioEstado)
         Me.gbDomicilio.Controls.Add(Me.lblDisplayLocalidad)
         Me.gbDomicilio.Controls.Add(Me.lblDisplayEstado)
-        Me.gbDomicilio.Location = New System.Drawing.Point(456, 225)
-        Me.gbDomicilio.Margin = New System.Windows.Forms.Padding(4)
+        Me.gbDomicilio.Location = New System.Drawing.Point(342, 183)
         Me.gbDomicilio.Name = "gbDomicilio"
-        Me.gbDomicilio.Padding = New System.Windows.Forms.Padding(4)
-        Me.gbDomicilio.Size = New System.Drawing.Size(449, 246)
+        Me.gbDomicilio.Size = New System.Drawing.Size(337, 200)
         Me.gbDomicilio.TabIndex = 2
         Me.gbDomicilio.TabStop = False
         Me.gbDomicilio.Text = "Domicilio :"
@@ -664,10 +620,9 @@ Partial Class Cat_Nomina_Trabajadores
         'lblDisplayArea
         '
         Me.lblDisplayArea.AutoSize = True
-        Me.lblDisplayArea.Location = New System.Drawing.Point(8, 23)
-        Me.lblDisplayArea.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayArea.Location = New System.Drawing.Point(6, 19)
         Me.lblDisplayArea.Name = "lblDisplayArea"
-        Me.lblDisplayArea.Size = New System.Drawing.Size(46, 17)
+        Me.lblDisplayArea.Size = New System.Drawing.Size(35, 13)
         Me.lblDisplayArea.TabIndex = 127
         Me.lblDisplayArea.Text = "Área :"
         '
@@ -675,20 +630,18 @@ Partial Class Cat_Nomina_Trabajadores
         '
         Me.cboArea.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboArea.FormattingEnabled = True
-        Me.cboArea.Location = New System.Drawing.Point(137, 18)
-        Me.cboArea.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboArea.Location = New System.Drawing.Point(103, 15)
         Me.cboArea.MaxLength = 1
         Me.cboArea.Name = "cboArea"
-        Me.cboArea.Size = New System.Drawing.Size(284, 24)
+        Me.cboArea.Size = New System.Drawing.Size(214, 21)
         Me.cboArea.TabIndex = 0
         '
         'lblDisplayPuesto
         '
         Me.lblDisplayPuesto.AutoSize = True
-        Me.lblDisplayPuesto.Location = New System.Drawing.Point(8, 55)
-        Me.lblDisplayPuesto.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayPuesto.Location = New System.Drawing.Point(6, 45)
         Me.lblDisplayPuesto.Name = "lblDisplayPuesto"
-        Me.lblDisplayPuesto.Size = New System.Drawing.Size(60, 17)
+        Me.lblDisplayPuesto.Size = New System.Drawing.Size(46, 13)
         Me.lblDisplayPuesto.TabIndex = 129
         Me.lblDisplayPuesto.Text = "Puesto :"
         '
@@ -696,20 +649,18 @@ Partial Class Cat_Nomina_Trabajadores
         '
         Me.cboPuesto.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboPuesto.FormattingEnabled = True
-        Me.cboPuesto.Location = New System.Drawing.Point(137, 50)
-        Me.cboPuesto.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboPuesto.Location = New System.Drawing.Point(103, 41)
         Me.cboPuesto.MaxLength = 1
         Me.cboPuesto.Name = "cboPuesto"
-        Me.cboPuesto.Size = New System.Drawing.Size(284, 24)
+        Me.cboPuesto.Size = New System.Drawing.Size(214, 21)
         Me.cboPuesto.TabIndex = 1
         '
         'lblDisplayPuntoPago
         '
         Me.lblDisplayPuntoPago.AutoSize = True
-        Me.lblDisplayPuntoPago.Location = New System.Drawing.Point(8, 87)
-        Me.lblDisplayPuntoPago.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayPuntoPago.Location = New System.Drawing.Point(6, 71)
         Me.lblDisplayPuntoPago.Name = "lblDisplayPuntoPago"
-        Me.lblDisplayPuntoPago.Size = New System.Drawing.Size(109, 17)
+        Me.lblDisplayPuntoPago.Size = New System.Drawing.Size(83, 13)
         Me.lblDisplayPuntoPago.TabIndex = 131
         Me.lblDisplayPuntoPago.Text = "Punto de pago :"
         '
@@ -717,49 +668,44 @@ Partial Class Cat_Nomina_Trabajadores
         '
         Me.cboPuntoPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboPuntoPago.FormattingEnabled = True
-        Me.cboPuntoPago.Location = New System.Drawing.Point(137, 82)
-        Me.cboPuntoPago.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboPuntoPago.Location = New System.Drawing.Point(103, 67)
         Me.cboPuntoPago.MaxLength = 1
         Me.cboPuntoPago.Name = "cboPuntoPago"
-        Me.cboPuntoPago.Size = New System.Drawing.Size(284, 24)
+        Me.cboPuntoPago.Size = New System.Drawing.Size(214, 21)
         Me.cboPuntoPago.TabIndex = 2
         '
         'lblDisplayNumeroIMSS
         '
         Me.lblDisplayNumeroIMSS.AutoSize = True
-        Me.lblDisplayNumeroIMSS.Location = New System.Drawing.Point(9, 124)
-        Me.lblDisplayNumeroIMSS.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayNumeroIMSS.Location = New System.Drawing.Point(7, 101)
         Me.lblDisplayNumeroIMSS.Name = "lblDisplayNumeroIMSS"
-        Me.lblDisplayNumeroIMSS.Size = New System.Drawing.Size(117, 17)
+        Me.lblDisplayNumeroIMSS.Size = New System.Drawing.Size(91, 13)
         Me.lblDisplayNumeroIMSS.TabIndex = 133
         Me.lblDisplayNumeroIMSS.Text = "# Registro IMSS :"
         '
         'txtNumIMSS
         '
-        Me.txtNumIMSS.Location = New System.Drawing.Point(165, 119)
-        Me.txtNumIMSS.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtNumIMSS.Location = New System.Drawing.Point(124, 97)
         Me.txtNumIMSS.MaxLength = 11
         Me.txtNumIMSS.Name = "txtNumIMSS"
-        Me.txtNumIMSS.Size = New System.Drawing.Size(267, 22)
+        Me.txtNumIMSS.Size = New System.Drawing.Size(201, 20)
         Me.txtNumIMSS.TabIndex = 3
         '
         'lblDisplaySueldo
         '
         Me.lblDisplaySueldo.AutoSize = True
-        Me.lblDisplaySueldo.Location = New System.Drawing.Point(8, 150)
-        Me.lblDisplaySueldo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplaySueldo.Location = New System.Drawing.Point(6, 122)
         Me.lblDisplaySueldo.Name = "lblDisplaySueldo"
-        Me.lblDisplaySueldo.Size = New System.Drawing.Size(99, 17)
+        Me.lblDisplaySueldo.Size = New System.Drawing.Size(74, 13)
         Me.lblDisplaySueldo.TabIndex = 135
         Me.lblDisplaySueldo.Text = "Sueldo diario :"
         '
         'txtSueldo
         '
-        Me.txtSueldo.Location = New System.Drawing.Point(137, 145)
-        Me.txtSueldo.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtSueldo.Location = New System.Drawing.Point(103, 118)
         Me.txtSueldo.MaxLength = 20
         Me.txtSueldo.Name = "txtSueldo"
-        Me.txtSueldo.Size = New System.Drawing.Size(104, 22)
+        Me.txtSueldo.Size = New System.Drawing.Size(79, 20)
         Me.txtSueldo.TabIndex = 4
         Me.txtSueldo.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
@@ -797,11 +743,9 @@ Partial Class Cat_Nomina_Trabajadores
         Me.gbDatosTrabajador.Controls.Add(Me.lblDisplayPuesto)
         Me.gbDatosTrabajador.Controls.Add(Me.lblDisplayPuntoPago)
         Me.gbDatosTrabajador.Controls.Add(Me.cboPuntoPago)
-        Me.gbDatosTrabajador.Location = New System.Drawing.Point(9, 332)
-        Me.gbDatosTrabajador.Margin = New System.Windows.Forms.Padding(4)
+        Me.gbDatosTrabajador.Location = New System.Drawing.Point(7, 270)
         Me.gbDatosTrabajador.Name = "gbDatosTrabajador"
-        Me.gbDatosTrabajador.Padding = New System.Windows.Forms.Padding(4)
-        Me.gbDatosTrabajador.Size = New System.Drawing.Size(439, 411)
+        Me.gbDatosTrabajador.Size = New System.Drawing.Size(329, 334)
         Me.gbDatosTrabajador.TabIndex = 1
         Me.gbDatosTrabajador.TabStop = False
         Me.gbDatosTrabajador.Text = "Datos del  trabajador"
@@ -809,290 +753,260 @@ Partial Class Cat_Nomina_Trabajadores
         'lblDisplayNumeroCuentaBanco
         '
         Me.lblDisplayNumeroCuentaBanco.AutoSize = True
-        Me.lblDisplayNumeroCuentaBanco.Location = New System.Drawing.Point(164, 298)
-        Me.lblDisplayNumeroCuentaBanco.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayNumeroCuentaBanco.Location = New System.Drawing.Point(123, 242)
         Me.lblDisplayNumeroCuentaBanco.Name = "lblDisplayNumeroCuentaBanco"
-        Me.lblDisplayNumeroCuentaBanco.Size = New System.Drawing.Size(73, 17)
+        Me.lblDisplayNumeroCuentaBanco.Size = New System.Drawing.Size(57, 13)
         Me.lblDisplayNumeroCuentaBanco.TabIndex = 263
         Me.lblDisplayNumeroCuentaBanco.Text = "# Cuenta :"
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(8, 352)
-        Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label4.Location = New System.Drawing.Point(6, 286)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(218, 17)
+        Me.Label4.Size = New System.Drawing.Size(163, 13)
         Me.Label4.TabIndex = 261
         Me.Label4.Text = "Número de trabajador en banco :"
         '
         'txtNumeroTrabajadorBanco
         '
-        Me.txtNumeroTrabajadorBanco.Location = New System.Drawing.Point(232, 347)
-        Me.txtNumeroTrabajadorBanco.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtNumeroTrabajadorBanco.Location = New System.Drawing.Point(174, 282)
         Me.txtNumeroTrabajadorBanco.MaxLength = 10
         Me.txtNumeroTrabajadorBanco.Name = "txtNumeroTrabajadorBanco"
-        Me.txtNumeroTrabajadorBanco.Size = New System.Drawing.Size(96, 22)
+        Me.txtNumeroTrabajadorBanco.Size = New System.Drawing.Size(73, 20)
         Me.txtNumeroTrabajadorBanco.TabIndex = 13
         '
         'txtNumeroCuentaBanco
         '
-        Me.txtNumeroCuentaBanco.Location = New System.Drawing.Point(255, 293)
-        Me.txtNumeroCuentaBanco.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtNumeroCuentaBanco.Location = New System.Drawing.Point(191, 238)
         Me.txtNumeroCuentaBanco.MaxLength = 18
         Me.txtNumeroCuentaBanco.Name = "txtNumeroCuentaBanco"
-        Me.txtNumeroCuentaBanco.Size = New System.Drawing.Size(165, 22)
+        Me.txtNumeroCuentaBanco.Size = New System.Drawing.Size(125, 20)
         Me.txtNumeroCuentaBanco.TabIndex = 11
         '
         'dtpFechaIngreso
         '
         Me.dtpFechaIngreso.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtpFechaIngreso.Location = New System.Drawing.Point(137, 379)
-        Me.dtpFechaIngreso.Margin = New System.Windows.Forms.Padding(4)
+        Me.dtpFechaIngreso.Location = New System.Drawing.Point(103, 308)
         Me.dtpFechaIngreso.Name = "dtpFechaIngreso"
-        Me.dtpFechaIngreso.Size = New System.Drawing.Size(191, 22)
+        Me.dtpFechaIngreso.Size = New System.Drawing.Size(144, 20)
         Me.dtpFechaIngreso.TabIndex = 14
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(8, 379)
-        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label3.Location = New System.Drawing.Point(6, 308)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(106, 17)
+        Me.Label3.Size = New System.Drawing.Size(80, 13)
         Me.Label3.TabIndex = 129
         Me.Label3.Text = "Fecha ingreso :"
         '
         'lblCuentaContable
         '
         Me.lblCuentaContable.AutoSize = True
-        Me.lblCuentaContable.Location = New System.Drawing.Point(8, 241)
-        Me.lblCuentaContable.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblCuentaContable.Location = New System.Drawing.Point(6, 196)
         Me.lblCuentaContable.Name = "lblCuentaContable"
-        Me.lblCuentaContable.Size = New System.Drawing.Size(119, 17)
+        Me.lblCuentaContable.Size = New System.Drawing.Size(91, 13)
         Me.lblCuentaContable.TabIndex = 259
         Me.lblCuentaContable.Text = "Cuenta contable :"
         '
         'txtCuentaContable
         '
         Me.txtCuentaContable.Enabled = False
-        Me.txtCuentaContable.Location = New System.Drawing.Point(137, 236)
-        Me.txtCuentaContable.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtCuentaContable.Location = New System.Drawing.Point(103, 192)
         Me.txtCuentaContable.MaxLength = 20
         Me.txtCuentaContable.Name = "txtCuentaContable"
-        Me.txtCuentaContable.Size = New System.Drawing.Size(283, 22)
+        Me.txtCuentaContable.Size = New System.Drawing.Size(213, 20)
         Me.txtCuentaContable.TabIndex = 8
         '
         'lblNombreMayordomo
         '
-        Me.lblNombreMayordomo.Location = New System.Drawing.Point(251, 117)
-        Me.lblNombreMayordomo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblNombreMayordomo.Location = New System.Drawing.Point(188, 95)
         Me.lblNombreMayordomo.Name = "lblNombreMayordomo"
-        Me.lblNombreMayordomo.Size = New System.Drawing.Size(172, 16)
+        Me.lblNombreMayordomo.Size = New System.Drawing.Size(129, 13)
         Me.lblNombreMayordomo.TabIndex = 257
         Me.lblNombreMayordomo.Text = "."
         '
         'lblPagoTarjeta
         '
         Me.lblPagoTarjeta.AutoSize = True
-        Me.lblPagoTarjeta.Location = New System.Drawing.Point(8, 271)
-        Me.lblPagoTarjeta.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblPagoTarjeta.Location = New System.Drawing.Point(6, 220)
         Me.lblPagoTarjeta.Name = "lblPagoTarjeta"
-        Me.lblPagoTarjeta.Size = New System.Drawing.Size(120, 17)
+        Me.lblPagoTarjeta.Size = New System.Drawing.Size(91, 13)
         Me.lblPagoTarjeta.TabIndex = 256
         Me.lblPagoTarjeta.Text = "Pago con tarjeta :"
         '
         'LblBanco
         '
-        Me.LblBanco.Location = New System.Drawing.Point(200, 321)
-        Me.LblBanco.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblBanco.Location = New System.Drawing.Point(150, 261)
         Me.LblBanco.Name = "LblBanco"
-        Me.LblBanco.Size = New System.Drawing.Size(208, 16)
+        Me.LblBanco.Size = New System.Drawing.Size(156, 13)
         Me.LblBanco.TabIndex = 255
         Me.LblBanco.Text = "."
         '
         'lblDisplayCURP
         '
         Me.lblDisplayCURP.AutoSize = True
-        Me.lblDisplayCURP.Location = New System.Drawing.Point(8, 212)
-        Me.lblDisplayCURP.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayCURP.Location = New System.Drawing.Point(6, 172)
         Me.lblDisplayCURP.Name = "lblDisplayCURP"
-        Me.lblDisplayCURP.Size = New System.Drawing.Size(54, 17)
+        Me.lblDisplayCURP.Size = New System.Drawing.Size(43, 13)
         Me.lblDisplayCURP.TabIndex = 145
         Me.lblDisplayCURP.Text = "CURP :"
         '
         'txtCurp
         '
-        Me.txtCurp.Location = New System.Drawing.Point(137, 207)
-        Me.txtCurp.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtCurp.Location = New System.Drawing.Point(103, 168)
         Me.txtCurp.MaxLength = 20
         Me.txtCurp.Name = "txtCurp"
-        Me.txtCurp.Size = New System.Drawing.Size(283, 22)
+        Me.txtCurp.Size = New System.Drawing.Size(213, 20)
         Me.txtCurp.TabIndex = 7
         '
         'lblDisplayRFC
         '
         Me.lblDisplayRFC.AutoSize = True
-        Me.lblDisplayRFC.Location = New System.Drawing.Point(8, 181)
-        Me.lblDisplayRFC.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayRFC.Location = New System.Drawing.Point(6, 147)
         Me.lblDisplayRFC.Name = "lblDisplayRFC"
-        Me.lblDisplayRFC.Size = New System.Drawing.Size(43, 17)
+        Me.lblDisplayRFC.Size = New System.Drawing.Size(34, 13)
         Me.lblDisplayRFC.TabIndex = 144
         Me.lblDisplayRFC.Text = "RFC :"
         '
         'txtCodigoMayordomo
         '
-        Me.txtCodigoMayordomo.Location = New System.Drawing.Point(137, 113)
-        Me.txtCodigoMayordomo.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtCodigoMayordomo.Location = New System.Drawing.Point(103, 92)
         Me.txtCodigoMayordomo.MaxLength = 10
         Me.txtCodigoMayordomo.Name = "txtCodigoMayordomo"
-        Me.txtCodigoMayordomo.Size = New System.Drawing.Size(104, 22)
+        Me.txtCodigoMayordomo.Size = New System.Drawing.Size(79, 20)
         Me.txtCodigoMayordomo.TabIndex = 3
         '
         'lblDisplayCodigoMayordomo
         '
         Me.lblDisplayCodigoMayordomo.AutoSize = True
-        Me.lblDisplayCodigoMayordomo.Location = New System.Drawing.Point(8, 117)
-        Me.lblDisplayCodigoMayordomo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayCodigoMayordomo.Location = New System.Drawing.Point(6, 95)
         Me.lblDisplayCodigoMayordomo.Name = "lblDisplayCodigoMayordomo"
-        Me.lblDisplayCodigoMayordomo.Size = New System.Drawing.Size(123, 17)
+        Me.lblDisplayCodigoMayordomo.Size = New System.Drawing.Size(92, 13)
         Me.lblDisplayCodigoMayordomo.TabIndex = 145
         Me.lblDisplayCodigoMayordomo.Text = "Cód. mayordomo :"
         '
         'txtRfc
         '
-        Me.txtRfc.Location = New System.Drawing.Point(137, 176)
-        Me.txtRfc.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtRfc.Location = New System.Drawing.Point(103, 143)
         Me.txtRfc.MaxLength = 20
         Me.txtRfc.Name = "txtRfc"
-        Me.txtRfc.Size = New System.Drawing.Size(283, 22)
+        Me.txtRfc.Size = New System.Drawing.Size(213, 20)
         Me.txtRfc.TabIndex = 6
         '
         'lblDisplayCodigoBanco
         '
         Me.lblDisplayCodigoBanco.AutoSize = True
-        Me.lblDisplayCodigoBanco.Location = New System.Drawing.Point(8, 321)
-        Me.lblDisplayCodigoBanco.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayCodigoBanco.Location = New System.Drawing.Point(6, 261)
         Me.lblDisplayCodigoBanco.Name = "lblDisplayCodigoBanco"
-        Me.lblDisplayCodigoBanco.Size = New System.Drawing.Size(56, 17)
+        Me.lblDisplayCodigoBanco.Size = New System.Drawing.Size(44, 13)
         Me.lblDisplayCodigoBanco.TabIndex = 141
         Me.lblDisplayCodigoBanco.Text = "Banco :"
         '
         'txtCodigoBanco
         '
-        Me.txtCodigoBanco.Location = New System.Drawing.Point(137, 316)
-        Me.txtCodigoBanco.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtCodigoBanco.Location = New System.Drawing.Point(103, 257)
         Me.txtCodigoBanco.MaxLength = 3
         Me.txtCodigoBanco.Name = "txtCodigoBanco"
-        Me.txtCodigoBanco.Size = New System.Drawing.Size(53, 22)
+        Me.txtCodigoBanco.Size = New System.Drawing.Size(41, 20)
         Me.txtCodigoBanco.TabIndex = 12
         '
         'lblDisplayNumTarjeta
         '
         Me.lblDisplayNumTarjeta.AutoSize = True
-        Me.lblDisplayNumTarjeta.Location = New System.Drawing.Point(165, 271)
-        Me.lblDisplayNumTarjeta.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayNumTarjeta.Location = New System.Drawing.Point(124, 220)
         Me.lblDisplayNumTarjeta.Name = "lblDisplayNumTarjeta"
-        Me.lblDisplayNumTarjeta.Size = New System.Drawing.Size(73, 17)
+        Me.lblDisplayNumTarjeta.Size = New System.Drawing.Size(56, 13)
         Me.lblDisplayNumTarjeta.TabIndex = 139
         Me.lblDisplayNumTarjeta.Text = "# Tarjeta :"
         '
         'ckbPagoTarjeta
         '
         Me.ckbPagoTarjeta.AutoSize = True
-        Me.ckbPagoTarjeta.Location = New System.Drawing.Point(137, 270)
-        Me.ckbPagoTarjeta.Margin = New System.Windows.Forms.Padding(4)
+        Me.ckbPagoTarjeta.Location = New System.Drawing.Point(103, 219)
         Me.ckbPagoTarjeta.Name = "ckbPagoTarjeta"
         Me.ckbPagoTarjeta.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.ckbPagoTarjeta.Size = New System.Drawing.Size(18, 17)
+        Me.ckbPagoTarjeta.Size = New System.Drawing.Size(15, 14)
         Me.ckbPagoTarjeta.TabIndex = 9
         Me.ckbPagoTarjeta.UseVisualStyleBackColor = True
         '
         'txtNumTarjeta
         '
-        Me.txtNumTarjeta.Location = New System.Drawing.Point(256, 266)
-        Me.txtNumTarjeta.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtNumTarjeta.Location = New System.Drawing.Point(192, 216)
         Me.txtNumTarjeta.MaxLength = 16
         Me.txtNumTarjeta.Name = "txtNumTarjeta"
-        Me.txtNumTarjeta.Size = New System.Drawing.Size(165, 22)
+        Me.txtNumTarjeta.Size = New System.Drawing.Size(125, 20)
         Me.txtNumTarjeta.TabIndex = 10
         '
         'lblDisplayFijoIMSS
         '
         Me.lblDisplayFijoIMSS.AutoSize = True
-        Me.lblDisplayFijoIMSS.Location = New System.Drawing.Point(9, 183)
-        Me.lblDisplayFijoIMSS.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayFijoIMSS.Location = New System.Drawing.Point(7, 149)
         Me.lblDisplayFijoIMSS.Name = "lblDisplayFijoIMSS"
-        Me.lblDisplayFijoIMSS.Size = New System.Drawing.Size(158, 17)
+        Me.lblDisplayFijoIMSS.Size = New System.Drawing.Size(125, 13)
         Me.lblDisplayFijoIMSS.TabIndex = 149
         Me.lblDisplayFijoIMSS.Text = "Fijo IMSS/Incapacitado :"
         '
         'lblDisplayAfiliableIMSS
         '
         Me.lblDisplayAfiliableIMSS.AutoSize = True
-        Me.lblDisplayAfiliableIMSS.Location = New System.Drawing.Point(9, 156)
-        Me.lblDisplayAfiliableIMSS.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayAfiliableIMSS.Location = New System.Drawing.Point(7, 127)
         Me.lblDisplayAfiliableIMSS.Name = "lblDisplayAfiliableIMSS"
-        Me.lblDisplayAfiliableIMSS.Size = New System.Drawing.Size(116, 17)
+        Me.lblDisplayAfiliableIMSS.Size = New System.Drawing.Size(89, 13)
         Me.lblDisplayAfiliableIMSS.TabIndex = 147
         Me.lblDisplayAfiliableIMSS.Text = "Afiliable al IMSS :"
         '
         'txtNombrePadre
         '
-        Me.txtNombrePadre.Location = New System.Drawing.Point(165, 55)
-        Me.txtNombrePadre.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtNombrePadre.Location = New System.Drawing.Point(124, 45)
         Me.txtNombrePadre.MaxLength = 50
         Me.txtNombrePadre.Name = "txtNombrePadre"
-        Me.txtNombrePadre.Size = New System.Drawing.Size(267, 22)
+        Me.txtNombrePadre.Size = New System.Drawing.Size(201, 20)
         Me.txtNombrePadre.TabIndex = 1
         '
         'lblDisplayNombrePadre
         '
         Me.lblDisplayNombrePadre.AutoSize = True
-        Me.lblDisplayNombrePadre.Location = New System.Drawing.Point(9, 60)
-        Me.lblDisplayNombrePadre.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayNombrePadre.Location = New System.Drawing.Point(7, 49)
         Me.lblDisplayNombrePadre.Name = "lblDisplayNombrePadre"
-        Me.lblDisplayNombrePadre.Size = New System.Drawing.Size(130, 17)
+        Me.lblDisplayNombrePadre.Size = New System.Drawing.Size(97, 13)
         Me.lblDisplayNombrePadre.TabIndex = 112
         Me.lblDisplayNombrePadre.Text = "Nombre del padre :"
         '
         'lblDisplayUMF
         '
         Me.lblDisplayUMF.AutoSize = True
-        Me.lblDisplayUMF.Location = New System.Drawing.Point(9, 28)
-        Me.lblDisplayUMF.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayUMF.Location = New System.Drawing.Point(7, 23)
         Me.lblDisplayUMF.Name = "lblDisplayUMF"
-        Me.lblDisplayUMF.Size = New System.Drawing.Size(128, 17)
+        Me.lblDisplayUMF.Size = New System.Drawing.Size(97, 13)
         Me.lblDisplayUMF.TabIndex = 143
         Me.lblDisplayUMF.Text = "U. Medica familiar :"
         '
         'txtNombreMadre
         '
-        Me.txtNombreMadre.Location = New System.Drawing.Point(165, 86)
-        Me.txtNombreMadre.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtNombreMadre.Location = New System.Drawing.Point(124, 70)
         Me.txtNombreMadre.MaxLength = 50
         Me.txtNombreMadre.Name = "txtNombreMadre"
-        Me.txtNombreMadre.Size = New System.Drawing.Size(267, 22)
+        Me.txtNombreMadre.Size = New System.Drawing.Size(201, 20)
         Me.txtNombreMadre.TabIndex = 2
         '
         'cboUnidadMedicaFamiliar
         '
         Me.cboUnidadMedicaFamiliar.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboUnidadMedicaFamiliar.FormattingEnabled = True
-        Me.cboUnidadMedicaFamiliar.Location = New System.Drawing.Point(165, 23)
-        Me.cboUnidadMedicaFamiliar.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboUnidadMedicaFamiliar.Location = New System.Drawing.Point(124, 19)
         Me.cboUnidadMedicaFamiliar.MaxLength = 1
         Me.cboUnidadMedicaFamiliar.Name = "cboUnidadMedicaFamiliar"
-        Me.cboUnidadMedicaFamiliar.Size = New System.Drawing.Size(267, 24)
+        Me.cboUnidadMedicaFamiliar.Size = New System.Drawing.Size(201, 21)
         Me.cboUnidadMedicaFamiliar.TabIndex = 0
         '
         'lblDisplayNombreMadre
         '
         Me.lblDisplayNombreMadre.AutoSize = True
-        Me.lblDisplayNombreMadre.Location = New System.Drawing.Point(9, 91)
-        Me.lblDisplayNombreMadre.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayNombreMadre.Location = New System.Drawing.Point(7, 74)
         Me.lblDisplayNombreMadre.Name = "lblDisplayNombreMadre"
-        Me.lblDisplayNombreMadre.Size = New System.Drawing.Size(145, 17)
+        Me.lblDisplayNombreMadre.Size = New System.Drawing.Size(108, 13)
         Me.lblDisplayNombreMadre.TabIndex = 113
         Me.lblDisplayNombreMadre.Text = "Nombre de la madre :"
         '
@@ -1112,11 +1026,9 @@ Partial Class Cat_Nomina_Trabajadores
         Me.gbDatosIMSS.Controls.Add(Me.txtNombrePadre)
         Me.gbDatosIMSS.Controls.Add(Me.lblDisplayNumeroIMSS)
         Me.gbDatosIMSS.Controls.Add(Me.txtNumIMSS)
-        Me.gbDatosIMSS.Location = New System.Drawing.Point(456, 478)
-        Me.gbDatosIMSS.Margin = New System.Windows.Forms.Padding(4)
+        Me.gbDatosIMSS.Location = New System.Drawing.Point(342, 388)
         Me.gbDatosIMSS.Name = "gbDatosIMSS"
-        Me.gbDatosIMSS.Padding = New System.Windows.Forms.Padding(4)
-        Me.gbDatosIMSS.Size = New System.Drawing.Size(449, 236)
+        Me.gbDatosIMSS.Size = New System.Drawing.Size(337, 192)
         Me.gbDatosIMSS.TabIndex = 3
         Me.gbDatosIMSS.TabStop = False
         Me.gbDatosIMSS.Text = "Datos IMSS del trabajador"
@@ -1124,53 +1036,49 @@ Partial Class Cat_Nomina_Trabajadores
         'ckbSindicato
         '
         Me.ckbSindicato.AutoSize = True
-        Me.ckbSindicato.Location = New System.Drawing.Point(413, 155)
-        Me.ckbSindicato.Margin = New System.Windows.Forms.Padding(4)
+        Me.ckbSindicato.Location = New System.Drawing.Point(310, 126)
         Me.ckbSindicato.Name = "ckbSindicato"
-        Me.ckbSindicato.Size = New System.Drawing.Size(18, 17)
+        Me.ckbSindicato.Size = New System.Drawing.Size(15, 14)
         Me.ckbSindicato.TabIndex = 6
         Me.ckbSindicato.UseVisualStyleBackColor = True
         '
         'ckbFijoIMSS
         '
         Me.ckbFijoIMSS.AutoSize = True
-        Me.ckbFijoIMSS.Location = New System.Drawing.Point(173, 185)
-        Me.ckbFijoIMSS.Margin = New System.Windows.Forms.Padding(4)
+        Me.ckbFijoIMSS.Location = New System.Drawing.Point(130, 150)
         Me.ckbFijoIMSS.Name = "ckbFijoIMSS"
-        Me.ckbFijoIMSS.Size = New System.Drawing.Size(18, 17)
+        Me.ckbFijoIMSS.Size = New System.Drawing.Size(15, 14)
         Me.ckbFijoIMSS.TabIndex = 5
         Me.ckbFijoIMSS.UseVisualStyleBackColor = True
         '
         'ckbAfiliableIMSS
         '
         Me.ckbAfiliableIMSS.AutoSize = True
-        Me.ckbAfiliableIMSS.Location = New System.Drawing.Point(173, 155)
-        Me.ckbAfiliableIMSS.Margin = New System.Windows.Forms.Padding(4)
+        Me.ckbAfiliableIMSS.Location = New System.Drawing.Point(130, 126)
         Me.ckbAfiliableIMSS.Name = "ckbAfiliableIMSS"
-        Me.ckbAfiliableIMSS.Size = New System.Drawing.Size(18, 17)
+        Me.ckbAfiliableIMSS.Size = New System.Drawing.Size(15, 14)
         Me.ckbAfiliableIMSS.TabIndex = 4
         Me.ckbAfiliableIMSS.UseVisualStyleBackColor = True
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(247, 156)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Location = New System.Drawing.Point(185, 127)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(122, 17)
+        Me.Label1.Size = New System.Drawing.Size(93, 13)
         Me.Label1.TabIndex = 151
         Me.Label1.Text = "Calcula sindicato :"
         '
         'pbFotoTrabajador
         '
         Me.pbFotoTrabajador.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.pbFotoTrabajador.Location = New System.Drawing.Point(469, 38)
-        Me.pbFotoTrabajador.Margin = New System.Windows.Forms.Padding(4)
+        Me.pbFotoTrabajador.Location = New System.Drawing.Point(352, 31)
         Me.pbFotoTrabajador.Name = "pbFotoTrabajador"
-        Me.pbFotoTrabajador.Size = New System.Drawing.Size(164, 179)
+        Me.pbFotoTrabajador.Size = New System.Drawing.Size(124, 146)
         Me.pbFotoTrabajador.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.pbFotoTrabajador.TabIndex = 126
         Me.pbFotoTrabajador.TabStop = False
+        Me.pbFotoTrabajador.Visible = False
         '
         'gbInformacion
         '
@@ -1180,24 +1088,22 @@ Partial Class Cat_Nomina_Trabajadores
         Me.gbInformacion.Controls.Add(Me.gbDatosTrabajador)
         Me.gbInformacion.Controls.Add(Me.gbDomicilio)
         Me.gbInformacion.Controls.Add(Me.gbDatosIMSS)
-        Me.gbInformacion.Location = New System.Drawing.Point(16, 34)
-        Me.gbInformacion.Margin = New System.Windows.Forms.Padding(4)
+        Me.gbInformacion.Location = New System.Drawing.Point(12, 28)
         Me.gbInformacion.Name = "gbInformacion"
-        Me.gbInformacion.Padding = New System.Windows.Forms.Padding(4)
-        Me.gbInformacion.Size = New System.Drawing.Size(915, 751)
+        Me.gbInformacion.Size = New System.Drawing.Size(686, 610)
         Me.gbInformacion.TabIndex = 0
         Me.gbInformacion.TabStop = False
         Me.gbInformacion.Text = "Información del trabajador"
         '
         'btnAgregaFoto
         '
-        Me.btnAgregaFoto.Location = New System.Drawing.Point(659, 190)
-        Me.btnAgregaFoto.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnAgregaFoto.Location = New System.Drawing.Point(494, 154)
         Me.btnAgregaFoto.Name = "btnAgregaFoto"
-        Me.btnAgregaFoto.Size = New System.Drawing.Size(100, 28)
+        Me.btnAgregaFoto.Size = New System.Drawing.Size(75, 23)
         Me.btnAgregaFoto.TabIndex = 373
         Me.btnAgregaFoto.Text = "Agregar foto"
         Me.btnAgregaFoto.UseVisualStyleBackColor = True
+        Me.btnAgregaFoto.Visible = False
         '
         'PrintForm1
         '
@@ -1209,19 +1115,18 @@ Partial Class Cat_Nomina_Trabajadores
         '
         'Cat_Nomina_Trabajadores
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1379, 816)
+        Me.ClientSize = New System.Drawing.Size(1034, 663)
         Me.Controls.Add(Me.gbInformacion)
         Me.Controls.Add(Me.gBoxBusquedaRapida)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.tsMenu)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Cat_Nomina_Trabajadores"
-        Me.Text = " Catalogo de trabajadores"
+        Me.Text = " Catálogo de trabajadores"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()
         Me.StatusStripEstado.ResumeLayout(False)

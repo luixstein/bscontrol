@@ -63,7 +63,6 @@ Partial Public Class AppMenu
         Me.UnidadesDeVentaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.NominaToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ÁreasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ActividadesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConceptosDeActividadesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PuestosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PuntosDePagoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -473,7 +472,7 @@ Partial Public Class AppMenu
         '
         'NominaToolStripMenuItem1
         '
-        Me.NominaToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ÁreasToolStripMenuItem, Me.ActividadesToolStripMenuItem, Me.ConceptosDeActividadesToolStripMenuItem, Me.PuestosToolStripMenuItem, Me.PuntosDePagoToolStripMenuItem, Me.TiposDeDeduccionesToolStripMenuItem, Me.TiposDePercepcionesToolStripMenuItem, Me.TrabajadoresToolStripMenuItem, Me.OtroTipoDePercepciónToolStripMenuItem, Me.UnidadMedicaFamiliarToolStripMenuItem})
+        Me.NominaToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ÁreasToolStripMenuItem, Me.ConceptosDeActividadesToolStripMenuItem, Me.PuestosToolStripMenuItem, Me.PuntosDePagoToolStripMenuItem, Me.TiposDeDeduccionesToolStripMenuItem, Me.TiposDePercepcionesToolStripMenuItem, Me.TrabajadoresToolStripMenuItem, Me.OtroTipoDePercepciónToolStripMenuItem, Me.UnidadMedicaFamiliarToolStripMenuItem})
         Me.NominaToolStripMenuItem1.Name = "NominaToolStripMenuItem1"
         Me.NominaToolStripMenuItem1.Size = New System.Drawing.Size(178, 22)
         Me.NominaToolStripMenuItem1.Text = "&Nómina"
@@ -481,55 +480,49 @@ Partial Public Class AppMenu
         'ÁreasToolStripMenuItem
         '
         Me.ÁreasToolStripMenuItem.Name = "ÁreasToolStripMenuItem"
-        Me.ÁreasToolStripMenuItem.Size = New System.Drawing.Size(221, 22)
+        Me.ÁreasToolStripMenuItem.Size = New System.Drawing.Size(224, 22)
         Me.ÁreasToolStripMenuItem.Text = "Áreas"
-        '
-        'ActividadesToolStripMenuItem
-        '
-        Me.ActividadesToolStripMenuItem.Name = "ActividadesToolStripMenuItem"
-        Me.ActividadesToolStripMenuItem.Size = New System.Drawing.Size(221, 22)
-        Me.ActividadesToolStripMenuItem.Text = "Actividades"
         '
         'ConceptosDeActividadesToolStripMenuItem
         '
         Me.ConceptosDeActividadesToolStripMenuItem.Name = "ConceptosDeActividadesToolStripMenuItem"
-        Me.ConceptosDeActividadesToolStripMenuItem.Size = New System.Drawing.Size(221, 22)
+        Me.ConceptosDeActividadesToolStripMenuItem.Size = New System.Drawing.Size(224, 22)
         Me.ConceptosDeActividadesToolStripMenuItem.Text = "Conceptos de actividades"
         '
         'PuestosToolStripMenuItem
         '
         Me.PuestosToolStripMenuItem.Name = "PuestosToolStripMenuItem"
-        Me.PuestosToolStripMenuItem.Size = New System.Drawing.Size(221, 22)
+        Me.PuestosToolStripMenuItem.Size = New System.Drawing.Size(224, 22)
         Me.PuestosToolStripMenuItem.Text = "Puestos"
         '
         'PuntosDePagoToolStripMenuItem
         '
         Me.PuntosDePagoToolStripMenuItem.Name = "PuntosDePagoToolStripMenuItem"
-        Me.PuntosDePagoToolStripMenuItem.Size = New System.Drawing.Size(221, 22)
+        Me.PuntosDePagoToolStripMenuItem.Size = New System.Drawing.Size(224, 22)
         Me.PuntosDePagoToolStripMenuItem.Text = "Puntos de pago"
         '
         'TiposDeDeduccionesToolStripMenuItem
         '
         Me.TiposDeDeduccionesToolStripMenuItem.Name = "TiposDeDeduccionesToolStripMenuItem"
-        Me.TiposDeDeduccionesToolStripMenuItem.Size = New System.Drawing.Size(221, 22)
+        Me.TiposDeDeduccionesToolStripMenuItem.Size = New System.Drawing.Size(224, 22)
         Me.TiposDeDeduccionesToolStripMenuItem.Text = "Tipos de deducciones"
         '
         'TiposDePercepcionesToolStripMenuItem
         '
         Me.TiposDePercepcionesToolStripMenuItem.Name = "TiposDePercepcionesToolStripMenuItem"
-        Me.TiposDePercepcionesToolStripMenuItem.Size = New System.Drawing.Size(221, 22)
+        Me.TiposDePercepcionesToolStripMenuItem.Size = New System.Drawing.Size(224, 22)
         Me.TiposDePercepcionesToolStripMenuItem.Text = "Tipos de percepciones"
         '
         'TrabajadoresToolStripMenuItem
         '
         Me.TrabajadoresToolStripMenuItem.Name = "TrabajadoresToolStripMenuItem"
-        Me.TrabajadoresToolStripMenuItem.Size = New System.Drawing.Size(221, 22)
+        Me.TrabajadoresToolStripMenuItem.Size = New System.Drawing.Size(224, 22)
         Me.TrabajadoresToolStripMenuItem.Text = "Trabajadores"
         '
         'OtroTipoDePercepciónToolStripMenuItem
         '
         Me.OtroTipoDePercepciónToolStripMenuItem.Name = "OtroTipoDePercepciónToolStripMenuItem"
-        Me.OtroTipoDePercepciónToolStripMenuItem.Size = New System.Drawing.Size(221, 22)
+        Me.OtroTipoDePercepciónToolStripMenuItem.Size = New System.Drawing.Size(224, 22)
         Me.OtroTipoDePercepciónToolStripMenuItem.Text = "Otros tipos de percepciones"
         '
         'UnidadMedicaFamiliarToolStripMenuItem
@@ -1640,7 +1633,6 @@ Partial Public Class AppMenu
     Friend WithEvents NavegadorToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents EmbarquesMasivosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RevisiónDeCXPToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ActividadesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents NavegadorDeCostosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ReporteDeCostosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents PólizasDeCostosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem

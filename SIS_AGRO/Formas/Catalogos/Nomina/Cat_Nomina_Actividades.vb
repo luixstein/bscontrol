@@ -104,17 +104,12 @@ Public Class Cat_Nomina_Actividades
             Case enumEstados.NUEVO
                 sMsg = " agregar el " & Me.msgElemento & " : " & Me.TxtCodigoActividad.Text
         End Select
+
         sMsg = "Deseas " & sMsg & " ?"
-        If (CInt(Me.txtCostoJornal.Text)) > 0 Then
-            If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
-                Me.Grabar_Elemento()
-            End If
-        Else
-            MsgBox("El costo jornal no puede ser menor a 1", MsgBoxStyle.Exclamation)
-            Me.txtCostoJornal.Focus()
+
+        If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
+            Me.Grabar_Elemento()
         End If
-        
-        
     End Sub
 
     Private Sub tsbCancelar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbCancelar.Click
@@ -223,7 +218,14 @@ Public Class Cat_Nomina_Actividades
         Dim Grabado As Boolean = False
 
         If txtLEN(Me.TxtNombreActividad.Text) = False Then
-            MsgBox("Asigne un nombre a la actividad.", MsgBoxStyle.Exclamation, Me.Name)
+            MsgBox("Captúre un nombre a la actividad.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.TxtNombreActividad.Focus()
+            Exit Sub
+        End If
+
+        If (valorNumerico(Me.txtCostoJornal.Text)) <= 0 Then
+            MsgBox("El costo jornal no puede ser menor a 1", MsgBoxStyle.Exclamation, Me.Text)
+            Me.txtCostoJornal.Focus()
             Exit Sub
         End If
 
@@ -232,7 +234,7 @@ Public Class Cat_Nomina_Actividades
                 Me.oActividad = New Class_CatActividades
                 Try
                     With Me.oActividad
-                        .CODIGO_ACTIVIDAD = CInt(Me.TxtCodigoActividad.Text)
+                        .CODIGO_ACTIVIDAD = CInt(valorNumerico(Me.TxtCodigoActividad.Text))
                         .NOMBRE_ACTIVIDAD = Me.TxtNombreActividad.Text
                         .ESTATUS_ACTIVIDAD = Strings.Left(Me.CboEstatus.Text, 1)
                         .CODIGO_CONCEPTO_ACTIVIDAD = Me.txtCodigoConcepto.Text
@@ -242,7 +244,6 @@ Public Class Cat_Nomina_Actividades
                         Else
                             .COSTO_JORNAL = 0
                         End If
-
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -257,7 +258,7 @@ Public Class Cat_Nomina_Actividades
                                 End If
                         End Select
 
-                        If Grabado Then
+                        If Grabado = True Then
                             MsgBox(Me.msgElemento & " Grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
                             Me.Refrescar()
                             Me.Cambia_Estado()

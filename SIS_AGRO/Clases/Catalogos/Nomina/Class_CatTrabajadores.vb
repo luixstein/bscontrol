@@ -899,7 +899,7 @@ Public Class Class_CatTrabajadores
         f.sTable = "NOMINA_CAT_TRABAJADORES"
         f.sQl = "SELECT CODIGO_TRABAJADOR,NOMBRE_TRABAJADOR FROM NOMINA_CAT_TRABAJADORES T " & _
         "INNER JOIN NOMINA_CAT_PUESTOS P ON(T.CODIGO_PUESTO=P.CODIGO_PUESTO AND P.NOMBRE_PUESTO='MAYORDOMO') " & _
-        "WHERE(T.ID_NOMINA_TEMPORADA = " & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA.ToString & " And "")"
+        "WHERE T.ID_NOMINA_TEMPORADA = " & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA.ToString & " And "
 
         f.Inicia("")
         f.ShowDialog()

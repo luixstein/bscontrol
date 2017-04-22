@@ -323,6 +323,7 @@ Public Class Class_CatActividades
         End Try
         Return dTable
     End Function
+
     Public Function ObtenerElementosFiltro(ByVal Filtro As String) As System.Data.DataTable
         Dim dTable As New DataTable
         Dim dA As New SqlDataAdapter("Select CODIGO_ACTIVIDAD,NOMBRE_ACTIVIDAD from NOMINA_CAT_ACTIVIDADES WHERE NOMBRE_ACTIVIDAD LIKE '" & Filtro.ToString & "%' ORDER BY NOMBRE_ACTIVIDAD", Me._Conexion)
@@ -348,7 +349,7 @@ Public Class Class_CatActividades
         Try
             dsCat_PuntoPago.Fill(dTable)
         Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
+            HandleError(Me._Nombre_Catalogo, "ObtenerElementosSubActividades", ex)
         Finally
             dsCat_PuntoPago.Dispose()
         End Try
