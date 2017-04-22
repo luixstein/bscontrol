@@ -1046,11 +1046,11 @@ Public Class Class_CatClientes
             .Connection = Me._Conexion
             .CommandTimeout = 0
             .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_CAT_CLIENTES_CREA_CUENTA_CONTABLE_DOLARES"
+            .CommandText = "MP_CAT_CUENTAS_GENERA_CUENTA_CONTABLE_CLIENTE_USD"
 
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_CLIENTE.ToUpper
             sqlParametro = .Parameters.Add("@NOMBRE_CLIENTE", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._NOMBRE_CLIENTE.ToUpper
-            sqlParametro = .Parameters.Add("@PLAZA", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._PLAZA.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._PLAZA.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CUENTA_CONTABLE", SqlDbType.NVarChar, 20) : sqlParametro.Value = ""
 
             Try
