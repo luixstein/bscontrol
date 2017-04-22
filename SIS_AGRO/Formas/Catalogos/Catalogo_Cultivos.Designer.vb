@@ -178,7 +178,7 @@ Partial Class Catalogo_Cultivos
         '
         'txtFraccionArancelaria
         '
-        Me.txtFraccionArancelaria.Location = New System.Drawing.Point(110, 167)
+        Me.txtFraccionArancelaria.Location = New System.Drawing.Point(110, 132)
         Me.txtFraccionArancelaria.MaxLength = 20
         Me.txtFraccionArancelaria.Name = "txtFraccionArancelaria"
         Me.txtFraccionArancelaria.Size = New System.Drawing.Size(281, 20)
@@ -186,7 +186,7 @@ Partial Class Catalogo_Cultivos
         '
         'lblDisplayFraccionArancelaria
         '
-        Me.lblDisplayFraccionArancelaria.Location = New System.Drawing.Point(10, 160)
+        Me.lblDisplayFraccionArancelaria.Location = New System.Drawing.Point(10, 125)
         Me.lblDisplayFraccionArancelaria.Name = "lblDisplayFraccionArancelaria"
         Me.lblDisplayFraccionArancelaria.Size = New System.Drawing.Size(84, 27)
         Me.lblDisplayFraccionArancelaria.TabIndex = 155
@@ -195,7 +195,7 @@ Partial Class Catalogo_Cultivos
         'ckbGenerico
         '
         Me.ckbGenerico.AutoSize = True
-        Me.ckbGenerico.Location = New System.Drawing.Point(110, 198)
+        Me.ckbGenerico.Location = New System.Drawing.Point(110, 163)
         Me.ckbGenerico.Name = "ckbGenerico"
         Me.ckbGenerico.Size = New System.Drawing.Size(82, 17)
         Me.ckbGenerico.TabIndex = 7
@@ -205,20 +205,22 @@ Partial Class Catalogo_Cultivos
         '
         'TxtObservacion1
         '
-        Me.TxtObservacion1.Location = New System.Drawing.Point(110, 131)
+        Me.TxtObservacion1.Location = New System.Drawing.Point(110, 221)
         Me.TxtObservacion1.MaxLength = 120
         Me.TxtObservacion1.Name = "TxtObservacion1"
         Me.TxtObservacion1.Size = New System.Drawing.Size(281, 20)
         Me.TxtObservacion1.TabIndex = 5
+        Me.TxtObservacion1.Visible = False
         '
         'lblCostosProdiccion
         '
         Me.lblCostosProdiccion.AutoSize = True
-        Me.lblCostosProdiccion.Location = New System.Drawing.Point(10, 134)
+        Me.lblCostosProdiccion.Location = New System.Drawing.Point(10, 224)
         Me.lblCostosProdiccion.Name = "lblCostosProdiccion"
         Me.lblCostosProdiccion.Size = New System.Drawing.Size(103, 13)
         Me.lblCostosProdiccion.TabIndex = 152
         Me.lblCostosProdiccion.Text = "Cta. de producción :"
+        Me.lblCostosProdiccion.Visible = False
         '
         'TxtAliasExtranjero
         '
