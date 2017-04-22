@@ -34,6 +34,8 @@ Partial Class Catalogo_Cultivos
         Me.Grid = New System.Windows.Forms.DataGridView()
         Me.txtFiltro = New System.Windows.Forms.TextBox()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.txtFraccionArancelaria = New System.Windows.Forms.TextBox()
+        Me.lblDisplayFraccionArancelaria = New System.Windows.Forms.Label()
         Me.ckbGenerico = New System.Windows.Forms.CheckBox()
         Me.TxtObservacion1 = New System.Windows.Forms.TextBox()
         Me.lblCostosProdiccion = New System.Windows.Forms.Label()
@@ -50,8 +52,6 @@ Partial Class Catalogo_Cultivos
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.txtFraccionArancelaria = New System.Windows.Forms.TextBox()
-        Me.lblDisplayFraccionArancelaria = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -176,10 +176,26 @@ Partial Class Catalogo_Cultivos
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información del cultivo"
         '
+        'txtFraccionArancelaria
+        '
+        Me.txtFraccionArancelaria.Location = New System.Drawing.Point(110, 167)
+        Me.txtFraccionArancelaria.MaxLength = 20
+        Me.txtFraccionArancelaria.Name = "txtFraccionArancelaria"
+        Me.txtFraccionArancelaria.Size = New System.Drawing.Size(281, 20)
+        Me.txtFraccionArancelaria.TabIndex = 6
+        '
+        'lblDisplayFraccionArancelaria
+        '
+        Me.lblDisplayFraccionArancelaria.Location = New System.Drawing.Point(10, 160)
+        Me.lblDisplayFraccionArancelaria.Name = "lblDisplayFraccionArancelaria"
+        Me.lblDisplayFraccionArancelaria.Size = New System.Drawing.Size(84, 27)
+        Me.lblDisplayFraccionArancelaria.TabIndex = 155
+        Me.lblDisplayFraccionArancelaria.Text = "Fracción arancelaria :"
+        '
         'ckbGenerico
         '
         Me.ckbGenerico.AutoSize = True
-        Me.ckbGenerico.Location = New System.Drawing.Point(110, 225)
+        Me.ckbGenerico.Location = New System.Drawing.Point(110, 198)
         Me.ckbGenerico.Name = "ckbGenerico"
         Me.ckbGenerico.Size = New System.Drawing.Size(82, 17)
         Me.ckbGenerico.TabIndex = 7
@@ -189,7 +205,7 @@ Partial Class Catalogo_Cultivos
         '
         'TxtObservacion1
         '
-        Me.TxtObservacion1.Location = New System.Drawing.Point(110, 158)
+        Me.TxtObservacion1.Location = New System.Drawing.Point(110, 131)
         Me.TxtObservacion1.MaxLength = 120
         Me.TxtObservacion1.Name = "TxtObservacion1"
         Me.TxtObservacion1.Size = New System.Drawing.Size(281, 20)
@@ -198,7 +214,7 @@ Partial Class Catalogo_Cultivos
         'lblCostosProdiccion
         '
         Me.lblCostosProdiccion.AutoSize = True
-        Me.lblCostosProdiccion.Location = New System.Drawing.Point(10, 161)
+        Me.lblCostosProdiccion.Location = New System.Drawing.Point(10, 134)
         Me.lblCostosProdiccion.Name = "lblCostosProdiccion"
         Me.lblCostosProdiccion.Size = New System.Drawing.Size(103, 13)
         Me.lblCostosProdiccion.TabIndex = 152
@@ -206,7 +222,7 @@ Partial Class Catalogo_Cultivos
         '
         'TxtAliasExtranjero
         '
-        Me.TxtAliasExtranjero.Location = New System.Drawing.Point(110, 131)
+        Me.TxtAliasExtranjero.Location = New System.Drawing.Point(110, 104)
         Me.TxtAliasExtranjero.MaxLength = 120
         Me.TxtAliasExtranjero.Name = "TxtAliasExtranjero"
         Me.TxtAliasExtranjero.Size = New System.Drawing.Size(281, 20)
@@ -214,7 +230,7 @@ Partial Class Catalogo_Cultivos
         '
         'TxtAliasNacional
         '
-        Me.TxtAliasNacional.Location = New System.Drawing.Point(110, 104)
+        Me.TxtAliasNacional.Location = New System.Drawing.Point(110, 77)
         Me.TxtAliasNacional.MaxLength = 120
         Me.TxtAliasNacional.Name = "TxtAliasNacional"
         Me.TxtAliasNacional.Size = New System.Drawing.Size(281, 20)
@@ -223,7 +239,7 @@ Partial Class Catalogo_Cultivos
         'lblDisplayAliasExtranjero
         '
         Me.lblDisplayAliasExtranjero.AutoSize = True
-        Me.lblDisplayAliasExtranjero.Location = New System.Drawing.Point(10, 134)
+        Me.lblDisplayAliasExtranjero.Location = New System.Drawing.Point(10, 107)
         Me.lblDisplayAliasExtranjero.Name = "lblDisplayAliasExtranjero"
         Me.lblDisplayAliasExtranjero.Size = New System.Drawing.Size(84, 13)
         Me.lblDisplayAliasExtranjero.TabIndex = 148
@@ -232,7 +248,7 @@ Partial Class Catalogo_Cultivos
         'LblDisplayAliasNacional
         '
         Me.LblDisplayAliasNacional.AutoSize = True
-        Me.LblDisplayAliasNacional.Location = New System.Drawing.Point(10, 107)
+        Me.LblDisplayAliasNacional.Location = New System.Drawing.Point(10, 80)
         Me.LblDisplayAliasNacional.Name = "LblDisplayAliasNacional"
         Me.LblDisplayAliasNacional.Size = New System.Drawing.Size(78, 13)
         Me.LblDisplayAliasNacional.TabIndex = 147
@@ -240,11 +256,12 @@ Partial Class Catalogo_Cultivos
         '
         'txtCuentaPredio
         '
-        Me.txtCuentaPredio.Location = New System.Drawing.Point(110, 77)
+        Me.txtCuentaPredio.Location = New System.Drawing.Point(110, 258)
         Me.txtCuentaPredio.MaxLength = 120
         Me.txtCuentaPredio.Name = "txtCuentaPredio"
         Me.txtCuentaPredio.Size = New System.Drawing.Size(281, 20)
         Me.txtCuentaPredio.TabIndex = 2
+        Me.txtCuentaPredio.Visible = False
         '
         'LblDisplayCodCultivo
         '
@@ -266,11 +283,12 @@ Partial Class Catalogo_Cultivos
         'LblDisplayCuentaPredio
         '
         Me.LblDisplayCuentaPredio.AutoSize = True
-        Me.LblDisplayCuentaPredio.Location = New System.Drawing.Point(10, 80)
+        Me.LblDisplayCuentaPredio.Location = New System.Drawing.Point(10, 261)
         Me.LblDisplayCuentaPredio.Name = "LblDisplayCuentaPredio"
         Me.LblDisplayCuentaPredio.Size = New System.Drawing.Size(79, 13)
         Me.LblDisplayCuentaPredio.TabIndex = 124
         Me.LblDisplayCuentaPredio.Text = "Cuenta predio :"
+        Me.LblDisplayCuentaPredio.Visible = False
         '
         'LblDisplayNom
         '
@@ -309,22 +327,6 @@ Partial Class Catalogo_Cultivos
         '
         Me.tssLabelEstado.Name = "tssLabelEstado"
         Me.tssLabelEstado.Size = New System.Drawing.Size(0, 17)
-        '
-        'txtFraccionArancelaria
-        '
-        Me.txtFraccionArancelaria.Location = New System.Drawing.Point(110, 194)
-        Me.txtFraccionArancelaria.MaxLength = 20
-        Me.txtFraccionArancelaria.Name = "txtFraccionArancelaria"
-        Me.txtFraccionArancelaria.Size = New System.Drawing.Size(281, 20)
-        Me.txtFraccionArancelaria.TabIndex = 6
-        '
-        'lblDisplayFraccionArancelaria
-        '
-        Me.lblDisplayFraccionArancelaria.Location = New System.Drawing.Point(10, 187)
-        Me.lblDisplayFraccionArancelaria.Name = "lblDisplayFraccionArancelaria"
-        Me.lblDisplayFraccionArancelaria.Size = New System.Drawing.Size(84, 27)
-        Me.lblDisplayFraccionArancelaria.TabIndex = 155
-        Me.lblDisplayFraccionArancelaria.Text = "Fracción arancelaria :"
         '
         'Catalogo_Cultivos
         '
