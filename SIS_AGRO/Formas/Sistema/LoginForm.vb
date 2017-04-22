@@ -238,14 +238,15 @@ Public Class LoginForm
                 Exit Sub
             End If
 
-            If bSistemaDirecto = True Then
-                My.Settings.ModoSistema = "Integral"
-            Else
-                If My.Settings.MostrarModoSistema = "1" Then
-                    Dim f As New ModoSistema
-                    f.ShowDialog()
-                End If
-            End If
+            My.Settings.ModoSistema = "Integral"
+            'If bSistemaDirecto = True Then
+            '    My.Settings.ModoSistema = "Integral"
+            'Else
+            '    If My.Settings.MostrarModoSistema = "1" Then
+            '        Dim f As New ModoSistema
+            '        f.ShowDialog()
+            '    End If
+            'End If
 
             If My.Settings.PrecargarLogins = "1" And (My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "ERNESTOA") Then
                 Me.DespliegaUsuarios()
