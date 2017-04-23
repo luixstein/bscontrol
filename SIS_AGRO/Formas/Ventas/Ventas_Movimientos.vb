@@ -862,6 +862,13 @@ Buscar:
 
             Me.Grid.Column(Me.igyNombreCentroCosto).Locked = True
 
+            Me.Grid.Column(Me.igyIEPS_PORCENTAJE).Visible = False
+            Me.Grid.Column(Me.igyIEPS_UNITARIO).Visible = False
+            Me.Grid.Column(Me.igyIEPS_IMPORTE).Visible = False
+            Me.Grid.Column(Me.igyBASE_IEPS).Visible = False
+            Me.Grid.Column(Me.igyBASE_IVA).Visible = False
+            Me.Grid.Column(Me.igyPRECIO_TOTAL).Visible = False
+
             'If bEsReferencia = True Then
             '    Me.Grid.Column(Me.igyCodigo).Locked = True
             '    Me.Grid.Column(Me.igyDescripcion).Locked = True

@@ -273,7 +273,7 @@ Public Class Catalogo_Vendedores
                     Me.CboEstatus.SelectedIndex = 1
                 End If
                 Me.txtCodigoCategoria.Text = .Codigo_Categoria
-                Dim sql As New Class_find("Select NOMBRE_CATEGORIA From CAT_CATEGORIAS Where CUENTA_CONTABLE='" & txtCodigoCategoria.Text & "' ")
+                Dim sql As New Class_find("Select NOMBRE_CATEGORIA From CAT_CATEGORIAS Where CODIGO_CATEGORIA='" & Me.txtCodigoCategoria.Text & "' ")
                 If sql.Result1 = "" Then
                 Else
                     LblNombreCategoria.Text = sql.Result1

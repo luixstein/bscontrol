@@ -113,13 +113,13 @@ Public Class Catalogo_Productos_Agricolas
         Dim sMsg As String = ""
         Select Case Me.Estado
             Case enumEstados.EDICION
-                sMsg = " grabar las modificaciones del " & Me.msgElemento & " : " & Me.TxtCodArticulo.Text
+                sMsg = "grabar las modificaciones del " & Me.msgElemento & " : " & Me.TxtDescripcion.Text
             Case enumEstados.NUEVO
-                sMsg = " agregar el " & Me.msgElemento & " : " & Me.TxtCodArticulo.Text
+                sMsg = "agregar el " & Me.msgElemento & " : " & Me.TxtDescripcion.Text
         End Select
         sMsg = "Deseas " & sMsg & " ?"
         If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
-            Call Grabar_Elemento()
+            Me.Grabar_Elemento()
         End If
     End Sub
 
@@ -589,6 +589,7 @@ Public Class Catalogo_Productos_Agricolas
                         .CODIGO_ETIQUETA = Me.cboEtiqueta.SelectedValue.ToString
                         .RANGO_PIEZAS = Me.TxtRangoPiezas.Text
                         .INVENTARIABLE = Convert.ToInt32(Me.chkInventariable.Checked).ToString
+                        .GRADO_TOXICIDAD = "0"
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO

@@ -68,6 +68,8 @@ Partial Class Ventas_Movimientos
         Me.lblDisplayVendedor = New System.Windows.Forms.Label()
         Me.chkVentaPublicoGeneral = New System.Windows.Forms.CheckBox()
         Me.gbPesos = New System.Windows.Forms.GroupBox()
+        Me.lblIEPS = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.lblTotal = New System.Windows.Forms.Label()
         Me.lblSubtotal = New System.Windows.Forms.Label()
         Me.lblImpuesto = New System.Windows.Forms.Label()
@@ -97,6 +99,7 @@ Partial Class Ventas_Movimientos
         Me.txtFolioEmbarque = New System.Windows.Forms.TextBox()
         Me.lblDisplayFolioEmbarque = New System.Windows.Forms.Label()
         Me.gbTotales = New System.Windows.Forms.GroupBox()
+        Me.lblIEPSIncluido = New System.Windows.Forms.Label()
         Me.btnSeries = New System.Windows.Forms.Button()
         Me.btnAgregaAddenda = New System.Windows.Forms.Button()
         Me.lblDisplayTipoCambio = New System.Windows.Forms.Label()
@@ -107,9 +110,7 @@ Partial Class Ventas_Movimientos
         Me.Grid = New FlexCell.Grid()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.GridSeries = New FlexCell.Grid()
-        Me.lblIEPS = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.lblIEPSIncluido = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -396,7 +397,7 @@ Partial Class Ventas_Movimientos
         Me.lblDisplayAlmacen.Name = "lblDisplayAlmacen"
         Me.lblDisplayAlmacen.Size = New System.Drawing.Size(54, 13)
         Me.lblDisplayAlmacen.TabIndex = 239
-        Me.lblDisplayAlmacen.Text = "Almacen :"
+        Me.lblDisplayAlmacen.Text = "Almacén :"
         '
         'lblDisplaySubtotalPesos
         '
@@ -449,7 +450,7 @@ Partial Class Ventas_Movimientos
         Me.lblDisplayPoliza.Name = "lblDisplayPoliza"
         Me.lblDisplayPoliza.Size = New System.Drawing.Size(41, 13)
         Me.lblDisplayPoliza.TabIndex = 283
-        Me.lblDisplayPoliza.Text = "Poliza :"
+        Me.lblDisplayPoliza.Text = "Póliza :"
         '
         'lblDisplayMercado
         '
@@ -531,6 +532,26 @@ Partial Class Ventas_Movimientos
         Me.gbPesos.TabIndex = 292
         Me.gbPesos.TabStop = False
         Me.gbPesos.Text = "Pesos"
+        '
+        'lblIEPS
+        '
+        Me.lblIEPS.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblIEPS.ForeColor = System.Drawing.Color.DarkBlue
+        Me.lblIEPS.Location = New System.Drawing.Point(68, 35)
+        Me.lblIEPS.Name = "lblIEPS"
+        Me.lblIEPS.Size = New System.Drawing.Size(110, 13)
+        Me.lblIEPS.TabIndex = 251
+        Me.lblIEPS.Text = "0.00"
+        Me.lblIEPS.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(6, 34)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(37, 13)
+        Me.Label2.TabIndex = 250
+        Me.Label2.Text = "IEPS :"
         '
         'lblTotal
         '
@@ -803,7 +824,7 @@ Partial Class Ventas_Movimientos
         Me.lblMetodoPago.Name = "lblMetodoPago"
         Me.lblMetodoPago.Size = New System.Drawing.Size(91, 13)
         Me.lblMetodoPago.TabIndex = 335
-        Me.lblMetodoPago.Text = "Metodo de pago :"
+        Me.lblMetodoPago.Text = "Método de pago :"
         '
         'cboMetodoPago
         '
@@ -843,6 +864,7 @@ Partial Class Ventas_Movimientos
         '
         'gbTotales
         '
+        Me.gbTotales.Controls.Add(Me.Label1)
         Me.gbTotales.Controls.Add(Me.lblIEPSIncluido)
         Me.gbTotales.Controls.Add(Me.btnSeries)
         Me.gbTotales.Controls.Add(Me.btnAgregaAddenda)
@@ -862,6 +884,17 @@ Partial Class Ventas_Movimientos
         Me.gbTotales.Size = New System.Drawing.Size(986, 108)
         Me.gbTotales.TabIndex = 2
         Me.gbTotales.TabStop = False
+        '
+        'lblIEPSIncluido
+        '
+        Me.lblIEPSIncluido.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblIEPSIncluido.ForeColor = System.Drawing.Color.DarkBlue
+        Me.lblIEPSIncluido.Location = New System.Drawing.Point(820, 34)
+        Me.lblIEPSIncluido.Name = "lblIEPSIncluido"
+        Me.lblIEPSIncluido.Size = New System.Drawing.Size(110, 13)
+        Me.lblIEPSIncluido.TabIndex = 382
+        Me.lblIEPSIncluido.Text = "0.00"
+        Me.lblIEPSIncluido.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'btnSeries
         '
@@ -980,36 +1013,14 @@ Partial Class Ventas_Movimientos
         Me.GridSeries.TabIndex = 2
         Me.GridSeries.UncheckedImage = CType(resources.GetObject("GridSeries.UncheckedImage"), System.Drawing.Bitmap)
         '
-        'lblIEPS
+        'Label1
         '
-        Me.lblIEPS.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.lblIEPS.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblIEPS.Location = New System.Drawing.Point(68, 35)
-        Me.lblIEPS.Name = "lblIEPS"
-        Me.lblIEPS.Size = New System.Drawing.Size(110, 13)
-        Me.lblIEPS.TabIndex = 251
-        Me.lblIEPS.Text = "0.00"
-        Me.lblIEPS.TextAlign = System.Drawing.ContentAlignment.TopRight
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(6, 34)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(37, 13)
-        Me.Label2.TabIndex = 250
-        Me.Label2.Text = "IEPS :"
-        '
-        'lblIEPSIncluido
-        '
-        Me.lblIEPSIncluido.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.lblIEPSIncluido.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblIEPSIncluido.Location = New System.Drawing.Point(810, 34)
-        Me.lblIEPSIncluido.Name = "lblIEPSIncluido"
-        Me.lblIEPSIncluido.Size = New System.Drawing.Size(110, 13)
-        Me.lblIEPSIncluido.TabIndex = 382
-        Me.lblIEPSIncluido.Text = "0.00"
-        Me.lblIEPSIncluido.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(853, 16)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(77, 13)
+        Me.Label1.TabIndex = 383
+        Me.Label1.Text = "IEPS Incluido :"
         '
         'Ventas_Movimientos
         '
@@ -1133,4 +1144,5 @@ Partial Class Ventas_Movimientos
     Friend WithEvents lblIEPS As System.Windows.Forms.Label
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents lblIEPSIncluido As System.Windows.Forms.Label
+    Friend WithEvents Label1 As System.Windows.Forms.Label
 End Class
