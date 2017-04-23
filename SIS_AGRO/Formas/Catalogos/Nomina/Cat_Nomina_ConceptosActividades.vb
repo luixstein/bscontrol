@@ -55,7 +55,7 @@ Public Class Cat_Nomina_ConceptosActividades
     Private Sub tsbNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbNuevo.Click
         Me.Estado = enumEstados.NUEVO
         Me.Cambia_Estado()
-        Me.TxtCodigoActividad.Text = Me.oActividad.CodigoSiguiente
+        Me.TxtCodigoConceptoActividad.Text = Me.oActividad.CodigoSiguiente
     End Sub
 
     Private Sub tsbEditar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbEditar.Click
@@ -67,9 +67,9 @@ Public Class Cat_Nomina_ConceptosActividades
         Dim sMsg As String = ""
         Select Case Me.Estado
             Case enumEstados.EDICION
-                sMsg = " grabar las modificaciones del " & Me.msgElemento & " : " & Me.TxtCodigoActividad.Text
+                sMsg = " grabar las modificaciones del " & Me.msgElemento & " : " & Me.TxtCodigoConceptoActividad.Text
             Case enumEstados.NUEVO
-                sMsg = " agregar el " & Me.msgElemento & " : " & Me.TxtCodigoActividad.Text
+                sMsg = " agregar el " & Me.msgElemento & " : " & Me.TxtCodigoConceptoActividad.Text
         End Select
         sMsg = "Deseas " & sMsg & " ?"
         If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
@@ -107,11 +107,11 @@ Public Class Cat_Nomina_ConceptosActividades
                 Me.tsbGrabar.Enabled = True
                 Me.tsbCancelar.Enabled = True
 
-                Me.TxtCodigoActividad.Enabled = False
-                Me.TxtConceptoActividad.Enabled = True
+                Me.TxtCodigoConceptoActividad.Enabled = False
+                Me.TxtDescripcion.Enabled = True
                 Me.CboEstatus.Enabled = False
                 Me.InicializaElemento()
-                Me.TxtCodigoActividad.Focus()
+                Me.TxtCodigoConceptoActividad.Focus()
                 Me.btnAgregaSubActividad.Enabled = False
                 Me.btnEditarSubActividad.Enabled = False
                 Me.lstbSubActividades.DataSource = Nothing
@@ -125,10 +125,10 @@ Public Class Cat_Nomina_ConceptosActividades
                 Me.tsbGrabar.Enabled = True
                 Me.tsbCancelar.Enabled = True
 
-                Me.TxtCodigoActividad.Enabled = False
-                Me.TxtConceptoActividad.Enabled = True
+                Me.TxtCodigoConceptoActividad.Enabled = False
+                Me.TxtDescripcion.Enabled = True
                 Me.CboEstatus.Enabled = True
-                Me.TxtConceptoActividad.Focus()
+                Me.TxtDescripcion.Focus()
                 Me.btnAgregaSubActividad.Enabled = True
                 Me.btnEditarSubActividad.Enabled = True
 
@@ -146,8 +146,8 @@ Public Class Cat_Nomina_ConceptosActividades
     End Sub
 
     Private Sub InicializaElemento()
-        Me.TxtCodigoActividad.Text = ""
-        Me.TxtConceptoActividad.Text = ""
+        Me.TxtCodigoConceptoActividad.Text = ""
+        Me.TxtDescripcion.Text = ""
         Me.CboEstatus.SelectedIndex = 0
     End Sub
 
@@ -167,7 +167,7 @@ Public Class Cat_Nomina_ConceptosActividades
             Dim dView As Data.DataView
             If Me.Run = False Then
                 If Me.Grid.Rows.Count > 0 Then
-                    dView = New Data.DataView(oSubActividades.ObtenerElementosSubActividades(Me.Grid.Item(0, 1).Value.ToString)) 'Envia el primer codigo_concepto_actividad de la lista del grid
+                    dView = New Data.DataView(oSubActividades.ObtenerElementosSubActividades(Me.Grid.Item(0, 0).Value.ToString)) 'Envia el primer codigo_concepto_actividad de la lista del grid
                 End If
             Else
                 dView = New Data.DataView(oSubActividades.ObtenerElementosSubActividades(Me.Grid.CurrentRow.Cells("CODIGO_CONCEPTO_ACTIVIDAD").Value.ToString))
@@ -190,8 +190,8 @@ Public Class Cat_Nomina_ConceptosActividades
         If Me.oActividad.Consultar Then
             With Me.oActividad
                 sCodigo = "000" + sCodigo_Elemento
-                Me.TxtCodigoActividad.Text = sCodigo.Substring(Len(sCodigo) - 3).ToString
-                Me.TxtConceptoActividad.Text = .NOMBRE_CONCEPTO_ACTIVIDAD.ToString
+                Me.TxtCodigoConceptoActividad.Text = sCodigo.Substring(Len(sCodigo) - 3).ToString
+                Me.TxtDescripcion.Text = .NOMBRE_CONCEPTO_ACTIVIDAD.ToString
                 Me.DesplegarElementosSubActividad()
                 If .Estatus = "A" Then
                     Me.CboEstatus.SelectedIndex = 0
@@ -206,7 +206,7 @@ Public Class Cat_Nomina_ConceptosActividades
     Private Sub Grabar_Elemento()
         Dim Grabado As Boolean = False
 
-        If txtLEN(Me.TxtConceptoActividad.Text) = False Then
+        If txtLEN(Me.TxtDescripcion.Text) = False Then
             MsgBox("Asigne un nombre a la actividad.", MsgBoxStyle.Exclamation, Me.Name)
             Exit Sub
         End If
@@ -216,8 +216,8 @@ Public Class Cat_Nomina_ConceptosActividades
                 Me.oActividad = New Class_CatConceptosActividades
                 Try
                     With Me.oActividad
-                        .CODIGO_CONCEPTO_ACTIVIDAD = Me.TxtCodigoActividad.Text
-                        .NOMBRE_CONCEPTO_ACTIVIDAD = Me.TxtConceptoActividad.Text
+                        .CODIGO_CONCEPTO_ACTIVIDAD = Me.TxtCodigoConceptoActividad.Text
+                        .NOMBRE_CONCEPTO_ACTIVIDAD = Me.TxtDescripcion.Text
                         .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -237,7 +237,7 @@ Public Class Cat_Nomina_ConceptosActividades
                             Me.Refrescar()
                             Me.Cambia_Estado()
                             If Me.Estado = enumEstados.NUEVO Then
-                                Me.TxtCodigoActividad.Text = .CodigoSiguiente.ToString
+                                Me.TxtCodigoConceptoActividad.Text = .CodigoSiguiente.ToString
                             End If
                         End If
                     End With
@@ -254,8 +254,8 @@ Public Class Cat_Nomina_ConceptosActividades
     Private Sub btnAgregaSubActividad_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAgregaSubActividad.Click
         Dim Child As New Cat_Nomina_Actividades
         Child.StartPosition = FormStartPosition.CenterScreen
-        Child.txtConcepto.Text = Me.TxtConceptoActividad.Text
-        Child.CodigoConcepto = Me.TxtCodigoActividad.Text
+        Child.txtConcepto.Text = Me.TxtDescripcion.Text
+        Child.CodigoConcepto = Me.TxtCodigoConceptoActividad.Text
         Child.ChildParaGrabar = True
         Child.ShowDialog()
         Child.Dispose()
@@ -266,9 +266,10 @@ Public Class Cat_Nomina_ConceptosActividades
         If CInt(Me.lstbSubActividades.SelectedValue) > 0 Then
             Dim Child As New Cat_Nomina_Actividades
             Child.StartPosition = FormStartPosition.CenterScreen
-            Child.txtConcepto.Text = Me.TxtConceptoActividad.Text
-            Child.CodigoConcepto = Me.TxtCodigoActividad.Text
-            Child.txtCodigoConcepto.Text = Me.TxtCodigoActividad.Text
+            Child.txtConcepto.Text = Me.TxtDescripcion.Text
+            Child.CodigoConcepto = Me.TxtCodigoConceptoActividad.Text
+            'Child.txtCodigoConcepto.Text = Me.TxtCodigoConceptoActividad.Text
+            Child.TxtCodigoActividad.Text = Me.lstbSubActividades.SelectedValue.ToString
             Child.ChildParaGrabar = False
             Child.ShowDialog()
             Child.Dispose()
@@ -347,11 +348,11 @@ Public Class Cat_Nomina_ConceptosActividades
             tsbGrabar.PerformClick()
         End If
     End Sub
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtConceptoActividad.KeyPress
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtDescripcion.KeyPress
         txtNoBeep(e)
     End Sub
 
-    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtConceptoActividad.KeyDown
+    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtDescripcion.KeyDown
         If e.KeyCode = Keys.Return Then
             Select Case Me.Estado
                 Case enumEstados.EDICION
@@ -362,12 +363,12 @@ Public Class Cat_Nomina_ConceptosActividades
         End If
     End Sub
 
-    Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoActividad.KeyPress
+    Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoConceptoActividad.KeyPress
         Dim txt As TextBox = CType(sender, TextBox)
         txtNoBeep(e)
     End Sub
 
-    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoActividad.KeyPress
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoConceptoActividad.KeyPress
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub

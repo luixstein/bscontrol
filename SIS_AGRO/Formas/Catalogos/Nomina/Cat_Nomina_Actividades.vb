@@ -74,11 +74,13 @@ Public Class Cat_Nomina_Actividades
         Me.DesplegarElementos()
         If Me._ChildParaGrabar = True Then
             Me.oActividad.CODIGO_CONCEPTO_ACTIVIDAD = Me._CodigoConcepto
-            Me.tsbNuevo.PerformClick()
+            Estado = enumEstados.NUEVO
         Else
+            Me.LlenaElemento(Me.TxtCodigoActividad.Text)
             Estado = enumEstados.EDICION
-            Me.Cambia_Estado()
         End If
+        Me.Cambia_Estado()
+        'Me.tsbNuevo.PerformClick()
     End Sub
 #End Region
 
@@ -176,7 +178,7 @@ Public Class Cat_Nomina_Actividades
     End Sub
 
     Private Sub InicializaElemento()
-        Me.TxtCodigoActividad.Text = ""
+        'Me.TxtCodigoActividad.Text = ""
         Me.TxtNombreActividad.Text = ""
         Me.CboEstatus.SelectedIndex = 0
         Me.txtCodigoSubActividad.Text = ""
