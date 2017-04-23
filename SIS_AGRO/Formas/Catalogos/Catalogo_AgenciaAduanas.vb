@@ -178,7 +178,12 @@ Public Class Catalogo_AgenciaAduanas
                     Me.cboNacionalidad.Text = "ESTADOUNIDENSE"
                 End If
                 Me.cboNacionalidad.Text = .NACIONAL.ToString
-                Me.CboEstatus.Text = Strings.Left(Me.CboEstatus.Text, 1)
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
+
             End With
         End If
         oElemento = Nothing
@@ -207,12 +212,7 @@ Public Class Catalogo_AgenciaAduanas
                         Else
                             .NACIONAL = "0"
                         End If
-
-                        If .Estatus = "A" Then
-                            Me.CboEstatus.SelectedIndex = 0
-                        Else
-                            Me.CboEstatus.SelectedIndex = 1
-                        End If
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO

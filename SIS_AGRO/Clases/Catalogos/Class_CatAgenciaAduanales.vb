@@ -68,7 +68,6 @@ Public Class Class_CatAgenciaAduanales
             Me._NACIONAL = VALUE
         End Set
     End Property
-
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
