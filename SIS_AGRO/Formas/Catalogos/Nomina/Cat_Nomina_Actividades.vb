@@ -102,16 +102,21 @@ Public Class Cat_Nomina_Actividades
         Dim sMsg As String = ""
         Select Case Me.Estado
             Case enumEstados.EDICION
-                sMsg = " grabar las modificaciones del " & Me.msgElemento & " : " & Me.TxtCodigoActividad.Text
+                sMsg = "grabar las modificaciones del " & Me.msgElemento & " : " & Me.TxtCodigoActividad.Text
             Case enumEstados.NUEVO
-                sMsg = " agregar el " & Me.msgElemento & " : " & Me.TxtCodigoActividad.Text
+                sMsg = "agregar el " & Me.msgElemento & " : " & Me.TxtCodigoActividad.Text
+            Case Else
+                MsgBox("Estado no válido para grabar.", MsgBoxStyle.Exclamation, Me.Text)
+                Return
         End Select
 
-        sMsg = "Deseas " & sMsg & " ?"
+        'sMsg = "Deseas " & sMsg & " ?"
 
-        If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
-            Me.Grabar_Elemento()
+        'If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
+        If Me.Grabar = True Then
+            Me.Close()
         End If
+        'End If
     End Sub
 
     Private Sub tsbCancelar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbCancelar.Click
@@ -216,19 +221,19 @@ Public Class Cat_Nomina_Actividades
         End If
     End Sub
 
-    Private Sub Grabar_Elemento()
-        Dim Grabado As Boolean = False
+    Private Function Grabar() As Boolean
+        Dim bResultado As Boolean = False
 
         If txtLEN(Me.TxtNombreActividad.Text) = False Then
             MsgBox("Captúre un nombre a la actividad.", MsgBoxStyle.Exclamation, Me.Text)
             Me.TxtNombreActividad.Focus()
-            Exit Sub
+            Exit Function
         End If
 
         If (valorNumerico(Me.txtCostoJornal.Text)) <= 0 Then
             MsgBox("El costo jornal no puede ser menor a 1", MsgBoxStyle.Exclamation, Me.Text)
             Me.txtCostoJornal.Focus()
-            Exit Sub
+            Exit Function
         End If
 
         Select Case Me.Estado
@@ -250,18 +255,18 @@ Public Class Cat_Nomina_Actividades
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 If .Insertar() Then
-                                    Grabado = True
+                                    bResultado = True
                                     Me.Estado = enumEstados.NUEVO
                                 End If
                             Case enumEstados.EDICION
                                 If .Actualizar() Then
-                                    Grabado = True
+                                    bResultado = True
                                     Me.Estado = enumEstados.CONSULTA
                                 End If
                         End Select
 
-                        If Grabado = True Then
-                            MsgBox(Me.msgElemento & " Grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
+                        If bResultado = True Then
+                            'MsgBox(Me.msgElemento & " Grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
                             Me.Refrescar()
                             Me.Cambia_Estado()
                             'If Me.Estado = enumEstados.NUEVO Then
@@ -279,7 +284,9 @@ Public Class Cat_Nomina_Actividades
 
                 End Try
         End Select
-    End Sub
+
+        Return bResultado
+    End Function
 
 #End Region
 
@@ -350,6 +357,12 @@ Public Class Cat_Nomina_Actividades
 #Region "Eventos Genericos"
 
     Private Sub CboEstatus_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboEstatus.KeyDown
+        If e.KeyCode = Keys.Return Then
+            txtTAB(e)
+        End If
+    End Sub
+
+    Private Sub txtCostoJornal_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCostoJornal.KeyDown
         If e.KeyCode = Keys.Return Then
             tsbGrabar.PerformClick()
         End If

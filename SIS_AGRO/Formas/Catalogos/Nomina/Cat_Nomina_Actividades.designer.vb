@@ -96,14 +96,14 @@ Partial Class Cat_Nomina_Actividades
         Me.txtCostoJornal.Location = New System.Drawing.Point(109, 138)
         Me.txtCostoJornal.Name = "txtCostoJornal"
         Me.txtCostoJornal.Size = New System.Drawing.Size(85, 20)
-        Me.txtCostoJornal.TabIndex = 121
+        Me.txtCostoJornal.TabIndex = 6
         '
         'txtCodigoSubActividad
         '
         Me.txtCodigoSubActividad.Location = New System.Drawing.Point(283, 103)
         Me.txtCodigoSubActividad.Name = "txtCodigoSubActividad"
         Me.txtCodigoSubActividad.Size = New System.Drawing.Size(85, 20)
-        Me.txtCodigoSubActividad.TabIndex = 120
+        Me.txtCodigoSubActividad.TabIndex = 5
         Me.txtCodigoSubActividad.Visible = False
         '
         'txtCodigoConcepto
@@ -111,7 +111,7 @@ Partial Class Cat_Nomina_Actividades
         Me.txtCodigoConcepto.Location = New System.Drawing.Point(187, 103)
         Me.txtCodigoConcepto.Name = "txtCodigoConcepto"
         Me.txtCodigoConcepto.Size = New System.Drawing.Size(85, 20)
-        Me.txtCodigoConcepto.TabIndex = 119
+        Me.txtCodigoConcepto.TabIndex = 4
         Me.txtCodigoConcepto.Visible = False
         '
         'txtConcepto
@@ -121,7 +121,7 @@ Partial Class Cat_Nomina_Actividades
         Me.txtConcepto.MaxLength = 50
         Me.txtConcepto.Name = "txtConcepto"
         Me.txtConcepto.Size = New System.Drawing.Size(259, 20)
-        Me.txtConcepto.TabIndex = 118
+        Me.txtConcepto.TabIndex = 0
         '
         'lblConcepto
         '
@@ -147,7 +147,7 @@ Partial Class Cat_Nomina_Actividades
         Me.TxtNombreActividad.MaxLength = 50
         Me.TxtNombreActividad.Name = "TxtNombreActividad"
         Me.TxtNombreActividad.Size = New System.Drawing.Size(259, 20)
-        Me.TxtNombreActividad.TabIndex = 1
+        Me.TxtNombreActividad.TabIndex = 2
         '
         'LblEstatus
         '
@@ -167,7 +167,7 @@ Partial Class Cat_Nomina_Actividades
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(73, 21)
-        Me.CboEstatus.TabIndex = 2
+        Me.CboEstatus.TabIndex = 3
         '
         'LblDisplayCodActividad
         '
@@ -184,7 +184,7 @@ Partial Class Cat_Nomina_Actividades
         Me.TxtCodigoActividad.MaxLength = 3
         Me.TxtCodigoActividad.Name = "TxtCodigoActividad"
         Me.TxtCodigoActividad.Size = New System.Drawing.Size(57, 20)
-        Me.TxtCodigoActividad.TabIndex = 0
+        Me.TxtCodigoActividad.TabIndex = 1
         '
         'Label2
         '
@@ -328,7 +328,7 @@ Partial Class Cat_Nomina_Actividades
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.MaximizeBox = False
         Me.Name = "Cat_Nomina_Actividades"
-        Me.Text = "Catalogo de actividades"
+        Me.Text = "Cátalogo de actividades"
         Me.gBoxInformacion.ResumeLayout(False)
         Me.gBoxInformacion.PerformLayout()
         Me.gBoxBusquedaRapida.ResumeLayout(False)

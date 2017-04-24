@@ -667,9 +667,9 @@ Partial Class Ventas_Movimientos
         Me.chkImprimirDolares.AutoSize = True
         Me.chkImprimirDolares.Location = New System.Drawing.Point(263, 19)
         Me.chkImprimirDolares.Name = "chkImprimirDolares"
-        Me.chkImprimirDolares.Size = New System.Drawing.Size(113, 17)
+        Me.chkImprimirDolares.Size = New System.Drawing.Size(102, 17)
         Me.chkImprimirDolares.TabIndex = 294
-        Me.chkImprimirDolares.Text = "Imprimir en dólares"
+        Me.chkImprimirDolares.Text = "Es en dólares  ?"
         Me.chkImprimirDolares.UseVisualStyleBackColor = True
         '
         'lblSaldo
@@ -907,11 +907,11 @@ Partial Class Ventas_Movimientos
         '
         'btnAgregaAddenda
         '
-        Me.btnAgregaAddenda.Location = New System.Drawing.Point(356, 74)
+        Me.btnAgregaAddenda.Location = New System.Drawing.Point(318, 74)
         Me.btnAgregaAddenda.Name = "btnAgregaAddenda"
-        Me.btnAgregaAddenda.Size = New System.Drawing.Size(75, 23)
+        Me.btnAgregaAddenda.Size = New System.Drawing.Size(113, 23)
         Me.btnAgregaAddenda.TabIndex = 339
-        Me.btnAgregaAddenda.Text = "Addenda"
+        Me.btnAgregaAddenda.Text = "Addenda soriana"
         Me.btnAgregaAddenda.UseVisualStyleBackColor = True
         '
         'lblDisplayTipoCambio

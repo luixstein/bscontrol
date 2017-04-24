@@ -664,6 +664,12 @@ Buscar:
 
                 .Column(Me.iGyBoton).CellType = FlexCell.CellTypeEnum.Button
 
+                .Column(Me.igyIEPS_PORCENTAJE).Visible = False
+                .Column(Me.igyIEPS_UNITARIO).Visible = False
+                .Column(Me.igyIEPS_IMPORTE).Visible = False
+                .Column(Me.igyBASE_IEPS).Visible = False
+                .Column(Me.igyBASE_IVA).Visible = False
+
                 .AutoRedraw = True
                 .Refresh()
             End With
