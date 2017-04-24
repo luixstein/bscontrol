@@ -763,6 +763,7 @@ Partial Class Compras_Movimientos
         Me.txtIVA.Location = New System.Drawing.Point(709, 473)
         Me.txtIVA.MaxLength = 80
         Me.txtIVA.Name = "txtIVA"
+        Me.txtIVA.ReadOnly = True
         Me.txtIVA.Size = New System.Drawing.Size(100, 20)
         Me.txtIVA.TabIndex = 330
         Me.txtIVA.TextAlign = System.Windows.Forms.HorizontalAlignment.Right

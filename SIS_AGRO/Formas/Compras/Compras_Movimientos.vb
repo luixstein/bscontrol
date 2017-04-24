@@ -589,7 +589,7 @@ Buscar:
 
                     .Column(Me.iGyNombreCuentaContable).Width = 70
                     .Column(Me.iGyBoton).Width = 70
-                    .Column(Me.iGyIDAdicional).Width = 70
+                    .Column(Me.iGyIDAdicional).Visible = False '.Column(Me.iGyIDAdicional).Width = 70
 
                 Else
                     .Column(Me.iGyBoton).Visible = False
@@ -1803,20 +1803,22 @@ Buscar:
             Me.txtIEPS.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyIEPS_IMPORTE), Empresa_Sistema.DECIMALES_CONTABILIDAD))
 
             Me.lblIVAcalculado.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImpuestoImporte), Empresa_Sistema.DECIMALES_CONTABILIDAD))
+            Me.txtIVA.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImpuestoImporte), Empresa_Sistema.DECIMALES_CONTABILIDAD))
 
-            If bIva = False Then
-                'If valorNumerico(Me.lblIVAcalculado.Text) > 0 And valorNumerico(Me.txtIVA.Text) = 0 Then
-                Me.txtIVA.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImpuestoImporte), Empresa_Sistema.DECIMALES_CONTABILIDAD))
-            Else
-                Me.txtIVA.Text = FormatImporteContable(valorNumerico(Me.txtIVA.Text))
-                'ElseIf valorNumerico(Me.lblIVAcalculado.Text) <> valorNumerico(Me.txtIVA.Text) Then
-                If valorNumerico(Me.txtIVA.Text) > valorNumerico(Me.lblIVAcalculado.Text) - 1 And valorNumerico(Me.txtIVA.Text) > valorNumerico(Me.lblIVAcalculado.Text) + 1 Then
-                    MsgBox("El IVA asignado no es correcto, favor de verificar.", MsgBoxStyle.Exclamation)
-                    Me.txtIVA.Focus()
-                    Exit Sub
-                End If
-                'End If
-            End If
+            'Se quitó de momento funcionalidad para poder editar el iva total a mano, hay que rediseñar solución. 24abr
+            'If bIva = False Then
+            '    'If valorNumerico(Me.lblIVAcalculado.Text) > 0 And valorNumerico(Me.txtIVA.Text) = 0 Then
+            '    Me.txtIVA.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImpuestoImporte), Empresa_Sistema.DECIMALES_CONTABILIDAD))
+            'Else
+            '    Me.txtIVA.Text = FormatImporteContable(valorNumerico(Me.txtIVA.Text))
+            '    'ElseIf valorNumerico(Me.lblIVAcalculado.Text) <> valorNumerico(Me.txtIVA.Text) Then
+            '    If valorNumerico(Me.txtIVA.Text) > valorNumerico(Me.lblIVAcalculado.Text) - 1 And valorNumerico(Me.txtIVA.Text) > valorNumerico(Me.lblIVAcalculado.Text) + 1 Then
+            '        MsgBox("El IVA asignado no es correcto, favor de verificar.", MsgBoxStyle.Exclamation)
+            '        Me.txtIVA.Focus()
+            '        Exit Sub
+            '    End If
+            '    'End If
+            'End If
 
             Me.txtTotal.Text = FormatImporteContable((valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.txtIEPS.Text) + valorNumerico(Me.txtIVA.Text)) - valorNumerico(Me.TxtRetencion.Text))
 
