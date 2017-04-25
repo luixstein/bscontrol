@@ -32,8 +32,8 @@ Public Class Cat_NominaPuestos
         ' Add any initialization after the InitializeComponent() call.
 
         Try
-            Me.msgElemento = "Punto de pago"
-            Me.msgElementos = "Puntos de pagos"
+            Me.msgElemento = "Puesto"
+            Me.msgElementos = "Puestos"
             Me.Run = False
             'Me.lstbElementos.ContextMenuStrip = Me.cMenuStripAccion
             Estado = enumEstados.CONSULTA
@@ -95,6 +95,7 @@ Public Class Cat_NominaPuestos
 
 #Region "Métodos y procedimientos"
     Private Sub Refrescar()
+        Me.cboEstatusFiltro.SelectedIndex = 0
         Me.DesplegarElementos()
     End Sub
 
@@ -103,7 +104,7 @@ Public Class Cat_NominaPuestos
             Case enumEstados.NUEVO
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Agregando una nueva " & Me.msgElemento
+                Me.tssLabelEstado.Text = "Agregando un nuevo " & Me.msgElemento
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
@@ -137,6 +138,7 @@ Public Class Cat_NominaPuestos
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = False
                 Me.tsbCancelar.Enabled = False
+                Me.cboEstatusFiltro.SelectedIndex = 0
                 Me.txtFiltro.Focus()
 
         End Select
@@ -152,7 +154,7 @@ Public Class Cat_NominaPuestos
     Private Sub DesplegarElementos()
         Dim oElementos As New Class_CatPuestos
         With Me.Grid
-            .DataSource = oElementos.ObtenerElementos
+            .DataSource = oElementos.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
             .Columns("CODIGO_PUESTO").Width = 50
             .Columns("NOMBRE_PUESTO").Width = 200
         End With
@@ -177,6 +179,10 @@ Public Class Cat_NominaPuestos
 
     Private Sub Grabar_Elemento()
         Dim Grabado As Boolean = False
+
+        If Validar() = False Then
+            Exit Sub
+        End If
 
         Select Case Me.Estado
             Case enumEstados.NUEVO, enumEstados.EDICION
@@ -218,6 +224,19 @@ Public Class Cat_NominaPuestos
         End Select
     End Sub
 
+    Private Function Validar() As Boolean
+        Dim bResultado As Boolean = False
+
+        If txtLEN(Me.TxtNombrePuesto.Text) = False Then
+            MsgBox("Capture un nombre de puesto.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.TxtNombrePuesto.Focus()
+            Return bResultado
+        End If
+
+        bResultado = True
+        Return bResultado
+    End Function
+
 #End Region
 
 #Region "Eventos de objetos"
@@ -254,11 +273,10 @@ Public Class Cat_NominaPuestos
 
 #Region " Eventos de TxtFiltro"
     Private Sub txtFiltro_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFiltro.TextChanged
-        Dim oElementos As New Class_CatPuestos
         Me.Grid.DataSource = Nothing
 
         With Me.Grid
-            .DataSource = oElementos.ObtenerElementosFiltro(Me.txtFiltro.Text)
+            .DataSource = oPuesto.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
             .Columns("CODIGO_PUESTO").Width = 50
             .Columns("NOMBRE_PUESTO").Width = 200
         End With
@@ -268,16 +286,26 @@ Public Class Cat_NominaPuestos
         txtNoComilla(e)
     End Sub
     Private Sub txtFiltro_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtFiltro.KeyDown
-        Dim oElementosFiltro As New Class_CatPuestos
         If e.KeyCode = Keys.Down Or e.KeyCode = Keys.Return Or e.KeyCode = Keys.Back Then
             Me.Grid.DataSource = Nothing
 
             With Me.Grid
-                .DataSource = oElementosFiltro.ObtenerElementosFiltro(Me.txtFiltro.Text)
+                .DataSource = oPuesto.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
                 .Columns("CODIGO_PUESTO").Width = 50
                 .Columns("NOMBRE_PUESTO").Width = 200
             End With
         End If
+    End Sub
+
+    Private Sub CboEstatusFiltro_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboEstatusFiltro.SelectedIndexChanged
+        Me.Grid.DataSource = Nothing
+
+        With Me.Grid
+            .DataSource = oPuesto.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
+
+            .Columns("CODIGO_PUESTO").Width = 50
+            .Columns("NOMBRE_PUESTO").Width = 200
+        End With
     End Sub
 #End Region
 

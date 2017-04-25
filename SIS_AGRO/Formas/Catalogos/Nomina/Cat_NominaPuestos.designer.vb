@@ -44,6 +44,8 @@ Partial Class Cat_NominaPuestos
         Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimirListado = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
+        Me.cboEstatusFiltro = New System.Windows.Forms.ComboBox()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.gBoxBusquedaRapida.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gBoxInformacion.SuspendLayout()
@@ -56,6 +58,8 @@ Partial Class Cat_NominaPuestos
         Me.gBoxBusquedaRapida.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.gBoxBusquedaRapida.Controls.Add(Me.Label1)
+        Me.gBoxBusquedaRapida.Controls.Add(Me.cboEstatusFiltro)
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(448, 33)
@@ -90,7 +94,7 @@ Partial Class Cat_NominaPuestos
         Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
         Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.Name = "txtFiltro"
-        Me.txtFiltro.Size = New System.Drawing.Size(488, 22)
+        Me.txtFiltro.Size = New System.Drawing.Size(352, 22)
         Me.txtFiltro.TabIndex = 0
         '
         'gBoxInformacion
@@ -262,6 +266,28 @@ Partial Class Cat_NominaPuestos
         Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
         Me.tsbSalir.Text = "&Salir"
         '
+        'cboEstatusFiltro
+        '
+        Me.cboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboEstatusFiltro.FormattingEnabled = True
+        Me.cboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
+        Me.cboEstatusFiltro.Location = New System.Drawing.Point(439, 23)
+        Me.cboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboEstatusFiltro.MaxLength = 1
+        Me.cboEstatusFiltro.Name = "cboEstatusFiltro"
+        Me.cboEstatusFiltro.Size = New System.Drawing.Size(57, 24)
+        Me.cboEstatusFiltro.TabIndex = 92
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(368, 26)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(63, 17)
+        Me.Label1.TabIndex = 92
+        Me.Label1.Text = "Estatus :"
+        '
         'Cat_NominaPuestos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -310,4 +336,6 @@ Partial Class Cat_NominaPuestos
     Friend WithEvents tsbImprimirListado As System.Windows.Forms.ToolStripButton
     Friend WithEvents tsbSalir As System.Windows.Forms.ToolStripButton
     Friend WithEvents Grid As System.Windows.Forms.DataGridView
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents cboEstatusFiltro As System.Windows.Forms.ComboBox
 End Class

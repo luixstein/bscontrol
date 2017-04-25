@@ -226,9 +226,9 @@ Public Class Class_CatPuestos
         Return dTable
     End Function    'Obtiene una lita completa de los elementos del catalogo en un datatable.
 
-    Public Function ObtenerElementosFiltro(ByVal Filtro As String) As System.Data.DataTable
+    Public Function ObtenerElementosFiltro(ByVal Filtro As String, ByVal Estatus As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dA As New SqlDataAdapter("SELECT CODIGO_PUESTO, NOMBRE_PUESTO FROM NOMINA_CAT_PUESTOS WHERE NOMBRE_PUESTO LIKE '" & Filtro.ToString & "%' ORDER BY NOMBRE_PUESTO", Me._Conexion)
+        Dim dA As New SqlDataAdapter("SELECT CODIGO_PUESTO, NOMBRE_PUESTO FROM NOMINA_CAT_PUESTOS WHERE NOMBRE_PUESTO LIKE '" & Filtro.ToString & "%' AND ESTATUS_PUESTO ='" & Estatus & "' ORDER BY NOMBRE_PUESTO", Me._Conexion)
         Try
             dA.Fill(dTable)
         Catch ex As Exception
