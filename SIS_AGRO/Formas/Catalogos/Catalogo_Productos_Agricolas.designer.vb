@@ -128,7 +128,7 @@ Partial Class Catalogo_Productos_Agricolas
         'LblNombreUnidadVenta
         '
         Me.LblNombreUnidadVenta.AutoSize = True
-        Me.LblNombreUnidadVenta.Location = New System.Drawing.Point(184, 342)
+        Me.LblNombreUnidadVenta.Location = New System.Drawing.Point(216, 342)
         Me.LblNombreUnidadVenta.Name = "LblNombreUnidadVenta"
         Me.LblNombreUnidadVenta.Size = New System.Drawing.Size(16, 17)
         Me.LblNombreUnidadVenta.TabIndex = 165
@@ -138,7 +138,7 @@ Partial Class Catalogo_Productos_Agricolas
         '
         Me.txtCodigoUnidadVenta.Location = New System.Drawing.Point(129, 339)
         Me.txtCodigoUnidadVenta.Name = "txtCodigoUnidadVenta"
-        Me.txtCodigoUnidadVenta.Size = New System.Drawing.Size(49, 22)
+        Me.txtCodigoUnidadVenta.Size = New System.Drawing.Size(81, 22)
         Me.txtCodigoUnidadVenta.TabIndex = 164
         '
         'LblNombreEtiqueta
