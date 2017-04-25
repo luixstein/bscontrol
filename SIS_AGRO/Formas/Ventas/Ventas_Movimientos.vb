@@ -1270,31 +1270,31 @@ Buscar:
                 Exit Function
             End If
 
-            If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
-                If Me.chkVentaPublicoGeneral.Checked = False Then
-                    '02Mar17, ya no se validaran datos del cliente desde aqui sino dentro de la fac electronica.
-                    'If Me.ValidarDatosCliente() = True Then
-                    '    If Me.oVenta.EsClienteDeContado(Me.oCliente.CUENTA_CONTABLE, Me.oCliente.CODIGO_ZONA.ToString) = True Then
-                    '        'If MsgBox("El sistema le generará una cuenta contable, ya no le podrá vender como público general, desea continuar?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Grabar") = MsgBoxResult.No Then
-                    '        '    Return False
-                    '        'End If
+            'If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
+            '    If Me.chkVentaPublicoGeneral.Checked = False Then
+            '        '02Mar17, ya no se validaran datos del cliente desde aqui sino dentro de la fac electronica.
+            '        'If Me.ValidarDatosCliente() = True Then
+            '        '    If Me.oVenta.EsClienteDeContado(Me.oCliente.CUENTA_CONTABLE, Me.oCliente.CODIGO_ZONA.ToString) = True Then
+            '        '        'If MsgBox("El sistema le generará una cuenta contable, ya no le podrá vender como público general, desea continuar?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Grabar") = MsgBoxResult.No Then
+            '        '        '    Return False
+            '        '        'End If
 
-                    '        'If Me.oCliente.EstablecerCuentaContable = False Then
-                    '        '    MsgBox("No se pudo establecer la nueva cuenta contable de venta al cliente, avíse al departamento de sistemas.", MsgBoxStyle.Exclamation, Me.Text)
-                    '        '    Return False
-                    '        'End If
-                    '    End If
-                    'Else
-                    '    Return False
-                    'End If
-                Else
-                    If Me.oVenta.EsClienteDeContado(Me.oCliente.CUENTA_CONTABLE, Me.oCliente.CODIGO_ZONA.ToString) = False Then
-                        MsgBox("El cliente no tiene asígnada una cuenta contable de contado, no se le puede vender como público general.", MsgBoxStyle.Exclamation, Me.Text)
-                        Return False
-                    End If
-                End If
+            '        '        'If Me.oCliente.EstablecerCuentaContable = False Then
+            '        '        '    MsgBox("No se pudo establecer la nueva cuenta contable de venta al cliente, avíse al departamento de sistemas.", MsgBoxStyle.Exclamation, Me.Text)
+            '        '        '    Return False
+            '        '        'End If
+            '        '    End If
+            '        'Else
+            '        '    Return False
+            '        'End If
+            '    Else
+            '        If Me.oVenta.EsClienteDeContado(Me.oCliente.CUENTA_CONTABLE, Me.oCliente.CODIGO_ZONA.ToString) = False Then
+            '            MsgBox("El cliente no tiene asígnada una cuenta contable de contado, no se le puede vender como público general.", MsgBoxStyle.Exclamation, Me.Text)
+            '            Return False
+            '        End If
+            '    End If
 
-            End If
+            'End If
 
             With Me.oVenta
                 .FOLIO_VENTA = Me.txtFolio.Text.ToUpper

@@ -63,10 +63,10 @@
       <Value Profile="(Default)">PCSISTEMASJORGE\SQL12</Value>
     </Setting>
     <Setting Name="AliasServidor4" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C1</Value>
+      <Value Profile="(Default)">C2</Value>
     </Setting>
     <Setting Name="BaseDatos4" Type="System.String" Scope="User">
-      <Value Profile="(Default)">COMER1</Value>
+      <Value Profile="(Default)">COMER2</Value>
     </Setting>
     <Setting Name="Servidor1" Type="System.String" Scope="User">
       <Value Profile="(Default)">PCSISTEMASJORGE\SQL14</Value>

@@ -99,6 +99,7 @@ Partial Class Ventas_Movimientos
         Me.txtFolioEmbarque = New System.Windows.Forms.TextBox()
         Me.lblDisplayFolioEmbarque = New System.Windows.Forms.Label()
         Me.gbTotales = New System.Windows.Forms.GroupBox()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.lblIEPSIncluido = New System.Windows.Forms.Label()
         Me.btnSeries = New System.Windows.Forms.Button()
         Me.btnAgregaAddenda = New System.Windows.Forms.Button()
@@ -110,7 +111,6 @@ Partial Class Ventas_Movimientos
         Me.Grid = New FlexCell.Grid()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.GridSeries = New FlexCell.Grid()
-        Me.Label1 = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -799,6 +799,7 @@ Partial Class Ventas_Movimientos
         Me.ckbVentaKilos.TabIndex = 338
         Me.ckbVentaKilos.Text = "Venta de productos en kilos"
         Me.ckbVentaKilos.UseVisualStyleBackColor = True
+        Me.ckbVentaKilos.Visible = False
         '
         'txtNumCuenta
         '
@@ -884,6 +885,15 @@ Partial Class Ventas_Movimientos
         Me.gbTotales.Size = New System.Drawing.Size(986, 108)
         Me.gbTotales.TabIndex = 2
         Me.gbTotales.TabStop = False
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(853, 16)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(77, 13)
+        Me.Label1.TabIndex = 383
+        Me.Label1.Text = "IEPS Incluido :"
         '
         'lblIEPSIncluido
         '
@@ -1012,15 +1022,6 @@ Partial Class Ventas_Movimientos
         Me.GridSeries.Size = New System.Drawing.Size(966, 198)
         Me.GridSeries.TabIndex = 2
         Me.GridSeries.UncheckedImage = CType(resources.GetObject("GridSeries.UncheckedImage"), System.Drawing.Bitmap)
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(853, 16)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(77, 13)
-        Me.Label1.TabIndex = 383
-        Me.Label1.Text = "IEPS Incluido :"
         '
         'Ventas_Movimientos
         '
