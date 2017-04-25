@@ -159,7 +159,7 @@ Public Class Servidor
             Case "PCSISTEMASJORGE"
                 Me.cboServerName.SelectedValue = "PCSISTEMASJORGE\SQL12"
                 My.Settings.Servidor1 = "PCSISTEMASJORGE\SQL12"
-                My.Settings.BaseDatos1 = "COMER1"
+                My.Settings.BaseDatos1 = "COMER2"
             Case "ERNESTOA"
                 Me.cboServerName.SelectedValue = "ERNESTOA"
         End Select

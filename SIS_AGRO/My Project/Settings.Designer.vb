@@ -293,7 +293,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("C1")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("C2")>  _
         Public Property AliasServidor4() As String
             Get
                 Return CType(Me("AliasServidor4"),String)
@@ -305,7 +305,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("COMER1")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("COMER2")>  _
         Public Property BaseDatos4() As String
             Get
                 Return CType(Me("BaseDatos4"),String)
