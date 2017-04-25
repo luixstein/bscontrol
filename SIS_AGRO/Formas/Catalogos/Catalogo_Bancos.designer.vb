@@ -33,7 +33,7 @@ Partial Class Catalogo_Bancos
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
         Me.Grid = New System.Windows.Forms.DataGridView()
         Me.txtFiltro = New System.Windows.Forms.TextBox()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.txtNombreBanco = New System.Windows.Forms.TextBox()
@@ -41,7 +41,6 @@ Partial Class Catalogo_Bancos
         Me.ComboBox1 = New System.Windows.Forms.ComboBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.txtCodigoBanco = New System.Windows.Forms.TextBox()
-        Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.LblDisplayNombreCultivo = New System.Windows.Forms.Label()
         Me.TxtNombreLinea = New System.Windows.Forms.TextBox()
@@ -55,7 +54,6 @@ Partial Class Catalogo_Bancos
         Me.tsMenu.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox1.SuspendLayout()
         Me.gBoxInformacion.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.SuspendLayout()
@@ -160,25 +158,25 @@ Partial Class Catalogo_Bancos
         Me.txtFiltro.Size = New System.Drawing.Size(477, 22)
         Me.txtFiltro.TabIndex = 0
         '
-        'GroupBox1
+        'gBoxInformacion
         '
-        Me.GroupBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+        Me.gBoxInformacion.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.GroupBox1.Controls.Add(Me.Label1)
-        Me.GroupBox1.Controls.Add(Me.Label3)
-        Me.GroupBox1.Controls.Add(Me.txtNombreBanco)
-        Me.GroupBox1.Controls.Add(Me.Label4)
-        Me.GroupBox1.Controls.Add(Me.ComboBox1)
-        Me.GroupBox1.Controls.Add(Me.Label5)
-        Me.GroupBox1.Controls.Add(Me.txtCodigoBanco)
-        Me.GroupBox1.Location = New System.Drawing.Point(16, 49)
-        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox1.Size = New System.Drawing.Size(413, 318)
-        Me.GroupBox1.TabIndex = 11
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Información"
+        Me.gBoxInformacion.Controls.Add(Me.Label1)
+        Me.gBoxInformacion.Controls.Add(Me.Label3)
+        Me.gBoxInformacion.Controls.Add(Me.txtNombreBanco)
+        Me.gBoxInformacion.Controls.Add(Me.Label4)
+        Me.gBoxInformacion.Controls.Add(Me.ComboBox1)
+        Me.gBoxInformacion.Controls.Add(Me.Label5)
+        Me.gBoxInformacion.Controls.Add(Me.txtCodigoBanco)
+        Me.gBoxInformacion.Location = New System.Drawing.Point(16, 49)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
+        Me.gBoxInformacion.Name = "gBoxInformacion"
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
+        Me.gBoxInformacion.Size = New System.Drawing.Size(413, 318)
+        Me.gBoxInformacion.TabIndex = 11
+        Me.gBoxInformacion.TabStop = False
+        Me.gBoxInformacion.Text = "Información"
         '
         'Label1
         '
@@ -251,26 +249,6 @@ Partial Class Catalogo_Bancos
         Me.txtCodigoBanco.Size = New System.Drawing.Size(75, 22)
         Me.txtCodigoBanco.TabIndex = 0
         '
-        'gBoxInformacion
-        '
-        Me.gBoxInformacion.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.gBoxInformacion.Controls.Add(Me.Label2)
-        Me.gBoxInformacion.Controls.Add(Me.LblDisplayNombreCultivo)
-        Me.gBoxInformacion.Controls.Add(Me.TxtNombreLinea)
-        Me.gBoxInformacion.Controls.Add(Me.LblEstatus)
-        Me.gBoxInformacion.Controls.Add(Me.CboEstatus)
-        Me.gBoxInformacion.Controls.Add(Me.LblDisplayCodCultivo)
-        Me.gBoxInformacion.Controls.Add(Me.TxtCodigoLinea)
-        Me.gBoxInformacion.Location = New System.Drawing.Point(16, 49)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
-        Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
-        Me.gBoxInformacion.Size = New System.Drawing.Size(413, 318)
-        Me.gBoxInformacion.TabIndex = 10
-        Me.gBoxInformacion.TabStop = False
-        Me.gBoxInformacion.Text = "Información"
-        '
         'Label2
         '
         Me.Label2.Location = New System.Drawing.Point(161, -140)
@@ -318,7 +296,7 @@ Partial Class Catalogo_Bancos
         Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(75, 24)
+        Me.CboEstatus.Size = New System.Drawing.Size(75, 25)
         Me.CboEstatus.TabIndex = 12
         '
         'LblDisplayCodCultivo
@@ -369,7 +347,6 @@ Partial Class Catalogo_Bancos
         Me.ClientSize = New System.Drawing.Size(965, 422)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.gBoxBusquedaRapida)
-        Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.gBoxInformacion)
         Me.Controls.Add(Me.tsMenu)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
@@ -382,8 +359,6 @@ Partial Class Catalogo_Bancos
         Me.gBoxBusquedaRapida.ResumeLayout(False)
         Me.gBoxBusquedaRapida.PerformLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
         Me.gBoxInformacion.ResumeLayout(False)
         Me.gBoxInformacion.PerformLayout()
         Me.StatusStripEstado.ResumeLayout(False)
@@ -401,7 +376,7 @@ Partial Class Catalogo_Bancos
     Friend WithEvents tsbSalir As System.Windows.Forms.ToolStripButton
     Friend WithEvents gBoxBusquedaRapida As System.Windows.Forms.GroupBox
     Friend WithEvents txtFiltro As System.Windows.Forms.TextBox
-    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents gBoxInformacion As System.Windows.Forms.GroupBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents txtNombreBanco As System.Windows.Forms.TextBox
@@ -409,7 +384,7 @@ Partial Class Catalogo_Bancos
     Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents txtCodigoBanco As System.Windows.Forms.TextBox
-    Friend WithEvents gBoxInformacion As System.Windows.Forms.GroupBox
+    'Friend WithEvents gBoxInformacion As System.Windows.Forms.GroupBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents LblDisplayNombreCultivo As System.Windows.Forms.Label
     Friend WithEvents TxtNombreLinea As System.Windows.Forms.TextBox
