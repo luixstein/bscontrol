@@ -11,6 +11,7 @@ Public Class Class_CatAlmacenes
     Private _Nombre_Almacen As String
     Private _Cuenta_Contable As String
     Private _Codigo_zona As String
+    Private _Codigo_Categoria As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -69,6 +70,15 @@ Public Class Class_CatAlmacenes
         End Get
         Set(ByVal Value As String)
             Me._Codigo_zona = Value
+        End Set
+    End Property
+
+    Public Property CODIGO_CATEGORIA() As String
+        Get
+            Return Me._Codigo_Categoria
+        End Get
+        Set(ByVal Value As String)
+            Me._Codigo_Categoria = Value
         End Set
     End Property
 #End Region
@@ -156,6 +166,7 @@ Public Class Class_CatAlmacenes
             sqlParametro = .Parameters.Add("@Estatus", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.Char, 1) : sqlParametro.Value = Usuario.Codigo_Plaza
             sqlParametro = .Parameters.Add("@CODIGO_ZONA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._Codigo_zona
+            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Categoria)
             sqlParametro = .Parameters.Add("@Agregar", SqlDbType.Char, 1) : sqlParametro.Value = "1"
 
             Try
@@ -189,6 +200,7 @@ Public Class Class_CatAlmacenes
             'sqlParametro = .Parameters.Add("@CUENTA_CONTABLE", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._Cuenta_Contable
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.Char, 1) : sqlParametro.Value = Usuario.Codigo_Plaza
             sqlParametro = .Parameters.Add("@CODIGO_ZONA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._Codigo_zona
+            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Categoria)
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "0"
 
             Try
@@ -223,6 +235,7 @@ Public Class Class_CatAlmacenes
                     Me._Cuenta_Contable = Trim("" & dReader("CUENTA_CONTABLE").ToString)
                     Me.Estatus = "" & dReader("ESTATUS").ToString
                     Me._Codigo_zona = "" & dReader("CODIGO_ZONA").ToString
+                    Me._Codigo_Categoria = "" & dReader("CODIGO_CATEGORIA").ToString
                     bResultado = True
                 End If
                 dReader.Close()

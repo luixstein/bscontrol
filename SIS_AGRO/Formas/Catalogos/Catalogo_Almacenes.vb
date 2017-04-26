@@ -168,6 +168,7 @@ Public Class Catalogo_Almacenes
                 Me.TxtCodigoAlmacen.Enabled = False
                 Me.TxtNombreAlmacen.Enabled = True
                 Me.txtCodigoZona.Enabled = True
+                Me.TxtCodigoCategoria.Enabled = True
                 Me.CboEstatus.Enabled = False
                 Me.InicializaElemento()
                 Me.TxtCodigoAlmacen.Focus()
@@ -184,6 +185,7 @@ Public Class Catalogo_Almacenes
                 Me.TxtCodigoAlmacen.Enabled = False
                 Me.TxtNombreAlmacen.Enabled = True
                 Me.CboEstatus.Enabled = True
+                Me.TxtCodigoCategoria.Enabled = True
                 Me.txtCodigoZona.Enabled = True
                 Me.TxtNombreAlmacen.Focus()
 
@@ -209,6 +211,8 @@ Public Class Catalogo_Almacenes
         Me.LblCuenta.Text = ""
         Me.txtCodigoZona.Text = ""
         Me.lblNombreZona.Text = ""
+        Me.TxtCodigoCategoria.Text = ""
+        Me.LblNombreCategoria.Text = ""
         Me.CboEstatus.SelectedIndex = 0
     End Sub
 
@@ -239,6 +243,14 @@ Public Class Catalogo_Almacenes
                 If sql.Result1 = "" Then
                 Else
                     lblNombreZona.Text = sql.Result1
+                End If
+                sql = Nothing
+
+                Me.TxtCodigoCategoria.Text = .CODIGO_CATEGORIA
+                sql = New Class_find("Select NOMBRE_CATEGORIA From CAT_CATEGORIAS Where CODIGO_CATEGORIA='" & TxtCodigoCategoria.Text & "' ")
+                If sql.Result1 = "" Then
+                Else
+                    LblNombreCategoria.Text = sql.Result1
                 End If
                 sql = Nothing
 
@@ -284,7 +296,8 @@ Public Class Catalogo_Almacenes
                                 .Nombre_Almacen = Me.TxtNombreAlmacen.Text
                                 '.Cuenta_Contable = Me.txtCuentaContable.Text
                                 .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
-                                .Codigo_Zona = Me.txtCodigoZona.Text
+                                .CODIGO_ZONA = Me.txtCodigoZona.Text
+                                .CODIGO_CATEGORIA = Me.TxtCodigoCategoria.Text
                                 If .Insertar() Then
                                     Grabado = True
                                     Me.Estado = enumEstados.CONSULTA
@@ -348,6 +361,12 @@ Public Class Catalogo_Almacenes
                 Me.txtCodigoZona.Focus()
                 Return bResultado
             End If
+        End If
+
+        If txtLEN(Me.TxtCodigoCategoria.Text) = False Then
+            MsgBox("Asígne una categoría.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.TxtCodigoCategoria.Focus()
+            Return bResultado
         End If
 
         bResultado = True
@@ -432,7 +451,7 @@ Public Class Catalogo_Almacenes
             tsbGrabar.PerformClick()
         End If
     End Sub
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombreAlmacen.KeyPress
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombreAlmacen.KeyPress, txtCodigoZona.KeyPress, TxtCodigoCategoria.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -480,6 +499,25 @@ busca:
                     GoTo busca
                 End If
                 Me.lblNombreZona.Text = oZonas.Nombre_Zona
+        End Select
+        txtTAB(e)
+    End Sub
+
+    Private Sub TxtCodigoCategoria_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtCodigoCategoria.KeyDown
+        Dim oCategorias As New Class_CatCategorias
+        Select Case e.KeyCode
+            Case Keys.F6
+busca:
+                Me.TxtCodigoCategoria.Text = oCategorias.BusquedaVisual_PorDescripcion
+                oCategorias.Codigo_Categoria = Me.TxtCodigoCategoria.Text
+                oCategorias.Consultar()
+                Me.LblNombreCategoria.Text = oCategorias.Nombre_Categoria
+            Case Keys.Enter
+                oCategorias.Codigo_Categoria = Me.TxtCodigoCategoria.Text
+                If oCategorias.Consultar() = False Then
+                    GoTo busca
+                End If
+                Me.LblNombreCategoria.Text = oCategorias.Nombre_Categoria
         End Select
         txtTAB(e)
     End Sub
