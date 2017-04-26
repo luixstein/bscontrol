@@ -491,14 +491,22 @@ Public Class Catalogo_Almacenes
 busca:
                 Me.txtCodigoZona.Text = oZonas.BusquedaVisual_PorDescripcion
                 oZonas.Codigo_Zona = CInt(Me.txtCodigoZona.Text)
-                oZonas.Consultar()
-                Me.lblNombreZona.Text = oZonas.Nombre_Zona
-            Case Keys.Enter
-                oZonas.Codigo_Zona = CInt(Me.txtCodigoZona.Text)
-                If oZonas.Consultar() = False Then
-                    GoTo busca
+                If txtLEN(Me.txtCodigoZona.Text) = True Then
+                    oZonas.Consultar()
+                    Me.lblNombreZona.Text = oZonas.Nombre_Zona
+                Else
+                    MsgBox("No existen elementos en el catálogo de Zonas.", MsgBoxStyle.Exclamation, Me.Text)
+                    Exit Sub
                 End If
-                Me.lblNombreZona.Text = oZonas.Nombre_Zona
+                
+            Case Keys.Enter
+                If txtLEN(Me.txtCodigoZona.Text) = True Then
+                    oZonas.Codigo_Zona = CInt(Me.txtCodigoZona.Text)
+                    If oZonas.Consultar() = False Then
+                        GoTo busca
+                    End If
+                    Me.lblNombreZona.Text = oZonas.Nombre_Zona
+                End If
         End Select
         txtTAB(e)
     End Sub
@@ -510,14 +518,23 @@ busca:
 busca:
                 Me.TxtCodigoCategoria.Text = oCategorias.BusquedaVisual_PorDescripcion
                 oCategorias.Codigo_Categoria = Me.TxtCodigoCategoria.Text
-                oCategorias.Consultar()
-                Me.LblNombreCategoria.Text = oCategorias.Nombre_Categoria
-            Case Keys.Enter
+                Me.TxtCodigoCategoria.Text = oCategorias.BusquedaVisual_PorDescripcion
                 oCategorias.Codigo_Categoria = Me.TxtCodigoCategoria.Text
-                If oCategorias.Consultar() = False Then
-                    GoTo busca
+                If txtLEN(Me.TxtCodigoCategoria.Text) = True Then
+                    oCategorias.Consultar()
+                    Me.LblNombreCategoria.Text = oCategorias.Nombre_Categoria
+                Else
+                    MsgBox("No existen elementos en el catálogo de Categorías.", MsgBoxStyle.Exclamation, Me.Text)
+                    Exit Sub
                 End If
-                Me.LblNombreCategoria.Text = oCategorias.Nombre_Categoria
+            Case Keys.Enter
+                If txtLEN(Me.TxtCodigoCategoria.Text) = True Then
+                    oCategorias.Codigo_Categoria = Me.TxtCodigoCategoria.Text
+                    If oCategorias.Consultar() = False Then
+                        GoTo busca
+                    End If
+                    Me.LblNombreCategoria.Text = oCategorias.Nombre_Categoria
+                End If
         End Select
         txtTAB(e)
     End Sub

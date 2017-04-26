@@ -9,6 +9,8 @@ Public Class Class_CatVehiculos
 #Region "Campos de la tabla"
     Private _Codigo_Vehiculo As String
     Private _Nombre_Vehiculo As String
+    Private _Estatus As String
+    Private _Codigo_Categoria As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -54,6 +56,15 @@ Public Class Class_CatVehiculos
             Me._Nombre_Vehiculo = Value
         End Set
     End Property
+
+    Public Property Codigo_Categoria() As String
+        Get
+            Return Me._Codigo_Categoria
+        End Get
+        Set(ByVal Value As String)
+            Me._Codigo_Categoria = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -88,14 +99,14 @@ Public Class Class_CatVehiculos
             Me._Nombre_Reporte = value
         End Set
     End Property
-    'Public Property Estatus() As String
-    '    Get
-    '        Return Me._Estatus
-    '    End Get
-    '    Set(ByVal value As String)
-    '        Me._Estatus = value
-    '    End Set
-    'End Property
+    Public Property Estatus() As String
+        Get
+            Return Me._Estatus
+        End Get
+        Set(ByVal value As String)
+            Me._Estatus = value
+        End Set
+    End Property
 
 #End Region
 
@@ -108,7 +119,7 @@ Public Class Class_CatVehiculos
         Me._Nombre_Reporte = "RPT_CAT_Vehiculo.rpt"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "Select Codigo_Vehiculo,Nombre_Vehiculo From CAT_VEHICULOS"
+        Me._QuerySelect = "Select * From CAT_VEHICULOS"
         Me._QueryOrder = " Order by Nombre_Vehiculo"
     End Sub                                                         'Inicializa al objeto.
 
@@ -148,6 +159,8 @@ Public Class Class_CatVehiculos
 
             sqlParametro = .Parameters.Add("@CODIGO_VEHICULO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Vehiculo)
             sqlParametro = .Parameters.Add("@NOMBRE_VEHICULO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._Nombre_Vehiculo.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._Estatus
+            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Categoria)
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "INSERTAR"
             Try
                 Me._Conexion.Open()
@@ -175,6 +188,8 @@ Public Class Class_CatVehiculos
 
             sqlParametro = .Parameters.Add("@CODIGO_VEHICULO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Vehiculo)
             sqlParametro = .Parameters.Add("@NOMBRE_VEHICULO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._Nombre_Vehiculo.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._Estatus
+            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Categoria)
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "ACTUALIZAR"
             Try
                 Me._Conexion.Open()
@@ -204,6 +219,9 @@ Public Class Class_CatVehiculos
                 If dReader.Read Then
                     Me._Codigo_Vehiculo = "" & dReader("CODIGO_VEHICULO").ToString
                     Me._Nombre_Vehiculo = Trim("" & dReader("NOMBRE_VEHICULO").ToString)
+                    Me._Estatus = "" & dReader("ESTATUS")
+                    Me._Codigo_Categoria = "" & dReader("CODIGO_CATEGORIA").ToString
+
                     Consultar = True
                 End If
                 dReader.Close()
@@ -244,9 +262,9 @@ Public Class Class_CatVehiculos
         Return dTable
     End Function
 
-    Public Function ObtenerElementosFiltro(ByVal Filtro As String) As System.Data.DataTable
+    Public Function ObtenerElementosFiltro(ByVal Filtro As String, ByVal ESTATUS As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dA As New SqlDataAdapter("SELECT CODIGO_VEHICULO, NOMBRE_VEHICULO FROM CAT_VEHICULOS WHERE NOMBRE_VEHICULO LIKE '" & Filtro.ToString & "%' ORDER BY NOMBRE_VEHICULO", Me._Conexion)
+        Dim dA As New SqlDataAdapter("SELECT CODIGO_VEHICULO, NOMBRE_VEHICULO FROM CAT_VEHICULOS WHERE NOMBRE_VEHICULO LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & ESTATUS & "' ORDER BY NOMBRE_VEHICULO", Me._Conexion)
         Try
             dA.Fill(dTable)
         Catch ex As Exception
