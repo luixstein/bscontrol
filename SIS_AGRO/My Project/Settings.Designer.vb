@@ -326,6 +326,18 @@ Namespace My
                 Me("Servidor1") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property ModoExeCarpetaUsuario() As String
+            Get
+                Return CType(Me("ModoExeCarpetaUsuario"),String)
+            End Get
+            Set
+                Me("ModoExeCarpetaUsuario") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

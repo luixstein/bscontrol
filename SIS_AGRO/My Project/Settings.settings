@@ -71,5 +71,8 @@
     <Setting Name="Servidor1" Type="System.String" Scope="User">
       <Value Profile="(Default)">PCSISTEMASJORGE\SQL14</Value>
     </Setting>
+    <Setting Name="ModoExeCarpetaUsuario" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

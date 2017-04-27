@@ -207,8 +207,16 @@ Public Class LoginForm
 
     Private Sub LoginForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
+            Dim misparametros() As String = Split(Command(), ",")
+
             If isSistemaValidaConfiguracionRegional() = False Then
                 End
+            End If
+
+            If My.Settings.ModoExeCarpetaUsuario = "1" AndAlso txtLEN(misparametros(0).ToString) = False Then 'este es cuando usan el sistema con remote apps
+                GestionaExeCarpetaUsuario()
+
+                Me.txtNombreUsuario.Text = Environ("USERNAME")
             End If
 
             My.Settings.Save()
