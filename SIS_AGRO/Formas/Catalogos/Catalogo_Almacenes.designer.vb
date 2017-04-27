@@ -46,13 +46,16 @@ Partial Public Class Catalogo_Almacenes
         Me.TxtNombreAlmacen = New System.Windows.Forms.TextBox()
         Me.LblDisplayNombreAlmacen = New System.Windows.Forms.Label()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.lblNombreZona = New System.Windows.Forms.Label()
+        Me.lblZona = New System.Windows.Forms.Label()
+        Me.txtCodigoZona = New System.Windows.Forms.TextBox()
         Me.LblCuenta = New System.Windows.Forms.Label()
         Me.txtCuentaContable = New System.Windows.Forms.TextBox()
         Me.lblDisplayCuentaContable = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.txtCodigoZona = New System.Windows.Forms.TextBox()
-        Me.lblZona = New System.Windows.Forms.Label()
-        Me.lblNombreZona = New System.Windows.Forms.Label()
+        Me.TxtCodigoCategoria = New System.Windows.Forms.TextBox()
+        Me.LblNombreCategoria = New System.Windows.Forms.Label()
+        Me.LblCategoria = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.cMenuStripAccion.SuspendLayout()
@@ -68,7 +71,7 @@ Partial Public Class Catalogo_Almacenes
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbEditar, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimirListado, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(734, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(979, 27)
         Me.tsMenu.TabIndex = 3
         Me.tsMenu.Text = "tsMenu"
         '
@@ -77,7 +80,7 @@ Partial Public Class Catalogo_Almacenes
         Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
         Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbNuevo.Name = "tsbNuevo"
-        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
+        Me.tsbNuevo.Size = New System.Drawing.Size(76, 24)
         Me.tsbNuevo.Text = "&Nuevo"
         '
         'tsbEditar
@@ -85,7 +88,7 @@ Partial Public Class Catalogo_Almacenes
         Me.tsbEditar.Image = CType(resources.GetObject("tsbEditar.Image"), System.Drawing.Image)
         Me.tsbEditar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbEditar.Name = "tsbEditar"
-        Me.tsbEditar.Size = New System.Drawing.Size(61, 24)
+        Me.tsbEditar.Size = New System.Drawing.Size(72, 24)
         Me.tsbEditar.Text = "&Editar"
         '
         'tsbGrabar
@@ -93,7 +96,7 @@ Partial Public Class Catalogo_Almacenes
         Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
         Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbGrabar.Name = "tsbGrabar"
-        Me.tsbGrabar.Size = New System.Drawing.Size(66, 24)
+        Me.tsbGrabar.Size = New System.Drawing.Size(78, 24)
         Me.tsbGrabar.Text = "&Grabar"
         '
         'tsbCancelar
@@ -101,7 +104,7 @@ Partial Public Class Catalogo_Almacenes
         Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
         Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbCancelar.Name = "tsbCancelar"
-        Me.tsbCancelar.Size = New System.Drawing.Size(77, 24)
+        Me.tsbCancelar.Size = New System.Drawing.Size(90, 24)
         Me.tsbCancelar.Text = "&Cancelar"
         '
         'tsbImprimirListado
@@ -109,7 +112,7 @@ Partial Public Class Catalogo_Almacenes
         Me.tsbImprimirListado.Image = CType(resources.GetObject("tsbImprimirListado.Image"), System.Drawing.Image)
         Me.tsbImprimirListado.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbImprimirListado.Name = "tsbImprimirListado"
-        Me.tsbImprimirListado.Size = New System.Drawing.Size(115, 24)
+        Me.tsbImprimirListado.Size = New System.Drawing.Size(139, 24)
         Me.tsbImprimirListado.Text = "&Imprimir listado"
         '
         'tsbSalir
@@ -117,37 +120,39 @@ Partial Public Class Catalogo_Almacenes
         Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
         Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
+        Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
         Me.tsbSalir.Text = "&Salir"
         '
         'tssLabel
         '
         Me.tssLabel.Name = "tssLabel"
-        Me.tssLabel.Size = New System.Drawing.Size(48, 17)
+        Me.tssLabel.Size = New System.Drawing.Size(61, 20)
         Me.tssLabel.Text = "Estado :"
         '
         'StatusStripEstado
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssLabel, Me.tssLabelEstado})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 545)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 673)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Size = New System.Drawing.Size(734, 22)
+        Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(979, 25)
         Me.StatusStripEstado.TabIndex = 5
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
         'tssLabelEstado
         '
         Me.tssLabelEstado.Name = "tssLabelEstado"
-        Me.tssLabelEstado.Size = New System.Drawing.Size(0, 17)
+        Me.tssLabelEstado.Size = New System.Drawing.Size(0, 20)
         '
         'txtFiltro
         '
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtFiltro.Location = New System.Drawing.Point(6, 19)
+        Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtFiltro.Name = "txtFiltro"
-        Me.txtFiltro.Size = New System.Drawing.Size(174, 20)
+        Me.txtFiltro.Size = New System.Drawing.Size(231, 22)
         Me.txtFiltro.TabIndex = 0
         '
         'cMenuStripAccion
@@ -155,13 +160,13 @@ Partial Public Class Catalogo_Almacenes
         Me.cMenuStripAccion.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.cMenuStripAccion.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tStripMenuItemEditar})
         Me.cMenuStripAccion.Name = "ContextMenuStrip1"
-        Me.cMenuStripAccion.Size = New System.Drawing.Size(109, 30)
+        Me.cMenuStripAccion.Size = New System.Drawing.Size(124, 30)
         '
         'tStripMenuItemEditar
         '
         Me.tStripMenuItemEditar.Image = CType(resources.GetObject("tStripMenuItemEditar.Image"), System.Drawing.Image)
         Me.tStripMenuItemEditar.Name = "tStripMenuItemEditar"
-        Me.tStripMenuItemEditar.Size = New System.Drawing.Size(108, 26)
+        Me.tStripMenuItemEditar.Size = New System.Drawing.Size(123, 26)
         Me.tStripMenuItemEditar.Text = "&Editar"
         '
         'gBoxBusquedaRapida
@@ -173,9 +178,11 @@ Partial Public Class Catalogo_Almacenes
         Me.gBoxBusquedaRapida.Controls.Add(Me.cboEstatusFiltro)
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
-        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(447, 28)
+        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(596, 34)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(274, 514)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(365, 633)
         Me.gBoxBusquedaRapida.TabIndex = 1
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
@@ -183,9 +190,10 @@ Partial Public Class Catalogo_Almacenes
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(184, 21)
+        Me.Label1.Location = New System.Drawing.Point(245, 26)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(48, 13)
+        Me.Label1.Size = New System.Drawing.Size(63, 17)
         Me.Label1.TabIndex = 216
         Me.Label1.Text = "Estatus :"
         '
@@ -194,10 +202,11 @@ Partial Public Class Catalogo_Almacenes
         Me.cboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboEstatusFiltro.FormattingEnabled = True
         Me.cboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
-        Me.cboEstatusFiltro.Location = New System.Drawing.Point(238, 17)
+        Me.cboEstatusFiltro.Location = New System.Drawing.Point(317, 21)
+        Me.cboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.cboEstatusFiltro.MaxLength = 1
         Me.cboEstatusFiltro.Name = "cboEstatusFiltro"
-        Me.cboEstatusFiltro.Size = New System.Drawing.Size(31, 21)
+        Me.cboEstatusFiltro.Size = New System.Drawing.Size(40, 24)
         Me.cboEstatusFiltro.TabIndex = 216
         '
         'Grid
@@ -207,12 +216,13 @@ Partial Public Class Catalogo_Almacenes
         Me.Grid.AllowUserToResizeColumns = False
         Me.Grid.AllowUserToResizeRows = False
         Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Grid.Location = New System.Drawing.Point(6, 41)
+        Me.Grid.Location = New System.Drawing.Point(8, 50)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Grid.Name = "Grid"
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
         Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(261, 467)
+        Me.Grid.Size = New System.Drawing.Size(348, 575)
         Me.Grid.TabIndex = 113
         '
         'ErrorProvider
@@ -221,18 +231,20 @@ Partial Public Class Catalogo_Almacenes
         '
         'TxtCodigoAlmacen
         '
-        Me.TxtCodigoAlmacen.Location = New System.Drawing.Point(108, 15)
+        Me.TxtCodigoAlmacen.Location = New System.Drawing.Point(144, 18)
+        Me.TxtCodigoAlmacen.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtCodigoAlmacen.MaxLength = 4
         Me.TxtCodigoAlmacen.Name = "TxtCodigoAlmacen"
-        Me.TxtCodigoAlmacen.Size = New System.Drawing.Size(57, 20)
+        Me.TxtCodigoAlmacen.Size = New System.Drawing.Size(75, 22)
         Me.TxtCodigoAlmacen.TabIndex = 0
         '
         'LblDisplayCodAlmacen
         '
         Me.LblDisplayCodAlmacen.AutoSize = True
-        Me.LblDisplayCodAlmacen.Location = New System.Drawing.Point(6, 18)
+        Me.LblDisplayCodAlmacen.Location = New System.Drawing.Point(8, 22)
+        Me.LblDisplayCodAlmacen.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayCodAlmacen.Name = "LblDisplayCodAlmacen"
-        Me.LblDisplayCodAlmacen.Size = New System.Drawing.Size(54, 13)
+        Me.LblDisplayCodAlmacen.Size = New System.Drawing.Size(70, 17)
         Me.LblDisplayCodAlmacen.TabIndex = 8
         Me.LblDisplayCodAlmacen.Text = "Almacen :"
         '
@@ -241,35 +253,39 @@ Partial Public Class Catalogo_Almacenes
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
-        Me.CboEstatus.Location = New System.Drawing.Point(108, 167)
+        Me.CboEstatus.Location = New System.Drawing.Point(143, 263)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(67, 21)
+        Me.CboEstatus.Size = New System.Drawing.Size(88, 24)
         Me.CboEstatus.TabIndex = 3
         '
         'LblEstatus
         '
         Me.LblEstatus.AutoSize = True
-        Me.LblEstatus.Location = New System.Drawing.Point(6, 170)
+        Me.LblEstatus.Location = New System.Drawing.Point(8, 266)
+        Me.LblEstatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblEstatus.Name = "LblEstatus"
-        Me.LblEstatus.Size = New System.Drawing.Size(48, 13)
+        Me.LblEstatus.Size = New System.Drawing.Size(63, 17)
         Me.LblEstatus.TabIndex = 22
         Me.LblEstatus.Text = "Estatus :"
         '
         'TxtNombreAlmacen
         '
-        Me.TxtNombreAlmacen.Location = New System.Drawing.Point(108, 41)
+        Me.TxtNombreAlmacen.Location = New System.Drawing.Point(144, 50)
+        Me.TxtNombreAlmacen.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtNombreAlmacen.MaxLength = 50
         Me.TxtNombreAlmacen.Name = "TxtNombreAlmacen"
-        Me.TxtNombreAlmacen.Size = New System.Drawing.Size(305, 20)
+        Me.TxtNombreAlmacen.Size = New System.Drawing.Size(405, 22)
         Me.TxtNombreAlmacen.TabIndex = 1
         '
         'LblDisplayNombreAlmacen
         '
         Me.LblDisplayNombreAlmacen.AutoSize = True
-        Me.LblDisplayNombreAlmacen.Location = New System.Drawing.Point(6, 44)
+        Me.LblDisplayNombreAlmacen.Location = New System.Drawing.Point(8, 54)
+        Me.LblDisplayNombreAlmacen.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayNombreAlmacen.Name = "LblDisplayNombreAlmacen"
-        Me.LblDisplayNombreAlmacen.Size = New System.Drawing.Size(50, 13)
+        Me.LblDisplayNombreAlmacen.Size = New System.Drawing.Size(66, 17)
         Me.LblDisplayNombreAlmacen.TabIndex = 74
         Me.LblDisplayNombreAlmacen.Text = "Nombre :"
         '
@@ -277,6 +293,9 @@ Partial Public Class Catalogo_Almacenes
         '
         Me.gBoxInformacion.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.gBoxInformacion.Controls.Add(Me.LblCategoria)
+        Me.gBoxInformacion.Controls.Add(Me.LblNombreCategoria)
+        Me.gBoxInformacion.Controls.Add(Me.TxtCodigoCategoria)
         Me.gBoxInformacion.Controls.Add(Me.lblNombreZona)
         Me.gBoxInformacion.Controls.Add(Me.lblZona)
         Me.gBoxInformacion.Controls.Add(Me.txtCodigoZona)
@@ -290,84 +309,123 @@ Partial Public Class Catalogo_Almacenes
         Me.gBoxInformacion.Controls.Add(Me.CboEstatus)
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayCodAlmacen)
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigoAlmacen)
-        Me.gBoxInformacion.Location = New System.Drawing.Point(12, 28)
+        Me.gBoxInformacion.Location = New System.Drawing.Point(16, 34)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Size = New System.Drawing.Size(429, 514)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Size = New System.Drawing.Size(572, 633)
         Me.gBoxInformacion.TabIndex = 2
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
         '
+        'lblNombreZona
+        '
+        Me.lblNombreZona.AutoSize = True
+        Me.lblNombreZona.Location = New System.Drawing.Point(148, 172)
+        Me.lblNombreZona.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblNombreZona.Name = "lblNombreZona"
+        Me.lblNombreZona.Size = New System.Drawing.Size(12, 17)
+        Me.lblNombreZona.TabIndex = 218
+        Me.lblNombreZona.Text = "."
+        '
+        'lblZona
+        '
+        Me.lblZona.AutoSize = True
+        Me.lblZona.Location = New System.Drawing.Point(8, 148)
+        Me.lblZona.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblZona.Name = "lblZona"
+        Me.lblZona.Size = New System.Drawing.Size(49, 17)
+        Me.lblZona.TabIndex = 217
+        Me.lblZona.Text = "Zona :"
+        '
+        'txtCodigoZona
+        '
+        Me.txtCodigoZona.Location = New System.Drawing.Point(144, 144)
+        Me.txtCodigoZona.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCodigoZona.MaxLength = 4
+        Me.txtCodigoZona.Name = "txtCodigoZona"
+        Me.txtCodigoZona.Size = New System.Drawing.Size(75, 22)
+        Me.txtCodigoZona.TabIndex = 216
+        '
         'LblCuenta
         '
         Me.LblCuenta.AutoSize = True
-        Me.LblCuenta.Location = New System.Drawing.Point(105, 92)
+        Me.LblCuenta.Location = New System.Drawing.Point(140, 113)
+        Me.LblCuenta.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblCuenta.Name = "LblCuenta"
-        Me.LblCuenta.Size = New System.Drawing.Size(10, 13)
+        Me.LblCuenta.Size = New System.Drawing.Size(12, 17)
         Me.LblCuenta.TabIndex = 215
         Me.LblCuenta.Text = "."
         '
         'txtCuentaContable
         '
-        Me.txtCuentaContable.Location = New System.Drawing.Point(108, 69)
+        Me.txtCuentaContable.Location = New System.Drawing.Point(144, 85)
+        Me.txtCuentaContable.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtCuentaContable.MaxLength = 20
         Me.txtCuentaContable.Name = "txtCuentaContable"
         Me.txtCuentaContable.ReadOnly = True
-        Me.txtCuentaContable.Size = New System.Drawing.Size(160, 20)
+        Me.txtCuentaContable.Size = New System.Drawing.Size(212, 22)
         Me.txtCuentaContable.TabIndex = 2
         '
         'lblDisplayCuentaContable
         '
         Me.lblDisplayCuentaContable.AutoSize = True
-        Me.lblDisplayCuentaContable.Location = New System.Drawing.Point(6, 72)
+        Me.lblDisplayCuentaContable.Location = New System.Drawing.Point(8, 89)
+        Me.lblDisplayCuentaContable.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayCuentaContable.Name = "lblDisplayCuentaContable"
-        Me.lblDisplayCuentaContable.Size = New System.Drawing.Size(92, 13)
+        Me.lblDisplayCuentaContable.Size = New System.Drawing.Size(121, 17)
         Me.lblDisplayCuentaContable.TabIndex = 143
         Me.lblDisplayCuentaContable.Text = "Cuenta Contable :"
         '
         'Label2
         '
-        Me.Label2.Location = New System.Drawing.Point(121, -114)
+        Me.Label2.Location = New System.Drawing.Point(161, -140)
+        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(181, 13)
+        Me.Label2.Size = New System.Drawing.Size(241, 16)
         Me.Label2.TabIndex = 91
         Me.Label2.Text = ".."
         '
-        'txtCodigoZona
+        'TxtCodigoCategoria
         '
-        Me.txtCodigoZona.Location = New System.Drawing.Point(108, 117)
-        Me.txtCodigoZona.MaxLength = 4
-        Me.txtCodigoZona.Name = "txtCodigoZona"
-        Me.txtCodigoZona.Size = New System.Drawing.Size(57, 20)
-        Me.txtCodigoZona.TabIndex = 216
+        Me.TxtCodigoCategoria.Location = New System.Drawing.Point(144, 205)
+        Me.TxtCodigoCategoria.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtCodigoCategoria.MaxLength = 4
+        Me.TxtCodigoCategoria.Name = "TxtCodigoCategoria"
+        Me.TxtCodigoCategoria.Size = New System.Drawing.Size(75, 22)
+        Me.TxtCodigoCategoria.TabIndex = 219
         '
-        'lblZona
+        'LblNombreCategoria
         '
-        Me.lblZona.AutoSize = True
-        Me.lblZona.Location = New System.Drawing.Point(6, 120)
-        Me.lblZona.Name = "lblZona"
-        Me.lblZona.Size = New System.Drawing.Size(38, 13)
-        Me.lblZona.TabIndex = 217
-        Me.lblZona.Text = "Zona :"
+        Me.LblNombreCategoria.AutoSize = True
+        Me.LblNombreCategoria.Location = New System.Drawing.Point(148, 231)
+        Me.LblNombreCategoria.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNombreCategoria.Name = "LblNombreCategoria"
+        Me.LblNombreCategoria.Size = New System.Drawing.Size(12, 17)
+        Me.LblNombreCategoria.TabIndex = 220
+        Me.LblNombreCategoria.Text = "."
         '
-        'lblNombreZona
+        'LblCategoria
         '
-        Me.lblNombreZona.AutoSize = True
-        Me.lblNombreZona.Location = New System.Drawing.Point(111, 140)
-        Me.lblNombreZona.Name = "lblNombreZona"
-        Me.lblNombreZona.Size = New System.Drawing.Size(10, 13)
-        Me.lblNombreZona.TabIndex = 218
-        Me.lblNombreZona.Text = "."
+        Me.LblCategoria.AutoSize = True
+        Me.LblCategoria.Location = New System.Drawing.Point(8, 208)
+        Me.LblCategoria.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblCategoria.Name = "LblCategoria"
+        Me.LblCategoria.Size = New System.Drawing.Size(77, 17)
+        Me.LblCategoria.TabIndex = 221
+        Me.LblCategoria.Text = "Categoria :"
         '
         'Catalogo_Almacenes
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(734, 567)
+        Me.ClientSize = New System.Drawing.Size(979, 698)
         Me.Controls.Add(Me.tsMenu)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.gBoxBusquedaRapida)
         Me.Controls.Add(Me.gBoxInformacion)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Almacenes"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
@@ -419,4 +477,7 @@ Partial Public Class Catalogo_Almacenes
     Friend WithEvents lblNombreZona As System.Windows.Forms.Label
     Friend WithEvents lblZona As System.Windows.Forms.Label
     Friend WithEvents txtCodigoZona As System.Windows.Forms.TextBox
+    Friend WithEvents LblCategoria As System.Windows.Forms.Label
+    Friend WithEvents LblNombreCategoria As System.Windows.Forms.Label
+    Friend WithEvents TxtCodigoCategoria As System.Windows.Forms.TextBox
 End Class

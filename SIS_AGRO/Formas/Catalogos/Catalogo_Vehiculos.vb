@@ -91,6 +91,7 @@ Public Class Catalogo_Vehiculos
             Estado = enumEstados.CONSULTA
             Me.Cambia_Estado()
             Me.DesplegarElementos()
+            Me.CboEstatusFiltro.SelectedIndex = 0
             Me.Run = True
         Catch ex As Exception
             HandleError(Me.Name, "New", ex)
@@ -163,6 +164,8 @@ Public Class Catalogo_Vehiculos
 
                 Me.TxtCodigo.Enabled = False
                 Me.TxtNombre.Enabled = True
+                Me.CboEstatus.Enabled = False
+                Me.TxtCodigoCategoria.Enabled = True
 
                 Me.InicializaElemento()
                 Me.TxtNombre.Focus()
@@ -178,6 +181,8 @@ Public Class Catalogo_Vehiculos
 
                 Me.TxtCodigo.Enabled = False
                 Me.TxtNombre.Enabled = True
+                Me.CboEstatus.Enabled = True
+                Me.TxtCodigoCategoria.Enabled = True
                 Me.TxtNombre.Focus()
 
             Case enumEstados.CONSULTA
@@ -196,11 +201,14 @@ Public Class Catalogo_Vehiculos
     Private Sub InicializaElemento()
         Me.TxtCodigo.Text = ""
         Me.TxtNombre.Text = ""
+        Me.CboEstatus.SelectedIndex = 0
+        Me.TxtCodigoCategoria.Text = ""
+        Me.LblNombreCategoria.Text = ""
     End Sub
 
     Private Sub DesplegarElementos()
         With Me.Grid
-            .DataSource = oVehiculo.ObtenerElementos
+            .DataSource = oVehiculo.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.CboEstatusFiltro.Text)
             .Columns("CODIGO_VEHICULO").Width = 30
             .Columns("NOMBRE_VEHICULO").Width = 200
         End With
@@ -213,18 +221,38 @@ Public Class Catalogo_Vehiculos
             With Me.oVehiculo
                 Me.TxtCodigo.Text = .Codigo_Vehiculo.ToString
                 Me.TxtNombre.Text = .Nombre_Vehiculo.ToString
+                Me.TxtCodigoCategoria.Text = .Codigo_Categoria
+                Dim sql As New Class_find("SELECT NOMBRE_CATEGORIA FROM CAT_CATEGORIAS WHERE CODIGO_CATEGORIA='" & Me.TxtCodigoCategoria.Text & "' ")
+                If sql.Result1 = "" Then
+                Else
+                    Me.LblNombreCategoria.Text = sql.Result1
+                End If
+
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
             End With
         End If
     End Sub
 
     Private Sub Grabar_Elemento()
         Dim Grabado As Boolean = False
+
+        If Validar() = False Then
+            Exit Sub
+        End If
+
         Select Case Me.Estado
             Case enumEstados.NUEVO, enumEstados.EDICION
                 Try
                     With Me.oVehiculo
                         .Codigo_Vehiculo = valorNumerico(Me.TxtCodigo.Text).ToString
                         .Nombre_Vehiculo = Me.TxtNombre.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
+                        .Codigo_Categoria = Me.TxtCodigoCategoria.Text
+
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 If .Insertar() Then
@@ -255,6 +283,25 @@ Public Class Catalogo_Vehiculos
         End Select
     End Sub
 
+    Private Function Validar() As Boolean
+        Dim bResultado As Boolean = False
+
+        If txtLEN(Me.TxtNombre.Text) = False Then
+            MsgBox("Asígne un nombre al vehiculo.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.TxtNombre.Focus()
+            Return bResultado
+        End If
+
+        If txtLEN(Me.TxtCodigoCategoria.Text) = False Then
+            MsgBox("Asígne una categoría.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.TxtCodigoCategoria.Focus()
+            Return bResultado
+        End If
+
+        bResultado = True
+        Return bResultado
+    End Function
+
 #End Region
 
 #Region "Eventos de objetos"
@@ -270,15 +317,14 @@ Public Class Catalogo_Vehiculos
     End Sub
 #End Region
 
-#Region " Eventos de TxtFiltro"
+#Region " Eventos de TxtFiltro y cboEstatusFiltro"
     Private Sub txtFiltro_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFiltro.TextChanged
-        Dim oElementos As New Class_CatVehiculos
         Me.Grid.DataSource = Nothing
 
         With Me.Grid
-            .DataSource = oElementos.ObtenerElementosFiltro(Me.txtFiltro.Text)
+            .DataSource = oVehiculo.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.CboEstatusFiltro.Text)
             .Columns("CODIGO_VEHICULO").Width = 30
-            .Columns("NOMBRE_CATEGORIA").Width = 200
+            .Columns("NOMBRE_VEHICULO").Width = 200
         End With
     End Sub
     Private Sub txtFiltro_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFiltro.KeyPress
@@ -286,17 +332,27 @@ Public Class Catalogo_Vehiculos
         txtNoComilla(e)
     End Sub
     Private Sub txtFiltro_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtFiltro.KeyDown
-        Dim oElementosFiltro As New Class_CatVehiculos
         If e.KeyCode = Keys.Down Or e.KeyCode = Keys.Return Or e.KeyCode = Keys.Back Then
             Me.Grid.DataSource = Nothing
 
             With Me.Grid
-                .DataSource = oElementosFiltro.ObtenerElementosFiltro(Me.txtFiltro.Text)
+                .DataSource = oVehiculo.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.CboEstatusFiltro.Text)
                 .Columns("CODIGO_VEHICULO").Width = 30
                 .Columns("NOMBRE_VEHICULO").Width = 200
             End With
         End If
     End Sub
+
+    Private Sub cboEstatusFiltro_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CboEstatusFiltro.SelectedIndexChanged
+        Me.Grid.DataSource = Nothing
+
+        With Me.Grid
+            .DataSource = oVehiculo.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.CboEstatusFiltro.Text)
+            .Columns("CODIGO_VEHICULO").Width = 30
+            .Columns("NOMBRE_VEHICULO").Width = 200
+        End With
+    End Sub
+
 #End Region
 
 #Region "Eventos Genericos"
@@ -306,13 +362,13 @@ Public Class Catalogo_Vehiculos
             tsbGrabar.PerformClick()
         End If
     End Sub
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtNombre.KeyPress
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtNombre.KeyPress, TxtCodigoCategoria.KeyPress
         txtNoBeep(e)
     End Sub
 
     Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombre.KeyDown
         If e.KeyCode = Keys.Return Then
-            Me.tsbGrabar.PerformClick()
+            txtTAB(e)
         End If
     End Sub
 
@@ -335,7 +391,33 @@ Public Class Catalogo_Vehiculos
 
 
 #Region "Keydown específicos"
+    Private Sub TxtCodigoCategoria_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtCodigoCategoria.KeyDown
+        Dim oCategorias As New Class_CatCategorias
+        Select Case e.KeyCode
+            Case Keys.F6
+busca:
+                Me.TxtCodigoCategoria.Text = oCategorias.BusquedaVisual_PorDescripcion
+                oCategorias.Codigo_Categoria = Me.TxtCodigoCategoria.Text
+                If txtLEN(Me.TxtCodigoCategoria.Text) = True Then
+                    oCategorias.Consultar()
+                    Me.LblNombreCategoria.Text = oCategorias.Nombre_Categoria
+                Else
+                    MsgBox("No existen elementos en el catálogo de Categorías.", MsgBoxStyle.Exclamation, Me.Text)
+                    Exit Sub
+                End If
+                
+            Case Keys.Enter
+                If txtLEN(Me.TxtCodigoCategoria.Text) = True Then
+                    oCategorias.Codigo_Categoria = Me.TxtCodigoCategoria.Text
+                    If oCategorias.Consultar() = False Then
+                        GoTo busca
+                    End If
+                    Me.LblNombreCategoria.Text = oCategorias.Nombre_Categoria
+                End If
+                Me.tsbGrabar.PerformClick()
+        End Select
 
+    End Sub
 #End Region
 
 #Region "Validating específicos"

@@ -32,12 +32,19 @@ Partial Class Catalogo_Vehiculos
         Me.tsbImprimirListado = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.CboEstatusFiltro = New System.Windows.Forms.ComboBox()
         Me.Grid = New System.Windows.Forms.DataGridView()
         Me.txtFiltro = New System.Windows.Forms.TextBox()
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.LblNombreCategoria = New System.Windows.Forms.Label()
+        Me.LblCategoria = New System.Windows.Forms.Label()
+        Me.TxtCodigoCategoria = New System.Windows.Forms.TextBox()
+        Me.CboEstatus = New System.Windows.Forms.ComboBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.LblNombreVehiculo = New System.Windows.Forms.Label()
         Me.TxtNombre = New System.Windows.Forms.TextBox()
@@ -112,6 +119,8 @@ Partial Class Catalogo_Vehiculos
         '
         'gBoxBusquedaRapida
         '
+        Me.gBoxBusquedaRapida.Controls.Add(Me.Label3)
+        Me.gBoxBusquedaRapida.Controls.Add(Me.CboEstatusFiltro)
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(439, 34)
@@ -122,6 +131,26 @@ Partial Class Catalogo_Vehiculos
         Me.gBoxBusquedaRapida.TabIndex = 26
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(414, 24)
+        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(60, 17)
+        Me.Label3.TabIndex = 97
+        Me.Label3.Text = "Estado :"
+        '
+        'CboEstatusFiltro
+        '
+        Me.CboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboEstatusFiltro.FormattingEnabled = True
+        Me.CboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
+        Me.CboEstatusFiltro.Location = New System.Drawing.Point(481, 21)
+        Me.CboEstatusFiltro.Name = "CboEstatusFiltro"
+        Me.CboEstatusFiltro.Size = New System.Drawing.Size(67, 24)
+        Me.CboEstatusFiltro.TabIndex = 97
         '
         'Grid
         '
@@ -146,7 +175,7 @@ Partial Class Catalogo_Vehiculos
         Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
         Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.Name = "txtFiltro"
-        Me.txtFiltro.Size = New System.Drawing.Size(540, 22)
+        Me.txtFiltro.Size = New System.Drawing.Size(398, 22)
         Me.txtFiltro.TabIndex = 0
         '
         'StatusStripEstado
@@ -173,6 +202,11 @@ Partial Class Catalogo_Vehiculos
         '
         'gBoxInformacion
         '
+        Me.gBoxInformacion.Controls.Add(Me.Label1)
+        Me.gBoxInformacion.Controls.Add(Me.LblNombreCategoria)
+        Me.gBoxInformacion.Controls.Add(Me.LblCategoria)
+        Me.gBoxInformacion.Controls.Add(Me.TxtCodigoCategoria)
+        Me.gBoxInformacion.Controls.Add(Me.CboEstatus)
         Me.gBoxInformacion.Controls.Add(Me.Label2)
         Me.gBoxInformacion.Controls.Add(Me.LblNombreVehiculo)
         Me.gBoxInformacion.Controls.Add(Me.TxtNombre)
@@ -182,10 +216,59 @@ Partial Class Catalogo_Vehiculos
         Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
         Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
-        Me.gBoxInformacion.Size = New System.Drawing.Size(413, 395)
+        Me.gBoxInformacion.Size = New System.Drawing.Size(413, 287)
         Me.gBoxInformacion.TabIndex = 27
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(8, 155)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(60, 17)
+        Me.Label1.TabIndex = 96
+        Me.Label1.Text = "Estado :"
+        '
+        'LblNombreCategoria
+        '
+        Me.LblNombreCategoria.AutoSize = True
+        Me.LblNombreCategoria.Location = New System.Drawing.Point(101, 119)
+        Me.LblNombreCategoria.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNombreCategoria.Name = "LblNombreCategoria"
+        Me.LblNombreCategoria.Size = New System.Drawing.Size(16, 17)
+        Me.LblNombreCategoria.TabIndex = 3
+        Me.LblNombreCategoria.Text = "_"
+        '
+        'LblCategoria
+        '
+        Me.LblCategoria.AutoSize = True
+        Me.LblCategoria.Location = New System.Drawing.Point(8, 92)
+        Me.LblCategoria.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblCategoria.Name = "LblCategoria"
+        Me.LblCategoria.Size = New System.Drawing.Size(77, 17)
+        Me.LblCategoria.TabIndex = 94
+        Me.LblCategoria.Text = "Categoria :"
+        '
+        'TxtCodigoCategoria
+        '
+        Me.TxtCodigoCategoria.Location = New System.Drawing.Point(103, 89)
+        Me.TxtCodigoCategoria.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtCodigoCategoria.MaxLength = 2
+        Me.TxtCodigoCategoria.Name = "TxtCodigoCategoria"
+        Me.TxtCodigoCategoria.Size = New System.Drawing.Size(75, 22)
+        Me.TxtCodigoCategoria.TabIndex = 2
+        '
+        'CboEstatus
+        '
+        Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboEstatus.FormattingEnabled = True
+        Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
+        Me.CboEstatus.Location = New System.Drawing.Point(101, 152)
+        Me.CboEstatus.Name = "CboEstatus"
+        Me.CboEstatus.Size = New System.Drawing.Size(100, 24)
+        Me.CboEstatus.TabIndex = 4
         '
         'Label2
         '
@@ -286,4 +369,11 @@ Partial Class Catalogo_Vehiculos
     Friend WithEvents TxtCodigo As System.Windows.Forms.TextBox
     Friend WithEvents ErrorProvider As System.Windows.Forms.ErrorProvider
     Friend WithEvents Grid As System.Windows.Forms.DataGridView
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents CboEstatusFiltro As System.Windows.Forms.ComboBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents LblNombreCategoria As System.Windows.Forms.Label
+    Friend WithEvents LblCategoria As System.Windows.Forms.Label
+    Friend WithEvents TxtCodigoCategoria As System.Windows.Forms.TextBox
+    Friend WithEvents CboEstatus As System.Windows.Forms.ComboBox
 End Class

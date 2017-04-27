@@ -148,12 +148,8 @@ Public Class Catalogo_Productos_Agricolas
 
     Private Sub Catalogo_Articulos_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
-            Me.DesplegarCultivos()
-            Me.DesplegarTamaños()
-            Me.DesplegarEnvases()
-            Me.DesplegarEtiquetas()
-            Me.DesplegarFamilias()
 
+            Me.DesplegarFamilias()
             Me.InicializaElemento()
             Me.DesplegarElementos()
             'Me.InicializaGrid()
@@ -178,14 +174,14 @@ Public Class Catalogo_Productos_Agricolas
                     Me.tsbGrabar.Enabled = True
                     Me.tsbCancelar.Enabled = True
 
-                    Me.cboUnidadVenta.Enabled = True
+                    Me.txtCodigoUnidadVenta.Enabled = True
                     Me.CboEstatus.Enabled = False
                     Me.TxtPrecio.Enabled = True
                     Me.TxtPeso.Enabled = True
-                    Me.cboCultivo.Enabled = True
-                    Me.cboEnvase.Enabled = True
-                    Me.cboTamaño.Enabled = True
-                    Me.cboEtiqueta.Enabled = True
+                    Me.txtCodigoCultivo.Enabled = True
+                    Me.txtCodigoEnvase.Enabled = True
+                    Me.txtCodigoTamaño.Enabled = True
+                    Me.txtCodigoEtiqueta.Enabled = True
                     Me.chkInventariable.Enabled = True
                     Me.Grid.Locked = False
 
@@ -201,13 +197,13 @@ Public Class Catalogo_Productos_Agricolas
                     Me.tsbCancelar.Enabled = True
 
                     Me.CboEstatus.Enabled = True
-                    Me.cboUnidadVenta.Enabled = False
+                    Me.txtCodigoUnidadVenta.Enabled = False
                     Me.TxtPrecio.Enabled = True
                     Me.TxtPeso.Enabled = True
-                    Me.cboCultivo.Enabled = False
-                    Me.cboEnvase.Enabled = False
-                    Me.cboTamaño.Enabled = False
-                    Me.cboEtiqueta.Enabled = False
+                    Me.txtCodigoCultivo.Enabled = False
+                    Me.txtCodigoEnvase.Enabled = False
+                    Me.txtCodigoTamaño.Enabled = False
+                    Me.txtCodigoEtiqueta.Enabled = False
                     Me.chkInventariable.Enabled = True
                     Me.Grid.Locked = False
 
@@ -220,11 +216,12 @@ Public Class Catalogo_Productos_Agricolas
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = False
 
-                    Me.cboCultivo.Enabled = False
-                    Me.cboEnvase.Enabled = False
-                    Me.cboTamaño.Enabled = False
-                    Me.cboEtiqueta.Enabled = False
-                    Me.cboUnidadVenta.Enabled = False
+                    Me.txtCodigoCultivo.Enabled = False
+                    Me.txtCodigoEnvase.Enabled = False
+                    Me.txtCodigoTamaño.Enabled = False
+                    Me.txtCodigoEtiqueta.Enabled = False
+                    Me.txtCodigoUnidadVenta.Enabled = False
+
                     Me.Grid.Locked = True
                     Me.txtFiltro.Focus()
                     Me.CboEstatusFiltro.SelectedIndex = 0
@@ -244,6 +241,16 @@ Public Class Catalogo_Productos_Agricolas
             Me.TxtPeso.Text = "0.00"
             Me.TxtRangoPiezas.Text = ""
             Me.chkInventariable.Checked = True
+            Me.txtCodigoCultivo.Text = ""
+            Me.LblNombreCultivo.Text = "_"
+            Me.txtCodigoTamaño.Text = ""
+            Me.LblNombreTamaño.Text = "_"
+            Me.txtCodigoEtiqueta.Text = ""
+            Me.LblNombreEtiqueta.Text = "_"
+            Me.txtCodigoEnvase.Text = ""
+            Me.LblNombreEnvase.Text = "_"
+            Me.txtCodigoUnidadVenta.Text = ""
+            Me.LblNombreUnidadVenta.Text = "_"
 
             Me.InicializaGrid()
 
@@ -255,14 +262,11 @@ Public Class Catalogo_Productos_Agricolas
 
     Private Sub InicializaCombos()
         Try
-            Me.cboCultivo.SelectedIndex = -1
-            Me.cboTamaño.SelectedIndex = -1
-            Me.cboEnvase.SelectedIndex = -1
-            Me.cboEtiqueta.SelectedIndex = -1
 
             Dim sql As New Class_find("SELECT CODIGO_FAMILIA_PRODUCTO_AGRICOLA FROM SIS_EMPRESA ")
             Me.CboFamilia.SelectedValue = sql.Result1
             sql = Nothing
+
         Catch ex As Exception
             HandleError(Me.Name, "InicializaCombos", ex)
         End Try
@@ -336,74 +340,6 @@ Public Class Catalogo_Productos_Agricolas
         End Try
     End Sub
 
-    Private Sub DesplegarCultivos()
-        Try
-            Dim oElementos As New Class_CatCultivos
-            With Me.cboCultivo
-                .DisplayMember = "NOMBRE_CULTIVO"
-                .ValueMember = "CODIGO_CULTIVO"
-
-                Dim dView As New Data.DataView(oElementos.ObtenerElementos)
-                dView.Sort = "NOMBRE_CULTIVO"
-                .DataSource = dView
-                .SelectedIndex = -1
-            End With
-        Catch ex As Exception
-            HandleError(Me.Name, "DesplegarCultivos", ex)
-        End Try
-    End Sub
-
-    Private Sub DesplegarTamaños()
-        Try
-            Dim oElementos As New Class_CatTamaños
-            With Me.cboTamaño
-                .DisplayMember = "NOMBRE_TAMAÑO"
-                .ValueMember = "CODIGO_TAMAÑO"
-
-                Dim dView As New Data.DataView(oElementos.ObtenerElementos)
-                dView.Sort = "NOMBRE_TAMAÑO"
-                .DataSource = dView
-                .SelectedIndex = -1
-            End With
-        Catch ex As Exception
-            HandleError(Me.Name, "DesplegarTamaños", ex)
-        End Try
-    End Sub
-
-    Private Sub DesplegarEnvases()
-        Try
-            Dim oElementos As New Class_CatEnvases
-            With Me.cboEnvase
-                .DisplayMember = "NOMBRE_ENVASE"
-                .ValueMember = "CODIGO_ENVASE"
-
-                Dim dView As New Data.DataView(oElementos.ObtenerElementos)
-                dView.Sort = "NOMBRE_ENVASE"
-                .DataSource = dView
-                .SelectedIndex = -1
-            End With
-        Catch ex As Exception
-            HandleError(Me.Name, "DesplegarEnvases", ex)
-        End Try
-    End Sub
-
-    Private Sub DesplegarEtiquetas()
-        Try
-            Dim oElementos As New Class_CatEtiquetas
-            With Me.cboEtiqueta
-                .DisplayMember = "NOMBRE_ETIQUETA"
-                .ValueMember = "CODIGO_ETIQUETA"
-
-                Dim dView As New Data.DataView(oElementos.ObtenerElementos)
-                dView.Sort = "NOMBRE_ETIQUETA"
-                .DataSource = dView
-                .SelectedIndex = -1
-            End With
-        Catch ex As Exception
-            HandleError(Me.Name, "DesplegarEtiquetas", ex)
-        End Try
-    End Sub
-
     Private Sub DesplegarFamilias()
         Try
             Dim oElementos As New Class_CatFamilias
@@ -456,14 +392,25 @@ Public Class Catalogo_Productos_Agricolas
                     Me.TxtPeso.Text = .PESO.ToString
                     Me.TxtCantidadBultosXPalet.Text = .CANTIDAD_BULTOS_POR_PALET.ToString
                     Me.CboFamilia.SelectedValue = .CODIGO_FAMILIA
-                    Me.cboCultivo.SelectedValue = .CODIGO_CULTIVO
-                    Me.cboTamaño.SelectedValue = .CODIGO_TAMAÑO
-                    Me.cboEnvase.SelectedValue = .CODIGO_ENVASE
-                    Me.cboEtiqueta.SelectedValue = .CODIGO_ETIQUETA
-                    Me.cboUnidadVenta.Text = .UNIDAD_VENTA
+                    Me.txtCodigoCultivo.Text = .CODIGO_CULTIVO
+                    Me.txtCodigoTamaño.Text = .CODIGO_TAMAÑO
+                    Me.txtCodigoEnvase.Text = .CODIGO_ENVASE
+                    Me.txtCodigoEtiqueta.Text = .CODIGO_ETIQUETA
+                    Me.txtCodigoUnidadVenta.Text = .UNIDAD_VENTA
                     Me.TxtRangoPiezas.Text = .RANGO_PIEZAS
                     Me.chkInventariable.Checked = CBool(.INVENTARIABLE.ToString)
                 End With
+
+                Dim sql As New Class_find("SELECT NOMBRE_CULTIVO FROM CAT_CULTIVOS WHERE CODIGO_CULTIVO='" & Me.txtCodigoCultivo.Text & "' ")
+                Me.LblNombreCultivo.Text = sql.Result1
+                sql = New Class_find("SELECT NOMBRE_TAMAÑO FROM CAT_TAMAÑOS WHERE CODIGO_TAMAÑO='" & Me.txtCodigoTamaño.Text & "' ")
+                Me.LblNombreTamaño.Text = sql.Result1
+                sql = New Class_find("SELECT NOMBRE_ENVASE FROM CAT_ENVASES WHERE CODIGO_ENVASE='" & Me.txtCodigoEnvase.Text & "' ")
+                Me.LblNombreEnvase.Text = sql.Result1
+                sql = New Class_find("SELECT NOMBRE_ETIQUETA FROM CAT_ETIQUETAS WHERE CODIGO_ETIQUETA='" & Me.txtCodigoEtiqueta.Text & "' ")
+                Me.LblNombreEtiqueta.Text = sql.Result1
+                sql = New Class_find("SELECT NOMBRE_UNIDAD_VENTA FROM CAT_UNIDADES_VENTA WHERE CODIGO_UNIDAD_VENTA='" & Me.txtCodigoUnidadVenta.Text & "' ")
+                Me.LblNombreUnidadVenta.Text = sql.Result1
 
                 'Me.Grid.DataSource = Me.oFormulasEmpaque.ObtenerDetalle(Me.TxtCodArticulo.Text)
 
@@ -506,27 +453,27 @@ Public Class Catalogo_Productos_Agricolas
             Exit Sub
         End If
 
-        If txtLEN(Me.cboCultivo.Text) = False Then
+        If txtLEN(Me.txtCodigoCultivo.Text) = False Then
             MsgBox("Asígne un cultivo", MsgBoxStyle.Exclamation, Me.Text)
-            Me.cboCultivo.Focus()
+            Me.txtCodigoCultivo.Focus()
             Exit Sub
         End If
 
-        If txtLEN(Me.cboTamaño.Text) = False Then
+        If txtLEN(Me.txtCodigoTamaño.Text) = False Then
             MsgBox("Asígne un tamaño", MsgBoxStyle.Exclamation, Me.Text)
-            Me.cboTamaño.Focus()
+            Me.txtCodigoTamaño.Focus()
             Exit Sub
         End If
 
-        If txtLEN(Me.cboEnvase.Text) = False Then
+        If txtLEN(Me.txtCodigoEnvase.Text) = False Then
             MsgBox("Asígne un envase", MsgBoxStyle.Exclamation, Me.Text)
-            Me.cboEnvase.Focus()
+            Me.txtCodigoEnvase.Focus()
             Exit Sub
         End If
 
-        If txtLEN(Me.cboEtiqueta.Text) = False Then
+        If txtLEN(Me.txtCodigoEtiqueta.Text) = False Then
             MsgBox("Asígne una etiqueta", MsgBoxStyle.Exclamation, Me.Text)
-            Me.cboEtiqueta.Focus()
+            Me.txtCodigoEtiqueta.Focus()
             Exit Sub
         End If
 
@@ -548,12 +495,18 @@ Public Class Catalogo_Productos_Agricolas
             End If
         End If
 
-        If txtLEN(Me.cboCultivo.Text) = True And Me.cboTamaño.SelectedValue.ToString <> Empresa_Sistema.CODIGO_TAMAÑO_REZAGA.ToString And Me.cboUnidadVenta.Text = "KG" Then
+        If txtLEN(Me.txtCodigoCultivo.Text) = True And Me.txtCodigoTamaño.Text <> Empresa_Sistema.CODIGO_TAMAÑO_REZAGA.ToString And Me.txtCodigoUnidadVenta.Text = "KG" Then
             If valorNumerico(Me.TxtPeso.Text) <= 0 Then
                 MsgBox("Asígne el peso que se usará para convertir la cantidad y precio facturado en bultos.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.TxtPeso.Focus()
                 Exit Sub
             End If
+        End If
+
+        If txtLEN(Me.txtCodigoUnidadVenta.Text) = False Then
+            MsgBox("Asígne la Unidad de Venta.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.txtCodigoUnidadVenta.Focus()
+            Exit Sub
         End If
 
         For i = 1 To Me.Grid.Rows - 1
@@ -569,12 +522,17 @@ Public Class Catalogo_Productos_Agricolas
         Select Case Me.Estado
             Case enumEstados.NUEVO, enumEstados.EDICION
                 oElemento = New Class_CatArticulos
+
+                If Me.Estado = enumEstados.NUEVO Then
+                    Me.GeneraCodigoDescripcion()
+                End If
+
                 Try
                     With oElemento
                         .CODIGO_ARTICULO = Me.TxtCodArticulo.Text
                         .DESCRIPCION = Me.TxtDescripcion.Text
                         .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
-                        .UNIDAD_VENTA = Me.cboUnidadVenta.Text '"BTO" 
+                        .UNIDAD_VENTA = Me.txtCodigoUnidadVenta.Text
                         .PROTEGIDO = "0"
                         .INVENTARIABLE = "0"
                         .TIENE_IMPUESTO = "0"
@@ -583,10 +541,10 @@ Public Class Catalogo_Productos_Agricolas
                         .PRECIO = Convert.ToDecimal(Me.TxtPrecio.Text)
                         .PESO = Convert.ToDecimal(Me.TxtPeso.Text)
                         .CANTIDAD_BULTOS_POR_PALET = CInt(valorNumerico(Me.TxtCantidadBultosXPalet.Text))
-                        .CODIGO_CULTIVO = Me.cboCultivo.SelectedValue.ToString
-                        .CODIGO_TAMAÑO = Me.cboTamaño.SelectedValue.ToString
-                        .CODIGO_ENVASE = Me.cboEnvase.SelectedValue.ToString
-                        .CODIGO_ETIQUETA = Me.cboEtiqueta.SelectedValue.ToString
+                        .CODIGO_CULTIVO = Me.txtCodigoCultivo.Text
+                        .CODIGO_TAMAÑO = Me.txtCodigoTamaño.Text
+                        .CODIGO_ENVASE = Me.txtCodigoEnvase.Text
+                        .CODIGO_ETIQUETA = Me.txtCodigoEtiqueta.Text
                         .RANGO_PIEZAS = Me.TxtRangoPiezas.Text
                         .INVENTARIABLE = Convert.ToInt32(Me.chkInventariable.Checked).ToString
                         .GRADO_TOXICIDAD = "0"
@@ -669,9 +627,9 @@ Public Class Catalogo_Productos_Agricolas
     End Function
 
     Private Sub GeneraCodigoDescripcion()
-        If Me.cboCultivo.SelectedIndex >= 0 And Me.cboTamaño.SelectedIndex >= 0 And Me.cboEnvase.SelectedIndex >= 0 And Me.cboEtiqueta.SelectedIndex >= 0 Then
-            Me.TxtCodArticulo.Text = Me.cboCultivo.SelectedValue.ToString + Me.cboTamaño.SelectedValue.ToString + Me.cboEnvase.SelectedValue.ToString + Me.cboEtiqueta.SelectedValue.ToString
-            Me.TxtDescripcion.Text = Me.cboCultivo.Text + " " + Me.cboTamaño.Text + " " + Me.cboEnvase.Text + " " + Me.cboEtiqueta.Text
+        If txtLEN(Me.txtCodigoCultivo.Text) = True And txtLEN(Me.txtCodigoTamaño.Text) = True And txtLEN(Me.txtCodigoEnvase.Text) = True And txtLEN(Me.txtCodigoEtiqueta.Text) = True Then
+            Me.TxtCodArticulo.Text = Me.txtCodigoCultivo.Text + Me.txtCodigoTamaño.Text + Me.txtCodigoEnvase.Text + Me.txtCodigoEtiqueta.Text
+            Me.TxtDescripcion.Text = Me.LblNombreCultivo.Text + " " + Me.LblNombreTamaño.Text + " " + Me.LblNombreEnvase.Text + " " + Me.LblNombreEtiqueta.Text
         End If
     End Sub
 
@@ -910,7 +868,7 @@ Busca:
         End Select
     End Sub
 
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtRangoPiezas.KeyPress
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtRangoPiezas.KeyPress, txtCodigoCultivo.KeyPress, txtCodigoEnvase.KeyPress, txtCodigoEtiqueta.KeyPress, txtCodigoTamaño.KeyPress, txtCodigoUnidadVenta.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -944,20 +902,6 @@ Busca:
         End If
     End Sub
 
-    Private Sub cboEnvase_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtPrecio.KeyDown, TxtDescripcion.KeyDown, TxtCodArticulo.KeyDown, cboTamaño.KeyDown, CboFamilia.KeyDown, cboEtiqueta.KeyDown, cboEnvase.KeyDown, cboCultivo.KeyDown, TxtPeso.KeyDown, TxtCantidadBultosXPalet.KeyDown, cboUnidadVenta.KeyDown
-        txtTAB(e)
-    End Sub
-
-    Private Sub cboCultivo_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtPrecio.KeyPress, TxtDescripcion.KeyPress, TxtCodArticulo.KeyPress, cboTamaño.KeyPress, CboFamilia.KeyPress, cboEtiqueta.KeyPress, CboEstatus.KeyPress, cboEnvase.KeyPress, cboCultivo.KeyPress, TxtPeso.KeyPress, cboUnidadVenta.KeyPress
-        txtNoBeep(e)
-    End Sub
-
-    Private Sub cboCultivo_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboTamaño.SelectedIndexChanged, cboEtiqueta.SelectedIndexChanged, cboEnvase.SelectedIndexChanged, cboCultivo.SelectedIndexChanged
-        If Me.Estado = enumEstados.NUEVO Then
-            Me.GeneraCodigoDescripcion()
-        End If
-    End Sub
-
     Private Sub CboFiltroHoja_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Refrescar()
     End Sub
@@ -969,6 +913,154 @@ Busca:
 
     Private Sub Grid_KeyDown(ByVal Sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Grid.KeyDown
         Me.GestionaGrid(e)
+    End Sub
+
+#End Region
+
+#Region "Keydown especificos"
+    Private Sub TxtCodigoCultivo_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCodigoCultivo.KeyDown
+        Dim oCultivos As New Class_CatCultivos
+        Select Case e.KeyCode
+            Case Keys.F6
+Busca:
+                Me.txtCodigoCultivo.Text = oCultivos.BusquedaVisual_PorDescripcion
+                oCultivos.CODIGO_CULTIVO = Me.txtCodigoCultivo.Text
+                If txtLEN(Me.txtCodigoCultivo.Text) = True Then
+                    oCultivos.Consultar()
+                    Me.LblNombreCultivo.Text = oCultivos.NOMBRE_CULTIVO
+                Else
+                    MsgBox("No hay existencias en el catálogo de Cultivos.", MsgBoxStyle.Exclamation, Me.Text)
+                    Exit Sub
+                End If
+
+            Case Keys.Enter
+
+                If txtLEN(Me.txtCodigoCultivo.Text) = True Then
+                    oCultivos.CODIGO_CULTIVO = Me.txtCodigoCultivo.Text
+                    If oCultivos.Consultar() = False Then
+                        GoTo Busca
+                    End If
+                    Me.LblNombreCultivo.Text = oCultivos.NOMBRE_CULTIVO
+                End If
+        End Select
+        If txtLEN(Me.txtCodigoCultivo.Text) = True Then
+            If Me.Estado = enumEstados.NUEVO Then
+                Me.GeneraCodigoDescripcion()
+            End If
+        End If
+        txtTAB(e)
+    End Sub
+
+    Private Sub TxtCodigoTamaño_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCodigoTamaño.KeyDown
+        Dim oElemento As New Class_CatTamaños
+        Select Case e.KeyCode
+            Case Keys.F6
+Busca:
+                Me.txtCodigoTamaño.Text = oElemento.BusquedaVisual_PorDescripcion
+                oElemento.Codigo_Tamaño = Me.txtCodigoTamaño.Text
+                If txtLEN(Me.txtCodigoTamaño.Text) = True Then
+                    oElemento.Consultar()
+                    Me.LblNombreTamaño.Text = oElemento.Nombre_Tamaño
+                Else
+                    MsgBox("No hay existencias en el catálogo de Tamaños.", MsgBoxStyle.Exclamation, Me.Text)
+                    Exit Sub
+                End If
+
+            Case Keys.Enter
+
+                If txtLEN(Me.txtCodigoTamaño.Text) = True Then
+                    oElemento.Codigo_Tamaño = Me.txtCodigoTamaño.Text
+                    If oElemento.Consultar() = False Then
+                        GoTo Busca
+                    End If
+                    Me.LblNombreTamaño.Text = oElemento.Nombre_Tamaño
+                End If
+        End Select
+        txtTAB(e)
+    End Sub
+
+    Private Sub TxtCodigoEnvase_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCodigoEnvase.KeyDown
+        Dim oElemento As New Class_CatEnvases
+        Select Case e.KeyCode
+            Case Keys.F6
+Busca:
+                Me.txtCodigoEnvase.Text = oElemento.BusquedaVisual_PorDescripcion
+                oElemento.Codigo_Envase = Me.txtCodigoEnvase.Text
+                If txtLEN(Me.txtCodigoEnvase.Text) = True Then
+                    oElemento.Consultar()
+                    Me.LblNombreEnvase.Text = oElemento.Nombre_Envase
+                Else
+                    MsgBox("No hay existencias en el catálogo de Envases.", MsgBoxStyle.Exclamation, Me.Text)
+                    Exit Sub
+                End If
+
+            Case Keys.Enter
+
+                If txtLEN(Me.txtCodigoEnvase.Text) = True Then
+                    oElemento.Codigo_Envase = Me.txtCodigoEnvase.Text
+                    If oElemento.Consultar() = False Then
+                        GoTo Busca
+                    End If
+                    Me.LblNombreEnvase.Text = oElemento.Nombre_Envase
+                End If
+        End Select
+        txtTAB(e)
+    End Sub
+
+    Private Sub TxtCodigoEtiqueta_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCodigoEtiqueta.KeyDown
+        Dim oElemento As New Class_CatEtiquetas
+        Select Case e.KeyCode
+            Case Keys.F6
+Busca:
+                Me.txtCodigoEtiqueta.Text = oElemento.BusquedaVisual_PorDescripcion
+                oElemento.Codigo_Etiqueta = Me.txtCodigoEtiqueta.Text
+                If txtLEN(Me.txtCodigoEtiqueta.Text) = True Then
+                    oElemento.Consultar()
+                    Me.LblNombreEtiqueta.Text = oElemento.Nombre_Etiqueta
+                Else
+                    MsgBox("No hay existencias en el catálogo de Etíquetas.", MsgBoxStyle.Exclamation, Me.Text)
+                    Exit Sub
+                End If
+
+            Case Keys.Enter
+
+                If txtLEN(Me.txtCodigoEtiqueta.Text) = True Then
+                    oElemento.Codigo_Etiqueta = Me.txtCodigoEtiqueta.Text
+                    If oElemento.Consultar() = False Then
+                        GoTo Busca
+                    End If
+                    Me.LblNombreEtiqueta.Text = oElemento.Nombre_Etiqueta
+                End If
+        End Select
+        txtTAB(e)
+    End Sub
+
+    Private Sub TxtCodigoUnidadVenta_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCodigoUnidadVenta.KeyDown
+        Dim oElemento As New Class_CatUnidadesVenta
+        Select Case e.KeyCode
+            Case Keys.F6
+Busca:
+                Me.txtCodigoUnidadVenta.Text = oElemento.BusquedaVisual_PorDescripcion
+                oElemento.Codigo_Unidad_Venta = Me.txtCodigoUnidadVenta.Text
+                If txtLEN(Me.txtCodigoUnidadVenta.Text) = True Then
+                    oElemento.Consultar()
+                    Me.LblNombreUnidadVenta.Text = oElemento.Nombre_Unidad_Venta
+                Else
+                    MsgBox("No hay existencias en el catálogo de Unidades de Venta.", MsgBoxStyle.Exclamation, Me.Text)
+                    Exit Sub
+                End If
+
+            Case Keys.Enter
+
+                If txtLEN(Me.txtCodigoUnidadVenta.Text) = True Then
+                    oElemento.Codigo_Unidad_Venta = Me.txtCodigoUnidadVenta.Text
+                    If oElemento.Consultar() = False Then
+                        GoTo Busca
+                    End If
+                    Me.LblNombreUnidadVenta.Text = oElemento.Nombre_Unidad_Venta
+                End If
+        End Select
+        txtTAB(e)
     End Sub
 
 #End Region

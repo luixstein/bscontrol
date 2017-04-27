@@ -24,22 +24,27 @@ Partial Class Catalogo_Productos_Agricolas
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Catalogo_Productos_Agricolas))
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.LblNombreUnidadVenta = New System.Windows.Forms.Label()
+        Me.txtCodigoUnidadVenta = New System.Windows.Forms.TextBox()
+        Me.LblNombreEtiqueta = New System.Windows.Forms.Label()
+        Me.LblNombreEnvase = New System.Windows.Forms.Label()
+        Me.LblNombreTamaño = New System.Windows.Forms.Label()
+        Me.LblNombreCultivo = New System.Windows.Forms.Label()
+        Me.txtCodigoEtiqueta = New System.Windows.Forms.TextBox()
+        Me.txtCodigoEnvase = New System.Windows.Forms.TextBox()
+        Me.txtCodigoTamaño = New System.Windows.Forms.TextBox()
+        Me.txtCodigoCultivo = New System.Windows.Forms.TextBox()
         Me.chkInventariable = New System.Windows.Forms.CheckBox()
         Me.lblDisplayUnidadVenta = New System.Windows.Forms.Label()
-        Me.cboUnidadVenta = New System.Windows.Forms.ComboBox()
         Me.LblDisplayRangoPiezas = New System.Windows.Forms.Label()
         Me.TxtRangoPiezas = New System.Windows.Forms.TextBox()
         Me.LblDisplayBultosXPalets = New System.Windows.Forms.Label()
         Me.TxtCantidadBultosXPalet = New System.Windows.Forms.TextBox()
         Me.lblPeso = New System.Windows.Forms.Label()
         Me.TxtPeso = New System.Windows.Forms.TextBox()
-        Me.cboEtiqueta = New System.Windows.Forms.ComboBox()
         Me.lblDisplayEtiqueta = New System.Windows.Forms.Label()
-        Me.cboEnvase = New System.Windows.Forms.ComboBox()
         Me.lblDisplayEnvase = New System.Windows.Forms.Label()
-        Me.cboTamaño = New System.Windows.Forms.ComboBox()
         Me.lblDisplayTamaño = New System.Windows.Forms.Label()
-        Me.cboCultivo = New System.Windows.Forms.ComboBox()
         Me.lblDisplayCultivo = New System.Windows.Forms.Label()
         Me.CboFamilia = New System.Windows.Forms.ComboBox()
         Me.lblDisplayFamilia = New System.Windows.Forms.Label()
@@ -79,22 +84,27 @@ Partial Class Catalogo_Productos_Agricolas
         '
         'gBoxInformacion
         '
+        Me.gBoxInformacion.Controls.Add(Me.LblNombreUnidadVenta)
+        Me.gBoxInformacion.Controls.Add(Me.txtCodigoUnidadVenta)
+        Me.gBoxInformacion.Controls.Add(Me.LblNombreEtiqueta)
+        Me.gBoxInformacion.Controls.Add(Me.LblNombreEnvase)
+        Me.gBoxInformacion.Controls.Add(Me.LblNombreTamaño)
+        Me.gBoxInformacion.Controls.Add(Me.LblNombreCultivo)
+        Me.gBoxInformacion.Controls.Add(Me.txtCodigoEtiqueta)
+        Me.gBoxInformacion.Controls.Add(Me.txtCodigoEnvase)
+        Me.gBoxInformacion.Controls.Add(Me.txtCodigoTamaño)
+        Me.gBoxInformacion.Controls.Add(Me.txtCodigoCultivo)
         Me.gBoxInformacion.Controls.Add(Me.chkInventariable)
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayUnidadVenta)
-        Me.gBoxInformacion.Controls.Add(Me.cboUnidadVenta)
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayRangoPiezas)
         Me.gBoxInformacion.Controls.Add(Me.TxtRangoPiezas)
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayBultosXPalets)
         Me.gBoxInformacion.Controls.Add(Me.TxtCantidadBultosXPalet)
         Me.gBoxInformacion.Controls.Add(Me.lblPeso)
         Me.gBoxInformacion.Controls.Add(Me.TxtPeso)
-        Me.gBoxInformacion.Controls.Add(Me.cboEtiqueta)
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayEtiqueta)
-        Me.gBoxInformacion.Controls.Add(Me.cboEnvase)
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayEnvase)
-        Me.gBoxInformacion.Controls.Add(Me.cboTamaño)
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayTamaño)
-        Me.gBoxInformacion.Controls.Add(Me.cboCultivo)
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayCultivo)
         Me.gBoxInformacion.Controls.Add(Me.CboFamilia)
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayFamilia)
@@ -107,19 +117,99 @@ Partial Class Catalogo_Productos_Agricolas
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayDescripcion)
         Me.gBoxInformacion.Controls.Add(Me.TxtDescripcion)
         Me.gBoxInformacion.Location = New System.Drawing.Point(5, 32)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Size = New System.Drawing.Size(531, 372)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información de los artículos"
         '
+        'LblNombreUnidadVenta
+        '
+        Me.LblNombreUnidadVenta.AutoSize = True
+        Me.LblNombreUnidadVenta.Location = New System.Drawing.Point(216, 342)
+        Me.LblNombreUnidadVenta.Name = "LblNombreUnidadVenta"
+        Me.LblNombreUnidadVenta.Size = New System.Drawing.Size(16, 17)
+        Me.LblNombreUnidadVenta.TabIndex = 165
+        Me.LblNombreUnidadVenta.Text = "_"
+        '
+        'txtCodigoUnidadVenta
+        '
+        Me.txtCodigoUnidadVenta.Location = New System.Drawing.Point(129, 339)
+        Me.txtCodigoUnidadVenta.Name = "txtCodigoUnidadVenta"
+        Me.txtCodigoUnidadVenta.Size = New System.Drawing.Size(81, 22)
+        Me.txtCodigoUnidadVenta.TabIndex = 164
+        '
+        'LblNombreEtiqueta
+        '
+        Me.LblNombreEtiqueta.AutoSize = True
+        Me.LblNombreEtiqueta.Location = New System.Drawing.Point(194, 132)
+        Me.LblNombreEtiqueta.Name = "LblNombreEtiqueta"
+        Me.LblNombreEtiqueta.Size = New System.Drawing.Size(16, 17)
+        Me.LblNombreEtiqueta.TabIndex = 163
+        Me.LblNombreEtiqueta.Text = "_"
+        '
+        'LblNombreEnvase
+        '
+        Me.LblNombreEnvase.AutoSize = True
+        Me.LblNombreEnvase.Location = New System.Drawing.Point(194, 98)
+        Me.LblNombreEnvase.Name = "LblNombreEnvase"
+        Me.LblNombreEnvase.Size = New System.Drawing.Size(16, 17)
+        Me.LblNombreEnvase.TabIndex = 162
+        Me.LblNombreEnvase.Text = "_"
+        '
+        'LblNombreTamaño
+        '
+        Me.LblNombreTamaño.AutoSize = True
+        Me.LblNombreTamaño.Location = New System.Drawing.Point(194, 65)
+        Me.LblNombreTamaño.Name = "LblNombreTamaño"
+        Me.LblNombreTamaño.Size = New System.Drawing.Size(16, 17)
+        Me.LblNombreTamaño.TabIndex = 161
+        Me.LblNombreTamaño.Text = "_"
+        '
+        'LblNombreCultivo
+        '
+        Me.LblNombreCultivo.AutoSize = True
+        Me.LblNombreCultivo.Location = New System.Drawing.Point(194, 36)
+        Me.LblNombreCultivo.Name = "LblNombreCultivo"
+        Me.LblNombreCultivo.Size = New System.Drawing.Size(16, 17)
+        Me.LblNombreCultivo.TabIndex = 160
+        Me.LblNombreCultivo.Text = "_"
+        '
+        'txtCodigoEtiqueta
+        '
+        Me.txtCodigoEtiqueta.Location = New System.Drawing.Point(129, 129)
+        Me.txtCodigoEtiqueta.Name = "txtCodigoEtiqueta"
+        Me.txtCodigoEtiqueta.Size = New System.Drawing.Size(59, 22)
+        Me.txtCodigoEtiqueta.TabIndex = 159
+        '
+        'txtCodigoEnvase
+        '
+        Me.txtCodigoEnvase.Location = New System.Drawing.Point(129, 95)
+        Me.txtCodigoEnvase.Name = "txtCodigoEnvase"
+        Me.txtCodigoEnvase.Size = New System.Drawing.Size(59, 22)
+        Me.txtCodigoEnvase.TabIndex = 158
+        '
+        'txtCodigoTamaño
+        '
+        Me.txtCodigoTamaño.Location = New System.Drawing.Point(129, 62)
+        Me.txtCodigoTamaño.Name = "txtCodigoTamaño"
+        Me.txtCodigoTamaño.Size = New System.Drawing.Size(59, 22)
+        Me.txtCodigoTamaño.TabIndex = 157
+        '
+        'txtCodigoCultivo
+        '
+        Me.txtCodigoCultivo.Location = New System.Drawing.Point(129, 33)
+        Me.txtCodigoCultivo.Name = "txtCodigoCultivo"
+        Me.txtCodigoCultivo.Size = New System.Drawing.Size(59, 22)
+        Me.txtCodigoCultivo.TabIndex = 156
+        '
         'chkInventariable
         '
         Me.chkInventariable.AutoSize = True
         Me.chkInventariable.Location = New System.Drawing.Point(264, 160)
-        Me.chkInventariable.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.chkInventariable.Margin = New System.Windows.Forms.Padding(4)
         Me.chkInventariable.Name = "chkInventariable"
         Me.chkInventariable.Size = New System.Drawing.Size(111, 21)
         Me.chkInventariable.TabIndex = 5
@@ -136,18 +226,6 @@ Partial Class Catalogo_Productos_Agricolas
         Me.lblDisplayUnidadVenta.TabIndex = 155
         Me.lblDisplayUnidadVenta.Text = "Unidad venta :"
         '
-        'cboUnidadVenta
-        '
-        Me.cboUnidadVenta.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboUnidadVenta.FormattingEnabled = True
-        Me.cboUnidadVenta.Items.AddRange(New Object() {"CAJA", "KG"})
-        Me.cboUnidadVenta.Location = New System.Drawing.Point(129, 337)
-        Me.cboUnidadVenta.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
-        Me.cboUnidadVenta.MaxLength = 1
-        Me.cboUnidadVenta.Name = "cboUnidadVenta"
-        Me.cboUnidadVenta.Size = New System.Drawing.Size(95, 24)
-        Me.cboUnidadVenta.TabIndex = 10
-        '
         'LblDisplayRangoPiezas
         '
         Me.LblDisplayRangoPiezas.AutoSize = True
@@ -161,7 +239,7 @@ Partial Class Catalogo_Productos_Agricolas
         'TxtRangoPiezas
         '
         Me.TxtRangoPiezas.Location = New System.Drawing.Point(424, 306)
-        Me.TxtRangoPiezas.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtRangoPiezas.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtRangoPiezas.MaxLength = 21
         Me.TxtRangoPiezas.Name = "TxtRangoPiezas"
         Me.TxtRangoPiezas.Size = New System.Drawing.Size(95, 22)
@@ -181,7 +259,7 @@ Partial Class Catalogo_Productos_Agricolas
         'TxtCantidadBultosXPalet
         '
         Me.TxtCantidadBultosXPalet.Location = New System.Drawing.Point(424, 278)
-        Me.TxtCantidadBultosXPalet.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCantidadBultosXPalet.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCantidadBultosXPalet.MaxLength = 21
         Me.TxtCantidadBultosXPalet.Name = "TxtCantidadBultosXPalet"
         Me.TxtCantidadBultosXPalet.Size = New System.Drawing.Size(95, 22)
@@ -202,24 +280,13 @@ Partial Class Catalogo_Productos_Agricolas
         'TxtPeso
         '
         Me.TxtPeso.Location = New System.Drawing.Point(129, 306)
-        Me.TxtPeso.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtPeso.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtPeso.MaxLength = 21
         Me.TxtPeso.Name = "TxtPeso"
         Me.TxtPeso.Size = New System.Drawing.Size(95, 22)
         Me.TxtPeso.TabIndex = 9
         Me.TxtPeso.Text = "0"
         Me.TxtPeso.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
-        'cboEtiqueta
-        '
-        Me.cboEtiqueta.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboEtiqueta.FormattingEnabled = True
-        Me.cboEtiqueta.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
-        Me.cboEtiqueta.Location = New System.Drawing.Point(129, 128)
-        Me.cboEtiqueta.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
-        Me.cboEtiqueta.Name = "cboEtiqueta"
-        Me.cboEtiqueta.Size = New System.Drawing.Size(391, 24)
-        Me.cboEtiqueta.TabIndex = 3
         '
         'lblDisplayEtiqueta
         '
@@ -231,17 +298,6 @@ Partial Class Catalogo_Productos_Agricolas
         Me.lblDisplayEtiqueta.TabIndex = 146
         Me.lblDisplayEtiqueta.Text = "Etiqueta :"
         '
-        'cboEnvase
-        '
-        Me.cboEnvase.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboEnvase.FormattingEnabled = True
-        Me.cboEnvase.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
-        Me.cboEnvase.Location = New System.Drawing.Point(129, 95)
-        Me.cboEnvase.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
-        Me.cboEnvase.Name = "cboEnvase"
-        Me.cboEnvase.Size = New System.Drawing.Size(391, 24)
-        Me.cboEnvase.TabIndex = 2
-        '
         'lblDisplayEnvase
         '
         Me.lblDisplayEnvase.AutoSize = True
@@ -252,17 +308,6 @@ Partial Class Catalogo_Productos_Agricolas
         Me.lblDisplayEnvase.TabIndex = 144
         Me.lblDisplayEnvase.Text = "Envase :"
         '
-        'cboTamaño
-        '
-        Me.cboTamaño.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboTamaño.FormattingEnabled = True
-        Me.cboTamaño.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
-        Me.cboTamaño.Location = New System.Drawing.Point(129, 62)
-        Me.cboTamaño.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
-        Me.cboTamaño.Name = "cboTamaño"
-        Me.cboTamaño.Size = New System.Drawing.Size(391, 24)
-        Me.cboTamaño.TabIndex = 1
-        '
         'lblDisplayTamaño
         '
         Me.lblDisplayTamaño.AutoSize = True
@@ -272,17 +317,6 @@ Partial Class Catalogo_Productos_Agricolas
         Me.lblDisplayTamaño.Size = New System.Drawing.Size(68, 17)
         Me.lblDisplayTamaño.TabIndex = 142
         Me.lblDisplayTamaño.Text = "Tamaño :"
-        '
-        'cboCultivo
-        '
-        Me.cboCultivo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboCultivo.FormattingEnabled = True
-        Me.cboCultivo.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
-        Me.cboCultivo.Location = New System.Drawing.Point(129, 28)
-        Me.cboCultivo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
-        Me.cboCultivo.Name = "cboCultivo"
-        Me.cboCultivo.Size = New System.Drawing.Size(391, 24)
-        Me.cboCultivo.TabIndex = 0
         '
         'lblDisplayCultivo
         '
@@ -301,7 +335,7 @@ Partial Class Catalogo_Productos_Agricolas
         Me.CboFamilia.FormattingEnabled = True
         Me.CboFamilia.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
         Me.CboFamilia.Location = New System.Drawing.Point(129, 242)
-        Me.CboFamilia.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboFamilia.Margin = New System.Windows.Forms.Padding(4)
         Me.CboFamilia.Name = "CboFamilia"
         Me.CboFamilia.Size = New System.Drawing.Size(391, 24)
         Me.CboFamilia.TabIndex = 7
@@ -329,7 +363,7 @@ Partial Class Catalogo_Productos_Agricolas
         'TxtPrecio
         '
         Me.TxtPrecio.Location = New System.Drawing.Point(129, 276)
-        Me.TxtPrecio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtPrecio.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtPrecio.MaxLength = 21
         Me.TxtPrecio.Name = "TxtPrecio"
         Me.TxtPrecio.Size = New System.Drawing.Size(95, 22)
@@ -353,7 +387,7 @@ Partial Class Catalogo_Productos_Agricolas
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.CboEstatus.Location = New System.Drawing.Point(424, 337)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(95, 24)
@@ -373,7 +407,7 @@ Partial Class Catalogo_Productos_Agricolas
         '
         Me.TxtCodArticulo.Enabled = False
         Me.TxtCodArticulo.Location = New System.Drawing.Point(129, 161)
-        Me.TxtCodArticulo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodArticulo.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodArticulo.MaxLength = 16
         Me.TxtCodArticulo.Name = "TxtCodArticulo"
         Me.TxtCodArticulo.Size = New System.Drawing.Size(95, 22)
@@ -392,7 +426,7 @@ Partial Class Catalogo_Productos_Agricolas
         'TxtDescripcion
         '
         Me.TxtDescripcion.Location = New System.Drawing.Point(129, 193)
-        Me.TxtDescripcion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtDescripcion.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtDescripcion.MaxLength = 80
         Me.TxtDescripcion.Multiline = True
         Me.TxtDescripcion.Name = "TxtDescripcion"
@@ -403,9 +437,9 @@ Partial Class Catalogo_Productos_Agricolas
         '
         Me.GpbFormulas.Controls.Add(Me.Grid)
         Me.GpbFormulas.Location = New System.Drawing.Point(5, 407)
-        Me.GpbFormulas.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GpbFormulas.Margin = New System.Windows.Forms.Padding(4)
         Me.GpbFormulas.Name = "GpbFormulas"
-        Me.GpbFormulas.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GpbFormulas.Padding = New System.Windows.Forms.Padding(4)
         Me.GpbFormulas.Size = New System.Drawing.Size(1411, 347)
         Me.GpbFormulas.TabIndex = 2
         Me.GpbFormulas.TabStop = False
@@ -423,7 +457,7 @@ Partial Class Catalogo_Productos_Agricolas
         Me.Grid.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.Grid.Location = New System.Drawing.Point(17, 23)
         Me.Grid.LockButton = True
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid.Name = "Grid"
         Me.Grid.Rows = 1
         Me.Grid.Size = New System.Drawing.Size(1385, 313)
@@ -437,9 +471,9 @@ Partial Class Catalogo_Productos_Agricolas
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid2)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(539, 32)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(869, 372)
         Me.gBoxBusquedaRapida.TabIndex = 3
         Me.gBoxBusquedaRapida.TabStop = False
@@ -451,7 +485,7 @@ Partial Class Catalogo_Productos_Agricolas
         Me.CboEstatusFiltro.FormattingEnabled = True
         Me.CboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
         Me.CboEstatusFiltro.Location = New System.Drawing.Point(804, 21)
-        Me.CboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatusFiltro.MaxLength = 1
         Me.CboEstatusFiltro.Name = "CboEstatusFiltro"
         Me.CboEstatusFiltro.Size = New System.Drawing.Size(57, 24)
@@ -475,7 +509,7 @@ Partial Class Catalogo_Productos_Agricolas
         Me.Grid2.AllowUserToResizeRows = False
         Me.Grid2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.Grid2.Location = New System.Drawing.Point(8, 53)
-        Me.Grid2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Grid2.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid2.Name = "Grid2"
         Me.Grid2.ReadOnly = True
         Me.Grid2.RowHeadersVisible = False
@@ -488,7 +522,7 @@ Partial Class Catalogo_Productos_Agricolas
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.Name = "txtFiltro"
         Me.txtFiltro.Size = New System.Drawing.Size(717, 22)
         Me.txtFiltro.TabIndex = 0
@@ -593,7 +627,7 @@ Partial Class Catalogo_Productos_Agricolas
         Me.Controls.Add(Me.StatusStripEstado)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Productos_Agricolas"
         Me.Text = "Catálogo productos agrícolas"
@@ -633,13 +667,9 @@ Partial Class Catalogo_Productos_Agricolas
     Friend WithEvents StatusStripEstado As System.Windows.Forms.StatusStrip
     Friend WithEvents tssLabel As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents tssLabelEstado As System.Windows.Forms.ToolStripStatusLabel
-    Friend WithEvents cboEtiqueta As System.Windows.Forms.ComboBox
     Friend WithEvents lblDisplayEtiqueta As System.Windows.Forms.Label
-    Friend WithEvents cboEnvase As System.Windows.Forms.ComboBox
     Friend WithEvents lblDisplayEnvase As System.Windows.Forms.Label
-    Friend WithEvents cboTamaño As System.Windows.Forms.ComboBox
     Friend WithEvents lblDisplayTamaño As System.Windows.Forms.Label
-    Friend WithEvents cboCultivo As System.Windows.Forms.ComboBox
     Friend WithEvents lblDisplayCultivo As System.Windows.Forms.Label
     Friend WithEvents lblPeso As System.Windows.Forms.Label
     Friend WithEvents TxtPeso As System.Windows.Forms.TextBox
@@ -651,10 +681,19 @@ Partial Class Catalogo_Productos_Agricolas
     Friend WithEvents tsbCancelar As System.Windows.Forms.ToolStripButton
     Friend WithEvents GpbFormulas As System.Windows.Forms.GroupBox
     Friend WithEvents Grid As FlexCell.Grid
-    Friend WithEvents cboUnidadVenta As System.Windows.Forms.ComboBox
     Friend WithEvents lblDisplayUnidadVenta As System.Windows.Forms.Label
     Friend WithEvents chkInventariable As System.Windows.Forms.CheckBox
     Friend WithEvents Grid2 As System.Windows.Forms.DataGridView
     Friend WithEvents CboEstatusFiltro As System.Windows.Forms.ComboBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents txtCodigoEtiqueta As System.Windows.Forms.TextBox
+    Friend WithEvents txtCodigoEnvase As System.Windows.Forms.TextBox
+    Friend WithEvents txtCodigoTamaño As System.Windows.Forms.TextBox
+    Friend WithEvents txtCodigoCultivo As System.Windows.Forms.TextBox
+    Friend WithEvents LblNombreEtiqueta As System.Windows.Forms.Label
+    Friend WithEvents LblNombreEnvase As System.Windows.Forms.Label
+    Friend WithEvents LblNombreTamaño As System.Windows.Forms.Label
+    Friend WithEvents LblNombreCultivo As System.Windows.Forms.Label
+    Friend WithEvents LblNombreUnidadVenta As System.Windows.Forms.Label
+    Friend WithEvents txtCodigoUnidadVenta As System.Windows.Forms.TextBox
 End Class
