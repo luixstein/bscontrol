@@ -12,6 +12,8 @@ Public Class Cat_Nomina_Trabajadores
     Dim oTrabajadores As New Class_CatTrabajadores
     Private _CODIGO_TRABAJADOR As String = ""
 
+    Private Archivo As New Class_Archivo
+
 #Region "Campos privados"
     Private Enum enumEstados
         NUEVO
@@ -367,6 +369,8 @@ Public Class Cat_Nomina_Trabajadores
             Me.txtNumeroTrabajadorBanco.Text = ""
             Me.txtNumeroCuentaBanco.Text = ""
 
+            Me.Archivo = New Class_Archivo
+
         Catch ex As Exception
             HandleError(Me.Name, "InicializaElemento", ex)
         End Try
@@ -711,6 +715,8 @@ Public Class Cat_Nomina_Trabajadores
                         .NUMERO_TRABAJADOR_BANCO = Me.txtNumeroTrabajadorBanco.Text.ToUpper
                         .NUMERO_CUENTA_BANCO = Me.txtNumeroCuentaBanco.Text.ToUpper
 
+                        .ARCHIVO_FOTO = Me.Archivo.Archivo
+
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 If .Insertar() = False Then
@@ -724,13 +730,14 @@ Public Class Cat_Nomina_Trabajadores
 
                         'para que solamente lo haga si hay imagen en la caja de imagen 
                         If Not Me.pbFotoTrabajador.Image Is Nothing Then
-                            sFoto = Plaza.oSisPlazaNomina.NOMINA_RUTA_FOTOS_TRABAJADORES.ToString & "\" & Me.txtCodigoTrabajador.Text & ".jpg"
-                            If File.Exists(sFoto) = False Then
-                                'File.Exists(Nothing)
-                                'File.Delete(sFoto)
+                            'sFoto = Plaza.oSisPlazaNomina.NOMINA_RUTA_FOTOS_TRABAJADORES.ToString & "\" & Me.txtCodigoTrabajador.Text & ".jpg"
+                            'If File.Exists(sFoto) = False Then
+                            '    'File.Exists(Nothing)
+                            '    'File.Delete(sFoto)
 
-                                Me.pbFotoTrabajador.Image.Save(sFoto, Imaging.ImageFormat.Jpeg)
-                            End If
+                            '    Me.pbFotoTrabajador.Image.Save(sFoto, Imaging.ImageFormat.Jpeg)
+                            'End If
+                            .ARCHIVO_FOTO = Me.Archivo.Archivo
                         End If
 
                         MsgBox(Me.msgElemento & " grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
@@ -842,7 +849,18 @@ Public Class Cat_Nomina_Trabajadores
 
                 Me.txtNumeroTrabajadorBanco.Text = .NUMERO_TRABAJADOR_BANCO
                 Me.txtNumeroCuentaBanco.Text = .NUMERO_CUENTA_BANCO
+
+                If IsNothing(.ARCHIVO_FOTO) = False Then
+                    Me.Archivo.Archivo = .ARCHIVO_FOTO 'Va fungir como propiedad, se tiene que cargar, porque este objecto es el que usa para grabar, y si no se llena, al grabar se perderá la foto.
+
+                    Dim ms As MemoryStream = New MemoryStream(Me.Archivo.Archivo)
+                    Me.pbFotoTrabajador.Image = Image.FromStream(ms)
+
+                End If
+
             End With
+
+            
 
             'Dim sFoto As String = Plaza.oSisPlazaNomina.NOMINA_RUTA_FOTOS_TRABAJADORES.ToString & "\" & Me.txtCodigoTrabajador.Text & ".jpg"
             'If File.Exists(sFoto) Then 'C:\agrinet\Nomina\Fotos_Trabajadores
@@ -1650,16 +1668,25 @@ Public Class Cat_Nomina_Trabajadores
     End Sub
 
     Private Sub btnAgregaFoto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAgregaFoto.Click
-        Dim oFd As OpenFileDialog = New OpenFileDialog()
+        Try
+            Dim oFd As OpenFileDialog = New OpenFileDialog()
 
-        oFd.Filter = "Imágenes JPG (*.jpg)|*.jpg|Mapas de bits (*.bmp)|*.bmp"
-        oFd.Title = "Abre una imagen JPG o BMP"
+            oFd.Filter = "Imágenes JPG (*.jpg)|*.jpg|Mapas de bits (*.bmp)|*.bmp"
+            oFd.Title = "Abre una imagen JPG o BMP"
 
-        If oFd.ShowDialog = Windows.Forms.DialogResult.OK Then
-            'Me.pbFotoTrabajador.Image.Dispose()
-            Me.pbFotoTrabajador.Image = Nothing
-            Me.pbFotoTrabajador.Image = System.Drawing.Image.FromFile(oFd.FileName)
-        End If
+            If oFd.ShowDialog = Windows.Forms.DialogResult.OK Then
+                'Me.pbFotoTrabajador.Image.Dispose()
+                Me.pbFotoTrabajador.Image = Nothing
+                Me.pbFotoTrabajador.Image = System.Drawing.Image.FromFile(oFd.FileName)
+            End If
+
+            'Dim Archivo As New Class_Archivo
+
+            Me.Archivo.NombreArchivo = Path.GetFileName(oFd.FileName)
+            Me.Archivo.Archivo = ArchivoToByte(oFd.FileName)
+        Catch ex As Exception
+            HandleError(Me.Name, "btnAgregaFoto_Click", ex)
+        End Try
     End Sub
 
     Private Sub cboPuntoPago_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPuntoPago.SelectedIndexChanged

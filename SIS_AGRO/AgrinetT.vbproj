@@ -298,6 +298,7 @@
     <Compile Include="Clases\Nomina\Class_NominaSemana.vb" />
     <Compile Include="Clases\Nomina\Class_NominaTemporada.vb" />
     <Compile Include="Clases\Nomina\Class_Nomina_SUA.vb" />
+    <Compile Include="Clases\Utilerias\Class_Archivo.vb" />
     <Compile Include="Clases\Utilerias\Class_Imagenes.vb" />
     <Compile Include="dsTrabajadores.Designer.vb">
       <AutoGen>True</AutoGen>

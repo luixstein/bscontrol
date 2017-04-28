@@ -4,6 +4,7 @@ Imports System.Data
 Imports System.Data.SqlClient
 Imports System.Threading
 Imports CrystalDecisions.CrystalReports.Engine
+Imports System.IO
 
 Module Mod_Uti
     Public sFelectronicaArchivoCadenaOriginalLocal As String
@@ -917,6 +918,52 @@ Module Mod_Uti
         End Try
 
         Return bResultado
+    End Function
+
+    Public Function ArchivoToByte(ByVal sPath As String) As Byte()
+        'Initialize byte array with a null value initially.
+        Dim data As Byte() = Nothing
+        Try
+            'Use FileInfo object to get file size.
+            Dim fInfo As New FileInfo(sPath)
+            'Dim numBytes As Long = fInfo.Length
+
+            'Open FileStream to read file
+            Dim fStream As New FileStream(sPath, FileMode.Open, FileAccess.Read)
+
+            'Use BinaryReader to read file stream into byte array.
+            Dim br As New BinaryReader(fStream)
+
+            'When you use BinaryReader, you need to supply number of bytes to read from file.
+            'In this case we want to read entire file. So supplying total number of bytes.
+            'data = br.ReadBytes(CInt(numBytes))
+            data = br.ReadBytes(CInt(fInfo.Length))
+
+            fStream.Close()
+            br.Close()
+            fStream.Dispose()
+
+            'Dim fs As System.IO.FileStream = System.IO.File.Open(sPath, System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite)
+            'Dim ms As New System.IO.MemoryStream(archivo.Datos)
+
+            'ms.WriteTo(fs)
+            'ms.Dispose()
+            'fs.Close()
+            'fs.Dispose()
+
+            'Dim f As String
+            'Dim archivo As New FileInfo(F)
+            '                StreamReader sr = new StreamReader(archivo.FullName);
+            '                string cadena = sr.ReadToEnd();
+            '                sr.Close();
+            '                //xmldocumento.Load(openFileDialog1.FileName);
+            '                byte[] encodedString = Encoding.UTF8.GetBytes(cadena);
+
+
+        Catch ex As Exception
+            HandleError("Mod_Uti", "ArchivoToByte", ex)
+        End Try
+        Return data
     End Function
 
 End Module

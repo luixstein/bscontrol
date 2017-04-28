@@ -45,6 +45,7 @@ Public Class Class_CatTrabajadores
     Private _FECHA_INGRESO As Date
     Private _NUMERO_TRABAJADOR_BANCO As String
     Private _NUMERO_CUENTA_BANCO As String
+    Private _ARCHIVO_FOTO() As Byte
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -432,6 +433,15 @@ Public Class Class_CatTrabajadores
             Me._NUMERO_CUENTA_BANCO = Value
         End Set
     End Property
+
+    Public Property ARCHIVO_FOTO() As Byte()
+        Get
+            Return Me._ARCHIVO_FOTO
+        End Get
+        Set(value As Byte())
+            Me._ARCHIVO_FOTO = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -576,6 +586,7 @@ Public Class Class_CatTrabajadores
             sqlParametro = .Parameters.Add("@FECHA_INGRESO", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_INGRESO
             sqlParametro = .Parameters.Add("@NUMERO_TRABAJADOR_BANCO", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._NUMERO_TRABAJADOR_BANCO.ToString.ToUpper
             sqlParametro = .Parameters.Add("@NUMERO_CUENTA_BANCO", SqlDbType.NVarChar, 18) : sqlParametro.Value = Me._NUMERO_CUENTA_BANCO.ToString.ToUpper
+            sqlParametro = .Parameters.Add("ARCHIVO_FOTO", SqlDbType.Image) : sqlParametro.Value = IIf(Me._ARCHIVO_FOTO Is Nothing, DBNull.Value, Me._ARCHIVO_FOTO)
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "ACTUALIZAR"
 
             Try
@@ -657,6 +668,10 @@ Public Class Class_CatTrabajadores
                     Me._NUMERO_TRABAJADOR_BANCO = "" & dReader("NUMERO_TRABAJADOR_BANCO").ToString
                     Me._NUMERO_CUENTA_BANCO = "" & dReader("NUMERO_CUENTA_BANCO").ToString
 
+                    If IsDBNull(dReader("ARCHIVO_FOTO")) = False Then
+                        Me._ARCHIVO_FOTO = CType(dReader("ARCHIVO_FOTO"), Byte())
+                    End If
+
                     Consultar = True
                 End If
                 dReader.Close()
@@ -717,6 +732,7 @@ Public Class Class_CatTrabajadores
             sqlParametro = .Parameters.Add("@FECHA_INGRESO", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_INGRESO
             sqlParametro = .Parameters.Add("@NUMERO_TRABAJADOR_BANCO", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._NUMERO_TRABAJADOR_BANCO.ToString.ToUpper
             sqlParametro = .Parameters.Add("@NUMERO_CUENTA_BANCO", SqlDbType.NVarChar, 18) : sqlParametro.Value = Me._NUMERO_CUENTA_BANCO.ToString.ToUpper
+            sqlParametro = .Parameters.Add("ARCHIVO_FOTO", SqlDbType.Image) : sqlParametro.Value = IIf(Me._ARCHIVO_FOTO Is Nothing, DBNull.Value, Me._ARCHIVO_FOTO)
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "INSERTAR"
             Try
 
