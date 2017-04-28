@@ -142,6 +142,7 @@ Module FacturacionElectronica
 
         Return bResultado
     End Function
+
     Public Function GestionaCertificado(ByVal FechaDocumento As Date) As Certificado
         Dim CKCert As New CHILKATCERTIFICATELib.ChilkatCert, dFechaServidor As Date
         Dim c As Certificado
