@@ -77,6 +77,42 @@ Public Class LoginForm
 #End Region
 
 #Region "Opciones"
+    Private Sub btnIniciarSesion_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnIniciarSesion.Click
+        Try
+            If My.Settings.ModoExeCarpetaUsuario = "1" Then
+                If txtLEN(Me.txtRFC.Text) = False Then
+                    MsgBox("Captúre el RFC de la empresa por favor.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.txtRFC.Focus()
+                    Return
+                End If
+            End If
+
+            If txtLEN(Me.txtNombreUsuario.Text) = False Then
+                MsgBox("Captúre el nombre de usuario por favor.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtNombreUsuario.Focus()
+                Return
+            End If
+
+            If txtLEN(Me.txtPassword.Text) = False Then
+                MsgBox("Captúre la contraseña por favor.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtPassword.Focus()
+                Return
+            End If
+
+            If My.Settings.ModoExeCarpetaUsuario = "1" Then
+                Me.GestionaInicioSesionModoRemoteAPP()
+            Else
+                Usuario.Nombre_Usuario = Me.txtNombreUsuario.Text
+                Me.Login()
+            End If
+
+            'btnEntrarAlSistema_Click(sender, e)
+
+        Catch ex As Exception
+            HandleError(Me.Name, "btnIniciarSesion", ex)
+        End Try
+    End Sub
+
     Private Sub btnEntrarAlSistema_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEntrarAlSistema.Click
         Try
             Usuario.Codigo_Plaza = cboPlazas.SelectedValue
@@ -104,64 +140,6 @@ Public Class LoginForm
             Me.Hide()
         Catch ex As Exception
             HandleError(Me.Name, "btnEntrarAlSistema", ex)
-        End Try
-    End Sub
-
-    Private Sub btnIniciarSesion_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnIniciarSesion.Click
-        Try
-            If txtLEN(Me.txtNombreUsuario.Text) = False Then
-                MsgBox("Asígne el nombre de usuario por favor.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.txtNombreUsuario.Focus()
-                Return
-            End If
-
-            If txtLEN(Me.txtPassword.Text) = False Then
-                MsgBox("Asígne la contraseña por favor.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.txtPassword.Focus()
-                Return
-            End If
-
-            Usuario.Nombre_Usuario = Me.txtNombreUsuario.Text
-
-            If Usuario.Consultar(Usuario.Nombre_Usuario) = True Then
-                If Usuario.Estatus = "B" Then
-                    MsgBox("Acceso denegado. Usuario dado de baja.", MsgBoxStyle.Exclamation, Me.Text)
-                    Me.txtPassword.Text = ""
-                    Return
-                End If
-
-                If Usuario.ValidaContraseña(Me.txtPassword.Text) = True Then
-                    Me.GpbCentro.Enabled = True
-                    Me.txtNombreUsuario.Enabled = False
-                    Me.txtPassword.Enabled = False
-                    Me.btnIniciarSesion.Enabled = False
-
-                    Dim oPlazas As New Class_SisPlazas
-                    oPlazas.CODIGO_PLAZA = Usuario.Codigo_Plaza
-                    cboPlazas.DataSource = oPlazas.ObtenerPlazasPorUsuario
-                    cboPlazas.DisplayMember = "NOMBRE_PLAZA"
-                    cboPlazas.ValueMember = "CODIGO_PLAZA"
-                    cboPlazas.SelectedValue = oPlazas.CODIGO_PLAZA
-                    oPlazas = Nothing
-                    My.Settings.Usuario = Usuario.Nombre_Usuario
-                    Me.cboPlazas.Focus()
-                Else
-                    MsgBox("Acceso denegado. Verifique su usuario y contraseña.", MsgBoxStyle.Critical)
-                    Me.txtPassword.Text = ""
-                    Me.txtPassword.Focus()
-                    Return
-                End If
-            Else
-                MsgBox("Acceso denegado. Verifique su usuario y contraseña.", MsgBoxStyle.Critical)
-                Me.txtPassword.Text = ""
-                Me.txtPassword.Focus()
-                Return
-            End If
-
-            'btnEntrarAlSistema_Click(sender, e)
-
-        Catch ex As Exception
-            HandleError(Me.Name, "btnIniciarSesion", ex)
         End Try
     End Sub
 
@@ -202,28 +180,83 @@ Public Class LoginForm
     End Sub
 
     Private Sub LoginForm_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.txtPassword.Focus()
+        If My.Settings.ModoExeCarpetaUsuario = "1" Then
+            Me.txtRFC.Focus()
+        Else
+            Me.txtPassword.Focus()
+        End If
     End Sub
 
     Private Sub LoginForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-            Dim misparametros() As String = Split(Command(), ",")
-
             If isSistemaValidaConfiguracionRegional() = False Then
                 End
             End If
 
-            If My.Settings.ModoExeCarpetaUsuario = "1" AndAlso txtLEN(misparametros(0).ToString) = False Then 'este es cuando usan el sistema con remote apps
-                GestionaExeCarpetaUsuario()
-
-                Me.txtNombreUsuario.Text = Environ("USERNAME")
+            If My.Settings.ModoExeCarpetaUsuario = "1" Then
+                Me.LoadInicioSesionModoRemoteAPP()
+            Else
+                Me.LoadInicioSesionNormal(sender, e)
             End If
 
-            My.Settings.Save()
+        Catch ex As Exception
+            HandleError(Me.Name, "LoginForm_Load", ex)
+        End Try
+    End Sub
+
+    Private Sub cboPlazas_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboPlazas.KeyDown
+        txtTAB(e)
+    End Sub
+
+    Private Sub CboUsuarios_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles CboUsuarios.SelectedValueChanged
+        If txtLEN(Me.CboUsuarios.Text) = True Then
+            Me.txtNombreUsuario.Text = Me.CboUsuarios.Text
+            Me.txtPassword.Text = Me.CboUsuarios.SelectedValue.ToString
+            Me.btnIniciarSesion.Focus()
+        End If
+    End Sub
+
+#Region "Eventos Genericos"
+    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtNombreUsuario.KeyDown, txtPassword.KeyDown, txtRFC.KeyDown
+        If e.KeyCode = Keys.Return Then
+            SendKeys.Send("{TAB}")
+        End If
+    End Sub
+
+    Private Sub TextFocus(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtNombreUsuario.Enter, txtPassword.Enter, txtRFC.Enter
+        Dim T As TextBox = CType(sender, TextBox)
+        T.SelectAll()
+    End Sub
+
+    Private Sub txtNombreUsuario_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtNombreUsuario.KeyPress, txtPassword.KeyPress, txtRFC.KeyPress
+        txtNoBeep(e)
+    End Sub
+#End Region
+
+#End Region
+
+#Region "Métodos y procedimientos"
+    Private Sub Preinicio()
+        Empresa_Sistema = New Class_sisEmpresa("Empresa", My.Settings.BaseDatos, My.Settings.Servidor, sCongif1, sCongif2)
+        EmpresaParametros = New Class_SisContabilidadParametros
+        Usuario = New Class_sisUsuarios
+        Plaza = New Class_SisPlazas
+
+        If Empresa_Sistema.VERSION_AGROCONTROL <> My.Application.Info.Version.Revision Then
+            MsgBox("La versión no esta actualizada. Version Bd: " & Empresa_Sistema.VERSION_AGROCONTROL & " Versión aplicación: " & My.Application.Info.Version.Revision, MsgBoxStyle.Exclamation, Me.Text)
+            Finaliza(False)
+            Exit Sub
+        End If
+    End Sub
+
+    Private Sub LoadInicioSesionNormal(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Try
             If My.Settings.MostrarServidores = "1" Then
                 Dim f As New Servidor
                 f.ShowDialog()
             End If
+
+            My.Settings.Save()
 
             If bSistemaDirecto = True Then
                 'My.Settings.BaseDatos = "AGRINET_LAND_TEST"
@@ -235,18 +268,9 @@ Public Class LoginForm
                 End If
             End If
 
-            Empresa_Sistema = New Class_sisEmpresa("Empresa", My.Settings.BaseDatos, My.Settings.Servidor, sCongif1, sCongif2)
-            EmpresaParametros = New Class_SisContabilidadParametros
-            Usuario = New Class_sisUsuarios
-            Plaza = New Class_SisPlazas
+            Me.Preinicio()
 
-            If Empresa_Sistema.VERSION_AGROCONTROL <> My.Application.Info.Version.Revision Then
-                MsgBox("La versión no esta actualizada. Version Bd: " & Empresa_Sistema.VERSION_AGROCONTROL & " Versión aplicación: " & My.Application.Info.Version.Revision, MsgBoxStyle.Exclamation, Me.Text)
-                Finaliza(False)
-                Exit Sub
-            End If
-
-            My.Settings.ModoSistema = "Integral"
+            'My.Settings.ModoSistema = "Integral"
             'If bSistemaDirecto = True Then
             '    My.Settings.ModoSistema = "Integral"
             'Else
@@ -267,91 +291,119 @@ Public Class LoginForm
                     Me.bLogueado = True
                 End If
             End If
-
-            'Me.DespliegaPlazas()
         Catch ex As Exception
-            HandleError(Me.Name, "LoginForm_Load", ex)
+            HandleError(Me.Name, "LoadInicioSesionNormal", ex)
         End Try
     End Sub
 
-    Private Sub cboPlazas_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboPlazas.KeyDown
-        txtTAB(e)
+    Private Sub LoadInicioSesionModoRemoteAPP()
+        Try
+            Dim misparametros() As String = Split(Command(), ",")
+
+            If txtLEN(misparametros(0).ToString) = False Then 'RemoteApp sin parametro, para gestionar abrir el exe de usuario(cerrando este, abriendo con parametro)
+                GestionaExeCarpetaUsuario()
+            Else
+                'RemoteApp con parametro, para que no se cicle
+            End If
+
+            Me.txtNombreUsuario.Text = Environ("USERNAME")
+            Me.txtRFC.Visible = True
+            Me.lblDisplayRFC.Visible = True
+        Catch ex As Exception
+            HandleError(Me.Name, "LoadInicioSesionModoRemoteAPP", ex)
+        End Try
     End Sub
 
-    Private Sub CboUsuarios_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles CboUsuarios.SelectedValueChanged
-        If txtLEN(Me.CboUsuarios.Text) = True Then
-            Me.txtNombreUsuario.Text = Me.CboUsuarios.Text
-            Me.txtPassword.Text = Me.CboUsuarios.SelectedValue.ToString
-            Me.btnIniciarSesion.Focus()
-        End If
-    End Sub
+    Private Function Login() As Boolean
+        Try
+            If Usuario.Consultar(Usuario.Nombre_Usuario) = True Then
+                If Usuario.Estatus = "B" Then
+                    MsgBox("Acceso denegado. Usuario dado de baja.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.txtPassword.Text = ""
+                    Return False
+                End If
 
-#Region "Eventos de la lista de elementos"
+                If Usuario.ValidaContraseña(Me.txtPassword.Text) = True Then
+                    Me.GpbCentro.Enabled = True
+                    Me.txtNombreUsuario.Enabled = False
+                    Me.txtPassword.Enabled = False
+                    Me.txtRFC.Enabled = False
+                    Me.btnIniciarSesion.Enabled = False
 
-#End Region
+                    Dim oPlazas As New Class_SisPlazas
+                    oPlazas.CODIGO_PLAZA = Usuario.Codigo_Plaza
+                    cboPlazas.DataSource = oPlazas.ObtenerPlazasPorUsuario
+                    cboPlazas.DisplayMember = "NOMBRE_PLAZA"
+                    cboPlazas.ValueMember = "CODIGO_PLAZA"
+                    cboPlazas.SelectedValue = oPlazas.CODIGO_PLAZA
+                    oPlazas = Nothing
+                    My.Settings.Usuario = Usuario.Nombre_Usuario
+                    Me.cboPlazas.Focus()
+                Else
+                    MsgBox("Acceso denegado. Verifique su usuario y contraseña.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.txtPassword.Text = ""
+                    Me.txtPassword.Focus()
+                    Return False
+                End If
+            Else
+                MsgBox("Acceso denegado. Verifique su usuario y contraseña.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtPassword.Text = ""
+                Me.txtPassword.Focus()
+                Return False
+            End If
 
-#Region " Eventos de TxtFiltro"
+            Return True
+        Catch ex As Exception
+            HandleError(Me.Name, "Login", ex)
+        End Try
+    End Function
 
-#End Region
+    Private Function GestionaInicioSesionModoRemoteAPP() As Boolean
+        Try
+            If txtLEN(Me.txtRFC.Text) = False Then
+                MsgBox("Captúre el RFC de la empresa por favor.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtRFC.Focus()
+                Return False
+            End If
 
-#Region "Eventos Genericos"
-    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtNombreUsuario.KeyDown, txtPassword.KeyDown
-        If e.KeyCode = Keys.Return Then
-            SendKeys.Send("{TAB}")
-        End If
-    End Sub
+            Dim Empresas As New Class_sisEmpresas("BS_EMPRESAS", My.Settings.Servidor, Me.txtRFC.Text)
 
-    Private Sub txt_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtNombreUsuario.TextChanged, txtPassword.TextChanged
-        'Me.btnIniciarSesion.Enabled = Not Me.txtNombreUsuario.Text = Nothing And Not Me.txtPassword.Text = Nothing
-    End Sub
+            If Empresas.Existe = False Then
+                MsgBox("No se encontró el RFC de la empresa, verifique.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtRFC.Focus()
+                Return False
+            End If
 
-    Private Sub TextFocus(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtNombreUsuario.Enter, txtPassword.Enter
-        Dim T As TextBox = CType(sender, TextBox)
-        T.SelectAll()
-    End Sub
-#End Region
+            My.Settings.BaseDatos = Empresas.NOMBRE_DB
 
-#Region "Keydown específicos"
+            Me.Preinicio()
 
+            Usuario.Nombre_Usuario = Me.txtNombreUsuario.Text
 
-#End Region
+            If Me.Login = True Then
+                Return True
+            End If
 
-#Region "Keypres específicos"
-    Private Sub txtNombreUsuario_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtNombreUsuario.KeyPress, txtPassword.KeyPress
-        txtNoBeep(e)
-    End Sub
-#End Region
+        Catch ex As Exception
+            HandleError(Me.Name, "GestionaInicioSesionModoRemoteAPP", ex)
+        End Try
+    End Function
 
-#Region "Validating específicos"
-
-#End Region
-
-#End Region
-
-#Region "Métodos y procedimientos"
     Private Sub DespliegaUsuarios()
-        Dim oElementos As New Class_sisUsuarios
-        With Me.CboUsuarios
-            .DisplayMember = "NOMBRE_USUARIO"
-            .ValueMember = "CLAVE"
-
-            Dim dView As New Data.DataView(oElementos.ObtenerElementos)
-            dView.Sort = "NOMBRE_USUARIO"
-            .DataSource = dView
-        End With
+        Try
+            Dim oElementos As New Class_sisUsuarios
+            With Me.CboUsuarios
+                .DisplayMember = "NOMBRE_USUARIO"
+                .ValueMember = "CLAVE"
+                Dim dView As New Data.DataView(oElementos.ObtenerElementos)
+                dView.Sort = "NOMBRE_USUARIO"
+                .DataSource = dView
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DespliegaUsuarios", ex)
+        End Try
     End Sub
 
-    Private Sub DespliegaPlazas()
-        Dim oElementos As New Class_SisPlazas
-        With Me.cboPlazas
-            .DisplayMember = "NOMBRE_PLAZA"
-            .ValueMember = "CODIGO_PLAZA"
-
-            Dim dView As New Data.DataView(oElementos.ObtenerElementos)
-            dView.Sort = "NOMBRE_PLAZA"
-            .DataSource = dView
-        End With
-    End Sub
 #End Region
 
 End Class

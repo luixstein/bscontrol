@@ -176,6 +176,7 @@
     <Compile Include="Clases\Catalogos\Class_CatMonedas.vb" />
     <Compile Include="Clases\Catalogos\Class_CatTiposCambio.vb" />
     <Compile Include="Clases\Catalogos\Class_Cat_UnidadesVenta.vb" />
+    <Compile Include="Clases\Catalogos\Class_sisEmpresas.vb" />
     <Compile Include="Clases\Catalogos\Class_SisEstados.vb" />
     <Compile Include="Clases\Catalogos\Class_SisTiposProveedores.vb" />
     <Compile Include="Clases\Catalogos\Class_CatTiposCategorias.vb" />

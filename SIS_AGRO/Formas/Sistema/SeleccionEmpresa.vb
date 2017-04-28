@@ -40,7 +40,7 @@ Public Class SeleccionEmpresa
     End Sub
 
     Private Sub CargaEmpresas()
-        Dim Conexion As String = "Data Source=" & My.Settings.Servidor & ";Initial Catalog=AGROCONTROL_EMPRESAS;" & "User ID=" & sCongif1 & ";Password=" & sCongif2
+        Dim Conexion As String = "Data Source=" & My.Settings.Servidor & ";Initial Catalog=BS_EMPRESAS;" & "User ID=" & sCongif1 & ";Password=" & sCongif2
 
         'MsgBox("SERVER = " & My.Settings.Servidor & vbCrLf & "USER = " & sCongif1 & vbCrLf & "PASS = " & sCongif2)
 
