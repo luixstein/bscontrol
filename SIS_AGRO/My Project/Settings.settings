@@ -60,7 +60,7 @@
       <Value Profile="(Default)">PCSISTEMASJORGE\SQL14</Value>
     </Setting>
     <Setting Name="Servidor4" Type="System.String" Scope="User">
-      <Value Profile="(Default)">PCSISTEMASJORGE\SQL12</Value>
+      <Value Profile="(Default)">PCSISTEMASJORGE\SQL14</Value>
     </Setting>
     <Setting Name="AliasServidor4" Type="System.String" Scope="User">
       <Value Profile="(Default)">C2</Value>

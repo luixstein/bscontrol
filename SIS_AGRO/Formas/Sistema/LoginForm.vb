@@ -109,7 +109,7 @@ Public Class LoginForm
             'btnEntrarAlSistema_Click(sender, e)
 
         Catch ex As Exception
-            HandleError(Me.Name, "btnIniciarSesion", ex)
+            HandleError(Me.Name, "btnIniciarSesion_Click", ex)
         End Try
     End Sub
 
