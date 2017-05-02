@@ -594,12 +594,13 @@ Module FacturacionElectronica
                 End If
             End If
 
-            If Len(Dir(sFelectronicaCbbImagen)) = 0 Then
-                If Len(Dir(sFelectronicaCbbImagenServidor)) = 0 OrElse Copiar_Archivo(sFelectronicaCbbImagenServidor, sFelectronicaCbbImagen) = False Then
-                    MsgBox("No existe en el servidor el archivo Cbb.jpg, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                    Exit Function
-                End If
-            End If
+            '28Abr17,jorgegc, lo quité, a pruebas, no deberia necesitarse ya que el cbb se genera en el momento.
+            'If Len(Dir(sFelectronicaCbbImagen)) = 0 Then
+            '    If Len(Dir(sFelectronicaCbbImagenServidor)) = 0 OrElse Copiar_Archivo(sFelectronicaCbbImagenServidor, sFelectronicaCbbImagen) = False Then
+            '        MsgBox("No existe en el servidor el archivo Cbb.jpg, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+            '        Exit Function
+            '    End If
+            'End If
 
             'If fElectronicaValidaArchivosCertificadoLocal(, , ) = False Then
             '    Exit Function

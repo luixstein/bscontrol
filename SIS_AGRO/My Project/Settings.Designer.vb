@@ -281,7 +281,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("PCSISTEMASJORGE\SQL12")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("PCSISTEMASJORGE\SQL14")>  _
         Public Property Servidor4() As String
             Get
                 Return CType(Me("Servidor4"),String)

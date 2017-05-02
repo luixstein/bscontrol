@@ -157,8 +157,8 @@ Public Class Servidor
         bSistemaDirecto = True
         Select Case My.Computer.Name
             Case "PCSISTEMASJORGE"
-                Me.cboServerName.SelectedValue = "PCSISTEMASJORGE\SQL12"
-                My.Settings.Servidor1 = "PCSISTEMASJORGE\SQL12"
+                Me.cboServerName.SelectedValue = "PCSISTEMASJORGE\SQL14"
+                My.Settings.Servidor1 = "PCSISTEMASJORGE\SQL14"
                 My.Settings.BaseDatos1 = "COMER2"
             Case "ERNESTOA"
                 Me.cboServerName.SelectedValue = "ERNESTOA"

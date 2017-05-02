@@ -1,7 +1,7 @@
 ﻿Imports System.Data
 Imports System.Data.SqlClient
 
-Public Class Class_sisUsuarios  'Clase Usuarios
+Public Class Class_sisUsuarios
     Inherits Class_Catalogos
 
 #Region "Campos"
@@ -183,7 +183,7 @@ Public Class Class_sisUsuarios  'Clase Usuarios
         End Set
     End Property
 #End Region
-   
+
 #Region "Propiedades de campos de sistema"
     Public Overrides ReadOnly Property Nombre_Catalogo() As String
         Get
@@ -290,7 +290,7 @@ Public Class Class_sisUsuarios  'Clase Usuarios
 
     Public Overrides Function Consultar() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand(Me._QuerySelect & " Where CODIGO_USUARIO=" & Replace(Me._Codigo_Usuario, "'", "''") & "", Me._Conexion)
+        Dim cmd As New SqlCommand(Me._QuerySelect & " Where CODIGO_USUARIO=" & sReplace(Me._Codigo_Usuario) & "", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -332,7 +332,7 @@ Public Class Class_sisUsuarios  'Clase Usuarios
 
     Public Overloads Function Consultar(ByVal sNombre As String) As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand(Me._QuerySelect & " Where NOMBRE_USUARIO='" & Replace(sNombre, "'", "''") & "'", Me._Conexion)
+        Dim cmd As New SqlCommand(Me._QuerySelect & " Where NOMBRE_USUARIO='" & sReplace(sNombre) & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -341,7 +341,7 @@ Public Class Class_sisUsuarios  'Clase Usuarios
                 Me._Conexion.Open()
                 dReader = .ExecuteReader()
 
-                If dReader.Read Then
+                If dReader.Read = True Then
                     Me._Codigo_Usuario = dReader("CODIGO_USUARIO")
                     Me._Nombre_Usuario = "" & dReader("NOMBRE_USUARIO").ToString
                     Me._Codigo_Plaza = "" & dReader("CODIGO_PLAZA")
@@ -364,48 +364,6 @@ Public Class Class_sisUsuarios  'Clase Usuarios
                 dReader.Close()
             Catch ex As Exception
                 HandleError(Me.Nombre_Catalogo, "Consultar", ex)
-            Finally
-                Me._Conexion.Close()
-                cmd.Dispose()
-            End Try
-        End With
-        Return bResultado
-    End Function
-
-    Public Overloads Function Consultar(ByVal iCodigo_Usuario As Integer) As Boolean
-        Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand(Me._QuerySelect & " Where CODIGO_USUARIO='" & iCodigo_Usuario & "'", Me._Conexion)
-        Dim dReader As SqlDataReader
-        With cmd
-            .CommandTimeout = 0
-            .CommandType = CommandType.Text
-            Try
-                Me._Conexion.Open()
-                dReader = .ExecuteReader()
-
-                If dReader.Read Then
-                    Me._Codigo_Usuario = dReader("CODIGO_USUARIO")
-                    Me._Nombre_Usuario = "" & dReader("NOMBRE_USUARIO").ToString
-                    Me._Codigo_Plaza = dReader("CODIGO_PLAZA")
-                    Me._Clave = dReader("CLAVE")
-                    Me._Codigo_Almacen = "" & dReader("CODIGO_ALMACEN").ToString
-                    Me._PERMISO_CON_CAT_CUENTAS = "" & dReader("PERMISO_CON_CAT_CUENTAS").ToString
-                    Me._PERMISO_CAT_ARTICULOS = "" & dReader("PERMISO_CAT_ARTICULOS").ToString
-                    Me._PERMISO_CAT_CLIENTES = "" & dReader("PERMISO_CAT_CLIENTES").ToString
-                    Me._PERMISO_ADMINISTRADOR = "" & dReader("PERMISO_ADMINISTRADOR").ToString
-                    Me._PERMISO_ARMADO_PALET = "" & dReader("PERMISO_ARMADO_PALET").ToString
-                    Me.Estatus = "" & dReader("ESTATUS").ToString
-                    Me._CORREO_USUARIO = Trim("" & dReader("CORREO_USUARIO").ToString)
-                    Me._CLAVE_CORREO = Trim("" & dReader("CLAVE_CORREO").ToString)
-                    Me._SERVIDOR_CORREO_REMITENTE = Trim("" & dReader("SERVIDOR_CORREO_REMITENTE").ToString)
-                    Me._PUERTO_REMITENTE = Trim("" & dReader("PUERTO_REMITENTE").ToString)
-                    Me._USAR_SSL_REMITENTE = CBool(dReader("USAR_SSL_REMITENTE").ToString)
-
-                    bResultado = True
-                End If
-                dReader.Close()
-            Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Consultar", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -651,7 +609,7 @@ Public Class Class_sisUsuarios  'Clase Usuarios
             Return False
         End If
 
-        Return  True
+        Return True
     End Function
 
     Public Function ValidaPermisoUsuarioDocumentoConAfectacionInventarios(ByVal sCodigoDocumento As String, ByVal sCodigoAlmacen As String) As Boolean

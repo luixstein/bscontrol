@@ -761,7 +761,7 @@ Public NotInheritable Class Class_sisEmpresa
 
         Me._Nombre_Catalogo = "sis_Empresa"
         Me._Conexion = "Data Source=" & sServidor & ";Initial Catalog=" & sBaseDatos & ";" & "User ID=" & sUser & ";Password=" & sPass
-        Me._ConexionDBEmpresas = "Data Source=" & sServidor & ";Initial Catalog=AGROCONTROL_EMPRESAS;" & "User ID=" & sUser & ";Password=" & sPass
+        Me._ConexionDBEmpresas = "Data Source=" & sServidor & ";Initial Catalog=BS_EMPRESAS;" & "User ID=" & sUser & ";Password=" & sPass
         Me._QuerySelect = "Select * From SIS_EMPRESA"
         Me._QueryOrder = " Order by NOMBRE_EMPRESA"
 

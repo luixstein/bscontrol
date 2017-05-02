@@ -40,6 +40,8 @@ Partial Public Class LoginForm
         Me.LogoPictureBox = New System.Windows.Forms.PictureBox()
         Me.CboUsuarios = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.txtRFC = New System.Windows.Forms.TextBox()
+        Me.lblDisplayRFC = New System.Windows.Forms.Label()
         Me.GpbCentro.SuspendLayout()
         CType(Me.LogoPictureBox, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -50,7 +52,7 @@ Partial Public Class LoginForm
         Me.UserNameLabel.Name = "UserNameLabel"
         Me.UserNameLabel.Size = New System.Drawing.Size(220, 23)
         Me.UserNameLabel.TabIndex = 5
-        Me.UserNameLabel.Text = "&Nombre de usuario"
+        Me.UserNameLabel.Text = "Nombre de usuario"
         Me.UserNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'PasswordLabel
@@ -59,7 +61,7 @@ Partial Public Class LoginForm
         Me.PasswordLabel.Name = "PasswordLabel"
         Me.PasswordLabel.Size = New System.Drawing.Size(220, 23)
         Me.PasswordLabel.TabIndex = 6
-        Me.PasswordLabel.Text = "&Contraseña"
+        Me.PasswordLabel.Text = "Contraseña"
         Me.PasswordLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'txtNombreUsuario
@@ -107,7 +109,7 @@ Partial Public Class LoginForm
         Me.cboPlazas.Location = New System.Drawing.Point(6, 19)
         Me.cboPlazas.Name = "cboPlazas"
         Me.cboPlazas.Size = New System.Drawing.Size(198, 21)
-        Me.cboPlazas.TabIndex = 5
+        Me.cboPlazas.TabIndex = 0
         '
         'GpbCentro
         '
@@ -117,7 +119,7 @@ Partial Public Class LoginForm
         Me.GpbCentro.Location = New System.Drawing.Point(171, 123)
         Me.GpbCentro.Name = "GpbCentro"
         Me.GpbCentro.Size = New System.Drawing.Size(219, 70)
-        Me.GpbCentro.TabIndex = 10
+        Me.GpbCentro.TabIndex = 5
         Me.GpbCentro.TabStop = False
         Me.GpbCentro.Text = "Plazas"
         '
@@ -127,7 +129,7 @@ Partial Public Class LoginForm
         Me.btnEntrarAlSistema.Location = New System.Drawing.Point(6, 44)
         Me.btnEntrarAlSistema.Name = "btnEntrarAlSistema"
         Me.btnEntrarAlSistema.Size = New System.Drawing.Size(94, 23)
-        Me.btnEntrarAlSistema.TabIndex = 6
+        Me.btnEntrarAlSistema.TabIndex = 1
         Me.btnEntrarAlSistema.Text = "&Entrar al sistema"
         Me.btnEntrarAlSistema.UseVisualStyleBackColor = False
         '
@@ -150,7 +152,7 @@ Partial Public Class LoginForm
         Me.CboUsuarios.Location = New System.Drawing.Point(270, 4)
         Me.CboUsuarios.Name = "CboUsuarios"
         Me.CboUsuarios.Size = New System.Drawing.Size(121, 21)
-        Me.CboUsuarios.TabIndex = 11
+        Me.CboUsuarios.TabIndex = 6
         Me.CboUsuarios.Visible = False
         '
         'Label1
@@ -164,12 +166,34 @@ Partial Public Class LoginForm
         Me.Label1.Text = "AgroControl"
         Me.Label1.Visible = False
         '
+        'txtRFC
+        '
+        Me.txtRFC.Location = New System.Drawing.Point(28, 43)
+        Me.txtRFC.MaxLength = 13
+        Me.txtRFC.Name = "txtRFC"
+        Me.txtRFC.Size = New System.Drawing.Size(106, 20)
+        Me.txtRFC.TabIndex = 0
+        Me.txtRFC.Visible = False
+        '
+        'lblDisplayRFC
+        '
+        Me.lblDisplayRFC.AutoSize = True
+        Me.lblDisplayRFC.Location = New System.Drawing.Point(67, 26)
+        Me.lblDisplayRFC.Name = "lblDisplayRFC"
+        Me.lblDisplayRFC.Size = New System.Drawing.Size(28, 13)
+        Me.lblDisplayRFC.TabIndex = 14
+        Me.lblDisplayRFC.Text = "RFC"
+        Me.lblDisplayRFC.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblDisplayRFC.Visible = False
+        '
         'LoginForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.ControlLightLight
         Me.ClientSize = New System.Drawing.Size(402, 203)
+        Me.Controls.Add(Me.txtRFC)
+        Me.Controls.Add(Me.lblDisplayRFC)
         Me.Controls.Add(Me.CboUsuarios)
         Me.Controls.Add(Me.GpbCentro)
         Me.Controls.Add(Me.btnCancelar)
@@ -200,5 +224,7 @@ Partial Public Class LoginForm
     Friend WithEvents LogoPictureBox As System.Windows.Forms.PictureBox
     Friend WithEvents CboUsuarios As System.Windows.Forms.ComboBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents txtRFC As System.Windows.Forms.TextBox
+    Friend WithEvents lblDisplayRFC As System.Windows.Forms.Label
 
 End Class
