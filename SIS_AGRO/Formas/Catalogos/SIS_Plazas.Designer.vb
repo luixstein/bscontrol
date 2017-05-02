@@ -99,12 +99,10 @@ Partial Class SIS_Plazas
         Me.LblNombreZona = New System.Windows.Forms.Label()
         Me.TxtCodigoZona = New System.Windows.Forms.TextBox()
         Me.LblCodigoZona = New System.Windows.Forms.Label()
-        Me.LblEjercicio = New System.Windows.Forms.Label()
-        Me.TxtIdEjercicioContable = New System.Windows.Forms.TextBox()
-        Me.LblNombreEjercicio = New System.Windows.Forms.Label()
         Me.dtFechaInicio = New System.Windows.Forms.DateTimePicker()
         Me.dtFechaFinal = New System.Windows.Forms.DateTimePicker()
         Me.gBoxEjercicio = New System.Windows.Forms.GroupBox()
+        Me.CboEjercicios = New System.Windows.Forms.ComboBox()
         Me.LblFechaFin = New System.Windows.Forms.Label()
         Me.LblFechaInicio = New System.Windows.Forms.Label()
         Me.gBoxCuentasContables = New System.Windows.Forms.GroupBox()
@@ -273,7 +271,7 @@ Partial Class SIS_Plazas
         Me.gBoxInformacion.Name = "gBoxInformacion"
         Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Size = New System.Drawing.Size(468, 165)
-        Me.gBoxInformacion.TabIndex = 27
+        Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
         '
@@ -281,10 +279,10 @@ Partial Class SIS_Plazas
         '
         Me.TxtIdentificador.Location = New System.Drawing.Point(114, 88)
         Me.TxtIdentificador.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtIdentificador.MaxLength = 50
+        Me.TxtIdentificador.MaxLength = 3
         Me.TxtIdentificador.Name = "TxtIdentificador"
         Me.TxtIdentificador.Size = New System.Drawing.Size(96, 22)
-        Me.TxtIdentificador.TabIndex = 93
+        Me.TxtIdentificador.TabIndex = 2
         '
         'LblIdentificador
         '
@@ -344,7 +342,7 @@ Partial Class SIS_Plazas
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(96, 24)
-        Me.CboEstatus.TabIndex = 2
+        Me.CboEstatus.TabIndex = 3
         '
         'LblCodigo
         '
@@ -398,7 +396,7 @@ Partial Class SIS_Plazas
         Me.gBoxDomicilio.Location = New System.Drawing.Point(16, 207)
         Me.gBoxDomicilio.Name = "gBoxDomicilio"
         Me.gBoxDomicilio.Size = New System.Drawing.Size(468, 420)
-        Me.gBoxDomicilio.TabIndex = 30
+        Me.gBoxDomicilio.TabIndex = 1
         Me.gBoxDomicilio.TabStop = False
         Me.gBoxDomicilio.Text = "Domicilio :"
         '
@@ -406,10 +404,10 @@ Partial Class SIS_Plazas
         '
         Me.TxtTelefono.Location = New System.Drawing.Point(125, 351)
         Me.TxtTelefono.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtTelefono.MaxLength = 50
+        Me.TxtTelefono.MaxLength = 20
         Me.TxtTelefono.Name = "TxtTelefono"
         Me.TxtTelefono.Size = New System.Drawing.Size(96, 22)
-        Me.TxtTelefono.TabIndex = 111
+        Me.TxtTelefono.TabIndex = 11
         '
         'LblTelefono
         '
@@ -425,10 +423,10 @@ Partial Class SIS_Plazas
         '
         Me.TxtCodigoPostal.Location = New System.Drawing.Point(125, 321)
         Me.TxtCodigoPostal.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtCodigoPostal.MaxLength = 50
+        Me.TxtCodigoPostal.MaxLength = 20
         Me.TxtCodigoPostal.Name = "TxtCodigoPostal"
         Me.TxtCodigoPostal.Size = New System.Drawing.Size(96, 22)
-        Me.TxtCodigoPostal.TabIndex = 109
+        Me.TxtCodigoPostal.TabIndex = 10
         '
         'TxtLocalidad
         '
@@ -437,7 +435,7 @@ Partial Class SIS_Plazas
         Me.TxtLocalidad.MaxLength = 50
         Me.TxtLocalidad.Name = "TxtLocalidad"
         Me.TxtLocalidad.Size = New System.Drawing.Size(283, 22)
-        Me.TxtLocalidad.TabIndex = 108
+        Me.TxtLocalidad.TabIndex = 9
         '
         'TxtCodLocalidad
         '
@@ -446,7 +444,7 @@ Partial Class SIS_Plazas
         Me.TxtCodLocalidad.MaxLength = 50
         Me.TxtCodLocalidad.Name = "TxtCodLocalidad"
         Me.TxtCodLocalidad.Size = New System.Drawing.Size(96, 22)
-        Me.TxtCodLocalidad.TabIndex = 107
+        Me.TxtCodLocalidad.TabIndex = 8
         '
         'TxtColonia
         '
@@ -455,7 +453,7 @@ Partial Class SIS_Plazas
         Me.TxtColonia.MaxLength = 50
         Me.TxtColonia.Name = "TxtColonia"
         Me.TxtColonia.Size = New System.Drawing.Size(283, 22)
-        Me.TxtColonia.TabIndex = 106
+        Me.TxtColonia.TabIndex = 7
         '
         'TxtCodColonia
         '
@@ -464,7 +462,7 @@ Partial Class SIS_Plazas
         Me.TxtCodColonia.MaxLength = 50
         Me.TxtCodColonia.Name = "TxtCodColonia"
         Me.TxtCodColonia.Size = New System.Drawing.Size(96, 22)
-        Me.TxtCodColonia.TabIndex = 105
+        Me.TxtCodColonia.TabIndex = 6
         '
         'LblCodPostal
         '
@@ -520,19 +518,19 @@ Partial Class SIS_Plazas
         '
         Me.TxtInterior.Location = New System.Drawing.Point(325, 158)
         Me.TxtInterior.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtInterior.MaxLength = 50
+        Me.TxtInterior.MaxLength = 10
         Me.TxtInterior.Name = "TxtInterior"
         Me.TxtInterior.Size = New System.Drawing.Size(121, 22)
-        Me.TxtInterior.TabIndex = 99
+        Me.TxtInterior.TabIndex = 5
         '
         'TxtExterior
         '
         Me.TxtExterior.Location = New System.Drawing.Point(92, 158)
         Me.TxtExterior.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtExterior.MaxLength = 50
+        Me.TxtExterior.MaxLength = 10
         Me.TxtExterior.Name = "TxtExterior"
         Me.TxtExterior.Size = New System.Drawing.Size(96, 22)
-        Me.TxtExterior.TabIndex = 98
+        Me.TxtExterior.TabIndex = 4
         '
         'LblInterior
         '
@@ -571,7 +569,7 @@ Partial Class SIS_Plazas
         Me.TxtCalle.MaxLength = 50
         Me.TxtCalle.Name = "TxtCalle"
         Me.TxtCalle.Size = New System.Drawing.Size(354, 22)
-        Me.TxtCalle.TabIndex = 94
+        Me.TxtCalle.TabIndex = 3
         '
         'cboEstado
         '
@@ -580,7 +578,7 @@ Partial Class SIS_Plazas
         Me.cboEstado.Location = New System.Drawing.Point(92, 57)
         Me.cboEstado.Name = "cboEstado"
         Me.cboEstado.Size = New System.Drawing.Size(354, 24)
-        Me.cboEstado.TabIndex = 28
+        Me.cboEstado.TabIndex = 1
         '
         'cboCiudad
         '
@@ -589,7 +587,7 @@ Partial Class SIS_Plazas
         Me.cboCiudad.Location = New System.Drawing.Point(92, 87)
         Me.cboCiudad.Name = "cboCiudad"
         Me.cboCiudad.Size = New System.Drawing.Size(354, 24)
-        Me.cboCiudad.TabIndex = 27
+        Me.cboCiudad.TabIndex = 2
         '
         'cboPais
         '
@@ -598,7 +596,7 @@ Partial Class SIS_Plazas
         Me.cboPais.Location = New System.Drawing.Point(92, 27)
         Me.cboPais.Name = "cboPais"
         Me.cboPais.Size = New System.Drawing.Size(354, 24)
-        Me.cboPais.TabIndex = 26
+        Me.cboPais.TabIndex = 0
         '
         'LblPais
         '
@@ -646,7 +644,7 @@ Partial Class SIS_Plazas
         Me.gBoxVentas.Location = New System.Drawing.Point(490, 267)
         Me.gBoxVentas.Name = "gBoxVentas"
         Me.gBoxVentas.Size = New System.Drawing.Size(451, 212)
-        Me.gBoxVentas.TabIndex = 31
+        Me.gBoxVentas.TabIndex = 4
         Me.gBoxVentas.TabStop = False
         Me.gBoxVentas.Text = "Ventas :"
         '
@@ -664,28 +662,28 @@ Partial Class SIS_Plazas
         '
         Me.TxtImpuestoPorcentaje.Location = New System.Drawing.Point(237, 32)
         Me.TxtImpuestoPorcentaje.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtImpuestoPorcentaje.MaxLength = 2
+        Me.TxtImpuestoPorcentaje.MaxLength = 10
         Me.TxtImpuestoPorcentaje.Name = "TxtImpuestoPorcentaje"
         Me.TxtImpuestoPorcentaje.Size = New System.Drawing.Size(86, 22)
-        Me.TxtImpuestoPorcentaje.TabIndex = 104
+        Me.TxtImpuestoPorcentaje.TabIndex = 0
         '
         'TxtCodigoClienteNacional
         '
         Me.TxtCodigoClienteNacional.Location = New System.Drawing.Point(237, 183)
         Me.TxtCodigoClienteNacional.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtCodigoClienteNacional.MaxLength = 2
+        Me.TxtCodigoClienteNacional.MaxLength = 10
         Me.TxtCodigoClienteNacional.Name = "TxtCodigoClienteNacional"
         Me.TxtCodigoClienteNacional.Size = New System.Drawing.Size(86, 22)
-        Me.TxtCodigoClienteNacional.TabIndex = 103
+        Me.TxtCodigoClienteNacional.TabIndex = 5
         '
         'TxtCodigoClienteExportacion
         '
         Me.TxtCodigoClienteExportacion.Location = New System.Drawing.Point(237, 153)
         Me.TxtCodigoClienteExportacion.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtCodigoClienteExportacion.MaxLength = 2
+        Me.TxtCodigoClienteExportacion.MaxLength = 10
         Me.TxtCodigoClienteExportacion.Name = "TxtCodigoClienteExportacion"
         Me.TxtCodigoClienteExportacion.Size = New System.Drawing.Size(86, 22)
-        Me.TxtCodigoClienteExportacion.TabIndex = 102
+        Me.TxtCodigoClienteExportacion.TabIndex = 4
         '
         'LblCodigoClienteNacional
         '
@@ -711,10 +709,10 @@ Partial Class SIS_Plazas
         '
         Me.TxtIdTemporadaProduccion.Location = New System.Drawing.Point(237, 123)
         Me.TxtIdTemporadaProduccion.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtIdTemporadaProduccion.MaxLength = 2
+        Me.TxtIdTemporadaProduccion.MaxLength = 5
         Me.TxtIdTemporadaProduccion.Name = "TxtIdTemporadaProduccion"
         Me.TxtIdTemporadaProduccion.Size = New System.Drawing.Size(86, 22)
-        Me.TxtIdTemporadaProduccion.TabIndex = 99
+        Me.TxtIdTemporadaProduccion.TabIndex = 3
         '
         'Label1
         '
@@ -733,7 +731,7 @@ Partial Class SIS_Plazas
         Me.ckbValidarFechaVentas.Location = New System.Drawing.Point(10, 94)
         Me.ckbValidarFechaVentas.Name = "ckbValidarFechaVentas"
         Me.ckbValidarFechaVentas.Size = New System.Drawing.Size(187, 21)
-        Me.ckbValidarFechaVentas.TabIndex = 97
+        Me.ckbValidarFechaVentas.TabIndex = 2
         Me.ckbValidarFechaVentas.Text = "Validar fecha de ventas :"
         Me.ckbValidarFechaVentas.UseVisualStyleBackColor = True
         '
@@ -741,10 +739,10 @@ Partial Class SIS_Plazas
         '
         Me.TxtPlazoVentaContado.Location = New System.Drawing.Point(237, 62)
         Me.TxtPlazoVentaContado.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtPlazoVentaContado.MaxLength = 2
+        Me.TxtPlazoVentaContado.MaxLength = 5
         Me.TxtPlazoVentaContado.Name = "TxtPlazoVentaContado"
         Me.TxtPlazoVentaContado.Size = New System.Drawing.Size(86, 22)
-        Me.TxtPlazoVentaContado.TabIndex = 96
+        Me.TxtPlazoVentaContado.TabIndex = 1
         '
         'LblPlazoVentaContado
         '
@@ -760,37 +758,37 @@ Partial Class SIS_Plazas
         '
         Me.TxtCtaContadoNacional.Location = New System.Drawing.Point(266, 139)
         Me.TxtCtaContadoNacional.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtCtaContadoNacional.MaxLength = 2
+        Me.TxtCtaContadoNacional.MaxLength = 20
         Me.TxtCtaContadoNacional.Name = "TxtCtaContadoNacional"
         Me.TxtCtaContadoNacional.Size = New System.Drawing.Size(178, 22)
-        Me.TxtCtaContadoNacional.TabIndex = 111
+        Me.TxtCtaContadoNacional.TabIndex = 4
         '
         'TxtCtaContadoExportacion
         '
         Me.TxtCtaContadoExportacion.Location = New System.Drawing.Point(266, 109)
         Me.TxtCtaContadoExportacion.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtCtaContadoExportacion.MaxLength = 2
+        Me.TxtCtaContadoExportacion.MaxLength = 20
         Me.TxtCtaContadoExportacion.Name = "TxtCtaContadoExportacion"
         Me.TxtCtaContadoExportacion.Size = New System.Drawing.Size(178, 22)
-        Me.TxtCtaContadoExportacion.TabIndex = 110
+        Me.TxtCtaContadoExportacion.TabIndex = 3
         '
         'TxtCtaContableMayorNacional
         '
         Me.TxtCtaContableMayorNacional.Location = New System.Drawing.Point(266, 79)
         Me.TxtCtaContableMayorNacional.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtCtaContableMayorNacional.MaxLength = 2
+        Me.TxtCtaContableMayorNacional.MaxLength = 20
         Me.TxtCtaContableMayorNacional.Name = "TxtCtaContableMayorNacional"
         Me.TxtCtaContableMayorNacional.Size = New System.Drawing.Size(178, 22)
-        Me.TxtCtaContableMayorNacional.TabIndex = 109
+        Me.TxtCtaContableMayorNacional.TabIndex = 2
         '
         'TxtCtaContableMayorExportacion
         '
         Me.TxtCtaContableMayorExportacion.Location = New System.Drawing.Point(266, 49)
         Me.TxtCtaContableMayorExportacion.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtCtaContableMayorExportacion.MaxLength = 2
+        Me.TxtCtaContableMayorExportacion.MaxLength = 20
         Me.TxtCtaContableMayorExportacion.Name = "TxtCtaContableMayorExportacion"
         Me.TxtCtaContableMayorExportacion.Size = New System.Drawing.Size(178, 22)
-        Me.TxtCtaContableMayorExportacion.TabIndex = 108
+        Me.TxtCtaContableMayorExportacion.TabIndex = 1
         '
         'Label6
         '
@@ -836,10 +834,10 @@ Partial Class SIS_Plazas
         '
         Me.TxtCuentaContableVentas.Location = New System.Drawing.Point(266, 19)
         Me.TxtCuentaContableVentas.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtCuentaContableVentas.MaxLength = 2
+        Me.TxtCuentaContableVentas.MaxLength = 20
         Me.TxtCuentaContableVentas.Name = "TxtCuentaContableVentas"
         Me.TxtCuentaContableVentas.Size = New System.Drawing.Size(178, 22)
-        Me.TxtCuentaContableVentas.TabIndex = 94
+        Me.TxtCuentaContableVentas.TabIndex = 0
         '
         'LblCuentaContableVentas
         '
@@ -859,7 +857,7 @@ Partial Class SIS_Plazas
         Me.gBoxZona.Location = New System.Drawing.Point(490, 485)
         Me.gBoxZona.Name = "gBoxZona"
         Me.gBoxZona.Size = New System.Drawing.Size(451, 57)
-        Me.gBoxZona.TabIndex = 32
+        Me.gBoxZona.TabIndex = 5
         Me.gBoxZona.TabStop = False
         Me.gBoxZona.Text = "Zona :"
         '
@@ -877,10 +875,10 @@ Partial Class SIS_Plazas
         '
         Me.TxtCodigoZona.Location = New System.Drawing.Point(168, 25)
         Me.TxtCodigoZona.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtCodigoZona.MaxLength = 2
+        Me.TxtCodigoZona.MaxLength = 5
         Me.TxtCodigoZona.Name = "TxtCodigoZona"
         Me.TxtCodigoZona.Size = New System.Drawing.Size(86, 22)
-        Me.TxtCodigoZona.TabIndex = 112
+        Me.TxtCodigoZona.TabIndex = 0
         '
         'LblCodigoZona
         '
@@ -892,42 +890,13 @@ Partial Class SIS_Plazas
         Me.LblCodigoZona.TabIndex = 96
         Me.LblCodigoZona.Text = "Código zona principal :"
         '
-        'LblEjercicio
-        '
-        Me.LblEjercicio.AutoSize = True
-        Me.LblEjercicio.Location = New System.Drawing.Point(8, 25)
-        Me.LblEjercicio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblEjercicio.Name = "LblEjercicio"
-        Me.LblEjercicio.Size = New System.Drawing.Size(27, 17)
-        Me.LblEjercicio.TabIndex = 112
-        Me.LblEjercicio.Text = "Id :"
-        '
-        'TxtIdEjercicioContable
-        '
-        Me.TxtIdEjercicioContable.Location = New System.Drawing.Point(58, 22)
-        Me.TxtIdEjercicioContable.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtIdEjercicioContable.MaxLength = 2
-        Me.TxtIdEjercicioContable.Name = "TxtIdEjercicioContable"
-        Me.TxtIdEjercicioContable.Size = New System.Drawing.Size(86, 22)
-        Me.TxtIdEjercicioContable.TabIndex = 113
-        '
-        'LblNombreEjercicio
-        '
-        Me.LblNombreEjercicio.AutoSize = True
-        Me.LblNombreEjercicio.Location = New System.Drawing.Point(164, 25)
-        Me.LblNombreEjercicio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblNombreEjercicio.Name = "LblNombreEjercicio"
-        Me.LblNombreEjercicio.Size = New System.Drawing.Size(16, 17)
-        Me.LblNombreEjercicio.TabIndex = 114
-        Me.LblNombreEjercicio.Text = "_"
-        '
         'dtFechaInicio
         '
         Me.dtFechaInicio.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.dtFechaInicio.Location = New System.Drawing.Point(58, 63)
         Me.dtFechaInicio.Name = "dtFechaInicio"
         Me.dtFechaInicio.Size = New System.Drawing.Size(95, 22)
-        Me.dtFechaInicio.TabIndex = 115
+        Me.dtFechaInicio.TabIndex = 1
         '
         'dtFechaFinal
         '
@@ -935,23 +904,30 @@ Partial Class SIS_Plazas
         Me.dtFechaFinal.Location = New System.Drawing.Point(249, 63)
         Me.dtFechaFinal.Name = "dtFechaFinal"
         Me.dtFechaFinal.Size = New System.Drawing.Size(95, 22)
-        Me.dtFechaFinal.TabIndex = 116
+        Me.dtFechaFinal.TabIndex = 2
         '
         'gBoxEjercicio
         '
+        Me.gBoxEjercicio.Controls.Add(Me.CboEjercicios)
         Me.gBoxEjercicio.Controls.Add(Me.LblFechaFin)
         Me.gBoxEjercicio.Controls.Add(Me.LblFechaInicio)
         Me.gBoxEjercicio.Controls.Add(Me.dtFechaFinal)
         Me.gBoxEjercicio.Controls.Add(Me.dtFechaInicio)
-        Me.gBoxEjercicio.Controls.Add(Me.LblNombreEjercicio)
-        Me.gBoxEjercicio.Controls.Add(Me.TxtIdEjercicioContable)
-        Me.gBoxEjercicio.Controls.Add(Me.LblEjercicio)
         Me.gBoxEjercicio.Location = New System.Drawing.Point(16, 633)
         Me.gBoxEjercicio.Name = "gBoxEjercicio"
         Me.gBoxEjercicio.Size = New System.Drawing.Size(451, 116)
-        Me.gBoxEjercicio.TabIndex = 33
+        Me.gBoxEjercicio.TabIndex = 2
         Me.gBoxEjercicio.TabStop = False
         Me.gBoxEjercicio.Text = "Ejercicio contable"
+        '
+        'CboEjercicios
+        '
+        Me.CboEjercicios.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboEjercicios.FormattingEnabled = True
+        Me.CboEjercicios.Location = New System.Drawing.Point(11, 26)
+        Me.CboEjercicios.Name = "CboEjercicios"
+        Me.CboEjercicios.Size = New System.Drawing.Size(147, 24)
+        Me.CboEjercicios.TabIndex = 0
         '
         'LblFechaFin
         '
@@ -992,7 +968,7 @@ Partial Class SIS_Plazas
         Me.gBoxCuentasContables.Location = New System.Drawing.Point(490, 34)
         Me.gBoxCuentasContables.Name = "gBoxCuentasContables"
         Me.gBoxCuentasContables.Size = New System.Drawing.Size(451, 237)
-        Me.gBoxCuentasContables.TabIndex = 34
+        Me.gBoxCuentasContables.TabIndex = 3
         Me.gBoxCuentasContables.TabStop = False
         Me.gBoxCuentasContables.Text = "Cuentas contables :"
         '
@@ -1000,19 +976,19 @@ Partial Class SIS_Plazas
         '
         Me.txtCuentaRebajas.Location = New System.Drawing.Point(265, 199)
         Me.txtCuentaRebajas.Margin = New System.Windows.Forms.Padding(4)
-        Me.txtCuentaRebajas.MaxLength = 2
+        Me.txtCuentaRebajas.MaxLength = 20
         Me.txtCuentaRebajas.Name = "txtCuentaRebajas"
         Me.txtCuentaRebajas.Size = New System.Drawing.Size(178, 22)
-        Me.txtCuentaRebajas.TabIndex = 115
+        Me.txtCuentaRebajas.TabIndex = 6
         '
         'TxtCuentaProveedor
         '
         Me.TxtCuentaProveedor.Location = New System.Drawing.Point(266, 169)
         Me.TxtCuentaProveedor.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtCuentaProveedor.MaxLength = 2
+        Me.TxtCuentaProveedor.MaxLength = 20
         Me.TxtCuentaProveedor.Name = "TxtCuentaProveedor"
         Me.TxtCuentaProveedor.Size = New System.Drawing.Size(178, 22)
-        Me.TxtCuentaProveedor.TabIndex = 114
+        Me.TxtCuentaProveedor.TabIndex = 5
         '
         'LblCtaDescuentos
         '
@@ -1050,7 +1026,7 @@ Partial Class SIS_Plazas
         Me.gBoxInventarios.Location = New System.Drawing.Point(490, 548)
         Me.gBoxInventarios.Name = "gBoxInventarios"
         Me.gBoxInventarios.Size = New System.Drawing.Size(451, 201)
-        Me.gBoxInventarios.TabIndex = 35
+        Me.gBoxInventarios.TabIndex = 6
         Me.gBoxInventarios.TabStop = False
         Me.gBoxInventarios.Text = "Inventarios"
         '
@@ -1058,28 +1034,28 @@ Partial Class SIS_Plazas
         '
         Me.TxtCodigoPuntoPago.Location = New System.Drawing.Point(214, 173)
         Me.TxtCodigoPuntoPago.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtCodigoPuntoPago.MaxLength = 2
+        Me.TxtCodigoPuntoPago.MaxLength = 10
         Me.TxtCodigoPuntoPago.Name = "TxtCodigoPuntoPago"
         Me.TxtCodigoPuntoPago.Size = New System.Drawing.Size(109, 22)
-        Me.TxtCodigoPuntoPago.TabIndex = 106
+        Me.TxtCodigoPuntoPago.TabIndex = 4
         '
         'TxtCodigoLotePlanta
         '
         Me.TxtCodigoLotePlanta.Location = New System.Drawing.Point(214, 143)
         Me.TxtCodigoLotePlanta.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtCodigoLotePlanta.MaxLength = 2
+        Me.TxtCodigoLotePlanta.MaxLength = 10
         Me.TxtCodigoLotePlanta.Name = "TxtCodigoLotePlanta"
         Me.TxtCodigoLotePlanta.Size = New System.Drawing.Size(109, 22)
-        Me.TxtCodigoLotePlanta.TabIndex = 105
+        Me.TxtCodigoLotePlanta.TabIndex = 3
         '
         'TxtCodigoLoteEmbarque
         '
         Me.TxtCodigoLoteEmbarque.Location = New System.Drawing.Point(214, 113)
         Me.TxtCodigoLoteEmbarque.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtCodigoLoteEmbarque.MaxLength = 2
+        Me.TxtCodigoLoteEmbarque.MaxLength = 10
         Me.TxtCodigoLoteEmbarque.Name = "TxtCodigoLoteEmbarque"
         Me.TxtCodigoLoteEmbarque.Size = New System.Drawing.Size(109, 22)
-        Me.TxtCodigoLoteEmbarque.TabIndex = 104
+        Me.TxtCodigoLoteEmbarque.TabIndex = 2
         '
         'Label9
         '
@@ -1135,19 +1111,19 @@ Partial Class SIS_Plazas
         '
         Me.TxtCodigoProveedor.Location = New System.Drawing.Point(214, 83)
         Me.TxtCodigoProveedor.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtCodigoProveedor.MaxLength = 2
+        Me.TxtCodigoProveedor.MaxLength = 10
         Me.TxtCodigoProveedor.Name = "TxtCodigoProveedor"
         Me.TxtCodigoProveedor.Size = New System.Drawing.Size(109, 22)
-        Me.TxtCodigoProveedor.TabIndex = 98
+        Me.TxtCodigoProveedor.TabIndex = 1
         '
         'TxtCodigoAlmacen
         '
         Me.TxtCodigoAlmacen.Location = New System.Drawing.Point(214, 24)
         Me.TxtCodigoAlmacen.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtCodigoAlmacen.MaxLength = 2
+        Me.TxtCodigoAlmacen.MaxLength = 5
         Me.TxtCodigoAlmacen.Name = "TxtCodigoAlmacen"
         Me.TxtCodigoAlmacen.Size = New System.Drawing.Size(109, 22)
-        Me.TxtCodigoAlmacen.TabIndex = 97
+        Me.TxtCodigoAlmacen.TabIndex = 0
         '
         'LblAlmacen
         '
@@ -1279,9 +1255,6 @@ Partial Class SIS_Plazas
     Friend WithEvents LblFechaInicio As System.Windows.Forms.Label
     Friend WithEvents dtFechaFinal As System.Windows.Forms.DateTimePicker
     Friend WithEvents dtFechaInicio As System.Windows.Forms.DateTimePicker
-    Friend WithEvents LblNombreEjercicio As System.Windows.Forms.Label
-    Friend WithEvents TxtIdEjercicioContable As System.Windows.Forms.TextBox
-    Friend WithEvents LblEjercicio As System.Windows.Forms.Label
     Friend WithEvents gBoxZona As System.Windows.Forms.GroupBox
     Friend WithEvents LblNombreZona As System.Windows.Forms.Label
     Friend WithEvents TxtCodigoZona As System.Windows.Forms.TextBox
@@ -1305,4 +1278,5 @@ Partial Class SIS_Plazas
     Friend WithEvents LblCtaContableProveedor As System.Windows.Forms.Label
     Friend WithEvents LblImpuesto As System.Windows.Forms.Label
     Friend WithEvents TxtImpuestoPorcentaje As System.Windows.Forms.TextBox
+    Friend WithEvents CboEjercicios As System.Windows.Forms.ComboBox
 End Class

@@ -16,7 +16,7 @@ Public Class Class_SisPlazas
     Private _Identificador As String
     Private _Impuesto_Porcentaje As Decimal
     Private _Codigo_Proveedor As String
-    Private _PLAZO_VENTA_CONTADO As Integer
+    Private _PLAZO_VENTA_CONTADO As String
     Private _CUENTA_CONTABLE_VENTAS As String
 
     Private _CALLE As String
@@ -51,7 +51,7 @@ Public Class Class_SisPlazas
     Private _FECHA_FINAL As Date
     Private _CUENTA_DESCUENTOS_REBAJAS_NACIONALES As String
 
-    Private _ID_TEMPORADA_PRODUCCION As Integer
+    Private _ID_TEMPORADA_PRODUCCION As String
     Private _CUENTA_CONTABLE_PROVEEDOR_GENERICA As String
     Private _CODIGO_LOTE_EMPAQUE As String
     Private _CODIGO_LOTE_PLANTA As String
@@ -279,11 +279,11 @@ Public Class Class_SisPlazas
         End Set
     End Property
 
-    Public Property PLAZO_VENTA_CONTADO() As Integer
+    Public Property PLAZO_VENTA_CONTADO() As String
         Get
             Return Me._PLAZO_VENTA_CONTADO
         End Get
-        Set(ByVal value As Integer)
+        Set(ByVal value As String)
             Me._PLAZO_VENTA_CONTADO = value
         End Set
     End Property
@@ -404,11 +404,11 @@ Public Class Class_SisPlazas
         End Set
     End Property
 
-    Public Property ID_TEMPORADA_PRODUCCION() As Integer
+    Public Property ID_TEMPORADA_PRODUCCION() As String
         Get
             Return Me._ID_TEMPORADA_PRODUCCION
         End Get
-        Set(ByVal value As Integer)
+        Set(ByVal value As String)
             Me._ID_TEMPORADA_PRODUCCION = value
         End Set
     End Property
@@ -586,10 +586,9 @@ Public Class Class_SisPlazas
             sqlParametro = .Parameters.Add("@CODIGO_POSTAL", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_POSTAL.ToString
             sqlParametro = .Parameters.Add("@TELEFONO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._TELEFONO.ToString
             sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_VENTAS", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_VENTAS.ToString
-            sqlParametro = .Parameters.Add("@PLAZO_VENTA_CONTADO", SqlDbType.SmallInt) : sqlParametro.Value = Me._PLAZO_VENTA_CONTADO
+            sqlParametro = .Parameters.Add("@PLAZO_VENTA_CONTADO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._PLAZO_VENTA_CONTADO)
             sqlParametro = .Parameters.Add("@VALIDAR_FECHA_VENTAS", SqlDbType.Char, 1) : sqlParametro.Value = Me._VALIDAR_FECHA_VENTAS.ToString
-            sqlParametro = .Parameters.Add("@CODIGO_ESTADO_NUMERICO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ESTADO_NUMERICO.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@ID_TEMPORADA_PRODUCCION", SqlDbType.SmallInt) : sqlParametro.Value = Me._ID_TEMPORADA_PRODUCCION
+            sqlParametro = .Parameters.Add("@ID_TEMPORADA_PRODUCCION", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._ID_TEMPORADA_PRODUCCION)
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTES_EXPORTACION", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CODIGO_CLIENTES_EXPORTACION.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTES_NACIONAL", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CODIGO_CLIENTES_NACIONAL.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_MAYOR_EXPORTACION", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_MAYOR_EXPORTACION.ToString
@@ -654,8 +653,9 @@ Public Class Class_SisPlazas
                     Me._Identificador = "" & dReader("IDENTIFICADOR").ToString
                     Me._Impuesto_Porcentaje = CDec(dReader("IMPUESTO_PORCENTAJE"))
                     Me._Codigo_Proveedor = "" & dReader("Codigo_Proveedor").ToString
-                    Me._PLAZO_VENTA_CONTADO = CInt(dReader("PLAZO_VENTA_CONTADO"))
+                    Me._PLAZO_VENTA_CONTADO = "" & dReader("PLAZO_VENTA_CONTADO").ToString
                     Me._CUENTA_CONTABLE_VENTAS = "" & dReader("CUENTA_CONTABLE_VENTAS").ToString
+                    Me._ID_TEMPORADA_PRODUCCION = "" & dReader("ID_TEMPORADA_PRODUCCION").ToString
 
                     Me._CALLE = "" & dReader("CALLE").ToString
                     Me._NUMERO_EXTERIOR = "" & dReader("NUMERO_EXTERIOR").ToString
@@ -726,10 +726,9 @@ Public Class Class_SisPlazas
             sqlParametro = .Parameters.Add("@CODIGO_POSTAL", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_POSTAL.ToString
             sqlParametro = .Parameters.Add("@TELEFONO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._TELEFONO.ToString
             sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_VENTAS", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_VENTAS.ToString
-            sqlParametro = .Parameters.Add("@PLAZO_VENTA_CONTADO", SqlDbType.SmallInt) : sqlParametro.Value = Me._PLAZO_VENTA_CONTADO
+            sqlParametro = .Parameters.Add("@PLAZO_VENTA_CONTADO", SqlDbType.Int) : sqlParametro.Value = CInt(Me._PLAZO_VENTA_CONTADO)
             sqlParametro = .Parameters.Add("@VALIDAR_FECHA_VENTAS", SqlDbType.Char, 1) : sqlParametro.Value = Me._VALIDAR_FECHA_VENTAS.ToString
-            sqlParametro = .Parameters.Add("@CODIGO_ESTADO_NUMERICO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ESTADO_NUMERICO.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@ID_TEMPORADA_PRODUCCION", SqlDbType.SmallInt) : sqlParametro.Value = Me._ID_TEMPORADA_PRODUCCION
+            sqlParametro = .Parameters.Add("@ID_TEMPORADA_PRODUCCION", SqlDbType.Int) : sqlParametro.Value = CInt(Me._ID_TEMPORADA_PRODUCCION)
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTES_EXPORTACION", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CODIGO_CLIENTES_EXPORTACION.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTES_NACIONAL", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CODIGO_CLIENTES_NACIONAL.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_MAYOR_EXPORTACION", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_MAYOR_EXPORTACION.ToString
@@ -745,10 +744,10 @@ Public Class Class_SisPlazas
             sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_PROVEEDOR_GENERICA", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_PROVEEDOR_GENERICA.ToString
             sqlParametro = .Parameters.Add("@CODIGO_LOTE_EMPAQUE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_LOTE_EMPAQUE.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_LOTE_PLANTA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_LOTE_PLANTA.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_PUNTO_PAGO_EMPAQUE", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PUNTO_PAGO_EMPAQUE.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_PUNTO_PAGO_EMPAQUE", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_PUNTO_PAGO_EMPAQUE)
             sqlParametro = .Parameters.Add("@CODIGO_COLONIA_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_COLONIA_SAT.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_LOCALIDAD_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_LOCALIDAD_SAT.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_MUNICIPIO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_MUNICIPIO
+            sqlParametro = .Parameters.Add("@CODIGO_MUNICIPIO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_MUNICIPIO)
             sqlParametro = .Parameters.Add("@CODIGO_ESTADO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ESTADO.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_PAIS_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_PAIS_SAT.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.Char, 1) : sqlParametro.Value = "1"

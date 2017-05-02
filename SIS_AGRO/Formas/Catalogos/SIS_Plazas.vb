@@ -150,11 +150,13 @@ Public Class SIS_Plazas
 #Region "Métodos y procedimientos"
     Private Sub SIS_Plazas_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.DesplegarPaises()
+        Me.DesplegarEjercicios()
         Me.DesplegarElementos()
     End Sub
     Private Sub Refrescar()
         Me.DesplegarElementos()
         Me.DesplegarPaises()
+        Me.DesplegarEjercicios()
     End Sub
 
     Private Sub Cambia_Estado()
@@ -244,8 +246,7 @@ Public Class SIS_Plazas
         Me.TxtCodigoPostal.Text = ""
         Me.TxtTelefono.Text = ""
 
-        Me.TxtIdEjercicioContable.Text = ""
-        Me.LblNombreEjercicio.Text = ""
+        Me.CboEjercicios.SelectedValue = Plaza.ID_CON_EJERCICIO
         Me.dtFechaInicio.Value = Now
         Me.dtFechaFinal.Value = Now
 
@@ -291,7 +292,7 @@ Public Class SIS_Plazas
                 Me.TxtCodigo.Text = .CODIGO_PLAZA.ToString
                 Me.TxtNombre.Text = .NOMBRE_PLAZA
                 Me.TxtIdentificador.Text = .Identificador
-                If .Estatus = "A" Then
+                If .ESTATUS_PLAZA = "A" Then
                     Me.CboEstatus.SelectedIndex = 0
                 Else
                     Me.CboEstatus.SelectedIndex = 1
@@ -310,13 +311,7 @@ Public Class SIS_Plazas
                 Me.TxtCodigoPostal.Text = .CODIGO_POSTAL
                 Me.TxtTelefono.Text = .TELEFONO
 
-                Me.TxtIdEjercicioContable.Text = .ID_CON_EJERCICIO.ToString
-                Dim sql As New Class_find("SELECT NOMBRE_EJERCICIO FROM CON_EJERCICIOS WHERE ID_CON_EJERCICIO =" & Me.TxtIdEjercicioContable.Text)
-                If sql.Result1 = "" Then
-                Else
-                    Me.LblNombreEjercicio.Text = sql.Result1.ToString
-                End If
-                sql = Nothing
+                Me.CboEjercicios.SelectedValue = .ID_CON_EJERCICIO
                 Me.dtFechaInicio.Value = .FECHA_INICIO
                 Me.dtFechaFinal.Value = .FECHA_FINAL
 
@@ -336,7 +331,7 @@ Public Class SIS_Plazas
                 Me.TxtCodigoClienteNacional.Text = .CODIGO_CLIENTES_NACIONAL
 
                 Me.TxtCodigoZona.Text = .CODIGO_ZONA_PRINCIPAL
-                sql = New Class_find("SELECT NOMBRE_ZONA FROM CAT_ZONAS WHERE CODIGO_ZONA='" & Me.TxtCodigoZona.Text & "'")
+                Dim sql = New Class_find("SELECT NOMBRE_ZONA FROM CAT_ZONAS WHERE CODIGO_ZONA='" & Me.TxtCodigoZona.Text & "'")
                 If sql.Result1 = "" Then
                 Else
                     Me.LblNombreZona.Text = sql.Result1
@@ -373,7 +368,7 @@ Public Class SIS_Plazas
                         .CODIGO_PLAZA = CInt(Me.TxtCodigo.Text)
                         .NOMBRE_PLAZA = Me.TxtNombre.Text
                         .Identificador = Me.TxtIdentificador.Text
-                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
+                        .ESTATUS_PLAZA = Strings.Left(Me.CboEstatus.Text, 1)
 
                         .CODIGO_PAIS_SAT = cboPais.SelectedValue.ToString
                         .PAIS = cboPais.Text
@@ -391,7 +386,7 @@ Public Class SIS_Plazas
                         .CODIGO_POSTAL = Me.TxtCodigoPostal.Text
                         .TELEFONO = Me.TxtTelefono.Text
 
-                        .ID_CON_EJERCICIO = CInt(Me.TxtIdEjercicioContable.Text)
+                        .ID_CON_EJERCICIO = CInt(Me.CboEjercicios.SelectedValue)
                         .FECHA_INICIO = dtFechaInicio.Value
                         .FECHA_FINAL = dtFechaFinal.Value
 
@@ -404,9 +399,17 @@ Public Class SIS_Plazas
                         .CUENTA_DESCUENTOS_REBAJAS_NACIONALES = Me.txtCuentaRebajas.Text
 
                         .Impuesto_Porcentaje = CType(Me.TxtImpuestoPorcentaje.Text, Decimal)
-                        .PLAZO_VENTA_CONTADO = CInt(Me.TxtPlazoVentaContado.Text)
+                        If txtLEN(Me.TxtPlazoVentaContado.Text) Then
+                            .PLAZO_VENTA_CONTADO = Me.TxtPlazoVentaContado.Text
+                        Else
+                            .PLAZO_VENTA_CONTADO = "-1"
+                        End If
                         .VALIDAR_FECHA_VENTAS = Me.ckbValidarFechaVentas.Checked.ToString
-                        .ID_TEMPORADA_PRODUCCION = CInt(Me.TxtIdTemporadaProduccion.Text)
+                        If txtLEN(Me.TxtIdTemporadaProduccion.Text) Then
+                            .ID_TEMPORADA_PRODUCCION = Me.TxtIdTemporadaProduccion.Text
+                        Else
+                            .ID_TEMPORADA_PRODUCCION = "-1"
+                        End If
                         .CODIGO_CLIENTES_EXPORTACION = Me.TxtCodigoClienteExportacion.Text
                         .CODIGO_CLIENTES_NACIONAL = Me.TxtCodigoClienteNacional.Text
 
@@ -416,7 +419,12 @@ Public Class SIS_Plazas
                         .Codigo_Proveedor = Me.TxtCodigoProveedor.Text
                         .CODIGO_LOTE_EMPAQUE = Me.TxtCodigoLoteEmbarque.Text
                         .CODIGO_LOTE_PLANTA = Me.TxtCodigoLotePlanta.Text
-                        .CODIGO_PUNTO_PAGO_EMPAQUE = Me.TxtCodigoPuntoPago.Text
+                        If txtLEN(Me.TxtCodigoPuntoPago.Text) Then
+                            .CODIGO_PUNTO_PAGO_EMPAQUE = Me.TxtCodigoPuntoPago.Text
+                        Else
+                            .CODIGO_PUNTO_PAGO_EMPAQUE = "-1"
+                        End If
+
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -507,6 +515,22 @@ Public Class SIS_Plazas
         End Try
     End Sub
 
+    Private Sub DesplegarEjercicios()
+        Try
+            Dim oElementos As New Class_Contabilidad_Ejercicios
+            With Me.CboEjercicios
+                .DisplayMember = "NOMBRE_EJERCICIO"
+                .ValueMember = "ID_CON_EJERCICIO"
+                Dim dView As New Data.DataView(oElementos.ObtenerEjercicios)
+                dView.Sort = "NOMBRE_EJERCICIO"
+                .DataSource = dView
+                .SelectedIndex = -1
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarEjercicios", ex)
+        End Try
+    End Sub
+
     Private Function Validar() As Boolean
         Dim bResultado As Boolean = False
 
@@ -540,9 +564,9 @@ Public Class SIS_Plazas
             Return bResultado
         End If
 
-        If txtLEN(Me.TxtIdEjercicioContable.Text) = False Then
-            MsgBox("Asígne un id de ejercicio contable.", MsgBoxStyle.Exclamation, Me.Text)
-            Me.TxtIdEjercicioContable.Focus()
+        If CboEjercicios.SelectedIndex = -1 Then
+            MsgBox("Seleccione un ejercicio contable.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.CboEjercicios.Focus()
             Return bResultado
         End If
 
@@ -611,18 +635,38 @@ Public Class SIS_Plazas
 
 #Region "Eventos Genericos"
 
-    Private Sub CboEstatus_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboEstatus.KeyDown
+    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombre.KeyDown, CboEstatus.KeyDown, cboPais.KeyDown, cboEstado.KeyDown, cboCiudad.KeyDown, TxtCalle.KeyDown, TxtExterior.KeyDown, TxtInterior.KeyDown, TxtCodColonia.KeyDown, TxtColonia.KeyDown, TxtCodLocalidad.KeyDown, TxtLocalidad.KeyDown, TxtCodigoPostal.KeyDown, TxtTelefono.KeyDown, dtFechaInicio.KeyDown, dtFechaFinal.KeyDown, TxtCuentaContableVentas.KeyDown, TxtCtaContableMayorExportacion.KeyDown, TxtCtaContableMayorNacional.KeyDown, TxtCtaContadoExportacion.KeyDown, TxtCtaContadoNacional.KeyDown, TxtCuentaProveedor.KeyDown, txtCuentaRebajas.KeyDown, TxtPlazoVentaContado.KeyDown, ckbValidarFechaVentas.KeyDown, TxtCodigoClienteExportacion.KeyDown, TxtCodigoClienteNacional.KeyDown, TxtCodigoProveedor.KeyDown, TxtCodigoLoteEmbarque.KeyDown, TxtCodigoLotePlanta.KeyDown, TxtIdTemporadaProduccion.KeyDown, CboEjercicios.KeyDown
         If e.KeyCode = Keys.Return Then
             SendKeys.Send("{TAB}")
         End If
     End Sub
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombre.KeyPress, TxtIdentificador.KeyPress, cboPais.KeyPress, cboEstado.KeyPress, cboCiudad.KeyPress, TxtCalle.KeyPress, TxtExterior.KeyPress, TxtInterior.KeyPress, TxtCodColonia.KeyPress, TxtColonia.KeyPress, TxtCodLocalidad.KeyPress, TxtLocalidad.KeyPress, TxtTelefono.KeyPress, dtFechaInicio.KeyPress, dtFechaFinal.KeyPress, TxtCodigoClienteExportacion.KeyPress, TxtCodigoClienteNacional.KeyPress, TxtCodigoZona.KeyPress, TxtCodigoAlmacen.KeyPress, TxtCodigoProveedor.KeyPress, TxtCodigoLoteEmbarque.KeyPress, TxtCodigoLotePlanta.KeyPress, TxtCodigoPuntoPago.KeyPress, ckbValidarFechaVentas.KeyPress
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombre.KeyPress, TxtIdentificador.KeyPress, cboPais.KeyPress, cboEstado.KeyPress, cboCiudad.KeyPress, TxtCalle.KeyPress, TxtExterior.KeyPress, TxtInterior.KeyPress, TxtCodColonia.KeyPress, TxtColonia.KeyPress, TxtCodLocalidad.KeyPress, TxtLocalidad.KeyPress, TxtTelefono.KeyPress, dtFechaInicio.KeyPress, dtFechaFinal.KeyPress, TxtCodigoClienteExportacion.KeyPress, TxtCodigoClienteNacional.KeyPress, TxtCodigoZona.KeyPress, TxtCodigoAlmacen.KeyPress, TxtCodigoProveedor.KeyPress, TxtCodigoLoteEmbarque.KeyPress, TxtCodigoLotePlanta.KeyPress, TxtCodigoPuntoPago.KeyPress, ckbValidarFechaVentas.KeyPress, CboEjercicios.KeyPress
         txtNoBeep(e)
     End Sub
-
-    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombre.KeyDown
+    Private Sub txtIdentificador_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtIdentificador.KeyDown
         If e.KeyCode = Keys.Return Then
+            If txtLEN(Me.TxtIdentificador.Text) = False Then
+                MsgBox("Debe capturar un identificador de la plaza.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.TxtIdentificador.Focus()
+            Else
+                SendKeys.Send("{TAB}")
+            End If
+        End If
+    End Sub
+    Private Sub txtImpuiestoPorcentaje_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtImpuestoPorcentaje.KeyDown
+        If e.KeyCode = Keys.Return Then
+            If txtLEN(Me.TxtImpuestoPorcentaje.Text) = False Then
+                MsgBox("Debe capturar un porcentaje para impuestos.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.TxtImpuestoPorcentaje.Focus()
+            Else
+                SendKeys.Send("{TAB}")
+            End If
+        End If
+    End Sub
 
+    Private Sub txtCodigoPuntoPago_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoPuntoPago.KeyDown
+        If e.KeyCode = Keys.Return Then
+            tsbGrabar.PerformClick()
         End If
     End Sub
 
@@ -637,7 +681,7 @@ Public Class SIS_Plazas
         End If
     End Sub
 
-    Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigo.KeyPress, TxtIdEjercicioContable.KeyPress, TxtCodigoPostal.KeyPress, TxtCuentaContableVentas.KeyPress, TxtCtaContableMayorExportacion.KeyPress, TxtCtaContableMayorNacional.KeyPress, TxtCtaContadoExportacion.KeyPress, TxtCtaContadoNacional.KeyPress, TxtCuentaProveedor.KeyPress, txtCuentaRebajas.KeyPress, TxtImpuestoPorcentaje.KeyPress, TxtPlazoVentaContado.KeyPress, TxtIdTemporadaProduccion.KeyPress
+    Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigo.KeyPress, TxtCodigoPostal.KeyPress, TxtCuentaContableVentas.KeyPress, TxtCtaContableMayorExportacion.KeyPress, TxtCtaContableMayorNacional.KeyPress, TxtCtaContadoExportacion.KeyPress, TxtCtaContadoNacional.KeyPress, TxtCuentaProveedor.KeyPress, txtCuentaRebajas.KeyPress, TxtImpuestoPorcentaje.KeyPress, TxtPlazoVentaContado.KeyPress, TxtIdTemporadaProduccion.KeyPress
         Dim txt As TextBox = CType(sender, TextBox)
         txtSoloNumerosDecimales(e, txt.Text)
         txtNoBeep(e)
@@ -683,6 +727,35 @@ busca:
         End Select
         txtTAB(e)
     End Sub
+
+    Private Sub TxtCodigoAlmacen_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtCodigoAlmacen.KeyDown
+        Dim oElemento As New Class_CatAlmacenes
+        Select Case e.KeyCode
+            Case Keys.F6
+busca:
+                Me.TxtCodigoAlmacen.Text = oElemento.BusquedaVisual_PorDescripcion
+                oElemento.Codigo_Almacen = Me.TxtCodigoAlmacen.Text
+                Me.TxtCodigoAlmacen.Text = oElemento.BusquedaVisual_PorDescripcion
+                oElemento.Codigo_Almacen = Me.TxtCodigoAlmacen.Text
+                If txtLEN(Me.TxtCodigoAlmacen.Text) = True Then
+                    oElemento.Consultar()
+                    Me.LblNombreAlmacen.Text = oElemento.Nombre_Almacen
+                Else
+                    MsgBox("No existen elementos en el catálogo de Almacenes.", MsgBoxStyle.Exclamation, Me.Text)
+                    Exit Sub
+                End If
+            Case Keys.Enter
+                If txtLEN(Me.TxtCodigoAlmacen.Text) = True Then
+                    oElemento.Codigo_Almacen = Me.TxtCodigoAlmacen.Text
+                    If oElemento.Consultar() = False Then
+                        GoTo busca
+                    End If
+                    Me.LblNombreAlmacen.Text = oElemento.Nombre_Almacen
+                End If
+        End Select
+        txtTAB(e)
+    End Sub
+
 #End Region
 
 #Region "Validating específicos"
