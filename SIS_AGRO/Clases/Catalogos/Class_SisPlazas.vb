@@ -50,6 +50,12 @@ Public Class Class_SisPlazas
     Private _FECHA_INICIO As Date
     Private _FECHA_FINAL As Date
     Private _CUENTA_DESCUENTOS_REBAJAS_NACIONALES As String
+
+    Private _ID_TEMPORADA_PRODUCCION As Integer
+    Private _CUENTA_CONTABLE_PROVEEDOR_GENERICA As String
+    Private _CODIGO_LOTE_EMPAQUE As String
+    Private _CODIGO_LOTE_PLANTA As String
+    Private _CODIGO_PUNTO_PAGO_EMPAQUE As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -129,135 +135,237 @@ Public Class Class_SisPlazas
         End Set
     End Property
 
-    Public ReadOnly Property Codigo_Proveedor() As String
+    Public Property Codigo_Proveedor() As String
         Get
             Return Me._Codigo_Proveedor
         End Get
+        Set(ByVal value As String)
+            Me._Codigo_Proveedor = value
+        End Set
     End Property
 
-    Public ReadOnly Property CALLE() As String
+    Public Property CALLE() As String
         Get
             Return Me._CALLE
         End Get
+        Set(ByVal value As String)
+            Me._CALLE = value
+        End Set
     End Property
 
-    Public ReadOnly Property NUMERO_EXTERIOR() As String
+    Public Property NUMERO_EXTERIOR() As String
         Get
             Return Me._NUMERO_EXTERIOR
         End Get
+        Set(ByVal value As String)
+            Me._NUMERO_EXTERIOR = value
+        End Set
     End Property
 
-    Public ReadOnly Property NUMERO_INTERIOR() As String
+    Public Property NUMERO_INTERIOR() As String
         Get
             Return Me._NUMERO_INTERIOR
         End Get
+        Set(ByVal value As String)
+            Me._NUMERO_INTERIOR = value
+        End Set
     End Property
 
-    Public ReadOnly Property COLONIA() As String
+    Public Property COLONIA() As String
         Get
             Return Me._COLONIA
         End Get
+        Set(ByVal value As String)
+            Me._COLONIA = value
+        End Set
     End Property
 
-    Public ReadOnly Property LOCALIDAD() As String
+    Public Property LOCALIDAD() As String
         Get
             Return Me._LOCALIDAD
         End Get
+        Set(ByVal value As String)
+            Me._LOCALIDAD = value
+        End Set
     End Property
 
-    Public ReadOnly Property CIUDAD() As String
+    Public Property CIUDAD() As String
         Get
             Return Me._CIUDAD
         End Get
+        Set(ByVal value As String)
+            Me._CIUDAD = value
+        End Set
     End Property
 
-    Public ReadOnly Property ESTADO() As String
+    Public Property ESTADO() As String
         Get
             Return Me._ESTADO
         End Get
+        Set(ByVal value As String)
+            Me._ESTADO = value
+        End Set
     End Property
 
-    Public ReadOnly Property PAIS() As String
+    Public Property PAIS() As String
         Get
             Return Me._PAIS
         End Get
+        Set(ByVal value As String)
+            Me._PAIS = value
+        End Set
     End Property
 
-    Public ReadOnly Property CODIGO_POSTAL() As String
+    Public Property CODIGO_POSTAL() As String
         Get
             Return Me._CODIGO_POSTAL
         End Get
+        Set(ByVal value As String)
+            Me._CODIGO_POSTAL = value
+        End Set
     End Property
 
-    Public ReadOnly Property TELEFONO() As String
+    Public Property TELEFONO() As String
         Get
             Return Me._TELEFONO
         End Get
+        Set(ByVal value As String)
+            Me._TELEFONO = value
+        End Set
     End Property
 
-    Public ReadOnly Property CUENTA_CONTABLE_VENTAS() As String
+    Public Property CUENTA_CONTABLE_VENTAS() As String
         Get
             Return Me._CUENTA_CONTABLE_VENTAS
         End Get
+        Set(ByVal value As String)
+            Me._CUENTA_CONTABLE_VENTAS = value
+        End Set
     End Property
 
-    Public ReadOnly Property PLAZO_VENTA_CONTADO() As Integer
+    Public Property CUENTA_CONTABLE_MAYOR_EXPORTACION() As String
+        Get
+            Return Me._CUENTA_CONTABLE_MAYOR_EXPORTACION
+        End Get
+        Set(ByVal value As String)
+            Me._CUENTA_CONTABLE_MAYOR_EXPORTACION = value
+        End Set
+    End Property
+
+    Public Property CUENTA_CONTABLE_MAYOR_NACIONAL() As String
+        Get
+            Return Me._CUENTA_CONTABLE_MAYOR_NACIONAL
+        End Get
+        Set(ByVal value As String)
+            Me._CUENTA_CONTABLE_MAYOR_NACIONAL = value
+        End Set
+    End Property
+
+    Public Property CUENTA_CONTABLE_CONTADO_EXPORTACION() As String
+        Get
+            Return Me._CUENTA_CONTABLE_CONTADO_EXPORTACION
+        End Get
+        Set(ByVal value As String)
+            Me._CUENTA_CONTABLE_CONTADO_EXPORTACION = value
+        End Set
+    End Property
+
+    Public Property CUENTA_CONTABLE_CONTADO_NACIONAL() As String
+        Get
+            Return Me._CUENTA_CONTABLE_CONTADO_NACIONAL
+        End Get
+        Set(ByVal value As String)
+            Me._CUENTA_CONTABLE_CONTADO_NACIONAL = value
+        End Set
+    End Property
+
+    Public Property PLAZO_VENTA_CONTADO() As Integer
         Get
             Return Me._PLAZO_VENTA_CONTADO
         End Get
+        Set(ByVal value As Integer)
+            Me._PLAZO_VENTA_CONTADO = value
+        End Set
     End Property
 
-    Public ReadOnly Property VALIDAR_FECHA_VENTAS() As String
+    Public Property VALIDAR_FECHA_VENTAS() As String
         Get
             Return Me._VALIDAR_FECHA_VENTAS
         End Get
+        Set(ByVal value As String)
+            Me._VALIDAR_FECHA_VENTAS = value
+        End Set
     End Property
-    Public ReadOnly Property CODIGO_COLONIA_SAT() As String
+    Public Property CODIGO_COLONIA_SAT() As String
         Get
             Return Me._CODIGO_COLONIA_SAT
         End Get
+        Set(ByVal value As String)
+            Me._CODIGO_COLONIA_SAT = value
+        End Set
     End Property
 
-    Public ReadOnly Property CODIGO_LOCALIDAD_SAT() As String
+    Public Property CODIGO_LOCALIDAD_SAT() As String
         Get
             Return Me._CODIGO_LOCALIDAD_SAT
         End Get
+        Set(ByVal value As String)
+            Me._CODIGO_LOCALIDAD_SAT = value
+        End Set
     End Property
 
-    Public ReadOnly Property CODIGO_MUNICIPIO() As String
+    Public Property CODIGO_MUNICIPIO() As String
         Get
             Return Me._CODIGO_MUNICIPIO
         End Get
+        Set(ByVal value As String)
+            Me._CODIGO_MUNICIPIO = value
+        End Set
     End Property
 
-    Public ReadOnly Property CODIGO_ESTADO() As String
+    Public Property CODIGO_ESTADO() As String
         Get
             Return Me._CODIGO_ESTADO
         End Get
+        Set(ByVal value As String)
+            Me._CODIGO_ESTADO = value
+        End Set
     End Property
 
-    Public ReadOnly Property CODIGO_PAIS_SAT() As String
+    Public Property CODIGO_PAIS_SAT() As String
         Get
             Return Me._CODIGO_PAIS_SAT
         End Get
+        Set(ByVal value As String)
+            Me._CODIGO_PAIS_SAT = value
+        End Set
     End Property
 
-    Public ReadOnly Property CODIGO_ESTADO_NUMERICO() As Integer
+    Public Property CODIGO_ESTADO_NUMERICO() As Integer
         Get
             Return Me._CODIGO_ESTADO_NUMERICO
         End Get
+        Set(ByVal value As Integer)
+            Me._CODIGO_ESTADO_NUMERICO = value
+        End Set
     End Property
 
-    Public ReadOnly Property CODIGO_ALMACEN_PRINCIPAL() As String
+    Public Property CODIGO_ALMACEN_PRINCIPAL() As String
         Get
             Return Me._CODIGO_ALMACEN_PRINCIPAL
         End Get
+        Set(ByVal value As String)
+            Me._CODIGO_ALMACEN_PRINCIPAL = value
+        End Set
     End Property
 
-    Public ReadOnly Property CODIGO_ZONA_PRINCIPAL() As String
+    Public Property CODIGO_ZONA_PRINCIPAL() As String
         Get
             Return Me._CODIGO_ZONA_PRINCIPAL
         End Get
+        Set(ByVal value As String)
+            Me._CODIGO_ZONA_PRINCIPAL = value
+        End Set
     End Property
 
     Public Property ID_CON_EJERCICIO() As Integer
@@ -287,11 +395,78 @@ Public Class Class_SisPlazas
         End Set
     End Property
 
-    Public ReadOnly Property CUENTA_DESCUENTOS_REBAJAS_NACIONALES() As String
+    Public Property CUENTA_DESCUENTOS_REBAJAS_NACIONALES() As String
         Get
             Return Me._CUENTA_DESCUENTOS_REBAJAS_NACIONALES
         End Get
+        Set(ByVal value As String)
+            Me._CUENTA_DESCUENTOS_REBAJAS_NACIONALES = value
+        End Set
     End Property
+
+    Public Property ID_TEMPORADA_PRODUCCION() As Integer
+        Get
+            Return Me._ID_TEMPORADA_PRODUCCION
+        End Get
+        Set(ByVal value As Integer)
+            Me._ID_TEMPORADA_PRODUCCION = value
+        End Set
+    End Property
+
+    Public Property CUENTA_CONTABLE_PROVEEDOR_GENERICA() As String
+        Get
+            Return Me._CUENTA_CONTABLE_PROVEEDOR_GENERICA
+        End Get
+        Set(ByVal value As String)
+            Me._CUENTA_CONTABLE_PROVEEDOR_GENERICA = value
+        End Set
+    End Property
+
+    Public Property CODIGO_LOTE_EMPAQUE() As String
+        Get
+            Return Me._CODIGO_LOTE_EMPAQUE
+        End Get
+        Set(ByVal value As String)
+            Me._CODIGO_LOTE_EMPAQUE = value
+        End Set
+    End Property
+
+    Public Property CODIGO_LOTE_PLANTA() As String
+        Get
+            Return Me._CODIGO_LOTE_PLANTA
+        End Get
+        Set(ByVal value As String)
+            Me._CODIGO_LOTE_PLANTA = value
+        End Set
+    End Property
+
+    Public Property CODIGO_PUNTO_PAGO_EMPAQUE() As String
+        Get
+            Return Me._CODIGO_PUNTO_PAGO_EMPAQUE
+        End Get
+        Set(ByVal value As String)
+            Me._CODIGO_PUNTO_PAGO_EMPAQUE = value
+        End Set
+    End Property
+
+    Public Property CODIGO_CLIENTES_EXPORTACION() As String
+        Get
+            Return Me._CODIGO_CLIENTES_EXPORTACION
+        End Get
+        Set(ByVal value As String)
+            Me._CODIGO_CLIENTES_EXPORTACION = value
+        End Set
+    End Property
+
+    Public Property CODIGO_CLIENTES_NACIONAL() As String
+        Get
+            Return Me._CODIGO_CLIENTES_NACIONAL
+        End Get
+        Set(ByVal value As String)
+            Me._CODIGO_CLIENTES_NACIONAL = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -301,16 +476,22 @@ Public Class Class_SisPlazas
             Return Me._NOMBRE_EJERCICIO
         End Get
     End Property
-    Public ReadOnly Property CODIGO_ESTADO_SAT() As String
+    Public Property CODIGO_ESTADO_SAT() As String
         Get
             Return Me._CODIGO_ESTADO_SAT
         End Get
+        Set(ByVal value As String)
+            Me._CODIGO_ESTADO_SAT = value
+        End Set
     End Property
 
-    Public ReadOnly Property CODIGO_MUNICIPIO_SAT() As String
+    Public Property CODIGO_MUNICIPIO_SAT() As String
         Get
             Return Me._CODIGO_MUNICIPIO_SAT
         End Get
+        Set(ByVal value As String)
+            Me._CODIGO_MUNICIPIO_SAT = value
+        End Set
     End Property
 #End Region
 
@@ -380,7 +561,71 @@ Public Class Class_SisPlazas
 #Region "Métodos y procedimientos"
 
     Public Overrides Function Actualizar() As Boolean
-        MsgBox("No desarrollado.", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_SIS_PLAZAS_GRABA"
+
+            sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_PLAZA)
+            sqlParametro = .Parameters.Add("@NOMBRE_PLAZA", SqlDbType.NVarChar, 60) : sqlParametro.Value = Me._NOMBRE_PLAZA.ToUpper
+            sqlParametro = .Parameters.Add("@ESTATUS_PLAZA", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS_PLAZA
+            sqlParametro = .Parameters.Add("@IDENTIFICADOR", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._Identificador.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_PROVEEDOR", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._Codigo_Proveedor.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@IMPUESTO_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._Impuesto_Porcentaje
+            sqlParametro = .Parameters.Add("@CALLE", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._CALLE.ToUpper
+            sqlParametro = .Parameters.Add("@NUMERO_EXTERIOR", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._NUMERO_EXTERIOR.ToString
+            sqlParametro = .Parameters.Add("@NUMERO_INTERIOR", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._NUMERO_INTERIOR.ToString
+            sqlParametro = .Parameters.Add("@COLONIA", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._COLONIA.ToUpper
+            sqlParametro = .Parameters.Add("@LOCALIDAD", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._LOCALIDAD.ToUpper
+            sqlParametro = .Parameters.Add("@CIUDAD", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._CIUDAD.ToUpper
+            sqlParametro = .Parameters.Add("@ESTADO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._ESTADO.ToUpper
+            sqlParametro = .Parameters.Add("@PAIS", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._PAIS.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_POSTAL", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_POSTAL.ToString
+            sqlParametro = .Parameters.Add("@TELEFONO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._TELEFONO.ToString
+            sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_VENTAS", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_VENTAS.ToString
+            sqlParametro = .Parameters.Add("@PLAZO_VENTA_CONTADO", SqlDbType.SmallInt) : sqlParametro.Value = Me._PLAZO_VENTA_CONTADO
+            sqlParametro = .Parameters.Add("@VALIDAR_FECHA_VENTAS", SqlDbType.Char, 1) : sqlParametro.Value = Me._VALIDAR_FECHA_VENTAS.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_ESTADO_NUMERICO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ESTADO_NUMERICO.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@ID_TEMPORADA_PRODUCCION", SqlDbType.SmallInt) : sqlParametro.Value = Me._ID_TEMPORADA_PRODUCCION
+            sqlParametro = .Parameters.Add("@CODIGO_CLIENTES_EXPORTACION", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CODIGO_CLIENTES_EXPORTACION.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_CLIENTES_NACIONAL", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CODIGO_CLIENTES_NACIONAL.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_MAYOR_EXPORTACION", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_MAYOR_EXPORTACION.ToString
+            sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_MAYOR_NACIONAL", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_MAYOR_NACIONAL.ToString
+            sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_CONTADO_EXPORTACION", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_CONTADO_EXPORTACION.ToString
+            sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_CONTADO_NACIONAL", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_CONTADO_NACIONAL.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_ALMACEN_PRINCIPAL", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_ALMACEN_PRINCIPAL.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_ZONA_PRINCIPAL", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ZONA_PRINCIPAL.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@ID_CON_EJERCICIO", SqlDbType.SmallInt) : sqlParametro.Value = Me._ID_CON_EJERCICIO
+            sqlParametro = .Parameters.Add("@FECHA_INICIO", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_INICIO
+            sqlParametro = .Parameters.Add("@FECHA_FINAL", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_FINAL
+            sqlParametro = .Parameters.Add("@CUENTA_DESCUENTOS_REBAJAS_NACIONALES", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_DESCUENTOS_REBAJAS_NACIONALES.ToString
+            sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_PROVEEDOR_GENERICA", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_PROVEEDOR_GENERICA.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_LOTE_EMPAQUE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_LOTE_EMPAQUE.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_LOTE_PLANTA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_LOTE_PLANTA.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_PUNTO_PAGO_EMPAQUE", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PUNTO_PAGO_EMPAQUE.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_COLONIA_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_COLONIA_SAT.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_LOCALIDAD_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_LOCALIDAD_SAT.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_MUNICIPIO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_MUNICIPIO
+            sqlParametro = .Parameters.Add("@CODIGO_ESTADO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ESTADO.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_PAIS_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_PAIS_SAT.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.Char, 1) : sqlParametro.Value = "0"
+
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                Actualizar = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+
+        End With
     End Function
 
     Public Overrides Function Consultar() As Boolean
@@ -456,7 +701,71 @@ Public Class Class_SisPlazas
     End Function
 
     Public Overrides Function Insertar() As Boolean
-        MsgBox("No desarrollado.", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_SIS_PLAZAS_GRABA"
+
+            sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_PLAZA)
+            sqlParametro = .Parameters.Add("@NOMBRE_PLAZA", SqlDbType.NVarChar, 60) : sqlParametro.Value = Me._NOMBRE_PLAZA.ToUpper
+            sqlParametro = .Parameters.Add("@ESTATUS_PLAZA", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS_PLAZA
+            sqlParametro = .Parameters.Add("@IDENTIFICADOR", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._Identificador.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_PROVEEDOR", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._Codigo_Proveedor.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@IMPUESTO_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._Impuesto_Porcentaje
+            sqlParametro = .Parameters.Add("@CALLE", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._CALLE.ToUpper
+            sqlParametro = .Parameters.Add("@NUMERO_EXTERIOR", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._NUMERO_EXTERIOR.ToString
+            sqlParametro = .Parameters.Add("@NUMERO_INTERIOR", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._NUMERO_INTERIOR.ToString
+            sqlParametro = .Parameters.Add("@COLONIA", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._COLONIA.ToUpper
+            sqlParametro = .Parameters.Add("@LOCALIDAD", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._LOCALIDAD.ToUpper
+            sqlParametro = .Parameters.Add("@CIUDAD", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._CIUDAD.ToUpper
+            sqlParametro = .Parameters.Add("@ESTADO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._ESTADO.ToUpper
+            sqlParametro = .Parameters.Add("@PAIS", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._PAIS.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_POSTAL", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_POSTAL.ToString
+            sqlParametro = .Parameters.Add("@TELEFONO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._TELEFONO.ToString
+            sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_VENTAS", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_VENTAS.ToString
+            sqlParametro = .Parameters.Add("@PLAZO_VENTA_CONTADO", SqlDbType.SmallInt) : sqlParametro.Value = Me._PLAZO_VENTA_CONTADO
+            sqlParametro = .Parameters.Add("@VALIDAR_FECHA_VENTAS", SqlDbType.Char, 1) : sqlParametro.Value = Me._VALIDAR_FECHA_VENTAS.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_ESTADO_NUMERICO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ESTADO_NUMERICO.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@ID_TEMPORADA_PRODUCCION", SqlDbType.SmallInt) : sqlParametro.Value = Me._ID_TEMPORADA_PRODUCCION
+            sqlParametro = .Parameters.Add("@CODIGO_CLIENTES_EXPORTACION", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CODIGO_CLIENTES_EXPORTACION.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_CLIENTES_NACIONAL", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CODIGO_CLIENTES_NACIONAL.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_MAYOR_EXPORTACION", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_MAYOR_EXPORTACION.ToString
+            sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_MAYOR_NACIONAL", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_MAYOR_NACIONAL.ToString
+            sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_CONTADO_EXPORTACION", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_CONTADO_EXPORTACION.ToString
+            sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_CONTADO_NACIONAL", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_CONTADO_NACIONAL.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_ALMACEN_PRINCIPAL", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_ALMACEN_PRINCIPAL.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_ZONA_PRINCIPAL", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ZONA_PRINCIPAL.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@ID_CON_EJERCICIO", SqlDbType.SmallInt) : sqlParametro.Value = Me._ID_CON_EJERCICIO
+            sqlParametro = .Parameters.Add("@FECHA_INICIO", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_INICIO
+            sqlParametro = .Parameters.Add("@FECHA_FINAL", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_FINAL
+            sqlParametro = .Parameters.Add("@CUENTA_DESCUENTOS_REBAJAS_NACIONALES", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_DESCUENTOS_REBAJAS_NACIONALES.ToString
+            sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_PROVEEDOR_GENERICA", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_PROVEEDOR_GENERICA.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_LOTE_EMPAQUE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_LOTE_EMPAQUE.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_LOTE_PLANTA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_LOTE_PLANTA.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_PUNTO_PAGO_EMPAQUE", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PUNTO_PAGO_EMPAQUE.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_COLONIA_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_COLONIA_SAT.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_LOCALIDAD_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_LOCALIDAD_SAT.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_MUNICIPIO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_MUNICIPIO
+            sqlParametro = .Parameters.Add("@CODIGO_ESTADO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ESTADO.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_PAIS_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_PAIS_SAT.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.Char, 1) : sqlParametro.Value = "1"
+
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                Insertar = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, "Insertar", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+
+        End With
     End Function
 
     ''' <summary>
@@ -471,6 +780,19 @@ Public Class Class_SisPlazas
             HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
         Finally
             dsCat.Dispose()
+        End Try
+        Return dTable
+    End Function
+
+    Public Function ObtenerElementosFiltro(ByVal Filtro As String) As System.Data.DataTable
+        Dim dTable As New DataTable
+        Dim dA As New SqlDataAdapter("SELECT CODIGO_PLAZA,NOMBRE_PLAZA FROM SIS_PLAZA WHERE NOMBRE_PLAZA LIKE '" & Filtro.ToString & "%' ORDER BY NOMBRE_PLAZA", Me._Conexion)
+        Try
+            dA.Fill(dTable)
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ObtenerElementosFiltro", ex)
+        Finally
+            dA.Dispose()
         End Try
         Return dTable
     End Function
@@ -611,6 +933,14 @@ Public Class Class_SisPlazas
             End Try
         End With
         Return bResultado
+    End Function
+
+    Public Function CodigoSiguiente() As String
+        Dim resultado As String
+        Dim sql As New Class_find("SELECT ISNULL(MAX(CODIGO_PLAZA),0) FROM SIS_PLAZAS")
+
+        resultado = (CInt(sql.Result1) + 1).ToString
+        Return resultado
     End Function
 
 #End Region
