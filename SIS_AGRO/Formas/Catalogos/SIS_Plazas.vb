@@ -110,7 +110,6 @@ Public Class SIS_Plazas
         Me.Estado = enumEstados.NUEVO
         Me.Cambia_Estado()
         Me.TxtCodigo.Text = Me.oPlazas.CodigoSiguiente
-        Me.CboEstatus.Enabled = True
     End Sub
 
     Private Sub tsbEditar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbEditar.Click
