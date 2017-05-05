@@ -40,6 +40,7 @@ Public Class Class_VentasSemanales
 
 #Region "Métodos y procedimientos"
     Public Function AgregarVenta(ByVal sCodigoCultivo As String, ByVal dBultos As Double, dVenta As Double, dAjustes As Double, dPrecioPromedio As Double) As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -61,7 +62,7 @@ Public Class Class_VentasSemanales
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                AgregarVenta = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me.Nombre_Clase, "AgregarVenta", ex)
             Finally
@@ -70,8 +71,11 @@ Public Class Class_VentasSemanales
                 sqlParametro = Nothing
             End Try
         End With
+        Return bResultado
     End Function
+
     Public Function EliminarVenta(ByVal ID_VENTA As Integer) As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -85,7 +89,7 @@ Public Class Class_VentasSemanales
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                EliminarVenta = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me.Nombre_Clase, "EliminarVenta", ex)
             Finally
@@ -94,8 +98,11 @@ Public Class Class_VentasSemanales
                 sqlParametro = Nothing
             End Try
         End With
+        Return bResultado
     End Function
+
     Public Function AgregarGasto(ByVal sCodigoGasto As String, ByVal dGasto As Double) As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -114,7 +121,7 @@ Public Class Class_VentasSemanales
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                AgregarGasto = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me.Nombre_Clase, "AgregarGasto", ex)
             Finally
@@ -123,8 +130,11 @@ Public Class Class_VentasSemanales
                 sqlParametro = Nothing
             End Try
         End With
+        Return bResultado
     End Function
+
     Public Function EliminarGasto(ByVal ID_GASTO As Integer) As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -138,7 +148,7 @@ Public Class Class_VentasSemanales
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                EliminarGasto = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me.Nombre_Clase, "EliminarGasto", ex)
             Finally
@@ -147,7 +157,9 @@ Public Class Class_VentasSemanales
                 sqlParametro = Nothing
             End Try
         End With
+        Return bResultado
     End Function
+
     Public Function ObtenerVentas() As System.Data.DataTable
         Dim dt As New DataTable
         Try
@@ -165,11 +177,11 @@ Public Class Class_VentasSemanales
 
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, "ObtenerVentas", ex)
-        Finally
-
         End Try
-        ObtenerVentas = dt
+
+        Return dt
     End Function
+
     Public Function ObtenerGastos() As System.Data.DataTable
         Dim dt As New DataTable
         Try
@@ -187,10 +199,9 @@ Public Class Class_VentasSemanales
 
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, "ObtenerGastos", ex)
-        Finally
-
         End Try
-        ObtenerGastos = dt
+
+        Return dt
     End Function
 #End Region
 

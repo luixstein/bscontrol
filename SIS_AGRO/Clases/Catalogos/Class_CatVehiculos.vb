@@ -83,6 +83,7 @@ Public Class Class_CatVehiculos
 #Region "Propiedades de campos privados"
 
 #End Region
+
 #Region "Propiedades de campos de sistema"
 
     Public Overrides ReadOnly Property Nombre_Catalogo() As String
@@ -99,15 +100,6 @@ Public Class Class_CatVehiculos
             Me._Nombre_Reporte = value
         End Set
     End Property
-    Public Property Estatus() As String
-        Get
-            Return Me._Estatus
-        End Get
-        Set(ByVal value As String)
-            Me._Estatus = value
-        End Set
-    End Property
-
 #End Region
 
 #End Region

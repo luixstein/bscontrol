@@ -231,26 +231,40 @@ Public Class Class_CatLineas
 
     Public Overrides Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dsCAT_Lineas As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
+        Dim da As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
         Try
-            dsCAT_Lineas.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
         Finally
-            dsCAT_Lineas.Dispose()
+            da.Dispose()
         End Try
         Return dTable
-    End Function    'Obtiene una lita completa de los elementos del catalogo en un datatable.
+    End Function
 
     Public Function ObtenerElementosFiltro(ByVal Filtro As String, ByVal Estatus As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dA As New SqlDataAdapter("SELECT CODIGO_LINEA, NOMBRE_LINEA FROM CAT_LINEAS WHERE NOMBRE_LINEA LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & Estatus & "' ORDER BY NOMBRE_LINEA", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_LINEA, NOMBRE_LINEA FROM CAT_LINEAS WHERE NOMBRE_LINEA LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & Estatus & "' ORDER BY NOMBRE_LINEA", Me._Conexion)
         Try
-            dA.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementosFiltro", ex)
         Finally
             dA.Dispose()
+        End Try
+        Return dTable
+    End Function
+
+    Public Function ObtenerElementosParaReportes() As System.Data.DataTable
+        Dim dTable As New DataTable
+        Dim da As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
+        Try
+            da.Fill(dTable)
+            dTable.Rows.Add("T", "TODAS")
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ObtenerElementosParaReportes", ex)
+        Finally
+            da.Dispose()
         End Try
         Return dTable
     End Function
