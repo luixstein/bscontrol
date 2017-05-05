@@ -315,6 +315,12 @@
     <Compile Include="Formas\Administracion\Sis_administracion_clientes.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Precios_Venta.Designer.vb">
+      <DependentUpon>Catalogo_Precios_Venta.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Precios_Venta.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\Catalogos\Catalogo_UnidadesVenta.Designer.vb">
       <DependentUpon>Catalogo_UnidadesVenta.vb</DependentUpon>
     </Compile>
@@ -1449,6 +1455,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_CajasTransportes.resx">
       <DependentUpon>Catalogo_CajasTransportes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Precios_Venta.resx">
+      <DependentUpon>Catalogo_Precios_Venta.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_UnidadesVenta.resx">
       <DependentUpon>Catalogo_UnidadesVenta.vb</DependentUpon>
