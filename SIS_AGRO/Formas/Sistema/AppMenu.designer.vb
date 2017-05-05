@@ -212,6 +212,7 @@ Partial Public Class AppMenu
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
         Me.PlazasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ListaDePreciosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -591,7 +592,7 @@ Partial Public Class AppMenu
         '
         'VentasToolStripMenuItem
         '
-        Me.VentasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ClientesToolStripMenuItem1, Me.VendedoresToolStripMenuItem1, Me.ZonasToolStripMenuItem})
+        Me.VentasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ClientesToolStripMenuItem1, Me.ListaDePreciosToolStripMenuItem, Me.VendedoresToolStripMenuItem1, Me.ZonasToolStripMenuItem})
         Me.VentasToolStripMenuItem.Name = "VentasToolStripMenuItem"
         Me.VentasToolStripMenuItem.Size = New System.Drawing.Size(214, 26)
         Me.VentasToolStripMenuItem.Text = "&Ventas"
@@ -1445,6 +1446,12 @@ Partial Public Class AppMenu
         Me.PlazasToolStripMenuItem.Size = New System.Drawing.Size(214, 26)
         Me.PlazasToolStripMenuItem.Text = "Plazas"
         '
+        'ListaDePreciosToolStripMenuItem
+        '
+        Me.ListaDePreciosToolStripMenuItem.Name = "ListaDePreciosToolStripMenuItem"
+        Me.ListaDePreciosToolStripMenuItem.Size = New System.Drawing.Size(155, 22)
+        Me.ListaDePreciosToolStripMenuItem.Text = "&Lista de precios"
+        '
         'AppMenu
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -1663,4 +1670,5 @@ Partial Public Class AppMenu
     Friend WithEvents ConceptosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents CentrosDeCostosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents PlazasToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ListaDePreciosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

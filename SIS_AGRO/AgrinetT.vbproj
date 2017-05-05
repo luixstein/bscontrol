@@ -163,6 +163,7 @@
     <Compile Include="Clases\Catalogos\Class_CatGradosToxicidad.vb" />
     <Compile Include="Clases\Catalogos\Class_CatMunicipios.vb" />
     <Compile Include="Clases\Catalogos\Class_CatPaises.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatPreciosVenta.vb" />
     <Compile Include="Clases\Catalogos\Class_CatVehiculos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatCategorias.vb" />
     <Compile Include="Clases\Catalogos\Class_CatChoferes.vb" />
@@ -319,6 +320,12 @@
       <DependentUpon>SIS_Plazas.vb</DependentUpon>
     </Compile>
     <Compile Include="Formas\Catalogos\SIS_Plazas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Precios_Venta.Designer.vb">
+      <DependentUpon>Catalogo_Precios_Venta.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Precios_Venta.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Catalogos\Catalogo_UnidadesVenta.Designer.vb">
@@ -1456,8 +1463,11 @@
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_CajasTransportes.resx">
       <DependentUpon>Catalogo_CajasTransportes.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Formas\Catalogos\SIS_Plazas.resx">
+   <EmbeddedResource Include="Formas\Catalogos\SIS_Plazas.resx">
       <DependentUpon>SIS_Plazas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Precios_Venta.resx">
+      <DependentUpon>Catalogo_Precios_Venta.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_UnidadesVenta.resx">
       <DependentUpon>Catalogo_UnidadesVenta.vb</DependentUpon>

@@ -164,7 +164,7 @@ Public Class Cat_Nomina_ConceptosActividades
         With Me.lstbSubActividades
             .DisplayMember = "NOMBRE_ACTIVIDAD"
             .ValueMember = "CODIGO_ACTIVIDAD"
-            Dim dView As Data.DataView
+            Dim dView As New Data.DataView
             If Me.Run = False Then
                 If Me.Grid.Rows.Count > 0 Then
                     dView = New Data.DataView(oSubActividades.ObtenerElementosSubActividades(Me.Grid.Item(0, 0).Value.ToString)) 'Envia el primer codigo_concepto_actividad de la lista del grid
