@@ -332,7 +332,9 @@ Enter:
 
             Me.InicializaGrid()
             Me.CboEmpaque.SelectedItem = 1
-            Me.CboLote.SelectedIndex = 0
+            If Me.CboLote.Items.Count > 1 Then
+                Me.CboLote.SelectedIndex = 0
+            End If
             Me.CboOrigen.SelectedIndex = 0
             Me.chkEsChepPalet.Checked = False
             Me.CboEstatus.SelectedIndex = 0
