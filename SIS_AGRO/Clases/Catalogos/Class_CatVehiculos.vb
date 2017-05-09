@@ -15,6 +15,8 @@ Public Class Class_CatVehiculos
 
 #Region "Campos ligados a la tabla"
     Private _Existe As Boolean
+    Private _GENERAR_CATEGORIA As Boolean
+    Private _CODIGO_TIPO_CATEGORIA As String
 #End Region
 
 #Region "Campos públicos"
@@ -74,6 +76,17 @@ Public Class Class_CatVehiculos
         End Get
     End Property
 
+    Public WriteOnly Property GENERAR_CATEGORIA() As Boolean
+        Set(ByVal Value As Boolean)
+            Me._GENERAR_CATEGORIA = Value
+        End Set
+    End Property
+
+    Public WriteOnly Property CODIGO_TIPO_CATEGORIA() As String
+        Set(ByVal Value As String)
+            Me._CODIGO_TIPO_CATEGORIA = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades públicos"
@@ -141,6 +154,7 @@ Public Class Class_CatVehiculos
 #Region "Métodos y procedimientos"
 
     Public Overrides Function Insertar() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -152,12 +166,14 @@ Public Class Class_CatVehiculos
             sqlParametro = .Parameters.Add("@CODIGO_VEHICULO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Vehiculo)
             sqlParametro = .Parameters.Add("@NOMBRE_VEHICULO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._Nombre_Vehiculo.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._Estatus
-            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Categoria)
+            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._Codigo_Categoria))
+            sqlParametro = .Parameters.Add("@GENERAR_CATEGORIA", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._GENERAR_CATEGORIA)
+            sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_TIPO_CATEGORIA))
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "INSERTAR"
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                Insertar = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "Insertar", ex)
             Finally
@@ -165,11 +181,12 @@ Public Class Class_CatVehiculos
                 cmd.Dispose()
                 sqlParametro = Nothing
             End Try
-
         End With
-    End Function                          'Inserta un elemento al catálogo.
+        Return bResultado
+    End Function
 
     Public Overrides Function Actualizar() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -181,12 +198,14 @@ Public Class Class_CatVehiculos
             sqlParametro = .Parameters.Add("@CODIGO_VEHICULO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Vehiculo)
             sqlParametro = .Parameters.Add("@NOMBRE_VEHICULO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._Nombre_Vehiculo.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._Estatus
-            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Categoria)
+            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = Me._Codigo_Categoria
+            sqlParametro = .Parameters.Add("@GENERAR_CATEGORIA", SqlDbType.Char, 1) : sqlParametro.Value = "0"
+            sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = 0
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "ACTUALIZAR"
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                Actualizar = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
             Finally
@@ -194,12 +213,13 @@ Public Class Class_CatVehiculos
                 cmd.Dispose()
                 sqlParametro = Nothing
             End Try
-
         End With
-    End Function                        'Actualiza un elemento del catálogo.
+        Return bResultado
+    End Function
 
     Public Overrides Function Consultar() As Boolean
-        Dim cmd As New SqlCommand("Select * from CAT_VEHICULOS Where CODIGO_VEHICULO='" & Replace(Me._Codigo_Vehiculo, "'", "''") & "'", Me._Conexion)
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand("Select * from CAT_VEHICULOS Where CODIGO_VEHICULO='" & sReplace(Me._Codigo_Vehiculo) & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -213,8 +233,7 @@ Public Class Class_CatVehiculos
                     Me._Nombre_Vehiculo = Trim("" & dReader("NOMBRE_VEHICULO").ToString)
                     Me._Estatus = "" & dReader("ESTATUS")
                     Me._Codigo_Categoria = "" & dReader("CODIGO_CATEGORIA").ToString
-
-                    Consultar = True
+                    bResultado = True
                 End If
                 dReader.Close()
             Catch ex As Exception
@@ -224,41 +243,41 @@ Public Class Class_CatVehiculos
                 cmd.Dispose()
             End Try
         End With
-
-    End Function        'Consulta un elemento del catálogo.
+        Return bResultado
+    End Function
 
     Public Overrides Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dsCAT_Lineas As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
+        Dim da As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
         Try
-            dsCAT_Lineas.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
         Finally
-            dsCAT_Lineas.Dispose()
+            da.Dispose()
         End Try
         Return dTable
-    End Function    'Obtiene una lita completa de los elementos del catalogo en un datatable.
+    End Function
 
     Public Function ObtenerElementosParaReportes() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dsCAT_Lineas As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
+        Dim da As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
         Try
-            dsCAT_Lineas.Fill(dTable)
+            da.Fill(dTable)
             dTable.Rows.Add("-1", "TODOS")
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementosParaReportes", ex)
         Finally
-            dsCAT_Lineas.Dispose()
+            da.Dispose()
         End Try
         Return dTable
     End Function
 
     Public Function ObtenerElementosFiltro(ByVal Filtro As String, ByVal ESTATUS As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dA As New SqlDataAdapter("SELECT CODIGO_VEHICULO, NOMBRE_VEHICULO FROM CAT_VEHICULOS WHERE NOMBRE_VEHICULO LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & ESTATUS & "' ORDER BY NOMBRE_VEHICULO", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_VEHICULO, NOMBRE_VEHICULO FROM CAT_VEHICULOS WHERE NOMBRE_VEHICULO LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & ESTATUS & "' ORDER BY NOMBRE_VEHICULO", Me._Conexion)
         Try
-            dA.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementosFiltro", ex)
         Finally
@@ -310,10 +329,10 @@ Public Class Class_CatVehiculos
     Public Function CodigoSiguiente() As String
         Dim Resultado As Integer
         Try
-            Dim sql As New Class_find("SELECT MAX(CODIGO_VEHICULO) FROM CAT_VEHICULOS")
+            Dim sql As New Class_find("SELECT ISNULL(MAX(CODIGO_VEHICULO),0) FROM CAT_VEHICULOS")
             Resultado = CType(sql.Result1, Integer) + 1
         Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcion", ex)
+            HandleError(Me.Nombre_Catalogo, "CodigoSiguiente", ex)
         End Try
         Return Resultado
     End Function

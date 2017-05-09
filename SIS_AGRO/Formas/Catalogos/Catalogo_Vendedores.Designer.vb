@@ -38,7 +38,11 @@ Partial Class Catalogo_Vendedores
         Me.Grid = New System.Windows.Forms.DataGridView()
         Me.txtFiltro = New System.Windows.Forms.TextBox()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
-        Me.LblNombreCategoria = New System.Windows.Forms.Label()
+        Me.lblTipoCategoria = New System.Windows.Forms.Label()
+        Me.chkCrearCategoria = New System.Windows.Forms.CheckBox()
+        Me.txtTipoCategoria = New System.Windows.Forms.TextBox()
+        Me.lblDisplayTipoCategoria = New System.Windows.Forms.Label()
+        Me.lblCategoria = New System.Windows.Forms.Label()
         Me.txtCodigoCategoria = New System.Windows.Forms.TextBox()
         Me.lblCodigoCategoria = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -64,7 +68,7 @@ Partial Class Catalogo_Vendedores
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(640, 27)
-        Me.tsMenu.TabIndex = 8
+        Me.tsMenu.TabIndex = 2
         Me.tsMenu.Text = "tsMenu"
         '
         'tsbNuevo
@@ -143,7 +147,7 @@ Partial Class Catalogo_Vendedores
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(329, 28)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
         Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(305, 514)
-        Me.gBoxBusquedaRapida.TabIndex = 6
+        Me.gBoxBusquedaRapida.TabIndex = 1
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
         '
@@ -173,7 +177,11 @@ Partial Class Catalogo_Vendedores
         '
         'gBoxInformacion
         '
-        Me.gBoxInformacion.Controls.Add(Me.LblNombreCategoria)
+        Me.gBoxInformacion.Controls.Add(Me.lblTipoCategoria)
+        Me.gBoxInformacion.Controls.Add(Me.chkCrearCategoria)
+        Me.gBoxInformacion.Controls.Add(Me.txtTipoCategoria)
+        Me.gBoxInformacion.Controls.Add(Me.lblDisplayTipoCategoria)
+        Me.gBoxInformacion.Controls.Add(Me.lblCategoria)
         Me.gBoxInformacion.Controls.Add(Me.txtCodigoCategoria)
         Me.gBoxInformacion.Controls.Add(Me.lblCodigoCategoria)
         Me.gBoxInformacion.Controls.Add(Me.Label2)
@@ -186,25 +194,65 @@ Partial Class Catalogo_Vendedores
         Me.gBoxInformacion.Location = New System.Drawing.Point(12, 28)
         Me.gBoxInformacion.Name = "gBoxInformacion"
         Me.gBoxInformacion.Size = New System.Drawing.Size(310, 515)
-        Me.gBoxInformacion.TabIndex = 7
+        Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
         '
-        'LblNombreCategoria
+        'lblTipoCategoria
         '
-        Me.LblNombreCategoria.AutoSize = True
-        Me.LblNombreCategoria.Location = New System.Drawing.Point(73, 132)
-        Me.LblNombreCategoria.Name = "LblNombreCategoria"
-        Me.LblNombreCategoria.Size = New System.Drawing.Size(13, 13)
-        Me.LblNombreCategoria.TabIndex = 94
-        Me.LblNombreCategoria.Text = "_"
+        Me.lblTipoCategoria.AutoSize = True
+        Me.lblTipoCategoria.Location = New System.Drawing.Point(104, 203)
+        Me.lblTipoCategoria.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.lblTipoCategoria.Name = "lblTipoCategoria"
+        Me.lblTipoCategoria.Size = New System.Drawing.Size(13, 13)
+        Me.lblTipoCategoria.TabIndex = 100
+        Me.lblTipoCategoria.Text = "_"
+        Me.lblTipoCategoria.Visible = False
+        '
+        'chkCrearCategoria
+        '
+        Me.chkCrearCategoria.AutoSize = True
+        Me.chkCrearCategoria.Location = New System.Drawing.Point(9, 157)
+        Me.chkCrearCategoria.Name = "chkCrearCategoria"
+        Me.chkCrearCategoria.Size = New System.Drawing.Size(191, 17)
+        Me.chkCrearCategoria.TabIndex = 4
+        Me.chkCrearCategoria.Text = "Crear categoria automáticamente ?"
+        Me.chkCrearCategoria.UseVisualStyleBackColor = True
+        '
+        'txtTipoCategoria
+        '
+        Me.txtTipoCategoria.Location = New System.Drawing.Point(104, 180)
+        Me.txtTipoCategoria.MaxLength = 30
+        Me.txtTipoCategoria.Name = "txtTipoCategoria"
+        Me.txtTipoCategoria.Size = New System.Drawing.Size(84, 20)
+        Me.txtTipoCategoria.TabIndex = 5
+        Me.txtTipoCategoria.Visible = False
+        '
+        'lblDisplayTipoCategoria
+        '
+        Me.lblDisplayTipoCategoria.AutoSize = True
+        Me.lblDisplayTipoCategoria.Location = New System.Drawing.Point(6, 182)
+        Me.lblDisplayTipoCategoria.Name = "lblDisplayTipoCategoria"
+        Me.lblDisplayTipoCategoria.Size = New System.Drawing.Size(96, 13)
+        Me.lblDisplayTipoCategoria.TabIndex = 99
+        Me.lblDisplayTipoCategoria.Text = "Tipo de categoria :"
+        Me.lblDisplayTipoCategoria.Visible = False
+        '
+        'lblCategoria
+        '
+        Me.lblCategoria.AutoSize = True
+        Me.lblCategoria.Location = New System.Drawing.Point(73, 132)
+        Me.lblCategoria.Name = "lblCategoria"
+        Me.lblCategoria.Size = New System.Drawing.Size(13, 13)
+        Me.lblCategoria.TabIndex = 94
+        Me.lblCategoria.Text = "_"
         '
         'txtCodigoCategoria
         '
-        Me.txtCodigoCategoria.Location = New System.Drawing.Point(70, 109)
+        Me.txtCodigoCategoria.Location = New System.Drawing.Point(76, 109)
         Me.txtCodigoCategoria.Name = "txtCodigoCategoria"
         Me.txtCodigoCategoria.Size = New System.Drawing.Size(90, 20)
-        Me.txtCodigoCategoria.TabIndex = 93
+        Me.txtCodigoCategoria.TabIndex = 3
         '
         'lblCodigoCategoria
         '
@@ -258,7 +306,7 @@ Partial Class Catalogo_Vendedores
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(84, 21)
-        Me.CboEstatus.TabIndex = 12
+        Me.CboEstatus.TabIndex = 2
         '
         'LblDisplayCodCultivo
         '
@@ -332,5 +380,9 @@ Partial Class Catalogo_Vendedores
     Friend WithEvents Grid As System.Windows.Forms.DataGridView
     Friend WithEvents lblCodigoCategoria As System.Windows.Forms.Label
     Friend WithEvents txtCodigoCategoria As System.Windows.Forms.TextBox
-    Friend WithEvents LblNombreCategoria As System.Windows.Forms.Label
+    Friend WithEvents lblCategoria As System.Windows.Forms.Label
+    Friend WithEvents lblTipoCategoria As System.Windows.Forms.Label
+    Friend WithEvents chkCrearCategoria As System.Windows.Forms.CheckBox
+    Friend WithEvents txtTipoCategoria As System.Windows.Forms.TextBox
+    Friend WithEvents lblDisplayTipoCategoria As System.Windows.Forms.Label
 End Class

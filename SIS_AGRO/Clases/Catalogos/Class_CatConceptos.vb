@@ -138,6 +138,7 @@ Public Class Class_CatConceptos
 #Region "Métodos y procedimientos"
 
     Public Overrides Function Insertar() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -146,14 +147,15 @@ Public Class Class_CatConceptos
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_CONCEPTOS_GRABA"
 
-            sqlParametro = .Parameters.Add("@CODIGO_CONCEPTO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Concepto)
+            sqlParametro = .Parameters.Add("@CODIGO_CONCEPTO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Concepto) : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@NOMBRE_CONCEPTO", SqlDbType.NVarChar, 200) : sqlParametro.Value = Me._Nombre_Concepto.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "INSERTAR"
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                Insertar = True
+                Me._Codigo_Concepto = .Parameters("@CODIGO_CONCEPTO").Value.ToString
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "Insertar", ex)
             Finally
@@ -161,11 +163,12 @@ Public Class Class_CatConceptos
                 cmd.Dispose()
                 sqlParametro = Nothing
             End Try
-
         End With
-    End Function                          'Inserta un elemento al catálogo.
+        Return bResultado
+    End Function
 
     Public Overrides Function Actualizar() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -181,7 +184,7 @@ Public Class Class_CatConceptos
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                Actualizar = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
             Finally
@@ -189,11 +192,12 @@ Public Class Class_CatConceptos
                 cmd.Dispose()
                 sqlParametro = Nothing
             End Try
-
         End With
-    End Function                        'Actualiza un elemento del catálogo.
+        Return bResultado
+    End Function
 
     Public Overrides Function Consultar() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand("Select * from Cat_Conceptos Where Codigo_Concepto='" & Replace(Me._Codigo_Concepto, "'", "''") & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
@@ -207,7 +211,7 @@ Public Class Class_CatConceptos
                     Me._Codigo_Concepto = "" & dReader("CODIGO_CONCEPTO").ToString
                     Me._Nombre_Concepto = Trim("" & dReader("NOMBRE_CONCEPTO").ToString)
                     Me.Estatus = "" & dReader("ESTATUS").ToString
-                    Consultar = True
+                    bResultado = True
                 End If
                 dReader.Close()
             Catch ex As Exception
@@ -217,45 +221,45 @@ Public Class Class_CatConceptos
                 cmd.Dispose()
             End Try
         End With
-
-    End Function        'Consulta un elemento del catálogo.
+        Return bResultado
+    End Function
 
     Public Overrides Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dsCAT_Lineas As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
+        Dim da As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
         Try
-            dsCAT_Lineas.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
         Finally
-            dsCAT_Lineas.Dispose()
+            da.Dispose()
         End Try
         Return dTable
-    End Function    'Obtiene una lita completa de los elementos del catalogo en un datatable.
+    End Function
 
     Public Function ObtenerElementosParaReportes() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dsCAT_Lineas As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
+        Dim da As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
         Try
-            dsCAT_Lineas.Fill(dTable)
+            da.Fill(dTable)
             dTable.Rows.Add("-1", "TODOS")
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementosParaReportes", ex)
         Finally
-            dsCAT_Lineas.Dispose()
+            da.Dispose()
         End Try
         Return dTable
     End Function
 
     Public Function ObtenerElementosFiltro(ByVal Filtro As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dA As New SqlDataAdapter("SELECT CODIGO_CONCEPTO, NOMBRE_CONCEPTO FROM CAT_CONCEPTOS WHERE NOMBRE_CONCEPTO LIKE '" & Filtro.ToString & "%' ORDER BY NOMBRE_CONCEPTO", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_CONCEPTO, NOMBRE_CONCEPTO FROM CAT_CONCEPTOS WHERE NOMBRE_CONCEPTO LIKE '" & Filtro.ToString & "%' ORDER BY NOMBRE_CONCEPTO", Me._Conexion)
         Try
-            dA.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementosFiltro", ex)
         Finally
-            dA.Dispose()
+            da.Dispose()
         End Try
         Return dTable
     End Function
@@ -306,39 +310,10 @@ Public Class Class_CatConceptos
             Dim sql As New Class_find("SELECT MAX(CODIGO_CONCEPTO) FROM CAT_CONCEPTOS")
             Resultado = CType(sql.Result1, Integer) + 1
         Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcion", ex)
+            HandleError(Me.Nombre_Catalogo, "CodigoSiguiente", ex)
         End Try
         Return Resultado
     End Function
-#End Region
-
-#Region "Eventos de objetos"
-
-
-#Region "Eventos de la lista de elementos"
-
-#End Region
-
-#Region " Eventos de TxtFiltro"
-
-#End Region
-
-#Region "Eventos Genericos"
-
-#End Region
-
-
-#Region "Keydown específicos"
-
-
-#End Region
-
-#Region "Validating específicos"
-
-#End Region
-
-
-
 #End Region
 
 End Class

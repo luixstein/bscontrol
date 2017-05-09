@@ -7,14 +7,16 @@ Public Class Class_CatFamilias
 #Region "Campos"
 
 #Region "Campos de la tabla"
-    Private _Codigo_Familia As String
-    Private _Nombre_Familia As String
+    Private _CODIGO_FAMILIA As String
+    Private _NOMBRE_FAMILIA As String
     'Private _Codigo_Concepto_Costos_Produccion As String
     Private _CODIGO_CATEGORIA As String
 #End Region
 
 #Region "Campos ligados a la tabla"
     Private _Existe As Boolean 'lectura
+    Private _GENERAR_CATEGORIA As Boolean
+    Private _CODIGO_TIPO_CATEGORIA As String
 #End Region
 
 #Region "Campos públicos"
@@ -41,19 +43,19 @@ Public Class Class_CatFamilias
 #Region "Propiedades Campos de la tabla"
     Public Property Codigo_Familia() As String
         Get
-            Return Me._Codigo_Familia
+            Return Me._CODIGO_FAMILIA
         End Get
         Set(ByVal Value As String)
-            Me._Codigo_Familia = Value
+            Me._CODIGO_FAMILIA = Value
         End Set
     End Property
 
     Public Property Nombre_Familia() As String
         Get
-            Return Me._Nombre_Familia
+            Return Me._NOMBRE_FAMILIA
         End Get
         Set(ByVal Value As String)
-            Me._Nombre_Familia = Value
+            Me._NOMBRE_FAMILIA = Value
         End Set
     End Property
 
@@ -77,7 +79,17 @@ Public Class Class_CatFamilias
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
+    Public WriteOnly Property GENERAR_CATEGORIA() As Boolean
+        Set(ByVal Value As Boolean)
+            Me._GENERAR_CATEGORIA = Value
+        End Set
+    End Property
 
+    Public WriteOnly Property CODIGO_TIPO_CATEGORIA() As String
+        Set(ByVal Value As String)
+            Me._CODIGO_TIPO_CATEGORIA = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades públicos"
@@ -158,12 +170,15 @@ Public Class Class_CatFamilias
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_FAMILIAS_GRABA"
 
-            sqlParametro = .Parameters.Add("@CODIGO_FAMILIA", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._Codigo_Familia
-            sqlParametro = .Parameters.Add("@NOMBRE_FAMILIA", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._Nombre_Familia.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_FAMILIA", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_FAMILIA
+            sqlParametro = .Parameters.Add("@NOMBRE_FAMILIA", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._NOMBRE_FAMILIA.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "1"
             'sqlParametro = .Parameters.Add("@CODIGO_CONCEPTO_COSTO_PRODUCCION", SqlDbType.NVarChar, 4) : sqlParametro.Value = ""
-            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CATEGORIA
+            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_CATEGORIA))
+            sqlParametro = .Parameters.Add("@GENERAR_CATEGORIA", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._GENERAR_CATEGORIA)
+            sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_TIPO_CATEGORIA))
+            sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "1"
+
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
@@ -189,12 +204,14 @@ Public Class Class_CatFamilias
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_FAMILIAS_GRABA"
 
-            sqlParametro = .Parameters.Add("@CODIGO_FAMILIA", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._Codigo_Familia
-            sqlParametro = .Parameters.Add("@NOMBRE_FAMILIA", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._Nombre_Familia.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_FAMILIA", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_FAMILIA
+            sqlParametro = .Parameters.Add("@NOMBRE_FAMILIA", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._NOMBRE_FAMILIA.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "0"
             'sqlParametro = .Parameters.Add("@CODIGO_CONCEPTO_COSTO_PRODUCCION", SqlDbType.NVarChar, 4) : sqlParametro.Value = ""
             sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CATEGORIA
+            sqlParametro = .Parameters.Add("@GENERAR_CATEGORIA", SqlDbType.Char, 1) : sqlParametro.Value = "0"
+            sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = 0
+            sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "0"
 
             Try
                 Me._Conexion.Open()
@@ -213,7 +230,7 @@ Public Class Class_CatFamilias
 
     Public Overrides Function Consultar() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand("Select * from CAT_FAMILIAS Where CODIGO_FAMILIA=" & Replace(Me._Codigo_Familia, "'", "''") & "", Me._Conexion)
+        Dim cmd As New SqlCommand("SELECT * FROM CAT_FAMILIAS WHERE CODIGO_FAMILIA='" & sReplace(Me._CODIGO_FAMILIA) & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -223,11 +240,11 @@ Public Class Class_CatFamilias
                 dReader = .ExecuteReader()
 
                 If dReader.Read Then
-                    Me._Codigo_Familia = "" & dReader("CODIGO_FAMILIA")
-                    Me._Nombre_Familia = Trim("" & dReader("NOMBRE_FAMILIA").ToString)
+                    Me._CODIGO_FAMILIA = "" & dReader("CODIGO_FAMILIA")
+                    Me._NOMBRE_FAMILIA = Trim("" & dReader("NOMBRE_FAMILIA").ToString)
                     Me.Estatus = "" & dReader("ESTATUS").ToString
                     'Me._Codigo_Concepto_Costos_Produccion = "" & dReader("CODIGO_CONCEPTO_COSTO_PRODUCCION")
-                    Me._Codigo_Categoria = "" & dReader("CODIGO_CATEGORIA")
+                    Me._CODIGO_CATEGORIA = "" & dReader("CODIGO_CATEGORIA")
                     bResultado = True
                 End If
                 dReader.Close()
@@ -243,7 +260,7 @@ Public Class Class_CatFamilias
 
     Public Overrides Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("Select CODIGO_FAMILIA,NOMBRE_FAMILIA from CAT_FAMILIAS order by NOMBRE_FAMILIA", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_FAMILIA,NOMBRE_FAMILIA FROM CAT_FAMILIAS ORDER BY NOMBRE_FAMILIA", Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
@@ -256,7 +273,7 @@ Public Class Class_CatFamilias
 
     Public Function ObtenerElementosParaReportes() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("Select CODIGO_FAMILIA,NOMBRE_FAMILIA from CAT_FAMILIAS order by NOMBRE_FAMILIA", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_FAMILIA,NOMBRE_FAMILIA FROM CAT_FAMILIAS ORDER BY NOMBRE_FAMILIA", Me._Conexion)
         Try
             da.Fill(dTable)
             dTable.Rows.Add("T", "TODAS")
@@ -270,7 +287,7 @@ Public Class Class_CatFamilias
 
     Public Function ObtenerElementosFiltro(ByVal Filtro As String, ByVal Estatus As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dA As New SqlDataAdapter("SELECT CODIGO_FAMILIA,NOMBRE_FAMILIA from CAT_FAMILIAS WHERE NOMBRE_FAMILIA LIKE '" & Filtro.ToString & "%' AND ESTATUS ='" & Estatus & "' ORDER BY NOMBRE_FAMILIA", Me._Conexion)
+        Dim dA As New SqlDataAdapter("SELECT CODIGO_FAMILIA,NOMBRE_FAMILIA FROM CAT_FAMILIAS WHERE NOMBRE_FAMILIA LIKE '" & Filtro.ToString & "%' AND ESTATUS ='" & Estatus & "' ORDER BY NOMBRE_FAMILIA", Me._Conexion)
         Try
             dA.Fill(dTable)
         Catch ex As Exception

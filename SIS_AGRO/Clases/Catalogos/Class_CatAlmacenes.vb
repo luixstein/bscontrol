@@ -7,15 +7,16 @@ Public Class Class_CatAlmacenes
 #Region "Campos"
 
 #Region "Campos de la tabla"
-    Private _Codigo_Almacen As String
-    Private _Nombre_Almacen As String
-    Private _Cuenta_Contable As String
-    Private _Codigo_zona As String
-    Private _Codigo_Categoria As String
+    Private _CODIGO_ALMACEN As String
+    Private _NOMBRE_ALMACEN As String
+    Private _CUENTA_CONTABLE As String
+    Private _CODIGO_ZONA As String
+    Private _CODIGO_CATEGORIA As String
 #End Region
 
 #Region "Campos ligados a la tabla"
-
+    Private _GENERAR_CATEGORIA As Boolean
+    Private _CODIGO_TIPO_CATEGORIA As String
 #End Region
 
 #Region "Campos públicos"
@@ -30,7 +31,7 @@ Public Class Class_CatAlmacenes
     Private _Nombre_Catalogo As String
     Private _Nombre_Reporte As String
     Private _Conexion As SqlConnection
-    Private _QuerySelect As String
+    Private _QuerySELECT As String
     Private _QueryOrder As String
 
 #End Region
@@ -40,51 +41,61 @@ Public Class Class_CatAlmacenes
 #Region "Propiedades"
 
 #Region "Propiedades Campos de la tabla"
-    Public Property Codigo_Almacen() As String
+    Public Property CODIGO_ALMACEN() As String
         Get
-            Return Me._Codigo_Almacen
+            Return Me._CODIGO_ALMACEN
         End Get
         Set(ByVal Value As String)
-            Me._Codigo_Almacen = Value
+            Me._CODIGO_ALMACEN = Value
         End Set
     End Property
 
-    Public Property Nombre_Almacen() As String
+    Public Property NOMBRE_ALMACEN() As String
         Get
-            Return Me._Nombre_Almacen
+            Return Me._NOMBRE_ALMACEN
         End Get
         Set(ByVal Value As String)
-            Me._Nombre_Almacen = Value
+            Me._NOMBRE_ALMACEN = Value
         End Set
     End Property
 
-    Public ReadOnly Property Cuenta_Contable() As String
+    Public ReadOnly Property CUENTA_CONTABLE() As String
         Get
-            Return Me._Cuenta_Contable
+            Return Me._CUENTA_CONTABLE
         End Get
     End Property
 
     Public Property CODIGO_ZONA() As String
         Get
-            Return Me._Codigo_zona
+            Return Me._CODIGO_ZONA
         End Get
         Set(ByVal Value As String)
-            Me._Codigo_zona = Value
+            Me._CODIGO_ZONA = Value
         End Set
     End Property
 
     Public Property CODIGO_CATEGORIA() As String
         Get
-            Return Me._Codigo_Categoria
+            Return Me._CODIGO_CATEGORIA
         End Get
         Set(ByVal Value As String)
-            Me._Codigo_Categoria = Value
+            Me._CODIGO_CATEGORIA = Value
         End Set
     End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
+    Public WriteOnly Property GENERAR_CATEGORIA() As Boolean
+        Set(ByVal Value As Boolean)
+            Me._GENERAR_CATEGORIA = Value
+        End Set
+    End Property
 
+    Public WriteOnly Property CODIGO_TIPO_CATEGORIA() As String
+        Set(ByVal Value As String)
+            Me._CODIGO_TIPO_CATEGORIA = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades públicos"
@@ -119,18 +130,18 @@ Public Class Class_CatAlmacenes
 #Region "Constructor y destructor"
 
     Public Sub New()
-        Me._Nombre_Catalogo = "Cat_Almacenes"
+        Me._Nombre_Catalogo = "CAT_ALMACENES"
         Me._Nombre_Reporte = "RPT_CATALOGO_ALMACENES"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "Select Codigo_Almacen,Nombre_Almacen From Cat_Almacenes"
-        Me._QueryOrder = " Order by Nombre_Almacen"
+        Me._QuerySELECT = "SELECT CODIGO_ALMACEN,NOMBRE_ALMACEN FROM CAT_ALMACENES"
+        Me._QueryOrder = " Order by NOMBRE_ALMACEN"
     End Sub
 
     Public Sub New(ByVal sAlmacen As String)
         Me.New()
         Try
-            Me.Codigo_Almacen = sAlmacen
+            Me.CODIGO_ALMACEN = sAlmacen
             If Me.Consultar = False Then
                 Throw New Exception("El almacén no existe.")
             End If
@@ -161,12 +172,14 @@ Public Class Class_CatAlmacenes
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_ALMACENES_GRABA"
 
-            sqlParametro = .Parameters.Add("@Codigo_Almacen", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._Codigo_Almacen.ToUpper
-            sqlParametro = .Parameters.Add("@Nombre_Almacen", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._Nombre_Almacen.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_ALMACEN.ToUpper
+            sqlParametro = .Parameters.Add("@NOMBRE_ALMACEN", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._NOMBRE_ALMACEN.ToString.ToUpper
             sqlParametro = .Parameters.Add("@Estatus", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.Char, 1) : sqlParametro.Value = Usuario.Codigo_Plaza
-            sqlParametro = .Parameters.Add("@CODIGO_ZONA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._Codigo_zona
-            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Categoria)
+            sqlParametro = .Parameters.Add("@CODIGO_ZONA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ZONA
+            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_CATEGORIA))
+            sqlParametro = .Parameters.Add("@GENERAR_CATEGORIA", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._GENERAR_CATEGORIA)
+            sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_TIPO_CATEGORIA))
             sqlParametro = .Parameters.Add("@Agregar", SqlDbType.Char, 1) : sqlParametro.Value = "1"
 
             Try
@@ -194,13 +207,15 @@ Public Class Class_CatAlmacenes
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_ALMACENES_GRABA"
 
-            sqlParametro = .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._Codigo_Almacen.ToUpper
-            sqlParametro = .Parameters.Add("@NOMBRE_ALMACEN", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._Nombre_Almacen.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_ALMACEN.ToUpper
+            sqlParametro = .Parameters.Add("@NOMBRE_ALMACEN", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._NOMBRE_ALMACEN.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToString.ToUpper
-            'sqlParametro = .Parameters.Add("@CUENTA_CONTABLE", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._Cuenta_Contable
+            'sqlParametro = .Parameters.Add("@CUENTA_CONTABLE", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.Char, 1) : sqlParametro.Value = Usuario.Codigo_Plaza
-            sqlParametro = .Parameters.Add("@CODIGO_ZONA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._Codigo_zona
-            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Categoria)
+            sqlParametro = .Parameters.Add("@CODIGO_ZONA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ZONA
+            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CATEGORIA
+            sqlParametro = .Parameters.Add("@GENERAR_CATEGORIA", SqlDbType.Char, 1) : sqlParametro.Value = "0"
+            sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = 0
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "0"
 
             Try
@@ -220,7 +235,7 @@ Public Class Class_CatAlmacenes
 
     Public Overrides Function Consultar() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand("Select * from Cat_Almacenes Where Codigo_Almacen='" & Replace(Me._Codigo_Almacen, "'", "''") & "'", Me._Conexion)
+        Dim cmd As New SqlCommand("SELECT * FROM CAT_ALMACENES WHERE CODIGO_ALMACEN='" & Replace(Me._CODIGO_ALMACEN, "'", "''") & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -230,12 +245,12 @@ Public Class Class_CatAlmacenes
                 dReader = .ExecuteReader()
 
                 If dReader.Read Then
-                    Me._Codigo_Almacen = "" & dReader("CODIGO_ALMACEN").ToString
-                    Me._Nombre_Almacen = Trim("" & dReader("NOMBRE_ALMACEN").ToString)
-                    Me._Cuenta_Contable = Trim("" & dReader("CUENTA_CONTABLE").ToString)
+                    Me._CODIGO_ALMACEN = "" & dReader("CODIGO_ALMACEN").ToString
+                    Me._NOMBRE_ALMACEN = Trim("" & dReader("NOMBRE_ALMACEN").ToString)
+                    Me._CUENTA_CONTABLE = Trim("" & dReader("CUENTA_CONTABLE").ToString)
                     Me.Estatus = "" & dReader("ESTATUS").ToString
-                    Me._Codigo_zona = "" & dReader("CODIGO_ZONA").ToString
-                    Me._Codigo_Categoria = "" & dReader("CODIGO_CATEGORIA").ToString
+                    Me._CODIGO_ZONA = "" & dReader("CODIGO_ZONA").ToString
+                    Me._CODIGO_CATEGORIA = "" & dReader("CODIGO_CATEGORIA").ToString
                     bResultado = True
                 End If
                 dReader.Close()
@@ -251,24 +266,24 @@ Public Class Class_CatAlmacenes
 
     Public Overrides Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dsCat_Almacenes As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
+        Dim dsCAT_ALMACENES As New SqlDataAdapter(Me._QuerySELECT & Me._QueryOrder, Me._Conexion)
         Try
-            dsCat_Almacenes.Fill(dTable)
+            dsCAT_ALMACENES.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
         Finally
-            dsCat_Almacenes.Dispose()
+            dsCAT_ALMACENES.Dispose()
         End Try
         Return dTable
     End Function
 
     Public Function ObtenerAlmacenes() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("SELECT CODIGO_ALMACEN,NOMBRE_ALMACEN FROM CAT_ALMACENES Where ESTATUS='A'", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_ALMACEN,NOMBRE_ALMACEN FROM CAT_ALMACENES WHERE ESTATUS='A'", Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
+            HandleError(Me._Nombre_Catalogo, "ObtenerAlmacenes", ex)
         Finally
             da.Dispose()
         End Try
@@ -277,12 +292,12 @@ Public Class Class_CatAlmacenes
 
     Public Function ObtenerAlmacenesParaReportes() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("SELECT CODIGO_ALMACEN,NOMBRE_ALMACEN FROM CAT_ALMACENES Where ESTATUS='A'", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_ALMACEN,NOMBRE_ALMACEN FROM CAT_ALMACENES WHERE ESTATUS='A'", Me._Conexion)
         Try
             da.Fill(dTable)
             dTable.Rows.Add("T", "TODOS")
         Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
+            HandleError(Me._Nombre_Catalogo, "ObtenerAlmacenesParaReportes", ex)
         Finally
             da.Dispose()
         End Try
@@ -290,7 +305,7 @@ Public Class Class_CatAlmacenes
     End Function
 
     Public Sub ObtenerAlmacenesUsuarios(ByRef LST As ListBox)
-        Dim cmd As New SqlCommand("SELECT CODIGO_ALMACEN,NOMBRE_ALMACEN FROM VW_CAT_REL_ALMACENES_USUARIOS Where CODIGO_USUARIO='" & Replace(Usuario.Codigo_Usuario, "'", "''") & "'", Me._Conexion)
+        Dim cmd As New SqlCommand("SELECT CODIGO_ALMACEN,NOMBRE_ALMACEN FROM VW_CAT_REL_ALMACENES_USUARIOS WHERE CODIGO_USUARIO='" & Replace(Usuario.Codigo_Usuario, "'", "''") & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -306,7 +321,7 @@ Public Class Class_CatAlmacenes
                 End If
                 dReader.Close()
             Catch ex As Exception
-                HandleError(Me.Nombre_Catalogo, "Obtener Almacenes", ex)
+                HandleError(Me.Nombre_Catalogo, "ObtenerAlmacenesUsuarios", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -331,10 +346,10 @@ Public Class Class_CatAlmacenes
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de Metodos de Almacenes por codigo."
-        f.sCampo = "Codigo_Almacen"
-        f.sOrder = "Nombre_Almacen"
-        f.sTable = "Cat_Almacenes"
-        f.sQl = "Select Codigo_Almacen,Nombre_Almacen From Cat_Almacenes Where 1=1 And"
+        f.sCampo = "CODIGO_ALMACEN"
+        f.sOrder = "NOMBRE_ALMACEN"
+        f.sTable = "CAT_ALMACENES"
+        f.sQl = "SELECT CODIGO_ALMACEN,NOMBRE_ALMACEN FROM CAT_ALMACENES WHERE 1=1 And"
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -351,10 +366,10 @@ Public Class Class_CatAlmacenes
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de Almacenes por Descripción."
-        f.sCampo = "Nombre_Almacen"
-        f.sOrder = "Nombre_Almacen"
-        f.sTable = "Cat_Almacenes"
-        f.sQl = "Select Codigo_Almacen,Nombre_Almacen From Cat_Almacenes Where 1=1 And"
+        f.sCampo = "NOMBRE_ALMACEN"
+        f.sOrder = "NOMBRE_ALMACEN"
+        f.sTable = "CAT_ALMACENES"
+        f.sQl = "SELECT CODIGO_ALMACEN,NOMBRE_ALMACEN FROM CAT_ALMACENES WHERE 1=1 And"
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -376,7 +391,7 @@ Public Class Class_CatAlmacenes
             sAlmacen = "0000" + iAlmacen.ToString
             Resultado = sAlmacen.Substring(Len(sAlmacen) - 4)
         Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcion", ex)
+            HandleError(Me.Nombre_Catalogo, "CodigoSiguiente", ex)
         End Try
         Return Resultado
     End Function

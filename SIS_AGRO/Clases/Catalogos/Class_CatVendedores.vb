@@ -7,15 +7,16 @@ Public Class Class_CatVendedores
 #Region "Campos"
 
 #Region "Campos de la tabla"
-    Private _Codigo_Vendedor As Integer
-    Private _Nombre_Vendedor As String
+    Private _CODIGO_VENDEDOR As Integer
+    Private _NOMBRE_VENDEDOR As String
     Private _Estatus As String
-    Private _Codigo_Categoria As String
+    Private _CODIGO_CATEGORIA As String
     Private _Agregar As String
 #End Region
 
 #Region "Campos ligados a la tabla"
-
+    Private _GENERAR_CATEGORIA As Boolean
+    Private _CODIGO_TIPO_CATEGORIA As String
 #End Region
 
 #Region "Campos públicos"
@@ -39,30 +40,30 @@ Public Class Class_CatVendedores
 #Region "Propiedades"
 
 #Region "Propiedades Campos de la tabla"
-    Public Property Codigo_Vendedor() As Integer
+    Public Property CODIGO_VENDEDOR() As Integer
         Get
-            Return Me._Codigo_Vendedor
+            Return Me._CODIGO_VENDEDOR
         End Get
         Set(ByVal Value As Integer)
-            Me._Codigo_Vendedor = Value
+            Me._CODIGO_VENDEDOR = Value
         End Set
     End Property
 
-    Public Property Nombre_Vendedor() As String
+    Public Property NOMBRE_VENDEDOR() As String
         Get
-            Return Me._Nombre_Vendedor
+            Return Me._NOMBRE_VENDEDOR
         End Get
         Set(ByVal Value As String)
-            Me._Nombre_Vendedor = Value
+            Me._NOMBRE_VENDEDOR = Value
         End Set
     End Property
 
-    Public Property Codigo_Categoria() As String
+    Public Property CODIGO_CATEGORIA() As String
         Get
-            Return Me._Codigo_Categoria
+            Return Me._CODIGO_CATEGORIA
         End Get
         Set(ByVal Value As String)
-            Me._Codigo_Categoria = Value
+            Me._CODIGO_CATEGORIA = Value
         End Set
     End Property
 
@@ -78,7 +79,17 @@ Public Class Class_CatVendedores
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
+    Public WriteOnly Property GENERAR_CATEGORIA() As Boolean
+        Set(ByVal Value As Boolean)
+            Me._GENERAR_CATEGORIA = Value
+        End Set
+    End Property
 
+    Public WriteOnly Property CODIGO_TIPO_CATEGORIA() As String
+        Set(ByVal Value As String)
+            Me._CODIGO_TIPO_CATEGORIA = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades públicos"
@@ -88,6 +99,7 @@ Public Class Class_CatVendedores
 #Region "Propiedades de campos privados"
 
 #End Region
+
 #Region "Propiedades de campos de sistema"
 
     Public Overrides ReadOnly Property Nombre_Catalogo() As String
@@ -119,13 +131,13 @@ Public Class Class_CatVendedores
 #Region "Constructor y destructor"
 
     Public Sub New()
-        Me._Nombre_Catalogo = "Cat_Vendedores"
-        Me._Nombre_Reporte = "RPT_Cat_Vendedores.rpt"
+        Me._Nombre_Catalogo = "CAT_VENDEDORES"
+        Me._Nombre_Reporte = "RPT_CAT_VENDEDORES.rpt"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "Select codigo_Vendedor,Nombre_Vendedor From Cat_Vendedores"
-        Me._QueryOrder = " Order by Nombre_Vendedor"
-    End Sub                                                         'Inicializa al objeto.
+        Me._QuerySelect = "Select CODIGO_VENDEDOR,NOMBRE_VENDEDOR From CAT_VENDEDORES"
+        Me._QueryOrder = " Order by NOMBRE_VENDEDOR"
+    End Sub
 
     Protected Overrides Sub Finalize()
         'Me._Conexion.Dispose()
@@ -134,8 +146,8 @@ Public Class Class_CatVendedores
 #End Region
 
 #Region "Métodos y procedimientos"
-
-    Public Overrides Function Actualizar() As Boolean
+    Public Overrides Function Insertar() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -144,16 +156,18 @@ Public Class Class_CatVendedores
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_VENDEDORES_GRABA"
 
-            sqlParametro = .Parameters.Add("@codigo_Vendedor", SqlDbType.SmallInt, 2) : sqlParametro.Value = Me._Codigo_Vendedor
-            sqlParametro = .Parameters.Add("@Nombre_Vendedor", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._Nombre_Vendedor.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_VENDEDOR", SqlDbType.SmallInt, 2) : sqlParametro.Value = Me._CODIGO_VENDEDOR
+            sqlParametro = .Parameters.Add("@NOMBRE_VENDEDOR", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_VENDEDOR.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._Estatus.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Categoria)
+            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_CATEGORIA))
+            sqlParametro = .Parameters.Add("@GENERAR_CATEGORIA", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._GENERAR_CATEGORIA)
+            sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_TIPO_CATEGORIA))
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._Agregar
 
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                Actualizar = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
             Finally
@@ -161,12 +175,46 @@ Public Class Class_CatVendedores
                 cmd.Dispose()
                 sqlParametro = Nothing
             End Try
-
         End With
-    End Function                        'Actualiza un elemento del catálogo.
+        Return bResultado
+    End Function
+
+    Public Overrides Function Actualizar() As Boolean
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_CAT_VENDEDORES_GRABA"
+
+            sqlParametro = .Parameters.Add("@CODIGO_VENDEDOR", SqlDbType.SmallInt, 2) : sqlParametro.Value = Me._CODIGO_VENDEDOR
+            sqlParametro = .Parameters.Add("@NOMBRE_VENDEDOR", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_VENDEDOR.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._Estatus.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CATEGORIA
+            sqlParametro = .Parameters.Add("@GENERAR_CATEGORIA", SqlDbType.Char, 1) : sqlParametro.Value = "0"
+            sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = 0
+            sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._Agregar
+
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
+    End Function
 
     Public Overrides Function Consultar() As Boolean
-        Dim cmd As New SqlCommand("Select * from Cat_Vendedores Where CODIGO_Vendedor=" & Replace(Me._Codigo_Vendedor, "'", "''") & "", Me._Conexion)
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand("SELECT * FROM CAT_VENDEDORES WHERE CODIGO_VENDEDOR=" & Replace(Me._CODIGO_VENDEDOR, "'", "''") & "", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -176,11 +224,11 @@ Public Class Class_CatVendedores
                 dReader = .ExecuteReader()
 
                 If dReader.Read Then
-                    Me._Codigo_Vendedor = "" & dReader("codigo_Vendedor")
-                    Me._Nombre_Vendedor = Trim("" & dReader("Nombre_Vendedor").ToString)
+                    Me._CODIGO_VENDEDOR = "" & dReader("CODIGO_VENDEDOR")
+                    Me._NOMBRE_VENDEDOR = Trim("" & dReader("NOMBRE_VENDEDOR").ToString)
                     Me._Estatus = "" & dReader("ESTATUS").ToString
-                    Me._Codigo_Categoria = "" & dReader("codigo_categoria")
-                    Consultar = True
+                    Me._CODIGO_CATEGORIA = "" & dReader("CODIGO_CATEGORIA")
+                    bResultado = True
                 End If
                 dReader.Close()
             Catch ex As Exception
@@ -190,61 +238,31 @@ Public Class Class_CatVendedores
                 cmd.Dispose()
             End Try
         End With
-
-    End Function        'Consulta un elemento del catálogo.
-
-    Public Overrides Function Insertar() As Boolean
-        Dim cmd As New SqlCommand
-        Dim sqlParametro As SqlParameter
-        With cmd
-            .Connection = Me._Conexion
-            .CommandTimeout = 0
-            .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_CAT_VENDEDORES_GRABA"
-
-            sqlParametro = .Parameters.Add("@codigo_Vendedor", SqlDbType.SmallInt, 2) : sqlParametro.Value = Me._Codigo_Vendedor
-            sqlParametro = .Parameters.Add("@Nombre_Vendedor", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._Nombre_Vendedor.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._Estatus.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Categoria)
-            sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._Agregar
-
-            Try
-                Me._Conexion.Open()
-                .ExecuteNonQuery()
-                Insertar = True
-            Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
-            Finally
-                Me._Conexion.Close()
-                cmd.Dispose()
-                sqlParametro = Nothing
-            End Try
-
-        End With
-    End Function                          'Inserta un elemento al catálogo.
+        Return bResultado
+    End Function
 
     Public Overrides Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dsCat_Vendedores As New SqlDataAdapter("Select codigo_Vendedor,Nombre_Vendedor from Cat_Vendedores order by Nombre_Vendedor", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_VENDEDOR,NOMBRE_VENDEDOR FROM CAT_VENDEDORES ORDER BY NOMBRE_VENDEDOR", Me._Conexion)
         Try
-            dsCat_Vendedores.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
         Finally
-            dsCat_Vendedores.Dispose()
+            da.Dispose()
         End Try
         Return dTable
-    End Function    'Obtiene una lita completa de los elementos del catalogo en un datatable.
+    End Function
 
     Public Function ObtenerElementosFiltro(ByVal Filtro As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dA As New SqlDataAdapter("SELECT CODIGO_VENDEDOR, NOMBRE_VENDEDOR FROM CAT_VENDEDORES WHERE NOMBRE_VENDEDOR LIKE '" & Filtro.ToString & "%' ORDER BY NOMBRE_VENDEDOR", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_VENDEDOR,NOMBRE_VENDEDOR FROM CAT_VENDEDORES WHERE NOMBRE_VENDEDOR LIKE '" & Filtro.ToString & "%' ORDER BY NOMBRE_VENDEDOR", Me._Conexion)
         Try
-            dA.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementosFiltro", ex)
         Finally
-            dA.Dispose()
+            da.Dispose()
         End Try
         Return dTable
     End Function
@@ -253,10 +271,10 @@ Public Class Class_CatVendedores
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de Metodos de Vendedores por codigo."
-        f.sCampo = "codigo_Vendedor"
-        f.sOrder = "Nombre_Vendedor"
-        f.sTable = "Cat_Vendedores"
-        f.sQl = "Select Id_Vendedor,Nombre_Vendedor From Cat_Vendedores Where 1=1 And"
+        f.sCampo = "CODIGO_VENDEDOR"
+        f.sOrder = "NOMBRE_VENDEDOR"
+        f.sTable = "CAT_VENDEDORES"
+        f.sQl = "SELECT Id_Vendedor,NOMBRE_VENDEDOR FROM CAT_VENDEDORES WHERE 1=1 AND"
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -273,10 +291,10 @@ Public Class Class_CatVendedores
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de Metodos de Vendedores por Descripción."
-        f.sCampo = "Nombre_Vendedor"
-        f.sOrder = "Nombre_Vendedor"
-        f.sTable = "Cat_Vendedores"
-        f.sQl = "Select CODIGO_VENDEDOR,Nombre_Vendedor From Cat_Vendedores Where 1=1 And"
+        f.sCampo = "NOMBRE_VENDEDOR"
+        f.sOrder = "NOMBRE_VENDEDOR"
+        f.sTable = "CAT_VENDEDORES"
+        f.sQl = "SELECT CODIGO_VENDEDOR,NOMBRE_VENDEDOR FROM CAT_VENDEDORES WHERE 1=1 AND"
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -291,9 +309,13 @@ Public Class Class_CatVendedores
 
     Public Function codigoSiguiente() As Integer
         Dim iCodigo As Integer
-        Dim sql As New Class_find("SELECT ISNULL(MAX(CODIGO_VENDEDOR),'') FROM CAT_VENDEDORES")
+        Try
+            Dim sql As New Class_find("SELECT ISNULL(MAX(CODIGO_VENDEDOR),0) FROM CAT_VENDEDORES")
 
-        iCodigo = CInt(sql.Result1) + 1
+            iCodigo = CInt(sql.Result1) + 1
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "codigoSiguiente", ex)
+        End Try
         Return iCodigo
     End Function
 #End Region
