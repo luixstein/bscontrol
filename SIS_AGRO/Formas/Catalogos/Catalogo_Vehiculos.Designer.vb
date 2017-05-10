@@ -40,9 +40,13 @@ Partial Class Catalogo_Vehiculos
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.lblTipoCategoria = New System.Windows.Forms.Label()
+        Me.chkCrearCategoria = New System.Windows.Forms.CheckBox()
+        Me.txtTipoCategoria = New System.Windows.Forms.TextBox()
+        Me.lblDisplayTipoCategoria = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.LblNombreCategoria = New System.Windows.Forms.Label()
-        Me.LblCategoria = New System.Windows.Forms.Label()
+        Me.lblCategoria = New System.Windows.Forms.Label()
+        Me.lblCodigoCategoria = New System.Windows.Forms.Label()
         Me.TxtCodigoCategoria = New System.Windows.Forms.TextBox()
         Me.CboEstatus = New System.Windows.Forms.ComboBox()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -65,8 +69,8 @@ Partial Class Catalogo_Vehiculos
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbEditar, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimirListado, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1004, 27)
-        Me.tsMenu.TabIndex = 28
+        Me.tsMenu.Size = New System.Drawing.Size(753, 27)
+        Me.tsMenu.TabIndex = 2
         Me.tsMenu.Text = "tsMenu"
         '
         'tsbNuevo
@@ -74,7 +78,7 @@ Partial Class Catalogo_Vehiculos
         Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
         Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbNuevo.Name = "tsbNuevo"
-        Me.tsbNuevo.Size = New System.Drawing.Size(76, 24)
+        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
         Me.tsbNuevo.Text = "&Nuevo"
         '
         'tsbEditar
@@ -82,7 +86,7 @@ Partial Class Catalogo_Vehiculos
         Me.tsbEditar.Image = CType(resources.GetObject("tsbEditar.Image"), System.Drawing.Image)
         Me.tsbEditar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbEditar.Name = "tsbEditar"
-        Me.tsbEditar.Size = New System.Drawing.Size(72, 24)
+        Me.tsbEditar.Size = New System.Drawing.Size(61, 24)
         Me.tsbEditar.Text = "&Editar"
         '
         'tsbGrabar
@@ -90,7 +94,7 @@ Partial Class Catalogo_Vehiculos
         Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
         Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbGrabar.Name = "tsbGrabar"
-        Me.tsbGrabar.Size = New System.Drawing.Size(78, 24)
+        Me.tsbGrabar.Size = New System.Drawing.Size(66, 24)
         Me.tsbGrabar.Text = "&Grabar"
         '
         'tsbCancelar
@@ -98,7 +102,7 @@ Partial Class Catalogo_Vehiculos
         Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
         Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbCancelar.Name = "tsbCancelar"
-        Me.tsbCancelar.Size = New System.Drawing.Size(90, 24)
+        Me.tsbCancelar.Size = New System.Drawing.Size(77, 24)
         Me.tsbCancelar.Text = "&Cancelar"
         '
         'tsbImprimirListado
@@ -106,7 +110,7 @@ Partial Class Catalogo_Vehiculos
         Me.tsbImprimirListado.Image = CType(resources.GetObject("tsbImprimirListado.Image"), System.Drawing.Image)
         Me.tsbImprimirListado.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbImprimirListado.Name = "tsbImprimirListado"
-        Me.tsbImprimirListado.Size = New System.Drawing.Size(139, 24)
+        Me.tsbImprimirListado.Size = New System.Drawing.Size(115, 24)
         Me.tsbImprimirListado.Text = "&Imprimir listado"
         '
         'tsbSalir
@@ -114,7 +118,7 @@ Partial Class Catalogo_Vehiculos
         Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
         Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
+        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
         Me.tsbSalir.Text = "&Salir"
         '
         'gBoxBusquedaRapida
@@ -123,22 +127,19 @@ Partial Class Catalogo_Vehiculos
         Me.gBoxBusquedaRapida.Controls.Add(Me.CboEstatusFiltro)
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
-        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(439, 34)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
+        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(329, 28)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
-        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(557, 395)
-        Me.gBoxBusquedaRapida.TabIndex = 26
+        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(418, 321)
+        Me.gBoxBusquedaRapida.TabIndex = 1
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(414, 24)
-        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label3.Location = New System.Drawing.Point(310, 20)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(60, 17)
+        Me.Label3.Size = New System.Drawing.Size(46, 13)
         Me.Label3.TabIndex = 97
         Me.Label3.Text = "Estado :"
         '
@@ -147,9 +148,10 @@ Partial Class Catalogo_Vehiculos
         Me.CboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatusFiltro.FormattingEnabled = True
         Me.CboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
-        Me.CboEstatusFiltro.Location = New System.Drawing.Point(481, 21)
+        Me.CboEstatusFiltro.Location = New System.Drawing.Point(361, 17)
+        Me.CboEstatusFiltro.Margin = New System.Windows.Forms.Padding(2)
         Me.CboEstatusFiltro.Name = "CboEstatusFiltro"
-        Me.CboEstatusFiltro.Size = New System.Drawing.Size(67, 24)
+        Me.CboEstatusFiltro.Size = New System.Drawing.Size(51, 21)
         Me.CboEstatusFiltro.TabIndex = 97
         '
         'Grid
@@ -159,52 +161,53 @@ Partial Class Catalogo_Vehiculos
         Me.Grid.AllowUserToResizeColumns = False
         Me.Grid.AllowUserToResizeRows = False
         Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Grid.Location = New System.Drawing.Point(8, 53)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
+        Me.Grid.Location = New System.Drawing.Point(6, 43)
         Me.Grid.Name = "Grid"
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
         Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(540, 250)
+        Me.Grid.Size = New System.Drawing.Size(405, 272)
         Me.Grid.TabIndex = 111
         '
         'txtFiltro
         '
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtFiltro.Location = New System.Drawing.Point(6, 19)
         Me.txtFiltro.Name = "txtFiltro"
-        Me.txtFiltro.Size = New System.Drawing.Size(398, 22)
+        Me.txtFiltro.Size = New System.Drawing.Size(300, 20)
         Me.txtFiltro.TabIndex = 0
         '
         'StatusStripEstado
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssLabel, Me.tssLabelEstado})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 325)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 356)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1004, 25)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(753, 22)
         Me.StatusStripEstado.TabIndex = 29
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
         'tssLabel
         '
         Me.tssLabel.Name = "tssLabel"
-        Me.tssLabel.Size = New System.Drawing.Size(61, 20)
+        Me.tssLabel.Size = New System.Drawing.Size(48, 17)
         Me.tssLabel.Text = "Estado :"
         '
         'tssLabelEstado
         '
         Me.tssLabelEstado.Name = "tssLabelEstado"
-        Me.tssLabelEstado.Size = New System.Drawing.Size(0, 20)
+        Me.tssLabelEstado.Size = New System.Drawing.Size(0, 17)
         '
         'gBoxInformacion
         '
+        Me.gBoxInformacion.Controls.Add(Me.lblTipoCategoria)
+        Me.gBoxInformacion.Controls.Add(Me.chkCrearCategoria)
+        Me.gBoxInformacion.Controls.Add(Me.txtTipoCategoria)
+        Me.gBoxInformacion.Controls.Add(Me.lblDisplayTipoCategoria)
         Me.gBoxInformacion.Controls.Add(Me.Label1)
-        Me.gBoxInformacion.Controls.Add(Me.LblNombreCategoria)
-        Me.gBoxInformacion.Controls.Add(Me.LblCategoria)
+        Me.gBoxInformacion.Controls.Add(Me.lblCategoria)
+        Me.gBoxInformacion.Controls.Add(Me.lblCodigoCategoria)
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigoCategoria)
         Me.gBoxInformacion.Controls.Add(Me.CboEstatus)
         Me.gBoxInformacion.Controls.Add(Me.Label2)
@@ -212,109 +215,139 @@ Partial Class Catalogo_Vehiculos
         Me.gBoxInformacion.Controls.Add(Me.TxtNombre)
         Me.gBoxInformacion.Controls.Add(Me.LblCodigo)
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigo)
-        Me.gBoxInformacion.Location = New System.Drawing.Point(16, 34)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
+        Me.gBoxInformacion.Location = New System.Drawing.Point(12, 28)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
-        Me.gBoxInformacion.Size = New System.Drawing.Size(413, 287)
-        Me.gBoxInformacion.TabIndex = 27
+        Me.gBoxInformacion.Size = New System.Drawing.Size(310, 321)
+        Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
+        '
+        'lblTipoCategoria
+        '
+        Me.lblTipoCategoria.AutoSize = True
+        Me.lblTipoCategoria.Location = New System.Drawing.Point(104, 179)
+        Me.lblTipoCategoria.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.lblTipoCategoria.Name = "lblTipoCategoria"
+        Me.lblTipoCategoria.Size = New System.Drawing.Size(13, 13)
+        Me.lblTipoCategoria.TabIndex = 100
+        Me.lblTipoCategoria.Text = "_"
+        Me.lblTipoCategoria.Visible = False
+        '
+        'chkCrearCategoria
+        '
+        Me.chkCrearCategoria.AutoSize = True
+        Me.chkCrearCategoria.Location = New System.Drawing.Point(9, 133)
+        Me.chkCrearCategoria.Name = "chkCrearCategoria"
+        Me.chkCrearCategoria.Size = New System.Drawing.Size(191, 17)
+        Me.chkCrearCategoria.TabIndex = 4
+        Me.chkCrearCategoria.Text = "Crear categoria automáticamente ?"
+        Me.chkCrearCategoria.UseVisualStyleBackColor = True
+        '
+        'txtTipoCategoria
+        '
+        Me.txtTipoCategoria.Location = New System.Drawing.Point(104, 156)
+        Me.txtTipoCategoria.MaxLength = 30
+        Me.txtTipoCategoria.Name = "txtTipoCategoria"
+        Me.txtTipoCategoria.Size = New System.Drawing.Size(84, 20)
+        Me.txtTipoCategoria.TabIndex = 5
+        Me.txtTipoCategoria.Visible = False
+        '
+        'lblDisplayTipoCategoria
+        '
+        Me.lblDisplayTipoCategoria.AutoSize = True
+        Me.lblDisplayTipoCategoria.Location = New System.Drawing.Point(6, 158)
+        Me.lblDisplayTipoCategoria.Name = "lblDisplayTipoCategoria"
+        Me.lblDisplayTipoCategoria.Size = New System.Drawing.Size(96, 13)
+        Me.lblDisplayTipoCategoria.TabIndex = 99
+        Me.lblDisplayTipoCategoria.Text = "Tipo de categoria :"
+        Me.lblDisplayTipoCategoria.Visible = False
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(8, 155)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Location = New System.Drawing.Point(6, 68)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(60, 17)
+        Me.Label1.Size = New System.Drawing.Size(48, 13)
         Me.Label1.TabIndex = 96
-        Me.Label1.Text = "Estado :"
+        Me.Label1.Text = "Estatus :"
         '
-        'LblNombreCategoria
+        'lblCategoria
         '
-        Me.LblNombreCategoria.AutoSize = True
-        Me.LblNombreCategoria.Location = New System.Drawing.Point(101, 119)
-        Me.LblNombreCategoria.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblNombreCategoria.Name = "LblNombreCategoria"
-        Me.LblNombreCategoria.Size = New System.Drawing.Size(16, 17)
-        Me.LblNombreCategoria.TabIndex = 3
-        Me.LblNombreCategoria.Text = "_"
+        Me.lblCategoria.AutoSize = True
+        Me.lblCategoria.Location = New System.Drawing.Point(76, 117)
+        Me.lblCategoria.Name = "lblCategoria"
+        Me.lblCategoria.Size = New System.Drawing.Size(13, 13)
+        Me.lblCategoria.TabIndex = 3
+        Me.lblCategoria.Text = "_"
         '
-        'LblCategoria
+        'lblCodigoCategoria
         '
-        Me.LblCategoria.AutoSize = True
-        Me.LblCategoria.Location = New System.Drawing.Point(8, 92)
-        Me.LblCategoria.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblCategoria.Name = "LblCategoria"
-        Me.LblCategoria.Size = New System.Drawing.Size(77, 17)
-        Me.LblCategoria.TabIndex = 94
-        Me.LblCategoria.Text = "Categoria :"
+        Me.lblCodigoCategoria.AutoSize = True
+        Me.lblCodigoCategoria.Location = New System.Drawing.Point(6, 95)
+        Me.lblCodigoCategoria.Name = "lblCodigoCategoria"
+        Me.lblCodigoCategoria.Size = New System.Drawing.Size(58, 13)
+        Me.lblCodigoCategoria.TabIndex = 94
+        Me.lblCodigoCategoria.Text = "Categoria :"
         '
         'TxtCodigoCategoria
         '
-        Me.TxtCodigoCategoria.Location = New System.Drawing.Point(103, 89)
-        Me.TxtCodigoCategoria.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtCodigoCategoria.Location = New System.Drawing.Point(77, 92)
         Me.TxtCodigoCategoria.MaxLength = 2
         Me.TxtCodigoCategoria.Name = "TxtCodigoCategoria"
-        Me.TxtCodigoCategoria.Size = New System.Drawing.Size(75, 22)
-        Me.TxtCodigoCategoria.TabIndex = 2
+        Me.TxtCodigoCategoria.Size = New System.Drawing.Size(57, 20)
+        Me.TxtCodigoCategoria.TabIndex = 3
         '
         'CboEstatus
         '
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
-        Me.CboEstatus.Location = New System.Drawing.Point(101, 152)
+        Me.CboEstatus.Location = New System.Drawing.Point(76, 66)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(2)
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(100, 24)
-        Me.CboEstatus.TabIndex = 4
+        Me.CboEstatus.Size = New System.Drawing.Size(76, 21)
+        Me.CboEstatus.TabIndex = 2
         '
         'Label2
         '
-        Me.Label2.Location = New System.Drawing.Point(161, -140)
-        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label2.Location = New System.Drawing.Point(121, -114)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(241, 16)
+        Me.Label2.Size = New System.Drawing.Size(181, 13)
         Me.Label2.TabIndex = 91
         Me.Label2.Text = ".."
         '
         'LblNombreVehiculo
         '
         Me.LblNombreVehiculo.AutoSize = True
-        Me.LblNombreVehiculo.Location = New System.Drawing.Point(8, 54)
-        Me.LblNombreVehiculo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNombreVehiculo.Location = New System.Drawing.Point(6, 44)
         Me.LblNombreVehiculo.Name = "LblNombreVehiculo"
-        Me.LblNombreVehiculo.Size = New System.Drawing.Size(66, 17)
+        Me.LblNombreVehiculo.Size = New System.Drawing.Size(50, 13)
         Me.LblNombreVehiculo.TabIndex = 74
         Me.LblNombreVehiculo.Text = "Nombre :"
         '
         'TxtNombre
         '
-        Me.TxtNombre.Location = New System.Drawing.Point(103, 50)
-        Me.TxtNombre.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtNombre.Location = New System.Drawing.Point(77, 41)
         Me.TxtNombre.MaxLength = 50
         Me.TxtNombre.Name = "TxtNombre"
-        Me.TxtNombre.Size = New System.Drawing.Size(301, 22)
+        Me.TxtNombre.Size = New System.Drawing.Size(227, 20)
         Me.TxtNombre.TabIndex = 1
         '
         'LblCodigo
         '
         Me.LblCodigo.AutoSize = True
-        Me.LblCodigo.Location = New System.Drawing.Point(8, 22)
-        Me.LblCodigo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblCodigo.Location = New System.Drawing.Point(6, 18)
         Me.LblCodigo.Name = "LblCodigo"
-        Me.LblCodigo.Size = New System.Drawing.Size(60, 17)
+        Me.LblCodigo.Size = New System.Drawing.Size(46, 13)
         Me.LblCodigo.TabIndex = 8
         Me.LblCodigo.Text = "Código :"
         '
         'TxtCodigo
         '
-        Me.TxtCodigo.Location = New System.Drawing.Point(101, 18)
-        Me.TxtCodigo.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtCodigo.Location = New System.Drawing.Point(76, 15)
         Me.TxtCodigo.MaxLength = 2
         Me.TxtCodigo.Name = "TxtCodigo"
-        Me.TxtCodigo.Size = New System.Drawing.Size(75, 22)
+        Me.TxtCodigo.Size = New System.Drawing.Size(57, 20)
         Me.TxtCodigo.TabIndex = 0
         '
         'ErrorProvider
@@ -323,15 +356,14 @@ Partial Class Catalogo_Vehiculos
         '
         'Catalogo_Vehiculos
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1004, 350)
+        Me.ClientSize = New System.Drawing.Size(753, 378)
         Me.Controls.Add(Me.tsMenu)
         Me.Controls.Add(Me.gBoxBusquedaRapida)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.gBoxInformacion)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Vehiculos"
         Me.Text = "Catálogo vehículos"
@@ -372,8 +404,12 @@ Partial Class Catalogo_Vehiculos
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents CboEstatusFiltro As System.Windows.Forms.ComboBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents LblNombreCategoria As System.Windows.Forms.Label
-    Friend WithEvents LblCategoria As System.Windows.Forms.Label
+    Friend WithEvents lblCategoria As System.Windows.Forms.Label
+    Friend WithEvents lblCodigoCategoria As System.Windows.Forms.Label
     Friend WithEvents TxtCodigoCategoria As System.Windows.Forms.TextBox
     Friend WithEvents CboEstatus As System.Windows.Forms.ComboBox
+    Friend WithEvents lblTipoCategoria As System.Windows.Forms.Label
+    Friend WithEvents chkCrearCategoria As System.Windows.Forms.CheckBox
+    Friend WithEvents txtTipoCategoria As System.Windows.Forms.TextBox
+    Friend WithEvents lblDisplayTipoCategoria As System.Windows.Forms.Label
 End Class

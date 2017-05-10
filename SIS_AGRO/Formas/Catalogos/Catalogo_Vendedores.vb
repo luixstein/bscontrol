@@ -158,15 +158,15 @@ Public Class Catalogo_Vendedores
         Dim sMsg As String = ""
         Select Case Me.Estado
             Case enumEstados.EDICION
-                sMsg = " grabar las modificaciones del " & Me.msgElemento & " : " & Me.TxtIDVendedor.Text
+                sMsg = " grabar las modificaciones del "
             Case enumEstados.NUEVO
-                sMsg = " agregar el " & Me.msgElemento & " : " & Me.TxtNombreVendedor.Text
+                sMsg = " agregar el "
             Case Else
                 MsgBox("Me.Estado no válido.", MsgBoxStyle.Exclamation, Me.Text)
                 Return
         End Select
-        sMsg = "Deseas " & sMsg & " ?"
-        If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
+        sMsg = "Deseas " & sMsg & Me.msgElemento & " : " & Me.TxtNombreVendedor.Text & " ?"
+        If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle), Me.Text) = MsgBoxResult.Yes Then
             Me.Grabar()
         End If
     End Sub
@@ -262,12 +262,16 @@ Public Class Catalogo_Vendedores
     End Sub
 
     Private Sub DesplegarElementos()
-        Dim oElementos As New Class_CatVendedores
-        With Me.Grid
-            .DataSource = oElementos.ObtenerElementos
-            .Columns("CODIGO_VENDEDOR").Width = 30
-            .Columns("NOMBRE_VENDEDOR").Width = 300
-        End With
+        Try
+            Dim oElementos As New Class_CatVendedores
+            With Me.Grid
+                .DataSource = oElementos.ObtenerElementos
+                .Columns("CODIGO_VENDEDOR").Width = 30
+                .Columns("NOMBRE_VENDEDOR").Width = 300
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarElementos", ex)
+        End Try
     End Sub
 
     Private Sub LlenaElemento(ByVal iCodigo_Elemento As Integer)
@@ -315,7 +319,7 @@ Public Class Catalogo_Vendedores
                                 .GENERAR_CATEGORIA = Me.chkCrearCategoria.Checked
                                 .CODIGO_TIPO_CATEGORIA = Me.txtTipoCategoria.Text
                                 .Agregar = "1"
-                                If .Insertar() Then
+                                If .Insertar() = True Then
                                     Grabado = True
                                     Me.Estado = enumEstados.NUEVO
                                 End If
@@ -324,7 +328,7 @@ Public Class Catalogo_Vendedores
                                 .GENERAR_CATEGORIA = False
                                 .CODIGO_TIPO_CATEGORIA = ""
                                 .Agregar = "0"
-                                If .Actualizar() Then
+                                If .Actualizar() = True Then
                                     Grabado = True
                                     Me.Estado = enumEstados.CONSULTA
                                 End If
@@ -434,41 +438,18 @@ Public Class Catalogo_Vendedores
 
 #Region "Eventos Genericos"
 
-    Private Sub CboEstatus_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboEstatus.KeyDown
-        If e.KeyCode = Keys.Return Then
-            tsbGrabar.PerformClick()
-        End If
-    End Sub
-
     Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombreVendedor.KeyPress, txtCodigoCategoria.KeyPress, txtTipoCategoria.KeyPress, TxtIDVendedor.KeyPress
         txtNoBeep(e)
     End Sub
 
-    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombreVendedor.KeyDown
+    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombreVendedor.KeyDown, CboEstatus.KeyDown, chkCrearCategoria.KeyDown
         If e.KeyCode = Keys.Return Then
-            Select Case Me.Estado
-                Case enumEstados.EDICION
-                    SendKeys.Send("{TAB}")
-                Case enumEstados.NUEVO
-                    SendKeys.Send("{TAB}")
-            End Select
+            txtTAB(e)
         End If
     End Sub
 
-    Private Sub cbo_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
-        If e.KeyCode = Keys.Return Then
-            Select Case Me.Estado
-                Case enumEstados.EDICION
-                    SendKeys.Send("{TAB}")
-                Case enumEstados.NUEVO
-                    tsbGrabar.PerformClick()
-            End Select
-        End If
-    End Sub
-
-    Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtIDVendedor.KeyPress
-        Dim txt As TextBox = CType(sender, TextBox)
-        txtSoloNumerosDecimales(e, txt.Text)
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoCategoria.KeyPress, txtTipoCategoria.KeyPress
+        txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
 

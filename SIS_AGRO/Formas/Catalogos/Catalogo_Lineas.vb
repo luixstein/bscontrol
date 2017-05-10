@@ -73,13 +73,16 @@ Public Class Catalogo_Lineas
         Dim sMsg As String = ""
         Select Case Me.Estado
             Case enumEstados.EDICION
-                sMsg = " grabar las modificaciones del " & Me.msgElemento & " : " & Me.TxtCodigoLinea.Text
+                sMsg = " grabar las modificaciones de la "
             Case enumEstados.NUEVO
-                sMsg = " agregar el " & Me.msgElemento & " : " & Me.TxtCodigoLinea.Text
+                sMsg = " agregar la "
+            Case Else
+                MsgBox("Me.Estado no válido.", MsgBoxStyle.Exclamation, Me.Text)
+                Return
         End Select
-        sMsg = "Deseas " & sMsg & " ?"
-        If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
-            Call Grabar_Elemento()
+        sMsg = "Deseas " & sMsg & Me.msgElemento & " : " & Me.TxtNombreLinea.Text & " ?"
+        If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle), Me.Text) = MsgBoxResult.Yes Then
+            Me.Grabar()
         End If
     End Sub
 
@@ -99,57 +102,59 @@ Public Class Catalogo_Lineas
 
 #Region "Métodos y procedimientos"
     Private Sub Refrescar()
-
         Me.DesplegarElementos()
-
     End Sub
 
     Private Sub Cambia_Estado()
-        Select Case Me.Estado
-            Case enumEstados.NUEVO
-                Me.gBoxInformacion.Enabled = True
-                Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Agregando una nueva " & Me.msgElemento
-                Me.tsbNuevo.Enabled = False
-                Me.tsbEditar.Enabled = False
-                Me.tsbGrabar.Enabled = True
-                Me.tsbCancelar.Enabled = True
+        Try
+            Select Case Me.Estado
+                Case enumEstados.NUEVO
+                    Me.gBoxInformacion.Enabled = True
+                    Me.gBoxBusquedaRapida.Enabled = False
+                    Me.tssLabelEstado.Text = "Agregando nueva " & Me.msgElemento
+                    Me.tsbNuevo.Enabled = False
+                    Me.tsbEditar.Enabled = False
+                    Me.tsbGrabar.Enabled = True
+                    Me.tsbCancelar.Enabled = True
 
-                Me.TxtCodigoLinea.Enabled = False
-                Me.TxtNombreLinea.Enabled = True
-                Me.CboEstatus.Enabled = False
-                Me.InicializaElemento()
-                Me.TxtCodigoLinea.Focus()
+                    Me.TxtCodigoLinea.Enabled = False
+                    Me.TxtNombreLinea.Enabled = True
+                    Me.CboEstatus.Enabled = False
+                    Me.InicializaElemento()
+                    Me.TxtCodigoLinea.Focus()
 
-                Me.txtCodigoConcepto.Text = ""
-                Me.lblNombreConcepto.Text = "_"
+                    Me.txtCodigoConcepto.Text = ""
+                    Me.lblNombreConcepto.Text = "_"
 
-            Case enumEstados.EDICION
-                Me.gBoxInformacion.Enabled = True
-                Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Edición"
-                Me.tsbNuevo.Enabled = False
-                Me.tsbEditar.Enabled = False
-                Me.tsbGrabar.Enabled = True
-                Me.tsbCancelar.Enabled = True
+                Case enumEstados.EDICION
+                    Me.gBoxInformacion.Enabled = True
+                    Me.gBoxBusquedaRapida.Enabled = False
+                    Me.tssLabelEstado.Text = "Edición"
+                    Me.tsbNuevo.Enabled = False
+                    Me.tsbEditar.Enabled = False
+                    Me.tsbGrabar.Enabled = True
+                    Me.tsbCancelar.Enabled = True
 
-                Me.TxtCodigoLinea.Enabled = False
-                Me.TxtNombreLinea.Enabled = True
-                Me.CboEstatus.Enabled = True
-                Me.TxtNombreLinea.Focus()
+                    Me.TxtCodigoLinea.Enabled = False
+                    Me.TxtNombreLinea.Enabled = True
+                    Me.CboEstatus.Enabled = True
+                    Me.TxtNombreLinea.Focus()
 
-            Case enumEstados.CONSULTA
-                Me.gBoxInformacion.Enabled = False
-                Me.gBoxBusquedaRapida.Enabled = True
-                Me.tssLabelEstado.Text = "Consulta"
-                Me.tsbNuevo.Enabled = True
-                Me.tsbEditar.Enabled = False
-                Me.tsbGrabar.Enabled = False
-                Me.tsbCancelar.Enabled = False
-                Me.txtFiltro.Focus()
+                Case enumEstados.CONSULTA
+                    Me.gBoxInformacion.Enabled = False
+                    Me.gBoxBusquedaRapida.Enabled = True
+                    Me.tssLabelEstado.Text = "Consulta"
+                    Me.tsbNuevo.Enabled = True
+                    Me.tsbEditar.Enabled = False
+                    Me.tsbGrabar.Enabled = False
+                    Me.tsbCancelar.Enabled = False
+                    Me.txtFiltro.Focus()
 
-        End Select
-        Application.DoEvents()
+            End Select
+            Application.DoEvents()
+        Catch ex As Exception
+            HandleError(Me.Name, "Cambia_Estado", ex)
+        End Try
     End Sub
 
     Private Sub InicializaElemento()
@@ -159,35 +164,42 @@ Public Class Catalogo_Lineas
     End Sub
 
     Private Sub DesplegarElementos()
-        With Me.Grid
-            .DataSource = oLineas.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
-            .Columns("CODIGO_LINEA").Width = 50
-            .Columns("NOMBRE_LINEA").Width = 200
-        End With
-
+        Try
+            With Me.Grid
+                .DataSource = oLineas.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
+                .Columns("CODIGO_LINEA").Width = 50
+                .Columns("NOMBRE_LINEA").Width = 200
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarElementos", ex)
+        End Try
     End Sub
 
     Private Sub LlenaElemento(ByVal iCodigo_Elemento As String)
-        Me.oLineas.Codigo_Linea = iCodigo_Elemento
-        If Me.oLineas.Consultar Then
-            With Me.oLineas
-                Me.TxtCodigoLinea.Text = .Codigo_Linea.ToString
-                Me.TxtNombreLinea.Text = .Nombre_Linea.ToString
-                If .Estatus = "A" Then
-                    Me.CboEstatus.SelectedIndex = 0
-                Else
-                    Me.CboEstatus.SelectedIndex = 1
-                End If
-                Me.txtCodigoConcepto.Text = .CODIGO_CONCEPTO
-                Dim oConceptos As New Class_CatConceptos
-                oConceptos.Codigo_Concepto = Me.txtCodigoConcepto.Text
-                oConceptos.Consultar()
-                Me.lblNombreConcepto.Text = oConceptos.Nombre_Concepto
-            End With
-        End If
+        Try
+            Me.oLineas.Codigo_Linea = iCodigo_Elemento
+            If Me.oLineas.Consultar Then
+                With Me.oLineas
+                    Me.TxtCodigoLinea.Text = .Codigo_Linea.ToString
+                    Me.TxtNombreLinea.Text = .Nombre_Linea.ToString
+                    If .Estatus = "A" Then
+                        Me.CboEstatus.SelectedIndex = 0
+                    Else
+                        Me.CboEstatus.SelectedIndex = 1
+                    End If
+                    Me.txtCodigoConcepto.Text = .CODIGO_CONCEPTO
+                    Dim oConceptos As New Class_CatConceptos
+                    oConceptos.Codigo_Concepto = Me.txtCodigoConcepto.Text
+                    oConceptos.Consultar()
+                    Me.lblNombreConcepto.Text = oConceptos.Nombre_Concepto
+                End With
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, "LlenaElemento", ex)
+        End Try
     End Sub
 
-    Private Sub Grabar_Elemento()
+    Private Sub Grabar()
         Dim Grabado As Boolean = False
         Select Case Me.Estado
             Case enumEstados.NUEVO, enumEstados.EDICION
@@ -198,21 +210,25 @@ Public Class Catalogo_Lineas
                         .Nombre_Linea = Me.TxtNombreLinea.Text
                         .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         .CODIGO_CONCEPTO = Me.txtCodigoConcepto.Text
+
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
-                                If .Insertar() Then
+
+                                .GENERAR_CATEGORIA = Me.chkCrearCategoria.Checked
+                                If .Insertar() = True Then
                                     Grabado = True
                                     Me.Estado = enumEstados.NUEVO
                                 End If
                             Case enumEstados.EDICION
-                                If .Actualizar() Then
+                                .GENERAR_CATEGORIA = False
+                                If .Actualizar() = True Then
                                     Grabado = True
                                     Me.Estado = enumEstados.CONSULTA
                                 End If
                         End Select
 
                         If Grabado Then
-                            MsgBox(Me.msgElemento & " Grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
+                            MsgBox(Me.msgElemento & " grabada satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
                             Me.Refrescar()
                             Me.Cambia_Estado()
                         End If
@@ -222,27 +238,41 @@ Public Class Catalogo_Lineas
                     HandleError(Me.Name, "Grabar", ex)
                     Me.Estado = enumEstados.CONSULTA
                     Me.Cambia_Estado()
-                Finally
-
                 End Try
         End Select
     End Sub
 
     Private Function Validar() As Boolean
         Dim bResultado As Boolean = False
-        If txtLEN(Me.TxtNombreLinea.Text) = False Then
-            MsgBox("Agregue un nombre de Linea", MsgBoxStyle.Exclamation)
-            Me.TxtNombreLinea.Focus()
-            Return bResultado
-        End If
 
-        If txtLEN(Me.txtCodigoConcepto.Text) = False Then
-            MsgBox("Agregue un concepto, en caso de no tener, agregar 0", MsgBoxStyle.Exclamation)
-            Me.txtCodigoConcepto.Focus()
-            Return bResultado
-        End If
+        Try
+            If txtLEN(Me.TxtNombreLinea.Text) = False Then
+                MsgBox("Captúre el nombre de la línea.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.TxtNombreLinea.Focus()
+                Return False
+            End If
 
-        bResultado = True
+            Select Case Me.chkCrearConcepto.Checked
+                Case False
+                    If txtLEN(Me.txtCodigoConcepto.Text) = False Then
+                        MsgBox("Seleccione un concepto, en caso de no tener, puede usar el 0.", MsgBoxStyle.Exclamation, Me.Text)
+                        Me.txtCodigoConcepto.Focus()
+                        Return False
+                    End If
+                Case True
+                    'No hay nada que validar
+            End Select
+
+            If txtLEN(Me.txtCodigoConcepto.Text) = False Then
+                MsgBox("Seleccione un concepto, en caso de no tener, agregar 0.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtCodigoConcepto.Focus()
+                Return bResultado
+            End If
+
+            bResultado = True
+        Catch ex As Exception
+            HandleError(Me.Name, "Validar", ex)
+        End Try
 
         Return bResultado
     End Function
@@ -250,6 +280,7 @@ Public Class Catalogo_Lineas
 #End Region
 
 #Region "Eventos de objetos"
+
 #Region "Eventos de la lista de elementos"
     Private Sub Grid_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles Grid.CellClick
         Me.LlenaElemento(Me.Grid.CurrentRow.Cells("CODIGO_LINEA").Value.ToString)
@@ -281,83 +312,41 @@ Public Class Catalogo_Lineas
     'End Sub
 #End Region
 
-#Region " Eventos de TxtFiltro"
+#Region "Eventos de TxtFiltro"
     Private Sub txtFiltro_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFiltro.TextChanged
         Me.Grid.DataSource = Nothing
-
-        With Me.Grid
-            .DataSource = oLineas.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
-            .Columns("CODIGO_LINEA").Width = 50
-            .Columns("NOMBRE_LINEA").Width = 200
-        End With
+        Me.DesplegarElementos()
     End Sub
+
     Private Sub txtFiltro_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFiltro.KeyPress
         txtNoBeep(e)
         txtNoComilla(e)
     End Sub
+
     Private Sub txtFiltro_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtFiltro.KeyDown
         If e.KeyCode = Keys.Down Or e.KeyCode = Keys.Return Or e.KeyCode = Keys.Back Then
             Me.Grid.DataSource = Nothing
-
-            With Me.Grid
-                .DataSource = oLineas.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
-                .Columns("CODIGO_LINEA").Width = 50
-                .Columns("NOMBRE_LINEA").Width = 200
-            End With
+            Me.DesplegarElementos()
         End If
     End Sub
 
     Private Sub cboEstatusFiltro_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboEstatusFiltro.SelectedIndexChanged
         Me.Grid.DataSource = Nothing
-
-        With Me.Grid
-            .DataSource = oLineas.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
-            .Columns("CODIGO_LINEA").Width = 50
-            .Columns("NOMBRE_LINEA").Width = 200
-        End With
+        Me.DesplegarElementos()
     End Sub
 
 #End Region
 
 #Region "Eventos Genericos"
 
-    Private Sub CboEstatus_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboEstatus.KeyDown
+    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombreLinea.KeyDown, CboEstatus.KeyDown, chkCrearConcepto.KeyDown
         If e.KeyCode = Keys.Return Then
-            tsbGrabar.PerformClick()
+            txtTAB(e)
         End If
     End Sub
-    Private Sub txtCodigoConcepto_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodigoConcepto.KeyDown
-        Dim oConceptos As New Class_CatConceptos
 
-        If e.KeyCode = Keys.F6 Then
-            Dim resultado As String
-            resultado = oConceptos.BusquedaVisual_PorDescripcion()
-            Me.txtCodigoConcepto.Text = resultado : GoTo Buscar : Exit Sub
-        End If
-        If e.KeyCode = Keys.Return Then
-Buscar:
-            If txtLEN(Me.txtCodigoConcepto.Text) = True Then
-                oConceptos.Codigo_Concepto = Me.txtCodigoConcepto.Text
-                oConceptos.Consultar()
-                Me.lblNombreConcepto.Text = oConceptos.Nombre_Concepto
-                tsbGrabar.PerformClick()
-            End If
-
-        End If
-    End Sub
     Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombreLinea.KeyPress
         txtNoBeep(e)
-    End Sub
-
-    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombreLinea.KeyDown
-        If e.KeyCode = Keys.Return Then
-            Select Case Me.Estado
-                Case enumEstados.EDICION
-                    SendKeys.Send("{TAB}")
-                Case enumEstados.NUEVO
-                    SendKeys.Send("{TAB}")
-            End Select
-        End If
     End Sub
 
     Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCodigoConcepto.KeyPress, TxtCodigoLinea.KeyPress
@@ -377,9 +366,26 @@ Buscar:
     End Sub
 #End Region
 
-
 #Region "Keydown específicos"
+    Private Sub txtCodigoConcepto_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodigoConcepto.KeyDown
+        Dim oConceptos As New Class_CatConceptos
 
+        If e.KeyCode = Keys.F6 Then
+            Dim resultado As String
+            resultado = oConceptos.BusquedaVisual_PorDescripcion()
+            Me.txtCodigoConcepto.Text = resultado : GoTo Buscar : Exit Sub
+        End If
+        If e.KeyCode = Keys.Return Then
+Buscar:
+            If txtLEN(Me.txtCodigoConcepto.Text) = True Then
+                oConceptos.Codigo_Concepto = Me.txtCodigoConcepto.Text
+                oConceptos.Consultar()
+                Me.lblNombreConcepto.Text = oConceptos.Nombre_Concepto
+                tsbGrabar.PerformClick()
+            End If
+
+        End If
+    End Sub
 #End Region
 
 #Region "Validating específicos"
@@ -387,10 +393,16 @@ Buscar:
 #End Region
 
     Private Sub CboFiltroHoja_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Refrescar()
+        Me.Refrescar()
     End Sub
 
+    Private Sub chkCrearConcepto_CheckedChanged(sender As Object, e As EventArgs) Handles chkCrearConcepto.CheckedChanged
+        If Me.chkCrearConcepto.Checked = True AndAlso Me.Estado = enumEstados.NUEVO Then
+            Me.txtCodigoConcepto.Visible = False : Me.lblCodigoConcepto.Visible = False : Me.lblNombreConcepto.Visible = False
+        Else
+            Me.txtCodigoConcepto.Visible = True : Me.lblCodigoConcepto.Visible = True : Me.lblNombreConcepto.Visible = True
+        End If
+    End Sub
 #End Region
 
-    
 End Class

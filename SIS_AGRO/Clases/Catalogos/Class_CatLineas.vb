@@ -7,9 +7,10 @@ Public Class Class_CatLineas
 #Region "Campos"
 
 #Region "Campos de la tabla"
-    Private _Codigo_Linea As String
-    Private _Nombre_Linea As String
+    Private _CODIGO_LINEA As String
+    Private _NOMBRE_LINEA As String
     Private _CODIGO_CONCEPTO As String
+    ASDAD
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -38,21 +39,21 @@ Public Class Class_CatLineas
 #Region "Propiedades"
 
 #Region "Propiedades Campos de la tabla"
-    Public Property Codigo_Linea() As String
+    Public Property CODIGO_LINEA() As String
         Get
-            Return Me._Codigo_Linea
+            Return Me._CODIGO_LINEA
         End Get
         Set(ByVal Value As String)
-            Me._Codigo_Linea = Value
+            Me._CODIGO_LINEA = Value
         End Set
     End Property
 
-    Public Property Nombre_Linea() As String
+    Public Property NOMBRE_LINEA() As String
         Get
-            Return Me._Nombre_Linea
+            Return Me._NOMBRE_LINEA
         End Get
         Set(ByVal Value As String)
-            Me._Nombre_Linea = Value
+            Me._NOMBRE_LINEA = Value
         End Set
     End Property
 
@@ -115,14 +116,14 @@ Public Class Class_CatLineas
         Me._Nombre_Reporte = "RPT_CATALOGO_LINEAS"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "Select Codigo_Linea,Nombre_Linea From CAT_Lineas"
-        Me._QueryOrder = " Order by Nombre_Linea"
+        Me._QuerySelect = "Select CODIGO_LINEA,NOMBRE_LINEA From CAT_Lineas"
+        Me._QueryOrder = " Order by NOMBRE_LINEA"
     End Sub
 
     Public Sub New(ByVal sCodigoLinea As String)
         Me.New()
         Try
-            Me.Codigo_Linea = sCodigoLinea
+            Me.CODIGO_LINEA = sCodigoLinea
             If Me.Consultar = True Then
                 Me._Existe = True
                 'Throw New Exception("El artículo no existe.")
@@ -150,8 +151,8 @@ Public Class Class_CatLineas
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_LINEAS_GRABA"
 
-            sqlParametro = .Parameters.Add("@CODIGO_LINEA", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._Codigo_Linea.ToUpper
-            sqlParametro = .Parameters.Add("@NOMBRE_LINEA", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._Nombre_Linea.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_LINEA", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_LINEA.ToUpper
+            sqlParametro = .Parameters.Add("@NOMBRE_LINEA", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._NOMBRE_LINEA.ToString.ToUpper
             sqlParametro = .Parameters.Add("@Estatus", SqlDbType.Char, 1) : sqlParametro.Value = "A"
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "1"
             sqlParametro = .Parameters.Add("@CODIGO_CONCEPTO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CONCEPTO
@@ -180,8 +181,8 @@ Public Class Class_CatLineas
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_LINEAS_GRABA"
 
-            sqlParametro = .Parameters.Add("@CODIGO_LINEA", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._Codigo_Linea.ToUpper
-            sqlParametro = .Parameters.Add("@NOMBRE_LINEA", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._Nombre_Linea.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_LINEA", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_LINEA.ToUpper
+            sqlParametro = .Parameters.Add("@NOMBRE_LINEA", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._NOMBRE_LINEA.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToString.ToUpper
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "0"
             sqlParametro = .Parameters.Add("@CODIGO_CONCEPTO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CONCEPTO
@@ -202,7 +203,7 @@ Public Class Class_CatLineas
 
     Public Overrides Function Consultar() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand("Select * from Cat_Lineas Where Codigo_Linea='" & Replace(Me._Codigo_Linea, "'", "''") & "'", Me._Conexion)
+        Dim cmd As New SqlCommand("Select * from Cat_Lineas Where CODIGO_LINEA='" & Replace(Me._CODIGO_LINEA, "'", "''") & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -212,8 +213,8 @@ Public Class Class_CatLineas
                 dReader = .ExecuteReader()
 
                 If dReader.Read Then
-                    Me._Codigo_Linea = "" & dReader("CODIGO_LINEA").ToString
-                    Me._Nombre_Linea = Trim("" & dReader("NOMBRE_LINEA").ToString)
+                    Me._CODIGO_LINEA = "" & dReader("CODIGO_LINEA").ToString
+                    Me._NOMBRE_LINEA = Trim("" & dReader("NOMBRE_LINEA").ToString)
                     Me.Estatus = "" & dReader("ESTATUS").ToString
                     Me._CODIGO_CONCEPTO = "" & dReader("CODIGO_CONCEPTO").ToString
                     bResultado = True
@@ -273,10 +274,10 @@ Public Class Class_CatLineas
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de Metodos de Tipos de Socios por codigo."
-        f.sCampo = "Codigo_Linea"
-        f.sOrder = "Nombre_Linea"
+        f.sCampo = "CODIGO_LINEA"
+        f.sOrder = "NOMBRE_LINEA"
         f.sTable = "CAT_Lineas"
-        f.sQl = "Select Codigo_Linea,Nombre_Linea From CAT_Lineas Where 1=1 And"
+        f.sQl = "Select CODIGO_LINEA,NOMBRE_LINEA From CAT_Lineas Where 1=1 And"
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -293,10 +294,10 @@ Public Class Class_CatLineas
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de Lineas por Descripción."
-        f.sCampo = "Nombre_Linea"
-        f.sOrder = "Nombre_Linea"
+        f.sCampo = "NOMBRE_LINEA"
+        f.sOrder = "NOMBRE_LINEA"
         f.sTable = "CAT_Lineas"
-        f.sQl = "Select Codigo_Linea,Nombre_Linea From CAT_Lineas Where 1=1 And"
+        f.sQl = "Select CODIGO_LINEA,NOMBRE_LINEA From CAT_Lineas Where 1=1 And"
         f.Inicia("")
         f.ShowDialog()
         Try

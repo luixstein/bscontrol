@@ -125,13 +125,16 @@ Public Class Catalogo_Almacenes
         Dim sMsg As String = ""
         Select Case Me.Estado
             Case enumEstados.EDICION
-                sMsg = " grabar las modificaciones del " & Me.msgElemento & " : " & Me.TxtCodigoAlmacen.Text
+                sMsg = " grabar las modificaciones del "
             Case enumEstados.NUEVO
-                sMsg = " agregar el " & Me.msgElemento & " : " & Me.TxtCodigoAlmacen.Text
+                sMsg = " agregar el "
+            Case Else
+                MsgBox("Me.Estado no válido.", MsgBoxStyle.Exclamation, Me.Text)
+                Return
         End Select
-        sMsg = "Deseas " & sMsg & " ?"
-        If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
-            Call Grabar_Elemento()
+        sMsg = "Deseas " & sMsg & Me.msgElemento & " : " & Me.TxtNombreAlmacen.Text & " ?"
+        If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle), Me.Text) = MsgBoxResult.Yes Then
+            Me.Grabar()
         End If
     End Sub
 
@@ -155,53 +158,57 @@ Public Class Catalogo_Almacenes
     End Sub
 
     Private Sub Cambia_Estado()
-        Select Case Me.Estado
-            Case enumEstados.NUEVO
-                Me.gBoxInformacion.Enabled = True
-                Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Agregando una nueva " & Me.msgElemento
-                Me.tsbNuevo.Enabled = False
-                Me.tsbEditar.Enabled = False
-                Me.tsbGrabar.Enabled = True
-                Me.tsbCancelar.Enabled = True
+        Try
+            Select Case Me.Estado
+                Case enumEstados.NUEVO
+                    Me.gBoxInformacion.Enabled = True
+                    Me.gBoxBusquedaRapida.Enabled = False
+                    Me.tssLabelEstado.Text = "Agregando una nueva " & Me.msgElemento
+                    Me.tsbNuevo.Enabled = False
+                    Me.tsbEditar.Enabled = False
+                    Me.tsbGrabar.Enabled = True
+                    Me.tsbCancelar.Enabled = True
 
-                Me.TxtCodigoAlmacen.Enabled = False
-                Me.TxtNombreAlmacen.Enabled = True
-                Me.txtCodigoZona.Enabled = True
-                Me.TxtCodigoCategoria.Enabled = True
-                Me.CboEstatus.Enabled = False
-                Me.InicializaElemento()
-                Me.TxtCodigoAlmacen.Focus()
+                    Me.TxtCodigoAlmacen.Enabled = False
+                    Me.TxtNombreAlmacen.Enabled = True
+                    Me.txtCodigoZona.Enabled = True
+                    Me.TxtCodigoCategoria.Enabled = True
+                    Me.CboEstatus.Enabled = False
+                    Me.InicializaElemento()
+                    Me.TxtCodigoAlmacen.Focus()
 
-            Case enumEstados.EDICION
-                Me.gBoxInformacion.Enabled = True
-                Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Edición"
-                Me.tsbNuevo.Enabled = False
-                Me.tsbEditar.Enabled = False
-                Me.tsbGrabar.Enabled = True
-                Me.tsbCancelar.Enabled = True
+                Case enumEstados.EDICION
+                    Me.gBoxInformacion.Enabled = True
+                    Me.gBoxBusquedaRapida.Enabled = False
+                    Me.tssLabelEstado.Text = "Edición"
+                    Me.tsbNuevo.Enabled = False
+                    Me.tsbEditar.Enabled = False
+                    Me.tsbGrabar.Enabled = True
+                    Me.tsbCancelar.Enabled = True
 
-                Me.TxtCodigoAlmacen.Enabled = False
-                Me.TxtNombreAlmacen.Enabled = True
-                Me.CboEstatus.Enabled = True
-                Me.TxtCodigoCategoria.Enabled = True
-                Me.txtCodigoZona.Enabled = True
-                Me.TxtNombreAlmacen.Focus()
+                    Me.TxtCodigoAlmacen.Enabled = False
+                    Me.TxtNombreAlmacen.Enabled = True
+                    Me.CboEstatus.Enabled = True
+                    Me.TxtCodigoCategoria.Enabled = True
+                    Me.txtCodigoZona.Enabled = True
+                    Me.TxtNombreAlmacen.Focus()
 
-            Case enumEstados.CONSULTA
+                Case enumEstados.CONSULTA
 
-                Me.gBoxInformacion.Enabled = False
-                Me.gBoxBusquedaRapida.Enabled = True
-                Me.tssLabelEstado.Text = "Consulta"
-                Me.tsbNuevo.Enabled = True
-                Me.tsbEditar.Enabled = False
-                Me.tsbGrabar.Enabled = False
-                Me.tsbCancelar.Enabled = False
-                Me.txtFiltro.Focus()
+                    Me.gBoxInformacion.Enabled = False
+                    Me.gBoxBusquedaRapida.Enabled = True
+                    Me.tssLabelEstado.Text = "Consulta"
+                    Me.tsbNuevo.Enabled = True
+                    Me.tsbEditar.Enabled = False
+                    Me.tsbGrabar.Enabled = False
+                    Me.tsbCancelar.Enabled = False
+                    Me.txtFiltro.Focus()
 
-        End Select
-        Application.DoEvents()
+            End Select
+            Application.DoEvents()
+        Catch ex As Exception
+            HandleError(Me.Name, "Cambia_Estado", ex)
+        End Try
     End Sub
 
     Private Sub InicializaElemento()
@@ -214,62 +221,168 @@ Public Class Catalogo_Almacenes
         Me.TxtCodigoCategoria.Text = ""
         Me.LblNombreCategoria.Text = ""
         Me.CboEstatus.SelectedIndex = 0
+        Me.txtTipoCategoria.Text = ""
+        Me.lblTipoCategoria.Text = ""
+        Me.chkCrearCategoria.Checked = False
     End Sub
 
     Private Sub DesplegarElementos()
-        With Me.Grid
-            .DataSource = oAlmacenes.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
-            .Columns("CODIGO_ALMACEN").Width = 50
-            .Columns("NOMBRE_ALMACEN").Width = 200
-        End With
+        Try
+            With Me.Grid
+                .DataSource = oAlmacenes.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
+                .Columns("CODIGO_ALMACEN").Width = 50
+                .Columns("NOMBRE_ALMACEN").Width = 200
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarElementos", ex)
+        End Try
     End Sub
 
     Private Sub LlenaElemento(ByVal iCodigo_Elemento As String)
-        Me.oAlmacenes.Codigo_Almacen = iCodigo_Elemento
-        If Me.oAlmacenes.Consultar Then
-            With Me.oAlmacenes
-                Me.TxtCodigoAlmacen.Text = .Codigo_Almacen.ToString
-                Me.TxtNombreAlmacen.Text = .Nombre_Almacen.ToString
-                Me.txtCuentaContable.Text = .Cuenta_Contable
-                Dim sql As New Class_find("Select NOMBRE_CUENTA From CON_CAT_CUENTAS Where CUENTA_CONTABLE='" & txtCuentaContable.Text & "' ")
-                If sql.Result1 = "" Then
-                Else
-                    LblCuenta.Text = sql.Result1
-                End If
-                sql = Nothing
+        Try
+            Me.oAlmacenes.CODIGO_ALMACEN = iCodigo_Elemento
+            If Me.oAlmacenes.Consultar Then
+                With Me.oAlmacenes
+                    Me.TxtCodigoAlmacen.Text = .CODIGO_ALMACEN.ToString
+                    Me.TxtNombreAlmacen.Text = .NOMBRE_ALMACEN.ToString
+                    Me.txtCuentaContable.Text = .CUENTA_CONTABLE
+                    Dim sql As New Class_find("Select NOMBRE_CUENTA From CON_CAT_CUENTAS Where CUENTA_CONTABLE='" & txtCuentaContable.Text & "' ")
+                    If sql.Result1 = "" Then
+                    Else
+                        LblCuenta.Text = sql.Result1
+                    End If
+                    sql = Nothing
 
-                Me.txtCodigoZona.Text = .Codigo_Zona
-                sql = New Class_find("Select NOMBRE_ZONA From CAT_ZONAS Where CODIGO_ZONA='" & txtCodigoZona.Text & "' ")
-                If sql.Result1 = "" Then
-                Else
-                    lblNombreZona.Text = sql.Result1
-                End If
-                sql = Nothing
+                    Me.txtCodigoZona.Text = .CODIGO_ZONA
+                    sql = New Class_find("Select NOMBRE_ZONA From CAT_ZONAS Where CODIGO_ZONA='" & txtCodigoZona.Text & "' ")
+                    If sql.Result1 = "" Then
+                    Else
+                        lblNombreZona.Text = sql.Result1
+                    End If
+                    sql = Nothing
 
-                Me.TxtCodigoCategoria.Text = .CODIGO_CATEGORIA
-                sql = New Class_find("Select NOMBRE_CATEGORIA From CAT_CATEGORIAS Where CODIGO_CATEGORIA='" & TxtCodigoCategoria.Text & "' ")
-                If sql.Result1 = "" Then
-                Else
-                    LblNombreCategoria.Text = sql.Result1
-                End If
-                sql = Nothing
+                    Me.TxtCodigoCategoria.Text = .CODIGO_CATEGORIA
+                    sql = New Class_find("Select NOMBRE_CATEGORIA From CAT_CATEGORIAS Where CODIGO_CATEGORIA='" & TxtCodigoCategoria.Text & "' ")
+                    If sql.Result1 = "" Then
+                    Else
+                        LblNombreCategoria.Text = sql.Result1
+                    End If
+                    sql = Nothing
 
+                    If .Estatus = "A" Then
+                        Me.CboEstatus.SelectedIndex = 0
+                    Else
+                        Me.CboEstatus.SelectedIndex = 1
+                    End If
 
-
-                If .Estatus = "A" Then
-                    Me.CboEstatus.SelectedIndex = 0
-                Else
-                    Me.CboEstatus.SelectedIndex = 1
-                End If
-
-            End With
-        End If
+                End With
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, "LlenaElemento", ex)
+        End Try
     End Sub
 
-    Private Sub Grabar_Elemento()
+    Private Sub Grabar()
         If Validar() = False Then
             Exit Sub
         End If
+
+        Dim Grabado As Boolean = False
+        Select Case Me.Estado
+            Case enumEstados.NUEVO, enumEstados.EDICION
+                Try
+                    With Me.oAlmacenes
+
+                        .CODIGO_ALMACEN = Me.TxtCodigoAlmacen.Text
+                        .NOMBRE_ALMACEN = Me.TxtNombreAlmacen.Text
+                        '.Cuenta_Contable = Me.txtCuentaContable.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
+                        .CODIGO_ZONA = Me.txtCodigoZona.Text
+                        .CODIGO_CATEGORIA = Me.TxtCodigoCategoria.Text
+
+                        Select Case Me.Estado
+                            Case enumEstados.NUEVO
+                                Me.oAlmacenes = New Class_CatAlmacenes
+
+                                .GENERAR_CATEGORIA = Me.chkCrearCategoria.Checked
+                                .CODIGO_TIPO_CATEGORIA = Me.txtTipoCategoria.Text
+
+                                If .Insertar() = True Then
+                                    Grabado = True
+                                    Me.Estado = enumEstados.CONSULTA
+
+                                End If
+                            Case enumEstados.EDICION
+                                Me.oAlmacenes = New Class_CatAlmacenes(Me.TxtCodigoAlmacen.Text)
+
+                                If .NOMBRE_ALMACEN.ToUpper <> Me.TxtNombreAlmacen.Text.ToUpper Then
+                                    If MsgBox("Modificó el nombre del almacén, automáticamente el sistema también cambiará el nombre de la cuenta contable." & vbCrLf & _
+                                              "Desea continuar?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Me.Text) = MsgBoxResult.No Then
+                                        Exit Sub
+                                    End If
+                                End If
+
+                                .GENERAR_CATEGORIA = False
+                                .CODIGO_TIPO_CATEGORIA = ""
+
+                                If .Actualizar() = True Then
+                                    Grabado = True
+                                    Me.Estado = enumEstados.CONSULTA
+                                End If
+                        End Select
+
+                        If Grabado = True Then
+                            MsgBox(Me.msgElemento & " grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
+                            Me.Refrescar()
+                            Me.Cambia_Estado()
+                        End If
+
+                    End With
+                Catch ex As Exception
+                    HandleError(Me.Name, "Grabar", ex)
+                    Me.Estado = enumEstados.CONSULTA
+                    Me.Cambia_Estado()
+                End Try
+        End Select
+    End Sub
+
+    Private Function Validar() As Boolean
+        Dim bResultado As Boolean = False
+
+        If txtLEN(Me.TxtNombreAlmacen.Text) = False Then
+            MsgBox("Asígne nombre al almacén", MsgBoxStyle.Exclamation, Me.Text)
+            Me.TxtNombreAlmacen.Focus()
+            Return bResultado
+        End If
+
+        If txtLEN(Me.txtCodigoZona.Text) = False Then
+            MsgBox("Asígne un código de zona.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.txtCodigoZona.Focus()
+            Return bResultado
+        Else
+            Dim sql1 As New Class_find("SELECT CODIGO_ZONA FROM CAT_ZONAS WHERE CODIGO_ZONA='" & Me.txtCodigoZona.Text & "' ")
+
+            If txtLEN(sql1.Result1) = False Then
+                MsgBox("El código de zona no existe.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtCodigoZona.Focus()
+                Return bResultado
+            End If
+        End If
+
+        Select Case Me.chkCrearCategoria.Checked
+            Case False
+                If txtLEN(Me.TxtCodigoCategoria.Text) = False Then
+                    MsgBox("Seleccione una categoria, en caso de no tener, puede usar la 0.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.TxtCodigoCategoria.Focus()
+                    Return False
+                End If
+            Case True
+                If txtLEN(Me.txtTipoCategoria.Text) = False Then
+                    MsgBox("Seleccione el tipo de categoria.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.txtTipoCategoria.Focus()
+                    Return False
+                End If
+        End Select
 
         'Me.oCuenta.CUENTA_CONTABLE = Me.txtCuentaContable.Text
         'If Me.oCuenta.Consultar = False Then
@@ -282,92 +395,6 @@ Public Class Catalogo_Almacenes
         '    Me.txtCuentaContable.Focus()
         '    Exit Sub
         'End If
-
-        Dim Grabado As Boolean = False
-        Select Case Me.Estado
-            Case enumEstados.NUEVO, enumEstados.EDICION
-                Try
-                    With Me.oAlmacenes
-                        Select Case Me.Estado
-                            Case enumEstados.NUEVO
-                                Me.oAlmacenes = New Class_CatAlmacenes
-
-                                .Codigo_Almacen = Me.TxtCodigoAlmacen.Text
-                                .Nombre_Almacen = Me.TxtNombreAlmacen.Text
-                                '.Cuenta_Contable = Me.txtCuentaContable.Text
-                                .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
-                                .CODIGO_ZONA = Me.txtCodigoZona.Text
-                                .CODIGO_CATEGORIA = Me.TxtCodigoCategoria.Text
-                                If .Insertar() Then
-                                    Grabado = True
-                                    Me.Estado = enumEstados.CONSULTA
-
-                                End If
-                            Case enumEstados.EDICION
-                                Me.oAlmacenes = New Class_CatAlmacenes(Me.TxtCodigoAlmacen.Text)
-
-                                If .Nombre_Almacen.ToUpper <> Me.TxtNombreAlmacen.Text.ToUpper Then
-                                    If MsgBox("Modificó el nombre del almacén, automáticamente el sistema también cambiará el nombre de la cuenta contable." & vbCrLf & _
-                                              "Desea continuar?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Me.Text) = MsgBoxResult.No Then
-                                        Exit Sub
-                                    End If
-                                End If
-
-                                .Nombre_Almacen = Me.TxtNombreAlmacen.Text
-                                '.Cuenta_Contable = Me.txtCuentaContable.Text
-                                .Estatus = Me.CboEstatus.Text
-
-                                If .Actualizar() Then
-                                    Grabado = True
-                                    Me.Estado = enumEstados.CONSULTA
-                                End If
-                        End Select
-
-                        If Grabado = True Then
-                            MsgBox(Me.msgElemento & " Grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
-                            Me.Refrescar()
-                            Me.Cambia_Estado()
-                        End If
-
-                    End With
-                Catch ex As Exception
-                    HandleError(Me.Name, "Grabar", ex)
-                    Me.Estado = enumEstados.CONSULTA
-                    Me.Cambia_Estado()
-                Finally
-
-                End Try
-        End Select
-    End Sub
-
-    Private Function Validar() As Boolean
-        Dim bResultado As Boolean = False
-
-        If txtLEN(Me.TxtNombreAlmacen.Text) = False Then
-            MsgBox("Asígne nombre al almacen", MsgBoxStyle.Exclamation, Me.Text)
-            Me.TxtNombreAlmacen.Focus()
-            Return bResultado
-        End If
-
-        If txtLEN(Me.txtCodigoZona.Text) = False Then
-            MsgBox("Asígne un codigo de zona.", MsgBoxStyle.Exclamation, Me.Text)
-            Me.txtCodigoZona.Focus()
-            Return bResultado
-        Else
-            Dim sql1 As New Class_find("SELECT CODIGO_ZONA FROM CAT_ZONAS WHERE CODIGO_ZONA='" & Me.txtCodigoZona.Text & "' ")
-
-            If txtLEN(sql1.Result1) = False Then
-                MsgBox("El codígo de Zona no existe.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.txtCodigoZona.Focus()
-                Return bResultado
-            End If
-        End If
-
-        If txtLEN(Me.TxtCodigoCategoria.Text) = False Then
-            MsgBox("Asígne una categoría.", MsgBoxStyle.Exclamation, Me.Text)
-            Me.TxtCodigoCategoria.Focus()
-            Return bResultado
-        End If
 
         bResultado = True
         Return bResultado
@@ -407,40 +434,27 @@ Public Class Catalogo_Almacenes
     'End Sub
 #End Region
 
-#Region " Eventos de TxtFiltro"
+#Region "Eventos de TxtFiltro"
     Private Sub txtFiltro_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFiltro.TextChanged
         Me.Grid.DataSource = Nothing
-
-        With Me.Grid
-            .DataSource = oAlmacenes.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
-            .Columns("CODIGO_ALMACEN").Width = 50
-            .Columns("NOMBRE_ALMACEN").Width = 200
-        End With
+        Me.DesplegarElementos()
     End Sub
+
     Private Sub txtFiltro_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFiltro.KeyPress
         txtNoBeep(e)
         txtNoComilla(e)
     End Sub
+
     Private Sub txtFiltro_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtFiltro.KeyDown
         If e.KeyCode = Keys.Down Or e.KeyCode = Keys.Return Or e.KeyCode = Keys.Back Then
             Me.Grid.DataSource = Nothing
-
-            With Me.Grid
-                .DataSource = oAlmacenes.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
-                .Columns("CODIGO_ALMACEN").Width = 50
-                .Columns("NOMBRE_ALMACEN").Width = 200
-            End With
+            Me.DesplegarElementos()
         End If
     End Sub
 
     Private Sub cboEstatusFiltro_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboEstatusFiltro.SelectedIndexChanged
         Me.Grid.DataSource = Nothing
-
-        With Me.Grid
-            .DataSource = oAlmacenes.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
-            .Columns("CODIGO_ALMACEN").Width = 50
-            .Columns("NOMBRE_ALMACEN").Width = 200
-        End With
+        Me.DesplegarElementos()
     End Sub
 #End Region
 
@@ -451,22 +465,23 @@ Public Class Catalogo_Almacenes
             tsbGrabar.PerformClick()
         End If
     End Sub
+
     Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombreAlmacen.KeyPress, txtCodigoZona.KeyPress, TxtCodigoCategoria.KeyPress
         txtNoBeep(e)
     End Sub
 
-    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombreAlmacen.KeyDown, txtCuentaContable.KeyDown
+    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombreAlmacen.KeyDown, CboEstatus.KeyDown, chkCrearCategoria.KeyDown
         If e.KeyCode = Keys.Return Then
-            Select Case Me.Estado
-                Case enumEstados.EDICION
-                    SendKeys.Send("{TAB}")
-                Case enumEstados.NUEVO
-                    SendKeys.Send("{TAB}")
-            End Select
+            txtTAB(e)
         End If
     End Sub
 
-    Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoAlmacen.KeyPress, TxtNombreAlmacen.KeyPress, txtCuentaContable.KeyPress
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoAlmacen.KeyPress, txtCuentaContable.KeyPress, txtCodigoZona.KeyPress, TxtCodigoCategoria.KeyPress, txtTipoCategoria.KeyPress
+        txtSoloNumerosEnteros(e)
+        txtNoBeep(e)
+    End Sub
+
+    Private Sub txtBeep_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtNombreAlmacen.KeyPress
         Dim txt As TextBox = CType(sender, TextBox)
         txtNoBeep(e)
     End Sub
@@ -482,61 +497,81 @@ Public Class Catalogo_Almacenes
     End Sub
 #End Region
 
-
 #Region "Keydown específicos"
-    Private Sub TxtCodigoZona_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCodigoZona.KeyDown
-        Dim oZonas As New Class_CatZonas
-        Select Case e.KeyCode
-            Case Keys.F6
-busca:
-                Me.txtCodigoZona.Text = oZonas.BusquedaVisual_PorDescripcion
-                oZonas.Codigo_Zona = CInt(Me.txtCodigoZona.Text)
-                If txtLEN(Me.txtCodigoZona.Text) = True Then
-                    oZonas.Consultar()
-                    Me.lblNombreZona.Text = oZonas.Nombre_Zona
-                Else
-                    MsgBox("No existen elementos en el catálogo de Zonas.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Sub
-                End If
-                
-            Case Keys.Enter
-                If txtLEN(Me.txtCodigoZona.Text) = True Then
-                    oZonas.Codigo_Zona = CInt(Me.txtCodigoZona.Text)
-                    If oZonas.Consultar() = False Then
-                        GoTo busca
+    Private Sub txtCodigoCategoria_keyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoCategoria.KeyDown
+        Try
+            Dim oCategorias As New Class_CatCategorias
+
+            Select Case e.KeyCode
+                Case Keys.F6
+Buscar:
+                    Dim resultado As String
+                    resultado = oCategorias.BusquedaVisual_PorDescripcion()
+                    Me.TxtCodigoCategoria.Text = resultado
+                    If txtLEN(resultado) = True Then
+                        GoTo Enter : Exit Sub
+                    Else
+                        Me.lblCodigoCategoria.Text = "_"
                     End If
-                    Me.lblNombreZona.Text = oZonas.Nombre_Zona
-                End If
-        End Select
-        txtTAB(e)
+
+                Case Keys.Return
+Enter:
+                    If txtLEN(Me.TxtCodigoCategoria.Text) = False Then
+                        Me.lblCodigoCategoria.Text = "_" ': GoTo Buscar : Exit Sub
+                        txtTAB(e)
+                        Return
+                    End If
+
+                    oCategorias = New Class_CatCategorias(Me.TxtCodigoCategoria.Text)
+                    If oCategorias.Existe = True Then
+                        Me.lblCodigoCategoria.Text = oCategorias.Nombre_Categoria
+                    Else
+                        Me.lblCodigoCategoria.Text = "_" : GoTo Buscar : Exit Sub
+                    End If
+
+                    If Me.chkCrearCategoria.Visible = True Then
+                        Me.chkCrearCategoria.Focus()
+                    Else
+                        'tsbGrabar.PerformClick()
+                    End If
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Name, "txtCodigoCategoria_keyDown", ex)
+        End Try
     End Sub
 
-    Private Sub TxtCodigoCategoria_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtCodigoCategoria.KeyDown
-        Dim oCategorias As New Class_CatCategorias
-        Select Case e.KeyCode
-            Case Keys.F6
-busca:
-                Me.TxtCodigoCategoria.Text = oCategorias.BusquedaVisual_PorDescripcion
-                oCategorias.Codigo_Categoria = Me.TxtCodigoCategoria.Text
-                Me.TxtCodigoCategoria.Text = oCategorias.BusquedaVisual_PorDescripcion
-                oCategorias.Codigo_Categoria = Me.TxtCodigoCategoria.Text
-                If txtLEN(Me.TxtCodigoCategoria.Text) = True Then
-                    oCategorias.Consultar()
-                    Me.LblNombreCategoria.Text = oCategorias.Nombre_Categoria
-                Else
-                    MsgBox("No existen elementos en el catálogo de Categorías.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Sub
-                End If
-            Case Keys.Enter
-                If txtLEN(Me.TxtCodigoCategoria.Text) = True Then
-                    oCategorias.Codigo_Categoria = Me.TxtCodigoCategoria.Text
-                    If oCategorias.Consultar() = False Then
-                        GoTo busca
+    Private Sub txtTipoCategoria_KeyDown(sender As Object, e As KeyEventArgs) Handles txtTipoCategoria.KeyDown
+        Try
+            Dim oTiposCategorias As New Class_CatTiposCategorias
+
+            Select Case e.KeyCode
+                Case Keys.F6
+Buscar:
+                    Dim resultado As String
+                    resultado = oTiposCategorias.BusquedaVisual_PorDescripcion()
+                    Me.txtTipoCategoria.Text = resultado
+                    If txtLEN(resultado) = True Then
+                        GoTo Enter : Exit Sub
                     End If
-                    Me.LblNombreCategoria.Text = oCategorias.Nombre_Categoria
-                End If
-        End Select
-        txtTAB(e)
+
+                Case Keys.Return
+Enter:
+                    If txtLEN(Me.txtTipoCategoria.Text) = False Then
+                        Me.lblTipoCategoria.Text = "" : GoTo Buscar : Exit Sub
+                    End If
+
+                    oTiposCategorias = New Class_CatTiposCategorias(Me.txtTipoCategoria.Text)
+                    If oTiposCategorias.Existe = True Then
+                        Me.lblTipoCategoria.Text = oTiposCategorias.Nombre_Tipo_Categoria
+                        tsbGrabar.PerformClick()
+                    Else
+                        Me.lblTipoCategoria.Text = "" : GoTo Buscar : Exit Sub
+                    End If
+
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Name, "txtTipoCategoria_KeyDown", ex)
+        End Try
     End Sub
 #End Region
 
@@ -546,6 +581,16 @@ busca:
 
     Private Sub CboFiltroHoja_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Refrescar()
+    End Sub
+
+    Private Sub chkCrearCategoria_CheckedChanged(sender As Object, e As EventArgs) Handles chkCrearCategoria.CheckedChanged
+        If Me.chkCrearCategoria.Checked = True AndAlso Me.Estado = enumEstados.NUEVO Then
+            Me.txtTipoCategoria.Visible = True : Me.lblDisplayTipoCategoria.Visible = True : Me.lblTipoCategoria.Visible = True
+            Me.TxtCodigoCategoria.Visible = False : Me.lblCodigoCategoria.Visible = False : Me.lblCodigoCategoria.Visible = False
+        Else
+            Me.txtTipoCategoria.Visible = False : Me.lblDisplayTipoCategoria.Visible = False : Me.lblTipoCategoria.Visible = False
+            Me.TxtCodigoCategoria.Visible = True : Me.lblCodigoCategoria.Visible = True : Me.lblCodigoCategoria.Visible = True
+        End If
     End Sub
 
     '    Private Sub txtCuentaContable_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCuentaContable.KeyDown

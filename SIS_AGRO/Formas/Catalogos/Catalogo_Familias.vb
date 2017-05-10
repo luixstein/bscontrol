@@ -128,15 +128,15 @@ Public Class Catalogo_Familias
         Dim sMsg As String = ""
         Select Case Me.Estado
             Case enumEstados.EDICION
-                sMsg = " grabar las modificaciones del " & Me.msgElemento & " : " & Me.TxtCodigoFamilia.Text
+                sMsg = " grabar las modificaciones de la "
             Case enumEstados.NUEVO
-                sMsg = " agregar el " & Me.msgElemento & " : " & Me.TxtCodigoFamilia.Text
+                sMsg = " agregar la "
             Case Else
                 MsgBox("Me.Estado no válido.", MsgBoxStyle.Exclamation, Me.Text)
                 Return
         End Select
-        sMsg = "Deseas " & sMsg & " ?"
-        If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
+        sMsg = "Deseas " & sMsg & Me.msgElemento & " : " & Me.TxtNombreFamilia.Text & " ?"
+        If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle), Me.Text) = MsgBoxResult.Yes Then
             Me.Grabar()
         End If
     End Sub
@@ -166,7 +166,7 @@ Public Class Catalogo_Familias
                 Case enumEstados.NUEVO
                     Me.gBoxInformacion.Enabled = True
                     Me.gBoxBusquedaRapida.Enabled = False
-                    Me.tssLabelEstado.Text = "Agregando nuevo " & Me.msgElemento
+                    Me.tssLabelEstado.Text = "Agregando nueva " & Me.msgElemento
                     Me.tsbNuevo.Enabled = False
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = True
@@ -228,11 +228,15 @@ Public Class Catalogo_Familias
     End Sub
 
     Private Sub DesplegarElementos()
-        With Me.Grid
-            .DataSource = oFamilias.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
-            .Columns("CODIGO_FAMILIA").Width = 50
-            .Columns("NOMBRE_FAMILIA").Width = 300
-        End With
+        Try
+            With Me.Grid
+                .DataSource = oFamilias.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
+                .Columns("CODIGO_FAMILIA").Width = 50
+                .Columns("NOMBRE_FAMILIA").Width = 300
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarElementos", ex)
+        End Try
     End Sub
 
     Private Sub LlenaElemento(ByVal sCodigo_Elemento As String)
@@ -265,18 +269,19 @@ Public Class Catalogo_Familias
             Select Case Me.Estado
                 Case enumEstados.NUEVO, enumEstados.EDICION
                     With Me.oFamilias
+                        .Codigo_Familia = Me.TxtCodigoFamilia.Text
+                        .Nombre_Familia = Me.TxtNombreFamilia.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
+                        .CODIGO_CATEGORIA = Me.txtCodigoCategoria.Text
+
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 Me.oFamilias = New Class_CatFamilias
 
-                                .Codigo_Familia = Me.TxtCodigoFamilia.Text
-                                .Nombre_Familia = Me.TxtNombreFamilia.Text
-                                .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
-                                .CODIGO_CATEGORIA = Me.txtCodigoCategoria.Text
                                 .GENERAR_CATEGORIA = Me.chkCrearCategoria.Checked
                                 .CODIGO_TIPO_CATEGORIA = Me.txtTipoCategoria.Text
 
-                                If .Insertar() Then
+                                If .Insertar() = True Then
                                     Grabado = True
                                     Me.Estado = enumEstados.NUEVO
                                 End If
@@ -291,9 +296,6 @@ Public Class Catalogo_Familias
                                     End If
                                 End If
 
-                                .Nombre_Familia = Me.TxtNombreFamilia.Text
-                                .Estatus = Me.CboEstatus.Text
-                                .CODIGO_CATEGORIA = Me.txtCodigoCategoria.Text
                                 .GENERAR_CATEGORIA = False
                                 .CODIGO_TIPO_CATEGORIA = ""
 
@@ -323,7 +325,7 @@ Public Class Catalogo_Familias
         Dim bResultado As Boolean = False
         Try
             If txtLEN(Me.TxtNombreFamilia.Text) = False Then
-                MsgBox("Capture el nombre de la familia.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("Captúre el nombre de la familia.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.TxtNombreFamilia.Focus()
                 Return False
             End If
@@ -407,34 +409,22 @@ Public Class Catalogo_Familias
         Me.Grid.DataSource = Nothing
         Me.DesplegarElementos()
     End Sub
+
 #End Region
 
 #Region "Eventos Genericos"
-    Private Sub CboEstatus_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboEstatus.KeyDown
-        If e.KeyCode = Keys.Return Then
-            tsbGrabar.PerformClick()
-        End If
-    End Sub
-
     Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombreFamilia.KeyPress, txtCodigoCategoria.KeyPress, TxtCodigoFamilia.KeyPress, txtTipoCategoria.KeyPress
         txtNoBeep(e)
     End Sub
 
-    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombreFamilia.KeyDown
+    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombreFamilia.KeyDown, CboEstatus.KeyDown, chkCrearCategoria.KeyDown
         If e.KeyCode = Keys.Return Then
-            Select Case Me.Estado
-                Case enumEstados.EDICION
-                    SendKeys.Send("{TAB}")
-                Case enumEstados.NUEVO
-                    SendKeys.Send("{TAB}")
-                    'tsbGrabar.PerformClick()
-            End Select
+            txtTAB(e)
         End If
     End Sub
 
-    Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoFamilia.KeyPress, txtCodigoCategoria.KeyPress
-        Dim txt As TextBox = CType(sender, TextBox)
-        txtSoloNumerosDecimales(e, txt.Text)
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoCategoria.KeyPress, txtTipoCategoria.KeyPress
+        txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
 
