@@ -889,7 +889,7 @@ Module FacturacionElectronica
                         .estado = fElectronicaValidaCampo(oCliente.CODIGO_ESTADO_SAT)
                         .pais = fElectronicaValidaCampo(oCliente.CODIGO_PAIS_SAT)
                     Else
-                        If oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
+                        If oCliente.CODIGO_PAIS_SAT <> "MEX" Then
                             .municipio = fElectronicaValidaCampo(oCliente.CIUDAD) 'Al ser extranjero no hay catalogo de municipios y se teclea manual.
                         Else
                             If txtLEN(oCliente.CODIGO_MUNICIPIO) = False And txtLEN(oCliente.CIUDAD) = True Then 'Tiene escrita la ciudad(municipio) a mano y no calza con ninguna del catálogo del sat, se forza a que falle
