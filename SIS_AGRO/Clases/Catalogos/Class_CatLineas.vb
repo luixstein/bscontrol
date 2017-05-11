@@ -10,11 +10,10 @@ Public Class Class_CatLineas
     Private _CODIGO_LINEA As String
     Private _NOMBRE_LINEA As String
     Private _CODIGO_CONCEPTO As String
-    ASDAD
 #End Region
 
 #Region "Campos ligados a la tabla"
-
+    Private _GENERAR_CONCEPTO As Boolean
 #End Region
 
 #Region "Campos públicos"
@@ -29,7 +28,7 @@ Public Class Class_CatLineas
     Private _Nombre_Catalogo As String
     Private _Nombre_Reporte As String
     Private _Conexion As SqlConnection
-    Private _QuerySelect As String
+    Private _QuerySELECT As String
     Private _QueryOrder As String
 
 #End Region
@@ -70,6 +69,12 @@ Public Class Class_CatLineas
 
 #Region "Propiedades de campos ligados a la tabla"
     Private _Existe As Boolean 'lectura
+
+    Public WriteOnly Property GENERAR_CONCEPTO() As Boolean
+        Set(ByVal Value As Boolean)
+            Me._GENERAR_CONCEPTO = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades públicos"
@@ -112,11 +117,11 @@ Public Class Class_CatLineas
 #Region "Constructor y destructor"
 
     Public Sub New()
-        Me._Nombre_Catalogo = "CAT_Lineas"
+        Me._Nombre_Catalogo = "CAT_LINEAS"
         Me._Nombre_Reporte = "RPT_CATALOGO_LINEAS"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "Select CODIGO_LINEA,NOMBRE_LINEA From CAT_Lineas"
+        Me._QuerySELECT = "SELECT CODIGO_LINEA,NOMBRE_LINEA From CAT_LINEAS"
         Me._QueryOrder = " Order by NOMBRE_LINEA"
     End Sub
 
@@ -151,15 +156,19 @@ Public Class Class_CatLineas
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_LINEAS_GRABA"
 
-            sqlParametro = .Parameters.Add("@CODIGO_LINEA", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_LINEA.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_LINEA", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_LINEA.ToUpper : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@NOMBRE_LINEA", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._NOMBRE_LINEA.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@Estatus", SqlDbType.Char, 1) : sqlParametro.Value = "A"
+            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = "A"
+            sqlParametro = .Parameters.Add("@CODIGO_CONCEPTO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_CONCEPTO)) : sqlParametro.Direction = ParameterDirection.InputOutput
+            sqlParametro = .Parameters.Add("@GENERAR_CONCEPTO", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._GENERAR_CONCEPTO)
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "1"
-            sqlParametro = .Parameters.Add("@CODIGO_CONCEPTO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CONCEPTO
+
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
                 bResultado = True
+                Me._CODIGO_LINEA = "" & .Parameters("@CODIGO_LINEA").Value.ToString
+                Me._CODIGO_CONCEPTO = "" & .Parameters("@CODIGO_CONCEPTO").Value.ToString
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "Insertar", ex)
             Finally
@@ -184,8 +193,9 @@ Public Class Class_CatLineas
             sqlParametro = .Parameters.Add("@CODIGO_LINEA", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_LINEA.ToUpper
             sqlParametro = .Parameters.Add("@NOMBRE_LINEA", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._NOMBRE_LINEA.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "0"
             sqlParametro = .Parameters.Add("@CODIGO_CONCEPTO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CONCEPTO
+            sqlParametro = .Parameters.Add("@GENERAR_CONCEPTO", SqlDbType.Char, 1) : sqlParametro.Value = "0"
+            sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "0"
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
@@ -203,7 +213,7 @@ Public Class Class_CatLineas
 
     Public Overrides Function Consultar() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand("Select * from Cat_Lineas Where CODIGO_LINEA='" & Replace(Me._CODIGO_LINEA, "'", "''") & "'", Me._Conexion)
+        Dim cmd As New SqlCommand("SELECT * from CAT_LINEAS WHERE CODIGO_LINEA='" & sReplace(Me._CODIGO_LINEA) & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -232,7 +242,7 @@ Public Class Class_CatLineas
 
     Public Overrides Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
+        Dim da As New SqlDataAdapter(Me._QuerySELECT & Me._QueryOrder, Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
@@ -245,7 +255,7 @@ Public Class Class_CatLineas
 
     Public Function ObtenerElementosFiltro(ByVal Filtro As String, ByVal Estatus As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("SELECT CODIGO_LINEA, NOMBRE_LINEA FROM CAT_LINEAS WHERE NOMBRE_LINEA LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & Estatus & "' ORDER BY NOMBRE_LINEA", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_LINEA,NOMBRE_LINEA FROM CAT_LINEAS WHERE NOMBRE_LINEA LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & Estatus & "' ORDER BY NOMBRE_LINEA", Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
@@ -258,7 +268,7 @@ Public Class Class_CatLineas
 
     Public Function ObtenerElementosParaReportes() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
+        Dim da As New SqlDataAdapter(Me._QuerySELECT & Me._QueryOrder, Me._Conexion)
         Try
             da.Fill(dTable)
             dTable.Rows.Add("T", "TODAS")
@@ -276,8 +286,8 @@ Public Class Class_CatLineas
         f.Text = "Búsqueda de Metodos de Tipos de Socios por codigo."
         f.sCampo = "CODIGO_LINEA"
         f.sOrder = "NOMBRE_LINEA"
-        f.sTable = "CAT_Lineas"
-        f.sQl = "Select CODIGO_LINEA,NOMBRE_LINEA From CAT_Lineas Where 1=1 And"
+        f.sTable = "CAT_LINEAS"
+        f.sQl = "SELECT CODIGO_LINEA,NOMBRE_LINEA From CAT_LINEAS WHERE 1=1 And"
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -296,8 +306,8 @@ Public Class Class_CatLineas
         f.Text = "Búsqueda de Lineas por Descripción."
         f.sCampo = "NOMBRE_LINEA"
         f.sOrder = "NOMBRE_LINEA"
-        f.sTable = "CAT_Lineas"
-        f.sQl = "Select CODIGO_LINEA,NOMBRE_LINEA From CAT_Lineas Where 1=1 And"
+        f.sTable = "CAT_LINEAS"
+        f.sQl = "SELECT CODIGO_LINEA,NOMBRE_LINEA From CAT_LINEAS WHERE 1=1 And"
         f.Inicia("")
         f.ShowDialog()
         Try

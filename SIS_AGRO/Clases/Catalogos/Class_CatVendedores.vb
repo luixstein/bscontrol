@@ -156,10 +156,10 @@ Public Class Class_CatVendedores
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_VENDEDORES_GRABA"
 
-            sqlParametro = .Parameters.Add("@CODIGO_VENDEDOR", SqlDbType.SmallInt, 2) : sqlParametro.Value = Me._CODIGO_VENDEDOR
+            sqlParametro = .Parameters.Add("@CODIGO_VENDEDOR", SqlDbType.SmallInt, 2) : sqlParametro.Value = Me._CODIGO_VENDEDOR : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@NOMBRE_VENDEDOR", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_VENDEDOR.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._Estatus.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_CATEGORIA))
+            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_CATEGORIA)) : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@GENERAR_CATEGORIA", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._GENERAR_CATEGORIA)
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_TIPO_CATEGORIA))
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._Agregar
@@ -168,6 +168,8 @@ Public Class Class_CatVendedores
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
                 bResultado = True
+                Me._CODIGO_VENDEDOR = "" & .Parameters("@CODIGO_VENDEDOR").Value.ToString
+                Me._CODIGO_CATEGORIA = "" & .Parameters("@CODIGO_CATEGORIA").Value.ToString
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
             Finally

@@ -58,7 +58,7 @@ Public Class Catalogo_Lineas
     Private Sub tsbNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbNuevo.Click
         Me.Estado = enumEstados.NUEVO
         Me.Cambia_Estado()
-        Me.TxtCodigoLinea.Text = Me.oLineas.CodigoSiguiente
+        'Me.TxtCodigoLinea.Text = Me.oLineas.CodigoSiguiente
     End Sub
 
     Private Sub tsbEditar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbEditar.Click
@@ -121,10 +121,10 @@ Public Class Catalogo_Lineas
                     Me.TxtNombreLinea.Enabled = True
                     Me.CboEstatus.Enabled = False
                     Me.InicializaElemento()
-                    Me.TxtCodigoLinea.Focus()
 
-                    Me.txtCodigoConcepto.Text = ""
-                    Me.lblNombreConcepto.Text = "_"
+                    Me.chkCrearConcepto.Visible = True : Me.chkCrearConcepto.Checked = False
+
+                    Me.TxtCodigoLinea.Focus()
 
                 Case enumEstados.EDICION
                     Me.gBoxInformacion.Enabled = True
@@ -138,6 +138,9 @@ Public Class Catalogo_Lineas
                     Me.TxtCodigoLinea.Enabled = False
                     Me.TxtNombreLinea.Enabled = True
                     Me.CboEstatus.Enabled = True
+
+                    Me.chkCrearConcepto.Visible = False : Me.chkCrearConcepto.Checked = False
+
                     Me.TxtNombreLinea.Focus()
 
                 Case enumEstados.CONSULTA
@@ -148,6 +151,9 @@ Public Class Catalogo_Lineas
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = False
+
+                    Me.chkCrearConcepto.Visible = False : Me.chkCrearConcepto.Checked = False
+
                     Me.txtFiltro.Focus()
 
             End Select
@@ -161,6 +167,9 @@ Public Class Catalogo_Lineas
         Me.TxtCodigoLinea.Text = ""
         Me.TxtNombreLinea.Text = ""
         Me.CboEstatus.SelectedIndex = 0
+        Me.txtCodigoConcepto.Text = ""
+        Me.lblNombreConcepto.Text = "_"
+        Me.chkCrearConcepto.Checked = False
     End Sub
 
     Private Sub DesplegarElementos()
@@ -168,7 +177,7 @@ Public Class Catalogo_Lineas
             With Me.Grid
                 .DataSource = oLineas.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
                 .Columns("CODIGO_LINEA").Width = 50
-                .Columns("NOMBRE_LINEA").Width = 200
+                .Columns("NOMBRE_LINEA").Width = 280
             End With
         Catch ex As Exception
             HandleError(Me.Name, "DesplegarElementos", ex)
@@ -213,14 +222,13 @@ Public Class Catalogo_Lineas
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
-
-                                .GENERAR_CATEGORIA = Me.chkCrearCategoria.Checked
+                                .GENERAR_CONCEPTO = Me.chkCrearConcepto.Checked
                                 If .Insertar() = True Then
                                     Grabado = True
                                     Me.Estado = enumEstados.NUEVO
                                 End If
                             Case enumEstados.EDICION
-                                .GENERAR_CATEGORIA = False
+                                .GENERAR_CONCEPTO = False
                                 If .Actualizar() = True Then
                                     Grabado = True
                                     Me.Estado = enumEstados.CONSULTA
@@ -262,12 +270,6 @@ Public Class Catalogo_Lineas
                 Case True
                     'No hay nada que validar
             End Select
-
-            If txtLEN(Me.txtCodigoConcepto.Text) = False Then
-                MsgBox("Seleccione un concepto, en caso de no tener, agregar 0.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.txtCodigoConcepto.Focus()
-                Return bResultado
-            End If
 
             bResultado = True
         Catch ex As Exception

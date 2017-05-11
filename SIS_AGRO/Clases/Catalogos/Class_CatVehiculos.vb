@@ -7,10 +7,10 @@ Public Class Class_CatVehiculos
 #Region "Campos"
 
 #Region "Campos de la tabla"
-    Private _Codigo_Vehiculo As String
+    Private _CODIGO_VEHICULO As String
     Private _Nombre_Vehiculo As String
     Private _Estatus As String
-    Private _Codigo_Categoria As String
+    Private _CODIGO_CATEGORIA As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -41,12 +41,12 @@ Public Class Class_CatVehiculos
 #Region "Propiedades"
 
 #Region "Propiedades Campos de la tabla"
-    Public Property Codigo_Vehiculo() As String
+    Public Property CODIGO_VEHICULO() As String
         Get
-            Return Me._Codigo_Vehiculo
+            Return Me._CODIGO_VEHICULO
         End Get
         Set(ByVal Value As String)
-            Me._Codigo_Vehiculo = Value
+            Me._CODIGO_VEHICULO = Value
         End Set
     End Property
 
@@ -59,12 +59,12 @@ Public Class Class_CatVehiculos
         End Set
     End Property
 
-    Public Property Codigo_Categoria() As String
+    Public Property CODIGO_CATEGORIA() As String
         Get
-            Return Me._Codigo_Categoria
+            Return Me._CODIGO_CATEGORIA
         End Get
         Set(ByVal Value As String)
-            Me._Codigo_Categoria = Value
+            Me._CODIGO_CATEGORIA = Value
         End Set
     End Property
 #End Region
@@ -131,7 +131,7 @@ Public Class Class_CatVehiculos
     Public Sub New(ByVal sCodigoVehiculo As String)
         Me.New()
         Try
-            Me._Codigo_Vehiculo = sCodigoVehiculo
+            Me._CODIGO_VEHICULO = sCodigoVehiculo
             If Me.Consultar = True Then
                 Me._Existe = True
 
@@ -163,10 +163,10 @@ Public Class Class_CatVehiculos
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_VEHICULOS_GRABA"
 
-            sqlParametro = .Parameters.Add("@CODIGO_VEHICULO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Vehiculo)
+            sqlParametro = .Parameters.Add("@CODIGO_VEHICULO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_VEHICULO) : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@NOMBRE_VEHICULO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._Nombre_Vehiculo.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._Estatus
-            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._Codigo_Categoria))
+            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_CATEGORIA)) : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@GENERAR_CATEGORIA", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._GENERAR_CATEGORIA)
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_TIPO_CATEGORIA))
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "INSERTAR"
@@ -174,6 +174,8 @@ Public Class Class_CatVehiculos
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
                 bResultado = True
+                Me._CODIGO_VEHICULO = "" & .Parameters("@CODIGO_VEHICULO").Value.ToString
+                Me._CODIGO_CATEGORIA = "" & .Parameters("@CODIGO_CATEGORIA").Value.ToString
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "Insertar", ex)
             Finally
@@ -195,10 +197,10 @@ Public Class Class_CatVehiculos
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_VEHICULOS_GRABA"
 
-            sqlParametro = .Parameters.Add("@CODIGO_VEHICULO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Vehiculo)
+            sqlParametro = .Parameters.Add("@CODIGO_VEHICULO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_VEHICULO)
             sqlParametro = .Parameters.Add("@NOMBRE_VEHICULO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._Nombre_Vehiculo.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._Estatus
-            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = Me._Codigo_Categoria
+            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CATEGORIA
             sqlParametro = .Parameters.Add("@GENERAR_CATEGORIA", SqlDbType.Char, 1) : sqlParametro.Value = "0"
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = 0
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "ACTUALIZAR"
@@ -219,7 +221,7 @@ Public Class Class_CatVehiculos
 
     Public Overrides Function Consultar() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand("Select * from CAT_VEHICULOS Where CODIGO_VEHICULO='" & sReplace(Me._Codigo_Vehiculo) & "'", Me._Conexion)
+        Dim cmd As New SqlCommand("Select * from CAT_VEHICULOS Where CODIGO_VEHICULO='" & sReplace(Me._CODIGO_VEHICULO) & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -229,10 +231,10 @@ Public Class Class_CatVehiculos
                 dReader = .ExecuteReader()
 
                 If dReader.Read Then
-                    Me._Codigo_Vehiculo = "" & dReader("CODIGO_VEHICULO").ToString
+                    Me._CODIGO_VEHICULO = "" & dReader("CODIGO_VEHICULO").ToString
                     Me._Nombre_Vehiculo = Trim("" & dReader("NOMBRE_VEHICULO").ToString)
                     Me._Estatus = "" & dReader("ESTATUS")
-                    Me._Codigo_Categoria = "" & dReader("CODIGO_CATEGORIA").ToString
+                    Me._CODIGO_CATEGORIA = "" & dReader("CODIGO_CATEGORIA").ToString
                     bResultado = True
                 End If
                 dReader.Close()
@@ -281,7 +283,7 @@ Public Class Class_CatVehiculos
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementosFiltro", ex)
         Finally
-            dA.Dispose()
+            da.Dispose()
         End Try
         Return dTable
     End Function
@@ -290,10 +292,10 @@ Public Class Class_CatVehiculos
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de categoria por codigo."
-        f.sCampo = "Codigo_VEHICULO"
+        f.sCampo = "CODIGO_VEHICULO"
         f.sOrder = "Nombre_VEHICULO"
         f.sTable = "CAT_VEHICULOS"
-        f.sQl = "Select Codigo_VEHICULO,Nombre_VEHICULO From CAT_VEHICULOS Where 1=1 And"
+        f.sQl = "Select CODIGO_VEHICULO,Nombre_VEHICULO From CAT_VEHICULOS Where 1=1 And"
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -313,7 +315,7 @@ Public Class Class_CatVehiculos
         f.sCampo = "Nombre_VEHICULO"
         f.sOrder = "Nombre_VEHICULO"
         f.sTable = "CAT_VEHICULOS"
-        f.sQl = "Select Codigo_VEHICULO,Nombre_VEHICULO From CAT_VEHICULOS Where 1=1 And"
+        f.sQl = "Select CODIGO_VEHICULO,Nombre_VEHICULO From CAT_VEHICULOS Where 1=1 And"
         f.Inicia("")
         f.ShowDialog()
         Try

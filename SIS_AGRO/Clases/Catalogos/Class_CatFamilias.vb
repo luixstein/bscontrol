@@ -170,11 +170,11 @@ Public Class Class_CatFamilias
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_FAMILIAS_GRABA"
 
-            sqlParametro = .Parameters.Add("@CODIGO_FAMILIA", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_FAMILIA
+            sqlParametro = .Parameters.Add("@CODIGO_FAMILIA", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_FAMILIA : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@NOMBRE_FAMILIA", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._NOMBRE_FAMILIA.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToString.ToUpper
             'sqlParametro = .Parameters.Add("@CODIGO_CONCEPTO_COSTO_PRODUCCION", SqlDbType.NVarChar, 4) : sqlParametro.Value = ""
-            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_CATEGORIA))
+            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_CATEGORIA)) : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@GENERAR_CATEGORIA", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._GENERAR_CATEGORIA)
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_TIPO_CATEGORIA))
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "1"
@@ -183,6 +183,8 @@ Public Class Class_CatFamilias
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
                 bResultado = True
+                Me._CODIGO_FAMILIA = "" & .Parameters("@CODIGO_FAMILIA").Value.ToString
+                Me._CODIGO_CATEGORIA = "" & .Parameters("@CODIGO_CATEGORIA").Value.ToString
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "Insertar", ex)
             Finally
