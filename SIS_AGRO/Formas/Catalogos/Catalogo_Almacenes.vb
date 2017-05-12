@@ -174,7 +174,11 @@ Public Class Catalogo_Almacenes
                     Me.txtCodigoZona.Enabled = True
                     Me.TxtCodigoCategoria.Enabled = True
                     Me.CboEstatus.Enabled = False
+
                     Me.InicializaElemento()
+
+                    Me.chkCrearCategoria.Visible = True : Me.chkCrearCategoria.Checked = False : Me.chkCrearCategoria.Checked = True 'esta como false y true para forzar a que hay cambio y se ejecute el evento del check
+
                     Me.TxtCodigoAlmacen.Focus()
 
                 Case enumEstados.EDICION
@@ -191,6 +195,9 @@ Public Class Catalogo_Almacenes
                     Me.CboEstatus.Enabled = True
                     Me.TxtCodigoCategoria.Enabled = True
                     Me.txtCodigoZona.Enabled = True
+
+                    Me.chkCrearCategoria.Visible = False : Me.chkCrearCategoria.Checked = True : Me.chkCrearCategoria.Checked = False
+
                     Me.TxtNombreAlmacen.Focus()
 
                 Case enumEstados.CONSULTA
@@ -202,6 +209,9 @@ Public Class Catalogo_Almacenes
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = False
+
+                    Me.chkCrearCategoria.Visible = False : Me.chkCrearCategoria.Checked = True : Me.chkCrearCategoria.Checked = False
+
                     Me.txtFiltro.Focus()
 
             End Select
@@ -349,54 +359,58 @@ Public Class Catalogo_Almacenes
     Private Function Validar() As Boolean
         Dim bResultado As Boolean = False
 
-        If txtLEN(Me.TxtNombreAlmacen.Text) = False Then
-            MsgBox("Asígne nombre al almacén", MsgBoxStyle.Exclamation, Me.Text)
-            Me.TxtNombreAlmacen.Focus()
-            Return bResultado
-        End If
-
-        If txtLEN(Me.txtCodigoZona.Text) = False Then
-            MsgBox("Asígne un código de zona.", MsgBoxStyle.Exclamation, Me.Text)
-            Me.txtCodigoZona.Focus()
-            Return bResultado
-        Else
-            Dim sql1 As New Class_find("SELECT CODIGO_ZONA FROM CAT_ZONAS WHERE CODIGO_ZONA='" & Me.txtCodigoZona.Text & "' ")
-
-            If txtLEN(sql1.Result1) = False Then
-                MsgBox("El código de zona no existe.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.txtCodigoZona.Focus()
+        Try
+            If txtLEN(Me.TxtNombreAlmacen.Text) = False Then
+                MsgBox("Asígne nombre al almacén", MsgBoxStyle.Exclamation, Me.Text)
+                Me.TxtNombreAlmacen.Focus()
                 Return bResultado
             End If
-        End If
 
-        Select Case Me.chkCrearCategoria.Checked
-            Case False
-                If txtLEN(Me.TxtCodigoCategoria.Text) = False Then
-                    MsgBox("Seleccione una categoria, en caso de no tener, puede usar la 0.", MsgBoxStyle.Exclamation, Me.Text)
-                    Me.TxtCodigoCategoria.Focus()
-                    Return False
+            If txtLEN(Me.txtCodigoZona.Text) = False Then
+                MsgBox("Asígne un código de zona.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtCodigoZona.Focus()
+                Return bResultado
+            Else
+                Dim sql1 As New Class_find("SELECT CODIGO_ZONA FROM CAT_ZONAS WHERE CODIGO_ZONA='" & Me.txtCodigoZona.Text & "' ")
+
+                If txtLEN(sql1.Result1) = False Then
+                    MsgBox("El código de zona no existe.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.txtCodigoZona.Focus()
+                    Return bResultado
                 End If
-            Case True
-                If txtLEN(Me.txtTipoCategoria.Text) = False Then
-                    MsgBox("Seleccione el tipo de categoria.", MsgBoxStyle.Exclamation, Me.Text)
-                    Me.txtTipoCategoria.Focus()
-                    Return False
-                End If
-        End Select
+            End If
 
-        'Me.oCuenta.CUENTA_CONTABLE = Me.txtCuentaContable.Text
-        'If Me.oCuenta.Consultar = False Then
-        '    MsgBox("La cuenta contable que intenta guardar no es válida, favor de revisar", MsgBoxStyle.Exclamation, "Validación de la cuenta contable")
-        '    Me.txtCuentaContable.Focus()
-        '    Exit Sub
-        'End If
-        'If oCuenta.isCuentaContableValida(Me.txtCuentaContable.Text, False) = False Then
-        '    MsgBox("La cuenta contable del almacen debe de ser de mayor", MsgBoxStyle.Exclamation, Me.Text)
-        '    Me.txtCuentaContable.Focus()
-        '    Exit Sub
-        'End If
+            Select Case Me.chkCrearCategoria.Checked
+                Case False
+                    If txtLEN(Me.TxtCodigoCategoria.Text) = False Then
+                        MsgBox("Seleccione una categoria, en caso de no tener, puede usar la 0.", MsgBoxStyle.Exclamation, Me.Text)
+                        Me.TxtCodigoCategoria.Focus()
+                        Return False
+                    End If
+                Case True
+                    If txtLEN(Me.txtTipoCategoria.Text) = False Then
+                        MsgBox("Seleccione el tipo de categoria.", MsgBoxStyle.Exclamation, Me.Text)
+                        Me.txtTipoCategoria.Focus()
+                        Return False
+                    End If
+            End Select
 
-        bResultado = True
+            'Me.oCuenta.CUENTA_CONTABLE = Me.txtCuentaContable.Text
+            'If Me.oCuenta.Consultar = False Then
+            '    MsgBox("La cuenta contable que intenta guardar no es válida, favor de revisar", MsgBoxStyle.Exclamation, "Validación de la cuenta contable")
+            '    Me.txtCuentaContable.Focus()
+            '    Exit Sub
+            'End If
+            'If oCuenta.isCuentaContableValida(Me.txtCuentaContable.Text, False) = False Then
+            '    MsgBox("La cuenta contable del almacen debe de ser de mayor", MsgBoxStyle.Exclamation, Me.Text)
+            '    Me.txtCuentaContable.Focus()
+            '    Exit Sub
+            'End If
+
+            bResultado = True
+        Catch ex As Exception
+            HandleError(Me.Name, "Validar", ex)
+        End Try
         Return bResultado
     End Function
 

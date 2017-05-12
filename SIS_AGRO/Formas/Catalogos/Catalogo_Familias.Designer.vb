@@ -228,9 +228,9 @@ Partial Class Catalogo_Familias
         Me.LblCodigoCategoria.AutoSize = True
         Me.LblCodigoCategoria.Location = New System.Drawing.Point(6, 98)
         Me.LblCodigoCategoria.Name = "LblCodigoCategoria"
-        Me.LblCodigoCategoria.Size = New System.Drawing.Size(58, 13)
+        Me.LblCodigoCategoria.Size = New System.Drawing.Size(60, 13)
         Me.LblCodigoCategoria.TabIndex = 92
-        Me.LblCodigoCategoria.Text = "Categoria :"
+        Me.LblCodigoCategoria.Text = "Categoría :"
         '
         'Label2
         '

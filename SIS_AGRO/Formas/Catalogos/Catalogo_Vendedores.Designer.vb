@@ -67,7 +67,7 @@ Partial Class Catalogo_Vendedores
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbEditar, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimirListado, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(640, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(711, 27)
         Me.tsMenu.TabIndex = 2
         Me.tsMenu.Text = "tsMenu"
         '
@@ -125,7 +125,7 @@ Partial Class Catalogo_Vendedores
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssLabel, Me.tssLabelEstado})
         Me.StatusStripEstado.Location = New System.Drawing.Point(0, 549)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Size = New System.Drawing.Size(640, 22)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(711, 22)
         Me.StatusStripEstado.TabIndex = 9
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -146,7 +146,7 @@ Partial Class Catalogo_Vendedores
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(329, 28)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(305, 514)
+        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(370, 514)
         Me.gBoxBusquedaRapida.TabIndex = 1
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
@@ -163,7 +163,7 @@ Partial Class Catalogo_Vendedores
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
         Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(292, 465)
+        Me.Grid.Size = New System.Drawing.Size(358, 465)
         Me.Grid.TabIndex = 115
         '
         'txtFiltro
@@ -172,7 +172,7 @@ Partial Class Catalogo_Vendedores
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFiltro.Location = New System.Drawing.Point(6, 19)
         Me.txtFiltro.Name = "txtFiltro"
-        Me.txtFiltro.Size = New System.Drawing.Size(293, 20)
+        Me.txtFiltro.Size = New System.Drawing.Size(285, 20)
         Me.txtFiltro.TabIndex = 0
         '
         'gBoxInformacion
@@ -214,9 +214,9 @@ Partial Class Catalogo_Vendedores
         Me.chkCrearCategoria.AutoSize = True
         Me.chkCrearCategoria.Location = New System.Drawing.Point(9, 157)
         Me.chkCrearCategoria.Name = "chkCrearCategoria"
-        Me.chkCrearCategoria.Size = New System.Drawing.Size(191, 17)
+        Me.chkCrearCategoria.Size = New System.Drawing.Size(193, 17)
         Me.chkCrearCategoria.TabIndex = 4
-        Me.chkCrearCategoria.Text = "Crear categoria automáticamente ?"
+        Me.chkCrearCategoria.Text = "Crear categoría automáticamente ?"
         Me.chkCrearCategoria.UseVisualStyleBackColor = True
         '
         'txtTipoCategoria
@@ -259,9 +259,9 @@ Partial Class Catalogo_Vendedores
         Me.lblCodigoCategoria.AutoSize = True
         Me.lblCodigoCategoria.Location = New System.Drawing.Point(6, 112)
         Me.lblCodigoCategoria.Name = "lblCodigoCategoria"
-        Me.lblCodigoCategoria.Size = New System.Drawing.Size(58, 13)
+        Me.lblCodigoCategoria.Size = New System.Drawing.Size(60, 13)
         Me.lblCodigoCategoria.TabIndex = 92
-        Me.lblCodigoCategoria.Text = "Categoria :"
+        Me.lblCodigoCategoria.Text = "Categoría :"
         '
         'Label2
         '
@@ -274,7 +274,7 @@ Partial Class Catalogo_Vendedores
         'LblDisplayNombreCultivo
         '
         Me.LblDisplayNombreCultivo.AutoSize = True
-        Me.LblDisplayNombreCultivo.Location = New System.Drawing.Point(6, 48)
+        Me.LblDisplayNombreCultivo.Location = New System.Drawing.Point(6, 44)
         Me.LblDisplayNombreCultivo.Name = "LblDisplayNombreCultivo"
         Me.LblDisplayNombreCultivo.Size = New System.Drawing.Size(50, 13)
         Me.LblDisplayNombreCultivo.TabIndex = 74
@@ -333,7 +333,7 @@ Partial Class Catalogo_Vendedores
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(640, 571)
+        Me.ClientSize = New System.Drawing.Size(711, 571)
         Me.Controls.Add(Me.tsMenu)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.gBoxBusquedaRapida)
@@ -341,7 +341,7 @@ Partial Class Catalogo_Vendedores
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Vendedores"
-        Me.Text = "Catalogo vendedores"
+        Me.Text = "Catálogo de vendedores"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()
         Me.StatusStripEstado.ResumeLayout(False)

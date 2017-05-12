@@ -7,9 +7,9 @@ Public Class Class_CatCategorias
 #Region "Campos"
 
 #Region "Campos de la tabla"
-    Private _Codigo_Categoria As String
-    Private _Nombre_Categoria As String
-    Private _Codigo_Tipo_Categoria As String
+    Private _CODIGO_CATEGORIA As String
+    Private _NOMBRE_CATEGORIA As String
+    Private _CODIGO_TIPO_CATEGORIA As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -28,7 +28,7 @@ Public Class Class_CatCategorias
     Private _Nombre_Catalogo As String
     Private _Nombre_Reporte As String
     Private _Conexion As SqlConnection
-    Private _QuerySelect As String
+    Private _QuerySELECT As String
     Private _QueryOrder As String
 
 #End Region
@@ -38,30 +38,30 @@ Public Class Class_CatCategorias
 #Region "Propiedades"
 
 #Region "Propiedades Campos de la tabla"
-    Public Property Codigo_Categoria() As String
+    Public Property CODIGO_CATEGORIA() As String
         Get
-            Return Me._Codigo_Categoria
+            Return Me._CODIGO_CATEGORIA
         End Get
         Set(ByVal Value As String)
-            Me._Codigo_Categoria = Value
+            Me._CODIGO_CATEGORIA = Value
         End Set
     End Property
 
-    Public Property Nombre_Categoria() As String
+    Public Property NOMBRE_CATEGORIA() As String
         Get
-            Return Me._Nombre_Categoria
+            Return Me._NOMBRE_CATEGORIA
         End Get
         Set(ByVal Value As String)
-            Me._Nombre_Categoria = Value
+            Me._NOMBRE_CATEGORIA = Value
         End Set
     End Property
 
-    Public Property Codigo_Tipo_Categoria() As String
+    Public Property CODIGO_TIPO_CATEGORIA() As String
         Get
-            Return Me._Codigo_Tipo_Categoria
+            Return Me._CODIGO_TIPO_CATEGORIA
         End Get
         Set(ByVal Value As String)
-            Me._Codigo_Tipo_Categoria = Value
+            Me._CODIGO_TIPO_CATEGORIA = Value
         End Set
     End Property
 #End Region
@@ -118,14 +118,14 @@ Public Class Class_CatCategorias
         Me._Nombre_Reporte = "RPT_CAT_Categoria.rpt"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "Select Codigo_Categoria,Nombre_Categoria From CAT_CATEGORIAS"
-        Me._QueryOrder = " Order by Nombre_Categoria"
+        Me._QuerySELECT = "SELECT CODIGO_CATEGORIA,NOMBRE_CATEGORIA FROM CAT_CATEGORIAS"
+        Me._QueryOrder = " Order by NOMBRE_CATEGORIA"
     End Sub                                                         'Inicializa al objeto.
 
     Public Sub New(ByVal sCodigoCategoria As String)
         Me.New()
         Try
-            Me._Codigo_Categoria = sCodigoCategoria
+            Me._CODIGO_CATEGORIA = sCodigoCategoria
             If Me.Consultar = True Then
                 Me._Existe = True
 
@@ -157,15 +157,15 @@ Public Class Class_CatCategorias
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_CATEGORIAS_GRABA"
 
-            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Categoria) : sqlParametro.Direction = ParameterDirection.InputOutput
-            sqlParametro = .Parameters.Add("@NOMBRE_CATEGORIA", SqlDbType.NVarChar, 200) : sqlParametro.Value = Me._Nombre_Categoria.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Tipo_Categoria)
+            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_CATEGORIA) : sqlParametro.Direction = ParameterDirection.InputOutput
+            sqlParametro = .Parameters.Add("@NOMBRE_CATEGORIA", SqlDbType.NVarChar, 200) : sqlParametro.Value = Me._NOMBRE_CATEGORIA.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_TIPO_CATEGORIA)
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "INSERTAR"
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                Me._Codigo_Categoria = .Parameters("@CODIGO_CATEGORIA").Value.ToString
+                Me._CODIGO_CATEGORIA = .Parameters("@CODIGO_CATEGORIA").Value.ToString
                 bResultado = True
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "Insertar", ex)
@@ -188,9 +188,9 @@ Public Class Class_CatCategorias
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_CATEGORIAS_GRABA"
 
-            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Categoria)
-            sqlParametro = .Parameters.Add("@NOMBRE_CATEGORIA", SqlDbType.NVarChar, 200) : sqlParametro.Value = Me._Nombre_Categoria.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Tipo_Categoria)
+            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_CATEGORIA)
+            sqlParametro = .Parameters.Add("@NOMBRE_CATEGORIA", SqlDbType.NVarChar, 200) : sqlParametro.Value = Me._NOMBRE_CATEGORIA.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_TIPO_CATEGORIA)
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "ACTUALIZAR"
             Try
@@ -210,7 +210,7 @@ Public Class Class_CatCategorias
 
     Public Overrides Function Consultar() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand("Select * from Cat_Categorias Where Codigo_Categoria='" & Replace(Me._Codigo_Categoria, "'", "''") & "'", Me._Conexion)
+        Dim cmd As New SqlCommand("SELECT * FROM CAT_CATEGORIAS Where CODIGO_CATEGORIA='" & Replace(Me._CODIGO_CATEGORIA, "'", "''") & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -220,9 +220,9 @@ Public Class Class_CatCategorias
                 dReader = .ExecuteReader()
 
                 If dReader.Read Then
-                    Me._Codigo_Categoria = "" & dReader("CODIGO_CATEGORIA").ToString
-                    Me._Nombre_Categoria = Trim("" & dReader("NOMBRE_CATEGORIA").ToString)
-                    Me._Codigo_Tipo_Categoria = Trim("" & dReader("CODIGO_TIPO_CATEGORIA").ToString)
+                    Me._CODIGO_CATEGORIA = "" & dReader("CODIGO_CATEGORIA").ToString
+                    Me._NOMBRE_CATEGORIA = Trim("" & dReader("NOMBRE_CATEGORIA").ToString)
+                    Me._CODIGO_TIPO_CATEGORIA = Trim("" & dReader("CODIGO_TIPO_CATEGORIA").ToString)
                     Me.Estatus = "" & dReader("ESTATUS").ToString
                     bResultado = True
                 End If
@@ -239,7 +239,7 @@ Public Class Class_CatCategorias
 
     Public Overrides Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
+        Dim da As New SqlDataAdapter(Me._QuerySELECT & Me._QueryOrder, Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
@@ -252,7 +252,7 @@ Public Class Class_CatCategorias
 
     Public Function ObtenerElementosParaReportes() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
+        Dim da As New SqlDataAdapter(Me._QuerySELECT & Me._QueryOrder, Me._Conexion)
         Try
             da.Fill(dTable)
             dTable.Rows.Add("-1", "TODOS")
@@ -266,7 +266,9 @@ Public Class Class_CatCategorias
 
     Public Function ObtenerElementosFiltro(ByVal Filtro As String, ByVal Estatus As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("SELECT CODIGO_CATEGORIA, NOMBRE_CATEGORIA FROM CAT_CATEGORIAS WHERE NOMBRE_CATEGORIA LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & Estatus & "' ORDER BY NOMBRE_CATEGORIA", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT C.CODIGO_CATEGORIA,C.NOMBRE_CATEGORIA,T.NOMBRE_TIPO_CATEGORIA " & _
+                                     "FROM CAT_CATEGORIAS C INNER JOIN CAT_TIPOS_CATEGORIAS T ON(C.CODIGO_TIPO_CATEGORIA=T.CODIGO_TIPO_CATEGORIA)" & _
+                                     "WHERE C.NOMBRE_CATEGORIA LIKE '" & Filtro.ToString & "%' AND C.ESTATUS='" & Estatus & "' ORDER BY C.NOMBRE_CATEGORIA", Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
@@ -281,10 +283,10 @@ Public Class Class_CatCategorias
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de categoria por codigo."
-        f.sCampo = "Codigo_CATEGORIA"
-        f.sOrder = "Nombre_CATEGORIA"
+        f.sCampo = "CODIGO_CATEGORIA"
+        f.sOrder = "NOMBRE_CATEGORIA"
         f.sTable = "CAT_CATEGORIAS"
-        f.sQl = "Select Codigo_CATEGORIA,Nombre_CATEGORIA From CAT_CATEGORIAS Where 1=1 And"
+        f.sQl = "SELECT CODIGO_CATEGORIA,NOMBRE_CATEGORIA FROM CAT_CATEGORIAS Where 1=1 And"
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -301,10 +303,10 @@ Public Class Class_CatCategorias
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de categorias por nombre."
-        f.sCampo = "Nombre_CATEGORIA"
-        f.sOrder = "Nombre_CATEGORIA"
+        f.sCampo = "NOMBRE_CATEGORIA"
+        f.sOrder = "NOMBRE_CATEGORIA"
         f.sTable = "CAT_CATEGORIAS"
-        f.sQl = "Select Codigo_CATEGORIA,Nombre_CATEGORIA From CAT_CATEGORIAS Where 1=1 And"
+        f.sQl = "SELECT CODIGO_CATEGORIA,NOMBRE_CATEGORIA FROM CAT_CATEGORIAS Where 1=1 And"
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -320,7 +322,7 @@ Public Class Class_CatCategorias
     Public Function CodigoSiguiente() As String
         Dim Resultado As Integer
         Try
-            Dim sql As New Class_find("SELECT MAX(CODIGO_CATEGORIA) FROM CAT_CATEGORIAS")
+            Dim sql As New Class_find("SELECT ISNULL(MAX(CODIGO_CATEGORIA),0) FROM CAT_CATEGORIAS")
             Resultado = CType(sql.Result1, Integer) + 1
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "CodigoSiguiente", ex)

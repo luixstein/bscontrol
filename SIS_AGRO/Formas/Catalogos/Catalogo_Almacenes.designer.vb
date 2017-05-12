@@ -346,9 +346,9 @@ Partial Public Class Catalogo_Almacenes
         Me.lblDisplayTipoCategoria.AutoSize = True
         Me.lblDisplayTipoCategoria.Location = New System.Drawing.Point(6, 245)
         Me.lblDisplayTipoCategoria.Name = "lblDisplayTipoCategoria"
-        Me.lblDisplayTipoCategoria.Size = New System.Drawing.Size(96, 13)
+        Me.lblDisplayTipoCategoria.Size = New System.Drawing.Size(98, 13)
         Me.lblDisplayTipoCategoria.TabIndex = 224
-        Me.lblDisplayTipoCategoria.Text = "Tipo de categoria :"
+        Me.lblDisplayTipoCategoria.Text = "Tipo de categoría :"
         Me.lblDisplayTipoCategoria.Visible = False
         '
         'lblCodigoCategoria
@@ -356,18 +356,18 @@ Partial Public Class Catalogo_Almacenes
         Me.lblCodigoCategoria.AutoSize = True
         Me.lblCodigoCategoria.Location = New System.Drawing.Point(6, 185)
         Me.lblCodigoCategoria.Name = "lblCodigoCategoria"
-        Me.lblCodigoCategoria.Size = New System.Drawing.Size(58, 13)
+        Me.lblCodigoCategoria.Size = New System.Drawing.Size(60, 13)
         Me.lblCodigoCategoria.TabIndex = 221
-        Me.lblCodigoCategoria.Text = "Categoria :"
+        Me.lblCodigoCategoria.Text = "Categoría :"
         '
         'LblNombreCategoria
         '
         Me.LblNombreCategoria.AutoSize = True
         Me.LblNombreCategoria.Location = New System.Drawing.Point(111, 204)
         Me.LblNombreCategoria.Name = "LblNombreCategoria"
-        Me.LblNombreCategoria.Size = New System.Drawing.Size(10, 13)
+        Me.LblNombreCategoria.Size = New System.Drawing.Size(13, 13)
         Me.LblNombreCategoria.TabIndex = 220
-        Me.LblNombreCategoria.Text = "."
+        Me.LblNombreCategoria.Text = "_"
         '
         'TxtCodigoCategoria
         '
@@ -380,11 +380,11 @@ Partial Public Class Catalogo_Almacenes
         'lblNombreZona
         '
         Me.lblNombreZona.AutoSize = True
-        Me.lblNombreZona.Location = New System.Drawing.Point(111, 140)
+        Me.lblNombreZona.Location = New System.Drawing.Point(108, 140)
         Me.lblNombreZona.Name = "lblNombreZona"
-        Me.lblNombreZona.Size = New System.Drawing.Size(10, 13)
+        Me.lblNombreZona.Size = New System.Drawing.Size(13, 13)
         Me.lblNombreZona.TabIndex = 218
-        Me.lblNombreZona.Text = "."
+        Me.lblNombreZona.Text = "_"
         '
         'lblZona
         '
@@ -406,11 +406,11 @@ Partial Public Class Catalogo_Almacenes
         'LblCuenta
         '
         Me.LblCuenta.AutoSize = True
-        Me.LblCuenta.Location = New System.Drawing.Point(105, 92)
+        Me.LblCuenta.Location = New System.Drawing.Point(108, 92)
         Me.LblCuenta.Name = "LblCuenta"
-        Me.LblCuenta.Size = New System.Drawing.Size(10, 13)
+        Me.LblCuenta.Size = New System.Drawing.Size(13, 13)
         Me.LblCuenta.TabIndex = 215
-        Me.LblCuenta.Text = "."
+        Me.LblCuenta.Text = "_"
         '
         'txtCuentaContable
         '

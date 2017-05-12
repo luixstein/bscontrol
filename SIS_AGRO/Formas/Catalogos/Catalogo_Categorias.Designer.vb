@@ -64,8 +64,8 @@ Partial Class Catalogo_Categorias
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbEditar, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimirListado, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(755, 27)
-        Me.tsMenu.TabIndex = 28
+        Me.tsMenu.Size = New System.Drawing.Size(952, 27)
+        Me.tsMenu.TabIndex = 2
         Me.tsMenu.Text = "tsMenu"
         '
         'tsbNuevo
@@ -124,15 +124,15 @@ Partial Class Catalogo_Categorias
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(329, 28)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(418, 520)
-        Me.gBoxBusquedaRapida.TabIndex = 26
+        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(611, 520)
+        Me.gBoxBusquedaRapida.TabIndex = 1
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(321, 21)
+        Me.Label1.Location = New System.Drawing.Point(514, 21)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(48, 13)
         Me.Label1.TabIndex = 94
@@ -143,7 +143,7 @@ Partial Class Catalogo_Categorias
         Me.cboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboEstatusFiltro.FormattingEnabled = True
         Me.cboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
-        Me.cboEstatusFiltro.Location = New System.Drawing.Point(374, 18)
+        Me.cboEstatusFiltro.Location = New System.Drawing.Point(567, 18)
         Me.cboEstatusFiltro.MaxLength = 1
         Me.cboEstatusFiltro.Name = "cboEstatusFiltro"
         Me.cboEstatusFiltro.Size = New System.Drawing.Size(38, 21)
@@ -161,7 +161,7 @@ Partial Class Catalogo_Categorias
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
         Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(405, 471)
+        Me.Grid.Size = New System.Drawing.Size(599, 471)
         Me.Grid.TabIndex = 111
         '
         'txtFiltro
@@ -170,7 +170,7 @@ Partial Class Catalogo_Categorias
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFiltro.Location = New System.Drawing.Point(6, 19)
         Me.txtFiltro.Name = "txtFiltro"
-        Me.txtFiltro.Size = New System.Drawing.Size(310, 20)
+        Me.txtFiltro.Size = New System.Drawing.Size(503, 20)
         Me.txtFiltro.TabIndex = 0
         '
         'StatusStripEstado
@@ -179,7 +179,7 @@ Partial Class Catalogo_Categorias
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssLabel, Me.tssLabelEstado})
         Me.StatusStripEstado.Location = New System.Drawing.Point(0, 551)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Size = New System.Drawing.Size(755, 22)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(952, 22)
         Me.StatusStripEstado.TabIndex = 29
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -208,7 +208,7 @@ Partial Class Catalogo_Categorias
         Me.gBoxInformacion.Location = New System.Drawing.Point(12, 28)
         Me.gBoxInformacion.Name = "gBoxInformacion"
         Me.gBoxInformacion.Size = New System.Drawing.Size(310, 520)
-        Me.gBoxInformacion.TabIndex = 27
+        Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
         '
@@ -230,7 +230,7 @@ Partial Class Catalogo_Categorias
         Me.CboTipoCategoria.MaxLength = 1
         Me.CboTipoCategoria.Name = "CboTipoCategoria"
         Me.CboTipoCategoria.Size = New System.Drawing.Size(197, 21)
-        Me.CboTipoCategoria.TabIndex = 92
+        Me.CboTipoCategoria.TabIndex = 2
         '
         'Label2
         '
@@ -302,7 +302,7 @@ Partial Class Catalogo_Categorias
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(755, 573)
+        Me.ClientSize = New System.Drawing.Size(952, 573)
         Me.Controls.Add(Me.tsMenu)
         Me.Controls.Add(Me.gBoxBusquedaRapida)
         Me.Controls.Add(Me.StatusStripEstado)
@@ -310,7 +310,7 @@ Partial Class Catalogo_Categorias
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Categorias"
-        Me.Text = "Catálogo categorias"
+        Me.Text = "Catálogo de categorias"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()
         Me.gBoxBusquedaRapida.ResumeLayout(False)

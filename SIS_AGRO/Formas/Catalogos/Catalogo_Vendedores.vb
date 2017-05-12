@@ -212,7 +212,7 @@ Public Class Catalogo_Vendedores
                     Me.InicializaElemento()
 
                     Me.TxtIDVendedor.Text = oVentas.codigoSiguiente.ToString
-                    Me.chkCrearCategoria.Visible = True : Me.txtTipoCategoria.Visible = False : Me.lblDisplayTipoCategoria.Visible = False : Me.lblTipoCategoria.Visible = False : Me.chkCrearCategoria.Checked = False
+                    Me.chkCrearCategoria.Visible = True : Me.chkCrearCategoria.Checked = False : Me.chkCrearCategoria.Checked = True 'esta como false y true para forzar a que hay cambio y se ejecute el evento del check
                     Me.TxtNombreVendedor.Focus()
 
                 Case enumEstados.EDICION
@@ -228,7 +228,7 @@ Public Class Catalogo_Vendedores
                     Me.TxtNombreVendedor.Enabled = True
                     Me.CboEstatus.Enabled = True
                     Me.txtCodigoCategoria.Enabled = True
-                    Me.chkCrearCategoria.Visible = True : Me.txtTipoCategoria.Visible = False : Me.lblDisplayTipoCategoria.Visible = False : Me.lblTipoCategoria.Visible = False : Me.chkCrearCategoria.Checked = False
+                    Me.chkCrearCategoria.Visible = False : Me.chkCrearCategoria.Checked = True : Me.chkCrearCategoria.Checked = False
 
                     Me.TxtNombreVendedor.Focus()
 
@@ -241,7 +241,7 @@ Public Class Catalogo_Vendedores
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = False
 
-                    Me.chkCrearCategoria.Visible = True : Me.txtTipoCategoria.Visible = False : Me.lblDisplayTipoCategoria.Visible = False : Me.lblTipoCategoria.Visible = False : Me.chkCrearCategoria.Checked = False
+                    Me.chkCrearCategoria.Visible = False : Me.chkCrearCategoria.Checked = True : Me.chkCrearCategoria.Checked = False
                     Me.txtFiltro.Focus()
             End Select
             Application.DoEvents()
@@ -267,7 +267,7 @@ Public Class Catalogo_Vendedores
             With Me.Grid
                 .DataSource = oElementos.ObtenerElementos
                 .Columns("CODIGO_VENDEDOR").Width = 30
-                .Columns("NOMBRE_VENDEDOR").Width = 300
+                .Columns("NOMBRE_VENDEDOR").Width = 280
             End With
         Catch ex As Exception
             HandleError(Me.Name, "DesplegarElementos", ex)
@@ -278,7 +278,7 @@ Public Class Catalogo_Vendedores
         Try
             Dim oElemento As New Class_CatVendedores
             oElemento.CODIGO_VENDEDOR = iCodigo_Elemento
-            If oElemento.Consultar Then
+            If oElemento.Consultar = True Then
                 With oElemento
                     Me.TxtIDVendedor.Text = .CODIGO_VENDEDOR.ToString
                     Me.TxtNombreVendedor.Text = .NOMBRE_VENDEDOR.ToString
@@ -353,6 +353,7 @@ Public Class Catalogo_Vendedores
     End Sub
 
     Private Function Validar() As Boolean
+        Dim bResultado As Boolean = False
         Try
             If txtLEN(Me.TxtNombreVendedor.Text) = False Then
                 MsgBox("Capture el nombre del vendedor.", MsgBoxStyle.Exclamation, Me.Text)
@@ -375,9 +376,13 @@ Public Class Catalogo_Vendedores
                     End If
             End Select
 
+            bResultado = True
+
         Catch ex As Exception
             HandleError(Me.Name, "Validar", ex)
         End Try
+
+        Return bResultado
     End Function
 
 #End Region
