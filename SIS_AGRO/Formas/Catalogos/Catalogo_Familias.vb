@@ -176,10 +176,10 @@ Public Class Catalogo_Familias
                     Me.TxtNombreFamilia.Enabled = True
                     Me.CboEstatus.Enabled = False
                     Me.txtCodigoCategoria.Text = ""
-                    Me.lblCategoria.Text = "_"
-                    Me.chkCrearCategoria.Visible = True : Me.txtTipoCategoria.Visible = False : Me.lblDisplayTipoCategoria.Visible = False : Me.lblTipoCategoria.Visible = False : Me.chkCrearCategoria.Checked = False
 
                     Me.InicializaElemento()
+
+                    Me.chkCrearCategoria.Visible = True : Me.chkCrearCategoria.Checked = False : Me.chkCrearCategoria.Checked = True 'esta como false y true para forzar a que hay cambio y se ejecute el evento del check
 
                     Me.TxtNombreFamilia.Focus()
 
@@ -195,7 +195,9 @@ Public Class Catalogo_Familias
                     Me.TxtCodigoFamilia.Enabled = False
                     Me.TxtNombreFamilia.Enabled = True
                     Me.CboEstatus.Enabled = True
-                    Me.chkCrearCategoria.Visible = False : Me.txtTipoCategoria.Visible = False : Me.lblDisplayTipoCategoria.Visible = False : Me.lblTipoCategoria.Visible = False
+
+                    Me.chkCrearCategoria.Visible = False : Me.chkCrearCategoria.Checked = True : Me.chkCrearCategoria.Checked = False
+
                     Me.TxtNombreFamilia.Focus()
 
                 Case enumEstados.CONSULTA
@@ -207,7 +209,8 @@ Public Class Catalogo_Familias
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = False
 
-                    Me.chkCrearCategoria.Visible = False : Me.txtTipoCategoria.Visible = False : Me.lblDisplayTipoCategoria.Visible = False : Me.lblTipoCategoria.Visible = False
+                    Me.chkCrearCategoria.Visible = False : Me.chkCrearCategoria.Checked = True : Me.chkCrearCategoria.Checked = False
+
                     Me.txtFiltro.Focus()
             End Select
             Application.DoEvents()
@@ -221,7 +224,7 @@ Public Class Catalogo_Familias
         Me.TxtNombreFamilia.Text = ""
         Me.CboEstatus.SelectedIndex = 0
         Me.txtCodigoCategoria.Text = ""
-        Me.lblCategoria.Text = ""
+        Me.lblCategoria.Text = "_"
         Me.txtTipoCategoria.Text = ""
         Me.lblTipoCategoria.Text = ""
         Me.chkCrearCategoria.Checked = False
@@ -242,7 +245,7 @@ Public Class Catalogo_Familias
     Private Sub LlenaElemento(ByVal sCodigo_Elemento As String)
         Try
             Me.oFamilias.Codigo_Familia = sCodigo_Elemento
-            If Me.oFamilias.Consultar Then
+            If Me.oFamilias.Consultar = True Then
                 With Me.oFamilias
                     Me.TxtCodigoFamilia.Text = .Codigo_Familia.ToString
                     Me.TxtNombreFamilia.Text = .Nombre_Familia.ToString
@@ -254,9 +257,10 @@ Public Class Catalogo_Familias
                     Me.txtCodigoCategoria.Text = .CODIGO_CATEGORIA
                 End With
                 Dim oCategoria As New Class_CatCategorias
-                oCategoria.Codigo_Categoria = Me.txtCodigoCategoria.Text
-                oCategoria.Consultar()
-                Me.lblCategoria.Text = oCategoria.Nombre_Categoria
+                oCategoria.CODIGO_CATEGORIA = Me.txtCodigoCategoria.Text
+                If oCategoria.Consultar() = True Then
+                    Me.lblCategoria.Text = oCategoria.NOMBRE_CATEGORIA
+                End If
             End If
         Catch ex As Exception
             HandleError(Me.Name, "LlenaElemento", ex)
