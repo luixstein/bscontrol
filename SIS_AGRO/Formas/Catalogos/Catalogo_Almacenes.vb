@@ -122,6 +122,10 @@ Public Class Catalogo_Almacenes
     End Sub
 
     Private Sub tsbGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbGrabar.Click
+        If Me.Validar() = False Then
+            Return
+        End If
+
         Dim sMsg As String = ""
         Select Case Me.Estado
             Case enumEstados.EDICION
@@ -163,7 +167,7 @@ Public Class Catalogo_Almacenes
                 Case enumEstados.NUEVO
                     Me.gBoxInformacion.Enabled = True
                     Me.gBoxBusquedaRapida.Enabled = False
-                    Me.tssLabelEstado.Text = "Agregando una nueva " & Me.msgElemento
+                    Me.tssLabelEstado.Text = "Agregando nuevo " & Me.msgElemento
                     Me.tsbNuevo.Enabled = False
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = True
@@ -174,6 +178,7 @@ Public Class Catalogo_Almacenes
                     Me.txtCodigoZona.Enabled = True
                     Me.TxtCodigoCategoria.Enabled = True
                     Me.CboEstatus.Enabled = False
+                    Me.txtCuentaContable.Visible = False : Me.lblDisplayCuentaContable.Visible = False : Me.lblNombreCuenta.Visible = False
 
                     Me.InicializaElemento()
 
@@ -195,6 +200,7 @@ Public Class Catalogo_Almacenes
                     Me.CboEstatus.Enabled = True
                     Me.TxtCodigoCategoria.Enabled = True
                     Me.txtCodigoZona.Enabled = True
+                    Me.txtCuentaContable.Visible = True : Me.lblDisplayCuentaContable.Visible = True : Me.lblNombreCuenta.Visible = True
 
                     Me.chkCrearCategoria.Visible = False : Me.chkCrearCategoria.Checked = True : Me.chkCrearCategoria.Checked = False
 
@@ -209,6 +215,8 @@ Public Class Catalogo_Almacenes
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = False
+
+                    Me.txtCuentaContable.Visible = True : Me.lblDisplayCuentaContable.Visible = True : Me.lblNombreCuenta.Visible = True
 
                     Me.chkCrearCategoria.Visible = False : Me.chkCrearCategoria.Checked = True : Me.chkCrearCategoria.Checked = False
 
@@ -225,7 +233,7 @@ Public Class Catalogo_Almacenes
         Me.TxtCodigoAlmacen.Text = ""
         Me.TxtNombreAlmacen.Text = ""
         Me.txtCuentaContable.Text = ""
-        Me.LblCuenta.Text = ""
+        Me.lblNombreCuenta.Text = ""
         Me.txtCodigoZona.Text = ""
         Me.lblNombreZona.Text = ""
         Me.TxtCodigoCategoria.Text = ""
@@ -259,7 +267,7 @@ Public Class Catalogo_Almacenes
                     Dim sql As New Class_find("Select NOMBRE_CUENTA From CON_CAT_CUENTAS Where CUENTA_CONTABLE='" & txtCuentaContable.Text & "' ")
                     If sql.Result1 = "" Then
                     Else
-                        LblCuenta.Text = sql.Result1
+                        lblNombreCuenta.Text = sql.Result1
                     End If
                     sql = Nothing
 
@@ -293,10 +301,6 @@ Public Class Catalogo_Almacenes
     End Sub
 
     Private Sub Grabar()
-        If Validar() = False Then
-            Exit Sub
-        End If
-
         Dim Grabado As Boolean = False
         Select Case Me.Estado
             Case enumEstados.NUEVO, enumEstados.EDICION
@@ -367,6 +371,7 @@ Public Class Catalogo_Almacenes
             End If
 
             If txtLEN(Me.txtCodigoZona.Text) = False Then
+                Me.lblNombreZona.Text = ""
                 MsgBox("Asígne un código de zona.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.txtCodigoZona.Focus()
                 Return bResultado
@@ -383,13 +388,13 @@ Public Class Catalogo_Almacenes
             Select Case Me.chkCrearCategoria.Checked
                 Case False
                     If txtLEN(Me.TxtCodigoCategoria.Text) = False Then
-                        MsgBox("Seleccione una categoria, en caso de no tener, puede usar la 0.", MsgBoxStyle.Exclamation, Me.Text)
+                        MsgBox("Seleccione una categoría, en caso de no tener, puede usar la 0.", MsgBoxStyle.Exclamation, Me.Text)
                         Me.TxtCodigoCategoria.Focus()
                         Return False
                     End If
                 Case True
                     If txtLEN(Me.txtTipoCategoria.Text) = False Then
-                        MsgBox("Seleccione el tipo de categoria.", MsgBoxStyle.Exclamation, Me.Text)
+                        MsgBox("Seleccione el tipo de categoría.", MsgBoxStyle.Exclamation, Me.Text)
                         Me.txtTipoCategoria.Focus()
                         Return False
                     End If
@@ -474,13 +479,8 @@ Public Class Catalogo_Almacenes
 
 #Region "Eventos Genericos"
 
-    Private Sub CboEstatus_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboEstatus.KeyDown
-        If e.KeyCode = Keys.Return Then
-            tsbGrabar.PerformClick()
-        End If
-    End Sub
-
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombreAlmacen.KeyPress, txtCodigoZona.KeyPress, TxtCodigoCategoria.KeyPress
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtNombreAlmacen.KeyPress, txtCodigoZona.KeyPress, CboEstatus.KeyPress, TxtCodigoCategoria.KeyPress, chkCrearCategoria.KeyPress, _
+        txtTipoCategoria.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -494,24 +494,43 @@ Public Class Catalogo_Almacenes
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
-
-    Private Sub txtBeep_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtNombreAlmacen.KeyPress
-        Dim txt As TextBox = CType(sender, TextBox)
-        txtNoBeep(e)
-    End Sub
-
-    Private Sub txtNumericos_Validating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs)
-        Dim t As TextBox
-        t = CType(sender, TextBox)
-        If Not IsNumeric(t.Text) Then
-            t.Text = Val(t.Text).ToString
-        Else
-            Me.ErrorProvider.Clear()
-        End If
-    End Sub
 #End Region
 
 #Region "Keydown específicos"
+    Private Sub txtCodigoZona_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCodigoZona.KeyDown
+        Try
+            Dim oZonas As New Class_CatZonas
+
+            Select Case e.KeyCode
+                Case Keys.F6
+Buscar:
+                    Dim resultado As String
+                    resultado = oZonas.BusquedaVisual_PorDescripcion()
+                    Me.txtCodigoZona.Text = resultado
+                    If txtLEN(resultado) = True Then
+                        GoTo Enter : Exit Sub
+                    End If
+
+                Case Keys.Return
+Enter:
+                    If txtLEN(Me.txtCodigoZona.Text) = False Then
+                        Me.lblNombreZona.Text = "" : GoTo Buscar : Exit Sub
+                    End If
+
+                    oZonas = New Class_CatZonas(Me.txtCodigoZona.Text)
+                    If oZonas.Existe = True Then
+                        Me.lblNombreZona.Text = oZonas.NOMBRE_ZONA
+                        txtTAB(e)
+                    Else
+                        Me.lblNombreZona.Text = "" : GoTo Buscar : Exit Sub
+                    End If
+
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Name, "txtCodigoZona_KeyDown", ex)
+        End Try
+    End Sub
+
     Private Sub txtCodigoCategoria_keyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoCategoria.KeyDown
         Try
             Dim oCategorias As New Class_CatCategorias
@@ -538,7 +557,7 @@ Enter:
 
                     oCategorias = New Class_CatCategorias(Me.TxtCodigoCategoria.Text)
                     If oCategorias.Existe = True Then
-                        Me.lblCodigoCategoria.Text = oCategorias.Nombre_Categoria
+                        Me.lblCodigoCategoria.Text = oCategorias.NOMBRE_CATEGORIA
                     Else
                         Me.lblCodigoCategoria.Text = "_" : GoTo Buscar : Exit Sub
                     End If
@@ -594,7 +613,7 @@ Enter:
 #End Region
 
     Private Sub CboFiltroHoja_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Refrescar()
+        Me.Refrescar()
     End Sub
 
     Private Sub chkCrearCategoria_CheckedChanged(sender As Object, e As EventArgs) Handles chkCrearCategoria.CheckedChanged

@@ -238,9 +238,9 @@ Partial Class Catalogo_Vehiculos
         Me.chkCrearCategoria.AutoSize = True
         Me.chkCrearCategoria.Location = New System.Drawing.Point(9, 133)
         Me.chkCrearCategoria.Name = "chkCrearCategoria"
-        Me.chkCrearCategoria.Size = New System.Drawing.Size(191, 17)
+        Me.chkCrearCategoria.Size = New System.Drawing.Size(193, 17)
         Me.chkCrearCategoria.TabIndex = 4
-        Me.chkCrearCategoria.Text = "Crear categoria automáticamente ?"
+        Me.chkCrearCategoria.Text = "Crear categoría automáticamente ?"
         Me.chkCrearCategoria.UseVisualStyleBackColor = True
         '
         'txtTipoCategoria
@@ -257,9 +257,9 @@ Partial Class Catalogo_Vehiculos
         Me.lblDisplayTipoCategoria.AutoSize = True
         Me.lblDisplayTipoCategoria.Location = New System.Drawing.Point(6, 158)
         Me.lblDisplayTipoCategoria.Name = "lblDisplayTipoCategoria"
-        Me.lblDisplayTipoCategoria.Size = New System.Drawing.Size(96, 13)
+        Me.lblDisplayTipoCategoria.Size = New System.Drawing.Size(98, 13)
         Me.lblDisplayTipoCategoria.TabIndex = 99
-        Me.lblDisplayTipoCategoria.Text = "Tipo de categoria :"
+        Me.lblDisplayTipoCategoria.Text = "Tipo de categoría :"
         Me.lblDisplayTipoCategoria.Visible = False
         '
         'Label1
@@ -285,9 +285,9 @@ Partial Class Catalogo_Vehiculos
         Me.lblCodigoCategoria.AutoSize = True
         Me.lblCodigoCategoria.Location = New System.Drawing.Point(6, 95)
         Me.lblCodigoCategoria.Name = "lblCodigoCategoria"
-        Me.lblCodigoCategoria.Size = New System.Drawing.Size(58, 13)
+        Me.lblCodigoCategoria.Size = New System.Drawing.Size(60, 13)
         Me.lblCodigoCategoria.TabIndex = 94
-        Me.lblCodigoCategoria.Text = "Categoria :"
+        Me.lblCodigoCategoria.Text = "Categoría :"
         '
         'TxtCodigoCategoria
         '

@@ -119,6 +119,10 @@ Public Class Catalogo_Vehiculos
     End Sub
 
     Private Sub tsbGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbGrabar.Click
+        If Me.Validar() = False Then
+            Exit Sub
+        End If
+
         Dim sMsg As String = ""
         Select Case Me.Estado
             Case enumEstados.EDICION
@@ -173,6 +177,9 @@ Public Class Catalogo_Vehiculos
                     Me.TxtCodigoCategoria.Enabled = True
 
                     Me.InicializaElemento()
+
+                    Me.chkCrearCategoria.Visible = True : Me.chkCrearCategoria.Checked = False : Me.chkCrearCategoria.Checked = True 'esta como false y true para forzar a que hay cambio y se ejecute el evento del check
+
                     Me.TxtNombre.Focus()
 
                 Case enumEstados.EDICION
@@ -188,6 +195,9 @@ Public Class Catalogo_Vehiculos
                     Me.TxtNombre.Enabled = True
                     Me.CboEstatus.Enabled = True
                     Me.TxtCodigoCategoria.Enabled = True
+
+                    Me.chkCrearCategoria.Visible = False : Me.chkCrearCategoria.Checked = True : Me.chkCrearCategoria.Checked = False
+
                     Me.TxtNombre.Focus()
 
                 Case enumEstados.CONSULTA
@@ -198,6 +208,9 @@ Public Class Catalogo_Vehiculos
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = False
+
+                    Me.chkCrearCategoria.Visible = False : Me.chkCrearCategoria.Checked = True : Me.chkCrearCategoria.Checked = False
+
                     Me.txtFiltro.Focus()
             End Select
             Application.DoEvents()
@@ -258,18 +271,14 @@ Public Class Catalogo_Vehiculos
     Private Sub Grabar()
         Dim Grabado As Boolean = False
 
-        If Me.Validar() = False Then
-            Exit Sub
-        End If
-
         Select Case Me.Estado
             Case enumEstados.NUEVO, enumEstados.EDICION
                 Try
                     With Me.oVehiculo
-                        .Codigo_Vehiculo = valorNumerico(Me.TxtCodigo.Text).ToString
+                        .CODIGO_VEHICULO = valorNumerico(Me.TxtCodigo.Text).ToString
                         .Nombre_Vehiculo = Me.TxtNombre.Text
                         .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
-                        .Codigo_Categoria = Me.TxtCodigoCategoria.Text
+                        .CODIGO_CATEGORIA = Me.TxtCodigoCategoria.Text
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -390,16 +399,6 @@ Public Class Catalogo_Vehiculos
     Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoCategoria.KeyPress, txtTipoCategoria.KeyPress
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
-    End Sub
-
-    Private Sub txtNumericos_Validating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs)
-        Dim t As TextBox
-        t = CType(sender, TextBox)
-        If Not IsNumeric(t.Text) Then
-            t.Text = Val(t.Text).ToString
-        Else
-            Me.ErrorProvider.Clear()
-        End If
     End Sub
 #End Region
 

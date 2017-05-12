@@ -6,22 +6,20 @@ Public Class Class_CatZonas
 
 #Region "Campos"
 
-
 #Region "Campos de la tabla"
-    Private _Codigo_Zona As Integer
-    Private _Nombre_Zona As String
-    Private _Codigo_Plaza As Integer
+    Private _CODIGO_ZONA As Integer
+    Private _NOMBRE_ZONA As String
+    Private _CODIGO_PLAZA As Integer
     Private _Agregar As String
 #End Region
 
 #Region "Campos ligados a la tabla"
-
+    Private _Existe As Boolean 'lectura
 #End Region
 
 #Region "Campos públicos"
 
 #End Region
-
 
 #Region "Campos privados"
 
@@ -31,7 +29,7 @@ Public Class Class_CatZonas
     Private _Nombre_Catalogo As String
     Private _Nombre_Reporte As String
     Private _Conexion As SqlConnection
-    Private _QuerySelect As String
+    Private _QuerySELECT As String
     Private _QueryOrder As String
 
 #End Region
@@ -41,30 +39,30 @@ Public Class Class_CatZonas
 #Region "Propiedades"
 
 #Region "Propiedades Campos de la tabla"
-    Public Property Codigo_Zona() As Integer
+    Public Property CODIGO_ZONA() As Integer
         Get
-            Return Me._Codigo_Zona
+            Return Me._CODIGO_ZONA
         End Get
         Set(ByVal Value As Integer)
-            Me._Codigo_Zona = Value
+            Me._CODIGO_ZONA = Value
         End Set
     End Property
 
-    Public Property Nombre_Zona() As String
+    Public Property NOMBRE_ZONA() As String
         Get
-            Return Me._Nombre_Zona
+            Return Me._NOMBRE_ZONA
         End Get
         Set(ByVal Value As String)
-            Me._Nombre_Zona = Value
+            Me._NOMBRE_ZONA = Value
         End Set
     End Property
 
-    Public Property Codigo_Plaza() As Integer
+    Public Property CODIGO_PLAZA() As Integer
         Get
-            Return Me._Codigo_Plaza
+            Return Me._CODIGO_PLAZA
         End Get
         Set(ByVal Value As Integer)
-            Me._Codigo_Plaza = Value
+            Me._CODIGO_PLAZA = Value
         End Set
     End Property
 
@@ -81,7 +79,11 @@ Public Class Class_CatZonas
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
-
+    Public ReadOnly Property Existe() As Boolean
+        Get
+            Return Me._Existe
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedades públicos"
@@ -91,6 +93,7 @@ Public Class Class_CatZonas
 #Region "Propiedades de campos privados"
 
 #End Region
+
 #Region "Propiedades de campos de sistema"
 
     Public Overrides ReadOnly Property Nombre_Catalogo() As String
@@ -114,13 +117,26 @@ Public Class Class_CatZonas
 #Region "Constructor y destructor"
 
     Public Sub New()
-        Me._Nombre_Catalogo = "Cat_Zonas"
-        Me._Nombre_Reporte = "RPT_Cat_Zonas.rpt"
+        Me._Nombre_Catalogo = "CAT_ZONAS"
+        Me._Nombre_Reporte = "RPT_CAT_ZONAS.rpt"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "SELECT CODIGO_ZONA,NOMBRE_ZONA,CODIGO_PLAZA FROM CAT_ZONAS"
-        Me._QueryOrder = " Order by NOMBRE_ZONA"
-    End Sub                                                         'Inicializa al objeto.
+        Me._QuerySELECT = "SELECT CODIGO_ZONA,NOMBRE_ZONA,CODIGO_PLAZA FROM CAT_ZONAS"
+        Me._QueryOrder = " ORDER BY NOMBRE_ZONA"
+    End Sub
+
+    Public Sub New(ByVal sCodigoZona As String)
+        Me.New()
+        Try
+            Me.CODIGO_ZONA = sCodigoZona
+            If Me.Consultar = True Then
+                Me._Existe = True
+                'Throw New Exception("El artículo no existe.")
+            End If
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "New", ex)
+        End Try
+    End Sub
 
     Protected Overrides Sub Finalize()
         'Me._Conexion.Dispose()
@@ -128,13 +144,10 @@ Public Class Class_CatZonas
     End Sub
 #End Region
 
-#Region "Opciones"
-
-#End Region
-
 #Region "Métodos y procedimientos"
 
     Public Overrides Function Actualizar() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -143,14 +156,14 @@ Public Class Class_CatZonas
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_ZONAS_GRABA"
 
-            sqlParametro = .Parameters.Add("@CODIGO_ZONA", SqlDbType.SmallInt, 2) : sqlParametro.Value = Me._Codigo_Zona
-            sqlParametro = .Parameters.Add("@NOMBRE_ZONA", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._Nombre_Zona.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt, 2) : sqlParametro.Value = Me._Codigo_Plaza
+            sqlParametro = .Parameters.Add("@CODIGO_ZONA", SqlDbType.SmallInt, 2) : sqlParametro.Value = Me._CODIGO_ZONA
+            sqlParametro = .Parameters.Add("@NOMBRE_ZONA", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_ZONA.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt, 2) : sqlParametro.Value = Me._CODIGO_PLAZA
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._Agregar.ToString
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                Actualizar = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
             Finally
@@ -159,10 +172,12 @@ Public Class Class_CatZonas
                 sqlParametro = Nothing
             End Try
         End With
-    End Function                        'Actualiza un elemento del catálogo.
+        Return bResultado
+    End Function
 
     Public Overrides Function Consultar() As Boolean
-        Dim cmd As New SqlCommand("Select * from Cat_ZONAS Where CODIGO_ZONA=" & Replace(Me._Codigo_Zona, "'", "''") & " and codigo_plaza=" & Plaza.CODIGO_PLAZA.ToString, Me._Conexion)
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand("SELECT * FROM CAT_ZONAS WHERE CODIGO_ZONA=" & sReplace(Me._CODIGO_ZONA) & " AND CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString, Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -172,10 +187,10 @@ Public Class Class_CatZonas
                 dReader = .ExecuteReader()
 
                 If dReader.Read Then
-                    Me._Codigo_Zona = "" & dReader("CODIGO_ZONA")
-                    Me._Nombre_Zona = Trim("" & dReader("NOMBRE_ZONA").ToString)
-                    Me._Codigo_Plaza = "" & dReader("CODIGO_PLAZA").ToString
-                    Consultar = True
+                    Me._CODIGO_ZONA = "" & dReader("CODIGO_ZONA")
+                    Me._NOMBRE_ZONA = Trim("" & dReader("NOMBRE_ZONA").ToString)
+                    Me._CODIGO_PLAZA = "" & dReader("CODIGO_PLAZA").ToString
+                    bResultado = True
                 End If
                 dReader.Close()
             Catch ex As Exception
@@ -185,10 +200,11 @@ Public Class Class_CatZonas
                 cmd.Dispose()
             End Try
         End With
-
-    End Function        'Consulta un elemento del catálogo.
+        Return bResultado
+    End Function
 
     Public Overrides Function Insertar() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -197,62 +213,62 @@ Public Class Class_CatZonas
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_ZONAS_GRABA"
 
-            sqlParametro = .Parameters.Add("@CODIGO_ZONA", SqlDbType.SmallInt, 2) : sqlParametro.Value = Me._Codigo_Zona
-            sqlParametro = .Parameters.Add("@NOMBRE_ZONA", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._Nombre_Zona.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt, 2) : sqlParametro.Value = Me._Codigo_Plaza
+            sqlParametro = .Parameters.Add("@CODIGO_ZONA", SqlDbType.SmallInt, 2) : sqlParametro.Value = Me._CODIGO_ZONA
+            sqlParametro = .Parameters.Add("@NOMBRE_ZONA", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_ZONA.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt, 2) : sqlParametro.Value = Me._CODIGO_PLAZA
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._Agregar.ToString
 
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                Insertar = True
+                bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
+                HandleError(Me._Nombre_Catalogo, "Insertar", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
                 sqlParametro = Nothing
             End Try
-
         End With
-    End Function                          'Inserta un elemento al catálogo.
+        Return bResultado
+    End Function
 
     Public Overrides Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dsCat_Vendedores As New SqlDataAdapter("Select CODIGO_ZONA,NOMBRE_ZONA from CAT_ZONAS Where CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & "  order by NOMBRE_ZONA", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_ZONA,NOMBRE_ZONA FROM CAT_ZONAS WHERE CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & "  ORDER BY NOMBRE_ZONA", Me._Conexion)
         Try
-            dsCat_Vendedores.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
         Finally
-            dsCat_Vendedores.Dispose()
+            da.Dispose()
         End Try
         Return dTable
-    End Function    'Obtiene una lita completa de los elementos del catalogo en un datatable.
+    End Function
 
     Public Function ObtenerZonasParaReportes() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dsCatTiposMercados As New SqlDataAdapter("SELECT CODIGO_ZONA,NOMBRE_ZONA from CAT_ZONAS", Empresa_Sistema.conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_ZONA,NOMBRE_ZONA FROM CAT_ZONAS", Empresa_Sistema.conexion)
         Try
-            dsCatTiposMercados.Fill(dTable)
+            da.Fill(dTable)
             dTable.Rows.Add("T", "TODOS")
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerZonasParaReportes", ex)
         Finally
-            dsCatTiposMercados.Dispose()
+            da.Dispose()
         End Try
-        ObtenerZonasParaReportes = dTable
+        Return dTable
     End Function
 
     Public Function ObtenerElementosFiltro(ByVal Filtro As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dA As New SqlDataAdapter("Select CODIGO_ZONA,NOMBRE_ZONA from CAT_ZONAS Where CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND NOMBRE_ZONA LIKE '" & Filtro.ToString & "%' ORDER BY NOMBRE_ZONA", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_ZONA,NOMBRE_ZONA FROM CAT_ZONAS WHERE CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND NOMBRE_ZONA LIKE '" & Filtro.ToString & "%' ORDER BY NOMBRE_ZONA", Me._Conexion)
         Try
-            dA.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementosFiltro", ex)
         Finally
-            dA.Dispose()
+            da.Dispose()
         End Try
         Return dTable
     End Function
@@ -264,7 +280,7 @@ Public Class Class_CatZonas
         f.sCampo = "CODIGO_ZONA"
         f.sOrder = "NOMBRE_ZONA"
         f.sTable = "CAT_ZONAS"
-        f.sQl = "Select CODIGO_ZONA,NOMBRE_ZONA From CAT_ZONAS Where 1=1 And"
+        f.sQl = "SELECT CODIGO_ZONA,NOMBRE_ZONA FROM CAT_ZONAS WHERE 1=1 AND "
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -284,7 +300,7 @@ Public Class Class_CatZonas
         f.sCampo = "NOMBRE_ZONA"
         f.sOrder = "NOMBRE_ZONA"
         f.sTable = "CAT_ZONAS"
-        f.sQl = "Select CODIGO_ZONA,NOMBRE_ZONA From CAT_ZONAS Where 1=1 And"
+        f.sQl = "SELECT CODIGO_ZONA,NOMBRE_ZONA FROM CAT_ZONAS WHERE 1=1 AND "
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -297,37 +313,5 @@ Public Class Class_CatZonas
         Return Resultado
     End Function
 #End Region
-
-#Region "Eventos de objetos"
-
-
-#Region "Eventos de la lista de elementos"
-
-#End Region
-
-#Region " Eventos de TxtFiltro"
-
-#End Region
-
-#Region "Eventos Genericos"
-
-#End Region
-
-
-#Region "Keydown específicos"
-
-
-#End Region
-
-#Region "Validating específicos"
-
-#End Region
-
-
-
-#End Region
-
-
-
 
 End Class

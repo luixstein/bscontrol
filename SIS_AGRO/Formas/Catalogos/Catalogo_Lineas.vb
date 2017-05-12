@@ -26,7 +26,6 @@ Public Class Catalogo_Lineas
 #Region "Constructor y destructor"
     'Inicializa al objeto.
     Sub New()
-
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
         ' Add any initialization after the InitializeComponent() call.
@@ -50,8 +49,6 @@ Public Class Catalogo_Lineas
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
     End Sub
-
-
 #End Region
 
 #Region "Opciones"
@@ -67,9 +64,10 @@ Public Class Catalogo_Lineas
     End Sub
 
     Private Sub tsbGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbGrabar.Click
-        If Validar() = False Then
+        If Me.Validar() = False Then
             Exit Sub
         End If
+
         Dim sMsg As String = ""
         Select Case Me.Estado
             Case enumEstados.EDICION
@@ -120,9 +118,10 @@ Public Class Catalogo_Lineas
                     Me.TxtCodigoLinea.Enabled = False
                     Me.TxtNombreLinea.Enabled = True
                     Me.CboEstatus.Enabled = False
+
                     Me.InicializaElemento()
 
-                    Me.chkCrearConcepto.Visible = True : Me.chkCrearConcepto.Checked = False
+                    Me.chkCrearConcepto.Visible = True : Me.chkCrearConcepto.Checked = False : Me.chkCrearConcepto.Checked = True 'esta como false y true para forzar a que hay cambio y se ejecute el evento del check
 
                     Me.TxtCodigoLinea.Focus()
 
@@ -139,7 +138,7 @@ Public Class Catalogo_Lineas
                     Me.TxtNombreLinea.Enabled = True
                     Me.CboEstatus.Enabled = True
 
-                    Me.chkCrearConcepto.Visible = False : Me.chkCrearConcepto.Checked = False
+                    Me.chkCrearConcepto.Visible = False : Me.chkCrearConcepto.Checked = True : Me.chkCrearConcepto.Checked = False
 
                     Me.TxtNombreLinea.Focus()
 
@@ -152,7 +151,7 @@ Public Class Catalogo_Lineas
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = False
 
-                    Me.chkCrearConcepto.Visible = False : Me.chkCrearConcepto.Checked = False
+                    Me.chkCrearConcepto.Visible = False : Me.chkCrearConcepto.Checked = True : Me.chkCrearConcepto.Checked = False
 
                     Me.txtFiltro.Focus()
 
@@ -235,12 +234,11 @@ Public Class Catalogo_Lineas
                                 End If
                         End Select
 
-                        If Grabado Then
+                        If Grabado = True Then
                             MsgBox(Me.msgElemento & " grabada satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
                             Me.Refrescar()
                             Me.Cambia_Estado()
                         End If
-
                     End With
                 Catch ex As Exception
                     HandleError(Me.Name, "Grabar", ex)
@@ -314,7 +312,7 @@ Public Class Catalogo_Lineas
     'End Sub
 #End Region
 
-#Region "Eventos de TxtFiltro"
+#Region "Eventos de TxtFiltro y cboEstatusFiltro"
     Private Sub txtFiltro_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFiltro.TextChanged
         Me.Grid.DataSource = Nothing
         Me.DesplegarElementos()
@@ -351,21 +349,11 @@ Public Class Catalogo_Lineas
         txtNoBeep(e)
     End Sub
 
-    Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCodigoConcepto.KeyPress, TxtCodigoLinea.KeyPress
-        Dim txt As TextBox = CType(sender, TextBox)
-        txtSoloNumerosDecimales(e, txt.Text)
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCodigoConcepto.KeyPress, TxtCodigoLinea.KeyPress
+        txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
 
-    Private Sub txtNumericos_Validating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs)
-        Dim t As TextBox
-        t = CType(sender, TextBox)
-        If Not IsNumeric(t.Text) Then
-            t.Text = Val(t.Text).ToString
-        Else
-            Me.ErrorProvider.Clear()
-        End If
-    End Sub
 #End Region
 
 #Region "Keydown específicos"

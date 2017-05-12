@@ -432,15 +432,6 @@ Public Class Catalogo_Familias
         txtNoBeep(e)
     End Sub
 
-    Private Sub txtNumericos_Validating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs)
-        Dim t As TextBox
-        t = CType(sender, TextBox)
-        If Not IsNumeric(t.Text) Then
-            t.Text = Val(t.Text).ToString
-        Else
-            Me.ErrorProvider.Clear()
-        End If
-    End Sub
 #End Region
 
 #Region "Keydown específicos"

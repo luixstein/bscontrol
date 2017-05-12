@@ -72,7 +72,6 @@ Public Class Class_CatCategorias
             Return Me._Existe
         End Get
     End Property
-
 #End Region
 
 #Region "Propiedades públicos"

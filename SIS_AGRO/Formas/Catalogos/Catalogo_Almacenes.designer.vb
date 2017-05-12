@@ -56,7 +56,7 @@ Partial Public Class Catalogo_Almacenes
         Me.lblNombreZona = New System.Windows.Forms.Label()
         Me.lblZona = New System.Windows.Forms.Label()
         Me.txtCodigoZona = New System.Windows.Forms.TextBox()
-        Me.LblCuenta = New System.Windows.Forms.Label()
+        Me.lblNombreCuenta = New System.Windows.Forms.Label()
         Me.txtCuentaContable = New System.Windows.Forms.TextBox()
         Me.lblDisplayCuentaContable = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -294,7 +294,7 @@ Partial Public Class Catalogo_Almacenes
         Me.gBoxInformacion.Controls.Add(Me.lblNombreZona)
         Me.gBoxInformacion.Controls.Add(Me.lblZona)
         Me.gBoxInformacion.Controls.Add(Me.txtCodigoZona)
-        Me.gBoxInformacion.Controls.Add(Me.LblCuenta)
+        Me.gBoxInformacion.Controls.Add(Me.lblNombreCuenta)
         Me.gBoxInformacion.Controls.Add(Me.txtCuentaContable)
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayCuentaContable)
         Me.gBoxInformacion.Controls.Add(Me.Label2)
@@ -403,14 +403,14 @@ Partial Public Class Catalogo_Almacenes
         Me.txtCodigoZona.Size = New System.Drawing.Size(57, 20)
         Me.txtCodigoZona.TabIndex = 3
         '
-        'LblCuenta
+        'lblNombreCuenta
         '
-        Me.LblCuenta.AutoSize = True
-        Me.LblCuenta.Location = New System.Drawing.Point(108, 92)
-        Me.LblCuenta.Name = "LblCuenta"
-        Me.LblCuenta.Size = New System.Drawing.Size(13, 13)
-        Me.LblCuenta.TabIndex = 215
-        Me.LblCuenta.Text = "_"
+        Me.lblNombreCuenta.AutoSize = True
+        Me.lblNombreCuenta.Location = New System.Drawing.Point(108, 92)
+        Me.lblNombreCuenta.Name = "lblNombreCuenta"
+        Me.lblNombreCuenta.Size = New System.Drawing.Size(13, 13)
+        Me.lblNombreCuenta.TabIndex = 215
+        Me.lblNombreCuenta.Text = "_"
         '
         'txtCuentaContable
         '
@@ -492,7 +492,7 @@ Partial Public Class Catalogo_Almacenes
     Friend WithEvents TxtCodigoAlmacen As System.Windows.Forms.TextBox
     Friend WithEvents txtCuentaContable As System.Windows.Forms.TextBox
     Friend WithEvents lblDisplayCuentaContable As System.Windows.Forms.Label
-    Friend WithEvents LblCuenta As System.Windows.Forms.Label
+    Friend WithEvents lblNombreCuenta As System.Windows.Forms.Label
     Friend WithEvents Grid As System.Windows.Forms.DataGridView
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents cboEstatusFiltro As System.Windows.Forms.ComboBox
