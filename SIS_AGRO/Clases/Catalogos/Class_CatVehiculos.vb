@@ -9,7 +9,6 @@ Public Class Class_CatVehiculos
 #Region "Campos de la tabla"
     Private _CODIGO_VEHICULO As String
     Private _Nombre_Vehiculo As String
-    Private _Estatus As String
     Private _CODIGO_CATEGORIA As String
 #End Region
 
@@ -165,7 +164,7 @@ Public Class Class_CatVehiculos
 
             sqlParametro = .Parameters.Add("@CODIGO_VEHICULO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_VEHICULO) : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@NOMBRE_VEHICULO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._Nombre_Vehiculo.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._Estatus
+            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus
             sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_CATEGORIA)) : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@GENERAR_CATEGORIA", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._GENERAR_CATEGORIA)
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_TIPO_CATEGORIA))
@@ -199,7 +198,7 @@ Public Class Class_CatVehiculos
 
             sqlParametro = .Parameters.Add("@CODIGO_VEHICULO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_VEHICULO)
             sqlParametro = .Parameters.Add("@NOMBRE_VEHICULO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._Nombre_Vehiculo.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._Estatus
+            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus
             sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CATEGORIA
             sqlParametro = .Parameters.Add("@GENERAR_CATEGORIA", SqlDbType.Char, 1) : sqlParametro.Value = "0"
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = 0
@@ -233,7 +232,7 @@ Public Class Class_CatVehiculos
                 If dReader.Read Then
                     Me._CODIGO_VEHICULO = "" & dReader("CODIGO_VEHICULO").ToString
                     Me._Nombre_Vehiculo = Trim("" & dReader("NOMBRE_VEHICULO").ToString)
-                    Me._Estatus = "" & dReader("ESTATUS")
+                    Me.Estatus = "" & dReader("ESTATUS")
                     Me._CODIGO_CATEGORIA = "" & dReader("CODIGO_CATEGORIA").ToString
                     bResultado = True
                 End If
