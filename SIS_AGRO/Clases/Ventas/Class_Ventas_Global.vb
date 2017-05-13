@@ -1264,10 +1264,10 @@ Public Class Class_Ventas_Global
         End Try
     End Function
 
-    Public Function ObtenerPrecioOriginal(ByVal iIdArticulo As Integer) As Double
+    Public Function ObtenerPrecioOriginal(ByVal iIdArticulo As Integer) As Decimal
         Try
             Dim Disponible As New Class_find("select PRECIO FROM VENTA_DETALLE WHERE ID_VENTA_DETALLE=" & iIdArticulo)
-            Return valorNumerico(Disponible.Result1)
+            Return CDec(valorNumerico(Disponible.Result1))
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "ObtenerPrecioOriginal", ex)
         End Try

@@ -2292,10 +2292,10 @@ CANCELAR:
 
     Private Sub Totales()
         Try
-            Dim i As Integer, dCantidad As Double, dPrecio As Double, dPrecioOriginal As Double, dPorcentajeIVA As Double, dImporte As Double, dImporteSustitucion As Double, iIDOrigen As Integer = 0, dImporteTotal As Double = 0
+            Dim i As Integer, dCantidad As Decimal, dPrecio As Decimal, dPrecioOriginal As Decimal, dPorcentajeIVA As Decimal, dImporte As Decimal, dImporteSustitucion As Decimal, iIDOrigen As Integer = 0, dImporteTotal As Double = 0
             Dim oArticulo As New Class_CatArticulos
-            Dim dIEPS_PORCENTAJE As Double = 0, dIEPS_UNITARIO As Double = 0, dIEPS_IMPORTE As Double = 0, dBASE_IEPS As Double = 0, dBASE_IVA As Double = 0, dPRECIO_TOTAL As Double = 0, dIVA_IMPORTE As Double = 0
-            Dim dtSubtotal As Double = 0, dtIEPS As Double = 0, dtImpuesto As Double = 0, dtTotal As Double = 0
+            Dim dIEPS_PORCENTAJE As Decimal = 0, dIEPS_UNITARIO As Decimal = 0, dIEPS_IMPORTE As Decimal = 0, dBASE_IEPS As Decimal = 0, dBASE_IVA As Decimal = 0, dPRECIO_TOTAL As Decimal = 0, dIVA_IMPORTE As Decimal = 0
+            Dim dtSubtotal As Decimal = 0, dtIEPS As Decimal = 0, dtImpuesto As Decimal = 0, dtTotal As Decimal = 0
 
             Me.lblSubtotal.Text = FormatImporteContable(0)
             Me.lblIEPSIncluido.text = FormatImporteContable(0)
@@ -2314,17 +2314,19 @@ CANCELAR:
                     oArticulo = New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
                     'If oArticulo.ES_PRODUCTO_KILOS = "0" Then
                     If txtLEN(Me.Grid.Cell(i, Me.igyCantidad).Text) = True Then
-                        dCantidad = valorNumerico(Me.Grid.Cell(i, Me.igyCantidad).Text)
-                        dPrecio = valorNumerico(Me.Grid.Cell(i, Me.igyPrecio).Text)
-                        iIDOrigen = CInt(valorNumerico(Me.Grid.Cell(i, Me.igyIdOrigen).Text))
-                        dPorcentajeIVA = valorNumerico(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text)
+                        dCantidad = valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text)
+                        dPrecio = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text)
+                        iIDOrigen = CInt(valorNumericoD(Me.Grid.Cell(i, Me.igyIdOrigen).Text))
+                        dPorcentajeIVA = valorNumericoD(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text)
 
-                        dIEPS_PORCENTAJE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
-                        dIEPS_UNITARIO = Redondear(dPrecio * (dIEPS_PORCENTAJE / 100), 4)
-                        dBASE_IEPS = Redondear((dPrecio * dCantidad), 2)
-                        dIEPS_IMPORTE = Redondear(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2)
+                        dIEPS_PORCENTAJE = CDec(valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text))
+                        dIEPS_UNITARIO = CDec(Redondear(dPrecio * (dIEPS_PORCENTAJE / 100), 4))
+
+                        dBASE_IEPS = RedondearD((dPrecio * dCantidad), 2)
+
+                        dIEPS_IMPORTE = RedondearD(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2)
                         dBASE_IVA = dIEPS_IMPORTE + dBASE_IEPS
-                        dIVA_IMPORTE = Redondear(dBASE_IVA * ((dPorcentajeIVA / 100)), 2)
+                        dIVA_IMPORTE = RedondearD(dBASE_IVA * ((dPorcentajeIVA / 100)), 2)
                         dPRECIO_TOTAL = dPrecio
 
                         Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text = dIEPS_UNITARIO.ToString
@@ -2334,7 +2336,7 @@ CANCELAR:
                         Me.Grid.Cell(i, Me.igyImpuestoImporte).Text = dIVA_IMPORTE.ToString
 
                         If Me.bClienteEsContribuyenteIEPS = False And dPrecio > 0 Then 'Cuando no es contribuyente se le adjunta al precio el ieps, es decir se le incluye
-                            dPRECIO_TOTAL = Redondear(dPrecio + dIEPS_UNITARIO, 3)
+                            dPRECIO_TOTAL = RedondearD(dPrecio + dIEPS_UNITARIO, 3)
                         End If
 
                         Me.Grid.Cell(i, Me.igyPRECIO_TOTAL).Text = dPRECIO_TOTAL.ToString
@@ -2347,11 +2349,11 @@ CANCELAR:
                         End If
 
                         'If dCantidad > 0 Then
-                        dImporte = Redondear((dPrecio * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD) 'no hacemos nada con este valor de momento
-                        dImporteTotal = Redondear((dPRECIO_TOTAL * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                        dImporte = RedondearD((dPrecio * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD) 'no hacemos nada con este valor de momento
+                        dImporteTotal = RedondearD((dPRECIO_TOTAL * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
-                        dImporteSustitucion = Redondear((dPrecioOriginal * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                        dImporteSustitucion = valorNumerico(Redondear(dImporteSustitucion * ((dPorcentajeIVA / 100) + 1), Empresa_Sistema.DECIMALES_CONTABILIDAD).ToString)
+                        dImporteSustitucion = RedondearD((dPrecioOriginal * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                        dImporteSustitucion = valorNumericoD(RedondearD(dImporteSustitucion * ((dPorcentajeIVA / 100) + 1), Empresa_Sistema.DECIMALES_CONTABILIDAD).ToString)
                         dTotalSustitucion = dTotalSustitucion + dImporteSustitucion
 
                         'Me.Grid.Cell(i, Me.igyImporte).Text = dImporteTotal.ToString
@@ -2399,7 +2401,7 @@ CANCELAR:
                 End If
             Next i
 
-            dtIEPS = Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyIEPS_IMPORTE), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            dtIEPS = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyIEPS_IMPORTE)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
             If Me.bClienteEsContribuyenteIEPS = True Then
                 Me.lblIEPSIncluido.text = FormatImporteContable(0)
@@ -2410,8 +2412,8 @@ CANCELAR:
                 dtIEPS = 0 'Se establece en 0 porque luego se le suma este valor al total y al ser includo entonces debe ser 0
             End If
 
-            dtSubtotal = Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImporte), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            dtImpuesto = Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImpuestoImporte), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            dtSubtotal = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyImporte)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            dtImpuesto = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyImpuestoImporte)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
             dtTotal = dtSubtotal + dtIEPS + dtImpuesto
 
             Me.lblSaldo.Text = FormatImporteContable(valorNumerico(Me.lblSaldo.Text))
@@ -2571,7 +2573,7 @@ CANCELAR:
     Private Sub GestionaGrid(ByVal e As System.Windows.Forms.KeyEventArgs)
         Try
             Dim Columna As Integer, Renglon As Integer
-            Dim StrCod As String, sCuentaContable As String, dCantidad As Double, dPrecio As Double, sCodigoCentroCosto As String
+            Dim StrCod As String, sCuentaContable As String, dCantidad As Decimal, dPrecio As Decimal, sCodigoCentroCosto As String
             Dim oArticulos As Class_CatArticulos
 
             'If Me.oDocumento.AFECTA_CXC = True And Me.Grid.Selection.FirstRow = Me.Grid.Rows - 1 Then
@@ -2581,8 +2583,8 @@ CANCELAR:
             Columna = Me.Grid.Selection.FirstCol
             Renglon = Me.Grid.Selection.FirstRow
             StrCod = Me.Grid.Cell(Renglon, Me.igyCodigo).Text
-            dCantidad = valorNumerico(Me.Grid.Cell(Renglon, Me.igyCantidad).Text)
-            dPrecio = valorNumerico(Me.Grid.Cell(Renglon, Me.igyPrecio).Text)
+            dCantidad = CDec(valorNumerico(Me.Grid.Cell(Renglon, Me.igyCantidad).Text))
+            dPrecio = CDec(valorNumerico(Me.Grid.Cell(Renglon, Me.igyPrecio).Text))
 
             'ESTA VALIDACION SE PUSO PARA QUE A LOS PRODUCTOS AGRICOLAS NO LES PUEDAN CAMBIAR LA CUENTA CONTABLE CALCULADA AUTOMATICAMENTE
             If Columna = Me.igyCuentaContable Then

@@ -280,6 +280,18 @@ Module Mod_Uti
         'dblnToR = Fix(dblnToR * DBlPot * (1 + 0.0000000000000001) + DBlF) / DBlPot
     End Function
 
+    Public Function RedondearD(ByVal dValor As Decimal, Optional ByVal iDecimales As Integer = 2) As Decimal
+        Dim DBlPot As Decimal, DBlF As Decimal
+        If dValor < 0 Then DBlF = CDec(-0.5) Else  : DBlF = CDec(0.5)
+        DBlPot = CDec(10 ^ iDecimales)
+        Return CDec(Fix(dValor * DBlPot * (1 + 0.0000000000000001) + DBlF) / DBlPot)
+
+        'Dim DBlPot As Double, DBlF As Double
+        'If dblnToR < 0 Then DBlF = -0.5 Else  : DBlF = 0.5
+        'DBlPot = 10 ^ intCntDec
+        'dblnToR = Fix(dblnToR * DBlPot * (1 + 0.0000000000000001) + DBlF) / DBlPot
+    End Function
+
     'Public Function Redondear2(ByVal Numero As String) As String
     '    Dim ParteEntera As String = CInt(Numero).ToString
     '    Dim ParteDecimal As String
@@ -536,6 +548,21 @@ Module Mod_Uti
         Catch ex As Exception
             HandleError("Utílerias", "valorNumerico", ex)
         End Try
+    End Function
+
+    Public Function valorNumericoD(ByVal sNumero As String) As Decimal
+        Dim d As Decimal
+        Try
+            If IsNumeric(sNumero) = True Then
+                Comas(sNumero)
+                d = CDec(Val(sNumero))
+            Else
+                d = 0
+            End If
+        Catch ex As Exception
+            HandleError("Utílerias", "valorNumericoD", ex)
+        End Try
+        Return d
     End Function
 
     Public Function ConvertirArrayAColeccion(ByVal array() As Integer) As Collection
