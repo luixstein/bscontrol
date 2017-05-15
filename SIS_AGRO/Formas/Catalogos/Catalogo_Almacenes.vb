@@ -544,22 +544,22 @@ Buscar:
                     If txtLEN(resultado) = True Then
                         GoTo Enter : Exit Sub
                     Else
-                        Me.lblCodigoCategoria.Text = "_"
+                        Me.LblNombreCategoria.Text = "_"
                     End If
 
                 Case Keys.Return
 Enter:
                     If txtLEN(Me.TxtCodigoCategoria.Text) = False Then
-                        Me.lblCodigoCategoria.Text = "_" ': GoTo Buscar : Exit Sub
+                        Me.LblNombreCategoria.Text = "_" ': GoTo Buscar : Exit Sub
                         txtTAB(e)
                         Return
                     End If
 
                     oCategorias = New Class_CatCategorias(Me.TxtCodigoCategoria.Text)
                     If oCategorias.Existe = True Then
-                        Me.lblCodigoCategoria.Text = oCategorias.NOMBRE_CATEGORIA
+                        Me.LblNombreCategoria.Text = oCategorias.NOMBRE_CATEGORIA
                     Else
-                        Me.lblCodigoCategoria.Text = "_" : GoTo Buscar : Exit Sub
+                        Me.LblNombreCategoria.Text = "_" : GoTo Buscar : Exit Sub
                     End If
 
                     If Me.chkCrearCategoria.Visible = True Then
