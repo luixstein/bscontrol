@@ -940,7 +940,9 @@ Buscar:
             End If
         End If
 
-        Me.Totales(True)
+        If Me.Totales(True) = False Then
+            Return False
+        End If
 
         If Me.ValidarOrdenCompra() = False Then
             Exit Function
@@ -1750,7 +1752,8 @@ Buscar:
         End Try
     End Sub
 
-    Private Sub Totales(Optional ByVal bIva As Boolean = False)
+    Private Function Totales(Optional ByVal bIva As Boolean = False) As Boolean
+        Dim bResultado As Boolean = False
         Try
             Dim i As Integer
             Dim dCantidad As Double, dPrecio As Double, dPorcentajeIVA As Double, dImporte As Double
@@ -1815,7 +1818,7 @@ Buscar:
                 If valorNumerico(Me.txtIVA.Text) > valorNumerico(Me.lblIVAcalculado.Text) - 1 And valorNumerico(Me.txtIVA.Text) > valorNumerico(Me.lblIVAcalculado.Text) + 1 Then
                     MsgBox("El IVA asignado no es correcto, favor de verificar.", MsgBoxStyle.Exclamation, Me.Name)
                     Me.txtIVA.Focus()
-                    Exit Sub
+                    Return False
                 End If
                 'End If
             End If
@@ -1824,10 +1827,14 @@ Buscar:
 
             Me.TotalesUSD()
 
+            bResultado = True
+
         Catch ex As Exception
             HandleError(Me.Name, "Totales", ex)
         End Try
-    End Sub
+
+        Return bResultado
+    End Function
 
     Private Sub TotalesUSD()
         Try
