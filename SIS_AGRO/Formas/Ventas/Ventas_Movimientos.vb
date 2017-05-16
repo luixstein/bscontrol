@@ -1437,9 +1437,9 @@ Buscar:
 
                 If oDocumento.AFECTA_INVENTARIOS = True Then
                     If Me.sTipoVenta = "SR" Then
-                        .SUSTITUYE_REMICION = "1"
+                        .SUSTITUYE_REMISION = "1"
                     Else
-                        .SUSTITUYE_REMICION = "0"
+                        .SUSTITUYE_REMISION = "0"
                     End If
 
                     If .AfectaInventarios = False Then

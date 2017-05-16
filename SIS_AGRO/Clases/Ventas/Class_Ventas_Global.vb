@@ -51,7 +51,7 @@ Public Class Class_Ventas_Global
     Private _CADENA_ORIGINAL As String
     Private _SELLO_DIGITAL As String
     'Private _SELLO_REPROCESADO As String
-    Private _SUSTITUYE_REMICION As String
+    Private _SUSTITUYE_REMISION As String
     Private _CODIGO_TIPO_MERCADO As String
     Private _NOMBRE_USUARIO As String
     Private _FECHA_CANCELACION As Date
@@ -447,12 +447,12 @@ Public Class Class_Ventas_Global
     '    'End Set
     'End Property
 
-    Public Property SUSTITUYE_REMICION() As String
+    Public Property SUSTITUYE_REMISION() As String
         Get
-            Return Me._SUSTITUYE_REMICION
+            Return Me._SUSTITUYE_REMISION
         End Get
         Set(ByVal Value As String)
-            Me._SUSTITUYE_REMICION = Value
+            Me._SUSTITUYE_REMISION = Value
         End Set
     End Property
 
@@ -935,7 +935,7 @@ Public Class Class_Ventas_Global
             .CommandText = "MP_VENTA_AFECTA_INVENTARIOS"
 
             sqlParametro = .Parameters.Add("@FOLIO_VENTA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_VENTA
-            sqlParametro = .Parameters.Add("@SUSTITUYE_REMISION", SqlDbType.Char, 1) : sqlParametro.Value = Me._SUSTITUYE_REMICION
+            sqlParametro = .Parameters.Add("@SUSTITUYE_REMISION", SqlDbType.Char, 1) : sqlParametro.Value = Me._SUSTITUYE_REMISION
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
