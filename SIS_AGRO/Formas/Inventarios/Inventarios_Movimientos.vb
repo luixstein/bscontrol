@@ -110,7 +110,14 @@ Public Class Inventarios_Movimientos
     End Sub
 
     Private Sub tsbAplicar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbAplicar.Click
-        Me.GestionaAplicacion()
+        If Me.Estado = enumEstados.NUEVO Then
+            If Me.Grabar() = True Then
+                Me.Consultar()
+                Me.GestionaAplicacion()
+            End If
+        Else
+            Me.GestionaAplicacion()
+        End If
     End Sub
 
     Private Sub tsbImprimir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbImprimir.Click
@@ -357,7 +364,7 @@ busca:
                     Me.tsslCancelo.Text = ""
                     Me.tsbNuevo.Enabled = True
                     Me.tsbGrabar.Enabled = True
-                    Me.tsbAplicar.Enabled = False
+                    Me.tsbAplicar.Enabled = True
                     Me.tsbCancelar.Enabled = False
                     Me.tsbImprimir.Enabled = False
                     Me.tsbEditarCostos.Visible = False
