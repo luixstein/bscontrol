@@ -411,17 +411,19 @@ Public Class SIS_Plazas
                         .CUENTA_DESCUENTOS_REBAJAS_NACIONALES = Me.txtCuentaRebajas.Text
 
                         .Impuesto_Porcentaje = CType(Me.TxtImpuestoPorcentaje.Text, Decimal)
-                        If txtLEN(Me.TxtPlazoVentaContado.Text) Then
-                            .PLAZO_VENTA_CONTADO = Me.TxtPlazoVentaContado.Text
-                        Else
-                            .PLAZO_VENTA_CONTADO = "-1"
-                        End If
+                        .PLAZO_VENTA_CONTADO = IIf(txtLEN(Me.TxtPlazoVentaContado.Text) = True, Me.TxtPlazoVentaContado.Text, "-1").ToString
+                        'If txtLEN(Me.TxtPlazoVentaContado.Text) Then
+                        '    .PLAZO_VENTA_CONTADO = Me.TxtPlazoVentaContado.Text
+                        'Else
+                        '    .PLAZO_VENTA_CONTADO = "-1"
+                        'End If
                         .VALIDAR_FECHA_VENTAS = IIf(Me.ckbValidarFechaVentas.Checked = True, "1", "0").ToString
-                        If txtLEN(Me.TxtIdTemporadaProduccion.Text) Then
-                            .ID_TEMPORADA_PRODUCCION = Me.TxtIdTemporadaProduccion.Text
-                        Else
-                            .ID_TEMPORADA_PRODUCCION = "-1"
-                        End If
+                        .ID_TEMPORADA_PRODUCCION = IIf(txtLEN(Me.TxtIdTemporadaProduccion.Text) = True, Me.TxtIdTemporadaProduccion.Text, "-1").ToString
+                        'If txtLEN(Me.TxtIdTemporadaProduccion.Text) Then
+                        '    .ID_TEMPORADA_PRODUCCION = Me.TxtIdTemporadaProduccion.Text
+                        'Else
+                        '    .ID_TEMPORADA_PRODUCCION = "-1"
+                        'End If
                         .CODIGO_CLIENTES_EXPORTACION = Me.TxtCodigoClienteExportacion.Text
                         .CODIGO_CLIENTES_NACIONAL = Me.TxtCodigoClienteNacional.Text
 
@@ -431,12 +433,12 @@ Public Class SIS_Plazas
                         .Codigo_Proveedor = Me.TxtCodigoProveedor.Text
                         .CODIGO_LOTE_EMPAQUE = Me.TxtCodigoLoteEmbarque.Text
                         .CODIGO_LOTE_PLANTA = Me.TxtCodigoLotePlanta.Text
-                        If txtLEN(Me.TxtCodigoPuntoPago.Text) Then
-                            .CODIGO_PUNTO_PAGO_EMPAQUE = Me.TxtCodigoPuntoPago.Text
-                        Else
-                            .CODIGO_PUNTO_PAGO_EMPAQUE = "-1"
-                        End If
-
+                        .CODIGO_PUNTO_PAGO_EMPAQUE = IIf(txtLEN(Me.TxtCodigoPuntoPago.Text) = True, Me.TxtCodigoPuntoPago.Text, "-1").ToString
+                        'If txtLEN(Me.TxtCodigoPuntoPago.Text) Then
+                        '    .CODIGO_PUNTO_PAGO_EMPAQUE = Me.TxtCodigoPuntoPago.Text
+                        'Else
+                        '    .CODIGO_PUNTO_PAGO_EMPAQUE = "-1"
+                        'End If
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO

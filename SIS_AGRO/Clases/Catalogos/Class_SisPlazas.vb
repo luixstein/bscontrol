@@ -604,7 +604,7 @@ Public Class Class_SisPlazas
             sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_PROVEEDOR_GENERICA", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_PROVEEDOR_GENERICA.ToString
             sqlParametro = .Parameters.Add("@CODIGO_LOTE_EMPAQUE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_LOTE_EMPAQUE.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_LOTE_PLANTA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_LOTE_PLANTA.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_PUNTO_PAGO_EMPAQUE", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PUNTO_PAGO_EMPAQUE.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_PUNTO_PAGO_EMPAQUE", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_PUNTO_PAGO_EMPAQUE)
             sqlParametro = .Parameters.Add("@CODIGO_COLONIA_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_COLONIA_SAT.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_LOCALIDAD_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_LOCALIDAD_SAT.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_MUNICIPIO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_MUNICIPIO
@@ -649,43 +649,56 @@ Public Class Class_SisPlazas
                     Me._CODIGO_PLAZA = CType(dReader("CODIGO_PLAZA"), Integer)
                     Me._NOMBRE_PLAZA = Trim("" & dReader("NOMBRE_PLAZA").ToString)
                     'Me.ESTATUS_EJERCICIO = "" & dReader("ESTATUS_EJERCICIO").ToString
-                    Me._ESTATUS_PLAZA = Trim("" & dReader("ESTATUS_PLAZA").ToString)
                     Me._Identificador = "" & dReader("IDENTIFICADOR").ToString
-                    Me._Impuesto_Porcentaje = CDec(dReader("IMPUESTO_PORCENTAJE"))
-                    Me._Codigo_Proveedor = "" & dReader("Codigo_Proveedor").ToString
-                    Me._PLAZO_VENTA_CONTADO = "" & dReader("PLAZO_VENTA_CONTADO").ToString
-                    Me._CUENTA_CONTABLE_VENTAS = "" & dReader("CUENTA_CONTABLE_VENTAS").ToString
-                    Me._ID_TEMPORADA_PRODUCCION = "" & dReader("ID_TEMPORADA_PRODUCCION").ToString
+                    Me._ESTATUS_PLAZA = Trim("" & dReader("ESTATUS_PLAZA").ToString)
 
+                    Me._PAIS = "" & dReader("PAIS").ToString
+                    Me._CODIGO_PAIS_SAT = "" & dReader("CODIGO_PAIS_SAT").ToString
+                    Me._ESTADO = "" & dReader("ESTADO").ToString
+                    Me._CODIGO_ESTADO = "" & dReader("CODIGO_ESTADO").ToString
+                    Me._CODIGO_ESTADO_NUMERICO = CInt(dReader("CODIGO_ESTADO_NUMERICO"))
+                    'Me._CODIGO_ESTADO_SAT = "" & dReader("CODIGO_ESTADO_SAT").ToString '''El campo ya no esta en la tabla
+                    Me._CIUDAD = "" & dReader("CIUDAD").ToString
+                    Me._CODIGO_MUNICIPIO = "" & dReader("CODIGO_MUNICIPIO").ToString
+                    'Me._CODIGO_MUNICIPIO_SAT = "" & dReader("CODIGO_MUNICIPIO_SAT").ToString '''El campo ya no esta en la tabla
                     Me._CALLE = "" & dReader("CALLE").ToString
                     Me._NUMERO_EXTERIOR = "" & dReader("NUMERO_EXTERIOR").ToString
                     Me._NUMERO_INTERIOR = "" & dReader("NUMERO_INTERIOR").ToString
+                    Me._CODIGO_COLONIA_SAT = "" & dReader("CODIGO_COLONIA_SAT").ToString
                     Me._COLONIA = "" & dReader("COLONIA").ToString
+                    Me._CODIGO_LOCALIDAD_SAT = "" & dReader("CODIGO_LOCALIDAD_SAT").ToString
                     Me._LOCALIDAD = "" & dReader("LOCALIDAD").ToString
-                    Me._CIUDAD = "" & dReader("CIUDAD").ToString
-                    Me._ESTADO = "" & dReader("ESTADO").ToString
-                    Me._PAIS = "" & dReader("PAIS").ToString
+
                     Me._CODIGO_POSTAL = "" & dReader("CODIGO_POSTAL").ToString
                     Me._TELEFONO = "" & dReader("TELEFONO").ToString
-                    Me._CODIGO_COLONIA_SAT = "" & dReader("CODIGO_COLONIA_SAT").ToString
-                    Me._CODIGO_LOCALIDAD_SAT = "" & dReader("CODIGO_LOCALIDAD_SAT").ToString
-                    Me._CODIGO_MUNICIPIO = "" & dReader("CODIGO_MUNICIPIO").ToString
-                    Me._CODIGO_ESTADO = "" & dReader("CODIGO_ESTADO").ToString
-                    Me._CODIGO_PAIS_SAT = "" & dReader("CODIGO_PAIS_SAT").ToString
-
-                    Me._CODIGO_ESTADO_SAT = "" & dReader("CODIGO_ESTADO_SAT").ToString
-                    Me._CODIGO_MUNICIPIO_SAT = "" & dReader("CODIGO_MUNICIPIO_SAT").ToString
-
-                    Me._VALIDAR_FECHA_VENTAS = "" & dReader("VALIDAR_FECHA_VENTAS").ToString
-                    Me._CODIGO_ESTADO_NUMERICO = CInt(dReader("CODIGO_ESTADO_NUMERICO"))
-                    Me._CODIGO_ALMACEN_PRINCIPAL = "" & dReader("CODIGO_ALMACEN_PRINCIPAL").ToString
-                    Me._CODIGO_ZONA_PRINCIPAL = "" & dReader("CODIGO_ZONA_PRINCIPAL").ToString
 
                     Me._ID_CON_EJERCICIO = CInt(dReader("ID_CON_EJERCICIO").ToString)
+                    Me._NOMBRE_EJERCICIO = "" & dReader("NOMBRE_EJERCICIO").ToString
                     Me._FECHA_INICIO = CDate(dReader("FECHA_INICIO").ToString)
                     Me._FECHA_FINAL = CDate(dReader("FECHA_FINAL").ToString)
-                    Me._NOMBRE_EJERCICIO = "" & dReader("NOMBRE_EJERCICIO").ToString
+
+                    Me._CUENTA_CONTABLE_VENTAS = "" & dReader("CUENTA_CONTABLE_VENTAS").ToString
+                    Me._CUENTA_CONTABLE_MAYOR_EXPORTACION = "" & dReader("CUENTA_CONTABLE_MAYOR_EXPORTACION").ToString
+                    Me._CUENTA_CONTABLE_MAYOR_NACIONAL = "" & dReader("CUENTA_CONTABLE_MAYOR_NACIONAL").ToString
+                    Me._CUENTA_CONTABLE_CONTADO_EXPORTACION = "" & dReader("CUENTA_CONTABLE_CONTADO_EXPORTACION").ToString
+                    Me._CUENTA_CONTABLE_CONTADO_NACIONAL = "" & dReader("CUENTA_CONTABLE_CONTADO_NACIONAL").ToString
+                    Me._CUENTA_CONTABLE_PROVEEDOR_GENERICA = "" & dReader("CUENTA_CONTABLE_PROVEEDOR_GENERICA").ToString
                     Me._CUENTA_DESCUENTOS_REBAJAS_NACIONALES = "" & dReader("CUENTA_DESCUENTOS_REBAJAS_NACIONALES").ToString
+
+                    Me._Impuesto_Porcentaje = CDec(dReader("IMPUESTO_PORCENTAJE"))
+                    Me._PLAZO_VENTA_CONTADO = "" & dReader("PLAZO_VENTA_CONTADO").ToString
+                    Me._VALIDAR_FECHA_VENTAS = "" & dReader("VALIDAR_FECHA_VENTAS").ToString
+                    Me._ID_TEMPORADA_PRODUCCION = "" & dReader("ID_TEMPORADA_PRODUCCION").ToString
+                    Me._CODIGO_CLIENTES_EXPORTACION = "" & dReader("CODIGO_CLIENTES_EXPORTACION").ToString
+                    Me._CODIGO_CLIENTES_NACIONAL = "" & dReader("CODIGO_CLIENTES_NACIONAL").ToString
+
+                    Me._CODIGO_ZONA_PRINCIPAL = "" & dReader("CODIGO_ZONA_PRINCIPAL").ToString
+                    Me._CODIGO_ALMACEN_PRINCIPAL = "" & dReader("CODIGO_ALMACEN_PRINCIPAL").ToString
+
+                    Me._Codigo_Proveedor = "" & dReader("Codigo_Proveedor").ToString
+                    Me._CODIGO_LOTE_EMPAQUE = "" & dReader("CODIGO_LOTE_EMPAQUE").ToString
+                    Me._CODIGO_LOTE_PLANTA = "" & dReader("CODIGO_LOTE_PLANTA").ToString
+                    Me._CODIGO_PUNTO_PAGO_EMPAQUE = "" & dReader("CODIGO_PUNTO_PAGO_EMPAQUE").ToString
 
                     bResultado = True
                 End If
