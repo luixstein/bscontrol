@@ -51,7 +51,7 @@ Public Class Class_Ventas_Global
     Private _CADENA_ORIGINAL As String
     Private _SELLO_DIGITAL As String
     'Private _SELLO_REPROCESADO As String
-    Private _SUSTITUYE_REMICION As String
+    Private _SUSTITUYE_REMISION As String
     Private _CODIGO_TIPO_MERCADO As String
     Private _NOMBRE_USUARIO As String
     Private _FECHA_CANCELACION As Date
@@ -447,12 +447,12 @@ Public Class Class_Ventas_Global
     '    'End Set
     'End Property
 
-    Public Property SUSTITUYE_REMICION() As String
+    Public Property SUSTITUYE_REMISION() As String
         Get
-            Return Me._SUSTITUYE_REMICION
+            Return Me._SUSTITUYE_REMISION
         End Get
         Set(ByVal Value As String)
-            Me._SUSTITUYE_REMICION = Value
+            Me._SUSTITUYE_REMISION = Value
         End Set
     End Property
 
@@ -935,7 +935,7 @@ Public Class Class_Ventas_Global
             .CommandText = "MP_VENTA_AFECTA_INVENTARIOS"
 
             sqlParametro = .Parameters.Add("@FOLIO_VENTA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_VENTA
-            sqlParametro = .Parameters.Add("@SUSTITUYE_REMISION", SqlDbType.Char, 1) : sqlParametro.Value = Me._SUSTITUYE_REMICION
+            sqlParametro = .Parameters.Add("@SUSTITUYE_REMISION", SqlDbType.Char, 1) : sqlParametro.Value = Me._SUSTITUYE_REMISION
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
@@ -1182,11 +1182,11 @@ Public Class Class_Ventas_Global
             sSQL = "SELECT R.CODIGO_ARTICULO, " & _
             "CASE WHEN A.ES_SERIALIZABLE = '1' THEN 'SER' WHEN A.INVENTARIABLE= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO, " & _
             "R.DESCRIPCION,R.DISPONIBLE,R.PRECIO,R.UNIDAD_VENTA,ISNULL(R.CANTIDAD_KILOS,0) CANTIDAD_KILOS,ISNULL(R.PRECIO_KILOS,0) PRECIO_KILOS,R.IMPUESTO_PORCENTAJE,R.IMPORTE,ISNULL(R.IMPORTE_KILOS,0) IMPORTE_KILOS," & _
-            "R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_VENTA_DETALLE,R.ES_PRODUCTO_KILOS,R.CODIGO_CENTRO_COSTO,CC.NOMBRE_CENTRO_COSTO,R.CODIGO_CENTRO_COSTO,R.PRECIO_USD,R.IMPORTE_USD " &
+            "R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_VENTA_DETALLE,R.ES_PRODUCTO_KILOS,R.CODIGO_CENTRO_COSTO,CC.NOMBRE_CENTRO_COSTO,R.CODIGO_CENTRO_COSTO,R.PRECIO_USD,R.IMPORTE_USD, " &
             "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA,R.PRECIO_TOTAL " & _
             "FROM VENTA_DETALLE R " & _
             "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
-            "INNER JOIN NOMINA_CAT_CENTROS_COSTOS A ON(T.CODIGO_CENTRO_COSTO=A.CODIGO_CENTRO_COSTO)" &
+            "INNER JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO=CC.CODIGO_CENTRO_COSTO)" &
             "WHERE R.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' AND R.DISPONIBLE>0 " &
             "ORDER BY R.ID_VENTA_DETALLE "
 
@@ -1255,10 +1255,10 @@ Public Class Class_Ventas_Global
         Return dTabla
     End Function
 
-    Public Function ObtenerDisponibleRenglon(ByVal iIdArticulo As Integer) As Double
+    Public Function ObtenerDisponibleRenglon(ByVal iIdArticulo As Integer) As Decimal
         Try
-            Dim Disponible As New Class_find("select DISPONIBLE FROM VENTA_DETALLE WHERE ID_VENTA_DETALLE=" & iIdArticulo)
-            Return valorNumerico(Disponible.Result1)
+            Dim Disponible As New Class_find("SELECT DISPONIBLE FROM VENTA_DETALLE WHERE ID_VENTA_DETALLE=" & iIdArticulo.ToString)
+            Return valorNumericoD(Disponible.Result1)
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "ObtenerDisponibleRenglon", ex)
         End Try

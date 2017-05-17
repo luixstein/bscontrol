@@ -163,10 +163,18 @@ Public Class Ventas_Movimientos
 
     Private Sub tsbRemisionVenta_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbRemisionVenta.Click
         sTipoVenta = "SR" 'SUSTITUCION DE REMISION
+
+        Dim oTF As New VentasSeleccionaTipoFactura
+        oTF.ShowDialog()
+
+        sCodigoDocumentoFacturaExterno = oTF.CboDocumento.SelectedValue.ToString
+
         If Me.Consultar(True) = True Then
             Me.EstableceCuentasContables()
             Me.Totales()
         End If
+
+        Me.Grid.Locked = True
     End Sub
 
     Private Sub tsbImprimir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbImprimir.Click
@@ -189,7 +197,7 @@ Public Class Ventas_Movimientos
                 MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, Me.Text)
             End If
         Else
-            MsgBox("El documento ya esta timbrado", MsgBoxStyle.Exclamation, Me.Text)
+            MsgBox("El documento ya esta timbrado.", MsgBoxStyle.Exclamation, Me.Text)
         End If
     End Sub
 
@@ -1138,7 +1146,7 @@ Buscar:
 
                     Me.btnAgregaAddenda.Visible = False
                     Me.frmDatos.Enabled = True
-                    Me.Grid.Locked = False
+                    'Me.Grid.Locked = True 'De momento no se permiten editar cantidades, o precios
                     Me.GridSeries.Locked = True 'De momento no permitimos manejo de series en sustituciones.
 
                     Me.tsbCotizacionFactura.Visible = False
@@ -1346,11 +1354,12 @@ Buscar:
                 .FOLIO_REFERENCIA_USUARIO = ""
                 .TIPO_VENTA = sTipoVenta
 
-                If Me.sTipoVenta = "NM" Then
-                    .TOTAL_SUSTITUCION = 0
-                Else
-                    .TOTAL_SUSTITUCION = dTotalSustitucion
-                End If
+                .TOTAL_SUSTITUCION = 0 'Ahora se graba dentor del stored MP_VENTA_AFECTA_SUSTITUCION_REMISION
+                'If Me.sTipoVenta = "NM" Then
+                '    .TOTAL_SUSTITUCION = 0
+                'Else
+                '    .TOTAL_SUSTITUCION = dTotalSustitucion
+                'End If
 
                 .ES_VENTA_PUBLICO_GENERAL = Convert.ToInt32(Me.chkVentaPublicoGeneral.Checked).ToString
                 .FOLIO_EMBARQUE = Me.txtFolioEmbarque.Text.ToUpper
@@ -1437,9 +1446,9 @@ Buscar:
 
                 If oDocumento.AFECTA_INVENTARIOS = True Then
                     If Me.sTipoVenta = "SR" Then
-                        .SUSTITUYE_REMICION = "1"
+                        .SUSTITUYE_REMISION = "1"
                     Else
-                        .SUSTITUYE_REMICION = "0"
+                        .SUSTITUYE_REMISION = "0"
                     End If
 
                     If .AfectaInventarios = False Then
@@ -1999,10 +2008,10 @@ CANCELAR:
         Dim i As Integer, dDisponible As Double
         Try
             i = 1
-            If Len(Me.Grid.Cell(i, Me.igyCodigo).Text) > 0 Then
+            If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
                 dDisponible = Me.oVenta.ObtenerDisponibleRenglon(CInt(Me.Grid.Cell(i, Me.igyIdOrigen).Text))
-                If valorNumerico(Me.Grid.Cell(i, Me.igyCantidad).Text) > dDisponible Then
-                    MsgBox("La cantidad es mayor al disponible.", MsgBoxStyle.Exclamation, "ValidarDisponibles")
+                If valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text) > dDisponible Then
+                    MsgBox("La cantidad del renglón #" & i & " es mayor al disponible.", MsgBoxStyle.Exclamation, "ValidarDisponibles")
                     Me.Grid.Cell(i, Me.igyDescripcion).SetFocus()
                     Return False
                 End If
@@ -2502,7 +2511,7 @@ CANCELAR:
                 Me.cboTipoNegociacion.SelectedValue = Me.oVenta.CODIGO_TIPO_NEGOCIACION
                 Me.CboAlmacen.SelectedValue = Me.oVenta.CODIGO_ALMACEN
                 Me.cboVendedor.SelectedValue = Me.oVenta.CODIGO_VENDEDOR
-                'CFD
+
                 Me.cboMetodoPago.SelectedValue = Me.oVenta.CODIGO_METODO_PAGO
                 Me.txtNumCuenta.Text = Me.oVenta.NUMERO_CUENTA_PAGO.ToString
 
