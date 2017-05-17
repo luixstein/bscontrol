@@ -1255,10 +1255,10 @@ Public Class Class_Ventas_Global
         Return dTabla
     End Function
 
-    Public Function ObtenerDisponibleRenglon(ByVal iIdArticulo As Integer) As Double
+    Public Function ObtenerDisponibleRenglon(ByVal iIdArticulo As Integer) As Decimal
         Try
-            Dim Disponible As New Class_find("select DISPONIBLE FROM VENTA_DETALLE WHERE ID_VENTA_DETALLE=" & iIdArticulo)
-            Return valorNumerico(Disponible.Result1)
+            Dim Disponible As New Class_find("SELECT DISPONIBLE FROM VENTA_DETALLE WHERE ID_VENTA_DETALLE=" & iIdArticulo.ToString)
+            Return valorNumericoD(Disponible.Result1)
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "ObtenerDisponibleRenglon", ex)
         End Try
