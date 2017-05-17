@@ -173,6 +173,8 @@ Public Class Ventas_Movimientos
             Me.EstableceCuentasContables()
             Me.Totales()
         End If
+
+        Me.Grid.Locked = True
     End Sub
 
     Private Sub tsbImprimir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbImprimir.Click
@@ -1144,7 +1146,7 @@ Buscar:
 
                     Me.btnAgregaAddenda.Visible = False
                     Me.frmDatos.Enabled = True
-                    Me.Grid.Locked = True 'De momento no se permiten editar cantidades, o precios
+                    'Me.Grid.Locked = True 'De momento no se permiten editar cantidades, o precios
                     Me.GridSeries.Locked = True 'De momento no permitimos manejo de series en sustituciones.
 
                     Me.tsbCotizacionFactura.Visible = False
@@ -1826,8 +1828,6 @@ CANCELAR:
                     End If
                 End If
             End If
-
-            MsgBox("valida sustit")
 
             Return True
 
