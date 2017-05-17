@@ -202,9 +202,22 @@ Public Class SIS_Plazas
                 Me.TxtIdentificador.Enabled = True
                 Me.CboEstatus.Enabled = True
 
-                Me.TxtCodigoClienteExportacion.Enabled = False
-                Me.TxtCodigoClienteNacional.Enabled = True
-                Me.TxtCodigoProveedor.Enabled = False
+                Me.TxtCuentaContableVentas.Enabled = CBool(IIf(txtLEN(Me.TxtCuentaContableVentas.Text) = True, False, True))
+                Me.TxtCtaContableMayorExportacion.Enabled = CBool(IIf(txtLEN(Me.TxtCtaContableMayorExportacion.Text) = True, False, True))
+                Me.TxtCtaContableMayorNacional.Enabled = CBool(IIf(txtLEN(Me.TxtCtaContableMayorNacional.Text) = True, False, True))
+                Me.TxtCtaContadoExportacion.Enabled = CBool(IIf(txtLEN(Me.TxtCtaContadoExportacion.Text) = True, False, True))
+                Me.TxtCtaContadoNacional.Enabled = CBool(IIf(txtLEN(Me.TxtCtaContadoNacional.Text) = True, False, True))
+                Me.TxtCuentaProveedor.Enabled = CBool(IIf(txtLEN(Me.TxtCuentaProveedor.Text) = True, False, True))
+                Me.txtCuentaRebajas.Enabled = CBool(IIf(txtLEN(Me.txtCuentaRebajas.Text) = True, False, True))
+
+                Me.TxtCodigoClienteExportacion.Enabled = CBool(IIf(txtLEN(Me.TxtCodigoClienteExportacion.Text) = True, False, True))
+                Me.TxtCodigoClienteNacional.Enabled = CBool(IIf(txtLEN(Me.TxtCodigoClienteNacional.Text) = True, False, True))
+
+                Me.TxtCodigoProveedor.Enabled = CBool(IIf(txtLEN(Me.TxtCodigoProveedor.Text) = True, False, True))
+                Me.TxtCodigoLoteEmbarque.Enabled = CBool(IIf(txtLEN(Me.TxtCodigoLoteEmbarque.Text) = True, False, True))
+                Me.TxtCodigoLotePlanta.Enabled = CBool(IIf(txtLEN(Me.TxtCodigoLotePlanta.Text) = True, False, True))
+                Me.TxtCodigoPuntoPago.Enabled = CBool(IIf(txtLEN(Me.TxtCodigoPuntoPago.Text) = True, False, True))
+
                 Me.TxtNombre.Focus()
 
             Case enumEstados.CONSULTA
@@ -403,7 +416,7 @@ Public Class SIS_Plazas
                         Else
                             .PLAZO_VENTA_CONTADO = "-1"
                         End If
-                        .VALIDAR_FECHA_VENTAS = Me.ckbValidarFechaVentas.Checked.ToString
+                        .VALIDAR_FECHA_VENTAS = IIf(Me.ckbValidarFechaVentas.Checked = True, "1", "0").ToString
                         If txtLEN(Me.TxtIdTemporadaProduccion.Text) Then
                             .ID_TEMPORADA_PRODUCCION = Me.TxtIdTemporadaProduccion.Text
                         Else
@@ -680,7 +693,7 @@ Public Class SIS_Plazas
         End If
     End Sub
 
-    Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigo.KeyPress, TxtCodigoPostal.KeyPress, TxtCuentaContableVentas.KeyPress, TxtCtaContableMayorExportacion.KeyPress, TxtCtaContableMayorNacional.KeyPress, TxtCtaContadoExportacion.KeyPress, TxtCtaContadoNacional.KeyPress, TxtCuentaProveedor.KeyPress, txtCuentaRebajas.KeyPress, TxtImpuestoPorcentaje.KeyPress, TxtPlazoVentaContado.KeyPress, TxtIdTemporadaProduccion.KeyPress
+    Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigo.KeyPress, TxtCodigoPostal.KeyPress, TxtCuentaContableVentas.KeyPress, TxtCtaContableMayorExportacion.KeyPress, TxtCtaContableMayorNacional.KeyPress, TxtCtaContadoExportacion.KeyPress, TxtCtaContadoNacional.KeyPress, TxtCuentaProveedor.KeyPress, txtCuentaRebajas.KeyPress, TxtImpuestoPorcentaje.KeyPress, TxtPlazoVentaContado.KeyPress, TxtIdTemporadaProduccion.KeyPress, TxtCodigoPuntoPago.KeyPress
         Dim txt As TextBox = CType(sender, TextBox)
         txtSoloNumerosDecimales(e, txt.Text)
         txtNoBeep(e)
