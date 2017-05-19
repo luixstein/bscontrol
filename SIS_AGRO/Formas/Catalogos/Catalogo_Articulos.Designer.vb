@@ -95,9 +95,9 @@ Partial Class Catalogo_Articulos
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayDescripcion)
         Me.gBoxInformacion.Controls.Add(Me.TxtDescripcion)
         Me.gBoxInformacion.Location = New System.Drawing.Point(11, 34)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Size = New System.Drawing.Size(529, 516)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
@@ -109,7 +109,7 @@ Partial Class Catalogo_Articulos
         Me.cboGradoToxicidad.FormattingEnabled = True
         Me.cboGradoToxicidad.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
         Me.cboGradoToxicidad.Location = New System.Drawing.Point(129, 463)
-        Me.cboGradoToxicidad.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboGradoToxicidad.Margin = New System.Windows.Forms.Padding(4)
         Me.cboGradoToxicidad.Name = "cboGradoToxicidad"
         Me.cboGradoToxicidad.Size = New System.Drawing.Size(281, 24)
         Me.cboGradoToxicidad.TabIndex = 10
@@ -138,7 +138,7 @@ Partial Class Catalogo_Articulos
         '
         Me.chkEsSerializable.AutoSize = True
         Me.chkEsSerializable.Location = New System.Drawing.Point(296, 268)
-        Me.chkEsSerializable.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.chkEsSerializable.Margin = New System.Windows.Forms.Padding(4)
         Me.chkEsSerializable.Name = "chkEsSerializable"
         Me.chkEsSerializable.Size = New System.Drawing.Size(173, 21)
         Me.chkEsSerializable.TabIndex = 4
@@ -149,18 +149,18 @@ Partial Class Catalogo_Articulos
         '
         Me.chkImpuesto.AutoSize = True
         Me.chkImpuesto.Location = New System.Drawing.Point(129, 297)
-        Me.chkImpuesto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.chkImpuesto.Margin = New System.Windows.Forms.Padding(4)
         Me.chkImpuesto.Name = "chkImpuesto"
-        Me.chkImpuesto.Size = New System.Drawing.Size(87, 21)
+        Me.chkImpuesto.Size = New System.Drawing.Size(51, 21)
         Me.chkImpuesto.TabIndex = 5
-        Me.chkImpuesto.Text = "Impuesto"
+        Me.chkImpuesto.Text = "IVA"
         Me.chkImpuesto.UseVisualStyleBackColor = True
         '
         'chkInventariable
         '
         Me.chkInventariable.AutoSize = True
         Me.chkInventariable.Location = New System.Drawing.Point(129, 268)
-        Me.chkInventariable.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.chkInventariable.Margin = New System.Windows.Forms.Padding(4)
         Me.chkInventariable.Name = "chkInventariable"
         Me.chkInventariable.Size = New System.Drawing.Size(111, 21)
         Me.chkInventariable.TabIndex = 3
@@ -173,7 +173,7 @@ Partial Class Catalogo_Articulos
         Me.CboFamilia.FormattingEnabled = True
         Me.CboFamilia.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
         Me.CboFamilia.Location = New System.Drawing.Point(129, 364)
-        Me.CboFamilia.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboFamilia.Margin = New System.Windows.Forms.Padding(4)
         Me.CboFamilia.Name = "CboFamilia"
         Me.CboFamilia.Size = New System.Drawing.Size(281, 24)
         Me.CboFamilia.TabIndex = 7
@@ -201,7 +201,7 @@ Partial Class Catalogo_Articulos
         'TxtPrecio
         '
         Me.TxtPrecio.Location = New System.Drawing.Point(129, 398)
-        Me.TxtPrecio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtPrecio.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtPrecio.MaxLength = 0
         Me.TxtPrecio.Name = "TxtPrecio"
         Me.TxtPrecio.Size = New System.Drawing.Size(95, 22)
@@ -215,7 +215,7 @@ Partial Class Catalogo_Articulos
         Me.cboLinea.FormattingEnabled = True
         Me.cboLinea.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
         Me.cboLinea.Location = New System.Drawing.Point(129, 330)
-        Me.cboLinea.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboLinea.Margin = New System.Windows.Forms.Padding(4)
         Me.cboLinea.Name = "cboLinea"
         Me.cboLinea.Size = New System.Drawing.Size(281, 24)
         Me.cboLinea.TabIndex = 6
@@ -246,7 +246,7 @@ Partial Class Catalogo_Articulos
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.CboEstatus.Location = New System.Drawing.Point(129, 430)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(95, 24)
@@ -265,7 +265,7 @@ Partial Class Catalogo_Articulos
         'TxtCodArticulo
         '
         Me.TxtCodArticulo.Location = New System.Drawing.Point(129, 27)
-        Me.TxtCodArticulo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodArticulo.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodArticulo.MaxLength = 16
         Me.TxtCodArticulo.Name = "TxtCodArticulo"
         Me.TxtCodArticulo.Size = New System.Drawing.Size(95, 22)
@@ -284,7 +284,7 @@ Partial Class Catalogo_Articulos
         'TxtUnidadVenta
         '
         Me.TxtUnidadVenta.Location = New System.Drawing.Point(129, 234)
-        Me.TxtUnidadVenta.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtUnidadVenta.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtUnidadVenta.MaxLength = 20
         Me.TxtUnidadVenta.Name = "TxtUnidadVenta"
         Me.TxtUnidadVenta.Size = New System.Drawing.Size(91, 22)
@@ -303,7 +303,7 @@ Partial Class Catalogo_Articulos
         'TxtDescripcion
         '
         Me.TxtDescripcion.Location = New System.Drawing.Point(129, 59)
-        Me.TxtDescripcion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtDescripcion.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtDescripcion.MaxLength = 500
         Me.TxtDescripcion.Multiline = True
         Me.TxtDescripcion.Name = "TxtDescripcion"
@@ -322,9 +322,9 @@ Partial Class Catalogo_Articulos
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(548, 34)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(567, 516)
         Me.gBoxBusquedaRapida.TabIndex = 121
         Me.gBoxBusquedaRapida.TabStop = False
@@ -346,7 +346,7 @@ Partial Class Catalogo_Articulos
         Me.CboEstatusFiltro.FormattingEnabled = True
         Me.CboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
         Me.CboEstatusFiltro.Location = New System.Drawing.Point(500, 54)
-        Me.CboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatusFiltro.MaxLength = 1
         Me.CboEstatusFiltro.Name = "CboEstatusFiltro"
         Me.CboEstatusFiltro.Size = New System.Drawing.Size(56, 24)
@@ -384,7 +384,7 @@ Partial Class Catalogo_Articulos
         Me.Grid.AllowUserToResizeRows = False
         Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.Grid.Location = New System.Drawing.Point(7, 86)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid.Name = "Grid"
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
@@ -397,7 +397,7 @@ Partial Class Catalogo_Articulos
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFiltro.Location = New System.Drawing.Point(8, 57)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.Name = "txtFiltro"
         Me.txtFiltro.Size = New System.Drawing.Size(413, 22)
         Me.txtFiltro.TabIndex = 0
@@ -501,7 +501,7 @@ Partial Class Catalogo_Articulos
         Me.Controls.Add(Me.StatusStripEstado)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Location = New System.Drawing.Point(8, 28)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Articulos"
         Me.Tag = "0022"
