@@ -122,7 +122,7 @@ Public Class Class_SisTiposProveedores
 
     Public Sub New()
         Me._Nombre_Catalogo = "SIS_TIPOS_PROVEEDORES"
-        Me._Nombre_Reporte = "RPT_CAT_TIPOS_PROVEEDORES"
+        Me._Nombre_Reporte = "RPT_CATALOGO_TIPOS_PROVEEDORES"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         Me._QuerySelect = "SELECT CODIGO_TIPO_PROVEEDOR,NOMBRE_TIPO_PROVEEDOR FROM SIS_TIPOS_PROVEEDORES"
