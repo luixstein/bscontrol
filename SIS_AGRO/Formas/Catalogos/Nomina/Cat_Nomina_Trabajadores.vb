@@ -131,7 +131,7 @@ Public Class Cat_Nomina_Trabajadores
 
     Private Sub tsbImprimirListado_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbImprimirListado.Click
         Dim oElementos As New Class_CatTrabajadores
-        'oElementos.Imprimir_Listado()
+        oElementos.Imprimir_Listado()
         oElementos = Nothing
     End Sub
 #End Region

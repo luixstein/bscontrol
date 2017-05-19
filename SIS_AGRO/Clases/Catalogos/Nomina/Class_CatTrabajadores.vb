@@ -1,5 +1,6 @@
 ﻿Imports System.Data
 Imports System.Data.SqlClient
+Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Class_CatTrabajadores
     'Inherits Class_Catalogos
@@ -525,6 +526,29 @@ Public Class Class_CatTrabajadores
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "New", ex)
         End Try
+    End Sub
+
+    Public Sub Imprimir_Listado()   'Función para ver la búsqueda visual por descripción.
+        If Len(Nombre_Reporte) > 0 Then
+            Dim Rpt As New ReportDocument
+            Dim oReporte As Class_Reporte
+            Try
+                oReporte = New Class_Reporte(Nombre_Reporte, Rpt)
+
+                Dim frm As New Reporte(Rpt)
+                frm.CRViewer.ShowGroupTreeButton = False
+                frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
+                frm.Show()
+
+            Catch ex As Exception
+                HandleError(Me.Nombre_Catalogo, " Impresión del listado :" + Me.Nombre_Catalogo, ex)
+            Finally
+                oReporte = Nothing
+                'Rpt.Dispose()
+            End Try
+        Else
+            MsgBox("El nombre del reporte no ha sido especificado, no hay nada que imprimir.", MsgBoxStyle.Critical, Me.Nombre_Catalogo)
+        End If
     End Sub
 
     Protected Overrides Sub Finalize()
