@@ -142,9 +142,10 @@ Public Class Sis_Tipos_Proveedores
         Me.Close()
     End Sub
 
-    Private Sub tsbImprimirListado_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub tsbImprimirListado_Click_1(sender As Object, e As EventArgs) Handles tsbImprimirListado.Click
         Me.oTipoProveedor.Imprimir_Listado()
     End Sub
+
 #End Region
 
 #Region "Métodos y procedimientos"
@@ -412,5 +413,4 @@ busqueda_Visual:
     End Sub
 
 #End Region
-
 End Class

@@ -517,7 +517,7 @@ Public Class Class_CatClientes
 
     Public Sub New()
         Me._Nombre_Catalogo = "CAT_CLIENTES"
-        Me._Nombre_Reporte = "RPT_CAT_CLIENTES.rpt"
+        Me._Nombre_Reporte = "RPT_CATALOGO_CLIENTES"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         Me._QuerySelect = "SELECT C.CODIGO_CLIENTE,C.NOMBRE_CLIENTE,C.Estatus,C.RFC,C.TIPO_PERSONA,C.CURP,C.TELEFONO,C.CELULAR, " & _

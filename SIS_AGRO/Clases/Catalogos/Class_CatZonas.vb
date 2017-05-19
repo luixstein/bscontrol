@@ -118,7 +118,7 @@ Public Class Class_CatZonas
 
     Public Sub New()
         Me._Nombre_Catalogo = "CAT_ZONAS"
-        Me._Nombre_Reporte = "RPT_CAT_ZONAS.rpt"
+        Me._Nombre_Reporte = "RPT_CATALOGO_ZONAS"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         Me._QuerySELECT = "SELECT CODIGO_ZONA,NOMBRE_ZONA,CODIGO_PLAZA FROM CAT_ZONAS"

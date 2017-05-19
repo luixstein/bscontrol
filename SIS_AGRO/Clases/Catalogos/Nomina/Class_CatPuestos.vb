@@ -110,7 +110,7 @@ Public Class Class_CatPuestos
 
     Public Sub New()
         Me._Nombre_Catalogo = "NOMINA_CAT_PUESTOS"
-        Me._Nombre_Reporte = "RPT_CATALOGO_NOMINA_AREAS"
+        Me._Nombre_Reporte = "RPT_CATALOGO_NOMINA_PUESTOS"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         Me._QuerySelect = "Select CODIGO_PUESTO,NOMBRE_PUESTO From NOMINA_CAT_PUESTOS"

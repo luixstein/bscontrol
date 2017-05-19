@@ -111,7 +111,7 @@ Public Class Class_CatAgenciaAduanales
 
     Public Sub New()
         Me._Nombre_Catalogo = "CAT_AGENCIAS_ADUANALES"
-        'Me._Nombre_Reporte = "RPT_CAT_AGENCIAS_ADUANALES.rpt"
+        Me._Nombre_Reporte = "RPT_CATALOGO_AGENCIAS_ADUANALES"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         Me._QuerySelect = "Select * From CAT_AGENCIAS_ADUANALES"

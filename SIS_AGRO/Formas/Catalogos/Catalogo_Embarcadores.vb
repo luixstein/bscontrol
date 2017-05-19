@@ -88,7 +88,7 @@ Public Class Catalogo_Embarcadores
     End Sub
 
     Private Sub tsbImprimirListado_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbImprimirListado.Click
-        Dim oElementos As New Class_CatClientes
+        Dim oElementos As New Class_CatEmbarcadores
 
         oElementos.Imprimir_Listado()
 

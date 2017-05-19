@@ -105,7 +105,7 @@ Public Class Class_CatConceptos
 
     Public Sub New()
         Me._Nombre_Catalogo = "CAT_CONCEPTOS"
-        Me._Nombre_Reporte = "RPT_CAT_Concepto.rpt"
+        Me._Nombre_Reporte = "RPT_CATALOGO_CONCEPTOS"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         Me._QuerySelect = "Select Codigo_Concepto,Nombre_Concepto From CAT_CONCEPTOS"

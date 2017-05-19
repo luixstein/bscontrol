@@ -106,7 +106,7 @@ Public Class Class_CatTiposCategorias
 
     Public Sub New()
         Me._Nombre_Catalogo = "CAT_TIPOS_CATEGORIAS"
-        Me._Nombre_Reporte = "RPT_CAT_tipos_categorias.rpt"
+        Me._Nombre_Reporte = "RPT_CATALOGO_TIPOS_CATEGORIAS"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         Me._QuerySelect = "Select Codigo_tipo_categoria,Nombre_Tipo_Categoria From CAT_TIPOS_CATEGORIAS"

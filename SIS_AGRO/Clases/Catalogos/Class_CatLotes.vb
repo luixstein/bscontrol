@@ -121,7 +121,7 @@ Public Class Class_CatLotes
 
     Public Sub New()
         Me._Nombre_Catalogo = "CAT_LOTES"
-        Me._Nombre_Reporte = "RPT_CAT_LOTES.rpt"
+        Me._Nombre_Reporte = "RPT_CATALOGO_LOTES"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         Me._QuerySelect = "SELECT * FROM CAT_LOTES"

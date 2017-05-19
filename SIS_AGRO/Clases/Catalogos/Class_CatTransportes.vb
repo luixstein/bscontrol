@@ -176,7 +176,7 @@ Public Class Class_CatTransportes
 
     Public Sub New()
         Me._Nombre_Catalogo = "CAT_TRANSPORTES"
-        'Me._Nombre_Reporte = "RPT_CAT_TRANSPORTES.rpt"
+        Me._Nombre_Reporte = "RPT_CATALOGO_TRANSPORTES"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         Me._QuerySelect = "Select * From CAT_TRANSPORTES"

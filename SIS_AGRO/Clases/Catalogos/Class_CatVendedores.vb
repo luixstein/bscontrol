@@ -132,7 +132,7 @@ Public Class Class_CatVendedores
 
     Public Sub New()
         Me._Nombre_Catalogo = "CAT_VENDEDORES"
-        Me._Nombre_Reporte = "RPT_CAT_VENDEDORES.rpt"
+        Me._Nombre_Reporte = "RPT_CATALOGO_VENDEDORES"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         Me._QuerySelect = "Select CODIGO_VENDEDOR,NOMBRE_VENDEDOR From CAT_VENDEDORES"

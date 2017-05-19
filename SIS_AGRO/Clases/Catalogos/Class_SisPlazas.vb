@@ -530,7 +530,7 @@ Public Class Class_SisPlazas
 
     Public Sub New()
         Me._Nombre_Catalogo = "SIS_PLAZAS"
-        Me._Nombre_Reporte = "RPT_CATALOGO_PLAZAS.rpt"
+        Me._Nombre_Reporte = "RPT_CATALOGO_PLAZAS"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         'Me._QuerySelect = "Select * From SIS_PLAZAS"

@@ -167,7 +167,7 @@ Public Class Class_CatProductores
 #Region "Constructor y destructor"
     Public Sub New()
         Me._Nombre_Catalogo = "CAT_PRODUCTORES"
-        'Me._Nombre_Reporte = "RPT_CATALOGO_PRODUCTORES.rpt"
+        Me._Nombre_Reporte = "RPT_CATALOGO_PRODUCTORES"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         Me._QuerySelect = "SELECT * FROM CAT_PRODUCTORES "

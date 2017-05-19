@@ -499,7 +499,7 @@ Public Class Class_CatTrabajadores
 
     Public Sub New()
         Me._Nombre_Catalogo = "NOMINA_CAT_TRABAJADORES"
-        Me._Nombre_Reporte = "RPT_NOMINA_CAT_TRABAJADORES.rpt"
+        Me._Nombre_Reporte = "RPT_CATALOGO_NOMINA_TRABAJADORES"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         Me._QuerySelect = "SELECT T.*,B.NOMBRE_BANCO,M.NOMBRE_TRABAJADOR NOMBRE_MAYORDOMO,E.CODIGO_ESTADO_NUMERICO CODIGO_ESTADO_NACIMIENTO_NUMERICO " & _
