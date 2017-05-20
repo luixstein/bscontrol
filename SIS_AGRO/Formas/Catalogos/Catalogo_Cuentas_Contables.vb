@@ -197,7 +197,7 @@ Public Class Catalogo_Cuentas_Contables
 
     Private Sub cmbTipoContabilidad_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cmbTipoContabilidad.KeyDown
         If e.KeyCode = Keys.Return Then
-            Me.tsbGrabar.PerformClick()
+            SendKeys.Send("{TAB}")
         End If
     End Sub
 
@@ -282,7 +282,7 @@ Public Class Catalogo_Cuentas_Contables
 
 #Region "Eventos Genericos"
 
-    Private Sub CboESTATUS_DOCUMENTO_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CmbNaturaleza.KeyDown
+    Private Sub CboPlazas_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboPlaza.KeyDown
         If e.KeyCode = Keys.Return Then
             tsbGrabar.PerformClick()
         End If
@@ -406,7 +406,7 @@ Public Class Catalogo_Cuentas_Contables
             Case enumEstados.NUEVO
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Agregando nueva " & Me.msgElemento
+                Me.tssLabelEstado.Text = "Agregando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
@@ -429,7 +429,7 @@ Public Class Catalogo_Cuentas_Contables
             Case enumEstados.EDICION
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Edición"
+                Me.tssLabelEstado.Text = "Editando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
@@ -448,7 +448,7 @@ Public Class Catalogo_Cuentas_Contables
             Case enumEstados.CONSULTA
                 Me.gBoxInformacion.Enabled = False
                 Me.gBoxBusquedaRapida.Enabled = True
-                Me.tssLabelEstado.Text = "Consulta"
+                Me.tssLabelEstado.Text = "Consultando"
                 Me.tsbNuevo.Enabled = True
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = False

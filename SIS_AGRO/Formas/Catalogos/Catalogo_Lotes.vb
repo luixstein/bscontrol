@@ -388,18 +388,23 @@ Public Class Catalogo_Lotes
             tsbGrabar.PerformClick()
         End If
     End Sub
+    Private Sub txtCoordenadas_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCoordenadas.KeyDown
+        If e.KeyCode = Keys.Return Then
+            Select Case Me.Estado
+                Case enumEstados.NUEVO
+                    tsbGrabar.PerformClick()
+                Case enumEstados.EDICION
+                    SendKeys.Send("{TAB}")
+            End Select
+        End If
+    End Sub
     Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombre.KeyPress, txtCoordenadas.KeyPress, txtColindancia.KeyPress
         txtNoBeep(e)
     End Sub
 
-    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombre.KeyDown
+    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombre.KeyDown, txtColindancia.KeyDown, txtHectareas.KeyDown
         If e.KeyCode = Keys.Return Then
-            Select Case Me.Estado
-                Case enumEstados.EDICION
-                    SendKeys.Send("{TAB}")
-                Case enumEstados.NUEVO
-                    tsbGrabar.PerformClick()
-            End Select
+            SendKeys.Send("{TAB}")
         End If
     End Sub
 

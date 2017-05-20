@@ -203,7 +203,7 @@ Public Class Catalogo_Cuentas_Bancarias
             Case enumEstados.NUEVO
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Agregando nuevo " & Me.msgElemento
+                Me.tssLabelEstado.Text = "Agregando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
@@ -219,7 +219,7 @@ Public Class Catalogo_Cuentas_Bancarias
             Case enumEstados.EDICION
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Edición"
+                Me.tssLabelEstado.Text = "Editando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
@@ -236,7 +236,7 @@ Public Class Catalogo_Cuentas_Bancarias
             Case enumEstados.CONSULTA
                 Me.gBoxInformacion.Enabled = False
                 Me.gBoxBusquedaRapida.Enabled = True
-                Me.tssLabelEstado.Text = "Consulta"
+                Me.tssLabelEstado.Text = "Consultando"
                 Me.tsbNuevo.Enabled = True
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = False
@@ -605,12 +605,23 @@ Public Class Catalogo_Cuentas_Bancarias
             tsbGrabar.PerformClick()
         End If
     End Sub
+    Private Sub txtFormatoReporte_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtFormatoReporte.KeyDown
+        If e.KeyCode = Keys.Return Then
+            Select Case Me.Estado
+                Case enumEstados.NUEVO
+                    tsbGrabar.PerformClick()
+                Case enumEstados.EDICION
+                    SendKeys.Send("{TAB}")
+            End Select
+
+        End If
+    End Sub
 
     Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombreCuenta.KeyPress, TxtNumeroCuenta.KeyPress, TxtSucursal.KeyPress, TxtTelefono.KeyPress, TxtFolioCheque.KeyPress, TxtBanco.KeyPress, TxtFormatoReporte.KeyPress, txtCuentaContableDolares.KeyPress, TxtCodigoProveedor.KeyPress, CboCodigoMoneda.KeyPress, txtCuentaContable.KeyPress
         txtNoBeep(e)
     End Sub
 
-    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombreCuenta.KeyDown, TxtSucursal.KeyDown, TxtNumeroCuenta.KeyDown, TxtTelefono.KeyDown, TxtFolioCheque.KeyDown, TxtFormatoReporte.KeyDown, txtCuentaContableDolares.KeyDown, TxtFormatoReporte.KeyDown, CboCodigoMoneda.KeyDown
+    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombreCuenta.KeyDown, TxtSucursal.KeyDown, TxtNumeroCuenta.KeyDown, TxtTelefono.KeyDown, TxtFolioCheque.KeyDown, txtCuentaContableDolares.KeyDown, CboCodigoMoneda.KeyDown
         If e.KeyCode = Keys.Return Then
             SendKeys.Send("{TAB}")
         End If

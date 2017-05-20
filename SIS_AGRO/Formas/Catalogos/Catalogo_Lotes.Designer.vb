@@ -373,6 +373,7 @@ Partial Class Catalogo_Lotes
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Lotes"
+        Me.ShowIcon = False
         Me.Text = "Catálogo lotes"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()

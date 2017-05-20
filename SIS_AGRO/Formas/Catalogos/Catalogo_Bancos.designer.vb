@@ -353,6 +353,7 @@ Partial Class Catalogo_Bancos
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Bancos"
+        Me.ShowIcon = False
         Me.Text = "Bancos"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()

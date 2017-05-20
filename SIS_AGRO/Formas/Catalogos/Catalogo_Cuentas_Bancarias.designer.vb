@@ -630,6 +630,7 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Cuentas_Bancarias"
+        Me.ShowIcon = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Catalogo de cuentas bancarias"
         Me.tsMenu.ResumeLayout(False)
