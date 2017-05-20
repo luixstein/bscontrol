@@ -66,7 +66,7 @@ Partial Public Class Catalogo_Lineas
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbEditar, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimirListado, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(731, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(975, 27)
         Me.tsMenu.TabIndex = 2
         Me.tsMenu.Text = "tsMenu"
         '
@@ -75,7 +75,7 @@ Partial Public Class Catalogo_Lineas
         Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
         Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbNuevo.Name = "tsbNuevo"
-        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
+        Me.tsbNuevo.Size = New System.Drawing.Size(76, 24)
         Me.tsbNuevo.Text = "&Nuevo"
         '
         'tsbEditar
@@ -83,7 +83,7 @@ Partial Public Class Catalogo_Lineas
         Me.tsbEditar.Image = CType(resources.GetObject("tsbEditar.Image"), System.Drawing.Image)
         Me.tsbEditar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbEditar.Name = "tsbEditar"
-        Me.tsbEditar.Size = New System.Drawing.Size(61, 24)
+        Me.tsbEditar.Size = New System.Drawing.Size(72, 24)
         Me.tsbEditar.Text = "&Editar"
         '
         'tsbGrabar
@@ -91,7 +91,7 @@ Partial Public Class Catalogo_Lineas
         Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
         Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbGrabar.Name = "tsbGrabar"
-        Me.tsbGrabar.Size = New System.Drawing.Size(66, 24)
+        Me.tsbGrabar.Size = New System.Drawing.Size(78, 24)
         Me.tsbGrabar.Text = "&Grabar"
         '
         'tsbCancelar
@@ -99,7 +99,7 @@ Partial Public Class Catalogo_Lineas
         Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
         Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbCancelar.Name = "tsbCancelar"
-        Me.tsbCancelar.Size = New System.Drawing.Size(77, 24)
+        Me.tsbCancelar.Size = New System.Drawing.Size(90, 24)
         Me.tsbCancelar.Text = "&Cancelar"
         '
         'tsbImprimirListado
@@ -107,7 +107,7 @@ Partial Public Class Catalogo_Lineas
         Me.tsbImprimirListado.Image = CType(resources.GetObject("tsbImprimirListado.Image"), System.Drawing.Image)
         Me.tsbImprimirListado.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbImprimirListado.Name = "tsbImprimirListado"
-        Me.tsbImprimirListado.Size = New System.Drawing.Size(115, 24)
+        Me.tsbImprimirListado.Size = New System.Drawing.Size(139, 24)
         Me.tsbImprimirListado.Text = "&Imprimir listado"
         '
         'tsbSalir
@@ -115,37 +115,39 @@ Partial Public Class Catalogo_Lineas
         Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
         Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
+        Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
         Me.tsbSalir.Text = "&Salir"
         '
         'tssLabel
         '
         Me.tssLabel.Name = "tssLabel"
-        Me.tssLabel.Size = New System.Drawing.Size(48, 17)
+        Me.tssLabel.Size = New System.Drawing.Size(61, 20)
         Me.tssLabel.Text = "Estado :"
         '
         'StatusStripEstado
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssLabel, Me.tssLabelEstado})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 545)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 673)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Size = New System.Drawing.Size(731, 22)
+        Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(975, 25)
         Me.StatusStripEstado.TabIndex = 5
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
         'tssLabelEstado
         '
         Me.tssLabelEstado.Name = "tssLabelEstado"
-        Me.tssLabelEstado.Size = New System.Drawing.Size(0, 17)
+        Me.tssLabelEstado.Size = New System.Drawing.Size(0, 20)
         '
         'txtFiltro
         '
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtFiltro.Location = New System.Drawing.Point(6, 19)
+        Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtFiltro.Name = "txtFiltro"
-        Me.txtFiltro.Size = New System.Drawing.Size(282, 20)
+        Me.txtFiltro.Size = New System.Drawing.Size(375, 22)
         Me.txtFiltro.TabIndex = 0
         '
         'cMenuStripAccion
@@ -153,13 +155,13 @@ Partial Public Class Catalogo_Lineas
         Me.cMenuStripAccion.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.cMenuStripAccion.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tStripMenuItemEditar})
         Me.cMenuStripAccion.Name = "ContextMenuStrip1"
-        Me.cMenuStripAccion.Size = New System.Drawing.Size(109, 30)
+        Me.cMenuStripAccion.Size = New System.Drawing.Size(124, 30)
         '
         'tStripMenuItemEditar
         '
         Me.tStripMenuItemEditar.Image = CType(resources.GetObject("tStripMenuItemEditar.Image"), System.Drawing.Image)
         Me.tStripMenuItemEditar.Name = "tStripMenuItemEditar"
-        Me.tStripMenuItemEditar.Size = New System.Drawing.Size(108, 26)
+        Me.tStripMenuItemEditar.Size = New System.Drawing.Size(123, 26)
         Me.tStripMenuItemEditar.Text = "&Editar"
         '
         'gBoxBusquedaRapida
@@ -171,9 +173,11 @@ Partial Public Class Catalogo_Lineas
         Me.gBoxBusquedaRapida.Controls.Add(Me.cboEstatusFiltro)
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
-        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(329, 28)
+        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(439, 34)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(390, 514)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(520, 633)
         Me.gBoxBusquedaRapida.TabIndex = 1
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
@@ -181,9 +185,10 @@ Partial Public Class Catalogo_Lineas
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(289, 21)
+        Me.Label1.Location = New System.Drawing.Point(385, 26)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(48, 13)
+        Me.Label1.Size = New System.Drawing.Size(63, 17)
         Me.Label1.TabIndex = 93
         Me.Label1.Text = "Estatus :"
         '
@@ -192,10 +197,11 @@ Partial Public Class Catalogo_Lineas
         Me.cboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboEstatusFiltro.FormattingEnabled = True
         Me.cboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
-        Me.cboEstatusFiltro.Location = New System.Drawing.Point(343, 17)
+        Me.cboEstatusFiltro.Location = New System.Drawing.Point(457, 21)
+        Me.cboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.cboEstatusFiltro.MaxLength = 1
         Me.cboEstatusFiltro.Name = "cboEstatusFiltro"
-        Me.cboEstatusFiltro.Size = New System.Drawing.Size(38, 21)
+        Me.cboEstatusFiltro.Size = New System.Drawing.Size(49, 24)
         Me.cboEstatusFiltro.TabIndex = 93
         '
         'Grid
@@ -205,12 +211,13 @@ Partial Public Class Catalogo_Lineas
         Me.Grid.AllowUserToResizeColumns = False
         Me.Grid.AllowUserToResizeRows = False
         Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Grid.Location = New System.Drawing.Point(6, 43)
+        Me.Grid.Location = New System.Drawing.Point(8, 53)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Grid.Name = "Grid"
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
         Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(375, 465)
+        Me.Grid.Size = New System.Drawing.Size(500, 572)
         Me.Grid.TabIndex = 113
         '
         'ErrorProvider
@@ -219,18 +226,20 @@ Partial Public Class Catalogo_Lineas
         '
         'TxtCodigoLinea
         '
-        Me.TxtCodigoLinea.Location = New System.Drawing.Point(76, 15)
+        Me.TxtCodigoLinea.Location = New System.Drawing.Point(101, 18)
+        Me.TxtCodigoLinea.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtCodigoLinea.MaxLength = 0
         Me.TxtCodigoLinea.Name = "TxtCodigoLinea"
-        Me.TxtCodigoLinea.Size = New System.Drawing.Size(57, 20)
+        Me.TxtCodigoLinea.Size = New System.Drawing.Size(75, 22)
         Me.TxtCodigoLinea.TabIndex = 0
         '
         'LblDisplayCodCultivo
         '
         Me.LblDisplayCodCultivo.AutoSize = True
-        Me.LblDisplayCodCultivo.Location = New System.Drawing.Point(6, 16)
+        Me.LblDisplayCodCultivo.Location = New System.Drawing.Point(8, 20)
+        Me.LblDisplayCodCultivo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayCodCultivo.Name = "LblDisplayCodCultivo"
-        Me.LblDisplayCodCultivo.Size = New System.Drawing.Size(39, 13)
+        Me.LblDisplayCodCultivo.Size = New System.Drawing.Size(51, 17)
         Me.LblDisplayCodCultivo.TabIndex = 8
         Me.LblDisplayCodCultivo.Text = "Linea :"
         '
@@ -239,35 +248,39 @@ Partial Public Class Catalogo_Lineas
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
-        Me.CboEstatus.Location = New System.Drawing.Point(76, 67)
+        Me.CboEstatus.Location = New System.Drawing.Point(101, 82)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(78, 21)
+        Me.CboEstatus.Size = New System.Drawing.Size(103, 24)
         Me.CboEstatus.TabIndex = 2
         '
         'LblEstatus
         '
         Me.LblEstatus.AutoSize = True
-        Me.LblEstatus.Location = New System.Drawing.Point(6, 75)
+        Me.LblEstatus.Location = New System.Drawing.Point(8, 92)
+        Me.LblEstatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblEstatus.Name = "LblEstatus"
-        Me.LblEstatus.Size = New System.Drawing.Size(48, 13)
+        Me.LblEstatus.Size = New System.Drawing.Size(63, 17)
         Me.LblEstatus.TabIndex = 22
         Me.LblEstatus.Text = "Estatus :"
         '
         'TxtNombreLinea
         '
-        Me.TxtNombreLinea.Location = New System.Drawing.Point(77, 41)
+        Me.TxtNombreLinea.Location = New System.Drawing.Point(103, 50)
+        Me.TxtNombreLinea.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtNombreLinea.MaxLength = 50
         Me.TxtNombreLinea.Name = "TxtNombreLinea"
-        Me.TxtNombreLinea.Size = New System.Drawing.Size(227, 20)
+        Me.TxtNombreLinea.Size = New System.Drawing.Size(301, 22)
         Me.TxtNombreLinea.TabIndex = 1
         '
         'LblDisplayNombreCultivo
         '
         Me.LblDisplayNombreCultivo.AutoSize = True
-        Me.LblDisplayNombreCultivo.Location = New System.Drawing.Point(6, 44)
+        Me.LblDisplayNombreCultivo.Location = New System.Drawing.Point(8, 54)
+        Me.LblDisplayNombreCultivo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayNombreCultivo.Name = "LblDisplayNombreCultivo"
-        Me.LblDisplayNombreCultivo.Size = New System.Drawing.Size(50, 13)
+        Me.LblDisplayNombreCultivo.Size = New System.Drawing.Size(66, 17)
         Me.LblDisplayNombreCultivo.TabIndex = 74
         Me.LblDisplayNombreCultivo.Text = "Nombre :"
         '
@@ -286,9 +299,11 @@ Partial Public Class Catalogo_Lineas
         Me.gBoxInformacion.Controls.Add(Me.CboEstatus)
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayCodCultivo)
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigoLinea)
-        Me.gBoxInformacion.Location = New System.Drawing.Point(12, 28)
+        Me.gBoxInformacion.Location = New System.Drawing.Point(16, 34)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Size = New System.Drawing.Size(310, 514)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Size = New System.Drawing.Size(413, 633)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
@@ -296,9 +311,10 @@ Partial Public Class Catalogo_Lineas
         'chkCrearConcepto
         '
         Me.chkCrearConcepto.AutoSize = True
-        Me.chkCrearConcepto.Location = New System.Drawing.Point(9, 144)
+        Me.chkCrearConcepto.Location = New System.Drawing.Point(12, 177)
+        Me.chkCrearConcepto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.chkCrearConcepto.Name = "chkCrearConcepto"
-        Me.chkCrearConcepto.Size = New System.Drawing.Size(192, 17)
+        Me.chkCrearConcepto.Size = New System.Drawing.Size(251, 21)
         Me.chkCrearConcepto.TabIndex = 4
         Me.chkCrearConcepto.Text = "Crear concepto automáticamente ?"
         Me.chkCrearConcepto.UseVisualStyleBackColor = True
@@ -306,49 +322,55 @@ Partial Public Class Catalogo_Lineas
         'lblNombreConcepto
         '
         Me.lblNombreConcepto.AutoSize = True
-        Me.lblNombreConcepto.Location = New System.Drawing.Point(101, 128)
+        Me.lblNombreConcepto.Location = New System.Drawing.Point(135, 158)
+        Me.lblNombreConcepto.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblNombreConcepto.Name = "lblNombreConcepto"
-        Me.lblNombreConcepto.Size = New System.Drawing.Size(13, 13)
+        Me.lblNombreConcepto.Size = New System.Drawing.Size(16, 17)
         Me.lblNombreConcepto.TabIndex = 3
         Me.lblNombreConcepto.Text = "_"
         '
         'txtCodigoConcepto
         '
-        Me.txtCodigoConcepto.Location = New System.Drawing.Point(104, 107)
+        Me.txtCodigoConcepto.Location = New System.Drawing.Point(139, 132)
+        Me.txtCodigoConcepto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtCodigoConcepto.MaxLength = 0
         Me.txtCodigoConcepto.Name = "txtCodigoConcepto"
-        Me.txtCodigoConcepto.Size = New System.Drawing.Size(93, 20)
+        Me.txtCodigoConcepto.Size = New System.Drawing.Size(123, 22)
         Me.txtCodigoConcepto.TabIndex = 3
         '
         'lblCodigoConcepto
         '
         Me.lblCodigoConcepto.AutoSize = True
-        Me.lblCodigoConcepto.Location = New System.Drawing.Point(6, 110)
+        Me.lblCodigoConcepto.Location = New System.Drawing.Point(8, 135)
+        Me.lblCodigoConcepto.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblCodigoConcepto.Name = "lblCodigoConcepto"
-        Me.lblCodigoConcepto.Size = New System.Drawing.Size(59, 13)
+        Me.lblCodigoConcepto.Size = New System.Drawing.Size(76, 17)
         Me.lblCodigoConcepto.TabIndex = 92
         Me.lblCodigoConcepto.Text = "Concepto :"
         '
         'Label2
         '
-        Me.Label2.Location = New System.Drawing.Point(121, -114)
+        Me.Label2.Location = New System.Drawing.Point(161, -140)
+        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(181, 13)
+        Me.Label2.Size = New System.Drawing.Size(241, 16)
         Me.Label2.TabIndex = 91
         Me.Label2.Text = ".."
         '
         'Catalogo_Lineas
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(731, 567)
+        Me.ClientSize = New System.Drawing.Size(975, 698)
         Me.Controls.Add(Me.tsMenu)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.gBoxBusquedaRapida)
         Me.Controls.Add(Me.gBoxInformacion)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Lineas"
+        Me.ShowIcon = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Catálogo de líneas"
         Me.tsMenu.ResumeLayout(False)

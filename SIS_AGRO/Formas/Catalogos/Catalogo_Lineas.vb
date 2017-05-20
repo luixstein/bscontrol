@@ -109,7 +109,7 @@ Public Class Catalogo_Lineas
                 Case enumEstados.NUEVO
                     Me.gBoxInformacion.Enabled = True
                     Me.gBoxBusquedaRapida.Enabled = False
-                    Me.tssLabelEstado.Text = "Agregando nueva " & Me.msgElemento
+                    Me.tssLabelEstado.Text = "Agregando"
                     Me.tsbNuevo.Enabled = False
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = True
@@ -128,7 +128,7 @@ Public Class Catalogo_Lineas
                 Case enumEstados.EDICION
                     Me.gBoxInformacion.Enabled = True
                     Me.gBoxBusquedaRapida.Enabled = False
-                    Me.tssLabelEstado.Text = "Edición"
+                    Me.tssLabelEstado.Text = "Editando"
                     Me.tsbNuevo.Enabled = False
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = True
@@ -145,7 +145,7 @@ Public Class Catalogo_Lineas
                 Case enumEstados.CONSULTA
                     Me.gBoxInformacion.Enabled = False
                     Me.gBoxBusquedaRapida.Enabled = True
-                    Me.tssLabelEstado.Text = "Consulta"
+                    Me.tssLabelEstado.Text = "Consultando"
                     Me.tsbNuevo.Enabled = True
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = False
@@ -339,7 +339,7 @@ Public Class Catalogo_Lineas
 
 #Region "Eventos Genericos"
 
-    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombreLinea.KeyDown, CboEstatus.KeyDown, chkCrearConcepto.KeyDown
+    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboEstatus.KeyDown, chkCrearConcepto.KeyDown
         If e.KeyCode = Keys.Return Then
             txtTAB(e)
         End If
@@ -357,6 +357,18 @@ Public Class Catalogo_Lineas
 #End Region
 
 #Region "Keydown específicos"
+
+    Private Sub txtNombreLinea_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombreLinea.KeyDown
+        If e.KeyCode = Keys.Return Then
+            Select Case Me.Estado
+                Case enumEstados.NUEVO
+                    tsbGrabar.PerformClick()
+                Case enumEstados.EDICION
+                    txtTAB(e)
+            End Select
+        End If
+    End Sub
+
     Private Sub txtCodigoConcepto_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodigoConcepto.KeyDown
         Dim oConceptos As New Class_CatConceptos
 

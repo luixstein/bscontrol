@@ -167,7 +167,7 @@ Public Class Catalogo_Almacenes
                 Case enumEstados.NUEVO
                     Me.gBoxInformacion.Enabled = True
                     Me.gBoxBusquedaRapida.Enabled = False
-                    Me.tssLabelEstado.Text = "Agregando nuevo " & Me.msgElemento
+                    Me.tssLabelEstado.Text = "Agregando"
                     Me.tsbNuevo.Enabled = False
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = True
@@ -189,7 +189,7 @@ Public Class Catalogo_Almacenes
                 Case enumEstados.EDICION
                     Me.gBoxInformacion.Enabled = True
                     Me.gBoxBusquedaRapida.Enabled = False
-                    Me.tssLabelEstado.Text = "Edición"
+                    Me.tssLabelEstado.Text = "Editando"
                     Me.tsbNuevo.Enabled = False
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = True
@@ -201,6 +201,7 @@ Public Class Catalogo_Almacenes
                     Me.TxtCodigoCategoria.Enabled = True
                     Me.txtCodigoZona.Enabled = True
                     Me.txtCuentaContable.Visible = True : Me.lblDisplayCuentaContable.Visible = True : Me.lblNombreCuenta.Visible = True
+                    Me.txtCuentaContable.Enabled = False
 
                     Me.chkCrearCategoria.Visible = False : Me.chkCrearCategoria.Checked = True : Me.chkCrearCategoria.Checked = False
 
@@ -210,7 +211,7 @@ Public Class Catalogo_Almacenes
 
                     Me.gBoxInformacion.Enabled = False
                     Me.gBoxBusquedaRapida.Enabled = True
-                    Me.tssLabelEstado.Text = "Consulta"
+                    Me.tssLabelEstado.Text = "Consultando"
                     Me.tsbNuevo.Enabled = True
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = False
@@ -565,7 +566,7 @@ Enter:
                     If Me.chkCrearCategoria.Visible = True Then
                         Me.chkCrearCategoria.Focus()
                     Else
-                        'tsbGrabar.PerformClick()
+                        tsbGrabar.PerformClick()
                     End If
             End Select
         Catch ex As Exception

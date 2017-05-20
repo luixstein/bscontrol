@@ -504,6 +504,7 @@ Partial Class Catalogo_Articulos
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Articulos"
+        Me.ShowIcon = False
         Me.Tag = "0022"
         Me.Text = "Artículos"
         Me.gBoxInformacion.ResumeLayout(False)

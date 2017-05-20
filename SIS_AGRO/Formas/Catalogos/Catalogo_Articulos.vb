@@ -165,7 +165,7 @@ Public Class Catalogo_Articulos
             Case enumEstados.NUEVO
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Agregando nuevo " & Me.msgElemento
+                Me.tssLabelEstado.Text = "Agregando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
@@ -187,7 +187,7 @@ Public Class Catalogo_Articulos
             Case enumEstados.EDICION
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Edición"
+                Me.tssLabelEstado.Text = "Editando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
@@ -207,7 +207,7 @@ Public Class Catalogo_Articulos
             Case enumEstados.CONSULTA
                 Me.gBoxInformacion.Enabled = False
                 Me.gBoxBusquedaRapida.Enabled = True
-                Me.tssLabelEstado.Text = "Consulta"
+                Me.tssLabelEstado.Text = "Consultando"
                 Me.tsbNuevo.Enabled = True
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = False
@@ -409,10 +409,16 @@ Public Class Catalogo_Articulos
     Private Function Validar() As Boolean
         Dim bResultado As Boolean = False
 
+        If Me.Estado = enumEstados.NUEVO And txtLEN(Me.TxtCodArticulo.Text) = False Then
+            MsgBox("Asígne un código de artículo.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.TxtCodArticulo.Focus()
+            Return bResultado
+        End If
+
         If txtLEN(Me.TxtDescripcion.Text) = False Then
             MsgBox("Asígne la descripción del artículo.", MsgBoxStyle.Exclamation, Me.Text)
             Me.TxtDescripcion.Focus()
-            Exit Function
+            Return bResultado
         End If
 
         If txtLEN(Me.TxtUnidadVenta.Text) = False Then
@@ -424,13 +430,13 @@ Public Class Catalogo_Articulos
         If Me.CboFamilia.SelectedIndex = -1 Then
             MsgBox("Seleccione por favor una familia del artículo.", MsgBoxStyle.Exclamation, Me.Text)
             Me.CboFamilia.Focus()
-            Return False
+            Return bResultado
         End If
 
         If Me.cboLinea.SelectedIndex = -1 Then
             MsgBox("Seleccione por favor una linea del artículo.", MsgBoxStyle.Exclamation, Me.Text)
             Me.cboLinea.Focus()
-            Return False
+            Return bResultado
         End If
 
         bResultado = True
