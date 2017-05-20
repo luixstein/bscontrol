@@ -303,7 +303,8 @@ Partial Class Catalogo_Tipos_Categorias
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Tipos_Categorias"
-        Me.Text = "Catálogo tipos categorias"
+        Me.ShowIcon = False
+        Me.Text = "Catálogo tipos categorías"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()
         Me.gBoxBusquedaRapida.ResumeLayout(False)

@@ -391,6 +391,7 @@ Partial Class Cat_Nomina_CentroCosto
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Cat_Nomina_CentroCosto"
+        Me.ShowIcon = False
         Me.Text = "Catálogo de centros de  costos"
         Me.gBoxBusquedaRapida.ResumeLayout(False)
         Me.gBoxBusquedaRapida.PerformLayout()

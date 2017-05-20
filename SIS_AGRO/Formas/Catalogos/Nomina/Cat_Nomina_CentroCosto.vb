@@ -106,7 +106,7 @@ Public Class Cat_Nomina_CentroCosto
             Case enumEstados.NUEVO
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Agregando una nueva " & Me.msgElemento
+                Me.tssLabelEstado.Text = "Agregando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
@@ -121,7 +121,7 @@ Public Class Cat_Nomina_CentroCosto
             Case enumEstados.EDICION
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Edición"
+                Me.tssLabelEstado.Text = "Editando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
@@ -135,7 +135,7 @@ Public Class Cat_Nomina_CentroCosto
             Case enumEstados.CONSULTA
                 Me.gBoxInformacion.Enabled = False
                 Me.gBoxBusquedaRapida.Enabled = True
-                Me.tssLabelEstado.Text = "Consulta"
+                Me.tssLabelEstado.Text = "Consultando"
                 Me.tsbNuevo.Enabled = True
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = False
@@ -333,9 +333,9 @@ Public Class Cat_Nomina_CentroCosto
 
 #Region "Eventos Genericos"
     Private Sub CboEstatus_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboEstatus.KeyDown
-        'If e.KeyCode = Keys.Return Then
-        '    Me.cboCultivo.Focus()
-        'End If
+        If e.KeyCode = Keys.Return Then
+            tsbGrabar.PerformClick()
+        End If
     End Sub
     Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombreCentroCosto.KeyPress
         txtNoBeep(e)
@@ -343,7 +343,12 @@ Public Class Cat_Nomina_CentroCosto
 
     Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombreCentroCosto.KeyDown
         If e.KeyCode = Keys.Return Then
-            Me.CboEstatus.Focus()
+            Select Case Me.Estado
+                Case enumEstados.NUEVO
+                    tsbGrabar.PerformClick()
+                Case enumEstados.EDICION
+                    txtTAB(e)
+            End Select
         End If
     End Sub
 

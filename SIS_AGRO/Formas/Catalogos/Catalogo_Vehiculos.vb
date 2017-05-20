@@ -165,7 +165,7 @@ Public Class Catalogo_Vehiculos
                 Case enumEstados.NUEVO
                     Me.gBoxInformacion.Enabled = True
                     Me.gBoxBusquedaRapida.Enabled = False
-                    Me.tssLabelEstado.Text = "Agregando nuevo " & Me.msgElemento
+                    Me.tssLabelEstado.Text = "Agregando"
                     Me.tsbNuevo.Enabled = False
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = True
@@ -185,7 +185,7 @@ Public Class Catalogo_Vehiculos
                 Case enumEstados.EDICION
                     Me.gBoxInformacion.Enabled = True
                     Me.gBoxBusquedaRapida.Enabled = False
-                    Me.tssLabelEstado.Text = "Edición"
+                    Me.tssLabelEstado.Text = "Editando"
                     Me.tsbNuevo.Enabled = False
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = True
@@ -203,7 +203,7 @@ Public Class Catalogo_Vehiculos
                 Case enumEstados.CONSULTA
                     Me.gBoxInformacion.Enabled = False
                     Me.gBoxBusquedaRapida.Enabled = True
-                    Me.tssLabelEstado.Text = "Consulta"
+                    Me.tssLabelEstado.Text = "Consultando"
                     Me.tsbNuevo.Enabled = True
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = False
@@ -403,6 +403,7 @@ Public Class Catalogo_Vehiculos
 #End Region
 
 #Region "Keydown específicos"
+
     Private Sub txtCodigoCategoria_keyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoCategoria.KeyDown
         Try
             Dim oCategorias As New Class_CatCategorias
@@ -429,7 +430,7 @@ Enter:
 
                     oCategorias = New Class_CatCategorias(Me.TxtCodigoCategoria.Text)
                     If oCategorias.Existe = True Then
-                        Me.lblCategoria.Text = oCategorias.Nombre_Categoria
+                        Me.lblCategoria.Text = oCategorias.NOMBRE_CATEGORIA
                     Else
                         Me.lblCategoria.Text = "_" : GoTo Buscar : Exit Sub
                     End If
@@ -437,7 +438,7 @@ Enter:
                     If Me.chkCrearCategoria.Visible = True Then
                         Me.chkCrearCategoria.Focus()
                     Else
-                        'tsbGrabar.PerformClick()
+                        tsbGrabar.PerformClick()
                     End If
             End Select
         Catch ex As Exception
@@ -472,6 +473,8 @@ Enter:
                     Else
                         Me.lblTipoCategoria.Text = "" : GoTo Buscar : Exit Sub
                     End If
+
+                    tsbGrabar.PerformClick()
 
             End Select
         Catch ex As Exception
