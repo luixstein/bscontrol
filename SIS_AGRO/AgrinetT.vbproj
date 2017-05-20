@@ -982,6 +982,12 @@
     <Compile Include="Formas\Ventas\VentasSeleccionaTipoFactura.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\Ventas\VentasSeleccionPrecio.Designer.vb">
+      <DependentUpon>VentasSeleccionPrecio.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Ventas\VentasSeleccionPrecio.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\Ventas\Ventas_Comentarios.Designer.vb">
       <DependentUpon>Ventas_Comentarios.vb</DependentUpon>
     </Compile>
@@ -1463,7 +1469,7 @@
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_CajasTransportes.resx">
       <DependentUpon>Catalogo_CajasTransportes.vb</DependentUpon>
     </EmbeddedResource>
-   <EmbeddedResource Include="Formas\Catalogos\SIS_Plazas.resx">
+    <EmbeddedResource Include="Formas\Catalogos\SIS_Plazas.resx">
       <DependentUpon>SIS_Plazas.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_Precios_Venta.resx">
@@ -1981,6 +1987,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Ventas\VentasSeleccionaTipoFactura.resx">
       <DependentUpon>VentasSeleccionaTipoFactura.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Ventas\VentasSeleccionPrecio.resx">
+      <DependentUpon>VentasSeleccionPrecio.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Ventas\Ventas_Comentarios.resx">
       <DependentUpon>Ventas_Comentarios.vb</DependentUpon>
