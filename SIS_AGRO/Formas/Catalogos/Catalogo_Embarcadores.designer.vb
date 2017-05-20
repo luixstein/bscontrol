@@ -202,7 +202,7 @@ Partial Class Catalogo_Embarcadores
         Me.txtFda.MaxLength = 10
         Me.txtFda.Name = "txtFda"
         Me.txtFda.Size = New System.Drawing.Size(172, 22)
-        Me.txtFda.TabIndex = 12
+        Me.txtFda.TabIndex = 14
         '
         'lblRfcRepresentante
         '
@@ -221,7 +221,7 @@ Partial Class Catalogo_Embarcadores
         Me.txtRfcRepresentante.MaxLength = 13
         Me.txtRfcRepresentante.Name = "txtRfcRepresentante"
         Me.txtRfcRepresentante.Size = New System.Drawing.Size(328, 22)
-        Me.txtRfcRepresentante.TabIndex = 11
+        Me.txtRfcRepresentante.TabIndex = 13
         '
         'lblRepresentante
         '
@@ -240,7 +240,7 @@ Partial Class Catalogo_Embarcadores
         Me.txtRepresentante.MaxLength = 15
         Me.txtRepresentante.Name = "txtRepresentante"
         Me.txtRepresentante.Size = New System.Drawing.Size(328, 22)
-        Me.txtRepresentante.TabIndex = 10
+        Me.txtRepresentante.TabIndex = 12
         '
         'Label1
         '
@@ -259,7 +259,7 @@ Partial Class Catalogo_Embarcadores
         Me.TxtFax.MaxLength = 15
         Me.TxtFax.Name = "TxtFax"
         Me.TxtFax.Size = New System.Drawing.Size(171, 22)
-        Me.TxtFax.TabIndex = 8
+        Me.TxtFax.TabIndex = 10
         '
         'txtDomicilio
         '
@@ -268,7 +268,7 @@ Partial Class Catalogo_Embarcadores
         Me.txtDomicilio.MaxLength = 50
         Me.txtDomicilio.Name = "txtDomicilio"
         Me.txtDomicilio.Size = New System.Drawing.Size(415, 22)
-        Me.txtDomicilio.TabIndex = 3
+        Me.txtDomicilio.TabIndex = 5
         '
         'Label10
         '
@@ -297,7 +297,7 @@ Partial Class Catalogo_Embarcadores
         Me.txtCodigoPostal.MaxLength = 10
         Me.txtCodigoPostal.Name = "txtCodigoPostal"
         Me.txtCodigoPostal.Size = New System.Drawing.Size(172, 22)
-        Me.txtCodigoPostal.TabIndex = 9
+        Me.txtCodigoPostal.TabIndex = 11
         '
         'txtCiudad
         '
@@ -306,7 +306,7 @@ Partial Class Catalogo_Embarcadores
         Me.txtCiudad.MaxLength = 50
         Me.txtCiudad.Name = "txtCiudad"
         Me.txtCiudad.Size = New System.Drawing.Size(415, 22)
-        Me.txtCiudad.TabIndex = 4
+        Me.txtCiudad.TabIndex = 6
         '
         'Label6
         '
@@ -328,7 +328,7 @@ Partial Class Catalogo_Embarcadores
         Me.cboEstado.MaxLength = 1
         Me.cboEstado.Name = "cboEstado"
         Me.cboEstado.Size = New System.Drawing.Size(416, 24)
-        Me.cboEstado.TabIndex = 5
+        Me.cboEstado.TabIndex = 7
         '
         'Label8
         '
@@ -357,7 +357,7 @@ Partial Class Catalogo_Embarcadores
         Me.txtNumeroCelular.MaxLength = 15
         Me.txtNumeroCelular.Name = "txtNumeroCelular"
         Me.txtNumeroCelular.Size = New System.Drawing.Size(171, 22)
-        Me.txtNumeroCelular.TabIndex = 7
+        Me.txtNumeroCelular.TabIndex = 9
         '
         'Label13
         '
@@ -376,7 +376,7 @@ Partial Class Catalogo_Embarcadores
         Me.txtNumeroTelefono.MaxLength = 15
         Me.txtNumeroTelefono.Name = "txtNumeroTelefono"
         Me.txtNumeroTelefono.Size = New System.Drawing.Size(172, 22)
-        Me.txtNumeroTelefono.TabIndex = 6
+        Me.txtNumeroTelefono.TabIndex = 8
         '
         'txtCurp
         '
@@ -385,7 +385,7 @@ Partial Class Catalogo_Embarcadores
         Me.txtCurp.MaxLength = 30
         Me.txtCurp.Name = "txtCurp"
         Me.txtCurp.Size = New System.Drawing.Size(172, 22)
-        Me.txtCurp.TabIndex = 2
+        Me.txtCurp.TabIndex = 4
         '
         'Label11
         '
@@ -404,7 +404,7 @@ Partial Class Catalogo_Embarcadores
         Me.txtRfc.MaxLength = 13
         Me.txtRfc.Name = "txtRfc"
         Me.txtRfc.Size = New System.Drawing.Size(171, 22)
-        Me.txtRfc.TabIndex = 1
+        Me.txtRfc.TabIndex = 3
         '
         'Label2
         '
@@ -432,7 +432,7 @@ Partial Class Catalogo_Embarcadores
         Me.TxtNombreEmbarcador.MaxLength = 80
         Me.TxtNombreEmbarcador.Name = "TxtNombreEmbarcador"
         Me.TxtNombreEmbarcador.Size = New System.Drawing.Size(415, 22)
-        Me.TxtNombreEmbarcador.TabIndex = 0
+        Me.TxtNombreEmbarcador.TabIndex = 2
         '
         'LblEstatus
         '
@@ -454,7 +454,7 @@ Partial Class Catalogo_Embarcadores
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(92, 24)
-        Me.CboEstatus.TabIndex = 13
+        Me.CboEstatus.TabIndex = 15
         '
         'lblCodigo
         '
@@ -463,7 +463,7 @@ Partial Class Catalogo_Embarcadores
         Me.lblCodigo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblCodigo.Name = "lblCodigo"
         Me.lblCodigo.Size = New System.Drawing.Size(60, 17)
-        Me.lblCodigo.TabIndex = 8
+        Me.lblCodigo.TabIndex = 23
         Me.lblCodigo.Text = "Código :"
         '
         'txtCodigoEmbarcador
@@ -473,7 +473,7 @@ Partial Class Catalogo_Embarcadores
         Me.txtCodigoEmbarcador.MaxLength = 6
         Me.txtCodigoEmbarcador.Name = "txtCodigoEmbarcador"
         Me.txtCodigoEmbarcador.Size = New System.Drawing.Size(171, 22)
-        Me.txtCodigoEmbarcador.TabIndex = 0
+        Me.txtCodigoEmbarcador.TabIndex = 1
         '
         'StatusStripEstado
         '
@@ -549,6 +549,7 @@ Partial Class Catalogo_Embarcadores
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Embarcadores"
+        Me.ShowIcon = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Catálogo de embarcadores"
         Me.tsMenu.ResumeLayout(False)

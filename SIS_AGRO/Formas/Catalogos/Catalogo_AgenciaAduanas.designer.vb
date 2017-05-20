@@ -323,6 +323,7 @@ Partial Class Catalogo_AgenciaAduanas
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_AgenciaAduanas"
+        Me.ShowIcon = False
         Me.Text = "Catálogo de agencias de aduanas"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()

@@ -169,7 +169,7 @@ Partial Class Catalogo_Distribuidores
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(95, 24)
-        Me.CboEstatus.TabIndex = 157
+        Me.CboEstatus.TabIndex = 8
         '
         'TxtObservacion3
         '
@@ -178,7 +178,7 @@ Partial Class Catalogo_Distribuidores
         Me.TxtObservacion3.MaxLength = 120
         Me.TxtObservacion3.Name = "TxtObservacion3"
         Me.TxtObservacion3.Size = New System.Drawing.Size(373, 22)
-        Me.TxtObservacion3.TabIndex = 156
+        Me.TxtObservacion3.TabIndex = 7
         '
         'TxtObservacion2
         '
@@ -187,7 +187,7 @@ Partial Class Catalogo_Distribuidores
         Me.TxtObservacion2.MaxLength = 120
         Me.TxtObservacion2.Name = "TxtObservacion2"
         Me.TxtObservacion2.Size = New System.Drawing.Size(373, 22)
-        Me.TxtObservacion2.TabIndex = 155
+        Me.TxtObservacion2.TabIndex = 6
         '
         'Label1
         '
@@ -216,7 +216,7 @@ Partial Class Catalogo_Distribuidores
         Me.TxtObservacion1.MaxLength = 120
         Me.TxtObservacion1.Name = "TxtObservacion1"
         Me.TxtObservacion1.Size = New System.Drawing.Size(373, 22)
-        Me.TxtObservacion1.TabIndex = 151
+        Me.TxtObservacion1.TabIndex = 5
         '
         'lblObsercacion1
         '
@@ -235,7 +235,7 @@ Partial Class Catalogo_Distribuidores
         Me.TxtEstado.MaxLength = 120
         Me.TxtEstado.Name = "TxtEstado"
         Me.TxtEstado.Size = New System.Drawing.Size(373, 22)
-        Me.TxtEstado.TabIndex = 150
+        Me.TxtEstado.TabIndex = 4
         '
         'TxtCiudad
         '
@@ -244,7 +244,7 @@ Partial Class Catalogo_Distribuidores
         Me.TxtCiudad.MaxLength = 120
         Me.TxtCiudad.Name = "TxtCiudad"
         Me.TxtCiudad.Size = New System.Drawing.Size(373, 22)
-        Me.TxtCiudad.TabIndex = 149
+        Me.TxtCiudad.TabIndex = 3
         '
         'Label4
         '
@@ -396,6 +396,7 @@ Partial Class Catalogo_Distribuidores
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Distribuidores"
+        Me.ShowIcon = False
         Me.Text = "Catálogo de distribuidores"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()

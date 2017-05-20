@@ -244,7 +244,7 @@ Partial Class Catalogo_Empaques
         Me.txtCodigoCentroCosto.MaxLength = 2
         Me.txtCodigoCentroCosto.Name = "txtCodigoCentroCosto"
         Me.txtCodigoCentroCosto.Size = New System.Drawing.Size(118, 22)
-        Me.txtCodigoCentroCosto.TabIndex = 271
+        Me.txtCodigoCentroCosto.TabIndex = 4
         '
         'lblCodigoCentroCosto
         '
@@ -362,6 +362,7 @@ Partial Class Catalogo_Empaques
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Empaques"
+        Me.ShowIcon = False
         Me.Text = "Catálogo empaques"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()

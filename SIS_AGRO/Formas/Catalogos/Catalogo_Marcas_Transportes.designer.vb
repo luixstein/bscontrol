@@ -197,7 +197,7 @@ Partial Class Catalogo_Marcas_Transportes
         Me.TxtMarcaTransporte.MaxLength = 80
         Me.TxtMarcaTransporte.Name = "TxtMarcaTransporte"
         Me.TxtMarcaTransporte.Size = New System.Drawing.Size(284, 22)
-        Me.TxtMarcaTransporte.TabIndex = 3
+        Me.TxtMarcaTransporte.TabIndex = 1
         '
         'LblEstatus
         '
@@ -219,7 +219,7 @@ Partial Class Catalogo_Marcas_Transportes
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(97, 24)
-        Me.CboEstatus.TabIndex = 12
+        Me.CboEstatus.TabIndex = 2
         '
         'LblDisplayCodCultivo
         '
@@ -274,6 +274,7 @@ Partial Class Catalogo_Marcas_Transportes
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "Catalogo_Marcas_Transportes"
+        Me.ShowIcon = False
         Me.Text = "Catálogo de marcas de transportes"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()

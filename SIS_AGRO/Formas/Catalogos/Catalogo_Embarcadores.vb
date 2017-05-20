@@ -106,7 +106,7 @@ Public Class Catalogo_Embarcadores
             Case enumEstados.NUEVO
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Agregando nuevo " & Me.msgElemento
+                Me.tssLabelEstado.Text = "Agregando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
@@ -135,7 +135,7 @@ Public Class Catalogo_Embarcadores
             Case enumEstados.EDICION
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Edición"
+                Me.tssLabelEstado.Text = "Editando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
@@ -162,7 +162,7 @@ Public Class Catalogo_Embarcadores
             Case Else
                 Me.gBoxInformacion.Enabled = False
                 Me.gBoxBusquedaRapida.Enabled = True
-                Me.tssLabelEstado.Text = "Consulta"
+                Me.tssLabelEstado.Text = "Consultando"
                 Me.tsbNuevo.Enabled = True
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = False
@@ -252,7 +252,7 @@ Public Class Catalogo_Embarcadores
                         .CURP = Me.txtCurp.Text
                         .DOMICILIO = Me.txtDomicilio.Text
                         .CIUDAD = Me.txtCiudad.Text
-                        .ESTADO = Me.cboEstado.SelectedValue.ToString
+                        .ESTADO = IIf(Me.cboEstado.SelectedIndex > 0, Me.cboEstado.SelectedValue, "").ToString
                         .TELEFONO = Me.txtNumeroTelefono.Text
                         .CELULAR = Me.txtNumeroCelular.Text
                         .FAX = Me.TxtFax.Text
@@ -452,8 +452,6 @@ Public Class Catalogo_Embarcadores
     End Sub
 #End Region
 
-#End Region
-
     Private Sub CboFiltroHoja_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Refrescar()
     End Sub
@@ -475,5 +473,7 @@ Public Class Catalogo_Embarcadores
         End If
 
     End Sub
+#End Region
+
 
 End Class

@@ -390,6 +390,7 @@ Partial Class Catalogo_Choferes
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Choferes"
+        Me.ShowIcon = False
         Me.Text = "Catálogo de choferes"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()

@@ -31,6 +31,7 @@ Partial Class Catalogo_Lugares_Entrega
         Me.tsbImprimirListado = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
+        Me.Grid = New System.Windows.Forms.DataGridView()
         Me.txtFiltro = New System.Windows.Forms.TextBox()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
         Me.lblVisa = New System.Windows.Forms.Label()
@@ -43,12 +44,11 @@ Partial Class Catalogo_Lugares_Entrega
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.Grid = New System.Windows.Forms.DataGridView()
         Me.tsMenu.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
+        CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gBoxInformacion.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
-        CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'tsMenu
@@ -117,20 +117,36 @@ Partial Class Catalogo_Lugares_Entrega
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(435, 34)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(428, 517)
         Me.gBoxBusquedaRapida.TabIndex = 7
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
+        '
+        'Grid
+        '
+        Me.Grid.AllowUserToAddRows = False
+        Me.Grid.AllowUserToDeleteRows = False
+        Me.Grid.AllowUserToResizeColumns = False
+        Me.Grid.AllowUserToResizeRows = False
+        Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.Grid.Location = New System.Drawing.Point(13, 53)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
+        Me.Grid.Name = "Grid"
+        Me.Grid.ReadOnly = True
+        Me.Grid.RowHeadersVisible = False
+        Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.Grid.Size = New System.Drawing.Size(407, 456)
+        Me.Grid.TabIndex = 112
         '
         'txtFiltro
         '
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFiltro.Location = New System.Drawing.Point(13, 23)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.Name = "txtFiltro"
         Me.txtFiltro.Size = New System.Drawing.Size(407, 22)
         Me.txtFiltro.TabIndex = 0
@@ -147,9 +163,9 @@ Partial Class Catalogo_Lugares_Entrega
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayCodLugarEntrega)
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigoLugarEntrega)
         Me.gBoxInformacion.Location = New System.Drawing.Point(16, 34)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Size = New System.Drawing.Size(411, 517)
         Me.gBoxInformacion.TabIndex = 8
         Me.gBoxInformacion.TabStop = False
@@ -168,7 +184,7 @@ Partial Class Catalogo_Lugares_Entrega
         'txtImporteFlete
         '
         Me.txtImporteFlete.Location = New System.Drawing.Point(121, 87)
-        Me.txtImporteFlete.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtImporteFlete.Margin = New System.Windows.Forms.Padding(4)
         Me.txtImporteFlete.MaxLength = 80
         Me.txtImporteFlete.Name = "txtImporteFlete"
         Me.txtImporteFlete.Size = New System.Drawing.Size(284, 22)
@@ -197,7 +213,7 @@ Partial Class Catalogo_Lugares_Entrega
         'TxtNombreLugarEntrega
         '
         Me.TxtNombreLugarEntrega.Location = New System.Drawing.Point(121, 55)
-        Me.TxtNombreLugarEntrega.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtNombreLugarEntrega.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNombreLugarEntrega.MaxLength = 80
         Me.TxtNombreLugarEntrega.Name = "TxtNombreLugarEntrega"
         Me.TxtNombreLugarEntrega.Size = New System.Drawing.Size(284, 22)
@@ -216,7 +232,7 @@ Partial Class Catalogo_Lugares_Entrega
         'TxtCodigoLugarEntrega
         '
         Me.TxtCodigoLugarEntrega.Location = New System.Drawing.Point(185, 23)
-        Me.TxtCodigoLugarEntrega.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodigoLugarEntrega.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigoLugarEntrega.MaxLength = 0
         Me.TxtCodigoLugarEntrega.Name = "TxtCodigoLugarEntrega"
         Me.TxtCodigoLugarEntrega.Size = New System.Drawing.Size(75, 22)
@@ -244,22 +260,6 @@ Partial Class Catalogo_Lugares_Entrega
         Me.tssLabelEstado.Name = "tssLabelEstado"
         Me.tssLabelEstado.Size = New System.Drawing.Size(0, 20)
         '
-        'Grid
-        '
-        Me.Grid.AllowUserToAddRows = False
-        Me.Grid.AllowUserToDeleteRows = False
-        Me.Grid.AllowUserToResizeColumns = False
-        Me.Grid.AllowUserToResizeRows = False
-        Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Grid.Location = New System.Drawing.Point(13, 53)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
-        Me.Grid.Name = "Grid"
-        Me.Grid.ReadOnly = True
-        Me.Grid.RowHeadersVisible = False
-        Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(407, 456)
-        Me.Grid.TabIndex = 112
-        '
         'Catalogo_Lugares_Entrega
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -270,19 +270,20 @@ Partial Class Catalogo_Lugares_Entrega
         Me.Controls.Add(Me.gBoxInformacion)
         Me.Controls.Add(Me.tsMenu)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Lugares_Entrega"
+        Me.ShowIcon = False
         Me.Text = "Catálogo de lugares de entrega"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()
         Me.gBoxBusquedaRapida.ResumeLayout(False)
         Me.gBoxBusquedaRapida.PerformLayout()
+        CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gBoxInformacion.ResumeLayout(False)
         Me.gBoxInformacion.PerformLayout()
         Me.StatusStripEstado.ResumeLayout(False)
         Me.StatusStripEstado.PerformLayout()
-        CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

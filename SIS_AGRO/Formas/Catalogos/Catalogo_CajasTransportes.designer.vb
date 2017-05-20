@@ -281,6 +281,7 @@ Partial Class Catalogo_CajasTransportes
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_CajasTransportes"
+        Me.ShowIcon = False
         Me.Text = "Catálogo de cajas"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()

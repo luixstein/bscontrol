@@ -442,6 +442,7 @@ Partial Class Catalogo_Productores
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Productores"
+        Me.ShowIcon = False
         Me.Text = "Catálogo de productores"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()

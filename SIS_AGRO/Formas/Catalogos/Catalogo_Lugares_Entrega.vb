@@ -102,7 +102,7 @@ Public Class Catalogo_Lugares_Entrega
             Case enumEstados.NUEVO
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Agregando nuevo " & Me.msgElemento
+                Me.tssLabelEstado.Text = "Agregando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
@@ -121,7 +121,7 @@ Public Class Catalogo_Lugares_Entrega
             Case enumEstados.EDICION
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Edición"
+                Me.tssLabelEstado.Text = "Editando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
@@ -136,7 +136,7 @@ Public Class Catalogo_Lugares_Entrega
             Case Else
                 Me.gBoxInformacion.Enabled = False
                 Me.gBoxBusquedaRapida.Enabled = True
-                Me.tssLabelEstado.Text = "Consulta"
+                Me.tssLabelEstado.Text = "Consultando"
                 Me.tsbNuevo.Enabled = True
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = False
@@ -181,8 +181,14 @@ Public Class Catalogo_Lugares_Entrega
         Dim Grabado As Boolean = False
 
         If txtLEN(Me.TxtNombreLugarEntrega.Text) = False Then
-            MsgBox("Asígne el nombre del chofer", MsgBoxStyle.Exclamation, Me.Text)
+            MsgBox("Asígne el nombre del lugar de entrega.", MsgBoxStyle.Exclamation, Me.Text)
             Me.TxtNombreLugarEntrega.Focus()
+            Exit Sub
+        End If
+
+        If txtLEN(Me.txtImporteFlete.Text) = False Then
+            MsgBox("Capture un importe de flete.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.txtImporteFlete.Focus()
             Exit Sub
         End If
 
@@ -346,7 +352,9 @@ Public Class Catalogo_Lugares_Entrega
 
     Private Sub txtImporteFlete_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtImporteFlete.KeyDown
         If e.KeyCode = Keys.Return Then
-            Me.txtImporteFlete.Text = FormatImporteContable(CDbl(Me.txtImporteFlete.Text))
+            If txtLEN(Me.txtImporteFlete.Text) Then
+                Me.txtImporteFlete.Text = FormatImporteContable(CDbl(Me.txtImporteFlete.Text))
+            End If
             tsbGrabar.PerformClick()
         End If
     End Sub
