@@ -287,6 +287,7 @@ Partial Class Sis_Tipos_Proveedores
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Sis_Tipos_Proveedores"
+        Me.ShowIcon = False
         Me.Text = "Tipos de proveedores"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()

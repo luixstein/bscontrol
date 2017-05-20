@@ -158,7 +158,7 @@ Public Class Sis_Tipos_Proveedores
             Case enumEstados.NUEVO
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Agregando nuevo " & Me.msgElemento
+                Me.tssLabelEstado.Text = "Agregando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
@@ -174,7 +174,7 @@ Public Class Sis_Tipos_Proveedores
             Case enumEstados.EDICION
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Edición"
+                Me.tssLabelEstado.Text = "Editando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
@@ -188,7 +188,7 @@ Public Class Sis_Tipos_Proveedores
             Case enumEstados.CONSULTA
                 Me.gBoxInformacion.Enabled = False
                 Me.gBoxBusquedaRapida.Enabled = True
-                Me.tssLabelEstado.Text = "Consulta"
+                Me.tssLabelEstado.Text = "Consultando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = False
@@ -399,7 +399,7 @@ busqueda_Visual:
                     Me.LblCuenta.Text = ""
                 End If
 
-                txtTAB(e)
+                tsbGrabar.PerformClick()
 
         End Select
 
