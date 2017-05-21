@@ -2761,8 +2761,14 @@ buscaCentrosCostos:
                     oComentario.Dispose()
 
                 Case Keys.F5 'Lista de precios
-
-
+                    If txtLEN(StrCod) = False Then
+                        Return
+                    End If
+                    Dim oPrecio As New VentasSeleccionPrecio(StrCod)
+                    oPrecio.ShowDialog()
+                    Me.Grid.Cell(Renglon, Me.igyPrecio).Text = oPrecio.PrecioSeleccionado.ToString
+                    oPrecio.Dispose()
+                    Me.Totales()
             End Select
 
         Catch ex As Exception

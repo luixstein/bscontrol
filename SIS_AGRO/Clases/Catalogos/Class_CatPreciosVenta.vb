@@ -8,11 +8,11 @@ Public Class Class_CatPreciosVenta
 
 #Region "Campos de la tabla"
     Private _CODIGO_ARTICULO As String
-    Private _PRECIO1 As Double
-    Private _PRECIO2 As Double
-    Private _PRECIO3 As Double
-    Private _PRECIO4 As Double
-    Private _PRECIO5 As Double
+    Private _PRECIO1 As Decimal
+    Private _PRECIO2 As Decimal
+    Private _PRECIO3 As Decimal
+    Private _PRECIO4 As Decimal
+    Private _PRECIO5 As Decimal
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -45,47 +45,47 @@ Public Class Class_CatPreciosVenta
         End Get
     End Property
 
-    Public Property PRECIO1() As Double
+    Public Property PRECIO1() As Decimal
         Get
             Return Me._PRECIO1
         End Get
-        Set(ByVal VALUE As Double)
+        Set(ByVal VALUE As Decimal)
             Me._PRECIO1 = VALUE
         End Set
     End Property
 
-    Public Property PRECIO2() As Double
+    Public Property PRECIO2() As Decimal
         Get
             Return Me._PRECIO2
         End Get
-        Set(ByVal VALUE As Double)
+        Set(ByVal VALUE As Decimal)
             Me._PRECIO2 = VALUE
         End Set
     End Property
 
-    Public Property PRECIO3() As Double
+    Public Property PRECIO3() As Decimal
         Get
             Return Me._PRECIO3
         End Get
-        Set(ByVal VALUE As Double)
+        Set(ByVal VALUE As Decimal)
             Me._PRECIO3 = VALUE
         End Set
     End Property
 
-    Public Property PRECIO4() As Double
+    Public Property PRECIO4() As Decimal
         Get
             Return Me._PRECIO4
         End Get
-        Set(ByVal VALUE As Double)
+        Set(ByVal VALUE As Decimal)
             Me._PRECIO4 = VALUE
         End Set
     End Property
 
-    Public Property PRECIO5() As Double
+    Public Property PRECIO5() As Decimal
         Get
             Return Me._PRECIO5
         End Get
-        Set(ByVal VALUE As Double)
+        Set(ByVal VALUE As Decimal)
             Me._PRECIO5 = VALUE
         End Set
     End Property
@@ -203,11 +203,11 @@ Public Class Class_CatPreciosVenta
                 If dReader.Read Then
                     Me._CODIGO_ARTICULO = dReader("CODIGO_ARTICULO").ToString()
                     Me._DESCRIPCION = dReader("DESCRIPCION").ToString()
-                    Me._PRECIO1 = CDbl(dReader("PRECIO1").ToString())
-                    Me._PRECIO2 = CDbl(dReader("PRECIO2").ToString())
-                    Me._PRECIO3 = CDbl(dReader("PRECIO3").ToString())
-                    Me._PRECIO4 = CDbl(dReader("PRECIO4").ToString())
-                    Me._PRECIO5 = CDbl(dReader("PRECIO5").ToString())
+                    Me._PRECIO1 = CDec(dReader("PRECIO1").ToString())
+                    Me._PRECIO2 = CDec(dReader("PRECIO2").ToString())
+                    Me._PRECIO3 = CDec(dReader("PRECIO3").ToString())
+                    Me._PRECIO4 = CDec(dReader("PRECIO4").ToString())
+                    Me._PRECIO5 = CDec(dReader("PRECIO5").ToString())
 
                     bResultado = True
                 End If

@@ -206,11 +206,11 @@ buscar:
             End If
 
             Me.oPrecios = New Class_CatPreciosVenta(sArticulo)
-            Me.oPrecios.PRECIO1 = valorNumerico(Me.Grid.Cell(Renglon, Me.igyPrecio1).Text)
-            Me.oPrecios.PRECIO2 = valorNumerico(Me.Grid.Cell(Renglon, Me.igyPrecio2).Text)
-            Me.oPrecios.PRECIO3 = valorNumerico(Me.Grid.Cell(Renglon, Me.igyPrecio3).Text)
-            Me.oPrecios.PRECIO4 = valorNumerico(Me.Grid.Cell(Renglon, Me.igyPrecio4).Text)
-            Me.oPrecios.PRECIO5 = valorNumerico(Me.Grid.Cell(Renglon, Me.igyPrecio5).Text)
+            Me.oPrecios.PRECIO1 = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPrecio1).Text)
+            Me.oPrecios.PRECIO2 = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPrecio2).Text)
+            Me.oPrecios.PRECIO3 = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPrecio3).Text)
+            Me.oPrecios.PRECIO4 = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPrecio4).Text)
+            Me.oPrecios.PRECIO5 = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPrecio5).Text)
             Me.oPrecios.GrabarCambioPrecio()
             bResultado = True
         Catch ex As Exception
