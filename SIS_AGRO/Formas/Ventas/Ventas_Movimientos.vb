@@ -62,6 +62,7 @@ Public Class Ventas_Movimientos
     Private igyBASE_IEPS As Short = 23
     Private igyBASE_IVA As Short = 24
     Private igyPRECIO_TOTAL As Short = 25
+    Private igyCosto As Short = 26
 #End Region
 
 #Region "Columnas grid series"
@@ -315,7 +316,6 @@ Buscar:
         End If
     End Sub
 
-
     Private Sub CmbAlmacen_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboAlmacen.SelectedIndexChanged
         'limpia()
     End Sub
@@ -539,7 +539,7 @@ Buscar:
 
     Private Sub llblAgregarSeguimiento_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles llblAgregarSeguimiento.LinkClicked
         If txtLEN(Me.TxtCliente.Text) = False Then
-            MsgBox("Debe de asignar primero un cliente", MsgBoxStyle.Exclamation, Me.Text)
+            MsgBox("Debe de asignar un cliente", MsgBoxStyle.Exclamation, Me.Text)
             Me.TxtCliente.Focus()
             Exit Sub
         End If
@@ -575,74 +575,6 @@ Buscar:
         Catch ex As Exception
             HandleError(Me.Name, "cboMetodoPago_SelectedValueChanged", ex)
         End Try
-    End Sub
-
-    Private Sub ckbVentaKilos_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ckbVentaKilos.CheckedChanged
-        Dim i As Integer
-        Dim oArticulo As New Class_CatArticulos
-        Dim bProductoKilos As Boolean = False
-
-        For i = 1 To Me.Grid.Rows - 1
-            'If (txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = False) And Me.Grid.Rows = 2 Then
-            '    If Me.ckbVentaKilos.Checked = True Then
-            '        Me.Grid.Column(Me.igyImporte).Locked = True
-            '        Me.Grid.Column(Me.igyImporteKilos).Locked = True
-            '        Me.Grid.Column(Me.igyCantidad).Locked = True
-            '        Me.Grid.Column(Me.igyCantidadKilos).Locked = False
-            '        Me.Grid.Column(Me.igyCantidadKilos).Visible = True
-            '        Me.Grid.Column(Me.igyPrecio).Locked = True
-            '        Me.Grid.Column(Me.igyPrecioKilos).Locked = False
-            '        Me.Grid.Column(Me.igyPrecioKilos).Visible = True
-            '        Me.Grid.Column(Me.igyImporteKilos).Visible = True
-            '    Else
-            '        Me.Grid.Column(Me.igyImporteKilos).Locked = False
-            '        Me.Grid.Column(Me.igyCantidad).Locked = False
-            '        Me.Grid.Column(Me.igyCantidadKilos).Locked = True
-            '        Me.Grid.Column(Me.igyCantidadKilos).Visible = False
-            '        Me.Grid.Column(Me.igyPrecio).Locked = False
-            '        Me.Grid.Column(Me.igyPrecioKilos).Locked = True
-            '        Me.Grid.Column(Me.igyPrecioKilos).Visible = False
-            '        Me.Grid.Column(Me.igyImporteKilos).Visible = False
-            '    End If
-            'End If
-
-            If (txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True) Then
-                oArticulo = New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
-                If oArticulo.ES_PRODUCTO_KILOS = "1" Then
-                    Me.Grid.Cell(i, Me.igyCantidadKilos).Locked = False
-                    Me.Grid.Cell(i, Me.igyPrecioKilos).Locked = False
-
-                    Me.Grid.Cell(i, Me.igyCantidad).Locked = True
-                    Me.Grid.Cell(i, Me.igyPrecio).Locked = True
-                    Me.Grid.Cell(i, Me.igyImpuestoImporte).Locked = True
-
-                    If bProductoKilos = False Then
-                        Me.Grid.Column(Me.igyPrecioKilos).Visible = True
-                        Me.Grid.Column(Me.igyCantidadKilos).Visible = True
-                        Me.Grid.Column(Me.igyImporteKilos).Visible = True
-                        bProductoKilos = True
-                    End If
-                Else
-                    Me.Grid.Cell(i, Me.igyCantidadKilos).Locked = True
-                    Me.Grid.Cell(i, Me.igyPrecioKilos).Locked = True
-
-                    Me.Grid.Cell(i, Me.igyCantidad).Locked = False
-                    Me.Grid.Cell(i, Me.igyPrecio).Locked = False
-
-                    If oArticulo.CODIGO_CULTIVO <> "" Then
-                        Me.Grid.Cell(i, Me.igyImpuestoImporte).Locked = True
-                    Else
-                        Me.Grid.Cell(i, Me.igyImpuestoImporte).Locked = False
-                    End If
-
-                    If bProductoKilos = False Then
-                        Me.Grid.Column(Me.igyPrecioKilos).Visible = False
-                        Me.Grid.Column(Me.igyCantidadKilos).Visible = False
-                        Me.Grid.Column(Me.igyImporteKilos).Visible = False
-                    End If
-                End If
-            End If
-        Next i
     End Sub
 
     Private Sub btnAgregaAddenda_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAgregaAddenda.Click
@@ -741,7 +673,7 @@ Buscar:
     Private Sub FormateaGrid()
         Try
             Me.Grid.AutoRedraw = False
-            Me.Grid.Cols = 26
+            Me.Grid.Cols = 27
 
             Me.Grid.Column(Me.igyCodigo).Width = 75
             Me.Grid.Column(Me.igyDescripcion).Width = 250
@@ -856,18 +788,6 @@ Buscar:
                 Me.Grid.Column(Me.igyImporteUSD).Visible = False
             End If
 
-            Dim i As Integer
-            For i = 1 To Me.Grid.Rows - 1
-                If (txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True) And (txtLEN(Me.Grid.Cell(i, Me.igyEsProductoKilos).Text) = True) Then
-                    If Me.Grid.Cell(i, Me.igyEsProductoKilos).Text = "1" Then
-                        Me.ckbVentaKilos.Checked = True
-                        Me.Grid.Column(Me.igyCantidadKilos).Visible = True
-                        Me.Grid.Column(Me.igyPrecioKilos).Visible = True
-                        Me.Grid.Column(Me.igyImporteKilos).Visible = True
-                    End If
-                End If
-            Next i
-
             Me.Grid.Column(Me.igyNombreCentroCosto).Locked = True
 
             Me.Grid.Column(Me.igyIEPS_PORCENTAJE).Visible = False
@@ -960,10 +880,8 @@ Buscar:
                     Me.cboTipoMercado.Enabled = True
                     Me.cboTipoNegociacion.Enabled = True
                     Me.txtFolioEmbarque.Enabled = True
-                    Me.ckbVentaKilos.Enabled = True
                     Me.llblAgregarSeguimiento.Enabled = True
 
-                    Me.ckbVentaKilos.Checked = False
                     Me.CboDocumento.Enabled = True
                     Me.txtFolio.Enabled = True
                     Me.CboAlmacen.Enabled = True
@@ -1088,7 +1006,6 @@ Buscar:
                         Me.cboTipoMercado.Enabled = False
                         Me.cboTipoNegociacion.Enabled = False
                         Me.txtFolioEmbarque.Enabled = False
-                        Me.ckbVentaKilos.Enabled = False
                         Me.llblAgregarSeguimiento.Enabled = False
 
                     ElseIf Me.oDocumento.AFECTA_INVENTARIOS = True Then
@@ -1207,7 +1124,6 @@ Buscar:
                     Me.cboTipoMercado.Enabled = False
                     Me.cboTipoNegociacion.Enabled = False
                     Me.txtFolioEmbarque.Enabled = False
-                    Me.ckbVentaKilos.Enabled = False
                     Me.llblAgregarSeguimiento.Enabled = False
 
                     If Me.oVenta.VERSION_ESQUEMA_XML >= "3.2" Or Me.oVenta.VERSION_ESQUEMA_XML = "" Then
@@ -1274,8 +1190,10 @@ Buscar:
                 Exit Function
             End If
 
-            If Me._EsPorEmbarqueExtranjero = False AndAlso Me.ValidarReglasCreditoplazo(True) = False Then
-                Exit Function
+            If Me.sTipoVenta <> "SR" And Me.oDocumento.AFECTA_CXC = True Then
+                If Me._EsPorEmbarqueExtranjero = False AndAlso Me.ValidarReglasCreditoplazo(True) = False Then
+                    Exit Function
+                End If
             End If
 
             'If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
@@ -2457,7 +2375,13 @@ CANCELAR:
     Private Function Consultar(Optional ByVal bEsReferencia As Boolean = False) As Boolean
         Dim bResultado As Boolean = False
         Try
-            Dim sVenta As String = Me.txtFolio.Text
+            Dim sVenta As String = ""
+
+            If sTipoVenta = "NM" And bEsReferencia = True Then
+                sVenta = Me.TxtReferencia.Text
+            Else
+                sVenta = Me.txtFolio.Text
+            End If
 
             Me.Inicializa()
             Me.oVenta = New Class_Ventas_Global(sVenta)
@@ -2487,8 +2411,12 @@ CANCELAR:
 
                 Me.oCliente = New Class_CatClientes(Me.TxtCliente.Text)
                 Me.lblCliente.Text = Me.oCliente.NOMBRE_CLIENTE
-                Me.LblPoliza.Text = Me.oVenta.FOLIO_POLIZA
-                Me.lblSaldo.Text = FormatImporteContable(Me.oVenta.SALDO)
+
+                If bEsReferencia = False Then
+                    Me.LblPoliza.Text = Me.oVenta.FOLIO_POLIZA
+                    Me.lblSaldo.Text = FormatImporteContable(Me.oVenta.SALDO)
+                End If
+
                 Me.lblSubtotal.Text = FormatImporteContable(Me.oVenta.SUBTOTAL)
                 Me.lblImpuesto.Text = FormatImporteContable(Me.oVenta.IMPUESTO)
                 Me.lblTotal.Text = FormatImporteContable(Me.oVenta.TOTAL)
@@ -2582,11 +2510,11 @@ CANCELAR:
     Private Sub GestionaGrid(ByVal e As System.Windows.Forms.KeyEventArgs)
         Try
             Dim Columna As Integer, Renglon As Integer
-            Dim StrCod As String, sCuentaContable As String, dCantidad As Decimal, dPrecio As Decimal, sCodigoCentroCosto As String
+            Dim StrCod As String, sCuentaContable As String = "", dCantidad As Decimal, dPrecio As Decimal, sCodigoCentroCosto As String
             Dim oArticulos As Class_CatArticulos
 
             'If Me.oDocumento.AFECTA_CXC = True And Me.Grid.Selection.FirstRow = Me.Grid.Rows - 1 Then
-            '    Exit Sub
+            '    Return
             'End If
 
             Columna = Me.Grid.Selection.FirstCol
@@ -2598,11 +2526,11 @@ CANCELAR:
             'ESTA VALIDACION SE PUSO PARA QUE A LOS PRODUCTOS AGRICOLAS NO LES PUEDAN CAMBIAR LA CUENTA CONTABLE CALCULADA AUTOMATICAMENTE
             If Columna = Me.igyCuentaContable Then
                 If Me.oDocumento.AFECTA_CONTBILIDAD = False Then
-                    Exit Sub
+                    Return
                 Else
                     oArticulos = New Class_CatArticulos(StrCod)
                     If txtLEN(oArticulos.CODIGO_CULTIVO) = True Then
-                        Exit Sub
+                        Return
                     End If
                 End If
             End If
@@ -2617,12 +2545,12 @@ CANCELAR:
                     Select Case Columna
                         Case Me.igyCodigo
                             If txtLEN(StrCod) = False Then
-                                GoTo BuscaArticulos : Exit Sub
+                                GoTo BuscaArticulos : Return
                             End If
 LlenaLinea:
                             oArticulos = New Class_CatArticulos(StrCod)
                             If oArticulos.Existe = False Then
-                                GoTo BuscaArticulos : Exit Sub
+                                GoTo BuscaArticulos : Return
                             End If
 
                             If oArticulos.Existe = False Then
@@ -2631,16 +2559,18 @@ LlenaLinea:
                             End If
 
                             If txtLEN(Me.txtFolioEmbarque.Text) = False Then
+                                Dim oPrecio As New tPrecioVenta
+                                oPrecio = Me.oVenta.GestionaPrecioVenta(oArticulos.CODIGO_ARTICULO, Me.TxtCliente.Text, Me.CboAlmacen.SelectedValue.ToString)
+
                                 Me.Grid.Cell(Renglon, Me.igyDescripcion).Text = oArticulos.DESCRIPCION
                                 Me.Grid.Cell(Renglon, Me.igyTipoControlInventariable).Text = oArticulos.TIPO_CONTROL_INVENTARIO
                                 Me.Grid.Cell(Renglon, Me.igyCantidad).Text = "0"
-                                Me.Grid.Cell(Renglon, Me.igyPrecio).Text = "0"
+                                Me.Grid.Cell(Renglon, Me.igyPrecio).Text = oPrecio.Precio.ToString
+                                Me.Grid.Cell(Renglon, Me.igyCosto).Text = oPrecio.Costo.ToString
                                 Me.Grid.Cell(Renglon, Me.igyUnidad).Text = oArticulos.UNIDAD_VENTA
-                                Me.Grid.Cell(Renglon, Me.igyCantidadKilos).Text = "0"
-                                Me.Grid.Cell(Renglon, Me.igyPrecioKilos).Text = "0"
                                 Me.Grid.Cell(Renglon, Me.igyIEPS_PORCENTAJE).Text = oArticulos.IEPS_PORCENTAJE.ToString
                             Else
-                                Dim oEmbarques As New Class_Embarques_EmbarqueGlobal
+                                Dim oEmbarques As New Class_Embarques_EmbarqueGlobal()
                                 oEmbarques.FOLIO_EMBARQUE = Me.txtFolioEmbarque.Text
                                 If oEmbarques.Consultar() = False Then
                                     MsgBox("El folio de embarque no existe.", MsgBoxStyle.Exclamation, Me.Text)
@@ -2659,31 +2589,10 @@ LlenaLinea:
                                 Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Text = "0"
                             End If
 
-                            If oArticulos.ES_PRODUCTO_KILOS = "1" Then
-                                Me.Grid.Cell(Renglon, Me.igyCantidadKilos).Locked = False
-                                Me.Grid.Cell(Renglon, Me.igyPrecioKilos).Locked = False
-                                Me.Grid.Cell(Renglon, Me.igyImporteKilos).Locked = True
-                                Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Locked = True
-
-                                Me.Grid.Cell(Renglon, Me.igyCantidad).Locked = True
-                                Me.Grid.Cell(Renglon, Me.igyPrecio).Locked = True
-
-                                Me.Grid.Column(Me.igyPrecioKilos).Visible = True
-                                Me.Grid.Column(Me.igyCantidadKilos).Visible = True
-                                Me.Grid.Column(Me.igyImporteKilos).Visible = True
-                                Me.ckbVentaKilos.Checked = True
+                            If oArticulos.CODIGO_CULTIVO <> "" Then
+                                Me.Grid.Cell(Renglon, Me.igyImpuestoImporte).Locked = True
                             Else
-                                Me.Grid.Cell(Renglon, Me.igyCantidadKilos).Locked = True
-                                Me.Grid.Cell(Renglon, Me.igyPrecioKilos).Locked = True
-                                Me.Grid.Cell(Renglon, Me.igyCantidad).Locked = False
-                                Me.Grid.Cell(Renglon, Me.igyPrecio).Locked = False
-                                Me.Grid.Cell(Renglon, Me.igyImporteKilos).Locked = True
-
-                                If oArticulos.CODIGO_CULTIVO <> "" Then
-                                    Me.Grid.Cell(Renglon, Me.igyImpuestoImporte).Locked = True
-                                Else
-                                    Me.Grid.Cell(Renglon, Me.igyImpuestoImporte).Locked = False
-                                End If
+                                Me.Grid.Cell(Renglon, Me.igyImpuestoImporte).Locked = False
                             End If
 
                             If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
@@ -2706,18 +2615,18 @@ LlenaLinea:
                             If dCantidad <= 0 And oArticulos.ES_PRODUCTO_KILOS = "0" Then
                                 MsgBox("La cantidad debe de ser mayor a 0.", MsgBoxStyle.Exclamation, Me.Text)
                                 Me.Grid.Cell(Renglon, Me.igyDescripcion).SetFocus()
-                                Exit Sub
+                                Return
                             End If
 
                             If sTipoVenta <> "NM" Then
                                 If ValidarDisponible() = False Then
-                                    Exit Sub
+                                    Return
                                 End If
                             End If
 
                             If Me.oDocumento.AFECTA_INVENTARIOS = True Then
                                 If ValidarExistencias() = False Then
-                                    Exit Sub
+                                    Return
                                 End If
                             End If
 
@@ -2726,7 +2635,7 @@ LlenaLinea:
                                 '    MsgBox("La cantidad debe de ser menor al disponible.", MsgBoxStyle.Exclamation, Me.Text)
                                 '    Me.Grid.Cell(Renglon, Me.igyCantidad).Text = Me.oCompras.ObtenerDisponibleArticulo(CInt(Me.Grid.Cell(Renglon, Me.igyIdOrigen).Text)).ToString
                                 '    Me.Grid.Refresh()
-                                '    Exit Sub
+                                '    Return
                                 'End If
                             End If
 
@@ -2738,55 +2647,26 @@ LlenaLinea:
                             End If
 
                         Case Me.igyImpuestoPorcentaje
-                            '?
+                            'Case Me.igyCuentaContable
+                            '    'Dim oCuentas As New Class_CatCuentas(Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text)
 
-                        Case Me.igyCuentaContable
-                            'Dim oCuentas As New Class_CatCuentas(Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text)
+                            '    'If oCuentas._Existe = False Then
+                            '    '    Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = ""
+                            '    '    GoTo BuscarCuentas : Return
+                            '    'End If
+                            '    ''Me.Grid.Cell(Renglon + 1, Me.igyImporte).SetFocus()
 
-                            'If oCuentas._Existe = False Then
-                            '    Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = ""
-                            '    GoTo BuscarCuentas : Exit Sub
-                            'End If
-                            ''Me.Grid.Cell(Renglon + 1, Me.igyImporte).SetFocus()
+                            '    If txtLEN(Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text) = False Then
+                            '        GoTo BuscarCuentas
 
-                            If txtLEN(Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text) = False Then
-                                GoTo BuscarCuentas
-
-                                Exit Sub
-                            End If
-
-
-                        Case Me.igyCantidadKilos
-                            oArticulos = New Class_CatArticulos(StrCod)
-                            If oArticulos.ES_PRODUCTO_KILOS = "1" Then
-                                If valorNumerico(Me.Grid.Cell(Renglon, Me.igyCantidadKilos).Text) <= 0 And Me.ckbVentaKilos.Checked = False Then
-                                    MsgBox("La cantidad debe de ser mayor a 0.", MsgBoxStyle.Exclamation, Me.Text)
-                                    Me.Grid.Cell(Renglon, Me.igyDescripcion).SetFocus()
-                                    Exit Sub
-                                Else
-                                    Me.Grid.Cell(Renglon, Me.igyCantidad).Text = ((valorNumerico(Me.Grid.Cell(Renglon, Me.igyCantidadKilos).Text)) / oArticulos.PESO).ToString
-                                End If
-                            End If
-
-                        Case Me.igyPrecioKilos
-                            oArticulos = New Class_CatArticulos(StrCod)
-                            If oArticulos.ES_PRODUCTO_KILOS = "1" Then
-                                If valorNumerico(Me.Grid.Cell(Renglon, Me.igyPrecioKilos).Text) <= 0 And Me.ckbVentaKilos.Checked = False Then
-                                    MsgBox("El precio por kgs debe de ser mayor a 0.", MsgBoxStyle.Exclamation, Me.Text)
-                                    Me.Grid.Cell(Renglon, Me.igyPrecioKilos).SetFocus()
-                                    Exit Sub
-                                Else
-                                    Me.Grid.Cell(Renglon, Me.igyImporteKilos).Text = (valorNumerico(Me.Grid.Cell(Renglon, Me.igyCantidadKilos).Text) * valorNumerico(Me.Grid.Cell(Renglon, Me.igyPrecioKilos).Text)).ToString
-                                    Me.Grid.Cell(Renglon, Me.igyPrecio).Text = (valorNumerico(Me.Grid.Cell(Renglon, Me.igyImporteKilos).Text) / valorNumerico(Me.Grid.Cell(Renglon, Me.igyCantidad).Text)).ToString
-                                    Me.Grid.Cell(Renglon, Me.igyImporte).Text = (Redondear(valorNumerico(Me.Grid.Cell(Renglon, Me.igyCantidad).Text) * valorNumerico(Me.Grid.Cell(Renglon, Me.igyPrecio).Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)).ToString
-                                End If
-                            End If
+                            '        Return
+                            '    End If
 
                         Case Me.igyNombreCentroCosto
                             If txtLEN(Me.Grid.Cell(Renglon, Me.igyCodigoCentroCosto).Text) = False Then
                                 GoTo buscaCentrosCostos
 
-                                Exit Sub
+                                Return
                             End If
                             'Me.oCentroCostos = New Class_CatCentroCostos()
 
@@ -2805,9 +2685,6 @@ LlenaLinea:
 
                     Me.Totales()
 
-                Case Keys.F2
-                    'Me.Grid.Cell(Renglon, Me.igyCodigo).Text = Empresa_Sistema.CODIGO_ARTICULO_NO_INVENTARIABLE_COMPRA_PROVEEDOR
-
                 Case Keys.F6
 BuscaArticulos:
                     Select Case Columna
@@ -2819,19 +2696,19 @@ BuscaArticulos:
                                 GoTo LlenaLinea
                             End If
 
-                        Case Me.igyCuentaContable 'Columna de la cuenta contable
-BuscarCuentas:
-                            sCuentaContable = Me.oCuentas.BusquedaVisual_PorCodigoFiltrandoTipoOperacion(, "4")
-                            If sCuentaContable = "" Then
-                                Exit Sub
-                            End If
-                            Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = sCuentaContable
+                            '                        Case Me.igyCuentaContable 'Columna de la cuenta contable
+                            'BuscarCuentas:
+                            '                            sCuentaContable = Me.oCuentas.BusquedaVisual_PorCodigoFiltrandoTipoOperacion(, "4")
+                            '                            If sCuentaContable = "" Then
+                            '                                Return
+                            '                            End If
+                            '                            Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = sCuentaContable
 
                         Case Me.igyNombreCentroCosto
 buscaCentrosCostos:
                             sCodigoCentroCosto = Me.oCentroCostos.BusquedaVisual_PorDescripcion()
                             If sCodigoCentroCosto = "" Then
-                                Exit Sub
+                                Return
                             End If
                             oCentroCostos = New Class_CatCentroCostos(CInt(sCodigoCentroCosto))
                             Me.Grid.Cell(Renglon, Me.igyCodigoCentroCosto).Text = sCodigoCentroCosto
@@ -2840,25 +2717,25 @@ buscaCentrosCostos:
 
                     If Me.Grid.Rows = Renglon + 1 Then Me.Grid.Rows = Me.Grid.Rows + 1
 
-                Case Keys.F7
-                    sCuentaContable = Me.oCuentas.BusquedaVisual_PorNombreFiltrandoTipoOperacion()
-                    If sCuentaContable = "" Then
-                        Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = ""
-                        Me.Grid.Refresh()
-                        Exit Sub
-                    End If
-                    Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = sCuentaContable
+                    'Case Keys.F7
+                    '    sCuentaContable = Me.oCuentas.BusquedaVisual_PorNombreFiltrandoTipoOperacion()
+                    '    If sCuentaContable = "" Then
+                    '        Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = ""
+                    '        Me.Grid.Refresh()
+                    '        Return
+                    '    End If
+                    '    Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = sCuentaContable
 
-                Case Keys.F8
+                Case Keys.F8 'Borrar renglón
                     If (Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.GRABADO) Then
                         Me.Grid.Selection.DeleteByRow()
                         Me.Totales()
                     End If
 
-                Case Keys.Delete
-                    Exit Sub
+                Case Keys.Delete 'Borrar renglón
+                    Return
 
-                Case Keys.F4
+                Case Keys.F4 'Comentarios
 
                     Dim oComentario As New Ventas_Comentarios
                     If StrCod = "-" Then 'Si el código anterior era comentario mostramos el mismo comentario para editarlo, si es un producto lo dejamos en blanco
@@ -2883,6 +2760,15 @@ buscaCentrosCostos:
                     Me.Totales() 'Por si a un renglón que ya tiene un artículo(con importe) le dan f4
                     oComentario.Dispose()
 
+                Case Keys.F5 'Lista de precios
+                    If txtLEN(StrCod) = False Then
+                        Return
+                    End If
+                    Dim oPrecio As New VentasSeleccionPrecio(StrCod)
+                    oPrecio.ShowDialog()
+                    Me.Grid.Cell(Renglon, Me.igyPrecio).Text = oPrecio.PrecioSeleccionado.ToString
+                    oPrecio.Dispose()
+                    Me.Totales()
             End Select
 
         Catch ex As Exception
@@ -3008,23 +2894,6 @@ buscaCentrosCostos:
                                 dRow("IMPORTE_USD").ToString)
                 'Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + dRow("CUENTA_CONTABLE_BASE").ToString & Chr(9) & 'En agr esta así, pero aquí la cuenta es general
             Next
-
-            'Private igyCodigo As Short = 1
-            'Private igyDescripcion As Short = 2
-            'Private igyCantidad As Short = 3
-            'Private igyPrecio As Short = 4
-            'Private igyUnidad As Short = 5
-            'Private igyCantidadKilos As Short = 6
-            'Private igyPrecioKilos As Short = 7
-            'Private igyImpuestoPorcentaje As Short = 8
-            'Private igyImporte As Short = 9
-            'Private igyImporteKilos As Short = 10
-            'Private igyCuentaContable As Short = 11
-            'Private igyImpuestoImporte As Short = 12
-            'Private igyIdOrigen As Short = 13
-            'Private igyEsProductoKilos As Short = 14
-            'Private igyCodigoCentroCosto As Short = 15
-            'Private igyNombreCentroCosto As Short = 16
 
             Me.FormateaGrid()
             Me.Totales()
@@ -3385,30 +3254,35 @@ busca_serie:
 
     Private Function ValidadGridSeries() As Boolean
         Dim bResultado As Boolean = False
-        Dim RenglonRepetido As Integer
-        Dim sRepetido As Boolean = False
+        Try
+            Dim RenglonRepetido As Integer
+            Dim sRepetido As Boolean = False
 
-        For i = 1 To Me.GridSeries.Rows - 1
-            If (txtLEN(Me.GridSeries.Cell(i, Me.igySerieCodigo).Text) = True) And sRepetido = False Then
-                For z = i + 1 To Me.GridSeries.Rows - (i + 1)
-                    If Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text = Me.GridSeries.Cell(z, Me.igySerieIdInventarioLotesCostos).Text Then
-                        sRepetido = True
-                        RenglonRepetido = z
-                        Exit For
-                    End If
-                Next
-            Else
-                Exit For
+            For i = 1 To Me.GridSeries.Rows - 1
+                If (txtLEN(Me.GridSeries.Cell(i, Me.igySerieCodigo).Text) = True) And sRepetido = False Then
+                    For z = i + 1 To Me.GridSeries.Rows - (i + 1)
+                        If Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text = Me.GridSeries.Cell(z, Me.igySerieIdInventarioLotesCostos).Text Then
+                            sRepetido = True
+                            RenglonRepetido = z
+                            Exit For
+                        End If
+                    Next
+                Else
+                    Exit For
+                End If
+            Next
+
+            If sRepetido = True Then
+                MsgBox("Hay una serie repetida " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text & " en: " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " en el renglón " & RenglonRepetido, MsgBoxStyle.Exclamation)
+                Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
+                Return False
             End If
-        Next
 
-        If sRepetido = True Then
-            MsgBox("Hay una serie repetida " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text & " en: " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " en el renglón " & RenglonRepetido, MsgBoxStyle.Exclamation)
-            Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
-            Return bResultado
-        End If
+            bResultado = True
 
-        bResultado = True
+        Catch ex As Exception
+            HandleError(Me.Name, "ValidadGridSeries", ex)
+        End Try
         Return bResultado
     End Function
 

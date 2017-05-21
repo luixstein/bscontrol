@@ -641,6 +641,10 @@ Module Mod_Uti
         Return Format(dCantidad, "###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CANTIDAD))
     End Function
 
+    Public Function FormatPrecio(ByVal dPrecio As Decimal) As String
+        Return Format(dPrecio, "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO))
+    End Function
+
     Public Function FormatFechaCorta(ByVal dFecha As Date) As String
         Return Format(dFecha, "dd-MMM-yy").ToUpper
     End Function

@@ -90,7 +90,6 @@ Partial Class Ventas_Movimientos
         Me.frmDatos = New System.Windows.Forms.GroupBox()
         Me.btnFacturaSiguiente = New System.Windows.Forms.Button()
         Me.btnFacturaAnterior = New System.Windows.Forms.Button()
-        Me.ckbVentaKilos = New System.Windows.Forms.CheckBox()
         Me.txtNumCuenta = New System.Windows.Forms.TextBox()
         Me.LblDisplayNumCuenta = New System.Windows.Forms.Label()
         Me.lblMetodoPago = New System.Windows.Forms.Label()
@@ -732,7 +731,6 @@ Partial Class Ventas_Movimientos
         '
         Me.frmDatos.Controls.Add(Me.btnFacturaSiguiente)
         Me.frmDatos.Controls.Add(Me.btnFacturaAnterior)
-        Me.frmDatos.Controls.Add(Me.ckbVentaKilos)
         Me.frmDatos.Controls.Add(Me.txtNumCuenta)
         Me.frmDatos.Controls.Add(Me.LblDisplayNumCuenta)
         Me.frmDatos.Controls.Add(Me.lblMetodoPago)
@@ -789,17 +787,6 @@ Partial Class Ventas_Movimientos
         Me.btnFacturaAnterior.TabIndex = 371
         Me.btnFacturaAnterior.Text = "<<"
         Me.btnFacturaAnterior.UseVisualStyleBackColor = True
-        '
-        'ckbVentaKilos
-        '
-        Me.ckbVentaKilos.AutoSize = True
-        Me.ckbVentaKilos.Location = New System.Drawing.Point(643, 120)
-        Me.ckbVentaKilos.Name = "ckbVentaKilos"
-        Me.ckbVentaKilos.Size = New System.Drawing.Size(158, 17)
-        Me.ckbVentaKilos.TabIndex = 338
-        Me.ckbVentaKilos.Text = "Venta de productos en kilos"
-        Me.ckbVentaKilos.UseVisualStyleBackColor = True
-        Me.ckbVentaKilos.Visible = False
         '
         'txtNumCuenta
         '
@@ -1130,7 +1117,6 @@ Partial Class Ventas_Movimientos
     Friend WithEvents cboMetodoPago As System.Windows.Forms.ComboBox
     Friend WithEvents txtNumCuenta As System.Windows.Forms.TextBox
     Friend WithEvents LblDisplayNumCuenta As System.Windows.Forms.Label
-    Friend WithEvents ckbVentaKilos As System.Windows.Forms.CheckBox
     Friend WithEvents btnAgregaAddenda As System.Windows.Forms.Button
     Friend WithEvents tsbCancelarTimbre As System.Windows.Forms.ToolStripButton
     Friend WithEvents btnFacturaSiguiente As System.Windows.Forms.Button

@@ -12,6 +12,11 @@ Imports System.Net
 Imports System.IO
 Imports System.Xml
 
+Public Class tPrecioVenta
+    Public Precio As Decimal = 0
+    Public Costo As Decimal = 0
+End Class
+
 Public Class Class_Ventas_Global
 
 #Region "Campos"
@@ -1155,7 +1160,7 @@ Public Class Class_Ventas_Global
                 "CASE WHEN A.ES_SERIALIZABLE = '1' THEN 'SER' WHEN A.INVENTARIABLE= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO, " & _
                 "R.DESCRIPCION,R.CANTIDAD,R.PRECIO,R.UNIDAD_VENTA,ISNULL(R.CANTIDAD_KILOS,0) CANTIDAD_KILOS,ISNULL(R.PRECIO_KILOS,0) PRECIO_KILOS,R.IMPUESTO_PORCENTAJE,R.IMPORTE,ISNULL(R.IMPORTE_KILOS,0) IMPORTE_KILOS, " &
                 "R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_VENTA_DETALLE,R.ES_PRODUCTO_KILOS,R.CODIGO_CENTRO_COSTO,CC.NOMBRE_CENTRO_COSTO,R.PRECIO_USD,R.IMPORTE_USD, " &
-                "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA,R.PRECIO_TOTAL " & _
+                "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA,R.PRECIO_TOTAL,R.COSTO " & _
                 "FROM VENTA_DETALLE R " & _
                 "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
                 "INNER JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO=CC.CODIGO_CENTRO_COSTO) " & _
@@ -1183,7 +1188,7 @@ Public Class Class_Ventas_Global
             "CASE WHEN A.ES_SERIALIZABLE = '1' THEN 'SER' WHEN A.INVENTARIABLE= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO, " & _
             "R.DESCRIPCION,R.DISPONIBLE,R.PRECIO,R.UNIDAD_VENTA,ISNULL(R.CANTIDAD_KILOS,0) CANTIDAD_KILOS,ISNULL(R.PRECIO_KILOS,0) PRECIO_KILOS,R.IMPUESTO_PORCENTAJE,R.IMPORTE,ISNULL(R.IMPORTE_KILOS,0) IMPORTE_KILOS," & _
             "R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_VENTA_DETALLE,R.ES_PRODUCTO_KILOS,R.CODIGO_CENTRO_COSTO,CC.NOMBRE_CENTRO_COSTO,R.CODIGO_CENTRO_COSTO,R.PRECIO_USD,R.IMPORTE_USD, " &
-            "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA,R.PRECIO_TOTAL " & _
+            "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA,R.PRECIO_TOTAL,R.COSTO " & _
             "FROM VENTA_DETALLE R " & _
             "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
             "INNER JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO=CC.CODIGO_CENTRO_COSTO)" &
@@ -2065,7 +2070,7 @@ Public Class Class_Ventas_Global
             End If
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, "CancelarTimbre", ex)
+            HandleError(Me._Nombre_Catalogo, sProcedure, ex)
         End Try
 
         Return bResultado
@@ -2094,12 +2099,13 @@ Public Class Class_Ventas_Global
                 MsgBox("La factura ya esta timbrada.", vbExclamation, sProcedure)
             End If
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, "GeneraFacturaElectronica", ex)
+            HandleError(Me._Nombre_Catalogo, sProcedure, ex)
         End Try
         Return bResultado
     End Function
 
     Public Function ObtenerImpuestosIEPS() As DataTable
+        Dim sProcedure As String = "ObtenerImpuestosIEPS"
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
 
@@ -2113,11 +2119,34 @@ Public Class Class_Ventas_Global
             da.Dispose()
 
         Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "ObtenerImpuestosIEPS", ex)
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
         End Try
         Return dTabla
     End Function
 
+    Public Function GestionaPrecioVenta(ByVal CodigoArticulo As String, ByVal CodigoCliente As String, ByVal CodigoAlmacen As String) As tPrecioVenta
+        Dim sProcedure As String = "GestionaPrecioVenta"
+        Dim oPrecioVenta As New tPrecioVenta
+        Dim dt As New DataTable
+        Try
+            Using da As New SqlDataAdapter("MP_VENTA_GESTIONA_PRECIO", Me._Conexion)
+                da.SelectCommand.CommandType = CommandType.StoredProcedure
+
+                With da.SelectCommand
+                    .Parameters.Add("@CODIGO_ARTICULO", SqlDbType.NVarChar, 16).Value = CodigoArticulo
+                    .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8).Value = CodigoCliente
+                    .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4).Value = CodigoAlmacen
+                End With
+
+                da.Fill(dt)
+            End Using
+            oPrecioVenta.Precio = CDec(dt.Rows(0)("PRECIO").ToString)
+            oPrecioVenta.Costo = CDec(dt.Rows(0)("COSTO").ToString)
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
+        End Try
+        Return oPrecioVenta
+    End Function
 #End Region
 
 End Class
