@@ -161,7 +161,7 @@ Partial Class Cat_Nomina_TipoPercepcion
         Me.TxtNombrePercepcion.MaxLength = 50
         Me.TxtNombrePercepcion.Name = "TxtNombrePercepcion"
         Me.TxtNombrePercepcion.Size = New System.Drawing.Size(229, 22)
-        Me.TxtNombrePercepcion.TabIndex = 3
+        Me.TxtNombrePercepcion.TabIndex = 1
         '
         'LblEstatus
         '
@@ -183,7 +183,7 @@ Partial Class Cat_Nomina_TipoPercepcion
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(91, 24)
-        Me.CboEstatus.TabIndex = 12
+        Me.CboEstatus.TabIndex = 2
         '
         'LblDisplayCodPercepcion
         '
@@ -275,6 +275,7 @@ Partial Class Cat_Nomina_TipoPercepcion
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Cat_Nomina_TipoPercepcion"
+        Me.ShowIcon = False
         Me.Text = "Catalogo tipo de percepción"
         Me.StatusStripEstado.ResumeLayout(False)
         Me.StatusStripEstado.PerformLayout()

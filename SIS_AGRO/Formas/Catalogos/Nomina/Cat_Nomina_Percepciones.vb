@@ -101,7 +101,7 @@ Public Class Cat_Nomina_CatPercepciones
             Case enumEstados.NUEVO
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Agregando una nueva " & Me.msgElemento
+                Me.tssLabelEstado.Text = "Agregando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
@@ -116,7 +116,7 @@ Public Class Cat_Nomina_CatPercepciones
             Case enumEstados.EDICION
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Edición"
+                Me.tssLabelEstado.Text = "Editando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
@@ -130,7 +130,7 @@ Public Class Cat_Nomina_CatPercepciones
             Case enumEstados.CONSULTA
                 Me.gBoxInformacion.Enabled = False
                 Me.gBoxBusquedaRapida.Enabled = True
-                Me.tssLabelEstado.Text = "Consulta"
+                Me.tssLabelEstado.Text = "Consultando"
                 Me.tsbNuevo.Enabled = True
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = False
@@ -145,6 +145,7 @@ Public Class Cat_Nomina_CatPercepciones
         Me.TxtCodigoPercepcion.Text = ""
         Me.TxtNombrePercepcion.Text = ""
         Me.CboEstatus.SelectedIndex = 0
+        Me.cmbReembolsable.SelectedIndex = 0
     End Sub
 
     Private Sub DesplegarElementos()
@@ -180,6 +181,10 @@ Public Class Cat_Nomina_CatPercepciones
 
     Private Sub Grabar_Elemento()
         Dim Grabado As Boolean = False
+
+        If Validar() = False Then
+            Exit Sub
+        End If
 
         Select Case Me.Estado
             Case enumEstados.NUEVO, enumEstados.EDICION
@@ -225,6 +230,21 @@ Public Class Cat_Nomina_CatPercepciones
                 End Try
         End Select
     End Sub
+
+    Private Function Validar() As Boolean
+        Dim bresultado As Boolean = False
+
+        If txtLEN(Me.TxtNombrePercepcion.Text) = False Then
+            MsgBox("Asígne un nombre a la percepción.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.TxtNombrePercepcion.Focus()
+            Return bresultado
+        End If
+
+
+
+        bresultado = True
+        Return bresultado
+    End Function
 
 #End Region
 
@@ -296,6 +316,17 @@ Public Class Cat_Nomina_CatPercepciones
             tsbGrabar.PerformClick()
         End If
     End Sub
+    Private Sub CmbReembonsable_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cmbReembolsable.KeyDown
+        If e.KeyCode = Keys.Return Then
+            Select Case Me.Estado
+                Case enumEstados.NUEVO
+                    tsbGrabar.PerformClick()
+                Case enumEstados.EDICION
+                    SendKeys.Send("{TAB}")
+            End Select
+
+        End If
+    End Sub
     Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombrePercepcion.KeyPress
         txtNoBeep(e)
     End Sub
@@ -306,7 +337,8 @@ Public Class Cat_Nomina_CatPercepciones
                 Case enumEstados.EDICION
                     SendKeys.Send("{TAB}")
                 Case enumEstados.NUEVO
-                    tsbGrabar.PerformClick()
+                    'tsbGrabar.PerformClick()
+                    SendKeys.Send("{TAB}")
             End Select
         End If
     End Sub

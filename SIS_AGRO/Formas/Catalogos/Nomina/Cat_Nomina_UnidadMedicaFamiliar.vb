@@ -105,13 +105,13 @@ Public Class Cat_Nomina_UnidadMedicaFamiliar
             Case enumEstados.NUEVO
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Agregando una nueva " & Me.msgElemento
+                Me.tssLabelEstado.Text = "Agregando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
                 Me.tsbCancelar.Enabled = True
 
-                Me.TxtCodigoUnidadMedica.Enabled = True
+                Me.TxtCodigoUnidadMedica.Enabled = False
                 Me.TxtNombreUnidadMedica.Enabled = True
                 Me.CboEstatus.Enabled = False
                 Me.InicializaElemento()
@@ -120,7 +120,7 @@ Public Class Cat_Nomina_UnidadMedicaFamiliar
             Case enumEstados.EDICION
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Edición"
+                Me.tssLabelEstado.Text = "Editando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
@@ -134,7 +134,7 @@ Public Class Cat_Nomina_UnidadMedicaFamiliar
             Case enumEstados.CONSULTA
                 Me.gBoxInformacion.Enabled = False
                 Me.gBoxBusquedaRapida.Enabled = True
-                Me.tssLabelEstado.Text = "Consulta"
+                Me.tssLabelEstado.Text = "Consultando"
                 Me.tsbNuevo.Enabled = True
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = False
@@ -167,13 +167,22 @@ Public Class Cat_Nomina_UnidadMedicaFamiliar
                 sCodigo = "000" + iCodigo_Elemento
                 Me.TxtCodigoUnidadMedica.Text = sCodigo.Substring(Len(sCodigo) - 3).ToString
                 Me.TxtNombreUnidadMedica.Text = .NOMBRE_UNIDAD_MEDICA_FAMILIAR.ToString
-                Me.CboEstatus.Text = Strings.Left(Me.CboEstatus.Text, 1)
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
             End With
         End If
     End Sub
 
     Private Sub Grabar_Elemento()
         Dim Grabado As Boolean = False
+
+        If Validar() = False Then
+            Exit Sub
+        End If
+
         Select Case Me.Estado
             Case enumEstados.NUEVO, enumEstados.EDICION
                 Me.oUnidadMedica = New Class_CatUnidadMedicaFamiliar
@@ -181,11 +190,7 @@ Public Class Cat_Nomina_UnidadMedicaFamiliar
                     With Me.oUnidadMedica
                         .CODIGO_UNIDAD_MEDICA_FAMILIAR = CInt(Me.TxtCodigoUnidadMedica.Text)
                         .NOMBRE_UNIDAD_MEDICA_FAMILIAR = Me.TxtNombreUnidadMedica.Text
-                        If .Estatus = "A" Then
-                            Me.CboEstatus.SelectedIndex = 0
-                        Else
-                            Me.CboEstatus.SelectedIndex = 1
-                        End If
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 If .Insertar() Then
@@ -215,6 +220,19 @@ Public Class Cat_Nomina_UnidadMedicaFamiliar
                 End Try
         End Select
     End Sub
+
+    Private Function Validar() As Boolean
+        Dim bResultado As Boolean = False
+
+        If txtLEN(Me.TxtNombreUnidadMedica.Text) = False Then
+            MsgBox("Asígne un nombre a la unidad médica.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.TxtNombreUnidadMedica.Focus()
+            Return bResultado
+        End If
+
+        bResultado = True
+        Return bResultado
+    End Function
 
 #End Region
 

@@ -103,7 +103,7 @@ Public Class Cat_Nomina_TipoPercepcion
             Case enumEstados.NUEVO
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Agregando una nueva " & Me.msgElemento
+                Me.tssLabelEstado.Text = "Agregando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
@@ -118,7 +118,7 @@ Public Class Cat_Nomina_TipoPercepcion
             Case enumEstados.EDICION
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Edición"
+                Me.tssLabelEstado.Text = "Editando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
@@ -132,7 +132,7 @@ Public Class Cat_Nomina_TipoPercepcion
             Case enumEstados.CONSULTA
                 Me.gBoxInformacion.Enabled = False
                 Me.gBoxBusquedaRapida.Enabled = True
-                Me.tssLabelEstado.Text = "Consulta"
+                Me.tssLabelEstado.Text = "Consultando"
                 Me.tsbNuevo.Enabled = True
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = False
@@ -178,6 +178,10 @@ Public Class Cat_Nomina_TipoPercepcion
     Private Sub Grabar_Elemento()
         Dim Grabado As Boolean = False
 
+        If Validar() = False Then
+            Exit Sub
+        End If
+
         Select Case Me.Estado
             Case enumEstados.NUEVO, enumEstados.EDICION
                 Me.oPercepcion = New Class_CatTipoPercepcion
@@ -217,6 +221,19 @@ Public Class Cat_Nomina_TipoPercepcion
                 End Try
         End Select
     End Sub
+
+    Private Function Validar() As Boolean
+        Dim bResultado As Boolean = False
+
+        If txtLEN(Me.TxtNombrePercepcion.Text) = False Then
+            MsgBox("Asígne un nombre al tipo de percepción.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.TxtNombrePercepcion.Focus()
+            Return bResultado
+        End If
+
+        bResultado = True
+        Return bResultado
+    End Function
 
 #End Region
 

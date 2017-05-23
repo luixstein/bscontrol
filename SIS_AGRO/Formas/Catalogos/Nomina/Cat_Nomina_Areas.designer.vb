@@ -300,6 +300,7 @@ Partial Class Cat_Nomina_Areas
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Cat_Nomina_Areas"
+        Me.ShowIcon = False
         Me.Text = "Cátalogo de áreas"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()

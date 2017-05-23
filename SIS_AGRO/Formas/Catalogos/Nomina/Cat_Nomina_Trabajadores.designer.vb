@@ -238,9 +238,9 @@ Partial Class Cat_Nomina_Trabajadores
         Me.gbDatosGenerales.Controls.Add(Me.lblDisplayCodigo)
         Me.gbDatosGenerales.Controls.Add(Me.txtCodigoTrabajador)
         Me.gbDatosGenerales.Location = New System.Drawing.Point(9, 28)
-        Me.gbDatosGenerales.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbDatosGenerales.Margin = New System.Windows.Forms.Padding(4)
         Me.gbDatosGenerales.Name = "gbDatosGenerales"
-        Me.gbDatosGenerales.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbDatosGenerales.Padding = New System.Windows.Forms.Padding(4)
         Me.gbDatosGenerales.Size = New System.Drawing.Size(439, 297)
         Me.gbDatosGenerales.TabIndex = 0
         Me.gbDatosGenerales.TabStop = False
@@ -249,7 +249,7 @@ Partial Class Cat_Nomina_Trabajadores
         'btnSiguiente
         '
         Me.btnSiguiente.Location = New System.Drawing.Point(355, 21)
-        Me.btnSiguiente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnSiguiente.Margin = New System.Windows.Forms.Padding(4)
         Me.btnSiguiente.Name = "btnSiguiente"
         Me.btnSiguiente.Size = New System.Drawing.Size(68, 26)
         Me.btnSiguiente.TabIndex = 372
@@ -259,7 +259,7 @@ Partial Class Cat_Nomina_Trabajadores
         'btnAnterior
         '
         Me.btnAnterior.Location = New System.Drawing.Point(283, 21)
-        Me.btnAnterior.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnAnterior.Margin = New System.Windows.Forms.Padding(4)
         Me.btnAnterior.Name = "btnAnterior"
         Me.btnAnterior.Size = New System.Drawing.Size(68, 26)
         Me.btnAnterior.TabIndex = 371
@@ -281,7 +281,7 @@ Partial Class Cat_Nomina_Trabajadores
         Me.cboIdTemporada.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboIdTemporada.FormattingEnabled = True
         Me.cboIdTemporada.Location = New System.Drawing.Point(133, 57)
-        Me.cboIdTemporada.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboIdTemporada.Margin = New System.Windows.Forms.Padding(4)
         Me.cboIdTemporada.MaxLength = 1
         Me.cboIdTemporada.Name = "cboIdTemporada"
         Me.cboIdTemporada.Size = New System.Drawing.Size(140, 24)
@@ -293,7 +293,7 @@ Partial Class Cat_Nomina_Trabajadores
         Me.cboEstadoNacimiento.FormattingEnabled = True
         Me.cboEstadoNacimiento.Items.AddRange(New Object() {"A", "B"})
         Me.cboEstadoNacimiento.Location = New System.Drawing.Point(155, 255)
-        Me.cboEstadoNacimiento.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboEstadoNacimiento.Margin = New System.Windows.Forms.Padding(4)
         Me.cboEstadoNacimiento.MaxLength = 80
         Me.cboEstadoNacimiento.Name = "cboEstadoNacimiento"
         Me.cboEstadoNacimiento.Size = New System.Drawing.Size(267, 24)
@@ -313,7 +313,7 @@ Partial Class Cat_Nomina_Trabajadores
         '
         Me.dtpFechaNacimiento.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.dtpFechaNacimiento.Location = New System.Drawing.Point(133, 223)
-        Me.dtpFechaNacimiento.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.dtpFechaNacimiento.Margin = New System.Windows.Forms.Padding(4)
         Me.dtpFechaNacimiento.Name = "dtpFechaNacimiento"
         Me.dtpFechaNacimiento.Size = New System.Drawing.Size(191, 22)
         Me.dtpFechaNacimiento.TabIndex = 6
@@ -341,7 +341,7 @@ Partial Class Cat_Nomina_Trabajadores
         'txtApellidoMaterno
         '
         Me.txtApellidoMaterno.Location = New System.Drawing.Point(133, 154)
-        Me.txtApellidoMaterno.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtApellidoMaterno.Margin = New System.Windows.Forms.Padding(4)
         Me.txtApellidoMaterno.MaxLength = 50
         Me.txtApellidoMaterno.Name = "txtApellidoMaterno"
         Me.txtApellidoMaterno.Size = New System.Drawing.Size(287, 22)
@@ -360,7 +360,7 @@ Partial Class Cat_Nomina_Trabajadores
         'txtApellidoPaterno
         '
         Me.txtApellidoPaterno.Location = New System.Drawing.Point(133, 122)
-        Me.txtApellidoPaterno.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtApellidoPaterno.Margin = New System.Windows.Forms.Padding(4)
         Me.txtApellidoPaterno.MaxLength = 50
         Me.txtApellidoPaterno.Name = "txtApellidoPaterno"
         Me.txtApellidoPaterno.Size = New System.Drawing.Size(287, 22)
@@ -381,7 +381,7 @@ Partial Class Cat_Nomina_Trabajadores
         Me.cboSexo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboSexo.FormattingEnabled = True
         Me.cboSexo.Location = New System.Drawing.Point(133, 190)
-        Me.cboSexo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboSexo.Margin = New System.Windows.Forms.Padding(4)
         Me.cboSexo.MaxLength = 1
         Me.cboSexo.Name = "cboSexo"
         Me.cboSexo.Size = New System.Drawing.Size(140, 24)
@@ -409,7 +409,7 @@ Partial Class Cat_Nomina_Trabajadores
         'TxtNombreTrabajador
         '
         Me.TxtNombreTrabajador.Location = New System.Drawing.Point(133, 90)
-        Me.TxtNombreTrabajador.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtNombreTrabajador.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNombreTrabajador.MaxLength = 50
         Me.TxtNombreTrabajador.Name = "TxtNombreTrabajador"
         Me.TxtNombreTrabajador.Size = New System.Drawing.Size(288, 22)
@@ -428,7 +428,7 @@ Partial Class Cat_Nomina_Trabajadores
         'txtCodigoTrabajador
         '
         Me.txtCodigoTrabajador.Location = New System.Drawing.Point(133, 22)
-        Me.txtCodigoTrabajador.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCodigoTrabajador.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCodigoTrabajador.MaxLength = 10
         Me.txtCodigoTrabajador.Name = "txtCodigoTrabajador"
         Me.txtCodigoTrabajador.Size = New System.Drawing.Size(140, 22)
@@ -450,7 +450,7 @@ Partial Class Cat_Nomina_Trabajadores
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.CboEstatus.Location = New System.Drawing.Point(316, 145)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(104, 24)
@@ -464,9 +464,9 @@ Partial Class Cat_Nomina_Trabajadores
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(939, 34)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(432, 751)
         Me.gBoxBusquedaRapida.TabIndex = 2
         Me.gBoxBusquedaRapida.TabStop = False
@@ -480,7 +480,7 @@ Partial Class Cat_Nomina_Trabajadores
         Me.Grid.AllowUserToResizeRows = False
         Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.Grid.Location = New System.Drawing.Point(8, 53)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid.Name = "Grid"
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
@@ -493,7 +493,7 @@ Partial Class Cat_Nomina_Trabajadores
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.Name = "txtFiltro"
         Me.txtFiltro.Size = New System.Drawing.Size(415, 22)
         Me.txtFiltro.TabIndex = 0
@@ -524,7 +524,7 @@ Partial Class Cat_Nomina_Trabajadores
         Me.cboDomicilioEstado.FormattingEnabled = True
         Me.cboDomicilioEstado.Items.AddRange(New Object() {"A", "B"})
         Me.cboDomicilioEstado.Location = New System.Drawing.Point(167, 206)
-        Me.cboDomicilioEstado.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboDomicilioEstado.Margin = New System.Windows.Forms.Padding(4)
         Me.cboDomicilioEstado.MaxLength = 80
         Me.cboDomicilioEstado.Name = "cboDomicilioEstado"
         Me.cboDomicilioEstado.Size = New System.Drawing.Size(267, 24)
@@ -533,7 +533,7 @@ Partial Class Cat_Nomina_Trabajadores
         'txtDomicilioLocalidad
         '
         Me.txtDomicilioLocalidad.Location = New System.Drawing.Point(168, 174)
-        Me.txtDomicilioLocalidad.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtDomicilioLocalidad.Margin = New System.Windows.Forms.Padding(4)
         Me.txtDomicilioLocalidad.MaxLength = 50
         Me.txtDomicilioLocalidad.Name = "txtDomicilioLocalidad"
         Me.txtDomicilioLocalidad.Size = New System.Drawing.Size(267, 22)
@@ -552,7 +552,7 @@ Partial Class Cat_Nomina_Trabajadores
         'txtDomicilioCiudad
         '
         Me.txtDomicilioCiudad.Location = New System.Drawing.Point(168, 142)
-        Me.txtDomicilioCiudad.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtDomicilioCiudad.Margin = New System.Windows.Forms.Padding(4)
         Me.txtDomicilioCiudad.MaxLength = 50
         Me.txtDomicilioCiudad.Name = "txtDomicilioCiudad"
         Me.txtDomicilioCiudad.Size = New System.Drawing.Size(267, 22)
@@ -561,7 +561,7 @@ Partial Class Cat_Nomina_Trabajadores
         'txtDomicilioCodigoPostal
         '
         Me.txtDomicilioCodigoPostal.Location = New System.Drawing.Point(167, 80)
-        Me.txtDomicilioCodigoPostal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtDomicilioCodigoPostal.Margin = New System.Windows.Forms.Padding(4)
         Me.txtDomicilioCodigoPostal.MaxLength = 10
         Me.txtDomicilioCodigoPostal.Name = "txtDomicilioCodigoPostal"
         Me.txtDomicilioCodigoPostal.Size = New System.Drawing.Size(135, 22)
@@ -591,7 +591,7 @@ Partial Class Cat_Nomina_Trabajadores
         'txtDomicilioColonia
         '
         Me.txtDomicilioColonia.Location = New System.Drawing.Point(168, 110)
-        Me.txtDomicilioColonia.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtDomicilioColonia.Margin = New System.Windows.Forms.Padding(4)
         Me.txtDomicilioColonia.MaxLength = 50
         Me.txtDomicilioColonia.Name = "txtDomicilioColonia"
         Me.txtDomicilioColonia.Size = New System.Drawing.Size(267, 22)
@@ -610,7 +610,7 @@ Partial Class Cat_Nomina_Trabajadores
         'txtDomicilioNumero
         '
         Me.txtDomicilioNumero.Location = New System.Drawing.Point(168, 48)
-        Me.txtDomicilioNumero.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtDomicilioNumero.Margin = New System.Windows.Forms.Padding(4)
         Me.txtDomicilioNumero.MaxLength = 50
         Me.txtDomicilioNumero.Name = "txtDomicilioNumero"
         Me.txtDomicilioNumero.Size = New System.Drawing.Size(135, 22)
@@ -620,7 +620,7 @@ Partial Class Cat_Nomina_Trabajadores
         'txtDomicilioCalle
         '
         Me.txtDomicilioCalle.Location = New System.Drawing.Point(168, 16)
-        Me.txtDomicilioCalle.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtDomicilioCalle.Margin = New System.Windows.Forms.Padding(4)
         Me.txtDomicilioCalle.MaxLength = 50
         Me.txtDomicilioCalle.Name = "txtDomicilioCalle"
         Me.txtDomicilioCalle.Size = New System.Drawing.Size(267, 22)
@@ -653,9 +653,9 @@ Partial Class Cat_Nomina_Trabajadores
         Me.gbDomicilio.Controls.Add(Me.lblDisplayLocalidad)
         Me.gbDomicilio.Controls.Add(Me.lblDisplayEstado)
         Me.gbDomicilio.Location = New System.Drawing.Point(456, 225)
-        Me.gbDomicilio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbDomicilio.Margin = New System.Windows.Forms.Padding(4)
         Me.gbDomicilio.Name = "gbDomicilio"
-        Me.gbDomicilio.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbDomicilio.Padding = New System.Windows.Forms.Padding(4)
         Me.gbDomicilio.Size = New System.Drawing.Size(449, 246)
         Me.gbDomicilio.TabIndex = 2
         Me.gbDomicilio.TabStop = False
@@ -676,7 +676,7 @@ Partial Class Cat_Nomina_Trabajadores
         Me.cboArea.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboArea.FormattingEnabled = True
         Me.cboArea.Location = New System.Drawing.Point(137, 18)
-        Me.cboArea.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboArea.Margin = New System.Windows.Forms.Padding(4)
         Me.cboArea.MaxLength = 1
         Me.cboArea.Name = "cboArea"
         Me.cboArea.Size = New System.Drawing.Size(284, 24)
@@ -697,7 +697,7 @@ Partial Class Cat_Nomina_Trabajadores
         Me.cboPuesto.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboPuesto.FormattingEnabled = True
         Me.cboPuesto.Location = New System.Drawing.Point(137, 50)
-        Me.cboPuesto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboPuesto.Margin = New System.Windows.Forms.Padding(4)
         Me.cboPuesto.MaxLength = 1
         Me.cboPuesto.Name = "cboPuesto"
         Me.cboPuesto.Size = New System.Drawing.Size(284, 24)
@@ -718,7 +718,7 @@ Partial Class Cat_Nomina_Trabajadores
         Me.cboPuntoPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboPuntoPago.FormattingEnabled = True
         Me.cboPuntoPago.Location = New System.Drawing.Point(137, 82)
-        Me.cboPuntoPago.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboPuntoPago.Margin = New System.Windows.Forms.Padding(4)
         Me.cboPuntoPago.MaxLength = 1
         Me.cboPuntoPago.Name = "cboPuntoPago"
         Me.cboPuntoPago.Size = New System.Drawing.Size(284, 24)
@@ -737,7 +737,7 @@ Partial Class Cat_Nomina_Trabajadores
         'txtNumIMSS
         '
         Me.txtNumIMSS.Location = New System.Drawing.Point(165, 119)
-        Me.txtNumIMSS.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtNumIMSS.Margin = New System.Windows.Forms.Padding(4)
         Me.txtNumIMSS.MaxLength = 11
         Me.txtNumIMSS.Name = "txtNumIMSS"
         Me.txtNumIMSS.Size = New System.Drawing.Size(267, 22)
@@ -756,7 +756,7 @@ Partial Class Cat_Nomina_Trabajadores
         'txtSueldo
         '
         Me.txtSueldo.Location = New System.Drawing.Point(137, 145)
-        Me.txtSueldo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtSueldo.Margin = New System.Windows.Forms.Padding(4)
         Me.txtSueldo.MaxLength = 20
         Me.txtSueldo.Name = "txtSueldo"
         Me.txtSueldo.Size = New System.Drawing.Size(104, 22)
@@ -798,9 +798,9 @@ Partial Class Cat_Nomina_Trabajadores
         Me.gbDatosTrabajador.Controls.Add(Me.lblDisplayPuntoPago)
         Me.gbDatosTrabajador.Controls.Add(Me.cboPuntoPago)
         Me.gbDatosTrabajador.Location = New System.Drawing.Point(9, 332)
-        Me.gbDatosTrabajador.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbDatosTrabajador.Margin = New System.Windows.Forms.Padding(4)
         Me.gbDatosTrabajador.Name = "gbDatosTrabajador"
-        Me.gbDatosTrabajador.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbDatosTrabajador.Padding = New System.Windows.Forms.Padding(4)
         Me.gbDatosTrabajador.Size = New System.Drawing.Size(439, 411)
         Me.gbDatosTrabajador.TabIndex = 1
         Me.gbDatosTrabajador.TabStop = False
@@ -829,7 +829,7 @@ Partial Class Cat_Nomina_Trabajadores
         'txtNumeroTrabajadorBanco
         '
         Me.txtNumeroTrabajadorBanco.Location = New System.Drawing.Point(232, 347)
-        Me.txtNumeroTrabajadorBanco.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtNumeroTrabajadorBanco.Margin = New System.Windows.Forms.Padding(4)
         Me.txtNumeroTrabajadorBanco.MaxLength = 10
         Me.txtNumeroTrabajadorBanco.Name = "txtNumeroTrabajadorBanco"
         Me.txtNumeroTrabajadorBanco.Size = New System.Drawing.Size(96, 22)
@@ -838,7 +838,7 @@ Partial Class Cat_Nomina_Trabajadores
         'txtNumeroCuentaBanco
         '
         Me.txtNumeroCuentaBanco.Location = New System.Drawing.Point(255, 293)
-        Me.txtNumeroCuentaBanco.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtNumeroCuentaBanco.Margin = New System.Windows.Forms.Padding(4)
         Me.txtNumeroCuentaBanco.MaxLength = 18
         Me.txtNumeroCuentaBanco.Name = "txtNumeroCuentaBanco"
         Me.txtNumeroCuentaBanco.Size = New System.Drawing.Size(165, 22)
@@ -848,7 +848,7 @@ Partial Class Cat_Nomina_Trabajadores
         '
         Me.dtpFechaIngreso.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.dtpFechaIngreso.Location = New System.Drawing.Point(137, 379)
-        Me.dtpFechaIngreso.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.dtpFechaIngreso.Margin = New System.Windows.Forms.Padding(4)
         Me.dtpFechaIngreso.Name = "dtpFechaIngreso"
         Me.dtpFechaIngreso.Size = New System.Drawing.Size(191, 22)
         Me.dtpFechaIngreso.TabIndex = 14
@@ -877,7 +877,7 @@ Partial Class Cat_Nomina_Trabajadores
         '
         Me.txtCuentaContable.Enabled = False
         Me.txtCuentaContable.Location = New System.Drawing.Point(137, 236)
-        Me.txtCuentaContable.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCuentaContable.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCuentaContable.MaxLength = 20
         Me.txtCuentaContable.Name = "txtCuentaContable"
         Me.txtCuentaContable.Size = New System.Drawing.Size(283, 22)
@@ -924,7 +924,7 @@ Partial Class Cat_Nomina_Trabajadores
         'txtCurp
         '
         Me.txtCurp.Location = New System.Drawing.Point(137, 207)
-        Me.txtCurp.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCurp.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCurp.MaxLength = 20
         Me.txtCurp.Name = "txtCurp"
         Me.txtCurp.Size = New System.Drawing.Size(283, 22)
@@ -943,7 +943,7 @@ Partial Class Cat_Nomina_Trabajadores
         'txtCodigoMayordomo
         '
         Me.txtCodigoMayordomo.Location = New System.Drawing.Point(137, 113)
-        Me.txtCodigoMayordomo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCodigoMayordomo.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCodigoMayordomo.MaxLength = 10
         Me.txtCodigoMayordomo.Name = "txtCodigoMayordomo"
         Me.txtCodigoMayordomo.Size = New System.Drawing.Size(104, 22)
@@ -962,7 +962,7 @@ Partial Class Cat_Nomina_Trabajadores
         'txtRfc
         '
         Me.txtRfc.Location = New System.Drawing.Point(137, 176)
-        Me.txtRfc.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtRfc.Margin = New System.Windows.Forms.Padding(4)
         Me.txtRfc.MaxLength = 20
         Me.txtRfc.Name = "txtRfc"
         Me.txtRfc.Size = New System.Drawing.Size(283, 22)
@@ -981,7 +981,7 @@ Partial Class Cat_Nomina_Trabajadores
         'txtCodigoBanco
         '
         Me.txtCodigoBanco.Location = New System.Drawing.Point(137, 316)
-        Me.txtCodigoBanco.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCodigoBanco.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCodigoBanco.MaxLength = 3
         Me.txtCodigoBanco.Name = "txtCodigoBanco"
         Me.txtCodigoBanco.Size = New System.Drawing.Size(53, 22)
@@ -1001,7 +1001,7 @@ Partial Class Cat_Nomina_Trabajadores
         '
         Me.ckbPagoTarjeta.AutoSize = True
         Me.ckbPagoTarjeta.Location = New System.Drawing.Point(137, 270)
-        Me.ckbPagoTarjeta.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ckbPagoTarjeta.Margin = New System.Windows.Forms.Padding(4)
         Me.ckbPagoTarjeta.Name = "ckbPagoTarjeta"
         Me.ckbPagoTarjeta.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.ckbPagoTarjeta.Size = New System.Drawing.Size(18, 17)
@@ -1011,7 +1011,7 @@ Partial Class Cat_Nomina_Trabajadores
         'txtNumTarjeta
         '
         Me.txtNumTarjeta.Location = New System.Drawing.Point(256, 266)
-        Me.txtNumTarjeta.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtNumTarjeta.Margin = New System.Windows.Forms.Padding(4)
         Me.txtNumTarjeta.MaxLength = 16
         Me.txtNumTarjeta.Name = "txtNumTarjeta"
         Me.txtNumTarjeta.Size = New System.Drawing.Size(165, 22)
@@ -1040,7 +1040,7 @@ Partial Class Cat_Nomina_Trabajadores
         'txtNombrePadre
         '
         Me.txtNombrePadre.Location = New System.Drawing.Point(165, 55)
-        Me.txtNombrePadre.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtNombrePadre.Margin = New System.Windows.Forms.Padding(4)
         Me.txtNombrePadre.MaxLength = 50
         Me.txtNombrePadre.Name = "txtNombrePadre"
         Me.txtNombrePadre.Size = New System.Drawing.Size(267, 22)
@@ -1069,7 +1069,7 @@ Partial Class Cat_Nomina_Trabajadores
         'txtNombreMadre
         '
         Me.txtNombreMadre.Location = New System.Drawing.Point(165, 86)
-        Me.txtNombreMadre.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtNombreMadre.Margin = New System.Windows.Forms.Padding(4)
         Me.txtNombreMadre.MaxLength = 50
         Me.txtNombreMadre.Name = "txtNombreMadre"
         Me.txtNombreMadre.Size = New System.Drawing.Size(267, 22)
@@ -1080,7 +1080,7 @@ Partial Class Cat_Nomina_Trabajadores
         Me.cboUnidadMedicaFamiliar.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboUnidadMedicaFamiliar.FormattingEnabled = True
         Me.cboUnidadMedicaFamiliar.Location = New System.Drawing.Point(165, 23)
-        Me.cboUnidadMedicaFamiliar.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboUnidadMedicaFamiliar.Margin = New System.Windows.Forms.Padding(4)
         Me.cboUnidadMedicaFamiliar.MaxLength = 1
         Me.cboUnidadMedicaFamiliar.Name = "cboUnidadMedicaFamiliar"
         Me.cboUnidadMedicaFamiliar.Size = New System.Drawing.Size(267, 24)
@@ -1113,9 +1113,9 @@ Partial Class Cat_Nomina_Trabajadores
         Me.gbDatosIMSS.Controls.Add(Me.lblDisplayNumeroIMSS)
         Me.gbDatosIMSS.Controls.Add(Me.txtNumIMSS)
         Me.gbDatosIMSS.Location = New System.Drawing.Point(456, 478)
-        Me.gbDatosIMSS.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbDatosIMSS.Margin = New System.Windows.Forms.Padding(4)
         Me.gbDatosIMSS.Name = "gbDatosIMSS"
-        Me.gbDatosIMSS.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbDatosIMSS.Padding = New System.Windows.Forms.Padding(4)
         Me.gbDatosIMSS.Size = New System.Drawing.Size(449, 236)
         Me.gbDatosIMSS.TabIndex = 3
         Me.gbDatosIMSS.TabStop = False
@@ -1125,7 +1125,7 @@ Partial Class Cat_Nomina_Trabajadores
         '
         Me.ckbSindicato.AutoSize = True
         Me.ckbSindicato.Location = New System.Drawing.Point(413, 155)
-        Me.ckbSindicato.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ckbSindicato.Margin = New System.Windows.Forms.Padding(4)
         Me.ckbSindicato.Name = "ckbSindicato"
         Me.ckbSindicato.Size = New System.Drawing.Size(18, 17)
         Me.ckbSindicato.TabIndex = 6
@@ -1135,7 +1135,7 @@ Partial Class Cat_Nomina_Trabajadores
         '
         Me.ckbFijoIMSS.AutoSize = True
         Me.ckbFijoIMSS.Location = New System.Drawing.Point(173, 185)
-        Me.ckbFijoIMSS.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ckbFijoIMSS.Margin = New System.Windows.Forms.Padding(4)
         Me.ckbFijoIMSS.Name = "ckbFijoIMSS"
         Me.ckbFijoIMSS.Size = New System.Drawing.Size(18, 17)
         Me.ckbFijoIMSS.TabIndex = 5
@@ -1145,7 +1145,7 @@ Partial Class Cat_Nomina_Trabajadores
         '
         Me.ckbAfiliableIMSS.AutoSize = True
         Me.ckbAfiliableIMSS.Location = New System.Drawing.Point(173, 155)
-        Me.ckbAfiliableIMSS.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ckbAfiliableIMSS.Margin = New System.Windows.Forms.Padding(4)
         Me.ckbAfiliableIMSS.Name = "ckbAfiliableIMSS"
         Me.ckbAfiliableIMSS.Size = New System.Drawing.Size(18, 17)
         Me.ckbAfiliableIMSS.TabIndex = 4
@@ -1165,7 +1165,7 @@ Partial Class Cat_Nomina_Trabajadores
         '
         Me.pbFotoTrabajador.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.pbFotoTrabajador.Location = New System.Drawing.Point(469, 38)
-        Me.pbFotoTrabajador.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.pbFotoTrabajador.Margin = New System.Windows.Forms.Padding(4)
         Me.pbFotoTrabajador.Name = "pbFotoTrabajador"
         Me.pbFotoTrabajador.Size = New System.Drawing.Size(164, 179)
         Me.pbFotoTrabajador.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -1181,9 +1181,9 @@ Partial Class Cat_Nomina_Trabajadores
         Me.gbInformacion.Controls.Add(Me.gbDomicilio)
         Me.gbInformacion.Controls.Add(Me.gbDatosIMSS)
         Me.gbInformacion.Location = New System.Drawing.Point(16, 34)
-        Me.gbInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gbInformacion.Name = "gbInformacion"
-        Me.gbInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbInformacion.Padding = New System.Windows.Forms.Padding(4)
         Me.gbInformacion.Size = New System.Drawing.Size(915, 751)
         Me.gbInformacion.TabIndex = 0
         Me.gbInformacion.TabStop = False
@@ -1192,7 +1192,7 @@ Partial Class Cat_Nomina_Trabajadores
         'btnAgregaFoto
         '
         Me.btnAgregaFoto.Location = New System.Drawing.Point(659, 190)
-        Me.btnAgregaFoto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnAgregaFoto.Margin = New System.Windows.Forms.Padding(4)
         Me.btnAgregaFoto.Name = "btnAgregaFoto"
         Me.btnAgregaFoto.Size = New System.Drawing.Size(100, 28)
         Me.btnAgregaFoto.TabIndex = 373
@@ -1218,9 +1218,10 @@ Partial Class Cat_Nomina_Trabajadores
         Me.Controls.Add(Me.tsMenu)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Cat_Nomina_Trabajadores"
+        Me.ShowIcon = False
         Me.Text = " Catálogo de trabajadores"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()

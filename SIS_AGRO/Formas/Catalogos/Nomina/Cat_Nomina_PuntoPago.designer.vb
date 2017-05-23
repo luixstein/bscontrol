@@ -139,7 +139,7 @@ Partial Class Cat_Nomina_PuntoPago
         Me.gBoxInformacion.Name = "gBoxInformacion"
         Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Size = New System.Drawing.Size(413, 514)
-        Me.gBoxInformacion.TabIndex = 5
+        Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
         '
@@ -160,7 +160,7 @@ Partial Class Cat_Nomina_PuntoPago
         Me.txtCodigoSiguiente.MaxLength = 0
         Me.txtCodigoSiguiente.Name = "txtCodigoSiguiente"
         Me.txtCodigoSiguiente.Size = New System.Drawing.Size(75, 22)
-        Me.txtCodigoSiguiente.TabIndex = 98
+        Me.txtCodigoSiguiente.TabIndex = 4
         '
         'lblDisplayGeneraDenominacion
         '
@@ -182,7 +182,7 @@ Partial Class Cat_Nomina_PuntoPago
         Me.cboGeneraDenominacion.MaxLength = 1
         Me.cboGeneraDenominacion.Name = "cboGeneraDenominacion"
         Me.cboGeneraDenominacion.Size = New System.Drawing.Size(75, 24)
-        Me.cboGeneraDenominacion.TabIndex = 96
+        Me.cboGeneraDenominacion.TabIndex = 5
         '
         'txtHasta
         '
@@ -191,7 +191,7 @@ Partial Class Cat_Nomina_PuntoPago
         Me.txtHasta.MaxLength = 0
         Me.txtHasta.Name = "txtHasta"
         Me.txtHasta.Size = New System.Drawing.Size(103, 22)
-        Me.txtHasta.TabIndex = 94
+        Me.txtHasta.TabIndex = 3
         '
         'Label1
         '
@@ -210,7 +210,7 @@ Partial Class Cat_Nomina_PuntoPago
         Me.txtDesde.MaxLength = 0
         Me.txtDesde.Name = "txtDesde"
         Me.txtDesde.Size = New System.Drawing.Size(101, 22)
-        Me.txtDesde.TabIndex = 92
+        Me.txtDesde.TabIndex = 2
         '
         'Label2
         '
@@ -238,7 +238,7 @@ Partial Class Cat_Nomina_PuntoPago
         Me.TxtNombrePuntoPago.MaxLength = 50
         Me.TxtNombrePuntoPago.Name = "TxtNombrePuntoPago"
         Me.TxtNombrePuntoPago.Size = New System.Drawing.Size(229, 22)
-        Me.TxtNombrePuntoPago.TabIndex = 3
+        Me.TxtNombrePuntoPago.TabIndex = 1
         '
         'LblEstatus
         '
@@ -260,7 +260,7 @@ Partial Class Cat_Nomina_PuntoPago
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(101, 24)
-        Me.CboEstatus.TabIndex = 12
+        Me.CboEstatus.TabIndex = 6
         '
         'LblDisplayCodPuntoPago
         '
@@ -358,6 +358,7 @@ Partial Class Cat_Nomina_PuntoPago
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Cat_Nomina_PuntoPago"
+        Me.ShowIcon = False
         Me.Text = "Catálgo de puntos de pagos"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()

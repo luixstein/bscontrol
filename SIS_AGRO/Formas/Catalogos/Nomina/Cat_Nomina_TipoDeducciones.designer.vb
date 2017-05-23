@@ -139,7 +139,7 @@ Partial Class Cat_Nomina_TipoDeducciones
         Me.TxtNombreTipoDeduccion.MaxLength = 50
         Me.TxtNombreTipoDeduccion.Name = "TxtNombreTipoDeduccion"
         Me.TxtNombreTipoDeduccion.Size = New System.Drawing.Size(229, 22)
-        Me.TxtNombreTipoDeduccion.TabIndex = 3
+        Me.TxtNombreTipoDeduccion.TabIndex = 1
         '
         'LblEstatus
         '
@@ -161,7 +161,7 @@ Partial Class Cat_Nomina_TipoDeducciones
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(89, 24)
-        Me.CboEstatus.TabIndex = 12
+        Me.CboEstatus.TabIndex = 2
         '
         'LblDisplayCodTipoDeducciones
         '
@@ -275,6 +275,7 @@ Partial Class Cat_Nomina_TipoDeducciones
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Cat_Nomina_TipoDeducciones"
+        Me.ShowIcon = False
         Me.Text = "Catalogo tipo de deducciones"
         Me.gBoxBusquedaRapida.ResumeLayout(False)
         Me.gBoxBusquedaRapida.PerformLayout()

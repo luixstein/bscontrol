@@ -62,7 +62,7 @@ Partial Class Cat_Nomina_ConceptosActividades
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbEditar, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimirListado, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(809, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1079, 27)
         Me.tsMenu.TabIndex = 16
         Me.tsMenu.Text = "tsMenu"
         '
@@ -71,7 +71,7 @@ Partial Class Cat_Nomina_ConceptosActividades
         Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
         Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbNuevo.Name = "tsbNuevo"
-        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
+        Me.tsbNuevo.Size = New System.Drawing.Size(76, 24)
         Me.tsbNuevo.Text = "&Nuevo"
         '
         'tsbEditar
@@ -79,7 +79,7 @@ Partial Class Cat_Nomina_ConceptosActividades
         Me.tsbEditar.Image = CType(resources.GetObject("tsbEditar.Image"), System.Drawing.Image)
         Me.tsbEditar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbEditar.Name = "tsbEditar"
-        Me.tsbEditar.Size = New System.Drawing.Size(61, 24)
+        Me.tsbEditar.Size = New System.Drawing.Size(72, 24)
         Me.tsbEditar.Text = "&Editar"
         '
         'tsbGrabar
@@ -87,7 +87,7 @@ Partial Class Cat_Nomina_ConceptosActividades
         Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
         Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbGrabar.Name = "tsbGrabar"
-        Me.tsbGrabar.Size = New System.Drawing.Size(66, 24)
+        Me.tsbGrabar.Size = New System.Drawing.Size(78, 24)
         Me.tsbGrabar.Text = "&Grabar"
         '
         'tsbCancelar
@@ -95,7 +95,7 @@ Partial Class Cat_Nomina_ConceptosActividades
         Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
         Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbCancelar.Name = "tsbCancelar"
-        Me.tsbCancelar.Size = New System.Drawing.Size(77, 24)
+        Me.tsbCancelar.Size = New System.Drawing.Size(90, 24)
         Me.tsbCancelar.Text = "&Cancelar"
         '
         'tsbImprimirListado
@@ -103,7 +103,7 @@ Partial Class Cat_Nomina_ConceptosActividades
         Me.tsbImprimirListado.Image = CType(resources.GetObject("tsbImprimirListado.Image"), System.Drawing.Image)
         Me.tsbImprimirListado.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbImprimirListado.Name = "tsbImprimirListado"
-        Me.tsbImprimirListado.Size = New System.Drawing.Size(115, 24)
+        Me.tsbImprimirListado.Size = New System.Drawing.Size(139, 24)
         Me.tsbImprimirListado.Text = "&Imprimir listado"
         '
         'tsbSalir
@@ -111,7 +111,7 @@ Partial Class Cat_Nomina_ConceptosActividades
         Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
         Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
+        Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
         Me.tsbSalir.Text = "&Salir"
         '
         'gBoxBusquedaRapida
@@ -121,9 +121,11 @@ Partial Class Cat_Nomina_ConceptosActividades
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
-        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(375, 19)
+        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(500, 23)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(398, 465)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(531, 572)
         Me.gBoxBusquedaRapida.TabIndex = 20
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
@@ -135,43 +137,46 @@ Partial Class Cat_Nomina_ConceptosActividades
         Me.Grid.AllowUserToResizeColumns = False
         Me.Grid.AllowUserToResizeRows = False
         Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Grid.Location = New System.Drawing.Point(6, 43)
+        Me.Grid.Location = New System.Drawing.Point(8, 53)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Grid.Name = "Grid"
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
         Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(379, 410)
+        Me.Grid.Size = New System.Drawing.Size(505, 505)
         Me.Grid.TabIndex = 113
         '
         'txtFiltro
         '
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtFiltro.Location = New System.Drawing.Point(6, 19)
+        Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtFiltro.Name = "txtFiltro"
-        Me.txtFiltro.Size = New System.Drawing.Size(380, 20)
+        Me.txtFiltro.Size = New System.Drawing.Size(505, 22)
         Me.txtFiltro.TabIndex = 0
         '
         'StatusStripEstado
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssLabel, Me.tssLabelEstado})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 541)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 668)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Size = New System.Drawing.Size(809, 22)
+        Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1079, 25)
         Me.StatusStripEstado.TabIndex = 19
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
         'tssLabel
         '
         Me.tssLabel.Name = "tssLabel"
-        Me.tssLabel.Size = New System.Drawing.Size(48, 17)
+        Me.tssLabel.Size = New System.Drawing.Size(61, 20)
         Me.tssLabel.Text = "Estado :"
         '
         'tssLabelEstado
         '
         Me.tssLabelEstado.Name = "tssLabelEstado"
-        Me.tssLabelEstado.Size = New System.Drawing.Size(0, 17)
+        Me.tssLabelEstado.Size = New System.Drawing.Size(0, 20)
         '
         'gBoxInformacion
         '
@@ -187,18 +192,21 @@ Partial Class Cat_Nomina_ConceptosActividades
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayCodConcepto)
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigoConceptoActividad)
         Me.gBoxInformacion.Controls.Add(Me.Label2)
-        Me.gBoxInformacion.Location = New System.Drawing.Point(6, 19)
+        Me.gBoxInformacion.Location = New System.Drawing.Point(8, 23)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Size = New System.Drawing.Size(363, 465)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Size = New System.Drawing.Size(484, 572)
         Me.gBoxInformacion.TabIndex = 18
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Actividad"
         '
         'btnEditarSubActividad
         '
-        Me.btnEditarSubActividad.Location = New System.Drawing.Point(9, 108)
+        Me.btnEditarSubActividad.Location = New System.Drawing.Point(12, 133)
+        Me.btnEditarSubActividad.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.btnEditarSubActividad.Name = "btnEditarSubActividad"
-        Me.btnEditarSubActividad.Size = New System.Drawing.Size(158, 23)
+        Me.btnEditarSubActividad.Size = New System.Drawing.Size(211, 28)
         Me.btnEditarSubActividad.TabIndex = 119
         Me.btnEditarSubActividad.Text = "Editar SubActividad"
         Me.btnEditarSubActividad.UseVisualStyleBackColor = True
@@ -209,16 +217,19 @@ Partial Class Cat_Nomina_ConceptosActividades
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lstbSubActividades.FormattingEnabled = True
-        Me.lstbSubActividades.Location = New System.Drawing.Point(9, 138)
+        Me.lstbSubActividades.ItemHeight = 16
+        Me.lstbSubActividades.Location = New System.Drawing.Point(12, 170)
+        Me.lstbSubActividades.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.lstbSubActividades.Name = "lstbSubActividades"
-        Me.lstbSubActividades.Size = New System.Drawing.Size(345, 316)
+        Me.lstbSubActividades.Size = New System.Drawing.Size(459, 388)
         Me.lstbSubActividades.TabIndex = 118
         '
         'btnAgregaSubActividad
         '
-        Me.btnAgregaSubActividad.Location = New System.Drawing.Point(196, 108)
+        Me.btnAgregaSubActividad.Location = New System.Drawing.Point(261, 133)
+        Me.btnAgregaSubActividad.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.btnAgregaSubActividad.Name = "btnAgregaSubActividad"
-        Me.btnAgregaSubActividad.Size = New System.Drawing.Size(158, 23)
+        Me.btnAgregaSubActividad.Size = New System.Drawing.Size(211, 28)
         Me.btnAgregaSubActividad.TabIndex = 117
         Me.btnAgregaSubActividad.Text = "Agregar SubActividad"
         Me.btnAgregaSubActividad.UseVisualStyleBackColor = True
@@ -226,26 +237,29 @@ Partial Class Cat_Nomina_ConceptosActividades
         'LblDisplayConceptoActividad
         '
         Me.LblDisplayConceptoActividad.AutoSize = True
-        Me.LblDisplayConceptoActividad.Location = New System.Drawing.Point(12, 49)
+        Me.LblDisplayConceptoActividad.Location = New System.Drawing.Point(16, 60)
+        Me.LblDisplayConceptoActividad.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayConceptoActividad.Name = "LblDisplayConceptoActividad"
-        Me.LblDisplayConceptoActividad.Size = New System.Drawing.Size(69, 13)
+        Me.LblDisplayConceptoActividad.Size = New System.Drawing.Size(90, 17)
         Me.LblDisplayConceptoActividad.TabIndex = 116
         Me.LblDisplayConceptoActividad.Text = "Descripción :"
         '
         'TxtDescripcion
         '
-        Me.TxtDescripcion.Location = New System.Drawing.Point(137, 46)
+        Me.TxtDescripcion.Location = New System.Drawing.Point(183, 57)
+        Me.TxtDescripcion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtDescripcion.MaxLength = 50
         Me.TxtDescripcion.Name = "TxtDescripcion"
-        Me.TxtDescripcion.Size = New System.Drawing.Size(207, 20)
+        Me.TxtDescripcion.Size = New System.Drawing.Size(275, 22)
         Me.TxtDescripcion.TabIndex = 1
         '
         'LblEstatus
         '
         Me.LblEstatus.AutoSize = True
-        Me.LblEstatus.Location = New System.Drawing.Point(12, 76)
+        Me.LblEstatus.Location = New System.Drawing.Point(16, 94)
+        Me.LblEstatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblEstatus.Name = "LblEstatus"
-        Me.LblEstatus.Size = New System.Drawing.Size(48, 13)
+        Me.LblEstatus.Size = New System.Drawing.Size(63, 17)
         Me.LblEstatus.TabIndex = 115
         Me.LblEstatus.Text = "Estatus :"
         '
@@ -254,34 +268,38 @@ Partial Class Cat_Nomina_ConceptosActividades
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
-        Me.CboEstatus.Location = New System.Drawing.Point(137, 73)
+        Me.CboEstatus.Location = New System.Drawing.Point(183, 90)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(65, 21)
+        Me.CboEstatus.Size = New System.Drawing.Size(85, 24)
         Me.CboEstatus.TabIndex = 2
         '
         'LblDisplayCodConcepto
         '
         Me.LblDisplayCodConcepto.AutoSize = True
-        Me.LblDisplayCodConcepto.Location = New System.Drawing.Point(12, 22)
+        Me.LblDisplayCodConcepto.Location = New System.Drawing.Point(16, 27)
+        Me.LblDisplayCodConcepto.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayCodConcepto.Name = "LblDisplayCodConcepto"
-        Me.LblDisplayCodConcepto.Size = New System.Drawing.Size(83, 13)
+        Me.LblDisplayCodConcepto.Size = New System.Drawing.Size(107, 17)
         Me.LblDisplayCodConcepto.TabIndex = 113
         Me.LblDisplayCodConcepto.Text = "Cód. concepto :"
         '
         'TxtCodigoConceptoActividad
         '
-        Me.TxtCodigoConceptoActividad.Location = New System.Drawing.Point(137, 19)
+        Me.TxtCodigoConceptoActividad.Location = New System.Drawing.Point(183, 23)
+        Me.TxtCodigoConceptoActividad.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtCodigoConceptoActividad.MaxLength = 3
         Me.TxtCodigoConceptoActividad.Name = "TxtCodigoConceptoActividad"
-        Me.TxtCodigoConceptoActividad.Size = New System.Drawing.Size(57, 20)
+        Me.TxtCodigoConceptoActividad.Size = New System.Drawing.Size(75, 22)
         Me.TxtCodigoConceptoActividad.TabIndex = 0
         '
         'Label2
         '
-        Me.Label2.Location = New System.Drawing.Point(121, -114)
+        Me.Label2.Location = New System.Drawing.Point(161, -140)
+        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(181, 13)
+        Me.Label2.Size = New System.Drawing.Size(241, 16)
         Me.Label2.TabIndex = 91
         Me.Label2.Text = ".."
         '
@@ -289,25 +307,29 @@ Partial Class Cat_Nomina_ConceptosActividades
         '
         Me.GroupBox3.Controls.Add(Me.gBoxBusquedaRapida)
         Me.GroupBox3.Controls.Add(Me.gBoxInformacion)
-        Me.GroupBox3.Location = New System.Drawing.Point(12, 38)
+        Me.GroupBox3.Location = New System.Drawing.Point(16, 47)
+        Me.GroupBox3.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(785, 500)
+        Me.GroupBox3.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox3.Size = New System.Drawing.Size(1047, 615)
         Me.GroupBox3.TabIndex = 23
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Actividades"
         '
         'Cat_Nomina_ConceptosActividades
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(809, 563)
+        Me.ClientSize = New System.Drawing.Size(1079, 693)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.tsMenu)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.MaximizeBox = False
         Me.Name = "Cat_Nomina_ConceptosActividades"
+        Me.ShowIcon = False
         Me.Text = "Conceptos de actividades"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()

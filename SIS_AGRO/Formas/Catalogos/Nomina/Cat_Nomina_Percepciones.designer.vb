@@ -135,7 +135,7 @@ Partial Class Cat_Nomina_CatPercepciones
         Me.gBoxInformacion.Name = "gBoxInformacion"
         Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Size = New System.Drawing.Size(413, 510)
-        Me.gBoxInformacion.TabIndex = 9
+        Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
         '
@@ -159,7 +159,7 @@ Partial Class Cat_Nomina_CatPercepciones
         Me.cmbReembolsable.MaxLength = 1
         Me.cmbReembolsable.Name = "cmbReembolsable"
         Me.cmbReembolsable.Size = New System.Drawing.Size(75, 24)
-        Me.cmbReembolsable.TabIndex = 92
+        Me.cmbReembolsable.TabIndex = 2
         '
         'Label2
         '
@@ -187,7 +187,7 @@ Partial Class Cat_Nomina_CatPercepciones
         Me.TxtNombrePercepcion.MaxLength = 50
         Me.TxtNombrePercepcion.Name = "TxtNombrePercepcion"
         Me.TxtNombrePercepcion.Size = New System.Drawing.Size(229, 22)
-        Me.TxtNombrePercepcion.TabIndex = 3
+        Me.TxtNombrePercepcion.TabIndex = 1
         '
         'LblEstatus
         '
@@ -209,7 +209,7 @@ Partial Class Cat_Nomina_CatPercepciones
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(99, 24)
-        Me.CboEstatus.TabIndex = 12
+        Me.CboEstatus.TabIndex = 3
         '
         'LblDisplayCodPercepcion
         '
@@ -302,6 +302,7 @@ Partial Class Cat_Nomina_CatPercepciones
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Cat_Nomina_CatPercepciones"
+        Me.ShowIcon = False
         Me.Text = "Catalogo percepciones"
         Me.StatusStripEstado.ResumeLayout(False)
         Me.StatusStripEstado.PerformLayout()

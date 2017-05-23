@@ -24,6 +24,8 @@ Partial Class Cat_NominaPuestos
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Cat_NominaPuestos))
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.cboEstatusFiltro = New System.Windows.Forms.ComboBox()
         Me.Grid = New System.Windows.Forms.DataGridView()
         Me.txtFiltro = New System.Windows.Forms.TextBox()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
@@ -44,8 +46,6 @@ Partial Class Cat_NominaPuestos
         Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimirListado = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
-        Me.cboEstatusFiltro = New System.Windows.Forms.ComboBox()
-        Me.Label1 = New System.Windows.Forms.Label()
         Me.gBoxBusquedaRapida.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gBoxInformacion.SuspendLayout()
@@ -70,6 +70,28 @@ Partial Class Cat_NominaPuestos
         Me.gBoxBusquedaRapida.TabIndex = 14
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(368, 26)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(63, 17)
+        Me.Label1.TabIndex = 92
+        Me.Label1.Text = "Estatus :"
+        '
+        'cboEstatusFiltro
+        '
+        Me.cboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboEstatusFiltro.FormattingEnabled = True
+        Me.cboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
+        Me.cboEstatusFiltro.Location = New System.Drawing.Point(439, 23)
+        Me.cboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboEstatusFiltro.MaxLength = 1
+        Me.cboEstatusFiltro.Name = "cboEstatusFiltro"
+        Me.cboEstatusFiltro.Size = New System.Drawing.Size(57, 24)
+        Me.cboEstatusFiltro.TabIndex = 92
         '
         'Grid
         '
@@ -143,7 +165,7 @@ Partial Class Cat_NominaPuestos
         Me.TxtNombrePuesto.MaxLength = 50
         Me.TxtNombrePuesto.Name = "TxtNombrePuesto"
         Me.TxtNombrePuesto.Size = New System.Drawing.Size(229, 22)
-        Me.TxtNombrePuesto.TabIndex = 3
+        Me.TxtNombrePuesto.TabIndex = 1
         '
         'LblEstatus
         '
@@ -165,7 +187,7 @@ Partial Class Cat_NominaPuestos
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(98, 24)
-        Me.CboEstatus.TabIndex = 12
+        Me.CboEstatus.TabIndex = 2
         '
         'LblDisplayCodPuesto
         '
@@ -266,28 +288,6 @@ Partial Class Cat_NominaPuestos
         Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
         Me.tsbSalir.Text = "&Salir"
         '
-        'cboEstatusFiltro
-        '
-        Me.cboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboEstatusFiltro.FormattingEnabled = True
-        Me.cboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
-        Me.cboEstatusFiltro.Location = New System.Drawing.Point(439, 23)
-        Me.cboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4)
-        Me.cboEstatusFiltro.MaxLength = 1
-        Me.cboEstatusFiltro.Name = "cboEstatusFiltro"
-        Me.cboEstatusFiltro.Size = New System.Drawing.Size(57, 24)
-        Me.cboEstatusFiltro.TabIndex = 92
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(368, 26)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(63, 17)
-        Me.Label1.TabIndex = 92
-        Me.Label1.Text = "Estatus :"
-        '
         'Cat_NominaPuestos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -301,6 +301,7 @@ Partial Class Cat_NominaPuestos
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Cat_NominaPuestos"
+        Me.ShowIcon = False
         Me.Text = "Catalogo de Puestos"
         Me.gBoxBusquedaRapida.ResumeLayout(False)
         Me.gBoxBusquedaRapida.PerformLayout()

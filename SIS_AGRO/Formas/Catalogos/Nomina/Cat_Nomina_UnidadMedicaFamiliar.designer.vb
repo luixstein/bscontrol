@@ -139,7 +139,7 @@ Partial Class Cat_Nomina_UnidadMedicaFamiliar
         Me.TxtNombreUnidadMedica.MaxLength = 50
         Me.TxtNombreUnidadMedica.Name = "TxtNombreUnidadMedica"
         Me.TxtNombreUnidadMedica.Size = New System.Drawing.Size(229, 22)
-        Me.TxtNombreUnidadMedica.TabIndex = 3
+        Me.TxtNombreUnidadMedica.TabIndex = 1
         '
         'LblEstatus
         '
@@ -161,7 +161,7 @@ Partial Class Cat_Nomina_UnidadMedicaFamiliar
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(86, 24)
-        Me.CboEstatus.TabIndex = 12
+        Me.CboEstatus.TabIndex = 2
         '
         'LblDisplayCodUnidadMedica
         '
@@ -275,6 +275,7 @@ Partial Class Cat_Nomina_UnidadMedicaFamiliar
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Cat_Nomina_UnidadMedicaFamiliar"
+        Me.ShowIcon = False
         Me.Text = "Catalogo de unidades medicas familiares"
         Me.gBoxBusquedaRapida.ResumeLayout(False)
         Me.gBoxBusquedaRapida.PerformLayout()
