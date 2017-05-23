@@ -1333,7 +1333,7 @@ Buscar:
                         .oVentasDetalle.CODIGO_CENTRO_COSTO = Me.Grid.Cell(i, Me.igyCodigoCentroCosto).Text
 
                         If Me.dtSeries.Rows.Count > 0 Then
-                            For Each dRow In Me.dtSeries.Select("POSICION=" & i.ToString)
+                            For Each dRow In Me.dtSeries.Select("POSICION='" & i.ToString & "'")
                                 sListaSeries = sListaSeries & dRow("POSICION").ToString & "," & dRow("CODIGO_ARTICULO").ToString & "," & dRow("ID_INVENTARIO_LOTES_COSTOS").ToString & "," & dRow("NUMERO_SERIE").ToString & "|"
                             Next
                             If txtLEN(sListaSeries) = True Then
