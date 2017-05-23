@@ -30,6 +30,7 @@ Public Class Frm_CXC_Descuentos
     Private oDescuentosCXC As New Class_CXC_Descuento
     Private oCliente As New Class_CatClientes
 
+#Region "Columnas grid"
     Private iGyFolio As Integer = 1
     Private iGyFechaVencimiento As Integer = 2
     Private iGySaldo As Integer = 3
@@ -40,6 +41,7 @@ Public Class Frm_CXC_Descuentos
     Private iGyIVALocal As Integer = 8
     Private iGySubtotalNuevo As Integer = 9
     Private iGyIVANuevo As Integer = 10
+#End Region
 
     Private ClickSinEjecutar As Boolean = False
     Private bDocumentosCargados As Boolean = False
@@ -58,7 +60,7 @@ Public Class Frm_CXC_Descuentos
 
 #Region "Opciones"
     Private Sub tsbNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbNuevo.Click
-        Inicializa()
+        Me.Inicializa()
         Me.Cambia_Estado(enumEstados.NUEVO)
     End Sub
 
@@ -1904,6 +1906,55 @@ Buscar:
             HandleError(Me.Name, "NavegadorNotas", ex)
         End Try
     End Sub
+
+    'Private Function CalculaImpuestosYTotales(ByVal sAccion As String) As Boolean
+    '    Try
+    '        Dim cmd As New Command, rsD As New ADODB.Recordset, sFoliosConDescuento As String, i As Integer
+
+    '        dtSubtotal = 0 : dtIVA = 0 : dtTotal = 0 : dtIEPSDesglosado = 0 : dtIEPSIIncluido = 0
+
+    '        sFoliosConDescuento = "|"
+
+    '        For i = 1 To Grid.Rows - 1
+    '            If valorNumerico(Me.Grid.TextMatrix(i, iGyDescuento)) > 0 Then
+    '                sFoliosConDescuento = sFoliosConDescuento & Me.Grid.TextMatrix(i, iGyFolio) & "," & valorNumerico(Me.Grid.TextMatrix(i, iGyDescuento)) & "|"
+    '            End If
+    '        Next i
+
+    '        .CommandText = "MP_CXC_DESCUENTOS_CALCULA_IMPUESTOS_Y_TOTALES"
+
+    '        .Parameters.Append.CreateParameter("@FOLIOS_CON_IMPORTES", adVarWChar, adParamInput, 4000, sFoliosConDescuento)
+    '        .Parameters.Append.CreateParameter("@FOLIO_DESCUENTO", adVarWChar, adParamInput, 12, Me.TxtFolio.Text)
+    '        .Parameters.Append.CreateParameter("@ACCION", adVarWChar, adParamInput, 20, sAccion)
+
+
+    '        While Not rsD.EOF
+    '            Me.lblSubTotal.Caption = "$ " & Format("" & rsD!subTotal, "###,###,##0." & empresa.frconta)
+    '            Me.lbliva.Caption = "$ " & Format("" & rsD!iva, "###,###,##0." & empresa.frconta)
+    '            Me.lbltotal.Caption = "$ " & Format("" & rsD!total, "###,###,##0." & empresa.frconta)
+
+    '            Me.lblIEPS.Caption = "$ " & Format("" & rsD!IEPS_DESGLOSADO, "###,###,##0." & empresa.frconta)
+    '            Me.lblIEPSIncluido.Caption = "$ " & Format("" & rsD!IEPS_INCLUIDO, "###,###,##0." & empresa.frconta)
+
+    '            Me.lblTotalFaltante.Caption = "$ " & Format(valorNumerico(Me.TxtImporte.Text) - valorNumerico("" & rsD!total), "###,###,##0." & empresa.frconta)
+
+    '            dtSubtotal = rsD!subTotal
+    '            dtIVA = rsD!iva
+    '            dtTotal = rsD!total
+    '            dtIEPSDesglosado = rsD!IEPS_DESGLOSADO
+    '            dtIEPSIIncluido = rsD!IEPS_INCLUIDO
+
+    '            rsD.MoveNext()
+    '        End While
+    '        rsD.Close() : rsD = Nothing
+
+    '        CalculaImpuestosYTotales = True
+
+    '    Catch ex As Exception
+    '        HandleError(Me.Name, "CalculaImpuestosYTotales", ex)
+    '    End Try
+
+    'End Function
 
 #End Region
 
