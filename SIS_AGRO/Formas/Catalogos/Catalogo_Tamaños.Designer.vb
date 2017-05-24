@@ -305,6 +305,7 @@ Partial Class Catalogo_Tamaños
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Tamaños"
+        Me.ShowIcon = False
         Me.Text = "Catalogo tamaños"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()

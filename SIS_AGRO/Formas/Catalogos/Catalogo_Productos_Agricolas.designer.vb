@@ -630,6 +630,7 @@ Partial Class Catalogo_Productos_Agricolas
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Productos_Agricolas"
+        Me.ShowIcon = False
         Me.Text = "Catálogo productos agrícolas"
         Me.gBoxInformacion.ResumeLayout(False)
         Me.gBoxInformacion.PerformLayout()

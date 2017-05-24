@@ -177,7 +177,7 @@ Partial Class Catalogo_Envases
         Me.CboTipoEnvase.MaxLength = 1
         Me.CboTipoEnvase.Name = "CboTipoEnvase"
         Me.CboTipoEnvase.Size = New System.Drawing.Size(301, 24)
-        Me.CboTipoEnvase.TabIndex = 92
+        Me.CboTipoEnvase.TabIndex = 3
         Me.CboTipoEnvase.Visible = False
         '
         'Label2
@@ -206,7 +206,7 @@ Partial Class Catalogo_Envases
         Me.TxtNombre.MaxLength = 50
         Me.TxtNombre.Name = "TxtNombre"
         Me.TxtNombre.Size = New System.Drawing.Size(301, 22)
-        Me.TxtNombre.TabIndex = 3
+        Me.TxtNombre.TabIndex = 1
         '
         'LblEstatus
         '
@@ -228,7 +228,7 @@ Partial Class Catalogo_Envases
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(90, 24)
-        Me.CboEstatus.TabIndex = 5
+        Me.CboEstatus.TabIndex = 2
         '
         'LblCodigo
         '
@@ -305,6 +305,7 @@ Partial Class Catalogo_Envases
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Envases"
+        Me.ShowIcon = False
         Me.Text = "Catálogo envases"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()

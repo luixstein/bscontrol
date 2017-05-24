@@ -178,7 +178,7 @@ Partial Class Catalogo_Etiquetas
         Me.TxtNombre.MaxLength = 50
         Me.TxtNombre.Name = "TxtNombre"
         Me.TxtNombre.Size = New System.Drawing.Size(301, 22)
-        Me.TxtNombre.TabIndex = 3
+        Me.TxtNombre.TabIndex = 1
         '
         'LblEstatus
         '
@@ -200,7 +200,7 @@ Partial Class Catalogo_Etiquetas
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(92, 24)
-        Me.CboEstatus.TabIndex = 12
+        Me.CboEstatus.TabIndex = 2
         '
         'LblCodigo
         '
@@ -277,6 +277,7 @@ Partial Class Catalogo_Etiquetas
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Etiquetas"
+        Me.ShowIcon = False
         Me.Text = "Catálogo etiquetas"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()
