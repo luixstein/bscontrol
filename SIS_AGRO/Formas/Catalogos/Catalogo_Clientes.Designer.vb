@@ -1217,6 +1217,7 @@ Partial Class Catalogo_Clientes
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Clientes"
+        Me.ShowIcon = False
         Me.Text = "Catalogo de clientes"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()

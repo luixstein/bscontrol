@@ -198,7 +198,7 @@ Public Class Catalogo_Vendedores
                 Case enumEstados.NUEVO
                     Me.gBoxInformacion.Enabled = True
                     Me.gBoxBusquedaRapida.Enabled = False
-                    Me.tssLabelEstado.Text = "Agregando nuevo " & Me.msgElemento
+                    Me.tssLabelEstado.Text = "Agregando"
                     Me.tsbNuevo.Enabled = False
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = True
@@ -218,7 +218,7 @@ Public Class Catalogo_Vendedores
                 Case enumEstados.EDICION
                     Me.gBoxInformacion.Enabled = True
                     Me.gBoxBusquedaRapida.Enabled = False
-                    Me.tssLabelEstado.Text = "Edición"
+                    Me.tssLabelEstado.Text = "Editando"
                     Me.tsbNuevo.Enabled = False
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = True
@@ -235,7 +235,7 @@ Public Class Catalogo_Vendedores
                 Case enumEstados.CONSULTA
                     Me.gBoxInformacion.Enabled = False
                     Me.gBoxBusquedaRapida.Enabled = True
-                    Me.tssLabelEstado.Text = "Consulta"
+                    Me.tssLabelEstado.Text = "Consultando"
                     Me.tsbNuevo.Enabled = True
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = False
@@ -453,6 +453,7 @@ Public Class Catalogo_Vendedores
         End If
     End Sub
 
+
     Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoCategoria.KeyPress, txtTipoCategoria.KeyPress
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
@@ -470,6 +471,7 @@ Public Class Catalogo_Vendedores
 #End Region
 
 #Region "Keydown específicos"
+
     Private Sub txtCodigoCategoria_keyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodigoCategoria.KeyDown
         Try
             Dim oCategorias As New Class_CatCategorias
@@ -496,7 +498,7 @@ Enter:
 
                     oCategorias = New Class_CatCategorias(Me.txtCodigoCategoria.Text)
                     If oCategorias.Existe = True Then
-                        Me.lblCategoria.Text = oCategorias.Nombre_Categoria
+                        Me.lblCategoria.Text = oCategorias.NOMBRE_CATEGORIA
                     Else
                         Me.lblCategoria.Text = "_" : GoTo Buscar : Exit Sub
                     End If
@@ -504,7 +506,7 @@ Enter:
                     If Me.chkCrearCategoria.Visible = True Then
                         Me.chkCrearCategoria.Focus()
                     Else
-                        'tsbGrabar.PerformClick()
+                        tsbGrabar.PerformClick()
                     End If
             End Select
         Catch ex As Exception

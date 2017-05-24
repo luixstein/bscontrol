@@ -192,7 +192,7 @@ Public Class Catalogo_Zonas
             Case enumEstados.NUEVO
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Agregando nuevo " & Me.msgElemento
+                Me.tssLabelEstado.Text = "Agregando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
@@ -207,7 +207,7 @@ Public Class Catalogo_Zonas
             Case enumEstados.EDICION
                 Me.gBoxInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Edición"
+                Me.tssLabelEstado.Text = "Editando"
                 Me.tsbNuevo.Enabled = False
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = True
@@ -222,7 +222,7 @@ Public Class Catalogo_Zonas
             Case enumEstados.CONSULTA
                 Me.gBoxInformacion.Enabled = False
                 Me.gBoxBusquedaRapida.Enabled = True
-                Me.tssLabelEstado.Text = "Consulta"
+                Me.tssLabelEstado.Text = "Consultando"
                 Me.tsbNuevo.Enabled = True
                 Me.tsbEditar.Enabled = False
                 Me.tsbGrabar.Enabled = False
@@ -264,6 +264,11 @@ Public Class Catalogo_Zonas
     Private Sub Grabar_Elemento()
         Dim oElemento As New Class_CatZonas
         Dim Grabado As Boolean = False
+
+        If Validar() = False Then
+            Exit Sub
+        End If
+
         Select Case Me.Estado
             Case enumEstados.NUEVO, enumEstados.EDICION
                 oElemento = New Class_CatZonas
@@ -329,6 +334,25 @@ Public Class Catalogo_Zonas
             End If
         End With
     End Sub
+
+    Private Function Validar() As Boolean
+        Dim bResultado As Boolean = False
+
+        If txtLEN(Me.TxtNombreZona.Text) = False Then
+            MsgBox("Asígne un nombre a la zona.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.TxtNombreZona.Focus()
+            Return bResultado
+        End If
+
+        If Me.cboPlaza.SelectedIndex = -1 Then
+            MsgBox("Asígne una plaza.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.cboPlaza.Focus()
+            Return bResultado
+        End If
+
+        bResultado = True
+        Return bResultado
+    End Function
 
 #End Region
 

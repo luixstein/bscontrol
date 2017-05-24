@@ -244,9 +244,9 @@ Public Class Catalogo_Clientes
 
     Private Sub txt_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtRfc.KeyDown, txtPais.KeyDown, txtNumeroTelefono.KeyDown, _
     txtNumeroInterior.KeyDown, txtNumeroExterior.KeyDown, txtNumeroCelular.KeyDown, TxtNombreCliente.KeyDown, txtLocalidad.KeyDown, txtLimiteCredito.KeyDown, txtDiasPlazo.KeyDown, txtCurp.KeyDown, _
-    txtColonia.KeyDown, txtCodigoPostal.KeyDown, txtCodigoCliente.KeyDown, txtCalle.KeyDown, DpFecha.KeyDown, chkPermitirVentaCredito.KeyDown, cboZona.KeyDown, cboVendedor.KeyDown, cboTipoPersona.KeyDown, _
+    txtColonia.KeyDown, txtCodigoCliente.KeyDown, txtCalle.KeyDown, DpFecha.KeyDown, chkPermitirVentaCredito.KeyDown, cboZona.KeyDown, cboVendedor.KeyDown, cboTipoPersona.KeyDown, _
     cboTipoMercado.KeyDown, CboEstatus.KeyDown, cboEstado.KeyDown, cboMetodoPago.KeyDown, txtNumeroCuenta.KeyDown, txtCiudad.KeyDown, txtCorreoCliente.KeyDown, cboMetodoPagoDlls.KeyDown, txtNumeroCuentaDolares.KeyDown, _
-    txtNumeroRegistroIdentificadorExtranjero.KeyDown, cboPais.KeyDown, cboMunicipio.KeyDown
+    txtNumeroRegistroIdentificadorExtranjero.KeyDown, cboPais.KeyDown, cboMunicipio.KeyDown, chkEsContribuyenteIEPS.KeyDown, cboNombreXML.KeyDown
         txtTAB(e)
     End Sub
 
@@ -325,6 +325,18 @@ busqueda_Visual:
                 Me.txtLocalidad.Text = Me.txtCiudad.Text
                 txtTAB(e)
             End If
+        End If
+    End Sub
+
+    Private Sub txtCodigoPostal_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodigoPostal.KeyDown
+        If e.KeyCode = Keys.Return Then
+            Me.cboVendedor.Focus()
+        End If
+    End Sub
+
+    Private Sub cboMetodoPagoDlls_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboMetodoPagoDlls.KeyDown
+        If e.KeyCode = Keys.Return Then
+            tsbGrabar.PerformClick()
         End If
     End Sub
 
@@ -467,7 +479,7 @@ busca:
                     Me.cboTipoMercado.Enabled = True
                     Me.gBoxInformacion.Enabled = True
 
-                    Me.tssLabelEstado.Text = "Agregando nuevo " & Me.msgElemento
+                    Me.tssLabelEstado.Text = "Agregando"
                     Me.tsbNuevo.Enabled = True
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = True
@@ -519,7 +531,7 @@ busca:
                 Case enumEstados.EDICION
                     Me.cboTipoMercado.Enabled = True
                     Me.gBoxInformacion.Enabled = True
-                    Me.tssLabelEstado.Text = "Edición"
+                    Me.tssLabelEstado.Text = "Editando"
                     Me.tsbNuevo.Enabled = False
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = True

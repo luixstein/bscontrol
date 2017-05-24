@@ -43,15 +43,15 @@ Partial Class Catalogo_Zonas
         Me.LblDisplayCodCultivo = New System.Windows.Forms.Label()
         Me.TxtCodigoZona = New System.Windows.Forms.TextBox()
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
+        Me.Grid = New System.Windows.Forms.DataGridView()
         Me.txtFiltro = New System.Windows.Forms.TextBox()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
-        Me.Grid = New System.Windows.Forms.DataGridView()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.gBoxInformacion.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
-        CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'tsMenu
@@ -144,9 +144,9 @@ Partial Class Catalogo_Zonas
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayCodCultivo)
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigoZona)
         Me.gBoxInformacion.Location = New System.Drawing.Point(16, 34)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Size = New System.Drawing.Size(413, 634)
         Me.gBoxInformacion.TabIndex = 11
         Me.gBoxInformacion.TabStop = False
@@ -156,10 +156,10 @@ Partial Class Catalogo_Zonas
         '
         Me.cboPlaza.FormattingEnabled = True
         Me.cboPlaza.Location = New System.Drawing.Point(103, 82)
-        Me.cboPlaza.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboPlaza.Margin = New System.Windows.Forms.Padding(4)
         Me.cboPlaza.Name = "cboPlaza"
         Me.cboPlaza.Size = New System.Drawing.Size(301, 24)
-        Me.cboPlaza.TabIndex = 93
+        Me.cboPlaza.TabIndex = 2
         '
         'Label1
         '
@@ -193,11 +193,11 @@ Partial Class Catalogo_Zonas
         'TxtNombreZona
         '
         Me.TxtNombreZona.Location = New System.Drawing.Point(103, 50)
-        Me.TxtNombreZona.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtNombreZona.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNombreZona.MaxLength = 50
         Me.TxtNombreZona.Name = "TxtNombreZona"
         Me.TxtNombreZona.Size = New System.Drawing.Size(301, 22)
-        Me.TxtNombreZona.TabIndex = 3
+        Me.TxtNombreZona.TabIndex = 1
         '
         'LblDisplayCodCultivo
         '
@@ -212,7 +212,7 @@ Partial Class Catalogo_Zonas
         'TxtCodigoZona
         '
         Me.TxtCodigoZona.Location = New System.Drawing.Point(101, 18)
-        Me.TxtCodigoZona.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodigoZona.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigoZona.MaxLength = 2
         Me.TxtCodigoZona.Name = "TxtCodigoZona"
         Me.TxtCodigoZona.Size = New System.Drawing.Size(75, 22)
@@ -223,27 +223,13 @@ Partial Class Catalogo_Zonas
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(439, 34)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(407, 633)
         Me.gBoxBusquedaRapida.TabIndex = 10
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
-        '
-        'txtFiltro
-        '
-        Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
-        Me.txtFiltro.Name = "txtFiltro"
-        Me.txtFiltro.Size = New System.Drawing.Size(389, 22)
-        Me.txtFiltro.TabIndex = 0
-        '
-        'ErrorProvider
-        '
-        Me.ErrorProvider.ContainerControl = Me
         '
         'Grid
         '
@@ -261,6 +247,20 @@ Partial Class Catalogo_Zonas
         Me.Grid.Size = New System.Drawing.Size(389, 572)
         Me.Grid.TabIndex = 115
         '
+        'txtFiltro
+        '
+        Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtFiltro.Name = "txtFiltro"
+        Me.txtFiltro.Size = New System.Drawing.Size(389, 22)
+        Me.txtFiltro.TabIndex = 0
+        '
+        'ErrorProvider
+        '
+        Me.ErrorProvider.ContainerControl = Me
+        '
         'Catalogo_Zonas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -270,9 +270,10 @@ Partial Class Catalogo_Zonas
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.gBoxInformacion)
         Me.Controls.Add(Me.gBoxBusquedaRapida)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Zonas"
+        Me.ShowIcon = False
         Me.Text = "Catalogo zonas"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()
@@ -282,8 +283,8 @@ Partial Class Catalogo_Zonas
         Me.gBoxInformacion.PerformLayout()
         Me.gBoxBusquedaRapida.ResumeLayout(False)
         Me.gBoxBusquedaRapida.PerformLayout()
-        CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
