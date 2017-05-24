@@ -496,7 +496,7 @@ Public Class Class_CXC_Descuento
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         ' Me.oDocumento = New Class_CatDocumentos()
-    End Sub                                                         'Inicializa al objeto.
+    End Sub
 
     Public Sub New(ByVal folioDescuento As String)
         Me.New()
@@ -1032,6 +1032,29 @@ Public Class Class_CXC_Descuento
             oReporte = Nothing
         End Try
         Return bResultado
+    End Function
+
+    Public Function ObtieneVentasConSaldo(ByVal CodigoCliente As String) As DataTable
+        Dim dt As New DataTable
+        Try
+
+            Using da As New SqlDataAdapter("SELECT V.FOLIO_VENTA,FECHA,TOTAL,SALDO,V.CODIGO_DOCUMENTO FROM VENTA_GLOBAL V " & _
+                                           "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO D ON (V.CODIGO_DOCUMENTO=D.CODIGO_DOCUMENTO)  " & _
+                                           "WHERE V.CODIGO_CLIENTE=@CODIGO_CLIENTE AND SALDO>0 AND D.AFECTA_CONTABILIDAD='1' AND V.CODIGO_PLAZA=" & Usuario.Codigo_Plaza.ToString & " " & _
+                                           "ORDER BY V.FECHA", Me._Conexion)
+                da.SelectCommand.CommandType = CommandType.StoredProcedure
+
+                With da.SelectCommand
+                    .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8).Value = CodigoCliente
+                End With
+
+                da.Fill(dt)
+            End Using
+
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ObtieneVentasConSaldo", ex)
+        End Try
+        Return dt
     End Function
 
 #End Region

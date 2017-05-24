@@ -23,53 +23,56 @@ Partial Class Frm_CXC_Descuentos
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Frm_CXC_Descuentos))
-        Me.tsMenu = New System.Windows.Forms.ToolStrip
-        Me.tsbNuevo = New System.Windows.Forms.ToolStripButton
-        Me.tsbGrabar = New System.Windows.Forms.ToolStripButton
-        Me.tsbCancelar = New System.Windows.Forms.ToolStripButton
-        Me.tsbImprimir = New System.Windows.Forms.ToolStripButton
-        Me.tsbSellarNotaElectronica = New System.Windows.Forms.ToolStripButton
-        Me.tsbGeneraAcuseCancelacion = New System.Windows.Forms.ToolStripButton
-        Me.tsbRecuperaNotaElectronica = New System.Windows.Forms.ToolStripButton
-        Me.tsbSalir = New System.Windows.Forms.ToolStripButton
-        Me.StatusStripEstado = New System.Windows.Forms.StatusStrip
-        Me.tssEstado = New System.Windows.Forms.ToolStripStatusLabel
-        Me.tssElaboro = New System.Windows.Forms.ToolStripStatusLabel
-        Me.tssCancelo = New System.Windows.Forms.ToolStripStatusLabel
-        Me.gbFacturas = New System.Windows.Forms.GroupBox
-        Me.Grid = New FlexCell.Grid
-        Me.gbGlobal = New System.Windows.Forms.GroupBox
-        Me.btnNotaSiguiente = New System.Windows.Forms.Button
-        Me.btnNotaAnterior = New System.Windows.Forms.Button
-        Me.ckbVentaPublicoGeneral = New System.Windows.Forms.CheckBox
-        Me.lblTipoCambio = New System.Windows.Forms.Label
-        Me.TxtConcepto2 = New System.Windows.Forms.TextBox
-        Me.txtImporteDolares = New System.Windows.Forms.TextBox
-        Me.txtTipoCambio = New System.Windows.Forms.TextBox
-        Me.lblDisplayConcepto2 = New System.Windows.Forms.Label
-        Me.lblTotalDolares = New System.Windows.Forms.Label
-        Me.ckbDolares = New System.Windows.Forms.CheckBox
-        Me.LblPoliza = New System.Windows.Forms.LinkLabel
-        Me.LblDisplayFecha = New System.Windows.Forms.Label
-        Me.lblDisplayPoliza = New System.Windows.Forms.Label
-        Me.dtFecha = New System.Windows.Forms.DateTimePicker
-        Me.LblCliente = New System.Windows.Forms.Label
-        Me.TxtConcepto = New System.Windows.Forms.TextBox
-        Me.LblDisplayCliente = New System.Windows.Forms.Label
-        Me.LblDisplayConcepto = New System.Windows.Forms.Label
-        Me.TxtCodigoCliente = New System.Windows.Forms.TextBox
-        Me.LblDisplayFolio = New System.Windows.Forms.Label
-        Me.TxtFolio = New System.Windows.Forms.TextBox
-        Me.lblDisplayStatus = New System.Windows.Forms.Label
-        Me.LblStatus = New System.Windows.Forms.Label
-        Me.BtnDistribuirDescuento = New System.Windows.Forms.Button
-        Me.gbTotales = New System.Windows.Forms.GroupBox
-        Me.LblDisplayTotal = New System.Windows.Forms.Label
-        Me.TxtTotal = New System.Windows.Forms.TextBox
-        Me.LblDisplaySubtotal = New System.Windows.Forms.Label
-        Me.TxtSubTotal = New System.Windows.Forms.TextBox
-        Me.LblDisplayIVA = New System.Windows.Forms.Label
-        Me.TxtImpuesto = New System.Windows.Forms.TextBox
+        Me.tsMenu = New System.Windows.Forms.ToolStrip()
+        Me.tsbNuevo = New System.Windows.Forms.ToolStripButton()
+        Me.tsbGrabar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
+        Me.tsbSellarNotaElectronica = New System.Windows.Forms.ToolStripButton()
+        Me.tsbGeneraAcuseCancelacion = New System.Windows.Forms.ToolStripButton()
+        Me.tsbRecuperaNotaElectronica = New System.Windows.Forms.ToolStripButton()
+        Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
+        Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
+        Me.tssEstado = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.tssElaboro = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.tssCancelo = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.gbFacturas = New System.Windows.Forms.GroupBox()
+        Me.Grid = New FlexCell.Grid()
+        Me.gbGlobal = New System.Windows.Forms.GroupBox()
+        Me.btnNotaSiguiente = New System.Windows.Forms.Button()
+        Me.btnNotaAnterior = New System.Windows.Forms.Button()
+        Me.ckbVentaPublicoGeneral = New System.Windows.Forms.CheckBox()
+        Me.lblTipoCambio = New System.Windows.Forms.Label()
+        Me.TxtConcepto2 = New System.Windows.Forms.TextBox()
+        Me.txtImporteDolares = New System.Windows.Forms.TextBox()
+        Me.txtTipoCambio = New System.Windows.Forms.TextBox()
+        Me.lblDisplayConcepto2 = New System.Windows.Forms.Label()
+        Me.lblTotalDolares = New System.Windows.Forms.Label()
+        Me.ckbDolares = New System.Windows.Forms.CheckBox()
+        Me.LblPoliza = New System.Windows.Forms.LinkLabel()
+        Me.LblDisplayFecha = New System.Windows.Forms.Label()
+        Me.lblDisplayPoliza = New System.Windows.Forms.Label()
+        Me.dtFecha = New System.Windows.Forms.DateTimePicker()
+        Me.LblCliente = New System.Windows.Forms.Label()
+        Me.TxtConcepto = New System.Windows.Forms.TextBox()
+        Me.LblDisplayCliente = New System.Windows.Forms.Label()
+        Me.LblDisplayConcepto = New System.Windows.Forms.Label()
+        Me.TxtCodigoCliente = New System.Windows.Forms.TextBox()
+        Me.LblDisplayFolio = New System.Windows.Forms.Label()
+        Me.TxtFolio = New System.Windows.Forms.TextBox()
+        Me.lblDisplayStatus = New System.Windows.Forms.Label()
+        Me.LblStatus = New System.Windows.Forms.Label()
+        Me.gbTotales = New System.Windows.Forms.GroupBox()
+        Me.LblDisplayTotal = New System.Windows.Forms.Label()
+        Me.TxtTotal = New System.Windows.Forms.TextBox()
+        Me.LblDisplaySubtotal = New System.Windows.Forms.Label()
+        Me.TxtSubTotal = New System.Windows.Forms.TextBox()
+        Me.LblDisplayIVA = New System.Windows.Forms.Label()
+        Me.TxtImpuesto = New System.Windows.Forms.TextBox()
+        Me.txtIEPS = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.txtIEPSIncluido = New System.Windows.Forms.TextBox()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.gbFacturas.SuspendLayout()
@@ -166,8 +169,8 @@ Partial Class Frm_CXC_Descuentos
         'tssEstado
         '
         Me.tssEstado.BorderSides = CType((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) _
-                    Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
-                    Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
         Me.tssEstado.Name = "tssEstado"
         Me.tssEstado.Size = New System.Drawing.Size(52, 19)
         Me.tssEstado.Text = "Estado :"
@@ -175,8 +178,8 @@ Partial Class Frm_CXC_Descuentos
         'tssElaboro
         '
         Me.tssElaboro.BorderSides = CType((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) _
-                    Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
-                    Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
         Me.tssElaboro.Name = "tssElaboro"
         Me.tssElaboro.Size = New System.Drawing.Size(60, 19)
         Me.tssElaboro.Text = "Elaboró : "
@@ -184,8 +187,8 @@ Partial Class Frm_CXC_Descuentos
         'tssCancelo
         '
         Me.tssCancelo.BorderSides = CType((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) _
-                    Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
-                    Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
         Me.tssCancelo.Name = "tssCancelo"
         Me.tssCancelo.Size = New System.Drawing.Size(60, 19)
         Me.tssCancelo.Text = "Canceló :"
@@ -457,18 +460,10 @@ Partial Class Frm_CXC_Descuentos
         Me.LblStatus.Size = New System.Drawing.Size(36, 13)
         Me.LblStatus.TabIndex = 218
         '
-        'BtnDistribuirDescuento
-        '
-        Me.BtnDistribuirDescuento.Location = New System.Drawing.Point(521, 415)
-        Me.BtnDistribuirDescuento.Name = "BtnDistribuirDescuento"
-        Me.BtnDistribuirDescuento.Size = New System.Drawing.Size(110, 23)
-        Me.BtnDistribuirDescuento.TabIndex = 321
-        Me.BtnDistribuirDescuento.Text = "Distribuir descuento"
-        Me.BtnDistribuirDescuento.UseVisualStyleBackColor = True
-        Me.BtnDistribuirDescuento.Visible = False
-        '
         'gbTotales
         '
+        Me.gbTotales.Controls.Add(Me.Label1)
+        Me.gbTotales.Controls.Add(Me.txtIEPS)
         Me.gbTotales.Controls.Add(Me.LblDisplayTotal)
         Me.gbTotales.Controls.Add(Me.TxtTotal)
         Me.gbTotales.Controls.Add(Me.LblDisplaySubtotal)
@@ -485,7 +480,7 @@ Partial Class Frm_CXC_Descuentos
         'LblDisplayTotal
         '
         Me.LblDisplayTotal.AutoSize = True
-        Me.LblDisplayTotal.Location = New System.Drawing.Point(6, 75)
+        Me.LblDisplayTotal.Location = New System.Drawing.Point(6, 82)
         Me.LblDisplayTotal.Name = "LblDisplayTotal"
         Me.LblDisplayTotal.Size = New System.Drawing.Size(37, 13)
         Me.LblDisplayTotal.TabIndex = 320
@@ -494,7 +489,7 @@ Partial Class Frm_CXC_Descuentos
         'TxtTotal
         '
         Me.TxtTotal.Enabled = False
-        Me.TxtTotal.Location = New System.Drawing.Point(83, 71)
+        Me.TxtTotal.Location = New System.Drawing.Point(83, 79)
         Me.TxtTotal.MaxLength = 160
         Me.TxtTotal.Name = "TxtTotal"
         Me.TxtTotal.Size = New System.Drawing.Size(99, 20)
@@ -504,7 +499,7 @@ Partial Class Frm_CXC_Descuentos
         'LblDisplaySubtotal
         '
         Me.LblDisplaySubtotal.AutoSize = True
-        Me.LblDisplaySubtotal.Location = New System.Drawing.Point(6, 23)
+        Me.LblDisplaySubtotal.Location = New System.Drawing.Point(6, 19)
         Me.LblDisplaySubtotal.Name = "LblDisplaySubtotal"
         Me.LblDisplaySubtotal.Size = New System.Drawing.Size(52, 13)
         Me.LblDisplaySubtotal.TabIndex = 318
@@ -513,7 +508,7 @@ Partial Class Frm_CXC_Descuentos
         'TxtSubTotal
         '
         Me.TxtSubTotal.Enabled = False
-        Me.TxtSubTotal.Location = New System.Drawing.Point(83, 19)
+        Me.TxtSubTotal.Location = New System.Drawing.Point(83, 16)
         Me.TxtSubTotal.MaxLength = 160
         Me.TxtSubTotal.Name = "TxtSubTotal"
         Me.TxtSubTotal.Size = New System.Drawing.Size(99, 20)
@@ -523,7 +518,7 @@ Partial Class Frm_CXC_Descuentos
         'LblDisplayIVA
         '
         Me.LblDisplayIVA.AutoSize = True
-        Me.LblDisplayIVA.Location = New System.Drawing.Point(6, 49)
+        Me.LblDisplayIVA.Location = New System.Drawing.Point(6, 61)
         Me.LblDisplayIVA.Name = "LblDisplayIVA"
         Me.LblDisplayIVA.Size = New System.Drawing.Size(56, 13)
         Me.LblDisplayIVA.TabIndex = 316
@@ -532,19 +527,58 @@ Partial Class Frm_CXC_Descuentos
         'TxtImpuesto
         '
         Me.TxtImpuesto.Enabled = False
-        Me.TxtImpuesto.Location = New System.Drawing.Point(83, 45)
+        Me.TxtImpuesto.Location = New System.Drawing.Point(83, 58)
         Me.TxtImpuesto.MaxLength = 160
         Me.TxtImpuesto.Name = "TxtImpuesto"
         Me.TxtImpuesto.Size = New System.Drawing.Size(99, 20)
         Me.TxtImpuesto.TabIndex = 3
         Me.TxtImpuesto.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
+        'txtIEPS
+        '
+        Me.txtIEPS.Enabled = False
+        Me.txtIEPS.Location = New System.Drawing.Point(83, 37)
+        Me.txtIEPS.MaxLength = 160
+        Me.txtIEPS.Name = "txtIEPS"
+        Me.txtIEPS.Size = New System.Drawing.Size(99, 20)
+        Me.txtIEPS.TabIndex = 321
+        Me.txtIEPS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(6, 40)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(37, 13)
+        Me.Label1.TabIndex = 322
+        Me.Label1.Text = "IEPS :"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(464, 484)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(76, 13)
+        Me.Label2.TabIndex = 324
+        Me.Label2.Text = "IEPS incluido :"
+        '
+        'txtIEPSIncluido
+        '
+        Me.txtIEPSIncluido.Enabled = False
+        Me.txtIEPSIncluido.Location = New System.Drawing.Point(541, 481)
+        Me.txtIEPSIncluido.MaxLength = 160
+        Me.txtIEPSIncluido.Name = "txtIEPSIncluido"
+        Me.txtIEPSIncluido.Size = New System.Drawing.Size(99, 20)
+        Me.txtIEPSIncluido.TabIndex = 323
+        Me.txtIEPSIncluido.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
         'Frm_CXC_Descuentos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(868, 543)
-        Me.Controls.Add(Me.BtnDistribuirDescuento)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.txtIEPSIncluido)
         Me.Controls.Add(Me.gbTotales)
         Me.Controls.Add(Me.gbFacturas)
         Me.Controls.Add(Me.gbGlobal)
@@ -608,11 +642,14 @@ Partial Class Frm_CXC_Descuentos
     Friend WithEvents txtTipoCambio As System.Windows.Forms.TextBox
     Friend WithEvents lblTotalDolares As System.Windows.Forms.Label
     Friend WithEvents ckbDolares As System.Windows.Forms.CheckBox
-    Friend WithEvents BtnDistribuirDescuento As System.Windows.Forms.Button
     Friend WithEvents tsbSellarNotaElectronica As System.Windows.Forms.ToolStripButton
     Friend WithEvents ckbVentaPublicoGeneral As System.Windows.Forms.CheckBox
     Friend WithEvents tsbRecuperaNotaElectronica As System.Windows.Forms.ToolStripButton
     Friend WithEvents tsbGeneraAcuseCancelacion As System.Windows.Forms.ToolStripButton
     Friend WithEvents btnNotaSiguiente As System.Windows.Forms.Button
     Friend WithEvents btnNotaAnterior As System.Windows.Forms.Button
+    Friend WithEvents txtIEPS As System.Windows.Forms.TextBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents txtIEPSIncluido As System.Windows.Forms.TextBox
 End Class
