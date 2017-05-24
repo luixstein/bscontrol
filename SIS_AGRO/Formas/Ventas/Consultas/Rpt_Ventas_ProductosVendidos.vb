@@ -94,10 +94,10 @@ Buscar:
                 .DisplayMember = "NOMBRE_LINEA"
                 .ValueMember = "CODIGO_LINEA"
 
-                Dim dView As New Data.DataView(oLinea.ObtenerElementos)
+                Dim dView As New Data.DataView(oLinea.ObtenerElementosParaReportes)
                 dView.Sort = "NOMBRE_LINEA"
                 .DataSource = dView
-                .Text = "TODOS"
+                .Text = "TODAS"
             End With
         Catch ex As Exception
             HandleError(Me.Name, "DesplegarLineas", ex)
