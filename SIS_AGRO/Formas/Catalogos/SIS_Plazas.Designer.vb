@@ -1154,6 +1154,7 @@ Partial Class SIS_Plazas
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "SIS_Plazas"
+        Me.ShowIcon = False
         Me.Text = "Plazas"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()
