@@ -11,6 +11,7 @@ Public Class Rpt_Compras_Global
         Me.DesplegarFamilias()
         Me.DesplegarInventariables()
         Me.DesplegarMonedas()
+        Me.DesplegarLineas()
 
         Me.DtFechaDesde.Value = CDate(Format(Me.DtFechaDesde.Value, "01/MMM/yy"))
         Me.DtFechaHasta.Value = Date.Now
@@ -150,6 +151,22 @@ buscar:
         End With
     End Sub
 
+    Private Sub DesplegarLineas()
+        Dim oLineas As New Class_CatLineas
+        With Me.cboLineas
+            .DisplayMember = "Nombre_Linea"
+
+            .ValueMember = "codigo_linea"
+
+            Dim dView As New Data.DataView(oLineas.ObtenerElementosParaReportes)
+            dView.Sort = "Nombre_linea"
+            .DataSource = dView
+            If dView.Count > 0 Then
+                .SelectedValue = "T"
+            End If
+        End With
+    End Sub
+
     Private Sub Imprimir()
         Dim FormatoDeReporte As String = ""
         Dim Rpt As ReportDocument
@@ -163,6 +180,7 @@ buscar:
             If Me.RbGlobal.Checked = True Then
                 oReporte = New Class_Reporte("RPT_COMPRA_GLOBAL", Rpt, True)
                 Me.CboFamilia.SelectedValue = "T"
+                Me.cboLineas.SelectedValue = "T"
             ElseIf Me.RbAgrupadoFamilia.Checked = True Then
                 oReporte = New Class_Reporte("RPT_COMPRA_AGRUPADO_POR_FAMILIA", Rpt, True)
             ElseIf Me.RbListadoDocumentos.Checked = True Then
@@ -188,6 +206,7 @@ buscar:
             Rpt.SetParameterValue("@CODIGO_FAMILIA", Me.CboFamilia.SelectedValue.ToString)
             Rpt.SetParameterValue("@INVENTARIABLES", Me.cboInventariables.SelectedItem)
             Rpt.SetParameterValue("@MONEDA", Me.cboMoneda.SelectedItem)
+            Rpt.SetParameterValue("@CODIGO_LINEA", Me.cboLineas.SelectedValue.ToString)
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
@@ -218,9 +237,15 @@ buscar:
         If Me.RbAgrupadoFamilia.Checked = True Then
             Me.lblDisplayFamilia.Visible = True
             Me.CboFamilia.Visible = True
+
+            Me.LblDisplayLinea.Visible = True
+            Me.cboLineas.Visible = True
         Else
             Me.lblDisplayFamilia.Visible = False
             Me.CboFamilia.Visible = False
+
+            Me.LblDisplayLinea.Visible = False
+            Me.cboLineas.Visible = False
         End If
     End Sub
 End Class
