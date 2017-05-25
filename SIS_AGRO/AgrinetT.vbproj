@@ -316,6 +316,12 @@
     <Compile Include="Formas\Administracion\Sis_administracion_clientes.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Conceptos_Pagos.Designer.vb">
+      <DependentUpon>Catalogo_Conceptos_Pagos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Conceptos_Pagos.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\Catalogos\SIS_Plazas.Designer.vb">
       <DependentUpon>SIS_Plazas.vb</DependentUpon>
     </Compile>
@@ -1468,6 +1474,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_CajasTransportes.resx">
       <DependentUpon>Catalogo_CajasTransportes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Conceptos_Pagos.resx">
+      <DependentUpon>Catalogo_Conceptos_Pagos.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\SIS_Plazas.resx">
       <DependentUpon>SIS_Plazas.vb</DependentUpon>
