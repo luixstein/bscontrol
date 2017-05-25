@@ -2693,7 +2693,7 @@ BuscaArticulos:
                             StrCod = oArticulos.BusquedaVisual_PorDescripcion_conExistencias(Me.CboAlmacen.SelectedValue.ToString)
                             If txtLEN(StrCod) = True Then
                                 Me.Grid.Cell(Renglon, Me.igyCodigo).Text = StrCod
-                                GoTo LlenaLinea
+                                GoTo LlenaLinea : Exit Sub
                             End If
 
                             '                        Case Me.igyCuentaContable 'Columna de la cuenta contable

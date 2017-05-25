@@ -191,69 +191,72 @@ Public Class Catalogo_Cuentas_Bancarias
 
 #Region "Métodos y procedimientos"
     Private Sub Refrescar()
-
         Me.DesplegarElementos()
         Me.DesplegarCboCodigoMoneda()
-
     End Sub
 
     Private Sub Cambia_Estado()
-        'Dim iIndex As Integer
-        Select Case Me.Estado
-            Case enumEstados.NUEVO
-                Me.gBoxInformacion.Enabled = True
-                Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Agregando"
-                Me.tsbNuevo.Enabled = False
-                Me.tsbEditar.Enabled = False
-                Me.tsbGrabar.Enabled = True
-                Me.tsbCancelar.Enabled = True
+        Try
+            'Dim iIndex As Integer
+            Select Case Me.Estado
+                Case enumEstados.NUEVO
+                    Me.gBoxInformacion.Enabled = True
+                    Me.gBoxBusquedaRapida.Enabled = False
+                    Me.tssLabelEstado.Text = "Agregando"
+                    Me.tsbNuevo.Enabled = False
+                    Me.tsbEditar.Enabled = False
+                    Me.tsbGrabar.Enabled = True
+                    Me.tsbCancelar.Enabled = True
 
-                Me.TxtIDCuenta.Enabled = False
-                Me.TxtNombreCuenta.Enabled = True
-                Me.CboEstatus.Enabled = False
-                Me.txtCuentaContableDolares.Enabled = False
+                    Me.TxtIDCuenta.Enabled = False
+                    Me.TxtNombreCuenta.Enabled = True
+                    Me.CboEstatus.Enabled = False
+                    Me.txtCuentaContableDolares.Enabled = False
 
-                Me.InicializaElemento()
+                    Me.InicializaElemento()
 
-            Case enumEstados.EDICION
-                Me.gBoxInformacion.Enabled = True
-                Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Editando"
-                Me.tsbNuevo.Enabled = False
-                Me.tsbEditar.Enabled = False
-                Me.tsbGrabar.Enabled = True
-                Me.tsbCancelar.Enabled = True
-                Me.TxtCodigoProveedor.Enabled = False
-                Me.txtCuentaContable.Enabled = False
-                Me.txtCuentaContableDolares.Enabled = False
+                Case enumEstados.EDICION
+                    Me.gBoxInformacion.Enabled = True
+                    Me.gBoxBusquedaRapida.Enabled = False
+                    Me.tssLabelEstado.Text = "Editando"
+                    Me.tsbNuevo.Enabled = False
+                    Me.tsbEditar.Enabled = False
+                    Me.tsbGrabar.Enabled = True
+                    Me.tsbCancelar.Enabled = True
+                    Me.TxtCodigoProveedor.Enabled = False
+                    Me.txtCuentaContable.Enabled = False
+                    Me.txtCuentaContableDolares.Enabled = False
 
 
-                Me.TxtIDCuenta.Enabled = False
-                Me.TxtNombreCuenta.Enabled = True
-                Me.CboEstatus.Enabled = True
+                    Me.TxtIDCuenta.Enabled = False
+                    Me.TxtNombreCuenta.Enabled = True
+                    Me.CboEstatus.Enabled = True
 
-            Case enumEstados.CONSULTA
-                Me.gBoxInformacion.Enabled = False
-                Me.gBoxBusquedaRapida.Enabled = True
-                Me.tssLabelEstado.Text = "Consultando"
-                Me.tsbNuevo.Enabled = True
-                Me.tsbEditar.Enabled = False
-                Me.tsbGrabar.Enabled = False
-                Me.tsbCancelar.Enabled = False
-                Me.cboEstatusFiltro.SelectedIndex = 0
-                'If Me.Run Then
-                '    If Me.lstbElementos.SelectedIndex < 0 Then
-                '        Me.lstbElementos.SelectedIndex = 0
-                '    Else
-                '        iIndex = Me.lstbElementos.SelectedIndex
-                '        Me.lstbElementos.SelectedIndex = -1
-                '        Me.lstbElementos.SelectedIndex = iIndex
-                '    End If
-                'End If
-                Me.txtFiltro.Focus()
-        End Select
-        Application.DoEvents()
+                Case enumEstados.CONSULTA
+                    Me.gBoxInformacion.Enabled = False
+                    Me.gBoxBusquedaRapida.Enabled = True
+                    Me.tssLabelEstado.Text = "Consultando"
+                    Me.tsbNuevo.Enabled = True
+                    Me.tsbEditar.Enabled = False
+                    Me.tsbGrabar.Enabled = False
+                    Me.tsbCancelar.Enabled = False
+                    Me.cboEstatusFiltro.SelectedIndex = 0
+                    'If Me.Run Then
+                    '    If Me.lstbElementos.SelectedIndex < 0 Then
+                    '        Me.lstbElementos.SelectedIndex = 0
+                    '    Else
+                    '        iIndex = Me.lstbElementos.SelectedIndex
+                    '        Me.lstbElementos.SelectedIndex = -1
+                    '        Me.lstbElementos.SelectedIndex = iIndex
+                    '    End If
+                    'End If
+                    Me.txtFiltro.Focus()
+            End Select
+            Application.DoEvents()
+
+        Catch ex As Exception
+            HandleError(Me.Name, "Cambia_Estado", ex)
+        End Try
     End Sub
 
     Private Sub InicializaElemento()
@@ -280,75 +283,85 @@ Public Class Catalogo_Cuentas_Bancarias
     End Sub
 
     Private Sub DesplegarElementos()
-        Dim oElementos As New Class_CatCuentasBancarias
-        With Me.Grid
-            .DataSource = oElementos.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
-            .Columns("ID_CUENTA_BANCARIA").Width = 150
-            .Columns("NOMBRE_CUENTA_BANCARIA").Width = 200
-        End With
+        Try
+            Dim oElementos As New Class_CatCuentasBancarias
+            With Me.Grid
+                .DataSource = oElementos.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
+                .Columns("ID_CUENTA_BANCARIA").Width = 150
+                .Columns("NOMBRE_CUENTA_BANCARIA").Width = 200
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarElementos", ex)
+        End Try
     End Sub
 
     Private Sub DesplegarCboCodigoMoneda()
-        Dim oElementos As New Class_CatMonedas
-        With Me.CboCodigoMoneda
-            .DisplayMember = "NOMBRE"
-
-            .ValueMember = "CODIGO_MONEDA"
-
-            Dim dView As New Data.DataView(oElementos.ObtenerElementos)
-            dView.Sort = "CODIGO_MONEDA"
-            .DataSource = dView
-            If dView.Count > 0 Then
-                .SelectedIndex = 0
-            End If
-        End With
+        Try
+            Dim oElementos As New Class_CatMonedas
+            With Me.CboCodigoMoneda
+                .DisplayMember = "NOMBRE"
+                .ValueMember = "CODIGO_MONEDA"
+                Dim dView As New Data.DataView(oElementos.ObtenerElementos)
+                dView.Sort = "CODIGO_MONEDA"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedIndex = 0
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarCboCodigoMoneda", ex)
+        End Try
     End Sub
 
     Private Sub LlenaElemento(ByVal iCodigo_Elemento As Integer)
-        Dim oElemento As New Class_CatCuentasBancarias
-        oElemento.ID_CUENTA_BANCARIA = iCodigo_Elemento
-        If oElemento.Consultar Then
-            With oElemento
-                Me.TxtIDCuenta.Text = .ID_CUENTA_BANCARIA.ToString
-                Me.TxtNombreCuenta.Text = .NOMBRE_CUENTA_BANCARIA.ToString
-                Me.TxtNumeroCuenta.Text = .NUMERO_CUENTA_BANCARIA
-                Me.TxtSucursal.Text = .SUCURSAL
-                Me.TxtTelefono.Text = .TELEFONO
-                Me.TxtBanco.Text = .CODIGO_BANCO
-                Dim sql As New Class_find("SELECT NOMBRE_BANCO FROM CAT_BANCOS WHERE CODIGO_BANCO='" & Me.TxtBanco.Text & "' AND ESTATUS_BANCO='A' AND PROTEGIDO='0'")
-                Me.LblBanco.Text = sql.Result1
-                Me.TxtCodigoProveedor.Text = .CODIGO_PROVEEDOR
-                If txtLEN(Me.TxtCodigoProveedor.Text) Then
-                    Dim sql3 As New Class_find("SELECT NOMBRE_PROVEEDOR FROM CAT_PROVEEDORES WHERE CODIGO_PROVEEDOR='" & Me.TxtCodigoProveedor.Text & "'")
-                    Me.LblNombreProveedor.Text = sql3.Result1
-                End If
+        Try
+            Dim oElemento As New Class_CatCuentasBancarias
+            oElemento.ID_CUENTA_BANCARIA = iCodigo_Elemento
+            If oElemento.Consultar Then
+                With oElemento
+                    Me.TxtIDCuenta.Text = .ID_CUENTA_BANCARIA.ToString
+                    Me.TxtNombreCuenta.Text = .NOMBRE_CUENTA_BANCARIA.ToString
+                    Me.TxtNumeroCuenta.Text = .NUMERO_CUENTA_BANCARIA
+                    Me.TxtSucursal.Text = .SUCURSAL
+                    Me.TxtTelefono.Text = .TELEFONO
+                    Me.TxtBanco.Text = .CODIGO_BANCO
+                    Dim sql As New Class_find("SELECT NOMBRE_BANCO FROM CAT_BANCOS WHERE CODIGO_BANCO='" & Me.TxtBanco.Text & "' AND ESTATUS_BANCO='A' AND PROTEGIDO='0'")
+                    Me.LblBanco.Text = sql.Result1
+                    Me.TxtCodigoProveedor.Text = .CODIGO_PROVEEDOR
+                    If txtLEN(Me.TxtCodigoProveedor.Text) Then
+                        Dim sql3 As New Class_find("SELECT NOMBRE_PROVEEDOR FROM CAT_PROVEEDORES WHERE CODIGO_PROVEEDOR='" & Me.TxtCodigoProveedor.Text & "'")
+                        Me.LblNombreProveedor.Text = sql3.Result1
+                    End If
 
-                Me.TxtSaldo.Text = .SALDO.ToString
-                Me.TxtFolioCheque.Text = .FOLIO_CHEQUE
+                    Me.TxtSaldo.Text = .SALDO.ToString
+                    Me.TxtFolioCheque.Text = .FOLIO_CHEQUE
 
-                Me.txtCuentaContable.Text = .CUENTA_CONTABLE_PESOS
-                Dim sql1 As New Class_find("SELECT NOMBRE_CUENTA From CON_CAT_CUENTAS Where CUENTA_CONTABLE='" & Me.txtCuentaContable.Text & "'")
-                Me.LblCuenta.Text = sql1.Result1
+                    Me.txtCuentaContable.Text = .CUENTA_CONTABLE_PESOS
+                    Dim sql1 As New Class_find("SELECT NOMBRE_CUENTA From CON_CAT_CUENTAS Where CUENTA_CONTABLE='" & Me.txtCuentaContable.Text & "'")
+                    Me.LblCuenta.Text = sql1.Result1
 
-                Me.txtCuentaContableDolares.Text = .CUENTA_CONTABLE_DOLARES
-                If txtLEN(Me.txtCuentaContableDolares.Text) Then
-                    Dim sql2 As New Class_find("SELECT NOMBRE_CUENTA From CON_CAT_CUENTAS Where CUENTA_CONTABLE='" & Me.txtCuentaContableDolares.Text & "'")
-                    Me.LblCuentaDolares.Text = sql2.Result1
-                Else
-                    Me.LblCuentaDolares.Text = ""
-                End If
+                    Me.txtCuentaContableDolares.Text = .CUENTA_CONTABLE_DOLARES
+                    If txtLEN(Me.txtCuentaContableDolares.Text) Then
+                        Dim sql2 As New Class_find("SELECT NOMBRE_CUENTA From CON_CAT_CUENTAS Where CUENTA_CONTABLE='" & Me.txtCuentaContableDolares.Text & "'")
+                        Me.LblCuentaDolares.Text = sql2.Result1
+                    Else
+                        Me.LblCuentaDolares.Text = ""
+                    End If
 
-                Me.CboCodigoMoneda.SelectedValue = .CODIGO_MONEDA
-                Me.TxtFormatoReporte.Text = .NOMBRE_FORMATO
-                If .ESTATUS_CUENTA_BANCARIA = "A" Then
-                    Me.CboEstatus.SelectedIndex = 0
-                Else
-                    Me.CboEstatus.SelectedIndex = 1
-                End If
-            End With
+                    Me.CboCodigoMoneda.SelectedValue = .CODIGO_MONEDA
+                    Me.TxtFormatoReporte.Text = .NOMBRE_FORMATO
+                    If .ESTATUS_CUENTA_BANCARIA = "A" Then
+                        Me.CboEstatus.SelectedIndex = 0
+                    Else
+                        Me.CboEstatus.SelectedIndex = 1
+                    End If
+                End With
 
-        End If
-        oElemento = Nothing
+            End If
+            oElemento = Nothing
+        Catch ex As Exception
+            HandleError(Me.Name, "LlenaElemento", ex)
+        End Try
     End Sub
 
     Public Function CodigoSiguiente() As Integer
