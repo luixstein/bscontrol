@@ -1,19 +1,8 @@
 ﻿Option Strict On
 
-Imports CrystalDecisions.CrystalReports.Engine
 Imports System.Data.SqlClient
-Imports System.Collections.Specialized
-Imports CrystalDecisions.Shared
 
 Public Class Frm_CXC_Descuentos
-
-#Region "Propiedades"
-    Public ReadOnly Property Nombre_Modulo() As String
-        Get
-            Return "Descuentos."
-        End Get
-    End Property
-#End Region
 
     Private Enum enumEstados
         NUEVO
@@ -21,10 +10,18 @@ Public Class Frm_CXC_Descuentos
         CANCELADO
     End Enum
 
+#Region "Campos privados"
     Private Estado As enumEstados
 
     Private oDescuentosCXC As New Class_CXC_Descuento
     Private oCliente As New Class_CatClientes
+
+    Private ClickSinEjecutar As Boolean = False
+    Private bDocumentosCargados As Boolean = False
+
+    Private dtTotal As Double 'SUMA DE LO QUE SE HA APLICADO
+    Private dtSubtotal As Double, dtIVA As Double
+#End Region
 
 #Region "Columnas grid"
     Private iGyFolio As Integer = 1
@@ -33,16 +30,6 @@ Public Class Frm_CXC_Descuentos
     Private iGyImporteFactura As Integer = 4
     Private iGySaldo As Integer = 5
     Private iGyDescuento As Integer = 6
-#End Region
-
-    Private ClickSinEjecutar As Boolean = False
-    Private bDocumentosCargados As Boolean = False
-
-    Dim dtTotal As Double 'SUMA DE LO QUE SE HA APLICADO
-    Dim dtSubtotal As Double, dtIVA As Double
-
-#Region "Propiedades"
-
 #End Region
 
 #Region "Opciones"
@@ -69,8 +56,6 @@ Public Class Frm_CXC_Descuentos
                 MsgBox("Movimiento de descuento cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
                 Me.GestionaCambioEstado()
             End If
-        Else
-            Exit Sub
         End If
     End Sub
 
@@ -135,7 +120,6 @@ Public Class Frm_CXC_Descuentos
 #End Region
 
 #Region "Eventos de objetos"
-
     Private Sub Frm_CXC_Descuentos_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
         If Me.Estado = enumEstados.NUEVO Then
             Me.TxtFolio.Focus()
@@ -333,18 +317,27 @@ Buscar:
                             sFolio = Me.Grid.Cell(Renglon, Me.iGyFolio).Text
                             dDescuento = valorNumerico(Me.Grid.Cell(Renglon, Me.iGyDescuento).Text)
                             If dDescuento > 0 And txtLEN(Me.Grid.Cell(Renglon, Me.iGyFolio).Text) = True Then
-                                Dim oVenta As New Class_Ventas_Global()
-                                oVenta = New Class_Ventas_Global(sFolio)
+                                Dim oVenta As New Class_Ventas_Global(sFolio)
 
-                                If dDescuento > oVenta.SALDO Then 'valorNumerico(Me.Grid.Cell(Renglon, Me.iGySaldo).Text) Then
+                                If dDescuento > oVenta.SALDO Then
                                     MsgBox("El descuento total del documento: " & sFolio & " es mayor al saldo del documento, favor de revisar.", MsgBoxStyle.Exclamation, "Validación de Importes de CXC")
-                                    Me.Grid.Cell(Renglon, Me.iGyDescuento).Text = "" ' 0.ToString
+                                    Me.Grid.Cell(Renglon, Me.iGyDescuento).Text = ""
                                     Me.Grid.Cell(Renglon, Me.iGyDescuento).SetFocus()
+                                    Me.CalculaImpuestosYTotales("CALCULAR")
                                     e.SuppressKeyPress = True
+                                    Return
                                 End If
                             End If
 
                             Me.CalculaImpuestosYTotales("CALCULAR")
+
+                            'Se establece una columna antes porque el enter la brincará a la siguiente y de este modo quedamos en la columna descuento aunque mandemos el foco a saldo.
+                            If Renglon < Me.Grid.Rows - 1 Then
+                                Me.Grid.Cell(Renglon + 1, Me.iGySaldo).SetFocus()
+                            Else
+                                Me.Grid.Cell(1, Me.iGySaldo).SetFocus()
+                            End If
+
                     End Select
             End Select
 
@@ -1342,7 +1335,7 @@ Buscar:
                     Me.chkVentaPublicoGeneral.Enabled = True
                     Me.txtTipoCambio.Enabled = False
                     Me.txtImporteDolares.Enabled = False
-                    Me.tssEstado.Text = "Estado: agregando documento " & Me.Nombre_Modulo
+                    Me.tssEstado.Text = "Estado: agregando documento"
                     Me.tssElaboro.Visible = False
                     Me.tssCancelo.Visible = False
                     Me.Grid.Locked = False
@@ -1368,7 +1361,7 @@ Buscar:
                     Me.chkVentaPublicoGeneral.Enabled = False
                     Me.txtTipoCambio.Enabled = False
                     Me.txtImporteDolares.Enabled = False
-                    Me.tssEstado.Text = "Estado: Consulta de " & Me.Nombre_Modulo
+                    Me.tssEstado.Text = "Estado: consultando"
                     Me.tssElaboro.Visible = True
                     Me.tssCancelo.Visible = False
                     Me.Grid.Locked = True
@@ -1400,7 +1393,7 @@ Buscar:
                     Me.chkVentaPublicoGeneral.Enabled = False
                     Me.txtTipoCambio.Enabled = False
                     Me.txtImporteDolares.Enabled = False
-                    Me.tssEstado.Text = "Estado: Consulta de " & Me.Nombre_Modulo
+                    Me.tssEstado.Text = "Estado: consultando"
                     Me.tssElaboro.Visible = True
                     Me.tssCancelo.Visible = True
                     Me.Grid.Locked = True

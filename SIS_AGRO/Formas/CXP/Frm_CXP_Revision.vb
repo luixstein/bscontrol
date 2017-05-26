@@ -1,15 +1,5 @@
 ﻿Option Strict On
 
-Imports Microsoft.VisualBasic
-Imports System
-Imports System.ComponentModel
-Imports System.Data
-Imports System.Data.Common
-Imports System.Data.Sql
-Imports System.Data.SqlClient
-Imports System.Windows.Forms
-Imports System.Collections
-Imports System.Collections.Generic
 Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Frm_CXP_Revision
@@ -26,11 +16,6 @@ Public Class Frm_CXP_Revision
         End Get
     End Property
 #End Region
-
-    Public Sub New()
-        ' This call is required by the Windows Form Designer.
-        InitializeComponent()
-    End Sub
 
     Private Estado As enumEstados
 

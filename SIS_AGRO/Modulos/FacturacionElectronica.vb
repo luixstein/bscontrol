@@ -615,6 +615,22 @@ Module FacturacionElectronica
         Const sProcedure As String = "fElectronicaValidaArchivosCertificadoLocal"
 
         Try
+
+            If txtLEN(sArchivoCer) = False Then
+                MsgBox("No se indicó el archivo cer.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If txtLEN(sArchivoKey) = False Then
+                MsgBox("No se indicó el archivo key.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If txtLEN(sContraseñaClavePrivada) = False Then
+                MsgBox("No se indicó la contrasena de la clave privada.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
             sFelectronicaArchivoCERLocal = sCarpetaCertificados + "\" + sArchivoCer
             sFelectronicaArchivoKEYLocal = sCarpetaCertificados + "\" + sArchivoKey
             Empresa_Sistema.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA = sContraseñaClavePrivada
