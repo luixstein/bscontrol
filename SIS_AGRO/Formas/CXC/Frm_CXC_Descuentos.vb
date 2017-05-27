@@ -253,18 +253,18 @@ Buscar:
         End If
     End Sub
 
-    Private Sub txtTipoCambio_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtTipoCambio.KeyDown
-        If e.KeyCode = Keys.Return Then
-            If valorNumerico(Me.txtTipoCambio.Text) <= 0 Or valorNumerico(Me.txtTipoCambio.Text) > 20 Then
-                MsgBox("Tipo de cambio incorrecto", MsgBoxStyle.Information, "Validación de tipo de cambio")
-                Exit Sub
-            Else
-                Me.CalculaImporteDolares()
-            End If
-            Me.dtFecha.Focus()
-            'SendKeys.Send("{TAB}")
-        End If
-    End Sub
+    'Private Sub txtTipoCambio_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtTipoCambio.KeyDown
+    '    If e.KeyCode = Keys.Return Then
+    '        If valorNumerico(Me.txtTipoCambio.Text) <= 0 Or valorNumerico(Me.txtTipoCambio.Text) > 20 Then
+    '            MsgBox("Tipo de cambio incorrecto", MsgBoxStyle.Information, "Validación de tipo de cambio")
+    '            Exit Sub
+    '        Else
+    '            Me.CalculaImporteDolares()
+    '        End If
+    '        Me.dtFecha.Focus()
+    '        'SendKeys.Send("{TAB}")
+    '    End If
+    'End Sub
 
     Private Sub chkVentaPublicoGeneral_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles chkVentaPublicoGeneral.KeyDown
         Select Case e.KeyCode
@@ -327,6 +327,10 @@ Buscar:
                                     e.SuppressKeyPress = True
                                     Return
                                 End If
+                            End If
+
+                            If Me.cboMoneda.Text = "USD" Then
+                                Me.GestionaUSD
                             End If
 
                             Me.CalculaImpuestosYTotales("CALCULAR")
@@ -583,18 +587,12 @@ Buscar:
 
     Private Sub CalculaImporteDolares()
         Try
-            If txtLEN(Me.TxtTotal.Text) = True And valorNumerico(Me.TxtTotal.Text) > 0 Then
-                Me.txtTipoCambio.Text = valorNumerico(Me.txtTipoCambio.Text).ToString
-                Me.txtTipoCambio.Text = Redondear(valorNumerico(Me.txtTipoCambio.Text), 5).ToString
-                Me.txtImporteDolares.Text = (valorNumerico(Me.TxtTotal.Text) / valorNumerico(Me.txtTipoCambio.Text)).ToString
-                Me.txtImporteDolares.Text = valorNumerico(Me.txtImporteDolares.Text).ToString
-                Me.txtImporteDolares.Text = Redondear(valorNumerico(Me.txtImporteDolares.Text), 2).ToString
+            Dim dUSD As Decimal = 0
+            If valorNumericoD(Me.TxtTotal.Text) > 0 Then
+                dUSD = valorNumericoD(Me.TxtTotal.Text) / valorNumericoD(Me.txtTipoCambio.Text)
+                Me.txtImporteDolares.Text = Redondear(dUSD, 2).ToString
             Else
-                Me.txtTipoCambio.Text = valorNumerico(Me.txtTipoCambio.Text).ToString
-                Me.txtTipoCambio.Text = Redondear(valorNumerico(Me.txtTipoCambio.Text), 5).ToString
                 Me.txtImporteDolares.Text = "0"
-                Me.txtImporteDolares.Text = valorNumerico(Me.txtImporteDolares.Text).ToString
-                Me.txtImporteDolares.Text = Redondear(valorNumerico(Me.txtImporteDolares.Text), 2).ToString
             End If
         Catch ex As Exception
             HandleError(Me.Name, "CalculaImporteDolares", ex)
@@ -825,16 +823,13 @@ Buscar:
                         Return False
                     End If
 
-
                     If valorNumerico(sql.Result2) > 0 Then
-
                         If FindCollection(clIvas, sql.Result3) = False Then
                             clIvas.Add(sql.Result3)
                         End If
 
                         bTieneVentasConIVA = True
                     End If
-
                 End If
             Next i
 
@@ -1160,9 +1155,9 @@ Buscar:
                 Me.TxtCodigoCliente.Text = oDescuentosCXC.CODIGO_CLIENTE
                 Me.LblCliente.Text = oDescuentosCXC.NOMBRE_CLIENTE
                 Me.LblPoliza.Text = oDescuentosCXC.FOLIO_POLIZA.ToString
+                Me.txtTipoCambio.Text = oDescuentosCXC.TIPO_DE_CAMBIO.ToString
                 If oDescuentosCXC.TIPO_DE_CAMBIO > 0 Then
                     Me.ckbDolares.Checked = True
-                    Me.txtTipoCambio.Text = oDescuentosCXC.TIPO_DE_CAMBIO.ToString
                     Me.CalculaImporteDolares()
                 End If
                 Me.TxtSubTotal.Text = FormatImporteContable(oDescuentosCXC.SUBTOTAL)
@@ -1466,7 +1461,7 @@ Buscar:
             Dim Conexion As New SqlConnection(Empresa_Sistema.conexion)
             sFoliosConDescuento = "|"
 
-            For i = 1 To Grid.Rows - 1
+            For i = 1 To Me.Grid.Rows - 1
                 If valorNumericoD(Me.Grid.Cell(i, iGyDescuento).Text) > 0 Then
                     sFoliosConDescuento = sFoliosConDescuento & Me.Grid.Cell(i, iGyFolio).Text & "," & valorNumericoD(Me.Grid.Cell(i, iGyDescuento).Text) & "|"
                 End If
@@ -1501,14 +1496,35 @@ Buscar:
                 Me.TxtTotal.Text = FormatImporteContable(CDbl(dt.Rows(0)("TOTAL")))
             End If
 
+            If Me.cboMoneda.Text = "USD" Then
+                Me.CalculaImporteDolares()
+            End If
+
         Catch ex As Exception
             HandleError(Me.Name, "CalculaImpuestosYTotales", ex)
         End Try
     End Function
 
+    Private Function GestionaUSD() As Boolean
+        Try
+            Dim Renglon As Integer = Me.Grid.Selection.FirstRow, i As Integer
+            Me.txtTipoCambio.Text = Me.Grid.Cell(Renglon, Me.iGyTipoCambio).Text
+
+            For i = 1 To Renglon - 1 'Elimina los descuentos anteriores al capturado
+                Me.Grid.Cell(Renglon, Me.iGyDescuento).Text = ""
+            Next
+
+            For i = Renglon + 1 To Me.Grid.Rows - 1 'Elimina los descuentos posteriores al capturado
+                Me.Grid.Cell(Renglon, Me.iGyDescuento).Text = ""
+            Next
+
+        Catch ex As Exception
+            HandleError(Me.Name, "GestionaUSD", ex)
+        End Try
+    End Function
+
 #End Region
 
-  
 End Class
 
 
