@@ -16,7 +16,8 @@ Friend Class Class_CFDI_cce_ComercioExterior
 #End Region
 #End Region
 
-    Public xmlns As String = "http://www.sat.gob.mx/ComercioExterior"
+    Private xmlns As String
+    Private xsischemaLocation As String
 
     Public Version As String
     Public TipoOperacion As String
@@ -41,24 +42,29 @@ Friend Class Class_CFDI_cce_ComercioExterior
     Private AnexoNodo As String = ""
 
     Public Sub New()
-        'AnexoNodo = "cce:"
+        AnexoNodo = "cce:"
+        xmlns = "http://www.sat.gob.mx/ComercioExterior"
+        xsischemaLocation = "http://www.sat.gob.mx/ComercioExterior http://www.sat.gob.mx/sitio_internet/cfd/ComercioExterior/ComercioExterior10.xsd"
     End Sub
 
     Public Function GenerarCadenaXMLComercioExterior() As String
+        Const sProcedure As String = "GenerarCadenaXMLComercioExterior"
         Dim sResultado As String = ""
         Try
-            Dim Doc As New MSXML2.DOMDocument60
+            Dim xmlDoc As New MSXML2.DOMDocument60
 
-            Doc.async = False
-            Doc.validateOnParse = False
-            Doc.resolveExternals = False
-            Doc.preserveWhiteSpace = True
+            xmlDoc.async = False
+            xmlDoc.validateOnParse = False
+            xmlDoc.resolveExternals = False
+            xmlDoc.preserveWhiteSpace = True
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''ComercioExterior
-            Dim NdComercioExterior As MSXML2.IXMLDOMElement 'Comprobante
-            NdComercioExterior = Doc.createNode(MSXML2.tagDOMNodeType.NODE_ELEMENT, "cce:ComercioExterior", xmlns)
+            Dim NodoComercioExterior As MSXML2.IXMLDOMElement 'Comprobante
+            NodoComercioExterior = xmlDoc.createNode(MSXML2.tagDOMNodeType.NODE_ELEMENT, Me.AnexoNodo & "ComercioExterior", Me.xmlns)
 
-            With NdComercioExterior
+            With NodoComercioExterior
+                .setAttribute("xsi:schemaLocation", xsischemaLocation)
+
                 If txtLEN(Me.Version) = False Then
                     MsgBox("El valor de Version es un dato requerido.", MsgBoxStyle.Exclamation, Me.NombreClase)
                     Return ""
@@ -104,118 +110,126 @@ Friend Class Class_CFDI_cce_ComercioExterior
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Emisor, opcional
             If bTieneEmisor = True Then
-                Dim NdEmisor As MSXML2.IXMLDOMElement
-                NdEmisor = Doc.createNode(MSXML2.tagDOMNodeType.NODE_ELEMENT, "cce:Emisor", xmlns)
+                Dim NodoEmisor As MSXML2.IXMLDOMElement
+                NodoEmisor = xmlDoc.createNode(MSXML2.tagDOMNodeType.NODE_ELEMENT, Me.AnexoNodo & "Emisor", Me.xmlns)
 
                 If txtLEN(Me.Emisor.Curp) = True Then
-                    NdEmisor.setAttribute("Curp", Me.Emisor.Curp)
+                    NodoEmisor.setAttribute("Curp", Me.Emisor.Curp)
                 End If
 
-                NdComercioExterior.appendChild(NdEmisor)
+                NodoComercioExterior.appendChild(NodoEmisor)
             End If
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Receptor
-            Dim NdReceptor As MSXML2.IXMLDOMElement
-            NdReceptor = Doc.createNode(MSXML2.tagDOMNodeType.NODE_ELEMENT, "cce:Receptor", xmlns)
+            Dim NodoReceptor As MSXML2.IXMLDOMElement
+            NodoReceptor = xmlDoc.createNode(MSXML2.tagDOMNodeType.NODE_ELEMENT, Me.AnexoNodo & "Receptor", Me.xmlns)
 
             If txtLEN(Me.Receptor.Curp) = True Then
-                NdReceptor.setAttribute("Curp", Me.Receptor.Curp)
+                NodoReceptor.setAttribute("Curp", Me.Receptor.Curp)
             End If
 
             If txtLEN(Me.Receptor.NumRegIdTrib) = True Then
-                NdReceptor.setAttribute("NumRegIdTrib", Me.Receptor.NumRegIdTrib)
+                NodoReceptor.setAttribute("NumRegIdTrib", Me.Receptor.NumRegIdTrib)
             Else
                 MsgBox("El valor de Receptor.NumRegIdTrib es un dato requerido.", MsgBoxStyle.Exclamation, Me.NombreClase)
                 Return ""
             End If
 
-            NdComercioExterior.appendChild(NdReceptor)
+            NodoComercioExterior.appendChild(NodoReceptor)
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Destinatario,opcional
             If bTieneDestinatario = True Then
-                Dim NdDestinatario As MSXML2.IXMLDOMElement
-                NdDestinatario = Doc.createNode(MSXML2.tagDOMNodeType.NODE_ELEMENT, "cce:Destinatario", xmlns)
+                Dim NodoDestinatario As MSXML2.IXMLDOMElement
+                NodoDestinatario = xmlDoc.createNode(MSXML2.tagDOMNodeType.NODE_ELEMENT, Me.AnexoNodo & "Destinatario", Me.xmlns)
 
                 If txtLEN(Me.Destinatario.NumRegIdTrib) = True Then
-                    NdDestinatario.setAttribute("NumRegIdTrib", Me.Destinatario.NumRegIdTrib)
+                    NodoDestinatario.setAttribute("NumRegIdTrib", Me.Destinatario.NumRegIdTrib)
                 End If
                 If txtLEN(Me.Destinatario.Rfc) = True Then
-                    NdDestinatario.setAttribute("Rfc", Me.Destinatario.Rfc)
+                    NodoDestinatario.setAttribute("Rfc", Me.Destinatario.Rfc)
                 End If
                 If txtLEN(Me.Destinatario.Curp) = True Then
-                    NdDestinatario.setAttribute("Curp", Me.Destinatario.Curp)
+                    NodoDestinatario.setAttribute("Curp", Me.Destinatario.Curp)
                 End If
                 If txtLEN(Me.Destinatario.Nombre) = True Then
-                    NdDestinatario.setAttribute("Nombre", Me.Destinatario.Nombre)
+                    NodoDestinatario.setAttribute("Nombre", Me.Destinatario.Nombre)
                 End If
 
-                Dim NdDomicilioDestinatario As MSXML2.IXMLDOMElement
-                NdDomicilioDestinatario = Doc.createNode(MSXML2.tagDOMNodeType.NODE_ELEMENT, "cce:Domicilio", xmlns)
+                Dim NodoDomicilioDestinatario As MSXML2.IXMLDOMElement
+                NodoDomicilioDestinatario = xmlDoc.createNode(MSXML2.tagDOMNodeType.NODE_ELEMENT, Me.AnexoNodo & "Domicilio", Me.xmlns)
 
-                If txtLEN(Me.Destinatario.Domicilio.Calle) = True Then
-                    NdDomicilioDestinatario.setAttribute("Calle", Me.Destinatario.Domicilio.Calle)
-                Else
-                    MsgBox("El valor de Destinatario.Domicilio.Calle es un dato requerido.", MsgBoxStyle.Exclamation, Me.NombreClase)
-                    Return ""
-                End If
+                With NodoDomicilioDestinatario
+                    If txtLEN(Me.Destinatario.Domicilio.Calle) = True Then
+                        .setAttribute("Calle", Me.Destinatario.Domicilio.Calle)
+                    Else
+                        MsgBox("El valor de Destinatario.Domicilio.Calle es un dato requerido.", MsgBoxStyle.Exclamation, Me.NombreClase)
+                        Return ""
+                    End If
 
-                If txtLEN(Me.Destinatario.Domicilio.NumeroExterior) = True Then
-                    NdDomicilioDestinatario.setAttribute("NumeroExterior", Me.Destinatario.Domicilio.NumeroExterior)
-                End If
-                If txtLEN(Me.Destinatario.Domicilio.NumeroInterior) = True Then
-                    NdDomicilioDestinatario.setAttribute("NumeroInterior", Me.Destinatario.Domicilio.NumeroInterior)
-                End If
-                If txtLEN(Me.Destinatario.Domicilio.Colonia) = True Then
-                    NdDomicilioDestinatario.setAttribute("Colonia", Me.Destinatario.Domicilio.Colonia)
-                End If
-                If txtLEN(Me.Destinatario.Domicilio.Localidad) = True Then
-                    NdDomicilioDestinatario.setAttribute("Localidad", Me.Destinatario.Domicilio.Localidad)
-                End If
-                If txtLEN(Me.Destinatario.Domicilio.Referencia) = True Then
-                    NdDomicilioDestinatario.setAttribute("Referencia", Me.Destinatario.Domicilio.Referencia)
-                End If
-                If txtLEN(Me.Destinatario.Domicilio.Municipio) = True Then
-                    NdDomicilioDestinatario.setAttribute("Municipio", Me.Destinatario.Domicilio.Municipio)
-                End If
+                    If txtLEN(Me.Destinatario.Domicilio.NumeroExterior) = True Then
+                        .setAttribute("NumeroExterior", Me.Destinatario.Domicilio.NumeroExterior)
+                    End If
 
-                If txtLEN(Me.Destinatario.Domicilio.Estado) = True Then
-                    NdDomicilioDestinatario.setAttribute("Estado", Me.Destinatario.Domicilio.Estado)
-                Else
-                    MsgBox("El valor de Destinatario.Domicilio.Estado es un dato requerido.", MsgBoxStyle.Exclamation, Me.NombreClase)
-                    Return ""
-                End If
+                    If txtLEN(Me.Destinatario.Domicilio.NumeroInterior) = True Then
+                        .setAttribute("NumeroInterior", Me.Destinatario.Domicilio.NumeroInterior)
+                    End If
 
-                If txtLEN(Me.Destinatario.Domicilio.Pais) = True Then
-                    NdDomicilioDestinatario.setAttribute("Pais", Me.Destinatario.Domicilio.Pais)
-                Else
-                    MsgBox("El valor de Destinatario.Domicilio.Pais es un dato requerido.", MsgBoxStyle.Exclamation, Me.NombreClase)
-                    Return ""
-                End If
+                    If txtLEN(Me.Destinatario.Domicilio.Colonia) = True Then
+                        .setAttribute("Colonia", Me.Destinatario.Domicilio.Colonia)
+                    End If
 
-                If txtLEN(Me.Destinatario.Domicilio.CodigoPostal) = True Then
-                    NdDomicilioDestinatario.setAttribute("CodigoPostal", Me.Destinatario.Domicilio.CodigoPostal)
-                Else
-                    MsgBox("El valor de Destinatario.Domicilio.CodigoPostal es un dato requerido.", MsgBoxStyle.Exclamation, Me.NombreClase)
-                    Return ""
-                End If
+                    If txtLEN(Me.Destinatario.Domicilio.Localidad) = True Then
+                        .setAttribute("Localidad", Me.Destinatario.Domicilio.Localidad)
+                    End If
 
-                NdDestinatario.appendChild(NdDomicilioDestinatario)
+                    If txtLEN(Me.Destinatario.Domicilio.Referencia) = True Then
+                        .setAttribute("Referencia", Me.Destinatario.Domicilio.Referencia)
+                    End If
 
-                NdComercioExterior.appendChild(NdDestinatario)
+                    If txtLEN(Me.Destinatario.Domicilio.Municipio) = True Then
+                        .setAttribute("Municipio", Me.Destinatario.Domicilio.Municipio)
+                    End If
+
+                    If txtLEN(Me.Destinatario.Domicilio.Estado) = True Then
+                        .setAttribute("Estado", Me.Destinatario.Domicilio.Estado)
+                    Else
+                        MsgBox("El valor de Destinatario.Domicilio.Estado es un dato requerido.", MsgBoxStyle.Exclamation, Me.NombreClase)
+                        Return ""
+                    End If
+
+                    If txtLEN(Me.Destinatario.Domicilio.Pais) = True Then
+                        .setAttribute("Pais", Me.Destinatario.Domicilio.Pais)
+                    Else
+                        MsgBox("El valor de Destinatario.Domicilio.Pais es un dato requerido.", MsgBoxStyle.Exclamation, Me.NombreClase)
+                        Return ""
+                    End If
+
+                    If txtLEN(Me.Destinatario.Domicilio.CodigoPostal) = True Then
+                        .setAttribute("CodigoPostal", Me.Destinatario.Domicilio.CodigoPostal)
+                    Else
+                        MsgBox("El valor de Destinatario.Domicilio.CodigoPostal es un dato requerido.", MsgBoxStyle.Exclamation, Me.NombreClase)
+                        Return ""
+                    End If
+                End With
+
+                NodoDestinatario.appendChild(NodoDomicilioDestinatario)
+
+                NodoComercioExterior.appendChild(NodoDestinatario)
             End If
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Mercancias
 
-            Dim NdMercancias As MSXML2.IXMLDOMElement
-            NdMercancias = Doc.createNode(MSXML2.tagDOMNodeType.NODE_ELEMENT, "cce:Mercancias", Me.xmlns)
+            Dim NodoMercancias As MSXML2.IXMLDOMElement
+            NodoMercancias = xmlDoc.createNode(MSXML2.tagDOMNodeType.NODE_ELEMENT, Me.AnexoNodo & "Mercancias", Me.xmlns)
 
-            Dim NdMercancia As MSXML2.IXMLDOMElement
+            Dim NodoMercancia As MSXML2.IXMLDOMElement
             Dim i As Integer = 0
 
             For i = 1 To CInt(Me.Mercancia.Count)
 
-                NdMercancia = Doc.createNode(MSXML2.tagDOMNodeType.NODE_ELEMENT, "cce:Mercancia", Me.xmlns)
-                With NdMercancia
+                NodoMercancia = xmlDoc.createNode(MSXML2.tagDOMNodeType.NODE_ELEMENT, Me.AnexoNodo & "Mercancia", Me.xmlns)
+
+                With NodoMercancia
 
                     If txtLEN(Me.Mercancia.Item(i).NoIdentificacion) = True Then
                         .setAttribute("NoIdentificacion", Me.Mercancia.Item(i).NoIdentificacion)
@@ -227,41 +241,41 @@ Friend Class Class_CFDI_cce_ComercioExterior
                         .setAttribute("FraccionArancelaria", Me.Mercancia.Item(i).FraccionArancelaria)
                     End If
                     If txtLEN(Me.Mercancia.Item(i).CantidadAduana) = True Then
-                        .setAttribute("CantidadAduana", Me.Mercancia.Item(i).CantidadAduana)
+                        .setAttribute("CantidadAduana", Format(Me.Mercancia.Item(i).CantidadAduana, "######.000"))
                     End If
                     If txtLEN(Me.Mercancia.Item(i).UnidadAduana) = True Then
                         .setAttribute("UnidadAduana", Me.Mercancia.Item(i).UnidadAduana)
                     End If
                     If txtLEN(Me.Mercancia.Item(i).ValorUnitarioAduana) = True Then
-                        .setAttribute("ValorUnitarioAduana", Me.Mercancia.Item(i).ValorUnitarioAduana)
+                        .setAttribute("ValorUnitarioAduana", Format(Me.Mercancia.Item(i).ValorUnitarioAduana, "######.00"))
                     End If
                     If txtLEN(Me.Mercancia.Item(i).ValorDolares) = True Then
-                        .setAttribute("ValorDolares", Me.Mercancia.Item(i).ValorDolares)
+                        .setAttribute("ValorDolares", Format(Me.Mercancia.Item(i).ValorDolares, "######.00"))
                     Else
                         MsgBox("El valor de Mercancia.ValorDolares es un dato requerido.", MsgBoxStyle.Exclamation, Me.NombreClase)
                         Return ""
                     End If
 
                 End With
-                NdMercancias.appendChild(NdMercancia)
+                NodoMercancias.appendChild(NodoMercancia)
 
                 'CfdAddenda.Articulos.Add(row("CODIGO_ARTICULO"))
             Next
 
             If Me.Mercancia.Count > 0 Then
-                NdComercioExterior.appendChild(NdMercancias)
+                NodoComercioExterior.appendChild(NodoMercancias)
             End If
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-            Doc.appendChild(NdComercioExterior)
+            xmlDoc.appendChild(NodoComercioExterior)
 
             'MsgBox(Doc.xml)
 
-            sResultado = Doc.xml
+            sResultado = xmlDoc.xml
 
         Catch ex As Exception
-            HandleError(Me.NombreClase, "GenerarCadenaXMLComercioExterior", ex)
+            HandleError(Me.NombreClase, sProcedure, ex)
         End Try
 
         Return sResultado
