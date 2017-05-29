@@ -1414,7 +1414,7 @@ BuscarCuentas:
                 .Cell(0, Me.iGyImporte).Text = "Total"
                 .Cell(0, Me.iGyCuentaContable).Text = "CuentaContable"
                 .Cell(0, Me.iGyNombreCuentaContable).Text = "Nombre cuenta"
-                .Cell(0, Me.iGyBoton).Text = "Botón"
+                .Cell(0, Me.iGyBoton).Text = "Costos"
 
                 .Column(Me.iGyCantidad).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyCantidad).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD

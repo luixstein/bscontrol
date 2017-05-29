@@ -609,7 +609,7 @@ Buscar:
                 .Cell(0, Me.igyImpuestoImporte).Text = "IVA"
                 .Cell(0, Me.igyIdArticulo).Text = "Id Articulo"
                 .Cell(0, Me.iGyNombreCuentaContable).Text = "Nombre cuenta"
-                .Cell(0, Me.iGyBoton).Text = "Botón"
+                .Cell(0, Me.iGyBoton).Text = "Costos"
                 .Cell(0, Me.iGyIDAdicional).Text = "IdAdicional"
 
                 .Column(Me.igyCantidad).Mask = FlexCell.MaskEnum.Numeric
