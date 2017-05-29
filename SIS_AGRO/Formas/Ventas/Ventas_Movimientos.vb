@@ -789,6 +789,7 @@ Buscar:
             End If
 
             Me.Grid.Column(Me.igyNombreCentroCosto).Locked = True
+            Me.Grid.Column(Me.igyCosto).Visible = False
 
             Me.Grid.Column(Me.igyIEPS_PORCENTAJE).Visible = False
             Me.Grid.Column(Me.igyIEPS_UNITARIO).Visible = False
