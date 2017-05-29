@@ -179,8 +179,8 @@ buscar:
 
             If Me.RbGlobal.Checked = True Then
                 oReporte = New Class_Reporte("RPT_COMPRA_GLOBAL", Rpt, True)
-                Me.CboFamilia.SelectedValue = "T"
-                Me.cboLineas.SelectedValue = "T"
+                'Me.CboFamilia.SelectedValue = "T"
+                'Me.cboLineas.SelectedValue = "T"
             ElseIf Me.RbAgrupadoFamilia.Checked = True Then
                 oReporte = New Class_Reporte("RPT_COMPRA_AGRUPADO_POR_FAMILIA", Rpt, True)
             ElseIf Me.RbListadoDocumentos.Checked = True Then
@@ -233,19 +233,19 @@ buscar:
         ValidarPeriodo = True
     End Function
 
-    Private Sub RbAgrupadoFamilia_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RbAgrupadoFamilia.CheckedChanged
-        If Me.RbAgrupadoFamilia.Checked = True Then
-            Me.lblDisplayFamilia.Visible = True
-            Me.CboFamilia.Visible = True
+    'Private Sub RbAgrupadoFamilia_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RbAgrupadoFamilia.CheckedChanged
+    'If Me.RbAgrupadoFamilia.Checked = True Then
+    '    Me.lblDisplayFamilia.Visible = True
+    '    Me.CboFamilia.Visible = True
 
-            Me.LblDisplayLinea.Visible = True
-            Me.cboLineas.Visible = True
-        Else
-            Me.lblDisplayFamilia.Visible = False
-            Me.CboFamilia.Visible = False
+    '    Me.LblDisplayLinea.Visible = True
+    '    Me.cboLineas.Visible = True
+    'Else
+    '    Me.lblDisplayFamilia.Visible = False
+    '    Me.CboFamilia.Visible = False
 
-            Me.LblDisplayLinea.Visible = False
-            Me.cboLineas.Visible = False
-        End If
-    End Sub
+    '    Me.LblDisplayLinea.Visible = False
+    '    Me.cboLineas.Visible = False
+    'End If
+    'End Sub
 End Class
