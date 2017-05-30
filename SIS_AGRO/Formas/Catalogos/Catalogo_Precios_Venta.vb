@@ -7,11 +7,17 @@ Public Class Catalogo_Precios_Venta
 #Region "Columnas grid"
     Private igyCodigo As Short = 1
     Private igyDescripcion As Short = 2
-    Private igyPrecio1 As Short = 3
-    Private igyPrecio2 As Short = 4
-    Private igyPrecio3 As Short = 5
-    Private igyPrecio4 As Short = 6
-    Private igyPrecio5 As Short = 7
+    Private igyIEPSPtje As Short = 3
+    Private igyPrecio1 As Short = 4
+    Private igyPrecio1Ieps As Short = 5
+    Private igyPrecio2 As Short = 6
+    Private igyPrecio2Ieps As Short = 7
+    Private igyPrecio3 As Short = 8
+    Private igyPrecio3Ieps As Short = 9
+    Private igyPrecio4 As Short = 10
+    Private igyPrecio4Ieps As Short = 11
+    Private igyPrecio5 As Short = 12
+    Private igyPrecio5Ieps As Short = 13
 #End Region
 
 #Region "Eventos de objetos"
@@ -65,8 +71,15 @@ buscar:
     End Sub
 
     Private Sub Grid_KeyDown(Sender As Object, e As KeyEventArgs) Handles Grid.KeyDown
+        Dim Renglon As Integer = Me.Grid.Selection.FirstRow
+        Dim Columna As Integer = Me.Grid.Selection.FirstCol
         If e.KeyCode = Keys.Return Then
             Me.Grabar()
+            Me.Grid.Cell(Renglon, Me.igyPrecio1Ieps).Text = (valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPrecio1).Text) * (1 + (valorNumericoD(Me.Grid.Cell(Renglon, Me.igyIEPSPtje).Text) / 100))).ToString
+            Me.Grid.Cell(Renglon, Me.igyPrecio2Ieps).Text = (valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPrecio2).Text) * (1 + (valorNumericoD(Me.Grid.Cell(Renglon, Me.igyIEPSPtje).Text) / 100))).ToString
+            Me.Grid.Cell(Renglon, Me.igyPrecio3Ieps).Text = (valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPrecio3).Text) * (1 + (valorNumericoD(Me.Grid.Cell(Renglon, Me.igyIEPSPtje).Text) / 100))).ToString
+            Me.Grid.Cell(Renglon, Me.igyPrecio4Ieps).Text = (valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPrecio4).Text) * (1 + (valorNumericoD(Me.Grid.Cell(Renglon, Me.igyIEPSPtje).Text) / 100))).ToString
+            Me.Grid.Cell(Renglon, Me.igyPrecio5Ieps).Text = (valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPrecio5).Text) * (1 + (valorNumericoD(Me.Grid.Cell(Renglon, Me.igyIEPSPtje).Text) / 100))).ToString
         End If
     End Sub
 #End Region
@@ -108,24 +121,92 @@ buscar:
 
     Private Sub FormateaGrid()
         Try
-            Me.Grid.Column(Me.igyCodigo).Locked = True
-            Me.Grid.Column(Me.igyDescripcion).Locked = True
-
             Me.Grid.Cell(0, Me.igyCodigo).Text = "Código"
             Me.Grid.Cell(0, Me.igyDescripcion).Text = "Descripción"
-            Me.Grid.Cell(0, Me.igyPrecio1).Text = "Precio1"
-            Me.Grid.Cell(0, Me.igyPrecio2).Text = "Precio2"
-            Me.Grid.Cell(0, Me.igyPrecio3).Text = "Precio3"
-            Me.Grid.Cell(0, Me.igyPrecio4).Text = "Precio4"
-            Me.Grid.Cell(0, Me.igyPrecio5).Text = "Precio5"
+            Me.Grid.Cell(0, Me.igyIEPSPtje).Text = "ieps%"
+            Me.Grid.Cell(0, Me.igyPrecio1).Text = "1"
+            Me.Grid.Cell(0, Me.igyPrecio1Ieps).Text = "1 c/ieps"
+            Me.Grid.Cell(0, Me.igyPrecio2).Text = "2"
+            Me.Grid.Cell(0, Me.igyPrecio2Ieps).Text = "2 c/ieps"
+            Me.Grid.Cell(0, Me.igyPrecio3).Text = "3"
+            Me.Grid.Cell(0, Me.igyPrecio3Ieps).Text = "3 c/ieps"
+            Me.Grid.Cell(0, Me.igyPrecio4).Text = "4"
+            Me.Grid.Cell(0, Me.igyPrecio4Ieps).Text = "4 c/ieps"
+            Me.Grid.Cell(0, Me.igyPrecio5).Text = "5"
+            Me.Grid.Cell(0, Me.igyPrecio5Ieps).Text = "5 c/ieps"
 
-            Me.Grid.Column(Me.igyCodigo).Width = 100
-            Me.Grid.Column(Me.igyDescripcion).Width = 290
-            Me.Grid.Column(Me.igyPrecio1).Width = 80
-            Me.Grid.Column(Me.igyPrecio2).Width = 80
-            Me.Grid.Column(Me.igyPrecio3).Width = 80
-            Me.Grid.Column(Me.igyPrecio4).Width = 80
-            Me.Grid.Column(Me.igyPrecio5).Width = 80
+            Me.Grid.Column(Me.igyCodigo).Width = 70
+            Me.Grid.Column(Me.igyDescripcion).Width = 280
+            Me.Grid.Column(Me.igyIEPSPtje).Width = 40
+            Me.Grid.Column(Me.igyPrecio1).Width = 75
+            Me.Grid.Column(Me.igyPrecio2).Width = 75
+            Me.Grid.Column(Me.igyPrecio3).Width = 75
+            Me.Grid.Column(Me.igyPrecio4).Width = 75
+            Me.Grid.Column(Me.igyPrecio5).Width = 75
+            Me.Grid.Column(Me.igyPrecio1Ieps).Width = 75
+            Me.Grid.Column(Me.igyPrecio2Ieps).Width = 75
+            Me.Grid.Column(Me.igyPrecio3Ieps).Width = 75
+            Me.Grid.Column(Me.igyPrecio4Ieps).Width = 75
+            Me.Grid.Column(Me.igyPrecio5Ieps).Width = 75
+
+            Me.Grid.Column(Me.igyPrecio1).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
+            Me.Grid.Column(Me.igyPrecio1).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.igyPrecio1).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.igyPrecio1).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Column(Me.igyPrecio1Ieps).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
+            Me.Grid.Column(Me.igyPrecio1Ieps).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.igyPrecio1Ieps).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.igyPrecio1Ieps).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Column(Me.igyPrecio2).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
+            Me.Grid.Column(Me.igyPrecio2).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.igyPrecio2).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.igyPrecio2).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Column(Me.igyPrecio2Ieps).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
+            Me.Grid.Column(Me.igyPrecio2Ieps).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.igyPrecio2Ieps).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.igyPrecio2Ieps).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Column(Me.igyPrecio3).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
+            Me.Grid.Column(Me.igyPrecio3).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.igyPrecio3).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.igyPrecio3).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Column(Me.igyPrecio3Ieps).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
+            Me.Grid.Column(Me.igyPrecio3Ieps).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.igyPrecio3Ieps).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.igyPrecio3Ieps).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Column(Me.igyPrecio4).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
+            Me.Grid.Column(Me.igyPrecio4).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.igyPrecio4).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.igyPrecio4).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Column(Me.igyPrecio4Ieps).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
+            Me.Grid.Column(Me.igyPrecio4Ieps).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.igyPrecio4Ieps).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.igyPrecio4Ieps).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Column(Me.igyPrecio5).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
+            Me.Grid.Column(Me.igyPrecio5).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.igyPrecio5).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.igyPrecio5).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Column(Me.igyPrecio5Ieps).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
+            Me.Grid.Column(Me.igyPrecio5Ieps).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.igyPrecio5Ieps).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.igyPrecio5Ieps).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Column(Me.igyCodigo).Locked = True
+            Me.Grid.Column(Me.igyDescripcion).Locked = True
+            Me.Grid.Column(Me.igyIEPSPtje).Locked = True
+            Me.Grid.Column(Me.igyPrecio1Ieps).Locked = True
+            Me.Grid.Column(Me.igyPrecio2Ieps).Locked = True
+            Me.Grid.Column(Me.igyPrecio3Ieps).Locked = True
+            Me.Grid.Column(Me.igyPrecio4Ieps).Locked = True
+            Me.Grid.Column(Me.igyPrecio5Ieps).Locked = True
 
             Me.Grid.Row(Me.Grid.Rows - 1).Locked = True
         Catch ex As Exception

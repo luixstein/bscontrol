@@ -54,7 +54,7 @@ Partial Class Catalogo_Precios_Venta
         Me.Grid.LockButton = True
         Me.Grid.Name = "Grid"
         Me.Grid.Rows = 1
-        Me.Grid.Size = New System.Drawing.Size(894, 379)
+        Me.Grid.Size = New System.Drawing.Size(943, 379)
         Me.Grid.TabIndex = 3
         Me.Grid.UncheckedImage = CType(resources.GetObject("Grid.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -101,7 +101,7 @@ Partial Class Catalogo_Precios_Venta
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbImprimir, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(918, 25)
+        Me.tsMenu.Size = New System.Drawing.Size(967, 25)
         Me.tsMenu.TabIndex = 4
         Me.tsMenu.Text = "tsMenu"
         '
@@ -160,7 +160,7 @@ Partial Class Catalogo_Precios_Venta
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(918, 524)
+        Me.ClientSize = New System.Drawing.Size(967, 524)
         Me.Controls.Add(Me.lblArticulo)
         Me.Controls.Add(Me.lblDisplayArticulo)
         Me.Controls.Add(Me.txtCodigoArticulo)

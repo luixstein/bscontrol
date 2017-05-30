@@ -772,7 +772,7 @@ Buscar:
             Me.Grid.Column(Me.igyImporteKilos).Visible = False
             Me.Grid.Column(Me.igyEsProductoKilos).Visible = False
 
-            If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
+            If Me.oDocumento.AFECTA_CXC = True Then
                 Me.Grid.Column(Me.igyCuentaContable).Visible = False 'True
                 Me.Grid.Column(Me.igyNombreCentroCosto).Visible = True
             Else
