@@ -42,26 +42,26 @@ Public Class Ventas_Movimientos
     Private igyDescripcion As Short = 3
     Private igyCantidad As Short = 4
     Private igyPrecio As Short = 5
-    Private igyUnidad As Short = 6
-    Private igyCantidadKilos As Short = 7
-    Private igyPrecioKilos As Short = 8
-    Private igyImpuestoPorcentaje As Short = 9
-    Private igyImporte As Short = 10
-    Private igyImporteKilos As Short = 11
-    Private igyCuentaContable As Short = 12
-    Private igyImpuestoImporte As Short = 13
-    Private igyIdOrigen As Short = 14
-    Private igyEsProductoKilos As Short = 15
-    Private igyCodigoCentroCosto As Short = 16
-    Private igyNombreCentroCosto As Short = 17
-    Private igyPrecioUSD As Short = 18
-    Private igyImporteUSD As Short = 19
-    Private igyIEPS_PORCENTAJE As Short = 20
-    Private igyIEPS_UNITARIO As Short = 21
-    Private igyIEPS_IMPORTE As Short = 22
-    Private igyBASE_IEPS As Short = 23
-    Private igyBASE_IVA As Short = 24
-    Private igyPRECIO_TOTAL As Short = 25
+    Private igyPRECIO_TOTAL As Short = 6
+    Private igyUnidad As Short = 7
+    Private igyCantidadKilos As Short = 8
+    Private igyPrecioKilos As Short = 9
+    Private igyImpuestoPorcentaje As Short = 10
+    Private igyImporte As Short = 11
+    Private igyImporteKilos As Short = 12
+    Private igyCuentaContable As Short = 13
+    Private igyImpuestoImporte As Short = 14
+    Private igyIdOrigen As Short = 15
+    Private igyEsProductoKilos As Short = 16
+    Private igyCodigoCentroCosto As Short = 17
+    Private igyNombreCentroCosto As Short = 18
+    Private igyPrecioUSD As Short = 19
+    Private igyImporteUSD As Short = 20
+    Private igyIEPS_PORCENTAJE As Short = 21
+    Private igyIEPS_UNITARIO As Short = 22
+    Private igyIEPS_IMPORTE As Short = 23
+    Private igyBASE_IEPS As Short = 24
+    Private igyBASE_IVA As Short = 25
     Private igyCosto As Short = 26
 #End Region
 
@@ -702,6 +702,7 @@ Buscar:
             Me.Grid.Cell(0, Me.igyTipoControlInventariable).Text = "Inv"
             Me.Grid.Cell(0, Me.igyCantidad).Text = "Cantidad"
             Me.Grid.Cell(0, Me.igyPrecio).Text = "Precio"
+            Me.Grid.Cell(0, Me.igyPRECIO_TOTAL).Text = "Precio total"
 
             Me.Grid.Cell(0, Me.igyCantidadKilos).Text = "Cantidad x Kg"
             Me.Grid.Cell(0, Me.igyPrecioKilos).Text = "Precio x Kg"
@@ -732,6 +733,11 @@ Buscar:
             Me.Grid.Column(Me.igyPrecio).Mask = FlexCell.MaskEnum.Numeric
             Me.Grid.Column(Me.igyPrecio).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
             Me.Grid.Column(Me.igyPrecio).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Column(Me.igyPRECIO_TOTAL).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
+            Me.Grid.Column(Me.igyPRECIO_TOTAL).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.igyPRECIO_TOTAL).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.igyPRECIO_TOTAL).Alignment = FlexCell.AlignmentEnum.RightCenter
 
             Me.Grid.Column(Me.igyPrecioKilos).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
             Me.Grid.Column(Me.igyPrecioKilos).Mask = FlexCell.MaskEnum.Numeric
@@ -796,7 +802,8 @@ Buscar:
             Me.Grid.Column(Me.igyIEPS_IMPORTE).Visible = False
             Me.Grid.Column(Me.igyBASE_IEPS).Visible = False
             Me.Grid.Column(Me.igyBASE_IVA).Visible = False
-            Me.Grid.Column(Me.igyPRECIO_TOTAL).Visible = False
+            Me.Grid.Column(Me.igyPRECIO_TOTAL).Locked = True
+            'Me.Grid.Column(Me.igyPRECIO_TOTAL).Visible = False
 
             'If bEsReferencia = True Then
             '    Me.Grid.Column(Me.igyCodigo).Locked = True
