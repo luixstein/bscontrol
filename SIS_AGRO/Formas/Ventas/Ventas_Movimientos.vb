@@ -780,7 +780,7 @@ Buscar:
 
             If Me.oDocumento.AFECTA_CXC = True Then
                 Me.Grid.Column(Me.igyCuentaContable).Visible = False 'True
-                Me.Grid.Column(Me.igyNombreCentroCosto).Visible = True
+                Me.Grid.Column(Me.igyNombreCentroCosto).Visible = False  'True
             Else
                 Me.Grid.Column(Me.igyCuentaContable).Visible = False
                 Me.Grid.Column(Me.igyNombreCentroCosto).Visible = False
@@ -1193,6 +1193,10 @@ Buscar:
             Me.dtSeries.AcceptChanges()
 
             Me.Totales()
+
+            If Me.AsignaCentrosCostos() = False Then
+                Exit Function
+            End If
 
             If Me.ValidarVenta() = False Then
                 Exit Function
@@ -2097,8 +2101,12 @@ CANCELAR:
             With Me.Grid
                 For i = 1 To .Rows - 1
                     If txtLEN(.Cell(i, Me.igyCodigo).Text) = True AndAlso Me.Grid.Cell(i, Me.igyCodigo).Text <> "-" Then
-                        If txtLEN(.Cell(i, Me.igyNombreCentroCosto).Text) = False Then
-                            MsgBox("Asígne el centro de costos del renglón: " & i & " .", MsgBoxStyle.Exclamation, sProcedure)
+                        'If txtLEN(.Cell(i, Me.igyNombreCentroCosto).Text) = False Then
+                        '    MsgBox("Asígne el centro de costos del renglón: " & i & " .", MsgBoxStyle.Exclamation, sProcedure)
+                        '    Return False
+                        'End If
+                        If txtLEN(.Cell(i, Me.igyCodigoCentroCosto).Text) = False Then 'AsignarCentrosCostos se volvera a ejecutar al dar clic en grabar nuevamente
+                            MsgBox("El renglón: " & i & " no tiene centro de costo, vuelva a dar click en Grabar.", MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         End If
                     End If
@@ -2108,6 +2116,33 @@ CANCELAR:
         Catch ex As Exception
             HandleError(Me.Name, "ValidarCentrosCostos", ex)
         End Try
+    End Function
+
+    Private Function AsignaCentrosCostos() As Boolean
+        Dim bResultado As Boolean = False
+        Try
+            Dim i As Integer
+            Dim oVendedor As New Class_CatVendedores
+            oVendedor.CODIGO_VENDEDOR = CInt(Me.cboVendedor.SelectedValue)
+
+            If oVendedor.Consultar = False Then
+                MsgBox("No se pudo recuperar el código de centro de costo del vendedor.", MsgBoxStyle.Exclamation, Me.Text)
+                Return bResultado
+            End If
+
+            With Me.Grid
+                For i = 1 To .Rows - 1
+                    If txtLEN(.Cell(i, Me.igyCodigo).Text) = True AndAlso Me.Grid.Cell(i, Me.igyCodigo).Text <> "-" Then
+                        .Cell(i, igyCodigoCentroCosto).Text = oVendedor.CODIGO_CENTRO_COSTO.ToString
+                    End If
+                Next
+            End With
+
+            bResultado = True
+        Catch ex As Exception
+            HandleError(Me.Name, "AsignaCentrosCostos", ex)
+        End Try
+        Return bResultado
     End Function
 
     Private Sub DesplegarDocumentos()

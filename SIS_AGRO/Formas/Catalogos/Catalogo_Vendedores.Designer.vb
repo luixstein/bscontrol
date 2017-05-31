@@ -38,6 +38,9 @@ Partial Class Catalogo_Vendedores
         Me.Grid = New System.Windows.Forms.DataGridView()
         Me.txtFiltro = New System.Windows.Forms.TextBox()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.LblNombreCentroCosto = New System.Windows.Forms.Label()
+        Me.LblDisplayCentroCosto = New System.Windows.Forms.Label()
+        Me.TxtCodigoCentroCosto = New System.Windows.Forms.TextBox()
         Me.lblTipoCategoria = New System.Windows.Forms.Label()
         Me.chkCrearCategoria = New System.Windows.Forms.CheckBox()
         Me.txtTipoCategoria = New System.Windows.Forms.TextBox()
@@ -146,9 +149,9 @@ Partial Class Catalogo_Vendedores
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(439, 34)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(493, 633)
         Me.gBoxBusquedaRapida.TabIndex = 1
         Me.gBoxBusquedaRapida.TabStop = False
@@ -162,7 +165,7 @@ Partial Class Catalogo_Vendedores
         Me.Grid.AllowUserToResizeRows = False
         Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.Grid.Location = New System.Drawing.Point(8, 53)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid.Name = "Grid"
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
@@ -175,13 +178,16 @@ Partial Class Catalogo_Vendedores
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.Name = "txtFiltro"
         Me.txtFiltro.Size = New System.Drawing.Size(379, 22)
         Me.txtFiltro.TabIndex = 0
         '
         'gBoxInformacion
         '
+        Me.gBoxInformacion.Controls.Add(Me.LblNombreCentroCosto)
+        Me.gBoxInformacion.Controls.Add(Me.LblDisplayCentroCosto)
+        Me.gBoxInformacion.Controls.Add(Me.TxtCodigoCentroCosto)
         Me.gBoxInformacion.Controls.Add(Me.lblTipoCategoria)
         Me.gBoxInformacion.Controls.Add(Me.chkCrearCategoria)
         Me.gBoxInformacion.Controls.Add(Me.txtTipoCategoria)
@@ -197,13 +203,40 @@ Partial Class Catalogo_Vendedores
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayCodCultivo)
         Me.gBoxInformacion.Controls.Add(Me.TxtIDVendedor)
         Me.gBoxInformacion.Location = New System.Drawing.Point(16, 34)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Size = New System.Drawing.Size(413, 634)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
+        '
+        'LblNombreCentroCosto
+        '
+        Me.LblNombreCentroCosto.AutoSize = True
+        Me.LblNombreCentroCosto.Location = New System.Drawing.Point(139, 323)
+        Me.LblNombreCentroCosto.Name = "LblNombreCentroCosto"
+        Me.LblNombreCentroCosto.Size = New System.Drawing.Size(16, 17)
+        Me.LblNombreCentroCosto.TabIndex = 103
+        Me.LblNombreCentroCosto.Text = "_"
+        '
+        'LblDisplayCentroCosto
+        '
+        Me.LblDisplayCentroCosto.AutoSize = True
+        Me.LblDisplayCentroCosto.Location = New System.Drawing.Point(8, 290)
+        Me.LblDisplayCentroCosto.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayCentroCosto.Name = "LblDisplayCentroCosto"
+        Me.LblDisplayCentroCosto.Size = New System.Drawing.Size(116, 17)
+        Me.LblDisplayCentroCosto.TabIndex = 102
+        Me.LblDisplayCentroCosto.Text = "Centro de costo :"
+        '
+        'TxtCodigoCentroCosto
+        '
+        Me.TxtCodigoCentroCosto.Location = New System.Drawing.Point(139, 287)
+        Me.TxtCodigoCentroCosto.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtCodigoCentroCosto.Name = "TxtCodigoCentroCosto"
+        Me.TxtCodigoCentroCosto.Size = New System.Drawing.Size(119, 22)
+        Me.TxtCodigoCentroCosto.TabIndex = 6
         '
         'lblTipoCategoria
         '
@@ -219,7 +252,7 @@ Partial Class Catalogo_Vendedores
         '
         Me.chkCrearCategoria.AutoSize = True
         Me.chkCrearCategoria.Location = New System.Drawing.Point(12, 193)
-        Me.chkCrearCategoria.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.chkCrearCategoria.Margin = New System.Windows.Forms.Padding(4)
         Me.chkCrearCategoria.Name = "chkCrearCategoria"
         Me.chkCrearCategoria.Size = New System.Drawing.Size(252, 21)
         Me.chkCrearCategoria.TabIndex = 4
@@ -229,7 +262,7 @@ Partial Class Catalogo_Vendedores
         'txtTipoCategoria
         '
         Me.txtTipoCategoria.Location = New System.Drawing.Point(139, 222)
-        Me.txtTipoCategoria.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtTipoCategoria.Margin = New System.Windows.Forms.Padding(4)
         Me.txtTipoCategoria.MaxLength = 30
         Me.txtTipoCategoria.Name = "txtTipoCategoria"
         Me.txtTipoCategoria.Size = New System.Drawing.Size(111, 22)
@@ -260,7 +293,7 @@ Partial Class Catalogo_Vendedores
         'txtCodigoCategoria
         '
         Me.txtCodigoCategoria.Location = New System.Drawing.Point(101, 134)
-        Me.txtCodigoCategoria.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCodigoCategoria.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCodigoCategoria.Name = "txtCodigoCategoria"
         Me.txtCodigoCategoria.Size = New System.Drawing.Size(119, 22)
         Me.txtCodigoCategoria.TabIndex = 3
@@ -297,7 +330,7 @@ Partial Class Catalogo_Vendedores
         'TxtNombreVendedor
         '
         Me.TxtNombreVendedor.Location = New System.Drawing.Point(103, 50)
-        Me.TxtNombreVendedor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtNombreVendedor.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNombreVendedor.MaxLength = 50
         Me.TxtNombreVendedor.Name = "TxtNombreVendedor"
         Me.TxtNombreVendedor.Size = New System.Drawing.Size(301, 22)
@@ -319,7 +352,7 @@ Partial Class Catalogo_Vendedores
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.CboEstatus.Location = New System.Drawing.Point(101, 89)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(111, 24)
@@ -338,7 +371,7 @@ Partial Class Catalogo_Vendedores
         'TxtIDVendedor
         '
         Me.TxtIDVendedor.Location = New System.Drawing.Point(101, 18)
-        Me.TxtIDVendedor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtIDVendedor.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtIDVendedor.MaxLength = 2
         Me.TxtIDVendedor.Name = "TxtIDVendedor"
         Me.TxtIDVendedor.Size = New System.Drawing.Size(75, 22)
@@ -358,7 +391,7 @@ Partial Class Catalogo_Vendedores
         Me.Controls.Add(Me.gBoxBusquedaRapida)
         Me.Controls.Add(Me.gBoxInformacion)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Vendedores"
         Me.ShowIcon = False
@@ -406,4 +439,7 @@ Partial Class Catalogo_Vendedores
     Friend WithEvents chkCrearCategoria As System.Windows.Forms.CheckBox
     Friend WithEvents txtTipoCategoria As System.Windows.Forms.TextBox
     Friend WithEvents lblDisplayTipoCategoria As System.Windows.Forms.Label
+    Friend WithEvents LblNombreCentroCosto As System.Windows.Forms.Label
+    Friend WithEvents LblDisplayCentroCosto As System.Windows.Forms.Label
+    Friend WithEvents TxtCodigoCentroCosto As System.Windows.Forms.TextBox
 End Class

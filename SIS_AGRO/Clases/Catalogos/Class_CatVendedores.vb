@@ -11,6 +11,7 @@ Public Class Class_CatVendedores
     Private _NOMBRE_VENDEDOR As String
     Private _Estatus As String
     Private _CODIGO_CATEGORIA As String
+    Private _CODIGO_CENTRO_COSTO As Integer
     Private _Agregar As String
 #End Region
 
@@ -64,6 +65,15 @@ Public Class Class_CatVendedores
         End Get
         Set(ByVal Value As String)
             Me._CODIGO_CATEGORIA = Value
+        End Set
+    End Property
+
+    Public Property CODIGO_CENTRO_COSTO() As Integer
+        Get
+            Return Me._CODIGO_CENTRO_COSTO
+        End Get
+        Set(ByVal Value As Integer)
+            Me._CODIGO_CENTRO_COSTO = Value
         End Set
     End Property
 
@@ -162,6 +172,7 @@ Public Class Class_CatVendedores
             sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_CATEGORIA)) : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@GENERAR_CATEGORIA", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._GENERAR_CATEGORIA)
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_TIPO_CATEGORIA))
+            sqlParametro = .Parameters.Add("@CODIGO_CENTRO_COSTO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CENTRO_COSTO
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._Agregar
 
             Try
@@ -197,6 +208,7 @@ Public Class Class_CatVendedores
             sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CATEGORIA
             sqlParametro = .Parameters.Add("@GENERAR_CATEGORIA", SqlDbType.Char, 1) : sqlParametro.Value = "0"
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = 0
+            sqlParametro = .Parameters.Add("@CODIGO_CENTRO_COSTO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CENTRO_COSTO
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._Agregar
 
             Try
@@ -230,6 +242,7 @@ Public Class Class_CatVendedores
                     Me._NOMBRE_VENDEDOR = Trim("" & dReader("NOMBRE_VENDEDOR").ToString)
                     Me._Estatus = "" & dReader("ESTATUS").ToString
                     Me._CODIGO_CATEGORIA = "" & dReader("CODIGO_CATEGORIA")
+                    Me._CODIGO_CENTRO_COSTO = "" & dReader("CODIGO_CENTRO_COSTO")
                     bResultado = True
                 End If
                 dReader.Close()

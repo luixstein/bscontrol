@@ -208,6 +208,7 @@ Public Class Catalogo_Vendedores
                     Me.TxtNombreVendedor.Enabled = True
                     Me.CboEstatus.Enabled = False
                     Me.txtCodigoCategoria.Enabled = True
+                    Me.TxtCodigoCentroCosto.Enabled = True
 
                     Me.InicializaElemento()
 
@@ -229,6 +230,7 @@ Public Class Catalogo_Vendedores
                     Me.CboEstatus.Enabled = True
                     Me.txtCodigoCategoria.Enabled = True
                     Me.chkCrearCategoria.Visible = False : Me.chkCrearCategoria.Checked = True : Me.chkCrearCategoria.Checked = False
+                    Me.TxtCodigoCentroCosto.Enabled = True
 
                     Me.TxtNombreVendedor.Focus()
 
@@ -259,6 +261,8 @@ Public Class Catalogo_Vendedores
         Me.txtTipoCategoria.Text = ""
         Me.lblTipoCategoria.Text = ""
         Me.chkCrearCategoria.Checked = False
+        Me.TxtCodigoCentroCosto.Text = ""
+        Me.LblNombreCentroCosto.Text = ""
     End Sub
 
     Private Sub DesplegarElementos()
@@ -293,6 +297,14 @@ Public Class Catalogo_Vendedores
                     Else
                         lblCategoria.Text = sql.Result1
                     End If
+
+                    Me.TxtCodigoCentroCosto.Text = .CODIGO_CENTRO_COSTO.ToString
+                    sql = New Class_find("SELECT NOMBRE_CENTRO_COSTO FROM NOMINA_CAT_CENTROS_COSTOS WHERE CODIGO_CENTRO_COSTO=" & Me.TxtCodigoCentroCosto.Text)
+                    If sql.Result1 = "" Then
+                    Else
+                        LblNombreCentroCosto.Text = sql.Result1
+                    End If
+
                 End With
             End If
             oElemento = Nothing
@@ -313,6 +325,7 @@ Public Class Catalogo_Vendedores
                         .NOMBRE_VENDEDOR = Me.TxtNombreVendedor.Text
                         .Status = Strings.Left(Me.CboEstatus.Text, 1)
                         .CODIGO_CATEGORIA = Me.txtCodigoCategoria.Text
+                        .CODIGO_CENTRO_COSTO = CInt(Me.TxtCodigoCentroCosto.Text)
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -375,6 +388,12 @@ Public Class Catalogo_Vendedores
                         Return False
                     End If
             End Select
+
+            If txtLEN(Me.TxtCodigoCentroCosto.Text) = False Then
+                MsgBox("Capture un centro de costo.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.TxtCodigoCentroCosto.Focus()
+                Return False
+            End If
 
             bResultado = True
 
@@ -454,7 +473,7 @@ Public Class Catalogo_Vendedores
     End Sub
 
 
-    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoCategoria.KeyPress, txtTipoCategoria.KeyPress
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCodigoCategoria.KeyPress, txtTipoCategoria.KeyPress, TxtCodigoCentroCosto.KeyPress
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
@@ -537,7 +556,7 @@ Enter:
                     oTiposCategorias = New Class_CatTiposCategorias(Me.txtTipoCategoria.Text)
                     If oTiposCategorias.Existe = True Then
                         Me.lblTipoCategoria.Text = oTiposCategorias.Nombre_Tipo_Categoria
-                        tsbGrabar.PerformClick()
+                        'tsbGrabar.PerformClick()
                     Else
                         Me.lblTipoCategoria.Text = "" : GoTo Buscar : Exit Sub
                     End If
@@ -545,6 +564,40 @@ Enter:
             End Select
         Catch ex As Exception
             HandleError(Me.Name, "txtTipoCategoria_KeyDown", ex)
+        End Try
+    End Sub
+
+    Private Sub txtCodigoCentroCosto_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtCodigoCentroCosto.KeyDown
+        Try
+            Dim oCentroCosto As New Class_CatCentroCostos
+
+            Select Case e.KeyCode
+                Case Keys.F6
+Buscar:
+                    Dim resultado As String
+                    resultado = oCentroCosto.BusquedaVisual_PorDescripcion()
+                    Me.TxtCodigoCentroCosto.Text = resultado
+                    If txtLEN(resultado) = True Then
+                        GoTo Enter : Exit Sub
+                    End If
+
+                Case Keys.Return
+Enter:
+                    If txtLEN(Me.TxtCodigoCentroCosto.Text) = False Then
+                        Me.LblNombreCentroCosto.Text = "" : GoTo Buscar : Exit Sub
+                    End If
+
+                    oCentroCosto = New Class_CatCentroCostos(CInt(Me.TxtCodigoCentroCosto.Text))
+                    If oCentroCosto.EXISTE = True Then
+                        Me.LblNombreCentroCosto.Text = oCentroCosto.NOMBRE_CENTRO_COSTO
+                        tsbGrabar.PerformClick()
+                    Else
+                        Me.LblNombreCentroCosto.Text = "" : GoTo Buscar : Exit Sub
+                    End If
+
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Name, "txtCodigoCentroCosto_KeyDown", ex)
         End Try
     End Sub
 #End Region
