@@ -73,6 +73,12 @@ Public Class VentasSeleccionPrecio
                 Me.txtPrecio3.Text = FormatPrecio(Me.oPrecio.PRECIO3)
                 Me.txtPrecio4.Text = FormatPrecio(Me.oPrecio.PRECIO4)
                 Me.txtPrecio5.Text = FormatPrecio(Me.oPrecio.PRECIO5)
+                Me.txtPrecio1_IEPS.Text = FormatPrecio(Me.oPrecio.PRECIO1_IEPS)
+                Me.txtPrecio2_IEPS.Text = FormatPrecio(Me.oPrecio.PRECIO2_IEPS)
+                Me.txtPrecio3_IEPS.Text = FormatPrecio(Me.oPrecio.PRECIO3_IEPS)
+                Me.txtPrecio4_IEPS.Text = FormatPrecio(Me.oPrecio.PRECIO4_IEPS)
+                Me.txtPrecio5_IEPS.Text = FormatPrecio(Me.oPrecio.PRECIO5_IEPS)
+                Me.txtIEPSPtje.Text = Format(Me.oPrecio.IEPS_PORCENTAJE, "0.00") & " %"
             End If
         Catch ex As Exception
             HandleError(Me.Name, "Consultar", ex)

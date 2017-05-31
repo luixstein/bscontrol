@@ -18,6 +18,12 @@ Public Class Class_CatPreciosVenta
 #Region "Campos ligados a la tabla"
     Private _Existe As Boolean 'lectura
     Private _DESCRIPCION As String
+    Private _IEPS_PORCENTAJE As Decimal
+    Private _PRECIO1_IEPS As Decimal
+    Private _PRECIO2_IEPS As Decimal
+    Private _PRECIO3_IEPS As Decimal
+    Private _PRECIO4_IEPS As Decimal
+    Private _PRECIO5_IEPS As Decimal
 #End Region
 
 #Region "Campos públicos"
@@ -95,6 +101,42 @@ Public Class Class_CatPreciosVenta
     Public ReadOnly Property DESCRIPCION() As String
         Get
             Return Me._DESCRIPCION
+        End Get
+    End Property
+
+    Public ReadOnly Property IEPS_PORCENTAJE() As Decimal
+        Get
+            Return Me._IEPS_PORCENTAJE
+        End Get
+    End Property
+
+    Public ReadOnly Property PRECIO1_IEPS() As Decimal
+        Get
+            Return Me._PRECIO1_IEPS
+        End Get
+    End Property
+
+    Public ReadOnly Property PRECIO2_IEPS() As Decimal
+        Get
+            Return Me._PRECIO2_IEPS
+        End Get
+    End Property
+
+    Public ReadOnly Property PRECIO3_IEPS() As Decimal
+        Get
+            Return Me._PRECIO3_IEPS
+        End Get
+    End Property
+
+    Public ReadOnly Property PRECIO4_IEPS() As Decimal
+        Get
+            Return Me._PRECIO4_IEPS
+        End Get
+    End Property
+
+    Public ReadOnly Property PRECIO5_IEPS() As Decimal
+        Get
+            Return Me._PRECIO5_IEPS
         End Get
     End Property
 #End Region
@@ -189,9 +231,15 @@ Public Class Class_CatPreciosVenta
 
     Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand("SELECT P.CODIGO_ARTICULO,A.DESCRIPCION,P.PRECIO1,P.PRECIO2,P.PRECIO3,P.PRECIO4,P.PRECIO5 " &
-                                  "FROM CAT_PRECIOS_VENTA P INNER JOIN CAT_ARTICULOS A ON(P.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
-                                  "WHERE P.CODIGO_ARTICULO='" & sReplace(Me._CODIGO_ARTICULO) & "'", Me._Conexion)
+        Dim cmd As New SqlCommand("SELECT P.CODIGO_ARTICULO,A.DESCRIPCION,P.PRECIO1,P.PRECIO2,P.PRECIO3,P.PRECIO4,P.PRECIO5,T.IEPS_PORCENTAJE, " &
+                                    "ROUND(P.PRECIO1*(1+(T.IEPS_PORCENTAJE/100.00)),3) PRECIO1_IEPS, " &
+                                    "ROUND(P.PRECIO2*(1+(T.IEPS_PORCENTAJE/100.00)),3) PRECIO2_IEPS, " &
+                                    "ROUND(P.PRECIO3*(1+(T.IEPS_PORCENTAJE/100.00)),3) PRECIO3_IEPS, " &
+                                    "ROUND(P.PRECIO4*(1+(T.IEPS_PORCENTAJE/100.00)),3) PRECIO4_IEPS, " &
+                                    "ROUND(P.PRECIO5*(1+(T.IEPS_PORCENTAJE/100.00)),3) PRECIO5_IEPS " &
+                                    "FROM CAT_PRECIOS_VENTA P INNER JOIN CAT_ARTICULOS A ON(P.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
+                                    "LEFT JOIN CAT_GRADOS_TOXICIDAD T ON(A.GRADO_TOXICIDAD=T.GRADO_TOXICIDAD)" &
+                                    "WHERE P.CODIGO_ARTICULO='" & sReplace(Me._CODIGO_ARTICULO) & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -203,12 +251,17 @@ Public Class Class_CatPreciosVenta
                 If dReader.Read Then
                     Me._CODIGO_ARTICULO = dReader("CODIGO_ARTICULO").ToString()
                     Me._DESCRIPCION = dReader("DESCRIPCION").ToString()
+                    Me._IEPS_PORCENTAJE = CDec(dReader("IEPS_PORCENTAJE").ToString())
                     Me._PRECIO1 = CDec(dReader("PRECIO1").ToString())
                     Me._PRECIO2 = CDec(dReader("PRECIO2").ToString())
                     Me._PRECIO3 = CDec(dReader("PRECIO3").ToString())
                     Me._PRECIO4 = CDec(dReader("PRECIO4").ToString())
                     Me._PRECIO5 = CDec(dReader("PRECIO5").ToString())
-
+                    Me._PRECIO1_IEPS = CDec(dReader("PRECIO1_IEPS").ToString())
+                    Me._PRECIO2_IEPS = CDec(dReader("PRECIO2_IEPS").ToString())
+                    Me._PRECIO3_IEPS = CDec(dReader("PRECIO3_IEPS").ToString())
+                    Me._PRECIO4_IEPS = CDec(dReader("PRECIO4_IEPS").ToString())
+                    Me._PRECIO5_IEPS = CDec(dReader("PRECIO5_IEPS").ToString())
                     bResultado = True
                 End If
                 dReader.Close()

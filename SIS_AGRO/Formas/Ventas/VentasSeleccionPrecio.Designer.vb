@@ -37,6 +37,15 @@ Partial Class VentasSeleccionPrecio
         Me.lblDisplayPrecio5 = New System.Windows.Forms.Label()
         Me.btnPrecio5 = New System.Windows.Forms.Button()
         Me.txtPrecio5 = New System.Windows.Forms.TextBox()
+        Me.txtPrecio5_IEPS = New System.Windows.Forms.TextBox()
+        Me.txtPrecio4_IEPS = New System.Windows.Forms.TextBox()
+        Me.txtPrecio3_IEPS = New System.Windows.Forms.TextBox()
+        Me.txtPrecio2_IEPS = New System.Windows.Forms.TextBox()
+        Me.txtPrecio1_IEPS = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.txtIEPSPtje = New System.Windows.Forms.TextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'txtPrecio1
@@ -49,7 +58,7 @@ Partial Class VentasSeleccionPrecio
         '
         'btnPrecio1
         '
-        Me.btnPrecio1.Location = New System.Drawing.Point(180, 26)
+        Me.btnPrecio1.Location = New System.Drawing.Point(325, 26)
         Me.btnPrecio1.Name = "btnPrecio1"
         Me.btnPrecio1.Size = New System.Drawing.Size(75, 23)
         Me.btnPrecio1.TabIndex = 1
@@ -76,7 +85,7 @@ Partial Class VentasSeleccionPrecio
         '
         'btnPrecio2
         '
-        Me.btnPrecio2.Location = New System.Drawing.Point(180, 55)
+        Me.btnPrecio2.Location = New System.Drawing.Point(325, 55)
         Me.btnPrecio2.Name = "btnPrecio2"
         Me.btnPrecio2.Size = New System.Drawing.Size(75, 23)
         Me.btnPrecio2.TabIndex = 4
@@ -102,7 +111,7 @@ Partial Class VentasSeleccionPrecio
         '
         'btnPrecio3
         '
-        Me.btnPrecio3.Location = New System.Drawing.Point(180, 84)
+        Me.btnPrecio3.Location = New System.Drawing.Point(325, 84)
         Me.btnPrecio3.Name = "btnPrecio3"
         Me.btnPrecio3.Size = New System.Drawing.Size(75, 23)
         Me.btnPrecio3.TabIndex = 7
@@ -128,7 +137,7 @@ Partial Class VentasSeleccionPrecio
         '
         'btnPrecio4
         '
-        Me.btnPrecio4.Location = New System.Drawing.Point(180, 113)
+        Me.btnPrecio4.Location = New System.Drawing.Point(325, 113)
         Me.btnPrecio4.Name = "btnPrecio4"
         Me.btnPrecio4.Size = New System.Drawing.Size(75, 23)
         Me.btnPrecio4.TabIndex = 10
@@ -154,7 +163,7 @@ Partial Class VentasSeleccionPrecio
         '
         'btnPrecio5
         '
-        Me.btnPrecio5.Location = New System.Drawing.Point(180, 142)
+        Me.btnPrecio5.Location = New System.Drawing.Point(325, 142)
         Me.btnPrecio5.Name = "btnPrecio5"
         Me.btnPrecio5.Size = New System.Drawing.Size(75, 23)
         Me.btnPrecio5.TabIndex = 13
@@ -169,11 +178,95 @@ Partial Class VentasSeleccionPrecio
         Me.txtPrecio5.Size = New System.Drawing.Size(100, 20)
         Me.txtPrecio5.TabIndex = 12
         '
+        'txtPrecio5_IEPS
+        '
+        Me.txtPrecio5_IEPS.Location = New System.Drawing.Point(180, 142)
+        Me.txtPrecio5_IEPS.Name = "txtPrecio5_IEPS"
+        Me.txtPrecio5_IEPS.ReadOnly = True
+        Me.txtPrecio5_IEPS.Size = New System.Drawing.Size(100, 20)
+        Me.txtPrecio5_IEPS.TabIndex = 19
+        '
+        'txtPrecio4_IEPS
+        '
+        Me.txtPrecio4_IEPS.Location = New System.Drawing.Point(180, 113)
+        Me.txtPrecio4_IEPS.Name = "txtPrecio4_IEPS"
+        Me.txtPrecio4_IEPS.ReadOnly = True
+        Me.txtPrecio4_IEPS.Size = New System.Drawing.Size(100, 20)
+        Me.txtPrecio4_IEPS.TabIndex = 18
+        '
+        'txtPrecio3_IEPS
+        '
+        Me.txtPrecio3_IEPS.Location = New System.Drawing.Point(180, 84)
+        Me.txtPrecio3_IEPS.Name = "txtPrecio3_IEPS"
+        Me.txtPrecio3_IEPS.ReadOnly = True
+        Me.txtPrecio3_IEPS.Size = New System.Drawing.Size(100, 20)
+        Me.txtPrecio3_IEPS.TabIndex = 17
+        '
+        'txtPrecio2_IEPS
+        '
+        Me.txtPrecio2_IEPS.Location = New System.Drawing.Point(180, 55)
+        Me.txtPrecio2_IEPS.Name = "txtPrecio2_IEPS"
+        Me.txtPrecio2_IEPS.ReadOnly = True
+        Me.txtPrecio2_IEPS.Size = New System.Drawing.Size(100, 20)
+        Me.txtPrecio2_IEPS.TabIndex = 16
+        '
+        'txtPrecio1_IEPS
+        '
+        Me.txtPrecio1_IEPS.Location = New System.Drawing.Point(180, 26)
+        Me.txtPrecio1_IEPS.Name = "txtPrecio1_IEPS"
+        Me.txtPrecio1_IEPS.ReadOnly = True
+        Me.txtPrecio1_IEPS.Size = New System.Drawing.Size(100, 20)
+        Me.txtPrecio1_IEPS.TabIndex = 15
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(194, 9)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(91, 13)
+        Me.Label1.TabIndex = 20
+        Me.Label1.Text = "Precios con ieps :"
+        '
+        'txtIEPSPtje
+        '
+        Me.txtIEPSPtje.Location = New System.Drawing.Point(74, 173)
+        Me.txtIEPSPtje.Name = "txtIEPSPtje"
+        Me.txtIEPSPtje.ReadOnly = True
+        Me.txtIEPSPtje.Size = New System.Drawing.Size(100, 20)
+        Me.txtIEPSPtje.TabIndex = 21
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(19, 176)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(43, 13)
+        Me.Label2.TabIndex = 22
+        Me.Label2.Text = "% ieps :"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(88, 9)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(86, 13)
+        Me.Label3.TabIndex = 23
+        Me.Label3.Text = "Precios sin ieps :"
+        '
         'VentasSeleccionPrecio
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(282, 188)
+        Me.ClientSize = New System.Drawing.Size(412, 205)
+        Me.Controls.Add(Me.Label3)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.txtIEPSPtje)
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.txtPrecio5_IEPS)
+        Me.Controls.Add(Me.txtPrecio4_IEPS)
+        Me.Controls.Add(Me.txtPrecio3_IEPS)
+        Me.Controls.Add(Me.txtPrecio2_IEPS)
+        Me.Controls.Add(Me.txtPrecio1_IEPS)
         Me.Controls.Add(Me.lblDisplayPrecio5)
         Me.Controls.Add(Me.btnPrecio5)
         Me.Controls.Add(Me.txtPrecio5)
@@ -214,4 +307,13 @@ Partial Class VentasSeleccionPrecio
     Friend WithEvents lblDisplayPrecio5 As System.Windows.Forms.Label
     Friend WithEvents btnPrecio5 As System.Windows.Forms.Button
     Friend WithEvents txtPrecio5 As System.Windows.Forms.TextBox
+    Friend WithEvents txtPrecio5_IEPS As TextBox
+    Friend WithEvents txtPrecio4_IEPS As TextBox
+    Friend WithEvents txtPrecio3_IEPS As TextBox
+    Friend WithEvents txtPrecio2_IEPS As TextBox
+    Friend WithEvents txtPrecio1_IEPS As TextBox
+    Friend WithEvents Label1 As Label
+    Friend WithEvents txtIEPSPtje As TextBox
+    Friend WithEvents Label2 As Label
+    Friend WithEvents Label3 As Label
 End Class
