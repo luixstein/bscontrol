@@ -803,20 +803,7 @@ Buscar:
             Me.Grid.Column(Me.igyBASE_IEPS).Visible = False
             Me.Grid.Column(Me.igyBASE_IVA).Visible = False
             Me.Grid.Column(Me.igyPRECIO_TOTAL).Locked = True
-            'Me.Grid.Column(Me.igyPRECIO_TOTAL).Visible = False
-
-            'If bEsReferencia = True Then
-            '    Me.Grid.Column(Me.igyCodigo).Locked = True
-            '    Me.Grid.Column(Me.igyDescripcion).Locked = True
-            '    Me.Grid.Column(Me.igyCantidad).Locked = False
-            '    Me.Grid.Column(Me.igyPrecio).Locked = True
-            '    Me.Grid.Column(Me.igyUnidad).Locked = True
-            '    Me.Grid.Column(Me.igyImpuestoPorcentaje).Locked = True
-            '    Me.Grid.Column(Me.igyImporte).Locked = True
-            '    Me.Grid.Column(Me.igyCuentaContable).Locked = False
-            '    Me.Grid.Column(Me.igyImpuestoImporte).Locked = True
-
-            'End If
+        
         Catch ex As Exception
             HandleError(Me.Name, "FormateaGrid", ex)
         Finally
@@ -928,30 +915,6 @@ Buscar:
                     Me.tsbSellarFacturaElectronica.Visible = False
                     Me.tsbCancelarTimbre.Visible = False
 
-                    'Case enumEstados.PARCIALMENTE_RECEPCIONADO
-                    '    Me.tsbNuevo.Enabled = True
-                    '    Me.tsbGrabar.Enabled = False
-                    '    Me.tsbCancelar.Enabled = True
-                    '    Me.tsbImprimir.Enabled = True
-                    '    Me.tsbEnviarCorreo.Enabled = False
-
-                    '    Me.frmDatos.Enabled = False
-                    '    Me.Grid.Locked = True
-
-                    '    Me.btnAgregaAddenda.Visible = False
-
-                    '    Me.tsbCotizacionFactura.Visible = True
-                    '    Me.tsbCotizacionRemision.Visible = True
-                    '    Me.tsbRemisionVenta.Visible = False
-
-                    '    Me.tsslEstado.Text = "Estado: Consultando movimiento"
-                    '    Me.tsslElaboro.Visible = True : Me.tsslElaboro.Text = "Elaboró: " + Me.oVenta.NOMBRE_USUARIO.ToUpper + " el " + Format(Me.dpFecha.Value, "dd/MMM/yy").ToUpper
-                    '    Me.tsslCancelo.Visible = False : Me.tsslCancelo.Text = ""
-
-                    '    Me.tsbImprimir.Select()
-
-                    '    Me.tsbSellarFacturaElectronica.Visible = False
-                    '    Me.tsbGenerarAcuseCancelacion.Visible = False
 
                 Case enumEstados.SUSTITUIDO
                     Me.tsbNuevo.Enabled = True
@@ -1809,7 +1772,7 @@ CANCELAR:
             If Me.oDocumento.AFECTA_INVENTARIOS = True Then
                 If Me.sTipoVenta <> "SR" Then
                     'SUSTITUCION DE COTIZACION A REMISION O FACTURA Y DE VENTA NORMAL
-                    If oSisAdministracionClientes.TIENE_CREDITO_SUFICIENTE = "0" Then
+                    If oSisAdministracionClientes.TIENE_CREDITO_SUFICIENTE = "0" And Me.cboTipoNegociacion.Text = "CREDITO" Then
                         MsgBox("La venta que intenta realizar supera el limite de credito del cliente. No es posible realizar este movimiento.", MsgBoxStyle.Exclamation, Me.Text)
                         Exit Function
                     End If
