@@ -232,26 +232,26 @@ Buscar:
         End If
     End Sub
 
-    Private Sub ckbDolares_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles ckbDolares.KeyDown
-        If e.KeyCode = Keys.Return Then
-            Me.TxtConcepto.Focus()
-        End If
-    End Sub
+    'Private Sub ckbDolares_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles ckbDolares.KeyDown
+    '    If e.KeyCode = Keys.Return Then
+    '        Me.TxtConcepto.Focus()
+    '    End If
+    'End Sub
 
-    Private Sub ckbDolares_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ckbDolares.CheckedChanged
-        If Me.ckbDolares.Checked = True Then
-            Me.txtTipoCambio.Enabled = True
-            'Me.txtTotalDolares.Enabled = True
-            Me.lblTipoCambio.Enabled = True
-            Me.lblTotalDolares.Enabled = True
-            Me.txtTipoCambio.Focus()
-        Else
-            Me.txtTipoCambio.Enabled = False : Me.txtTipoCambio.Text = ""
-            'Me.txtTotalDolares.Enabled = False
-            Me.lblTipoCambio.Enabled = False
-            Me.lblTotalDolares.Enabled = False : Me.txtImporteDolares.Text = ""
-        End If
-    End Sub
+    'Private Sub ckbDolares_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ckbDolares.CheckedChanged
+    '    If Me.ckbDolares.Checked = True Then
+    '        Me.txtTipoCambio.Enabled = True
+    '        'Me.txtTotalDolares.Enabled = True
+    '        Me.lblTipoCambio.Enabled = True
+    '        Me.lblTotalDolares.Enabled = True
+    '        Me.txtTipoCambio.Focus()
+    '    Else
+    '        Me.txtTipoCambio.Enabled = False : Me.txtTipoCambio.Text = ""
+    '        'Me.txtTotalDolares.Enabled = False
+    '        Me.lblTipoCambio.Enabled = False
+    '        Me.lblTotalDolares.Enabled = False : Me.txtImporteDolares.Text = ""
+    '    End If
+    'End Sub
 
     'Private Sub txtTipoCambio_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtTipoCambio.KeyDown
     '    If e.KeyCode = Keys.Return Then
@@ -450,9 +450,9 @@ Buscar:
             Me.Grid.Cell(0, Me.iGyFolio).Text = "FOLIO"
             Me.Grid.Cell(0, Me.iGyFechaFactura).Text = "FECHA VTA"
             Me.Grid.Cell(0, Me.iGyTipoCambio).Text = "TP CAMBIO"
-            Me.Grid.Cell(0, Me.iGyImporteFactura).Text = "IMPORTE"
-            Me.Grid.Cell(0, Me.iGySaldo).Text = "SALDO"
-            Me.Grid.Cell(0, Me.iGyDescuento).Text = "DESCUENTO"
+            Me.Grid.Cell(0, Me.iGyImporteFactura).Text = "IMPORTE MXN"
+            Me.Grid.Cell(0, Me.iGySaldo).Text = "SALDO MXN"
+            Me.Grid.Cell(0, Me.iGyDescuento).Text = "DESCUENTO MXN"
 
             Me.Grid.Column(Me.iGyFechaFactura).CellType = FlexCell.CellTypeEnum.DateTime
             Me.Grid.Column(Me.iGyFechaFactura).FormatString = "dd-MMM-yy"
@@ -590,7 +590,7 @@ Buscar:
             Dim dUSD As Decimal = 0
             If valorNumericoD(Me.TxtTotal.Text) > 0 Then
                 dUSD = valorNumericoD(Me.TxtTotal.Text) / valorNumericoD(Me.txtTipoCambio.Text)
-                Me.txtImporteDolares.Text = Redondear(dUSD, 2).ToString
+                Me.txtImporteDolares.Text = FormatImporteContable(RedondearD(dUSD, 2))
             Else
                 Me.txtImporteDolares.Text = "0"
             End If
@@ -682,7 +682,7 @@ Buscar:
                 .CODIGO_CLIENTE = Me.TxtCodigoCliente.Text
                 .SUBTOTAL = valorNumerico(Me.TxtSubTotal.Text)
                 .IEPS_DESGLOSADO = valorNumerico(Me.txtIEPS.Text)
-                .IEPS_YA_INCLUIDO = valorNumerico(Me.txtIEPSIncluido.Text)
+                .IEPS_INCLUIDO = valorNumerico(Me.txtIEPSIncluido.Text)
                 .IVA = valorNumerico(Me.TxtImpuesto.Text)
                 .TOTAL = valorNumerico(Me.TxtTotal.Text)
                 .FECHA = Me.dtFecha.Value
@@ -693,6 +693,7 @@ Buscar:
                 .ES_POR_DEVOLUCION = "0"
                 .ES_COMPROBANTE_ELECTRONICO = IIf(Empresa_Sistema.FELECTRONICA_ACTIVA = True, "1", "0").ToString
                 .ES_VENTA_PUBLICO_GENERAL = Convert.ToInt32(Me.chkVentaPublicoGeneral.Checked).ToString
+                .MONEDA = Me.cboMoneda.Text
                 .LISTA_DESCUENTOS = ListaDescuentos
 
                 If .InsertarDescuentos() = True Then
@@ -805,7 +806,7 @@ Buscar:
             '    Return False 
             'End If
 
-            Dim clIvas As New Collection, bTieneVentasConIVA As Boolean
+            Dim clIvas As New Collection, bTieneVentasConIVA As Boolean, Contador As Integer = 0
 
             For i = 1 To Grid.Rows - 1
                 If valorNumerico(Me.Grid.Cell(i, Me.iGyDescuento).Text) > 0 And txtLEN(Me.Grid.Cell(i, Me.iGyFolio).Text) = True Then
@@ -830,12 +831,19 @@ Buscar:
 
                         bTieneVentasConIVA = True
                     End If
+
+                    Contador += 1
                 End If
             Next i
 
-            If Me.ckbDolares.Checked = True Then
+            'If Me.ckbDolares.Checked = True Then
+            If Me.cboMoneda.Text = "USD" Then
                 If valorNumerico(Me.txtTipoCambio.Text) = 0 Then
                     MsgBox("El tipo de cambio debe ser mayor a 0. Favor de revisar.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+                If Contador > 1 Then
+                    MsgBox("En los descuentos en USD sólo es permitido indicar una factura.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
             End If
@@ -1155,17 +1163,19 @@ Buscar:
                 Me.TxtCodigoCliente.Text = oDescuentosCXC.CODIGO_CLIENTE
                 Me.LblCliente.Text = oDescuentosCXC.NOMBRE_CLIENTE
                 Me.LblPoliza.Text = oDescuentosCXC.FOLIO_POLIZA.ToString
-                Me.txtTipoCambio.Text = oDescuentosCXC.TIPO_DE_CAMBIO.ToString
+
+                Me.txtTipoCambio.Text = FormatTipoCambio(oDescuentosCXC.TIPO_DE_CAMBIO)
+                Me.TxtSubTotal.Text = FormatImporteContable(oDescuentosCXC.SUBTOTAL)
+                Me.txtIEPS.Text = FormatImporteContable(oDescuentosCXC.IEPS_DESGLOSADO)
+                Me.txtIEPSIncluido.Text = FormatImporteContable(oDescuentosCXC.IEPS_INCLUIDO)
+                Me.TxtImpuesto.Text = FormatImporteContable(oDescuentosCXC.IVA)
+                Me.TxtTotal.Text = FormatImporteContable(oDescuentosCXC.TOTAL)
+                Me.cboMoneda.Text = oDescuentosCXC.MONEDA
+
                 If oDescuentosCXC.TIPO_DE_CAMBIO > 0 Then
                     Me.ckbDolares.Checked = True
                     Me.CalculaImporteDolares()
                 End If
-                Me.TxtSubTotal.Text = FormatImporteContable(oDescuentosCXC.SUBTOTAL)
-                Me.txtIEPS.Text = FormatImporteContable(oDescuentosCXC.IEPS_DESGLOSADO)
-                Me.txtIEPSIncluido.Text = FormatImporteContable(oDescuentosCXC.IEPS_YA_INCLUIDO)
-                Me.TxtImpuesto.Text = FormatImporteContable(oDescuentosCXC.IVA)
-                Me.TxtTotal.Text = FormatImporteContable(oDescuentosCXC.TOTAL)
-                Me.cboMoneda.Text = oDescuentosCXC.MONEDA
 
                 Me.tssElaboro.Text = "Elaboró : " & Me.oDescuentosCXC.NOMBRE_USUARIO_GRABO & " el " & Format(Me.oDescuentosCXC.FECHA_SERVIDOR, "dd-MMM-yyyy hh:mm tt")
                 If Me.oDescuentosCXC.ESTATUS_DESCUENTO = "C" Then
@@ -1511,11 +1521,11 @@ Buscar:
             Me.txtTipoCambio.Text = Me.Grid.Cell(Renglon, Me.iGyTipoCambio).Text
 
             For i = 1 To Renglon - 1 'Elimina los descuentos anteriores al capturado
-                Me.Grid.Cell(Renglon, Me.iGyDescuento).Text = ""
+                Me.Grid.Cell(i, Me.iGyDescuento).Text = ""
             Next
 
             For i = Renglon + 1 To Me.Grid.Rows - 1 'Elimina los descuentos posteriores al capturado
-                Me.Grid.Cell(Renglon, Me.iGyDescuento).Text = ""
+                Me.Grid.Cell(i, Me.iGyDescuento).Text = ""
             Next
 
         Catch ex As Exception

@@ -31,7 +31,7 @@ Public Class Class_CXC_Descuento
     Private _SUBTOTAL As Double
     Private _IVA As Double
     Private _IEPS_DESGLOSADO As Double
-    Private _IEPS_YA_INCLUIDO As Double
+    Private _IEPS_INCLUIDO As Double
     Private _TOTAL As Double
     Private _MONEDA As String
     Private _ES_COMPROBANTE_ELECTRONICO As String
@@ -298,12 +298,12 @@ Public Class Class_CXC_Descuento
         End Set
     End Property
 
-    Public Property IEPS_YA_INCLUIDO() As Double
+    Public Property IEPS_INCLUIDO() As Double
         Get
-            Return Me._IEPS_YA_INCLUIDO
+            Return Me._IEPS_INCLUIDO
         End Get
         Set(ByVal value As Double)
-            Me._IEPS_YA_INCLUIDO = value
+            Me._IEPS_INCLUIDO = value
         End Set
     End Property
 
@@ -574,7 +574,7 @@ Public Class Class_CXC_Descuento
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._CODIGO_CLIENTE
             sqlParametro = .Parameters.Add("@SUBTOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL
             sqlParametro = .Parameters.Add("@IEPS_DESGLOSADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_DESGLOSADO
-            sqlParametro = .Parameters.Add("@IEPS_INCLUIDO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_YA_INCLUIDO
+            sqlParametro = .Parameters.Add("@IEPS_INCLUIDO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_INCLUIDO
             sqlParametro = .Parameters.Add("@IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._IVA
             sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL
             sqlParametro = .Parameters.Add("@FECHA", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA
@@ -701,6 +701,8 @@ Public Class Class_CXC_Descuento
                     Me._NOMBRE_USUARIO_GRABO = CType(dReader("NOMBRE_USUARIO_GRABO"), String)
                     Me._TIPO_DE_CAMBIO = CType(dReader("TIPO_DE_CAMBIO"), Double)
                     Me._SUBTOTAL = CType(dReader("SUBTOTAL"), Double)
+                    Me._IEPS_DESGLOSADO = CType(dReader("IEPS_DESGLOSADO"), Double)
+                    Me._IEPS_INCLUIDO = CType(dReader("IEPS_INCLUIDO"), Double)
                     Me._IVA = CType(dReader("IVA"), Double)
                     Me._TOTAL = CType(dReader("TOTAL"), Double)
                     Me._MONEDA = dReader("MONEDA").ToString

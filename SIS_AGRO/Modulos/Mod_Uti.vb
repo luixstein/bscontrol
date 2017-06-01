@@ -997,4 +997,11 @@ Module Mod_Uti
         Return data
     End Function
 
+    Public Function FormatTipoCambio(ByVal dImporte As Double, Optional ByVal bConSignoMoneda As Boolean = True) As String
+        If bConSignoMoneda = True Then
+            Return Format(dImporte, "$ ###,###,##0." & CerosEnCadena(6))
+        Else
+            Return Format(dImporte, "###,###,##0." & CerosEnCadena(6))
+        End If
+    End Function
 End Module

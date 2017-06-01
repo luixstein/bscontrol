@@ -39,6 +39,7 @@ Partial Class Frm_CXC_Descuentos
         Me.gbFacturas = New System.Windows.Forms.GroupBox()
         Me.Grid = New FlexCell.Grid()
         Me.gbGlobal = New System.Windows.Forms.GroupBox()
+        Me.btnCargarFacturas = New System.Windows.Forms.Button()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cboMoneda = New System.Windows.Forms.ComboBox()
         Me.btnNotaSiguiente = New System.Windows.Forms.Button()
@@ -46,11 +47,8 @@ Partial Class Frm_CXC_Descuentos
         Me.chkVentaPublicoGeneral = New System.Windows.Forms.CheckBox()
         Me.lblTipoCambio = New System.Windows.Forms.Label()
         Me.TxtConcepto2 = New System.Windows.Forms.TextBox()
-        Me.txtImporteDolares = New System.Windows.Forms.TextBox()
         Me.txtTipoCambio = New System.Windows.Forms.TextBox()
         Me.lblDisplayConcepto2 = New System.Windows.Forms.Label()
-        Me.lblTotalDolares = New System.Windows.Forms.Label()
-        Me.ckbDolares = New System.Windows.Forms.CheckBox()
         Me.LblPoliza = New System.Windows.Forms.LinkLabel()
         Me.LblDisplayFecha = New System.Windows.Forms.Label()
         Me.lblDisplayPoliza = New System.Windows.Forms.Label()
@@ -64,6 +62,9 @@ Partial Class Frm_CXC_Descuentos
         Me.TxtFolio = New System.Windows.Forms.TextBox()
         Me.lblDisplayStatus = New System.Windows.Forms.Label()
         Me.LblStatus = New System.Windows.Forms.Label()
+        Me.txtImporteDolares = New System.Windows.Forms.TextBox()
+        Me.lblTotalDolares = New System.Windows.Forms.Label()
+        Me.ckbDolares = New System.Windows.Forms.CheckBox()
         Me.gbTotales = New System.Windows.Forms.GroupBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.txtIEPS = New System.Windows.Forms.TextBox()
@@ -75,7 +76,6 @@ Partial Class Frm_CXC_Descuentos
         Me.TxtImpuesto = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.txtIEPSIncluido = New System.Windows.Forms.TextBox()
-        Me.btnCargarFacturas = New System.Windows.Forms.Button()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.gbFacturas.SuspendLayout()
@@ -256,6 +256,15 @@ Partial Class Frm_CXC_Descuentos
         Me.gbGlobal.TabStop = False
         Me.gbGlobal.Text = "Datos"
         '
+        'btnCargarFacturas
+        '
+        Me.btnCargarFacturas.Location = New System.Drawing.Point(66, 143)
+        Me.btnCargarFacturas.Name = "btnCargarFacturas"
+        Me.btnCargarFacturas.Size = New System.Drawing.Size(164, 23)
+        Me.btnCargarFacturas.TabIndex = 377
+        Me.btnCargarFacturas.Text = "Cargar facturas"
+        Me.btnCargarFacturas.UseVisualStyleBackColor = True
+        '
         'Label3
         '
         Me.Label3.AutoSize = True
@@ -321,16 +330,6 @@ Partial Class Frm_CXC_Descuentos
         Me.TxtConcepto2.Size = New System.Drawing.Size(440, 20)
         Me.TxtConcepto2.TabIndex = 7
         '
-        'txtImporteDolares
-        '
-        Me.txtImporteDolares.Enabled = False
-        Me.txtImporteDolares.Location = New System.Drawing.Point(325, 481)
-        Me.txtImporteDolares.MaxLength = 15
-        Me.txtImporteDolares.Name = "txtImporteDolares"
-        Me.txtImporteDolares.Size = New System.Drawing.Size(110, 20)
-        Me.txtImporteDolares.TabIndex = 5
-        Me.txtImporteDolares.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
         'txtTipoCambio
         '
         Me.txtTipoCambio.Enabled = False
@@ -349,26 +348,6 @@ Partial Class Frm_CXC_Descuentos
         Me.lblDisplayConcepto2.Size = New System.Drawing.Size(65, 13)
         Me.lblDisplayConcepto2.TabIndex = 320
         Me.lblDisplayConcepto2.Text = "Concepto2 :"
-        '
-        'lblTotalDolares
-        '
-        Me.lblTotalDolares.AutoSize = True
-        Me.lblTotalDolares.Enabled = False
-        Me.lblTotalDolares.Location = New System.Drawing.Point(230, 484)
-        Me.lblTotalDolares.Name = "lblTotalDolares"
-        Me.lblTotalDolares.Size = New System.Drawing.Size(89, 13)
-        Me.lblTotalDolares.TabIndex = 301
-        Me.lblTotalDolares.Text = "Total en dólares :"
-        '
-        'ckbDolares
-        '
-        Me.ckbDolares.AutoSize = True
-        Me.ckbDolares.Location = New System.Drawing.Point(162, 483)
-        Me.ckbDolares.Name = "ckbDolares"
-        Me.ckbDolares.Size = New System.Drawing.Size(62, 17)
-        Me.ckbDolares.TabIndex = 3
-        Me.ckbDolares.Text = "Dólares"
-        Me.ckbDolares.UseVisualStyleBackColor = True
         '
         'LblPoliza
         '
@@ -482,6 +461,36 @@ Partial Class Frm_CXC_Descuentos
         Me.LblStatus.Size = New System.Drawing.Size(36, 13)
         Me.LblStatus.TabIndex = 218
         '
+        'txtImporteDolares
+        '
+        Me.txtImporteDolares.Location = New System.Drawing.Point(325, 481)
+        Me.txtImporteDolares.MaxLength = 15
+        Me.txtImporteDolares.Name = "txtImporteDolares"
+        Me.txtImporteDolares.ReadOnly = True
+        Me.txtImporteDolares.Size = New System.Drawing.Size(110, 20)
+        Me.txtImporteDolares.TabIndex = 5
+        Me.txtImporteDolares.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'lblTotalDolares
+        '
+        Me.lblTotalDolares.AutoSize = True
+        Me.lblTotalDolares.Location = New System.Drawing.Point(230, 484)
+        Me.lblTotalDolares.Name = "lblTotalDolares"
+        Me.lblTotalDolares.Size = New System.Drawing.Size(89, 13)
+        Me.lblTotalDolares.TabIndex = 301
+        Me.lblTotalDolares.Text = "Total en dólares :"
+        '
+        'ckbDolares
+        '
+        Me.ckbDolares.AutoSize = True
+        Me.ckbDolares.Location = New System.Drawing.Point(162, 483)
+        Me.ckbDolares.Name = "ckbDolares"
+        Me.ckbDolares.Size = New System.Drawing.Size(62, 17)
+        Me.ckbDolares.TabIndex = 3
+        Me.ckbDolares.Text = "Dólares"
+        Me.ckbDolares.UseVisualStyleBackColor = True
+        Me.ckbDolares.Visible = False
+        '
         'gbTotales
         '
         Me.gbTotales.Controls.Add(Me.Label1)
@@ -497,7 +506,7 @@ Partial Class Frm_CXC_Descuentos
         Me.gbTotales.Size = New System.Drawing.Size(204, 106)
         Me.gbTotales.TabIndex = 244
         Me.gbTotales.TabStop = False
-        Me.gbTotales.Text = "Totales"
+        Me.gbTotales.Text = "Totales MXN :"
         '
         'Label1
         '
@@ -578,7 +587,7 @@ Partial Class Frm_CXC_Descuentos
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(464, 484)
+        Me.Label2.Location = New System.Drawing.Point(464, 442)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(76, 13)
         Me.Label2.TabIndex = 324
@@ -587,21 +596,12 @@ Partial Class Frm_CXC_Descuentos
         'txtIEPSIncluido
         '
         Me.txtIEPSIncluido.Enabled = False
-        Me.txtIEPSIncluido.Location = New System.Drawing.Point(541, 481)
+        Me.txtIEPSIncluido.Location = New System.Drawing.Point(541, 439)
         Me.txtIEPSIncluido.MaxLength = 160
         Me.txtIEPSIncluido.Name = "txtIEPSIncluido"
         Me.txtIEPSIncluido.Size = New System.Drawing.Size(99, 20)
         Me.txtIEPSIncluido.TabIndex = 323
         Me.txtIEPSIncluido.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
-        'btnCargarFacturas
-        '
-        Me.btnCargarFacturas.Location = New System.Drawing.Point(66, 143)
-        Me.btnCargarFacturas.Name = "btnCargarFacturas"
-        Me.btnCargarFacturas.Size = New System.Drawing.Size(164, 23)
-        Me.btnCargarFacturas.TabIndex = 377
-        Me.btnCargarFacturas.Text = "Cargar facturas"
-        Me.btnCargarFacturas.UseVisualStyleBackColor = True
         '
         'Frm_CXC_Descuentos
         '
