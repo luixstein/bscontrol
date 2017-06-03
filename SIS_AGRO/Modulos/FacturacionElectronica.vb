@@ -2,20 +2,18 @@ Option Strict Off
 Option Explicit On
 
 Imports cfdi
-Imports System.Data
 Imports System.Data.SqlClient
-Imports System.Xml.XmlDocument
 Imports System.IO
 
 Module FacturacionElectronica
 
     Private Const nombreModulo As String = "FacturacionElectronica"
-    Public Const CK_KEY As String = "RSAT34MB34N_2637664B634J" ' "RSAT34MB34N_2637664B634J"  '"123456"
+    Public Const CK_KEY As String = "RSAT34MB34N_2637664B634J"
 
     Private oComprobante As New cComprobante
 
     Private sCarpetaCertificados As String = ""
-    'Private tPlazaFacturaElectronica As Plaza
+    Private tPlazaFacturaElectronica As Class_SisPlazas
 
 #Region "Campos de sistema"
     Private _Nombre_Catalogo As String = "FacturacionElectronica"
@@ -39,18 +37,15 @@ Module FacturacionElectronica
 
         Dim FacturaO As MSXML2.IXMLDOMNode
         Dim Factura As MSXML2.IXMLDOMNode
-        'Dim fElectronica As FacturaElectronica
 
         Dim Fecha_Documento
-        'Dim sSerie As String = Left(sFolioFacturaSistema, 3).ToString
-        'Dim iFolioNumerico As Integer = sFolioFacturaSistema.Substring(4, Len(sFolioFacturaSistema) - 4)
 
         Dim oVenta As New Class_Ventas_Global
         Dim oDescuento As New Class_CXC_Descuento
         Dim oCliente As New Class_CatClientes
         Dim sNombreFormatoXML As String = ""
 
-        If tipoComprobante = FacturacionElectronica.TipoComprobante.FACTURA_VENTA Then
+        If tipoComprobante = TipoComprobante.FACTURA_VENTA Then
             oVenta = New Class_Ventas_Global(sSerie & "-" & iFolioNumerico.ToString)
             oCliente = New Class_CatClientes(oVenta.CODIGO_CLIENTE)
             sNombreFormatoXML = oCliente.FORMATO_NOMBRE_XML
@@ -203,8 +198,9 @@ Module FacturacionElectronica
     End Function
 
     Private Function CancelarCFDI(ByVal sFolioDocumentoSistema As String, ByVal sSerie As String, ByVal iFolioNumerico As Integer, ByVal sFolioFiscalSat As String, ByVal sDocumentoYaEstaTimbrado As String, ByVal sTipoComprobante As TipoComprobante) As Boolean
-        Dim bResultado As Boolean = False
         Const sProcedure As String = "CancelarCFDI"
+        Dim bResultado As Boolean = False
+
         Dim ArchivoXmlAcuseCancelacion As String = sFelectronicaCarpetaXmlsAcusesCancelacion & "\AcuseCancelacion_" & sFolioDocumentoSistema & ".xml" ' "la ruta de los xml de acuses de cancelacion"
         Dim sUUID As String = "" ' "el folio del sat del documento"
         Dim sXml As String = ""
@@ -261,11 +257,12 @@ Module FacturacionElectronica
     End Function
 
     Private Function GrabaCancelacionYAcuseXML(ByVal sFolioFacturaSistema As String, ByRef sAcuseCancelacionXML As String, ByVal sTipoComprobanteElectronico As TipoComprobante) As Boolean
+        Const sProcedure As String = "GrabaCancelacionYAcuseXML"
         Dim bResultado As Boolean = False
+
         Try
             Dim cmd As New SqlCommand
             Dim sqlParametro As SqlParameter
-            Const sProcedure As String = "GrabaCancelacionYAcuseXML"
 
             With cmd
                 .Connection = _Conexion
@@ -297,7 +294,7 @@ Module FacturacionElectronica
 
         Catch ex As Exception
             _Conexion.Close()
-            HandleError(_Nombre_Catalogo, "GrabaCancelacionYAcuseXML", ex)
+            HandleError(_Nombre_Catalogo, sProcedure, ex)
         End Try
         Return bResultado
     End Function
@@ -334,9 +331,7 @@ Module FacturacionElectronica
         Try
             Dim Var As Object
             Var = Shell(sFelectronicaConvierteUTF8Local & " """ & sRutaXML & """", AppWinStyle.MinimizedFocus)
-
             Return True
-
         Catch ex As Exception
             HandleError(_Nombre_Catalogo, "ConvierteXMLUTF8", ex)
         End Try
@@ -620,6 +615,22 @@ Module FacturacionElectronica
         Const sProcedure As String = "fElectronicaValidaArchivosCertificadoLocal"
 
         Try
+
+            If txtLEN(sArchivoCer) = False Then
+                MsgBox("No se indicó el archivo cer.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If txtLEN(sArchivoKey) = False Then
+                MsgBox("No se indicó el archivo key.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If txtLEN(sContraseñaClavePrivada) = False Then
+                MsgBox("No se indicó la contrasena de la clave privada.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
             sFelectronicaArchivoCERLocal = sCarpetaCertificados + "\" + sArchivoCer
             sFelectronicaArchivoKEYLocal = sCarpetaCertificados + "\" + sArchivoKey
             Empresa_Sistema.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA = sContraseñaClavePrivada
@@ -650,7 +661,6 @@ Module FacturacionElectronica
         Dim bResultado As Boolean = False
         Dim sVentaPublicoGeneral As String
         Dim sPlaza As String
-        'Dim idFactura As Integer
         Dim drImporte, dPrecio As Double
 
         Dim Cfd As New cComprobante
@@ -662,18 +672,7 @@ Module FacturacionElectronica
             Cfd.xsischemaLocation = "http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd"
 
             Cfd.version = Empresa_Sistema.VERSION_ESQUEMA_CFD
-            'sFolio = sReplace(sFolio)
-
-            'Dim sqlResult As New Class_find("SELECT SERIE,NUMERO_APROBACION,ANIO_APROBACION FROM CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS WHERE IDCATALOGO_FOLIO_FELECTRONICA=(SELECT IDCATALOGO_FOLIO_FELECTRONICA FROM VENTA_GLOBAL WHERE FOLIO_VENTA='" & oVenta.FOLIO_VENTA & "')")
-            'If txtLEN(sqlResult.Result1) = False Then
-            '    MsgBox("No se encontro el numero de aprobación,serie y año de aprobación de la factura.", MsgBoxStyle.Exclamation, sProcedure)
-            '    Exit Function
-            'End If
-
             Cfd.serie = fElectronicaValidaCampo(oVenta.SERIE)
-            'Cfd.serie = fElectronicaValidaCampo(sqlResult.Result1)
-            'Cfd.noAprobacion = fElectronicaValidaCampo(sqlResult.Result2)
-            'Cfd.anoAprobacion = fElectronicaValidaCampo(sqlResult.Result3)
 
             Cfd.noCertificado = "" 'Solo de muestra despues se obtendra el Numero de Certificado
             Cfd.certificado = "" 'Solo de muestra despues se obtendra el Certificado
@@ -774,81 +773,83 @@ Module FacturacionElectronica
             Cfd.Emisor.rfc = fElectronicaValidaCampo(Empresa_Sistema.RFC)
 
             '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Cfd.Emisor.DomicilioFiscal''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            Cfd.Emisor.DomicilioFiscal.calle = fElectronicaValidaCampo(Empresa_Sistema.CALLE)
-            Cfd.Emisor.DomicilioFiscal.noExterior = fElectronicaValidaCampo(Empresa_Sistema.NUMERO_EXTERIOR)
-            Cfd.Emisor.DomicilioFiscal.noInterior = fElectronicaValidaCampo(Empresa_Sistema.NUMERO_INTERIOR)
-            Cfd.Emisor.DomicilioFiscal.codigoPostal = fElectronicaValidaCampo(Empresa_Sistema.CODIGO_POSTAL)
+            With Cfd.Emisor.DomicilioFiscal
+                .calle = fElectronicaValidaCampo(Empresa_Sistema.CALLE)
+                .noExterior = fElectronicaValidaCampo(Empresa_Sistema.NUMERO_EXTERIOR)
+                .noInterior = fElectronicaValidaCampo(Empresa_Sistema.NUMERO_INTERIOR)
+                .codigoPostal = fElectronicaValidaCampo(Empresa_Sistema.CODIGO_POSTAL)
 
-            If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
-                'Nota, si es con factura de embarque extranjero, estos datos en vez de ir con texto libre van con item de los catálogos proporcionados por el sat.
-                If txtLEN(Empresa_Sistema.CODIGO_COLONIA_SAT) = True Then
-                    Cfd.Emisor.DomicilioFiscal.colonia = fElectronicaValidaCampo(Empresa_Sistema.CODIGO_COLONIA_SAT)
+                If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
+                    'Nota, si es con factura de embarque extranjero, estos datos en vez de ir con texto libre van con item de los catálogos proporcionados por el sat.
+                    If txtLEN(Empresa_Sistema.CODIGO_COLONIA_SAT) = True Then
+                        .colonia = fElectronicaValidaCampo(Empresa_Sistema.CODIGO_COLONIA_SAT)
+                    End If
+                    If txtLEN(Empresa_Sistema.CODIGO_LOCALIDAD_SAT) = True Then
+                        .localidad = fElectronicaValidaCampo(Empresa_Sistema.CODIGO_LOCALIDAD_SAT)
+                    End If
+                    If txtLEN(Empresa_Sistema.CODIGO_MUNICIPIO_SAT) = True Then
+                        .municipio = fElectronicaValidaCampo(Empresa_Sistema.CODIGO_MUNICIPIO_SAT)
+                    End If
+                    If txtLEN(Empresa_Sistema.CODIGO_ESTADO_SAT) = True Then
+                        .estado = fElectronicaValidaCampo(Empresa_Sistema.CODIGO_ESTADO_SAT)
+                    End If
+                    If txtLEN(Empresa_Sistema.CODIGO_PAIS_SAT) = True Then
+                        .pais = fElectronicaValidaCampo(Empresa_Sistema.CODIGO_PAIS_SAT)
+                    End If
+                Else 'Factura normal
+                    .colonia = fElectronicaValidaCampo(Empresa_Sistema.COLONIA)
+                    .localidad = fElectronicaValidaCampo(Empresa_Sistema.LOCALIDAD)
+                    .municipio = fElectronicaValidaCampo(Empresa_Sistema.CIUDAD)
+                    .estado = fElectronicaValidaCampo(Empresa_Sistema.ESTADO)
+                    .pais = fElectronicaValidaCampo(Empresa_Sistema.PAIS)
                 End If
-                If txtLEN(Empresa_Sistema.CODIGO_LOCALIDAD_SAT) = True Then
-                    Cfd.Emisor.DomicilioFiscal.localidad = fElectronicaValidaCampo(Empresa_Sistema.CODIGO_LOCALIDAD_SAT)
-                End If
-                If txtLEN(Empresa_Sistema.CODIGO_MUNICIPIO_SAT) = True Then
-                    Cfd.Emisor.DomicilioFiscal.municipio = fElectronicaValidaCampo(Empresa_Sistema.CODIGO_MUNICIPIO_SAT)
-                End If
-                If txtLEN(Empresa_Sistema.CODIGO_ESTADO_SAT) = True Then
-                    Cfd.Emisor.DomicilioFiscal.estado = fElectronicaValidaCampo(Empresa_Sistema.CODIGO_ESTADO_SAT)
-                End If
-                If txtLEN(Empresa_Sistema.CODIGO_PAIS_SAT) = True Then
-                    Cfd.Emisor.DomicilioFiscal.pais = fElectronicaValidaCampo(Empresa_Sistema.CODIGO_PAIS_SAT)
-                End If
-            Else 'Factura normal
-                Cfd.Emisor.DomicilioFiscal.colonia = fElectronicaValidaCampo(Empresa_Sistema.COLONIA)
-                Cfd.Emisor.DomicilioFiscal.localidad = fElectronicaValidaCampo(Empresa_Sistema.LOCALIDAD)
-                Cfd.Emisor.DomicilioFiscal.municipio = fElectronicaValidaCampo(Empresa_Sistema.CIUDAD)
-                Cfd.Emisor.DomicilioFiscal.estado = fElectronicaValidaCampo(Empresa_Sistema.ESTADO)
-                Cfd.Emisor.DomicilioFiscal.pais = fElectronicaValidaCampo(Empresa_Sistema.PAIS)
-            End If
+            End With
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Cfd.Emisor.ExpedidoEn''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             If sPlaza <> Usuario.Codigo_Plaza Then
                 If sPlaza <> Plaza.CODIGO_PLAZA Then 'Si ya estaba cargada la plaza de la factura, no se cargará de nuevo para evitar consultas.
-                    'UPGRADE_WARNING: Couldn't resolve default property of object tPlazaFacturaElectronica. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-                    'tPlazaFacturaElectronica = CargaPlazaParametro(sPlaza)
+                    tPlazaFacturaElectronica = New Class_SisPlazas(sPlaza)
                 End If
             Else
-                'UPGRADE_WARNING: Couldn't resolve default property of object tPlazaFacturaElectronica. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-                'tPlazaFacturaElectronica = Plaza.CODIGO_PLAZA 'Plaza ya cargada en el inicio de sesión del usuario.
+                tPlazaFacturaElectronica = Plaza
             End If
 
-            Cfd.Emisor.ExpedidoEn.USADO = True 'si es usado diferente lugar de expedición se pondra la información, en este caso dejaremos la misma
-            Cfd.Emisor.ExpedidoEn.calle = fElectronicaValidaCampo(Plaza.CALLE)
-            Cfd.Emisor.ExpedidoEn.noExterior = fElectronicaValidaCampo(Plaza.NUMERO_EXTERIOR)
-            Cfd.Emisor.ExpedidoEn.noInterior = fElectronicaValidaCampo(Plaza.NUMERO_INTERIOR)
-            Cfd.Emisor.ExpedidoEn.codigoPostal = fElectronicaValidaCampo(Plaza.CODIGO_POSTAL)
+            With Cfd.Emisor.ExpedidoEn
+                .USADO = True 'si es usado diferente lugar de expedición se pondra la información, en este caso dejaremos la misma
+                .calle = fElectronicaValidaCampo(tPlazaFacturaElectronica.CALLE)
+                .noExterior = fElectronicaValidaCampo(tPlazaFacturaElectronica.NUMERO_EXTERIOR)
+                .noInterior = fElectronicaValidaCampo(tPlazaFacturaElectronica.NUMERO_INTERIOR)
+                .codigoPostal = fElectronicaValidaCampo(tPlazaFacturaElectronica.CODIGO_POSTAL)
 
-            If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
-                'Nota, si es con factura de embarque extranjero, estos datos en vez de ir con texto libre van con item de los catálogos proporcionados por el sat.
-                If txtLEN(Plaza.CODIGO_COLONIA_SAT) = True Then
-                    Cfd.Emisor.ExpedidoEn.colonia = fElectronicaValidaCampo(Plaza.CODIGO_COLONIA_SAT)
+                If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
+                    'Nota, si es con factura de embarque extranjero, estos datos en vez de ir con texto libre van con item de los catálogos proporcionados por el sat.
+                    If txtLEN(tPlazaFacturaElectronica.CODIGO_COLONIA_SAT) = True Then
+                        .colonia = fElectronicaValidaCampo(tPlazaFacturaElectronica.CODIGO_COLONIA_SAT)
+                    End If
+                    If txtLEN(tPlazaFacturaElectronica.CODIGO_LOCALIDAD_SAT) = True Then
+                        .localidad = fElectronicaValidaCampo(tPlazaFacturaElectronica.CODIGO_LOCALIDAD_SAT)
+                    End If
+                    If txtLEN(tPlazaFacturaElectronica.CODIGO_MUNICIPIO_SAT) = True Then
+                        .municipio = fElectronicaValidaCampo(tPlazaFacturaElectronica.CODIGO_MUNICIPIO_SAT)
+                    End If
+                    If txtLEN(tPlazaFacturaElectronica.CODIGO_ESTADO_SAT) = True Then
+                        .estado = fElectronicaValidaCampo(tPlazaFacturaElectronica.CODIGO_ESTADO_SAT)
+                    End If
+                    If txtLEN(tPlazaFacturaElectronica.CODIGO_PAIS_SAT) = True Then
+                        .pais = fElectronicaValidaCampo(tPlazaFacturaElectronica.CODIGO_PAIS_SAT)
+                    End If
+                Else
+                    .colonia = fElectronicaValidaCampo(tPlazaFacturaElectronica.COLONIA)
+                    .localidad = fElectronicaValidaCampo(tPlazaFacturaElectronica.LOCALIDAD)
+                    .municipio = fElectronicaValidaCampo(tPlazaFacturaElectronica.CIUDAD)
+                    .estado = fElectronicaValidaCampo(tPlazaFacturaElectronica.ESTADO)
+                    .pais = fElectronicaValidaCampo(tPlazaFacturaElectronica.PAIS)
                 End If
-                If txtLEN(Plaza.CODIGO_LOCALIDAD_SAT) = True Then
-                    Cfd.Emisor.ExpedidoEn.localidad = fElectronicaValidaCampo(Plaza.CODIGO_LOCALIDAD_SAT)
-                End If
-                If txtLEN(Plaza.CODIGO_MUNICIPIO_SAT) = True Then
-                    Cfd.Emisor.ExpedidoEn.municipio = fElectronicaValidaCampo(Plaza.CODIGO_MUNICIPIO_SAT)
-                End If
-                If txtLEN(Plaza.CODIGO_ESTADO_SAT) = True Then
-                    Cfd.Emisor.ExpedidoEn.estado = fElectronicaValidaCampo(Plaza.CODIGO_ESTADO_SAT)
-                End If
-                If txtLEN(Plaza.CODIGO_PAIS_SAT) = True Then
-                    Cfd.Emisor.ExpedidoEn.pais = fElectronicaValidaCampo(Plaza.CODIGO_PAIS_SAT)
-                End If
-            Else
-                Cfd.Emisor.ExpedidoEn.colonia = fElectronicaValidaCampo(Plaza.COLONIA)
-                Cfd.Emisor.ExpedidoEn.localidad = fElectronicaValidaCampo(Plaza.LOCALIDAD)
-                Cfd.Emisor.ExpedidoEn.municipio = fElectronicaValidaCampo(Plaza.CIUDAD)
-                Cfd.Emisor.ExpedidoEn.estado = fElectronicaValidaCampo(Plaza.ESTADO)
-                Cfd.Emisor.ExpedidoEn.pais = fElectronicaValidaCampo(Plaza.PAIS)
-            End If
+            End With
+
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-            'CFD
-            Cfd.LugarExpedicion = fElectronicaValidaCampo(Plaza.CIUDAD) & ", " & fElectronicaValidaCampo(Plaza.ESTADO)
+            Cfd.LugarExpedicion = fElectronicaValidaCampo(tPlazaFacturaElectronica.CIUDAD) & ", " & fElectronicaValidaCampo(tPlazaFacturaElectronica.ESTADO)
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Cfd.Receptor'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
@@ -867,15 +868,16 @@ Module FacturacionElectronica
                     .noExterior = "S/N"
                     .noInterior = ""
                     .colonia = "CENTRO"
-                    .localidad = fElectronicaValidaCampo(Plaza.LOCALIDAD)
-                    .municipio = fElectronicaValidaCampo(Plaza.CIUDAD)
-                    .estado = fElectronicaValidaCampo(Plaza.ESTADO)
+                    .localidad = fElectronicaValidaCampo(tPlazaFacturaElectronica.LOCALIDAD)
+                    .municipio = fElectronicaValidaCampo(tPlazaFacturaElectronica.CIUDAD)
+                    .estado = fElectronicaValidaCampo(tPlazaFacturaElectronica.ESTADO)
                     .pais = fElectronicaValidaCampo(Empresa_Sistema.PAIS)
                     .codigoPostal = "00000"
                 End With
             Else
                 Cfd.Receptor.nombre = fElectronicaValidaCampo(oCliente.NOMBRE_CLIENTE)
                 Cfd.Receptor.rfc = fElectronicaValidaCampo(oCliente.RFC)
+
                 With Cfd.Receptor.Domicilio
                     .calle = fElectronicaValidaCampo(oCliente.CALLE)
                     .noExterior = fElectronicaValidaCampo(oCliente.NUMERO_EXTERIOR)
@@ -919,7 +921,7 @@ Module FacturacionElectronica
 
             'El 2do parámetro es la combinación de dos validaciones, porque puede ser factura extranjera, y otra cosa es que tenga complemento CCE.
             If ValidaDatoFacturaElectronica(Cfd, Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True) = False Then
-                Exit Function
+                Return False
             End If
             ' _Conexion.Close()
 
@@ -1007,19 +1009,7 @@ Module FacturacionElectronica
             Cfd.xsischemaLocation = "http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd"
 
             Cfd.version = Empresa_Sistema.VERSION_ESQUEMA_CFD
-
-            'sFolio = sReplace(sFolio)
-            'Dim sqlResult As New Class_find("SELECT SERIE,NUMERO_APROBACION,ANIO_APROBACION FROM CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS WHERE IDCATALOGO_FOLIO_FELECTRONICA=(SELECT IDCATALOGO_FOLIO_FELECTRONICA FROM CXC_DESCUENTOS_GLOBAL WHERE FOLIO_DESCUENTO='" & sFolio & "')")
-            'If txtLEN(sqlResult.Result1) = False Then
-            '    MsgBox("No se encontro el numero de aprobación,serie y año de aprobación de la factura.", MsgBoxStyle.Exclamation, "GeneraFacturaElectronica")
-            '    Exit Function
-            'End If
-
             Cfd.serie = fElectronicaValidaCampo(oDescuento.SERIE)
-            'Cfd.serie = fElectronicaValidaCampo(sqlResult.Result1)
-            'Cfd.noAprobacion = fElectronicaValidaCampo(sqlResult.Result2)
-            'Cfd.anoAprobacion = fElectronicaValidaCampo(sqlResult.Result3)
-
             Cfd.noCertificado = "" 'Solo de muestra despues se obtendra el Numero de Certificado
             Cfd.certificado = "" 'Solo de muestra despues se obtendra el Certificado
             Cfd.sello = "" 'Solo de muestra despues se obtendra el Sello
@@ -1031,7 +1021,7 @@ Module FacturacionElectronica
             'End If
 
             If fElectronicaValidaArchivosCertificadoLocal(oDescuento.FELECTRONICA_CER, oDescuento.FELECTRONICA_KEY, oDescuento.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA) = False Then
-                Exit Function
+                Return False
             End If
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Datos globales''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -1059,7 +1049,6 @@ Module FacturacionElectronica
             Cfd.Impuestos.Traslados.USADO = True 'si uso el trasladado
 
             Cfd.metodoDePago = oDescuento.CODIGO_METODO_PAGO
-
             Cfd.Regimen = oDescuento.NOMBRE_REGIMEN_FISCAL
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -1083,7 +1072,8 @@ Module FacturacionElectronica
                     Cfd.Impuestos.Traslados.Add("IVA", Format(0, "#0.00"), Format(0, "#0.00"))
                 End If
                 '16 IMPUESTO_PORCENTAJE
-                Cfd.Impuestos.Traslados.Add("IVA", Format(IIf(oDescuento.IVA > 0, oDescuento.IMPUESTO_PORCENTAJE, 0), "#0.00"), Format(oDescuento.IVA, "#0.00")) 'corregir, crerar campo impuesto_poercentaje, y no poner fijo 16
+                'Cfd.Impuestos.Traslados.Add("IVA", Format(IIf(oDescuento.IVA > 0, oDescuento.IMPUESTO_PORCENTAJE, 0), "#0.00"), Format(oDescuento.IVA, "#0.00")) 'corregir, crerar campo impuesto_poercentaje, y no poner fijo 16
+                Cfd.Impuestos.Traslados.Add("IVA", Format(IIf(oDescuento.IVA > 0, 16, 0), "#0.00"), Format(oDescuento.IVA, "#0.00")) 'corregir, crerar campo impuesto_poercentaje, y no poner fijo 16
             End If
             'End If
 
@@ -1094,46 +1084,49 @@ Module FacturacionElectronica
             Cfd.Emisor.nombre = fElectronicaValidaCampo(Empresa_Sistema.NOMBRE_EMPRESA)
             Cfd.Emisor.rfc = fElectronicaValidaCampo(Empresa_Sistema.RFC)
             '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Cfd.Emisor.DomicilioFiscal''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            Cfd.Emisor.DomicilioFiscal.calle = fElectronicaValidaCampo(Empresa_Sistema.CALLE)
-            Cfd.Emisor.DomicilioFiscal.noExterior = fElectronicaValidaCampo(Empresa_Sistema.NUMERO_EXTERIOR)
-            Cfd.Emisor.DomicilioFiscal.noInterior = fElectronicaValidaCampo(Empresa_Sistema.NUMERO_INTERIOR)
-            Cfd.Emisor.DomicilioFiscal.colonia = fElectronicaValidaCampo(Empresa_Sistema.COLONIA)
-            Cfd.Emisor.DomicilioFiscal.localidad = fElectronicaValidaCampo(Empresa_Sistema.LOCALIDAD)
-            Cfd.Emisor.DomicilioFiscal.municipio = fElectronicaValidaCampo(Empresa_Sistema.CIUDAD)
-            Cfd.Emisor.DomicilioFiscal.estado = fElectronicaValidaCampo(Empresa_Sistema.ESTADO)
-            Cfd.Emisor.DomicilioFiscal.pais = fElectronicaValidaCampo(Empresa_Sistema.PAIS)
-            Cfd.Emisor.DomicilioFiscal.codigoPostal = fElectronicaValidaCampo(Empresa_Sistema.CODIGO_POSTAL)
+            With Cfd.Emisor.DomicilioFiscal
+                .calle = fElectronicaValidaCampo(Empresa_Sistema.CALLE)
+                .noExterior = fElectronicaValidaCampo(Empresa_Sistema.NUMERO_EXTERIOR)
+                .noInterior = fElectronicaValidaCampo(Empresa_Sistema.NUMERO_INTERIOR)
+                .colonia = fElectronicaValidaCampo(Empresa_Sistema.COLONIA)
+                .localidad = fElectronicaValidaCampo(Empresa_Sistema.LOCALIDAD)
+                .municipio = fElectronicaValidaCampo(Empresa_Sistema.CIUDAD)
+                .estado = fElectronicaValidaCampo(Empresa_Sistema.ESTADO)
+                .pais = fElectronicaValidaCampo(Empresa_Sistema.PAIS)
+                .codigoPostal = fElectronicaValidaCampo(Empresa_Sistema.CODIGO_POSTAL)
+            End With
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Cfd.Emisor.ExpedidoEn''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             If sPlaza <> Usuario.Codigo_Plaza Then
                 If sPlaza <> Plaza.CODIGO_PLAZA Then 'Si ya estaba cargada la plaza de la factura, no se cargará de nuevo para evitar consultas.
-                    'UPGRADE_WARNING: Couldn't resolve default property of object tPlazaFacturaElectronica. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-                    'tPlazaFacturaElectronica = CargaPlazaParametro(sPlaza)
+                    tPlazaFacturaElectronica = New Class_SisPlazas(sPlaza)
                 End If
             Else
-                'UPGRADE_WARNING: Couldn't resolve default property of object tPlazaFacturaElectronica. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-                'tPlazaFacturaElectronica = Plaza.CODIGO_PLAZA 'Plaza ya cargada en el inicio de sesión del usuario.
+                tPlazaFacturaElectronica = Plaza 'Plaza ya cargada en el inicio de sesión del usuario.
             End If
 
-            Cfd.Emisor.ExpedidoEn.USADO = True 'si es usado diferente lugar de expedición se pondra la información, en este caso dejaremos la misma
-            Cfd.Emisor.ExpedidoEn.calle = fElectronicaValidaCampo(Plaza.CALLE)
-            Cfd.Emisor.ExpedidoEn.noExterior = fElectronicaValidaCampo(Plaza.NUMERO_EXTERIOR)
-            Cfd.Emisor.ExpedidoEn.noInterior = fElectronicaValidaCampo(Plaza.NUMERO_INTERIOR)
-            Cfd.Emisor.ExpedidoEn.colonia = fElectronicaValidaCampo(Plaza.COLONIA)
-            Cfd.Emisor.ExpedidoEn.localidad = fElectronicaValidaCampo(Plaza.LOCALIDAD)
-            Cfd.Emisor.ExpedidoEn.municipio = fElectronicaValidaCampo(Plaza.CIUDAD)
-            Cfd.Emisor.ExpedidoEn.estado = fElectronicaValidaCampo(Plaza.ESTADO)
-            Cfd.Emisor.ExpedidoEn.pais = fElectronicaValidaCampo(Plaza.PAIS)
-            Cfd.Emisor.ExpedidoEn.codigoPostal = fElectronicaValidaCampo(Plaza.CODIGO_POSTAL)
-            'CFD
-            Cfd.LugarExpedicion = fElectronicaValidaCampo(Plaza.CIUDAD) & ", " & fElectronicaValidaCampo(Plaza.ESTADO)
+            With Cfd.Emisor.ExpedidoEn
+                .USADO = True 'si es usado diferente lugar de expedición se pondra la información, en este caso dejaremos la misma
+                .calle = fElectronicaValidaCampo(tPlazaFacturaElectronica.CALLE)
+                .noExterior = fElectronicaValidaCampo(tPlazaFacturaElectronica.NUMERO_EXTERIOR)
+                .noInterior = fElectronicaValidaCampo(tPlazaFacturaElectronica.NUMERO_INTERIOR)
+                .colonia = fElectronicaValidaCampo(tPlazaFacturaElectronica.COLONIA)
+                .localidad = fElectronicaValidaCampo(tPlazaFacturaElectronica.LOCALIDAD)
+                .municipio = fElectronicaValidaCampo(tPlazaFacturaElectronica.CIUDAD)
+                .estado = fElectronicaValidaCampo(tPlazaFacturaElectronica.ESTADO)
+                .pais = fElectronicaValidaCampo(tPlazaFacturaElectronica.PAIS)
+                .codigoPostal = fElectronicaValidaCampo(tPlazaFacturaElectronica.CODIGO_POSTAL)
+            End With
+
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            Cfd.LugarExpedicion = fElectronicaValidaCampo(tPlazaFacturaElectronica.CIUDAD) & ", " & fElectronicaValidaCampo(tPlazaFacturaElectronica.ESTADO)
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Cfd.Receptor'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Dim oCliente As New Class_CatClientes(oDescuento.CODIGO_CLIENTE.ToString)
 
             If oCliente.Existe = False Then
                 MsgBox("Cliente no encontrado.", MsgBoxStyle.Exclamation, nombreModulo)
-                Exit Function
+                Return False
             End If
 
             If sVentaPublicoGeneral = "1" Then
@@ -1144,9 +1137,9 @@ Module FacturacionElectronica
                     .noExterior = "S/N"
                     .noInterior = ""
                     .colonia = "CENTRO"
-                    .localidad = fElectronicaValidaCampo(Plaza.LOCALIDAD)
-                    .municipio = fElectronicaValidaCampo(Plaza.CIUDAD)
-                    .estado = fElectronicaValidaCampo(Plaza.ESTADO)
+                    .localidad = fElectronicaValidaCampo(tPlazaFacturaElectronica.LOCALIDAD)
+                    .municipio = fElectronicaValidaCampo(tPlazaFacturaElectronica.CIUDAD)
+                    .estado = fElectronicaValidaCampo(tPlazaFacturaElectronica.ESTADO)
                     .pais = fElectronicaValidaCampo(Empresa_Sistema.PAIS)
                     .codigoPostal = "00000"
                 End With
@@ -1165,10 +1158,14 @@ Module FacturacionElectronica
                     '.estado = fElectronicaValidaCampo(oCliente.ESTADO)
                     '.pais = fElectronicaValidaCampo(oCliente.PAIS)
 
-                    If txtLEN(oCliente.CODIGO_MUNICIPIO) = False And txtLEN(oCliente.CIUDAD) = True Then 'Tiene escrita la ciudad(municipio) a mano y no calza con ninguna del catálogo del sat, se forza a que falle
-                        .municipio = "."
+                    If oCliente.CODIGO_PAIS_SAT <> "MEX" Then
+                        .municipio = fElectronicaValidaCampo(oCliente.CIUDAD) 'Al ser extranjero no hay catalogo de municipios y se teclea manual.
                     Else
-                        .municipio = fElectronicaValidaCampo(oCliente.NOMBRE_MUNICIPIO) 'Nota en la validacion se pregunta por oCliente.CIUDAD que es escrito a mano, pero se usa el nombre del catálogo del sat, igual con estado y pais
+                        If txtLEN(oCliente.CODIGO_MUNICIPIO) = False And txtLEN(oCliente.CIUDAD) = True Then 'Tiene escrita la ciudad(municipio) a mano y no calza con ninguna del catálogo del sat, se forza a que falle
+                            .municipio = "."
+                        Else
+                            .municipio = fElectronicaValidaCampo(oCliente.NOMBRE_MUNICIPIO) 'Nota en la validacion se pregunta por oCliente.CIUDAD que es escrito a mano, pero se usa el nombre del catálogo del sat, igual con estado y pais
+                        End If
                     End If
 
                     If txtLEN(oCliente.CODIGO_ESTADO_SAT) = False And txtLEN(oCliente.ESTADO) = True Then 'Tiene escrito el estado mano y no calza con ninguno del catálogo del sat, se forza a que falle
@@ -1188,7 +1185,7 @@ Module FacturacionElectronica
             End If
 
             If ValidaDatoFacturaElectronica(Cfd) = False Then
-                Exit Function
+                Return False
             End If
             '_Conexion.Close()
 

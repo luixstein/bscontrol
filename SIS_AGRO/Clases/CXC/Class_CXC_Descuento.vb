@@ -11,7 +11,9 @@ Public Class Class_CXC_Descuento
 
 #Region "Campos de la tabla"
     Private _ID_CXC_DESCUENTOS_GLOBAL As Integer
+    Private _FOLIO_DESCUENTO As String
     Private _CODIGO_PLAZA As Integer
+    Private _CODIGO_DOCUMENTO As String
     Private _CODIGO_CLIENTE As String
     Private _NOMBRE_CLIENTE As String
     Private _FECHA As Date
@@ -24,13 +26,15 @@ Public Class Class_CXC_Descuento
     Private _NOMBRE_USUARIO_GRABO As String
     Private _CODIGO_USUARIO_CANCELO As Integer
     Private _NOMBRE_USUARIO_CANCELO As String
-    Private _FOLIO_DESCUENTO As String
     Private _FECHA_CANCELACION As Date
     Private _FECHA_CANCELACION_SERVIDOR As Date
     Private _TIPO_DE_CAMBIO As Double
     Private _SUBTOTAL As Double
     Private _IVA As Double
+    Private _IEPS_DESGLOSADO As Double
+    Private _IEPS_INCLUIDO As Double
     Private _TOTAL As Double
+    Private _MONEDA As String
     Private _ES_COMPROBANTE_ELECTRONICO As String
     Private _FOLIO_NUMERICO As Integer
     Private _IDCATALOGO_FOLIO_FELECTRONICA As Integer
@@ -80,6 +84,8 @@ Public Class Class_CXC_Descuento
     Private _FELECTRONICA_CER As String
     Private _FELECTRONICA_KEY As String
     Private _FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA As String
+
+    Private _LISTA_DESCUENTOS As String
 #End Region
 
 #Region "Campos de privado"
@@ -103,7 +109,6 @@ Public Class Class_CXC_Descuento
         Set(ByVal value As String)
             Me._FOLIO_DESCUENTO = value
         End Set
-
     End Property
 
     Public Property CODIGO_PLAZA() As Integer
@@ -112,6 +117,15 @@ Public Class Class_CXC_Descuento
         End Get
         Set(ByVal value As Integer)
             Me._CODIGO_PLAZA = value
+        End Set
+    End Property
+
+    Public Property CODIGO_DOCUMENTO() As String
+        Get
+            Return Me._CODIGO_DOCUMENTO
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_DOCUMENTO = Value
         End Set
     End Property
 
@@ -285,12 +299,39 @@ Public Class Class_CXC_Descuento
         End Set
     End Property
 
+    Public Property IEPS_DESGLOSADO() As Double
+        Get
+            Return Me._IEPS_DESGLOSADO
+        End Get
+        Set(ByVal value As Double)
+            Me._IEPS_DESGLOSADO = value
+        End Set
+    End Property
+
+    Public Property IEPS_INCLUIDO() As Double
+        Get
+            Return Me._IEPS_INCLUIDO
+        End Get
+        Set(ByVal value As Double)
+            Me._IEPS_INCLUIDO = value
+        End Set
+    End Property
+
     Public Property TOTAL() As Double
         Get
             Return Me._TOTAL
         End Get
         Set(ByVal value As Double)
             Me._TOTAL = value
+        End Set
+    End Property
+
+    Public Property MONEDA() As String
+        Get
+            Return Me._MONEDA
+        End Get
+        Set(ByVal value As String)
+            Me._MONEDA = value
         End Set
     End Property
 
@@ -488,6 +529,15 @@ Public Class Class_CXC_Descuento
             Return Me._FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA
         End Get
     End Property
+
+    Public Property LISTA_DESCUENTOS() As String
+        Get
+            Return Me._LISTA_DESCUENTOS
+        End Get
+        Set(value As String)
+            Me._LISTA_DESCUENTOS = value
+        End Set
+    End Property
 #End Region
 #End Region
 
@@ -495,8 +545,8 @@ Public Class Class_CXC_Descuento
     Public Sub New()
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        ' Me.oDocumento = New Class_CatDocumentos()
-    End Sub                                                         'Inicializa al objeto.
+        Me._oDocumento = New Class_CatDocumentos()
+    End Sub
 
     Public Sub New(ByVal folioDescuento As String)
         Me.New()
@@ -531,8 +581,11 @@ Public Class Class_CXC_Descuento
 
             sqlParametro = .Parameters.Add("@FOLIO_DESCUENTO", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_DESCUENTO : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PLAZA
+            sqlParametro = .Parameters.Add("@CODIGO_DOCUMENTO", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_DOCUMENTO
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._CODIGO_CLIENTE
             sqlParametro = .Parameters.Add("@SUBTOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL
+            sqlParametro = .Parameters.Add("@IEPS_DESGLOSADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_DESGLOSADO
+            sqlParametro = .Parameters.Add("@IEPS_INCLUIDO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_INCLUIDO
             sqlParametro = .Parameters.Add("@IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._IVA
             sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL
             sqlParametro = .Parameters.Add("@FECHA", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA
@@ -543,6 +596,8 @@ Public Class Class_CXC_Descuento
             sqlParametro = .Parameters.Add("@ES_POR_DEVOLUCION", SqlDbType.Char, 1) : sqlParametro.Value = Me._ES_POR_DEVOLUCION
             sqlParametro = .Parameters.Add("@ES_COMPROBANTE_ELECTRONICO", SqlDbType.Char, 1) : sqlParametro.Value = Me._ES_COMPROBANTE_ELECTRONICO
             sqlParametro = .Parameters.Add("@ES_VENTA_PUBLICO_GENERAL", SqlDbType.Char, 1) : sqlParametro.Value = Me._ES_VENTA_PUBLICO_GENERAL
+            sqlParametro = .Parameters.Add("@MONEDA", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._MONEDA
+            sqlParametro = .Parameters.Add("@LISTA_DESCUENTOS", SqlDbType.NVarChar, -1) : sqlParametro.Value = Me._LISTA_DESCUENTOS
 
             Try
                 Me._Conexion.Open()
@@ -620,16 +675,9 @@ Public Class Class_CXC_Descuento
     Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
 
-        'Dim cmd As New SqlCommand("SELECT V.* " & _
-        '                          "FROM VW_CXC_DESCUENTOS_GLOBAL_CON_CXC_GLOBAL V, " & _
-        '                          "SIS_CAT_DOCUMENTOS DOC " & _
-        '                          "WHERE V.FOLIO_DESCUENTO='" & Me._FOLIO_DESCUENTO & "'" & _
-        '                            "AND DOC.CODIGO_DOCUMENTO='NCG_CXC'+CAST(CXC.CODIGO_PLAZA AS NVARCHAR) ", Me._Conexion) 'La tabla no tiene codigo de documento por eso lo creamos
-
-        Dim cmd As New SqlCommand("SELECT V.* " & _
-                          "FROM VW_CXC_DESCUENTOS_GLOBAL_CON_CXC_GLOBAL V " & _
-                          "WHERE V.FOLIO_DESCUENTO='" & Me._FOLIO_DESCUENTO & "'", Me._Conexion)
-
+        Dim cmd As New SqlCommand("SELECT V.* " &
+                          "FROM VW_CXC_DESCUENTOS_GLOBAL_CON_CXC_GLOBAL V " &
+                          "WHERE V.FOLIO_DESCUENTO='" & Me._FOLIO_DESCUENTO & "' AND V.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA, Me._Conexion)
 
         Dim dReader As SqlDataReader
 
@@ -645,6 +693,7 @@ Public Class Class_CXC_Descuento
                     Me._ID_CXC_DESCUENTOS_GLOBAL = CType(dReader("ID_CXC_DESCUENTOS_GLOBAL"), Integer)
                     Me._FOLIO_DESCUENTO = CType(dReader("FOLIO_DESCUENTO"), String)
                     Me._CODIGO_PLAZA = CType(dReader("CODIGO_PLAZA"), Integer)
+                    Me._CODIGO_DOCUMENTO = CType(dReader("CODIGO_DOCUMENTO"), String)
                     Me._CODIGO_CLIENTE = CType(dReader("CODIGO_CLIENTE"), String)
                     Me._NOMBRE_CLIENTE = CType(dReader("NOMBRE_CLIENTE"), String)
                     Me._FOLIO_POLIZA = "" & dReader("FOLIO_POLIZA").ToString
@@ -657,8 +706,11 @@ Public Class Class_CXC_Descuento
                     Me._NOMBRE_USUARIO_GRABO = CType(dReader("NOMBRE_USUARIO_GRABO"), String)
                     Me._TIPO_DE_CAMBIO = CType(dReader("TIPO_DE_CAMBIO"), Double)
                     Me._SUBTOTAL = CType(dReader("SUBTOTAL"), Double)
+                    Me._IEPS_DESGLOSADO = CType(dReader("IEPS_DESGLOSADO"), Double)
+                    Me._IEPS_INCLUIDO = CType(dReader("IEPS_INCLUIDO"), Double)
                     Me._IVA = CType(dReader("IVA"), Double)
                     Me._TOTAL = CType(dReader("TOTAL"), Double)
+                    Me._MONEDA = dReader("MONEDA").ToString
                     Me._IMPUESTO_PORCENTAJE = CType(dReader("IMPUESTO_PORCENTAJE"), Double)
                     Me._RETENCION = CType(dReader("RETENCION"), Double)
                     Me._ES_COMPROBANTE_ELECTRONICO = CType(dReader("ES_COMPROBANTE_ELECTRONICO"), String)
@@ -723,21 +775,28 @@ Public Class Class_CXC_Descuento
         '"INNER JOIN CAT_ARTICULOS P ON(R.CODIGO_ARTICULO=P.CODIGO_ARTICULO AND C.CODIGO_CULTIVO=P.CODIGO_CULTIVO) " & _
         '        "LEFT JOIN CAT_CULTIVOS PC ON(P.CODIGO_CULTIVO=PC.CODIGO_CULTIVO) " & _
 
-        sSQL = "SELECT MAX( V.FOLIO_VENTA),MAX(V.FECHA),MAX(V.SALDO),P.CODIGO_CULTIVO,P.NOMBRE_CULTIVO, " & _
-        "(SELECT SUM(VD.IMPORTE) IMPORTE FROM VENTA_GLOBAL VG INNER JOIN VENTA_DETALLE VD ON(VG.FOLIO_VENTA=VD.FOLIO_VENTA) " & _
-        "LEFT JOIN CAT_ARTICULOS PA ON(VD.CODIGO_ARTICULO=PA.CODIGO_ARTICULO) " & _
-        "WHERE(VG.FOLIO_VENTA = G.FOLIO_REFERENCIA And PA.CODIGO_CULTIVO = P.CODIGO_CULTIVO) GROUP BY PA.CODIGO_CULTIVO) IMPORTE, " & _
-        "(SELECT ISNULL(MAX(IMPORTE_DESCUENTO) ,0) FROM CXC_DESCUENTOS_DETALLE_CULTIVOS WHERE CODIGO_CULTIVO=ISNULL(P.CODIGO_CULTIVO,'00') AND FOLIO_CXC=D.FOLIO_CXC) DESCUENTO,'','','' " & _
-        "FROM  CXC_DESCUENTOS_GLOBAL DG " & _
-        "INNER JOIN CXC_DESCUENTOS_DETALLE D ON(DG.FOLIO_DESCUENTO=D.FOLIO_DESCUENTO) " & _
-        "INNER JOIN CXC_DESCUENTOS_DETALLE_CULTIVOS C ON(D.FOLIO_CXC=C.FOLIO_CXC) " & _
-        "INNER JOIN CXC_GLOBAL G ON(C.FOLIO_CXC=G.FOLIO_CXC) " & _
-        "INNER JOIN VENTA_GLOBAL V  ON(G.FOLIO_REFERENCIA=V.FOLIO_VENTA ) " & _
-        "INNER JOIN VENTA_DETALLE R ON(V.FOLIO_VENTA=R.FOLIO_VENTA) " & _
-        "LEFT JOIN VW_CAT_PRODUCTOS_AGRICOLAS P ON(R.CODIGO_ARTICULO=P.CODIGO_ARTICULO) " & _
-        "WHERE DG.FOLIO_DESCUENTO='" & Me._FOLIO_DESCUENTO & "'  " & _
-        "GROUP BY P.CODIGO_CULTIVO,P.NOMBRE_CULTIVO,D.FOLIO_CXC,G.FOLIO_REFERENCIA " & _
-        "ORDER BY D.FOLIO_CXC "
+        'sSQL = "SELECT MAX( V.FOLIO_VENTA),MAX(V.FECHA),MAX(V.SALDO),P.CODIGO_CULTIVO,P.NOMBRE_CULTIVO, " &
+        '"(SELECT SUM(VD.IMPORTE) IMPORTE FROM VENTA_GLOBAL VG INNER JOIN VENTA_DETALLE VD ON(VG.FOLIO_VENTA=VD.FOLIO_VENTA) " &
+        '"LEFT JOIN CAT_ARTICULOS PA ON(VD.CODIGO_ARTICULO=PA.CODIGO_ARTICULO) " &
+        '"WHERE(VG.FOLIO_VENTA = G.FOLIO_REFERENCIA And PA.CODIGO_CULTIVO = P.CODIGO_CULTIVO) GROUP BY PA.CODIGO_CULTIVO) IMPORTE, " &
+        '"(SELECT ISNULL(MAX(IMPORTE_DESCUENTO) ,0) FROM CXC_DESCUENTOS_DETALLE_CULTIVOS WHERE CODIGO_CULTIVO=ISNULL(P.CODIGO_CULTIVO,'00') AND FOLIO_CXC=D.FOLIO_CXC) DESCUENTO,'','','' " &
+        '"FROM  CXC_DESCUENTOS_GLOBAL DG " &
+        '"INNER JOIN CXC_DESCUENTOS_DETALLE D ON(DG.FOLIO_DESCUENTO=D.FOLIO_DESCUENTO) " &
+        '"INNER JOIN CXC_DESCUENTOS_DETALLE_CULTIVOS C ON(D.FOLIO_CXC=C.FOLIO_CXC) " &
+        '"INNER JOIN CXC_GLOBAL G ON(C.FOLIO_CXC=G.FOLIO_CXC) " &
+        '"INNER JOIN VENTA_GLOBAL V  ON(G.FOLIO_REFERENCIA=V.FOLIO_VENTA ) " &
+        '"INNER JOIN VENTA_DETALLE R ON(V.FOLIO_VENTA=R.FOLIO_VENTA) " &
+        '"LEFT JOIN VW_CAT_PRODUCTOS_AGRICOLAS P ON(R.CODIGO_ARTICULO=P.CODIGO_ARTICULO) " &
+        '"WHERE DG.FOLIO_DESCUENTO='" & Me._FOLIO_DESCUENTO & "'  " &
+        '"GROUP BY P.CODIGO_CULTIVO,P.NOMBRE_CULTIVO,D.FOLIO_CXC,G.FOLIO_REFERENCIA " &
+        '"ORDER BY D.FOLIO_CXC "
+
+        sSQL = "SELECT P.FOLIO_VENTA,VG.FECHA,VG.TIPO_DE_CAMBIO,VG.TOTAL,VG.SALDO,P.TOTAL DESCUENTO " &
+        "FROM CXC_DESCUENTOS_GLOBAL G " &
+        "INNER JOIN CXC_DESCUENTOS_DETALLE_PREVIO P ON(g.FOLIO_DESCUENTO=P.FOLIO_DESCUENTO) " &
+        "INNER JOIN VENTA_GLOBAL VG ON(P.FOLIO_VENTA=VG.FOLIO_VENTA) " &
+        "WHERE G.FOLIO_DESCUENTO='" & Me._FOLIO_DESCUENTO & "' " &
+        "ORDER BY P.ID"
 
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
@@ -1032,6 +1091,39 @@ Public Class Class_CXC_Descuento
             oReporte = Nothing
         End Try
         Return bResultado
+    End Function
+
+    Public Function ObtieneVentasConSaldo(ByVal CodigoCliente As String, ByVal Moneda As String, ByVal VentaPublicoGeneral As Boolean, ByVal CodigoTipoDocumento As String) As DataTable
+        Dim dt As New DataTable, sSQLDocs As String = ""
+        Try
+            Select Case CodigoTipoDocumento
+                Case "NCG_CXC"
+                    sSQLDocs = "AND V.CODIGO_DOCUMENTO LIKE 'F%'"
+                Case "NRG_CXC"
+                    sSQLDocs = "AND V.CODIGO_DOCUMENTO LIKE 'R%'"
+            End Select
+
+            Using da As New SqlDataAdapter("SELECT V.FOLIO_VENTA,V.FECHA,V.TIPO_DE_CAMBIO,V.TOTAL,V.SALDO " &
+                                           "FROM VENTA_GLOBAL V " &
+                                           "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO D ON (V.CODIGO_DOCUMENTO=D.CODIGO_DOCUMENTO)  " &
+                                           "WHERE V.CODIGO_CLIENTE=@CODIGO_CLIENTE AND SALDO>0 AND V.CODIGO_PLAZA=" & Usuario.Codigo_Plaza.ToString & " AND " &
+                                           IIf(Moneda = "MXN", "V.TIPO_DE_CAMBIO<=1", "V.TIPO_DE_CAMBIO>1").ToString & " " &
+                                           "AND V.ES_VENTA_PUBLICO_GENERAL=" & IIf(VentaPublicoGeneral = True, "1", "0").ToString & " " &
+                                           sSQLDocs &
+                                           "ORDER BY V.FECHA", Me._Conexion)
+                da.SelectCommand.CommandType = CommandType.Text
+
+                With da.SelectCommand
+                    .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8).Value = CodigoCliente
+                End With
+
+                da.Fill(dt)
+            End Using
+
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ObtieneVentasConSaldo", ex)
+        End Try
+        Return dt
     End Function
 
 #End Region
