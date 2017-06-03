@@ -1072,7 +1072,8 @@ Module FacturacionElectronica
                     Cfd.Impuestos.Traslados.Add("IVA", Format(0, "#0.00"), Format(0, "#0.00"))
                 End If
                 '16 IMPUESTO_PORCENTAJE
-                Cfd.Impuestos.Traslados.Add("IVA", Format(IIf(oDescuento.IVA > 0, oDescuento.IMPUESTO_PORCENTAJE, 0), "#0.00"), Format(oDescuento.IVA, "#0.00")) 'corregir, crerar campo impuesto_poercentaje, y no poner fijo 16
+                'Cfd.Impuestos.Traslados.Add("IVA", Format(IIf(oDescuento.IVA > 0, oDescuento.IMPUESTO_PORCENTAJE, 0), "#0.00"), Format(oDescuento.IVA, "#0.00")) 'corregir, crerar campo impuesto_poercentaje, y no poner fijo 16
+                Cfd.Impuestos.Traslados.Add("IVA", Format(IIf(oDescuento.IVA > 0, 16, 0), "#0.00"), Format(oDescuento.IVA, "#0.00")) 'corregir, crerar campo impuesto_poercentaje, y no poner fijo 16
             End If
             'End If
 
