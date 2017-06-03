@@ -59,7 +59,7 @@ Public Class Frm_CXC_Descuentos
         End If
     End Sub
 
-    Private Sub tsbImprimirPoliza_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbImprimir.Click
+    Private Sub tsbImprimir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbImprimir.Click
 
         MsgBox("Falta crear los formatos de nc y cr", vbExclamation, Me.Text)
         Return
