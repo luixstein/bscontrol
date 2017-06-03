@@ -177,7 +177,7 @@ Public Class Class_CatZonas
 
     Public Overrides Function Consultar() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand("SELECT * FROM CAT_ZONAS WHERE CODIGO_ZONA=" & sReplace(Me._CODIGO_ZONA) & " AND CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString, Me._Conexion)
+        Dim cmd As New SqlCommand("SELECT * FROM CAT_ZONAS WHERE CODIGO_ZONA=" & sReplace(Me._CODIGO_ZONA), Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -235,7 +235,7 @@ Public Class Class_CatZonas
 
     Public Overrides Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("SELECT CODIGO_ZONA,NOMBRE_ZONA FROM CAT_ZONAS WHERE CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & "  ORDER BY NOMBRE_ZONA", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_ZONA,NOMBRE_ZONA FROM CAT_ZONAS ORDER BY NOMBRE_ZONA", Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
@@ -262,7 +262,7 @@ Public Class Class_CatZonas
 
     Public Function ObtenerElementosFiltro(ByVal Filtro As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("SELECT CODIGO_ZONA,NOMBRE_ZONA FROM CAT_ZONAS WHERE CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND NOMBRE_ZONA LIKE '" & Filtro.ToString & "%' ORDER BY NOMBRE_ZONA", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_ZONA,NOMBRE_ZONA FROM CAT_ZONAS WHERE NOMBRE_ZONA LIKE '" & Filtro.ToString & "%' ORDER BY NOMBRE_ZONA", Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
