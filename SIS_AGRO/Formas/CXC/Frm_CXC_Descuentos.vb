@@ -11,6 +11,7 @@ Public Class Frm_CXC_Descuentos
     End Enum
 
 #Region "Campos privados"
+    Private oDocumento As New Class_CatDocumentos
     Private Estado As enumEstados
 
     Private oDescuentosCXC As New Class_CXC_Descuento
@@ -46,20 +47,23 @@ Public Class Frm_CXC_Descuentos
 
     Private Sub tsbCancelar_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbCancelar.Click
         If Me.oDescuentosCXC.ESTATUS_DESCUENTO = "A" Then
-            If Me.CancelaDescuentosCXC = True Then  'Se cancelo el documento correctamente = true
+            If Me.Cancelar = True Then  'Se cancelo el documento correctamente = true
                 'If Me.oDescuentosCXC.ESTATUS_CANCELACION_CFDI = "0" Then
-                If Me.oDescuentosCXC.VERSION_ESQUEMA_XML > "2.2" Then 'Si no se cumbre no es CFDi (por lo tanto no tiene timbre)
+                If Me.oDescuentosCXC.VERSION_ESQUEMA_XML > "2.2" AndAlso Me.oDocumento.TIMBRA_DOCUMENTO = True Then 'Si no se cumbre no es CFDi (por lo tanto no tiene timbre)
                     Me.CancelarNotaCreditoElectronicaLocal()
                 End If
                 'End If
                 Me.Consultar()
-                MsgBox("Movimiento de descuento cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
                 Me.GestionaCambioEstado()
             End If
         End If
     End Sub
 
     Private Sub tsbImprimirPoliza_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbImprimir.Click
+
+        MsgBox("Falta crear los formatos de nc y cr", vbExclamation, Me.Text)
+        Return
+
         Me.oDescuentosCXC.Consultar()
         If txtLEN(Me.oDescuentosCXC.FOLIO_FISCAL_SAT + Me.oDescuentosCXC.FECHA_TIMBRADO_SAT + Me.oDescuentosCXC.NUMERO_SERIE_CERTIFICADO_SAT + Me.oDescuentosCXC.SELLO_SAT) = False And Me.oDescuentosCXC.CBB_IMAGE Is Nothing Then
             MsgBox("El descuento debe de estar sellado para poder imprimir", MsgBoxStyle.Exclamation, Me.Text)
@@ -110,6 +114,8 @@ Public Class Frm_CXC_Descuentos
             Me.TxtCodigoCliente.Enabled = False
             Me.cboMoneda.Enabled = False
             Me.chkVentaPublicoGeneral.Enabled = False
+            Me.CboDocumento.Enabled = False
+            Me.TxtFolio.Enabled = False
         Else
             Me.TxtCodigoCliente.Enabled = True
             Me.cboMoneda.Enabled = True
@@ -117,6 +123,13 @@ Public Class Frm_CXC_Descuentos
         End If
     End Sub
 
+    Private Sub btnNotaSiguiente_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNotaSiguiente.Click
+        Me.NavegadorNotas("Siguiente")
+    End Sub
+
+    Private Sub btnNotaAnterior_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNotaAnterior.Click
+        Me.NavegadorNotas("Anterior")
+    End Sub
 #End Region
 
 #Region "Eventos de objetos"
@@ -127,8 +140,13 @@ Public Class Frm_CXC_Descuentos
     End Sub
 
     Private Sub Frm_CXC_Descuentos_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.Inicializa()
-        Me.Cambia_Estado(enumEstados.NUEVO)
+        Try
+            Me.DesplegarDocumentos()
+            Me.Inicializa()
+            Me.Cambia_Estado(enumEstados.NUEVO)
+        Catch ex As Exception
+            HandleError(Me.Name, "Frm_CXC_Descuentos_Load", ex)
+        End Try
     End Sub
 
     Private Sub TxtFolio_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtFolio.KeyDown
@@ -350,12 +368,29 @@ Buscar:
         End Try
     End Sub
 
-    Private Sub btnNotaSiguiente_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNotaSiguiente.Click
-        Me.NavegadorNotas("Siguiente")
-    End Sub
+    Private Sub CmbDocumento_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboDocumento.SelectedIndexChanged
+        'Me.oDescuentosCXC.CODIGO_DOCUMENTO = Me.CboDocumento.SelectedValue.ToString
+        Me.oDocumento = New Class_CatDocumentos(Me.CboDocumento.SelectedValue.ToString)
+        Me.Inicializa()
+        Me.Cambia_Estado(enumEstados.NUEVO)
 
-    Private Sub btnNotaAnterior_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNotaAnterior.Click
-        Me.NavegadorNotas("Anterior")
+        'If Me.oDocumento.AFECTA_INVENTARIOS = False Then 'COTIZACION
+        '    If Me.LblEstatus.Text = "G" Or Me.LblEstatus.Text = "R" Then
+        '        Me.tsbCotizacionRemision.Visible = True
+        '        Me.tsbCotizacionFactura.Visible = True
+        '        Me.tsbRemisionVenta.Visible = False
+        '    Else
+        '        Me.tsbCotizacionRemision.Visible = False
+        '        Me.tsbCotizacionFactura.Visible = False
+        '        Me.tsbRemisionVenta.Visible = False
+        '    End If
+
+        'Else
+        'If Me.oDocumento.AFECTA_CONTBILIDAD = True Then 'FACTURA
+        '    Me.txtFolioEmbarque.Enabled = True
+        'Else
+        '    Me.txtFolioEmbarque.Enabled = False
+        'End If
     End Sub
 
 #Region "Eventos Genericos"
@@ -515,7 +550,7 @@ Buscar:
                 Return False
             End If
 
-            dt = Me.oDescuentosCXC.ObtieneVentasConSaldo(Me.TxtCodigoCliente.Text, Me.cboMoneda.Text, Me.chkVentaPublicoGeneral.Checked)
+            dt = Me.oDescuentosCXC.ObtieneVentasConSaldo(Me.TxtCodigoCliente.Text, Me.cboMoneda.Text, Me.chkVentaPublicoGeneral.Checked, Me.oDocumento.CODIGO_TIPO_DOCUMENTO)
 
             If dt.Rows.Count = 0 Then
                 MsgBox("No hay facturas con saldo.", MsgBoxStyle.Exclamation, sProcedure)
@@ -605,24 +640,24 @@ Buscar:
         Try
 
             'Validar permiso
-            If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios("NCG_CXC" & Usuario.Codigo_Plaza) = False Then
+            If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString) = False Then
                 MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, Me.Text)
-                Exit Function
+                Return False
             End If
 
             If MsgBox("Deseas grabar el documento con el folio : " & Me.TxtFolio.Text & "?", CType(vbYesNo + vbQuestion, MsgBoxStyle), "Grabar") = MsgBoxResult.No Then
-                Exit Function
+                Return False
             End If
 
             'Me.Totales()
             Me.CalculaImpuestosYTotales("CALCULAR")
 
             If Me.Validar() = False Then
-                Exit Function
+                Return False
             End If
 
             'If Me.ValidaPrePoliza() = False Then
-            '    Exit Function
+            '    RETURN FALSE
             'End If
 
             If Me.Grabar() = True Then
@@ -647,7 +682,7 @@ Buscar:
 
                 bResultado = True
 
-                If Empresa_Sistema.FELECTRONICA_ACTIVA = True Then
+                If Empresa_Sistema.FELECTRONICA_ACTIVA = True AndAlso Me.oDocumento.TIMBRA_DOCUMENTO = True Then
                     If Me.GeneraNotaCreditoElectronica(False) = True Then
                         Me.oDescuentosCXC.ExportarAPdf()
                     End If
@@ -679,6 +714,7 @@ Buscar:
             With Me.oDescuentosCXC
                 .FOLIO_DESCUENTO = Me.TxtFolio.Text
                 .CODIGO_PLAZA = Usuario.Codigo_Plaza
+                .CODIGO_DOCUMENTO = Me.CboDocumento.SelectedValue.ToString
                 .CODIGO_CLIENTE = Me.TxtCodigoCliente.Text
                 .SUBTOTAL = valorNumerico(Me.TxtSubTotal.Text)
                 .IEPS_DESGLOSADO = valorNumerico(Me.txtIEPS.Text)
@@ -735,7 +771,7 @@ Buscar:
         Try
             If CancelarCFDIDescuento(Me.oDescuentosCXC, TipoComprobante.NOTA_CREDITO_CXC) = False Then
                 MsgBox("Los datos digitales del documento no fueron cancelados correctamente. Avíse al depto. de sistemas.", vbExclamation, Me.Text)
-                Exit Function
+                Return False
             End If
 
             Return True
@@ -1149,11 +1185,14 @@ Buscar:
             If Me.oDescuentosCXC.Existe = False Then
                 Me.GeneraFolio()
                 Me.Cambia_Estado(enumEstados.NUEVO)
+                Me.CboDocumento.Enabled = False
                 Me.TxtFolio.Enabled = False
                 Exit Function
             Else
-                Me.TxtFolio.Text = Me.oDescuentosCXC.FOLIO_DESCUENTO
+                Me.CboDocumento.Enabled = False
                 Me.TxtFolio.Enabled = False
+
+                Me.TxtFolio.Text = Me.oDescuentosCXC.FOLIO_DESCUENTO
 
                 Me.dtFecha.Value = oDescuentosCXC.FECHA
                 Me.LblStatus.Text = oDescuentosCXC.ESTATUS_DESCUENTO
@@ -1196,7 +1235,7 @@ Buscar:
         Return bResultado
     End Function
 
-    Private Function CancelaDescuentosCXC() As Boolean
+    Private Function Cancelar() As Boolean
         Dim bResultado As Boolean = False
         'Dim oFirmaElectronica = New UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo
         Dim oUtileriasCancela As New Class_UtileriasFirmaElectronicaCancelacion
@@ -1292,8 +1331,9 @@ Buscar:
 
             MsgBox("Movimiento de descuento cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
             bResultado = True
+
         Catch ex As Exception
-            HandleError(Me.Name, "CancelaDescuentosCXC", ex)
+            HandleError(Me.Name, "Cancelar", ex)
         End Try
 
         Return bResultado
@@ -1320,7 +1360,8 @@ Buscar:
     End Function
 
     Private Sub GeneraFolio()
-        Me.TxtFolio.Text = Me.oDescuentosCXC.GeneraFolio
+        'Me.TxtFolio.Text = Me.oDescuentosCXC.GeneraFolio
+        Me.TxtFolio.Text = Me.oDocumento.GeneraFolio
     End Sub
 
     Private Sub Cambia_Estado(ByVal pEstado As enumEstados)
@@ -1331,6 +1372,7 @@ Buscar:
                     Me.tsbGrabar.Enabled = True
                     Me.tsbCancelar.Enabled = False
                     Me.tsbImprimir.Enabled = False
+                    Me.CboDocumento.Enabled = True
                     Me.dtFecha.Enabled = True
                     Me.TxtCodigoCliente.Enabled = True
                     Me.TxtConcepto.Enabled = True
@@ -1357,6 +1399,7 @@ Buscar:
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = True
                     Me.tsbImprimir.Enabled = True
+                    Me.CboDocumento.Enabled = False
                     Me.dtFecha.Enabled = False
                     Me.TxtCodigoCliente.Enabled = False
                     Me.TxtConcepto.Enabled = False
@@ -1373,7 +1416,7 @@ Buscar:
 
                     Me.tsbImprimir.Select()
                     If Me.oDescuentosCXC.VERSION_ESQUEMA_XML >= "3.2" Or Me.oDescuentosCXC.VERSION_ESQUEMA_XML = "" Or Me.oDescuentosCXC.VERSION_ESQUEMA_XML = "0" Then
-                        If Me.oDescuentosCXC.TIMBRADO_CFDI = "0" And Me.oDescuentosCXC.TIMBRADO_DESCARTADO = "0" Then
+                        If Me.oDescuentosCXC.TIMBRADO_CFDI = "0" And Me.oDescuentosCXC.TIMBRADO_DESCARTADO = "0" And Me.oDocumento.TIMBRA_DOCUMENTO = True Then
                             Me.tsbSellarNotaElectronica.Visible = True
                             Me.tsbGeneraAcuseCancelacion.Visible = False
                         Else
@@ -1389,6 +1432,7 @@ Buscar:
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = False
                     Me.tsbImprimir.Enabled = True
+                    Me.CboDocumento.Enabled = False
                     Me.dtFecha.Enabled = False
                     Me.TxtCodigoCliente.Enabled = False
                     Me.TxtConcepto.Enabled = False
@@ -1408,7 +1452,7 @@ Buscar:
                         If Me.oDescuentosCXC.ESTATUS_CANCELACION_CFDI = "1" Then
                             Me.tsbSellarNotaElectronica.Visible = False
                             Me.tsbGeneraAcuseCancelacion.Visible = False
-                        Else
+                        ElseIf Me.oDocumento.TIMBRA_DOCUMENTO = True Then
                             Me.tsbGeneraAcuseCancelacion.Visible = True
                         End If
                     Else
@@ -1532,6 +1576,25 @@ Buscar:
             HandleError(Me.Name, "GestionaUSD", ex)
         End Try
     End Function
+
+    Private Sub DesplegarDocumentos()
+        Try
+            With Me.CboDocumento
+                .DisplayMember = "NOMBRE_TIPO_DOCUMENTO"
+                .ValueMember = "CODIGO_DOCUMENTO"
+                Dim dView As New Data.DataView(Me.oDocumento.ObtenerCodigosDocumentos("CXC", Usuario.Codigo_Plaza.ToString, " ESTATUS_DOCUMENTO='A' AND CODIGO_TIPO_DOCUMENTO IN('NCG_CXC','NRG_CXC')"))
+                dView.Sort = "ORDEN ASC"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedIndex = 0
+                    'Me.bDocumentosCargados = True
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarDocumentos", ex)
+        End Try
+    End Sub
+
 
 #End Region
 

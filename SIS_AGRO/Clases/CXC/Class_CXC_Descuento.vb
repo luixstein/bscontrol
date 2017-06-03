@@ -11,7 +11,9 @@ Public Class Class_CXC_Descuento
 
 #Region "Campos de la tabla"
     Private _ID_CXC_DESCUENTOS_GLOBAL As Integer
+    Private _FOLIO_DESCUENTO As String
     Private _CODIGO_PLAZA As Integer
+    Private _CODIGO_DOCUMENTO As String
     Private _CODIGO_CLIENTE As String
     Private _NOMBRE_CLIENTE As String
     Private _FECHA As Date
@@ -24,7 +26,6 @@ Public Class Class_CXC_Descuento
     Private _NOMBRE_USUARIO_GRABO As String
     Private _CODIGO_USUARIO_CANCELO As Integer
     Private _NOMBRE_USUARIO_CANCELO As String
-    Private _FOLIO_DESCUENTO As String
     Private _FECHA_CANCELACION As Date
     Private _FECHA_CANCELACION_SERVIDOR As Date
     Private _TIPO_DE_CAMBIO As Double
@@ -116,6 +117,15 @@ Public Class Class_CXC_Descuento
         End Get
         Set(ByVal value As Integer)
             Me._CODIGO_PLAZA = value
+        End Set
+    End Property
+
+    Public Property CODIGO_DOCUMENTO() As String
+        Get
+            Return Me._CODIGO_DOCUMENTO
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_DOCUMENTO = Value
         End Set
     End Property
 
@@ -571,6 +581,7 @@ Public Class Class_CXC_Descuento
 
             sqlParametro = .Parameters.Add("@FOLIO_DESCUENTO", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_DESCUENTO : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PLAZA
+            sqlParametro = .Parameters.Add("@CODIGO_DOCUMENTO", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_DOCUMENTO
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._CODIGO_CLIENTE
             sqlParametro = .Parameters.Add("@SUBTOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL
             sqlParametro = .Parameters.Add("@IEPS_DESGLOSADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_DESGLOSADO
@@ -664,16 +675,9 @@ Public Class Class_CXC_Descuento
     Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
 
-        'Dim cmd As New SqlCommand("SELECT V.* " & _
-        '                          "FROM VW_CXC_DESCUENTOS_GLOBAL_CON_CXC_GLOBAL V, " & _
-        '                          "SIS_CAT_DOCUMENTOS DOC " & _
-        '                          "WHERE V.FOLIO_DESCUENTO='" & Me._FOLIO_DESCUENTO & "'" & _
-        '                            "AND DOC.CODIGO_DOCUMENTO='NCG_CXC'+CAST(CXC.CODIGO_PLAZA AS NVARCHAR) ", Me._Conexion) 'La tabla no tiene codigo de documento por eso lo creamos
-
-        Dim cmd As New SqlCommand("SELECT V.* " & _
-                          "FROM VW_CXC_DESCUENTOS_GLOBAL_CON_CXC_GLOBAL V " & _
-                          "WHERE V.FOLIO_DESCUENTO='" & Me._FOLIO_DESCUENTO & "'", Me._Conexion)
-
+        Dim cmd As New SqlCommand("SELECT V.* " &
+                          "FROM VW_CXC_DESCUENTOS_GLOBAL_CON_CXC_GLOBAL V " &
+                          "WHERE V.FOLIO_DESCUENTO='" & Me._FOLIO_DESCUENTO & "' AND V.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA, Me._Conexion)
 
         Dim dReader As SqlDataReader
 
@@ -689,6 +693,7 @@ Public Class Class_CXC_Descuento
                     Me._ID_CXC_DESCUENTOS_GLOBAL = CType(dReader("ID_CXC_DESCUENTOS_GLOBAL"), Integer)
                     Me._FOLIO_DESCUENTO = CType(dReader("FOLIO_DESCUENTO"), String)
                     Me._CODIGO_PLAZA = CType(dReader("CODIGO_PLAZA"), Integer)
+                    Me._CODIGO_DOCUMENTO = CType(dReader("CODIGO_DOCUMENTO"), String)
                     Me._CODIGO_CLIENTE = CType(dReader("CODIGO_CLIENTE"), String)
                     Me._NOMBRE_CLIENTE = CType(dReader("NOMBRE_CLIENTE"), String)
                     Me._FOLIO_POLIZA = "" & dReader("FOLIO_POLIZA").ToString
@@ -1088,16 +1093,23 @@ Public Class Class_CXC_Descuento
         Return bResultado
     End Function
 
-    Public Function ObtieneVentasConSaldo(ByVal CodigoCliente As String, ByVal Moneda As String, ByVal VentaPublicoGeneral As Boolean) As DataTable
-        Dim dt As New DataTable
+    Public Function ObtieneVentasConSaldo(ByVal CodigoCliente As String, ByVal Moneda As String, ByVal VentaPublicoGeneral As Boolean, ByVal CodigoTipoDocumento As String) As DataTable
+        Dim dt As New DataTable, sSQLDocs As String = ""
         Try
+            Select Case CodigoTipoDocumento
+                Case "NCG_CXC"
+                    sSQLDocs = "AND V.CODIGO_DOCUMENTO LIKE 'F%'"
+                Case "NRG_CXC"
+                    sSQLDocs = "AND V.CODIGO_DOCUMENTO LIKE 'R%'"
+            End Select
 
-            Using da As New SqlDataAdapter("SELECT V.FOLIO_VENTA,V.FECHA,V.TIPO_DE_CAMBIO,V.TOTAL,V.SALDO " & _
-                                           "FROM VENTA_GLOBAL V " & _
-                                           "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO D ON (V.CODIGO_DOCUMENTO=D.CODIGO_DOCUMENTO)  " & _
-                                           "WHERE V.CODIGO_CLIENTE=@CODIGO_CLIENTE AND SALDO>0 AND D.AFECTA_CONTABILIDAD='1' AND V.CODIGO_PLAZA=" & Usuario.Codigo_Plaza.ToString & " AND " & _
-                                           IIf(Moneda = "MXN", "V.TIPO_DE_CAMBIO<=1", "V.TIPO_DE_CAMBIO>1").ToString & " " & _
-                                           "AND V.ES_VENTA_PUBLICO_GENERAL=" & IIf(VentaPublicoGeneral = True, "1", "0").ToString & " " & _
+            Using da As New SqlDataAdapter("SELECT V.FOLIO_VENTA,V.FECHA,V.TIPO_DE_CAMBIO,V.TOTAL,V.SALDO " &
+                                           "FROM VENTA_GLOBAL V " &
+                                           "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO D ON (V.CODIGO_DOCUMENTO=D.CODIGO_DOCUMENTO)  " &
+                                           "WHERE V.CODIGO_CLIENTE=@CODIGO_CLIENTE AND SALDO>0 AND V.CODIGO_PLAZA=" & Usuario.Codigo_Plaza.ToString & " AND " &
+                                           IIf(Moneda = "MXN", "V.TIPO_DE_CAMBIO<=1", "V.TIPO_DE_CAMBIO>1").ToString & " " &
+                                           "AND V.ES_VENTA_PUBLICO_GENERAL=" & IIf(VentaPublicoGeneral = True, "1", "0").ToString & " " &
+                                           sSQLDocs &
                                            "ORDER BY V.FECHA", Me._Conexion)
                 da.SelectCommand.CommandType = CommandType.Text
 

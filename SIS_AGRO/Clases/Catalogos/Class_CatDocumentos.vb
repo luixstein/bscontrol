@@ -567,7 +567,7 @@ Public Class Class_CatDocumentos
         Return Resultado
     End Function
 
-    Public Function GeneraFolio() As Boolean
+    Public Function GeneraFolio() As String
         Dim cmd As SqlCommand
         Dim sqlParametro As SqlParameter
 
@@ -597,6 +597,8 @@ Public Class Class_CatDocumentos
             Me._Conexion.Close()
             sqlParametro = Nothing
         End Try
+
+        Return Me._FOLIO
     End Function
 
     Public Function GeneraFolioCheque(ByVal IDCuentaBancaria As Integer) As String
