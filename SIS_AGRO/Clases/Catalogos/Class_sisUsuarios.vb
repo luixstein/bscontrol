@@ -22,6 +22,7 @@ Public Class Class_sisUsuarios
     Private _SERVIDOR_CORREO_REMITENTE As String
     Private _PUERTO_REMITENTE As String
     Private _USAR_SSL_REMITENTE As Boolean
+    Private _PERMISO_CAMBIAR_PRECIO_VENTA As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -182,6 +183,15 @@ Public Class Class_sisUsuarios
             Me._USAR_SSL_REMITENTE = Value
         End Set
     End Property
+
+    Public Property PERMISO_CAMBIAR_PRECIO_VENTA() As Boolean
+        Get
+            Return Me._PERMISO_CAMBIAR_PRECIO_VENTA
+        End Get
+        Set(ByVal Value As Boolean)
+            Me._PERMISO_CAMBIAR_PRECIO_VENTA = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos de sistema"
@@ -316,6 +326,7 @@ Public Class Class_sisUsuarios
                     Me._SERVIDOR_CORREO_REMITENTE = Trim("" & dReader("SERVIDOR_CORREO_REMITENTE").ToString)
                     Me._PUERTO_REMITENTE = Trim("" & dReader("PUERTO_REMITENTE").ToString)
                     Me._USAR_SSL_REMITENTE = CBool(dReader("USAR_SSL_REMITENTE").ToString)
+                    Me._PERMISO_CAMBIAR_PRECIO_VENTA = CBool(dReader("PERMISO_CAMBIAR_PRECIO_VENTA").ToString)
 
                     bResultado = True
                 End If
@@ -358,6 +369,7 @@ Public Class Class_sisUsuarios
                     Me._SERVIDOR_CORREO_REMITENTE = Trim("" & dReader("SERVIDOR_CORREO_REMITENTE").ToString)
                     Me._PUERTO_REMITENTE = Trim("" & dReader("PUERTO_REMITENTE").ToString)
                     Me._USAR_SSL_REMITENTE = CBool(dReader("USAR_SSL_REMITENTE").ToString)
+                    Me._PERMISO_CAMBIAR_PRECIO_VENTA = CBool(dReader("PERMISO_CAMBIAR_PRECIO_VENTA").ToString)
 
                     bResultado = True
                 End If

@@ -803,6 +803,12 @@ Buscar:
             Me.Grid.Column(Me.igyBASE_IEPS).Visible = False
             Me.Grid.Column(Me.igyBASE_IVA).Visible = False
             Me.Grid.Column(Me.igyPRECIO_TOTAL).Locked = True
+
+            If Usuario.PERMISO_CAMBIAR_PRECIO_VENTA = True Then
+                Me.Grid.Column(Me.igyPrecio).Locked = False
+            Else
+                Me.Grid.Column(Me.igyPrecio).Locked = True
+            End If
         
         Catch ex As Exception
             HandleError(Me.Name, "FormateaGrid", ex)
