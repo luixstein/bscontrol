@@ -625,12 +625,12 @@ busca:
                             If Me.oDocumentos.ES_TRANSFERENCIA <> "1" Then
                                 sCuentaContable = Me.Grid1.Cell(Renglon, Me.iGyCuentaContable).Text
 
-                                If sCuentaContable.StartsWith("1") = False Then
-                                    Me.Grid1.Cell(Renglon, Me.iGyCuentaContable).Text = ""
-                                    Me.Grid1.Cell(Renglon, Me.iGyNombreCuentaContable).Text = ""
-                                    MsgBox("La cuenta contable del renglón : " & Renglon & " debe ser del rango de las miles(que empiezen con 1).", MsgBoxStyle.Exclamation, Me.Name)
-                                    Return
-                                End If
+                                'If sCuentaContable.StartsWith("1") = False Then
+                                '    Me.Grid1.Cell(Renglon, Me.iGyCuentaContable).Text = ""
+                                '    Me.Grid1.Cell(Renglon, Me.iGyNombreCuentaContable).Text = ""
+                                '    MsgBox("La cuenta contable del renglón : " & Renglon & " debe ser del rango de las miles(que empiezen con 1).", MsgBoxStyle.Exclamation, Me.Name)
+                                '    Return
+                                'End If
 
                                 oCuentas = New Class_CatCuentas(sCuentaContable) 'Class_VWCatDeudoresDiversos(sCuentaContable) 
 
@@ -638,8 +638,8 @@ busca:
                                     Me.Grid1.Cell(Renglon, Me.iGyCuentaContable).Text = oCuentas.CUENTA_CONTABLE
                                     Me.Grid1.Cell(Renglon, Me.iGyNombreCuentaContable).Text = oCuentas.NOMBRE_CUENTA
                                 Else
-                                    Me.Grid1.Cell(Renglon, Me.iGyCuentaContable).Text = oCuentas.CUENTA_CONTABLE
-                                    Me.Grid1.Cell(Renglon, Me.iGyNombreCuentaContable).Text = oCuentas.NOMBRE_CUENTA
+                                    Me.Grid1.Cell(Renglon, Me.iGyCuentaContable).Text = ""
+                                    Me.Grid1.Cell(Renglon, Me.iGyNombreCuentaContable).Text = ""
                                     GoTo BuscarCuentas : Exit Sub
                                 End If
 
@@ -690,10 +690,16 @@ BuscaArticulos:
                                 Exit Sub
                             Else
 BuscarCuentas:
+                                'If e.KeyCode = Keys.F6 Then
+                                '    sCuentaContable = oCuentas.BusquedaVisual_PorCodigoConLike("1")
+                                'Else 'F7
+                                '    sCuentaContable = oCuentas.BusquedaVisual_PorDescripcionConLike("1")
+                                'End If
+
                                 If e.KeyCode = Keys.F6 Then
-                                    sCuentaContable = oCuentas.BusquedaVisual_PorCodigoConLike("1") 'oCuentas.BusquedaVisual_PorDescripcion()
-                                Else
-                                    sCuentaContable = oCuentas.BusquedaVisual_PorDescripcionConLike("1") 'f7
+                                    sCuentaContable = oCuentas.BusquedaVisual_PorCodigo
+                                Else 'F7
+                                    sCuentaContable = oCuentas.BusquedaVisual_PorDescripcion
                                 End If
                             End If
 
@@ -1612,11 +1618,11 @@ BuscarCuentas:
                             Return False
                         End If
 
-                        If sCuentaContable.StartsWith("1") = False Then
-                            MsgBox("La cuenta contable del renglón : " & i & " debe ser del rango de las miles(que empiezen con 1)." & vbCrLf & _
-                            "O debe en vez de poner cuenta, detallar con el botón de centros de costos.", MsgBoxStyle.Exclamation, Me.Name)
-                            Return False
-                        End If
+                        'If sCuentaContable.StartsWith("1") = False Then
+                        '    MsgBox("La cuenta contable del renglón : " & i & " debe ser del rango de las miles(que empiezen con 1)." & vbCrLf & _
+                        '    "O debe en vez de poner cuenta, detallar con el botón de centros de costos.", MsgBoxStyle.Exclamation, Me.Name)
+                        '    Return False
+                        'End If
 
                         oCuentas = New Class_CatCuentas(sCuentaContable)
 
