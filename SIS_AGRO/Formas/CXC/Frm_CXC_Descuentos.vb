@@ -60,14 +60,10 @@ Public Class Frm_CXC_Descuentos
     End Sub
 
     Private Sub tsbImprimir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbImprimir.Click
-
-        MsgBox("Falta crear los formatos de nc y cr", vbExclamation, Me.Text)
-        Return
-
         Me.oDescuentosCXC.Consultar()
-        If txtLEN(Me.oDescuentosCXC.FOLIO_FISCAL_SAT + Me.oDescuentosCXC.FECHA_TIMBRADO_SAT + Me.oDescuentosCXC.NUMERO_SERIE_CERTIFICADO_SAT + Me.oDescuentosCXC.SELLO_SAT) = False And Me.oDescuentosCXC.CBB_IMAGE Is Nothing Then
-            MsgBox("El descuento debe de estar sellado para poder imprimir", MsgBoxStyle.Exclamation, Me.Text)
-            Exit Sub
+        If txtLEN(Me.oDescuentosCXC.FOLIO_FISCAL_SAT + Me.oDescuentosCXC.FECHA_TIMBRADO_SAT + Me.oDescuentosCXC.NUMERO_SERIE_CERTIFICADO_SAT + Me.oDescuentosCXC.SELLO_SAT) = False AndAlso txtLEN(Me.oDescuentosCXC.CBB_IMAGE.ToString) = False _
+            AndAlso Me.oDocumento.TIMBRA_DOCUMENTO = True Then
+            MsgBox("El descuento no esta timbrado.", MsgBoxStyle.Exclamation, "Advertencia")
         End If
         Me.oDescuentosCXC.Imprimir()
     End Sub

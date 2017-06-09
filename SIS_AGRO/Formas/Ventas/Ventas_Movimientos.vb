@@ -182,7 +182,7 @@ Public Class Ventas_Movimientos
         'If txtLEN(Me.oVenta.SELLO_DIGITAL) = False And Me.oDocumento.AFECTA_CONTBILIDAD = True Then
         Me.oVenta.Consultar()
         If Me.oVenta.VERSION_ESQUEMA_XML >= "3.2" Then
-            If txtLEN(Me.oVenta.FOLIO_FISCAL_SAT + Me.oVenta.FECHA_TIMBRADO_SAT + Me.oVenta.NUMERO_SERIE_CERTIFICADO_SAT + Me.oVenta.SELLO_SAT) = False And txtLEN(Me.oVenta.CBB_IMAGE.ToString) = False And Me.oDocumento.AFECTA_CONTBILIDAD = True Then
+            If txtLEN(Me.oVenta.FOLIO_FISCAL_SAT + Me.oVenta.FECHA_TIMBRADO_SAT + Me.oVenta.NUMERO_SERIE_CERTIFICADO_SAT + Me.oVenta.SELLO_SAT) = False And txtLEN(Me.oVenta.CBB_IMAGE.ToString) = False And Me.oDocumento.TIMBRA_DOCUMENTO = True Then
                 MsgBox("La factura debe de estar sellada para poder imprimir.", MsgBoxStyle.Exclamation, Me.Text)
                 Exit Sub
             End If
