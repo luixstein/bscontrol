@@ -243,7 +243,8 @@ Public Class LoginForm
         Plaza = New Class_SisPlazas
 
         If Empresa_Sistema.VERSION_AGROCONTROL <> My.Application.Info.Version.Revision Then
-            MsgBox("La versión no esta actualizada. Version Bd: " & Empresa_Sistema.VERSION_AGROCONTROL & " Versión aplicación: " & My.Application.Info.Version.Revision, MsgBoxStyle.Exclamation, Me.Text)
+            MsgBox("La versión no esta actualizada. Version Basedatos: " & Empresa_Sistema.VERSION_AGROCONTROL & " Versión aplicación: " & My.Application.Info.Version.Revision, MsgBoxStyle.Exclamation,
+                   "Servidor=" & My.Settings.Servidor & " Basedatos=" & My.Settings.BaseDatos)
             Finaliza(False)
             Exit Sub
         End If
