@@ -61,8 +61,8 @@ Public Class Frm_CXC_Descuentos
 
     Private Sub tsbImprimir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbImprimir.Click
 
-        MsgBox("Falta crear los formatos de nc y cr", vbExclamation, Me.Text)
-        Return
+        'MsgBox("Falta crear los formatos de nc y cr", vbExclamation, Me.Text)
+        'Return
 
         Me.oDescuentosCXC.Consultar()
         If txtLEN(Me.oDescuentosCXC.FOLIO_FISCAL_SAT + Me.oDescuentosCXC.FECHA_TIMBRADO_SAT + Me.oDescuentosCXC.NUMERO_SERIE_CERTIFICADO_SAT + Me.oDescuentosCXC.SELLO_SAT) = False And Me.oDescuentosCXC.CBB_IMAGE Is Nothing Then
