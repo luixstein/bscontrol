@@ -1860,7 +1860,8 @@ Buscar:
         Try
             Dim iFolio As Integer, sFolio As String, iPosicion As Integer, sFolioParte2 As String
             If txtLEN(Me.TxtFolio.Text) = False Then
-                Me.TxtFolio.Text = Me.oBancosCXC.GeneraFolio
+                'Me.TxtFolio.Text = Me.oBancosCXC.GeneraFolio
+                Me.GeneraFolio()
             End If
 
             If sTipoDeBusqueda = "Anterior" Then
@@ -1899,7 +1900,14 @@ Buscar:
                 Me.TxtFolio.Text = sFolio
 
                 If iFolio > 0 Then
-                    Me.Consultar()
+                    If Me.Consultar() = False Then
+                        Me.TxtCuentaBancaria.Text = ""
+                        Me.LblCuentaBancaria.Text = ""
+                        Me.LblCuentaContableCuentaBancaria.Text = ""
+                        Me.Inicializa()
+                        Me.Cambia_Estado(enumEstados.NUEVO)
+                        Me.TxtCuentaBancaria.Focus()
+                    End If
                 End If
             End If
 
