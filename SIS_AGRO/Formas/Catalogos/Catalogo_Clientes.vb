@@ -259,7 +259,7 @@ Public Class Catalogo_Clientes
         txtNoBeep(e)
     End Sub
 
-    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtNumeroCuentaDolares.KeyPress, TxtCodigoAlmacen.KeyPress
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtNumeroCuentaDolares.KeyPress, TxtCodigoAlmacen.KeyPress, TxtCodigoPropietario.KeyPress
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
@@ -363,6 +363,29 @@ busca:
                 oAlmacenes.Codigo_Almacen = Me.TxtCodigoAlmacen.Text
                 If oAlmacenes.Consultar() = False Then
                     GoTo busca
+                End If
+        End Select
+        txtTAB(e)
+    End Sub
+
+    Private Sub TxtCodigoPropietario_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtCodigoPropietario.KeyDown
+        Dim oPropietario As New Class_CatPropietarios
+        Select Case e.KeyCode
+            Case Keys.F6
+busca:
+                Me.TxtCodigoPropietario.Text = oPropietario.BusquedaVisual_PorDescripcion
+                If txtLEN(Me.TxtCodigoPropietario.Text) = True Then
+                    Dim sql As New Class_find("SELECT NOMBRE_PROPIETARIO FROM CAT_PROPIETARIOS WHERE CODIGO_PROPIETARIO=" & Me.TxtCodigoPropietario.Text)
+                    Me.LblNombrePropietario.Text = sql.Result1.ToString
+                End If
+            Case Keys.Enter
+                If txtLEN(Me.TxtCodigoPropietario.Text) = True Then
+                    oPropietario.CODIGO_PROPIETARIO = CInt(Me.TxtCodigoPropietario.Text)
+                    If oPropietario.Consultar() = True Then
+                        Me.LblNombrePropietario.Text = oPropietario.NOMBRE_PROPIETARIO
+                    Else
+                        GoTo busca
+                    End If
                 End If
         End Select
         txtTAB(e)
@@ -486,6 +509,8 @@ busca:
                     Me.tsbCancelar.Enabled = True
                     Me.tsbEliminar.Enabled = False
 
+                    Me.TxtCodigoPropietario.Enabled = True
+
                     Me.txtCodigoCliente.Enabled = False
                     Me.TxtNombreCliente.Enabled = True
                     Me.txtRfc.Enabled = True
@@ -538,6 +563,8 @@ busca:
                     Me.tsbCancelar.Enabled = True
                     Me.tsbEliminar.Enabled = True
 
+                    Me.TxtCodigoPropietario.Enabled = True
+
                     Me.txtCodigoCliente.Enabled = False
                     Me.TxtNombreCliente.Enabled = True
                     Me.txtRfc.Enabled = True
@@ -587,6 +614,8 @@ busca:
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = True
                     Me.tsbEliminar.Enabled = False
+
+                    Me.TxtCodigoPropietario.Enabled = False
 
                     Me.cboTipoMercado.Enabled = False
                     Me.txtCodigoCliente.Enabled = False
@@ -638,6 +667,9 @@ busca:
 
     Private Sub InicializaElemento()
         Try
+            Me.TxtCodigoPropietario.Text = ""
+            Me.LblNombrePropietario.Text = ""
+            Me.TxtIdRelacion.Text = ""
             Me.txtCodigoCliente.Text = ""
             Me.TxtNombreCliente.Text = ""
             Me.txtRfc.Text = ""
@@ -882,6 +914,16 @@ busca:
 
                         .ES_CONTRIBUYENTE_IEPS = Convert.ToInt32(Me.chkEsContribuyenteIEPS.Checked).ToString
 
+                        If txtLEN(Me.TxtCodigoPropietario.Text) = True Then
+                            .CODIGO_PROPIETARIO = Me.TxtCodigoPropietario.Text
+
+                            If txtLEN(Me.TxtIdRelacion.Text) = True Then
+                                .ID = Me.TxtIdRelacion.Text
+                            Else
+                                .ID = "0"
+                            End If
+                        End If
+
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 .AGREGAR = "1"
@@ -894,6 +936,7 @@ busca:
                                     Exit Sub
                                 End If
                         End Select
+
 
                         MsgBox(Me.msgElemento & " Grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
                         Me.Estado = enumEstados.CONSULTA
@@ -1124,6 +1167,16 @@ busca:
                     Me.chkEsContribuyenteIEPS.Checked = CBool(.ES_CONTRIBUYENTE_IEPS)
 
                 End With
+
+                Dim sql As New Class_find("SELECT R.ID,R.CODIGO_PROPIETARIO,P.NOMBRE_PROPIETARIO FROM CAT_PROPIETARIOS_RELACION_CLIENTES R INNER JOIN CAT_PROPIETARIOS P ON(R.CODIGO_PROPIETARIO=P.CODIGO_PROPIETARIO) " _
+                                          & "WHERE R.CODIGO_CLIENTE='" & Me.txtCodigoCliente.Text & "'")
+
+                If sql.Result1 = "" Then
+                Else
+                    Me.TxtIdRelacion.Text = sql.Result1
+                    Me.TxtCodigoPropietario.Text = sql.Result2
+                    Me.LblNombrePropietario.Text = sql.Result3
+                End If
 
             End If
             bResultado = True

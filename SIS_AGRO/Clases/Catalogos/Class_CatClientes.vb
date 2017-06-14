@@ -58,6 +58,9 @@ Public Class Class_CatClientes
     Private _NOMBRE_MUNICIPIO As String
     Private _NOMBRE_ESTADO As String
     Private _NOMBRE_PAIS As String
+
+    Private _CODIGO_PROPIETARIO As String
+    Private _ID As String
 #End Region
 
 #Region "Campos públicos"
@@ -468,6 +471,24 @@ Public Class Class_CatClientes
         End Get
     End Property
 
+    Public Property CODIGO_PROPIETARIO() As String
+        Get
+            Return Me._CODIGO_PROPIETARIO
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_PROPIETARIO = Value
+        End Set
+    End Property
+
+    Public Property ID() As String
+        Get
+            Return Me._ID
+        End Get
+        Set(ByVal Value As String)
+            Me._ID = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades públicos"
@@ -602,6 +623,8 @@ Public Class Class_CatClientes
             sqlParametro = .Parameters.Add("@CODIGO_ESTADO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ESTADO.ToString
             sqlParametro = .Parameters.Add("@CODIGO_PAIS_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_PAIS_SAT.ToString
             sqlParametro = .Parameters.Add("@ES_CONTRIBUYENTE_IEPS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ES_CONTRIBUYENTE_IEPS.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_PROPIETARIO", SqlDbType.Int) : sqlParametro.Value = IIf(txtLEN(Me._CODIGO_PROPIETARIO) = True, CInt(Me._CODIGO_PROPIETARIO), DBNull.Value)
+            sqlParametro = .Parameters.Add("@ID", SqlDbType.Int) : sqlParametro.Value = IIf(txtLEN(Me._ID) = True, CInt(Me._ID), DBNull.Value)
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._AGREGAR.ToString
             Try
                 Me._Conexion.Open()
@@ -735,6 +758,8 @@ Public Class Class_CatClientes
             sqlParametro = .Parameters.Add("@CODIGO_ESTADO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ESTADO.ToString
             sqlParametro = .Parameters.Add("@CODIGO_PAIS_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_PAIS_SAT.ToString
             sqlParametro = .Parameters.Add("@ES_CONTRIBUYENTE_IEPS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ES_CONTRIBUYENTE_IEPS.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_PROPIETARIO", SqlDbType.Int) : sqlParametro.Value = IIf(txtLEN(Me._CODIGO_PROPIETARIO) = True, CInt(Me._CODIGO_PROPIETARIO), DBNull.Value)
+            sqlParametro = .Parameters.Add("@ID", SqlDbType.Int) : sqlParametro.Value = IIf(txtLEN(Me._ID) = True, CInt(Me._ID), DBNull.Value)
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._AGREGAR.ToString
             Try
                 Me._Conexion.Open()

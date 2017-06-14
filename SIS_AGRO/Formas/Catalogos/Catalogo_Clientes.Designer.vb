@@ -33,6 +33,10 @@ Partial Class Catalogo_Clientes
         Me.tsbImprimirListado = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.TxtIdRelacion = New System.Windows.Forms.TextBox()
+        Me.LblDisplayCodigoPropietario = New System.Windows.Forms.Label()
+        Me.LblNombrePropietario = New System.Windows.Forms.Label()
+        Me.TxtCodigoPropietario = New System.Windows.Forms.TextBox()
         Me.chkEsContribuyenteIEPS = New System.Windows.Forms.CheckBox()
         Me.lblDisplayNumeroRegistroIdentificadorExtranjero = New System.Windows.Forms.Label()
         Me.txtNumeroRegistroIdentificadorExtranjero = New System.Windows.Forms.TextBox()
@@ -205,6 +209,10 @@ Partial Class Catalogo_Clientes
         '
         'gBoxInformacion
         '
+        Me.gBoxInformacion.Controls.Add(Me.TxtIdRelacion)
+        Me.gBoxInformacion.Controls.Add(Me.LblDisplayCodigoPropietario)
+        Me.gBoxInformacion.Controls.Add(Me.LblNombrePropietario)
+        Me.gBoxInformacion.Controls.Add(Me.TxtCodigoPropietario)
         Me.gBoxInformacion.Controls.Add(Me.chkEsContribuyenteIEPS)
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayNumeroRegistroIdentificadorExtranjero)
         Me.gBoxInformacion.Controls.Add(Me.txtNumeroRegistroIdentificadorExtranjero)
@@ -230,14 +238,52 @@ Partial Class Catalogo_Clientes
         Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
         Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
-        Me.gBoxInformacion.Size = New System.Drawing.Size(527, 321)
+        Me.gBoxInformacion.Size = New System.Drawing.Size(527, 374)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Datos generales"
         '
+        'TxtIdRelacion
+        '
+        Me.TxtIdRelacion.Location = New System.Drawing.Point(279, 55)
+        Me.TxtIdRelacion.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtIdRelacion.MaxLength = 6
+        Me.TxtIdRelacion.Name = "TxtIdRelacion"
+        Me.TxtIdRelacion.Size = New System.Drawing.Size(122, 22)
+        Me.TxtIdRelacion.TabIndex = 130
+        Me.TxtIdRelacion.Visible = False
+        '
+        'LblDisplayCodigoPropietario
+        '
+        Me.LblDisplayCodigoPropietario.Location = New System.Drawing.Point(8, 52)
+        Me.LblDisplayCodigoPropietario.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayCodigoPropietario.Name = "LblDisplayCodigoPropietario"
+        Me.LblDisplayCodigoPropietario.Size = New System.Drawing.Size(88, 33)
+        Me.LblDisplayCodigoPropietario.TabIndex = 129
+        Me.LblDisplayCodigoPropietario.Text = "Código " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "propietario :"
+        '
+        'LblNombrePropietario
+        '
+        Me.LblNombrePropietario.AutoSize = True
+        Me.LblNombrePropietario.Location = New System.Drawing.Point(101, 84)
+        Me.LblNombrePropietario.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNombrePropietario.Name = "LblNombrePropietario"
+        Me.LblNombrePropietario.Size = New System.Drawing.Size(16, 17)
+        Me.LblNombrePropietario.TabIndex = 128
+        Me.LblNombrePropietario.Text = "_"
+        '
+        'TxtCodigoPropietario
+        '
+        Me.TxtCodigoPropietario.Location = New System.Drawing.Point(101, 55)
+        Me.TxtCodigoPropietario.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtCodigoPropietario.MaxLength = 6
+        Me.TxtCodigoPropietario.Name = "TxtCodigoPropietario"
+        Me.TxtCodigoPropietario.Size = New System.Drawing.Size(151, 22)
+        Me.TxtCodigoPropietario.TabIndex = 1
+        '
         'chkEsContribuyenteIEPS
         '
-        Me.chkEsContribuyenteIEPS.Location = New System.Drawing.Point(156, 278)
+        Me.chkEsContribuyenteIEPS.Location = New System.Drawing.Point(156, 326)
         Me.chkEsContribuyenteIEPS.Margin = New System.Windows.Forms.Padding(4)
         Me.chkEsContribuyenteIEPS.Name = "chkEsContribuyenteIEPS"
         Me.chkEsContribuyenteIEPS.Size = New System.Drawing.Size(344, 38)
@@ -247,7 +293,7 @@ Partial Class Catalogo_Clientes
         '
         'lblDisplayNumeroRegistroIdentificadorExtranjero
         '
-        Me.lblDisplayNumeroRegistroIdentificadorExtranjero.Location = New System.Drawing.Point(8, 249)
+        Me.lblDisplayNumeroRegistroIdentificadorExtranjero.Location = New System.Drawing.Point(8, 297)
         Me.lblDisplayNumeroRegistroIdentificadorExtranjero.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayNumeroRegistroIdentificadorExtranjero.Name = "lblDisplayNumeroRegistroIdentificadorExtranjero"
         Me.lblDisplayNumeroRegistroIdentificadorExtranjero.Size = New System.Drawing.Size(140, 33)
@@ -256,7 +302,7 @@ Partial Class Catalogo_Clientes
         '
         'txtNumeroRegistroIdentificadorExtranjero
         '
-        Me.txtNumeroRegistroIdentificadorExtranjero.Location = New System.Drawing.Point(156, 249)
+        Me.txtNumeroRegistroIdentificadorExtranjero.Location = New System.Drawing.Point(156, 297)
         Me.txtNumeroRegistroIdentificadorExtranjero.Margin = New System.Windows.Forms.Padding(4)
         Me.txtNumeroRegistroIdentificadorExtranjero.MaxLength = 100
         Me.txtNumeroRegistroIdentificadorExtranjero.Name = "txtNumeroRegistroIdentificadorExtranjero"
@@ -286,7 +332,7 @@ Partial Class Catalogo_Clientes
         'lblDisplayTipoPersona
         '
         Me.lblDisplayTipoPersona.AutoSize = True
-        Me.lblDisplayTipoPersona.Location = New System.Drawing.Point(292, 124)
+        Me.lblDisplayTipoPersona.Location = New System.Drawing.Point(292, 172)
         Me.lblDisplayTipoPersona.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayTipoPersona.Name = "lblDisplayTipoPersona"
         Me.lblDisplayTipoPersona.Size = New System.Drawing.Size(100, 17)
@@ -298,7 +344,7 @@ Partial Class Catalogo_Clientes
         Me.cboTipoPersona.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboTipoPersona.FormattingEnabled = True
         Me.cboTipoPersona.Items.AddRange(New Object() {"MORAL", "FISICA"})
-        Me.cboTipoPersona.Location = New System.Drawing.Point(400, 119)
+        Me.cboTipoPersona.Location = New System.Drawing.Point(400, 167)
         Me.cboTipoPersona.Margin = New System.Windows.Forms.Padding(4)
         Me.cboTipoPersona.MaxLength = 1
         Me.cboTipoPersona.Name = "cboTipoPersona"
@@ -308,7 +354,7 @@ Partial Class Catalogo_Clientes
         'lblDisplayCelCliente
         '
         Me.lblDisplayCelCliente.AutoSize = True
-        Me.lblDisplayCelCliente.Location = New System.Drawing.Point(8, 220)
+        Me.lblDisplayCelCliente.Location = New System.Drawing.Point(8, 268)
         Me.lblDisplayCelCliente.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayCelCliente.Name = "lblDisplayCelCliente"
         Me.lblDisplayCelCliente.Size = New System.Drawing.Size(72, 17)
@@ -317,7 +363,7 @@ Partial Class Catalogo_Clientes
         '
         'txtNumeroCelular
         '
-        Me.txtNumeroCelular.Location = New System.Drawing.Point(103, 217)
+        Me.txtNumeroCelular.Location = New System.Drawing.Point(103, 265)
         Me.txtNumeroCelular.Margin = New System.Windows.Forms.Padding(4)
         Me.txtNumeroCelular.MaxLength = 15
         Me.txtNumeroCelular.Name = "txtNumeroCelular"
@@ -327,7 +373,7 @@ Partial Class Catalogo_Clientes
         'LblDisplayTelefonoCliente
         '
         Me.LblDisplayTelefonoCliente.AutoSize = True
-        Me.LblDisplayTelefonoCliente.Location = New System.Drawing.Point(8, 188)
+        Me.LblDisplayTelefonoCliente.Location = New System.Drawing.Point(8, 236)
         Me.LblDisplayTelefonoCliente.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayTelefonoCliente.Name = "LblDisplayTelefonoCliente"
         Me.LblDisplayTelefonoCliente.Size = New System.Drawing.Size(84, 17)
@@ -336,7 +382,7 @@ Partial Class Catalogo_Clientes
         '
         'txtNumeroTelefono
         '
-        Me.txtNumeroTelefono.Location = New System.Drawing.Point(101, 185)
+        Me.txtNumeroTelefono.Location = New System.Drawing.Point(101, 233)
         Me.txtNumeroTelefono.Margin = New System.Windows.Forms.Padding(4)
         Me.txtNumeroTelefono.MaxLength = 15
         Me.txtNumeroTelefono.Name = "txtNumeroTelefono"
@@ -346,7 +392,7 @@ Partial Class Catalogo_Clientes
         'lblDisplayCURP
         '
         Me.lblDisplayCURP.AutoSize = True
-        Me.lblDisplayCURP.Location = New System.Drawing.Point(8, 156)
+        Me.lblDisplayCURP.Location = New System.Drawing.Point(8, 204)
         Me.lblDisplayCURP.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayCURP.Name = "lblDisplayCURP"
         Me.lblDisplayCURP.Size = New System.Drawing.Size(54, 17)
@@ -355,7 +401,7 @@ Partial Class Catalogo_Clientes
         '
         'txtCurp
         '
-        Me.txtCurp.Location = New System.Drawing.Point(101, 153)
+        Me.txtCurp.Location = New System.Drawing.Point(101, 201)
         Me.txtCurp.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCurp.MaxLength = 30
         Me.txtCurp.Name = "txtCurp"
@@ -365,7 +411,7 @@ Partial Class Catalogo_Clientes
         'lblDisplayRFC
         '
         Me.lblDisplayRFC.AutoSize = True
-        Me.lblDisplayRFC.Location = New System.Drawing.Point(8, 124)
+        Me.lblDisplayRFC.Location = New System.Drawing.Point(8, 172)
         Me.lblDisplayRFC.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayRFC.Name = "lblDisplayRFC"
         Me.lblDisplayRFC.Size = New System.Drawing.Size(43, 17)
@@ -374,7 +420,7 @@ Partial Class Catalogo_Clientes
         '
         'txtRfc
         '
-        Me.txtRfc.Location = New System.Drawing.Point(103, 121)
+        Me.txtRfc.Location = New System.Drawing.Point(103, 169)
         Me.txtRfc.Margin = New System.Windows.Forms.Padding(4)
         Me.txtRfc.MaxLength = 13
         Me.txtRfc.Name = "txtRfc"
@@ -384,7 +430,7 @@ Partial Class Catalogo_Clientes
         'LblDisplayNombreCultivo
         '
         Me.LblDisplayNombreCultivo.AutoSize = True
-        Me.LblDisplayNombreCultivo.Location = New System.Drawing.Point(8, 92)
+        Me.LblDisplayNombreCultivo.Location = New System.Drawing.Point(8, 140)
         Me.LblDisplayNombreCultivo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayNombreCultivo.Name = "LblDisplayNombreCultivo"
         Me.LblDisplayNombreCultivo.Size = New System.Drawing.Size(66, 17)
@@ -393,7 +439,7 @@ Partial Class Catalogo_Clientes
         '
         'TxtNombreCliente
         '
-        Me.TxtNombreCliente.Location = New System.Drawing.Point(103, 89)
+        Me.TxtNombreCliente.Location = New System.Drawing.Point(103, 137)
         Me.TxtNombreCliente.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNombreCliente.MaxLength = 80
         Me.TxtNombreCliente.Name = "TxtNombreCliente"
@@ -403,7 +449,7 @@ Partial Class Catalogo_Clientes
         'LblEstatus
         '
         Me.LblEstatus.AutoSize = True
-        Me.LblEstatus.Location = New System.Drawing.Point(367, 60)
+        Me.LblEstatus.Location = New System.Drawing.Point(367, 108)
         Me.LblEstatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblEstatus.Name = "LblEstatus"
         Me.LblEstatus.Size = New System.Drawing.Size(63, 17)
@@ -415,7 +461,7 @@ Partial Class Catalogo_Clientes
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
-        Me.CboEstatus.Location = New System.Drawing.Point(433, 55)
+        Me.CboEstatus.Location = New System.Drawing.Point(433, 103)
         Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
@@ -425,7 +471,7 @@ Partial Class Catalogo_Clientes
         'lblDisplayCodigo
         '
         Me.lblDisplayCodigo.AutoSize = True
-        Me.lblDisplayCodigo.Location = New System.Drawing.Point(8, 60)
+        Me.lblDisplayCodigo.Location = New System.Drawing.Point(8, 108)
         Me.lblDisplayCodigo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayCodigo.Name = "lblDisplayCodigo"
         Me.lblDisplayCodigo.Size = New System.Drawing.Size(60, 17)
@@ -434,12 +480,12 @@ Partial Class Catalogo_Clientes
         '
         'txtCodigoCliente
         '
-        Me.txtCodigoCliente.Location = New System.Drawing.Point(103, 57)
+        Me.txtCodigoCliente.Location = New System.Drawing.Point(103, 105)
         Me.txtCodigoCliente.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCodigoCliente.MaxLength = 6
         Me.txtCodigoCliente.Name = "txtCodigoCliente"
         Me.txtCodigoCliente.Size = New System.Drawing.Size(171, 22)
-        Me.txtCodigoCliente.TabIndex = 1
+        Me.txtCodigoCliente.TabIndex = 2
         '
         'lblDisplayCalle
         '
@@ -777,7 +823,7 @@ Partial Class Catalogo_Clientes
         Me.gbDomicilio.Controls.Add(Me.cboEstado)
         Me.gbDomicilio.Controls.Add(Me.lblDisplayLocalidad)
         Me.gbDomicilio.Controls.Add(Me.lblDisplayEstado)
-        Me.gbDomicilio.Location = New System.Drawing.Point(16, 363)
+        Me.gbDomicilio.Location = New System.Drawing.Point(16, 416)
         Me.gbDomicilio.Margin = New System.Windows.Forms.Padding(4)
         Me.gbDomicilio.Name = "gbDomicilio"
         Me.gbDomicilio.Padding = New System.Windows.Forms.Padding(4)
@@ -1345,4 +1391,8 @@ Partial Class Catalogo_Clientes
     Friend WithEvents txtCiudad As System.Windows.Forms.TextBox
     Friend WithEvents lblDisplayCiudad As System.Windows.Forms.Label
     Friend WithEvents chkEsContribuyenteIEPS As System.Windows.Forms.CheckBox
+    Friend WithEvents LblDisplayCodigoPropietario As System.Windows.Forms.Label
+    Friend WithEvents LblNombrePropietario As System.Windows.Forms.Label
+    Friend WithEvents TxtCodigoPropietario As System.Windows.Forms.TextBox
+    Friend WithEvents TxtIdRelacion As System.Windows.Forms.TextBox
 End Class
