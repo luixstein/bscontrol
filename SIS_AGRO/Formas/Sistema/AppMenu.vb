@@ -1483,4 +1483,12 @@ Public Class AppMenu
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
     End Sub
+
+    Private Sub PropietariosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PropietariosToolStripMenuItem.Click
+        Dim Child As New Catalogo_Propietarios
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
 End Class

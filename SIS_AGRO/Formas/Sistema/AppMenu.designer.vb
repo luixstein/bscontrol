@@ -87,6 +87,7 @@ Partial Public Class AppMenu
         Me.VendedoresToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ZonasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PlazasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DocumentosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuContabilidad = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuContabilidadMovimientos = New System.Windows.Forms.ToolStripMenuItem()
         Me.CapturaDePolizasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -214,7 +215,7 @@ Partial Public Class AppMenu
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
-        Me.DocumentosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.PropietariosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -600,7 +601,7 @@ Partial Public Class AppMenu
         '
         'VentasToolStripMenuItem
         '
-        Me.VentasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ClientesToolStripMenuItem1, Me.ListaDePreciosToolStripMenuItem, Me.VendedoresToolStripMenuItem1, Me.ZonasToolStripMenuItem})
+        Me.VentasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ClientesToolStripMenuItem1, Me.ListaDePreciosToolStripMenuItem, Me.VendedoresToolStripMenuItem1, Me.ZonasToolStripMenuItem, Me.PropietariosToolStripMenuItem})
         Me.VentasToolStripMenuItem.Name = "VentasToolStripMenuItem"
         Me.VentasToolStripMenuItem.Size = New System.Drawing.Size(214, 26)
         Me.VentasToolStripMenuItem.Text = "&Ventas"
@@ -634,6 +635,12 @@ Partial Public Class AppMenu
         Me.PlazasToolStripMenuItem.Name = "PlazasToolStripMenuItem"
         Me.PlazasToolStripMenuItem.Size = New System.Drawing.Size(214, 26)
         Me.PlazasToolStripMenuItem.Text = "Plazas"
+        '
+        'DocumentosToolStripMenuItem
+        '
+        Me.DocumentosToolStripMenuItem.Name = "DocumentosToolStripMenuItem"
+        Me.DocumentosToolStripMenuItem.Size = New System.Drawing.Size(214, 26)
+        Me.DocumentosToolStripMenuItem.Text = "Documentos"
         '
         'MenuContabilidad
         '
@@ -1463,11 +1470,11 @@ Partial Public Class AppMenu
         Me.pbLogo.TabStop = False
         Me.pbLogo.Visible = False
         '
-        'DocumentosToolStripMenuItem
+        'PropietariosToolStripMenuItem
         '
-        Me.DocumentosToolStripMenuItem.Name = "DocumentosToolStripMenuItem"
-        Me.DocumentosToolStripMenuItem.Size = New System.Drawing.Size(214, 26)
-        Me.DocumentosToolStripMenuItem.Text = "Documentos"
+        Me.PropietariosToolStripMenuItem.Name = "PropietariosToolStripMenuItem"
+        Me.PropietariosToolStripMenuItem.Size = New System.Drawing.Size(187, 26)
+        Me.PropietariosToolStripMenuItem.Text = "Propietarios"
         '
         'AppMenu
         '
@@ -1480,7 +1487,7 @@ Partial Public Class AppMenu
         Me.Controls.Add(Me.StatusStrip)
         Me.HelpProvider.SetHelpKeyword(Me, "F1")
         Me.IsMdiContainer = True
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "AppMenu"
         Me.HelpProvider.SetShowHelp(Me, True)
         Me.Text = "AppMenu"
@@ -1690,4 +1697,5 @@ Partial Public Class AppMenu
     Friend WithEvents ListaDePreciosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ConceptosDePagosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents DocumentosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents PropietariosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class
