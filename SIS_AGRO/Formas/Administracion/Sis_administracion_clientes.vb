@@ -185,6 +185,8 @@ Buscar:
         Me.lblPlazo.Text = ""
         Me.lblSaldo.Text = ""
         Me.lblSaldoVencido.Text = ""
+        Me.lblLimiteCredito.Text = ""
+        Me.lblCreditoRestante.Text = ""
         Me.lblSaldoVentaAntigua.Text = ""
         Me.lblsaldoVentaReciente.Text = ""
 
@@ -304,7 +306,7 @@ Buscar:
                     Me.lblFolioVentaReciente.Text = "" & Me.oSisAdministracionClientes.FolioVentaReciente
 
 
-                    Me.lblPlazo.Text = "" & Me.oSisAdministracionClientes.Plaza
+                    Me.lblPlazo.Text = "" & Me.oSisAdministracionClientes.PLAZO
 
                     Me.lblSaldoVentaAntigua.Text = "" & FormatImporteContable(CDbl(Me.oSisAdministracionClientes.SaldoVentaAntigua), True)
                     Me.lblsaldoVentaReciente.Text = "" & FormatImporteContable(CDbl(Me.oSisAdministracionClientes.SaldoVentaReciente), True)

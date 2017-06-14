@@ -337,7 +337,7 @@ Buscar:
                 If txtLEN(Me.TxtReferencia.Text) = True Then
                     Me.oVenta = New Class_Ventas_Global(Me.TxtReferencia.Text)
                     If Me.oVenta.Existe = True Then
-                        Me.Consultar(True)
+                        Me.Consultar(True, True)
                     Else
                         SendKeys.Send("{TAB}")
                     End If
@@ -2384,7 +2384,7 @@ CANCELAR:
         'End If
     End Sub
 
-    Private Function Consultar(Optional ByVal bEsReferencia As Boolean = False) As Boolean
+    Private Function Consultar(Optional ByVal bEsReferencia As Boolean = False, Optional ByVal bEsRefrenciaSoloRenglones As Boolean = False) As Boolean
         Dim bResultado As Boolean = False
         Try
             Dim sVenta As String = ""
@@ -2475,7 +2475,12 @@ CANCELAR:
                     Me.CboAlmacen.Enabled = False
                     Me.Grid.DataSource = Me.oVenta.ObtenerDetalleSoloDisponibles
                     Me.dpFecha.Value = Date.Now
-                    Me.LblEstatus.Text = "SY"
+
+                    If bEsRefrenciaSoloRenglones = True Then
+                        Me.LblEstatus.Text = "N"
+                    Else
+                        Me.LblEstatus.Text = "SY"
+                    End If
                 End If
                 Me.FormateaGrid()
                 Me.dpVencimiento.Value = Me.oVenta.FECHA_VENCIMIENTO
