@@ -1078,4 +1078,18 @@ Buscar:
             HandleError(Me.Name, "NavegadorObsercaciones", ex)
         End Try
     End Function
+
+    Public Sub New()
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        If Usuario.ADMON_CREDITOS = 1 Then
+            Me.gbAutorizaciones.Enabled = True
+        Else
+            Me.gbAutorizaciones.Enabled = False
+        End If
+
+    End Sub
 End Class

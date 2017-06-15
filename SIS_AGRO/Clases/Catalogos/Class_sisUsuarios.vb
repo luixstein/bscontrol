@@ -23,6 +23,7 @@ Public Class Class_sisUsuarios
     Private _PUERTO_REMITENTE As String
     Private _USAR_SSL_REMITENTE As Boolean
     Private _PERMISO_CAMBIAR_PRECIO_VENTA As Boolean
+    Private _ADMON_CREDITOS As Integer
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -192,6 +193,15 @@ Public Class Class_sisUsuarios
             Me._PERMISO_CAMBIAR_PRECIO_VENTA = Value
         End Set
     End Property
+
+    Public Property ADMON_CREDITOS() As Integer
+        Get
+            Return Me._ADMON_CREDITOS
+        End Get
+        Set(ByVal Value As Integer)
+            Me._ADMON_CREDITOS = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos de sistema"
@@ -279,6 +289,7 @@ Public Class Class_sisUsuarios
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me.Estatus
             sqlParametro = .Parameters.Add("@CORREO_USUARIO", SqlDbType.NVarChar, 120) : sqlParametro.Value = Me._CORREO_USUARIO
             sqlParametro = .Parameters.Add("@CLAVE_CORREO", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CLAVE_CORREO
+            sqlParametro = .Parameters.Add("@ADMON_CREDITOS", SqlDbType.SmallInt) : sqlParametro.Value = Me._ADMON_CREDITOS
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "ACTUALIZAR"
 
             Try
@@ -327,6 +338,7 @@ Public Class Class_sisUsuarios
                     Me._PUERTO_REMITENTE = Trim("" & dReader("PUERTO_REMITENTE").ToString)
                     Me._USAR_SSL_REMITENTE = CBool(dReader("USAR_SSL_REMITENTE").ToString)
                     Me._PERMISO_CAMBIAR_PRECIO_VENTA = CBool(dReader("PERMISO_CAMBIAR_PRECIO_VENTA").ToString)
+                    Me._ADMON_CREDITOS = CInt(dReader("ADMON_CREDITOS"))
 
                     bResultado = True
                 End If
@@ -370,6 +382,7 @@ Public Class Class_sisUsuarios
                     Me._PUERTO_REMITENTE = Trim("" & dReader("PUERTO_REMITENTE").ToString)
                     Me._USAR_SSL_REMITENTE = CBool(dReader("USAR_SSL_REMITENTE").ToString)
                     Me._PERMISO_CAMBIAR_PRECIO_VENTA = CBool(dReader("PERMISO_CAMBIAR_PRECIO_VENTA").ToString)
+                    Me._ADMON_CREDITOS = CInt(dReader("ADMON_CREDITOS"))
 
                     bResultado = True
                 End If
@@ -407,6 +420,7 @@ Public Class Class_sisUsuarios
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me.Estatus
             sqlParametro = .Parameters.Add("@CORREO_USUARIO", SqlDbType.NVarChar, 120) : sqlParametro.Value = Me._CORREO_USUARIO
             sqlParametro = .Parameters.Add("@CLAVE_CORREO", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CLAVE_CORREO
+            sqlParametro = .Parameters.Add("@ADMON_CREDITOS", SqlDbType.SmallInt) : sqlParametro.Value = Me._ADMON_CREDITOS
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "INSERTAR"
 
             Try
