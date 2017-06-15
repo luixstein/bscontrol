@@ -1172,6 +1172,9 @@ busca:
                                           & "WHERE R.CODIGO_CLIENTE='" & Me.txtCodigoCliente.Text & "'")
 
                 If sql.Result1 = "" Then
+                    Me.TxtCodigoPropietario.Text = ""
+                    Me.LblNombrePropietario.Text = ""
+                    Me.TxtIdRelacion.Text = ""
                 Else
                     Me.TxtIdRelacion.Text = sql.Result1
                     Me.TxtCodigoPropietario.Text = sql.Result2
