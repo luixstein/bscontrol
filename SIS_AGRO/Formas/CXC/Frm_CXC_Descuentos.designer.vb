@@ -347,7 +347,7 @@ Partial Class Frm_CXC_Descuentos
         'TxtConcepto2
         '
         Me.TxtConcepto2.Location = New System.Drawing.Point(398, 143)
-        Me.TxtConcepto2.MaxLength = 160
+        Me.TxtConcepto2.MaxLength = 200
         Me.TxtConcepto2.Name = "TxtConcepto2"
         Me.TxtConcepto2.Size = New System.Drawing.Size(440, 20)
         Me.TxtConcepto2.TabIndex = 9
@@ -416,7 +416,7 @@ Partial Class Frm_CXC_Descuentos
         'TxtConcepto
         '
         Me.TxtConcepto.Location = New System.Drawing.Point(398, 117)
-        Me.TxtConcepto.MaxLength = 160
+        Me.TxtConcepto.MaxLength = 200
         Me.TxtConcepto.Name = "TxtConcepto"
         Me.TxtConcepto.Size = New System.Drawing.Size(440, 20)
         Me.TxtConcepto.TabIndex = 8
