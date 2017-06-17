@@ -1,7 +1,5 @@
 ﻿Option Strict On
 
-Imports System.Drawing.Image
-Imports System.Data
 Imports System.Data.SqlClient
 Imports CrystalDecisions.CrystalReports.Engine
 Imports CrystalDecisions.Shared
@@ -9,8 +7,6 @@ Imports System.Net.Mail
 Imports System.Net.Security
 Imports System.Security.Cryptography.X509Certificates
 Imports System.Net
-Imports System.IO
-Imports System.Xml
 
 Public Class tPrecioVenta
     Public Precio As Decimal = 0

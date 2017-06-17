@@ -258,6 +258,7 @@
     <Compile Include="Clases\CXC\Class_Bancos_CXC.vb" />
     <Compile Include="Clases\CXC\Class_CXC_Afecta_Documentos.vb" />
     <Compile Include="Clases\CXC\Class_CXC_Descuento.vb" />
+    <Compile Include="Clases\CXC\Class_CXC_Devoluciones_Global.vb" />
     <Compile Include="Clases\CXC\Class_CXC_Seguimientos.vb" />
     <Compile Include="Clases\CXP\Class_Bancos_CXP.vb" />
     <Compile Include="Clases\CXP\Class_CXP_Afecta_Documentos.vb" />
@@ -584,6 +585,12 @@
       <DependentUpon>Rpt_CXC_Descuentos.vb</DependentUpon>
     </Compile>
     <Compile Include="Formas\CXC\Consultas\Rpt_CXC_Descuentos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CXC\Frm_CXC_Devoluciones.Designer.vb">
+      <DependentUpon>Frm_CXC_Devoluciones.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXC\Frm_CXC_Devoluciones.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\CXC\Frm_CXC_Seguimientos.Designer.vb">
@@ -1740,6 +1747,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\CXC\Frm_CXC_Descuentos.resx">
       <DependentUpon>Frm_CXC_Descuentos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXC\Frm_CXC_Devoluciones.resx">
+      <DependentUpon>Frm_CXC_Devoluciones.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\CXC\Frm_CXC_Pagos.resx">
       <DependentUpon>Frm_CXC_Pagos.vb</DependentUpon>

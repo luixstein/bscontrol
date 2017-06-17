@@ -1,8 +1,5 @@
 ﻿Option Strict On
 
-Imports CrystalDecisions.CrystalReports.Engine
-Imports CrystalDecisions.Shared
-
 Public Class Ventas_Movimientos
 
 #Region "Campos privados"
