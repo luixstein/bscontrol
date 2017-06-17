@@ -871,7 +871,7 @@ Public Class Class_CatClientes
         Else
             sql = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES  WHERE CODIGO_ZONA='" & Usuario.Codigo_Plaza.ToString & "' ORDER BY NOMBRE_CLIENTE"
         End If
-        Dim ds As New SqlDataAdapter("SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES  WHERE CODIGO_ZONA='" & Usuario.Codigo_Plaza.ToString & "' ORDER BY NOMBRE_CLIENTE", Me._Conexion)
+        Dim ds As New SqlDataAdapter(sql, Me._Conexion)
         Try
             ds.Fill(dTable)
         Catch ex As Exception
