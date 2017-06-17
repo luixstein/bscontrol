@@ -1491,4 +1491,12 @@ Public Class AppMenu
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
     End Sub
+
+    Private Sub ImportarClientesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImportarClientesToolStripMenuItem.Click
+        Dim Child As New ImportarClientes
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
 End Class

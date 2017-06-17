@@ -1015,6 +1015,27 @@ Public Class Class_CatClientes
         Return Resultado
     End Function
 
+    Public Function BusquedaVisual_PorDescripcionFiltradoZona(ByVal sCodigo_Zona As String) As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de clientes por Descripción."
+        f.sCampo = "NOMBRE_CLIENTE"
+        f.sOrder = "NOMBRE_CLIENTE"
+        f.sTable = "CAT_CLIENTES"
+        f.sQl = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE 1=1 AND ESTATUS='A' AND CODIGO_ZONA='" & sCodigo_Zona & "' AND "
+
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcion", ex)
+        End Try
+        Return Resultado
+    End Function
+
     'Public Function BusquedaVisual_PorDescripcionMercado(ByVal sCodigoMercado As String) As String
     '    Dim f As New BusquedaVisual
     '    Dim Resultado As String = ""

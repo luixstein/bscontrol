@@ -947,6 +947,12 @@
     <Compile Include="Formas\Utilerias\Frm_Monitor_CFDi.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\Utilerias\ImportarClientes.Designer.vb">
+      <DependentUpon>ImportarClientes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Utilerias\ImportarClientes.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\Utilerias\ModoSistema.designer.vb">
       <DependentUpon>ModoSistema.vb</DependentUpon>
     </Compile>
@@ -1982,6 +1988,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Utilerias\Frm_Monitor_CFDi.resx">
       <DependentUpon>Frm_Monitor_CFDi.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Utilerias\ImportarClientes.resx">
+      <DependentUpon>ImportarClientes.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Utilerias\ModoSistema.resx">
       <DependentUpon>ModoSistema.vb</DependentUpon>
