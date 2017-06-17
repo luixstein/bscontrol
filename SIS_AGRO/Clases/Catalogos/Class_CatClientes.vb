@@ -865,6 +865,12 @@ Public Class Class_CatClientes
 
     Public Overrides Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
+        Dim sql As String = ""
+        If Usuario.Codigo_Plaza = 1 Then 'Si inicio sesion en Matriz(plaza 1) debe poder ver todos los clientes
+            sql = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES ORDER BY NOMBRE_CLIENTE"
+        Else
+            sql = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES  WHERE CODIGO_ZONA='" & Usuario.Codigo_Plaza.ToString & "' ORDER BY NOMBRE_CLIENTE"
+        End If
         Dim ds As New SqlDataAdapter("SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES  WHERE CODIGO_ZONA='" & Usuario.Codigo_Plaza.ToString & "' ORDER BY NOMBRE_CLIENTE", Me._Conexion)
         Try
             ds.Fill(dTable)
@@ -878,7 +884,13 @@ Public Class Class_CatClientes
 
     Public Function ObtenerElementosFiltro(ByVal Filtro As String, ByVal Estatus As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dA As New SqlDataAdapter("SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES  WHERE CODIGO_ZONA='" & Usuario.Codigo_Plaza.ToString & "' AND NOMBRE_CLIENTE LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & Estatus & "' ORDER BY NOMBRE_CLIENTE", Me._Conexion)
+        Dim sql As String = ""
+        If Usuario.Codigo_Plaza = 1 Then 'Si inicio sesion en Matriz(plaza 1) debe poder ver todos los clientes
+            sql = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES  WHERE NOMBRE_CLIENTE LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & Estatus & "' ORDER BY NOMBRE_CLIENTE"
+        Else
+            sql = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES  WHERE CODIGO_ZONA='" & Usuario.Codigo_Plaza.ToString & "' AND NOMBRE_CLIENTE LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & Estatus & "' ORDER BY NOMBRE_CLIENTE"
+        End If
+        Dim dA As New SqlDataAdapter(sql, Me._Conexion)
         Try
             dA.Fill(dTable)
         Catch ex As Exception
@@ -891,11 +903,17 @@ Public Class Class_CatClientes
 
     Public Function ObtenerElementosFiltroCodigoCliente(ByVal Filtro As String, ByVal Estatus As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dA As New SqlDataAdapter("SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES  WHERE CODIGO_ZONA='" & Usuario.Codigo_Plaza.ToString & "' AND CODIGO_CLIENTE LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & Estatus & "' ORDER BY CODIGO_CLIENTE", Me._Conexion)
+        Dim sql As String = ""
+        If Usuario.Codigo_Plaza = 1 Then 'Si inicio sesion en Matriz(plaza 1) debe poder ver todos los clientes
+            sql = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES  WHERE CODIGO_CLIENTE LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & Estatus & "' ORDER BY CODIGO_CLIENTE"
+        Else
+            sql = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES  WHERE CODIGO_ZONA='" & Usuario.Codigo_Plaza.ToString & "' AND CODIGO_CLIENTE LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & Estatus & "' ORDER BY CODIGO_CLIENTE"
+        End If
+        Dim dA As New SqlDataAdapter(sql, Me._Conexion)
         Try
             dA.Fill(dTable)
         Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerElementosFiltro", ex)
+            HandleError(Me._Nombre_Catalogo, "ObtenerElementosFiltroCodigoCliente", ex)
         Finally
             dA.Dispose()
         End Try
@@ -937,6 +955,7 @@ Public Class Class_CatClientes
         f.sOrder = "NOMBRE_CLIENTE"
         f.sTable = "CAT_CLIENTES"
         f.sQl = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE 1=1 AND ESTATUS='A' AND CODIGO_ZONA='" & Usuario.Codigo_Plaza.ToString & "' AND "
+
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -957,6 +976,7 @@ Public Class Class_CatClientes
         f.sOrder = "NOMBRE_CLIENTE"
         f.sTable = "CAT_CLIENTES"
         f.sQl = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE 1=1 AND ESTATUS='A' AND CODIGO_ZONA='" & Usuario.Codigo_Plaza.ToString & "' AND "
+
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -1029,6 +1049,7 @@ Public Class Class_CatClientes
         End If
 
         f.sQl = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE 1=1 AND ESTATUS='A' " & sMercado & " AND CODIGO_ZONA=" & Usuario.Codigo_Plaza & " AND"
+
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -1038,7 +1059,7 @@ Public Class Class_CatClientes
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcionZona", ex)
         End Try
-        Return Resultado
+            Return Resultado
     End Function
 
     Public Function CodigoSiguiente(ByVal sCodigoTipoMercado As String) As String
