@@ -3,6 +3,7 @@
 Imports System.Data.SqlClient
 
 Public Class Class_CXC_Devoluciones_Global
+
 #Region "Campos"
 
 #Region "Campos de la tabla"
@@ -44,7 +45,7 @@ Public Class Class_CXC_Devoluciones_Global
 #End Region
 
 #Region "Campos públicos"
-    Public oVentasDetalle As Class_Ventas_Detalle
+    Public oDetalle As Class_CXC_Devoluciones_Detalle
 #End Region
 
 #Region "Campos privados"
@@ -386,8 +387,8 @@ Public Class Class_CXC_Devoluciones_Global
     Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand("SELECT DG.ID_CXC_DEVOLUCION_GLOBAL,DG.FOLIO_DEVOLUCION,DG.FOLIO_VENTA,DG.FOLIO_DESCUENTO_DEVOLUCION,DG.FECHA,DG.FECHA_SERVIDOR,DG.CODIGO_DOCUMENTO,DG.CODIGO_PLAZA,DG.ESTATUS_DEVOLUCION,DG.CONCEPTO," &
-                                  "DG.TIPO_DE_CAMBIO,DG.SUBTOTAL,DG.IMPUESTO,DG.TOTAL,DG.TOTAL_USD,DG.IEPS_DESGLOSADO,DG.IEPS_INCLUIDO,DG.IMPUESTO_PORCENTAJE,DG.COSTO,DG.FOLIO_POLIZA,DG.CODIGO_USUARIO_GRABO" &
-                                    "" &
+                                  "DG.TIPO_DE_CAMBIO,DG.SUBTOTAL,DG.IMPUESTO,DG.TOTAL,DG.TOTAL_USD,DG.IEPS_DESGLOSADO,DG.IEPS_INCLUIDO,DG.IMPUESTO_PORCENTAJE,DG.COSTO,DG.FOLIO_POLIZA,DG.CODIGO_USUARIO_GRABO,S1.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO," &
+                                    "DOC.NOMBRE_FORMATO,S2.NOMBRE_USUARIO NOMBRE_USUARIO_CANCELO," &
                                     "VG.CODIGO_ALMACEN,ALM.NOMBRE_ALMACEN,VG.CODIGO_CLIENTE,CTE.NOMBRE_CLIENTE " &
                                     "FROM CXC_DEVOLUCION_GLOBAL DG " &
                                     "INNER JOIN SIS_USUARIOS S1 ON(DG.CODIGO_USUARIO_GRABO=S1.CODIGO_USUARIO) " &
@@ -395,7 +396,7 @@ Public Class Class_CXC_Devoluciones_Global
                                     "INNER JOIN VENTA_GLOBAL VG ON(DG.FOLIO_VENTA=VG.FOLIO_VENTA) " &
                                     "INNER JOIN CAT_ALMACENES ALM ON(VG.CODIGO_ALMACEN=ALM.CODIGO_ALMACEN) " &
                                     "INNER JOIN CAT_CLIENTES CTE ON(VG.CODIGO_CLIENTE=CTE.CODIGO_CLIENTE) " &
-                                    "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC(=DOC.) " &
+                                    "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(DG.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
                                     "WHERE DG.FOLIO_DEVOLUCION='" & sReplace(Me._FOLIO_DEVOLUCION) & "' AND DG.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString, Me._Conexion)
 
         Dim dReader As SqlDataReader
@@ -406,7 +407,7 @@ Public Class Class_CXC_Devoluciones_Global
                 Me._Conexion.Open()
                 dReader = .ExecuteReader()
 
-                If dReader.Read Then
+                If dReader.Read = True Then
                     Me._ID_CXC_DEVOLUCION_GLOBAL = CInt(dReader("ID_CXC_DEVOLUCION_GLOBAL"))
                     Me._FOLIO_DEVOLUCION = "" & dReader("FOLIO_DEVOLUCION").ToString()
                     Me._FOLIO_VENTA = "" & dReader("FOLIO_VENTA").ToString()
@@ -435,7 +436,7 @@ Public Class Class_CXC_Devoluciones_Global
                         Me._FECHA_CANCELACION = CDate(dReader("FECHA_CANCELACION"))
                         Me._FECHA_CANCELACION_SERVIDOR = CDate(dReader("FECHA_CANCELACION_SERVIDOR"))
                     End If
-                    
+
                     Me._Nombre_Formato = "" & Trim(dReader("NOMBRE_FORMATO").ToString)
 
                     Me._CODIGO_CLIENTE = "" & dReader("CODIGO_CLIENTE").ToString()
@@ -509,6 +510,32 @@ Public Class Class_CXC_Devoluciones_Global
         End Try
         Return Resultado
     End Function
+
+    Public Function ObtenerDetalle() As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String
+
+        sSQL = "SELECT DR.*,ART.DESCRIPCION " &
+            "FROM CXC_DEVOLUCION_DETALLE DR " &
+            "INNER JOIN CAT_ARTICULOS ART ON(DR.CODIGO_ARTICULO=ART.CODIGO_ARTICULO) " &
+            "WHERE DR.FOLIO_DEVOLUCION='" & sReplace(Me._FOLIO_DEVOLUCION) & "' " &
+            "ORDER BY DR.ID_CXC_DEVOLUCION_DETALLE"
+
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+
+            da.Dispose()
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, "ObtenerDetalle", ex)
+        End Try
+
+        Return dTabla
+    End Function
+
+    Public Sub NuevoRenglon()
+        Me.oDetalle = New Class_CXC_Devoluciones_Detalle
+    End Sub
 
 #End Region
 

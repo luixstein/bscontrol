@@ -1240,7 +1240,7 @@ Module FacturacionElectronica
         Dim bResultado As Boolean = False
 
         Try
-            MsgBox "falta desarrollar.."
+            MsgBox("falta desarrollar..")
         Catch ex As Exception
             HandleError(_Nombre_Catalogo, sProcedure, ex)
         Finally

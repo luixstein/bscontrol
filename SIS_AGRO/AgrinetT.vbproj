@@ -258,6 +258,7 @@
     <Compile Include="Clases\CXC\Class_Bancos_CXC.vb" />
     <Compile Include="Clases\CXC\Class_CXC_Afecta_Documentos.vb" />
     <Compile Include="Clases\CXC\Class_CXC_Descuento.vb" />
+    <Compile Include="Clases\CXC\Class_CXC_Devoluciones_Detalle.vb" />
     <Compile Include="Clases\CXC\Class_CXC_Devoluciones_Global.vb" />
     <Compile Include="Clases\CXC\Class_CXC_Seguimientos.vb" />
     <Compile Include="Clases\CXP\Class_Bancos_CXP.vb" />
