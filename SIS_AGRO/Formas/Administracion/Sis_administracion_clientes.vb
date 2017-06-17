@@ -345,6 +345,21 @@ Buscar:
 
                     Me.tcPanel.TabPages(1).Enabled = True
                 End With
+
+                Dim oPropietarios As New Class_CatPropietarios
+                Dim sql As New Class_find("SELECT R.CODIGO_PROPIETARIO FROM CAT_PROPIETARIOS_RELACION_CLIENTES R " _
+                                          & "WHERE CODIGO_CLIENTE='" & Me.TxtCliente.Text & "'")
+
+                If txtLEN(sql.Result1.ToString) = True Then
+                    With Me.GridListaClientes
+                        .DataSource = oPropietarios.ObtenerRelacionPropietariosClientes(sql.Result1.ToString)
+                        .Columns("CODIGO_CLIENTE").Width = 52
+                        .Columns("NOMBRE_CLIENTE").Width = 500
+                    End With
+                Else
+                    Me.GridListaClientes.DataSource = Nothing
+                End If
+
             End If
 
             Me.ConsultaReglasCXC()
