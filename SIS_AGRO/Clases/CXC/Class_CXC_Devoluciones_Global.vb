@@ -320,7 +320,7 @@ Public Class Class_CXC_Devoluciones_Global
 #Region "Constructor y destructor"
     Public Sub New()
         Me._Conexion = New SqlConnection(Empresa_Sistema.conexion)
-        oVentasDetalle = New Class_Ventas_Detalle
+        oDetalle = New Class_CXC_Devoluciones_Detalle
     End Sub
 
     Public Sub New(ByVal FolioDevolucion As String)
@@ -364,7 +364,6 @@ Public Class Class_CXC_Devoluciones_Global
                 sqlParametro = .Parameters.Add("@IEPS_DESGLOSADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_DESGLOSADO
                 sqlParametro = .Parameters.Add("@IEPS_INCLUIDO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_INCLUIDO
                 sqlParametro = .Parameters.Add("@IMPUESTO_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_PORCENTAJE
-                sqlParametro = .Parameters.Add("@COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO
                 sqlParametro = .Parameters.Add("@CODIGO_USUARIO_GRABO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
 
                 Me._Conexion.Open()
@@ -515,9 +514,12 @@ Public Class Class_CXC_Devoluciones_Global
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
 
-        sSQL = "SELECT DR.*,ART.DESCRIPCION " &
+        sSQL = "SELECT DR.CODIGO_ARTICULO," &
+            "CASE WHEN ART.ES_SERIALIZABLE = '1' THEN 'SER' WHEN ART.INVENTARIABLE= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO," &
+            "VR.DESCRIPCION,DR.CANTIDAD,DR.PRECIO,DR.PRECIO_TOTAL,VR.UNIDAD_VENTA,DR.IMPUESTO_PORCENTAJE,DR.IMPORTE,DR.IMPUESTO_IMPORTE,DR.ID_VENTA_DETALLE,DR.IEPS_PORCENTAJE,DR.IEPS_UNITARIO,DR.IEPS_IMPORTE,DR.BASE_IEPS,DR.BASE_IVA " &
             "FROM CXC_DEVOLUCION_DETALLE DR " &
             "INNER JOIN CAT_ARTICULOS ART ON(DR.CODIGO_ARTICULO=ART.CODIGO_ARTICULO) " &
+            "INNER JOIN VENTA_DETALLE VR ON(DR.ID_VENTA_DETALLE=VR.ID_VENTA_DETALLE) " &
             "WHERE DR.FOLIO_DEVOLUCION='" & sReplace(Me._FOLIO_DEVOLUCION) & "' " &
             "ORDER BY DR.ID_CXC_DEVOLUCION_DETALLE"
 

@@ -477,7 +477,8 @@ busca:
             Dim oAlmacen As New Class_CatAlmacenes(Me.oVenta.CODIGO_ALMACEN)
             Me.txtCliente.Text = Me.oVenta.CODIGO_CLIENTE
             Me.lblCliente.Text = Me.oCliente.NOMBRE_CLIENTE
-            Me.lblAlmacen.Text = Me.oVenta.CODIGO_ALMACEN & " " & oAlmacen.NOMBRE_ALMACEN
+            Me.txtAlmacen.Text = Me.oVenta.CODIGO_ALMACEN
+            Me.lblAlmacen.Text = oAlmacen.NOMBRE_ALMACEN
             Me.txtTipoCambio.Text = Me.oVenta.TIPO_DE_CAMBIO
 
             Dim dTabla As DataTable = Me.oVenta.ObtenerDetalleDisponiblesParaDevolucion
@@ -863,6 +864,7 @@ Sigue:
 
             If txtLEN(Me.txtConcepto.Text) = False Then
                 MsgBox("Captúre por favor un concepto.", MsgBoxStyle.Exclamation, sProcedure)
+                Me.txtConcepto.Focus()
                 Return False
             End If
 
