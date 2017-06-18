@@ -23,41 +23,45 @@ Partial Class Frm_CXC_AplicacionDocumentos
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Frm_CXC_AplicacionDocumentos))
-        Me.tsMenu = New System.Windows.Forms.ToolStrip
-        Me.tsbNuevo = New System.Windows.Forms.ToolStripButton
-        Me.tsbAplicar = New System.Windows.Forms.ToolStripButton
-        Me.tsbSalir = New System.Windows.Forms.ToolStripButton
-        Me.StatusStripEstado = New System.Windows.Forms.StatusStrip
-        Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel
-        Me.tssElaboro = New System.Windows.Forms.ToolStripStatusLabel
-        Me.gbDatos = New System.Windows.Forms.GroupBox
-        Me.lblDisplayFechaVenta = New System.Windows.Forms.Label
-        Me.dtpFechaVenta = New System.Windows.Forms.DateTimePicker
-        Me.lblDisplaySaldo = New System.Windows.Forms.Label
-        Me.txtSaldo = New System.Windows.Forms.TextBox
-        Me.lblDisplayImporte = New System.Windows.Forms.Label
-        Me.txtImporte = New System.Windows.Forms.TextBox
-        Me.lblNombreDocumento = New System.Windows.Forms.Label
-        Me.lblDisplayCodigoDocumento = New System.Windows.Forms.Label
-        Me.txtCodigoDocumento = New System.Windows.Forms.TextBox
-        Me.lblDisplayReferencia2 = New System.Windows.Forms.Label
-        Me.txtReferencia2 = New System.Windows.Forms.TextBox
-        Me.lblDisplayEstatus = New System.Windows.Forms.Label
-        Me.lblEstatus = New System.Windows.Forms.Label
-        Me.lblDisplayFecha = New System.Windows.Forms.Label
-        Me.dtpFecha = New System.Windows.Forms.DateTimePicker
-        Me.lblDisplayReferencia = New System.Windows.Forms.Label
-        Me.txtReferencia = New System.Windows.Forms.TextBox
-        Me.txtConcepto = New System.Windows.Forms.TextBox
-        Me.lblDisplayConcepto = New System.Windows.Forms.Label
-        Me.lblDisplayFolio = New System.Windows.Forms.Label
-        Me.txtFolio = New System.Windows.Forms.TextBox
-        Me.lblNombreProveedor = New System.Windows.Forms.Label
-        Me.lblDisplayCodigoCliente = New System.Windows.Forms.Label
-        Me.txtCodigoCliente = New System.Windows.Forms.TextBox
+        Me.tsMenu = New System.Windows.Forms.ToolStrip()
+        Me.tsbNuevo = New System.Windows.Forms.ToolStripButton()
+        Me.tsbAplicar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
+        Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
+        Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.tssElaboro = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.gbDatos = New System.Windows.Forms.GroupBox()
+        Me.lblDisplayFechaVenta = New System.Windows.Forms.Label()
+        Me.dtpFechaVenta = New System.Windows.Forms.DateTimePicker()
+        Me.lblDisplaySaldo = New System.Windows.Forms.Label()
+        Me.txtSaldo = New System.Windows.Forms.TextBox()
+        Me.lblDisplayImporte = New System.Windows.Forms.Label()
+        Me.txtImporte = New System.Windows.Forms.TextBox()
+        Me.lblNombreDocumento = New System.Windows.Forms.Label()
+        Me.lblDisplayCodigoDocumento = New System.Windows.Forms.Label()
+        Me.txtCodigoDocumento = New System.Windows.Forms.TextBox()
+        Me.lblDisplayReferencia2 = New System.Windows.Forms.Label()
+        Me.txtReferencia2 = New System.Windows.Forms.TextBox()
+        Me.lblDisplayEstatus = New System.Windows.Forms.Label()
+        Me.lblEstatus = New System.Windows.Forms.Label()
+        Me.lblDisplayFecha = New System.Windows.Forms.Label()
+        Me.dtpFecha = New System.Windows.Forms.DateTimePicker()
+        Me.lblDisplayReferencia = New System.Windows.Forms.Label()
+        Me.txtReferencia = New System.Windows.Forms.TextBox()
+        Me.txtConcepto = New System.Windows.Forms.TextBox()
+        Me.lblDisplayConcepto = New System.Windows.Forms.Label()
+        Me.lblDisplayFolio = New System.Windows.Forms.Label()
+        Me.txtFolio = New System.Windows.Forms.TextBox()
+        Me.lblNombreProveedor = New System.Windows.Forms.Label()
+        Me.lblDisplayCodigoCliente = New System.Windows.Forms.Label()
+        Me.txtCodigoCliente = New System.Windows.Forms.TextBox()
+        Me.gbDocumento = New System.Windows.Forms.GroupBox()
+        Me.rbAnticipo = New System.Windows.Forms.RadioButton()
+        Me.rbDescuentoDevolucion = New System.Windows.Forms.RadioButton()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.gbDatos.SuspendLayout()
+        Me.gbDocumento.SuspendLayout()
         Me.SuspendLayout()
         '
         'tsMenu
@@ -96,7 +100,7 @@ Partial Class Frm_CXC_AplicacionDocumentos
         'StatusStripEstado
         '
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssLabelEstado, Me.tssElaboro})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 206)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 262)
         Me.StatusStripEstado.Name = "StatusStripEstado"
         Me.StatusStripEstado.Size = New System.Drawing.Size(674, 22)
         Me.StatusStripEstado.TabIndex = 4
@@ -138,7 +142,7 @@ Partial Class Frm_CXC_AplicacionDocumentos
         Me.gbDatos.Controls.Add(Me.lblNombreProveedor)
         Me.gbDatos.Controls.Add(Me.lblDisplayCodigoCliente)
         Me.gbDatos.Controls.Add(Me.txtCodigoCliente)
-        Me.gbDatos.Location = New System.Drawing.Point(7, 27)
+        Me.gbDatos.Location = New System.Drawing.Point(7, 85)
         Me.gbDatos.Name = "gbDatos"
         Me.gbDatos.Size = New System.Drawing.Size(661, 174)
         Me.gbDatos.TabIndex = 5
@@ -359,11 +363,46 @@ Partial Class Frm_CXC_AplicacionDocumentos
         Me.txtCodigoCliente.Size = New System.Drawing.Size(100, 20)
         Me.txtCodigoCliente.TabIndex = 2
         '
+        'gbDocumento
+        '
+        Me.gbDocumento.Controls.Add(Me.rbDescuentoDevolucion)
+        Me.gbDocumento.Controls.Add(Me.rbAnticipo)
+        Me.gbDocumento.Enabled = False
+        Me.gbDocumento.Location = New System.Drawing.Point(7, 36)
+        Me.gbDocumento.Name = "gbDocumento"
+        Me.gbDocumento.Size = New System.Drawing.Size(661, 43)
+        Me.gbDocumento.TabIndex = 6
+        Me.gbDocumento.TabStop = False
+        Me.gbDocumento.Text = "Seleccione el tipo de documento :"
+        '
+        'rbAnticipo
+        '
+        Me.rbAnticipo.AutoSize = True
+        Me.rbAnticipo.Checked = True
+        Me.rbAnticipo.Location = New System.Drawing.Point(9, 20)
+        Me.rbAnticipo.Name = "rbAnticipo"
+        Me.rbAnticipo.Size = New System.Drawing.Size(63, 17)
+        Me.rbAnticipo.TabIndex = 0
+        Me.rbAnticipo.TabStop = True
+        Me.rbAnticipo.Text = "Anticipo"
+        Me.rbAnticipo.UseVisualStyleBackColor = True
+        '
+        'rbDescuentoDevolucion
+        '
+        Me.rbDescuentoDevolucion.AutoSize = True
+        Me.rbDescuentoDevolucion.Location = New System.Drawing.Point(144, 20)
+        Me.rbDescuentoDevolucion.Name = "rbDescuentoDevolucion"
+        Me.rbDescuentoDevolucion.Size = New System.Drawing.Size(140, 17)
+        Me.rbDescuentoDevolucion.TabIndex = 1
+        Me.rbDescuentoDevolucion.Text = "Descuento x devolución"
+        Me.rbDescuentoDevolucion.UseVisualStyleBackColor = True
+        '
         'Frm_CXC_AplicacionDocumentos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(674, 228)
+        Me.ClientSize = New System.Drawing.Size(674, 284)
+        Me.Controls.Add(Me.gbDocumento)
         Me.Controls.Add(Me.gbDatos)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.tsMenu)
@@ -378,6 +417,8 @@ Partial Class Frm_CXC_AplicacionDocumentos
         Me.StatusStripEstado.PerformLayout()
         Me.gbDatos.ResumeLayout(False)
         Me.gbDatos.PerformLayout()
+        Me.gbDocumento.ResumeLayout(False)
+        Me.gbDocumento.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -414,4 +455,7 @@ Partial Class Frm_CXC_AplicacionDocumentos
     Friend WithEvents dtpFechaVenta As System.Windows.Forms.DateTimePicker
     Friend WithEvents lblDisplaySaldo As System.Windows.Forms.Label
     Friend WithEvents txtSaldo As System.Windows.Forms.TextBox
+    Friend WithEvents gbDocumento As GroupBox
+    Friend WithEvents rbDescuentoDevolucion As RadioButton
+    Friend WithEvents rbAnticipo As RadioButton
 End Class

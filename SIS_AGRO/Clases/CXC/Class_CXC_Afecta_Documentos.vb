@@ -192,7 +192,7 @@ Public Class Class_CXC_Afecta_Documentos
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         ' Me.oDocumento = New Class_CatDocumentos()
-    End Sub                                                         'Inicializa al objeto.
+    End Sub
 
     Protected Overrides Sub Finalize()
         Me._Conexion.Dispose()

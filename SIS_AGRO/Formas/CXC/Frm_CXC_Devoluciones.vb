@@ -136,6 +136,40 @@ busca:
         Me.GestionaGrid(e)
     End Sub
 
+    Private Sub dtFecha_KeyDown(sender As Object, e As KeyEventArgs) Handles dtFecha.KeyDown
+        If e.KeyCode = Keys.Return Then
+            Me.txtConcepto.Focus()
+        End If
+    End Sub
+
+    Private Sub txtConcepto_KeyDown(sender As Object, e As KeyEventArgs) Handles txtConcepto.KeyDown
+        If e.KeyCode = Keys.Return Then
+            Me.Grid.Focus()
+        End If
+    End Sub
+
+#Region "Eventos Genericos"
+    Private Sub txt_Enter(ByVal sender As Object, ByVal e As System.EventArgs)
+        Dim oTexBox As TextBox = CType(sender, TextBox)
+        oTexBox.SelectAll()
+    End Sub
+
+    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
+        If e.KeyCode = Keys.Return Then
+            SendKeys.Send("{TAB}")
+        End If
+    End Sub
+
+    Private Sub txtNumerosDecimalKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
+        Dim txt As TextBox = CType(sender, TextBox)
+        txtSoloNumerosDecimales(e, txt.Text)
+        txtNoBeep(e)
+    End Sub
+
+    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFolioDevolucion.KeyPress, txtFolioVenta.KeyPress, txtFolioDescuento.KeyPress, dtFecha.KeyPress, txtConcepto.KeyPress
+        txtNoBeep(e)
+    End Sub
+#End Region
 #End Region
 
 #Region "Métodos y procedimientos"
@@ -161,6 +195,7 @@ busca:
             Me.lblSubtotal.Text = FormatImporteContable(0)
             Me.lblImpuesto.Text = FormatImporteContable(0)
             Me.lblTotal.Text = FormatImporteContable(0)
+            Me.txtSaldo.Text = ""
 
             Me.InicializaGrid()
             Me.InicializaGridSeries()
@@ -481,6 +516,8 @@ busca:
             Me.lblAlmacen.Text = oAlmacen.NOMBRE_ALMACEN
             Me.txtTipoCambio.Text = Me.oVenta.TIPO_DE_CAMBIO
 
+            Me.txtSaldo.Text = FormatImporteContable(Me.oVenta.SALDO)
+
             Dim dTabla As DataTable = Me.oVenta.ObtenerDetalleDisponiblesParaDevolucion
             If dTabla.Rows.Count = 0 Then
                 MsgBox("No hay disponibles en la venta para devolver.", MsgBoxStyle.Exclamation, Me.Text)
@@ -520,6 +557,8 @@ busca:
             Else
                 Me.txtFolioDevolucion.Enabled = False
 
+                Me.oVenta = New Class_Ventas_Global(Me.oDevolucion.FOLIO_VENTA)
+
                 With oDevolucion
                     Me.txtFolioDevolucion.Text = .FOLIO_DEVOLUCION
                     Me.txtFolioVenta.Text = .FOLIO_VENTA
@@ -551,6 +590,8 @@ busca:
                     If .ESTATUS_DEVOLUCION = "C" Then
                         Me.tssCancelo.Text = "Canceló : " & .NOMBRE_USUARIO_CANCELO & " el : " & Format(.FECHA_CANCELACION, "dd-MMM-yyyy hh:mm tt")
                     End If
+
+                    Me.txtSaldo.Text = Me.oVenta.SALDO
 
                     Me.Grid.DataSource = .ObtenerDetalle
                 End With
@@ -632,7 +673,7 @@ busca:
                     End If
                 Next
 
-                'FALTA:Graba inventarios
+                .AfectaInventarios()
 
                 'FALTA:Contabilidad
                 'PREGUNTAR SI ES EL DOC DE LA VENTA AFECTO A CONTA Y DECIR QUE NO AFECTARA A CONTA, QUE AVISEA SISTEMAs?
@@ -931,6 +972,7 @@ Sigue:
         End Try
         Return bResultado
     End Function
+
 
 #End Region
 

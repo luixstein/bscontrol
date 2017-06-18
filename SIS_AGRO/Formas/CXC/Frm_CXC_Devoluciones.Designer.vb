@@ -70,6 +70,7 @@ Partial Class Frm_CXC_Devoluciones
         Me.lblEstatus = New System.Windows.Forms.Label()
         Me.lblDisplayPoliza = New System.Windows.Forms.Label()
         Me.frmDatos = New System.Windows.Forms.GroupBox()
+        Me.txtAlmacen = New System.Windows.Forms.TextBox()
         Me.txtFolioDescuento = New System.Windows.Forms.TextBox()
         Me.lblDisplayFolioDescuento = New System.Windows.Forms.Label()
         Me.lblAlmacen = New System.Windows.Forms.Label()
@@ -88,7 +89,8 @@ Partial Class Frm_CXC_Devoluciones
         Me.lblDisplayFolioVenta = New System.Windows.Forms.Label()
         Me.txtFolioVenta = New System.Windows.Forms.TextBox()
         Me.lblDisplayAlmacen = New System.Windows.Forms.Label()
-        Me.txtAlmacen = New System.Windows.Forms.TextBox()
+        Me.txtSaldo = New System.Windows.Forms.TextBox()
+        Me.lblDisplaySaldo = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -580,6 +582,8 @@ Partial Class Frm_CXC_Devoluciones
         '
         'frmDatos
         '
+        Me.frmDatos.Controls.Add(Me.txtSaldo)
+        Me.frmDatos.Controls.Add(Me.lblDisplaySaldo)
         Me.frmDatos.Controls.Add(Me.txtAlmacen)
         Me.frmDatos.Controls.Add(Me.txtFolioDescuento)
         Me.frmDatos.Controls.Add(Me.lblDisplayFolioDescuento)
@@ -608,6 +612,16 @@ Partial Class Frm_CXC_Devoluciones
         Me.frmDatos.Size = New System.Drawing.Size(986, 162)
         Me.frmDatos.TabIndex = 0
         Me.frmDatos.TabStop = False
+        '
+        'txtAlmacen
+        '
+        Me.txtAlmacen.Enabled = False
+        Me.txtAlmacen.Location = New System.Drawing.Point(395, 48)
+        Me.txtAlmacen.MaxLength = 15
+        Me.txtAlmacen.Name = "txtAlmacen"
+        Me.txtAlmacen.ReadOnly = True
+        Me.txtAlmacen.Size = New System.Drawing.Size(36, 20)
+        Me.txtAlmacen.TabIndex = 375
         '
         'txtFolioDescuento
         '
@@ -773,15 +787,23 @@ Partial Class Frm_CXC_Devoluciones
         Me.lblDisplayAlmacen.TabIndex = 239
         Me.lblDisplayAlmacen.Text = "Almacén :"
         '
-        'txtAlmacen
+        'txtSaldo
         '
-        Me.txtAlmacen.Enabled = False
-        Me.txtAlmacen.Location = New System.Drawing.Point(395, 48)
-        Me.txtAlmacen.MaxLength = 15
-        Me.txtAlmacen.Name = "txtAlmacen"
-        Me.txtAlmacen.ReadOnly = True
-        Me.txtAlmacen.Size = New System.Drawing.Size(36, 20)
-        Me.txtAlmacen.TabIndex = 375
+        Me.txtSaldo.Location = New System.Drawing.Point(395, 70)
+        Me.txtSaldo.MaxLength = 8
+        Me.txtSaldo.Name = "txtSaldo"
+        Me.txtSaldo.ReadOnly = True
+        Me.txtSaldo.Size = New System.Drawing.Size(90, 20)
+        Me.txtSaldo.TabIndex = 376
+        '
+        'lblDisplaySaldo
+        '
+        Me.lblDisplaySaldo.AutoSize = True
+        Me.lblDisplaySaldo.Location = New System.Drawing.Point(335, 73)
+        Me.lblDisplaySaldo.Name = "lblDisplaySaldo"
+        Me.lblDisplaySaldo.Size = New System.Drawing.Size(40, 13)
+        Me.lblDisplaySaldo.TabIndex = 377
+        Me.lblDisplaySaldo.Text = "Saldo :"
         '
         'Frm_CXC_Devoluciones
         '
@@ -883,4 +905,6 @@ Partial Class Frm_CXC_Devoluciones
     Friend WithEvents lblDisplayFolioDescuento As Label
     Friend WithEvents tsbEnviarCorreo As ToolStripButton
     Friend WithEvents txtAlmacen As TextBox
+    Friend WithEvents txtSaldo As TextBox
+    Friend WithEvents lblDisplaySaldo As Label
 End Class
