@@ -70,6 +70,8 @@ Partial Class Frm_CXC_Devoluciones
         Me.lblEstatus = New System.Windows.Forms.Label()
         Me.lblDisplayPoliza = New System.Windows.Forms.Label()
         Me.frmDatos = New System.Windows.Forms.GroupBox()
+        Me.txtSaldo = New System.Windows.Forms.TextBox()
+        Me.lblDisplaySaldo = New System.Windows.Forms.Label()
         Me.txtAlmacen = New System.Windows.Forms.TextBox()
         Me.txtFolioDescuento = New System.Windows.Forms.TextBox()
         Me.lblDisplayFolioDescuento = New System.Windows.Forms.Label()
@@ -89,8 +91,6 @@ Partial Class Frm_CXC_Devoluciones
         Me.lblDisplayFolioVenta = New System.Windows.Forms.Label()
         Me.txtFolioVenta = New System.Windows.Forms.TextBox()
         Me.lblDisplayAlmacen = New System.Windows.Forms.Label()
-        Me.txtSaldo = New System.Windows.Forms.TextBox()
-        Me.lblDisplaySaldo = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -134,6 +134,7 @@ Partial Class Frm_CXC_Devoluciones
         Me.tsbCancelar.Name = "tsbCancelar"
         Me.tsbCancelar.Size = New System.Drawing.Size(76, 22)
         Me.tsbCancelar.Text = " Cancelar"
+        Me.tsbCancelar.Visible = False
         '
         'tsbImprimir
         '
@@ -178,6 +179,7 @@ Partial Class Frm_CXC_Devoluciones
         Me.tsbEnviarCorreo.Name = "tsbEnviarCorreo"
         Me.tsbEnviarCorreo.Size = New System.Drawing.Size(96, 22)
         Me.tsbEnviarCorreo.Text = "&Enviar correo"
+        Me.tsbEnviarCorreo.Visible = False
         '
         'tsbSalir
         '
@@ -613,6 +615,25 @@ Partial Class Frm_CXC_Devoluciones
         Me.frmDatos.TabIndex = 0
         Me.frmDatos.TabStop = False
         '
+        'txtSaldo
+        '
+        Me.txtSaldo.Location = New System.Drawing.Point(395, 70)
+        Me.txtSaldo.MaxLength = 8
+        Me.txtSaldo.Name = "txtSaldo"
+        Me.txtSaldo.ReadOnly = True
+        Me.txtSaldo.Size = New System.Drawing.Size(90, 20)
+        Me.txtSaldo.TabIndex = 376
+        Me.txtSaldo.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'lblDisplaySaldo
+        '
+        Me.lblDisplaySaldo.AutoSize = True
+        Me.lblDisplaySaldo.Location = New System.Drawing.Point(335, 73)
+        Me.lblDisplaySaldo.Name = "lblDisplaySaldo"
+        Me.lblDisplaySaldo.Size = New System.Drawing.Size(40, 13)
+        Me.lblDisplaySaldo.TabIndex = 377
+        Me.lblDisplaySaldo.Text = "Saldo :"
+        '
         'txtAlmacen
         '
         Me.txtAlmacen.Enabled = False
@@ -786,24 +807,6 @@ Partial Class Frm_CXC_Devoluciones
         Me.lblDisplayAlmacen.Size = New System.Drawing.Size(54, 13)
         Me.lblDisplayAlmacen.TabIndex = 239
         Me.lblDisplayAlmacen.Text = "Almacén :"
-        '
-        'txtSaldo
-        '
-        Me.txtSaldo.Location = New System.Drawing.Point(395, 70)
-        Me.txtSaldo.MaxLength = 8
-        Me.txtSaldo.Name = "txtSaldo"
-        Me.txtSaldo.ReadOnly = True
-        Me.txtSaldo.Size = New System.Drawing.Size(90, 20)
-        Me.txtSaldo.TabIndex = 376
-        '
-        'lblDisplaySaldo
-        '
-        Me.lblDisplaySaldo.AutoSize = True
-        Me.lblDisplaySaldo.Location = New System.Drawing.Point(335, 73)
-        Me.lblDisplaySaldo.Name = "lblDisplaySaldo"
-        Me.lblDisplaySaldo.Size = New System.Drawing.Size(40, 13)
-        Me.lblDisplaySaldo.TabIndex = 377
-        Me.lblDisplaySaldo.Text = "Saldo :"
         '
         'Frm_CXC_Devoluciones
         '

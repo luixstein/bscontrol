@@ -85,6 +85,11 @@ Public Class Frm_CXC_Pagos
     End Sub
 
     Private Sub btnAgregarDocumentosClientes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAgregarDocumentosClientes.Click
+        If txtLEN(Me.TxtCuentaBancaria.Text) = False Then
+            MsgBox("Asígne la cuenta bancaria de donde sale el pago.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.TxtCuentaBancaria.Focus()
+            Return
+        End If
         If Me.CkbAnticipo.Checked = True Then
             If txtLEN(Me.txtAnticipo.Text) = True And valorNumerico(Me.txtAnticipo.Text) > 0 Then
                 Me.AgregarAnticipoClientes()
@@ -95,7 +100,6 @@ Public Class Frm_CXC_Pagos
         Else
             Me.AgregarDocumentosClientes()
         End If
-
     End Sub
 #End Region
 

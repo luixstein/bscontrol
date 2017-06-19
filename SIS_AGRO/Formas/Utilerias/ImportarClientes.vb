@@ -1,5 +1,14 @@
-﻿Public Class ImportarClientes
+﻿Option Strict On
 
+Public Class ImportarClientes
+
+#Region "Opciones"
+    Private Sub BtnImportar_Click(sender As Object, e As EventArgs) Handles BtnImportar.Click
+        Me.Importar()
+    End Sub
+#End Region
+
+#Region "Eventos de objetos"
     Private Sub ImportarClientes_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.DesplegarZonas()
     End Sub
@@ -13,7 +22,7 @@
 
         If e.KeyCode = Keys.F6 Then
 Buscar:
-            Me.TxtCodigoClienteOrigen.Text = oClientes.BusquedaVisual_PorDescripcionFiltradoZona(Me.CboZonas.SelectedValue)
+            Me.TxtCodigoClienteOrigen.Text = oClientes.BusquedaVisual_PorDescripcionFiltradoZona(Me.CboZonas.SelectedValue.ToString)
 
             If txtLEN(Me.TxtCodigoClienteOrigen.Text) = True Then
                 Dim sql As New Class_find("SELECT NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE CODIGO_CLIENTE='" & Me.TxtCodigoClienteOrigen.Text & "'")
@@ -39,30 +48,49 @@ Buscar:
         txtTAB(e)
 
     End Sub
+#End Region
 
+#Region "Métodos y procedimientos"
     Private Sub DesplegarZonas()
-        Dim oZonas As New Class_CatZonas
-        With Me.CboZonas
-            .DataSource = oZonas.ObtenerElementos
-            .ValueMember = ("CODIGO_ZONA")
-            .DisplayMember = ("NOMBRE_ZONA")
-
-            If .Items.Count > 0 Then
-                .SelectedIndex = 0
-            End If
-        End With
+        Try
+            Dim oZonas As New Class_CatZonas
+            With Me.CboZonas
+                .DataSource = oZonas.ObtenerElementos
+                .ValueMember = ("CODIGO_ZONA")
+                .DisplayMember = ("NOMBRE_ZONA")
+                If .Items.Count > 0 Then
+                    .SelectedIndex = 0
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarZonas", ex)
+        End Try
     End Sub
 
-    Private Function Validar() As Boolean
-        If txtLEN(Me.TxtCodigoClienteOrigen.Text) = False Then
-            Me.TxtCodigoClienteOrigen.Focus()
-            Return False
-        End If
+    Private Function Importar() As Boolean
+        Dim bResultado As Boolean = False
+        Try
+            If txtLEN(Me.TxtCodigoClienteOrigen.Text) = False Then
+                MsgBox("Asígne el cliente origen.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.TxtCodigoClienteOrigen.Focus()
+                Return False
+            End If
 
-        'Dim sql As New Class_find("SELECT CODIGO_ZONA FROM CAT_CLIENTES WHERE CODIGO_CLIENTE='" & Me.TxtCodigoClienteOrigen.Text & "'")
-        If Me.CboZonas.SelectedValue = Usuario.Codigo_Plaza Then
-            MsgBox("El cliente " & Me.TxtCodigoClienteOrigen.Text & " ya existe en la zona: " & Usuario.Codigo_Plaza)
-        End If
+            Dim oCliente As New Class_CatClientes(Me.TxtCodigoClienteOrigen.Text)
+
+            If oCliente.Existe = False Then
+                MsgBox("El cliente origen no existe.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.TxtCodigoClienteOrigen.Focus()
+                Return False
+            End If
+
+            bResultado = oCliente.ImportaClienteSucursal(Me.CboZonas.SelectedValue.ToString)
+
+        Catch ex As Exception
+            HandleError(Me.Name, "Importar", ex)
+        End Try
+        Return bResultado
     End Function
+#End Region
 
 End Class

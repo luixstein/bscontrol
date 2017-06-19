@@ -25,7 +25,11 @@ Public Class Frm_CXC_AplicacionDocumentos
 
     Private Sub tsbAplicar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbAplicar.Click
         If Me.Aplicar = True Then
-            Me.Consultar()
+            If Me.rbAnticipo.Checked = True Then
+                Me.Consultar()
+            Else
+                Me.ConsultarDescuentoDevolucion()
+            End If
         End If
     End Sub
 
@@ -282,8 +286,8 @@ busca:
 
         f.sQl = "SELECT CXC.CXC_FOLIO_CXC,CXC.CXC_ESTATUS_CXC,CXC.CXC_CODIGO_DOCUMENTO,T.NOMBRE_TIPO_DOCUMENTO,CXC.CXC_TOTAL,CXC.CXC_CODIGO_CLIENTE,CXC.CXC_NOMBRE_CLIENTE,DBO.FN_FECHA_SIN_HORA(CXC.BAN_FECHA) FECHA_CXC " &
                 "FROM VW_BANCOS_GLOBAL_CON_CXC_GLOBAL CXC " &
-                "INNER JOIN SIS_TIPOS_DOCUMENTOS T ON(CXC.CXC_CODIGO_TIPO_DOCUMENTO=T.CODIGO_TIPO_DOCUMENTO) " &
-                "WHERE T.CODIGO_MODULO='CXC' AND CXC.CXC_ESTATUS_CXC='G' AND"
+                "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO T ON(CXC.CXC_CODIGO_TIPO_DOCUMENTO=T.CODIGO_TIPO_DOCUMENTO) " &
+                "WHERE T.CODIGO_MODULO='CXC' AND CXC.CXC_ESTATUS_CXC='G' AND T.CODIGO_TIPO_DOCUMENTO='PA' AND"
 
         f.arrayWidthColumns = New Integer() {100, 70, 100, 200, 70, 100, 300, 100}
         f.Inicia("")
@@ -311,7 +315,7 @@ busca:
                 "FROM CXC_GLOBAL CXC " &
                 "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO T ON(CXC.CODIGO_DOCUMENTO=T.CODIGO_DOCUMENTO) " &
                 "INNER JOIN CAT_CLIENTES CTE ON(CXC.CODIGO_CLIENTE=CTE.CODIGO_CLIENTE)" &
-                "WHERE T.CODIGO_MODULO='CXC' AND CXC.ESTATUS_CXC='G' AND"
+                "WHERE T.CODIGO_MODULO='CXC' AND CXC.ESTATUS_CXC='G' AND T.CODIGO_TIPO_DOCUMENTO<>'PA' AND "
 
         f.arrayWidthColumns = New Integer() {100, 70, 100, 200, 70, 100, 300, 100}
 

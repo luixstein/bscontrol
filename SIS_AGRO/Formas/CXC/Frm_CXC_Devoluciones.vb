@@ -1,4 +1,6 @@
-﻿Public Class Frm_CXC_Devoluciones
+﻿Option Strict On
+
+Public Class Frm_CXC_Devoluciones
 
 #Region "Campos privados"
     Private oDevolucion As New Class_CXC_Devoluciones_Global
@@ -57,7 +59,7 @@
 
     Private Sub tsbGrabar_Click(sender As Object, e As EventArgs) Handles tsbGrabar.Click
         If Me.Grabar = True Then
-            Me.Consultar
+            Me.Consultar()
         End If
     End Sub
 
@@ -255,7 +257,7 @@ busca:
             Me.Grid.Cell(0, Me.igyCodigo).Text = "Código"
             Me.Grid.Cell(0, Me.igyDescripcion).Text = "Descripción"
             Me.Grid.Cell(0, Me.igyTipoControlInventariable).Text = "Inv"
-            Me.Grid.Cell(0, Me.igyCantidad).Text = "Cantidad"
+            Me.Grid.Cell(0, Me.igyCantidad).Text = "Cant devuelta"
             Me.Grid.Cell(0, Me.igyPrecio).Text = "Precio"
             Me.Grid.Cell(0, Me.igyPRECIO_TOTAL).Text = "Precio total"
             Me.Grid.Cell(0, Me.igyUnidad).Text = "Unidad"
@@ -514,7 +516,7 @@ busca:
             Me.lblCliente.Text = Me.oCliente.NOMBRE_CLIENTE
             Me.txtAlmacen.Text = Me.oVenta.CODIGO_ALMACEN
             Me.lblAlmacen.Text = oAlmacen.NOMBRE_ALMACEN
-            Me.txtTipoCambio.Text = Me.oVenta.TIPO_DE_CAMBIO
+            Me.txtTipoCambio.Text = Me.oVenta.TIPO_DE_CAMBIO.ToString
 
             Me.txtSaldo.Text = FormatImporteContable(Me.oVenta.SALDO)
 
@@ -591,7 +593,7 @@ busca:
                         Me.tssCancelo.Text = "Canceló : " & .NOMBRE_USUARIO_CANCELO & " el : " & Format(.FECHA_CANCELACION, "dd-MMM-yyyy hh:mm tt")
                     End If
 
-                    Me.txtSaldo.Text = Me.oVenta.SALDO
+                    Me.txtSaldo.Text = FormatImporteContable(Me.oVenta.SALDO)
 
                     Me.Grid.DataSource = .ObtenerDetalle
                 End With
@@ -633,7 +635,7 @@ busca:
                 .TOTAL = valorNumericoD(Me.lblTotal.Text)
                 .IEPS_DESGLOSADO = valorNumericoD(Me.lblIEPS.Text)
                 .IEPS_INCLUIDO = valorNumericoD(Me.lblIEPSIncluido.Text)
-                .IMPUESTO_PORCENTAJE = IIf(valorNumericoD(Me.lblImpuesto.Text) > 0, "16", "0")
+                .IMPUESTO_PORCENTAJE = CDec(IIf(valorNumericoD(Me.lblImpuesto.Text) > 0, "16", "0"))
 
                 If .GrabaDevolucionGlobal = False Then
                     Return False
@@ -651,17 +653,17 @@ busca:
                         .oDetalle.FOLIO_DEVOLUCION = .FOLIO_DEVOLUCION
                         .oDetalle.CODIGO_ARTICULO = Me.Grid.Cell(i, Me.igyCodigo).Text.ToUpper
                         .oDetalle.ID_VENTA_DETALLE = CInt(Me.Grid.Cell(i, Me.igyIdOrigen).Text)
-                        .oDetalle.CANTIDAD = valorNumerico(Me.Grid.Cell(i, Me.igyCantidad).Text)
-                        .oDetalle.PRECIO = valorNumerico(Me.Grid.Cell(i, Me.igyPrecio).Text)
+                        .oDetalle.CANTIDAD = valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text)
+                        .oDetalle.PRECIO = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text)
                         .oDetalle.IMPUESTO_PORCENTAJE = valorNumericoD(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text)
                         .oDetalle.IMPUESTO_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.igyImpuestoImporte).Text)
-                        .oDetalle.IMPORTE = valorNumerico(Me.Grid.Cell(i, Me.igyImporte).Text)
-                        .oDetalle.IEPS_PORCENTAJE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
-                        .oDetalle.IEPS_UNITARIO = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text)
-                        .oDetalle.IEPS_IMPORTE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_IMPORTE).Text)
-                        .oDetalle.BASE_IEPS = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IEPS).Text)
-                        .oDetalle.BASE_IVA = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IVA).Text)
-                        .oDetalle.PRECIO_TOTAL = valorNumerico(Me.Grid.Cell(i, Me.igyPRECIO_TOTAL).Text)
+                        .oDetalle.IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.igyImporte).Text)
+                        .oDetalle.IEPS_PORCENTAJE = valorNumericoD(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
+                        .oDetalle.IEPS_UNITARIO = valorNumericoD(Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text)
+                        .oDetalle.IEPS_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.igyIEPS_IMPORTE).Text)
+                        .oDetalle.BASE_IEPS = valorNumericoD(Me.Grid.Cell(i, Me.igyBASE_IEPS).Text)
+                        .oDetalle.BASE_IVA = valorNumericoD(Me.Grid.Cell(i, Me.igyBASE_IVA).Text)
+                        .oDetalle.PRECIO_TOTAL = valorNumericoD(Me.Grid.Cell(i, Me.igyPRECIO_TOTAL).Text)
                         .oDetalle.LISTA_SERIES = sListaSeries
 
                         If .oDetalle.GrabaRenglon = False Then
@@ -867,7 +869,7 @@ busca:
                             If dCantidad <= 0 Then
                                 Me.Grid.Cell(Renglon, Me.igyCantidad).Text = "0"
                                 Me.Grid.Refresh()
-                                MsgBox("La cantidad debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
+                                'MsgBox("La cantidad debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
                                 Me.Grid.Cell(Renglon, Me.igyDescripcion).SetFocus()
                                 GoTo Sigue
                             End If
@@ -892,7 +894,7 @@ Sigue:
         Dim sProcedure As String = "Validar"
         Dim bResultado As Boolean = False
         Try
-            If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios(Me.oDocumento.CODIGO_DOCUMENTO, Me.txtAlmacen.text) = False Then
+            If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios(Me.oDocumento.CODIGO_DOCUMENTO, Me.txtAlmacen.Text) = False Then
                 MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, Me.Text)
                 Exit Function
             End If

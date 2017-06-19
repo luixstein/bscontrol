@@ -1135,36 +1135,33 @@ Public Class Class_CatClientes
         Return bResultado
     End Function
 
-    'Public Function EstablecerCuentaContable() As Boolean
-    '    Dim bResultado As Boolean = False
-    '    Dim cmd As New SqlCommand
-    '    Dim sqlParametro As SqlParameter
-    '    With cmd
-    '        .Connection = Me._Conexion
-    '        .CommandTimeout = 0
-    '        .CommandType = CommandType.StoredProcedure
-    '        .CommandText = "MP_CAT_CLIENTES_CREA_CUENTA_CONTABLE"
+    Public Function ImportaClienteSucursal(ByVal sCodigoZona As String) As Boolean
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_CAT_CLIENTES_IMPORTA_CLIENTE_SUCURSAL"
 
-    '        sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_CLIENTE.ToUpper
-    '        sqlParametro = .Parameters.Add("@NOMBRE_CLIENTE", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._NOMBRE_CLIENTE.ToUpper
-    '        sqlParametro = .Parameters.Add("@CODIGO_TIPO_MERCADO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_TIPO_MERCADO.ToString.ToUpper
-    '        sqlParametro = .Parameters.Add("@PLAZA", SqlDbType.NVarChar, 3) : sqlParametro.Value = Usuario.Codigo_Plaza.ToString
-    '        sqlParametro = .Parameters.Add("@CUENTA_CONTABLE", SqlDbType.NVarChar, 20) : sqlParametro.Value = ""
+            sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_CLIENTE
+            sqlParametro = .Parameters.Add("@NOMBRE_CLIENTE", SqlDbType.SmallInt) : sqlParametro.Value = sCodigoZona
 
-    '        Try
-    '            Me._Conexion.Open()
-    '            .ExecuteNonQuery()
-    '            bResultado = True
-    '        Catch ex As Exception
-    '            HandleError(Me._Nombre_Catalogo, "EstablecerCuentaContable", ex)
-    '        Finally
-    '            Me._Conexion.Close()
-    '            cmd.Dispose()
-    '            sqlParametro = Nothing
-    '        End Try
-    '    End With
-    '    Return bResultado
-    'End Function
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, "ImportaClienteSucursal", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
+    End Function
 #End Region
 
 End Class
