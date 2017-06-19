@@ -86,7 +86,6 @@ Partial Public Class AppMenu
         Me.ListaDePreciosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.VendedoresToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ZonasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.PropietariosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PlazasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DocumentosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuContabilidad = New System.Windows.Forms.ToolStripMenuItem()
@@ -118,6 +117,7 @@ Partial Public Class AppMenu
         Me.MenuStrip = New System.Windows.Forms.MenuStrip()
         Me.VentasToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.DocumentosDeVentaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DevolucionesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CambioDePrecioRemisionToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem3 = New System.Windows.Forms.ToolStripSeparator()
         Me.ConsultaToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
@@ -216,11 +216,8 @@ Partial Public Class AppMenu
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
-<<<<<<< HEAD
-        Me.ImportarClientesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-=======
-        Me.DevolucionesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
->>>>>>> DevolucionesCXC
+        Me.PropietariosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ImportarClienteSucursalToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -605,7 +602,7 @@ Partial Public Class AppMenu
         '
         'VentasToolStripMenuItem
         '
-        Me.VentasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ClientesToolStripMenuItem1, Me.ListaDePreciosToolStripMenuItem, Me.VendedoresToolStripMenuItem1, Me.ZonasToolStripMenuItem, Me.PropietariosToolStripMenuItem})
+        Me.VentasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ClientesToolStripMenuItem1, Me.ImportarClienteSucursalToolStripMenuItem, Me.ListaDePreciosToolStripMenuItem, Me.VendedoresToolStripMenuItem1, Me.ZonasToolStripMenuItem, Me.PropietariosToolStripMenuItem})
         Me.VentasToolStripMenuItem.Name = "VentasToolStripMenuItem"
         Me.VentasToolStripMenuItem.Size = New System.Drawing.Size(178, 22)
         Me.VentasToolStripMenuItem.Text = "&Ventas"
@@ -634,12 +631,6 @@ Partial Public Class AppMenu
         Me.ZonasToolStripMenuItem.Size = New System.Drawing.Size(155, 22)
         Me.ZonasToolStripMenuItem.Text = "&Zonas"
         '
-        'PropietariosToolStripMenuItem
-        '
-        Me.PropietariosToolStripMenuItem.Name = "PropietariosToolStripMenuItem"
-        Me.PropietariosToolStripMenuItem.Size = New System.Drawing.Size(187, 26)
-        Me.PropietariosToolStripMenuItem.Text = "Propietarios"
-        '
         'PlazasToolStripMenuItem
         '
         Me.PlazasToolStripMenuItem.Name = "PlazasToolStripMenuItem"
@@ -649,11 +640,7 @@ Partial Public Class AppMenu
         'DocumentosToolStripMenuItem
         '
         Me.DocumentosToolStripMenuItem.Name = "DocumentosToolStripMenuItem"
-<<<<<<< HEAD
-        Me.DocumentosToolStripMenuItem.Size = New System.Drawing.Size(214, 26)
-=======
         Me.DocumentosToolStripMenuItem.Size = New System.Drawing.Size(178, 22)
->>>>>>> DevolucionesCXC
         Me.DocumentosToolStripMenuItem.Text = "Documentos"
         '
         'MenuContabilidad
@@ -851,6 +838,12 @@ Partial Public Class AppMenu
         Me.DocumentosDeVentaToolStripMenuItem.Name = "DocumentosDeVentaToolStripMenuItem"
         Me.DocumentosDeVentaToolStripMenuItem.Size = New System.Drawing.Size(230, 22)
         Me.DocumentosDeVentaToolStripMenuItem.Text = "Documentos de venta"
+        '
+        'DevolucionesToolStripMenuItem
+        '
+        Me.DevolucionesToolStripMenuItem.Name = "DevolucionesToolStripMenuItem"
+        Me.DevolucionesToolStripMenuItem.Size = New System.Drawing.Size(230, 22)
+        Me.DevolucionesToolStripMenuItem.Text = "Devoluciones"
         '
         'CambioDePrecioRemisionToolStripMenuItem
         '
@@ -1399,7 +1392,7 @@ Partial Public Class AppMenu
         '
         'UtileriasToolStripMenuItem
         '
-        Me.UtileriasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AdministracionToolStripMenuItem, Me.ConfiguraciónDeUsuariosToolStripMenuItem, Me.MonitoDeTimbradosToolStripMenuItem, Me.EmbarquesMasivosToolStripMenuItem, Me.ImportarClientesToolStripMenuItem})
+        Me.UtileriasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AdministracionToolStripMenuItem, Me.ConfiguraciónDeUsuariosToolStripMenuItem, Me.MonitoDeTimbradosToolStripMenuItem, Me.EmbarquesMasivosToolStripMenuItem})
         Me.UtileriasToolStripMenuItem.Name = "UtileriasToolStripMenuItem"
         Me.UtileriasToolStripMenuItem.Size = New System.Drawing.Size(61, 20)
         Me.UtileriasToolStripMenuItem.Text = "Utilerias"
@@ -1481,19 +1474,17 @@ Partial Public Class AppMenu
         Me.pbLogo.TabStop = False
         Me.pbLogo.Visible = False
         '
-<<<<<<< HEAD
-        'ImportarClientesToolStripMenuItem
+        'PropietariosToolStripMenuItem
         '
-        Me.ImportarClientesToolStripMenuItem.Name = "ImportarClientesToolStripMenuItem"
-        Me.ImportarClientesToolStripMenuItem.Size = New System.Drawing.Size(256, 26)
-        Me.ImportarClientesToolStripMenuItem.Text = "Importar clientes"
-=======
-        'DevolucionesToolStripMenuItem
+        Me.PropietariosToolStripMenuItem.Name = "PropietariosToolStripMenuItem"
+        Me.PropietariosToolStripMenuItem.Size = New System.Drawing.Size(155, 22)
+        Me.PropietariosToolStripMenuItem.Text = "&Propietarios"
         '
-        Me.DevolucionesToolStripMenuItem.Name = "DevolucionesToolStripMenuItem"
-        Me.DevolucionesToolStripMenuItem.Size = New System.Drawing.Size(230, 22)
-        Me.DevolucionesToolStripMenuItem.Text = "Devoluciones"
->>>>>>> DevolucionesCXC
+        'ImportarClienteSucursalToolStripMenuItem
+        '
+        Me.ImportarClienteSucursalToolStripMenuItem.Name = "ImportarClienteSucursalToolStripMenuItem"
+        Me.ImportarClienteSucursalToolStripMenuItem.Size = New System.Drawing.Size(204, 22)
+        Me.ImportarClienteSucursalToolStripMenuItem.Text = "Importar cliente sucursal"
         '
         'AppMenu
         '
@@ -1506,10 +1497,6 @@ Partial Public Class AppMenu
         Me.Controls.Add(Me.StatusStrip)
         Me.HelpProvider.SetHelpKeyword(Me, "F1")
         Me.IsMdiContainer = True
-<<<<<<< HEAD
-        Me.Margin = New System.Windows.Forms.Padding(4)
-=======
->>>>>>> DevolucionesCXC
         Me.Name = "AppMenu"
         Me.HelpProvider.SetShowHelp(Me, True)
         Me.Text = "AppMenu"
@@ -1719,10 +1706,7 @@ Partial Public Class AppMenu
     Friend WithEvents ListaDePreciosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ConceptosDePagosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents DocumentosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-<<<<<<< HEAD
-    Friend WithEvents PropietariosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ImportarClientesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-=======
     Friend WithEvents DevolucionesToolStripMenuItem As ToolStripMenuItem
->>>>>>> DevolucionesCXC
+    Friend WithEvents PropietariosToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ImportarClienteSucursalToolStripMenuItem As ToolStripMenuItem
 End Class

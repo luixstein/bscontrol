@@ -1484,8 +1484,6 @@ Public Class AppMenu
         Child.Show()
     End Sub
 
-    Private Sub PropietariosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PropietariosToolStripMenuItem.Click
-        Dim Child As New Catalogo_Propietarios
     Private Sub DevolucionesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DevolucionesToolStripMenuItem.Click
         Dim Child As New Frm_CXC_Devoluciones
         Child.MdiParent = Me
@@ -1494,7 +1492,15 @@ Public Class AppMenu
         Child.Show()
     End Sub
 
-    Private Sub ImportarClientesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImportarClientesToolStripMenuItem.Click
+    Private Sub PropietariosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PropietariosToolStripMenuItem.Click
+        Dim Child As New Catalogo_Propietarios
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ImportarClienteSucursalToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImportarClienteSucursalToolStripMenuItem.Click
         Dim Child As New ImportarClientes
         Child.MdiParent = Me
         m_ChildFormNumber += 1
