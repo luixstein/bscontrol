@@ -11,6 +11,7 @@ Public Class ImportarClientes
 #Region "Eventos de objetos"
     Private Sub ImportarClientes_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.DesplegarZonas()
+        Me.CboZonas.SelectedValue = Plaza.CODIGO_ZONA_PRINCIPAL
     End Sub
 
     Private Sub txt_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoClienteOrigen.KeyPress, CboZonas.KeyPress, BtnImportar.KeyPress
@@ -20,30 +21,30 @@ Public Class ImportarClientes
     Private Sub TxtCodigoClienteOrigen_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtCodigoClienteOrigen.KeyDown
         Dim oClientes As New Class_CatClientes
 
-        If e.KeyCode = Keys.F6 Then
+        Select Case e.KeyCode
+            Case Keys.F6
 Buscar:
-            Me.TxtCodigoClienteOrigen.Text = oClientes.BusquedaVisual_PorDescripcionFiltradoZona(Me.CboZonas.SelectedValue.ToString)
+                Me.TxtCodigoClienteOrigen.Text = oClientes.BusquedaVisual_PorDescripcionSinFiltroZona()
 
-            If txtLEN(Me.TxtCodigoClienteOrigen.Text) = True Then
-                Dim sql As New Class_find("SELECT NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE CODIGO_CLIENTE='" & Me.TxtCodigoClienteOrigen.Text & "'")
-                Me.LblNombreCliente.Text = sql.Result1.ToString
-            End If
-        End If
-
-        If e.KeyCode = Keys.Return Then
-            If txtLEN(Me.TxtCodigoClienteOrigen.Text) = True Then
-                oClientes.CODIGO_CLIENTE = Me.TxtCodigoClienteOrigen.Text
-
-                If oClientes.Consultar() = True Then
-                    Me.CboZonas.SelectedValue = oClientes.CODIGO_ZONA
-                    Me.LblNombreCliente.Text = oClientes.NOMBRE_CLIENTE
-                Else
-                    GoTo Buscar
+                If txtLEN(Me.TxtCodigoClienteOrigen.Text) = True Then
+                    Dim sql As New Class_find("SELECT NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE CODIGO_CLIENTE='" & Me.TxtCodigoClienteOrigen.Text & "'")
+                    Me.LblNombreCliente.Text = sql.Result1.ToString
                 End If
-            Else
-                Me.LblNombreCliente.Text = ""
-            End If
-        End If
+
+            Case Keys.Return
+                If txtLEN(Me.TxtCodigoClienteOrigen.Text) = True Then
+                    oClientes.CODIGO_CLIENTE = Me.TxtCodigoClienteOrigen.Text
+
+                    If oClientes.Consultar() = True Then
+                        Me.CboZonas.SelectedValue = oClientes.CODIGO_ZONA
+                        Me.LblNombreCliente.Text = oClientes.NOMBRE_CLIENTE
+                    Else
+                        GoTo Buscar
+                    End If
+                Else
+                    Me.LblNombreCliente.Text = ""
+                End If
+        End Select
 
         txtTAB(e)
 
@@ -84,7 +85,7 @@ Buscar:
                 Return False
             End If
 
-            bResultado = oCliente.ImportaClienteSucursal(Me.CboZonas.SelectedValue.ToString)
+            bResultado = oCliente.ImportaClienteSucursal(Me.TxtCodigoClienteOrigen.Text, Me.CboZonas.SelectedValue.ToString)
 
         Catch ex As Exception
             HandleError(Me.Name, "Importar", ex)
