@@ -950,14 +950,14 @@ Public Class Class_CatClientes
     Public Overrides Function BusquedaVisual_PorCodigo() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de clientes por codigo."
+        f.Text = "Búsqueda de clientes por código."
         f.sCampo = "CODIGO_CLIENTE"
         f.sOrder = "NOMBRE_CLIENTE"
         f.sTable = "CAT_CLIENTES"
         f.sQl = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE ESTATUS='A' AND "
 
         If Usuario.Codigo_Plaza <> 1 Then
-            f.sQl = f.sQl & " CODIGO_PLAZA ='" & Usuario.Codigo_Plaza.ToString & "' AND "
+            f.sQl = f.sQl & " PLAZA='" & Usuario.Codigo_Plaza.ToString & "' AND "
         End If
 
         f.Inicia("")
@@ -975,14 +975,14 @@ Public Class Class_CatClientes
     Public Overrides Function BusquedaVisual_PorDescripcion() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de clientes por Descripción."
+        f.Text = "Búsqueda de clientes por nombre."
         f.sCampo = "NOMBRE_CLIENTE"
         f.sOrder = "NOMBRE_CLIENTE"
         f.sTable = "CAT_CLIENTES"
         f.sQl = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE ESTATUS='A' AND "
 
         If Usuario.Codigo_Plaza <> 1 Then
-            f.sQl = f.sQl & " CODIGO_PLAZA ='" & Usuario.Codigo_Plaza.ToString & "' AND "
+            f.sQl = f.sQl & " PLAZA='" & Usuario.Codigo_Plaza.ToString & "' AND "
         End If
 
         f.Inicia("")
@@ -1026,7 +1026,7 @@ Public Class Class_CatClientes
     Public Function BusquedaVisual_PorDescripcionFiltradoZona(ByVal sCodigo_Zona As String) As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de clientes por Descripción."
+        f.Text = "Búsqueda de clientes por nombre."
         f.sCampo = "NOMBRE_CLIENTE"
         f.sOrder = "NOMBRE_CLIENTE"
         f.sTable = "CAT_CLIENTES"
@@ -1069,7 +1069,7 @@ Public Class Class_CatClientes
         Dim Resultado As String = "", sMercado As String = ""
 
         sMercado = sCodigo_Tipo_Mercado
-        f.Text = "Búsqueda de clientes por Descripción."
+        f.Text = "Búsqueda de clientes por nombre."
         f.sCampo = "NOMBRE_CLIENTE"
         f.sOrder = "NOMBRE_CLIENTE"
         f.sTable = "CAT_CLIENTES"
@@ -1077,7 +1077,7 @@ Public Class Class_CatClientes
             sMercado = " AND CODIGO_TIPO_MERCADO='" & sMercado & "' "
         End If
 
-        f.sQl = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE ESTATUS='A' " & sMercado & " AND CODIGO_ZONA=" & Usuario.Codigo_Plaza & " AND"
+        f.sQl = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE ESTATUS='A' " & sMercado & " AND PLAZA=" & Usuario.Codigo_Plaza & " AND"
 
         f.Inicia("")
         f.ShowDialog()
@@ -1099,7 +1099,7 @@ Public Class Class_CatClientes
 
             Dim CodigoCliente As New Class_find("SELECT CASE WHEN " & sCodigoTipoMercado & "='0001' THEN CODIGO_CLIENTES_EXPORTACION ELSE CODIGO_CLIENTES_NACIONAL END FROM SIS_PLAZAS WHERE CODIGO_PLAZA =" & Usuario.Codigo_Plaza.ToString)
             If txtLEN(CodigoCliente.Result1) = False Then
-                MsgBox("No se encontro el siguiente codigo de cliente.", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
+                MsgBox("No se encontró el siguiente código de cliente.", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
                 Exit Function
             End If
 

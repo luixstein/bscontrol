@@ -69,7 +69,7 @@ Enter:
                 oVendedor = New Class_CatVendedores(Me.txtVendedor.Text)
 
                 If oVendedor.Existe = True Then
-                    Me.txtVendedor.Text = oVendedor.NOMBRE_VENDEDOR
+                    Me.lblVendedor.Text = oVendedor.NOMBRE_VENDEDOR
                 Else
                     GoTo Buscar : Exit Sub
                 End If
