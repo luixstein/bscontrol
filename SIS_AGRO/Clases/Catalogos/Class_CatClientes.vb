@@ -1154,7 +1154,7 @@ Public Class Class_CatClientes
             .CommandText = "MP_CAT_CLIENTES_IMPORTA_CLIENTE_SUCURSAL"
 
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTE_ORIGEN", SqlDbType.NVarChar, 8) : sqlParametro.Value = ClienteOrigen
-            sqlParametro = .Parameters.Add("@CODIGO_ZONA_DESTINO", SqlDbType.SmallInt) : sqlParametro.Value = CodigoZonaDestino
+            sqlParametro = .Parameters.Add("@CODIGO_ZONA_DESTINO", SqlDbType.NVarChar, 4) : sqlParametro.Value = CodigoZonaDestino
 
             Try
                 Me._Conexion.Open()
