@@ -1,6 +1,7 @@
 ﻿Option Strict On
 
 Imports System.Data.SqlClient
+Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Class_CXC_Devoluciones_Global
 
@@ -563,6 +564,30 @@ Public Class Class_CXC_Devoluciones_Global
 
     Public Sub NuevoRenglon()
         Me.oDetalle = New Class_CXC_Devoluciones_Detalle
+    End Sub
+
+    Public Sub Imprimir()
+        Dim Rpt As New ReportDocument
+        Dim oReporte As Class_Reporte
+
+        Try
+            oReporte = New Class_Reporte(Me._Nombre_Formato, Rpt, False)
+
+            If Not oReporte.RptCargado Then
+                Exit Sub
+            End If
+
+            Rpt.SetParameterValue("@FOLIO_DESCUENTO", Me._FOLIO_DEVOLUCION)
+
+            Dim frm As New Reporte(Rpt)
+            frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
+            frm.Show()
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, "Imprimir", ex)
+        Finally
+            oReporte = Nothing
+        End Try
     End Sub
 
 #End Region

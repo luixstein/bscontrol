@@ -695,7 +695,12 @@ busca:
     End Function
 
     Private Sub Imprimir()
-        MsgBox("FALTA:Imprimir", vbExclamation)
+        Me.oDevolucion.Consultar()
+        'If txtLEN(Me.oDevolucion.FOLIO_FISCAL_SAT + Me.oDevolucion.FECHA_TIMBRADO_SAT + Me.oDevolucion.NUMERO_SERIE_CERTIFICADO_SAT + Me.oDevolucion.SELLO_SAT) = False AndAlso txtLEN(Me.oDevolucion.CBB_IMAGE.ToString) = False _
+        '    AndAlso Me.oDocumento.TIMBRA_DOCUMENTO = True Then
+        '    MsgBox("La devolución no esta timbrada.", MsgBoxStyle.Exclamation, "Advertencia")
+        'End If
+        Me.oDevolucion.Imprimir()
     End Sub
 
     Private Sub CalculaImporteDolares()
