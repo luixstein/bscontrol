@@ -1,8 +1,5 @@
 ﻿Option Strict On
 
-Imports CrystalDecisions.CrystalReports.Engine
-Imports CrystalDecisions.Shared
-
 Public Class Ventas_Movimientos
 
 #Region "Campos privados"
@@ -332,7 +329,7 @@ Buscar:
     Private Sub TxtFolioReferencia_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtReferencia.KeyDown
         Select Case e.KeyCode
             Case Keys.F6
-                Me.txtFolio.Text = Me.oVenta.BusquedaVisual_PorCodigo
+                Me.txtFolio.Text = Me.oVenta.BusquedaVisual_PorFolio
             Case Keys.Enter
                 If txtLEN(Me.TxtReferencia.Text) = True Then
                     Me.oVenta = New Class_Ventas_Global(Me.TxtReferencia.Text)
@@ -434,7 +431,7 @@ Buscar:
     Private Sub TxtFolio_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtFolio.KeyDown
         Select Case e.KeyCode
             Case Keys.F6
-                Me.txtFolio.Text = Me.oVenta.BusquedaVisual_PorCodigo
+                Me.txtFolio.Text = Me.oVenta.BusquedaVisual_PorFolio
             Case Keys.Enter
                 If Consultar() = False Then
                     Me.cboTipoNegociacion.Focus()
@@ -2401,7 +2398,7 @@ CANCELAR:
             If Me.oVenta.Existe = False Then
                 Me.Cambia_Estado(enumEstados.NUEVO)
                 Me.CboDocumento.Enabled = False
-                Exit Function
+                Return False
             Else
                 Me.DesplegarMetodosPago(False) 'Para forzar a que muestre todos incluso los que están dados de baja porque al consultarlos fallaria si no estuvieran.
 

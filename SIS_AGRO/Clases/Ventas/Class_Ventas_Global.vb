@@ -1,7 +1,5 @@
 ﻿Option Strict On
 
-Imports System.Drawing.Image
-Imports System.Data
 Imports System.Data.SqlClient
 Imports CrystalDecisions.CrystalReports.Engine
 Imports CrystalDecisions.Shared
@@ -9,8 +7,6 @@ Imports System.Net.Mail
 Imports System.Net.Security
 Imports System.Security.Cryptography.X509Certificates
 Imports System.Net
-Imports System.IO
-Imports System.Xml
 
 Public Class tPrecioVenta
     Public Precio As Decimal = 0
@@ -107,6 +103,7 @@ Public Class Class_Ventas_Global
     Private _FELECTRONICA_KEY As String
     Private _FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA As String
     Private _ES_FACTURA_EMBARQUE_EXTRANJERO As Boolean = False
+    Private _TIENE_SERIES As Boolean = False
 #End Region
 
 #Region "Campos públicos"
@@ -737,11 +734,19 @@ Public Class Class_Ventas_Global
             Return Me._FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA
         End Get
     End Property
+
     Public ReadOnly Property ES_FACTURA_EMBARQUE_EXTRANJERO() As Boolean
         Get
             Return Me._ES_FACTURA_EMBARQUE_EXTRANJERO
         End Get
     End Property
+
+    Public ReadOnly Property TIENE_SERIES() As Boolean
+        Get
+            Return Me._TIENE_SERIES
+        End Get
+    End Property
+
 #End Region
 
 #Region "Propiedades públicos"
@@ -770,17 +775,18 @@ Public Class Class_Ventas_Global
 
         Me._Conexion = New SqlConnection(Empresa_Sistema.conexion)
 
-        Me._QuerySelect = "SELECT G.* " & _
-            ",U1.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO,U2.NOMBRE_USUARIO NOMBRE_USUARIO_CANCELO,CFD.FELECTRONICA_CER,CFD.FELECTRONICA_KEY,CFD.CONTRASEÑA, " & _
-            "MP.NOMBRE_METODO_PAGO,RF.NOMBRE_REGIMEN_FISCAL,CFFE.SERIE," & _
-            "(SELECT MAX(FOLIO_EMBARQUE) FROM EMB_EMBARQUE_GLOBAL WHERE FOLIO_VENTA=G.FOLIO_VENTA) FOLIO_EMBARQUE,DOC.NOMBRE_FORMATO,DOC.ES_FACTURA_EMBARQUE_EXTRANJERO " & _
-            "FROM VENTA_GLOBAL G " & _
-            "INNER JOIN CFD_CAT_METODOS_PAGO MP ON(G.CODIGO_METODO_PAGO=MP.CODIGO_METODO_PAGO) " & _
-            "INNER JOIN CDF_CAT_TIPOS_REGIMENES_FISCALES RF ON(G.CODIGO_REGIMEN_FISCAL=RF.CODIGO_REGIMEN_FISCAL) " & _
-            "INNER JOIN SIS_USUARIOS U1 ON(G.CODIGO_USUARIO_GRABO=U1.CODIGO_USUARIO) " & _
-            "LEFT JOIN SIS_USUARIOS U2 ON(G.CODIGO_USUARIO_CANCELO=U2.CODIGO_USUARIO) " & _
-            "LEFT JOIN SIS_CFD_CATALOGO_CERTIFICADOS CFD ON(G.ID_SIS_CFD_CATALOGO_CERTIFICADOS=CFD.ID_SIS_CFD_CATALOGO_CERTIFICADOS) " & _
-            "LEFT JOIN CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS CFFE ON(G.IDCATALOGO_FOLIO_FELECTRONICA=CFFE.IDCATALOGO_FOLIO_FELECTRONICA)" & _
+        Me._QuerySelect = "SELECT G.* " &
+            ",U1.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO,U2.NOMBRE_USUARIO NOMBRE_USUARIO_CANCELO,CFD.FELECTRONICA_CER,CFD.FELECTRONICA_KEY,CFD.CONTRASEÑA, " &
+            "MP.NOMBRE_METODO_PAGO,RF.NOMBRE_REGIMEN_FISCAL,CFFE.SERIE," &
+            "(SELECT MAX(FOLIO_EMBARQUE) FROM EMB_EMBARQUE_GLOBAL WHERE FOLIO_VENTA=G.FOLIO_VENTA) FOLIO_EMBARQUE,DOC.NOMBRE_FORMATO,DOC.ES_FACTURA_EMBARQUE_EXTRANJERO, " &
+            "ISNULL((SELECT TOP 1 '1' FROM VENTA_DETALLE WHERE FOLIO_VENTA=G.FOLIO_VENTA AND LEN(LISTA_SERIES)>0),0) TIENE_SERIES " &
+            "FROM VENTA_GLOBAL G " &
+            "INNER JOIN CFD_CAT_METODOS_PAGO MP ON(G.CODIGO_METODO_PAGO=MP.CODIGO_METODO_PAGO) " &
+            "INNER JOIN CDF_CAT_TIPOS_REGIMENES_FISCALES RF ON(G.CODIGO_REGIMEN_FISCAL=RF.CODIGO_REGIMEN_FISCAL) " &
+            "INNER JOIN SIS_USUARIOS U1 ON(G.CODIGO_USUARIO_GRABO=U1.CODIGO_USUARIO) " &
+            "LEFT JOIN SIS_USUARIOS U2 ON(G.CODIGO_USUARIO_CANCELO=U2.CODIGO_USUARIO) " &
+            "LEFT JOIN SIS_CFD_CATALOGO_CERTIFICADOS CFD ON(G.ID_SIS_CFD_CATALOGO_CERTIFICADOS=CFD.ID_SIS_CFD_CATALOGO_CERTIFICADOS) " &
+            "LEFT JOIN CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS CFFE ON(G.IDCATALOGO_FOLIO_FELECTRONICA=CFFE.IDCATALOGO_FOLIO_FELECTRONICA)" &
             "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(G.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) "
 
         Me._QueryOrder = " ORDER BY G.FOLIO_VENTA"
@@ -1137,6 +1143,8 @@ Public Class Class_Ventas_Global
                     Me._IEPS_TOTAL_DESGLOSADO = CDbl(dReader("IEPS_TOTAL_DESGLOSADO"))
                     Me._IEPS_TOTAL_YA_INCLUIDO = CDbl(dReader("IEPS_TOTAL_YA_INCLUIDO"))
 
+                    Me._TIENE_SERIES = CBool(dReader("TIENE_SERIES"))
+
                     bResultado = True
                 End If
                 dReader.Close()
@@ -1303,14 +1311,14 @@ Public Class Class_Ventas_Global
         Return bResultado
     End Function
 
-    Public Function BusquedaVisual_PorCodigo() As String
+    Public Function BusquedaVisual_PorFolio() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de ventas por Código."
-        f.sCampo = "FOLIO_VENTA"
-        f.sOrder = "FECHA"
+        f.sCampo = "VG.FOLIO_VENTA"
+        f.sOrder = "VG.FECHA"
         f.sTable = "VENTA_GLOBAL"
-        f.sQl = "Select FOLIO_VENTA,FECHA,CODIGO_CLIENTE From VENTA_GLOBAL Where 1=1 AND CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND "
+        f.sQl = "SELECT VG.FOLIO_VENTA,CTE.NOMBRE_CLIENTE,VG.CODIGO_CLIENTE,DBO.FN_FORMAT_FECHA_CORTO(VG.FECHA) FECHA FROM VENTA_GLOBAL VG INNER JOIN CAT_CLIENTES CTE ON(VG.CODIGO_CLIENTE=CTE.CODIGO_CLIENTE) WHERE VG.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND "
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -1318,7 +1326,7 @@ Public Class Class_Ventas_Global
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             End If
         Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorCodigo", ex)
+            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorFolio", ex)
         End Try
         Return Resultado
     End Function
@@ -2146,6 +2154,32 @@ Public Class Class_Ventas_Global
             HandleError(Me.Nombre_Catalogo, sProcedure, ex)
         End Try
         Return oPrecioVenta
+    End Function
+
+    Public Function ObtenerDetalleDisponiblesParaDevolucion() As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String
+
+        Try
+
+            sSQL = "SELECT R.CODIGO_ARTICULO, " &
+            "CASE WHEN A.ES_SERIALIZABLE = '1' THEN 'SER' WHEN A.INVENTARIABLE= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO, " &
+            "R.DESCRIPCION,R.DISPONIBLE,R.PRECIO,R.PRECIO_TOTAL,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE," &
+            "R.IMPUESTO_IMPORTE,R.ID_VENTA_DETALLE," &
+            "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA " &
+            "FROM VENTA_DETALLE R " &
+            "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
+            "WHERE R.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' AND R.DISPONIBLE>0 " &
+            "ORDER BY R.ID_VENTA_DETALLE "
+
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtenerDetalleDisponiblesParaDevolucion", ex)
+        End Try
+        Return dTabla
     End Function
 #End Region
 

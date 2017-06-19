@@ -1235,6 +1235,21 @@ Module FacturacionElectronica
         Return bResultado
     End Function
 
+    Public Function GeneraCXCDevolucionElectronica(ByVal oDescuento As Class_CXC_Devoluciones_Global, ByVal bMostrarMensaje As Boolean, ByVal sRutaXML As String) As Boolean
+        Const sProcedure As String = "GeneraCXCDevolucionElectronica"
+        Dim bResultado As Boolean = False
+
+        Try
+            MsgBox("falta desarrollar..")
+        Catch ex As Exception
+            HandleError(_Nombre_Catalogo, sProcedure, ex)
+        Finally
+
+        End Try
+
+        Return bResultado
+    End Function
+
     Public Function fElectronicaValidaCampo(ByRef campo As String) As String
         fElectronicaValidaCampo = ""
         Try
