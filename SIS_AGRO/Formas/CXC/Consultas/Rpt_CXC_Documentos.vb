@@ -1,11 +1,9 @@
 ﻿Option Strict On
-Imports System.Data
-Imports System.Data.SqlClient
+
 Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Rpt_CXC_Documentos
     Private oClientes As New Class_CatClientes
-    'Private oZona As New Class_CatZonas
 
 #Region "Opciones"
 

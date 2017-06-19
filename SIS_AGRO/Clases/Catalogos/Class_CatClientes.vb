@@ -954,7 +954,11 @@ Public Class Class_CatClientes
         f.sCampo = "CODIGO_CLIENTE"
         f.sOrder = "NOMBRE_CLIENTE"
         f.sTable = "CAT_CLIENTES"
-        f.sQl = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE 1=1 AND ESTATUS='A' AND CODIGO_ZONA='" & Usuario.Codigo_Plaza.ToString & "' AND "
+        f.sQl = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE ESTATUS='A' AND "
+
+        If Usuario.Codigo_Plaza <> 1 Then
+            f.sQl = f.sQl & " CODIGO_PLAZA ='" & Usuario.Codigo_Plaza.ToString & "' AND "
+        End If
 
         f.Inicia("")
         f.ShowDialog()
@@ -975,7 +979,11 @@ Public Class Class_CatClientes
         f.sCampo = "NOMBRE_CLIENTE"
         f.sOrder = "NOMBRE_CLIENTE"
         f.sTable = "CAT_CLIENTES"
-        f.sQl = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE 1=1 AND ESTATUS='A' AND CODIGO_ZONA='" & Usuario.Codigo_Plaza.ToString & "' AND "
+        f.sQl = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE ESTATUS='A' AND "
+
+        If Usuario.Codigo_Plaza <> 1 Then
+            f.sQl = f.sQl & " CODIGO_PLAZA ='" & Usuario.Codigo_Plaza.ToString & "' AND "
+        End If
 
         f.Inicia("")
         f.ShowDialog()
@@ -1002,7 +1010,7 @@ Public Class Class_CatClientes
             sMercado = " AND CODIGO_TIPO_MERCADO='" & sMercado & "' "
         End If
 
-        f.sQl = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE 1=1 AND ESTATUS='A' " & sMercado & " AND"
+        f.sQl = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE ESTATUS='A' " & sMercado & " AND"
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -1022,7 +1030,7 @@ Public Class Class_CatClientes
         f.sCampo = "NOMBRE_CLIENTE"
         f.sOrder = "NOMBRE_CLIENTE"
         f.sTable = "CAT_CLIENTES"
-        f.sQl = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE 1=1 AND ESTATUS='A' AND CODIGO_ZONA='" & sCodigo_Zona & "' AND "
+        f.sQl = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE ESTATUS='A' AND CODIGO_ZONA='" & sCodigo_Zona & "' AND "
 
         f.Inicia("")
         f.ShowDialog()
@@ -1069,7 +1077,7 @@ Public Class Class_CatClientes
             sMercado = " AND CODIGO_TIPO_MERCADO='" & sMercado & "' "
         End If
 
-        f.sQl = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE 1=1 AND ESTATUS='A' " & sMercado & " AND CODIGO_ZONA=" & Usuario.Codigo_Plaza & " AND"
+        f.sQl = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE ESTATUS='A' " & sMercado & " AND CODIGO_ZONA=" & Usuario.Codigo_Plaza & " AND"
 
         f.Inicia("")
         f.ShowDialog()
@@ -1145,8 +1153,8 @@ Public Class Class_CatClientes
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_CLIENTES_IMPORTA_CLIENTE_SUCURSAL"
 
-            sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_CLIENTE
-            sqlParametro = .Parameters.Add("@NOMBRE_CLIENTE", SqlDbType.SmallInt) : sqlParametro.Value = sCodigoZona
+            sqlParametro = .Parameters.Add("@CODIGO_CLIENTE_ORIGEN", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._CODIGO_CLIENTE
+            sqlParametro = .Parameters.Add("@CODIGO_ZONA_DESTINO", SqlDbType.SmallInt) : sqlParametro.Value = sCodigoZona
 
             Try
                 Me._Conexion.Open()
