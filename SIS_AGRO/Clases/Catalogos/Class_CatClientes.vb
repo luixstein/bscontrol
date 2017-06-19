@@ -1143,7 +1143,7 @@ Public Class Class_CatClientes
         Return bResultado
     End Function
 
-    Public Function ImportaClienteSucursal(ByVal ClienteOrigen As String, ByVal CodigoZonaDestino As String) As Boolean
+    Public Function ImportaClienteSucursal(ByVal ClienteOrigen As String, ByVal CodigoZonaDestino As String, ByVal Vendedor As String) As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -1155,6 +1155,7 @@ Public Class Class_CatClientes
 
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTE_ORIGEN", SqlDbType.NVarChar, 8) : sqlParametro.Value = ClienteOrigen
             sqlParametro = .Parameters.Add("@CODIGO_ZONA_DESTINO", SqlDbType.NVarChar, 4) : sqlParametro.Value = CodigoZonaDestino
+            sqlParametro = .Parameters.Add("@CODIGO_VENDEDOR_DESTINO", SqlDbType.NVarChar, 3) : sqlParametro.Value = Vendedor
 
             Try
                 Me._Conexion.Open()

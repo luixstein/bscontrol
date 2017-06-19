@@ -16,6 +16,7 @@ Public Class Class_CatVendedores
 #End Region
 
 #Region "Campos ligados a la tabla"
+    Private _Existe As Boolean
     Private _GENERAR_CATEGORIA As Boolean
     Private _CODIGO_TIPO_CATEGORIA As String
 #End Region
@@ -89,6 +90,12 @@ Public Class Class_CatVendedores
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
+    Public ReadOnly Property Existe() As Boolean
+        Get
+            Return Me._Existe
+        End Get
+    End Property
+
     Public WriteOnly Property GENERAR_CATEGORIA() As Boolean
         Set(ByVal Value As Boolean)
             Me._GENERAR_CATEGORIA = Value
@@ -147,6 +154,20 @@ Public Class Class_CatVendedores
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         Me._QuerySelect = "Select CODIGO_VENDEDOR,NOMBRE_VENDEDOR From CAT_VENDEDORES"
         Me._QueryOrder = " Order by NOMBRE_VENDEDOR"
+    End Sub
+
+    Public Sub New(ByVal sCodigoVendedor As String)
+        Me.New()
+        Me._CODIGO_VENDEDOR = sCodigoVendedor
+        Try
+            If Me.Consultar = True Then
+                Me._Existe = True
+                'Else
+                '    Throw New Exception("El PRODUCTOR no existe.")
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "New", ex)
+        End Try
     End Sub
 
     Protected Overrides Sub Finalize()
@@ -285,11 +306,11 @@ Public Class Class_CatVendedores
     Public Overrides Function BusquedaVisual_PorCodigo() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de Metodos de Vendedores por codigo."
+        f.Text = "Búsqueda de vendedores por código."
         f.sCampo = "CODIGO_VENDEDOR"
         f.sOrder = "NOMBRE_VENDEDOR"
         f.sTable = "CAT_VENDEDORES"
-        f.sQl = "SELECT Id_Vendedor,NOMBRE_VENDEDOR FROM CAT_VENDEDORES WHERE 1=1 AND"
+        f.sQl = "SELECT CODIGO_VENDEDOR,NOMBRE_VENDEDOR FROM CAT_VENDEDORES WHERE 1=1 AND"
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -305,7 +326,7 @@ Public Class Class_CatVendedores
     Public Overrides Function BusquedaVisual_PorDescripcion() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de Metodos de Vendedores por Descripción."
+        f.Text = "Búsqueda de vendedores por nombre."
         f.sCampo = "NOMBRE_VENDEDOR"
         f.sOrder = "NOMBRE_VENDEDOR"
         f.sTable = "CAT_VENDEDORES"
