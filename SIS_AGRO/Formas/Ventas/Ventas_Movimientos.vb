@@ -1865,7 +1865,7 @@ CANCELAR:
                     If oArticulos.INVENTARIABLE = "1" Then
                         If txtLEN(oArticulos.CODIGO_CULTIVO) = False Then
                             If dExistencia <= 0 Then
-                                MsgBox("El artículo que intenta agregar no tiene existencia. ", MsgBoxStyle.Exclamation, sProcedure)
+                                MsgBox("El artículo " & Me.Grid.Cell(i, Me.igyDescripcion).Text & " no tiene existencia. ", MsgBoxStyle.Exclamation, sProcedure)
                                 Exit Function
                             Else
                                 dCantidadSumadaPorArticulos = valorNumerico(dt.Compute("sum(CANTIDAD)", "CODIGO_ARTICULO='" & Me.Grid.Cell(i, Me.igyCodigo).Text & "'").ToString)

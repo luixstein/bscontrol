@@ -34,6 +34,12 @@ Partial Class Sis_Documentos
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.TxtNombreFormato = New System.Windows.Forms.TextBox()
+        Me.TxtFolio = New System.Windows.Forms.TextBox()
+        Me.LblTipoDocumento = New System.Windows.Forms.Label()
+        Me.LblAsientoRepetitivo = New System.Windows.Forms.Label()
+        Me.LblConsecutivo = New System.Windows.Forms.Label()
+        Me.LblCodigoPlaza = New System.Windows.Forms.Label()
         Me.LblDisplayNombreFormato = New System.Windows.Forms.Label()
         Me.LblDisplayFolio = New System.Windows.Forms.Label()
         Me.LblDisplayAsientoRepetitivo = New System.Windows.Forms.Label()
@@ -51,12 +57,6 @@ Partial Class Sis_Documentos
         Me.Grid = New System.Windows.Forms.DataGridView()
         Me.txtFiltro = New System.Windows.Forms.TextBox()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
-        Me.LblCodigoPlaza = New System.Windows.Forms.Label()
-        Me.LblConsecutivo = New System.Windows.Forms.Label()
-        Me.LblAsientoRepetitivo = New System.Windows.Forms.Label()
-        Me.LblTipoDocumento = New System.Windows.Forms.Label()
-        Me.TxtFolio = New System.Windows.Forms.TextBox()
-        Me.TxtNombreFormato = New System.Windows.Forms.TextBox()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.gBoxInformacion.SuspendLayout()
@@ -71,7 +71,7 @@ Partial Class Sis_Documentos
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbEditar, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimirListado, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(869, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(914, 27)
         Me.tsMenu.TabIndex = 24
         Me.tsMenu.Text = "tsMenu"
         '
@@ -122,7 +122,7 @@ Partial Class Sis_Documentos
         Me.StatusStripEstado.Location = New System.Drawing.Point(0, 439)
         Me.StatusStripEstado.Name = "StatusStripEstado"
         Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
-        Me.StatusStripEstado.Size = New System.Drawing.Size(869, 25)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(914, 25)
         Me.StatusStripEstado.TabIndex = 25
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -164,6 +164,62 @@ Partial Class Sis_Documentos
         Me.gBoxInformacion.TabIndex = 23
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
+        '
+        'TxtNombreFormato
+        '
+        Me.TxtNombreFormato.Location = New System.Drawing.Point(11, 271)
+        Me.TxtNombreFormato.MaxLength = 100
+        Me.TxtNombreFormato.Name = "TxtNombreFormato"
+        Me.TxtNombreFormato.Size = New System.Drawing.Size(381, 22)
+        Me.TxtNombreFormato.TabIndex = 105
+        '
+        'TxtFolio
+        '
+        Me.TxtFolio.Location = New System.Drawing.Point(7, 217)
+        Me.TxtFolio.MaxLength = 16
+        Me.TxtFolio.Name = "TxtFolio"
+        Me.TxtFolio.Size = New System.Drawing.Size(229, 22)
+        Me.TxtFolio.TabIndex = 104
+        '
+        'LblTipoDocumento
+        '
+        Me.LblTipoDocumento.AutoSize = True
+        Me.LblTipoDocumento.Location = New System.Drawing.Point(189, 83)
+        Me.LblTipoDocumento.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblTipoDocumento.Name = "LblTipoDocumento"
+        Me.LblTipoDocumento.Size = New System.Drawing.Size(16, 17)
+        Me.LblTipoDocumento.TabIndex = 103
+        Me.LblTipoDocumento.Text = "_"
+        '
+        'LblAsientoRepetitivo
+        '
+        Me.LblAsientoRepetitivo.AutoSize = True
+        Me.LblAsientoRepetitivo.Location = New System.Drawing.Point(189, 165)
+        Me.LblAsientoRepetitivo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblAsientoRepetitivo.Name = "LblAsientoRepetitivo"
+        Me.LblAsientoRepetitivo.Size = New System.Drawing.Size(16, 17)
+        Me.LblAsientoRepetitivo.TabIndex = 102
+        Me.LblAsientoRepetitivo.Text = "_"
+        '
+        'LblConsecutivo
+        '
+        Me.LblConsecutivo.AutoSize = True
+        Me.LblConsecutivo.Location = New System.Drawing.Point(189, 139)
+        Me.LblConsecutivo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblConsecutivo.Name = "LblConsecutivo"
+        Me.LblConsecutivo.Size = New System.Drawing.Size(16, 17)
+        Me.LblConsecutivo.TabIndex = 101
+        Me.LblConsecutivo.Text = "_"
+        '
+        'LblCodigoPlaza
+        '
+        Me.LblCodigoPlaza.AutoSize = True
+        Me.LblCodigoPlaza.Location = New System.Drawing.Point(189, 111)
+        Me.LblCodigoPlaza.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblCodigoPlaza.Name = "LblCodigoPlaza"
+        Me.LblCodigoPlaza.Size = New System.Drawing.Size(16, 17)
+        Me.LblCodigoPlaza.TabIndex = 100
+        Me.LblCodigoPlaza.Text = "_"
         '
         'LblDisplayNombreFormato
         '
@@ -284,7 +340,7 @@ Partial Class Sis_Documentos
         Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
         Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
-        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(419, 395)
+        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(462, 395)
         Me.gBoxBusquedaRapida.TabIndex = 22
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
@@ -294,7 +350,7 @@ Partial Class Sis_Documentos
         Me.CboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatusFiltro.FormattingEnabled = True
         Me.CboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
-        Me.CboEstatusFiltro.Location = New System.Drawing.Point(330, 23)
+        Me.CboEstatusFiltro.Location = New System.Drawing.Point(373, 23)
         Me.CboEstatusFiltro.Name = "CboEstatusFiltro"
         Me.CboEstatusFiltro.Size = New System.Drawing.Size(78, 24)
         Me.CboEstatusFiltro.TabIndex = 116
@@ -302,7 +358,7 @@ Partial Class Sis_Documentos
         'LblEstatusFiltro
         '
         Me.LblEstatusFiltro.AutoSize = True
-        Me.LblEstatusFiltro.Location = New System.Drawing.Point(260, 26)
+        Me.LblEstatusFiltro.Location = New System.Drawing.Point(304, 26)
         Me.LblEstatusFiltro.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblEstatusFiltro.Name = "LblEstatusFiltro"
         Me.LblEstatusFiltro.Size = New System.Drawing.Size(63, 17)
@@ -322,7 +378,7 @@ Partial Class Sis_Documentos
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
         Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(401, 334)
+        Me.Grid.Size = New System.Drawing.Size(446, 334)
         Me.Grid.TabIndex = 115
         '
         'txtFiltro
@@ -332,74 +388,18 @@ Partial Class Sis_Documentos
         Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
         Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.Name = "txtFiltro"
-        Me.txtFiltro.Size = New System.Drawing.Size(244, 22)
+        Me.txtFiltro.Size = New System.Drawing.Size(287, 22)
         Me.txtFiltro.TabIndex = 0
         '
         'ErrorProvider
         '
         Me.ErrorProvider.ContainerControl = Me
         '
-        'LblCodigoPlaza
-        '
-        Me.LblCodigoPlaza.AutoSize = True
-        Me.LblCodigoPlaza.Location = New System.Drawing.Point(189, 111)
-        Me.LblCodigoPlaza.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblCodigoPlaza.Name = "LblCodigoPlaza"
-        Me.LblCodigoPlaza.Size = New System.Drawing.Size(16, 17)
-        Me.LblCodigoPlaza.TabIndex = 100
-        Me.LblCodigoPlaza.Text = "_"
-        '
-        'LblConsecutivo
-        '
-        Me.LblConsecutivo.AutoSize = True
-        Me.LblConsecutivo.Location = New System.Drawing.Point(189, 139)
-        Me.LblConsecutivo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblConsecutivo.Name = "LblConsecutivo"
-        Me.LblConsecutivo.Size = New System.Drawing.Size(16, 17)
-        Me.LblConsecutivo.TabIndex = 101
-        Me.LblConsecutivo.Text = "_"
-        '
-        'LblAsientoRepetitivo
-        '
-        Me.LblAsientoRepetitivo.AutoSize = True
-        Me.LblAsientoRepetitivo.Location = New System.Drawing.Point(189, 165)
-        Me.LblAsientoRepetitivo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblAsientoRepetitivo.Name = "LblAsientoRepetitivo"
-        Me.LblAsientoRepetitivo.Size = New System.Drawing.Size(16, 17)
-        Me.LblAsientoRepetitivo.TabIndex = 102
-        Me.LblAsientoRepetitivo.Text = "_"
-        '
-        'LblTipoDocumento
-        '
-        Me.LblTipoDocumento.AutoSize = True
-        Me.LblTipoDocumento.Location = New System.Drawing.Point(189, 83)
-        Me.LblTipoDocumento.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblTipoDocumento.Name = "LblTipoDocumento"
-        Me.LblTipoDocumento.Size = New System.Drawing.Size(16, 17)
-        Me.LblTipoDocumento.TabIndex = 103
-        Me.LblTipoDocumento.Text = "_"
-        '
-        'TxtFolio
-        '
-        Me.TxtFolio.Location = New System.Drawing.Point(7, 217)
-        Me.TxtFolio.MaxLength = 16
-        Me.TxtFolio.Name = "TxtFolio"
-        Me.TxtFolio.Size = New System.Drawing.Size(229, 22)
-        Me.TxtFolio.TabIndex = 104
-        '
-        'TxtNombreFormato
-        '
-        Me.TxtNombreFormato.Location = New System.Drawing.Point(11, 271)
-        Me.TxtNombreFormato.MaxLength = 100
-        Me.TxtNombreFormato.Name = "TxtNombreFormato"
-        Me.TxtNombreFormato.Size = New System.Drawing.Size(381, 22)
-        Me.TxtNombreFormato.TabIndex = 105
-        '
-        'Sis_Tipos_Documentos
+        'Sis_Documentos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(869, 464)
+        Me.ClientSize = New System.Drawing.Size(914, 464)
         Me.Controls.Add(Me.tsMenu)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.gBoxInformacion)
@@ -407,7 +407,7 @@ Partial Class Sis_Documentos
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
-        Me.Name = "Sis_Tipos_Documentos"
+        Me.Name = "Sis_Documentos"
         Me.ShowIcon = False
         Me.Text = "Catálogo etiquetas"
         Me.tsMenu.ResumeLayout(False)
