@@ -214,7 +214,9 @@ Public Class Class_SisTiposDocumentos
 
     Public Function ObtenerElementosFiltro(ByVal Filtro As String, ByVal Estatus As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("SELECT CODIGO_DOCUMENTO FROM SIS_CAT_DOCUMENTOS WHERE CODIGO_DOCUMENTO LIKE '" & Filtro.ToString & "%' AND ESTATUS_DOCUMENTO='" & Estatus & "' ORDER BY CODIGO_DOCUMENTO", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT T.CODIGO_MODULO,D.CODIGO_DOCUMENTO, (T.NOMBRE_TIPO_DOCUMENTO+ ' ' + (SELECT NOMBRE_PLAZA FROM SIS_PLAZAS WHERE CODIGO_PLAZA=D.CODIGO_PLAZA)) AS NOMBRE_DOCUMENTO " & _
+                                     "FROM SIS_CAT_DOCUMENTOS D INNER JOIN SIS_TIPOS_DOCUMENTOS T ON(D.CODIGO_TIPO_DOCUMENTO=T.CODIGO_TIPO_DOCUMENTO) " & _
+                                     "WHERE CODIGO_DOCUMENTO LIKE '" & Filtro.ToString & "%' AND ESTATUS_DOCUMENTO='" & Estatus & "' ORDER BY CODIGO_DOCUMENTO", Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception

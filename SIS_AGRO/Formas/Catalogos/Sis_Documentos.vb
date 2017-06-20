@@ -188,7 +188,9 @@ Public Class Sis_Documentos
     Private Sub DesplegarElementos()
         With Me.Grid
             .DataSource = oTiposDocumentos.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.CboEstatusFiltro.Text)
-            .Columns("CODIGO_DOCUMENTO").Width = 200
+            .Columns("CODIGO_MODULO").Width = 50
+            .Columns("CODIGO_DOCUMENTO").Width = 50
+            .Columns("NOMBRE_DOCUMENTO").Width = 200
         End With
 
     End Sub
