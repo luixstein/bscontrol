@@ -3300,6 +3300,13 @@ busca_serie:
         Return bResultado
     End Function
 
+    Private Sub Ventas_Movimientos_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
+        ''If e.KeyCode = Keys.A  AndAlso (e.Control) Then
+        'If e.Alt = True AndAlso e.Control = True AndAlso e.Shift = True AndAlso e.KeyCode = Keys.A Then
+        '    MsgBox("eale")
+        'End If
+    End Sub
+
 #End Region
 
 End Class

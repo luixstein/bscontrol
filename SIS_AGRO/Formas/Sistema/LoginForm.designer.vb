@@ -42,6 +42,7 @@ Partial Public Class LoginForm
         Me.Label1 = New System.Windows.Forms.Label()
         Me.txtRFC = New System.Windows.Forms.TextBox()
         Me.lblDisplayRFC = New System.Windows.Forms.Label()
+        Me.lblVersion = New System.Windows.Forms.Label()
         Me.GpbCentro.SuspendLayout()
         CType(Me.LogoPictureBox, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -186,12 +187,23 @@ Partial Public Class LoginForm
         Me.lblDisplayRFC.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.lblDisplayRFC.Visible = False
         '
+        'lblVersion
+        '
+        Me.lblVersion.AutoSize = True
+        Me.lblVersion.Location = New System.Drawing.Point(12, 181)
+        Me.lblVersion.Name = "lblVersion"
+        Me.lblVersion.Size = New System.Drawing.Size(42, 13)
+        Me.lblVersion.TabIndex = 15
+        Me.lblVersion.Text = "Versión"
+        Me.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'LoginForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.ControlLightLight
         Me.ClientSize = New System.Drawing.Size(402, 203)
+        Me.Controls.Add(Me.lblVersion)
         Me.Controls.Add(Me.txtRFC)
         Me.Controls.Add(Me.lblDisplayRFC)
         Me.Controls.Add(Me.CboUsuarios)
@@ -206,6 +218,7 @@ Partial Public Class LoginForm
         Me.Controls.Add(Me.LogoPictureBox)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.KeyPreview = True
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "LoginForm"
@@ -226,5 +239,5 @@ Partial Public Class LoginForm
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents txtRFC As System.Windows.Forms.TextBox
     Friend WithEvents lblDisplayRFC As System.Windows.Forms.Label
-
+    Friend WithEvents lblVersion As Label
 End Class

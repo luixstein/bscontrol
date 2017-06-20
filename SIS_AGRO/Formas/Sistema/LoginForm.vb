@@ -189,6 +189,8 @@ Public Class LoginForm
 
     Private Sub LoginForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
+            Me.lblVersion.Text = "Versión exe : " & My.Application.Info.Version.Revision
+
             If isSistemaValidaConfiguracionRegional() = False Then
                 End
             End If
@@ -403,6 +405,19 @@ Public Class LoginForm
         Catch ex As Exception
             HandleError(Me.Name, "DespliegaUsuarios", ex)
         End Try
+    End Sub
+
+    Private Sub LoginForm_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
+        If e.Alt = True AndAlso e.Control = True AndAlso e.Shift = True Then
+            Select Case e.KeyCode
+                Case Keys.A
+                    Me.txtRFC.Text = "ATL140226IQ6"
+                Case Keys.S
+                    Me.txtRFC.Text = "PSIN0507192F3"
+                Case Keys.L
+                    Me.txtRFC.Text = "LEL680425AJ7"
+            End Select
+        End If
     End Sub
 
 #End Region
