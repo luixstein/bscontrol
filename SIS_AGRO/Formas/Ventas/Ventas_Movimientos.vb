@@ -252,7 +252,7 @@ Public Class Ventas_Movimientos
         Select Case e.KeyCode
             Case Keys.F6
 Buscar:
-                sText = Me.oCliente.BusquedaVisual_PorDescripcion
+                sText = Me.oCliente.BusquedaVisualPlaza
                 If txtLEN(sText) = True Then Me.TxtCliente.Text = sText
             Case Keys.Enter
                 If txtLEN(Me.TxtCliente.Text) = False Then
