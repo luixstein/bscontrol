@@ -577,7 +577,7 @@ Public Class Class_CXC_Devoluciones_Global
                 Exit Sub
             End If
 
-            Rpt.SetParameterValue("@FOLIO_DESCUENTO", Me._FOLIO_DEVOLUCION)
+            Rpt.SetParameterValue("@FOLIO_DEVOLUCION", Me._FOLIO_DEVOLUCION)
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
