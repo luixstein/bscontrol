@@ -1,4 +1,6 @@
-﻿Imports CrystalDecisions.CrystalReports.Engine
+﻿Option Strict On
+
+Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Rpt_Ventas_Global
 
@@ -139,12 +141,12 @@ Buscar:
         Me.DesplegarZonas()
 
         Me.CboEstatus.SelectedValue = "A"
-        Me.DtFechaDesde.Value = Format(Date.Now, "01-MM-yyyy")
+        Me.DtFechaDesde.Value = FechaActualINI()
         Me.DtFechaHasta.Value = Date.Now
     End Sub
 
     Private Sub tsbConsultar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbConsultar.Click
-        Consultar()
+        Me.Consultar()
     End Sub
 
     'Private Sub Consultar()
@@ -171,8 +173,7 @@ Buscar:
 
     Private Sub Consultar()
         Dim FormatoDeReporte As String = ""
-        Dim Rpt As ReportDocument
-        Rpt = New ReportDocument
+        Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
         Try
 
@@ -221,7 +222,8 @@ Buscar:
             Me.DtFechaDesde.Focus()
             Exit Function
         End If
-        ValidarPeriodo = True
+
+        Return True
     End Function
 
     Private Sub TxtCodArticulo_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles DtFechaHasta.KeyPress, DtFechaDesde.KeyPress

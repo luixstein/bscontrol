@@ -659,7 +659,7 @@ Public Class Rpt_Ventas_TopTenProductos
         Select Case e.KeyCode
             Case Keys.F6
 Buscar:
-                sText = Me.oClientes.BusquedaVisual_PorDescripcionZona(IIf(Me.CboZona.SelectedValue.ToString <> "T", Me.CboZona.SelectedValue.ToString, "").ToString)
+                sText = Me.oClientes.BusquedaVisual_PorDescripcion
                 If txtLEN(sText) = True Then Me.TxtCliente.Text = sText
             Case Keys.Enter
                 If txtLEN(Me.TxtCliente.Text) = False Then

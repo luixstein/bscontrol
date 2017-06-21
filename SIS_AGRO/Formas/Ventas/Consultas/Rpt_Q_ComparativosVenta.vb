@@ -1,5 +1,5 @@
-﻿Imports System.Data
-Imports System.Data.SqlClient
+﻿Option Strict On
+
 Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Rpt_Q_ComparativosVenta
@@ -105,8 +105,7 @@ Public Class Rpt_Q_ComparativosVenta
 
     Private Sub Imprimir()
         Dim FormatoDeReporte As String = ""
-        Dim Rpt As ReportDocument
-        Rpt = New ReportDocument
+        Dim Rpt As New ReportDocument
         Dim oReporte As New Class_Reporte
         Try
             If txtLEN(Me.TxtCliente.Text) = True Then
@@ -157,7 +156,7 @@ Public Class Rpt_Q_ComparativosVenta
         Select Case e.KeyCode
             Case Keys.F6
 Buscar:
-                sText = Me.oClientes.BusquedaVisual_PorDescripcionZona(Me.CboZona.SelectedValue)
+                sText = Me.oClientes.BusquedaVisual_PorDescripcion
                 If txtLEN(sText) = True Then Me.TxtCliente.Text = sText
             Case Keys.Enter
                 If txtLEN(Me.TxtCliente.Text) = False Then

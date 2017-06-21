@@ -1,4 +1,6 @@
-﻿Imports CrystalDecisions.CrystalReports.Engine
+﻿Option Strict On
+
+Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Rpt_Ventas_ProductosVendidos
 
@@ -181,7 +183,7 @@ Buscar:
         Me.DesplegarFamilias()
         Me.DesplegarCultivos()
 
-        Me.DtFechaDesde.Value = Format(Date.Now, "01-MM-yyyy")
+        Me.DtFechaDesde.Value = FechaActualINI()
         Me.DtFechaHasta.Value = Date.Now
     End Sub
 

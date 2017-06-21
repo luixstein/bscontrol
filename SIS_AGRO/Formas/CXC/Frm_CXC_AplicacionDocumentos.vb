@@ -1,5 +1,4 @@
 ﻿Option Strict On
-Imports System.Data.SqlClient
 
 Public Class Frm_CXC_AplicacionDocumentos
 

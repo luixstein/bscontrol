@@ -23,27 +23,27 @@ Partial Class Rpt_Q_ComparativosVenta
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Rpt_Q_ComparativosVenta))
-        Me.ToolStrip2 = New System.Windows.Forms.ToolStrip
-        Me.tsbImprimir = New System.Windows.Forms.ToolStripButton
-        Me.tsbSalir = New System.Windows.Forms.ToolStripButton
-        Me.lblDisplayCultivo = New System.Windows.Forms.Label
-        Me.cboCultivo = New System.Windows.Forms.ComboBox
-        Me.lblDisplayCliente = New System.Windows.Forms.Label
-        Me.TxtCliente = New System.Windows.Forms.TextBox
-        Me.lblNombreCliente = New System.Windows.Forms.Label
-        Me.txtTipoCambio = New System.Windows.Forms.TextBox
-        Me.lblTipoCambio = New System.Windows.Forms.Label
-        Me.lblDisplayZona = New System.Windows.Forms.Label
-        Me.CboZona = New System.Windows.Forms.ComboBox
-        Me.gbFiltros = New System.Windows.Forms.GroupBox
-        Me.cboPrecentacion = New System.Windows.Forms.ComboBox
-        Me.lblDisplayPrecentacion = New System.Windows.Forms.Label
-        Me.cboMostrar = New System.Windows.Forms.ComboBox
-        Me.lblDisplayMostrar = New System.Windows.Forms.Label
-        Me.cboTemporada = New System.Windows.Forms.ComboBox
-        Me.lblDisplayTemporada = New System.Windows.Forms.Label
-        Me.cboMercado = New System.Windows.Forms.ComboBox
-        Me.LblDisplayMercado = New System.Windows.Forms.Label
+        Me.ToolStrip2 = New System.Windows.Forms.ToolStrip()
+        Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
+        Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
+        Me.lblDisplayCultivo = New System.Windows.Forms.Label()
+        Me.cboCultivo = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayCliente = New System.Windows.Forms.Label()
+        Me.TxtCliente = New System.Windows.Forms.TextBox()
+        Me.lblNombreCliente = New System.Windows.Forms.Label()
+        Me.txtTipoCambio = New System.Windows.Forms.TextBox()
+        Me.lblTipoCambio = New System.Windows.Forms.Label()
+        Me.lblDisplayZona = New System.Windows.Forms.Label()
+        Me.CboZona = New System.Windows.Forms.ComboBox()
+        Me.gbFiltros = New System.Windows.Forms.GroupBox()
+        Me.cboMercado = New System.Windows.Forms.ComboBox()
+        Me.LblDisplayMercado = New System.Windows.Forms.Label()
+        Me.cboPrecentacion = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayPresentacion = New System.Windows.Forms.Label()
+        Me.cboMostrar = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayMostrar = New System.Windows.Forms.Label()
+        Me.cboTemporada = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayTemporada = New System.Windows.Forms.Label()
         Me.ToolStrip2.SuspendLayout()
         Me.gbFiltros.SuspendLayout()
         Me.SuspendLayout()
@@ -95,7 +95,7 @@ Partial Class Rpt_Q_ComparativosVenta
         'lblDisplayCliente
         '
         Me.lblDisplayCliente.AutoSize = True
-        Me.lblDisplayCliente.Location = New System.Drawing.Point(7, 164)
+        Me.lblDisplayCliente.Location = New System.Drawing.Point(8, 164)
         Me.lblDisplayCliente.Name = "lblDisplayCliente"
         Me.lblDisplayCliente.Size = New System.Drawing.Size(45, 13)
         Me.lblDisplayCliente.TabIndex = 358
@@ -130,7 +130,7 @@ Partial Class Rpt_Q_ComparativosVenta
         'lblTipoCambio
         '
         Me.lblTipoCambio.AutoSize = True
-        Me.lblTipoCambio.Location = New System.Drawing.Point(6, 210)
+        Me.lblTipoCambio.Location = New System.Drawing.Point(8, 210)
         Me.lblTipoCambio.Name = "lblTipoCambio"
         Me.lblTipoCambio.Size = New System.Drawing.Size(71, 13)
         Me.lblTipoCambio.TabIndex = 368
@@ -159,7 +159,7 @@ Partial Class Rpt_Q_ComparativosVenta
         Me.gbFiltros.Controls.Add(Me.cboMercado)
         Me.gbFiltros.Controls.Add(Me.LblDisplayMercado)
         Me.gbFiltros.Controls.Add(Me.cboPrecentacion)
-        Me.gbFiltros.Controls.Add(Me.lblDisplayPrecentacion)
+        Me.gbFiltros.Controls.Add(Me.lblDisplayPresentacion)
         Me.gbFiltros.Controls.Add(Me.cboMostrar)
         Me.gbFiltros.Controls.Add(Me.lblDisplayMostrar)
         Me.gbFiltros.Controls.Add(Me.cboTemporada)
@@ -180,6 +180,24 @@ Partial Class Rpt_Q_ComparativosVenta
         Me.gbFiltros.TabStop = False
         Me.gbFiltros.Text = "Filtros"
         '
+        'cboMercado
+        '
+        Me.cboMercado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboMercado.FormattingEnabled = True
+        Me.cboMercado.Location = New System.Drawing.Point(86, 127)
+        Me.cboMercado.Name = "cboMercado"
+        Me.cboMercado.Size = New System.Drawing.Size(157, 21)
+        Me.cboMercado.TabIndex = 4
+        '
+        'LblDisplayMercado
+        '
+        Me.LblDisplayMercado.AutoSize = True
+        Me.LblDisplayMercado.Location = New System.Drawing.Point(8, 131)
+        Me.LblDisplayMercado.Name = "LblDisplayMercado"
+        Me.LblDisplayMercado.Size = New System.Drawing.Size(55, 13)
+        Me.LblDisplayMercado.TabIndex = 380
+        Me.LblDisplayMercado.Text = "Mercado :"
+        '
         'cboPrecentacion
         '
         Me.cboPrecentacion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
@@ -189,14 +207,14 @@ Partial Class Rpt_Q_ComparativosVenta
         Me.cboPrecentacion.Size = New System.Drawing.Size(157, 21)
         Me.cboPrecentacion.TabIndex = 2
         '
-        'lblDisplayPrecentacion
+        'lblDisplayPresentacion
         '
-        Me.lblDisplayPrecentacion.AutoSize = True
-        Me.lblDisplayPrecentacion.Location = New System.Drawing.Point(8, 77)
-        Me.lblDisplayPrecentacion.Name = "lblDisplayPrecentacion"
-        Me.lblDisplayPrecentacion.Size = New System.Drawing.Size(76, 13)
-        Me.lblDisplayPrecentacion.TabIndex = 378
-        Me.lblDisplayPrecentacion.Text = "Precentación :"
+        Me.lblDisplayPresentacion.AutoSize = True
+        Me.lblDisplayPresentacion.Location = New System.Drawing.Point(8, 77)
+        Me.lblDisplayPresentacion.Name = "lblDisplayPresentacion"
+        Me.lblDisplayPresentacion.Size = New System.Drawing.Size(75, 13)
+        Me.lblDisplayPresentacion.TabIndex = 378
+        Me.lblDisplayPresentacion.Text = "Presentación :"
         '
         'cboMostrar
         '
@@ -232,29 +250,11 @@ Partial Class Rpt_Q_ComparativosVenta
         'lblDisplayTemporada
         '
         Me.lblDisplayTemporada.AutoSize = True
-        Me.lblDisplayTemporada.Location = New System.Drawing.Point(7, 23)
+        Me.lblDisplayTemporada.Location = New System.Drawing.Point(8, 23)
         Me.lblDisplayTemporada.Name = "lblDisplayTemporada"
         Me.lblDisplayTemporada.Size = New System.Drawing.Size(67, 13)
         Me.lblDisplayTemporada.TabIndex = 374
         Me.lblDisplayTemporada.Text = "Temporada :"
-        '
-        'cboMercado
-        '
-        Me.cboMercado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboMercado.FormattingEnabled = True
-        Me.cboMercado.Location = New System.Drawing.Point(86, 127)
-        Me.cboMercado.Name = "cboMercado"
-        Me.cboMercado.Size = New System.Drawing.Size(157, 21)
-        Me.cboMercado.TabIndex = 4
-        '
-        'LblDisplayMercado
-        '
-        Me.LblDisplayMercado.AutoSize = True
-        Me.LblDisplayMercado.Location = New System.Drawing.Point(8, 131)
-        Me.LblDisplayMercado.Name = "LblDisplayMercado"
-        Me.LblDisplayMercado.Size = New System.Drawing.Size(55, 13)
-        Me.LblDisplayMercado.TabIndex = 380
-        Me.LblDisplayMercado.Text = "Mercado :"
         '
         'Rpt_Q_ComparativosVenta
         '
@@ -294,7 +294,7 @@ Partial Class Rpt_Q_ComparativosVenta
     Friend WithEvents cboMostrar As System.Windows.Forms.ComboBox
     Friend WithEvents lblDisplayMostrar As System.Windows.Forms.Label
     Friend WithEvents cboPrecentacion As System.Windows.Forms.ComboBox
-    Friend WithEvents lblDisplayPrecentacion As System.Windows.Forms.Label
+    Friend WithEvents lblDisplayPresentacion As System.Windows.Forms.Label
     Friend WithEvents cboMercado As System.Windows.Forms.ComboBox
     Friend WithEvents LblDisplayMercado As System.Windows.Forms.Label
 End Class
