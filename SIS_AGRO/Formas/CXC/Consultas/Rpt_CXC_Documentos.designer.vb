@@ -23,36 +23,39 @@ Partial Class Rpt_CXC_Documentos
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Rpt_CXC_Documentos))
-        Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
-        Me.tsbImprimir = New System.Windows.Forms.ToolStripButton
-        Me.tsbSalir = New System.Windows.Forms.ToolStripButton
-        Me.lblNombreVendedor = New System.Windows.Forms.Label
-        Me.lblDisplayVendedor = New System.Windows.Forms.Label
-        Me.txtCodigoVendedor = New System.Windows.Forms.TextBox
-        Me.lblNombreCliente = New System.Windows.Forms.Label
-        Me.lblDisplayCliente = New System.Windows.Forms.Label
-        Me.txtCodigoCliente = New System.Windows.Forms.TextBox
-        Me.LblDisplayDocumento = New System.Windows.Forms.Label
-        Me.CboDocumentos = New System.Windows.Forms.ComboBox
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.CboZona = New System.Windows.Forms.ComboBox
-        Me.lblDisplayZona = New System.Windows.Forms.Label
-        Me.lblCuentaBancaria = New System.Windows.Forms.Label
-        Me.txtCuentaBancaria = New System.Windows.Forms.TextBox
-        Me.lblDisplayCuentaBancaria = New System.Windows.Forms.Label
-        Me.LblDisplayFechaFinal = New System.Windows.Forms.Label
-        Me.lblDisplayFechaInicio = New System.Windows.Forms.Label
-        Me.lblDisplayEstatus = New System.Windows.Forms.Label
-        Me.CboEstatus = New System.Windows.Forms.ComboBox
-        Me.dpFechaFinal = New System.Windows.Forms.DateTimePicker
-        Me.dpFechaInicio = New System.Windows.Forms.DateTimePicker
-        Me.LblDisplayTipoMercado = New System.Windows.Forms.Label
-        Me.CboTipoMercado = New System.Windows.Forms.ComboBox
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.RdbDetalleDepositos = New System.Windows.Forms.RadioButton
-        Me.RdbDetalleCXC = New System.Windows.Forms.RadioButton
-        Me.RdbGlobalCXC = New System.Windows.Forms.RadioButton
-        Me.rdbDetalleBultos = New System.Windows.Forms.RadioButton
+        Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
+        Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
+        Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
+        Me.lblNombreVendedor = New System.Windows.Forms.Label()
+        Me.lblDisplayVendedor = New System.Windows.Forms.Label()
+        Me.txtCodigoVendedor = New System.Windows.Forms.TextBox()
+        Me.lblNombreCliente = New System.Windows.Forms.Label()
+        Me.lblDisplayCliente = New System.Windows.Forms.Label()
+        Me.txtCodigoCliente = New System.Windows.Forms.TextBox()
+        Me.LblDisplayDocumento = New System.Windows.Forms.Label()
+        Me.CboDocumentos = New System.Windows.Forms.ComboBox()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.lblDisplayPropietario = New System.Windows.Forms.Label()
+        Me.txtPropietario = New System.Windows.Forms.TextBox()
+        Me.lblPropietario = New System.Windows.Forms.Label()
+        Me.CboZona = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayZona = New System.Windows.Forms.Label()
+        Me.lblCuentaBancaria = New System.Windows.Forms.Label()
+        Me.txtCuentaBancaria = New System.Windows.Forms.TextBox()
+        Me.lblDisplayCuentaBancaria = New System.Windows.Forms.Label()
+        Me.LblDisplayFechaFinal = New System.Windows.Forms.Label()
+        Me.lblDisplayFechaInicio = New System.Windows.Forms.Label()
+        Me.lblDisplayEstatus = New System.Windows.Forms.Label()
+        Me.CboEstatus = New System.Windows.Forms.ComboBox()
+        Me.dpFechaFinal = New System.Windows.Forms.DateTimePicker()
+        Me.dpFechaInicio = New System.Windows.Forms.DateTimePicker()
+        Me.LblDisplayTipoMercado = New System.Windows.Forms.Label()
+        Me.CboTipoMercado = New System.Windows.Forms.ComboBox()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.rdbDetalleBultos = New System.Windows.Forms.RadioButton()
+        Me.RdbDetalleDepositos = New System.Windows.Forms.RadioButton()
+        Me.RdbDetalleCXC = New System.Windows.Forms.RadioButton()
+        Me.RdbGlobalCXC = New System.Windows.Forms.RadioButton()
         Me.ToolStrip1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -86,7 +89,7 @@ Partial Class Rpt_CXC_Documentos
         'lblNombreVendedor
         '
         Me.lblNombreVendedor.AutoSize = True
-        Me.lblNombreVendedor.Location = New System.Drawing.Point(143, 54)
+        Me.lblNombreVendedor.Location = New System.Drawing.Point(143, 79)
         Me.lblNombreVendedor.Name = "lblNombreVendedor"
         Me.lblNombreVendedor.Size = New System.Drawing.Size(10, 13)
         Me.lblNombreVendedor.TabIndex = 257
@@ -95,7 +98,7 @@ Partial Class Rpt_CXC_Documentos
         'lblDisplayVendedor
         '
         Me.lblDisplayVendedor.AutoSize = True
-        Me.lblDisplayVendedor.Location = New System.Drawing.Point(6, 54)
+        Me.lblDisplayVendedor.Location = New System.Drawing.Point(6, 79)
         Me.lblDisplayVendedor.Name = "lblDisplayVendedor"
         Me.lblDisplayVendedor.Size = New System.Drawing.Size(59, 13)
         Me.lblDisplayVendedor.TabIndex = 256
@@ -103,11 +106,11 @@ Partial Class Rpt_CXC_Documentos
         '
         'txtCodigoVendedor
         '
-        Me.txtCodigoVendedor.Location = New System.Drawing.Point(88, 50)
+        Me.txtCodigoVendedor.Location = New System.Drawing.Point(88, 75)
         Me.txtCodigoVendedor.MaxLength = 15
         Me.txtCodigoVendedor.Name = "txtCodigoVendedor"
         Me.txtCodigoVendedor.Size = New System.Drawing.Size(49, 20)
-        Me.txtCodigoVendedor.TabIndex = 1
+        Me.txtCodigoVendedor.TabIndex = 2
         Me.txtCodigoVendedor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'lblNombreCliente
@@ -140,7 +143,7 @@ Partial Class Rpt_CXC_Documentos
         'LblDisplayDocumento
         '
         Me.LblDisplayDocumento.AutoSize = True
-        Me.LblDisplayDocumento.Location = New System.Drawing.Point(6, 82)
+        Me.LblDisplayDocumento.Location = New System.Drawing.Point(6, 107)
         Me.LblDisplayDocumento.Name = "LblDisplayDocumento"
         Me.LblDisplayDocumento.Size = New System.Drawing.Size(73, 13)
         Me.LblDisplayDocumento.TabIndex = 259
@@ -150,14 +153,17 @@ Partial Class Rpt_CXC_Documentos
         '
         Me.CboDocumentos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboDocumentos.FormattingEnabled = True
-        Me.CboDocumentos.Location = New System.Drawing.Point(88, 79)
+        Me.CboDocumentos.Location = New System.Drawing.Point(88, 104)
         Me.CboDocumentos.MaxLength = 1
         Me.CboDocumentos.Name = "CboDocumentos"
-        Me.CboDocumentos.Size = New System.Drawing.Size(133, 21)
-        Me.CboDocumentos.TabIndex = 2
+        Me.CboDocumentos.Size = New System.Drawing.Size(177, 21)
+        Me.CboDocumentos.TabIndex = 3
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.lblDisplayPropietario)
+        Me.GroupBox1.Controls.Add(Me.txtPropietario)
+        Me.GroupBox1.Controls.Add(Me.lblPropietario)
         Me.GroupBox1.Controls.Add(Me.CboZona)
         Me.GroupBox1.Controls.Add(Me.lblDisplayZona)
         Me.GroupBox1.Controls.Add(Me.lblCuentaBancaria)
@@ -181,24 +187,51 @@ Partial Class Rpt_CXC_Documentos
         Me.GroupBox1.Controls.Add(Me.lblDisplayVendedor)
         Me.GroupBox1.Location = New System.Drawing.Point(149, 28)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(398, 180)
+        Me.GroupBox1.Size = New System.Drawing.Size(398, 299)
         Me.GroupBox1.TabIndex = 1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Filtros"
+        '
+        'lblDisplayPropietario
+        '
+        Me.lblDisplayPropietario.AutoSize = True
+        Me.lblDisplayPropietario.Location = New System.Drawing.Point(6, 52)
+        Me.lblDisplayPropietario.Name = "lblDisplayPropietario"
+        Me.lblDisplayPropietario.Size = New System.Drawing.Size(63, 13)
+        Me.lblDisplayPropietario.TabIndex = 378
+        Me.lblDisplayPropietario.Text = "Propietario :"
+        '
+        'txtPropietario
+        '
+        Me.txtPropietario.Location = New System.Drawing.Point(88, 49)
+        Me.txtPropietario.MaxLength = 15
+        Me.txtPropietario.Name = "txtPropietario"
+        Me.txtPropietario.Size = New System.Drawing.Size(49, 20)
+        Me.txtPropietario.TabIndex = 1
+        Me.txtPropietario.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'lblPropietario
+        '
+        Me.lblPropietario.AutoSize = True
+        Me.lblPropietario.Location = New System.Drawing.Point(143, 52)
+        Me.lblPropietario.Name = "lblPropietario"
+        Me.lblPropietario.Size = New System.Drawing.Size(10, 13)
+        Me.lblPropietario.TabIndex = 379
+        Me.lblPropietario.Text = "."
         '
         'CboZona
         '
         Me.CboZona.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboZona.FormattingEnabled = True
-        Me.CboZona.Location = New System.Drawing.Point(88, 108)
+        Me.CboZona.Location = New System.Drawing.Point(88, 133)
         Me.CboZona.Name = "CboZona"
-        Me.CboZona.Size = New System.Drawing.Size(133, 21)
-        Me.CboZona.TabIndex = 3
+        Me.CboZona.Size = New System.Drawing.Size(177, 21)
+        Me.CboZona.TabIndex = 4
         '
         'lblDisplayZona
         '
         Me.lblDisplayZona.AutoSize = True
-        Me.lblDisplayZona.Location = New System.Drawing.Point(6, 111)
+        Me.lblDisplayZona.Location = New System.Drawing.Point(6, 136)
         Me.lblDisplayZona.Name = "lblDisplayZona"
         Me.lblDisplayZona.Size = New System.Drawing.Size(38, 13)
         Me.lblDisplayZona.TabIndex = 376
@@ -207,7 +240,7 @@ Partial Class Rpt_CXC_Documentos
         'lblCuentaBancaria
         '
         Me.lblCuentaBancaria.AutoSize = True
-        Me.lblCuentaBancaria.Location = New System.Drawing.Point(373, 145)
+        Me.lblCuentaBancaria.Location = New System.Drawing.Point(152, 270)
         Me.lblCuentaBancaria.Name = "lblCuentaBancaria"
         Me.lblCuentaBancaria.Size = New System.Drawing.Size(10, 13)
         Me.lblCuentaBancaria.TabIndex = 273
@@ -215,17 +248,17 @@ Partial Class Rpt_CXC_Documentos
         '
         'txtCuentaBancaria
         '
-        Me.txtCuentaBancaria.Location = New System.Drawing.Point(309, 141)
+        Me.txtCuentaBancaria.Location = New System.Drawing.Point(88, 266)
         Me.txtCuentaBancaria.MaxLength = 8
         Me.txtCuentaBancaria.Name = "txtCuentaBancaria"
         Me.txtCuentaBancaria.Size = New System.Drawing.Size(49, 20)
-        Me.txtCuentaBancaria.TabIndex = 8
+        Me.txtCuentaBancaria.TabIndex = 9
         Me.txtCuentaBancaria.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'lblDisplayCuentaBancaria
         '
         Me.lblDisplayCuentaBancaria.AutoSize = True
-        Me.lblDisplayCuentaBancaria.Location = New System.Drawing.Point(227, 142)
+        Me.lblDisplayCuentaBancaria.Location = New System.Drawing.Point(6, 267)
         Me.lblDisplayCuentaBancaria.Name = "lblDisplayCuentaBancaria"
         Me.lblDisplayCuentaBancaria.Size = New System.Drawing.Size(77, 13)
         Me.lblDisplayCuentaBancaria.TabIndex = 272
@@ -234,7 +267,7 @@ Partial Class Rpt_CXC_Documentos
         'LblDisplayFechaFinal
         '
         Me.LblDisplayFechaFinal.AutoSize = True
-        Me.LblDisplayFechaFinal.Location = New System.Drawing.Point(231, 83)
+        Me.LblDisplayFechaFinal.Location = New System.Drawing.Point(6, 213)
         Me.LblDisplayFechaFinal.Name = "LblDisplayFechaFinal"
         Me.LblDisplayFechaFinal.Size = New System.Drawing.Size(41, 13)
         Me.LblDisplayFechaFinal.TabIndex = 270
@@ -243,7 +276,7 @@ Partial Class Rpt_CXC_Documentos
         'lblDisplayFechaInicio
         '
         Me.lblDisplayFechaInicio.AutoSize = True
-        Me.lblDisplayFechaInicio.Location = New System.Drawing.Point(227, 54)
+        Me.lblDisplayFechaInicio.Location = New System.Drawing.Point(6, 191)
         Me.lblDisplayFechaInicio.Name = "lblDisplayFechaInicio"
         Me.lblDisplayFechaInicio.Size = New System.Drawing.Size(44, 13)
         Me.lblDisplayFechaInicio.TabIndex = 269
@@ -252,7 +285,7 @@ Partial Class Rpt_CXC_Documentos
         'lblDisplayEstatus
         '
         Me.lblDisplayEstatus.AutoSize = True
-        Me.lblDisplayEstatus.Location = New System.Drawing.Point(227, 113)
+        Me.lblDisplayEstatus.Location = New System.Drawing.Point(6, 240)
         Me.lblDisplayEstatus.Name = "lblDisplayEstatus"
         Me.lblDisplayEstatus.Size = New System.Drawing.Size(48, 13)
         Me.lblDisplayEstatus.TabIndex = 268
@@ -263,34 +296,34 @@ Partial Class Rpt_CXC_Documentos
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"TODOS", "APLICADOS", "CANCELADOS"})
-        Me.CboEstatus.Location = New System.Drawing.Point(309, 112)
+        Me.CboEstatus.Location = New System.Drawing.Point(88, 239)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(133, 21)
-        Me.CboEstatus.TabIndex = 7
+        Me.CboEstatus.Size = New System.Drawing.Size(177, 21)
+        Me.CboEstatus.TabIndex = 8
         '
         'dpFechaFinal
         '
         Me.dpFechaFinal.CustomFormat = "dd-MM-yyyy"
         Me.dpFechaFinal.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.dpFechaFinal.Location = New System.Drawing.Point(309, 86)
+        Me.dpFechaFinal.Location = New System.Drawing.Point(88, 213)
         Me.dpFechaFinal.Name = "dpFechaFinal"
         Me.dpFechaFinal.Size = New System.Drawing.Size(124, 20)
-        Me.dpFechaFinal.TabIndex = 6
+        Me.dpFechaFinal.TabIndex = 7
         '
         'dpFechaInicio
         '
         Me.dpFechaInicio.CustomFormat = "dd-MM-yyyy"
         Me.dpFechaInicio.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.dpFechaInicio.Location = New System.Drawing.Point(309, 50)
+        Me.dpFechaInicio.Location = New System.Drawing.Point(88, 187)
         Me.dpFechaInicio.Name = "dpFechaInicio"
         Me.dpFechaInicio.Size = New System.Drawing.Size(124, 20)
-        Me.dpFechaInicio.TabIndex = 5
+        Me.dpFechaInicio.TabIndex = 6
         '
         'LblDisplayTipoMercado
         '
         Me.LblDisplayTipoMercado.AutoSize = True
-        Me.LblDisplayTipoMercado.Location = New System.Drawing.Point(6, 138)
+        Me.LblDisplayTipoMercado.Location = New System.Drawing.Point(6, 163)
         Me.LblDisplayTipoMercado.Name = "LblDisplayTipoMercado"
         Me.LblDisplayTipoMercado.Size = New System.Drawing.Size(78, 13)
         Me.LblDisplayTipoMercado.TabIndex = 264
@@ -300,11 +333,11 @@ Partial Class Rpt_CXC_Documentos
         '
         Me.CboTipoMercado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboTipoMercado.FormattingEnabled = True
-        Me.CboTipoMercado.Location = New System.Drawing.Point(88, 135)
+        Me.CboTipoMercado.Location = New System.Drawing.Point(88, 160)
         Me.CboTipoMercado.MaxLength = 1
         Me.CboTipoMercado.Name = "CboTipoMercado"
-        Me.CboTipoMercado.Size = New System.Drawing.Size(133, 21)
-        Me.CboTipoMercado.TabIndex = 4
+        Me.CboTipoMercado.Size = New System.Drawing.Size(177, 21)
+        Me.CboTipoMercado.TabIndex = 5
         '
         'GroupBox2
         '
@@ -314,10 +347,21 @@ Partial Class Rpt_CXC_Documentos
         Me.GroupBox2.Controls.Add(Me.RdbGlobalCXC)
         Me.GroupBox2.Location = New System.Drawing.Point(7, 28)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(136, 180)
+        Me.GroupBox2.Size = New System.Drawing.Size(136, 196)
         Me.GroupBox2.TabIndex = 0
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Reporte"
+        '
+        'rdbDetalleBultos
+        '
+        Me.rdbDetalleBultos.AutoSize = True
+        Me.rdbDetalleBultos.Location = New System.Drawing.Point(13, 90)
+        Me.rdbDetalleBultos.Name = "rdbDetalleBultos"
+        Me.rdbDetalleBultos.Size = New System.Drawing.Size(95, 17)
+        Me.rdbDetalleBultos.TabIndex = 267
+        Me.rdbDetalleBultos.Text = "Det. dep. btos."
+        Me.rdbDetalleBultos.UseVisualStyleBackColor = True
+        Me.rdbDetalleBultos.Visible = False
         '
         'RdbDetalleDepositos
         '
@@ -326,13 +370,13 @@ Partial Class Rpt_CXC_Documentos
         Me.RdbDetalleDepositos.Name = "RdbDetalleDepositos"
         Me.RdbDetalleDepositos.Size = New System.Drawing.Size(106, 17)
         Me.RdbDetalleDepositos.TabIndex = 265
-        Me.RdbDetalleDepositos.TabStop = True
         Me.RdbDetalleDepositos.Text = "Detalle depósitos"
         Me.RdbDetalleDepositos.UseVisualStyleBackColor = True
         '
         'RdbDetalleCXC
         '
         Me.RdbDetalleCXC.AutoSize = True
+        Me.RdbDetalleCXC.Checked = True
         Me.RdbDetalleCXC.Location = New System.Drawing.Point(13, 42)
         Me.RdbDetalleCXC.Name = "RdbDetalleCXC"
         Me.RdbDetalleCXC.Size = New System.Drawing.Size(104, 17)
@@ -348,26 +392,14 @@ Partial Class Rpt_CXC_Documentos
         Me.RdbGlobalCXC.Name = "RdbGlobalCXC"
         Me.RdbGlobalCXC.Size = New System.Drawing.Size(101, 17)
         Me.RdbGlobalCXC.TabIndex = 265
-        Me.RdbGlobalCXC.TabStop = True
         Me.RdbGlobalCXC.Text = "Cobranza global"
         Me.RdbGlobalCXC.UseVisualStyleBackColor = True
-        '
-        'rdbDetalleBultos
-        '
-        Me.rdbDetalleBultos.AutoSize = True
-        Me.rdbDetalleBultos.Location = New System.Drawing.Point(13, 90)
-        Me.rdbDetalleBultos.Name = "rdbDetalleBultos"
-        Me.rdbDetalleBultos.Size = New System.Drawing.Size(95, 17)
-        Me.rdbDetalleBultos.TabIndex = 267
-        Me.rdbDetalleBultos.TabStop = True
-        Me.rdbDetalleBultos.Text = "Det. dep. btos."
-        Me.rdbDetalleBultos.UseVisualStyleBackColor = True
         '
         'Rpt_CXC_Documentos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(559, 214)
+        Me.ClientSize = New System.Drawing.Size(559, 333)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.ToolStrip1)
@@ -416,4 +448,7 @@ Partial Class Rpt_CXC_Documentos
     Friend WithEvents CboZona As System.Windows.Forms.ComboBox
     Friend WithEvents lblDisplayZona As System.Windows.Forms.Label
     Friend WithEvents rdbDetalleBultos As System.Windows.Forms.RadioButton
+    Friend WithEvents lblDisplayPropietario As Label
+    Friend WithEvents txtPropietario As TextBox
+    Friend WithEvents lblPropietario As Label
 End Class
