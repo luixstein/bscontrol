@@ -141,7 +141,7 @@ Buscar:
             Me.tcPanel.SelectedIndex = 1
         End If
     End Sub
-    'Se agrego
+
     Private Sub BtnActualizarPlazo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnActualizarPlazo.Click
         If Me.ActualizaPlazoDirectamente() = True Then
             Me.Consultar()
@@ -151,7 +151,7 @@ Buscar:
             Me.tcPanel.SelectedIndex = 1
         End If
     End Sub
-    'Se agrego
+
     Private Sub BtnConvertir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnConvertir.Click
         If Me.ConvertirVentaContadoACredito() = True Then
             Me.Consultar()
@@ -650,72 +650,76 @@ Buscar:
     End Function
 
     Private Function ActualizaPlazoDirectamente() As Boolean
+        Dim bResultado As Boolean = False
         Try
             If valorNumerico(Me.txtDiasPlazo.Text) <= 0 Then
-                MsgBox("Asígne el plazo en días de crédito a actualizar.", MsgBoxStyle.Information, Me.Text)
+                MsgBox("Asígne el plazo en días de crédito a actualizar.", MsgBoxStyle.Exclamation, Me.Text)
                 If Me.txtDiasPlazo.Enabled = True Then Me.txtDiasPlazo.Focus()
-                Exit Function
+                Return False
             End If
 
-            'permisos
-            If MsgBox("Desea actualizar directamente el plazo en dias de crédito del cliente por " & Me.txtDiasPlazo.Text.ToString & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "ActualizaPlazoDirectamente") = MsgBoxResult.No Then
-                Exit Function
+            If MsgBox("Desea actualizar directamente el plazo en días de crédito del cliente por " & Me.txtDiasPlazo.Text.ToString & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "ActualizaPlazoDirectamente") = MsgBoxResult.No Then
+                Return False
             End If
 
             Me.oSisAdministracionClientes = New Class_Sis_Administracion_Clientes
             Me.oSisAdministracionClientes.CodigoCliente = Me.TxtCliente.Text
             Me.oSisAdministracionClientes.PLAZO = Me.txtDiasPlazo.Text
 
-            If Me.oSisAdministracionClientes.ActulizaPlazo(CBool(IIf(Me.ckbRecaularVencimientos.Checked = True, True, False)), CBool(IIf(Me.ckbRangoFechas.Checked = True, True, False)), Format(dpFechaDesde.Value, "yyyy-dd-MM").ToString, Format(dpFechaHasta.Value, "yyyy-dd-MM").ToString) = False Then
+            If Me.oSisAdministracionClientes.ActualizaPlazo(CBool(IIf(Me.ckbRecaularVencimientos.Checked = True, True, False)), CBool(IIf(Me.ckbRangoFechas.Checked = True, True, False)), Format(dpFechaDesde.Value, "yyyy-dd-MM").ToString, Format(dpFechaHasta.Value, "yyyy-dd-MM").ToString) = False Then
                 MsgBox("Error al tratar de actualizar plazo de CXC.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+                Return False
             End If
 
             'Me.cmdDatosCreditoActualizarLimiteCredito.Enabled = True
-            ActualizaPlazoDirectamente = True
-            MsgBox("Se ha actualizado el plazo de crédito al cliente satisfactoriamente.", vbInformation, Me.Text)
+            bResultado = True
+            MsgBox("Se ha actualizado el plazo de crédito al cliente satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
 
         Catch ex As Exception
             HandleError(Me.Name, "ActualizaPlazoDirectamente", ex)
         End Try
+
+        Return bResultado
     End Function
 
     Private Function ConvertirVentaContadoACredito() As Boolean
+        Dim bResultado As Boolean = False
         Try
             If txtLEN(Me.TxtFolio.Text) = False Then
-                MsgBox("Asígne el folio del documento a convertir.", MsgBoxStyle.Information, Me.Text)
+                MsgBox("Asígne el folio del documento a convertir.", MsgBoxStyle.Exclamation, Me.Text)
                 If Me.TxtFolio.Enabled = True Then Me.TxtFolio.Focus()
-                Exit Function
+                Return False
             End If
 
-            Dim oVentas As New Class_Ventas_Global
-            oVentas = New Class_Ventas_Global(Me.TxtFolio.Text)
+            Dim oVentas As New Class_Ventas_Global(Me.TxtFolio.Text)
 
             If oVentas.Existe = False Then
                 MsgBox("La venta que desea convertir no existe.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+                Return False
             End If
 
             'permisos
             If MsgBox("Desea convertir la venta " & Me.TxtFolio.Text & " de contado a crédito? ", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "ConvertirVentaContadoACredito") = MsgBoxResult.No Then
-                Exit Function
+                Return False
             End If
 
             Me.oSisAdministracionClientes = New Class_Sis_Administracion_Clientes
             Me.oSisAdministracionClientes.CodigoCliente = Me.TxtCliente.Text
             'Me.oSisAdministracionClientes.PLAZO = Me.txtDiasPlazo.Text
 
-            If Me.oSisAdministracionClientes.ConvertirContadoAcreedito(Me.TxtFolio.Text) = False Then
+            If Me.oSisAdministracionClientes.ConvertirContadoACredito(Me.TxtFolio.Text) = False Then
                 MsgBox("Error al tratar de convertir la venta de contado a crédito.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+                Return False
             End If
 
-            ConvertirVentaContadoACredito = True
-            MsgBox("Se ha actualizado el tipo de negociación la venta de contado a crédito satisfactoriamente.", vbInformation, Me.Text)
+            bResultado = True
+            MsgBox("Se ha actualizado el tipo de negociación la venta de contado a crédito satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
 
         Catch ex As Exception
             HandleError(Me.Name, "ConvertirVentaContadoACredito", ex)
         End Try
+
+        Return bResultado
     End Function
 
     'Se agrego 

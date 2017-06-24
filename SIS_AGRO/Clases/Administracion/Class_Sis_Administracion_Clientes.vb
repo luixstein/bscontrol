@@ -231,10 +231,10 @@ Public Class Class_Sis_Administracion_Clientes
 
     Public Property SaldoVentaReciente() As String
         Get
-            Return Me._saldoVentaReciente
+            Return Me._SaldoVentaReciente
         End Get
         Set(ByVal Value As String)
-            Me._saldoVentaReciente = Value
+            Me._SaldoVentaReciente = Value
         End Set
     End Property
 
@@ -519,7 +519,7 @@ Public Class Class_Sis_Administracion_Clientes
                 Me._Conexion.Open()
                 dReader = .ExecuteReader()
 
-                    If dReader.Read Then
+                If dReader.Read Then
                     Me._CodigoCliente = "" & dReader("CODIGO_CLIENTE")
                     Me._NombreCliente = "" & dReader("NOMBRE_CLIENTE")
                     Me._DiasCarteraVentaAntigua = "" & dReader("DIAS_CARTERA")
@@ -685,8 +685,8 @@ Public Class Class_Sis_Administracion_Clientes
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String 'A.PRECIO
 
-        sSQL = "SELECT C.ID_REGLA,C.ESTATUS,C.FECHA_CREACION,C.IMPORTE_AUTORIZADO,C.IMPORTE_RESTANTE " & _
-               "FROM  DBO.SIS_REGLAS_CXC C   " & _
+        sSQL = "SELECT C.ID_REGLA,C.ESTATUS,C.FECHA_CREACION,C.IMPORTE_AUTORIZADO,C.IMPORTE_RESTANTE " &
+               "FROM  DBO.SIS_REGLAS_CXC C   " &
                "WHERE C.CODIGO_CLIENTE='" & Me._CodigoCliente.ToString & "' AND IMPORTE_AUTORIZADO>0  "
 
         If bReglasActivas = True Then
@@ -705,7 +705,8 @@ Public Class Class_Sis_Administracion_Clientes
         ObtenerReglasCXC = dTabla
     End Function
 
-    Public Function ActulizaPlazo(Optional ByVal bRecaulcular As Boolean = True, Optional ByVal bRecaulcularFechas As Boolean = False, Optional ByVal dFechaInicial As String = "", Optional ByVal dFechaFinal As String = "") As Boolean
+    Public Function ActualizaPlazo(Optional ByVal bRecaulcular As Boolean = True, Optional ByVal bRecaulcularFechas As Boolean = False, Optional ByVal dFechaInicial As String = "", Optional ByVal dFechaFinal As String = "") As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -714,7 +715,7 @@ Public Class Class_Sis_Administracion_Clientes
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_SIS_ADMIN_CLIENTES_ACTUALIZA_DIAS_PLAZO"
 
-            sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CodigoCliente
+            sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._CodigoCliente
             sqlParametro = .Parameters.Add("@DIAS_PLAZO", SqlDbType.SmallInt) : sqlParametro.Value = Me._PLAZO
             sqlParametro = .Parameters.Add("@RECALCULAR_VENCIMIENTOS", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(bRecaulcular)
             sqlParametro = .Parameters.Add("@RECALCULAR_VENCIMIENTOS_USANDO_RANGO_FECHAS", SqlDbType.NVarChar, 2) : sqlParametro.Value = Convert.ToInt32(bRecaulcularFechas)
@@ -725,18 +726,20 @@ Public Class Class_Sis_Administracion_Clientes
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                ActulizaPlazo = True
+                bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Catalogo, "ActulizaPlazo", ex)
+                HandleError(Me.Nombre_Catalogo, "ActualizaPlazo", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
                 sqlParametro = Nothing
             End Try
         End With
+        Return bResultado
     End Function
 
-    Public Function ConvertirContadoAcreedito(Optional ByVal sFolio As String = "") As Boolean
+    Public Function ConvertirContadoACredito(Optional ByVal sFolio As String = "") As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -752,18 +755,20 @@ Public Class Class_Sis_Administracion_Clientes
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                ConvertirContadoAcreedito = True
+                bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Catalogo, "ConvertirContadoAcreedito", ex)
+                HandleError(Me.Nombre_Catalogo, "ConvertirContadoACredito", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
                 sqlParametro = Nothing
             End Try
         End With
+        Return bResultado
     End Function
 
     Public Function ObservacionesNegociaciones(ByVal sObservaciones As String, ByVal bAccion As Boolean, ByVal iIdObservacion As Integer) As String
+        Dim sResultado As String = ""
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         ObservacionesNegociaciones = ""
@@ -782,7 +787,7 @@ Public Class Class_Sis_Administracion_Clientes
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
 
-                ObservacionesNegociaciones = "" & .Parameters("@ID_OBSERVACION_CLIENTE").Value.ToString
+                sResultado = "" & .Parameters("@ID_OBSERVACION_CLIENTE").Value.ToString
 
             Catch ex As Exception
                 HandleError(Me.Nombre_Catalogo, "ObservacionesNegociaciones", ex)
@@ -792,6 +797,7 @@ Public Class Class_Sis_Administracion_Clientes
                 sqlParametro = Nothing
             End Try
         End With
+        Return sResultado
     End Function
 #End Region
 
