@@ -510,7 +510,7 @@ busca:
                 Return False
             End If
 
-            Dim oCliente As New Class_CatClientes(Me.oVenta.CODIGO_CLIENTE)
+            oCliente = New Class_CatClientes(Me.oVenta.CODIGO_CLIENTE)
             Dim oAlmacen As New Class_CatAlmacenes(Me.oVenta.CODIGO_ALMACEN)
             Me.txtCliente.Text = Me.oVenta.CODIGO_CLIENTE
             Me.lblCliente.Text = Me.oCliente.NOMBRE_CLIENTE
