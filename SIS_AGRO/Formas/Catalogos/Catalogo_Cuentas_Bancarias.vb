@@ -151,7 +151,7 @@ Public Class Catalogo_Cuentas_Bancarias
     End Sub
 
     Private Sub tsbEditar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbEditar.Click
-        If txtLEN(Me.TxtIDCuenta.Text) = True Then
+        If txtLEN(Me.TxtNombreCuenta.Text) = True Then
             Me.Estado = enumEstados.EDICION
         Else
             Me.Estado = enumEstados.NUEVO
@@ -491,6 +491,12 @@ Public Class Catalogo_Cuentas_Bancarias
             '    MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, Me.Text)
             '    Exit Function
             'End If
+
+            If txtLEN(Me.TxtNombreCuenta.Text) = False Then
+                MsgBox("Asígne un nombre a la cuenta bancaria.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.TxtNombreCuenta.Focus()
+                Return False
+            End If
 
             Dim sql0 As New Class_find("SELECT 1 FROM CAT_BANCOS WHERE CODIGO_BANCO='" & Me.TxtBanco.Text & "' ")
             If sql0.Result1 = "" Then
