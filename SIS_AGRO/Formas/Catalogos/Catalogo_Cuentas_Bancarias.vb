@@ -151,7 +151,12 @@ Public Class Catalogo_Cuentas_Bancarias
     End Sub
 
     Private Sub tsbEditar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbEditar.Click
-        Me.Estado = enumEstados.EDICION
+        If txtLEN(Me.TxtIDCuenta.Text) = True Then
+            Me.Estado = enumEstados.EDICION
+        Else
+            Me.Estado = enumEstados.NUEVO
+        End If
+
         Me.Cambia_Estado()
     End Sub
 
