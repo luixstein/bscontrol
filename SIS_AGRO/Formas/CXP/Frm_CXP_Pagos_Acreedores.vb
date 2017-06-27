@@ -2448,13 +2448,22 @@ BuscaEmbarque:
             End If
 
             If sTipoDeBusqueda = "Anterior" Then
-                iPosicion = Me.TxtFolio.Text.IndexOf("-")
-                sFolio = Me.TxtFolio.Text.Substring(0, iPosicion)
-                iFolio = CInt(Strings.Right(Me.TxtFolio.Text, Len(Me.TxtFolio.Text) - (Len(sFolio) + 1))) ' Me.oVenta.FOLIO_NUMERICO
-                iFolio = iFolio - 1
-                sFolioParte2 = Format(iFolio, New String("0", Me.TxtFolio.Text.Substring(3, Me.TxtFolio.TextLength - iPosicion - 1).Length))
-                sFolio = sFolio + "-" + sFolioParte2 'sFolio + "-" + iFolio.ToString
-                Me.TxtFolio.Text = sFolio
+                If Me.TxtFolio.Text.Contains("-") Then
+                    iPosicion = Me.TxtFolio.Text.IndexOf("-")
+                    sFolio = Me.TxtFolio.Text.Substring(0, iPosicion)
+                    iFolio = CInt(Strings.Right(Me.TxtFolio.Text, Len(Me.TxtFolio.Text) - (Len(sFolio) + 1))) ' Me.oVenta.FOLIO_NUMERICO
+                    iFolio = iFolio - 1
+                    sFolioParte2 = Format(iFolio, New String("0", Me.TxtFolio.Text.Substring(3, Me.TxtFolio.TextLength - iPosicion - 1).Length))
+                    sFolio = sFolio + "-" + sFolioParte2 'sFolio + "-" + iFolio.ToString
+                    Me.TxtFolio.Text = sFolio
+                Else
+                    sFolio = Me.TxtFolio.Text.TrimEnd("0", "1", "2", "3", "4", "5", "6", "7", "8", "9")
+                    iFolio = CInt(Strings.Right(Me.TxtFolio.Text, Len(Me.TxtFolio.Text) - Len(sFolio)))
+                    iFolio = iFolio - 1
+                    sFolioParte2 = Format(iFolio, New String("0", Me.TxtFolio.Text.Substring(0, Me.TxtFolio.TextLength - CInt(Len(sFolio))).Length))
+                    sFolio = sFolio + sFolioParte2
+                    Me.TxtFolio.Text = sFolio
+                End If
 
                 If txtLEN(sFolio) = True Then
                     Me.Consultar()
@@ -2466,13 +2475,22 @@ BuscaEmbarque:
                 End If
 
             ElseIf sTipoDeBusqueda = "Siguiente" Then
-                iPosicion = Me.TxtFolio.Text.IndexOf("-")
-                sFolio = Me.TxtFolio.Text.Substring(0, iPosicion)
-                iFolio = CInt(Strings.Right(Me.TxtFolio.Text, Len(Me.TxtFolio.Text) - (Len(sFolio) + 1))) ' Me.oVenta.FOLIO_NUMERICO
-                iFolio = iFolio + 1
-                sFolioParte2 = Format(iFolio, New String("0", Me.TxtFolio.Text.Substring(3, Me.TxtFolio.TextLength - iPosicion - 1).Length))
-                sFolio = sFolio + "-" + sFolioParte2 'sFolio + "-" + iFolio.ToString
-                Me.TxtFolio.Text = sFolio
+                If Me.TxtFolio.Text.Contains("-") Then
+                    iPosicion = Me.TxtFolio.Text.IndexOf("-")
+                    sFolio = Me.TxtFolio.Text.Substring(0, iPosicion)
+                    iFolio = CInt(Strings.Right(Me.TxtFolio.Text, Len(Me.TxtFolio.Text) - (Len(sFolio) + 1))) ' Me.oVenta.FOLIO_NUMERICO
+                    iFolio = iFolio + 1
+                    sFolioParte2 = Format(iFolio, New String("0", Me.TxtFolio.Text.Substring(3, Me.TxtFolio.TextLength - iPosicion - 1).Length))
+                    sFolio = sFolio + "-" + sFolioParte2 'sFolio + "-" + iFolio.ToString
+                    Me.TxtFolio.Text = sFolio
+                Else
+                    sFolio = Me.TxtFolio.Text.TrimEnd("0", "1", "2", "3", "4", "5", "6", "7", "8", "9")
+                    iFolio = CInt(Strings.Right(Me.TxtFolio.Text, Len(Me.TxtFolio.Text) - Len(sFolio)))
+                    iFolio = iFolio + 1
+                    sFolioParte2 = Format(iFolio, New String("0", Me.TxtFolio.Text.Substring(0, Me.TxtFolio.TextLength - CInt(Len(sFolio))).Length))
+                    sFolio = sFolio + sFolioParte2
+                    Me.TxtFolio.Text = sFolio
+                End If
 
                 If txtLEN(sFolio) = True Then
                     Me.Consultar()
@@ -2482,7 +2500,7 @@ BuscaEmbarque:
                     Me.GeneraFolio()
                     Me.TxtFolio.Focus()
                 End If
-            End If
+                End If
         Catch ex As Exception
             HandleError(Me.Name, "Navegador", ex)
         End Try
