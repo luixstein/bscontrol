@@ -9,6 +9,7 @@ Public Class Class_CatTrabajadores
 
 #Region "Campos de la tabla"
     Private _CODIGO_TRABAJADOR As String
+    Private _CODIGO_X_TEMPORADA As String
     Private _ID_NOMINA_TEMPORADA As Integer
     Private _NOMBRE_TRABAJADOR As String
     Private _APELLIDO_PATERNO As String
@@ -70,6 +71,10 @@ Public Class Class_CatTrabajadores
     Private _QuerySelect As String
     Private _QueryOrder As String
 
+    Enum Accion
+        INSERTAR
+        ACTUALIZAR
+    End Enum
 #End Region
 
 #End Region
@@ -84,6 +89,12 @@ Public Class Class_CatTrabajadores
         Set(ByVal Value As String)
             Me._CODIGO_TRABAJADOR = Value
         End Set
+    End Property
+
+    Public ReadOnly Property CODIGO_X_TEMPORADA() As String
+        Get
+            Return Me._CODIGO_X_TEMPORADA
+        End Get
     End Property
 
     Public Property ID_NOMINA_TEMPORADA() As Integer
@@ -503,13 +514,13 @@ Public Class Class_CatTrabajadores
         Me._Nombre_Reporte = "RPT_CATALOGO_NOMINA_TRABAJADORES"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "SELECT T.*,B.NOMBRE_BANCO,M.NOMBRE_TRABAJADOR NOMBRE_MAYORDOMO,E.CODIGO_ESTADO_NUMERICO CODIGO_ESTADO_NACIMIENTO_NUMERICO " & _
-        "FROM NOMINA_CAT_TRABAJADORES T " & _
-        "LEFT JOIN CAT_BANCOS B ON(T.CODIGO_BANCO_PAGO_TARJETA=B.CODIGO_BANCO) " & _
-        "LEFT JOIN NOMINA_CAT_TRABAJADORES M ON(T.CODIGO_MAYORDOMO=M.CODIGO_TRABAJADOR) " & _
+        Me._QuerySelect = "SELECT T.*,B.NOMBRE_BANCO,M.NOMBRE_TRABAJADOR NOMBRE_MAYORDOMO,E.CODIGO_ESTADO_NUMERICO CODIGO_ESTADO_NACIMIENTO_NUMERICO " &
+        "FROM NOMINA_CAT_TRABAJADORES T " &
+        "LEFT JOIN CAT_BANCOS B ON(T.CODIGO_BANCO_PAGO_TARJETA=B.CODIGO_BANCO) " &
+        "LEFT JOIN NOMINA_CAT_TRABAJADORES M ON(T.CODIGO_MAYORDOMO=M.CODIGO_TRABAJADOR) " &
         "INNER JOIN SIS_ESTADOS E ON(T.CODIGO_ESTADO_NACIMIENTO=E.CODIGO_ESTADO) "
         Me._QueryOrder = " ORDER BY NOMBRE_TRABAJADOR"
-    End Sub                                                         'Inicializa al objeto.
+    End Sub
 
     Public Sub New(ByVal sCodigoTrabajador As String, Optional ByVal sRegistroImss As String = "")
         Me.New()
@@ -521,7 +532,21 @@ Public Class Class_CatTrabajadores
             If Me.Consultar(sRegistroImss) = True Then
                 Me._Existe = True
                 'Else
-                '    Throw New Exception("El PRODUCTOR no existe.")
+                '    Throw New Exception("El trabajador no existe.")
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "New", ex)
+        End Try
+    End Sub
+
+    Public Sub New(ByVal sCodigoxTemporada As String)
+        Me.New()
+        Me._CODIGO_X_TEMPORADA = sCodigoxTemporada
+        Try
+            If Me.ConsultarXTemporada() = True Then
+                Me._Existe = True
+                'Else
+                '    Throw New Exception("El trabajador no existe.")
             End If
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "New", ex)
@@ -562,154 +587,8 @@ Public Class Class_CatTrabajadores
 #End Region
 
 #Region "Métodos y procedimientos"
-
-    Public Function Actualizar() As Boolean
-        Dim cmd As New SqlCommand
-        Dim sqlParametro As SqlParameter
-        With cmd
-            .Connection = Me._Conexion
-            .CommandTimeout = 0
-            .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_NOMINA_CAT_TRABAJADORES_GRABA"
-
-            sqlParametro = .Parameters.Add("@CODIGO_TRABAJADOR", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_TRABAJADOR
-            sqlParametro = .Parameters.Add("@ID_NOMINA_TEMPORADA", SqlDbType.SmallInt) : sqlParametro.Value = Me._ID_NOMINA_TEMPORADA
-            sqlParametro = .Parameters.Add("@NOMBRE_TRABAJADOR", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_TRABAJADOR.ToUpper
-            sqlParametro = .Parameters.Add("@APELLIDO_PATERNO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._APELLIDO_PATERNO.ToUpper
-            sqlParametro = .Parameters.Add("@APELLIDO_MATERNO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._APELLIDO_MATERNO.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_SEXO", SqlDbType.Char, 1) : sqlParametro.Value = Me._CODIGO_SEXO.ToUpper
-            sqlParametro = .Parameters.Add("@FECHA_NACIMIENTO", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_NACIMIENTO
-            sqlParametro = .Parameters.Add("@CODIGO_ESTADO_NACIMIENTO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ESTADO_NACIMIENTO.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_AREA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_AREA
-            sqlParametro = .Parameters.Add("@CODIGO_PUESTO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PUESTO
-            sqlParametro = .Parameters.Add("@CODIGO_PUNTO_PAGO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PUNTO_PAGO
-            sqlParametro = .Parameters.Add("@NUMERO_REGISTRO_IMSS", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._NUMERO_REGISTRO_IMSS
-            sqlParametro = .Parameters.Add("@SUELDO_DIARIO", SqlDbType.Money) : sqlParametro.Value = Me._SUELDO_DIARIO
-            sqlParametro = .Parameters.Add("@RFC", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._RFC.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CURP", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._CURP.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@ESTATUS_TRABAJADOR", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS_TRABAJADOR.ToUpper
-
-            sqlParametro = .Parameters.Add("@DOMICILIO_CALLE", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._DOMICILIO_CALLE.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@DOMICILIO_NUMERO", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._DOMICILIO_NUMERO.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@DOMICILIO_COLONIA", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._DOMICILIO_COLONIA.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@DOMICILIO_LOCALIDAD", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._DOMICILIO_LOCALIDAD.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@DOMICILIO_CIUDAD", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._DOMICILIO_CIUDAD.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@DOMICILIO_CODIGO_ESTADO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._DOMICILIO_CODIGO_ESTADO.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@DOMICILIO_CODIGO_POSTAL ", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._DOMICILIO_CODIGO_POSTAL.ToString.ToUpper
-
-            sqlParametro = .Parameters.Add("@RECIBE_PAGO_TARJETA_BANCARIA", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._RECIBE_PAGO_TARJETA_BANCARIA.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@NUMERO_TARJETA_BANCARIA", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._NUMERO_TARJETA_BANCARIA.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_BANCO_PAGO_TARJETA", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_BANCO_PAGO_TARJETA.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_UNIDAD_MEDICA_FAMILIAR", SqlDbType.NVarChar, 3) : sqlParametro.Value = "" & Me._CODIGO_UNIDAD_MEDICA_FAMILIAR
-            sqlParametro = .Parameters.Add("@NOMBRE_PADRE", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_PADRE.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@NOMBRE_MADRE", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_MADRE.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_MAYORDOMO", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_MAYORDOMO.ToString
-            sqlParametro = .Parameters.Add("@AFILIABLE_IMSS", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._AFILIABLE_IMSS.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@FIJO_IMSS", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._FIJO_IMSS.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CALCULA_SINDICATO", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._CALCULA_SINDICATO.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@FECHA_INGRESO", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_INGRESO
-            sqlParametro = .Parameters.Add("@NUMERO_TRABAJADOR_BANCO", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._NUMERO_TRABAJADOR_BANCO.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@NUMERO_CUENTA_BANCO", SqlDbType.NVarChar, 18) : sqlParametro.Value = Me._NUMERO_CUENTA_BANCO.ToString.ToUpper
-            sqlParametro = .Parameters.Add("ARCHIVO_FOTO", SqlDbType.Image) : sqlParametro.Value = IIf(Me._ARCHIVO_FOTO Is Nothing, DBNull.Value, Me._ARCHIVO_FOTO)
-            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "ACTUALIZAR"
-
-            Try
-                Me._Conexion.Open()
-                .ExecuteNonQuery()
-                Actualizar = True
-            Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
-            Finally
-                Me._Conexion.Close()
-                cmd.Dispose()
-                sqlParametro = Nothing
-            End Try
-
-        End With
-    End Function                        'Actualiza un elemento del catálogo.
-
-    Public Function Consultar(Optional ByVal sRegistroImss As String = "") As Boolean
-        Dim sSql As String = ""
-        If txtLEN(sRegistroImss) = True Then
-            Me._NUMERO_REGISTRO_IMSS = sRegistroImss
-            sSql = " WHERE T.NUMERO_REGISTRO_IMSS='" & Replace(Me._NUMERO_REGISTRO_IMSS, "'", "''") & "' "
-        Else
-            sSql = " WHERE T.CODIGO_TRABAJADOR='" & Replace(Me._CODIGO_TRABAJADOR, "'", "''") & "' "
-        End If
-
-        Dim cmd As New SqlCommand(Me._QuerySelect & sSql, Me._Conexion)
-        Dim dReader As SqlDataReader
-
-        With cmd
-            .CommandTimeout = 0
-            .CommandType = CommandType.Text
-            Try
-                Me._Conexion.Open()
-                dReader = .ExecuteReader()
-
-                If dReader.Read Then
-                    Me._CODIGO_TRABAJADOR = "" & dReader("CODIGO_TRABAJADOR")
-                    Me._ID_NOMINA_TEMPORADA = dReader("ID_NOMINA_TEMPORADA")
-                    Me._NOMBRE_TRABAJADOR = "" & dReader("NOMBRE_TRABAJADOR")
-                    Me._APELLIDO_PATERNO = "" & dReader("APELLIDO_PATERNO")
-                    Me._APELLIDO_MATERNO = "" & dReader("APELLIDO_MATERNO")
-                    Me._CODIGO_SEXO = "" & dReader("CODIGO_SEXO")
-                    Me._FECHA_NACIMIENTO = dReader("FECHA_NACIMIENTO")
-                    Me._CODIGO_ESTADO_NACIMIENTO = "" & dReader("CODIGO_ESTADO_NACIMIENTO")
-                    Me._CODIGO_ESTADO_NACIMIENTO_NUMERICO = CInt("0" & dReader("CODIGO_ESTADO_NACIMIENTO_NUMERICO"))
-
-                    Me._CODIGO_AREA = "" & dReader("CODIGO_AREA")
-                    Me._CODIGO_PUESTO = "" & dReader("CODIGO_PUESTO")
-                    Me._CODIGO_PUNTO_PAGO = "" & dReader("CODIGO_PUNTO_PAGO")
-                    Me._NUMERO_REGISTRO_IMSS = "" & dReader("NUMERO_REGISTRO_IMSS")
-                    Me._SUELDO_DIARIO = "" & dReader("SUELDO_DIARIO")
-                    Me._ESTATUS_TRABAJADOR = "" & dReader("ESTATUS_TRABAJADOR")
-                    Me._RFC = "" & dReader("RFC")
-                    Me._CURP = "" & dReader("CURP")
-
-                    Me._DOMICILIO_CALLE = "" & dReader("DOMICILIO_CALLE")
-                    Me._DOMICILIO_NUMERO = "" & dReader("DOMICILIO_NUMERO")
-                    Me._DOMICILIO_COLONIA = "" & dReader("DOMICILIO_COLONIA")
-                    Me._DOMICILIO_CIUDAD = "" & dReader("DOMICILIO_CIUDAD")
-                    Me._DOMICILIO_LOCALIDAD = "" & dReader("DOMICILIO_LOCALIDAD")
-                    Me._DOMICILIO_CODIGO_ESTADO = "" & dReader("DOMICILIO_CODIGO_ESTADO")
-                    Me._DOMICILIO_CODIGO_POSTAL = "" & dReader("DOMICILIO_CODIGO_POSTAL")
-                    Me._RECIBE_PAGO_TARJETA_BANCARIA = "" & dReader("RECIBE_PAGO_TARJETA_BANCARIA")
-                    Me._NUMERO_TARJETA_BANCARIA = "" & dReader("NUMERO_TARJETA_BANCARIA")
-                    Me._CODIGO_BANCO_PAGO_TARJETA = "" & dReader("CODIGO_BANCO_PAGO_TARJETA")
-                    Me._NOMBRE_BANCO = "" & dReader("NOMBRE_BANCO")
-
-                    Me._CODIGO_UNIDAD_MEDICA_FAMILIAR = "" & dReader("CODIGO_UNIDAD_MEDICA_FAMILIAR")
-                    Me._NOMBRE_PADRE = "" & dReader("NOMBRE_PADRE")
-                    Me._NOMBRE_MADRE = "" & dReader("NOMBRE_MADRE")
-                    Me._CODIGO_MAYORDOMO = "" & dReader("CODIGO_MAYORDOMO")
-                    Me._NOMBRE_MAYORDOMO = "" & dReader("NOMBRE_MAYORDOMO")
-                    Me._AFILIABLE_IMSS = "" & dReader("AFILIABLE_IMSS")
-                    Me._FIJO_IMSS = "" & dReader("FIJO_IMSS")
-                    Me._CUENTA_CONTABLE = "" & dReader("CUENTA_CONTABLE")
-                    Me._CALCULA_SINDICATO = "" & dReader("CALCULA_SINDICATO")
-                    Me._FECHA_INGRESO = dReader("FECHA_INGRESO")
-                    Me._NUMERO_TRABAJADOR_BANCO = "" & dReader("NUMERO_TRABAJADOR_BANCO").ToString
-                    Me._NUMERO_CUENTA_BANCO = "" & dReader("NUMERO_CUENTA_BANCO").ToString
-
-                    If IsDBNull(dReader("ARCHIVO_FOTO")) = False Then
-                        Me._ARCHIVO_FOTO = CType(dReader("ARCHIVO_FOTO"), Byte())
-                    End If
-
-                    Consultar = True
-                End If
-                dReader.Close()
-            Catch ex As Exception
-                HandleError(Me.Nombre_Catalogo, "Consultar", ex)
-            Finally
-                Me._Conexion.Close()
-                cmd.Dispose()
-            End Try
-        End With
-
-    End Function        'Consulta un elemento del catálogo.
-
-    Public Function Insertar() As Boolean
+    Public Function Grabar(ByVal eAccion As Accion) As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -719,6 +598,7 @@ Public Class Class_CatTrabajadores
             .CommandText = "MP_NOMINA_CAT_TRABAJADORES_GRABA"
 
             sqlParametro = .Parameters.Add("@CODIGO_TRABAJADOR", SqlDbType.NVarChar, 10) : sqlParametro.Direction = ParameterDirection.InputOutput : sqlParametro.Value = Me._CODIGO_TRABAJADOR
+            sqlParametro = .Parameters.Add("@CODIGO_X_TEMPORADA", SqlDbType.NVarChar, 10) : sqlParametro.Direction = ParameterDirection.InputOutput : sqlParametro.Value = ""
             sqlParametro = .Parameters.Add("@ID_NOMINA_TEMPORADA", SqlDbType.SmallInt) : sqlParametro.Value = Me._ID_NOMINA_TEMPORADA
             sqlParametro = .Parameters.Add("@NOMBRE_TRABAJADOR", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_TRABAJADOR.ToUpper
             sqlParametro = .Parameters.Add("@APELLIDO_PATERNO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._APELLIDO_PATERNO.ToUpper
@@ -757,13 +637,16 @@ Public Class Class_CatTrabajadores
             sqlParametro = .Parameters.Add("@NUMERO_TRABAJADOR_BANCO", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._NUMERO_TRABAJADOR_BANCO.ToString.ToUpper
             sqlParametro = .Parameters.Add("@NUMERO_CUENTA_BANCO", SqlDbType.NVarChar, 18) : sqlParametro.Value = Me._NUMERO_CUENTA_BANCO.ToString.ToUpper
             sqlParametro = .Parameters.Add("ARCHIVO_FOTO", SqlDbType.Image) : sqlParametro.Value = IIf(Me._ARCHIVO_FOTO Is Nothing, DBNull.Value, Me._ARCHIVO_FOTO)
-            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "INSERTAR"
+
+            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = eAccion.ToString
+
             Try
 
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
                 Me._CODIGO_TRABAJADOR = "" & .Parameters("@CODIGO_TRABAJADOR").Value.ToString
-                Insertar = True
+                Me._CODIGO_X_TEMPORADA = "" & .Parameters("@CODIGO_X_TEMPORADA").Value.ToString
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "Insertar", ex)
             Finally
@@ -771,11 +654,126 @@ Public Class Class_CatTrabajadores
                 cmd.Dispose()
                 sqlParametro = Nothing
             End Try
-
         End With
-    End Function                          'Inserta un elemento al catálogo.
+        Return bResultado
+    End Function
+
+    Private Function ConsultarLocal(ByVal sSql As String) As Boolean
+        Dim bResultado As Boolean = False
+        Try
+            Dim cmd As New SqlCommand(Me._QuerySelect & sSql, Me._Conexion)
+            Dim dReader As SqlDataReader
+
+            With cmd
+                .CommandTimeout = 0
+                .CommandType = CommandType.Text
+                Try
+                    Me._Conexion.Open()
+                    dReader = .ExecuteReader()
+
+                    If dReader.Read = True Then
+                        Me._CODIGO_TRABAJADOR = "" & dReader("CODIGO_TRABAJADOR")
+                        Me._CODIGO_X_TEMPORADA = "" & dReader("CODIGO_X_TEMPORADA")
+                        Me._ID_NOMINA_TEMPORADA = dReader("ID_NOMINA_TEMPORADA")
+                        Me._NOMBRE_TRABAJADOR = "" & dReader("NOMBRE_TRABAJADOR")
+                        Me._APELLIDO_PATERNO = "" & dReader("APELLIDO_PATERNO")
+                        Me._APELLIDO_MATERNO = "" & dReader("APELLIDO_MATERNO")
+                        Me._CODIGO_SEXO = "" & dReader("CODIGO_SEXO")
+                        Me._FECHA_NACIMIENTO = dReader("FECHA_NACIMIENTO")
+                        Me._CODIGO_ESTADO_NACIMIENTO = "" & dReader("CODIGO_ESTADO_NACIMIENTO")
+                        Me._CODIGO_ESTADO_NACIMIENTO_NUMERICO = CInt("0" & dReader("CODIGO_ESTADO_NACIMIENTO_NUMERICO"))
+
+                        Me._CODIGO_AREA = "" & dReader("CODIGO_AREA")
+                        Me._CODIGO_PUESTO = "" & dReader("CODIGO_PUESTO")
+                        Me._CODIGO_PUNTO_PAGO = "" & dReader("CODIGO_PUNTO_PAGO")
+                        Me._NUMERO_REGISTRO_IMSS = "" & dReader("NUMERO_REGISTRO_IMSS")
+                        Me._SUELDO_DIARIO = "" & dReader("SUELDO_DIARIO")
+                        Me._ESTATUS_TRABAJADOR = "" & dReader("ESTATUS_TRABAJADOR")
+                        Me._RFC = "" & dReader("RFC")
+                        Me._CURP = "" & dReader("CURP")
+
+                        Me._DOMICILIO_CALLE = "" & dReader("DOMICILIO_CALLE")
+                        Me._DOMICILIO_NUMERO = "" & dReader("DOMICILIO_NUMERO")
+                        Me._DOMICILIO_COLONIA = "" & dReader("DOMICILIO_COLONIA")
+                        Me._DOMICILIO_CIUDAD = "" & dReader("DOMICILIO_CIUDAD")
+                        Me._DOMICILIO_LOCALIDAD = "" & dReader("DOMICILIO_LOCALIDAD")
+                        Me._DOMICILIO_CODIGO_ESTADO = "" & dReader("DOMICILIO_CODIGO_ESTADO")
+                        Me._DOMICILIO_CODIGO_POSTAL = "" & dReader("DOMICILIO_CODIGO_POSTAL")
+                        Me._RECIBE_PAGO_TARJETA_BANCARIA = "" & dReader("RECIBE_PAGO_TARJETA_BANCARIA")
+                        Me._NUMERO_TARJETA_BANCARIA = "" & dReader("NUMERO_TARJETA_BANCARIA")
+                        Me._CODIGO_BANCO_PAGO_TARJETA = "" & dReader("CODIGO_BANCO_PAGO_TARJETA")
+                        Me._NOMBRE_BANCO = "" & dReader("NOMBRE_BANCO")
+
+                        Me._CODIGO_UNIDAD_MEDICA_FAMILIAR = "" & dReader("CODIGO_UNIDAD_MEDICA_FAMILIAR")
+                        Me._NOMBRE_PADRE = "" & dReader("NOMBRE_PADRE")
+                        Me._NOMBRE_MADRE = "" & dReader("NOMBRE_MADRE")
+                        Me._CODIGO_MAYORDOMO = "" & dReader("CODIGO_MAYORDOMO")
+                        Me._NOMBRE_MAYORDOMO = "" & dReader("NOMBRE_MAYORDOMO")
+                        Me._AFILIABLE_IMSS = "" & dReader("AFILIABLE_IMSS")
+                        Me._FIJO_IMSS = "" & dReader("FIJO_IMSS")
+                        Me._CUENTA_CONTABLE = "" & dReader("CUENTA_CONTABLE")
+                        Me._CALCULA_SINDICATO = "" & dReader("CALCULA_SINDICATO")
+                        Me._FECHA_INGRESO = dReader("FECHA_INGRESO")
+                        Me._NUMERO_TRABAJADOR_BANCO = "" & dReader("NUMERO_TRABAJADOR_BANCO").ToString
+                        Me._NUMERO_CUENTA_BANCO = "" & dReader("NUMERO_CUENTA_BANCO").ToString
+
+                        If IsDBNull(dReader("ARCHIVO_FOTO")) = False Then
+                            Me._ARCHIVO_FOTO = CType(dReader("ARCHIVO_FOTO"), Byte())
+                        End If
+
+                        bResultado = True
+                    End If
+                    dReader.Close()
+                Catch ex As Exception
+                    HandleError(Me.Nombre_Catalogo, "Consultar", ex)
+                Finally
+                    Me._Conexion.Close()
+                    cmd.Dispose()
+                End Try
+            End With
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ConsultarLocal", ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Public Function Consultar(Optional ByVal sRegistroImss As String = "") As Boolean
+        Dim bResultado As Boolean = False
+        Try
+            Dim sSql As String = ""
+            If txtLEN(sRegistroImss) = True Then
+                Me._NUMERO_REGISTRO_IMSS = sRegistroImss
+                sSql = " WHERE T.NUMERO_REGISTRO_IMSS='" & sReplace(Me._NUMERO_REGISTRO_IMSS) & "' "
+            Else
+                sSql = " WHERE T.CODIGO_TRABAJADOR='" & sReplace(Me._CODIGO_TRABAJADOR) & "' "
+            End If
+
+            bResultado = Me.ConsultarLocal(sSql)
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "Consultar", ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Public Function ConsultarXTemporada() As Boolean
+        Dim bResultado As Boolean = False
+        Try
+            Dim sSql As String = ""
+            sSql = " WHERE T.CODIGO_X_TEMPORADA='" & sReplace(Me._CODIGO_X_TEMPORADA) & "' AND ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA.ToString
+
+            bResultado = Me.ConsultarLocal(sSql)
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ConsultarXTemporada", ex)
+        End Try
+
+        Return bResultado
+    End Function
 
     Public Function ActualizarUnidadMedica() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -791,7 +789,7 @@ Public Class Class_CatTrabajadores
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                ActualizarUnidadMedica = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "ActualizarUnidadMedica", ex)
             Finally
@@ -799,46 +797,46 @@ Public Class Class_CatTrabajadores
                 cmd.Dispose()
                 sqlParametro = Nothing
             End Try
-
         End With
+        Return bResultado
     End Function
 
     Public Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dsCat_Vendedores As New SqlDataAdapter("SELECT CODIGO_TRABAJADOR,NOMBRE_COMPLETO_APELLIDO FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA where CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString & "  ORDER BY NOMBRE_COMPLETO_APELLIDO", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_TRABAJADOR,NOMBRE_COMPLETO_APELLIDO FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA where CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString & "  ORDER BY NOMBRE_COMPLETO_APELLIDO", Me._Conexion)
         Try
-            dsCat_Vendedores.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
         Finally
-            dsCat_Vendedores.Dispose()
+            da.Dispose()
         End Try
         Return dTable
-    End Function    'Obtiene una lita completa de los elementos del catalogo en un datatable.
+    End Function
 
     Public Function ObtenerElementosFiltroTrabajador(ByVal Filtro As String) As System.Data.DataTable
         Dim dTable As New DataTable
 
-        Dim dA As New SqlDataAdapter("SELECT CODIGO_TRABAJADOR,NOMBRE_COMPLETO_APELLIDO FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA where CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString & " AND  NOMBRE_COMPLETO_APELLIDO LIKE '%" & Filtro.ToString & "%' ORDER BY NOMBRE_COMPLETO_APELLIDO", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_TRABAJADOR,NOMBRE_COMPLETO_APELLIDO FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA where CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString & " AND  NOMBRE_COMPLETO_APELLIDO LIKE '%" & Filtro.ToString & "%' ORDER BY NOMBRE_COMPLETO_APELLIDO", Me._Conexion)
         Try
-            dA.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementosFiltroTrabajador", ex)
         Finally
-            dA.Dispose()
+            da.Dispose()
         End Try
         Return dTable
     End Function
 
     Public Function ObtenerEstados() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dsCat_Estados As New SqlDataAdapter("SELECT CODIGO_ESTADO,NOMBRE_ESTADO FROM SIS_ESTADOS ORDER BY NOMBRE_ESTADO", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_ESTADO,NOMBRE_ESTADO FROM SIS_ESTADOS ORDER BY NOMBRE_ESTADO", Me._Conexion)
         Try
-            dsCat_Estados.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerEstados", ex)
         Finally
-            dsCat_Estados.Dispose()
+            da.Dispose()
         End Try
         Return dTable
     End Function
@@ -846,26 +844,26 @@ Public Class Class_CatTrabajadores
     Public Function ObtenerTemporadas() As System.Data.DataTable
         Dim dTable As New DataTable
         'Dim dsCat_Estados As New SqlDataAdapter("SELECT ID_NOMINA_TEMPORADA,NOMBRE_TEMPORADA FROM NOMINA_TEMPORADAS T INNER JOIN SIS_EMPRESA_NOMINA P ON(T.CODIGO_PLAZA=P.CODIGO_PLAZA) WHERE T.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND T.CODIGO_TEMPORADA=P.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA ", Me._Conexion)
-        Dim dsCat_Estados As New SqlDataAdapter("SELECT ID_NOMINA_TEMPORADA,NOMBRE_TEMPORADA FROM NOMINA_TEMPORADAS T INNER JOIN SIS_EMPRESA_NOMINA P ON(T.CODIGO_PLAZA=P.CODIGO_PLAZA) WHERE T.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " ORDER BY CODIGO_TEMPORADA DESC ", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT ID_NOMINA_TEMPORADA,NOMBRE_TEMPORADA FROM NOMINA_TEMPORADAS T INNER JOIN SIS_EMPRESA_NOMINA P ON(T.CODIGO_PLAZA=P.CODIGO_PLAZA) WHERE T.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " ORDER BY CODIGO_TEMPORADA DESC ", Me._Conexion)
         Try
-            dsCat_Estados.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerTemporadas", ex)
         Finally
-            dsCat_Estados.Dispose()
+            da.Dispose()
         End Try
         Return dTable
     End Function
 
     Public Function ObtenerSexos() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dsCat_Estados As New SqlDataAdapter("SELECT CODIGO_SEXO,NOMBRE_SEXO FROM CAT_SEXOS ORDER BY NOMBRE_SEXO", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_SEXO,NOMBRE_SEXO FROM CAT_SEXOS ORDER BY NOMBRE_SEXO", Me._Conexion)
         Try
-            dsCat_Estados.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerSexos", ex)
         Finally
-            dsCat_Estados.Dispose()
+            da.Dispose()
         End Try
         Return dTable
     End Function
@@ -1014,11 +1012,11 @@ Public Class Class_CatTrabajadores
 
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "ObtenerHistorialDeducciones", ex)
-        Finally
-
         End Try
-        ObtenerHistorialDeducciones = dt
+
+        Return dt
     End Function
 
 #End Region
+
 End Class
