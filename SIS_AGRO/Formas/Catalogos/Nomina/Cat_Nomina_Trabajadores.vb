@@ -83,9 +83,7 @@ Public Class Cat_Nomina_Trabajadores
     Private Sub tsbNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbNuevo.Click
         Me.Cambia_Estado(enumEstados.NUEVO)
 
-        Me.oTrabajadores.CodigoSiguiente()
-
-        Me.txtCodigoXTemporada.Text = String.Format("{0,5}", Me.oTrabajadores.CODIGO_TRABAJADOR.ToString).Replace(" ", "0")
+        Me.GeneraSiguienteCodigoTrabajador()
     End Sub
 
     Private Sub tsbEditar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbEditar.Click
@@ -667,7 +665,7 @@ Public Class Cat_Nomina_Trabajadores
 
     Private Function Grabar() As Boolean
         Dim bResultado As Boolean = False
-        Dim oElemento As New Class_CatTrabajadores
+        Dim oElemento As New Class_CatTrabajadores, oMayormodo As New Class_CatTrabajadores
         Try
             Dim sFoto As String = ""
 
@@ -677,6 +675,10 @@ Public Class Cat_Nomina_Trabajadores
 
             If Not (Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.EDICION) Then
                 Return False
+            End If
+
+            If txtLEN(Me.txtCodigoMayordomo.Text) = True Then
+                oMayormodo = New Class_CatTrabajadores(Me.txtCodigoMayordomo.Text, True)
             End If
 
             With oElemento
@@ -694,7 +696,13 @@ Public Class Cat_Nomina_Trabajadores
                 .CODIGO_PUNTO_PAGO = CInt(Me.cboPuntoPago.SelectedValue)
                 .RFC = Me.txtRfc.Text
                 .CURP = Me.txtCurp.Text
-                .CODIGO_MAYORDOMO = Me.txtCodigoMayordomo.Text
+
+                If txtLEN(Me.txtCodigoMayordomo.Text) = True Then
+                    .CODIGO_MAYORDOMO = oMayormodo.CODIGO_TRABAJADOR 'Recordemos que el usuario ve los codigos_x_temporada y nos unicos, por eso esta el objeto oMayordomo
+                Else
+                    .CODIGO_MAYORDOMO = ""
+                End If
+
                 .SUELDO_DIARIO = CDbl(Me.txtSueldo.Text)
                 .ESTATUS_TRABAJADOR = Strings.Left(Me.CboEstatus.Text, 1)
                 .RECIBE_PAGO_TARJETA_BANCARIA = Convert.ToInt32(Me.ckbPagoTarjeta.Checked).ToString
@@ -849,7 +857,7 @@ Public Class Cat_Nomina_Trabajadores
                     Me.cboArea.SelectedValue = .CODIGO_AREA
                     Me.cboPuesto.SelectedValue = .CODIGO_PUESTO
                     Me.cboPuntoPago.SelectedValue = .CODIGO_PUNTO_PAGO
-                    Me.txtCodigoMayordomo.Text = .CODIGO_MAYORDOMO
+                    Me.txtCodigoMayordomo.Text = .CODIGO_X_TEMPORADA_MAYORDOMO
                     Me.lblNombreMayordomo.Text = .NOMBRE_MAYORDOMO
                     Me.txtSueldo.Text = FormatImporteContable(valorNumerico(.SUELDO_DIARIO.ToString), True)
                     Me.txtRfc.Text = .RFC
@@ -1458,6 +1466,19 @@ Public Class Cat_Nomina_Trabajadores
     End Function
 #End Region
 
+    Private Sub GeneraSiguienteCodigoTrabajador()
+        Try
+            Me.oTrabajadores = New Class_CatTrabajadores
+            Me.oTrabajadores.CODIGO_PUNTO_PAGO = CInt(Me.cboPuntoPago.SelectedValue.ToString)
+            Me.oTrabajadores.CodigoSiguiente()
+
+            'Me.txtCodigoTrabajador.Text = String.Format("{0,5}", Me.oTrabajadores.CODIGO_TRABAJADOR.ToString).Replace(" ", "0")
+            Me.txtCodigoXTemporada.Text = Me.oTrabajadores.CODIGO_TRABAJADOR
+        Catch ex As Exception
+            HandleError(Me.Name, "GeneraSiguienteCodigoTrabajador", ex)
+        End Try
+    End Sub
+
 #End Region
 
 #Region "Eventos de objetos"
@@ -1614,8 +1635,8 @@ Public Class Cat_Nomina_Trabajadores
                     Exit Sub
                 End If
 
-                Dim sql As New Class_find("SELECT CODIGO_TRABAJADOR,NOMBRE_TRABAJADOR FROM NOMINA_CAT_TRABAJADORES T INNER JOIN NOMINA_CAT_PUESTOS P ON(T.CODIGO_PUESTO=P.CODIGO_PUESTO AND P.NOMBRE_PUESTO='MAYORDOMO') " &
-                                          "WHERE T.ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA.ToString & " AND CODIGO_TRABAJADOR='" & Me.txtCodigoMayordomo.Text & "'")
+                Dim sql As New Class_find("SELECT T.CODIGO_X_TEMPORADA,T.NOMBRE_TRABAJADOR FROM NOMINA_CAT_TRABAJADORES T INNER JOIN NOMINA_CAT_PUESTOS P ON(T.CODIGO_PUESTO=P.CODIGO_PUESTO AND P.NOMBRE_PUESTO='MAYORDOMO') " &
+                                          "WHERE T.ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA.ToString & " AND T.CODIGO_X_TEMPORADA='" & Me.txtCodigoMayordomo.Text & "'")
                 If sql.Result1 = "" Then
                     MsgBox("El código del mayordomo no existe, favor de verificar.", MsgBoxStyle.Exclamation, "Validación de código de mayordomo")
                     Me.lblNombreMayordomo.Text = ""
@@ -1750,10 +1771,7 @@ Public Class Cat_Nomina_Trabajadores
 
     Private Sub cboPuntoPago_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPuntoPago.SelectedIndexChanged
         If Me.Estado = enumEstados.NUEVO Then
-            Me.oTrabajadores.CODIGO_PUNTO_PAGO = CInt(Me.cboPuntoPago.SelectedValue)
-            Me.oTrabajadores.CodigoSiguiente()
-
-            Me.txtCodigoTrabajador.Text = String.Format("{0,5}", Me.oTrabajadores.CODIGO_TRABAJADOR.ToString).Replace(" ", "0")
+            Me.GeneraSiguienteCodigoTrabajador()
         End If
     End Sub
 

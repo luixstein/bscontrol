@@ -54,6 +54,7 @@ Public Class Class_CatTrabajadores
 #Region "Campos ligados a la tabla"
     Private _Existe As Boolean
     Private _NOMBRE_BANCO As String
+    Private _CODIGO_X_TEMPORADA_MAYORDOMO As String
     Private _NOMBRE_MAYORDOMO As String
 #End Region
 
@@ -405,12 +406,6 @@ Public Class Class_CatTrabajadores
         End Get
     End Property
 
-    Public ReadOnly Property NOMBRE_MAYORDOMO() As String
-        Get
-            Return Me._NOMBRE_MAYORDOMO
-        End Get
-    End Property
-
     Public Property CALCULA_SINDICATO() As String
         Get
             Return Me._CALCULA_SINDICATO
@@ -458,6 +453,18 @@ Public Class Class_CatTrabajadores
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
+    Public ReadOnly Property CODIGO_X_TEMPORADA_MAYORDOMO() As String
+        Get
+            Return Me._CODIGO_X_TEMPORADA_MAYORDOMO
+        End Get
+    End Property
+
+    Public ReadOnly Property NOMBRE_MAYORDOMO() As String
+        Get
+            Return Me._NOMBRE_MAYORDOMO
+        End Get
+    End Property
+
     Public ReadOnly Property NOMBRE_BANCO() As String
         Get
             Return Me._NOMBRE_BANCO
@@ -475,6 +482,7 @@ Public Class Class_CatTrabajadores
             Return Me._APELLIDO_PATERNO + " " + Me._APELLIDO_MATERNO + " " + Me._NOMBRE_TRABAJADOR
         End Get
     End Property
+
 #End Region
 
 #Region "Propiedades públicos"
@@ -527,7 +535,7 @@ Public Class Class_CatTrabajadores
         Me._Nombre_Reporte = "RPT_CATALOGO_NOMINA_TRABAJADORES"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "SELECT T.*,B.NOMBRE_BANCO,M.NOMBRE_TRABAJADOR NOMBRE_MAYORDOMO,E.CODIGO_ESTADO_NUMERICO CODIGO_ESTADO_NACIMIENTO_NUMERICO " &
+        Me._QuerySelect = "SELECT T.*,B.NOMBRE_BANCO,M.CODIGO_X_TEMPORADA CODIGO_X_TEMPORADA_MAYORDOMO,M.NOMBRE_TRABAJADOR NOMBRE_MAYORDOMO,E.CODIGO_ESTADO_NUMERICO CODIGO_ESTADO_NACIMIENTO_NUMERICO " &
         "FROM NOMINA_CAT_TRABAJADORES T " &
         "LEFT JOIN CAT_BANCOS B ON(T.CODIGO_BANCO_PAGO_TARJETA=B.CODIGO_BANCO) " &
         "LEFT JOIN NOMINA_CAT_TRABAJADORES M ON(T.CODIGO_MAYORDOMO=M.CODIGO_TRABAJADOR) " &
@@ -718,6 +726,7 @@ Public Class Class_CatTrabajadores
                         Me._NOMBRE_PADRE = "" & dReader("NOMBRE_PADRE").ToString
                         Me._NOMBRE_MADRE = "" & dReader("NOMBRE_MADRE").ToString
                         Me._CODIGO_MAYORDOMO = "" & dReader("CODIGO_MAYORDOMO").ToString
+                        Me._CODIGO_X_TEMPORADA_MAYORDOMO = "" & dReader("CODIGO_X_TEMPORADA_MAYORDOMO").ToString
                         Me._NOMBRE_MAYORDOMO = "" & dReader("NOMBRE_MAYORDOMO").ToString
                         Me._AFILIABLE_IMSS = "" & dReader("AFILIABLE_IMSS").ToString
                         Me._FIJO_IMSS = "" & dReader("FIJO_IMSS").ToString
@@ -899,8 +908,8 @@ Public Class Class_CatTrabajadores
         f.sCampo = "CODIGO_TRABAJADOR"
         f.sOrder = "NOMBRE_COMPLETO_APELLIDO"
         f.sTable = "VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA"
-        f.sQl = "SELECT CODIGO_X_TEMPORADA,NOMBRE_COMPLETO_APELLIDO FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA WHERE CODIGO_PLAZA=" & Usuario.Codigo_Plaza.ToString &
-            " AND ID_NOMINA_TEMPORADA = " & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA & " AND "
+        f.sQl = "SELECT CODIGO_X_TEMPORADA,NOMBRE_COMPLETO_APELLIDO FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA " &
+            " WHERE ID_NOMINA_TEMPORADA = " & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA & " AND "
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -920,8 +929,8 @@ Public Class Class_CatTrabajadores
         f.sCampo = "NOMBRE_COMPLETO_NOMBRE"
         f.sOrder = "NOMBRE_COMPLETO_NOMBRE"
         f.sTable = "VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA"
-        f.sQl = "SELECT CODIGO_X_TEMPORADA,NOMBRE_COMPLETO_NOMBRE FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA WHERE CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString &
-            " AND ID_NOMINA_TEMPORADA = " & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA & " AND "
+        f.sQl = "SELECT CODIGO_X_TEMPORADA,NOMBRE_COMPLETO_NOMBRE FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA " &
+            " WHERE ID_NOMINA_TEMPORADA = " & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA & " AND "
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -941,8 +950,8 @@ Public Class Class_CatTrabajadores
         f.sCampo = "NOMBRE_COMPLETO_APELLIDO"
         f.sOrder = "NOMBRE_COMPLETO_APELLIDO"
         f.sTable = "VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA"
-        f.sQl = "SELECT CODIGO_X_TEMPORADA,NOMBRE_COMPLETO_APELLIDO FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA WHERE CODIGO_PUNTO_PAGO=" & iPuntoPago.ToString & " And CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString &
-            " AND ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA & " AND "
+        f.sQl = "SELECT CODIGO_X_TEMPORADA,NOMBRE_COMPLETO_APELLIDO FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA " &
+            " WHERE ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA & " AND CODIGO_PUNTO_PAGO=" & iPuntoPago.ToString & " "
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -962,9 +971,9 @@ Public Class Class_CatTrabajadores
         f.sCampo = "NOMBRE_TRABAJADOR"
         f.sOrder = "NOMBRE_TRABAJADOR"
         f.sTable = "NOMINA_CAT_TRABAJADORES"
-        f.sQl = "SELECT CODIGO_X_TEMPORADA,NOMBRE_TRABAJADOR FROM NOMINA_CAT_TRABAJADORES T " &
-        "INNER JOIN NOMINA_CAT_PUESTOS P ON(T.CODIGO_PUESTO=P.CODIGO_PUESTO AND P.NOMBRE_PUESTO='MAYORDOMO') " &
-        "WHERE T.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString & " AND T.ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA.ToString & " AND "
+        f.sQl = "SELECT CODIGO_X_TEMPORADA,NOMBRE_COMPLETO_APELLIDO FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA T " &
+            "INNER JOIN NOMINA_CAT_PUESTOS P ON(T.CODIGO_PUESTO=P.CODIGO_PUESTO And P.NOMBRE_PUESTO='MAYORDOMO') " &
+            "WHERE T.ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA.ToString & " AND "
         f.Inicia("")
         f.ShowDialog()
         Try
