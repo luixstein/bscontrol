@@ -680,29 +680,32 @@ Enter:
                 If Me.Estado = enumEstados.NUEVO Then
                     If .Insertar() = False Then
                         MsgBox("Error al tratar de insertar la hoja.", MsgBoxStyle.Exclamation, Me.Text)
-                        Exit Function
+                        Return False
                     End If
                 Else
                     If .Actualizar(IIf(Me.ModoPercepcion = enumModoPercepcion.PERCECION, "1", "0").ToString) = False Then
                         MsgBox("Error al tratar de actualizar la hoja.", MsgBoxStyle.Exclamation, Me.Text)
-                        Exit Function
+                        Return False
                     End If
                 End If
+
+                Dim oTrabajador As Class_CatTrabajadores
 
                 'se graba el detalle
                 If Me.ModoPercepcion = enumModoPercepcion.PERCECION Then
                     For i = 1 To Me.GridPercepciones.Rows - 1
                         If txtLEN(Me.GridPercepciones.Cell(i, Me.igyCodigo).Text) = True And valorNumerico(Me.GridPercepciones.Cell(i, Me.igyImporte).Text) > 0 Then
+                            oTrabajador = New Class_CatTrabajadores(Me.GridPercepciones.Cell(i, Me.igyCodigo).Text, True)
                             .oHojaPercepcion.ID_NOMINA_PERCEPCION = 0
                             .oHojaPercepcion.ID_NOMINA_HOJA = .ID_NOMINA_HOJA
-                            .oHojaPercepcion.CODIGO_TRABAJADOR = Me.GridPercepciones.Cell(i, Me.igyCodigo).Text.ToUpper()
+                            .oHojaPercepcion.CODIGO_TRABAJADOR = oTrabajador.CODIGO_TRABAJADOR
                             .oHojaPercepcion.PERCEPCION = valorNumerico(Me.GridPercepciones.Cell(i, Me.igyImporte).Text)
                             .oHojaPercepcion.CODIGO_PERCEPCION = 1
                             .oHojaPercepcion.CAJAS_CORTADAS = valorNumerico(Me.GridPercepciones.Cell(i, Me.igyCajasCortadas).Text)
 
                             If .oHojaPercepcion.GrabaDetallePercepcion("INSERTAR") = False Then
                                 MsgBox("Error al tratar de grabar el detalle de la hoja.", MsgBoxStyle.Exclamation, Me.Text)
-                                Exit Function
+                                Return False
                             End If
                         End If
                     Next
@@ -714,13 +717,14 @@ Enter:
                             If txtLEN(sql.Result1) = True Then
                                 Dim oDeducciones As New Class_NominaDeduccionesGlobal(CInt(sql.Result1))
                                 If oDeducciones.EliminaDeduccion() = False Then
-                                    Exit Function
+                                    Return False
                                 End If
                             End If
                         End If
                         If txtLEN(Me.GridPercepciones.Cell(i, Me.igyCodigo).Text) = True Then
+                            oTrabajador = New Class_CatTrabajadores(Me.GridPercepciones.Cell(i, Me.igyCodigo).Text, True)
                             .oHojaPercepcion.ID_NOMINA_HOJA = .ID_NOMINA_HOJA
-                            .oHojaPercepcion.CODIGO_TRABAJADOR = Me.GridPercepciones.Cell(i, Me.igyCodigo).Text.ToUpper()
+                            .oHojaPercepcion.CODIGO_TRABAJADOR = oTrabajador.CODIGO_TRABAJADOR
                             .oHojaPercepcion.PERCEPCION = valorNumerico(Me.GridPercepciones.Cell(i, Me.igyImporte).Text)
                             .oHojaPercepcion.CODIGO_PERCEPCION = CInt(Me.GridPercepciones.Cell(i, Me.igyCodigoPercepcion).Text)
                             .oHojaPercepcion.CAJAS_CORTADAS = 0 'Es 0 porque ni esta visible esta columna en este modo
@@ -729,13 +733,13 @@ Enter:
                                 .oHojaPercepcion.ID_NOMINA_PERCEPCION = CInt(Me.GridPercepciones.Cell(i, Me.igyIdNominaPercepcion).Text)
                                 If .oHojaPercepcion.GrabaDetallePercepcion("ACTUALIZAR") = False Then
                                     MsgBox("Error al tratar de grabar el detalle de la hoja.", MsgBoxStyle.Exclamation, Me.Text)
-                                    Exit Function
+                                    Return False
                                 End If
                             Else
                                 .oHojaPercepcion.ID_NOMINA_PERCEPCION = 0
                                 If .oHojaPercepcion.GrabaDetallePercepcion("INSERTAR") = False Then
                                     MsgBox("Error al tratar de grabar el detalle de la hoja.", MsgBoxStyle.Exclamation, Me.Text)
-                                    Exit Function
+                                    Return False
                                 End If
                             End If
 
@@ -795,11 +799,23 @@ Enter:
 
                 dTabla = Me.oHoja.ObtenerDetalle
                 Me.GridPercepciones.Rows = 1
+
+                'Private igyCodigo As Short = 1
+                'Private igyDescripcion As Short = 2
+                'Private igyPercepcion As Short = 3
+                'Private igyCodigoPercepcion As Short = 4
+                'Private igyRembolsable As Short = 5
+                'Private igyImporte As Short = 6
+                'Private igyIdNominaPercepcion As Short = 7
+                'Private igyConfirmar As Short = 8
+                'Private igyJornales As Short = 9
+                'Private igyCajasCortadas As Short = 10
+
                 For Each dRow As DataRow In dTabla.Rows
-                    Me.GridPercepciones.AddItem(dRow(0).ToString & Chr(9) & dRow(1).ToString & " " & dRow(2).ToString & " " & dRow(3).ToString & Chr(9) & _
-                                                dRow(4).ToString & Chr(9) & dRow(5).ToString & Chr(9) & dRow(6).ToString & Chr(9) & _
-                                                dRow(7).ToString & Chr(9) & dRow(8).ToString & Chr(9) & dRow(9).ToString & Chr(9) & _
-                                                dRow(10).ToString & Chr(9) & dRow(11).ToString & Chr(9))
+                    Me.GridPercepciones.AddItem(dRow("CODIGO_X_TEMPORADA").ToString & Chr(9) & dRow("NOMBRE_TRABAJADOR").ToString & " " & dRow("APELLIDO_PATERNO").ToString & " " & dRow("APELLIDO_MATERNO").ToString & Chr(9) &
+                                                dRow("NOMBRE").ToString & Chr(9) & dRow("CODIGO_PERCEPCION").ToString & Chr(9) & dRow("REEMBOLSABLE").ToString & Chr(9) &
+                                                dRow("PERCEPCION").ToString & Chr(9) & dRow("ID_NOMINA_PERCEPCION").ToString & Chr(9) & dRow("CONFIRMAR").ToString & Chr(9) &
+                                                dRow("JORNALES").ToString & Chr(9) & dRow("CAJAS_CORTADAS").ToString & Chr(9))
                 Next
                 dTabla.Dispose()
 
@@ -810,7 +826,7 @@ Enter:
                 Me.GridPercepciones.Rows = 2
             End If
 
-            Me.tssElaboro.Text = "Ultima modificación : " & Format(Me.oHoja.FECHA_SERVIDOR, "dd/MMM/yyyy hh:mm tt") & " por " & Me.oHoja.NOMBRE_USUARIO_GRABO.ToString
+            Me.tssElaboro.Text = "Ultima modificación :  " & Format(Me.oHoja.FECHA_SERVIDOR, "dd/MMM/yyyy hh:mm tt") & " por " & Me.oHoja.NOMBRE_USUARIO_GRABO.ToString
             Me.Cambia_Estado(enumEstados.GRABADO)
 
             If Me.oSemana.NOMINA_GENERADA = "1" Then
@@ -1103,7 +1119,7 @@ Enter:
     '            If txtLEN(Me.GridPercepciones.Cell(i, Me.igyCodigo).Text) = True And valorNumerico(Me.GridPercepciones.Cell(i, Me.igyImporte).Text) > 0 Then
     '                StrCod = Me.GridPercepciones.Cell(i, Me.igyCodigo).Text
     '                dPercepcion = valorNumerico(Me.GridPercepciones.Cell(i, Me.igyImporte).Text)
-    '                oTrabajadores = New Class_CatTrabajadores(StrCod)
+    '                oTrabajadores = New Class_CatTrabajadores(StrCod,true)
     '                If oTrabajadores.Existe = False Then
     '                    Me.GridPercepciones.Cell(Renglon, Me.igyCodigo).Text = ""
     '                    'GoTo BuscaTrabajadores
@@ -1430,8 +1446,6 @@ BuscaTrabajadores:
 
                     oFormaDeducciones.CboSemana.Text = Me.txtSemana.Text
                     oFormaDeducciones.txtCodigoTrabajador.Text = sCodigoTrabajador
-                    Dim oTrabajador As New Class_CatTrabajadores(sCodigoTrabajador, True)
-                    oFormaDeducciones.lblNombreTrabajador.Text = oTrabajador.NOMBRE_TRABAJADOR + " " + oTrabajador.APELLIDO_PATERNO + " " + oTrabajador.APELLIDO_MATERNO
 
                     If txtLEN(Me.GridPercepciones.Cell(i, Me.igyIdNominaPercepcion).Text) = True Then
                         If Me.Estado = enumEstados.NUEVO Then
@@ -1455,6 +1469,7 @@ BuscaTrabajadores:
                         End If
                     Else
                         oFormaDeducciones.ID_NOMINA_PERCEPCION = 0
+                        oFormaDeducciones.ConsultarTrabajador()
                     End If
 
                     oFormaDeducciones.LblId_Percepcion.Text = Me.GridPercepciones.Cell(iRenglon, Me.igyIdNominaPercepcion).Text

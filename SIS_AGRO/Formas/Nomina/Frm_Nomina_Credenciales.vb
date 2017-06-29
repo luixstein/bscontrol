@@ -1,6 +1,6 @@
-﻿Imports System.Data.SqlClient
-Imports CrystalDecisions.ReportSource
-Imports CrystalDecisions.CrystalReports.Engine
+﻿Option Strict On
+
+Imports System.Data.SqlClient
 Imports System.IO
 
 Public Class Frm_Nomina_Credenciales
@@ -83,7 +83,7 @@ Public Class Frm_Nomina_Credenciales
                     Exit Sub
                 End If
 
-                oTrabajador = New Class_CatTrabajadores(Me.txtCodigoTrabajador1.Text)
+                oTrabajador = New Class_CatTrabajadores(Me.txtCodigoTrabajador1.Text, True)
                 If oTrabajador.Existe = True Then
                     Me.txtCodigoTrabajador2.Focus()
                     Me.ImprimirCreedenciales()
@@ -112,7 +112,7 @@ Public Class Frm_Nomina_Credenciales
                     Exit Sub
                 End If
 
-                oTrabajador = New Class_CatTrabajadores(Me.txtCodigoTrabajador2.Text)
+                oTrabajador = New Class_CatTrabajadores(Me.txtCodigoTrabajador2.Text, True)
                 If oTrabajador.Existe = True Then
                     Me.txtCodigoTrabajador3.Focus()
                     Me.ImprimirCreedenciales()
@@ -141,7 +141,7 @@ Public Class Frm_Nomina_Credenciales
                     Exit Sub
                 End If
 
-                oTrabajador = New Class_CatTrabajadores(Me.txtCodigoTrabajador3.Text)
+                oTrabajador = New Class_CatTrabajadores(Me.txtCodigoTrabajador3.Text, True)
                 If oTrabajador.Existe = True Then
                     Me.txtCodigoTrabajador4.Focus()
                     Me.ImprimirCreedenciales()
@@ -170,7 +170,7 @@ Public Class Frm_Nomina_Credenciales
                     Exit Sub
                 End If
 
-                oTrabajador = New Class_CatTrabajadores(Me.txtCodigoTrabajador4.Text)
+                oTrabajador = New Class_CatTrabajadores(Me.txtCodigoTrabajador4.Text, True)
                 If oTrabajador.Existe = True Then
                     Me.ImprimirCreedenciales()
                 Else
@@ -180,59 +180,66 @@ Public Class Frm_Nomina_Credenciales
     End Sub
 
     Private Sub ImprimirCreedenciales()
-        Dim x As New dsTrabajadores
-        Dim oTemporada As New Class_NominaTemporada
-        oTemporada.Consultar()
+        Try
+            Dim x As New dsTrabajadores
+            Dim oTemporada As New Class_NominaTemporada
+            oTemporada.Consultar()
 
-        Dim _Conexion As New SqlConnection(Empresa_Sistema.conexion)
+            Dim _Conexion As New SqlConnection(Empresa_Sistema.conexion)
 
-        Dim sql As String = "SELECT " & _
-        "DBO.FN_SIS_EMPRESA_NOMBRE_RAZON_SOCIAL() AS EMPRESA_NOMBRE,DBO.FN_SIS_EMPRESA_DOMICILIO() AS EMPRESA_DOMICILIO,   " & _
-        "DBO.FN_SIS_EMPRESA_CIUDAD() AS EMPRESA_CIUDAD,DBO.FN_SIS_EMPRESA_ESTADO() AS EMPRESA_ESTADO, " & _
-        "DBO.FN_SIS_EMPRESA_RFC() AS EMPRESA_RFC,DBO.FN_SIS_EMPRESA_TELEFONO() AS EMPRESA_TELEFONO,  " & _
-        "T.CODIGO_TRABAJADOR,T.NOMBRE_COMPLETO_NOMBRE,T.NOMBRE_TEMPORADA, " & _
-        "T.CODIGO_SEXO, T.NOMBRE_SEXO, T.FECHA_NACIMIENTO, DATEDIFF(DAY,T.FECHA_NACIMIENTO,GETDATE())/365 EDAD, " & _
-        "T.NUMERO_REGISTRO_IMSS, T.RFC, T.CURP,T.CODIGO_ESTADO_NACIMIENTO, T.NOMBRE_ESTADO, " & _
-        "T.CODIGO_PUESTO, T.NOMBRE_PUESTO, T.CODIGO_PUNTO_PAGO, T.NOMBRE_PUNTO_PAGO,'" & _
-        oTemporada.NOMBRE_TEMPORADA.ToString & "' TEMPORADA_ACTUAL " & _
-        "FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA T " & _
-        "WHERE T.CODIGO_TRABAJADOR IN('" & Me.txtCodigoTrabajador1.Text & "','" & Me.txtCodigoTrabajador2.Text & "','" & Me.txtCodigoTrabajador3.Text & "','" & Me.txtCodigoTrabajador4.Text & "') " & _
-        "ORDER BY CODIGO_TRABAJADOR"
+            Dim sql As String = "SELECT " &
+            "DBO.FN_SIS_EMPRESA_NOMBRE_RAZON_SOCIAL() AS EMPRESA_NOMBRE,DBO.FN_SIS_EMPRESA_DOMICILIO() AS EMPRESA_DOMICILIO,   " &
+            "DBO.FN_SIS_EMPRESA_CIUDAD() AS EMPRESA_CIUDAD,DBO.FN_SIS_EMPRESA_ESTADO() AS EMPRESA_ESTADO, " &
+            "DBO.FN_SIS_EMPRESA_RFC() AS EMPRESA_RFC,DBO.FN_SIS_EMPRESA_TELEFONO() AS EMPRESA_TELEFONO,  " &
+            "T.CODIGO_TRABAJADOR,T.NOMBRE_COMPLETO_NOMBRE,T.NOMBRE_TEMPORADA, " &
+            "T.CODIGO_SEXO, T.NOMBRE_SEXO, T.FECHA_NACIMIENTO, DATEDIFF(DAY,T.FECHA_NACIMIENTO,GETDATE())/365 EDAD, " &
+            "T.NUMERO_REGISTRO_IMSS, T.RFC, T.CURP,T.CODIGO_ESTADO_NACIMIENTO, T.NOMBRE_ESTADO, " &
+            "T.CODIGO_PUESTO, T.NOMBRE_PUESTO, T.CODIGO_PUNTO_PAGO, T.NOMBRE_PUNTO_PAGO,'" &
+            oTemporada.NOMBRE_TEMPORADA.ToString & "' TEMPORADA_ACTUAL " &
+            "FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA T " &
+            "WHERE T.CODIGO_X_TEMPORADA IN('" & Me.txtCodigoTrabajador1.Text & "','" & Me.txtCodigoTrabajador2.Text & "','" & Me.txtCodigoTrabajador3.Text & "','" & Me.txtCodigoTrabajador4.Text & "') " &
+            "AND T.ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA.ToString & " " &
+            "ORDER BY CODIGO_TRABAJADOR"
+            'Nota en este caso no se uso 4 veces la clase de trabajado instanciada que es x temporada  , en vez de eso se forzó a ligar con temporada para tener el mismo efecto.
 
-        Dim da As New SqlDataAdapter(sql, _Conexion)
-        da.Fill(x, x.Tables(0).TableName)
+            Dim da As New SqlDataAdapter(sql, _Conexion)
+            da.Fill(x, x.Tables(0).TableName)
 
-        Dim dt As New DataTable
-        da.Fill(dt)
-        Dim i As Integer = 0
-        Dim PathArchivo As String
-        Dim im As System.Drawing.Image
-        Dim ms As MemoryStream
+            Dim dt As New DataTable
+            da.Fill(dt)
+            Dim i As Integer = 0
+            Dim PathArchivo As String
+            Dim im As System.Drawing.Image
+            Dim ms As MemoryStream
 
-        For Each drow As DataRow In dt.Rows
-            PathArchivo = Plaza.oSisPlazaNomina.NOMINA_RUTA_FOTOS_TRABAJADORES.ToString & "\" & drow(6).ToString & ".jpg"
-            If isExisteArchivo(PathArchivo) = True Then
-                Dim sPathNew As String = Path.ChangeExtension(PathArchivo, "jpg")
-                FileSystem.Rename(PathArchivo, sPathNew)
+            For Each drow As DataRow In dt.Rows
+                PathArchivo = Plaza.oSisPlazaNomina.NOMINA_RUTA_FOTOS_TRABAJADORES.ToString & "\" & drow(6).ToString & ".jpg"
+                If isExisteArchivo(PathArchivo) = True Then
+                    Dim sPathNew As String = Path.ChangeExtension(PathArchivo, "jpg")
+                    FileSystem.Rename(PathArchivo, sPathNew)
 
-                Application.DoEvents()
+                    Application.DoEvents()
 
-                im = Image.FromFile(PathArchivo)
-                ms = New MemoryStream
-                im.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg)
-                x.Tables(0)(i)("IMAGEN") = ms.ToArray
-                im.Dispose()
-                ms.Dispose()
-                im = Nothing
-                ms = Nothing
-            End If
-            i = i + 1
-        Next
+                    im = Image.FromFile(PathArchivo)
+                    ms = New MemoryStream
+                    im.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg)
+                    x.Tables(0)(i)("IMAGEN") = ms.ToArray
+                    im.Dispose()
+                    ms.Dispose()
+                    im = Nothing
+                    ms = Nothing
+                End If
+                i = i + 1
+            Next
 
-        x.AcceptChanges()
+            x.AcceptChanges()
 
-        Dim rpt As New rptCredenciales()
-        rpt.SetDataSource(x)
-        CrystalReportViewer1.ReportSource = rpt
+            Dim rpt As New rptCredenciales()
+            rpt.SetDataSource(x)
+            CrystalReportViewer1.ReportSource = rpt
+
+        Catch ex As Exception
+            HandleError(Me.Name, "ImprimirCreedenciales", ex)
+        End Try
     End Sub
 End Class

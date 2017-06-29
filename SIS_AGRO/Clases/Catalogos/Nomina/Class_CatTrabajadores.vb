@@ -1,4 +1,5 @@
-﻿Imports System.Data
+﻿Option Strict On
+
 Imports System.Data.SqlClient
 Imports CrystalDecisions.CrystalReports.Engine
 
@@ -462,6 +463,18 @@ Public Class Class_CatTrabajadores
             Return Me._NOMBRE_BANCO
         End Get
     End Property
+
+    Public ReadOnly Property NOMBRE_COMPLETO_NOMBRE() As String
+        Get
+            Return Me._NOMBRE_TRABAJADOR + " " + Me._APELLIDO_PATERNO + " " + Me._APELLIDO_MATERNO
+        End Get
+    End Property
+
+    Public ReadOnly Property NOMBRE_COMPLETO_APELLIDO() As String
+        Get
+            Return Me._APELLIDO_PATERNO + " " + Me._APELLIDO_MATERNO + " " + Me._NOMBRE_TRABAJADOR
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedades públicos"
@@ -669,48 +682,48 @@ Public Class Class_CatTrabajadores
                     dReader = .ExecuteReader()
 
                     If dReader.Read = True Then
-                        Me._CODIGO_TRABAJADOR = "" & dReader("CODIGO_TRABAJADOR")
-                        Me._CODIGO_X_TEMPORADA = "" & dReader("CODIGO_X_TEMPORADA")
-                        Me._ID_NOMINA_TEMPORADA = dReader("ID_NOMINA_TEMPORADA")
-                        Me._NOMBRE_TRABAJADOR = "" & dReader("NOMBRE_TRABAJADOR")
-                        Me._APELLIDO_PATERNO = "" & dReader("APELLIDO_PATERNO")
-                        Me._APELLIDO_MATERNO = "" & dReader("APELLIDO_MATERNO")
-                        Me._CODIGO_SEXO = "" & dReader("CODIGO_SEXO")
-                        Me._FECHA_NACIMIENTO = dReader("FECHA_NACIMIENTO")
-                        Me._CODIGO_ESTADO_NACIMIENTO = "" & dReader("CODIGO_ESTADO_NACIMIENTO")
-                        Me._CODIGO_ESTADO_NACIMIENTO_NUMERICO = CInt("0" & dReader("CODIGO_ESTADO_NACIMIENTO_NUMERICO"))
+                        Me._CODIGO_TRABAJADOR = "" & dReader("CODIGO_TRABAJADOR").ToString
+                        Me._CODIGO_X_TEMPORADA = "" & dReader("CODIGO_X_TEMPORADA").ToString
+                        Me._ID_NOMINA_TEMPORADA = CInt(dReader("ID_NOMINA_TEMPORADA"))
+                        Me._NOMBRE_TRABAJADOR = "" & dReader("NOMBRE_TRABAJADOR").ToString
+                        Me._APELLIDO_PATERNO = "" & dReader("APELLIDO_PATERNO").ToString
+                        Me._APELLIDO_MATERNO = "" & dReader("APELLIDO_MATERNO").ToString
+                        Me._CODIGO_SEXO = "" & dReader("CODIGO_SEXO").ToString
+                        Me._FECHA_NACIMIENTO = CDate(dReader("FECHA_NACIMIENTO"))
+                        Me._CODIGO_ESTADO_NACIMIENTO = "" & dReader("CODIGO_ESTADO_NACIMIENTO").ToString
+                        Me._CODIGO_ESTADO_NACIMIENTO_NUMERICO = dReader("CODIGO_ESTADO_NACIMIENTO_NUMERICO").ToString
 
-                        Me._CODIGO_AREA = "" & dReader("CODIGO_AREA")
-                        Me._CODIGO_PUESTO = "" & dReader("CODIGO_PUESTO")
-                        Me._CODIGO_PUNTO_PAGO = "" & dReader("CODIGO_PUNTO_PAGO")
-                        Me._NUMERO_REGISTRO_IMSS = "" & dReader("NUMERO_REGISTRO_IMSS")
-                        Me._SUELDO_DIARIO = "" & dReader("SUELDO_DIARIO")
-                        Me._ESTATUS_TRABAJADOR = "" & dReader("ESTATUS_TRABAJADOR")
-                        Me._RFC = "" & dReader("RFC")
-                        Me._CURP = "" & dReader("CURP")
+                        Me._CODIGO_AREA = CInt("" & dReader("CODIGO_AREA").ToString)
+                        Me._CODIGO_PUESTO = CInt("" & dReader("CODIGO_PUESTO").ToString)
+                        Me._CODIGO_PUNTO_PAGO = CInt("" & dReader("CODIGO_PUNTO_PAGO").ToString)
+                        Me._NUMERO_REGISTRO_IMSS = "" & dReader("NUMERO_REGISTRO_IMSS").ToString.ToString
+                        Me._SUELDO_DIARIO = CDec(dReader("SUELDO_DIARIO"))
+                        Me._ESTATUS_TRABAJADOR = "" & dReader("ESTATUS_TRABAJADOR").ToString
+                        Me._RFC = "" & dReader("RFC").ToString
+                        Me._CURP = "" & dReader("CURP").ToString
 
-                        Me._DOMICILIO_CALLE = "" & dReader("DOMICILIO_CALLE")
-                        Me._DOMICILIO_NUMERO = "" & dReader("DOMICILIO_NUMERO")
-                        Me._DOMICILIO_COLONIA = "" & dReader("DOMICILIO_COLONIA")
-                        Me._DOMICILIO_CIUDAD = "" & dReader("DOMICILIO_CIUDAD")
-                        Me._DOMICILIO_LOCALIDAD = "" & dReader("DOMICILIO_LOCALIDAD")
-                        Me._DOMICILIO_CODIGO_ESTADO = "" & dReader("DOMICILIO_CODIGO_ESTADO")
-                        Me._DOMICILIO_CODIGO_POSTAL = "" & dReader("DOMICILIO_CODIGO_POSTAL")
-                        Me._RECIBE_PAGO_TARJETA_BANCARIA = "" & dReader("RECIBE_PAGO_TARJETA_BANCARIA")
-                        Me._NUMERO_TARJETA_BANCARIA = "" & dReader("NUMERO_TARJETA_BANCARIA")
-                        Me._CODIGO_BANCO_PAGO_TARJETA = "" & dReader("CODIGO_BANCO_PAGO_TARJETA")
-                        Me._NOMBRE_BANCO = "" & dReader("NOMBRE_BANCO")
+                        Me._DOMICILIO_CALLE = "" & dReader("DOMICILIO_CALLE").ToString
+                        Me._DOMICILIO_NUMERO = "" & dReader("DOMICILIO_NUMERO").ToString
+                        Me._DOMICILIO_COLONIA = "" & dReader("DOMICILIO_COLONIA").ToString
+                        Me._DOMICILIO_CIUDAD = "" & dReader("DOMICILIO_CIUDAD").ToString
+                        Me._DOMICILIO_LOCALIDAD = "" & dReader("DOMICILIO_LOCALIDAD").ToString
+                        Me._DOMICILIO_CODIGO_ESTADO = "" & dReader("DOMICILIO_CODIGO_ESTADO").ToString
+                        Me._DOMICILIO_CODIGO_POSTAL = "" & dReader("DOMICILIO_CODIGO_POSTAL").ToString
+                        Me._RECIBE_PAGO_TARJETA_BANCARIA = "" & dReader("RECIBE_PAGO_TARJETA_BANCARIA").ToString
+                        Me._NUMERO_TARJETA_BANCARIA = "" & dReader("NUMERO_TARJETA_BANCARIA").ToString
+                        Me._CODIGO_BANCO_PAGO_TARJETA = "" & dReader("CODIGO_BANCO_PAGO_TARJETA").ToString
+                        Me._NOMBRE_BANCO = "" & dReader("NOMBRE_BANCO").ToString
 
-                        Me._CODIGO_UNIDAD_MEDICA_FAMILIAR = "" & dReader("CODIGO_UNIDAD_MEDICA_FAMILIAR")
-                        Me._NOMBRE_PADRE = "" & dReader("NOMBRE_PADRE")
-                        Me._NOMBRE_MADRE = "" & dReader("NOMBRE_MADRE")
-                        Me._CODIGO_MAYORDOMO = "" & dReader("CODIGO_MAYORDOMO")
-                        Me._NOMBRE_MAYORDOMO = "" & dReader("NOMBRE_MAYORDOMO")
-                        Me._AFILIABLE_IMSS = "" & dReader("AFILIABLE_IMSS")
-                        Me._FIJO_IMSS = "" & dReader("FIJO_IMSS")
-                        Me._CUENTA_CONTABLE = "" & dReader("CUENTA_CONTABLE")
-                        Me._CALCULA_SINDICATO = "" & dReader("CALCULA_SINDICATO")
-                        Me._FECHA_INGRESO = dReader("FECHA_INGRESO")
+                        Me._CODIGO_UNIDAD_MEDICA_FAMILIAR = "" & dReader("CODIGO_UNIDAD_MEDICA_FAMILIAR").ToString
+                        Me._NOMBRE_PADRE = "" & dReader("NOMBRE_PADRE").ToString
+                        Me._NOMBRE_MADRE = "" & dReader("NOMBRE_MADRE").ToString
+                        Me._CODIGO_MAYORDOMO = "" & dReader("CODIGO_MAYORDOMO").ToString
+                        Me._NOMBRE_MAYORDOMO = "" & dReader("NOMBRE_MAYORDOMO").ToString
+                        Me._AFILIABLE_IMSS = "" & dReader("AFILIABLE_IMSS").ToString
+                        Me._FIJO_IMSS = "" & dReader("FIJO_IMSS").ToString
+                        Me._CUENTA_CONTABLE = "" & dReader("CUENTA_CONTABLE").ToString
+                        Me._CALCULA_SINDICATO = "" & dReader("CALCULA_SINDICATO").ToString
+                        Me._FECHA_INGRESO = CDate(dReader("FECHA_INGRESO"))
                         Me._NUMERO_TRABAJADOR_BANCO = "" & dReader("NUMERO_TRABAJADOR_BANCO").ToString
                         Me._NUMERO_CUENTA_BANCO = "" & dReader("NUMERO_CUENTA_BANCO").ToString
 
@@ -800,7 +813,22 @@ Public Class Class_CatTrabajadores
 
     Public Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("SELECT CODIGO_TRABAJADOR,NOMBRE_COMPLETO_APELLIDO FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA where CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString & "  ORDER BY NOMBRE_COMPLETO_APELLIDO", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_TRABAJADOR,NOMBRE_COMPLETO_APELLIDO FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA EHERE CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString & "  ORDER BY NOMBRE_COMPLETO_APELLIDO", Me._Conexion)
+        Try
+            da.Fill(dTable)
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
+        Finally
+            da.Dispose()
+        End Try
+        Return dTable
+    End Function
+
+    Public Function ObtenerElementosxTemporada() As System.Data.DataTable
+        Dim dTable As New DataTable
+        Dim da As New SqlDataAdapter("SELECT CODIGO_X_TEMPORADA,NOMBRE_COMPLETO_APELLIDO FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA WHERE CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString &
+                                    "AND ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA & " " &
+                                    "ORDER BY NOMBRE_COMPLETO_APELLIDO", Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
@@ -813,7 +841,6 @@ Public Class Class_CatTrabajadores
 
     Public Function ObtenerElementosFiltroTrabajador(ByVal Filtro As String) As System.Data.DataTable
         Dim dTable As New DataTable
-
         Dim da As New SqlDataAdapter("SELECT CODIGO_TRABAJADOR,NOMBRE_COMPLETO_APELLIDO FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA where CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString & " AND  NOMBRE_COMPLETO_APELLIDO LIKE '%" & Filtro.ToString & "%' ORDER BY NOMBRE_COMPLETO_APELLIDO", Me._Conexion)
         Try
             da.Fill(dTable)
@@ -868,11 +895,12 @@ Public Class Class_CatTrabajadores
     Public Function BusquedaVisual_PorCodigo() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de clientes por codigo."
+        f.Text = "Búsqueda de trabajadores por código."
         f.sCampo = "CODIGO_TRABAJADOR"
         f.sOrder = "NOMBRE_COMPLETO_APELLIDO"
         f.sTable = "VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA"
-        f.sQl = "SELECT CODIGO_TRABAJADOR,NOMBRE_COMPLETO_APELLIDO FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA WHERE 1=1 AND CODIGO_PLAZA=" & Usuario.Codigo_Plaza.ToString & "  AND "
+        f.sQl = "SELECT CODIGO_X_TEMPORADA,NOMBRE_COMPLETO_APELLIDO FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA WHERE CODIGO_PLAZA=" & Usuario.Codigo_Plaza.ToString &
+            " AND ID_NOMINA_TEMPORADA = " & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA & " AND "
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -888,11 +916,12 @@ Public Class Class_CatTrabajadores
     Public Function BusquedaVisual_PorDescripcion() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de trabajadores por Descripción."
+        f.Text = "Búsqueda de trabajadores por nombre."
         f.sCampo = "NOMBRE_COMPLETO_NOMBRE"
         f.sOrder = "NOMBRE_COMPLETO_NOMBRE"
         f.sTable = "VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA"
-        f.sQl = "SELECT CODIGO_TRABAJADOR,NOMBRE_COMPLETO_NOMBRE FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA WHERE 1=1 AND CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString & "  AND "
+        f.sQl = "SELECT CODIGO_X_TEMPORADA,NOMBRE_COMPLETO_NOMBRE FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA WHERE CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString &
+            " AND ID_NOMINA_TEMPORADA = " & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA & " AND "
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -908,11 +937,12 @@ Public Class Class_CatTrabajadores
     Public Function BusquedaVisual_PorDescripcion_PuntoPago(ByVal iPuntoPago As Integer) As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de clientes por Descripción por punto de pago."
+        f.Text = "Búsqueda de trabajadores por nombre de un punto de pago."
         f.sCampo = "NOMBRE_COMPLETO_APELLIDO"
         f.sOrder = "NOMBRE_COMPLETO_APELLIDO"
         f.sTable = "VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA"
-        f.sQl = "SELECT CODIGO_TRABAJADOR,NOMBRE_COMPLETO_APELLIDO FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA WHERE 1=1 AND CODIGO_PUNTO_PAGO=" & iPuntoPago.ToString & " AND CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString & "  AND """
+        f.sQl = "SELECT CODIGO_X_TEMPORADA,NOMBRE_COMPLETO_APELLIDO FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA WHERE CODIGO_PUNTO_PAGO=" & iPuntoPago.ToString & " And CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString &
+            " AND ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA & " AND "
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -928,14 +958,13 @@ Public Class Class_CatTrabajadores
     Public Function BusquedaVisual_Mayordomos() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de clientes por Descripción."
+        f.Text = "Búsqueda de mayordomos por nombre."
         f.sCampo = "NOMBRE_TRABAJADOR"
         f.sOrder = "NOMBRE_TRABAJADOR"
         f.sTable = "NOMINA_CAT_TRABAJADORES"
-        f.sQl = "SELECT CODIGO_TRABAJADOR,NOMBRE_TRABAJADOR FROM NOMINA_CAT_TRABAJADORES T " & _
-        "INNER JOIN NOMINA_CAT_PUESTOS P ON(T.CODIGO_PUESTO=P.CODIGO_PUESTO AND P.NOMBRE_PUESTO='MAYORDOMO') " & _
-        "WHERE T.ID_NOMINA_TEMPORADA = " & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA.ToString & " And "
-
+        f.sQl = "SELECT CODIGO_X_TEMPORADA,NOMBRE_TRABAJADOR FROM NOMINA_CAT_TRABAJADORES T " &
+        "INNER JOIN NOMINA_CAT_PUESTOS P ON(T.CODIGO_PUESTO=P.CODIGO_PUESTO AND P.NOMBRE_PUESTO='MAYORDOMO') " &
+        "WHERE T.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString & " AND T.ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA.ToString & " AND "
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -997,9 +1026,9 @@ Public Class Class_CatTrabajadores
         Dim dt As New DataTable("detalle"), da As SqlDataAdapter
 
         Dim sSQL As String
-        sSQL = "SELECT * " & _
-        "FROM VW_NOMINA_DEDUCCIONES_GLOBAL_EXTENDIDA P " & _
-        "WHERE CODIGO_TRABAJADOR= '" & Me._CODIGO_TRABAJADOR & "' AND CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA
+        sSQL = "SELECT * " &
+        "FROM VW_NOMINA_DEDUCCIONES_GLOBAL_EXTENDIDA P " &
+        "WHERE P.CODIGO_TRABAJADOR= '" & Me._CODIGO_TRABAJADOR & "' AND P.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA
 
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)

@@ -85,7 +85,7 @@ Public Class Cat_Nomina_Trabajadores
 
         Me.oTrabajadores.CodigoSiguiente()
 
-        Me.txtCodigoTrabajador.Text = String.Format("{0,5}", Me.oTrabajadores.CODIGO_TRABAJADOR.ToString).Replace(" ", "0")
+        Me.txtCodigoXTemporada.Text = String.Format("{0,5}", Me.oTrabajadores.CODIGO_TRABAJADOR.ToString).Replace(" ", "0")
     End Sub
 
     Private Sub tsbEditar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbEditar.Click
@@ -103,9 +103,9 @@ Public Class Cat_Nomina_Trabajadores
 
         Select Case Me.Estado
             Case enumEstados.EDICION
-                sMsg = "grabar las modificaciones del " & Me.msgElemento & " : " & Me.txtCodigoTrabajador.Text
+                sMsg = "grabar las modificaciones del " & Me.msgElemento & " : " & Me.TxtNombreTrabajador.Text
             Case enumEstados.NUEVO
-                sMsg = "agregar el " & Me.msgElemento & " : " & Me.txtCodigoTrabajador.Text
+                sMsg = "agregar el " & Me.msgElemento & " : " & Me.TxtNombreTrabajador.Text
         End Select
         sMsg = "Deseas " & sMsg & " ?"
         'If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
@@ -547,9 +547,11 @@ Public Class Cat_Nomina_Trabajadores
                     Exit Function
                 End If
 
-                Dim sql2 As New Class_find("SELECT 1 FROM NOMINA_CAT_TRABAJADORES WHERE NUMERO_REGISTRO_IMSS='" & Me.txtNumIMSS.Text & "' AND CODIGO_TRABAJADOR<>'" & Me.txtCodigoTrabajador.Text & "' AND ID_NOMINA_TEMPORADA=" & Me.cboIdTemporada.SelectedValue.ToString)
+                Dim sql2 = New Class_find("SELECT 1 FROM NOMINA_CAT_TRABAJADORES WHERE NUMERO_REGISTRO_IMSS='" & Me.txtNumIMSS.Text & "' AND ID_NOMINA_TEMPORADA=" & Me.cboIdTemporada.SelectedValue.ToString & " " &
+                                      IIf(Me.Estado = enumEstados.CONSULTA, " AND CODIGO_TRABAJADOR<>'" & sReplace(Me.txtCodigoTrabajador.Text) & "'", "").ToString)
+
                 If sql2.Result1 = "1" Then
-                    MsgBox("El número de registro de IMSS ya existe.", MsgBoxStyle.Exclamation, Me.Text)
+                    MsgBox("El número de IMSS ya lo tiene asignado algún trabajador.", MsgBoxStyle.Exclamation, Me.Text)
                     Me.txtNumIMSS.Focus()
                     Exit Function
                 End If
@@ -576,15 +578,21 @@ Public Class Cat_Nomina_Trabajadores
 
             End If
 
-            Dim SQL3 As New Class_find("SELECT 1 FROM NOMINA_CAT_TRABAJADORES WHERE NOMBRE_TRABAJADOR='" & Me.TxtNombreTrabajador.Text & "' AND APELLIDO_PATERNO='" & Me.txtApellidoPaterno.Text & "' AND APELLIDO_MATERNO='" & Me.txtApellidoMaterno.Text & "' AND FECHA_NACIMIENTO='" & Format(Me.dtpFechaNacimiento.Value, "yyyy-dd-MM").ToString & "' AND CODIGO_TRABAJADOR<>'" & Me.txtCodigoTrabajador.Text & "' ")
+            Dim SQL3 As New Class_find("SELECT 1 FROM NOMINA_CAT_TRABAJADORES " &
+                                       "WHERE ID_NOMINA_TEMPORADA=" & Me.cboIdTemporada.SelectedValue.ToString & " AND CODIGO_TRABAJADOR<>'" & Me.txtCodigoTrabajador.Text & "' " &
+                                       "AND NOMBRE_TRABAJADOR ='" & Me.TxtNombreTrabajador.Text & "' AND APELLIDO_PATERNO='" & Me.txtApellidoPaterno.Text & "' AND APELLIDO_MATERNO='" & Me.txtApellidoMaterno.Text & "' " &
+                                       "AND FECHA_NACIMIENTO='" & Format(Me.dtpFechaNacimiento.Value, "yyyy-dd-MM").ToString & "'")
             If SQL3.Result1 = "1" Then
                 MsgBox("Ya existe un trabajador con el mismo nombre,apellidos y fecha de nacimiento, no es posible repetirlo.", MsgBoxStyle.Exclamation, Me.Text)
                 Exit Function
             End If
 
-            Dim sql4 As New Class_find("SELECT 1 FROM NOMINA_CAT_TRABAJADORES WHERE NOMBRE_TRABAJADOR='" & Me.TxtNombreTrabajador.Text & "' AND APELLIDO_PATERNO='" & Me.txtApellidoPaterno.Text & "' AND APELLIDO_MATERNO='" & Me.txtApellidoMaterno.Text & "' AND CODIGO_TRABAJADOR<>'" & Me.txtCodigoTrabajador.Text & "' ")
+            Dim sql4 As New Class_find("SELECT 1 FROM NOMINA_CAT_TRABAJADORES " &
+                                       "WHERE ID_NOMINA_TEMPORADA=" & Me.cboIdTemporada.SelectedValue.ToString & " AND CODIGO_TRABAJADOR<>'" & Me.txtCodigoTrabajador.Text & "' " &
+                                       "AND NOMBRE_TRABAJADOR='" & Me.TxtNombreTrabajador.Text & "' AND APELLIDO_PATERNO='" & Me.txtApellidoPaterno.Text & "' AND APELLIDO_MATERNO='" & Me.txtApellidoMaterno.Text & "' " &
+                                       "")
             If sql4.Result1 = "1" Then
-                If MsgBox("Ya existe un trabajador con el mismo nombre, apellidos pero con fecha de nacimiento diferente, esta seguro de grabarlo?", CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.No Then
+                If MsgBox("Ya existe un trabajador con el mismo nombre y apellidos pero con fecha de nacimiento diferente, esta seguro de grabarlo?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "Confirmación") = MsgBoxResult.No Then
                     Exit Function
                 End If
             End If
@@ -805,15 +813,19 @@ Public Class Cat_Nomina_Trabajadores
         Try
             Dim sCodigo As String = ""
 
-            If bConsultarXCodigoXTemporada = True Then 'Consulta x temporada, se puede repetir.
-                sCodigo = Me.txtCodigoXTemporada.Text
-                Me.InicializaElemento()
-                Me.oTrabajadores = New Class_CatTrabajadores(sCodigo, True)
-            Else 'Consulta x código único
-                sCodigo = Me.txtCodigoTrabajador.Text
-                Me.InicializaElemento()
-                Me.oTrabajadores = New Class_CatTrabajadores(sCodigo, "")
-            End If
+            sCodigo = Me.txtCodigoXTemporada.Text
+            Me.InicializaElemento()
+            Me.oTrabajadores = New Class_CatTrabajadores(sCodigo, True)
+
+            'If bConsultarXCodigoXTemporada = True Then 'Consulta x temporada, se puede repetir.
+            '    sCodigo = Me.txtCodigoXTemporada.Text
+            '    Me.InicializaElemento()
+            '    Me.oTrabajadores = New Class_CatTrabajadores(sCodigo, True)
+            'Else 'Consulta x código único
+            '    sCodigo = Me.txtCodigoTrabajador.Text
+            '    Me.InicializaElemento()
+            '    Me.oTrabajadores = New Class_CatTrabajadores(sCodigo, "")
+            'End If
 
             If Me.oTrabajadores.Existe = False Then
                 Me.oTrabajadores.CodigoSiguiente()
@@ -898,8 +910,8 @@ Public Class Cat_Nomina_Trabajadores
     Private Sub DesplegarElementos()
         Try
             With Me.Grid
-                .DataSource = oTrabajadores.ObtenerElementos
-                .Columns("CODIGO_TRABAJADOR").Width = 40
+                .DataSource = oTrabajadores.ObtenerElementosxTemporada
+                .Columns("CODIGO_X_TEMPORADA").Width = 40
                 .Columns("NOMBRE_COMPLETO_APELLIDO").Width = 300
             End With
         Catch ex As Exception
@@ -1452,7 +1464,7 @@ Public Class Cat_Nomina_Trabajadores
 
 #Region "Eventos de la lista de elementos"
     Private Sub Grid_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles Grid.CellClick
-        Me.txtCodigoTrabajador.Text = (Me.Grid.CurrentRow.Cells("CODIGO_TRABAJADOR").Value.ToString)
+        Me.txtCodigoXTemporada.Text = (Me.Grid.CurrentRow.Cells("CODIGO_X_TEMPORADA").Value.ToString)
         Me.Consultar()
         Me.Cambia_Estado(enumEstados.CONSULTA)
     End Sub
@@ -1589,7 +1601,6 @@ Public Class Cat_Nomina_Trabajadores
         Select Case e.KeyCode
             Case Keys.F6
                 Dim oMayordomos As New Class_CatTrabajadores
-                oMayordomos = New Class_CatTrabajadores
                 sCodigo = oMayordomos.BusquedaVisual_Mayordomos
 
                 If txtLEN(sCodigo) = True Then
@@ -1603,9 +1614,10 @@ Public Class Cat_Nomina_Trabajadores
                     Exit Sub
                 End If
 
-                Dim sql As New Class_find("SELECT CODIGO_TRABAJADOR,NOMBRE_TRABAJADOR FROM NOMINA_CAT_TRABAJADORES T INNER JOIN NOMINA_CAT_PUESTOS P ON(T.CODIGO_PUESTO=P.CODIGO_PUESTO AND P.NOMBRE_PUESTO='MAYORDOMO') WHERE  T.ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA.ToString & " AND CODIGO_TRABAJADOR='" & Me.txtCodigoMayordomo.Text & "'")
+                Dim sql As New Class_find("SELECT CODIGO_TRABAJADOR,NOMBRE_TRABAJADOR FROM NOMINA_CAT_TRABAJADORES T INNER JOIN NOMINA_CAT_PUESTOS P ON(T.CODIGO_PUESTO=P.CODIGO_PUESTO AND P.NOMBRE_PUESTO='MAYORDOMO') " &
+                                          "WHERE T.ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA.ToString & " AND CODIGO_TRABAJADOR='" & Me.txtCodigoMayordomo.Text & "'")
                 If sql.Result1 = "" Then
-                    MsgBox("El código del mayordomo no existe, favor de verificar.", MsgBoxStyle.Critical, "Validación de código de mayordomo")
+                    MsgBox("El código del mayordomo no existe, favor de verificar.", MsgBoxStyle.Exclamation, "Validación de código de mayordomo")
                     Me.lblNombreMayordomo.Text = ""
                     Me.txtCodigoMayordomo.Focus()
                     Exit Sub
