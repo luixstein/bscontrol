@@ -1,16 +1,6 @@
 ﻿Option Strict On
 
-Imports Microsoft.VisualBasic
-Imports System
-Imports System.ComponentModel
-Imports System.Data
-Imports System.Data.Common
-Imports System.Data.Sql
 Imports System.Data.SqlClient
-Imports System.Windows.Forms
-Imports System.Collections
-Imports System.Collections.Generic
-Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Frm_Nomina_CapturaHoja
     Private _ID_NOMINA_DIA As Integer
@@ -881,10 +871,10 @@ Enter:
 
         Try
             Dim i As Integer
-            Dim oTrabajador As New Class_CatTrabajadores()
+            Dim oTrabajador As Class_CatTrabajadores
             For i = 1 To Me.GridPercepciones.Rows - 1
                 If txtLEN(Me.GridPercepciones.Cell(i, Me.igyCodigo).Text) = True Then
-                    oTrabajador = New Class_CatTrabajadores(Me.GridPercepciones.Cell(i, Me.igyCodigo).Text)
+                    oTrabajador = New Class_CatTrabajadores(Me.GridPercepciones.Cell(i, Me.igyCodigo).Text, True)
                     If oTrabajador.Existe() = False Then
                         MsgBox("El trabajador no existe.", MsgBoxStyle.Exclamation, Me.Text)
                         Me.GridPercepciones.Cell(i, Me.igyCodigo).SetFocus()
@@ -1195,7 +1185,7 @@ Enter:
                                 Exit Sub
                             End If
 LlenaLinea:
-                            oTrabajadores = New Class_CatTrabajadores(StrCod)
+                            oTrabajadores = New Class_CatTrabajadores(StrCod, True)
                             If oTrabajadores.Existe = False Then
                                 Me.GridPercepciones.Cell(Renglon, Me.igyCodigo).Text = ""
                                 GoTo BuscaTrabajadores
@@ -1360,8 +1350,7 @@ BuscaTrabajadores:
 
             For i = 1 To Me.GridPercepciones.Rows - 1
                 If txtLEN(Me.GridPercepciones.Cell(i, Me.igyCodigo).Text) = True Then
-                    Dim oTrabajador As New Class_CatTrabajadores
-                    oTrabajador = New Class_CatTrabajadores(Me.GridPercepciones.Cell(i, Me.igyCodigo).Text)
+                    Dim oTrabajador As New Class_CatTrabajadores(Me.GridPercepciones.Cell(i, Me.igyCodigo).Text, True)
                     If oTrabajador.Existe = False Then
                         MsgBox("El trabajador que intenta introducir en el renglón: " & i & " no existe, favor de intentar con otro código.", MsgBoxStyle.Exclamation, "Validación de trabajadores")
                         Me.GridPercepciones.Cell(i, Me.igyCodigo).Text = ""
@@ -1432,14 +1421,16 @@ BuscaTrabajadores:
 
             If txtLEN(Me.GridPercepciones.Cell(i, Me.igyCodigo).Text) = True Then
 
+                Dim sCodigoTrabajador As String = Me.GridPercepciones.Cell(i, Me.igyCodigo).Text
+
                 If Me.GridPercepciones.Cell(i, Me.igyRembolsable).Text = "1" Then
                     Me.oFormaDeducciones = New Frm_Nomina_Deducciones()
                     Me.oFormaDeducciones.StartPosition = FormStartPosition.CenterScreen
                     oFormaDeducciones.ChildParaGrabar = True
 
                     oFormaDeducciones.CboSemana.Text = Me.txtSemana.Text
-                    oFormaDeducciones.txtCodigoTrabajador.Text = Me.GridPercepciones.Cell(i, Me.igyCodigo).Text.ToUpper()
-                    Dim oTrabajador As New Class_CatTrabajadores(Me.GridPercepciones.Cell(i, Me.igyCodigo).Text.ToUpper())
+                    oFormaDeducciones.txtCodigoTrabajador.Text = sCodigoTrabajador
+                    Dim oTrabajador As New Class_CatTrabajadores(sCodigoTrabajador, True)
                     oFormaDeducciones.lblNombreTrabajador.Text = oTrabajador.NOMBRE_TRABAJADOR + " " + oTrabajador.APELLIDO_PATERNO + " " + oTrabajador.APELLIDO_MATERNO
 
                     If txtLEN(Me.GridPercepciones.Cell(i, Me.igyIdNominaPercepcion).Text) = True Then
@@ -1561,7 +1552,5 @@ BuscaTrabajadores:
         Return bResultado
     End Function
 #End Region
-
-
 
 End Class

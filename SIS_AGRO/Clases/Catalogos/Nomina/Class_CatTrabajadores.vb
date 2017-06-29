@@ -519,7 +519,7 @@ Public Class Class_CatTrabajadores
         "LEFT JOIN CAT_BANCOS B ON(T.CODIGO_BANCO_PAGO_TARJETA=B.CODIGO_BANCO) " &
         "LEFT JOIN NOMINA_CAT_TRABAJADORES M ON(T.CODIGO_MAYORDOMO=M.CODIGO_TRABAJADOR) " &
         "INNER JOIN SIS_ESTADOS E ON(T.CODIGO_ESTADO_NACIMIENTO=E.CODIGO_ESTADO) "
-        Me._QueryOrder = " ORDER BY NOMBRE_TRABAJADOR"
+        Me._QueryOrder = " ORDER BY T.NOMBRE_TRABAJADOR"
     End Sub
 
     Public Sub New(ByVal sCodigoTrabajador As String, Optional ByVal sRegistroImss As String = "")
@@ -539,7 +539,7 @@ Public Class Class_CatTrabajadores
         End Try
     End Sub
 
-    Public Sub New(ByVal sCodigoxTemporada As String)
+    Public Sub New(ByVal sCodigoxTemporada As String, ByVal bEsXTemporada As Boolean)
         Me.New()
         Me._CODIGO_X_TEMPORADA = sCodigoxTemporada
         Try
@@ -582,9 +582,6 @@ Public Class Class_CatTrabajadores
     End Sub
 #End Region
 
-#Region "Opciones"
-
-#End Region
 
 #Region "Métodos y procedimientos"
     Public Function Grabar(ByVal eAccion As Accion) As Boolean
@@ -762,7 +759,7 @@ Public Class Class_CatTrabajadores
         Dim bResultado As Boolean = False
         Try
             Dim sSql As String = ""
-            sSql = " WHERE T.CODIGO_X_TEMPORADA='" & sReplace(Me._CODIGO_X_TEMPORADA) & "' AND ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA.ToString
+            sSql = " WHERE T.CODIGO_X_TEMPORADA='" & sReplace(Me._CODIGO_X_TEMPORADA) & "' AND T.ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA.ToString
 
             bResultado = Me.ConsultarLocal(sSql)
         Catch ex As Exception
