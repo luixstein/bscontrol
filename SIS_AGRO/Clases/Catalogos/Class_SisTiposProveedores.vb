@@ -11,6 +11,7 @@ Public Class Class_SisTiposProveedores
     Private _Nombre_Tipo_Proveedor As String
     Private _Cuenta_Contable As String
     Private _ELEGIBLE_CATALOGO_PROVEEDORES As Boolean
+    Private _REALIZA_COMPRAS_GASTOS_PAGOS As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -70,6 +71,15 @@ Public Class Class_SisTiposProveedores
         Get
             Return Me._ELEGIBLE_CATALOGO_PROVEEDORES
         End Get
+    End Property
+
+    Public Property REALIZA_COMPRAS_GASTOS_PAGOS() As Boolean
+        Get
+            Return Me._REALIZA_COMPRAS_GASTOS_PAGOS
+        End Get
+        Set(ByVal Value As Boolean)
+            Me._REALIZA_COMPRAS_GASTOS_PAGOS = Value
+        End Set
     End Property
 #End Region
 
@@ -162,6 +172,7 @@ Public Class Class_SisTiposProveedores
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_PROVEEDOR", SqlDbType.Char) : sqlParametro.Value = Me._Codigo_Tipo_Proveedor.ToString
             sqlParametro = .Parameters.Add("@NOMBRE_TIPO_PROVEEDOR", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._Nombre_Tipo_Proveedor.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CUENTA_CONTABLE", SqlDbType.NVarChar, 40) : sqlParametro.Value = Me._Cuenta_Contable.ToString
+            sqlParametro = .Parameters.Add("@REALIZA_COMPRAS_GASTOS_PAGOS", SqlDbType.Char) : sqlParametro.Value = IIf(Me._REALIZA_COMPRAS_GASTOS_PAGOS = True, "1", "0").ToString
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "INSERTAR"
             Try
                 Me._Conexion.Open()
@@ -191,6 +202,7 @@ Public Class Class_SisTiposProveedores
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_PROVEEDOR", SqlDbType.Char) : sqlParametro.Value = Me._Codigo_Tipo_Proveedor.ToString
             sqlParametro = .Parameters.Add("@NOMBRE_TIPO_PROVEEDOR", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._Nombre_Tipo_Proveedor.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CUENTA_CONTABLE", SqlDbType.NVarChar, 40) : sqlParametro.Value = Me._Cuenta_Contable.ToString
+            sqlParametro = .Parameters.Add("@REALIZA_COMPRAS_GASTOS_PAGOS", SqlDbType.Char) : sqlParametro.Value = IIf(Me._REALIZA_COMPRAS_GASTOS_PAGOS = True, "1", "0").ToString
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "ACTUALIZAR"
             Try
                 Me._Conexion.Open()
@@ -223,6 +235,7 @@ Public Class Class_SisTiposProveedores
                     Me._Nombre_Tipo_Proveedor = Trim("" & dReader("NOMBRE_TIPO_PROVEEDOR").ToString)
                     Me._Cuenta_Contable = "" & dReader("CUENTA_CONTABLE")
                     Me._ELEGIBLE_CATALOGO_PROVEEDORES = CBool(dReader("ELEGIBLE_CATALOGO_PROVEEDORES"))
+                    Me._REALIZA_COMPRAS_GASTOS_PAGOS = CBool(dReader("REALIZA_COMPRAS_GASTOS_PAGOS"))
                     bResultado = True
                 End If
                 dReader.Close()

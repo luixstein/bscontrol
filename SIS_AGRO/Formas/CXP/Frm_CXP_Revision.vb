@@ -287,7 +287,8 @@ Public Class Frm_CXP_Revision
             Select Case e.KeyCode
                 Case Keys.F6
 Buscar:
-                    Dim Busqueda = New Busqueda_General("CODIGO_PROVEEDOR AS CODIGO,NOMBRE_PROVEEDOR AS NOMBRE", "Cat_Proveedores", " 1=1 and Estatus='A' AND CODIGO_PLAZA=" & Usuario.Codigo_Plaza, "Nombre", "Nombre_Proveedor")
+                    Dim Busqueda = New Busqueda_General("P.CODIGO_PROVEEDOR AS CODIGO,P.NOMBRE_PROVEEDOR AS NOMBRE", "Cat_Proveedores P INNER JOIN SIS_TIPOS_PROVEEDORES T ON(P.CODIGO_TIPO_PROVEEDOR=T.CODIGO_TIPO_PROVEEDOR)", _
+                                                        " 1=1 and P.Estatus='A' AND P.CODIGO_PLAZA=" & Usuario.Codigo_Plaza & "AND T.REALIZA_COMPRAS_GASTOS_PAGOS='1'", "Nombre", "Nombre_Proveedor")
                     Busqueda.ShowDialog()
                     Me.TxtCodigoProveedor.Text = "" & Busqueda.Tag.ToString
                     Busqueda.Dispose()
@@ -299,7 +300,8 @@ Buscar:
                         GoTo Buscar
                         Exit Sub
                     End If
-                    Dim sql As New Class_find("Select NOMBRE_PROVEEDOR,CUENTA_CONTABLE,CUENTA_CONTABLE_DOLARES From CAT_PROVEEDORES Where CODIGO_PROVEEDOR='" & Me.TxtCodigoProveedor.Text & "' and Estatus='A' AND CODIGO_PLAZA=" & Usuario.Codigo_Plaza)
+                    Dim sql As New Class_find("Select P.NOMBRE_PROVEEDOR,P.CUENTA_CONTABLE,P.CUENTA_CONTABLE_DOLARES From CAT_PROVEEDORES P INNER JOIN SIS_TIPOS_PROVEEDORES T ON(P.CODIGO_TIPO_PROVEEDOR=T.CODIGO_TIPO_PROVEEDOR) " & _
+                                              "Where P.CODIGO_PROVEEDOR='" & Me.TxtCodigoProveedor.Text & "' and P.Estatus='A' AND P.CODIGO_PLAZA=" & Usuario.Codigo_Plaza & " AND T.REALIZA_COMPRAS_GASTOS_PAGOS='1'")
                     If sql.Result1 = "" Then
                         MsgBox("El código de proveedor que intenta buscar no existe o esta dado de baja, favor de intentar con otro código.", MsgBoxStyle.Exclamation, "Validación de Proveedores")
                         Me.LblProveedor.Text = "" : Me.LblCuentaContableProveedor.Text = ""

@@ -2373,6 +2373,16 @@ BuscaEmbarque:
                     sql = Nothing
                     Return bResultado
                 End If
+
+                sql = New Class_find("SELECT T.REALIZA_COMPRAS_GASTOS_PAGOS FROM CAT_PROVEEDORES P INNER JOIN SIS_TIPOS_PROVEEDORES T ON(P.CODIGO_TIPO_PROVEEDOR=T.CODIGO_TIPO_PROVEEDOR) " & _
+                                     "WHERE P.CODIGO_PROVEEDOR='" & Me.TxtCodigoProveedor.Text & "'")
+                If sql.Result1 = "0" Then
+                    MsgBox("No se pueden realizar pagos al proveedor " & Me.TxtCodigoProveedor.Text, MsgBoxStyle.Information, Me.Text)
+                    Me.TxtCodigoProveedor.Text = ""
+                    Me.TxtCodigoProveedor.Focus()
+                    sql = Nothing
+                    Return bResultado
+                End If
             End If
 
             bResultado = True

@@ -167,6 +167,7 @@ Public Class Sis_Tipos_Proveedores
                 Me.TxtCodigo.Enabled = False
                 Me.TxtNombre.Enabled = True
                 Me.TxtCuenta.Enabled = True
+                Me.ckbRealizaCompras.Enabled = True
 
                 Me.InicializaElemento()
                 Me.TxtNombre.Focus()
@@ -183,6 +184,7 @@ Public Class Sis_Tipos_Proveedores
                 Me.TxtCodigo.Enabled = False
                 Me.TxtNombre.Enabled = True
                 Me.TxtCuenta.Enabled = True
+                Me.ckbRealizaCompras.Enabled = True
                 Me.TxtNombre.Focus()
 
             Case enumEstados.CONSULTA
@@ -203,6 +205,7 @@ Public Class Sis_Tipos_Proveedores
         Me.TxtNombre.Text = ""
         Me.TxtCuenta.Text = ""
         Me.LblCuenta.Text = "_"
+        Me.ckbRealizaCompras.Checked = True
     End Sub
 
     Private Sub DesplegarElementos()
@@ -223,6 +226,7 @@ Public Class Sis_Tipos_Proveedores
                 Me.TxtCuenta.Text = .Cuenta_Contable.ToString
                 Dim sql As New Class_find("Select NOMBRE_CUENTA From CON_CAT_CUENTAS Where CUENTA_CONTABLE='" & Me.TxtCuenta.Text & "' ")
                 Me.LblCuenta.Text = sql.Result1
+                Me.ckbRealizaCompras.Checked = .REALIZA_COMPRAS_GASTOS_PAGOS
             End With
         End If
     End Sub
@@ -236,6 +240,7 @@ Public Class Sis_Tipos_Proveedores
                         .Codigo_Tipo_Proveedor = Me.TxtCodigo.Text
                         .Nombre_Tipo_Proveedor = Me.TxtNombre.Text
                         .Cuenta_Contable = Me.TxtCuenta.Text
+                        .REALIZA_COMPRAS_GASTOS_PAGOS = Me.ckbRealizaCompras.Checked
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 If .Insertar() Then
@@ -413,4 +418,5 @@ busqueda_Visual:
     End Sub
 
 #End Region
+
 End Class

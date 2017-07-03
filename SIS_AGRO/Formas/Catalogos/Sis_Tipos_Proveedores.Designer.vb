@@ -38,6 +38,7 @@ Partial Class Sis_Tipos_Proveedores
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.ckbRealizaCompras = New System.Windows.Forms.CheckBox()
         Me.LblCuenta = New System.Windows.Forms.Label()
         Me.TxtCuenta = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -176,6 +177,7 @@ Partial Class Sis_Tipos_Proveedores
         '
         'gBoxInformacion
         '
+        Me.gBoxInformacion.Controls.Add(Me.ckbRealizaCompras)
         Me.gBoxInformacion.Controls.Add(Me.LblCuenta)
         Me.gBoxInformacion.Controls.Add(Me.TxtCuenta)
         Me.gBoxInformacion.Controls.Add(Me.Label2)
@@ -192,6 +194,20 @@ Partial Class Sis_Tipos_Proveedores
         Me.gBoxInformacion.TabIndex = 27
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
+        '
+        'ckbRealizaCompras
+        '
+        Me.ckbRealizaCompras.AutoSize = True
+        Me.ckbRealizaCompras.Checked = True
+        Me.ckbRealizaCompras.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.ckbRealizaCompras.Location = New System.Drawing.Point(11, 144)
+        Me.ckbRealizaCompras.Name = "ckbRealizaCompras"
+        Me.ckbRealizaCompras.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.ckbRealizaCompras.Size = New System.Drawing.Size(288, 21)
+        Me.ckbRealizaCompras.TabIndex = 94
+        Me.ckbRealizaCompras.Text = "Puede realizar compras, gastos y pagos "
+        Me.ckbRealizaCompras.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.ckbRealizaCompras.UseVisualStyleBackColor = True
         '
         'LblCuenta
         '
@@ -326,4 +342,5 @@ Partial Class Sis_Tipos_Proveedores
     Friend WithEvents TxtCuenta As System.Windows.Forms.TextBox
     Friend WithEvents LblCuenta As System.Windows.Forms.Label
     Friend WithEvents tsbImprimirListado As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ckbRealizaCompras As System.Windows.Forms.CheckBox
 End Class

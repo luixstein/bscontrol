@@ -1511,6 +1511,14 @@ Buscar:
                 Exit Function
             End If
 
+            Dim sql As New Class_find("SELECT T.REALIZA_COMPRAS_GASTOS_PAGOS FROM CAT_PROVEEDORES P INNER JOIN SIS_TIPOS_PROVEEDORES T ON(P.CODIGO_TIPO_PROVEEDOR=T.CODIGO_TIPO_PROVEEDOR)" & _
+                                      " WHERE P.CODIGO_PROVEEDOR='" & Me.txtProveedor.Text & "'")
+            If sql.Result1 = "0" Then
+                MsgBox("El proveedor " & Me.txtProveedor.Text & "no puede realizar movimientos de compras.", MsgBoxStyle.Information, Me.Text)
+                Me.txtProveedor.Focus()
+                Exit Function
+            End If
+
             If txtLEN(Me.oProveedores.CUENTA_CONTABLE) = False Then
                 MsgBox("El proveedor no tiene una cuenta contable en pesos asignada.", MsgBoxStyle.Exclamation, "ValidarOrdenCompra")
                 Me.txtProveedor.Focus()
