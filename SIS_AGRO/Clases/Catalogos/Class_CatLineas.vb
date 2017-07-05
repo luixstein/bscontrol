@@ -242,7 +242,7 @@ Public Class Class_CatLineas
 
     Public Overrides Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter(Me._QuerySELECT & Me._QueryOrder, Me._Conexion)
+        Dim da As New SqlDataAdapter(Me._QuerySELECT & " WHERE ESTATUS='A' " & Me._QueryOrder, Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
