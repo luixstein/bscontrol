@@ -1,17 +1,5 @@
 ﻿Option Strict On
 
-Imports Microsoft.VisualBasic
-Imports System
-Imports System.ComponentModel
-Imports System.Data
-Imports System.Data.Common
-Imports System.Data.Sql
-Imports System.Data.SqlClient
-Imports System.Windows.Forms
-Imports System.Collections
-Imports System.Collections.Generic
-Imports CrystalDecisions.CrystalReports.Engine
-
 Public Class Frm_Nomina_Deducciones
     Private _ChildParaGrabar As Boolean
     Private _FormaValidaParaGrabarLlamadoExterior As Boolean = False
@@ -24,24 +12,30 @@ Public Class Frm_Nomina_Deducciones
 
     Private Estado As enumEstados
 
+#Region "Columnas grid plan abonos"
     Private igyIdDeduccionDetalle As Short = 1
     Private igySemana As Short = 2
     Private igyDescuento As Short = 3
     Private igySaldo As Short = 4
     Private igyAbonado As Short = 5
     Private igyTemporada As Short = 6
+#End Region
 
+#Region "Columnas grid historial"
     Private igyHistorialIdDeduccion As Short = 1
     Private igyHistorialSemana As Short = 2
     Private igyHistorialFecha As Short = 3
     Private igyHistorialImporte As Short = 4
     Private igyHistorialSaldo As Short = 5
+#End Region
 
+#Region "Columnas grid trabajadores"
     Private igyCodigoTrabajador As Short = 1
     Private igyNombreTrabajador As Short = 2
     Private igyDeduccion As Short = 3
     Private igyImporteTrabajador As Short = 4
     Private igySaldoTrabajador As Short = 5
+#End Region
 
     Private clicGrid As Boolean = False
 
@@ -161,7 +155,7 @@ Public Class Frm_Nomina_Deducciones
         End If
     End Sub
 
-    Private Sub CboLote_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodigoTrabajador.KeyDown, _
+    Private Sub CboLote_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodigoTrabajador.KeyDown,
     CboSemana.KeyDown, cboTipoDeduccion.KeyDown ', CboMercado.KeyDown, cboHojas.KeyDown, CboPuntoPago.KeyDown, CboTipoPercepcion.KeyDown
         Select Case e.KeyCode
             Case Keys.Enter
@@ -184,7 +178,7 @@ Buscar:
                     Me.lblNombreTrabajador.Text = "" : GoTo Buscar : Exit Sub
                 End If
 
-                oTrabajadores = New Class_CatTrabajadores(Me.txtCodigoTrabajador.Text)
+                oTrabajadores = New Class_CatTrabajadores(Me.txtCodigoTrabajador.Text, True)
                 If oTrabajadores.Existe = False Then
                     Me.lblNombreTrabajador.Text = "" : GoTo Buscar : Exit Sub
                 End If
@@ -538,7 +532,7 @@ Buscar:
         Else
             iTemporadaSig = CInt(sql.Result1)
         End If
-       
+
         If (Me.GridPlanAbonos.Rows < 2) Then
             iSemana = CInt(Me.txtNumeroSemana.Text)
         Else
@@ -608,7 +602,7 @@ Buscar:
         End If
     End Sub
 
-    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboSemana.KeyPress, cboTipoDeduccion.KeyPress, _
+    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboSemana.KeyPress, cboTipoDeduccion.KeyPress,
         txtCodigoTrabajador.KeyPress, TxtImporte.KeyPress, txtSumaImportes.KeyPress, txtSumaSaldos.KeyPress, TxtDescuento.KeyPress, TxtSaldo.KeyPress
         txtNoBeep(e)
     End Sub
@@ -705,6 +699,7 @@ Buscar:
 
         Me.txtNumeroSemana.Text = Me._NumeroSemana.ToString
         Me.Cambia_Estado(enumEstados.NUEVO)
+
         Me.txtCodigoTrabajador.Enabled = False
         Me.CboSemana.Enabled = False
         Me.txtNumeroSemana.Enabled = False
@@ -780,9 +775,16 @@ Buscar:
 
             dTabla = oElementos.ObtenerElementos
 
+            'Private igyCodigoTrabajador As Short = 1
+            'Private igyNombreTrabajador As Short = 2
+            'Private igyDeduccion As Short = 3
+            'Private igyImporteTrabajador As Short = 4
+            'Private igySaldoTrabajador As Short = 5
+
             Me.GridTrabajadores.Rows = 1
             For Each dRow As DataRow In dTabla.Rows
-                Me.GridTrabajadores.AddItem(dRow(0).ToString & Chr(9) & dRow(1).ToString & Chr(9) & dRow(2).ToString & Chr(9) & Format(CDate(dRow(3).ToString), "dd-MMM-yy") & Chr(9) & dRow(4).ToString & Chr(9) & dRow(5).ToString & Chr(9))
+                Me.GridTrabajadores.AddItem(dRow("CODIGO_X_TEMPORADA").ToString & Chr(9) & dRow("NOMBRE_COMPLETO_APELLIDO").ToString & Chr(9) & dRow("NOMBRE_TIPO_DEDUCCION").ToString & Chr(9) &
+                                            Format(CDate(dRow("FECHA_SERVIDOR").ToString), "dd-MMM-yy") & Chr(9) & dRow("IMPORTE").ToString & Chr(9) & dRow("SALDO").ToString & Chr(9))
             Next
             dTabla.Dispose()
 
@@ -1052,24 +1054,27 @@ Buscar:
     End Sub
 
     Public Function Grabar(Optional ByVal bConfirmacion As Boolean = True) As Boolean
-        Dim i As Integer
+        Dim bResultado As Boolean = False
+        Dim i As Integer, oTrabajador As Class_CatTrabajadores
 
-        If bConfirmacion = True Then
+        Try
+            If bConfirmacion = True Then
             If MsgBox("Deseas grabar la deducción?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Grabar") = MsgBoxResult.No Then
-                Exit Function
+                Return False
             End If
         End If
 
-        If Me.ValidarDeduccion() = False Then
-            Exit Function
-        End If
+            If Me.ValidarDeduccion() = False Then
+                Return False
+            End If
 
-        Me.Totales()
+            Me.Totales()
 
-        Try
+            oTrabajador = New Class_CatTrabajadores(Me.txtCodigoTrabajador.Text, True)
+
             With Me.oDeducciones
                 .CODIGO_TIPO_DEDUCCION = CInt(Me.cboTipoDeduccion.SelectedValue)
-                .CODIGO_TRABAJADOR = Me.txtCodigoTrabajador.Text
+                .CODIGO_TRABAJADOR = oTrabajador.CODIGO_TRABAJADOR
                 .ID_NOMINA_SEMANA = CInt(Me.txtIdSemana.Text)
                 .IMPORTE = CDbl(Me.TxtImporte.Text)
                 .SALDO = CDbl(Me.TxtSaldo.Text)
@@ -1079,18 +1084,18 @@ Buscar:
                 If Me._ChildParaGrabar = True Then
                     If .Insertar() = False Then
                         MsgBox("Error al tratar de insertar la hoja.", MsgBoxStyle.Exclamation, Me.Text)
-                        Exit Function
+                        Return False
                     End If
                 Else
                     If Me.Estado = enumEstados.NUEVO Then
                         If .Insertar() = False Then
                             MsgBox("Error al tratar de insertar la hoja.", MsgBoxStyle.Exclamation, Me.Text)
-                            Exit Function
+                            Return False
                         End If
                     Else
                         If .Actualizar() = False Then
                             MsgBox("Error al tratar de actualizar la hoja.", MsgBoxStyle.Exclamation, Me.Text)
-                            Exit Function
+                            Return False
                         End If
                     End If
                 End If
@@ -1099,7 +1104,7 @@ Buscar:
                 For i = 1 To Me.GridPlanAbonos.Rows - 1
                     If valorNumerico(Me.GridPlanAbonos.Cell(i, Me.igyDescuento).Text) <= 0 Then
                         MsgBox("El descuento tiene que ser mayor a 0.", MsgBoxStyle.Exclamation, Me.Text)
-                        Exit Function
+                        Return False
                     End If
                     If Me.GridPlanAbonos.Cell(i, Me.igyAbonado).Text = "0" Then
                         .oDeduccionDetalle.ID_DEDUCCION_GLOBAL = .ID_DEDUCCION_GLOBAL
@@ -1112,13 +1117,14 @@ Buscar:
 
                         If .oDeduccionDetalle.GrabaDetalleDeduccion("INSERTAR") = False Then
                             MsgBox("Error al tratar de grabar el detalle de la deducción.", MsgBoxStyle.Exclamation, Me.Text)
-                            Exit Function
+                            Return False
                         End If
                     End If
                 Next
 
-                Grabar = True
-                If bConfirmacion = True And Grabar = True Then
+                bResultado = True
+
+                If bConfirmacion = True And bResultado = True Then
                     MsgBox("Deducción grabada satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
                 End If
 
@@ -1126,50 +1132,63 @@ Buscar:
         Catch ex As Exception
             HandleError(Me.Name, "Grabar", ex)
         End Try
+
+        Return bResultado
     End Function
 
     Public Function Eliminar(Optional ByVal bConfirmacion As Boolean = True) As Boolean
-        If bConfirmacion = True Then
-            If MsgBox("Deseas eliminar la deducción?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Grabar") = MsgBoxResult.No Then
-                Exit Function
+        Dim bResultado As Boolean = False
+        Try
+            If bConfirmacion = True Then
+                If MsgBox("Deseas eliminar la deducción?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Eliminar") = MsgBoxResult.No Then
+                    Return False
+                End If
             End If
-        End If
 
-        If Me._ID_DEDUCCION > 0 Then
-            Dim oDeducciones As New Class_NominaDeduccionesGlobal(Me._ID_DEDUCCION)
+            If Me._ID_DEDUCCION > 0 Then
+                Dim oDeducciones As New Class_NominaDeduccionesGlobal(Me._ID_DEDUCCION)
 
-            If oDeducciones.ID_NOMIA_PERCEPCION.ToString <> "0" Then
-                If oDeducciones.IMPORTE <> oDeducciones.SALDO Then
-                    MsgBox("La deduccion ya tiene abonos no se puede eliminar.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
-                End If
+                If oDeducciones.ID_NOMIA_PERCEPCION.ToString <> "0" Then
+                    If oDeducciones.IMPORTE <> oDeducciones.SALDO Then
+                        MsgBox("La deduccion ya tiene abonos no se puede eliminar.", MsgBoxStyle.Exclamation, Me.Text)
+                        Return False
+                    End If
 
-                Dim sql As New Class_find("SELECT NOMINA_GENERADA FROM NOMINA_SEMANA WHERE ID_NOMINA_SEMANA=" & Me.CboSemana.SelectedValue.ToString)
-                If sql.Result1 = "1" Then
-                    MsgBox("La semana ya esta generada.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
-                End If
-                oDeducciones.EliminaDeduccion()
-                Dim oHoja As New Class_NominaHoja
-                oHoja = New Class_NominaHoja
-                oHoja.oHojaPercepcion.ID_NOMINA_PERCEPCION = oDeducciones.ID_NOMIA_PERCEPCION
-                oHoja.oHojaPercepcion.EliminaDetallePercepcion()
-            Else
-                If oDeducciones.EliminaDeduccion() = True Then
-                    'MsgBox("Se elimino correctamente.", MsgBoxStyle.Information, Me.Text)
-                    Me.ConsultarTrabajador()
+                    Dim sql As New Class_find("SELECT NOMINA_GENERADA FROM NOMINA_SEMANA WHERE ID_NOMINA_SEMANA=" & Me.CboSemana.SelectedValue.ToString)
+                    If sql.Result1 = "1" Then
+                        MsgBox("La semana ya esta generada.", MsgBoxStyle.Exclamation, Me.Text)
+                        Return False
+                    End If
+                    If oDeducciones.EliminaDeduccion() = True Then
+                        Dim oHoja As New Class_NominaHoja
+                        oHoja.oHojaPercepcion.ID_NOMINA_PERCEPCION = oDeducciones.ID_NOMIA_PERCEPCION
+                        If oHoja.oHojaPercepcion.EliminaDetallePercepcion() = True Then
+                            bResultado = True
+                        End If
+                    End If
                 Else
-                    MsgBox("No se puedo eliminar.", MsgBoxStyle.Information, Me.Text)
-                    Eliminar = False
+                    If oDeducciones.EliminaDeduccion() = True Then
+                        bResultado = True
+                        'MsgBox("Se elimino correctamente.", MsgBoxStyle.Information, Me.Text)
+                        Me.ConsultarTrabajador()
+                    Else
+                        MsgBox("No se puedo eliminar.", MsgBoxStyle.Information, Me.Text)
+                        Return False
+                    End If
                 End If
-
             End If
-        End If
-        Eliminar = True
-        MsgBox("Se elimino correctamente.", MsgBoxStyle.Information, Me.Text)
+
+            MsgBox("Se eliminó correctamente.", MsgBoxStyle.Information, Me.Text)
+
+        Catch ex As Exception
+            HandleError(Me.Name, "Eliminar", ex)
+        End Try
+
+        Return bResultado
     End Function
 
     Public Function Consultar(ByVal iDeduccion As Integer) As Boolean
+        Dim bResultado As Boolean = False
         Dim dTabla As DataTable
         Me.oDeducciones = New Class_NominaDeduccionesGlobal(iDeduccion)
 
@@ -1177,17 +1196,18 @@ Buscar:
             If Me.oDeducciones.Existe = False Then
                 Me.Inicializa()
                 Me.Cambia_Estado(enumEstados.NUEVO)
-                Exit Function
+                Return False
             Else
                 Me.DesplegarTipoDeduccion(True)
+
+                Dim oTrabajador As New Class_CatTrabajadores(Me.oDeducciones.CODIGO_X_TEMPORADA, True)
+                Dim oSemana As New Class_NominaSemana(Me.oDeducciones.ID_NOMINA_SEMANA)
+
                 Me.cboTipoDeduccion.SelectedValue = Me.oDeducciones.CODIGO_TIPO_DEDUCCION
-                Me.txtCodigoTrabajador.Text = Me.oDeducciones.CODIGO_TRABAJADOR.ToString
-                Dim oTrabajador As New Class_CatTrabajadores(Me.oDeducciones.CODIGO_TRABAJADOR.ToString)
-                Me.lblNombreTrabajador.Text = oTrabajador.NOMBRE_TRABAJADOR + " " + oTrabajador.APELLIDO_PATERNO + " " + oTrabajador.APELLIDO_MATERNO
+                Me.txtCodigoTrabajador.Text = Me.oDeducciones.CODIGO_X_TEMPORADA.ToString
+                Me.lblNombreTrabajador.Text = oTrabajador.NOMBRE_COMPLETO_APELLIDO
                 'Me.CboSemana.SelectedValue = Me.oDeducciones.ID_NOMINA_SEMANA
                 Me.txtIdSemana.Text = Me.oDeducciones.ID_NOMINA_SEMANA.ToString
-                Dim oSemana As New Class_NominaSemana(Me.oDeducciones.ID_NOMINA_SEMANA)
-                oSemana.Consultar()
                 Me.txtNumeroSemana.Text = oSemana.NUMERO_SEMANA.ToString
                 Me.LlenaFechasSemana(oSemana.ID_NOMINA_TEMPORADA)
                 'Me.CboSemana.Text = Me.oDeducciones.NUMERO_SEMANA.ToString
@@ -1205,7 +1225,8 @@ Buscar:
 
                 Me.GridPlanAbonos.Rows = 1
                 For Each dRow As DataRow In dTabla.Rows
-                    Me.GridPlanAbonos.AddItem(dRow(0).ToString & Chr(9) & dRow(1).ToString & Chr(9) & dRow(2).ToString & Chr(9) & dRow(3).ToString & Chr(9) & dRow(4).ToString & Chr(9) & dRow(5).ToString & Chr(9) & "".ToString & Chr(9))
+                    Me.GridPlanAbonos.AddItem(dRow("ID_DEDUCCION_DETALLE").ToString & Chr(9) & dRow("NUMERO_SEMANA").ToString & Chr(9) & dRow("DESCUENTO").ToString & Chr(9) & dRow("AMORTIZACION").ToString & Chr(9) &
+                                              dRow("ESTATUS_ABONADO").ToString & Chr(9) & dRow(5).ToString & Chr(9) & "".ToString & Chr(9))
                 Next
                 dTabla.Dispose()
 
@@ -1217,7 +1238,7 @@ Buscar:
             Me.Cambia_Estado(enumEstados.GRABADO)
 
             Me.Totales()
-            Consultar = True
+            bResultado = True
 
             Dim sql As New Class_find("SELECT NOMINA_GENERADA FROM NOMINA_SEMANA WHERE ID_NOMINA_SEMANA=" & Me.oDeducciones.ID_NOMINA_SEMANA.ToString)
             If sql.Result1 = "1" Then
@@ -1229,95 +1250,109 @@ Buscar:
         Catch ex As Exception
             HandleError(Me.Name, "Consultar", ex)
         End Try
+
+        Return bResultado
     End Function
 
     Public Function ConsultarTrabajador() As Boolean
-        Dim dTabla As DataTable
-        Dim oTrabajadores = New Class_CatTrabajadores(Me.txtCodigoTrabajador.Text)
-        Me.Inicializa()
+        Dim bResultado As Boolean = False
+        Try
+            Dim dTabla As DataTable
+            Dim oTrabajador As New Class_CatTrabajadores(Me.txtCodigoTrabajador.Text, True)
+            Me.Inicializa()
 
-        If oTrabajadores.Existe = False Then
-            Me.lblNombreTrabajador.Text = ""
-            Exit Function
-        End If
+            If oTrabajador.Existe = False Then
+                Me.lblNombreTrabajador.Text = ""
+                Return False
+            End If
 
-        Me.txtCodigoTrabajador.Text = oTrabajadores.CODIGO_TRABAJADOR.ToString
-        Me.lblNombreTrabajador.Text = oTrabajadores.NOMBRE_TRABAJADOR + " " + oTrabajadores.APELLIDO_PATERNO + " " + oTrabajadores.APELLIDO_MATERNO
-        Me.txtCodigoTrabajador.Enabled = False
+            Me.txtCodigoTrabajador.Text = oTrabajador.CODIGO_X_TEMPORADA
+            Me.lblNombreTrabajador.Text = oTrabajador.NOMBRE_COMPLETO_APELLIDO
+            Me.txtCodigoTrabajador.Enabled = False
 
-        dTabla = oTrabajadores.ObtenerHistorialDeducciones
-        Me.GridHistorialDeducciones.Rows = 1
-        For Each dRow As DataRow In dTabla.Rows
-            Me.GridHistorialDeducciones.AddItem(dRow(0).ToString & Chr(9) & dRow(5).ToString & Chr(9) & Format(CDate(dRow(11).ToString), "dd-MMM-yy") & Chr(9) & dRow(7).ToString & Chr(9) & dRow(8).ToString & Chr(9))
-        Next
-        dTabla.Dispose()
+            dTabla = oTrabajador.ObtenerHistorialDeducciones
+            Me.GridHistorialDeducciones.Rows = 1
+            For Each dRow As DataRow In dTabla.Rows
+                Me.GridHistorialDeducciones.AddItem(dRow("ID_DEDUCCION_GLOBAL").ToString & Chr(9) & dRow("NUMERO_SEMANA").ToString & Chr(9) & Format(CDate(dRow("FECHA_SERVIDOR").ToString), "dd-MMM-yy") & Chr(9) &
+                                                    dRow("IMPORTE").ToString & Chr(9) & dRow("SALDO").ToString & Chr(9))
+            Next
+            dTabla.Dispose()
 
-        Me.FormateaGrid()
-        If Me.GridHistorialDeducciones.Rows <= 1 Then
-            Me.GridHistorialDeducciones.Rows = 2
-        Else
-            Me.GridHistorialDeducciones.Cell(1, 1).SetFocus()
-        End If
-        Me.CboSemana.Focus()
-        Me.gbDeducciones.Enabled = True
-        Me.gbHistorialDeducciones.Enabled = True
-        Me.GridHistorialDeducciones.Locked = False
-        Me.gbPlanAbonos.Enabled = True
-        Me.DesplegarDeducciones()
-        Me.Totales()
+            bResultado = True
+
+            Me.FormateaGrid()
+            If Me.GridHistorialDeducciones.Rows <= 1 Then
+                Me.GridHistorialDeducciones.Rows = 2
+            Else
+                Me.GridHistorialDeducciones.Cell(1, 1).SetFocus()
+            End If
+            Me.CboSemana.Focus()
+            Me.gbDeducciones.Enabled = True
+            Me.gbHistorialDeducciones.Enabled = True
+            Me.GridHistorialDeducciones.Locked = False
+            Me.gbPlanAbonos.Enabled = True
+            Me.DesplegarDeducciones()
+            Me.Totales()
+
+        Catch ex As Exception
+            HandleError(Me.Name, "ConsultarTrabajador", ex)
+        End Try
+
+        Return bResultado
     End Function
 
     Private Function ValidarDeduccion() As Boolean
-        ''Semena generada
+        Dim bResultado As Boolean = False
 
         Try
             Dim i As Integer
-            Dim oTrabajador As New Class_CatTrabajadores(Me.txtCodigoTrabajador.Text)
+            Dim oTrabajador As New Class_CatTrabajadores(Me.txtCodigoTrabajador.Text, True)
             If oTrabajador.Existe = False Then
                 MsgBox("El trabajador no existe.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+                Return False
             End If
 
-            Dim oSemana As New Class_NominaSemana
-            oSemana = New Class_NominaSemana(CInt(Me.txtIdSemana.Text))
+            Dim oSemana As New Class_NominaSemana(CInt(Me.txtIdSemana.Text))
 
             'If oSemana.NOMINA_GENERADA = "1" Then
             '    MsgBox("La semana ya fue generada, no es posible crear una deducción. Favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
-            '    Exit Function
+            '    return false
             'End If
 
             If valorNumerico(Me.TxtSaldo.Text) < 0 Then
                 MsgBox("El prestamo no tiene un saldo activo. Favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+                Return False
             End If
 
             For i = 1 To Me.GridPlanAbonos.Rows - 1
                 If valorNumerico(Me.GridPlanAbonos.Cell(i, Me.igyDescuento).Text) <= 0 Then
                     MsgBox("No debe haber descuentos en ceros. Favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    Return False
                 End If
             Next i
 
             If txtLEN(Me.TxtConcepto.Text) = False Then
                 MsgBox("Favor de capturar un concepto a la deducción.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.TxtConcepto.Focus()
-                Exit Function
+                Return False
             End If
 
             If valorNumerico(Me.GridPlanAbonos.Cell(Me.GridPlanAbonos.Rows - 1, Me.igySaldo).Text) <> 0 Then
                 MsgBox("El Último saldo del plan de pagos deber ser en ceros. Favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+                Return False
             End If
 
             If valorNumerico(Me.txtSuma.Text) <> valorNumerico(Me.TxtImporte.Text) Then
                 MsgBox("La suma de los descuentos no es igual al importe. Favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+                Return False
             End If
 
-            ValidarDeduccion = True
+            bResultado = True
         Catch ex As Exception
             HandleError(Me.Name, "ValidarDeduccion", ex)
         End Try
+
+        Return bResultado
     End Function
 
     Private Sub Totales()
@@ -1389,7 +1424,7 @@ Buscar:
                                             iSemana = valorNumerico(Me.GridPlanAbonos.Cell(Renglon, Me.igySemana).Text)
                                             'Me.GridPlanAbonos.Rows = CInt(oTemporada.NUMERO_SEMANAS - valorNumerico(Me.GridPlanAbonos.Cell(Renglon, Me.igySemana).Text)) + 2
                                             Me.GridPlanAbonos.Rows = Renglon + oTemporada.NUMERO_SEMANAS - 1
-                                            
+
                                             For i As Integer = Renglon To Me.GridPlanAbonos.Rows - 1
                                                 Me.GridPlanAbonos.Cell(i, Me.igyIdDeduccionDetalle).Text = ""
                                                 If oTemporada.NUMERO_SEMANAS > iSemana Then

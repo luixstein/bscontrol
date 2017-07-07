@@ -1,10 +1,6 @@
 ﻿Option Strict On
 
-Imports System.Data
 Imports System.Data.SqlClient
-Imports System.IO
-Imports System.Drawing
-Imports System.Drawing.Printing
 
 Public Class Class_NominaDeduccionesGlobal
 
@@ -28,6 +24,7 @@ Public Class Class_NominaDeduccionesGlobal
 
 #Region "Campos ligados a la tabla"
     Private _Existe As Boolean 'lectura
+    Private _CODIGO_X_TEMPORADA As String
 #End Region
 
 #Region "Clase Detalle"
@@ -41,6 +38,7 @@ Public Class Class_NominaDeduccionesGlobal
 #End Region
 
 #End Region
+
 #Region "Propiedades"
 
 #Region "Propiedades Campos de la tabla"
@@ -168,6 +166,12 @@ Public Class Class_NominaDeduccionesGlobal
             Return Me._Existe
         End Get
     End Property
+
+    Public ReadOnly Property CODIGO_X_TEMPORADA() As String
+        Get
+            Return Me._CODIGO_X_TEMPORADA
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedad Nombre de Clase"
@@ -186,8 +190,9 @@ Public Class Class_NominaDeduccionesGlobal
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
 
-        Me._QuerySelect = "SELECT G.*,U.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO " & _
-                            "FROM NOMINA_DEDUCCIONES_GLOBAL G " & _
+        Me._QuerySelect = "SELECT G.*,U.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO,T.CODIGO_X_TEMPORADA " &
+                            "FROM NOMINA_DEDUCCIONES_GLOBAL G " &
+                            "INNER JOIN NOMINA_CAT_TRABAJADORES T ON(G.CODIGO_TRABAJADOR=T.CODIGO_TRABAJADOR) " &
                             "INNER JOIN SIS_USUARIOS U ON(G.CODIGO_USUARIO_GRABO=U.CODIGO_USUARIO) "
 
         Me.oDeduccionDetalle = New Class_NominaDeduccionesDetalle
@@ -214,6 +219,7 @@ Public Class Class_NominaDeduccionesGlobal
 
 #Region "Métodos y procedimientos"
     Public Function Consultar() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand(Me._QuerySelect & " WHERE G.ID_DEDUCCION_GLOBAL=" & Me._ID_DEDUCCION_GLOBAL.ToString, Me._Conexion)
         Dim dReader As SqlDataReader
         'Dim sqlParametro As SqlParameter
@@ -229,6 +235,7 @@ Public Class Class_NominaDeduccionesGlobal
                     Me._CODIGO_TIPO_DEDUCCION = CType(dReader("CODIGO_TIPO_DEDUCCION"), Integer)
                     Me._ID_NOMINA_SEMANA = CType(dReader("ID_NOMINA_SEMANA"), Integer)
                     Me._CODIGO_TRABAJADOR = Trim("" & dReader("CODIGO_TRABAJADOR").ToString)
+                    Me._CODIGO_X_TEMPORADA = Trim("" & dReader("CODIGO_X_TEMPORADA").ToString)
                     'Me._NUMERO_SEMANA = CType(dReader("NUMERO_SEMANA"), Integer)
                     Me._IMPORTE = CType(dReader("IMPORTE"), Double)
                     Me._SALDO = CType(dReader("SALDO"), Double)
@@ -241,7 +248,7 @@ Public Class Class_NominaDeduccionesGlobal
                     Me._DESCUENTO_SEMANAL = CType(dReader("DESCUENTO_SEMANAL"), Double)
                     Me._CONCEPTO = dReader("CONCEPTO").ToString
 
-                    Consultar = True
+                    bResultado = True
                 End If
                 dReader.Close()
             Catch ex As Exception
@@ -251,9 +258,11 @@ Public Class Class_NominaDeduccionesGlobal
                 cmd.Dispose()
             End Try
         End With
-    End Function    'Obtiene polizas globales
+        Return bResultado
+    End Function
 
     Public Function Insertar() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -278,7 +287,7 @@ Public Class Class_NominaDeduccionesGlobal
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
                 Me._ID_DEDUCCION_GLOBAL = CInt(.Parameters("@ID_DEDUCCION_GLOBAL").Value)
-                Insertar = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me.Nombre_Clase, "Insertar", ex)
             Finally
@@ -287,9 +296,11 @@ Public Class Class_NominaDeduccionesGlobal
                 sqlParametro = Nothing
             End Try
         End With
+        Return bResultado
     End Function
 
     Public Function Actualizar() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -314,7 +325,7 @@ Public Class Class_NominaDeduccionesGlobal
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
                 Me._ID_DEDUCCION_GLOBAL = CInt(.Parameters("@ID_DEDUCCION_GLOBAL").Value)
-                Actualizar = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me.Nombre_Clase, "Actualizar", ex)
             Finally
@@ -323,9 +334,11 @@ Public Class Class_NominaDeduccionesGlobal
                 sqlParametro = Nothing
             End Try
         End With
+        Return bResultado
     End Function
 
     Public Function EliminaDeduccion() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -340,7 +353,7 @@ Public Class Class_NominaDeduccionesGlobal
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
 
-                EliminaDeduccion = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me.Nombre_Clase, "EliminaDeduccion", ex)
             Finally
@@ -349,9 +362,11 @@ Public Class Class_NominaDeduccionesGlobal
                 sqlParametro = Nothing
             End Try
         End With
+        Return bResultado
     End Function
 
     Public Function SaldarDeducciones() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -366,7 +381,7 @@ Public Class Class_NominaDeduccionesGlobal
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
 
-                SaldarDeducciones = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me.Nombre_Clase, "SaldarDeducciones", ex)
             Finally
@@ -375,6 +390,7 @@ Public Class Class_NominaDeduccionesGlobal
                 sqlParametro = Nothing
             End Try
         End With
+        Return bResultado
     End Function
 
     Public Function ObtenerDetalle() As DataTable
@@ -390,21 +406,19 @@ Public Class Class_NominaDeduccionesGlobal
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, "ObtenerDetalle", ex)
         End Try
-        ObtenerDetalle = dTabla
+        Return dTabla
     End Function
 
     Public Function ObtenerElementos() As DataTable
-        Dim dTabla As New DataTable(), da As SqlDataAdapter
+        Dim dTabla As New DataTable, da As SqlDataAdapter
         Dim sSQL As String
-        sSQL = "SELECT CODIGO_TRABAJADOR, CASE WHEN LEN(G .APELLIDO_PATERNO)  " & _
-                      "= 0 THEN '' ELSE G .APELLIDO_PATERNO + ' ' END + CASE WHEN LEN(G .APELLIDO_MATERNO) " & _
-                      "= 0 THEN '' ELSE G .APELLIDO_MATERNO + ' ' END + G.NOMBRE_TRABAJADOR AS NOMBRE_COMPLETO_APELLIDO, " & _
-                "MAX(D.NOMBRE_TIPO_DEDUCCION) NOMBRE_TIPO_DEDUCCION,MAX(FECHA_SERVIDOR) FECHA_SERVIDOR, SUM(IMPORTE) IMPORTE,SUM(SALDO) SALDO " & _
-                "FROM VW_NOMINA_DEDUCCIONES_GLOBAL_EXTENDIDA G " & _
-                "INNER JOIN NOMINA_CAT_TIPOS_DEDUCCIONES D ON (G.CODIGO_TIPO_DEDUCCION=D.CODIGO_TIPO_DEDUCCION) " & _
-                "WHERE  SALDO>0 " & _
-                " GROUP BY CODIGO_TRABAJADOR,APELLIDO_PATERNO,APELLIDO_MATERNO,NOMBRE_TRABAJADOR" & _
-                " ORDER BY APELLIDO_PATERNO,APELLIDO_MATERNO,NOMBRE_TRABAJADOR,NOMBRE_TIPO_DEDUCCION,IMPORTE,SALDO"
+        sSQL = "SELECT G.CODIGO_X_TEMPORADA,G.NOMBRE_COMPLETO_APELLIDO, " &
+                "MAX(D.NOMBRE_TIPO_DEDUCCION) NOMBRE_TIPO_DEDUCCION,MAX(FECHA_SERVIDOR) FECHA_SERVIDOR,SUM(IMPORTE) IMPORTE,SUM(SALDO) SALDO " &
+                "FROM VW_NOMINA_DEDUCCIONES_GLOBAL_EXTENDIDA G " &
+                "INNER JOIN NOMINA_CAT_TIPOS_DEDUCCIONES D ON (G.CODIGO_TIPO_DEDUCCION=D.CODIGO_TIPO_DEDUCCION) " &
+                "WHERE G.SALDO>0 AND G.CODIGO_PLAZA=" & Usuario.Codigo_Plaza.ToString & " " &
+                "GROUP BY CODIGO_X_TEMPORADA,NOMBRE_COMPLETO_APELLIDO " &
+                "ORDER BY NOMBRE_COMPLETO_APELLIDO,NOMBRE_TIPO_DEDUCCION,IMPORTE,SALDO"
         'ID_NOMINA_TEMPORADA= " & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA.ToString & " AND
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
@@ -413,7 +427,7 @@ Public Class Class_NominaDeduccionesGlobal
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, "ObtenerElementos", ex)
         End Try
-        ObtenerElementos = dTabla
+        Return dTabla
     End Function
 
     Public Sub NuevoRenglon()

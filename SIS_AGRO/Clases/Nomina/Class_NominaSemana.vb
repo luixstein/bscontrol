@@ -192,9 +192,9 @@ Public Class Class_NominaSemana
         'Me._Nombre_Reporte = "RPT_CATALOGO_NOMINA_DIAS.rpt"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "Select S.*,U.NOMBRE_USUARIO AS NOMBRE_USUARIO_GENERO_NOMINA From NOMINA_SEMANA S LEFT JOIN SIS_USUARIOS U ON(S.CODIGO_USUARIO_GENERO_NOMINA=U.CODIGO_USUARIO)"
-        Me._QueryOrder = " Order by S.ID_NOMINA_TEMPORADA,S.NUMERO_SEMANA"
-    End Sub                                                         'Inicializa al objeto.
+        Me._QuerySelect = "SELECT S.*,U.NOMBRE_USUARIO AS NOMBRE_USUARIO_GENERO_NOMINA From NOMINA_SEMANA S LEFT JOIN SIS_USUARIOS U ON(S.CODIGO_USUARIO_GENERO_NOMINA=U.CODIGO_USUARIO)"
+        Me._QueryOrder = " ORDER BY S.ID_NOMINA_TEMPORADA,S.NUMERO_SEMANA"
+    End Sub
 
     Public Sub New(ByVal iSemana As Integer)
         Me.New()
@@ -217,7 +217,7 @@ Public Class Class_NominaSemana
 #Region "Métodos y procedimientos"
     Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand(Me._QuerySelect & " Where S.ID_NOMINA_SEMANA=" & Me._ID_NOMINA_SEMANA.ToString, Me._Conexion)
+        Dim cmd As New SqlCommand(Me._QuerySelect & " WHERE S.ID_NOMINA_SEMANA=" & Me._ID_NOMINA_SEMANA.ToString, Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0

@@ -1,18 +1,6 @@
 ﻿Option Strict On
 
-Imports Microsoft.VisualBasic
-Imports System
-Imports System.ComponentModel
-Imports System.Data
-Imports System.Data.Common
-Imports System.Data.Sql
-Imports System.Data.SqlClient
-Imports System.Windows.Forms
-Imports System.Collections
-Imports System.Collections.Generic
 Imports CrystalDecisions.CrystalReports.Engine
-Imports System.IO
-Imports System.Data.OleDb
 
 Public Class Frm_Nomina_Aguinaldos
     Dim oTemporada As New Class_NominaTemporada
@@ -434,33 +422,10 @@ Public Class Frm_Nomina_Aguinaldos
             End If
         End If
         Me.Consultar(True)
-
     End Sub
 
     Private Sub btnGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGrabar.Click
-        If MsgBox("Deseas grabar la modificación de los aguinaldo de los trabajadores?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Grabar") = MsgBoxResult.No Then
-            Exit Sub
-        End If
-        Try
-
-            If Me.oTemporada.GrabaAgunaldo(CInt(Me.lblIdPrestacionGlobal.Text), valorNumerico(Me.GridTrabajadores.Cell(1, Me.igyAguinaldo).Text), False) = False Then
-                Exit Sub
-            End If
-            Dim i As Integer
-
-            For i = 1 To Me.GridTrabajadores.Rows - 1
-                If Me.GridTrabajadores.Cell(i, Me.igyCodigoTrabajador).Text <> "" Then
-                    If Me.oTemporada.GrabaAgunaldo(CInt(Me.lblIdPrestacionGlobal.Text), valorNumerico(Me.GridTrabajadores.Cell(i, Me.igyAguinaldo).Text), True, Me.GridTrabajadores.Cell(i, Me.igyCodigoTrabajador).Text, CInt(Me.GridTrabajadores.Cell(i, Me.igyDiasTrabajados).Text)) = False Then
-                        Exit Sub
-                    End If
-                End If
-            Next i
-
-            MsgBox("Los aguinaldos se grabaron satisfactoriamente. ", MsgBoxStyle.Information, Me.Text)
-            Me.Consultar()
-        Catch ex As Exception
-            HandleError(Me.Name, "btnGeneraNomina", ex)
-        End Try
+        Me.Grabar
     End Sub
 
     Private Sub btnImprimirReporte_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnImprimirReporte.Click
@@ -526,7 +491,7 @@ Buscar:
                     GoTo Buscar : Exit Sub
                 End If
 
-                oTrabajadores = New Class_CatTrabajadores(Me.txtCodigoTrabajador.Text)
+                oTrabajadores = New Class_CatTrabajadores(Me.txtCodigoTrabajador.Text, True)
                 If oTrabajadores.Existe = False Then
                     GoTo Buscar : Exit Sub
                 End If
@@ -541,42 +506,91 @@ Buscar:
     End Sub
 
     Private Function ValidarTrabajador() As Boolean
-        Dim oTrabajadores As New Class_CatTrabajadores
-        oTrabajadores = New Class_CatTrabajadores(Me.txtCodigoTrabajador.Text)
-        If oTrabajadores.Existe = False Then
-            MsgBox("El trabajador no existe")
-            Exit Function
-        End If
-
-        If oTrabajadores.CODIGO_PUNTO_PAGO <> CInt(Me.cboPuntoPago1.SelectedValue) Then
-            MsgBox("El trabajador no tiene el punto de pago " & Me.cboPuntoPago1.Text & ", favor de verificar.", MsgBoxStyle.Exclamation, "Validación")
-            Exit Function
-        End If
-
-        Dim i As Integer
-        Dim sCodigoTrabajador As String = Me.txtCodigoTrabajador.Text
-
-        For i = 1 To Me.GridTrabajadores.Rows - 1
-            If txtLEN(sCodigoTrabajador) = True Then
-                If sCodigoTrabajador = Me.GridTrabajadores.Cell(i, Me.igyCodigoTrabajador).Text Then
-                    MsgBox("El trabajador ya esta agregado, favor de verificar.", MsgBoxStyle.Exclamation, "Validación")
-                    Exit Function
-                End If
+        Dim bResultado As Boolean = False
+        Try
+            Dim oTrabajadores As New Class_CatTrabajadores(Me.txtCodigoTrabajador.Text, True)
+            If oTrabajadores.Existe = False Then
+                MsgBox("El trabajador no existe", MsgBoxStyle.Exclamation, "ValidarTrabajador")
+                Exit Function
             End If
-        Next i
+
+            If oTrabajadores.CODIGO_PUNTO_PAGO <> CInt(Me.cboPuntoPago1.SelectedValue) Then
+                MsgBox("El trabajador no tiene el punto de pago " & Me.cboPuntoPago1.Text & ", favor de verificar.", MsgBoxStyle.Exclamation, "ValidarTrabajador")
+                Exit Function
+            End If
+
+            Dim i As Integer
+            Dim sCodigoTrabajador As String = Me.txtCodigoTrabajador.Text
+
+            For i = 1 To Me.GridTrabajadores.Rows - 1
+                If txtLEN(sCodigoTrabajador) = True Then
+                    If sCodigoTrabajador = Me.GridTrabajadores.Cell(i, Me.igyCodigoTrabajador).Text Then
+                        MsgBox("El trabajador ya esta agregado, favor de verificar.", MsgBoxStyle.Exclamation, "Validación")
+                        Exit Function
+                    End If
+                End If
+            Next i
+
+            MsgBox("temporada fija a 2, avise al depto de sistemas.")
+            Return False
+
+            Dim sql As New Class_find("SELECT P.CODIGO_TRABAJADOR,COUNT(*),(COUNT(*)* " & Me.txtFactor.Text & ") IMPORTE " &
+                                   "FROM VW_NOMINA_HOJAS_PERCEPCIONES_EXTENDIDA P " &
+                                   "INNER JOIN NOMINA_CAT_TRABAJADORES T ON (P.CODIGO_TRABAJADOR=T.CODIGO_TRABAJADOR) " &
+                                   "WHERE P.ID_NOMINA_DIA BETWEEN (SELECT ID_NOMINA_DIA FROM VW_NOMINA_DIAS_EXTENDIDA WHERE NUMERO_SEMANA=1 AND NUMERO_DIA=1 AND ID_NOMINA_TEMPORADA=P.ID_NOMINA_TEMPORADA) AND  " &
+              "(SELECT ID_NOMINA_DIA FROM VW_NOMINA_DIAS_EXTENDIDA WHERE ID_NOMINA_SEMANA=" & CInt(Me.CboSemana2.SelectedValue) & " AND NUMERO_DIA=7 AND ID_NOMINA_TEMPORADA=P.ID_NOMINA_TEMPORADA) AND P.NUMERO_DIA<8   " &
+                                   "AND P.ID_NOMINA_TEMPORADA=2 AND P.CODIGO_TRABAJADOR='" & Me.txtCodigoTrabajador.Text & "' GROUP BY P.CODIGO_TRABAJADOR")
 
 
-        Dim sql As New Class_find("SELECT P.CODIGO_TRABAJADOR,COUNT(*),(COUNT(*)* " & Me.txtFactor.Text & ") IMPORTE " & _
-                               "FROM VW_NOMINA_HOJAS_PERCEPCIONES_EXTENDIDA P " & _
-                               "INNER JOIN NOMINA_CAT_TRABAJADORES T ON (P.CODIGO_TRABAJADOR=T.CODIGO_TRABAJADOR) " & _
-                               "WHERE P.ID_NOMINA_DIA BETWEEN (SELECT ID_NOMINA_DIA FROM VW_NOMINA_DIAS_EXTENDIDA WHERE NUMERO_SEMANA=1 AND NUMERO_DIA=1 AND ID_NOMINA_TEMPORADA=P.ID_NOMINA_TEMPORADA) AND  " & _
-          "(SELECT ID_NOMINA_DIA FROM VW_NOMINA_DIAS_EXTENDIDA WHERE ID_NOMINA_SEMANA=" & CInt(Me.CboSemana2.SelectedValue) & " AND NUMERO_DIA=7 AND ID_NOMINA_TEMPORADA=P.ID_NOMINA_TEMPORADA) AND P.NUMERO_DIA<8   " & _
-                               "AND P.ID_NOMINA_TEMPORADA=2 AND P.CODIGO_TRABAJADOR='" & Me.txtCodigoTrabajador.Text & "' GROUP BY P.CODIGO_TRABAJADOR")
+            Me.GridTrabajadores.AddItem("0" & Chr(9) & oTrabajadores.CODIGO_X_TEMPORADA.ToString & Chr(9) & oTrabajadores.APELLIDO_PATERNO + " " + oTrabajadores.APELLIDO_MATERNO + " " + oTrabajadores.NOMBRE_TRABAJADOR & Chr(9) &
+                                        sql.Result2.ToString & Chr(9) & sql.Result3.ToString & Chr(9))
 
+            bResultado = True
 
-        Me.GridTrabajadores.AddItem("0" & Chr(9) & oTrabajadores.CODIGO_TRABAJADOR.ToString & Chr(9) & oTrabajadores.APELLIDO_PATERNO + " " + oTrabajadores.APELLIDO_MATERNO + " " + oTrabajadores.NOMBRE_TRABAJADOR & Chr(9) & sql.Result2.ToString & Chr(9) & sql.Result3.ToString & Chr(9))
-        Me.FormateaGridTrabajadores()
-        Me.Totales()
+            Me.FormateaGridTrabajadores()
+            Me.Totales()
 
+        Catch ex As Exception
+            HandleError(Me.Name, "ValidarTrabajador", ex)
+        End Try
+    End Function
+
+    Private Function Grabar() As Boolean
+        Dim bResultado As Boolean = False, sCodigoTrabajador As String = ""
+        Try
+            Dim i As Integer, oTrabajador As Class_CatTrabajadores
+
+            If MsgBox("Deseas grabar la modificación de los aguinaldo de los trabajadores?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Grabar") = MsgBoxResult.No Then
+                Return False
+            End If
+
+            If Me.oTemporada.GrabaAguinaldo(CInt(Me.lblIdPrestacionGlobal.Text), valorNumerico(Me.GridTrabajadores.Cell(1, Me.igyAguinaldo).Text), False) = False Then
+                Return False
+            End If
+
+            For i = 1 To Me.GridTrabajadores.Rows - 1
+                sCodigoTrabajador = Me.GridTrabajadores.Cell(i, Me.igyCodigoTrabajador).Text
+                If sCodigoTrabajador <> "" Then
+                    oTrabajador = New Class_CatTrabajadores(sCodigoTrabajador, True)
+                    If oTrabajador.Existe = False Then
+                        MsgBox("El trabajador " & sCodigoTrabajador & " no existe.", vbExclamation, Me.Text)
+                        Return False
+                    End If
+                    If Me.oTemporada.GrabaAguinaldo(CInt(Me.lblIdPrestacionGlobal.Text), valorNumerico(Me.GridTrabajadores.Cell(i, Me.igyAguinaldo).Text), True, oTrabajador.CODIGO_TRABAJADOR,
+                                                    CInt(Me.GridTrabajadores.Cell(i, Me.igyDiasTrabajados).Text)) = False Then
+                        Return False
+                    End If
+                End If
+            Next i
+
+            bResultado = True
+            MsgBox("Los aguinaldos se grabaron satisfactoriamente. ", MsgBoxStyle.Information, Me.Text)
+            Me.Consultar()
+
+        Catch ex As Exception
+            HandleError(Me.Name, "Grabar", ex)
+        End Try
+
+        Return bResultado
     End Function
 End Class

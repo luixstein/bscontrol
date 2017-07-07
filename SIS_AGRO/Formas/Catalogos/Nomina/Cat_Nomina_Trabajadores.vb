@@ -1,17 +1,11 @@
 ﻿Option Strict On
 
-Imports System.Drawing.Imaging
-Imports System.Drawing.Printing
-
 Imports System.IO
-Imports System.Data
 Imports System.Data.SqlClient
-Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Cat_Nomina_Trabajadores
     Dim oTrabajadores As New Class_CatTrabajadores
     Private _CODIGO_TRABAJADOR As String = ""
-
     Private Archivo As New Class_Archivo
 
 #Region "Campos privados"
@@ -89,9 +83,7 @@ Public Class Cat_Nomina_Trabajadores
     Private Sub tsbNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbNuevo.Click
         Me.Cambia_Estado(enumEstados.NUEVO)
 
-        Me.oTrabajadores.CodigoSiguiente()
-
-        Me.txtCodigoTrabajador.Text = String.Format("{0,5}", Me.oTrabajadores.CODIGO_TRABAJADOR.ToString).Replace(" ", "0")
+        Me.GeneraSiguienteCodigoTrabajador()
     End Sub
 
     Private Sub tsbEditar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbEditar.Click
@@ -109,13 +101,13 @@ Public Class Cat_Nomina_Trabajadores
 
         Select Case Me.Estado
             Case enumEstados.EDICION
-                sMsg = "grabar las modificaciones del " & Me.msgElemento & " : " & Me.txtCodigoTrabajador.Text
+                sMsg = "grabar las modificaciones del " & Me.msgElemento & " : " & Me.TxtNombreTrabajador.Text
             Case enumEstados.NUEVO
-                sMsg = "agregar el " & Me.msgElemento & " : " & Me.txtCodigoTrabajador.Text
+                sMsg = "agregar el " & Me.msgElemento & " : " & Me.TxtNombreTrabajador.Text
         End Select
         sMsg = "Deseas " & sMsg & " ?"
         'If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
-        Me.Grabar_Elemento()
+        Me.Grabar()
         'End If
     End Sub
 
@@ -167,6 +159,7 @@ Public Class Cat_Nomina_Trabajadores
                 Me.btnSiguiente.Enabled = False
 
                 Me.txtCodigoTrabajador.Enabled = False
+                Me.txtCodigoXTemporada.Enabled = False
                 Me.cboIdTemporada.Enabled = False
                 Me.TxtNombreTrabajador.Enabled = True
                 Me.txtApellidoPaterno.Enabled = True
@@ -221,6 +214,7 @@ Public Class Cat_Nomina_Trabajadores
                 Me.btnSiguiente.Enabled = False
 
                 Me.txtCodigoTrabajador.Enabled = False
+                Me.txtCodigoXTemporada.Enabled = False
                 Me.cboIdTemporada.Enabled = False
                 Me.TxtNombreTrabajador.Enabled = True
                 Me.txtApellidoPaterno.Enabled = True
@@ -276,7 +270,8 @@ Public Class Cat_Nomina_Trabajadores
                 Me.btnAnterior.Enabled = True
                 Me.btnSiguiente.Enabled = True
 
-                Me.txtCodigoTrabajador.Enabled = True
+                Me.txtCodigoTrabajador.Enabled = False
+                Me.txtCodigoXTemporada.Enabled = True
                 Me.cboIdTemporada.Enabled = False
                 Me.TxtNombreTrabajador.Enabled = False
                 Me.txtApellidoPaterno.Enabled = False
@@ -329,6 +324,7 @@ Public Class Cat_Nomina_Trabajadores
     Private Sub InicializaElemento()
         Try
             Me.txtCodigoTrabajador.Text = ""
+            Me.txtCodigoXTemporada.Text = ""
             Me.TxtNombreTrabajador.Text = ""
             Me.txtApellidoPaterno.Text = ""
             Me.txtApellidoMaterno.Text = ""
@@ -549,9 +545,11 @@ Public Class Cat_Nomina_Trabajadores
                     Exit Function
                 End If
 
-                Dim sql2 As New Class_find("SELECT 1 FROM NOMINA_CAT_TRABAJADORES WHERE NUMERO_REGISTRO_IMSS='" & Me.txtNumIMSS.Text & "' AND CODIGO_TRABAJADOR<>'" & Me.txtCodigoTrabajador.Text & "' AND ID_NOMINA_TEMPORADA=" & Me.cboIdTemporada.SelectedValue.ToString)
+                Dim sql2 = New Class_find("SELECT 1 FROM NOMINA_CAT_TRABAJADORES WHERE NUMERO_REGISTRO_IMSS='" & Me.txtNumIMSS.Text & "' AND ID_NOMINA_TEMPORADA=" & Me.cboIdTemporada.SelectedValue.ToString & " " &
+                                      IIf(Me.Estado = enumEstados.CONSULTA, " AND CODIGO_TRABAJADOR<>'" & sReplace(Me.txtCodigoTrabajador.Text) & "'", "").ToString)
+
                 If sql2.Result1 = "1" Then
-                    MsgBox("El número de registro de IMSS ya existe.", MsgBoxStyle.Exclamation, Me.Text)
+                    MsgBox("El número de IMSS ya lo tiene asignado algún trabajador.", MsgBoxStyle.Exclamation, Me.Text)
                     Me.txtNumIMSS.Focus()
                     Exit Function
                 End If
@@ -578,15 +576,21 @@ Public Class Cat_Nomina_Trabajadores
 
             End If
 
-            Dim SQL3 As New Class_find("SELECT 1 FROM NOMINA_CAT_TRABAJADORES WHERE NOMBRE_TRABAJADOR='" & Me.TxtNombreTrabajador.Text & "' AND APELLIDO_PATERNO='" & Me.txtApellidoPaterno.Text & "' AND APELLIDO_MATERNO='" & Me.txtApellidoMaterno.Text & "' AND FECHA_NACIMIENTO='" & Format(Me.dtpFechaNacimiento.Value, "yyyy-dd-MM").ToString & "' AND CODIGO_TRABAJADOR<>'" & Me.txtCodigoTrabajador.Text & "' ")
+            Dim SQL3 As New Class_find("SELECT 1 FROM NOMINA_CAT_TRABAJADORES " &
+                                       "WHERE ID_NOMINA_TEMPORADA=" & Me.cboIdTemporada.SelectedValue.ToString & " AND CODIGO_TRABAJADOR<>'" & Me.txtCodigoTrabajador.Text & "' " &
+                                       "AND NOMBRE_TRABAJADOR ='" & Me.TxtNombreTrabajador.Text & "' AND APELLIDO_PATERNO='" & Me.txtApellidoPaterno.Text & "' AND APELLIDO_MATERNO='" & Me.txtApellidoMaterno.Text & "' " &
+                                       "AND FECHA_NACIMIENTO='" & Format(Me.dtpFechaNacimiento.Value, "yyyy-dd-MM").ToString & "'")
             If SQL3.Result1 = "1" Then
                 MsgBox("Ya existe un trabajador con el mismo nombre,apellidos y fecha de nacimiento, no es posible repetirlo.", MsgBoxStyle.Exclamation, Me.Text)
                 Exit Function
             End If
 
-            Dim sql4 As New Class_find("SELECT 1 FROM NOMINA_CAT_TRABAJADORES WHERE NOMBRE_TRABAJADOR='" & Me.TxtNombreTrabajador.Text & "' AND APELLIDO_PATERNO='" & Me.txtApellidoPaterno.Text & "' AND APELLIDO_MATERNO='" & Me.txtApellidoMaterno.Text & "' AND CODIGO_TRABAJADOR<>'" & Me.txtCodigoTrabajador.Text & "' ")
+            Dim sql4 As New Class_find("SELECT 1 FROM NOMINA_CAT_TRABAJADORES " &
+                                       "WHERE ID_NOMINA_TEMPORADA=" & Me.cboIdTemporada.SelectedValue.ToString & " AND CODIGO_TRABAJADOR<>'" & Me.txtCodigoTrabajador.Text & "' " &
+                                       "AND NOMBRE_TRABAJADOR='" & Me.TxtNombreTrabajador.Text & "' AND APELLIDO_PATERNO='" & Me.txtApellidoPaterno.Text & "' AND APELLIDO_MATERNO='" & Me.txtApellidoMaterno.Text & "' " &
+                                       "")
             If sql4.Result1 = "1" Then
-                If MsgBox("Ya existe un trabajador con el mismo nombre, apellidos pero con fecha de nacimiento diferente, esta seguro de grabarlo?", CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.No Then
+                If MsgBox("Ya existe un trabajador con el mismo nombre y apellidos pero con fecha de nacimiento diferente, esta seguro de grabarlo?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "Confirmación") = MsgBoxResult.No Then
                     Exit Function
                 End If
             End If
@@ -659,99 +663,113 @@ Public Class Cat_Nomina_Trabajadores
         Next
     End Function
 
-    Private Sub Grabar_Elemento()
-        Dim oElemento As New Class_CatTrabajadores
-        Dim Grabado As Boolean = False
-        Dim sFoto As String = ""
+    Private Function Grabar() As Boolean
+        Dim bResultado As Boolean = False
+        Dim oElemento As New Class_CatTrabajadores, oMayormodo As New Class_CatTrabajadores
+        Try
+            Dim sFoto As String = ""
 
-        If Me.Validar() = False Then
-            Exit Sub
-        End If
+            If Me.Validar() = False Then
+                Return False
+            End If
 
-        Select Case Me.Estado
-            Case enumEstados.NUEVO, enumEstados.EDICION
-                oElemento = New Class_CatTrabajadores
-                Try
-                    With oElemento
-                        .CODIGO_TRABAJADOR = Me.txtCodigoTrabajador.Text
-                        .NOMBRE_TRABAJADOR = Me.TxtNombreTrabajador.Text
-                        .ID_NOMINA_TEMPORADA = CInt(Me.cboIdTemporada.SelectedValue)
-                        .APELLIDO_PATERNO = Me.txtApellidoPaterno.Text
-                        .APELLIDO_MATERNO = Me.txtApellidoMaterno.Text
-                        .CODIGO_SEXO = Me.cboSexo.SelectedValue.ToString
-                        .FECHA_NACIMIENTO = Me.dtpFechaNacimiento.Value
-                        .CODIGO_ESTADO_NACIMIENTO = Me.cboEstadoNacimiento.SelectedValue.ToString
+            If Not (Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.EDICION) Then
+                Return False
+            End If
 
-                        .CODIGO_AREA = CInt(Me.cboArea.SelectedValue)
-                        .CODIGO_PUESTO = CInt(Me.cboPuesto.SelectedValue)
-                        .CODIGO_PUNTO_PAGO = CInt(Me.cboPuntoPago.SelectedValue)
-                        .RFC = Me.txtRfc.Text
-                        .CURP = Me.txtCurp.Text
-                        .CODIGO_MAYORDOMO = Me.txtCodigoMayordomo.Text
-                        .SUELDO_DIARIO = CDbl(Me.txtSueldo.Text)
-                        .ESTATUS_TRABAJADOR = Strings.Left(Me.CboEstatus.Text, 1)
-                        .RECIBE_PAGO_TARJETA_BANCARIA = Convert.ToInt32(Me.ckbPagoTarjeta.Checked).ToString
-                        .NUMERO_TARJETA_BANCARIA = Me.txtNumTarjeta.Text
-                        .CODIGO_BANCO_PAGO_TARJETA = Me.txtCodigoBanco.Text
+            If txtLEN(Me.txtCodigoMayordomo.Text) = True Then
+                oMayormodo = New Class_CatTrabajadores(Me.txtCodigoMayordomo.Text, True)
+            End If
 
-                        .DOMICILIO_CALLE = Me.txtDomicilioCalle.Text
-                        .DOMICILIO_NUMERO = Me.txtDomicilioNumero.Text
-                        .DOMICILIO_CODIGO_POSTAL = Me.txtDomicilioCodigoPostal.Text
-                        .DOMICILIO_COLONIA = Me.txtDomicilioColonia.Text
-                        .DOMICILIO_CIUDAD = Me.txtDomicilioCiudad.Text
-                        .DOMICILIO_LOCALIDAD = Me.txtDomicilioLocalidad.Text
-                        .DOMICILIO_CODIGO_ESTADO = Me.cboDomicilioEstado.SelectedValue.ToString
+            With oElemento
+                .CODIGO_TRABAJADOR = Me.txtCodigoTrabajador.Text
+                .NOMBRE_TRABAJADOR = Me.TxtNombreTrabajador.Text
+                .ID_NOMINA_TEMPORADA = CInt(Me.cboIdTemporada.SelectedValue)
+                .APELLIDO_PATERNO = Me.txtApellidoPaterno.Text
+                .APELLIDO_MATERNO = Me.txtApellidoMaterno.Text
+                .CODIGO_SEXO = Me.cboSexo.SelectedValue.ToString
+                .FECHA_NACIMIENTO = Me.dtpFechaNacimiento.Value
+                .CODIGO_ESTADO_NACIMIENTO = Me.cboEstadoNacimiento.SelectedValue.ToString
 
-                        If txtLEN(Me.cboUnidadMedicaFamiliar.Text) = True Then
-                            .CODIGO_UNIDAD_MEDICA_FAMILIAR = "" & Me.cboUnidadMedicaFamiliar.SelectedValue.ToString
+                .CODIGO_AREA = CInt(Me.cboArea.SelectedValue)
+                .CODIGO_PUESTO = CInt(Me.cboPuesto.SelectedValue)
+                .CODIGO_PUNTO_PAGO = CInt(Me.cboPuntoPago.SelectedValue)
+                .RFC = Me.txtRfc.Text
+                .CURP = Me.txtCurp.Text
+
+                If txtLEN(Me.txtCodigoMayordomo.Text) = True Then
+                    .CODIGO_MAYORDOMO = oMayormodo.CODIGO_TRABAJADOR 'Recordemos que el usuario ve los codigos_x_temporada y nos unicos, por eso esta el objeto oMayordomo
+                Else
+                    .CODIGO_MAYORDOMO = ""
+                End If
+
+                .SUELDO_DIARIO = CDbl(Me.txtSueldo.Text)
+                .ESTATUS_TRABAJADOR = Strings.Left(Me.CboEstatus.Text, 1)
+                .RECIBE_PAGO_TARJETA_BANCARIA = Convert.ToInt32(Me.ckbPagoTarjeta.Checked).ToString
+                .NUMERO_TARJETA_BANCARIA = Me.txtNumTarjeta.Text
+                .CODIGO_BANCO_PAGO_TARJETA = Me.txtCodigoBanco.Text
+
+                .DOMICILIO_CALLE = Me.txtDomicilioCalle.Text
+                .DOMICILIO_NUMERO = Me.txtDomicilioNumero.Text
+                .DOMICILIO_CODIGO_POSTAL = Me.txtDomicilioCodigoPostal.Text
+                .DOMICILIO_COLONIA = Me.txtDomicilioColonia.Text
+                .DOMICILIO_CIUDAD = Me.txtDomicilioCiudad.Text
+                .DOMICILIO_LOCALIDAD = Me.txtDomicilioLocalidad.Text
+                .DOMICILIO_CODIGO_ESTADO = Me.cboDomicilioEstado.SelectedValue.ToString
+
+                If txtLEN(Me.cboUnidadMedicaFamiliar.Text) = True Then
+                    .CODIGO_UNIDAD_MEDICA_FAMILIAR = "" & Me.cboUnidadMedicaFamiliar.SelectedValue.ToString
+                End If
+                .NOMBRE_PADRE = Me.txtNombrePadre.Text
+                .NOMBRE_MADRE = Me.txtNombreMadre.Text
+                .NUMERO_REGISTRO_IMSS = Me.txtNumIMSS.Text
+                .AFILIABLE_IMSS = Convert.ToInt32(Me.ckbAfiliableIMSS.Checked).ToString
+                .FIJO_IMSS = Convert.ToInt32(Me.ckbFijoIMSS.Checked).ToString
+                .CALCULA_SINDICATO = Convert.ToInt32(Me.ckbSindicato.Checked).ToString
+                .FECHA_INGRESO = Me.dtpFechaIngreso.Value
+                .NUMERO_TRABAJADOR_BANCO = Me.txtNumeroTrabajadorBanco.Text.ToUpper
+                .NUMERO_CUENTA_BANCO = Me.txtNumeroCuentaBanco.Text.ToUpper
+
+                .ARCHIVO_FOTO = Me.Archivo.Archivo
+
+                Select Case Me.Estado
+                    Case enumEstados.NUEVO
+                        If .Grabar(Class_CatTrabajadores.Accion.INSERTAR) = False Then
+                            Return False
                         End If
-                        .NOMBRE_PADRE = Me.txtNombrePadre.Text
-                        .NOMBRE_MADRE = Me.txtNombreMadre.Text
-                        .NUMERO_REGISTRO_IMSS = Me.txtNumIMSS.Text
-                        .AFILIABLE_IMSS = Convert.ToInt32(Me.ckbAfiliableIMSS.Checked).ToString
-                        .FIJO_IMSS = Convert.ToInt32(Me.ckbFijoIMSS.Checked).ToString
-                        .CALCULA_SINDICATO = Convert.ToInt32(Me.ckbSindicato.Checked).ToString
-                        .FECHA_INGRESO = Me.dtpFechaIngreso.Value
-                        .NUMERO_TRABAJADOR_BANCO = Me.txtNumeroTrabajadorBanco.Text.ToUpper
-                        .NUMERO_CUENTA_BANCO = Me.txtNumeroCuentaBanco.Text.ToUpper
-
-                        .ARCHIVO_FOTO = Me.Archivo.Archivo
-
-                        Select Case Me.Estado
-                            Case enumEstados.NUEVO
-                                If .Insertar() = False Then
-                                    Exit Sub
-                                End If
-                            Case enumEstados.EDICION
-                                If .Actualizar() = False Then
-                                    Exit Sub
-                                End If
-                        End Select
-
-                        'para que solamente lo haga si hay imagen en la caja de imagen 
-                        If Not Me.pbFotoTrabajador.Image Is Nothing Then
-                            'sFoto = Plaza.oSisPlazaNomina.NOMINA_RUTA_FOTOS_TRABAJADORES.ToString & "\" & Me.txtCodigoTrabajador.Text & ".jpg"
-                            'If File.Exists(sFoto) = False Then
-                            '    'File.Exists(Nothing)
-                            '    'File.Delete(sFoto)
-
-                            '    Me.pbFotoTrabajador.Image.Save(sFoto, Imaging.ImageFormat.Jpeg)
-                            'End If
-                            .ARCHIVO_FOTO = Me.Archivo.Archivo
+                    Case enumEstados.EDICION
+                        If .Grabar(Class_CatTrabajadores.Accion.ACTUALIZAR) = False Then
+                            Return False
                         End If
+                End Select
 
-                        MsgBox(Me.msgElemento & " grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
-                        Me.Cambia_Estado(enumEstados.CONSULTA)
-                        Me.DesplegarElementos()
+                'para que solamente lo haga si hay imagen en la caja de imagen 
+                If Not Me.pbFotoTrabajador.Image Is Nothing Then
+                    'sFoto = Plaza.oSisPlazaNomina.NOMINA_RUTA_FOTOS_TRABAJADORES.ToString & "\" & Me.txtCodigoTrabajador.Text & ".jpg"
+                    'If File.Exists(sFoto) = False Then
+                    '    'File.Exists(Nothing)
+                    '    'File.Delete(sFoto)
 
-                    End With
-                Catch ex As Exception
-                    HandleError(Me.Name, "Grabar_Elemento", ex)
-                Finally
-                    oElemento = Nothing
-                End Try
-        End Select
-    End Sub
+                    '    Me.pbFotoTrabajador.Image.Save(sFoto, Imaging.ImageFormat.Jpeg)
+                    'End If
+                    .ARCHIVO_FOTO = Me.Archivo.Archivo
+                End If
+
+                bResultado = True
+
+                MsgBox(Me.msgElemento & " grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
+                Me.Cambia_Estado(enumEstados.CONSULTA)
+                Me.DesplegarElementos()
+
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "Grabar", ex)
+        Finally
+            oElemento = Nothing
+        End Try
+
+        Return bResultado
+    End Function
 
     Private Function LlenaComboEstatus() As Boolean
         Me.CboEstatus.Items.Add("A")
@@ -760,153 +778,188 @@ Public Class Cat_Nomina_Trabajadores
     End Function
 
     Private Sub CargaEstados()
-        Dim oElementos As New Class_CatTrabajadores
-        With Me.cboDomicilioEstado
-            .DisplayMember = "NOMBRE_ESTADO"
-            .ValueMember = "CODIGO_ESTADO"
+        Try
+            Dim oElementos As New Class_CatTrabajadores
+            With Me.cboDomicilioEstado
+                .DisplayMember = "NOMBRE_ESTADO"
+                .ValueMember = "CODIGO_ESTADO"
 
-            Dim dView As New Data.DataView(oElementos.ObtenerEstados)
-            dView.Sort = "NOMBRE_ESTADO"
-            .DataSource = dView
-            If dView.Count > 0 Then
-                .SelectedValue = "SIN"
-            End If
-        End With
+                Dim dView As New Data.DataView(oElementos.ObtenerEstados)
+                dView.Sort = "NOMBRE_ESTADO"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedValue = "SIN"
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "CargaEstados", ex)
+        End Try
     End Sub
 
     Private Sub CargaEstadosNacimiento()
-        Dim oElementos As New Class_CatTrabajadores
-        With Me.cboEstadoNacimiento
-            .DisplayMember = "NOMBRE_ESTADO"
-            .ValueMember = "CODIGO_ESTADO"
+        Try
+            Dim oElementos As New Class_CatTrabajadores
+            With Me.cboEstadoNacimiento
+                .DisplayMember = "NOMBRE_ESTADO"
+                .ValueMember = "CODIGO_ESTADO"
 
-            Dim dView As New Data.DataView(oElementos.ObtenerEstados)
-            dView.Sort = "NOMBRE_ESTADO"
-            .DataSource = dView
-            If dView.Count > 0 Then
-                .SelectedValue = "SIN"
-            End If
-        End With
+                Dim dView As New Data.DataView(oElementos.ObtenerEstados)
+                dView.Sort = "NOMBRE_ESTADO"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedValue = "SIN"
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "CargaEstadosNacimiento", ex)
+        End Try
     End Sub
 
-    Private Function Consultar() As Boolean
-        Dim sFolio As String = Me.txtCodigoTrabajador.Text
-        Me.InicializaElemento()
-        Me.oTrabajadores = New Class_CatTrabajadores()
-        Me.oTrabajadores.CODIGO_TRABAJADOR = sFolio
+    Private Function Consultar(Optional ByVal bConsultarXCodigoXTemporada As Boolean = False) As Boolean
+        Dim bResultado As Boolean = False
 
-        If Me.oTrabajadores.Consultar = False Then
-            Me.oTrabajadores.CodigoSiguiente()
-            Me.Cambia_Estado(enumEstados.NUEVO)
-            Me.txtCodigoTrabajador.Text = Me.oTrabajadores.CODIGO_TRABAJADOR.ToString
-            Exit Function
-        Else
-            With Me.oTrabajadores
-                Me.txtCodigoTrabajador.Text = .CODIGO_TRABAJADOR
-                Me.TxtNombreTrabajador.Text = .NOMBRE_TRABAJADOR
-                Me.cboIdTemporada.SelectedValue = .ID_NOMINA_TEMPORADA
-                Me.txtApellidoPaterno.Text = .APELLIDO_PATERNO
-                Me.txtApellidoMaterno.Text = .APELLIDO_MATERNO
-                Me.cboSexo.SelectedValue = .CODIGO_SEXO
-                Me.dtpFechaNacimiento.Value = .FECHA_NACIMIENTO
-                Me.cboEstadoNacimiento.SelectedValue = .CODIGO_ESTADO_NACIMIENTO
+        Try
+            Dim sCodigo As String = ""
 
-                Me.cboArea.SelectedValue = .CODIGO_AREA
-                Me.cboPuesto.SelectedValue = .CODIGO_PUESTO
-                Me.cboPuntoPago.SelectedValue = .CODIGO_PUNTO_PAGO
-                Me.txtCodigoMayordomo.Text = .CODIGO_MAYORDOMO
-                Me.lblNombreMayordomo.Text = .NOMBRE_MAYORDOMO
-                Me.txtSueldo.Text = FormatImporteContable(valorNumerico(.SUELDO_DIARIO.ToString), True)
-                Me.txtRfc.Text = .RFC
-                Me.txtCurp.Text = .CURP
-                If .ESTATUS_TRABAJADOR = "A" Then
-                    Me.CboEstatus.SelectedIndex = 0
-                Else
-                    Me.CboEstatus.SelectedIndex = 1
-                End If
-                Me.ckbPagoTarjeta.Checked = CBool(.RECIBE_PAGO_TARJETA_BANCARIA)
-                Me.txtNumTarjeta.Text = .NUMERO_TARJETA_BANCARIA
-                Me.txtCodigoBanco.Text = .CODIGO_BANCO_PAGO_TARJETA
-                Me.LblBanco.Text = .NOMBRE_BANCO
-                Me.txtCuentaContable.Text = .CUENTA_CONTABLE
+            sCodigo = Me.txtCodigoXTemporada.Text
+            Me.InicializaElemento()
+            Me.oTrabajadores = New Class_CatTrabajadores(sCodigo, True)
 
-                Me.txtDomicilioCalle.Text = .DOMICILIO_CALLE
-                Me.txtDomicilioNumero.Text = .DOMICILIO_NUMERO
-                Me.txtDomicilioCodigoPostal.Text = .DOMICILIO_CODIGO_POSTAL
-                Me.txtDomicilioColonia.Text = .DOMICILIO_COLONIA
-                Me.txtDomicilioCiudad.Text = .DOMICILIO_CIUDAD
-                Me.txtDomicilioLocalidad.Text = .DOMICILIO_LOCALIDAD
-                Me.cboDomicilioEstado.SelectedValue = .DOMICILIO_CODIGO_ESTADO
-
-                Me.cboUnidadMedicaFamiliar.SelectedValue = .CODIGO_UNIDAD_MEDICA_FAMILIAR
-                Me.txtNombrePadre.Text = .NOMBRE_PADRE
-                Me.txtNombreMadre.Text = .NOMBRE_MADRE
-                Me.txtNumIMSS.Text = .NUMERO_REGISTRO_IMSS
-                Me.ckbAfiliableIMSS.Checked = CBool(.AFILIABLE_IMSS)
-                Me.ckbFijoIMSS.Checked = CBool(.FIJO_IMSS)
-                Me.ckbSindicato.Checked = CBool(.CALCULA_SINDICATO)
-                Me.dtpFechaIngreso.Value = .FECHA_INGRESO
-
-                Me.txtNumeroTrabajadorBanco.Text = .NUMERO_TRABAJADOR_BANCO
-                Me.txtNumeroCuentaBanco.Text = .NUMERO_CUENTA_BANCO
-
-                If IsNothing(.ARCHIVO_FOTO) = False Then
-                    Me.Archivo.Archivo = .ARCHIVO_FOTO 'Va fungir como propiedad, se tiene que cargar, porque este objecto es el que usa para grabar, y si no se llena, al grabar se perderá la foto.
-
-                    Dim ms As MemoryStream = New MemoryStream(Me.Archivo.Archivo)
-                    Me.pbFotoTrabajador.Image = Image.FromStream(ms)
-
-                End If
-
-            End With
-
-            
-
-            'Dim sFoto As String = Plaza.oSisPlazaNomina.NOMINA_RUTA_FOTOS_TRABAJADORES.ToString & "\" & Me.txtCodigoTrabajador.Text & ".jpg"
-            'If File.Exists(sFoto) Then 'C:\agrinet\Nomina\Fotos_Trabajadores
-            '    Me.pbFotoTrabajador.Image = System.Drawing.Image.FromFile(sFoto)
-            'Else
-            '    Me.pbFotoTrabajador.Image = Nothing
+            'If bConsultarXCodigoXTemporada = True Then 'Consulta x temporada, se puede repetir.
+            '    sCodigo = Me.txtCodigoXTemporada.Text
+            '    Me.InicializaElemento()
+            '    Me.oTrabajadores = New Class_CatTrabajadores(sCodigo, True)
+            'Else 'Consulta x código único
+            '    sCodigo = Me.txtCodigoTrabajador.Text
+            '    Me.InicializaElemento()
+            '    Me.oTrabajadores = New Class_CatTrabajadores(sCodigo, "")
             'End If
 
-        End If
-        Consultar = True
+            If Me.oTrabajadores.Existe = False Then
+                Me.oTrabajadores.CodigoSiguiente()
+                Me.Cambia_Estado(enumEstados.NUEVO)
+                Me.txtCodigoTrabajador.Text = Me.oTrabajadores.CODIGO_TRABAJADOR.ToString
+                Return False
+            Else
+                Me.txtCodigoXTemporada.Enabled = False
+                Me.txtCodigoTrabajador.Enabled = False
+                With Me.oTrabajadores
+                    Me.txtCodigoTrabajador.Text = .CODIGO_TRABAJADOR
+                    Me.txtCodigoXTemporada.Text = .CODIGO_X_TEMPORADA
+                    Me.TxtNombreTrabajador.Text = .NOMBRE_TRABAJADOR
+                    Me.cboIdTemporada.SelectedValue = .ID_NOMINA_TEMPORADA
+                    Me.txtApellidoPaterno.Text = .APELLIDO_PATERNO
+                    Me.txtApellidoMaterno.Text = .APELLIDO_MATERNO
+                    Me.cboSexo.SelectedValue = .CODIGO_SEXO
+                    Me.dtpFechaNacimiento.Value = .FECHA_NACIMIENTO
+                    Me.cboEstadoNacimiento.SelectedValue = .CODIGO_ESTADO_NACIMIENTO
 
+                    Me.cboArea.SelectedValue = .CODIGO_AREA
+                    Me.cboPuesto.SelectedValue = .CODIGO_PUESTO
+                    Me.cboPuntoPago.SelectedValue = .CODIGO_PUNTO_PAGO
+                    Me.txtCodigoMayordomo.Text = .CODIGO_X_TEMPORADA_MAYORDOMO
+                    Me.lblNombreMayordomo.Text = .NOMBRE_MAYORDOMO
+                    Me.txtSueldo.Text = FormatImporteContable(valorNumerico(.SUELDO_DIARIO.ToString), True)
+                    Me.txtRfc.Text = .RFC
+
+                    Me.txtCurp.Text = .CURP
+                    If .ESTATUS_TRABAJADOR = "A" Then
+                        Me.CboEstatus.SelectedIndex = 0
+                    Else
+                        Me.CboEstatus.SelectedIndex = 1
+                    End If
+                    Me.ckbPagoTarjeta.Checked = CBool(.RECIBE_PAGO_TARJETA_BANCARIA)
+                    Me.txtNumTarjeta.Text = .NUMERO_TARJETA_BANCARIA
+                    Me.txtCodigoBanco.Text = .CODIGO_BANCO_PAGO_TARJETA
+                    Me.LblBanco.Text = .NOMBRE_BANCO
+                    Me.txtCuentaContable.Text = .CUENTA_CONTABLE
+
+                    Me.txtDomicilioCalle.Text = .DOMICILIO_CALLE
+                    Me.txtDomicilioNumero.Text = .DOMICILIO_NUMERO
+                    Me.txtDomicilioCodigoPostal.Text = .DOMICILIO_CODIGO_POSTAL
+                    Me.txtDomicilioColonia.Text = .DOMICILIO_COLONIA
+                    Me.txtDomicilioCiudad.Text = .DOMICILIO_CIUDAD
+                    Me.txtDomicilioLocalidad.Text = .DOMICILIO_LOCALIDAD
+                    Me.cboDomicilioEstado.SelectedValue = .DOMICILIO_CODIGO_ESTADO
+
+                    Me.cboUnidadMedicaFamiliar.SelectedValue = .CODIGO_UNIDAD_MEDICA_FAMILIAR
+                    Me.txtNombrePadre.Text = .NOMBRE_PADRE
+                    Me.txtNombreMadre.Text = .NOMBRE_MADRE
+                    Me.txtNumIMSS.Text = .NUMERO_REGISTRO_IMSS
+                    Me.ckbAfiliableIMSS.Checked = CBool(.AFILIABLE_IMSS)
+                    Me.ckbFijoIMSS.Checked = CBool(.FIJO_IMSS)
+                    Me.ckbSindicato.Checked = CBool(.CALCULA_SINDICATO)
+                    Me.dtpFechaIngreso.Value = .FECHA_INGRESO
+
+                    Me.txtNumeroTrabajadorBanco.Text = .NUMERO_TRABAJADOR_BANCO
+                    Me.txtNumeroCuentaBanco.Text = .NUMERO_CUENTA_BANCO
+
+                    If IsNothing(.ARCHIVO_FOTO) = False Then
+                        Me.Archivo.Archivo = .ARCHIVO_FOTO 'Va fungir como propiedad, se tiene que cargar, porque este objecto es el que usa para grabar, y si no se llena, al grabar se perderá la foto.
+
+                        Dim ms As MemoryStream = New MemoryStream(Me.Archivo.Archivo)
+                        Me.pbFotoTrabajador.Image = Image.FromStream(ms)
+
+                    End If
+
+                End With
+
+                bResultado = True
+
+            End If
+
+        Catch ex As Exception
+            HandleError(Me.Name, "Consultar", ex)
+        End Try
+
+        Return bResultado
     End Function
 
     Private Sub DesplegarElementos()
-        With Me.Grid
-            .DataSource = oTrabajadores.ObtenerElementos
-            .Columns("CODIGO_TRABAJADOR").Width = 40
-            .Columns("NOMBRE_COMPLETO_APELLIDO").Width = 300
-        End With
+        Try
+            With Me.Grid
+                .DataSource = oTrabajadores.ObtenerElementosxTemporada
+                .Columns("CODIGO_X_TEMPORADA").Width = 40
+                .Columns("NOMBRE_COMPLETO_APELLIDO").Width = 300
+            End With
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "DesplegarElementos", ex)
+        End Try
     End Sub
 
     Private Sub DesplegarTemporadas()
-        With Me.cboIdTemporada
-            .DisplayMember = "NOMBRE_TEMPORADA"
-            .ValueMember = "ID_NOMINA_TEMPORADA"
-            Dim dView As New Data.DataView(Me.oTrabajadores.ObtenerTemporadas)
-            dView.Sort = "NOMBRE_TEMPORADA"
-            .DataSource = dView
-            If dView.Count > 0 Then
-                '.SelectedIndex = 0
-                .SelectedValue = Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA
-            End If
-        End With
+        Try
+            With Me.cboIdTemporada
+                .DisplayMember = "NOMBRE_TEMPORADA"
+                .ValueMember = "ID_NOMINA_TEMPORADA"
+                Dim dView As New Data.DataView(Me.oTrabajadores.ObtenerTemporadas)
+                dView.Sort = "NOMBRE_TEMPORADA"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    '.SelectedIndex = 0
+                    .SelectedValue = Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "DesplegarTemporadas", ex)
+        End Try
     End Sub
 
     Private Sub DesplegarSexos()
-        With Me.cboSexo
-            .DisplayMember = "NOMBRE_SEXO"
-            .ValueMember = "CODIGO_SEXO"
-            Dim dView As New Data.DataView(Me.oTrabajadores.ObtenerSexos)
-            dView.Sort = "NOMBRE_SEXO"
-            .DataSource = dView
-            If dView.Count > 0 Then
-                .SelectedIndex = 0
-            End If
-        End With
+        Try
+            With Me.cboSexo
+                .DisplayMember = "NOMBRE_SEXO"
+                .ValueMember = "CODIGO_SEXO"
+                Dim dView As New Data.DataView(Me.oTrabajadores.ObtenerSexos)
+                dView.Sort = "NOMBRE_SEXO"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedIndex = 0
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "DesplegarSexos", ex)
+        End Try
     End Sub
 
     Private Sub DesplegarAreas()
@@ -1413,13 +1466,26 @@ Public Class Cat_Nomina_Trabajadores
     End Function
 #End Region
 
+    Private Sub GeneraSiguienteCodigoTrabajador()
+        Try
+            Me.oTrabajadores = New Class_CatTrabajadores
+            Me.oTrabajadores.CODIGO_PUNTO_PAGO = CInt(Me.cboPuntoPago.SelectedValue.ToString)
+            Me.oTrabajadores.CodigoSiguiente()
+
+            'Me.txtCodigoTrabajador.Text = String.Format("{0,5}", Me.oTrabajadores.CODIGO_TRABAJADOR.ToString).Replace(" ", "0")
+            Me.txtCodigoXTemporada.Text = Me.oTrabajadores.CODIGO_TRABAJADOR
+        Catch ex As Exception
+            HandleError(Me.Name, "GeneraSiguienteCodigoTrabajador", ex)
+        End Try
+    End Sub
+
 #End Region
 
 #Region "Eventos de objetos"
 
 #Region "Eventos de la lista de elementos"
     Private Sub Grid_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles Grid.CellClick
-        Me.txtCodigoTrabajador.Text = (Me.Grid.CurrentRow.Cells("CODIGO_TRABAJADOR").Value.ToString)
+        Me.txtCodigoXTemporada.Text = (Me.Grid.CurrentRow.Cells("CODIGO_X_TEMPORADA").Value.ToString)
         Me.Consultar()
         Me.Cambia_Estado(enumEstados.CONSULTA)
     End Sub
@@ -1428,6 +1494,7 @@ Public Class Cat_Nomina_Trabajadores
         Me.Estado = enumEstados.EDICION
         Me.Cambia_Estado(enumEstados.EDICION)
     End Sub
+
     'Private Sub lstbElementos_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstbElementos.Click
 
     'End Sub
@@ -1450,7 +1517,8 @@ Public Class Cat_Nomina_Trabajadores
     'End Sub
 
 #End Region
-#Region " Eventos de TxtFiltro"
+
+#Region "Eventos de TxtFiltro"
     Private Sub txtFiltro_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFiltro.TextChanged
         Me.Grid.DataSource = Nothing
 
@@ -1478,6 +1546,7 @@ Public Class Cat_Nomina_Trabajadores
         End If
     End Sub
 #End Region
+
 #Region "Eventos Genericos"
 
     Private Sub txt_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtDomicilioNumero.KeyDown, _
@@ -1496,8 +1565,8 @@ Public Class Cat_Nomina_Trabajadores
         txtNoBeep(e)
     End Sub
 
-    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtDomicilioNumero.KeyPress, txtDomicilioCodigoPostal.KeyPress, txtNumTarjeta.KeyPress, txtNumIMSS.KeyPress, _
-        txtCodigoTrabajador.KeyPress, txtCodigoMayordomo.KeyPress, txtNumeroTrabajadorBanco.KeyPress, txtNumeroCuentaBanco.KeyPress
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtDomicilioNumero.KeyPress, txtDomicilioCodigoPostal.KeyPress, txtNumTarjeta.KeyPress, txtNumIMSS.KeyPress,
+        txtCodigoTrabajador.KeyPress, txtCodigoMayordomo.KeyPress, txtNumeroTrabajadorBanco.KeyPress, txtNumeroCuentaBanco.KeyPress, txtCodigoXTemporada.KeyPress
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
@@ -1553,7 +1622,6 @@ Public Class Cat_Nomina_Trabajadores
         Select Case e.KeyCode
             Case Keys.F6
                 Dim oMayordomos As New Class_CatTrabajadores
-                oMayordomos = New Class_CatTrabajadores
                 sCodigo = oMayordomos.BusquedaVisual_Mayordomos
 
                 If txtLEN(sCodigo) = True Then
@@ -1567,9 +1635,10 @@ Public Class Cat_Nomina_Trabajadores
                     Exit Sub
                 End If
 
-                Dim sql As New Class_find("SELECT CODIGO_TRABAJADOR,NOMBRE_TRABAJADOR FROM NOMINA_CAT_TRABAJADORES T INNER JOIN NOMINA_CAT_PUESTOS P ON(T.CODIGO_PUESTO=P.CODIGO_PUESTO AND P.NOMBRE_PUESTO='MAYORDOMO') WHERE  T.ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA.ToString & " AND CODIGO_TRABAJADOR='" & Me.txtCodigoMayordomo.Text & "'")
+                Dim sql As New Class_find("SELECT T.CODIGO_X_TEMPORADA,T.NOMBRE_TRABAJADOR FROM NOMINA_CAT_TRABAJADORES T INNER JOIN NOMINA_CAT_PUESTOS P ON(T.CODIGO_PUESTO=P.CODIGO_PUESTO AND P.NOMBRE_PUESTO='MAYORDOMO') " &
+                                          "WHERE T.ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA.ToString & " AND T.CODIGO_X_TEMPORADA='" & Me.txtCodigoMayordomo.Text & "'")
                 If sql.Result1 = "" Then
-                    MsgBox("El código del mayordomo no existe, favor de verificar.", MsgBoxStyle.Critical, "Validación de código de mayordomo")
+                    MsgBox("El código del mayordomo no existe, favor de verificar.", MsgBoxStyle.Exclamation, "Validación de código de mayordomo")
                     Me.lblNombreMayordomo.Text = ""
                     Me.txtCodigoMayordomo.Focus()
                     Exit Sub
@@ -1626,15 +1695,26 @@ Public Class Cat_Nomina_Trabajadores
         End If
     End Sub
 
-    Private Sub txtCodigoTrabajador_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodigoTrabajador.KeyDown
+    'Private Sub txtCodigoTrabajador_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodigoTrabajador.KeyDown
+    '    Select Case e.KeyCode
+    '        Case Keys.Enter
+    '            If Me.Consultar() = False Then
+    '                Me.tsbNuevo.PerformClick()
+    '            End If
+    '    End Select
+    '    txtTAB(e)
+    'End Sub
+
+    Private Sub txtCodigoXTemporada_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodigoXTemporada.KeyDown
         Select Case e.KeyCode
             Case Keys.Enter
-                If Me.Consultar() = False Then
+                If Me.Consultar(True) = False Then
                     Me.tsbNuevo.PerformClick()
                 End If
         End Select
         txtTAB(e)
     End Sub
+
 #End Region
 
     Private Sub txtLocalidad_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtDomicilioLocalidad.Click
@@ -1691,10 +1771,7 @@ Public Class Cat_Nomina_Trabajadores
 
     Private Sub cboPuntoPago_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPuntoPago.SelectedIndexChanged
         If Me.Estado = enumEstados.NUEVO Then
-            Me.oTrabajadores.CODIGO_PUNTO_PAGO = CInt(Me.cboPuntoPago.SelectedValue)
-            Me.oTrabajadores.CodigoSiguiente()
-
-            Me.txtCodigoTrabajador.Text = String.Format("{0,5}", Me.oTrabajadores.CODIGO_TRABAJADOR.ToString).Replace(" ", "0")
+            Me.GeneraSiguienteCodigoTrabajador()
         End If
     End Sub
 

@@ -272,7 +272,7 @@ Public Class Class_NominaTemporada
         Return dTable
     End Function
 
-    Public Function GrabaAgunaldo(ByVal iIdPrestacion As Integer, ByVal dAguinaldo As Double, ByVal bAccion As Boolean, Optional ByVal sCodigoTrabajador As String = "", Optional ByVal iDiasTrabajados As Integer = 0) As Boolean
+    Public Function GrabaAguinaldo(ByVal iIdPrestacion As Integer, ByVal dAguinaldo As Double, ByVal bAccion As Boolean, Optional ByVal sCodigoTrabajador As String = "", Optional ByVal iDiasTrabajados As Integer = 0) As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -294,7 +294,7 @@ Public Class Class_NominaTemporada
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Catalogo, "GrabaAgunaldo", ex)
+                HandleError(Me.Nombre_Catalogo, "GrabaAguinaldo", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()

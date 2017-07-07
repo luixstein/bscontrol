@@ -36,24 +36,24 @@ Public Class Frm_Nomina_TrabajadorAdicional
 
     Private Sub txtCodigoTrabajador_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodigoTrabajador.KeyDown
         Dim sText As String
-        Dim oTrabajadores As New Class_CatTrabajadores
+        Dim oTrabajador As New Class_CatTrabajadores
 
         Select Case e.KeyCode
             Case Keys.F6
 Buscar:
-                sText = oTrabajadores.BusquedaVisual_PorDescripcion
+                sText = oTrabajador.BusquedaVisual_PorDescripcion
                 If txtLEN(sText) = True Then Me.txtCodigoTrabajador.Text = sText
             Case Keys.Enter
                 If txtLEN(Me.txtCodigoTrabajador.Text) = False Then
                     Me.lblNombreTrabajador.Text = "" : GoTo Buscar : Exit Sub
                 End If
 
-                oTrabajadores = New Class_CatTrabajadores(Me.txtCodigoTrabajador.Text)
-                If oTrabajadores.Existe = False Then
+                oTrabajador = New Class_CatTrabajadores(Me.txtCodigoTrabajador.Text, True)
+                If oTrabajador.Existe = False Then
                     Me.lblNombreTrabajador.Text = "" : GoTo Buscar : Exit Sub
                 End If
 
-                Me.lblNombreTrabajador.Text = oTrabajadores.NOMBRE_TRABAJADOR + " " + oTrabajadores.APELLIDO_PATERNO + " " + oTrabajadores.APELLIDO_MATERNO
+                Me.lblNombreTrabajador.Text = oTrabajador.NOMBRE_COMPLETO_NOMBRE
                 Me.dtFecha.Focus()
         End Select
     End Sub
