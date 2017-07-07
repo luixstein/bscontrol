@@ -682,7 +682,7 @@ Buscar:
         Return bResultado
     End Function
 
-    Private Function ConvertirVentaContadoACredito() As Boolean
+    Private Function ConvertirVentaContadoACredito() As Boolean 'Si es contado la cambia a credito y viceversa
         Dim bResultado As Boolean = False
         Try
             If txtLEN(Me.TxtFolio.Text) = False Then
@@ -698,22 +698,37 @@ Buscar:
                 Return False
             End If
 
-            'permisos
-            If MsgBox("Desea convertir la venta " & Me.TxtFolio.Text & " de contado a crédito? ", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "ConvertirVentaContadoACredito") = MsgBoxResult.No Then
-                Return False
+            If oVentas.CODIGO_TIPO_NEGOCIACION = 2 Then
+                'permisos
+                If MsgBox("Desea convertir la venta " & Me.TxtFolio.Text & " de contado a crédito? ", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "ConvertirVentaContadoACredito") = MsgBoxResult.No Then
+                    Return False
+                End If
+            Else
+                If MsgBox("Desea convertir la venta " & Me.TxtFolio.Text & " de crédito a contado? ", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "ConvertirVentaContadoACredito") = MsgBoxResult.No Then
+                    Return False
+                End If
             End If
+
 
             Me.oSisAdministracionClientes = New Class_Sis_Administracion_Clientes
             Me.oSisAdministracionClientes.CodigoCliente = Me.TxtCliente.Text
             'Me.oSisAdministracionClientes.PLAZO = Me.txtDiasPlazo.Text
 
-            If Me.oSisAdministracionClientes.ConvertirContadoACredito(Me.TxtFolio.Text) = False Then
-                MsgBox("Error al tratar de convertir la venta de contado a crédito.", MsgBoxStyle.Exclamation, Me.Text)
-                Return False
+            If oVentas.CODIGO_TIPO_NEGOCIACION = 2 Then
+                If Me.oSisAdministracionClientes.ConvertirContadoACredito(Me.TxtFolio.Text) = False Then
+                    MsgBox("Error al tratar de convertir la venta de contado a crédito.", MsgBoxStyle.Exclamation, Me.Text)
+                    Return False
+                End If
+            Else
+                If Me.oSisAdministracionClientes.ConvertirCreditoAContado(Me.TxtFolio.Text) = False Then
+                    MsgBox("Error al tratar de convertir la venta de crédito a contado.", MsgBoxStyle.Exclamation, Me.Text)
+                    Return False
+                End If
             End If
 
+
             bResultado = True
-            MsgBox("Se ha actualizado el tipo de negociación la venta de contado a crédito satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+            MsgBox("Se ha actualizado el tipo de negociación la venta satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
 
         Catch ex As Exception
             HandleError(Me.Name, "ConvertirVentaContadoACredito", ex)

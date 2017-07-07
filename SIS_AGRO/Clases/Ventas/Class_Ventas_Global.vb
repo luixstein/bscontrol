@@ -1631,7 +1631,7 @@ Public Class Class_Ventas_Global
         f.sTable = "VENTA_GLOBAL"
         f.sQl = "SELECT V.FOLIO_VENTA,N.NOMBRE_TIPO_NEGOCIACION,V.FECHA,V.TOTAL FROM VENTA_GLOBAL V " & _
         "INNER JOIN VENTAS_CAT_TIPOS_NEGOCIACION N ON(V.CODIGO_TIPO_NEGOCIACION=N.CODIGO_TIPO_NEGOCIACION) " & _
-        "WHERE V.CODIGO_CLIENTE='" & sCodigoCliente.ToString & "' AND V.CODIGO_TIPO_NEGOCIACION=2 And "
+        "WHERE V.CODIGO_CLIENTE='" & sCodigoCliente.ToString & "' AND " 'V.CODIGO_TIPO_NEGOCIACION=2 And "
 
         f.Inicia("")
         f.ShowDialog()

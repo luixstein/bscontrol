@@ -767,6 +767,35 @@ Public Class Class_Sis_Administracion_Clientes
         Return bResultado
     End Function
 
+    Public Function ConvertirCreditoAContado(Optional ByVal sFolio As String = "") As Boolean
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_SIS_ADMIN_CLIENTES_CONVIERTE_VENTA_CREDITO_A_CONTADO"
+
+            sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CodigoCliente
+            sqlParametro = .Parameters.Add("@FOLIO", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolio
+            sqlParametro = .Parameters.Add("@CODIGO_USUARIO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Usuario.Codigo_Usuario
+
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me.Nombre_Catalogo, "ConvertirContadoACredito", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
+    End Function
+
     Public Function ObservacionesNegociaciones(ByVal sObservaciones As String, ByVal bAccion As Boolean, ByVal iIdObservacion As Integer) As String
         Dim sResultado As String = ""
         Dim cmd As New SqlCommand
