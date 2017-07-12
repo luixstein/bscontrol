@@ -24,6 +24,7 @@ Public Class Class_sisUsuarios
     Private _USAR_SSL_REMITENTE As Boolean
     Private _PERMISO_CAMBIAR_PRECIO_VENTA As Boolean
     Private _ADMON_CREDITOS As Integer
+    Private _VER_COSTOS As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -202,6 +203,16 @@ Public Class Class_sisUsuarios
             Me._ADMON_CREDITOS = Value
         End Set
     End Property
+
+    Public Property VER_COSTOS() As Boolean
+        Get
+            Return Me._VER_COSTOS
+        End Get
+        Set(ByVal Value As Boolean)
+            Me._VER_COSTOS = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos de sistema"
@@ -309,9 +320,9 @@ Public Class Class_sisUsuarios
         Return bResultado
     End Function
 
-    Public Overrides Function Consultar() As Boolean
+    Private Function ConsultarUnico(ByVal sSQL As String) As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand(Me._QuerySelect & " Where CODIGO_USUARIO=" & sReplace(Me._Codigo_Usuario) & "", Me._Conexion)
+        Dim cmd As New SqlCommand(sSQL, Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -339,12 +350,13 @@ Public Class Class_sisUsuarios
                     Me._USAR_SSL_REMITENTE = CBool(dReader("USAR_SSL_REMITENTE").ToString)
                     Me._PERMISO_CAMBIAR_PRECIO_VENTA = CBool(dReader("PERMISO_CAMBIAR_PRECIO_VENTA").ToString)
                     Me._ADMON_CREDITOS = CInt(dReader("ADMON_CREDITOS"))
+                    Me._VER_COSTOS = CBool(dReader("VER_COSTOS").ToString)
 
                     bResultado = True
                 End If
                 dReader.Close()
             Catch ex As Exception
-                HandleError(Me.Nombre_Catalogo, "Consultar", ex)
+                HandleError(Me.Nombre_Catalogo, "ConsultarUnico", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -353,47 +365,23 @@ Public Class Class_sisUsuarios
         Return bResultado
     End Function
 
+    Public Overrides Function Consultar() As Boolean
+        Dim bResultado As Boolean = False
+        Try
+            bResultado = Me.ConsultarUnico(Me._QuerySelect & " Where CODIGO_USUARIO=" & sReplace(Me._Codigo_Usuario))
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "Consultar", ex)
+        End Try
+        Return bResultado
+    End Function
+
     Public Overloads Function Consultar(ByVal sNombre As String) As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand(Me._QuerySelect & " Where NOMBRE_USUARIO='" & sReplace(sNombre) & "'", Me._Conexion)
-        Dim dReader As SqlDataReader
-        With cmd
-            .CommandTimeout = 0
-            .CommandType = CommandType.Text
-            Try
-                Me._Conexion.Open()
-                dReader = .ExecuteReader()
-
-                If dReader.Read = True Then
-                    Me._Codigo_Usuario = dReader("CODIGO_USUARIO")
-                    Me._Nombre_Usuario = "" & dReader("NOMBRE_USUARIO").ToString
-                    Me._Codigo_Plaza = "" & dReader("CODIGO_PLAZA")
-                    Me._Clave = "" & dReader("CLAVE")
-                    Me._Codigo_Almacen = "" & dReader("CODIGO_ALMACEN").ToString
-                    Me._PERMISO_CON_CAT_CUENTAS = "" & dReader("PERMISO_CON_CAT_CUENTAS").ToString
-                    Me._PERMISO_CAT_ARTICULOS = "" & dReader("PERMISO_CAT_ARTICULOS").ToString
-                    Me._PERMISO_CAT_CLIENTES = "" & dReader("PERMISO_CAT_CLIENTES").ToString
-                    Me._PERMISO_ADMINISTRADOR = "" & dReader("PERMISO_ADMINISTRADOR").ToString
-                    Me._PERMISO_ARMADO_PALET = "" & dReader("PERMISO_ARMADO_PALET").ToString
-                    Me.Estatus = "" & dReader("ESTATUS").ToString
-                    Me._CORREO_USUARIO = Trim("" & dReader("CORREO_USUARIO").ToString)
-                    Me._CLAVE_CORREO = Trim("" & dReader("CLAVE_CORREO").ToString)
-                    Me._SERVIDOR_CORREO_REMITENTE = Trim("" & dReader("SERVIDOR_CORREO_REMITENTE").ToString)
-                    Me._PUERTO_REMITENTE = Trim("" & dReader("PUERTO_REMITENTE").ToString)
-                    Me._USAR_SSL_REMITENTE = CBool(dReader("USAR_SSL_REMITENTE").ToString)
-                    Me._PERMISO_CAMBIAR_PRECIO_VENTA = CBool(dReader("PERMISO_CAMBIAR_PRECIO_VENTA").ToString)
-                    Me._ADMON_CREDITOS = CInt(dReader("ADMON_CREDITOS"))
-
-                    bResultado = True
-                End If
-                dReader.Close()
-            Catch ex As Exception
-                HandleError(Me.Nombre_Catalogo, "Consultar", ex)
-            Finally
-                Me._Conexion.Close()
-                cmd.Dispose()
-            End Try
-        End With
+        Try
+            bResultado = Me.ConsultarUnico(Me._QuerySelect & " Where NOMBRE_USUARIO='" & sReplace(sNombre) & "'")
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "Consultar", ex)
+        End Try
         Return bResultado
     End Function
 
@@ -619,46 +607,58 @@ Public Class Class_sisUsuarios
     Public Function ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(ByVal sCodigo_Documento As String) As Boolean
         Dim sQuery As String
         Dim Doc As New Class_CatDocumentos
-        Doc.CODIGO_DOCUMENTO = sCodigo_Documento
 
-        If Not Doc.Consultar() Then
-            MsgBox("El documento " & sCodigo_Documento & " no fue encontrado en el catálogo de documentos.", MsgBoxStyle.Exclamation, "Validación de permisos de usuarios sobre documentos")
-            Return False
-        End If
+        Try
+            Doc.CODIGO_DOCUMENTO = sCodigo_Documento
 
-        sQuery = "SELECT 1 FROM SIS_PERMISOS_USUARIOS_DOCUMENTOS_SIN_AFECTACION_INVENTARIOS " & _
-        "WHERE CODIGO_DOCUMENTO='" & sCodigo_Documento & "' AND CODIGO_USUARIO='" & Usuario.Codigo_Usuario & "'"
+            If Not Doc.Consultar() Then
+                MsgBox("El documento " & sCodigo_Documento & " no fue encontrado en el catálogo de documentos.", MsgBoxStyle.Exclamation, "Validación de permisos de usuarios sobre documentos")
+                Return False
+            End If
 
-        Dim sql As New Class_find(sQuery)
-        If sql.Result1 = "" Or Len(sql.Result1) < 1 Then
-            'MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para utilizar el documento " & Doc.NOMBRE_DOCUMENTO & ".", MsgBoxStyle.Exclamation, "Validación de permisos de usuarios sobre documentos")
-            Return False
-        End If
+            sQuery = "SELECT 1 FROM SIS_PERMISOS_USUARIOS_DOCUMENTOS_SIN_AFECTACION_INVENTARIOS " &
+            "WHERE CODIGO_DOCUMENTO='" & sCodigo_Documento & "' AND CODIGO_USUARIO='" & Usuario.Codigo_Usuario & "'"
 
-        Return True
+            Dim sql As New Class_find(sQuery)
+            If sql.Result1 = "" Or Len(sql.Result1) < 1 Then
+                'MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para utilizar el documento " & Doc.NOMBRE_DOCUMENTO & ".", MsgBoxStyle.Exclamation, "Validación de permisos de usuarios sobre documentos")
+                Return False
+            End If
+
+            Return True
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ValidaPermisoUsuarioDocumentoSinAfectacionInventarios", ex)
+        End Try
+
     End Function
 
     Public Function ValidaPermisoUsuarioDocumentoConAfectacionInventarios(ByVal sCodigoDocumento As String, ByVal sCodigoAlmacen As String) As Boolean
         Dim bResultado As Boolean = False
         Dim sQuery As String
         Dim Doc As New Class_CatDocumentos
-        Doc.CODIGO_DOCUMENTO = sCodigoDocumento
 
-        If Not Doc.Consultar() Then
-            MsgBox("El documento " & sCodigoDocumento & " no fue encontrado en el catálogo de documentos.", MsgBoxStyle.Exclamation, "Validación de permisos de usuarios sobre documentos")
-            Return False
-        End If
+        Try
+            Doc.CODIGO_DOCUMENTO = sCodigoDocumento
 
-        sQuery = "SELECT 1 FROM SIS_PERMISOS_USUARIOS_DOCUMENTOS_CON_AFECTACION_INVENTARIOS " & _
-        "WHERE CODIGO_DOCUMENTO='" & sCodigoDocumento & "' AND CODIGO_USUARIO='" & Usuario.Codigo_Usuario & "' AND CODIGO_ALMACEN='" & sCodigoAlmacen & "' "
+            If Not Doc.Consultar() Then
+                MsgBox("El documento " & sCodigoDocumento & " no fue encontrado en el catálogo de documentos.", MsgBoxStyle.Exclamation, "Validación de permisos de usuarios sobre documentos")
+                Return False
+            End If
 
-        Dim sql As New Class_find(sQuery)
-        If sql.Result1 = "" Or Len(sql.Result1) < 1 Then
-            'MsgBox("El usuario " & Usuario.Nombre_Completo & " no tiene permiso para utilizar el documento " & Doc.NOMBRE_DOCUMENTO & ".", MsgBoxStyle.Exclamation, "Validación de permisos de usuarios sobre documentos")
-            Return False
-        End If
+            sQuery = "SELECT 1 FROM SIS_PERMISOS_USUARIOS_DOCUMENTOS_CON_AFECTACION_INVENTARIOS " &
+            "WHERE CODIGO_DOCUMENTO='" & sCodigoDocumento & "' AND CODIGO_USUARIO='" & Usuario.Codigo_Usuario & "' AND CODIGO_ALMACEN='" & sCodigoAlmacen & "' "
 
-        Return True
+            Dim sql As New Class_find(sQuery)
+            If sql.Result1 = "" Or Len(sql.Result1) < 1 Then
+                'MsgBox("El usuario " & Usuario.Nombre_Completo & " no tiene permiso para utilizar el documento " & Doc.NOMBRE_DOCUMENTO & ".", MsgBoxStyle.Exclamation, "Validación de permisos de usuarios sobre documentos")
+                Return False
+            End If
+
+            Return True
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ValidaPermisoUsuarioDocumentoConAfectacionInventarios", ex)
+        End Try
+
     End Function
 
     'Public Function ValidaPermisoUsuarioTiposDocumentosSinAfectaInventarios(ByVal sCodigoDocumento As String, ByVal sCodigoAlmacen As String, ByVal sCodigoAlmacen2 As String) As Boolean
@@ -690,28 +690,34 @@ Public Class Class_sisUsuarios
     Public Function ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios(ByVal sCodigoTipoDocumento As String, ByVal sCodigoAlmacen As String, ByVal sCodigoAlmacen2 As String) As Boolean
         Dim sQuery As String
         Dim Doc As New Class_CatDocumentos
-        Doc.CODIGO_TIPO_DOCUMENTO = sCodigoTipoDocumento
 
-        If Not Doc.ConsultarTipoDocumento() Then
-            MsgBox("El tipo de documento " & sCodigoTipoDocumento & " no fue encontrado en el catálogo de documentos.", MsgBoxStyle.Critical, "Validación de permisos de usuarios sobre documentos")
-            Return False
-        End If
+        Try
+            Doc.CODIGO_TIPO_DOCUMENTO = sCodigoTipoDocumento
 
-        If txtLEN(sCodigoAlmacen2) = True Then
-            sQuery = "SELECT 1 FROM SIS_PERMISOS_USUARIOS_TIPOS_DOCUMENTOS_CON_AFECTACION_INVENTARIOS " & _
-            "WHERE CODIGO_TIPO_DOCUMENTO='" & sCodigoTipoDocumento & "' AND CODIGO_USUARIO='" & Usuario.Codigo_Usuario & "' AND CODIGO_ALMACEN='" & sCodigoAlmacen & "' AND CODIGO_ALMACEN2='" & sCodigoAlmacen2 & "' "
-        Else
-            sQuery = "SELECT 1 FROM SIS_PERMISOS_USUARIOS_TIPOS_DOCUMENTOS_CON_AFECTACION_INVENTARIOS " & _
-            "WHERE CODIGO_TIPO_DOCUMENTO='" & sCodigoTipoDocumento & "' AND CODIGO_USUARIO='" & Usuario.Codigo_Usuario & "' AND CODIGO_ALMACEN='" & sCodigoAlmacen & "' "
-        End If
+            If Not Doc.ConsultarTipoDocumento() Then
+                MsgBox("El tipo de documento " & sCodigoTipoDocumento & " no fue encontrado en el catálogo de documentos.", MsgBoxStyle.Critical, "Validación de permisos de usuarios sobre documentos")
+                Return False
+            End If
 
-        Dim sql As New Class_find(sQuery)
-        If sql.Result1 = "" Or Len(sql.Result1) < 1 Then
-            MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para utilizar el documento " & Doc.NOMBRE_DOCUMENTO & ".", MsgBoxStyle.Information, "Validación de permisos de usuarios sobre documentos")
-            Return False
-        End If
+            If txtLEN(sCodigoAlmacen2) = True Then
+                sQuery = "SELECT 1 FROM SIS_PERMISOS_USUARIOS_TIPOS_DOCUMENTOS_CON_AFECTACION_INVENTARIOS " &
+                "WHERE CODIGO_TIPO_DOCUMENTO='" & sCodigoTipoDocumento & "' AND CODIGO_USUARIO='" & Usuario.Codigo_Usuario & "' AND CODIGO_ALMACEN='" & sCodigoAlmacen & "' AND CODIGO_ALMACEN2='" & sCodigoAlmacen2 & "' "
+            Else
+                sQuery = "SELECT 1 FROM SIS_PERMISOS_USUARIOS_TIPOS_DOCUMENTOS_CON_AFECTACION_INVENTARIOS " &
+                "WHERE CODIGO_TIPO_DOCUMENTO='" & sCodigoTipoDocumento & "' AND CODIGO_USUARIO='" & Usuario.Codigo_Usuario & "' AND CODIGO_ALMACEN='" & sCodigoAlmacen & "' "
+            End If
 
-        Return True
+            Dim sql As New Class_find(sQuery)
+            If sql.Result1 = "" Or Len(sql.Result1) < 1 Then
+                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para utilizar el documento " & Doc.NOMBRE_DOCUMENTO & ".", MsgBoxStyle.Information, "Validación de permisos de usuarios sobre documentos")
+                Return False
+            End If
+
+            Return True
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios", ex)
+        End Try
+
     End Function
 
     Public Function CodigoSiguiente() As String

@@ -23,19 +23,19 @@ Partial Class RPT_INVENTARIOS_AUXILIAR_ARTICULOS
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(RPT_INVENTARIOS_AUXILIAR_ARTICULOS))
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.lblArticulo = New System.Windows.Forms.Label
-        Me.LblDisplayCodArticulo = New System.Windows.Forms.Label
-        Me.TxtCodArticulo = New System.Windows.Forms.TextBox
-        Me.CmbAlmacen = New System.Windows.Forms.ComboBox
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.DtFechaHasta = New System.Windows.Forms.DateTimePicker
-        Me.LblDisplayFechaNacimiento = New System.Windows.Forms.Label
-        Me.DtFechaDesde = New System.Windows.Forms.DateTimePicker
-        Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
-        Me.tsbConsultar = New System.Windows.Forms.ToolStripButton
-        Me.tsbSalir = New System.Windows.Forms.ToolStripButton
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.lblArticulo = New System.Windows.Forms.Label()
+        Me.LblDisplayCodArticulo = New System.Windows.Forms.Label()
+        Me.TxtCodArticulo = New System.Windows.Forms.TextBox()
+        Me.CmbAlmacen = New System.Windows.Forms.ComboBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.DtFechaHasta = New System.Windows.Forms.DateTimePicker()
+        Me.LblDisplayFechaNacimiento = New System.Windows.Forms.Label()
+        Me.DtFechaDesde = New System.Windows.Forms.DateTimePicker()
+        Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
+        Me.tsbConsultar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.GroupBox1.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -95,11 +95,11 @@ Partial Class RPT_INVENTARIOS_AUXILIAR_ARTICULOS
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(7, 59)
+        Me.Label3.Location = New System.Drawing.Point(7, 54)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(54, 13)
         Me.Label3.TabIndex = 269
-        Me.Label3.Text = "Almacen :"
+        Me.Label3.Text = "Almacén :"
         '
         'Label1
         '

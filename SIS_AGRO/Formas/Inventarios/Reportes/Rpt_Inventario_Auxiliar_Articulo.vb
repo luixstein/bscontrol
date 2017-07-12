@@ -3,22 +3,80 @@
 Public Class RPT_INVENTARIOS_AUXILIAR_ARTICULOS
     Private oArticulos As New Class_CatArticulos
 
+#Region "Opciones"
     Private Sub tsbConsultar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbConsultar.Click
         If txtLEN(Me.TxtCodArticulo.Text) = False Then
-            MsgBox("Asigne un articulo", MsgBoxStyle.Exclamation, Me.Text)
+            MsgBox("Asígne un artículo", MsgBoxStyle.Exclamation, Me.Text)
             Me.TxtCodArticulo.Focus()
             Exit Sub
         End If
 
         Me.Consultar()
     End Sub
+
+    Private Sub tsbSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSalir.Click
+        Me.Close()
+    End Sub
+
+#End Region
+
+#Region "Eventos"
+    Private Sub Inventario_Existencias_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.DesplegarAlmacenes()
+        Me.DtFechaDesde.Value = Format(Date.Now, "01-MM-yyyy")
+        Me.DtFechaHasta.Value = Date.Now
+    End Sub
+
+    Private Sub TxtCodArticulo_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodArticulo.KeyDown
+        Select Case e.KeyCode
+            Case Keys.F6
+                oArticulos = New Class_CatArticulos
+buscar:
+                Dim sArticulo As String = oArticulos.BusquedaVisual_PorDescripcion
+                If sArticulo.Length > 0 Then
+                    Me.TxtCodArticulo.Text = sArticulo
+                    Me.lblArticulo.Text = oArticulos.BuscarNombreArticulo(sArticulo)
+                End If
+            Case Keys.Enter
+                If txtLEN(Me.TxtCodArticulo.Text) = False Then
+                    Me.lblArticulo.Text = ""
+                    GoTo buscar : Exit Sub
+                End If
+
+                Me.lblArticulo.Text = oArticulos.BuscarNombreArticulo(Me.TxtCodArticulo.Text)
+                If txtLEN(Me.lblArticulo.Text) = False Then
+                    MsgBox("El artículo no existe.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.lblArticulo.Text = ""
+                    GoTo buscar : Exit Sub
+                End If
+
+                txtTAB(e)
+        End Select
+    End Sub
+
+#End Region
+
+#Region "Eventos genéricos"
+    Private Sub txt_Enter(ByVal sender As Object, ByVal e As System.EventArgs)
+        Dim oTexBox As TextBox = CType(sender, TextBox)
+        oTexBox.SelectAll()
+    End Sub
+
+    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles DtFechaHasta.KeyDown, DtFechaDesde.KeyDown, CmbAlmacen.KeyDown
+        txtTAB(e)
+    End Sub
+
+    Private Sub txtKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodArticulo.KeyPress, DtFechaDesde.KeyPress, DtFechaHasta.KeyPress
+        txtNoBeep(e)
+    End Sub
+#End Region
+
 #Region "Métodos y procedimientos"
 
     Private Sub Consultar()
         Dim StrFiltros As String = ""
         Dim FormatoDeReporte As String = ""
-        Dim Rpt As ReportDocument
-        Rpt = New ReportDocument
+        Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
         Try
             If Me.ValidarPeriodo = False Then
@@ -75,74 +133,4 @@ Public Class RPT_INVENTARIOS_AUXILIAR_ARTICULOS
     End Function
 #End Region
 
-#Region "Eventos Genericos"
-    Private Sub txt_Enter(ByVal sender As Object, ByVal e As System.EventArgs)
-        Dim oTexBox As TextBox = CType(sender, TextBox)
-        oTexBox.SelectAll()
-    End Sub
-
-    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
-        If e.KeyCode = Keys.Return Then
-            SendKeys.Send("{TAB}")
-        End If
-    End Sub
-
-    Private Sub txtKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
-        txtNoBeep(e)
-    End Sub
-#End Region
-
-
-#Region "Keydown específicos"
-    Private Sub chk_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
-        If e.KeyCode = Keys.Return Then
-            Me.tsbConsultar.PerformClick()
-        End If
-    End Sub
-#End Region
-
-    Private Sub tsbSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSalir.Click
-        Me.Close()
-    End Sub
-
-    Private Sub Inventario_Existencias_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.DesplegarAlmacenes()
-        Me.DtFechaDesde.Value = Format(Date.Now, "01-MM-yyyy")
-        Me.DtFechaHasta.Value = Date.Now
-    End Sub
-
-    Private Sub TxtCodArticulo_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodArticulo.KeyDown
-        Select Case e.KeyCode
-            Case Keys.F6
-                oArticulos = New Class_CatArticulos
-buscar:
-                Dim sArticulo As String = oArticulos.BusquedaVisual_PorDescripcion
-                If sArticulo.Length > 0 Then
-                    Me.TxtCodArticulo.Text = sArticulo
-                    Me.lblArticulo.Text = oArticulos.BuscarNombreArticulo(sArticulo)
-                End If
-            Case Keys.Enter
-                If txtLEN(Me.TxtCodArticulo.Text) = False Then
-                    GoTo buscar
-                End If
-                Me.lblArticulo.Text = oArticulos.BuscarNombreArticulo(Me.TxtCodArticulo.Text)
-                If txtLEN(Me.lblArticulo.Text) = False Then
-                    MsgBox("El articulo no existe.", MsgBoxStyle.Exclamation, Me.Text)
-                    lblArticulo.Text = ""
-                    GoTo buscar
-                    Exit Sub
-                Else
-                    txtTAB(e)
-                End If
-            Case Keys.Escape
-        End Select
-    End Sub
-
-    Private Sub CmbAlmacen_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles DtFechaHasta.KeyDown, DtFechaDesde.KeyDown, CmbAlmacen.KeyDown
-        txtTAB(e)
-    End Sub
-
-    Private Sub TxtCodArticulo_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtCodArticulo.TextChanged
-
-    End Sub
 End Class
