@@ -310,39 +310,28 @@ buscar_proveedor:
                             oProveedores = New Class_CatProveedores
                             sCodigoProveedor = oProveedores.BusquedaVisual_PorDescripcion()
                             If txtLEN(sCodigoProveedor) = True Then
-                                If ValidaProveedor() = False Then
-                                    Exit Sub
-                                End If
                                 Me.TxtCodigoProveedor.Text = sCodigoProveedor
                                 Me.LblProveedor.Text = ""
                             End If
-                            oProveedores = Nothing
 
                         Case enumModoPago.ACREEDOR
 buscar_acreedor:
                             oProveedores = New Class_CatProveedores
                             sCodigoProveedor = oProveedores.BusquedaVisual_PorDescripcion_TiposCuentasBancarias
                             If txtLEN(sCodigoProveedor) = True Then
-                                If ValidaProveedor() = False Then
-                                    Exit Sub
-                                End If
                                 Me.TxtCodigoProveedor.Text = sCodigoProveedor
                                 Me.LblProveedor.Text = ""
                             End If
-                            oProveedores = Nothing
                     End Select
 
                 Case Keys.Enter
+
                     Select Case Me.ModoPago
                         Case enumModoPago.PROVEEDOR
                             If txtLEN(Me.TxtCodigoProveedor.Text) = False Then
                                 Me.LblProveedor.Text = ""
                                 Me.TxtCodigoProveedor.Focus()
                                 GoTo buscar_proveedor : Exit Sub
-                            End If
-
-                            If ValidaProveedor() = False Then
-                                Exit Sub
                             End If
 
                             oProveedores = New Class_CatProveedores(Me.TxtCodigoProveedor.Text)
@@ -355,7 +344,11 @@ buscar_acreedor:
                             Me.LblProveedor.Text = oProveedores.Nombre_Proveedor
 
                             If txtLEN(oProveedores.CUENTA_CONTABLE) = False Then
-                                MsgBox("El proveedor/cuenta destino no tiene cuenta contable asignda, favor de asignarle una.", MsgBoxStyle.Exclamation, Me.Text)
+                                MsgBox("El proveedor/cuenta destino no tiene cuenta contable asiginda, favor de asignarle una.", MsgBoxStyle.Exclamation, Me.Text)
+                                Exit Sub
+                            End If
+
+                            If Me.ValidaProveedor() = False Then
                                 Exit Sub
                             End If
 
@@ -369,10 +362,6 @@ buscar_acreedor:
                                 GoTo buscar_acreedor : Exit Sub
                             End If
 
-                            If ValidaProveedor() = False Then
-                                Exit Sub
-                            End If
-
                             oProveedores = New Class_CatProveedores(Me.TxtCodigoProveedor.Text)
                             If oProveedores.Existe = False Then
                                 Me.LblProveedor.Text = ""
@@ -380,14 +369,13 @@ buscar_acreedor:
                                 GoTo buscar_acreedor : Exit Sub
                             End If
 
-                            If txtLEN(oProveedores.CuentaBancaria.ID_CUENTA_BANCARIA) = False Then
-                                MsgBox("El proveedor debe estar relacionado a una cuenta bancaria.", MsgBoxStyle.Exclamation, Me.Text)
-                                Me.LblProveedor.Text = ""
-                                Me.TxtCodigoProveedor.Focus()
-                                GoTo buscar_acreedor : Exit Sub
+                            Me.LblProveedor.Text = oProveedores.Nombre_Proveedor
+
+                            If Me.ValidaProveedor() = False Then
+                                Exit Sub
                             End If
 
-                            Me.LblProveedor.Text = oProveedores.Nombre_Proveedor
+                            'Esto va aquí porque si ponen un proveedor de pagos(no traspasos) va fallar
                             Me.lblNombreMonedaDestino.Text = oProveedores.CuentaBancaria.NOMBRE_MONEDA
 
                             Me.TxtImporte.Focus()
@@ -402,6 +390,8 @@ buscar_acreedor:
 
         Catch ex As Exception
             HandleError(Me.Name, "TxtCodigoProveedor_KeyDown", ex)
+        Finally
+            oProveedores = Nothing
         End Try
     End Sub
 
@@ -1043,12 +1033,12 @@ buscar_acreedor:
         Dim bResultado As Boolean = False
 
         Try
-            If MsgBox("Deseas grabar el documento " & Me.CmbDocumento.Text & " con el folio : " & Me.TxtFolio.Text & "?", CType(vbYesNo + vbQuestion, MsgBoxStyle), "Grabar") = MsgBoxResult.No Then
-                Exit Function
+            If MsgBox("Deseas grabar el documento " & Me.CmbDocumento.Text & " con el folio : " & Me.TxtFolio.Text & "?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo, "Grabar") = MsgBoxResult.No Then
+                Return False
             End If
 
             If Me.Validar() = False Then
-                Exit Function
+                Return False
             End If
 
             'If Me.ValidaPrePoliza() = False Then
@@ -1257,7 +1247,7 @@ buscar_acreedor:
                 Return False
             End If
 
-            If ValidaProveedor() = False Then
+            If Me.ValidaProveedor() = False Then
                 Return False
             End If
 
@@ -2360,30 +2350,81 @@ BuscaEmbarque:
     Private Function ValidaProveedor() As Boolean 'Valida que el codigo de proveedor no sea el de la cuenta bancaria
         Dim bResultado As Boolean = False
         Try
+            Dim oCuentaBancaria As Class_CatCuentasBancarias, oTipoProveedor As Class_SisTiposProveedores, oProveedor As Class_CatProveedores
+
             If txtLEN(Me.TxtCuentaBancaria.Text) = False Then
-                Return bResultado
+                MsgBox("Falta que asígne la cuenta bancaria.", MsgBoxStyle.Exclamation, Me.Text)
+                Return False
             End If
 
-            If txtLEN(Me.TxtCodigoProveedor.Text) = True Then
-                Dim sql As New Class_find("SELECT CODIGO_PROVEEDOR FROM CAT_CUENTAS_BANCARIAS WHERE ID_CUENTA_BANCARIA=" & Me.TxtCuentaBancaria.Text)
-                If Me.TxtCodigoProveedor.Text = (sql.Result1).ToString Then
-                    MsgBox("No se puede hacer un traspaso de una cuenta bancaria asi misma.", MsgBoxStyle.Exclamation, Me.Text)
-                    Me.TxtCodigoProveedor.Text = ""
-                    Me.TxtCodigoProveedor.Focus()
-                    sql = Nothing
-                    Return bResultado
-                End If
-
-                sql = New Class_find("SELECT T.REALIZA_COMPRAS_GASTOS_PAGOS FROM CAT_PROVEEDORES P INNER JOIN SIS_TIPOS_PROVEEDORES T ON(P.CODIGO_TIPO_PROVEEDOR=T.CODIGO_TIPO_PROVEEDOR) " & _
-                                     "WHERE P.CODIGO_PROVEEDOR='" & Me.TxtCodigoProveedor.Text & "'")
-                If sql.Result1 = "0" Then
-                    MsgBox("No se pueden realizar pagos al proveedor " & Me.TxtCodigoProveedor.Text, MsgBoxStyle.Information, Me.Text)
-                    Me.TxtCodigoProveedor.Text = ""
-                    Me.TxtCodigoProveedor.Focus()
-                    sql = Nothing
-                    Return bResultado
-                End If
+            oCuentaBancaria = New Class_CatCuentasBancarias(Me.TxtCuentaBancaria.Text)
+            If oCuentaBancaria.Existe = False Then
+                MsgBox("No existe la cuenta bancaria asignada.", MsgBoxStyle.Exclamation, Me.Text)
+                Return False
             End If
+
+            If txtLEN(Me.TxtCodigoProveedor.Text) = False Then
+                MsgBox("Falta que asígne el proveedor.", MsgBoxStyle.Exclamation, Me.Text)
+                Return False
+            End If
+
+            oProveedor = New Class_CatProveedores(Me.TxtCodigoProveedor.Text)
+
+            If txtLEN(Me.TxtCodigoProveedor.Text) = False Then
+                MsgBox("No existe el proveedor asignado.", MsgBoxStyle.Exclamation, Me.Text)
+                Return False
+            End If
+
+            If Me.TxtCodigoProveedor.Text = oCuentaBancaria.CODIGO_PROVEEDOR Then
+                MsgBox("No se puede hacer un traspaso de una cuenta bancaria asi misma.", MsgBoxStyle.Exclamation, Me.Text)
+                If Me.TxtCodigoProveedor.Enabled = True Then Me.TxtCodigoProveedor.Focus()
+                Return False
+            End If
+
+            oTipoProveedor = New Class_SisTiposProveedores(oProveedor.Codigo_Tipo_Proveedor)
+
+            Select Case Me.ModoPago
+                Case enumModoPago.PROVEEDOR
+                    If oTipoProveedor.REALIZA_COMPRAS_GASTOS_PAGOS = False Then
+                        MsgBox("No se pueden realizar pagos al proveedor " & Me.TxtCodigoProveedor.Text & " por el tipo de proveedor : " & oTipoProveedor.Nombre_Tipo_Proveedor, MsgBoxStyle.Exclamation, Me.Text)
+                        If Me.TxtCodigoProveedor.Enabled = True Then Me.TxtCodigoProveedor.Focus()
+                        Return False
+                    End If
+
+                Case enumModoPago.ACREEDOR
+                    If oTipoProveedor.REALIZA_TRASPASOS_ENTRE_CUENTAS = False Then
+                        MsgBox("No se pueden realizar traspasos a la cuenta " & Me.TxtCodigoProveedor.Text & " por el tipo de proveedor : " & oTipoProveedor.Nombre_Tipo_Proveedor, MsgBoxStyle.Exclamation, Me.Text)
+                        If Me.TxtCodigoProveedor.Enabled = True Then Me.TxtCodigoProveedor.Focus()
+                        Return False
+                    End If
+
+                    If txtLEN(oProveedor.CuentaBancaria.ID_CUENTA_BANCARIA) = False Then
+                        MsgBox("El proveedor debe estar relacionado a una cuenta bancaria.", MsgBoxStyle.Exclamation, Me.Text)
+                        If Me.TxtCodigoProveedor.Enabled = True Then Me.TxtCodigoProveedor.Focus()
+                        Return False
+                    End If
+            End Select
+
+            'If txtLEN(Me.TxtCodigoProveedor.Text) = True Then
+            '    Dim sql As New Class_find("SELECT CODIGO_PROVEEDOR FROM CAT_CUENTAS_BANCARIAS WHERE ID_CUENTA_BANCARIA=" & Me.TxtCuentaBancaria.Text)
+            '    If Me.TxtCodigoProveedor.Text = (sql.Result1).ToString Then
+            '        MsgBox("No se puede hacer un traspaso de una cuenta bancaria asi misma.", MsgBoxStyle.Exclamation, Me.Text)
+            '        Me.TxtCodigoProveedor.Text = ""
+            '        Me.TxtCodigoProveedor.Focus()
+            '        sql = Nothing
+            '        Return bResultado
+            '    End If
+
+            '    sql = New Class_find("SELECT T.REALIZA_COMPRAS_GASTOS_PAGOS FROM CAT_PROVEEDORES P INNER JOIN SIS_TIPOS_PROVEEDORES T ON(P.CODIGO_TIPO_PROVEEDOR=T.CODIGO_TIPO_PROVEEDOR) " &
+            '                         "WHERE P.CODIGO_PROVEEDOR='" & Me.TxtCodigoProveedor.Text & "'")
+            '    If sql.Result1 = "0" Then
+            '        MsgBox("No se pueden realizar pagos al proveedor " & Me.TxtCodigoProveedor.Text, MsgBoxStyle.Information, Me.Text)
+            '        Me.TxtCodigoProveedor.Text = ""
+            '        Me.TxtCodigoProveedor.Focus()
+            '        sql = Nothing
+            '        Return bResultado
+            '    End If
+            'End If
 
             bResultado = True
         Catch ex As Exception

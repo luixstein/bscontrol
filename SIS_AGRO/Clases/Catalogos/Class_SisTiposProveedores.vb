@@ -12,6 +12,7 @@ Public Class Class_SisTiposProveedores
     Private _Cuenta_Contable As String
     Private _ELEGIBLE_CATALOGO_PROVEEDORES As Boolean
     Private _REALIZA_COMPRAS_GASTOS_PAGOS As Boolean
+    Private _REALIZA_TRASPASOS_ENTRE_CUENTAS As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -79,6 +80,15 @@ Public Class Class_SisTiposProveedores
         End Get
         Set(ByVal Value As Boolean)
             Me._REALIZA_COMPRAS_GASTOS_PAGOS = Value
+        End Set
+    End Property
+
+    Public Property REALIZA_TRASPASOS_ENTRE_CUENTAS() As Boolean
+        Get
+            Return Me._REALIZA_TRASPASOS_ENTRE_CUENTAS
+        End Get
+        Set(ByVal Value As Boolean)
+            Me._REALIZA_TRASPASOS_ENTRE_CUENTAS = Value
         End Set
     End Property
 #End Region
@@ -221,7 +231,7 @@ Public Class Class_SisTiposProveedores
 
     Public Overrides Function Consultar() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand("Select * from SIS_TIPOS_PROVEEDORES Where Codigo_TIPO_PROVEEDOR='" & Replace(Me._Codigo_Tipo_Proveedor, "'", "''") & "'", Me._Conexion)
+        Dim cmd As New SqlCommand("SELECT * FROM SIS_TIPOS_PROVEEDORES WHERE CODIGO_TIPO_PROVEEDOR='" & sReplace(Me._Codigo_Tipo_Proveedor) & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -236,6 +246,7 @@ Public Class Class_SisTiposProveedores
                     Me._Cuenta_Contable = "" & dReader("CUENTA_CONTABLE")
                     Me._ELEGIBLE_CATALOGO_PROVEEDORES = CBool(dReader("ELEGIBLE_CATALOGO_PROVEEDORES"))
                     Me._REALIZA_COMPRAS_GASTOS_PAGOS = CBool(dReader("REALIZA_COMPRAS_GASTOS_PAGOS"))
+                    Me._REALIZA_TRASPASOS_ENTRE_CUENTAS = CBool(dReader("REALIZA_TRASPASOS_ENTRE_CUENTAS"))
                     bResultado = True
                 End If
                 dReader.Close()
