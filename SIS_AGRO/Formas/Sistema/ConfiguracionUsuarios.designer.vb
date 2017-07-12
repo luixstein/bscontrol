@@ -104,6 +104,7 @@ Partial Class ConfiguracionUsuarios
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.ckbVerCostos = New System.Windows.Forms.CheckBox()
         Me.tsMenu.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
         Me.gbInformacion.SuspendLayout()
@@ -128,7 +129,7 @@ Partial Class ConfiguracionUsuarios
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbEditar, Me.tsbGrabar, Me.tsbCancelar, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1165, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1553, 27)
         Me.tsMenu.TabIndex = 17
         Me.tsMenu.Text = "tsMenu"
         '
@@ -137,7 +138,7 @@ Partial Class ConfiguracionUsuarios
         Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
         Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbNuevo.Name = "tsbNuevo"
-        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
+        Me.tsbNuevo.Size = New System.Drawing.Size(76, 24)
         Me.tsbNuevo.Text = "&Nuevo"
         '
         'tsbEditar
@@ -145,7 +146,7 @@ Partial Class ConfiguracionUsuarios
         Me.tsbEditar.Image = CType(resources.GetObject("tsbEditar.Image"), System.Drawing.Image)
         Me.tsbEditar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbEditar.Name = "tsbEditar"
-        Me.tsbEditar.Size = New System.Drawing.Size(61, 24)
+        Me.tsbEditar.Size = New System.Drawing.Size(72, 24)
         Me.tsbEditar.Text = "&Editar"
         '
         'tsbGrabar
@@ -153,7 +154,7 @@ Partial Class ConfiguracionUsuarios
         Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
         Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbGrabar.Name = "tsbGrabar"
-        Me.tsbGrabar.Size = New System.Drawing.Size(66, 24)
+        Me.tsbGrabar.Size = New System.Drawing.Size(78, 24)
         Me.tsbGrabar.Text = "&Grabar"
         '
         'tsbCancelar
@@ -161,7 +162,7 @@ Partial Class ConfiguracionUsuarios
         Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
         Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbCancelar.Name = "tsbCancelar"
-        Me.tsbCancelar.Size = New System.Drawing.Size(77, 24)
+        Me.tsbCancelar.Size = New System.Drawing.Size(90, 24)
         Me.tsbCancelar.Text = "&Cancelar"
         '
         'tsbSalir
@@ -169,16 +170,18 @@ Partial Class ConfiguracionUsuarios
         Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
         Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
+        Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
         Me.tsbSalir.Text = "&Salir"
         '
         'gBoxBusquedaRapida
         '
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Controls.Add(Me.lstbElementos)
-        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(964, 39)
+        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(1285, 48)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(189, 493)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(252, 607)
         Me.gBoxBusquedaRapida.TabIndex = 18
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
@@ -187,9 +190,10 @@ Partial Class ConfiguracionUsuarios
         '
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtFiltro.Location = New System.Drawing.Point(6, 19)
+        Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtFiltro.Name = "txtFiltro"
-        Me.txtFiltro.Size = New System.Drawing.Size(177, 20)
+        Me.txtFiltro.Size = New System.Drawing.Size(235, 22)
         Me.txtFiltro.TabIndex = 0
         '
         'lstbElementos
@@ -198,9 +202,11 @@ Partial Class ConfiguracionUsuarios
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lstbElementos.FormattingEnabled = True
-        Me.lstbElementos.Location = New System.Drawing.Point(6, 45)
+        Me.lstbElementos.ItemHeight = 16
+        Me.lstbElementos.Location = New System.Drawing.Point(8, 55)
+        Me.lstbElementos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.lstbElementos.Name = "lstbElementos"
-        Me.lstbElementos.Size = New System.Drawing.Size(178, 433)
+        Me.lstbElementos.Size = New System.Drawing.Size(236, 532)
         Me.lstbElementos.TabIndex = 1
         '
         'gbInformacion
@@ -219,9 +225,11 @@ Partial Class ConfiguracionUsuarios
         Me.gbInformacion.Controls.Add(Me.CboEstatus)
         Me.gbInformacion.Controls.Add(Me.LblDisplayCodUsuario)
         Me.gbInformacion.Controls.Add(Me.TxtCodigoUsuario)
-        Me.gbInformacion.Location = New System.Drawing.Point(12, 28)
+        Me.gbInformacion.Location = New System.Drawing.Point(16, 34)
+        Me.gbInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gbInformacion.Name = "gbInformacion"
-        Me.gbInformacion.Size = New System.Drawing.Size(946, 504)
+        Me.gbInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbInformacion.Size = New System.Drawing.Size(1261, 620)
         Me.gbInformacion.TabIndex = 0
         Me.gbInformacion.TabStop = False
         Me.gbInformacion.Text = "Usuario"
@@ -233,18 +241,21 @@ Partial Class ConfiguracionUsuarios
         Me.gbCorreo.Controls.Add(Me.txtClaveCorreo)
         Me.gbCorreo.Controls.Add(Me.Label4)
         Me.gbCorreo.Controls.Add(Me.txtCorreoUsuario)
-        Me.gbCorreo.Location = New System.Drawing.Point(6, 313)
+        Me.gbCorreo.Location = New System.Drawing.Point(8, 385)
+        Me.gbCorreo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gbCorreo.Name = "gbCorreo"
-        Me.gbCorreo.Size = New System.Drawing.Size(257, 69)
+        Me.gbCorreo.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbCorreo.Size = New System.Drawing.Size(343, 85)
         Me.gbCorreo.TabIndex = 113
         Me.gbCorreo.TabStop = False
         Me.gbCorreo.Text = "Correo"
         '
         'btnActualizarCorreo
         '
-        Me.btnActualizarCorreo.Location = New System.Drawing.Point(187, 40)
+        Me.btnActualizarCorreo.Location = New System.Drawing.Point(249, 49)
+        Me.btnActualizarCorreo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.btnActualizarCorreo.Name = "btnActualizarCorreo"
-        Me.btnActualizarCorreo.Size = New System.Drawing.Size(63, 23)
+        Me.btnActualizarCorreo.Size = New System.Drawing.Size(84, 28)
         Me.btnActualizarCorreo.TabIndex = 109
         Me.btnActualizarCorreo.Text = "Actualizar"
         Me.btnActualizarCorreo.UseVisualStyleBackColor = True
@@ -252,36 +263,40 @@ Partial Class ConfiguracionUsuarios
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(6, 44)
+        Me.Label1.Location = New System.Drawing.Point(8, 54)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(67, 13)
+        Me.Label1.Size = New System.Drawing.Size(89, 17)
         Me.Label1.TabIndex = 107
         Me.Label1.Text = "Contraseña :"
         '
         'txtClaveCorreo
         '
-        Me.txtClaveCorreo.Location = New System.Drawing.Point(78, 40)
+        Me.txtClaveCorreo.Location = New System.Drawing.Point(104, 49)
+        Me.txtClaveCorreo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtClaveCorreo.MaxLength = 16
         Me.txtClaveCorreo.Name = "txtClaveCorreo"
         Me.txtClaveCorreo.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
-        Me.txtClaveCorreo.Size = New System.Drawing.Size(87, 20)
+        Me.txtClaveCorreo.Size = New System.Drawing.Size(115, 22)
         Me.txtClaveCorreo.TabIndex = 1
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(6, 20)
+        Me.Label4.Location = New System.Drawing.Point(8, 25)
+        Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(41, 13)
+        Me.Label4.Size = New System.Drawing.Size(54, 17)
         Me.Label4.TabIndex = 105
         Me.Label4.Text = "e-Mail :"
         '
         'txtCorreoUsuario
         '
-        Me.txtCorreoUsuario.Location = New System.Drawing.Point(78, 16)
+        Me.txtCorreoUsuario.Location = New System.Drawing.Point(104, 20)
+        Me.txtCorreoUsuario.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtCorreoUsuario.MaxLength = 60
         Me.txtCorreoUsuario.Name = "txtCorreoUsuario"
-        Me.txtCorreoUsuario.Size = New System.Drawing.Size(172, 20)
+        Me.txtCorreoUsuario.Size = New System.Drawing.Size(228, 22)
         Me.txtCorreoUsuario.TabIndex = 0
         '
         'tcPanelPermisos
@@ -290,11 +305,12 @@ Partial Class ConfiguracionUsuarios
         Me.tcPanelPermisos.Controls.Add(Me.TpPermisosDocumentos)
         Me.tcPanelPermisos.Controls.Add(Me.TpPermisosTiposDocumentos)
         Me.tcPanelPermisos.Controls.Add(Me.TpPermisosControl)
-        Me.tcPanelPermisos.Location = New System.Drawing.Point(282, 11)
+        Me.tcPanelPermisos.Location = New System.Drawing.Point(376, 14)
+        Me.tcPanelPermisos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.tcPanelPermisos.Multiline = True
         Me.tcPanelPermisos.Name = "tcPanelPermisos"
         Me.tcPanelPermisos.SelectedIndex = 0
-        Me.tcPanelPermisos.Size = New System.Drawing.Size(658, 487)
+        Me.tcPanelPermisos.Size = New System.Drawing.Size(877, 599)
         Me.tcPanelPermisos.TabIndex = 5
         '
         'TpPermisosMenus
@@ -302,10 +318,11 @@ Partial Class ConfiguracionUsuarios
         Me.TpPermisosMenus.BackColor = System.Drawing.Color.Transparent
         Me.TpPermisosMenus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TpPermisosMenus.Controls.Add(Me.gbControlMenus)
-        Me.TpPermisosMenus.Location = New System.Drawing.Point(4, 22)
+        Me.TpPermisosMenus.Location = New System.Drawing.Point(4, 25)
+        Me.TpPermisosMenus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TpPermisosMenus.Name = "TpPermisosMenus"
-        Me.TpPermisosMenus.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
-        Me.TpPermisosMenus.Size = New System.Drawing.Size(650, 461)
+        Me.TpPermisosMenus.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TpPermisosMenus.Size = New System.Drawing.Size(869, 570)
         Me.TpPermisosMenus.TabIndex = 1
         Me.TpPermisosMenus.Text = "Permiso de menús"
         Me.TpPermisosMenus.UseVisualStyleBackColor = True
@@ -313,9 +330,11 @@ Partial Class ConfiguracionUsuarios
         'gbControlMenus
         '
         Me.gbControlMenus.Controls.Add(Me.TreeViewMenus)
-        Me.gbControlMenus.Location = New System.Drawing.Point(6, 12)
+        Me.gbControlMenus.Location = New System.Drawing.Point(8, 15)
+        Me.gbControlMenus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gbControlMenus.Name = "gbControlMenus"
-        Me.gbControlMenus.Size = New System.Drawing.Size(636, 435)
+        Me.gbControlMenus.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbControlMenus.Size = New System.Drawing.Size(848, 535)
         Me.gbControlMenus.TabIndex = 19
         Me.gbControlMenus.TabStop = False
         Me.gbControlMenus.Text = "Control de menus"
@@ -323,9 +342,10 @@ Partial Class ConfiguracionUsuarios
         'TreeViewMenus
         '
         Me.TreeViewMenus.CheckBoxes = True
-        Me.TreeViewMenus.Location = New System.Drawing.Point(6, 19)
+        Me.TreeViewMenus.Location = New System.Drawing.Point(8, 23)
+        Me.TreeViewMenus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TreeViewMenus.Name = "TreeViewMenus"
-        Me.TreeViewMenus.Size = New System.Drawing.Size(624, 410)
+        Me.TreeViewMenus.Size = New System.Drawing.Size(831, 504)
         Me.TreeViewMenus.TabIndex = 16
         '
         'TpPermisosDocumentos
@@ -336,9 +356,10 @@ Partial Class ConfiguracionUsuarios
         Me.TpPermisosDocumentos.Controls.Add(Me.gbDocumentosSinAfectacionInventarios)
         Me.TpPermisosDocumentos.Controls.Add(Me.CboModulos)
         Me.TpPermisosDocumentos.Controls.Add(Me.lblDisplayModulo)
-        Me.TpPermisosDocumentos.Location = New System.Drawing.Point(4, 22)
+        Me.TpPermisosDocumentos.Location = New System.Drawing.Point(4, 25)
+        Me.TpPermisosDocumentos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TpPermisosDocumentos.Name = "TpPermisosDocumentos"
-        Me.TpPermisosDocumentos.Size = New System.Drawing.Size(650, 461)
+        Me.TpPermisosDocumentos.Size = New System.Drawing.Size(869, 570)
         Me.TpPermisosDocumentos.TabIndex = 2
         Me.TpPermisosDocumentos.Text = "Permisos de documentos"
         Me.TpPermisosDocumentos.UseVisualStyleBackColor = True
@@ -346,9 +367,10 @@ Partial Class ConfiguracionUsuarios
         'lblDisplayPlazaPermiso
         '
         Me.lblDisplayPlazaPermiso.AutoSize = True
-        Me.lblDisplayPlazaPermiso.Location = New System.Drawing.Point(7, 49)
+        Me.lblDisplayPlazaPermiso.Location = New System.Drawing.Point(9, 60)
+        Me.lblDisplayPlazaPermiso.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayPlazaPermiso.Name = "lblDisplayPlazaPermiso"
-        Me.lblDisplayPlazaPermiso.Size = New System.Drawing.Size(39, 13)
+        Me.lblDisplayPlazaPermiso.Size = New System.Drawing.Size(51, 17)
         Me.lblDisplayPlazaPermiso.TabIndex = 132
         Me.lblDisplayPlazaPermiso.Text = "Plaza :"
         '
@@ -360,9 +382,11 @@ Partial Class ConfiguracionUsuarios
         Me.gbDocumentosConAfectacionInventarios.Controls.Add(Me.CboAlmacen2)
         Me.gbDocumentosConAfectacionInventarios.Controls.Add(Me.BtnQuitar1)
         Me.gbDocumentosConAfectacionInventarios.Controls.Add(Me.BtnAgregar1)
-        Me.gbDocumentosConAfectacionInventarios.Location = New System.Drawing.Point(8, 72)
+        Me.gbDocumentosConAfectacionInventarios.Location = New System.Drawing.Point(11, 89)
+        Me.gbDocumentosConAfectacionInventarios.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gbDocumentosConAfectacionInventarios.Name = "gbDocumentosConAfectacionInventarios"
-        Me.gbDocumentosConAfectacionInventarios.Size = New System.Drawing.Size(639, 202)
+        Me.gbDocumentosConAfectacionInventarios.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbDocumentosConAfectacionInventarios.Size = New System.Drawing.Size(852, 249)
         Me.gbDocumentosConAfectacionInventarios.TabIndex = 113
         Me.gbDocumentosConAfectacionInventarios.TabStop = False
         Me.gbDocumentosConAfectacionInventarios.Text = "Permisos de documentos con afectacion a inventarios"
@@ -370,29 +394,32 @@ Partial Class ConfiguracionUsuarios
         'LstVDocumentos1
         '
         Me.LstVDocumentos1.FullRowSelect = True
-        Me.LstVDocumentos1.Location = New System.Drawing.Point(6, 47)
+        Me.LstVDocumentos1.Location = New System.Drawing.Point(8, 58)
+        Me.LstVDocumentos1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.LstVDocumentos1.MultiSelect = False
         Me.LstVDocumentos1.Name = "LstVDocumentos1"
-        Me.LstVDocumentos1.Size = New System.Drawing.Size(297, 146)
+        Me.LstVDocumentos1.Size = New System.Drawing.Size(395, 179)
         Me.LstVDocumentos1.TabIndex = 132
         Me.LstVDocumentos1.UseCompatibleStateImageBehavior = False
         '
         'LstVDocumentos2
         '
         Me.LstVDocumentos2.FullRowSelect = True
-        Me.LstVDocumentos2.Location = New System.Drawing.Point(336, 47)
+        Me.LstVDocumentos2.Location = New System.Drawing.Point(448, 58)
+        Me.LstVDocumentos2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.LstVDocumentos2.MultiSelect = False
         Me.LstVDocumentos2.Name = "LstVDocumentos2"
-        Me.LstVDocumentos2.Size = New System.Drawing.Size(297, 146)
+        Me.LstVDocumentos2.Size = New System.Drawing.Size(395, 179)
         Me.LstVDocumentos2.TabIndex = 131
         Me.LstVDocumentos2.UseCompatibleStateImageBehavior = False
         '
         'lblDisplayAlmacenPermiso
         '
         Me.lblDisplayAlmacenPermiso.AutoSize = True
-        Me.lblDisplayAlmacenPermiso.Location = New System.Drawing.Point(11, 23)
+        Me.lblDisplayAlmacenPermiso.Location = New System.Drawing.Point(15, 28)
+        Me.lblDisplayAlmacenPermiso.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayAlmacenPermiso.Name = "lblDisplayAlmacenPermiso"
-        Me.lblDisplayAlmacenPermiso.Size = New System.Drawing.Size(54, 13)
+        Me.lblDisplayAlmacenPermiso.Size = New System.Drawing.Size(70, 17)
         Me.lblDisplayAlmacenPermiso.TabIndex = 126
         Me.lblDisplayAlmacenPermiso.Text = "Almacen :"
         '
@@ -400,25 +427,28 @@ Partial Class ConfiguracionUsuarios
         '
         Me.CboAlmacen2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboAlmacen2.FormattingEnabled = True
-        Me.CboAlmacen2.Location = New System.Drawing.Point(90, 20)
+        Me.CboAlmacen2.Location = New System.Drawing.Point(120, 25)
+        Me.CboAlmacen2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.CboAlmacen2.Name = "CboAlmacen2"
-        Me.CboAlmacen2.Size = New System.Drawing.Size(161, 21)
+        Me.CboAlmacen2.Size = New System.Drawing.Size(213, 24)
         Me.CboAlmacen2.TabIndex = 125
         '
         'BtnQuitar1
         '
-        Me.BtnQuitar1.Location = New System.Drawing.Point(306, 88)
+        Me.BtnQuitar1.Location = New System.Drawing.Point(408, 108)
+        Me.BtnQuitar1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.BtnQuitar1.Name = "BtnQuitar1"
-        Me.BtnQuitar1.Size = New System.Drawing.Size(27, 23)
+        Me.BtnQuitar1.Size = New System.Drawing.Size(36, 28)
         Me.BtnQuitar1.TabIndex = 124
         Me.BtnQuitar1.Text = "<<"
         Me.BtnQuitar1.UseVisualStyleBackColor = True
         '
         'BtnAgregar1
         '
-        Me.BtnAgregar1.Location = New System.Drawing.Point(306, 60)
+        Me.BtnAgregar1.Location = New System.Drawing.Point(408, 74)
+        Me.BtnAgregar1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.BtnAgregar1.Name = "BtnAgregar1"
-        Me.BtnAgregar1.Size = New System.Drawing.Size(27, 23)
+        Me.BtnAgregar1.Size = New System.Drawing.Size(36, 28)
         Me.BtnAgregar1.TabIndex = 123
         Me.BtnAgregar1.Text = ">>"
         Me.BtnAgregar1.UseVisualStyleBackColor = True
@@ -427,9 +457,10 @@ Partial Class ConfiguracionUsuarios
         '
         Me.CboPlazasPermiso.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboPlazasPermiso.FormattingEnabled = True
-        Me.CboPlazasPermiso.Location = New System.Drawing.Point(61, 45)
+        Me.CboPlazasPermiso.Location = New System.Drawing.Point(81, 55)
+        Me.CboPlazasPermiso.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.CboPlazasPermiso.Name = "CboPlazasPermiso"
-        Me.CboPlazasPermiso.Size = New System.Drawing.Size(161, 21)
+        Me.CboPlazasPermiso.Size = New System.Drawing.Size(213, 24)
         Me.CboPlazasPermiso.TabIndex = 131
         '
         'gbDocumentosSinAfectacionInventarios
@@ -438,9 +469,11 @@ Partial Class ConfiguracionUsuarios
         Me.gbDocumentosSinAfectacionInventarios.Controls.Add(Me.LstVDocumentos3)
         Me.gbDocumentosSinAfectacionInventarios.Controls.Add(Me.BtnAgregar2)
         Me.gbDocumentosSinAfectacionInventarios.Controls.Add(Me.BtnQuitar2)
-        Me.gbDocumentosSinAfectacionInventarios.Location = New System.Drawing.Point(6, 280)
+        Me.gbDocumentosSinAfectacionInventarios.Location = New System.Drawing.Point(8, 345)
+        Me.gbDocumentosSinAfectacionInventarios.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gbDocumentosSinAfectacionInventarios.Name = "gbDocumentosSinAfectacionInventarios"
-        Me.gbDocumentosSinAfectacionInventarios.Size = New System.Drawing.Size(639, 178)
+        Me.gbDocumentosSinAfectacionInventarios.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbDocumentosSinAfectacionInventarios.Size = New System.Drawing.Size(852, 219)
         Me.gbDocumentosSinAfectacionInventarios.TabIndex = 137
         Me.gbDocumentosSinAfectacionInventarios.TabStop = False
         Me.gbDocumentosSinAfectacionInventarios.Text = "Permisos de documentos sin afectación a inventarios"
@@ -448,37 +481,41 @@ Partial Class ConfiguracionUsuarios
         'LstVDocumentos4
         '
         Me.LstVDocumentos4.FullRowSelect = True
-        Me.LstVDocumentos4.Location = New System.Drawing.Point(336, 26)
+        Me.LstVDocumentos4.Location = New System.Drawing.Point(448, 32)
+        Me.LstVDocumentos4.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.LstVDocumentos4.MultiSelect = False
         Me.LstVDocumentos4.Name = "LstVDocumentos4"
-        Me.LstVDocumentos4.Size = New System.Drawing.Size(297, 146)
+        Me.LstVDocumentos4.Size = New System.Drawing.Size(395, 179)
         Me.LstVDocumentos4.TabIndex = 134
         Me.LstVDocumentos4.UseCompatibleStateImageBehavior = False
         '
         'LstVDocumentos3
         '
         Me.LstVDocumentos3.FullRowSelect = True
-        Me.LstVDocumentos3.Location = New System.Drawing.Point(6, 26)
+        Me.LstVDocumentos3.Location = New System.Drawing.Point(8, 32)
+        Me.LstVDocumentos3.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.LstVDocumentos3.MultiSelect = False
         Me.LstVDocumentos3.Name = "LstVDocumentos3"
-        Me.LstVDocumentos3.Size = New System.Drawing.Size(297, 146)
+        Me.LstVDocumentos3.Size = New System.Drawing.Size(395, 179)
         Me.LstVDocumentos3.TabIndex = 133
         Me.LstVDocumentos3.UseCompatibleStateImageBehavior = False
         '
         'BtnAgregar2
         '
-        Me.BtnAgregar2.Location = New System.Drawing.Point(306, 48)
+        Me.BtnAgregar2.Location = New System.Drawing.Point(408, 59)
+        Me.BtnAgregar2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.BtnAgregar2.Name = "BtnAgregar2"
-        Me.BtnAgregar2.Size = New System.Drawing.Size(27, 23)
+        Me.BtnAgregar2.Size = New System.Drawing.Size(36, 28)
         Me.BtnAgregar2.TabIndex = 129
         Me.BtnAgregar2.Text = ">>"
         Me.BtnAgregar2.UseVisualStyleBackColor = True
         '
         'BtnQuitar2
         '
-        Me.BtnQuitar2.Location = New System.Drawing.Point(306, 77)
+        Me.BtnQuitar2.Location = New System.Drawing.Point(408, 95)
+        Me.BtnQuitar2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.BtnQuitar2.Name = "BtnQuitar2"
-        Me.BtnQuitar2.Size = New System.Drawing.Size(27, 23)
+        Me.BtnQuitar2.Size = New System.Drawing.Size(36, 28)
         Me.BtnQuitar2.TabIndex = 130
         Me.BtnQuitar2.Text = "<<"
         Me.BtnQuitar2.UseVisualStyleBackColor = True
@@ -487,26 +524,29 @@ Partial Class ConfiguracionUsuarios
         '
         Me.CboModulos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboModulos.FormattingEnabled = True
-        Me.CboModulos.Location = New System.Drawing.Point(61, 19)
+        Me.CboModulos.Location = New System.Drawing.Point(81, 23)
+        Me.CboModulos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.CboModulos.Name = "CboModulos"
-        Me.CboModulos.Size = New System.Drawing.Size(161, 21)
+        Me.CboModulos.Size = New System.Drawing.Size(213, 24)
         Me.CboModulos.TabIndex = 118
         '
         'lblDisplayModulo
         '
         Me.lblDisplayModulo.AutoSize = True
-        Me.lblDisplayModulo.Location = New System.Drawing.Point(7, 23)
+        Me.lblDisplayModulo.Location = New System.Drawing.Point(9, 28)
+        Me.lblDisplayModulo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayModulo.Name = "lblDisplayModulo"
-        Me.lblDisplayModulo.Size = New System.Drawing.Size(48, 13)
+        Me.lblDisplayModulo.Size = New System.Drawing.Size(62, 17)
         Me.lblDisplayModulo.TabIndex = 119
         Me.lblDisplayModulo.Text = "Modulo :"
         '
         'TpPermisosTiposDocumentos
         '
         Me.TpPermisosTiposDocumentos.Controls.Add(Me.gbTipoDocumentosConAfectacionInventarios)
-        Me.TpPermisosTiposDocumentos.Location = New System.Drawing.Point(4, 22)
+        Me.TpPermisosTiposDocumentos.Location = New System.Drawing.Point(4, 25)
+        Me.TpPermisosTiposDocumentos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TpPermisosTiposDocumentos.Name = "TpPermisosTiposDocumentos"
-        Me.TpPermisosTiposDocumentos.Size = New System.Drawing.Size(650, 461)
+        Me.TpPermisosTiposDocumentos.Size = New System.Drawing.Size(869, 570)
         Me.TpPermisosTiposDocumentos.TabIndex = 3
         Me.TpPermisosTiposDocumentos.Text = "Permisos de tipos de documentos"
         Me.TpPermisosTiposDocumentos.UseVisualStyleBackColor = True
@@ -523,35 +563,40 @@ Partial Class ConfiguracionUsuarios
         Me.gbTipoDocumentosConAfectacionInventarios.Controls.Add(Me.lblDisplayModulo3)
         Me.gbTipoDocumentosConAfectacionInventarios.Controls.Add(Me.BtnAgregar3)
         Me.gbTipoDocumentosConAfectacionInventarios.Controls.Add(Me.BtnQuitar3)
-        Me.gbTipoDocumentosConAfectacionInventarios.Location = New System.Drawing.Point(9, 11)
+        Me.gbTipoDocumentosConAfectacionInventarios.Location = New System.Drawing.Point(12, 14)
+        Me.gbTipoDocumentosConAfectacionInventarios.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gbTipoDocumentosConAfectacionInventarios.Name = "gbTipoDocumentosConAfectacionInventarios"
-        Me.gbTipoDocumentosConAfectacionInventarios.Size = New System.Drawing.Size(638, 447)
+        Me.gbTipoDocumentosConAfectacionInventarios.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbTipoDocumentosConAfectacionInventarios.Size = New System.Drawing.Size(851, 550)
         Me.gbTipoDocumentosConAfectacionInventarios.TabIndex = 114
         Me.gbTipoDocumentosConAfectacionInventarios.TabStop = False
         Me.gbTipoDocumentosConAfectacionInventarios.Text = "Permisos de tipos de documentos con afectación a inventarios"
         '
         'LstVDocumentos5
         '
-        Me.LstVDocumentos5.Location = New System.Drawing.Point(6, 110)
+        Me.LstVDocumentos5.Location = New System.Drawing.Point(8, 135)
+        Me.LstVDocumentos5.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.LstVDocumentos5.Name = "LstVDocumentos5"
-        Me.LstVDocumentos5.Size = New System.Drawing.Size(297, 146)
+        Me.LstVDocumentos5.Size = New System.Drawing.Size(395, 179)
         Me.LstVDocumentos5.TabIndex = 142
         Me.LstVDocumentos5.UseCompatibleStateImageBehavior = False
         '
         'LstVDocumentos6
         '
-        Me.LstVDocumentos6.Location = New System.Drawing.Point(335, 108)
+        Me.LstVDocumentos6.Location = New System.Drawing.Point(447, 133)
+        Me.LstVDocumentos6.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.LstVDocumentos6.Name = "LstVDocumentos6"
-        Me.LstVDocumentos6.Size = New System.Drawing.Size(297, 146)
+        Me.LstVDocumentos6.Size = New System.Drawing.Size(395, 179)
         Me.LstVDocumentos6.TabIndex = 141
         Me.LstVDocumentos6.UseCompatibleStateImageBehavior = False
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(9, 83)
+        Me.Label2.Location = New System.Drawing.Point(12, 102)
+        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(63, 13)
+        Me.Label2.Size = New System.Drawing.Size(82, 17)
         Me.Label2.TabIndex = 140
         Me.Label2.Text = "Almacen 2 :"
         '
@@ -559,17 +604,19 @@ Partial Class ConfiguracionUsuarios
         '
         Me.CboAlmacen3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboAlmacen3.FormattingEnabled = True
-        Me.CboAlmacen3.Location = New System.Drawing.Point(88, 80)
+        Me.CboAlmacen3.Location = New System.Drawing.Point(117, 98)
+        Me.CboAlmacen3.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.CboAlmacen3.Name = "CboAlmacen3"
-        Me.CboAlmacen3.Size = New System.Drawing.Size(179, 21)
+        Me.CboAlmacen3.Size = New System.Drawing.Size(237, 24)
         Me.CboAlmacen3.TabIndex = 139
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(9, 57)
+        Me.Label3.Location = New System.Drawing.Point(12, 70)
+        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(54, 13)
+        Me.Label3.Size = New System.Drawing.Size(70, 17)
         Me.Label3.TabIndex = 138
         Me.Label3.Text = "Almacen :"
         '
@@ -577,58 +624,65 @@ Partial Class ConfiguracionUsuarios
         '
         Me.CboAlmacen4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboAlmacen4.FormattingEnabled = True
-        Me.CboAlmacen4.Location = New System.Drawing.Point(88, 54)
+        Me.CboAlmacen4.Location = New System.Drawing.Point(117, 66)
+        Me.CboAlmacen4.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.CboAlmacen4.Name = "CboAlmacen4"
-        Me.CboAlmacen4.Size = New System.Drawing.Size(179, 21)
+        Me.CboAlmacen4.Size = New System.Drawing.Size(237, 24)
         Me.CboAlmacen4.TabIndex = 137
         '
         'CboModulos2
         '
         Me.CboModulos2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboModulos2.FormattingEnabled = True
-        Me.CboModulos2.Location = New System.Drawing.Point(62, 29)
+        Me.CboModulos2.Location = New System.Drawing.Point(83, 36)
+        Me.CboModulos2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.CboModulos2.Name = "CboModulos2"
-        Me.CboModulos2.Size = New System.Drawing.Size(161, 21)
+        Me.CboModulos2.Size = New System.Drawing.Size(213, 24)
         Me.CboModulos2.TabIndex = 131
         '
         'lblDisplayModulo3
         '
         Me.lblDisplayModulo3.AutoSize = True
-        Me.lblDisplayModulo3.Location = New System.Drawing.Point(9, 33)
+        Me.lblDisplayModulo3.Location = New System.Drawing.Point(12, 41)
+        Me.lblDisplayModulo3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayModulo3.Name = "lblDisplayModulo3"
-        Me.lblDisplayModulo3.Size = New System.Drawing.Size(48, 13)
+        Me.lblDisplayModulo3.Size = New System.Drawing.Size(62, 17)
         Me.lblDisplayModulo3.TabIndex = 136
         Me.lblDisplayModulo3.Text = "Modulo :"
         '
         'BtnAgregar3
         '
-        Me.BtnAgregar3.Location = New System.Drawing.Point(303, 127)
+        Me.BtnAgregar3.Location = New System.Drawing.Point(404, 156)
+        Me.BtnAgregar3.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.BtnAgregar3.Name = "BtnAgregar3"
-        Me.BtnAgregar3.Size = New System.Drawing.Size(29, 23)
+        Me.BtnAgregar3.Size = New System.Drawing.Size(39, 28)
         Me.BtnAgregar3.TabIndex = 134
         Me.BtnAgregar3.Text = ">>"
         Me.BtnAgregar3.UseVisualStyleBackColor = True
         '
         'BtnQuitar3
         '
-        Me.BtnQuitar3.Location = New System.Drawing.Point(303, 156)
+        Me.BtnQuitar3.Location = New System.Drawing.Point(404, 192)
+        Me.BtnQuitar3.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.BtnQuitar3.Name = "BtnQuitar3"
-        Me.BtnQuitar3.Size = New System.Drawing.Size(29, 23)
+        Me.BtnQuitar3.Size = New System.Drawing.Size(39, 28)
         Me.BtnQuitar3.TabIndex = 135
         Me.BtnQuitar3.Text = "<<"
         Me.BtnQuitar3.UseVisualStyleBackColor = True
         '
         'TpPermisosControl
         '
+        Me.TpPermisosControl.Controls.Add(Me.ckbVerCostos)
         Me.TpPermisosControl.Controls.Add(Me.CkbAdmonCreditos)
         Me.TpPermisosControl.Controls.Add(Me.CkbAdministrador)
         Me.TpPermisosControl.Controls.Add(Me.CkbArmadoPalet)
         Me.TpPermisosControl.Controls.Add(Me.ckbCuentas)
         Me.TpPermisosControl.Controls.Add(Me.CkbClientes)
         Me.TpPermisosControl.Controls.Add(Me.ckbArticulos)
-        Me.TpPermisosControl.Location = New System.Drawing.Point(4, 22)
+        Me.TpPermisosControl.Location = New System.Drawing.Point(4, 25)
+        Me.TpPermisosControl.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TpPermisosControl.Name = "TpPermisosControl"
-        Me.TpPermisosControl.Size = New System.Drawing.Size(650, 461)
+        Me.TpPermisosControl.Size = New System.Drawing.Size(869, 570)
         Me.TpPermisosControl.TabIndex = 4
         Me.TpPermisosControl.Text = "Permisos de control"
         Me.TpPermisosControl.UseVisualStyleBackColor = True
@@ -636,9 +690,10 @@ Partial Class ConfiguracionUsuarios
         'CkbAdmonCreditos
         '
         Me.CkbAdmonCreditos.AutoSize = True
-        Me.CkbAdmonCreditos.Location = New System.Drawing.Point(15, 50)
+        Me.CkbAdmonCreditos.Location = New System.Drawing.Point(20, 62)
+        Me.CkbAdmonCreditos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.CkbAdmonCreditos.Name = "CkbAdmonCreditos"
-        Me.CkbAdmonCreditos.Size = New System.Drawing.Size(149, 17)
+        Me.CkbAdmonCreditos.Size = New System.Drawing.Size(196, 21)
         Me.CkbAdmonCreditos.TabIndex = 5
         Me.CkbAdmonCreditos.Text = "Administración de créditos"
         Me.CkbAdmonCreditos.UseVisualStyleBackColor = True
@@ -646,9 +701,10 @@ Partial Class ConfiguracionUsuarios
         'CkbAdministrador
         '
         Me.CkbAdministrador.AutoSize = True
-        Me.CkbAdministrador.Location = New System.Drawing.Point(15, 19)
+        Me.CkbAdministrador.Location = New System.Drawing.Point(20, 23)
+        Me.CkbAdministrador.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.CkbAdministrador.Name = "CkbAdministrador"
-        Me.CkbAdministrador.Size = New System.Drawing.Size(89, 17)
+        Me.CkbAdministrador.Size = New System.Drawing.Size(117, 21)
         Me.CkbAdministrador.TabIndex = 0
         Me.CkbAdministrador.Text = "Administrador"
         Me.CkbAdministrador.UseVisualStyleBackColor = True
@@ -656,9 +712,10 @@ Partial Class ConfiguracionUsuarios
         'CkbArmadoPalet
         '
         Me.CkbArmadoPalet.AutoSize = True
-        Me.CkbArmadoPalet.Location = New System.Drawing.Point(15, 80)
+        Me.CkbArmadoPalet.Location = New System.Drawing.Point(20, 98)
+        Me.CkbArmadoPalet.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.CkbArmadoPalet.Name = "CkbArmadoPalet"
-        Me.CkbArmadoPalet.Size = New System.Drawing.Size(108, 17)
+        Me.CkbArmadoPalet.Size = New System.Drawing.Size(141, 21)
         Me.CkbArmadoPalet.TabIndex = 2
         Me.CkbArmadoPalet.Text = "Armado de palets"
         Me.CkbArmadoPalet.UseVisualStyleBackColor = True
@@ -666,9 +723,10 @@ Partial Class ConfiguracionUsuarios
         'ckbCuentas
         '
         Me.ckbCuentas.AutoSize = True
-        Me.ckbCuentas.Location = New System.Drawing.Point(15, 142)
+        Me.ckbCuentas.Location = New System.Drawing.Point(20, 175)
+        Me.ckbCuentas.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.ckbCuentas.Name = "ckbCuentas"
-        Me.ckbCuentas.Size = New System.Drawing.Size(114, 17)
+        Me.ckbCuentas.Size = New System.Drawing.Size(147, 21)
         Me.ckbCuentas.TabIndex = 4
         Me.ckbCuentas.Text = "Cuentas contables"
         Me.ckbCuentas.UseVisualStyleBackColor = True
@@ -676,9 +734,10 @@ Partial Class ConfiguracionUsuarios
         'CkbClientes
         '
         Me.CkbClientes.AutoSize = True
-        Me.CkbClientes.Location = New System.Drawing.Point(15, 111)
+        Me.CkbClientes.Location = New System.Drawing.Point(20, 137)
+        Me.CkbClientes.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.CkbClientes.Name = "CkbClientes"
-        Me.CkbClientes.Size = New System.Drawing.Size(63, 17)
+        Me.CkbClientes.Size = New System.Drawing.Size(80, 21)
         Me.CkbClientes.TabIndex = 3
         Me.CkbClientes.Text = "Clientes"
         Me.CkbClientes.UseVisualStyleBackColor = True
@@ -686,9 +745,10 @@ Partial Class ConfiguracionUsuarios
         'ckbArticulos
         '
         Me.ckbArticulos.AutoSize = True
-        Me.ckbArticulos.Location = New System.Drawing.Point(15, 173)
+        Me.ckbArticulos.Location = New System.Drawing.Point(20, 213)
+        Me.ckbArticulos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.ckbArticulos.Name = "ckbArticulos"
-        Me.ckbArticulos.Size = New System.Drawing.Size(66, 17)
+        Me.ckbArticulos.Size = New System.Drawing.Size(84, 21)
         Me.ckbArticulos.TabIndex = 1
         Me.ckbArticulos.Text = "Articulos"
         Me.ckbArticulos.UseVisualStyleBackColor = True
@@ -701,27 +761,31 @@ Partial Class ConfiguracionUsuarios
         Me.gbContraseña.Controls.Add(Me.TxtConfirmaClave)
         Me.gbContraseña.Controls.Add(Me.lblDisplayClave)
         Me.gbContraseña.Controls.Add(Me.txtClave)
-        Me.gbContraseña.Location = New System.Drawing.Point(6, 238)
+        Me.gbContraseña.Location = New System.Drawing.Point(8, 293)
+        Me.gbContraseña.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gbContraseña.Name = "gbContraseña"
-        Me.gbContraseña.Size = New System.Drawing.Size(257, 69)
+        Me.gbContraseña.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbContraseña.Size = New System.Drawing.Size(343, 85)
         Me.gbContraseña.TabIndex = 112
         Me.gbContraseña.TabStop = False
         Me.gbContraseña.Text = "Contraseña"
         '
         'BtnActualizar
         '
-        Me.BtnActualizar.Location = New System.Drawing.Point(187, 40)
+        Me.BtnActualizar.Location = New System.Drawing.Point(249, 49)
+        Me.BtnActualizar.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.BtnActualizar.Name = "BtnActualizar"
-        Me.BtnActualizar.Size = New System.Drawing.Size(63, 23)
+        Me.BtnActualizar.Size = New System.Drawing.Size(84, 28)
         Me.BtnActualizar.TabIndex = 109
         Me.BtnActualizar.Text = "Actualizar"
         Me.BtnActualizar.UseVisualStyleBackColor = True
         '
         'BtnRecurperar
         '
-        Me.BtnRecurperar.Location = New System.Drawing.Point(187, 14)
+        Me.BtnRecurperar.Location = New System.Drawing.Point(249, 17)
+        Me.BtnRecurperar.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.BtnRecurperar.Name = "BtnRecurperar"
-        Me.BtnRecurperar.Size = New System.Drawing.Size(63, 23)
+        Me.BtnRecurperar.Size = New System.Drawing.Size(84, 28)
         Me.BtnRecurperar.TabIndex = 108
         Me.BtnRecurperar.Text = "Recuperar"
         Me.BtnRecurperar.UseVisualStyleBackColor = True
@@ -729,37 +793,41 @@ Partial Class ConfiguracionUsuarios
         'lblDisplayConfirmarClave
         '
         Me.lblDisplayConfirmarClave.AutoSize = True
-        Me.lblDisplayConfirmarClave.Location = New System.Drawing.Point(6, 40)
+        Me.lblDisplayConfirmarClave.Location = New System.Drawing.Point(8, 49)
+        Me.lblDisplayConfirmarClave.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayConfirmarClave.Name = "lblDisplayConfirmarClave"
-        Me.lblDisplayConfirmarClave.Size = New System.Drawing.Size(57, 13)
+        Me.lblDisplayConfirmarClave.Size = New System.Drawing.Size(77, 17)
         Me.lblDisplayConfirmarClave.TabIndex = 107
         Me.lblDisplayConfirmarClave.Text = "Confirmar :"
         '
         'TxtConfirmaClave
         '
-        Me.TxtConfirmaClave.Location = New System.Drawing.Point(78, 40)
+        Me.TxtConfirmaClave.Location = New System.Drawing.Point(104, 49)
+        Me.TxtConfirmaClave.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtConfirmaClave.MaxLength = 12
         Me.TxtConfirmaClave.Name = "TxtConfirmaClave"
         Me.TxtConfirmaClave.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
-        Me.TxtConfirmaClave.Size = New System.Drawing.Size(87, 20)
+        Me.TxtConfirmaClave.Size = New System.Drawing.Size(115, 22)
         Me.TxtConfirmaClave.TabIndex = 1
         '
         'lblDisplayClave
         '
         Me.lblDisplayClave.AutoSize = True
-        Me.lblDisplayClave.Location = New System.Drawing.Point(6, 16)
+        Me.lblDisplayClave.Location = New System.Drawing.Point(8, 20)
+        Me.lblDisplayClave.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayClave.Name = "lblDisplayClave"
-        Me.lblDisplayClave.Size = New System.Drawing.Size(45, 13)
+        Me.lblDisplayClave.Size = New System.Drawing.Size(57, 17)
         Me.lblDisplayClave.TabIndex = 105
         Me.lblDisplayClave.Text = "Nueva :"
         '
         'txtClave
         '
-        Me.txtClave.Location = New System.Drawing.Point(78, 16)
+        Me.txtClave.Location = New System.Drawing.Point(104, 20)
+        Me.txtClave.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtClave.MaxLength = 12
         Me.txtClave.Name = "txtClave"
         Me.txtClave.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
-        Me.txtClave.Size = New System.Drawing.Size(87, 20)
+        Me.txtClave.Size = New System.Drawing.Size(115, 22)
         Me.txtClave.TabIndex = 0
         '
         'gbImportar
@@ -768,52 +836,59 @@ Partial Class ConfiguracionUsuarios
         Me.gbImportar.Controls.Add(Me.BtnImportar)
         Me.gbImportar.Controls.Add(Me.TxtCodigoUsuarioImporta)
         Me.gbImportar.Controls.Add(Me.lblDisplayImportarPermisos)
-        Me.gbImportar.Location = New System.Drawing.Point(6, 165)
+        Me.gbImportar.Location = New System.Drawing.Point(8, 203)
+        Me.gbImportar.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gbImportar.Name = "gbImportar"
-        Me.gbImportar.Size = New System.Drawing.Size(257, 67)
+        Me.gbImportar.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbImportar.Size = New System.Drawing.Size(343, 82)
         Me.gbImportar.TabIndex = 22
         Me.gbImportar.TabStop = False
         Me.gbImportar.Text = "Importar"
         '
         'TxtNombreUsuarioImportar
         '
-        Me.TxtNombreUsuarioImportar.Location = New System.Drawing.Point(63, 42)
+        Me.TxtNombreUsuarioImportar.Location = New System.Drawing.Point(84, 52)
+        Me.TxtNombreUsuarioImportar.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.TxtNombreUsuarioImportar.Name = "TxtNombreUsuarioImportar"
-        Me.TxtNombreUsuarioImportar.Size = New System.Drawing.Size(117, 17)
+        Me.TxtNombreUsuarioImportar.Size = New System.Drawing.Size(156, 21)
         Me.TxtNombreUsuarioImportar.TabIndex = 3
         '
         'BtnImportar
         '
-        Me.BtnImportar.Location = New System.Drawing.Point(187, 38)
+        Me.BtnImportar.Location = New System.Drawing.Point(249, 47)
+        Me.BtnImportar.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.BtnImportar.Name = "BtnImportar"
-        Me.BtnImportar.Size = New System.Drawing.Size(63, 23)
+        Me.BtnImportar.Size = New System.Drawing.Size(84, 28)
         Me.BtnImportar.TabIndex = 2
         Me.BtnImportar.Text = "Importar"
         Me.BtnImportar.UseVisualStyleBackColor = True
         '
         'TxtCodigoUsuarioImporta
         '
-        Me.TxtCodigoUsuarioImporta.Location = New System.Drawing.Point(6, 40)
+        Me.TxtCodigoUsuarioImporta.Location = New System.Drawing.Point(8, 49)
+        Me.TxtCodigoUsuarioImporta.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtCodigoUsuarioImporta.MaxLength = 4
         Me.TxtCodigoUsuarioImporta.Name = "TxtCodigoUsuarioImporta"
-        Me.TxtCodigoUsuarioImporta.Size = New System.Drawing.Size(54, 20)
+        Me.TxtCodigoUsuarioImporta.Size = New System.Drawing.Size(71, 22)
         Me.TxtCodigoUsuarioImporta.TabIndex = 0
         '
         'lblDisplayImportarPermisos
         '
         Me.lblDisplayImportarPermisos.AutoSize = True
-        Me.lblDisplayImportarPermisos.Location = New System.Drawing.Point(6, 24)
+        Me.lblDisplayImportarPermisos.Location = New System.Drawing.Point(8, 30)
+        Me.lblDisplayImportarPermisos.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayImportarPermisos.Name = "lblDisplayImportarPermisos"
-        Me.lblDisplayImportarPermisos.Size = New System.Drawing.Size(110, 13)
+        Me.lblDisplayImportarPermisos.Size = New System.Drawing.Size(149, 17)
         Me.lblDisplayImportarPermisos.TabIndex = 0
         Me.lblDisplayImportarPermisos.Text = "Importar permisos de :"
         '
         'lblDisplayAlamcen
         '
         Me.lblDisplayAlamcen.AutoSize = True
-        Me.lblDisplayAlamcen.Location = New System.Drawing.Point(6, 104)
+        Me.lblDisplayAlamcen.Location = New System.Drawing.Point(8, 128)
+        Me.lblDisplayAlamcen.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayAlamcen.Name = "lblDisplayAlamcen"
-        Me.lblDisplayAlamcen.Size = New System.Drawing.Size(54, 13)
+        Me.lblDisplayAlamcen.Size = New System.Drawing.Size(70, 17)
         Me.lblDisplayAlamcen.TabIndex = 111
         Me.lblDisplayAlamcen.Text = "Almacen :"
         '
@@ -821,17 +896,19 @@ Partial Class ConfiguracionUsuarios
         '
         Me.CboAlmacen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboAlmacen.FormattingEnabled = True
-        Me.CboAlmacen.Location = New System.Drawing.Point(84, 101)
+        Me.CboAlmacen.Location = New System.Drawing.Point(112, 124)
+        Me.CboAlmacen.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.CboAlmacen.Name = "CboAlmacen"
-        Me.CboAlmacen.Size = New System.Drawing.Size(179, 21)
+        Me.CboAlmacen.Size = New System.Drawing.Size(237, 24)
         Me.CboAlmacen.TabIndex = 3
         '
         'lblDisplayPlaza
         '
         Me.lblDisplayPlaza.AutoSize = True
-        Me.lblDisplayPlaza.Location = New System.Drawing.Point(6, 77)
+        Me.lblDisplayPlaza.Location = New System.Drawing.Point(8, 95)
+        Me.lblDisplayPlaza.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayPlaza.Name = "lblDisplayPlaza"
-        Me.lblDisplayPlaza.Size = New System.Drawing.Size(39, 13)
+        Me.lblDisplayPlaza.Size = New System.Drawing.Size(51, 17)
         Me.lblDisplayPlaza.TabIndex = 109
         Me.lblDisplayPlaza.Text = "Plaza :"
         '
@@ -839,34 +916,38 @@ Partial Class ConfiguracionUsuarios
         '
         Me.cboPlazas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboPlazas.FormattingEnabled = True
-        Me.cboPlazas.Location = New System.Drawing.Point(84, 74)
+        Me.cboPlazas.Location = New System.Drawing.Point(112, 91)
+        Me.cboPlazas.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.cboPlazas.Name = "cboPlazas"
-        Me.cboPlazas.Size = New System.Drawing.Size(179, 21)
+        Me.cboPlazas.Size = New System.Drawing.Size(237, 24)
         Me.cboPlazas.TabIndex = 2
         '
         'LblNombreUsuario
         '
         Me.LblNombreUsuario.AutoSize = True
-        Me.LblNombreUsuario.Location = New System.Drawing.Point(6, 52)
+        Me.LblNombreUsuario.Location = New System.Drawing.Point(8, 64)
+        Me.LblNombreUsuario.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblNombreUsuario.Name = "LblNombreUsuario"
-        Me.LblNombreUsuario.Size = New System.Drawing.Size(50, 13)
+        Me.LblNombreUsuario.Size = New System.Drawing.Size(66, 17)
         Me.LblNombreUsuario.TabIndex = 103
         Me.LblNombreUsuario.Text = "Nombre :"
         '
         'TxtNombreUsuario
         '
-        Me.TxtNombreUsuario.Location = New System.Drawing.Point(84, 48)
+        Me.TxtNombreUsuario.Location = New System.Drawing.Point(112, 59)
+        Me.TxtNombreUsuario.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtNombreUsuario.MaxLength = 60
         Me.TxtNombreUsuario.Name = "TxtNombreUsuario"
-        Me.TxtNombreUsuario.Size = New System.Drawing.Size(179, 20)
+        Me.TxtNombreUsuario.Size = New System.Drawing.Size(237, 22)
         Me.TxtNombreUsuario.TabIndex = 1
         '
         'LblEstatus
         '
         Me.LblEstatus.AutoSize = True
-        Me.LblEstatus.Location = New System.Drawing.Point(6, 132)
+        Me.LblEstatus.Location = New System.Drawing.Point(8, 162)
+        Me.LblEstatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblEstatus.Name = "LblEstatus"
-        Me.LblEstatus.Size = New System.Drawing.Size(48, 13)
+        Me.LblEstatus.Size = New System.Drawing.Size(63, 17)
         Me.LblEstatus.TabIndex = 102
         Me.LblEstatus.Text = "Estatus :"
         '
@@ -875,61 +956,77 @@ Partial Class ConfiguracionUsuarios
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"A", "B"})
-        Me.CboEstatus.Location = New System.Drawing.Point(84, 128)
+        Me.CboEstatus.Location = New System.Drawing.Point(112, 158)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(60, 21)
+        Me.CboEstatus.Size = New System.Drawing.Size(79, 24)
         Me.CboEstatus.TabIndex = 4
         '
         'LblDisplayCodUsuario
         '
         Me.LblDisplayCodUsuario.AutoSize = True
-        Me.LblDisplayCodUsuario.Location = New System.Drawing.Point(6, 27)
+        Me.LblDisplayCodUsuario.Location = New System.Drawing.Point(8, 33)
+        Me.LblDisplayCodUsuario.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayCodUsuario.Name = "LblDisplayCodUsuario"
-        Me.LblDisplayCodUsuario.Size = New System.Drawing.Size(72, 13)
+        Me.LblDisplayCodUsuario.Size = New System.Drawing.Size(96, 17)
         Me.LblDisplayCodUsuario.TabIndex = 101
         Me.LblDisplayCodUsuario.Text = "Cód. usuario :"
         '
         'TxtCodigoUsuario
         '
-        Me.TxtCodigoUsuario.Location = New System.Drawing.Point(84, 23)
+        Me.TxtCodigoUsuario.Location = New System.Drawing.Point(112, 28)
+        Me.TxtCodigoUsuario.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtCodigoUsuario.MaxLength = 4
         Me.TxtCodigoUsuario.Name = "TxtCodigoUsuario"
-        Me.TxtCodigoUsuario.Size = New System.Drawing.Size(60, 20)
+        Me.TxtCodigoUsuario.Size = New System.Drawing.Size(79, 22)
         Me.TxtCodigoUsuario.TabIndex = 0
         '
         'StatusStripEstado
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssLabel, Me.tssLabelEstado})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 535)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 661)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1165, 22)
+        Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1553, 25)
         Me.StatusStripEstado.TabIndex = 21
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
         'tssLabel
         '
         Me.tssLabel.Name = "tssLabel"
-        Me.tssLabel.Size = New System.Drawing.Size(48, 17)
+        Me.tssLabel.Size = New System.Drawing.Size(61, 20)
         Me.tssLabel.Text = "Estado :"
         '
         'tssLabelEstado
         '
         Me.tssLabelEstado.Name = "tssLabelEstado"
-        Me.tssLabelEstado.Size = New System.Drawing.Size(0, 17)
+        Me.tssLabelEstado.Size = New System.Drawing.Size(0, 20)
+        '
+        'ckbVerCostos
+        '
+        Me.ckbVerCostos.AutoSize = True
+        Me.ckbVerCostos.Location = New System.Drawing.Point(20, 254)
+        Me.ckbVerCostos.Margin = New System.Windows.Forms.Padding(4)
+        Me.ckbVerCostos.Name = "ckbVerCostos"
+        Me.ckbVerCostos.Size = New System.Drawing.Size(97, 21)
+        Me.ckbVerCostos.TabIndex = 6
+        Me.ckbVerCostos.Text = "Ver costos"
+        Me.ckbVerCostos.UseVisualStyleBackColor = True
         '
         'ConfiguracionUsuarios
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1165, 557)
+        Me.ClientSize = New System.Drawing.Size(1553, 686)
         Me.Controls.Add(Me.gBoxBusquedaRapida)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.gbInformacion)
         Me.Controls.Add(Me.tsMenu)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.MaximizeBox = False
         Me.Name = "ConfiguracionUsuarios"
         Me.Text = "ConfiguracionUsuarios"
@@ -1045,4 +1142,5 @@ Partial Class ConfiguracionUsuarios
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents txtCorreoUsuario As System.Windows.Forms.TextBox
     Friend WithEvents CkbAdmonCreditos As System.Windows.Forms.CheckBox
+    Friend WithEvents ckbVerCostos As System.Windows.Forms.CheckBox
 End Class

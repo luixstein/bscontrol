@@ -412,6 +412,7 @@ Public Class ConfiguracionUsuarios
                 Me.txtCorreoUsuario.Text = .CORREO_USUARIO.ToString
                 Me.txtClaveCorreo.Text = .CLAVE_CORREO.ToString
                 Me.CkbAdmonCreditos.Checked = CBool(.ADMON_CREDITOS)
+                Me.ckbVerCostos.Checked = CBool(.VER_COSTOS)
             End With
         End If
         Me.TreeMenus()
@@ -450,6 +451,7 @@ Public Class ConfiguracionUsuarios
                         .CORREO_USUARIO = Me.txtCorreoUsuario.Text
                         .CLAVE_CORREO = Me.txtClaveCorreo.Text
                         .ADMON_CREDITOS = Convert.ToInt32(Me.CkbAdmonCreditos.Checked)
+                        .VER_COSTOS = ckbVerCostos.Checked
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO

@@ -301,6 +301,7 @@ Public Class Class_sisUsuarios
             sqlParametro = .Parameters.Add("@CORREO_USUARIO", SqlDbType.NVarChar, 120) : sqlParametro.Value = Me._CORREO_USUARIO
             sqlParametro = .Parameters.Add("@CLAVE_CORREO", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CLAVE_CORREO
             sqlParametro = .Parameters.Add("@ADMON_CREDITOS", SqlDbType.SmallInt) : sqlParametro.Value = Me._ADMON_CREDITOS
+            sqlParametro = .Parameters.Add("@VER_COSTOS", SqlDbType.NVarChar, 1) : sqlParametro.Value = Convert.ToInt32(Me._VER_COSTOS).ToString
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "ACTUALIZAR"
 
             Try
@@ -409,6 +410,7 @@ Public Class Class_sisUsuarios
             sqlParametro = .Parameters.Add("@CORREO_USUARIO", SqlDbType.NVarChar, 120) : sqlParametro.Value = Me._CORREO_USUARIO
             sqlParametro = .Parameters.Add("@CLAVE_CORREO", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CLAVE_CORREO
             sqlParametro = .Parameters.Add("@ADMON_CREDITOS", SqlDbType.SmallInt) : sqlParametro.Value = Me._ADMON_CREDITOS
+            sqlParametro = .Parameters.Add("@VER_COSTOS", SqlDbType.NVarChar, 1) : sqlParametro.Value = Convert.ToInt32(Me._VER_COSTOS).ToString
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "INSERTAR"
 
             Try
