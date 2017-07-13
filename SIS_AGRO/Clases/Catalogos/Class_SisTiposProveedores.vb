@@ -342,7 +342,7 @@ Public Class Class_SisTiposProveedores
 
     Public Function CodigoSiguiente() As String
         Dim iTipoProveedor As Integer
-        Dim sql As New Class_find("SELECT MAX(CODIGO_TIPO_PROVEEDOR) FROM SIS_TIPOS_PROVEEDORES")
+        Dim sql As New Class_find("SELECT MAX(CAST (CODIGO_TIPO_PROVEEDOR AS INT)) FROM SIS_TIPOS_PROVEEDORES ")
         Try
 
             iTipoProveedor = sql.Result1
