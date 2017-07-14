@@ -350,6 +350,10 @@ Buscar:
                 Dim sql As New Class_find("SELECT R.CODIGO_PROPIETARIO FROM CAT_PROPIETARIOS_RELACION_CLIENTES R " _
                                           & "WHERE CODIGO_CLIENTE='" & Me.TxtCliente.Text & "'")
 
+                Me.GridListaClientes.DataSource = Nothing
+                Me.GridListaClientes.Columns.Clear()
+                Me.GridListaClientes.Rows.Clear()
+
                 If txtLEN(sql.Result1.ToString) = True Then
                     With Me.GridListaClientes
                         .DataSource = oPropietarios.ObtenerRelacionPropietariosClientes(sql.Result1.ToString)
@@ -357,7 +361,14 @@ Buscar:
                         .Columns("NOMBRE_CLIENTE").Width = 500
                     End With
                 Else
-                    Me.GridListaClientes.DataSource = Nothing
+                    With Me.GridListaClientes
+                        .Columns.Add("CODIGO_CLIENTE", "CODIGO")
+                        .Columns.Add("NOMBRE_CLIENTE", "NOMBRE CLIENTE")
+                        .Columns("CODIGO_CLIENTE").Width = 52
+                        .Columns("NOMBRE_CLIENTE").Width = 500
+                        .Rows.Add(Me.TxtCliente.Text, Me.lblCliente.Text)
+                    End With
+                    'Me.GridListaClientes.DataSource = Nothing
                 End If
 
             End If
@@ -565,6 +576,38 @@ Buscar:
 
     Private Sub btnObsevacionesSiguiente_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnObsevacionesSiguiente.Click
         NavegadorObsercaciones("Siguiente")
+    End Sub
+
+    Private Sub LlblCobranzaDetalle_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles LlblCobranzaDetalle.LinkClicked
+        Me.ImprimirRptCobranzaDetalle()
+    End Sub
+
+    Private Sub ImprimirRptCobranzaDetalle()
+        Dim StrFiltros As String = ""
+        Dim Rpt As New ReportDocument
+        Dim oReporte As Class_Reporte
+        Try
+            oReporte = New Class_Reporte("RPT_CXC_COBRANZA_DETALLE", Rpt)
+
+            If Not oReporte.RptCargado Then
+                Exit Sub
+            End If
+
+            Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.GridListaClientes.CurrentRow.Cells("CODIGO_CLIENTE").Value.ToString)
+            Rpt.SetParameterValue("@CODIGO_VENDEDOR", "")
+            Rpt.SetParameterValue("@CODIGO_TIPO_DOCUMENTO", "T")
+            Rpt.SetParameterValue("@CODIGO_ZONA", "T")
+            Rpt.SetParameterValue("@CODIGO_TIPO_MERCADO", "T")
+            Rpt.SetParameterValue("@CODIGO_PROPIETARIO", valorNumerico(Me.TxtCliente.Text))
+
+            Dim frm As New Reporte(Rpt)
+            frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
+            frm.Show()
+        Catch ex As Exception
+            HandleError(Me.Name, "ImprimirRptCobranzaDetalle", ex)
+        Finally
+            oReporte = Nothing
+        End Try
     End Sub
 
     Private Function NavegadorSeguimientoCxc(ByVal sTipoDeBusqueda As String) As Boolean
@@ -1126,4 +1169,6 @@ Buscar:
         End If
 
     End Sub
+
+    
 End Class

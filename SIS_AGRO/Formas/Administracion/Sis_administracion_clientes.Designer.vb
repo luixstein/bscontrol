@@ -24,6 +24,7 @@ Partial Class Sis_administracion_clientes
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Sis_administracion_clientes))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.GridListaClientes = New System.Windows.Forms.DataGridView()
         Me.LblListaClientes = New System.Windows.Forms.Label()
         Me.btnClienteSiguiente = New System.Windows.Forms.Button()
         Me.btnClienteAnterior = New System.Windows.Forms.Button()
@@ -160,8 +161,9 @@ Partial Class Sis_administracion_clientes
         Me.BtnAgregar = New System.Windows.Forms.Button()
         Me.txtConcepto = New System.Windows.Forms.TextBox()
         Me.lblDisplayConcepto = New System.Windows.Forms.Label()
-        Me.GridListaClientes = New System.Windows.Forms.DataGridView()
+        Me.LlblCobranzaDetalle = New System.Windows.Forms.LinkLabel()
         Me.GroupBox1.SuspendLayout()
+        CType(Me.GridListaClientes, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GbResumenCXC.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -183,7 +185,6 @@ Partial Class Sis_administracion_clientes
         Me.gbReglasCXC.SuspendLayout()
         Me.gpCliente.SuspendLayout()
         Me.gpLimiteCredito.SuspendLayout()
-        CType(Me.GridListaClientes, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox1
@@ -202,6 +203,22 @@ Partial Class Sis_administracion_clientes
         Me.GroupBox1.Size = New System.Drawing.Size(612, 237)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
+        '
+        'GridListaClientes
+        '
+        Me.GridListaClientes.AllowUserToAddRows = False
+        Me.GridListaClientes.AllowUserToDeleteRows = False
+        Me.GridListaClientes.AllowUserToResizeColumns = False
+        Me.GridListaClientes.AllowUserToResizeRows = False
+        Me.GridListaClientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.GridListaClientes.Location = New System.Drawing.Point(8, 91)
+        Me.GridListaClientes.Margin = New System.Windows.Forms.Padding(4)
+        Me.GridListaClientes.Name = "GridListaClientes"
+        Me.GridListaClientes.ReadOnly = True
+        Me.GridListaClientes.RowHeadersVisible = False
+        Me.GridListaClientes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.GridListaClientes.Size = New System.Drawing.Size(596, 138)
+        Me.GridListaClientes.TabIndex = 245
         '
         'LblListaClientes
         '
@@ -847,6 +864,7 @@ Partial Class Sis_administracion_clientes
         '
         'tpGeneral
         '
+        Me.tpGeneral.Controls.Add(Me.LlblCobranzaDetalle)
         Me.tpGeneral.Controls.Add(Me.GbObservacionesCXC)
         Me.tpGeneral.Controls.Add(Me.GroupBox2)
         Me.tpGeneral.Controls.Add(Me.GroupBox1)
@@ -1175,7 +1193,7 @@ Partial Class Sis_administracion_clientes
         Me.tbAutorizaciones.Margin = New System.Windows.Forms.Padding(4)
         Me.tbAutorizaciones.Name = "tbAutorizaciones"
         Me.tbAutorizaciones.Padding = New System.Windows.Forms.Padding(4)
-        Me.tbAutorizaciones.Size = New System.Drawing.Size(1468, 868)
+        Me.tbAutorizaciones.Size = New System.Drawing.Size(1468, 799)
         Me.tbAutorizaciones.TabIndex = 1
         Me.tbAutorizaciones.Text = "Autorizaciones"
         Me.tbAutorizaciones.UseVisualStyleBackColor = True
@@ -1719,21 +1737,15 @@ Partial Class Sis_administracion_clientes
         Me.lblDisplayConcepto.TabIndex = 288
         Me.lblDisplayConcepto.Text = "Concepto :"
         '
-        'GridListaClientes
+        'LlblCobranzaDetalle
         '
-        Me.GridListaClientes.AllowUserToAddRows = False
-        Me.GridListaClientes.AllowUserToDeleteRows = False
-        Me.GridListaClientes.AllowUserToResizeColumns = False
-        Me.GridListaClientes.AllowUserToResizeRows = False
-        Me.GridListaClientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.GridListaClientes.Location = New System.Drawing.Point(8, 91)
-        Me.GridListaClientes.Margin = New System.Windows.Forms.Padding(4)
-        Me.GridListaClientes.Name = "GridListaClientes"
-        Me.GridListaClientes.ReadOnly = True
-        Me.GridListaClientes.RowHeadersVisible = False
-        Me.GridListaClientes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.GridListaClientes.Size = New System.Drawing.Size(596, 138)
-        Me.GridListaClientes.TabIndex = 245
+        Me.LlblCobranzaDetalle.AutoSize = True
+        Me.LlblCobranzaDetalle.Location = New System.Drawing.Point(629, 464)
+        Me.LlblCobranzaDetalle.Name = "LlblCobranzaDetalle"
+        Me.LlblCobranzaDetalle.Size = New System.Drawing.Size(115, 17)
+        Me.LlblCobranzaDetalle.TabIndex = 241
+        Me.LlblCobranzaDetalle.TabStop = True
+        Me.LlblCobranzaDetalle.Text = "Cobranza detalle"
         '
         'Sis_administracion_clientes
         '
@@ -1750,6 +1762,7 @@ Partial Class Sis_administracion_clientes
         Me.Text = "Administracion de clientes"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        CType(Me.GridListaClientes, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GbResumenCXC.ResumeLayout(False)
         Me.GbResumenCXC.PerformLayout()
         Me.GroupBox6.ResumeLayout(False)
@@ -1764,6 +1777,7 @@ Partial Class Sis_administracion_clientes
         Me.tsMenu.PerformLayout()
         Me.tcPanel.ResumeLayout(False)
         Me.tpGeneral.ResumeLayout(False)
+        Me.tpGeneral.PerformLayout()
         Me.GbObservacionesCXC.ResumeLayout(False)
         Me.GbObservacionesCXC.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
@@ -1787,7 +1801,6 @@ Partial Class Sis_administracion_clientes
         Me.gpCliente.PerformLayout()
         Me.gpLimiteCredito.ResumeLayout(False)
         Me.gpLimiteCredito.PerformLayout()
-        CType(Me.GridListaClientes, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1930,4 +1943,5 @@ Partial Class Sis_administracion_clientes
     Friend WithEvents lblEstadoObservacion As System.Windows.Forms.Label
     Friend WithEvents LblListaClientes As System.Windows.Forms.Label
     Friend WithEvents GridListaClientes As System.Windows.Forms.DataGridView
+    Friend WithEvents LlblCobranzaDetalle As System.Windows.Forms.LinkLabel
 End Class
