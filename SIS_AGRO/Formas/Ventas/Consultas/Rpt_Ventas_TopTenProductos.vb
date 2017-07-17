@@ -126,6 +126,7 @@ Public Class Rpt_Ventas_TopTenProductos
         'Me.TxtCodigoProveedor.Text = ""
         'Me.LblProveedor.Text = ""
         Me.CboZona.SelectedValue = "T"
+        Me.RbtnCategoria.Checked = True
 
         If Me.ModoAgrupado = enumModoAgrupado.PRODUCTOS Then
             '    Me.InicializaGrid()
@@ -147,40 +148,40 @@ Public Class Rpt_Ventas_TopTenProductos
         End If
     End Sub
 
-    Private Sub DesplegarCultivos()
-        Dim oElementos As New Class_CatCultivos
-        With Me.cboCultivo
-            .DisplayMember = "NOMBRE_CULTIVO"
-            .ValueMember = "CODIGO_CULTIVO"
+    'Private Sub DesplegarCultivos()
+    '    Dim oElementos As New Class_CatCultivos
+    '    With Me.cboCultivo
+    '        .DisplayMember = "NOMBRE_CULTIVO"
+    '        .ValueMember = "CODIGO_CULTIVO"
 
-            Dim dView As New Data.DataView(oElementos.ObtenerElementosParaReportes)
-            dView.Sort = "NOMBRE_CULTIVO"
-            .DataSource = dView
-            .Text = "TODOS"
-        End With
-    End Sub
+    '        Dim dView As New Data.DataView(oElementos.ObtenerElementosParaReportes)
+    '        dView.Sort = "NOMBRE_CULTIVO"
+    '        .DataSource = dView
+    '        .Text = "TODOS"
+    '    End With
+    'End Sub
 
-    Private Sub DesplegarSemana1()
-        Dim oElementos As New Class_CatCultivos
-        With Me.CboSemana1
-            .DisplayMember = "SEMANA"
-            .ValueMember = "FECHA1"
-            Dim dView As New Data.DataView(oElementos.ObtenerSemanas("1"))
-            dView.Sort = "SEMANA"
-            .DataSource = dView
-        End With
-    End Sub
+    'Private Sub DesplegarSemana1()
+    '    Dim oElementos As New Class_CatCultivos
+    '    With Me.CboSemana1
+    '        .DisplayMember = "SEMANA"
+    '        .ValueMember = "FECHA1"
+    '        Dim dView As New Data.DataView(oElementos.ObtenerSemanas("1"))
+    '        dView.Sort = "SEMANA"
+    '        .DataSource = dView
+    '    End With
+    'End Sub
 
-    Private Sub DesplegarSemana2()
-        Dim oElementos As New Class_CatCultivos
-        With Me.CboSemana2
-            .DisplayMember = "SEMANA"
-            .ValueMember = "FECHA2"
-            Dim dView As New Data.DataView(oElementos.ObtenerSemanas("2"))
-            dView.Sort = "SEMANA"
-            .DataSource = dView
-        End With
-    End Sub
+    'Private Sub DesplegarSemana2()
+    '    Dim oElementos As New Class_CatCultivos
+    '    With Me.CboSemana2
+    '        .DisplayMember = "SEMANA"
+    '        .ValueMember = "FECHA2"
+    '        Dim dView As New Data.DataView(oElementos.ObtenerSemanas("2"))
+    '        dView.Sort = "SEMANA"
+    '        .DataSource = dView
+    '    End With
+    'End Sub
 
     Private Sub DesplegarZona()
         Dim oElementos As New Class_CatZonas
@@ -193,45 +194,88 @@ Public Class Rpt_Ventas_TopTenProductos
         End With
     End Sub
 
-    Private Sub DesplegarMercado()
-        Dim oElementos As New Class_CatTiposMercados
-        With Me.cboMercado
-            .DisplayMember = "NOMBRE_MERCADO"
-            .ValueMember = "CODIGO_TIPO_MERCADO"
-            Dim dView As New Data.DataView(oElementos.ObtenerTiposMercadosParaReportes())
-            dView.Sort = "NOMBRE_MERCADO"
+    'Private Sub DesplegarMercado()
+    '    Dim oElementos As New Class_CatTiposMercados
+    '    With Me.cboMercado
+    '        .DisplayMember = "NOMBRE_MERCADO"
+    '        .ValueMember = "CODIGO_TIPO_MERCADO"
+    '        Dim dView As New Data.DataView(oElementos.ObtenerTiposMercadosParaReportes())
+    '        dView.Sort = "NOMBRE_MERCADO"
+    '        .DataSource = dView
+    '        .Text = "TODOS"
+    '    End With
+    'End Sub
+
+    Private Sub DesplegarDocumentos()
+        Dim oElementos As New Class_CatDocumentos
+        With Me.CboDocumento
+            .DisplayMember = "NOMBRE_TIPO_DOCUMENTO"
+            .ValueMember = "CODIGO_DOCUMENTO"
+            Dim dView As New Data.DataView(oElementos.ObtenerCodigosDocumentos("VTA", Usuario.Codigo_Plaza.ToString))
+            dView.Table.Rows.Add("T", "TODOS")
+            dView.Sort = "NOMBRE_TIPO_DOCUMENTO"
             .DataSource = dView
-            .Text = "TODOS"
+            .SelectedValue = "T"
         End With
     End Sub
 
+    Private Sub DesplegarOrden()
+        '$UTILIDAD,%UTILIDAD,$VENTA,DESCRI 
+        Dim Items As New List(Of String)
+        Items.Add("$UTILIDAD")
+        Items.Add("%UTILIDAD")
+        Items.Add("$VENTA")
+        Items.Add("DESCRI")
+
+        cboOrden.DataSource = Items
+        cboOrden.SelectedIndex = 0
+
+    End Sub
+
+    Private Sub DesplegarTipoPago()
+        Dim oElementos As New Class_CatTiposNegociaciones
+        With Me.cboTipoPago
+            .DisplayMember = "NOMBRE_TIPO_NEGOCIACION"
+            .ValueMember = "CODIGO_TIPO_NEGOCIACION"
+            Dim dView As New Data.DataView(oElementos.ObtenerTiposNegociacionesParaReportes)
+            dView.Sort = "NOMBRE_TIPO_NEGOCIACION"
+            .DataSource = dView
+            .SelectedValue = "T"
+        End With
+    End Sub
+
+
     Private Sub Rpt_Ventas_TopTenProductos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.DesplegarCultivos()
-        Me.DesplegarSemana1()
-        Me.DesplegarSemana2()
+        'Me.DesplegarCultivos()
+        'Me.DesplegarSemana1()
+        'Me.DesplegarSemana2()
+        'Me.DesplegarMercado()
         Me.DesplegarZona()
-        Me.DesplegarMercado()
+        Me.DesplegarDocumentos()
+        Me.DesplegarOrden()
+        Me.DesplegarTipoPago()
+
 
         'Me.CboSemana1.Text = "2011-26" '& DatePart("ww", TemporadaActiva.FECHA1, FirstDayOfWeek.Sunday, FirstWeekOfYear.FirstFullWeek).ToString
         Me.DtFechaDesde.Value = CDate("2011-06-26")
         'Me.CboSemana2.Text = Format(Now, "yyyy-") & Format(CInt(DatePart("ww", Now, FirstDayOfWeek.Sunday, FirstWeekOfYear.FirstFullWeek).ToString) - 1, "00")
         Me.DtFechaHasta.Value = Now
 
-        Me.cboCultivo.Focus()
+        'Me.cboCultivo.Focus()
 
         Me.Inicializa()
         Me.InicializaGrid()
 
         If Me._ConsultaExterior = True Then
-            Me.CboSemana1.SelectedValue = Me._TopTenConsultaExteriorSemana1.ToString
-            Me.CboSemana2.SelectedValue = Me._TopTenConsultaExteriorSemana2.ToString
+            'Me.CboSemana1.SelectedValue = Me._TopTenConsultaExteriorSemana1.ToString
+            'Me.CboSemana2.SelectedValue = Me._TopTenConsultaExteriorSemana2.ToString
             Me.DtFechaDesde.Value = CDate(Me._TopTenConsultaExteriorDia1)
             Me.DtFechaHasta.Value = CDate(Me._TopTenConsultaExteriorDia2)
-            Me.cboCultivo.SelectedValue = Me._TopTenConsultaExteriorCodCultivo.ToString
+            'Me.cboCultivo.SelectedValue = Me._TopTenConsultaExteriorCodCultivo.ToString
             Me.TxtCliente.Text = Me._TopTenConsultaExteriorCliente.ToString
-            Me.txtTipoCambio.Text = Me._TopTenConsultaExteriorTipoCambio.ToString
+            'Me.txtTipoCambio.Text = Me._TopTenConsultaExteriorTipoCambio.ToString
             Me.CboZona.SelectedValue = Me._TopTenConsultaExteriorZona.ToString
-            Me.cboMercado.SelectedValue = Me._TopTenConsultaExteriorMercado.ToString
+            'Me.cboMercado.SelectedValue = Me._TopTenConsultaExteriorMercado.ToString
 
             Me.GroupBox1.Enabled = False
             Me.Consultar()
@@ -267,15 +311,15 @@ Public Class Rpt_Ventas_TopTenProductos
         vdg = Me.Grid.Cell(Renglon, Me.igyCodigo).Text 'Grid.Rows(Renglon).Cell("FOLIO_POLIZA")
 
         Dim Child As New Rpt_Ventas_TopTenProductos()
-        Child.TopTenConsultaExteriorSemana1 = Me.CboSemana1.SelectedValue.ToString
-        Child.TopTenConsultaExteriorSemana2 = Me.CboSemana2.SelectedValue.ToString
+        'Child.TopTenConsultaExteriorSemana1 = Me.CboSemana1.SelectedValue.ToString
+        'Child.TopTenConsultaExteriorSemana2 = Me.CboSemana2.SelectedValue.ToString
         Child.TopTenConsultaExteriorDia1 = Me.DtFechaDesde.Value.ToString
         Child.TopTenConsultaExteriorDia2 = Me.DtFechaHasta.Value.ToString
         Child.TopTenConsultaExteriorPresentacion = Me.Grid.Cell(Renglon, Me.igyPresentacion).Text
 
         If Me.ModoAgrupado = enumModoAgrupado.CLIENTES Then
             Child.ModoAgrupado = Rpt_Ventas_TopTenProductos.enumModoAgrupado.PRODUCTOS
-            Child.TopTenConsultaExteriorCodCultivo = Me.cboCultivo.SelectedValue.ToString
+            'Child.TopTenConsultaExteriorCodCultivo = Me.cboCultivo.SelectedValue.ToString
             Child.TopTenConsultaExteriorCliente = vdg
         Else
             Child.ModoAgrupado = Rpt_Ventas_TopTenProductos.enumModoAgrupado.CLIENTES
@@ -283,9 +327,9 @@ Public Class Rpt_Ventas_TopTenProductos
             Child.TopTenConsultaExteriorCliente = Me.TxtCliente.Text
         End If
 
-        Child.TopTenConsultaExteriorTipoCambio = CDbl(Me.txtTipoCambio.Text)
+        'Child.TopTenConsultaExteriorTipoCambio = CDbl(Me.txtTipoCambio.Text)
         Child.TopTenConsultaExteriorZona = Me.CboZona.SelectedValue.ToString
-        Child.TopTenConsultaExteriorMercado = Me.cboMercado.SelectedValue.ToString
+        'Child.TopTenConsultaExteriorMercado = Me.cboMercado.SelectedValue.ToString
         Child.ConsultaExterior = True
 
         Child.ShowDialog()
@@ -485,52 +529,63 @@ Public Class Rpt_Ventas_TopTenProductos
             Dim sqlParametro As New SqlParameter
 
             If Me.ModoAgrupado = enumModoAgrupado.PRODUCTOS Then
-                Using da As New SqlDataAdapter("MP_RPT_Q_TOPTEN_PRODUCTOS", Empresa_Sistema.conexion)
+                Using da As New SqlDataAdapter("MP_RPT_Q_VENTAS_TOP_PRODUCTOS", Empresa_Sistema.conexion)
                     da.SelectCommand.CommandType = CommandType.StoredProcedure
 
                     With da.SelectCommand
-                        .Parameters.Add("@FECHA1_SEMANA", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me.CboSemana1.Text
-                        .Parameters.Add("@FECHA2_SEMANA", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me.CboSemana2.Text
-                        .Parameters.Add("@FECHA1_DIA", SqlDbType.NVarChar, 20) : sqlParametro.Value = Format(Me.DtFechaDesde.Value, "yyyy-dd-MM")
-                        .Parameters.Add("@FECHA2_DIA", SqlDbType.NVarChar, 20) : sqlParametro.Value = Format(Me.DtFechaHasta.Value, "yyyy-dd-MM")
-                        .Parameters.Add("@CODIGO_CULTIVO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me.cboCultivo.SelectedValue.ToString()
                         .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me.TxtCliente.Text
-                        .Parameters.Add("@AGRUPADO_POR", SqlDbType.NVarChar, 20) : sqlParametro.Value = IIf(Me.RdbCliente.Checked = True, "CLIENTE", "CULTIVO")
-                        .Parameters.Add("@TIPO_CAMBIO", SqlDbType.Decimal) : sqlParametro.Value = valorNumerico(Me.txtTipoCambio.Text)
+                        .Parameters.Add("@CODIGO_DOCUMENTO", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me.CboDocumento.SelectedValue
+                        .Parameters.Add("@FECHA1", SqlDbType.NVarChar, 20) : sqlParametro.Value = Format(Me.DtFechaDesde.Value, "yyyy-dd-MM")
+                        .Parameters.Add("@FECHA2", SqlDbType.NVarChar, 20) : sqlParametro.Value = Format(Me.DtFechaHasta.Value, "yyyy-dd-MM")
                         .Parameters.Add("@CODIGO_ZONA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me.CboZona.SelectedValue.ToString
-                        .Parameters.Add("@CODIGO_TIPO_MERCADO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me.cboMercado.SelectedValue.ToString
+                        .Parameters.Add("@PORCENTAJE", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me.TxtPorcentaje.Text)
+                        .Parameters.Add("@DESCRIPCION", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me.TxtDescripcion.Text.ToUpper
+                        .Parameters.Add("@MIN", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me.TxtMin.Text
+                        .Parameters.Add("@TIPO_PAGO", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me.cboTipoPago.SelectedValue.ToString
+                        .Parameters.Add("@UTILIDAD_MAXIMA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me.TxtUtilidadMaxima.Text)
+                        .Parameters.Add("@CATEGORIA", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me.TxtCategoria.Text
+                        .Parameters.Add("@FILTRAR_VALOR", SqlDbType.NVarChar, 1) : sqlParametro.Value = IIf(Me.RbtnCategoria.Checked = True, "C", "P")
+                        .Parameters.Add("@CODIGOS_PRODUCTOS", SqlDbType.NVarChar, 2000) : sqlParametro.Value = Me.CboZona.SelectedValue.ToString
+                        .Parameters.Add("@ORDEN", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me.CboZona.SelectedValue.ToString
+                        '.Parameters.Add("@COD_USU_EJECUTO", SqlDbType.NVarChar, 2) : sqlParametro.Value = 1 'Usuario.Codigo_Usuario.ToString
+                        '.Parameters.Add("@SISTEMA", SqlDbType.NVarChar, 20) : sqlParametro.Value = "BS"
                     End With
 
                     da.Fill(dt)
                 End Using
             Else
-                Using da As New SqlDataAdapter("MP_RPT_Q_TOPTEN_CLIENTES", Empresa_Sistema.conexion)
+                Using da As New SqlDataAdapter("MP_RPT_Q_TOPTEN_CLIENTES", Empresa_Sistema.conexion) 'Falta actualizar el stored
                     da.SelectCommand.CommandType = CommandType.StoredProcedure
 
                     With da.SelectCommand
-                        .Parameters.Add("@FECHA1_SEMANA", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me.CboSemana1.Text
-                        .Parameters.Add("@FECHA2_SEMANA", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me.CboSemana2.Text
+                        '.Parameters.Add("@FECHA1_SEMANA", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me.CboSemana1.Text
+                        '.Parameters.Add("@FECHA2_SEMANA", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me.CboSemana2.Text
                         .Parameters.Add("@FECHA1_DIA", SqlDbType.NVarChar, 20) : sqlParametro.Value = Format(Me.DtFechaDesde.Value, "yyyy-dd-MM")
                         .Parameters.Add("@FECHA2_DIA", SqlDbType.NVarChar, 20) : sqlParametro.Value = Format(Me.DtFechaHasta.Value, "yyyy-dd-MM")
-                        .Parameters.Add("@CODIGO_CULTIVO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me.cboCultivo.SelectedValue.ToString()
+                        '.Parameters.Add("@CODIGO_CULTIVO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me.cboCultivo.SelectedValue.ToString()
                         .Parameters.Add("@UNIDAD_VENTA", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._TopTenConsultaExteriorPresentacion.ToString
                         .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me.TxtCliente.Text
-                        .Parameters.Add("@TIPO_CAMBIO", SqlDbType.Decimal) : sqlParametro.Value = valorNumerico(Me.txtTipoCambio.Text)
+                        '.Parameters.Add("@TIPO_CAMBIO", SqlDbType.Decimal) : sqlParametro.Value = valorNumerico(Me.txtTipoCambio.Text)
                         .Parameters.Add("@CODIGO_ZONA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me.CboZona.SelectedValue.ToString
-                        .Parameters.Add("@CODIGO_TIPO_MERCADO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me.cboMercado.SelectedValue.ToString
+                        '.Parameters.Add("@CODIGO_TIPO_MERCADO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me.cboMercado.SelectedValue.ToString
                     End With
 
                     da.Fill(dt)
                 End Using
             End If
 
-            dt.Columns.Remove("EMPRESA_NOMBRE")
-            dt.Columns.Remove("EMPRESA_DOMICILIO")
-            dt.Columns.Remove("EMPRESA_CIUDAD")
-            dt.Columns.Remove("EMPRESA_ESTADO")
-            dt.Columns.Remove("EMPRESA_RFC")
-            dt.Columns.Remove("EMPRESA_TELEFONO")
-            dt.Columns.Remove("FILTROS")
+            'dt.Columns.Remove("EMPRESA_NOMBRE")
+            'dt.Columns.Remove("EMPRESA_DOMICILIO")
+            'dt.Columns.Remove("EMPRESA_CIUDAD")
+            'dt.Columns.Remove("EMPRESA_ESTADO")
+            'dt.Columns.Remove("EMPRESA_RFC")
+            'dt.Columns.Remove("EMPRESA_TELEFONO")
+            'dt.Columns.Remove("FILTROS")
+            dt.Columns.Remove("FILTROS_TEXTO")
+
+            If dt.Rows.Count > 1 Then
+                MsgBox("OK")
+            End If
 
             If Me.ModoAgrupado = enumModoAgrupado.PRODUCTOS Then
                 Me.Grid.Rows = 1
@@ -587,33 +642,39 @@ Public Class Rpt_Ventas_TopTenProductos
             End If
             If Me.ModoAgrupado = enumModoAgrupado.PRODUCTOS Then
 
-                FormatoDeReporte = "RPT_MP_Q_TOPTEN_PRODUCTOS"
+                FormatoDeReporte = "RPT_MP_Q_VENTAS_TOPTEN_PRODUCTOS"
 
                 oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
-                Rpt.SetParameterValue("@FECHA1_SEMANA", Me.CboSemana1.Text)
-                Rpt.SetParameterValue("@FECHA2_SEMANA", Me.CboSemana2.Text)
-                Rpt.SetParameterValue("@FECHA1_DIA", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
-                Rpt.SetParameterValue("@FECHA2_DIA", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
-                Rpt.SetParameterValue("@CODIGO_CULTIVO", Me.cboCultivo.SelectedValue.ToString())
                 Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.TxtCliente.Text)
-                Rpt.SetParameterValue("@AGRUPADO_POR", IIf(Me.RdbCliente.Checked = True, "CLIENTE", "CULTIVO"))
-                Rpt.SetParameterValue("@TIPO_CAMBIO", valorNumerico(Me.txtTipoCambio.Text))
-                Rpt.SetParameterValue("@CODIGO_ZONA", Me.CboZona.SelectedValue)
-                Rpt.SetParameterValue("@CODIGO_TIPO_MERCADO", Me.cboMercado.SelectedValue)
-            Else
-                FormatoDeReporte = "RPT_MP_Q_TOPTEN_CLIENTES"
-
-                oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
-                Rpt.SetParameterValue("@FECHA1_SEMANA", Me.CboSemana1.Text)
-                Rpt.SetParameterValue("@FECHA2_SEMANA", Me.CboSemana2.Text)
+                Rpt.SetParameterValue("@CODIGO_DOCUMENTO", Me.CboDocumento.SelectedValue)
                 Rpt.SetParameterValue("@FECHA1_DIA", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
                 Rpt.SetParameterValue("@FECHA2_DIA", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
-                Rpt.SetParameterValue("@CODIGO_CULTIVO", Me.cboCultivo.SelectedValue.ToString())
+                Rpt.SetParameterValue("@CODIGO_ZONA", Me.CboZona.SelectedValue.ToString())
+                Rpt.SetParameterValue("@PORCENTAJE", CInt(Me.TxtPorcentaje.Text))
+                Rpt.SetParameterValue("@DESCRIPCION", Me.TxtDescripcion.Text)
+                Rpt.SetParameterValue("@MIN", CInt(Me.TxtMin.Text))
+                Rpt.SetParameterValue("@TIPO_PAGO", Me.cboTipoPago.SelectedValue.ToString)
+                Rpt.SetParameterValue("@UTILIDAD_MAXIMA", CInt(Me.TxtUtilidadMaxima.Text))
+                Rpt.SetParameterValue("@CATEGORIA", Me.TxtCategoria.Text)
+                Rpt.SetParameterValue("@FILTRAR_VALOR", IIf(Me.RbtnCategoria.Checked = True, "C", "P"))
+                Rpt.SetParameterValue("@CODIGOS_PRODUCTOS", Me.TxtCodigosProductos.Text)
+                Rpt.SetParameterValue("@ORDEN", Me.cboOrden.SelectedValue)
+                Rpt.SetParameterValue("@COD_USU_EJECUTO", Usuario.Codigo_Usuario.ToString)
+                Rpt.SetParameterValue("@SISTEMA", "BS")
+            Else
+                FormatoDeReporte = "RPT_MP_Q_TOPTEN_CLIENTES" 'Falta actualizar el stored
+
+                oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
+                'Rpt.SetParameterValue("@FECHA1_SEMANA", Me.CboSemana1.Text)
+                'Rpt.SetParameterValue("@FECHA2_SEMANA", Me.CboSemana2.Text)
+                Rpt.SetParameterValue("@FECHA1_DIA", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
+                Rpt.SetParameterValue("@FECHA2_DIA", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
+                'Rpt.SetParameterValue("@CODIGO_CULTIVO", Me.cboCultivo.SelectedValue.ToString())
                 Rpt.SetParameterValue("@UNIDAD_VENTA", Me._TopTenConsultaExteriorPresentacion.ToString)
                 Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.TxtCliente.Text)
-                Rpt.SetParameterValue("@TIPO_CAMBIO", valorNumerico(Me.txtTipoCambio.Text))
+                'Rpt.SetParameterValue("@TIPO_CAMBIO", valorNumerico(Me.txtTipoCambio.Text))
                 Rpt.SetParameterValue("@CODIGO_ZONA", Me.CboZona.SelectedValue)
-                Rpt.SetParameterValue("@CODIGO_TIPO_MERCADO", Me.cboMercado.SelectedValue)
+                'Rpt.SetParameterValue("@CODIGO_TIPO_MERCADO", Me.cboMercado.SelectedValue)
             End If
 
             Dim frm As New Reporte(Rpt)
@@ -641,12 +702,11 @@ Public Class Rpt_Ventas_TopTenProductos
         ValidarPeriodo = True
     End Function
 
-    Private Sub cboCultivo_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles cboCultivo.KeyPress, TxtCliente.KeyPress, CboSemana1.KeyPress, CboSemana2.KeyPress, txtTipoCambio.KeyPress
+    Private Sub cboCultivo_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCliente.KeyPress, TxtCodigosProductos.KeyPress, TxtDescripcion.KeyPress, TxtCategoria.KeyPress, TxtPorcentaje.KeyPress, TxtMin.KeyPress, TxtUtilidadMaxima.KeyPress
         txtNoBeep(e) 'DtFechaHasta.KeyPress, DtFechaDesde.KeyPress, _
     End Sub
 
-    Private Sub cboCultivo_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles DtFechaHasta.KeyDown, DtFechaDesde.KeyDown, _
-    cboCultivo.KeyDown, CboSemana1.KeyDown, CboSemana2.KeyDown, txtTipoCambio.KeyDown
+    Private Sub cboCultivo_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles DtFechaHasta.KeyDown, DtFechaDesde.KeyDown, CboZona.KeyDown, TxtCodigosProductos.KeyDown, TxtDescripcion.KeyDown, TxtPorcentaje.KeyDown, TxtMin.KeyDown, TxtUtilidadMaxima.KeyDown, cboTipoPago.KeyDown, CboDocumento.KeyDown, cboOrden.KeyDown
         txtTAB(e)
     End Sub
 
@@ -672,24 +732,58 @@ Buscar:
                 End If
 
                 Me.lblNombreCliente.Text = Me.oClientes.NOMBRE_CLIENTE.ToString
-                Me.txtTipoCambio.Focus()
+                'Me.txtTipoCambio.Focus()
         End Select
         Me.TxtCliente.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
+        txtTAB(e)
     End Sub
 
-    Private Sub txtTipoCambio_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtTipoCambio.KeyDown
-        If e.KeyCode = Keys.Enter Then
-            Me.tsbConsultar.PerformClick()
+    Private Sub TxtCategoria_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCategoria.KeyDown
+        Dim oCategoria As New Class_CatCategorias
+        Dim sText As String
+        Select Case e.KeyCode
+            Case Keys.F6
+Buscar:
+                sText = oCategoria.BusquedaVisual_PorDescripcion
+                If txtLEN(sText) = True Then Me.TxtCategoria.Text = sText
+            Case Keys.Enter
+                oCategoria = New Class_CatCategorias(Me.TxtCategoria.Text)
+                If oCategoria.Existe = False Then
+                    GoTo Buscar : Exit Sub
+                End If
+
+        End Select
+        txtTAB(e)
+    End Sub
+
+    Private Sub RbtnCategoria_CheckedChanged(sender As Object, e As EventArgs) Handles RbtnCategoria.CheckedChanged
+        If Me.RbtnCategoria.Checked = True Then
+            Me.TxtCategoria.Enabled = True
+            Me.TxtPorcentaje.Enabled = False
+        Else
+            Me.TxtCategoria.Enabled = False
+            Me.TxtPorcentaje.Enabled = True
         End If
     End Sub
 
-    Private Sub txtTipoCambio_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTipoCambio.KeyPress
-        Dim txt As TextBox = CType(sender, TextBox)
-        txtSoloNumerosDecimales(e, txt.Text)
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtMin.KeyPress, TxtUtilidadMaxima.KeyPress, TxtCategoria.KeyPress, TxtPorcentaje.KeyPress
+        txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
 
-    Private Sub CboSemana1_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles CboSemana1.SelectedValueChanged
+    'Private Sub txtTipoCambio_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
+    '    If e.KeyCode = Keys.Enter Then
+    '        Me.tsbConsultar.PerformClick()
+    '    End If
+    'End Sub
+
+    'Private Sub txtTipoCambio_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
+    '    Dim txt As TextBox = CType(sender, TextBox)
+    '    txtSoloNumerosDecimales(e, txt.Text)
+    '    txtNoBeep(e)
+    'End Sub
+
+    Private Sub CboSemana1_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs)
         'Dim sql As Class_find
         'sql = New Class_find("SELECT FECHA1,FECHA2 FROM EMB_CAT_RANGOS_LOTES_MASTRONARDI " & _
         '"WHERE REPLACE(LEFT(CAST(((NUMERO_SEMANA/100.00)+AÑO) AS NVARCHAR),7),'.','-')='" & Me.CboSemana1.Text.ToString & "'")
@@ -698,7 +792,7 @@ Buscar:
         'End If
     End Sub
 
-    Private Sub CboSemana2_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles CboSemana2.SelectedValueChanged
+    Private Sub CboSemana2_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs)
         'Dim sql As Class_find
         'sql = New Class_find("SELECT FECHA2 FROM EMB_CAT_RANGOS_LOTES_MASTRONARDI " & _
         '"WHERE REPLACE(LEFT(CAST(((NUMERO_SEMANA/100.00)+AÑO) AS NVARCHAR),7),'.','-')='" & Me.CboSemana2.Text.ToString & "'")
@@ -707,36 +801,37 @@ Buscar:
         'End If
     End Sub
 
-    Private Sub DtFechaDesde_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles DtFechaDesde.KeyPress
-        Dim sql As Class_find
-        sql = New Class_find("select CAST(AÑO AS NVARCHAR) + '-' +  RIGHT('0' + CAST(NUMERO_SEMANA AS NVARCHAR),2) from EMB_CAT_RANGOS_LOTES_MASTRONARDI where '" & Format(Me.DtFechaDesde.Value, "yyyy-dd-MM").ToString & "' BETWEEN FECHA1 and FECHA2 ")
-        If txtLEN(sql.Result1) = True Then
-            Me.CboSemana1.Text = sql.Result1
-        End If
-    End Sub
+    'Private Sub DtFechaDesde_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles DtFechaDesde.KeyPress
+    '    Dim sql As Class_find
+    '    sql = New Class_find("select CAST(AÑO AS NVARCHAR) + '-' +  RIGHT('0' + CAST(NUMERO_SEMANA AS NVARCHAR),2) from EMB_CAT_RANGOS_LOTES_MASTRONARDI where '" & Format(Me.DtFechaDesde.Value, "yyyy-dd-MM").ToString & "' BETWEEN FECHA1 and FECHA2 ")
+    '    If txtLEN(sql.Result1) = True Then
+    '        Me.CboSemana1.Text = sql.Result1
+    '    End If
+    'End Sub
 
-    Private Sub DtFechaHasta_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles DtFechaHasta.KeyPress
-        Dim sql As Class_find
+    'Private Sub DtFechaHasta_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles DtFechaHasta.KeyPress
+    '    Dim sql As Class_find
 
-        sql = New Class_find("select CAST(AÑO AS NVARCHAR) + '-' +  RIGHT('0' + CAST(NUMERO_SEMANA AS NVARCHAR),2) from EMB_CAT_RANGOS_LOTES_MASTRONARDI where '" & Format(Me.DtFechaHasta.Value, "yyyy-dd-MM").ToString & "' BETWEEN FECHA1 and FECHA2 ")
-        If txtLEN(sql.Result1) = True Then
-            Me.CboSemana2.Text = sql.Result1
-        End If
-    End Sub
+    '    sql = New Class_find("select CAST(AÑO AS NVARCHAR) + '-' +  RIGHT('0' + CAST(NUMERO_SEMANA AS NVARCHAR),2) from EMB_CAT_RANGOS_LOTES_MASTRONARDI where '" & Format(Me.DtFechaHasta.Value, "yyyy-dd-MM").ToString & "' BETWEEN FECHA1 and FECHA2 ")
+    '    If txtLEN(sql.Result1) = True Then
+    '        Me.CboSemana2.Text = sql.Result1
+    '    End If
+    'End Sub
 
-    Private Sub DtFechaDesde_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles DtFechaDesde.ValueChanged
-        Dim sql As Class_find
-        sql = New Class_find("select CAST(AÑO AS NVARCHAR) + '-' +  RIGHT('0' + CAST(NUMERO_SEMANA AS NVARCHAR),2) from EMB_CAT_RANGOS_LOTES_MASTRONARDI where '" & Format(Me.DtFechaDesde.Value, "yyyy-dd-MM").ToString & "' BETWEEN FECHA1 and FECHA2 ")
-        If txtLEN(sql.Result1) = True Then
-            Me.CboSemana1.Text = sql.Result1
-        End If
-    End Sub
+    'Private Sub DtFechaDesde_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles DtFechaDesde.ValueChanged
+    '    Dim sql As Class_find
+    '    sql = New Class_find("select CAST(AÑO AS NVARCHAR) + '-' +  RIGHT('0' + CAST(NUMERO_SEMANA AS NVARCHAR),2) from EMB_CAT_RANGOS_LOTES_MASTRONARDI where '" & Format(Me.DtFechaDesde.Value, "yyyy-dd-MM").ToString & "' BETWEEN FECHA1 and FECHA2 ")
+    '    If txtLEN(sql.Result1) = True Then
+    '        Me.CboSemana1.Text = sql.Result1
+    '    End If
+    'End Sub
 
-    Private Sub DtFechaHasta_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles DtFechaHasta.ValueChanged
-        Dim sql As Class_find
-        sql = New Class_find("select CAST(AÑO AS NVARCHAR) + '-' +  RIGHT('0' + CAST(NUMERO_SEMANA AS NVARCHAR),2) from EMB_CAT_RANGOS_LOTES_MASTRONARDI where '" & Format(Me.DtFechaHasta.Value, "yyyy-dd-MM").ToString & "' BETWEEN FECHA1 and FECHA2 ")
-        If txtLEN(sql.Result1) = True Then
-            Me.CboSemana2.Text = sql.Result1
-        End If
-    End Sub
+    'Private Sub DtFechaHasta_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles DtFechaHasta.ValueChanged
+    '    Dim sql As Class_find
+    '    sql = New Class_find("select CAST(AÑO AS NVARCHAR) + '-' +  RIGHT('0' + CAST(NUMERO_SEMANA AS NVARCHAR),2) from EMB_CAT_RANGOS_LOTES_MASTRONARDI where '" & Format(Me.DtFechaHasta.Value, "yyyy-dd-MM").ToString & "' BETWEEN FECHA1 and FECHA2 ")
+    '    If txtLEN(sql.Result1) = True Then
+    '        Me.CboSemana2.Text = sql.Result1
+    '    End If
+    'End Sub
+
 End Class

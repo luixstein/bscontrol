@@ -901,7 +901,6 @@ Partial Public Class AppMenu
         Me.TopTenProductosToolStripMenuItem.Name = "TopTenProductosToolStripMenuItem"
         Me.TopTenProductosToolStripMenuItem.Size = New System.Drawing.Size(214, 26)
         Me.TopTenProductosToolStripMenuItem.Text = "TopTen Productos"
-        Me.TopTenProductosToolStripMenuItem.Visible = False
         '
         'ComparativoToolStripMenuItem
         '
@@ -1482,7 +1481,7 @@ Partial Public Class AppMenu
         Me.pbLogo.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pbLogo.Enabled = False
         Me.pbLogo.Location = New System.Drawing.Point(232, 63)
-        Me.pbLogo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.pbLogo.Margin = New System.Windows.Forms.Padding(4)
         Me.pbLogo.Name = "pbLogo"
         Me.pbLogo.Size = New System.Drawing.Size(643, 445)
         Me.pbLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
@@ -1501,7 +1500,7 @@ Partial Public Class AppMenu
         Me.Controls.Add(Me.StatusStrip)
         Me.HelpProvider.SetHelpKeyword(Me, "F1")
         Me.IsMdiContainer = True
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "AppMenu"
         Me.HelpProvider.SetShowHelp(Me, True)
         Me.Text = "AppMenu"
