@@ -547,10 +547,9 @@ Public Class Rpt_Ventas_TopTenProductos
                         .Parameters.Add("@FILTRAR_VALOR", SqlDbType.NVarChar, 1) : sqlParametro.Value = IIf(Me.RbtnCategoria.Checked = True, "C", "P")
                         .Parameters.Add("@CODIGOS_PRODUCTOS", SqlDbType.NVarChar, 2000) : sqlParametro.Value = Me.CboZona.SelectedValue.ToString
                         .Parameters.Add("@ORDEN", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me.CboZona.SelectedValue.ToString
-                        '.Parameters.Add("@COD_USU_EJECUTO", SqlDbType.NVarChar, 2) : sqlParametro.Value = 1 'Usuario.Codigo_Usuario.ToString
-                        '.Parameters.Add("@SISTEMA", SqlDbType.NVarChar, 20) : sqlParametro.Value = "BS"
+                        .Parameters.Add("@COD_USU_EJECUTO", SqlDbType.NVarChar, 2) : sqlParametro.Value = 1 'Usuario.Codigo_Usuario.ToString
+                        .Parameters.Add("@SISTEMA", SqlDbType.NVarChar, 20) : sqlParametro.Value = "BS"
                     End With
-
                     da.Fill(dt)
                 End Using
             Else
@@ -582,10 +581,6 @@ Public Class Rpt_Ventas_TopTenProductos
             'dt.Columns.Remove("EMPRESA_TELEFONO")
             'dt.Columns.Remove("FILTROS")
             dt.Columns.Remove("FILTROS_TEXTO")
-
-            If dt.Rows.Count > 1 Then
-                MsgBox("OK")
-            End If
 
             If Me.ModoAgrupado = enumModoAgrupado.PRODUCTOS Then
                 Me.Grid.Rows = 1
@@ -702,12 +697,20 @@ Public Class Rpt_Ventas_TopTenProductos
         ValidarPeriodo = True
     End Function
 
-    Private Sub cboCultivo_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCliente.KeyPress, TxtCodigosProductos.KeyPress, TxtDescripcion.KeyPress, TxtCategoria.KeyPress, TxtPorcentaje.KeyPress, TxtMin.KeyPress, TxtUtilidadMaxima.KeyPress
-        txtNoBeep(e) 'DtFechaHasta.KeyPress, DtFechaDesde.KeyPress, _
+    Private Sub cboCultivo_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCliente.KeyPress, TxtCodigosProductos.KeyPress, TxtDescripcion.KeyPress, TxtCategoria.KeyPress, TxtPorcentaje.KeyPress, TxtMin.KeyPress, TxtUtilidadMaxima.KeyPress, DtFechaDesde.KeyPress, DtFechaHasta.KeyPress
+        txtNoBeep(e)
     End Sub
 
-    Private Sub cboCultivo_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles DtFechaHasta.KeyDown, DtFechaDesde.KeyDown, CboZona.KeyDown, TxtCodigosProductos.KeyDown, TxtDescripcion.KeyDown, TxtPorcentaje.KeyDown, TxtMin.KeyDown, TxtUtilidadMaxima.KeyDown, cboTipoPago.KeyDown, CboDocumento.KeyDown, cboOrden.KeyDown
-        txtTAB(e)
+    Private Sub cboCultivo_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles DtFechaDesde.KeyDown, CboZona.KeyDown, TxtCodigosProductos.KeyDown, TxtDescripcion.KeyDown, TxtPorcentaje.KeyDown, TxtMin.KeyDown, TxtUtilidadMaxima.KeyDown, cboTipoPago.KeyDown, CboDocumento.KeyDown, cboOrden.KeyDown
+        If e.KeyCode = Keys.Return Then
+            txtTAB(e)
+        End If
+    End Sub
+
+    Private Sub dtFechaHaste_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles DtFechaHasta.KeyDown
+        If e.KeyCode = Keys.Return Then
+            tsbConsultar.PerformClick()
+        End If
     End Sub
 
     Private Sub tsbSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSalir.Click

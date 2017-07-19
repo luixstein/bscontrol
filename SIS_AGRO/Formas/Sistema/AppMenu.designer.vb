@@ -901,6 +901,7 @@ Partial Public Class AppMenu
         Me.TopTenProductosToolStripMenuItem.Name = "TopTenProductosToolStripMenuItem"
         Me.TopTenProductosToolStripMenuItem.Size = New System.Drawing.Size(214, 26)
         Me.TopTenProductosToolStripMenuItem.Text = "TopTen Productos"
+        Me.TopTenProductosToolStripMenuItem.Visible = False
         '
         'ComparativoToolStripMenuItem
         '
