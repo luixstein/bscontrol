@@ -6,32 +6,79 @@ Public Class borrar
     Private dtA As DataTable, dtK As DataTable, dtL As DataTable
     'Private WithEvents dtX As DataTable
 
-    Public Event RowChanged As DataRowChangeEventHandler
-    Public Event TableNewRow As DataTableNewRowEventHandler
+    'Public Event RowChanged As DataRowChangeEventHandler
+    'Public Event TableNewRow As DataTableNewRowEventHandler
 
-    Private Sub Row_Changed(ByVal sender As Object, ByVal e As DataRowChangeEventArgs)
+    Private Sub Row_Deleted_A(ByVal sender As Object, ByVal e As DataRowChangeEventArgs)
+        Try
+            'Console.WriteLine("Row_Deleted Event: name={0}; action={1}", e.Row("name", DataRowVersion.Original), e.Action)
 
-        'MsgBox("Row_Changed Event: name=" & e.Row("IDK").ToString & "; action=" & e.Action, MsgBoxStyle.Information, Me.Text)
-
-        If e.Row("CANTIDAD").ToString <> e.Row("CANTIDAD_ANTERIOR").ToString Then
-            'MsgBox("CAMBIO DE " & e.Row("CANTIDAD_ANTERIOR").ToString & " A " & e.Row("CANTIDAD").ToString, vbInformation, Me.Text)
-            e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD")
-
-            'Elimina los l por haber cambiado la cantidad.
-            Dim foundRow As DataRow() = Me.dtL.Select("IDK=" & e.Row("IDK").ToString)
+            'Elimina los l por haber eliminado el A.
+            Dim foundRow As DataRow() = Me.dtL.Select("IDA=" & e.Row("IDA").ToString)
             For Each row As DataRow In foundRow
                 row.Delete()
             Next
 
-        End If
-
+            'Elimina los K por haber eliminado el A.
+            foundRow = Me.dtK.Select("IDA=" & e.Row("IDA").ToString)
+            For Each row As DataRow In foundRow
+                row.Delete()
+            Next
+        Catch ex As Exception
+            HandleError("", "Row_Deleted_A", ex)
+        End Try
     End Sub
 
-    Private Sub Table_NewRow(ByVal sender As Object, ByVal e As DataTableNewRowEventArgs)
-        'MsgBox("renglón nuevo en dtk", MsgBoxStyle.Information, Me.Text)
+    Private Sub Row_Changed_A(ByVal sender As Object, ByVal e As DataRowChangeEventArgs)
+        Try
+            'MsgBox("Row_Changed Event: name=" & e.Row("IDK").ToString & "; action=" & e.Action, MsgBoxStyle.Information, Me.Text)
+
+            If e.Row("CANTIDAD").ToString <> e.Row("CANTIDAD_ANTERIOR").ToString Then
+                'MsgBox("CAMBIO DE " & e.Row("CANTIDAD_ANTERIOR").ToString & " A " & e.Row("CANTIDAD").ToString, vbInformation, Me.Text)
+                e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD")
+
+                'Elimina los l por haber cambiado la cantidad.
+                Dim foundRow As DataRow() = Me.dtL.Select("IDA=" & e.Row("IDA").ToString)
+                For Each row As DataRow In foundRow
+                    row.Delete()
+                Next
+
+            End If
+        Catch ex As Exception
+            HandleError("", "Row_Changed_A", ex)
+        End Try
+    End Sub
+
+    Private Sub Row_Changed_K(ByVal sender As Object, ByVal e As DataRowChangeEventArgs)
+        Try
+            'MsgBox("Row_Changed Event: name=" & e.Row("IDK").ToString & "; action=" & e.Action, MsgBoxStyle.Information, Me.Text)
+
+            If e.Row("CANTIDAD").ToString <> e.Row("CANTIDAD_ANTERIOR").ToString Then
+                'MsgBox("CAMBIO DE " & e.Row("CANTIDAD_ANTERIOR").ToString & " A " & e.Row("CANTIDAD").ToString, vbInformation, Me.Text)
+                e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD")
+
+                'Elimina los l por haber cambiado la cantidad.
+                Dim foundRow As DataRow() = Me.dtL.Select("IDK=" & e.Row("IDK").ToString)
+                For Each row As DataRow In foundRow
+                    row.Delete()
+                Next
+
+            End If
+        Catch ex As Exception
+            HandleError("", "Row_Changed_K", ex)
+        End Try
+    End Sub
+
+    Private Sub Table_NewRow_K(ByVal sender As Object, ByVal e As DataTableNewRowEventArgs)
+        'MsgBox("renglón nuevo en dtK", MsgBoxStyle.Information, Me.Text)
         e.Row("IDA") = Me.dtA.Rows(Me.gridA.ActiveCell.Row - 1)("IDA")
     End Sub
 
+    Private Sub Table_NewRow_L(ByVal sender As Object, ByVal e As DataTableNewRowEventArgs)
+        'MsgBox("renglón nuevo en dtL", MsgBoxStyle.Information, Me.Text)
+        e.Row("IDA") = Me.dtK.Rows(Me.gridK.ActiveCell.Row - 1)("IDA")
+        e.Row("IDK") = Me.dtK.Rows(Me.gridK.ActiveCell.Row - 1)("IDK")
+    End Sub
 
     Private Sub borrar_Load(sender As Object, e As EventArgs) Handles Me.Load
         Me.dtA = New DataTable("A")
@@ -56,6 +103,7 @@ Public Class borrar
                 .Columns.Add("BOTON_K", GetType(String))
                 .Columns.Add("BOTON_L", GetType(String))
 
+                .Columns("IDA").Unique = True
                 .Columns("IDA").AutoIncrement = True
                 .Columns("IDA").AutoIncrementSeed = 1
                 .Columns("IDA").AutoIncrementStep = 1
@@ -84,11 +132,13 @@ Public Class borrar
                 .Columns.Add("CANTIDAD", GetType(Decimal))
                 .Columns.Add("CANTIDAD_ANTERIOR", GetType(Decimal))
                 .Columns.Add("BOTON_L", GetType(String))
+
+                .Columns("IDK").Unique = True
+                .Columns("IDK").AutoIncrement = True
+                .Columns("IDK").AutoIncrementSeed = 1
+                .Columns("IDK").AutoIncrementStep = 1
+                .AcceptChanges()
             End With
-            Me.dtK.Columns("IDK").AutoIncrement = True
-            Me.dtK.Columns("IDK").AutoIncrementSeed = 1
-            Me.dtK.Columns("IDK").AutoIncrementStep = 1
-            Me.dtK.AcceptChanges()
 
             Me.dtK.Rows.Add(1, Nothing, "ART1", "DESCRI1", 2, 2, "")
             Me.dtK.Rows.Add(1, Nothing, "ART2", "DESCRI2", 10, 10, "")
@@ -111,18 +161,23 @@ Public Class borrar
                 .Columns.Add("ID_INVENTARIO_LOTES_COSTOS", GetType(String))
                 .Columns.Add("CANTIDAD_USAR", GetType(Decimal))
                 .Columns.Add("NS", GetType(String))
+
+                .Columns("IDL").Unique = True
+                .Columns("IDL").AutoIncrement = True
+                .Columns("IDL").AutoIncrementSeed = 1
+                .Columns("IDL").AutoIncrementStep = 1
+                .AcceptChanges()
             End With
-            Me.dtL.Columns("IDL").AutoIncrement = True
-            Me.dtL.Columns("IDL").AutoIncrementSeed = 1
-            Me.dtL.Columns("IDL").AutoIncrementStep = 1
-            Me.dtL.AcceptChanges()
 
+            AddHandler dtA.RowDeleted, New DataRowChangeEventHandler(AddressOf Row_Deleted_A)
 
+            AddHandler dtA.RowChanged, New DataRowChangeEventHandler(AddressOf Row_Changed_A)
 
-            ' add a RowChanged event handler for the table.
-            AddHandler dtK.RowChanged, New DataRowChangeEventHandler(AddressOf Row_Changed)
+            AddHandler dtK.RowChanged, New DataRowChangeEventHandler(AddressOf Row_Changed_K)
 
-            AddHandler dtK.TableNewRow, New DataTableNewRowEventHandler(AddressOf Table_NewRow)
+            AddHandler dtK.TableNewRow, New DataTableNewRowEventHandler(AddressOf Table_NewRow_K)
+
+            AddHandler dtL.TableNewRow, New DataTableNewRowEventHandler(AddressOf Table_NewRow_L)
 
             Me.dtL.Rows.Add(1, 1, Nothing, 500, 1)
             Me.dtL.Rows.Add(1, 1, Nothing, 501, 1)
