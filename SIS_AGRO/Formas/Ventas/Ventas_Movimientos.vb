@@ -514,6 +514,10 @@ Buscar:
         Me.dpVencimiento.Value = Me.dpFecha.Value.AddDays(valorNumerico(Me.txtPlazo.Text))
     End Sub
 
+    Private Sub dpFecha_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles dpFecha.ValueChanged
+        Me.dpVencimiento.Value = Me.dpFecha.Value.AddDays(valorNumerico(Me.txtPlazo.Text))
+    End Sub
+
     Private Sub LblPoliza_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LblPoliza.LinkClicked
         Dim Child As New Frm_Contabilidad_Captura_Polizas()
         Child.FolioPolizaConsultaExterior = Me.LblPoliza.Text
@@ -634,7 +638,7 @@ Buscar:
             Me.lblTotal.Text = FormatImporteContable(0)
 
             Me.dpFecha.Value = Date.Now
-            Me.dpVencimiento.Value = Date.Now.AddDays(CDbl(Me.txtPlazo.Text))
+            Me.dpVencimiento.Value = Me.dpFecha.Value.AddDays(CDbl(Me.txtPlazo.Text))
 
             Me.InicializaGrid()
             Me.InicializaGridSeries()
