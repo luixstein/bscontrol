@@ -54,18 +54,14 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.DtFechaDesde = New System.Windows.Forms.DateTimePicker()
         Me.Grid = New FlexCell.Grid()
         Me.gbConsulta = New System.Windows.Forms.GroupBox()
-        Me.txtSum6 = New System.Windows.Forms.Label()
         Me.txtSum1 = New System.Windows.Forms.Label()
         Me.txtSum4 = New System.Windows.Forms.Label()
-        Me.txtSum3 = New System.Windows.Forms.Label()
         Me.txtSum2 = New System.Windows.Forms.Label()
-        Me.txtSum5 = New System.Windows.Forms.Label()
-        Me.lblDisplayTotalDolares = New System.Windows.Forms.Label()
-        Me.lblDisplayTotalPesos = New System.Windows.Forms.Label()
         Me.ToolStrip2 = New System.Windows.Forms.ToolStrip()
         Me.tsbConsultar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
+        Me.lblDisplayTotalPesos = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.GbFiltrarValor.SuspendLayout()
         Me.gbConsulta.SuspendLayout()
@@ -411,13 +407,9 @@ Partial Class Rpt_Ventas_TopTenProductos
         '
         'gbConsulta
         '
-        Me.gbConsulta.Controls.Add(Me.txtSum6)
         Me.gbConsulta.Controls.Add(Me.txtSum1)
         Me.gbConsulta.Controls.Add(Me.txtSum4)
-        Me.gbConsulta.Controls.Add(Me.txtSum3)
         Me.gbConsulta.Controls.Add(Me.txtSum2)
-        Me.gbConsulta.Controls.Add(Me.txtSum5)
-        Me.gbConsulta.Controls.Add(Me.lblDisplayTotalDolares)
         Me.gbConsulta.Controls.Add(Me.lblDisplayTotalPesos)
         Me.gbConsulta.Controls.Add(Me.Grid)
         Me.gbConsulta.Location = New System.Drawing.Point(16, 185)
@@ -428,17 +420,6 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.gbConsulta.TabIndex = 224
         Me.gbConsulta.TabStop = False
         Me.gbConsulta.Text = "Consulta"
-        '
-        'txtSum6
-        '
-        Me.txtSum6.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.txtSum6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtSum6.Location = New System.Drawing.Point(560, 454)
-        Me.txtSum6.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.txtSum6.Name = "txtSum6"
-        Me.txtSum6.Size = New System.Drawing.Size(133, 24)
-        Me.txtSum6.TabIndex = 237
-        Me.txtSum6.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'txtSum1
         '
@@ -455,65 +436,23 @@ Partial Class Rpt_Ventas_TopTenProductos
         '
         Me.txtSum4.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.txtSum4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtSum4.Location = New System.Drawing.Point(780, 454)
+        Me.txtSum4.Location = New System.Drawing.Point(701, 425)
         Me.txtSum4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.txtSum4.Name = "txtSum4"
         Me.txtSum4.Size = New System.Drawing.Size(133, 24)
         Me.txtSum4.TabIndex = 235
         Me.txtSum4.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'txtSum3
-        '
-        Me.txtSum3.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.txtSum3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtSum3.Location = New System.Drawing.Point(780, 425)
-        Me.txtSum3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.txtSum3.Name = "txtSum3"
-        Me.txtSum3.Size = New System.Drawing.Size(133, 24)
-        Me.txtSum3.TabIndex = 234
-        Me.txtSum3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
         'txtSum2
         '
         Me.txtSum2.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.txtSum2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtSum2.Location = New System.Drawing.Point(921, 454)
+        Me.txtSum2.Location = New System.Drawing.Point(842, 425)
         Me.txtSum2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.txtSum2.Name = "txtSum2"
-        Me.txtSum2.Size = New System.Drawing.Size(91, 24)
+        Me.txtSum2.Size = New System.Drawing.Size(123, 24)
         Me.txtSum2.TabIndex = 233
         Me.txtSum2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'txtSum5
-        '
-        Me.txtSum5.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.txtSum5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtSum5.Location = New System.Drawing.Point(921, 425)
-        Me.txtSum5.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.txtSum5.Name = "txtSum5"
-        Me.txtSum5.Size = New System.Drawing.Size(91, 24)
-        Me.txtSum5.TabIndex = 232
-        Me.txtSum5.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'lblDisplayTotalDolares
-        '
-        Me.lblDisplayTotalDolares.AutoSize = True
-        Me.lblDisplayTotalDolares.Location = New System.Drawing.Point(335, 430)
-        Me.lblDisplayTotalDolares.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblDisplayTotalDolares.Name = "lblDisplayTotalDolares"
-        Me.lblDisplayTotalDolares.Size = New System.Drawing.Size(99, 17)
-        Me.lblDisplayTotalDolares.TabIndex = 231
-        Me.lblDisplayTotalDolares.Text = "Total dólares :"
-        '
-        'lblDisplayTotalPesos
-        '
-        Me.lblDisplayTotalPesos.AutoSize = True
-        Me.lblDisplayTotalPesos.Location = New System.Drawing.Point(335, 459)
-        Me.lblDisplayTotalPesos.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblDisplayTotalPesos.Name = "lblDisplayTotalPesos"
-        Me.lblDisplayTotalPesos.Size = New System.Drawing.Size(90, 17)
-        Me.lblDisplayTotalPesos.TabIndex = 230
-        Me.lblDisplayTotalPesos.Text = "Total pesos :"
         '
         'ToolStrip2
         '
@@ -548,6 +487,16 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.tsbSalir.Name = "tsbSalir"
         Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
         Me.tsbSalir.Text = "&Salir"
+        '
+        'lblDisplayTotalPesos
+        '
+        Me.lblDisplayTotalPesos.AutoSize = True
+        Me.lblDisplayTotalPesos.Location = New System.Drawing.Point(376, 429)
+        Me.lblDisplayTotalPesos.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayTotalPesos.Name = "lblDisplayTotalPesos"
+        Me.lblDisplayTotalPesos.Size = New System.Drawing.Size(90, 17)
+        Me.lblDisplayTotalPesos.TabIndex = 230
+        Me.lblDisplayTotalPesos.Text = "Total pesos :"
         '
         'Rpt_Ventas_TopTenProductos
         '
@@ -591,13 +540,8 @@ Partial Class Rpt_Ventas_TopTenProductos
     Friend WithEvents tsbSalir As System.Windows.Forms.ToolStripButton
     Friend WithEvents CboZona As System.Windows.Forms.ComboBox
     Friend WithEvents lblDisplayZona As System.Windows.Forms.Label
-    Friend WithEvents lblDisplayTotalPesos As System.Windows.Forms.Label
-    Friend WithEvents lblDisplayTotalDolares As System.Windows.Forms.Label
-    Friend WithEvents txtSum5 As System.Windows.Forms.Label
     Friend WithEvents txtSum4 As System.Windows.Forms.Label
-    Friend WithEvents txtSum3 As System.Windows.Forms.Label
     Friend WithEvents txtSum2 As System.Windows.Forms.Label
-    Friend WithEvents txtSum6 As System.Windows.Forms.Label
     Friend WithEvents txtSum1 As System.Windows.Forms.Label
     Friend WithEvents CboDocumento As System.Windows.Forms.ComboBox
     Friend WithEvents LblDocumento As System.Windows.Forms.Label
@@ -618,4 +562,5 @@ Partial Class Rpt_Ventas_TopTenProductos
     Friend WithEvents RbtnPorcentaje As System.Windows.Forms.RadioButton
     Friend WithEvents cboTipoPago As System.Windows.Forms.ComboBox
     Friend WithEvents LblTipoPago As System.Windows.Forms.Label
+    Friend WithEvents lblDisplayTotalPesos As System.Windows.Forms.Label
 End Class
