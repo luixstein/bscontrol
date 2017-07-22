@@ -485,6 +485,13 @@ Public Class Rpt_Ventas_TopTenProductos
         Me.Grid.Column(Me.igyCantidad).DecimalLength = 0
         Me.Grid.Column(Me.igyCantidad).Alignment = FlexCell.AlignmentEnum.RightCenter
 
+        Me.Grid.Column(Me.igyP_Utilidad).Alignment = FlexCell.AlignmentEnum.RightCenter
+        Me.Grid.Column(Me.igyUtilidadUnitaria).Alignment = FlexCell.AlignmentEnum.RightCenter
+        Me.Grid.Column(Me.igyParticipacionUtilidad).Alignment = FlexCell.AlignmentEnum.RightCenter
+        Me.Grid.Column(Me.igyParticipacionVenta).Alignment = FlexCell.AlignmentEnum.RightCenter
+        Me.Grid.Column(Me.igyUtilidadBruta).Alignment = FlexCell.AlignmentEnum.RightCenter
+        Me.Grid.Column(Me.igyUtilidadBrutaPorcentaje).Alignment = FlexCell.AlignmentEnum.RightCenter
+
         Me.Grid.Column(Me.igyVenta).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
         Me.Grid.Column(Me.igyVenta).Mask = FlexCell.MaskEnum.Numeric
         Me.Grid.Column(Me.igyVenta).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
@@ -731,13 +738,12 @@ Public Class Rpt_Ventas_TopTenProductos
                 End Using
             End If
 
-            'dt.Columns.Remove("EMPRESA_NOMBRE")
-            'dt.Columns.Remove("EMPRESA_DOMICILIO")
-            'dt.Columns.Remove("EMPRESA_CIUDAD")
-            'dt.Columns.Remove("EMPRESA_ESTADO")
-            'dt.Columns.Remove("EMPRESA_RFC")
-            'dt.Columns.Remove("EMPRESA_TELEFONO")
-            'dt.Columns.Remove("FILTROS")
+            dt.Columns.Remove("EMPRESA_NOMBRE")
+            dt.Columns.Remove("EMPRESA_DOMICILIO")
+            dt.Columns.Remove("EMPRESA_CIUDAD")
+            dt.Columns.Remove("EMPRESA_ESTADO")
+            dt.Columns.Remove("EMPRESA_RFC")
+            dt.Columns.Remove("EMPRESA_TELEFONO")
             dt.Columns.Remove("IDTRANS")
             dt.Columns.Remove("FILTROS_TEXTO")
 
@@ -802,8 +808,8 @@ Public Class Rpt_Ventas_TopTenProductos
                 oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
                 Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.TxtCliente.Text)
                 Rpt.SetParameterValue("@CODIGO_DOCUMENTO", Me.CboDocumento.SelectedValue)
-                Rpt.SetParameterValue("@FECHA1_DIA", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
-                Rpt.SetParameterValue("@FECHA2_DIA", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
+                Rpt.SetParameterValue("@FECHA1", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
+                Rpt.SetParameterValue("@FECHA2", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
                 Rpt.SetParameterValue("@CODIGO_ZONA", Me.CboZona.SelectedValue.ToString())
                 Rpt.SetParameterValue("@PORCENTAJE", CInt(Me.TxtPorcentaje.Text))
                 Rpt.SetParameterValue("@DESCRIPCION", Me.TxtDescripcion.Text)
