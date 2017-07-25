@@ -57,11 +57,11 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.txtSum1 = New System.Windows.Forms.Label()
         Me.txtSum4 = New System.Windows.Forms.Label()
         Me.txtSum2 = New System.Windows.Forms.Label()
+        Me.lblDisplayTotalPesos = New System.Windows.Forms.Label()
         Me.ToolStrip2 = New System.Windows.Forms.ToolStrip()
         Me.tsbConsultar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
-        Me.lblDisplayTotalPesos = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.GbFiltrarValor.SuspendLayout()
         Me.gbConsulta.SuspendLayout()
@@ -129,7 +129,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.GbFiltrarValor.Controls.Add(Me.RbtnPorcentaje)
         Me.GbFiltrarValor.Controls.Add(Me.TxtPorcentaje)
         Me.GbFiltrarValor.Controls.Add(Me.TxtCategoria)
-        Me.GbFiltrarValor.Location = New System.Drawing.Point(364, 36)
+        Me.GbFiltrarValor.Location = New System.Drawing.Point(439, 36)
         Me.GbFiltrarValor.Name = "GbFiltrarValor"
         Me.GbFiltrarValor.Size = New System.Drawing.Size(296, 48)
         Me.GbFiltrarValor.TabIndex = 4
@@ -202,7 +202,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.TxtCodigosProductos.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigosProductos.MaxLength = 2000
         Me.TxtCodigosProductos.Name = "TxtCodigosProductos"
-        Me.TxtCodigosProductos.Size = New System.Drawing.Size(232, 22)
+        Me.TxtCodigosProductos.Size = New System.Drawing.Size(146, 22)
         Me.TxtCodigosProductos.TabIndex = 2
         '
         'LblCodigosProductos
@@ -211,13 +211,13 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.LblCodigosProductos.Location = New System.Drawing.Point(9, 77)
         Me.LblCodigosProductos.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblCodigosProductos.Name = "LblCodigosProductos"
-        Me.LblCodigosProductos.Size = New System.Drawing.Size(80, 17)
+        Me.LblCodigosProductos.Size = New System.Drawing.Size(73, 17)
         Me.LblCodigosProductos.TabIndex = 388
-        Me.LblCodigosProductos.Text = "Productos :"
+        Me.LblCodigosProductos.Text = "Producto :"
         '
         'TxtUtilidadMaxima
         '
-        Me.TxtUtilidadMaxima.Location = New System.Drawing.Point(637, 96)
+        Me.TxtUtilidadMaxima.Location = New System.Drawing.Point(680, 96)
         Me.TxtUtilidadMaxima.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtUtilidadMaxima.MaxLength = 3
         Me.TxtUtilidadMaxima.Name = "TxtUtilidadMaxima"
@@ -227,12 +227,12 @@ Partial Class Rpt_Ventas_TopTenProductos
         'LblUtilidadMaxima
         '
         Me.LblUtilidadMaxima.AutoSize = True
-        Me.LblUtilidadMaxima.Location = New System.Drawing.Point(515, 99)
+        Me.LblUtilidadMaxima.Location = New System.Drawing.Point(576, 99)
         Me.LblUtilidadMaxima.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblUtilidadMaxima.Name = "LblUtilidadMaxima"
-        Me.LblUtilidadMaxima.Size = New System.Drawing.Size(114, 17)
+        Me.LblUtilidadMaxima.Size = New System.Drawing.Size(96, 17)
         Me.LblUtilidadMaxima.TabIndex = 383
-        Me.LblUtilidadMaxima.Text = "Utilidad máxima :"
+        Me.LblUtilidadMaxima.Text = "Utilidad max. :"
         '
         'TxtDescripcion
         '
@@ -240,12 +240,12 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.TxtDescripcion.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtDescripcion.MaxLength = 30
         Me.TxtDescripcion.Name = "TxtDescripcion"
-        Me.TxtDescripcion.Size = New System.Drawing.Size(230, 22)
+        Me.TxtDescripcion.Size = New System.Drawing.Size(313, 22)
         Me.TxtDescripcion.TabIndex = 3
         '
         'TxtMin
         '
-        Me.TxtMin.Location = New System.Drawing.Point(443, 96)
+        Me.TxtMin.Location = New System.Drawing.Point(504, 96)
         Me.TxtMin.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtMin.MaxLength = 3
         Me.TxtMin.Name = "TxtMin"
@@ -255,7 +255,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         'LblMin
         '
         Me.LblMin.AutoSize = True
-        Me.LblMin.Location = New System.Drawing.Point(376, 99)
+        Me.LblMin.Location = New System.Drawing.Point(437, 99)
         Me.LblMin.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblMin.Name = "LblMin"
         Me.LblMin.Size = New System.Drawing.Size(60, 17)
@@ -454,6 +454,16 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.txtSum2.TabIndex = 233
         Me.txtSum2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
+        'lblDisplayTotalPesos
+        '
+        Me.lblDisplayTotalPesos.AutoSize = True
+        Me.lblDisplayTotalPesos.Location = New System.Drawing.Point(376, 429)
+        Me.lblDisplayTotalPesos.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayTotalPesos.Name = "lblDisplayTotalPesos"
+        Me.lblDisplayTotalPesos.Size = New System.Drawing.Size(90, 17)
+        Me.lblDisplayTotalPesos.TabIndex = 230
+        Me.lblDisplayTotalPesos.Text = "Total pesos :"
+        '
         'ToolStrip2
         '
         Me.ToolStrip2.ImageScalingSize = New System.Drawing.Size(20, 20)
@@ -487,16 +497,6 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.tsbSalir.Name = "tsbSalir"
         Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
         Me.tsbSalir.Text = "&Salir"
-        '
-        'lblDisplayTotalPesos
-        '
-        Me.lblDisplayTotalPesos.AutoSize = True
-        Me.lblDisplayTotalPesos.Location = New System.Drawing.Point(376, 429)
-        Me.lblDisplayTotalPesos.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblDisplayTotalPesos.Name = "lblDisplayTotalPesos"
-        Me.lblDisplayTotalPesos.Size = New System.Drawing.Size(90, 17)
-        Me.lblDisplayTotalPesos.TabIndex = 230
-        Me.lblDisplayTotalPesos.Text = "Total pesos :"
         '
         'Rpt_Ventas_TopTenProductos
         '

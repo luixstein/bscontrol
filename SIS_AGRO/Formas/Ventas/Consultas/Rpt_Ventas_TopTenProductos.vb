@@ -812,13 +812,13 @@ Public Class Rpt_Ventas_TopTenProductos
                 Rpt.SetParameterValue("@FECHA2", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
                 Rpt.SetParameterValue("@CODIGO_ZONA", Me.CboZona.SelectedValue.ToString())
                 Rpt.SetParameterValue("@PORCENTAJE", CInt(Me.TxtPorcentaje.Text))
-                Rpt.SetParameterValue("@DESCRIPCION", Me.TxtDescripcion.Text)
+                Rpt.SetParameterValue("@DESCRIPCION", Me.TxtDescripcion.Text.ToUpper)
                 Rpt.SetParameterValue("@MIN", CInt(Me.TxtMin.Text))
                 Rpt.SetParameterValue("@TIPO_PAGO", Me.cboTipoPago.SelectedValue.ToString)
                 Rpt.SetParameterValue("@UTILIDAD_MAXIMA", CInt(Me.TxtUtilidadMaxima.Text))
                 Rpt.SetParameterValue("@CATEGORIA", Me.TxtCategoria.Text)
                 Rpt.SetParameterValue("@FILTRAR_VALOR", IIf(Me.RbtnCategoria.Checked = True, "C", "P"))
-                Rpt.SetParameterValue("@CODIGOS_PRODUCTOS", Me.TxtCodigosProductos.Text)
+                Rpt.SetParameterValue("@CODIGOS_PRODUCTOS", Me.TxtCodigosProductos.Text.ToUpper)
                 Rpt.SetParameterValue("@ORDEN", Me.cboOrden.SelectedValue)
                 Rpt.SetParameterValue("@COD_USU_EJECUTO", Usuario.Codigo_Usuario.ToString)
                 Rpt.SetParameterValue("@SISTEMA", "BS")
@@ -867,7 +867,7 @@ Public Class Rpt_Ventas_TopTenProductos
         txtNoBeep(e)
     End Sub
 
-    Private Sub cboCultivo_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles DtFechaDesde.KeyDown, CboZona.KeyDown, TxtCodigosProductos.KeyDown, TxtDescripcion.KeyDown, TxtPorcentaje.KeyDown, TxtMin.KeyDown, TxtUtilidadMaxima.KeyDown, cboTipoPago.KeyDown, CboDocumento.KeyDown, cboOrden.KeyDown
+    Private Sub cboCultivo_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles DtFechaDesde.KeyDown, CboZona.KeyDown, TxtDescripcion.KeyDown, TxtPorcentaje.KeyDown, TxtMin.KeyDown, TxtUtilidadMaxima.KeyDown, cboTipoPago.KeyDown, CboDocumento.KeyDown, cboOrden.KeyDown
         If e.KeyCode = Keys.Return Then
             txtTAB(e)
         End If
@@ -921,6 +921,25 @@ Buscar:
                     GoTo Buscar : Exit Sub
                 End If
 
+        End Select
+        txtTAB(e)
+    End Sub
+
+    Private Sub TxtCodigosProductosKeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigosProductos.KeyDown
+        Dim oProductos As New Class_CatArticulos
+        Dim sText As String
+        Select Case e.KeyCode
+            Case Keys.F6
+Buscar:
+                sText = oProductos.BusquedaVisual_PorDescripcion
+                If txtLEN(sText) = True Then Me.TxtCodigosProductos.Text = sText
+            Case Keys.Enter
+                If txtLEN(TxtCodigosProductos.Text) = True Then
+                    oProductos = New Class_CatArticulos(Me.TxtCodigosProductos.Text)
+                    If oProductos.Existe = False Then
+                        GoTo Buscar : Exit Sub
+                    End If
+                End If
         End Select
         txtTAB(e)
     End Sub
@@ -1002,5 +1021,4 @@ Buscar:
     '        Me.CboSemana2.Text = sql.Result1
     '    End If
     'End Sub
-
 End Class
