@@ -14,6 +14,7 @@ Public Class Class_Inventarios_Detalle
     Private _CUENTA_CONTABLE As String
     Private _IMPORTE As Decimal
     Private _ID_ADICIONAL As Integer = 0
+    Private _LISTA_SERIES As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -103,6 +104,15 @@ Public Class Class_Inventarios_Detalle
             Me._ID_ADICIONAL = Value
         End Set
     End Property
+
+    Public Property LISTA_SERIES() As String
+        Get
+            Return Me._LISTA_SERIES
+        End Get
+        Set(ByVal Value As String)
+            Me._LISTA_SERIES = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -175,6 +185,7 @@ Public Class Class_Inventarios_Detalle
             sqlParametro = .Parameters.Add("@CUENTA_CONTABLE", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE
             sqlParametro = .Parameters.Add("@IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPORTE
             sqlParametro = .Parameters.Add("@ID_ADICIONAL", SqlDbType.Int) : sqlParametro.Value = Me._ID_ADICIONAL
+            sqlParametro = .Parameters.Add("@LISTA_SERIES", SqlDbType.NVarChar) : sqlParametro.Value = Me._LISTA_SERIES.ToUpper
 
             Try
                 Me._Conexion.Open()
