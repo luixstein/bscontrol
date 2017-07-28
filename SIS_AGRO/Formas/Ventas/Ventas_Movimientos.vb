@@ -3122,7 +3122,7 @@ busca_serie:
         Dim iArticulosEncontrados As Integer = 0
         Try
             For i = 1 To Me.GridSeries.Rows - 1
-                If Me.GridSeries.Cell(i, Me.igySerieCodigo).Text = sCodigoArticulo AndAlso Me.Grid.Cell(i, Me.igyCodigo).Text <> "-" AndAlso txtLEN(Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text) = False Then
+                If Me.GridSeries.Cell(i, Me.igySerieCodigo).Text = sCodigoArticulo AndAlso Me.GridSeries.Cell(i, Me.igyCodigo).Text <> "-" AndAlso txtLEN(Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text) = False Then
                     iArticulosEncontrados += 1
                 End If
             Next
