@@ -450,6 +450,7 @@ busca:
                     Me.CboAlmacenDestino.Enabled = False
                     Me.txtFolioEmbarque.Enabled = False
                     Me.Grid1.Locked = True
+                    Me.BtnSeries.Enabled = False
 
                     Me.tsbImprimir.Select()
 
@@ -472,6 +473,7 @@ busca:
                     Me.CboAlmacenDestino.Enabled = False
                     Me.txtFolioEmbarque.Enabled = False
                     Me.Grid1.Locked = True
+                    Me.BtnSeries.Enabled = False
 
                     Me.tsbImprimir.Select()
             End Select
@@ -835,10 +837,8 @@ BuscarCuentas:
             Exit Function
         End If
 
-        If Me.CboDocumento.Text = "SALIDA" Or Me.CboDocumento.Text = "TRANSFERENCIA" Then
-            If Me.ValidaNumerosSerie() = False Then
-                Exit Function
-            End If
+        If Me.ValidaNumerosSerie() = False Then
+            Exit Function
         End If
 
         Me.Totales()
@@ -945,9 +945,9 @@ BuscarCuentas:
                     Exit Function
                 End If
 
-                If Me.Grabar() = False Then 'Razón no identificada de porque cuando se trata de exterior lo graba despues de validar, y cuando es normal lo graba antes de validar
-                    Exit Function
-                End If
+                ''If Me.Grabar() = False Then 'Razón no identificada de porque cuando se trata de exterior lo graba despues de validar, y cuando es normal lo graba antes de validar
+                ''Exit Function
+                ''End If
             End If
 
             'If SiTieneCuentaContable() = False Then
@@ -1735,6 +1735,7 @@ BuscarCuentas:
             End If
             Me.tsbCancelar.Visible = False
             Me.txtFolioEmbarque.Visible = True : Me.lblDisplayFolioEmbarque.Visible = True
+            Me.BtnSeries.Enabled = True
 
         Else
             Me.CboAlmacenDestino.Visible = False
@@ -1746,6 +1747,11 @@ BuscarCuentas:
             Me.tsbCancelar.Visible = True
             Me.txtFolioEmbarque.Text = "" 'Se forza a blanco por si tenia algo capturado.
             Me.txtFolioEmbarque.Visible = False : Me.lblDisplayFolioEmbarque.Visible = False
+            If Me.CboDocumento.Text <> "SALIDA" Then
+                Me.BtnSeries.Enabled = False
+            Else
+                Me.BtnSeries.Enabled = True
+            End If
         End If
     End Sub
 
