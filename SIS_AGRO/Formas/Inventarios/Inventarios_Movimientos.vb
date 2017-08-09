@@ -906,6 +906,8 @@ BuscarCuentas:
                                     MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Text)
                                     Exit Function
                                 End If
+
+                                sListaSeries = ""
                             End If
                         Next
 
