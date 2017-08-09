@@ -1353,8 +1353,12 @@ BuscarCuentas:
 
                 Me.Grid1.AutoRedraw = True
                 Me.Grid1.Refresh()
-
                 Me.FormateaGrid()
+
+                Me.dtSeries = oInventarios.ObtenerDetalleSeries(Me.TxtFolio.Text)
+                Me.GridSeries.DataSource = dtSeries
+                Me.FormateaGridSeries()
+
 
                 'Me.Totales() 'Nota, no debemos totalizar al consultar porque pudieramos ocultar errores de grabado si es que los hay, como nos pasó cuando no actualizabamos el importe de salidas aplicadas
 
