@@ -1,15 +1,5 @@
 ﻿Option Strict On
 
-Imports Microsoft.VisualBasic
-Imports System
-Imports System.ComponentModel
-Imports System.Data
-Imports System.Data.Common
-Imports System.Data.Sql
-Imports System.Data.SqlClient
-Imports System.Windows.Forms
-Imports System.Collections
-Imports System.Collections.Generic
 Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Inventarios_Movimientos
@@ -957,9 +947,9 @@ BuscarCuentas:
                     Exit Function
                 End If
 
-                ''If Me.Grabar() = False Then 'Razón no identificada de porque cuando se trata de exterior lo graba despues de validar, y cuando es normal lo graba antes de validar
-                ''Exit Function
-                ''End If
+                If Me.Grabar() = False Then 'Razón no identificada de porque cuando se trata de exterior lo graba despues de validar, y cuando es normal lo graba antes de validar
+                    Exit Function
+                End If
             End If
 
             'If SiTieneCuentaContable() = False Then

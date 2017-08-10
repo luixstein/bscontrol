@@ -1523,7 +1523,7 @@ Public Class Cat_Nomina_Trabajadores
         Me.Grid.DataSource = Nothing
 
         With Me.Grid
-            .DataSource = oTrabajadores.ObtenerElementosFiltroTrabajador(Me.txtFiltro.Text)
+            .DataSource = oTrabajadores.ObtenerElementosxTemporadaConFiltro(Me.txtFiltro.Text)
             .Columns("CODIGO_TRABAJADOR").Width = 40
             .Columns("NOMBRE_COMPLETO_APELLIDO").Width = 300
         End With
@@ -1539,7 +1539,7 @@ Public Class Cat_Nomina_Trabajadores
             Me.Grid.DataSource = Nothing
 
             With Me.Grid
-                .DataSource = oTrabajadores.ObtenerElementosFiltroTrabajador(Me.txtFiltro.Text)
+                .DataSource = oTrabajadores.ObtenerElementosxTemporadaConFiltro(Me.txtFiltro.Text)
                 .Columns("CODIGO_TRABAJADOR").Width = 40
                 .Columns("NOMBRE_COMPLETO_APELLIDO").Width = 300
             End With
