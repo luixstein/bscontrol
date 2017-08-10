@@ -957,9 +957,9 @@ BuscarCuentas:
                     Exit Function
                 End If
 
-                ''If Me.Grabar() = False Then 'Razón no identificada de porque cuando se trata de exterior lo graba despues de validar, y cuando es normal lo graba antes de validar
-                ''Exit Function
-                ''End If
+                If Me.Grabar() = False Then 'Razón no identificada de porque cuando se trata de exterior lo graba despues de validar, y cuando es normal lo graba antes de validar
+                    Exit Function
+                End If
             End If
 
             'If SiTieneCuentaContable() = False Then
