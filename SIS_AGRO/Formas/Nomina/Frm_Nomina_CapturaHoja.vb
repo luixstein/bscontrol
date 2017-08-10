@@ -448,6 +448,8 @@ Enter:
 
             'Me.GridPercepciones.Column(Me.igyCajasCortadas).Visible = False
             Me.GridPercepciones.Column(Me.igyCajasCortadas).Mask = FlexCell.MaskEnum.Numeric
+            Me.GridPercepciones.Column(Me.igyCajasCortadas).DecimalLength = 2
+            Me.GridPercepciones.Column(Me.igyCajasCortadas).Alignment = FlexCell.AlignmentEnum.RightCenter
 
             If Me.ModoPercepcion = enumModoPercepcion.PERCECION Then
                 Me.GridPercepciones.Column(Me.igyPercepcion).Locked = True
@@ -795,7 +797,7 @@ Enter:
                 Me.CboHoras.Text = CInt(Me.oHoja.HORAS_POR_TRABAJADOR).ToString
                 Me.txtTotalPercepcion.Text = FormatImporteContable(Me.oHoja.TOTAL_PERCEPCIONES)
                 Me.txtTotalJornales.Text = Me.oHoja.TOTAL_JORNALES.ToString
-                Me.txtTotalCajasCortadas.Text = Format(Me.oHoja.TOTAL_CAJAS_CORTADAS, "###,###")
+                Me.txtTotalCajasCortadas.Text = Format(Me.oHoja.TOTAL_CAJAS_CORTADAS, "###,###.00")
                 Me.cboTurno.Text = Me.oHoja.TURNO
 
                 dTabla = Me.oHoja.ObtenerDetalle
@@ -1166,7 +1168,7 @@ Enter:
             'Me.txtTotalJornales.Text = ((iTrabajadores * valorNumerico(Me.CboHoras.Text)) / Plaza.oSisPlazaNomina.NOMINA_EQUIVALENCIA_JORNAL_HORAS).ToString
             Me.txtTotalJornales.Text = dJornales.ToString
 
-            Me.txtTotalCajasCortadas.Text = Format(FG_Grid_SumaCol(Me.GridPercepciones, Me.igyCajasCortadas), "###,###")
+            Me.txtTotalCajasCortadas.Text = Format(FG_Grid_SumaCol(Me.GridPercepciones, Me.igyCajasCortadas), "###,###.00")
         Catch ex As Exception
             HandleError(Me.Name, "Totales", ex)
         End Try

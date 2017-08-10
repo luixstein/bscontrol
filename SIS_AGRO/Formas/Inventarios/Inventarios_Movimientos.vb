@@ -516,6 +516,8 @@ busca:
 
             Me.dtSeries = New DataTable("Series")
 
+            Me.TabControl1.SelectedIndex = 0
+
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
         End Try
@@ -845,7 +847,7 @@ BuscarCuentas:
             Exit Function
         End If
 
-        If Me.HaySeriesRepetidas = False Then
+        If Me.HaySeriesRepetidas = True Then
             Exit Function
         End If
 

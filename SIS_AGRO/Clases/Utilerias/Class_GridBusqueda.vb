@@ -60,8 +60,7 @@ Public Class Class_GridBusqueda
     End Function
 
     Public Sub inicia(ByVal sTabla As String)
-        Dim tablestyle As DataGridTableStyle
-        tablestyle = New DataGridTableStyle
+        Dim tablestyle As New DataGridTableStyle
         tablestyle.MappingName = CStr(sTabla)
         Me.TableStyles.Clear()
         Me.TableStyles.Add(tablestyle)

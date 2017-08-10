@@ -1,13 +1,7 @@
 Option Strict Off
-Option Explicit On 
-Imports Microsoft.VisualBasic
-Imports System
+Option Explicit On
+
 Imports System.ComponentModel
-Imports System.Data
-Imports System.Data.Common
-Imports System.Data.OleDb
-Imports System.Drawing
-Imports System.Windows.Forms
 
 Public Class BusquedaVisual
     Inherits Form
@@ -65,7 +59,6 @@ Public Class BusquedaVisual
 
 #End Region
 
-
 #Region "Propiedades públicos"
     Public arrayWidthColumns(-1) As Integer
     Private CollectionWidthColumns As Collection
@@ -108,6 +101,7 @@ Public Class BusquedaVisual
 #End Region
 
 #End Region
+
     Public sCampo As String
     Public sTable As String
     Public sOrder As String
@@ -139,6 +133,7 @@ Public Class BusquedaVisual
         Me.GridBusqueda.ReadOnly = True
         Me.GridBusqueda.RowHeadersVisible = False
     End Sub
+
 #Region " Windows Form Designer generated code "
 
 
