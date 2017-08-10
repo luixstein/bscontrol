@@ -395,6 +395,7 @@ busca:
                     Me.CboAlmacenDestino.Enabled = True
                     Me.txtFolioEmbarque.Enabled = True
                     Me.Grid1.Locked = False
+                    Me.GridSeries.Locked = False
 
                     Me.OcultaControles()
 
@@ -426,6 +427,7 @@ busca:
                     Me.CboAlmacenDestino.Enabled = False
                     Me.txtFolioEmbarque.Enabled = True
                     Me.Grid1.Locked = False
+                    Me.GridSeries.Locked = False
 
                     Me.OcultaControles()
 
@@ -451,6 +453,7 @@ busca:
                     Me.txtFolioEmbarque.Enabled = False
                     Me.Grid1.Locked = True
                     Me.BtnSeries.Enabled = False
+                    Me.GridSeries.Locked = True
 
                     Me.tsbImprimir.Select()
 
@@ -474,6 +477,7 @@ busca:
                     Me.txtFolioEmbarque.Enabled = False
                     Me.Grid1.Locked = True
                     Me.BtnSeries.Enabled = False
+                    Me.GridSeries.Locked = False
 
                     Me.tsbImprimir.Select()
             End Select
@@ -838,6 +842,10 @@ BuscarCuentas:
         End If
 
         If Me.ValidaNumerosSerie() = False Then
+            Exit Function
+        End If
+
+        If Me.HaySeriesRepetidas = False Then
             Exit Function
         End If
 
@@ -2232,6 +2240,36 @@ busca_serie:
         Catch ex As Exception
             HandleError(Me.Name, "ValidaNumerosSerie", ex)
         End Try
+    End Function
+
+    Private Function HaySeriesRepetidas() As Boolean
+        Dim RenglonRepetido As Integer
+
+        Try
+            Me.dtSeries.AcceptChanges()
+
+            For i = 1 To Me.GridSeries.Rows - 1
+                If txtLEN(Me.GridSeries.Cell(i, Me.igySerieCodigo).Text) = True Then
+                    For z = i + 1 To Me.GridSeries.Rows - 1
+                        If Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text = Me.GridSeries.Cell(z, Me.igySerieIdInventarioLotesCostos).Text Then
+                            RenglonRepetido = z
+
+                            MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text & _
+                                   " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf & _
+                                   "", MsgBoxStyle.Exclamation)
+                            Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
+
+                            Return True
+
+                        End If
+                    Next
+                End If
+            Next
+        Catch ex As Exception
+            HandleError(Me.Name, "HaySeriesRepetidas", ex)
+        End Try
+
+        Return False
     End Function
 
 #End Region
