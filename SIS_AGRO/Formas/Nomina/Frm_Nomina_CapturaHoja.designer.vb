@@ -87,7 +87,7 @@ Partial Class Frm_Nomina_CapturaHoja
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbEliminar, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1102, 25)
+        Me.tsMenu.Size = New System.Drawing.Size(1105, 25)
         Me.tsMenu.TabIndex = 3
         Me.tsMenu.Text = "tsMenu"
         '
@@ -490,7 +490,7 @@ Partial Class Frm_Nomina_CapturaHoja
         Me.gbPercepciones.Controls.Add(Me.GridPercepciones)
         Me.gbPercepciones.Location = New System.Drawing.Point(275, 81)
         Me.gbPercepciones.Name = "gbPercepciones"
-        Me.gbPercepciones.Size = New System.Drawing.Size(815, 473)
+        Me.gbPercepciones.Size = New System.Drawing.Size(827, 473)
         Me.gbPercepciones.TabIndex = 1
         Me.gbPercepciones.TabStop = False
         Me.gbPercepciones.Text = "Percepciones de trabajadores"
@@ -510,9 +510,9 @@ Partial Class Frm_Nomina_CapturaHoja
         Me.Label2.Cursor = System.Windows.Forms.Cursors.Cross
         Me.Label2.Location = New System.Drawing.Point(470, 446)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(127, 13)
+        Me.Label2.Size = New System.Drawing.Size(112, 13)
         Me.Label2.TabIndex = 384
-        Me.Label2.Text = "Total de cajas cortadas  :"
+        Me.Label2.Text = "Tareas completadas  :"
         '
         'txtTotalJornales
         '
@@ -561,7 +561,7 @@ Partial Class Frm_Nomina_CapturaHoja
         Me.GridPercepciones.Location = New System.Drawing.Point(11, 19)
         Me.GridPercepciones.Name = "GridPercepciones"
         Me.GridPercepciones.Rows = 2
-        Me.GridPercepciones.Size = New System.Drawing.Size(798, 366)
+        Me.GridPercepciones.Size = New System.Drawing.Size(813, 366)
         Me.GridPercepciones.TabIndex = 0
         Me.GridPercepciones.UncheckedImage = CType(resources.GetObject("GridPercepciones.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -570,7 +570,7 @@ Partial Class Frm_Nomina_CapturaHoja
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsslEstado, Me.tssElaboro})
         Me.StatusStripEstado.Location = New System.Drawing.Point(0, 557)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1102, 24)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1105, 24)
         Me.StatusStripEstado.TabIndex = 316
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -596,7 +596,7 @@ Partial Class Frm_Nomina_CapturaHoja
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1102, 581)
+        Me.ClientSize = New System.Drawing.Size(1105, 581)
         Me.Controls.Add(Me.tsMenu)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.gbPercepciones)

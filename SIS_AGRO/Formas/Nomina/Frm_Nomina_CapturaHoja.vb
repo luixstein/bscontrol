@@ -176,11 +176,11 @@ Buscar:
                     Me.cboConceptoActividad.SelectedValue = Me.oActividades.CODIGO_CONCEPTO_ACTIVIDAD.ToString
                     Me.lblNombreActividad.Text = Me.oActividades.NOMBRE_ACTIVIDAD
 
-                    If Me.txtActividad.Text = "388" Then 'Corte
-                        Me.GridPercepciones.Column(Me.igyCajasCortadas).Visible = True
-                    Else
-                        Me.GridPercepciones.Column(Me.igyCajasCortadas).Visible = False
-                    End If
+                    'If Me.txtActividad.Text = "388" Then 'Corte
+                    '    Me.GridPercepciones.Column(Me.igyCajasCortadas).Visible = True
+                    'Else
+                    '    Me.GridPercepciones.Column(Me.igyCajasCortadas).Visible = False
+                    'End If
 
                     txtTAB(e)
             End Select
@@ -425,6 +425,7 @@ Enter:
             Me.GridPercepciones.Column(Me.igyDescripcion).Width = 360
             Me.GridPercepciones.Column(Me.igyImporte).Width = 100
             Me.GridPercepciones.Column(Me.igyJornales).Width = 70
+            Me.GridPercepciones.Column(Me.igyCajasCortadas).Width = 100
 
             Me.GridPercepciones.Cell(0, Me.igyCodigo).Text = "Código"
             Me.GridPercepciones.Cell(0, Me.igyDescripcion).Text = "Nombre"
@@ -435,7 +436,7 @@ Enter:
             Me.GridPercepciones.Cell(0, Me.igyIdNominaPercepcion).Text = "IdNominaPercepcion"
             Me.GridPercepciones.Cell(0, Me.igyConfirmar).Text = "Confirmar"
             Me.GridPercepciones.Cell(0, Me.igyJornales).Text = "Jornales"
-            Me.GridPercepciones.Cell(0, Me.igyCajasCortadas).Text = "Cajas cortadas"
+            Me.GridPercepciones.Cell(0, Me.igyCajasCortadas).Text = "Tareas completadas"
 
             Me.GridPercepciones.Column(Me.igyDescripcion).Locked = True
             Me.GridPercepciones.Column(Me.igyCodigoPercepcion).Visible = False
@@ -445,7 +446,7 @@ Enter:
             Me.GridPercepciones.Column(Me.igyImporte).Alignment = FlexCell.AlignmentEnum.RightCenter
             Me.GridPercepciones.Column(Me.igyJornales).Locked = True
 
-            Me.GridPercepciones.Column(Me.igyCajasCortadas).Visible = False
+            'Me.GridPercepciones.Column(Me.igyCajasCortadas).Visible = False
             Me.GridPercepciones.Column(Me.igyCajasCortadas).Mask = FlexCell.MaskEnum.Numeric
 
             If Me.ModoPercepcion = enumModoPercepcion.PERCECION Then
@@ -459,9 +460,9 @@ Enter:
                 Me.GridPercepciones.Column(Me.igyConfirmar).Locked = True
                 Me.GridPercepciones.Column(Me.igyConfirmar).Visible = False
 
-                If Me.txtActividad.Text = "388" Then
-                    Me.GridPercepciones.Column(Me.igyCajasCortadas).Visible = True
-                End If
+                'If Me.txtActividad.Text = "388" Then
+                '    Me.GridPercepciones.Column(Me.igyCajasCortadas).Visible = True
+                'End If
 
             Else
                 Me.GridPercepciones.Column(Me.igyCodigo).Width = 70
