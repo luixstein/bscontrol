@@ -733,6 +733,21 @@ Public Class Class_Inventarios_Global
         Return Resultado
     End Function
 
+    Public Function ObtenerDetalleSeries(ByVal sFolio As String) As DataTable
+        Dim dTabla As New DataTable, da As SqlDataAdapter
+
+        Try
+
+            da = New SqlDataAdapter("EXEC MP_INVENTARIOS_CONSULTA_TABLA_SERIES @FOLIO_MOVIMIENTO_INVENTARIO='" & sFolio & "'", Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtenerDetalleSeries", ex)
+        End Try
+        Return dTabla
+    End Function
+
 #End Region
 
 End Class

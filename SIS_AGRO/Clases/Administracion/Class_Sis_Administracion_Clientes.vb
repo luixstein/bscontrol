@@ -513,7 +513,7 @@ Public Class Class_Sis_Administracion_Clientes
             .CommandText = "MP_CXC_UTILERIAS_OBTIENE_RESUMEN_CLIENTE"
 
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CodigoCliente
-            sqlParametro = .Parameters.Add("@VENTA", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._TOTAL_VENTA
+            sqlParametro = .Parameters.Add("@VENTA", SqlDbType.NVarChar, 80) : sqlParametro.Value = 0 'Me._TOTAL_VENTA
             sqlParametro = .Parameters.Add("@COSTO", SqlDbType.Char, 1) : sqlParametro.Value = 0
             Try
                 Me._Conexion.Open()
