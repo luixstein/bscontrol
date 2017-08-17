@@ -1521,6 +1521,9 @@
     <EmbeddedResource Include="borrarK.resx">
       <DependentUpon>borrarK.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="borrarL.resx">
+      <DependentUpon>borrarL.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formas\Administracion\Sis_administracion_clientes.resx">
       <DependentUpon>Sis_administracion_clientes.vb</DependentUpon>
     </EmbeddedResource>

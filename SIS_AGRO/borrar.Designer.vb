@@ -29,6 +29,7 @@ Partial Class borrar
         Me.Button2 = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.gridA = New FlexCell.Grid()
+        Me.Button4 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'gridL
@@ -112,11 +113,21 @@ Partial Class borrar
         Me.gridA.TabIndex = 8
         Me.gridA.UncheckedImage = CType(resources.GetObject("gridA.UncheckedImage"), System.Drawing.Bitmap)
         '
+        'Button4
+        '
+        Me.Button4.Location = New System.Drawing.Point(569, 27)
+        Me.Button4.Name = "Button4"
+        Me.Button4.Size = New System.Drawing.Size(75, 23)
+        Me.Button4.TabIndex = 9
+        Me.Button4.Text = "Button4"
+        Me.Button4.UseVisualStyleBackColor = True
+        '
         'borrar
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(775, 521)
+        Me.Controls.Add(Me.Button4)
         Me.Controls.Add(Me.gridA)
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Button2)
@@ -135,4 +146,5 @@ Partial Class borrar
     Friend WithEvents Button2 As Button
     Friend WithEvents Button3 As Button
     Friend WithEvents gridA As FlexCell.Grid
+    Friend WithEvents Button4 As Button
 End Class
