@@ -158,6 +158,24 @@
     <Compile Include="borrar.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="borrarA.Designer.vb">
+      <DependentUpon>borrarA.vb</DependentUpon>
+    </Compile>
+    <Compile Include="borrarA.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="borrarK.Designer.vb">
+      <DependentUpon>borrarK.vb</DependentUpon>
+    </Compile>
+    <Compile Include="borrarK.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="borrarL.Designer.vb">
+      <DependentUpon>borrarL.vb</DependentUpon>
+    </Compile>
+    <Compile Include="borrarL.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Clases\Administracion\Class_Sis_Administracion_Clientes.vb" />
     <Compile Include="Clases\Bancos\Class_Conciliacion_Bancaria.vb" />
     <Compile Include="Clases\Catalogos\Class_CatAgenciaAduanales.vb" />
@@ -1496,6 +1514,12 @@
   <ItemGroup>
     <EmbeddedResource Include="borrar.resx">
       <DependentUpon>borrar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="borrarA.resx">
+      <DependentUpon>borrarA.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="borrarK.resx">
+      <DependentUpon>borrarK.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Administracion\Sis_administracion_clientes.resx">
       <DependentUpon>Sis_administracion_clientes.vb</DependentUpon>

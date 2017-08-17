@@ -212,13 +212,14 @@ Partial Public Class AppMenu
         Me.ConfiguraciónDeUsuariosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MonitoDeTimbradosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.EmbarquesMasivosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.BorrarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip2 = New System.Windows.Forms.MenuStrip()
         Me.CostoDeProduccionToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.CostoCorteAcarreoEmpaqueYEmbarqueToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
-        Me.BorrarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.BorrarAToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -832,7 +833,7 @@ Partial Public Class AppMenu
         'MenuStrip
         '
         Me.MenuStrip.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.MenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.VentasToolStripMenuItem1, Me.ComprasToolStripMenuItem, Me.CXCToolStripMenuItem, Me.ToolStripMenuItem1, Me.MenuInventarios, Me.MenuCatalogos, Me.MenuContabilidad, Me.EmbarquesToolStripMenuItem1, Me.NominaToolStripMenuItem, Me.UtileriasToolStripMenuItem, Me.MenuSalir, Me.BorrarToolStripMenuItem})
+        Me.MenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.VentasToolStripMenuItem1, Me.ComprasToolStripMenuItem, Me.CXCToolStripMenuItem, Me.ToolStripMenuItem1, Me.MenuInventarios, Me.MenuCatalogos, Me.MenuContabilidad, Me.EmbarquesToolStripMenuItem1, Me.NominaToolStripMenuItem, Me.UtileriasToolStripMenuItem, Me.MenuSalir, Me.BorrarToolStripMenuItem, Me.BorrarAToolStripMenuItem})
         Me.MenuStrip.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip.Name = "MenuStrip"
         Me.MenuStrip.Size = New System.Drawing.Size(959, 24)
@@ -1441,6 +1442,12 @@ Partial Public Class AppMenu
         Me.EmbarquesMasivosToolStripMenuItem.Size = New System.Drawing.Size(213, 22)
         Me.EmbarquesMasivosToolStripMenuItem.Text = "Embarques masivos"
         '
+        'BorrarToolStripMenuItem
+        '
+        Me.BorrarToolStripMenuItem.Name = "BorrarToolStripMenuItem"
+        Me.BorrarToolStripMenuItem.Size = New System.Drawing.Size(51, 20)
+        Me.BorrarToolStripMenuItem.Text = "borrar"
+        '
         'MenuStrip2
         '
         Me.MenuStrip2.ImageScalingSize = New System.Drawing.Size(20, 20)
@@ -1487,11 +1494,11 @@ Partial Public Class AppMenu
         Me.pbLogo.TabStop = False
         Me.pbLogo.Visible = False
         '
-        'BorrarToolStripMenuItem
+        'BorrarAToolStripMenuItem
         '
-        Me.BorrarToolStripMenuItem.Name = "BorrarToolStripMenuItem"
-        Me.BorrarToolStripMenuItem.Size = New System.Drawing.Size(51, 20)
-        Me.BorrarToolStripMenuItem.Text = "borrar"
+        Me.BorrarAToolStripMenuItem.Name = "BorrarAToolStripMenuItem"
+        Me.BorrarAToolStripMenuItem.Size = New System.Drawing.Size(59, 20)
+        Me.BorrarAToolStripMenuItem.Text = "borrarA"
         '
         'AppMenu
         '
@@ -1717,4 +1724,5 @@ Partial Public Class AppMenu
     Friend WithEvents PropietariosToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ImportarClienteSucursalToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents BorrarToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents BorrarAToolStripMenuItem As ToolStripMenuItem
 End Class
