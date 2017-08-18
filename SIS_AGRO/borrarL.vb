@@ -11,7 +11,7 @@ Public Class borrarL
         ' Add any initialization after the InitializeComponent() call.
         Me.CreaTablaL()
 
-        Me.SimulaCaptura()
+        'Me.SimulaCaptura()
     End Sub
 
     Private Sub CreaTablaL()
@@ -117,7 +117,7 @@ Public Class borrarL
 
     Public Function EliminarDesdeK(ByVal IDK As String) As Boolean
         Try
-            Dim foundRow As DataRow() = Me.dtL.Select("IDK=" & IDA)
+            Dim foundRow As DataRow() = Me.dtL.Select("IDK=" & IDK)
             For Each row As DataRow In foundRow
                 row.Delete()
             Next

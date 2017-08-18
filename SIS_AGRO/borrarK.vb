@@ -7,6 +7,17 @@ Public Class borrarK
 
     Public oBorrarL As borrarL
 
+    Private _IDA As String
+
+    Public Property IDA As String
+        Get
+            Return Me._IDA
+        End Get
+        Set(value As String)
+            Me._IDA = value
+        End Set
+    End Property
+
     Public Sub New()
 
         ' This call is required by the designer.
@@ -18,7 +29,7 @@ Public Class borrarK
 
         'oBorrarL = New borrarL
 
-        Me.SimulaCaptura()
+        'Me.SimulaCaptura()
     End Sub
 
     Private Sub CreaTablaK()
@@ -42,6 +53,8 @@ Public Class borrarK
             End With
 
             AddHandler dtK.RowDeleted, New DataRowChangeEventHandler(AddressOf Row_Deleted_K)
+            AddHandler dtK.RowChanged, New DataRowChangeEventHandler(AddressOf Row_Changed_K)
+            AddHandler dtK.TableNewRow, New DataTableNewRowEventHandler(AddressOf Table_NewRow_K)
 
             'Me.dtL = New DataTable("L")
             'With Me.dtL
@@ -64,10 +77,10 @@ Public Class borrarK
         End Try
     End Sub
 
-    Public Function RefrescaGridK(ByVal IDA As String) As Boolean
+    Public Function RefrescaGridK() As Boolean
         Try
             Dim dView As New DataView(Me.dtK)
-            dView.RowFilter = "IDA=" & IDA
+            dView.RowFilter = "IDA=" & Me._IDA
 
             Me.gridK.AutoRedraw = False
             Me.gridK.DataSource = dView
@@ -123,6 +136,7 @@ Public Class borrarK
 
             'Elimina los renglones de los lotes de todo el kit
             Me.oBorrarL.EliminarDesdeA(IDA)
+
         Catch ex As Exception
             HandleError(Me.Name, "Elimina", ex)
         End Try
@@ -178,14 +192,31 @@ Public Class borrarK
 
     Private Sub Row_Deleted_K(ByVal sender As Object, ByVal e As DataRowChangeEventArgs)
         Try
-
+            'Si eliminan un renglón de K se eliminan sus hijos del L(tienen que volver a detallar L)
             Dim IDK As String = e.Row("IDK", DataRowVersion.Original).ToString
-
             Me.oBorrarL.EliminarDesdeK(IDK)
-
         Catch ex As Exception
             HandleError("", "Row_Deleted_A", ex)
         End Try
+    End Sub
+
+    Private Sub Row_Changed_K(ByVal sender As Object, ByVal e As DataRowChangeEventArgs)
+        Try
+            If e.Row("CANTIDAD").ToString <> e.Row("CANTIDAD_ANTERIOR").ToString Then
+                e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD")
+
+                'Si modifican un renglón de K se eliminan sus hijos del L(tienen que volver a detallar L)
+                Dim IDK As String = e.Row("IDK", DataRowVersion.Original).ToString
+                Me.oBorrarL.EliminarDesdeK(IDK)
+            End If
+        Catch ex As Exception
+            HandleError("", "Row_Changed_K", ex)
+        End Try
+    End Sub
+
+    Private Sub Table_NewRow_K(ByVal sender As Object, ByVal e As DataTableNewRowEventArgs)
+        'MsgBox("renglón nuevo en dtK", MsgBoxStyle.Information, Me.Text)
+        e.Row("IDA") = Me._IDA
     End Sub
 
 End Class

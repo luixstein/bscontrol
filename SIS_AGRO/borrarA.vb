@@ -34,8 +34,8 @@ Public Class borrarA
             Me.gridA.AutoRedraw = False
             Me.gridA.DataSource = Me.dtA
             Me.gridA.DisplayFocusRect = False
-            Me.gridA.Column(6).CellType = FlexCell.CellTypeEnum.Button
-            Me.gridA.Column(7).CellType = FlexCell.CellTypeEnum.Button
+            Me.gridA.Column(6).CellType = FlexCell.CellTypeEnum.Button 'BOTON_K
+            Me.gridA.Column(7).CellType = FlexCell.CellTypeEnum.Button 'BOTON_L
             Me.gridA.AutoRedraw = True
             Me.gridA.Refresh()
 
@@ -62,15 +62,16 @@ Public Class borrarA
         Try
             Select Case e.Col.ToString
                 Case "6" 'BOTON_K
+                    Me.oBorrarK.IDA = Me.gridA.Cell(Me.gridA.ActiveCell.Row, 1).Text 'Note que debe sacarse el valor y no de la tabla porque en la tabla si se borró un renglón este ya no existe
                     Me.oBorrarK.oBorrarL = Me.oBorrarL
-                    Me.oBorrarK.RefrescaGridK(Me.gridA.Cell(Me.gridA.ActiveCell.Row, 1).Text) 'Note que debe sacarse el valor y no de la tabla porque en la tabla si se borró un renglón este ya no existe
+                    Me.oBorrarK.RefrescaGridK()
                     Me.oBorrarK.ShowDialog()
 
                 Case "7" 'BOTON_L
                     'Me.oBorrarK.RefrescaGridLDesdeA(Me.gridA.Cell(Me.gridA.ActiveCell.Row, 1).Text) 'Note que debe sacarse el valor y no de la tabla porque en la tabla si se borró un renglón este ya no existe
                     'Me.oBorrarK.ShowDialog()
 
-                    Me.oBorrarK.oBorrarL = Me.oBorrarL
+                    'Me.oBorrarK.oBorrarL = Me.oBorrarL
                     Me.oBorrarL.RefrescaGridLDesdeA(Me.gridA.Cell(Me.gridA.ActiveCell.Row, 1).Text)
                     Me.oBorrarL.ShowDialog()
 
@@ -82,10 +83,17 @@ Public Class borrarA
     End Sub
 
     Private Sub Row_Deleted_A(ByVal sender As Object, ByVal e As DataRowChangeEventArgs)
+        'Si eliminan un renglón de A
         Try
             Dim IDA As String = e.Row("IDA", DataRowVersion.Original).ToString
+            Dim sCodigoArticulo As String = e.Row("CODIGO_ARTICULO", DataRowVersion.Original).ToString
 
-            Me.oBorrarK.Elimina(IDA) 'Borra los renglones del kit y este dentro elimina los renglones de los lotes
+            If sCodigoArticulo = "K" Then
+                Me.oBorrarK.Elimina(IDA) 'Borra los renglones del kit y este dentro elimina los renglones de los lotes
+            Else
+                Me.oBorrarL.EliminarDesdeA(IDA)
+            End If
+
 
         Catch ex As Exception
             HandleError("", "Row_Deleted_A", ex)
