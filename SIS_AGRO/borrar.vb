@@ -96,7 +96,6 @@ Public Class borrar
 
             If e.Row("CANTIDAD").ToString <> e.Row("CANTIDAD_ANTERIOR").ToString Then
                 'MsgBox("CAMBIO DE " & e.Row("CANTIDAD_ANTERIOR").ToString & " A " & e.Row("CANTIDAD").ToString, vbInformation, Me.Text)
-                e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD")
 
                 'Elimina los l por haber cambiado la cantidad.
                 Dim foundRow As DataRow() = Me.dtL.Select("IDK=" & e.Row("IDK").ToString)
@@ -104,6 +103,7 @@ Public Class borrar
                     row.Delete()
                 Next
 
+                e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD")
             End If
         Catch ex As Exception
             HandleError("", "Row_Changed_K", ex)

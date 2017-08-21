@@ -2,8 +2,18 @@
 
 Public Class borrarK
 
+#Region "Columnas grid ventas"
+    Private igyIDA As Short = 1
+    Private igyIDK As Short = 2
+    Private igyCODIGO_ARTICULO As Short = 3
+    Private igyDESCRIPCION As Short = 4
+    Private igyCANTIDAD As Short = 5
+    Private igyCANTIDAD_ANTERIOR As Short = 6
+    Private igyBOTON_L As Short = 7
+    Private igyCONFIRMACION As Short = 8
+#End Region
+
     Private dtK As DataTable
-    'Private dtL As DataTable
 
     Public oBorrarL As borrarL
 
@@ -18,18 +28,33 @@ Public Class borrarK
         End Set
     End Property
 
+#Region "Opciones"
+
+#End Region
+
+#Region "Eventos"
+    Private Sub borrarK_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+        'Me.dtK.AcceptChanges()
+        If Me.dtK.Rows.Count <> Me.gridK.Rows - 2 Then
+            MsgBox("Falta confirmacion")
+            e.Cancel = True
+        End If
+        'Me.gridK.
+    End Sub
+
+    Private Sub gridK_KeyDown(Sender As Object, e As KeyEventArgs) Handles gridK.KeyDown
+        Me.GestionaGrid(e)
+    End Sub
+#End Region
+
+#Region "Métodos y procedimientos"
     Public Sub New()
 
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-
         Me.CreaTablaK()
-
-        'oBorrarL = New borrarL
-
-        'Me.SimulaCaptura()
     End Sub
 
     Private Sub CreaTablaK()
@@ -43,6 +68,7 @@ Public Class borrarK
                 .Columns.Add("CANTIDAD", GetType(Decimal))
                 .Columns.Add("CANTIDAD_ANTERIOR", GetType(Decimal))
                 .Columns.Add("BOTON_L", GetType(String))
+                .Columns.Add("CONFIRMACION", GetType(String))
 
                 .Columns("IDK").Unique = True
                 .Columns("IDK").AutoIncrement = True
@@ -56,22 +82,6 @@ Public Class borrarK
             AddHandler dtK.RowChanged, New DataRowChangeEventHandler(AddressOf Row_Changed_K)
             AddHandler dtK.TableNewRow, New DataTableNewRowEventHandler(AddressOf Table_NewRow_K)
 
-            'Me.dtL = New DataTable("L")
-            'With Me.dtL
-            '    .Columns.Add("IDA", GetType(Integer))
-            '    .Columns.Add("IDK", GetType(Integer))
-            '    .Columns.Add("IDL", GetType(Integer))
-            '    .Columns.Add("ID_INVENTARIO_LOTES_COSTOS", GetType(String))
-            '    .Columns.Add("CANTIDAD_USAR", GetType(Decimal))
-            '    .Columns.Add("NS", GetType(String))
-
-            '    .Columns("IDL").Unique = True
-            '    .Columns("IDL").AutoIncrement = True
-            '    .Columns("IDL").AutoIncrementSeed = 1
-            '    .Columns("IDL").AutoIncrementStep = 1
-
-            '    .AcceptChanges()
-            'End With
         Catch ex As Exception
             HandleError(Me.Name, "CreaTablaK", ex)
         End Try
@@ -82,48 +92,13 @@ Public Class borrarK
             Dim dView As New DataView(Me.dtK)
             dView.RowFilter = "IDA=" & Me._IDA
 
-            Me.gridK.AutoRedraw = False
             Me.gridK.DataSource = dView
-            Me.gridK.DisplayFocusRect = False
-            Me.gridK.Column(7).CellType = FlexCell.CellTypeEnum.Button 'L
-            Me.gridK.AutoRedraw = True
-            Me.gridK.Refresh()
 
-            'Me.gridL.DataSource = Nothing
-            'Me.gridL.Visible = False
-
+            Me.FormateaGrid()
         Catch ex As Exception
             HandleError(Me.Name, "RefrescaGridK", ex)
         End Try
     End Function
-
-    'Public Function RefrescaGridLDesdeA(ByVal IDA As String) As Boolean
-    '    Try
-    '        Dim dView As New DataView(Me.dtL)
-    '        dView.RowFilter = "IDA=" & IDA 'Filtra los lotes del gridA del elemento seleccionado
-    '        Me.gridL.DataSource = dView
-
-    '        If dView.Count = 0 Then
-    '            MsgBox("cargar full l en blanco",, Me.Text)
-    '        End If
-    '    Catch ex As Exception
-    '        HandleError(Me.Name, "RefrescaGridLDesdeA", ex)
-    '    End Try
-    'End Function
-
-    'Public Function RefrescaGridLDesdeK(ByVal IDK As String) As Boolean
-    '    Try
-    '        Dim dView As New DataView(Me.dtL)
-    '        dView.RowFilter = "IDK=" & IDK 'Filtra los lotes del gridK del elemento seleccionado
-    '        Me.gridL.DataSource = dView
-
-    '        If dView.Count = 0 Then
-    '            MsgBox("falta cargar full l en rows en blanco para capturar",, Me.Text)
-    '        End If
-    '    Catch ex As Exception
-    '        HandleError(Me.Name, "RefrescaGridLDesdeK", ex)
-    '    End Try
-    'End Function
 
     Public Function Elimina(ByVal IDA As String) As Boolean
         Try
@@ -150,24 +125,6 @@ Public Class borrarK
 
                 .AcceptChanges()
             End With
-
-            'With Me.dtL
-            '    .Rows.Add(1, 1, Nothing, 500, 1, "S1")
-            '    .Rows.Add(1, 1, Nothing, 501, 1, "S2")
-            '    .Rows.Add(1, 1, Nothing, 600, 1, "S3")
-            '    .Rows.Add(1, 1, Nothing, 601, 1, "S4")
-            '    '.Rows.Add(1, 2, Nothing, 620, 6)'2DO r del k es nos por eso no se muestran, son peps
-            '    '.Rows.Add(1, 2, Nothing, 777, 4)'2DO r del k es nos por eso no se muestran, son peps
-
-            '    .Rows.Add(2, 0, Nothing, 700, 1, "S5")
-            '    .Rows.Add(2, 0, Nothing, 701, 1, "S6")
-            '    .Rows.Add(2, 0, Nothing, 702, 1, "S7")
-
-            '    '.Rows.Add(3, 0, Nothing, 555, 50, Nothing)'3er r del gridA, es nos por eso no se muestran, son peps
-
-            '    .AcceptChanges()
-            'End With
-
         Catch ex As Exception
             HandleError(Me.Name, "InicializaTabla", ex)
         End Try
@@ -181,7 +138,9 @@ Public Class borrarK
                         Return
                     End If
 
-                    Me.oBorrarL.RefrescaGridLDesdeK(Me.gridK.Cell(Me.gridK.ActiveCell.Row, 2).Text)
+                    Me.oBorrarL.IDA = Me._IDA
+                    Me.oBorrarL.IDK = Me.gridK.Cell(Me.gridK.ActiveCell.Row, Me.igyIDK).Text
+                    Me.oBorrarL.RefrescaGridLDesdeK()
                     Me.oBorrarL.ShowDialog()
 
             End Select
@@ -193,21 +152,32 @@ Public Class borrarK
     Private Sub Row_Deleted_K(ByVal sender As Object, ByVal e As DataRowChangeEventArgs)
         Try
             'Si eliminan un renglón de K se eliminan sus hijos del L(tienen que volver a detallar L)
-            Dim IDK As String = e.Row("IDK", DataRowVersion.Original).ToString
-            Me.oBorrarL.EliminarDesdeK(IDK)
+            'MsgBox(e.Row.RowState.ToString)
+            Try
+                Dim IDK As String = e.Row("IDK", DataRowVersion.Original).ToString
+                Me.oBorrarL.EliminarDesdeK(IDK)
+            Catch ex As Exception
+
+            End Try
+
         Catch ex As Exception
-            HandleError("", "Row_Deleted_A", ex)
+            HandleError("", "Row_Deleted_K", ex)
         End Try
     End Sub
 
     Private Sub Row_Changed_K(ByVal sender As Object, ByVal e As DataRowChangeEventArgs)
         Try
             If e.Row("CANTIDAD").ToString <> e.Row("CANTIDAD_ANTERIOR").ToString Then
-                e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD")
 
                 'Si modifican un renglón de K se eliminan sus hijos del L(tienen que volver a detallar L)
-                Dim IDK As String = e.Row("IDK", DataRowVersion.Original).ToString
-                Me.oBorrarL.EliminarDesdeK(IDK)
+                Try
+                    Dim IDK As String = e.Row("IDK", DataRowVersion.Original).ToString
+                    Me.oBorrarL.EliminarDesdeK(IDK)
+                Catch ex As Exception
+
+                End Try
+
+                e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD")
             End If
         Catch ex As Exception
             HandleError("", "Row_Changed_K", ex)
@@ -216,7 +186,92 @@ Public Class borrarK
 
     Private Sub Table_NewRow_K(ByVal sender As Object, ByVal e As DataTableNewRowEventArgs)
         'MsgBox("renglón nuevo en dtK", MsgBoxStyle.Information, Me.Text)
-        e.Row("IDA") = Me._IDA
+        Try
+            e.Row("IDA") = Me._IDA
+            e.Row("DESCRIPCION") = ""
+            e.Row("CONFIRMACION") = "Sin confirmar"
+        Catch ex As Exception
+            HandleError("", "Table_NewRow_K", ex)
+        End Try
     End Sub
+
+    Private Sub FormateaGrid()
+        Try
+            With Me.gridK
+                .AutoRedraw = False
+                .DisplayFocusRect = False
+
+                .Column(Me.igyIDA).Width = 50
+                .Column(Me.igyIDK).Width = 50
+                .Column(Me.igyCODIGO_ARTICULO).Width = 75
+                .Column(Me.igyDESCRIPCION).Width = 250
+                .Column(Me.igyCANTIDAD).Width = 75
+                .Column(Me.igyCANTIDAD_ANTERIOR).Width = 75
+                .Column(Me.igyBOTON_L).Width = 50
+
+                .Cell(0, Me.igyCODIGO_ARTICULO).Text = "Código"
+                .Cell(0, Me.igyDESCRIPCION).Text = "Descripción"
+                .Cell(0, Me.igyCANTIDAD).Text = "Cantidad"
+                .Cell(0, Me.igyBOTON_L).Text = "Lotes"
+
+                .Column(Me.igyCANTIDAD).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.igyCANTIDAD).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
+                .Column(Me.igyCANTIDAD).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.igyIDA).Locked = True
+                .Column(Me.igyIDK).Locked = True
+                .Column(Me.igyDESCRIPCION).Locked = True
+                .Column(Me.igyCANTIDAD_ANTERIOR).Locked = True
+                .Column(Me.igyCONFIRMACION).Locked = True
+
+                .Column(Me.igyIDA).Visible = False
+                .Column(Me.igyIDK).Visible = False
+                .Column(Me.igyCANTIDAD_ANTERIOR).Visible = False
+                .Column(Me.igyIDA).Visible = False
+
+                .Column(Me.igyBOTON_L).CellType = CellTypeEnum.Button
+
+                .AutoRedraw = True
+                .Refresh()
+            End With
+
+        Catch ex As Exception
+            HandleError("", "FormateaGrid", ex)
+        End Try
+    End Sub
+
+    Private Sub GestionaGrid(ByVal e As System.Windows.Forms.KeyEventArgs)
+        Try
+            Dim Columna As Integer, Renglon As Integer
+            'Dim StrCod As String, sCuentaContable As String = "", dCantidad As Decimal, dPrecio As Decimal, sCodigoCentroCosto As String
+            'Dim oArticulos As Class_CatArticulos
+
+            If Me.gridK.Selection.FirstRow = Me.gridK.Rows - 1 Then
+                Return
+            End If
+
+            Columna = Me.gridK.Selection.FirstCol
+            Renglon = Me.gridK.Selection.FirstRow
+
+            Select Case e.KeyCode
+                Case Keys.F6
+
+                Case Keys.Enter
+                    Select Case Columna
+                        Case Me.igyCANTIDAD
+                            'If Me.gridK.Rows = Renglon + 1 Then Me.gridK.Rows = Me.gridK.Rows + 1
+                        Case Me.igyCONFIRMACION
+                            Me.gridK.Cell(Renglon, Columna).Text = "Confirmado"
+                    End Select
+                    'Me.dtK.AcceptChanges()
+            End Select
+
+        Catch ex As Exception
+            HandleError("", "GestionaGrid", ex)
+        End Try
+
+    End Sub
+
+#End Region
 
 End Class

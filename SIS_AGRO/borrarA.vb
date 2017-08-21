@@ -72,7 +72,9 @@ Public Class borrarA
                     'Me.oBorrarK.ShowDialog()
 
                     'Me.oBorrarK.oBorrarL = Me.oBorrarL
-                    Me.oBorrarL.RefrescaGridLDesdeA(Me.gridA.Cell(Me.gridA.ActiveCell.Row, 1).Text)
+                    Me.oBorrarK.IDA = Me.gridA.Cell(Me.gridA.ActiveCell.Row, 1).Text
+                    Me.oBorrarL.IDA = Me.gridA.Cell(Me.gridA.ActiveCell.Row, 1).Text
+                    Me.oBorrarL.RefrescaGridLDesdeA()
                     Me.oBorrarL.ShowDialog()
 
             End Select
@@ -91,9 +93,8 @@ Public Class borrarA
             If sCodigoArticulo = "K" Then
                 Me.oBorrarK.Elimina(IDA) 'Borra los renglones del kit y este dentro elimina los renglones de los lotes
             Else
-                Me.oBorrarL.EliminarDesdeA(IDA)
+                Me.oBorrarL.EliminarDesdeA(IDA) 'Borra los renglones de L
             End If
-
 
         Catch ex As Exception
             HandleError("", "Row_Deleted_A", ex)
@@ -104,7 +105,7 @@ Public Class borrarA
         Try
             Dim IDA As String = e.Row("IDA", DataRowVersion.Original).ToString
 
-            If e.Row("CANTIDAD").ToString <> e.Row("CANTIDAD_ANTERIOR").ToString Then
+            If e.Row("CANTIDAD").ToString <> e.Row("CANTIDAD_ANTERIOR").ToString Then 'Si modifican la cantidad se eliminan los lotes(no el kit, sea o no kit)
                 Me.oBorrarL.EliminarDesdeA(IDA)
             End If
 

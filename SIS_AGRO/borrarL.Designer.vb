@@ -51,6 +51,7 @@ Partial Class borrarL
         Me.ClientSize = New System.Drawing.Size(765, 262)
         Me.Controls.Add(Me.gridL)
         Me.Name = "borrarL"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "borrarL"
         Me.ResumeLayout(False)
 

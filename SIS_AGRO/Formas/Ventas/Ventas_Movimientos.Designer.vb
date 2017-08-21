@@ -163,7 +163,7 @@ Partial Class Ventas_Movimientos
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbImprimir, Me.tsbCancelar, Me.tsbCotizacionRemision, Me.tsbCotizacionFactura, Me.tsbRemisionVenta, Me.tsbCancelarTimbre, Me.tsbSellarFacturaElectronica, Me.tsbEnviarCorreo, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1004, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1019, 27)
         Me.tsMenu.TabIndex = 3
         Me.tsMenu.Text = "tsMenu"
         '
@@ -696,7 +696,7 @@ Partial Class Ventas_Movimientos
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsslEstado, Me.tsslElaboro, Me.tsslCancelo})
         Me.StatusStripEstado.Location = New System.Drawing.Point(0, 578)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1004, 24)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1019, 24)
         Me.StatusStripEstado.TabIndex = 315
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -948,7 +948,7 @@ Partial Class Ventas_Movimientos
         Me.TabControl1.Location = New System.Drawing.Point(8, 222)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(986, 238)
+        Me.TabControl1.Size = New System.Drawing.Size(1003, 238)
         Me.TabControl1.TabIndex = 1
         '
         'TabPage1
@@ -957,7 +957,7 @@ Partial Class Ventas_Movimientos
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(978, 212)
+        Me.TabPage1.Size = New System.Drawing.Size(995, 212)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Artículos"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -977,7 +977,7 @@ Partial Class Ventas_Movimientos
         Me.Grid.LockButton = True
         Me.Grid.Name = "Grid"
         Me.Grid.Rows = 8
-        Me.Grid.Size = New System.Drawing.Size(969, 204)
+        Me.Grid.Size = New System.Drawing.Size(990, 204)
         Me.Grid.TabIndex = 2
         Me.Grid.UncheckedImage = CType(resources.GetObject("Grid.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -1014,7 +1014,7 @@ Partial Class Ventas_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1004, 602)
+        Me.ClientSize = New System.Drawing.Size(1019, 602)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.gbTotales)
         Me.Controls.Add(Me.frmDatos)
