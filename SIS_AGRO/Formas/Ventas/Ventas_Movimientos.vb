@@ -33,6 +33,8 @@ Public Class Ventas_Movimientos
     Private bClienteEsContribuyenteIEPS As Boolean = False
 
     Private dtA As DataTable
+    Private oVentaK As VentasDetalleKits
+    Private oVentaL As VentasDetalleLotes
 #End Region
 
 #Region "Columnas grid ventas"
@@ -2704,6 +2706,12 @@ LlenaLinea:
                                 Me.Grid.Rows = Me.Grid.Rows + 1
                             End If
 
+                        Case Me.igyBOTON_K
+                            Me.oBorrarK.IDA = Me.gridA.Cell(Me.gridA.ActiveCell.Row, 1).Text 'Note que debe sacarse el valor y no de la tabla porque en la tabla si se borró un renglón este ya no existe
+                            Me.oBorrarK.oBorrarL = Me.oBorrarL
+                            Me.oBorrarK.RefrescaGridK()
+                            Me.oBorrarK.ShowDialog()
+
                     End Select
 
                     Select Case Columna
@@ -3412,8 +3420,8 @@ busca_serie:
 
             AddHandler dtA.RowChanged, New DataRowChangeEventHandler(AddressOf Row_Changed_A)
 
-            'Me.oBorrarK = New borrarK
-            'Me.oBorrarL = New borrarL
+            Me.oVentaK = New VentasDetalleKits
+            Me.oVentaL = New VentasDetalleLotes
 
         Catch ex As Exception
             HandleError(Me.Name, "CreaTablaA", ex)

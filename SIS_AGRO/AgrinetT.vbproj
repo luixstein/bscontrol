@@ -1034,6 +1034,18 @@
     <Compile Include="Formas\Ventas\Consultas\Rpt_Q_ComparativosVenta.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\Ventas\VentasDetalleKits.Designer.vb">
+      <DependentUpon>VentasDetalleKits.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Ventas\VentasDetalleKits.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Ventas\VentasDetalleLotes.Designer.vb">
+      <DependentUpon>VentasDetalleLotes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Ventas\VentasDetalleLotes.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\Ventas\VentasSeleccionaTipoFactura.Designer.vb">
       <DependentUpon>VentasSeleccionaTipoFactura.vb</DependentUpon>
     </Compile>
@@ -2069,6 +2081,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Ventas\Consultas\Rpt_Q_ComparativosVenta.resx">
       <DependentUpon>Rpt_Q_ComparativosVenta.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Ventas\VentasDetalleKits.resx">
+      <DependentUpon>VentasDetalleKits.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Ventas\VentasDetalleLotes.resx">
+      <DependentUpon>VentasDetalleLotes.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Ventas\VentasSeleccionaTipoFactura.resx">
       <DependentUpon>VentasSeleccionaTipoFactura.vb</DependentUpon>
