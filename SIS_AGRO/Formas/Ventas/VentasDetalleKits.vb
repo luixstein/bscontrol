@@ -18,7 +18,7 @@ Public Class VentasDetalleKits
 
 #Region "Campos"
     Private dtK As DataTable
-    Public oBorrarL As VentasDetalleLotes
+    Public oVentaL As VentasDetalleLotes
 
     Private _IDA As String
     Private _CodigoAlmacen As String
@@ -80,12 +80,12 @@ Public Class VentasDetalleKits
                 .Columns.Add("IDK", GetType(Integer))
                 .Columns.Add("CODIGO_ARTICULO", GetType(String))
                 .Columns.Add("DESCRIPCION", GetType(String))
-                .Columns.Add("CANTIDAD", GetType(Decimal))
-                .Columns.Add("CANTIDAD_ANTERIOR", GetType(Decimal))
+                .Columns.Add("CANTIDAD", GetType(String))
+                .Columns.Add("CANTIDAD_ANTERIOR", GetType(String))
                 .Columns.Add("BOTON_L", GetType(String))
                 .Columns.Add("CONFIRMACION", GetType(String))
-                .Columns.Add("COSTO", GetType(Decimal))
-                .Columns.Add("IMPORTE", GetType(Decimal))
+                .Columns.Add("COSTO", GetType(String))
+                .Columns.Add("IMPORTE", GetType(String))
 
                 .Columns("IDK").Unique = True
                 .Columns("IDK").AutoIncrement = True
@@ -95,12 +95,11 @@ Public Class VentasDetalleKits
                 .Columns("CODIGO_ARTICULO").DefaultValue = ""
                 .Columns("DESCRIPCION").DefaultValue = ""
                 .Columns("CANTIDAD").DefaultValue = ""
-                .Columns("CANTIDAD").DefaultValue = "0"
-                .Columns("CANTIDAD_ANTERIOR").DefaultValue = "0"
+                .Columns("CANTIDAD_ANTERIOR").DefaultValue = ""
                 .Columns("BOTON_L").DefaultValue = ""
                 .Columns("CONFIRMACION").DefaultValue = "Sin confirmar"
-                .Columns("COSTO").DefaultValue = "0"
-                .Columns("IMPORTE").DefaultValue = "0"
+                .Columns("COSTO").DefaultValue = ""
+                .Columns("IMPORTE").DefaultValue = ""
 
                 .AcceptChanges()
             End With
@@ -117,7 +116,7 @@ Public Class VentasDetalleKits
     Public Function RefrescaGridK() As Boolean
         Try
             Dim dView As New DataView(Me.dtK)
-            dView.RowFilter = "IDA=" & Me._IDA
+            dView.RowFilter = "IDA=" & valorNumerico(Me._IDA)
 
             Me.gridK.DataSource = dView
 
@@ -137,7 +136,7 @@ Public Class VentasDetalleKits
             Me.dtK.AcceptChanges()
 
             'Elimina los renglones de los lotes de todo el kit
-            Me.oBorrarL.EliminarDesdeA(IDA)
+            Me.oVentaL.EliminarDesdeA(IDA)
 
         Catch ex As Exception
             HandleError(Me.Name, "Elimina", ex)
@@ -165,10 +164,10 @@ Public Class VentasDetalleKits
                         Return
                     End If
 
-                    Me.oBorrarL.IDA = Me._IDA
-                    Me.oBorrarL.IDK = Me.gridK.Cell(Me.gridK.ActiveCell.Row, Me.igyIDK).Text
-                    Me.oBorrarL.RefrescaGridLDesdeK()
-                    Me.oBorrarL.ShowDialog()
+                    Me.oVentaL.IDA = Me._IDA
+                    Me.oVentaL.IDK = Me.gridK.Cell(Me.gridK.ActiveCell.Row, Me.igyIDK).Text
+                    Me.oVentaL.RefrescaGridLDesdeK()
+                    Me.oVentaL.ShowDialog()
 
             End Select
         Catch ex As Exception
@@ -182,7 +181,7 @@ Public Class VentasDetalleKits
             'MsgBox(e.Row.RowState.ToString)
             Try
                 Dim IDK As String = e.Row("IDK", DataRowVersion.Original).ToString
-                Me.oBorrarL.EliminarDesdeK(IDK)
+                Me.oVentaL.EliminarDesdeK(IDK)
             Catch ex As Exception
 
             End Try
@@ -199,7 +198,7 @@ Public Class VentasDetalleKits
                 'Si modifican un renglón de K se eliminan sus hijos del L(tienen que volver a detallar L)
                 Try
                     Dim IDK As String = e.Row("IDK", DataRowVersion.Original).ToString
-                    Me.oBorrarL.EliminarDesdeK(IDK)
+                    Me.oVentaL.EliminarDesdeK(IDK)
                 Catch ex As Exception
 
                 End Try
@@ -287,12 +286,13 @@ Public Class VentasDetalleKits
             Dim StrCod As String = "" ', sCuentaContable As String = "", dCantidad As Decimal, dPrecio As Decimal, sCodigoCentroCosto As String
             Dim oArticulos As Class_CatArticulos
 
-            If Me.gridK.Selection.FirstRow = Me.gridK.Rows - 1 Then
-                Return
-            End If
+            'If Me.gridK.Selection.FirstRow = Me.gridK.Rows - 1 Then
+            '    Return
+            'End If
 
             Columna = Me.gridK.Selection.FirstCol
             Renglon = Me.gridK.Selection.FirstRow
+            StrCod = Me.gridK.Cell(Renglon, Me.igyCODIGO_ARTICULO).Text
 
             Select Case e.KeyCode
                 Case Keys.F6

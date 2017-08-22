@@ -1,4 +1,5 @@
 ﻿Option Strict On
+Imports FlexCell
 
 Public Class Ventas_Movimientos
 
@@ -818,7 +819,7 @@ Buscar:
                 Me.Grid.Column(Me.igyPRECIO).Locked = True
             End If
 
-            Me.Grid.Column(Me.igyIDA).Visible = False
+            Me.Grid.Column(Me.igyIDA).Visible = True
             Me.Grid.Column(Me.igyCANTIDAD_ANTERIOR).Visible = False
 
             Me.Grid.DisplayFocusRect = False
@@ -2707,10 +2708,10 @@ LlenaLinea:
                             End If
 
                         Case Me.igyBOTON_K
-                            Me.oBorrarK.IDA = Me.gridA.Cell(Me.gridA.ActiveCell.Row, 1).Text 'Note que debe sacarse el valor y no de la tabla porque en la tabla si se borró un renglón este ya no existe
-                            Me.oBorrarK.oBorrarL = Me.oBorrarL
-                            Me.oBorrarK.RefrescaGridK()
-                            Me.oBorrarK.ShowDialog()
+                            Me.oVentaK.IDA = Me.Grid.Cell(Me.Grid.ActiveCell.Row, 1).Text 'Note que debe sacarse el valor y no de la tabla porque en la tabla si se borró un renglón este ya no existe
+                            Me.oVentaK.oVentaL = Me.oVentaL
+                            Me.oVentaK.RefrescaGridK()
+                            Me.oVentaK.ShowDialog()
 
                     End Select
 
@@ -3339,7 +3340,7 @@ busca_serie:
                 .Columns.Add("CODIGO_ARTICULO", GetType(String))
                 .Columns.Add("TIPO_CONTROL_INVENTARIO", GetType(String))
                 .Columns.Add("DESCRIPCION", GetType(String))
-                .Columns.Add("CANTIDAD", GetType(Decimal))
+                .Columns.Add("CANTIDAD", GetType(String))
                 .Columns.Add("PRECIO", GetType(String))
                 .Columns.Add("PRECIO_TOTAL", GetType(String))
                 .Columns.Add("UNIDAD_VENTA", GetType(String))
@@ -3364,7 +3365,7 @@ busca_serie:
                 .Columns.Add("COSTO", GetType(String))
 
                 .Columns.Add("IDA", GetType(Integer))
-                .Columns.Add("CANTIDAD_ANTERIOR", GetType(Decimal))
+                .Columns.Add("CANTIDAD_ANTERIOR", GetType(String))
                 .Columns.Add("BOTON_K", GetType(String))
                 .Columns.Add("BOTON_L", GetType(String))
 
@@ -3376,7 +3377,7 @@ busca_serie:
                 .Columns("CODIGO_ARTICULO").DefaultValue = ""
                 .Columns("TIPO_CONTROL_INVENTARIO").DefaultValue = ""
                 .Columns("DESCRIPCION").DefaultValue = ""
-                .Columns("CANTIDAD").DefaultValue = "0"
+                .Columns("CANTIDAD").DefaultValue = ""
                 .Columns("PRECIO").DefaultValue = ""
                 .Columns("PRECIO_TOTAL").DefaultValue = ""
                 .Columns("UNIDAD_VENTA").DefaultValue = ""
@@ -3399,9 +3400,10 @@ busca_serie:
                 .Columns("BASE_IEPS").DefaultValue = ""
                 .Columns("BASE_IVA").DefaultValue = ""
                 .Columns("COSTO").DefaultValue = ""
+                '.Columns("IMPORTE_COSTO").DefaultValue = ""
 
                 '.Columns("IDA").DefaultValue = "0"
-                .Columns("CANTIDAD_ANTERIOR").DefaultValue = "0"
+                .Columns("CANTIDAD_ANTERIOR").DefaultValue = ""
                 .Columns("BOTON_K").DefaultValue = ""
                 .Columns("BOTON_L").DefaultValue = ""
 
@@ -3468,6 +3470,33 @@ busca_serie:
 
         Catch ex As Exception
             HandleError("", "Row_Changed_A", ex)
+        End Try
+    End Sub
+
+    Private Sub Grid_ButtonClick(Sender As Object, e As Grid.ButtonClickEventArgs) Handles Grid.ButtonClick
+        Try
+            Select Case e.Col.ToString
+                Case Me.igyBOTON_K.ToString
+                    Me.oVentaK.CodigoAlmacen = Me.CboAlmacen.SelectedValue.ToString
+                    Me.oVentaK.IDA = Me.Grid.Cell(Me.Grid.ActiveCell.Row, Me.igyIDA).Text 'Note que debe sacarse el valor y no de la tabla porque en la tabla si se borró un renglón este ya no existe
+                    Me.oVentaK.oVentaL = Me.oVentaL
+                    Me.oVentaK.RefrescaGridK()
+                    Me.oVentaK.ShowDialog()
+
+                Case Me.igyBOTON_L.ToString
+                    'Me.oBorrarK.RefrescaGridLDesdeA(Me.gridA.Cell(Me.gridA.ActiveCell.Row, 1).Text) 'Note que debe sacarse el valor y no de la tabla porque en la tabla si se borró un renglón este ya no existe
+                    'Me.oBorrarK.ShowDialog()
+
+                    'Me.oBorrarK.oBorrarL = Me.oBorrarL
+                    'Me.oBorrarK.IDA = Me.Grid.Cell(Me.Grid.ActiveCell.Row, 1).Text
+                    Me.oVentaL.IDA = Me.Grid.Cell(Me.Grid.ActiveCell.Row, 1).Text
+                    Me.oVentaL.RefrescaGridLDesdeA()
+                    Me.oVentaL.ShowDialog()
+
+            End Select
+
+        Catch ex As Exception
+            HandleError("", "Grid_ButtonClick", ex)
         End Try
     End Sub
 #End Region
