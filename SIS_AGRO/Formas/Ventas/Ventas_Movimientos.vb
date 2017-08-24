@@ -3450,7 +3450,7 @@ busca_serie:
             End If
 
         Catch ex As Exception
-            HandleError("", "Row_Deleted_A", ex)
+            HandleError(Me.Name, "Row_Deleted_A", ex)
         End Try
     End Sub
 
@@ -3469,7 +3469,7 @@ busca_serie:
             End If
 
         Catch ex As Exception
-            HandleError("", "Row_Changed_A", ex)
+            HandleError(Me.Name, "Row_Changed_A", ex)
         End Try
     End Sub
 
@@ -3479,6 +3479,7 @@ busca_serie:
                 Case Me.igyBOTON_K.ToString
                     Me.oVentaK.CodigoAlmacen = Me.CboAlmacen.SelectedValue.ToString
                     Me.oVentaK.IDA = Me.Grid.Cell(Me.Grid.ActiveCell.Row, Me.igyIDA).Text 'Note que debe sacarse el valor y no de la tabla porque en la tabla si se borró un renglón este ya no existe
+                    Me.oVentaK.Cantidad = CDec(Me.Grid.Cell(Me.Grid.ActiveCell.Row, Me.igyCANTIDAD).Text)
                     Me.oVentaK.oVentaL = Me.oVentaL
                     Me.oVentaK.RefrescaGridK()
                     Me.oVentaK.ShowDialog()
@@ -3495,10 +3496,13 @@ busca_serie:
 
             End Select
 
+            MsgBox(Me.oVentaK.dtKPublica.Rows.Count.ToString)
+
         Catch ex As Exception
-            HandleError("", "Grid_ButtonClick", ex)
+            HandleError(Me.Name, "Grid_ButtonClick", ex)
         End Try
     End Sub
+
 #End Region
 
 End Class

@@ -1,9 +1,8 @@
 ﻿Option Strict On
 
 Public Class VentasDetalleLotes
-    Private dtL As DataTable
 
-#Region "Columnas grid ventas"
+#Region "Columnas grid"
     Private igyIDA As Short = 1
     Private igyIDK As Short = 2
     Private igyIDL As Short = 3
@@ -15,9 +14,16 @@ Public Class VentasDetalleLotes
     Private igyIMPORTE As Short = 9
 #End Region
 
+#Region "Campos"
+    Private dtL As DataTable
     Private _IDA As String
     Private _IDK As String
+    Private _CodigoArticulo As String
+    Private _CodigoAlmacen As String
+    Private _Cantidad As Decimal
+#End Region
 
+#Region "Propiedades"
     Public Property IDA As String
         Get
             Return Me._IDA
@@ -35,6 +41,38 @@ Public Class VentasDetalleLotes
             Me._IDK = value
         End Set
     End Property
+
+    Public Property CodigoArticulo As String
+        Get
+            Return Me._CodigoArticulo
+        End Get
+        Set(value As String)
+            Me._CodigoArticulo = value
+        End Set
+    End Property
+
+    Public Property CodigoAlmacen As String
+        Get
+            Return Me._CodigoAlmacen
+        End Get
+        Set(value As String)
+            Me._CodigoAlmacen = value
+        End Set
+    End Property
+
+    Public Property Cantidad As Decimal
+        Get
+            Return Me._Cantidad
+        End Get
+        Set(value As Decimal)
+            Me._Cantidad = value
+        End Set
+    End Property
+#End Region
+
+#Region "Opciones"
+
+#End Region
 
 #Region "Eventos"
     Private Sub borrarL_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
@@ -69,7 +107,7 @@ Public Class VentasDetalleLotes
                 .Columns.Add("IDK", GetType(Integer))
                 .Columns.Add("IDL", GetType(Integer))
                 .Columns.Add("ID_INVENTARIO_LOTES_COSTOS", GetType(String))
-                .Columns.Add("CANTIDAD_USAR", GetType(Decimal))
+                .Columns.Add("CANTIDAD_USAR", GetType(String))
                 .Columns.Add("NS", GetType(String))
                 .Columns.Add("CONFIRMACION", GetType(String))
 
@@ -77,6 +115,11 @@ Public Class VentasDetalleLotes
                 .Columns("IDL").AutoIncrement = True
                 .Columns("IDL").AutoIncrementSeed = 1
                 .Columns("IDL").AutoIncrementStep = 1
+
+                .Columns("ID_INVENTARIO_LOTES_COSTOS").DefaultValue = ""
+                .Columns("CANTIDAD_USAR").DefaultValue = ""
+                .Columns("NS").DefaultValue = ""
+                .Columns("CONFIRMACION").DefaultValue = "Sin confirmar"
 
                 .AcceptChanges()
             End With
@@ -114,15 +157,58 @@ Public Class VentasDetalleLotes
             Dim dView As New DataView(Me.dtL)
             dView.RowFilter = "IDA=" & Me._IDA & " AND IDK=" & Me._IDK
 
-            With Me.gridL
-                .AutoRedraw = False
-                .DataSource = dView
-                .DisplayFocusRect = False
-                .AutoRedraw = True
-                .Refresh()
-            End With
+            If dView.Count > 0 Then
+                With Me.gridL
+                    .AutoRedraw = False
+                    .DataSource = dView
+                    .DisplayFocusRect = False
+                    .AutoRedraw = True
+                    .Refresh()
+                End With
+            Else
 
-            'falta algo que valide si rows 0 para preparar series en blanco
+                Dim dRow As DataRow
+
+                If Me._Cantidad = 0 Then
+                    MsgBox("No ha especificado la cantidad de series que se usarán.", MsgBoxStyle.Exclamation, Me.Text)
+                    Return False
+                End If
+
+                Dim oArticulo As New Class_CatArticulos(Me._CodigoArticulo)
+
+                If oArticulo.Existe = True AndAlso oArticulo.ES_SERIALIZABLE = True AndAlso oArticulo.INVENTARIABLE = "1" Then
+                    For j = 1 To Me._Cantidad
+                        dRow = Me.dtL.NewRow
+
+                        'dRow("POSICION") = i
+                        'dRow("CODIGO_ARTICULO") = Me.Grid.Cell(i, Me.igyCODIGO_ARTICULO).Text
+                        'dRow("DESCRIPCION") = Me.Grid.Cell(i, Me.igyDESCRIPCION).Text
+                        'dRow("ID_INVENTARIO_LOTES_COSTOS") = ""
+                        'dRow("NUMERO_SERIE") = ""
+
+                        dRow("IDA") = Me._IDA
+                        dRow("IDK") = Me._IDK
+                        dRow("CANTIDAD_USAR") = "1"
+
+                        Me.dtL.Rows.Add(dRow)
+                    Next
+                End If
+
+                '.Columns.Add("IDA", GetType(Integer))
+                '.Columns.Add("IDK", GetType(Integer))
+                '.Columns.Add("IDL", GetType(Integer))
+                '.Columns.Add("ID_INVENTARIO_LOTES_COSTOS", GetType(String))
+                '.Columns.Add("CANTIDAD_USAR", GetType(Decimal))
+                '.Columns.Add("NS", GetType(String))
+                '.Columns.Add("CONFIRMACION", GetType(String))
+
+                Me.dtL.AcceptChanges()
+
+                Me.gridL.DataSource = Me.dtL
+
+            End If
+
+            Me.FormateaGrid()
 
         Catch ex As Exception
             HandleError(Me.Name, "RefrescaGridLDesdeK", ex)
@@ -214,9 +300,33 @@ Public Class VentasDetalleLotes
             End Select
 
         Catch ex As Exception
-            HandleError("", "GestionaGrid", ex)
+            HandleError(Me.Name, "GestionaGrid", ex)
         End Try
 
+    End Sub
+
+    Private Sub FormateaGrid()
+        Try
+            With Me.gridL
+                .AutoRedraw = False
+                .DisplayFocusRect = False
+
+
+                .Column(Me.igyIDA).Locked = True
+                .Column(Me.igyIDK).Locked = True
+                .Column(Me.igyIDL).Locked = True
+                .Column(Me.igyID_INVENTARIO_LOTES_COSTOSO).Locked = False
+                .Column(Me.igyCANTIDAD_USAR).Locked = True
+                .Column(Me.igyNS).Locked = True
+                .Column(Me.igyCONFIRMACION).Locked = True
+
+                .AutoRedraw = True
+                .Refresh()
+            End With
+
+        Catch ex As Exception
+            HandleError(Me.Name, "FormateaGrid", ex)
+        End Try
     End Sub
 
 #End Region

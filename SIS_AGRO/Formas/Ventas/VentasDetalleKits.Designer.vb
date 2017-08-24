@@ -24,6 +24,7 @@ Partial Class VentasDetalleKits
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(VentasDetalleKits))
         Me.gridK = New FlexCell.Grid()
+        Me.btnAceptar = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'gridK
@@ -44,11 +45,21 @@ Partial Class VentasDetalleKits
         Me.gridK.TabIndex = 7
         Me.gridK.UncheckedImage = CType(resources.GetObject("gridK.UncheckedImage"), System.Drawing.Bitmap)
         '
+        'btnAceptar
+        '
+        Me.btnAceptar.Location = New System.Drawing.Point(686, 223)
+        Me.btnAceptar.Name = "btnAceptar"
+        Me.btnAceptar.Size = New System.Drawing.Size(109, 32)
+        Me.btnAceptar.TabIndex = 382
+        Me.btnAceptar.Text = "Aceptar"
+        Me.btnAceptar.UseVisualStyleBackColor = True
+        '
         'VentasDetalleKits
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(844, 262)
+        Me.Controls.Add(Me.btnAceptar)
         Me.Controls.Add(Me.gridK)
         Me.Name = "VentasDetalleKits"
         Me.Text = "Ventas k"
@@ -57,4 +68,5 @@ Partial Class VentasDetalleKits
     End Sub
 
     Friend WithEvents gridK As FlexCell.Grid
+    Friend WithEvents btnAceptar As Button
 End Class

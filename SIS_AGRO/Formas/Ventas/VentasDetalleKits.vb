@@ -3,7 +3,7 @@ Imports FlexCell
 
 Public Class VentasDetalleKits
 
-#Region "Columnas grid ventas"
+#Region "Columnas grid"
     Private igyIDA As Short = 1
     Private igyIDK As Short = 2
     Private igyCODIGO_ARTICULO As Short = 3
@@ -22,9 +22,16 @@ Public Class VentasDetalleKits
 
     Private _IDA As String
     Private _CodigoAlmacen As String
+    Private _Cantidad As Decimal
 #End Region
 
 #Region "Propiedades"
+    Public ReadOnly Property dtKPublica As DataTable
+        Get
+            Return Me.dtK
+        End Get
+    End Property
+
     Public Property IDA As String
         Get
             Return Me._IDA
@@ -43,16 +50,31 @@ Public Class VentasDetalleKits
         End Set
     End Property
 
+    Public Property Cantidad As Decimal
+        Get
+            Return Me._Cantidad
+        End Get
+        Set(value As Decimal)
+            Me._Cantidad = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Opciones"
-
+    Private Sub btnAceptar_Click(sender As Object, e As EventArgs) Handles btnAceptar.Click
+        Me.Close()
+    End Sub
 #End Region
 
 #Region "Eventos"
     Private Sub VentasDetalleKits_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         If Me.dtK.Rows.Count <> Me.gridK.Rows - 2 Then
             MsgBox("Falta la confirmación de algunos renglones.", MsgBoxStyle.Exclamation, Me.Text)
+            e.Cancel = True
+        End If
+
+        If Me.HayArticulosRepetidos = True Then
             e.Cancel = True
         End If
     End Sub
@@ -159,7 +181,7 @@ Public Class VentasDetalleKits
     Private Sub gridK_ButtonClick(Sender As Object, e As Grid.ButtonClickEventArgs) Handles gridK.ButtonClick
         Try
             Select Case e.Col.ToString
-                Case "7" 'BOTON_L
+                Case Me.igyBOTON_L.ToString
                     If Me.gridK.ActiveCell.Row <= 0 Then
                         Return
                     End If
@@ -334,6 +356,54 @@ LlenaArticulo:
         End Try
 
     End Sub
+
+    Private Function HayArticulosRepetidos() As Boolean
+        Dim RenglonRepetido As Integer
+
+        Try
+            Me.dtK.AcceptChanges()
+
+            For i = 1 To Me.gridK.Rows - 1
+                If txtLEN(Me.gridK.Cell(i, Me.igyCODIGO_ARTICULO).Text) = True Then
+                    For z = i + 1 To Me.gridK.Rows - 1
+                        If Me.gridK.Cell(i, Me.igyCODIGO_ARTICULO).Text = Me.gridK.Cell(z, Me.igyCODIGO_ARTICULO).Text Then
+                            RenglonRepetido = z
+
+                            MsgBox("El artículo " & Me.gridK.Cell(RenglonRepetido, igyCODIGO_ARTICULO).Text & " esta repetido en el renglón " & RenglonRepetido & ".", MsgBoxStyle.Exclamation)
+                            Me.gridK.Cell(RenglonRepetido, Me.igyCODIGO_ARTICULO).SetFocus()
+
+                            Return True
+                        End If
+                    Next
+                End If
+            Next
+        Catch ex As Exception
+            HandleError(Me.Name, "HayArticulosRepetidos", ex)
+        End Try
+
+        Return False
+    End Function
+
+    Private Function ValidaExistanSoloArticulosInventariables() As Boolean
+        Try
+            For i = 1 To Me.gridK.Rows - 1
+                If txtLEN(Me.gridK.Cell(i, Me.igyCODIGO_ARTICULO).Text) = True Then
+                    Dim oArticulo As New Class_CatArticulos(Me.gridK.Cell(i, Me.igyCODIGO_ARTICULO).Text)
+                    If oArticulo.Existe = False Then
+                        MsgBox("El artículo " & Me.gridK.Cell(i, igyCODIGO_ARTICULO).Text & "-" & Me.gridK.Cell(i, igyDESCRIPCION).Text & " del renglón " & i.ToString & " no existe.", MsgBoxStyle.Exclamation)
+                        Return False
+                    ElseIf oArticulo.INVENTARIABLE = "0" Then
+                        MsgBox("El artículo " & Me.gridK.Cell(i, igyCODIGO_ARTICULO).Text & "-" & Me.gridK.Cell(i, igyDESCRIPCION).Text & " del renglón " & i.ToString & " no es inventariable.", MsgBoxStyle.Exclamation)
+                        Return False
+                    End If
+                End If
+            Next
+        Catch ex As Exception
+            HandleError(Me.Name, "HayArticulosRepetidos", ex)
+        End Try
+
+        Return True
+    End Function
 
 #End Region
 
