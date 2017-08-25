@@ -62,6 +62,7 @@ Public Class Class_Compras_Global
 
 #Region "Campos ligados a la tabla"
     Private _Existe As Boolean 'lectura
+    Private _TIENE_SERIES As Boolean = False
 #End Region
 
 #Region "Campos públicos"
@@ -473,6 +474,12 @@ Public Class Class_Compras_Global
             Return Me._Existe
         End Get
     End Property
+
+    Public ReadOnly Property TIENE_SERIES() As Boolean
+        Get
+            Return Me._TIENE_SERIES
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedades públicos"
@@ -513,7 +520,9 @@ Public Class Class_Compras_Global
         Me._Nombre_Reporte = "RPT_FORMATO_COMPRAS"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "SELECT G.*,U1.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO,U2.NOMBRE_USUARIO NOMBRE_USUARIO_CANCELO FROM COMPRA_GLOBAL G " & _
+        Me._QuerySelect = "SELECT G.*,U1.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO,U2.NOMBRE_USUARIO NOMBRE_USUARIO_CANCELO, " & _
+        "ISNULL((SELECT TOP 1 '1' FROM COMPRA_DETALLE WHERE FOLIO_COMPRA=G.FOLIO_COMPRA AND LEN(LISTA_SERIES)>0),0) TIENE_SERIES " & _
+        "FROM COMPRA_GLOBAL G " & _
         "INNER JOIN SIS_USUARIOS U1 ON(G.CODIGO_USUARIO_GRABO=U1.CODIGO_USUARIO) " & _
         "LEFT JOIN SIS_USUARIOS U2 ON(G.CODIGO_USUARIO_CANCELO=U2.CODIGO_USUARIO) "
         Me._QueryOrder = " ORDER BY FOLIO_COMPRA"
@@ -945,6 +954,7 @@ Public Class Class_Compras_Global
                     Me._CODIGO_MONEDA = dReader("CODIGO_MONEDA").ToString
                     Me._SUBTOTAL_USD = CDbl(dReader("SUBTOTAL_USD"))
                     Me._IMPUESTO_USD = CDbl(dReader("IMPUESTO_USD"))
+                    Me._TIENE_SERIES = CBool(dReader("TIENE_SERIES"))
 
                     bResultado = True
                 End If
@@ -1644,6 +1654,41 @@ Public Class Class_Compras_Global
             End Try
         End With
         Return sResultado
+    End Function
+
+    Public Function ObtenerDetalleDisponiblesParaDevolucion() As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String
+
+        Try
+
+            sSQL = "SELECT R.CODIGO_ARTICULO, " &
+            "CASE WHEN A.ES_SERIALIZABLE = '1' THEN 'SER' WHEN A.INVENTARIABLE= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO, " &
+            "R.DESCRIPCION,R.DISPONIBLE,R.PRECIO,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE," &
+            "R.IMPUESTO_IMPORTE,R.ID_COMPRA_DETALLE," &
+            "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA " &
+            "FROM COMPRA_DETALLE R " &
+            "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
+            "WHERE R.FOLIO_COMPRA='" & Me._FOLIO_COMPRA & "' AND R.DISPONIBLE>0 " &
+            "ORDER BY R.ID_COMPRA_DETALLE "
+
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtenerDetalleDisponiblesParaDevolucion", ex)
+        End Try
+        Return dTabla
+    End Function
+
+    Public Function ObtenerDisponibleRenglon(ByVal iIdArticulo As Integer) As Decimal
+        Try
+            Dim Disponible As New Class_find("SELECT DISPONIBLE FROM COMPRA_DETALLE WHERE ID_COMPRA_DETALLE=" & iIdArticulo.ToString)
+            Return valorNumericoD(Disponible.Result1)
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtenerDisponibleRenglon", ex)
+        End Try
     End Function
 
 #End Region
