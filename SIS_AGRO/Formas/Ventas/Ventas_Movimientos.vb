@@ -3496,7 +3496,7 @@ busca_serie:
 
             End Select
 
-            MsgBox(Me.oVentaK.dtKPublica.Rows.Count.ToString)
+            'MsgBox(Me.oVentaK.dtKPublica.Rows.Count.ToString)
 
         Catch ex As Exception
             HandleError(Me.Name, "Grid_ButtonClick", ex)

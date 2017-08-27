@@ -37,11 +37,11 @@ Partial Class VentasDetalleKits
         Me.gridK.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
         Me.gridK.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gridK.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.gridK.Location = New System.Drawing.Point(50, 45)
+        Me.gridK.Location = New System.Drawing.Point(13, 45)
         Me.gridK.LockButton = True
         Me.gridK.Name = "gridK"
-        Me.gridK.Rows = 6
-        Me.gridK.Size = New System.Drawing.Size(745, 172)
+        Me.gridK.Rows = 2
+        Me.gridK.Size = New System.Drawing.Size(782, 172)
         Me.gridK.TabIndex = 7
         Me.gridK.UncheckedImage = CType(resources.GetObject("gridK.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -58,9 +58,12 @@ Partial Class VentasDetalleKits
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(844, 262)
+        Me.ClientSize = New System.Drawing.Size(804, 262)
         Me.Controls.Add(Me.btnAceptar)
         Me.Controls.Add(Me.gridK)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "VentasDetalleKits"
         Me.Text = "Ventas k"
         Me.ResumeLayout(False)

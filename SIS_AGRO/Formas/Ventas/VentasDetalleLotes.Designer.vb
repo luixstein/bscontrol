@@ -24,6 +24,7 @@ Partial Class VentasDetalleLotes
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(VentasDetalleLotes))
         Me.gridL = New FlexCell.Grid()
+        Me.btnAceptar = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'gridL
@@ -36,7 +37,7 @@ Partial Class VentasDetalleLotes
         Me.gridL.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
         Me.gridL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gridL.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.gridL.Location = New System.Drawing.Point(27, 32)
+        Me.gridL.Location = New System.Drawing.Point(12, 32)
         Me.gridL.LockButton = True
         Me.gridL.Name = "gridL"
         Me.gridL.Rows = 6
@@ -44,12 +45,24 @@ Partial Class VentasDetalleLotes
         Me.gridL.TabIndex = 9
         Me.gridL.UncheckedImage = CType(resources.GetObject("gridL.UncheckedImage"), System.Drawing.Bitmap)
         '
+        'btnAceptar
+        '
+        Me.btnAceptar.Location = New System.Drawing.Point(642, 168)
+        Me.btnAceptar.Name = "btnAceptar"
+        Me.btnAceptar.Size = New System.Drawing.Size(109, 32)
+        Me.btnAceptar.TabIndex = 383
+        Me.btnAceptar.Text = "Aceptar"
+        Me.btnAceptar.UseVisualStyleBackColor = True
+        '
         'VentasDetalleLotes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(819, 193)
+        Me.ClientSize = New System.Drawing.Size(763, 207)
+        Me.Controls.Add(Me.btnAceptar)
         Me.Controls.Add(Me.gridL)
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "VentasDetalleLotes"
         Me.Text = "VentasDetalleLotes"
         Me.ResumeLayout(False)
@@ -57,4 +70,5 @@ Partial Class VentasDetalleLotes
     End Sub
 
     Friend WithEvents gridL As FlexCell.Grid
+    Friend WithEvents btnAceptar As Button
 End Class

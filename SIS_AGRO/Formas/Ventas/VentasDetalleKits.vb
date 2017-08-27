@@ -72,10 +72,17 @@ Public Class VentasDetalleKits
         If Me.dtK.Rows.Count <> Me.gridK.Rows - 2 Then
             MsgBox("Falta la confirmación de algunos renglones.", MsgBoxStyle.Exclamation, Me.Text)
             e.Cancel = True
+            Return
         End If
 
         If Me.HayArticulosRepetidos = True Then
             e.Cancel = True
+            Return
+        End If
+
+        If Me.ValidaExistanSoloArticulosInventariables = False Then
+            e.Cancel = True
+            Return
         End If
     End Sub
 
@@ -188,6 +195,9 @@ Public Class VentasDetalleKits
 
                     Me.oVentaL.IDA = Me._IDA
                     Me.oVentaL.IDK = Me.gridK.Cell(Me.gridK.ActiveCell.Row, Me.igyIDK).Text
+                    Me.oVentaL.CodigoArticulo = Me.gridK.Cell(Me.gridK.ActiveCell.Row, Me.igyCODIGO_ARTICULO).Text
+                    Me.oVentaL.Cantidad = CDec(Me.gridK.Cell(Me.gridK.ActiveCell.Row, Me.igyCANTIDAD).Text)
+                    Me.oVentaL.CodigoAlmacen = Me._CodigoAlmacen
                     Me.oVentaL.RefrescaGridLDesdeK()
                     Me.oVentaL.ShowDialog()
 
@@ -249,8 +259,8 @@ Public Class VentasDetalleKits
                 .AutoRedraw = False
                 .DisplayFocusRect = False
 
-                .Column(Me.igyIDA).Width = 50
-                .Column(Me.igyIDK).Width = 50
+                .Column(Me.igyIDA).Width = 20
+                .Column(Me.igyIDK).Width = 20
                 .Column(Me.igyCODIGO_ARTICULO).Width = 75
                 .Column(Me.igyDESCRIPCION).Width = 250
                 .Column(Me.igyCANTIDAD).Width = 75
@@ -286,10 +296,12 @@ Public Class VentasDetalleKits
                 .Column(Me.igyCOSTO).Locked = True
                 .Column(Me.igyIMPORTE).Locked = True
 
-                .Column(Me.igyIDA).Visible = False
-                .Column(Me.igyIDK).Visible = False
+                .Column(Me.igyIDA).Visible = True
+                .Column(Me.igyIDK).Visible = True  ' False
                 .Column(Me.igyCANTIDAD_ANTERIOR).Visible = False
-                .Column(Me.igyIDA).Visible = False
+                .Column(Me.igyBOTON_L).Visible = True
+                .Column(Me.igyCOSTO).Visible = False
+                .Column(Me.igyIMPORTE).Visible = False
 
                 .Column(Me.igyBOTON_L).CellType = CellTypeEnum.Button
 

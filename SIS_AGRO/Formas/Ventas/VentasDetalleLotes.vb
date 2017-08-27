@@ -6,7 +6,7 @@ Public Class VentasDetalleLotes
     Private igyIDA As Short = 1
     Private igyIDK As Short = 2
     Private igyIDL As Short = 3
-    Private igyID_INVENTARIO_LOTES_COSTOSO As Short = 4
+    Private igyID_INVENTARIO_LOTES_COSTOS As Short = 4
     Private igyCANTIDAD_USAR As Short = 5
     Private igyNS As Short = 6
     Private igyCONFIRMACION As Short = 7
@@ -71,7 +71,9 @@ Public Class VentasDetalleLotes
 #End Region
 
 #Region "Opciones"
-
+    Private Sub btnAceptar_Click(sender As Object, e As EventArgs) Handles btnAceptar.Click
+        Me.Close()
+    End Sub
 #End Region
 
 #Region "Eventos"
@@ -79,6 +81,7 @@ Public Class VentasDetalleLotes
         If Me.dtL.Rows.Count <> Me.gridL.Rows - 2 Then
             MsgBox("Falta confirmacion")
             e.Cancel = True
+            Return
         End If
     End Sub
 
@@ -157,6 +160,7 @@ Public Class VentasDetalleLotes
             Dim dView As New DataView(Me.dtL)
             dView.RowFilter = "IDA=" & Me._IDA & " AND IDK=" & Me._IDK
 
+            'Si hay detalle de lotes , se carga
             If dView.Count > 0 Then
                 With Me.gridL
                     .AutoRedraw = False
@@ -165,34 +169,51 @@ Public Class VentasDetalleLotes
                     .AutoRedraw = True
                     .Refresh()
                 End With
-            Else
+            Else 'Si no, se construye en blanco la tabla lista para capturarle lotes
 
                 Dim dRow As DataRow
 
+                If txtLEN(Me._CodigoArticulo) = False Then
+                    MsgBox("No ha especificado el artículo de series que se usarán.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.gridL.DataSource = Nothing
+                    Return False
+                End If
+
                 If Me._Cantidad = 0 Then
                     MsgBox("No ha especificado la cantidad de series que se usarán.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.gridL.DataSource = Nothing
                     Return False
                 End If
 
                 Dim oArticulo As New Class_CatArticulos(Me._CodigoArticulo)
 
-                If oArticulo.Existe = True AndAlso oArticulo.ES_SERIALIZABLE = True AndAlso oArticulo.INVENTARIABLE = "1" Then
-                    For j = 1 To Me._Cantidad
-                        dRow = Me.dtL.NewRow
-
-                        'dRow("POSICION") = i
-                        'dRow("CODIGO_ARTICULO") = Me.Grid.Cell(i, Me.igyCODIGO_ARTICULO).Text
-                        'dRow("DESCRIPCION") = Me.Grid.Cell(i, Me.igyDESCRIPCION).Text
-                        'dRow("ID_INVENTARIO_LOTES_COSTOS") = ""
-                        'dRow("NUMERO_SERIE") = ""
-
-                        dRow("IDA") = Me._IDA
-                        dRow("IDK") = Me._IDK
-                        dRow("CANTIDAD_USAR") = "1"
-
-                        Me.dtL.Rows.Add(dRow)
-                    Next
+                If oArticulo.Existe = False Then
+                    MsgBox("El artículo indicado no existe.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.gridL.DataSource = Nothing
+                    Return False
                 End If
+
+                If Not (oArticulo.ES_SERIALIZABLE = True AndAlso oArticulo.INVENTARIABLE = "1") Then
+                    MsgBox("El artículo indicado no es serializable.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.gridL.DataSource = Nothing
+                    Return False
+                End If
+
+                For j = 1 To Me._Cantidad
+                    dRow = Me.dtL.NewRow
+
+                    'dRow("POSICION") = i
+                    'dRow("CODIGO_ARTICULO") = Me.Grid.Cell(i, Me.igyCODIGO_ARTICULO).Text
+                    'dRow("DESCRIPCION") = Me.Grid.Cell(i, Me.igyDESCRIPCION).Text
+                    'dRow("ID_INVENTARIO_LOTES_COSTOS") = ""
+                    'dRow("NUMERO_SERIE") = ""
+
+                    dRow("IDA") = Me._IDA
+                    dRow("IDK") = Me._IDK
+                    dRow("CANTIDAD_USAR") = "1"
+
+                    Me.dtL.Rows.Add(dRow)
+                Next
 
                 '.Columns.Add("IDA", GetType(Integer))
                 '.Columns.Add("IDK", GetType(Integer))
@@ -273,52 +294,25 @@ Public Class VentasDetalleLotes
         End Try
     End Sub
 
-    Private Sub GestionaGrid(ByVal e As System.Windows.Forms.KeyEventArgs)
-        Try
-            Dim Columna As Integer, Renglon As Integer
-            'Dim StrCod As String, sCuentaContable As String = "", dCantidad As Decimal, dPrecio As Decimal, sCodigoCentroCosto As String
-            'Dim oArticulos As Class_CatArticulos
-
-            If Me.gridL.Selection.FirstRow = Me.gridL.Rows - 1 Then
-                Return
-            End If
-
-            Columna = Me.gridL.Selection.FirstCol
-            Renglon = Me.gridL.Selection.FirstRow
-
-            Select Case e.KeyCode
-                Case Keys.F6
-
-                Case Keys.Enter
-                    Select Case Columna
-                        'Case Me.igyCANTIDAD
-                            'If Me.gridK.Rows = Renglon + 1 Then Me.gridK.Rows = Me.gridK.Rows + 1
-                        Case Me.igyCONFIRMACION
-                            Me.gridL.Cell(Renglon, Columna).Text = "Confirmado"
-                    End Select
-                    'Me.dtK.AcceptChanges()
-            End Select
-
-        Catch ex As Exception
-            HandleError(Me.Name, "GestionaGrid", ex)
-        End Try
-
-    End Sub
-
     Private Sub FormateaGrid()
         Try
             With Me.gridL
                 .AutoRedraw = False
                 .DisplayFocusRect = False
 
+                .Column(Me.igyIDA).Width = 20
+                .Column(Me.igyIDK).Width = 20
+                .Column(Me.igyIDL).Width = 20
 
                 .Column(Me.igyIDA).Locked = True
                 .Column(Me.igyIDK).Locked = True
                 .Column(Me.igyIDL).Locked = True
-                .Column(Me.igyID_INVENTARIO_LOTES_COSTOSO).Locked = False
+                .Column(Me.igyID_INVENTARIO_LOTES_COSTOS).Locked = False
                 .Column(Me.igyCANTIDAD_USAR).Locked = True
                 .Column(Me.igyNS).Locked = True
                 .Column(Me.igyCONFIRMACION).Locked = True
+
+                .Column(Me.igyIDA).Visible = True
 
                 .AutoRedraw = True
                 .Refresh()
@@ -328,6 +322,153 @@ Public Class VentasDetalleLotes
             HandleError(Me.Name, "FormateaGrid", ex)
         End Try
     End Sub
+
+    Private Sub GestionaGrid(ByVal e As System.Windows.Forms.KeyEventArgs)
+        Dim sLote As String = ""
+        Dim oSerie As Class_Inventarios_Lotes_Series
+        Try
+            With Me.gridL
+                Dim Renglon As Integer = .Selection.FirstRow
+                Dim Columna As Integer = .Selection.FirstCol
+
+                If .Selection.FirstRow = .Rows - 1 Then
+                    Return
+                End If
+
+                Select Case e.KeyCode
+                    Case Keys.Return
+                        Select Case Columna
+                            Case Me.igyNS
+                                If Columna = Me.igyNS AndAlso txtLEN(.Cell(Renglon, Me.igyIDL).Text) = True Then
+                                    sLote = .Cell(Renglon, Me.igyID_INVENTARIO_LOTES_COSTOS).Text
+                                    If txtLEN(sLote) = False Then
+                                        GoTo busca_serie
+                                        Return
+                                    End If
+
+                                    If Me.EstableceSerie(Renglon, sLote) = True Then
+                                        'If Renglon + 1 < .Rows Then
+                                        '    .Cell(Renglon + 1, Me.igySerieDescripcion).SetFocus()
+                                        'Else
+                                        '    .Cell(1, Me.igySerieDescripcion).SetFocus()
+                                        'End If
+                                    End If
+                                End If
+                            Case Me.igyCONFIRMACION
+                                Me.gridL.Cell(Renglon, Columna).Text = "Confirmado"
+                        End Select
+
+                    Case Keys.F6
+                        If Columna = Me.igyNS AndAlso txtLEN(.Cell(Renglon, Me.igyIDL).Text) = True Then
+busca_serie:
+                            oSerie = New Class_Inventarios_Lotes_Series
+                            sLote = oSerie.BusquedaVisual(Me._CodigoArticulo, Me._CodigoAlmacen)
+                            If txtLEN(sLote) = True Then
+                                If RepiteSerie(Renglon, sLote) = False Then
+                                    Me.EstableceSerie(Renglon, sLote)
+                                End If
+                            End If
+                        End If
+
+                    Case Keys.F7
+                        If Columna = Me.igyNS AndAlso txtLEN(.Cell(Renglon, Me.igyIDL).Text) = True Then
+                            oSerie = New Class_Inventarios_Lotes_Series
+
+                            Dim lote As New Class_Inventarios_Lotes_Series.Lote
+                            lote = oSerie.BusquedaVisualSeriesMultiplesFolio(Me._CodigoArticulo, Me._CodigoAlmacen)
+
+                            If txtLEN(lote.FolioMovimiento) = True Then
+
+                                Dim dtSeries As DataTable = oSerie.ObtieneRenglonesSeriesFolio(lote.FolioMovimiento, Me._CodigoArticulo)
+                                If dtSeries.Rows.Count = 0 Then
+                                    MsgBox("No se encontraron series disponibles del artículo " & Me._CodigoArticulo & " del folio " & lote.FolioMovimiento, MsgBoxStyle.Exclamation, Me.Text)
+                                    Return
+                                End If
+
+                                Dim i As Integer, iArticulosPendientes As Integer = Me.CantidadArticulosPendientesSerie(Me._CodigoArticulo) 'iArticulosEncontrados As Integer
+                                Dim iSeriesUsadas As Double = lote.Cantidad, iRowEncontrado As Integer = 0
+                                For i = 1 To Me.gridL.Rows - 1
+                                    If iArticulosPendientes <= 0 Or iSeriesUsadas <= 0 Then
+                                        Exit For
+                                    End If
+                                    If txtLEN(Me.gridL.Cell(i, Me.igyIDL).Text) = True AndAlso txtLEN(Me.gridL.Cell(i, Me.igyID_INVENTARIO_LOTES_COSTOS).Text) = False Then
+                                        iArticulosPendientes -= 1
+                                        iSeriesUsadas -= 1
+                                        Me.gridL.Cell(i, Me.igyID_INVENTARIO_LOTES_COSTOS).Text = dtSeries.Rows(iRowEncontrado)("ID_INVENTARIO_LOTES_COSTOS").ToString
+                                        Me.gridL.Cell(i, Me.igyNS).Text = dtSeries.Rows(iRowEncontrado)("NUMERO_SERIE").ToString
+                                        iRowEncontrado += 1 'empieza desde el 0
+                                    End If
+                                Next
+
+
+                            End If
+                        End If
+
+                    Case Keys.Delete
+                        e.SuppressKeyPress = True
+                End Select
+            End With
+
+        Catch ex As Exception
+            HandleError(Me.Name, "GestionaGrid", ex)
+        End Try
+    End Sub
+
+    Private Function CantidadArticulosPendientesSerie(ByVal sCodigoArticulo As String) As Integer
+        Dim iArticulosEncontrados As Integer = 0
+        Try
+            For i = 1 To Me.gridL.Rows - 1
+                If txtLEN(Me.gridL.Cell(i, Me.igyIDL).Text) = True AndAlso txtLEN(Me.gridL.Cell(i, Me.igyID_INVENTARIO_LOTES_COSTOS).Text) = False Then
+                    iArticulosEncontrados += 1
+                End If
+            Next
+        Catch ex As Exception
+            HandleError(Me.Name, "CantidadArticulosPendientesSerie", ex)
+        End Try
+        Return iArticulosEncontrados
+    End Function
+
+    Private Function EstableceSerie(ByVal Renglon As Integer, ByVal ID_INVENTARIO_LOTES_COSTOS As String) As Boolean
+        Try
+            Dim oSerie As New Class_Inventarios_Lotes_Series(ID_INVENTARIO_LOTES_COSTOS)
+            If oSerie.Existe = True Then
+                Me.gridL.Cell(Renglon, Me.igyID_INVENTARIO_LOTES_COSTOS).Text = oSerie.ID_INVENTARIO_LOTES_COSTOS
+                Me.gridL.Cell(Renglon, Me.igyNS).Text = oSerie.NUMERO_SERIE
+                Return True
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, "EstableceSerie", ex)
+        End Try
+    End Function
+
+    Private Function RepiteSerie(ByVal Renglon As Integer, ByVal ID_INVENTARIO_LOTES_COSTOS As String) As Boolean
+        Dim RenglonRepetido As Integer
+        Try
+            Me.dtL.AcceptChanges()
+
+            For i = 1 To Me.gridL.Rows - 1
+                If i <> Renglon Then
+                    If txtLEN(Me.gridL.Cell(i, Me.igyIDL).Text) = True Then
+                        If ID_INVENTARIO_LOTES_COSTOS = Me.gridL.Cell(i, Me.igyID_INVENTARIO_LOTES_COSTOS).Text Then
+                            RenglonRepetido = i
+
+                            MsgBox("La serie " & Me.gridL.Cell(RenglonRepetido, igyNS).Text &
+                                   " del artículo " & Me._CodigoArticulo & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf &
+                                   "", MsgBoxStyle.Exclamation)
+                            Me.gridL.Cell(RenglonRepetido, Me.igyNS).SetFocus()
+
+                            Return True
+
+                        End If
+
+                    End If
+                End If
+
+            Next
+        Catch ex As Exception
+            HandleError(Me.Name, "RepiteSerie", ex)
+        End Try
+    End Function
 
 #End Region
 
