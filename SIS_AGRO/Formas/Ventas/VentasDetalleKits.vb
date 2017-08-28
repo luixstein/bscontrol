@@ -266,11 +266,18 @@ Public Class VentasDetalleKits
                 .Column(Me.igyCANTIDAD).Width = 75
                 .Column(Me.igyCANTIDAD_ANTERIOR).Width = 75
                 .Column(Me.igyBOTON_L).Width = 50
+                .Column(Me.igyCONFIRMACION).Width = 50
+                .Column(Me.igyCOSTO).Width = 50
+                .Column(Me.igyIMPORTE).Width = 50
 
+                .Cell(0, Me.igyIDA).Text = "IDA"
+                .Cell(0, Me.igyIDK).Text = "IDK"
                 .Cell(0, Me.igyCODIGO_ARTICULO).Text = "Código"
                 .Cell(0, Me.igyDESCRIPCION).Text = "Descripción"
                 .Cell(0, Me.igyCANTIDAD).Text = "Cantidad"
+                .Cell(0, Me.igyCANTIDAD_ANTERIOR).Text = "CantAnt"
                 .Cell(0, Me.igyBOTON_L).Text = "Lotes"
+                .Cell(0, Me.igyCONFIRMACION).Text = ""
                 .Cell(0, Me.igyCOSTO).Text = "Costo"
                 .Cell(0, Me.igyIMPORTE).Text = "Importe"
 
@@ -290,8 +297,11 @@ Public Class VentasDetalleKits
 
                 .Column(Me.igyIDA).Locked = True
                 .Column(Me.igyIDK).Locked = True
+                .Column(Me.igyCODIGO_ARTICULO).Locked = False
                 .Column(Me.igyDESCRIPCION).Locked = True
+                .Column(Me.igyCANTIDAD).Locked = False
                 .Column(Me.igyCANTIDAD_ANTERIOR).Locked = True
+                .Column(Me.igyBOTON_L).Locked = False
                 .Column(Me.igyCONFIRMACION).Locked = True
                 .Column(Me.igyCOSTO).Locked = True
                 .Column(Me.igyIMPORTE).Locked = True

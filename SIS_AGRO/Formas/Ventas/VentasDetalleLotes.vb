@@ -303,16 +303,42 @@ Public Class VentasDetalleLotes
                 .Column(Me.igyIDA).Width = 20
                 .Column(Me.igyIDK).Width = 20
                 .Column(Me.igyIDL).Width = 20
+                .Column(Me.igyID_INVENTARIO_LOTES_COSTOS).Width = 50
+                .Column(Me.igyCANTIDAD_USAR).Width = 75
+                .Column(Me.igyNS).Width = 75
+                .Column(Me.igyCONFIRMACION).Width = 50
+                .Column(Me.igyCOSTO).Width = 50
+                .Column(Me.igyIMPORTE).Width = 50
+
+                .Cell(0, Me.igyIDA).Text = "IDA"
+                .Cell(0, Me.igyIDK).Text = "IDK"
+                .Cell(0, Me.igyIDL).Text = "IDL"
+                .Cell(0, Me.igyID_INVENTARIO_LOTES_COSTOS).Text = "IDLoteCosto"
+                .Cell(0, Me.igyCANTIDAD_USAR).Text = "Cantidad"
+                .Cell(0, Me.igyNS).Text = "IDA"
+                .Cell(0, Me.igyCONFIRMACION).Text = ""
+                .Cell(0, Me.igyCOSTO).Text = "Costo"
+                .Cell(0, Me.igyIMPORTE).Text = "Importe"
 
                 .Column(Me.igyIDA).Locked = True
                 .Column(Me.igyIDK).Locked = True
                 .Column(Me.igyIDL).Locked = True
-                .Column(Me.igyID_INVENTARIO_LOTES_COSTOS).Locked = False
+                .Column(Me.igyID_INVENTARIO_LOTES_COSTOS).Locked = True
                 .Column(Me.igyCANTIDAD_USAR).Locked = True
                 .Column(Me.igyNS).Locked = True
                 .Column(Me.igyCONFIRMACION).Locked = True
+                .Column(Me.igyCOSTO).Locked = True
+                .Column(Me.igyIMPORTE).Locked = True
 
                 .Column(Me.igyIDA).Visible = True
+                .Column(Me.igyIDK).Visible = True
+                .Column(Me.igyIDL).Visible = True
+                .Column(Me.igyID_INVENTARIO_LOTES_COSTOS).Visible = True
+                .Column(Me.igyCANTIDAD_USAR).Visible = True
+                .Column(Me.igyNS).Visible = True
+                .Column(Me.igyCONFIRMACION).Visible = True
+                .Column(Me.igyCOSTO).Visible = False
+                .Column(Me.igyIMPORTE).Visible = False
 
                 .AutoRedraw = True
                 .Refresh()
