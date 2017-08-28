@@ -152,6 +152,8 @@ Public Class Frm_CXP_Pagos_Acreedores
             Me.DesplegarDocumentos()
             Me.DesplegarDocumentosProveedor()
             Me.DesplegarTiposPago()
+            Me.DesplegarMonedas()
+
             Me.dtFecha.Value = Date.Now
 
             Me.Inicializa()
@@ -258,9 +260,11 @@ enter:
                     Me.LblCuentaBancaria.Text = oCuentaBancaria.NOMBRE_CUENTA_BANCARIA
                     Me.lblNombreMonedaOrigen.Text = oCuentaBancaria.NOMBRE_MONEDA
                     If oCuentaBancaria.CODIGO_MONEDA <> 1 Then '1=pesos
-                        Me.ckbDolares.Checked = True
+                        'Me.ckbDolares.Checked = True
+                        Me.cboMoneda.SelectedValue = 2
                     Else
-                        Me.ckbDolares.Checked = False
+                        'Me.ckbDolares.Checked = False
+                        Me.cboMoneda.SelectedValue = 1
                     End If
 
                     Me.GeneraFolio()
@@ -401,7 +405,8 @@ buscar_acreedor:
             If e.KeyCode = Keys.Return Then
                 If valorNumerico(Me.TxtImporte.Text) > 0 Then
                     Me.TxtImporte.Text = FormatImporteContable(CDbl(Me.TxtImporte.Text))
-                    If Me.ckbDolares.Checked = True Then
+                    'If Me.ckbDolares.Checked = True Then
+                    If Me.cboMoneda.SelectedValue = 2 Then
                         Me.txtTipoCambio.Focus()
                         Me.CalculaImporteDolares()
                         'If txtLEN(Me.TxtImporte.Text) = True And valorNumerico(Me.TxtImporte.Text) > 0 Then
@@ -1433,6 +1438,20 @@ buscar_acreedor:
         End Try
     End Sub
 
+    Private Sub DesplegarMonedas()
+        Dim oMoneda As New Class_CatMonedas
+        Dim dTable As New DataTable
+
+        With Me.cboMoneda
+            .DisplayMember = "NOMBRE"
+            .ValueMember = "CODIGO_MONEDA"
+            dTable = oMoneda.ObtenerElementos
+            dTable.Rows(2).Delete() 'Quita Euros del DataTable
+            .DataSource = dTable
+            .SelectedValue = 1
+        End With
+    End Sub
+
     'Private Function ValidaPrePoliza() As Boolean
     '    Dim bResultado As Boolean = False
 
@@ -1712,7 +1731,8 @@ buscar_acreedor:
                 Me.txtImporteDolares.Text = FormatImporteContable(oBancosCXP.TOTAL_DOLARES)
 
                 If Me.oBancosCXP.CODIGO_MONEDA <> 1 Then '1=pesos
-                    Me.ckbDolares.Checked = True
+                    'Me.ckbDolares.Checked = True
+                    Me.cboMoneda.SelectedValue = 2
                 End If
 
                 Me.txtRetencion.Text = FormatImporteContable(oBancosCXP.RETENCION)
@@ -2072,7 +2092,8 @@ buscar_acreedor:
                     Me.Grid1.Locked = False
                     Me.TxtFolio.Enabled = True
                     Me.TxtCuentaBancaria.Enabled = True
-                    Me.ckbDolares.Enabled = False
+                    'Me.ckbDolares.Enabled = False
+                    Me.cboMoneda.Enabled = False
                     Me.txtTipoCambio.Enabled = True
                     Me.txtImporteDolares.Enabled = False
                     Me.CboFacturasRecibidas.Enabled = True
@@ -2089,7 +2110,8 @@ buscar_acreedor:
                     Me.tsbImprimir.Enabled = True
                     Me.CmbDocumento.Enabled = False
                     Me.dtFecha.Enabled = False
-                    Me.ckbDolares.Enabled = False
+                    'Me.ckbDolares.Enabled = False
+                    Me.cboMoneda.Enabled = False
                     Me.txtTipoCambio.Enabled = False
                     Me.txtImporteDolares.Enabled = False
                     Me.TxtCodigoProveedor.Enabled = False
@@ -2118,7 +2140,8 @@ buscar_acreedor:
                     Me.tsbImprimir.Enabled = True
                     Me.CmbDocumento.Enabled = False
                     Me.dtFecha.Enabled = False
-                    Me.ckbDolares.Enabled = False
+                    'Me.ckbDolares.Enabled = False
+                    Me.cboMoneda.Enabled = False
                     Me.txtTipoCambio.Enabled = False
                     Me.txtImporteDolares.Enabled = False
                     Me.TxtCodigoProveedor.Enabled = False
@@ -2570,6 +2593,5 @@ BuscaEmbarque:
     End Sub
 
 #End Region
-
 
 End Class
