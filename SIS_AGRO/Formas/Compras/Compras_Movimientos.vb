@@ -172,6 +172,7 @@ Public Class Compras_Movimientos
             Dim sfolio As String = Me.txtFolioCompra.Text
             Me.DesplegarDocumentos(False)
             Me.DesplegarAlmacenes()
+            Me.DesplegarMonedas()
             Me.Consultar()
             Me.GestionaCambioEstado()
             Me.txtFolioCompra.Enabled = False
@@ -179,6 +180,7 @@ Public Class Compras_Movimientos
         Else
             Me.DesplegarDocumentos()
             Me.DesplegarAlmacenes()
+            Me.DesplegarMonedas()
             Me.Inicializa()
             Me.Cambia_Estado(enumEstados.NUEVO)
         End If
@@ -358,12 +360,23 @@ Buscar:
         End Select
     End Sub
 
-    Private Sub chkImprimirDolares_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles chkImprimirDolares.KeyDown
-        txtTAB(e)
-    End Sub
+    'Private Sub chkImprimirDolares_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles chkImprimirDolares.KeyDown
+    '    txtTAB(e)
+    'End Sub
 
-    Private Sub chkImprimirDolares_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkImprimirDolares.CheckedChanged
-        If Me.chkImprimirDolares.Checked = True Then
+    'Private Sub chkImprimirDolares_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkImprimirDolares.CheckedChanged
+    '    If Me.chkImprimirDolares.Checked = True Then
+    '        Me.txtTipoCambio.Enabled = True
+    '        Me.gbUSD.Visible = True
+    '    Else
+    '        Me.txtTipoCambio.Enabled = False
+    '        Me.gbUSD.Visible = False
+    '    End If
+    '    Me.TotalesUSD()
+    'End Sub
+
+    Private Sub cboMoneda_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboMoneda.SelectedIndexChanged
+        If Me.cboMoneda.SelectedIndex = 1 Then
             Me.txtTipoCambio.Enabled = True
             Me.gbUSD.Visible = True
         Else
@@ -454,7 +467,7 @@ Buscar:
             Me.txtProveedor.Text = ""
             Me.lblProveedor.Text = ""
 
-            Me.chkImprimirDolares.Checked = False
+            'Me.chkImprimirDolares.Checked = False
             Me.txtTipoCambio.Text = "0"
 
             Me.txtEntregarA.Text = ""
@@ -725,7 +738,8 @@ Buscar:
                         Me.Grid.Locked = False
                         Me.GridSeries.Locked = False
                         Me.DtpFechaFacturaProveedor.Enabled = True
-                        Me.chkImprimirDolares.Enabled = False
+                        'Me.chkImprimirDolares.Enabled = False
+                        Me.cboMoneda.Enabled = False
                         Me.BtnActualizaFolioProv.Visible = False
                         Me.btnActualizaConcepto.Visible = False
                         Me.txtIVA.Enabled = True
@@ -766,7 +780,8 @@ Buscar:
                         Me.Grid.Locked = False
                         Me.GridSeries.Locked = True
                         Me.DtpFechaFacturaProveedor.Enabled = False
-                        Me.chkImprimirDolares.Enabled = True
+                        'Me.chkImprimirDolares.Enabled = True
+                        Me.cboMoneda.Enabled = True
                         Me.BtnActualizaFolioProv.Visible = False
                         Me.btnActualizaConcepto.Visible = False
                         Me.txtIVA.Enabled = True
@@ -964,7 +979,8 @@ Buscar:
                 .TOTAL = valorNumerico(Me.txtTotal.Text)
                 .RETENCION = valorNumerico(Me.TxtRetencion.Text)
                 .IMPUESTO_PORCENTAJE = dPorcentajeIVAGlobal
-                .TIPO_DE_CAMBIO = CDbl(IIf(Me.chkImprimirDolares.Checked, valorNumerico(Me.txtTipoCambio.Text), 0))
+                '.TIPO_DE_CAMBIO = CDbl(IIf(Me.chkImprimirDolares.Checked, valorNumerico(Me.txtTipoCambio.Text), 0))
+                .TIPO_DE_CAMBIO = CDbl(IIf(Me.cboMoneda.SelectedIndex = 1, valorNumerico(Me.txtTipoCambio.Text), 0))
                 .ENTREGAR_A = Me.txtEntregarA.Text
                 .SOLICITO = Me.txtSolicito.Text
                 .CONCEPTO = Me.TxtConcepto.Text
@@ -1250,10 +1266,12 @@ Buscar:
                 'Esto va antes de los totales, porque se va ejecutar el checked de los dolares
                 If Me.oCompras.TIPO_DE_CAMBIO > 0 Then
                     Me.txtTipoCambio.Text = Me.oCompras.TIPO_DE_CAMBIO.ToString
-                    Me.chkImprimirDolares.Checked = True
+                    'Me.chkImprimirDolares.Checked = True
+                    Me.cboMoneda.SelectedIndex = 1
                 Else
                     Me.txtTipoCambio.Text = "0"
-                    Me.chkImprimirDolares.Checked = False
+                    'Me.chkImprimirDolares.Checked = False
+                    Me.cboMoneda.SelectedIndex = 0
                 End If
 
                 If bEsReferencia = False Then 'Estos datos no tienen que llenarse si se esta aplicando una oc(jalando a una co)
@@ -1533,7 +1551,15 @@ Buscar:
                 Exit Function
             End If
 
-            If Me.chkImprimirDolares.Checked = True Then
+            'If Me.chkImprimirDolares.Checked = True Then
+            '    If txtLEN(Me.oProveedores.CUENTA_CONTABLE_DOLARES) = False Then
+            '        MsgBox("El proveedor no tiene una cuenta contable en dólares asignada.", MsgBoxStyle.Exclamation, "ValidarOrdenCompra")
+            '        Me.txtProveedor.Focus()
+            '        Exit Function
+            '    End If
+            'End If
+
+            If Me.cboMoneda.SelectedIndex = 1 Then
                 If txtLEN(Me.oProveedores.CUENTA_CONTABLE_DOLARES) = False Then
                     MsgBox("El proveedor no tiene una cuenta contable en dólares asignada.", MsgBoxStyle.Exclamation, "ValidarOrdenCompra")
                     Me.txtProveedor.Focus()
@@ -1760,6 +1786,20 @@ Buscar:
         End Try
     End Sub
 
+    Private Sub DesplegarMonedas()
+        Dim oMoneda As New Class_CatMonedas
+        Dim dTable As New DataTable
+
+        With Me.cboMoneda
+            .DisplayMember = "NOMBRE"
+            .ValueMember = "CODIGO_MONEDA"
+            dTable = oMoneda.ObtenerElementos
+            dTable.Rows(2).Delete() 'Quita Euros del DataTable
+            .DataSource = dTable
+            .SelectedValue = 1
+        End With
+    End Sub
+
     Private Function Totales(Optional ByVal bIva As Boolean = False) As Boolean
         Dim bResultado As Boolean = False
         Try
@@ -1849,7 +1889,13 @@ Buscar:
             Dim dTipoCambio As Double = valorNumerico(Me.txtTipoCambio.Text)
             Dim dSubtotalUSD As Double = 0, dIVAUSD As Double = 0, dTotalUSD As Double = 0
 
-            If dTipoCambio > 0 And Me.chkImprimirDolares.Checked = True Then 'Si no esta chequeado en usd , no va entrar aqui y van a quedan en ceros(simulando que se inicilizaron)
+            'If dTipoCambio > 0 And Me.chkImprimirDolares.Checked = True Then 'Si no esta chequeado en usd , no va entrar aqui y van a quedan en ceros(simulando que se inicilizaron)
+            '    dSubtotalUSD = Redondear(valorNumerico(Me.TxtSubTotal.Text) / dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            '    dIVAUSD = Redondear(valorNumerico(Me.txtIVA.Text) / dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            '    dTotalUSD = Redondear(valorNumerico(Me.txtTotal.Text) / dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            'End If
+
+            If dTipoCambio > 0 And Me.cboMoneda.SelectedIndex = 1 Then 'Si no esta chequeado en usd , no va entrar aqui y van a quedan en ceros(simulando que se inicilizaron)
                 dSubtotalUSD = Redondear(valorNumerico(Me.TxtSubTotal.Text) / dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
                 dIVAUSD = Redondear(valorNumerico(Me.txtIVA.Text) / dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
                 dTotalUSD = Redondear(valorNumerico(Me.txtTotal.Text) / dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
@@ -2752,5 +2798,4 @@ BuscarCuentas:
         Return False
     End Function
 #End Region
-
 End Class

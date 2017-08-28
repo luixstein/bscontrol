@@ -234,6 +234,7 @@ Public Class Ventas_Movimientos
             Me.DesplegarTiposMercados()
             Me.DesplegarTiposNegociaciones()
             Me.DesplegarVendedores()
+            Me.DesplegarMonedas()
 
             Me.Inicializa()
 
@@ -448,10 +449,37 @@ Buscar:
         Me.GestionaGrid(e)
     End Sub
 
-    Private Sub chkImprimirDolares_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkImprimirDolares.CheckedChanged
+    'Private Sub chkImprimirDolares_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkImprimirDolares.CheckedChanged
+    '    Dim ocliente As Class_CatClientes
+    '    Try
+    '        If Me.chkImprimirDolares.Checked = True Then
+    '            Me.gbDolares.Visible = True
+    '            Me.txtTipoCambio.Enabled = True
+
+    '            If txtLEN(Me.TxtCliente.Text) = True Then
+    '                ocliente = New Class_CatClientes(Me.TxtCliente.Text)
+    '                Me.cboMetodoPago.SelectedValue = ocliente.CODIGO_METODO_PAGO_DOLARES
+    '                Me.txtNumCuenta.Text = ocliente.NUMERO_CUENTA_PAGO_DOLARES.ToString
+    '            End If
+    '        Else
+    '            Me.gbDolares.Visible = False
+    '            Me.txtTipoCambio.Enabled = False
+
+    '            If txtLEN(Me.TxtCliente.Text) = True Then
+    '                ocliente = New Class_CatClientes(Me.TxtCliente.Text)
+    '                Me.cboMetodoPago.SelectedValue = ocliente.CODIGO_METODO_PAGO
+    '                Me.txtNumCuenta.Text = ocliente.NUMERO_CUENTA_PAGO.ToString
+    '            End If
+    '        End If
+    '    Catch ex As Exception
+    '        HandleError(Me.Name, "chkImprimirDolares_CheckedChanged", ex)
+    '    End Try
+    'End Sub
+
+    Private Sub cboMoneda_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboMoneda.SelectedIndexChanged
         Dim ocliente As Class_CatClientes
         Try
-            If Me.chkImprimirDolares.Checked = True Then
+            If Me.cboMoneda.SelectedIndex = 1 Then
                 Me.gbDolares.Visible = True
                 Me.txtTipoCambio.Enabled = True
 
@@ -471,7 +499,7 @@ Buscar:
                 End If
             End If
         Catch ex As Exception
-            HandleError(Me.Name, "chkImprimirDolares_CheckedChanged", ex)
+            HandleError(Me.Name, "cboMoneda_SelectedIndexChanged", ex)
         End Try
     End Sub
 
@@ -622,7 +650,7 @@ Buscar:
             Me.txtFolioEmbarque.Text = ""
             Me.txtNumCuenta.Text = ""
             Me.chkVentaPublicoGeneral.Checked = False
-            Me.chkImprimirDolares.Checked = False
+            'Me.chkImprimirDolares.Checked = False
             Me.cboMetodoPago.SelectedValue = "01" '01=Efectivo
 
             Me.lblCliente.Text = ""
@@ -875,7 +903,8 @@ Buscar:
                     Me.TxtConcepto.Enabled = True
                     Me.txtNumCuenta.Enabled = True
                     Me.chkVentaPublicoGeneral.Enabled = True
-                    Me.chkImprimirDolares.Enabled = True
+                    'Me.chkImprimirDolares.Enabled = True
+                    Me.cboMoneda.Enabled = True
                     Me.dpFecha.Enabled = True
                     Me.cboMetodoPago.Enabled = True
                     Me.cboVendedor.Enabled = True
@@ -974,7 +1003,8 @@ Buscar:
                         Me.txtFolioEmbarque.Enabled = False
                         Me.txtNumCuenta.Enabled = False
                         Me.chkVentaPublicoGeneral.Enabled = False
-                        Me.chkImprimirDolares.Enabled = False
+                        'Me.chkImprimirDolares.Enabled = False
+                        Me.cboMoneda.Enabled = False
                         Me.dpFecha.Enabled = False
                         Me.dpVencimiento.Enabled = False
                         Me.cboMetodoPago.Enabled = False
@@ -1092,7 +1122,8 @@ Buscar:
                     Me.txtFolioEmbarque.Enabled = False
                     Me.txtNumCuenta.Enabled = False
                     Me.chkVentaPublicoGeneral.Enabled = False
-                    Me.chkImprimirDolares.Enabled = False
+                    'Me.chkImprimirDolares.Enabled = False
+                    Me.cboMoneda.Enabled = False
                     Me.dpFecha.Enabled = False
                     Me.dpVencimiento.Enabled = False
                     Me.cboMetodoPago.Enabled = False
@@ -1227,7 +1258,14 @@ Buscar:
                     .DESCUENTO_USD = 0 'No aplica en facturas normales aunque estén en usd
                 End If
 
-                If Me.chkImprimirDolares.Checked = True Then
+                'If Me.chkImprimirDolares.Checked = True Then
+                '    .TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text)
+                '    .TOTAL_DOLARES = valorNumerico(Me.lblTotalDolares.Text)
+                'Else
+                '    .TIPO_DE_CAMBIO = 0
+                'End If
+
+                If Me.cboMoneda.SelectedIndex = 1 Then
                     .TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text)
                     .TOTAL_DOLARES = valorNumerico(Me.lblTotalDolares.Text)
                 Else
@@ -1627,7 +1665,22 @@ CANCELAR:
                 End If
             End If
 
-            If Me.chkImprimirDolares.Checked = True Then
+            'If Me.chkImprimirDolares.Checked = True Then
+            '    If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
+            '        If txtLEN(Me.oCliente.CUENTA_CONTABLE_DOLARES) = False Then
+            '            MsgBox("El cliente no tiene una cuenta contable en dólares asignada.", MsgBoxStyle.Exclamation, sProcedure)
+            '            Me.TxtCliente.Focus()
+            '            Exit Function
+            '        End If
+            '    End If
+
+            '    If valorNumerico(Me.txtTipoCambio.Text) <= 0 Then
+            '        MsgBox("Asígne el tipo de cambio.", MsgBoxStyle.Exclamation, sProcedure)
+            '        Exit Function
+            '    End If
+            'End If
+
+            If Me.cboMoneda.SelectedIndex = 1 Then
                 If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
                     If txtLEN(Me.oCliente.CUENTA_CONTABLE_DOLARES) = False Then
                         MsgBox("El cliente no tiene una cuenta contable en dólares asignada.", MsgBoxStyle.Exclamation, sProcedure)
@@ -2230,6 +2283,20 @@ CANCELAR:
         End Try
     End Sub
 
+    Private Sub DesplegarMonedas()
+        Dim oMoneda As New Class_CatMonedas
+        Dim dTable As New DataTable
+
+        With Me.cboMoneda
+            .DisplayMember = "NOMBRE"
+            .ValueMember = "CODIGO_MONEDA"
+            dTable = oMoneda.ObtenerElementos
+            dTable.Rows(2).Delete() 'Quita Euros del DataTable
+            .DataSource = dTable
+            .SelectedValue = 1
+        End With
+    End Sub
+
     Private Sub Totales()
         Try
             Dim i As Integer, dCantidad As Decimal, dPrecio As Decimal, dPrecioOriginal As Decimal, dPorcentajeIVA As Decimal, dImporte As Decimal, dImporteSustitucion As Decimal, iIDOrigen As Integer = 0, dImporteTotal As Double = 0
@@ -2438,14 +2505,16 @@ CANCELAR:
 
                 If Me.oVenta.TIPO_DE_CAMBIO > 0 Then
                     Me.txtTipoCambio.Text = Me.oVenta.TIPO_DE_CAMBIO.ToString
-                    Me.chkImprimirDolares.Checked = True
+                    'Me.chkImprimirDolares.Checked = True
+                    Me.cboMoneda.SelectedIndex = 1
 
                     Me.lblSubtotalDolares.Text = FormatImporteContable(Me.oVenta.SUBTOTAL / Me.oVenta.TIPO_DE_CAMBIO).ToString
                     Me.lblImpuestoDolares.Text = FormatImporteContable(Me.oVenta.IMPUESTO / Me.oVenta.TIPO_DE_CAMBIO).ToString
                     Me.lblTotalDolares.Text = FormatImporteContable(Me.oVenta.TOTAL / Me.oVenta.TIPO_DE_CAMBIO).ToString
                 Else
                     Me.txtTipoCambio.Text = "0"
-                    Me.chkImprimirDolares.Checked = False
+                    'Me.chkImprimirDolares.Checked = False
+                    Me.cboMoneda.SelectedIndex = 0
                 End If
 
                 Me.cboTipoMercado.SelectedValue = Me.oVenta.CODIGO_TIPO_MERCADO
@@ -2881,7 +2950,8 @@ buscaCentrosCostos:
 
             Me.ConsultarCliente()
 
-            Me.chkImprimirDolares.Checked = True
+            'Me.chkImprimirDolares.Checked = True
+            Me.cboMoneda.SelectedIndex = 1
             Me.txtTipoCambio.Text = Me._TipoCambioPorEmbarqueExtranjero.ToString
 
             Me.cboMetodoPago.SelectedValue = "NA" '99=Otros
@@ -3312,5 +3382,4 @@ busca_serie:
     End Sub
 
 #End Region
-
 End Class

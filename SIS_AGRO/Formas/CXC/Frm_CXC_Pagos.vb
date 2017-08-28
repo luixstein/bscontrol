@@ -250,12 +250,42 @@ Buscar:
         End If
     End Sub
 
-    Private Sub ckbDolares_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ckbDolares.CheckedChanged
-        If Me.ckbDolares.Checked = True Then
+    'Private Sub ckbDolares_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ckbDolares.CheckedChanged
+    '    If Me.ckbDolares.Checked = True Then
+    '        Me.txtTipoCambio.Enabled = True
+    '        'Me.txtTotalDolares.Enabled = True
+    '        Me.lblTipoCambio.Enabled = True
+    '        ' Me.lblTotalDolares.Enabled = True
+    '        Me.txtTipoCambio.Focus()
+
+    '        Me.Grid.Column(Me.iGyFolio).Width = 50
+    '        Me.Grid.Column(Me.iGyFecha).Width = 60
+    '        Me.Grid.Column(Me.iGyTotal).Visible = False
+    '        Me.Grid.Column(Me.iGySaldo).Visible = False
+    '        Me.Grid.Column(Me.iGyTotalDlls).Visible = True
+    '        Me.Grid.Column(Me.iGySaldoDlls).Visible = True
+    '        Me.Grid.Column(Me.iGyDiferencia).Visible = True
+    '        Me.Grid.Column(Me.iGyPagoPesos).Visible = True
+    '    Else
+    '        Me.txtTipoCambio.Enabled = False : Me.txtTipoCambio.Text = ""
+    '        'Me.txtTotalDolares.Enabled = False
+    '        Me.lblTipoCambio.Enabled = False
+    '        'Me.lblTotalDolares.Enabled = False : Me.txtImporteDolares.Text = ""
+    '        Me.Grid.Column(Me.iGyFolio).Width = 95
+    '        Me.Grid.Column(Me.iGyFecha).Width = 90
+    '        Me.Grid.Column(Me.iGyTotal).Visible = True
+    '        Me.Grid.Column(Me.iGySaldo).Visible = True
+    '        Me.Grid.Column(Me.iGyTotalDlls).Visible = False
+    '        Me.Grid.Column(Me.iGySaldoDlls).Visible = False
+    '        Me.Grid.Column(Me.iGyDiferencia).Visible = False
+    '        Me.Grid.Column(Me.iGyPagoPesos).Visible = False
+    '    End If
+    'End Sub
+
+    Private Sub cboMoneda_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboMoneda.SelectedIndexChanged
+        If Me.cboMoneda.SelectedIndex = 1 Then
             Me.txtTipoCambio.Enabled = True
-            'Me.txtTotalDolares.Enabled = True
             Me.lblTipoCambio.Enabled = True
-            ' Me.lblTotalDolares.Enabled = True
             Me.txtTipoCambio.Focus()
 
             Me.Grid.Column(Me.iGyFolio).Width = 50
@@ -268,9 +298,7 @@ Buscar:
             Me.Grid.Column(Me.iGyPagoPesos).Visible = True
         Else
             Me.txtTipoCambio.Enabled = False : Me.txtTipoCambio.Text = ""
-            'Me.txtTotalDolares.Enabled = False
             Me.lblTipoCambio.Enabled = False
-            'Me.lblTotalDolares.Enabled = False : Me.txtImporteDolares.Text = ""
             Me.Grid.Column(Me.iGyFolio).Width = 95
             Me.Grid.Column(Me.iGyFecha).Width = 90
             Me.Grid.Column(Me.iGyTotal).Visible = True
@@ -345,7 +373,8 @@ Buscar:
             Dim dPago As Double
             If e.Col = Me.iGySeleccion And e.Row > 0 Then
                 If Me.Grid.Cell(Renglon, Me.iGySeleccion).Text = "1" And Me.ClickSinEjecutar = False Then
-                    If Me.ckbDolares.Checked = True Then
+                    'If Me.ckbDolares.Checked = True Then
+                    If Me.cboMoneda.SelectedIndex = 1 Then
                         If valorNumerico(Me.txtTipoCambio.Text) <= 0 Or valorNumerico(Me.txtTipoCambio.Text) > 20 Then
                             MsgBox("Tipo de cambio incorrecto", MsgBoxStyle.Information, "Validación de tipo de cambio")
                             Me.txtTipoCambio.Focus()
@@ -400,7 +429,8 @@ Buscar:
                         Case Me.iGyPago
                             dPago = valorNumerico(Me.Grid.Cell(Renglon, Me.iGyPago).Text)
                             If dPago > 0 And txtLEN(Me.Grid.Cell(Renglon, Me.iGyFolio).Text) = True Then
-                                If Me.ckbDolares.Checked = False Then
+                                'If Me.ckbDolares.Checked = False Then
+                                If Me.cboMoneda.SelectedIndex = 1 Then
                                     If dPago > valorNumerico(Me.Grid.Cell(Renglon, Me.iGySaldo).Text) And Me.Grid.Locked = False Then
                                         MsgBox("El pago en el renglón: " & Renglon & " es mayor al saldo del documento favor de revisar.", MsgBoxStyle.Exclamation, "Validación de Importes de CXC")
                                         Me.Grid.Cell(Renglon, Me.iGyPago).SetFocus()
@@ -420,7 +450,7 @@ Buscar:
                                         Me.Grid.Cell(Renglon, Me.iGyDiferencia).Text = ((valorNumerico(Me.Grid.Cell(Renglon, Me.iGySaldo).Text) - valorNumerico(Me.Grid.Cell(Renglon, Me.iGyPagoPesos).Text)) * -1).ToString
                                     Else
                                         Me.Grid.Cell(Renglon, Me.iGyPagoPesos).Text = (valorNumerico(Me.Grid.Cell(Renglon, Me.iGyPago).Text) * valorNumerico(Me.txtTipoCambio.Text)).ToString
-                                        Me.Grid.Cell(Renglon, Me.iGyDiferencia).Text = ((valorNumerico(Me.Grid.Cell(Renglon, Me.iGySaldo).Text) - valorNumerico(Me.Grid.Cell(Renglon, Me.iGyPagoPesos).Text))*-1).ToString
+                                        Me.Grid.Cell(Renglon, Me.iGyDiferencia).Text = ((valorNumerico(Me.Grid.Cell(Renglon, Me.iGySaldo).Text) - valorNumerico(Me.Grid.Cell(Renglon, Me.iGyPagoPesos).Text)) * -1).ToString
                                     End If
                                 End If
                             ElseIf dPago > 0 And Me.Grid.Rows = Renglon Then
@@ -487,7 +517,7 @@ Buscar:
         oTexBox.SelectAll()
     End Sub
 
-    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CmbDocumento.KeyDown, dtFecha.KeyDown, CboMedioDePago.KeyDown, CboBancos.KeyDown, ckbDolares.KeyDown
+    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CmbDocumento.KeyDown, dtFecha.KeyDown, CboMedioDePago.KeyDown, CboBancos.KeyDown, cboMoneda.KeyDown
         If e.KeyCode = Keys.Return Then
             SendKeys.Send("{TAB}")
         End If
@@ -527,10 +557,14 @@ Buscar:
             Me.CboMedioDePago.SelectedIndex = -1
             Me.TxtReferencia.Text = ""
             Me.txtAnticipo.Text = "" : Me.CkbAnticipo.Checked = False
-            Me.ckbDolares.Checked = False : Me.txtTipoCambio.Text = ""
+            'Me.ckbDolares.Checked = False : Me.txtTipoCambio.Text = ""
             Me.TxtTotal.Text = ""
 
             Me.InicializaGrid()
+
+            Me.DesplegarMonedas()
+            Me.cboMoneda.SelectedIndex = 0 : Me.txtTipoCambio.Text = ""
+
             Me.lstClientesAgregados.Items.Clear()
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
@@ -804,7 +838,11 @@ Buscar:
         Dim i As Integer = 1, oCliente As Class_CatClientes, sMedioPago As String, oBanco As Class_CatBancos, sSaldoDlls As String = ""
         Dim sql As Class_find
 
-        If Me.ckbDolares.Checked = True Then
+        'If Me.ckbDolares.Checked = True Then
+        '    sSaldoDlls = "AND SALDO_DOLARES>0 "
+        'End If
+
+        If Me.cboMoneda.SelectedIndex = 1 Then
             sSaldoDlls = "AND SALDO_DOLARES>0 "
         End If
         Dim cmd As New SqlCommand("SELECT FECHA,FOLIO_VENTA,TOTAL,SALDO,TOTAL_DOLARES,SALDO_DOLARES, CASE WHEN TOTAL=SALDO THEN IMPUESTO ELSE 0 END IVA " & _
@@ -1024,7 +1062,8 @@ Buscar:
             oBancosCXC.FECHA = Me.dtFecha.Value
             oBancosCXC.CONCEPTO1 = Me.TxtConcepto.Text.ToUpper
             oBancosCXC.CODIGO_PLAZA = Usuario.Codigo_Plaza
-            If Me.ckbDolares.Checked = True Then
+            'If Me.ckbDolares.Checked = True Then
+            If Me.cboMoneda.SelectedIndex = 1 Then
                 oBancosCXC.TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text)
                 oBancosCXC.TOTAL_DOLARES = valorNumerico(Me.TxtTotal.Text)
                 oBancosCXC.TOTAL = valorNumerico(Me.TxtTotal.Text) * valorNumerico(Me.txtTipoCambio.Text)
@@ -1046,7 +1085,8 @@ Buscar:
                     oCxcAfectaDocumentos.CONCEPTO1 = Me.TxtConcepto.Text
                     oCxcAfectaDocumentos.CONCEPTO2 = ""
                     oCxcAfectaDocumentos.CODIGO_PLAZA = Usuario.Codigo_Plaza
-                    If Me.ckbDolares.Checked = True Then
+                    'If Me.ckbDolares.Checked = True Then
+                    If Me.cboMoneda.SelectedIndex = 1 Then
                         oCxcAfectaDocumentos.TOTAL_DOLARES = dPago
                         If valorNumerico(Me.Grid.Cell(i, Me.iGyTotalDlls).Text) <> valorNumerico(Me.Grid.Cell(i, Me.iGyPago).Text) And valorNumerico(Me.Grid.Cell(i, Me.iGySaldoDlls).Text) <> valorNumerico(Me.Grid.Cell(i, Me.iGyPago).Text) Then
                             'Si solo es un pago parcial el abono en pesos sera segun al tipo de cambio de la venta
@@ -1099,7 +1139,8 @@ Buscar:
             oCuentaBancaria = New Class_CatCuentasBancarias(CInt(Me.TxtCuentaBancaria.Text))
 
             If oCuentaBancaria.Existe = True Then
-                If Me.ckbDolares.Checked = True Then
+                'If Me.ckbDolares.Checked = True Then
+                If Me.cboMoneda.SelectedIndex = 1 Then
                     If txtLEN(oCuentaBancaria.CUENTA_CONTABLE_DOLARES.ToString) = False Then
                         MsgBox("La cuenta bancaria que intenta debe tener cuenta en dolares, favor de intentar con otro codigo", MsgBoxStyle.Exclamation, "Validación de Cuentas Bancarias")
                         Me.TxtCuentaBancaria.Focus()
@@ -1129,7 +1170,8 @@ Buscar:
 
             Dim i As Integer
             For i = 1 To Grid.Rows - 1
-                If Me.ckbDolares.Checked = False Then
+                'If Me.ckbDolares.Checked = False Then
+                If Me.cboMoneda.SelectedIndex = 1 Then
                     If valorNumerico(Me.Grid.Cell(i, Me.iGyPago).Text) > 0 And txtLEN(Me.Grid.Cell(i, Me.iGyFolio).Text) = True Then
                         sql = New Class_find("SELECT SALDO FROM VENTA_GLOBAL WHERE FOLIO_VENTA='" & Me.Grid.Cell(i, Me.iGyFolio).Text & "'")
                         Me.Grid.Cell(i, Me.iGySaldo).Text = sql.Result1
@@ -1150,7 +1192,8 @@ Buscar:
                 End If
             Next i
 
-            If Me.ckbDolares.Checked = True Then
+            'If Me.ckbDolares.Checked = True Then
+            If Me.cboMoneda.SelectedIndex = 1 Then
                 If valorNumerico(Me.txtTipoCambio.Text) <= 0 Or valorNumerico(Me.txtTipoCambio.Text) > 20 Then
                     MsgBox("Tipo de cambio incorrecto", MsgBoxStyle.Information, "Validación de tipo de cambio")
                     Me.txtTipoCambio.Focus()
@@ -1271,6 +1314,22 @@ Buscar:
         End Try
     End Sub
 
+    Private Sub DesplegarMonedas()
+        Dim oMoneda As New Class_CatMonedas
+        Dim dTable As New DataTable
+
+        With Me.cboMoneda
+            .DisplayMember = "NOMBRE"
+            .ValueMember = "CODIGO_MONEDA"
+            dTable = oMoneda.ObtenerElementos
+            dTable.Rows(2).Delete() 'Quita Euros del DataTable
+            .DataSource = dTable
+            If .Items.Count > 0 Then
+                .SelectedIndex = 0
+            End If
+        End With
+    End Sub
+
     Private Function ValidaPrePoliza() As Boolean
         Dim bResultado As Boolean = False
 
@@ -1304,7 +1363,8 @@ Buscar:
             Me.oFormaPoliza.Grid1.Cols = 9
 
             oCuentaBancaria = New Class_CatCuentasBancarias(CInt(Me.TxtCuentaBancaria.Text))
-            If Me.ckbDolares.Checked = False Then
+            'If Me.ckbDolares.Checked = False Then
+            If Me.cboMoneda.SelectedIndex = 1 Then
                 Dim i As Integer, R As Integer = 1, dPago As Double, ivaporpagar As Double = 0
                 For i = 1 To Me.Grid.Rows - 1
                     If valorNumerico(Me.Grid.Cell(i, Me.iGyPago).Text) = valorNumerico(Me.Grid.Cell(i, Me.iGySaldo).Text) Then
@@ -1610,7 +1670,8 @@ Buscar:
                 Me.FormateaGrid()
                 'Para que haga el cambio de las columnas que se van a mostrar
                 If valorNumerico(oBancosCXC.TIPO_DE_CAMBIO.ToString) > 0 Then
-                    Me.ckbDolares.Checked = True
+                    'Me.ckbDolares.Checked = True
+                    Me.cboMoneda.SelectedIndex = 1
                 End If
 
                 bResultado = True
@@ -1796,7 +1857,8 @@ Buscar:
                     Me.tsbImprimirPoliza.Enabled = False
                     Me.CmbDocumento.Enabled = True
                     Me.dtFecha.Enabled = True
-                    Me.ckbDolares.Enabled = True
+                    'Me.ckbDolares.Enabled = True
+                    Me.cboMoneda.Enabled = True
                     Me.txtTipoCambio.Enabled = False
                     Me.TxtConcepto.Enabled = True
                     Me.TxtTotal.Enabled = False
@@ -1818,7 +1880,8 @@ Buscar:
                     Me.tsbImprimirPoliza.Enabled = True
                     Me.CmbDocumento.Enabled = False
                     Me.dtFecha.Enabled = False
-                    Me.ckbDolares.Enabled = False
+                    'Me.ckbDolares.Enabled = False
+                    Me.cboMoneda.Enabled = False
                     Me.txtTipoCambio.Enabled = False
                     Me.TxtConcepto.Enabled = False
                     Me.TxtTotal.Enabled = False
@@ -1839,7 +1902,8 @@ Buscar:
                     Me.tsbImprimirPoliza.Enabled = True
                     Me.CmbDocumento.Enabled = False
                     Me.dtFecha.Enabled = False
-                    Me.ckbDolares.Enabled = False
+                    'Me.ckbDolares.Enabled = False
+                    Me.cboMoneda.Enabled = False
                     Me.txtTipoCambio.Enabled = False
                     Me.TxtConcepto.Enabled = False
                     Me.TxtTotal.Enabled = False
