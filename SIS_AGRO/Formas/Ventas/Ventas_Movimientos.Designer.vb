@@ -87,6 +87,7 @@ Partial Class Ventas_Movimientos
         Me.tsslElaboro = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tsslCancelo = New System.Windows.Forms.ToolStripStatusLabel()
         Me.frmDatos = New System.Windows.Forms.GroupBox()
+        Me.ckbMostrarUtilidad = New System.Windows.Forms.CheckBox()
         Me.LblDisplayMoneda = New System.Windows.Forms.Label()
         Me.cboMoneda = New System.Windows.Forms.ComboBox()
         Me.btnFacturaSiguiente = New System.Windows.Forms.Button()
@@ -770,6 +771,7 @@ Partial Class Ventas_Movimientos
         '
         'frmDatos
         '
+        Me.frmDatos.Controls.Add(Me.ckbMostrarUtilidad)
         Me.frmDatos.Controls.Add(Me.LblDisplayMoneda)
         Me.frmDatos.Controls.Add(Me.cboMoneda)
         Me.frmDatos.Controls.Add(Me.btnFacturaSiguiente)
@@ -816,6 +818,17 @@ Partial Class Ventas_Movimientos
         Me.frmDatos.Size = New System.Drawing.Size(1315, 267)
         Me.frmDatos.TabIndex = 0
         Me.frmDatos.TabStop = False
+        '
+        'ckbMostrarUtilidad
+        '
+        Me.ckbMostrarUtilidad.AutoSize = True
+        Me.ckbMostrarUtilidad.Location = New System.Drawing.Point(953, 144)
+        Me.ckbMostrarUtilidad.Margin = New System.Windows.Forms.Padding(4)
+        Me.ckbMostrarUtilidad.Name = "ckbMostrarUtilidad"
+        Me.ckbMostrarUtilidad.Size = New System.Drawing.Size(127, 21)
+        Me.ckbMostrarUtilidad.TabIndex = 375
+        Me.ckbMostrarUtilidad.Text = "Mostrar utilidad"
+        Me.ckbMostrarUtilidad.UseVisualStyleBackColor = True
         '
         'LblDisplayMoneda
         '
@@ -1222,4 +1235,5 @@ Partial Class Ventas_Movimientos
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents LblDisplayMoneda As System.Windows.Forms.Label
     Friend WithEvents cboMoneda As System.Windows.Forms.ComboBox
+    Friend WithEvents ckbMostrarUtilidad As System.Windows.Forms.CheckBox
 End Class
