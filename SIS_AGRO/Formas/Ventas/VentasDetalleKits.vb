@@ -69,21 +69,28 @@ Public Class VentasDetalleKits
 
 #Region "Eventos"
     Private Sub VentasDetalleKits_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
-        If Me.dtK.Rows.Count <> Me.gridK.Rows - 2 Then
-            MsgBox("Falta la confirmación de algunos renglones.", MsgBoxStyle.Exclamation, Me.Text)
-            e.Cancel = True
-            Return
-        End If
+        Try
+            Dim dView As New DataView(Me.dtK)
+            dView.RowFilter = "IDA=" & valorNumerico(Me._IDA)
 
-        If Me.HayArticulosRepetidos = True Then
-            e.Cancel = True
-            Return
-        End If
+            If dView.Count <> Me.gridK.Rows - 2 Then
+                MsgBox("Falta la confirmación de algunos renglones.", MsgBoxStyle.Exclamation, Me.Text)
+                e.Cancel = True
+                Return
+            End If
 
-        If Me.ValidaExistanSoloArticulosInventariables = False Then
-            e.Cancel = True
-            Return
-        End If
+            If Me.HayArticulosRepetidos = True Then
+                e.Cancel = True
+                Return
+            End If
+
+            If Me.ValidaExistanSoloArticulosInventariables = False Then
+                e.Cancel = True
+                Return
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, "VentasDetalleKits_FormClosing", ex)
+        End Try
     End Sub
 
     Private Sub gridK_KeyDown(Sender As Object, e As KeyEventArgs) Handles gridK.KeyDown
@@ -193,6 +200,7 @@ Public Class VentasDetalleKits
                         Return
                     End If
 
+                    Me.oVentaL.eLlamadoDesde = VentasDetalleLotes.LlamadoDesde.K
                     Me.oVentaL.IDA = Me._IDA
                     Me.oVentaL.IDK = Me.gridK.Cell(Me.gridK.ActiveCell.Row, Me.igyIDK).Text
                     Me.oVentaL.CodigoArticulo = Me.gridK.Cell(Me.gridK.ActiveCell.Row, Me.igyCODIGO_ARTICULO).Text

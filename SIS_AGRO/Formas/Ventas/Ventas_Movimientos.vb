@@ -3490,6 +3490,7 @@ busca_serie:
 
                     'Me.oBorrarK.oBorrarL = Me.oBorrarL
                     'Me.oBorrarK.IDA = Me.Grid.Cell(Me.Grid.ActiveCell.Row, 1).Text
+                    Me.oVentaL.eLlamadoDesde = VentasDetalleLotes.LlamadoDesde.A
                     Me.oVentaL.IDA = Me.Grid.Cell(Me.Grid.ActiveCell.Row, 1).Text
                     Me.oVentaL.RefrescaGridLDesdeA()
                     Me.oVentaL.ShowDialog()

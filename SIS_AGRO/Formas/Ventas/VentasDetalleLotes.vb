@@ -21,6 +21,13 @@ Public Class VentasDetalleLotes
     Private _CodigoArticulo As String
     Private _CodigoAlmacen As String
     Private _Cantidad As Decimal
+
+    Enum LlamadoDesde
+        A
+        K
+    End Enum
+
+    Public eLlamadoDesde As LlamadoDesde
 #End Region
 
 #Region "Propiedades"
@@ -77,12 +84,26 @@ Public Class VentasDetalleLotes
 #End Region
 
 #Region "Eventos"
-    Private Sub borrarL_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
-        If Me.dtL.Rows.Count <> Me.gridL.Rows - 2 Then
-            MsgBox("Falta confirmacion")
-            e.Cancel = True
-            Return
-        End If
+    Private Sub VentasDetalleLotes_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+        Try
+            Dim dView As New DataView
+            Select Case Me.eLlamadoDesde
+                Case LlamadoDesde.A
+                    dView = New DataView(Me.dtL)
+                    dView.RowFilter = "IDA=" & Me._IDA
+                Case LlamadoDesde.K
+                    dView = New DataView(Me.dtL)
+                    dView.RowFilter = "IDA=" & Me._IDA & " AND IDK=" & Me._IDK
+            End Select
+            'If Me.dtL.Rows.Count <> Me.gridL.Rows - 2 Then
+            If dView.Count <> Me.gridL.Rows - 2 Then
+                MsgBox("Falta la confirmación de algunos renglones.", MsgBoxStyle.Exclamation, Me.Text)
+                e.Cancel = True
+                Return
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, "VentasDetalleLotes_FormClosing", ex)
+        End Try
     End Sub
 
     Private Sub gridK_KeyDown(Sender As Object, e As KeyEventArgs) Handles gridL.KeyDown
@@ -113,6 +134,8 @@ Public Class VentasDetalleLotes
                 .Columns.Add("CANTIDAD_USAR", GetType(String))
                 .Columns.Add("NS", GetType(String))
                 .Columns.Add("CONFIRMACION", GetType(String))
+                .Columns.Add("COSTO", GetType(String))
+                .Columns.Add("IMPORTE", GetType(String))
 
                 .Columns("IDL").Unique = True
                 .Columns("IDL").AutoIncrement = True
