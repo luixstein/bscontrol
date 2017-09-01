@@ -1036,8 +1036,9 @@ Public Class Cat_Nomina_Trabajadores
     End Sub
 
     Private Function NavegadorTrabajadores(ByVal sTipoDeBusqueda As String) As Boolean
+        Dim bResultado As Boolean = False
         Try
-            Dim iFolio As Integer, sFolio As String
+            Dim sFolio As String = ""
 
             If txtLEN(Me.txtCodigoXTemporada.Text) = False Then
                 Me.oTrabajadores.CODIGO_PUNTO_PAGO = CInt(Me.cboPuntoPago.SelectedValue.ToString)
@@ -1048,39 +1049,24 @@ Public Class Cat_Nomina_Trabajadores
             sFolio = Me.txtCodigoXTemporada.Text
 
             If sTipoDeBusqueda = "Anterior" Then
-                'iFolio = CInt(Strings.Right(Me.txtCodigoTrabajador.Text, 5))
-                'iFolio = iFolio - 1
-                'sFolio = "00000" + iFolio.ToString
-                'Me.txtCodigoTrabajador.Text = sFolio.Substring(Len(sFolio) - 5)
-                Dim oSQl As New Class_find("SELECT MAX(CODIGO_X_TEMPORADA) from VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA WHERE CODIGO_X_TEMPORADA<'" & sFolio & "' AND CODIGO_PLAZA=" & Usuario.Codigo_Plaza.ToString & " AND ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA)
+                Dim oSQl As New Class_find("SELECT MAX(CODIGO_X_TEMPORADA) FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA WHERE CODIGO_X_TEMPORADA<'" & sFolio & "' AND CODIGO_PLAZA=" & Usuario.Codigo_Plaza.ToString & " AND ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA)
                 Me.txtCodigoXTemporada.Text = oSQl.Result1.ToString
-
-                'Me.txtCodigoTrabajador.Text = Me.txtCodigoTrabajador.Text
-                If txtLEN(Me.txtCodigoXTemporada.Text) = False Then
-                    Me.tsbNuevo.PerformClick()
-                Else
-                    Me.Consultar()
-                End If
-
             ElseIf sTipoDeBusqueda = "Siguiente" Then
-                'iFolio = CInt(Strings.Right(Me.txtCodigoTrabajador.Text, 5))
-                'iFolio = iFolio + 1
-                'sFolio = "00000" + iFolio.ToString
-                'Me.txtCodigoTrabajador.Text = sFolio.Substring(Len(sFolio) - 5)
                 Dim oSQl As New Class_find("SELECT MIN(CODIGO_X_TEMPORADA) FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA WHERE CODIGO_X_TEMPORADA>'" & sFolio & "%' AND CODIGO_PLAZA=" & Usuario.Codigo_Plaza.ToString & " AND ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA)
                 Me.txtCodigoXTemporada.Text = oSQl.Result1.ToString
-
-                If txtLEN(Me.txtCodigoXTemporada.Text) = False Then
-                    Me.tsbNuevo.PerformClick()
-                Else
-                    Me.Consultar()
-                End If
             End If
 
-            NavegadorTrabajadores = True
+            If txtLEN(Me.txtCodigoXTemporada.Text) = False Then
+                Me.tsbNuevo.PerformClick()
+            Else
+                Me.Consultar()
+            End If
+
+            bResultado = True
         Catch ex As Exception
             HandleError(Me.Name, "NavegadorTrabajadores", ex)
         End Try
+        Return bResultado
     End Function
 
 #Region "CURP y RFC"
