@@ -35,6 +35,7 @@ Partial Class Cat_Nomina_Trabajadores
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gbDatosGenerales = New System.Windows.Forms.GroupBox()
+        Me.txtCodigoXTemporada = New System.Windows.Forms.TextBox()
         Me.btnSiguiente = New System.Windows.Forms.Button()
         Me.btnAnterior = New System.Windows.Forms.Button()
         Me.lblDisplayIdNominaTemporada = New System.Windows.Forms.Label()
@@ -124,7 +125,6 @@ Partial Class Cat_Nomina_Trabajadores
         Me.gbInformacion = New System.Windows.Forms.GroupBox()
         Me.btnAgregaFoto = New System.Windows.Forms.Button()
         Me.PrintForm1 = New Microsoft.VisualBasic.PowerPacks.Printing.PrintForm(Me.components)
-        Me.txtCodigoXTemporada = New System.Windows.Forms.TextBox()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.gbDatosGenerales.SuspendLayout()
@@ -245,6 +245,14 @@ Partial Class Cat_Nomina_Trabajadores
         Me.gbDatosGenerales.TabStop = False
         Me.gbDatosGenerales.Text = "Datos generales"
         '
+        'txtCodigoXTemporada
+        '
+        Me.txtCodigoXTemporada.Location = New System.Drawing.Point(100, 18)
+        Me.txtCodigoXTemporada.MaxLength = 10
+        Me.txtCodigoXTemporada.Name = "txtCodigoXTemporada"
+        Me.txtCodigoXTemporada.Size = New System.Drawing.Size(106, 20)
+        Me.txtCodigoXTemporada.TabIndex = 373
+        '
         'btnSiguiente
         '
         Me.btnSiguiente.Location = New System.Drawing.Point(266, 17)
@@ -253,7 +261,6 @@ Partial Class Cat_Nomina_Trabajadores
         Me.btnSiguiente.TabIndex = 372
         Me.btnSiguiente.Text = ">>"
         Me.btnSiguiente.UseVisualStyleBackColor = True
-        Me.btnSiguiente.Visible = False
         '
         'btnAnterior
         '
@@ -263,7 +270,6 @@ Partial Class Cat_Nomina_Trabajadores
         Me.btnAnterior.TabIndex = 371
         Me.btnAnterior.Text = "<<"
         Me.btnAnterior.UseVisualStyleBackColor = True
-        Me.btnAnterior.Visible = False
         '
         'lblDisplayIdNominaTemporada
         '
@@ -1114,14 +1120,6 @@ Partial Class Cat_Nomina_Trabajadores
         Me.PrintForm1.PrintAction = System.Drawing.Printing.PrintAction.PrintToPrinter
         Me.PrintForm1.PrinterSettings = CType(resources.GetObject("PrintForm1.PrinterSettings"), System.Drawing.Printing.PrinterSettings)
         Me.PrintForm1.PrintFileName = Nothing
-        '
-        'txtCodigoXTemporada
-        '
-        Me.txtCodigoXTemporada.Location = New System.Drawing.Point(100, 18)
-        Me.txtCodigoXTemporada.MaxLength = 10
-        Me.txtCodigoXTemporada.Name = "txtCodigoXTemporada"
-        Me.txtCodigoXTemporada.Size = New System.Drawing.Size(106, 20)
-        Me.txtCodigoXTemporada.TabIndex = 373
         '
         'Cat_Nomina_Trabajadores
         '
