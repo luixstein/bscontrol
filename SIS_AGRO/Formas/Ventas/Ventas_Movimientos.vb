@@ -2658,7 +2658,7 @@ LlenaLinea:
                             End If
 
                             If Me.oDocumento.AFECTA_INVENTARIOS = True Then
-                                If ValidarExistencias() = False Then
+                                If Me.ValidarExistencias() = False Then
                                     Return
                                 End If
                             End If
@@ -3475,8 +3475,34 @@ busca_serie:
 
     Private Sub Grid_ButtonClick(Sender As Object, e As Grid.ButtonClickEventArgs) Handles Grid.ButtonClick
         Try
+            Dim oArticulo As New Class_CatArticulos(), sCodigoArticulo As String = ""
             Select Case e.Col.ToString
                 Case Me.igyBOTON_K.ToString
+
+                    sCodigoArticulo = Me.Grid.Cell(Me.Grid.ActiveCell.Row, Me.igyCODIGO_ARTICULO).Text
+
+                    If txtLEN(sCodigoArticulo) = False Then
+                        MsgBox("No ha capturado el artículo.", MsgBoxStyle.Exclamation, Me.Text)
+                        Return
+                    End If
+
+                    If valorNumericoD(Me.Grid.Cell(Me.Grid.ActiveCell.Row, Me.igyCANTIDAD).Text) <= 0 Then
+                        MsgBox("No ha capturado la cantidad del artículo.", MsgBoxStyle.Exclamation, Me.Text)
+                        Return
+                    End If
+
+                    oArticulo = New Class_CatArticulos(sCodigoArticulo)
+
+                    If oArticulo.Existe = False Then
+                        MsgBox("El artículo indicado no existe.", MsgBoxStyle.Exclamation, Me.Text)
+                        Return
+                    End If
+
+                    If sCodigoArticulo <> "KIT" Then
+                        MsgBox("El artículo indicado no es un kit.", MsgBoxStyle.Exclamation, Me.Text)
+                        Return
+                    End If
+
                     Me.oVentaK.CodigoAlmacen = Me.CboAlmacen.SelectedValue.ToString
                     Me.oVentaK.IDA = Me.Grid.Cell(Me.Grid.ActiveCell.Row, Me.igyIDA).Text 'Note que debe sacarse el valor y no de la tabla porque en la tabla si se borró un renglón este ya no existe
                     Me.oVentaK.Cantidad = CDec(Me.Grid.Cell(Me.Grid.ActiveCell.Row, Me.igyCANTIDAD).Text)
@@ -3485,13 +3511,35 @@ busca_serie:
                     Me.oVentaK.ShowDialog()
 
                 Case Me.igyBOTON_L.ToString
+                    If txtLEN(Me.Grid.Cell(Me.Grid.ActiveCell.Row, Me.igyCODIGO_ARTICULO).Text) = False Then
+                        MsgBox("No ha capturado el artículo.", MsgBoxStyle.Exclamation, Me.Text)
+                        Return
+                    End If
+
+                    If valorNumericoD(Me.Grid.Cell(Me.Grid.ActiveCell.Row, Me.igyCANTIDAD).Text) <= 0 Then
+                        MsgBox("No ha capturado la cantidad del artículo.", MsgBoxStyle.Exclamation, Me.Text)
+                        Return
+                    End If
+
+                    oArticulo = New Class_CatArticulos(sCodigoArticulo)
+
+                    If oArticulo.Existe = False Then
+                        MsgBox("El artículo indicado no existe.", MsgBoxStyle.Exclamation, Me.Text)
+                        Return
+                    End If
+
+                    If Not (oArticulo.ES_SERIALIZABLE = True AndAlso oArticulo.INVENTARIABLE = "1") Then
+                        MsgBox("El artículo indicado no es serializable.", MsgBoxStyle.Exclamation, Me.Text)
+                        Return
+                    End If
+
                     'Me.oBorrarK.RefrescaGridLDesdeA(Me.gridA.Cell(Me.gridA.ActiveCell.Row, 1).Text) 'Note que debe sacarse el valor y no de la tabla porque en la tabla si se borró un renglón este ya no existe
                     'Me.oBorrarK.ShowDialog()
 
                     'Me.oBorrarK.oBorrarL = Me.oBorrarL
                     'Me.oBorrarK.IDA = Me.Grid.Cell(Me.Grid.ActiveCell.Row, 1).Text
                     Me.oVentaL.eLlamadoDesde = VentasDetalleLotes.LlamadoDesde.A
-                    Me.oVentaL.IDA = Me.Grid.Cell(Me.Grid.ActiveCell.Row, 1).Text
+                    Me.oVentaL.IDA = Me.Grid.Cell(Me.Grid.ActiveCell.Row, Me.igyIDA).Text
                     Me.oVentaL.RefrescaGridLDesdeA()
                     Me.oVentaL.ShowDialog()
 

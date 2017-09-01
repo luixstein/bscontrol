@@ -156,33 +156,8 @@ Public Class VentasDetalleLotes
         End Try
     End Sub
 
-    Public Function RefrescaGridLDesdeA() As Boolean
+    Private Function RefrescaGrid(ByVal dView As DataView) As Boolean
         Try
-            Dim dView As New DataView(Me.dtL)
-            dView.RowFilter = "IDA=" & Me._IDA
-
-            'MsgBox(dView.Count.ToString)
-
-            With Me.gridL
-                .AutoRedraw = False
-                .DataSource = dView
-                .DisplayFocusRect = False
-                .AutoRedraw = True
-                .Refresh()
-            End With
-
-            'falta algo que valide si rows 0 para preparar series en blanco
-
-        Catch ex As Exception
-            HandleError(Me.Name, "RefrescaGridLDesdeA", ex)
-        End Try
-    End Function
-
-    Public Function RefrescaGridLDesdeK() As Boolean
-        Try
-            Dim dView As New DataView(Me.dtL)
-            dView.RowFilter = "IDA=" & Me._IDA & " AND IDK=" & Me._IDK
-
             'Si hay detalle de lotes , se carga
             If dView.Count > 0 Then
                 With Me.gridL
@@ -253,6 +228,29 @@ Public Class VentasDetalleLotes
             End If
 
             Me.FormateaGrid()
+        Catch ex As Exception
+
+        End Try
+    End Function
+
+    Public Function RefrescaGridLDesdeA() As Boolean
+        Try
+            Dim dView As New DataView(Me.dtL)
+            dView.RowFilter = "IDA=" & Me._IDA
+
+            Me.RefrescaGrid(dView)
+
+        Catch ex As Exception
+            HandleError(Me.Name, "RefrescaGridLDesdeA", ex)
+        End Try
+    End Function
+
+    Public Function RefrescaGridLDesdeK() As Boolean
+        Try
+            Dim dView As New DataView(Me.dtL)
+            dView.RowFilter = "IDA=" & Me._IDA & " AND IDK=" & Me._IDK
+
+            Me.RefrescaGrid(dView)
 
         Catch ex As Exception
             HandleError(Me.Name, "RefrescaGridLDesdeK", ex)

@@ -65,6 +65,7 @@ Partial Class VentasDetalleKits
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "VentasDetalleKits"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Ventas k"
         Me.ResumeLayout(False)
 

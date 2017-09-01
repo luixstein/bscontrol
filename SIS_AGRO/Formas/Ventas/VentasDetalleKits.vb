@@ -200,6 +200,16 @@ Public Class VentasDetalleKits
                         Return
                     End If
 
+                    If txtLEN(Me.gridK.Cell(Me.gridK.ActiveCell.Row, Me.igyCODIGO_ARTICULO).Text) = False Then
+                        MsgBox("No ha capturado el artículo.", MsgBoxStyle.Exclamation, Me.Text)
+                        Return
+                    End If
+
+                    If valorNumericoD(Me.gridK.Cell(Me.gridK.ActiveCell.Row, Me.igyCANTIDAD).Text) <= 0 Then
+                        MsgBox("No ha capturado la cantidad del artículo.", MsgBoxStyle.Exclamation, Me.Text)
+                        Return
+                    End If
+
                     Me.oVentaL.eLlamadoDesde = VentasDetalleLotes.LlamadoDesde.K
                     Me.oVentaL.IDA = Me._IDA
                     Me.oVentaL.IDK = Me.gridK.Cell(Me.gridK.ActiveCell.Row, Me.igyIDK).Text
