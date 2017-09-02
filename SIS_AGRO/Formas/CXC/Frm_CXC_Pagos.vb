@@ -430,7 +430,7 @@ Buscar:
                             dPago = valorNumerico(Me.Grid.Cell(Renglon, Me.iGyPago).Text)
                             If dPago > 0 And txtLEN(Me.Grid.Cell(Renglon, Me.iGyFolio).Text) = True Then
                                 'If Me.ckbDolares.Checked = False Then
-                                If Me.cboMoneda.SelectedIndex = 1 Then
+                                If Me.cboMoneda.SelectedIndex = 0 Then
                                     If dPago > valorNumerico(Me.Grid.Cell(Renglon, Me.iGySaldo).Text) And Me.Grid.Locked = False Then
                                         MsgBox("El pago en el renglón: " & Renglon & " es mayor al saldo del documento favor de revisar.", MsgBoxStyle.Exclamation, "Validación de Importes de CXC")
                                         Me.Grid.Cell(Renglon, Me.iGyPago).SetFocus()
@@ -1171,7 +1171,7 @@ Buscar:
             Dim i As Integer
             For i = 1 To Grid.Rows - 1
                 'If Me.ckbDolares.Checked = False Then
-                If Me.cboMoneda.SelectedIndex = 1 Then
+                If Me.cboMoneda.SelectedIndex = 0 Then
                     If valorNumerico(Me.Grid.Cell(i, Me.iGyPago).Text) > 0 And txtLEN(Me.Grid.Cell(i, Me.iGyFolio).Text) = True Then
                         sql = New Class_find("SELECT SALDO FROM VENTA_GLOBAL WHERE FOLIO_VENTA='" & Me.Grid.Cell(i, Me.iGyFolio).Text & "'")
                         Me.Grid.Cell(i, Me.iGySaldo).Text = sql.Result1
@@ -1364,7 +1364,7 @@ Buscar:
 
             oCuentaBancaria = New Class_CatCuentasBancarias(CInt(Me.TxtCuentaBancaria.Text))
             'If Me.ckbDolares.Checked = False Then
-            If Me.cboMoneda.SelectedIndex = 1 Then
+            If Me.cboMoneda.SelectedIndex = 0 Then
                 Dim i As Integer, R As Integer = 1, dPago As Double, ivaporpagar As Double = 0
                 For i = 1 To Me.Grid.Rows - 1
                     If valorNumerico(Me.Grid.Cell(i, Me.iGyPago).Text) = valorNumerico(Me.Grid.Cell(i, Me.iGySaldo).Text) Then
