@@ -933,9 +933,9 @@ Module FacturacionElectronica
                     drImporte = valorNumerico(row("IMPORTE_USD"))
                 Else
                     'If sVentaPublicoGeneral = "1" Then
-                    'dPrecio = valorNumerico(row("PRECIO")) + valorNumerico(row("IMPUESTO_IMPORTE")) 'ojo si es publico gral  no desglosar iva
+                    'dPrecio = valorNumerico(row("PRECIO_TOTAL")) + valorNumerico(row("IMPUESTO_IMPORTE")) 'ojo si es publico gral  no desglosar iva
                     'Else
-                    dPrecio = valorNumerico(row("PRECIO"))
+                    dPrecio = valorNumerico(row("PRECIO_TOTAL"))
                     'End If
 
                     drImporte = valorNumerico(row("CANTIDAD")) * dPrecio
