@@ -130,6 +130,8 @@ Public Class Ventas_Movimientos
     End Sub
 
     Private Sub tsbGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbGrabar.Click
+        Me.ValidarExistencias2017()
+        Return
         If Me.Grabar() = True Then
             Me.Consultar()
         End If
@@ -1727,6 +1729,10 @@ CANCELAR:
                 Return False
             End If
 
+            If Me.ValidarExistencias2017 = False Then
+                Return False
+            End If
+
             If Me.oDocumento.AFECTA_INVENTARIOS = True Then
                 If Me.ValidarExistencias() = False Then
                     Exit Function
@@ -2570,7 +2576,7 @@ CANCELAR:
 
             Select Case e.KeyCode
                 Case Keys.Enter
-
+                    
                     If StrCod = "-" Then
                         Return
                     End If
@@ -3498,7 +3504,7 @@ busca_serie:
                         Return
                     End If
 
-                    If sCodigoArticulo <> "KIT" Then
+                    If sCodigoArticulo.ToUpper <> "KIT" Then
                         MsgBox("El artículo indicado no es un kit.", MsgBoxStyle.Exclamation, Me.Text)
                         Return
                     End If
@@ -3551,6 +3557,55 @@ busca_serie:
             HandleError(Me.Name, "Grid_ButtonClick", ex)
         End Try
     End Sub
+
+    Private Function ValidarExistencias2017() As Boolean
+        Try
+            'Dim grupo = From r In Me.dtA Group By CODIGO_ARTICULO = r.Field(Of String)("CODIGO_ARTICULO") Into TOTAL = Sum(CType(r.Field(Of String)("CANTIDAD"), Decimal))
+            'Dim grupo2 = From r In Me.oVentaK.dtKPublica Group By CODIGO_ARTICULO = r.Field(Of String)("CODIGO_ARTICULO") Into TOTAL = Sum(CType(r.Field(Of String)("CANTIDAD"), Decimal))
+            'Dim juntos = (From uno In grupo Select uno.CODIGO_ARTICULO, uno.TOTAL).Union(From dos In grupo2 Select dos.CODIGO_ARTICULO, dos.TOTAL)
+            'Dim suma = From r In juntos Group By CODIGO_ARTICULO = r.CODIGO_ARTICULO Into TOTAL = Sum(r.TOTAL)
+
+            'For Each Q In suma
+            '    MsgBox(Q.CODIGO_ARTICULO & " " & Q.TOTAL)
+            'Next
+
+            'For Each X In grupo
+            '    MsgBox(X.CODIGO_ARTICULO & " " & X.TOTAL)
+            'Next
+
+            'For Each X In grupo2
+            '    MsgBox(X.CODIGO_ARTICULO & " " & X.TOTAL)
+            'Next
+
+            'MsgBox(Me.dtA.Rows.Count)
+            'MsgBox(Me.oVentaK.dtKPublica.Rows.Count)
+
+            Dim ai = From r In Me.dtA Where r.Field(Of String)("TIPO_CONTROL_INVENTARIO") = "INV"
+                     Select New With {.CODIGO_ARTICULO = r.Field(Of String)("CODIGO_ARTICULO"), .CANTIDAD = CType(r.Field(Of String)("CANTIDAD"), Decimal)}
+
+            Dim ki = From a In Me.dtA Join k In Me.oVentaK.dtKPublica On a.Field(Of Integer)("IDA") Equals k.Field(Of Integer)("IDA")
+                     Where k.Field(Of String)("TIPO_CONTROL_INVENTARIO") = "INV"
+                     Select New With {.CODIGO_ARTICULO = k.Field(Of String)("CODIGO_ARTICULO"), .CANTIDAD = CType(a.Field(Of String)("CANTIDAD"), Decimal) * CType(k.Field(Of String)("CANTIDAD"), Decimal),
+                        .TIPO_CONTROL_INVENTARIO = k.Field(Of String)("TIPO_CONTROL_INVENTARIO")}
+
+            Dim juntos = (From uno In ai Select uno.CODIGO_ARTICULO, uno.CANTIDAD).Union(From dos In ki Select dos.CODIGO_ARTICULO, dos.CANTIDAD)
+            Dim suma = From r In juntos Group By CODIGO_ARTICULO = r.CODIGO_ARTICULO Into TOTAL = Sum(r.CANTIDAD)
+
+            ', CANTIDAD = CType(A.Field(Of String)("CANTIDAD"), Decimal) * CType(K.Field(Of String)("CANTIDAD"), Decimal)
+
+            'For Each x In ki
+            '    MsgBox(x.CODIGO_ARTICULO & " " & x.CANTIDAD & " " & x.TIPO_CONTROL_INVENTARIO)
+            'Next
+
+
+            For Each e In suma
+                MsgBox(e.CODIGO_ARTICULO & " " & e.TOTAL)
+            Next
+
+        Catch ex As Exception
+            HandleError(Me.Name, "ValidarExistencias2017", ex)
+        End Try
+    End Function
 
 #End Region
 

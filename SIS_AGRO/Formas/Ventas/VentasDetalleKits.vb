@@ -14,6 +14,7 @@ Public Class VentasDetalleKits
     Private igyCONFIRMACION As Short = 8
     Private igyCOSTO As Short = 9
     Private igyIMPORTE As Short = 10
+    Private igyTIPO_CONTROL_INVENTARIO As Short = 11
 #End Region
 
 #Region "Campos"
@@ -122,6 +123,7 @@ Public Class VentasDetalleKits
                 .Columns.Add("CONFIRMACION", GetType(String))
                 .Columns.Add("COSTO", GetType(String))
                 .Columns.Add("IMPORTE", GetType(String))
+                .Columns.Add("TIPO_CONTROL_INVENTARIO", GetType(String))
 
                 .Columns("IDK").Unique = True
                 .Columns("IDK").AutoIncrement = True
@@ -136,10 +138,11 @@ Public Class VentasDetalleKits
                 .Columns("CONFIRMACION").DefaultValue = "Sin confirmar"
                 .Columns("COSTO").DefaultValue = ""
                 .Columns("IMPORTE").DefaultValue = ""
+                .Columns("TIPO_CONTROL_INVENTARIO").DefaultValue = ""
 
                 .AcceptChanges()
             End With
-
+            'CASE WHEN A.ES_SERIALIZABLE = '1' THEN 'SER' WHEN A.INVENTARIABLE= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO
             AddHandler dtK.RowDeleted, New DataRowChangeEventHandler(AddressOf Row_Deleted_K)
             AddHandler dtK.RowChanged, New DataRowChangeEventHandler(AddressOf Row_Changed_K)
             AddHandler dtK.TableNewRow, New DataTableNewRowEventHandler(AddressOf Table_NewRow_K)
@@ -287,6 +290,7 @@ Public Class VentasDetalleKits
                 .Column(Me.igyCONFIRMACION).Width = 50
                 .Column(Me.igyCOSTO).Width = 50
                 .Column(Me.igyIMPORTE).Width = 50
+                .Column(Me.igyTIPO_CONTROL_INVENTARIO).Width = 50
 
                 .Cell(0, Me.igyIDA).Text = "IDA"
                 .Cell(0, Me.igyIDK).Text = "IDK"
@@ -298,6 +302,7 @@ Public Class VentasDetalleKits
                 .Cell(0, Me.igyCONFIRMACION).Text = ""
                 .Cell(0, Me.igyCOSTO).Text = "Costo"
                 .Cell(0, Me.igyIMPORTE).Text = "Importe"
+                .Cell(0, Me.igyTIPO_CONTROL_INVENTARIO).Text = "TipoInv"
 
                 .Column(Me.igyCANTIDAD).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.igyCANTIDAD).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
@@ -323,6 +328,7 @@ Public Class VentasDetalleKits
                 .Column(Me.igyCONFIRMACION).Locked = True
                 .Column(Me.igyCOSTO).Locked = True
                 .Column(Me.igyIMPORTE).Locked = True
+                .Column(Me.igyTIPO_CONTROL_INVENTARIO).Locked = True
 
                 .Column(Me.igyIDA).Visible = True
                 .Column(Me.igyIDK).Visible = True  ' False
@@ -382,6 +388,7 @@ LlenaArticulo:
                             End If
 
                             Me.gridK.Cell(Renglon, Me.igyDESCRIPCION).Text = oArticulos.DESCRIPCION
+                            Me.gridK.Cell(Renglon, Me.igyTIPO_CONTROL_INVENTARIO).Text = oArticulos.TIPO_CONTROL_INVENTARIO
 
                         Case Me.igyCANTIDAD
                             'If Me.gridK.Rows = Renglon + 1 Then Me.gridK.Rows = Me.gridK.Rows + 1
@@ -448,3 +455,4 @@ LlenaArticulo:
 #End Region
 
 End Class
+
