@@ -919,7 +919,7 @@ Public Class Cat_Nomina_Trabajadores
     Private Sub DesplegarElementos()
         Try
             With Me.Grid
-                .DataSource = oTrabajadores.ObtenerElementosxTemporada
+                .DataSource = oTrabajadores.ObtenerElementosxTemporadaConFiltro(Me.txtFiltro.Text)
                 .Columns("CODIGO_X_TEMPORADA").Width = 40
                 .Columns("NOMBRE_COMPLETO_APELLIDO").Width = 300
             End With
@@ -1505,13 +1505,7 @@ Public Class Cat_Nomina_Trabajadores
 
 #Region "Eventos de TxtFiltro"
     Private Sub txtFiltro_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFiltro.TextChanged
-        Me.Grid.DataSource = Nothing
-
-        With Me.Grid
-            .DataSource = oTrabajadores.ObtenerElementosxTemporadaConFiltro(Me.txtFiltro.Text)
-            .Columns("CODIGO_TRABAJADOR").Width = 40
-            .Columns("NOMBRE_COMPLETO_APELLIDO").Width = 300
-        End With
+        Me.DesplegarElementos()
     End Sub
 
     Private Sub txtFiltro_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFiltro.KeyPress
@@ -1521,13 +1515,7 @@ Public Class Cat_Nomina_Trabajadores
 
     Private Sub txtFiltro_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtFiltro.KeyDown
         If e.KeyCode = Keys.Down Or e.KeyCode = Keys.Return Or e.KeyCode = Keys.Back Then
-            Me.Grid.DataSource = Nothing
-
-            With Me.Grid
-                .DataSource = oTrabajadores.ObtenerElementosxTemporadaConFiltro(Me.txtFiltro.Text)
-                .Columns("CODIGO_TRABAJADOR").Width = 40
-                .Columns("NOMBRE_COMPLETO_APELLIDO").Width = 300
-            End With
+            Me.DesplegarElementos()
         End If
     End Sub
 #End Region

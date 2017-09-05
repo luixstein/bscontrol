@@ -822,7 +822,7 @@ Public Class Class_CatTrabajadores
 
     Public Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("SELECT CODIGO_TRABAJADOR,NOMBRE_COMPLETO_APELLIDO FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA EHERE CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString & "  ORDER BY NOMBRE_COMPLETO_APELLIDO", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_TRABAJADOR,NOMBRE_COMPLETO_APELLIDO FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA WHERE CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString & " ORDER BY NOMBRE_COMPLETO_APELLIDO", Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
@@ -837,12 +837,12 @@ Public Class Class_CatTrabajadores
         Dim dTable As New DataTable
         Dim da As New SqlDataAdapter("SELECT CODIGO_X_TEMPORADA,NOMBRE_COMPLETO_APELLIDO " &
                                      "FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA " &
-                                     "WHERE CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString & "AND ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA & " " &
+                                     "WHERE CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString & " AND ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA & " " &
                                      "ORDER BY NOMBRE_COMPLETO_APELLIDO", Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
+            HandleError(Me._Nombre_Catalogo, "ObtenerElementosxTemporada", ex)
         Finally
             da.Dispose()
         End Try
@@ -851,9 +851,9 @@ Public Class Class_CatTrabajadores
 
     Public Function ObtenerElementosxTemporadaConFiltro(ByVal Filtro As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("SELECT CODIGO_TRABAJADOR,NOMBRE_COMPLETO_APELLIDO " &
+        Dim da As New SqlDataAdapter("SELECT CODIGO_X_TEMPORADA,NOMBRE_COMPLETO_APELLIDO " &
                                      "FROM VW_NOMINA_CAT_TRABAJADORES_EXTENDIDA " &
-                                     "WHERE CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString & "AND ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA & " " &
+                                     "WHERE CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString & " AND ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA & " " &
                                      "AND NOMBRE_COMPLETO_APELLIDO LIKE '%" & Filtro.ToString & "%' " &
                                      "ORDER BY NOMBRE_COMPLETO_APELLIDO", Me._Conexion)
         Try
