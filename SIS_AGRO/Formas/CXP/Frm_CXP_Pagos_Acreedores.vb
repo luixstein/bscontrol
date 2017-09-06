@@ -259,12 +259,10 @@ enter:
                     Me.TxtCuentaBancaria.Text = oCuentaBancaria.ID_CUENTA_BANCARIA
                     Me.LblCuentaBancaria.Text = oCuentaBancaria.NOMBRE_CUENTA_BANCARIA
                     Me.lblNombreMonedaOrigen.Text = oCuentaBancaria.NOMBRE_MONEDA
-                    If oCuentaBancaria.CODIGO_MONEDA <> 1 Then '1=pesos
-                        'Me.ckbDolares.Checked = True
-                        Me.cboMoneda.SelectedValue = 2
-                    Else
-                        'Me.ckbDolares.Checked = False
-                        Me.cboMoneda.SelectedValue = 1
+                    If oCuentaBancaria.CODIGO_MONEDA <> "1" Then '1=pesos
+                        Me.cboMoneda.SelectedValue = 2 'USD 'Nota, aqui es SelectedValue y no SelectedIndex
+                    Else 'MXN
+                        Me.cboMoneda.SelectedValue = 1 'MXN
                     End If
 
                     Me.GeneraFolio()

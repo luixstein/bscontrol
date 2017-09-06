@@ -2,6 +2,7 @@
 
 Imports System.Data
 Imports System.Data.SqlClient
+Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Class_Compras_Global
 
@@ -520,10 +521,10 @@ Public Class Class_Compras_Global
         Me._Nombre_Reporte = "RPT_FORMATO_COMPRAS"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "SELECT G.*,U1.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO,U2.NOMBRE_USUARIO NOMBRE_USUARIO_CANCELO, " & _
-        "ISNULL((SELECT TOP 1 '1' FROM COMPRA_DETALLE WHERE FOLIO_COMPRA=G.FOLIO_COMPRA AND LEN(LISTA_SERIES)>0),0) TIENE_SERIES " & _
-        "FROM COMPRA_GLOBAL G " & _
-        "INNER JOIN SIS_USUARIOS U1 ON(G.CODIGO_USUARIO_GRABO=U1.CODIGO_USUARIO) " & _
+        Me._QuerySelect = "SELECT G.*,U1.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO,U2.NOMBRE_USUARIO NOMBRE_USUARIO_CANCELO, " &
+        "ISNULL((SELECT TOP 1 '1' FROM COMPRA_DETALLE WHERE FOLIO_COMPRA=G.FOLIO_COMPRA AND LEN(LISTA_SERIES)>0),0) TIENE_SERIES " &
+        "FROM COMPRA_GLOBAL G " &
+        "INNER JOIN SIS_USUARIOS U1 ON(G.CODIGO_USUARIO_GRABO=U1.CODIGO_USUARIO) " &
         "LEFT JOIN SIS_USUARIOS U2 ON(G.CODIGO_USUARIO_CANCELO=U2.CODIGO_USUARIO) "
         Me._QueryOrder = " ORDER BY FOLIO_COMPRA"
         Me.oComprasDetalle = New Class_Compras_Detalle
@@ -549,8 +550,8 @@ Public Class Class_Compras_Global
         Me._Nombre_Reporte = "RPT_COMPRA.rpt"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "SELECT G.*,U1.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO,U2.NOMBRE_USUARIO NOMBRE_USUARIO_CANCELO FROM COMPRA_GLOBAL G " & _
-        "INNER JOIN SIS_USUARIOS U1 ON(G.CODIGO_USUARIO_GRABO=U1.CODIGO_USUARIO) " & _
+        Me._QuerySelect = "SELECT G.*,U1.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO,U2.NOMBRE_USUARIO NOMBRE_USUARIO_CANCELO FROM COMPRA_GLOBAL G " &
+        "INNER JOIN SIS_USUARIOS U1 ON(G.CODIGO_USUARIO_GRABO=U1.CODIGO_USUARIO) " &
         "LEFT JOIN SIS_USUARIOS U2 ON(G.CODIGO_USUARIO_CANCELO=U2.CODIGO_USUARIO) "
         Me._QueryOrder = " ORDER BY FOLIO_COMPRA"
         Me.oComprasDetalle = New Class_Compras_Detalle
@@ -975,17 +976,17 @@ Public Class Class_Compras_Global
         Dim sSQL As String
 
         'Las primeras 3 líneas construyen una tabla que nos trae al menos una cuenta del detalle para poder indicar que si tiene detalle, hace así y no en el mismo select principal porque se tendria que andar agrupando y haciendo varios max
-        sSQL = "With DC(ID_ADICIONAL, CUENTA_CONTABLE) " & _
-                "AS " & _
-                "(SELECT ID_ADICIONAL,MAX(CUENTA_CONTABLE) FROM CENTRO_COSTOS_MOVIMIENTOS_DETALLE WHERE FOLIO_MOVIMIENTO='" & Me._FOLIO_COMPRA & "' GROUP BY FOLIO_MOVIMIENTO,ID_ADICIONAL) " & _
-                "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.CANTIDAD,R.PRECIO,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_COMPRA_DETALLE, " & _
-                "CASE WHEN DC.CUENTA_CONTABLE IS NOT NULL THEN 'Tiene detalle -->>' ELSE C.NOMBRE_CUENTA END NOMBRE_CUENTA, " & _
-                "'' Boton,R.ID_ADICIONAL, " & _
-                "R.IEPS_PORCENTAJE,R.IEPS_PORCENTAJE,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA " & _
-                "FROM COMPRA_DETALLE R " & _
-                "LEFT JOIN CON_CAT_CUENTAS C ON(R.CUENTA_CONTABLE=C.CUENTA_CONTABLE) " & _
-                "LEFT JOIN DC ON(R.ID_ADICIONAL=DC.ID_ADICIONAL) " & _
-                "WHERE R.FOLIO_COMPRA = '" & Me._FOLIO_COMPRA & "' " & _
+        sSQL = "With DC(ID_ADICIONAL, CUENTA_CONTABLE) " &
+                "AS " &
+                "(SELECT ID_ADICIONAL,MAX(CUENTA_CONTABLE) FROM CENTRO_COSTOS_MOVIMIENTOS_DETALLE WHERE FOLIO_MOVIMIENTO='" & Me._FOLIO_COMPRA & "' GROUP BY FOLIO_MOVIMIENTO,ID_ADICIONAL) " &
+                "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.CANTIDAD,R.PRECIO,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_COMPRA_DETALLE, " &
+                "CASE WHEN DC.CUENTA_CONTABLE IS NOT NULL THEN 'Tiene detalle -->>' ELSE C.NOMBRE_CUENTA END NOMBRE_CUENTA, " &
+                "'' Boton,R.ID_ADICIONAL, " &
+                "R.IEPS_PORCENTAJE,R.IEPS_PORCENTAJE,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA " &
+                "FROM COMPRA_DETALLE R " &
+                "LEFT JOIN CON_CAT_CUENTAS C ON(R.CUENTA_CONTABLE=C.CUENTA_CONTABLE) " &
+                "LEFT JOIN DC ON(R.ID_ADICIONAL=DC.ID_ADICIONAL) " &
+                "WHERE R.FOLIO_COMPRA = '" & Me._FOLIO_COMPRA & "' " &
                 "ORDER BY R.ID_COMPRA_DETALLE " 'NOTA NO SE DEBE ORDENAR POR DESCRIPCION PORQUE NOS VA MOVER EL IDADICIONAL PARA LO DEL CENTRO DE COSTOS
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
@@ -1000,12 +1001,12 @@ Public Class Class_Compras_Global
     Public Function ObtenerDetalleOrdenCompra() As DataTable
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
-        sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.DISPONIBLE,R.PRECIO,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_COMPRA_DETALLE, " & _
-            "'' NOMBRE_CUENTA,'' Boton,ROW_NUMBER() OVER(ORDER BY R.ID_COMPRA_DETALLE) ID_ADICIONAL, " & _
-            "R.IEPS_PORCENTAJE,R.IEPS_PORCENTAJE,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA " & _
-            "FROM COMPRA_DETALLE R " & _
-            "WHERE R.FOLIO_COMPRA = '" & Me._FOLIO_COMPRA & "' " & _
-            "AND R.DISPONIBLE>0 " & _
+        sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.DISPONIBLE,R.PRECIO,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_COMPRA_DETALLE, " &
+            "'' NOMBRE_CUENTA,'' Boton,ROW_NUMBER() OVER(ORDER BY R.ID_COMPRA_DETALLE) ID_ADICIONAL, " &
+            "R.IEPS_PORCENTAJE,R.IEPS_PORCENTAJE,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA " &
+            "FROM COMPRA_DETALLE R " &
+            "WHERE R.FOLIO_COMPRA = '" & Me._FOLIO_COMPRA & "' " &
+            "AND R.DISPONIBLE>0 " &
             "ORDER BY R.ID_COMPRA_DETALLE " 'NOTA NO SE DEBE ORDENAR POR DESCRIPCION PORQUE NOS VA MOVER EL IDADICIONAL PARA LO DEL CENTRO DE COSTOS
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
@@ -1021,12 +1022,12 @@ Public Class Class_Compras_Global
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
 
-        sSQL = "SELECT '' TIPO,R.CODIGO_CENTRO_COSTO,CC.NOMBRE_CENTRO_COSTO,R.CODIGO_CATEGORIA,CA.NOMBRE_CATEGORIA,R.CODIGO_CONCEPTO,CO.NOMBRE_CONCEPTO,R.IMPORTE,R.CUENTA_CONTABLE " & _
-                "FROM CENTRO_COSTOS_MOVIMIENTOS_DETALLE R " & _
-                "INNER JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO=CC.CODIGO_CENTRO_COSTO) " & _
-                "INNER JOIN CAT_CATEGORIAS CA ON(R.CODIGO_CATEGORIA=CA.CODIGO_CATEGORIA) " & _
-                "INNER JOIN CAT_CONCEPTOS CO ON(R.CODIGO_CONCEPTO=CO.CODIGO_CONCEPTO) " & _
-                "WHERE R.FOLIO_MOVIMIENTO = '" & Me._FOLIO_COMPRA & "' " & _
+        sSQL = "SELECT '' TIPO,R.CODIGO_CENTRO_COSTO,CC.NOMBRE_CENTRO_COSTO,R.CODIGO_CATEGORIA,CA.NOMBRE_CATEGORIA,R.CODIGO_CONCEPTO,CO.NOMBRE_CONCEPTO,R.IMPORTE,R.CUENTA_CONTABLE " &
+                "FROM CENTRO_COSTOS_MOVIMIENTOS_DETALLE R " &
+                "INNER JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO=CC.CODIGO_CENTRO_COSTO) " &
+                "INNER JOIN CAT_CATEGORIAS CA ON(R.CODIGO_CATEGORIA=CA.CODIGO_CATEGORIA) " &
+                "INNER JOIN CAT_CONCEPTOS CO ON(R.CODIGO_CONCEPTO=CO.CODIGO_CONCEPTO) " &
+                "WHERE R.FOLIO_MOVIMIENTO = '" & Me._FOLIO_COMPRA & "' " &
                 "ORDER BY R.ID_CENTRO_COSTOS_MOVIMIENTOS_DETALLE "
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
@@ -1042,10 +1043,10 @@ Public Class Class_Compras_Global
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
 
-        sSQL = "SELECT R.CUENTA_CONTABLE,DBO.FN_CONTABILIDAD_NOMBRE_CUENTA_NIVELES_COMPLETOS(R.CUENTA_CONTABLE) NOMBRE_CUENTA_NIVELES_COMPLETOS,R.IMPORTE " & _
-                "FROM GASTOS_DETALLE R " & _
-                "LEFT JOIN CON_CAT_CUENTAS C ON(R.CUENTA_CONTABLE=C.CUENTA_CONTABLE) " & _
-                "WHERE R.FOLIO_MOVIMIENTO = '" & Me._FOLIO_COMPRA & "' " & _
+        sSQL = "SELECT R.CUENTA_CONTABLE,DBO.FN_CONTABILIDAD_NOMBRE_CUENTA_NIVELES_COMPLETOS(R.CUENTA_CONTABLE) NOMBRE_CUENTA_NIVELES_COMPLETOS,R.IMPORTE " &
+                "FROM GASTOS_DETALLE R " &
+                "LEFT JOIN CON_CAT_CUENTAS C ON(R.CUENTA_CONTABLE=C.CUENTA_CONTABLE) " &
+                "WHERE R.FOLIO_MOVIMIENTO = '" & Me._FOLIO_COMPRA & "' " &
                 "ORDER BY R.ID_GASTOS_DETALLE "
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
@@ -1092,15 +1093,15 @@ Public Class Class_Compras_Global
         Try
             '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             ''Primero evaluamos los artículos que no son seriados.
-            sSQL = "SELECT I.CODIGO_ARTICULO,MAX(A.DESCRIPCION) DESCRIPCION,SUM(I.CANTIDAD) CANTIDAD,MAX(ALM.NOMBRE_ALMACEN) NOMBRE_ALMACEN " & _
-                "FROM INVENTARIO_MOVIMIENTOS_DETALLE I " & _
-                "INNER JOIN INVENTARIO_MOVIMIENTOS_GLOBAL G ON(I.FOLIO_MOVIMIENTO_INVENTARIO=G.FOLIO_MOVIMIENTO_INVENTARIO) " & _
-                "INNER JOIN INVENTARIO_LOTES_COSTOS L ON(I.ID_INVENTARIO_MOVIMIENTOS_DETALLE=L.ID_INVENTARIO_MOVIMIENTOS_DETALLE) " & _
-                "INNER JOIN CAT_ARTICULOS A ON(I.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
-                "LEFT JOIN INVENTARIO_EXISTENCIA_ARTICULOS E ON(I.CODIGO_ARTICULO=E.CODIGO_ARTICULO AND G.CODIGO_ALMACEN1=E.CODIGO_ALMACEN) " & _
-                "INNER JOIN CAT_ALMACENES ALM ON(G.CODIGO_ALMACEN1=ALM.CODIGO_ALMACEN) " & _
-                "WHERE I.FOLIO_MOVIMIENTO_INVENTARIO='" & Me._FOLIO_COMPRA & "' AND LEN(L.NUMERO_SERIE)=0 " & _
-                "GROUP BY I.CODIGO_ARTICULO " & _
+            sSQL = "SELECT I.CODIGO_ARTICULO,MAX(A.DESCRIPCION) DESCRIPCION,SUM(I.CANTIDAD) CANTIDAD,MAX(ALM.NOMBRE_ALMACEN) NOMBRE_ALMACEN " &
+                "FROM INVENTARIO_MOVIMIENTOS_DETALLE I " &
+                "INNER JOIN INVENTARIO_MOVIMIENTOS_GLOBAL G ON(I.FOLIO_MOVIMIENTO_INVENTARIO=G.FOLIO_MOVIMIENTO_INVENTARIO) " &
+                "INNER JOIN INVENTARIO_LOTES_COSTOS L ON(I.ID_INVENTARIO_MOVIMIENTOS_DETALLE=L.ID_INVENTARIO_MOVIMIENTOS_DETALLE) " &
+                "INNER JOIN CAT_ARTICULOS A ON(I.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
+                "LEFT JOIN INVENTARIO_EXISTENCIA_ARTICULOS E ON(I.CODIGO_ARTICULO=E.CODIGO_ARTICULO AND G.CODIGO_ALMACEN1=E.CODIGO_ALMACEN) " &
+                "INNER JOIN CAT_ALMACENES ALM ON(G.CODIGO_ALMACEN1=ALM.CODIGO_ALMACEN) " &
+                "WHERE I.FOLIO_MOVIMIENTO_INVENTARIO='" & Me._FOLIO_COMPRA & "' AND LEN(L.NUMERO_SERIE)=0 " &
+                "GROUP BY I.CODIGO_ARTICULO " &
                 "HAVING SUM(I.CANTIDAD)>ISNULL(MAX(E.EXISTENCIA),0) "
 
             dTabla = New DataTable("detalle")
@@ -1115,10 +1116,10 @@ Public Class Class_Compras_Global
             '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
             'Luego los que si son seriados.
-            sSQL = "SELECT I.CODIGO_ARTICULO,A.DESCRIPCION,I.CANTIDAD,C.NUMERO_SERIE " & _
-                "FROM INVENTARIO_MOVIMIENTOS_DETALLE I " & _
-                "INNER JOIN INVENTARIO_LOTES_COSTOS C ON(I.ID_INVENTARIO_MOVIMIENTOS_DETALLE=C.ID_INVENTARIO_MOVIMIENTOS_DETALLE) " & _
-                "INNER JOIN CAT_ARTICULOS A ON(I.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
+            sSQL = "SELECT I.CODIGO_ARTICULO,A.DESCRIPCION,I.CANTIDAD,C.NUMERO_SERIE " &
+                "FROM INVENTARIO_MOVIMIENTOS_DETALLE I " &
+                "INNER JOIN INVENTARIO_LOTES_COSTOS C ON(I.ID_INVENTARIO_MOVIMIENTOS_DETALLE=C.ID_INVENTARIO_MOVIMIENTOS_DETALLE) " &
+                "INNER JOIN CAT_ARTICULOS A ON(I.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
                 "WHERE I.FOLIO_MOVIMIENTO_INVENTARIO='" & Me._FOLIO_COMPRA & "' AND LEN(C.NUMERO_SERIE)>0 AND C.CANTIDAD_ORIGINAL>C.CANTIDAD_DISPONIBLE"
 
             dTabla = New DataTable("detalle")
@@ -1135,14 +1136,14 @@ Public Class Class_Compras_Global
             'Esta validación es simple protección para evitar que catexis quede negativo, digamos que un seriado tiene disp en costos, pero no en caexis
             'Esta validación es la validación base que ya existia para validar agrupando por artículos por si repiten renglones en el movimiento, se suman y se validan vs catexis
 
-            sSQL = "SELECT I.CODIGO_ARTICULO,MAX(A.DESCRIPCION) DESCRIPCION,SUM(I.CANTIDAD) CANTIDAD,ISNULL(MAX(E.EXISTENCIA),0)EXISTENCIA,MAX(ALM.NOMBRE_ALMACEN) NOMBRE_ALMACEN " & _
-            "FROM INVENTARIO_MOVIMIENTOS_DETALLE I " & _
-            "INNER JOIN INVENTARIO_MOVIMIENTOS_GLOBAL G ON(I.FOLIO_MOVIMIENTO_INVENTARIO=G.FOLIO_MOVIMIENTO_INVENTARIO) " & _
-            "INNER JOIN CAT_ARTICULOS A ON(I.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
-            "LEFT JOIN INVENTARIO_EXISTENCIA_ARTICULOS E ON(I.CODIGO_ARTICULO=E.CODIGO_ARTICULO AND G.CODIGO_ALMACEN1=E.CODIGO_ALMACEN) " & _
-            "INNER JOIN CAT_ALMACENES ALM ON(G.CODIGO_ALMACEN1=ALM.CODIGO_ALMACEN) " & _
-            "WHERE I.FOLIO_MOVIMIENTO_INVENTARIO='" & Me._FOLIO_COMPRA & "'" & _
-            "GROUP BY I.CODIGO_ARTICULO " & _
+            sSQL = "SELECT I.CODIGO_ARTICULO,MAX(A.DESCRIPCION) DESCRIPCION,SUM(I.CANTIDAD) CANTIDAD,ISNULL(MAX(E.EXISTENCIA),0)EXISTENCIA,MAX(ALM.NOMBRE_ALMACEN) NOMBRE_ALMACEN " &
+            "FROM INVENTARIO_MOVIMIENTOS_DETALLE I " &
+            "INNER JOIN INVENTARIO_MOVIMIENTOS_GLOBAL G ON(I.FOLIO_MOVIMIENTO_INVENTARIO=G.FOLIO_MOVIMIENTO_INVENTARIO) " &
+            "INNER JOIN CAT_ARTICULOS A ON(I.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
+            "LEFT JOIN INVENTARIO_EXISTENCIA_ARTICULOS E ON(I.CODIGO_ARTICULO=E.CODIGO_ARTICULO AND G.CODIGO_ALMACEN1=E.CODIGO_ALMACEN) " &
+            "INNER JOIN CAT_ALMACENES ALM ON(G.CODIGO_ALMACEN1=ALM.CODIGO_ALMACEN) " &
+            "WHERE I.FOLIO_MOVIMIENTO_INVENTARIO='" & Me._FOLIO_COMPRA & "'" &
+            "GROUP BY I.CODIGO_ARTICULO " &
             "HAVING SUM(I.CANTIDAD)>ISNULL(MAX(E.EXISTENCIA),0) "
 
             dTabla = New DataTable("detalle")
@@ -1157,55 +1158,55 @@ Public Class Class_Compras_Global
 
             '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-                'Dim oAlmacenes As New Class_CatAlmacenes(Me._CODIGO_ALMACEN)
-                'dTabla = Me.ObtenerDetalleInventarios
+            'Dim oAlmacenes As New Class_CatAlmacenes(Me._CODIGO_ALMACEN)
+            'dTabla = Me.ObtenerDetalleInventarios
 
-                ' ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                ''Primero evaluamos los artículos que no son seriados.
-                'sSQL = "SELECT CODIGO_ARTICULO,SUM(CANTIDAD) CANTIDAD FROM INVENTARIO_MOVIMIENTOS_DETALLE WHERE FOLIO_MOVIMIENTO_INVENTARIO='" & Me._FOLIO_COMPRA & "' AND LEN(NUMERO_SERIE)=0 GROUP BY CODIGO_ARTICULO "
+            ' ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            ''Primero evaluamos los artículos que no son seriados.
+            'sSQL = "SELECT CODIGO_ARTICULO,SUM(CANTIDAD) CANTIDAD FROM INVENTARIO_MOVIMIENTOS_DETALLE WHERE FOLIO_MOVIMIENTO_INVENTARIO='" & Me._FOLIO_COMPRA & "' AND LEN(NUMERO_SERIE)=0 GROUP BY CODIGO_ARTICULO "
 
-                'dTabla = New DataTable("detalle")
-                'da = New SqlDataAdapter(sSQL, Me._Conexion)
-                'da.Fill(dTabla)
-                'da.Dispose()
+            'dTabla = New DataTable("detalle")
+            'da = New SqlDataAdapter(sSQL, Me._Conexion)
+            'da.Fill(dTabla)
+            'da.Dispose()
 
-                'For Each dRow As DataRow In dTabla.Rows
-                '    sql = New Class_find("SELECT EXISTENCIA FROM INVENTARIO_EXISTENCIA_ARTICULOS WHERE CODIGO_ARTICULO='" & dRow(0).ToString & "' AND CODIGO_ALMACEN='" & Me._CODIGO_ALMACEN & "' ")
+            'For Each dRow As DataRow In dTabla.Rows
+            '    sql = New Class_find("SELECT EXISTENCIA FROM INVENTARIO_EXISTENCIA_ARTICULOS WHERE CODIGO_ARTICULO='" & dRow(0).ToString & "' AND CODIGO_ALMACEN='" & Me._CODIGO_ALMACEN & "' ")
 
-                '    If CDbl(dRow("CANTIDAD")) > CDbl(sql.Result1) Then
-                '        Dim oArticulos As New Class_CatArticulos(dRow(0).ToString)
+            '    If CDbl(dRow("CANTIDAD")) > CDbl(sql.Result1) Then
+            '        Dim oArticulos As New Class_CatArticulos(dRow(0).ToString)
 
-                '        MsgBox("No hay existencia suficiente del artículo " & oArticulos.DESCRIPCION & " en el almacén " & oAlmacenes.Nombre_Almacen & ".", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
-                '        Return False
-                '    End If
-                'Next
-                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                'Luego los que si son seriados.
-                'sSQL = "SELECT I.CODIGO_ARTICULO,A.DESCRIPCION,I.CANTIDAD,I.NUMERO_SERIE " & _
-                '    "FROM INVENTARIO_MOVIMIENTOS_DETALLE I " & _
-                '    "LEFT JOIN INVENTARIO_LOTES_COSTOS C ON(I.ID_INVENTARIO_MOVIMIENTOS_DETALLE=C.ID_INVENTARIO_MOVIMIENTOS_DETALLE) " & _
-                '    "INNER JOIN CAT_ARTICULOS A ON(I.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
-                '    "WHERE I.FOLIO_MOVIMIENTO_INVENTARIO='" & Me._FOLIO_COMPRA & "' AND LEN(I.NUMERO_SERIE)>0 AND I.CANTIDAD<>ISNULL(C.CANTIDAD_DISPONIBLE,0)"
+            '        MsgBox("No hay existencia suficiente del artículo " & oArticulos.DESCRIPCION & " en el almacén " & oAlmacenes.Nombre_Almacen & ".", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
+            '        Return False
+            '    End If
+            'Next
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            'Luego los que si son seriados.
+            'sSQL = "SELECT I.CODIGO_ARTICULO,A.DESCRIPCION,I.CANTIDAD,I.NUMERO_SERIE " & _
+            '    "FROM INVENTARIO_MOVIMIENTOS_DETALLE I " & _
+            '    "LEFT JOIN INVENTARIO_LOTES_COSTOS C ON(I.ID_INVENTARIO_MOVIMIENTOS_DETALLE=C.ID_INVENTARIO_MOVIMIENTOS_DETALLE) " & _
+            '    "INNER JOIN CAT_ARTICULOS A ON(I.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
+            '    "WHERE I.FOLIO_MOVIMIENTO_INVENTARIO='" & Me._FOLIO_COMPRA & "' AND LEN(I.NUMERO_SERIE)>0 AND I.CANTIDAD<>ISNULL(C.CANTIDAD_DISPONIBLE,0)"
 
-                ''Tiene que estar al 100 el lote completo de toda la compra
-                'sSQL = "SELECT C.CODIGO_ARTICULO,A.DESCRIPCION " & _
-                '"FROM INVENTARIO_LOTES_COSTOS C " & _
-                '"INNER JOIN CAT_ARTICULOS A ON(C.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
-                '"WHERE C.FOLIO_MOVIMIENTO_INVENTARIO='" & Me._FOLIO_COMPRA & "' AND C.CANTIDAD_ORIGINAL<>C.CANTIDAD_DISPONIBLE " & _
-                '"ORDER BY C.ID_INVENTARIO_LOTES_COSTOS"
+            ''Tiene que estar al 100 el lote completo de toda la compra
+            'sSQL = "SELECT C.CODIGO_ARTICULO,A.DESCRIPCION " & _
+            '"FROM INVENTARIO_LOTES_COSTOS C " & _
+            '"INNER JOIN CAT_ARTICULOS A ON(C.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
+            '"WHERE C.FOLIO_MOVIMIENTO_INVENTARIO='" & Me._FOLIO_COMPRA & "' AND C.CANTIDAD_ORIGINAL<>C.CANTIDAD_DISPONIBLE " & _
+            '"ORDER BY C.ID_INVENTARIO_LOTES_COSTOS"
 
-                'dTabla = New DataTable("detalle")
-                'da = New SqlDataAdapter(sSQL, Me._Conexion)
-                'da.Fill(dTabla)
-                'da.Dispose()
+            'dTabla = New DataTable("detalle")
+            'da = New SqlDataAdapter(sSQL, Me._Conexion)
+            'da.Fill(dTabla)
+            'da.Dispose()
 
-                'For Each dRow As DataRow In dTabla.Rows
-                '    'MsgBox("No hay existencia suficiente del artículo " & dRow("DESCRIPCION").ToString & " con el número de serie" & dRow("NUMERO_SERIE").ToString & ".", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
-                '    MsgBox("No hay existencia suficiente del artículo " & dRow("DESCRIPCION").ToString & " del lote exacto de la compra.", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
-                '    Return False
-                'Next
+            'For Each dRow As DataRow In dTabla.Rows
+            '    'MsgBox("No hay existencia suficiente del artículo " & dRow("DESCRIPCION").ToString & " con el número de serie" & dRow("NUMERO_SERIE").ToString & ".", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
+            '    MsgBox("No hay existencia suficiente del artículo " & dRow("DESCRIPCION").ToString & " del lote exacto de la compra.", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
+            '    Return False
+            'Next
 
-                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
             bResultado = True
 
@@ -1691,6 +1692,25 @@ Public Class Class_Compras_Global
         End Try
     End Function
 
+    Public Sub Imprimir()
+        Dim Rpt As New ReportDocument
+        Dim oReporte As Class_Reporte
+        Try
+            oReporte = New Class_Reporte(Me.Nombre_Reporte, Rpt, False)
+            If Not oReporte.RptCargado Then
+                Exit Sub
+            End If
+            Rpt.SetParameterValue("@FOLIO_COMPRA", Me.FOLIO_COMPRA)
+
+            Dim frm As New Reporte(Rpt)
+            frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
+            frm.ShowDialog()
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "Imprimir", ex)
+        Finally
+            oReporte = Nothing
+        End Try
+    End Sub
 #End Region
 
 End Class
