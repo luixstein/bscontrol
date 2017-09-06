@@ -218,6 +218,7 @@ Partial Public Class AppMenu
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
+        Me.DevolucionesToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -942,7 +943,7 @@ Partial Public Class AppMenu
         '
         'ComprasToolStripMenuItem
         '
-        Me.ComprasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MovimientosToolStripMenuItem1, Me.RevisiónDeCXPToolStripMenuItem, Me.ConsultasToolStripMenuItem1})
+        Me.ComprasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MovimientosToolStripMenuItem1, Me.RevisiónDeCXPToolStripMenuItem, Me.DevolucionesToolStripMenuItem1, Me.ConsultasToolStripMenuItem1})
         Me.ComprasToolStripMenuItem.Name = "ComprasToolStripMenuItem"
         Me.ComprasToolStripMenuItem.Size = New System.Drawing.Size(80, 24)
         Me.ComprasToolStripMenuItem.Text = "Compras"
@@ -1489,6 +1490,12 @@ Partial Public Class AppMenu
         Me.pbLogo.TabStop = False
         Me.pbLogo.Visible = False
         '
+        'DevolucionesToolStripMenuItem1
+        '
+        Me.DevolucionesToolStripMenuItem1.Name = "DevolucionesToolStripMenuItem1"
+        Me.DevolucionesToolStripMenuItem1.Size = New System.Drawing.Size(244, 26)
+        Me.DevolucionesToolStripMenuItem1.Text = "Devoluciones"
+        '
         'AppMenu
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -1713,4 +1720,5 @@ Partial Public Class AppMenu
     Friend WithEvents DevolucionesToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents PropietariosToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ImportarClienteSucursalToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents DevolucionesToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
 End Class

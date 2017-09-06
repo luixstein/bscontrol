@@ -60,6 +60,8 @@ Public Class Ventas_Movimientos
     Private igyBASE_IEPS As Short = 24
     Private igyBASE_IVA As Short = 25
     Private igyCosto As Short = 26
+    Private igyUtilidad As Short = 27
+    Private igyUtilidadPorcentaje As Short = 28
 #End Region
 
 #Region "Columnas grid series"
@@ -234,8 +236,17 @@ Public Class Ventas_Movimientos
             Me.DesplegarTiposMercados()
             Me.DesplegarTiposNegociaciones()
             Me.DesplegarVendedores()
+            Me.DesplegarMonedas()
 
             Me.Inicializa()
+
+            Me.ckbMostrarUtilidad.Checked = False
+
+            If Usuario.VER_COSTOS = False Then
+                Me.ckbMostrarUtilidad.Visible = False
+            Else
+                Me.ckbMostrarUtilidad.Visible = True
+            End If
 
             Me.Cambia_Estado(enumEstados.NUEVO)
 
@@ -448,10 +459,37 @@ Buscar:
         Me.GestionaGrid(e)
     End Sub
 
-    Private Sub chkImprimirDolares_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkImprimirDolares.CheckedChanged
+    'Private Sub chkImprimirDolares_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkImprimirDolares.CheckedChanged
+    '    Dim ocliente As Class_CatClientes
+    '    Try
+    '        If Me.chkImprimirDolares.Checked = True Then
+    '            Me.gbDolares.Visible = True
+    '            Me.txtTipoCambio.Enabled = True
+
+    '            If txtLEN(Me.TxtCliente.Text) = True Then
+    '                ocliente = New Class_CatClientes(Me.TxtCliente.Text)
+    '                Me.cboMetodoPago.SelectedValue = ocliente.CODIGO_METODO_PAGO_DOLARES
+    '                Me.txtNumCuenta.Text = ocliente.NUMERO_CUENTA_PAGO_DOLARES.ToString
+    '            End If
+    '        Else
+    '            Me.gbDolares.Visible = False
+    '            Me.txtTipoCambio.Enabled = False
+
+    '            If txtLEN(Me.TxtCliente.Text) = True Then
+    '                ocliente = New Class_CatClientes(Me.TxtCliente.Text)
+    '                Me.cboMetodoPago.SelectedValue = ocliente.CODIGO_METODO_PAGO
+    '                Me.txtNumCuenta.Text = ocliente.NUMERO_CUENTA_PAGO.ToString
+    '            End If
+    '        End If
+    '    Catch ex As Exception
+    '        HandleError(Me.Name, "chkImprimirDolares_CheckedChanged", ex)
+    '    End Try
+    'End Sub
+
+    Private Sub cboMoneda_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboMoneda.SelectedIndexChanged
         Dim ocliente As Class_CatClientes
         Try
-            If Me.chkImprimirDolares.Checked = True Then
+            If Me.cboMoneda.SelectedIndex = 1 Then
                 Me.gbDolares.Visible = True
                 Me.txtTipoCambio.Enabled = True
 
@@ -471,7 +509,7 @@ Buscar:
                 End If
             End If
         Catch ex As Exception
-            HandleError(Me.Name, "chkImprimirDolares_CheckedChanged", ex)
+            HandleError(Me.Name, "cboMoneda_SelectedIndexChanged", ex)
         End Try
     End Sub
 
@@ -603,6 +641,20 @@ Buscar:
         Me.GestionaGridSeries(e)
     End Sub
 
+    Private Sub ckbMostrarUtilidad_CheckedChanged(sender As Object, e As EventArgs) Handles ckbMostrarUtilidad.CheckedChanged
+        If Me.ckbMostrarUtilidad.Checked = True Then
+            Me.Grid.Column(Me.igyCosto).Visible = True
+            Me.Grid.Column(Me.igyUtilidad).Visible = True
+            Me.Grid.Column(Me.igyUtilidadPorcentaje).Visible = True
+            Me.Grid.Cell(1, Me.igyUtilidad).SetFocus()
+        Else
+            Me.Grid.Column(Me.igyCosto).Visible = False
+            Me.Grid.Column(Me.igyUtilidad).Visible = False
+            Me.Grid.Column(Me.igyUtilidadPorcentaje).Visible = False
+            Me.Grid.Cell(1, Me.igyImporte).SetFocus()
+        End If
+    End Sub
+
 #End Region
 
 #Region "Métodos y procedimientos"
@@ -622,7 +674,7 @@ Buscar:
             Me.txtFolioEmbarque.Text = ""
             Me.txtNumCuenta.Text = ""
             Me.chkVentaPublicoGeneral.Checked = False
-            Me.chkImprimirDolares.Checked = False
+            'Me.chkImprimirDolares.Checked = False
             Me.cboMetodoPago.SelectedValue = "01" '01=Efectivo
 
             Me.lblCliente.Text = ""
@@ -674,7 +726,7 @@ Buscar:
     Private Sub FormateaGrid()
         Try
             Me.Grid.AutoRedraw = False
-            Me.Grid.Cols = 27
+            Me.Grid.Cols = 29
 
             Me.Grid.Column(Me.igyCodigo).Width = 75
             Me.Grid.Column(Me.igyDescripcion).Width = 250
@@ -697,6 +749,10 @@ Buscar:
             Me.Grid.Column(Me.igyImpuestoImporte).Width = 100
             Me.Grid.Column(Me.igyIdOrigen).Width = 100
             Me.Grid.Column(Me.igyEsProductoKilos).Width = 100
+
+            Me.Grid.Column(Me.igyCosto).Width = 100
+            Me.Grid.Column(Me.igyUtilidad).Width = 100
+            Me.Grid.Column(Me.igyUtilidadPorcentaje).Width = 100
 
             Me.Grid.Cell(0, Me.igyCodigo).Text = "Código"
             Me.Grid.Cell(0, Me.igyDescripcion).Text = "Descripción"
@@ -721,6 +777,10 @@ Buscar:
             Me.Grid.Cell(0, Me.igyCodigoCentroCosto).Text = "Ccos"
             Me.Grid.Cell(0, Me.igyNombreCentroCosto).Text = "C.Costo"
             Me.Grid.Column(Me.igyNombreCentroCosto).Alignment = FlexCell.AlignmentEnum.LeftCenter
+
+            Me.Grid.Cell(0, Me.igyCosto).Text = "Costo"
+            Me.Grid.Cell(0, Me.igyUtilidad).Text = "Utilidad"
+            Me.Grid.Cell(0, Me.igyUtilidadPorcentaje).Text = "% utilidad"
 
             Me.Grid.Column(Me.igyCantidad).Mask = FlexCell.MaskEnum.Numeric
             Me.Grid.Column(Me.igyCantidad).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
@@ -767,12 +827,26 @@ Buscar:
 
             Me.Grid.Column(Me.igyIdOrigen).Mask = FlexCell.MaskEnum.Numeric
 
+            Me.Grid.Column(Me.igyCosto).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.Grid.Column(Me.igyCosto).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.igyCosto).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+            Me.Grid.Column(Me.igyCosto).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Column(Me.igyUtilidad).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.Grid.Column(Me.igyUtilidad).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.igyUtilidad).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+            Me.Grid.Column(Me.igyUtilidad).Alignment = FlexCell.AlignmentEnum.RightCenter
+
             Me.Grid.Column(Me.igyDescripcion).Locked = True
             Me.Grid.Column(Me.igyTipoControlInventariable).Locked = True
             Me.Grid.Column(Me.igyImporte).Locked = True
             Me.Grid.Column(Me.igyImpuestoImporte).Visible = False
             Me.Grid.Column(Me.igyIdOrigen).Visible = False
             Me.Grid.Column(Me.igyUnidad).Locked = True
+
+            Me.Grid.Column(Me.igyCosto).Locked = True
+            Me.Grid.Column(Me.igyUtilidad).Locked = True
+            Me.Grid.Column(Me.igyUtilidadPorcentaje).Locked = True
 
             Me.Grid.Column(Me.igyCantidadKilos).Visible = False
             Me.Grid.Column(Me.igyPrecioKilos).Visible = False
@@ -796,7 +870,15 @@ Buscar:
             End If
 
             Me.Grid.Column(Me.igyNombreCentroCosto).Locked = True
-            Me.Grid.Column(Me.igyCosto).Visible = False
+            If Me.ckbMostrarUtilidad.Checked = True Then
+                Me.Grid.Column(Me.igyCosto).Visible = True
+                Me.Grid.Column(Me.igyUtilidad).Visible = True
+                Me.Grid.Column(Me.igyUtilidadPorcentaje).Visible = True
+            Else
+                Me.Grid.Column(Me.igyCosto).Visible = False
+                Me.Grid.Column(Me.igyUtilidad).Visible = False
+                Me.Grid.Column(Me.igyUtilidadPorcentaje).Visible = False
+            End If
 
             Me.Grid.Column(Me.igyIEPS_PORCENTAJE).Visible = False
             Me.Grid.Column(Me.igyIEPS_UNITARIO).Visible = False
@@ -875,7 +957,8 @@ Buscar:
                     Me.TxtConcepto.Enabled = True
                     Me.txtNumCuenta.Enabled = True
                     Me.chkVentaPublicoGeneral.Enabled = True
-                    Me.chkImprimirDolares.Enabled = True
+                    'Me.chkImprimirDolares.Enabled = True
+                    Me.cboMoneda.Enabled = True
                     Me.dpFecha.Enabled = True
                     Me.cboMetodoPago.Enabled = True
                     Me.cboVendedor.Enabled = True
@@ -974,7 +1057,8 @@ Buscar:
                         Me.txtFolioEmbarque.Enabled = False
                         Me.txtNumCuenta.Enabled = False
                         Me.chkVentaPublicoGeneral.Enabled = False
-                        Me.chkImprimirDolares.Enabled = False
+                        'Me.chkImprimirDolares.Enabled = False
+                        Me.cboMoneda.Enabled = False
                         Me.dpFecha.Enabled = False
                         Me.dpVencimiento.Enabled = False
                         Me.cboMetodoPago.Enabled = False
@@ -1092,7 +1176,8 @@ Buscar:
                     Me.txtFolioEmbarque.Enabled = False
                     Me.txtNumCuenta.Enabled = False
                     Me.chkVentaPublicoGeneral.Enabled = False
-                    Me.chkImprimirDolares.Enabled = False
+                    'Me.chkImprimirDolares.Enabled = False
+                    Me.cboMoneda.Enabled = False
                     Me.dpFecha.Enabled = False
                     Me.dpVencimiento.Enabled = False
                     Me.cboMetodoPago.Enabled = False
@@ -1148,15 +1233,30 @@ Buscar:
                 Exit Function
             End If
 
-            If Me._EsPorEmbarqueExtranjero = False AndAlso Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
-                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, Me.Text)
-                Exit Function
-            End If
+            If oDocumento.AFECTA_INVENTARIOS = True Then
 
-            If Me._EsPorEmbarqueExtranjero = False Then
-                If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
+                If Me._EsPorEmbarqueExtranjero = False AndAlso Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
                     MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, Me.Text)
                     Exit Function
+                End If
+
+                If Me._EsPorEmbarqueExtranjero = False Then
+                    If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
+                        MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, Me.Text)
+                        Exit Function
+                    End If
+                End If
+            Else
+                If Me._EsPorEmbarqueExtranjero = False AndAlso Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString) = False Then
+                    MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, Me.Text)
+                    Exit Function
+                End If
+
+                If Me._EsPorEmbarqueExtranjero = False Then
+                    If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString) = False Then
+                        MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, Me.Text)
+                        Exit Function
+                    End If
                 End If
             End If
 
@@ -1227,7 +1327,14 @@ Buscar:
                     .DESCUENTO_USD = 0 'No aplica en facturas normales aunque estén en usd
                 End If
 
-                If Me.chkImprimirDolares.Checked = True Then
+                'If Me.chkImprimirDolares.Checked = True Then
+                '    .TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text)
+                '    .TOTAL_DOLARES = valorNumerico(Me.lblTotalDolares.Text)
+                'Else
+                '    .TIPO_DE_CAMBIO = 0
+                'End If
+
+                If Me.cboMoneda.SelectedIndex = 1 Then
                     .TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text)
                     .TOTAL_DOLARES = valorNumerico(Me.lblTotalDolares.Text)
                 Else
@@ -1627,7 +1734,22 @@ CANCELAR:
                 End If
             End If
 
-            If Me.chkImprimirDolares.Checked = True Then
+            'If Me.chkImprimirDolares.Checked = True Then
+            '    If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
+            '        If txtLEN(Me.oCliente.CUENTA_CONTABLE_DOLARES) = False Then
+            '            MsgBox("El cliente no tiene una cuenta contable en dólares asignada.", MsgBoxStyle.Exclamation, sProcedure)
+            '            Me.TxtCliente.Focus()
+            '            Exit Function
+            '        End If
+            '    End If
+
+            '    If valorNumerico(Me.txtTipoCambio.Text) <= 0 Then
+            '        MsgBox("Asígne el tipo de cambio.", MsgBoxStyle.Exclamation, sProcedure)
+            '        Exit Function
+            '    End If
+            'End If
+
+            If Me.cboMoneda.SelectedIndex = 1 Then
                 If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
                     If txtLEN(Me.oCliente.CUENTA_CONTABLE_DOLARES) = False Then
                         MsgBox("El cliente no tiene una cuenta contable en dólares asignada.", MsgBoxStyle.Exclamation, sProcedure)
@@ -2230,6 +2352,20 @@ CANCELAR:
         End Try
     End Sub
 
+    Private Sub DesplegarMonedas()
+        Dim oMoneda As New Class_CatMonedas
+        Dim dTable As New DataTable
+
+        With Me.cboMoneda
+            .DisplayMember = "NOMBRE"
+            .ValueMember = "CODIGO_MONEDA"
+            dTable = oMoneda.ObtenerElementos
+            dTable.Rows(2).Delete() 'Quita Euros del DataTable
+            .DataSource = dTable
+            .SelectedValue = 1
+        End With
+    End Sub
+
     Private Sub Totales()
         Try
             Dim i As Integer, dCantidad As Decimal, dPrecio As Decimal, dPrecioOriginal As Decimal, dPorcentajeIVA As Decimal, dImporte As Decimal, dImporteSustitucion As Decimal, iIDOrigen As Integer = 0, dImporteTotal As Double = 0
@@ -2438,14 +2574,16 @@ CANCELAR:
 
                 If Me.oVenta.TIPO_DE_CAMBIO > 0 Then
                     Me.txtTipoCambio.Text = Me.oVenta.TIPO_DE_CAMBIO.ToString
-                    Me.chkImprimirDolares.Checked = True
+                    'Me.chkImprimirDolares.Checked = True
+                    Me.cboMoneda.SelectedIndex = 1
 
                     Me.lblSubtotalDolares.Text = FormatImporteContable(Me.oVenta.SUBTOTAL / Me.oVenta.TIPO_DE_CAMBIO).ToString
                     Me.lblImpuestoDolares.Text = FormatImporteContable(Me.oVenta.IMPUESTO / Me.oVenta.TIPO_DE_CAMBIO).ToString
                     Me.lblTotalDolares.Text = FormatImporteContable(Me.oVenta.TOTAL / Me.oVenta.TIPO_DE_CAMBIO).ToString
                 Else
                     Me.txtTipoCambio.Text = "0"
-                    Me.chkImprimirDolares.Checked = False
+                    'Me.chkImprimirDolares.Checked = False
+                    Me.cboMoneda.SelectedIndex = 0
                 End If
 
                 Me.cboTipoMercado.SelectedValue = Me.oVenta.CODIGO_TIPO_MERCADO
@@ -2881,7 +3019,8 @@ buscaCentrosCostos:
 
             Me.ConsultarCliente()
 
-            Me.chkImprimirDolares.Checked = True
+            'Me.chkImprimirDolares.Checked = True
+            Me.cboMoneda.SelectedIndex = 1
             Me.txtTipoCambio.Text = Me._TipoCambioPorEmbarqueExtranjero.ToString
 
             Me.cboMetodoPago.SelectedValue = "NA" '99=Otros
