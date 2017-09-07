@@ -202,7 +202,10 @@ Public Class Ventas_Movimientos
     End Sub
 
     Private Sub tsbCancelarTimbre_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbCancelarTimbre.Click
-        Me.oVenta.CancelarTimbre()
+        If Me.oVenta.CancelarTimbre() = True Then
+            MsgBox("Timbre cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+            Me.tsbCancelarTimbre.Enabled = False
+        End If
     End Sub
 
     Private Sub tsbRecuperaFacturaElectronica_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
