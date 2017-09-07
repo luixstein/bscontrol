@@ -110,6 +110,7 @@ Partial Class Ventas_Movimientos
         Me.Grid = New FlexCell.Grid()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.GridSeries = New FlexCell.Grid()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -729,6 +730,7 @@ Partial Class Ventas_Movimientos
         '
         'frmDatos
         '
+        Me.frmDatos.Controls.Add(Me.Button1)
         Me.frmDatos.Controls.Add(Me.btnFacturaSiguiente)
         Me.frmDatos.Controls.Add(Me.btnFacturaAnterior)
         Me.frmDatos.Controls.Add(Me.txtNumCuenta)
@@ -987,7 +989,7 @@ Partial Class Ventas_Movimientos
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(995, 212)
+        Me.TabPage2.Size = New System.Drawing.Size(1124, 212)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Series"
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -1009,6 +1011,15 @@ Partial Class Ventas_Movimientos
         Me.GridSeries.Size = New System.Drawing.Size(966, 198)
         Me.GridSeries.TabIndex = 2
         Me.GridSeries.UncheckedImage = CType(resources.GetObject("GridSeries.UncheckedImage"), System.Drawing.Bitmap)
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(796, 131)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(76, 25)
+        Me.Button1.TabIndex = 373
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
         '
         'Ventas_Movimientos
         '
@@ -1132,4 +1143,5 @@ Partial Class Ventas_Movimientos
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents lblIEPSIncluido As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents Button1 As Button
 End Class

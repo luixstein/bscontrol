@@ -31,6 +31,12 @@ Public Class VentasDetalleLotes
 #End Region
 
 #Region "Propiedades"
+    Public ReadOnly Property dtLPublica As DataTable
+        Get
+            Return Me.dtL
+        End Get
+    End Property
+
     Public Property IDA As String
         Get
             Return Me._IDA

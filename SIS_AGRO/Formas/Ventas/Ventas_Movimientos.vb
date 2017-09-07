@@ -130,8 +130,6 @@ Public Class Ventas_Movimientos
     End Sub
 
     Private Sub tsbGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbGrabar.Click
-        Me.ValidarExistencias2017()
-        Return
         If Me.Grabar() = True Then
             Me.Consultar()
         End If
@@ -1331,6 +1329,20 @@ Buscar:
 
                         .oVentasDetalle.CODIGO_CENTRO_COSTO = Me.Grid.Cell(i, Me.igyCODIGO_CENTRO_COSTO).Text
 
+                        MsgBox("falta validar que si es kit le hayan detallado renglones, y si son lotes validar que hayan puesto todos ")
+
+                        '--LA ESTRUCTURA QUE SE MANDA ES  k;1,ART1S,2,(1221?1@1222?1@1223?1@1224?1)|2,ART2N,1,() DONDE LA 1ER LETRA INDICA SI ES K,S O AFECTACION PEPS(SI NO ES NINGUNA LETRA)
+                        '--LUEGO ES POSICION,CODIGO_ARTCULO,CANTIDAD,ENTRE PARENTESIS LA LISTA DE LOTES CON IDL Y CANTIDAD SEPARANDO RENGLONES CON @A, Y VALOR COLUMNAS CON ?, SI ENTRE PARENTESIS ESTA EN BLANCO ENTONCES ES PEPS.
+
+                        If oArticulo.CODIGO_ARTICULO = "KIT" Then
+                            sListaSeries = "k;" '& Me.dtA.Rows(i)("IDA").ToString
+
+                            For Each k In Me.oVentaK.dtKPublica.Select("IDA=" & Me.dtA.Rows(i)("IDA").ToString)
+                                sListaSeries &= k("IDK").ToString & "," & k("CODIGO_ARTICULO").ToString & "," & k("CANTIDAD").ToString & "|"
+                            Next
+
+                        End If
+
                         If Me.dtSeries.Rows.Count > 0 Then
                             For Each dRow In Me.dtSeries.Select("POSICION='" & i.ToString & "'")
                                 sListaSeries = sListaSeries & dRow("POSICION").ToString & "," & dRow("CODIGO_ARTICULO").ToString & "," & dRow("ID_INVENTARIO_LOTES_COSTOS").ToString & "," & dRow("NUMERO_SERIE").ToString & "|"
@@ -1583,13 +1595,13 @@ CANCELAR:
         Dim sProcedure As String = "ValidarVenta"
         Try
             If Plaza.ValidarPeriodoTrabajo(Me.dpFecha.Value) = False Then
-                Exit Function
+                Return False
             End If
 
             If txtLEN(Me.txtFolio.Text) = False Then
                 MsgBox("Asígne el folio de la venta.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.txtFolio.Focus()
-                Exit Function
+                Return False
             End If
 
             If txtLEN(Me.TxtReferencia.Text) = True Then
@@ -1597,28 +1609,28 @@ CANCELAR:
                 If Me.oVenta.Existe = False Then
                     MsgBox("Asígne una referencia válida.", MsgBoxStyle.Exclamation, sProcedure)
                     Me.TxtReferencia.Focus()
-                    Exit Function
+                    Return False
                 End If
             End If
 
             If txtLEN(Me.TxtCliente.Text) = False Then
                 MsgBox("Asígne un cliente.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.TxtCliente.Focus()
-                Exit Function
+                Return False
             End If
 
             Me.oCliente = New Class_CatClientes(Me.TxtCliente.Text)
             If Me.oCliente.Existe = False Then
                 MsgBox("Asígne un cliente válido.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.TxtCliente.Focus()
-                Exit Function
+                Return False
             End If
 
             If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
                 If txtLEN(Me.oCliente.CUENTA_CONTABLE) = False Then
                     MsgBox("El cliente no tiene una cuenta contable en pesos asignada.", MsgBoxStyle.Exclamation, sProcedure)
                     Me.TxtCliente.Focus()
-                    Exit Function
+                    Return False
                 End If
             End If
 
@@ -1628,18 +1640,18 @@ CANCELAR:
                 If oEmbarques.Consultar() = False Then
                     MsgBox("El folio de embarque no existe, favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
                     Me.txtFolioEmbarque.Focus()
-                    Exit Function
+                    Return False
                 End If
 
                 'No se porque volvia a preguntar si desean grabar cuando ya se preguntó
                 'If MsgBox("Deseas grabar la " & Me.CboDocumento.Text & " con el folio : " & Me.txtFolio.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, sProcedure) = MsgBoxResult.No Then
-                '    Exit Function
+                '    return false
                 'End If
 
                 If oEmbarques.FACTURA_GENERADA = True Then 'EL EMBARQUE YA TIENE UNA FACTURA ACTIVA
                     If MsgBox("El embarque ya tiene generada una factura, Deseas volver a facturar el embarque" & Me.txtFolioEmbarque.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, sProcedure) = MsgBoxResult.No Then
                         Me.txtFolioEmbarque.Focus()
-                        Exit Function
+                        Return False
                     End If
                 End If
             End If
@@ -1649,38 +1661,38 @@ CANCELAR:
                     If txtLEN(Me.oCliente.CUENTA_CONTABLE_DOLARES) = False Then
                         MsgBox("El cliente no tiene una cuenta contable en dólares asignada.", MsgBoxStyle.Exclamation, sProcedure)
                         Me.TxtCliente.Focus()
-                        Exit Function
+                        Return False
                     End If
                 End If
 
                 If valorNumerico(Me.txtTipoCambio.Text) <= 0 Then
                     MsgBox("Asígne el tipo de cambio.", MsgBoxStyle.Exclamation, sProcedure)
-                    Exit Function
+                    Return False
                 End If
             End If
 
             If Me.SiTieneRenglones() = False Then
                 MsgBox("Asígne los artículos del movimiento.", MsgBoxStyle.Exclamation, sProcedure)
-                Exit Function
+                Return False
             End If
 
             If Me.SiTieneCantidad() = False Then
                 MsgBox("La cantidad de los artículos debe de ser mayor a cero.", MsgBoxStyle.Exclamation, sProcedure)
-                Exit Function
+                Return False
             End If
 
             If Me.SiTieneImporte() = False Then
                 MsgBox("El importe de los renglones debe de ser mayor a cero.", MsgBoxStyle.Exclamation, sProcedure)
-                Exit Function
+                Return False
             End If
 
             If Me.SiTieneProductosKG() = False Then
                 MsgBox("La cantidad y/o de precio en kg de los renglones debe de ser mayor a cero.", MsgBoxStyle.Exclamation, sProcedure)
-                Exit Function
+                Return False
             End If
 
             If Me.SiTieneIVA = False Then
-                Exit Function
+                Return False
             End If
 
             'Dim i As Integer
@@ -1689,7 +1701,7 @@ CANCELAR:
             '        If Me.oCompras.ValidaCantidadDisponibleArticulo(CInt(Me.Grid.Cell(i, Me.igyID_ORIGEN).Text), CDbl(Me.Grid.Cell(i, Me.igyCANTIDAD).Text)) = False Then
             '            MsgBox("La cantidad debe de ser menor al disponible.", MsgBoxStyle.Exclamation, Me.Text)
             '            Me.Grid.Cell(i, Me.igyCANTIDAD).SetFocus()
-            '            Exit Function
+            '            return false
             '        End If
             '    End If
             'Next i
@@ -1699,19 +1711,19 @@ CANCELAR:
             If oMetodoPago.REQUIERE_NUMERO_CUENTA_PAGO = 1 Then
                 If txtLEN(Me.txtNumCuenta.Text) = False Then
                     If MsgBox("El método de pago seleccionado requiere número de cuenta de pago. Esta seguro de dejarlo en blanco ?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Me.Text) = MsgBoxResult.No Then
-                        Exit Function
+                        Return False
                     End If
                 End If
             End If
 
             If oMetodoPago.ESTATUS = "B" Then
                 MsgBox("El método de pago tiene estatus baja.", MsgBoxStyle.Exclamation, sProcedure)
-                Exit Function
+                Return False
             End If
 
             If sTipoVenta <> "NM" Then
                 If Me.ValidarDisponible() = False Then
-                    Exit Function
+                    Return False
                 End If
             End If
 
@@ -1729,14 +1741,16 @@ CANCELAR:
                 Return False
             End If
 
-            If Me.ValidarExistencias2017 = False Then
-                Return False
-            End If
-
             If Me.oDocumento.AFECTA_INVENTARIOS = True Then
-                If Me.ValidarExistencias() = False Then
-                    Exit Function
+
+                If Me.ValidarExistenciasAgrupadas = False Then
+                    Return False
                 End If
+
+                If Me.ValidarExistencias() = False Then
+                    Return False
+                End If
+
                 If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
                     If Me.SiTieneCuentaContable() = False Then
                         MsgBox("Asígne la cuenta contable a todos los renglones.", MsgBoxStyle.Exclamation, sProcedure)
@@ -3558,7 +3572,9 @@ busca_serie:
         End Try
     End Sub
 
-    Private Function ValidarExistencias2017() As Boolean
+    Private Function ValidarExistenciasAgrupadas() As Boolean
+        Const sProcedure As String = "ValidarExistenciasAgrupadas"
+
         Try
             'Dim grupo = From r In Me.dtA Group By CODIGO_ARTICULO = r.Field(Of String)("CODIGO_ARTICULO") Into TOTAL = Sum(CType(r.Field(Of String)("CANTIDAD"), Decimal))
             'Dim grupo2 = From r In Me.oVentaK.dtKPublica Group By CODIGO_ARTICULO = r.Field(Of String)("CODIGO_ARTICULO") Into TOTAL = Sum(CType(r.Field(Of String)("CANTIDAD"), Decimal))
@@ -3597,15 +3613,74 @@ busca_serie:
             '    MsgBox(x.CODIGO_ARTICULO & " " & x.CANTIDAD & " " & x.TIPO_CONTROL_INVENTARIO)
             'Next
 
+            Dim oInventarios As New Class_Inventarios_Global, dExistencia As Decimal, i As Integer
+            Dim oArticulo As Class_CatArticulos
 
             For Each e In suma
-                MsgBox(e.CODIGO_ARTICULO & " " & e.TOTAL)
+                oArticulo = New Class_CatArticulos(e.CODIGO_ARTICULO)
+                dExistencia = CDec(oInventarios.Existencia(Me.Grid.Cell(i, Me.igyCODIGO_ARTICULO).Text, Me.CboAlmacen.SelectedValue.ToString))
+
+                If dExistencia <= 0 Then
+                    MsgBox("El artículo " & oArticulo.CODIGO_ARTICULO & "-" & oArticulo.DESCRIPCION & " no tiene existencia. ", MsgBoxStyle.Exclamation, sProcedure)
+                    Exit Function
+                Else
+                    If e.TOTAL > dExistencia Then
+                        MsgBox("El artículo " & oArticulo.CODIGO_ARTICULO & "-" & oArticulo.DESCRIPCION & " no tiene suficiente existencia." & vbCrLf &
+                               "Existencia=" & dExistencia.ToString, MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+                End If
+
+                'MsgBox(e.CODIGO_ARTICULO & " " & e.TOTAL)
             Next
 
         Catch ex As Exception
-            HandleError(Me.Name, "ValidarExistencias2017", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Function
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Try
+            Dim oArticulo As Class_CatArticulos, sListaSeries As String = "", sLotes As String = ""
+            '--LA ESTRUCTURA QUE SE MANDA ES  k;1,ART1S,2,(1221?1@1222?1@1223?1@1224?1)|2,ART2N,1,() DONDE LA 1ER LETRA INDICA SI ES K,S O AFECTACION PEPS(SI NO ES NINGUNA LETRA)
+            '--LUEGO ES POSICION,CODIGO_ARTCULO,CANTIDAD,ENTRE PARENTESIS LA LISTA DE LOTES CON IDL Y CANTIDAD SEPARANDO RENGLONES CON @A, Y VALOR COLUMNAS CON ?, SI ENTRE PARENTESIS ESTA EN BLANCO ENTONCES ES PEPS.
+
+            'se graba el detalle
+            For i = 1 To Me.Grid.Rows - 1
+
+                If txtLEN(Me.Grid.Cell(i, Me.igyCODIGO_ARTICULO).Text) = True Then
+
+                    oArticulo = New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCODIGO_ARTICULO).Text)
+
+                    If oArticulo.CODIGO_ARTICULO = "KIT" Then
+                        sListaSeries = "k;" '& Me.dtA.Rows(i)("IDA").ToString
+
+                        For Each k In Me.oVentaK.dtKPublica.Select("IDA=" & Me.dtA.Rows(i - 1)("IDA").ToString)
+                            sListaSeries &= k("IDK").ToString & "," & k("CODIGO_ARTICULO").ToString & "," & k("CANTIDAD").ToString & ","
+
+                            For Each l In Me.oVentaL.dtLPublica.Select("IDK=" & k("IDK").ToString)
+                                sLotes &= sLotes & l("IDL").ToString & "?" & l("CANTIDAD").ToString & "@"
+                            Next
+
+                            If txtLEN(sLotes) = True Then
+                                sLotes = "(" & sLotes & ")"
+
+                            Else
+
+                            End If
+
+
+                            sListaSeries &= sListaSeries & "|"
+                        Next
+
+                        sLotes = ""
+                    End If
+                End If
+            Next
+        Catch ex As Exception
+            HandleError(Me.Name, "Button1_Click", ex)
+        End Try
+    End Sub
 
 #End Region
 
