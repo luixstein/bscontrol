@@ -217,9 +217,10 @@ Public Class VentasDetalleKits
                     Me.oVentaL.IDA = Me._IDA
                     Me.oVentaL.IDK = Me.gridK.Cell(Me.gridK.ActiveCell.Row, Me.igyIDK).Text
                     Me.oVentaL.CodigoArticulo = Me.gridK.Cell(Me.gridK.ActiveCell.Row, Me.igyCODIGO_ARTICULO).Text
-                    Me.oVentaL.Cantidad = CDec(Me.gridK.Cell(Me.gridK.ActiveCell.Row, Me.igyCANTIDAD).Text)
+                    Me.oVentaL.Cantidad = Me.Cantidad * CDec(Me.gridK.Cell(Me.gridK.ActiveCell.Row, Me.igyCANTIDAD).Text)
                     Me.oVentaL.CodigoAlmacen = Me._CodigoAlmacen
-                    Me.oVentaL.RefrescaGridLDesdeK()
+                    'Me.oVentaL.RefrescaGridLDesdeK()
+                    Me.oVentaL.RefrescaGrid()
                     Me.oVentaL.ShowDialog()
 
             End Select

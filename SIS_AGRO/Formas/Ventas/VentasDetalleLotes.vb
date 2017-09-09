@@ -33,6 +33,7 @@ Public Class VentasDetalleLotes
 #Region "Propiedades"
     Public ReadOnly Property dtLPublica As DataTable
         Get
+            Me.dtL.AcceptChanges()
             Return Me.dtL
         End Get
     End Property
@@ -148,6 +149,7 @@ Public Class VentasDetalleLotes
                 .Columns("IDL").AutoIncrementSeed = 1
                 .Columns("IDL").AutoIncrementStep = 1
 
+                .Columns("IDK").DefaultValue = "0"
                 .Columns("ID_INVENTARIO_LOTES_COSTOS").DefaultValue = ""
                 .Columns("CANTIDAD_USAR").DefaultValue = ""
                 .Columns("NS").DefaultValue = ""
@@ -162,9 +164,20 @@ Public Class VentasDetalleLotes
         End Try
     End Sub
 
-    Private Function RefrescaGrid(ByVal dView As DataView) As Boolean
+    '    Private Function RefrescaGrid(ByVal dView As DataView) As Boolean
+    Public Function RefrescaGrid() As Boolean
         Try
+            Dim dView As New DataView(Me.dtL)
+
+            Select Case Me.eLlamadoDesde
+                Case LlamadoDesde.A
+                    dView.RowFilter = "IDA=" & Me._IDA
+                Case LlamadoDesde.K
+                    dView.RowFilter = "IDA=" & Me._IDA & " AND IDK=" & Me._IDK
+            End Select
+
             'Si hay detalle de lotes , se carga
+            'MsgBox(dView.Count.ToString)
             If dView.Count > 0 Then
                 With Me.gridL
                     .AutoRedraw = False
@@ -180,6 +193,7 @@ Public Class VentasDetalleLotes
                 If txtLEN(Me._CodigoArticulo) = False Then
                     MsgBox("No ha especificado el artículo de series que se usarán.", MsgBoxStyle.Exclamation, Me.Text)
                     Me.gridL.DataSource = Nothing
+                    Me.gridL.Rows = 0
                     Return False
                 End If
 
@@ -203,65 +217,73 @@ Public Class VentasDetalleLotes
                     Return False
                 End If
 
-                For j = 1 To Me._Cantidad
-                    dRow = Me.dtL.NewRow
 
-                    'dRow("POSICION") = i
-                    'dRow("CODIGO_ARTICULO") = Me.Grid.Cell(i, Me.igyCODIGO_ARTICULO).Text
-                    'dRow("DESCRIPCION") = Me.Grid.Cell(i, Me.igyDESCRIPCION).Text
-                    'dRow("ID_INVENTARIO_LOTES_COSTOS") = ""
-                    'dRow("NUMERO_SERIE") = ""
+                Select Case Me.eLlamadoDesde
+                    Case LlamadoDesde.A
+                        For j = 1 To Me._Cantidad
+                            dRow = Me.dtL.NewRow
 
-                    dRow("IDA") = Me._IDA
-                    dRow("IDK") = Me._IDK
-                    dRow("CANTIDAD_USAR") = "1"
+                            dRow("IDA") = Me._IDA
+                            dRow("CANTIDAD_USAR") = "1"
 
-                    Me.dtL.Rows.Add(dRow)
-                Next
+                            Me.dtL.Rows.Add(dRow)
+                        Next
 
-                '.Columns.Add("IDA", GetType(Integer))
-                '.Columns.Add("IDK", GetType(Integer))
-                '.Columns.Add("IDL", GetType(Integer))
-                '.Columns.Add("ID_INVENTARIO_LOTES_COSTOS", GetType(String))
-                '.Columns.Add("CANTIDAD_USAR", GetType(Decimal))
-                '.Columns.Add("NS", GetType(String))
-                '.Columns.Add("CONFIRMACION", GetType(String))
+                        Me.dtL.AcceptChanges()
 
-                Me.dtL.AcceptChanges()
+                        dView.RowFilter = "IDA=" & Me._IDA
 
-                Me.gridL.DataSource = Me.dtL
+                    Case LlamadoDesde.K
+                        For j = 1 To Me._Cantidad
+                            dRow = Me.dtL.NewRow
+
+                            dRow("IDA") = Me._IDA
+                            dRow("IDK") = Me._IDK
+                            dRow("CANTIDAD_USAR") = "1"
+
+                            Me.dtL.Rows.Add(dRow)
+                        Next
+
+                        Me.dtL.AcceptChanges()
+
+                        dView.RowFilter = "IDA=" & Me._IDA & " AND IDK=" & Me._IDK
+                End Select
+
+                Me.gridL.DataSource = dView
 
             End If
 
             Me.FormateaGrid()
         Catch ex As Exception
-
+            HandleError(Me.Name, "RefrescaGrid", ex)
         End Try
     End Function
 
-    Public Function RefrescaGridLDesdeA() As Boolean
-        Try
-            Dim dView As New DataView(Me.dtL)
-            dView.RowFilter = "IDA=" & Me._IDA
+    'Public Function RefrescaGridLDesdeA() As Boolean
+    '    Try
+    '        Dim dView As New DataView(Me.dtL)
+    '        dView.RowFilter = "IDA=" & Me._IDA
 
-            Me.RefrescaGrid(dView)
+    '        Me.RefrescaGrid(dView)
 
-        Catch ex As Exception
-            HandleError(Me.Name, "RefrescaGridLDesdeA", ex)
-        End Try
-    End Function
 
-    Public Function RefrescaGridLDesdeK() As Boolean
-        Try
-            Dim dView As New DataView(Me.dtL)
-            dView.RowFilter = "IDA=" & Me._IDA & " AND IDK=" & Me._IDK
 
-            Me.RefrescaGrid(dView)
+    '    Catch ex As Exception
+    '        HandleError(Me.Name, "RefrescaGridLDesdeA", ex)
+    '    End Try
+    'End Function
 
-        Catch ex As Exception
-            HandleError(Me.Name, "RefrescaGridLDesdeK", ex)
-        End Try
-    End Function
+    'Public Function RefrescaGridLDesdeK() As Boolean
+    '    Try
+    '        Dim dView As New DataView(Me.dtL)
+    '        dView.RowFilter = "IDA=" & Me._IDA & " AND IDK=" & Me._IDK
+
+    '        Me.RefrescaGrid(dView)
+
+    '    Catch ex As Exception
+    '        HandleError(Me.Name, "RefrescaGridLDesdeK", ex)
+    '    End Try
+    'End Function
 
     Private Sub SimulaCaptura()
         Try
@@ -314,7 +336,9 @@ Public Class VentasDetalleLotes
     Private Sub Table_NewRow_L(ByVal sender As Object, ByVal e As DataTableNewRowEventArgs)
         Try
             e.Row("IDA") = Me._IDA
-            e.Row("IDK") = Me._IDK
+            If Me.eLlamadoDesde = LlamadoDesde.K Then
+                e.Row("IDK") = Me._IDK
+            End If
             e.Row("CONFIRMACION") = "Sin confirmar"
         Catch ex As Exception
             HandleError(Me.Name, "Table_NewRow_L", ex)
@@ -332,8 +356,8 @@ Public Class VentasDetalleLotes
                 .Column(Me.igyIDL).Width = 20
                 .Column(Me.igyID_INVENTARIO_LOTES_COSTOS).Width = 50
                 .Column(Me.igyCANTIDAD_USAR).Width = 75
-                .Column(Me.igyNS).Width = 75
-                .Column(Me.igyCONFIRMACION).Width = 50
+                .Column(Me.igyNS).Width = 150
+                .Column(Me.igyCONFIRMACION).Width = 75
                 .Column(Me.igyCOSTO).Width = 50
                 .Column(Me.igyIMPORTE).Width = 50
 
@@ -342,7 +366,7 @@ Public Class VentasDetalleLotes
                 .Cell(0, Me.igyIDL).Text = "IDL"
                 .Cell(0, Me.igyID_INVENTARIO_LOTES_COSTOS).Text = "IDLoteCosto"
                 .Cell(0, Me.igyCANTIDAD_USAR).Text = "Cantidad"
-                .Cell(0, Me.igyNS).Text = "IDA"
+                .Cell(0, Me.igyNS).Text = "Número de serie"
                 .Cell(0, Me.igyCONFIRMACION).Text = ""
                 .Cell(0, Me.igyCOSTO).Text = "Costo"
                 .Cell(0, Me.igyIMPORTE).Text = "Importe"

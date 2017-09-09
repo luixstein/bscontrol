@@ -3496,10 +3496,11 @@ busca_serie:
     Private Sub Grid_ButtonClick(Sender As Object, e As Grid.ButtonClickEventArgs) Handles Grid.ButtonClick
         Try
             Dim oArticulo As New Class_CatArticulos(), sCodigoArticulo As String = ""
+
+            sCodigoArticulo = Me.Grid.Cell(Me.Grid.ActiveCell.Row, Me.igyCODIGO_ARTICULO).Text
+
             Select Case e.Col.ToString
                 Case Me.igyBOTON_K.ToString
-
-                    sCodigoArticulo = Me.Grid.Cell(Me.Grid.ActiveCell.Row, Me.igyCODIGO_ARTICULO).Text
 
                     If txtLEN(sCodigoArticulo) = False Then
                         MsgBox("No ha capturado el artículo.", MsgBoxStyle.Exclamation, Me.Text)
@@ -3531,7 +3532,7 @@ busca_serie:
                     Me.oVentaK.ShowDialog()
 
                 Case Me.igyBOTON_L.ToString
-                    If txtLEN(Me.Grid.Cell(Me.Grid.ActiveCell.Row, Me.igyCODIGO_ARTICULO).Text) = False Then
+                    If txtLEN(sCodigoArticulo) = False Then
                         MsgBox("No ha capturado el artículo.", MsgBoxStyle.Exclamation, Me.Text)
                         Return
                     End If
@@ -3558,9 +3559,13 @@ busca_serie:
 
                     'Me.oBorrarK.oBorrarL = Me.oBorrarL
                     'Me.oBorrarK.IDA = Me.Grid.Cell(Me.Grid.ActiveCell.Row, 1).Text
+                    Me.oVentaL.CodigoAlmacen = Me.CboAlmacen.SelectedValue.ToString
                     Me.oVentaL.eLlamadoDesde = VentasDetalleLotes.LlamadoDesde.A
                     Me.oVentaL.IDA = Me.Grid.Cell(Me.Grid.ActiveCell.Row, Me.igyIDA).Text
-                    Me.oVentaL.RefrescaGridLDesdeA()
+                    Me.oVentaL.Cantidad = CDec(Me.Grid.Cell(Me.Grid.ActiveCell.Row, Me.igyCANTIDAD).Text)
+                    Me.oVentaL.CodigoArticulo = Me.Grid.Cell(Me.Grid.ActiveCell.Row, Me.igyCODIGO_ARTICULO).Text
+                    'Me.oVentaL.RefrescaGridLDesdeA()
+                    Me.oVentaL.RefrescaGrid()
                     Me.oVentaL.ShowDialog()
 
             End Select
@@ -3641,7 +3646,7 @@ busca_serie:
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Try
-            Dim oArticulo As Class_CatArticulos, sLotes As String = "" ', sListaSeries As String = ""
+            Dim oArticulo As Class_CatArticulos, sLotes As String = "", sListaSeries As String = ""
             '--LA ESTRUCTURA QUE SE MANDA ES  k;1,ART1S,2,(1221?1@1222?1@1223?1@1224?1)|2,ART2N,1,() DONDE LA 1ER LETRA INDICA SI ES K,S O AFECTACION PEPS(SI NO ES NINGUNA LETRA)
             '--LUEGO ES POSICION,CODIGO_ARTCULO,CANTIDAD,ENTRE PARENTESIS LA LISTA DE LOTES CON IDL Y CANTIDAD SEPARANDO RENGLONES CON @A, Y VALOR COLUMNAS CON ?, SI ENTRE PARENTESIS ESTA EN BLANCO ENTONCES ES PEPS.
 
@@ -3653,12 +3658,22 @@ busca_serie:
                     oArticulo = New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCODIGO_ARTICULO).Text)
 
                     If oArticulo.CODIGO_ARTICULO = "KIT" Then
+                        sLotes = ""
+
+                        '                        MsgBox(Me.oVentaK.dtKPublica.Select("IDA=" & Me.dtA.Rows(i - 1)("IDA").ToString).Count.ToString)
+
                         For Each k In Me.oVentaK.dtKPublica.Select("IDA=" & Me.dtA.Rows(i - 1)("IDA").ToString)
+                            sLotes = ""
 
                             '1,ART1S,2,(1221?1@1222?1@1223?1@1224?1)|
 
+                            Dim xtexto As String = ""
+
+                            'MsgBox(Me.oVentaL.dtLPublica.Select("IDK=" & k("IDK").ToString).Count.ToString & "  " & "IDK=" & k("IDK").ToString)
                             For Each l In Me.oVentaL.dtLPublica.Select("IDK=" & k("IDK").ToString)
-                                sLotes &= sLotes & l("IDL").ToString & "?" & l("CANTIDAD").ToString & "@"
+                                xtexto = l("ID_INVENTARIO_LOTES_COSTOS").ToString & "?" & l("CANTIDAD_USAR").ToString & "@"
+                                sLotes = sLotes & xtexto
+                                'sLotes &= sLotes & l("ID_INVENTARIO_LOTES_COSTOS").ToString & "?" & l("CANTIDAD_USAR").ToString & "@"
                             Next
                             If txtLEN(sLotes) = True Then
                                 sLotes = sLotes.Substring(0, sLotes.Length - 1) 'Para quitarle el último @ que sale sobrando.
@@ -3668,17 +3683,33 @@ busca_serie:
                                 sLotes = "(" & sLotes & ")|"
                                 sLotes = k("IDK").ToString & "," & k("CODIGO_ARTICULO").ToString & "," & k("CANTIDAD").ToString & "," & sLotes
                             End If
+
+                            sListaSeries = sListaSeries & sLotes
+
                         Next
 
-                        If txtLEN(sLotes) = True Then
-                            sLotes = sLotes.Substring(0, sLotes.Length - 1) 'Para quitarle el último | que sale sobrando.
-                            sLotes = "k;" & sLotes
+                        If txtLEN(sListaSeries) = True Then
+                            sListaSeries = sListaSeries.Substring(0, sListaSeries.Length - 1) 'Para quitarle el último | que sale sobrando.
+                            sListaSeries = "k;" & sListaSeries
                         End If
 
                     ElseIf oArticulo.ES_SERIALIZABLE = True Then 'S;1225,1|1226,1|1228,1'
+                        sLotes = ""
 
-                        For Each l In Me.oVentaL.dtLPublica.Select("IDA=" & Me.dtA.Rows(i - 1)("IDA").ToString)
-                            sLotes &= sLotes & l("ID_INVENTARIO_LOTES_COSTOS").ToString & "," & l("CANTIDAD_USAR").ToString & "|"
+                        'MsgBox(Me.oVentaL.dtLPublica.Select("IDA=" & Me.dtA.Rows(i - 1)("IDA").ToString).Count.ToString)
+                        Dim sIDA As String = Me.dtA.Rows(i - 1)("IDA").ToString
+                        Dim dS As DataRow() = Me.oVentaL.dtLPublica.Select("IDA=" & sIDA)
+
+                        'MsgBox(dS(0)("ID_INVENTARIO_LOTES_COSTOS").ToString)
+                        'MsgBox(dS(1)("ID_INVENTARIO_LOTES_COSTOS").ToString)
+
+                        Dim xtexto As String = ""
+
+                        For Each l As DataRow In Me.oVentaL.dtLPublica.Select("IDA=" & sIDA)
+                            xtexto = l("ID_INVENTARIO_LOTES_COSTOS").ToString & "," & l("CANTIDAD_USAR").ToString & "|"
+                            sLotes = sLotes & xtexto
+                            'sLotes &= sLotes & l("ID_INVENTARIO_LOTES_COSTOS").ToString & "," & l("CANTIDAD_USAR").ToString & "|"
+                            'MsgBox(l("ID_INVENTARIO_LOTES_COSTOS").ToString & "," & l("CANTIDAD_USAR").ToString & "|")
                         Next
 
                         If txtLEN(sLotes) = True Then
@@ -3698,3 +3729,5 @@ busca_serie:
 #End Region
 
 End Class
+
+
