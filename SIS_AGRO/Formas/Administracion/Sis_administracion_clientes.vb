@@ -586,6 +586,7 @@ Buscar:
         Dim StrFiltros As String = ""
         Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
+        Dim sCodigoPropietario As String = ""
         Try
             oReporte = New Class_Reporte("RPT_CXC_COBRANZA_DETALLE", Rpt)
 
@@ -593,12 +594,22 @@ Buscar:
                 Exit Sub
             End If
 
-            Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.GridListaClientes.CurrentRow.Cells("CODIGO_CLIENTE").Value.ToString)
+            Dim sql As New Class_find("SELECT R.CODIGO_PROPIETARIO FROM CAT_PROPIETARIOS_RELACION_CLIENTES R " _
+                                          & "WHERE CODIGO_CLIENTE='" & Me.TxtCliente.Text & "'")
+
+            If txtLEN(sql.Result1.ToString) = True Then
+                sCodigoPropietario = sql.Result1.ToString
+            Else
+                sCodigoPropietario = "0"
+            End If
+
+            'Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.GridListaClientes.CurrentRow.Cells("CODIGO_CLIENTE").Value.ToString)
+            Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.TxtCliente.Text.ToString)
             Rpt.SetParameterValue("@CODIGO_VENDEDOR", "")
             Rpt.SetParameterValue("@CODIGO_TIPO_DOCUMENTO", "T")
             Rpt.SetParameterValue("@CODIGO_ZONA", "T")
             Rpt.SetParameterValue("@CODIGO_TIPO_MERCADO", "T")
-            Rpt.SetParameterValue("@CODIGO_PROPIETARIO", valorNumerico(Me.TxtCliente.Text))
+            Rpt.SetParameterValue("@CODIGO_PROPIETARIO", valorNumerico(sCodigoPropietario))
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
