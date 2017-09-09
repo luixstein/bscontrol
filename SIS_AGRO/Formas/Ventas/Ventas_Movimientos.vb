@@ -3641,7 +3641,7 @@ busca_serie:
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Try
-            Dim oArticulo As Class_CatArticulos, sListaSeries As String = "", sLotes As String = ""
+            Dim oArticulo As Class_CatArticulos, sLotes As String = "" ', sListaSeries As String = ""
             '--LA ESTRUCTURA QUE SE MANDA ES  k;1,ART1S,2,(1221?1@1222?1@1223?1@1224?1)|2,ART2N,1,() DONDE LA 1ER LETRA INDICA SI ES K,S O AFECTACION PEPS(SI NO ES NINGUNA LETRA)
             '--LUEGO ES POSICION,CODIGO_ARTCULO,CANTIDAD,ENTRE PARENTESIS LA LISTA DE LOTES CON IDL Y CANTIDAD SEPARANDO RENGLONES CON @A, Y VALOR COLUMNAS CON ?, SI ENTRE PARENTESIS ESTA EN BLANCO ENTONCES ES PEPS.
 
@@ -3653,26 +3653,39 @@ busca_serie:
                     oArticulo = New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCODIGO_ARTICULO).Text)
 
                     If oArticulo.CODIGO_ARTICULO = "KIT" Then
-                        sListaSeries = "k;" '& Me.dtA.Rows(i)("IDA").ToString
-
                         For Each k In Me.oVentaK.dtKPublica.Select("IDA=" & Me.dtA.Rows(i - 1)("IDA").ToString)
-                            sListaSeries &= k("IDK").ToString & "," & k("CODIGO_ARTICULO").ToString & "," & k("CANTIDAD").ToString & ","
+
+                            '1,ART1S,2,(1221?1@1222?1@1223?1@1224?1)|
 
                             For Each l In Me.oVentaL.dtLPublica.Select("IDK=" & k("IDK").ToString)
                                 sLotes &= sLotes & l("IDL").ToString & "?" & l("CANTIDAD").ToString & "@"
                             Next
-
                             If txtLEN(sLotes) = True Then
-                                sLotes = "(" & sLotes & ")"
-
-                            Else
-
+                                sLotes = sLotes.Substring(0, sLotes.Length - 1) 'Para quitarle el último @ que sale sobrando.
                             End If
 
-
-                            sListaSeries &= sListaSeries & "|"
+                            If txtLEN(sLotes) = True Then
+                                sLotes = "(" & sLotes & ")|"
+                                sLotes = k("IDK").ToString & "," & k("CODIGO_ARTICULO").ToString & "," & k("CANTIDAD").ToString & "," & sLotes
+                            End If
                         Next
 
+                        If txtLEN(sLotes) = True Then
+                            sLotes = sLotes.Substring(0, sLotes.Length - 1) 'Para quitarle el último | que sale sobrando.
+                            sLotes = "k;" & sLotes
+                        End If
+
+                    ElseIf oArticulo.ES_SERIALIZABLE = True Then 'S;1225,1|1226,1|1228,1'
+
+                        For Each l In Me.oVentaL.dtLPublica.Select("IDA=" & Me.dtA.Rows(i - 1)("IDA").ToString)
+                            sLotes &= sLotes & l("ID_INVENTARIO_LOTES_COSTOS").ToString & "," & l("CANTIDAD_USAR").ToString & "|"
+                        Next
+
+                        If txtLEN(sLotes) = True Then
+                            sLotes = sLotes.Substring(0, sLotes.Length - 1) 'Para quitarle el último | que sale sobrando.
+                            sLotes = "S;" & sLotes
+                        End If
+                    Else
                         sLotes = ""
                     End If
                 End If
