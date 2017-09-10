@@ -37,11 +37,11 @@ Partial Class VentasDetalleKits
         Me.gridK.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
         Me.gridK.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gridK.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.gridK.Location = New System.Drawing.Point(13, 45)
+        Me.gridK.Location = New System.Drawing.Point(13, 12)
         Me.gridK.LockButton = True
         Me.gridK.Name = "gridK"
         Me.gridK.Rows = 2
-        Me.gridK.Size = New System.Drawing.Size(782, 172)
+        Me.gridK.Size = New System.Drawing.Size(782, 210)
         Me.gridK.TabIndex = 7
         Me.gridK.UncheckedImage = CType(resources.GetObject("gridK.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -66,7 +66,7 @@ Partial Class VentasDetalleKits
         Me.MinimizeBox = False
         Me.Name = "VentasDetalleKits"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "Ventas k"
+        Me.Text = "Detalle del kit"
         Me.ResumeLayout(False)
 
     End Sub

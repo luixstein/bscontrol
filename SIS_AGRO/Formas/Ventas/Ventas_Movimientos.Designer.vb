@@ -88,6 +88,7 @@ Partial Class Ventas_Movimientos
         Me.tsslElaboro = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tsslCancelo = New System.Windows.Forms.ToolStripStatusLabel()
         Me.frmDatos = New System.Windows.Forms.GroupBox()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.btnFacturaSiguiente = New System.Windows.Forms.Button()
         Me.btnFacturaAnterior = New System.Windows.Forms.Button()
         Me.txtNumCuenta = New System.Windows.Forms.TextBox()
@@ -110,7 +111,6 @@ Partial Class Ventas_Movimientos
         Me.Grid = New FlexCell.Grid()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.GridSeries = New FlexCell.Grid()
-        Me.Button1 = New System.Windows.Forms.Button()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -772,6 +772,15 @@ Partial Class Ventas_Movimientos
         Me.frmDatos.TabIndex = 0
         Me.frmDatos.TabStop = False
         '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(796, 131)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(76, 25)
+        Me.Button1.TabIndex = 373
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
         'btnFacturaSiguiente
         '
         Me.btnFacturaSiguiente.Location = New System.Drawing.Point(235, 67)
@@ -903,6 +912,7 @@ Partial Class Ventas_Movimientos
         Me.btnSeries.TabIndex = 381
         Me.btnSeries.Text = "Detallar series"
         Me.btnSeries.UseVisualStyleBackColor = True
+        Me.btnSeries.Visible = False
         '
         'btnAgregaAddenda
         '
@@ -1011,15 +1021,6 @@ Partial Class Ventas_Movimientos
         Me.GridSeries.Size = New System.Drawing.Size(966, 198)
         Me.GridSeries.TabIndex = 2
         Me.GridSeries.UncheckedImage = CType(resources.GetObject("GridSeries.UncheckedImage"), System.Drawing.Bitmap)
-        '
-        'Button1
-        '
-        Me.Button1.Location = New System.Drawing.Point(796, 131)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(76, 25)
-        Me.Button1.TabIndex = 373
-        Me.Button1.Text = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
         '
         'Ventas_Movimientos
         '

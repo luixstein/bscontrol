@@ -37,17 +37,17 @@ Partial Class VentasDetalleLotes
         Me.gridL.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
         Me.gridL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gridL.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.gridL.Location = New System.Drawing.Point(12, 32)
+        Me.gridL.Location = New System.Drawing.Point(12, 12)
         Me.gridL.LockButton = True
         Me.gridL.Name = "gridL"
-        Me.gridL.Rows = 6
-        Me.gridL.Size = New System.Drawing.Size(745, 130)
+        Me.gridL.Rows = 2
+        Me.gridL.Size = New System.Drawing.Size(780, 203)
         Me.gridL.TabIndex = 9
         Me.gridL.UncheckedImage = CType(resources.GetObject("gridL.UncheckedImage"), System.Drawing.Bitmap)
         '
         'btnAceptar
         '
-        Me.btnAceptar.Location = New System.Drawing.Point(642, 168)
+        Me.btnAceptar.Location = New System.Drawing.Point(683, 218)
         Me.btnAceptar.Name = "btnAceptar"
         Me.btnAceptar.Size = New System.Drawing.Size(109, 32)
         Me.btnAceptar.TabIndex = 383
@@ -58,14 +58,14 @@ Partial Class VentasDetalleLotes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(763, 207)
+        Me.ClientSize = New System.Drawing.Size(798, 262)
         Me.Controls.Add(Me.btnAceptar)
         Me.Controls.Add(Me.gridL)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "VentasDetalleLotes"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "VentasDetalleLotes"
+        Me.Text = "Lotes/Series"
         Me.ResumeLayout(False)
 
     End Sub

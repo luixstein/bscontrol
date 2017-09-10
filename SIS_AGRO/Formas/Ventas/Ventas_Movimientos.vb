@@ -869,7 +869,7 @@ Buscar:
                     Me.GridSeries.Locked = True
                     If Me.oDocumento.AFECTA_INVENTARIOS = True Then
                         Me.GridSeries.Locked = False
-                        Me.btnSeries.Visible = True
+                        'Me.btnSeries.Visible = True
                     End If
 
                     Me.tsslEstado.Text = "Estado: Agregando nuevo movimiento"
@@ -1334,23 +1334,16 @@ Buscar:
                         '--LA ESTRUCTURA QUE SE MANDA ES  k;1,ART1S,2,(1221?1@1222?1@1223?1@1224?1)|2,ART2N,1,() DONDE LA 1ER LETRA INDICA SI ES K,S O AFECTACION PEPS(SI NO ES NINGUNA LETRA)
                         '--LUEGO ES POSICION,CODIGO_ARTCULO,CANTIDAD,ENTRE PARENTESIS LA LISTA DE LOTES CON IDL Y CANTIDAD SEPARANDO RENGLONES CON @A, Y VALOR COLUMNAS CON ?, SI ENTRE PARENTESIS ESTA EN BLANCO ENTONCES ES PEPS.
 
-                        If oArticulo.CODIGO_ARTICULO = "KIT" Then
-                            sListaSeries = "k;" '& Me.dtA.Rows(i)("IDA").ToString
+                        sListaSeries = ObtieneLotes(i)
 
-                            For Each k In Me.oVentaK.dtKPublica.Select("IDA=" & Me.dtA.Rows(i)("IDA").ToString)
-                                sListaSeries &= k("IDK").ToString & "," & k("CODIGO_ARTICULO").ToString & "," & k("CANTIDAD").ToString & "|"
-                            Next
-
-                        End If
-
-                        If Me.dtSeries.Rows.Count > 0 Then
-                            For Each dRow In Me.dtSeries.Select("POSICION='" & i.ToString & "'")
-                                sListaSeries = sListaSeries & dRow("POSICION").ToString & "," & dRow("CODIGO_ARTICULO").ToString & "," & dRow("ID_INVENTARIO_LOTES_COSTOS").ToString & "," & dRow("NUMERO_SERIE").ToString & "|"
-                            Next
-                            If txtLEN(sListaSeries) = True Then
-                                sListaSeries = sListaSeries.Substring(0, sListaSeries.Length - 1) 'Para quitarle el último pipe que sale sobrando.
-                            End If
-                        End If
+                        'If Me.dtSeries.Rows.Count > 0 Then
+                        '    For Each dRow In Me.dtSeries.Select("POSICION='" & i.ToString & "'")
+                        '        sListaSeries = sListaSeries & dRow("POSICION").ToString & "," & dRow("CODIGO_ARTICULO").ToString & "," & dRow("ID_INVENTARIO_LOTES_COSTOS").ToString & "," & dRow("NUMERO_SERIE").ToString & "|"
+                        '    Next
+                        '    If txtLEN(sListaSeries) = True Then
+                        '        sListaSeries = sListaSeries.Substring(0, sListaSeries.Length - 1) 'Para quitarle el último pipe que sale sobrando.
+                        '    End If
+                        'End If
 
                         .oVentasDetalle.LISTA_SERIES = sListaSeries
 
@@ -3586,21 +3579,6 @@ busca_serie:
             'Dim juntos = (From uno In grupo Select uno.CODIGO_ARTICULO, uno.TOTAL).Union(From dos In grupo2 Select dos.CODIGO_ARTICULO, dos.TOTAL)
             'Dim suma = From r In juntos Group By CODIGO_ARTICULO = r.CODIGO_ARTICULO Into TOTAL = Sum(r.TOTAL)
 
-            'For Each Q In suma
-            '    MsgBox(Q.CODIGO_ARTICULO & " " & Q.TOTAL)
-            'Next
-
-            'For Each X In grupo
-            '    MsgBox(X.CODIGO_ARTICULO & " " & X.TOTAL)
-            'Next
-
-            'For Each X In grupo2
-            '    MsgBox(X.CODIGO_ARTICULO & " " & X.TOTAL)
-            'Next
-
-            'MsgBox(Me.dtA.Rows.Count)
-            'MsgBox(Me.oVentaK.dtKPublica.Rows.Count)
-
             Dim ai = From r In Me.dtA Where r.Field(Of String)("TIPO_CONTROL_INVENTARIO") = "INV"
                      Select New With {.CODIGO_ARTICULO = r.Field(Of String)("CODIGO_ARTICULO"), .CANTIDAD = CType(r.Field(Of String)("CANTIDAD"), Decimal)}
 
@@ -3626,8 +3604,9 @@ busca_serie:
                 dExistencia = CDec(oInventarios.Existencia(Me.Grid.Cell(i, Me.igyCODIGO_ARTICULO).Text, Me.CboAlmacen.SelectedValue.ToString))
 
                 If dExistencia <= 0 Then
-                    MsgBox("El artículo " & oArticulo.CODIGO_ARTICULO & "-" & oArticulo.DESCRIPCION & " no tiene existencia. ", MsgBoxStyle.Exclamation, sProcedure)
-                    Exit Function
+                    MsgBox("El artículo " & oArticulo.CODIGO_ARTICULO & "-" & oArticulo.DESCRIPCION & " no tiene existencia. " & vbCrLf &
+                               "Existencia=" & dExistencia.ToString, MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 Else
                     If e.TOTAL > dExistencia Then
                         MsgBox("El artículo " & oArticulo.CODIGO_ARTICULO & "-" & oArticulo.DESCRIPCION & " no tiene suficiente existencia." & vbCrLf &
@@ -3645,86 +3624,79 @@ busca_serie:
     End Function
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        For i = 1 To Me.Grid.Rows - 1
+            If txtLEN(Me.Grid.Cell(i, Me.igyCODIGO_ARTICULO).Text) = True Then
+                MsgBox(ObtieneLotes(i))
+            End If
+        Next
+    End Sub
+
+    Private Function ObtieneLotes(ByVal iRowGrid As Integer) As String
+        Dim sResultado As String = ""
         Try
-            Dim oArticulo As Class_CatArticulos, sLotes As String = "", sListaSeries As String = ""
-            '--LA ESTRUCTURA QUE SE MANDA ES  k;1,ART1S,2,(1221?1@1222?1@1223?1@1224?1)|2,ART2N,1,() DONDE LA 1ER LETRA INDICA SI ES K,S O AFECTACION PEPS(SI NO ES NINGUNA LETRA)
-            '--LUEGO ES POSICION,CODIGO_ARTCULO,CANTIDAD,ENTRE PARENTESIS LA LISTA DE LOTES CON IDL Y CANTIDAD SEPARANDO RENGLONES CON @A, Y VALOR COLUMNAS CON ?, SI ENTRE PARENTESIS ESTA EN BLANCO ENTONCES ES PEPS.
+            Dim oArticulo As Class_CatArticulos, sLotes As String = "", sKit As String = "", Texto As String = ""
 
-            'se graba el detalle
-            For i = 1 To Me.Grid.Rows - 1
+            'LA ESTRUCTURA DEL KIT k;1,ART1S,2,(1221?1@1222?1@1223?1@1224?1)|2,ART2N,1,() DONDE LA 1ER LETRA INDICA SI ES K,S O AFECTACION PEPS(SI NO ES NINGUNA LETRA)
+            'LUEGO ES POSICION,CODIGO_ARTCULO,CANTIDAD,ENTRE PARENTESIS LA LISTA DE LOTES CON IDL Y CANTIDAD SEPARANDO RENGLONES CON @A, Y VALOR COLUMNAS CON ?, 
+            'SI ENTRE PARENTESIS ESTA EN BLANCO ENTONCES ES PEPS
 
-                If txtLEN(Me.Grid.Cell(i, Me.igyCODIGO_ARTICULO).Text) = True Then
+            If txtLEN(Me.Grid.Cell(iRowGrid, Me.igyCODIGO_ARTICULO).Text) = True Then
 
-                    oArticulo = New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCODIGO_ARTICULO).Text)
+                oArticulo = New Class_CatArticulos(Me.Grid.Cell(iRowGrid, Me.igyCODIGO_ARTICULO).Text)
 
-                    If oArticulo.CODIGO_ARTICULO = "KIT" Then
+                If oArticulo.CODIGO_ARTICULO = "KIT" Then
+                    sLotes = ""
+
+                    For Each k In Me.oVentaK.dtKPublica.Select("IDA=" & Me.dtA.Rows(iRowGrid - 1)("IDA").ToString)
                         sLotes = ""
 
-                        '                        MsgBox(Me.oVentaK.dtKPublica.Select("IDA=" & Me.dtA.Rows(i - 1)("IDA").ToString).Count.ToString)
+                        '1,ART1S,2,(1221?1@1222?1@1223?1@1224?1)|
 
-                        For Each k In Me.oVentaK.dtKPublica.Select("IDA=" & Me.dtA.Rows(i - 1)("IDA").ToString)
-                            sLotes = ""
-
-                            '1,ART1S,2,(1221?1@1222?1@1223?1@1224?1)|
-
-                            Dim xtexto As String = ""
-
-                            'MsgBox(Me.oVentaL.dtLPublica.Select("IDK=" & k("IDK").ToString).Count.ToString & "  " & "IDK=" & k("IDK").ToString)
-                            For Each l In Me.oVentaL.dtLPublica.Select("IDK=" & k("IDK").ToString)
-                                xtexto = l("ID_INVENTARIO_LOTES_COSTOS").ToString & "?" & l("CANTIDAD_USAR").ToString & "@"
-                                sLotes = sLotes & xtexto
-                                'sLotes &= sLotes & l("ID_INVENTARIO_LOTES_COSTOS").ToString & "?" & l("CANTIDAD_USAR").ToString & "@"
-                            Next
-                            If txtLEN(sLotes) = True Then
-                                sLotes = sLotes.Substring(0, sLotes.Length - 1) 'Para quitarle el último @ que sale sobrando.
-                            End If
-
-                            If txtLEN(sLotes) = True Then
-                                sLotes = "(" & sLotes & ")|"
-                                sLotes = k("IDK").ToString & "," & k("CODIGO_ARTICULO").ToString & "," & k("CANTIDAD").ToString & "," & sLotes
-                            End If
-
-                            sListaSeries = sListaSeries & sLotes
-
-                        Next
-
-                        If txtLEN(sListaSeries) = True Then
-                            sListaSeries = sListaSeries.Substring(0, sListaSeries.Length - 1) 'Para quitarle el último | que sale sobrando.
-                            sListaSeries = "k;" & sListaSeries
-                        End If
-
-                    ElseIf oArticulo.ES_SERIALIZABLE = True Then 'S;1225,1|1226,1|1228,1'
-                        sLotes = ""
-
-                        'MsgBox(Me.oVentaL.dtLPublica.Select("IDA=" & Me.dtA.Rows(i - 1)("IDA").ToString).Count.ToString)
-                        Dim sIDA As String = Me.dtA.Rows(i - 1)("IDA").ToString
-                        Dim dS As DataRow() = Me.oVentaL.dtLPublica.Select("IDA=" & sIDA)
-
-                        'MsgBox(dS(0)("ID_INVENTARIO_LOTES_COSTOS").ToString)
-                        'MsgBox(dS(1)("ID_INVENTARIO_LOTES_COSTOS").ToString)
-
-                        Dim xtexto As String = ""
-
-                        For Each l As DataRow In Me.oVentaL.dtLPublica.Select("IDA=" & sIDA)
-                            xtexto = l("ID_INVENTARIO_LOTES_COSTOS").ToString & "," & l("CANTIDAD_USAR").ToString & "|"
-                            sLotes = sLotes & xtexto
-                            'sLotes &= sLotes & l("ID_INVENTARIO_LOTES_COSTOS").ToString & "," & l("CANTIDAD_USAR").ToString & "|"
-                            'MsgBox(l("ID_INVENTARIO_LOTES_COSTOS").ToString & "," & l("CANTIDAD_USAR").ToString & "|")
+                        For Each l In Me.oVentaL.dtLPublica.Select("IDK=" & k("IDK").ToString)
+                            Texto = l("ID_INVENTARIO_LOTES_COSTOS").ToString & "?" & l("CANTIDAD_USAR").ToString & "@"
+                            sLotes = sLotes & Texto
                         Next
 
                         If txtLEN(sLotes) = True Then
-                            sLotes = sLotes.Substring(0, sLotes.Length - 1) 'Para quitarle el último | que sale sobrando.
-                            sLotes = "S;" & sLotes
+                            sLotes = sLotes.Substring(0, sLotes.Length - 1) 'Para quitarle el último @ que sale sobrando.
+                            sLotes = "(" & sLotes & ")|"
+                            sLotes = k("IDK").ToString & "," & k("CODIGO_ARTICULO").ToString & "," & k("CANTIDAD").ToString & "," & sLotes
                         End If
-                    Else
-                        sLotes = ""
+
+                        sKit = sKit & sLotes
+
+                    Next
+
+                    If txtLEN(sKit) = True Then
+                        sKit = sKit.Substring(0, sKit.Length - 1) 'Para quitarle el último | que sale sobrando.
+                        sResultado = "k;" & sKit
                     End If
+
+                ElseIf oArticulo.ES_SERIALIZABLE = True Then 'S;1225,1|1226,1|1228,1'
+                    sLotes = ""
+
+                    Dim sIDA As String = Me.dtA.Rows(iRowGrid - 1)("IDA").ToString
+
+                    For Each l As DataRow In Me.oVentaL.dtLPublica.Select("IDA=" & sIDA)
+                        Texto = l("ID_INVENTARIO_LOTES_COSTOS").ToString & "," & l("CANTIDAD_USAR").ToString & "|"
+                        sLotes = sLotes & Texto
+                    Next
+
+                    If txtLEN(sLotes) = True Then
+                        sLotes = sLotes.Substring(0, sLotes.Length - 1) 'Para quitarle el último | que sale sobrando.
+                        sResultado = "S;" & sLotes
+                    End If
+                Else
+                    sLotes = ""
                 End If
-            Next
+            End If
+
         Catch ex As Exception
-            HandleError(Me.Name, "Button1_Click", ex)
+            HandleError(Me.Name, "ObtieneLotes", ex)
         End Try
-    End Sub
+
+        Return sResultado
+    End Function
 
 #End Region
 

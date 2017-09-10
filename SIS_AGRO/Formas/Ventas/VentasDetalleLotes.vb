@@ -259,32 +259,6 @@ Public Class VentasDetalleLotes
         End Try
     End Function
 
-    'Public Function RefrescaGridLDesdeA() As Boolean
-    '    Try
-    '        Dim dView As New DataView(Me.dtL)
-    '        dView.RowFilter = "IDA=" & Me._IDA
-
-    '        Me.RefrescaGrid(dView)
-
-
-
-    '    Catch ex As Exception
-    '        HandleError(Me.Name, "RefrescaGridLDesdeA", ex)
-    '    End Try
-    'End Function
-
-    'Public Function RefrescaGridLDesdeK() As Boolean
-    '    Try
-    '        Dim dView As New DataView(Me.dtL)
-    '        dView.RowFilter = "IDA=" & Me._IDA & " AND IDK=" & Me._IDK
-
-    '        Me.RefrescaGrid(dView)
-
-    '    Catch ex As Exception
-    '        HandleError(Me.Name, "RefrescaGridLDesdeK", ex)
-    '    End Try
-    'End Function
-
     Private Sub SimulaCaptura()
         Try
             With Me.dtL
@@ -473,6 +447,7 @@ busca_serie:
                                         iSeriesUsadas -= 1
                                         Me.gridL.Cell(i, Me.igyID_INVENTARIO_LOTES_COSTOS).Text = dtSeries.Rows(iRowEncontrado)("ID_INVENTARIO_LOTES_COSTOS").ToString
                                         Me.gridL.Cell(i, Me.igyNS).Text = dtSeries.Rows(iRowEncontrado)("NUMERO_SERIE").ToString
+                                        Me.gridL.Cell(i, Me.igyCONFIRMACION).Text = "Confirmado"
                                         iRowEncontrado += 1 'empieza desde el 0
                                     End If
                                 Next
@@ -537,7 +512,6 @@ busca_serie:
                             Return True
 
                         End If
-
                     End If
                 End If
 
