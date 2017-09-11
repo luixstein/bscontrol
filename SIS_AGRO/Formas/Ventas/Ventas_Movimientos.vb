@@ -1155,23 +1155,23 @@ Buscar:
         Try
 
             If Me._EsPorEmbarqueExtranjero = False AndAlso MsgBox("Deseas grabar la " & Me.CboDocumento.Text & " con el folio : " & Me.txtFolio.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Grabar") = MsgBoxResult.No Then
-                Exit Function
+                Return False
             End If
 
             If Me._EsPorEmbarqueExtranjero = False AndAlso oDocumento.ACCESIBLE_USUARIO = False Then
                 MsgBox("Este documento no se puede grabar directamente.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+                Return False
             End If
 
             If Me._EsPorEmbarqueExtranjero = False AndAlso Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
                 MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, Me.Text)
-                Exit Function
+                Return False
             End If
 
             If Me._EsPorEmbarqueExtranjero = False Then
                 If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
                     MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, Me.Text)
-                    Exit Function
+                    Return False
                 End If
             End If
 
@@ -1180,16 +1180,16 @@ Buscar:
             Me.Totales()
 
             If Me.AsignaCentrosCostos() = False Then
-                Exit Function
+                Return False
             End If
 
             If Me.ValidarVenta() = False Then
-                Exit Function
+                Return False
             End If
 
             If Me.sTipoVenta <> "SR" And Me.oDocumento.AFECTA_CXC = True Then
                 If Me._EsPorEmbarqueExtranjero = False AndAlso Me.ValidarReglasCreditoplazo(True) = False Then
-                    Exit Function
+                    Return False
                 End If
             End If
 
@@ -1288,13 +1288,13 @@ Buscar:
                 If Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.SUSTITUYENDO Then
                     If .Insertar = False Then
                         MsgBox("Error al tratar de insertar el movimiento de ventas.", MsgBoxStyle.Exclamation, Me.Text)
-                        Exit Function
+                        Return False
                     End If
                     Me.txtFolio.Text = Me.oVenta.FOLIO_VENTA 'Se asegura del cambio del folio en pantalla
                 Else
                     If .Actualizar = False Then
                         MsgBox("Error al tratar de actualizar el movimiento de ventas.", MsgBoxStyle.Exclamation, Me.Text)
-                        Exit Function
+                        Return False
                     End If
                 End If
 
@@ -1329,8 +1329,6 @@ Buscar:
 
                         .oVentasDetalle.CODIGO_CENTRO_COSTO = Me.Grid.Cell(i, Me.igyCODIGO_CENTRO_COSTO).Text
 
-                        MsgBox("falta validar que si es kit le hayan detallado renglones, y si son lotes validar que hayan puesto todos ")
-
                         '--LA ESTRUCTURA QUE SE MANDA ES  k;1,ART1S,2,(1221?1@1222?1@1223?1@1224?1)|2,ART2N,1,() DONDE LA 1ER LETRA INDICA SI ES K,S O AFECTACION PEPS(SI NO ES NINGUNA LETRA)
                         '--LUEGO ES POSICION,CODIGO_ARTCULO,CANTIDAD,ENTRE PARENTESIS LA LISTA DE LOTES CON IDL Y CANTIDAD SEPARANDO RENGLONES CON @A, Y VALOR COLUMNAS CON ?, SI ENTRE PARENTESIS ESTA EN BLANCO ENTONCES ES PEPS.
 
@@ -1359,7 +1357,7 @@ Buscar:
 
                         If .oVentasDetalle.GrabaRenglon = False Then
                             MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Text)
-                            Exit Function
+                            Return False
                         End If
 
                         sListaSeries = ""
@@ -1375,12 +1373,12 @@ Buscar:
 
                     If .AfectaInventarios = False Then
                         MsgBox("Error al tratar de afectar inventarios en el movimiento de ventas.", MsgBoxStyle.Exclamation, Me.Text)
-                        Exit Function
+                        Return False
                     End If
 
                     If oDocumento.AFECTA_CONTBILIDAD = True Then
                         If .AplicarPoliza = False Then
-                            Exit Function
+                            Return False
                         End If
                     End If
                 End If
@@ -1392,18 +1390,18 @@ Buscar:
 
                 If Me.sTipoVenta = "SCR" Or sTipoVenta = "SCF" Then 'SUSTITUCION DE COTIZACION A REMISION O FACTURA
                     If .AfectaSustitucionCotizacion = False Then
-                        Exit Function
+                        Return False
                     End If
                 ElseIf Me.sTipoVenta = "SR" Then 'SUSTITUCION DE REMISION
                     If .AfectaSustitucionRemision = False Then
-                        Exit Function
+                        Return False
                     End If
                 End If
 
                 If bVentaAutorizadaPorRegla = True Then
                     .VENTA_TOTAL = CDbl(Me.lblTotal.Text)
                     If .ConsumeReglas = False Then
-                        Exit Function
+                        Return False
                     End If
                 End If
 
@@ -1726,13 +1724,17 @@ CANCELAR:
                 End If
             End If
 
-            If Me.ValidaNumerosSerie = False Then
+            'If Me.ValidaNumerosSerie_V1 = False Then
+            '    Return False
+            'End If
+
+            If Me.ValidaNumerosSerie_v2 = False Then
                 Return False
             End If
 
-            If Me.HaySeriesRepetidas = True Then
-                Return False
-            End If
+            'If Me.HaySeriesRepetidas = True Then
+            '    Return False
+            'End If
 
             If Me.oDocumento.AFECTA_INVENTARIOS = True Then
 
@@ -3238,7 +3240,7 @@ busca_serie:
         Return False
     End Function
 
-    Private Function ValidaNumerosSerie() As Boolean
+    Private Function ValidaNumerosSerie_V1() As Boolean
         Try
             Dim dtSeriesTemp As New DataTable("Series")
             With dtSeriesTemp
@@ -3572,13 +3574,15 @@ busca_serie:
 
     Private Function ValidarExistenciasAgrupadas() As Boolean
         Const sProcedure As String = "ValidarExistenciasAgrupadas"
-
+        Dim bResultado As Boolean = False
         Try
             'Dim grupo = From r In Me.dtA Group By CODIGO_ARTICULO = r.Field(Of String)("CODIGO_ARTICULO") Into TOTAL = Sum(CType(r.Field(Of String)("CANTIDAD"), Decimal))
             'Dim grupo2 = From r In Me.oVentaK.dtKPublica Group By CODIGO_ARTICULO = r.Field(Of String)("CODIGO_ARTICULO") Into TOTAL = Sum(CType(r.Field(Of String)("CANTIDAD"), Decimal))
             'Dim juntos = (From uno In grupo Select uno.CODIGO_ARTICULO, uno.TOTAL).Union(From dos In grupo2 Select dos.CODIGO_ARTICULO, dos.TOTAL)
             'Dim suma = From r In juntos Group By CODIGO_ARTICULO = r.CODIGO_ARTICULO Into TOTAL = Sum(r.TOTAL)
 
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            'Valida sólo inventariables
             Dim ai = From r In Me.dtA Where r.Field(Of String)("TIPO_CONTROL_INVENTARIO") = "INV"
                      Select New With {.CODIGO_ARTICULO = r.Field(Of String)("CODIGO_ARTICULO"), .CANTIDAD = CType(r.Field(Of String)("CANTIDAD"), Decimal)}
 
@@ -3601,7 +3605,7 @@ busca_serie:
 
             For Each e In suma
                 oArticulo = New Class_CatArticulos(e.CODIGO_ARTICULO)
-                dExistencia = CDec(oInventarios.Existencia(Me.Grid.Cell(i, Me.igyCODIGO_ARTICULO).Text, Me.CboAlmacen.SelectedValue.ToString))
+                dExistencia = CDec(oInventarios.Existencia(oArticulo.CODIGO_ARTICULO, Me.CboAlmacen.SelectedValue.ToString))
 
                 If dExistencia <= 0 Then
                     MsgBox("El artículo " & oArticulo.CODIGO_ARTICULO & "-" & oArticulo.DESCRIPCION & " no tiene existencia. " & vbCrLf &
@@ -3618,9 +3622,27 @@ busca_serie:
                 'MsgBox(e.CODIGO_ARTICULO & " " & e.TOTAL)
             Next
 
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            ', CODIGO_ARTICULO = r.Field(Of String)("CODIGO_ARTICULO"),
+            'Valida sólo con lotes
+            Dim sumaLotes = From r In Me.oVentaL.dtLPublica Group By ID_INVENTARIO_LOTES_COSTOS = r.Field(Of String)("ID_INVENTARIO_LOTES_COSTOS"), NS = r.Field(Of String)("NS")
+            Into TOTAL = Sum(CType(r.Field(Of String)("CANTIDAD_USAR"), Decimal))
+
+            For Each r In sumaLotes
+                dExistencia = CDec(oInventarios.ExistenciaLoteSerie(r.ID_INVENTARIO_LOTES_COSTOS))
+                If dExistencia < r.TOTAL Then
+                    MsgBox("El Artículo " & "" & " con la serie " & r.NS & " no tiene suficiente existencia.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+            Next
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            bResultado = True
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
+
+        Return bResultado
     End Function
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
@@ -3644,7 +3666,7 @@ busca_serie:
 
                 oArticulo = New Class_CatArticulos(Me.Grid.Cell(iRowGrid, Me.igyCODIGO_ARTICULO).Text)
 
-                If oArticulo.CODIGO_ARTICULO = "KIT" Then
+                If oArticulo.CODIGO_ARTICULO.ToUpper = "KIT" Then
                     sLotes = ""
 
                     For Each k In Me.oVentaK.dtKPublica.Select("IDA=" & Me.dtA.Rows(iRowGrid - 1)("IDA").ToString)
@@ -3652,19 +3674,21 @@ busca_serie:
 
                         '1,ART1S,2,(1221?1@1222?1@1223?1@1224?1)|
 
-                        For Each l In Me.oVentaL.dtLPublica.Select("IDK=" & k("IDK").ToString)
+                        Dim lRows As DataRow() = Me.oVentaL.dtLPublica.Select("IDK=" & k("IDK").ToString)
+
+                        For Each l In lRows
                             Texto = l("ID_INVENTARIO_LOTES_COSTOS").ToString & "?" & l("CANTIDAD_USAR").ToString & "@"
                             sLotes = sLotes & Texto
                         Next
 
                         If txtLEN(sLotes) = True Then
                             sLotes = sLotes.Substring(0, sLotes.Length - 1) 'Para quitarle el último @ que sale sobrando.
-                            sLotes = "(" & sLotes & ")|"
-                            sLotes = k("IDK").ToString & "," & k("CODIGO_ARTICULO").ToString & "," & k("CANTIDAD").ToString & "," & sLotes
                         End If
 
-                        sKit = sKit & sLotes
+                        sLotes = "(" & sLotes & ")|"
+                        sLotes = k("IDK").ToString & "," & k("CODIGO_ARTICULO").ToString & "," & k("CANTIDAD").ToString & "," & sLotes
 
+                        sKit = sKit & sLotes
                     Next
 
                     If txtLEN(sKit) = True Then
@@ -3698,6 +3722,47 @@ busca_serie:
         Return sResultado
     End Function
 
+    Private Function ValidaNumerosSerie_V2() As Boolean
+        Const sProcedure As String = "ValidaNumerosSerie_V2"
+        Dim bResultado As Boolean = False, i As Integer, IDA As Integer
+        Try
+            Dim oArticulo As Class_CatArticulos
+
+            For i = 1 To Me.Grid.Rows - 1
+                If txtLEN(Me.Grid.Cell(i, Me.igyCODIGO_ARTICULO).Text) = True Then
+
+                    oArticulo = New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCODIGO_ARTICULO).Text)
+                    IDA = CInt(Me.Grid.Cell(i, Me.igyIDA).Text)
+
+                    If oArticulo.ES_SERIALIZABLE = True Then
+
+                        If Me.oVentaL.dtLPublica.Select("IDA=" & IDA & " AND LEN(ID_INVENTARIO_LOTES_COSTOS)>0").Count <> CInt(Me.Grid.Cell(i, Me.igyCANTIDAD).Text) Then
+                            MsgBox("No ha detallado todas las series del renglón #" & i.ToString, MsgBoxStyle.Exclamation, sProcedure)
+                            Return False
+                        End If
+
+                    ElseIf oArticulo.CODIGO_ARTICULO.ToUpper = "KIT" Then
+                        Dim dCantidaKIT As Decimal = CDec(Me.Grid.Cell(i, Me.igyCANTIDAD).Text), dCantidadLote As Decimal = 0
+
+                        For Each k In Me.oVentaK.dtKPublica.Select("IDA=" & IDA & " AND TIPO_CONTROL_INVENTARIO='SER'")
+                            dCantidadLote = CDec(k("CANTIDAD")) * dCantidaKIT
+
+                            If Me.oVentaL.dtLPublica.Select("IDK=" & k("IDK").ToString & " AND LEN(ID_INVENTARIO_LOTES_COSTOS)>0").Count <> dCantidadLote Then
+                                MsgBox("No ha detallado todas las series del renglón #" & i.ToString, MsgBoxStyle.Exclamation, sProcedure)
+                                Return False
+                            End If
+                        Next
+
+                    End If
+                End If
+            Next
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
 #End Region
 
 End Class
