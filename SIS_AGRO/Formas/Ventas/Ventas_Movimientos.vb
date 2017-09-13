@@ -3757,6 +3757,8 @@ busca_serie:
                 End If
             Next
 
+            Return True
+
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
