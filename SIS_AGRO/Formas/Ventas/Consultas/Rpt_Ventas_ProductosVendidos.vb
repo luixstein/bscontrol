@@ -220,6 +220,7 @@ Buscar:
             Rpt.SetParameterValue("@CODIGO_LINEA", Me.CboLinea.SelectedValue.ToString)
             Rpt.SetParameterValue("@CODIGO_FAMILIA", Me.CboFamilia.SelectedValue.ToString)
             Rpt.SetParameterValue("@CODIGO_CULTIVO", IIf(txtLEN(Me.CboCultivoAgricola.SelectedValue.ToString) = True, Me.CboCultivoAgricola.SelectedValue.ToString, "T"))
+            Rpt.SetParameterValue("@CODIGO_USUARIO", Usuario.Codigo_Usuario.ToString)
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
