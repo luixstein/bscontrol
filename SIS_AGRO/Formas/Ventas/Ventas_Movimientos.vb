@@ -67,9 +67,10 @@ Public Class Ventas_Movimientos
     Private igyCOSTO As Short = 26
 
     Private igyIDA As Short = 27
-    Private igyCANTIDAD_ANTERIOR As Short = 28
-    Private igyBOTON_K As Short = 29
-    Private igyBOTON_L As Short = 30
+    Private igyCODIGO_ARTICULO_ANTERIOR As Short = 28
+    Private igyCANTIDAD_ANTERIOR As Short = 29
+    Private igyBOTON_K As Short = 30
+    Private igyBOTON_L As Short = 31
 #End Region
 
 #Region "Columnas grid series"
@@ -819,7 +820,8 @@ Buscar:
                 Me.Grid.Column(Me.igyPRECIO).Locked = True
             End If
 
-            Me.Grid.Column(Me.igyIDA).Visible = True
+            Me.Grid.Column(Me.igyIDA).Visible = False
+            Me.Grid.Column(Me.igyCODIGO_ARTICULO_ANTERIOR).Visible = False
             Me.Grid.Column(Me.igyCANTIDAD_ANTERIOR).Visible = False
 
             Me.Grid.DisplayFocusRect = False
@@ -2945,7 +2947,17 @@ buscaCentrosCostos:
                                 "0" & Chr(9) &
                                 "SIN DEFINIR" & Chr(9) &
                                 dRow("PRECIO_USD").ToString & Chr(9) &
-                                dRow("IMPORTE_USD").ToString)
+                                dRow("IMPORTE_USD").ToString & Chr(9) &
+                                "0.00" & Chr(9) &
+                                "0.00" & Chr(9) &
+                                "0.00" & Chr(9) &
+                                "0.00" & Chr(9) &
+                                "0.00" & Chr(9) &
+                                "0.00" & Chr(9) &
+                                "0.00" & Chr(9) &
+                                "0.00" & Chr(9) &
+                                "" & Chr(9) &
+                                "")
                 'Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + dRow("CUENTA_CONTABLE_BASE").ToString & Chr(9) & 'En agr esta así, pero aquí la cuenta es general
             Next
 
@@ -3380,6 +3392,7 @@ busca_serie:
                 .Columns.Add("COSTO", GetType(String))
 
                 .Columns.Add("IDA", GetType(Integer))
+                .Columns.Add("CODIGO_ARTICULO_ANTERIOR", GetType(String))
                 .Columns.Add("CANTIDAD_ANTERIOR", GetType(String))
                 .Columns.Add("BOTON_K", GetType(String))
                 .Columns.Add("BOTON_L", GetType(String))
@@ -3418,6 +3431,7 @@ busca_serie:
                 '.Columns("IMPORTE_COSTO").DefaultValue = ""
 
                 '.Columns("IDA").DefaultValue = "0"
+                .Columns("CODIGO_ARTICULO_ANTERIOR").DefaultValue = ""
                 .Columns("CANTIDAD_ANTERIOR").DefaultValue = ""
                 .Columns("BOTON_K").DefaultValue = ""
                 .Columns("BOTON_L").DefaultValue = ""
@@ -3448,21 +3462,24 @@ busca_serie:
     Private Sub Row_Deleted_A(ByVal sender As Object, ByVal e As DataRowChangeEventArgs)
         'Si eliminan un renglón de A
         Try
-            Dim IDA As String = ""
+            Dim IDA As String = e.Row("IDA").ToString
 
-            Try
-                IDA = e.Row("IDA", DataRowVersion.Original).ToString
-            Catch ex As Exception
-                Return
-            End Try
+            'Try
+            '    IDA = e.Row("IDA", DataRowVersion.Original).ToString
+            'Catch ex As Exception
+            '    Return
+            'End Try
 
             Dim sCodigoArticulo As String = e.Row("CODIGO_ARTICULO", DataRowVersion.Original).ToString
 
-            If sCodigoArticulo = "K" Then
-                'Me.oBorrarK.Elimina(IDA) 'Borra los renglones del kit y este dentro elimina los renglones de los lotes
-            Else
-                'Me.oBorrarL.EliminarDesdeA(IDA) 'Borra los renglones de L
-            End If
+            Me.oVentaK.Elimina(IDA)
+            Me.oVentaL.EliminarDesdeA(IDA)
+
+            'If sCodigoArticulo = "K" Then
+            '    'Me.oBorrarK.Elimina(IDA) 'Borra los renglones del kit y este dentro elimina los renglones de los lotes
+            'Else
+            '    'Me.oBorrarL.EliminarDesdeA(IDA) 'Borra los renglones de L
+            'End If
 
         Catch ex As Exception
             HandleError(Me.Name, "Row_Deleted_A", ex)
@@ -3471,17 +3488,31 @@ busca_serie:
 
     Private Sub Row_Changed_A(ByVal sender As Object, ByVal e As DataRowChangeEventArgs)
         Try
-            Dim IDA As String = ""
+            Dim IDA As String = e.Row("IDA").ToString
 
-            Try
-                IDA = e.Row("IDA", DataRowVersion.Original).ToString
-            Catch ex As Exception
+            If e.Row("CODIGO_ARTICULO_ANTERIOR").ToString = "" Then
+                e.Row("CODIGO_ARTICULO_ANTERIOR") = e.Row("CODIGO_ARTICULO").ToString
                 Return
-            End Try
+            End If
+
+            If e.Row("CANTIDAD_ANTERIOR").ToString = "" Then
+                e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD").ToString
+                Return
+            End If
+
+            If e.Row("CODIGO_ARTICULO").ToString <> e.Row("CODIGO_ARTICULO_ANTERIOR").ToString Then 'Si modifican el código se eliminan el detalle del kit y los lotes.
+                Me.oVentaK.Elimina(IDA)
+                Me.oVentaL.EliminarDesdeA(IDA)
+                e.Row("CODIGO_ARTICULO_ANTERIOR") = e.Row("CODIGO_ARTICULO").ToString
+            End If
 
             If e.Row("CANTIDAD").ToString <> e.Row("CANTIDAD_ANTERIOR").ToString Then 'Si modifican la cantidad se eliminan los lotes(no el kit, sea o no kit)
-                'Me.oBorrarL.EliminarDesdeA(IDA)
+                Me.oVentaK.Elimina(IDA)
+                Me.oVentaL.EliminarDesdeA(IDA)
+                e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD").ToString
             End If
+
+            Me.RefrescaGridsPruebas()
 
         Catch ex As Exception
             HandleError(Me.Name, "Row_Changed_A", ex)
@@ -3765,6 +3796,15 @@ busca_serie:
 
         Return bResultado
     End Function
+
+    Private Sub btnPruebasKL_Click(sender As Object, e As EventArgs) Handles btnPruebasKL.Click
+        Me.RefrescaGridsPruebas()
+    End Sub
+
+    Private Sub RefrescaGridsPruebas()
+        Me.gridPruebasK.DataSource = Me.oVentaK.dtKPublica
+        Me.gridPruebasL.DataSource = Me.oVentaL.dtLPublica
+    End Sub
 #End Region
 
 End Class

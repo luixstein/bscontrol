@@ -103,10 +103,12 @@ Public Class borrarA
 
     Private Sub Row_Changed_A(ByVal sender As Object, ByVal e As DataRowChangeEventArgs)
         Try
-            Dim IDA As String = e.Row("IDA", DataRowVersion.Original).ToString
+            'Dim IDA As String = e.Row("IDA", DataRowVersion.Original).ToString
+            Dim IDA As String = e.Row("IDA").ToString
 
             If e.Row("CANTIDAD").ToString <> e.Row("CANTIDAD_ANTERIOR").ToString Then 'Si modifican la cantidad se eliminan los lotes(no el kit, sea o no kit)
                 Me.oBorrarL.EliminarDesdeA(IDA)
+                e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD").ToString
             End If
 
         Catch ex As Exception

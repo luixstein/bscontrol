@@ -111,6 +111,9 @@ Partial Class Ventas_Movimientos
         Me.Grid = New FlexCell.Grid()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.GridSeries = New FlexCell.Grid()
+        Me.gridPruebasK = New FlexCell.Grid()
+        Me.gridPruebasL = New FlexCell.Grid()
+        Me.btnPruebasKL = New System.Windows.Forms.Button()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -695,7 +698,7 @@ Partial Class Ventas_Movimientos
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsslEstado, Me.tsslElaboro, Me.tsslCancelo})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 578)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 718)
         Me.StatusStripEstado.Name = "StatusStripEstado"
         Me.StatusStripEstado.Size = New System.Drawing.Size(1152, 24)
         Me.StatusStripEstado.TabIndex = 315
@@ -1022,11 +1025,61 @@ Partial Class Ventas_Movimientos
         Me.GridSeries.TabIndex = 2
         Me.GridSeries.UncheckedImage = CType(resources.GetObject("GridSeries.UncheckedImage"), System.Drawing.Bitmap)
         '
+        'gridPruebasK
+        '
+        Me.gridPruebasK.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.gridPruebasK.CheckedImage = CType(resources.GetObject("gridPruebasK.CheckedImage"), System.Drawing.Bitmap)
+        Me.gridPruebasK.Cols = 1
+        Me.gridPruebasK.DefaultFont = New System.Drawing.Font("Tahoma", 5.25!)
+        Me.gridPruebasK.DefaultRowHeight = CType(15, Short)
+        Me.gridPruebasK.DisplayRowNumber = True
+        Me.gridPruebasK.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
+        Me.gridPruebasK.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gridPruebasK.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.gridPruebasK.Location = New System.Drawing.Point(12, 580)
+        Me.gridPruebasK.LockButton = True
+        Me.gridPruebasK.Name = "gridPruebasK"
+        Me.gridPruebasK.Rows = 3
+        Me.gridPruebasK.Size = New System.Drawing.Size(594, 121)
+        Me.gridPruebasK.TabIndex = 316
+        Me.gridPruebasK.UncheckedImage = CType(resources.GetObject("gridPruebasK.UncheckedImage"), System.Drawing.Bitmap)
+        '
+        'gridPruebasL
+        '
+        Me.gridPruebasL.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.gridPruebasL.CheckedImage = CType(resources.GetObject("gridPruebasL.CheckedImage"), System.Drawing.Bitmap)
+        Me.gridPruebasL.Cols = 1
+        Me.gridPruebasL.DefaultFont = New System.Drawing.Font("Tahoma", 5.25!)
+        Me.gridPruebasL.DefaultRowHeight = CType(15, Short)
+        Me.gridPruebasL.DisplayRowNumber = True
+        Me.gridPruebasL.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
+        Me.gridPruebasL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gridPruebasL.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.gridPruebasL.Location = New System.Drawing.Point(612, 580)
+        Me.gridPruebasL.LockButton = True
+        Me.gridPruebasL.Name = "gridPruebasL"
+        Me.gridPruebasL.Rows = 3
+        Me.gridPruebasL.Size = New System.Drawing.Size(516, 121)
+        Me.gridPruebasL.TabIndex = 317
+        Me.gridPruebasL.UncheckedImage = CType(resources.GetObject("gridPruebasL.UncheckedImage"), System.Drawing.Bitmap)
+        '
+        'btnPruebasKL
+        '
+        Me.btnPruebasKL.Location = New System.Drawing.Point(558, 683)
+        Me.btnPruebasKL.Name = "btnPruebasKL"
+        Me.btnPruebasKL.Size = New System.Drawing.Size(109, 32)
+        Me.btnPruebasKL.TabIndex = 382
+        Me.btnPruebasKL.Text = "btnPruebasKL"
+        Me.btnPruebasKL.UseVisualStyleBackColor = True
+        '
         'Ventas_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1152, 602)
+        Me.ClientSize = New System.Drawing.Size(1152, 742)
+        Me.Controls.Add(Me.btnPruebasKL)
+        Me.Controls.Add(Me.gridPruebasL)
+        Me.Controls.Add(Me.gridPruebasK)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.gbTotales)
         Me.Controls.Add(Me.frmDatos)
@@ -1145,4 +1198,7 @@ Partial Class Ventas_Movimientos
     Friend WithEvents lblIEPSIncluido As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Button1 As Button
+    Friend WithEvents gridPruebasK As FlexCell.Grid
+    Friend WithEvents gridPruebasL As FlexCell.Grid
+    Friend WithEvents btnPruebasKL As Button
 End Class

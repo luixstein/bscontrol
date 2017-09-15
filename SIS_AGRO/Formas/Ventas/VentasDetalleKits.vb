@@ -249,15 +249,37 @@ Public Class VentasDetalleKits
         Try
             If e.Row("CANTIDAD").ToString <> e.Row("CANTIDAD_ANTERIOR").ToString Then
 
-                'Si modifican un renglón de K se eliminan sus hijos del L(tienen que volver a detallar L)
-                Try
-                    Dim IDK As String = e.Row("IDK", DataRowVersion.Original).ToString
+                Dim IDK As String = e.Row("IDK").ToString
+
+                If e.Row("CODIGO_ARTICULO_ANTERIOR").ToString = "" Then
+                    e.Row("CODIGO_ARTICULO_ANTERIOR") = e.Row("CODIGO_ARTICULO").ToString
+                    Return
+                End If
+
+                If e.Row("CANTIDAD_ANTERIOR").ToString = "" Then
+                    e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD").ToString
+                    Return
+                End If
+
+                If e.Row("CODIGO_ARTICULO").ToString <> e.Row("CODIGO_ARTICULO_ANTERIOR").ToString Then 'Si modifican el código se eliminan el detalle del kit y los lotes.
                     Me.oVentaL.EliminarDesdeK(IDK)
-                Catch ex As Exception
+                    e.Row("CODIGO_ARTICULO_ANTERIOR") = e.Row("CODIGO_ARTICULO").ToString
+                End If
 
-                End Try
+                If e.Row("CANTIDAD").ToString <> e.Row("CANTIDAD_ANTERIOR").ToString Then 'Si modifican la cantidad se eliminan los lotes(no el kit, sea o no kit)
+                    Me.oVentaL.EliminarDesdeK(IDK)
+                    e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD").ToString
+                End If
 
-                e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD")
+                'Si modifican un renglón de K se eliminan sus hijos del L(tienen que volver a detallar L)
+                'Try
+                '    Dim IDK As String = e.Row("IDK", DataRowVersion.Original).ToString
+                '    Me.oVentaL.EliminarDesdeK(IDK)
+                'Catch ex As Exception
+
+                'End Try
+
+                'e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD")
             End If
         Catch ex As Exception
             HandleError(Me.Name, "Row_Changed_K", ex)
