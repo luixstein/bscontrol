@@ -698,7 +698,7 @@ Partial Class Ventas_Movimientos
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsslEstado, Me.tsslElaboro, Me.tsslCancelo})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 718)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 576)
         Me.StatusStripEstado.Name = "StatusStripEstado"
         Me.StatusStripEstado.Size = New System.Drawing.Size(1152, 24)
         Me.StatusStripEstado.TabIndex = 315
@@ -783,6 +783,7 @@ Partial Class Ventas_Movimientos
         Me.Button1.TabIndex = 373
         Me.Button1.Text = "Button1"
         Me.Button1.UseVisualStyleBackColor = True
+        Me.Button1.Visible = False
         '
         'btnFacturaSiguiente
         '
@@ -1004,7 +1005,6 @@ Partial Class Ventas_Movimientos
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage2.Size = New System.Drawing.Size(1124, 212)
         Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Series"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
         'GridSeries
@@ -1024,6 +1024,7 @@ Partial Class Ventas_Movimientos
         Me.GridSeries.Size = New System.Drawing.Size(966, 198)
         Me.GridSeries.TabIndex = 2
         Me.GridSeries.UncheckedImage = CType(resources.GetObject("GridSeries.UncheckedImage"), System.Drawing.Bitmap)
+        Me.GridSeries.Visible = False
         '
         'gridPruebasK
         '
@@ -1043,6 +1044,7 @@ Partial Class Ventas_Movimientos
         Me.gridPruebasK.Size = New System.Drawing.Size(594, 121)
         Me.gridPruebasK.TabIndex = 316
         Me.gridPruebasK.UncheckedImage = CType(resources.GetObject("gridPruebasK.UncheckedImage"), System.Drawing.Bitmap)
+        Me.gridPruebasK.Visible = False
         '
         'gridPruebasL
         '
@@ -1062,6 +1064,7 @@ Partial Class Ventas_Movimientos
         Me.gridPruebasL.Size = New System.Drawing.Size(516, 121)
         Me.gridPruebasL.TabIndex = 317
         Me.gridPruebasL.UncheckedImage = CType(resources.GetObject("gridPruebasL.UncheckedImage"), System.Drawing.Bitmap)
+        Me.gridPruebasL.Visible = False
         '
         'btnPruebasKL
         '
@@ -1071,12 +1074,13 @@ Partial Class Ventas_Movimientos
         Me.btnPruebasKL.TabIndex = 382
         Me.btnPruebasKL.Text = "btnPruebasKL"
         Me.btnPruebasKL.UseVisualStyleBackColor = True
+        Me.btnPruebasKL.Visible = False
         '
         'Ventas_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1152, 742)
+        Me.ClientSize = New System.Drawing.Size(1152, 600)
         Me.Controls.Add(Me.btnPruebasKL)
         Me.Controls.Add(Me.gridPruebasL)
         Me.Controls.Add(Me.gridPruebasK)

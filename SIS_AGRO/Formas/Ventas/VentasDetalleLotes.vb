@@ -291,7 +291,8 @@ Public Class VentasDetalleLotes
             Next
             Me.dtL.AcceptChanges()
         Catch ex As Exception
-            HandleError(Me.Name, "EliminarDesdeA", ex)
+            'HandleError(Me.Name, "EliminarDesdeA", ex)
+            Debug.Print("error intencional")
         End Try
     End Function
 
@@ -303,7 +304,8 @@ Public Class VentasDetalleLotes
             Next
             Me.dtL.AcceptChanges()
         Catch ex As Exception
-            HandleError(Me.Name, "EliminarDesdeK", ex)
+            'HandleError(Me.Name, "EliminarDesdeK", ex)
+            Debug.Print("error intencional")
         End Try
     End Function
 
@@ -325,15 +327,15 @@ Public Class VentasDetalleLotes
                 .AutoRedraw = False
                 .DisplayFocusRect = False
 
-                .Column(Me.igyIDA).Width = 20
-                .Column(Me.igyIDK).Width = 20
-                .Column(Me.igyIDL).Width = 20
-                .Column(Me.igyID_INVENTARIO_LOTES_COSTOS).Width = 50
+                .Column(Me.igyIDA).Visible = False
+                .Column(Me.igyIDK).Visible = False
+                .Column(Me.igyIDL).Visible = False
+                .Column(Me.igyID_INVENTARIO_LOTES_COSTOS).Visible = False
                 .Column(Me.igyCANTIDAD_USAR).Width = 75
                 .Column(Me.igyNS).Width = 150
                 .Column(Me.igyCONFIRMACION).Width = 75
-                .Column(Me.igyCOSTO).Width = 50
-                .Column(Me.igyIMPORTE).Width = 50
+                .Column(Me.igyCOSTO).Visible = False
+                .Column(Me.igyIMPORTE).Visible = False
 
                 .Cell(0, Me.igyIDA).Text = "IDA"
                 .Cell(0, Me.igyIDK).Text = "IDK"
@@ -354,16 +356,6 @@ Public Class VentasDetalleLotes
                 .Column(Me.igyCONFIRMACION).Locked = True
                 .Column(Me.igyCOSTO).Locked = True
                 .Column(Me.igyIMPORTE).Locked = True
-
-                .Column(Me.igyIDA).Visible = True
-                .Column(Me.igyIDK).Visible = True
-                .Column(Me.igyIDL).Visible = True
-                .Column(Me.igyID_INVENTARIO_LOTES_COSTOS).Visible = True
-                .Column(Me.igyCANTIDAD_USAR).Visible = True
-                .Column(Me.igyNS).Visible = True
-                .Column(Me.igyCONFIRMACION).Visible = True
-                .Column(Me.igyCOSTO).Visible = False
-                .Column(Me.igyIMPORTE).Visible = False
 
                 .AutoRedraw = True
                 .Refresh()

@@ -7,14 +7,15 @@ Public Class VentasDetalleKits
     Private igyIDA As Short = 1
     Private igyIDK As Short = 2
     Private igyCODIGO_ARTICULO As Short = 3
-    Private igyDESCRIPCION As Short = 4
-    Private igyCANTIDAD As Short = 5
-    Private igyCANTIDAD_ANTERIOR As Short = 6
-    Private igyBOTON_L As Short = 7
-    Private igyCONFIRMACION As Short = 8
-    Private igyCOSTO As Short = 9
-    Private igyIMPORTE As Short = 10
-    Private igyTIPO_CONTROL_INVENTARIO As Short = 11
+    Private igyCODIGO_ARTICULO_ANTERIOR As Short = 4
+    Private igyDESCRIPCION As Short = 5
+    Private igyCANTIDAD As Short = 6
+    Private igyCANTIDAD_ANTERIOR As Short = 7
+    Private igyBOTON_L As Short = 8
+    Private igyCONFIRMACION As Short = 9
+    Private igyCOSTO As Short = 10
+    Private igyIMPORTE As Short = 11
+    Private igyTIPO_CONTROL_INVENTARIO As Short = 12
 #End Region
 
 #Region "Campos"
@@ -116,6 +117,7 @@ Public Class VentasDetalleKits
                 .Columns.Add("IDA", GetType(Integer))
                 .Columns.Add("IDK", GetType(Integer))
                 .Columns.Add("CODIGO_ARTICULO", GetType(String))
+                .Columns.Add("CODIGO_ARTICULO_ANTERIOR", GetType(String))
                 .Columns.Add("DESCRIPCION", GetType(String))
                 .Columns.Add("CANTIDAD", GetType(String))
                 .Columns.Add("CANTIDAD_ANTERIOR", GetType(String))
@@ -131,6 +133,7 @@ Public Class VentasDetalleKits
                 .Columns("IDK").AutoIncrementStep = 1
 
                 .Columns("CODIGO_ARTICULO").DefaultValue = ""
+                .Columns("CODIGO_ARTICULO_ANTERIOR").DefaultValue = ""
                 .Columns("DESCRIPCION").DefaultValue = ""
                 .Columns("CANTIDAD").DefaultValue = ""
                 .Columns("CANTIDAD_ANTERIOR").DefaultValue = ""
@@ -142,6 +145,7 @@ Public Class VentasDetalleKits
 
                 .AcceptChanges()
             End With
+
             'CASE WHEN A.ES_SERIALIZABLE = '1' THEN 'SER' WHEN A.INVENTARIABLE= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO
             AddHandler dtK.RowDeleted, New DataRowChangeEventHandler(AddressOf Row_Deleted_K)
             AddHandler dtK.RowChanged, New DataRowChangeEventHandler(AddressOf Row_Changed_K)
@@ -231,58 +235,63 @@ Public Class VentasDetalleKits
 
     Private Sub Row_Deleted_K(ByVal sender As Object, ByVal e As DataRowChangeEventArgs)
         Try
-            'Si eliminan un renglón de K se eliminan sus hijos del L(tienen que volver a detallar L)
-            'MsgBox(e.Row.RowState.ToString)
-            Try
-                Dim IDK As String = e.Row("IDK", DataRowVersion.Original).ToString
-                Me.oVentaL.EliminarDesdeK(IDK)
-            Catch ex As Exception
+            ''Si eliminan un renglón de K se eliminan sus hijos del L(tienen que volver a detallar L)
+            ''MsgBox(e.Row.RowState.ToString)
+            'Try
+            '    Dim IDK As String = e.Row("IDK", DataRowVersion.Original).ToString
+            '    Me.oVentaL.EliminarDesdeK(IDK)
+            'Catch ex As Exception
 
-            End Try
+            'End Try
+
+            Dim IDK As String = e.Row("IDK").ToString
+            Me.oVentaL.EliminarDesdeK(IDK)
 
         Catch ex As Exception
-            HandleError(Me.Name, "Row_Deleted_K", ex)
+            Debug.Print("error intencional")
+            'HandleError(Me.Name, "Row_Deleted_K", ex)
         End Try
     End Sub
 
     Private Sub Row_Changed_K(ByVal sender As Object, ByVal e As DataRowChangeEventArgs)
         Try
-            If e.Row("CANTIDAD").ToString <> e.Row("CANTIDAD_ANTERIOR").ToString Then
+            'If e.Row("CANTIDAD").ToString <> e.Row("CANTIDAD_ANTERIOR").ToString Then
 
-                Dim IDK As String = e.Row("IDK").ToString
+            Dim IDK As String = e.Row("IDK").ToString
 
-                If e.Row("CODIGO_ARTICULO_ANTERIOR").ToString = "" Then
-                    e.Row("CODIGO_ARTICULO_ANTERIOR") = e.Row("CODIGO_ARTICULO").ToString
-                    Return
-                End If
-
-                If e.Row("CANTIDAD_ANTERIOR").ToString = "" Then
-                    e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD").ToString
-                    Return
-                End If
-
-                If e.Row("CODIGO_ARTICULO").ToString <> e.Row("CODIGO_ARTICULO_ANTERIOR").ToString Then 'Si modifican el código se eliminan el detalle del kit y los lotes.
-                    Me.oVentaL.EliminarDesdeK(IDK)
-                    e.Row("CODIGO_ARTICULO_ANTERIOR") = e.Row("CODIGO_ARTICULO").ToString
-                End If
-
-                If e.Row("CANTIDAD").ToString <> e.Row("CANTIDAD_ANTERIOR").ToString Then 'Si modifican la cantidad se eliminan los lotes(no el kit, sea o no kit)
-                    Me.oVentaL.EliminarDesdeK(IDK)
-                    e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD").ToString
-                End If
-
-                'Si modifican un renglón de K se eliminan sus hijos del L(tienen que volver a detallar L)
-                'Try
-                '    Dim IDK As String = e.Row("IDK", DataRowVersion.Original).ToString
-                '    Me.oVentaL.EliminarDesdeK(IDK)
-                'Catch ex As Exception
-
-                'End Try
-
-                'e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD")
+            If e.Row("CODIGO_ARTICULO_ANTERIOR").ToString = "" Then
+                e.Row("CODIGO_ARTICULO_ANTERIOR") = e.Row("CODIGO_ARTICULO").ToString
+                Return
             End If
+
+            If e.Row("CANTIDAD_ANTERIOR").ToString = "" Then
+                e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD").ToString
+                Return
+            End If
+
+            If e.Row("CODIGO_ARTICULO").ToString <> e.Row("CODIGO_ARTICULO_ANTERIOR").ToString Then 'Si modifican el código se eliminan el detalle del kit y los lotes.
+                Me.oVentaL.EliminarDesdeK(IDK)
+                e.Row("CODIGO_ARTICULO_ANTERIOR") = e.Row("CODIGO_ARTICULO").ToString
+            End If
+
+            If e.Row("CANTIDAD").ToString <> e.Row("CANTIDAD_ANTERIOR").ToString Then 'Si modifican la cantidad se eliminan los lotes(no el kit, sea o no kit)
+                Me.oVentaL.EliminarDesdeK(IDK)
+                e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD").ToString
+            End If
+
+            'Si modifican un renglón de K se eliminan sus hijos del L(tienen que volver a detallar L)
+            'Try
+            '    Dim IDK As String = e.Row("IDK", DataRowVersion.Original).ToString
+            '    Me.oVentaL.EliminarDesdeK(IDK)
+            'Catch ex As Exception
+
+            'End Try
+
+            'e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD")
+            'End If
         Catch ex As Exception
-            HandleError(Me.Name, "Row_Changed_K", ex)
+            Debug.Print("error intencional")
+            'HandleError(Me.Name, "Row_Changed_K", ex)
         End Try
     End Sub
 
@@ -303,17 +312,18 @@ Public Class VentasDetalleKits
                 .AutoRedraw = False
                 .DisplayFocusRect = False
 
-                .Column(Me.igyIDA).Width = 20
-                .Column(Me.igyIDK).Width = 20
+                .Column(Me.igyIDA).Visible = False
+                .Column(Me.igyIDK).Visible = False
                 .Column(Me.igyCODIGO_ARTICULO).Width = 75
+                .Column(Me.igyCODIGO_ARTICULO_ANTERIOR).Visible = False
                 .Column(Me.igyDESCRIPCION).Width = 250
                 .Column(Me.igyCANTIDAD).Width = 75
-                .Column(Me.igyCANTIDAD_ANTERIOR).Width = 75
+                .Column(Me.igyCANTIDAD_ANTERIOR).Visible = False
                 .Column(Me.igyBOTON_L).Width = 50
                 .Column(Me.igyCONFIRMACION).Width = 50
-                .Column(Me.igyCOSTO).Width = 50
-                .Column(Me.igyIMPORTE).Width = 50
-                .Column(Me.igyTIPO_CONTROL_INVENTARIO).Width = 50
+                .Column(Me.igyCOSTO).Visible = False
+                .Column(Me.igyIMPORTE).Visible = False
+                .Column(Me.igyTIPO_CONTROL_INVENTARIO).Visible = False
 
                 .Cell(0, Me.igyIDA).Text = "IDA"
                 .Cell(0, Me.igyIDK).Text = "IDK"
@@ -352,13 +362,6 @@ Public Class VentasDetalleKits
                 .Column(Me.igyCOSTO).Locked = True
                 .Column(Me.igyIMPORTE).Locked = True
                 .Column(Me.igyTIPO_CONTROL_INVENTARIO).Locked = True
-
-                .Column(Me.igyIDA).Visible = True
-                .Column(Me.igyIDK).Visible = True  ' False
-                .Column(Me.igyCANTIDAD_ANTERIOR).Visible = False
-                .Column(Me.igyBOTON_L).Visible = True
-                .Column(Me.igyCOSTO).Visible = False
-                .Column(Me.igyIMPORTE).Visible = False
 
                 .Column(Me.igyBOTON_L).CellType = CellTypeEnum.Button
 
@@ -478,4 +481,7 @@ LlenaArticulo:
 #End Region
 
 End Class
+
+
+
 

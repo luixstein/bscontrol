@@ -705,6 +705,8 @@ Buscar:
             Me.Grid.Column(Me.igyIMPUESTO_IMPORTE).Width = 100
             Me.Grid.Column(Me.igyID_ORIGEN).Width = 100
             Me.Grid.Column(Me.igyES_PRODUCTO_KILOS).Width = 100
+            Me.Grid.Column(Me.igyCODIGO_ARTICULO_ANTERIOR).Visible = False
+            Me.Grid.Column(Me.igyCANTIDAD_ANTERIOR).Visible = False
             Me.Grid.Column(Me.igyBOTON_K).Width = 40
             Me.Grid.Column(Me.igyBOTON_L).Width = 40
 
@@ -2934,6 +2936,7 @@ buscaCentrosCostos:
                                 dRow("DESCRIPCION").ToString & Chr(9) &
                                 dRow("CANTIDAD_BULTOS_DETALLE").ToString & Chr(9) &
                                 dRow("PRECIO_UNIDAD_BULTO").ToString & Chr(9) &
+                                dRow("PRECIO_UNIDAD_BULTO").ToString & Chr(9) &
                                 dRow("UNIDAD").ToString & Chr(9) &
                                 dRow("CANTIDAD_KILOS").ToString & Chr(9) &
                                 dRow("PRECIO_KILOS").ToString & Chr(9) &
@@ -2954,8 +2957,9 @@ buscaCentrosCostos:
                                 "0.00" & Chr(9) &
                                 "0.00" & Chr(9) &
                                 "0.00" & Chr(9) &
-                                "0.00" & Chr(9) &
-                                "0.00" & Chr(9) &
+                                "" & Chr(9) &
+                                "" & Chr(9) &
+                                "" & Chr(9) &
                                 "" & Chr(9) &
                                 "")
                 'Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + dRow("CUENTA_CONTABLE_BASE").ToString & Chr(9) & 'En agr esta así, pero aquí la cuenta es general
@@ -3482,7 +3486,8 @@ busca_serie:
             'End If
 
         Catch ex As Exception
-            HandleError(Me.Name, "Row_Deleted_A", ex)
+            Debug.Print("error intencional")
+            'HandleError(Me.Name, "Row_Deleted_A", ex)
         End Try
     End Sub
 
@@ -3496,7 +3501,9 @@ busca_serie:
             End If
 
             If e.Row("CANTIDAD_ANTERIOR").ToString = "" Then
-                e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD").ToString
+                If e.Row("CANTIDAD").ToString <> "" Then
+                    e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD").ToString
+                End If
                 Return
             End If
 
@@ -3507,7 +3514,7 @@ busca_serie:
             End If
 
             If e.Row("CANTIDAD").ToString <> e.Row("CANTIDAD_ANTERIOR").ToString Then 'Si modifican la cantidad se eliminan los lotes(no el kit, sea o no kit)
-                Me.oVentaK.Elimina(IDA)
+                'Me.oVentaK.Elimina(IDA)
                 Me.oVentaL.EliminarDesdeA(IDA)
                 e.Row("CANTIDAD_ANTERIOR") = e.Row("CANTIDAD").ToString
             End If
@@ -3515,7 +3522,8 @@ busca_serie:
             Me.RefrescaGridsPruebas()
 
         Catch ex As Exception
-            HandleError(Me.Name, "Row_Changed_A", ex)
+            'HandleError(Me.Name, "Row_Changed_A", ex)
+            Debug.Print("error intencional")
         End Try
     End Sub
 
@@ -3808,5 +3816,6 @@ busca_serie:
 #End Region
 
 End Class
+
 
 
