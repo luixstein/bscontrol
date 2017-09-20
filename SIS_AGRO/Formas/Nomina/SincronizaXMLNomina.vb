@@ -1,18 +1,8 @@
 ﻿Option Strict On
 
-Imports Microsoft.VisualBasic
-Imports System
-Imports System.ComponentModel
-Imports System.Data
-Imports System.Data.Common
-Imports System.Data.Sql
 Imports System.Data.SqlClient
-Imports System.Windows.Forms
-Imports System.Collections
-Imports System.Collections.Generic
 Imports System.Data.OleDb
 Imports System.IO
-Imports System.Linq
 Imports Ionic.Zip
 
 Public Class SincronizaXMLNomina
@@ -213,10 +203,14 @@ Public Class SincronizaXMLNomina
 
                     For Each row In Hoja
                         'se graba el detalle
+
+                        'Nota, los códigos que ingresa el usuario son tipo temporada(se repiten entre temporadas distintas) aunque para grabar si se usa el código único(pk)
+                        Dim oTrabajador As New Class_CatTrabajadores(row("CODIGO_TRABAJADOR").ToString(), True)
+
                         .oHojaPercepcion.ID_NOMINA_PERCEPCION = 0
                         .oHojaPercepcion.ID_NOMINA_HOJA = .ID_NOMINA_HOJA
-                        .oHojaPercepcion.CODIGO_TRABAJADOR = row("CODIGO_TRABAJADOR").ToString() 'sCodigoTrabajador
-                        .oHojaPercepcion.PERCEPCION = CDbl(row("IMPORTE").ToString()) 'dImporte
+                        .oHojaPercepcion.CODIGO_TRABAJADOR = oTrabajador.CODIGO_TRABAJADOR 'Aqui va el código único y el CODIGO_X_TEMPORADA 'row("CODIGO_TRABAJADOR").ToString()
+                        .oHojaPercepcion.PERCEPCION = CDbl(row("IMPORTE").ToString())
                         .oHojaPercepcion.CODIGO_PERCEPCION = 1
 
                         If .oHojaPercepcion.GrabaDetallePercepcion("INSERTAR") = False Then
