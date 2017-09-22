@@ -1067,7 +1067,7 @@ Public Class Frm_CXP_Descuentos
         Rpt = New ReportDocument
         Dim oReporte As Class_Reporte
         Try
-            FormatoDeReporte = "RPT_FORMATO_CXP_NOTA_DESCUENTO_LAND"
+            FormatoDeReporte = "RPT_FORMATO_CXP_NOTA_DESCUENTO"
             oReporte = New Class_Reporte(FormatoDeReporte, Rpt, False)
             If Not oReporte.RptCargado Then
                 Exit Sub
