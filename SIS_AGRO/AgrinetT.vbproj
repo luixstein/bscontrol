@@ -646,7 +646,9 @@
     <Compile Include="Formas\CXP\Frm_CXP_Descuentos.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Formas\CXP\Frm_CXP_Devoluciones.Designer.vb" />
+    <Compile Include="Formas\CXP\Frm_CXP_Devoluciones.designer.vb">
+      <DependentUpon>Frm_CXP_Devoluciones.vb</DependentUpon>
+    </Compile>
     <Compile Include="Formas\CXP\Frm_CXP_Devoluciones.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -1805,7 +1807,9 @@
     <EmbeddedResource Include="Formas\CXP\Frm_CXP_Descuentos.resx">
       <DependentUpon>Frm_CXP_Descuentos.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Formas\CXP\Frm_CXP_Devoluciones.resx" />
+    <EmbeddedResource Include="Formas\CXP\Frm_CXP_Devoluciones.resx">
+      <DependentUpon>Frm_CXP_Devoluciones.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formas\CXP\Frm_CXP_PagosCobrados.resx">
       <DependentUpon>Frm_CXP_PagosCobrados.vb</DependentUpon>
     </EmbeddedResource>
