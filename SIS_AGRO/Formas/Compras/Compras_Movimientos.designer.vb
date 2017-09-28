@@ -24,6 +24,7 @@ Partial Class Compras_Movimientos
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Compras_Movimientos))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.LblDisplayMoneda = New System.Windows.Forms.Label()
         Me.cboMoneda = New System.Windows.Forms.ComboBox()
         Me.lblProveedor = New System.Windows.Forms.Label()
         Me.btnActualizaConcepto = New System.Windows.Forms.Button()
@@ -112,7 +113,6 @@ Partial Class Compras_Movimientos
         Me.btnSeleccionarArchivoSeries = New System.Windows.Forms.Button()
         Me.txtIEPS = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
-        Me.LblDisplayMoneda = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
@@ -177,6 +177,16 @@ Partial Class Compras_Movimientos
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         '
+        'LblDisplayMoneda
+        '
+        Me.LblDisplayMoneda.AutoSize = True
+        Me.LblDisplayMoneda.Location = New System.Drawing.Point(8, 155)
+        Me.LblDisplayMoneda.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayMoneda.Name = "LblDisplayMoneda"
+        Me.LblDisplayMoneda.Size = New System.Drawing.Size(67, 17)
+        Me.LblDisplayMoneda.TabIndex = 382
+        Me.LblDisplayMoneda.Text = "Moneda :"
+        '
         'cboMoneda
         '
         Me.cboMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
@@ -198,7 +208,6 @@ Partial Class Compras_Movimientos
         '
         'btnActualizaConcepto
         '
-        Me.btnActualizaConcepto.Enabled = False
         Me.btnActualizaConcepto.Location = New System.Drawing.Point(1205, 123)
         Me.btnActualizaConcepto.Margin = New System.Windows.Forms.Padding(4)
         Me.btnActualizaConcepto.Name = "btnActualizaConcepto"
@@ -1067,16 +1076,6 @@ Partial Class Compras_Movimientos
         Me.Label4.Size = New System.Drawing.Size(46, 17)
         Me.Label4.TabIndex = 384
         Me.Label4.Text = "IEPS :"
-        '
-        'LblDisplayMoneda
-        '
-        Me.LblDisplayMoneda.AutoSize = True
-        Me.LblDisplayMoneda.Location = New System.Drawing.Point(8, 155)
-        Me.LblDisplayMoneda.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblDisplayMoneda.Name = "LblDisplayMoneda"
-        Me.LblDisplayMoneda.Size = New System.Drawing.Size(67, 17)
-        Me.LblDisplayMoneda.TabIndex = 382
-        Me.LblDisplayMoneda.Text = "Moneda :"
         '
         'Compras_Movimientos
         '

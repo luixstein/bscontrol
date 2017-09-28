@@ -503,6 +503,7 @@ Buscar:
             Me.txtConfirmo.Enabled = False
 
             Me.BtnActualizaFolioProv.Enabled = True
+            Me.btnActualizaConcepto.Enabled = True
             'Me.DtpFecha.Value = Date.Now
             'Me.DtpFechaFacturaProveedor.Value = Date.Now
             'Me.txtPlazo.Text = "30"
@@ -2075,7 +2076,7 @@ BuscarCuentas:
             Me.txtSaldoMXP.Visible = True : Me.lblDisplaySaldoMXP.Visible = True
             Me.txtSaldoUSD.Visible = True : Me.lblDisplaySaldoUSD.Visible = True
             Me.BtnActualizaFolioProv.Visible = True
-            Me.btnActualizaConcepto.Visible = False 'True
+            Me.btnActualizaConcepto.Visible = True
 
             If Me.Grid.Cols > 1 Then
                 Me.Grid.Column(Me.igyCuentaContable).Visible = True
@@ -2383,17 +2384,20 @@ BuscarCuentas:
                 Exit Function
             End If
 
-            MsgBox("falta completar desarrollo....")
+            Dim sConcepto As String
+            sConcepto = InputBox("Proporcione el nuevo concepto de la compra", "Concepto de compra")
+            If String.IsNullOrEmpty(sConcepto) Then
+                Exit Function
+            Else
+                Me.oCompras.CONCEPTO = sConcepto.ToUpper
+                If Me.oCompras.ActualizaConcepto = True Then
+                    MsgBox("Concepto actualizado satisfactoramente.", MsgBoxStyle.Information, Me.Text)
+                    Me.TxtConcepto.Text = Me.oCompras.CONCEPTO
+                End If
+            End If
 
-            'Dim sFolioProv As String
-            'sFolioProv = InputBox("Proporcione el nuevo folio de la factura del proveedor", "Folio de proveedor")
-            'If String.IsNullOrEmpty(sFolioProv) Then
-            '    Exit Function
-            'Else
-            '    Me.oCompras.FOLIO_PROVEEDOR = sFolioProv
-            '    Me.oCompras.ActualizaFolioProveedor()
-            'End If
-            'Return True
+            Return True
+
         Catch ex As Exception
             HandleError(Me.Name, "ActualizaConcepto", ex)
         End Try
