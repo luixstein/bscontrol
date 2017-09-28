@@ -50,6 +50,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.TxtImporte = New System.Windows.Forms.TextBox()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.gbGlobal = New System.Windows.Forms.GroupBox()
+        Me.lblMoneda = New System.Windows.Forms.Label()
         Me.cboMoneda = New System.Windows.Forms.ComboBox()
         Me.lblNombreMonedaDestino = New System.Windows.Forms.Label()
         Me.lblNombreMonedaOrigen = New System.Windows.Forms.Label()
@@ -79,7 +80,6 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.Grid1 = New FlexCell.Grid()
         Me.gbFleteEmbarques = New System.Windows.Forms.GroupBox()
         Me.Grid2 = New FlexCell.Grid()
-        Me.lblMoneda = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbPagosAutorizados.SuspendLayout()
@@ -385,6 +385,16 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.gbGlobal.TabIndex = 0
         Me.gbGlobal.TabStop = False
         Me.gbGlobal.Text = "Datos"
+        '
+        'lblMoneda
+        '
+        Me.lblMoneda.AutoSize = True
+        Me.lblMoneda.Location = New System.Drawing.Point(337, 199)
+        Me.lblMoneda.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblMoneda.Name = "lblMoneda"
+        Me.lblMoneda.Size = New System.Drawing.Size(67, 17)
+        Me.lblMoneda.TabIndex = 382
+        Me.lblMoneda.Text = "Moneda :"
         '
         'cboMoneda
         '
@@ -717,20 +727,11 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.Grid2.TabIndex = 210
         Me.Grid2.UncheckedImage = CType(resources.GetObject("Grid2.UncheckedImage"), System.Drawing.Bitmap)
         '
-        'lblMoneda
-        '
-        Me.lblMoneda.AutoSize = True
-        Me.lblMoneda.Location = New System.Drawing.Point(337, 199)
-        Me.lblMoneda.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblMoneda.Name = "lblMoneda"
-        Me.lblMoneda.Size = New System.Drawing.Size(67, 17)
-        Me.lblMoneda.TabIndex = 382
-        Me.lblMoneda.Text = "Moneda :"
-        '
         'Frm_CXP_Pagos_Acreedores
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoSize = True
         Me.ClientSize = New System.Drawing.Size(1452, 713)
         Me.Controls.Add(Me.gbGlobal)
         Me.Controls.Add(Me.gbFleteEmbarques)

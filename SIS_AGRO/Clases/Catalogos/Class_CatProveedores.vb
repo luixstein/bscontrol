@@ -27,6 +27,7 @@ Public Class Class_CatProveedores
     Private _CODIGO_PLAZA As Integer
     Private _CURP As String
     Private _PROTEGIDO As Boolean
+    Private _CODIGO_PROPIETARIO As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -245,6 +246,15 @@ Public Class Class_CatProveedores
             Return Me._CuentaBancaria
         End Get
     End Property
+
+    Public Property CODIGO_PROPIETARIO() As String
+        Get
+            Return Me._CODIGO_PROPIETARIO
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_PROPIETARIO = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos de sistema"
@@ -333,6 +343,7 @@ Public Class Class_CatProveedores
             sqlParametro = .Parameters.Add("@CONTACTO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONTACTO.ToUpper
             sqlParametro = .Parameters.Add("@CONTACTO_TELEFONO_CELULAR", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONTACTO_TELEFONO_CELULAR.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PLAZA
+            sqlParametro = .Parameters.Add("@CODIGO_PROPIETARIO", SqlDbType.Int) : sqlParametro.Value = IIf(txtLEN(Me._CODIGO_PROPIETARIO) = True, CInt(Me._CODIGO_PROPIETARIO), DBNull.Value)
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "1"
 
             Try
@@ -380,6 +391,7 @@ Public Class Class_CatProveedores
             sqlParametro = .Parameters.Add("@CONTACTO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONTACTO.ToUpper
             sqlParametro = .Parameters.Add("@CONTACTO_TELEFONO_CELULAR", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONTACTO_TELEFONO_CELULAR.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PLAZA
+            sqlParametro = .Parameters.Add("@CODIGO_PROPIETARIO", SqlDbType.Int) : sqlParametro.Value = IIf(txtLEN(Me._CODIGO_PROPIETARIO) = True, CInt(Me._CODIGO_PROPIETARIO), DBNull.Value)
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "0"
 
             Try
@@ -462,6 +474,7 @@ Public Class Class_CatProveedores
                     Me._CODIGO_PLAZA = Convert.ToInt32(dReader("CODIGO_PLAZA"))
                     Me._CURP = "" & dReader("CURP").ToString()
                     Me._PROTEGIDO = CBool(dReader("PROTEGIDO").ToString())
+                    Me._CODIGO_PROPIETARIO = "" & dReader("CODIGO_PROPIETARIO").ToString()
 
                     If txtLEN(dReader("ID_CUENTA_BANCARIA").ToString()) = True Then
                         Me._CuentaBancaria = New Class_CatCuentasBancarias(CInt(dReader("ID_CUENTA_BANCARIA").ToString()))

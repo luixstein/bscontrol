@@ -338,6 +338,8 @@ Public Class Catalogo_Proveedores
                     Me.tsbCancelar.Enabled = True
                     Me.tsbEliminar.Enabled = False
 
+                    Me.TxtCodigoPropietario.Enabled = True
+
                     Me.TxtCodProveedor.Enabled = False
                     Me.TxtNomProveedor.Enabled = True
                     Me.txtDomicilio.Enabled = True
@@ -369,6 +371,8 @@ Public Class Catalogo_Proveedores
                     Me.tsbGrabar.Enabled = True
                     Me.tsbCancelar.Enabled = True
                     Me.tsbEliminar.Enabled = True
+
+                    Me.TxtCodigoPropietario.Enabled = True
 
                     Me.TxtCodProveedor.Enabled = False
                     Me.TxtNomProveedor.Enabled = True
@@ -403,6 +407,7 @@ Public Class Catalogo_Proveedores
                     Me.tsbEliminar.Enabled = False
                     Me.txtFiltro.Focus()
                     Me.CboEstatusFiltro.SelectedIndex = 0
+                    Me.TxtCodigoPropietario.Enabled = False
             End Select
             Application.DoEvents()
         Catch ex As Exception
@@ -414,6 +419,8 @@ Public Class Catalogo_Proveedores
         Try
             Me.TxtCodProveedor.Text = ""
             Me.TxtNomProveedor.Text = ""
+            Me.TxtCodigoPropietario.Text = ""
+            Me.LblNombrePropietario.Text = ""
             Me.txtDomicilio.Text = ""
             Me.txtRFC.Text = ""
             Me.txtTelefono.Text = ""
@@ -433,6 +440,8 @@ Public Class Catalogo_Proveedores
             Me.lblCuentaContabledolares.Text = ""
             Me.txtCuentaContable.Enabled = False
             Me.chkProtegido.Checked = False
+            Me.TxtCodigoPropietario.Text = ""
+            Me.LblNombrePropietario.Text = ""
 
             'Me.TxtCodProveedor.Text = Me.oProveedores.CodigoSiguiente
         Catch ex As Exception
@@ -476,6 +485,7 @@ Public Class Catalogo_Proveedores
                     Me.cboTipoProveedor.SelectedValue = .Codigo_Tipo_Proveedor
                     Me.txtContactoNombre.Text = .Contacto
                     Me.txtContactoTelefonoCelular.Text = .Contacto_Telefono_Celular
+                    Me.TxtCodigoPropietario.Text = .CODIGO_PROPIETARIO
                     If .Estatus = "A" Then
                         Me.CboEstatus.SelectedIndex = 0
                     Else
@@ -494,6 +504,15 @@ Public Class Catalogo_Proveedores
                 If txtLEN(Me.txtCuentaContableDolares.Text) = False Then
                     Me.btnGenerarCuentaDolares.Enabled = True
                 End If
+
+                If txtLEN(Me.TxtCodigoPropietario.Text) = True Then
+                    Dim sql1 As New Class_find("SELECT NOMBRE_PROPIETARIO FROM CAT_PROPIETARIOS WHERE CODIGO_PROPIETARIO=" & Me.TxtCodigoPropietario.Text)
+                    Me.LblNombrePropietario.Text = sql1.Result1.ToString
+                Else
+                    Me.LblNombrePropietario.Text = ""
+                End If
+
+
             End If
             oElemento = Nothing
         Catch ex As Exception
@@ -618,6 +637,7 @@ Public Class Catalogo_Proveedores
                         .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         .CODIGO_PLAZA = Usuario.Codigo_Plaza
                         .CURP = Me.txtCURP.Text.ToUpper
+                        .CODIGO_PROPIETARIO = Me.TxtCodigoPropietario.Text
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -887,7 +907,28 @@ Public Class Catalogo_Proveedores
 #End Region
 
 #Region "Keydown específicos"
-
+    Private Sub TxtCodigoPropietario_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtCodigoPropietario.KeyDown
+        Dim oPropietario As New Class_CatPropietarios
+        Select Case e.KeyCode
+            Case Keys.F6
+busca:
+                Me.TxtCodigoPropietario.Text = oPropietario.BusquedaVisual_PorDescripcion
+                If txtLEN(Me.TxtCodigoPropietario.Text) = True Then
+                    Dim sql As New Class_find("SELECT NOMBRE_PROPIETARIO FROM CAT_PROPIETARIOS WHERE CODIGO_PROPIETARIO=" & Me.TxtCodigoPropietario.Text)
+                    Me.LblNombrePropietario.Text = sql.Result1.ToString
+                End If
+            Case Keys.Enter
+                If txtLEN(Me.TxtCodigoPropietario.Text) = True Then
+                    oPropietario.CODIGO_PROPIETARIO = CInt(Me.TxtCodigoPropietario.Text)
+                    If oPropietario.Consultar() = True Then
+                        Me.LblNombrePropietario.Text = oPropietario.NOMBRE_PROPIETARIO
+                    Else
+                        GoTo busca
+                    End If
+                End If
+        End Select
+        txtTAB(e)
+    End Sub
 #End Region
 
 #Region "Validating específicos"
