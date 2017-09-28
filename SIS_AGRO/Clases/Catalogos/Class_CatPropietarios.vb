@@ -301,6 +301,19 @@ Public Class Class_CatPropietarios
         Return dTable
     End Function
 
+    Public Function ObtenerRelacionPropietariosProveedores(ByVal sCodigoPropietario As String) As System.Data.DataTable
+        Dim dTable As New DataTable
+        Dim da As New SqlDataAdapter("SELECT CODIGO_PROVEEDOR,NOMBRE_PROVEEDOR FROM CAT_PROVEEDORES  WHERE CODIGO_PROPIETARIO=" & sCodigoPropietario & " ORDER BY NOMBRE_PROVEEDOR ", Me._Conexion)
+        Try
+            da.Fill(dTable)
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ObtenerRelacionPropietariosProveedores", ex)
+        Finally
+            da.Dispose()
+        End Try
+        Return dTable
+    End Function
+
     Public Overrides Function BusquedaVisual_PorCodigo() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""

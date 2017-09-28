@@ -208,6 +208,7 @@ Public Class Catalogo_Propietarios
         Me.TxtLimiteCredito.Text = ""
         Me.TxtPlazo.Text = ""
         Me.GridClientes.DataSource = Nothing
+        Me.GridProveedores.DataSource = Nothing
     End Sub
 
     Private Sub DesplegarElementos()
@@ -226,6 +227,14 @@ Public Class Catalogo_Propietarios
         End With
     End Sub
 
+    Private Sub DesplegarProveedores()
+        With Me.GridProveedores
+            .DataSource = oPropietario.ObtenerRelacionPropietariosProveedores(Me.TxtCodigo.Text)
+            .Columns("CODIGO_PROVEEDOR").Width = 60
+            .Columns("NOMBRE_PROVEEDOR").Width = 600
+        End With
+    End Sub
+
     Private Sub LlenaElemento(ByVal sCodigo_Elemento As Integer)
         Me.oPropietario.CODIGO_PROPIETARIO = sCodigo_Elemento
         If Me.oPropietario.Consultar Then
@@ -237,6 +246,7 @@ Public Class Catalogo_Propietarios
             End With
 
             Me.DesplegarClientes()
+            Me.DesplegarProveedores()
 
         End If
     End Sub
