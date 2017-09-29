@@ -240,6 +240,7 @@ Public Class Ventas_Movimientos
             Me.DesplegarTiposMercados()
             Me.DesplegarTiposNegociaciones()
             Me.DesplegarVendedores()
+            Me.DesplegarTiposCredito()
 
             Me.Inicializa()
 
@@ -522,6 +523,16 @@ Buscar:
                 Me.txtPlazo.Text = Plaza.PLAZO_VENTA_CONTADO.ToString
             End If
         End If
+
+        If CInt(cboTipoNegociacion.SelectedValue) = 1 Then ' CREDITO
+            Me.LblTipoCredito.Visible = True
+            Me.CboTipoCredito.Visible = True
+
+        ElseIf CInt(cboTipoNegociacion.SelectedValue) = 2 Then ' CONTADO
+            Me.LblTipoCredito.Visible = False
+            Me.CboTipoCredito.Visible = False
+        End If
+
     End Sub
 
     Private Sub txtPlazo_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPlazo.TextChanged
@@ -946,6 +957,9 @@ Buscar:
                     Me.txtFolio.Enabled = True
                     Me.CboAlmacen.Enabled = True
 
+                    Me.LblTipoCredito.Enabled = True
+                    Me.CboTipoCredito.Enabled = True
+
                     If Me.Visible = True Then
                         Me.txtFolio.Focus()
                     End If
@@ -1043,6 +1057,8 @@ Buscar:
                         Me.cboTipoNegociacion.Enabled = False
                         Me.txtFolioEmbarque.Enabled = False
                         Me.llblAgregarSeguimiento.Enabled = False
+                        Me.LblTipoCredito.Enabled = False
+                        Me.CboTipoCredito.Enabled = False
 
                     ElseIf Me.oDocumento.AFECTA_INVENTARIOS = True Then
                         Me.tsbCotizacionFactura.Visible = False
@@ -1342,6 +1358,14 @@ Buscar:
 
                 .IEPS_TOTAL_DESGLOSADO = valorNumerico(Me.lblIEPS.Text)
                 .IEPS_TOTAL_YA_INCLUIDO = valorNumerico(Me.lblIEPSIncluido.Text)
+
+                If .CODIGO_TIPO_NEGOCIACION = 1 Then ' CREDITO
+                    .CODIGO_TIPO_CREDITO = Me.CboTipoCredito.SelectedValue.ToString
+
+                ElseIf .CODIGO_TIPO_NEGOCIACION = 2 Then ' CONTADO
+                    .CODIGO_TIPO_CREDITO = "NA"
+
+                End If
 
                 If Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.SUSTITUYENDO Then
                     If .Insertar = False Then
@@ -2268,6 +2292,23 @@ CANCELAR:
         End Try
     End Sub
 
+    Private Sub DesplegarTiposCredito()
+        Try
+            Dim oElementos As New Class_CatTiposCreditos
+            With Me.CboTipoCredito
+                .DisplayMember = "NOMBRE_TIPO_CREDITO"
+                .ValueMember = "CODIGO_TIPO_CREDITO"
+                Dim dView As New Data.DataView(oElementos.ObtenerElementos)
+                dView.Sort = "CODIGO_TIPO_CREDITO"
+                .DataSource = dView
+                .SelectedIndex = 0
+            End With
+
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarTiposCreditos", ex)
+        End Try
+    End Sub
+
     Private Sub DesplegarTiposMercados()
         Try
             Dim oElementos As New Class_TiposMercados
@@ -2559,6 +2600,10 @@ CANCELAR:
                     Me.chkVentaPublicoGeneral.Checked = True
                 Else
                     Me.chkVentaPublicoGeneral.Checked = False
+                End If
+
+                If Me.oVenta.CODIGO_TIPO_CREDITO <> "NA" Then
+                    Me.CboTipoCredito.SelectedValue = Me.oVenta.CODIGO_TIPO_CREDITO
                 End If
 
                 If bEsReferencia = False Then

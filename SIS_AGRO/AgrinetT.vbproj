@@ -165,6 +165,7 @@
     <Compile Include="Clases\Catalogos\Class_CatMunicipios.vb" />
     <Compile Include="Clases\Catalogos\Class_CatPaises.vb" />
     <Compile Include="Clases\Catalogos\Class_CatPreciosVenta.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatTiposCreditos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatVehiculos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatCategorias.vb" />
     <Compile Include="Clases\Catalogos\Class_CatChoferes.vb" />

@@ -70,6 +70,7 @@ Public Class Class_Ventas_Global
     Private _DESCUENTO_USD As Double
     Private _VENTA_TOTAL As Double
     Private _CONDICIONES_DE_PAGO As String
+    Private _CODIGO_TIPO_CREDITO As String
     'CFD
     Private _ID_SIS_CFD_CATALOGO_CERTIFICADOS As String
     Private _CODIGO_METODO_PAGO As String
@@ -590,6 +591,15 @@ Public Class Class_Ventas_Global
         End Set
     End Property
 
+    Public Property CODIGO_TIPO_CREDITO() As String
+        Get
+            Return Me._CODIGO_TIPO_CREDITO
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_TIPO_CREDITO = Value
+        End Set
+    End Property
+
     'CFD
     Public Property CODIGO_METODO_PAGO() As String
         Get
@@ -856,6 +866,7 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@NUMERO_CUENTA_PAGO", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._NUMERO_CUENTA_PAGO
             sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO
             sqlParametro = .Parameters.Add("@IEPS_TOTAL_YA_INCLUIDO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_YA_INCLUIDO
+            sqlParametro = .Parameters.Add("@CODIGO_TIPO_CREDITO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_TIPO_CREDITO
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "ACTUALIZAR"
 
             Try
@@ -916,6 +927,7 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@DESCUENTO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._DESCUENTO_USD
             sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO
             sqlParametro = .Parameters.Add("@IEPS_TOTAL_YA_INCLUIDO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_YA_INCLUIDO
+            sqlParametro = .Parameters.Add("@CODIGO_TIPO_CREDITO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_TIPO_CREDITO
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "INSERTAR"
             Try
                 Me._Conexion.Open()
@@ -1144,6 +1156,8 @@ Public Class Class_Ventas_Global
                     Me._IEPS_TOTAL_YA_INCLUIDO = CDbl(dReader("IEPS_TOTAL_YA_INCLUIDO"))
 
                     Me._TIENE_SERIES = CBool(dReader("TIENE_SERIES"))
+
+                    Me._CODIGO_TIPO_CREDITO = "" & dReader("CODIGO_TIPO_CREDITO").ToString()
 
                     bResultado = True
                 End If
