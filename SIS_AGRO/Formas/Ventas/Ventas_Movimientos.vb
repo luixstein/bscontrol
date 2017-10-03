@@ -60,8 +60,9 @@ Public Class Ventas_Movimientos
     Private igyBASE_IEPS As Short = 24
     Private igyBASE_IVA As Short = 25
     Private igyCosto As Short = 26
-    Private igyUtilidad As Short = 27
-    Private igyUtilidadPorcentaje As Short = 28
+    Private igyUtilidadUnitaria As Short = 27
+    Private igyUtilidadTotal As Short = 28
+    Private igyUtilidadPorcentaje As Short = 29
 #End Region
 
 #Region "Columnas grid series"
@@ -631,12 +632,14 @@ Buscar:
     Private Sub ckbMostrarUtilidad_CheckedChanged(sender As Object, e As EventArgs) Handles ckbMostrarUtilidad.CheckedChanged
         If Me.ckbMostrarUtilidad.Checked = True Then
             Me.Grid.Column(Me.igyCosto).Visible = True
-            Me.Grid.Column(Me.igyUtilidad).Visible = True
+            Me.Grid.Column(Me.igyUtilidadUnitaria).Visible = True
+            Me.Grid.Column(Me.igyUtilidadTotal).Visible = True
             Me.Grid.Column(Me.igyUtilidadPorcentaje).Visible = True
-            Me.Grid.Cell(1, Me.igyUtilidad).SetFocus()
+            Me.Grid.Cell(1, Me.igyUtilidadTotal).SetFocus()
         Else
             Me.Grid.Column(Me.igyCosto).Visible = False
-            Me.Grid.Column(Me.igyUtilidad).Visible = False
+            Me.Grid.Column(Me.igyUtilidadUnitaria).Visible = False
+            Me.Grid.Column(Me.igyUtilidadTotal).Visible = False
             Me.Grid.Column(Me.igyUtilidadPorcentaje).Visible = False
             Me.Grid.Cell(1, Me.igyImporte).SetFocus()
         End If
@@ -713,7 +716,7 @@ Buscar:
     Private Sub FormateaGrid()
         Try
             Me.Grid.AutoRedraw = False
-            Me.Grid.Cols = 29
+            Me.Grid.Cols = 30
 
             Me.Grid.Column(Me.igyCodigo).Width = 75
             Me.Grid.Column(Me.igyDescripcion).Width = 250
@@ -738,7 +741,8 @@ Buscar:
             Me.Grid.Column(Me.igyEsProductoKilos).Width = 100
 
             Me.Grid.Column(Me.igyCosto).Width = 100
-            Me.Grid.Column(Me.igyUtilidad).Width = 100
+            Me.Grid.Column(Me.igyUtilidadUnitaria).Width = 100
+            Me.Grid.Column(Me.igyUtilidadTotal).Width = 100
             Me.Grid.Column(Me.igyUtilidadPorcentaje).Width = 100
 
             Me.Grid.Cell(0, Me.igyCodigo).Text = "Código"
@@ -766,7 +770,8 @@ Buscar:
             Me.Grid.Column(Me.igyNombreCentroCosto).Alignment = FlexCell.AlignmentEnum.LeftCenter
 
             Me.Grid.Cell(0, Me.igyCosto).Text = "Costo"
-            Me.Grid.Cell(0, Me.igyUtilidad).Text = "Utilidad"
+            Me.Grid.Cell(0, Me.igyUtilidadUnitaria).Text = "Utilidad unitaria"
+            Me.Grid.Cell(0, Me.igyUtilidadTotal).Text = "Utilidad total"
             Me.Grid.Cell(0, Me.igyUtilidadPorcentaje).Text = "% utilidad"
 
             Me.Grid.Column(Me.igyCantidad).Mask = FlexCell.MaskEnum.Numeric
@@ -819,10 +824,15 @@ Buscar:
             Me.Grid.Column(Me.igyCosto).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
             Me.Grid.Column(Me.igyCosto).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.igyUtilidad).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            Me.Grid.Column(Me.igyUtilidad).Mask = FlexCell.MaskEnum.Numeric
-            Me.Grid.Column(Me.igyUtilidad).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-            Me.Grid.Column(Me.igyUtilidad).Alignment = FlexCell.AlignmentEnum.RightCenter
+            Me.Grid.Column(Me.igyUtilidadUnitaria).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.Grid.Column(Me.igyUtilidadUnitaria).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.igyUtilidadUnitaria).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+            Me.Grid.Column(Me.igyUtilidadUnitaria).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Column(Me.igyUtilidadTotal).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.Grid.Column(Me.igyUtilidadTotal).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.igyUtilidadTotal).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+            Me.Grid.Column(Me.igyUtilidadTotal).Alignment = FlexCell.AlignmentEnum.RightCenter
 
             Me.Grid.Column(Me.igyDescripcion).Locked = True
             Me.Grid.Column(Me.igyTipoControlInventariable).Locked = True
@@ -832,7 +842,8 @@ Buscar:
             Me.Grid.Column(Me.igyUnidad).Locked = True
 
             Me.Grid.Column(Me.igyCosto).Locked = True
-            Me.Grid.Column(Me.igyUtilidad).Locked = True
+            Me.Grid.Column(Me.igyUtilidadUnitaria).Locked = True
+            Me.Grid.Column(Me.igyUtilidadTotal).Locked = True
             Me.Grid.Column(Me.igyUtilidadPorcentaje).Locked = True
 
             Me.Grid.Column(Me.igyCantidadKilos).Visible = False
@@ -859,11 +870,13 @@ Buscar:
             Me.Grid.Column(Me.igyNombreCentroCosto).Locked = True
             If Me.ckbMostrarUtilidad.Checked = True Then
                 Me.Grid.Column(Me.igyCosto).Visible = True
-                Me.Grid.Column(Me.igyUtilidad).Visible = True
+                Me.Grid.Column(Me.igyUtilidadUnitaria).Visible = True
+                Me.Grid.Column(Me.igyUtilidadTotal).Visible = True
                 Me.Grid.Column(Me.igyUtilidadPorcentaje).Visible = True
             Else
                 Me.Grid.Column(Me.igyCosto).Visible = False
-                Me.Grid.Column(Me.igyUtilidad).Visible = False
+                Me.Grid.Column(Me.igyUtilidadUnitaria).Visible = False
+                Me.Grid.Column(Me.igyUtilidadTotal).Visible = False
                 Me.Grid.Column(Me.igyUtilidadPorcentaje).Visible = False
             End If
 
