@@ -644,7 +644,6 @@ Public Class Catalogo_Proveedores
                                 If .Insertar() Then
                                     Grabado = True
                                     Me.Estado = enumEstados.CONSULTA
-
                                 End If
                             Case enumEstados.EDICION
                                 If .Actualizar() Then

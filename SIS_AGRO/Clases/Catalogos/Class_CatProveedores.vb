@@ -343,7 +343,13 @@ Public Class Class_CatProveedores
             sqlParametro = .Parameters.Add("@CONTACTO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONTACTO.ToUpper
             sqlParametro = .Parameters.Add("@CONTACTO_TELEFONO_CELULAR", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONTACTO_TELEFONO_CELULAR.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PLAZA
-            sqlParametro = .Parameters.Add("@CODIGO_PROPIETARIO", SqlDbType.Int) : sqlParametro.Value = IIf(txtLEN(Me._CODIGO_PROPIETARIO) = True, CInt(Me._CODIGO_PROPIETARIO), DBNull.Value)
+
+            If txtLEN(Me._CODIGO_PROPIETARIO) = True Then
+                sqlParametro = .Parameters.Add("@CODIGO_PROPIETARIO", SqlDbType.Int) : sqlParametro.Value = CInt(Me._CODIGO_PROPIETARIO)
+            Else
+                sqlParametro = .Parameters.Add("@CODIGO_PROPIETARIO", SqlDbType.Int) : sqlParametro.Value = DBNull.Value
+            End If
+
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "1"
 
             Try
