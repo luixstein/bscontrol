@@ -27,6 +27,10 @@ Partial Class Rpt_Ventas_LotesCostos
         Me.tsbConsultar = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.LblFolioCompra = New System.Windows.Forms.Label()
+        Me.LblFolioVenta = New System.Windows.Forms.Label()
+        Me.TxtFolioVenta = New System.Windows.Forms.TextBox()
+        Me.TxtFolioCompra = New System.Windows.Forms.TextBox()
         Me.LblNombreProveedor = New System.Windows.Forms.Label()
         Me.TxtProveedor = New System.Windows.Forms.TextBox()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -37,10 +41,6 @@ Partial Class Rpt_Ventas_LotesCostos
         Me.DtFechaHasta = New System.Windows.Forms.DateTimePicker()
         Me.LblDisplayFechaNacimiento = New System.Windows.Forms.Label()
         Me.DtFechaDesde = New System.Windows.Forms.DateTimePicker()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.TextBox2 = New System.Windows.Forms.TextBox()
-        Me.LblFolioVenta = New System.Windows.Forms.Label()
-        Me.LblFolioCompra = New System.Windows.Forms.Label()
         Me.ToolStrip1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
@@ -75,8 +75,8 @@ Partial Class Rpt_Ventas_LotesCostos
         '
         Me.GroupBox2.Controls.Add(Me.LblFolioCompra)
         Me.GroupBox2.Controls.Add(Me.LblFolioVenta)
-        Me.GroupBox2.Controls.Add(Me.TextBox2)
-        Me.GroupBox2.Controls.Add(Me.TextBox1)
+        Me.GroupBox2.Controls.Add(Me.TxtFolioVenta)
+        Me.GroupBox2.Controls.Add(Me.TxtFolioCompra)
         Me.GroupBox2.Controls.Add(Me.LblNombreProveedor)
         Me.GroupBox2.Controls.Add(Me.TxtProveedor)
         Me.GroupBox2.Controls.Add(Me.Label3)
@@ -96,6 +96,44 @@ Partial Class Rpt_Ventas_LotesCostos
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Filtros"
         '
+        'LblFolioCompra
+        '
+        Me.LblFolioCompra.AutoSize = True
+        Me.LblFolioCompra.Location = New System.Drawing.Point(8, 27)
+        Me.LblFolioCompra.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblFolioCompra.Name = "LblFolioCompra"
+        Me.LblFolioCompra.Size = New System.Drawing.Size(97, 17)
+        Me.LblFolioCompra.TabIndex = 405
+        Me.LblFolioCompra.Text = "Folio compra :"
+        '
+        'LblFolioVenta
+        '
+        Me.LblFolioVenta.AutoSize = True
+        Me.LblFolioVenta.Location = New System.Drawing.Point(8, 58)
+        Me.LblFolioVenta.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblFolioVenta.Name = "LblFolioVenta"
+        Me.LblFolioVenta.Size = New System.Drawing.Size(85, 17)
+        Me.LblFolioVenta.TabIndex = 404
+        Me.LblFolioVenta.Text = "Folio venta :"
+        '
+        'TxtFolioVenta
+        '
+        Me.TxtFolioVenta.Location = New System.Drawing.Point(113, 55)
+        Me.TxtFolioVenta.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtFolioVenta.MaxLength = 15
+        Me.TxtFolioVenta.Name = "TxtFolioVenta"
+        Me.TxtFolioVenta.Size = New System.Drawing.Size(95, 22)
+        Me.TxtFolioVenta.TabIndex = 1
+        '
+        'TxtFolioCompra
+        '
+        Me.TxtFolioCompra.Location = New System.Drawing.Point(113, 24)
+        Me.TxtFolioCompra.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtFolioCompra.MaxLength = 15
+        Me.TxtFolioCompra.Name = "TxtFolioCompra"
+        Me.TxtFolioCompra.Size = New System.Drawing.Size(95, 22)
+        Me.TxtFolioCompra.TabIndex = 0
+        '
         'LblNombreProveedor
         '
         Me.LblNombreProveedor.Location = New System.Drawing.Point(110, 118)
@@ -112,7 +150,7 @@ Partial Class Rpt_Ventas_LotesCostos
         Me.TxtProveedor.MaxLength = 8
         Me.TxtProveedor.Name = "TxtProveedor"
         Me.TxtProveedor.Size = New System.Drawing.Size(95, 22)
-        Me.TxtProveedor.TabIndex = 400
+        Me.TxtProveedor.TabIndex = 2
         '
         'Label3
         '
@@ -140,7 +178,7 @@ Partial Class Rpt_Ventas_LotesCostos
         Me.TxtCliente.MaxLength = 8
         Me.TxtCliente.Name = "TxtCliente"
         Me.TxtCliente.Size = New System.Drawing.Size(95, 22)
-        Me.TxtCliente.TabIndex = 2
+        Me.TxtCliente.TabIndex = 3
         '
         'lblDisplayCliente
         '
@@ -170,7 +208,7 @@ Partial Class Rpt_Ventas_LotesCostos
         Me.DtFechaHasta.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.DtFechaHasta.Name = "DtFechaHasta"
         Me.DtFechaHasta.Size = New System.Drawing.Size(116, 22)
-        Me.DtFechaHasta.TabIndex = 11
+        Me.DtFechaHasta.TabIndex = 5
         Me.DtFechaHasta.Value = New Date(2009, 9, 26, 0, 0, 0, 0)
         '
         'LblDisplayFechaNacimiento
@@ -191,46 +229,8 @@ Partial Class Rpt_Ventas_LotesCostos
         Me.DtFechaDesde.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.DtFechaDesde.Name = "DtFechaDesde"
         Me.DtFechaDesde.Size = New System.Drawing.Size(116, 22)
-        Me.DtFechaDesde.TabIndex = 10
+        Me.DtFechaDesde.TabIndex = 4
         Me.DtFechaDesde.Value = New Date(2009, 9, 26, 0, 0, 0, 0)
-        '
-        'TextBox1
-        '
-        Me.TextBox1.Location = New System.Drawing.Point(113, 24)
-        Me.TextBox1.Margin = New System.Windows.Forms.Padding(4)
-        Me.TextBox1.MaxLength = 8
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(95, 22)
-        Me.TextBox1.TabIndex = 402
-        '
-        'TextBox2
-        '
-        Me.TextBox2.Location = New System.Drawing.Point(113, 55)
-        Me.TextBox2.Margin = New System.Windows.Forms.Padding(4)
-        Me.TextBox2.MaxLength = 8
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(95, 22)
-        Me.TextBox2.TabIndex = 403
-        '
-        'LblFolioVenta
-        '
-        Me.LblFolioVenta.AutoSize = True
-        Me.LblFolioVenta.Location = New System.Drawing.Point(8, 58)
-        Me.LblFolioVenta.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblFolioVenta.Name = "LblFolioVenta"
-        Me.LblFolioVenta.Size = New System.Drawing.Size(85, 17)
-        Me.LblFolioVenta.TabIndex = 404
-        Me.LblFolioVenta.Text = "Folio venta :"
-        '
-        'LblFolioCompra
-        '
-        Me.LblFolioCompra.AutoSize = True
-        Me.LblFolioCompra.Location = New System.Drawing.Point(8, 27)
-        Me.LblFolioCompra.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblFolioCompra.Name = "LblFolioCompra"
-        Me.LblFolioCompra.Size = New System.Drawing.Size(97, 17)
-        Me.LblFolioCompra.TabIndex = 405
-        Me.LblFolioCompra.Text = "Folio compra :"
         '
         'Rpt_Ventas_LotesCostos
         '
@@ -268,6 +268,6 @@ Partial Class Rpt_Ventas_LotesCostos
     Friend WithEvents LblNombreProveedor As System.Windows.Forms.Label
     Friend WithEvents LblFolioCompra As System.Windows.Forms.Label
     Friend WithEvents LblFolioVenta As System.Windows.Forms.Label
-    Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
+    Friend WithEvents TxtFolioVenta As System.Windows.Forms.TextBox
+    Friend WithEvents TxtFolioCompra As System.Windows.Forms.TextBox
 End Class

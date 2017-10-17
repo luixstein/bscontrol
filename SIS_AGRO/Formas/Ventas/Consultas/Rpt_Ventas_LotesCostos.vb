@@ -18,6 +18,7 @@ Buscar:
             Case Keys.Enter
                 If txtLEN(Me.TxtCliente.Text) = False Then
                     Me.lblNombreCliente.Text = ""
+                    txtTAB(e)
                     Exit Sub
                 End If
 
@@ -41,6 +42,7 @@ Buscar:
             Case Keys.Enter
                 If txtLEN(Me.TxtProveedor.Text) = False Then
                     Me.LblNombreProveedor.Text = ""
+                    txtTAB(e)
                     Exit Sub
                 End If
 
@@ -52,6 +54,44 @@ Buscar:
                 Me.LblNombreProveedor.Text = Me.oProveedores.Nombre_Proveedor
                 txtTAB(e)
         End Select
+    End Sub
+
+    Private Sub TxtFolioCompra_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtFolioCompra.KeyDown
+        Dim oCompras As New Class_Compras_Global
+        Dim sText As String
+        Select Case e.KeyCode
+            Case Keys.F6
+                sText = oCompras.BusquedaVisual_Compras
+                If txtLEN(sText) = True Then Me.TxtFolioCompra.Text = sText
+            Case Keys.Enter
+                txtTAB(e)
+        End Select
+    End Sub
+
+    Private Sub TxtFolioVenta_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtFolioVenta.KeyDown
+        Dim oVentas As New Class_Ventas_Global
+        Dim sText As String
+        Select Case e.KeyCode
+            Case Keys.F6
+                sText = oVentas.BusquedaVisual_PorFolio
+                If txtLEN(sText) = True Then Me.TxtFolioVenta.Text = sText
+            Case Keys.Enter
+                txtTAB(e)
+        End Select
+    End Sub
+
+    Private Sub DtFechaDesde_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles DtFechaDesde.KeyDown
+        txtTAB(e)
+    End Sub
+
+    Private Sub DtFechaHasta_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles DtFechaHasta.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            Me.tsbConsultar.PerformClick()
+        End If
+    End Sub
+
+    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtFolioCompra.KeyPress, TxtFolioVenta.KeyPress, TxtCliente.KeyPress, TxtProveedor.KeyPress
+        txtNoBeep(e)
     End Sub
 
     Private Sub Rpt_Embarques_Empaque_Y_Embarque_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -78,8 +118,8 @@ Buscar:
             oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
             Rpt.SetParameterValue("@FECHA1", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
             Rpt.SetParameterValue("@FECHA2", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
-            Rpt.SetParameterValue("@FOLIO_VENTA", "")
-            Rpt.SetParameterValue("@FOLIO_COMPRA", "")
+            Rpt.SetParameterValue("@FOLIO_VENTA", Me.TxtFolioVenta.Text)
+            Rpt.SetParameterValue("@FOLIO_COMPRA", Me.TxtFolioCompra.Text)
             Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.TxtCliente.Text)
             Rpt.SetParameterValue("@CODIGO_PROVEEDOR", Me.TxtProveedor.Text)
 
