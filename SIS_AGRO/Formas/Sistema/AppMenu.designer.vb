@@ -136,6 +136,7 @@ Partial Public Class AppMenu
         Me.ComprasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MovimientosToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.RevisiónDeCXPToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DevolucionesToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConsultasToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.GlobalDeDocumentosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CXCToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -218,7 +219,7 @@ Partial Public Class AppMenu
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
-        Me.DevolucionesToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.LotesCostosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -873,7 +874,7 @@ Partial Public Class AppMenu
         '
         'ConsultaToolStripMenuItem1
         '
-        Me.ConsultaToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.GlobalToolStripMenuItem, Me.ProductosVendidosToolStripMenuItem, Me.TopTenClientesToolStripMenuItem, Me.TopTenProductosToolStripMenuItem, Me.ComparativoToolStripMenuItem})
+        Me.ConsultaToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.GlobalToolStripMenuItem, Me.ProductosVendidosToolStripMenuItem, Me.TopTenClientesToolStripMenuItem, Me.TopTenProductosToolStripMenuItem, Me.ComparativoToolStripMenuItem, Me.LotesCostosToolStripMenuItem})
         Me.ConsultaToolStripMenuItem1.Name = "ConsultaToolStripMenuItem1"
         Me.ConsultaToolStripMenuItem1.Size = New System.Drawing.Size(280, 26)
         Me.ConsultaToolStripMenuItem1.Text = "Consultas"
@@ -959,6 +960,12 @@ Partial Public Class AppMenu
         Me.RevisiónDeCXPToolStripMenuItem.Name = "RevisiónDeCXPToolStripMenuItem"
         Me.RevisiónDeCXPToolStripMenuItem.Size = New System.Drawing.Size(244, 26)
         Me.RevisiónDeCXPToolStripMenuItem.Text = "Gastos"
+        '
+        'DevolucionesToolStripMenuItem1
+        '
+        Me.DevolucionesToolStripMenuItem1.Name = "DevolucionesToolStripMenuItem1"
+        Me.DevolucionesToolStripMenuItem1.Size = New System.Drawing.Size(244, 26)
+        Me.DevolucionesToolStripMenuItem1.Text = "Devoluciones"
         '
         'ConsultasToolStripMenuItem1
         '
@@ -1490,11 +1497,11 @@ Partial Public Class AppMenu
         Me.pbLogo.TabStop = False
         Me.pbLogo.Visible = False
         '
-        'DevolucionesToolStripMenuItem1
+        'LotesCostosToolStripMenuItem
         '
-        Me.DevolucionesToolStripMenuItem1.Name = "DevolucionesToolStripMenuItem1"
-        Me.DevolucionesToolStripMenuItem1.Size = New System.Drawing.Size(244, 26)
-        Me.DevolucionesToolStripMenuItem1.Text = "Devoluciones"
+        Me.LotesCostosToolStripMenuItem.Name = "LotesCostosToolStripMenuItem"
+        Me.LotesCostosToolStripMenuItem.Size = New System.Drawing.Size(214, 26)
+        Me.LotesCostosToolStripMenuItem.Text = "Lotes costos"
         '
         'AppMenu
         '
@@ -1721,4 +1728,5 @@ Partial Public Class AppMenu
     Friend WithEvents PropietariosToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ImportarClienteSucursalToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents DevolucionesToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents LotesCostosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

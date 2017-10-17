@@ -995,6 +995,12 @@
     <Compile Include="Formas\Ventas\Consultas\Rpt_Ventas_Global.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\Ventas\Consultas\Rpt_Ventas_LotesCostos.designer.vb">
+      <DependentUpon>Rpt_Ventas_LotesCostos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Ventas\Consultas\Rpt_Ventas_LotesCostos.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\Ventas\Consultas\Rpt_Ventas_ProductosVendidos.designer.vb">
       <DependentUpon>Rpt_Ventas_ProductosVendidos.vb</DependentUpon>
     </Compile>
@@ -2033,6 +2039,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Ventas\Consultas\Rpt_Ventas_Global.resx">
       <DependentUpon>Rpt_Ventas_Global.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Ventas\Consultas\Rpt_Ventas_LotesCostos.resx">
+      <DependentUpon>Rpt_Ventas_LotesCostos.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Ventas\Consultas\Rpt_Ventas_ProductosVendidos.resx">
       <DependentUpon>Rpt_Ventas_ProductosVendidos.vb</DependentUpon>
