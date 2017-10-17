@@ -571,7 +571,7 @@ Partial Class Catalogo_Proveedores
         '
         Me.TxtNomProveedor.Location = New System.Drawing.Point(147, 109)
         Me.TxtNomProveedor.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtNomProveedor.MaxLength = 120
+        Me.TxtNomProveedor.MaxLength = 130
         Me.TxtNomProveedor.Name = "TxtNomProveedor"
         Me.TxtNomProveedor.Size = New System.Drawing.Size(435, 22)
         Me.TxtNomProveedor.TabIndex = 1

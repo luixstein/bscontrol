@@ -327,7 +327,7 @@ Public Class Class_CatProveedores
             .CommandText = "MP_CAT_PROVEEDORES_GRABA"
 
             sqlParametro = .Parameters.Add("@CODIGO_PROVEEDOR", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._CODIGO_PROVEEDOR.ToUpper
-            sqlParametro = .Parameters.Add("@NOMBRE_PROVEEDOR", SqlDbType.NVarChar, 120) : sqlParametro.Value = Me._NOMBRE_PROVEEDOR.ToUpper
+            sqlParametro = .Parameters.Add("@NOMBRE_PROVEEDOR", SqlDbType.NVarChar, 130) : sqlParametro.Value = Me._NOMBRE_PROVEEDOR.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = "A"
             sqlParametro = .Parameters.Add("@PLAZO", SqlDbType.SmallInt) : sqlParametro.Value = Me._PLAZO
             sqlParametro = .Parameters.Add("@DOMICILIO", SqlDbType.NVarChar, 120) : sqlParametro.Value = Me._DOMICILIO.ToUpper
@@ -381,7 +381,7 @@ Public Class Class_CatProveedores
             .CommandText = "MP_CAT_PROVEEDORES_GRABA"
 
             sqlParametro = .Parameters.Add("@CODIGO_PROVEEDOR", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._CODIGO_PROVEEDOR.ToUpper
-            sqlParametro = .Parameters.Add("@NOMBRE_PROVEEDOR", SqlDbType.NVarChar, 120) : sqlParametro.Value = Me._NOMBRE_PROVEEDOR.ToUpper
+            sqlParametro = .Parameters.Add("@NOMBRE_PROVEEDOR", SqlDbType.NVarChar, 130) : sqlParametro.Value = Me._NOMBRE_PROVEEDOR.ToUpper
             sqlParametro = .Parameters.Add("@PLAZO", SqlDbType.SmallInt) : sqlParametro.Value = Me._PLAZO
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus
             sqlParametro = .Parameters.Add("@DOMICILIO", SqlDbType.NVarChar, 120) : sqlParametro.Value = Me._DOMICILIO.ToUpper
@@ -646,6 +646,8 @@ Public Class Class_CatProveedores
             .CommandTimeout = 0
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_CUENTAS_GENERA_CUENTA_CONTABLE_DOLARES_PROVEEDOR"
+
+            Me._NOMBRE_PROVEEDOR = Strings.Left(Me._NOMBRE_PROVEEDOR, 120)
 
             sqlParametro = .Parameters.Add("@NOMBRE_CUENTA_CONTABLE", SqlDbType.NVarChar, 120) : sqlParametro.Value = Me._NOMBRE_PROVEEDOR.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_PROVEEDOR", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._CODIGO_PROVEEDOR.ToUpper

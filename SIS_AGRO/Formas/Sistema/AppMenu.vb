@@ -1515,4 +1515,12 @@ Public Class AppMenu
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
     End Sub
+
+    Private Sub LotesCostosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LotesCostosToolStripMenuItem.Click
+        Dim Child As New Rpt_Ventas_LotesCostos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
 End Class
