@@ -1,12 +1,11 @@
 ﻿Option Strict On
-Imports System.Math
-Imports System.Data
-Imports System.Data.SqlClient
-Imports System.Threading
+
 Imports CrystalDecisions.CrystalReports.Engine
 Imports System.IO
 
 Module Mod_Uti
+    Private Const nombreModulo As String = "Mod_Uti"
+
     Public sFelectronicaArchivoCadenaOriginalLocal As String
     Public sFelectronicaArchivoCERLocal As String
     Public sFelectronicaArchivoKEYLocal As String
@@ -18,13 +17,13 @@ Module Mod_Uti
     Public sFelectronicaCbbImagen As String
     Public bSistemaDirecto As Boolean
 
-    Private Declare Function SQLDataSources Lib "ODBC32.DLL" (ByVal henv As Integer, _
-    ByVal fDirection As Short, ByVal szDSN As String, ByVal cbDSNMax As Short, ByRef pcbDSN As Short, _
+    Private Declare Function SQLDataSources Lib "ODBC32.DLL" (ByVal henv As Integer,
+    ByVal fDirection As Short, ByVal szDSN As String, ByVal cbDSNMax As Short, ByRef pcbDSN As Short,
     ByVal szDescription As String, ByVal cbDescriptionMax As Short, ByRef pcbDescription As Short) As Short
 
     Private Declare Function SQLAllocEnv Lib "ODBC32.DLL" (ByRef env As Integer) As Short
 
-    Private Declare Function SQLConfigDataSource Lib "ODBCCP32.DLL" (ByVal hwndParent As Integer, _
+    Private Declare Function SQLConfigDataSource Lib "ODBCCP32.DLL" (ByVal hwndParent As Integer,
     ByVal ByValfRequest As Integer, ByVal lpszDriver As String, ByVal lpszAttributes As String) As Integer
 
     Const SQL_SUCCESS As Integer = 0
@@ -270,7 +269,7 @@ Module Mod_Uti
 
     Public Function Redondear(ByVal dValor As Double, Optional ByVal iDecimales As Integer = 2) As Double
         Dim DBlPot As Double, DBlF As Double
-        If dValor < 0 Then DBlF = -0.5 Else  : DBlF = 0.5
+        If dValor < 0 Then DBlF = -0.5 Else : DBlF = 0.5
         DBlPot = 10 ^ iDecimales
         Return Fix(dValor * DBlPot * (1 + 0.0000000000000001) + DBlF) / DBlPot
 
@@ -282,7 +281,7 @@ Module Mod_Uti
 
     Public Function RedondearD(ByVal dValor As Decimal, Optional ByVal iDecimales As Integer = 2) As Decimal
         Dim DBlPot As Decimal, DBlF As Decimal
-        If dValor < 0 Then DBlF = CDec(-0.5) Else  : DBlF = CDec(0.5)
+        If dValor < 0 Then DBlF = CDec(-0.5) Else : DBlF = CDec(0.5)
         DBlPot = CDec(10 ^ iDecimales)
         Return CDec(Fix(dValor * DBlPot * (1 + 0.0000000000000001) + DBlF) / DBlPot)
 
@@ -657,7 +656,7 @@ Module Mod_Uti
         '    MsgBox("Error : " & ex.Message.ToString, MsgBoxStyle.Critical, _
         '    "Error en : " & CurrentModule & " " & CurrentProcedure)
         'End If
-        MsgBox("Error : " & ex.Message.ToString, MsgBoxStyle.Critical, _
+        MsgBox("Error : " & ex.Message.ToString, MsgBoxStyle.Critical,
         "Error en : " & CurrentModule & " " & CurrentProcedure)
     End Sub
 
@@ -889,7 +888,7 @@ Module Mod_Uti
             sParcial = ActualConfgRegional(LCID, LOCALE_SCURRENCY)
             sCorrecto = "$"
             If sParcial <> sCorrecto Then
-                MsgBox("La configuración regional del equipo esta incorrecta, avíse al depto. de sistemas." & vbCrLf & _
+                MsgBox("La configuración regional del equipo esta incorrecta, avíse al depto. de sistemas." & vbCrLf &
                        "LOCALE_SCURRENCY=" & sParcial & " debería ser=" & sCorrecto, MsgBoxStyle.Critical, sProcedure)
                 Return False
             End If
@@ -897,7 +896,7 @@ Module Mod_Uti
             sParcial = ActualConfgRegional(LCID, LOCALE_SDATE)
             sCorrecto = "/"
             If sParcial <> sCorrecto Then
-                MsgBox("La configuración regional del equipo esta incorrecta, avíse al depto. de sistemas." & vbCrLf & _
+                MsgBox("La configuración regional del equipo esta incorrecta, avíse al depto. de sistemas." & vbCrLf &
                        "LOCALE_SDATE=" & sParcial & " debería ser=" & sCorrecto, MsgBoxStyle.Critical, sProcedure)
                 Return False
             End If
@@ -905,7 +904,7 @@ Module Mod_Uti
             sParcial = ActualConfgRegional(LCID, LOCALE_SDECIMAL)
             sCorrecto = "."
             If sParcial <> sCorrecto Then
-                MsgBox("La configuración regional del equipo esta incorrecta, avíse al depto. de sistemas." & vbCrLf & _
+                MsgBox("La configuración regional del equipo esta incorrecta, avíse al depto. de sistemas." & vbCrLf &
                        "LOCALE_SDECIMAL=" & sParcial & " debería ser=" & sCorrecto, MsgBoxStyle.Critical, sProcedure)
                 Return False
             End If
@@ -913,7 +912,7 @@ Module Mod_Uti
             sParcial = ActualConfgRegional(LCID, LOCALE_STHOUSAND)
             sCorrecto = ","
             If sParcial <> sCorrecto Then
-                MsgBox("La configuración regional del equipo esta incorrecta, avíse al depto. de sistemas." & vbCrLf & _
+                MsgBox("La configuración regional del equipo esta incorrecta, avíse al depto. de sistemas." & vbCrLf &
                        "LOCALE_STHOUSAND=" & sParcial & " debería ser=" & sCorrecto, MsgBoxStyle.Critical, sProcedure)
                 Return False
             End If
@@ -921,7 +920,7 @@ Module Mod_Uti
             sParcial = ActualConfgRegional(LCID, LOCALE_ICURRDIGITS)
             sCorrecto = "2"
             If sParcial <> sCorrecto Then
-                MsgBox("La configuración regional del equipo esta incorrecta, avíse al depto. de sistemas." & vbCrLf & _
+                MsgBox("La configuración regional del equipo esta incorrecta, avíse al depto. de sistemas." & vbCrLf &
                        "LOCALE_ICURRDIGITS=" & sParcial & " debería ser=" & sCorrecto, MsgBoxStyle.Critical, sProcedure)
                 Return False
             End If
@@ -929,7 +928,7 @@ Module Mod_Uti
             sParcial = ActualConfgRegional(LCID, LOCALE_SSHORTDATE)
             sCorrecto = "dd/MM/yyyy"
             If sParcial <> sCorrecto Then
-                MsgBox("La configuración regional del equipo esta incorrecta, avíse al depto. de sistemas." & vbCrLf & _
+                MsgBox("La configuración regional del equipo esta incorrecta, avíse al depto. de sistemas." & vbCrLf &
                        "LOCALE_SSHORTDATE=" & sParcial & " debería ser=" & sCorrecto, MsgBoxStyle.Critical, sProcedure)
                 Return False
             End If
@@ -937,7 +936,7 @@ Module Mod_Uti
             sParcial = ActualConfgRegional(LCID, LOCALE_STIMEFORMAT)
             sCorrecto = "hh:mm:ss tt"
             If sParcial <> sCorrecto Then
-                MsgBox("La configuración regional del equipo esta incorrecta, avíse al depto. de sistemas." & vbCrLf & _
+                MsgBox("La configuración regional del equipo esta incorrecta, avíse al depto. de sistemas." & vbCrLf &
                        "LOCALE_STIMEFORMAT=" & sParcial & " debería ser=" & sCorrecto, MsgBoxStyle.Critical, sProcedure)
                 Return False
             End If
@@ -1003,5 +1002,13 @@ Module Mod_Uti
         Else
             Return Format(dImporte, "###,###,##0." & CerosEnCadena(6))
         End If
+    End Function
+
+    Public Function VersionArchivo(ByVal sFile As String) As Double
+        Try
+            MsgBox(FileVersionInfo.GetVersionInfo("c:\agrinet\agrinet.exe").FileVersion)
+        Catch ex As Exception
+            HandleError(nombreModulo, "VersionArchivo", ex)
+        End Try
     End Function
 End Module
