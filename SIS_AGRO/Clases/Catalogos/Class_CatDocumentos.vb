@@ -142,7 +142,7 @@ Public Class Class_CatDocumentos
         End Set
     End Property
 
-    Public Property AFECTA_CONTBILIDAD() As Boolean
+    Public Property AFECTA_CONTABILIDAD() As Boolean
         Get
             Return Me._AFECTA_CONTABILIDAD
         End Get

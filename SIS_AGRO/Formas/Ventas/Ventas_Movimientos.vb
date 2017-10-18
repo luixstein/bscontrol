@@ -73,7 +73,7 @@ Public Class Ventas_Movimientos
     Private igySerieNumeroSerie As Short = 5
 #End Region
 
-#Region "Campos/propiedades para facturas embarques entrajeros que se incian desde otra pantalla"
+#Region "Campos/propiedades para facturas embarques extrajeros que se incian desde otra pantalla"
     Private _EsPorEmbarqueExtranjero As Boolean = False
     'Private sFolioEmbarqueExtranjero As String = ""
     Private _oEmbarqueExtranjero As Class_Embarques_EmbarqueGlobal
@@ -179,7 +179,7 @@ Public Class Ventas_Movimientos
     End Sub
 
     Private Sub tsbImprimir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbImprimir.Click
-        'If txtLEN(Me.oVenta.SELLO_DIGITAL) = False And Me.oDocumento.AFECTA_CONTBILIDAD = True Then
+        'If txtLEN(Me.oVenta.SELLO_DIGITAL) = False And Me.oDocumento.AFECTA_CONTABILIDAD = True Then
         Me.oVenta.Consultar()
         If Me.oVenta.VERSION_ESQUEMA_XML >= "3.2" Then
             If txtLEN(Me.oVenta.FOLIO_FISCAL_SAT + Me.oVenta.FECHA_TIMBRADO_SAT + Me.oVenta.NUMERO_SERIE_CERTIFICADO_SAT + Me.oVenta.SELLO_SAT) = False And txtLEN(Me.oVenta.CBB_IMAGE.ToString) = False And Me.oDocumento.TIMBRA_DOCUMENTO = True Then
@@ -279,7 +279,7 @@ Buscar:
                     Me.lblCliente.Text = "" : GoTo Buscar : Exit Sub
                 End If
 
-                If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
+                If Me.oDocumento.AFECTA_CONTABILIDAD = True Then
                     If Me.chkVentaPublicoGeneral.Checked = False Then
                         'If Me.ValidarDatosCliente() = False Then
                         '    Exit Sub
@@ -309,7 +309,7 @@ Buscar:
         '    End If
 
         'Else
-        If Me.oDocumento.AFECTA_CONTBILIDAD = True Then 'FACTURA
+        If Me.oDocumento.AFECTA_CONTABILIDAD = True Then 'FACTURA
             Me.txtFolioEmbarque.Enabled = True
         Else
             Me.txtFolioEmbarque.Enabled = False
@@ -892,7 +892,7 @@ Buscar:
             Else
                 Me.Grid.Column(Me.igyPrecio).Locked = True
             End If
-        
+
         Catch ex As Exception
             HandleError(Me.Name, "FormateaGrid", ex)
         Finally
@@ -1046,7 +1046,7 @@ Buscar:
                     Me.Grid.Locked = True
                     Me.GridSeries.Locked = True
 
-                    If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
+                    If Me.oDocumento.AFECTA_CONTABILIDAD = True Then
                         Me.tsbCotizacionFactura.Visible = False
                         Me.tsbCotizacionRemision.Visible = False
                         Me.tsbRemisionVenta.Visible = False
@@ -1280,7 +1280,7 @@ Buscar:
                 End If
             End If
 
-            'If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
+            'If Me.oDocumento.AFECTA_CONTABILIDAD = True Then
             '    If Me.chkVentaPublicoGeneral.Checked = False Then
             '        '02Mar17, ya no se validaran datos del cliente desde aqui sino dentro de la fac electronica.
             '        'If Me.ValidarDatosCliente() = True Then
@@ -1345,9 +1345,9 @@ Buscar:
                 .CODIGO_TIPO_NEGOCIACION = CInt(Me.cboTipoNegociacion.SelectedValue.ToString)
                 .FOLIO_POLIZA = Me.LblPoliza.Text.ToUpper
                 .IMPUESTO_PORCENTAJE = Plaza.Impuesto_Porcentaje
-                'If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.AFECTA_CONTBILIDAD = True And oDocumento.AFECTA_INVENTARIOS = True Then
-                'If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.AFECTA_CONTBILIDAD = True And oDocumento.AFECTA_INVENTARIOS = True And oDocumento.TIMBRA_DOCUMENTO = True Then
-                If Empresa_Sistema.FELECTRONICA_ACTIVA = True And ((oDocumento.AFECTA_CONTBILIDAD = True And oDocumento.AFECTA_INVENTARIOS = True) Or Me._EsPorEmbarqueExtranjero = True) Then
+                'If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.AFECTA_CONTABILIDAD = True And oDocumento.AFECTA_INVENTARIOS = True Then
+                'If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.AFECTA_CONTABILIDAD = True And oDocumento.AFECTA_INVENTARIOS = True And oDocumento.TIMBRA_DOCUMENTO = True Then
+                If Empresa_Sistema.FELECTRONICA_ACTIVA = True And ((oDocumento.AFECTA_CONTABILIDAD = True And oDocumento.AFECTA_INVENTARIOS = True) Or Me._EsPorEmbarqueExtranjero = True) Then
                     .ES_FACTURA_ELECTRONICA = "1"
                 Else
                     .ES_FACTURA_ELECTRONICA = "0"
@@ -1466,7 +1466,7 @@ Buscar:
                         Exit Function
                     End If
 
-                    If oDocumento.AFECTA_CONTBILIDAD = True Then
+                    If oDocumento.AFECTA_CONTABILIDAD = True Then
                         If .AplicarPoliza = False Then
                             Exit Function
                         End If
@@ -1707,7 +1707,7 @@ CANCELAR:
                 Exit Function
             End If
 
-            If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
+            If Me.oDocumento.AFECTA_CONTABILIDAD = True Then
                 If txtLEN(Me.oCliente.CUENTA_CONTABLE) = False Then
                     MsgBox("El cliente no tiene una cuenta contable en pesos asignada.", MsgBoxStyle.Exclamation, sProcedure)
                     Me.TxtCliente.Focus()
@@ -1738,7 +1738,7 @@ CANCELAR:
             End If
 
             If Me.cboMoneda.SelectedIndex = 1 Then
-                If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
+                If Me.oDocumento.AFECTA_CONTABILIDAD = True Then
                     If txtLEN(Me.oCliente.CUENTA_CONTABLE_DOLARES) = False Then
                         MsgBox("El cliente no tiene una cuenta contable en dólares asignada.", MsgBoxStyle.Exclamation, sProcedure)
                         Me.TxtCliente.Focus()
@@ -1816,7 +1816,7 @@ CANCELAR:
                 End If
             End If
 
-            If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
+            If Me.oDocumento.AFECTA_CONTABILIDAD = True Then
                 If Me.ValidarCentrosCostos = False Then
                     Return False
                 End If
@@ -1834,7 +1834,7 @@ CANCELAR:
                 If Me.ValidarExistencias() = False Then
                     Exit Function
                 End If
-                If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
+                If Me.oDocumento.AFECTA_CONTABILIDAD = True Then
                     If Me.SiTieneCuentaContable() = False Then
                         MsgBox("Asígne la cuenta contable a todos los renglones.", MsgBoxStyle.Exclamation, sProcedure)
                         Return False
@@ -2391,8 +2391,8 @@ CANCELAR:
             Dim dtSubtotal As Decimal = 0, dtIEPS As Decimal = 0, dtImpuesto As Decimal = 0, dtTotal As Decimal = 0
 
             Me.lblSubtotal.Text = FormatImporteContable(0)
-            Me.lblIEPSIncluido.text = FormatImporteContable(0)
-            Me.lblIEPS.text = FormatImporteContable(0)
+            Me.lblIEPSIncluido.Text = FormatImporteContable(0)
+            Me.lblIEPS.Text = FormatImporteContable(0)
             Me.lblImpuesto.Text = FormatImporteContable(0)
             Me.lblTotal.Text = FormatImporteContable(0)
 
@@ -2497,11 +2497,11 @@ CANCELAR:
             dtIEPS = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyIEPS_IMPORTE)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
             If Me.bClienteEsContribuyenteIEPS = True Then
-                Me.lblIEPSIncluido.text = FormatImporteContable(0)
-                Me.lblIEPS.text = FormatImporteContable(dtIEPS)
+                Me.lblIEPSIncluido.Text = FormatImporteContable(0)
+                Me.lblIEPS.Text = FormatImporteContable(dtIEPS)
             Else
-                Me.lblIEPSIncluido.text = FormatImporteContable(dtIEPS)
-                Me.lblIEPS.text = FormatImporteContable(0)
+                Me.lblIEPSIncluido.Text = FormatImporteContable(dtIEPS)
+                Me.lblIEPS.Text = FormatImporteContable(0)
                 dtIEPS = 0 'Se establece en 0 porque luego se le suma este valor al total y al ser includo entonces debe ser 0
             End If
 
@@ -2700,7 +2700,7 @@ CANCELAR:
 
             'ESTA VALIDACION SE PUSO PARA QUE A LOS PRODUCTOS AGRICOLAS NO LES PUEDAN CAMBIAR LA CUENTA CONTABLE CALCULADA AUTOMATICAMENTE
             If Columna = Me.igyCuentaContable Then
-                If Me.oDocumento.AFECTA_CONTBILIDAD = False Then
+                If Me.oDocumento.AFECTA_CONTABILIDAD = False Then
                     Return
                 Else
                     oArticulos = New Class_CatArticulos(StrCod)
@@ -2770,7 +2770,7 @@ LlenaLinea:
                                 Me.Grid.Cell(Renglon, Me.igyImpuestoImporte).Locked = False
                             End If
 
-                            If Me.oDocumento.AFECTA_CONTBILIDAD = True Then
+                            If Me.oDocumento.AFECTA_CONTABILIDAD = True Then
                                 'If txtLEN(oArticulos.CODIGO_CULTIVO) = True Then
                                 'Dim Sql As New Class_find("SELECT CUENTA_CONTABLE_BASE FROM CAT_CULTIVOS Where CODIGO_CULTIVO='" & oArticulos.CODIGO_CULTIVO.ToString & "' AND CODIGO_PLAZA=" & Usuario.Codigo_Plaza)
 
@@ -3064,8 +3064,8 @@ buscaCentrosCostos:
                                 "" & Chr(9) &
                                 "" & Chr(9) &
                                 "0" & Chr(9) &
-                                "SIN DEFINIR" & Chr(9) & _
-                                dRow("PRECIO_USD").ToString & Chr(9) & _
+                                "SIN DEFINIR" & Chr(9) &
+                                dRow("PRECIO_USD").ToString & Chr(9) &
                                 dRow("IMPORTE_USD").ToString)
                 'Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + dRow("CUENTA_CONTABLE_BASE").ToString & Chr(9) & 'En agr esta así, pero aquí la cuenta es general
             Next
@@ -3313,8 +3313,8 @@ busca_serie:
                         If ID_INVENTARIO_LOTES_COSTOS = Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text Then
                             RenglonRepetido = i
 
-                            MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text & _
-                                   " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf & _
+                            MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text &
+                                   " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf &
                                    "", MsgBoxStyle.Exclamation)
                             Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
 
@@ -3343,8 +3343,8 @@ busca_serie:
                         If Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text = Me.GridSeries.Cell(z, Me.igySerieIdInventarioLotesCostos).Text Then
                             RenglonRepetido = z
 
-                            MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text & _
-                                   " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf & _
+                            MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text &
+                                   " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf &
                                    "", MsgBoxStyle.Exclamation)
                             Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
 
