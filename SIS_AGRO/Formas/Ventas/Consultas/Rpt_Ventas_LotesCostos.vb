@@ -80,6 +80,31 @@ Buscar:
         End Select
     End Sub
 
+    Private Sub TxtCodigoProducto_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoProducto.KeyDown
+        Dim oArticulos As New Class_CatArticulos
+        Dim sText As String
+        Select Case e.KeyCode
+            Case Keys.F6
+Buscar:
+                sText = oArticulos.BusquedaVisual_PorDescripcion
+                If txtLEN(sText) = True Then Me.TxtCodigoProducto.Text = sText
+            Case Keys.Enter
+                If txtLEN(Me.TxtCodigoProducto.Text) = False Then
+                    Me.LblNombreProducto.Text = ""
+                    txtTAB(e)
+                    Exit Sub
+                End If
+
+                Me.oArticulos = New Class_CatArticulos(Me.TxtCodigoProducto.Text)
+                If Me.oArticulos.Existe = False Then
+                    Me.LblNombreProducto.Text = "" : GoTo Buscar : Exit Sub
+                End If
+
+                Me.LblNombreProducto.Text = Me.oArticulos.DESCRIPCION
+                txtTAB(e)
+        End Select
+    End Sub
+
     Private Sub DtFechaDesde_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles DtFechaDesde.KeyDown
         txtTAB(e)
     End Sub
@@ -90,7 +115,7 @@ Buscar:
         End If
     End Sub
 
-    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtFolioCompra.KeyPress, TxtFolioVenta.KeyPress, TxtCliente.KeyPress, TxtProveedor.KeyPress
+    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtFolioCompra.KeyPress, TxtFolioVenta.KeyPress, TxtCliente.KeyPress, TxtProveedor.KeyPress, TxtCodigoProducto.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -122,6 +147,7 @@ Buscar:
             Rpt.SetParameterValue("@FOLIO_COMPRA", Me.TxtFolioCompra.Text)
             Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.TxtCliente.Text)
             Rpt.SetParameterValue("@CODIGO_PROVEEDOR", Me.TxtProveedor.Text)
+            Rpt.SetParameterValue("@CODIGO_ARTICULO", Me.TxtCodigoProducto.Text)
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
@@ -146,11 +172,6 @@ Buscar:
         End If
         ValidarPeriodo = True
     End Function
-
-    Private Sub TxtCodArticulo_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCliente.KeyPress, _
-      DtFechaHasta.KeyPress, DtFechaDesde.KeyPress, DtFechaHasta.KeyPress, DtFechaDesde.KeyPress
-        txtNoBeep(e)
-    End Sub
 
     Private Sub tsbSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSalir.Click
         Me.Close()
