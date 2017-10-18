@@ -3051,6 +3051,7 @@ buscaCentrosCostos:
                                 dRow("DESCRIPCION").ToString & Chr(9) &
                                 dRow("CANTIDAD_BULTOS_DETALLE").ToString & Chr(9) &
                                 dRow("PRECIO_UNIDAD_BULTO").ToString & Chr(9) &
+                                dRow("PRECIO_UNIDAD_BULTO").ToString & Chr(9) &
                                 dRow("UNIDAD").ToString & Chr(9) &
                                 dRow("CANTIDAD_KILOS").ToString & Chr(9) &
                                 dRow("PRECIO_KILOS").ToString & Chr(9) &
