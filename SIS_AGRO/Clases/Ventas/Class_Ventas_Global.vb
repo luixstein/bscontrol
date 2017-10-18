@@ -824,68 +824,7 @@ Public Class Class_Ventas_Global
 #End Region
 
 #Region "Métodos y procedimientos"
-    Public Function Actualizar() As Boolean
-        Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand
-        Dim sqlParametro As SqlParameter
-        With cmd
-            .Connection = Me._Conexion
-            .CommandTimeout = 0
-            .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_VENTA_GRABA_GLOBAL"
-
-            sqlParametro = .Parameters.Add("@FOLIO_VENTA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_VENTA
-            sqlParametro = .Parameters.Add("@FECHA", SqlDbType.DateTime) : sqlParametro.Value = "" & Me._FECHA
-            sqlParametro = .Parameters.Add("@FECHA_VENCIMIENTO", SqlDbType.DateTime) : sqlParametro.Value = "" & Me._FECHA_VENCIMIENTO
-            sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8) : sqlParametro.Value = "" & Me._CODIGO_CLIENTE
-            sqlParametro = .Parameters.Add("@CODIGO_DOCUMENTO", SqlDbType.NVarChar, 10) : sqlParametro.Value = "" & Me._CODIGO_DOCUMENTO
-            sqlParametro = .Parameters.Add("@CODIGO_VENDEDOR", SqlDbType.SmallInt) : sqlParametro.Value = "" & Me._CODIGO_VENDEDOR
-            sqlParametro = .Parameters.Add("@SUBTOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL
-            sqlParametro = .Parameters.Add("@DESCUENTO", SqlDbType.Decimal) : sqlParametro.Value = Me._DESCUENTO
-            sqlParametro = .Parameters.Add("@IMPUESTO", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO
-            sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL
-            sqlParametro = .Parameters.Add("@CODIGO_USUARIO", SqlDbType.SmallInt) : sqlParametro.Value = "" & Me._CODIGO_USUARIO_GRABO
-            sqlParametro = .Parameters.Add("@FOLIO_REFERENCIA", SqlDbType.NVarChar, 15) : sqlParametro.Value = "" & Me._FOLIO_REFERENCIA.ToUpper
-            sqlParametro = .Parameters.Add("@FOLIO_REFERENCIA_USUARIO", SqlDbType.NVarChar, 15) : sqlParametro.Value = "" & Me._FOLIO_REFERENCIA_USUARIO.ToUpper
-            sqlParametro = .Parameters.Add("@TIPO_DE_CAMBIO", SqlDbType.Decimal) : sqlParametro.Value = Me._TIPO_DE_CAMBIO
-            sqlParametro = .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_ALMACEN
-            sqlParametro = .Parameters.Add("@CONCEPTO", SqlDbType.NVarChar, 120) : sqlParametro.Value = "" & Me._CONCEPTO
-            sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PLAZA
-            sqlParametro = .Parameters.Add("@CODIGO_TIPO_NEGOCIACION", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_TIPO_NEGOCIACION
-            sqlParametro = .Parameters.Add("@IMPUESTO_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_PORCENTAJE
-            sqlParametro = .Parameters.Add("@ES_FACTURA_ELECTRONICA", SqlDbType.NVarChar, 1) : sqlParametro.Value = "" & Me._ES_FACTURA_ELECTRONICA
-            sqlParametro = .Parameters.Add("@CODIGO_TIPO_MERCADO", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_TIPO_MERCADO
-            sqlParametro = .Parameters.Add("@TOTAL_SUSTITUCION", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAl_SUSTITUCION
-            sqlParametro = .Parameters.Add("@TIPO_VENTA", SqlDbType.NVarChar, 5) : sqlParametro.Value = Me._TIPO_VENTA
-            sqlParametro = .Parameters.Add("@ES_VENTA_PUBLICO_GENERAL", SqlDbType.NVarChar, 1) : sqlParametro.Value = "" & Me._ES_VENTA_PUBLICO_GENERAL
-            'sqlParametro = .Parameters.Add("@FOLIO_EMBARQUE", SqlDbType.NVarChar, 15) : sqlParametro.Value = "" & Me._FOLIO_EMBARQUE
-            sqlParametro = .Parameters.Add("@TOTAL_DOLARES", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_DOLARES
-            'CFD
-            sqlParametro = .Parameters.Add("@CODIGO_METODO_PAGO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_METODO_PAGO
-            'sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL
-            sqlParametro = .Parameters.Add("@NUMERO_CUENTA_PAGO", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._NUMERO_CUENTA_PAGO
-            sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO
-            sqlParametro = .Parameters.Add("@IEPS_TOTAL_YA_INCLUIDO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_YA_INCLUIDO
-            sqlParametro = .Parameters.Add("@CODIGO_TIPO_CREDITO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_TIPO_CREDITO
-            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "ACTUALIZAR"
-
-            Try
-                Me._Conexion.Open()
-                .ExecuteNonQuery()
-                bResultado = True
-                'Me._FOLIO_MOVIMIENTO_INVENTARIO = "" & .Parameters("@FOLIO_MOVIMIENTO_INVENTARIO").Value.ToString
-            Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "ACTUALIZAR", ex)
-            Finally
-                Me._Conexion.Close()
-                cmd.Dispose()
-                sqlParametro = Nothing
-            End Try
-        End With
-        Return bResultado
-    End Function
-
-    Public Function Insertar() As Boolean
+    Public Function Grabar(ByVal sAccion As String) As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -932,10 +871,14 @@ Public Class Class_Ventas_Global
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                Me._FOLIO_VENTA = "" & .Parameters("@FOLIO_VENTA").Value.ToString 'Se asegura el cambio del folio
+
+                If sAccion = "INSERTAR" Then
+                    Me._FOLIO_VENTA = "" & .Parameters("@FOLIO_VENTA").Value.ToString 'Se asegura el cambio del folio
+                End If
+
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Insertar", ex)
+                HandleError(Me._Nombre_Catalogo, "Grabar", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
