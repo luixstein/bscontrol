@@ -16,7 +16,6 @@ Module FacturacionElectronica
     Private tPlazaFacturaElectronica As Class_SisPlazas
 
 #Region "Campos de sistema"
-    Private _Nombre_Catalogo As String = "FacturacionElectronica"
     Private _Conexion As New SqlConnection(Empresa_Sistema.conexion)
 #End Region
 
@@ -132,7 +131,7 @@ Module FacturacionElectronica
             Factura = Nothing
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         End Try
 
         Return bResultado
@@ -170,7 +169,7 @@ Module FacturacionElectronica
             c.Certificado = Mid(CKCert.GetEncoded(), 1, Len(CKCert.GetEncoded()) - 2)
             c.CertificadoValido = True
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         End Try
         Return c
     End Function
@@ -181,7 +180,7 @@ Module FacturacionElectronica
         Try
             bResultado = CancelarCFDI(oVenta.FOLIO_VENTA, oVenta.SERIE, oVenta.FOLIO_NUMERICO, oVenta.FOLIO_FISCAL_SAT, oVenta.TIMBRADO_CFDI, TipoComprobante)
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         End Try
         Return bResultado
     End Function
@@ -192,7 +191,7 @@ Module FacturacionElectronica
         Try
             bResultado = CancelarCFDI(oDescuento.FOLIO_DESCUENTO, oDescuento.SERIE, oDescuento.FOLIO_NUMERICO, oDescuento.FOLIO_FISCAL_SAT, oDescuento.TIMBRADO_CFDI, TipoComprobante)
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         End Try
         Return bResultado
     End Function
@@ -250,7 +249,7 @@ Module FacturacionElectronica
             End Using
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         End Try
 
         Return bResultado
@@ -294,7 +293,7 @@ Module FacturacionElectronica
 
         Catch ex As Exception
             _Conexion.Close()
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         End Try
         Return bResultado
     End Function
@@ -317,7 +316,7 @@ Module FacturacionElectronica
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(_Nombre_Catalogo, "DescartarTimbrado", ex)
+                HandleError(nombreModulo, "DescartarTimbrado", ex)
             Finally
                 _Conexion.Close()
                 cmd.Dispose()
@@ -333,7 +332,7 @@ Module FacturacionElectronica
             Var = Shell(sFelectronicaConvierteUTF8Local & " """ & sRutaXML & """", AppWinStyle.MinimizedFocus)
             Return True
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, "ConvierteXMLUTF8", ex)
+            HandleError(nombreModulo, "ConvierteXMLUTF8", ex)
         End Try
     End Function
 
@@ -357,7 +356,7 @@ Module FacturacionElectronica
 
             bResultado = True
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, "ConvierteUTF8", ex)
+            HandleError(nombreModulo, "ConvierteUTF8", ex)
         End Try
 
         Return bResultado
@@ -410,7 +409,7 @@ Module FacturacionElectronica
 
         Catch ex As Exception
             _Conexion.Close()
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         End Try
 
         Return bResultado
@@ -442,7 +441,7 @@ Module FacturacionElectronica
             cadena = Replace(cadena, "'", "&apos", , , CompareMethod.Text)
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, "CaracterEspecial", ex)
+            HandleError(nombreModulo, "CaracterEspecial", ex)
         End Try
 
         Return sResultado 'No se esta usando esta función al parecer
@@ -596,7 +595,7 @@ Module FacturacionElectronica
             bResultado = True
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         End Try
 
         Return bResultado
@@ -643,7 +642,7 @@ Module FacturacionElectronica
             bResultado = True
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         End Try
         Return bResultado
     End Function
@@ -674,11 +673,11 @@ Module FacturacionElectronica
             'oVenta = New Class_Ventas_Global(sFolio)
             'If oVenta.Existe = False Then
             '    MsgBox("Error al consultar el documento, no se encontró favor de revisar que exista.", MsgBoxStyle.Exclamation, "Búsqueda de Folios")
-            '    Exit Function
+            '    Return False
             'End If
 
             If fElectronicaValidaArchivosCertificadoLocal(oVenta.FELECTRONICA_CER, oVenta.FELECTRONICA_KEY, oVenta.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA) = False Then
-                Exit Function
+                Return False
             End If
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Datos globales''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -687,7 +686,6 @@ Module FacturacionElectronica
             sVentaPublicoGeneral = oVenta.ES_VENTA_PUBLICO_GENERAL
             sPlaza = oVenta.CODIGO_PLAZA
 
-            'Agregamos los datos totales y Generales
             Cfd.Folio = oVenta.FOLIO_NUMERICO
             Cfd.fecha = Format(oVenta.FECHA, "yyyy-MM-dd") & "T" & Format(oVenta.FECHA, "HH:mm:ss")
             Cfd.tipoDeComprobante = "ingreso"
@@ -803,7 +801,7 @@ Module FacturacionElectronica
                     tPlazaFacturaElectronica = New Class_SisPlazas(sPlaza)
                 End If
             Else
-                tPlazaFacturaElectronica = Plaza
+                tPlazaFacturaElectronica = Plaza 'Plaza ya cargada en el inicio de sesión del usuario.
             End If
 
             With Cfd.Emisor.ExpedidoEn
@@ -849,7 +847,7 @@ Module FacturacionElectronica
 
             If oCliente.Existe = False Then
                 MsgBox("Cliente no encontrado.", MsgBoxStyle.Exclamation, nombreModulo)
-                Exit Function
+                Return False
             End If
 
             If sVentaPublicoGeneral = "1" Then
@@ -938,7 +936,7 @@ Module FacturacionElectronica
                 'Else
                 '    'Si elprecio o la cantidad es cero no dejar sellar
                 '    If valorNumerico(row("PRECIO_KILOS")) = 0 Or valorNumerico(row("CANTIDAD_KILOS")) = 0 Then
-                '        Exit Function
+                '        Return False
                 '    End If
 
                 '    'If sVentaPublicoGeneral = "1" Then
@@ -979,7 +977,7 @@ Module FacturacionElectronica
 
         Catch ex As Exception
             _Conexion.Close()
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         Finally
             Cfd = New cComprobante 'vaciar el comprobante
         End Try
@@ -1219,7 +1217,7 @@ Module FacturacionElectronica
             End If
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         Finally
             Cfd = New cComprobante 'vaciar el comprobante
         End Try
@@ -1234,7 +1232,7 @@ Module FacturacionElectronica
         Try
             MsgBox("falta desarrollar..")
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         Finally
 
         End Try
@@ -1267,7 +1265,7 @@ Module FacturacionElectronica
             Return campo
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, "fElectronicaValidaCampo", ex)
+            HandleError(nombreModulo, "fElectronicaValidaCampo", ex)
         End Try
     End Function
 
@@ -1306,7 +1304,7 @@ Module FacturacionElectronica
             _Conexion.Close()
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, "ValidaHuecosFoliosElectronicosVenta", ex)
+            HandleError(nombreModulo, "ValidaHuecosFoliosElectronicosVenta", ex)
             _Conexion.Close()
         End Try
         Return bResultado
@@ -1346,7 +1344,7 @@ Module FacturacionElectronica
                 bResultado = True
             End If
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, "ValidaHuecosFoliosElectronicosNotasCreditoCXC", ex)
+            HandleError(nombreModulo, "ValidaHuecosFoliosElectronicosNotasCreditoCXC", ex)
         End Try
         Return bResultado
     End Function
@@ -1499,7 +1497,7 @@ Module FacturacionElectronica
             MsgBox("El archivo fue generado con éxito en la My.Settings.Ruta: " & strPort, MsgBoxStyle.Information, "Generación de informe de CFD")
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, "GeneraInformeMensual", ex)
+            HandleError(nombreModulo, "GeneraInformeMensual", ex)
         End Try
         Return bResultado
     End Function
@@ -1570,7 +1568,7 @@ Module FacturacionElectronica
             Return True
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, "ValidaDatoFacturaElectronica", ex)
+            HandleError(nombreModulo, "ValidaDatoFacturaElectronica", ex)
         End Try
     End Function
 
@@ -1603,7 +1601,7 @@ Module FacturacionElectronica
             CKCert = Nothing
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, "GestionaFechaCertificadoCFD", ex)
+            HandleError(nombreModulo, "GestionaFechaCertificadoCFD", ex)
         End Try
 
         Return sMensaje
@@ -1653,7 +1651,7 @@ Module FacturacionElectronica
 
     '           Exit Function
     '       Catch ex As Exception
-    '           HandleError(_Nombre_Catalogo, "GenerarSello", ex)
+    '           HandleError(nombreModulo, "GenerarSello", ex)
     '       End Try
     '   End Function
 
@@ -1746,7 +1744,7 @@ Module FacturacionElectronica
     '        End If
     '        Exit Function
     '    Catch ex As Exception
-    '        HandleError(_Nombre_Catalogo, "GetCadenaOriginal", ex)
+    '        HandleError(nombreModulo, "GetCadenaOriginal", ex)
     '    End Try
     'End Function
 
