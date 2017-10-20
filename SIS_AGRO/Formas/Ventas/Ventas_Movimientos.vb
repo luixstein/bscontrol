@@ -1380,7 +1380,6 @@ Buscar:
 
                 ElseIf .CODIGO_TIPO_NEGOCIACION = 2 Then ' CONTADO
                     .CODIGO_TIPO_CREDITO = "NA"
-
                 End If
 
                 If Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.SUSTITUYENDO Then
