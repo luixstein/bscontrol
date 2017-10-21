@@ -2049,7 +2049,8 @@ CANCELAR:
     End Function
 
     Private Function ValidarExistencias() As Boolean
-        Const sProcedure As String = "Validación de existencias de Articulos"
+        Const sProcedure As String = "ValidarExistencias"
+
         Dim dCantidadSumadaPorArticulos As Double, dExistencia As Double
         Dim i As Integer
         Dim oInventarios As New Class_Inventarios_Global
@@ -2721,9 +2722,21 @@ CANCELAR:
                         Me.LblEstatus.Text = "SY"
                     End If
                 End If
+
                 Me.FormateaGrid()
                 Me.dpVencimiento.Value = Me.oVenta.FECHA_VENCIMIENTO
                 Me.txtPlazo.Text = DateDiff(DateInterval.Day, Me.dpFecha.Value, Me.dpVencimiento.Value.AddDays(1)).ToString
+
+                Select Case Me.oCliente.TIPO_PERSONA
+                    Case "F"
+                        Me.DesplegarUsoCFDIPersonasFisicas()
+                    Case "M"
+                        Me.DesplegarUsoCFDIPersonasMorales()
+                End Select
+
+                If txtLEN("" & Me.oVenta.CODIGO_USO_CFDI) = True Then
+                    Me.cboUsoCFDI.SelectedValue = Me.oCliente.CODIGO_USO_CFDI
+                End If
             End If
 
             bResultado = True
@@ -2949,7 +2962,7 @@ BuscaArticulos:
                             StrCod = oArticulos.BusquedaVisual_PorDescripcion_conExistencias(Me.CboAlmacen.SelectedValue.ToString)
                             If txtLEN(StrCod) = True Then
                                 Me.Grid.Cell(Renglon, Me.igyCodigo).Text = StrCod
-                                GoTo LlenaLinea : Exit Sub
+                                GoTo LlenaLinea : Return
                             End If
 
                             '                        Case Me.igyCuentaContable 'Columna de la cuenta contable
@@ -3098,8 +3111,40 @@ buscaCentrosCostos:
             Me.txtPlazo.Text = Me.oCliente.DIAS_PLAZO.ToString
             Me.dpVencimiento.Value = Me.dpFecha.Value.AddDays(CDbl(Me.txtPlazo.Text))
             Me.cboVendedor.SelectedValue = Me.oCliente.CODIGO_VENDEDOR
-            Me.cboFormaPago.SelectedValue = Me.oCliente.CODIGO_METODO_PAGO
+
+            Dim bEstableceFormaPago As Boolean
+
+            If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
+                bEstableceFormaPago = True
+            Else
+                If Me.cboMetodoPago.SelectedValue.ToString = "PUE" Then 'Si es PPD recordemos que la forma de pago es obligatoriamente 99
+                    bEstableceFormaPago = True
+                End If
+            End If
+
+            If bEstableceFormaPago = True Then
+                Select Case Me.cboMoneda.Text
+                    Case "MXN"
+                        Me.cboFormaPago.SelectedValue = Me.oCliente.CODIGO_METODO_PAGO
+                    Case "USD"
+                        If txtLEN("" & Me.oCliente.CODIGO_METODO_PAGO_DOLARES) = True Then
+                            Me.cboFormaPago.SelectedValue = Me.oCliente.CODIGO_METODO_PAGO_DOLARES
+                        Else
+                            Me.cboFormaPago.SelectedIndex = -1
+                        End If
+                End Select
+            End If
+
             Me.txtNumeroCuentaPago.Text = Me.oCliente.NUMERO_CUENTA_PAGO.ToString
+
+            Select Case Me.oCliente.TIPO_PERSONA
+                Case "F"
+                    Me.DesplegarUsoCFDIPersonasFisicas()
+                Case "M"
+                    Me.DesplegarUsoCFDIPersonasMorales()
+            End Select
+            Me.cboUsoCFDI.SelectedValue = Me.oCliente.CODIGO_USO_CFDI
+
             Me.bClienteEsContribuyenteIEPS = CBool(Me.oCliente.ES_CONTRIBUYENTE_IEPS)
 
             Return True
@@ -3119,7 +3164,7 @@ buscaCentrosCostos:
 
             Me.ConsultarCliente()
 
-            Me.cboMoneda.SelectedIndex = 1 'USD
+            Me.cboMoneda.Text = "USD"
             Me.txtTipoCambio.Text = Me._TipoCambioPorEmbarqueExtranjero.ToString
 
             Me.cboFormaPago.SelectedValue = "NA" '99=Otros
@@ -3680,7 +3725,7 @@ busca_serie:
                 End If
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "DesplegarUsoCFDIPersonasFisicas", ex)
+            HandleError(Me.Name, "DesplegarUsoCFDIPersonasMorales", ex)
         End Try
     End Sub
 #End Region
