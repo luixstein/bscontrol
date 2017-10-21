@@ -1,8 +1,6 @@
 ﻿Option Strict On
 
-Imports System.Data
 Imports System.Data.SqlClient
-Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Catalogo_Clientes
     Dim oClientes As New Class_CatClientes
@@ -154,12 +152,12 @@ Public Class Catalogo_Clientes
         End If
     End Sub
 
-    Private Sub cboMetodoPago_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboMetodoPago.SelectedValueChanged
-        Dim oMetodoPago As New Class_CFD_CatMetodosPago
-        If Me.cboMetodoPago.SelectedValue Is Nothing Then
+    Private Sub cboFormaPago_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboFormaPago.SelectedValueChanged
+        Dim oMetodoPago As New Class_CFD_CatFormasPago
+        If Me.cboFormaPago.SelectedValue Is Nothing Then
             Exit Sub
         End If
-        oMetodoPago = New Class_CFD_CatMetodosPago(Me.cboMetodoPago.SelectedValue.ToString)
+        oMetodoPago = New Class_CFD_CatFormasPago(Me.cboFormaPago.SelectedValue.ToString)
 
         If Me.Estado = enumEstados.CONSULTA Then
             Exit Sub
@@ -172,12 +170,12 @@ Public Class Catalogo_Clientes
         End If
     End Sub
 
-    Private Sub cboMetodoPagoDlls_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboMetodoPagoDlls.SelectedValueChanged
-        Dim oMetodoPago As New Class_CFD_CatMetodosPago
-        If Me.cboMetodoPagoDlls.SelectedValue Is Nothing Then
+    Private Sub cboFormaPagoUSD_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboFormaPagoUSD.SelectedValueChanged
+        Dim oMetodoPago As New Class_CFD_CatFormasPago
+        If Me.cboFormaPagoUSD.SelectedValue Is Nothing Then
             Exit Sub
         End If
-        oMetodoPago = New Class_CFD_CatMetodosPago(Me.cboMetodoPagoDlls.SelectedValue.ToString)
+        oMetodoPago = New Class_CFD_CatFormasPago(Me.cboFormaPagoUSD.SelectedValue.ToString)
 
         If Me.Estado = enumEstados.CONSULTA Then
             Exit Sub
@@ -222,6 +220,35 @@ Public Class Catalogo_Clientes
     Private Sub cboEstado_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboEstado.SelectedIndexChanged
         Me.DesplegarMunicipios()
     End Sub
+
+    Private Sub cboTipoPersona_SelectedValueChanged(sender As Object, e As EventArgs) Handles cboTipoPersona.SelectedValueChanged
+        Try
+            With Me.cboUsoCFDI
+                Dim dView As New Data.DataView(CType(IIf(Me.cboTipoPersona.Text = "FISICA", dtUsosCFDIPersonasFisicas, dtUsosCFDIPersonasMorales), DataTable))
+                Dim dRow() As DataRow
+                Select Case Me.cboTipoPersona.Text
+                    Case "FISICA"
+                        dView = New Data.DataView(dtUsosCFDIPersonasFisicas)
+                        dRow = dtUsosCFDIPersonasFisicas.Select("ES_DEFAULT='1'")
+                    Case "MORAL"
+                        dView = New Data.DataView(dtUsosCFDIPersonasMorales)
+                        dRow = dtUsosCFDIPersonasMorales.Select("ES_DEFAULT='1'")
+                End Select
+
+                .DisplayMember = "NOMBRE_USO_CFDI"
+                .ValueMember = "CODIGO_USO_CFDI"
+                .DataSource = dView
+                .SelectedIndex = -1
+
+                If dRow.Length > 0 Then
+                    .SelectedValue = dRow(0)("CODIGO_USO_CFDI")
+                End If
+
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "cboTipoPersona_SelectedValueChanged", ex)
+        End Try
+    End Sub
 #End Region
 
 #Region "Eventos Genericos"
@@ -242,20 +269,20 @@ Public Class Catalogo_Clientes
     '    txtNoBeep(e)
     'End Sub
 
-    Private Sub txt_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtRfc.KeyDown, txtPais.KeyDown, txtNumeroTelefono.KeyDown, _
-    txtNumeroInterior.KeyDown, txtNumeroExterior.KeyDown, txtNumeroCelular.KeyDown, TxtNombreCliente.KeyDown, txtLocalidad.KeyDown, txtLimiteCredito.KeyDown, txtDiasPlazo.KeyDown, txtCurp.KeyDown, _
-    txtColonia.KeyDown, txtCodigoCliente.KeyDown, txtCalle.KeyDown, DpFecha.KeyDown, chkPermitirVentaCredito.KeyDown, cboZona.KeyDown, cboVendedor.KeyDown, cboTipoPersona.KeyDown, _
-    cboTipoMercado.KeyDown, CboEstatus.KeyDown, cboEstado.KeyDown, cboMetodoPago.KeyDown, txtNumeroCuenta.KeyDown, txtCiudad.KeyDown, txtCorreoCliente.KeyDown, cboMetodoPagoDlls.KeyDown, txtNumeroCuentaDolares.KeyDown, _
-    txtNumeroRegistroIdentificadorExtranjero.KeyDown, cboPais.KeyDown, cboMunicipio.KeyDown, chkEsContribuyenteIEPS.KeyDown, cboNombreXML.KeyDown
+    Private Sub txt_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtRfc.KeyDown, txtPais.KeyDown, txtNumeroTelefono.KeyDown,
+    txtNumeroInterior.KeyDown, txtNumeroExterior.KeyDown, txtNumeroCelular.KeyDown, TxtNombreCliente.KeyDown, txtLocalidad.KeyDown, txtLimiteCredito.KeyDown, txtDiasPlazo.KeyDown, txtCurp.KeyDown,
+    txtColonia.KeyDown, txtCodigoCliente.KeyDown, txtCalle.KeyDown, DpFecha.KeyDown, chkPermitirVentaCredito.KeyDown, cboZona.KeyDown, cboVendedor.KeyDown, cboTipoPersona.KeyDown,
+    cboTipoMercado.KeyDown, CboEstatus.KeyDown, cboEstado.KeyDown, cboFormaPago.KeyDown, txtNumeroCuenta.KeyDown, txtCiudad.KeyDown, txtCorreoCliente.KeyDown, cboFormaPagoUSD.KeyDown, txtNumeroCuentaDolares.KeyDown,
+    txtNumeroRegistroIdentificadorExtranjero.KeyDown, cboPais.KeyDown, cboMunicipio.KeyDown, chkEsContribuyenteIEPS.KeyDown, cboNombreXML.KeyDown, cboUsoCFDI.KeyDown
         txtTAB(e)
     End Sub
 
-    Private Sub txt_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtRfc.KeyPress, _
-    txtPais.KeyPress, txtNumeroTelefono.KeyPress, txtNumeroInterior.KeyPress, txtNumeroExterior.KeyPress, txtNumeroCelular.KeyPress, TxtNombreCliente.KeyPress, _
-    txtLocalidad.KeyPress, txtLimiteCredito.KeyPress, txtDiasPlazo.KeyPress, txtCurp.KeyPress, txtCuentaContableDolares.KeyPress, txtCuentaContable.KeyPress, _
-    txtColonia.KeyPress, txtCodigoPostal.KeyPress, txtCodigoCliente.KeyPress, txtCiudad.KeyPress, txtCalle.KeyPress, DpFecha.KeyPress, chkPermitirVentaCredito.KeyPress, _
-    cboZona.KeyPress, cboVendedor.KeyPress, cboTipoPersona.KeyPress, cboTipoMercado.KeyPress, CboEstatus.KeyPress, cboEstado.KeyPress, txtCorreoCliente.KeyPress, _
-    cboMetodoPago.KeyPress, cboMetodoPagoDlls.KeyPress, txtNumeroRegistroIdentificadorExtranjero.KeyPress, cboPais.KeyPress, cboMunicipio.KeyPress
+    Private Sub txt_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtRfc.KeyPress,
+    txtPais.KeyPress, txtNumeroTelefono.KeyPress, txtNumeroInterior.KeyPress, txtNumeroExterior.KeyPress, txtNumeroCelular.KeyPress, TxtNombreCliente.KeyPress,
+    txtLocalidad.KeyPress, txtLimiteCredito.KeyPress, txtDiasPlazo.KeyPress, txtCurp.KeyPress, txtCuentaContableDolares.KeyPress, txtCuentaContable.KeyPress,
+    txtColonia.KeyPress, txtCodigoPostal.KeyPress, txtCodigoCliente.KeyPress, txtCiudad.KeyPress, txtCalle.KeyPress, DpFecha.KeyPress, chkPermitirVentaCredito.KeyPress,
+    cboZona.KeyPress, cboVendedor.KeyPress, cboTipoPersona.KeyPress, cboTipoMercado.KeyPress, CboEstatus.KeyPress, cboEstado.KeyPress, txtCorreoCliente.KeyPress,
+    cboFormaPago.KeyPress, cboFormaPagoUSD.KeyPress, txtNumeroRegistroIdentificadorExtranjero.KeyPress, cboPais.KeyPress, cboMunicipio.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -334,7 +361,7 @@ busqueda_Visual:
         End If
     End Sub
 
-    Private Sub cboMetodoPagoDlls_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboMetodoPagoDlls.KeyDown
+    Private Sub cboMetodoPagoDlls_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboFormaPagoUSD.KeyDown
         If e.KeyCode = Keys.Return Then
             tsbGrabar.PerformClick()
         End If
@@ -360,7 +387,7 @@ busca:
 busca:
                 Me.TxtCodigoAlmacen.Text = oAlmacenes.BusquedaVisual_PorDescripcion
             Case Keys.Enter
-                oAlmacenes.Codigo_Almacen = Me.TxtCodigoAlmacen.Text
+                oAlmacenes.CODIGO_ALMACEN = Me.TxtCodigoAlmacen.Text
                 If oAlmacenes.Consultar() = False Then
                     GoTo busca
                 End If
@@ -538,8 +565,8 @@ busca:
                     Me.txtNumeroCuentaDolares.Enabled = False
                     Me.txtNumeroRegistroIdentificadorExtranjero.Enabled = True
 
-                    Me.cboMetodoPago.Enabled = True
-                    Me.cboMetodoPagoDlls.Enabled = True
+                    Me.cboFormaPago.Enabled = True
+                    Me.cboFormaPagoUSD.Enabled = True
                     Me.CboEstatus.Enabled = False
                     Me.cboEstado.Enabled = True
                     Me.cboTipoPersona.Enabled = True
@@ -548,6 +575,7 @@ busca:
                     Me.cboNombreXML.Enabled = True
                     Me.chkPermitirVentaCredito.Enabled = True
                     Me.TxtCodigoAlmacen.Enabled = True
+                    Me.cboUsoCFDI.Enabled = True
 
                     Me.InicializaElemento()
 
@@ -592,8 +620,8 @@ busca:
                     Me.txtNumeroCuentaDolares.Enabled = False
                     Me.txtNumeroRegistroIdentificadorExtranjero.Enabled = True
 
-                    Me.cboMetodoPago.Enabled = True
-                    Me.cboMetodoPagoDlls.Enabled = True
+                    Me.cboFormaPago.Enabled = True
+                    Me.cboFormaPagoUSD.Enabled = True
                     Me.CboEstatus.Enabled = True
                     Me.cboEstado.Enabled = True
                     Me.cboTipoPersona.Enabled = True
@@ -605,6 +633,8 @@ busca:
                     If txtLEN(Me.txtCuentaContableDolares.Text) = False Then
                         Me.BtnGeneraCuentaContableDolares.Enabled = True
                     End If
+
+                    Me.cboUsoCFDI.Enabled = True
 
                     Me.TxtNombreCliente.Focus()
 
@@ -645,8 +675,8 @@ busca:
                     Me.txtNumeroCuentaDolares.Enabled = False
                     Me.txtNumeroRegistroIdentificadorExtranjero.Enabled = False
 
-                    Me.cboMetodoPagoDlls.Enabled = False
-                    Me.cboMetodoPago.Enabled = False
+                    Me.cboFormaPagoUSD.Enabled = False
+                    Me.cboFormaPago.Enabled = False
                     Me.CboEstatus.Enabled = False
                     Me.cboEstado.Enabled = False
                     Me.cboTipoPersona.Enabled = False
@@ -657,6 +687,7 @@ busca:
                     Me.TxtCodigoAlmacen.Enabled = False
                     Me.txtFiltro.Focus()
                     Me.CboEstatusFiltro.SelectedIndex = 0
+                    Me.cboUsoCFDI.Enabled = False
             End Select
             Application.DoEvents()
 
@@ -700,8 +731,8 @@ busca:
             Me.cboTipoPersona.SelectedItem = "MORAL"
             Me.cboZona.SelectedValue = Plaza.CODIGO_ZONA_PRINCIPAL
             Me.cboVendedor.SelectedValue = "1"
-            Me.cboMetodoPago.SelectedValue = "NA"
-            Me.cboMetodoPagoDlls.SelectedValue = "NA"
+            Me.cboFormaPago.SelectedValue = "NA"
+            Me.cboFormaPagoUSD.SelectedValue = "NA"
             Me.cboNombreXML.SelectedValue = ""
             Me.cboNombreXML.Text = ""
             Me.chkPermitirVentaCredito.Checked = False
@@ -767,16 +798,18 @@ busca:
     '    oElemento = Nothing
     'End Sub
 
-    Private Sub Grabar_Elemento()
+    Private Function Grabar_Elemento() As Boolean
+        Dim bResultado As Boolean = False
+
         Dim oElemento As New Class_CatClientes
-        Dim oMetodoPago As New Class_CFD_CatMetodosPago
+        Dim oMetodoPago As New Class_CFD_CatFormasPago, oMetodoPagoUSD As New Class_CFD_CatFormasPago
         Dim Grabado As Boolean = False, tabla() As String, n As Integer
 
         Try
             If txtLEN(Me.TxtNombreCliente.Text) = False Then
                 MsgBox("Asígne el nombre del cliente.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.TxtNombreCliente.Focus()
-                Exit Sub
+                Return False
             End If
 
             If txtLEN(Me.txtCorreoCliente.Text) = True Then
@@ -786,7 +819,7 @@ busca:
                     If IsEmailSyntaxValid(tabla(n)) = False Then
                         MsgBox("El correo del cliente es inválido, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
                         Me.txtCorreoCliente.Focus()
-                        Exit Sub
+                        Return False
                     End If
                 Next
 
@@ -795,59 +828,53 @@ busca:
             If Me.cboPais.SelectedIndex = -1 Then
                 MsgBox("Seleccione por favor el pais del cliente.", MsgBoxStyle.Exclamation, Me.Name)
                 Me.cboPais.Focus()
-                Return
+                Return False
             End If
 
             If Me.cboPais.SelectedValue.ToString <> "MEX" Then
                 If Me.cboEstado.SelectedIndex = -1 Then
                     MsgBox("Seleccione por favor el estado del cliente(es obligatorio si es pais<>mexico).", MsgBoxStyle.Exclamation, Me.Name)
                     Me.cboEstado.Focus()
-                    Return
+                    Return False
                 End If
             End If
 
-            If Me.cboMetodoPago.SelectedValue Is Nothing Then
+            If Me.cboFormaPago.SelectedValue Is Nothing Then
                 MsgBox("Seleccione el método de pago.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.cboMetodoPago.Focus()
-                Return
+                Me.cboFormaPago.Focus()
+                Return False
             End If
 
-            oMetodoPago = New Class_CFD_CatMetodosPago(Me.cboMetodoPago.SelectedValue.ToString)
+            oMetodoPago = New Class_CFD_CatFormasPago(Me.cboFormaPago.SelectedValue.ToString)
+            oMetodoPagoUSD = New Class_CFD_CatFormasPago(Me.cboFormaPagoUSD.SelectedValue.ToString)
 
-            If oMetodoPago.REQUIERE_NUMERO_CUENTA_PAGO = 1 Then
-                If txtLEN(Me.txtNumeroCuenta.Text) = False Then
-                    'Actualmente es opcional
-                    'MsgBox("El método de pago requiere número de cuenta, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
-                    'Me.txtNumeroCuenta.Focus()
-                    'Exit Sub
-                Else
-                    If Len(Me.txtNumeroCuenta.Text) <> 4 Then
-                        MsgBox("El número de cuenta debe ser de 4 caracteres, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
-                        Me.txtNumeroCuenta.Focus()
-                        Exit Sub
+            If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
+                If oMetodoPago.REQUIERE_NUMERO_CUENTA_PAGO = 1 Then
+                    If txtLEN(Me.txtNumeroCuenta.Text) = False Then
+                        'Es opcional
+                        'MsgBox("El método de pago requiere número de cuenta, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+                        'Me.txtNumeroCuenta.Focus()
+                        'Return False
+                    Else
+                        If Len(Me.txtNumeroCuenta.Text) <> 4 Then
+                            MsgBox("El número de cuenta debe ser de 4 caracteres, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+                            Me.txtNumeroCuenta.Focus()
+                            Return False
+                        End If
                     End If
                 End If
-            End If
 
-            'If Me.cboMetodoPagoDlls.SelectedValue Is Nothing Then
-            '    MsgBox("Seleccione el método de pago en dólares.", MsgBoxStyle.Exclamation, Me.Text)
-            '    Me.cboMetodoPagoDlls.Focus()
-            '    Return
-            'End If
-
-            If Not (Me.cboMetodoPagoDlls.SelectedValue Is Nothing) Then
-                oMetodoPago = New Class_CFD_CatMetodosPago(Me.cboMetodoPagoDlls.SelectedValue.ToString)
-
-                If oMetodoPago.REQUIERE_NUMERO_CUENTA_PAGO = 1 Then
+                If oMetodoPagoUSD.REQUIERE_NUMERO_CUENTA_PAGO = 1 Then
                     If txtLEN(Me.txtNumeroCuentaDolares.Text) = False Then
-                        MsgBox("El método de pago requiere número de cuenta dólares, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
-                        Me.txtNumeroCuentaDolares.Focus()
-                        Exit Sub
+                        'Es opcional
+                        'MsgBox("El método de pago requiere número de cuenta dólares, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+                        'Me.txtNumeroCuentaDolares.Focus()
+                        'Return False
                     Else
                         If Len(Me.txtNumeroCuentaDolares.Text) <> 4 Then
                             MsgBox("El número de cuenta dólares debe ser de 4 caracteres, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
                             Me.txtNumeroCuentaDolares.Focus()
-                            Exit Sub
+                            Return False
                         End If
                     End If
                 End If
@@ -859,7 +886,7 @@ busca:
                     With oElemento
                         .CODIGO_CLIENTE = Me.txtCodigoCliente.Text
                         .NOMBRE_CLIENTE = Me.TxtNombreCliente.Text
-                        .Status = Strings.Left(Me.CboEstatus.Text, 1)
+                        .ESTATUS = Strings.Left(Me.CboEstatus.Text, 1)
                         .RFC = Me.txtRfc.Text
                         If Me.cboTipoPersona.Text = "MORAL" Then
                             .TIPO_PERSONA = "M"
@@ -887,10 +914,10 @@ busca:
                         .FECHA_ALTA = Me.DpFecha.Value
                         .PLAZA = Usuario.Codigo_Plaza.ToString
                         .CORREO_CLIENTE = Me.txtCorreoCliente.Text
-                        .CODIGO_METODO_PAGO = Me.cboMetodoPago.SelectedValue.ToString
+                        .CODIGO_METODO_PAGO = Me.cboFormaPago.SelectedValue.ToString
                         .NUMERO_CUENTA_PAGO = Me.txtNumeroCuenta.Text
-                        If Not (Me.cboMetodoPagoDlls.SelectedValue Is Nothing) Then
-                            .CODIGO_METODO_PAGO_DOLARES = Me.cboMetodoPagoDlls.SelectedValue.ToString
+                        If Not (Me.cboFormaPagoUSD.SelectedValue Is Nothing) Then
+                            .CODIGO_METODO_PAGO_DOLARES = Me.cboFormaPagoUSD.SelectedValue.ToString
                         Else
                             .CODIGO_METODO_PAGO_DOLARES = ""
                         End If
@@ -924,16 +951,18 @@ busca:
                             End If
                         End If
 
+                        .CODIGO_USO_CFDI = Me.cboUsoCFDI.SelectedValue.ToString
+
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 .AGREGAR = "1"
-                                If .Insertar() = False Then
-                                    Exit Sub
+                                If .Grabar() = False Then
+                                    Return False
                                 End If
                             Case enumEstados.EDICION
                                 .AGREGAR = "0"
-                                If .Actualizar() = False Then
-                                    Exit Sub
+                                If .Grabar() = False Then
+                                    Return False
                                 End If
                         End Select
 
@@ -955,7 +984,7 @@ busca:
             oElemento = Nothing
         End Try
 
-    End Sub
+    End Function
 
     Private Sub GeneraCuentaContableDolares()
         Dim generado As Boolean = False
@@ -1132,7 +1161,7 @@ busca:
                     Me.txtDiasPlazo.Text = .DIAS_PLAZO.ToString
                     Me.txtLimiteCredito.Text = FormatImporteContable(CDbl(.LIMITE_CREDITO.ToString), True)
 
-                    If .Estatus = "A" Then
+                    If .ESTATUS = "A" Then
                         Me.CboEstatus.SelectedIndex = 0
                     Else
                         Me.CboEstatus.SelectedIndex = 1
@@ -1157,9 +1186,9 @@ busca:
 
                     Me.cboTipoMercado.SelectedValue = .CODIGO_TIPO_MERCADO.ToString
 
-                    Me.cboMetodoPago.SelectedValue = .CODIGO_METODO_PAGO
+                    Me.cboFormaPago.SelectedValue = .CODIGO_METODO_PAGO
                     Me.txtNumeroCuenta.Text = .NUMERO_CUENTA_PAGO.ToString
-                    Me.cboMetodoPagoDlls.SelectedValue = .CODIGO_METODO_PAGO_DOLARES
+                    Me.cboFormaPagoUSD.SelectedValue = .CODIGO_METODO_PAGO_DOLARES
                     Me.txtNumeroCuentaDolares.Text = .NUMERO_CUENTA_PAGO_DOLARES.ToString
                     Me.cboNombreXML.SelectedValue = .FORMATO_NOMBRE_XML
                     Me.txtNumeroRegistroIdentificadorExtranjero.Text = .NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO
@@ -1208,8 +1237,8 @@ busca:
 
     Private Sub DesplegarMetodoPago()
         Try
-            Dim oElementos As New Class_CFD_CatMetodosPago
-            With Me.cboMetodoPago
+            Dim oElementos As New Class_CFD_CatFormasPago
+            With Me.cboFormaPago
                 .DisplayMember = "NOMBRE_METODO_PAGO"
                 .ValueMember = "CODIGO_METODO_PAGO"
 
@@ -1227,8 +1256,8 @@ busca:
 
     Private Sub DesplegarMetodoPagoDolares()
         Try
-            Dim oElementos As New Class_CFD_CatMetodosPago
-            With Me.cboMetodoPagoDlls
+            Dim oElementos As New Class_CFD_CatFormasPago
+            With Me.cboFormaPagoUSD
                 .DisplayMember = "NOMBRE_METODO_PAGO"
                 .ValueMember = "CODIGO_METODO_PAGO"
 

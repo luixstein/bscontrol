@@ -64,7 +64,7 @@
   <ItemGroup>
     <Reference Include="cfdi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\cfdi.dll</HintPath>
+      <HintPath>..\..\..\_FuentesFer\Abaconet\AbacoNet_3.0\bin\Debug\cfdi.dll</HintPath>
     </Reference>
     <Reference Include="co32, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -222,7 +222,7 @@
     <Compile Include="Clases\Catalogos\Class_Cat_IVAS.vb" />
     <Compile Include="Clases\Catalogos\Class_CatProveedores.vb" />
     <Compile Include="Clases\Catalogos\Class_Cat_tiposDocumentos.vb" />
-    <Compile Include="Clases\Catalogos\Class_CFD_CatMetodosPago.vb" />
+    <Compile Include="Clases\Catalogos\Class_CFD_CatFormasPago.vb" />
     <Compile Include="Clases\Catalogos\Class_SisContabilidadParametros.vb" />
     <Compile Include="Clases\Catalogos\Class_sisEmpresa.vb" />
     <Compile Include="Clases\Catalogos\Class_SisModulos.vb" />
@@ -289,13 +289,39 @@
     <Compile Include="Clases\Facturacion_Electronica\Addenda\iRemision.vb" />
     <Compile Include="Clases\Facturacion_Electronica\Addenda\iPedidos.vb" />
     <Compile Include="Clases\Facturacion_Electronica\Addenda\Xml.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cCatalogoFormaPago.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cCatalogoFormasPago.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cCatalogoMetodoPago.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cCatalogoMetodosPago.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cCatalogoUsoCFDI.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cCatalogoUsosCFDI.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cCfdiRelacionado.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cCfdiRelacionados.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cComplementoCCE10.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cComplementoPagos.vb" />
     <Compile Include="Clases\Facturacion_Electronica\cComprobante.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cComprobante33.vb" />
     <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\Class_CFDI_cce_ComercioExterior.vb" />
     <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\Class_CFDI_cce_Destinatario.vb" />
     <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\Class_CFDI_cce_Emisor.vb" />
     <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\Class_CFDI_cce_Mercancia.vb" />
     <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\Class_CFDI_cce_Mercancias.vb" />
     <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\Class_CFDI_cce_Receptor.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cPagosDoctoRelacionado.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cPagosDoctoRelacionados.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iConcepto33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iConceptoImpuestoRetencion33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iConceptoImpuestoRetenciones33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iConceptoImpuestoTraslado33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iConceptoImpuestoTraslados33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iConceptos33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iEmisor33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iImpuestos33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iImpuestosRetencion33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iImpuestosRetenciones33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iImpuestosTraslado33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iImpuestosTraslados33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iReceptor33.vb" />
     <Compile Include="Clases\Inventarios\Class_Inventarios_Lotes_Series.vb" />
     <Compile Include="Clases\Nomina\Class_NominaDeduccionesDetalle.vb" />
     <Compile Include="Clases\Nomina\Class_NominaDeduccionesGlobal.vb" />
@@ -1472,6 +1498,7 @@
     <Compile Include="Formas\Ventas\Ventas_Modifica_Precios.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Modulos\FacturacionElectronica33.vb" />
     <Compile Include="Modulos\Mod_Grid.vb" />
     <Compile Include="Modulos\Mod_main.vb" />
     <Compile Include="Modulos\Mod_Uti.vb" />

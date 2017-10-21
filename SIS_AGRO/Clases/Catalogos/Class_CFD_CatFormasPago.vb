@@ -3,7 +3,7 @@
 Imports System.Data
 Imports System.Data.SqlClient
 
-Public Class Class_CFD_CatMetodosPago
+Public Class Class_CFD_CatFormasPago
 
 #Region "Campos"
 

@@ -15,6 +15,7 @@ Module Mod_Uti
     Public sFelectronicaConvierteUTF8Servidor As String
     Public sFelectronicaCarpetaXmlsTimbrados As String = "", sFelectronicaCarpetaXmlsAcusesCancelacion As String = "", sFelectronicaArchivoPFX As String = ""
     Public sFelectronicaCbbImagen As String
+    Public sFelectronicaDLLCFDILocal As String
     Public bSistemaDirecto As Boolean
 
     Private Declare Function SQLDataSources Lib "ODBC32.DLL" (ByVal henv As Integer,
@@ -996,12 +997,112 @@ Module Mod_Uti
         Return data
     End Function
 
-    Public Function FormatTipoCambio(ByVal dImporte As Double, Optional ByVal bConSignoMoneda As Boolean = True) As String
-        If bConSignoMoneda = True Then
-            Return Format(dImporte, "$ ###,###,##0." & CerosEnCadena(6))
-        Else
-            Return Format(dImporte, "###,###,##0." & CerosEnCadena(6))
-        End If
+    Public Function ValidaRFC(ByVal sRFC As String, ByVal sTipoPersona As String) As Boolean
+        Dim bResultado As Boolean = False
+        Try
+            Dim sFecha As String
+            Select Case sTipoPersona
+                Case "F"
+                    If Len(sRFC) <> 13 Then
+                        MsgBox("El RFC debe ser de 13 dígitos para personas físicas, favor de revisar.", vbExclamation, nombreModulo)
+                        Return False
+                    End If
+
+                    If SoloLetrasSinAcentos(Mid(sRFC, 1, 4)) = False Then
+                        MsgBox("El RFC no tiene la estructura correcta en las 4 primeras letras(rfc=4 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanumericos), favor de revisar.", vbExclamation, nombreModulo)
+                        Return False
+                    End If
+
+                    sFecha = Mid(sRFC, 5, 6) '"dd/mm/yyyy" rfc=aammdd
+                    sFecha = Mid(sFecha, 5, 2) & "/" & Mid(sFecha, 3, 2) & "/" & Mid(sFecha, 1, 2)
+                    If IsDate(sFecha) = False Then
+                        MsgBox("El RFC no tiene la estructura correcta de la fecha(rfc=4 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanumericos), favor de revisar.", vbExclamation, nombreModulo)
+                        Return False
+                    End If
+
+                    If SoloAlfanumericos(Mid(sRFC, 11, 3)) = False Then
+                        MsgBox("El RFC no tiene la estructura correcta en las 3 últimos alfanumericos(rfc=4 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanumericos), favor de revisar.", vbExclamation, nombreModulo)
+                        Return False
+                    End If
+
+                    bResultado = True
+
+                Case "M"
+                    If Len(sRFC) <> 12 Then
+                        MsgBox("El RFC debe ser de 12 dígitos para personas morales, favor de revisar.", vbExclamation, nombreModulo)
+                        Return False
+                    End If
+
+                    If SoloLetrasSinAcentos(Mid(sRFC, 1, 3)) = False Then
+                        MsgBox("El RFC no tiene la estructura correcta en las 3 primeras letras(rfc=3 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanumericos), favor de revisar.", vbExclamation, nombreModulo)
+                        Return False
+                    End If
+
+                    sFecha = Mid(sRFC, 4, 6) '"dd/mm/yyyy" rfc=aammdd
+                    Dim año As String, mes As String, dia As String
+
+                    año = Mid(sFecha, 1, 2)
+                    mes = Mid(sFecha, 3, 2)
+                    dia = Mid(sFecha, 5, 2)
+
+                    'sFecha = año & "/" & mes & "/" & dia
+                    sFecha = dia & "/" & mes & "/" & año
+                    If IsDate(sFecha) = False Or CDbl(mes) > 12 Then 'si no es una fecha valida o el mes valido(porque el isdate da true tanto en 05/20/999  como en 20/05/99)
+                        MsgBox("El RFC no tiene la estructura correcta de la fecha(rfc=3 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanumericos), favor de revisar.", vbExclamation, nombreModulo)
+                        Return False
+                    End If
+
+                    If SoloAlfanumericos(Mid(sRFC, 10, 3)) = False Then
+                        MsgBox("El RFC no tiene la estructura correcta en las 3 últimos alfanumericos(rfc=3 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanumericos), favor de revisar.", vbExclamation, nombreModulo)
+                        Return False
+                    End If
+
+                    bResultado = True
+
+                Case Else
+                    MsgBox("Tipo de persona inválida.", vbExclamation, nombreModulo)
+                    Return False
+            End Select
+        Catch ex As Exception
+            HandleError(nombreModulo, "ValidaRFC", ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Public Function SoloLetrasSinAcentos(ByVal sCadena As String) As Boolean
+        Try
+            Dim i As Integer, letra As String, bError As Boolean
+            For i = 1 To Len(sCadena)
+                letra = Mid(sCadena, i, 1)
+                If Not ((letra >= "A" And letra <= "Z") Or (letra >= "a" And letra <= "z")) Then
+                    bError = True
+                End If
+            Next
+            If bError = False Then
+                SoloLetrasSinAcentos = True
+            End If
+        Catch ex As Exception
+            HandleError(nombreModulo, "SoloLetrasSinAcentos", ex)
+        End Try
+    End Function
+
+    Public Function SoloAlfanumericos(ByVal sCadena As String) As Boolean
+        Try
+            Dim i As Integer, letra As String, bError As Boolean
+            For i = 1 To Len(sCadena)
+                letra = Mid(sCadena, i, 1)
+                If Not ((letra >= "A" And letra <= "Z") Or (letra >= "a" And letra <= "z") Or (Asc(letra) >= 48 And Asc(letra) <= 57)) Then 'Or (Asc(letra) >= vbKey0 And Asc(letra) <= vbKey9)) 
+                    bError = True
+                End If
+                'KeyAscii >= vbKey0 And KeyAscii <= vbKey9
+            Next
+            If bError = False Then
+                SoloAlfanumericos = True
+            End If
+        Catch ex As Exception
+            HandleError(nombreModulo, "SoloAlfanumericos", ex)
+        End Try
     End Function
 
     Public Function VersionArchivo(ByVal sFile As String) As Double
@@ -1011,4 +1112,5 @@ Module Mod_Uti
             HandleError(nombreModulo, "VersionArchivo", ex)
         End Try
     End Function
+
 End Module

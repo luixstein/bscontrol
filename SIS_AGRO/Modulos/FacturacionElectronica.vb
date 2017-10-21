@@ -16,7 +16,6 @@ Module FacturacionElectronica
     Private tPlazaFacturaElectronica As Class_SisPlazas
 
 #Region "Campos de sistema"
-    Private _Nombre_Catalogo As String = "FacturacionElectronica"
     Private _Conexion As New SqlConnection(Empresa_Sistema.conexion)
 #End Region
 
@@ -96,47 +95,69 @@ Module FacturacionElectronica
                 Exit Function
             End If
 
-            If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "ERNESTOA" Or Usuario.Codigo_Usuario = 1 Then
-                MsgBox("Las computadoras de sistemas no deben timbrar documentos." & vbCrLf & "Ni el dba(por protección de timbrar por error estando en pruebas).", MsgBoxStyle.Exclamation, sProcedure)
-                Exit Function
-            Else
-                Using cfd As New clsCFDI(sRutaXML, Empresa_Sistema.BaseDatos, Empresa_Sistema.Servidor, _
-                                  sFelectronicaArchivoPFX, Decrypt(Empresa_Sistema.FELECTRONICA_CONTRASENIA_PFX, "ex8"), _
-                                  Empresa_Sistema.FELECTRONICA_USER_WS, Empresa_Sistema.FELECTRONICA_PASS_WS, True)
-
-                    If txtLEN(cfd.RecuperarTimbrePorSerieFolio(sSerie, iFolioNumerico, Empresa_Sistema.RFC, sFelectronicaCbbImagen)) = True Then
-                        If cfd.Recuperado = True Then
-                            Dim sRutaXMLTimbrado As String = sFelectronicaCarpetaXmlsTimbrados & "\" & sFolioDocumentoSistema & ".xml"
-                            'cfd.Timbrar(sRutaXMLTimbrado, sFelectronicaCbbImagen)
-                            docXml.LoadXml(cfd.RecuperarTimbrePorSerieFolio(sSerie, iFolioNumerico, Empresa_Sistema.RFC, sFelectronicaCbbImagen))
-                            docXml.Save(sRutaXMLTimbrado)
-                            bResultado = True
-                        End If
-                    Else
-                        cfd.Sellar()
-                        If cfd.Sellado = True Then
-                            Dim sRutaXMLTimbrado As String = sFelectronicaCarpetaXmlsTimbrados & "\" & sFolioDocumentoSistema & ".xml"
-                            cfd.Timbrar(sRutaXMLTimbrado, sFelectronicaCbbImagen, True)
-                            If cfd.Timbrado = True Then
-                                'sFolioFacturaSistema, cfd.XmlTimbrado.ToString,
-                                If GrabaCadenaOriginalYSelloComprobanteElectronico(cfd, tipoComprobante) = True Then
-                                    bResultado = True
-                                End If
-                            End If
-                        End If
-                    End If
-                End Using
-            End If
+            bResultado = Timbrar(sFolioDocumentoSistema, sRutaXML, tipoComprobante)
 
             xmlDoc = Nothing
             Factura = Nothing
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         End Try
 
         Return bResultado
     End Function
+
+    Public Function Timbrar(ByVal sFolioDocumentoSistema As String, ByVal sRutaXML As String, ByVal tipoComprobante As TipoComprobante)
+        Const sProcedure As String = "Timbrar"
+        Dim bResultado As Boolean = False
+
+        Try
+            If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "ERNESTOA" Or Usuario.Codigo_Usuario = 1 Then
+                MsgBox("Las computadoras de sistemas no deben timbrar documentos." & vbCrLf & "Ni el dba(por protección de timbrar por error estando en pruebas).", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            Else
+                Using cfd As New clsCFDI(sRutaXML, Empresa_Sistema.BaseDatos, Empresa_Sistema.Servidor,
+                                  sFelectronicaArchivoPFX, Decrypt(Empresa_Sistema.FELECTRONICA_CONTRASENIA_PFX, "ex8"),
+                                  Empresa_Sistema.FELECTRONICA_USER_WS, Empresa_Sistema.FELECTRONICA_PASS_WS, True)
+
+                    'If txtLEN(cfd.RecuperarTimbrePorSerieFolio(sSerie, iFolioNumerico, Empresa_Sistema.RFC, sFelectronicaCbbImagen)) = True Then
+                    '    If cfd.Recuperado = True Then
+                    '        Dim sRutaXMLTimbrado As String = sFelectronicaCarpetaXmlsTimbrados & "\" & sFolioDocumentoSistema & ".xml"
+                    '        'cfd.Timbrar(sRutaXMLTimbrado, sFelectronicaCbbImagen)
+                    '        docXml.LoadXml(cfd.RecuperarTimbrePorSerieFolio(sSerie, iFolioNumerico, Empresa_Sistema.RFC, sFelectronicaCbbImagen))
+                    '        docXml.Save(sRutaXMLTimbrado)
+                    '        bResultado = True
+                    '    End If
+                    'Else
+                        cfd.Sellar()
+                        If cfd.Sellado = True Then
+                            Dim sRutaXMLTimbrado As String = sFelectronicaCarpetaXmlsTimbrados & "\" & sFolioDocumentoSistema & ".xml"
+
+                            If cfd.Sellar = True Then
+                                MsgBox("Esta el timbrado en modo demo")
+
+                                'cfd.Timbrar(sRutaXMLTimbrado, sFelectronicaCbbImagen, True)
+                                cfd.TimbrarDemo(sRutaXMLTimbrado, sFelectronicaCbbImagen)
+                                If cfd.Timbrado = True Then
+                                    'sFolioFacturaSistema, cfd.XmlTimbrado.ToString,
+                                    If GrabaCadenaOriginalYSelloComprobanteElectronico(cfd, tipoComprobante) = True Then
+                                        bResultado = True
+                                    End If
+                                End If
+                            End If
+
+                        End If
+                    'End If
+                End Using
+            End If
+
+        Catch ex As Exception
+            HandleError(nombreModulo, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
 
     Public Function GestionaCertificado(ByVal FechaDocumento As Date) As Certificado
         Dim CKCert As New CHILKATCERTIFICATELib.ChilkatCert, dFechaServidor As Date
@@ -166,11 +187,11 @@ Module FacturacionElectronica
                 Return c
             End If
 
-            c.noCertificado = FormatearSerie(CKCert.SerialNumber)
+            c.noCertificado = GeneraNumeroCertificado(CKCert.SerialNumber)
             c.Certificado = Mid(CKCert.GetEncoded(), 1, Len(CKCert.GetEncoded()) - 2)
             c.CertificadoValido = True
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         End Try
         Return c
     End Function
@@ -181,7 +202,7 @@ Module FacturacionElectronica
         Try
             bResultado = CancelarCFDI(oVenta.FOLIO_VENTA, oVenta.SERIE, oVenta.FOLIO_NUMERICO, oVenta.FOLIO_FISCAL_SAT, oVenta.TIMBRADO_CFDI, TipoComprobante)
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         End Try
         Return bResultado
     End Function
@@ -192,7 +213,7 @@ Module FacturacionElectronica
         Try
             bResultado = CancelarCFDI(oDescuento.FOLIO_DESCUENTO, oDescuento.SERIE, oDescuento.FOLIO_NUMERICO, oDescuento.FOLIO_FISCAL_SAT, oDescuento.TIMBRADO_CFDI, TipoComprobante)
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         End Try
         Return bResultado
     End Function
@@ -214,9 +235,9 @@ Module FacturacionElectronica
                 Return False
             End If
 
-            Using cfd As New clsCFDI(Empresa_Sistema.BaseDatos, Empresa_Sistema.Servidor, sFelectronicaArchivoPFX, _
-                                    Decrypt(Empresa_Sistema.FELECTRONICA_CONTRASENIA_PFX, "ex8"), _
-                                    Empresa_Sistema.FELECTRONICA_USER_WS, Empresa_Sistema.FELECTRONICA_PASS_WS)
+            Using cfd As New clsCFDI(Empresa_Sistema.BaseDatos, Empresa_Sistema.Servidor, sFelectronicaArchivoPFX,
+                                    Decrypt(Empresa_Sistema.FELECTRONICA_CONTRASENIA_PFX, "ex8"),
+                                    Empresa_Sistema.FELECTRONICA_USER_WS, Empresa_Sistema.FELECTRONICA_PASS_WS, True)
 
                 If sDocumentoYaEstaTimbrado = "0" Then
                     'Recuperar 
@@ -241,7 +262,7 @@ Module FacturacionElectronica
                 End If
 
                 'Cancelar timbre
-                cfd.CancelarTimbre(Empresa_Sistema.RFC, sUUID, ArchivoXmlAcuseCancelacion, True)
+                cfd.CancelarTimbre(Empresa_Sistema.RFC, sUUID, ArchivoXmlAcuseCancelacion)
 
                 If cfd.Cancelado = True Then
                     bResultado = True 'Marcamos true sin hacer lo del acuse, porque no es importante grabarlo
@@ -250,7 +271,7 @@ Module FacturacionElectronica
             End Using
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         End Try
 
         Return bResultado
@@ -294,7 +315,7 @@ Module FacturacionElectronica
 
         Catch ex As Exception
             _Conexion.Close()
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         End Try
         Return bResultado
     End Function
@@ -317,7 +338,7 @@ Module FacturacionElectronica
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(_Nombre_Catalogo, "DescartarTimbrado", ex)
+                HandleError(nombreModulo, "DescartarTimbrado", ex)
             Finally
                 _Conexion.Close()
                 cmd.Dispose()
@@ -333,7 +354,7 @@ Module FacturacionElectronica
             Var = Shell(sFelectronicaConvierteUTF8Local & " """ & sRutaXML & """", AppWinStyle.MinimizedFocus)
             Return True
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, "ConvierteXMLUTF8", ex)
+            HandleError(nombreModulo, "ConvierteXMLUTF8", ex)
         End Try
     End Function
 
@@ -357,7 +378,7 @@ Module FacturacionElectronica
 
             bResultado = True
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, "ConvierteUTF8", ex)
+            HandleError(nombreModulo, "ConvierteUTF8", ex)
         End Try
 
         Return bResultado
@@ -377,18 +398,17 @@ Module FacturacionElectronica
 
                 Select Case sTipoComprobanteElectronico
                     Case TipoComprobante.FACTURA_VENTA '"FACTURA_VENTA"
-                        .CommandText = "MP_VENTAS_FACTURACION_ELECTRONICA_GRABA_DATOS_DIGITALES_Y_XML"
+                        .CommandText = "MP_CFD_VENTAS_GRABA_DATOS_DIGITALES"
                         sqlParametro = .Parameters.Add("@FOLIO_VENTA", SqlDbType.NVarChar, 15) : sqlParametro.Value = fElectronica.Comprobante.FolioCompleto
                     Case TipoComprobante.NOTA_CREDITO_CXC '"NOTA_CREDITO_CXC"
-                        .CommandText = "MP_CXC_NOTAS_CREDITO_ELECTRONICA_GRABA_DATOS_DIGITALES_Y_XML"
+                        .CommandText = "MP_CFD_CXC_NOTAS_CREDITO_GRABA_DATOS_DIGITALES"
                         sqlParametro = .Parameters.Add("@FOLIO_DESCUENTO", SqlDbType.NVarChar, 15) : sqlParametro.Value = fElectronica.Comprobante.FolioCompleto
                     Case Else
                         MsgBox("No se indicó el tipo de comprobante electrónico generado para grabar los datos digitales del documento.", MsgBoxStyle.Exclamation, sProcedure)
                         cmd = Nothing
-                        Exit Function
+                        Return False
                 End Select
 
-                'sqlParametro = .Parameters.Add("@ID_SIS_CFD_CATALOGO_CERTIFICADOS", SqlDbType.NVarChar, 50) : sqlParametro.Value = fElectronica.IdCfdCertificado
                 sqlParametro = .Parameters.Add("@VERSION_ESQUEMA_XML", SqlDbType.NVarChar, 6) : sqlParametro.Value = fElectronica.Comprobante.Version
                 sqlParametro = .Parameters.Add("@CADENA_XML", SqlDbType.Xml) : sqlParametro.Value = fElectronica.XmlTimbrado.ToString 'sxml
                 sqlParametro = .Parameters.Add("@NUMERO_CERTIFICADO_DIGITAL", SqlDbType.NVarChar, 50) : sqlParametro.Value = fElectronica.Comprobante.noCertificado
@@ -400,6 +420,10 @@ Module FacturacionElectronica
                 sqlParametro = .Parameters.Add("@SELLO_SAT", SqlDbType.NVarChar, 500) : sqlParametro.Value = fElectronica.Complemento.SelloSAT
                 sqlParametro = .Parameters.Add("@CBB_IMAGE", SqlDbType.Image) : sqlParametro.Value = fElectronica.ImagenCBB
 
+                'DE MOMENTO NO SE VAN A GRABAR ESTOS DATOS, ES AUMENTAR EL TAMANO DE LA BASE DATOS SOLAMENTE
+                'sqlParametro = .Parameters.Add("@RFCPROVCERTIF", SqlDbType.NVarChar, 13) : sqlParametro.Value = fElectronica.Complemento.RfcProvCertif
+                'sqlParametro = .Parameters.Add("@LEYENDA", SqlDbType.NVarChar, 200) : sqlParametro.Value = fElectronica.Complemento.Leyenda
+
                 _Conexion.Open()
                 .ExecuteNonQuery()
             End With
@@ -410,19 +434,24 @@ Module FacturacionElectronica
 
         Catch ex As Exception
             _Conexion.Close()
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         End Try
 
         Return bResultado
     End Function
 
-    Private Function FormatearSerie(ByVal serie As String) As String
+    Public Function GeneraNumeroCertificado(ByVal serie As String) As String
+        Const sProcedure As String = "GeneraNumeroCertificado"
         Dim resultado As String = ""
-        Dim i As Short
+        Try
+            Dim i As Short
 
-        For i = 2 To Len(serie) Step 2
-            resultado = resultado & Mid(serie, i, 1)
-        Next
+            For i = 2 To Len(serie) Step 2
+                resultado = resultado & Mid(serie, i, 1)
+            Next
+        Catch ex As Exception
+            HandleError(nombreModulo, sProcedure, ex)
+        End Try
 
         Return resultado
     End Function
@@ -442,24 +471,26 @@ Module FacturacionElectronica
             cadena = Replace(cadena, "'", "&apos", , , CompareMethod.Text)
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, "CaracterEspecial", ex)
+            HandleError(nombreModulo, "CaracterEspecial", ex)
         End Try
 
         Return sResultado 'No se esta usando esta función al parecer
     End Function
 
     Public Function GestionaExistanCertificadosFacturaElectronica() As Boolean
-        Dim bResultado As Boolean = False
         Const sProcedure As String = "GestionaExistanCertificadosFacturaElectronica"
+        Dim bResultado As Boolean = False
+
         Dim sNombreServidor As String
-        Dim sCarpetaTrabajoServer, sCarpetaTrabajoLocal As String
+        Dim sCarpetaTrabajoServer As String, sCarpetaTrabajoLocal As String
         Dim sCarpetaDB As String
-        Dim sCerServer, sCadenaOriginalServer, sKeyServer As String
+        Dim sCerServer As String, sCadenaOriginalServer As String, sKeyServer As String
         Dim sDllCfdi As String = "cfdi.dll"
         Dim sDllCo32 As String = "co32.dll"
+        Dim sDllCo33 As String = "cadenaoriginal_3_3.dll"
         Dim sDllIonicZip As String = "Ionic.Zip.dll"
         Dim sDllQRCode As String = "ThoughtWorks.QRCode.dll"
-        Dim sDllCfdiArchivo, sDllCo32Archivo, sDllIonicZipArchivo, sDllQRCodeArchivo As String
+        Dim sDllCo32Archivo As String, sDllIonicZipArchivo As String, sDllQRCodeArchivo As String, sDllCo33Archivo As String
         Dim sFelectronicaArchivoPFXServidor As String
         Dim sFelectronicaCbbImagenServidor As String
 
@@ -482,8 +513,9 @@ Module FacturacionElectronica
             sFelectronicaCarpetaXmlsAcusesCancelacion = sCarpetaDB & "\XMLsAcusesCancelacion" & "\" & Plaza.NOMBRE_PLAZA
             sFelectronicaCbbImagen = sCarpetaDB & "\" & "cbb.jpg"
 
-            sDllCfdiArchivo = My.Settings.Ruta & "\" & sDllCfdi
+            sFelectronicaDLLCFDILocal = My.Settings.Ruta & "\" & sDllCfdi
             sDllCo32Archivo = My.Settings.Ruta & "\" & sDllCo32
+            sDllCo33Archivo = My.Settings.Ruta & "\" & sDllCo33
             sDllIonicZipArchivo = My.Settings.Ruta & "\" & sDllIonicZip
             sDllQRCodeArchivo = My.Settings.Ruta & "\" & sDllQRCode
 
@@ -527,7 +559,7 @@ Module FacturacionElectronica
             If Len(Dir(sFelectronicaArchivoCadenaOriginalLocal)) = 0 Then
                 If Len(Dir(sCadenaOriginalServer)) = 0 OrElse Copiar_Archivo(sCadenaOriginalServer, sFelectronicaArchivoCadenaOriginalLocal) = False Then
                     MsgBox("No existe en el servidor el archivo de la cadena original, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                    Exit Function
+                    Return False
                 End If
             End If
 
@@ -535,68 +567,84 @@ Module FacturacionElectronica
                 If Len(Dir(sFelectronicaArchivoCERLocal)) = 0 Then
                     If Len(Dir(sCerServer)) = 0 OrElse Copiar_Archivo(sCerServer, sFelectronicaArchivoCERLocal) = False Then
                         MsgBox("No existe en el servidor el archivo .cer, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                        Exit Function
+                        Return False
                     End If
                 End If
+            End If
 
-                If Len(Dir(sFelectronicaArchivoKEYLocal)) = 0 Then
+            If Len(Dir(sFelectronicaArchivoKEYLocal)) = 0 Then
                     If Len(Dir(sKeyServer)) = 0 OrElse Copiar_Archivo(sKeyServer, sFelectronicaArchivoKEYLocal) = False Then
                         MsgBox("No existe en el servidor el archivo .key, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                        Exit Function
+                        Return False
+                    End If
+                End If
+                If Len(Dir(sFelectronicaConvierteUTF8Local)) = 0 Then
+                    If Len(Dir(sFelectronicaConvierteUTF8Servidor)) = 0 OrElse Copiar_Archivo(sFelectronicaConvierteUTF8Servidor, sFelectronicaConvierteUTF8Local) = False Then
+                        MsgBox("No existe en el servidor el archivo para convertir el XML a UTF8, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
                     End If
                 End If
 
                 If Len(Dir(sFelectronicaArchivoPFX)) = 0 Then
                     If Len(Dir(sFelectronicaArchivoPFXServidor)) = 0 OrElse Copiar_Archivo(sFelectronicaArchivoPFXServidor, sFelectronicaArchivoPFX) = False Then
                         MsgBox("No existe en el servidor el archivo .pfx, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                        Exit Function
+                        Return False
                     End If
                 End If
-            End If
-
-            If Len(Dir(sFelectronicaConvierteUTF8Local)) = 0 Then
-                If Len(Dir(sFelectronicaConvierteUTF8Servidor)) = 0 OrElse Copiar_Archivo(sFelectronicaConvierteUTF8Servidor, sFelectronicaConvierteUTF8Local) = False Then
-                    MsgBox("No existe en el servidor el archivo para convertir el XML a UTF8, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                    Exit Function
+                If Len(Dir(sFelectronicaDLLCFDILocal)) = 0 Then
+                    If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCfdi)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCfdi, sFelectronicaDLLCFDILocal) = False Then
+                        MsgBox("No existe en el servidor el archivo " & sDllCfdi & ", no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
                 End If
-            End If
 
-            If Len(Dir(sDllCfdiArchivo)) = 0 Then
-                If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCfdi)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCfdi, sDllCfdiArchivo) = False Then
-                    MsgBox("No existe en el servidor el archivo Cfdi.dll, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                    Exit Function
+                If Len(Dir(sDllCo32Archivo)) = 0 Then
+                    If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCo32)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCo32, sDllCo32Archivo) = False Then
+                        MsgBox("No existe en el servidor el archivo " & sDllCo32 & ", no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
                 End If
-            End If
 
-            If Len(Dir(sDllCo32Archivo)) = 0 Then
-                If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCo32)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCo32, sDllCo32Archivo) = False Then
-                    MsgBox("No existe en el servidor el archivo Co32.dll, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                    Exit Function
+                If Len(Dir(sDllCo33Archivo)) = 0 Then
+                    If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCo33)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCo33, sDllCo33Archivo) = False Then
+                        MsgBox("No existe en el servidor el archivo " & sDllCo33 & ", no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
                 End If
-            End If
 
-            If Len(Dir(sDllIonicZipArchivo)) = 0 Then
-                If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllIonicZip)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & sDllIonicZip, sDllIonicZipArchivo) = False Then
-                    MsgBox("No existe en el servidor el archivo Ionic.Zip.dll, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                    Exit Function
+                If Len(Dir(sDllIonicZipArchivo)) = 0 Then
+                    If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllIonicZip)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & sDllIonicZip, sDllIonicZipArchivo) = False Then
+                        MsgBox("No existe en el servidor el archivo " & sDllIonicZip & ", no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
                 End If
-            End If
 
-            If Len(Dir(sDllQRCodeArchivo)) = 0 Then
-                If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllQRCode)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllQRCode, sDllQRCodeArchivo) = False Then
-                    MsgBox("No existe en el servidor el archivo ThoughtWorks.QRCode.dll, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                    Exit Function
+                If Len(Dir(sDllQRCodeArchivo)) = 0 Then
+                    If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllQRCode)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllQRCode, sDllQRCodeArchivo) = False Then
+                        MsgBox("No existe en el servidor el archivo " & sDllQRCode & ", no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
                 End If
-            End If
+                If Empresa_Sistema.VERSION_CFDI_DLL <> VersionArchivo(sFelectronicaDLLCFDILocal) Then
+                    Copiar_Archivo("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCfdi, sFelectronicaDLLCFDILocal) 'Actualizar la dll del usuario
 
-            'If fElectronicaValidaArchivosCertificadoLocal(, , ) = False Then
-            '    Exit Function
-            'End If
+                    If Empresa_Sistema.VERSION_CFDI_DLL <> VersionArchivo(sFelectronicaDLLCFDILocal) Then
+                        MsgBox("La versión del archivo cfdi.dll(v " & VersionArchivo(sFelectronicaDLLCFDILocal) & ") no es la del servidor(v " & Empresa_Sistema.VERSION_CFDI_DLL & "). " & vbCrLf &
+                            "No se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+                        Return False
+                    End If
+                End If
 
-            bResultado = True
+                '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+                'If fElectronicaValidaArchivosCertificadoLocal(, , ) = False Then
+                '    Return False
+                'End If
+
+                bResultado = True
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         End Try
 
         Return bResultado
@@ -643,7 +691,7 @@ Module FacturacionElectronica
             bResultado = True
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         End Try
         Return bResultado
     End Function
@@ -703,7 +751,7 @@ Module FacturacionElectronica
 
             Cfd.metodoDePago = oVenta.CODIGO_METODO_PAGO
 
-            Dim oMetodoPago As New Class_CFD_CatMetodosPago(oVenta.CODIGO_METODO_PAGO)
+            Dim oMetodoPago As New Class_CFD_CatFormasPago(oVenta.CODIGO_METODO_PAGO)
             If oMetodoPago.REQUIERE_NUMERO_CUENTA_PAGO = 1 Then
                 Cfd.sRequiereNumPago = oMetodoPago.REQUIERE_NUMERO_CUENTA_PAGO
                 Cfd.NumCtaPago = oVenta.NUMERO_CUENTA_PAGO.ToString
@@ -979,7 +1027,7 @@ Module FacturacionElectronica
 
         Catch ex As Exception
             _Conexion.Close()
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         Finally
             Cfd = New cComprobante 'vaciar el comprobante
         End Try
@@ -1056,8 +1104,8 @@ Module FacturacionElectronica
             If oDescuento.IVA = 0 Then
                 Cfd.Impuestos.Traslados.Add("IVA", Format(0, "#0.00"), Format(0, "#0.00"))
             Else
-                Dim Impuesto As New Class_find("SELECT 1 FROM CXC_DESCUENTOS_GLOBAL D INNER JOIN CXC_DESCUENTOS_DETALLE CD ON (D.FOLIO_DESCUENTO=CD.FOLIO_DESCUENTO) " & _
-                "INNER JOIN CXC_GLOBAL G ON (CD.FOLIO_CXC=G.FOLIO_CXC) INNER JOIN VENTA_DETALLE VD ON(G.FOLIO_REFERENCIA=VD.FOLIO_VENTA) " & _
+                Dim Impuesto As New Class_find("SELECT 1 FROM CXC_DESCUENTOS_GLOBAL D INNER JOIN CXC_DESCUENTOS_DETALLE CD ON (D.FOLIO_DESCUENTO=CD.FOLIO_DESCUENTO) " &
+                "INNER JOIN CXC_GLOBAL G ON (CD.FOLIO_CXC=G.FOLIO_CXC) INNER JOIN VENTA_DETALLE VD ON(G.FOLIO_REFERENCIA=VD.FOLIO_VENTA) " &
                 "WHERE D.FOLIO_DESCUENTO='" & oDescuento.FOLIO_DESCUENTO & "' AND VD.IMPUESTO_PORCENTAJE=0 ")
 
                 If txtLEN(Impuesto.Result1) = True Then
@@ -1219,7 +1267,7 @@ Module FacturacionElectronica
             End If
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         Finally
             Cfd = New cComprobante 'vaciar el comprobante
         End Try
@@ -1234,7 +1282,7 @@ Module FacturacionElectronica
         Try
             MsgBox("falta desarrollar..")
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, sProcedure, ex)
+            HandleError(nombreModulo, sProcedure, ex)
         Finally
 
         End Try
@@ -1267,7 +1315,7 @@ Module FacturacionElectronica
             Return campo
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, "fElectronicaValidaCampo", ex)
+            HandleError(nombreModulo, "fElectronicaValidaCampo", ex)
         End Try
     End Function
 
@@ -1306,7 +1354,7 @@ Module FacturacionElectronica
             _Conexion.Close()
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, "ValidaHuecosFoliosElectronicosVenta", ex)
+            HandleError(nombreModulo, "ValidaHuecosFoliosElectronicosVenta", ex)
             _Conexion.Close()
         End Try
         Return bResultado
@@ -1346,7 +1394,7 @@ Module FacturacionElectronica
                 bResultado = True
             End If
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, "ValidaHuecosFoliosElectronicosNotasCreditoCXC", ex)
+            HandleError(nombreModulo, "ValidaHuecosFoliosElectronicosNotasCreditoCXC", ex)
         End Try
         Return bResultado
     End Function
@@ -1499,7 +1547,7 @@ Module FacturacionElectronica
             MsgBox("El archivo fue generado con éxito en la My.Settings.Ruta: " & strPort, MsgBoxStyle.Information, "Generación de informe de CFD")
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, "GeneraInformeMensual", ex)
+            HandleError(nombreModulo, "GeneraInformeMensual", ex)
         End Try
         Return bResultado
     End Function
@@ -1540,7 +1588,7 @@ Module FacturacionElectronica
                 End If
                 Dim oEstado As New Class_SisEstados(Cfd.Receptor.Domicilio.estado, Cfd.Receptor.Domicilio.pais)
                 If oEstado.Existe = False Then
-                    MsgBox("Receptor.Domicilio.estado - Si la clave de país es {ZZZ} o la clave del país no existe en la columna c_Pais del catálogo c_Estado, se podrá registrar texto libremente. " & vbCrLf & _
+                    MsgBox("Receptor.Domicilio.estado - Si la clave de país es {ZZZ} o la clave del país no existe en la columna c_Pais del catálogo c_Estado, se podrá registrar texto libremente. " & vbCrLf &
                            "En otro caso, debe contener una clave del catálogo c_Estado, donde la columna clave de país sea igual a la clave de país registrada en el atributo [pais].", MsgBoxStyle.Exclamation, nombreModulo)
                     Return False
                 End If
@@ -1570,7 +1618,7 @@ Module FacturacionElectronica
             Return True
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, "ValidaDatoFacturaElectronica", ex)
+            HandleError(nombreModulo, "ValidaDatoFacturaElectronica", ex)
         End Try
     End Function
 
@@ -1603,7 +1651,7 @@ Module FacturacionElectronica
             CKCert = Nothing
 
         Catch ex As Exception
-            HandleError(_Nombre_Catalogo, "GestionaFechaCertificadoCFD", ex)
+            HandleError(nombreModulo, "GestionaFechaCertificadoCFD", ex)
         End Try
 
         Return sMensaje

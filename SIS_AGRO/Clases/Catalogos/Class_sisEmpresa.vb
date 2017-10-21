@@ -1,5 +1,5 @@
 ﻿Imports System.Data.SqlClient
-Imports System.Data
+
 Public NotInheritable Class Class_sisEmpresa
     Inherits Class_Catalogos
 
@@ -68,26 +68,23 @@ Public NotInheritable Class Class_sisEmpresa
     Private _CODIGO_TAMAÑO_REZAGA As String
     Private _CODIGO_CONCEPTO_FLETE_EQUIPO As String
 
-    'Facturacion Electronica
-    Private _FELECTRONICA_ACTIVA As Boolean
     Private _RFC_VENTA_PUBLICO_GENERAL As String
+    Private _RFC_EXTRANJERO As String
+    Private _FELECTRONICA_ACTIVA As Boolean
     Private _FELECTRONICA_CARPETA_TRABAJO As String
     Private _FELECTRONICA_CADENA_ORIGINAL As String 'Se actualiza segun la cadena a usar
     Private _FELECTRONICA_KEY As String
     Private _FELECTRONICA_CER As String
     Private _FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA As String
-
-    'CFD
-    Private _CODIGO_REGIMEN_FISCAL As Integer
-    Private _VERSION_ESQUEMA_CFD As String 'Se actualiza segun a esquema a utilizar
-
-    'CFDi
     Private _FELECTRONICA_PFX As String
     Private _FELECTRONICA_CONTRASENIA_PFX As String
     Private _FELECTRONICA_USER_WS As String
     Private _FELECTRONICA_PASS_WS As String
     Private _FELECTRONICA_TIPO_CFD As String
     Private _FELECTRONICA_CCE_HABILITADO As Boolean
+    Private _CODIGO_REGIMEN_FISCAL As Integer
+    Private _VERSION_ESQUEMA_CFD As String 'Se actualiza segun a esquema a utilizar
+    Private _VERSION_CFDI_DLL As String
 
     'AddendaSoriana
     Private _CODIGO_PROVEDOR_SORIANA As String
@@ -470,37 +467,48 @@ Public NotInheritable Class Class_sisEmpresa
         End Get
     End Property
 
-    'FACTURACION ELECTRONICA
     Public ReadOnly Property FELECTRONICA_ACTIVA() As Boolean
         Get
             Return Me._FELECTRONICA_ACTIVA
         End Get
     End Property
+
     Public ReadOnly Property RFC_VENTA_PUBLICO_GENERAL() As String
         Get
             Return Me._RFC_VENTA_PUBLICO_GENERAL
         End Get
     End Property
+
+    Public ReadOnly Property RFC_EXTRANJERO() As String
+        Get
+            Return Me._RFC_EXTRANJERO
+        End Get
+    End Property
+
     Public ReadOnly Property FELECTRONICA_CARPETA_TRABAJO() As String
         Get
             Return Me._FELECTRONICA_CARPETA_TRABAJO
         End Get
     End Property
+
     Public ReadOnly Property FELECTRONICA_CADENA_ORIGINAL() As String
         Get
             Return Me._FELECTRONICA_CADENA_ORIGINAL
         End Get
     End Property
+
     Public ReadOnly Property FELECTRONICA_KEY() As String
         Get
             Return Me._FELECTRONICA_KEY
         End Get
     End Property
+
     Public ReadOnly Property FELECTRONICA_CER() As String
         Get
             Return Me._FELECTRONICA_CER
         End Get
     End Property
+
     Public Property FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA() As String
         Get
             Return Me._FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA
@@ -510,39 +518,42 @@ Public NotInheritable Class Class_sisEmpresa
         End Set
     End Property
 
-    'CFD
     Public ReadOnly Property CODIGO_REGIMEN_FISCAL() As Integer
         Get
             Return Me._CODIGO_REGIMEN_FISCAL
         End Get
     End Property
+
     Public ReadOnly Property VERSION_ESQUEMA_CFD() As String
         Get
             Return Me._VERSION_ESQUEMA_CFD
         End Get
     End Property
 
-    'CFDi
     Public ReadOnly Property FELECTRONICA_PFX() As String
         Get
             Return Me._FELECTRONICA_PFX
         End Get
     End Property
+
     Public ReadOnly Property FELECTRONICA_CONTRASENIA_PFX() As String
         Get
             Return Me._FELECTRONICA_CONTRASENIA_PFX
         End Get
     End Property
+
     Public ReadOnly Property FELECTRONICA_USER_WS() As String
         Get
             Return Me._FELECTRONICA_USER_WS
         End Get
     End Property
+
     Public ReadOnly Property FELECTRONICA_PASS_WS() As String
         Get
             Return Me._FELECTRONICA_PASS_WS
         End Get
     End Property
+
     Public ReadOnly Property FELECTRONICA_TIPO_CFD() As String
         Get
             Return Me._FELECTRONICA_TIPO_CFD
@@ -573,7 +584,11 @@ Public NotInheritable Class Class_sisEmpresa
         End Get
     End Property
 
-
+    Public ReadOnly Property VERSION_CFDI_DLL() As String
+        Get
+            Return Me._VERSION_CFDI_DLL
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -871,6 +886,7 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES = dReader("CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES")
 
                     Me._RFC_VENTA_PUBLICO_GENERAL = dReader("RFC_VENTA_PUBLICO_GENERAL")
+                    Me._RFC_EXTRANJERO = dReader("RFC_EXTRANJERO")
                     Me._CALLE = dReader("CALLE")
                     Me._NUMERO_EXTERIOR = dReader("NUMERO_EXTERIOR")
                     Me._NUMERO_INTERIOR = dReader("NUMERO_INTERIOR")
@@ -925,6 +941,8 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._CODIGO_PRODUCTOR_HAPPY = "" & dReader("CODIGO_PRODUCTOR_HAPPY").ToString
                     Me._CODIGO_TIPO_DOCUMENTO_TRANSFERENCIA_EMPAQUE = "" & dReader("CODIGO_TIPO_DOCUMENTO_TRANSFERENCIA_EMPAQUE").ToString
                     Me._CODIGO_CONCEPTO_PAGO_CXP_DEFAULT = "" & dReader("CODIGO_CONCEPTO_PAGO_CXP_DEFAULT").ToString
+
+                    Me._VERSION_CFDI_DLL = "" & dReader("VERSION_CFDI_DLL").ToString
 
                     dReader.Close()
                     bResultado = True
@@ -1056,6 +1074,31 @@ Public NotInheritable Class Class_sisEmpresa
         End Try
 
         Return dTable
+    End Function
+
+    Public Function FechaActualServidor() As Date
+        Dim Conexion As New SqlConnection(Me._Conexion)
+        Dim dFecha As Date
+        Dim cmd As New SqlCommand("SELECT FECHA_SERVIDOR FROM VW_FECHA_SERVIDOR", Conexion)
+        Dim dReader As SqlDataReader
+        With cmd
+            .CommandTimeout = 0
+            .CommandType = CommandType.Text
+            Try
+                Conexion.Open()
+                dReader = .ExecuteReader()
+                If dReader.Read Then
+                    dFecha = CType(dReader("FECHA_SERVIDOR"), Date)
+                End If
+                dReader.Close()
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, "FechaActualServidor", ex)
+            Finally
+                Conexion.Close()
+                cmd.Dispose()
+            End Try
+        End With
+        Return dFecha
     End Function
 #End Region
 
