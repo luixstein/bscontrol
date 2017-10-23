@@ -409,7 +409,7 @@ Public Class Catalogo_Articulos
     Private Function Validar() As Boolean
         Dim bResultado As Boolean = False
 
-        If txtLEN(Me.TxtCodArticulo.Text) = False Then
+        If Empresa_Sistema.CODIGO_ARTICULO_AUTOMATICO = False AndAlso txtLEN(Me.TxtCodArticulo.Text) = False Then
             MsgBox("Asígne un código de artículo.", MsgBoxStyle.Exclamation, Me.Text)
             Me.TxtCodArticulo.Focus()
             Return bResultado

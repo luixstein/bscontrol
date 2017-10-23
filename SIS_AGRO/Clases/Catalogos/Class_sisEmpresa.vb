@@ -98,6 +98,9 @@ Public NotInheritable Class Class_sisEmpresa
     Private _CODIGO_TIPO_DOCUMENTO_TRANSFERENCIA_EMPAQUE As String
     Private _CODIGO_CONCEPTO_PAGO_CXP_DEFAULT As String
 
+    'Codigos automaticos
+    Private _CODIGO_ARTICULO_AUTOMATICO As Boolean
+
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -573,6 +576,13 @@ Public NotInheritable Class Class_sisEmpresa
         End Get
     End Property
 
+    'Codigos automaticos 
+    Public ReadOnly Property CODIGO_ARTICULO_AUTOMATICO() As Boolean
+        Get
+            Return Me._CODIGO_ARTICULO_AUTOMATICO
+        End Get
+    End Property
+
 
 #End Region
 
@@ -925,6 +935,8 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._CODIGO_PRODUCTOR_HAPPY = "" & dReader("CODIGO_PRODUCTOR_HAPPY").ToString
                     Me._CODIGO_TIPO_DOCUMENTO_TRANSFERENCIA_EMPAQUE = "" & dReader("CODIGO_TIPO_DOCUMENTO_TRANSFERENCIA_EMPAQUE").ToString
                     Me._CODIGO_CONCEPTO_PAGO_CXP_DEFAULT = "" & dReader("CODIGO_CONCEPTO_PAGO_CXP_DEFAULT").ToString
+
+                    Me._CODIGO_ARTICULO_AUTOMATICO = CBool(dReader("CODIGO_ARTICULO_AUTOMATICO").ToString)
 
                     dReader.Close()
                     bResultado = True
