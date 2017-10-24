@@ -408,10 +408,12 @@ Buscar:
                             'Me.Grid.AddItem(dRow(0).ToString & Chr(9) & dRow(1).ToString & Chr(9) & dRow(2).ToString & Chr(9) & dRow(3).ToString & Chr(9) &
                             '                dRow(4).ToString & Chr(9) & dRow(5).ToString & Chr(9) & dRow(6).ToString & Chr(9) & Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + "00" + dRow(7).ToString & Chr(9))
 
-                            Me.Grid.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) &
+                            Me.Grid.AddItem(
+                            dRow("CODIGO_ARTICULO").ToString & Chr(9) &
                             dRow("TIPO_CONTROL_INVENTARIO").ToString & Chr(9) &
                             dRow("DESCRIPCION").ToString & Chr(9) &
                             dRow("CANTIDAD_BULTOS_DETALLE").ToString & Chr(9) &
+                            dRow("PRECIO_UNIDAD_BULTO").ToString & Chr(9) &
                             dRow("PRECIO_UNIDAD_BULTO").ToString & Chr(9) &
                             dRow("UNIDAD").ToString & Chr(9) &
                             dRow("CANTIDAD_KILOS").ToString & Chr(9) &
@@ -1420,7 +1422,6 @@ Buscar:
 
                 .CODIGO_METODO_PAGO = Me.cboFormaPago.SelectedValue.ToString
                 .NUMERO_CUENTA_PAGO = Me.txtNumeroCuentaPago.Text
-
                 .CODIGO_METODO_PAGO_EVENTO = sMetodoPago
                 .CODIGO_USO_CFDI = sUsoCFDI
                 .CODIGO_MONEDA_SAT = Me.cboMoneda.Text
@@ -3178,6 +3179,7 @@ buscaCentrosCostos:
                                 dRow("TIPO_CONTROL_INVENTARIO").ToString & Chr(9) &
                                 dRow("DESCRIPCION").ToString & Chr(9) &
                                 dRow("CANTIDAD_BULTOS_DETALLE").ToString & Chr(9) &
+                                dRow("PRECIO_UNIDAD_BULTO").ToString & Chr(9) &
                                 dRow("PRECIO_UNIDAD_BULTO").ToString & Chr(9) &
                                 dRow("UNIDAD").ToString & Chr(9) &
                                 dRow("CANTIDAD_KILOS").ToString & Chr(9) &

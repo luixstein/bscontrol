@@ -87,6 +87,12 @@ Partial Class Ventas_Movimientos
         Me.tsslElaboro = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tsslCancelo = New System.Windows.Forms.ToolStripStatusLabel()
         Me.frmDatos = New System.Windows.Forms.GroupBox()
+        Me.cboFormaPago = New System.Windows.Forms.ComboBox()
+        Me.lblVersionCFDI = New System.Windows.Forms.Label()
+        Me.cboUsoCFDI = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayMetodoPago = New System.Windows.Forms.Label()
+        Me.cboMetodoPago = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayUsoCFDI = New System.Windows.Forms.Label()
         Me.CboTipoCredito = New System.Windows.Forms.ComboBox()
         Me.LblTipoCredito = New System.Windows.Forms.Label()
         Me.ckbMostrarUtilidad = New System.Windows.Forms.CheckBox()
@@ -99,7 +105,6 @@ Partial Class Ventas_Movimientos
         Me.txtNumeroCuentaPago = New System.Windows.Forms.TextBox()
         Me.lblDisplayNumeroCuentaPago = New System.Windows.Forms.Label()
         Me.lblFormaPago = New System.Windows.Forms.Label()
-        Me.cboFormaPago = New System.Windows.Forms.ComboBox()
         Me.llblAgregarSeguimiento = New System.Windows.Forms.LinkLabel()
         Me.txtFolioEmbarque = New System.Windows.Forms.TextBox()
         Me.lblDisplayFolioEmbarque = New System.Windows.Forms.Label()
@@ -114,11 +119,6 @@ Partial Class Ventas_Movimientos
         Me.Grid = New FlexCell.Grid()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.GridSeries = New FlexCell.Grid()
-        Me.cboUsoCFDI = New System.Windows.Forms.ComboBox()
-        Me.lblDisplayMetodoPago = New System.Windows.Forms.Label()
-        Me.cboMetodoPago = New System.Windows.Forms.ComboBox()
-        Me.lblDisplayUsoCFDI = New System.Windows.Forms.Label()
-        Me.lblVersionCFDI = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -297,7 +297,7 @@ Partial Class Ventas_Movimientos
         Me.dpFecha.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dpFecha.Name = "dpFecha"
         Me.dpFecha.Size = New System.Drawing.Size(90, 20)
-        Me.dpFecha.TabIndex = 13
+        Me.dpFecha.TabIndex = 12
         '
         'LblFecha
         '
@@ -317,7 +317,7 @@ Partial Class Ventas_Movimientos
         Me.dpVencimiento.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dpVencimiento.Name = "dpVencimiento"
         Me.dpVencimiento.Size = New System.Drawing.Size(90, 20)
-        Me.dpVencimiento.TabIndex = 14
+        Me.dpVencimiento.TabIndex = 13
         '
         'lblDisplayVencimiento
         '
@@ -476,7 +476,7 @@ Partial Class Ventas_Movimientos
         Me.cboTipoMercado.Location = New System.Drawing.Point(400, 11)
         Me.cboTipoMercado.Name = "cboTipoMercado"
         Me.cboTipoMercado.Size = New System.Drawing.Size(205, 21)
-        Me.cboTipoMercado.TabIndex = 11
+        Me.cboTipoMercado.TabIndex = 1
         '
         'cboTipoNegociacion
         '
@@ -781,6 +781,64 @@ Partial Class Ventas_Movimientos
         Me.frmDatos.TabIndex = 0
         Me.frmDatos.TabStop = False
         '
+        'cboFormaPago
+        '
+        Me.cboFormaPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboFormaPago.FormattingEnabled = True
+        Me.cboFormaPago.Location = New System.Drawing.Point(84, 165)
+        Me.cboFormaPago.Name = "cboFormaPago"
+        Me.cboFormaPago.Size = New System.Drawing.Size(205, 21)
+        Me.cboFormaPago.TabIndex = 9
+        '
+        'lblVersionCFDI
+        '
+        Me.lblVersionCFDI.AutoSize = True
+        Me.lblVersionCFDI.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblVersionCFDI.Location = New System.Drawing.Point(931, 169)
+        Me.lblVersionCFDI.Name = "lblVersionCFDI"
+        Me.lblVersionCFDI.Size = New System.Drawing.Size(45, 25)
+        Me.lblVersionCFDI.TabIndex = 383
+        Me.lblVersionCFDI.Text = "0.0"
+        '
+        'cboUsoCFDI
+        '
+        Me.cboUsoCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboUsoCFDI.FormattingEnabled = True
+        Me.cboUsoCFDI.Location = New System.Drawing.Point(422, 113)
+        Me.cboUsoCFDI.MaxLength = 1
+        Me.cboUsoCFDI.Name = "cboUsoCFDI"
+        Me.cboUsoCFDI.Size = New System.Drawing.Size(301, 21)
+        Me.cboUsoCFDI.TabIndex = 14
+        '
+        'lblDisplayMetodoPago
+        '
+        Me.lblDisplayMetodoPago.AutoSize = True
+        Me.lblDisplayMetodoPago.Location = New System.Drawing.Point(328, 169)
+        Me.lblDisplayMetodoPago.Name = "lblDisplayMetodoPago"
+        Me.lblDisplayMetodoPago.Size = New System.Drawing.Size(91, 13)
+        Me.lblDisplayMetodoPago.TabIndex = 382
+        Me.lblDisplayMetodoPago.Text = "Método de pago :"
+        '
+        'cboMetodoPago
+        '
+        Me.cboMetodoPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboMetodoPago.Enabled = False
+        Me.cboMetodoPago.FormattingEnabled = True
+        Me.cboMetodoPago.Location = New System.Drawing.Point(422, 166)
+        Me.cboMetodoPago.MaxLength = 1
+        Me.cboMetodoPago.Name = "cboMetodoPago"
+        Me.cboMetodoPago.Size = New System.Drawing.Size(301, 21)
+        Me.cboMetodoPago.TabIndex = 15
+        '
+        'lblDisplayUsoCFDI
+        '
+        Me.lblDisplayUsoCFDI.AutoSize = True
+        Me.lblDisplayUsoCFDI.Location = New System.Drawing.Point(328, 118)
+        Me.lblDisplayUsoCFDI.Name = "lblDisplayUsoCFDI"
+        Me.lblDisplayUsoCFDI.Size = New System.Drawing.Size(76, 13)
+        Me.lblDisplayUsoCFDI.TabIndex = 381
+        Me.lblDisplayUsoCFDI.Text = "Uso del CFDI :"
+        '
         'CboTipoCredito
         '
         Me.CboTipoCredito.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
@@ -871,7 +929,7 @@ Partial Class Ventas_Movimientos
         Me.txtNumeroCuentaPago.MaxLength = 4
         Me.txtNumeroCuentaPago.Name = "txtNumeroCuentaPago"
         Me.txtNumeroCuentaPago.Size = New System.Drawing.Size(90, 20)
-        Me.txtNumeroCuentaPago.TabIndex = 12
+        Me.txtNumeroCuentaPago.TabIndex = 11
         '
         'lblDisplayNumeroCuentaPago
         '
@@ -890,15 +948,6 @@ Partial Class Ventas_Movimientos
         Me.lblFormaPago.Size = New System.Drawing.Size(84, 13)
         Me.lblFormaPago.TabIndex = 335
         Me.lblFormaPago.Text = "Forma de pago :"
-        '
-        'cboFormaPago
-        '
-        Me.cboFormaPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboFormaPago.FormattingEnabled = True
-        Me.cboFormaPago.Location = New System.Drawing.Point(84, 165)
-        Me.cboFormaPago.Name = "cboFormaPago"
-        Me.cboFormaPago.Size = New System.Drawing.Size(205, 21)
-        Me.cboFormaPago.TabIndex = 9
         '
         'llblAgregarSeguimiento
         '
@@ -1064,55 +1113,6 @@ Partial Class Ventas_Movimientos
         Me.GridSeries.Size = New System.Drawing.Size(966, 198)
         Me.GridSeries.TabIndex = 2
         Me.GridSeries.UncheckedImage = CType(resources.GetObject("GridSeries.UncheckedImage"), System.Drawing.Bitmap)
-        '
-        'cboUsoCFDI
-        '
-        Me.cboUsoCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboUsoCFDI.FormattingEnabled = True
-        Me.cboUsoCFDI.Location = New System.Drawing.Point(422, 113)
-        Me.cboUsoCFDI.MaxLength = 1
-        Me.cboUsoCFDI.Name = "cboUsoCFDI"
-        Me.cboUsoCFDI.Size = New System.Drawing.Size(301, 21)
-        Me.cboUsoCFDI.TabIndex = 15
-        '
-        'lblDisplayMetodoPago
-        '
-        Me.lblDisplayMetodoPago.AutoSize = True
-        Me.lblDisplayMetodoPago.Location = New System.Drawing.Point(328, 169)
-        Me.lblDisplayMetodoPago.Name = "lblDisplayMetodoPago"
-        Me.lblDisplayMetodoPago.Size = New System.Drawing.Size(91, 13)
-        Me.lblDisplayMetodoPago.TabIndex = 382
-        Me.lblDisplayMetodoPago.Text = "Método de pago :"
-        '
-        'cboMetodoPago
-        '
-        Me.cboMetodoPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboMetodoPago.Enabled = False
-        Me.cboMetodoPago.FormattingEnabled = True
-        Me.cboMetodoPago.Location = New System.Drawing.Point(422, 166)
-        Me.cboMetodoPago.MaxLength = 1
-        Me.cboMetodoPago.Name = "cboMetodoPago"
-        Me.cboMetodoPago.Size = New System.Drawing.Size(301, 21)
-        Me.cboMetodoPago.TabIndex = 16
-        '
-        'lblDisplayUsoCFDI
-        '
-        Me.lblDisplayUsoCFDI.AutoSize = True
-        Me.lblDisplayUsoCFDI.Location = New System.Drawing.Point(328, 118)
-        Me.lblDisplayUsoCFDI.Name = "lblDisplayUsoCFDI"
-        Me.lblDisplayUsoCFDI.Size = New System.Drawing.Size(76, 13)
-        Me.lblDisplayUsoCFDI.TabIndex = 381
-        Me.lblDisplayUsoCFDI.Text = "Uso del CFDI :"
-        '
-        'lblVersionCFDI
-        '
-        Me.lblVersionCFDI.AutoSize = True
-        Me.lblVersionCFDI.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblVersionCFDI.Location = New System.Drawing.Point(931, 169)
-        Me.lblVersionCFDI.Name = "lblVersionCFDI"
-        Me.lblVersionCFDI.Size = New System.Drawing.Size(45, 25)
-        Me.lblVersionCFDI.TabIndex = 383
-        Me.lblVersionCFDI.Text = "0.0"
         '
         'Ventas_Movimientos
         '
