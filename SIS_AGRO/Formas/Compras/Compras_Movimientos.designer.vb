@@ -113,6 +113,8 @@ Partial Class Compras_Movimientos
         Me.btnSeleccionarArchivoSeries = New System.Windows.Forms.Button()
         Me.txtIEPS = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
+        Me.TxtConceptoCancelacion = New System.Windows.Forms.TextBox()
+        Me.LblConceptoCancelacion = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
@@ -1013,7 +1015,7 @@ Partial Class Compras_Movimientos
         'btnSeries
         '
         Me.btnSeries.Enabled = False
-        Me.btnSeries.Location = New System.Drawing.Point(65, 567)
+        Me.btnSeries.Location = New System.Drawing.Point(272, 577)
         Me.btnSeries.Margin = New System.Windows.Forms.Padding(4)
         Me.btnSeries.Name = "btnSeries"
         Me.btnSeries.Size = New System.Drawing.Size(145, 39)
@@ -1048,7 +1050,7 @@ Partial Class Compras_Movimientos
         'btnSeleccionarArchivoSeries
         '
         Me.btnSeleccionarArchivoSeries.Enabled = False
-        Me.btnSeleccionarArchivoSeries.Location = New System.Drawing.Point(65, 623)
+        Me.btnSeleccionarArchivoSeries.Location = New System.Drawing.Point(272, 624)
         Me.btnSeleccionarArchivoSeries.Margin = New System.Windows.Forms.Padding(4)
         Me.btnSeleccionarArchivoSeries.Name = "btnSeleccionarArchivoSeries"
         Me.btnSeleccionarArchivoSeries.Size = New System.Drawing.Size(220, 39)
@@ -1077,17 +1079,42 @@ Partial Class Compras_Movimientos
         Me.Label4.TabIndex = 384
         Me.Label4.Text = "IEPS :"
         '
+        'TxtConceptoCancelacion
+        '
+        Me.TxtConceptoCancelacion.Location = New System.Drawing.Point(6, 579)
+        Me.TxtConceptoCancelacion.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtConceptoCancelacion.MaxLength = 1000
+        Me.TxtConceptoCancelacion.Multiline = True
+        Me.TxtConceptoCancelacion.Name = "TxtConceptoCancelacion"
+        Me.TxtConceptoCancelacion.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.TxtConceptoCancelacion.Size = New System.Drawing.Size(258, 83)
+        Me.TxtConceptoCancelacion.TabIndex = 386
+        Me.TxtConceptoCancelacion.Visible = False
+        '
+        'LblConceptoCancelacion
+        '
+        Me.LblConceptoCancelacion.AutoSize = True
+        Me.LblConceptoCancelacion.Location = New System.Drawing.Point(3, 556)
+        Me.LblConceptoCancelacion.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblConceptoCancelacion.Name = "LblConceptoCancelacion"
+        Me.LblConceptoCancelacion.Size = New System.Drawing.Size(155, 17)
+        Me.LblConceptoCancelacion.TabIndex = 387
+        Me.LblConceptoCancelacion.Text = "Concepto cancelación :"
+        Me.LblConceptoCancelacion.Visible = False
+        '
         'Compras_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1372, 702)
+        Me.Controls.Add(Me.LblConceptoCancelacion)
+        Me.Controls.Add(Me.TxtConceptoCancelacion)
         Me.Controls.Add(Me.txtIEPS)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.btnSeleccionarArchivoSeries)
         Me.Controls.Add(Me.txtSaldoUSD)
-        Me.Controls.Add(Me.lblDisplaySaldoUSD)
         Me.Controls.Add(Me.btnSeries)
+        Me.Controls.Add(Me.lblDisplaySaldoUSD)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.gbUSD)
         Me.Controls.Add(Me.Label5)
@@ -1215,4 +1242,6 @@ Partial Class Compras_Movimientos
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents cboMoneda As System.Windows.Forms.ComboBox
     Friend WithEvents LblDisplayMoneda As System.Windows.Forms.Label
+    Friend WithEvents TxtConceptoCancelacion As System.Windows.Forms.TextBox
+    Friend WithEvents LblConceptoCancelacion As System.Windows.Forms.Label
 End Class

@@ -59,6 +59,8 @@ Public Class Class_Compras_Global
     Private _CODIGO_MONEDA As String
     Private _SUBTOTAL_USD As Double
     Private _IMPUESTO_USD As Double
+
+    Private _CONCEPTO_CANCELACION As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -467,6 +469,16 @@ Public Class Class_Compras_Global
             Return Me._IMPUESTO_USD
         End Get
     End Property
+
+    Public Property CONCEPTO_CANCELACION() As String
+        Get
+            Return Me._CONCEPTO_CANCELACION
+        End Get
+        Set(ByVal Value As String)
+            Me._CONCEPTO_CANCELACION = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -838,6 +850,7 @@ Public Class Class_Compras_Global
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
+        MsgBox(Me._CONCEPTO_CANCELACION)
         With cmd
             .Connection = Me._Conexion
             .CommandTimeout = 0
@@ -848,6 +861,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Plaza
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
             sqlParametro = .Parameters.Add("@FECHA_CANCELACION_COMPRA", SqlDbType.SmallDateTime) : sqlParametro.Value = Now
+            sqlParametro = .Parameters.Add("@CONCEPTO_CANCELACION", SqlDbType.NVarChar, 1000) : sqlParametro.Value = Me._CONCEPTO_CANCELACION.ToUpper
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
@@ -867,6 +881,7 @@ Public Class Class_Compras_Global
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
+
         With cmd
             .Connection = Me._Conexion
             .CommandTimeout = 0
@@ -877,6 +892,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Plaza
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_CANCELO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
             sqlParametro = .Parameters.Add("@FECHA_CANCELACION", SqlDbType.SmallDateTime) : sqlParametro.Value = Me.FECHA_CANCELACION
+            sqlParametro = .Parameters.Add("@CONCEPTO_CANCELACION", SqlDbType.NVarChar, 1000) : sqlParametro.Value = Me._CONCEPTO_CANCELACION.ToUpper
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
@@ -956,6 +972,8 @@ Public Class Class_Compras_Global
                     Me._SUBTOTAL_USD = CDbl(dReader("SUBTOTAL_USD"))
                     Me._IMPUESTO_USD = CDbl(dReader("IMPUESTO_USD"))
                     Me._TIENE_SERIES = CBool(dReader("TIENE_SERIES"))
+
+                    Me._CONCEPTO_CANCELACION = dReader("CONCEPTO_CANCELACION").ToString
 
                     bResultado = True
                 End If
