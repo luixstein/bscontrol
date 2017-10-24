@@ -92,6 +92,8 @@ Public Class Class_Ventas_Global
     Private _VERSION_ESQUEMA_XML As String
     Private _SERIE As String
     Private _TIENE_COMPLEMENTO_COMERCIO_EXTERIOR As Boolean
+
+    Private _CONCEPTO_CANCELACION As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -692,6 +694,15 @@ Public Class Class_Ventas_Global
             Return Me._TIENE_COMPLEMENTO_COMERCIO_EXTERIOR
         End Get
     End Property
+
+    Public Property CONCEPTO_CANCELACION() As String
+        Get
+            Return Me._CONCEPTO_CANCELACION
+        End Get
+        Set(ByVal Value As String)
+            Me._CONCEPTO_CANCELACION = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -949,6 +960,7 @@ Public Class Class_Ventas_Global
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
+
         With cmd
             .Connection = Me._Conexion
             .CommandTimeout = 0
@@ -960,6 +972,7 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Plaza
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
             sqlParametro = .Parameters.Add("@FECHA_CANCELACION", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_CANCELACION
+            sqlParametro = .Parameters.Add("@CONCEPTO_CANCELACION", SqlDbType.NVarChar, 120) : sqlParametro.Value = Me._CONCEPTO_CANCELACION.ToUpper
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
@@ -1101,6 +1114,8 @@ Public Class Class_Ventas_Global
                     Me._TIENE_SERIES = CBool(dReader("TIENE_SERIES"))
 
                     Me._CODIGO_TIPO_CREDITO = "" & dReader("CODIGO_TIPO_CREDITO").ToString()
+
+                    Me._CONCEPTO_CANCELACION = "" & dReader("CONCEPTO_CANCELACION").ToString()
 
                     bResultado = True
                 End If

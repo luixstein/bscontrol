@@ -983,6 +983,9 @@ Buscar:
                     Me.tsbSellarFacturaElectronica.Visible = False
                     Me.tsbCancelarTimbre.Visible = False
 
+                    Me.LblConceptoCancelacion.Visible = False
+                    Me.TxtConceptoCancelacion.Visible = False
+
                 Case enumEstados.GRABADO
                     Me.tsbNuevo.Enabled = True
                     Me.tsbGrabar.Enabled = True
@@ -1009,6 +1012,9 @@ Buscar:
 
                     Me.tsbSellarFacturaElectronica.Visible = False
                     Me.tsbCancelarTimbre.Visible = False
+
+                    Me.LblConceptoCancelacion.Visible = False
+                    Me.TxtConceptoCancelacion.Visible = False
 
 
                 Case enumEstados.SUSTITUIDO
@@ -1037,6 +1043,9 @@ Buscar:
 
                     Me.tsbSellarFacturaElectronica.Visible = False
                     Me.tsbCancelarTimbre.Visible = False
+
+                    Me.LblConceptoCancelacion.Visible = False
+                    Me.TxtConceptoCancelacion.Visible = False
 
                 Case enumEstados.APLICADO
                     Me.tsbNuevo.Enabled = True
@@ -1118,6 +1127,9 @@ Buscar:
 
                     Me.tsbImprimir.Select()
 
+                    Me.LblConceptoCancelacion.Visible = False
+                    Me.TxtConceptoCancelacion.Visible = False
+
                 Case enumEstados.SUSTITUYENDO
                     Me.tsbNuevo.Enabled = True
                     Me.tsbGrabar.Enabled = True
@@ -1149,6 +1161,9 @@ Buscar:
 
                     Me.tsbSellarFacturaElectronica.Visible = False
                     Me.tsbCancelarTimbre.Visible = False
+
+                    Me.LblConceptoCancelacion.Visible = False
+                    Me.TxtConceptoCancelacion.Visible = False
 
                 Case enumEstados.CANCELADO
                     Me.tsbNuevo.Enabled = True
@@ -1212,6 +1227,10 @@ Buscar:
                         Me.tsbSellarFacturaElectronica.Visible = False
                         Me.tsbCancelarTimbre.Visible = False
                     End If
+
+                    Me.LblConceptoCancelacion.Visible = True
+                    Me.TxtConceptoCancelacion.Visible = True
+                    Me.TxtConceptoCancelacion.Enabled = False
 
             End Select
 
@@ -1575,6 +1594,7 @@ Buscar:
         Dim oFirmaElectronica = New UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo
         Dim oUtileriasCancela As New Class_UtileriasFirmaElectronicaCancelacion
         Dim oPoliza As New Class_Contabilidad_Poliza_Global
+        Dim sConceptoCancelacion As String = ""
 
         If Me._EsPorEmbarqueExtranjero = False AndAlso oDocumento.ACCESIBLE_USUARIO = False Then
             MsgBox("Este documento no se puede cancelar directamente.", MsgBoxStyle.Exclamation, Me.Text)
@@ -1602,6 +1622,9 @@ Buscar:
             If oUtileriasCancela.CANCELA_DIRECTO = True Then
                 Me.oVenta.FECHA_CANCELACION = Date.Now
 
+                sConceptoCancelacion = InputBox("Ingrese el concepto de cancelación :", "Concepto de cancelación")
+                oVenta.CONCEPTO_CANCELACION = sConceptoCancelacion
+
                 GoTo CANCELAR
             Else
                 oUtileriasCancela = New Class_UtileriasFirmaElectronicaCancelacion
@@ -1615,6 +1638,9 @@ Buscar:
                     'MsgBox("Error al tratar de autorizar la cancelación fuera del periodo.", MsgBoxStyle.Exclamation, Me.Text)
                     Return False
                 End If
+
+                sConceptoCancelacion = oUtileriasCancela.CANCELACION_CONCEPTO
+                oVenta.CONCEPTO_CANCELACION = sConceptoCancelacion
 
                 'si no se autorizo
                 If oUtileriasCancela.CANCELACION_AUTORIZO = False Then
@@ -2571,6 +2597,7 @@ CANCELAR:
                 Me.TxtCliente.Text = Me.oVenta.CODIGO_CLIENTE
                 Me.TxtConcepto.Text = Me.oVenta.CONCEPTO
                 Me.txtFolioEmbarque.Text = Me.oVenta.FOLIO_EMBARQUE
+                Me.TxtConceptoCancelacion.Text = Me.oVenta.CONCEPTO_CANCELACION
 
                 Me.oCliente = New Class_CatClientes(Me.TxtCliente.Text)
                 Me.lblCliente.Text = Me.oCliente.NOMBRE_CLIENTE
