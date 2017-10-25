@@ -1106,11 +1106,13 @@ Module Mod_Uti
     End Function
 
     Public Function VersionArchivo(ByVal sFile As String) As Double
+        Dim dVersion As Double
         Try
-            MsgBox(FileVersionInfo.GetVersionInfo("c:\agrinet\agrinet.exe").FileVersion)
+            dVersion = FileVersionInfo.GetVersionInfo(sFile).FilePrivatePart
         Catch ex As Exception
             HandleError(nombreModulo, "VersionArchivo", ex)
         End Try
+        Return dVersion
     End Function
 
 End Module

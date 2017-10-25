@@ -222,7 +222,8 @@
     <Compile Include="Clases\Catalogos\Class_Cat_IVAS.vb" />
     <Compile Include="Clases\Catalogos\Class_CatProveedores.vb" />
     <Compile Include="Clases\Catalogos\Class_Cat_tiposDocumentos.vb" />
-    <Compile Include="Clases\Catalogos\Class_CFD_CatFormasPago.vb" />
+    <Compile Include="Clases\Catalogos\SAT\Class_CatCuentasSAT.vb" />
+    <Compile Include="Clases\Catalogos\SAT\Class_CFD_CatFormasPago.vb" />
     <Compile Include="Clases\Catalogos\Class_SisContabilidadParametros.vb" />
     <Compile Include="Clases\Catalogos\Class_sisEmpresa.vb" />
     <Compile Include="Clases\Catalogos\Class_SisModulos.vb" />
@@ -243,6 +244,10 @@
     <Compile Include="Clases\Catalogos\Nomina\Class_CatTipoPercepcion.vb" />
     <Compile Include="Clases\Catalogos\Nomina\Class_CatUnidadMedicaFamiliar.vb" />
     <Compile Include="Clases\Catalogos\Class_SisEmpresaNomina.vb" />
+    <Compile Include="Clases\Catalogos\SAT\Class_CFD_CatMetodosPago.vb" />
+    <Compile Include="Clases\Catalogos\SAT\Class_CFD_CatProductosServicios.vb" />
+    <Compile Include="Clases\Catalogos\SAT\Class_CFD_CatUnidades.vb" />
+    <Compile Include="Clases\Catalogos\SAT\Class_CFD_CatUsosCFDI.vb" />
     <Compile Include="Clases\CentrosCostos\Class_Centros_Costos_Global.vb" />
     <Compile Include="Clases\Contabilidad\Class_ProyectoSiembra.vb" />
     <Compile Include="Clases\Compras\Class_Compras_Detalle.vb" />

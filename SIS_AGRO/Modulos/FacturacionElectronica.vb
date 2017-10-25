@@ -573,75 +573,78 @@ Module FacturacionElectronica
             End If
 
             If Len(Dir(sFelectronicaArchivoKEYLocal)) = 0 Then
-                    If Len(Dir(sKeyServer)) = 0 OrElse Copiar_Archivo(sKeyServer, sFelectronicaArchivoKEYLocal) = False Then
-                        MsgBox("No existe en el servidor el archivo .key, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
-                    End If
+                If Len(Dir(sKeyServer)) = 0 OrElse Copiar_Archivo(sKeyServer, sFelectronicaArchivoKEYLocal) = False Then
+                    MsgBox("No existe en el servidor el archivo .key, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 End If
-                If Len(Dir(sFelectronicaConvierteUTF8Local)) = 0 Then
-                    If Len(Dir(sFelectronicaConvierteUTF8Servidor)) = 0 OrElse Copiar_Archivo(sFelectronicaConvierteUTF8Servidor, sFelectronicaConvierteUTF8Local) = False Then
-                        MsgBox("No existe en el servidor el archivo para convertir el XML a UTF8, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
-                    End If
-                End If
+            End If
 
-                If Len(Dir(sFelectronicaArchivoPFX)) = 0 Then
-                    If Len(Dir(sFelectronicaArchivoPFXServidor)) = 0 OrElse Copiar_Archivo(sFelectronicaArchivoPFXServidor, sFelectronicaArchivoPFX) = False Then
-                        MsgBox("No existe en el servidor el archivo .pfx, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
-                    End If
+            If Len(Dir(sFelectronicaConvierteUTF8Local)) = 0 Then
+                If Len(Dir(sFelectronicaConvierteUTF8Servidor)) = 0 OrElse Copiar_Archivo(sFelectronicaConvierteUTF8Servidor, sFelectronicaConvierteUTF8Local) = False Then
+                    MsgBox("No existe en el servidor el archivo para convertir el XML a UTF8, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 End If
-                If Len(Dir(sFelectronicaDLLCFDILocal)) = 0 Then
-                    If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCfdi)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCfdi, sFelectronicaDLLCFDILocal) = False Then
-                        MsgBox("No existe en el servidor el archivo " & sDllCfdi & ", no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
-                    End If
-                End If
+            End If
 
-                If Len(Dir(sDllCo32Archivo)) = 0 Then
-                    If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCo32)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCo32, sDllCo32Archivo) = False Then
-                        MsgBox("No existe en el servidor el archivo " & sDllCo32 & ", no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
-                    End If
+            If Len(Dir(sFelectronicaArchivoPFX)) = 0 Then
+                If Len(Dir(sFelectronicaArchivoPFXServidor)) = 0 OrElse Copiar_Archivo(sFelectronicaArchivoPFXServidor, sFelectronicaArchivoPFX) = False Then
+                    MsgBox("No existe en el servidor el archivo .pfx, no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 End If
+            End If
 
-                If Len(Dir(sDllCo33Archivo)) = 0 Then
-                    If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCo33)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCo33, sDllCo33Archivo) = False Then
-                        MsgBox("No existe en el servidor el archivo " & sDllCo33 & ", no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
-                    End If
+            If Len(Dir(sFelectronicaDLLCFDILocal)) = 0 Then
+                If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCfdi)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCfdi, sFelectronicaDLLCFDILocal) = False Then
+                    MsgBox("No existe en el servidor el archivo " & sDllCfdi & ", no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 End If
+            End If
 
-                If Len(Dir(sDllIonicZipArchivo)) = 0 Then
-                    If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllIonicZip)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & sDllIonicZip, sDllIonicZipArchivo) = False Then
-                        MsgBox("No existe en el servidor el archivo " & sDllIonicZip & ", no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
-                    End If
+            If Len(Dir(sDllCo32Archivo)) = 0 Then
+                If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCo32)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCo32, sDllCo32Archivo) = False Then
+                    MsgBox("No existe en el servidor el archivo " & sDllCo32 & ", no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 End If
+            End If
 
-                If Len(Dir(sDllQRCodeArchivo)) = 0 Then
-                    If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllQRCode)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllQRCode, sDllQRCodeArchivo) = False Then
-                        MsgBox("No existe en el servidor el archivo " & sDllQRCode & ", no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
-                    End If
+            If Len(Dir(sDllCo33Archivo)) = 0 Then
+                If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCo33)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCo33, sDllCo33Archivo) = False Then
+                    MsgBox("No existe en el servidor el archivo " & sDllCo33 & ", no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 End If
+            End If
+
+            If Len(Dir(sDllIonicZipArchivo)) = 0 Then
+                If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllIonicZip)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & sDllIonicZip, sDllIonicZipArchivo) = False Then
+                    MsgBox("No existe en el servidor el archivo " & sDllIonicZip & ", no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+            End If
+
+            If Len(Dir(sDllQRCodeArchivo)) = 0 Then
+                If Len(Dir("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllQRCode)) = 0 OrElse Copiar_Archivo("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllQRCode, sDllQRCodeArchivo) = False Then
+                    MsgBox("No existe en el servidor el archivo " & sDllQRCode & ", no se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+            End If
+
+            If Empresa_Sistema.VERSION_CFDI_DLL <> VersionArchivo(sFelectronicaDLLCFDILocal) Then
+                Copiar_Archivo("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCfdi, sFelectronicaDLLCFDILocal) 'Actualizar la dll del usuario
+
                 If Empresa_Sistema.VERSION_CFDI_DLL <> VersionArchivo(sFelectronicaDLLCFDILocal) Then
-                    Copiar_Archivo("\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & sDllCfdi, sFelectronicaDLLCFDILocal) 'Actualizar la dll del usuario
-
-                    If Empresa_Sistema.VERSION_CFDI_DLL <> VersionArchivo(sFelectronicaDLLCFDILocal) Then
-                        MsgBox("La versión del archivo cfdi.dll(v " & VersionArchivo(sFelectronicaDLLCFDILocal) & ") no es la del servidor(v " & Empresa_Sistema.VERSION_CFDI_DLL & "). " & vbCrLf &
+                    MsgBox("La versión del archivo cfdi.dll(v " & VersionArchivo(sFelectronicaDLLCFDILocal) & ") no es la del servidor(v " & Empresa_Sistema.VERSION_CFDI_DLL & "). " & vbCrLf &
                             "No se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
-                        Return False
-                    End If
+                    Return False
                 End If
+            End If
 
-                '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-                'If fElectronicaValidaArchivosCertificadoLocal(, , ) = False Then
-                '    Return False
-                'End If
+            'If fElectronicaValidaArchivosCertificadoLocal(, , ) = False Then
+            '    Return False
+            'End If
 
-                bResultado = True
+            bResultado = True
 
         Catch ex As Exception
             HandleError(nombreModulo, sProcedure, ex)

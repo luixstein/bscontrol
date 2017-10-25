@@ -201,6 +201,20 @@ Public Class LoginForm
                 Me.LoadInicioSesionNormal(sender, e)
             End If
 
+            Dim oUsosCFDI As New Class_CFD_CatUsosCFDI
+            dtUsosCFDIPersonasFisicas = oUsosCFDI.ObtenerElementosPersonasFisicas
+            dtUsosCFDIPersonasMorales = oUsosCFDI.ObtenerElementosPersonasMorales
+            oUsosCFDI = Nothing
+
+            Dim oFormasPago As New Class_CFD_CatFormasPago
+            dtFormasPagoActivas = oFormasPago.ObtenerElementos
+            dtFormasPagoTodas = oFormasPago.ObtenerTodas()
+            oFormasPago = Nothing
+
+            Dim oMetodosPago As New Class_CFD_CatMetodosPago
+            dtMetodosPago = oMetodosPago.ObtenerElementos
+            oMetodosPago = Nothing
+
         Catch ex As Exception
             HandleError(Me.Name, "LoginForm_Load", ex)
         End Try

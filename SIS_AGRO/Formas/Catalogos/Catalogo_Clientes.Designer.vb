@@ -1095,10 +1095,10 @@ Partial Class Catalogo_Clientes
         Me.cboFormaPagoUSD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboFormaPagoUSD.FormattingEnabled = True
         Me.cboFormaPagoUSD.Items.AddRange(New Object() {"A", "B"})
-        Me.cboFormaPagoUSD.Location = New System.Drawing.Point(125, 64)
+        Me.cboFormaPagoUSD.Location = New System.Drawing.Point(115, 64)
         Me.cboFormaPagoUSD.MaxLength = 1
         Me.cboFormaPagoUSD.Name = "cboFormaPagoUSD"
-        Me.cboFormaPagoUSD.Size = New System.Drawing.Size(194, 21)
+        Me.cboFormaPagoUSD.Size = New System.Drawing.Size(204, 21)
         Me.cboFormaPagoUSD.TabIndex = 2
         '
         'lblDisplayNCuentaDlls
@@ -1133,10 +1133,10 @@ Partial Class Catalogo_Clientes
         Me.cboFormaPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboFormaPago.FormattingEnabled = True
         Me.cboFormaPago.Items.AddRange(New Object() {"A", "B"})
-        Me.cboFormaPago.Location = New System.Drawing.Point(125, 17)
+        Me.cboFormaPago.Location = New System.Drawing.Point(115, 17)
         Me.cboFormaPago.MaxLength = 1
         Me.cboFormaPago.Name = "cboFormaPago"
-        Me.cboFormaPago.Size = New System.Drawing.Size(194, 21)
+        Me.cboFormaPago.Size = New System.Drawing.Size(204, 21)
         Me.cboFormaPago.TabIndex = 0
         '
         'lblDisplayNumCuenta
@@ -1187,7 +1187,7 @@ Partial Class Catalogo_Clientes
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Clientes"
         Me.ShowIcon = False
-        Me.Text = "Catalogo de clientes"
+        Me.Text = "Catálogo de clientes"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()
         Me.gBoxInformacion.ResumeLayout(False)
