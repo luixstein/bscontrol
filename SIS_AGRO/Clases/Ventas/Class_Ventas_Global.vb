@@ -867,7 +867,7 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO
             sqlParametro = .Parameters.Add("@IEPS_TOTAL_YA_INCLUIDO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_YA_INCLUIDO
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_CREDITO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_TIPO_CREDITO
-            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "INSERTAR"
+            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = sAccion '"INSERTAR"
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
