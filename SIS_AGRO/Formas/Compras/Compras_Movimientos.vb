@@ -771,6 +771,9 @@ Buscar:
                         End If
                     End If
 
+                    Me.LblConceptoCancelacion.Visible = False
+                    Me.TxtConceptoCancelacion.Visible = False
+
                 Case enumEstados.GRABADO
                     Me.tsbNuevo.Enabled = True
                     Me.tsbGrabar.Enabled = True
@@ -809,6 +812,9 @@ Buscar:
                     Me.tsslElaboro.Visible = True : Me.tsslElaboro.Text = "Elaboró: " + Me.oCompras.NOMBRE_USUARIO_GRABO.ToUpper + " el " + Format(Me.DtpFecha.Value, "dd/MMM/yy").ToUpper
                     Me.tsslCancelo.Visible = False : Me.tsslCancelo.Text = ""
                     Me.DtpFechaFacturaProveedor.Visible = False : Me.lblDisplayFechaFacturaProveedor.Visible = False
+
+                    Me.LblConceptoCancelacion.Visible = False
+                    Me.TxtConceptoCancelacion.Visible = False
 
                     Me.TxtConcepto.Focus()
 
@@ -857,6 +863,9 @@ Buscar:
 
                     Me.tsbImprimir.Select()
 
+                    Me.LblConceptoCancelacion.Visible = False
+                    Me.TxtConceptoCancelacion.Visible = False
+
                 Case enumEstados.CANCELADO
                     Me.tsbNuevo.Enabled = True
                     Me.tsbGrabar.Enabled = False
@@ -897,6 +906,11 @@ Buscar:
                     End If
 
                     Me.tsbImprimir.Select()
+
+                    Me.LblConceptoCancelacion.Visible = True
+                    Me.TxtConceptoCancelacion.Visible = True
+                    Me.TxtConceptoCancelacion.Enabled = False
+
             End Select
 
             Me.OcultarControles()
@@ -1276,6 +1290,7 @@ Buscar:
                 Me.txtPredio.Text = Me.oCompras.PREDIO.ToString.ToUpper
                 Me.txtConfirmo.Text = Me.oCompras.CONFIRMO.ToString.ToUpper
                 Me.txtFolioProveedor.Text = Me.oCompras.FOLIO_PROVEEDOR
+                Me.TxtConceptoCancelacion.Text = Me.oCompras.CONCEPTO_CANCELACION
 
                 Me.DtpFecha.Value = CDate(Me.oCompras.FECHA)
                 Me.dtpFechaVencimiento.Value = Me.DtpFecha.Value.AddDays(CDbl(Me.txtPlazo.Text))
@@ -1322,6 +1337,7 @@ Buscar:
         Dim oFirmaElectronica = New UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo
         Dim oUtileriasCancela As New Class_UtileriasFirmaElectronicaCancelacion
         Dim oPoliza As New Class_Contabilidad_Poliza_Global
+        Dim sConceptoCancelacion As String = ""
 
         If MsgBox("Deseas cancelar el movimiento de " & Me.CboDocumento.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "CancelarCompra") = MsgBoxResult.No Then
             Exit Function
@@ -1359,6 +1375,10 @@ Buscar:
 
             If oUtileriasCancela.CANCELA_DIRECTO = True Then
                 Me.oCompras.FECHA_CANCELACION = Date.Now
+
+                sConceptoCancelacion = InputBox("Ingrese un concepto de cancelación :", "Conepto de cancelación")
+                Me.oCompras.CONCEPTO_CANCELACION = sConceptoCancelacion
+
                 If Me.oCompras.CancelaCompra() = False Then
                     Exit Function
                 End If
@@ -1374,6 +1394,9 @@ Buscar:
                     'MsgBox("Error al tratar de autorizar la cancelación fuera del periodo.", MsgBoxStyle.Exclamation, Me.Text)
                     Exit Function
                 End If
+
+                sConceptoCancelacion = oUtileriasCancela.CANCELACION_CONCEPTO
+                Me.oCompras.CONCEPTO_CANCELACION = sConceptoCancelacion
 
                 'si no se autorizo
                 If oUtileriasCancela.CANCELACION_AUTORIZO = False Then
@@ -1410,6 +1433,7 @@ Buscar:
 
     Private Function CancelaOrdenCompra() As Boolean
         Dim bResultado As Boolean = False
+        Dim sConceptoCancelacion As String = ""
 
         Try
             If MsgBox("Deseas Cancelar el documento " & CboDocumento.Text & "  con el Folio: " & txtFolioCompra.Text & "?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "CancelaOrdenCompra") = MsgBoxResult.No Then
@@ -1437,6 +1461,9 @@ Buscar:
                     MsgBox("No se puede cancelar la orden de compra si esta aplicada.", MsgBoxStyle.Exclamation, "CancelaOrdenCompra")
                     Exit Function
             End Select
+
+            sConceptoCancelacion = InputBox("Ingrese un concepto de cancelación :", "Concepto de cancelación")
+            Me.oCompras.CONCEPTO_CANCELACION = sConceptoCancelacion
 
             If Me.oCompras.CancelaOrdenCompra = False Then
                 Exit Function
