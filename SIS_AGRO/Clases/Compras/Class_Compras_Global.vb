@@ -850,7 +850,7 @@ Public Class Class_Compras_Global
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
-        MsgBox(Me._CONCEPTO_CANCELACION)
+
         With cmd
             .Connection = Me._Conexion
             .CommandTimeout = 0
