@@ -1,7 +1,5 @@
 ﻿Option Strict On
-Imports System.Data
 Imports System.Data.SqlClient
-Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Catalogo_Productos_Agricolas
 
@@ -148,7 +146,6 @@ Public Class Catalogo_Productos_Agricolas
 
     Private Sub Catalogo_Articulos_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
-
             Me.DesplegarFamilias()
             Me.InicializaElemento()
             Me.DesplegarElementos()
@@ -251,6 +248,8 @@ Public Class Catalogo_Productos_Agricolas
             Me.LblNombreEnvase.Text = "_"
             Me.txtCodigoUnidadVenta.Text = ""
             Me.LblNombreUnidadVenta.Text = "_"
+            Me.txtCodigoUnidadSAT.Text = "" : Me.lblCodigoUnidadSAT.Text = ""
+            Me.txtClaveProductoSAT.Text = "" : Me.lblClaveProductoSAT.Text = ""
 
             Me.InicializaGrid()
 
@@ -399,6 +398,18 @@ Public Class Catalogo_Productos_Agricolas
                     Me.txtCodigoUnidadVenta.Text = .UNIDAD_VENTA
                     Me.TxtRangoPiezas.Text = .RANGO_PIEZAS
                     Me.chkInventariable.Checked = CBool(.INVENTARIABLE.ToString)
+
+                    Dim oUnidad As New Class_CFD_CatUnidades(.CODIGO_UNIDAD)
+                    Dim oProductoServicio As New Class_CFD_CatProductosServicios(.CODIGO_PRODUCTO_SERVICIO)
+
+                    Me.txtCodigoUnidadSAT.Text = .CODIGO_UNIDAD
+                    Me.txtClaveProductoSAT.Text = .CODIGO_PRODUCTO_SERVICIO
+
+                    Me.lblCodigoUnidadSAT.Text = oUnidad.NOMBRE_UNIDAD
+                    Me.lblClaveProductoSAT.Text = oProductoServicio.NOMBRE_PRODUCTO_SERVICIO
+
+                    oUnidad = Nothing
+                    oProductoServicio = Nothing
                 End With
 
                 Dim sql As New Class_find("SELECT NOMBRE_CULTIVO FROM CAT_CULTIVOS WHERE CODIGO_CULTIVO='" & Me.txtCodigoCultivo.Text & "' ")
@@ -441,57 +452,58 @@ Public Class Catalogo_Productos_Agricolas
         End Try
     End Sub
 
-    Private Sub Grabar_Elemento()
+    Private Function Grabar_Elemento() As Boolean
+        Dim bResultado As Boolean = False
+
         Dim oElemento As New Class_CatArticulos
-        Dim Grabado As Boolean = False
         Dim i As Integer
 
         If Usuario.PERMISO_CAT_ARTICULOS = "0" Then
             MsgBox("No tiene permiso para realizar este movimiento.", MsgBoxStyle.Exclamation, Me.Name)
             Me.Estado = enumEstados.CONSULTA
             Me.Cambia_Estado()
-            Exit Sub
+            Return False
         End If
 
         If txtLEN(Me.txtCodigoCultivo.Text) = False Then
             MsgBox("Asígne un cultivo", MsgBoxStyle.Exclamation, Me.Text)
             Me.txtCodigoCultivo.Focus()
-            Exit Sub
+            Return False
         End If
 
         If txtLEN(Me.txtCodigoTamaño.Text) = False Then
             MsgBox("Asígne un tamaño", MsgBoxStyle.Exclamation, Me.Text)
             Me.txtCodigoTamaño.Focus()
-            Exit Sub
+            Return False
         End If
 
         If txtLEN(Me.txtCodigoEnvase.Text) = False Then
             MsgBox("Asígne un envase", MsgBoxStyle.Exclamation, Me.Text)
             Me.txtCodigoEnvase.Focus()
-            Exit Sub
+            Return False
         End If
 
         If txtLEN(Me.txtCodigoEtiqueta.Text) = False Then
             MsgBox("Asígne una etiqueta", MsgBoxStyle.Exclamation, Me.Text)
             Me.txtCodigoEtiqueta.Focus()
-            Exit Sub
+            Return False
         End If
 
         If txtLEN(Me.CboFamilia.Text) = False Then
             MsgBox("Asígne una familia", MsgBoxStyle.Exclamation, Me.Text)
             Me.CboFamilia.Focus()
-            Exit Sub
+            Return False
         End If
 
         If txtLEN(Me.TxtPeso.Text) = False Then
             MsgBox("Asígne el peso que se usará para convertir la cantidad y precio facturado en bultos.", MsgBoxStyle.Exclamation, Me.Text)
             Me.TxtPeso.Focus()
-            Exit Sub
+            Return False
         Else
             If CInt(Me.TxtPeso.Text) <= 0 Then
                 MsgBox("Asígne el peso que se usará para convertir la cantidad y precio facturado en bultos.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.TxtPeso.Focus()
-                Exit Sub
+                Return False
             End If
         End If
 
@@ -499,14 +511,14 @@ Public Class Catalogo_Productos_Agricolas
             If valorNumerico(Me.TxtPeso.Text) <= 0 Then
                 MsgBox("Asígne el peso que se usará para convertir la cantidad y precio facturado en bultos.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.TxtPeso.Focus()
-                Exit Sub
+                Return False
             End If
         End If
 
         If txtLEN(Me.txtCodigoUnidadVenta.Text) = False Then
             MsgBox("Asígne la Unidad de Venta.", MsgBoxStyle.Exclamation, Me.Text)
             Me.txtCodigoUnidadVenta.Focus()
-            Exit Sub
+            Return False
         End If
 
         For i = 1 To Me.Grid.Rows - 1
@@ -514,7 +526,7 @@ Public Class Catalogo_Productos_Agricolas
                 If valorNumerico(Me.Grid.Cell(i, Me.igyCantidad).Text) = 0 Then
                     MsgBox("La cantidad debe ser mayor a 0, Favor de modificarla.", MsgBoxStyle.Exclamation, Me.Text)
                     Me.Grid.Cell(i, Me.igyCantidad).SetFocus()
-                    Exit Sub
+                    Return False
                 End If
             End If
         Next
@@ -531,7 +543,7 @@ Public Class Catalogo_Productos_Agricolas
                     With oElemento
                         .CODIGO_ARTICULO = Me.TxtCodArticulo.Text
                         .DESCRIPCION = Me.TxtDescripcion.Text
-                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
+                        .ESTATUS = Strings.Left(Me.CboEstatus.Text, 1)
                         .UNIDAD_VENTA = Me.txtCodigoUnidadVenta.Text
                         .PROTEGIDO = "0"
                         .INVENTARIABLE = "0"
@@ -548,24 +560,26 @@ Public Class Catalogo_Productos_Agricolas
                         .RANGO_PIEZAS = Me.TxtRangoPiezas.Text
                         .INVENTARIABLE = Convert.ToInt32(Me.chkInventariable.Checked).ToString
                         .GRADO_TOXICIDAD = "0"
+                        .CODIGO_UNIDAD = Me.txtCodigoUnidadSAT.Text
+                        .CODIGO_PRODUCTO_SERVICIO = Me.txtClaveProductoSAT.Text
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
-                                If .Insertar() Then
-                                    Grabado = True
+                                If .Grabar("1") = True Then
+                                    bResultado = True
                                     Me.Estado = enumEstados.CONSULTA
                                 End If
                             Case enumEstados.EDICION
-                                If .Actualizar() Then
-                                    Grabado = True
+                                If .Grabar("0") = True Then
+                                    bResultado = True
                                     Me.Estado = enumEstados.CONSULTA
                                 End If
                         End Select
 
                         Me.GrabarFormulas()
 
-                        If Grabado Then
-                            MsgBox(Me.msgElemento & " Grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
+                        If bResultado = True Then
+                            MsgBox(Me.msgElemento & " grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
                             Me.Refrescar()
                             Me.Cambia_Estado()
                         End If
@@ -579,7 +593,9 @@ Public Class Catalogo_Productos_Agricolas
                     oElemento = Nothing
                 End Try
         End Select
-    End Sub
+
+        Return bResultado
+    End Function
 
     Private Function GrabarFormulas() As Boolean
         Dim i As Integer
@@ -1067,6 +1083,64 @@ Busca:
 
     Private Sub chkInventariable_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs)
         txtTAB(e)
+    End Sub
+
+    Private Sub txtCodigoUnidadSAT_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCodigoUnidadSAT.KeyDown
+        Try
+            Dim sText As String, oUnidadSAT As Class_CFD_CatUnidades
+            Select Case e.KeyCode
+                Case Keys.F6
+Buscar:
+                    oUnidadSAT = New Class_CFD_CatUnidades
+                    sText = oUnidadSAT.BusquedaVisual_PorDescripcion
+                    If txtLEN(sText) = True Then Me.txtCodigoUnidadSAT.Text = sText
+                Case Keys.Enter
+                    If txtLEN(Me.txtCodigoUnidadSAT.Text) = False Then
+                        Me.lblCodigoUnidadSAT.Text = "" : GoTo Buscar : Exit Sub
+                    End If
+
+                    oUnidadSAT = New Class_CFD_CatUnidades(Me.txtCodigoUnidadSAT.Text)
+
+                    If oUnidadSAT.EXISTE = False Then
+                        Me.lblCodigoUnidadSAT.Text = "" : GoTo Buscar : Exit Sub
+                    Else
+                        Me.lblCodigoUnidadSAT.Text = oUnidadSAT.NOMBRE_UNIDAD
+                    End If
+
+                    txtTAB(e)
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Name, "txtCodigoUnidadSAT_KeyDown", ex)
+        End Try
+    End Sub
+
+    Private Sub txtClaveProductoSAT_KeyDown(sender As Object, e As KeyEventArgs) Handles txtClaveProductoSAT.KeyDown
+        Try
+            Dim sText As String, oProductoSAT As Class_CFD_CatProductosServicios
+            Select Case e.KeyCode
+                Case Keys.F6
+Buscar:
+                    oProductoSAT = New Class_CFD_CatProductosServicios
+                    sText = oProductoSAT.BusquedaVisual_PorDescripcion
+                    If txtLEN(sText) = True Then Me.txtClaveProductoSAT.Text = sText
+                Case Keys.Enter
+                    If txtLEN(Me.txtClaveProductoSAT.Text) = False Then
+                        Me.lblClaveProductoSAT.Text = "" : GoTo Buscar : Exit Sub
+                    End If
+
+                    oProductoSAT = New Class_CFD_CatProductosServicios(Me.txtClaveProductoSAT.Text)
+
+                    If oProductoSAT.EXISTE = False Then
+                        Me.lblClaveProductoSAT.Text = "" : GoTo Buscar : Exit Sub
+                    Else
+                        Me.lblClaveProductoSAT.Text = oProductoSAT.NOMBRE_PRODUCTO_SERVICIO
+                    End If
+
+                    txtTAB(e)
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Name, "txtClaveProductoSAT_KeyDown", ex)
+        End Try
     End Sub
 
 #End Region

@@ -192,11 +192,11 @@ Module FacturacionElectronica33
                 If oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
                     drPrecio = CDec(row("PRECIO_USD"))
                     drImporte = CDec(row("IMPORTE_USD"))
-                    drDescuento = 0
+                    drDescuento = CDec("0.00")
                 Else
                     drPrecio = CDec(row("PRECIO_TOTAL"))
                     drImporte = CDec(row("IMPORTE"))
-                    drDescuento = 0
+                    drDescuento = CDec("0.00")
 
                     If oVenta.CODIGO_MONEDA_SAT = "USD" Then
                         drPrecio = RedondearD(drPrecio / dTIPO_DE_CAMBIO, 3)

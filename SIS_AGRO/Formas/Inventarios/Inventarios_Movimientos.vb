@@ -591,7 +591,7 @@ busca:
                         GoTo BuscaArticulos
                     End If
 
-                    If oArticulos.Estatus = "B" Then
+                    If oArticulos.ESTATUS = "B" Then
                         oArticulos.CODIGO_ARTICULO = ""
                         oArticulos.DESCRIPCION = ""
                     End If
