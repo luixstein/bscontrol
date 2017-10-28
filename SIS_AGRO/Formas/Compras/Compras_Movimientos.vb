@@ -497,7 +497,8 @@ Buscar:
         Try
             Me.tsbNuevo.Enabled = False
             Me.txtSolicito.Enabled = False
-            Me.TxtConcepto.Enabled = False
+            'Me.TxtConcepto.Enabled = False
+            Me.TxtConcepto.ReadOnly = True
             Me.txtConCargoA.Enabled = False
             Me.txtPredio.Enabled = False
             Me.txtConfirmo.Enabled = False
@@ -706,7 +707,8 @@ Buscar:
                         Me.txtTipoCambio.Enabled = False
                         Me.txtPlazo.Enabled = True
                         'Me.TxtRetencion.Enabled = False
-                        Me.TxtConcepto.Enabled = False
+                        'Me.TxtConcepto.Enabled = False
+                        Me.TxtConcepto.ReadOnly = True
                         Me.txtConCargoA.Enabled = False
                         Me.txtPredio.Enabled = False
                         Me.txtConfirmo.Enabled = False
@@ -747,7 +749,8 @@ Buscar:
                         Me.txtTipoCambio.Enabled = False
                         Me.txtPlazo.Enabled = True
                         'Me.TxtRetencion.Enabled = True
-                        Me.TxtConcepto.Enabled = True
+                        'Me.TxtConcepto.Enabled = True
+                        Me.TxtConcepto.ReadOnly = False
                         Me.txtConCargoA.Enabled = True
                         Me.txtPredio.Enabled = True
                         Me.txtConfirmo.Enabled = True
@@ -799,7 +802,8 @@ Buscar:
                     Me.txtTipoCambio.Enabled = False
                     Me.txtPlazo.Enabled = True
                     'Me.TxtRetencion.Enabled = True
-                    Me.TxtConcepto.Enabled = True
+                    'Me.TxtConcepto.Enabled = True
+                    Me.TxtConcepto.ReadOnly = False
                     Me.Grid.Locked = False
                     Me.DtpFechaFacturaProveedor.Enabled = False
                     Me.BtnActualizaFolioProv.Visible = False
@@ -841,7 +845,8 @@ Buscar:
                     Me.txtTipoCambio.Enabled = False
                     Me.txtPlazo.Enabled = False
                     'Me.TxtRetencion.Enabled = False
-                    Me.TxtConcepto.Enabled = False
+                    'Me.TxtConcepto.Enabled = False
+                    Me.TxtConcepto.ReadOnly = True
                     Me.Grid.Locked = True
                     Me.GridSeries.Locked = True
                     If Me.oDocumento.AFECTA_CXP = True Then
@@ -886,7 +891,8 @@ Buscar:
                     Me.txtTipoCambio.Enabled = False
                     Me.txtPlazo.Enabled = False
                     'Me.TxtRetencion.Enabled = False
-                    Me.TxtConcepto.Enabled = False
+                    'Me.TxtConcepto.Enabled = False
+                    Me.TxtConcepto.ReadOnly = True
                     Me.Grid.Locked = True
                     Me.GridSeries.Locked = True
                     Me.DtpFechaFacturaProveedor.Enabled = False
@@ -909,7 +915,8 @@ Buscar:
 
                     Me.LblConceptoCancelacion.Visible = True
                     Me.TxtConceptoCancelacion.Visible = True
-                    Me.TxtConceptoCancelacion.Enabled = False
+                    'Me.TxtConceptoCancelacion.Enabled = False
+                    Me.TxtConceptoCancelacion.ReadOnly = True
 
             End Select
 
