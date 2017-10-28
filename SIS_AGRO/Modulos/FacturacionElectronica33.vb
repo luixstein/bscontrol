@@ -306,7 +306,7 @@ Module FacturacionElectronica33
         Try
 
             Dim i As Integer, j As Integer, c As Collection, X As Integer
-            Dim arrCount As Integer
+            Dim arrCount As Integer, bEncontrado As Boolean
 
             c = New Collection
 
@@ -328,18 +328,23 @@ Module FacturacionElectronica33
                             For X = 1 To arrCount
                                 If arr(X).TasaOCuota = Cfd.Conceptos.Item(i).Traslados.Item(j).TasaOCuota Then
                                     arr(X).Importe = (valorNumerico(arr(X).Importe) + valorNumerico(Cfd.Conceptos.Item(i).Traslados.Item(j).Importe)).ToString  'Son strings por eso el cast
+                                    bEncontrado = True
                                     Exit For
-                                Else
-                                    arrCount = arrCount + 1
-                                    ReDim Preserve arr(arrCount)
-
-                                    arr(arrCount) = New iImpuestosTraslado33
-                                    arr(arrCount).Impuesto = Cfd.Conceptos.Item(i).Traslados.Item(j).Impuesto
-                                    arr(arrCount).Importe = Cfd.Conceptos.Item(i).Traslados.Item(j).Importe
-                                    arr(arrCount).TasaOCuota = Cfd.Conceptos.Item(i).Traslados.Item(j).TasaOCuota
-                                    arr(arrCount).TipoFactor = Cfd.Conceptos.Item(i).Traslados.Item(j).TipoFactor
                                 End If
                             Next
+
+                            If bEncontrado = False Then
+                                arrCount = arrCount + 1
+                                ReDim Preserve arr(arrCount)
+
+                                arr(arrCount) = New iImpuestosTraslado33
+                                arr(arrCount).Impuesto = Cfd.Conceptos.Item(i).Traslados.Item(j).Impuesto
+                                arr(arrCount).Importe = Cfd.Conceptos.Item(i).Traslados.Item(j).Importe
+                                arr(arrCount).TasaOCuota = Cfd.Conceptos.Item(i).Traslados.Item(j).TasaOCuota
+                                arr(arrCount).TipoFactor = Cfd.Conceptos.Item(i).Traslados.Item(j).TipoFactor
+                            End If
+
+                            bEncontrado = False
                         End If
                     End If
                 Next
