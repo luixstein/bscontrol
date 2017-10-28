@@ -377,7 +377,7 @@ Partial Class Ventas_Movimientos
         '
         Me.TxtConcepto.Location = New System.Drawing.Point(112, 209)
         Me.TxtConcepto.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtConcepto.MaxLength = 160
+        Me.TxtConcepto.MaxLength = 120
         Me.TxtConcepto.Multiline = True
         Me.TxtConcepto.Name = "TxtConcepto"
         Me.TxtConcepto.Size = New System.Drawing.Size(721, 47)
