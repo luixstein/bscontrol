@@ -185,23 +185,26 @@ Module FacturacionElectronica33
             Dim ConceptoImpuestoTraslados As iConceptoImpuestoTraslados33
             'Dim ConceptoImpuestoRetenciones As iConceptoImpuestoRetenciones33
 
-            Dim drImporte As Decimal, drPrecio As Decimal, drDescuento As Decimal
-            Dim drBASE_IEPS As Decimal, drIEPS_IMPORTE As Decimal, drIEPS_PORCENTAJE As Decimal, drBASE_IVA As Decimal, drIMPUESTO_IMPORTE As Decimal
+            Dim drImporte As Decimal, drPrecio As Decimal, drCantidad As Decimal, drDESCUENTO_IMPORTE As Decimal, drIMPUESTO_PORCENTAJE As Decimal
+            Dim drBASE_IEPS As Decimal, drBASE_IVA As Decimal, drIMPUESTO_IMPORTE As Decimal, drIEPS_IMPORTE As Decimal, drIEPS_PORCENTAJE As Decimal
 
             For Each row As DataRow In oVenta.ObtenerDetalleParaCFDI.Rows
+                drCantidad = CDec(row("CANTIDAD").ToString)
+                drIMPUESTO_PORCENTAJE = CDec(row("IMPUESTO_PORCENTAJE").ToString) / CDec("100.00")
+                drIEPS_PORCENTAJE = CDec(row("IEPS_PORCENTAJE").ToString) / CDec("100.00")
                 If oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
                     drPrecio = CDec(row("PRECIO_USD").ToString)
                     drImporte = CDec(row("IMPORTE_USD").ToString)
-                    drDescuento = CDec(row("IMPORTE_USD").ToString)
+                    drDESCUENTO_IMPORTE = CDec(row("IMPORTE_USD").ToString)
                 Else
                     drPrecio = CDec(row("PRECIO_TOTAL").ToString)
                     drImporte = CDec(row("IMPORTE").ToString)
-                    drDescuento = CDec("0.00")
+                    drDESCUENTO_IMPORTE = CDec("0.00")
 
                     If oVenta.CODIGO_MONEDA_SAT = "USD" Then
                         drPrecio = RedondearD(drPrecio / dTIPO_DE_CAMBIO, 3)
                         drImporte = RedondearD(drImporte / dTIPO_DE_CAMBIO, 2)
-                        drDescuento = RedondearD(drDescuento / dTIPO_DE_CAMBIO, 2)
+                        drDESCUENTO_IMPORTE = RedondearD(drDESCUENTO_IMPORTE / dTIPO_DE_CAMBIO, 2)
                     End If
                 End If
 
@@ -209,11 +212,10 @@ Module FacturacionElectronica33
 
                 '003=IEPS,002=IVA
 
-                If oVenta.IEPS_TOTAL_DESGLOSADO > 0 Then 'Solamente si se le desglosan los ieps se mencionan, si es incluido no(como si no tuviera)
+                If oVenta.IEPS_TOTAL_DESGLOSADO > 0 Then 'Solamente si se le desglosan los ieps se mencionan, si es incluido no(como si no tuviera), por eso se pregunta por el total y no del renglón porque al ser inc si va tener ieps pero no es parte del xml
                     If CDec(row("IEPS_PORCENTAJE").ToString) > 0 Then 'Este viene como 6,7,9
                         drBASE_IEPS = CDec(row("BASE_IEPS").ToString)
                         drIEPS_IMPORTE = CDec(row("IEPS_IMPORTE").ToString)
-                        drIEPS_PORCENTAJE = CDec(row("IEPS_PORCENTAJE").ToString) / CDec("100.00")
 
                         If oVenta.CODIGO_MONEDA_SAT = "USD" Then
                             drBASE_IEPS = RedondearD(drBASE_IEPS / dTIPO_DE_CAMBIO, 2)
@@ -224,7 +226,7 @@ Module FacturacionElectronica33
                     End If
                 End If
 
-                If CDec(row("IMPUESTO_PORCENTAJE")) > 0 Then 'Este viene como 0.16 , no se ocupa divir entre 100
+                If drIMPUESTO_PORCENTAJE > 0 Then
                     drBASE_IVA = CDec(row("BASE_IVA").ToString)
                     drIMPUESTO_IMPORTE = CDec(row("IMPUESTO_IMPORTE").ToString)
 
@@ -233,22 +235,22 @@ Module FacturacionElectronica33
                         drIMPUESTO_IMPORTE = RedondearD(drIMPUESTO_IMPORTE / dTIPO_DE_CAMBIO, 2)
                     End If
 
-                    ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Tasa", Format(CDec(row("IMPUESTO_PORCENTAJE").ToString) / CDec("100.00"), "0.#00000"), Format(drIMPUESTO_IMPORTE, "##0.00"))
+                    ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Tasa", Format(drIMPUESTO_PORCENTAJE, "0.#00000"), Format(drIMPUESTO_IMPORTE, "##0.00"))
                 End If
 
                 Cfd.Conceptos.Add(row("CODIGO_PRODUCTO_SERVICIO").ToString, row("CODIGO_ARTICULO").ToString,
-                                  Format(row("CANTIDAD"), "##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CANTIDAD)),
+                                  Format(drCantidad, "##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CANTIDAD)),
                                   row("CODIGO_UNIDAD").ToString, row("UNIDAD_VENTA").ToString, fElectronicaValidaCampo(row("DESCRIPCION").ToString),
                                   Format(drPrecio, "##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)),
                                   Format(drImporte, "##0.00"),
-                                  Format(drDescuento, "##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CANTIDAD)), ConceptoImpuestoTraslados,)
+                                  IIf(drDESCUENTO_IMPORTE > 0, Format(drDESCUENTO_IMPORTE, "##0.00"), "").ToString, ConceptoImpuestoTraslados,)
             Next
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Impuestos'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Dim arr() As iImpuestosTraslado33, dImpuestoIEPSImporte As Decimal, dImpuestoIVAImporte As Decimal
 
             ''IEPS, deben acumularse, puede ser que mas de un artículo tenga el mismo % de ieps, de modo que aquí se juntan en uno sólo.
-            If oVenta.IEPS_TOTAL_DESGLOSADO > 0 Then 'Solamente si se le desglosan los ieps se mencionan, si es incluido no(como si no tuviera)
+            If oVenta.IEPS_TOTAL_DESGLOSADO > 0 Then 'Solamente si se le desglosan los ieps se mencionan, si es incluido no(como si no tuviera), por eso se pregunta por el total y no del renglón porque al ser inc si va tener ieps pero no es parte del xml
                 arr = ImpuestosTrasladoAgrupados(Cfd)
 
                 For i = 1 To UBound(arr)
