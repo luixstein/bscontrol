@@ -186,16 +186,16 @@ Module FacturacionElectronica33
             'Dim ConceptoImpuestoRetenciones As iConceptoImpuestoRetenciones33
 
             Dim drImporte As Decimal, drPrecio As Decimal, drDescuento As Decimal
-            Dim drBASE_IEPS As Decimal, drIEPS_IMPORTE As Decimal, drBASE_IVA As Decimal, drIMPUESTO_IMPORTE As Decimal
+            Dim drBASE_IEPS As Decimal, drIEPS_IMPORTE As Decimal, drIEPS_PORCENTAJE As Decimal, drBASE_IVA As Decimal, drIMPUESTO_IMPORTE As Decimal
 
             For Each row As DataRow In oVenta.ObtenerDetalleParaCFDI.Rows
                 If oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
-                    drPrecio = CDec(row("PRECIO_USD"))
-                    drImporte = CDec(row("IMPORTE_USD"))
-                    drDescuento = CDec("0.00")
+                    drPrecio = CDec(row("PRECIO_USD").ToString)
+                    drImporte = CDec(row("IMPORTE_USD").ToString)
+                    drDescuento = CDec(row("IMPORTE_USD").ToString)
                 Else
-                    drPrecio = CDec(row("PRECIO_TOTAL"))
-                    drImporte = CDec(row("IMPORTE"))
+                    drPrecio = CDec(row("PRECIO_TOTAL").ToString)
+                    drImporte = CDec(row("IMPORTE").ToString)
                     drDescuento = CDec("0.00")
 
                     If oVenta.CODIGO_MONEDA_SAT = "USD" Then
@@ -213,13 +213,14 @@ Module FacturacionElectronica33
                     If CDec(row("IEPS_PORCENTAJE").ToString) > 0 Then 'Este viene como 6,7,9
                         drBASE_IEPS = CDec(row("BASE_IEPS").ToString)
                         drIEPS_IMPORTE = CDec(row("IEPS_IMPORTE").ToString)
+                        drIEPS_PORCENTAJE = CDec(row("IEPS_PORCENTAJE").ToString) / CDec("100.00")
 
                         If oVenta.CODIGO_MONEDA_SAT = "USD" Then
                             drBASE_IEPS = RedondearD(drBASE_IEPS / dTIPO_DE_CAMBIO, 2)
                             drIEPS_IMPORTE = RedondearD(drIEPS_IMPORTE / dTIPO_DE_CAMBIO, 2)
                         End If
 
-                        ConceptoImpuestoTraslados.Add(drBASE_IEPS.ToString, "003", "Tasa", Format(CDec(row("IEPS_PORCENTAJE").ToString) / CDec("100.00"), "0.#00000"), drIEPS_IMPORTE.ToString)
+                        ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.00"), "003", "Tasa", Format(drIEPS_PORCENTAJE, "0.#00000"), Format(drIEPS_IMPORTE, "##0.00"))
                     End If
                 End If
 
@@ -232,11 +233,15 @@ Module FacturacionElectronica33
                         drIMPUESTO_IMPORTE = RedondearD(drIMPUESTO_IMPORTE / dTIPO_DE_CAMBIO, 2)
                     End If
 
-                    ConceptoImpuestoTraslados.Add(drBASE_IVA.ToString, "002", "Tasa", Format(CDec(row("IMPUESTO_PORCENTAJE").ToString) / CDec("100.00"), "0.#00000"), drIMPUESTO_IMPORTE.ToString)
+                    ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Tasa", Format(CDec(row("IMPUESTO_PORCENTAJE").ToString) / CDec("100.00"), "0.#00000"), Format(drIMPUESTO_IMPORTE, "##0.00"))
                 End If
 
-                Cfd.Conceptos.Add(row("CODIGO_PRODUCTO_SERVICIO").ToString, row("CODIGO_ARTICULO").ToString, row("CANTIDAD").ToString, row("CODIGO_UNIDAD").ToString, row("UNIDAD_VENTA").ToString, fElectronicaValidaCampo(row("DESCRIPCION").ToString),
-                                    drPrecio.ToString, drImporte.ToString, drDescuento.ToString, ConceptoImpuestoTraslados,)
+                Cfd.Conceptos.Add(row("CODIGO_PRODUCTO_SERVICIO").ToString, row("CODIGO_ARTICULO").ToString,
+                                  Format(row("CANTIDAD"), "##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CANTIDAD)),
+                                  row("CODIGO_UNIDAD").ToString, row("UNIDAD_VENTA").ToString, fElectronicaValidaCampo(row("DESCRIPCION").ToString),
+                                  Format(drPrecio, "##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)),
+                                  Format(drImporte, "##0.00"),
+                                  Format(drDescuento, "##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CANTIDAD)), ConceptoImpuestoTraslados,)
             Next
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Impuestos'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -251,7 +256,7 @@ Module FacturacionElectronica33
 
                     'Nota, no es necesario preguntar si es en USD y dividir por el tipo de cambio porque este valor se llena con el desglose x concepto el cual ya esta en USD
 
-                    Cfd.Impuestos.Traslados.Add(arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIEPSImporte, "#0.00"))
+                    Cfd.Impuestos.Traslados.Add(arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIEPSImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
                 Next
             End If
 
