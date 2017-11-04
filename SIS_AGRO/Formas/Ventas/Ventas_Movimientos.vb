@@ -719,7 +719,7 @@ Buscar:
             Me.oVenta.CODIGO_DOCUMENTO = Me.CboDocumento.SelectedValue.ToString
             Me.GeneraFolio()
 
-            Me.DesplegarFormasPago(True)
+            Me.DesplegarFormasPago(False)
             Me.EstableceMetodoPago()
 
             Me.dtSeries = New DataTable("Series")
@@ -2437,17 +2437,17 @@ CANCELAR:
         End Try
     End Sub
 
-    Private Sub DesplegarFormasPago(ByVal bSoloActivos As Boolean)
+    Private Sub DesplegarFormasPago(ByVal bTodos As Boolean)
         'Dim dViewFormasPago As New Data.DataView
         Try
             With Me.cboFormaPago
                 .DisplayMember = "NOMBRE_METODO_PAGO"
                 .ValueMember = "CODIGO_METODO_PAGO"
 
-                If bSoloActivos = True Then
-                    dViewFormasPago = New Data.DataView(dtFormasPagoActivas)
-                Else
+                If bTodos = True Then
                     dViewFormasPago = New Data.DataView(dtFormasPagoTodas)
+                Else
+                    dViewFormasPago = New Data.DataView(dtFormasPagoActivas)
                 End If
 
                 .DataSource = dViewFormasPago
@@ -2634,7 +2634,7 @@ CANCELAR:
                 Me.CboDocumento.Enabled = False
                 Return False
             Else
-                Me.DesplegarFormasPago(False) 'Para forzar a que muestre todos incluso los que están dados de baja porque al consultarlos fallaria si no estuvieran.
+                Me.DesplegarFormasPago(True) 'Para forzar a que muestre todos incluso los que están dados de baja porque al consultarlos fallaria si no estuvieran.
 
                 If sTipoVenta = "NM" Then
                     Me.CboDocumento.SelectedValue = Me.oVenta.CODIGO_DOCUMENTO
@@ -2680,7 +2680,7 @@ CANCELAR:
                 Me.CboAlmacen.SelectedValue = Me.oVenta.CODIGO_ALMACEN
                 Me.cboVendedor.SelectedValue = Me.oVenta.CODIGO_VENDEDOR
 
-                'AgregaFormaPago99
+                'AgregaFormaPago99 'Así esta en vb6, pero aquí facilmente se quita el filtro y aparecerá el 99
                 dViewFormasPago.RowFilter = ""
 
                 Me.cboFormaPago.SelectedValue = Me.oVenta.CODIGO_METODO_PAGO
