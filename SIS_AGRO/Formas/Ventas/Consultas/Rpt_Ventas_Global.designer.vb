@@ -51,6 +51,8 @@ Partial Class Rpt_Ventas_Global
         Me.DtFechaDesde = New System.Windows.Forms.DateTimePicker()
         Me.LblEstatus = New System.Windows.Forms.Label()
         Me.CboEstatus = New System.Windows.Forms.ComboBox()
+        Me.LblVendedor = New System.Windows.Forms.Label()
+        Me.CboVendedores = New System.Windows.Forms.ComboBox()
         Me.ToolStrip1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -88,9 +90,9 @@ Partial Class Rpt_Ventas_Global
         Me.GroupBox1.Controls.Add(Me.RdnListadoDesagrupado)
         Me.GroupBox1.Controls.Add(Me.RdnPorCliente)
         Me.GroupBox1.Location = New System.Drawing.Point(16, 34)
-        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Size = New System.Drawing.Size(267, 123)
         Me.GroupBox1.TabIndex = 3
         Me.GroupBox1.TabStop = False
@@ -100,7 +102,7 @@ Partial Class Rpt_Ventas_Global
         '
         Me.RndTotalizadoPorCliente.AutoSize = True
         Me.RndTotalizadoPorCliente.Location = New System.Drawing.Point(21, 81)
-        Me.RndTotalizadoPorCliente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RndTotalizadoPorCliente.Margin = New System.Windows.Forms.Padding(4)
         Me.RndTotalizadoPorCliente.Name = "RndTotalizadoPorCliente"
         Me.RndTotalizadoPorCliente.Size = New System.Drawing.Size(165, 21)
         Me.RndTotalizadoPorCliente.TabIndex = 2
@@ -112,7 +114,7 @@ Partial Class Rpt_Ventas_Global
         Me.RdnListadoDesagrupado.AutoSize = True
         Me.RdnListadoDesagrupado.Checked = True
         Me.RdnListadoDesagrupado.Location = New System.Drawing.Point(21, 27)
-        Me.RdnListadoDesagrupado.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RdnListadoDesagrupado.Margin = New System.Windows.Forms.Padding(4)
         Me.RdnListadoDesagrupado.Name = "RdnListadoDesagrupado"
         Me.RdnListadoDesagrupado.Size = New System.Drawing.Size(176, 21)
         Me.RdnListadoDesagrupado.TabIndex = 1
@@ -124,7 +126,7 @@ Partial Class Rpt_Ventas_Global
         '
         Me.RdnPorCliente.AutoSize = True
         Me.RdnPorCliente.Location = New System.Drawing.Point(21, 53)
-        Me.RdnPorCliente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RdnPorCliente.Margin = New System.Windows.Forms.Padding(4)
         Me.RdnPorCliente.Name = "RdnPorCliente"
         Me.RdnPorCliente.Size = New System.Drawing.Size(161, 21)
         Me.RdnPorCliente.TabIndex = 0
@@ -133,6 +135,8 @@ Partial Class Rpt_Ventas_Global
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.CboVendedores)
+        Me.GroupBox2.Controls.Add(Me.LblVendedor)
         Me.GroupBox2.Controls.Add(Me.LblDisplayZona)
         Me.GroupBox2.Controls.Add(Me.CboZona)
         Me.GroupBox2.Controls.Add(Me.CboMercado)
@@ -154,10 +158,10 @@ Partial Class Rpt_Ventas_Global
         Me.GroupBox2.Controls.Add(Me.LblEstatus)
         Me.GroupBox2.Controls.Add(Me.CboEstatus)
         Me.GroupBox2.Location = New System.Drawing.Point(291, 34)
-        Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
-        Me.GroupBox2.Size = New System.Drawing.Size(679, 378)
+        Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4)
+        Me.GroupBox2.Size = New System.Drawing.Size(679, 383)
         Me.GroupBox2.TabIndex = 4
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Filtros"
@@ -178,7 +182,7 @@ Partial Class Rpt_Ventas_Global
         Me.CboZona.FormattingEnabled = True
         Me.CboZona.Items.AddRange(New Object() {"A", "B"})
         Me.CboZona.Location = New System.Drawing.Point(136, 279)
-        Me.CboZona.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboZona.Margin = New System.Windows.Forms.Padding(4)
         Me.CboZona.MaxLength = 1
         Me.CboZona.Name = "CboZona"
         Me.CboZona.Size = New System.Drawing.Size(165, 24)
@@ -189,7 +193,7 @@ Partial Class Rpt_Ventas_Global
         Me.CboMercado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboMercado.FormattingEnabled = True
         Me.CboMercado.Location = New System.Drawing.Point(136, 313)
-        Me.CboMercado.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboMercado.Margin = New System.Windows.Forms.Padding(4)
         Me.CboMercado.Name = "CboMercado"
         Me.CboMercado.Size = New System.Drawing.Size(408, 24)
         Me.CboMercado.TabIndex = 390
@@ -209,7 +213,7 @@ Partial Class Rpt_Ventas_Global
         Me.CboTipoDocumento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboTipoDocumento.FormattingEnabled = True
         Me.CboTipoDocumento.Location = New System.Drawing.Point(136, 188)
-        Me.CboTipoDocumento.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboTipoDocumento.Margin = New System.Windows.Forms.Padding(4)
         Me.CboTipoDocumento.Name = "CboTipoDocumento"
         Me.CboTipoDocumento.Size = New System.Drawing.Size(408, 24)
         Me.CboTipoDocumento.TabIndex = 385
@@ -219,7 +223,7 @@ Partial Class Rpt_Ventas_Global
         Me.CboAlmacen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboAlmacen.FormattingEnabled = True
         Me.CboAlmacen.Location = New System.Drawing.Point(136, 159)
-        Me.CboAlmacen.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboAlmacen.Margin = New System.Windows.Forms.Padding(4)
         Me.CboAlmacen.Name = "CboAlmacen"
         Me.CboAlmacen.Size = New System.Drawing.Size(408, 24)
         Me.CboAlmacen.TabIndex = 384
@@ -229,7 +233,7 @@ Partial Class Rpt_Ventas_Global
         Me.CboNegociacion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboNegociacion.FormattingEnabled = True
         Me.CboNegociacion.Location = New System.Drawing.Point(136, 218)
-        Me.CboNegociacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboNegociacion.Margin = New System.Windows.Forms.Padding(4)
         Me.CboNegociacion.Name = "CboNegociacion"
         Me.CboNegociacion.Size = New System.Drawing.Size(408, 24)
         Me.CboNegociacion.TabIndex = 386
@@ -276,7 +280,7 @@ Partial Class Rpt_Ventas_Global
         'TxtCliente
         '
         Me.TxtCliente.Location = New System.Drawing.Point(87, 121)
-        Me.TxtCliente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCliente.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCliente.MaxLength = 8
         Me.TxtCliente.Name = "TxtCliente"
         Me.TxtCliente.Size = New System.Drawing.Size(95, 22)
@@ -296,7 +300,7 @@ Partial Class Rpt_Ventas_Global
         '
         Me.CkbSaldo.AutoSize = True
         Me.CkbSaldo.Location = New System.Drawing.Point(68, 85)
-        Me.CkbSaldo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CkbSaldo.Margin = New System.Windows.Forms.Padding(4)
         Me.CkbSaldo.Name = "CkbSaldo"
         Me.CkbSaldo.Size = New System.Drawing.Size(281, 21)
         Me.CkbSaldo.TabIndex = 380
@@ -317,7 +321,7 @@ Partial Class Rpt_Ventas_Global
         '
         Me.DtFechaHasta.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.DtFechaHasta.Location = New System.Drawing.Point(136, 53)
-        Me.DtFechaHasta.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.DtFechaHasta.Margin = New System.Windows.Forms.Padding(4)
         Me.DtFechaHasta.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.DtFechaHasta.Name = "DtFechaHasta"
         Me.DtFechaHasta.Size = New System.Drawing.Size(116, 22)
@@ -338,7 +342,7 @@ Partial Class Rpt_Ventas_Global
         '
         Me.DtFechaDesde.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.DtFechaDesde.Location = New System.Drawing.Point(136, 22)
-        Me.DtFechaDesde.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.DtFechaDesde.Margin = New System.Windows.Forms.Padding(4)
         Me.DtFechaDesde.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.DtFechaDesde.Name = "DtFechaDesde"
         Me.DtFechaDesde.Size = New System.Drawing.Size(116, 22)
@@ -361,22 +365,42 @@ Partial Class Rpt_Ventas_Global
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"A", "B"})
         Me.CboEstatus.Location = New System.Drawing.Point(136, 249)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(408, 24)
         Me.CboEstatus.TabIndex = 374
         '
+        'LblVendedor
+        '
+        Me.LblVendedor.AutoSize = True
+        Me.LblVendedor.Location = New System.Drawing.Point(15, 348)
+        Me.LblVendedor.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblVendedor.Name = "LblVendedor"
+        Me.LblVendedor.Size = New System.Drawing.Size(78, 17)
+        Me.LblVendedor.TabIndex = 394
+        Me.LblVendedor.Text = "Vendedor :"
+        '
+        'CboVendedores
+        '
+        Me.CboVendedores.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboVendedores.FormattingEnabled = True
+        Me.CboVendedores.Location = New System.Drawing.Point(136, 345)
+        Me.CboVendedores.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboVendedores.Name = "CboVendedores"
+        Me.CboVendedores.Size = New System.Drawing.Size(408, 24)
+        Me.CboVendedores.TabIndex = 395
+        '
         'Rpt_Ventas_Global
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(983, 427)
+        Me.ClientSize = New System.Drawing.Size(983, 430)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.ToolStrip1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Rpt_Ventas_Global"
         Me.Text = "Global de ventas"
@@ -418,4 +442,6 @@ Partial Class Rpt_Ventas_Global
     Friend WithEvents LblDisplayMercado As System.Windows.Forms.Label
     Friend WithEvents LblDisplayZona As System.Windows.Forms.Label
     Friend WithEvents CboZona As System.Windows.Forms.ComboBox
+    Friend WithEvents CboVendedores As System.Windows.Forms.ComboBox
+    Friend WithEvents LblVendedor As System.Windows.Forms.Label
 End Class

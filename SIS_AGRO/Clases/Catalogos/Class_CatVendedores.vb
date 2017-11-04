@@ -303,6 +303,20 @@ Public Class Class_CatVendedores
         Return dTable
     End Function
 
+    Public Function ObtenerVendedoresParaReportes() As System.Data.DataTable
+        Dim dTable As New DataTable
+        Dim da As New SqlDataAdapter("SELECT CODIGO_VENDEDOR,NOMBRE_VENDEDOR FROM CAT_VENDEDORES ", Me._Conexion)
+        Try
+            da.Fill(dTable)
+            dTable.Rows.Add(0, "TODOS")
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ObtenerVendedoresParaReportes", ex)
+        Finally
+            da.Dispose()
+        End Try
+        Return dTable
+    End Function
+
     Public Overrides Function BusquedaVisual_PorCodigo() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""

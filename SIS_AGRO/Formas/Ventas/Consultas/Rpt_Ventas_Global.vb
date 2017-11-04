@@ -132,6 +132,23 @@ Buscar:
         End Try
     End Sub
 
+    Private Sub DesplegarVendedores()
+        Dim oVendedores As New Class_CatVendedores
+        Try
+            With Me.CboVendedores
+                .DisplayMember = "NOMBRE_VENDEDOR"
+                .ValueMember = "CODIGO_VENDEDOR"
+
+                Dim dView As New Data.DataView(oVendedores.ObtenerVendedoresParaReportes)
+                dView.Sort = "NOMBRE_VENDEDOR"
+                .DataSource = dView
+                .SelectedValue = 0
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarVendedores", ex)
+        End Try
+    End Sub
+
     Private Sub Rpt_Embarques_Empaque_Y_Embarque_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.DesplegarAlmacen()
         Me.DesplegarEstatusVentas()
@@ -139,10 +156,14 @@ Buscar:
         Me.DesplegarNegociacion()
         Me.DesplegarMercados()
         Me.DesplegarZonas()
+        Me.DesplegarVendedores()
 
         Me.CboEstatus.SelectedValue = "A"
         Me.DtFechaDesde.Value = FechaActualINI()
         Me.DtFechaHasta.Value = Date.Now
+
+        Me.CboVendedores.Visible = False
+        Me.LblVendedor.Visible = False
     End Sub
 
     Private Sub tsbConsultar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbConsultar.Click
@@ -200,6 +221,7 @@ Buscar:
             Rpt.SetParameterValue("@CODIGO_TIPO_MERCADO", Me.CboMercado.SelectedValue.ToString)
             Rpt.SetParameterValue("@CODIGO_TIPO_NEGOCIACION", Me.CboNegociacion.SelectedValue.ToString)
             Rpt.SetParameterValue("@MOSTAR_CON_SALDO", IIf(Me.CkbSaldo.Checked = True, "1", "0"))
+            Rpt.SetParameterValue("@CODIGO_VENDEDOR", Me.CboVendedores.SelectedValue)
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
@@ -236,6 +258,17 @@ Buscar:
 
     Private Sub tsbSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSalir.Click
         Me.Close()
+    End Sub
+
+    Private Sub RdnPorCliente_CheckedChanged(sender As Object, e As EventArgs) Handles RdnPorCliente.CheckedChanged
+        If Me.RdnPorCliente.Checked = True Then
+            Me.CboVendedores.Visible = True
+            Me.LblVendedor.Visible = True
+        Else
+            Me.CboVendedores.Visible = False
+            Me.LblVendedor.Visible = False
+        End If
+
     End Sub
 
 End Class
