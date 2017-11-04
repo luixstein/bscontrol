@@ -281,6 +281,13 @@ Public Class Ventas_Movimientos
         End Try
     End Sub
 
+    Private Sub Ventas_Movimientos_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
+        ''If e.KeyCode = Keys.A  AndAlso (e.Control) Then
+        'If e.Alt = True AndAlso e.Control = True AndAlso e.Shift = True AndAlso e.KeyCode = Keys.A Then
+        '    MsgBox("eale")
+        'End If
+    End Sub
+
     Private Sub TxtCodigoCliente_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCliente.KeyDown
         Dim sText As String
         Select Case e.KeyCode
@@ -728,6 +735,12 @@ Buscar:
 
             Me.TabControl1.SelectedIndex = 0
             Me.bClienteEsContribuyenteIEPS = False
+
+            If dViewFormasPago.Count > 0 And Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
+                Me.cboFormaPago.SelectedValue = "NA"
+            End If
+
+            Me.lblVersionCFDI.Text = ""
 
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
@@ -2437,29 +2450,6 @@ CANCELAR:
         End Try
     End Sub
 
-    Private Sub DesplegarFormasPago(ByVal bTodos As Boolean)
-        'Dim dViewFormasPago As New Data.DataView
-        Try
-            With Me.cboFormaPago
-                .DisplayMember = "NOMBRE_METODO_PAGO"
-                .ValueMember = "CODIGO_METODO_PAGO"
-
-                If bTodos = True Then
-                    dViewFormasPago = New Data.DataView(dtFormasPagoTodas)
-                Else
-                    dViewFormasPago = New Data.DataView(dtFormasPagoActivas)
-                End If
-
-                .DataSource = dViewFormasPago
-                If dViewFormasPago.Count > 0 And Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
-                    .SelectedValue = "NA" '01=EFECTIVO
-                End If
-            End With
-        Catch ex As Exception
-            HandleError(Me.Name, "DesplegarFormasPago", ex)
-        End Try
-    End Sub
-
     Private Sub Totales()
         Try
             Dim i As Integer, dCantidad As Decimal, dPrecio As Decimal, dPrecioOriginal As Decimal, dPorcentajeIVA As Decimal, dImporte As Decimal, dImporteSustitucion As Decimal, iIDOrigen As Integer = 0, dImporteTotal As Double = 0
@@ -2634,6 +2624,8 @@ CANCELAR:
                 Me.CboDocumento.Enabled = False
                 Return False
             Else
+                Me.lblVersionCFDI.Text = "" & oVenta.VERSION_ESQUEMA_XML
+
                 Me.DesplegarFormasPago(True) 'Para forzar a que muestre todos incluso los que están dados de baja porque al consultarlos fallaria si no estuvieran.
 
                 If sTipoVenta = "NM" Then
@@ -2666,7 +2658,7 @@ CANCELAR:
                 Me.lblIEPS.Text = FormatImporteContable(Me.oVenta.IEPS_TOTAL_DESGLOSADO)
                 Me.lblIEPSIncluido.Text = FormatImporteContable(Me.oVenta.IEPS_TOTAL_YA_INCLUIDO)
 
-                Me.cboMoneda.Text = Me.oVenta.CODIGO_MONEDA_SAT
+                Me.cboMoneda.Text = Me.oVenta.CODIGO_MONEDA_SAT 'Nota debe llenarse primero la moneda porque tiene evento change que llena la forma de pago segpun el cte, y asi se consulta correcto.
                 Me.txtTipoCambio.Text = Me.oVenta.TIPO_DE_CAMBIO.ToString
 
                 If Me.oVenta.TIPO_DE_CAMBIO > 0 Then
@@ -2736,7 +2728,7 @@ CANCELAR:
                 End Select
 
                 If txtLEN("" & Me.oVenta.CODIGO_USO_CFDI) = True Then
-                    Me.cboUsoCFDI.SelectedValue = Me.oCliente.CODIGO_USO_CFDI
+                    Me.cboUsoCFDI.SelectedValue = Me.oVenta.CODIGO_USO_CFDI
                 End If
             End If
 
@@ -3589,11 +3581,22 @@ busca_serie:
         Return bResultado
     End Function
 
-    Private Sub Ventas_Movimientos_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
-        ''If e.KeyCode = Keys.A  AndAlso (e.Control) Then
-        'If e.Alt = True AndAlso e.Control = True AndAlso e.Shift = True AndAlso e.KeyCode = Keys.A Then
-        '    MsgBox("eale")
-        'End If
+    Private Sub DesplegarFormasPago(ByVal bTodos As Boolean)
+        'Dim dViewFormasPago As New Data.DataView
+        Try
+            With Me.cboFormaPago
+                .DisplayMember = "NOMBRE_METODO_PAGO"
+                .ValueMember = "CODIGO_METODO_PAGO"
+
+                If bTodos = True Then
+                    dViewFormasPago = New Data.DataView(dtFormasPagoTodas)
+                Else
+                    dViewFormasPago = New Data.DataView(dtFormasPagoActivas)
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarFormasPago", ex)
+        End Try
     End Sub
 
     Private Sub DesplegarMetodosPago()

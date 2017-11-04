@@ -793,10 +793,10 @@ Partial Class Ventas_Movimientos
         'lblVersionCFDI
         '
         Me.lblVersionCFDI.AutoSize = True
-        Me.lblVersionCFDI.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblVersionCFDI.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblVersionCFDI.Location = New System.Drawing.Point(931, 169)
         Me.lblVersionCFDI.Name = "lblVersionCFDI"
-        Me.lblVersionCFDI.Size = New System.Drawing.Size(45, 25)
+        Me.lblVersionCFDI.Size = New System.Drawing.Size(34, 20)
         Me.lblVersionCFDI.TabIndex = 383
         Me.lblVersionCFDI.Text = "0.0"
         '
