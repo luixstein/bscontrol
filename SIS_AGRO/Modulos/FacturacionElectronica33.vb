@@ -368,12 +368,10 @@ Module FacturacionElectronica33
         Const sProcedure As String = "FormatTipoCambio"
         Dim sResultado As String = ""
         Try
-            sResultado = Format(dTipoCambio, "#0.000000")
-
             If bConSignoMoneda = True Then
-                sResultado = Format(dTipoCambio, "$ ###,###,##0." & CerosEnCadena(6))
+                sResultado = Format(dTipoCambio, "$ ##0." & CerosEnCadena(4))
             Else
-                sResultado = Format(dTipoCambio, "###,###,##0." & CerosEnCadena(6))
+                sResultado = Format(dTipoCambio, "##0." & CerosEnCadena(4))
             End If
 
         Catch ex As Exception
