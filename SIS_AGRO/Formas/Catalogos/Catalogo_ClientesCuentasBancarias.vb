@@ -215,18 +215,25 @@ Buscar:
                 End If
                 oBanco = Nothing
 
-                If Me.cboFormaPago.SelectedValue.ToString = "02" Then '02=CHEQUE NOMINATIVO
-                    If txtLEN(Me.txtCuentaEmisor.Text) = False Then
-                        MsgBox("Asígne la cuenta del emisor.", vbExclamation, Me.Name)
-                        Me.txtCuentaEmisor.Focus()
-                        Return False
-                    End If
-                End If
-            End If
-            'si es transferencia la cuenta emisor es opcional
+                'If Me.cboFormaPago.SelectedValue.ToString = "02" Then '02=CHEQUE NOMINATIVO
+                '    If txtLEN(Me.txtCuentaEmisor.Text) = False Then
+                '        MsgBox("Asígne la cuenta del emisor.", vbExclamation, Me.Name)
+                '        Me.txtCuentaEmisor.Focus()
+                '        Return False
+                '    End If
+                'End If
 
+                If txtLEN(Me.txtCuentaEmisor.Text) = False Then
+                    MsgBox("Asígne la cuenta del emisor.", vbExclamation, Me.Name)
+                    Me.txtCuentaEmisor.Focus()
+                    Return False
+                End If
+
+            End If
+
+            'si es transferencia la cuenta emisor es opcional(en la contabilidad electrónica, aunque en el complemento de pagos es opcional, es una ambiguedad por eso se pide como oblitario en ch/tr)
             If txtLEN(Me.txtCuentaEmisor.Text) = True And Len(Me.txtCuentaEmisor.Text) < 10 Then
-                MsgBox("La cuenta del emisor debe ser de mínimamente de 10 dígitos, si no la tiene puede dejarla en blanco.", vbExclamation, Me.Name)
+                MsgBox("La cuenta del emisor debe ser de mínimamente de 10 dígitos, si no la tiene puede dejarla en blanco(cuando no es ch/tr).", vbExclamation, Me.Name)
                 Return False
             End If
 

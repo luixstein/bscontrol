@@ -3119,16 +3119,16 @@ buscaCentrosCostos:
                 Select Case Me.cboMoneda.Text
                     Case "MXN"
                         Me.cboFormaPago.SelectedValue = Me.oCliente.CODIGO_METODO_PAGO
+                        Me.txtNumeroCuentaPago.Text = Me.oCliente.NUMERO_CUENTA_PAGO
                     Case "USD"
                         If txtLEN("" & Me.oCliente.CODIGO_METODO_PAGO_DOLARES) = True Then
                             Me.cboFormaPago.SelectedValue = Me.oCliente.CODIGO_METODO_PAGO_DOLARES
+                            Me.txtNumeroCuentaPago.Text = Me.oCliente.NUMERO_CUENTA_PAGO_DOLARES
                         Else
                             Me.cboFormaPago.SelectedIndex = -1
                         End If
                 End Select
             End If
-
-            Me.txtNumeroCuentaPago.Text = Me.oCliente.NUMERO_CUENTA_PAGO.ToString
 
             Select Case Me.oCliente.TIPO_PERSONA
                 Case "F"
@@ -3692,8 +3692,10 @@ busca_serie:
             Select Case Me.cboMoneda.Text
                 Case "MXN"
                     Me.cboFormaPago.SelectedValue = oCliente.CODIGO_METODO_PAGO
+                    Me.txtNumeroCuentaPago.Text = oCliente.NUMERO_CUENTA_PAGO
                 Case "USD"
                     Me.cboFormaPago.SelectedValue = oCliente.CODIGO_METODO_PAGO_DOLARES
+                    Me.txtNumeroCuentaPago.Text = oCliente.NUMERO_CUENTA_PAGO_DOLARES
             End Select
         Catch ex As Exception
             HandleError(Me.Name, "EstableceFormaPagoCliente", ex)
