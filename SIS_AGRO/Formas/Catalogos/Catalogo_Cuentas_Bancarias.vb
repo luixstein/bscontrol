@@ -1,7 +1,6 @@
 Option Strict On
-Imports System.Data
+
 Imports System.Data.SqlClient
-Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Catalogo_Cuentas_Bancarias
     Private oProveedor As New Class_CatProveedores
@@ -127,7 +126,6 @@ Public Class Catalogo_Cuentas_Bancarias
             Estado = enumEstados.CONSULTA
             Me.Cambia_Estado()
             Me.DesplegarElementos()
-            Me.DesplegarCboCodigoMoneda()
             'Me.Run = True
             Me.CboEstatus.SelectedIndex = 0
         Catch ex As Exception
@@ -197,7 +195,6 @@ Public Class Catalogo_Cuentas_Bancarias
 #Region "Métodos y procedimientos"
     Private Sub Refrescar()
         Me.DesplegarElementos()
-        Me.DesplegarCboCodigoMoneda()
     End Sub
 
     Private Sub Cambia_Estado()
@@ -265,26 +262,30 @@ Public Class Catalogo_Cuentas_Bancarias
     End Sub
 
     Private Sub InicializaElemento()
-        Me.TxtIDCuenta.Text = CodigoSiguiente().ToString
-        Me.TxtNombreCuenta.Text = ""
-        Me.TxtNumeroCuenta.Text = ""
-        Me.TxtSucursal.Text = ""
-        Me.TxtTelefono.Text = ""
-        Me.TxtBanco.Text = ""
-        Me.LblBanco.Text = ""
-        Me.TxtSaldo.Text = ""
-        Me.TxtFolioCheque.Text = ""
-        Me.txtCuentaContable.Text = ""
-        Me.txtCuentaContableDolares.Text = ""
-        Me.LblCuenta.Text = ""
-        Me.LblCuentaDolares.Text = ""
-        Me.TxtFormatoReporte.Text = ""
-        Me.CboEstatus.SelectedIndex = 0
-        Me.TxtCodigoProveedor.Text = "" 'oProveedor.CodigoSiguiente
-        Me.TxtCodigoProveedor.Enabled = False
-        Me.txtCuentaContable.Enabled = False
-        Me.LblNombreProveedor.Text = ""
-        Me.CboCodigoMoneda.SelectedIndex = 0
+        Try
+            Me.TxtIDCuenta.Text = CodigoSiguiente().ToString
+            Me.cboMoneda.Text = "MXN"
+            Me.TxtNombreCuenta.Text = ""
+            Me.TxtNumeroCuenta.Text = ""
+            Me.TxtSucursal.Text = ""
+            Me.TxtTelefono.Text = ""
+            Me.TxtBanco.Text = ""
+            Me.LblBanco.Text = ""
+            Me.TxtSaldo.Text = ""
+            Me.TxtFolioCheque.Text = ""
+            Me.txtCuentaContable.Text = ""
+            Me.txtCuentaContableDolares.Text = ""
+            Me.LblCuenta.Text = ""
+            Me.LblCuentaDolares.Text = ""
+            Me.TxtFormatoReporte.Text = ""
+            Me.CboEstatus.SelectedIndex = 0
+            Me.TxtCodigoProveedor.Text = "" 'oProveedor.CodigoSiguiente
+            Me.TxtCodigoProveedor.Enabled = False
+            Me.txtCuentaContable.Enabled = False
+            Me.LblNombreProveedor.Text = ""
+        Catch ex As Exception
+            HandleError(Me.Name, "InicializaElemento", ex)
+        End Try
     End Sub
 
     Private Sub DesplegarElementos()
@@ -300,24 +301,6 @@ Public Class Catalogo_Cuentas_Bancarias
         End Try
     End Sub
 
-    Private Sub DesplegarCboCodigoMoneda()
-        Try
-            Dim oElementos As New Class_CatMonedas
-            With Me.CboCodigoMoneda
-                .DisplayMember = "NOMBRE"
-                .ValueMember = "CODIGO_MONEDA"
-                Dim dView As New Data.DataView(oElementos.ObtenerElementos)
-                dView.Sort = "CODIGO_MONEDA"
-                .DataSource = dView
-                If dView.Count > 0 Then
-                    .SelectedIndex = 0
-                End If
-            End With
-        Catch ex As Exception
-            HandleError(Me.Name, "DesplegarCboCodigoMoneda", ex)
-        End Try
-    End Sub
-
     Private Sub LlenaElemento(ByVal iCodigo_Elemento As Integer)
         Try
             Dim oElemento As New Class_CatCuentasBancarias
@@ -325,6 +308,7 @@ Public Class Catalogo_Cuentas_Bancarias
             If oElemento.Consultar Then
                 With oElemento
                     Me.TxtIDCuenta.Text = .ID_CUENTA_BANCARIA.ToString
+                    Me.cboMoneda.Text = .CODIGO_MONEDA_SAT
                     Me.TxtNombreCuenta.Text = .NOMBRE_CUENTA_BANCARIA.ToString
                     Me.TxtNumeroCuenta.Text = .NUMERO_CUENTA_BANCARIA
                     Me.TxtSucursal.Text = .SUCURSAL
@@ -353,7 +337,6 @@ Public Class Catalogo_Cuentas_Bancarias
                         Me.LblCuentaDolares.Text = ""
                     End If
 
-                    Me.CboCodigoMoneda.SelectedValue = .CODIGO_MONEDA
                     Me.TxtFormatoReporte.Text = .NOMBRE_FORMATO
                     If .ESTATUS_CUENTA_BANCARIA = "A" Then
                         Me.CboEstatus.SelectedIndex = 0
@@ -414,10 +397,11 @@ Public Class Catalogo_Cuentas_Bancarias
 
     End Function
 
-    Private Sub Grabar_Elemento()
+    Private Function Grabar_Elemento() As Boolean
+        Dim bResultado As Boolean = False
 
         If Me.Validar() = False Then
-            Exit Sub
+            Return False
         End If
 
         Dim oElemento As New Class_CatCuentasBancarias
@@ -429,6 +413,7 @@ Public Class Catalogo_Cuentas_Bancarias
                 Try
                     With oElemento
                         .ID_CUENTA_BANCARIA = CInt(0 & Me.TxtIDCuenta.Text)
+                        .CODIGO_MONEDA_SAT = Me.cboMoneda.Text
                         .NOMBRE_CUENTA_BANCARIA = Me.TxtNombreCuenta.Text
                         .SUCURSAL = Me.TxtSucursal.Text
                         .NUMERO_CUENTA_BANCARIA = Me.TxtNumeroCuenta.Text
@@ -441,7 +426,7 @@ Public Class Catalogo_Cuentas_Bancarias
                         .NOMBRE_FORMATO = Me.TxtFormatoReporte.Text
                         .ESTATUS_CUENTA_BANCARIA = Strings.Left(Me.CboEstatus.Text, 1)
                         .CODIGO_PROVEEDOR = Me.TxtCodigoProveedor.Text
-                        .CODIGO_MONEDA = (Me.CboCodigoMoneda.SelectedValue).ToString
+
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 'If GrabaProveedor() = True Then
@@ -449,7 +434,7 @@ Public Class Catalogo_Cuentas_Bancarias
                                 '    oProveedor.Consultar()
                                 '    .CUENTA_CONTABLE_PESOS = oProveedor.CUENTA_CONTABLE
                                 If .Insertar() Then
-                                    Grabado = True
+                                    bResultado = True
                                     Me.Estado = enumEstados.NUEVO
                                     oProveedor = Nothing
                                 End If
@@ -457,12 +442,12 @@ Public Class Catalogo_Cuentas_Bancarias
 
                             Case enumEstados.EDICION
                                 If .Actualizar() Then
-                                    Grabado = True
+                                    bResultado = True
                                     Me.Estado = enumEstados.CONSULTA
                                 End If
                         End Select
 
-                        If Grabado Then
+                        If bResultado = True Then
                             MsgBox(Me.msgElemento & " Grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
                             Me.Refrescar()
                             Me.Cambia_Estado()
@@ -479,28 +464,57 @@ Public Class Catalogo_Cuentas_Bancarias
                     oElemento = Nothing
                 End Try
         End Select
-    End Sub
+
+        Return bResultado
+    End Function
 
     Private Function Validar() As Boolean
+        Const sProcedure As String = "Validar"
+        Dim bResultado As Boolean = False
         Try
             'If PLAZA.ValidarPeriodoTrabajo(Me.DtpFechaFactura.Value) = False Then
-            '    Exit Function
+            '    return false
             'End If
 
             'If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CmbDocumento.SelectedValue.ToString) = False Then
-            '    MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, Me.Text)
-            '    Exit Function
+            '    MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information,sProcedure)
+            '    return false
             'End If
 
             If txtLEN(Me.TxtNombreCuenta.Text) = False Then
-                MsgBox("Asígne un nombre a la cuenta bancaria.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("Asígne el nombre de la cuenta bancaria.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.TxtNombreCuenta.Focus()
                 Return False
             End If
 
-            Dim sql0 As New Class_find("SELECT 1 FROM CAT_BANCOS WHERE CODIGO_BANCO='" & Me.TxtBanco.Text & "' ")
-            If sql0.Result1 = "" Then
-                MsgBox("El codigo de Banco que intenta buscar no existe, favor de intentar con otro codigo", MsgBoxStyle.Critical, "Validación de Bancoes")
+            If txtLEN(Me.TxtBanco.Text) = False Then
+                MsgBox("Asígne el banco.", MsgBoxStyle.Exclamation, sProcedure)
+                Me.TxtBanco.Focus()
+                Return False
+            End If
+
+            If txtLEN(Me.txtCuentaContable.Text) = False Then
+                MsgBox("Asígne la cuenta contable.", MsgBoxStyle.Exclamation, sProcedure)
+                Me.txtCuentaContable.Focus()
+                Return False
+            End If
+
+            If txtLEN(Me.TxtNumeroCuenta.Text) = False Then
+                MsgBox("Asígne el número de la cuenta bancaria.", MsgBoxStyle.Exclamation, sProcedure)
+                Me.TxtNumeroCuenta.Focus()
+                Return False
+            End If
+
+            If Len(Me.TxtNumeroCuenta.Text) < 10 Then
+                MsgBox("El número de la cuenta bancaria de ser mínimo de 10 dígitos.", MsgBoxStyle.Exclamation, sProcedure)
+                Me.TxtNumeroCuenta.Focus()
+                Return False
+            End If
+
+            Dim oBanco As New Class_CatBancos(Me.TxtBanco.Text)
+
+            If oBanco.EXISTE = False Then
+                MsgBox("El banco no existe.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.LblBanco.Text = ""
                 Me.TxtBanco.Focus()
                 Return False
@@ -516,37 +530,62 @@ Public Class Catalogo_Cuentas_Bancarias
             'End If
             'sql1 = Nothing
 
+            oBanco = Nothing
+            'oCuenta = Nothing
+
             If txtLEN(Me.txtCuentaContableDolares.Text) = True Then
-                Dim sql2 As New Class_find("SELECT 1 FROM CON_CAT_CUENTAS WHERE CUENTA_CONTABLE='" & Me.txtCuentaContableDolares.Text & "' AND ESMAYOR=0 ")
-                If sql2.Result1 = "" Then
-                    MsgBox("La cuenta contable que intenta guardar no es valida, favor de revisar", MsgBoxStyle.Critical, "Validación de la cuenta contable")
+                Dim oCuentaUSD As New Class_CatCuentas(Me.txtCuentaContableDolares.Text)
+
+                If oCuentaUSD.EXISTE = False Then
+                    MsgBox("La cuenta contable en USD no existe.", MsgBoxStyle.Exclamation, sProcedure)
                     Me.txtCuentaContableDolares.Focus()
                     Me.LblCuentaDolares.Text = ""
-                    sql2 = Nothing
                     Return False
                 End If
-                sql2 = Nothing
+
+                If oCuentaUSD.ESMAYOR <> "0" Then
+                    MsgBox("La cuenta contable en USD debe ser de operación.", MsgBoxStyle.Exclamation, sProcedure)
+                    Me.txtCuentaContableDolares.Focus()
+                    Me.LblCuentaDolares.Text = ""
+                    Return False
+                End If
+
+                oCuentaUSD = Nothing
             End If
 
             'If Me.LblCuenta.Text <> Me.TxtNombreCuenta.Text Then
             '    MsgBox("El nombre de la cuenta bancaria es diferente de la cuenta contable, favor de revisar", MsgBoxStyle.Critical, "Validación de la cuenta bancaria")
-            '    Exit Function
+            '    Return False
             'End If
 
             If Me.Estado = enumEstados.EDICION Then
                 If txtLEN(Me.TxtCodigoProveedor.Text) = False Then
-                    MsgBox("Ingrese un código de proveedor.", MsgBoxStyle.Exclamation, Me.Text)
+                    MsgBox("Ingrese un código de proveedor.", MsgBoxStyle.Exclamation, sProcedure)
                     Me.TxtCodigoProveedor.Focus()
                     Return False
                 End If
             End If
 
-            Return True
+            bResultado = True
         Catch ex As Exception
-            HandleError(Me.Name, "Validar", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
+
+        Return bResultado
     End Function
 
+    Private Sub DesplegarMonedas()
+        Dim dView As New Data.DataView
+        Try
+            With Me.cboMoneda
+                .Items.Add("MXN")
+                .Items.Add("USD")
+                .Text = "MXN"
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarMonedas", ex)
+        End Try
+    End Sub
 #End Region
 
 #Region "Eventos de objetos"
@@ -641,11 +680,11 @@ Public Class Catalogo_Cuentas_Bancarias
         End If
     End Sub
 
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombreCuenta.KeyPress, TxtNumeroCuenta.KeyPress, TxtSucursal.KeyPress, TxtTelefono.KeyPress, TxtFolioCheque.KeyPress, TxtBanco.KeyPress, TxtFormatoReporte.KeyPress, txtCuentaContableDolares.KeyPress, TxtCodigoProveedor.KeyPress, CboCodigoMoneda.KeyPress, txtCuentaContable.KeyPress
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombreCuenta.KeyPress, TxtNumeroCuenta.KeyPress, TxtSucursal.KeyPress, TxtTelefono.KeyPress, TxtFolioCheque.KeyPress, TxtBanco.KeyPress, TxtFormatoReporte.KeyPress, txtCuentaContableDolares.KeyPress, TxtCodigoProveedor.KeyPress, cboMoneda.KeyPress, txtCuentaContable.KeyPress
         txtNoBeep(e)
     End Sub
 
-    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombreCuenta.KeyDown, TxtSucursal.KeyDown, TxtNumeroCuenta.KeyDown, TxtTelefono.KeyDown, TxtFolioCheque.KeyDown, txtCuentaContableDolares.KeyDown, CboCodigoMoneda.KeyDown
+    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboMoneda.KeyDown, TxtNombreCuenta.KeyDown, TxtSucursal.KeyDown, TxtNumeroCuenta.KeyDown, TxtTelefono.KeyDown, TxtFolioCheque.KeyDown
         If e.KeyCode = Keys.Return Then
             SendKeys.Send("{TAB}")
         End If
@@ -672,7 +711,7 @@ Public Class Catalogo_Cuentas_Bancarias
     Private Sub TxtBanco_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtBanco.KeyDown
         Select Case e.KeyCode
             Case Keys.F6
-                Dim Busqueda = New Busqueda_General("CODIGO_BANCO AS CODIGO,NOMBRE_BANCO AS NOMBRE", "CAT_BANCOS", " 1=1 AND ESTATUS_BANCO='A' AND PROTEGIDO='0' ", "NOMBRE", "NOMBRE_BANCO")
+                Dim Busqueda = New Busqueda_General("CODIGO_BANCO AS CODIGO,NOMBRE_BANCO AS NOMBRE,NOMBRE_LARGO ", "CAT_BANCOS", " 1=1 AND ESTATUS_BANCO='A' AND PROTEGIDO='0' ", "NOMBRE", "NOMBRE_BANCO")
                 Busqueda.ShowDialog()
                 Me.TxtBanco.Text = "" & Busqueda.Tag.ToString
                 Busqueda.Dispose()
@@ -731,18 +770,23 @@ busqueda_Visual:
                 End If
 
             Case Keys.Return
-                Dim sql As New Class_find("Select NOMBRE_CUENTA From CON_CAT_CUENTAS Where CUENTA_CONTABLE='" & Me.txtCuentaContable.Text & "' AND ESMAYOR=0 ")
-                If sql.Result1 = "" Then
-                    Me.txtCuentaContable.Text = ""
-                    Me.LblCuenta.Text = ""
-                    Me.txtCuentaContable.Focus()
-                    GoTo busqueda_Visual
+                If txtLEN(Me.txtCuentaContableDolares.Text) = True Then
+
+                    Dim sql As New Class_find("Select NOMBRE_CUENTA From CON_CAT_CUENTAS Where CUENTA_CONTABLE='" & Me.txtCuentaContableDolares.Text & "' AND ESMAYOR=0  ")
+                    If sql.Result1 = "" Then
+                        Me.txtCuentaContableDolares.Text = ""
+                        Me.LblCuentaDolares.Text = ""
+                        GoTo busqueda_Visual : Exit Sub
+                    Else
+                        Me.LblCuentaDolares.Text = sql.Result1
+                    End If
+
+                    sql = Nothing
                 Else
-                    Me.LblCuenta.Text = sql.Result1
-                    Me.txtCuentaContableDolares.Focus()
+                    Me.LblCuentaDolares.Text = ""
                 End If
 
-                sql = Nothing
+                txtTAB(e)
 
             Case Keys.Escape
                 Me.TxtFolioCheque.Focus()
@@ -827,11 +871,10 @@ Buscar:
 
 #End Region
 
-    Private Sub CboFiltroHoja_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Refrescar()
+    Private Sub Catalogo_Cuentas_Bancarias_Load(sender As Object, e As EventArgs) Handles Me.Load
+        Me.DesplegarMonedas()
     End Sub
 
 #End Region
-
 
 End Class

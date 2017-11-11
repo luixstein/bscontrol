@@ -1059,6 +1059,26 @@ Public Class Class_CatClientes
         Return Resultado
     End Function
 
+    Public Function BusquedaVisual_PorDescripcionRegresandoRFC() As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de clientes por Descripción."
+        f.sCampo = "NOMBRE_CLIENTE"
+        f.sOrder = "NOMBRE_CLIENTE"
+        f.sTable = "CAT_CLIENTES"
+        f.sQl = "SELECT RFC,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE 1=1 AND ESTATUS='A' AND CODIGO_ZONA='" & Usuario.Codigo_Plaza.ToString & "' AND "
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcionRegresandoRFC", ex)
+        End Try
+        Return Resultado
+    End Function
+
     Public Function CodigoSiguiente(ByVal sCodigoTipoMercado As String) As String
         Dim iCliente As Integer, sCliente As String
         CodigoSiguiente = ""

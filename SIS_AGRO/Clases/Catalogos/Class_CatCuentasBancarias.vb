@@ -21,6 +21,7 @@ Public Class Class_CatCuentasBancarias
     Private _CUENTA_CONTABLE_DOLARES As String
     Private _NOMBRE_FORMATO As String
     Private _CODIGO_MONEDA As String
+    Private _CODIGO_MONEDA_SAT As String
     Private _CODIGO_PROVEEDOR As String
 #End Region
 
@@ -158,12 +159,18 @@ Public Class Class_CatCuentasBancarias
         End Set
     End Property
 
-    Public Property CODIGO_MONEDA As String
+    Public ReadOnly Property CODIGO_MONEDA As String
         Get
             Return Me._CODIGO_MONEDA
         End Get
+    End Property
+
+    Public Property CODIGO_MONEDA_SAT() As String
+        Get
+            Return Me._CODIGO_MONEDA_SAT
+        End Get
         Set(ByVal VALUE As String)
-            Me._CODIGO_MONEDA = VALUE
+            Me._CODIGO_MONEDA_SAT = VALUE
         End Set
     End Property
 
@@ -223,10 +230,10 @@ Public Class Class_CatCuentasBancarias
         Me._Nombre_Catalogo = "CAT_CUENTAS_BANCARIAS"
         Me._Nombre_Reporte = "RPT_CATALOGO_CUENTAS_BANCARIAS"
         Me._Conexion = New SqlConnection
-        Me._Conexion.ConnectionString = Empresa_Sistema.Conexion
-        Me._QuerySelect = "SELECT B.*,M.NOMBRE NOMBRE_MONEDA " & _
-            "FROM CAT_CUENTAS_BANCARIAS B " & _
-            "INNER JOIN CATALOGO_MONEDAS M ON(B.CODIGO_MONEDA=M.CODIGO_MONEDA) "
+        Me._Conexion.ConnectionString = Empresa_Sistema.conexion
+        Me._QuerySelect = "SELECT B.*,M.CODIGO_MONEDA,M.NOMBRE NOMBRE_MONEDA " &
+            "FROM CAT_CUENTAS_BANCARIAS B " &
+            "INNER JOIN CATALOGO_MONEDAS M ON(B.CODIGO_MONEDA_SAT=M.CODIGO_MONEDA_SAT) "
         Me._QueryOrder = " ORDER BY B.NOMBRE_CUENTA_BANCARIA "
     End Sub
 
@@ -274,7 +281,7 @@ Public Class Class_CatCuentasBancarias
             sqlParametro = .Parameters.Add("@Nombre_FORMATO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_FORMATO.ToUpper
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "ACTUALIZAR"
             sqlParametro = .Parameters.Add("@CODIGO_PROVEEDOR", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._CODIGO_PROVEEDOR
-            sqlParametro = .Parameters.Add("@CODIGO_MONEDA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_MONEDA)
+            sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_MONEDA_SAT
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Plaza
 
             Try
@@ -306,7 +313,7 @@ Public Class Class_CatCuentasBancarias
                 Me._Conexion.Open()
                 dReader = .ExecuteReader()
 
-                If dReader.Read Then
+                If dReader.Read = True Then
                     Me._ID_CUENTA_BANCARIA = CType(dReader("ID_CUENTA_BANCARIA"), Integer)
                     Me._NOMBRE_CUENTA_BANCARIA = Trim("" & dReader("NOMBRE_CUENTA_BANCARIA").ToString)
                     Me._SUCURSAL = "" & dReader("SUCURSAL").ToString
@@ -320,6 +327,7 @@ Public Class Class_CatCuentasBancarias
                     Me._CUENTA_CONTABLE_DOLARES = "" & dReader("CUENTA_CONTABLE_DOLARES").ToString
                     Me._NOMBRE_FORMATO = "" & dReader("NOMBRE_FORMATO").ToString
                     Me._CODIGO_MONEDA = "" & dReader("CODIGO_MONEDA").ToString
+                    Me._CODIGO_MONEDA_SAT = "" & dReader("CODIGO_MONEDA_SAT").ToString
                     Me._CODIGO_PROVEEDOR = "" & dReader("CODIGO_PROVEEDOR").ToString
                     Me._NOMBRE_MONEDA = "" & dReader("NOMBRE_MONEDA").ToString
 
@@ -359,7 +367,7 @@ Public Class Class_CatCuentasBancarias
             sqlParametro = .Parameters.Add("@NOMBRE_FORMATO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_FORMATO.ToUpper
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "INSERTAR"
             sqlParametro = .Parameters.Add("@CODIGO_PROVEEDOR", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._CODIGO_PROVEEDOR
-            sqlParametro = .Parameters.Add("@CODIGO_MONEDA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_MONEDA)
+            sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_MONEDA_SAT
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Plaza
 
             Try
@@ -427,7 +435,7 @@ Public Class Class_CatCuentasBancarias
         f.sCampo = "ID_Cuenta_Bancaria"
         f.sOrder = "NOMBRE_Cuenta_Bancaria"
         f.sTable = "CAT_CUENTAS_BANCARIAS"
-        f.sQl = "Select ID_Cuenta_Bancaria,NOMBRE_Cuenta_Bancaria From CAT_CUENTAS_BANCARIAS Where 1=1 And"
+        f.sQl = "SELECT ID_Cuenta_Bancaria,NOMBRE_Cuenta_Bancaria,CODIGO_MONEDA_SAT FROM CAT_CUENTAS_BANCARIAS WHERE 1=1 AND "
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -450,7 +458,7 @@ Public Class Class_CatCuentasBancarias
         f.sCampo = "NOMBRE_Cuenta_Bancaria"
         f.sOrder = "NOMBRE_Cuenta_Bancaria"
         f.sTable = "CAT_CUENTAS_BANCARIAS"
-        f.sQl = "Select ID_Cuenta_Bancaria,NOMBRE_Cuenta_Bancaria,CUENTA_CONTABLE_PESOS From CAT_CUENTAS_BANCARIAS Where 1=1 And"
+        f.sQl = "SELECT ID_Cuenta_Bancaria,NOMBRE_Cuenta_Bancaria,CUENTA_CONTABLE_PESOS,CODIGO_MONEDA_SAT FROM CAT_CUENTAS_BANCARIAS WHERE 1=1 AND "
         f.Inicia("")
         f.ShowDialog()
         Try
