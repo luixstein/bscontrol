@@ -419,10 +419,8 @@ Module FacturacionElectronica
                 sqlParametro = .Parameters.Add("@NUMERO_SERIE_CERTIFICADO_SAT", SqlDbType.NVarChar, 20) : sqlParametro.Value = fElectronica.Complemento.noCertificadoSAT
                 sqlParametro = .Parameters.Add("@SELLO_SAT", SqlDbType.NVarChar, 500) : sqlParametro.Value = fElectronica.Complemento.SelloSAT
                 sqlParametro = .Parameters.Add("@CBB_IMAGE", SqlDbType.Image) : sqlParametro.Value = fElectronica.ImagenCBB
-
-                'DE MOMENTO NO SE VAN A GRABAR ESTOS DATOS, ES AUMENTAR EL TAMANO DE LA BASE DATOS SOLAMENTE
-                'sqlParametro = .Parameters.Add("@RFCPROVCERTIF", SqlDbType.NVarChar, 13) : sqlParametro.Value = fElectronica.Complemento.RfcProvCertif
-                'sqlParametro = .Parameters.Add("@LEYENDA", SqlDbType.NVarChar, 200) : sqlParametro.Value = fElectronica.Complemento.Leyenda
+                sqlParametro = .Parameters.Add("@RFCPROVCERTIF", SqlDbType.NVarChar, 13) : sqlParametro.Value = fElectronica.Complemento.RfcProvCertif
+                sqlParametro = .Parameters.Add("@LEYENDA", SqlDbType.NVarChar, 200) : sqlParametro.Value = fElectronica.Complemento.Leyenda
 
                 _Conexion.Open()
                 .ExecuteNonQuery()

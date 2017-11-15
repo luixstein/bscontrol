@@ -412,7 +412,8 @@ Buscar:
                                         Me.Grid.Cell(Renglon, Me.iGyPago).SetFocus()
                                         Exit Sub
                                     End If
-                                    If valorNumerico(Me.Grid.Cell(Renglon, Me.iGyTotalDlls).Text) <> valorNumerico(Me.Grid.Cell(Renglon, Me.iGyPago).Text) And valorNumerico(Me.Grid.Cell(Renglon, Me.iGySaldoDlls).Text) <> valorNumerico(Me.Grid.Cell(Renglon, Me.iGyPago).Text) Then
+                                    If valorNumerico(Me.Grid.Cell(Renglon, Me.iGyTotalDlls).Text) <> valorNumerico(Me.Grid.Cell(Renglon, Me.iGyPago).Text) And
+                                        valorNumerico(Me.Grid.Cell(Renglon, Me.iGySaldoDlls).Text) <> valorNumerico(Me.Grid.Cell(Renglon, Me.iGyPago).Text) Then
                                         'Si solo es un pago parcial el abono en pesos sera segun al tipo de cambio de la venta
                                         Dim oVenta As New Class_Ventas_Global
                                         oVenta = New Class_Ventas_Global(Me.Grid.Cell(Renglon, Me.iGyFolio).Text)

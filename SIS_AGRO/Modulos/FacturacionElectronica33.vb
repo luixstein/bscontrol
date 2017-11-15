@@ -127,7 +127,7 @@ Module FacturacionElectronica33
                 .Certificado = ""               'Igual que el anterior
                 .CondicionesDePago = ""         'De momento no lo vamos usar, podria llevar frases como crédito 30 dias, etc
                 .SubTotal = Format(dSubTotal, "#0.00")
-                .Descuento = Format(dDescuento, "#0.00")
+                .Descuento = IIf(dDescuento > 0, Format(dDescuento, "#0.00"), "").ToString
                 .Total = Format(dTotal, "#0.00")
                 .Moneda = oVenta.CODIGO_MONEDA_SAT
                 If oVenta.TIPO_DE_CAMBIO > 0 Then

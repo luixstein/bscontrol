@@ -723,24 +723,27 @@ Buscar:
             Me.InicializaGrid()
             Me.InicializaGridSeries()
 
+            Me.oVenta = New Class_Ventas_Global()
             Me.oVenta.CODIGO_DOCUMENTO = Me.CboDocumento.SelectedValue.ToString
             Me.GeneraFolio()
 
             Me.DesplegarFormasPago(False)
-            Me.EstableceMetodoPago()
+            Me.cboTipoNegociacion.SelectedIndex = -1
+            Me.cboTipoNegociacion.Text = "CREDITO"
+            'Me.EstableceMetodoPago()
 
             Me.dtSeries = New DataTable("Series")
 
             'Me.bEsReferencia = False
-
-            Me.TabControl1.SelectedIndex = 0
-            Me.bClienteEsContribuyenteIEPS = False
 
             If dViewFormasPago.Count > 0 And Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
                 Me.cboFormaPago.SelectedValue = "NA"
             End If
 
             Me.lblVersionCFDI.Text = ""
+
+            Me.TabControl1.SelectedIndex = 0
+            Me.bClienteEsContribuyenteIEPS = False
 
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
