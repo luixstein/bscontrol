@@ -540,7 +540,7 @@ Buscar:
     Private Sub cboTipoNegociacion_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboTipoNegociacion.SelectedIndexChanged
         Try
             If sTipoVenta = "NM" Then
-                If Me.cboTipoNegociacion.SelectedValue.ToString = "1" Then
+                If Me.cboTipoNegociacion.SelectedIndex <> -1 AndAlso Me.cboTipoNegociacion.SelectedValue.ToString = "1" Then
                     Me.txtPlazo.Enabled = True
                 Else
                     Me.txtPlazo.Enabled = False
@@ -551,7 +551,6 @@ Buscar:
             If CInt(cboTipoNegociacion.SelectedValue) = 1 Then ' CREDITO
                 Me.LblTipoCredito.Visible = True
                 Me.CboTipoCredito.Visible = True
-
             ElseIf CInt(cboTipoNegociacion.SelectedValue) = 2 Then ' CONTADO
                 Me.LblTipoCredito.Visible = False
                 Me.CboTipoCredito.Visible = False
