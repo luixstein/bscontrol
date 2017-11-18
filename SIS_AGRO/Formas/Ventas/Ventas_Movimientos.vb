@@ -235,8 +235,6 @@ Public Class Ventas_Movimientos
 #Region "Eventos de objetos"
     Private Sub Ventas_Movimientos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-            Me.lblVersionCFDI.Text = Empresa_Sistema.VERSION_ESQUEMA_CFD
-
             Me.DesplegarAlmacenes()
             Me.DesplegarTiposMercados()
             Me.DesplegarVendedores()
@@ -3595,6 +3593,8 @@ busca_serie:
                 Else
                     dViewFormasPago = New Data.DataView(dtFormasPagoActivas)
                 End If
+
+                .DataSource = dViewFormasPago
             End With
         Catch ex As Exception
             HandleError(Me.Name, "DesplegarFormasPago", ex)

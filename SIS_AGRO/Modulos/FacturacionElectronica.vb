@@ -386,8 +386,9 @@ Module FacturacionElectronica
     End Function
 
     Private Function GrabaCadenaOriginalYSelloComprobanteElectronico(ByRef fElectronica As clsCFDI, ByVal sTipoComprobanteElectronico As String) As Boolean
-        Dim bResultado As Boolean = False
         Const sProcedure As String = "GrabaCadenaOriginalYSelloComprobanteElectronico"
+        Dim bResultado As Boolean = False
+
         Try
             Dim cmd As New SqlCommand
             Dim sqlParametro As SqlParameter
@@ -401,9 +402,15 @@ Module FacturacionElectronica
                     Case TipoComprobante.FACTURA_VENTA '"FACTURA_VENTA"
                         .CommandText = "MP_CFD_VENTAS_GRABA_DATOS_DIGITALES"
                         sqlParametro = .Parameters.Add("@FOLIO_VENTA", SqlDbType.NVarChar, 15) : sqlParametro.Value = fElectronica.Comprobante.FolioCompleto
+
                     Case TipoComprobante.NOTA_CREDITO_CXC '"NOTA_CREDITO_CXC"
                         .CommandText = "MP_CFD_CXC_NOTAS_CREDITO_GRABA_DATOS_DIGITALES"
                         sqlParametro = .Parameters.Add("@FOLIO_DESCUENTO", SqlDbType.NVarChar, 15) : sqlParametro.Value = fElectronica.Comprobante.FolioCompleto
+
+                    Case TipoComprobante.PAGO_CXC
+                        .CommandText = "MP_CFD_CXC_PAGOS_GRABA_DATOS_DIGITALES"
+                        sqlParametro = .Parameters.Add("@FOLIO_PAGO", SqlDbType.NVarChar, 15) : sqlParametro.Value = fElectronica.Comprobante.FolioCompleto
+
                     Case Else
                         MsgBox("No se indicó el tipo de comprobante electrónico generado para grabar los datos digitales del documento.", MsgBoxStyle.Exclamation, sProcedure)
                         cmd = Nothing
@@ -417,7 +424,7 @@ Module FacturacionElectronica
                 sqlParametro = .Parameters.Add("@SELLO_DIGITAL", SqlDbType.NVarChar, 2000) : sqlParametro.Value = fElectronica.Comprobante.SelloCFD
                 sqlParametro = .Parameters.Add("@FOLIO_FISCAL_SAT", SqlDbType.NVarChar, 50) : sqlParametro.Value = fElectronica.Complemento.UUID.ToUpper
                 sqlParametro = .Parameters.Add("@FECHA_TIMBRADO_SAT", SqlDbType.NVarChar, 20) : sqlParametro.Value = fElectronica.Complemento.FechaTimbrado
-                sqlParametro = .Parameters.Add("@NUMERO_SERIE_CERTIFICADO_SAT", SqlDbType.NVarChar, 20) : sqlParametro.Value = fElectronica.Complemento.noCertificadoSAT
+                sqlParametro = .Parameters.Add("@NUMERO_SERIE_CERTIFICADO_SAT", SqlDbType.NVarChar, 20) : sqlParametro.Value = fElectronica.Complemento.NoCertificadoSAT
                 sqlParametro = .Parameters.Add("@SELLO_SAT", SqlDbType.NVarChar, 500) : sqlParametro.Value = fElectronica.Complemento.SelloSAT
                 sqlParametro = .Parameters.Add("@CBB_IMAGE", SqlDbType.Image) : sqlParametro.Value = fElectronica.ImagenCBB
                 sqlParametro = .Parameters.Add("@RFCPROVCERTIF", SqlDbType.NVarChar, 13) : sqlParametro.Value = fElectronica.Complemento.RfcProvCertif

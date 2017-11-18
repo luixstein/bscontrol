@@ -553,7 +553,7 @@ Public Class AppMenu
     End Sub
 
     Private Sub PagosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PagosToolStripMenuItem.Click
-        Dim Child As New Frm_CXC_Pagos_OLD
+        Dim Child As New Frm_CXC_Pagos
         Child.MdiParent = Me
         m_ChildFormNumber += 1
         Child.StartPosition = FormStartPosition.CenterScreen
