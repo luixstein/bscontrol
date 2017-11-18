@@ -1137,6 +1137,12 @@ Buscar:
                     End If
 
                     txtTAB(e)
+
+                Case Keys.F7
+                    oProductoSAT = New Class_CFD_CatProductosServicios
+                    sText = oProductoSAT.BusquedaVisual_CatalogoProductosServicios
+                    If txtLEN(sText) = True Then Me.txtClaveProductoSAT.Text = sText
+
             End Select
         Catch ex As Exception
             HandleError(Me.Name, "txtClaveProductoSAT_KeyDown", ex)

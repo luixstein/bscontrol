@@ -264,11 +264,14 @@
     <Compile Include="Clases\Contabilidad\Class_Contabilidad_RP_Global_Poliza.vb" />
     <Compile Include="Clases\Contabilidad\Class_Contabilidad_Saldos_Cuentas.vb" />
     <Compile Include="Clases\CXC\Class_Bancos_CXC.vb" />
+    <Compile Include="Clases\CXC\Class_Bancos_CXC_Detalle.vb" />
     <Compile Include="Clases\CXC\Class_CXC_Afecta_Documentos.vb" />
     <Compile Include="Clases\CXC\Class_CXC_Descuento.vb" />
     <Compile Include="Clases\CXC\Class_CXC_Devoluciones_Detalle.vb" />
     <Compile Include="Clases\CXC\Class_CXC_Devoluciones_Global.vb" />
     <Compile Include="Clases\CXC\Class_CXC_Global.vb" />
+    <Compile Include="Clases\CXC\Class_CXC_Pago_CFDI_Detalle.vb" />
+    <Compile Include="Clases\CXC\Class_CXC_Pago_CFDI_Global.vb" />
     <Compile Include="Clases\CXC\Class_CXC_Seguimientos.vb" />
     <Compile Include="Clases\CXP\Class_Bancos_CXP.vb" />
     <Compile Include="Clases\CXP\Class_CXP_Afecta_Documentos.vb" />
@@ -653,6 +656,12 @@
     <Compile Include="Formas\CXC\Frm_CXC_Devoluciones.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\CXC\Frm_CXC_Pagos.designer.vb">
+      <DependentUpon>Frm_CXC_Pagos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXC\Frm_CXC_Pagos.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\CXC\Frm_CXC_Seguimientos.Designer.vb">
       <DependentUpon>Frm_CXC_Seguimientos.vb</DependentUpon>
     </Compile>
@@ -999,6 +1008,12 @@
       <DependentUpon>ConfiguracionUsuarios.vb</DependentUpon>
     </Compile>
     <Compile Include="Formas\Sistema\ConfiguracionUsuarios.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Utilerias\BusquedaCatalogoProductosServicios.designer.vb">
+      <DependentUpon>BusquedaCatalogoProductosServicios.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Utilerias\BusquedaCatalogoProductosServicios.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Utilerias\frmEmbarquesMasivos.designer.vb">
@@ -1385,10 +1400,10 @@
     <Compile Include="Formas\CXC\Frm_CXC_AplicacionDocumentos.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Formas\CXC\Frm_CXC_Pagos.designer.vb">
-      <DependentUpon>Frm_CXC_Pagos.vb</DependentUpon>
+    <Compile Include="Formas\CXC\Frm_CXC_Pagos_OLD.designer.vb">
+      <DependentUpon>Frm_CXC_Pagos_OLD.vb</DependentUpon>
     </Compile>
-    <Compile Include="Formas\CXC\Frm_CXC_Pagos.vb">
+    <Compile Include="Formas\CXC\Frm_CXC_Pagos_OLD.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\CXP\Consultas\Rpt_Cxp_Auxiliar_proveedor.Designer.vb">
@@ -1839,6 +1854,9 @@
     <EmbeddedResource Include="Formas\CXC\Frm_CXC_Pagos.resx">
       <DependentUpon>Frm_CXC_Pagos.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXC\Frm_CXC_Pagos_OLD.resx">
+      <DependentUpon>Frm_CXC_Pagos_OLD.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formas\CXC\Frm_CXC_Seguimientos.resx">
       <DependentUpon>Frm_CXC_Seguimientos.vb</DependentUpon>
     </EmbeddedResource>
@@ -2058,6 +2076,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Sistema\Reporte.resx">
       <DependentUpon>Reporte.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Utilerias\BusquedaCatalogoProductosServicios.resx">
+      <DependentUpon>BusquedaCatalogoProductosServicios.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Utilerias\Busqueda_General.resx">
       <DependentUpon>Busqueda_General.vb</DependentUpon>

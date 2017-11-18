@@ -649,6 +649,10 @@ Module Mod_Uti
         Return Format(dFecha, "dd-MMM-yy").ToUpper
     End Function
 
+    Public Function FormatFechaLarga(ByVal dFecha As Date) As String
+        Return Format(dFecha, "dd-MMM-yy hh:mm:ss").ToUpper
+    End Function
+
     Public Sub HandleError(ByVal CurrentModule As String, ByVal CurrentProcedure As String, ByVal ex As Exception)
         'If ex.Source = ".Net SqlClient Data Provider" Then
         '    MsgBox("Error : " & My.Settings.Servidor & " " & ex.Message.ToString, MsgBoxStyle.Critical, _

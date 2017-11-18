@@ -22,6 +22,7 @@ Module FacturacionElectronica
     Public Enum TipoComprobante
         FACTURA_VENTA
         NOTA_CREDITO_CXC
+        PAGO_CXC
     End Enum
 
     Public Structure Certificado

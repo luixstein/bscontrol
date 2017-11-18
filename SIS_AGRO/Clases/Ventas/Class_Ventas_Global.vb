@@ -87,6 +87,7 @@ Public Class Class_Ventas_Global
     Private _VERSION_ESQUEMA_XML As String
     Private _SERIE As String
     Private _TIENE_COMPLEMENTO_COMERCIO_EXTERIOR As Boolean
+    Private _CODIGO_REGIMEN_FISCAL As String
     Private _CODIGO_METODO_PAGO_EVENTO As String
     Private _CODIGO_USO_CFDI As String
     Private _RFC_RECEPTOR As String
@@ -692,6 +693,12 @@ Public Class Class_Ventas_Global
         End Get
     End Property
 
+    Public ReadOnly Property CODIGO_REGIMEN_FISCAL() As String
+        Get
+            Return Me._CODIGO_REGIMEN_FISCAL
+        End Get
+    End Property
+
     Public Property CODIGO_METODO_PAGO_EVENTO() As String
         Get
             Return Me._CODIGO_METODO_PAGO_EVENTO
@@ -1103,7 +1110,6 @@ Public Class Class_Ventas_Global
                     Me._ES_VENTA_PUBLICO_GENERAL = "" & dReader("ES_VENTA_PUBLICO_GENERAL").ToString()
                     Me._FOLIO_EMBARQUE = "" & dReader("FOLIO_EMBARQUE").ToString()
                     Me._CODIGO_METODO_PAGO = dReader("CODIGO_METODO_PAGO").ToString
-                    'Me._CODIGO_REGIMEN_FISCAL = CInt(dReader("CODIGO_REGIMEN_FISCAL"))
                     Me._NOMBRE_METODO_PAGO = "" & dReader("NOMBRE_METODO_PAGO").ToString()
                     Me._NOMBRE_REGIMEN_FISCAL = "" & dReader("NOMBRE_REGIMEN_FISCAL").ToString()
                     Me._NUMERO_CUENTA_PAGO = "" & dReader("NUMERO_CUENTA_PAGO").ToString()
@@ -1127,10 +1133,9 @@ Public Class Class_Ventas_Global
                     Me._VERSION_ESQUEMA_XML = "" & dReader("VERSION_ESQUEMA_XML").ToString
                     Me._SERIE = "" & Trim(dReader("SERIE").ToString)
                     Me._TIENE_COMPLEMENTO_COMERCIO_EXTERIOR = CBool(dReader("TIENE_COMPLEMENTO_COMERCIO_EXTERIOR").ToString)
+                    Me._CODIGO_REGIMEN_FISCAL = "" & Trim(dReader("CODIGO_REGIMEN_FISCAL").ToString)
                     Me._ES_FACTURA_EMBARQUE_EXTRANJERO = CBool(dReader("ES_FACTURA_EMBARQUE_EXTRANJERO"))
-
                     Me._Nombre_Formato = "" & Trim(dReader("NOMBRE_FORMATO").ToString)
-
                     Me._IEPS_TOTAL_DESGLOSADO = CDbl(dReader("IEPS_TOTAL_DESGLOSADO"))
                     Me._IEPS_TOTAL_YA_INCLUIDO = CDbl(dReader("IEPS_TOTAL_YA_INCLUIDO"))
                     Me._TIENE_SERIES = CBool(dReader("TIENE_SERIES"))
@@ -2059,6 +2064,148 @@ Public Class Class_Ventas_Global
                 End If
 
             End With
+
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, sProcedure, ex)
+        End Try
+
+        Return sXmlComercioExterior
+    End Function
+
+    Public Function GeneraXmlComercioExterior11() As String
+        Dim sProcedure As String = "GeneraXmlComercioExterior11"
+        Dim sXmlComercioExterior As String = ""
+        Try
+
+            If Me.ValidarComercioExterior() = False Then
+                Return ""
+            End If
+
+            Dim oCliente As New Class_CatClientes(Me._CODIGO_CLIENTE)
+
+            Dim cfdiComercioExterior As New Class_CFDI_cce_ComercioExterior11
+
+            With cfdiComercioExterior
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                .Version = "1.1"
+                .MotivoTraslado = ""
+                .TipoOperacion = "2"
+                .ClaveDePedimento = "A1"
+
+                .CertificadoOrigen = "0"
+                .NumCertificadoOrigen = ""
+                .NumeroExportadorConfiable = ""
+                .Incoterm = "DAP" 'DAP=ENTREGADA EN LUGAR
+                .Subdivision = "0"
+
+                .Observaciones = ""
+                .TipoCambioUSD = FormatTipoCambio(Me._TIPO_DE_CAMBIO)
+                .TotalUSD = Format(Me._TOTAL_DOLARES, "######.00")
+
+                '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                'MsgBox("bTieneEmisor=true este no lo podiamos en 32, pongo solo los obligatorios")
+                .bTieneEmisor = True
+                '.Emisor.Curp = ""
+                .Emisor.Domicilio.Calle = Empresa_Sistema.CALLE
+                .Emisor.Domicilio.NumeroExterior = Empresa_Sistema.NUMERO_INTERIOR
+                '.Emisor.Domicilio.NumeroInterior = ""
+                '.Emisor.Domicilio.Colonia = ""
+                '.Emisor.Domicilio.Localidad = ""
+                '.Emisor.Domicilio.Referencia = ""
+                .Emisor.Domicilio.Municipio = Empresa_Sistema.CODIGO_MUNICIPIO_SAT
+                .Emisor.Domicilio.Estado = Empresa_Sistema.CODIGO_ESTADO_SAT
+                .Emisor.Domicilio.Pais = Empresa_Sistema.CODIGO_PAIS_SAT
+                .Emisor.Domicilio.CodigoPostal = Empresa_Sistema.CODIGO_POSTAL
+                '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+                .bTienePropietario = False
+                '.Propietario.NumRegIdTrib = ""
+                '.Propietario.ResidenciaFiscal = ""
+
+                '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+                .bTieneReceptor = True
+
+                '"752491201"  farsmestbest,"205582956" 'nidia
+                '.Receptor.NumRegIdTrib = oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO'El atributo cce11:ComercioExterior:Receptor:NumRegIdTrib no debe registrarse si la versión de CFDI es 3.3. 
+
+                .Receptor.Domicilio.Calle = fElectronicaValidaCampo(oCliente.CALLE)
+                .Receptor.Domicilio.NumeroExterior = fElectronicaValidaCampo(oCliente.NUMERO_EXTERIOR)
+                .Receptor.Domicilio.NumeroInterior = fElectronicaValidaCampo(oCliente.NUMERO_INTERIOR)
+                .Receptor.Domicilio.Colonia = fElectronicaValidaCampo(oCliente.COLONIA)
+                .Receptor.Domicilio.Localidad = fElectronicaValidaCampo(oCliente.LOCALIDAD)
+                '.Receptor.Domicilio.Referencia = ""
+                .Receptor.Domicilio.Municipio = fElectronicaValidaCampo(oCliente.CIUDAD)
+                .Receptor.Domicilio.Estado = fElectronicaValidaCampo(oCliente.CODIGO_ESTADO_SAT)
+                .Receptor.Domicilio.Pais = fElectronicaValidaCampo(oCliente.CODIGO_PAIS_SAT)
+                .Receptor.Domicilio.CodigoPostal = fElectronicaValidaCampo(oCliente.CODIGO_POSTAL.ToString)
+                '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+                .bTieneDestinatario = False
+                'Estos se habilitarian si se llevara destinatario
+                '.Destinatario.NumRegIdTrib = oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO
+                '.Destinatario.Nombre =oCliente.NOMBRE_CLIENTE 
+                '.Destinatario.Domicilio.Calle = oCliente.CALLE
+                '.Destinatario.Domicilio.NumeroExterior = oCliente.NUMERO_EXTERIOR
+                '.Destinatario.Domicilio.NumeroInterior = oCliente.NUMERO_INTERIOR
+                '.Destinatario.Domicilio.Colonia = "?"
+                '.Destinatario.Domicilio.Localidad = "?"
+                '.Destinatario.Domicilio.Referencia = "?"
+                '.Destinatario.Domicilio.Municipio = "?"
+                '.Destinatario.Domicilio.Estado = oCliente.CODIGO_ESTADO_SAT
+                '.Destinatario.Domicilio.Pais = oCliente.PAIS
+                '.Destinatario.Domicilio.CodigoPostal = oCliente.CODIGO_POSTAL
+
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+                'Ciclo a los artículos
+
+                For Each dRow As DataRow In Me.ObtenerDetalleParaComercioExterior.Rows
+                    .Mercancia.NoIdentificacion = dRow("CODIGO_ARTICULO").ToString
+                    .Mercancia.FraccionArancelaria = dRow("FRACCION_ARANCELARIA").ToString
+                    .Mercancia.CantidadAduana = Format(valorNumerico(dRow("CANTIDAD").ToString), "######.000")
+
+                    'MsgBox("quite de momento la unidad al parecer es incompatible, o nos dirá que pongamos kilos ? MATRIX DE ERRORES CCE209")
+                    '.Mercancia.UnidadAduana = "20" '20=CAJA,01=KILO
+                    .Mercancia.UnidadAduana = "01"
+
+                    .Mercancia.ValorUnitarioAduana = Format(valorNumerico(dRow("PRECIO_USD").ToString), "######.00")
+                    .Mercancia.ValorDolares = Format(valorNumerico(dRow("IMPORTE_USD").ToString), "######.00")
+                    .Mercancia.Add(.Mercancia.NoIdentificacion)
+                Next
+
+                'Ejemplo manual.
+
+                '.Mercancia.NoIdentificacion = "ARTI1"
+                '.Mercancia.FraccionArancelaria = "030711"
+                '.Mercancia.CantidadAduana = "1000.000"
+                '.Mercancia.UnidadAduana = "20" '20=CAJA
+                '.Mercancia.ValorUnitarioAduana = "3.50"
+                '.Mercancia.ValorDolares = "3500.00"
+                '.Mercancia.Add(.Mercancia.NoIdentificacion)
+
+                '.Mercancia.NoIdentificacion = "ARTI2"
+                '.Mercancia.FraccionArancelaria = "056644"
+                '.Mercancia.CantidadAduana = "2000.000"
+                '.Mercancia.UnidadAduana = "20" '20=CAJA
+                '.Mercancia.ValorUnitarioAduana = "3.00"
+                '.Mercancia.ValorDolares = "6000.00"
+                '.Mercancia.Add(.Mercancia.NoIdentificacion)
+
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+                'MsgBox("hay que ver si meteremos o no validaciones tipo proveedor")
+                'If .ValidacionesProveedorComplementoExterior = False Then
+                '    Return ""
+                'End If
+
+            End With
+
+            sXmlComercioExterior = cfdiComercioExterior.GenerarCadenaXMLComercioExterior()
+
+            If txtLEN(sXmlComercioExterior) = False Then
+                MsgBox("No se logró generar el XML del comercio exterior.", MsgBoxStyle.Exclamation, Me._Nombre_Catalogo)
+            End If
 
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, sProcedure, ex)

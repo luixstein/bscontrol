@@ -9,7 +9,7 @@ Friend Class cComplementoPagos
     Private xsischemaLocation As String
     Private AnexoNodo As String
 
-    Public CfdLectura As cComprobante33 'Se necesita para validar algunos datos del comprobante en este complemento
+    Public CfdComprobanteLectura As cComprobante33 'Se necesita para validar algunos datos del comprobante en este complemento
 
     Public Version As String
     Public FechaPago As String
@@ -325,21 +325,36 @@ Friend Class cComplementoPagos
             Dim MesAnioFechaPago As Double, MesAnioFechaCFDI As Double, MesAnteriorAnioFechaCFDI As Double, diaFechaCFDI As Integer
 
             'MsgBox dtFormasPago.Item("01").NOMBRE_METODO_PAGO
+            'Estas validaciones son de limites de longitudes de algunos campos.''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            If txtLEN(Me.CtaOrdenante) = True And Len(Me.CtaOrdenante) < 10 Then
+                MsgBox("CtaOrdenante(Emisor) : La longitud mínima de este campo es de 10 dígitos." & vbCrLf &
+                           "El valor asignado es " & Me.CtaOrdenante, vbExclamation, sProcedure) : Exit Function
+            End If
+
+            If txtLEN(Me.CtaBeneficiario) = True And Len(Me.CtaBeneficiario) < 10 Then
+                MsgBox("CtaBeneficiario(Destino) : La longitud mínima de este campo es de 10 dígitos." & vbCrLf &
+                           "El valor asignado es " & Me.CtaBeneficiario, vbExclamation, sProcedure) : Exit Function
+            End If
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             MesAnioFechaPago = Year(FechaSatAFechaNormal(Me.FechaPago)) & "." & Right("00" & Month(FechaSatAFechaNormal(Me.FechaPago)), 2)
-            MesAnioFechaCFDI = Year(FechaSatAFechaNormal(Me.CfdLectura.Fecha)) & "." & Right("00" & Month(FechaSatAFechaNormal(Me.CfdLectura.Fecha)), 2)
-            MesAnteriorAnioFechaCFDI = Year(DateAdd("m", -1, FechaSatAFechaNormal(Me.CfdLectura.Fecha))) & "." & Right("00" & Month(DateAdd("m", -1, FechaSatAFechaNormal(Me.CfdLectura.Fecha))), 2)
-            diaFechaCFDI = FechaSatAFechaNormal(Me.CfdLectura.Fecha).Day
+            MesAnioFechaCFDI = Year(FechaSatAFechaNormal(Me.CfdComprobanteLectura.Fecha)) & "." & Right("00" & Month(FechaSatAFechaNormal(Me.CfdComprobanteLectura.Fecha)), 2)
+            MesAnteriorAnioFechaCFDI = Year(DateAdd("m", -1, FechaSatAFechaNormal(Me.CfdComprobanteLectura.Fecha))) & "." & Right("00" & Month(DateAdd("m", -1, FechaSatAFechaNormal(Me.CfdComprobanteLectura.Fecha))), 2)
+            diaFechaCFDI = FechaSatAFechaNormal(Me.CfdComprobanteLectura.Fecha).Day
 
-            msgGenerico = "FechaPago=" & FormatFechaCorta(FechaSatAFechaNormal(Me.FechaPago)) & " CFDI:Fecha=" & FormatFechaCorta(FechaSatAFechaNormal(Me.CfdLectura.Fecha))
+            msgGenerico = "FechaPago=" & FormatFechaLarga(FechaSatAFechaNormal(Me.FechaPago)) & " CFDI:Fecha=" & FormatFechaLarga(FechaSatAFechaNormal(Me.CfdComprobanteLectura.Fecha))
 
-            If Not (FechaSatAFechaNormal(Me.FechaPago) <= FechaSatAFechaNormal(Me.CfdLectura.Fecha)) Then
+            'If Not (FechaSatAFechaNormal(Me.FechaPago) <= FechaSatAFechaNormal(Me.CfdComprobanteLectura.Fecha)) Then
+            '    MsgBox("FechaPago : Debe ser menor o igual al atributo CFDI:Fecha." & vbCrLf & msgGenerico, vbExclamation, sProcedure) : Exit Function
+            'ElseIf (FechaSatAFechaNormal(Me.FechaPago) < FechaSatAFechaNormal(Me.CfdComprobanteLectura.Fecha)) Then
+            '    If Not ((MesAnioFechaPago = MesAnioFechaCFDI) Or (MesAnioFechaPago = MesAnteriorAnioFechaCFDI And diaFechaCFDI <= 10)) Then
+            '        MsgBox("FechaPago : La fecha del pago puede estar dentro del mes pasado durante los primeros 10 dias de la fecha del cfdi." & vbCrLf & msgGenerico, vbExclamation, sProcedure) : Exit Function
+            '    End If
+            'End If
+
+            If FechaSatAFechaNormal(Me.FechaPago) > FechaSatAFechaNormal(Me.CfdComprobanteLectura.Fecha) Then
                 MsgBox("FechaPago : Debe ser menor o igual al atributo CFDI:Fecha." & vbCrLf & msgGenerico, vbExclamation, sProcedure) : Exit Function
-            ElseIf (FechaSatAFechaNormal(Me.FechaPago) < FechaSatAFechaNormal(Me.CfdLectura.Fecha)) Then
-                If Not ((MesAnioFechaPago = MesAnioFechaCFDI) Or (MesAnioFechaPago = MesAnteriorAnioFechaCFDI And diaFechaCFDI <= 10)) Then
-                    MsgBox("FechaPago : La fecha del pago puede estar dentro del mes pasado durante los primeros 10 dias de la fecha del cfdi." & vbCrLf & msgGenerico, vbExclamation, sProcedure) : Exit Function
-                End If
             End If
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -462,7 +477,7 @@ Friend Class cComplementoPagos
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             'Validaciones de DoctoRelacionados
-            If (Me.CfdLectura.TipoDeComprobante = "I" Or Me.CfdLectura.TipoDeComprobante = "E") And Me.DoctoRelacionados.Count > 0 Then
+            If (Me.CfdComprobanteLectura.TipoDeComprobante = "I" Or Me.CfdComprobanteLectura.TipoDeComprobante = "E") And Me.DoctoRelacionados.Count > 0 Then
                 MsgBox("DoctoRelacionados: Si el tipo de comprobante es ingreso o egreso no se debe incluir este nodo.", vbExclamation, sProcedure) : Exit Function
             End If
 

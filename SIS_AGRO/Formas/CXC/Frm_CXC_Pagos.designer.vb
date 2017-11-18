@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Frm_CXC_Pagos
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class Frm_CXC_Pagos
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Frm_CXC_Pagos))
         Me.tsMenu = New System.Windows.Forms.ToolStrip()
@@ -30,71 +30,90 @@ Partial Class Frm_CXC_Pagos
         Me.tsbImprimirPoliza = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.gbGlobal = New System.Windows.Forms.GroupBox()
-        Me.lblMoneda = New System.Windows.Forms.Label()
-        Me.cboMoneda = New System.Windows.Forms.ComboBox()
+        Me.cmdPruebaPagoCFDI = New System.Windows.Forms.Button()
+        Me.TxtTotal = New System.Windows.Forms.MaskedTextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.lstClientesAgregados = New System.Windows.Forms.ListView()
+        Me.col_CodigoSocio = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.col_NombreSocio = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.col_Total = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.TxtConcepto = New System.Windows.Forms.TextBox()
         Me.btnDepositosSiguiente = New System.Windows.Forms.Button()
         Me.btnDepositosAnterior = New System.Windows.Forms.Button()
         Me.lblTipoCambio = New System.Windows.Forms.Label()
         Me.txtTipoCambio = New System.Windows.Forms.TextBox()
-        Me.gbAgregaDocCliente = New System.Windows.Forms.GroupBox()
-        Me.CkbAnticipo = New System.Windows.Forms.CheckBox()
-        Me.CboBancos = New System.Windows.Forms.ComboBox()
-        Me.CboMedioDePago = New System.Windows.Forms.ComboBox()
-        Me.lblDisplayAnticipo = New System.Windows.Forms.Label()
-        Me.txtAnticipo = New System.Windows.Forms.TextBox()
-        Me.btnAgregarDocumentosClientes = New System.Windows.Forms.Button()
-        Me.LblDisplayReferencia = New System.Windows.Forms.Label()
-        Me.TxtReferencia = New System.Windows.Forms.TextBox()
-        Me.LblDisplayBanco = New System.Windows.Forms.Label()
-        Me.LblDisplayMedioPago = New System.Windows.Forms.Label()
-        Me.LblCliente = New System.Windows.Forms.Label()
-        Me.LblDisplayCliente = New System.Windows.Forms.Label()
-        Me.TxtCodigoCliente = New System.Windows.Forms.TextBox()
         Me.LblPoliza = New System.Windows.Forms.LinkLabel()
         Me.CmbDocumento = New System.Windows.Forms.ComboBox()
         Me.LblFecha = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
+        Me.LblCuentaContableCuentaBancaria = New System.Windows.Forms.Label()
         Me.dtFecha = New System.Windows.Forms.DateTimePicker()
         Me.LblDocumento = New System.Windows.Forms.Label()
-        Me.TxtConcepto = New System.Windows.Forms.TextBox()
         Me.LblDisplayConcepto = New System.Windows.Forms.Label()
         Me.LblDisplayFolio = New System.Windows.Forms.Label()
         Me.TxtFolio = New System.Windows.Forms.TextBox()
-        Me.LblCuentaContableCuentaBancaria = New System.Windows.Forms.Label()
         Me.lblDisplayStatus = New System.Windows.Forms.Label()
         Me.LblCuentaBancaria = New System.Windows.Forms.Label()
         Me.LblStatus = New System.Windows.Forms.Label()
         Me.LblDisplayCuentaBancaria = New System.Windows.Forms.Label()
         Me.TxtCuentaBancaria = New System.Windows.Forms.TextBox()
+        Me.CboMedioDePago = New System.Windows.Forms.ComboBox()
+        Me.LblDisplayMedioPago = New System.Windows.Forms.Label()
+        Me.gbAgregaDocCliente = New System.Windows.Forms.GroupBox()
+        Me.dtFechaCheque = New System.Windows.Forms.DateTimePicker()
+        Me.lblDisplayFechaCheque = New System.Windows.Forms.Label()
+        Me.dtFechaPagoCliente = New System.Windows.Forms.DateTimePicker()
+        Me.CboBancos = New System.Windows.Forms.ComboBox()
+        Me.txtCuentaEmisor = New System.Windows.Forms.TextBox()
+        Me.txtFolioDetalle = New System.Windows.Forms.TextBox()
+        Me.btnEditarCuentaBancariaCliente = New System.Windows.Forms.Button()
+        Me.btnAgregarCuentaBancariaCliente = New System.Windows.Forms.Button()
+        Me.lblDisplayCuenta = New System.Windows.Forms.Label()
+        Me.lblRFCEmisor = New System.Windows.Forms.Label()
+        Me.lblDisplayRFCEmisor = New System.Windows.Forms.Label()
+        Me.cboCuentaEmisor = New System.Windows.Forms.ComboBox()
+        Me.txtRFCEmisor = New System.Windows.Forms.TextBox()
+        Me.btnLimpiarDocumentoPagos = New System.Windows.Forms.Button()
+        Me.lblDisplayMonto = New System.Windows.Forms.Label()
+        Me.txtMonto = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.lblDisplayCuentaEmisor = New System.Windows.Forms.Label()
+        Me.lblDisplayFolioDetalle = New System.Windows.Forms.Label()
+        Me.cboFormaPago = New System.Windows.Forms.ComboBox()
+        Me.cboMoneda = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayFormaPago = New System.Windows.Forms.Label()
+        Me.CkbAnticipo = New System.Windows.Forms.CheckBox()
+        Me.btnAgregarDocumentosClientes = New System.Windows.Forms.Button()
+        Me.LblDisplayReferencia = New System.Windows.Forms.Label()
+        Me.TxtReferencia = New System.Windows.Forms.TextBox()
+        Me.LblDisplayBanco = New System.Windows.Forms.Label()
+        Me.LblCliente = New System.Windows.Forms.Label()
+        Me.LblDisplayCliente = New System.Windows.Forms.Label()
+        Me.TxtCodigoCliente = New System.Windows.Forms.TextBox()
         Me.gbVentas = New System.Windows.Forms.GroupBox()
-        Me.Grid = New FlexCell.Grid()
+        Me.GridVentas = New FlexCell.Grid()
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssElaboro = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssCancelo = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.gbTotales = New System.Windows.Forms.GroupBox()
-        Me.lstClientesAgregados = New System.Windows.Forms.ListView()
-        Me.col_CodigoSocio = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.col_NombreSocio = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.col_Total = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.TxtTotal = New System.Windows.Forms.MaskedTextBox()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.gbDocumentosPago = New System.Windows.Forms.GroupBox()
+        Me.btnEliminarDocumentoPago = New System.Windows.Forms.Button()
+        Me.GridDocumentosPago = New FlexCell.Grid()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbAgregaDocCliente.SuspendLayout()
         Me.gbVentas.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
-        Me.gbTotales.SuspendLayout()
+        Me.gbDocumentosPago.SuspendLayout()
         Me.SuspendLayout()
         '
         'tsMenu
         '
-        Me.tsMenu.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimirPoliza, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1006, 27)
-        Me.tsMenu.TabIndex = 1
+        Me.tsMenu.Size = New System.Drawing.Size(1462, 25)
+        Me.tsMenu.TabIndex = 5
         Me.tsMenu.Text = "tsMenu"
         '
         'tsbNuevo
@@ -102,7 +121,7 @@ Partial Class Frm_CXC_Pagos
         Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
         Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbNuevo.Name = "tsbNuevo"
-        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
+        Me.tsbNuevo.Size = New System.Drawing.Size(62, 22)
         Me.tsbNuevo.Text = "&Nuevo"
         '
         'tsbGrabar
@@ -110,15 +129,15 @@ Partial Class Frm_CXC_Pagos
         Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
         Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbGrabar.Name = "tsbGrabar"
-        Me.tsbGrabar.Size = New System.Drawing.Size(101, 24)
-        Me.tsbGrabar.Text = "&Grabar Pagos"
+        Me.tsbGrabar.Size = New System.Drawing.Size(62, 22)
+        Me.tsbGrabar.Text = "&Grabar"
         '
         'tsbCancelar
         '
         Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
         Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbCancelar.Name = "tsbCancelar"
-        Me.tsbCancelar.Size = New System.Drawing.Size(80, 24)
+        Me.tsbCancelar.Size = New System.Drawing.Size(76, 22)
         Me.tsbCancelar.Text = " Cancelar"
         '
         'tsbImprimirPoliza
@@ -126,7 +145,7 @@ Partial Class Frm_CXC_Pagos
         Me.tsbImprimirPoliza.Image = CType(resources.GetObject("tsbImprimirPoliza.Image"), System.Drawing.Image)
         Me.tsbImprimirPoliza.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbImprimirPoliza.Name = "tsbImprimirPoliza"
-        Me.tsbImprimirPoliza.Size = New System.Drawing.Size(111, 24)
+        Me.tsbImprimirPoliza.Size = New System.Drawing.Size(107, 22)
         Me.tsbImprimirPoliza.Text = "&Imprimir póliza"
         Me.tsbImprimirPoliza.ToolTipText = "Imprimir"
         '
@@ -135,29 +154,30 @@ Partial Class Frm_CXC_Pagos
         Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
         Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
+        Me.tsbSalir.Size = New System.Drawing.Size(49, 22)
         Me.tsbSalir.Text = "&Salir"
         '
         'gbGlobal
         '
-        Me.gbGlobal.Controls.Add(Me.lblMoneda)
-        Me.gbGlobal.Controls.Add(Me.cboMoneda)
+        Me.gbGlobal.Controls.Add(Me.cmdPruebaPagoCFDI)
+        Me.gbGlobal.Controls.Add(Me.TxtTotal)
+        Me.gbGlobal.Controls.Add(Me.Label1)
+        Me.gbGlobal.Controls.Add(Me.lstClientesAgregados)
+        Me.gbGlobal.Controls.Add(Me.TxtConcepto)
         Me.gbGlobal.Controls.Add(Me.btnDepositosSiguiente)
         Me.gbGlobal.Controls.Add(Me.btnDepositosAnterior)
         Me.gbGlobal.Controls.Add(Me.lblTipoCambio)
         Me.gbGlobal.Controls.Add(Me.txtTipoCambio)
-        Me.gbGlobal.Controls.Add(Me.gbAgregaDocCliente)
         Me.gbGlobal.Controls.Add(Me.LblPoliza)
         Me.gbGlobal.Controls.Add(Me.CmbDocumento)
         Me.gbGlobal.Controls.Add(Me.LblFecha)
         Me.gbGlobal.Controls.Add(Me.Label8)
+        Me.gbGlobal.Controls.Add(Me.LblCuentaContableCuentaBancaria)
         Me.gbGlobal.Controls.Add(Me.dtFecha)
         Me.gbGlobal.Controls.Add(Me.LblDocumento)
-        Me.gbGlobal.Controls.Add(Me.TxtConcepto)
         Me.gbGlobal.Controls.Add(Me.LblDisplayConcepto)
         Me.gbGlobal.Controls.Add(Me.LblDisplayFolio)
         Me.gbGlobal.Controls.Add(Me.TxtFolio)
-        Me.gbGlobal.Controls.Add(Me.LblCuentaContableCuentaBancaria)
         Me.gbGlobal.Controls.Add(Me.lblDisplayStatus)
         Me.gbGlobal.Controls.Add(Me.LblCuentaBancaria)
         Me.gbGlobal.Controls.Add(Me.LblStatus)
@@ -165,28 +185,78 @@ Partial Class Frm_CXC_Pagos
         Me.gbGlobal.Controls.Add(Me.TxtCuentaBancaria)
         Me.gbGlobal.Location = New System.Drawing.Point(8, 28)
         Me.gbGlobal.Name = "gbGlobal"
-        Me.gbGlobal.Size = New System.Drawing.Size(988, 165)
+        Me.gbGlobal.Size = New System.Drawing.Size(1034, 133)
         Me.gbGlobal.TabIndex = 0
         Me.gbGlobal.TabStop = False
         Me.gbGlobal.Text = "Datos"
         '
-        'lblMoneda
+        'cmdPruebaPagoCFDI
         '
-        Me.lblMoneda.AutoSize = True
-        Me.lblMoneda.Location = New System.Drawing.Point(316, 105)
-        Me.lblMoneda.Name = "lblMoneda"
-        Me.lblMoneda.Size = New System.Drawing.Size(52, 13)
-        Me.lblMoneda.TabIndex = 376
-        Me.lblMoneda.Text = "Moneda :"
+        Me.cmdPruebaPagoCFDI.Location = New System.Drawing.Point(507, 67)
+        Me.cmdPruebaPagoCFDI.Name = "cmdPruebaPagoCFDI"
+        Me.cmdPruebaPagoCFDI.Size = New System.Drawing.Size(106, 30)
+        Me.cmdPruebaPagoCFDI.TabIndex = 378
+        Me.cmdPruebaPagoCFDI.Text = "Prueba CFDI-Pago"
+        Me.cmdPruebaPagoCFDI.UseVisualStyleBackColor = True
         '
-        'cboMoneda
+        'TxtTotal
         '
-        Me.cboMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboMoneda.FormattingEnabled = True
-        Me.cboMoneda.Location = New System.Drawing.Point(370, 102)
-        Me.cboMoneda.Name = "cboMoneda"
-        Me.cboMoneda.Size = New System.Drawing.Size(87, 21)
-        Me.cboMoneda.TabIndex = 375
+        Me.TxtTotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TxtTotal.Location = New System.Drawing.Point(859, 95)
+        Me.TxtTotal.Name = "TxtTotal"
+        Me.TxtTotal.ReadOnly = True
+        Me.TxtTotal.Size = New System.Drawing.Size(123, 23)
+        Me.TxtTotal.TabIndex = 376
+        Me.TxtTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.ForeColor = System.Drawing.Color.Black
+        Me.Label1.Location = New System.Drawing.Point(798, 98)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(55, 17)
+        Me.Label1.TabIndex = 377
+        Me.Label1.Text = "Total :"
+        '
+        'lstClientesAgregados
+        '
+        Me.lstClientesAgregados.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.lstClientesAgregados.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.col_CodigoSocio, Me.col_NombreSocio, Me.col_Total})
+        Me.lstClientesAgregados.GridLines = True
+        Me.lstClientesAgregados.Location = New System.Drawing.Point(634, 12)
+        Me.lstClientesAgregados.Name = "lstClientesAgregados"
+        Me.lstClientesAgregados.Size = New System.Drawing.Size(371, 78)
+        Me.lstClientesAgregados.TabIndex = 375
+        Me.lstClientesAgregados.UseCompatibleStateImageBehavior = False
+        Me.lstClientesAgregados.View = System.Windows.Forms.View.Details
+        '
+        'col_CodigoSocio
+        '
+        Me.col_CodigoSocio.Tag = "STRING"
+        Me.col_CodigoSocio.Text = "Código"
+        Me.col_CodigoSocio.Width = 49
+        '
+        'col_NombreSocio
+        '
+        Me.col_NombreSocio.Text = "Nombre"
+        Me.col_NombreSocio.Width = 199
+        '
+        'col_Total
+        '
+        Me.col_Total.Tag = "NUMBER"
+        Me.col_Total.Text = "Total"
+        Me.col_Total.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.col_Total.Width = 100
+        '
+        'TxtConcepto
+        '
+        Me.TxtConcepto.Location = New System.Drawing.Point(378, 102)
+        Me.TxtConcepto.MaxLength = 160
+        Me.TxtConcepto.Name = "TxtConcepto"
+        Me.TxtConcepto.Size = New System.Drawing.Size(334, 20)
+        Me.TxtConcepto.TabIndex = 5
         '
         'btnDepositosSiguiente
         '
@@ -210,7 +280,7 @@ Partial Class Frm_CXC_Pagos
         '
         Me.lblTipoCambio.AutoSize = True
         Me.lblTipoCambio.Enabled = False
-        Me.lblTipoCambio.Location = New System.Drawing.Point(459, 104)
+        Me.lblTipoCambio.Location = New System.Drawing.Point(320, 77)
         Me.lblTipoCambio.Name = "lblTipoCambio"
         Me.lblTipoCambio.Size = New System.Drawing.Size(86, 13)
         Me.lblTipoCambio.TabIndex = 305
@@ -219,158 +289,19 @@ Partial Class Frm_CXC_Pagos
         'txtTipoCambio
         '
         Me.txtTipoCambio.Enabled = False
-        Me.txtTipoCambio.Location = New System.Drawing.Point(558, 101)
+        Me.txtTipoCambio.Location = New System.Drawing.Point(410, 77)
         Me.txtTipoCambio.MaxLength = 15
         Me.txtTipoCambio.Name = "txtTipoCambio"
-        Me.txtTipoCambio.Size = New System.Drawing.Size(62, 20)
+        Me.txtTipoCambio.Size = New System.Drawing.Size(78, 20)
         Me.txtTipoCambio.TabIndex = 304
         Me.txtTipoCambio.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
-        'gbAgregaDocCliente
-        '
-        Me.gbAgregaDocCliente.Controls.Add(Me.CkbAnticipo)
-        Me.gbAgregaDocCliente.Controls.Add(Me.CboBancos)
-        Me.gbAgregaDocCliente.Controls.Add(Me.CboMedioDePago)
-        Me.gbAgregaDocCliente.Controls.Add(Me.lblDisplayAnticipo)
-        Me.gbAgregaDocCliente.Controls.Add(Me.txtAnticipo)
-        Me.gbAgregaDocCliente.Controls.Add(Me.btnAgregarDocumentosClientes)
-        Me.gbAgregaDocCliente.Controls.Add(Me.LblDisplayReferencia)
-        Me.gbAgregaDocCliente.Controls.Add(Me.TxtReferencia)
-        Me.gbAgregaDocCliente.Controls.Add(Me.LblDisplayBanco)
-        Me.gbAgregaDocCliente.Controls.Add(Me.LblDisplayMedioPago)
-        Me.gbAgregaDocCliente.Controls.Add(Me.LblCliente)
-        Me.gbAgregaDocCliente.Controls.Add(Me.LblDisplayCliente)
-        Me.gbAgregaDocCliente.Controls.Add(Me.TxtCodigoCliente)
-        Me.gbAgregaDocCliente.Location = New System.Drawing.Point(638, 12)
-        Me.gbAgregaDocCliente.Name = "gbAgregaDocCliente"
-        Me.gbAgregaDocCliente.Size = New System.Drawing.Size(344, 146)
-        Me.gbAgregaDocCliente.TabIndex = 6
-        Me.gbAgregaDocCliente.TabStop = False
-        Me.gbAgregaDocCliente.Text = "Agregar documentos del cliente"
-        '
-        'CkbAnticipo
-        '
-        Me.CkbAnticipo.AutoSize = True
-        Me.CkbAnticipo.Location = New System.Drawing.Point(254, 92)
-        Me.CkbAnticipo.Name = "CkbAnticipo"
-        Me.CkbAnticipo.Size = New System.Drawing.Size(64, 17)
-        Me.CkbAnticipo.TabIndex = 4
-        Me.CkbAnticipo.Text = "Anticipo"
-        Me.CkbAnticipo.UseVisualStyleBackColor = True
-        '
-        'CboBancos
-        '
-        Me.CboBancos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CboBancos.FormattingEnabled = True
-        Me.CboBancos.Location = New System.Drawing.Point(89, 65)
-        Me.CboBancos.Name = "CboBancos"
-        Me.CboBancos.Size = New System.Drawing.Size(211, 21)
-        Me.CboBancos.TabIndex = 2
-        '
-        'CboMedioDePago
-        '
-        Me.CboMedioDePago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CboMedioDePago.FormattingEnabled = True
-        Me.CboMedioDePago.Location = New System.Drawing.Point(89, 38)
-        Me.CboMedioDePago.Name = "CboMedioDePago"
-        Me.CboMedioDePago.Size = New System.Drawing.Size(211, 21)
-        Me.CboMedioDePago.TabIndex = 1
-        '
-        'lblDisplayAnticipo
-        '
-        Me.lblDisplayAnticipo.AutoSize = True
-        Me.lblDisplayAnticipo.Location = New System.Drawing.Point(6, 119)
-        Me.lblDisplayAnticipo.Name = "lblDisplayAnticipo"
-        Me.lblDisplayAnticipo.Size = New System.Drawing.Size(51, 13)
-        Me.lblDisplayAnticipo.TabIndex = 318
-        Me.lblDisplayAnticipo.Text = "Anticipo :"
-        Me.lblDisplayAnticipo.Visible = False
-        '
-        'txtAnticipo
-        '
-        Me.txtAnticipo.Location = New System.Drawing.Point(89, 115)
-        Me.txtAnticipo.MaxLength = 6
-        Me.txtAnticipo.Name = "txtAnticipo"
-        Me.txtAnticipo.Size = New System.Drawing.Size(159, 20)
-        Me.txtAnticipo.TabIndex = 5
-        Me.txtAnticipo.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.txtAnticipo.Visible = False
-        '
-        'btnAgregarDocumentosClientes
-        '
-        Me.btnAgregarDocumentosClientes.Location = New System.Drawing.Point(254, 114)
-        Me.btnAgregarDocumentosClientes.Name = "btnAgregarDocumentosClientes"
-        Me.btnAgregarDocumentosClientes.Size = New System.Drawing.Size(75, 23)
-        Me.btnAgregarDocumentosClientes.TabIndex = 6
-        Me.btnAgregarDocumentosClientes.Text = "Agregar"
-        Me.btnAgregarDocumentosClientes.UseVisualStyleBackColor = True
-        '
-        'LblDisplayReferencia
-        '
-        Me.LblDisplayReferencia.AutoSize = True
-        Me.LblDisplayReferencia.Location = New System.Drawing.Point(6, 92)
-        Me.LblDisplayReferencia.Name = "LblDisplayReferencia"
-        Me.LblDisplayReferencia.Size = New System.Drawing.Size(65, 13)
-        Me.LblDisplayReferencia.TabIndex = 316
-        Me.LblDisplayReferencia.Text = "Referencia :"
-        '
-        'TxtReferencia
-        '
-        Me.TxtReferencia.Location = New System.Drawing.Point(89, 90)
-        Me.TxtReferencia.MaxLength = 160
-        Me.TxtReferencia.Name = "TxtReferencia"
-        Me.TxtReferencia.Size = New System.Drawing.Size(159, 20)
-        Me.TxtReferencia.TabIndex = 3
-        '
-        'LblDisplayBanco
-        '
-        Me.LblDisplayBanco.AutoSize = True
-        Me.LblDisplayBanco.Location = New System.Drawing.Point(6, 67)
-        Me.LblDisplayBanco.Name = "LblDisplayBanco"
-        Me.LblDisplayBanco.Size = New System.Drawing.Size(44, 13)
-        Me.LblDisplayBanco.TabIndex = 314
-        Me.LblDisplayBanco.Text = "Banco :"
-        '
-        'LblDisplayMedioPago
-        '
-        Me.LblDisplayMedioPago.AutoSize = True
-        Me.LblDisplayMedioPago.Location = New System.Drawing.Point(6, 41)
-        Me.LblDisplayMedioPago.Name = "LblDisplayMedioPago"
-        Me.LblDisplayMedioPago.Size = New System.Drawing.Size(85, 13)
-        Me.LblDisplayMedioPago.TabIndex = 312
-        Me.LblDisplayMedioPago.Text = "Medio de Pago :"
-        '
-        'LblCliente
-        '
-        Me.LblCliente.BackColor = System.Drawing.SystemColors.ControlLight
-        Me.LblCliente.Location = New System.Drawing.Point(165, 18)
-        Me.LblCliente.Name = "LblCliente"
-        Me.LblCliente.Size = New System.Drawing.Size(164, 13)
-        Me.LblCliente.TabIndex = 239
-        '
-        'LblDisplayCliente
-        '
-        Me.LblDisplayCliente.AutoSize = True
-        Me.LblDisplayCliente.Location = New System.Drawing.Point(5, 18)
-        Me.LblDisplayCliente.Name = "LblDisplayCliente"
-        Me.LblDisplayCliente.Size = New System.Drawing.Size(45, 13)
-        Me.LblDisplayCliente.TabIndex = 238
-        Me.LblDisplayCliente.Text = "Cliente :"
-        '
-        'TxtCodigoCliente
-        '
-        Me.TxtCodigoCliente.Location = New System.Drawing.Point(89, 15)
-        Me.TxtCodigoCliente.MaxLength = 8
-        Me.TxtCodigoCliente.Name = "TxtCodigoCliente"
-        Me.TxtCodigoCliente.Size = New System.Drawing.Size(66, 20)
-        Me.TxtCodigoCliente.TabIndex = 0
         '
         'LblPoliza
         '
         Me.LblPoliza.BackColor = System.Drawing.SystemColors.ControlLight
-        Me.LblPoliza.Location = New System.Drawing.Point(470, 77)
+        Me.LblPoliza.Location = New System.Drawing.Point(462, 22)
         Me.LblPoliza.Name = "LblPoliza"
-        Me.LblPoliza.Size = New System.Drawing.Size(149, 13)
+        Me.LblPoliza.Size = New System.Drawing.Size(105, 13)
         Me.LblPoliza.TabIndex = 291
         '
         'CmbDocumento
@@ -394,15 +325,23 @@ Partial Class Frm_CXC_Pagos
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(423, 77)
+        Me.Label8.Location = New System.Drawing.Point(415, 22)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(41, 13)
         Me.Label8.TabIndex = 287
         Me.Label8.Text = "Póliza :"
         '
+        'LblCuentaContableCuentaBancaria
+        '
+        Me.LblCuentaContableCuentaBancaria.BackColor = System.Drawing.SystemColors.ControlLight
+        Me.LblCuentaContableCuentaBancaria.Location = New System.Drawing.Point(423, 48)
+        Me.LblCuentaContableCuentaBancaria.Name = "LblCuentaContableCuentaBancaria"
+        Me.LblCuentaContableCuentaBancaria.Size = New System.Drawing.Size(144, 13)
+        Me.LblCuentaContableCuentaBancaria.TabIndex = 224
+        '
         'dtFecha
         '
-        Me.dtFecha.Location = New System.Drawing.Point(103, 101)
+        Me.dtFecha.Location = New System.Drawing.Point(103, 102)
         Me.dtFecha.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dtFecha.Name = "dtFecha"
         Me.dtFecha.Size = New System.Drawing.Size(211, 20)
@@ -417,18 +356,10 @@ Partial Class Frm_CXC_Pagos
         Me.LblDocumento.TabIndex = 177
         Me.LblDocumento.Text = "Documento :"
         '
-        'TxtConcepto
-        '
-        Me.TxtConcepto.Location = New System.Drawing.Point(103, 126)
-        Me.TxtConcepto.MaxLength = 160
-        Me.TxtConcepto.Name = "TxtConcepto"
-        Me.TxtConcepto.Size = New System.Drawing.Size(516, 20)
-        Me.TxtConcepto.TabIndex = 5
-        '
         'LblDisplayConcepto
         '
         Me.LblDisplayConcepto.AutoSize = True
-        Me.LblDisplayConcepto.Location = New System.Drawing.Point(8, 130)
+        Me.LblDisplayConcepto.Location = New System.Drawing.Point(320, 105)
         Me.LblDisplayConcepto.Name = "LblDisplayConcepto"
         Me.LblDisplayConcepto.Size = New System.Drawing.Size(59, 13)
         Me.LblDisplayConcepto.TabIndex = 185
@@ -452,18 +383,10 @@ Partial Class Frm_CXC_Pagos
         Me.TxtFolio.Size = New System.Drawing.Size(135, 26)
         Me.TxtFolio.TabIndex = 2
         '
-        'LblCuentaContableCuentaBancaria
-        '
-        Me.LblCuentaContableCuentaBancaria.BackColor = System.Drawing.SystemColors.ControlLight
-        Me.LblCuentaContableCuentaBancaria.Location = New System.Drawing.Point(423, 49)
-        Me.LblCuentaContableCuentaBancaria.Name = "LblCuentaContableCuentaBancaria"
-        Me.LblCuentaContableCuentaBancaria.Size = New System.Drawing.Size(196, 13)
-        Me.LblCuentaContableCuentaBancaria.TabIndex = 224
-        '
         'lblDisplayStatus
         '
         Me.lblDisplayStatus.AutoSize = True
-        Me.lblDisplayStatus.Location = New System.Drawing.Point(316, 77)
+        Me.lblDisplayStatus.Location = New System.Drawing.Point(320, 22)
         Me.lblDisplayStatus.Name = "lblDisplayStatus"
         Me.lblDisplayStatus.Size = New System.Drawing.Size(48, 13)
         Me.lblDisplayStatus.TabIndex = 217
@@ -472,7 +395,7 @@ Partial Class Frm_CXC_Pagos
         'LblCuentaBancaria
         '
         Me.LblCuentaBancaria.BackColor = System.Drawing.SystemColors.ControlLight
-        Me.LblCuentaBancaria.Location = New System.Drawing.Point(150, 49)
+        Me.LblCuentaBancaria.Location = New System.Drawing.Point(150, 48)
         Me.LblCuentaBancaria.Name = "LblCuentaBancaria"
         Me.LblCuentaBancaria.Size = New System.Drawing.Size(267, 13)
         Me.LblCuentaBancaria.TabIndex = 223
@@ -481,7 +404,7 @@ Partial Class Frm_CXC_Pagos
         '
         Me.LblStatus.BackColor = System.Drawing.SystemColors.ControlLight
         Me.LblStatus.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.LblStatus.Location = New System.Drawing.Point(370, 77)
+        Me.LblStatus.Location = New System.Drawing.Point(373, 22)
         Me.LblStatus.Name = "LblStatus"
         Me.LblStatus.Size = New System.Drawing.Size(36, 13)
         Me.LblStatus.TabIndex = 218
@@ -489,7 +412,7 @@ Partial Class Frm_CXC_Pagos
         'LblDisplayCuentaBancaria
         '
         Me.LblDisplayCuentaBancaria.AutoSize = True
-        Me.LblDisplayCuentaBancaria.Location = New System.Drawing.Point(8, 49)
+        Me.LblDisplayCuentaBancaria.Location = New System.Drawing.Point(8, 48)
         Me.LblDisplayCuentaBancaria.Name = "LblDisplayCuentaBancaria"
         Me.LblDisplayCuentaBancaria.Size = New System.Drawing.Size(91, 13)
         Me.LblDisplayCuentaBancaria.TabIndex = 222
@@ -497,48 +420,371 @@ Partial Class Frm_CXC_Pagos
         '
         'TxtCuentaBancaria
         '
-        Me.TxtCuentaBancaria.Location = New System.Drawing.Point(103, 45)
+        Me.TxtCuentaBancaria.Location = New System.Drawing.Point(103, 44)
         Me.TxtCuentaBancaria.MaxLength = 6
         Me.TxtCuentaBancaria.Name = "TxtCuentaBancaria"
         Me.TxtCuentaBancaria.Size = New System.Drawing.Size(41, 20)
         Me.TxtCuentaBancaria.TabIndex = 1
         '
+        'CboMedioDePago
+        '
+        Me.CboMedioDePago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboMedioDePago.FormattingEnabled = True
+        Me.CboMedioDePago.Location = New System.Drawing.Point(853, 376)
+        Me.CboMedioDePago.Name = "CboMedioDePago"
+        Me.CboMedioDePago.Size = New System.Drawing.Size(211, 21)
+        Me.CboMedioDePago.TabIndex = 1
+        Me.CboMedioDePago.Visible = False
+        '
+        'LblDisplayMedioPago
+        '
+        Me.LblDisplayMedioPago.AutoSize = True
+        Me.LblDisplayMedioPago.Location = New System.Drawing.Point(957, 360)
+        Me.LblDisplayMedioPago.Name = "LblDisplayMedioPago"
+        Me.LblDisplayMedioPago.Size = New System.Drawing.Size(85, 13)
+        Me.LblDisplayMedioPago.TabIndex = 312
+        Me.LblDisplayMedioPago.Text = "Medio de Pago :"
+        Me.LblDisplayMedioPago.Visible = False
+        '
+        'gbAgregaDocCliente
+        '
+        Me.gbAgregaDocCliente.Controls.Add(Me.dtFechaCheque)
+        Me.gbAgregaDocCliente.Controls.Add(Me.lblDisplayFechaCheque)
+        Me.gbAgregaDocCliente.Controls.Add(Me.dtFechaPagoCliente)
+        Me.gbAgregaDocCliente.Controls.Add(Me.CboBancos)
+        Me.gbAgregaDocCliente.Controls.Add(Me.txtCuentaEmisor)
+        Me.gbAgregaDocCliente.Controls.Add(Me.txtFolioDetalle)
+        Me.gbAgregaDocCliente.Controls.Add(Me.btnEditarCuentaBancariaCliente)
+        Me.gbAgregaDocCliente.Controls.Add(Me.btnAgregarCuentaBancariaCliente)
+        Me.gbAgregaDocCliente.Controls.Add(Me.lblDisplayCuenta)
+        Me.gbAgregaDocCliente.Controls.Add(Me.lblRFCEmisor)
+        Me.gbAgregaDocCliente.Controls.Add(Me.lblDisplayRFCEmisor)
+        Me.gbAgregaDocCliente.Controls.Add(Me.cboCuentaEmisor)
+        Me.gbAgregaDocCliente.Controls.Add(Me.txtRFCEmisor)
+        Me.gbAgregaDocCliente.Controls.Add(Me.btnLimpiarDocumentoPagos)
+        Me.gbAgregaDocCliente.Controls.Add(Me.lblDisplayMonto)
+        Me.gbAgregaDocCliente.Controls.Add(Me.txtMonto)
+        Me.gbAgregaDocCliente.Controls.Add(Me.Label5)
+        Me.gbAgregaDocCliente.Controls.Add(Me.lblDisplayCuentaEmisor)
+        Me.gbAgregaDocCliente.Controls.Add(Me.lblDisplayFolioDetalle)
+        Me.gbAgregaDocCliente.Controls.Add(Me.cboFormaPago)
+        Me.gbAgregaDocCliente.Controls.Add(Me.cboMoneda)
+        Me.gbAgregaDocCliente.Controls.Add(Me.lblDisplayFormaPago)
+        Me.gbAgregaDocCliente.Controls.Add(Me.CkbAnticipo)
+        Me.gbAgregaDocCliente.Controls.Add(Me.btnAgregarDocumentosClientes)
+        Me.gbAgregaDocCliente.Controls.Add(Me.LblDisplayReferencia)
+        Me.gbAgregaDocCliente.Controls.Add(Me.TxtReferencia)
+        Me.gbAgregaDocCliente.Controls.Add(Me.LblDisplayBanco)
+        Me.gbAgregaDocCliente.Controls.Add(Me.LblCliente)
+        Me.gbAgregaDocCliente.Controls.Add(Me.LblDisplayCliente)
+        Me.gbAgregaDocCliente.Controls.Add(Me.TxtCodigoCliente)
+        Me.gbAgregaDocCliente.Location = New System.Drawing.Point(8, 167)
+        Me.gbAgregaDocCliente.Name = "gbAgregaDocCliente"
+        Me.gbAgregaDocCliente.Size = New System.Drawing.Size(1034, 140)
+        Me.gbAgregaDocCliente.TabIndex = 1
+        Me.gbAgregaDocCliente.TabStop = False
+        Me.gbAgregaDocCliente.Text = "Documentos de pago :"
+        '
+        'dtFechaCheque
+        '
+        Me.dtFechaCheque.Location = New System.Drawing.Point(788, 65)
+        Me.dtFechaCheque.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
+        Me.dtFechaCheque.Name = "dtFechaCheque"
+        Me.dtFechaCheque.Size = New System.Drawing.Size(211, 20)
+        Me.dtFechaCheque.TabIndex = 345
+        '
+        'lblDisplayFechaCheque
+        '
+        Me.lblDisplayFechaCheque.AutoSize = True
+        Me.lblDisplayFechaCheque.Location = New System.Drawing.Point(692, 69)
+        Me.lblDisplayFechaCheque.Name = "lblDisplayFechaCheque"
+        Me.lblDisplayFechaCheque.Size = New System.Drawing.Size(99, 13)
+        Me.lblDisplayFechaCheque.TabIndex = 346
+        Me.lblDisplayFechaCheque.Text = "Fecha del cheque :"
+        '
+        'dtFechaPagoCliente
+        '
+        Me.dtFechaPagoCliente.Location = New System.Drawing.Point(788, 38)
+        Me.dtFechaPagoCliente.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
+        Me.dtFechaPagoCliente.Name = "dtFechaPagoCliente"
+        Me.dtFechaPagoCliente.Size = New System.Drawing.Size(211, 20)
+        Me.dtFechaPagoCliente.TabIndex = 10
+        '
+        'CboBancos
+        '
+        Me.CboBancos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboBancos.FormattingEnabled = True
+        Me.CboBancos.Location = New System.Drawing.Point(569, 85)
+        Me.CboBancos.Name = "CboBancos"
+        Me.CboBancos.Size = New System.Drawing.Size(211, 21)
+        Me.CboBancos.TabIndex = 8
+        '
+        'txtCuentaEmisor
+        '
+        Me.txtCuentaEmisor.Location = New System.Drawing.Point(569, 38)
+        Me.txtCuentaEmisor.MaxLength = 50
+        Me.txtCuentaEmisor.Name = "txtCuentaEmisor"
+        Me.txtCuentaEmisor.Size = New System.Drawing.Size(124, 20)
+        Me.txtCuentaEmisor.TabIndex = 7
+        '
+        'txtFolioDetalle
+        '
+        Me.txtFolioDetalle.Location = New System.Drawing.Point(636, 15)
+        Me.txtFolioDetalle.MaxLength = 100
+        Me.txtFolioDetalle.Name = "txtFolioDetalle"
+        Me.txtFolioDetalle.Size = New System.Drawing.Size(103, 20)
+        Me.txtFolioDetalle.TabIndex = 6
+        '
+        'btnEditarCuentaBancariaCliente
+        '
+        Me.btnEditarCuentaBancariaCliente.Location = New System.Drawing.Point(420, 60)
+        Me.btnEditarCuentaBancariaCliente.Name = "btnEditarCuentaBancariaCliente"
+        Me.btnEditarCuentaBancariaCliente.Size = New System.Drawing.Size(53, 21)
+        Me.btnEditarCuentaBancariaCliente.TabIndex = 344
+        Me.btnEditarCuentaBancariaCliente.Text = "Editar"
+        Me.btnEditarCuentaBancariaCliente.UseVisualStyleBackColor = True
+        '
+        'btnAgregarCuentaBancariaCliente
+        '
+        Me.btnAgregarCuentaBancariaCliente.Location = New System.Drawing.Point(364, 60)
+        Me.btnAgregarCuentaBancariaCliente.Name = "btnAgregarCuentaBancariaCliente"
+        Me.btnAgregarCuentaBancariaCliente.Size = New System.Drawing.Size(53, 21)
+        Me.btnAgregarCuentaBancariaCliente.TabIndex = 343
+        Me.btnAgregarCuentaBancariaCliente.Text = "Agregar"
+        Me.btnAgregarCuentaBancariaCliente.UseVisualStyleBackColor = True
+        '
+        'lblDisplayCuenta
+        '
+        Me.lblDisplayCuenta.AutoSize = True
+        Me.lblDisplayCuenta.Location = New System.Drawing.Point(6, 42)
+        Me.lblDisplayCuenta.Name = "lblDisplayCuenta"
+        Me.lblDisplayCuenta.Size = New System.Drawing.Size(80, 13)
+        Me.lblDisplayCuenta.TabIndex = 342
+        Me.lblDisplayCuenta.Text = "Cuenta emisor :"
+        '
+        'lblRFCEmisor
+        '
+        Me.lblRFCEmisor.BackColor = System.Drawing.SystemColors.ControlLight
+        Me.lblRFCEmisor.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblRFCEmisor.Location = New System.Drawing.Point(572, 116)
+        Me.lblRFCEmisor.Name = "lblRFCEmisor"
+        Me.lblRFCEmisor.Size = New System.Drawing.Size(178, 13)
+        Me.lblRFCEmisor.TabIndex = 340
+        '
+        'lblDisplayRFCEmisor
+        '
+        Me.lblDisplayRFCEmisor.AutoSize = True
+        Me.lblDisplayRFCEmisor.Location = New System.Drawing.Point(392, 117)
+        Me.lblDisplayRFCEmisor.Name = "lblDisplayRFCEmisor"
+        Me.lblDisplayRFCEmisor.Size = New System.Drawing.Size(67, 13)
+        Me.lblDisplayRFCEmisor.TabIndex = 339
+        Me.lblDisplayRFCEmisor.Text = "RFC emisor :"
+        '
+        'cboCuentaEmisor
+        '
+        Me.cboCuentaEmisor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboCuentaEmisor.FormattingEnabled = True
+        Me.cboCuentaEmisor.Location = New System.Drawing.Point(99, 38)
+        Me.cboCuentaEmisor.Name = "cboCuentaEmisor"
+        Me.cboCuentaEmisor.Size = New System.Drawing.Size(374, 21)
+        Me.cboCuentaEmisor.TabIndex = 1
+        '
+        'txtRFCEmisor
+        '
+        Me.txtRFCEmisor.Location = New System.Drawing.Point(465, 114)
+        Me.txtRFCEmisor.MaxLength = 13
+        Me.txtRFCEmisor.Name = "txtRFCEmisor"
+        Me.txtRFCEmisor.Size = New System.Drawing.Size(97, 20)
+        Me.txtRFCEmisor.TabIndex = 9
+        '
+        'btnLimpiarDocumentoPagos
+        '
+        Me.btnLimpiarDocumentoPagos.Location = New System.Drawing.Point(924, 85)
+        Me.btnLimpiarDocumentoPagos.Name = "btnLimpiarDocumentoPagos"
+        Me.btnLimpiarDocumentoPagos.Size = New System.Drawing.Size(75, 30)
+        Me.btnLimpiarDocumentoPagos.TabIndex = 13
+        Me.btnLimpiarDocumentoPagos.Text = "Limpiar"
+        Me.btnLimpiarDocumentoPagos.UseVisualStyleBackColor = True
+        '
+        'lblDisplayMonto
+        '
+        Me.lblDisplayMonto.AutoSize = True
+        Me.lblDisplayMonto.Location = New System.Drawing.Point(6, 96)
+        Me.lblDisplayMonto.Name = "lblDisplayMonto"
+        Me.lblDisplayMonto.Size = New System.Drawing.Size(43, 13)
+        Me.lblDisplayMonto.TabIndex = 336
+        Me.lblDisplayMonto.Text = "Monto :"
+        '
+        'txtMonto
+        '
+        Me.txtMonto.Location = New System.Drawing.Point(99, 93)
+        Me.txtMonto.MaxLength = 20
+        Me.txtMonto.Name = "txtMonto"
+        Me.txtMonto.Size = New System.Drawing.Size(108, 20)
+        Me.txtMonto.TabIndex = 3
+        Me.txtMonto.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'Label5
+        '
+        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Location = New System.Drawing.Point(692, 38)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(102, 30)
+        Me.Label5.TabIndex = 330
+        Me.Label5.Text = "Fecha en que pagó el cliente :"
+        '
+        'lblDisplayCuentaEmisor
+        '
+        Me.lblDisplayCuentaEmisor.AutoSize = True
+        Me.lblDisplayCuentaEmisor.Location = New System.Drawing.Point(479, 40)
+        Me.lblDisplayCuentaEmisor.Name = "lblDisplayCuentaEmisor"
+        Me.lblDisplayCuentaEmisor.Size = New System.Drawing.Size(90, 13)
+        Me.lblDisplayCuentaEmisor.TabIndex = 329
+        Me.lblDisplayCuentaEmisor.Text = "# Cuenta emisor :"
+        '
+        'lblDisplayFolioDetalle
+        '
+        Me.lblDisplayFolioDetalle.AutoSize = True
+        Me.lblDisplayFolioDetalle.Location = New System.Drawing.Point(415, 17)
+        Me.lblDisplayFolioDetalle.Name = "lblDisplayFolioDetalle"
+        Me.lblDisplayFolioDetalle.Size = New System.Drawing.Size(223, 13)
+        Me.lblDisplayFolioDetalle.TabIndex = 328
+        Me.lblDisplayFolioDetalle.Text = "Número de operación(Folio chq/transf/ficha) :"
+        '
+        'cboFormaPago
+        '
+        Me.cboFormaPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboFormaPago.FormattingEnabled = True
+        Me.cboFormaPago.Location = New System.Drawing.Point(99, 66)
+        Me.cboFormaPago.Name = "cboFormaPago"
+        Me.cboFormaPago.Size = New System.Drawing.Size(229, 21)
+        Me.cboFormaPago.TabIndex = 2
+        '
+        'cboMoneda
+        '
+        Me.cboMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboMoneda.Enabled = False
+        Me.cboMoneda.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cboMoneda.FormattingEnabled = True
+        Me.cboMoneda.Location = New System.Drawing.Point(213, 93)
+        Me.cboMoneda.Name = "cboMoneda"
+        Me.cboMoneda.Size = New System.Drawing.Size(73, 21)
+        Me.cboMoneda.TabIndex = 4
+        '
+        'lblDisplayFormaPago
+        '
+        Me.lblDisplayFormaPago.AutoSize = True
+        Me.lblDisplayFormaPago.Location = New System.Drawing.Point(6, 69)
+        Me.lblDisplayFormaPago.Name = "lblDisplayFormaPago"
+        Me.lblDisplayFormaPago.Size = New System.Drawing.Size(84, 13)
+        Me.lblDisplayFormaPago.TabIndex = 327
+        Me.lblDisplayFormaPago.Text = "Forma de pago :"
+        '
+        'CkbAnticipo
+        '
+        Me.CkbAnticipo.AutoSize = True
+        Me.CkbAnticipo.Location = New System.Drawing.Point(292, 96)
+        Me.CkbAnticipo.Name = "CkbAnticipo"
+        Me.CkbAnticipo.Size = New System.Drawing.Size(64, 17)
+        Me.CkbAnticipo.TabIndex = 5
+        Me.CkbAnticipo.Text = "Anticipo"
+        Me.CkbAnticipo.UseVisualStyleBackColor = True
+        Me.CkbAnticipo.Visible = False
+        '
+        'btnAgregarDocumentosClientes
+        '
+        Me.btnAgregarDocumentosClientes.Location = New System.Drawing.Point(845, 85)
+        Me.btnAgregarDocumentosClientes.Name = "btnAgregarDocumentosClientes"
+        Me.btnAgregarDocumentosClientes.Size = New System.Drawing.Size(75, 30)
+        Me.btnAgregarDocumentosClientes.TabIndex = 12
+        Me.btnAgregarDocumentosClientes.Text = "Agregar"
+        Me.btnAgregarDocumentosClientes.UseVisualStyleBackColor = True
+        '
+        'LblDisplayReferencia
+        '
+        Me.LblDisplayReferencia.AutoSize = True
+        Me.LblDisplayReferencia.Location = New System.Drawing.Point(745, 17)
+        Me.LblDisplayReferencia.Name = "LblDisplayReferencia"
+        Me.LblDisplayReferencia.Size = New System.Drawing.Size(65, 13)
+        Me.LblDisplayReferencia.TabIndex = 316
+        Me.LblDisplayReferencia.Text = "Referencia :"
+        '
+        'TxtReferencia
+        '
+        Me.TxtReferencia.Location = New System.Drawing.Point(816, 15)
+        Me.TxtReferencia.MaxLength = 160
+        Me.TxtReferencia.Name = "TxtReferencia"
+        Me.TxtReferencia.Size = New System.Drawing.Size(183, 20)
+        Me.TxtReferencia.TabIndex = 11
+        '
+        'LblDisplayBanco
+        '
+        Me.LblDisplayBanco.AutoSize = True
+        Me.LblDisplayBanco.Location = New System.Drawing.Point(479, 86)
+        Me.LblDisplayBanco.Name = "LblDisplayBanco"
+        Me.LblDisplayBanco.Size = New System.Drawing.Size(84, 13)
+        Me.LblDisplayBanco.TabIndex = 314
+        Me.LblDisplayBanco.Text = "Banco emi nac :"
+        '
+        'LblCliente
+        '
+        Me.LblCliente.BackColor = System.Drawing.SystemColors.ControlLight
+        Me.LblCliente.Location = New System.Drawing.Point(171, 18)
+        Me.LblCliente.Name = "LblCliente"
+        Me.LblCliente.Size = New System.Drawing.Size(233, 13)
+        Me.LblCliente.TabIndex = 239
+        '
+        'LblDisplayCliente
+        '
+        Me.LblDisplayCliente.AutoSize = True
+        Me.LblDisplayCliente.Location = New System.Drawing.Point(6, 18)
+        Me.LblDisplayCliente.Name = "LblDisplayCliente"
+        Me.LblDisplayCliente.Size = New System.Drawing.Size(45, 13)
+        Me.LblDisplayCliente.TabIndex = 238
+        Me.LblDisplayCliente.Text = "Cliente :"
+        '
+        'TxtCodigoCliente
+        '
+        Me.TxtCodigoCliente.Location = New System.Drawing.Point(99, 15)
+        Me.TxtCodigoCliente.MaxLength = 8
+        Me.TxtCodigoCliente.Name = "TxtCodigoCliente"
+        Me.TxtCodigoCliente.Size = New System.Drawing.Size(66, 20)
+        Me.TxtCodigoCliente.TabIndex = 0
+        '
         'gbVentas
         '
-        Me.gbVentas.Controls.Add(Me.Grid)
-        Me.gbVentas.Location = New System.Drawing.Point(8, 199)
+        Me.gbVentas.Controls.Add(Me.GridVentas)
+        Me.gbVentas.Location = New System.Drawing.Point(8, 409)
         Me.gbVentas.Name = "gbVentas"
-        Me.gbVentas.Size = New System.Drawing.Size(988, 212)
-        Me.gbVentas.TabIndex = 0
+        Me.gbVentas.Size = New System.Drawing.Size(1442, 203)
+        Me.gbVentas.TabIndex = 2
         Me.gbVentas.TabStop = False
         Me.gbVentas.Text = "Ventas"
         '
-        'Grid
+        'GridVentas
         '
-        Me.Grid.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.Grid.CheckedImage = CType(resources.GetObject("Grid.CheckedImage"), System.Drawing.Bitmap)
-        Me.Grid.Cols = 1
-        Me.Grid.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
-        Me.Grid.DefaultRowHeight = CType(24, Short)
-        Me.Grid.DisplayRowNumber = True
-        Me.Grid.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
-        Me.Grid.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Grid.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Grid.Location = New System.Drawing.Point(7, 19)
-        Me.Grid.LockButton = True
-        Me.Grid.Name = "Grid"
-        Me.Grid.Rows = 20
-        Me.Grid.Size = New System.Drawing.Size(975, 181)
-        Me.Grid.TabIndex = 0
-        Me.Grid.UncheckedImage = CType(resources.GetObject("Grid.UncheckedImage"), System.Drawing.Bitmap)
+        Me.GridVentas.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.GridVentas.CheckedImage = CType(resources.GetObject("GridVentas.CheckedImage"), System.Drawing.Bitmap)
+        Me.GridVentas.Cols = 1
+        Me.GridVentas.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
+        Me.GridVentas.DisplayRowNumber = True
+        Me.GridVentas.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
+        Me.GridVentas.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GridVentas.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.GridVentas.Location = New System.Drawing.Point(7, 19)
+        Me.GridVentas.LockButton = True
+        Me.GridVentas.Name = "GridVentas"
+        Me.GridVentas.Rows = 8
+        Me.GridVentas.Size = New System.Drawing.Size(1429, 178)
+        Me.GridVentas.TabIndex = 0
+        Me.GridVentas.UncheckedImage = CType(resources.GetObject("GridVentas.UncheckedImage"), System.Drawing.Bitmap)
         '
         'StatusStripEstado
         '
-        Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssEstado, Me.tssElaboro, Me.tssCancelo})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 594)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 615)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1006, 24)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1462, 24)
         Me.StatusStripEstado.TabIndex = 240
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -569,78 +815,58 @@ Partial Class Frm_CXC_Pagos
         Me.tssCancelo.Size = New System.Drawing.Size(60, 19)
         Me.tssCancelo.Text = "Canceló :"
         '
-        'gbTotales
+        'gbDocumentosPago
         '
-        Me.gbTotales.Controls.Add(Me.lstClientesAgregados)
-        Me.gbTotales.Controls.Add(Me.TxtTotal)
-        Me.gbTotales.Controls.Add(Me.Label1)
-        Me.gbTotales.Location = New System.Drawing.Point(618, 417)
-        Me.gbTotales.Name = "gbTotales"
-        Me.gbTotales.Size = New System.Drawing.Size(378, 164)
-        Me.gbTotales.TabIndex = 1
-        Me.gbTotales.TabStop = False
-        Me.gbTotales.Text = "Totales"
+        Me.gbDocumentosPago.Controls.Add(Me.btnEliminarDocumentoPago)
+        Me.gbDocumentosPago.Controls.Add(Me.GridDocumentosPago)
+        Me.gbDocumentosPago.Location = New System.Drawing.Point(8, 313)
+        Me.gbDocumentosPago.Name = "gbDocumentosPago"
+        Me.gbDocumentosPago.Size = New System.Drawing.Size(1034, 90)
+        Me.gbDocumentosPago.TabIndex = 1
+        Me.gbDocumentosPago.TabStop = False
+        Me.gbDocumentosPago.Text = "Documentos de pago :"
         '
-        'lstClientesAgregados
+        'btnEliminarDocumentoPago
         '
-        Me.lstClientesAgregados.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.col_CodigoSocio, Me.col_NombreSocio, Me.col_Total})
-        Me.lstClientesAgregados.Dock = System.Windows.Forms.DockStyle.Top
-        Me.lstClientesAgregados.GridLines = True
-        Me.lstClientesAgregados.Location = New System.Drawing.Point(3, 16)
-        Me.lstClientesAgregados.Name = "lstClientesAgregados"
-        Me.lstClientesAgregados.Size = New System.Drawing.Size(372, 108)
-        Me.lstClientesAgregados.TabIndex = 211
-        Me.lstClientesAgregados.UseCompatibleStateImageBehavior = False
-        Me.lstClientesAgregados.View = System.Windows.Forms.View.Details
+        Me.btnEliminarDocumentoPago.Location = New System.Drawing.Point(902, 0)
+        Me.btnEliminarDocumentoPago.Name = "btnEliminarDocumentoPago"
+        Me.btnEliminarDocumentoPago.Size = New System.Drawing.Size(75, 19)
+        Me.btnEliminarDocumentoPago.TabIndex = 13
+        Me.btnEliminarDocumentoPago.Text = "Eliminar"
+        Me.btnEliminarDocumentoPago.UseVisualStyleBackColor = True
         '
-        'col_CodigoSocio
+        'GridDocumentosPago
         '
-        Me.col_CodigoSocio.Tag = "STRING"
-        Me.col_CodigoSocio.Text = "Código"
-        Me.col_CodigoSocio.Width = 49
-        '
-        'col_NombreSocio
-        '
-        Me.col_NombreSocio.Text = "Nombre"
-        Me.col_NombreSocio.Width = 199
-        '
-        'col_Total
-        '
-        Me.col_Total.Tag = "NUMBER"
-        Me.col_Total.Text = "Total"
-        Me.col_Total.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.col_Total.Width = 118
-        '
-        'TxtTotal
-        '
-        Me.TxtTotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtTotal.Location = New System.Drawing.Point(235, 130)
-        Me.TxtTotal.Name = "TxtTotal"
-        Me.TxtTotal.ReadOnly = True
-        Me.TxtTotal.Size = New System.Drawing.Size(123, 23)
-        Me.TxtTotal.TabIndex = 208
-        Me.TxtTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(174, 133)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(55, 17)
-        Me.Label1.TabIndex = 210
-        Me.Label1.Text = "Total :"
+        Me.GridDocumentosPago.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.GridDocumentosPago.CheckedImage = CType(resources.GetObject("GridDocumentosPago.CheckedImage"), System.Drawing.Bitmap)
+        Me.GridDocumentosPago.Cols = 1
+        Me.GridDocumentosPago.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
+        Me.GridDocumentosPago.DisplayRowNumber = True
+        Me.GridDocumentosPago.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
+        Me.GridDocumentosPago.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GridDocumentosPago.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.GridDocumentosPago.Location = New System.Drawing.Point(7, 19)
+        Me.GridDocumentosPago.LockButton = True
+        Me.GridDocumentosPago.Name = "GridDocumentosPago"
+        Me.GridDocumentosPago.Rows = 3
+        Me.GridDocumentosPago.SelectionMode = FlexCell.SelectionModeEnum.ByRow
+        Me.GridDocumentosPago.Size = New System.Drawing.Size(1021, 61)
+        Me.GridDocumentosPago.TabIndex = 0
+        Me.GridDocumentosPago.UncheckedImage = CType(resources.GetObject("GridDocumentosPago.UncheckedImage"), System.Drawing.Bitmap)
         '
         'Frm_CXC_Pagos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1006, 618)
-        Me.Controls.Add(Me.gbTotales)
+        Me.ClientSize = New System.Drawing.Size(1462, 639)
+        Me.Controls.Add(Me.gbDocumentosPago)
+        Me.Controls.Add(Me.gbAgregaDocCliente)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.gbVentas)
         Me.Controls.Add(Me.gbGlobal)
         Me.Controls.Add(Me.tsMenu)
+        Me.Controls.Add(Me.CboMedioDePago)
+        Me.Controls.Add(Me.LblDisplayMedioPago)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -655,8 +881,7 @@ Partial Class Frm_CXC_Pagos
         Me.gbVentas.ResumeLayout(False)
         Me.StatusStripEstado.ResumeLayout(False)
         Me.StatusStripEstado.PerformLayout()
-        Me.gbTotales.ResumeLayout(False)
-        Me.gbTotales.PerformLayout()
+        Me.gbDocumentosPago.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -684,7 +909,7 @@ Partial Class Frm_CXC_Pagos
     Friend WithEvents LblDisplayCuentaBancaria As System.Windows.Forms.Label
     Friend WithEvents TxtCuentaBancaria As System.Windows.Forms.TextBox
     Friend WithEvents gbVentas As System.Windows.Forms.GroupBox
-    Friend WithEvents Grid As FlexCell.Grid
+    Friend WithEvents GridVentas As FlexCell.Grid
     Friend WithEvents gbAgregaDocCliente As System.Windows.Forms.GroupBox
     Friend WithEvents StatusStripEstado As System.Windows.Forms.StatusStrip
     Friend WithEvents tssEstado As System.Windows.Forms.ToolStripStatusLabel
@@ -693,20 +918,11 @@ Partial Class Frm_CXC_Pagos
     Friend WithEvents LblCliente As System.Windows.Forms.Label
     Friend WithEvents LblDisplayCliente As System.Windows.Forms.Label
     Friend WithEvents TxtCodigoCliente As System.Windows.Forms.TextBox
-    Friend WithEvents lblDisplayAnticipo As System.Windows.Forms.Label
-    Friend WithEvents txtAnticipo As System.Windows.Forms.TextBox
     Friend WithEvents btnAgregarDocumentosClientes As System.Windows.Forms.Button
     Friend WithEvents LblDisplayReferencia As System.Windows.Forms.Label
     Friend WithEvents TxtReferencia As System.Windows.Forms.TextBox
     Friend WithEvents LblDisplayBanco As System.Windows.Forms.Label
     Friend WithEvents LblDisplayMedioPago As System.Windows.Forms.Label
-    Friend WithEvents gbTotales As System.Windows.Forms.GroupBox
-    Friend WithEvents lstClientesAgregados As System.Windows.Forms.ListView
-    Friend WithEvents col_CodigoSocio As System.Windows.Forms.ColumnHeader
-    Friend WithEvents col_NombreSocio As System.Windows.Forms.ColumnHeader
-    Friend WithEvents col_Total As System.Windows.Forms.ColumnHeader
-    Friend WithEvents TxtTotal As System.Windows.Forms.MaskedTextBox
-    Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents CboBancos As System.Windows.Forms.ComboBox
     Friend WithEvents CboMedioDePago As System.Windows.Forms.ComboBox
     Friend WithEvents CkbAnticipo As System.Windows.Forms.CheckBox
@@ -716,5 +932,34 @@ Partial Class Frm_CXC_Pagos
     Friend WithEvents btnDepositosSiguiente As System.Windows.Forms.Button
     Friend WithEvents btnDepositosAnterior As System.Windows.Forms.Button
     Friend WithEvents cboMoneda As System.Windows.Forms.ComboBox
-    Friend WithEvents lblMoneda As System.Windows.Forms.Label
+    Friend WithEvents dtFechaPagoCliente As System.Windows.Forms.DateTimePicker
+    Friend WithEvents txtCuentaEmisor As System.Windows.Forms.TextBox
+    Friend WithEvents txtFolioDetalle As System.Windows.Forms.TextBox
+    Friend WithEvents cboFormaPago As System.Windows.Forms.ComboBox
+    Friend WithEvents lblDisplayFormaPago As System.Windows.Forms.Label
+    Friend WithEvents gbDocumentosPago As System.Windows.Forms.GroupBox
+    Friend WithEvents GridDocumentosPago As FlexCell.Grid
+    Friend WithEvents lblDisplayMonto As System.Windows.Forms.Label
+    Friend WithEvents txtMonto As System.Windows.Forms.TextBox
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents lblDisplayCuentaEmisor As System.Windows.Forms.Label
+    Friend WithEvents lblDisplayFolioDetalle As System.Windows.Forms.Label
+    Friend WithEvents btnLimpiarDocumentoPagos As System.Windows.Forms.Button
+    Friend WithEvents lblDisplayRFCEmisor As System.Windows.Forms.Label
+    Friend WithEvents txtRFCEmisor As System.Windows.Forms.TextBox
+    Friend WithEvents lblRFCEmisor As System.Windows.Forms.Label
+    Friend WithEvents TxtTotal As System.Windows.Forms.MaskedTextBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents lstClientesAgregados As System.Windows.Forms.ListView
+    Friend WithEvents col_CodigoSocio As System.Windows.Forms.ColumnHeader
+    Friend WithEvents col_NombreSocio As System.Windows.Forms.ColumnHeader
+    Friend WithEvents col_Total As System.Windows.Forms.ColumnHeader
+    Friend WithEvents btnEliminarDocumentoPago As System.Windows.Forms.Button
+    Friend WithEvents lblDisplayCuenta As System.Windows.Forms.Label
+    Friend WithEvents cboCuentaEmisor As System.Windows.Forms.ComboBox
+    Friend WithEvents btnEditarCuentaBancariaCliente As System.Windows.Forms.Button
+    Friend WithEvents btnAgregarCuentaBancariaCliente As System.Windows.Forms.Button
+    Friend WithEvents cmdPruebaPagoCFDI As Button
+    Friend WithEvents dtFechaCheque As DateTimePicker
+    Friend WithEvents lblDisplayFechaCheque As Label
 End Class

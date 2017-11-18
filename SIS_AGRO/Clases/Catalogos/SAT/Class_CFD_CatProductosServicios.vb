@@ -127,6 +127,59 @@ Public Class Class_CFD_CatProductosServicios
         Return dTable
     End Function
 
+    Public Function ObtenerElementosporNivel(sTipo As String, iNivel As Integer, Optional sDescripcion As String = "") As System.Data.DataTable
+        Dim dTable As New DataTable
+        Dim sQl As String
+        If iNivel >= 2 And sDescripcion <> "" Then
+            sQl = "SELECT CODIGO_PRODUCTO_SERVICIO,CODIGO_PRODUCTO_SERVICIO + ' - ' + NOMBRE_PRODUCTO_SERVICIO NOMBRE_PRODUCTO_SERVICIO FROM CFDI_CAT_PRODUCTOS_Y_SERVICIOS " &
+            "WHERE NIVEL=" & iNivel & " AND TIPO='" & sTipo & "' AND CODIGO_PRODUCTO_SERVICIO like " &
+            " (LEFT(" & sDescripcion & "," & iNivel + (iNivel - 2) & ") + '%')"
+        Else
+            sQl = "SELECT CODIGO_PRODUCTO_SERVICIO,CODIGO_PRODUCTO_SERVICIO + ' - ' + NOMBRE_PRODUCTO_SERVICIO NOMBRE_PRODUCTO_SERVICIO FROM CFDI_CAT_PRODUCTOS_Y_SERVICIOS " &
+            "WHERE NIVEL=" & iNivel & " AND TIPO='" & sTipo & "' "
+        End If
+        Dim da As New SqlDataAdapter(sQl, Empresa_Sistema.conexion)
+        Try
+            da.Fill(dTable)
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ObtenerElementosNivel", ex)
+        Finally
+            da.Dispose()
+        End Try
+        Return dTable
+    End Function
+
+    Public Function ObtenerElementospoFiltro(sTipo As String, iNivel As Integer, sCodigo As String) As System.Data.DataTable
+        Dim Sql, Filtro As String
+        Sql = " SELECT CODIGO_PRODUCTO_SERVICIO,NOMBRE_PRODUCTO_SERVICIO,NIVEL FROM CFDI_CAT_PRODUCTOS_Y_SERVICIOS WHERE TIPO = '" & sTipo & "' "
+        If iNivel = 1 Then
+            Filtro = "  AND ( CODIGO_PRODUCTO_SERVICIO like (LEFT('" & sCodigo & "',2) +'%')   ) "
+        ElseIf iNivel = 2 Then
+            Filtro = "  AND ( CODIGO_PRODUCTO_SERVICIO like (LEFT('" & sCodigo & "',4) +'%') " &
+                         " OR CODIGO_PRODUCTO_SERVICIO like (LEFT('" & sCodigo & "',2) + '000000') ) "
+        ElseIf iNivel = 3 Then
+            Filtro = " AND ( CODIGO_PRODUCTO_SERVICIO like (LEFT('" & sCodigo & "',6) +'%')" &
+               " OR CODIGO_PRODUCTO_SERVICIO like (LEFT('" & sCodigo & "',4) + '0000')  " &
+               " OR CODIGO_PRODUCTO_SERVICIO like (LEFT('" & sCodigo & "',2) + '000000') )"
+        Else
+            Filtro = ""
+        End If
+
+        Dim dTable As New DataTable
+        'Dim sQl As String
+        'Sql = "SELECT CODIGO_PRODUCTO_SERVICIO,CODIGO_PRODUCTO_SERVICIO + ' - ' + NOMBRE_PRODUCTO_SERVICIO NOMBRE_PRODUCTO_SERVICIO FROM CFDI_CAT_PRODUCTOS_Y_SERVICIOS " &
+        '    "WHERE NIVEL=" & iNivel & " AND TIPO='" & sTipo & "' "
+        Dim da As New SqlDataAdapter(Sql & Filtro, Empresa_Sistema.conexion)
+        Try
+            da.Fill(dTable)
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ObtenerElementospoFiltro", ex)
+        Finally
+            da.Dispose()
+        End Try
+        Return dTable
+    End Function
+
     Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand(Me._QuerySelect & " WHERE CODIGO_PRODUCTO_SERVICIO='" & Me._CODIGO_PRODUCTO_SERVICIO & "'", Me._Conexion)
@@ -172,6 +225,26 @@ Public Class Class_CFD_CatProductosServicios
             End If
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcion", ex)
+        End Try
+        Return Resultado
+    End Function
+
+    Public Function BusquedaVisual_CatalogoProductosServicios() As String
+        Dim f As New BusquedaCatalogoProductosServicios
+        Dim Resultado As String = ""
+        f.Text = "Catálogo de productos/servicios."
+        'f.sCampo = "NOMBRE_PRODUCTO_SERVICIO"
+        'f.sOrder = "NOMBRE_PRODUCTO_SERVICIO"
+        'f.sTable = "CFDI_CAT_PRODUCTOS_Y_SERVICIOS"
+        'f.sQl = "SELECT CODIGO_PRODUCTO_SERVICIO,NOMBRE_PRODUCTO_SERVICIO FROM CFDI_CAT_PRODUCTOS_Y_SERVICIOS WHERE 1=1 AND "
+        'f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.Grid.Item("CODIGO_PRODUCTO_SERVICIO", f.Grid.SelectedRows(0).Index).Value, String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_CatalogoProductosServicios", ex)
         End Try
         Return Resultado
     End Function
