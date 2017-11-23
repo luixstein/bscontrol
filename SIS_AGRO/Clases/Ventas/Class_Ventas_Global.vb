@@ -1244,13 +1244,13 @@ Public Class Class_Ventas_Global
 
         Try
             'sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,ISNULL(V.FRACCION_ARANCELARIA,'')FRACCION_ARANCELARIA,R.CANTIDAD,ROUND(R.PRECIO/G.TIPO_DE_CAMBIO,2) PRECIO_USD,(R.CANTIDAD*R.PRECIO)/G.TIPO_DE_CAMBIO IMPORTE_USD, " & _
-            sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,ISNULL(V.FRACCION_ARANCELARIA,'')FRACCION_ARANCELARIA,R.CANTIDAD,PRECIO_USD,IMPORTE_USD, " & _
-                "ISNULL(V.NOMBRE_CULTIVO,'') NOMBRE_CULTIVO " & _
-                "FROM VENTA_DETALLE R " & _
-                "INNER JOIN VENTA_GLOBAL G ON(R.FOLIO_VENTA=G.FOLIO_VENTA) " & _
-                "LEFT JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
-                "LEFT JOIN CAT_CULTIVOS V ON(A.CODIGO_CULTIVO=V.CODIGO_CULTIVO) " & _
-                "WHERE G.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' " & _
+            sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,ISNULL(V.FRACCION_ARANCELARIA,'')FRACCION_ARANCELARIA,R.CANTIDAD,PRECIO_USD,IMPORTE_USD, " &
+                "ISNULL(V.NOMBRE_CULTIVO,'') NOMBRE_CULTIVO,A.PESO " &
+                "FROM VENTA_DETALLE R " &
+                "INNER JOIN VENTA_GLOBAL G ON(R.FOLIO_VENTA=G.FOLIO_VENTA) " &
+                "LEFT JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
+                "LEFT JOIN CAT_CULTIVOS V ON(A.CODIGO_CULTIVO=V.CODIGO_CULTIVO) " &
+                "WHERE G.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' " &
                 "ORDER BY R.DESCRIPCION"
 
             da = New SqlDataAdapter(sSQL, Me._Conexion)
@@ -2099,7 +2099,7 @@ Public Class Class_Ventas_Global
                 .Subdivision = "0"
 
                 .Observaciones = ""
-                .TipoCambioUSD = FormatTipoCambio(Me._TIPO_DE_CAMBIO)
+                .TipoCambioUSD = FormatTipoCambio(Me._TIPO_DE_CAMBIO, False)
                 .TotalUSD = Format(Me._TOTAL_DOLARES, "######.00")
 
                 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -2160,17 +2160,43 @@ Public Class Class_Ventas_Global
 
                 'Ciclo a los artículos
 
+                Dim dCantidadAduana As Decimal, dValorUnitarioAduana As Decimal, dValorDolares As Decimal, dPesoxCaja As Decimal, dValorDolaresNuevo As Decimal
+
                 For Each dRow As DataRow In Me.ObtenerDetalleParaComercioExterior.Rows
                     .Mercancia.NoIdentificacion = dRow("CODIGO_ARTICULO").ToString
                     .Mercancia.FraccionArancelaria = dRow("FRACCION_ARANCELARIA").ToString
-                    .Mercancia.CantidadAduana = Format(valorNumerico(dRow("CANTIDAD").ToString), "######.000")
+
+                    dCantidadAduana = CDec(dRow("CANTIDAD").ToString)
+                    dValorUnitarioAduana = CDec(dRow("PRECIO_USD").ToString)
+                    dValorDolares = CDec(dRow("IMPORTE_USD").ToString)
+                    dPesoxCaja = CDec(dRow("PESO").ToString)
+
+                    If dPesoxCaja = 0 Then
+                        MsgBox("El producto " & dRow("CODIGO_ARTICULO").ToString & "-" & dRow("DESCRIPCION").ToString & " no tiene configurado el peso x caja." & vbCrLf &
+                               "Debe hacerlo para hacer la conversión a kilos para la aduana en el complemento exterior.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return ""
+                    End If
+
+                    dValorUnitarioAduana = RedondearD(dValorUnitarioAduana / dPesoxCaja, 2)
+                    dCantidadAduana = RedondearD(dValorDolares / dValorUnitarioAduana, 3)
+
+                    'dValorDolares='Este se queda como orignalmente es, y así se va poner en el ValorDolares, aunque la multiplicación no de el valor exacto.
+                    dValorDolaresNuevo = RedondearD(dCantidadAduana * dValorUnitarioAduana, 2)
+
+                    If dValorDolaresNuevo <> dValorDolares Then
+                        If MsgBox("El campo ValorDolares(en datos de aduana) es diferente al del concepto original. Seguro quiere continuar así ?" & vbCrLf &
+                                   "Concepto.Importe=" & dValorDolares & vbCrLf & "ValorDolares=" & dValorDolaresNuevo.ToString, MsgBoxStyle.Question Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
+                            Return ""
+                        End If
+                    End If
 
                     'MsgBox("quite de momento la unidad al parecer es incompatible, o nos dirá que pongamos kilos ? MATRIX DE ERRORES CCE209")
                     '.Mercancia.UnidadAduana = "20" '20=CAJA,01=KILO
                     .Mercancia.UnidadAduana = "01"
 
-                    .Mercancia.ValorUnitarioAduana = Format(valorNumerico(dRow("PRECIO_USD").ToString), "######.00")
-                    .Mercancia.ValorDolares = Format(valorNumerico(dRow("IMPORTE_USD").ToString), "######.00")
+                    .Mercancia.CantidadAduana = Format(dCantidadAduana, "#####0.000")
+                    .Mercancia.ValorUnitarioAduana = Format(dValorUnitarioAduana, "#####0.00")
+                    .Mercancia.ValorDolares = Format(dValorDolares, "#####0.00")
                     .Mercancia.Add(.Mercancia.NoIdentificacion)
                 Next
 

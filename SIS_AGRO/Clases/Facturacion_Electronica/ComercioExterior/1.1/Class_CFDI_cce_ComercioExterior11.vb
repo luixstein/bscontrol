@@ -379,7 +379,8 @@ Friend Class Class_CFDI_cce_ComercioExterior11
                     End If
 
                     If txtLEN(Me.Mercancia.Item(i).CantidadAduana) = True Then
-                        .setAttribute("CantidadAduana", Format(Me.Mercancia.Item(i).CantidadAduana, "######.000"))
+                        '.setAttribute("CantidadAduana", Format(Me.Mercancia.Item(i).CantidadAduana, "######.000"))
+                        .setAttribute("CantidadAduana", Me.Mercancia.Item(i).CantidadAduana)
                     End If
 
                     If txtLEN(Me.Mercancia.Item(i).UnidadAduana) = True Then
@@ -387,11 +388,13 @@ Friend Class Class_CFDI_cce_ComercioExterior11
                     End If
 
                     If txtLEN(Me.Mercancia.Item(i).ValorUnitarioAduana) = True Then
-                        .setAttribute("ValorUnitarioAduana", Format(Me.Mercancia.Item(i).ValorUnitarioAduana, "######.00"))
+                        '.setAttribute("ValorUnitarioAduana", Format(Me.Mercancia.Item(i).ValorUnitarioAduana, "######.00"))
+                        .setAttribute("ValorUnitarioAduana", Me.Mercancia.Item(i).ValorUnitarioAduana)
                     End If
 
                     If txtLEN(Me.Mercancia.Item(i).ValorDolares) = True Then
-                        .setAttribute("ValorDolares", Format(Me.Mercancia.Item(i).ValorDolares, "######.00"))
+                        '.setAttribute("ValorDolares", Format(Me.Mercancia.Item(i).ValorDolares, "######.00"))
+                        .setAttribute("ValorDolares", Me.Mercancia.Item(i).ValorDolares)
                     Else
                         MsgBox("El valor de Mercancia.ValorDolares es un dato requerido.", MsgBoxStyle.Exclamation, Me.NombreClase)
                         Return ""
@@ -423,7 +426,7 @@ Friend Class Class_CFDI_cce_ComercioExterior11
 
     End Function
 
-    Public  Function ValidacionesProveedorComplementoExterior() As Boolean
+    Public Function ValidacionesProveedorComplementoExterior() As Boolean
         Dim bResultado As Boolean = False
         Try
 

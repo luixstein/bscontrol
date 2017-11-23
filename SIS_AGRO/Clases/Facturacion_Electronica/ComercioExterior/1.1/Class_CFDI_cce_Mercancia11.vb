@@ -7,8 +7,8 @@ Public Class Class_CFDI_cce_Mercancia11
 
     Public NoIdentificacion As String
     Public FraccionArancelaria As String
-    Public CantidadAduana As Double
+    Public CantidadAduana As String
     Public UnidadAduana As String
-    Public ValorUnitarioAduana As Double
-    Public ValorDolares As Double
+    Public ValorUnitarioAduana As String
+    Public ValorDolares As String
 End Class

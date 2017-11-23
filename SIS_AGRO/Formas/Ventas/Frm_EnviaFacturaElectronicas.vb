@@ -1,12 +1,9 @@
 ﻿Option Strict On
-Imports CrystalDecisions.CrystalReports.Engine
-Imports CrystalDecisions.Shared
 Imports System.Data.SqlClient
 Imports System.Net.Mail
 Imports System.Net.Security
 Imports System.Security.Cryptography.X509Certificates
 Imports System.Net
-Imports System.IO
 
 Public Class Frm_EnviaFacturaElectronicas
 
@@ -24,6 +21,8 @@ Public Class Frm_EnviaFacturaElectronicas
 
     Private Estado As enumEstados
 
+#Region "Columnas grid"
+
     Private iGyFolio As Integer = 1
     Private iGyFecha As Integer = 2
     Private iGyReferencia As Integer = 3
@@ -32,18 +31,14 @@ Public Class Frm_EnviaFacturaElectronicas
     Private iGySeleccion As Integer = 6
     Private iGyEnviada As Integer = 7
     Private iGyDocumento As Integer = 8
+#End Region
 
     Dim message As New MailMessage
     Dim smtp As New SmtpClient
     Private ClickSinEjecutar As Boolean = False
 
-
     Private Declare Function IsNetworkAlive Lib "SENSAPI.DLL" (ByRef lpdwFlags As Long) As Long
 
-    Public Sub New()
-        ' This call is required by the Windows Form Designer.
-        InitializeComponent()
-    End Sub
 
 #Region "Opciones"
     Private Sub tsbNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbNuevo.Click
@@ -52,7 +47,7 @@ Public Class Frm_EnviaFacturaElectronicas
     End Sub
 
     Private Sub tsbEnviar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbEnviar.Click
-        If Me.validar() = True Then
+        If Me.Validar() = True Then
             Me.ProgresoBarra()
             Me.EnviarCorreo()
             Me.btnAgregarDocumentosClientes.PerformClick()
@@ -87,15 +82,15 @@ Buscar:
                 Busqueda.Dispose()
 
             Case Keys.Enter
-                If txtLEN(Me.TxtCodigoCliente.Text) = False Then
+                If txtLEN(Me.txtCodigoCliente.Text) = False Then
                     Me.lblNombreCliente.Text = ""
-                    Me.TxtCodigoCliente.Focus()
+                    Me.txtCodigoCliente.Focus()
                     GoTo Buscar
                     Exit Sub
                 End If
                 oCliente = New Class_CatClientes(Me.txtCodigoCliente.Text)
                 If oCliente.Consultar = True Then
-                    If oCliente.Estatus = "A" Then
+                    If oCliente.ESTATUS = "A" Then
                         Me.lblNombreCliente.Text = oCliente.NOMBRE_CLIENTE
                         Me.TxtFormatoXML.Text = oCliente.FORMATO_NOMBRE_XML.ToString
                         If txtLEN(oCliente.CORREO_CLIENTE) = True Then
@@ -142,7 +137,6 @@ Buscar:
             HandleError(Me.Name, "Grid1_KeyDown", ex)
         End Try
     End Sub
-
 
     Private Sub Grid_CellChanging(ByVal Sender As Object, ByVal e As FlexCell.Grid.CellChangingEventArgs) Handles Grid.CellChanging
         Try
@@ -350,37 +344,47 @@ Buscar:
 
             Me.CkbMarcarTodo.Checked = False
             Me.InicializaGrid()
-            Me.CargaFacturas()
+            Me.CargaDocumentos()
 
         Catch ex As Exception
             HandleError(Me.Name, "AgregarDocumentosClientes", ex)
         End Try
     End Sub
 
-    Private Sub CargaFacturas()
+    Private Sub CargaDocumentos()
         Dim Conexion As New SqlConnection(Empresa_Sistema.conexion)
-        Dim i As Integer = 1, oCliente As Class_CatClientes, sSaldo As String = "", sEstatus As String = ""
+        Dim i As Integer = 1, oCliente As Class_CatClientes
 
-        If Me.ckbConSaldo.Checked = True Then
-            sSaldo = " AND SALDO>0 "
-        End If
-
-        If Me.CboEstatus.Text <> "T" Then
-            sEstatus = " AND ESTATUS_VENTA='" & Me.CboEstatus.Text & "' "
-        End If
-
-        Dim cmd As New SqlCommand(" SELECT FOLIO_VENTA,FECHA,ISNULL(FOLIO_REFERENCIA, '') FOLIO_REFERENCIA,TOTAL,SALDO,ENVIADA, 'F' DOCUMENTO  " & _
-                                  "FROM VENTA_GLOBAL WHERE CODIGO_CLIENTE='" & sReplace(Me.txtCodigoCliente.Text) & "' " & _
-                                  "AND CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & sSaldo & sEstatus & _
-                                  "AND FECHA BETWEEN '" & Format(Me.DtFechaDesde.Value, "yyyy-dd-MM") & "' AND '" & Format(Me.DtFechaHasta.Value, "yyyy-dd-MM 23:59:59") & "' " & _
-                                  "UNION ALL " & _
-                                  "SELECT D.FOLIO_DESCUENTO,D.FECHA,MAX(FOLIO_REFERENCIA)  ,D.TOTAL,0, ENVIADA,'D' DOCUMENTO " & _
-                                  "FROM CXC_DESCUENTOS_GLOBAL D INNER JOIN CXC_DESCUENTOS_dETALLE C " & _
-                                  "ON (D.FOLIO_DESCUENTO=C.FOLIO_DESCUENTO) INNER JOIN CXC_GLOBAL G ON(C.FOLIO_CXC=G.FOLIO_CXC) " & _
-                                  " WHERE D.CODIGO_CLIENTE='" & sReplace(Me.txtCodigoCliente.Text) & "' " & _
-                                  "AND D.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND D.ESTATUS_DESCUENTO='A' " & _
-                                  "AND D.FECHA BETWEEN '" & Format(Me.DtFechaDesde.Value, "yyyy-dd-MM") & "' AND '" & Format(Me.DtFechaHasta.Value, "yyyy-dd-MM 23:59:59") & "' " & _
-                                  "GROUP BY D.FOLIO_DESCUENTO,D.FECHA,D.TOTAL,D.ENVIADA " & _
+        Dim cmd As New SqlCommand("SELECT FOLIO_VENTA,FECHA,ISNULL(FOLIO_REFERENCIA, '') FOLIO_REFERENCIA,TOTAL,SALDO,ENVIADA,'F' DOCUMENTO  " &
+                                  "FROM VENTA_GLOBAL " &
+                                  "WHERE CODIGO_CLIENTE='" & sReplace(Me.txtCodigoCliente.Text) & "' " &
+                                  "AND CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " " &
+                                  "AND FECHA BETWEEN '" & Format(Me.DtFechaDesde.Value, "yyyy-dd-MM") & "' AND '" & Format(Me.DtFechaHasta.Value, "yyyy-dd-MM 23:59:59") & "' " &
+                                  IIf(Me.ckbConSaldo.Checked = True, " AND SALDO>0 ", "").ToString() & " " &
+                                  IIf(Me.CboEstatus.Text <> "T", " AND ESTATUS_VENTA='" & Me.CboEstatus.Text & "' ", "").ToString &
+                                  "" &
+                                  "UNION ALL " &
+                                  "" &
+                                  "SELECT D.FOLIO_DESCUENTO,MAX(D.FECHA) FECHA,MAX(FOLIO_REFERENCIA) FOLIO_REFERENCIA,MAX(D.TOTAL) TOTAL,0 SALDO,MAX(ENVIADA) ENVIADA,'D' DOCUMENTO " &
+                                  "FROM CXC_DESCUENTOS_GLOBAL D " &
+                                  "INNER JOIN CXC_DESCUENTOS_DETALLE C ON(D.FOLIO_DESCUENTO=C.FOLIO_DESCUENTO) " &
+                                  "INNER JOIN CXC_GLOBAL G ON(C.FOLIO_CXC=G.FOLIO_CXC) " &
+                                  "WHERE D.CODIGO_CLIENTE='" & sReplace(Me.txtCodigoCliente.Text) & "' " &
+                                  "AND D.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " " &
+                                  "AND D.FECHA BETWEEN '" & Format(Me.DtFechaDesde.Value, "yyyy-dd-MM") & "' AND '" & Format(Me.DtFechaHasta.Value, "yyyy-dd-MM 23:59:59") & "' " &
+                                  IIf(Me.CboEstatus.Text <> "T", " AND D.ESTATUS_DESCUENTO='" & Me.CboEstatus.Text & "' ", "").ToString &
+                                  "GROUP BY D.FOLIO_DESCUENTO " &
+                                  "" &
+                                  "UNION ALL " &
+                                  "" &
+                                  "SELECT G.FOLIO_PAGO,G.FECHA_PAGO FECHA,'' FOLIO_REFERENCIA,G.MONTO TOTAL,0 SALDO,CASE WHEN G.ENVIADA_POR_CORREO='1' THEN 'SI' ELSE 'NO' END ENVIADA,'P' DOCUMENTO " &
+                                  "FROM CFDI_PAGOS_CXC_GLOBAL G " &
+                                  "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(G.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
+                                  "WHERE G.CODIGO_CLIENTE='" & sReplace(Me.txtCodigoCliente.Text) & "' " &
+                                  "AND DOC.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " " &
+                                  "AND G.FECHA_PAGO BETWEEN '" & Format(Me.DtFechaDesde.Value, "yyyy-dd-MM") & "' AND '" & Format(Me.DtFechaHasta.Value, "yyyy-dd-MM 23:59:59") & "' " &
+                                  IIf(Me.CboEstatus.Text <> "T", " AND G.ESTATUS_PAGO='" & Me.CboEstatus.Text & "' ", "").ToString &
+                                  "" &
                                   "ORDER BY FECHA", Conexion)
 
         Dim dReader As SqlDataReader
@@ -393,35 +397,36 @@ Buscar:
                 Conexion.Open()
                 dReader = .ExecuteReader()
 
-                If dReader.HasRows Then
+                If dReader.HasRows = True Then
+                    With Me.Grid
+                        i = .Rows - 1
 
-                    i = Me.Grid.Rows - 1
-
-                    If Me.Grid.Cell(i, Me.iGyFolio).Text.Length > 0 Then
-                        i = i + 1
+                        If .Cell(i, Me.iGyFolio).Text.Length > 0 Then
+                            i = i + 1
                         End If
 
-                    While dReader.Read()
-                        Me.Grid.Rows = Me.Grid.Rows + 1
-                        Me.Grid.Cell(i, Me.iGyFolio).Text = dReader("FOLIO_VENTA").ToString
-                        Me.Grid.Cell(i, Me.iGyFecha).Text = dReader("FECHA").ToString
-                        Me.Grid.Cell(i, Me.iGyReferencia).Text = dReader("FOLIO_REFERENCIA").ToString
-                        Me.Grid.Cell(i, Me.iGyTotal).Text = dReader("TOTAL").ToString
-                        Me.Grid.Cell(i, Me.iGySaldo).Text = dReader("SALDO").ToString
-                        Me.Grid.Cell(i, Me.iGyEnviada).Text = dReader("ENVIADA").ToString
-                        Me.Grid.Cell(i, Me.iGyDocumento).Text = dReader("DOCUMENTO").ToString
+                        While dReader.Read()
+                            .Rows = .Rows + 1
+                            .Cell(i, Me.iGyFolio).Text = dReader("FOLIO_VENTA").ToString
+                            .Cell(i, Me.iGyFecha).Text = dReader("FECHA").ToString
+                            .Cell(i, Me.iGyReferencia).Text = dReader("FOLIO_REFERENCIA").ToString
+                            .Cell(i, Me.iGyTotal).Text = dReader("TOTAL").ToString
+                            .Cell(i, Me.iGySaldo).Text = dReader("SALDO").ToString
+                            .Cell(i, Me.iGyEnviada).Text = dReader("ENVIADA").ToString
+                            .Cell(i, Me.iGyDocumento).Text = dReader("DOCUMENTO").ToString
 
-                        i = i + 1
+                            i = i + 1
                         End While
-                    End If
+                    End With
+                End If
                 dReader.Close()
             Catch ex As Exception
                 HandleError(Me.Text, "CargaFacturas", ex)
             Finally
                 Conexion.Close()
                 cmd.Dispose()
-                End Try
-            End With
+            End Try
+        End With
 
         Me.Totales()
 
@@ -455,21 +460,17 @@ Buscar:
 
         'Si el Api retorna 0 quiere decir que no hay ningun tipo de conexión de Red
         If IsNetworkAlive(Ret) = 0 Then
-            MsgBox("No existe conexion a internet" & "Error enviando E-Mail. " & "Por favor revise su conexion a internet e intentelo nuevamente.", MsgBoxStyle.Exclamation)
+            MsgBox("No existe conexión a internet.", MsgBoxStyle.Exclamation, Me.Name)
         Else
             Dim MyMailMsg As New Net.Mail.MailMessage
             Dim oUsuario As New Class_sisUsuarios
 
             Try
                 oUsuario = New Class_sisUsuarios(Usuario.Codigo_Usuario)
-                'If oUsuario.Consultar() = False Then
-                '    MsgBox("El usuario no tiene correo configurado. ", MsgBoxStyle.Information, Me.Name)
-                '    Exit Function
-                'End If
 
                 If txtLEN(oUsuario.CORREO_USUARIO) = False Then
-                    MsgBox("El usuario no tiene correo configurado. ", MsgBoxStyle.Information, Me.Name)
-                    Exit Function
+                    MsgBox("El usuario no tiene correo configurado.", MsgBoxStyle.Exclamation, Me.Name)
+                    Return False
                 End If
 
                 MyMailMsg.Subject = "FACTURAS DE " & Empresa_Sistema.NOMBRE_EMPRESA
@@ -516,94 +517,101 @@ Buscar:
                         Dim sRutaXML As String = "", sNombreXmlTimbrado As String = ""
                         Dim sRutaPDF As String = ""
 
-                        If Me.Grid.Cell(i, Me.iGyDocumento).Text = "F" Then
-                            Dim oVenta As New Class_Ventas_Global(Me.Grid.Cell(i, Me.iGyFolio).Text)
+                        Select Case Me.Grid.Cell(i, Me.iGyDocumento).Text
+                            Case "F" 'Facturas
+                                Dim oVenta As New Class_Ventas_Global(Me.Grid.Cell(i, Me.iGyFolio).Text)
 
-                            If txtLEN(Me.TxtFormatoXML.Text) = True Then
-                                If Me.TxtFormatoXML.Text = "RFCemisor-Serie-FolioNumerico" Then
-                                    sNombreXmlTimbrado = Empresa_Sistema.RFC & "-" & oVenta.SERIE & "-" & oVenta.FOLIO_NUMERICO
-                                ElseIf Me.TxtFormatoXML.Text = "RFCemisor-Fecha-SerieFolio" Then
-                                    sNombreXmlTimbrado = Empresa_Sistema.RFC & Format(oVenta.FECHA, "yyyyddMM") & oVenta.SERIE & oVenta.FOLIO_NUMERICO
+                                If txtLEN(Me.TxtFormatoXML.Text) = True Then
+                                    If Me.TxtFormatoXML.Text = "RFCemisor-Serie-FolioNumerico" Then
+                                        sNombreXmlTimbrado = Empresa_Sistema.RFC & "-" & oVenta.SERIE & "-" & oVenta.FOLIO_NUMERICO
+                                    ElseIf Me.TxtFormatoXML.Text = "RFCemisor-Fecha-SerieFolio" Then
+                                        sNombreXmlTimbrado = Empresa_Sistema.RFC & Format(oVenta.FECHA, "yyyyddMM") & oVenta.SERIE & oVenta.FOLIO_NUMERICO
+                                    End If
+                                Else
+                                    sNombreXmlTimbrado = Me.Grid.Cell(i, Me.iGyFolio).Text
                                 End If
-                            Else
-                                sNombreXmlTimbrado = Me.Grid.Cell(i, Me.iGyFolio).Text
-                            End If
-                            'sRutaXML = archivos.ToString & "\" & sNombreXmlTimbrado & ".xml"
-                            'If GeneraFacturaElectronica(oVenta, False, sRutaXML) = False Then
-                            '    MsgBox("Los datos digitales de la factura electrónica no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, Me.Text)
-                            'End If
+                                'sRutaXML = archivos.ToString & "\" & sNombreXmlTimbrado & ".xml"
 
-                            sRutaXML = sFelectronicaCarpetaXmlsTimbrados & "\" & sNombreXmlTimbrado & ".xml"
-                            sRutaPDF = archivos.ToString & sNombreXmlTimbrado & ".PDF"
+                                sRutaXML = sFelectronicaCarpetaXmlsTimbrados & "\" & sNombreXmlTimbrado & ".xml"
+                                sRutaPDF = archivos.ToString & sNombreXmlTimbrado & ".PDF"
 
-                            If oVenta.RecuperaXML(sRutaXML) = True Then
-                                If oVenta.ExportarAPdf(sRutaPDF) = False Then
-                                    MsgBox("No se logro generar el PDF de la factura : " & Me.Grid.Cell(i, Me.iGyFolio).Text & ". Avíse al depto. de sistemas.", vbExclamation, Me.Text)
+                                If oVenta.RecuperaXML(sRutaXML) = True Then
+                                    If oVenta.ExportarAPdf(sRutaPDF) = False Then
+                                        MsgBox("No se logró generar el PDF de la factura : " & Me.Grid.Cell(i, Me.iGyFolio).Text & ". Avíse al depto. de sistemas.", vbExclamation, Me.Name)
+                                    End If
+                                Else
+                                    MsgBox("No se logró recuperar el XML de la factura : " & Me.Grid.Cell(i, Me.iGyFolio).Text & ". Avíse al depto. de sistemas.", vbExclamation, Me.Name)
                                 End If
-                            Else
-                                MsgBox("No se logro recuperar el XML de la factura : " & Me.Grid.Cell(i, Me.iGyFolio).Text & ". Avíse al depto. de sistemas.", vbExclamation, Me.Text)
-                            End If
 
-                            oVenta.Enviado(oVenta.FOLIO_VENTA)
-                        Else
-                            Dim oDescuento As New Class_CXC_Descuento(Me.Grid.Cell(i, Me.iGyFolio).Text)
+                                oVenta.Enviado(oVenta.FOLIO_VENTA)
+                                oVenta = Nothing
 
-                            If txtLEN(Me.TxtFormatoXML.Text) = True Then
-                                If Me.TxtFormatoXML.Text = "RFCemisor-Serie-FolioNumerico" Then
-                                    sNombreXmlTimbrado = Empresa_Sistema.RFC & "-" & oDescuento.SERIE & "-" & oDescuento.FOLIO_NUMERICO
-                                ElseIf Me.TxtFormatoXML.Text = "RFCemisor-Fecha-SerieFolio" Then
-                                    sNombreXmlTimbrado = Empresa_Sistema.RFC & Format(oDescuento.FECHA, "yyyyddMM") & oDescuento.SERIE & oDescuento.FOLIO_NUMERICO
+                            Case "D" 'Nota de crédito
+                                Dim oDescuento As New Class_CXC_Descuento(Me.Grid.Cell(i, Me.iGyFolio).Text)
+
+                                If txtLEN(Me.TxtFormatoXML.Text) = True Then
+                                    If Me.TxtFormatoXML.Text = "RFCemisor-Serie-FolioNumerico" Then
+                                        sNombreXmlTimbrado = Empresa_Sistema.RFC & "-" & oDescuento.SERIE & "-" & oDescuento.FOLIO_NUMERICO
+                                    ElseIf Me.TxtFormatoXML.Text = "RFCemisor-Fecha-SerieFolio" Then
+                                        sNombreXmlTimbrado = Empresa_Sistema.RFC & Format(oDescuento.FECHA, "yyyyddMM") & oDescuento.SERIE & oDescuento.FOLIO_NUMERICO
+                                    End If
+                                Else
+                                    sNombreXmlTimbrado = Me.Grid.Cell(i, Me.iGyFolio).Text
                                 End If
-                            Else
-                                sNombreXmlTimbrado = Me.Grid.Cell(i, Me.iGyFolio).Text
-                            End If
-                            'sRutaXML = archivos.ToString & "\" & sNombreXmlTimbrado & ".xml"
+                                'sRutaXML = archivos.ToString & "\" & sNombreXmlTimbrado & ".xml"
 
-                            'If GeneraNotaCreditoCXCElectronica(oDescuento, False, sRutaXML) = False Then
-                            '    MsgBox("Los datos digitales de la factura electrónica no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, Me.Text)
-                            'End If
+                                sRutaXML = sFelectronicaCarpetaXmlsTimbrados & "\" & sNombreXmlTimbrado & ".xml"
+                                sRutaPDF = archivos.ToString & sNombreXmlTimbrado & ".PDF"
 
-                            sRutaXML = sFelectronicaCarpetaXmlsTimbrados & "\" & sNombreXmlTimbrado & ".xml"
-                            sRutaPDF = archivos.ToString & sNombreXmlTimbrado & ".PDF"
-
-                            If oDescuento.RecuperaXML(sRutaXML) = True Then
-                                If oDescuento.ExportarAPdf(sRutaPDF) = False Then
-                                    MsgBox("No se logro generar el PDF del descuento : " & Me.Grid.Cell(i, Me.iGyFolio).Text & ". Avíse al depto. de sistemas.", vbExclamation, Me.Text)
+                                If oDescuento.RecuperaXML(sRutaXML) = True Then
+                                    If oDescuento.ExportarAPdf(sRutaPDF) = False Then
+                                        MsgBox("No se logró generar el PDF del descuento : " & Me.Grid.Cell(i, Me.iGyFolio).Text & ". Avíse al depto. de sistemas.", vbExclamation, Me.Name)
+                                    End If
+                                Else
+                                    MsgBox("No se logró recuperar el XML del descuento : " & Me.Grid.Cell(i, Me.iGyFolio).Text & ". Avíse al depto. de sistemas.", vbExclamation, Me.Name)
                                 End If
-                            Else
-                                MsgBox("No se logro recuperar el XML del descuento : " & Me.Grid.Cell(i, Me.iGyFolio).Text & ". Avíse al depto. de sistemas.", vbExclamation, Me.Text)
-                            End If
 
-                            oDescuento.Enviado(oDescuento.FOLIO_DESCUENTO)
-                        End If
+                                oDescuento.Enviado(oDescuento.FOLIO_DESCUENTO)
+                                oDescuento = Nothing
+
+                            Case "P" 'Pagos
+                                Dim oPago As New Class_CXC_Pago_CFDI_Global(Me.Grid.Cell(i, Me.iGyFolio).Text)
+
+                                If oPago.EXISTE = False Then
+                                    Exit Select
+                                End If
+
+                                If txtLEN(Me.TxtFormatoXML.Text) = True Then
+                                    If Me.TxtFormatoXML.Text = "RFCemisor-Serie-FolioNumerico" Then
+                                        sNombreXmlTimbrado = Empresa_Sistema.RFC & "-" & oPago.SERIE & "-" & oPago.FOLIO_NUMERICO
+                                    ElseIf Me.TxtFormatoXML.Text = "RFCemisor-Fecha-SerieFolio" Then
+                                        sNombreXmlTimbrado = Empresa_Sistema.RFC & Format(oPago.FECHA_PAGO, "yyyyddMM") & oPago.SERIE & oPago.FOLIO_NUMERICO
+                                    End If
+                                Else
+                                    sNombreXmlTimbrado = Me.Grid.Cell(i, Me.iGyFolio).Text
+                                End If
+                                'sRutaXML = archivos.ToString & "\" & sNombreXmlTimbrado & ".xml"
+
+                                sRutaXML = sFelectronicaCarpetaXmlsTimbrados & "\" & sNombreXmlTimbrado & ".xml"
+                                sRutaPDF = archivos.ToString & sNombreXmlTimbrado & ".PDF"
+
+                                If oPago.RecuperaXML(sRutaXML) = True Then
+                                    If oPago.ExportarAPdf(sRutaPDF) = False Then
+                                        MsgBox("No se logró generar el PDF del pago : " & Me.Grid.Cell(i, Me.iGyFolio).Text & ". Avíse al depto. de sistemas.", vbExclamation, Me.Name)
+                                    End If
+                                Else
+                                    MsgBox("No se logró recuperar el XML del pago : " & Me.Grid.Cell(i, Me.iGyFolio).Text & ". Avíse al depto. de sistemas.", vbExclamation, Me.Name)
+                                End If
+
+                                oPago.MarcaEnviadoxCorreo(oPago.FOLIO_PAGO)
+                                oPago = Nothing
+
+                        End Select
 
                         Dim msa As New Attachment(sRutaPDF)
                         MyMailMsg.Attachments.Add(msa)
                         msa = New Attachment(sRutaXML)
                         MyMailMsg.Attachments.Add(msa)
-
-                        'If Directory.Exists(archivos & Me.Grid.Cell(i, Me.iGyFolio).Text & ".pdf") = False Then
-                        '    If Me.Grid.Cell(i, Me.iGyDocumento).Text = "F" Then
-                        '        ExportarAPdfFactura(Me.Grid.Cell(i, Me.iGyFolio).Text)
-                        '    Else
-                        '        ExportarAPdfDescuento(Me.Grid.Cell(i, Me.iGyFolio).Text)
-                        '    End If
-                        'Else
-                        '    If Me.Grid.Cell(i, Me.iGyDocumento).Text = "F" Then
-                        '        ExportarAPdfFactura(Me.Grid.Cell(i, Me.iGyFolio).Text)
-                        '    Else
-                        '        ExportarAPdfDescuento(Me.Grid.Cell(i, Me.iGyFolio).Text)
-                        '    End If
-                        'End If
-
-                        'If sNombreXmlTimbrado <> Me.Grid.Cell(i, Me.iGyFolio).Text Then
-                        '    My.Computer.FileSystem.RenameFile(archivosXMLtimbrados & "\" & Me.Grid.Cell(i, Me.iGyFolio).Text & ".xml", sNombreXmlTimbrado & ".xml")
-                        'End If
-
-                        'Dim msa As New Attachment(archivos.ToString & Me.Grid.Cell(i, Me.iGyFolio).Text & ".pdf")
-                        'MyMailMsg.Attachments.Add(msa)
-                        'msa = New Attachment(archivosXMLtimbrados & sNombreXmlTimbrado & ".xml")
-                        'MyMailMsg.Attachments.Add(msa)
 
                         ServicePointManager.ServerCertificateValidationCallback = Function(s As Object, certificate As X509Certificate, chain As X509Chain, sslPolicyErrors As SslPolicyErrors) True
 
@@ -612,7 +620,7 @@ Buscar:
                 Next i
                 SMTP.Send(MyMailMsg)
 
-                MsgBox("Tu E-Mail se ha enviado exitosamente", MsgBoxStyle.Information, "Listo!!")
+                MsgBox("Tu E-Mail se ha enviado exitosamente.", MsgBoxStyle.Information, "Listo!!")
                 bResultado = True
 
                 Me.lblDisplayProgreso.Visible = False
@@ -652,6 +660,7 @@ Buscar:
     End Sub
 
     Private Function Validar() As Boolean
+        Const sProcedure As String = "Validar"
         Dim bResultado As Boolean = False
         Dim oCliente As Class_CatClientes
         Dim i As Integer, bMarcado As Boolean, tabla() As String, n As Integer
@@ -660,7 +669,7 @@ Buscar:
         Try
 
             If oCliente.Consultar = True Then
-                If oCliente.Estatus = "A" Then
+                If oCliente.ESTATUS = "A" Then
                     Me.lblNombreCliente.Text = oCliente.NOMBRE_CLIENTE
                     Me.txtCorreoCliente.Focus()
                     Me.tsbEnviar.Enabled = True
@@ -668,23 +677,23 @@ Buscar:
                     Me.btnAgregarDocumentosClientes.Enabled = True
                     Me.txtCodigoCliente.Enabled = False
                 Else
-                    MsgBox("El cliente no exites favor de verificar.", MsgBoxStyle.Exclamation, "Validación de Clientes")
+                    MsgBox("El cliente no exite.", MsgBoxStyle.Exclamation, sProcedure)
                     Me.lblNombreCliente.Text = ""
-                    Exit Function
+                    Return False
                 End If
             End If
 
             If txtLEN(Me.txtCorreoCliente.Text) = False Then
-                MsgBox("El correo no es valido, favor de verificar.", MsgBoxStyle.Exclamation, "Validación")
-                Exit Function
+                MsgBox("El correo no es válido.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
             End If
 
             tabla = Split(Me.txtCorreoCliente.Text, ";")
 
             For n = 0 To UBound(tabla, 1)
                 If IsEmailSyntaxValid(tabla(n)) = False Then
-                    MsgBox("El correo no es valido, favor de verificar.", MsgBoxStyle.Exclamation, "Validación")
-                    Exit Function
+                    MsgBox("El correo no es válido.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 End If
             Next
 
@@ -695,13 +704,13 @@ Buscar:
             Next i
 
             If bMarcado = False Then
-                MsgBox("No ha seleccionado ninguna factura, favor de verificar.", MsgBoxStyle.Exclamation, "Validación")
-                Exit Function
+                MsgBox("No ha seleccionado ningún documento.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
             End If
             bResultado = True
 
         Catch ex As Exception
-            HandleError(Me.Name, "Validar", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado
@@ -724,37 +733,6 @@ Buscar:
         Me.pbBarra.Visible = True
     End Sub
 
-    Private Sub ExportarAPdfDescuento(ByVal sFolio As String)
-        Dim Rpt As New ReportDocument
-        Dim oReporte As Class_Reporte
-        Dim oDescuentosCXC As New Class_CXC_Descuento
-        Try
-            If oDescuentosCXC.VERSION_ESQUEMA_XML >= "3.2" Then
-                oReporte = New Class_Reporte("RPT_FORMATO_CXC_NOTA_DESCUENTO_LAND", Rpt, False)
-            Else
-                oReporte = New Class_Reporte("RPT_FORMATO_CXC_NOTA_DESCUENTO_LAND_CFD", Rpt, False)
-            End If
-
-            If Not oReporte.RptCargado Then
-                Exit Sub
-            End If
-
-            oDescuentosCXC = New Class_CXC_Descuento(sFolio)
-            If oDescuentosCXC.Existe = False Then
-                MsgBox("NO FOLIO DE VENTA NO EXISTE", MsgBoxStyle.Information, Me.Text)
-                Exit Sub
-            End If
-
-            Rpt.SetParameterValue("@FOLIO_DESCUENTO", sFolio)
-
-            Rpt.ExportToDisk(ExportFormatType.PortableDocFormat, sFelectronicaCarpetaXMLPDF & "\" & oDescuentosCXC.FOLIO_DESCUENTO.ToString & ".PDF")
-        Catch ex As Exception
-            HandleError(Me.Name, "ExportarAPdfDescuento", ex)
-        Finally
-            oReporte = Nothing
-        End Try
-    End Sub
-
     Private Function ValidarPeriodo() As Boolean
         Me.DtFechaDesde.Enabled = False
         Me.DtFechaDesde.Enabled = True
@@ -763,7 +741,7 @@ Buscar:
 
         If Me.DtFechaDesde.Value > Me.DtFechaHasta.Value Then
             MsgBox("Rango de fechas inválidas.", MsgBoxStyle.Exclamation, Me.Name)
-            Exit Function
+            Return False
         End If
 
         Return True

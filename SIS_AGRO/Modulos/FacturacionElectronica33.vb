@@ -131,7 +131,7 @@ Module FacturacionElectronica33
                 .Total = Format(dTotal, "#0.00")
                 .Moneda = oVenta.CODIGO_MONEDA_SAT
                 If oVenta.TIPO_DE_CAMBIO > 0 Then
-                    .TipoCambio = FormatTipoCambio(oVenta.TIPO_DE_CAMBIO)
+                    .TipoCambio = FormatTipoCambio(oVenta.TIPO_DE_CAMBIO, False)
                 End If
                 .TipoDeComprobante = "I" 'Ingreso
                 .MetodoPago = oVenta.CODIGO_METODO_PAGO_EVENTO
@@ -580,7 +580,7 @@ Module FacturacionElectronica33
 
                     .DoctoRelacionados.Add(oPagoDetalle.FACTURA_FOLIO_FISCAL_SAT, oPagoDetalle.FACTURA_SERIE, oPagoDetalle.FACTURA_FOLIO_NUMERICO,
                                            oPagoDetalle.CODIGO_MONEDA_SAT_DR,
-                                           IIf(oPagoDetalle.CODIGO_MONEDA_SAT_DR <> complementoPagos.MonedaP, FormatTipoCambio(oPagoDetalle.TIPO_CAMBIO_DR), "").ToString,
+                                           IIf(oPagoDetalle.CODIGO_MONEDA_SAT_DR <> complementoPagos.MonedaP, FormatTipoCambio(oPagoDetalle.TIPO_CAMBIO_DR, False), "").ToString,
                                            oPagoDetalle.CODIGO_METODO_PAGO_EVENTO_DR, oPagoDetalle.NUMERO_PARCIALIDAD,
                                            Format(oPagoDetalle.IMPORTE_SALDO_ANTERIOR, "#0.00"), Format(oPagoDetalle.IMPORTE_PAGADO, "#0.00"), Format(oPagoDetalle.IMPORTE_SALDO_INSOLUTO, "#0.00"))
                 Next
