@@ -140,6 +140,18 @@ Public Class Frm_CXC_Pagos
             Me.GestionaAltaEdicionCuentaBancariaCliente(False)
         End If
     End Sub
+
+    Private Sub btnVerCFDIS_Click(sender As Object, e As EventArgs) Handles btnVerCFDIS.Click
+        Try
+            Dim oCFDIS As New Frm_CXC_CFDI_Pagos(Me.TxtFolio.Text)
+            oCFDIS.ShowDialog()
+            oCFDIS.Dispose()
+        Catch ex As Exception
+            HandleError(Me.Name, "btnVerCFDIS_Click", ex)
+        End Try
+
+    End Sub
+
 #End Region
 
 #Region "Eventos de objetos"
@@ -720,9 +732,9 @@ Buscar:
             Me.GridVentas.Column(Me.iGyVentaVersionCFDI).Visible = True
             Me.GridVentas.Column(Me.iGyVentaFormaPago).Visible = True
             Me.GridVentas.Column(Me.iGyVentaMetodoPago).Visible = True
-            Me.GridVentas.Column(Me.iGyVentaImporteMonedaVenta).Visible = True
-            Me.GridVentas.Column(Me.iGyVentaSaldoAnteriorMonedaPago).Visible = True
-            Me.GridVentas.Column(Me.iGyVentaSaldoAnteriorMonedaVenta).Visible = True
+            Me.GridVentas.Column(Me.iGyVentaImporteMonedaVenta).Visible = False
+            Me.GridVentas.Column(Me.iGyVentaSaldoAnteriorMonedaPago).Visible = False
+            Me.GridVentas.Column(Me.iGyVentaSaldoAnteriorMonedaVenta).Visible = False
 
             'Me.Grid.Visible = True
         Catch ex As Exception
@@ -2908,6 +2920,8 @@ Buscar:
     Private Sub cmdPruebaPagoCFDI_Click(sender As Object, e As EventArgs) Handles cmdPruebaPagoCFDI.Click
         Me.oBancosCXC.GeneraPagosElectronicos()
     End Sub
+
+
 
 #End Region
 

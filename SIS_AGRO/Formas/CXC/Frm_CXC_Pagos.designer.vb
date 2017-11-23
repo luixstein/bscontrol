@@ -99,6 +99,7 @@ Partial Class Frm_CXC_Pagos
         Me.gbDocumentosPago = New System.Windows.Forms.GroupBox()
         Me.btnEliminarDocumentoPago = New System.Windows.Forms.Button()
         Me.GridDocumentosPago = New FlexCell.Grid()
+        Me.btnVerCFDIS = New System.Windows.Forms.Button()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbAgregaDocCliente.SuspendLayout()
@@ -112,7 +113,7 @@ Partial Class Frm_CXC_Pagos
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimirPoliza, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1462, 25)
+        Me.tsMenu.Size = New System.Drawing.Size(1152, 25)
         Me.tsMenu.TabIndex = 5
         Me.tsMenu.Text = "tsMenu"
         '
@@ -756,7 +757,7 @@ Partial Class Frm_CXC_Pagos
         Me.gbVentas.Controls.Add(Me.GridVentas)
         Me.gbVentas.Location = New System.Drawing.Point(8, 409)
         Me.gbVentas.Name = "gbVentas"
-        Me.gbVentas.Size = New System.Drawing.Size(1442, 203)
+        Me.gbVentas.Size = New System.Drawing.Size(1138, 203)
         Me.gbVentas.TabIndex = 2
         Me.gbVentas.TabStop = False
         Me.gbVentas.Text = "Ventas"
@@ -775,7 +776,7 @@ Partial Class Frm_CXC_Pagos
         Me.GridVentas.LockButton = True
         Me.GridVentas.Name = "GridVentas"
         Me.GridVentas.Rows = 8
-        Me.GridVentas.Size = New System.Drawing.Size(1429, 178)
+        Me.GridVentas.Size = New System.Drawing.Size(1124, 178)
         Me.GridVentas.TabIndex = 0
         Me.GridVentas.UncheckedImage = CType(resources.GetObject("GridVentas.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -784,7 +785,7 @@ Partial Class Frm_CXC_Pagos
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssEstado, Me.tssElaboro, Me.tssCancelo})
         Me.StatusStripEstado.Location = New System.Drawing.Point(0, 615)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1462, 24)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1152, 24)
         Me.StatusStripEstado.TabIndex = 240
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -854,11 +855,21 @@ Partial Class Frm_CXC_Pagos
         Me.GridDocumentosPago.TabIndex = 0
         Me.GridDocumentosPago.UncheckedImage = CType(resources.GetObject("GridDocumentosPago.UncheckedImage"), System.Drawing.Bitmap)
         '
+        'btnVerCFDIS
+        '
+        Me.btnVerCFDIS.Location = New System.Drawing.Point(1046, 199)
+        Me.btnVerCFDIS.Name = "btnVerCFDIS"
+        Me.btnVerCFDIS.Size = New System.Drawing.Size(106, 67)
+        Me.btnVerCFDIS.TabIndex = 380
+        Me.btnVerCFDIS.Text = "Ver CFDI's"
+        Me.btnVerCFDIS.UseVisualStyleBackColor = True
+        '
         'Frm_CXC_Pagos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1462, 639)
+        Me.ClientSize = New System.Drawing.Size(1152, 639)
+        Me.Controls.Add(Me.btnVerCFDIS)
         Me.Controls.Add(Me.gbDocumentosPago)
         Me.Controls.Add(Me.gbAgregaDocCliente)
         Me.Controls.Add(Me.StatusStripEstado)
@@ -962,4 +973,5 @@ Partial Class Frm_CXC_Pagos
     Friend WithEvents cmdPruebaPagoCFDI As Button
     Friend WithEvents dtFechaCheque As DateTimePicker
     Friend WithEvents lblDisplayFechaCheque As Label
+    Friend WithEvents btnVerCFDIS As Button
 End Class

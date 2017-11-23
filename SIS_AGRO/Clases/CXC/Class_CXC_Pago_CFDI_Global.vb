@@ -517,6 +517,33 @@ Public Class Class_CXC_Pago_CFDI_Global
         Return bResultado
     End Function
 
+    Public Sub Imprimir()
+        Dim sProcedure As String = "Imprimir"
+        Dim Rpt As New ReportDocument
+        Dim oReporte As Class_Reporte
+        Try
+            If Me._EXISTE = False Then
+                MsgBox("NO FOLIO NO EXISTE", MsgBoxStyle.Exclamation, sProcedure)
+                Exit Sub
+            End If
+
+            oReporte = New Class_Reporte(Me._NOMBRE_FORMATO, Rpt, False)
+
+            If Not oReporte.RptCargado Then
+                Exit Sub
+            End If
+
+            Rpt.SetParameterValue("@FOLIO_PAGO", Me._FOLIO_PAGO)
+
+            Dim frm As New Reporte(Rpt)
+            frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
+            frm.Show()
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, "Imprimir", ex)
+        End Try
+    End Sub
+
     Public Function ExportarAPdf(Optional ByVal sRutaPDF As String = "") As Boolean
         Dim bResultado As Boolean = False
         Dim Rpt As New ReportDocument
@@ -586,7 +613,7 @@ Public Class Class_CXC_Pago_CFDI_Global
                 Return False
             End If
 
-            MyMailMsg.Subject = "PAGOS PARA " & Empresa_Sistema.NOMBRE_EMPRESA
+            MyMailMsg.Subject = "CFDI DE PAGOS A " & Empresa_Sistema.NOMBRE_EMPRESA
 
             For n = 0 To UBound(tabla, 1)
                 MyMailMsg.To.Add(tabla(n))
@@ -632,7 +659,7 @@ Public Class Class_CXC_Pago_CFDI_Global
                 Return False
             End If
 
-            Me.Enviado(Me._FOLIO_PAGO)
+            Me.MarcaEnviadoxCorreo(Me._FOLIO_PAGO)
 
             Dim msa As New Attachment(sRutaPDF)
             MyMailMsg.Attachments.Add(msa)
@@ -652,7 +679,7 @@ Public Class Class_CXC_Pago_CFDI_Global
         End Try
     End Function
 
-    Public Function Enviado(ByVal sFolio As String) As Boolean
+    Public Function MarcaEnviadoxCorreo(ByVal sFolio As String) As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -662,14 +689,14 @@ Public Class Class_CXC_Pago_CFDI_Global
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CFDI_PAGOS_CXC_MARCA_CORREO_ENVIADO"
 
-            sqlParametro = .Parameters.Add("@FOLIO_DOCUMENTO", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolio
+            sqlParametro = .Parameters.Add("@FOLIO_PAGO", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolio
 
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "Enviado", ex)
+                HandleError(Me.Nombre_Clase, "MarcaEnviadoxCorreo", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -692,7 +719,7 @@ Public Class Class_CXC_Pago_CFDI_Global
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CFDI_PAGOS_CXC_RECUPERA_CADENA_XML"
 
-            sqlParametro = .Parameters.Add("@FOLIO_VENTA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_PAGO
+            sqlParametro = .Parameters.Add("@FOLIO_PAGO", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_PAGO
             sqlParametro = .Parameters.Add("@CADENA_XML", SqlDbType.Xml) : sqlParametro.Direction = ParameterDirection.Output : sqlParametro.Value = "" 'XmlDoc.OuterXml
             Try
                 Me._Conexion.Open()
@@ -744,7 +771,27 @@ Public Class Class_CXC_Pago_CFDI_Global
         Return dTabla
     End Function
 
+    Public Function ObtenerPagosDetalleParaConsultaCFDI() As DataTable
+        Dim dTabla As New DataTable, da As SqlDataAdapter
+        Dim sSQL As String
 
+        sSQL = "SELECT CXC.FOLIO_REFERENCIA,D.CODIGO_MONEDA_SAT_DR,D.TIPO_CAMBIO_DR,D.CODIGO_METODO_PAGO_EVENTO_DR,D.NUMERO_PARCIALIDAD,D.IMPORTE_SALDO_ANTERIOR,D.IMPORTE_PAGADO,D.IMPORTE_SALDO_INSOLUTO " &
+            "FROM CFDI_PAGOS_CXC_DETALLE D " &
+            "INNER JOIN CXC_GLOBAL CXC ON(D.FOLIO_CXC=CXC.FOLIO_CXC) " &
+            "WHERE D.FOLIO_PAGO='" & Me._FOLIO_PAGO & "' " &
+            "ORDER BY D.ID_CFDI_PAGOS_CXC_DETALLE"
+
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+
+            da.Dispose()
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, "ObtenerPagosDetalleParaConsultaCFDI", ex)
+        End Try
+
+        Return dTabla
+    End Function
 #End Region
 
 End Class

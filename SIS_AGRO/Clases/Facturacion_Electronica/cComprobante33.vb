@@ -559,20 +559,19 @@ Friend Class cComprobante33
                 NodoComprobante.appendChild(NodoImpuestos)
             End If
 
-            'El complemento cce se pone mas abajo de momento se usó este código, hay que ver si considerarlo
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            'Dim NodoComplemento As MSXML2.IXMLDOMElement
-            'NodoComplemento = xmlDoc.createNode(MSXML2.tagDOMNodeType.NODE_ELEMENT, AnexoNodo & "Complemento", xmlns)
+            Dim NodoComplemento As MSXML2.IXMLDOMElement
+            NodoComplemento = xmlDoc.createNode(MSXML2.tagDOMNodeType.NODE_ELEMENT, AnexoNodo & "Complemento", xmlns)
             '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            ''Complemento de pagos
-            'If Not (Me.ComplementoPagos10 Is Nothing) Then 'Si le pasó el complemento de pagos
-            '    NodoComplemento.appendChild(Me.ComplementoPagos10.GenerarNodoComplementoPagos)
+            'Complemento de pagos
+            If Not (Me.ComplementoPagos10 Is Nothing) Then 'Si le pasó el complemento de pagos
+                NodoComplemento.appendChild(Me.ComplementoPagos10.GenerarNodoComplementoPagos)
 
-            '    If Me.ComplementoPagos10.ComplementoGenerado = False Then
-            '        MsgBox("No se pudo generar el complemento de pagos.", vbExclamation, sProcedure)
-            '        Return False
-            '    End If
-            'End If
+                If Me.ComplementoPagos10.ComplementoGenerado = False Then
+                    MsgBox("No se pudo generar el complemento de pagos.", vbExclamation, sProcedure)
+                    Return False
+                End If
+            End If
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             'Si hubiera mas complementos, aqui se agregarian
@@ -581,23 +580,27 @@ Friend Class cComprobante33
             'End If
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            'If NodoComplemento.childNodes.length > 0 Then
-            '    NodoComprobante.appendChild(NodoComplemento)
-            'End If
+            If NodoComplemento.childNodes.length > 0 Then
+                NodoComprobante.appendChild(NodoComplemento)
+            End If
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             xmlDoc.appendChild(NodoComprobante)
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            If txtLEN(XmlComplementoComercioExterior) = True Then
-                Dim sXmlTemp As String = Me.xmlDoc.xml
-                sXmlTemp = Replace(sXmlTemp, "</cfdi:Comprobante>", "") 'quitamos la terminación del comprobante para pegarle el completo, y al final se la volvemos a poner.
+            'Complemento cce
+            If tipoComprobante = TipoComprobante.FACTURA_VENTA Then
+                If txtLEN(XmlComplementoComercioExterior) = True Then
+                    Dim sXmlTemp As String = Me.xmlDoc.xml
+                    sXmlTemp = Replace(sXmlTemp, "</cfdi:Comprobante>", "") 'quitamos la terminación del comprobante para pegarle el completo, y al final se la volvemos a poner.
 
-                'Pegar el xml base con el complemento
-                sXmlTemp = sXmlTemp & "<cfdi:Complemento>" & XmlComplementoComercioExterior & "</cfdi:Complemento></cfdi:Comprobante>"
+                    'Pegar el xml base con el complemento
+                    sXmlTemp = sXmlTemp & "<cfdi:Complemento>" & XmlComplementoComercioExterior & "</cfdi:Complemento></cfdi:Comprobante>"
 
-                Me.xmlDoc.loadXML(sXmlTemp)
+                    Me.xmlDoc.loadXML(sXmlTemp)
+                End If
             End If
+
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
             'MsgBox xmlDoc.selectSingleNode("//@sello")

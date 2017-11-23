@@ -974,6 +974,31 @@ Public Class Class_Bancos_CXC
         Return bResultado
     End Function
 
+    Public Function ObtenerPagosParaConsultaCFDI() As DataTable
+        Dim dTabla As New DataTable, da As SqlDataAdapter
+        Dim sSQL As String
+
+        sSQL = "SELECT P.FOLIO_PAGO,P.FECHA_PAGO,P.MONTO,B.CODIGO_MONEDA_SAT,P.CODIGO_CLIENTE,CTE.NOMBRE_CLIENTE,P.TIMBRADO_CFDI " &
+            "FROM CFDI_PAGOS_CXC_GLOBAL P " &
+            "INNER JOIN BANCOS_GLOBAL B ON(P.FOLIO_BANCO=B.FOLIO_BANCO) " &
+            "INNER JOIN CAT_CLIENTES CTE ON(P.CODIGO_CLIENTE=CTE.CODIGO_CLIENTE) " &
+            "WHERE P.FOLIO_BANCO='" & Me._FOLIO_BANCO & "'" &
+            "ORDER BY P.ID_CFDI_PAGOS_CXC_GLOBAL"
+
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+
+            da.Dispose()
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, "ObtenerPagosParaConsultaCFDI", ex)
+        End Try
+
+        Return dTabla
+    End Function
+
+
+
 #End Region
 
 End Class

@@ -1763,7 +1763,7 @@ Public Class Class_Ventas_Global
         Dim oReporte As Class_Reporte
         Try
             If Me._Existe = False Then
-                MsgBox("NO FOLIO DE VENTA NO EXISTE", MsgBoxStyle.Information, "Imprimir")
+                MsgBox("NO FOLIO DE VENTA NO EXISTE", MsgBoxStyle.Exclamation, "Imprimir")
                 Exit Sub
             End If
 
