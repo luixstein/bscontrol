@@ -28,7 +28,7 @@ Partial Class Frm_CXC_Devoluciones
         Me.tsbGrabar = New System.Windows.Forms.ToolStripButton()
         Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
-        Me.tsbSellar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbTimbrar = New System.Windows.Forms.ToolStripButton()
         Me.tsbCancelarTimbre = New System.Windows.Forms.ToolStripButton()
         Me.tsbRecuperaXMLPdf = New System.Windows.Forms.ToolStripButton()
         Me.tsbEnviarCorreo = New System.Windows.Forms.ToolStripButton()
@@ -46,8 +46,6 @@ Partial Class Frm_CXC_Devoluciones
         Me.lblDisplayIEPSIncluido = New System.Windows.Forms.Label()
         Me.lblIEPSIncluido = New System.Windows.Forms.Label()
         Me.btnSeries = New System.Windows.Forms.Button()
-        Me.lblDisplayTipoCambio = New System.Windows.Forms.Label()
-        Me.txtTipoCambio = New System.Windows.Forms.TextBox()
         Me.gbPesos = New System.Windows.Forms.GroupBox()
         Me.lblIEPS = New System.Windows.Forms.Label()
         Me.lblDisplayIEPS = New System.Windows.Forms.Label()
@@ -64,12 +62,22 @@ Partial Class Frm_CXC_Devoluciones
         Me.lblDisplayTotalDolares = New System.Windows.Forms.Label()
         Me.lblDisplaySubtotalDolares = New System.Windows.Forms.Label()
         Me.lblDisplayImpuestoDolares = New System.Windows.Forms.Label()
-        Me.chkDolares = New System.Windows.Forms.CheckBox()
+        Me.lblDisplayTipoCambio = New System.Windows.Forms.Label()
+        Me.txtTipoCambio = New System.Windows.Forms.TextBox()
         Me.lblPoliza = New System.Windows.Forms.LinkLabel()
         Me.lblDisplayStatus = New System.Windows.Forms.Label()
         Me.lblEstatus = New System.Windows.Forms.Label()
         Me.lblDisplayPoliza = New System.Windows.Forms.Label()
         Me.frmDatos = New System.Windows.Forms.GroupBox()
+        Me.lblVersionCFDI = New System.Windows.Forms.Label()
+        Me.cboFormaPago = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayMetodoPago = New System.Windows.Forms.Label()
+        Me.cboMetodoPago = New System.Windows.Forms.ComboBox()
+        Me.lblFormaPago = New System.Windows.Forms.Label()
+        Me.cboUsoCFDI = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayUsoCFDI = New System.Windows.Forms.Label()
+        Me.LblDisplayMoneda = New System.Windows.Forms.Label()
+        Me.cboMoneda = New System.Windows.Forms.ComboBox()
         Me.txtSaldo = New System.Windows.Forms.TextBox()
         Me.lblDisplaySaldo = New System.Windows.Forms.Label()
         Me.txtAlmacen = New System.Windows.Forms.TextBox()
@@ -104,7 +112,7 @@ Partial Class Frm_CXC_Devoluciones
         '
         'tsMenu
         '
-        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimir, Me.tsbSellar, Me.tsbCancelarTimbre, Me.tsbRecuperaXMLPdf, Me.tsbEnviarCorreo, Me.tsbSalir})
+        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimir, Me.tsbTimbrar, Me.tsbCancelarTimbre, Me.tsbRecuperaXMLPdf, Me.tsbEnviarCorreo, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(992, 25)
@@ -145,14 +153,14 @@ Partial Class Frm_CXC_Devoluciones
         Me.tsbImprimir.Text = "&Imprimir"
         Me.tsbImprimir.ToolTipText = "Imprimir"
         '
-        'tsbSellar
+        'tsbTimbrar
         '
-        Me.tsbSellar.Image = Global.BsControl.My.Resources.Resources._782
-        Me.tsbSellar.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbSellar.Name = "tsbSellar"
-        Me.tsbSellar.Size = New System.Drawing.Size(143, 22)
-        Me.tsbSellar.Text = "S&ellar nota electronica"
-        Me.tsbSellar.Visible = False
+        Me.tsbTimbrar.Image = Global.BsControl.My.Resources.Resources._782
+        Me.tsbTimbrar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbTimbrar.Name = "tsbTimbrar"
+        Me.tsbTimbrar.Size = New System.Drawing.Size(69, 22)
+        Me.tsbTimbrar.Text = "Timbrar"
+        Me.tsbTimbrar.Visible = False
         '
         'tsbCancelarTimbre
         '
@@ -299,11 +307,8 @@ Partial Class Frm_CXC_Devoluciones
         Me.gbTotales.Controls.Add(Me.lblDisplayIEPSIncluido)
         Me.gbTotales.Controls.Add(Me.lblIEPSIncluido)
         Me.gbTotales.Controls.Add(Me.btnSeries)
-        Me.gbTotales.Controls.Add(Me.lblDisplayTipoCambio)
-        Me.gbTotales.Controls.Add(Me.txtTipoCambio)
         Me.gbTotales.Controls.Add(Me.gbPesos)
         Me.gbTotales.Controls.Add(Me.gbDolares)
-        Me.gbTotales.Controls.Add(Me.chkDolares)
         Me.gbTotales.Location = New System.Drawing.Point(4, 469)
         Me.gbTotales.Name = "gbTotales"
         Me.gbTotales.Size = New System.Drawing.Size(986, 108)
@@ -338,27 +343,6 @@ Partial Class Frm_CXC_Devoluciones
         Me.btnSeries.TabIndex = 381
         Me.btnSeries.Text = "Detallar series"
         Me.btnSeries.UseVisualStyleBackColor = True
-        '
-        'lblDisplayTipoCambio
-        '
-        Me.lblDisplayTipoCambio.AutoSize = True
-        Me.lblDisplayTipoCambio.Location = New System.Drawing.Point(260, 45)
-        Me.lblDisplayTipoCambio.Name = "lblDisplayTipoCambio"
-        Me.lblDisplayTipoCambio.Size = New System.Drawing.Size(86, 13)
-        Me.lblDisplayTipoCambio.TabIndex = 332
-        Me.lblDisplayTipoCambio.Text = "Tipo de cambio :"
-        '
-        'txtTipoCambio
-        '
-        Me.txtTipoCambio.Enabled = False
-        Me.txtTipoCambio.Location = New System.Drawing.Point(352, 42)
-        Me.txtTipoCambio.MaxLength = 8
-        Me.txtTipoCambio.Name = "txtTipoCambio"
-        Me.txtTipoCambio.ReadOnly = True
-        Me.txtTipoCambio.Size = New System.Drawing.Size(79, 20)
-        Me.txtTipoCambio.TabIndex = 331
-        Me.txtTipoCambio.Text = "0"
-        Me.txtTipoCambio.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'gbPesos
         '
@@ -533,16 +517,28 @@ Partial Class Frm_CXC_Devoluciones
         Me.lblDisplayImpuestoDolares.TabIndex = 244
         Me.lblDisplayImpuestoDolares.Text = "Impuesto :"
         '
-        'chkDolares
+        'lblDisplayTipoCambio
         '
-        Me.chkDolares.AutoSize = True
-        Me.chkDolares.Enabled = False
-        Me.chkDolares.Location = New System.Drawing.Point(263, 19)
-        Me.chkDolares.Name = "chkDolares"
-        Me.chkDolares.Size = New System.Drawing.Size(102, 17)
-        Me.chkDolares.TabIndex = 294
-        Me.chkDolares.Text = "Es en dólares  ?"
-        Me.chkDolares.UseVisualStyleBackColor = True
+        Me.lblDisplayTipoCambio.AutoSize = True
+        Me.lblDisplayTipoCambio.Location = New System.Drawing.Point(189, 124)
+        Me.lblDisplayTipoCambio.Name = "lblDisplayTipoCambio"
+        Me.lblDisplayTipoCambio.Size = New System.Drawing.Size(86, 13)
+        Me.lblDisplayTipoCambio.TabIndex = 332
+        Me.lblDisplayTipoCambio.Text = "Tipo de cambio :"
+        Me.lblDisplayTipoCambio.Visible = False
+        '
+        'txtTipoCambio
+        '
+        Me.txtTipoCambio.Enabled = False
+        Me.txtTipoCambio.Location = New System.Drawing.Point(281, 122)
+        Me.txtTipoCambio.MaxLength = 8
+        Me.txtTipoCambio.Name = "txtTipoCambio"
+        Me.txtTipoCambio.ReadOnly = True
+        Me.txtTipoCambio.Size = New System.Drawing.Size(79, 20)
+        Me.txtTipoCambio.TabIndex = 5
+        Me.txtTipoCambio.Text = "0"
+        Me.txtTipoCambio.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.txtTipoCambio.Visible = False
         '
         'lblPoliza
         '
@@ -584,8 +580,19 @@ Partial Class Frm_CXC_Devoluciones
         '
         'frmDatos
         '
+        Me.frmDatos.Controls.Add(Me.lblVersionCFDI)
+        Me.frmDatos.Controls.Add(Me.cboFormaPago)
+        Me.frmDatos.Controls.Add(Me.lblDisplayMetodoPago)
+        Me.frmDatos.Controls.Add(Me.cboMetodoPago)
+        Me.frmDatos.Controls.Add(Me.lblFormaPago)
+        Me.frmDatos.Controls.Add(Me.cboUsoCFDI)
+        Me.frmDatos.Controls.Add(Me.lblDisplayUsoCFDI)
+        Me.frmDatos.Controls.Add(Me.LblDisplayMoneda)
+        Me.frmDatos.Controls.Add(Me.cboMoneda)
         Me.frmDatos.Controls.Add(Me.txtSaldo)
+        Me.frmDatos.Controls.Add(Me.lblDisplayTipoCambio)
         Me.frmDatos.Controls.Add(Me.lblDisplaySaldo)
+        Me.frmDatos.Controls.Add(Me.txtTipoCambio)
         Me.frmDatos.Controls.Add(Me.txtAlmacen)
         Me.frmDatos.Controls.Add(Me.txtFolioDescuento)
         Me.frmDatos.Controls.Add(Me.lblDisplayFolioDescuento)
@@ -611,9 +618,95 @@ Partial Class Frm_CXC_Devoluciones
         Me.frmDatos.Controls.Add(Me.lblDisplayAlmacen)
         Me.frmDatos.Location = New System.Drawing.Point(4, 28)
         Me.frmDatos.Name = "frmDatos"
-        Me.frmDatos.Size = New System.Drawing.Size(986, 162)
+        Me.frmDatos.Size = New System.Drawing.Size(986, 199)
         Me.frmDatos.TabIndex = 0
         Me.frmDatos.TabStop = False
+        '
+        'lblVersionCFDI
+        '
+        Me.lblVersionCFDI.AutoSize = True
+        Me.lblVersionCFDI.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblVersionCFDI.Location = New System.Drawing.Point(942, 144)
+        Me.lblVersionCFDI.Name = "lblVersionCFDI"
+        Me.lblVersionCFDI.Size = New System.Drawing.Size(34, 20)
+        Me.lblVersionCFDI.TabIndex = 388
+        Me.lblVersionCFDI.Text = "0.0"
+        '
+        'cboFormaPago
+        '
+        Me.cboFormaPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboFormaPago.FormattingEnabled = True
+        Me.cboFormaPago.Location = New System.Drawing.Point(84, 147)
+        Me.cboFormaPago.Name = "cboFormaPago"
+        Me.cboFormaPago.Size = New System.Drawing.Size(205, 21)
+        Me.cboFormaPago.TabIndex = 7
+        '
+        'lblDisplayMetodoPago
+        '
+        Me.lblDisplayMetodoPago.AutoSize = True
+        Me.lblDisplayMetodoPago.Location = New System.Drawing.Point(374, 151)
+        Me.lblDisplayMetodoPago.Name = "lblDisplayMetodoPago"
+        Me.lblDisplayMetodoPago.Size = New System.Drawing.Size(91, 13)
+        Me.lblDisplayMetodoPago.TabIndex = 387
+        Me.lblDisplayMetodoPago.Text = "Método de pago :"
+        '
+        'cboMetodoPago
+        '
+        Me.cboMetodoPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboMetodoPago.Enabled = False
+        Me.cboMetodoPago.FormattingEnabled = True
+        Me.cboMetodoPago.Location = New System.Drawing.Point(468, 147)
+        Me.cboMetodoPago.MaxLength = 1
+        Me.cboMetodoPago.Name = "cboMetodoPago"
+        Me.cboMetodoPago.Size = New System.Drawing.Size(301, 21)
+        Me.cboMetodoPago.TabIndex = 8
+        '
+        'lblFormaPago
+        '
+        Me.lblFormaPago.AutoSize = True
+        Me.lblFormaPago.Location = New System.Drawing.Point(2, 151)
+        Me.lblFormaPago.Name = "lblFormaPago"
+        Me.lblFormaPago.Size = New System.Drawing.Size(84, 13)
+        Me.lblFormaPago.TabIndex = 386
+        Me.lblFormaPago.Text = "Forma de pago :"
+        '
+        'cboUsoCFDI
+        '
+        Me.cboUsoCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboUsoCFDI.FormattingEnabled = True
+        Me.cboUsoCFDI.Location = New System.Drawing.Point(468, 122)
+        Me.cboUsoCFDI.MaxLength = 1
+        Me.cboUsoCFDI.Name = "cboUsoCFDI"
+        Me.cboUsoCFDI.Size = New System.Drawing.Size(301, 21)
+        Me.cboUsoCFDI.TabIndex = 6
+        '
+        'lblDisplayUsoCFDI
+        '
+        Me.lblDisplayUsoCFDI.AutoSize = True
+        Me.lblDisplayUsoCFDI.Location = New System.Drawing.Point(374, 124)
+        Me.lblDisplayUsoCFDI.Name = "lblDisplayUsoCFDI"
+        Me.lblDisplayUsoCFDI.Size = New System.Drawing.Size(76, 13)
+        Me.lblDisplayUsoCFDI.TabIndex = 383
+        Me.lblDisplayUsoCFDI.Text = "Uso del CFDI :"
+        '
+        'LblDisplayMoneda
+        '
+        Me.LblDisplayMoneda.AutoSize = True
+        Me.LblDisplayMoneda.Location = New System.Drawing.Point(2, 124)
+        Me.LblDisplayMoneda.Name = "LblDisplayMoneda"
+        Me.LblDisplayMoneda.Size = New System.Drawing.Size(52, 13)
+        Me.LblDisplayMoneda.TabIndex = 379
+        Me.LblDisplayMoneda.Text = "Moneda :"
+        '
+        'cboMoneda
+        '
+        Me.cboMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboMoneda.Enabled = False
+        Me.cboMoneda.FormattingEnabled = True
+        Me.cboMoneda.Location = New System.Drawing.Point(84, 122)
+        Me.cboMoneda.Name = "cboMoneda"
+        Me.cboMoneda.Size = New System.Drawing.Size(90, 21)
+        Me.cboMoneda.TabIndex = 4
         '
         'txtSaldo
         '
@@ -691,7 +784,7 @@ Partial Class Frm_CXC_Devoluciones
         'lblDisplayFolioDevolucion
         '
         Me.lblDisplayFolioDevolucion.AutoSize = True
-        Me.lblDisplayFolioDevolucion.Location = New System.Drawing.Point(11, 23)
+        Me.lblDisplayFolioDevolucion.Location = New System.Drawing.Point(2, 23)
         Me.lblDisplayFolioDevolucion.Name = "lblDisplayFolioDevolucion"
         Me.lblDisplayFolioDevolucion.Size = New System.Drawing.Size(56, 13)
         Me.lblDisplayFolioDevolucion.TabIndex = 224
@@ -708,7 +801,7 @@ Partial Class Frm_CXC_Devoluciones
         'lblDisplayFecha
         '
         Me.lblDisplayFecha.AutoSize = True
-        Me.lblDisplayFecha.Location = New System.Drawing.Point(11, 73)
+        Me.lblDisplayFecha.Location = New System.Drawing.Point(2, 73)
         Me.lblDisplayFecha.Name = "lblDisplayFecha"
         Me.lblDisplayFecha.Size = New System.Drawing.Size(43, 13)
         Me.lblDisplayFecha.TabIndex = 228
@@ -737,7 +830,7 @@ Partial Class Frm_CXC_Devoluciones
         'lblDisplayCliente
         '
         Me.lblDisplayCliente.AutoSize = True
-        Me.lblDisplayCliente.Location = New System.Drawing.Point(11, 98)
+        Me.lblDisplayCliente.Location = New System.Drawing.Point(2, 98)
         Me.lblDisplayCliente.Name = "lblDisplayCliente"
         Me.lblDisplayCliente.Size = New System.Drawing.Size(45, 13)
         Me.lblDisplayCliente.TabIndex = 232
@@ -753,7 +846,6 @@ Partial Class Frm_CXC_Devoluciones
         Me.chkVentaPublicoGeneral.TabIndex = 7
         Me.chkVentaPublicoGeneral.Text = "Venta al público general"
         Me.chkVentaPublicoGeneral.UseVisualStyleBackColor = True
-        Me.chkVentaPublicoGeneral.Visible = False
         '
         'lblCliente
         '
@@ -765,17 +857,17 @@ Partial Class Frm_CXC_Devoluciones
         '
         'txtConcepto
         '
-        Me.txtConcepto.Location = New System.Drawing.Point(84, 122)
+        Me.txtConcepto.Location = New System.Drawing.Point(84, 171)
         Me.txtConcepto.MaxLength = 160
         Me.txtConcepto.Multiline = True
         Me.txtConcepto.Name = "txtConcepto"
         Me.txtConcepto.Size = New System.Drawing.Size(892, 22)
-        Me.txtConcepto.TabIndex = 4
+        Me.txtConcepto.TabIndex = 9
         '
         'lblDisplayConcepto
         '
         Me.lblDisplayConcepto.AutoSize = True
-        Me.lblDisplayConcepto.Location = New System.Drawing.Point(11, 123)
+        Me.lblDisplayConcepto.Location = New System.Drawing.Point(2, 172)
         Me.lblDisplayConcepto.Name = "lblDisplayConcepto"
         Me.lblDisplayConcepto.Size = New System.Drawing.Size(59, 13)
         Me.lblDisplayConcepto.TabIndex = 235
@@ -784,7 +876,7 @@ Partial Class Frm_CXC_Devoluciones
         'lblDisplayFolioVenta
         '
         Me.lblDisplayFolioVenta.AutoSize = True
-        Me.lblDisplayFolioVenta.Location = New System.Drawing.Point(11, 48)
+        Me.lblDisplayFolioVenta.Location = New System.Drawing.Point(2, 48)
         Me.lblDisplayFolioVenta.Name = "lblDisplayFolioVenta"
         Me.lblDisplayFolioVenta.Size = New System.Drawing.Size(65, 13)
         Me.lblDisplayFolioVenta.TabIndex = 237
@@ -847,7 +939,7 @@ Partial Class Frm_CXC_Devoluciones
     Friend WithEvents tsbGrabar As ToolStripButton
     Friend WithEvents tsbCancelar As ToolStripButton
     Friend WithEvents tsbImprimir As ToolStripButton
-    Friend WithEvents tsbSellar As ToolStripButton
+    Friend WithEvents tsbTimbrar As ToolStripButton
     Friend WithEvents tsbCancelarTimbre As ToolStripButton
     Friend WithEvents tsbRecuperaXMLPdf As ToolStripButton
     Friend WithEvents tsbSalir As ToolStripButton
@@ -886,7 +978,6 @@ Partial Class Frm_CXC_Devoluciones
     Friend WithEvents lblDisplayTotalDolares As Label
     Friend WithEvents lblDisplaySubtotalDolares As Label
     Friend WithEvents lblDisplayImpuestoDolares As Label
-    Friend WithEvents chkDolares As CheckBox
     Friend WithEvents frmDatos As GroupBox
     Friend WithEvents btnSiguiente As Button
     Friend WithEvents btnAnterior As Button
@@ -910,4 +1001,13 @@ Partial Class Frm_CXC_Devoluciones
     Friend WithEvents txtAlmacen As TextBox
     Friend WithEvents txtSaldo As TextBox
     Friend WithEvents lblDisplaySaldo As Label
+    Friend WithEvents LblDisplayMoneda As Label
+    Friend WithEvents cboMoneda As ComboBox
+    Friend WithEvents cboUsoCFDI As ComboBox
+    Friend WithEvents lblDisplayUsoCFDI As Label
+    Friend WithEvents cboFormaPago As ComboBox
+    Friend WithEvents lblDisplayMetodoPago As Label
+    Friend WithEvents cboMetodoPago As ComboBox
+    Friend WithEvents lblFormaPago As Label
+    Friend WithEvents lblVersionCFDI As Label
 End Class

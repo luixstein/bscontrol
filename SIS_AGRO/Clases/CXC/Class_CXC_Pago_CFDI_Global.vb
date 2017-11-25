@@ -651,11 +651,11 @@ Public Class Class_CXC_Pago_CFDI_Global
 
             If Me.RecuperaXML(sRutaXML) = True Then
                 If Me.ExportarAPdf(sRutaPDF) = False Then
-                    MsgBox("No se logró generar el PDF de la factura : " & Me._FOLIO_PAGO & ". Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+                    MsgBox("No se logró generar el PDF del documento : " & Me._FOLIO_PAGO & ". Avíse al depto. de sistemas.", vbExclamation, sProcedure)
                     Return False
                 End If
             Else
-                MsgBox("No se logró recuperar el XML de la factura : " & Me._FOLIO_PAGO & ". Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+                MsgBox("No se logró recuperar el XML del documento : " & Me._FOLIO_PAGO & ". Avíse al depto. de sistemas.", vbExclamation, sProcedure)
                 Return False
             End If
 

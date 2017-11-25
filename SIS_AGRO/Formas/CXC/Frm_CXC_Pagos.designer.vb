@@ -43,7 +43,7 @@ Partial Class Frm_CXC_Pagos
         Me.lblTipoCambio = New System.Windows.Forms.Label()
         Me.txtTipoCambio = New System.Windows.Forms.TextBox()
         Me.LblPoliza = New System.Windows.Forms.LinkLabel()
-        Me.CmbDocumento = New System.Windows.Forms.ComboBox()
+        Me.CboDocumento = New System.Windows.Forms.ComboBox()
         Me.LblFecha = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.LblCuentaContableCuentaBancaria = New System.Windows.Forms.Label()
@@ -170,7 +170,7 @@ Partial Class Frm_CXC_Pagos
         Me.gbGlobal.Controls.Add(Me.lblTipoCambio)
         Me.gbGlobal.Controls.Add(Me.txtTipoCambio)
         Me.gbGlobal.Controls.Add(Me.LblPoliza)
-        Me.gbGlobal.Controls.Add(Me.CmbDocumento)
+        Me.gbGlobal.Controls.Add(Me.CboDocumento)
         Me.gbGlobal.Controls.Add(Me.LblFecha)
         Me.gbGlobal.Controls.Add(Me.Label8)
         Me.gbGlobal.Controls.Add(Me.LblCuentaContableCuentaBancaria)
@@ -305,14 +305,14 @@ Partial Class Frm_CXC_Pagos
         Me.LblPoliza.Size = New System.Drawing.Size(105, 13)
         Me.LblPoliza.TabIndex = 291
         '
-        'CmbDocumento
+        'CboDocumento
         '
-        Me.CmbDocumento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CmbDocumento.FormattingEnabled = True
-        Me.CmbDocumento.Location = New System.Drawing.Point(103, 19)
-        Me.CmbDocumento.Name = "CmbDocumento"
-        Me.CmbDocumento.Size = New System.Drawing.Size(211, 21)
-        Me.CmbDocumento.TabIndex = 0
+        Me.CboDocumento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboDocumento.FormattingEnabled = True
+        Me.CboDocumento.Location = New System.Drawing.Point(103, 19)
+        Me.CboDocumento.Name = "CboDocumento"
+        Me.CboDocumento.Size = New System.Drawing.Size(211, 21)
+        Me.CboDocumento.TabIndex = 0
         '
         'LblFecha
         '
@@ -904,7 +904,7 @@ Partial Class Frm_CXC_Pagos
     Friend WithEvents tsbSalir As System.Windows.Forms.ToolStripButton
     Friend WithEvents gbGlobal As System.Windows.Forms.GroupBox
     Friend WithEvents LblPoliza As System.Windows.Forms.LinkLabel
-    Friend WithEvents CmbDocumento As System.Windows.Forms.ComboBox
+    Friend WithEvents CboDocumento As System.Windows.Forms.ComboBox
     Friend WithEvents LblFecha As System.Windows.Forms.Label
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents dtFecha As System.Windows.Forms.DateTimePicker

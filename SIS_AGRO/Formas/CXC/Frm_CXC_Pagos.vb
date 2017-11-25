@@ -18,6 +18,7 @@ Public Class Frm_CXC_Pagos
     Private oCxcAfectaDocumentos As New Class_CXC_Afecta_Documentos
     Private oFormaPoliza As Frm_Contabilidad_Captura_Polizas
     Private oPolizaGlobal As Class_Contabilidad_Poliza_Global
+    Private oDocumento As Class_CatDocumentos
 
     Private ClickSinEjecutar As Boolean = False
     Private bDocumentosCargados As Boolean = False
@@ -184,9 +185,15 @@ Public Class Frm_CXC_Pagos
         End If
     End Sub
 
-    Private Sub CmbDocumento_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles CmbDocumento.SelectedIndexChanged
-        Me.Inicializa()
-        Me.Cambia_Estado(enumEstados.NUEVO)
+    Private Sub CboDocumento_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles CboDocumento.SelectedIndexChanged
+        Try
+            'Me.oVenta.CODIGO_DOCUMENTO = Me.CboDocumento.SelectedValue.ToString
+            Me.oDocumento = New Class_CatDocumentos(Me.CboDocumento.SelectedValue.ToString)
+            Me.Inicializa()
+            Me.Cambia_Estado(enumEstados.NUEVO)
+        Catch ex As Exception
+            HandleError(Me.Name, "CboDocumento_SelectedIndexChanged", ex)
+        End Try
     End Sub
 
     Private Sub TxtCuentaBancaria_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCuentaBancaria.KeyDown
@@ -499,7 +506,7 @@ Buscar:
         oTexBox.SelectAll()
     End Sub
 
-    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CmbDocumento.KeyDown, dtFecha.KeyDown, CboMedioDePago.KeyDown, CboBancos.KeyDown, cboFormaPago.KeyDown, txtFolioDetalle.KeyDown, txtCuentaEmisor.KeyDown, dtFechaPagoCliente.KeyDown
+    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboDocumento.KeyDown, dtFecha.KeyDown, CboMedioDePago.KeyDown, CboBancos.KeyDown, cboFormaPago.KeyDown, txtFolioDetalle.KeyDown, txtCuentaEmisor.KeyDown, dtFechaPagoCliente.KeyDown
         If e.KeyCode = Keys.Return Then
             SendKeys.Send("{TAB}")
         End If
@@ -516,7 +523,7 @@ Buscar:
         txtNoBeep(e)
     End Sub
 
-    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CmbDocumento.KeyPress, TxtFolio.KeyPress,
+    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboDocumento.KeyPress, TxtFolio.KeyPress,
     dtFecha.KeyPress, TxtConcepto.KeyPress, TxtCodigoCliente.KeyPress, TxtReferencia.KeyPress, txtFolioDetalle.KeyPress, txtCuentaEmisor.KeyPress, txtRFCEmisor.KeyPress, dtFechaPagoCliente.KeyPress
         txtNoBeep(e)
     End Sub
@@ -1173,7 +1180,7 @@ Buscar:
         Dim bResultado As Boolean = False
         Me.oPolizaGlobal = New Class_Contabilidad_Poliza_Global(Me.TxtFolio.Text)
         Try
-            If MsgBox("Deseas grabar el documento " & Me.CmbDocumento.Text & " con el folio : " & Me.TxtFolio.Text & "?", CType(vbYesNo + vbQuestion, MsgBoxStyle), "Grabar") = MsgBoxResult.No Then
+            If MsgBox("Deseas grabar el documento " & Me.CboDocumento.Text & " con el folio : " & Me.TxtFolio.Text & "?", CType(vbYesNo + vbQuestion, MsgBoxStyle), "Grabar") = MsgBoxResult.No Then
                 Exit Function
             End If
 
@@ -1204,7 +1211,9 @@ Buscar:
                 End If
 
                 If Me.oBancosCXC.GestionaCFDI() = True Then
-                    Me.oBancosCXC.GeneraPagosElectronicos()
+                    If Me.oDocumento.TIMBRA_DOCUMENTO = True Then
+                        Me.oBancosCXC.GeneraPagosElectronicos()
+                    End If
                 End If
 
             End If
@@ -1232,7 +1241,7 @@ Buscar:
             oBancosCXC.FOLIO_BANCO = Me.TxtFolio.Text
             oBancosCXC.ID_CUENTA_BANCARIA = CInt(Me.TxtCuentaBancaria.Text)
             oBancosCXC.TOTAL = valorNumerico(Me.TxtTotal.Text)
-            oBancosCXC.CODIGO_DOCUMENTO = (Me.CmbDocumento.SelectedValue.ToString)
+            oBancosCXC.CODIGO_DOCUMENTO = (Me.CboDocumento.SelectedValue.ToString)
             oBancosCXC.FECHA = Me.dtFecha.Value
             oBancosCXC.CONCEPTO1 = Me.TxtConcepto.Text.ToUpper
             oBancosCXC.CODIGO_PLAZA = Usuario.Codigo_Plaza
@@ -1352,7 +1361,7 @@ Buscar:
                 Return False
             End If
 
-            If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CmbDocumento.SelectedValue.ToString) = False Then
+            If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString) = False Then
                 MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
@@ -1494,7 +1503,7 @@ Buscar:
     Private Sub DesplegarDocumentos()
         Try
             Dim oElementos As New Class_CatDocumentos
-            With Me.CmbDocumento
+            With Me.CboDocumento
                 .DisplayMember = "NOMBRE_TIPO_DOCUMENTO"
                 .ValueMember = "CODIGO_DOCUMENTO"
                 Dim dView As New Data.DataView(oElementos.ObtenerCodigosDocumentos("BAN", Usuario.Codigo_Plaza.ToString, " ESTATUS_DOCUMENTO='A' AND AFECTA_CXC='1' AND AFECTA_CONTABILIDAD='1'"))
@@ -1584,7 +1593,7 @@ Buscar:
 
         Try
             If ExisteDocumento(Me.TxtFolio.Text) = True Then
-                MsgBox("El folio del documento : " & Me.CmbDocumento.Text & " ya existe, verifíquelo.", MsgBoxStyle.Exclamation, "Contabilizar")
+                MsgBox("El folio del documento : " & Me.CboDocumento.Text & " ya existe, verifíquelo.", MsgBoxStyle.Exclamation, "Contabilizar")
                 Exit Function
             End If
 
@@ -1957,7 +1966,7 @@ Buscar:
                 Me.TxtCuentaBancaria.Enabled = False
                 Me.TxtFolio.Enabled = False
 
-                Me.CmbDocumento.SelectedValue = oBancosCXC.CODIGO_DOCUMENTO
+                Me.CboDocumento.SelectedValue = oBancosCXC.CODIGO_DOCUMENTO
                 Me.dtFecha.Value = oBancosCXC.FECHA
                 Me.dtFechaCheque.Value = oBancosCXC.FECHA_CHEQUE
                 Me.LblStatus.Text = oBancosCXC.ESTATUS
@@ -2054,11 +2063,11 @@ Buscar:
 
         'Me.oBancosCXC = New Class_Bancos_CXC(sFolio)
 
-        If MsgBox("Deseas cancelar el movimiento de " & Me.CmbDocumento.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "CancelarCompra") = MsgBoxResult.No Then
+        If MsgBox("Deseas cancelar el movimiento de " & Me.CboDocumento.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "CancelarCompra") = MsgBoxResult.No Then
             Exit Function
         End If
 
-        If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CmbDocumento.SelectedValue.ToString) = False Then
+        If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString) = False Then
             MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento de inventarios.", MsgBoxStyle.Exclamation, Me.Text)
             Exit Function
         End If
@@ -2097,7 +2106,7 @@ Buscar:
                 oUtileriasCancela = New Class_UtileriasFirmaElectronicaCancelacion
                 oUtileriasCancela.FOLIO_DOCUMENTO = Me.TxtFolio.Text
                 oUtileriasCancela.FOLIO_POLIZA = Me.oBancosCXC.FOLIO_POLIZA
-                oUtileriasCancela.CODIGO_DOCUMENTO = Me.CmbDocumento.SelectedValue.ToString
+                oUtileriasCancela.CODIGO_DOCUMENTO = Me.CboDocumento.SelectedValue.ToString
                 oUtileriasCancela.CODIGO_PLAZA = Usuario.Codigo_Plaza
                 oUtileriasCancela.MODULO = Me.oBancosCXC.CODIGO_MODULO
 
@@ -2160,7 +2169,7 @@ Buscar:
     Private Sub GeneraFolio()
         Try
             If Me.bDocumentosCargados = True Then
-                Me.oBancosCXC.CODIGO_DOCUMENTO = Me.CmbDocumento.SelectedValue.ToString
+                Me.oBancosCXC.CODIGO_DOCUMENTO = Me.CboDocumento.SelectedValue.ToString
                 Me.TxtFolio.Text = Me.oBancosCXC.GeneraFolio
             End If
         Catch ex As Exception
@@ -2179,13 +2188,13 @@ Buscar:
                     Me.tsbGrabar.Enabled = True
                     Me.tsbCancelar.Enabled = False
                     Me.tsbImprimirPoliza.Enabled = False
-                    Me.CmbDocumento.Enabled = True
+                    Me.CboDocumento.Enabled = True
                     Me.dtFecha.Enabled = True
                     Me.cboMoneda.Enabled = False
                     'Me.txtTipoCambio.Enabled = False'No se cambia para dejar el último estado
                     Me.TxtConcepto.Enabled = True
                     Me.TxtTotal.Enabled = False
-                    Me.tssEstado.Text = "Estado: agregando documento " & Me.CmbDocumento.Text
+                    Me.tssEstado.Text = "Estado: agregando documento " & Me.CboDocumento.Text
                     Me.tssElaboro.Visible = False
                     Me.tssCancelo.Visible = False
                     Me.GridVentas.Locked = False
@@ -2204,13 +2213,13 @@ Buscar:
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = True
                     Me.tsbImprimirPoliza.Enabled = True
-                    Me.CmbDocumento.Enabled = False
+                    Me.CboDocumento.Enabled = False
                     Me.dtFecha.Enabled = False
                     Me.cboMoneda.Enabled = False
                     Me.txtTipoCambio.Enabled = False
                     Me.TxtConcepto.Enabled = False
                     Me.TxtTotal.Enabled = False
-                    Me.tssEstado.Text = "Estado: Consulta de " & Me.CmbDocumento.Text
+                    Me.tssEstado.Text = "Estado: Consulta de " & Me.CboDocumento.Text
                     Me.tssElaboro.Visible = True
                     Me.tssCancelo.Visible = False
                     Me.GridVentas.Locked = True
@@ -2227,13 +2236,13 @@ Buscar:
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = False
                     Me.tsbImprimirPoliza.Enabled = True
-                    Me.CmbDocumento.Enabled = False
+                    Me.CboDocumento.Enabled = False
                     Me.dtFecha.Enabled = False
                     Me.cboMoneda.Enabled = False
                     Me.txtTipoCambio.Enabled = False
                     Me.TxtConcepto.Enabled = False
                     Me.TxtTotal.Enabled = False
-                    Me.tssEstado.Text = "Estado: Consulta de " & Me.CmbDocumento.Text
+                    Me.tssEstado.Text = "Estado: Consulta de " & Me.CboDocumento.Text
                     Me.tssElaboro.Visible = True
                     Me.tssCancelo.Visible = True
                     Me.GridVentas.Locked = True
@@ -2918,10 +2927,9 @@ Buscar:
     End Sub
 
     Private Sub cmdPruebaPagoCFDI_Click(sender As Object, e As EventArgs) Handles cmdPruebaPagoCFDI.Click
-        Me.oBancosCXC.GeneraPagosElectronicos()
+        'Me.oBancosCXC.GeneraPagosElectronicos()
+        'GeneraPagoElectronico33Prueba()
     End Sub
-
-
 
 #End Region
 

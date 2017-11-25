@@ -23,6 +23,7 @@ Module FacturacionElectronica
         FACTURA_VENTA
         NOTA_CREDITO_CXC
         PAGO_CXC
+        DEVOLUCION_CXC
     End Enum
 
     Public Structure Certificado
@@ -219,7 +220,7 @@ Module FacturacionElectronica
         Return bResultado
     End Function
 
-    Private Function CancelarCFDI(ByVal sFolioDocumentoSistema As String, ByVal sSerie As String, ByVal iFolioNumerico As Integer, ByVal sFolioFiscalSat As String, ByVal sDocumentoYaEstaTimbrado As String, ByVal sTipoComprobante As TipoComprobante) As Boolean
+    Public Function CancelarCFDI(ByVal sFolioDocumentoSistema As String, ByVal sSerie As String, ByVal iFolioNumerico As Integer, ByVal sFolioFiscalSat As String, ByVal sDocumentoYaEstaTimbrado As String, ByVal sTipoComprobante As TipoComprobante) As Boolean
         Const sProcedure As String = "CancelarCFDI"
         Dim bResultado As Boolean = False
 
@@ -246,7 +247,7 @@ Module FacturacionElectronica
                     If cfd.Recuperado = False Then 'No se recupero
                         If sXml = "ErrorDLL" Then
                             'No descarta el timbre por algun otro error, que no necesariamente signifca que no exista el timbre
-                            Exit Function
+                            Return False
                         End If
                         DescartarTimbrado(sFolioDocumentoSistema, sTipoComprobante) 'ActualizaEstatusTimbradoDescartado(Folio, sTipoComprobanteElectronico)
                         Exit Function
@@ -254,7 +255,7 @@ Module FacturacionElectronica
                         sXml = Replace(sXml, "<?xml version=""1.0"" encoding=""UTF-8""?>", "")
                         'Se recupero 'sFolioFacturaSistema, sXml, 
                         If GrabaCadenaOriginalYSelloComprobanteElectronico(cfd, sTipoComprobante) = False Then
-                            Exit Function
+                            Return False
                         End If
                     End If
                     sUUID = cfd.Complemento.UUID
@@ -295,13 +296,23 @@ Module FacturacionElectronica
                     Case TipoComprobante.FACTURA_VENTA '"FACTURA_VENTA"
                         .CommandText = "MP_VENTAS_FACTURACION_ELECTRONICA_CANCELA_Y_GUARDA_ACUSE_XML"
                         sqlParametro = .Parameters.Add("@FOLIO_VENTA", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolioFacturaSistema
+
                     Case TipoComprobante.NOTA_CREDITO_CXC '"NOTA_CREDITO_CXC"
                         .CommandText = "MP_CXC_NOTAS_CREDITO_ELECTRONICA_CANCELA_Y_GUARDA_ACUSE_XML"
                         sqlParametro = .Parameters.Add("@FOLIO_DESCUENTO", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolioFacturaSistema
+
+                    Case TipoComprobante.PAGO_CXC
+                        .CommandText = "MP_CFD_CXC_PAGOS_CANCELA_Y_GUARDA_ACUSE_XML"
+                        sqlParametro = .Parameters.Add("@FOLIO_DESCUENTO", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolioFacturaSistema
+
+                    Case TipoComprobante.DEVOLUCION_CXC
+                        .CommandText = "MP_CFD_CXC_DEVOLUCIONES_CANCELA_Y_GUARDA_ACUSE_XML"
+                        sqlParametro = .Parameters.Add("@FOLIO_DEVOLUCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolioFacturaSistema
+
                     Case Else
                         MsgBox("No se indicó el tipo de comprobante electrónico generado para grabar los datos de cancelación del documento.", MsgBoxStyle.Exclamation, sProcedure)
                         cmd = Nothing
-                        Exit Function
+                        Return False
                 End Select
 
                 sqlParametro = .Parameters.Add("@CADENA_XML_ACUSE_CANCELACION", SqlDbType.Xml) : sqlParametro.Value = sAcuseCancelacionXML
@@ -410,6 +421,10 @@ Module FacturacionElectronica
                     Case TipoComprobante.PAGO_CXC
                         .CommandText = "MP_CFD_CXC_PAGOS_GRABA_DATOS_DIGITALES"
                         sqlParametro = .Parameters.Add("@FOLIO_PAGO", SqlDbType.NVarChar, 15) : sqlParametro.Value = fElectronica.Comprobante.FolioCompleto
+
+                    Case TipoComprobante.DEVOLUCION_CXC
+                        .CommandText = "MP_CFD_CXC_DEVOLUCIONES_GRABA_DATOS_DIGITALES"
+                        sqlParametro = .Parameters.Add("@FOLIO_DEVOLUCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = fElectronica.Comprobante.FolioCompleto
 
                     Case Else
                         MsgBox("No se indicó el tipo de comprobante electrónico generado para grabar los datos digitales del documento.", MsgBoxStyle.Exclamation, sProcedure)

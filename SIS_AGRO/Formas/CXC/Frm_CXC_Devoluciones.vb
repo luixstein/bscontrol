@@ -22,6 +22,7 @@ Public Class Frm_CXC_Devoluciones
 
     Private dTablaMetodosPago As DataTable
     Private dtSeries As DataTable
+    Private dViewFormasPago As New Data.DataView
 #End Region
 
 #Region "Columnas grid ventas"
@@ -84,14 +85,42 @@ Public Class Frm_CXC_Devoluciones
     Private Sub btnSiguiente_Click(sender As Object, e As EventArgs) Handles btnSiguiente.Click
         Me.NavegadorNotas("Siguiente")
     End Sub
+
+    Private Sub tsbTimbrar_Click(sender As Object, e As EventArgs) Handles tsbTimbrar.Click
+        If Me.oDevolucion.GeneraDevolucionElectronica(True, True) = True Then
+            Me.Consultar()
+        End If
+    End Sub
+
+    Private Sub tsbCancelarTimbre_Click(sender As Object, e As EventArgs) Handles tsbCancelarTimbre.Click
+        If Me.oDevolucion.CancelarTimbre = True Then
+            Me.Consultar()
+        End If
+    End Sub
+
+    Private Sub tsbRecuperaXMLPdf_Click(sender As Object, e As EventArgs) Handles tsbRecuperaXMLPdf.Click
+        Me.oDevolucion.RecuperaXMLyPDF()
+    End Sub
+
+    Private Sub tsbEnviarCorreo_Click(sender As Object, e As EventArgs) Handles tsbEnviarCorreo.Click
+        Me.EnviarCorreo()
+    End Sub
+
 #End Region
 
 #Region "Eventos de objetos"
     Private Sub Frm_CXC_Devoluciones_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
             Me.oDocumento = New Class_CatDocumentos("DEVV" & Usuario.Codigo_Plaza.ToString)
+
+            Me.DesplegarMetodosPago()
+            Me.DesplegarMonedas()
+            Me.DesplegarFormasPago(False)
+            Me.DesplegarUsoCFDIPersonasFisicas()
+
             Me.Inicializa()
             Me.Cambia_Estado(enumEstados.NUEVO)
+
         Catch ex As Exception
             HandleError(Me.Name, "Frm_CXC_Devoluciones_Load", ex)
         End Try
@@ -150,6 +179,20 @@ busca:
         End If
     End Sub
 
+    Private Sub cboMoneda_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboMoneda.SelectedIndexChanged
+        Try
+            If Me.cboMoneda.Text = "USD" Then
+                Me.txtTipoCambio.Visible = True : Me.txtTipoCambio.Enabled = True : Me.lblDisplayTipoCambio.Visible = True
+                Me.gbDolares.Visible = True
+            Else
+                Me.txtTipoCambio.Visible = False : Me.txtTipoCambio.Enabled = False : Me.lblDisplayTipoCambio.Visible = False
+                Me.gbDolares.Visible = False
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, "cboMoneda_SelectedIndexChanged", ex)
+        End Try
+    End Sub
+
 #Region "Eventos Genericos"
     Private Sub txt_Enter(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim oTexBox As TextBox = CType(sender, TextBox)
@@ -172,6 +215,7 @@ busca:
         txtNoBeep(e)
     End Sub
 #End Region
+
 #End Region
 
 #Region "Métodos y procedimientos"
@@ -189,7 +233,6 @@ busca:
             Me.txtTipoCambio.Text = "0"
 
             Me.chkVentaPublicoGeneral.Checked = False
-            Me.chkDolares.Checked = False
 
             Me.lblSubtotalDolares.Text = FormatImporteContable(0)
             Me.lblImpuestoDolares.Text = FormatImporteContable(0)
@@ -206,6 +249,14 @@ busca:
             Me.GeneraFolio()
 
             Me.dtSeries = New DataTable("Series")
+
+            Me.cboMoneda.Text = "MXN"
+
+            Me.DesplegarFormasPago(False)
+            Me.cboFormaPago.SelectedValue = "99" ' "99-Por definir"  '99=Por definir
+            Me.cboMetodoPago.SelectedValue = "PUE" ' "PUE-Pago en una sola exhibición"
+            Me.cboUsoCFDI.SelectedValue = "G02" ' "G02-Devoluciones, descuentos o bonificaciones"
+            Me.lblVersionCFDI.Text = ""
 
             Me.TabControl1.SelectedIndex = 0
 
@@ -377,6 +428,12 @@ busca:
         Try
             Me.Estado = pEstado
 
+            Me.cboUsoCFDI.Enabled = False
+            Me.cboFormaPago.Enabled = False
+            Me.cboMetodoPago.Enabled = False
+
+            Me.chkVentaPublicoGeneral.Enabled = False
+
             Select Case Me.Estado
                 Case enumEstados.NUEVO
                     Me.tsbNuevo.Enabled = True
@@ -398,8 +455,10 @@ busca:
                     Me.txtConcepto.Enabled = True
                     Me.dtFecha.Enabled = True
 
-                    Me.tsbSellar.Visible = False
+                    Me.tsbTimbrar.Visible = False
                     Me.tsbCancelarTimbre.Visible = False
+
+                    Me.cboFormaPago.Enabled = True
 
                     Me.tssEstado.Text = "Estado: Agregando nuevo movimiento"
 
@@ -423,7 +482,7 @@ busca:
                     Me.txtConcepto.Enabled = False
                     Me.dtFecha.Enabled = False
 
-                    Me.tsbSellar.Visible = False
+                    Me.tsbTimbrar.Visible = False
                     Me.tsbCancelarTimbre.Visible = False
                     'If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
                     '    If Me.oVenta.VERSION_ESQUEMA_XML >= "3.2" Or Me.oVenta.VERSION_ESQUEMA_XML = "" Then
@@ -459,7 +518,7 @@ busca:
                     Me.txtConcepto.Enabled = False
                     Me.dtFecha.Enabled = False
 
-                    Me.tsbSellar.Visible = False
+                    Me.tsbTimbrar.Visible = False
                     Me.tsbCancelarTimbre.Visible = False
                     'If Me.oVenta.VERSION_ESQUEMA_XML >= "3.2" Or Me.oVenta.VERSION_ESQUEMA_XML = "" Then
                     '    If Me.oVenta.TIMBRADO_CFDI = "1" Then
@@ -506,7 +565,7 @@ busca:
             Me.oVenta = New Class_Ventas_Global(Me.txtFolioVenta.Text)
 
             If Me.oVenta.Existe = False Then
-                MsgBox("No existe la venta indicada.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("No existe la venta indicada.", MsgBoxStyle.Exclamation, Me.Name)
                 Return False
             End If
 
@@ -517,12 +576,12 @@ busca:
             Me.txtAlmacen.Text = Me.oVenta.CODIGO_ALMACEN
             Me.lblAlmacen.Text = oAlmacen.NOMBRE_ALMACEN
             Me.txtTipoCambio.Text = Me.oVenta.TIPO_DE_CAMBIO.ToString
-
+            Me.chkVentaPublicoGeneral.Checked = CBool(Me.oVenta.ES_VENTA_PUBLICO_GENERAL)
             Me.txtSaldo.Text = FormatImporteContable(Me.oVenta.SALDO)
 
             Dim dTabla As DataTable = Me.oVenta.ObtenerDetalleDisponiblesParaDevolucion
             If dTabla.Rows.Count = 0 Then
-                MsgBox("No hay disponibles en la venta para devolver.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("No hay disponibles en la venta para devolver.", MsgBoxStyle.Exclamation, Me.Name)
                 Return False
             End If
 
@@ -538,8 +597,9 @@ busca:
 
             bResultado = True
         Catch ex As Exception
-            HandleError(Me.Name, "CargarDisponiblesVenta", ex)
+            HandleError(Me.Name, "CargarVenta", ex)
         End Try
+
         Return bResultado
     End Function
 
@@ -556,54 +616,93 @@ busca:
                 Me.Cambia_Estado(enumEstados.NUEVO)
                 Me.txtFolioDevolucion.Enabled = False
                 Return False
-            Else
-                Me.txtFolioDevolucion.Enabled = False
-
-                Me.oVenta = New Class_Ventas_Global(Me.oDevolucion.FOLIO_VENTA)
-
-                With oDevolucion
-                    Me.txtFolioDevolucion.Text = .FOLIO_DEVOLUCION
-                    Me.txtFolioVenta.Text = .FOLIO_VENTA
-                    Me.txtFolioDescuento.Text = .FOLIO_DESCUENTO_DEVOLUCION
-
-                    Me.dtFecha.Value = .FECHA
-                    Me.txtCliente.Text = .CODIGO_CLIENTE
-                    Me.lblCliente.Text = .NOMBRE_CLIENTE
-                    Me.txtConcepto.Text = .CONCEPTO
-                    Me.lblEstatus.Text = .ESTATUS_DEVOLUCION
-                    Me.lblPoliza.Text = .FOLIO_POLIZA
-                    Me.txtAlmacen.Text = .CODIGO_ALMACEN
-                    Me.lblAlmacen.Text = .NOMBRE_ALMACEN
-
-                    Me.txtTipoCambio.Text = FormatTipoCambio(.TIPO_DE_CAMBIO)
-                    Me.lblSubtotal.Text = FormatImporteContable(.SUBTOTAL)
-                    Me.lblIEPS.Text = FormatImporteContable(.IEPS_DESGLOSADO)
-                    Me.lblIEPSIncluido.Text = FormatImporteContable(.IEPS_INCLUIDO)
-                    Me.lblImpuesto.Text = FormatImporteContable(.IMPUESTO)
-                    Me.lblTotal.Text = FormatImporteContable(.TOTAL)
-                    'Me.cboMoneda.Text = .MONEDA
-
-                    If .TIPO_DE_CAMBIO > 0 Then
-                        Me.chkDolares.Checked = True
-                        Me.CalculaImporteDolares()
-                    End If
-
-                    Me.tssElaboro.Text = "Elaboró : " & .NOMBRE_USUARIO_GRABO & " el " & Format(.FECHA_SERVIDOR, "dd-MMM-yyyy hh:mm tt")
-                    If .ESTATUS_DEVOLUCION = "C" Then
-                        Me.tssCancelo.Text = "Canceló : " & .NOMBRE_USUARIO_CANCELO & " el : " & Format(.FECHA_CANCELACION, "dd-MMM-yyyy hh:mm tt")
-                    End If
-
-                    Me.txtSaldo.Text = FormatImporteContable(Me.oVenta.SALDO)
-
-                    Me.Grid.DataSource = .ObtenerDetalle
-                End With
-
-                Me.FormateaGrid()
-
-                bResultado = True
-
-                Me.GestionaCambioEstado()
             End If
+
+            Me.txtFolioDevolucion.Enabled = False
+
+            Me.oVenta = New Class_Ventas_Global(Me.oDevolucion.FOLIO_VENTA)
+
+            With oDevolucion
+                Me.lblVersionCFDI.Text = "" & Me.oDevolucion.VERSION_ESQUEMA_XML
+                Me.DesplegarFormasPago(True) 'Para forzar a que muestre todos incluso los que están dados de baja porque al consultarlos fallaria si no estuvieran.
+
+                Me.txtFolioDevolucion.Text = .FOLIO_DEVOLUCION
+                Me.txtFolioVenta.Text = .FOLIO_VENTA
+                Me.txtFolioDescuento.Text = .FOLIO_DESCUENTO_DEVOLUCION
+
+                Me.dtFecha.Value = .FECHA
+                Me.txtCliente.Text = .CODIGO_CLIENTE
+                Me.lblCliente.Text = .NOMBRE_CLIENTE
+                Me.txtConcepto.Text = .CONCEPTO
+                Me.lblEstatus.Text = .ESTATUS_DEVOLUCION
+                Me.lblPoliza.Text = .FOLIO_POLIZA
+                Me.txtAlmacen.Text = .CODIGO_ALMACEN
+                Me.lblAlmacen.Text = .NOMBRE_ALMACEN
+
+                Me.txtTipoCambio.Text = FormatTipoCambio(.TIPO_DE_CAMBIO)
+                Me.lblSubtotal.Text = FormatImporteContable(.SUBTOTAL)
+                Me.lblIEPS.Text = FormatImporteContable(.IEPS_DESGLOSADO)
+                Me.lblIEPSIncluido.Text = FormatImporteContable(.IEPS_INCLUIDO)
+                Me.lblImpuesto.Text = FormatImporteContable(.IMPUESTO)
+                Me.lblTotal.Text = FormatImporteContable(.TOTAL)
+
+                Me.cboMoneda.Text = .CODIGO_MONEDA_SAT
+                Me.txtTipoCambio.Text = .TIPO_DE_CAMBIO.ToString
+
+                If .TIPO_DE_CAMBIO > 0 Then
+                    Me.CalculaImporteDolares()
+                End If
+
+                If txtLEN("" & .CODIGO_METODO_PAGO_EVENTO) = True Then
+                    Me.cboFormaPago.SelectedValue = .CODIGO_METODO_PAGO
+                Else
+                    Me.cboFormaPago.SelectedIndex = -1
+                End If
+
+                If txtLEN("" & .CODIGO_METODO_PAGO_EVENTO) = True Then
+                    Me.cboMetodoPago.SelectedValue = .CODIGO_METODO_PAGO_EVENTO
+                Else
+                    Me.cboMetodoPago.SelectedIndex = -1
+                End If
+
+                If txtLEN("" & .CODIGO_USO_CFDI) = True Then
+                    Me.cboUsoCFDI.SelectedValue = .CODIGO_USO_CFDI
+                Else
+                    Me.cboUsoCFDI.SelectedIndex = -1
+                End If
+
+                Me.tssElaboro.Text = "Elaboró : " & .NOMBRE_USUARIO_GRABO & " el " & Format(.FECHA_SERVIDOR, "dd-MMM-yyyy hh:mm tt")
+                If .ESTATUS_DEVOLUCION = "C" Then
+                    Me.tssCancelo.Text = "Canceló : " & .NOMBRE_USUARIO_CANCELO & " el : " & Format(.FECHA_CANCELACION, "dd-MMM-yyyy hh:mm tt")
+                End If
+
+                Me.txtSaldo.Text = FormatImporteContable(Me.oVenta.SALDO)
+
+                Me.Grid.DataSource = .ObtenerDetalle
+            End With
+
+            Me.FormateaGrid()
+
+            bResultado = True
+
+            Me.GestionaCambioEstado()
+
+            Me.tsbTimbrar.Visible = False
+            Me.tsbCancelarTimbre.Visible = False
+            Me.tsbRecuperaXMLPdf.Visible = False
+
+            If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
+                If Me.oDevolucion.TIMBRADO_CFDI = False And Me.oDevolucion.TIMBRADO_DESCARTADO = False And Me.oVenta.TIMBRADO_CFDI = "1" Then 'Pregunta por campos de la dev y de la factura(de ambos)
+                    Me.tsbTimbrar.Visible = True
+                ElseIf Me.oDevolucion.TIMBRADO_CFDI = True AndAlso Me.oDevolucion.TIMBRADO_DESCARTADO = False AndAlso Me.oDevolucion.ESTATUS_CANCELACION_CFDI = False Then
+                    Me.tsbCancelarTimbre.Visible = True
+                End If
+
+                If Me.oDevolucion.TIMBRADO_CFDI = True Then
+                    Me.tsbRecuperaXMLPdf.Visible = True
+                End If
+            End If
+
         Catch ex As Exception
             HandleError(Me.Name, "Consultar", ex)
         End Try
@@ -612,8 +711,10 @@ busca:
     End Function
 
     Private Function Grabar() As Boolean
+        Const sProcedure As String = "Grabar"
         Dim bResultado As Boolean = False
-        Dim i As Integer, sListaSeries As String = ""
+
+        Dim i As Integer, sListaSeries As String = "", bTimbrar As Boolean = False
 
         Try
             If Me.Validar = False Then
@@ -636,6 +737,25 @@ busca:
                 .IEPS_DESGLOSADO = valorNumericoD(Me.lblIEPS.Text)
                 .IEPS_INCLUIDO = valorNumericoD(Me.lblIEPSIncluido.Text)
                 .IMPUESTO_PORCENTAJE = CDec(IIf(valorNumericoD(Me.lblImpuesto.Text) > 0, "16", "0"))
+
+                If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
+                    If Me.oVenta.TIMBRADO_CFDI = "1" Then 'Si se timbró la venta, se considera que la dev será electrónica, nota también hay dev de remisiones que no afectaton timbre.
+                        .ES_COMPROBANTE_ELECTRONICO = "1"
+                        bTimbrar = True
+                    Else
+                        If MsgBox("La factura no fue timbrada de modo que esta devolución tampoco será timbrada, seguro desea continuar de todas formas ?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Me.Name) = MsgBoxResult.No Then
+                            Return False
+                        End If
+                    End If
+                Else
+                    .ES_COMPROBANTE_ELECTRONICO = "0"
+                End If
+
+                .ES_A_PUBLICO_GENERAL = Convert.ToInt32(Me.chkVentaPublicoGeneral.Checked).ToString
+                .CODIGO_METODO_PAGO = Me.cboFormaPago.SelectedValue.ToString
+                .CODIGO_METODO_PAGO_EVENTO = Me.cboMetodoPago.SelectedValue.ToString
+                .CODIGO_USO_CFDI = Me.cboUsoCFDI.SelectedValue.ToString
+                .CODIGO_MONEDA_SAT = Me.cboMoneda.Text
 
                 If .GrabaDevolucionGlobal = False Then
                     Return False
@@ -667,8 +787,8 @@ busca:
                         .oDetalle.LISTA_SERIES = sListaSeries
 
                         If .oDetalle.GrabaRenglon = False Then
-                            MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Text)
-                            Exit Function
+                            MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, sProcedure)
+                            Return False
                         End If
 
                         sListaSeries = ""
@@ -678,15 +798,20 @@ busca:
                 .AfectaInventarios()
 
                 'FALTA:Contabilidad
-                'PREGUNTAR SI ES EL DOC DE LA VENTA AFECTO A CONTA Y DECIR QUE NO AFECTARA A CONTA, QUE AVISEA SISTEMAs?
+                'PREGUNTAR SI ES EL DOC DE LA VENTA AFECTO A CONTA Y DECIR QUE NO AFECTARA A CONTA, QUE AVISE A SISTEMAs?
 
                 'FALTA:Timbrado
+
+                If Empresa_Sistema.FELECTRONICA_ACTIVA = True And bTimbrar = True Then
+                    Me.oDevolucion = New Class_CXC_Devoluciones_Global(Me.txtFolioDevolucion.Text) 'Refrescar documento para evitar algún error por dato no cargado.
+                    Me.oDevolucion.GeneraDevolucionElectronica(False, True)
+                End If
 
             End With
 
             bResultado = True
         Catch ex As Exception
-            HandleError(Me.Name, "Grabar", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado
@@ -979,6 +1104,86 @@ Sigue:
         End Try
         Return bResultado
     End Function
+
+    Private Sub DesplegarFormasPago(ByVal bTodos As Boolean)
+        'Dim dViewFormasPago As New Data.DataView
+        Try
+            With Me.cboFormaPago
+                .DisplayMember = "NOMBRE_METODO_PAGO"
+                .ValueMember = "CODIGO_METODO_PAGO"
+
+                If bTodos = True Then
+                    dViewFormasPago = New Data.DataView(dtFormasPagoTodas)
+                Else
+                    dViewFormasPago = New Data.DataView(dtFormasPagoActivas)
+                End If
+
+                .DataSource = dViewFormasPago
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarFormasPago", ex)
+        End Try
+    End Sub
+
+    Private Sub DesplegarMetodosPago()
+        Dim dView As New Data.DataView
+        Try
+            With Me.cboMetodoPago
+                .DisplayMember = "NOMBRE_METODO_PAGO_EVENTO"
+                .ValueMember = "CODIGO_METODO_PAGO_EVENTO"
+                dView = New Data.DataView(dtMetodosPago)
+                .DataSource = dView
+                .SelectedIndex = -1
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarMetodosPago", ex)
+        End Try
+    End Sub
+
+    Private Sub DesplegarMonedas()
+        Dim dView As New Data.DataView
+        Try
+            With Me.cboMoneda
+                .Items.Add("MXN")
+                .Items.Add("USD")
+                .Text = "MXN"
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarMonedas", ex)
+        End Try
+    End Sub
+
+    Private Sub DesplegarUsoCFDIPersonasFisicas()
+        Try
+            With Me.cboUsoCFDI
+                .DisplayMember = "NOMBRE_USO_CFDI"
+                .ValueMember = "CODIGO_USO_CFDI"
+                Dim dView As New Data.DataView(dtUsosCFDIPersonasFisicas)
+                dView.Sort = "NOMBRE_USO_CFDI"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedIndex = 0
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarUsoCFDIPersonasFisicas", ex)
+        End Try
+    End Sub
+
+    Private Sub EnviarCorreo()
+        Try
+            Me.tsbEnviarCorreo.Enabled = False
+            Me.tsbEnviarCorreo.Text = "Enviando..."
+            Application.DoEvents()
+            Me.oDevolucion.EnviarCorreo()
+        Catch ex As Exception
+            HandleError(Me.Name, "EnviarCorreo", ex)
+        Finally
+            Me.tsbEnviarCorreo.Text = "&Enviar correo"
+            Me.tsbEnviarCorreo.Enabled = True
+        End Try
+        Application.DoEvents()
+    End Sub
 
 
 #End Region
