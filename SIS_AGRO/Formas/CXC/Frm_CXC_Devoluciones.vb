@@ -98,7 +98,7 @@ Public Class Frm_CXC_Devoluciones
         End If
     End Sub
 
-    Private Sub tsbRecuperaXMLPdf_Click(sender As Object, e As EventArgs) Handles tsbRecuperaXMLPdf.Click
+    Private Sub tsbRecuperaXMLPdf_Click(sender As Object, e As EventArgs) Handles tsbRecuperaXMLPDF.Click
         Me.oDevolucion.RecuperaXMLyPDF()
     End Sub
 
@@ -259,6 +259,12 @@ busca:
             Me.lblVersionCFDI.Text = ""
 
             Me.TabControl1.SelectedIndex = 0
+
+            'Estos se gestionan su visibilidad en el consultar
+            Me.tsbTimbrar.Visible = False
+            Me.tsbCancelarTimbre.Visible = False
+            Me.tsbRecuperaXMLPDF.Visible = False
+            Me.tsbEnviarCorreo.Visible = False
 
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
@@ -689,7 +695,8 @@ busca:
 
             Me.tsbTimbrar.Visible = False
             Me.tsbCancelarTimbre.Visible = False
-            Me.tsbRecuperaXMLPdf.Visible = False
+            Me.tsbRecuperaXMLPDF.Visible = False
+            Me.tsbEnviarCorreo.Visible = False
 
             If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
                 If Me.oDevolucion.TIMBRADO_CFDI = False And Me.oDevolucion.TIMBRADO_DESCARTADO = False And Me.oVenta.TIMBRADO_CFDI = "1" Then 'Pregunta por campos de la dev y de la factura(de ambos)
@@ -699,7 +706,8 @@ busca:
                 End If
 
                 If Me.oDevolucion.TIMBRADO_CFDI = True Then
-                    Me.tsbRecuperaXMLPdf.Visible = True
+                    Me.tsbRecuperaXMLPDF.Visible = True
+                    Me.tsbEnviarCorreo.Visible = True
                 End If
             End If
 

@@ -30,7 +30,7 @@ Partial Class Frm_CXC_Devoluciones
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
         Me.tsbTimbrar = New System.Windows.Forms.ToolStripButton()
         Me.tsbCancelarTimbre = New System.Windows.Forms.ToolStripButton()
-        Me.tsbRecuperaXMLPdf = New System.Windows.Forms.ToolStripButton()
+        Me.tsbRecuperaXMLPDF = New System.Windows.Forms.ToolStripButton()
         Me.tsbEnviarCorreo = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
@@ -112,7 +112,7 @@ Partial Class Frm_CXC_Devoluciones
         '
         'tsMenu
         '
-        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimir, Me.tsbTimbrar, Me.tsbCancelarTimbre, Me.tsbRecuperaXMLPdf, Me.tsbEnviarCorreo, Me.tsbSalir})
+        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimir, Me.tsbTimbrar, Me.tsbCancelarTimbre, Me.tsbRecuperaXMLPDF, Me.tsbEnviarCorreo, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(992, 25)
@@ -160,7 +160,6 @@ Partial Class Frm_CXC_Devoluciones
         Me.tsbTimbrar.Name = "tsbTimbrar"
         Me.tsbTimbrar.Size = New System.Drawing.Size(69, 22)
         Me.tsbTimbrar.Text = "Timbrar"
-        Me.tsbTimbrar.Visible = False
         '
         'tsbCancelarTimbre
         '
@@ -169,16 +168,14 @@ Partial Class Frm_CXC_Devoluciones
         Me.tsbCancelarTimbre.Name = "tsbCancelarTimbre"
         Me.tsbCancelarTimbre.Size = New System.Drawing.Size(111, 22)
         Me.tsbCancelarTimbre.Text = "Cancelar timbre"
-        Me.tsbCancelarTimbre.Visible = False
         '
-        'tsbRecuperaXMLPdf
+        'tsbRecuperaXMLPDF
         '
-        Me.tsbRecuperaXMLPdf.Image = Global.BsControl.My.Resources.Resources._782
-        Me.tsbRecuperaXMLPdf.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbRecuperaXMLPdf.Name = "tsbRecuperaXMLPdf"
-        Me.tsbRecuperaXMLPdf.Size = New System.Drawing.Size(121, 22)
-        Me.tsbRecuperaXMLPdf.Text = "Recupera xml/pdf"
-        Me.tsbRecuperaXMLPdf.Visible = False
+        Me.tsbRecuperaXMLPDF.Image = Global.BsControl.My.Resources.Resources._782
+        Me.tsbRecuperaXMLPDF.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbRecuperaXMLPDF.Name = "tsbRecuperaXMLPDF"
+        Me.tsbRecuperaXMLPDF.Size = New System.Drawing.Size(121, 22)
+        Me.tsbRecuperaXMLPDF.Text = "Recupera xml/pdf"
         '
         'tsbEnviarCorreo
         '
@@ -187,7 +184,6 @@ Partial Class Frm_CXC_Devoluciones
         Me.tsbEnviarCorreo.Name = "tsbEnviarCorreo"
         Me.tsbEnviarCorreo.Size = New System.Drawing.Size(96, 22)
         Me.tsbEnviarCorreo.Text = "&Enviar correo"
-        Me.tsbEnviarCorreo.Visible = False
         '
         'tsbSalir
         '
@@ -941,7 +937,7 @@ Partial Class Frm_CXC_Devoluciones
     Friend WithEvents tsbImprimir As ToolStripButton
     Friend WithEvents tsbTimbrar As ToolStripButton
     Friend WithEvents tsbCancelarTimbre As ToolStripButton
-    Friend WithEvents tsbRecuperaXMLPdf As ToolStripButton
+    Friend WithEvents tsbRecuperaXMLPDF As ToolStripButton
     Friend WithEvents tsbSalir As ToolStripButton
     Friend WithEvents StatusStripEstado As StatusStrip
     Friend WithEvents tssEstado As ToolStripStatusLabel

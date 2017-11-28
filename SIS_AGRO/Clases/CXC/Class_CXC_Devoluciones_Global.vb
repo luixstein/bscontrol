@@ -46,6 +46,7 @@ Public Class Class_CXC_Devoluciones_Global
     Private _CODIGO_METODO_PAGO_EVENTO As String
     Private _CODIGO_USO_CFDI As String
     Private _CODIGO_MONEDA_SAT As String
+    Private _CODIGO_TIPO_RELACION_CFDI As String
 
     Private _IDCATALOGO_FOLIO_FELECTRONICA As String
     Private _ID_SIS_CFD_CATALOGO_CERTIFICADOS As String
@@ -351,6 +352,15 @@ Public Class Class_CXC_Devoluciones_Global
         End Get
         Set(ByVal Value As String)
             Me._CODIGO_MONEDA_SAT = Value
+        End Set
+    End Property
+
+    Public Property CODIGO_TIPO_RELACION_CFDI() As String
+        Get
+            Return Me._CODIGO_TIPO_RELACION_CFDI
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_TIPO_RELACION_CFDI = Value
         End Set
     End Property
 
@@ -678,6 +688,7 @@ Public Class Class_CXC_Devoluciones_Global
                     Me._CODIGO_METODO_PAGO_EVENTO = "" & dReader("CODIGO_METODO_PAGO_EVENTO").ToString()
                     Me._CODIGO_USO_CFDI = "" & dReader("CODIGO_USO_CFDI").ToString()
                     Me._CODIGO_MONEDA_SAT = "" & dReader("CODIGO_MONEDA_SAT").ToString()
+                    Me._CODIGO_TIPO_RELACION_CFDI = "" & dReader("CODIGO_TIPO_RELACION_CFDI").ToString()
 
                     Me._IDCATALOGO_FOLIO_FELECTRONICA = "" & dReader("IDCATALOGO_FOLIO_FELECTRONICA").ToString()
                     Me._ID_SIS_CFD_CATALOGO_CERTIFICADOS = "" & dReader("ID_SIS_CFD_CATALOGO_CERTIFICADOS").ToString()
@@ -898,6 +909,8 @@ Public Class Class_CXC_Devoluciones_Global
 
             Rpt.ExportToDisk(ExportFormatType.PortableDocFormat, sRutaPDF)
 
+            Rpt.Dispose()
+
             bResultado = True
 
         Catch ex As Exception
@@ -987,10 +1000,11 @@ Public Class Class_CXC_Devoluciones_Global
             'MyMailMsg.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure
 
             Dim SMTP As New SmtpClient()
-            SMTP.Host = "mail.passa.com.mx"
-            'SMTP.EnableSsl = True
+            SMTP.Host = Usuario.SERVIDOR_CORREO_REMITENTE
+            SMTP.EnableSsl = Usuario.USAR_SSL_REMITENTE
+            SMTP.Port = CInt(Usuario.PUERTO_REMITENTE)
+
             SMTP.Credentials = New System.Net.NetworkCredential(Usuario.CORREO_USUARIO.ToString, Usuario.CLAVE_CORREO.ToString)
-            SMTP.Port = 587
 
             Dim sRutaXML As String = "", sNombreXmlTimbrado As String = ""
             Dim sRutaPDF As String = ""

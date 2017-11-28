@@ -675,10 +675,10 @@ Module FacturacionElectronica33
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''CfdiRelacionados''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-            Cfd.CfdiRelacionados.TipoRelacion = "03" '03=Devolución de mercancía sobre facturas o traslados previos
+            Cfd.CfdiRelacionados.TipoRelacion = oDevolucion.CODIGO_TIPO_RELACION_CFDI
 
             If txtLEN(oVenta.FOLIO_FISCAL_SAT) = False Then
-                MsgBox("La factura " & oDevolucion.FOLIO_VENTA & " no tiene UUID. No se podrá timbrar la devolución.", MsgBoxStyle.Exclamation, sProcedure)
+                MsgBox("La factura " & oDevolucion.FOLIO_VENTA & " no tiene UUID(tal vez no este timbrada). No se podrá timbrar la devolución.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
 

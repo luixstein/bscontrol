@@ -1874,10 +1874,11 @@ Public Class Class_Ventas_Global
             'MyMailMsg.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure
 
             Dim SMTP As New SmtpClient()
-            SMTP.Host = "mail.passa.com.mx"
-            SMTP.EnableSsl = True
+            SMTP.Host = Usuario.SERVIDOR_CORREO_REMITENTE
+            SMTP.EnableSsl = Usuario.USAR_SSL_REMITENTE
+            SMTP.Port = CInt(Usuario.PUERTO_REMITENTE)
+
             SMTP.Credentials = New System.Net.NetworkCredential(Usuario.CORREO_USUARIO.ToString, Usuario.CLAVE_CORREO.ToString)
-            SMTP.Port = 587
 
             Dim sRutaXML As String = "", sNombreXmlTimbrado As String = ""
             Dim sRutaPDF As String = ""
