@@ -131,6 +131,7 @@ Partial Public Class AppMenu
         Me.CantidadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PrecioPromedioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.VentaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.LotesCostosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.EnvioDeFacturasElectronicasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CapturaVentassemanalesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ComprasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -219,7 +220,7 @@ Partial Public Class AppMenu
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
-        Me.LotesCostosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaldosPropietariosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -929,6 +930,12 @@ Partial Public Class AppMenu
         Me.VentaToolStripMenuItem.Size = New System.Drawing.Size(195, 26)
         Me.VentaToolStripMenuItem.Text = "Venta"
         '
+        'LotesCostosToolStripMenuItem
+        '
+        Me.LotesCostosToolStripMenuItem.Name = "LotesCostosToolStripMenuItem"
+        Me.LotesCostosToolStripMenuItem.Size = New System.Drawing.Size(214, 26)
+        Me.LotesCostosToolStripMenuItem.Text = "Lotes costos"
+        '
         'EnvioDeFacturasElectronicasToolStripMenuItem
         '
         Me.EnvioDeFacturasElectronicasToolStripMenuItem.Name = "EnvioDeFacturasElectronicasToolStripMenuItem"
@@ -1057,7 +1064,7 @@ Partial Public Class AppMenu
         '
         'ConsultasToolStripMenuItem2
         '
-        Me.ConsultasToolStripMenuItem2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AuxliarDeProveedorToolStripMenuItem, Me.CompruebaSaldosToolStripMenuItem, Me.PagosAProveedoresToolStripMenuItem, Me.SaldosProveedoresToolStripMenuItem})
+        Me.ConsultasToolStripMenuItem2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AuxliarDeProveedorToolStripMenuItem, Me.CompruebaSaldosToolStripMenuItem, Me.PagosAProveedoresToolStripMenuItem, Me.SaldosProveedoresToolStripMenuItem, Me.SaldosPropietariosToolStripMenuItem})
         Me.ConsultasToolStripMenuItem2.Name = "ConsultasToolStripMenuItem2"
         Me.ConsultasToolStripMenuItem2.Size = New System.Drawing.Size(240, 26)
         Me.ConsultasToolStripMenuItem2.Text = "Consultas"
@@ -1497,11 +1504,11 @@ Partial Public Class AppMenu
         Me.pbLogo.TabStop = False
         Me.pbLogo.Visible = False
         '
-        'LotesCostosToolStripMenuItem
+        'SaldosPropietariosToolStripMenuItem
         '
-        Me.LotesCostosToolStripMenuItem.Name = "LotesCostosToolStripMenuItem"
-        Me.LotesCostosToolStripMenuItem.Size = New System.Drawing.Size(214, 26)
-        Me.LotesCostosToolStripMenuItem.Text = "Lotes costos"
+        Me.SaldosPropietariosToolStripMenuItem.Name = "SaldosPropietariosToolStripMenuItem"
+        Me.SaldosPropietariosToolStripMenuItem.Size = New System.Drawing.Size(228, 26)
+        Me.SaldosPropietariosToolStripMenuItem.Text = "Saldos propietarios"
         '
         'AppMenu
         '
@@ -1729,4 +1736,5 @@ Partial Public Class AppMenu
     Friend WithEvents ImportarClienteSucursalToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents DevolucionesToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents LotesCostosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SaldosPropietariosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

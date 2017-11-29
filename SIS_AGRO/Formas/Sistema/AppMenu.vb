@@ -1523,4 +1523,12 @@ Public Class AppMenu
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
     End Sub
+
+    Private Sub SaldosPropietariosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaldosPropietariosToolStripMenuItem.Click
+        Dim Child As New Rpt_Cxp_Analisis_saldos_propietarios
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
 End Class

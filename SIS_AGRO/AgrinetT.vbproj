@@ -623,6 +623,12 @@
     <Compile Include="Formas\CXC\Frm_CXC_Descuentos.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\CXP\Consultas\Rpt_Cxp_Analisis_saldos_propietario.Designer.vb">
+      <DependentUpon>Rpt_Cxp_Analisis_saldos_propietario.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXP\Consultas\Rpt_Cxp_Analisis_saldos_propietario.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\CXP\Consultas\Rpt_CXP_SaldosProveedores.designer.vb">
       <DependentUpon>Rpt_CXP_SaldosProveedores.vb</DependentUpon>
     </Compile>
@@ -1789,6 +1795,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\CXC\Frm_CXC_Seguimientos.resx">
       <DependentUpon>Frm_CXC_Seguimientos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXP\Consultas\Rpt_Cxp_Analisis_saldos_propietario.resx">
+      <DependentUpon>Rpt_Cxp_Analisis_saldos_propietario.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\CXP\Consultas\Rpt_Cxp_Auxiliar_proveedor.resx">
       <DependentUpon>Rpt_Cxp_Auxiliar_proveedor.vb</DependentUpon>
