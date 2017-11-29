@@ -46,6 +46,8 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.TxtNombreCuenta = New System.Windows.Forms.TextBox()
         Me.LblDisplayNombreCultivo = New System.Windows.Forms.Label()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.lblDisplayClabeInterbancaria = New System.Windows.Forms.Label()
+        Me.txtClabeInterbancaria = New System.Windows.Forms.TextBox()
         Me.LblNombreProveedor = New System.Windows.Forms.Label()
         Me.cboMoneda = New System.Windows.Forms.ComboBox()
         Me.LblCodigoMoneda = New System.Windows.Forms.Label()
@@ -263,16 +265,16 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.IntegralHeight = False
         Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
-        Me.CboEstatus.Location = New System.Drawing.Point(112, 416)
+        Me.CboEstatus.Location = New System.Drawing.Point(111, 426)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(78, 21)
-        Me.CboEstatus.TabIndex = 12
+        Me.CboEstatus.TabIndex = 13
         '
         'LblEstatus
         '
         Me.LblEstatus.AutoSize = True
-        Me.LblEstatus.Location = New System.Drawing.Point(3, 422)
+        Me.LblEstatus.Location = New System.Drawing.Point(4, 429)
         Me.LblEstatus.Name = "LblEstatus"
         Me.LblEstatus.Size = New System.Drawing.Size(48, 13)
         Me.LblEstatus.TabIndex = 22
@@ -299,6 +301,8 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         '
         Me.gBoxInformacion.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.gBoxInformacion.Controls.Add(Me.lblDisplayClabeInterbancaria)
+        Me.gBoxInformacion.Controls.Add(Me.txtClabeInterbancaria)
         Me.gBoxInformacion.Controls.Add(Me.LblNombreProveedor)
         Me.gBoxInformacion.Controls.Add(Me.cboMoneda)
         Me.gBoxInformacion.Controls.Add(Me.LblCodigoMoneda)
@@ -339,9 +343,26 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
         '
+        'lblDisplayClabeInterbancaria
+        '
+        Me.lblDisplayClabeInterbancaria.AutoSize = True
+        Me.lblDisplayClabeInterbancaria.Location = New System.Drawing.Point(4, 123)
+        Me.lblDisplayClabeInterbancaria.Name = "lblDisplayClabeInterbancaria"
+        Me.lblDisplayClabeInterbancaria.Size = New System.Drawing.Size(104, 13)
+        Me.lblDisplayClabeInterbancaria.TabIndex = 266
+        Me.lblDisplayClabeInterbancaria.Text = "Clabe interbancaria :"
+        '
+        'txtClabeInterbancaria
+        '
+        Me.txtClabeInterbancaria.Location = New System.Drawing.Point(111, 120)
+        Me.txtClabeInterbancaria.MaxLength = 18
+        Me.txtClabeInterbancaria.Name = "txtClabeInterbancaria"
+        Me.txtClabeInterbancaria.Size = New System.Drawing.Size(199, 20)
+        Me.txtClabeInterbancaria.TabIndex = 4
+        '
         'LblNombreProveedor
         '
-        Me.LblNombreProveedor.Location = New System.Drawing.Point(110, 206)
+        Me.LblNombreProveedor.Location = New System.Drawing.Point(110, 225)
         Me.LblNombreProveedor.Name = "LblNombreProveedor"
         Me.LblNombreProveedor.Size = New System.Drawing.Size(202, 13)
         Me.LblNombreProveedor.TabIndex = 264
@@ -361,7 +382,7 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         'LblCodigoMoneda
         '
         Me.LblCodigoMoneda.AutoSize = True
-        Me.LblCodigoMoneda.Location = New System.Drawing.Point(3, 71)
+        Me.LblCodigoMoneda.Location = New System.Drawing.Point(4, 71)
         Me.LblCodigoMoneda.Name = "LblCodigoMoneda"
         Me.LblCodigoMoneda.Size = New System.Drawing.Size(49, 13)
         Me.LblCodigoMoneda.TabIndex = 263
@@ -369,24 +390,24 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         '
         'TxtCodigoProveedor
         '
-        Me.TxtCodigoProveedor.Location = New System.Drawing.Point(112, 177)
+        Me.TxtCodigoProveedor.Location = New System.Drawing.Point(112, 196)
         Me.TxtCodigoProveedor.MaxLength = 50
         Me.TxtCodigoProveedor.Name = "TxtCodigoProveedor"
         Me.TxtCodigoProveedor.Size = New System.Drawing.Size(98, 20)
-        Me.TxtCodigoProveedor.TabIndex = 6
+        Me.TxtCodigoProveedor.TabIndex = 7
         '
         'LblCodigoProveedor
         '
         Me.LblCodigoProveedor.AutoSize = True
-        Me.LblCodigoProveedor.Location = New System.Drawing.Point(4, 180)
+        Me.LblCodigoProveedor.Location = New System.Drawing.Point(4, 199)
         Me.LblCodigoProveedor.Name = "LblCodigoProveedor"
-        Me.LblCodigoProveedor.Size = New System.Drawing.Size(109, 13)
+        Me.LblCodigoProveedor.Size = New System.Drawing.Size(112, 13)
         Me.LblCodigoProveedor.TabIndex = 261
-        Me.LblCodigoProveedor.Text = "Codigo de proveedor:"
+        Me.LblCodigoProveedor.Text = "Código de proveedor :"
         '
         'LblCuentaDolares
         '
-        Me.LblCuentaDolares.Location = New System.Drawing.Point(110, 356)
+        Me.LblCuentaDolares.Location = New System.Drawing.Point(110, 375)
         Me.LblCuentaDolares.Name = "LblCuentaDolares"
         Me.LblCuentaDolares.Size = New System.Drawing.Size(202, 13)
         Me.LblCuentaDolares.TabIndex = 260
@@ -394,16 +415,16 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         '
         'txtCuentaContableDolares
         '
-        Me.txtCuentaContableDolares.Location = New System.Drawing.Point(111, 331)
+        Me.txtCuentaContableDolares.Location = New System.Drawing.Point(111, 350)
         Me.txtCuentaContableDolares.MaxLength = 15
         Me.txtCuentaContableDolares.Name = "txtCuentaContableDolares"
         Me.txtCuentaContableDolares.Size = New System.Drawing.Size(160, 20)
-        Me.txtCuentaContableDolares.TabIndex = 10
+        Me.txtCuentaContableDolares.TabIndex = 11
         '
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(2, 333)
+        Me.Label10.Location = New System.Drawing.Point(4, 352)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(107, 13)
         Me.Label10.TabIndex = 259
@@ -412,7 +433,7 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(2, 385)
+        Me.Label7.Location = New System.Drawing.Point(4, 403)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(105, 13)
         Me.Label7.TabIndex = 259
@@ -420,15 +441,15 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         '
         'TxtFormatoReporte
         '
-        Me.TxtFormatoReporte.Location = New System.Drawing.Point(111, 381)
+        Me.TxtFormatoReporte.Location = New System.Drawing.Point(111, 400)
         Me.TxtFormatoReporte.MaxLength = 50
         Me.TxtFormatoReporte.Name = "TxtFormatoReporte"
         Me.TxtFormatoReporte.Size = New System.Drawing.Size(199, 20)
-        Me.TxtFormatoReporte.TabIndex = 11
+        Me.TxtFormatoReporte.TabIndex = 12
         '
         'LblCuenta
         '
-        Me.LblCuenta.Location = New System.Drawing.Point(109, 313)
+        Me.LblCuenta.Location = New System.Drawing.Point(109, 332)
         Me.LblCuenta.Name = "LblCuenta"
         Me.LblCuenta.Size = New System.Drawing.Size(202, 13)
         Me.LblCuenta.TabIndex = 257
@@ -436,16 +457,16 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         '
         'txtCuentaContable
         '
-        Me.txtCuentaContable.Location = New System.Drawing.Point(111, 288)
+        Me.txtCuentaContable.Location = New System.Drawing.Point(111, 307)
         Me.txtCuentaContable.MaxLength = 15
         Me.txtCuentaContable.Name = "txtCuentaContable"
         Me.txtCuentaContable.Size = New System.Drawing.Size(160, 20)
-        Me.txtCuentaContable.TabIndex = 9
+        Me.txtCuentaContable.TabIndex = 10
         '
         'lblDisplayCuentaContable
         '
         Me.lblDisplayCuentaContable.AutoSize = True
-        Me.lblDisplayCuentaContable.Location = New System.Drawing.Point(3, 290)
+        Me.lblDisplayCuentaContable.Location = New System.Drawing.Point(4, 309)
         Me.lblDisplayCuentaContable.Name = "lblDisplayCuentaContable"
         Me.lblDisplayCuentaContable.Size = New System.Drawing.Size(101, 13)
         Me.lblDisplayCuentaContable.TabIndex = 256
@@ -454,7 +475,7 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(3, 264)
+        Me.Label6.Location = New System.Drawing.Point(4, 283)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(71, 13)
         Me.Label6.TabIndex = 254
@@ -463,15 +484,15 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         'TxtFolioCheque
         '
         Me.TxtFolioCheque.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtFolioCheque.Location = New System.Drawing.Point(111, 260)
+        Me.TxtFolioCheque.Location = New System.Drawing.Point(111, 279)
         Me.TxtFolioCheque.MaxLength = 50
         Me.TxtFolioCheque.Name = "TxtFolioCheque"
         Me.TxtFolioCheque.Size = New System.Drawing.Size(160, 22)
-        Me.TxtFolioCheque.TabIndex = 8
+        Me.TxtFolioCheque.TabIndex = 9
         '
         'LblBanco
         '
-        Me.LblBanco.Location = New System.Drawing.Point(158, 236)
+        Me.LblBanco.Location = New System.Drawing.Point(158, 255)
         Me.LblBanco.Name = "LblBanco"
         Me.LblBanco.Size = New System.Drawing.Size(156, 13)
         Me.LblBanco.TabIndex = 252
@@ -480,7 +501,7 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         'LblDisplayBanco
         '
         Me.LblDisplayBanco.AutoSize = True
-        Me.LblDisplayBanco.Location = New System.Drawing.Point(3, 236)
+        Me.LblDisplayBanco.Location = New System.Drawing.Point(4, 255)
         Me.LblDisplayBanco.Name = "LblDisplayBanco"
         Me.LblDisplayBanco.Size = New System.Drawing.Size(44, 13)
         Me.LblDisplayBanco.TabIndex = 251
@@ -488,16 +509,16 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         '
         'TxtBanco
         '
-        Me.TxtBanco.Location = New System.Drawing.Point(112, 236)
+        Me.TxtBanco.Location = New System.Drawing.Point(112, 255)
         Me.TxtBanco.MaxLength = 6
         Me.TxtBanco.Name = "TxtBanco"
         Me.TxtBanco.Size = New System.Drawing.Size(41, 20)
-        Me.TxtBanco.TabIndex = 7
+        Me.TxtBanco.TabIndex = 8
         '
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(133, 447)
+        Me.Label5.Location = New System.Drawing.Point(173, 457)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(37, 13)
         Me.Label5.TabIndex = 100
@@ -507,7 +528,7 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         'TxtSaldo
         '
         Me.TxtSaldo.Enabled = False
-        Me.TxtSaldo.Location = New System.Drawing.Point(177, 444)
+        Me.TxtSaldo.Location = New System.Drawing.Point(216, 454)
         Me.TxtSaldo.MaxLength = 50
         Me.TxtSaldo.Name = "TxtSaldo"
         Me.TxtSaldo.ReadOnly = True
@@ -518,7 +539,7 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(4, 153)
+        Me.Label4.Location = New System.Drawing.Point(4, 172)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(55, 13)
         Me.Label4.TabIndex = 97
@@ -526,16 +547,16 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         '
         'TxtTelefono
         '
-        Me.TxtTelefono.Location = New System.Drawing.Point(111, 150)
+        Me.TxtTelefono.Location = New System.Drawing.Point(111, 169)
         Me.TxtTelefono.MaxLength = 50
         Me.TxtTelefono.Name = "TxtTelefono"
         Me.TxtTelefono.Size = New System.Drawing.Size(120, 20)
-        Me.TxtTelefono.TabIndex = 5
+        Me.TxtTelefono.TabIndex = 6
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(4, 127)
+        Me.Label3.Location = New System.Drawing.Point(4, 146)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(79, 13)
         Me.Label3.TabIndex = 95
@@ -543,11 +564,11 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         '
         'TxtNumeroCuenta
         '
-        Me.TxtNumeroCuenta.Location = New System.Drawing.Point(111, 124)
-        Me.TxtNumeroCuenta.MaxLength = 50
+        Me.TxtNumeroCuenta.Location = New System.Drawing.Point(111, 143)
+        Me.TxtNumeroCuenta.MaxLength = 18
         Me.TxtNumeroCuenta.Name = "TxtNumeroCuenta"
         Me.TxtNumeroCuenta.Size = New System.Drawing.Size(199, 20)
-        Me.TxtNumeroCuenta.TabIndex = 4
+        Me.TxtNumeroCuenta.TabIndex = 5
         '
         'Label1
         '
@@ -588,7 +609,7 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.Name = "Catalogo_Cuentas_Bancarias"
         Me.ShowIcon = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "Catalogo de cuentas bancarias"
+        Me.Text = "Catálogo de cuentas bancarias"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()
         Me.StatusStripEstado.ResumeLayout(False)
@@ -656,4 +677,6 @@ Partial Public Class Catalogo_Cuentas_Bancarias
     Friend WithEvents Grid As System.Windows.Forms.DataGridView
     Friend WithEvents cboEstatusFiltro As System.Windows.Forms.ComboBox
     Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents lblDisplayClabeInterbancaria As Label
+    Friend WithEvents txtClabeInterbancaria As TextBox
 End Class

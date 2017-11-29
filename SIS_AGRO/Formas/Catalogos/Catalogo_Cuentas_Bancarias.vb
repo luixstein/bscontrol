@@ -266,6 +266,7 @@ Public Class Catalogo_Cuentas_Bancarias
             Me.TxtIDCuenta.Text = CodigoSiguiente().ToString
             Me.cboMoneda.Text = "MXN"
             Me.TxtNombreCuenta.Text = ""
+            Me.txtClabeInterbancaria.Text = ""
             Me.TxtNumeroCuenta.Text = ""
             Me.TxtSucursal.Text = ""
             Me.TxtTelefono.Text = ""
@@ -310,6 +311,7 @@ Public Class Catalogo_Cuentas_Bancarias
                     Me.TxtIDCuenta.Text = .ID_CUENTA_BANCARIA.ToString
                     Me.cboMoneda.Text = .CODIGO_MONEDA_SAT
                     Me.TxtNombreCuenta.Text = .NOMBRE_CUENTA_BANCARIA.ToString
+                    Me.txtClabeInterbancaria.Text = .CLABE_INTERBANCARIA.ToString
                     Me.TxtNumeroCuenta.Text = .NUMERO_CUENTA_BANCARIA
                     Me.TxtSucursal.Text = .SUCURSAL
                     Me.TxtTelefono.Text = .TELEFONO
@@ -416,6 +418,7 @@ Public Class Catalogo_Cuentas_Bancarias
                         .CODIGO_MONEDA_SAT = Me.cboMoneda.Text
                         .NOMBRE_CUENTA_BANCARIA = Me.TxtNombreCuenta.Text
                         .SUCURSAL = Me.TxtSucursal.Text
+                        .CLABE_INTERBANCARIA = Me.txtClabeInterbancaria.Text
                         .NUMERO_CUENTA_BANCARIA = Me.TxtNumeroCuenta.Text
                         .TELEFONO = Me.TxtTelefono.Text
                         .SALDO = 0 'CONVERT.TODECIMAL(0 & ME.TXTSALDO.TEXT)
@@ -505,8 +508,14 @@ Public Class Catalogo_Cuentas_Bancarias
                 Return False
             End If
 
-            If Len(Me.TxtNumeroCuenta.Text) < 10 Then
-                MsgBox("El número de la cuenta bancaria de ser mínimo de 10 dígitos.", MsgBoxStyle.Exclamation, sProcedure)
+            If Len(Me.txtClabeInterbancaria.Text) <> 18 Then
+                MsgBox("La clabe interbancaria de ser de 18 dígitos.", MsgBoxStyle.Exclamation, sProcedure)
+                Me.txtClabeInterbancaria.Focus()
+                Return False
+            End If
+
+            If Len(Me.TxtNumeroCuenta.Text) <> 11 Then
+                MsgBox("El número de la cuenta bancaria debe ser de 11 dígitos.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.TxtNumeroCuenta.Focus()
                 Return False
             End If
@@ -668,6 +677,7 @@ Public Class Catalogo_Cuentas_Bancarias
             tsbGrabar.PerformClick()
         End If
     End Sub
+
     Private Sub txtFormatoReporte_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtFormatoReporte.KeyDown
         If e.KeyCode = Keys.Return Then
             Select Case Me.Estado
@@ -680,14 +690,20 @@ Public Class Catalogo_Cuentas_Bancarias
         End If
     End Sub
 
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombreCuenta.KeyPress, TxtNumeroCuenta.KeyPress, TxtSucursal.KeyPress, TxtTelefono.KeyPress, TxtFolioCheque.KeyPress, TxtBanco.KeyPress, TxtFormatoReporte.KeyPress, txtCuentaContableDolares.KeyPress, TxtCodigoProveedor.KeyPress, cboMoneda.KeyPress, txtCuentaContable.KeyPress
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombreCuenta.KeyPress, TxtSucursal.KeyPress, TxtTelefono.KeyPress, TxtFolioCheque.KeyPress, TxtBanco.KeyPress, TxtFormatoReporte.KeyPress, txtCuentaContableDolares.KeyPress, TxtCodigoProveedor.KeyPress, cboMoneda.KeyPress, txtCuentaContable.KeyPress
         txtNoBeep(e)
     End Sub
 
-    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboMoneda.KeyDown, TxtNombreCuenta.KeyDown, TxtSucursal.KeyDown, TxtNumeroCuenta.KeyDown, TxtTelefono.KeyDown, TxtFolioCheque.KeyDown
+    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboMoneda.KeyDown, TxtNombreCuenta.KeyDown, TxtSucursal.KeyDown, TxtNumeroCuenta.KeyDown, TxtTelefono.KeyDown, TxtFolioCheque.KeyDown, txtClabeInterbancaria.KeyDown
         If e.KeyCode = Keys.Return Then
             SendKeys.Send("{TAB}")
         End If
+    End Sub
+
+    Private Sub txtNumericosEnteros_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtClabeInterbancaria.KeyPress, TxtNumeroCuenta.KeyPress
+        Dim txt As TextBox = CType(sender, TextBox)
+        txtSoloNumerosEnteros(e)
+        txtNoBeep(e)
     End Sub
 
     Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtIDCuenta.KeyPress
