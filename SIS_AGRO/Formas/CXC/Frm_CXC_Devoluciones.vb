@@ -193,6 +193,13 @@ busca:
         End Try
     End Sub
 
+    Private Sub LblPoliza_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles lblPoliza.LinkClicked
+        Dim Child As New Frm_Contabilidad_Captura_Polizas()
+        Child.FolioPolizaConsultaExterior = Me.lblPoliza.Text
+        Child.ShowDialog()
+        Child.Dispose()
+    End Sub
+
 #Region "Eventos Genericos"
     Private Sub txt_Enter(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim oTexBox As TextBox = CType(sender, TextBox)
@@ -701,7 +708,7 @@ busca:
             If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
                 If Me.oDevolucion.TIMBRADO_CFDI = False And Me.oDevolucion.TIMBRADO_DESCARTADO = False And Me.oVenta.TIMBRADO_CFDI = "1" Then 'Pregunta por campos de la dev y de la factura(de ambos)
                     Me.tsbTimbrar.Visible = True
-                ElseIf Me.oDevolucion.TIMBRADO_CFDI = True AndAlso Me.oDevolucion.TIMBRADO_DESCARTADO = False AndAlso Me.oDevolucion.ESTATUS_CANCELACION_CFDI = False Then
+                ElseIf Me.oDevolucion.ESTATUS_DEVOLUCION = "C" And Me.oDevolucion.TIMBRADO_CFDI = True AndAlso Me.oDevolucion.TIMBRADO_DESCARTADO = False AndAlso Me.oDevolucion.ESTATUS_CANCELACION_CFDI = False Then
                     Me.tsbCancelarTimbre.Visible = True
                 End If
 
@@ -803,12 +810,17 @@ busca:
                     End If
                 Next
 
-                .AfectaInventarios()
+                If oDocumento.AFECTA_INVENTARIOS = True Then
+                    .AfectaInventarios()
+                End If
 
-                'FALTA:Contabilidad
-                'PREGUNTAR SI ES EL DOC DE LA VENTA AFECTO A CONTA Y DECIR QUE NO AFECTARA A CONTA, QUE AVISE A SISTEMAs?
+                Dim oDocumentoVenta As New Class_CatDocumentos(Me.oVenta.CODIGO_DOCUMENTO)
 
-                'FALTA:Timbrado
+                If oDocumento.AFECTA_CONTABILIDAD = True AndAlso oDocumentoVenta.AFECTA_CONTABILIDAD = True Then 'Si ambos documentos deben afectar a conta se hace la póliza
+                    If .AplicarPoliza = False Then
+                        Return False
+                    End If
+                End If
 
                 If Empresa_Sistema.FELECTRONICA_ACTIVA = True And bTimbrar = True Then
                     Me.oDevolucion = New Class_CXC_Devoluciones_Global(Me.txtFolioDevolucion.Text) 'Refrescar documento para evitar algún error por dato no cargado.
@@ -1192,7 +1204,6 @@ Sigue:
         End Try
         Application.DoEvents()
     End Sub
-
 
 #End Region
 
