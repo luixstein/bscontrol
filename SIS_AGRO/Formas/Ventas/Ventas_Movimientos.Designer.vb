@@ -36,7 +36,7 @@ Partial Class Ventas_Movimientos
         Me.tsbCotizacionFactura = New System.Windows.Forms.ToolStripButton()
         Me.tsbRemisionVenta = New System.Windows.Forms.ToolStripButton()
         Me.tsbCancelarTimbre = New System.Windows.Forms.ToolStripButton()
-        Me.tsbSellarFacturaElectronica = New System.Windows.Forms.ToolStripButton()
+        Me.tsbTimbrar = New System.Windows.Forms.ToolStripButton()
         Me.tsbEnviarCorreo = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.CboDocumento = New System.Windows.Forms.ComboBox()
@@ -119,6 +119,7 @@ Partial Class Ventas_Movimientos
         Me.Grid = New FlexCell.Grid()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.GridSeries = New FlexCell.Grid()
+        Me.tsbRecuperarXMLPDF = New System.Windows.Forms.ToolStripButton()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -169,7 +170,7 @@ Partial Class Ventas_Movimientos
         'tsMenu
         '
         Me.tsMenu.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbImprimir, Me.tsbCancelar, Me.tsbCotizacionRemision, Me.tsbCotizacionFactura, Me.tsbRemisionVenta, Me.tsbCancelarTimbre, Me.tsbSellarFacturaElectronica, Me.tsbEnviarCorreo, Me.tsbSalir})
+        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbImprimir, Me.tsbCancelar, Me.tsbCotizacionRemision, Me.tsbCotizacionFactura, Me.tsbRemisionVenta, Me.tsbCancelarTimbre, Me.tsbTimbrar, Me.tsbRecuperarXMLPDF, Me.tsbEnviarCorreo, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(1004, 27)
@@ -245,14 +246,14 @@ Partial Class Ventas_Movimientos
         Me.tsbCancelarTimbre.Text = "Cancelar timbre"
         Me.tsbCancelarTimbre.Visible = False
         '
-        'tsbSellarFacturaElectronica
+        'tsbTimbrar
         '
-        Me.tsbSellarFacturaElectronica.Image = Global.BsControl.My.Resources.Resources._782
-        Me.tsbSellarFacturaElectronica.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbSellarFacturaElectronica.Name = "tsbSellarFacturaElectronica"
-        Me.tsbSellarFacturaElectronica.Size = New System.Drawing.Size(160, 24)
-        Me.tsbSellarFacturaElectronica.Text = "S&ellar factura electronica"
-        Me.tsbSellarFacturaElectronica.Visible = False
+        Me.tsbTimbrar.Image = Global.BsControl.My.Resources.Resources._782
+        Me.tsbTimbrar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbTimbrar.Name = "tsbTimbrar"
+        Me.tsbTimbrar.Size = New System.Drawing.Size(73, 24)
+        Me.tsbTimbrar.Text = "Timbrar"
+        Me.tsbTimbrar.Visible = False
         '
         'tsbEnviarCorreo
         '
@@ -1114,6 +1115,15 @@ Partial Class Ventas_Movimientos
         Me.GridSeries.TabIndex = 2
         Me.GridSeries.UncheckedImage = CType(resources.GetObject("GridSeries.UncheckedImage"), System.Drawing.Bitmap)
         '
+        'tsbRecuperarXMLPDF
+        '
+        Me.tsbRecuperarXMLPDF.Image = Global.BsControl.My.Resources.Resources._782
+        Me.tsbRecuperarXMLPDF.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbRecuperarXMLPDF.Name = "tsbRecuperarXMLPDF"
+        Me.tsbRecuperarXMLPDF.Size = New System.Drawing.Size(129, 24)
+        Me.tsbRecuperarXMLPDF.Text = "Recuperar xml/pdf"
+        Me.tsbRecuperarXMLPDF.Visible = False
+        '
         'Ventas_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1212,7 +1222,7 @@ Partial Class Ventas_Movimientos
     Friend WithEvents tsbCotizacionRemision As System.Windows.Forms.ToolStripButton
     Friend WithEvents tsbRemisionVenta As System.Windows.Forms.ToolStripButton
     Friend WithEvents tsbCotizacionFactura As System.Windows.Forms.ToolStripButton
-    Friend WithEvents tsbSellarFacturaElectronica As System.Windows.Forms.ToolStripButton
+    Friend WithEvents tsbTimbrar As System.Windows.Forms.ToolStripButton
     Friend WithEvents txtFolioEmbarque As System.Windows.Forms.TextBox
     Friend WithEvents lblDisplayFolioEmbarque As System.Windows.Forms.Label
     Friend WithEvents llblAgregarSeguimiento As System.Windows.Forms.LinkLabel
@@ -1245,4 +1255,5 @@ Partial Class Ventas_Movimientos
     Friend WithEvents cboMetodoPago As ComboBox
     Friend WithEvents lblDisplayUsoCFDI As Label
     Friend WithEvents lblVersionCFDI As Label
+    Friend WithEvents tsbRecuperarXMLPDF As ToolStripButton
 End Class

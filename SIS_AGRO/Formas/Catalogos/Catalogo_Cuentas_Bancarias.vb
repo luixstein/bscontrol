@@ -310,9 +310,9 @@ Public Class Catalogo_Cuentas_Bancarias
                 With oElemento
                     Me.TxtIDCuenta.Text = .ID_CUENTA_BANCARIA.ToString
                     Me.cboMoneda.Text = .CODIGO_MONEDA_SAT
-                    Me.TxtNombreCuenta.Text = .NOMBRE_CUENTA_BANCARIA.ToString
-                    Me.txtClabeInterbancaria.Text = .CLABE_INTERBANCARIA.ToString
-                    Me.TxtNumeroCuenta.Text = .NUMERO_CUENTA_BANCARIA
+                    Me.TxtNombreCuenta.Text = .NOMBRE_CUENTA_BANCARIA
+                    Me.txtClabeInterbancaria.Text = .CLABE_INTERBANCARIA
+                    Me.TxtNumeroCuenta.Text = .NUMERO_DE_CUENTA_BANCARIA
                     Me.TxtSucursal.Text = .SUCURSAL
                     Me.TxtTelefono.Text = .TELEFONO
                     Me.TxtBanco.Text = .CODIGO_BANCO
@@ -419,7 +419,7 @@ Public Class Catalogo_Cuentas_Bancarias
                         .NOMBRE_CUENTA_BANCARIA = Me.TxtNombreCuenta.Text
                         .SUCURSAL = Me.TxtSucursal.Text
                         .CLABE_INTERBANCARIA = Me.txtClabeInterbancaria.Text
-                        .NUMERO_CUENTA_BANCARIA = Me.TxtNumeroCuenta.Text
+                        .NUMERO_DE_CUENTA_BANCARIA = Me.TxtNumeroCuenta.Text
                         .TELEFONO = Me.TxtTelefono.Text
                         .SALDO = 0 'CONVERT.TODECIMAL(0 & ME.TXTSALDO.TEXT)
                         .CODIGO_BANCO = Me.TxtBanco.Text
@@ -499,6 +499,12 @@ Public Class Catalogo_Cuentas_Bancarias
             If txtLEN(Me.txtCuentaContable.Text) = False Then
                 MsgBox("Asígne la cuenta contable.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.txtCuentaContable.Focus()
+                Return False
+            End If
+
+            If txtLEN(Me.txtClabeInterbancaria.Text) = False Then
+                MsgBox("Asígne la clabe interbancaria.", MsgBoxStyle.Exclamation, sProcedure)
+                Me.txtClabeInterbancaria.Focus()
                 Return False
             End If
 
@@ -879,6 +885,19 @@ Buscar:
                 txtTAB(e)
 
         End Select
+    End Sub
+
+    Private Sub txtClabeInterbancaria_KeyDown(sender As Object, e As KeyEventArgs) Handles txtClabeInterbancaria.KeyDown
+        If e.KeyCode = Keys.Return Then
+            If Me.txtClabeInterbancaria.TextLength = 18 Then
+                If txtLEN(Me.TxtNumeroCuenta.Text) = False Then
+                    Me.TxtNumeroCuenta.Text = Me.txtClabeInterbancaria.Text.Substring(6, 11)
+                End If
+                txtTAB(e)
+            Else
+                MsgBox("La clabe interbancaria debe de ser de 18 dígitos.", MsgBoxStyle.Exclamation, Me.Text)
+            End If
+        End If
     End Sub
 
 #End Region

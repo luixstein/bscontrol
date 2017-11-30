@@ -2266,7 +2266,7 @@ Public Class Class_Ventas_Global
 
             If CancelarCFDIVenta(Me, TipoComprobante.FACTURA_VENTA) = False Then
                 MsgBox("El timbre no se pudo cancelar. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
-                Exit Function
+                Return False
             Else
                 bResultado = True
             End If
@@ -2381,6 +2381,52 @@ Public Class Class_Ventas_Global
         End Try
         Return dTabla
     End Function
+
+    Public Function RecuperarXMLyPDF() As Boolean
+        Dim sProcedure As String = "RecuperarXMLyPDF"
+        Dim bResultado As Boolean = False
+
+        Dim oCliente As Class_CatClientes
+
+        Try
+            oCliente = New Class_CatClientes(Me._CODIGO_CLIENTE)
+
+            Dim sRutaXML As String = "", sNombreXmlTimbrado As String = ""
+            Dim sRutaPDF As String = "", archivos As String = sFelectronicaCarpetaXMLPDF & "\"
+
+            If txtLEN(oCliente.FORMATO_NOMBRE_XML) = True Then
+                Select Case oCliente.FORMATO_NOMBRE_XML
+                    Case "RFCemisor-Serie-FolioNumerico"
+                        sNombreXmlTimbrado = Empresa_Sistema.RFC & "-" & Me._SERIE & "-" & Me._FOLIO_NUMERICO
+                    Case "RFCemisor-Fecha-SerieFolio"
+                        sNombreXmlTimbrado = Empresa_Sistema.RFC & Format(Me._FOLIO_VENTA, "yyyyddMM") & Me._SERIE & Me._FOLIO_NUMERICO
+                End Select
+            Else
+                sNombreXmlTimbrado = Me._FOLIO_VENTA
+            End If
+
+            sRutaXML = sFelectronicaCarpetaXmlsTimbrados & "\" & sNombreXmlTimbrado & ".xml"
+            sRutaPDF = archivos.ToString & sNombreXmlTimbrado & ".PDF"
+
+            If Me.RecuperaXML(sRutaXML) = True Then
+                If Me.ExportarAPdf(sRutaPDF) = False Then
+                    MsgBox("Se logró recuperar el XML pero no se logró generar el PDF del documento : " & Me._FOLIO_VENTA & ". Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+                    Return False
+                Else
+                    bResultado = True
+                End If
+            Else
+                MsgBox("No se logró recuperar el XML y PDF del documento : " & Me._FOLIO_VENTA & ". Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+                Return False
+            End If
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
 #End Region
 
 End Class

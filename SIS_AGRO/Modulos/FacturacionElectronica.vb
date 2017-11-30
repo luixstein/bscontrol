@@ -220,6 +220,28 @@ Module FacturacionElectronica
         Return bResultado
     End Function
 
+    Public Function CancelarCFDIPago(ByVal oPago As Class_CXC_Pago_CFDI_Global, ByVal TipoComprobante As TipoComprobante) As Boolean
+        Dim bResultado As Boolean = False
+        Const sProcedure As String = "CancelarCFDIPago"
+        Try
+            bResultado = CancelarCFDI(oPago.FOLIO_PAGO, oPago.SERIE, oPago.FOLIO_NUMERICO, oPago.FOLIO_FISCAL_SAT, oPago.TIMBRADO_CFDI, TipoComprobante)
+        Catch ex As Exception
+            HandleError(nombreModulo, sProcedure, ex)
+        End Try
+        Return bResultado
+    End Function
+
+    Public Function CancelarCFDIDevolucion(ByVal oDevolucion As Class_CXC_Devoluciones_Global, ByVal TipoComprobante As TipoComprobante) As Boolean
+        Dim bResultado As Boolean = False
+        Const sProcedure As String = "CancelarCFDIDevolucion"
+        Try
+            bResultado = CancelarCFDI(oDevolucion.FOLIO_DEVOLUCION, oDevolucion.SERIE, oDevolucion.FOLIO_NUMERICO, oDevolucion.FOLIO_FISCAL_SAT, oDevolucion.TIMBRADO_CFDI, TipoComprobante)
+        Catch ex As Exception
+            HandleError(nombreModulo, sProcedure, ex)
+        End Try
+        Return bResultado
+    End Function
+
     Public Function CancelarCFDI(ByVal sFolioDocumentoSistema As String, ByVal sSerie As String, ByVal iFolioNumerico As Integer, ByVal sFolioFiscalSat As String, ByVal sDocumentoYaEstaTimbrado As String, ByVal sTipoComprobante As TipoComprobante) As Boolean
         Const sProcedure As String = "CancelarCFDI"
         Dim bResultado As Boolean = False
@@ -250,7 +272,7 @@ Module FacturacionElectronica
                             Return False
                         End If
                         DescartarTimbrado(sFolioDocumentoSistema, sTipoComprobante) 'ActualizaEstatusTimbradoDescartado(Folio, sTipoComprobanteElectronico)
-                        Exit Function
+                        Return False
                     Else
                         sXml = Replace(sXml, "<?xml version=""1.0"" encoding=""UTF-8""?>", "")
                         'Se recupero 'sFolioFacturaSistema, sXml, 

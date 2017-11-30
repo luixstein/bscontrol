@@ -327,15 +327,16 @@ Friend Class cComplementoPagos
             'MsgBox dtFormasPago.Item("01").NOMBRE_METODO_PAGO
             'Estas validaciones son de limites de longitudes de algunos campos.''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-            If txtLEN(Me.CtaOrdenante) = True And Len(Me.CtaOrdenante) < 10 Then
-                MsgBox("CtaOrdenante(Emisor) : La longitud mínima de este campo es de 10 dígitos." & vbCrLf &
-                           "El valor asignado es " & Me.CtaOrdenante, vbExclamation, sProcedure) : Exit Function
-            End If
+            'Se quitaron estas validaciones, cuando se graba el pago se validan
+            'If txtLEN(Me.CtaOrdenante) = True And Len(Me.CtaOrdenante) < 10 Then
+            '    MsgBox("CtaOrdenante(Emisor) : La longitud mínima de este campo es de 10 dígitos." & vbCrLf &
+            '               "El valor asignado es " & Me.CtaOrdenante, vbExclamation, sProcedure) : Exit Function
+            'End If
 
-            If txtLEN(Me.CtaBeneficiario) = True And Len(Me.CtaBeneficiario) < 10 Then
-                MsgBox("CtaBeneficiario(Destino) : La longitud mínima de este campo es de 10 dígitos." & vbCrLf &
-                           "El valor asignado es " & Me.CtaBeneficiario, vbExclamation, sProcedure) : Exit Function
-            End If
+            'If txtLEN(Me.CtaBeneficiario) = True And Len(Me.CtaBeneficiario) < 10 Then
+            '    MsgBox("CtaBeneficiario(Destino) : La longitud mínima de este campo es de 10 dígitos." & vbCrLf &
+            '               "El valor asignado es " & Me.CtaBeneficiario, vbExclamation, sProcedure) : Exit Function
+            'End If
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             MesAnioFechaPago = Year(FechaSatAFechaNormal(Me.FechaPago)) & "." & Right("00" & Month(FechaSatAFechaNormal(Me.FechaPago)), 2)

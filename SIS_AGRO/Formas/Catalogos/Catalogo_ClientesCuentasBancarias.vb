@@ -62,7 +62,7 @@ Public Class Catalogo_ClientesCuentasBancarias
 #Region "Eventos de objetos"
 
     Private Sub Catalogo_ClientesCuentasBancarias_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Me.DesplegarMetodosPago()
+        Me.DesplegarFormasPago()
         If txtLEN(Me._ID_CUENTA) = True Then
             Me.CargaDatos()
         End If
@@ -147,20 +147,20 @@ Buscar:
         End Try
     End Sub
 
-    Private Sub DesplegarMetodosPago()
+    Private Sub DesplegarFormasPago()
         Try
             Dim oElementos As New Class_CFD_CatFormasPago
             With Me.cboFormaPago
                 .DisplayMember = "NOMBRE_METODO_PAGO"
                 .ValueMember = "CODIGO_METODO_PAGO"
-                Dim dView As New Data.DataView(oElementos.ObtenerElementos())
+                Dim dView As New Data.DataView(oElementos.ObtenerElementosParaCuentasBancarias)
                 .DataSource = dView
                 If dView.Count > 0 Then
                     .SelectedIndex = -1
                 End If
             End With
         Catch ex As Exception
-            HandleError(Me.Text, "DesplegarMetodosPago", ex)
+            HandleError(Me.Text, "DesplegarFormasPago", ex)
         End Try
     End Sub
 
@@ -201,12 +201,15 @@ Buscar:
                 Return False
             End If
 
-            If Me.cboFormaPago.SelectedValue.ToString = "02" Or Me.cboFormaPago.SelectedValue.ToString = "03" Then '02=CHEQUE NOMINATIVO, 03=TRANSFERENCIA ELECTRONICA DE FONDOS
+            Dim oFormaPago As New Class_CFD_CatFormasPago(Me.cboFormaPago.SelectedValue.ToString)
+
+            If oFormaPago.ES_BANCARIZADO = True Then
                 If txtLEN(Me.txtBanco.Text) = False Then
                     MsgBox("Asígne el banco de la cuenta bancaria.", vbExclamation, Me.Name)
                     Me.txtBanco.Focus()
                     Return False
                 End If
+
                 Dim oBanco As New Class_CatBancos(Me.txtBanco.Text)
                 If oBanco.EXISTE = False Then
                     MsgBox("El banco seleccionado no existe.", vbExclamation, Me.Name)
@@ -215,27 +218,54 @@ Buscar:
                 End If
                 oBanco = Nothing
 
-                'If Me.cboFormaPago.SelectedValue.ToString = "02" Then '02=CHEQUE NOMINATIVO
-                '    If txtLEN(Me.txtCuentaEmisor.Text) = False Then
-                '        MsgBox("Asígne la cuenta del emisor.", vbExclamation, Me.Name)
-                '        Me.txtCuentaEmisor.Focus()
-                '        Return False
-                '    End If
-                'End If
-
                 If txtLEN(Me.txtCuentaEmisor.Text) = False Then
                     MsgBox("Asígne la cuenta del emisor.", vbExclamation, Me.Name)
                     Me.txtCuentaEmisor.Focus()
                     Return False
                 End If
 
+                If Len(Me.txtCuentaEmisor.Text) <> oFormaPago.DIGITOS Then
+                    MsgBox("La cuenta del emisor debe ser de " & oFormaPago.DIGITOS.ToString & " dígitos para esta forma de pago.", vbExclamation, Me.Name)
+                    Me.txtCuentaEmisor.Focus()
+                    Return False
+                End If
             End If
 
-            'si es transferencia la cuenta emisor es opcional(en la contabilidad electrónica, aunque en el complemento de pagos es opcional, es una ambiguedad por eso se pide como oblitario en ch/tr)
-            If txtLEN(Me.txtCuentaEmisor.Text) = True And Len(Me.txtCuentaEmisor.Text) < 10 Then
-                MsgBox("La cuenta del emisor debe ser de mínimamente de 10 dígitos, si no la tiene puede dejarla en blanco(cuando no es ch/tr).", vbExclamation, Me.Name)
-                Return False
-            End If
+            'If Me.cboFormaPago.SelectedValue.ToString = "02" Or Me.cboFormaPago.SelectedValue.ToString = "03" Then '02=CHEQUE NOMINATIVO, 03=TRANSFERENCIA ELECTRONICA DE FONDOS
+            '    If txtLEN(Me.txtBanco.Text) = False Then
+            '        MsgBox("Asígne el banco de la cuenta bancaria.", vbExclamation, Me.Name)
+            '        Me.txtBanco.Focus()
+            '        Return False
+            '    End If
+            '    Dim oBanco As New Class_CatBancos(Me.txtBanco.Text)
+            '    If oBanco.EXISTE = False Then
+            '        MsgBox("El banco seleccionado no existe.", vbExclamation, Me.Name)
+            '        Me.txtBanco.Focus()
+            '        Return False
+            '    End If
+            '    oBanco = Nothing
+
+            '    'If Me.cboFormaPago.SelectedValue.ToString = "02" Then '02=CHEQUE NOMINATIVO
+            '    '    If txtLEN(Me.txtCuentaEmisor.Text) = False Then
+            '    '        MsgBox("Asígne la cuenta del emisor.", vbExclamation, Me.Name)
+            '    '        Me.txtCuentaEmisor.Focus()
+            '    '        Return False
+            '    '    End If
+            '    'End If
+
+            '    If txtLEN(Me.txtCuentaEmisor.Text) = False Then
+            '        MsgBox("Asígne la cuenta del emisor.", vbExclamation, Me.Name)
+            '        Me.txtCuentaEmisor.Focus()
+            '        Return False
+            '    End If
+
+            'End If
+
+            ''si es transferencia la cuenta emisor es opcional(en la contabilidad electrónica, aunque en el complemento de pagos es opcional, es una ambiguedad por eso se pide como oblitario en ch/tr)
+            'If txtLEN(Me.txtCuentaEmisor.Text) = True And Len(Me.txtCuentaEmisor.Text) < 10 Then
+            '    MsgBox("La cuenta del emisor debe ser de mínimamente de 10 dígitos, si no la tiene puede dejarla en blanco(cuando no es ch/tr).", vbExclamation, Me.Name)
+            '    Return False
+            'End If
 
             Dim oCuenta As New Class_CatClientesCuentasBancarias
 
@@ -268,6 +298,7 @@ Buscar:
         End Try
         Return bResultado
     End Function
+
 #End Region
 
 End Class

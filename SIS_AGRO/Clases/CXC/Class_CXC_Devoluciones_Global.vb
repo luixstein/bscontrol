@@ -1152,8 +1152,8 @@ Public Class Class_CXC_Devoluciones_Global
         Return bResultado
     End Function
 
-    Public Function RecuperaXMLyPDF() As Boolean
-        Dim sProcedure As String = "EnviarCorreo"
+    Public Function RecuperarXMLyPDF() As Boolean
+        Dim sProcedure As String = "RecuperarXMLyPDF"
         Dim bResultado As Boolean = False
 
         Dim oCliente As Class_CatClientes
@@ -1189,6 +1189,7 @@ Public Class Class_CXC_Devoluciones_Global
                 MsgBox("No se logró recuperar el XML y PDF del documento : " & Me._FOLIO_DEVOLUCION & ". Avíse al depto. de sistemas.", vbExclamation, sProcedure)
                 Return False
             End If
+
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try

@@ -11,6 +11,8 @@ Public Class Class_CFD_CatFormasPago
     Private _NOMBRE_METODO_PAGO As String
     Private _REQUIERE_NUMERO_CUENTA_PAGO As Integer
     Private _ESTATUS As String
+    Private _ES_BANCARIZADO As Boolean
+    Private _DIGITOS As Integer
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -59,6 +61,18 @@ Public Class Class_CFD_CatFormasPago
     Public ReadOnly Property ESTATUS() As String
         Get
             Return Me._ESTATUS
+        End Get
+    End Property
+
+    Public ReadOnly Property ES_BANCARIZADO() As Boolean
+        Get
+            Return Me._ES_BANCARIZADO
+        End Get
+    End Property
+
+    Public ReadOnly Property DIGITOS() As Integer
+        Get
+            Return Me._DIGITOS
         End Get
     End Property
 #End Region
@@ -178,6 +192,19 @@ Public Class Class_CFD_CatFormasPago
         Return dTable
     End Function
 
+    Public Function ObtenerElementosParaCuentasBancarias() As System.Data.DataTable
+        Dim dTable As New DataTable
+        Dim da As New SqlDataAdapter("SELECT CODIGO_METODO_PAGO,CODIGO_METODO_PAGO + ' - ' + NOMBRE_METODO_PAGO NOMBRE_METODO_PAGO FROM CFD_CAT_METODOS_PAGO WHERE ESTATUS='A' AND ES_BANCARIZADO='1' ORDER BY CODIGO_METODO_PAGO", Empresa_Sistema.conexion)
+        Try
+            da.Fill(dTable)
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ObtenerElementosParaCuentasBancarias", ex)
+        Finally
+            da.Dispose()
+        End Try
+        Return dTable
+    End Function
+
     Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand(Me._QuerySelect & " WHERE CODIGO_METODO_PAGO='" & Me._CODIGO_METODO_PAGO & "'", Me._Conexion)
@@ -189,11 +216,18 @@ Public Class Class_CFD_CatFormasPago
                 Me._Conexion.Open()
                 dReader = .ExecuteReader()
 
-                If dReader.Read Then
+                If dReader.Read = True Then
                     Me._CODIGO_METODO_PAGO = dReader("CODIGO_METODO_PAGO").ToString
                     Me._NOMBRE_METODO_PAGO = Trim("" & dReader("NOMBRE_METODO_PAGO").ToString)
                     Me._REQUIERE_NUMERO_CUENTA_PAGO = CInt(dReader("REQUIERE_NUMERO_CUENTA_PAGO").ToString)
                     Me._ESTATUS = dReader("ESTATUS").ToString
+                    If dReader("ES_BANCARIZADO").ToString = "1" Then
+                        Me._ES_BANCARIZADO = True
+                    Else
+                        Me._ES_BANCARIZADO = False
+                    End If
+                    'Me._ES_BANCARIZADO = CBool(dReader("ES_BANCARIZADO").ToString)'No se usa este modo porque hay formas de pago con la letra P(opcional) en vez de 0 1
+                    Me._DIGITOS = CInt(dReader("DIGITOS").ToString)
 
                     bResultado = True
                 End If

@@ -12,7 +12,7 @@ Public Class Class_CatCuentasBancarias
     Private _NOMBRE_CUENTA_BANCARIA As String
     Private _SUCURSAL As String
     Private _CLABE_INTERBANCARIA As String
-    Private _NUMERO_CUENTA_BANCARIA As String
+    Private _NUMERO_DE_CUENTA_BANCARIA As String
     Private _TELEFONO As String
     Private _ESTATUS_CUENTA_BANCARIA As String
     Private _SALDO As Decimal
@@ -88,12 +88,12 @@ Public Class Class_CatCuentasBancarias
         End Set
     End Property
 
-    Public Property NUMERO_CUENTA_BANCARIA() As String
+    Public Property NUMERO_DE_CUENTA_BANCARIA() As String
         Get
-            Return Me._NUMERO_CUENTA_BANCARIA
+            Return Me._NUMERO_DE_CUENTA_BANCARIA
         End Get
         Set(ByVal VALUE As String)
-            Me._NUMERO_CUENTA_BANCARIA = VALUE
+            Me._NUMERO_DE_CUENTA_BANCARIA = VALUE
         End Set
     End Property
 
@@ -282,7 +282,7 @@ Public Class Class_CatCuentasBancarias
             sqlParametro = .Parameters.Add("@NOMBRE_CUENTA_BANCARIA", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_CUENTA_BANCARIA.ToUpper
             sqlParametro = .Parameters.Add("@SUCURSAL", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._SUCURSAL.ToUpper
             sqlParametro = .Parameters.Add("@CLABE_INTERBANCARIA", SqlDbType.NVarChar, 18) : sqlParametro.Value = Me._CLABE_INTERBANCARIA
-            sqlParametro = .Parameters.Add("@NUMERO_DE_CUENTA_BANCARIA", SqlDbType.NVarChar, 18) : sqlParametro.Value = Me._NUMERO_CUENTA_BANCARIA
+            sqlParametro = .Parameters.Add("@NUMERO_DE_CUENTA_BANCARIA", SqlDbType.NVarChar, 18) : sqlParametro.Value = Me._NUMERO_DE_CUENTA_BANCARIA
             sqlParametro = .Parameters.Add("@TELEFONO", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._TELEFONO
             sqlParametro = .Parameters.Add("@ESTATUS_CUENTA_BANCARIA", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS_CUENTA_BANCARIA.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_BANCO", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_BANCO
@@ -329,7 +329,7 @@ Public Class Class_CatCuentasBancarias
                     Me._NOMBRE_CUENTA_BANCARIA = Trim("" & dReader("NOMBRE_CUENTA_BANCARIA").ToString)
                     Me._SUCURSAL = "" & dReader("SUCURSAL").ToString
                     Me._CLABE_INTERBANCARIA = "" & dReader("CLABE_INTERBANCARIA").ToString
-                    Me._NUMERO_CUENTA_BANCARIA = "" & dReader("NUMERO_DE_CUENTA_BANCARIA").ToString
+                    Me._NUMERO_DE_CUENTA_BANCARIA = "" & dReader("NUMERO_DE_CUENTA_BANCARIA").ToString
                     Me._TELEFONO = "" & dReader("TELEFONO").ToString
                     Me._ESTATUS_CUENTA_BANCARIA = dReader("ESTATUS_CUENTA_BANCARIA").ToString
                     Me._SALDO = Convert.ToDecimal(dReader("SALDO"))
@@ -370,7 +370,7 @@ Public Class Class_CatCuentasBancarias
             sqlParametro = .Parameters.Add("@NOMBRE_CUENTA_BANCARIA", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_CUENTA_BANCARIA.ToUpper
             sqlParametro = .Parameters.Add("@SUCURSAL", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._SUCURSAL.ToUpper
             sqlParametro = .Parameters.Add("@CLABE_INTERBANCARIA", SqlDbType.NVarChar, 18) : sqlParametro.Value = Me._CLABE_INTERBANCARIA
-            sqlParametro = .Parameters.Add("@NUMERO_DE_CUENTA_BANCARIA", SqlDbType.NVarChar, 18) : sqlParametro.Value = Me._NUMERO_CUENTA_BANCARIA
+            sqlParametro = .Parameters.Add("@NUMERO_DE_CUENTA_BANCARIA", SqlDbType.NVarChar, 18) : sqlParametro.Value = Me._NUMERO_DE_CUENTA_BANCARIA
             sqlParametro = .Parameters.Add("@TELEFONO", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._TELEFONO
             sqlParametro = .Parameters.Add("@ESTATUS_CUENTA_BANCARIA", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS_CUENTA_BANCARIA.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_BANCO", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_BANCO

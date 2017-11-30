@@ -98,8 +98,8 @@ Public Class Frm_CXC_Devoluciones
         End If
     End Sub
 
-    Private Sub tsbRecuperaXMLPdf_Click(sender As Object, e As EventArgs) Handles tsbRecuperaXMLPDF.Click
-        Me.oDevolucion.RecuperaXMLyPDF()
+    Private Sub tsbRecuperaXMLPdf_Click(sender As Object, e As EventArgs) Handles tsbRecuperarXMLPDF.Click
+        Me.oDevolucion.RecuperarXMLyPDF()
     End Sub
 
     Private Sub tsbEnviarCorreo_Click(sender As Object, e As EventArgs) Handles tsbEnviarCorreo.Click
@@ -270,7 +270,7 @@ busca:
             'Estos se gestionan su visibilidad en el consultar
             Me.tsbTimbrar.Visible = False
             Me.tsbCancelarTimbre.Visible = False
-            Me.tsbRecuperaXMLPDF.Visible = False
+            Me.tsbRecuperarXMLPDF.Visible = False
             Me.tsbEnviarCorreo.Visible = False
 
         Catch ex As Exception
@@ -621,6 +621,11 @@ busca:
         Dim sFolio As String = Me.txtFolioDevolucion.Text
 
         Try
+            Me.tsbTimbrar.Visible = False
+            Me.tsbCancelarTimbre.Visible = False
+            Me.tsbRecuperarXMLPDF.Visible = False
+            Me.tsbEnviarCorreo.Visible = False
+
             Me.Inicializa()
             Me.oDevolucion = New Class_CXC_Devoluciones_Global(sFolio)
 
@@ -700,20 +705,15 @@ busca:
 
             Me.GestionaCambioEstado()
 
-            Me.tsbTimbrar.Visible = False
-            Me.tsbCancelarTimbre.Visible = False
-            Me.tsbRecuperaXMLPDF.Visible = False
-            Me.tsbEnviarCorreo.Visible = False
-
             If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
-                If Me.oDevolucion.TIMBRADO_CFDI = False And Me.oDevolucion.TIMBRADO_DESCARTADO = False And Me.oVenta.TIMBRADO_CFDI = "1" Then 'Pregunta por campos de la dev y de la factura(de ambos)
+                If Me.oDevolucion.TIMBRADO_CFDI = False AndAlso Me.oDevolucion.TIMBRADO_DESCARTADO = False AndAlso Me.oVenta.TIMBRADO_CFDI = "1" Then 'Pregunta por campos de la dev y de la factura(de ambos)
                     Me.tsbTimbrar.Visible = True
-                ElseIf Me.oDevolucion.ESTATUS_DEVOLUCION = "C" And Me.oDevolucion.TIMBRADO_CFDI = True AndAlso Me.oDevolucion.TIMBRADO_DESCARTADO = False AndAlso Me.oDevolucion.ESTATUS_CANCELACION_CFDI = False Then
+                ElseIf Me.oDevolucion.ESTATUS_DEVOLUCION = "C" AndAlso Me.oDevolucion.TIMBRADO_CFDI = True AndAlso Me.oDevolucion.TIMBRADO_DESCARTADO = False AndAlso Me.oDevolucion.ESTATUS_CANCELACION_CFDI = False Then
                     Me.tsbCancelarTimbre.Visible = True
                 End If
 
                 If Me.oDevolucion.TIMBRADO_CFDI = True Then
-                    Me.tsbRecuperaXMLPDF.Visible = True
+                    Me.tsbRecuperarXMLPDF.Visible = True
                     Me.tsbEnviarCorreo.Visible = True
                 End If
             End If

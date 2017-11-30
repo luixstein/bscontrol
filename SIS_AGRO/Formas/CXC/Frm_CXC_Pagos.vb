@@ -1388,7 +1388,7 @@ Buscar:
                 Return False
             End If
 
-            If Len(oCuentaBancaria.NUMERO_CUENTA_BANCARIA) < 10 Then
+            If Len(oCuentaBancaria.NUMERO_DE_CUENTA_BANCARIA) < 10 Then
                 MsgBox("La cuenta bancaria que recibe los fondos debe de tener 10 dígitos mínimamente en el número de cuenta.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If

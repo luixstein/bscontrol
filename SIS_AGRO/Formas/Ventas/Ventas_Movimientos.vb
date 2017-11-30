@@ -192,7 +192,7 @@ Public Class Ventas_Movimientos
         Me.oVenta.Imprimir()
     End Sub
 
-    Private Sub tsbSellarFacturaElectronica_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSellarFacturaElectronica.Click
+    Private Sub tsbTimbrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbTimbrar.Click
         If Me.oVenta.TIMBRADO_CFDI = "0" Then
             If Me.oVenta.GeneraFacturaElectronica(True, True) = True Then
                 Me.Consultar()
@@ -217,6 +217,10 @@ Public Class Ventas_Movimientos
         '        'ExportarAPdf()
         '    End If
         'End If
+    End Sub
+
+    Private Sub tsbRecuperarXMLPDF_Click(sender As Object, e As EventArgs) Handles tsbRecuperarXMLPDF.Click
+        Me.oVenta.RecuperarXMLyPDF()
     End Sub
 
     Private Sub tsbEnviar_Click(sender As Object, e As EventArgs) Handles tsbEnviarCorreo.Click
@@ -1026,7 +1030,7 @@ Buscar:
                         Me.txtFolio.Focus()
                     End If
 
-                    Me.tsbSellarFacturaElectronica.Visible = False
+                    Me.tsbTimbrar.Visible = False
                     Me.tsbCancelarTimbre.Visible = False
 
                 Case enumEstados.GRABADO
@@ -1053,7 +1057,7 @@ Buscar:
 
                     Me.TxtConcepto.Focus()
 
-                    Me.tsbSellarFacturaElectronica.Visible = False
+                    Me.tsbTimbrar.Visible = False
                     Me.tsbCancelarTimbre.Visible = False
 
 
@@ -1081,7 +1085,7 @@ Buscar:
 
                     Me.tsbImprimir.Select()
 
-                    Me.tsbSellarFacturaElectronica.Visible = False
+                    Me.tsbTimbrar.Visible = False
                     Me.tsbCancelarTimbre.Visible = False
 
                 Case enumEstados.APLICADO
@@ -1138,13 +1142,13 @@ Buscar:
                     If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
                         If Me.oVenta.VERSION_ESQUEMA_XML >= "3.2" Or Me.oVenta.VERSION_ESQUEMA_XML = "" Then
                             If Me.oVenta.TIMBRADO_CFDI = "0" And Me.oVenta.TIMBRADO_DESCARTADO = "0" Then
-                                Me.tsbSellarFacturaElectronica.Visible = True
+                                Me.tsbTimbrar.Visible = True
                                 Me.tsbCancelarTimbre.Visible = False
                             Else
-                                Me.tsbSellarFacturaElectronica.Visible = False
+                                Me.tsbTimbrar.Visible = False
                             End If
                         Else
-                            Me.tsbSellarFacturaElectronica.Visible = False
+                            Me.tsbTimbrar.Visible = False
                             Me.tsbCancelarTimbre.Visible = False
                         End If
                     End If
@@ -1196,7 +1200,7 @@ Buscar:
 
                     Me.tsbImprimir.Select()
 
-                    Me.tsbSellarFacturaElectronica.Visible = False
+                    Me.tsbTimbrar.Visible = False
                     Me.tsbCancelarTimbre.Visible = False
 
                 Case enumEstados.CANCELADO
@@ -1260,7 +1264,7 @@ Buscar:
                             Me.tsbCancelarTimbre.Visible = False
                         End If
                     Else
-                        Me.tsbSellarFacturaElectronica.Visible = False
+                        Me.tsbTimbrar.Visible = False
                         Me.tsbCancelarTimbre.Visible = False
                     End If
 

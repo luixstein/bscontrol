@@ -164,8 +164,8 @@ Public Class Class_CatClientesCuentasBancarias
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_CLIENTES_GRABA_CUENTAS_BANCARIAS"
 
-            sqlParametro = .Parameters.Add("@ID_CUENTA", SqlDbType.Int) : sqlParametro.Value = 0 : sqlParametro.Direction = ParameterDirection.InputOutput
-            sqlParametro = .Parameters.Add("@CUENTA", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._CUENTA.ToUpper
+            sqlParametro = .Parameters.Add("@ID_CUENTA", SqlDbType.Int) : sqlParametro.Value = Me._ID_CUENTA : sqlParametro.Direction = ParameterDirection.InputOutput
+            sqlParametro = .Parameters.Add("@CUENTA", SqlDbType.NVarChar, 18) : sqlParametro.Value = Me._CUENTA.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._CODIGO_CLIENTE.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_METODO_PAGO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_METODO_PAGO.ToUpper
             sqlParametro = .Parameters.Add("@RFC_EMISOR", SqlDbType.NVarChar, 13) : sqlParametro.Value = Me._RFC_EMISOR.ToUpper
@@ -178,7 +178,7 @@ Public Class Class_CatClientesCuentasBancarias
                 Me._ID_CUENTA = .Parameters("@ID_CUENTA").Value.ToString
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Insertar", ex)
+                HandleError(Me._Nombre_Catalogo, "Grabar", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
