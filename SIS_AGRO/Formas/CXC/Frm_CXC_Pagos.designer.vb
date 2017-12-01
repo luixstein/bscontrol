@@ -860,7 +860,7 @@ Partial Class Frm_CXC_Pagos
         Me.btnVerCFDIS.Location = New System.Drawing.Point(1046, 199)
         Me.btnVerCFDIS.Name = "btnVerCFDIS"
         Me.btnVerCFDIS.Size = New System.Drawing.Size(106, 67)
-        Me.btnVerCFDIS.TabIndex = 380
+        Me.btnVerCFDIS.TabIndex = 379
         Me.btnVerCFDIS.Text = "Ver CFDI's"
         Me.btnVerCFDIS.UseVisualStyleBackColor = True
         '

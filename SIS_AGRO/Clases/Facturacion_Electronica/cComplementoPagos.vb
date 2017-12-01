@@ -34,6 +34,14 @@ Friend Class cComplementoPagos
 
     Public ComplementoGenerado As Boolean
 
+    Private _Complemento As MSXML2.IXMLDOMElement
+
+    Public ReadOnly Property Complemento As MSXML2.IXMLDOMElement
+        Get
+            Return Me._Complemento
+        End Get
+    End Property
+
     Private Sub Class_Initialize_Renamed()
         Const sProcedure As String = "New"
         Try
@@ -58,8 +66,9 @@ Friend Class cComplementoPagos
         Class_Initialize_Renamed()
     End Sub
 
-    Public Function GenerarNodoComplementoPagos() As MSXML2.IXMLDOMElement
+    Public Function GenerarNodoComplementoPagos() As Boolean
         Const sProcedure As String = "GenerarNodoComplementoPagos"
+        Dim bResultado As Boolean = False
         Dim mResultado As MSXML2.IXMLDOMElement
 
         Try
@@ -79,7 +88,7 @@ Friend Class cComplementoPagos
                 '.setAttribute ("xmlns:pago10", xmlnspago10 'Da lo mismo ponerlo o no, si se omite lo pone automáticamente al hacer Set NodoPagos =
 
                 If txtLEN(Me.Version) = False Then
-                    MsgBox("El valor de Version es un dato requerido.", vbExclamation, sProcedure) : Exit Function
+                    MsgBox("El valor de Version es un dato requerido.", vbExclamation, sProcedure) : Return False
                 Else
                     .setAttribute("Version", Me.Version) 'required
                 End If
@@ -90,19 +99,19 @@ Friend Class cComplementoPagos
 
             With NodoPago
                 If txtLEN(Me.FechaPago) = False Then
-                    MsgBox("El valor de FechaPago es un dato requerido.", vbExclamation, sProcedure) : Exit Function
+                    MsgBox("El valor de FechaPago es un dato requerido.", vbExclamation, sProcedure) : Return False
                 Else
                     .setAttribute("FechaPago", Me.FechaPago) 'required
                 End If
 
                 If txtLEN(Me.FormaDePagoP) = False Then
-                    MsgBox("El valor de FormaDePagoP es un dato requerido.", vbExclamation, sProcedure) : Exit Function
+                    MsgBox("El valor de FormaDePagoP es un dato requerido.", vbExclamation, sProcedure) : Return False
                 Else
                     .setAttribute("FormaDePagoP", Me.FormaDePagoP) 'required
                 End If
 
                 If txtLEN(Me.MonedaP) = False Then
-                    MsgBox("El valor de MonedaP es un dato requerido.", vbExclamation, sProcedure) : Exit Function
+                    MsgBox("El valor de MonedaP es un dato requerido.", vbExclamation, sProcedure) : Return False
                 Else
                     .setAttribute("MonedaP", Me.MonedaP) 'required
                 End If
@@ -112,7 +121,7 @@ Friend Class cComplementoPagos
                 End If
 
                 If txtLEN(Me.Monto) = False Then
-                    MsgBox("El valor de Monto es un dato requerido.", vbExclamation, sProcedure) : Exit Function
+                    MsgBox("El valor de Monto es un dato requerido.", vbExclamation, sProcedure) : Return False
                 Else
                     .setAttribute("Monto", Me.Monto) 'required
                 End If
@@ -171,7 +180,7 @@ Friend Class cComplementoPagos
                         .setAttribute("IdDocumento", Me.DoctoRelacionados.Item(i).IdDocumento)
                     Else
                         MsgBox("El valor de DoctoRelacionados.IdDocumento es un dato requerido.", vbExclamation, sProcedure)
-                        Exit Function
+                        Return False
                     End If
 
                     If txtLEN(Me.DoctoRelacionados.Item(i).Serie) = True Then
@@ -186,7 +195,7 @@ Friend Class cComplementoPagos
                         .setAttribute("MonedaDR", Me.DoctoRelacionados.Item(i).MonedaDR)
                     Else
                         MsgBox("El valor de DoctoRelacionados.MonedaDR es un dato requerido.", vbExclamation, sProcedure)
-                        Exit Function
+                        Return False
                     End If
 
                     If txtLEN(Me.DoctoRelacionados.Item(i).TipoCambioDR) = True Then
@@ -197,7 +206,7 @@ Friend Class cComplementoPagos
                         .setAttribute("MetodoDePagoDR", Me.DoctoRelacionados.Item(i).MetodoDePagoDR)
                     Else
                         MsgBox("El valor de DoctoRelacionados.MetodoDePagoDR es un dato requerido.", vbExclamation, sProcedure)
-                        Exit Function
+                        Return False
                     End If
 
                     If txtLEN(Me.DoctoRelacionados.Item(i).NumParcialidad) = True Then
@@ -237,13 +246,13 @@ Friend Class cComplementoPagos
                         If txtLEN(Trim(Me.Impuestos.Retenciones.Item(i).Impuesto)) = True Then
                             .setAttribute("Impuesto", Me.Impuestos.Retenciones.Item(i).Impuesto) 'required
                         Else
-                            MsgBox("El valor de Impuestos.Retenciones.Retencion.Impuesto es un dato requerido.", vbExclamation, NombreClase) : Exit Function
+                            MsgBox("El valor de Impuestos.Retenciones.Retencion.Impuesto es un dato requerido.", vbExclamation, NombreClase) : Return False
                         End If
 
                         If txtLEN(Trim(Me.Impuestos.Retenciones.Item(i).Importe)) = True Then
                             .setAttribute("Importe", Me.Impuestos.Retenciones.Item(i).Importe) 'required
                         Else
-                            MsgBox("El valor de Impuestos.Retenciones.Retencion.Importe es un dato requerido.", vbExclamation, NombreClase) : Exit Function
+                            MsgBox("El valor de Impuestos.Retenciones.Retencion.Importe es un dato requerido.", vbExclamation, NombreClase) : Return False
                         End If
                     End With
                     NodoRetenciones.appendChild(NodoRetencion)
@@ -265,25 +274,25 @@ Friend Class cComplementoPagos
                         If txtLEN(Trim(Me.Impuestos.Traslados.Item(i).Impuesto)) = True Then
                             .setAttribute("Impuesto", Me.Impuestos.Traslados.Item(i).Impuesto) 'required
                         Else
-                            MsgBox("El valor de Impuestos.Traslados.Traslado.Impuesto es un dato requerido.", vbExclamation, NombreClase) : Exit Function
+                            MsgBox("El valor de Impuestos.Traslados.Traslado.Impuesto es un dato requerido.", vbExclamation, NombreClase) : Return False
                         End If
 
                         If txtLEN(Trim(Me.Impuestos.Traslados.Item(i).TipoFactor)) = True Then
                             .setAttribute("TipoFactor", Me.Impuestos.Traslados.Item(i).TipoFactor) 'required
                         Else
-                            MsgBox("El valor de Impuestos.Traslados.Traslado.TipoFactor es un dato requerido.", vbExclamation, NombreClase) : Exit Function
+                            MsgBox("El valor de Impuestos.Traslados.Traslado.TipoFactor es un dato requerido.", vbExclamation, NombreClase) : Return False
                         End If
 
                         If txtLEN(Trim(Me.Impuestos.Traslados.Item(i).TasaOCuota)) = True Then
                             .setAttribute("TasaOCuota", Me.Impuestos.Traslados.Item(i).TasaOCuota) 'required
                         Else
-                            MsgBox("El valor de Impuestos.Traslados.Traslado.TasaOCuota es un dato requerido.", vbExclamation, NombreClase) : Exit Function
+                            MsgBox("El valor de Impuestos.Traslados.Traslado.TasaOCuota es un dato requerido.", vbExclamation, NombreClase) : Return False
                         End If
 
                         If txtLEN(Trim(Me.Impuestos.Traslados.Item(i).Importe)) = True Then
                             .setAttribute("Importe", Me.Impuestos.Traslados.Item(i).Importe) 'required
                         Else
-                            MsgBox("El valor de Impuestos.Traslados.Traslado.Importe es un dato requerido.", vbExclamation, NombreClase) : Exit Function
+                            MsgBox("El valor de Impuestos.Traslados.Traslado.Importe es un dato requerido.", vbExclamation, NombreClase) : Return False
                         End If
                     End With
                     NodoTraslados.appendChild(NodoTraslado)
@@ -304,15 +313,18 @@ Friend Class cComplementoPagos
 
             If Me.ValidaComplementoPagos() = True Then
                 'MsgBox NodoPago.xml
+                bResultado = True
                 mResultado = NodoPagos
                 Me.ComplementoGenerado = True
+
+                Me._Complemento = mResultado
             End If
 
         Catch ex As Exception
             HandleError(NombreClase, sProcedure, ex)
         End Try
 
-        Return mResultado
+        Return bResultado
     End Function
 
     Private Function ValidaComplementoPagos() As Boolean
@@ -325,6 +337,7 @@ Friend Class cComplementoPagos
             Dim MesAnioFechaPago As Double, MesAnioFechaCFDI As Double, MesAnteriorAnioFechaCFDI As Double, diaFechaCFDI As Integer
 
             'MsgBox dtFormasPago.Item("01").NOMBRE_METODO_PAGO
+
             'Estas validaciones son de limites de longitudes de algunos campos.''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
             'Se quitaron estas validaciones, cuando se graba el pago se validan

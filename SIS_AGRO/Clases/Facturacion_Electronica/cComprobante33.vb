@@ -565,12 +565,14 @@ Friend Class cComprobante33
             '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             'Complemento de pagos
             If Not (Me.ComplementoPagos10 Is Nothing) Then 'Si le pasó el complemento de pagos
-                NodoComplemento.appendChild(Me.ComplementoPagos10.GenerarNodoComplementoPagos)
-
-                If Me.ComplementoPagos10.ComplementoGenerado = False Then
-                    MsgBox("No se pudo generar el complemento de pagos.", vbExclamation, sProcedure)
-                    Return False
+                If Me.ComplementoPagos10.GenerarNodoComplementoPagos = True Then
+                    NodoComplemento.appendChild(Me.ComplementoPagos10.Complemento)
                 End If
+
+                'If Me.ComplementoPagos10.ComplementoGenerado = False Then
+                '    MsgBox("No se pudo generar el complemento de pagos.", vbExclamation, sProcedure)
+                '    Return False
+                'End If
             End If
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

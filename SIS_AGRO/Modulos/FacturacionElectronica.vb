@@ -242,7 +242,7 @@ Module FacturacionElectronica
         Return bResultado
     End Function
 
-    Public Function CancelarCFDI(ByVal sFolioDocumentoSistema As String, ByVal sSerie As String, ByVal iFolioNumerico As Integer, ByVal sFolioFiscalSat As String, ByVal sDocumentoYaEstaTimbrado As String, ByVal sTipoComprobante As TipoComprobante) As Boolean
+    Private Function CancelarCFDI(ByVal sFolioDocumentoSistema As String, ByVal sSerie As String, ByVal iFolioNumerico As Integer, ByVal sFolioFiscalSat As String, ByVal sDocumentoYaEstaTimbrado As String, ByVal sTipoComprobante As TipoComprobante) As Boolean
         Const sProcedure As String = "CancelarCFDI"
         Dim bResultado As Boolean = False
 
@@ -253,46 +253,76 @@ Module FacturacionElectronica
         'Dim iFolioNumerico As Integer = sFolioDocumentoSistema.Substring(4, Len(sFolioDocumentoSistema) - 4)
         Dim sAcuseCancelacion As String = ""
 
+        Dim bModoDemo As Boolean = False
+
         Try
-            If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "ERNESTOA" Or Usuario.Codigo_Usuario = 1 Then
+
+            If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "PCSISTEMASFER" Or Usuario.Codigo_Usuario = "1" Then
                 MsgBox("Las computadoras de sistemas no deben cancelar timbres documentos.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
-            End If
+            Else
 
-            Using cfd As New clsCFDI(Empresa_Sistema.BaseDatos, Empresa_Sistema.Servidor, sFelectronicaArchivoPFX,
-                                    Decrypt(Empresa_Sistema.FELECTRONICA_CONTRASENIA_PFX, "ex8"),
-                                    Empresa_Sistema.FELECTRONICA_USER_WS, Empresa_Sistema.FELECTRONICA_PASS_WS, True)
+                If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "PCSISTEMASFER" Or Usuario.Nombre_Usuario = "DBA" Then
+                    bModoDemo = True
+                End If
 
-                If sDocumentoYaEstaTimbrado = "0" Then
-                    'Recuperar 
-                    sXml = cfd.RecuperarTimbrePorSerieFolio(sSerie, iFolioNumerico, Empresa_Sistema.RFC, sFelectronicaCbbImagen)
-                    If cfd.Recuperado = False Then 'No se recupero
-                        If sXml = "ErrorDLL" Then
-                            'No descarta el timbre por algun otro error, que no necesariamente signifca que no exista el timbre
-                            Return False
+                If bModoDemo = True Then
+                    MsgBox("Esta el timbrado en modo demo")
+
+                    'demo.demo", "demo
+
+                    Using cfd As New clsCFDI(Empresa_Sistema.BaseDatos, Empresa_Sistema.Servidor,
+                                         sFelectronicaArchivoPFX, Decrypt(Empresa_Sistema.FELECTRONICA_CONTRASENIA_PFX, "ex8"),
+                                         "demo.demo", "demo", True)
+
+                        sUUID = sFolioFiscalSat
+
+                        cfd.CancelarTimbre(Empresa_Sistema.RFC, sUUID, ArchivoXmlAcuseCancelacion)
+
+                        If cfd.Cancelado = True Then
+                            bResultado = True 'Marcamos true sin hacer lo del acuse, porque no es importante grabarlo
+                            GrabaCancelacionYAcuseXML(sFolioDocumentoSistema, cfd.XmlAcuseCancelacionTimbre, sTipoComprobante)
                         End If
-                        DescartarTimbrado(sFolioDocumentoSistema, sTipoComprobante) 'ActualizaEstatusTimbradoDescartado(Folio, sTipoComprobanteElectronico)
-                        Return False
-                    Else
-                        sXml = Replace(sXml, "<?xml version=""1.0"" encoding=""UTF-8""?>", "")
-                        'Se recupero 'sFolioFacturaSistema, sXml, 
-                        If GrabaCadenaOriginalYSelloComprobanteElectronico(cfd, sTipoComprobante) = False Then
-                            Return False
-                        End If
-                    End If
-                    sUUID = cfd.Complemento.UUID
+                    End Using
+
                 Else
-                    sUUID = sFolioFiscalSat
+                    Using cfd As New clsCFDI(Empresa_Sistema.BaseDatos, Empresa_Sistema.Servidor,
+                                         sFelectronicaArchivoPFX, Decrypt(Empresa_Sistema.FELECTRONICA_CONTRASENIA_PFX, "ex8"),
+                                         Empresa_Sistema.FELECTRONICA_USER_WS, Empresa_Sistema.FELECTRONICA_PASS_WS, True)
+
+                        If sDocumentoYaEstaTimbrado = "0" Then
+                            'Recuperar 
+                            sXml = cfd.RecuperarTimbrePorSerieFolio(sSerie, iFolioNumerico, Empresa_Sistema.RFC, sFelectronicaCbbImagen)
+                            If cfd.Recuperado = False Then 'No se recupero
+                                If sXml = "ErrorDLL" Then
+                                    'No descarta el timbre por algun otro error, que no necesariamente signifca que no exista el timbre
+                                    Return False
+                                End If
+                                DescartarTimbrado(sFolioDocumentoSistema, sTipoComprobante) 'ActualizaEstatusTimbradoDescartado(Folio, sTipoComprobanteElectronico)
+                                Return False
+                            Else
+                                sXml = Replace(sXml, "<?xml version=""1.0"" encoding=""UTF-8""?>", "")
+                                'Se recupero 'sFolioFacturaSistema, sXml, 
+                                If GrabaCadenaOriginalYSelloComprobanteElectronico(cfd, sTipoComprobante) = False Then
+                                    Return False
+                                End If
+                            End If
+                            sUUID = cfd.Complemento.UUID
+                        Else
+                            sUUID = sFolioFiscalSat
+                        End If
+
+                        cfd.CancelarTimbre(Empresa_Sistema.RFC, sUUID, ArchivoXmlAcuseCancelacion)
+
+                        If cfd.Cancelado = True Then
+                            bResultado = True 'Marcamos true sin hacer lo del acuse, porque no es importante grabarlo
+                            GrabaCancelacionYAcuseXML(sFolioDocumentoSistema, cfd.XmlAcuseCancelacionTimbre, sTipoComprobante)
+                        End If
+                    End Using
+
                 End If
 
-                'Cancelar timbre
-                cfd.CancelarTimbre(Empresa_Sistema.RFC, sUUID, ArchivoXmlAcuseCancelacion)
-
-                If cfd.Cancelado = True Then
-                    bResultado = True 'Marcamos true sin hacer lo del acuse, porque no es importante grabarlo
-                    GrabaCancelacionYAcuseXML(sFolioDocumentoSistema, cfd.XmlAcuseCancelacionTimbre, sTipoComprobante)
-                End If
-            End Using
+            End If
 
         Catch ex As Exception
             HandleError(nombreModulo, sProcedure, ex)

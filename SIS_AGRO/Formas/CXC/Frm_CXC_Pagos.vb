@@ -38,6 +38,8 @@ Public Class Frm_CXC_Pagos
     Private iGyDocRFC_EMISOR As Integer = 9
     Private iGyDocMONTO As Integer = 10
     Private iGyDocCODIGO_MONEDA_SAT As Integer = 11
+    Private iGyDocCUENTA_BENEFICIARIO As Integer = 12
+    Private iGyDocCODIGO_BANCO_DESTINO_NACIONAL As Integer = 13
 #End Region
 
 #Region "Columnas grid venta"
@@ -580,7 +582,7 @@ Buscar:
             Me.GridVentas.Cols = 26
             Me.GridVentas.DisplayRowNumber = True
 
-            Me.FormateaGrid()
+            Me.FormateaGridVentas()
         Catch ex As Exception
             HandleError(Me.Name, "InicializaGrid", ex)
         End Try
@@ -592,7 +594,7 @@ Buscar:
                 .DataSource = Nothing
                 FG_Grid_Limpiar(Me.GridDocumentosPago)
                 .Rows = 2
-                .Cols = 12
+                .Cols = 14
                 .DisplayRowNumber = True
                 Me.FormateaGridDocumentosPago()
             End With
@@ -601,7 +603,7 @@ Buscar:
         End Try
     End Sub
 
-    Private Sub FormateaGrid()
+    Private Sub FormateaGridVentas()
         Try
             'Me.Grid.Visible = False
 
@@ -776,6 +778,8 @@ Buscar:
                 .Cell(0, Me.iGyDocRFC_EMISOR).Text = "RFC emisor"
                 .Cell(0, Me.iGyDocMONTO).Text = "Monto"
                 .Cell(0, Me.iGyDocCODIGO_MONEDA_SAT).Text = "Moneda"
+                .Cell(0, Me.iGyDocCUENTA_BENEFICIARIO).Text = "Cuenta beneficiario"
+                .Cell(0, Me.iGyDocCODIGO_BANCO_DESTINO_NACIONAL).Text = "Banco destino"
 
                 .Column(Me.iGyDocFECHA).CellType = FlexCell.CellTypeEnum.DateTime
                 .Column(Me.iGyDocFECHA).FormatString = "dd-MMM-yy"
@@ -1210,8 +1214,8 @@ Buscar:
                     MsgBox("Movimiento grabado sin relacionar el folio de la póliza.", MsgBoxStyle.Information, Me.Text)
                 End If
 
-                If Me.oBancosCXC.GestionaCFDI() = True Then
-                    If Me.oDocumento.TIMBRA_DOCUMENTO = True Then
+                If Me.oDocumento.TIMBRA_DOCUMENTO = True Then
+                    If Me.oBancosCXC.GestionaCFDI() = True Then
                         Me.oBancosCXC.GeneraPagosElectronicos()
                     End If
                 End If
@@ -1276,7 +1280,8 @@ Buscar:
                         lID_BANCOS_DETALLE = oBancosCXC.AgregaDocumentoPago(Me.TxtFolio.Text, .Cell(i, Me.iGyDocCODIGO_METODO_PAGO).Text, .Cell(i, Me.iGyDocFOLIO_DETALLE).Text,
                                   .Cell(i, Me.iGyDocCODIGO_BANCO_EMISOR_NACIONAL).Text, .Cell(i, Me.iGyDocCUENTA_EMISOR).Text,
                                   CDate(.Cell(i, Me.iGyDocFECHA).Text), .Cell(i, Me.iGyDocRFC_EMISOR).Text, valorNumerico(.Cell(i, Me.iGyDocMONTO).Text),
-                                 .Cell(i, Me.iGyDocCODIGO_MONEDA_SAT).Text, valorNumerico(txtTipoCambio.Text)) 'El beneficiario es la empresa propia, el store lo llenará internamente
+                                 .Cell(i, Me.iGyDocCODIGO_MONEDA_SAT).Text, valorNumerico(txtTipoCambio.Text),
+                                 .Cell(i, Me.iGyDocCUENTA_BENEFICIARIO).Text, .Cell(i, Me.iGyDocCODIGO_BANCO_DESTINO_NACIONAL).Text) 'El beneficiario es la empresa propia, el store lo llenará internamente
 
                         .Cell(i, Me.iGyDocID_BANCOS_DETALLE).Text = lID_BANCOS_DETALLE.ToString
                     End If
@@ -1388,8 +1393,13 @@ Buscar:
                 Return False
             End If
 
-            If Len(oCuentaBancaria.NUMERO_DE_CUENTA_BANCARIA) < 10 Then
-                MsgBox("La cuenta bancaria que recibe los fondos debe de tener 10 dígitos mínimamente en el número de cuenta.", MsgBoxStyle.Exclamation, sProcedure)
+            'If Len(oCuentaBancaria.NUMERO_CUENTA_BANCARIA) < 10 Then
+            '    MsgBox("La cuenta bancaria que recibe los fondos debe de tener 10 dígitos mínimamente en el número de cuenta.", MsgBoxStyle.Exclamation, sProcedure)
+            '    Return False
+            'End If
+
+            If Len(oCuentaBancaria.CLABE_INTERBANCARIA) <> 18 Then
+                MsgBox("La cuenta bancaria que recibe los fondos debe de tener 18 dígitos en la clabe interbancaria.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
 
@@ -1987,7 +1997,7 @@ Buscar:
 
                 'Me.Grid.Visible = false
                 Me.GridVentas.DataSource = Me.oBancosCXC.ObtenerDetalle
-                Me.FormateaGrid()
+                Me.FormateaGridVentas()
                 'Me.Grid.Visible = True
 
                 Me.GridDocumentosPago.DataSource = Me.oBancosCXC.ObtenerDetalleDocumentosPago
@@ -2056,6 +2066,9 @@ Buscar:
     End Function
 
     Private Function CancelaPagosCXC() As Boolean
+        Const sProcedure As String = "CancelaPagosCXC"
+        Dim bResultado As Boolean = False
+
         Dim oFirmaElectronica = New UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo
         Dim oUtileriasCancela As New Class_UtileriasFirmaElectronicaCancelacion
         Dim oPoliza As New Class_Contabilidad_Poliza_Global
@@ -2063,29 +2076,29 @@ Buscar:
 
         'Me.oBancosCXC = New Class_Bancos_CXC(sFolio)
 
-        If MsgBox("Deseas cancelar el movimiento de " & Me.CboDocumento.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "CancelarCompra") = MsgBoxResult.No Then
-            Exit Function
+        If MsgBox("Deseas cancelar el movimiento de " & Me.CboDocumento.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, sProcedure) = MsgBoxResult.No Then
+            Return False
         End If
 
         If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString) = False Then
-            MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento de inventarios.", MsgBoxStyle.Exclamation, Me.Text)
-            Exit Function
+            MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar este movimiento.", MsgBoxStyle.Exclamation, sProcedure)
+            Return False
         End If
 
         'no se ocupa por que para eso esta la interfaz
         'If PLAZA.ValidarPeriodoTrabajo(Date.Now) = False Then 'Para cancelar se valida con la fecha de la maquina
-        '    Exit Function
+        '    RETURN FALSE
         'End If
 
         Select Case Me.LblStatus.Text
             Case "N"
-                MsgBox("El documento no se ha grabado.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+                MsgBox("El documento no se ha grabado.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
             Case "A"
                 'No hay restricciones
             Case "C"
-                MsgBox("Los documentos cancelados no se pueden volver a cancelar.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+                MsgBox("Los documentos cancelados no se pueden volver a cancelar.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
         End Select
 
         Try
@@ -2094,13 +2107,15 @@ Buscar:
             oUtileriasCancela.CODIGO_PLAZA = Usuario.Codigo_Plaza
 
             If oUtileriasCancela.GestionaCancelacion() = False Then
-                Exit Function
+                Return False
             End If
 
             If oUtileriasCancela.CANCELA_DIRECTO = True Then
                 Me.oBancosCXC.FECHA_DE_CANCELACION = Date.Now
                 If Me.oBancosCXC.CancelaBancosCXC() = False Then
-                    Exit Function
+                    Return False
+                Else
+                    bResultado = True
                 End If
             Else
                 oUtileriasCancela = New Class_UtileriasFirmaElectronicaCancelacion
@@ -2111,39 +2126,49 @@ Buscar:
                 oUtileriasCancela.MODULO = Me.oBancosCXC.CODIGO_MODULO
 
                 If oUtileriasCancela.AutorizaCancelacionMovimientosFueraPeriodo() = False Then
-                    MsgBox("Error al tratar de autorizar la cancelación fuera del periodo.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    MsgBox("Error al tratar de autorizar la cancelación fuera del periodo.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 End If
 
                 'si no se autorizo
                 If oUtileriasCancela.CANCELACION_AUTORIZO = False Then
-                    MsgBox("No se autorizó la cancelación de movimiento.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    MsgBox("No se autorizó la cancelación de movimiento.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 End If
 
                 If oUtileriasCancela.GestionaCancelacionConInterfaz() = False Then
-                    MsgBox("Error al gestionar la cancelacion con interfaz", MsgBoxStyle.Information, Me.Text)
-                    Exit Function
+                    MsgBox("Error al gestionar la cancelacion con interfaz", MsgBoxStyle.Information, sProcedure)
+                    Return False
                 Else
                     If oUtileriasCancela.ES_FECHA_CANCELACION_VALIDA = "0" Then
-                        MsgBox("La fecha de cancelación debe de ser mayor o igual a la fecha del documento y debe estar en el mismo ejercicio.", vbExclamation, Me.Text)
-                        Exit Function
+                        MsgBox("La fecha de cancelación debe de ser mayor o igual a la fecha del documento y debe estar en el mismo ejercicio.", vbExclamation, sProcedure)
+                        Return False
                     End If
 
                     Me.oBancosCXC.FECHA_DE_CANCELACION = oUtileriasCancela.FECHA_CANCELACION
 
                     If Me.oBancosCXC.CancelaBancosCXC() = False Then
-                        MsgBox("Error al intentar cancelar el movimiento de documento de banco.", MsgBoxStyle.Exclamation, Me.Text)
-                        Exit Function
+                        MsgBox("Error al intentar cancelar el movimiento de documento de banco.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    Else
+                        bResultado = True
                     End If
                 End If
             End If
 
-            MsgBox("Movimiento de bancos cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
-            CancelaPagosCXC = True
+            If bResultado = True Then
+                If Me.oDocumento.TIMBRA_DOCUMENTO = True Then
+                    Me.oBancosCXC.CancelaPagosElectronicos()
+                End If
+
+                MsgBox("Movimiento de bancos cancelado satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
+            End If
+
         Catch ex As Exception
-            HandleError(Me.Name, "CancelaPagosCXC", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
+
+        Return bResultado
     End Function
 
     Private Function BusquedaVisual_PorDescripcion() As String
@@ -2370,6 +2395,9 @@ Buscar:
     Private Function AgregaDocumentoPago() As Boolean
         Const sProcedure As String = "AgregaDocumentoPago"
         Dim bResultado As Boolean = True
+
+        Dim oCuentaBancaria As Class_CatCuentasBancarias
+
         Try
             If txtLEN(Me.TxtCuentaBancaria.Text) = False Then
                 MsgBox("Asígne por favor la cuenta bancaria.", MsgBoxStyle.Exclamation, sProcedure)
@@ -2378,6 +2406,8 @@ Buscar:
                 End If
                 Return False
             End If
+
+            oCuentaBancaria = New Class_CatCuentasBancarias(CInt(Me.TxtCuentaBancaria.Text))
 
             If Me.GridDocumentosPago.Rows > 2 Then 'Si de algún modo ya tienen mas de un pago, le vamos diciendo que no se permite otro
                 MsgBox("Sólo es permitido agregar un sólo documento en esta sección.", MsgBoxStyle.Exclamation, sProcedure)
@@ -2390,7 +2420,7 @@ Buscar:
             End If
 
             If Me.cboFormaPago.SelectedIndex = -1 Then
-                MsgBox("Asígne el método de pago.", MsgBoxStyle.Exclamation, sProcedure)
+                MsgBox("Seleccione la forma de pago.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.cboFormaPago.Focus()
                 Return False
             End If
@@ -2413,33 +2443,67 @@ Buscar:
                 Return False
             End If
 
-            If Me.cboFormaPago.SelectedValue.ToString = "02" Or Me.cboFormaPago.SelectedValue.ToString = "03" Then '02=CHEQUE NOMINATIVO, 03=TRANSFERENCIA ELECTRONICA DE FONDOS
+            Dim oFormaPago As New Class_CFD_CatFormasPago(Me.cboFormaPago.SelectedValue.ToString)
+
+            If oFormaPago.ES_BANCARIZADO = True Then
                 If Me.CboBancos.SelectedIndex = -1 Then
                     MsgBox("Asígne el banco de la cuenta bancaria.", vbExclamation, sProcedure)
                     Me.CboBancos.Focus()
                     Return False
                 End If
 
-                'If Me.cboMetodoPago.SelectedValue.ToString = "02" Then '02=CHEQUE NOMINATIVO
-                '    If txtLEN(Me.txtCuentaEmisor.Text) = False Then
-                '        MsgBox("Asígne la cuenta del emisor.", vbExclamation, sProcedure)
-                '        Me.txtCuentaEmisor.Focus()
-                '        Return False
-                '    End If
-                'End If
-
                 If txtLEN(Me.txtCuentaEmisor.Text) = False Then
-                    MsgBox("Asígne la cuenta del emisor.", vbExclamation, sProcedure)
+                    MsgBox("Asígne la cuenta del emisor.", vbExclamation, Me.Name)
+                    Me.txtCuentaEmisor.Focus()
+                    Return False
+                End If
+
+                If Len(Me.txtCuentaEmisor.Text) <> oFormaPago.DIGITOS Then
+                    MsgBox("La cuenta del emisor debe ser de " & oFormaPago.DIGITOS.ToString & " dígitos para esta forma de pago.", vbExclamation, Me.Name)
+                    Me.txtCuentaEmisor.Focus()
+                    Return False
+                End If
+
+                If oCuentaBancaria.CLABE_INTERBANCARIA.Length <> 18 Then
+                    MsgBox("La clabe interbancaria de la cuenta destino(la que recibe los fondos) debe ser de 18 dígitos.", vbExclamation, Me.Name)
+                    Return False
+                End If
+
+            Else
+                If txtLEN(Me.txtCuentaEmisor.Text) = True Then
+                    MsgBox("La cuenta del emisor debe estar en blanco para esta forma de pago.", vbExclamation, Me.Name)
                     Me.txtCuentaEmisor.Focus()
                     Return False
                 End If
             End If
 
-            'si es transferencia la cuenta emisor es opcional(en la contabilidad electrónica, aunque en el complemento de pagos es opcional, es una ambiguedad por eso se pide como oblitario en ch/tr)
-            If txtLEN(Me.txtCuentaEmisor.Text) = True And Len(Me.txtCuentaEmisor.Text) < 10 Then
-                MsgBox("La cuenta del emisor debe ser de mínimamente de 10 dígitos, si no la tiene puede dejarla en blanco(cuando no es ch/tr).", vbExclamation, Me.Name)
-                Return False
-            End If
+            'If Me.cboFormaPago.SelectedValue.ToString = "02" Or Me.cboFormaPago.SelectedValue.ToString = "03" Then '02=CHEQUE NOMINATIVO, 03=TRANSFERENCIA ELECTRONICA DE FONDOS
+            '    If Me.CboBancos.SelectedIndex = -1 Then
+            '        MsgBox("Asígne el banco de la cuenta bancaria.", vbExclamation, sProcedure)
+            '        Me.CboBancos.Focus()
+            '        Return False
+            '    End If
+
+            '    'If Me.cboMetodoPago.SelectedValue.ToString = "02" Then '02=CHEQUE NOMINATIVO
+            '    '    If txtLEN(Me.txtCuentaEmisor.Text) = False Then
+            '    '        MsgBox("Asígne la cuenta del emisor.", vbExclamation, sProcedure)
+            '    '        Me.txtCuentaEmisor.Focus()
+            '    '        Return False
+            '    '    End If
+            '    'End If
+
+            '    If txtLEN(Me.txtCuentaEmisor.Text) = False Then
+            '        MsgBox("Asígne la cuenta del emisor.", vbExclamation, sProcedure)
+            '        Me.txtCuentaEmisor.Focus()
+            '        Return False
+            '    End If
+            'End If
+
+            ''si es transferencia la cuenta emisor es opcional(en la contabilidad electrónica, aunque en el complemento de pagos es opcional, es una ambiguedad por eso se pide como oblitario en ch/tr)
+            'If txtLEN(Me.txtCuentaEmisor.Text) = True And Len(Me.txtCuentaEmisor.Text) < 10 Then
+            '    MsgBox("La cuenta del emisor debe ser de mínimamente de 10 dígitos, si no la tiene puede dejarla en blanco(cuando no es ch/tr).", vbExclamation, Me.Name)
+            '    Return False
+            'End If
 
             'If txtLEN(Me.txtBeneficiario.Text) = False Then
             '    MsgBox "Asigne el beneficiario.", vbExclamation, sProcedure
@@ -2488,10 +2552,13 @@ Buscar:
                 .Cell(r, Me.iGyDocNOMBRE_METODO_PAGO).Text = Me.cboFormaPago.Text
                 .Cell(r, Me.iGyDocFOLIO_DETALLE).Text = Me.txtFolioDetalle.Text.ToUpper
 
-                If Me.cboFormaPago.SelectedValue.ToString = "02" Or Me.cboFormaPago.SelectedValue.ToString = "03" Then '02=CHEQUE NOMINATIVO, 03=TRANSFERENCIA ELECTRONICA DE FONDOS
+                'If Me.cboFormaPago.SelectedValue.ToString = "02" Or Me.cboFormaPago.SelectedValue.ToString = "03" Then '02=CHEQUE NOMINATIVO, 03=TRANSFERENCIA ELECTRONICA DE FONDOS
+                If oFormaPago.ES_BANCARIZADO = True Then
                     .Cell(r, Me.iGyDocCODIGO_BANCO_EMISOR_NACIONAL).Text = Me.CboBancos.SelectedValue.ToString
                     .Cell(r, Me.iGyDocNOMBRE_BANCO_EMISOR_NACIONAL).Text = Me.CboBancos.Text
                     .Cell(r, Me.iGyDocCUENTA_EMISOR).Text = Me.txtCuentaEmisor.Text.ToUpper
+                    .Cell(r, Me.iGyDocCUENTA_BENEFICIARIO).Text = oCuentaBancaria.CLABE_INTERBANCARIA
+                    .Cell(r, Me.iGyDocCODIGO_BANCO_DESTINO_NACIONAL).Text = oCuentaBancaria.CODIGO_BANCO
                 End If
 
                 '.Cell(r, Me.iGyDocFECHA).Text = Format(Me.dtFechaDetalle.Value, "dd-MMM-yyyy")
@@ -2499,6 +2566,7 @@ Buscar:
                 .Cell(r, Me.iGyDocRFC_EMISOR).Text = Me.txtRFCEmisor.Text.ToUpper
                 .Cell(r, Me.iGyDocMONTO).Text = valorNumerico(Me.txtMonto.Text).ToString
                 .Cell(r, Me.iGyDocCODIGO_MONEDA_SAT).Text = Me.cboMoneda.Text
+
             End With
 
             bResultado = True
@@ -2928,7 +2996,7 @@ Buscar:
 
     Private Sub cmdPruebaPagoCFDI_Click(sender As Object, e As EventArgs) Handles cmdPruebaPagoCFDI.Click
         'Me.oBancosCXC.GeneraPagosElectronicos()
-        'GeneraPagoElectronico33Prueba()
+        GeneraPagoElectronico33Prueba()
     End Sub
 
 #End Region

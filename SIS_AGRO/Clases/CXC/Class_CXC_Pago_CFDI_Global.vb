@@ -16,6 +16,7 @@ Public Class Class_CXC_Pago_CFDI_Global
 #Region "Campos de la tabla"
     Private _ID_CFDI_PAGOS_CXC_GLOBAL As Integer
     Private _FOLIO_PAGO As String
+    Private _ESTATUS_PAGO As String
     Private _FOLIO_NUMERICO As String
     Private _FOLIO_BANCO As String
     Private _FECHA_SERVIDOR As Date
@@ -93,6 +94,11 @@ Public Class Class_CXC_Pago_CFDI_Global
     Public ReadOnly Property FOLIO_PAGO() As String
         Get
             Return Me._FOLIO_PAGO
+        End Get
+    End Property
+    Public ReadOnly Property ESTATUS_PAGO() As String
+        Get
+            Return Me._ESTATUS_PAGO
         End Get
     End Property
 
@@ -426,6 +432,7 @@ Public Class Class_CXC_Pago_CFDI_Global
                 If dReader.Read = True Then
                     Me._ID_CFDI_PAGOS_CXC_GLOBAL = CInt(dReader("ID_CFDI_PAGOS_CXC_GLOBAL").ToString)
                     Me._FOLIO_PAGO = dReader("FOLIO_PAGO").ToString
+                    Me._ESTATUS_PAGO = dReader("ESTATUS_PAGO").ToString
                     Me._FOLIO_NUMERICO = dReader("FOLIO_NUMERICO").ToString
                     Me._FOLIO_BANCO = dReader("FOLIO_BANCO").ToString
                     Me._FECHA_SERVIDOR = CDate(dReader("FECHA_SERVIDOR").ToString)
@@ -488,8 +495,8 @@ Public Class Class_CXC_Pago_CFDI_Global
     End Function
 
     Public Function GeneraPagoElectronico(ByVal bMensajes As Boolean, ByVal bGenerarPDF As Boolean) As Boolean
+        Const sProcedure As String = "GeneraPagoElectronico"
         Dim bResultado As Boolean = False
-        Dim sProcedure As String = "GeneraPagoElectronico"
         Dim sRutaXML As String
 
         Try
@@ -512,6 +519,43 @@ Public Class Class_CXC_Pago_CFDI_Global
             End If
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+    Public Function CancelarTimbre() As Boolean
+        Const sProcedure As String = "CancelarTimbre"
+        Dim bResultado As Boolean = False
+
+        Try
+            If Me.Consultar() = False Then 'Refrescamos el documento para tener los datos mas nuevos.
+                Return False
+            End If
+
+            If Me._ESTATUS_PAGO <> "C" Then
+                MsgBox("El documento no esta cancelado.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If Me._TIMBRADO_DESCARTADO = True Then
+                MsgBox("El timbre esta descartado.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If Me._ESTATUS_CANCELACION_CFDI = True Then
+                MsgBox("El timbre ya esta cancelado.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If CancelarCFDIPago(Me, TipoComprobante.PAGO_CXC) = False Then
+                MsgBox("El timbre no se pudo cancelar. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+                Return False
+            Else
+                bResultado = True
+            End If
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, "CancelarTimbre", ex)
         End Try
 
         Return bResultado

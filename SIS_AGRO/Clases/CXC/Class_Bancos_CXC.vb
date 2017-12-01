@@ -819,7 +819,7 @@ Public Class Class_Bancos_CXC
 
     Public Function AgregaDocumentoPago(ByVal sFolioBancoGlobal As String, ByVal sCodigoMetodoPago As String, ByVal sFolioDetalle As String, ByVal sCodigoBancoEmisorNacional As String,
                                        ByVal sCuentaEmisor As String, ByVal dFecha As Date,
-                                       ByVal sRFCEmisor As String, ByVal dMonto As Double, ByVal sCodigoMonedaSAT As String, ByVal dTipoCambio As Double) As Long
+                                       ByVal sRFCEmisor As String, ByVal dMonto As Double, ByVal sCodigoMonedaSAT As String, ByVal dTipoCambio As Double, ByVal sCuentaDestino As String, ByVal sCodigoBancoDestinoNacional As String) As Long
 
         Dim lResultado As Long
 
@@ -838,8 +838,8 @@ Public Class Class_Bancos_CXC
             sqlParametro = .Parameters.Add("@FOLIO_DETALLE", SqlDbType.NVarChar, 100) : sqlParametro.Value = sFolioDetalle
             sqlParametro = .Parameters.Add("@CODIGO_BANCO_EMISOR_NACIONAL", SqlDbType.NVarChar, 3) : sqlParametro.Value = sCodigoBancoEmisorNacional
             sqlParametro = .Parameters.Add("@CUENTA_EMISOR", SqlDbType.NVarChar, 20) : sqlParametro.Value = sCuentaEmisor
-            sqlParametro = .Parameters.Add("@CODIGO_BANCO_DESTINO_NACIONAL", SqlDbType.NVarChar, 3) : sqlParametro.Value = "" 'Lo obtiene interno el store
-            sqlParametro = .Parameters.Add("@CUENTA_DESTINO", SqlDbType.NVarChar, 20) : sqlParametro.Value = "" 'Lo obtiene interno el store
+            sqlParametro = .Parameters.Add("@CODIGO_BANCO_DESTINO_NACIONAL", SqlDbType.NVarChar, 3) : sqlParametro.Value = sCodigoBancoDestinoNacional
+            sqlParametro = .Parameters.Add("@CUENTA_DESTINO", SqlDbType.NVarChar, 20) : sqlParametro.Value = sCuentaDestino
             sqlParametro = .Parameters.Add("@FECHA", SqlDbType.DateTime) : sqlParametro.Value = dFecha
             sqlParametro = .Parameters.Add("@BENEFICIARIO", SqlDbType.NVarChar, 100) : sqlParametro.Value = "" 'Lo obtiene interno el store
             sqlParametro = .Parameters.Add("@RFC_EMISOR", SqlDbType.NVarChar, 13) : sqlParametro.Value = sRFCEmisor
@@ -869,7 +869,7 @@ Public Class Class_Bancos_CXC
         Dim sSQL As String
 
         sSQL = "SELECT D.ID_BANCOS_DETALLE,D.CODIGO_METODO_PAGO,MP.NOMBRE_METODO_PAGO,D.FOLIO_DETALLE,D.CODIGO_BANCO_EMISOR_NACIONAL,CB.NOMBRE_BANCO,D.CUENTA_EMISOR," &
-        "D.FECHA, D.RFC_EMISOR, D.MONTO, D.CODIGO_MONEDA_SAT " &
+        "D.FECHA, D.RFC_EMISOR, D.MONTO, D.CODIGO_MONEDA_SAT,D.CUENTA_DESTINO,D.CODIGO_BANCO_DESTINO_NACIONAL " &
         "FROM BANCOS_DETALLE D " &
         "INNER JOIN BANCOS_GLOBAL G ON(D.FOLIO_BANCOS_GLOBAL=G.FOLIO_BANCO) " &
         "INNER JOIN CFD_CAT_METODOS_PAGO MP ON(D.CODIGO_METODO_PAGO=MP.CODIGO_METODO_PAGO) " &
@@ -911,6 +911,29 @@ Public Class Class_Bancos_CXC
         Return dTabla
     End Function
 
+    Public Function ObtenerPagosCFDIParaCancelarTimbre() As DataTable
+        Dim dTabla As New DataTable, da As SqlDataAdapter
+        Dim sSQL As String
+
+        sSQL = "SELECT P.* " &
+            "FROM CFDI_PAGOS_CXC_GLOBAL P " &
+            "INNER JOIN BANCOS_GLOBAL B ON(P.FOLIO_BANCO=B.FOLIO_BANCO) " &
+            "WHERE P.FOLIO_BANCO='" & Me._FOLIO_BANCO & "' " &
+            "AND P.ESTATUS_PAGO='C' AND P.TIMBRADO_CFDI='1' AND P.TIMBRADO_DESCARTADO='0' AND ESTATUS_CANCELACION_CFDI='0' " &
+            "ORDER BY P.ID_CFDI_PAGOS_CXC_GLOBAL"
+
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+
+            da.Dispose()
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, "ObtenerPagosCFDIParaCancelarTimbre", ex)
+        End Try
+
+        Return dTabla
+    End Function
+
     Public Function GestionaCFDI() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
@@ -939,6 +962,7 @@ Public Class Class_Bancos_CXC
     End Function
 
     Public Function GeneraPagosElectronicos() As Boolean
+        Dim sProcedure As String = Me.Nombre_Clase & "- GeneraPagosElectronicos"
         Dim bResultado As Boolean = False
         Try
             Dim bTimbresNoRealizados As Boolean = False, dTabla As New DataTable
@@ -946,7 +970,7 @@ Public Class Class_Bancos_CXC
             dTabla = Me.ObtenerPagosCFDI(True)
 
             If dTabla.Rows.Count = 0 Then
-                MsgBox("No se encontraron pagos cfdi pendientes de timbrar.", vbExclamation, Me.Nombre_Clase)
+                MsgBox("No se encontraron pagos cfdi pendientes de timbrar.", vbExclamation, sProcedure)
                 Return False
             End If
 
@@ -954,21 +978,58 @@ Public Class Class_Bancos_CXC
                 Dim oPagoCFDI As New Class_CXC_Pago_CFDI_Global(dRow("FOLIO_PAGO").ToString)
 
                 If oPagoCFDI.EXISTE = True Then
-                    If oPagoCFDI.GeneraPagoElectronico(True, True) = False Then
+                    If oPagoCFDI.GeneraPagoElectronico(False, True) = False Then
                         bTimbresNoRealizados = True
                     End If
                 End If
             Next
 
             If bTimbresNoRealizados = True Then
-                MsgBox("Quedaron pagos pendientes de timbrar, verifiquelos.", vbExclamation, Me.Nombre_Clase)
+                MsgBox("Quedaron pagos pendientes de timbrar, verifiquelos.", vbExclamation, sProcedure)
             Else
-                MsgBox("Pagos timbrados satisfactoriamente.", vbInformation, Me.Nombre_Clase)
+                MsgBox("Pagos timbrados satisfactoriamente.", vbInformation, sProcedure)
                 bResultado = True
             End If
 
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "GeneraPagosElectronicos", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Public Function CancelaPagosElectronicos() As Boolean
+        Dim sProcedure As String = Me.Nombre_Clase & "- CancelaPagosElectronicos"
+        Dim bResultado As Boolean = False
+        Try
+            Dim bTimbresNoCancelados As Boolean = False, dTabla As New DataTable
+
+            dTabla = Me.ObtenerPagosCFDIParaCancelarTimbre
+
+            If dTabla.Rows.Count = 0 Then
+                MsgBox("No se encontraron pagos cfdi con timbres pendientes de cancelar.", vbExclamation, sProcedure)
+                Return False
+            End If
+
+            For Each dRow As DataRow In dTabla.Rows
+                Dim oPagoCFDI As New Class_CXC_Pago_CFDI_Global(dRow("FOLIO_PAGO").ToString)
+
+                If oPagoCFDI.EXISTE = True Then
+                    If oPagoCFDI.CancelarTimbre = False Then
+                        bTimbresNoCancelados = True
+                    End If
+                End If
+            Next
+
+            If bTimbresNoCancelados = True Then
+                MsgBox("Quedaron timbres pendientes de cancelar, verifiquelos.", vbExclamation, sProcedure)
+            Else
+                MsgBox("Timbres cancelados satisfactoriamente.", vbInformation, sProcedure)
+                bResultado = True
+            End If
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
 
         Return bResultado
@@ -978,7 +1039,7 @@ Public Class Class_Bancos_CXC
         Dim dTabla As New DataTable, da As SqlDataAdapter
         Dim sSQL As String
 
-        sSQL = "SELECT P.FOLIO_PAGO,P.FECHA_PAGO,P.MONTO,B.CODIGO_MONEDA_SAT,P.CODIGO_CLIENTE,CTE.NOMBRE_CLIENTE,P.TIMBRADO_CFDI " &
+        sSQL = "SELECT P.FOLIO_PAGO,P.FECHA_PAGO,P.MONTO,B.CODIGO_MONEDA_SAT,P.CODIGO_CLIENTE,CTE.NOMBRE_CLIENTE,P.TIMBRADO_CFDI,P.ESTATUS_PAGO,P.ESTATUS_CANCELACION_CFDI " &
             "FROM CFDI_PAGOS_CXC_GLOBAL P " &
             "INNER JOIN BANCOS_GLOBAL B ON(P.FOLIO_BANCO=B.FOLIO_BANCO) " &
             "INNER JOIN CAT_CLIENTES CTE ON(P.CODIGO_CLIENTE=CTE.CODIGO_CLIENTE) " &
@@ -996,8 +1057,6 @@ Public Class Class_Bancos_CXC
 
         Return dTabla
     End Function
-
-
 
 #End Region
 

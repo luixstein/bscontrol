@@ -1030,9 +1030,6 @@ Buscar:
                         Me.txtFolio.Focus()
                     End If
 
-                    Me.tsbTimbrar.Visible = False
-                    Me.tsbCancelarTimbre.Visible = False
-
                 Case enumEstados.GRABADO
                     Me.tsbNuevo.Enabled = True
                     Me.tsbGrabar.Enabled = True
@@ -1057,10 +1054,6 @@ Buscar:
 
                     Me.TxtConcepto.Focus()
 
-                    Me.tsbTimbrar.Visible = False
-                    Me.tsbCancelarTimbre.Visible = False
-
-
                 Case enumEstados.SUSTITUIDO
                     Me.tsbNuevo.Enabled = True
                     Me.tsbGrabar.Enabled = False
@@ -1084,9 +1077,6 @@ Buscar:
                     Me.tsslCancelo.Visible = False : Me.tsslCancelo.Text = ""
 
                     Me.tsbImprimir.Select()
-
-                    Me.tsbTimbrar.Visible = False
-                    Me.tsbCancelarTimbre.Visible = False
 
                 Case enumEstados.APLICADO
                     Me.tsbNuevo.Enabled = True
@@ -1139,20 +1129,6 @@ Buscar:
                         Me.tsbRemisionVenta.Visible = False
                     End If
 
-                    If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
-                        If Me.oVenta.VERSION_ESQUEMA_XML >= "3.2" Or Me.oVenta.VERSION_ESQUEMA_XML = "" Then
-                            If Me.oVenta.TIMBRADO_CFDI = "0" And Me.oVenta.TIMBRADO_DESCARTADO = "0" Then
-                                Me.tsbTimbrar.Visible = True
-                                Me.tsbCancelarTimbre.Visible = False
-                            Else
-                                Me.tsbTimbrar.Visible = False
-                            End If
-                        Else
-                            Me.tsbTimbrar.Visible = False
-                            Me.tsbCancelarTimbre.Visible = False
-                        End If
-                    End If
-
                     'If Me.oVenta.ADDENDA = "1" Then
                     '    Me.btnAgregaAddenda.Visible = False
                     'Else
@@ -1200,9 +1176,6 @@ Buscar:
 
                     Me.tsbImprimir.Select()
 
-                    Me.tsbTimbrar.Visible = False
-                    Me.tsbCancelarTimbre.Visible = False
-
                 Case enumEstados.CANCELADO
                     Me.tsbNuevo.Enabled = True
                     Me.tsbGrabar.Enabled = False
@@ -1248,25 +1221,6 @@ Buscar:
                     Me.llblAgregarSeguimiento.Enabled = False
                     Me.cboMoneda.Enabled = False
                     Me.cboUsoCFDI.Enabled = False
-
-                    If Me.oVenta.VERSION_ESQUEMA_XML >= "3.2" Or Me.oVenta.VERSION_ESQUEMA_XML = "" Then
-                        If Me.oVenta.TIMBRADO_CFDI = "1" Then
-                            If Me.oVenta.TIMBRADO_DESCARTADO = "0" Then
-                                If Me.oVenta.ESTATUS_CANCELACION_CFDI = "0" Then
-                                    Me.tsbCancelarTimbre.Visible = True
-                                Else
-                                    Me.tsbCancelarTimbre.Visible = False
-                                End If
-                            Else
-                                Me.tsbCancelarTimbre.Visible = False
-                            End If
-                        Else
-                            Me.tsbCancelarTimbre.Visible = False
-                        End If
-                    Else
-                        Me.tsbTimbrar.Visible = False
-                        Me.tsbCancelarTimbre.Visible = False
-                    End If
 
             End Select
 
@@ -2612,6 +2566,11 @@ CANCELAR:
     Private Function Consultar(Optional ByVal bEsReferencia As Boolean = False, Optional ByVal bEsRefrenciaSoloRenglones As Boolean = False) As Boolean
         Dim bResultado As Boolean = False
         Try
+            Me.tsbTimbrar.Visible = False
+            Me.tsbCancelarTimbre.Visible = False
+            Me.tsbRecuperarXMLPDF.Visible = False
+            Me.tsbEnviarCorreo.Visible = False
+
             Dim sVenta As String = ""
 
             If sTipoVenta = "NM" And bEsReferencia = True Then
@@ -2741,6 +2700,19 @@ CANCELAR:
             Me.GestionaCambioEstado()
 
             Me.txtFolio.Enabled = False
+
+            If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
+                If Me.oVenta.TIMBRADO_CFDI = "0" AndAlso Me.oVenta.TIMBRADO_DESCARTADO = "0" And Me.oVenta.VERSION_ESQUEMA_XML <> "2.2" Then
+                    Me.tsbTimbrar.Visible = True
+                ElseIf Me.oVenta.ESTATUS_VENTA = "C" AndAlso Me.oVenta.TIMBRADO_CFDI = "1" AndAlso Me.oVenta.TIMBRADO_DESCARTADO = "0" AndAlso Me.oVenta.ESTATUS_CANCELACION_CFDI = "0" Then
+                    Me.tsbCancelarTimbre.Visible = True
+                End If
+
+                If Me.oVenta.TIMBRADO_CFDI = "1" Then
+                    Me.tsbRecuperarXMLPDF.Visible = True
+                    Me.tsbEnviarCorreo.Visible = True
+                End If
+            End If
 
         Catch ex As Exception
             HandleError(Me.Name, "Consultar", ex)

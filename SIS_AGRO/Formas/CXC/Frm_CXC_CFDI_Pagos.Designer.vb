@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class Frm_CXC_CFDI_Pagos
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()>
+    <System.Diagnostics.DebuggerNonUserCode()> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class Frm_CXC_CFDI_Pagos
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()>
+    <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Frm_CXC_CFDI_Pagos))
         Me.gbDocumentosPago = New System.Windows.Forms.GroupBox()
@@ -30,9 +30,9 @@ Partial Class Frm_CXC_CFDI_Pagos
         Me.tsMenu = New System.Windows.Forms.ToolStrip()
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
         Me.tsbCancelarTimbre = New System.Windows.Forms.ToolStripButton()
-        Me.tsbEnviarCorreo = New System.Windows.Forms.ToolStripButton()
-        Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.tsbTimbrar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
+        Me.tsbEnviarCorreo = New System.Windows.Forms.ToolStripButton()
         Me.gbDocumentosPago.SuspendLayout()
         Me.gbVentas.SuspendLayout()
         Me.tsMenu.SuspendLayout()
@@ -101,7 +101,7 @@ Partial Class Frm_CXC_CFDI_Pagos
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(1060, 25)
-        Me.tsMenu.TabIndex = 6
+        Me.tsMenu.TabIndex = 5
         Me.tsMenu.Text = "tsMenu"
         '
         'tsbImprimir
@@ -110,24 +110,24 @@ Partial Class Frm_CXC_CFDI_Pagos
         Me.tsbImprimir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbImprimir.Name = "tsbImprimir"
         Me.tsbImprimir.Size = New System.Drawing.Size(73, 22)
-        Me.tsbImprimir.Text = "Imprimir"
+        Me.tsbImprimir.Text = "&Imprimir"
         Me.tsbImprimir.ToolTipText = "Imprimir"
         '
         'tsbCancelarTimbre
         '
-        Me.tsbCancelarTimbre.Image = CType(resources.GetObject("tsbCancelarTimbre.Image"), System.Drawing.Image)
+        Me.tsbCancelarTimbre.Image = Global.Agrinet.My.Resources.Resources._782
         Me.tsbCancelarTimbre.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbCancelarTimbre.Name = "tsbCancelarTimbre"
         Me.tsbCancelarTimbre.Size = New System.Drawing.Size(111, 22)
         Me.tsbCancelarTimbre.Text = "Cancelar timbre"
         '
-        'tsbEnviarCorreo
+        'tsbTimbrar
         '
-        Me.tsbEnviarCorreo.Image = CType(resources.GetObject("tsbEnviarCorreo.Image"), System.Drawing.Image)
-        Me.tsbEnviarCorreo.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbEnviarCorreo.Name = "tsbEnviarCorreo"
-        Me.tsbEnviarCorreo.Size = New System.Drawing.Size(96, 22)
-        Me.tsbEnviarCorreo.Text = "&Enviar correo"
+        Me.tsbTimbrar.Image = Global.Agrinet.My.Resources.Resources._782
+        Me.tsbTimbrar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbTimbrar.Name = "tsbTimbrar"
+        Me.tsbTimbrar.Size = New System.Drawing.Size(69, 22)
+        Me.tsbTimbrar.Text = "Timbrar"
         '
         'tsbSalir
         '
@@ -137,14 +137,13 @@ Partial Class Frm_CXC_CFDI_Pagos
         Me.tsbSalir.Size = New System.Drawing.Size(49, 22)
         Me.tsbSalir.Text = "&Salir"
         '
-        'tsbTimbrar
+        'tsbEnviarCorreo
         '
-        Me.tsbTimbrar.Image = Global.BsControl.My.Resources.Resources._782
-        Me.tsbTimbrar.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbTimbrar.Name = "tsbTimbrar"
-        Me.tsbTimbrar.Size = New System.Drawing.Size(69, 22)
-        Me.tsbTimbrar.Text = "Timbrar"
-        Me.tsbTimbrar.Visible = False
+        Me.tsbEnviarCorreo.Image = CType(resources.GetObject("tsbEnviarCorreo.Image"), System.Drawing.Image)
+        Me.tsbEnviarCorreo.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbEnviarCorreo.Name = "tsbEnviarCorreo"
+        Me.tsbEnviarCorreo.Size = New System.Drawing.Size(96, 22)
+        Me.tsbEnviarCorreo.Text = "&Enviar correo"
         '
         'Frm_CXC_CFDI_Pagos
         '
@@ -173,9 +172,9 @@ Partial Class Frm_CXC_CFDI_Pagos
     Friend WithEvents gbVentas As GroupBox
     Friend WithEvents GridVentas As FlexCell.Grid
     Friend WithEvents tsMenu As ToolStrip
-    Friend WithEvents tsbEnviarCorreo As ToolStripButton
-    Friend WithEvents tsbCancelarTimbre As ToolStripButton
     Friend WithEvents tsbImprimir As ToolStripButton
-    Friend WithEvents tsbSalir As ToolStripButton
     Friend WithEvents tsbTimbrar As ToolStripButton
+    Friend WithEvents tsbCancelarTimbre As ToolStripButton
+    Friend WithEvents tsbEnviarCorreo As ToolStripButton
+    Friend WithEvents tsbSalir As ToolStripButton
 End Class

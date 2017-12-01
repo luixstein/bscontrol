@@ -17,6 +17,8 @@
     Private iGyPagoCODIGO_CLIENTE As Integer = 5
     Private iGyPagoNOMBRE_CLIENTE As Integer = 6
     Private iGyPagoTIMBRADO As Integer = 7
+    Private iGyPagoESTATUS_PAGO As Integer = 8
+    Private iGyPagoESTATUS_CANCELACION_CFDI As Integer = 9
 #End Region
 
 #Region "Columnas grid venta"
@@ -32,7 +34,7 @@
 
 #Region "Opciones"
     Private Sub tsbImprimir_Click(sender As Object, e As EventArgs) Handles tsbImprimir.Click
-        Me.Imprimir()
+        Me.Imprimir
     End Sub
 
     Private Sub tsbTimbrar_Click(sender As Object, e As EventArgs) Handles tsbTimbrar.Click
@@ -118,8 +120,12 @@
                 .Cell(0, Me.iGyPagoCODIGO_CLIENTE).Text = "Cliente"
                 .Cell(0, Me.iGyPagoNOMBRE_CLIENTE).Text = "Nombre"
                 .Cell(0, Me.iGyPagoTIMBRADO).Text = "Timbrado ?"
+                .Cell(0, Me.iGyPagoESTATUS_PAGO).Text = "Estatus pago"
+                .Cell(0, Me.iGyPagoESTATUS_CANCELACION_CFDI).Text = "Timbre cancelado ?"
 
                 .Column(Me.iGyPagoNOMBRE_CLIENTE).Width = 250
+                .Column(Me.iGyPagoESTATUS_PAGO).Width = 80
+                .Column(Me.iGyPagoESTATUS_CANCELACION_CFDI).Width = 120
 
                 .Column(Me.iGyPagoFECHA_PAGO).CellType = FlexCell.CellTypeEnum.DateTime
                 .Column(Me.iGyPagoFECHA_PAGO).FormatString = "dd-MMM-yy"
@@ -130,6 +136,7 @@
                 .Column(Me.iGyPagoMONTO).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .Column(Me.iGyPagoTIMBRADO).CellType = FlexCell.CellTypeEnum.CheckBox
+                .Column(Me.iGyPagoESTATUS_CANCELACION_CFDI).CellType = FlexCell.CellTypeEnum.CheckBox
 
                 .Locked = True
             End With
@@ -241,7 +248,28 @@
         Dim bResultado As Boolean = False
 
         Try
-            MsgBox("falta...")
+            If Me.GridPagos.ActiveCell.Row <= 0 Then
+                MsgBox("Debe seleccionar un pago.", MsgBoxStyle.Exclamation, Me.Name)
+                Return False
+            End If
+
+            Dim sFolioPago As String = Me.GridPagos.Cell(Me.GridPagos.ActiveCell.Row, Me.iGyPagoFOLIO).Text
+            Dim oPago As New Class_CXC_Pago_CFDI_Global(sFolioPago)
+
+            If oPago.EXISTE = True Then
+
+                If oPago.TIMBRADO_CFDI = True Then
+                    MsgBox("El pago ya esta timbrado.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                If oPago.GeneraPagoElectronico(True, True) = True Then
+                    bResultado = True
+                End If
+            End If
+
+            oPago = Nothing
+
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
@@ -254,7 +282,21 @@
         Dim bResultado As Boolean = False
 
         Try
-            MsgBox("falta...")
+            If Me.GridPagos.ActiveCell.Row <= 0 Then
+                MsgBox("Debe seleccionar un pago.", MsgBoxStyle.Exclamation, Me.Name)
+                Return False
+            End If
+
+            Dim sFolioPago As String = Me.GridPagos.Cell(Me.GridPagos.ActiveCell.Row, Me.iGyPagoFOLIO).Text
+            Dim oPago As New Class_CXC_Pago_CFDI_Global(sFolioPago)
+
+            If oPago.EXISTE = True Then
+                If oPago.CancelarTimbre() = True Then
+                    MsgBox("Timbre cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+                    bResultado = True
+                End If
+            End If
+
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
