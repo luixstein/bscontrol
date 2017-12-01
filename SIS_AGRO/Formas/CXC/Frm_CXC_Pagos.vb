@@ -854,14 +854,6 @@ Buscar:
                 Return False
             End If
 
-            If Me.cboFormaPago.SelectedValue.ToString = "02" Or Me.cboFormaPago.SelectedValue.ToString = "03" Then '02=CHEQUE NOMINATIVO, 03=TRANSFERENCIA ELECTRONICA DE FONDOS
-                If Me.CboBancos.SelectedIndex = -1 Then
-                    MsgBox("Seleccione de favor un banco.", MsgBoxStyle.Exclamation, sProcedure)
-                    Me.CboBancos.Focus()
-                    Return False
-                End If
-            End If
-
             Me.BorraDocumentosSinPago()
 
             For iRow = 1 To Me.GridVentas.Rows - 1

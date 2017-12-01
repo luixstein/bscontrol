@@ -257,8 +257,8 @@ Module FacturacionElectronica
 
         Try
 
-            If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "PCSISTEMASFER" Or Usuario.Codigo_Usuario = "1" Then
-                MsgBox("Las computadoras de sistemas no deben cancelar timbres documentos.", MsgBoxStyle.Exclamation, sProcedure)
+            If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "PCSISTEMASFER" Or Usuario.Nombre_Usuario = "DBA" Then
+                MsgBox("Las computadoras de sistemas no deben cancelar timbres.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             Else
 
@@ -267,9 +267,7 @@ Module FacturacionElectronica
                 End If
 
                 If bModoDemo = True Then
-                    MsgBox("Esta el timbrado en modo demo")
-
-                    'demo.demo", "demo
+                    MsgBox("La cancelación de timbres esta modo demo")
 
                     Using cfd As New clsCFDI(Empresa_Sistema.BaseDatos, Empresa_Sistema.Servidor,
                                          sFelectronicaArchivoPFX, Decrypt(Empresa_Sistema.FELECTRONICA_CONTRASENIA_PFX, "ex8"),
