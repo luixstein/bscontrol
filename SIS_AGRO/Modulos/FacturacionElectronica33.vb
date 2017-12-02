@@ -24,8 +24,13 @@ Module FacturacionElectronica33
 
             'Nota1, no la copia en automático, porque ya lo debió haber hecho el gestionaArchivosCertificados
             'Nota2, se valida la versión que tenga el servidor en el instante por si tenemos fallo en la dll y se pare el timbrado.
+            If txtLEN(sqlResult.Result2) = False Then
+                MsgBox("No se encontró el dato VERSION_CFDI_DLL de acuerdo a la fecha de emisión.", vbExclamation, sProcedure)
+                Return False
+            End If
+
             If sqlResult.Result2 <> VersionArchivo(sFelectronicaDLLCFDILocal).ToString Then
-                MsgBox("La versión del archivo cfdi.dll(v " & VersionArchivo(sFelectronicaDLLCFDILocal) & ") es diferente del servidor(v " & Empresa_Sistema.VERSION_CFDI_DLL & "). " & vbCrLf &
+                MsgBox("La versión del archivo cfdi.dll(v " & VersionArchivo(sFelectronicaDLLCFDILocal) & ") es diferente del servidor(v " & sqlResult.Result2 & "). " & vbCrLf &
                 "No se podrán generar facturas electrónicas en este equipo. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
                 Return False
             End If
