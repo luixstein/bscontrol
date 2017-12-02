@@ -452,12 +452,12 @@ Friend Class cComplementoPagos
             'MsgBox ("duda: NumOperacion , validar que la lleve si es spei ?, no esta claro si deba ser obligatorio a llevar la clave de rastreo en caso de ser SPEI(Dice en la guia NumOperacion)"
 
             If dSumaPagado > valorNumerico(Me.Monto) Then
-                MsgBox("Monto : La suma de los valores registrados en el nodo DoctoRelacionados, atributo ImpPagado, sea menor o igual que el valor de este atributo.",
-                vbExclamation, sProcedure) : Exit Function
+                MsgBox("Monto : La suma de los valores registrados en el nodo DoctoRelacionados, atributo ImpPagado, sea menor o igual que el valor de este atributo." & vbCrLf &
+                       "Pago.Monto=" & Me.Monto & vbCrLf & "Suma DoctoRelacionados.ImpPagado=" & dSumaPagado.ToString, vbExclamation, sProcedure) : Exit Function
             End If
 
-            If dRow(0)("ES_BANCARIZADO").ToString = "1" And txtLEN(Me.TipoCadPago) = True Then
-                MsgBox("TipoCadPago : Se debe omitir si el banco no es bancarizado.", vbExclamation, sProcedure) : Exit Function
+            If dRow(0)("ES_BANCARIZADO").ToString = "0" And txtLEN(Me.TipoCadPago) = True Then
+                MsgBox("TipoCadPago : Se debe omitir si la forma de pago no es bancarizada.", vbExclamation, sProcedure) : Exit Function
             End If
 
             msgGenerico = "TipoCadPago : Si existe este campo es obligatorio registrar los campos ""CertificadoPago"",""CadenaPago"" y ""SelloPago"", en otro caso estos atributos no deben existir."

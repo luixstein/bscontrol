@@ -415,6 +415,111 @@ Module FacturacionElectronica33
         End Try
     End Function
 
+    Public Function GeneraPagoElectronico33Prueba() As Boolean
+        Const sProcedure As String = "GeneraPagoElectronico33Prueba"
+        Dim bResultado As Boolean = False
+
+        Dim ComprobanteFecha As String, PagoFechaPago As String
+        Dim Cfd As New cComprobante33
+        Dim sRutaXML As String = "C:\Agrinet\FELECTRONICA\AGRINET_LAND\Xmls_Pdfs\CULIACAN\PX-1.xml"
+
+        Try
+            ComprobanteFecha = Format(Date.Now, "yyyy-MM-dd") & "T" & Format(Date.Now, "hh:mm:ss")
+            PagoFechaPago = Format(Date.Now.AddDays(-1), "yyyy-MM-dd") & "T" & Format(Date.Now.AddDays(-1), "hh:mm:ss")
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Datos globales''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            With Cfd
+                .FolioCompleto = "PX-1"
+                .Version = "3.3"
+                .Serie = "PX"
+                .Folio = "1"
+                .Fecha = ComprobanteFecha
+                .Sello = ""                     'Inicialmente va en blanco, posteriormente se genera
+                .FormaPago = ""                 'Sat dice Omitir
+                .NoCertificado = ""             'Se llenan dentro de Cfd.Sellar(clase comprobante) y dentro se llama a SellarFactura(modulo FacturacionElectronica)
+                .Certificado = ""               'Igual que el anterior
+                .CondicionesDePago = ""         'Sat dice Omitir
+                .SubTotal = "0"                 'Sat dice 0
+                .Descuento = ""                 'Sat dice Omitir
+                .Moneda = "XXX"                 'Sat dice XXX
+                .TipoCambio = ""                'Sat dice Omitir
+                .Total = "0"                    'Sat dice 0
+                .TipoDeComprobante = "P"        'Sat dice P
+                .MetodoPago = ""                'Sat dice Omitir
+                .LugarExpedicion = "80430"
+                .Confirmacion = ""              'Nosotros no lo usaremos de momento
+            End With
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''CfdiRelacionados''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            'Nota en caso de pagos aqui no van las facturas que pagan, iria mas bien algún uuid que esta sustituyendo.
+            'Cfd.CfdiRelacionados.TipoRelacion = "04" '04=Sustitución de los CFDI previos
+            'Cfd.CfdiRelacionados.Add("F664C038-474C-414E-B40D-2E8C4A3EFCAC")
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Emisor''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            With Cfd.Emisor
+                .Rfc = fElectronicaValidaCampo(Empresa_Sistema.RFC)
+                .Nombre = fElectronicaValidaCampo(Empresa_Sistema.NOMBRE_EMPRESA)
+                .RegimenFiscal = fElectronicaValidaCampo("601")
+            End With
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Receptor''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            Dim sReceptorRFC As String, sReceptorNombre As String
+
+            sReceptorNombre = "PUBLICO GENERAL"
+            sReceptorRFC = Empresa_Sistema.RFC_VENTA_PUBLICO_GENERAL
+
+            With Cfd.Receptor
+                .Rfc = sReceptorRFC
+                .Nombre = sReceptorNombre
+                .UsoCFDI = "P01"
+            End With
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Conceptos'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            Dim ConceptoImpuestoTraslados As New iConceptoImpuestoTraslados33 'El SAT dice en la guia de complemento de pagos : Este nodo no debe existir , solamente le hacemos new
+            Dim ConceptoImpuestoRetenciones As New iConceptoImpuestoRetenciones33 'El SAT dice en la guia de complemento de pagos : Este nodo no debe existir , solamente le hacemos new
+
+            'El sat en la guia dice que debe llevar sólo un renglón del siguiente modo:
+            Cfd.Conceptos.Add("84111506", "", "1", "ACT", "", "Pago", "0", "0", "", ConceptoImpuestoTraslados, ConceptoImpuestoRetenciones)
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Impuestos'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            'Nodo: Impuestos(del nodo comprobante),El SAT dice en la guia de complemento de pagos : Este nodo no debe existir
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Complemento pagos'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            Dim complementoPagos As New cComplementoPagos
+
+            complementoPagos.CfdComprobanteLectura = Cfd 'Se ocupan validar ciertos datos del comprobante, por ello se le pasa el objeto
+
+            With complementoPagos
+                .Version = "1.0"
+                .FechaPago = PagoFechaPago
+                .FormaDePagoP = "03"
+                .MonedaP = "MXN"
+                .Monto = Format(CDec("70"), "#0.00")
+                .NumOperacion = "XXX111"
+                .RfcEmisorCtaOrd = ""
+                .NomBancoOrdExt = ""
+                .CtaOrdenante = "123456789012345666"
+                .RfcEmisorCtaBen = ""
+                .CtaBeneficiario = "123456789012345777"
+
+                .TipoCadPago = "01" 'Omitir de momento
+                .CertPago = "00000200002000002868" 'Omitir de momento
+                .CadPago = "||01|18052017|18052017|101822|40012|BANORTE/IXE|CONECCIONES AGRICOLAS S DE RL DE CV|40|072730006388659501|CAG091015DQ8|BBVA BANCOMER|PAQA SC DE RL DE CV|40|012730001527605177|PAQ060726T93|PAGO EFECTUADO|000000000000000.00|000000000010000.00|00000200002000002868||t9VZFki7mZJgM5emr5/mJpTHKDI8bhcX+rdxqjcWKn2fsAcxfzlVf4sL2AAjtOj/OtcYCIuEvvOr9AngRPdeQLKb9KlWXO+mM8HkVALeGjZ2iAoC/P2o8SUoJoPMi9yZGy+lbC+hiJxtx+WoN1Icdis/HcNFF66poWl+oSMHQrM=" 'Omitir de momento
+                .SelloPago = "t9VZFki7mZJgM5emr5/mJpTHKDI8bhcX+rdxqjcWKn2fsAcxfzlVf4sL2AAjtOj/OtcYCIuEvvOr9AngRPdeQLKb9KlWXO+mM8HkVALeGjZ2iAoC/P2o8SUoJoPMi9yZGy+lbC+hiJxtx+WoN1Icdis/HcNFF66poWl+oSMHQrM=" 'Omitir de momento
+
+                .DoctoRelacionados.Add("1454CD62-7425-4547-A346-744186C912F5", "F", "666", "MXN", "", "PPD", "1", Format(CDec("100"), "#0.00"), Format(CDec("70"), "#0.00"), Format(CDec("30"), "#0.00"))
+            End With
+
+            Cfd.ComplementoPagos10 = complementoPagos
+
+            'Fin de llenado de nodos del comprobante''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            If Cfd.GeneraCFD(TipoComprobante.PAGO_CXC, sRutaXML) = True Then
+                bResultado = True
+                MsgBox("Pago timbrado satisfactoriamente.", vbInformation, sProcedure)
+            End If
+
+        Catch ex As Exception
+            HandleError(nombreModulo, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
     Public Function GeneraPagoElectronico33(ByVal oPago As Class_CXC_Pago_CFDI_Global, ByVal bMostrarMensaje As Boolean, ByVal sRutaXML As String) As Boolean
         Const sProcedure As String = "GeneraPagoElectronico33"
         Dim bResultado As Boolean = False

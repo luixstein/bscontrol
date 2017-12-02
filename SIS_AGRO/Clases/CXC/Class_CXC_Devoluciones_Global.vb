@@ -1220,7 +1220,12 @@ Public Class Class_CXC_Devoluciones_Global
                 Return False
             End If
 
-            bResultado = CancelarCFDI(Me._FOLIO_DEVOLUCION, Me._SERIE, CInt(Me._FOLIO_NUMERICO), Me._FOLIO_FISCAL_SAT, Convert.ToInt32(Me._TIMBRADO_CFDI).ToString, TipoComprobante.DEVOLUCION_CXC)
+            If CancelarCFDIDevolucion(Me, TipoComprobante.DEVOLUCION_CXC) = False Then
+                MsgBox("El timbre no se pudo cancelar. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+                Return False
+            Else
+                bResultado = True
+            End If
 
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, sProcedure, ex)

@@ -567,6 +567,8 @@ Friend Class cComprobante33
             If Not (Me.ComplementoPagos10 Is Nothing) Then 'Si le pasó el complemento de pagos
                 If Me.ComplementoPagos10.GenerarNodoComplementoPagos = True Then
                     NodoComplemento.appendChild(Me.ComplementoPagos10.Complemento)
+                Else
+                    Return False
                 End If
 
                 'If Me.ComplementoPagos10.ComplementoGenerado = False Then

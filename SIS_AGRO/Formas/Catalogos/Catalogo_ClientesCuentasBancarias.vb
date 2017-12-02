@@ -184,7 +184,7 @@ Buscar:
         Dim bResultado As Boolean = False
         Try
             If Me.cboFormaPago.SelectedIndex = -1 Then
-                MsgBox("Asígne el método de pago.", MsgBoxStyle.Exclamation, Me.Name)
+                MsgBox("Seleccione la forma de pago.", MsgBoxStyle.Exclamation, Me.Name)
                 Me.cboFormaPago.Focus()
                 Return False
             End If

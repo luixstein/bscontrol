@@ -115,7 +115,7 @@ Partial Class Frm_CXC_CFDI_Pagos
         '
         'tsbCancelarTimbre
         '
-        Me.tsbCancelarTimbre.Image = Global.Agrinet.My.Resources.Resources._782
+        Me.tsbCancelarTimbre.Image = Global.BsControl.My.Resources.Resources._782
         Me.tsbCancelarTimbre.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbCancelarTimbre.Name = "tsbCancelarTimbre"
         Me.tsbCancelarTimbre.Size = New System.Drawing.Size(111, 22)
@@ -123,7 +123,7 @@ Partial Class Frm_CXC_CFDI_Pagos
         '
         'tsbTimbrar
         '
-        Me.tsbTimbrar.Image = Global.Agrinet.My.Resources.Resources._782
+        Me.tsbTimbrar.Image = Global.BsControl.My.Resources.Resources._782
         Me.tsbTimbrar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbTimbrar.Name = "tsbTimbrar"
         Me.tsbTimbrar.Size = New System.Drawing.Size(69, 22)
