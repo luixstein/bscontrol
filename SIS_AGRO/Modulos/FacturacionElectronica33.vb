@@ -718,6 +718,20 @@ Module FacturacionElectronica33
         Return bResultado
     End Function
 
+    Public Function GeneraNotaCreditoCXCElectronica33(ByVal oDescuento As Class_CXC_Descuento, ByVal bMostrarMensaje As Boolean, ByVal sRutaXML As String) As Boolean
+        Const sProcedure As String = "GeneraNotaCreditoCXCElectronica33"
+        Dim bResultado As Boolean = False
+
+        Try
+            MsgBox("FALTA")
+        Catch ex As Exception
+            HandleError(nombreModulo, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+
     Public Function GeneraDevolucionElectronica33(ByVal oDevolucion As Class_CXC_Devoluciones_Global, ByVal bMostrarMensaje As Boolean, ByVal sRutaXML As String) As Boolean
         Const sProcedure As String = "GeneraDevolucionElectronica33"
         Dim bResultado As Boolean = False

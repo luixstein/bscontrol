@@ -4,13 +4,13 @@ Imports System.Data.SqlClient
 
 Public Class Frm_CXC_Descuentos
 
+#Region "Campos privados"
     Private Enum enumEstados
         NUEVO
         APLICADO
         CANCELADO
     End Enum
 
-#Region "Campos privados"
     Private oDocumento As New Class_CatDocumentos
     Private Estado As enumEstados
 
@@ -22,6 +22,8 @@ Public Class Frm_CXC_Descuentos
 
     Private dtTotal As Double 'SUMA DE LO QUE SE HA APLICADO
     Private dtSubtotal As Double, dtIVA As Double
+
+    Private sMonedaAnterior As String, dViewFormasPago As New Data.DataView
 #End Region
 
 #Region "Columnas grid"
@@ -49,13 +51,16 @@ Public Class Frm_CXC_Descuentos
         If Me.oDescuentosCXC.ESTATUS_DESCUENTO = "A" Then
             If Me.Cancelar = True Then  'Se cancelo el documento correctamente = true
                 'If Me.oDescuentosCXC.ESTATUS_CANCELACION_CFDI = "0" Then
-                If Me.oDescuentosCXC.VERSION_ESQUEMA_XML > "2.2" AndAlso Me.oDocumento.TIMBRA_DOCUMENTO = True Then 'Si no se cumbre no es CFDi (por lo tanto no tiene timbre)
+                If Me.oDescuentosCXC.VERSION_ESQUEMA_XML > "2.2" AndAlso Me.oDocumento.TIMBRA_DOCUMENTO = True Then
                     Me.CancelarNotaCreditoElectronicaLocal()
                 End If
                 'End If
                 Me.Consultar()
                 Me.GestionaCambioEstado()
             End If
+        Else
+            MsgBox("El documento debe de estar en estatus de cancelado.", MsgBoxStyle.Exclamation, Me.Text)
+            Exit Sub
         End If
     End Sub
 
@@ -95,9 +100,11 @@ Public Class Frm_CXC_Descuentos
                 End If
             Else
                 MsgBox("El documento ya tiene acuse de cancelación.", MsgBoxStyle.Exclamation, Me.Text)
+                Exit Sub
             End If
         Else
             MsgBox("El documento no esta cancelado o el tiembre esta descartado.", MsgBoxStyle.Exclamation, Me.Text)
+            Exit Sub
         End If
     End Sub
 
@@ -138,62 +145,81 @@ Public Class Frm_CXC_Descuentos
     Private Sub Frm_CXC_Descuentos_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
             Me.DesplegarDocumentos()
+
+            Me.DesplegarMetodosPago()
+            Me.DesplegarMonedas()
+            Me.DesplegarFormasPago(False)
+            Me.DesplegarUsoCFDIPersonasFisicas() 'Finalmente sólo se usará el fijo G02 que sta en fisicas y morales
+
             Me.Inicializa()
             Me.Cambia_Estado(enumEstados.NUEVO)
+
+            If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
+                Me.cboUsoCFDI.Visible = False : Me.lblDisplayUsoCFDI.Visible = False
+                Me.cboMetodoPago.Visible = False : Me.lblDisplayMetodoPago.Visible = False
+            End If
         Catch ex As Exception
             HandleError(Me.Name, "Frm_CXC_Descuentos_Load", ex)
         End Try
     End Sub
 
     Private Sub TxtFolio_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtFolio.KeyDown
-        Dim sText As String
-        Select Case e.KeyCode
-            Case Keys.F6
-                sText = BusquedaVisual_PorDescripcion()
-                If txtLEN(sText) = True Then
-                    Me.TxtFolio.Text = sText
-                    Me.Consultar()
-                End If
-            Case Keys.Return
-                If txtLEN(Me.TxtFolio.Text) = True Then
-                    Me.Consultar()
-                    Me.TxtCodigoCliente.Focus()
-                Else
-                    Me.GeneraFolio()
-                End If
-        End Select
+        Try
+            Dim sText As String
+            Select Case e.KeyCode
+                Case Keys.F6
+                    sText = BusquedaVisual_PorDescripcion()
+                    If txtLEN(sText) = True Then
+                        Me.TxtFolio.Text = sText
+                        Me.Consultar()
+                    End If
+                Case Keys.Return
+                    If txtLEN(Me.TxtFolio.Text) = True Then
+                        Me.Consultar()
+                        Me.TxtCodigoCliente.Focus()
+                    Else
+                        Me.GeneraFolio()
+                    End If
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Name, "TxtFolio_KeyDown", ex)
+        End Try
     End Sub
 
     Private Sub TxtCodigoCliente_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoCliente.KeyDown
-        Dim sText As String
-        Select Case e.KeyCode
-            Case Keys.F6
+        Try
+            Dim sText As String
+            Select Case e.KeyCode
+                Case Keys.F6
 Buscar:
-                sText = Me.oCliente.BusquedaVisual_PorDescripcion
-                If txtLEN(sText) = True Then Me.TxtCodigoCliente.Text = sText
+                    sText = Me.oCliente.BusquedaVisual_PorDescripcion
+                    If txtLEN(sText) = True Then Me.TxtCodigoCliente.Text = sText
 
-            Case Keys.Enter
-                If txtLEN(Me.TxtCodigoCliente.Text) = False Then
-                    Me.LblCliente.Text = ""
-                    Me.TxtCodigoCliente.Focus()
-                    GoTo Buscar : Exit Sub
-                End If
-
-                Me.oCliente = New Class_CatClientes(Me.TxtCodigoCliente.Text)
-                If Me.oCliente.Existe = False Then
-                    'MsgBox("El código de Cliente que intenta buscar no existe o esta dado de baja, favor de intentar con otro código.", MsgBoxStyle.Exclamation, "Validación de Clientes")
-                    Me.LblCliente.Text = "" : GoTo Buscar : Exit Sub
-                Else
-                    Me.LblCliente.Text = Me.oCliente.NOMBRE_CLIENTE
-                    Me.TxtCodigoCliente.Enabled = False
-                    If Me.chkVentaPublicoGeneral.Checked = False Then
-                        'If Me.ValidarDatosCliente() = False Then
-                        '    Exit Sub
-                        'End If
+                Case Keys.Enter
+                    If txtLEN(Me.TxtCodigoCliente.Text) = False Then
+                        Me.LblCliente.Text = ""
+                        Me.TxtCodigoCliente.Focus()
+                        GoTo Buscar : Exit Sub
                     End If
-                    Me.dtFecha.Focus()
-                End If
-        End Select
+
+                    Me.oCliente = New Class_CatClientes(Me.TxtCodigoCliente.Text)
+                    If Me.oCliente.Existe = False Then
+                        'MsgBox("El código de Cliente que intenta buscar no existe o esta dado de baja, favor de intentar con otro código.", MsgBoxStyle.Exclamation, "Validación de Clientes")
+                        Me.LblCliente.Text = "" : GoTo Buscar : Exit Sub
+                    Else
+                        Me.LblCliente.Text = Me.oCliente.NOMBRE_CLIENTE
+                        Me.TxtCodigoCliente.Enabled = False
+                        If Me.chkVentaPublicoGeneral.Checked = False Then
+                            'If Me.ValidarDatosCliente() = False Then
+                            '    Exit Sub
+                            'End If
+                        End If
+                        Me.dtFecha.Focus()
+                    End If
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Name, "TxtCodigoCliente_KeyDown", ex)
+        End Try
 
     End Sub
 
@@ -344,7 +370,7 @@ Buscar:
                             End If
 
                             If Me.cboMoneda.Text = "USD" Then
-                                Me.GestionaUSD
+                                Me.GestionaUSD()
                             End If
 
                             Me.CalculaImpuestosYTotales("CALCULAR")
@@ -407,8 +433,8 @@ Buscar:
         txtNoBeep(e)
     End Sub
 
-    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtFolio.KeyPress, _
-    dtFecha.KeyPress, TxtConcepto.KeyPress, TxtConcepto2.KeyPress, TxtCodigoCliente.KeyPress, chkVentaPublicoGeneral.KeyPress, ckbDolares.KeyPress
+    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtFolio.KeyPress,
+    dtFecha.KeyPress, TxtConcepto.KeyPress, TxtConcepto2.KeyPress, TxtCodigoCliente.KeyPress, chkVentaPublicoGeneral.KeyPress
         txtNoBeep(e)
     End Sub
 #End Region
@@ -428,7 +454,6 @@ Buscar:
             Me.LblStatus.Text = "N"
             Me.TxtCodigoCliente.Text = ""
             Me.LblCliente.Text = ""
-            Me.ckbDolares.Checked = False
             Me.cboMoneda.Text = "MXN"
             Me.txtTipoCambio.Text = ""
             Me.txtImporteDolares.Text = ""
@@ -442,6 +467,20 @@ Buscar:
 
             Me.GeneraFolio()
             Me.InicializaGrid()
+
+            Me.DesplegarFormasPago(False)
+
+            If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
+                Me.cboFormaPago.SelectedValue = "NA" '01=EFECTIVO
+            Else
+                Me.cboFormaPago.SelectedValue = "99" '99=Por definir
+            End If
+
+            Me.cboMetodoPago.SelectedValue = "PUE"
+
+            Me.cboUsoCFDI.SelectedValue = "G02" 'G02=Devoluciones, descuentos o bonificaciones
+
+            Me.lblVersionCFDI.Text = ""
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
         End Try
@@ -631,6 +670,7 @@ Buscar:
     End Sub
 
     Private Function GestionaGrabar() As Boolean
+        Const sProcedure As String = "GestionaGrabar"
         Dim bResultado As Boolean = False
 
         Try
@@ -685,21 +725,31 @@ Buscar:
                 End If
             End If
         Catch ex As Exception
-            HandleError(Me.Name, "GestionaGrabar", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado
     End Function
 
     Private Function Grabar() As Boolean
+        Const sProcedure As String = "Grabar"
         Dim bResultado As Boolean = False
         Dim i As Integer
         Dim ListaDescuentos As String = ""
+        Dim sMetodoPago As String, sUsoCFDI As String
 
         Try
             Me.GeneraFolio()
 
             Me.oDescuentosCXC = New Class_CXC_Descuento
+
+            If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
+                sMetodoPago = ""
+                sUsoCFDI = ""
+            Else
+                sMetodoPago = Me.cboMetodoPago.SelectedValue.ToString
+                sUsoCFDI = Me.cboUsoCFDI.SelectedValue.ToString
+            End If
 
             For i = 1 To Me.Grid.Rows - 1
                 If valorNumericoD(Me.Grid.Cell(i, iGyDescuento).Text) > 0 Then
@@ -723,12 +773,19 @@ Buscar:
                 .CODIGO_USUARIO_GRABO = Usuario.Codigo_Usuario
                 .TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text)
                 .ES_POR_DEVOLUCION = "0"
-                .ES_COMPROBANTE_ELECTRONICO = IIf(Empresa_Sistema.FELECTRONICA_ACTIVA = True, "1", "0").ToString
+                If Empresa_Sistema.FELECTRONICA_ACTIVA = True Then
+                    .ES_COMPROBANTE_ELECTRONICO = "1"
+                Else
+                    .ES_COMPROBANTE_ELECTRONICO = "0"
+                End If
                 .ES_VENTA_PUBLICO_GENERAL = Convert.ToInt32(Me.chkVentaPublicoGeneral.Checked).ToString
-                .MONEDA = Me.cboMoneda.Text
+                .CODIGO_METODO_PAGO = Me.cboFormaPago.SelectedValue.ToString
+                .CODIGO_METODO_PAGO_EVENTO = sMetodoPago
+                .CODIGO_USO_CFDI = sUsoCFDI
+                .CODIGO_MONEDA_SAT = Me.cboMoneda.Text
                 .LISTA_DESCUENTOS = ListaDescuentos
 
-                If .InsertarDescuentos() = True Then
+                If .Grabar() = True Then
                     bResultado = True
                 End If
 
@@ -807,7 +864,7 @@ Buscar:
 
             oCliente = New Class_CatClientes(Me.TxtCodigoCliente.Text)
 
-            If oCliente.Existe = False Or oCliente.Estatus = "B" Then
+            If oCliente.Existe = False Or oCliente.ESTATUS = "B" Then
                 MsgBox("El código de Cliente que intenta introducir no existe o esta dado de baja, favor de intentar con otro código.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.LblCliente.Text = ""
                 Me.TxtCodigoCliente.Focus()
@@ -918,41 +975,41 @@ Buscar:
             If txtLEN(Me.oCliente.NOMBRE_CLIENTE) = False Or Me.oCliente.NOMBRE_CLIENTE = "." Then
                 MsgBox("El dato ''Nombre'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.TxtCodigoCliente.Focus()
-                Exit Function
+                Return False
             ElseIf txtLEN(Me.oCliente.RFC) = False Or Me.oCliente.RFC = "." Then
                 MsgBox("El dato ''RFC'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.TxtCodigoCliente.Focus()
-                Exit Function
+                Return False
             ElseIf txtLEN(Me.oCliente.CALLE) = False Or Me.oCliente.CALLE = "." Then
                 MsgBox("El dato ''Calle'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.TxtCodigoCliente.Focus()
-                Exit Function
+                Return False
             ElseIf txtLEN(Me.oCliente.NUMERO_EXTERIOR) = False Or Me.oCliente.NUMERO_EXTERIOR = "." Then
                 MsgBox("El dato ''Número exterior'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.TxtCodigoCliente.Focus()
-                Exit Function
+                Return False
             ElseIf txtLEN(Me.oCliente.CIUDAD) = False Or Me.oCliente.CIUDAD = "." Then
                 MsgBox("El dato ''Municipio'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.TxtCodigoCliente.Focus()
-                Exit Function
+                Return False
             ElseIf txtLEN(Me.oCliente.ESTADO) = False Or Me.oCliente.ESTADO = "." Then
                 MsgBox("El dato ''Estado'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.TxtCodigoCliente.Focus()
-                Exit Function
+                Return False
             ElseIf txtLEN(Me.oCliente.PAIS) = False Or Me.oCliente.PAIS = "." Then
                 MsgBox("El dato ''País'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.TxtCodigoCliente.Focus()
-                Exit Function
+                Return False
             ElseIf txtLEN(Me.oCliente.CODIGO_POSTAL) = False Or Me.oCliente.CODIGO_POSTAL = "." Then
                 MsgBox("El dato ''Código postal'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.TxtCodigoCliente.Focus()
-                Exit Function
+                Return False
             End If
+            Return True
         Catch ex As Exception
             HandleError(Me.Name, "ValidarDatosCliente", ex)
         End Try
 
-        Return True
     End Function
 
     Private Sub GestionaCambioEstado()
@@ -1183,33 +1240,49 @@ Buscar:
                 Me.Cambia_Estado(enumEstados.NUEVO)
                 Me.CboDocumento.Enabled = False
                 Me.TxtFolio.Enabled = False
-                Exit Function
+                Return False
             Else
-                Me.CboDocumento.Enabled = False
-                Me.TxtFolio.Enabled = False
+                Me.lblVersionCFDI.Text = "" & Me.oDescuentosCXC.VERSION_ESQUEMA_XML
+
+                Me.DesplegarFormasPago(True) 'Para forzar a que muestre todos incluso los que están dados de baja porque al consultarlos fallaria si no estuvieran.
 
                 Me.TxtFolio.Text = Me.oDescuentosCXC.FOLIO_DESCUENTO
 
+                Me.CboDocumento.Enabled = False
+                Me.TxtFolio.Enabled = False
+
                 Me.dtFecha.Value = oDescuentosCXC.FECHA
                 Me.LblStatus.Text = oDescuentosCXC.ESTATUS_DESCUENTO
-                'Me.LblPoliza.Text = oDescuentosCXC.FOLIO_POLIZA
                 Me.TxtConcepto.Text = oDescuentosCXC.CONCEPTO1
                 Me.TxtConcepto2.Text = oDescuentosCXC.CONCEPTO2
                 Me.TxtCodigoCliente.Text = oDescuentosCXC.CODIGO_CLIENTE
                 Me.LblCliente.Text = oDescuentosCXC.NOMBRE_CLIENTE
                 Me.LblPoliza.Text = oDescuentosCXC.FOLIO_POLIZA.ToString
 
-                Me.txtTipoCambio.Text = FormatTipoCambio(oDescuentosCXC.TIPO_DE_CAMBIO)
                 Me.TxtSubTotal.Text = FormatImporteContable(oDescuentosCXC.SUBTOTAL)
                 Me.txtIEPS.Text = FormatImporteContable(oDescuentosCXC.IEPS_DESGLOSADO)
                 Me.txtIEPSIncluido.Text = FormatImporteContable(oDescuentosCXC.IEPS_INCLUIDO)
                 Me.TxtImpuesto.Text = FormatImporteContable(oDescuentosCXC.IVA)
                 Me.TxtTotal.Text = FormatImporteContable(oDescuentosCXC.TOTAL)
-                Me.cboMoneda.Text = oDescuentosCXC.MONEDA
+                Me.cboMoneda.Text = oDescuentosCXC.CODIGO_MONEDA_SAT
+                Me.txtTipoCambio.Text = FormatTipoCambio(oDescuentosCXC.TIPO_DE_CAMBIO)
 
                 If oDescuentosCXC.TIPO_DE_CAMBIO > 0 Then
-                    Me.ckbDolares.Checked = True
                     Me.CalculaImporteDolares()
+                End If
+
+                Me.cboFormaPago.SelectedValue = Me.oDescuentosCXC.CODIGO_METODO_PAGO
+
+                If txtLEN("" & Me.oDescuentosCXC.CODIGO_METODO_PAGO_EVENTO) = True Then
+                    Me.cboMetodoPago.SelectedValue = Me.oDescuentosCXC.CODIGO_METODO_PAGO_EVENTO
+                Else
+                    Me.cboMetodoPago.SelectedIndex = -1
+                End If
+
+                If txtLEN("" & Me.oDescuentosCXC.CODIGO_USO_CFDI) = True Then
+                    Me.cboUsoCFDI.SelectedValue = Me.oDescuentosCXC.CODIGO_USO_CFDI
+                Else
+                    Me.cboUsoCFDI.SelectedIndex = -1
                 End If
 
                 Me.tssElaboro.Text = "Elaboró : " & Me.oDescuentosCXC.NOMBRE_USUARIO_GRABO & " el " & Format(Me.oDescuentosCXC.FECHA_SERVIDOR, "dd-MMM-yyyy hh:mm tt")
@@ -1356,12 +1429,21 @@ Buscar:
     End Function
 
     Private Sub GeneraFolio()
-        'Me.TxtFolio.Text = Me.oDescuentosCXC.GeneraFolio
-        Me.TxtFolio.Text = Me.oDocumento.GeneraFolio
+        Try
+            'Me.TxtFolio.Text = Me.oDescuentosCXC.GeneraFolio
+            Me.TxtFolio.Text = Me.oDocumento.GeneraFolio
+        Catch ex As Exception
+            HandleError(Me.Name, "GeneraFolio", ex)
+        End Try
     End Sub
 
     Private Sub Cambia_Estado(ByVal pEstado As enumEstados)
         Try
+            'Estos controles siempre deberán estar deshabilitados, se llenan automáticamente.
+            Me.txtTipoCambio.Enabled = False
+            Me.cboMetodoPago.Enabled = False
+            Me.cboUsoCFDI.Enabled = False
+
             Me.Estado = pEstado
             Select Case Me.Estado
                 Case enumEstados.NUEVO
@@ -1373,7 +1455,6 @@ Buscar:
                     Me.TxtCodigoCliente.Enabled = True
                     Me.TxtConcepto.Enabled = True
                     Me.TxtConcepto2.Enabled = True
-                    Me.ckbDolares.Enabled = True
                     Me.cboMoneda.Enabled = True
                     Me.chkVentaPublicoGeneral.Enabled = True
                     Me.txtTipoCambio.Enabled = False
@@ -1400,7 +1481,6 @@ Buscar:
                     Me.TxtCodigoCliente.Enabled = False
                     Me.TxtConcepto.Enabled = False
                     Me.TxtConcepto2.Enabled = False
-                    Me.ckbDolares.Enabled = False
                     Me.cboMoneda.Enabled = False
                     Me.chkVentaPublicoGeneral.Enabled = False
                     Me.txtTipoCambio.Enabled = False
@@ -1433,7 +1513,6 @@ Buscar:
                     Me.TxtCodigoCliente.Enabled = False
                     Me.TxtConcepto.Enabled = False
                     Me.TxtConcepto2.Enabled = False
-                    Me.ckbDolares.Enabled = False
                     Me.cboMoneda.Enabled = False
                     Me.chkVentaPublicoGeneral.Enabled = False
                     Me.txtTipoCambio.Enabled = False
@@ -1591,6 +1670,88 @@ Buscar:
         End Try
     End Sub
 
+    Private Sub DesplegarMetodosPago()
+        Dim dView As New Data.DataView
+        Try
+            With Me.cboMetodoPago
+                .DisplayMember = "NOMBRE_METODO_PAGO_EVENTO"
+                .ValueMember = "CODIGO_METODO_PAGO_EVENTO"
+                dView = New Data.DataView(dtMetodosPago)
+                .DataSource = dView
+                .SelectedValue = -1
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarMetodosPago", ex)
+        End Try
+    End Sub
+
+    Private Sub DesplegarMonedas()
+        Dim dView As New Data.DataView
+        Try
+            With Me.cboMoneda
+                .Items.Add("MXN")
+                .Items.Add("USD")
+                .Text = "MXN"
+                sMonedaAnterior = "MXN"
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarMonedas", ex)
+        End Try
+    End Sub
+
+    Private Sub DesplegarFormasPago(ByVal bTodos As Boolean)
+        'Dim dViewFormasPago As New Data.DataView
+        Try
+            With Me.cboFormaPago
+                .DisplayMember = "NOMBRE_METODO_PAGO"
+                .ValueMember = "CODIGO_METODO_PAGO"
+
+                If bTodos = True Then
+                    dViewFormasPago = New Data.DataView(dtFormasPagoTodas)
+                Else
+                    dViewFormasPago = New Data.DataView(dtFormasPagoActivas)
+                End If
+
+                .DataSource = dViewFormasPago
+                .SelectedIndex = -1
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarFormasPago", ex)
+        End Try
+    End Sub
+
+    'Private Sub EstableceMetodoPago()
+    '    Try
+    '        If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
+    '            If txtLEN(Me.TxtCodigoCliente.Text) = False Then
+    '                Me.cboFormaPago.SelectedValue = "NA"
+    '            End If
+    '        Else
+    '            MsgBox("falta ver el modo de poner el de la factura con descuento mas alto o que el usuario lo ponga.")
+    '            'Ver el modo
+    '            Me.cboFormaPago.SelectedValue = "99"
+    '        End If
+    '    Catch ex As Exception
+    '        HandleError(Me.Name, "EstableceMetodoPago", ex)
+    '    End Try
+    'End Sub
+
+    Private Sub DesplegarUsoCFDIPersonasFisicas()
+        Try
+            With Me.cboUsoCFDI
+                .DisplayMember = "NOMBRE_USO_CFDI"
+                .ValueMember = "CODIGO_USO_CFDI"
+                Dim dView As New Data.DataView(dtUsosCFDIPersonasFisicas)
+                dView.Sort = "NOMBRE_USO_CFDI"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedIndex = 0
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarUsoCFDIPersonasFisicas", ex)
+        End Try
+    End Sub
 
 #End Region
 

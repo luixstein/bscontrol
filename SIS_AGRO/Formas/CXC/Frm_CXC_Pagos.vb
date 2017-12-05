@@ -28,8 +28,8 @@ Public Class Frm_CXC_Pagos
 
 #Region "Columnas grid pago"
     Private iGyDocID_BANCOS_DETALLE As Integer = 1
-    Private iGyDocCODIGO_METODO_PAGO As Integer = 2
-    Private iGyDocNOMBRE_METODO_PAGO As Integer = 3
+    Private iGyDocCODIGO_FORMA_PAGO As Integer = 2
+    Private iGyDocNOMBRE_FORMA_PAGO As Integer = 3
     Private iGyDocFOLIO_DETALLE As Integer = 4
     Private iGyDocCODIGO_BANCO_EMISOR_NACIONAL As Integer = 5
     Private iGyDocNOMBRE_BANCO_EMISOR_NACIONAL As Integer = 6
@@ -153,6 +153,14 @@ Public Class Frm_CXC_Pagos
             HandleError(Me.Name, "btnVerCFDIS_Click", ex)
         End Try
 
+    End Sub
+    Private Sub cmdPruebaPagoCFDI_Click(sender As Object, e As EventArgs) Handles cmdPruebaPagoCFDI.Click
+        'Me.oBancosCXC.GeneraPagosElectronicos()
+        GeneraPagoElectronico33Prueba()
+    End Sub
+
+    Private Sub cmdSeleccionaSPEI_Click(sender As Object, e As EventArgs) Handles cmdSeleccionaSPEI.Click
+        Me.SeleccionarSPEI()
     End Sub
 
 #End Region
@@ -466,34 +474,48 @@ Buscar:
     End Sub
 
     Private Sub cboFormaPago_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboFormaPago.SelectedIndexChanged
-        'If Me.cboMetodoPago.Text.ToUpper = "EFECTIVO" Then
-        '    Me.txtCuentaEmisor.Text = ""
-        '    Me.CboBancos.SelectedIndex = -1
-        '    Me.txtCuentaEmisor.Visible = False : Me.lblDisplayCuentaEmisor.Visible = False
-        '    Me.CboBancos.Visible = False : Me.LblDisplayBanco.Visible = False
-        'Else
-        '    Me.txtCuentaEmisor.Visible = True : Me.lblDisplayCuentaEmisor.Visible = True
-        '    Me.CboBancos.Visible = True : Me.LblDisplayBanco.Visible = True
-        'End If
+        Try
+            Dim bEsFormaPagoBancarizada As Boolean = False
+            Dim oFormaPago As New Class_CFD_CatFormasPago
 
-        If Me.cboFormaPago.SelectedIndex <> -1 Then
-            If Me.cboFormaPago.SelectedValue.ToString = "02" Or Me.cboFormaPago.SelectedValue.ToString = "03" Then '02=CHEQUE NOMINATIVO, 03=TRANSFERENCIA ELECTRONICA DE FONDOS
+            If Me.cboFormaPago.SelectedIndex <> -1 Then
+                oFormaPago = New Class_CFD_CatFormasPago(Me.cboFormaPago.SelectedValue.ToString)
+
+                'If Me.cboFormaPago.SelectedValue.ToString = "02" Or Me.cboFormaPago.SelectedValue.ToString = "03" Then '02=CHEQUE NOMINATIVO, 03=TRANSFERENCIA ELECTRONICA DE FONDOS
+                If oFormaPago.ES_BANCARIZADO = True Then
+                    bEsFormaPagoBancarizada = True
+                End If
+            End If
+
+            If bEsFormaPagoBancarizada = True Then
                 Me.txtCuentaEmisor.Visible = True : Me.lblDisplayCuentaEmisor.Visible = True
                 Me.CboBancos.Visible = True : Me.LblDisplayBanco.Visible = True
 
-                If Me.cboFormaPago.SelectedValue.ToString = "02" Then
+                If Me.cboFormaPago.SelectedValue.ToString = "02" Then '02=Cheque
                     Me.dtFechaCheque.Visible = True : Me.lblDisplayFechaCheque.Visible = True
                 Else
                     Me.dtFechaCheque.Visible = False : Me.lblDisplayFechaCheque.Visible = False
                 End If
+                If oFormaPago.PERMITE_SPEI = True Then
+                    Me.cmdSeleccionaSPEI.Visible = True
+                    Me.txtSPEI_cadenaCDA.Visible = True : Me.txtSPEI_numeroCertificado.Visible = True : Me.txtSPEI_sello.Visible = True
+                Else
+                    Me.cmdSeleccionaSPEI.Visible = False
+                    Me.txtSPEI_cadenaCDA.Visible = False : Me.txtSPEI_numeroCertificado.Visible = False : Me.txtSPEI_sello.Visible = False
+                End If
+            Else
+                Me.txtCuentaEmisor.Text = ""
+                Me.CboBancos.SelectedIndex = -1
+                Me.CboBancos.Visible = False : Me.LblDisplayBanco.Visible = False
+                Me.txtCuentaEmisor.Visible = False : Me.lblDisplayCuentaEmisor.Visible = False
+                Me.CboBancos.Visible = False : Me.LblDisplayBanco.Visible = False
+                Me.dtFechaCheque.Visible = False : Me.lblDisplayFechaCheque.Visible = False
+                Me.cmdSeleccionaSPEI.Visible = False
+                Me.txtSPEI_cadenaCDA.Visible = False : Me.txtSPEI_numeroCertificado.Visible = False : Me.txtSPEI_sello.Visible = False
             End If
-        Else
-            Me.txtCuentaEmisor.Text = ""
-            Me.CboBancos.SelectedIndex = -1
-            Me.txtCuentaEmisor.Visible = False : Me.lblDisplayCuentaEmisor.Visible = False
-            Me.CboBancos.Visible = False : Me.LblDisplayBanco.Visible = False
-            Me.dtFechaCheque.Visible = False : Me.lblDisplayFechaCheque.Visible = False
-        End If
+        Catch ex As Exception
+            HandleError(Me.Name, "cboFormaPago_SelectedIndexChanged", ex)
+        End Try
     End Sub
 
     Private Sub cboCuentaEmisor_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboCuentaEmisor.SelectedIndexChanged
@@ -756,8 +778,8 @@ Buscar:
         Try
             With Me.GridDocumentosPago
                 .Column(Me.iGyDocID_BANCOS_DETALLE).Visible = False
-                .Column(Me.iGyDocCODIGO_METODO_PAGO).Width = 80
-                .Column(Me.iGyDocNOMBRE_METODO_PAGO).Width = 110
+                .Column(Me.iGyDocCODIGO_FORMA_PAGO).Width = 80
+                .Column(Me.iGyDocNOMBRE_FORMA_PAGO).Width = 110
                 .Column(Me.iGyDocFOLIO_DETALLE).Width = 70
                 .Column(Me.iGyDocCODIGO_BANCO_EMISOR_NACIONAL).Width = 100
                 .Column(Me.iGyDocNOMBRE_BANCO_EMISOR_NACIONAL).Width = 110
@@ -766,10 +788,12 @@ Buscar:
                 .Column(Me.iGyDocRFC_EMISOR).Width = 90
                 .Column(Me.iGyDocMONTO).Width = 80
                 .Column(Me.iGyDocCODIGO_MONEDA_SAT).Width = 60
+                .Column(Me.iGyDocCUENTA_BENEFICIARIO).Width = 0
+                .Column(Me.iGyDocCODIGO_BANCO_DESTINO_NACIONAL).Width = 0
 
                 .Cell(0, Me.iGyDocID_BANCOS_DETALLE).Text = ""
-                .Cell(0, Me.iGyDocCODIGO_METODO_PAGO).Text = "Método pago"
-                .Cell(0, Me.iGyDocNOMBRE_METODO_PAGO).Text = "Nombre"
+                .Cell(0, Me.iGyDocCODIGO_FORMA_PAGO).Text = "Forma pago"
+                .Cell(0, Me.iGyDocNOMBRE_FORMA_PAGO).Text = "Nombre"
                 .Cell(0, Me.iGyDocFOLIO_DETALLE).Text = "Folio pago"
                 .Cell(0, Me.iGyDocCODIGO_BANCO_EMISOR_NACIONAL).Text = "Banco origen"
                 .Cell(0, Me.iGyDocNOMBRE_BANCO_EMISOR_NACIONAL).Text = "Nombre"
@@ -1250,7 +1274,7 @@ Buscar:
             End If
             oBancosCXC.CODIGO_MONEDA_SAT = Me.cboMoneda.Text
 
-            If Me.GridDocumentosPago.Cell(1, Me.iGyDocCODIGO_METODO_PAGO).Text = "02" Then '02=Cheque
+            If Me.GridDocumentosPago.Cell(1, Me.iGyDocCODIGO_FORMA_PAGO).Text = "02" Then '02=Cheque
                 oBancosCXC.FECHA_CHEQUE = Me.dtFechaCheque.Value
             Else
                 oBancosCXC.FECHA_CHEQUE = Me.dtFecha.Value 'Importa cuando es cheque, si es otro va grabar el que sea(no tiene importancia)
@@ -1269,7 +1293,7 @@ Buscar:
                     sFolioPago = Me.GridDocumentosPago.Cell(i, Me.iGyDocFOLIO_DETALLE).Text.ToUpper
 
                     If txtLEN(sFolioPago) = True Then
-                        lID_BANCOS_DETALLE = oBancosCXC.AgregaDocumentoPago(Me.TxtFolio.Text, .Cell(i, Me.iGyDocCODIGO_METODO_PAGO).Text, .Cell(i, Me.iGyDocFOLIO_DETALLE).Text,
+                        lID_BANCOS_DETALLE = oBancosCXC.AgregaDocumentoPago(Me.TxtFolio.Text, .Cell(i, Me.iGyDocCODIGO_FORMA_PAGO).Text, .Cell(i, Me.iGyDocFOLIO_DETALLE).Text,
                                   .Cell(i, Me.iGyDocCODIGO_BANCO_EMISOR_NACIONAL).Text, .Cell(i, Me.iGyDocCUENTA_EMISOR).Text,
                                   CDate(.Cell(i, Me.iGyDocFECHA).Text), .Cell(i, Me.iGyDocRFC_EMISOR).Text, valorNumerico(.Cell(i, Me.iGyDocMONTO).Text),
                                  .Cell(i, Me.iGyDocCODIGO_MONEDA_SAT).Text, valorNumerico(txtTipoCambio.Text),
@@ -2540,8 +2564,8 @@ Buscar:
 
                 .Rows += 1
                 .Cell(r, Me.iGyDocID_BANCOS_DETALLE).Text = ""
-                .Cell(r, Me.iGyDocCODIGO_METODO_PAGO).Text = Me.cboFormaPago.SelectedValue.ToString
-                .Cell(r, Me.iGyDocNOMBRE_METODO_PAGO).Text = Me.cboFormaPago.Text
+                .Cell(r, Me.iGyDocCODIGO_FORMA_PAGO).Text = Me.cboFormaPago.SelectedValue.ToString
+                .Cell(r, Me.iGyDocNOMBRE_FORMA_PAGO).Text = Me.cboFormaPago.Text
                 .Cell(r, Me.iGyDocFOLIO_DETALLE).Text = Me.txtFolioDetalle.Text.ToUpper
 
                 'If Me.cboFormaPago.SelectedValue.ToString = "02" Or Me.cboFormaPago.SelectedValue.ToString = "03" Then '02=CHEQUE NOMINATIVO, 03=TRANSFERENCIA ELECTRONICA DE FONDOS
@@ -2986,10 +3010,101 @@ Buscar:
         End Try
     End Sub
 
-    Private Sub cmdPruebaPagoCFDI_Click(sender As Object, e As EventArgs) Handles cmdPruebaPagoCFDI.Click
-        'Me.oBancosCXC.GeneraPagosElectronicos()
-        GeneraPagoElectronico33Prueba()
-    End Sub
+    Private Function SeleccionarSPEI() As Boolean
+        Try
+            Dim OpenFileDialog1 As New OpenFileDialog(), sRutaXML As String = ""
+
+            With OpenFileDialog1
+                '.InitialDirectory = My.Settings.Ruta & FolderRpt
+                .Filter = "xml files (*.xml)|*.xml"
+                .Title = "Seleccione un xml de tipo SPEI"
+                .RestoreDirectory = True
+                .Multiselect = False
+
+                If .ShowDialog() = DialogResult.OK Then
+                    sRutaXML = .FileName
+                End If
+            End With
+
+            OpenFileDialog1.Dispose()
+
+            If txtLEN(sRutaXML) = True Then
+                Me.ObtieneDatosSPEI(sRutaXML)
+            End If
+
+        Catch ex As Exception
+            HandleError(Me.Name, "SeleccionarSPEI", ex)
+        End Try
+    End Function
+
+    Private Function ObtieneDatosSPEI(ByVal sRutaXML As String) As Boolean
+        Const sProcedure As String = "ObtieneDatosSPEI"
+        Dim bResultado As Boolean = False
+
+        Try
+            Dim xmlDoc As MSXML2.DOMDocument60
+
+            'sRutaXML = "E:\_Documentacion\_Sellos digitales fact ele PASSA\CFDI 3.3 y complemento pagos\ComplementoPagos\spei_CEP-20170518-8846CAP3201705180451295223.xml"
+
+            Me.txtSPEI_numeroCertificado.Text = ""
+            Me.txtSPEI_sello.Text = ""
+            Me.txtSPEI_cadenaCDA.Text = ""
+
+            xmlDoc = New MSXML2.DOMDocument60
+            xmlDoc.load(sRutaXML)
+
+            Dim Nodo As MSXML2.IXMLDOMNode
+
+            Nodo = xmlDoc.selectSingleNode("//@numeroCertificado")
+            If Not (Nodo Is Nothing) Then
+                Me.txtSPEI_numeroCertificado.Text = Nodo.text
+            Else
+                MsgBox("El xml seleccionado no es de tipo SPEI.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            Nodo = xmlDoc.selectSingleNode("//@sello")
+            If Not (Nodo Is Nothing) Then
+                Me.txtSPEI_sello.Text = Nodo.text
+            End If
+
+            Nodo = xmlDoc.selectSingleNode("//@cadenaCDA")
+            If Not (Nodo Is Nothing) Then
+                Me.txtSPEI_cadenaCDA.Text = Nodo.text
+            End If
+
+            Nodo = xmlDoc.selectSingleNode("/SPEI_Tercero/Ordenante/@Cuenta")
+            If Not (Nodo Is Nothing) Then
+                Me.txtCuentaEmisor.Text = Nodo.text
+            End If
+
+            Nodo = xmlDoc.selectSingleNode("/SPEI_Tercero/Ordenante/@RFC")
+            If Not (Nodo Is Nothing) Then
+                Me.txtRFCEmisor.Text = Nodo.text
+            End If
+
+            Nodo = xmlDoc.selectSingleNode("/SPEI_Tercero/Beneficiario/@MontoPago")
+            If Not (Nodo Is Nothing) Then
+                Me.txtMonto.Text = FormatImporteContable(valorNumericoD(Nodo.text))
+            End If
+
+            Nodo = xmlDoc.selectSingleNode("//@FechaOperacion")
+            If Not (Nodo Is Nothing) Then
+                Me.dtFechaPagoCliente.Value = CDate(Nodo.text)
+            End If
+
+            Me.CboBancos.SelectedValue = Me.txtCuentaEmisor.Text.Substring(0, 3)
+
+            'Set Nodo = xmlDoc.selectSingleNode("/SPEI_Tercero/Beneficiario/@Cuenta")'Así podemos extraer datos de los otros nodos del spei
+
+            bResultado = True
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
 
 #End Region
 

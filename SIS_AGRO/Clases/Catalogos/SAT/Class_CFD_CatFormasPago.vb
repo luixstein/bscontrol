@@ -13,6 +13,7 @@ Public Class Class_CFD_CatFormasPago
     Private _ESTATUS As String
     Private _ES_BANCARIZADO As Boolean
     Private _DIGITOS As Integer
+    Private _PERMITE_SPEI As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -75,6 +76,13 @@ Public Class Class_CFD_CatFormasPago
             Return Me._DIGITOS
         End Get
     End Property
+
+    Public ReadOnly Property PERMITE_SPEI() As Boolean
+        Get
+            Return Me._PERMITE_SPEI
+        End Get
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -228,6 +236,7 @@ Public Class Class_CFD_CatFormasPago
                     End If
                     'Me._ES_BANCARIZADO = CBool(dReader("ES_BANCARIZADO").ToString)'No se usa este modo porque hay formas de pago con la letra P(opcional) en vez de 0 1
                     Me._DIGITOS = CInt(dReader("DIGITOS").ToString)
+                    Me._PERMITE_SPEI = CBool(dReader("PERMITE_SPEI").ToString)
 
                     bResultado = True
                 End If

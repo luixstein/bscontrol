@@ -100,6 +100,10 @@ Partial Class Frm_CXC_Pagos
         Me.btnEliminarDocumentoPago = New System.Windows.Forms.Button()
         Me.GridDocumentosPago = New FlexCell.Grid()
         Me.btnVerCFDIS = New System.Windows.Forms.Button()
+        Me.cmdSeleccionaSPEI = New System.Windows.Forms.Button()
+        Me.txtSPEI_cadenaCDA = New System.Windows.Forms.TextBox()
+        Me.txtSPEI_sello = New System.Windows.Forms.TextBox()
+        Me.txtSPEI_numeroCertificado = New System.Windows.Forms.TextBox()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbAgregaDocCliente.SuspendLayout()
@@ -864,11 +868,48 @@ Partial Class Frm_CXC_Pagos
         Me.btnVerCFDIS.Text = "Ver CFDI's"
         Me.btnVerCFDIS.UseVisualStyleBackColor = True
         '
+        'cmdSeleccionaSPEI
+        '
+        Me.cmdSeleccionaSPEI.Location = New System.Drawing.Point(1045, 349)
+        Me.cmdSeleccionaSPEI.Name = "cmdSeleccionaSPEI"
+        Me.cmdSeleccionaSPEI.Size = New System.Drawing.Size(106, 24)
+        Me.cmdSeleccionaSPEI.TabIndex = 387
+        Me.cmdSeleccionaSPEI.Text = "Selecciona SPEI"
+        Me.cmdSeleccionaSPEI.UseVisualStyleBackColor = True
+        '
+        'txtSPEI_cadenaCDA
+        '
+        Me.txtSPEI_cadenaCDA.Location = New System.Drawing.Point(1048, 324)
+        Me.txtSPEI_cadenaCDA.MaxLength = 0
+        Me.txtSPEI_cadenaCDA.Name = "txtSPEI_cadenaCDA"
+        Me.txtSPEI_cadenaCDA.Size = New System.Drawing.Size(103, 20)
+        Me.txtSPEI_cadenaCDA.TabIndex = 386
+        '
+        'txtSPEI_sello
+        '
+        Me.txtSPEI_sello.Location = New System.Drawing.Point(1048, 298)
+        Me.txtSPEI_sello.MaxLength = 0
+        Me.txtSPEI_sello.Name = "txtSPEI_sello"
+        Me.txtSPEI_sello.Size = New System.Drawing.Size(103, 20)
+        Me.txtSPEI_sello.TabIndex = 385
+        '
+        'txtSPEI_numeroCertificado
+        '
+        Me.txtSPEI_numeroCertificado.Location = New System.Drawing.Point(1048, 272)
+        Me.txtSPEI_numeroCertificado.MaxLength = 0
+        Me.txtSPEI_numeroCertificado.Name = "txtSPEI_numeroCertificado"
+        Me.txtSPEI_numeroCertificado.Size = New System.Drawing.Size(103, 20)
+        Me.txtSPEI_numeroCertificado.TabIndex = 384
+        '
         'Frm_CXC_Pagos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1152, 639)
+        Me.Controls.Add(Me.cmdSeleccionaSPEI)
+        Me.Controls.Add(Me.txtSPEI_cadenaCDA)
+        Me.Controls.Add(Me.txtSPEI_sello)
+        Me.Controls.Add(Me.txtSPEI_numeroCertificado)
         Me.Controls.Add(Me.btnVerCFDIS)
         Me.Controls.Add(Me.gbDocumentosPago)
         Me.Controls.Add(Me.gbAgregaDocCliente)
@@ -974,4 +1015,8 @@ Partial Class Frm_CXC_Pagos
     Friend WithEvents dtFechaCheque As DateTimePicker
     Friend WithEvents lblDisplayFechaCheque As Label
     Friend WithEvents btnVerCFDIS As Button
+    Friend WithEvents cmdSeleccionaSPEI As Button
+    Friend WithEvents txtSPEI_cadenaCDA As TextBox
+    Friend WithEvents txtSPEI_sello As TextBox
+    Friend WithEvents txtSPEI_numeroCertificado As TextBox
 End Class

@@ -1,6 +1,5 @@
 ﻿Option Strict On
 
-Imports System.Data
 Imports System.Data.SqlClient
 Imports CrystalDecisions.CrystalReports.Engine
 Imports CrystalDecisions.Shared
@@ -34,7 +33,7 @@ Public Class Class_CXC_Descuento
     Private _IEPS_DESGLOSADO As Double
     Private _IEPS_INCLUIDO As Double
     Private _TOTAL As Double
-    Private _MONEDA As String
+
     Private _ES_COMPROBANTE_ELECTRONICO As String
     Private _FOLIO_NUMERICO As Integer
     Private _IDCATALOGO_FOLIO_FELECTRONICA As Integer
@@ -45,11 +44,8 @@ Public Class Class_CXC_Descuento
     Private _ES_POR_DEVOLUCION As String
     Private _IMPUESTO_PORCENTAJE As Double
     Private _RETENCION As Double
-    'CFD
     Private _CODIGO_METODO_PAGO As String
     Private _CODIGO_REGIMEN_FISCAL As Integer
-
-    'CFDi
     Private _FOLIO_FISCAL_SAT As String
     Private _FECHA_TIMBRADO_SAT As String
     Private _NUMERO_SERIE_CERTIFICADO_SAT As String
@@ -61,6 +57,10 @@ Public Class Class_CXC_Descuento
     Private _TIMBRADO_DESCARTADO As String
     Private _VERSION_ESQUEMA_XML As String
     Private _SERIE As String
+    Private _CODIGO_METODO_PAGO_EVENTO As String
+    Private _CODIGO_USO_CFDI As String
+    Private _CODIGO_MONEDA_SAT As String
+    Private _CODIGO_TIPO_RELACION_CFDI As String
 
 #End Region
 
@@ -137,13 +137,10 @@ Public Class Class_CXC_Descuento
             Me._CODIGO_CLIENTE = value
         End Set
     End Property
-    Public Property NOMBRE_CLIENTE() As String
+    Public ReadOnly Property NOMBRE_CLIENTE() As String
         Get
             Return Me._NOMBRE_CLIENTE
         End Get
-        Set(ByVal value As String)
-            Me._NOMBRE_CLIENTE = value
-        End Set
     End Property
 
     Public Property FECHA() As Date
@@ -155,13 +152,10 @@ Public Class Class_CXC_Descuento
         End Set
     End Property
 
-    Public Property FECHA_SERVIDOR() As Date
+    Public ReadOnly Property FECHA_SERVIDOR() As Date
         Get
             Return Me._FECHA_SERVIDOR
         End Get
-        Set(ByVal value As Date)
-            Me._FECHA_SERVIDOR = value
-        End Set
     End Property
 
     Public Property ESTATUS_DESCUENTO() As String
@@ -209,13 +203,10 @@ Public Class Class_CXC_Descuento
         End Set
     End Property
 
-    Public Property NOMBRE_USUARIO_GRABO() As String
+    Public ReadOnly Property NOMBRE_USUARIO_GRABO() As String
         Get
             Return Me._NOMBRE_USUARIO_GRABO
         End Get
-        Set(ByVal value As String)
-            Me._NOMBRE_USUARIO_GRABO = value
-        End Set
     End Property
 
     Public Property CODIGO_USUARIO_CANCELO() As Integer
@@ -227,13 +218,10 @@ Public Class Class_CXC_Descuento
         End Set
     End Property
 
-    Public Property NOMBRE_USUARIO_CANCELO() As String
+    Public ReadOnly Property NOMBRE_USUARIO_CANCELO() As String
         Get
             Return Me._NOMBRE_USUARIO_CANCELO
         End Get
-        Set(ByVal value As String)
-            Me._NOMBRE_USUARIO_CANCELO = value
-        End Set
     End Property
 
     Public Property FECHA_CANCELACION() As Date
@@ -245,13 +233,10 @@ Public Class Class_CXC_Descuento
         End Set
     End Property
 
-    Public Property FECHA_CANCELACION_SERVIDOR() As Date
+    Public ReadOnly Property FECHA_CANCELACION_SERVIDOR() As Date
         Get
             Return Me._FECHA_CANCELACION_SERVIDOR
         End Get
-        Set(ByVal value As Date)
-            Me._FECHA_CANCELACION_SERVIDOR = value
-        End Set
     End Property
 
     Public Property TIPO_DE_CAMBIO() As Double
@@ -326,14 +311,6 @@ Public Class Class_CXC_Descuento
         End Set
     End Property
 
-    Public Property MONEDA() As String
-        Get
-            Return Me._MONEDA
-        End Get
-        Set(ByVal value As String)
-            Me._MONEDA = value
-        End Set
-    End Property
 
     Public WriteOnly Property ES_COMPROBANTE_ELECTRONICO() As String
         Set(ByVal value As String)
@@ -389,7 +366,6 @@ Public Class Class_CXC_Descuento
         End Set
     End Property
 
-    'CFD
     Public Property CODIGO_METODO_PAGO() As String
         Get
             Return Me._CODIGO_METODO_PAGO
@@ -399,17 +375,12 @@ Public Class Class_CXC_Descuento
         End Set
     End Property
 
-    'CFD
-    Public Property CODIGO_REGIMEN_FISCAL() As Integer
+    Public ReadOnly Property CODIGO_REGIMEN_FISCAL() As Integer
         Get
             Return Me._CODIGO_REGIMEN_FISCAL
         End Get
-        Set(ByVal Value As Integer)
-            Me._CODIGO_REGIMEN_FISCAL = Value
-        End Set
     End Property
 
-    'CFDi
     Public ReadOnly Property FOLIO_FISCAL_SAT() As String
         Get
             Return Me._FOLIO_FISCAL_SAT
@@ -474,6 +445,41 @@ Public Class Class_CXC_Descuento
         Get
             Return Me._SERIE
         End Get
+    End Property
+    Public Property CODIGO_METODO_PAGO_EVENTO() As String
+        Get
+            Return Me._CODIGO_METODO_PAGO_EVENTO
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_METODO_PAGO_EVENTO = Value
+        End Set
+    End Property
+
+    Public Property CODIGO_USO_CFDI() As String
+        Get
+            Return Me._CODIGO_USO_CFDI
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_USO_CFDI = Value
+        End Set
+    End Property
+
+    Public Property CODIGO_MONEDA_SAT() As String
+        Get
+            Return Me._CODIGO_MONEDA_SAT
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_MONEDA_SAT = Value
+        End Set
+    End Property
+
+    Public Property CODIGO_TIPO_RELACION_CFDI() As String
+        Get
+            Return Me._CODIGO_TIPO_RELACION_CFDI
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_TIPO_RELACION_CFDI = Value
+        End Set
     End Property
 #End Region
 
@@ -569,7 +575,7 @@ Public Class Class_CXC_Descuento
 
 #Region "Métodos y procedimientos"
 
-    Public Function InsertarDescuentos() As Boolean
+    Public Function Grabar() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -596,8 +602,11 @@ Public Class Class_CXC_Descuento
             sqlParametro = .Parameters.Add("@ES_POR_DEVOLUCION", SqlDbType.Char, 1) : sqlParametro.Value = Me._ES_POR_DEVOLUCION
             sqlParametro = .Parameters.Add("@ES_COMPROBANTE_ELECTRONICO", SqlDbType.Char, 1) : sqlParametro.Value = Me._ES_COMPROBANTE_ELECTRONICO
             sqlParametro = .Parameters.Add("@ES_VENTA_PUBLICO_GENERAL", SqlDbType.Char, 1) : sqlParametro.Value = Me._ES_VENTA_PUBLICO_GENERAL
-            sqlParametro = .Parameters.Add("@MONEDA", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._MONEDA
             sqlParametro = .Parameters.Add("@LISTA_DESCUENTOS", SqlDbType.NVarChar, -1) : sqlParametro.Value = Me._LISTA_DESCUENTOS
+            sqlParametro = .Parameters.Add("@CODIGO_METODO_PAGO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_METODO_PAGO
+            sqlParametro = .Parameters.Add("@CODIGO_METODO_PAGO_EVENTO", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_METODO_PAGO_EVENTO
+            sqlParametro = .Parameters.Add("@CODIGO_USO_CFDI", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_USO_CFDI
+            sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_MONEDA_SAT
 
             Try
                 Me._Conexion.Open()
@@ -605,7 +614,7 @@ Public Class Class_CXC_Descuento
                 bResultado = True
                 Me._FOLIO_DESCUENTO = "" & .Parameters("@FOLIO_DESCUENTO").Value.ToString
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "InsertarDescuentos", ex)
+                HandleError(Me.Nombre_Clase, "Grabar", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -688,7 +697,7 @@ Public Class Class_CXC_Descuento
                 Me._Conexion.Open()
                 dReader = .ExecuteReader()
 
-                If dReader.Read Then
+                If dReader.Read = True Then
 
                     Me._ID_CXC_DESCUENTOS_GLOBAL = CType(dReader("ID_CXC_DESCUENTOS_GLOBAL"), Integer)
                     Me._FOLIO_DESCUENTO = CType(dReader("FOLIO_DESCUENTO"), String)
@@ -710,7 +719,6 @@ Public Class Class_CXC_Descuento
                     Me._IEPS_INCLUIDO = CType(dReader("IEPS_INCLUIDO"), Double)
                     Me._IVA = CType(dReader("IVA"), Double)
                     Me._TOTAL = CType(dReader("TOTAL"), Double)
-                    Me._MONEDA = dReader("MONEDA").ToString
                     Me._IMPUESTO_PORCENTAJE = CType(dReader("IMPUESTO_PORCENTAJE"), Double)
                     Me._RETENCION = CType(dReader("RETENCION"), Double)
                     Me._ES_COMPROBANTE_ELECTRONICO = CType(dReader("ES_COMPROBANTE_ELECTRONICO"), String)
@@ -726,7 +734,7 @@ Public Class Class_CXC_Descuento
                         Me._CODIGO_USUARIO_CANCELO = CType(dReader("CODIGO_USUARIO_CANCELO"), Integer)
                         Me._NOMBRE_USUARIO_CANCELO = CType(dReader("NOMBRE_USUARIO_CANCELO"), String)
                         Me._FECHA_CANCELACION = CType(dReader("FECHA_CANCELACION"), Date)
-                        'Me._FECHA_CANCELACION_SERVIDOR = CType(dReader("FECHA_CANCELACION_SERVIDOR"), Date)
+                        Me._FECHA_CANCELACION_SERVIDOR = CType(dReader("FECHA_CANCELACION_SERVIDOR"), Date)
                     End If
                     Me._CODIGO_METODO_PAGO = dReader("CODIGO_METODO_PAGO").ToString
                     Me._CODIGO_REGIMEN_FISCAL = CType(dReader("CODIGO_REGIMEN_FISCAL"), Integer)
@@ -735,7 +743,6 @@ Public Class Class_CXC_Descuento
                     Me._FELECTRONICA_CER = "" & dReader("FELECTRONICA_CER").ToString
                     Me._FELECTRONICA_KEY = "" & dReader("FELECTRONICA_KEY").ToString
                     Me._FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA = IIf(txtLEN("" & dReader("CONTRASEÑA").ToString) = True, Decrypt("" & dReader("CONTRASEÑA").ToString, "r7"), "").ToString
-                    'CFDi
                     Me._FOLIO_FISCAL_SAT = "" & dReader("FOLIO_FISCAL_SAT").ToString
                     Me._FECHA_TIMBRADO_SAT = "" & dReader("FECHA_TIMBRADO_SAT").ToString
                     Me._NUMERO_SERIE_CERTIFICADO_SAT = "" & dReader("NUMERO_SERIE_CERTIFICADO_SAT").ToString
@@ -745,7 +752,6 @@ Public Class Class_CXC_Descuento
                     Else
                         Me._CBB_IMAGE = "" '& dReader("CBB_IMAGE").ToString
                     End If
-                    'Me._FOLIO_FISCAL_CANCELACION_SAT = "" & dReader("FOLIO_FISCAL_CANCELACION_SAT").ToString
                     Me._TIMBRADO_CFDI = "" & dReader("TIMBRADO_CFDI").ToString
                     Me._ESTATUS_CANCELACION_CFDI = "" & dReader("ESTATUS_CANCELACION_CFDI").ToString
                     Me._TIMBRADO_DESCARTADO = "" & dReader("TIMBRADO_DESCARTADO").ToString
@@ -753,6 +759,10 @@ Public Class Class_CXC_Descuento
                     Me._SERIE = "" & Trim(dReader("SERIE").ToString)
 
                     Me._Nombre_Formato = "" & Trim(dReader("NOMBRE_FORMATO").ToString)
+                    Me._CODIGO_METODO_PAGO_EVENTO = "" & dReader("CODIGO_METODO_PAGO_EVENTO").ToString
+                    Me._CODIGO_USO_CFDI = "" & dReader("CODIGO_USO_CFDI").ToString
+                    Me._CODIGO_MONEDA_SAT = "" & dReader("CODIGO_MONEDA_SAT").ToString
+                    Me._CODIGO_TIPO_RELACION_CFDI = "" & dReader("CODIGO_TIPO_RELACION_CFDI").ToString
 
                     bResultado = True
 
@@ -969,24 +979,6 @@ Public Class Class_CXC_Descuento
         Return bResultado
     End Function
 
-    Public Function ObtenerEstatusParaReportes() As DataTable
-        Dim dTable As New DataTable
-        'Dim dRow As DataRow
-        Try
-            dTable.Columns.Add("CODIGO_ESTATUS", GetType(String))
-            dTable.Columns.Add("NOMBRE_ESTATUS", GetType(String))
-
-            'dRow = dTable.NewRow
-            dTable.Rows.Add("A", "APLICADOS")
-            dTable.Rows.Add("C", "CANCELADOS")
-            dTable.Rows.Add("T", "TODOS")
-            dTable.AcceptChanges()
-        Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerEstatusParaReportes", ex)
-        End Try
-        Return dTable
-    End Function
-
     Public Function RecuperaXML(ByVal sRutaXML As String) As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
@@ -1093,6 +1085,24 @@ Public Class Class_CXC_Descuento
         Return bResultado
     End Function
 
+    Public Function ObtenerEstatusParaReportes() As DataTable
+        Dim dTable As New DataTable
+        'Dim dRow As DataRow
+        Try
+            dTable.Columns.Add("CODIGO_ESTATUS", GetType(String))
+            dTable.Columns.Add("NOMBRE_ESTATUS", GetType(String))
+
+            'dRow = dTable.NewRow
+            dTable.Rows.Add("A", "APLICADOS")
+            dTable.Rows.Add("C", "CANCELADOS")
+            dTable.Rows.Add("T", "TODOS")
+            dTable.AcceptChanges()
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ObtenerEstatusParaReportes", ex)
+        End Try
+        Return dTable
+    End Function
+
     Public Function ObtieneVentasConSaldo(ByVal CodigoCliente As String, ByVal Moneda As String, ByVal VentaPublicoGeneral As Boolean, ByVal CodigoTipoDocumento As String) As DataTable
         Dim dt As New DataTable, sSQLDocs As String = ""
         Try
@@ -1126,6 +1136,38 @@ Public Class Class_CXC_Descuento
         Return dt
     End Function
 
+    Public Function GeneraNotaCreditoElectronica(ByVal bMensajes As Boolean, ByVal bGenerarPDF As Boolean) As Boolean
+        Dim bResultado As Boolean = False
+        Dim sProcedure As String = "GeneraNotaCreditoElectronica"
+        Dim sRutaXML As String
+
+        Try
+            sRutaXML = sFelectronicaCarpetaXMLPDF & "\" & Me._FOLIO_DESCUENTO & ".xml"
+
+            If Me._TIMBRADO_CFDI = "0" Then
+                If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
+                    bResultado = GeneraNotaCreditoCXCElectronica(Me, bMensajes, sRutaXML)
+                Else
+                    bResultado = GeneraNotaCreditoCXCElectronica33(Me, bMensajes, sRutaXML)
+                End If
+
+                If bResultado = False Then
+                    MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+                Else
+                    If bGenerarPDF = True Then
+                        Me.ExportarAPdf()
+                    End If
+                End If
+                'Else
+                '    Me.RecuperarFacturaElectronicaLocal(bMensajes)
+            Else
+                MsgBox("El documento ya esta timbrado.", vbExclamation, sProcedure)
+            End If
+        Catch ex As Exception
+            HandleError(_Nombre_Catalogo, sProcedure, ex)
+        End Try
+        Return bResultado
+    End Function
 #End Region
 
 End Class
