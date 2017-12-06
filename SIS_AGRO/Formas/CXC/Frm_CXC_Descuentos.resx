@@ -170,6 +170,16 @@
         RK5CYII=
 </value>
   </data>
+  <data name="tsbEnviarCorreo.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAD9SURBVDhPYxh40NHR8R+GGxsbcdLouLa29n9BQcF/BhDn
+        379/JOHXr1+D6YzsTIQBCWlJYBPTMtL/79y5E0UDCIM0CWXo/efjWwA3AKSWaBeANM2bx/6fKU7h//tv
+        H/8/+/ASbCkDyC/YNKBjkAEg/OzFs/+3Ht75f//No/8RSdHEGwDDn398+f/2y/v/d17dx24AKGCwYaIN
+        IIRh/sdpAChk0fHH75/BGKQZZDvI/+cfXYEYAIo6kEaQ00AmgyRxYZCt15/f/n/u0eX/x+6e+R+aEAEx
+        AOYnmAQhvOPqATAOiA3+zwAKIFB8gpwDMhEkCKPR2egY7IIBBgwMAP9/b2O/F+rbAAAAAElFTkSuQmCC
+</value>
+  </data>
   <data name="tsbSalir.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8

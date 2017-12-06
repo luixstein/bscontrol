@@ -244,7 +244,7 @@ Module FacturacionElectronica
 
     Private Function CancelarCFDI(ByVal sFolioDocumentoSistema As String, ByVal sSerie As String, ByVal iFolioNumerico As Integer, ByVal sFolioFiscalSat As String, ByVal sDocumentoYaEstaTimbrado As String, ByVal sTipoComprobante As TipoComprobante) As Boolean
         Const sProcedure As String = "CancelarCFDI"
-        Dim bResultado As Boolean = False
+        Dim bResultado As Boolean = False, bGraboAcuse As Boolean = False
 
         Dim ArchivoXmlAcuseCancelacion As String = sFelectronicaCarpetaXmlsAcusesCancelacion & "\AcuseCancelacion_" & sFolioDocumentoSistema & ".xml" ' "la ruta de los xml de acuses de cancelacion"
         Dim sUUID As String = "" ' "el folio del sat del documento"
@@ -279,7 +279,7 @@ Module FacturacionElectronica
 
                         If cfd.Cancelado = True Then
                             bResultado = True 'Marcamos true sin hacer lo del acuse, porque no es importante grabarlo
-                            GrabaCancelacionYAcuseXML(sFolioDocumentoSistema, cfd.XmlAcuseCancelacionTimbre, sTipoComprobante)
+                            bGraboAcuse = GrabaCancelacionYAcuseXML(sFolioDocumentoSistema, cfd.XmlAcuseCancelacionTimbre, sTipoComprobante)
                         End If
                     End Using
 
@@ -314,12 +314,20 @@ Module FacturacionElectronica
 
                         If cfd.Cancelado = True Then
                             bResultado = True 'Marcamos true sin hacer lo del acuse, porque no es importante grabarlo
-                            GrabaCancelacionYAcuseXML(sFolioDocumentoSistema, cfd.XmlAcuseCancelacionTimbre, sTipoComprobante)
+                            bGraboAcuse = GrabaCancelacionYAcuseXML(sFolioDocumentoSistema, cfd.XmlAcuseCancelacionTimbre, sTipoComprobante)
                         End If
                     End Using
 
                 End If
 
+            End If
+
+            If bResultado = True Then
+                If bGraboAcuse = False Then
+                    MsgBox("Timbre cancelado satisfactoriamente pero no se grabó el acuse.", vbInformation, sProcedure)
+                Else
+                    MsgBox("Timbre cancelado satisfactoriamente.", vbInformation, sProcedure)
+                End If
             End If
 
         Catch ex As Exception

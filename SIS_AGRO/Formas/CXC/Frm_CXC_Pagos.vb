@@ -1299,6 +1299,10 @@ Buscar:
                                  .Cell(i, Me.iGyDocCODIGO_MONEDA_SAT).Text, valorNumerico(txtTipoCambio.Text),
                                  .Cell(i, Me.iGyDocCUENTA_BENEFICIARIO).Text, .Cell(i, Me.iGyDocCODIGO_BANCO_DESTINO_NACIONAL).Text) 'El beneficiario es la empresa propia, el store lo llenará internamente
 
+                        If lID_BANCOS_DETALLE = 0 Then
+                            Return False
+                        End If
+
                         .Cell(i, Me.iGyDocID_BANCOS_DETALLE).Text = lID_BANCOS_DETALLE.ToString
                     End If
 

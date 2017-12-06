@@ -50,11 +50,9 @@ Public Class Frm_CXC_Descuentos
     Private Sub tsbCancelar_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbCancelar.Click
         If Me.oDescuentosCXC.ESTATUS_DESCUENTO = "A" Then
             If Me.Cancelar = True Then  'Se cancelo el documento correctamente = true
-                'If Me.oDescuentosCXC.ESTATUS_CANCELACION_CFDI = "0" Then
                 If Me.oDescuentosCXC.VERSION_ESQUEMA_XML > "2.2" AndAlso Me.oDocumento.TIMBRA_DOCUMENTO = True Then
-                    Me.CancelarNotaCreditoElectronicaLocal()
+                    Me.oDescuentosCXC.CancelarTimbre()
                 End If
-                'End If
                 Me.Consultar()
                 Me.GestionaCambioEstado()
             End If
@@ -73,10 +71,9 @@ Public Class Frm_CXC_Descuentos
         Me.oDescuentosCXC.Imprimir()
     End Sub
 
-    Private Sub tsbSellarFacturaElectronica_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSellarNotaElectronica.Click
+    Private Sub tsbTimbrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbTimbrar.Click
         If Me.oDescuentosCXC.TIMBRADO_CFDI = "0" Then
-            If Me.GeneraNotaCreditoElectronica(True) = True Then
-                Me.oDescuentosCXC.ExportarAPdf()
+            If Me.oDescuentosCXC.GeneraNotaCreditoElectronica(True, True) = True Then
                 Me.Consultar()
             End If
         Else
@@ -84,28 +81,18 @@ Public Class Frm_CXC_Descuentos
         End If
     End Sub
 
-    Private Sub tsbRecuperaNotaElectronica_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbRecuperaNotaElectronica.Click
-        'If RecuperarNotaCreditoElectronicaLocal(True) = True Then
-        '    'ExportarAPdf()
-        'End If
+    Private Sub tsbRecuperarXMLPDF_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbRecuperarXMLPDF.Click
+        Me.oDescuentosCXC.RecuperarXMLyPDF()
     End Sub
 
-    Private Sub tsbGeneraAcuseCancelacion_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbGeneraAcuseCancelacion.Click
-        If Me.oDescuentosCXC.ESTATUS_DESCUENTO = "C" And Me.oDescuentosCXC.TIMBRADO_DESCARTADO = "0" Then
-            If Me.oDescuentosCXC.ESTATUS_CANCELACION_CFDI = "0" Then
-                If Me.oDescuentosCXC.VERSION_ESQUEMA_XML > "2.2" Then 'Si no se cumbre no es CFDi (por lo tanto no tiene timbre)
-                    If Me.CancelarNotaCreditoElectronicaLocal() = True Then
-                        MsgBox("El documento digital se canceló correctamente.", MsgBoxStyle.Exclamation, Me.Text)
-                    End If
-                End If
-            Else
-                MsgBox("El documento ya tiene acuse de cancelación.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Sub
-            End If
-        Else
-            MsgBox("El documento no esta cancelado o el tiembre esta descartado.", MsgBoxStyle.Exclamation, Me.Text)
-            Exit Sub
+    Private Sub tsbCancelarTimbre_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbCancelarTimbre.Click
+        If Me.oDescuentosCXC.CancelarTimbre = True Then
+            Me.Consultar()
         End If
+    End Sub
+
+    Private Sub tsbEnviarCorreo_Click(sender As Object, e As EventArgs) Handles tsbEnviarCorreo.Click
+        Me.EnviarCorreo()
     End Sub
 
     Private Sub tsbSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSalir.Click
@@ -427,7 +414,7 @@ Buscar:
         End If
     End Sub
 
-    Private Sub txtNumerosDecimalKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTipoCambio.KeyPress, txtImporteDolares.KeyPress
+    Private Sub txtNumerosDecimalKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTipoCambio.KeyPress
         Dim txt As TextBox = CType(sender, TextBox)
         txtSoloNumerosDecimales(e, txt.Text)
         txtNoBeep(e)
@@ -437,7 +424,22 @@ Buscar:
     dtFecha.KeyPress, TxtConcepto.KeyPress, TxtConcepto2.KeyPress, TxtCodigoCliente.KeyPress, chkVentaPublicoGeneral.KeyPress
         txtNoBeep(e)
     End Sub
+
 #End Region
+
+    Private Sub cboMoneda_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboMoneda.SelectedIndexChanged
+        Try
+            If Me.cboMoneda.Text = "USD" Then
+                Me.txtTipoCambio.Visible = True : Me.txtTipoCambio.Enabled = True : Me.lblDisplayTipoCambio.Visible = True
+                Me.gbDolares.Visible = True
+            Else
+                Me.txtTipoCambio.Visible = False : Me.txtTipoCambio.Enabled = False : Me.lblDisplayTipoCambio.Visible = False
+                Me.gbDolares.Visible = False
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, "cboMoneda_SelectedIndexChanged", ex)
+        End Try
+    End Sub
 
 #End Region
 
@@ -456,14 +458,18 @@ Buscar:
             Me.LblCliente.Text = ""
             Me.cboMoneda.Text = "MXN"
             Me.txtTipoCambio.Text = ""
-            Me.txtImporteDolares.Text = ""
             Me.chkVentaPublicoGeneral.Checked = False
 
-            Me.TxtSubTotal.Text = ""
-            Me.txtIEPS.Text = ""
-            Me.txtIEPSIncluido.Text = ""
-            Me.TxtImpuesto.Text = ""
-            Me.TxtTotal.Text = ""
+            Me.lblSubtotalDolares.Text = FormatImporteContable(0)
+            Me.lblImpuestoDolares.Text = FormatImporteContable(0)
+            Me.lblTotalDolares.Text = FormatImporteContable(0)
+
+            Me.TxtSubTotal.Text = FormatImporteContable(0)
+            Me.txtIEPS.Text = FormatImporteContable(0)
+            Me.txtIEPSIncluido.Text = FormatImporteContable(0)
+            Me.TxtImpuesto.Text = FormatImporteContable(0)
+            Me.TxtTotal.Text = FormatImporteContable(0)
+            Me.lblImpuestoPorcentaje.Text = FormatImporteContable(0)
 
             Me.GeneraFolio()
             Me.InicializaGrid()
@@ -573,7 +579,7 @@ Buscar:
             oCliente = New Class_CatClientes(Me.TxtCodigoCliente.Text)
 
             If oCliente.Existe = False Then
-                MsgBox("El código de cliente que intenta buscar no existe o esta dado de Baja, favor de intentar con otro código.", MsgBoxStyle.Critical, sProcedure)
+                MsgBox("El código de cliente que intenta buscar no existe o esta dado de baja, favor de intentar con otro código.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.LblCliente.Text = ""
                 Me.TxtCodigoCliente.Focus()
                 Return False
@@ -601,12 +607,12 @@ Buscar:
                 Me.Grid.AddItem(dRow("FOLIO_VENTA").ToString & Chr(9) & dRow("FECHA").ToString & Chr(9) & dRow("TIPO_DE_CAMBIO").ToString & Chr(9) & dRow("TOTAL").ToString & Chr(9) & dRow("SALDO").ToString & Chr(9) & "")
             Next
 
-            Me.Grid.AutoRedraw = True
-            Me.Grid.Refresh()
-
             bResultado = True
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
+        Finally
+            Me.Grid.AutoRedraw = True
+            Me.Grid.Refresh()
         End Try
 
         Return bResultado
@@ -659,10 +665,13 @@ Buscar:
         Try
             Dim dUSD As Decimal = 0
             If valorNumericoD(Me.TxtTotal.Text) > 0 Then
-                dUSD = valorNumericoD(Me.TxtTotal.Text) / valorNumericoD(Me.txtTipoCambio.Text)
-                Me.txtImporteDolares.Text = FormatImporteContable(RedondearD(dUSD, 2))
+                Me.lblSubtotalDolares.Text = FormatImporteContable(Redondear(valorNumerico(Me.TxtSubTotal.Text) / valorNumerico(Me.txtTipoCambio.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD))
+                Me.lblImpuestoDolares.Text = FormatImporteContable(Redondear(valorNumerico(Me.TxtImpuesto.Text) / valorNumerico(Me.txtTipoCambio.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD))
+                Me.lblTotalDolares.Text = FormatImporteContable(Redondear(valorNumerico(Me.TxtTotal.Text) / valorNumerico(Me.txtTipoCambio.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD))
             Else
-                Me.txtImporteDolares.Text = "0"
+                Me.lblSubtotalDolares.Text = "0"
+                Me.lblImpuestoDolares.Text = "0"
+                Me.lblTotalDolares.Text = "0"
             End If
         Catch ex As Exception
             HandleError(Me.Name, "CalculaImporteDolares", ex)
@@ -719,11 +728,11 @@ Buscar:
                 bResultado = True
 
                 If Empresa_Sistema.FELECTRONICA_ACTIVA = True AndAlso Me.oDocumento.TIMBRA_DOCUMENTO = True Then
-                    If Me.GeneraNotaCreditoElectronica(False) = True Then
-                        Me.oDescuentosCXC.ExportarAPdf()
-                    End If
+                    Me.oDescuentosCXC = New Class_CXC_Descuento(Me.TxtFolio.Text) 'Refrescar documento para evitar algún error por dato no cargado.
+                    Me.oDescuentosCXC.GeneraNotaCreditoElectronica(True, True)
                 End If
             End If
+
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
@@ -784,6 +793,7 @@ Buscar:
                 .CODIGO_USO_CFDI = sUsoCFDI
                 .CODIGO_MONEDA_SAT = Me.cboMoneda.Text
                 .LISTA_DESCUENTOS = ListaDescuentos
+                .IMPUESTO_PORCENTAJE = valorNumerico(Me.lblImpuestoPorcentaje.Text)
 
                 If .Grabar() = True Then
                     bResultado = True
@@ -793,62 +803,11 @@ Buscar:
             End With
 
         Catch ex As Exception
-            HandleError(Me.Name, "Grabar", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado
     End Function
-
-    Private Function GeneraNotaCreditoElectronica(ByVal bMensaje As Boolean) As Boolean
-        Dim bResultado As Boolean = False
-        Dim sRutaXML As String
-        Try
-            'sRutaXML = sFelectronicaCarpetaXMLPDF & "\" & Me.TxtFolio.Text & ".xml"
-            sRutaXML = sFelectronicaCarpetaXMLSinTimbrar & "\" & Me.TxtFolio.Text & ".xml"
-
-            oDescuentosCXC = New Class_CXC_Descuento(Me.TxtFolio.Text)
-            If GeneraNotaCreditoCXCElectronica(Me.oDescuentosCXC, bMensaje, sRutaXML) = False Then
-                MsgBox("Los datos digitales de la nota electrónica no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, Me.Text)
-            Else
-                bResultado = True
-                'ExportaFormatoVentaPDF(Me.txtFolio.Text, "F")GeneraNotaCreditoCXCElectronica
-            End If
-        Catch ex As Exception
-            HandleError(Me.Name, "GeneraNotaCreditoElectronica", ex)
-        End Try
-
-        Return bResultado
-    End Function
-
-    Private Function CancelarNotaCreditoElectronicaLocal() As Boolean
-        Try
-            If CancelarCFDIDescuento(Me.oDescuentosCXC, TipoComprobante.NOTA_CREDITO_CXC) = False Then
-                MsgBox("Los datos digitales del documento no fueron cancelados correctamente. Avíse al depto. de sistemas.", vbExclamation, Me.Text)
-                Return False
-            End If
-
-            Return True
-        Catch ex As Exception
-            HandleError(Me.Name, "CancelarNotaCreditoElectronicaLocal", ex)
-        End Try
-    End Function
-
-    'Private Function RecuperarNotaCreditoElectronicaLocal(ByVal bMensajes As Boolean) As Boolean
-    '    Dim sRutaXML As String
-    '    Try
-    '        sRutaXML = sFelectronicaCarpetaXMLPDF & "\" & Me.TxtFolio.Text & ".xml"
-    '        If RecuperaNotaElectronica(Me.TxtFolio.Text, bMensajes, sRutaXML) = False Then
-    '            MsgBox("Los datos digitales de la nota electrónica no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, Me.Text)
-    '        Else
-    '            RecuperarNotaCreditoElectronicaLocal = True
-    '            'ExportaFormatoVentaPDF(Me.txtFolio.Text, "F")
-    '            MsgBox("Los datos digitales de la nota electrónica fueron recuperados correctamente. ", MsgBoxStyle.Information, Me.Text)
-    '        End If
-    '        Exit Function
-    '    Catch ex As Exception
-    '        HandleError(Me.Name, "RecuperarNotaCreditoElectronicaLocal", ex)
-    '    End Try
-    'End Function
 
     Private Function Validar() As Boolean
         Const sProcedure As String = "Validar"
@@ -1232,6 +1191,11 @@ Buscar:
         Dim sFolio As String = Me.TxtFolio.Text
 
         Try
+            Me.tsbTimbrar.Visible = False
+            Me.tsbCancelarTimbre.Visible = False
+            Me.tsbRecuperarXMLPDF.Visible = False
+            Me.tsbEnviarCorreo.Visible = False
+
             Me.Inicializa()
             Me.oDescuentosCXC = New Class_CXC_Descuento(sFolio)
 
@@ -1296,6 +1260,19 @@ Buscar:
                 bResultado = True
 
                 Me.GestionaCambioEstado()
+
+                If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
+                    If Me.oDescuentosCXC.TIMBRADO_CFDI = "0" AndAlso Me.oDescuentosCXC.TIMBRADO_DESCARTADO = "0" And Me.oDescuentosCXC.VERSION_ESQUEMA_XML <> "2.2" Then
+                        Me.tsbTimbrar.Visible = True
+                    ElseIf Me.oDescuentosCXC.ESTATUS_DESCUENTO = "C" AndAlso Me.oDescuentosCXC.TIMBRADO_CFDI = "1" AndAlso Me.oDescuentosCXC.TIMBRADO_DESCARTADO = "0" AndAlso Me.oDescuentosCXC.ESTATUS_CANCELACION_CFDI = "0" Then
+                        Me.tsbCancelarTimbre.Visible = True
+                    End If
+
+                    If Me.oDescuentosCXC.TIMBRADO_CFDI = "1" Then
+                        Me.tsbRecuperarXMLPDF.Visible = True
+                        Me.tsbEnviarCorreo.Visible = True
+                    End If
+                End If
             End If
         Catch ex As Exception
             HandleError(Me.Name, "Consultar", ex)
@@ -1458,7 +1435,6 @@ Buscar:
                     Me.cboMoneda.Enabled = True
                     Me.chkVentaPublicoGeneral.Enabled = True
                     Me.txtTipoCambio.Enabled = False
-                    Me.txtImporteDolares.Enabled = False
                     Me.tssEstado.Text = "Estado: agregando documento"
                     Me.tssElaboro.Visible = False
                     Me.tssCancelo.Visible = False
@@ -1468,8 +1444,6 @@ Buscar:
                         Me.TxtFolio.Focus()
                     End If
 
-                    Me.tsbSellarNotaElectronica.Visible = False
-                    Me.tsbGeneraAcuseCancelacion.Visible = False
                     Me.btnCargarFacturas.Enabled = True
 
                 Case enumEstados.APLICADO
@@ -1484,24 +1458,12 @@ Buscar:
                     Me.cboMoneda.Enabled = False
                     Me.chkVentaPublicoGeneral.Enabled = False
                     Me.txtTipoCambio.Enabled = False
-                    Me.txtImporteDolares.Enabled = False
                     Me.tssEstado.Text = "Estado: consultando"
                     Me.tssElaboro.Visible = True
                     Me.tssCancelo.Visible = False
                     Me.Grid.Locked = True
 
                     Me.tsbImprimir.Select()
-                    If Me.oDescuentosCXC.VERSION_ESQUEMA_XML >= "3.2" Or Me.oDescuentosCXC.VERSION_ESQUEMA_XML = "" Or Me.oDescuentosCXC.VERSION_ESQUEMA_XML = "0" Then
-                        If Me.oDescuentosCXC.TIMBRADO_CFDI = "0" And Me.oDescuentosCXC.TIMBRADO_DESCARTADO = "0" And Me.oDocumento.TIMBRA_DOCUMENTO = True Then
-                            Me.tsbSellarNotaElectronica.Visible = True
-                            Me.tsbGeneraAcuseCancelacion.Visible = False
-                        Else
-                            Me.tsbSellarNotaElectronica.Visible = False
-                        End If
-                    Else
-                        Me.tsbSellarNotaElectronica.Visible = False
-                        Me.tsbGeneraAcuseCancelacion.Visible = False
-                    End If
                     Me.btnCargarFacturas.Enabled = False
 
                 Case enumEstados.CANCELADO
@@ -1516,25 +1478,12 @@ Buscar:
                     Me.cboMoneda.Enabled = False
                     Me.chkVentaPublicoGeneral.Enabled = False
                     Me.txtTipoCambio.Enabled = False
-                    Me.txtImporteDolares.Enabled = False
                     Me.tssEstado.Text = "Estado: consultando"
                     Me.tssElaboro.Visible = True
                     Me.tssCancelo.Visible = True
                     Me.Grid.Locked = True
 
                     Me.tsbImprimir.Select()
-                    If Me.oDescuentosCXC.VERSION_ESQUEMA_XML >= "3.2" Or Me.oDescuentosCXC.VERSION_ESQUEMA_XML = "" Then
-                        If Me.oDescuentosCXC.ESTATUS_CANCELACION_CFDI = "1" Then
-                            Me.tsbSellarNotaElectronica.Visible = False
-                            Me.tsbGeneraAcuseCancelacion.Visible = False
-                        ElseIf Me.oDocumento.TIMBRA_DOCUMENTO = True Then
-                            Me.tsbGeneraAcuseCancelacion.Visible = True
-                        End If
-                    Else
-                        Me.tsbSellarNotaElectronica.Visible = False
-                        Me.tsbGeneraAcuseCancelacion.Visible = False
-                    End If
-
                     Me.btnCargarFacturas.Enabled = False
 
             End Select
@@ -1602,6 +1551,7 @@ Buscar:
                 Me.txtIEPSIncluido.Text = FormatImporteContable(0)
                 Me.TxtImpuesto.Text = FormatImporteContable(0)
                 Me.TxtTotal.Text = FormatImporteContable(0)
+                Me.lblImpuestoPorcentaje.Text = FormatImporteContable(0)
                 Return True
             End If
 
@@ -1623,6 +1573,7 @@ Buscar:
                 Me.txtIEPSIncluido.Text = FormatImporteContable(CDbl(dt.Rows(0)("IEPS_INCLUIDO")))
                 Me.TxtImpuesto.Text = FormatImporteContable(CDbl(dt.Rows(0)("IVA")))
                 Me.TxtTotal.Text = FormatImporteContable(CDbl(dt.Rows(0)("TOTAL")))
+                Me.lblImpuestoPorcentaje.Text = FormatImporteContable(CDbl(dt.Rows(0)("IMPUESTO_PORCENTAJE")))
             End If
 
             If Me.cboMoneda.Text = "USD" Then
@@ -1753,6 +1704,20 @@ Buscar:
         End Try
     End Sub
 
+    Private Sub EnviarCorreo()
+        Try
+            Me.tsbEnviarCorreo.Enabled = False
+            Me.tsbEnviarCorreo.Text = "Enviando..."
+            Application.DoEvents()
+            Me.oDescuentosCXC.EnviarCorreo()
+        Catch ex As Exception
+            HandleError(Me.Name, "EnviarCorreo", ex)
+        Finally
+            Me.tsbEnviarCorreo.Text = "&Enviar correo"
+            Me.tsbEnviarCorreo.Enabled = True
+        End Try
+        Application.DoEvents()
+    End Sub
 #End Region
 
 End Class

@@ -790,10 +790,14 @@ Friend Class cComprobante33
                 End If
             End If
 
-            If Abs(Me.Total - (valorNumerico(Me.SubTotal) - valorNumerico(Me.Descuento) + valorNumerico(TotalImpuestosTrasladados) - valorNumerico(TotalImpuestosRetenidos))) > 0.010001 Then
+            Dim dDiferencia As Decimal = Me.Total - (valorNumerico(Me.SubTotal) - valorNumerico(Me.Descuento) + valorNumerico(TotalImpuestosTrasladados) - valorNumerico(TotalImpuestosRetenidos))
+
+            If Abs(dDiferencia) > 0.010001 Then
                 MsgBox("Total: El valor del atributo debe ser igual al subtotal menos descuentos más las contribuciones recibidas " &
                     "(impuestos trasladados - federales o locales, derechos, productos, aprovechamientos, aportaciones de seguridad social, contribuciones de mejoras) " &
-                    "menos los impuestos retenidos.", vbExclamation, sProcedure) : Return False
+                    "menos los impuestos retenidos." & vbCrLf &
+                    "+SubTotal " & Me.SubTotal & vbCrLf & "-Descuento " & Me.Descuento & vbCrLf & "+TotalImpuestosTrasladados " & TotalImpuestosTrasladados() & vbCrLf & "-TotalImpuestosRetenidos " & TotalImpuestosRetenidos() & vbCrLf &
+                    "Total " & Me.Total & vbCrLf & "Diferencia=" & dDiferencia, vbExclamation, sProcedure) : Return False
                 Return False
             End If
             '-----------------------------------------------------------------------------------------------------------------------------------------------------------------

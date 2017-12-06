@@ -706,13 +706,13 @@ busca:
             Me.GestionaCambioEstado()
 
             If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
-                If Me.oDevolucion.TIMBRADO_CFDI = False AndAlso Me.oDevolucion.TIMBRADO_DESCARTADO = False AndAlso Me.oVenta.TIMBRADO_CFDI = "1" Then 'Pregunta por campos de la dev y de la factura(de ambos)
+                If Me.oDevolucion.TIMBRADO_CFDI = "0" AndAlso Me.oDevolucion.TIMBRADO_DESCARTADO = "0" AndAlso Me.oDevolucion.VERSION_ESQUEMA_XML <> "2.2" AndAlso Me.oVenta.TIMBRADO_CFDI = "1" Then 'Pregunta por campos de la dev y de la factura(de ambos)
                     Me.tsbTimbrar.Visible = True
-                ElseIf Me.oDevolucion.ESTATUS_DEVOLUCION = "C" AndAlso Me.oDevolucion.TIMBRADO_CFDI = True AndAlso Me.oDevolucion.TIMBRADO_DESCARTADO = False AndAlso Me.oDevolucion.ESTATUS_CANCELACION_CFDI = False Then
+                ElseIf Me.oDevolucion.ESTATUS_DEVOLUCION = "C" AndAlso Me.oDevolucion.TIMBRADO_CFDI = "1" AndAlso Me.oDevolucion.TIMBRADO_DESCARTADO = "0" AndAlso Me.oDevolucion.ESTATUS_CANCELACION_CFDI = "0" Then
                     Me.tsbCancelarTimbre.Visible = True
                 End If
 
-                If Me.oDevolucion.TIMBRADO_CFDI = True Then
+                If Me.oDevolucion.TIMBRADO_CFDI = "1" Then
                     Me.tsbRecuperarXMLPDF.Visible = True
                     Me.tsbEnviarCorreo.Visible = True
                 End If

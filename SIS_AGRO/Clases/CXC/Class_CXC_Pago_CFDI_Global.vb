@@ -31,15 +31,15 @@ Public Class Class_CXC_Pago_CFDI_Global
     Private _NUMERO_CERTIFICADO_DIGITAL As String
     Private _CADENA_ORIGINAL As String
     Private _SELLO_DIGITAL As String
-    Private _TIMBRADO_CFDI As Boolean
-    Private _TIMBRADO_DESCARTADO As Boolean
+    Private _TIMBRADO_CFDI As String
+    Private _TIMBRADO_DESCARTADO As String
     Private _FOLIO_FISCAL_SAT As String
     Private _FECHA_TIMBRADO_SAT As String
     Private _NUMERO_SERIE_CERTIFICADO_SAT As String
     Private _SELLO_SAT As String
     Private _CBB_IMAGE As String
     Private _FOLIO_FISCAL_CANCELACION_SAT As String
-    Private _ESTATUS_CANCELACION_CFDI As Boolean
+    Private _ESTATUS_CANCELACION_CFDI As String
     Private _ENVIADO_AUTOMATICAMENTE As Boolean
     Private _CANCELACION_ENVIADA_AUTOMATICAMENTE As Boolean
     Private _CODIGO_MOTIVO_CANCELACION As String
@@ -186,13 +186,13 @@ Public Class Class_CXC_Pago_CFDI_Global
         End Get
     End Property
 
-    Public ReadOnly Property TIMBRADO_CFDI() As Boolean
+    Public ReadOnly Property TIMBRADO_CFDI() As String
         Get
             Return Me._TIMBRADO_CFDI
         End Get
     End Property
 
-    Public ReadOnly Property TIMBRADO_DESCARTADO() As Boolean
+    Public ReadOnly Property TIMBRADO_DESCARTADO() As String
         Get
             Return Me._TIMBRADO_DESCARTADO
         End Get
@@ -234,7 +234,7 @@ Public Class Class_CXC_Pago_CFDI_Global
         End Get
     End Property
 
-    Public ReadOnly Property ESTATUS_CANCELACION_CFDI() As Boolean
+    Public ReadOnly Property ESTATUS_CANCELACION_CFDI() As String
         Get
             Return Me._ESTATUS_CANCELACION_CFDI
         End Get
@@ -447,8 +447,8 @@ Public Class Class_CXC_Pago_CFDI_Global
                     Me._NUMERO_CERTIFICADO_DIGITAL = "" & dReader("NUMERO_CERTIFICADO_DIGITAL").ToString
                     Me._CADENA_ORIGINAL = "" & dReader("CADENA_ORIGINAL").ToString
                     Me._SELLO_DIGITAL = "" & dReader("SELLO_DIGITAL").ToString
-                    Me._TIMBRADO_CFDI = CBool(dReader("TIMBRADO_CFDI").ToString)
-                    Me._TIMBRADO_DESCARTADO = CBool(dReader("TIMBRADO_DESCARTADO").ToString)
+                    Me._TIMBRADO_CFDI = dReader("TIMBRADO_CFDI").ToString
+                    Me._TIMBRADO_DESCARTADO = dReader("TIMBRADO_DESCARTADO").ToString
                     Me._FOLIO_FISCAL_SAT = "" & dReader("FOLIO_FISCAL_SAT").ToString
                     Me._FECHA_TIMBRADO_SAT = "" & dReader("FECHA_TIMBRADO_SAT").ToString
                     Me._NUMERO_SERIE_CERTIFICADO_SAT = "" & dReader("NUMERO_SERIE_CERTIFICADO_SAT").ToString
@@ -459,7 +459,7 @@ Public Class Class_CXC_Pago_CFDI_Global
                         Me._CBB_IMAGE = ""
                     End If
                     Me._FOLIO_FISCAL_CANCELACION_SAT = "" & dReader("FOLIO_FISCAL_CANCELACION_SAT").ToString
-                    Me._ESTATUS_CANCELACION_CFDI = CBool(dReader("ESTATUS_CANCELACION_CFDI").ToString)
+                    Me._ESTATUS_CANCELACION_CFDI = dReader("ESTATUS_CANCELACION_CFDI").ToString
                     Me._ENVIADO_AUTOMATICAMENTE = CBool(dReader("ENVIADO_AUTOMATICAMENTE").ToString)
                     Me._CANCELACION_ENVIADA_AUTOMATICAMENTE = CBool(dReader("CANCELACION_ENVIADA_AUTOMATICAMENTE").ToString)
                     Me._CODIGO_MOTIVO_CANCELACION = "" & dReader("CODIGO_MOTIVO_CANCELACION").ToString
@@ -502,7 +502,7 @@ Public Class Class_CXC_Pago_CFDI_Global
         Try
             sRutaXML = sFelectronicaCarpetaXMLPDF & "\" & Me._FOLIO_PAGO & ".xml"
 
-            If Me._TIMBRADO_CFDI = False Then
+            If Me._TIMBRADO_CFDI = "0" Then
                 bResultado = FacturacionElectronica33.GeneraPagoElectronico33(Me, bMensajes, sRutaXML)
 
                 If bResultado = False Then
@@ -523,6 +523,7 @@ Public Class Class_CXC_Pago_CFDI_Global
 
         Return bResultado
     End Function
+
     Public Function CancelarTimbre() As Boolean
         Const sProcedure As String = "CancelarTimbre"
         Dim bResultado As Boolean = False
@@ -537,12 +538,12 @@ Public Class Class_CXC_Pago_CFDI_Global
                 Return False
             End If
 
-            If Me._TIMBRADO_DESCARTADO = True Then
+            If Me._TIMBRADO_DESCARTADO = "1" Then
                 MsgBox("El timbre esta descartado.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
 
-            If Me._ESTATUS_CANCELACION_CFDI = True Then
+            If Me._ESTATUS_CANCELACION_CFDI = "1" Then
                 MsgBox("El timbre ya esta cancelado.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If

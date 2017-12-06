@@ -722,15 +722,230 @@ Module FacturacionElectronica33
         Const sProcedure As String = "GeneraNotaCreditoCXCElectronica33"
         Dim bResultado As Boolean = False
 
+        Dim sPlaza As String
+        Dim Cfd As New cComprobante33
+
         Try
-            MsgBox("FALTA")
+            If ValidaDatosGenerales(oDescuento.FECHA, oDescuento.FELECTRONICA_CER, oDescuento.FELECTRONICA_KEY, oDescuento.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA) = False Then
+                Return False
+            End If
+
+            sPlaza = oDescuento.CODIGO_PLAZA.ToString
+
+            If sPlaza <> Usuario.Codigo_Plaza.ToString Then
+                If sPlaza <> Plaza.CODIGO_PLAZA.ToString Then 'Si ya estaba cargada la plaza de la factura, no se cargará de nuevo para evitar consultas.
+                    tPlazaFacturaElectronica = New Class_SisPlazas(CInt(sPlaza))
+                End If
+            Else
+                tPlazaFacturaElectronica = Plaza 'Plaza ya cargada en el inicio de sesión del usuario.
+            End If
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Datos globales''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            Dim dSubTotal As Decimal, dDescuento As Decimal, dTotal As Decimal, dTIPO_DE_CAMBIO As Decimal
+
+            dTIPO_DE_CAMBIO = CDec(oDescuento.TIPO_DE_CAMBIO)
+
+            dSubTotal = CDec(oDescuento.SUBTOTAL)
+            dDescuento = CDec(0)
+            dTotal = CDec(oDescuento.TOTAL)
+
+            If oDescuento.CODIGO_MONEDA_SAT = "USD" Then
+                dSubTotal = RedondearD(dSubTotal / dTIPO_DE_CAMBIO, 2)
+                dDescuento = RedondearD(dDescuento / dTIPO_DE_CAMBIO, 2)
+                dTotal = RedondearD(dTotal / dTIPO_DE_CAMBIO, 2)
+            End If
+
+            With Cfd
+                .FolioCompleto = oDescuento.FOLIO_DESCUENTO
+                .Version = Empresa_Sistema.VERSION_ESQUEMA_CFD
+                .Serie = oDescuento.SERIE
+                .Folio = oDescuento.FOLIO_NUMERICO.ToString
+                .Fecha = Format(oDescuento.FECHA, "yyyy-MM-dd") & "T" & Format(oDescuento.FECHA, "HH:mm:ss")
+                .Sello = ""                     'Inicialmente va en blanco, posteriormente se genera
+                .FormaPago = oDescuento.CODIGO_METODO_PAGO
+                .NoCertificado = ""             'Se llenan dentro de Cfd.Sellar(clase comprobante) y dentro se llama a SellarFactura(modulo FacturacionElectronica)
+                .Certificado = ""               'Igual que el anterior
+                .CondicionesDePago = ""         'De momento no lo vamos usar, podria llevar frases como crédito 30 dias, etc
+                .SubTotal = Format(dSubTotal, "#0.00")
+                .Descuento = IIf(dDescuento > 0, Format(dDescuento, "#0.00"), "").ToString
+                .Total = Format(dTotal, "#0.00")
+                .Moneda = oDescuento.CODIGO_MONEDA_SAT
+                If oDescuento.TIPO_DE_CAMBIO > 0 Then
+                    .TipoCambio = FormatTipoCambio(oDescuento.TIPO_DE_CAMBIO)
+                End If
+                .TipoDeComprobante = "E" 'Egreso
+                .MetodoPago = oDescuento.CODIGO_METODO_PAGO_EVENTO
+                .LugarExpedicion = tPlazaFacturaElectronica.CODIGO_POSTAL
+                .Confirmacion = ""
+            End With
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''CfdiRelacionados''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            Cfd.CfdiRelacionados.TipoRelacion = oDescuento.CODIGO_TIPO_RELACION_CFDI '01=Nota de crédito de los documentos relacionados
+
+            Dim dtFacturasRelacionadas As DataTable = oDescuento.ObtieneFacturasRelacionadas
+            Dim FaltanUUIDRelacionados As Boolean = False
+
+            If dtFacturasRelacionadas.Rows.Count = 0 Then
+                MsgBox("No se encontraron los cfdis relacionados(facturas) a la nota de crédito.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            For Each dRow As DataRow In dtFacturasRelacionadas.Rows
+                If txtLEN("" & dRow("FOLIO_FISCAL_SAT").ToString) = False Then
+                    MsgBox("La factura " & dRow("FOLIO_VENTA").ToString & " no tiene UUID(posiblemente no esta timbrada).", vbExclamation, sProcedure)
+                    FaltanUUIDRelacionados = True
+                End If
+
+                Cfd.CfdiRelacionados.Add(dRow("FOLIO_FISCAL_SAT").ToString) 'uuids
+            Next
+
+            'En caso de que alguna factura no este timbrada se aborta el proceso.
+            If FaltanUUIDRelacionados = True Then
+                Exit Function
+            End If
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Emisor''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            With Cfd.Emisor
+                .Rfc = fElectronicaValidaCampo(Empresa_Sistema.RFC)
+                .Nombre = fElectronicaValidaCampo(Empresa_Sistema.NOMBRE_EMPRESA)
+                .RegimenFiscal = fElectronicaValidaCampo(oDescuento.CODIGO_REGIMEN_FISCAL.ToString)
+            End With
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Receptor''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            Dim oCliente As New Class_CatClientes(oDescuento.CODIGO_CLIENTE.ToString)
+            Dim sReceptorRFC As String, sReceptorNombre As String
+
+            If oCliente.Existe = False Then
+                MsgBox("Cliente no encontrado.", MsgBoxStyle.Exclamation, nombreModulo)
+                Return False
+            End If
+
+            If oDescuento.ES_VENTA_PUBLICO_GENERAL = "1" Then
+                sReceptorNombre = "PUBLICO GENERAL"
+                sReceptorRFC = Empresa_Sistema.RFC_VENTA_PUBLICO_GENERAL
+            Else
+                sReceptorNombre = fElectronicaValidaCampo(oCliente.NOMBRE_CLIENTE)
+                sReceptorRFC = fElectronicaValidaCampo(Replace(oCliente.RFC, "-", ""))
+            End If
+
+            With Cfd.Receptor
+                .Rfc = sReceptorRFC
+                .Nombre = sReceptorNombre
+
+                'De momento no estan soportados las notas de crédito de facturas de embarques(con complemento CCE)
+                'If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oDescuento.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
+                '    .ResidenciaFiscal = oCliente.CODIGO_PAIS_SAT  'usarlo sólo cuando el rfc sea extranjero y haya cce o numregid
+                '    .NumRegIdTrib = oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO
+                'End If
+
+                .UsoCFDI = oDescuento.CODIGO_USO_CFDI
+            End With
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Conceptos'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            Dim ConceptoImpuestoTraslados As iConceptoImpuestoTraslados33
+            'Dim ConceptoImpuestoRetenciones As iConceptoImpuestoRetenciones33
+
+            Dim drImporte As Decimal, drPrecio As Decimal, drCantidad As Decimal, drDESCUENTO_IMPORTE As Decimal, drIMPUESTO_PORCENTAJE As Decimal
+            Dim drBASE_IEPS As Decimal = 0, drBASE_IVA As Decimal, drIMPUESTO_IMPORTE As Decimal, drIEPS_IMPORTE As Decimal = 0, drIEPS_PORCENTAJE As Decimal = 0
+
+            'Es una nota de crédito directa y llevará un sólo concepto.
+            drCantidad = 1
+            drPrecio = CDec(oDescuento.SUBTOTAL)
+            drImporte = CDec(oDescuento.SUBTOTAL)
+
+            drDESCUENTO_IMPORTE = CDec(0)
+            drIMPUESTO_IMPORTE = CDec(oDescuento.IVA)
+            drIMPUESTO_PORCENTAJE = CDec(oDescuento.IMPUESTO_PORCENTAJE) / 100
+            If drIMPUESTO_PORCENTAJE > 0 Then
+                drBASE_IVA = RedondearD(drIMPUESTO_IMPORTE / drIMPUESTO_PORCENTAJE, 2) 'Se obtiene hacia atras para no tener complicaciones de calculos
+            End If
+
+            ConceptoImpuestoTraslados = New iConceptoImpuestoTraslados33
+
+            If oDescuento.IEPS_DESGLOSADO > 0 Then
+                Dim dtIEPS As DataTable
+                dtIEPS = oDescuento.ObtieneDetalleIEPS
+
+                For Each dRow As DataRow In dtIEPS.Rows
+
+                    drIEPS_IMPORTE = CDec(dRow("IEPS_IMPORTE"))
+                    drIEPS_PORCENTAJE = CDec(dRow("IEPS_PORCENTAJE")) / CDec("100.00") 'Este viene como 6,7,9
+                    drBASE_IEPS = RedondearD(drIEPS_IMPORTE / drIEPS_PORCENTAJE, 2) 'Se obtiene hacia atras para no tener complicaciones de calculos
+
+                    If oDescuento.CODIGO_MONEDA_SAT = "USD" Then
+                        drBASE_IEPS = RedondearD(drBASE_IEPS / dTIPO_DE_CAMBIO, 2)
+                        drIEPS_IMPORTE = RedondearD(drIEPS_IMPORTE / dTIPO_DE_CAMBIO, 2)
+                    End If
+
+                    ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.00"), "003", "Tasa", Format(drIEPS_PORCENTAJE, "0.#00000"), Format(drIEPS_IMPORTE, "##0.00"))
+                Next
+
+            End If
+
+            If drIMPUESTO_IMPORTE > 0 Then 'IVA
+                If oDescuento.CODIGO_MONEDA_SAT = "USD" Then
+                    drBASE_IVA = RedondearD(drBASE_IVA / dTIPO_DE_CAMBIO, 2)
+                    drIMPUESTO_IMPORTE = RedondearD(drIMPUESTO_IMPORTE / dTIPO_DE_CAMBIO, 2)
+                End If
+
+                ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Tasa", Format(drIMPUESTO_PORCENTAJE, "0.#00000"), Format(drIMPUESTO_IMPORTE, "##0.00"))
+            End If
+
+            Cfd.Conceptos.Add("84111506", "",
+                                    Format(drCantidad, "##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CANTIDAD)),
+                                    "ACT", "NO APLICA", fElectronicaValidaCampo(oDescuento.CONCEPTO1),
+                                    Format(drPrecio, "##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)),
+                                    Format(drImporte, "##0.00"),
+                                    IIf(drDESCUENTO_IMPORTE > 0, Format(drDESCUENTO_IMPORTE, "##0.00"), "").ToString, ConceptoImpuestoTraslados,)
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Impuestos'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            Dim arr() As iImpuestosTraslado33, dImpuestoIEPSImporte As Decimal, dImpuestoIVAImporte As Decimal
+
+            'IEPS, deben acumularse, puede ser que mas de un artículo tenga el mismo % de ieps, de modo que aquí se juntan en uno sólo.
+            If oDescuento.IEPS_DESGLOSADO > 0 Then 'Solamente si se le desglosan los ieps se mencionan, si es incluido no(como si no tuviera), por eso se pregunta por el total y no del renglón porque al ser inc si va tener ieps pero no es parte del xml
+                arr = ImpuestosTrasladoAgrupados(Cfd)
+
+                For i = 1 To UBound(arr)
+                    dImpuestoIEPSImporte = CDec(arr(i).Importe)
+
+                    'Nota, no es necesario preguntar si es en USD y dividir por el tipo de cambio porque este valor se llena con el desglose x concepto el cual ya esta en USD
+
+                    Cfd.Impuestos.Traslados.Add(arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIEPSImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
+                Next
+            End If
+
+            ''IVA
+            'Nota el total de iva ya esta acumulado y es un sólo tipo de iva por se obtiene directamente del documento(a diferencia del ieps)
+            If oDescuento.IVA > 0 Then
+                'rsDocumento!IMPUESTO_PORCENTAJE viene como 16, se ocupa dividir
+
+                dImpuestoIVAImporte = CDec(oDescuento.IVA)
+
+                If oDescuento.CODIGO_MONEDA_SAT = "USD" Then
+                    dImpuestoIVAImporte = RedondearD(dImpuestoIVAImporte / dTIPO_DE_CAMBIO, 2)
+                End If
+
+                Cfd.Impuestos.Traslados.Add("002", "Tasa", Format(oDescuento.IMPUESTO_PORCENTAJE / CDec("100.00"), "0.#00000"), Format(dImpuestoIVAImporte, "#0.00"))
+            End If
+
+            'Fin de llenado de nodos del comprobante''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            If Cfd.GeneraCFD(TipoComprobante.NOTA_CREDITO_CXC, sRutaXML) = True Then
+                bResultado = True
+                If bMostrarMensaje = True Then
+                    MsgBox("Nota de crédito sellada satisfactoriamente.", vbInformation, sProcedure)
+                End If
+            End If
+
         Catch ex As Exception
             HandleError(nombreModulo, sProcedure, ex)
         End Try
 
         Return bResultado
     End Function
-
 
     Public Function GeneraDevolucionElectronica33(ByVal oDevolucion As Class_CXC_Devoluciones_Global, ByVal bMostrarMensaje As Boolean, ByVal sRutaXML As String) As Boolean
         Const sProcedure As String = "GeneraDevolucionElectronica33"
