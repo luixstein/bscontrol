@@ -518,8 +518,12 @@ busca:
         Me.DesplegarZonas()
         Me.DesplegarTiposMercados()
         Me.DesplegarElementos()
-        Me.DesplegarMetodoPago()
-        Me.DesplegarMetodoPagoDolares()
+        Me.DesplegarFormasPago()
+        Me.DesplegarFormasPagoDolares()
+
+        If Empresa_Sistema.VERSION_ESQUEMA_CFD >= "3.3" Then
+            Me.gbMetodoPago.Visible = False
+        End If
     End Sub
 
     Private Sub Cambia_Estado()
@@ -731,8 +735,8 @@ busca:
             Me.cboTipoPersona.SelectedItem = "MORAL"
             Me.cboZona.SelectedValue = Plaza.CODIGO_ZONA_PRINCIPAL
             Me.cboVendedor.SelectedValue = "1"
-            Me.cboFormaPago.SelectedValue = "NA"
-            Me.cboFormaPagoUSD.SelectedValue = "NA"
+            Me.cboFormaPago.SelectedValue = "99" '99=Por definir
+            Me.cboFormaPagoUSD.SelectedValue = "99"
             Me.cboNombreXML.SelectedValue = ""
             Me.cboNombreXML.Text = ""
             Me.chkPermitirVentaCredito.Checked = False
@@ -1235,7 +1239,7 @@ busca:
         End Try
     End Sub
 
-    Private Sub DesplegarMetodoPago()
+    Private Sub DesplegarFormasPago()
         Try
             Dim oElementos As New Class_CFD_CatFormasPago
             With Me.cboFormaPago
@@ -1246,15 +1250,15 @@ busca:
                 dView.Sort = "NOMBRE_METODO_PAGO"
                 .DataSource = dView
                 If dView.Count > 0 Then
-                    .SelectedValue = "NA"
+                    .SelectedValue = "99"
                 End If
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "DesplegarMetodoPago", ex)
+            HandleError(Me.Name, "DesplegarFormasPago", ex)
         End Try
     End Sub
 
-    Private Sub DesplegarMetodoPagoDolares()
+    Private Sub DesplegarFormasPagoDolares()
         Try
             Dim oElementos As New Class_CFD_CatFormasPago
             With Me.cboFormaPagoUSD
@@ -1265,11 +1269,11 @@ busca:
                 dView.Sort = "NOMBRE_METODO_PAGO"
                 .DataSource = dView
                 If dView.Count > 0 Then
-                    .SelectedValue = "NA"
+                    .SelectedValue = "99"
                 End If
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "DesplegarMetodoPagoDolares", ex)
+            HandleError(Me.Name, "DesplegarFormasPagoDolares", ex)
         End Try
     End Sub
 
