@@ -451,8 +451,10 @@ Friend Class cComplementoPagos
 
             'MsgBox ("duda: NumOperacion , validar que la lleve si es spei ?, no esta claro si deba ser obligatorio a llevar la clave de rastreo en caso de ser SPEI(Dice en la guia NumOperacion)"
 
-            If dSumaPagado > valorNumerico(Me.Monto) Then
-                MsgBox("Monto : La suma de los valores registrados en el nodo DoctoRelacionados, atributo ImpPagado, sea menor o igual que el valor de este atributo." & vbCrLf &
+            If dSumaPagado <> valorNumerico(Me.Monto) Then
+                'If dSumaPagado > valorNumerico(Me.Monto) Then
+                'MsgBox("Monto : La suma de los valores registrados en el nodo DoctoRelacionados, atributo ImpPagado, sea menor o igual que el valor de este atributo." & vbCrLf &
+                MsgBox("Monto : La suma de los valores registrados en el nodo DoctoRelacionados, atributo ImpPagado, sea igual que el valor de este atributo." & vbCrLf &
                        "Pago.Monto=" & Me.Monto & vbCrLf & "Suma DoctoRelacionados.ImpPagado=" & dSumaPagado.ToString, vbExclamation, sProcedure) : Exit Function
             End If
 

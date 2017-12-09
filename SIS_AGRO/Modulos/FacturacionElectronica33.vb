@@ -659,7 +659,7 @@ Module FacturacionElectronica33
                     .TipoCambioP = FormatTipoCambio(oBanco.TIPO_DE_CAMBIO)
                 End If
 
-                .Monto = Format(oBancoDetalle.MONTO, "#0.00")
+                .Monto = Format(oPago.MONTO, "#0.00")
                 .NumOperacion = oBancoDetalle.FOLIO_DETALLE
                 .RfcEmisorCtaOrd = ""
                 .NomBancoOrdExt = ""

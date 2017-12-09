@@ -743,6 +743,12 @@ Buscar:
 
             Me.lblVersionCFDI.Text = ""
 
+            'Estos no se gestionan en el cambiar el estado, se gestionan en el consultar
+            Me.tsbTimbrar.Visible = False
+            Me.tsbCancelarTimbre.Visible = False
+            Me.tsbRecuperarXMLPDF.Visible = False
+            Me.tsbEnviarCorreo.Visible = False
+
             Me.TabControl1.SelectedIndex = 0
             Me.bClienteEsContribuyenteIEPS = False
 
