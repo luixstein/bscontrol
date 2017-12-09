@@ -89,7 +89,6 @@ Public Class Class_CXC_Descuento
     Private _FELECTRONICA_CER As String
     Private _FELECTRONICA_KEY As String
     Private _FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA As String
-
     Private _LISTA_DESCUENTOS As String
 #End Region
 
@@ -142,6 +141,7 @@ Public Class Class_CXC_Descuento
             Me._CODIGO_CLIENTE = value
         End Set
     End Property
+
     Public ReadOnly Property NOMBRE_CLIENTE() As String
         Get
             Return Me._NOMBRE_CLIENTE
@@ -315,7 +315,6 @@ Public Class Class_CXC_Descuento
             Me._TOTAL = value
         End Set
     End Property
-
 
     Public WriteOnly Property ES_COMPROBANTE_ELECTRONICO() As String
         Set(ByVal value As String)
@@ -509,14 +508,12 @@ Public Class Class_CXC_Descuento
         End Get
     End Property
 
-    'CFD
     Public ReadOnly Property NOMBRE_METODO_PAGO() As String
         Get
             Return Me._NOMBRE_METODO_PAGO
         End Get
     End Property
 
-    'CFD
     Public ReadOnly Property NOMBRE_REGIMEN_FISCAL() As String
         Get
             Return Me._NOMBRE_REGIMEN_FISCAL

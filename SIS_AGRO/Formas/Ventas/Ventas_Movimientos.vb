@@ -134,7 +134,7 @@ Public Class Ventas_Movimientos
         If Me.oDocumento.AFECTA_CXC = True Then 'El Documento tiene que estar no cancelado para llegar aqui
             If Me.oVenta.ESTATUS_VENTA = "A" Then
                 If Me.CancelarVenta = True Then  'Se cancelo el documento correctamente = true
-                    If Me.oVenta.VERSION_ESQUEMA_XML > "2.2" And oDocumento.TIMBRA_DOCUMENTO = True Then 'Si no se cumbre no es CFDi (por lo tanto no tiene timbre)
+                    If Me.oVenta.VERSION_ESQUEMA_XML > "2.2" And oDocumento.TIMBRA_DOCUMENTO = True Then 'Si es CFDi
                         Me.oVenta.CancelarTimbre()
                     End If
                     MsgBox("Movimiento de venta cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)

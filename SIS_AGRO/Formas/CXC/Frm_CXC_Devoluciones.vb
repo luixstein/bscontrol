@@ -267,7 +267,7 @@ busca:
 
             Me.TabControl1.SelectedIndex = 0
 
-            'Estos se gestionan su visibilidad en el consultar
+            'Estos gestionan su visibilidad en el consultar
             Me.tsbTimbrar.Visible = False
             Me.tsbCancelarTimbre.Visible = False
             Me.tsbRecuperarXMLPDF.Visible = False
@@ -468,9 +468,6 @@ busca:
                     Me.txtConcepto.Enabled = True
                     Me.dtFecha.Enabled = True
 
-                    Me.tsbTimbrar.Visible = False
-                    Me.tsbCancelarTimbre.Visible = False
-
                     Me.cboFormaPago.Enabled = True
 
                     Me.tssEstado.Text = "Estado: Agregando nuevo movimiento"
@@ -495,22 +492,6 @@ busca:
                     Me.txtConcepto.Enabled = False
                     Me.dtFecha.Enabled = False
 
-                    Me.tsbTimbrar.Visible = False
-                    Me.tsbCancelarTimbre.Visible = False
-                    'If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
-                    '    If Me.oVenta.VERSION_ESQUEMA_XML >= "3.2" Or Me.oVenta.VERSION_ESQUEMA_XML = "" Then
-                    '        If Me.oVenta.TIMBRADO_CFDI = "0" And Me.oVenta.TIMBRADO_DESCARTADO = "0" Then
-                    '            Me.tsbSellar.Visible = True
-                    '            Me.tsbCancelarTimbre.Visible = False
-                    '        Else
-                    '            Me.tsbSellar.Visible = False
-                    '        End If
-                    '    Else
-                    '        Me.tsbSellar.Visible = False
-                    '        Me.tsbCancelarTimbre.Visible = False
-                    '    End If
-                    'End If
-
                     Me.tssEstado.Text = "Estado: Consultando movimiento"
 
                     Me.tsbImprimir.Select()
@@ -531,34 +512,10 @@ busca:
                     Me.txtConcepto.Enabled = False
                     Me.dtFecha.Enabled = False
 
-                    Me.tsbTimbrar.Visible = False
-                    Me.tsbCancelarTimbre.Visible = False
-                    'If Me.oVenta.VERSION_ESQUEMA_XML >= "3.2" Or Me.oVenta.VERSION_ESQUEMA_XML = "" Then
-                    '    If Me.oVenta.TIMBRADO_CFDI = "1" Then
-                    '        If Me.oVenta.TIMBRADO_DESCARTADO = "0" Then
-                    '            If Me.oVenta.ESTATUS_CANCELACION_CFDI = "0" Then
-                    '                Me.tsbCancelarTimbre.Visible = True
-                    '            Else
-                    '                Me.tsbCancelarTimbre.Visible = False
-                    '            End If
-                    '        Else
-                    '            Me.tsbCancelarTimbre.Visible = False
-                    '        End If
-                    '    Else
-                    '        Me.tsbCancelarTimbre.Visible = False
-                    '    End If
-                    'Else
-                    '    Me.tsbSellar.Visible = False
-                    '    Me.tsbCancelarTimbre.Visible = False
-                    'End If
-
                     Me.tssEstado.Text = "Estado: Consultando movimiento"
 
                     Me.tsbImprimir.Select()
             End Select
-
-            'Me.tsbSellarFacturaElectronica.Visible = False
-
             Application.DoEvents()
 
         Catch ex As Exception
@@ -830,6 +787,7 @@ busca:
             End With
 
             bResultado = True
+
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
@@ -839,6 +797,7 @@ busca:
 
     Private Function Cancelar() As Boolean
         MsgBox("FALTA:Cancelar", vbExclamation)
+        Return False
     End Function
 
     Private Sub Imprimir()

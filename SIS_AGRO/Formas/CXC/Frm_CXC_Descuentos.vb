@@ -210,36 +210,6 @@ Buscar:
 
     End Sub
 
-    'Private Sub txtTipoCambio_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtTipoCambio.KeyDown
-    '    If e.KeyCode = Keys.Return Then
-    '        If valorNumerico(Me.txtTipoCambio.Text) < 0 Or valorNumerico(Me.txtTipoCambio.Text) > 20 Then
-    '            MsgBox("Tipo de cambio incorrecto", MsgBoxStyle.Information, "Validación de tipo de cambio")
-    '            Exit Sub
-    '        Else
-    '            Me.CalculaImporteDolares()
-    '            'If txtLEN(Me.TxtImporte.Text) = True And valorNumerico(Me.TxtImporte.Text) > 0 Then
-    '            '    Me.txtTipoCambio.Text = valorNumerico(Me.txtTipoCambio.Text).ToString
-    '            '    Me.txtTipoCambio.Text = Redondear(valorNumerico(Me.txtTipoCambio.Text), 4).ToString
-    '            '    Me.txtImporteDolares.Text = (valorNumerico(Me.TxtImporte.Text) / valorNumerico(Me.txtTipoCambio.Text)).ToString
-    '            '    Me.txtImporteDolares.Text = valorNumerico(Me.txtImporteDolares.Text).ToString
-    '            '    Me.txtImporteDolares.Text = Redondear(valorNumerico(Me.txtImporteDolares.Text), 2).ToString
-    '            'Else
-    '            '    Me.txtTipoCambio.Text = valorNumerico(Me.txtTipoCambio.Text).ToString
-    '            '    Me.txtTipoCambio.Text = Redondear(valorNumerico(Me.txtTipoCambio.Text), 4).ToString
-    '            '    Me.txtImporteDolares.Text = "0"
-    '            '    Me.txtImporteDolares.Text = valorNumerico(Me.txtImporteDolares.Text).ToString
-    '            '    Me.txtImporteDolares.Text = Redondear(valorNumerico(Me.txtImporteDolares.Text), 2).ToString
-    '        End If
-
-    '        If Me.ModoPago = enumModoPago.Cliente Then
-    '            Me.TxtCodigoCliente.Focus()
-    '        Else
-    '            Me.TxtConcepto.Focus()
-    '        End If
-    '        'SendKeys.Send("{TAB}")
-    '    End If
-    'End Sub
-
     Private Sub TxtConcepto_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtConcepto.KeyDown
         If e.KeyCode = Keys.Return Then
             'Me.Grid1.Cell(1, Me.iGyDescuento).SetFocus()
@@ -258,40 +228,6 @@ Buscar:
             Me.Grid.Cell(1, Me.iGyFolio).SetFocus()
         End If
     End Sub
-
-    'Private Sub ckbDolares_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles ckbDolares.KeyDown
-    '    If e.KeyCode = Keys.Return Then
-    '        Me.TxtConcepto.Focus()
-    '    End If
-    'End Sub
-
-    'Private Sub ckbDolares_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ckbDolares.CheckedChanged
-    '    If Me.ckbDolares.Checked = True Then
-    '        Me.txtTipoCambio.Enabled = True
-    '        'Me.txtTotalDolares.Enabled = True
-    '        Me.lblTipoCambio.Enabled = True
-    '        Me.lblTotalDolares.Enabled = True
-    '        Me.txtTipoCambio.Focus()
-    '    Else
-    '        Me.txtTipoCambio.Enabled = False : Me.txtTipoCambio.Text = ""
-    '        'Me.txtTotalDolares.Enabled = False
-    '        Me.lblTipoCambio.Enabled = False
-    '        Me.lblTotalDolares.Enabled = False : Me.txtImporteDolares.Text = ""
-    '    End If
-    'End Sub
-
-    'Private Sub txtTipoCambio_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtTipoCambio.KeyDown
-    '    If e.KeyCode = Keys.Return Then
-    '        If valorNumerico(Me.txtTipoCambio.Text) <= 0 Or valorNumerico(Me.txtTipoCambio.Text) > 20 Then
-    '            MsgBox("Tipo de cambio incorrecto", MsgBoxStyle.Information, "Validación de tipo de cambio")
-    '            Exit Sub
-    '        Else
-    '            Me.CalculaImporteDolares()
-    '        End If
-    '        Me.dtFecha.Focus()
-    '        'SendKeys.Send("{TAB}")
-    '    End If
-    'End Sub
 
     Private Sub chkVentaPublicoGeneral_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles chkVentaPublicoGeneral.KeyDown
         Select Case e.KeyCode
@@ -408,7 +344,7 @@ Buscar:
         oTexBox.SelectAll()
     End Sub
 
-    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dtFecha.KeyDown
+    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dtFecha.KeyDown, cboFormaPago.KeyDown, cboMetodoPago.KeyDown, cboUsoCFDI.KeyDown
         If e.KeyCode = Keys.Return Then
             SendKeys.Send("{TAB}")
         End If
@@ -469,7 +405,7 @@ Buscar:
             Me.txtIEPSIncluido.Text = FormatImporteContable(0)
             Me.TxtImpuesto.Text = FormatImporteContable(0)
             Me.TxtTotal.Text = FormatImporteContable(0)
-            Me.lblImpuestoPorcentaje.Text = FormatImporteContable(0)
+            Me.lblImpuestoPorcentaje.Text = "0.00"
 
             Me.GeneraFolio()
             Me.InicializaGrid()
@@ -487,6 +423,13 @@ Buscar:
             Me.cboUsoCFDI.SelectedValue = "G02" 'G02=Devoluciones, descuentos o bonificaciones
 
             Me.lblVersionCFDI.Text = ""
+
+            'Estos no se gestionan en el cambiar el estado, se gestionan en el consultar
+            Me.tsbTimbrar.Visible = False
+            Me.tsbCancelarTimbre.Visible = False
+            Me.tsbRecuperarXMLPDF.Visible = False
+            Me.tsbEnviarCorreo.Visible = False
+
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
         End Try
@@ -510,12 +453,6 @@ Buscar:
 
     Private Sub FormateaGrid()
         Try
-            'Private iGyFolio As Integer = 1
-            'Private iGyFechaFactura As Integer = 2
-            'Private iGyImporteFactura As Integer = 3
-            'Private iGySaldo As Integer = 4
-            'Private iGyDescuento As Integer = 5
-
             Me.Grid.Column(Me.iGyFolio).Width = 95
             Me.Grid.Column(Me.iGyFechaFactura).Width = 90
             Me.Grid.Column(Me.iGyTipoCambio).Width = 90
@@ -663,11 +600,11 @@ Buscar:
 
     Private Sub CalculaImporteDolares()
         Try
-            Dim dUSD As Decimal = 0
+            Dim dTipoCambio As Decimal = valorNumericoD(Me.txtTipoCambio.Text)
             If valorNumericoD(Me.TxtTotal.Text) > 0 Then
-                Me.lblSubtotalDolares.Text = FormatImporteContable(Redondear(valorNumerico(Me.TxtSubTotal.Text) / valorNumerico(Me.txtTipoCambio.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD))
-                Me.lblImpuestoDolares.Text = FormatImporteContable(Redondear(valorNumerico(Me.TxtImpuesto.Text) / valorNumerico(Me.txtTipoCambio.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD))
-                Me.lblTotalDolares.Text = FormatImporteContable(Redondear(valorNumerico(Me.TxtTotal.Text) / valorNumerico(Me.txtTipoCambio.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD))
+                Me.lblSubtotalDolares.Text = FormatImporteContable(Redondear(valorNumerico(Me.TxtSubTotal.Text) / dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD))
+                Me.lblImpuestoDolares.Text = FormatImporteContable(Redondear(valorNumerico(Me.TxtImpuesto.Text) / dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD))
+                Me.lblTotalDolares.Text = FormatImporteContable(Redondear(valorNumerico(Me.TxtTotal.Text) / dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD))
             Else
                 Me.lblSubtotalDolares.Text = "0"
                 Me.lblImpuestoDolares.Text = "0"
@@ -685,7 +622,7 @@ Buscar:
         Try
 
             'Validar permiso
-            If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString) = False Then
+            If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.oDocumento.CODIGO_DOCUMENTO) = False Then
                 MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, Me.Text)
                 Return False
             End If
@@ -694,37 +631,13 @@ Buscar:
                 Return False
             End If
 
-            'Me.Totales()
             Me.CalculaImpuestosYTotales("CALCULAR")
 
             If Me.Validar() = False Then
                 Return False
             End If
 
-            'If Me.ValidaPrePoliza() = False Then
-            '    RETURN FALSE
-            'End If
-
             If Me.Grabar() = True Then
-                ''sobreescibir texbox folio y folio oringen de oFormaPoliza, aplicar la poliza, y actualizar folio_poliza en bancos global
-                'Me.oFormaPoliza.TxtFolio.Text = Me.TxtFolio.Text
-                'Me.oFormaPoliza.lblFolioOrigen.Text = Me.TxtFolio.Text
-                'If Me.oFormaPoliza.Aplicar(False, False) = True Then
-                '    If Me.oDescuentosCXC.ActualizaFolioPoliza() = True Then
-                '        If Empresa_Sistema.FELECTRONICA_ACTIVA = True Then
-                '            If Me.GeneraNotaCreditoElectronica(False) = True Then
-                '                Me.oDescuentosCXC.ExportarAPdf()
-                '            End If
-                '        End If
-                '        MsgBox("Movimiento grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
-                '    Else
-                '        MsgBox("Movimiento grabado sin relacionar el folio de la póliza.", MsgBoxStyle.Information, Me.Text)
-                '    End If
-                '    bResultado = True
-                'Else
-                '    MsgBox("Movimiento grabado sin relacionar el folio de la póliza.", MsgBoxStyle.Information, Me.Text)
-                'End If
-
                 bResultado = True
 
                 If Empresa_Sistema.FELECTRONICA_ACTIVA = True AndAlso Me.oDocumento.TIMBRA_DOCUMENTO = True Then
@@ -822,14 +735,16 @@ Buscar:
             End If
 
             oCliente = New Class_CatClientes(Me.TxtCodigoCliente.Text)
+            Me.LblCliente.Text = oCliente.NOMBRE_CLIENTE.ToString
 
-            If oCliente.Existe = False Or oCliente.ESTATUS = "B" Then
-                MsgBox("El código de Cliente que intenta introducir no existe o esta dado de baja, favor de intentar con otro código.", MsgBoxStyle.Exclamation, sProcedure)
-                Me.LblCliente.Text = ""
+            If oCliente.Existe = False Then
+                MsgBox("El cliente no existe.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.TxtCodigoCliente.Focus()
                 Return False
-            Else
-                Me.LblCliente.Text = oCliente.NOMBRE_CLIENTE.ToString
+            ElseIf oCliente.ESTATUS = "B" Then
+                MsgBox("El cliente esta dado de baja.", MsgBoxStyle.Exclamation, sProcedure)
+                Me.TxtCodigoCliente.Focus()
+                Return False
             End If
 
             'If Me.ckbVentaPublicoGeneral.Checked = False Then
@@ -850,7 +765,7 @@ Buscar:
             End If
 
             'If valorNumerico(Me.TxtFalta.Text) <> 0 Then
-            '    MsgBox("El importe es diferente al descuento total.", MsgBoxStyle.Exclamation, Me.Nombre_Modulo)
+            '    MsgBox("El importe es diferente al descuento total.", MsgBoxStyle.Exclamation, sProcedure)
             '    Return False 
             'End If
 
@@ -980,212 +895,6 @@ Buscar:
         End Select
     End Sub
 
-    'Private Function ValidaPrePoliza() As Boolean
-    '    Dim bResultado As Boolean = False
-    '    Dim oCliente As Class_CatClientes
-    '    Dim oCuenta As Class_CatCuentas
-    '    'Dim oVentas As Class_Ventas_Global
-    '    Dim i As Integer, sCultivo As String = ""
-
-    '    Try
-    '        If ExisteDocumento(Me.TxtFolio.Text) = True Then
-    '            MsgBox("El folio : " & Me.TxtFolio.Text & " ya existe, verifíquelo.", MsgBoxStyle.Exclamation, "Contabilizar")
-    '            Exit Function
-    '        End If
-
-    '        'Me.GeneraFolio() 'No hay que generar folio nuevo porque se manda el folio del documento
-
-    '        Me.oFormaPoliza = New Frm_Contabilidad_Captura_Polizas
-
-    '        Me.oFormaPoliza.StartPosition = FormStartPosition.CenterScreen
-
-    '        Me.oFormaPoliza.ChildParaGrabar = True
-    '        Me.oFormaPoliza.CodigoDocumentoParaGrabar = "D"
-
-    '        Me.oFormaPoliza.DtpFecha.Value = Me.dtFecha.Value
-    '        Me.oFormaPoliza.TxtTotalCargos.Text = Me.TxtTotal.Text
-    '        Me.oFormaPoliza.TxtTotalAbonos.Text = Me.TxtTotal.Text
-    '        Me.oFormaPoliza.TxtConcepto1.Text = Me.TxtConcepto.Text
-
-    '        Me.oFormaPoliza.lblFolioOrigen.Text = Me.TxtFolio.Text
-    '        Me.oFormaPoliza.TxtFolio.Text = Me.TxtFolio.Text
-
-    '        Me.oFormaPoliza.Grid1.Rows = 2
-    '        Me.oFormaPoliza.Grid1.Cols = 9
-
-    '        oCliente = New Class_CatClientes(Me.TxtCodigoCliente.Text)
-
-    '        Me.oFormaPoliza.Grid1.Cell(1, 1).Text = oCliente.CUENTA_CONTABLE.ToString
-    '        Me.oFormaPoliza.Grid1.Cell(1, 2).Text = oCliente.NOMBRE_CLIENTE
-    '        Me.oFormaPoliza.Grid1.Cell(1, 3).Text = Me.Grid.Cell(2, Me.iGySubtotalNuevo).Text
-    '        Me.oFormaPoliza.Grid1.Cell(1, 4).Text = "D"
-    '        Me.oFormaPoliza.Grid1.Cell(1, 5).Text = "0"
-    '        Me.oFormaPoliza.Grid1.Cell(1, 6).Text = Me.TxtTotal.Text
-
-    '        'Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 3
-    '        ''Pone los renglones segun el codigo de descuentos del cultivo 
-    '        For i = 1 To Me.Grid.Rows - 1
-    '            If Me.Grid.Cell(i, Me.iGyFolio).Text <> "" And valorNumerico(Me.Grid.Cell(i, Me.iGyDescuento).Text) > 0 Then
-
-    '                'La comersializadora es una cuenta fija y no va por cultivo
-    '                'If Empresa_Sistema.RFC = "LPR070917RT9" Then
-    '                '    sCultivo = "0000" + Me.Grid.Cell(i, Me.iGyCodigoCultivo).Text
-    '                '    oCuenta = New Class_CatCuentas("5100" & sCultivo.Substring(Len(sCultivo) - 4))
-    '                'Else
-    '                '    oCuenta = New Class_CatCuentas("510000020001")
-    '                'End If
-
-    '                sCultivo = "0000" + Me.Grid.Cell(i, Me.iGyCodigoCultivo).Text
-    '                oCuenta = New Class_CatCuentas("5100" & sCultivo.Substring(Len(sCultivo) - 4))
-
-    '                Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-    '                If txtLEN(Me.Grid.Cell(i, Me.iGyCodigoCultivo).Text) = False Then
-    '                    Me.oFormaPoliza.Grid1.Cell(Me.oFormaPoliza.Grid1.Rows - 1, 1).Text = ""
-    '                Else
-    '                    Me.oFormaPoliza.Grid1.Cell(Me.oFormaPoliza.Grid1.Rows - 1, 1).Text = oCuenta.CUENTA_CONTABLE 'Plaza.CUENTA_DESCUENTOS_REBAJAS_NACIONALES & sCultivo.Substring(Len(sCultivo) - 4)
-    '                    Me.oFormaPoliza.Grid1.Cell(Me.oFormaPoliza.Grid1.Rows - 1, 2).Text = oCuenta.NOMBRE_CUENTA
-    '                End If
-    '                Me.oFormaPoliza.Grid1.Cell(Me.oFormaPoliza.Grid1.Rows - 1, 3).Text = oCliente.NOMBRE_CLIENTE
-    '                Me.oFormaPoliza.Grid1.Cell(Me.oFormaPoliza.Grid1.Rows - 1, 4).Text = "A"
-    '                Me.oFormaPoliza.Grid1.Cell(Me.oFormaPoliza.Grid1.Rows - 1, 5).Text = Me.Grid.Cell(i, Me.iGyDescuento).Text
-    '                Me.oFormaPoliza.Grid1.Cell(Me.oFormaPoliza.Grid1.Rows - 1, 6).Text = "0"
-    '            End If
-    '        Next i
-
-    '        'poner el nombre del cliente al cual se le hiso el descuento
-    '        'Me.AgregaPrepolizaIVAAcreditable()
-    '        If Me.ckbDolares.Checked = True Then
-    '            Me.CalculaImporteDolares()
-
-    '            If txtLEN(oCliente.CUENTA_CONTABLE_DOLARES) = False Then
-    '                MsgBox("El cliente no tiene cuenta contable en dólares. Favor de revisar.", MsgBoxStyle.Exclamation, "Validación de descuentos de CXC")
-    '                Exit Function
-    '            End If
-
-    '            Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-    '            Me.oFormaPoliza.Grid1.Cell(Me.oFormaPoliza.Grid1.Rows - 1, 1).Text = oCliente.CUENTA_CONTABLE_DOLARES
-    '            Me.oFormaPoliza.Grid1.Cell(Me.oFormaPoliza.Grid1.Rows - 1, 2).Text = oCliente.NOMBRE_CLIENTE
-    '            Me.oFormaPoliza.Grid1.Cell(Me.oFormaPoliza.Grid1.Rows - 1, 3).Text = Me.oFormaPoliza.TxtConcepto1.Text
-    '            Me.oFormaPoliza.Grid1.Cell(Me.oFormaPoliza.Grid1.Rows - 1, 4).Text = "A"
-    '            Me.oFormaPoliza.Grid1.Cell(Me.oFormaPoliza.Grid1.Rows - 1, 5).Text = Me.txtImporteDolares.Text
-    '            Me.oFormaPoliza.Grid1.Cell(Me.oFormaPoliza.Grid1.Rows - 1, 6).Text = "0"
-
-    '            oCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES)
-    '            Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-    '            Me.oFormaPoliza.Grid1.Cell(Me.oFormaPoliza.Grid1.Rows - 1, 1).Text = oCuenta.CUENTA_CONTABLE
-    '            Me.oFormaPoliza.Grid1.Cell(Me.oFormaPoliza.Grid1.Rows - 1, 2).Text = oCuenta.NOMBRE_CUENTA
-    '            Me.oFormaPoliza.Grid1.Cell(Me.oFormaPoliza.Grid1.Rows - 1, 3).Text = Me.oFormaPoliza.TxtConcepto1.Text
-    '            Me.oFormaPoliza.Grid1.Cell(Me.oFormaPoliza.Grid1.Rows - 1, 4).Text = oCuenta.NATURALEZA_CONTABLE
-    '            Me.oFormaPoliza.Grid1.Cell(Me.oFormaPoliza.Grid1.Rows - 1, 5).Text = "0"
-    '            Me.oFormaPoliza.Grid1.Cell(Me.oFormaPoliza.Grid1.Rows - 1, 6).Text = Me.txtImporteDolares.Text
-    '        End If
-
-    '        Me.oFormaPoliza.lblEstatus.Text = "N"
-
-    '        Me.oFormaPoliza.ShowDialog()
-
-    '        bResultado = Me.oFormaPoliza.FormaValidaParaGrabarLlamadoExterior
-
-    '    Catch ex As Exception
-    '        HandleError(Me.Text, "ValidaPrePoliza", ex)
-    '    Finally
-    '        oCuenta = Nothing
-    '        oCliente = Nothing
-    '    End Try
-
-    '    Return bResultado
-    'End Function
-
-    'Private Function AgregaPrepolizaIVAAcreditable() As Boolean
-    '    Dim i As Integer, dPago As Double, sFolio As String, sCodigoDocumento As String ', dIvaImporte As Double
-    '    Dim oCompra As Class_Compras_Global, dtImpuestosAbonos As New DataTable("tabla"), dtImpuestosCargos As New DataTable("tabla")
-    '    Dim dA As SqlDataAdapter
-    '    Try
-
-    '        dtImpuestosCargos.Columns.Add("CUENTA_CONTABLE", GetType(String))
-    '        dtImpuestosCargos.Columns.Add("NOMBRE_CUENTA", GetType(String))
-    '        dtImpuestosCargos.Columns.Add("NATURALEZA", GetType(String))
-    '        dtImpuestosCargos.Columns.Add("CARGO", GetType(Double))
-    '        dtImpuestosCargos.Columns.Add("TIPO", GetType(String))
-    '        dtImpuestosCargos.Columns.Add("PORCENTAJE", GetType(Double))
-
-    '        dtImpuestosAbonos.Columns.Add("CUENTA_CONTABLE", GetType(String))
-    '        dtImpuestosAbonos.Columns.Add("NOMBRE_CUENTA", GetType(String))
-    '        dtImpuestosAbonos.Columns.Add("NATURALEZA", GetType(String))
-    '        dtImpuestosAbonos.Columns.Add("ABONO", GetType(Double))
-    '        dtImpuestosAbonos.Columns.Add("TIPO", GetType(String))
-    '        dtImpuestosAbonos.Columns.Add("PORCENTAJE", GetType(Double))
-
-    '        dA = New SqlDataAdapter("SELECT I.CUENTA_CONTABLE,C.NOMBRE_CUENTA,C.NATURALEZA_CONTABLE,0,0,I.TIPO,I.PORCENTAJE " & _
-    '                                "FROM CON_IVA_ACREDITABLE_CATALOGO_CUENTAS I INNER JOIN CON_CAT_CUENTAS C ON(I.CUENTA_CONTABLE=C.CUENTA_CONTABLE) ORDER BY I.PORCENTAJE,I.TIPO", Empresa_Sistema.conexion)
-    '        dA.Fill(dtImpuestosCargos)
-    '        dA.Dispose()
-
-    '        For i = 1 To Me.Grid.Rows - 1
-    '            sFolio = Me.Grid.Cell(i, Me.iGyFolio).Text
-    '            sCodigoDocumento = Me.Grid.Cell(i, Me.iGyFolio).Text
-    '            dPago = valorNumerico(Me.Grid.Cell(i, Me.iGyDescuento).Text)
-    '            If txtLEN(sFolio) = True And dPago > 0 Then
-    '                oCompra = New Class_Compras_Global(sFolio, sCodigoDocumento)
-    '                If oCompra.IMPUESTO > 0 AndAlso (dPago - oCompra.SALDO) = 0 Then 'Si es el último pago(si quedará con saldo cero)
-    '                    Dim dRowAbonoRenglon As DataRow
-    '                    Dim dRowAbono() As Data.DataRow = dtImpuestosCargos.Select("PORCENTAJE=" & oCompra.IMPUESTO_PORCENTAJE & " AND TIPO='IVA_PENDIENTE_ACREDITAR'")
-    '                    Dim dRowCargo() As Data.DataRow = dtImpuestosCargos.Select("PORCENTAJE=" & oCompra.IMPUESTO_PORCENTAJE & " AND TIPO='IVA_ACREDITABLE'")
-
-    '                    'dIvaImporte = (dPago / oCompra.TOTAL) * oCompra.IMPUESTO_PORCENTAJE
-    '                    'dIvaImporte = Redondear(dIvaImporte, Empresa_Sistema.DECIMALES_CONTABILIDAD)
-    '                    'dRow(0)("ABONO") = valorNumerico(dRow(0)("ABONO").ToString) + dIvaImporte
-
-    '                    dRowAbonoRenglon = dtImpuestosAbonos.NewRow
-
-    '                    dRowAbonoRenglon("CUENTA_CONTABLE") = dRowAbono(0)("CUENTA_CONTABLE")
-    '                    dRowAbonoRenglon("NOMBRE_CUENTA") = dRowAbono(0)("NOMBRE_CUENTA")
-    '                    dRowAbonoRenglon("NATURALEZA") = dRowAbono(0)("NATURALEZA")
-    '                    dRowAbonoRenglon("ABONO") = oCompra.IMPUESTO
-    '                    dRowAbonoRenglon("TIPO") = dRowAbono(0)("TIPO")
-    '                    dRowAbonoRenglon("PORCENTAJE") = dRowAbono(0)("PORCENTAJE")
-
-    '                    dtImpuestosAbonos.Rows.Add(dRowAbonoRenglon)
-
-    '                    dRowCargo(0)("CARGO") = valorNumerico(dRowCargo(0)("CARGO").ToString) + oCompra.IMPUESTO
-
-    '                    dtImpuestosAbonos.AcceptChanges()
-    '                    dtImpuestosCargos.AcceptChanges()
-
-    '                End If
-    '            End If
-    '        Next
-
-    '        Dim iRow As Integer = 3
-    '        For Each dRow As DataRow In dtImpuestosAbonos.Rows
-    '            Me.oFormaPoliza.Grid1.Rows += 1
-    '            Me.oFormaPoliza.Grid1.Cell(iRow, 1).Text = dRow("CUENTA_CONTABLE").ToString
-    '            Me.oFormaPoliza.Grid1.Cell(iRow, 2).Text = dRow("NOMBRE_CUENTA").ToString
-    '            Me.oFormaPoliza.Grid1.Cell(iRow, 3).Text = Me.TxtConcepto.Text
-    '            Me.oFormaPoliza.Grid1.Cell(iRow, 4).Text = dRow("NATURALEZA").ToString
-    '            Me.oFormaPoliza.Grid1.Cell(iRow, 5).Text = "0"
-    '            Me.oFormaPoliza.Grid1.Cell(iRow, 6).Text = dRow("ABONO").ToString
-    '            iRow += 1
-    '        Next
-
-    '        If dtImpuestosAbonos.Rows.Count > 0 Then
-    '            For Each dRow As DataRow In dtImpuestosCargos.Select("CARGO<>0")
-    '                Me.oFormaPoliza.Grid1.Rows += 1
-    '                Me.oFormaPoliza.Grid1.Cell(iRow, 1).Text = dRow("CUENTA_CONTABLE").ToString
-    '                Me.oFormaPoliza.Grid1.Cell(iRow, 2).Text = dRow("NOMBRE_CUENTA").ToString
-    '                Me.oFormaPoliza.Grid1.Cell(iRow, 3).Text = Me.TxtConcepto.Text
-    '                Me.oFormaPoliza.Grid1.Cell(iRow, 4).Text = dRow("NATURALEZA").ToString
-    '                Me.oFormaPoliza.Grid1.Cell(iRow, 5).Text = dRow("CARGO").ToString
-    '                Me.oFormaPoliza.Grid1.Cell(iRow, 6).Text = "0"
-    '                iRow += 1
-    '            Next
-    '        End If
-
-    '    Catch ex As Exception
-    '        HandleError(Me.Text, "AgregaPrepolizaIVAAcreditable", ex)
-    '    End Try
-    'End Function
-
     Private Function Consultar() As Boolean
         Dim bResultado As Boolean = False
         Dim sFolio As String = Me.TxtFolio.Text
@@ -1274,6 +983,7 @@ Buscar:
                     End If
                 End If
             End If
+
         Catch ex As Exception
             HandleError(Me.Name, "Consultar", ex)
         End Try
@@ -1433,6 +1143,7 @@ Buscar:
                     Me.TxtConcepto.Enabled = True
                     Me.TxtConcepto2.Enabled = True
                     Me.cboMoneda.Enabled = True
+                    Me.cboFormaPago.Enabled = True
                     Me.chkVentaPublicoGeneral.Enabled = True
                     Me.txtTipoCambio.Enabled = False
                     Me.tssEstado.Text = "Estado: agregando documento"
@@ -1456,6 +1167,7 @@ Buscar:
                     Me.TxtConcepto.Enabled = False
                     Me.TxtConcepto2.Enabled = False
                     Me.cboMoneda.Enabled = False
+                    Me.cboFormaPago.Enabled = False
                     Me.chkVentaPublicoGeneral.Enabled = False
                     Me.txtTipoCambio.Enabled = False
                     Me.tssEstado.Text = "Estado: consultando"
@@ -1476,6 +1188,7 @@ Buscar:
                     Me.TxtConcepto.Enabled = False
                     Me.TxtConcepto2.Enabled = False
                     Me.cboMoneda.Enabled = False
+                    Me.cboFormaPago.Enabled = False
                     Me.chkVentaPublicoGeneral.Enabled = False
                     Me.txtTipoCambio.Enabled = False
                     Me.tssEstado.Text = "Estado: consultando"
@@ -1551,7 +1264,7 @@ Buscar:
                 Me.txtIEPSIncluido.Text = FormatImporteContable(0)
                 Me.TxtImpuesto.Text = FormatImporteContable(0)
                 Me.TxtTotal.Text = FormatImporteContable(0)
-                Me.lblImpuestoPorcentaje.Text = FormatImporteContable(0)
+                Me.lblImpuestoPorcentaje.Text = "0.00"
                 Return True
             End If
 

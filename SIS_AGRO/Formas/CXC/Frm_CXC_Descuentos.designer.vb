@@ -594,7 +594,7 @@ Partial Class Frm_CXC_Descuentos
         Me.gbTotales.Size = New System.Drawing.Size(204, 106)
         Me.gbTotales.TabIndex = 244
         Me.gbTotales.TabStop = False
-        Me.gbTotales.Text = "Totales MXN :"
+        Me.gbTotales.Text = "Total MXN :"
         '
         'Label1
         '
@@ -704,7 +704,7 @@ Partial Class Frm_CXC_Descuentos
         Me.gbDolares.Size = New System.Drawing.Size(176, 78)
         Me.gbDolares.TabIndex = 325
         Me.gbDolares.TabStop = False
-        Me.gbDolares.Text = "Dólares"
+        Me.gbDolares.Text = "Total USD :"
         Me.gbDolares.Visible = False
         '
         'lblTotalDolares
