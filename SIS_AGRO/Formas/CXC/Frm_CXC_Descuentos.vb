@@ -232,7 +232,7 @@ Buscar:
     Private Sub chkVentaPublicoGeneral_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles chkVentaPublicoGeneral.KeyDown
         Select Case e.KeyCode
             Case Keys.Enter
-                Me.dtFecha.Focus()
+                Me.TxtConcepto.Focus()
         End Select
     End Sub
 
@@ -366,7 +366,7 @@ Buscar:
     Private Sub cboMoneda_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboMoneda.SelectedIndexChanged
         Try
             If Me.cboMoneda.Text = "USD" Then
-                Me.txtTipoCambio.Visible = True : Me.txtTipoCambio.Enabled = True : Me.lblDisplayTipoCambio.Visible = True
+                Me.txtTipoCambio.Visible = True : Me.txtTipoCambio.Enabled = True : Me.lblDisplayTipoCambio.Visible = True 'El tipo de cambio siempre estará readonly true(aunque este enabled), se llenará automáticamente.
                 Me.gbDolares.Visible = True
             Else
                 Me.txtTipoCambio.Visible = False : Me.txtTipoCambio.Enabled = False : Me.lblDisplayTipoCambio.Visible = False
@@ -1025,11 +1025,6 @@ Buscar:
                 Return False
         End Select
 
-        If Me.oDescuentosCXC.VERSION_ESQUEMA_XML <> Empresa_Sistema.VERSION_ESQUEMA_CFD Then
-            MsgBox("La versión del esquema es diferente al actual. .", MsgBoxStyle.Exclamation, Me.Text)
-            Return False
-        End If
-
         Try
             oUtileriasCancela.FOLIO_DOCUMENTO = Me.TxtFolio.Text.ToUpper
             oUtileriasCancela.MODULO = "CXC"
@@ -1286,7 +1281,7 @@ Buscar:
                 Me.txtIEPSIncluido.Text = FormatImporteContable(CDbl(dt.Rows(0)("IEPS_INCLUIDO")))
                 Me.TxtImpuesto.Text = FormatImporteContable(CDbl(dt.Rows(0)("IVA")))
                 Me.TxtTotal.Text = FormatImporteContable(CDbl(dt.Rows(0)("TOTAL")))
-                Me.lblImpuestoPorcentaje.Text = FormatImporteContable(CDbl(dt.Rows(0)("IMPUESTO_PORCENTAJE")))
+                Me.lblImpuestoPorcentaje.Text = CDbl(dt.Rows(0)("IMPUESTO_PORCENTAJE")).ToString
             End If
 
             If Me.cboMoneda.Text = "USD" Then
