@@ -46,6 +46,7 @@ Public Class RptCentrosCostosNavegador
         InitializeComponent()
 
         Me.Limpiar()
+        Me.ConsultaTemporadaActual()
         Me.Consultar()
     End Sub
 
@@ -387,6 +388,25 @@ Buscar:
             Me.FormateaGridMovimientos()
         Catch ex As Exception
             HandleError(Me.Name, "InicializaGridMovimientos", ex)
+        End Try
+    End Sub
+
+    Private Sub ConsultaTemporadaActual()
+        Dim oTemporada As New Class_NominaTemporada
+
+        Try
+            If oTemporada.Consultar() = False Then
+                MsgBox("Error al consultar el codigo de la temporada actual.", MsgBoxStyle.Exclamation, Me.Text)
+                Exit Sub
+            End If
+
+            Me.TxtCodigoTemporada.Text = oTemporada.CODIGO_TEMPORADA.ToString
+            Me.LblNombreTemporada.Text = oTemporada.NOMBRE_TEMPORADA
+            Me.DtFechaDesde.Value = CDate(oTemporada.FECHA1)
+            Me.DtFechaHasta.Value = CDate(oTemporada.FECHA2)
+
+        Catch ex As Exception
+            HandleError(Me.Name, "ConsultaTemporadaActual", ex)
         End Try
     End Sub
 
