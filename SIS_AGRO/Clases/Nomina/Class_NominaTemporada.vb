@@ -304,6 +304,27 @@ Public Class Class_NominaTemporada
         Return bResultado
     End Function
 
+    Public Function BusquedaVisual() As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de temporadas por nombre."
+        f.sCampo = "NOMBRE_TEMPORADA"
+        f.sOrder = "NOMBRE_TEMPORADA"
+        f.sTable = "NOMINA_TEMPORADAS"
+        f.sQl = "SELECT CODIGO_TEMPORADA,NOMBRE_TEMPORADA FROM NOMINA_TEMPORADAS WHERE "
+
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "BusquedaVisual", ex)
+        End Try
+        Return Resultado
+    End Function
+
 #End Region
 
 End Class

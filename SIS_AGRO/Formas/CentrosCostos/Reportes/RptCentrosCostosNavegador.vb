@@ -82,7 +82,7 @@ Public Class RptCentrosCostosNavegador
         End If
     End Sub
 
-    Private Sub txtKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCuenta1.KeyPress, DtFechaDesde.KeyPress, DtFechaHasta.KeyPress
+    Private Sub txtKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCuenta1.KeyPress, DtFechaDesde.KeyPress, DtFechaHasta.KeyPress, TxtCodigoTemporada.KeyPress
         txtNoBeep(e)
         txtSoloNumerosEnteros(e)
     End Sub
@@ -191,6 +191,43 @@ Public Class RptCentrosCostosNavegador
         End Try
 
     End Sub
+
+    Private Sub TxtCodigoTemporada_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtCodigoTemporada.KeyDown
+        Dim oTemporada As New Class_NominaTemporada
+        Dim sText As String
+        Dim sql As Class_find
+
+        Select Case e.KeyCode
+            Case Keys.F6
+Buscar:
+                sText = oTemporada.BusquedaVisual
+                If txtLEN(sText) = True Then Me.TxtCodigoTemporada.Text = sText
+
+            Case Keys.Enter
+                If txtLEN(Me.TxtCodigoTemporada.Text) = True Then
+                    oTemporada.ID_NOMINA_TEMPORADA = CInt(Me.TxtCodigoTemporada.Text)
+
+                    sql = New Class_find("SELECT CODIGO_TEMPORADA,NOMBRE_TEMPORADA,FECHA1,FECHA2 FROM NOMINA_TEMPORADAS WHERE CODIGO_TEMPORADA =" & Me.TxtCodigoTemporada.Text)
+
+                    If txtLEN(sql.Result1) = False Then
+                        GoTo Buscar
+                    End If
+
+                    Me.LblNombreTemporada.Text = sql.Result2
+                    Me.DtFechaDesde.Value = CDate(sql.Result3)
+                    Me.DtFechaHasta.Value = CDate(sql.Result4)
+
+                Else
+                    Me.LblNombreTemporada.Text = ""
+                End If
+
+                txtTAB(e)
+        End Select
+
+        
+
+    End Sub
+
 #End Region
 
 #End Region
