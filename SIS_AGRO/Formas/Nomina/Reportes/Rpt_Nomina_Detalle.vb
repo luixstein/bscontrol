@@ -25,14 +25,35 @@ Public Class Rpt_Nomina_Detalle
     Private Sub cboConceptoActividad_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboConceptoActividad.SelectedIndexChanged
         Me.DesplegarSubactividades()
     End Sub
+
+    Private Sub txtCodicoTrabajador_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoTrabajador.KeyDown
+        Dim oTrabajador As New Class_CatTrabajadores
+        Dim sText As String
+        Select Case e.KeyCode
+            Case Keys.F6
+Buscar:
+                sText = oTrabajador.BusquedaVisual_PorDescripcion
+                If txtLEN(sText) = True Then Me.TxtCodigoTrabajador.Text = sText
+            Case Keys.Enter
+                If txtLEN(Me.TxtCodigoTrabajador.Text) = False Then
+                    Me.LblNombreTrabajador.Text = ""
+                    txtTAB(e)
+                    Exit Sub
+                End If
+
+                oTrabajador = New Class_CatTrabajadores(Me.TxtCodigoTrabajador.Text)
+                If oTrabajador.Existe = False Then
+                    Me.LblNombreTrabajador.Text = "" : GoTo Buscar : Exit Sub
+                End If
+
+                Me.LblNombreTrabajador.Text = oTrabajador.NOMBRE_COMPLETO_NOMBRE
+                txtTAB(e)
+        End Select
+    End Sub
 #End Region
 
 #Region "Eventos Genericos"
-    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) ' Handles 
-        txtNoBeep(e)
-    End Sub
-    '
-    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) ' Handles txtCantidadPalets.KeyPress, TxtFolio.KeyPress, TxtTotalPeso.KeyPress, txtFolioPalet1Etiquetas.KeyPress, txtFolioPalet2Etiquetas.KeyPress
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoTrabajador.KeyPress
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
@@ -150,6 +171,7 @@ Public Class Rpt_Nomina_Detalle
             Rpt.SetParameterValue("@CODIGO_CENTRO_COSTO", Me.CboCentroCosto.SelectedValue.ToString)
             Rpt.SetParameterValue("@CODIGO_CONCEPTO_ACTIVIDAD", Me.cboConceptoActividad.SelectedValue.ToString)
             Rpt.SetParameterValue("@CODIGO_SUB_ACTIVIDAD", Me.cboSubactividad.SelectedValue.ToString)
+            Rpt.SetParameterValue("@CODIGO_TRABAJADOR", Me.TxtCodigoTrabajador.Text)
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
