@@ -166,9 +166,6 @@ busca:
     Private Sub Grid_KeyDown(ByVal Sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Grid.KeyDown
         Me.GestionaGrid(e)
     End Sub
-    Private Sub GridSeries_KeyDown(ByVal Sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles GridSeries.KeyDown
-        Me.GestionaGridSeries(e)
-    End Sub
 
     Private Sub dtFecha_KeyDown(sender As Object, e As KeyEventArgs) Handles dtFecha.KeyDown
         If e.KeyCode = Keys.Return Then
@@ -202,9 +199,6 @@ busca:
         Child.ShowDialog()
         Child.Dispose()
     End Sub
-    Private Sub btnSeries_Click(sender As Object, e As EventArgs) Handles btnSeries.Click
-        Me.PrepararSeries()
-    End Sub
 
 #Region "Eventos Genericos"
     Private Sub txt_Enter(ByVal sender As Object, ByVal e As System.EventArgs)
@@ -234,7 +228,6 @@ busca:
 #Region "Métodos y procedimientos"
     Private Sub Inicializa()
         Try
-            Me.btnSeries.Enabled = True
             Me.txtFolioDevolucion.Text = ""
             Me.txtFolioVenta.Text = ""
             Me.txtFolioDescuento.Text = ""
@@ -293,59 +286,6 @@ busca:
             Me.FormateaGrid()
         Catch ex As Exception
             HandleError(Me.Name, "InicializaGrid", ex)
-        End Try
-    End Sub
-    Private Sub PrepararSeries()
-        Try
-            'Dim iUnidades As Integer
-            If IsNothing(Me.dtSeries) = False AndAlso Me.dtSeries.Rows.Count > 0 Then
-                If MsgBox("Hay series ya especificadas, si continua tendrá que recapturar todas." & vbCrLf & "Esta seguro de continuar ?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.No Then
-                    Return
-                End If
-            End If
-
-            Me.dtSeries.Clear()
-            Me.dtSeries = New DataTable("Series")
-            With Me.dtSeries
-                .Columns.Add("POSICION", GetType(String))
-                .Columns.Add("CODIGO_ARTICULO", GetType(String))
-                .Columns.Add("DESCRIPCION", GetType(String))
-                .Columns.Add("ID_INVENTARIO_LOTES_COSTOS", GetType(String))
-                .Columns.Add("NUMERO_SERIE", GetType(String))
-            End With
-            Me.dtSeries.AcceptChanges()
-
-            Dim dRow As DataRow
-
-            For i = 1 To Me.Grid.Rows - 1
-                If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True AndAlso Me.Grid.Cell(i, Me.igyCodigo).Text <> "-" AndAlso CInt(Me.Grid.Cell(i, Me.igyCantidad).Text) > 0 Then
-                    Dim oArticulo As New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
-                    If oArticulo.Existe = True AndAlso oArticulo.ES_SERIALIZABLE = True AndAlso oArticulo.INVENTARIABLE = "1" Then
-                        For j = 1 To CInt(Me.Grid.Cell(i, Me.igyCantidad).Text)
-                            dRow = Me.dtSeries.NewRow
-
-                            dRow("POSICION") = i
-                            dRow("CODIGO_ARTICULO") = Me.Grid.Cell(i, Me.igyCodigo).Text
-                            dRow("DESCRIPCION") = Me.Grid.Cell(i, Me.igyDescripcion).Text
-                            dRow("ID_INVENTARIO_LOTES_COSTOS") = ""
-                            dRow("NUMERO_SERIE") = ""
-
-                            Me.dtSeries.Rows.Add(dRow)
-                        Next
-                    End If
-                End If
-            Next
-
-            Me.dtSeries.AcceptChanges()
-
-            Me.GridSeries.DataSource = Me.dtSeries
-
-            Me.FormateaGridSeries()
-
-            Me.TabControl1.SelectedIndex = 1
-
-        Catch ex As Exception
-            HandleError(Me.Name, "PrepararSeries", ex)
         End Try
     End Sub
 
@@ -714,9 +654,6 @@ busca:
                 Me.txtSaldo.Text = FormatImporteContable(Me.oVenta.SALDO)
 
                 Me.Grid.DataSource = .ObtenerDetalle
-                Me.dtSeries = oDevolucion.ObtenerDetalleSeries(Me.txtFolioDevolucion.Text)
-                Me.GridSeries.DataSource = dtSeries
-                Me.FormateaGridSeries()
             End With
 
             Me.FormateaGrid()
@@ -753,13 +690,6 @@ busca:
 
         Try
             If Me.Validar = False Then
-                Return False
-            End If
-            If Me.ValidaNumerosSerie = False Then
-                Return False
-            End If
-
-            If Me.HaySeriesRepetidas = True Then
                 Return False
             End If
 
@@ -826,14 +756,6 @@ busca:
                         .oDetalle.BASE_IEPS = valorNumericoD(Me.Grid.Cell(i, Me.igyBASE_IEPS).Text)
                         .oDetalle.BASE_IVA = valorNumericoD(Me.Grid.Cell(i, Me.igyBASE_IVA).Text)
                         .oDetalle.PRECIO_TOTAL = valorNumericoD(Me.Grid.Cell(i, Me.igyPRECIO_TOTAL).Text)
-                        If Me.dtSeries.Rows.Count > 0 Then
-                            For Each dRow In Me.dtSeries.Select("POSICION='" & i.ToString & "'")
-                                sListaSeries = sListaSeries & dRow("POSICION").ToString & "," & dRow("CODIGO_ARTICULO").ToString & "," & dRow("ID_INVENTARIO_LOTES_COSTOS").ToString & "," & dRow("NUMERO_SERIE").ToString & "|"
-                            Next
-                            If txtLEN(sListaSeries) = True Then
-                                sListaSeries = sListaSeries.Substring(0, sListaSeries.Length - 1) 'Para quitarle el último pipe que sale sobrando.
-                            End If
-                        End If
                         .oDetalle.LISTA_SERIES = sListaSeries
 
                         If .oDetalle.GrabaRenglon = False Then
@@ -1072,148 +994,6 @@ Sigue:
         End Try
     End Sub
 
-    Private Sub GestionaGridSeries(ByVal e As System.Windows.Forms.KeyEventArgs)
-        Dim sLote As String = "", sCodigoArticulo As String = ""
-        Dim oSerie As Class_Inventarios_Lotes_Series
-        Try
-            With Me.GridSeries
-                Dim Renglon As Integer = .Selection.FirstRow
-                Dim Columna As Integer = .Selection.FirstCol
-                Select Case e.KeyCode
-                    Case Keys.Return
-                        If Columna = Me.igySerieNumeroSerie AndAlso txtLEN(.Cell(Renglon, Me.igySeriePosicion).Text) = True Then
-                            sLote = .Cell(Renglon, Me.igySerieIdInventarioLotesCostos).Text
-                            If txtLEN(sLote) = False Then
-                                GoTo busca_serie
-                                Return
-                            End If
-
-                            If Me.EstableceSerie(Renglon, sLote) = True Then
-                                If Renglon + 1 < .Rows Then
-                                    .Cell(Renglon + 1, Me.igySerieDescripcion).SetFocus()
-                                Else
-                                    .Cell(1, Me.igySerieDescripcion).SetFocus()
-                                End If
-                            End If
-                        End If
-
-                    Case Keys.F6
-                        If Columna = Me.igySerieNumeroSerie AndAlso txtLEN(.Cell(Renglon, Me.igySeriePosicion).Text) = True Then
-busca_serie:
-                            oSerie = New Class_Inventarios_Lotes_Series
-                            sCodigoArticulo = .Cell(Renglon, Me.igySerieCodigo).Text
-                            sLote = oDevolucion.BusquedaVisualSeriesDevolucion(Me.txtFolioVenta.Text, sCodigoArticulo)
-                            If txtLEN(sLote) = True Then
-                                If RepiteSerie(Renglon, sLote) = False Then
-                                    Me.EstableceSerie(Renglon, sLote)
-                                End If
-                            End If
-                        End If
-
-                        'Case Keys.F7
-                        '    If Columna = Me.igySerieNumeroSerie AndAlso txtLEN(.Cell(Renglon, Me.igySeriePosicion).Text) = True Then
-                        '        oSerie = New Class_Inventarios_Lotes_Series
-                        '        sCodigoArticulo = .Cell(Renglon, Me.igySerieCodigo).Text
-                        '        If txtLEN(sCodigoArticulo) = False Then
-                        '            Return
-                        '        End If
-
-                        '        Dim lote As New Class_Inventarios_Lotes_Series.Lote
-                        '        lote = oSerie.BusquedaVisualSeriesMultiplesFolio(sCodigoArticulo, oVenta.CODIGO_ALMACEN)
-
-                        '        If txtLEN(lote.FolioMovimiento) = True Then
-
-                        '            Dim dtSeries As DataTable = oSerie.ObtieneRenglonesSeriesFolio(lote.FolioMovimiento, sCodigoArticulo)
-                        '            If dtSeries.Rows.Count = 0 Then
-                        '                MsgBox("No se encontraron series disponibles del artículo " & sCodigoArticulo & " del folio " & lote.FolioMovimiento, MsgBoxStyle.Exclamation, Me.Text)
-                        '                Return
-                        '            End If
-
-                        '            Dim i As Integer, iArticulosPendientes As Integer = Me.CantidadArticulosPendientesSerie(sCodigoArticulo) 'iArticulosEncontrados As Integer
-                        '            Dim iSeriesUsadas As Double = lote.Cantidad, iRowEncontrado As Integer = 0
-                        '            For i = 1 To Me.GridSeries.Rows - 1
-                        '                If iArticulosPendientes <= 0 Or iSeriesUsadas <= 0 Then
-                        '                    Exit For
-                        '                End If
-                        '                If Me.GridSeries.Cell(i, Me.igySerieCodigo).Text = sCodigoArticulo AndAlso txtLEN(Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text) = False Then
-                        '                    iArticulosPendientes -= 1
-                        '                    iSeriesUsadas -= 1
-                        '                    Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text = dtSeries.Rows(iRowEncontrado)("ID_INVENTARIO_LOTES_COSTOS").ToString
-                        '                    Me.GridSeries.Cell(i, Me.igySerieNumeroSerie).Text = dtSeries.Rows(iRowEncontrado)("NUMERO_SERIE").ToString
-                        '                    iRowEncontrado += 1 'empieza desde el 0
-                        '                End If
-                        '            Next
-
-
-                        '        End If
-                        '    End If
-
-                    Case Keys.Delete
-                        e.SuppressKeyPress = True
-                End Select
-            End With
-
-        Catch ex As Exception
-            HandleError(Me.Name, "GestionaGridSeries", ex)
-        End Try
-    End Sub
-
-    Private Function CantidadArticulosPendientesSerie(ByVal sCodigoArticulo As String) As Integer
-        Dim iArticulosEncontrados As Integer = 0
-        Try
-            For i = 1 To Me.GridSeries.Rows - 1
-                If Me.GridSeries.Cell(i, Me.igySerieCodigo).Text = sCodigoArticulo AndAlso Me.GridSeries.Cell(i, Me.igyCodigo).Text <> "-" AndAlso txtLEN(Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text) = False Then
-                    iArticulosEncontrados += 1
-                End If
-            Next
-        Catch ex As Exception
-            HandleError(Me.Name, "CantidadArticulosPendientesSerie", ex)
-        End Try
-        Return iArticulosEncontrados
-    End Function
-
-    Private Function EstableceSerie(ByVal Renglon As Integer, ByVal ID_INVENTARIO_LOTES_COSTOS As String) As Boolean
-        Try
-            Dim oSerie As New Class_Inventarios_Lotes_Series(ID_INVENTARIO_LOTES_COSTOS)
-            If oSerie.Existe = True Then
-                Me.GridSeries.Cell(Renglon, Me.igySerieIdInventarioLotesCostos).Text = oSerie.ID_INVENTARIO_LOTES_COSTOS
-                Me.GridSeries.Cell(Renglon, Me.igySerieNumeroSerie).Text = oSerie.NUMERO_SERIE
-                Return True
-            End If
-        Catch ex As Exception
-            HandleError(Me.Name, "EstableceSerie", ex)
-        End Try
-    End Function
-
-    Private Function RepiteSerie(ByVal Renglon As Integer, ByVal ID_INVENTARIO_LOTES_COSTOS As String) As Boolean
-        Dim RenglonRepetido As Integer
-        Try
-            Me.dtSeries.AcceptChanges()
-
-            For i = 1 To Me.GridSeries.Rows - 1
-                If i <> Renglon Then
-                    If txtLEN(Me.GridSeries.Cell(i, Me.igySerieCodigo).Text) = True Then
-                        If ID_INVENTARIO_LOTES_COSTOS = Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text Then
-                            RenglonRepetido = i
-
-                            MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text &
-                                   " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf &
-                                   "", MsgBoxStyle.Exclamation)
-                            Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
-
-                            Return True
-
-                        End If
-
-                    End If
-                End If
-
-            Next
-        Catch ex As Exception
-            HandleError(Me.Name, "RepiteSerie", ex)
-        End Try
-    End Function
-
     Private Function Validar() As Boolean
         Dim sProcedure As String = "Validar"
         Dim bResultado As Boolean = False
@@ -1251,11 +1031,11 @@ busca_serie:
                 Return False
             End If
 
-            ''FALTA:Validaciones de disponibles de series
-            'If Me.oVenta.TIENE_SERIES = True Then
-            '    MsgBox("FALTA:Validaciones de disponibles de series", vbExclamation, sProcedure)
-            '    Return False
-            'End If
+            'FALTA:Validaciones de disponibles de series
+            If Me.oVenta.TIENE_SERIES = True Then
+                MsgBox("FALTA:Validaciones de disponibles de series", vbExclamation, sProcedure)
+                Return False
+            End If
 
             'FALTA:Validaciones de datos fiscales si se va timbrar
 
@@ -1383,102 +1163,6 @@ busca_serie:
         End Try
         Application.DoEvents()
     End Sub
-
-    Private Function HaySeriesRepetidas() As Boolean
-        Dim RenglonRepetido As Integer
-
-        Try
-            Me.dtSeries.AcceptChanges()
-
-            For i = 1 To Me.GridSeries.Rows - 1
-                If txtLEN(Me.GridSeries.Cell(i, Me.igySerieCodigo).Text) = True Then
-                    For z = i + 1 To Me.GridSeries.Rows - 1
-                        If Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text = Me.GridSeries.Cell(z, Me.igySerieIdInventarioLotesCostos).Text Then
-                            RenglonRepetido = z
-
-                            MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text &
-                                   " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf &
-                                   "", MsgBoxStyle.Exclamation)
-                            Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
-
-                            Return True
-
-                        End If
-                    Next
-                End If
-            Next
-        Catch ex As Exception
-            HandleError(Me.Name, "HaySeriesRepetidas", ex)
-        End Try
-
-        Return False
-    End Function
-
-    Private Function ValidaNumerosSerie() As Boolean
-        Try
-            Dim dtSeriesTemp As New DataTable("Series")
-            With dtSeriesTemp
-                .Columns.Add("POSICION", GetType(String))
-                .Columns.Add("CODIGO_ARTICULO", GetType(String))
-                .Columns.Add("DESCRIPCION", GetType(String))
-            End With
-            dtSeriesTemp.AcceptChanges()
-
-            Dim dRow As DataRow, i As Integer
-
-            For i = 1 To Me.Grid.Rows - 1
-                If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True AndAlso Me.Grid.Cell(i, Me.igyCodigo).Text <> "-" AndAlso CInt(Me.Grid.Cell(i, Me.igyCantidad).Text) > 0 Then
-                    Dim oArticulo As New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
-                    If oArticulo.Existe = True AndAlso oArticulo.ES_SERIALIZABLE = True AndAlso oArticulo.INVENTARIABLE = "1" Then
-                        For j = 1 To CInt(Me.Grid.Cell(i, Me.igyCantidad).Text)
-                            dRow = dtSeriesTemp.NewRow
-
-                            dRow("POSICION") = i
-                            dRow("CODIGO_ARTICULO") = Me.Grid.Cell(i, Me.igyCodigo).Text
-                            dRow("DESCRIPCION") = Me.Grid.Cell(i, Me.igyDescripcion).Text
-
-                            dtSeriesTemp.Rows.Add(dRow)
-                        Next
-                    End If
-                End If
-            Next
-
-            dtSeriesTemp.AcceptChanges()
-
-            'If Me.sTipoVenta = "SR" AndAlso dtSeriesTemp.Rows.Count > 0 Then
-            '    MsgBox("Las sustituciones no soportan el manejo de series actualmente.", MsgBoxStyle.Exclamation, Me.Text)
-            '    Return False
-            'End If
-
-            If Me.dtSeries.Rows.Count <> dtSeriesTemp.Rows.Count Then
-                MsgBox("Tiene que volver a detallar todas las series porque no corresponden los artículos.", MsgBoxStyle.Exclamation)
-                Return False
-            End If
-
-            i = 0
-            For Each d As DataRow In dtSeriesTemp.Rows
-                If d("POSICION").ToString <> Me.dtSeries.Rows(i)("POSICION").ToString Then
-                    MsgBox("Tiene que volver a detallar todas las series porque no corresponden los artículos.", MsgBoxStyle.Exclamation)
-                    Return False
-                ElseIf d("CODIGO_ARTICULO").ToString <> Me.dtSeries.Rows(i)("CODIGO_ARTICULO").ToString Then
-                    MsgBox("Tiene que volver a detallar todas las series porque no corresponden los artículos.", MsgBoxStyle.Exclamation)
-                    Return False
-                End If
-                i += 1
-            Next
-
-            For Each d As DataRow In Me.dtSeries.Rows
-                If txtLEN(d("NUMERO_SERIE").ToString) = False Then
-                    MsgBox("Faltan de capturar series, favor de revisar.", MsgBoxStyle.Exclamation)
-                    Return False
-                End If
-            Next
-
-            Return True
-        Catch ex As Exception
-            HandleError(Me.Name, "ValidaNumerosSerie", ex)
-        End Try
-    End Function
 
 #End Region
 

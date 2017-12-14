@@ -1707,6 +1707,7 @@ Module FacturacionElectronica
     Public Function ConvierteFechaTipoXML(ByVal sFechaXML As String) As Date
         Return CDate(Replace(sFechaXML, "T", " "))
     End Function
+
     Public Function GestionaFechaCertificadoCFD() As String
         Dim sMensaje As String = ""
         Try
