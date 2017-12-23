@@ -1091,7 +1091,7 @@ Module FacturacionElectronica
             'Alguna pregunta que se fije si la empresa lo tiene activado y si el documento es de tipo embarque extranjero
             If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
                 'If bGenerarComplementoComercioExterior = True Then
-                sXmlComercioExterior = oVenta.GeneraXmlComercioExterior
+                sXmlComercioExterior = oVenta.GeneraXmlComercioExterior10
 
                 If txtLEN(sXmlComercioExterior) = False Then
                     Return False 'Abortamos

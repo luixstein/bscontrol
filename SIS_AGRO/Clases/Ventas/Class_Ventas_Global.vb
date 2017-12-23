@@ -1984,8 +1984,8 @@ Public Class Class_Ventas_Global
         Return bResultado
     End Function
 
-    Public Function GeneraXmlComercioExterior() As String
-        Dim sProcedure As String = "GrabarXmlComercioExterior"
+    Public Function GeneraXmlComercioExterior10() As String
+        Dim sProcedure As String = "GeneraXmlComercioExterior10"
         Dim sXmlComercioExterior As String = ""
         Try
 

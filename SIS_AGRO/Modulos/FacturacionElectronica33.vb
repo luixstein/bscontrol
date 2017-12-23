@@ -546,7 +546,11 @@ Module FacturacionElectronica33
                 Return False
             End If
 
-            If ValidaDatosGenerales(oPago.FECHA_PAGO, oPago.FELECTRONICA_CER, oPago.FELECTRONICA_KEY, oPago.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA) = False Then
+            'Nota en el comprobante va la fecha del depósito.
+            ComprobanteFecha = Format(oBanco.FECHA, "yyyy-MM-dd") & "T" & Format(oBanco.FECHA_SERVIDOR, "hh:mm:ss")
+
+            'Debemos validar la fecha del comprobante y no la del pago.
+            If ValidaDatosGenerales(FechaSatAFechaNormal(ComprobanteFecha), oPago.FELECTRONICA_CER, oPago.FELECTRONICA_KEY, oPago.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA) = False Then
                 Return False
             End If
 
@@ -560,8 +564,6 @@ Module FacturacionElectronica33
                 tPlazaFacturaElectronica = Plaza 'Plaza ya cargada en el inicio de sesión del usuario.
             End If
 
-            'Nota en el comprobante va la fecha del depósito.
-            ComprobanteFecha = Format(oBanco.FECHA, "yyyy-MM-dd") & "T" & Format(oBanco.FECHA_SERVIDOR, "hh:mm:ss")
             PagoFechaPago = Format(oPago.FECHA_PAGO, "yyyy-MM-dd") & "T" & Format(oPago.FECHA_PAGO, "hh:mm:ss")
 
             'No funcionó poder las 12 por ser antes que la fecha del comprobante(si es que es del mismo dia), ya la propia fecha_pago tiene la hora grabada necesaria
