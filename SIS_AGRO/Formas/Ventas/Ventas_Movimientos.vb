@@ -239,8 +239,6 @@ Public Class Ventas_Movimientos
 #Region "Eventos de objetos"
     Private Sub Ventas_Movimientos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-            Me.ObtenerMetodosPago()
-            Me.DesplegarFormasPago()
             Me.DesplegarAlmacenes()
             Me.DesplegarTiposMercados()
             Me.DesplegarVendedores()
@@ -502,12 +500,6 @@ Buscar:
                 Me.gbDolares.Visible = True
 
                 If txtLEN(Me.TxtCliente.Text) = True Then
-                    ocliente = New Class_CatClientes(Me.TxtCliente.Text)
-                    Me.cboMetodoPago.SelectedValue = ocliente.CODIGO_METODO_PAGO_DOLARES
-                    Me.txtNumCuenta.Text = ocliente.NUMERO_CUENTA_PAGO_DOLARES.ToString
-                    ocliente = New Class_CatClientes(Me.TxtCliente.Text)
-                    Me.cboFormaPago.SelectedValue = ocliente.CODIGO_METODO_PAGO_DOLARES
-                    Me.txtNumeroCuentaPago.Text = ocliente.NUMERO_CUENTA_PAGO_DOLARES.ToString
                     Me.EstableceFormaPagoCliente()
                 End If
             Else
@@ -515,12 +507,6 @@ Buscar:
                 Me.gbDolares.Visible = False
 
                 If txtLEN(Me.TxtCliente.Text) = True Then
-                    ocliente = New Class_CatClientes(Me.TxtCliente.Text)
-                    Me.cboMetodoPago.SelectedValue = ocliente.CODIGO_METODO_PAGO
-                    Me.txtNumCuenta.Text = ocliente.NUMERO_CUENTA_PAGO.ToString
-                    ocliente = New Class_CatClientes(Me.TxtCliente.Text)
-                    Me.cboFormaPago.SelectedValue = ocliente.CODIGO_METODO_PAGO
-                    Me.txtNumeroCuentaPago.Text = ocliente.NUMERO_CUENTA_PAGO.ToString
                     Me.EstableceFormaPagoCliente()
                 End If
             End If
@@ -631,16 +617,10 @@ Buscar:
                     Exit Sub
                 End If
 
-                oMetodoPago = New Class_CFD_CatMetodosPago(Me.cboMetodoPago.SelectedValue.ToString)
-                oMetodoPago = New Class_CFD_CatMetodosPago(Me.cboFormaPago.SelectedValue.ToString)
                 oFormaPago = New Class_CFD_CatFormasPago(Me.cboFormaPago.SelectedValue.ToString)
                 If Me.Estado <> enumEstados.NUEVO Then
                     Exit Sub
                 End If
-                If oMetodoPago.REQUIERE_NUMERO_CUENTA_PAGO = 1 Then
-                    Me.txtNumCuenta.Enabled = True
-                    Me.txtNumCuenta.Focus()
-                If oMetodoPago.REQUIERE_NUMERO_CUENTA_PAGO = 1 Then
                 If oFormaPago.REQUIERE_NUMERO_CUENTA_PAGO = 1 Then
                     Me.txtNumeroCuentaPago.Enabled = True
                     Me.txtNumeroCuentaPago.Focus()
@@ -673,14 +653,6 @@ Buscar:
 
     Private Sub btnFacturaAnterior_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFacturaAnterior.Click
         Me.NavegadorFacturas("Anterior")
-    End Sub
-
-    Private Sub cboMoneda_KeyDown(sender As Object, e As KeyEventArgs) Handles cboMoneda.KeyDown
-        If Me.cboMoneda.Text = "USD" And Me.txtTipoCambio.Enabled = True Then
-            Me.txtTipoCambio.Focus()
-        ElseIf Me.TxtCliente.Enabled = True Then
-            Me.TxtCliente.Focus()
-        End If
     End Sub
 
     Private Sub GridSeries_KeyDown(ByVal Sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles GridSeries.KeyDown
@@ -731,9 +703,6 @@ Buscar:
             Me.txtFolioEmbarque.Text = ""
             Me.txtNumeroCuentaPago.Text = ""
             Me.chkVentaPublicoGeneral.Checked = False
-            Me.cboMoneda.SelectedIndex = 0 'MXN
-            Me.cboMetodoPago.SelectedValue = "01" '01=Efectivo
-            Me.cboMoneda.SelectedIndex = 0 'MXN
             Me.cboMoneda.Text = "MXN"
             Me.cboFormaPago.SelectedValue = "01" '01=Efectivo
 
@@ -1045,8 +1014,6 @@ Buscar:
                     Me.chkVentaPublicoGeneral.Enabled = True
                     Me.cboMoneda.Enabled = True
                     Me.dpFecha.Enabled = True
-                    Me.cboMetodoPago.Enabled = True
-                    Me.cboFormaPago.Enabled = True
                     'Me.cboFormaPago.Enabled = True
                     Me.cboVendedor.Enabled = True
                     Me.cboTipoMercado.Enabled = True
@@ -1279,9 +1246,6 @@ Buscar:
 
         Try
 
-            If Me._EsPorEmbarqueExtranjero = False AndAlso MsgBox("Deseas grabar la " & Me.CboDocumento.Text & " con el folio : " & Me.txtFolio.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Grabar") = MsgBoxResult.No Then
-                Exit Function
-            If Me._EsPorEmbarqueExtranjero = False AndAlso MsgBox("Deseas grabar la " & Me.CboDocumento.Text & " con el folio : " & Me.txtFolio.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Grabar") = MsgBoxResult.No Then
             If Me._EsPorEmbarqueExtranjero = False AndAlso MsgBox("Deseas grabar la " & Me.CboDocumento.Text & " con el folio : " & Me.txtFolio.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, sProcedure) = MsgBoxResult.No Then
                 Return False
             End If
@@ -1346,8 +1310,6 @@ Buscar:
             '        '        'End If
 
             '        '        'If Me.oCliente.EstablecerCuentaContable = False Then
-            '        '        '    MsgBox("No se pudo establecer la nueva cuenta contable de venta al cliente, avíse al departamento de sistemas.", MsgBoxStyle.Exclamation, Me.Text)
-            '        '        '    MsgBox("No se pudo establecer la nueva cuenta contable de venta al cliente, avíse al departamento de sistemas.", MsgBoxStyle.Exclamation,sprocedure)
             '        '        '    MsgBox("No se pudo establecer la nueva cuenta contable de venta al cliente, avíse al departamento de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
             '        '        '    Return False
             '        '        'End If
@@ -1357,8 +1319,6 @@ Buscar:
             '        'End If
             '    Else
             '        If Me.oVenta.EsClienteDeContado(Me.oCliente.CUENTA_CONTABLE, Me.oCliente.CODIGO_ZONA.ToString) = False Then
-            '            MsgBox("El cliente no tiene asígnada una cuenta contable de contado, no se le puede vender como público general.", MsgBoxStyle.Exclamation, Me.Text)
-            '            MsgBox("El cliente no tiene asígnada una cuenta contable de contado, no se le puede vender como público general.", MsgBoxStyle.Exclamation,sprocedure)
             '            MsgBox("El cliente no tiene asígnada una cuenta contable de contado, no se le puede vender como público general.", MsgBoxStyle.Exclamation, sProcedure)
             '            Return False
             '        End If
@@ -1413,6 +1373,8 @@ Buscar:
                 .CODIGO_TIPO_NEGOCIACION = CInt(Me.cboTipoNegociacion.SelectedValue.ToString)
                 .FOLIO_POLIZA = Me.LblPoliza.Text.ToUpper
                 .IMPUESTO_PORCENTAJE = Plaza.Impuesto_Porcentaje
+                'If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.AFECTA_CONTABILIDAD = True And oDocumento.AFECTA_INVENTARIOS = True Then
+                'If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.AFECTA_CONTABILIDAD = True And oDocumento.AFECTA_INVENTARIOS = True And oDocumento.TIMBRA_DOCUMENTO = True Then
                 If Empresa_Sistema.FELECTRONICA_ACTIVA = True And ((oDocumento.AFECTA_CONTABILIDAD = True And oDocumento.AFECTA_INVENTARIOS = True) Or Me._EsPorEmbarqueExtranjero = True) Then
                     .ES_FACTURA_ELECTRONICA = "1"
                 Else
@@ -1432,8 +1394,6 @@ Buscar:
                 .ES_VENTA_PUBLICO_GENERAL = Convert.ToInt32(Me.chkVentaPublicoGeneral.Checked).ToString
                 .FOLIO_EMBARQUE = Me.txtFolioEmbarque.Text.ToUpper
 
-                .CODIGO_METODO_PAGO = Me.cboFormaPago.SelectedValue.ToString
-                .NUMERO_CUENTA_PAGO = Me.txtNumeroCuentaPago.Text
                 .IEPS_TOTAL_DESGLOSADO = valorNumerico(Me.lblIEPS.Text)
                 .IEPS_TOTAL_YA_INCLUIDO = valorNumerico(Me.lblIEPSIncluido.Text)
 
@@ -1859,16 +1819,6 @@ CANCELAR:
             '    End If
             'Next i
 
-            If Me.cboMetodoPago.SelectedIndex = -1 Then
-                MsgBox("Seleccione el método de pago.", MsgBoxStyle.Exclamation, sProcedure)
-                If Me.cboMetodoPago.Enabled = True Then
-                    Me.cboMetodoPago.Focus()
-                End If
-            If Me.cboFormaPago.SelectedIndex = -1 Then
-                MsgBox("Seleccione el método de pago.", MsgBoxStyle.Exclamation, sProcedure)
-                If Me.cboFormaPago.Enabled = True Then
-                    Me.cboFormaPago.Focus()
-                End If
             Dim oFormaPago As New Class_CFD_CatFormasPago(Me.cboFormaPago.SelectedValue.ToString)
 
             If oFormaPago.ESTATUS = "B" Then
@@ -1876,8 +1826,6 @@ CANCELAR:
                 Return False
             End If
 
-            Dim oMetodoPago As New Class_CFD_CatMetodosPago(Me.cboMetodoPago.SelectedValue.ToString)
-            Dim oMetodoPago As New Class_CFD_CatMetodosPago(Me.cboFormaPago.SelectedValue.ToString)
             If Me.oDocumento.AFECTA_CXC = True Then
                 If Me.cboFormaPago.SelectedIndex = -1 Then
                     MsgBox("Seleccione una forma de pago.", MsgBoxStyle.Exclamation, sProcedure)
@@ -1923,10 +1871,6 @@ CANCELAR:
                             End If
                     End Select
 
-            If oMetodoPago.REQUIERE_NUMERO_CUENTA_PAGO = 1 Then
-                If txtLEN(Me.txtNumCuenta.Text) = False Then
-            If oMetodoPago.REQUIERE_NUMERO_CUENTA_PAGO = 1 Then
-                If txtLEN(Me.txtNumeroCuentaPago.Text) = False Then
                     If Me.cboUsoCFDI.SelectedIndex = -1 Then
                         MsgBox("Seleccione el uso del CFDI.", vbExclamation, sProcedure)
                         If Me.cboUsoCFDI.Enabled = True Then
@@ -1935,16 +1879,6 @@ CANCELAR:
                         Return False
                     End If
                 End If
-            End If
-
-            If oMetodoPago.ESTATUS = "B" Then
-                MsgBox("El método de pago tiene estatus baja.", MsgBoxStyle.Exclamation, sProcedure)
-                Exit Function
-            End If
-
-            If oMetodoPago.ESTATUS = "B" Then
-                MsgBox("El método de pago tiene estatus baja.", MsgBoxStyle.Exclamation, sProcedure)
-                Return False
             End If
 
             If sTipoVenta <> "NM" Then
@@ -2477,84 +2411,6 @@ CANCELAR:
             End With
         Catch ex As Exception
             HandleError(Me.Name, "DesplegarTiposMercados", ex)
-        End Try
-    End Sub
-
-    Private Sub ObtenerMetodosPago()
-        Try
-            Dim oElementos As New Class_CFD_CatMetodosPago
-            Me.dTablaMetodosPago = oElementos.ObtenerElementosParaFacturacion
-        Catch ex As Exception
-            HandleError(Me.Name, "ObtenerMetodosPago", ex)
-        End Try
-    End Sub
-
-    Private Sub DesplegarMetodosPago(ByVal bSoloActivos As Boolean)
-        Try
-            With Me.cboMetodoPago
-                .DisplayMember = "NOMBRE_METODO_PAGO"
-                .ValueMember = "CODIGO_METODO_PAGO"
-                Dim dView As New Data.DataView(Me.dTablaMetodosPago, IIf(bSoloActivos = True, "ESTATUS='A'", "").ToString, "NOMBRE_METODO_PAGO", DataViewRowState.CurrentRows)
-                .DataSource = dView
-                If dView.Count > 0 Then
-                    .SelectedValue = "NA" '01=EFECTIVO
-                End If
-            End With
-        Catch ex As Exception
-            HandleError(Me.Name, "DesplegarMetodosPago", ex)
-        End Try
-    End Sub
-
-    Private Sub DesplegarMonedas()
-        Try
-    Private Sub DesplegarFormasPago()
-        Try
-            Dim oElementos As New Class_CFD_CatMetodosPago
-            Me.dTablaMetodosPago = oElementos.ObtenerElementosParaFacturacion
-        Catch ex As Exception
-            HandleError(Me.Name, "DesplegarFormasPago", ex)
-        End Try
-    End Sub
-
-    Private Sub DesplegarMetodosPago(ByVal bSoloActivos As Boolean)
-        Try
-            With Me.cboFormaPago
-                .DisplayMember = "NOMBRE_METODO_PAGO"
-                .ValueMember = "CODIGO_METODO_PAGO"
-                Dim dView As New Data.DataView(Me.dTablaMetodosPago, IIf(bSoloActivos = True, "ESTATUS='A'", "").ToString, "NOMBRE_METODO_PAGO", DataViewRowState.CurrentRows)
-                .DataSource = dView
-                If dView.Count > 0 Then
-                    .SelectedValue = "NA" '01=EFECTIVO
-                End If
-            End With
-        Catch ex As Exception
-            HandleError(Me.Name, "DesplegarMetodosPago", ex)
-        End Try
-    End Sub
-
-    Private Sub DesplegarMonedas()
-        Try
-            With Me.cboMoneda
-                .DisplayMember = "NOMBRE"
-                .ValueMember = "CODIGO_MONEDA"
-                dTable = oMoneda.ObtenerElementos
-                dTable.Rows(2).Delete() 'Quita Euros del DataTable
-                .DataSource = dTable
-                .SelectedValue = 1
-            End With
-        Catch ex As Exception
-            HandleError(Me.Name, "DesplegarMonedas", ex)
-        End Try
-    End Sub
-
-            With Me.cboMoneda
-                .Items.Add("MXN")
-                .Items.Add("USD")
-                .Text = "MXN"
-                sMonedaAnterior = "MXN"
-            End With
-        Catch ex As Exception
-            HandleError(Me.Name, "DesplegarMonedas", ex)
         End Try
     End Sub
 
@@ -3230,10 +3086,6 @@ buscaCentrosCostos:
             Me.txtPlazo.Text = Me.oCliente.DIAS_PLAZO.ToString
             Me.dpVencimiento.Value = Me.dpFecha.Value.AddDays(CDbl(Me.txtPlazo.Text))
             Me.cboVendedor.SelectedValue = Me.oCliente.CODIGO_VENDEDOR
-            Me.cboMetodoPago.SelectedValue = Me.oCliente.CODIGO_METODO_PAGO
-            Me.txtNumCuenta.Text = Me.oCliente.NUMERO_CUENTA_PAGO.ToString
-            Me.cboFormaPago.SelectedValue = Me.oCliente.CODIGO_METODO_PAGO
-            Me.txtNumeroCuentaPago.Text = Me.oCliente.NUMERO_CUENTA_PAGO.ToString
 
             Dim bEstableceFormaPago As Boolean
 
