@@ -131,29 +131,27 @@ Module FacturacionElectronica
                     '        bResultado = True
                     '    End If
                     'Else
-                        cfd.Sellar()
-                        If cfd.Sellado = True Then
-                            Dim sRutaXMLTimbrado As String = sFelectronicaCarpetaXmlsTimbrados & "\" & sFolioDocumentoSistema & ".xml"
+                    cfd.Sellar()
+                    If cfd.Sellado = True Then
+                        Dim sRutaXMLTimbrado As String = sFelectronicaCarpetaXmlsTimbrados & "\" & sFolioDocumentoSistema & ".xml"
 
-                            If cfd.Sellar = True Then
-                                MsgBox("Esta el timbrado en modo demo")
+                        If cfd.Sellar = True Then
+                            MsgBox("Esta el timbrado en modo demo")
 
-                                'cfd.Timbrar(sRutaXMLTimbrado, sFelectronicaCbbImagen, True)
-                                cfd.TimbrarDemo(sRutaXMLTimbrado, sFelectronicaCbbImagen)
-                                If cfd.Timbrado = True Then
-                                    'sFolioFacturaSistema, cfd.XmlTimbrado.ToString,
-                                    If GrabaCadenaOriginalYSelloComprobanteElectronico(cfd, tipoComprobante) = True Then
-                                        bResultado = True
-                                    End If
+                            'cfd.Timbrar(sRutaXMLTimbrado, sFelectronicaCbbImagen, True)
+                            cfd.TimbrarDemo(sRutaXMLTimbrado, sFelectronicaCbbImagen)
+                            If cfd.Timbrado = True Then
+                                'sFolioFacturaSistema, cfd.XmlTimbrado.ToString,
+                                If GrabaCadenaOriginalYSelloComprobanteElectronico(cfd, tipoComprobante) = True Then
+                                    bResultado = True
                                 End If
                             End If
-
                         End If
+
+                    End If
                     'End If
                 End Using
             End If
-            xmlDoc = Nothing
-            Factura = Nothing
 
         Catch ex As Exception
             HandleError(nombreModulo, sProcedure, ex)

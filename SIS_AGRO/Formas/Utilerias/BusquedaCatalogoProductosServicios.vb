@@ -105,7 +105,7 @@
                 '.Refresh()
             End With
         Catch ex As Exception
-            HandleError(Me.Name, NameOf(Me.CargarValoresGrid), ex)
+            HandleError(Me.Name, "CargarValoresGrid", ex)
         End Try
     End Sub
 
