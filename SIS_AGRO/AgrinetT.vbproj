@@ -64,7 +64,7 @@
   <ItemGroup>
     <Reference Include="cfdi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\cfdi.dll</HintPath>
+      <HintPath>..\..\..\_FuentesFer\Abaconet\AbacoNet_3.0\bin\Debug\cfdi.dll</HintPath>
     </Reference>
     <Reference Include="co32, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -158,6 +158,7 @@
     <Compile Include="Clases\Catalogos\Class_CatAlmacenes.vb" />
     <Compile Include="Clases\Catalogos\Class_Catalogos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatArticulos.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatClientesCuentasBancarias.vb" />
     <Compile Include="Clases\Catalogos\Class_CatPropietarios.vb" />
     <Compile Include="Clases\Catalogos\Class_CatBancos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatCajasTransportes.vb" />
@@ -222,7 +223,8 @@
     <Compile Include="Clases\Catalogos\Class_Cat_IVAS.vb" />
     <Compile Include="Clases\Catalogos\Class_CatProveedores.vb" />
     <Compile Include="Clases\Catalogos\Class_Cat_tiposDocumentos.vb" />
-    <Compile Include="Clases\Catalogos\Class_CFD_CatMetodosPago.vb" />
+    <Compile Include="Clases\Catalogos\SAT\Class_CatCuentasSAT.vb" />
+    <Compile Include="Clases\Catalogos\SAT\Class_CFD_CatFormasPago.vb" />
     <Compile Include="Clases\Catalogos\Class_SisContabilidadParametros.vb" />
     <Compile Include="Clases\Catalogos\Class_sisEmpresa.vb" />
     <Compile Include="Clases\Catalogos\Class_SisModulos.vb" />
@@ -243,6 +245,10 @@
     <Compile Include="Clases\Catalogos\Nomina\Class_CatTipoPercepcion.vb" />
     <Compile Include="Clases\Catalogos\Nomina\Class_CatUnidadMedicaFamiliar.vb" />
     <Compile Include="Clases\Catalogos\Class_SisEmpresaNomina.vb" />
+    <Compile Include="Clases\Catalogos\SAT\Class_CFD_CatMetodosPago.vb" />
+    <Compile Include="Clases\Catalogos\SAT\Class_CFD_CatProductosServicios.vb" />
+    <Compile Include="Clases\Catalogos\SAT\Class_CFD_CatUnidades.vb" />
+    <Compile Include="Clases\Catalogos\SAT\Class_CFD_CatUsosCFDI.vb" />
     <Compile Include="Clases\CentrosCostos\Class_Centros_Costos_Global.vb" />
     <Compile Include="Clases\Contabilidad\Class_ProyectoSiembra.vb" />
     <Compile Include="Clases\Compras\Class_Compras_Detalle.vb" />
@@ -258,11 +264,14 @@
     <Compile Include="Clases\Contabilidad\Class_Contabilidad_RP_Global_Poliza.vb" />
     <Compile Include="Clases\Contabilidad\Class_Contabilidad_Saldos_Cuentas.vb" />
     <Compile Include="Clases\CXC\Class_Bancos_CXC.vb" />
+    <Compile Include="Clases\CXC\Class_Bancos_CXC_Detalle.vb" />
     <Compile Include="Clases\CXC\Class_CXC_Afecta_Documentos.vb" />
     <Compile Include="Clases\CXC\Class_CXC_Descuento.vb" />
     <Compile Include="Clases\CXC\Class_CXC_Devoluciones_Detalle.vb" />
     <Compile Include="Clases\CXC\Class_CXC_Devoluciones_Global.vb" />
     <Compile Include="Clases\CXC\Class_CXC_Global.vb" />
+    <Compile Include="Clases\CXC\Class_CXC_Pago_CFDI_Detalle.vb" />
+    <Compile Include="Clases\CXC\Class_CXC_Pago_CFDI_Global.vb" />
     <Compile Include="Clases\CXC\Class_CXC_Seguimientos.vb" />
     <Compile Include="Clases\CXP\Class_Bancos_CXP.vb" />
     <Compile Include="Clases\CXP\Class_CXP_Afecta_Documentos.vb" />
@@ -289,13 +298,49 @@
     <Compile Include="Clases\Facturacion_Electronica\Addenda\iRemision.vb" />
     <Compile Include="Clases\Facturacion_Electronica\Addenda\iPedidos.vb" />
     <Compile Include="Clases\Facturacion_Electronica\Addenda\Xml.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cCatalogoFormaPago.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cCatalogoFormasPago.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cCatalogoMetodoPago.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cCatalogoMetodosPago.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cCatalogoUsoCFDI.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cCatalogoUsosCFDI.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cCfdiRelacionado.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cCfdiRelacionados.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cComplementoCCE10.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cComplementoPagos.vb" />
     <Compile Include="Clases\Facturacion_Electronica\cComprobante.vb" />
-    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\Class_CFDI_cce_ComercioExterior.vb" />
-    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\Class_CFDI_cce_Destinatario.vb" />
-    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\Class_CFDI_cce_Emisor.vb" />
-    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\Class_CFDI_cce_Mercancia.vb" />
-    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\Class_CFDI_cce_Mercancias.vb" />
-    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\Class_CFDI_cce_Receptor.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cComprobante33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\1.0\Class_CFDI_cce_ComercioExterior.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\1.0\Class_CFDI_cce_Destinatario.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\1.0\Class_CFDI_cce_Emisor.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\1.0\Class_CFDI_cce_Mercancia.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\1.0\Class_CFDI_cce_Mercancias.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\1.0\Class_CFDI_cce_Receptor.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\1.1\Class_CFDI_cce_ComercioExterior11.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\1.1\Class_CFDI_cce_Destinatario11.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\1.1\Class_CFDI_cce_DestinatarioDomicilio11.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\1.1\Class_CFDI_cce_Emisor11.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\1.1\Class_CFDI_cce_EmisorDomicilio11.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\1.1\Class_CFDI_cce_Mercancia11.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\1.1\Class_CFDI_cce_Mercancias11.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\1.1\Class_CFDI_cce_Propietario11.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\1.1\Class_CFDI_cce_Receptor11.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\1.1\Class_CFDI_cce_ReceptorDomicilio11.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cPagosDoctoRelacionado.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\cPagosDoctoRelacionados.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iConcepto33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iConceptoImpuestoRetencion33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iConceptoImpuestoRetenciones33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iConceptoImpuestoTraslado33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iConceptoImpuestoTraslados33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iConceptos33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iEmisor33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iImpuestos33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iImpuestosRetencion33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iImpuestosRetenciones33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iImpuestosTraslado33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iImpuestosTraslados33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\iReceptor33.vb" />
     <Compile Include="Clases\Inventarios\Class_Inventarios_Lotes_Series.vb" />
     <Compile Include="Clases\Nomina\Class_NominaDeduccionesDetalle.vb" />
     <Compile Include="Clases\Nomina\Class_NominaDeduccionesGlobal.vb" />
@@ -321,6 +366,12 @@
       <DependentUpon>Sis_administracion_clientes.vb</DependentUpon>
     </Compile>
     <Compile Include="Formas\Administracion\Sis_administracion_clientes.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_ClientesCuentasBancarias.designer.vb">
+      <DependentUpon>Catalogo_ClientesCuentasBancarias.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_ClientesCuentasBancarias.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Catalogos\Catalogo_Conceptos_Pagos.Designer.vb">
@@ -599,10 +650,22 @@
     <Compile Include="Formas\CXC\Consultas\Rpt_CXC_Descuentos.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\CXC\Frm_CXC_CFDI_Pagos.designer.vb">
+      <DependentUpon>Frm_CXC_CFDI_Pagos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXC\Frm_CXC_CFDI_Pagos.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\CXC\Frm_CXC_Devoluciones.Designer.vb">
       <DependentUpon>Frm_CXC_Devoluciones.vb</DependentUpon>
     </Compile>
     <Compile Include="Formas\CXC\Frm_CXC_Devoluciones.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\CXC\Frm_CXC_Pagos.designer.vb">
+      <DependentUpon>Frm_CXC_Pagos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXC\Frm_CXC_Pagos.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\CXC\Frm_CXC_Seguimientos.Designer.vb">
@@ -957,6 +1020,12 @@
       <DependentUpon>ConfiguracionUsuarios.vb</DependentUpon>
     </Compile>
     <Compile Include="Formas\Sistema\ConfiguracionUsuarios.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Utilerias\BusquedaCatalogoProductosServicios.designer.vb">
+      <DependentUpon>BusquedaCatalogoProductosServicios.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Utilerias\BusquedaCatalogoProductosServicios.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Utilerias\frmEmbarquesMasivos.designer.vb">
@@ -1343,10 +1412,10 @@
     <Compile Include="Formas\CXC\Frm_CXC_AplicacionDocumentos.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Formas\CXC\Frm_CXC_Pagos.designer.vb">
-      <DependentUpon>Frm_CXC_Pagos.vb</DependentUpon>
+    <Compile Include="Formas\CXC\Frm_CXC_Pagos_OLD.designer.vb">
+      <DependentUpon>Frm_CXC_Pagos_OLD.vb</DependentUpon>
     </Compile>
-    <Compile Include="Formas\CXC\Frm_CXC_Pagos.vb">
+    <Compile Include="Formas\CXC\Frm_CXC_Pagos_OLD.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\CXP\Consultas\Rpt_Cxp_Auxiliar_proveedor.Designer.vb">
@@ -1478,6 +1547,7 @@
     <Compile Include="Formas\Ventas\Ventas_Modifica_Precios.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Modulos\FacturacionElectronica33.vb" />
     <Compile Include="Modulos\Mod_Grid.vb" />
     <Compile Include="Modulos\Mod_main.vb" />
     <Compile Include="Modulos\Mod_Uti.vb" />
@@ -1523,6 +1593,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_CajasTransportes.resx">
       <DependentUpon>Catalogo_CajasTransportes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_ClientesCuentasBancarias.resx">
+      <DependentUpon>Catalogo_ClientesCuentasBancarias.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_Conceptos_Pagos.resx">
       <DependentUpon>Catalogo_Conceptos_Pagos.vb</DependentUpon>
@@ -1784,6 +1857,9 @@
     <EmbeddedResource Include="Formas\CXC\Frm_CXC_AplicacionDocumentos.resx">
       <DependentUpon>Frm_CXC_AplicacionDocumentos.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXC\Frm_CXC_CFDI_Pagos.resx">
+      <DependentUpon>Frm_CXC_CFDI_Pagos.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formas\CXC\Frm_CXC_Descuentos.resx">
       <DependentUpon>Frm_CXC_Descuentos.vb</DependentUpon>
     </EmbeddedResource>
@@ -1792,6 +1868,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\CXC\Frm_CXC_Pagos.resx">
       <DependentUpon>Frm_CXC_Pagos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXC\Frm_CXC_Pagos_OLD.resx">
+      <DependentUpon>Frm_CXC_Pagos_OLD.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\CXC\Frm_CXC_Seguimientos.resx">
       <DependentUpon>Frm_CXC_Seguimientos.vb</DependentUpon>
@@ -2015,6 +2094,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Sistema\Reporte.resx">
       <DependentUpon>Reporte.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Utilerias\BusquedaCatalogoProductosServicios.resx">
+      <DependentUpon>BusquedaCatalogoProductosServicios.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Utilerias\Busqueda_General.resx">
       <DependentUpon>Busqueda_General.vb</DependentUpon>

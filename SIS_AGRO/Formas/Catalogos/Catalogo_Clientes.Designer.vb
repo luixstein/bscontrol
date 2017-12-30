@@ -33,6 +33,8 @@ Partial Class Catalogo_Clientes
         Me.tsbImprimirListado = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.lblDisplayUsoCFDI = New System.Windows.Forms.Label()
+        Me.cboUsoCFDI = New System.Windows.Forms.ComboBox()
         Me.TxtIdRelacion = New System.Windows.Forms.TextBox()
         Me.LblDisplayCodigoPropietario = New System.Windows.Forms.Label()
         Me.LblNombrePropietario = New System.Windows.Forms.Label()
@@ -118,14 +120,14 @@ Partial Class Catalogo_Clientes
         Me.lblDisplayCorreoCliente = New System.Windows.Forms.Label()
         Me.txtCorreoCliente = New System.Windows.Forms.TextBox()
         Me.gbMetodoPago = New System.Windows.Forms.GroupBox()
-        Me.cboMetodoPagoDlls = New System.Windows.Forms.ComboBox()
+        Me.cboFormaPagoUSD = New System.Windows.Forms.ComboBox()
         Me.lblDisplayNCuentaDlls = New System.Windows.Forms.Label()
         Me.txtNumeroCuentaDolares = New System.Windows.Forms.TextBox()
-        Me.lblDisplayMdoPagoDlls = New System.Windows.Forms.Label()
-        Me.cboMetodoPago = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayFormaPagoUSD = New System.Windows.Forms.Label()
+        Me.cboFormaPago = New System.Windows.Forms.ComboBox()
         Me.lblDisplayNumCuenta = New System.Windows.Forms.Label()
         Me.txtNumeroCuenta = New System.Windows.Forms.TextBox()
-        Me.lblDisplayMetodoPago = New System.Windows.Forms.Label()
+        Me.lblDisplayFormaPago = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gBoxInformacion.SuspendLayout()
         Me.gbDatosVentas.SuspendLayout()
@@ -209,6 +211,8 @@ Partial Class Catalogo_Clientes
         '
         'gBoxInformacion
         '
+        Me.gBoxInformacion.Controls.Add(Me.lblDisplayUsoCFDI)
+        Me.gBoxInformacion.Controls.Add(Me.cboUsoCFDI)
         Me.gBoxInformacion.Controls.Add(Me.TxtIdRelacion)
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayCodigoPropietario)
         Me.gBoxInformacion.Controls.Add(Me.LblNombrePropietario)
@@ -236,10 +240,30 @@ Partial Class Catalogo_Clientes
         Me.gBoxInformacion.Controls.Add(Me.txtCodigoCliente)
         Me.gBoxInformacion.Location = New System.Drawing.Point(12, 28)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Size = New System.Drawing.Size(395, 304)
+        Me.gBoxInformacion.Size = New System.Drawing.Size(395, 341)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Datos generales"
+        '
+        'lblDisplayUsoCFDI
+        '
+        Me.lblDisplayUsoCFDI.AutoSize = True
+        Me.lblDisplayUsoCFDI.Location = New System.Drawing.Point(6, 243)
+        Me.lblDisplayUsoCFDI.Name = "lblDisplayUsoCFDI"
+        Me.lblDisplayUsoCFDI.Size = New System.Drawing.Size(76, 13)
+        Me.lblDisplayUsoCFDI.TabIndex = 132
+        Me.lblDisplayUsoCFDI.Text = "Uso del CFDI :"
+        '
+        'cboUsoCFDI
+        '
+        Me.cboUsoCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboUsoCFDI.FormattingEnabled = True
+        Me.cboUsoCFDI.Items.AddRange(New Object() {"MORAL", "FISICA"})
+        Me.cboUsoCFDI.Location = New System.Drawing.Point(87, 240)
+        Me.cboUsoCFDI.MaxLength = 1
+        Me.cboUsoCFDI.Name = "cboUsoCFDI"
+        Me.cboUsoCFDI.Size = New System.Drawing.Size(301, 21)
+        Me.cboUsoCFDI.TabIndex = 10
         '
         'TxtIdRelacion
         '
@@ -277,16 +301,16 @@ Partial Class Catalogo_Clientes
         '
         'chkEsContribuyenteIEPS
         '
-        Me.chkEsContribuyenteIEPS.Location = New System.Drawing.Point(117, 265)
+        Me.chkEsContribuyenteIEPS.Location = New System.Drawing.Point(117, 298)
         Me.chkEsContribuyenteIEPS.Name = "chkEsContribuyenteIEPS"
         Me.chkEsContribuyenteIEPS.Size = New System.Drawing.Size(258, 31)
-        Me.chkEsContribuyenteIEPS.TabIndex = 10
+        Me.chkEsContribuyenteIEPS.TabIndex = 12
         Me.chkEsContribuyenteIEPS.Text = "Es contribuyente del IEPS ? ( Si se le desglosará por separado)"
         Me.chkEsContribuyenteIEPS.UseVisualStyleBackColor = True
         '
         'lblDisplayNumeroRegistroIdentificadorExtranjero
         '
-        Me.lblDisplayNumeroRegistroIdentificadorExtranjero.Location = New System.Drawing.Point(6, 241)
+        Me.lblDisplayNumeroRegistroIdentificadorExtranjero.Location = New System.Drawing.Point(6, 267)
         Me.lblDisplayNumeroRegistroIdentificadorExtranjero.Name = "lblDisplayNumeroRegistroIdentificadorExtranjero"
         Me.lblDisplayNumeroRegistroIdentificadorExtranjero.Size = New System.Drawing.Size(105, 27)
         Me.lblDisplayNumeroRegistroIdentificadorExtranjero.TabIndex = 125
@@ -294,11 +318,11 @@ Partial Class Catalogo_Clientes
         '
         'txtNumeroRegistroIdentificadorExtranjero
         '
-        Me.txtNumeroRegistroIdentificadorExtranjero.Location = New System.Drawing.Point(117, 241)
+        Me.txtNumeroRegistroIdentificadorExtranjero.Location = New System.Drawing.Point(116, 270)
         Me.txtNumeroRegistroIdentificadorExtranjero.MaxLength = 100
         Me.txtNumeroRegistroIdentificadorExtranjero.Name = "txtNumeroRegistroIdentificadorExtranjero"
         Me.txtNumeroRegistroIdentificadorExtranjero.Size = New System.Drawing.Size(185, 20)
-        Me.txtNumeroRegistroIdentificadorExtranjero.TabIndex = 9
+        Me.txtNumeroRegistroIdentificadorExtranjero.TabIndex = 11
         '
         'cboTipoMercado
         '
@@ -336,7 +360,7 @@ Partial Class Catalogo_Clientes
         Me.cboTipoPersona.MaxLength = 1
         Me.cboTipoPersona.Name = "cboTipoPersona"
         Me.cboTipoPersona.Size = New System.Drawing.Size(89, 21)
-        Me.cboTipoPersona.TabIndex = 5
+        Me.cboTipoPersona.TabIndex = 6
         '
         'lblDisplayCelCliente
         '
@@ -353,7 +377,7 @@ Partial Class Catalogo_Clientes
         Me.txtNumeroCelular.MaxLength = 15
         Me.txtNumeroCelular.Name = "txtNumeroCelular"
         Me.txtNumeroCelular.Size = New System.Drawing.Size(129, 20)
-        Me.txtNumeroCelular.TabIndex = 8
+        Me.txtNumeroCelular.TabIndex = 9
         '
         'LblDisplayTelefonoCliente
         '
@@ -370,7 +394,7 @@ Partial Class Catalogo_Clientes
         Me.txtNumeroTelefono.MaxLength = 15
         Me.txtNumeroTelefono.Name = "txtNumeroTelefono"
         Me.txtNumeroTelefono.Size = New System.Drawing.Size(130, 20)
-        Me.txtNumeroTelefono.TabIndex = 7
+        Me.txtNumeroTelefono.TabIndex = 8
         '
         'lblDisplayCURP
         '
@@ -387,7 +411,7 @@ Partial Class Catalogo_Clientes
         Me.txtCurp.MaxLength = 30
         Me.txtCurp.Name = "txtCurp"
         Me.txtCurp.Size = New System.Drawing.Size(130, 20)
-        Me.txtCurp.TabIndex = 6
+        Me.txtCurp.TabIndex = 7
         '
         'lblDisplayRFC
         '
@@ -404,7 +428,7 @@ Partial Class Catalogo_Clientes
         Me.txtRfc.MaxLength = 13
         Me.txtRfc.Name = "txtRfc"
         Me.txtRfc.Size = New System.Drawing.Size(129, 20)
-        Me.txtRfc.TabIndex = 4
+        Me.txtRfc.TabIndex = 5
         '
         'LblDisplayNombreCultivo
         '
@@ -421,7 +445,7 @@ Partial Class Catalogo_Clientes
         Me.TxtNombreCliente.MaxLength = 80
         Me.TxtNombreCliente.Name = "TxtNombreCliente"
         Me.TxtNombreCliente.Size = New System.Drawing.Size(312, 20)
-        Me.TxtNombreCliente.TabIndex = 3
+        Me.TxtNombreCliente.TabIndex = 4
         '
         'LblEstatus
         '
@@ -441,7 +465,7 @@ Partial Class Catalogo_Clientes
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(64, 21)
-        Me.CboEstatus.TabIndex = 2
+        Me.CboEstatus.TabIndex = 3
         '
         'lblDisplayCodigo
         '
@@ -701,7 +725,7 @@ Partial Class Catalogo_Clientes
         'BtnGeneraCuentaContableDolares
         '
         Me.BtnGeneraCuentaContableDolares.Location = New System.Drawing.Point(115, 65)
-        Me.BtnGeneraCuentaContableDolares.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.BtnGeneraCuentaContableDolares.Margin = New System.Windows.Forms.Padding(2)
         Me.BtnGeneraCuentaContableDolares.Name = "BtnGeneraCuentaContableDolares"
         Me.BtnGeneraCuentaContableDolares.Size = New System.Drawing.Size(126, 19)
         Me.BtnGeneraCuentaContableDolares.TabIndex = 75
@@ -765,9 +789,9 @@ Partial Class Catalogo_Clientes
         Me.gbDomicilio.Controls.Add(Me.cboEstado)
         Me.gbDomicilio.Controls.Add(Me.lblDisplayLocalidad)
         Me.gbDomicilio.Controls.Add(Me.lblDisplayEstado)
-        Me.gbDomicilio.Location = New System.Drawing.Point(12, 338)
+        Me.gbDomicilio.Location = New System.Drawing.Point(12, 380)
         Me.gbDomicilio.Name = "gbDomicilio"
-        Me.gbDomicilio.Size = New System.Drawing.Size(395, 239)
+        Me.gbDomicilio.Size = New System.Drawing.Size(395, 234)
         Me.gbDomicilio.TabIndex = 1
         Me.gbDomicilio.TabStop = False
         Me.gbDomicilio.Text = "Domicilio :"
@@ -954,7 +978,7 @@ Partial Class Catalogo_Clientes
         '
         Me.rbtCodigoCliente.AutoSize = True
         Me.rbtCodigoCliente.Location = New System.Drawing.Point(100, 15)
-        Me.rbtCodigoCliente.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.rbtCodigoCliente.Margin = New System.Windows.Forms.Padding(2)
         Me.rbtCodigoCliente.Name = "rbtCodigoCliente"
         Me.rbtCodigoCliente.Size = New System.Drawing.Size(92, 17)
         Me.rbtCodigoCliente.TabIndex = 116
@@ -966,7 +990,7 @@ Partial Class Catalogo_Clientes
         Me.rbtNombreCliente.AutoSize = True
         Me.rbtNombreCliente.Checked = True
         Me.rbtNombreCliente.Location = New System.Drawing.Point(6, 15)
-        Me.rbtNombreCliente.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.rbtNombreCliente.Margin = New System.Windows.Forms.Padding(2)
         Me.rbtNombreCliente.Name = "rbtNombreCliente"
         Me.rbtNombreCliente.Size = New System.Drawing.Size(62, 17)
         Me.rbtNombreCliente.TabIndex = 115
@@ -1051,31 +1075,31 @@ Partial Class Catalogo_Clientes
         '
         'gbMetodoPago
         '
-        Me.gbMetodoPago.Controls.Add(Me.cboMetodoPagoDlls)
+        Me.gbMetodoPago.Controls.Add(Me.cboFormaPagoUSD)
         Me.gbMetodoPago.Controls.Add(Me.lblDisplayNCuentaDlls)
         Me.gbMetodoPago.Controls.Add(Me.txtNumeroCuentaDolares)
-        Me.gbMetodoPago.Controls.Add(Me.lblDisplayMdoPagoDlls)
-        Me.gbMetodoPago.Controls.Add(Me.cboMetodoPago)
+        Me.gbMetodoPago.Controls.Add(Me.lblDisplayFormaPagoUSD)
+        Me.gbMetodoPago.Controls.Add(Me.cboFormaPago)
         Me.gbMetodoPago.Controls.Add(Me.lblDisplayNumCuenta)
         Me.gbMetodoPago.Controls.Add(Me.txtNumeroCuenta)
-        Me.gbMetodoPago.Controls.Add(Me.lblDisplayMetodoPago)
-        Me.gbMetodoPago.Location = New System.Drawing.Point(414, 503)
+        Me.gbMetodoPago.Controls.Add(Me.lblDisplayFormaPago)
+        Me.gbMetodoPago.Location = New System.Drawing.Point(414, 498)
         Me.gbMetodoPago.Name = "gbMetodoPago"
         Me.gbMetodoPago.Size = New System.Drawing.Size(323, 116)
         Me.gbMetodoPago.TabIndex = 7
         Me.gbMetodoPago.TabStop = False
-        Me.gbMetodoPago.Text = "Método de pago"
+        Me.gbMetodoPago.Text = "Forma de pago :"
         '
-        'cboMetodoPagoDlls
+        'cboFormaPagoUSD
         '
-        Me.cboMetodoPagoDlls.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboMetodoPagoDlls.FormattingEnabled = True
-        Me.cboMetodoPagoDlls.Items.AddRange(New Object() {"A", "B"})
-        Me.cboMetodoPagoDlls.Location = New System.Drawing.Point(125, 64)
-        Me.cboMetodoPagoDlls.MaxLength = 1
-        Me.cboMetodoPagoDlls.Name = "cboMetodoPagoDlls"
-        Me.cboMetodoPagoDlls.Size = New System.Drawing.Size(194, 21)
-        Me.cboMetodoPagoDlls.TabIndex = 2
+        Me.cboFormaPagoUSD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboFormaPagoUSD.FormattingEnabled = True
+        Me.cboFormaPagoUSD.Items.AddRange(New Object() {"A", "B"})
+        Me.cboFormaPagoUSD.Location = New System.Drawing.Point(115, 64)
+        Me.cboFormaPagoUSD.MaxLength = 1
+        Me.cboFormaPagoUSD.Name = "cboFormaPagoUSD"
+        Me.cboFormaPagoUSD.Size = New System.Drawing.Size(204, 21)
+        Me.cboFormaPagoUSD.TabIndex = 2
         '
         'lblDisplayNCuentaDlls
         '
@@ -1095,25 +1119,25 @@ Partial Class Catalogo_Clientes
         Me.txtNumeroCuentaDolares.TabIndex = 3
         Me.txtNumeroCuentaDolares.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
-        'lblDisplayMdoPagoDlls
+        'lblDisplayFormaPagoUSD
         '
-        Me.lblDisplayMdoPagoDlls.AutoSize = True
-        Me.lblDisplayMdoPagoDlls.Location = New System.Drawing.Point(6, 68)
-        Me.lblDisplayMdoPagoDlls.Name = "lblDisplayMdoPagoDlls"
-        Me.lblDisplayMdoPagoDlls.Size = New System.Drawing.Size(117, 13)
-        Me.lblDisplayMdoPagoDlls.TabIndex = 77
-        Me.lblDisplayMdoPagoDlls.Text = "Método de pago USD :"
+        Me.lblDisplayFormaPagoUSD.AutoSize = True
+        Me.lblDisplayFormaPagoUSD.Location = New System.Drawing.Point(6, 68)
+        Me.lblDisplayFormaPagoUSD.Name = "lblDisplayFormaPagoUSD"
+        Me.lblDisplayFormaPagoUSD.Size = New System.Drawing.Size(110, 13)
+        Me.lblDisplayFormaPagoUSD.TabIndex = 77
+        Me.lblDisplayFormaPagoUSD.Text = "Forma de pago USD :"
         '
-        'cboMetodoPago
+        'cboFormaPago
         '
-        Me.cboMetodoPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboMetodoPago.FormattingEnabled = True
-        Me.cboMetodoPago.Items.AddRange(New Object() {"A", "B"})
-        Me.cboMetodoPago.Location = New System.Drawing.Point(125, 17)
-        Me.cboMetodoPago.MaxLength = 1
-        Me.cboMetodoPago.Name = "cboMetodoPago"
-        Me.cboMetodoPago.Size = New System.Drawing.Size(194, 21)
-        Me.cboMetodoPago.TabIndex = 0
+        Me.cboFormaPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboFormaPago.FormattingEnabled = True
+        Me.cboFormaPago.Items.AddRange(New Object() {"A", "B"})
+        Me.cboFormaPago.Location = New System.Drawing.Point(115, 17)
+        Me.cboFormaPago.MaxLength = 1
+        Me.cboFormaPago.Name = "cboFormaPago"
+        Me.cboFormaPago.Size = New System.Drawing.Size(204, 21)
+        Me.cboFormaPago.TabIndex = 0
         '
         'lblDisplayNumCuenta
         '
@@ -1133,14 +1157,14 @@ Partial Class Catalogo_Clientes
         Me.txtNumeroCuenta.TabIndex = 1
         Me.txtNumeroCuenta.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
-        'lblDisplayMetodoPago
+        'lblDisplayFormaPago
         '
-        Me.lblDisplayMetodoPago.AutoSize = True
-        Me.lblDisplayMetodoPago.Location = New System.Drawing.Point(6, 21)
-        Me.lblDisplayMetodoPago.Name = "lblDisplayMetodoPago"
-        Me.lblDisplayMetodoPago.Size = New System.Drawing.Size(118, 13)
-        Me.lblDisplayMetodoPago.TabIndex = 8
-        Me.lblDisplayMetodoPago.Text = "Método de pago MXN :"
+        Me.lblDisplayFormaPago.AutoSize = True
+        Me.lblDisplayFormaPago.Location = New System.Drawing.Point(6, 21)
+        Me.lblDisplayFormaPago.Name = "lblDisplayFormaPago"
+        Me.lblDisplayFormaPago.Size = New System.Drawing.Size(111, 13)
+        Me.lblDisplayFormaPago.TabIndex = 8
+        Me.lblDisplayFormaPago.Text = "Forma de pago MXN :"
         '
         'Catalogo_Clientes
         '
@@ -1163,7 +1187,7 @@ Partial Class Catalogo_Clientes
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Clientes"
         Me.ShowIcon = False
-        Me.Text = "Catalogo de clientes"
+        Me.Text = "Catálogo de clientes"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()
         Me.gBoxInformacion.ResumeLayout(False)
@@ -1266,12 +1290,12 @@ Partial Class Catalogo_Clientes
     Friend WithEvents gbMetodoPago As System.Windows.Forms.GroupBox
     Friend WithEvents lblDisplayNumCuenta As System.Windows.Forms.Label
     Friend WithEvents txtNumeroCuenta As System.Windows.Forms.TextBox
-    Friend WithEvents lblDisplayMetodoPago As System.Windows.Forms.Label
-    Friend WithEvents cboMetodoPago As System.Windows.Forms.ComboBox
-    Friend WithEvents cboMetodoPagoDlls As System.Windows.Forms.ComboBox
+    Friend WithEvents lblDisplayFormaPago As System.Windows.Forms.Label
+    Friend WithEvents cboFormaPago As System.Windows.Forms.ComboBox
+    Friend WithEvents cboFormaPagoUSD As System.Windows.Forms.ComboBox
     Friend WithEvents lblDisplayNCuentaDlls As System.Windows.Forms.Label
     Friend WithEvents txtNumeroCuentaDolares As System.Windows.Forms.TextBox
-    Friend WithEvents lblDisplayMdoPagoDlls As System.Windows.Forms.Label
+    Friend WithEvents lblDisplayFormaPagoUSD As System.Windows.Forms.Label
     Friend WithEvents cboNombreXML As System.Windows.Forms.ComboBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents lblDisplayNumeroRegistroIdentificadorExtranjero As System.Windows.Forms.Label
@@ -1294,4 +1318,6 @@ Partial Class Catalogo_Clientes
     Friend WithEvents LblNombrePropietario As System.Windows.Forms.Label
     Friend WithEvents TxtCodigoPropietario As System.Windows.Forms.TextBox
     Friend WithEvents TxtIdRelacion As System.Windows.Forms.TextBox
+    Friend WithEvents lblDisplayUsoCFDI As Label
+    Friend WithEvents cboUsoCFDI As ComboBox
 End Class

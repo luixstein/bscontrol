@@ -1,7 +1,10 @@
 ﻿Option Strict On
 
-Imports System.Data
 Imports System.Data.SqlClient
+Imports System.Net
+Imports System.Net.Mail
+Imports System.Net.Security
+Imports System.Security.Cryptography.X509Certificates
 Imports CrystalDecisions.CrystalReports.Engine
 Imports CrystalDecisions.Shared
 
@@ -34,7 +37,7 @@ Public Class Class_CXC_Descuento
     Private _IEPS_DESGLOSADO As Double
     Private _IEPS_INCLUIDO As Double
     Private _TOTAL As Double
-    Private _MONEDA As String
+
     Private _ES_COMPROBANTE_ELECTRONICO As String
     Private _FOLIO_NUMERICO As Integer
     Private _IDCATALOGO_FOLIO_FELECTRONICA As Integer
@@ -45,11 +48,8 @@ Public Class Class_CXC_Descuento
     Private _ES_POR_DEVOLUCION As String
     Private _IMPUESTO_PORCENTAJE As Double
     Private _RETENCION As Double
-    'CFD
     Private _CODIGO_METODO_PAGO As String
     Private _CODIGO_REGIMEN_FISCAL As Integer
-
-    'CFDi
     Private _FOLIO_FISCAL_SAT As String
     Private _FECHA_TIMBRADO_SAT As String
     Private _NUMERO_SERIE_CERTIFICADO_SAT As String
@@ -61,6 +61,10 @@ Public Class Class_CXC_Descuento
     Private _TIMBRADO_DESCARTADO As String
     Private _VERSION_ESQUEMA_XML As String
     Private _SERIE As String
+    Private _CODIGO_METODO_PAGO_EVENTO As String
+    Private _CODIGO_USO_CFDI As String
+    Private _CODIGO_MONEDA_SAT As String
+    Private _CODIGO_TIPO_RELACION_CFDI As String
 
 #End Region
 
@@ -73,18 +77,18 @@ Public Class Class_CXC_Descuento
     Private _Conexion As SqlConnection
     Private _QuerySelect As String
     Private _QueryOrder As String
+
+    Private Declare Function IsNetworkAlive Lib "SENSAPI.DLL" (ByRef lpdwFlags As Long) As Long
 #End Region
 
 #Region "Campos ligados a la tabla"
     Private _Existe As Boolean 'lectura
     Private _Nombre_Formato As String
-    'CFD
     Private _NOMBRE_METODO_PAGO As String
     Private _NOMBRE_REGIMEN_FISCAL As String
     Private _FELECTRONICA_CER As String
     Private _FELECTRONICA_KEY As String
     Private _FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA As String
-
     Private _LISTA_DESCUENTOS As String
 #End Region
 
@@ -137,13 +141,11 @@ Public Class Class_CXC_Descuento
             Me._CODIGO_CLIENTE = value
         End Set
     End Property
-    Public Property NOMBRE_CLIENTE() As String
+
+    Public ReadOnly Property NOMBRE_CLIENTE() As String
         Get
             Return Me._NOMBRE_CLIENTE
         End Get
-        Set(ByVal value As String)
-            Me._NOMBRE_CLIENTE = value
-        End Set
     End Property
 
     Public Property FECHA() As Date
@@ -155,13 +157,10 @@ Public Class Class_CXC_Descuento
         End Set
     End Property
 
-    Public Property FECHA_SERVIDOR() As Date
+    Public ReadOnly Property FECHA_SERVIDOR() As Date
         Get
             Return Me._FECHA_SERVIDOR
         End Get
-        Set(ByVal value As Date)
-            Me._FECHA_SERVIDOR = value
-        End Set
     End Property
 
     Public Property ESTATUS_DESCUENTO() As String
@@ -209,13 +208,10 @@ Public Class Class_CXC_Descuento
         End Set
     End Property
 
-    Public Property NOMBRE_USUARIO_GRABO() As String
+    Public ReadOnly Property NOMBRE_USUARIO_GRABO() As String
         Get
             Return Me._NOMBRE_USUARIO_GRABO
         End Get
-        Set(ByVal value As String)
-            Me._NOMBRE_USUARIO_GRABO = value
-        End Set
     End Property
 
     Public Property CODIGO_USUARIO_CANCELO() As Integer
@@ -227,13 +223,10 @@ Public Class Class_CXC_Descuento
         End Set
     End Property
 
-    Public Property NOMBRE_USUARIO_CANCELO() As String
+    Public ReadOnly Property NOMBRE_USUARIO_CANCELO() As String
         Get
             Return Me._NOMBRE_USUARIO_CANCELO
         End Get
-        Set(ByVal value As String)
-            Me._NOMBRE_USUARIO_CANCELO = value
-        End Set
     End Property
 
     Public Property FECHA_CANCELACION() As Date
@@ -245,13 +238,10 @@ Public Class Class_CXC_Descuento
         End Set
     End Property
 
-    Public Property FECHA_CANCELACION_SERVIDOR() As Date
+    Public ReadOnly Property FECHA_CANCELACION_SERVIDOR() As Date
         Get
             Return Me._FECHA_CANCELACION_SERVIDOR
         End Get
-        Set(ByVal value As Date)
-            Me._FECHA_CANCELACION_SERVIDOR = value
-        End Set
     End Property
 
     Public Property TIPO_DE_CAMBIO() As Double
@@ -326,15 +316,6 @@ Public Class Class_CXC_Descuento
         End Set
     End Property
 
-    Public Property MONEDA() As String
-        Get
-            Return Me._MONEDA
-        End Get
-        Set(ByVal value As String)
-            Me._MONEDA = value
-        End Set
-    End Property
-
     Public WriteOnly Property ES_COMPROBANTE_ELECTRONICO() As String
         Set(ByVal value As String)
             Me._ES_COMPROBANTE_ELECTRONICO = value
@@ -389,7 +370,6 @@ Public Class Class_CXC_Descuento
         End Set
     End Property
 
-    'CFD
     Public Property CODIGO_METODO_PAGO() As String
         Get
             Return Me._CODIGO_METODO_PAGO
@@ -399,17 +379,12 @@ Public Class Class_CXC_Descuento
         End Set
     End Property
 
-    'CFD
-    Public Property CODIGO_REGIMEN_FISCAL() As Integer
+    Public ReadOnly Property CODIGO_REGIMEN_FISCAL() As Integer
         Get
             Return Me._CODIGO_REGIMEN_FISCAL
         End Get
-        Set(ByVal Value As Integer)
-            Me._CODIGO_REGIMEN_FISCAL = Value
-        End Set
     End Property
 
-    'CFDi
     Public ReadOnly Property FOLIO_FISCAL_SAT() As String
         Get
             Return Me._FOLIO_FISCAL_SAT
@@ -475,6 +450,41 @@ Public Class Class_CXC_Descuento
             Return Me._SERIE
         End Get
     End Property
+    Public Property CODIGO_METODO_PAGO_EVENTO() As String
+        Get
+            Return Me._CODIGO_METODO_PAGO_EVENTO
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_METODO_PAGO_EVENTO = Value
+        End Set
+    End Property
+
+    Public Property CODIGO_USO_CFDI() As String
+        Get
+            Return Me._CODIGO_USO_CFDI
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_USO_CFDI = Value
+        End Set
+    End Property
+
+    Public Property CODIGO_MONEDA_SAT() As String
+        Get
+            Return Me._CODIGO_MONEDA_SAT
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_MONEDA_SAT = Value
+        End Set
+    End Property
+
+    Public Property CODIGO_TIPO_RELACION_CFDI() As String
+        Get
+            Return Me._CODIGO_TIPO_RELACION_CFDI
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_TIPO_RELACION_CFDI = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedad Nombre de Clase"
@@ -498,14 +508,12 @@ Public Class Class_CXC_Descuento
         End Get
     End Property
 
-    'CFD
     Public ReadOnly Property NOMBRE_METODO_PAGO() As String
         Get
             Return Me._NOMBRE_METODO_PAGO
         End Get
     End Property
 
-    'CFD
     Public ReadOnly Property NOMBRE_REGIMEN_FISCAL() As String
         Get
             Return Me._NOMBRE_REGIMEN_FISCAL
@@ -569,7 +577,7 @@ Public Class Class_CXC_Descuento
 
 #Region "Métodos y procedimientos"
 
-    Public Function InsertarDescuentos() As Boolean
+    Public Function Grabar() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -596,8 +604,12 @@ Public Class Class_CXC_Descuento
             sqlParametro = .Parameters.Add("@ES_POR_DEVOLUCION", SqlDbType.Char, 1) : sqlParametro.Value = Me._ES_POR_DEVOLUCION
             sqlParametro = .Parameters.Add("@ES_COMPROBANTE_ELECTRONICO", SqlDbType.Char, 1) : sqlParametro.Value = Me._ES_COMPROBANTE_ELECTRONICO
             sqlParametro = .Parameters.Add("@ES_VENTA_PUBLICO_GENERAL", SqlDbType.Char, 1) : sqlParametro.Value = Me._ES_VENTA_PUBLICO_GENERAL
-            sqlParametro = .Parameters.Add("@MONEDA", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._MONEDA
             sqlParametro = .Parameters.Add("@LISTA_DESCUENTOS", SqlDbType.NVarChar, -1) : sqlParametro.Value = Me._LISTA_DESCUENTOS
+            sqlParametro = .Parameters.Add("@CODIGO_METODO_PAGO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_METODO_PAGO
+            sqlParametro = .Parameters.Add("@CODIGO_METODO_PAGO_EVENTO", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_METODO_PAGO_EVENTO
+            sqlParametro = .Parameters.Add("@CODIGO_USO_CFDI", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_USO_CFDI
+            sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_MONEDA_SAT
+            sqlParametro = .Parameters.Add("@IMPUESTO_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_PORCENTAJE
 
             Try
                 Me._Conexion.Open()
@@ -605,7 +617,7 @@ Public Class Class_CXC_Descuento
                 bResultado = True
                 Me._FOLIO_DESCUENTO = "" & .Parameters("@FOLIO_DESCUENTO").Value.ToString
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "InsertarDescuentos", ex)
+                HandleError(Me.Nombre_Clase, "Grabar", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -688,7 +700,7 @@ Public Class Class_CXC_Descuento
                 Me._Conexion.Open()
                 dReader = .ExecuteReader()
 
-                If dReader.Read Then
+                If dReader.Read = True Then
 
                     Me._ID_CXC_DESCUENTOS_GLOBAL = CType(dReader("ID_CXC_DESCUENTOS_GLOBAL"), Integer)
                     Me._FOLIO_DESCUENTO = CType(dReader("FOLIO_DESCUENTO"), String)
@@ -710,7 +722,6 @@ Public Class Class_CXC_Descuento
                     Me._IEPS_INCLUIDO = CType(dReader("IEPS_INCLUIDO"), Double)
                     Me._IVA = CType(dReader("IVA"), Double)
                     Me._TOTAL = CType(dReader("TOTAL"), Double)
-                    Me._MONEDA = dReader("MONEDA").ToString
                     Me._IMPUESTO_PORCENTAJE = CType(dReader("IMPUESTO_PORCENTAJE"), Double)
                     Me._RETENCION = CType(dReader("RETENCION"), Double)
                     Me._ES_COMPROBANTE_ELECTRONICO = CType(dReader("ES_COMPROBANTE_ELECTRONICO"), String)
@@ -726,7 +737,7 @@ Public Class Class_CXC_Descuento
                         Me._CODIGO_USUARIO_CANCELO = CType(dReader("CODIGO_USUARIO_CANCELO"), Integer)
                         Me._NOMBRE_USUARIO_CANCELO = CType(dReader("NOMBRE_USUARIO_CANCELO"), String)
                         Me._FECHA_CANCELACION = CType(dReader("FECHA_CANCELACION"), Date)
-                        'Me._FECHA_CANCELACION_SERVIDOR = CType(dReader("FECHA_CANCELACION_SERVIDOR"), Date)
+                        Me._FECHA_CANCELACION_SERVIDOR = CType(dReader("FECHA_CANCELACION_SERVIDOR"), Date)
                     End If
                     Me._CODIGO_METODO_PAGO = dReader("CODIGO_METODO_PAGO").ToString
                     Me._CODIGO_REGIMEN_FISCAL = CType(dReader("CODIGO_REGIMEN_FISCAL"), Integer)
@@ -735,7 +746,6 @@ Public Class Class_CXC_Descuento
                     Me._FELECTRONICA_CER = "" & dReader("FELECTRONICA_CER").ToString
                     Me._FELECTRONICA_KEY = "" & dReader("FELECTRONICA_KEY").ToString
                     Me._FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA = IIf(txtLEN("" & dReader("CONTRASEÑA").ToString) = True, Decrypt("" & dReader("CONTRASEÑA").ToString, "r7"), "").ToString
-                    'CFDi
                     Me._FOLIO_FISCAL_SAT = "" & dReader("FOLIO_FISCAL_SAT").ToString
                     Me._FECHA_TIMBRADO_SAT = "" & dReader("FECHA_TIMBRADO_SAT").ToString
                     Me._NUMERO_SERIE_CERTIFICADO_SAT = "" & dReader("NUMERO_SERIE_CERTIFICADO_SAT").ToString
@@ -745,14 +755,17 @@ Public Class Class_CXC_Descuento
                     Else
                         Me._CBB_IMAGE = "" '& dReader("CBB_IMAGE").ToString
                     End If
-                    'Me._FOLIO_FISCAL_CANCELACION_SAT = "" & dReader("FOLIO_FISCAL_CANCELACION_SAT").ToString
-                    Me._TIMBRADO_CFDI = "" & dReader("TIMBRADO_CFDI").ToString
-                    Me._ESTATUS_CANCELACION_CFDI = "" & dReader("ESTATUS_CANCELACION_CFDI").ToString
-                    Me._TIMBRADO_DESCARTADO = "" & dReader("TIMBRADO_DESCARTADO").ToString
+                    Me._TIMBRADO_CFDI = dReader("TIMBRADO_CFDI").ToString
+                    Me._ESTATUS_CANCELACION_CFDI = dReader("ESTATUS_CANCELACION_CFDI").ToString
+                    Me._TIMBRADO_DESCARTADO = dReader("TIMBRADO_DESCARTADO").ToString
                     Me._VERSION_ESQUEMA_XML = "" & dReader("VERSION_ESQUEMA_XML").ToString
                     Me._SERIE = "" & Trim(dReader("SERIE").ToString)
 
                     Me._Nombre_Formato = "" & Trim(dReader("NOMBRE_FORMATO").ToString)
+                    Me._CODIGO_METODO_PAGO_EVENTO = "" & dReader("CODIGO_METODO_PAGO_EVENTO").ToString
+                    Me._CODIGO_USO_CFDI = "" & dReader("CODIGO_USO_CFDI").ToString
+                    Me._CODIGO_MONEDA_SAT = "" & dReader("CODIGO_MONEDA_SAT").ToString
+                    Me._CODIGO_TIPO_RELACION_CFDI = "" & dReader("CODIGO_TIPO_RELACION_CFDI").ToString
 
                     bResultado = True
 
@@ -969,24 +982,6 @@ Public Class Class_CXC_Descuento
         Return bResultado
     End Function
 
-    Public Function ObtenerEstatusParaReportes() As DataTable
-        Dim dTable As New DataTable
-        'Dim dRow As DataRow
-        Try
-            dTable.Columns.Add("CODIGO_ESTATUS", GetType(String))
-            dTable.Columns.Add("NOMBRE_ESTATUS", GetType(String))
-
-            'dRow = dTable.NewRow
-            dTable.Rows.Add("A", "APLICADOS")
-            dTable.Rows.Add("C", "CANCELADOS")
-            dTable.Rows.Add("T", "TODOS")
-            dTable.AcceptChanges()
-        Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerEstatusParaReportes", ex)
-        End Try
-        Return dTable
-    End Function
-
     Public Function RecuperaXML(ByVal sRutaXML As String) As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
@@ -1093,6 +1088,24 @@ Public Class Class_CXC_Descuento
         Return bResultado
     End Function
 
+    Public Function ObtenerEstatusParaReportes() As DataTable
+        Dim dTable As New DataTable
+        'Dim dRow As DataRow
+        Try
+            dTable.Columns.Add("CODIGO_ESTATUS", GetType(String))
+            dTable.Columns.Add("NOMBRE_ESTATUS", GetType(String))
+
+            'dRow = dTable.NewRow
+            dTable.Rows.Add("A", "APLICADOS")
+            dTable.Rows.Add("C", "CANCELADOS")
+            dTable.Rows.Add("T", "TODOS")
+            dTable.AcceptChanges()
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ObtenerEstatusParaReportes", ex)
+        End Try
+        Return dTable
+    End Function
+
     Public Function ObtieneVentasConSaldo(ByVal CodigoCliente As String, ByVal Moneda As String, ByVal VentaPublicoGeneral As Boolean, ByVal CodigoTipoDocumento As String) As DataTable
         Dim dt As New DataTable, sSQLDocs As String = ""
         Try
@@ -1106,15 +1119,17 @@ Public Class Class_CXC_Descuento
             Using da As New SqlDataAdapter("SELECT V.FOLIO_VENTA,V.FECHA,V.TIPO_DE_CAMBIO,V.TOTAL,V.SALDO " &
                                            "FROM VENTA_GLOBAL V " &
                                            "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO D ON (V.CODIGO_DOCUMENTO=D.CODIGO_DOCUMENTO)  " &
-                                           "WHERE V.CODIGO_CLIENTE=@CODIGO_CLIENTE AND SALDO>0 AND V.CODIGO_PLAZA=" & Usuario.Codigo_Plaza.ToString & " AND " &
-                                           IIf(Moneda = "MXN", "V.TIPO_DE_CAMBIO<=1", "V.TIPO_DE_CAMBIO>1").ToString & " " &
+                                           "WHERE V.CODIGO_CLIENTE=@CODIGO_CLIENTE AND SALDO>0 AND V.CODIGO_PLAZA=" & Usuario.Codigo_Plaza.ToString & " " &
+                                           "AND V.CODIGO_MONEDA_SAT=@CODIGO_MONEDA_SAT " &
                                            "AND V.ES_VENTA_PUBLICO_GENERAL=" & IIf(VentaPublicoGeneral = True, "1", "0").ToString & " " &
                                            sSQLDocs &
                                            "ORDER BY V.FECHA", Me._Conexion)
+                '                           IIf(Moneda = "MXN", "V.TIPO_DE_CAMBIO<=1", "V.TIPO_DE_CAMBIO>1").ToString & " " &
                 da.SelectCommand.CommandType = CommandType.Text
 
                 With da.SelectCommand
                     .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8).Value = CodigoCliente
+                    .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3).Value = Moneda
                 End With
 
                 da.Fill(dt)
@@ -1126,6 +1141,302 @@ Public Class Class_CXC_Descuento
         Return dt
     End Function
 
+    Public Function GeneraNotaCreditoElectronica(ByVal bMensajes As Boolean, ByVal bGenerarPDF As Boolean) As Boolean
+        Dim bResultado As Boolean = False
+        Dim sProcedure As String = "GeneraNotaCreditoElectronica"
+        Dim sRutaXML As String
+
+        Try
+            sRutaXML = sFelectronicaCarpetaXMLPDF & "\" & Me._FOLIO_DESCUENTO & ".xml"
+
+            If Me._TIMBRADO_CFDI = "0" Then
+                If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
+                    bResultado = GeneraNotaCreditoCXCElectronica(Me, bMensajes, sRutaXML)
+                Else
+                    bResultado = GeneraNotaCreditoCXCElectronica33(Me, bMensajes, sRutaXML)
+                End If
+
+                If bResultado = False Then
+                    MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+                Else
+                    If bGenerarPDF = True Then
+                        Me.ExportarAPdf()
+                    End If
+                End If
+                'Else
+                '    Me.RecuperarFacturaElectronicaLocal(bMensajes)
+            Else
+                MsgBox("El documento ya esta timbrado.", vbExclamation, sProcedure)
+            End If
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, sProcedure, ex)
+        End Try
+        Return bResultado
+    End Function
+
+    Public Function RecuperarXMLyPDF() As Boolean
+        Dim sProcedure As String = "RecuperarXMLyPDF"
+        Dim bResultado As Boolean = False
+
+        Dim oCliente As Class_CatClientes
+
+        Try
+            oCliente = New Class_CatClientes(Me._CODIGO_CLIENTE)
+
+            Dim sRutaXML As String = "", sNombreXmlTimbrado As String = ""
+            Dim sRutaPDF As String = "", archivos As String = sFelectronicaCarpetaXMLPDF & "\"
+
+            If txtLEN(oCliente.FORMATO_NOMBRE_XML) = True Then
+                Select Case oCliente.FORMATO_NOMBRE_XML
+                    Case "RFCemisor-Serie-FolioNumerico"
+                        sNombreXmlTimbrado = Empresa_Sistema.RFC & "-" & Me._SERIE & "-" & Me._FOLIO_NUMERICO
+                    Case "RFCemisor-Fecha-SerieFolio"
+                        sNombreXmlTimbrado = Empresa_Sistema.RFC & Format(Me._FOLIO_DESCUENTO, "yyyyddMM") & Me._SERIE & Me._FOLIO_NUMERICO
+                End Select
+            Else
+                sNombreXmlTimbrado = Me._FOLIO_DESCUENTO
+            End If
+
+            sRutaXML = sFelectronicaCarpetaXmlsTimbrados & "\" & sNombreXmlTimbrado & ".xml"
+            sRutaPDF = archivos.ToString & sNombreXmlTimbrado & ".PDF"
+
+            If Me.RecuperaXML(sRutaXML) = True Then
+                If Me.ExportarAPdf(sRutaPDF) = False Then
+                    MsgBox("Se logró recuperar el XML pero no se logró generar el PDF del documento : " & Me._FOLIO_DESCUENTO & ". Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+                    Return False
+                Else
+                    bResultado = True
+                End If
+            Else
+                MsgBox("No se logró recuperar el XML y PDF del documento : " & Me._FOLIO_DESCUENTO & ". Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+                Return False
+            End If
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Public Function EnviarCorreo() As Boolean
+        Dim sProcedure As String = "EnviarCorreo"
+        Dim Ret As Long, tabla() As String, n As Integer, archivos As String = sFelectronicaCarpetaXMLPDF & "\"
+        Dim oCliente As Class_CatClientes
+        Dim MyMailMsg As New Net.Mail.MailMessage
+
+        Try
+            oCliente = New Class_CatClientes(Me._CODIGO_CLIENTE)
+
+            If txtLEN(oCliente.CORREO_CLIENTE) = False Then
+                MsgBox("El cliente no tiene correo configurado.", MsgBoxStyle.Exclamation, sProcedure)
+                Dim oActualizar As New Catalogo_Clientes_ActualizaCorreo(oCliente)
+                oActualizar.ShowDialog()
+                If oActualizar.bActualizado = False Then
+                    Return False
+                End If
+            End If
+
+            tabla = Split(oCliente.CORREO_CLIENTE, ";")
+
+            For n = 0 To UBound(tabla, 1)
+                If IsEmailSyntaxValid(tabla(n)) = False Then
+                    MsgBox("El correo no es válido, favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+            Next
+
+            'Si el Api retorna 0 quiere decir que no hay ningun tipo de conexión de Red
+            If IsNetworkAlive(Ret) = 0 Then
+                MsgBox("No existe conexión a internet. Por favor revise su conexión e inténtelo nuevamente.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If txtLEN(Usuario.CORREO_USUARIO) = False Then
+                MsgBox("El usuario : " & Usuario.Nombre_Usuario & " no tiene correo configurado.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            MyMailMsg.Subject = "CFDI DE DEVOLUCION A " & Empresa_Sistema.NOMBRE_EMPRESA
+
+            For n = 0 To UBound(tabla, 1)
+                MyMailMsg.To.Add(tabla(n))
+            Next
+
+            MyMailMsg.From = New MailAddress(Usuario.CORREO_USUARIO.ToString)
+            MyMailMsg.Priority = MailPriority.Normal
+            MyMailMsg.Body = "DEVOLUCION " & Me._FOLIO_DESCUENTO
+
+            'MyMailMsg.IsBodyHtml = False
+            'MyMailMsg.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure
+
+            Dim SMTP As New SmtpClient()
+            SMTP.Host = Usuario.SERVIDOR_CORREO_REMITENTE
+            SMTP.EnableSsl = Usuario.USAR_SSL_REMITENTE
+            SMTP.Port = CInt(Usuario.PUERTO_REMITENTE)
+
+            SMTP.Credentials = New System.Net.NetworkCredential(Usuario.CORREO_USUARIO.ToString, Usuario.CLAVE_CORREO.ToString)
+
+            Dim sRutaXML As String = "", sNombreXmlTimbrado As String = ""
+            Dim sRutaPDF As String = ""
+
+            If txtLEN(oCliente.FORMATO_NOMBRE_XML) = True Then
+                Select Case oCliente.FORMATO_NOMBRE_XML
+                    Case "RFCemisor-Serie-FolioNumerico"
+                        sNombreXmlTimbrado = Empresa_Sistema.RFC & "-" & Me._SERIE & "-" & Me._FOLIO_NUMERICO
+                    Case "RFCemisor-Fecha-SerieFolio"
+                        sNombreXmlTimbrado = Empresa_Sistema.RFC & Format(Me._FOLIO_DESCUENTO, "yyyyddMM") & Me._SERIE & Me._FOLIO_NUMERICO
+                End Select
+            Else
+                sNombreXmlTimbrado = Me._FOLIO_DESCUENTO
+            End If
+
+            sRutaXML = sFelectronicaCarpetaXmlsTimbrados & "\" & sNombreXmlTimbrado & ".xml"
+            sRutaPDF = archivos.ToString & sNombreXmlTimbrado & ".PDF"
+
+            If Me.RecuperaXML(sRutaXML) = True Then
+                If Me.ExportarAPdf(sRutaPDF) = False Then
+                    MsgBox("No se logró generar el PDF del documento : " & Me._FOLIO_DESCUENTO & ". Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+                    Return False
+                End If
+            Else
+                MsgBox("No se logró recuperar el XML del documento : " & Me._FOLIO_DESCUENTO & ". Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+                Return False
+            End If
+
+            Me.MarcaEnviadoxCorreo(Me._FOLIO_DESCUENTO)
+
+            Dim msa As New Attachment(sRutaPDF)
+            MyMailMsg.Attachments.Add(msa)
+            msa = New Attachment(sRutaXML)
+            MyMailMsg.Attachments.Add(msa)
+
+            ServicePointManager.ServerCertificateValidationCallback = Function(s As Object, certificate As X509Certificate, chain As X509Chain, sslPolicyErrors As SslPolicyErrors) True
+
+            SMTP.Send(MyMailMsg)
+
+            MsgBox("Tu E-Mail se ha enviado exitosamente.", MsgBoxStyle.Information, sProcedure)
+
+            Return True
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
+        End Try
+    End Function
+
+    Private Function MarcaEnviadoxCorreo(ByVal sFolio As String) As Boolean
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_CXC_DESCUENTOS_MARCA_CORREO_ENVIADO"
+
+            sqlParametro = .Parameters.Add("@FOLIO_DESCUENTO", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolio
+
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me.Nombre_Clase, "MarcaEnviadoxCorreo", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+
+        Return bResultado
+    End Function
+
+    Public Function ObtieneFacturasRelacionadas() As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String
+
+        sSQL = "SELECT F.FOLIO_VENTA,F.FOLIO_FISCAL_SAT " &
+                "FROM CXC_DESCUENTOS_GLOBAL DG INNER JOIN CXC_DESCUENTOS_DETALLE DR ON(DG.FOLIO_DESCUENTO=DR.FOLIO_DESCUENTO) " &
+                "INNER JOIN CXC_GLOBAL C ON(DR.FOLIO_CXC=C.FOLIO_CXC) " &
+                "INNER JOIN VENTA_GLOBAL F ON(C.FOLIO_REFERENCIA=F.FOLIO_VENTA) " &
+                "WHERE DG.FOLIO_DESCUENTO='" & Me.FOLIO_DESCUENTO & "'" &
+                "ORDER BY C.ID_CXC_GLOBAL"
+
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+
+            da.Dispose()
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, "ObtieneFacturasRelacionadas", ex)
+        End Try
+
+        Return dTabla
+    End Function
+
+    Public Function ObtieneDetalleIEPS() As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String
+
+        sSQL = "SELECT IEPS_PORCENTAJE,IEPS_IMPORTE " &
+                "FROM CXC_DESCUENTOS_DETALLE_IEPS " &
+                "WHERE FOLIO_DESCUENTO='" & Me.FOLIO_DESCUENTO & "'" &
+                "ORDER BY IEPS_PORCENTAJE"
+
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+
+            da.Dispose()
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, "ObtieneDetalleIEPS", ex)
+        End Try
+
+        Return dTabla
+    End Function
+
+    Public Function CancelarTimbre() As Boolean
+        Dim bResultado As Boolean = False
+        Dim sProcedure As String = "CancelarTimbre"
+        Try
+            If Me.Consultar() = False Then 'Refrescamos el documento para tener los datos mas nuevos.
+                Return False
+            End If
+
+            If txtLEN(Me._FOLIO_FISCAL_SAT) = False Then
+                MsgBox("El documento no tiene UUID(posiblemente no este timbrado).", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If Me._ESTATUS_DESCUENTO <> "C" Then
+                MsgBox("El documento no esta cancelado.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If Me._TIMBRADO_DESCARTADO = "1" Then
+                MsgBox("El timbre esta descartado.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If Me._ESTATUS_CANCELACION_CFDI = "1" Then
+                MsgBox("El timbre ya esta cancelado.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If CancelarCFDIDescuento(Me, TipoComprobante.NOTA_CREDITO_CXC) = False Then
+                MsgBox("El timbre no se pudo cancelar. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+                Return False
+            Else
+                bResultado = True
+            End If
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
 #End Region
 
 End Class

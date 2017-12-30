@@ -1,9 +1,8 @@
 ﻿Option Strict On
-Imports System.Data
 Imports System.Data.SqlClient
+Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Class_CatArticulos
-    Inherits Class_Catalogos
 
 #Region "Campos"
 
@@ -11,6 +10,7 @@ Public Class Class_CatArticulos
     Private _CODIGO_ARTICULO As String
     Private _DESCRIPCION As String
     Private _UNIDAD_VENTA As String
+    Private _ESTATUS As String
     Private _PROTEGIDO As String
     Private _INVENTARIABLE As String
     Private _TIENE_IMPUESTO As String
@@ -35,6 +35,8 @@ Public Class Class_CatArticulos
     Private _GRADO_TOXICIDAD As String
     'Private _CODIGO_UNIDAD_VENTA As String
     'Private _NOMBRE_UNIDAD As String
+    Private _CODIGO_PRODUCTO_SERVICIO As String
+    Private _CODIGO_UNIDAD As String
 
 #End Region
 
@@ -95,14 +97,14 @@ Public Class Class_CatArticulos
         End Set
     End Property
 
-    'PUBLIC PROPERTY ESTATUS() AS STRING
-    '    GET
-    '        RETURN ME._ESTATUS
-    '    END GET
-    '    SET(BYVAL VALUE AS STRING)
-    '        ME._ESTATUS = VALUE
-    '    END SET
-    'END PROPERTY
+    Public Property ESTATUS() As String
+        Get
+            Return Me._ESTATUS
+        End Get
+        Set(ByVal VALUE As String)
+            Me._ESTATUS = VALUE
+        End Set
+    End Property
 
     Public Property PROTEGIDO() As String
         Get
@@ -296,6 +298,23 @@ Public Class Class_CatArticulos
     '    End Set
     'End Property
 
+    Public Property CODIGO_PRODUCTO_SERVICIO() As String
+        Get
+            Return Me._CODIGO_PRODUCTO_SERVICIO
+        End Get
+        Set(ByVal VALUE As String)
+            Me._CODIGO_PRODUCTO_SERVICIO = VALUE
+        End Set
+    End Property
+
+    Public Property CODIGO_UNIDAD() As String
+        Get
+            Return Me._CODIGO_UNIDAD
+        End Get
+        Set(ByVal VALUE As String)
+            Me._CODIGO_UNIDAD = VALUE
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -333,13 +352,13 @@ Public Class Class_CatArticulos
 #End Region
 
 #Region "Propiedades de campos de sistema"
-    Public Overrides ReadOnly Property Nombre_Catalogo() As String
+    Public ReadOnly Property Nombre_Catalogo() As String
         Get
             Return Me._Nombre_Catalogo
         End Get
     End Property
 
-    Public Overrides Property Nombre_Reporte() As String
+    Public Property Nombre_Reporte() As String
         Get
             Return Me._Nombre_Reporte
         End Get
@@ -347,6 +366,7 @@ Public Class Class_CatArticulos
             Me._Nombre_Reporte = value
         End Set
     End Property
+
     Public ReadOnly Property Existe() As Boolean
         Get
             Return Me._Existe
@@ -389,7 +409,7 @@ Public Class Class_CatArticulos
 
 #Region "Métodos y procedimientos"
 
-    Public Overrides Function Insertar() As Boolean
+    Public Function Grabar(ByVal sAccion As String) As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -402,7 +422,7 @@ Public Class Class_CatArticulos
             sqlParametro = .Parameters.Add("@CODIGO_ARTICULO", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_ARTICULO
             sqlParametro = .Parameters.Add("@DESCRIPCION", SqlDbType.NVarChar, 500) : sqlParametro.Value = Me._DESCRIPCION.ToUpper
             sqlParametro = .Parameters.Add("@UNIDAD_VENTA", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._UNIDAD_VENTA.ToUpper
-            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToUpper
+            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS.ToUpper
             sqlParametro = .Parameters.Add("@PROTEGIDO", SqlDbType.Char, 1) : sqlParametro.Value = Me._PROTEGIDO
             sqlParametro = .Parameters.Add("@INVENTARIABLE", SqlDbType.Char, 1) : sqlParametro.Value = Me._INVENTARIABLE
             sqlParametro = .Parameters.Add("@TIENE_IMPUESTO", SqlDbType.Char, 1) : sqlParametro.Value = Me._TIENE_IMPUESTO
@@ -419,7 +439,9 @@ Public Class Class_CatArticulos
             sqlParametro = .Parameters.Add("@ES_SERIALIZABLE", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._ES_SERIALIZABLE)
             sqlParametro = .Parameters.Add("@CODIGO_UNIDAD_VENTA", SqlDbType.NVarChar, 20) : sqlParametro.Value = "NA" ' Me._CODIGO_UNIDAD_VENTA.ToUpper
             sqlParametro = .Parameters.Add("@GRADO_TOXICIDAD", SqlDbType.SmallInt) : sqlParametro.Value = Me._GRADO_TOXICIDAD
-            sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = "1"
+            sqlParametro = .Parameters.Add("@CODIGO_PRODUCTO_SERVICIO", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_PRODUCTO_SERVICIO
+            sqlParametro = .Parameters.Add("@CODIGO_UNIDAD", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_UNIDAD
+            sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = sAccion
 
             Try
                 Me._Conexion.Open()
@@ -427,60 +449,7 @@ Public Class Class_CatArticulos
                 Me._CODIGO_ARTICULO = "" & .Parameters("@CODIGO_ARTICULO").Value.ToString
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Insertar", ex)
-            Finally
-                Me._Conexion.Close()
-                cmd.Dispose()
-                sqlParametro = Nothing
-            End Try
-        End With
-
-        Return bResultado
-    End Function
-
-    ''' <summary>
-    ''' Actualiza al almacén.
-    ''' </summary>
-    Public Overrides Function Actualizar() As Boolean
-        Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand
-        Dim sqlParametro As SqlParameter
-        With cmd
-            .Connection = Me._Conexion
-            .CommandTimeout = 0
-            .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_CAT_ARTICULOS_GRABA"
-
-            sqlParametro = .Parameters.Add("@CODIGO_ARTICULO", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_ARTICULO
-            sqlParametro = .Parameters.Add("@DESCRIPCION", SqlDbType.NVarChar, 500) : sqlParametro.Value = Me._DESCRIPCION.ToUpper
-            sqlParametro = .Parameters.Add("@UNIDAD_VENTA", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._UNIDAD_VENTA.ToUpper
-            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToUpper
-            sqlParametro = .Parameters.Add("@PROTEGIDO", SqlDbType.Char, 1) : sqlParametro.Value = Me._PROTEGIDO
-            sqlParametro = .Parameters.Add("@INVENTARIABLE", SqlDbType.Char, 1) : sqlParametro.Value = Me._INVENTARIABLE
-            sqlParametro = .Parameters.Add("@TIENE_IMPUESTO", SqlDbType.Char, 1) : sqlParametro.Value = Me._TIENE_IMPUESTO
-            sqlParametro = .Parameters.Add("@CODIGO_FAMILIA", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_FAMILIA
-            sqlParametro = .Parameters.Add("@CODIGO_LINEA", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_LINEA
-            sqlParametro = .Parameters.Add("@PRECIO", SqlDbType.Money) : sqlParametro.Value = Me._PRECIO
-            sqlParametro = .Parameters.Add("@PESO", SqlDbType.Money) : sqlParametro.Value = Me._PESO
-            sqlParametro = .Parameters.Add("@CANTIDAD_BULTOS_POR_PALET", SqlDbType.SmallInt) : sqlParametro.Value = Me._CANTIDAD_BULTOS_POR_PALET
-            sqlParametro = .Parameters.Add("@CODIGO_CULTIVO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_CULTIVO
-            sqlParametro = .Parameters.Add("@CODIGO_TAMAÑO", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_TAMAÑO
-            sqlParametro = .Parameters.Add("@CODIGO_ENVASE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ENVASE
-            sqlParametro = .Parameters.Add("@CODIGO_ETIQUETA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ETIQUETA
-            sqlParametro = .Parameters.Add("@RANGO_PIEZAS", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._RANGO_PIEZAS
-            sqlParametro = .Parameters.Add("@ES_SERIALIZABLE", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._ES_SERIALIZABLE)
-            'sqlParametro = .Parameters.Add("@CODIGO_UNIDAD_VENTA", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CODIGO_UNIDAD_VENTA.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_UNIDAD_VENTA", SqlDbType.NVarChar, 20) : sqlParametro.Value = "NA" ' Me._CODIGO_UNIDAD_VENTA.ToUpper
-            sqlParametro = .Parameters.Add("@GRADO_TOXICIDAD", SqlDbType.SmallInt) : sqlParametro.Value = Me._GRADO_TOXICIDAD
-            sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = "0"
-
-            Try
-                Me._Conexion.Open()
-                .ExecuteNonQuery()
-                Me._CODIGO_ARTICULO = "" & .Parameters("@CODIGO_ARTICULO").Value.ToString
-                bResultado = True
-            Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
+                HandleError(Me._Nombre_Catalogo, "Grabar", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -549,10 +518,7 @@ Public Class Class_CatArticulos
     '    Return bResultado
     'End Function
 
-    ''' <summary>
-    ''' Consulta y refresca los campos del almacén.
-    ''' </summary>
-    Public Overrides Function Consultar() As Boolean
+    Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand(Me._QuerySelect & " CODIGO_ARTICULO='" & Replace(Me._CODIGO_ARTICULO, "'", "''") & "'", Me._Conexion)
         Dim dReader As SqlDataReader
@@ -564,20 +530,20 @@ Public Class Class_CatArticulos
                 dReader = .ExecuteReader()
 
                 If dReader.Read Then
-                    Me._CODIGO_ARTICULO = "" & dReader("Codigo_Articulo").ToString()
-                    Me._DESCRIPCION = Trim("" & dReader("Descripcion").ToString())
-                    Me._UNIDAD_VENTA = Trim("" & dReader("Unidad_Venta").ToString())
-                    Me.Estatus = "" & dReader("ESTATUS").ToString()
-                    Me._INVENTARIABLE = "" & dReader("Inventariable").ToString()
+                    Me._CODIGO_ARTICULO = "" & dReader("CODIGO_ARTICULO").ToString()
+                    Me._DESCRIPCION = Trim("" & dReader("DESCRIPCION").ToString())
+                    Me._UNIDAD_VENTA = Trim("" & dReader("UNIDAD_VENTA").ToString())
+                    Me._ESTATUS = "" & dReader("ESTATUS").ToString()
+                    Me._INVENTARIABLE = "" & dReader("INVENTARIABLE").ToString()
                     Me._TIENE_IMPUESTO = "" & dReader("TIENE_IMPUESTO").ToString()
                     Me._CODIGO_FAMILIA = "" & dReader("CODIGO_FAMILIA").ToString()
-                    Me._CODIGO_LINEA = "" & dReader("Codigo_Linea").ToString()
-                    Me._PRECIO = Convert.ToDecimal("" & dReader("Precio").ToString())
-                    Me._DESCRIPCION_EXTRANJERA = "" & dReader("Descripcion_Extranjera").ToString()
-                    Me._CODIGO_CULTIVO = "" & dReader("Codigo_Cultivo").ToString()
-                    Me._CODIGO_TAMAÑO = "" & dReader("Codigo_Tamaño").ToString()
-                    Me._CODIGO_ENVASE = "" & dReader("Codigo_Envase").ToString()
-                    Me._CODIGO_ETIQUETA = "" & dReader("Codigo_Etiqueta").ToString()
+                    Me._CODIGO_LINEA = "" & dReader("CODIGO_LINEA").ToString()
+                    Me._PRECIO = Convert.ToDecimal("" & dReader("PRECIO").ToString())
+                    Me._DESCRIPCION_EXTRANJERA = "" & dReader("DESCRIPCION_EXTRANJERA").ToString()
+                    Me._CODIGO_CULTIVO = "" & dReader("CODIGO_CULTIVO").ToString()
+                    Me._CODIGO_TAMAÑO = "" & dReader("CODIGO_TAMAÑO").ToString()
+                    Me._CODIGO_ENVASE = "" & dReader("CODIGO_ENVASE").ToString()
+                    Me._CODIGO_ETIQUETA = "" & dReader("CODIGO_ETIQUETA").ToString()
                     Me._RANGO_PIEZAS = "" & dReader("RANGO_PIEZAS").ToString()
                     If txtLEN(Me._CODIGO_CULTIVO) = True Then
                         Me._PESO = Convert.ToDecimal("" & dReader("PESO").ToString())
@@ -602,6 +568,9 @@ Public Class Class_CatArticulos
                     '------------------------------------------------------------------------Estos campos se crearon en la base de datos pero aun no se utilizaran
                     'Me._CODIGO_UNIDAD_VENTA = "" & dReader("CODIGO_UNIDAD_VENTA").ToString()
                     'Me._NOMBRE_UNIDAD = "" & dReader("NOMBRE_UNIDAD").ToString()
+
+                    Me._CODIGO_UNIDAD = "" & dReader("CODIGO_UNIDAD").ToString
+                    Me._CODIGO_PRODUCTO_SERVICIO = "" & dReader("CODIGO_PRODUCTO_SERVICIO").ToString
 
                     bResultado = True
                 End If
@@ -643,7 +612,7 @@ Public Class Class_CatArticulos
         Return bResultado
     End Function
 
-    Public Overrides Function ObtenerElementos() As System.Data.DataTable
+    Public Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
         Dim dsCatArticulos As New SqlDataAdapter("SELECT CODIGO_ARTICULO,DESCRIPCION FROM CAT_ARTICULOS WHERE CODIGO_CULTIVO IS NULL ORDER BY DESCRIPCION", Me._Conexion)
         Try
@@ -748,16 +717,16 @@ Public Class Class_CatArticulos
         Return dTable
     End Function
 
-    Public Overrides Function BusquedaVisual_PorCodigo() As String
+    Public Function BusquedaVisual_PorCodigo() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de Articulos por Código."
         f.sCampo = "A.CODIGO_ARTICULO"
         f.sOrder = "A.DESCRIPCION"
         f.sTable = "CAT_ARTICULOS"
-        f.sQl = "SELECT A.CODIGO_ARTICULO,A.DESCRIPCION,F.NOMBRE_FAMILIA FROM CAT_ARTICULOS A " & _
-        "INNER JOIN CAT_FAMILIAS F ON(A.CODIGO_FAMILIA=F.CODIGO_FAMILIA) " & _
-        "LEFT JOIN CAT_CULTIVOS C ON (A.CODIGO_CULTIVO=C.CODIGO_CULTIVO) " & _
+        f.sQl = "SELECT A.CODIGO_ARTICULO,A.DESCRIPCION,F.NOMBRE_FAMILIA FROM CAT_ARTICULOS A " &
+        "INNER JOIN CAT_FAMILIAS F ON(A.CODIGO_FAMILIA=F.CODIGO_FAMILIA) " &
+        "LEFT JOIN CAT_CULTIVOS C ON (A.CODIGO_CULTIVO=C.CODIGO_CULTIVO) " &
         "WHERE 1=1 AND A.PROTEGIDO=0 AND A.ESTATUS='A' AND (C.CODIGO_PLAZA=1 OR A.CODIGO_CULTIVO IS NULL)"
 
         f.arrayWidthColumns = New Integer() {150, 500, 250}
@@ -773,17 +742,17 @@ Public Class Class_CatArticulos
         Return Resultado
     End Function
 
-    Public Overrides Function BusquedaVisual_PorDescripcion() As String
+    Public Function BusquedaVisual_PorDescripcion() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de Articulos por Descripción."
         f.sCampo = "A.DESCRIPCION"
         f.sOrder = "A.DESCRIPCION"
         f.sTable = "CAT_ARTICULOS"
-        f.sQl = "SELECT A.CODIGO_ARTICULO,A.DESCRIPCION,F.NOMBRE_FAMILIA,CASE WHEN A.ES_SERIALIZABLE='1' THEN 'ES SERIADO' ELSE '' END " & _
-        "FROM CAT_ARTICULOS A " & _
-        "INNER JOIN CAT_FAMILIAS F ON(A.CODIGO_FAMILIA=F.CODIGO_FAMILIA) " & _
-        "LEFT JOIN CAT_CULTIVOS C ON (A.CODIGO_CULTIVO=C.CODIGO_CULTIVO) " & _
+        f.sQl = "SELECT A.CODIGO_ARTICULO,A.DESCRIPCION,F.NOMBRE_FAMILIA,CASE WHEN A.ES_SERIALIZABLE='1' THEN 'ES SERIADO' ELSE '' END " &
+        "FROM CAT_ARTICULOS A " &
+        "INNER JOIN CAT_FAMILIAS F ON(A.CODIGO_FAMILIA=F.CODIGO_FAMILIA) " &
+        "LEFT JOIN CAT_CULTIVOS C ON (A.CODIGO_CULTIVO=C.CODIGO_CULTIVO) " &
         "WHERE A.PROTEGIDO=0 AND A.ESTATUS='A' AND (C.CODIGO_PLAZA=" & Usuario.Codigo_Plaza.ToString & " OR A.CODIGO_CULTIVO IS NULL) AND "
 
         f.arrayWidthColumns = New Integer() {150, 500, 250}
@@ -933,6 +902,29 @@ Public Class Class_CatArticulos
         End Try
         Return Resultado
     End Function
+
+    Public Sub Imprimir_Listado()   'Función para ver la búsqueda visual por descripción.
+        If Len(Nombre_Reporte) > 0 Then
+            Dim Rpt As New ReportDocument
+            Dim oReporte As Class_Reporte
+            Try
+                oReporte = New Class_Reporte(Nombre_Reporte, Rpt)
+
+                Dim frm As New Reporte(Rpt)
+                frm.CRViewer.ShowGroupTreeButton = False
+                frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
+                frm.Show()
+
+            Catch ex As Exception
+                HandleError(Me.Nombre_Catalogo, " Impresión del listado :" + Me.Nombre_Catalogo, ex)
+            Finally
+                oReporte = Nothing
+                'Rpt.Dispose()
+            End Try
+        Else
+            MsgBox("El nombre del reporte no ha sido especificado, no hay nada que imprimir.", MsgBoxStyle.Critical, Me.Nombre_Catalogo)
+        End If
+    End Sub
 #End Region
 
 End Class

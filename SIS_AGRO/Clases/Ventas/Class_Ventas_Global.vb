@@ -1,4 +1,4 @@
-ï»¿Option Strict On
+Option Strict On
 
 Imports System.Data.SqlClient
 Imports CrystalDecisions.CrystalReports.Engine
@@ -71,27 +71,27 @@ Public Class Class_Ventas_Global
     Private _VENTA_TOTAL As Double
     Private _CONDICIONES_DE_PAGO As String
     Private _CODIGO_TIPO_CREDITO As String
-    'CFD
     Private _ID_SIS_CFD_CATALOGO_CERTIFICADOS As String
     Private _CODIGO_METODO_PAGO As String
-    'Private _CODIGO_REGIMEN_FISCAL As Integer
     Private _NUMERO_CUENTA_PAGO As String
     Private _RETENCION As Double
     Private _ADDENDA As String
-
-    'CFDi
     Private _FOLIO_FISCAL_SAT As String
     Private _FECHA_TIMBRADO_SAT As String
     Private _NUMERO_SERIE_CERTIFICADO_SAT As String
     Private _SELLO_SAT As String
     Private _CBB_IMAGE As String
-    'Private _FOLIO_FISCAL_CANCELACION_SAT As String
     Private _TIMBRADO_CFDI As String
     Private _ESTATUS_CANCELACION_CFDI As String
     Private _TIMBRADO_DESCARTADO As String
     Private _VERSION_ESQUEMA_XML As String
     Private _SERIE As String
     Private _TIENE_COMPLEMENTO_COMERCIO_EXTERIOR As Boolean
+    Private _CODIGO_REGIMEN_FISCAL As String
+    Private _CODIGO_METODO_PAGO_EVENTO As String
+    Private _CODIGO_USO_CFDI As String
+    Private _RFC_RECEPTOR As String
+    Private _CODIGO_MONEDA_SAT As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -107,7 +107,7 @@ Public Class Class_Ventas_Global
     Private _TIENE_SERIES As Boolean = False
 #End Region
 
-#Region "Campos pÃºblicos"
+#Region "Campos públicos"
     Public oVentasDetalle As Class_Ventas_Detalle
 #End Region
 
@@ -692,6 +692,45 @@ Public Class Class_Ventas_Global
             Return Me._TIENE_COMPLEMENTO_COMERCIO_EXTERIOR
         End Get
     End Property
+
+    Public ReadOnly Property CODIGO_REGIMEN_FISCAL() As String
+        Get
+            Return Me._CODIGO_REGIMEN_FISCAL
+        End Get
+    End Property
+
+    Public Property CODIGO_METODO_PAGO_EVENTO() As String
+        Get
+            Return Me._CODIGO_METODO_PAGO_EVENTO
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_METODO_PAGO_EVENTO = Value
+        End Set
+    End Property
+
+    Public Property CODIGO_USO_CFDI() As String
+        Get
+            Return Me._CODIGO_USO_CFDI
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_USO_CFDI = Value
+        End Set
+    End Property
+
+    Public ReadOnly Property RFC_RECEPTOR() As String
+        Get
+            Return Me._RFC_RECEPTOR
+        End Get
+    End Property
+
+    Public Property CODIGO_MONEDA_SAT() As String
+        Get
+            Return Me._CODIGO_MONEDA_SAT
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_MONEDA_SAT = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -759,7 +798,7 @@ Public Class Class_Ventas_Global
 
 #End Region
 
-#Region "Propiedades pÃºblicos"
+#Region "Propiedades públicos"
 
 #End Region
 
@@ -785,21 +824,6 @@ Public Class Class_Ventas_Global
 
         Me._Conexion = New SqlConnection(Empresa_Sistema.conexion)
 
-        Me._QuerySelect = "SELECT G.* " &
-            ",U1.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO,U2.NOMBRE_USUARIO NOMBRE_USUARIO_CANCELO,CFD.FELECTRONICA_CER,CFD.FELECTRONICA_KEY,CFD.CONTRASEÃ‘A, " &
-            "MP.NOMBRE_METODO_PAGO,RF.NOMBRE_REGIMEN_FISCAL,CFFE.SERIE," &
-            "(SELECT MAX(FOLIO_EMBARQUE) FROM EMB_EMBARQUE_GLOBAL WHERE FOLIO_VENTA=G.FOLIO_VENTA) FOLIO_EMBARQUE,DOC.NOMBRE_FORMATO,DOC.ES_FACTURA_EMBARQUE_EXTRANJERO, " &
-            "ISNULL((SELECT TOP 1 '1' FROM VENTA_DETALLE WHERE FOLIO_VENTA=G.FOLIO_VENTA AND LEN(LISTA_SERIES)>0),0) TIENE_SERIES " &
-            "FROM VENTA_GLOBAL G " &
-            "INNER JOIN CFD_CAT_METODOS_PAGO MP ON(G.CODIGO_METODO_PAGO=MP.CODIGO_METODO_PAGO) " &
-            "INNER JOIN CDF_CAT_TIPOS_REGIMENES_FISCALES RF ON(G.CODIGO_REGIMEN_FISCAL=RF.CODIGO_REGIMEN_FISCAL) " &
-            "INNER JOIN SIS_USUARIOS U1 ON(G.CODIGO_USUARIO_GRABO=U1.CODIGO_USUARIO) " &
-            "LEFT JOIN SIS_USUARIOS U2 ON(G.CODIGO_USUARIO_CANCELO=U2.CODIGO_USUARIO) " &
-            "LEFT JOIN SIS_CFD_CATALOGO_CERTIFICADOS CFD ON(G.ID_SIS_CFD_CATALOGO_CERTIFICADOS=CFD.ID_SIS_CFD_CATALOGO_CERTIFICADOS) " &
-            "LEFT JOIN CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS CFFE ON(G.IDCATALOGO_FOLIO_FELECTRONICA=CFFE.IDCATALOGO_FOLIO_FELECTRONICA)" &
-            "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(G.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) "
-
-        Me._QueryOrder = " ORDER BY G.FOLIO_VENTA"
         oVentasDetalle = New Class_Ventas_Detalle
     End Sub
 
@@ -823,17 +847,18 @@ Public Class Class_Ventas_Global
     End Sub
 #End Region
 
-#Region "MÃ©todos y procedimientos"
+#Region "Métodos y procedimientos"
     Public Function Grabar(ByVal sAccion As String) As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
+
         With cmd
             .Connection = Me._Conexion
             .CommandTimeout = 0
             .CommandType = CommandType.StoredProcedure
-
             .CommandText = "MP_VENTA_GRABA_GLOBAL"
+
             sqlParametro = .Parameters.Add("@FOLIO_VENTA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_VENTA : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@FECHA", SqlDbType.DateTime) : sqlParametro.Value = "" & Me._FECHA
             sqlParametro = .Parameters.Add("@FECHA_VENCIMIENTO", SqlDbType.DateTime) : sqlParametro.Value = "" & Me._FECHA_VENCIMIENTO
@@ -867,7 +892,11 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO
             sqlParametro = .Parameters.Add("@IEPS_TOTAL_YA_INCLUIDO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_YA_INCLUIDO
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_CREDITO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_TIPO_CREDITO
-            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = sAccion '"INSERTAR"
+            sqlParametro = .Parameters.Add("@CODIGO_METODO_PAGO_EVENTO", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_METODO_PAGO_EVENTO
+            sqlParametro = .Parameters.Add("@CODIGO_USO_CFDI", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_USO_CFDI
+            sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3) : sqlParametro.Value = "" & Me._CODIGO_MONEDA_SAT
+            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = sAccion 'INSERTAR,ACTUALIZAR
+
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
@@ -877,6 +906,7 @@ Public Class Class_Ventas_Global
                 End If
 
                 bResultado = True
+
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "Grabar", ex)
             Finally
@@ -884,9 +914,7 @@ Public Class Class_Ventas_Global
                 cmd.Dispose()
                 sqlParametro = Nothing
             End Try
-
         End With
-
         Return bResultado
     End Function
 
@@ -1004,7 +1032,25 @@ Public Class Class_Ventas_Global
 
     Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand(Me._QuerySelect & " WHERE G.FOLIO_VENTA='" & Replace(Me._FOLIO_VENTA, "'", "''") & "' AND G.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " ", Me._Conexion)
+
+        Dim sSQL As String = ""
+
+        sSQL = "SELECT G.* " &
+            ",U1.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO,U2.NOMBRE_USUARIO NOMBRE_USUARIO_CANCELO,CFD.FELECTRONICA_CER,CFD.FELECTRONICA_KEY,CFD.CONTRASEÑA, " &
+            "MP.NOMBRE_METODO_PAGO,RF.NOMBRE_REGIMEN_FISCAL,CFFE.SERIE," &
+            "(SELECT MAX(FOLIO_EMBARQUE) FROM EMB_EMBARQUE_GLOBAL WHERE FOLIO_VENTA=G.FOLIO_VENTA) FOLIO_EMBARQUE,DOC.NOMBRE_FORMATO,DOC.ES_FACTURA_EMBARQUE_EXTRANJERO, " &
+            "ISNULL((SELECT TOP 1 '1' FROM VENTA_DETALLE WHERE FOLIO_VENTA=G.FOLIO_VENTA AND LEN(LISTA_SERIES)>0),0) TIENE_SERIES " &
+            "FROM VENTA_GLOBAL G " &
+            "INNER JOIN CFD_CAT_METODOS_PAGO MP ON(G.CODIGO_METODO_PAGO=MP.CODIGO_METODO_PAGO) " &
+            "INNER JOIN CDF_CAT_TIPOS_REGIMENES_FISCALES RF ON(G.CODIGO_REGIMEN_FISCAL=RF.CODIGO_REGIMEN_FISCAL) " &
+            "INNER JOIN SIS_USUARIOS U1 ON(G.CODIGO_USUARIO_GRABO=U1.CODIGO_USUARIO) " &
+            "LEFT JOIN SIS_USUARIOS U2 ON(G.CODIGO_USUARIO_CANCELO=U2.CODIGO_USUARIO) " &
+            "LEFT JOIN SIS_CFD_CATALOGO_CERTIFICADOS CFD ON(G.ID_SIS_CFD_CATALOGO_CERTIFICADOS=CFD.ID_SIS_CFD_CATALOGO_CERTIFICADOS) " &
+            "LEFT JOIN CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS CFFE ON(G.IDCATALOGO_FOLIO_FELECTRONICA=CFFE.IDCATALOGO_FOLIO_FELECTRONICA)" &
+            "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(G.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
+            "WHERE G.FOLIO_VENTA='" & Replace(Me._FOLIO_VENTA, "'", "''") & "' AND G.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " "
+
+        Dim cmd As New SqlCommand(sSQL, Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -1063,18 +1109,15 @@ Public Class Class_Ventas_Global
                     Me._DESCUENTO_USD = CDec(dReader("DESCUENTO_USD"))
                     Me._ES_VENTA_PUBLICO_GENERAL = "" & dReader("ES_VENTA_PUBLICO_GENERAL").ToString()
                     Me._FOLIO_EMBARQUE = "" & dReader("FOLIO_EMBARQUE").ToString()
-                    'CDF
                     Me._CODIGO_METODO_PAGO = dReader("CODIGO_METODO_PAGO").ToString
-                    'Me._CODIGO_REGIMEN_FISCAL = CInt(dReader("CODIGO_REGIMEN_FISCAL"))
                     Me._NOMBRE_METODO_PAGO = "" & dReader("NOMBRE_METODO_PAGO").ToString()
                     Me._NOMBRE_REGIMEN_FISCAL = "" & dReader("NOMBRE_REGIMEN_FISCAL").ToString()
                     Me._NUMERO_CUENTA_PAGO = "" & dReader("NUMERO_CUENTA_PAGO").ToString()
                     Me._FELECTRONICA_CER = "" & dReader("FELECTRONICA_CER").ToString
                     Me._FELECTRONICA_KEY = "" & dReader("FELECTRONICA_KEY").ToString
-                    Me._FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA = IIf(txtLEN("" & dReader("CONTRASEÃ‘A").ToString) = True, Decrypt("" & dReader("CONTRASEÃ‘A").ToString, "r7"), "").ToString
+                    Me._FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA = IIf(txtLEN("" & dReader("CONTRASEÑA").ToString) = True, Decrypt("" & dReader("CONTRASEÑA").ToString, "r7"), "").ToString
                     Me._RETENCION = CDec(dReader("RETENCION"))
                     Me._ADDENDA = "" & dReader("ADDENDA").ToString
-                    'CFDi
                     Me._FOLIO_FISCAL_SAT = "" & dReader("FOLIO_FISCAL_SAT").ToString
                     Me._FECHA_TIMBRADO_SAT = "" & dReader("FECHA_TIMBRADO_SAT").ToString
                     Me._NUMERO_SERIE_CERTIFICADO_SAT = "" & dReader("NUMERO_SERIE_CERTIFICADO_SAT").ToString
@@ -1084,23 +1127,23 @@ Public Class Class_Ventas_Global
                     Else
                         Me._CBB_IMAGE = "" '& dReader("CBB_IMAGE").ToString
                     End If
-                    'Me._FOLIO_FISCAL_CANCELACION_SAT = "" & dReader("FOLIO_FISCAL_CANCELACION_SAT").ToString
                     Me._TIMBRADO_CFDI = "" & dReader("TIMBRADO_CFDI").ToString
                     Me._ESTATUS_CANCELACION_CFDI = "" & dReader("ESTATUS_CANCELACION_CFDI").ToString
                     Me._TIMBRADO_DESCARTADO = "" & dReader("TIMBRADO_DESCARTADO").ToString
                     Me._VERSION_ESQUEMA_XML = "" & dReader("VERSION_ESQUEMA_XML").ToString
                     Me._SERIE = "" & Trim(dReader("SERIE").ToString)
                     Me._TIENE_COMPLEMENTO_COMERCIO_EXTERIOR = CBool(dReader("TIENE_COMPLEMENTO_COMERCIO_EXTERIOR").ToString)
+                    Me._CODIGO_REGIMEN_FISCAL = "" & Trim(dReader("CODIGO_REGIMEN_FISCAL").ToString)
                     Me._ES_FACTURA_EMBARQUE_EXTRANJERO = CBool(dReader("ES_FACTURA_EMBARQUE_EXTRANJERO"))
-
                     Me._Nombre_Formato = "" & Trim(dReader("NOMBRE_FORMATO").ToString)
-
                     Me._IEPS_TOTAL_DESGLOSADO = CDbl(dReader("IEPS_TOTAL_DESGLOSADO"))
                     Me._IEPS_TOTAL_YA_INCLUIDO = CDbl(dReader("IEPS_TOTAL_YA_INCLUIDO"))
-
                     Me._TIENE_SERIES = CBool(dReader("TIENE_SERIES"))
-
                     Me._CODIGO_TIPO_CREDITO = "" & dReader("CODIGO_TIPO_CREDITO").ToString()
+                    Me._CODIGO_METODO_PAGO_EVENTO = "" & dReader("CODIGO_METODO_PAGO_EVENTO").ToString
+                    Me._CODIGO_USO_CFDI = "" & dReader("CODIGO_USO_CFDI").ToString
+                    Me._RFC_RECEPTOR = "" & dReader("RFC_RECEPTOR").ToString
+                    Me._CODIGO_MONEDA_SAT = "" & dReader("CODIGO_MONEDA_SAT").ToString
 
                     bResultado = True
                 End If
@@ -1142,6 +1185,31 @@ Public Class Class_Ventas_Global
         Return dTabla
     End Function
 
+    Public Function ObtenerDetalleParaCFDI(Optional ByVal bSinComentarios As Boolean = True) As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String
+
+        Try
+            sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.CANTIDAD,R.PRECIO,R.PRECIO_TOTAL,R.UNIDAD_VENTA,ISNULL(R.CANTIDAD_KILOS,0) CANTIDAD_KILOS,ISNULL(R.PRECIO_KILOS,0) PRECIO_KILOS,R.IMPUESTO_PORCENTAJE,R.IMPORTE," &
+                "ISNULL(R.IMPORTE_KILOS,0) IMPORTE_KILOS,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_VENTA_DETALLE,R.ES_PRODUCTO_KILOS,R.PRECIO_USD,R.IMPORTE_USD," &
+                "A.CODIGO_PRODUCTO_SERVICIO,A.CODIGO_UNIDAD,R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA,R.PRECIO_TOTAL " &
+                "FROM VENTA_DETALLE R " &
+                "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
+                "WHERE R.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' " &
+                IIf(bSinComentarios = True, " AND R.CODIGO_ARTICULO<>'-' ", " ").ToString &
+                "ORDER BY R.ID_VENTA_DETALLE"
+
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtenerDetalleParaCFDI", ex)
+        End Try
+
+        Return dTabla
+    End Function
+
     Public Function ObtenerDetalleSoloDisponibles() As DataTable
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
@@ -1176,13 +1244,13 @@ Public Class Class_Ventas_Global
 
         Try
             'sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,ISNULL(V.FRACCION_ARANCELARIA,'')FRACCION_ARANCELARIA,R.CANTIDAD,ROUND(R.PRECIO/G.TIPO_DE_CAMBIO,2) PRECIO_USD,(R.CANTIDAD*R.PRECIO)/G.TIPO_DE_CAMBIO IMPORTE_USD, " & _
-            sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,ISNULL(V.FRACCION_ARANCELARIA,'')FRACCION_ARANCELARIA,R.CANTIDAD,PRECIO_USD,IMPORTE_USD, " & _
-                "ISNULL(V.NOMBRE_CULTIVO,'') NOMBRE_CULTIVO " & _
-                "FROM VENTA_DETALLE R " & _
-                "INNER JOIN VENTA_GLOBAL G ON(R.FOLIO_VENTA=G.FOLIO_VENTA) " & _
-                "LEFT JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
-                "LEFT JOIN CAT_CULTIVOS V ON(A.CODIGO_CULTIVO=V.CODIGO_CULTIVO) " & _
-                "WHERE G.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' " & _
+            sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,ISNULL(V.FRACCION_ARANCELARIA,'')FRACCION_ARANCELARIA,R.CANTIDAD,PRECIO_USD,IMPORTE_USD, " &
+                "ISNULL(V.NOMBRE_CULTIVO,'') NOMBRE_CULTIVO,A.PESO " &
+                "FROM VENTA_DETALLE R " &
+                "INNER JOIN VENTA_GLOBAL G ON(R.FOLIO_VENTA=G.FOLIO_VENTA) " &
+                "LEFT JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
+                "LEFT JOIN CAT_CULTIVOS V ON(A.CODIGO_CULTIVO=V.CODIGO_CULTIVO) " &
+                "WHERE G.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' " &
                 "ORDER BY R.DESCRIPCION"
 
             da = New SqlDataAdapter(sSQL, Me._Conexion)
@@ -1271,7 +1339,7 @@ Public Class Class_Ventas_Global
     Public Function BusquedaVisual_PorFolio() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "BÃºsqueda de ventas por CÃ³digo."
+        f.Text = "Búsqueda de ventas por Código."
         f.sCampo = "VG.FOLIO_VENTA"
         f.sOrder = "VG.FECHA"
         f.sTable = "VENTA_GLOBAL"
@@ -1291,7 +1359,7 @@ Public Class Class_Ventas_Global
     Public Function BusquedaVisual_Remiciones_PorCodigo() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "BÃºsqueda de ventas por CÃ³digo."
+        f.Text = "Búsqueda de ventas por Código."
         f.sCampo = "FOLIO_VENTA"
         f.sOrder = "FECHA"
         f.sTable = "VENTA_GLOBAL"
@@ -1311,7 +1379,7 @@ Public Class Class_Ventas_Global
     Public Function BusquedaVisual_PorDescripcion() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "BÃºsqueda de ventas por referencia."
+        f.Text = "Búsqueda de ventas por referencia."
         f.sCampo = "FOLIO_REFERENCIA"
         f.sOrder = "FECHA"
         f.sTable = "VENTA_GLOBAL"
@@ -1539,7 +1607,7 @@ Public Class Class_Ventas_Global
         Me.oVentasDetalle = New Class_Ventas_Detalle
     End Sub
 
-    Public Function ObtenerFacturasMesAÃ±o(ByVal iMes As Integer, ByVal iAÃ±o As Integer) As DataTable
+    Public Function ObtenerFacturasMesAño(ByVal iMes As Integer, ByVal iAño As Integer) As DataTable
         Dim dTabla As New DataTable("Facturas"), da As SqlDataAdapter
         Dim sSQL As String
 
@@ -1547,19 +1615,19 @@ Public Class Class_Ventas_Global
             sSQL = "SELECT CASE WHEN G.ES_VENTA_PUBLICO_GENERAL='1' THEN '" & Empresa_Sistema.RFC_VENTA_PUBLICO_GENERAL & "' ELSE CTE.RFC END rfc,G.FOLIO_NUMERICO,G.FECHA,G.TOTAL,G.IMPUESTO,G.ESTATUS_VENTA,FE.SERIE,FE.NUMERO_APROBACION,FE.ANIO_APROBACION,G.SELLO_DIGITAL " & _
                     "FROM VENTA_GLOBAL G INNER JOIN CAT_CLIENTES CTE ON(G.CODIGO_CLIENTE=CTE.CODIGO_CLIENTE) INNER JOIN CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS FE ON(G.IDCATALOGO_FOLIO_FELECTRONICA=FE.IDCATALOGO_FOLIO_FELECTRONICA) " & _
                     "WHERE G.CODIGO_DOCUMENTO IN(SELECT CODIGO_DOCUMENTO FROM VW_SIS_CAT_DOCUMENTOS_EXTENDIDO WHERE AFECTA_CONTABILIDAD='1' AND AFECTA_INVENTARIOS='1' AND AFECTA_CXC='1') AND G.ES_FACTURA_ELECTRONICA='1' " & _
-                    "AND YEAR(G.FECHA)=" & iAÃ±o & " AND MONTH(G.FECHA)=" & iMes & " ORDER BY G.CODIGO_PLAZA,G.FOLIO_NUMERICO "
+                    "AND YEAR(G.FECHA)=" & iAño & " AND MONTH(G.FECHA)=" & iMes & " ORDER BY G.CODIGO_PLAZA,G.FOLIO_NUMERICO "
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
             da.Dispose()
 
         Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "ObtenerFacturasMesAÃ±o", ex)
+            HandleError(Me.Nombre_Catalogo, "ObtenerFacturasMesAño", ex)
         End Try
 
         Return dTabla
     End Function
 
-    Public Function ObtenerFacturasCanceladasMesAÃ±o(ByVal iMes As Integer, ByVal iAÃ±o As Integer) As DataTable
+    Public Function ObtenerFacturasCanceladasMesAño(ByVal iMes As Integer, ByVal iAño As Integer) As DataTable
         Dim dTabla As New DataTable("Facturas"), da As SqlDataAdapter
         Dim sSQL As String
 
@@ -1567,13 +1635,13 @@ Public Class Class_Ventas_Global
             sSQL = "SELECT CASE WHEN G.ES_VENTA_PUBLICO_GENERAL='1' THEN '" & Empresa_Sistema.RFC_VENTA_PUBLICO_GENERAL & "' ELSE CTE.RFC END RFC,G.FOLIO_NUMERICO,G.FECHA,G.TOTAL,G.IMPUESTO,G.ESTATUS_VENTA,FE.SERIE,FE.NUMERO_APROBACION,FE.ANIO_APROBACION,G.SELLO_DIGITAL " & _
                     "FROM VENTA_GLOBAL G INNER JOIN CAT_CLIENTES CTE ON(G.CODIGO_CLIENTE=CTE.CODIGO_CLIENTE) INNER JOIN CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS FE ON(G.IDCATALOGO_FOLIO_FELECTRONICA=FE.IDCATALOGO_FOLIO_FELECTRONICA) " & _
                     "WHERE G.CODIGO_DOCUMENTO IN(SELECT CODIGO_DOCUMENTO FROM VW_SIS_CAT_DOCUMENTOS_EXTENDIDO WHERE AFECTA_CONTABILIDAD='1' AND AFECTA_INVENTARIOS='1' AND AFECTA_CXC='1') AND G.ES_FACTURA_ELECTRONICA='1' " & _
-                    "AND G.ESTATUS_VENTA='C' AND YEAR(G.FECHA_DE_CANCELACION)=" & iAÃ±o & " AND MONTH(G.FECHA_DE_CANCELACION)=" & iMes & " ORDER BY G.CODIGO_PLAZA,G.FOLIO_NUMERICO "
+                    "AND G.ESTATUS_VENTA='C' AND YEAR(G.FECHA_DE_CANCELACION)=" & iAño & " AND MONTH(G.FECHA_DE_CANCELACION)=" & iMes & " ORDER BY G.CODIGO_PLAZA,G.FOLIO_NUMERICO "
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
             da.Dispose()
 
         Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerFacturasCanceladasMesAÃ±o", ex)
+            HandleError(Me._Nombre_Catalogo, "ObtenerFacturasCanceladasMesAño", ex)
         End Try
 
         Return dTabla
@@ -1582,7 +1650,7 @@ Public Class Class_Ventas_Global
     Public Function BusquedaVisual_PorCliente(Optional ByVal sCodigoCliente As String = "") As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "BÃºsqueda de ventas del cliente."
+        f.Text = "Búsqueda de ventas del cliente."
         f.sCampo = "CODIGO_CLIENTE"
         f.sOrder = "FECHA"
         f.sTable = "VENTA_GLOBAL"
@@ -1695,11 +1763,11 @@ Public Class Class_Ventas_Global
         Dim oReporte As Class_Reporte
         Try
             If Me._Existe = False Then
-                MsgBox("NO FOLIO DE VENTA NO EXISTE", MsgBoxStyle.Information, "Imprimir")
+                MsgBox("NO FOLIO DE VENTA NO EXISTE", MsgBoxStyle.Exclamation, "Imprimir")
                 Exit Sub
             End If
 
-            If Me._VERSION_ESQUEMA_XML >= "3.2" Or txtLEN(Me._VERSION_ESQUEMA_XML) = False Then 'Se pregunta por vacio por si no se ha cargado la versiÃ³n en el objecto.
+            If Me._VERSION_ESQUEMA_XML >= "3.2" Or txtLEN(Me._VERSION_ESQUEMA_XML) = False Then 'Se pregunta por vacio por si no se ha cargado la versión en el objecto.
                 oReporte = New Class_Reporte(Me._Nombre_Formato, Rpt, False)
             Else
                 oReporte = New Class_Reporte(Me._Nombre_Formato & "_CFD", Rpt, False)
@@ -1730,7 +1798,7 @@ Public Class Class_Ventas_Global
                 sRutaPDF = sFelectronicaCarpetaXMLPDF & "\" & Me._FOLIO_VENTA.ToString & ".PDF"
             End If
 
-            If Me.VERSION_ESQUEMA_XML >= "3.2" Or txtLEN(Me._VERSION_ESQUEMA_XML) = False Then 'Se pregunta por vacio por si no se ha cargado la versiÃ³n en el objecto.
+            If Me.VERSION_ESQUEMA_XML >= "3.2" Or txtLEN(Me._VERSION_ESQUEMA_XML) = False Then 'Se pregunta por vacio por si no se ha cargado la versión en el objecto.
                 oReporte = New Class_Reporte(Me._Nombre_Formato, Rpt, False)
             Else
                 oReporte = New Class_Reporte(Me._Nombre_Formato & "_CFD", Rpt, False)
@@ -1776,14 +1844,14 @@ Public Class Class_Ventas_Global
 
             For n = 0 To UBound(tabla, 1)
                 If IsEmailSyntaxValid(tabla(n)) = False Then
-                    MsgBox("El correo no es vÃ¡lido, favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
+                    MsgBox("El correo no es válido, favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
             Next
 
-            'Si el Api retorna 0 quiere decir que no hay ningun tipo de conexiÃ³n de Red
+            'Si el Api retorna 0 quiere decir que no hay ningun tipo de conexión de Red
             If IsNetworkAlive(Ret) = 0 Then
-                MsgBox("No existe conexiÃ³n a internet. Por favor revise su conexiÃ³n e intÃ©ntelo nuevamente.", MsgBoxStyle.Exclamation, sProcedure)
+                MsgBox("No existe conexión a internet. Por favor revise su conexión e inténtelo nuevamente.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
 
@@ -1806,10 +1874,11 @@ Public Class Class_Ventas_Global
             'MyMailMsg.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure
 
             Dim SMTP As New SmtpClient()
-            SMTP.Host = "mail.passa.com.mx"
-            SMTP.EnableSsl = True
+            SMTP.Host = Usuario.SERVIDOR_CORREO_REMITENTE
+            SMTP.EnableSsl = Usuario.USAR_SSL_REMITENTE
+            SMTP.Port = CInt(Usuario.PUERTO_REMITENTE)
+
             SMTP.Credentials = New System.Net.NetworkCredential(Usuario.CORREO_USUARIO.ToString, Usuario.CLAVE_CORREO.ToString)
-            SMTP.Port = 587
 
             Dim sRutaXML As String = "", sNombreXmlTimbrado As String = ""
             Dim sRutaPDF As String = ""
@@ -1830,11 +1899,11 @@ Public Class Class_Ventas_Global
 
             If Me.RecuperaXML(sRutaXML) = True Then
                 If Me.ExportarAPdf(sRutaPDF) = False Then
-                    MsgBox("No se logrÃ³ generar el PDF de la factura : " & Me._FOLIO_VENTA & ". AvÃ­se al depto. de sistemas.", vbExclamation, sProcedure)
+                    MsgBox("No se logró generar el PDF de la factura : " & Me._FOLIO_VENTA & ". Avíse al depto. de sistemas.", vbExclamation, sProcedure)
                     Return False
                 End If
             Else
-                MsgBox("No se logrÃ³ recuperar el XML de la factura : " & Me._FOLIO_VENTA & ". AvÃ­se al depto. de sistemas.", vbExclamation, sProcedure)
+                MsgBox("No se logró recuperar el XML de la factura : " & Me._FOLIO_VENTA & ". Avíse al depto. de sistemas.", vbExclamation, sProcedure)
                 Return False
             End If
 
@@ -1873,19 +1942,19 @@ Public Class Class_Ventas_Global
             End If
 
             If Me._TIPO_DE_CAMBIO <= 0 Then
-                MsgBox("La venta debiÃ³ grabarse en USD.", MsgBoxStyle.Exclamation, sProcedure)
+                MsgBox("La venta debió grabarse en USD.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
 
             Dim oCliente As New Class_CatClientes(Me._CODIGO_CLIENTE)
 
             If txtLEN(oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO) = False Then
-                MsgBox("Al cliente le falta configurar el nÃºmero de registro de identificaciÃ³n fiscal extranjero.", MsgBoxStyle.Exclamation, sProcedure)
+                MsgBox("Al cliente le falta configurar el número de registro de identificación fiscal extranjero.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
 
             If oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO.Length < 6 Then
-                MsgBox("El nÃºmero de registro de identificaciÃ³n fiscal extranjero del cliente debe ser 6 caracteres mÃ­nimo.", MsgBoxStyle.Exclamation, sProcedure)
+                MsgBox("El número de registro de identificación fiscal extranjero del cliente debe ser 6 caracteres mínimo.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
 
@@ -1896,9 +1965,9 @@ Public Class Class_Ventas_Global
                 For i As Integer = 0 To dRows.Length - 1
 
                     If txtLEN(dRows(i)("NOMBRE_CULTIVO").ToString) = False Then
-                        MsgBox("El artÃ­culo " & dRows(i)("DESCRIPCION").ToString & " no tiene cultivo y por tanto tampoco fracciÃ³n arancelaria.", MsgBoxStyle.Exclamation, sProcedure)
+                        MsgBox("El artículo " & dRows(i)("DESCRIPCION").ToString & " no tiene cultivo y por tanto tampoco fracción arancelaria.", MsgBoxStyle.Exclamation, sProcedure)
                     ElseIf txtLEN(dRows(i)("FRACCION_ARANCELARIA").ToString) = False Then
-                        MsgBox("El artÃ­culo " & dRows(i)("DESCRIPCION").ToString & " tiene el cultivo " & dRows(i)("NOMBRE_CULTIVO").ToString & " que no tiene fracciÃ³n arancelaria.", MsgBoxStyle.Exclamation, sProcedure)
+                        MsgBox("El artículo " & dRows(i)("DESCRIPCION").ToString & " tiene el cultivo " & dRows(i)("NOMBRE_CULTIVO").ToString & " que no tiene fracción arancelaria.", MsgBoxStyle.Exclamation, sProcedure)
                     End If
 
                 Next
@@ -1915,8 +1984,8 @@ Public Class Class_Ventas_Global
         Return bResultado
     End Function
 
-    Public Function GeneraXmlComercioExterior() As String
-        Dim sProcedure As String = "GrabarXmlComercioExterior"
+    Public Function GeneraXmlComercioExterior10() As String
+        Dim sProcedure As String = "GeneraXmlComercioExterior10"
         Dim sXmlComercioExterior As String = ""
         Try
 
@@ -1957,7 +2026,7 @@ Public Class Class_Ventas_Global
                 '.Destinatario.Domicilio.CodigoPostal = oCliente.CODIGO_POSTAL
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-                'Ciclo a los artÃ­culos
+                'Ciclo a los artículos
 
                 For Each dRow As DataRow In Me.ObtenerDetalleParaComercioExterior.Rows
                     .Mercancia.NoIdentificacion = dRow("CODIGO_ARTICULO").ToString
@@ -2004,6 +2073,174 @@ Public Class Class_Ventas_Global
         Return sXmlComercioExterior
     End Function
 
+    Public Function GeneraXmlComercioExterior11() As String
+        Dim sProcedure As String = "GeneraXmlComercioExterior11"
+        Dim sXmlComercioExterior As String = ""
+        Try
+
+            If Me.ValidarComercioExterior() = False Then
+                Return ""
+            End If
+
+            Dim oCliente As New Class_CatClientes(Me._CODIGO_CLIENTE)
+
+            Dim cfdiComercioExterior As New Class_CFDI_cce_ComercioExterior11
+
+            With cfdiComercioExterior
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                .Version = "1.1"
+                .MotivoTraslado = ""
+                .TipoOperacion = "2"
+                .ClaveDePedimento = "A1"
+
+                .CertificadoOrigen = "0"
+                .NumCertificadoOrigen = ""
+                .NumeroExportadorConfiable = ""
+                .Incoterm = "DAP" 'DAP=ENTREGADA EN LUGAR
+                .Subdivision = "0"
+
+                .Observaciones = ""
+                .TipoCambioUSD = FormatTipoCambio(Me._TIPO_DE_CAMBIO, False)
+                .TotalUSD = Format(Me._TOTAL_DOLARES, "######.00")
+
+                '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                'MsgBox("bTieneEmisor=true este no lo podiamos en 32, pongo solo los obligatorios")
+                .bTieneEmisor = True
+                '.Emisor.Curp = ""
+                .Emisor.Domicilio.Calle = Empresa_Sistema.CALLE
+                .Emisor.Domicilio.NumeroExterior = Empresa_Sistema.NUMERO_INTERIOR
+                '.Emisor.Domicilio.NumeroInterior = ""
+                '.Emisor.Domicilio.Colonia = ""
+                '.Emisor.Domicilio.Localidad = ""
+                '.Emisor.Domicilio.Referencia = ""
+                .Emisor.Domicilio.Municipio = Empresa_Sistema.CODIGO_MUNICIPIO_SAT
+                .Emisor.Domicilio.Estado = Empresa_Sistema.CODIGO_ESTADO_SAT
+                .Emisor.Domicilio.Pais = Empresa_Sistema.CODIGO_PAIS_SAT
+                .Emisor.Domicilio.CodigoPostal = Empresa_Sistema.CODIGO_POSTAL
+                '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+                .bTienePropietario = False
+                '.Propietario.NumRegIdTrib = ""
+                '.Propietario.ResidenciaFiscal = ""
+
+                '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+                .bTieneReceptor = True
+
+                '"752491201"  farsmestbest,"205582956" 'nidia
+                '.Receptor.NumRegIdTrib = oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO'El atributo cce11:ComercioExterior:Receptor:NumRegIdTrib no debe registrarse si la versión de CFDI es 3.3. 
+
+                .Receptor.Domicilio.Calle = fElectronicaValidaCampo(oCliente.CALLE)
+                .Receptor.Domicilio.NumeroExterior = fElectronicaValidaCampo(oCliente.NUMERO_EXTERIOR)
+                .Receptor.Domicilio.NumeroInterior = fElectronicaValidaCampo(oCliente.NUMERO_INTERIOR)
+                .Receptor.Domicilio.Colonia = fElectronicaValidaCampo(oCliente.COLONIA)
+                .Receptor.Domicilio.Localidad = fElectronicaValidaCampo(oCliente.LOCALIDAD)
+                '.Receptor.Domicilio.Referencia = ""
+                .Receptor.Domicilio.Municipio = fElectronicaValidaCampo(oCliente.CIUDAD)
+                .Receptor.Domicilio.Estado = fElectronicaValidaCampo(oCliente.CODIGO_ESTADO_SAT)
+                .Receptor.Domicilio.Pais = fElectronicaValidaCampo(oCliente.CODIGO_PAIS_SAT)
+                .Receptor.Domicilio.CodigoPostal = fElectronicaValidaCampo(oCliente.CODIGO_POSTAL.ToString)
+                '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+                .bTieneDestinatario = False
+                'Estos se habilitarian si se llevara destinatario
+                '.Destinatario.NumRegIdTrib = oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO
+                '.Destinatario.Nombre =oCliente.NOMBRE_CLIENTE 
+                '.Destinatario.Domicilio.Calle = oCliente.CALLE
+                '.Destinatario.Domicilio.NumeroExterior = oCliente.NUMERO_EXTERIOR
+                '.Destinatario.Domicilio.NumeroInterior = oCliente.NUMERO_INTERIOR
+                '.Destinatario.Domicilio.Colonia = "?"
+                '.Destinatario.Domicilio.Localidad = "?"
+                '.Destinatario.Domicilio.Referencia = "?"
+                '.Destinatario.Domicilio.Municipio = "?"
+                '.Destinatario.Domicilio.Estado = oCliente.CODIGO_ESTADO_SAT
+                '.Destinatario.Domicilio.Pais = oCliente.PAIS
+                '.Destinatario.Domicilio.CodigoPostal = oCliente.CODIGO_POSTAL
+
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+                'Ciclo a los artículos
+
+                Dim dCantidadAduana As Decimal, dValorUnitarioAduana As Decimal, dValorDolares As Decimal, dPesoxCaja As Decimal, dValorDolaresNuevo As Decimal
+
+                For Each dRow As DataRow In Me.ObtenerDetalleParaComercioExterior.Rows
+                    .Mercancia.NoIdentificacion = dRow("CODIGO_ARTICULO").ToString
+                    .Mercancia.FraccionArancelaria = dRow("FRACCION_ARANCELARIA").ToString
+
+                    dCantidadAduana = CDec(dRow("CANTIDAD").ToString)
+                    dValorUnitarioAduana = CDec(dRow("PRECIO_USD").ToString)
+                    dValorDolares = CDec(dRow("IMPORTE_USD").ToString)
+                    dPesoxCaja = CDec(dRow("PESO").ToString)
+
+                    If dPesoxCaja = 0 Then
+                        MsgBox("El producto " & dRow("CODIGO_ARTICULO").ToString & "-" & dRow("DESCRIPCION").ToString & " no tiene configurado el peso x caja." & vbCrLf &
+                               "Debe hacerlo para hacer la conversión a kilos para la aduana en el complemento exterior.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return ""
+                    End If
+
+                    dValorUnitarioAduana = RedondearD(dValorUnitarioAduana / dPesoxCaja, 2)
+                    dCantidadAduana = RedondearD(dValorDolares / dValorUnitarioAduana, 3)
+
+                    'dValorDolares='Este se queda como orignalmente es, y así se va poner en el ValorDolares, aunque la multiplicación no de el valor exacto.
+                    dValorDolaresNuevo = RedondearD(dCantidadAduana * dValorUnitarioAduana, 2)
+
+                    If dValorDolaresNuevo <> dValorDolares Then
+                        If MsgBox("El campo ValorDolares(en datos de aduana) es diferente al del concepto original. Seguro quiere continuar así ?" & vbCrLf &
+                                   "Concepto.Importe=" & dValorDolares & vbCrLf & "ValorDolares=" & dValorDolaresNuevo.ToString, MsgBoxStyle.Question Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
+                            Return ""
+                        End If
+                    End If
+
+                    'MsgBox("quite de momento la unidad al parecer es incompatible, o nos dirá que pongamos kilos ? MATRIX DE ERRORES CCE209")
+                    '.Mercancia.UnidadAduana = "20" '20=CAJA,01=KILO
+                    .Mercancia.UnidadAduana = "01"
+
+                    .Mercancia.CantidadAduana = Format(dCantidadAduana, "#####0.000")
+                    .Mercancia.ValorUnitarioAduana = Format(dValorUnitarioAduana, "#####0.00")
+                    .Mercancia.ValorDolares = Format(dValorDolares, "#####0.00")
+                    .Mercancia.Add(.Mercancia.NoIdentificacion)
+                Next
+
+                'Ejemplo manual.
+
+                '.Mercancia.NoIdentificacion = "ARTI1"
+                '.Mercancia.FraccionArancelaria = "030711"
+                '.Mercancia.CantidadAduana = "1000.000"
+                '.Mercancia.UnidadAduana = "20" '20=CAJA
+                '.Mercancia.ValorUnitarioAduana = "3.50"
+                '.Mercancia.ValorDolares = "3500.00"
+                '.Mercancia.Add(.Mercancia.NoIdentificacion)
+
+                '.Mercancia.NoIdentificacion = "ARTI2"
+                '.Mercancia.FraccionArancelaria = "056644"
+                '.Mercancia.CantidadAduana = "2000.000"
+                '.Mercancia.UnidadAduana = "20" '20=CAJA
+                '.Mercancia.ValorUnitarioAduana = "3.00"
+                '.Mercancia.ValorDolares = "6000.00"
+                '.Mercancia.Add(.Mercancia.NoIdentificacion)
+
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+                'MsgBox("hay que ver si meteremos o no validaciones tipo proveedor")
+                'If .ValidacionesProveedorComplementoExterior = False Then
+                '    Return ""
+                'End If
+
+            End With
+
+            sXmlComercioExterior = cfdiComercioExterior.GenerarCadenaXMLComercioExterior()
+
+            If txtLEN(sXmlComercioExterior) = False Then
+                MsgBox("No se logró generar el XML del comercio exterior.", MsgBoxStyle.Exclamation, Me._Nombre_Catalogo)
+            End If
+
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, sProcedure, ex)
+        End Try
+
+        Return sXmlComercioExterior
+    End Function
+
     Public Function CancelarTimbre() As Boolean
         Dim bResultado As Boolean = False
         Dim sProcedure As String = "CancelarTimbre"
@@ -2028,8 +2265,8 @@ Public Class Class_Ventas_Global
             End If
 
             If CancelarCFDIVenta(Me, TipoComprobante.FACTURA_VENTA) = False Then
-                MsgBox("El timbre no se pudo cancelar. AvÃ­se al depto. de sistemas.", vbExclamation, sProcedure)
-                Exit Function
+                MsgBox("El timbre no se pudo cancelar. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+                Return False
             Else
                 bResultado = True
             End If
@@ -2050,8 +2287,14 @@ Public Class Class_Ventas_Global
             sRutaXML = sFelectronicaCarpetaXMLPDF & "\" & Me._FOLIO_VENTA & ".xml"
 
             If Me._TIMBRADO_CFDI = "0" Then
-                If FacturacionElectronica.GeneraFacturaElectronica(Me, bMensajes, sRutaXML) = False Then
-                    MsgBox("Los datos digitales del documento no fueron generados correctamente. AvÃ­se al depto. de sistemas.", vbExclamation, sProcedure)
+                If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
+                    bResultado = FacturacionElectronica.GeneraFacturaElectronica(Me, bMensajes, sRutaXML)
+                Else
+                    bResultado = FacturacionElectronica33.GeneraFacturaElectronica33(Me, bMensajes, sRutaXML)
+                End If
+
+                If bResultado = False Then
+                    MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
                 Else
                     bResultado = True
                     If bGenerarPDF = True Then
@@ -2138,6 +2381,52 @@ Public Class Class_Ventas_Global
         End Try
         Return dTabla
     End Function
+
+    Public Function RecuperarXMLyPDF() As Boolean
+        Dim sProcedure As String = "RecuperarXMLyPDF"
+        Dim bResultado As Boolean = False
+
+        Dim oCliente As Class_CatClientes
+
+        Try
+            oCliente = New Class_CatClientes(Me._CODIGO_CLIENTE)
+
+            Dim sRutaXML As String = "", sNombreXmlTimbrado As String = ""
+            Dim sRutaPDF As String = "", archivos As String = sFelectronicaCarpetaXMLPDF & "\"
+
+            If txtLEN(oCliente.FORMATO_NOMBRE_XML) = True Then
+                Select Case oCliente.FORMATO_NOMBRE_XML
+                    Case "RFCemisor-Serie-FolioNumerico"
+                        sNombreXmlTimbrado = Empresa_Sistema.RFC & "-" & Me._SERIE & "-" & Me._FOLIO_NUMERICO
+                    Case "RFCemisor-Fecha-SerieFolio"
+                        sNombreXmlTimbrado = Empresa_Sistema.RFC & Format(Me._FOLIO_VENTA, "yyyyddMM") & Me._SERIE & Me._FOLIO_NUMERICO
+                End Select
+            Else
+                sNombreXmlTimbrado = Me._FOLIO_VENTA
+            End If
+
+            sRutaXML = sFelectronicaCarpetaXmlsTimbrados & "\" & sNombreXmlTimbrado & ".xml"
+            sRutaPDF = archivos.ToString & sNombreXmlTimbrado & ".PDF"
+
+            If Me.RecuperaXML(sRutaXML) = True Then
+                If Me.ExportarAPdf(sRutaPDF) = False Then
+                    MsgBox("Se logró recuperar el XML pero no se logró generar el PDF del documento : " & Me._FOLIO_VENTA & ". Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+                    Return False
+                Else
+                    bResultado = True
+                End If
+            Else
+                MsgBox("No se logró recuperar el XML y PDF del documento : " & Me._FOLIO_VENTA & ". Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+                Return False
+            End If
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
 #End Region
 
 End Class

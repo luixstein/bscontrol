@@ -1,5 +1,5 @@
 ﻿Option Strict On
-Imports System.Data
+
 Imports System.Data.SqlClient
 
 Public Class Class_CXC_Afecta_Documentos
@@ -24,6 +24,12 @@ Public Class Class_CXC_Afecta_Documentos
     Private _ID_MEDIO_PAGO As Integer
     Private _CODIGO_BANCO As String
     Private _TOTAL_DOLARES As Double
+    Private _ID_BANCOS_DETALLE As Long
+    Private _IMPORTE_CAPTURADO As Double
+    Private _FECHA_PAGO As Date
+    Private _IMPORTE_MONEDA_VENTA As Double
+    Private _SALDO_ANTERIOR_MONEDA_VENTA As Double
+    Private _SALDO_ANTERIOR_MONEDA_PAGO As Double
 #End Region
 
 #Region "Campos de control"
@@ -54,16 +60,19 @@ Public Class Class_CXC_Afecta_Documentos
             Me._FOLIO_CXC = value
         End Set
     End Property
+
     Public WriteOnly Property CODIGO_CLIENTE() As String
         Set(ByVal value As String)
             Me._CODIGO_CLIENTE = value
         End Set
     End Property
+
     Public WriteOnly Property FECHA() As Date
         Set(ByVal value As Date)
             Me._FECHA = value
         End Set
     End Property
+
     'Public WriteOnly Property CODIGO_DOCUMENTO() As String
     '    Set(ByVal value As String)
     '        Me._CODIGO_DOCUMENTO = value
@@ -81,32 +90,32 @@ Public Class Class_CXC_Afecta_Documentos
         Set(ByVal value As String)
             Me._FOLIO_REFERENCIA = value
         End Set
-
     End Property
+
     Public WriteOnly Property FOLIO_REFERENCIA_USUARIO() As String
         Set(ByVal value As String)
             Me._FOLIO_REFERENCIA_USUARIO = value
         End Set
-
     End Property
+
     Public WriteOnly Property CONCEPTO1() As String
         Set(ByVal value As String)
             Me._CONCEPTO1 = value
         End Set
-
     End Property
+
     Public WriteOnly Property CONCEPTO2() As String
         Set(ByVal value As String)
             Me._CONCEPTO2 = value
         End Set
-
     End Property
+
     Public WriteOnly Property CODIGO_PLAZA() As Integer
         Set(ByVal value As Integer)
             Me._CODIGO_PLAZA = value
         End Set
-
     End Property
+
     Public WriteOnly Property TOTAL() As Double
         Set(ByVal value As Double)
             Me._TOTAL = value
@@ -123,6 +132,7 @@ Public Class Class_CXC_Afecta_Documentos
             Me._FOLIO_POLIZA = value
         End Set
     End Property
+
     Public Property CODIGO_USUARIO_GRABO() As Integer
         Get
             Return Me._CODIGO_USUARIO_GRABO
@@ -131,6 +141,7 @@ Public Class Class_CXC_Afecta_Documentos
             Me._CODIGO_USUARIO_GRABO = value
         End Set
     End Property
+
     Public Property TIPO_DE_CAMBIO() As Double
         Get
             Return Me._TIPO_DE_CAMBIO
@@ -176,6 +187,61 @@ Public Class Class_CXC_Afecta_Documentos
         End Set
     End Property
 
+    Public Property ID_BANCOS_DETALLE() As Long
+        Get
+            Return Me._ID_BANCOS_DETALLE
+        End Get
+        Set(ByVal value As Long)
+            Me._ID_BANCOS_DETALLE = value
+        End Set
+    End Property
+
+    Public Property IMPORTE_CAPTURADO() As Double
+        Get
+            Return Me._IMPORTE_CAPTURADO
+        End Get
+        Set(ByVal value As Double)
+            Me._IMPORTE_CAPTURADO = value
+        End Set
+    End Property
+
+    Public Property FECHA_PAGO() As Date
+        Get
+            Return Me._FECHA_PAGO
+        End Get
+        Set(ByVal value As Date)
+            Me._FECHA_PAGO = value
+        End Set
+    End Property
+
+    Public Property IMPORTE_MONEDA_VENTA() As Double
+        Get
+            Return Me._IMPORTE_MONEDA_VENTA
+        End Get
+        Set(ByVal value As Double)
+            Me._IMPORTE_MONEDA_VENTA = value
+        End Set
+    End Property
+
+    Public Property SALDO_ANTERIOR_MONEDA_VENTA() As Double
+        Get
+            Return Me._SALDO_ANTERIOR_MONEDA_VENTA
+        End Get
+        Set(ByVal value As Double)
+            Me._SALDO_ANTERIOR_MONEDA_VENTA = value
+        End Set
+    End Property
+
+    Public Property SALDO_ANTERIOR_MONEDA_PAGO() As Double
+        Get
+            Return Me._SALDO_ANTERIOR_MONEDA_PAGO
+        End Get
+        Set(ByVal value As Double)
+            Me._SALDO_ANTERIOR_MONEDA_PAGO = value
+        End Set
+    End Property
+
+
 #End Region
 
 #Region "Propiedad Nombre de Clase"
@@ -185,6 +251,7 @@ Public Class Class_CXC_Afecta_Documentos
         End Get
     End Property
 #End Region
+
 #End Region
 
 #Region "Constructor y destructor"
@@ -201,7 +268,6 @@ Public Class Class_CXC_Afecta_Documentos
 #End Region
 
 #Region "Métodos y procedimientos"
-
     Public Function InsertarPagosClientes() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
@@ -227,6 +293,12 @@ Public Class Class_CXC_Afecta_Documentos
             sqlParametro = .Parameters.Add("@ID_MEDIO_PAGO", SqlDbType.SmallInt) : sqlParametro.Value = Me._ID_MEDIO_PAGO
             sqlParametro = .Parameters.Add("@CODIGO_BANCO", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_BANCO
             sqlParametro = .Parameters.Add("@TOTAL_DOLARES", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_DOLARES
+            sqlParametro = .Parameters.Add("@ID_BANCOS_DETALLE", SqlDbType.Int) : sqlParametro.Value = Me._ID_BANCOS_DETALLE
+            sqlParametro = .Parameters.Add("@IMPORTE_CAPTURADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPORTE_CAPTURADO
+            sqlParametro = .Parameters.Add("@FECHA_PAGO", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_PAGO
+            sqlParametro = .Parameters.Add("@IMPORTE_MONEDA_VENTA", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPORTE_MONEDA_VENTA
+            sqlParametro = .Parameters.Add("@SALDO_ANTERIOR_MONEDA_VENTA", SqlDbType.Decimal) : sqlParametro.Value = Me._SALDO_ANTERIOR_MONEDA_VENTA
+            sqlParametro = .Parameters.Add("@SALDO_ANTERIOR_MONEDA_PAGO", SqlDbType.Decimal) : sqlParametro.Value = Me._SALDO_ANTERIOR_MONEDA_PAGO
 
             Try
                 Me._Conexion.Open()
@@ -347,6 +419,7 @@ Public Class Class_CXC_Afecta_Documentos
                 sqlParametro = Nothing
             End Try
         End With
+
         Return bResultado
     End Function
 

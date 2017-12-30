@@ -1,9 +1,8 @@
 ﻿Option Strict On
-Imports System.Data
 Imports System.Data.SqlClient
+Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Class_CatCultivos
-    Inherits Class_Catalogos
 
 #Region "Campos"
 
@@ -17,6 +16,8 @@ Public Class Class_CatCultivos
     Private _CUENTA_CONTABLE_BASE As String
     Private _CODIGO_PLAZA As Integer
     Private _FRACCION_ARANCELARIA As String
+    Private _CODIGO_PRODUCTO_SERVICIO As String
+    Private _ESTATUS As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -126,6 +127,24 @@ Public Class Class_CatCultivos
         End Set
     End Property
 
+    Public Property CODIGO_PRODUCTO_SERVICIO() As String
+        Get
+            Return Me._CODIGO_PRODUCTO_SERVICIO
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_PRODUCTO_SERVICIO = Value
+        End Set
+    End Property
+
+    Public Property ESTATUS() As String
+        Get
+            Return Me._ESTATUS
+        End Get
+        Set(ByVal value As String)
+            Me._ESTATUS = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -146,14 +165,13 @@ Public Class Class_CatCultivos
 #End Region
 
 #Region "Propiedades de campos de sistema"
-
-    Public Overrides ReadOnly Property Nombre_Catalogo() As String
+    Public ReadOnly Property Nombre_Catalogo() As String
         Get
             Return Me._Nombre_Catalogo
         End Get
     End Property
 
-    Public Overrides Property Nombre_Reporte() As String
+    Public Property Nombre_Reporte() As String
         Get
             Return Me._Nombre_Reporte
         End Get
@@ -161,14 +179,6 @@ Public Class Class_CatCultivos
             Me._Nombre_Reporte = value
         End Set
     End Property
-    'Public Property EStatus() As String
-    '    Get
-    '        Return Me._Estatus
-    '    End Get
-    '    Set(ByVal value As String)
-    '        Me._Estatus = value
-    '    End Set
-    'End Property
 #End Region
 
 #End Region
@@ -179,7 +189,7 @@ Public Class Class_CatCultivos
         Me._Nombre_Reporte = "RPT_CATALOGO_CULTIVOS"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "SELECT CODIGO_CULTIVO,NOMBRE_CULTIVO,CUENTA_CONTABLE_COSTOS_DIRECTOS_PRODUCCION,CUENTA_CONTABLE_PREDIO," & _
+        Me._QuerySelect = "SELECT CODIGO_CULTIVO,NOMBRE_CULTIVO,CUENTA_CONTABLE_COSTOS_DIRECTOS_PRODUCCION,CUENTA_CONTABLE_PREDIO," &
         "ALIAS_NACIONAL,ALIAS_EXTRANJERO, CUENTA_CONTABLE_BASE,CODIGO_PLAZA,FRACCION_ARANCELARIA FROM CAT_CULTIVOS"
         Me._QueryOrder = " ORDER BY NOMBRE_CULTIVO"
     End Sub
@@ -191,7 +201,7 @@ Public Class Class_CatCultivos
 #End Region
 
 #Region "Métodos y procedimientos"
-    Public Overrides Function Insertar() As Boolean
+    Public Function Insertar() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -227,7 +237,7 @@ Public Class Class_CatCultivos
         Return bResultado
     End Function
 
-    Public Overrides Function Actualizar() As Boolean
+    Public Function Actualizar() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -262,7 +272,7 @@ Public Class Class_CatCultivos
         Return bResultado
     End Function
 
-    Public Overrides Function Consultar() As Boolean
+    Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand(Me._QuerySelect & " Where CODIGO_CULTIVO='" & Me._CODIGO_CULTIVO.ToString & "' AND CODIGO_PLAZA=" & Usuario.Codigo_Plaza.ToString, Me._Conexion)
         Dim dReader As SqlDataReader
@@ -282,6 +292,8 @@ Public Class Class_CatCultivos
                     Me._CUENTA_CONTABLE_COSTOS_DIRECTOS_PRODUCCION = "" & dReader("CUENTA_CONTABLE_COSTOS_DIRECTOS_PRODUCCION").ToString()
                     Me._CODIGO_PLAZA = CInt(dReader("CODIGO_PLAZA").ToString)
                     Me._FRACCION_ARANCELARIA = "" & dReader("FRACCION_ARANCELARIA").ToString()
+                    Me._CODIGO_PRODUCTO_SERVICIO = "" & dReader("CODIGO_PRODUCTO_SERVICIO").ToString()
+                    Me._ESTATUS = dReader("ESTATUS").ToString()
 
                     bResultado = True
                 End If
@@ -296,7 +308,7 @@ Public Class Class_CatCultivos
         Return bResultado
     End Function
 
-    Public Overrides Function ObtenerElementos() As System.Data.DataTable
+    Public Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
         Dim da As New SqlDataAdapter("Select CODIGO_CULTIVO,CASE WHEN LEN(ALIAS_NACIONAL)>0 THEN ALIAS_NACIONAL ELSE NOMBRE_CULTIVO END NOMBRE_CULTIVO FROM CAT_CULTIVOS WHERE CODIGO_PLAZA=" & Usuario.Codigo_Plaza.ToString & " ORDER BY NOMBRE_CULTIVO ", Me._Conexion)
         Try
@@ -328,7 +340,7 @@ Public Class Class_CatCultivos
         Dim da As New SqlDataAdapter("Select CODIGO_CULTIVO,CASE WHEN LEN(ALIAS_NACIONAL)>0 THEN ALIAS_NACIONAL ELSE NOMBRE_CULTIVO END NOMBRE_CULTIVO FROM CAT_CULTIVOS WHERE CODIGO_PLAZA=" & Usuario.Codigo_Plaza.ToString & " ORDER BY NOMBRE_CULTIVO ", Me._Conexion)
         Try
             da.Fill(dTable)
-            dTable.Rows.Add("","")
+            dTable.Rows.Add("", "")
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementosParaCatalogos", ex)
         Finally
@@ -388,7 +400,7 @@ Public Class Class_CatCultivos
         Return Resultado
     End Function
 
-    Public Overrides Function BusquedaVisual_PorCodigo() As String
+    Public Function BusquedaVisual_PorCodigo() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de cultivos por Código."
@@ -408,7 +420,7 @@ Public Class Class_CatCultivos
         Return Resultado
     End Function
 
-    Public Overrides Function BusquedaVisual_PorDescripcion() As String
+    Public Function BusquedaVisual_PorDescripcion() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de cultivos por Nombre."
@@ -428,6 +440,28 @@ Public Class Class_CatCultivos
         Return Resultado
     End Function
 
+    Public Sub Imprimir_Listado()   'Función para ver la búsqueda visual por descripción.
+        If Len(Nombre_Reporte) > 0 Then
+            Dim Rpt As New ReportDocument
+            Dim oReporte As Class_Reporte
+            Try
+                oReporte = New Class_Reporte(Nombre_Reporte, Rpt)
+
+                Dim frm As New Reporte(Rpt)
+                frm.CRViewer.ShowGroupTreeButton = False
+                frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
+                frm.Show()
+
+            Catch ex As Exception
+                HandleError(Me.Nombre_Catalogo, " Impresión del listado :" + Me.Nombre_Catalogo, ex)
+            Finally
+                oReporte = Nothing
+                'Rpt.Dispose()
+            End Try
+        Else
+            MsgBox("El nombre del reporte no ha sido especificado, no hay nada que imprimir.", MsgBoxStyle.Critical, Me.Nombre_Catalogo)
+        End If
+    End Sub
 #End Region
 
 End Class

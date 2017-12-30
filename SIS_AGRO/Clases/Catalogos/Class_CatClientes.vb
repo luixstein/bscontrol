@@ -1,10 +1,9 @@
 ﻿Option Strict On
 
-Imports System.Data
 Imports System.Data.SqlClient
+Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Class_CatClientes
-    Inherits Class_Catalogos
 
 #Region "Campos"
 
@@ -51,6 +50,7 @@ Public Class Class_CatClientes
     Private _CODIGO_ESTADO_SAT As String
     Private _CODIGO_PAIS_SAT As String
     Private _ES_CONTRIBUYENTE_IEPS As String
+    Private _CODIGO_USO_CFDI As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -100,6 +100,15 @@ Public Class Class_CatClientes
         End Get
         Set(ByVal Value As String)
             Me._NOMBRE_CLIENTE = Value
+        End Set
+    End Property
+
+    Public Property ESTATUS() As String
+        Get
+            Return Me._ESTATUS
+        End Get
+        Set(ByVal Value As String)
+            Me._ESTATUS = Value
         End Set
     End Property
 
@@ -444,6 +453,15 @@ Public Class Class_CatClientes
         End Set
     End Property
 
+    Public Property CODIGO_USO_CFDI() As String
+        Get
+            Return Me._CODIGO_USO_CFDI
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_USO_CFDI = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -501,27 +519,18 @@ Public Class Class_CatClientes
 
 #Region "Propiedades de campos de sistema"
 
-    Public Overrides ReadOnly Property Nombre_Catalogo() As String
+    Public ReadOnly Property Nombre_Catalogo() As String
         Get
             Return Me._Nombre_Catalogo
         End Get
     End Property
 
-    Public Overrides Property Nombre_Reporte() As String
+    Public Property Nombre_Reporte() As String
         Get
             Return Me._Nombre_Reporte
         End Get
         Set(ByVal value As String)
             Me._Nombre_Reporte = value
-        End Set
-    End Property
-
-    Public Property Status() As String
-        Get
-            Return Me._Estatus
-        End Get
-        Set(ByVal value As String)
-            Me._Estatus = value
         End Set
     End Property
 
@@ -541,15 +550,15 @@ Public Class Class_CatClientes
         Me._Nombre_Reporte = "RPT_CATALOGO_CLIENTES"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "SELECT C.CODIGO_CLIENTE,C.NOMBRE_CLIENTE,C.Estatus,C.RFC,C.TIPO_PERSONA,C.CURP,C.TELEFONO,C.CELULAR, " & _
-        "C.CALLE,C.NUMERO_EXTERIOR,C.NUMERO_INTERIOR,C.COLONIA,C.CIUDAD,C.LOCALIDAD,C.ESTADO,C.PAIS,C.CODIGO_POSTAL,C.CODIGO_ZONA, " & _
-        "C.CODIGO_VENDEDOR,C.CUENTA_CONTABLE,C.CUENTA_CONTABLE_DOLARES,C.LIMITE_CREDITO,C.DIAS_PLAZO,C.SALDO,C.PERMITIR_VENTA_CREDITO, " & _
-        "C.FECHA_ALTA,C.PLAZA,C.CORREO_CLIENTE,C.CODIGO_METODO_PAGO,C.NUMERO_CUENTA_PAGO,C.CODIGO_METODO_PAGO_DOLARES,C.NUMERO_CUENTA_PAGO_DOLARES,C.CODIGO_TIPO_MERCADO,C.FORMATO_NOMBRE_XML," & _
-        "C.CODIGO_ALMACEN, " & _
-        "C.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO,C.CODIGO_MUNICIPIO,C.CODIGO_ESTADO,E.CODIGO_ESTADO_SAT,C.CODIGO_PAIS_SAT,M.NOMBRE_MUNICIPIO,E.NOMBRE_ESTADO,P.NOMBRE_PAIS,C.ES_CONTRIBUYENTE_IEPS " & _
-        "FROM CAT_CLIENTES C " & _
-        "LEFT JOIN CAT_MUNICIPIOS M ON(C.CODIGO_MUNICIPIO=M.CODIGO_MUNICIPIO) " & _
-        "LEFT JOIN SIS_ESTADOS E ON(C.CODIGO_ESTADO=E.CODIGO_ESTADO) " & _
+        Me._QuerySelect = "SELECT C.CODIGO_CLIENTE,C.NOMBRE_CLIENTE,C.Estatus,C.RFC,C.TIPO_PERSONA,C.CURP,C.TELEFONO,C.CELULAR, " &
+        "C.CALLE,C.NUMERO_EXTERIOR,C.NUMERO_INTERIOR,C.COLONIA,C.CIUDAD,C.LOCALIDAD,C.ESTADO,C.PAIS,C.CODIGO_POSTAL,C.CODIGO_ZONA, " &
+        "C.CODIGO_VENDEDOR,C.CUENTA_CONTABLE,C.CUENTA_CONTABLE_DOLARES,C.LIMITE_CREDITO,C.DIAS_PLAZO,C.SALDO,C.PERMITIR_VENTA_CREDITO, " &
+        "C.FECHA_ALTA,C.PLAZA,C.CORREO_CLIENTE,C.CODIGO_METODO_PAGO,C.NUMERO_CUENTA_PAGO,C.CODIGO_METODO_PAGO_DOLARES,C.NUMERO_CUENTA_PAGO_DOLARES,C.CODIGO_TIPO_MERCADO,C.FORMATO_NOMBRE_XML," &
+        "C.CODIGO_ALMACEN, " &
+        "C.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO,C.CODIGO_MUNICIPIO,C.CODIGO_ESTADO,E.CODIGO_ESTADO_SAT,C.CODIGO_PAIS_SAT,M.NOMBRE_MUNICIPIO,E.NOMBRE_ESTADO,P.NOMBRE_PAIS,C.ES_CONTRIBUYENTE_IEPS,C.CODIGO_USO_CFDI " &
+        "FROM CAT_CLIENTES C " &
+        "LEFT JOIN CAT_MUNICIPIOS M ON(C.CODIGO_MUNICIPIO=M.CODIGO_MUNICIPIO) " &
+        "LEFT JOIN SIS_ESTADOS E ON(C.CODIGO_ESTADO=E.CODIGO_ESTADO) " &
         "LEFT JOIN CAT_PAISES P ON(C.CODIGO_PAIS_SAT=P.CODIGO_PAIS_SAT)"
         Me._QueryOrder = " ORDER BY C.NOMBRE_CLIENTE"
     End Sub
@@ -576,7 +585,7 @@ Public Class Class_CatClientes
 
 #Region "Métodos y procedimientos"
 
-    Public Overrides Function Actualizar() As Boolean
+    Public Function Grabar() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -612,9 +621,9 @@ Public Class Class_CatClientes
             sqlParametro = .Parameters.Add("@PLAZA", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._PLAZA.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CORREO_CLIENTE", SqlDbType.NVarChar, 500) : sqlParametro.Value = Me._CORREO_CLIENTE.ToString
             sqlParametro = .Parameters.Add("@CODIGO_METODO_PAGO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_METODO_PAGO
-            sqlParametro = .Parameters.Add("@NUMERO_CUENTA_PAGO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._NUMERO_CUENTA_PAGO.ToString
+            sqlParametro = .Parameters.Add("@NUMERO_CUENTA_PAGO", SqlDbType.NVarChar, 40) : sqlParametro.Value = Me._NUMERO_CUENTA_PAGO.ToString
             sqlParametro = .Parameters.Add("@CODIGO_METODO_PAGO_DOLARES", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_METODO_PAGO_DOLARES
-            sqlParametro = .Parameters.Add("@NUMERO_CUENTA_PAGO_DOLARES", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._NUMERO_CUENTA_PAGO_DOLARES.ToString
+            sqlParametro = .Parameters.Add("@NUMERO_CUENTA_PAGO_DOLARES", SqlDbType.NVarChar, 40) : sqlParametro.Value = Me._NUMERO_CUENTA_PAGO_DOLARES.ToString
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_MERCADO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_TIPO_MERCADO.ToString
             sqlParametro = .Parameters.Add("@FORMATO_NOMBRE_XML", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._FORMATO_NOMBRE_XML.ToString
             sqlParametro = .Parameters.Add("@NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO.ToString
@@ -625,6 +634,7 @@ Public Class Class_CatClientes
             sqlParametro = .Parameters.Add("@ES_CONTRIBUYENTE_IEPS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ES_CONTRIBUYENTE_IEPS.ToString
             sqlParametro = .Parameters.Add("@CODIGO_PROPIETARIO", SqlDbType.Int) : sqlParametro.Value = IIf(txtLEN(Me._CODIGO_PROPIETARIO) = True, CInt(Me._CODIGO_PROPIETARIO), DBNull.Value)
             sqlParametro = .Parameters.Add("@ID", SqlDbType.Int) : sqlParametro.Value = IIf(txtLEN(Me._ID) = True, CInt(Me._ID), DBNull.Value)
+            sqlParametro = .Parameters.Add("@CODIGO_USO_CFDI", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_USO_CFDI.ToString
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._AGREGAR.ToString
             Try
                 Me._Conexion.Open()
@@ -641,9 +651,9 @@ Public Class Class_CatClientes
         Return bResultado
     End Function
 
-    Public Overrides Function Consultar() As Boolean
+    Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand(Me._QuerySelect & " WHERE CODIGO_CLIENTE='" & Replace(Me._CODIGO_CLIENTE, "'", "''") & "' ", Me._Conexion)
+        Dim cmd As New SqlCommand(Me._QuerySelect & " WHERE CODIGO_CLIENTE='" & sReplace(Me._CODIGO_CLIENTE) & "' ", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -655,7 +665,7 @@ Public Class Class_CatClientes
                 If dReader.Read Then
                     Me._CODIGO_CLIENTE = "" & dReader("CODIGO_CLIENTE").ToString
                     Me._NOMBRE_CLIENTE = "" & dReader("NOMBRE_CLIENTE").ToString
-                    Me.Estatus = "" & dReader("ESTATUS").ToString
+                    Me._ESTATUS = "" & dReader("ESTATUS").ToString
                     Me._RFC = "" & dReader("RFC").ToString
                     Me._TIPO_PERSONA = "" & dReader("TIPO_PERSONA").ToString
                     Me._CURP = "" & dReader("CURP").ToString
@@ -698,6 +708,9 @@ Public Class Class_CatClientes
                     Me._NOMBRE_MUNICIPIO = Trim("" & dReader("NOMBRE_MUNICIPIO").ToString)
                     Me._NOMBRE_ESTADO = Trim("" & dReader("NOMBRE_ESTADO").ToString)
                     Me._NOMBRE_PAIS = Trim("" & dReader("NOMBRE_PAIS").ToString)
+
+                    Me._CODIGO_USO_CFDI = Trim("" & dReader("CODIGO_USO_CFDI").ToString)
+
                     bResultado = True
                 End If
                 dReader.Close()
@@ -706,72 +719,6 @@ Public Class Class_CatClientes
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
-            End Try
-        End With
-        Return bResultado
-    End Function
-
-    Public Overrides Function Insertar() As Boolean
-        Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand
-        Dim sqlParametro As SqlParameter
-        With cmd
-            .Connection = Me._Conexion
-            .CommandTimeout = 0
-            .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_CAT_CLIENTES_GRABAR"
-
-            sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_CLIENTE.ToUpper
-            sqlParametro = .Parameters.Add("@NOMBRE_CLIENTE", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._NOMBRE_CLIENTE.ToUpper
-            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS.ToUpper
-            sqlParametro = .Parameters.Add("@RFC", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._RFC.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@TIPO_PERSONA", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._TIPO_PERSONA.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CURP", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._CURP.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@TELEFONO", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._TELEFONO.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CELULAR", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._CELULAR.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CALLE", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._CALLE.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@NUMERO_EXTERIOR", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._NUMERO_EXTERIOR.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@NUMERO_INTERIOR", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._NUMERO_INTERIOR.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@COLONIA", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._COLONIA.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CIUDAD", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._CIUDAD.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@LOCALIDAD", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._LOCALIDAD.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@ESTADO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._ESTADO.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@PAIS", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._PAIS.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_POSTAL", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_POSTAL.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_ZONA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ZONA.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_VENDEDOR", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_VENDEDOR.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_DOLARES", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_DOLARES.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@LIMITE_CREDITO", SqlDbType.Money) : sqlParametro.Value = Me._LIMITE_CREDITO
-            sqlParametro = .Parameters.Add("@DIAS_PLAZO", SqlDbType.Decimal) : sqlParametro.Value = Me._DIAS_PLAZO
-            sqlParametro = .Parameters.Add("@PERMITIR_VENTA_CREDITO", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._PERMITIR_VENTA_CREDITO.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@PLAZA", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._PLAZA.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CORREO_CLIENTE", SqlDbType.NVarChar, 500) : sqlParametro.Value = Me._CORREO_CLIENTE.ToString
-            sqlParametro = .Parameters.Add("@CODIGO_METODO_PAGO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_METODO_PAGO
-            sqlParametro = .Parameters.Add("@NUMERO_CUENTA_PAGO", SqlDbType.NVarChar, 40) : sqlParametro.Value = Me._NUMERO_CUENTA_PAGO.ToString
-            sqlParametro = .Parameters.Add("@CODIGO_METODO_PAGO_DOLARES", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_METODO_PAGO_DOLARES
-            sqlParametro = .Parameters.Add("@NUMERO_CUENTA_PAGO_DOLARES", SqlDbType.NVarChar, 40) : sqlParametro.Value = Me._NUMERO_CUENTA_PAGO_DOLARES.ToString
-            sqlParametro = .Parameters.Add("@CODIGO_TIPO_MERCADO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_TIPO_MERCADO.ToString
-            sqlParametro = .Parameters.Add("@FORMATO_NOMBRE_XML", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._FORMATO_NOMBRE_XML.ToString
-            sqlParametro = .Parameters.Add("@NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO.ToString
-            sqlParametro = .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_ALMACEN.ToString
-            sqlParametro = .Parameters.Add("@CODIGO_MUNICIPIO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_MUNICIPIO.ToString
-            sqlParametro = .Parameters.Add("@CODIGO_ESTADO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ESTADO.ToString
-            sqlParametro = .Parameters.Add("@CODIGO_PAIS_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_PAIS_SAT.ToString
-            sqlParametro = .Parameters.Add("@ES_CONTRIBUYENTE_IEPS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ES_CONTRIBUYENTE_IEPS.ToString
-            sqlParametro = .Parameters.Add("@CODIGO_PROPIETARIO", SqlDbType.Int) : sqlParametro.Value = IIf(txtLEN(Me._CODIGO_PROPIETARIO) = True, CInt(Me._CODIGO_PROPIETARIO), DBNull.Value)
-            sqlParametro = .Parameters.Add("@ID", SqlDbType.Int) : sqlParametro.Value = IIf(txtLEN(Me._ID) = True, CInt(Me._ID), DBNull.Value)
-            sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._AGREGAR.ToString
-            Try
-                Me._Conexion.Open()
-                .ExecuteNonQuery()
-                bResultado = True
-            Catch ex As Exception
-
-                HandleError(Me._Nombre_Catalogo, "Insertar", ex)
-            Finally
-                Me._Conexion.Close()
-                cmd.Dispose()
-                sqlParametro = Nothing
             End Try
         End With
         Return bResultado
@@ -863,7 +810,7 @@ Public Class Class_CatClientes
         Return bResultado
     End Function
 
-    Public Overrides Function ObtenerElementos() As System.Data.DataTable
+    Public Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
         Dim sql As String = ""
         If Usuario.Codigo_Plaza = 1 Then 'Si inicio sesion en Matriz(plaza 1) debe poder ver todos los clientes
@@ -947,7 +894,7 @@ Public Class Class_CatClientes
         Return dTable
     End Function
 
-    Public Overrides Function BusquedaVisual_PorCodigo() As String
+    Public Function BusquedaVisual_PorCodigo() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de clientes por código."
@@ -972,7 +919,7 @@ Public Class Class_CatClientes
         Return Resultado
     End Function
 
-    Public Overrides Function BusquedaVisual_PorDescripcion() As String
+    Public Function BusquedaVisual_PorDescripcion() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de clientes por nombre."
@@ -1109,7 +1056,27 @@ Public Class Class_CatClientes
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcionZona", ex)
         End Try
-            Return Resultado
+        Return Resultado
+    End Function
+
+    Public Function BusquedaVisual_PorDescripcionRegresandoRFC() As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de clientes por Descripción."
+        f.sCampo = "NOMBRE_CLIENTE"
+        f.sOrder = "NOMBRE_CLIENTE"
+        f.sTable = "CAT_CLIENTES"
+        f.sQl = "SELECT RFC,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE 1=1 AND ESTATUS='A' AND CODIGO_ZONA='" & Usuario.Codigo_Plaza.ToString & "' AND "
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcionRegresandoRFC", ex)
+        End Try
+        Return Resultado
     End Function
 
     Public Function CodigoSiguiente(ByVal sCodigoTipoMercado As String) As String
@@ -1192,6 +1159,29 @@ Public Class Class_CatClientes
         End With
         Return bResultado
     End Function
+
+    Public Sub Imprimir_Listado()   'Función para ver la búsqueda visual por descripción.
+        If Len(Nombre_Reporte) > 0 Then
+            Dim Rpt As New ReportDocument
+            Dim oReporte As Class_Reporte
+            Try
+                oReporte = New Class_Reporte(Nombre_Reporte, Rpt)
+
+                Dim frm As New Reporte(Rpt)
+                frm.CRViewer.ShowGroupTreeButton = False
+                frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
+                frm.Show()
+
+            Catch ex As Exception
+                HandleError(Me.Nombre_Catalogo, " Impresión del listado :" + Me.Nombre_Catalogo, ex)
+            Finally
+                oReporte = Nothing
+                'Rpt.Dispose()
+            End Try
+        Else
+            MsgBox("El nombre del reporte no ha sido especificado, no hay nada que imprimir.", MsgBoxStyle.Critical, Me.Nombre_Catalogo)
+        End If
+    End Sub
 #End Region
 
 End Class

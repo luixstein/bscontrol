@@ -154,6 +154,11 @@ Public Class Class_CatCuentas
         End Get
     End Property
 
+    Public ReadOnly Property EXISTE() As Boolean
+        Get
+            Return Me._Existe
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedades de campos de sistema"

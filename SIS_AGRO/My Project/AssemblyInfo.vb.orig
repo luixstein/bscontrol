@@ -32,10 +32,10 @@ Imports System.Runtime.InteropServices
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
 <<<<<<< HEAD
-<Assembly: AssemblyVersion("1.0.0.144")>
-<Assembly: AssemblyFileVersion("1.0.0.144")>
+<Assembly: AssemblyVersion("1.0.0.167")> 
+<Assembly: AssemblyFileVersion("1.0.0.167")> 
 =======
-<Assembly: AssemblyVersion("1.0.0.150")>
-<Assembly: AssemblyFileVersion("1.0.0.150")>
->>>>>>> DevolucionesCXC
+<Assembly: AssemblyVersion("1.0.0.170")>
+<Assembly: AssemblyFileVersion("1.0.0.170")>
+>>>>>>> cfdi33_1.0
 

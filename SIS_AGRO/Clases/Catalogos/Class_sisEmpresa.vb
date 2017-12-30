@@ -1,5 +1,5 @@
-ï»¿Imports System.Data.SqlClient
-Imports System.Data
+Imports System.Data.SqlClient
+
 Public NotInheritable Class Class_sisEmpresa
     Inherits Class_Catalogos
 
@@ -65,29 +65,26 @@ Public NotInheritable Class Class_sisEmpresa
     Private _CUENTA_CONTABLE_CONTRA_CUENTA_DOLARES As String
     Private _CUENTA_CONTABLE_PROVEEDORES_CONTRA_CUENTA_DOLARES As String
 
-    Private _CODIGO_TAMAÃ‘O_REZAGA As String
+    Private _CODIGO_TAMAÑO_REZAGA As String
     Private _CODIGO_CONCEPTO_FLETE_EQUIPO As String
 
-    'Facturacion Electronica
-    Private _FELECTRONICA_ACTIVA As Boolean
     Private _RFC_VENTA_PUBLICO_GENERAL As String
+    Private _RFC_EXTRANJERO As String
+    Private _FELECTRONICA_ACTIVA As Boolean
     Private _FELECTRONICA_CARPETA_TRABAJO As String
     Private _FELECTRONICA_CADENA_ORIGINAL As String 'Se actualiza segun la cadena a usar
     Private _FELECTRONICA_KEY As String
     Private _FELECTRONICA_CER As String
     Private _FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA As String
-
-    'CFD
-    Private _CODIGO_REGIMEN_FISCAL As Integer
-    Private _VERSION_ESQUEMA_CFD As String 'Se actualiza segun a esquema a utilizar
-
-    'CFDi
     Private _FELECTRONICA_PFX As String
     Private _FELECTRONICA_CONTRASENIA_PFX As String
     Private _FELECTRONICA_USER_WS As String
     Private _FELECTRONICA_PASS_WS As String
     Private _FELECTRONICA_TIPO_CFD As String
     Private _FELECTRONICA_CCE_HABILITADO As Boolean
+    Private _CODIGO_REGIMEN_FISCAL As Integer
+    Private _VERSION_ESQUEMA_CFD As String 'Se actualiza segun a esquema a utilizar
+    Private _VERSION_CFDI_DLL As String
 
     'AddendaSoriana
     Private _CODIGO_PROVEDOR_SORIANA As String
@@ -97,7 +94,6 @@ Public NotInheritable Class Class_sisEmpresa
     Private _CODIGO_PRODUCTOR_HAPPY As String
     Private _CODIGO_TIPO_DOCUMENTO_TRANSFERENCIA_EMPAQUE As String
     Private _CODIGO_CONCEPTO_PAGO_CXP_DEFAULT As String
-
     'Codigos automaticos
     Private _CODIGO_ARTICULO_AUTOMATICO As Boolean
 
@@ -115,7 +111,7 @@ Public NotInheritable Class Class_sisEmpresa
     Private _CODIGO_MUNICIPIO_SAT As String
 #End Region
 
-#Region "Campos pÃºblicos"
+#Region "Campos públicos"
 
 #End Region
 
@@ -442,9 +438,9 @@ Public NotInheritable Class Class_sisEmpresa
         End Get
     End Property
 
-    Public ReadOnly Property CODIGO_TAMAÃ‘O_REZAGA() As String
+    Public ReadOnly Property CODIGO_TAMAÑO_REZAGA() As String
         Get
-            Return Me._CODIGO_TAMAÃ‘O_REZAGA
+            Return Me._CODIGO_TAMAÑO_REZAGA
         End Get
     End Property
 
@@ -473,37 +469,48 @@ Public NotInheritable Class Class_sisEmpresa
         End Get
     End Property
 
-    'FACTURACION ELECTRONICA
     Public ReadOnly Property FELECTRONICA_ACTIVA() As Boolean
         Get
             Return Me._FELECTRONICA_ACTIVA
         End Get
     End Property
+
     Public ReadOnly Property RFC_VENTA_PUBLICO_GENERAL() As String
         Get
             Return Me._RFC_VENTA_PUBLICO_GENERAL
         End Get
     End Property
+
+    Public ReadOnly Property RFC_EXTRANJERO() As String
+        Get
+            Return Me._RFC_EXTRANJERO
+        End Get
+    End Property
+
     Public ReadOnly Property FELECTRONICA_CARPETA_TRABAJO() As String
         Get
             Return Me._FELECTRONICA_CARPETA_TRABAJO
         End Get
     End Property
+
     Public ReadOnly Property FELECTRONICA_CADENA_ORIGINAL() As String
         Get
             Return Me._FELECTRONICA_CADENA_ORIGINAL
         End Get
     End Property
+
     Public ReadOnly Property FELECTRONICA_KEY() As String
         Get
             Return Me._FELECTRONICA_KEY
         End Get
     End Property
+
     Public ReadOnly Property FELECTRONICA_CER() As String
         Get
             Return Me._FELECTRONICA_CER
         End Get
     End Property
+
     Public Property FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA() As String
         Get
             Return Me._FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA
@@ -513,39 +520,42 @@ Public NotInheritable Class Class_sisEmpresa
         End Set
     End Property
 
-    'CFD
     Public ReadOnly Property CODIGO_REGIMEN_FISCAL() As Integer
         Get
             Return Me._CODIGO_REGIMEN_FISCAL
         End Get
     End Property
+
     Public ReadOnly Property VERSION_ESQUEMA_CFD() As String
         Get
             Return Me._VERSION_ESQUEMA_CFD
         End Get
     End Property
 
-    'CFDi
     Public ReadOnly Property FELECTRONICA_PFX() As String
         Get
             Return Me._FELECTRONICA_PFX
         End Get
     End Property
+
     Public ReadOnly Property FELECTRONICA_CONTRASENIA_PFX() As String
         Get
             Return Me._FELECTRONICA_CONTRASENIA_PFX
         End Get
     End Property
+
     Public ReadOnly Property FELECTRONICA_USER_WS() As String
         Get
             Return Me._FELECTRONICA_USER_WS
         End Get
     End Property
+
     Public ReadOnly Property FELECTRONICA_PASS_WS() As String
         Get
             Return Me._FELECTRONICA_PASS_WS
         End Get
     End Property
+
     Public ReadOnly Property FELECTRONICA_TIPO_CFD() As String
         Get
             Return Me._FELECTRONICA_TIPO_CFD
@@ -583,7 +593,11 @@ Public NotInheritable Class Class_sisEmpresa
         End Get
     End Property
 
-
+    Public ReadOnly Property VERSION_CFDI_DLL() As String
+        Get
+            Return Me._VERSION_CFDI_DLL
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -609,7 +623,7 @@ Public NotInheritable Class Class_sisEmpresa
 
 #End Region
 
-#Region "Propiedades pÃºblicos"
+#Region "Propiedades públicos"
 
 #End Region
 
@@ -749,7 +763,7 @@ Public NotInheritable Class Class_sisEmpresa
 #End Region
 
 #Region "Constructor y destructor"
-    Public Sub New() 'Utilizado unicamente para la configuraciÃ³n de la empresa.
+    Public Sub New() 'Utilizado unicamente para la configuración de la empresa.
         If Not IsNothing(Empresa_Sistema) Then
             Me._Nombre_Catalogo = Empresa_Sistema.Nombre_Catalogo
             Me._Nombre_Reporte = "RPT_SIS_EMPRESA.rpt"
@@ -762,7 +776,7 @@ Public NotInheritable Class Class_sisEmpresa
     End Sub
 
     Public Sub New(ByVal sEmpresa As String, ByVal sBaseDatos As String, ByVal sServidor As String, ByVal sUser As String, ByVal sPass As String)
-        'Utilizado para arrancar la aplicaciÃ³n
+        'Utilizado para arrancar la aplicación
         _Nombre_Empresa = sEmpresa
         _BaseDatos = sBaseDatos
         _Servidor = sServidor
@@ -777,13 +791,13 @@ Public NotInheritable Class Class_sisEmpresa
 
         If Not Me.Consultar Then
             Running = True
-            MsgBox("No es posible conectarse al servidor. ContÃ¡cte a su administrador de sistemas.", MsgBoxStyle.Critical)
+            MsgBox("No es posible conectarse al servidor. Contácte a su administrador de sistemas.", MsgBoxStyle.Critical)
             Finaliza(False)
         End If
 
 #If Not Debug Then
         'If Me._VERSION_AGRINET <> My.Application.Info.Version.Revision Then
-        '    MsgBox("La versiÃ³n no esta actualizada.", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
+        '    MsgBox("La versión no esta actualizada.", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
         '    Finaliza(False)
         '    Exit Sub
         'End If
@@ -804,7 +818,7 @@ Public NotInheritable Class Class_sisEmpresa
     End Sub
 #End Region
 
-#Region "MÃ©todos y procedimientos"
+#Region "Métodos y procedimientos"
     Public Overrides Function Actualizar() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
@@ -881,6 +895,7 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES = dReader("CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES")
 
                     Me._RFC_VENTA_PUBLICO_GENERAL = dReader("RFC_VENTA_PUBLICO_GENERAL")
+                    Me._RFC_EXTRANJERO = dReader("RFC_EXTRANJERO")
                     Me._CALLE = dReader("CALLE")
                     Me._NUMERO_EXTERIOR = dReader("NUMERO_EXTERIOR")
                     Me._NUMERO_INTERIOR = dReader("NUMERO_INTERIOR")
@@ -914,7 +929,7 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._NUMERO_CLIENTE_BANCO = "" & dReader("NUMERO_CLIENTE_BANCO").ToString
                     Me._SUCURSAL_BANCO = "" & dReader("SUCURSAL_BANCO").ToString
                     Me._NUMERO_CUENTA_BANCO = "" & dReader("NUMERO_CUENTA_BANCO").ToString
-                    Me._CODIGO_TAMAÃ‘O_REZAGA = "" & dReader("CODIGO_TAMAÃ‘O_REZAGA").ToString
+                    Me._CODIGO_TAMAÑO_REZAGA = "" & dReader("CODIGO_TAMAÑO_REZAGA").ToString
                     'Me._CODIGO_CONCEPTO_FLETE_EQUIPO = "" & dReader("CODIGO_CONCEPTO_FLETE_EQUIPO").ToString
                     Me._CODIGO_PROVEDOR_SORIANA = "" & dReader("CODIGO_PROVEDOR_SORIANA").ToString
                     Me._CODIGO_CLIENTE_SORIANA = "" & dReader("CODIGO_CLIENTE_SORIANA").ToString
@@ -936,7 +951,8 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._CODIGO_TIPO_DOCUMENTO_TRANSFERENCIA_EMPAQUE = "" & dReader("CODIGO_TIPO_DOCUMENTO_TRANSFERENCIA_EMPAQUE").ToString
                     Me._CODIGO_CONCEPTO_PAGO_CXP_DEFAULT = "" & dReader("CODIGO_CONCEPTO_PAGO_CXP_DEFAULT").ToString
 
-                    Me._CODIGO_ARTICULO_AUTOMATICO = CBool(dReader("CODIGO_ARTICULO_AUTOMATICO").ToString)
+					Me._CODIGO_ARTICULO_AUTOMATICO = CBool(dReader("CODIGO_ARTICULO_AUTOMATICO").ToString)
+                    Me._VERSION_CFDI_DLL = "" & dReader("VERSION_CFDI_DLL").ToString
 
                     dReader.Close()
                     bResultado = True
@@ -1068,6 +1084,31 @@ Public NotInheritable Class Class_sisEmpresa
         End Try
 
         Return dTable
+    End Function
+
+    Public Function FechaActualServidor() As Date
+        Dim Conexion As New SqlConnection(Me._Conexion)
+        Dim dFecha As Date
+        Dim cmd As New SqlCommand("SELECT FECHA_SERVIDOR FROM VW_FECHA_SERVIDOR", Conexion)
+        Dim dReader As SqlDataReader
+        With cmd
+            .CommandTimeout = 0
+            .CommandType = CommandType.Text
+            Try
+                Conexion.Open()
+                dReader = .ExecuteReader()
+                If dReader.Read Then
+                    dFecha = CType(dReader("FECHA_SERVIDOR"), Date)
+                End If
+                dReader.Close()
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, "FechaActualServidor", ex)
+            Finally
+                Conexion.Close()
+                cmd.Dispose()
+            End Try
+        End With
+        Return dFecha
     End Function
 #End Region
 
