@@ -114,7 +114,7 @@ Module FacturacionElectronica
         Dim bResultado As Boolean = False
 
         Try
-            If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "ERNESTOA" Or Usuario.Codigo_Usuario = 1 Then
+            If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "DANIEL-PC" Or Usuario.Codigo_Usuario = 1 Then
                 MsgBox("Las computadoras de sistemas no deben timbrar documentos." & vbCrLf & "Ni el dba(por protección de timbrar por error estando en pruebas).", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             Else
