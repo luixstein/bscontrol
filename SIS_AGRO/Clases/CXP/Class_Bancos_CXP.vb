@@ -69,7 +69,7 @@ Public Class Class_Bancos_CXP
     Private _Nombre_Formato As String
 
     Private _NOMBRE_CUENTA_BANCARIA As String
-    Private _CODIGO_MONEDA As String
+    Private _CODIGO_MONEDA_SAT As String
     Private _NOMBRE_MONEDA As String
 #End Region
 
@@ -431,9 +431,9 @@ Public Class Class_Bancos_CXP
         End Get
     End Property
 
-    Public ReadOnly Property CODIGO_MONEDA() As String
+    Public ReadOnly Property CODIGO_MONEDA_SAT() As String
         Get
-            Return _CODIGO_MONEDA
+            Return _CODIGO_MONEDA_SAT
         End Get
     End Property
 
@@ -516,11 +516,11 @@ Public Class Class_Bancos_CXP
     Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
         'VW_BANCOS_GLOBAL_CON_CXP_GLOBAL Where FOLIO_BANCO=
-        Dim cmd As New SqlCommand("SELECT V.*, CD.NOMBRE_FORMATO AS NOMBRE_FORMATO_DOCUMENTO,CB.NOMBRE_FORMATO AS NOMBRE_FORMATO_CHEQUE, S.CODIGO_MODULO " & _
-                                  "FROM VW_BANCOS_GLOBAL_CON_CXP_GLOBAL V " & _
-                                  "INNER JOIN SIS_CAT_DOCUMENTOS CD ON (V.CODIGO_DOCUMENTO=CD.CODIGO_DOCUMENTO) " & _
-                                  "INNER JOIN SIS_TIPOS_DOCUMENTOS S on(CD.CODIGO_TIPO_DOCUMENTO=S.CODIGO_TIPO_DOCUMENTO) " & _
-                                  "INNER JOIN CAT_CUENTAS_BANCARIAS CB ON (V.ID_CUENTA_BANCARIA=CB.ID_CUENTA_BANCARIA) " & _
+        Dim cmd As New SqlCommand("SELECT V.*, CD.NOMBRE_FORMATO AS NOMBRE_FORMATO_DOCUMENTO,CB.NOMBRE_FORMATO AS NOMBRE_FORMATO_CHEQUE, S.CODIGO_MODULO " &
+                                  "FROM VW_BANCOS_GLOBAL_CON_CXP_GLOBAL V " &
+                                  "INNER JOIN SIS_CAT_DOCUMENTOS CD ON (V.CODIGO_DOCUMENTO=CD.CODIGO_DOCUMENTO) " &
+                                  "INNER JOIN SIS_TIPOS_DOCUMENTOS S on(CD.CODIGO_TIPO_DOCUMENTO=S.CODIGO_TIPO_DOCUMENTO) " &
+                                  "INNER JOIN CAT_CUENTAS_BANCARIAS CB ON (V.ID_CUENTA_BANCARIA=CB.ID_CUENTA_BANCARIA) " &
                                   "WHERE V.FOLIO_BANCO='" & Me._FOLIO_BANCO & "' AND V.CODIGO_PLAZA= " & Plaza.CODIGO_PLAZA & " ", Me._Conexion)
         Dim dReader As SqlDataReader
 
@@ -564,7 +564,7 @@ Public Class Class_Bancos_CXP
                         Me._FECHA_DE_CANCELACION_SERVIDOR = CType(dReader("FECHA_DE_CANCELACION_SERVIDOR"), Date)
                     End If
                     Me._CODIGO_CONCEPTO_PAGO_CXP = CType(dReader("CODIGO_CONCEPTO_PAGO_CXP"), String)
-                    Me._CODIGO_MONEDA = CType(dReader("CODIGO_MONEDA"), String)
+                    Me._CODIGO_MONEDA_SAT = CType(dReader("CODIGO_MONEDA_SAT"), String)
                     Me._NOMBRE_MONEDA = CType(dReader("NOMBRE_MONEDA"), String)
 
                     bResultado = True

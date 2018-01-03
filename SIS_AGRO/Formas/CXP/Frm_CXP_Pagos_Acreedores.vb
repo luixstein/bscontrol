@@ -1,5 +1,4 @@
 ﻿Imports CrystalDecisions.CrystalReports.Engine
-Imports System.Data.SqlClient
 
 Public Class Frm_CXP_Pagos_Acreedores
 
@@ -1036,7 +1035,7 @@ buscar_acreedor:
         Dim bResultado As Boolean = False
 
         Try
-            If MsgBox("Deseas grabar el documento " & Me.CmbDocumento.Text & " con el folio : " & Me.TxtFolio.Text & "?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo, "Grabar") = MsgBoxResult.No Then
+            If MsgBox("Deseas grabar el documento " & Me.CmbDocumento.Text & " con el folio : " & Me.TxtFolio.Text & "?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "Grabar") = MsgBoxResult.No Then
                 Return False
             End If
 
@@ -1094,7 +1093,7 @@ buscar_acreedor:
     End Function
 
     Private Function Grabar() As Boolean
-        Dim bResultado As Boolean = False
+        Dim bResultado As Boolean = False, bResultadoParcial As Boolean = False
         Dim i As Integer
         Dim oProveedor As Class_CatProveedores
 
@@ -1130,7 +1129,9 @@ buscar_acreedor:
                     .CODIGO_CONCEPTO_PAGO_CXP = 1
                 End If
 
-                .Inserta_Global()
+                If .Inserta_Global = False Then
+                    Return False
+                End If
 
                 Me.TxtFolio.Text = .FOLIO_BANCO
             End With
@@ -1158,7 +1159,7 @@ buscar_acreedor:
                             .CODIGO_MONEDA = oCuentaBancaria.CODIGO_MONEDA
                             .TOTAL_USD = valorNumerico(Me.Grid1.Cell(i, Me.iGyPagoUSD).Text)
 
-                            bResultado = .InsertarPagosProveedoresAcreedores(Class_CXP_Afecta_Documentos.enumModoPago.PROVEEDOR)
+                            bResultadoParcial = .InsertarPagosProveedoresAcreedores(Class_CXP_Afecta_Documentos.enumModoPago.PROVEEDOR)
                         End With
                     End If
                 Next i
@@ -1182,7 +1183,7 @@ buscar_acreedor:
                                 .CODIGO_MONEDA = oCuentaBancaria.CODIGO_MONEDA
                                 '.TOTAL_USD = 0 valorNumerico(Me.Grid1.Cell(i, Me.iGyPagoUSD).Text), DE MOMENTO NO SE USA ESTE LLAMADO DE TODAS FORMAS 01JUL17
 
-                                bResultado = .InsertarPagosProveedoresAcreedores(Class_CXP_Afecta_Documentos.enumModoPago.ACREEDOR)
+                                bResultadoParcial = .InsertarPagosProveedoresAcreedores(Class_CXP_Afecta_Documentos.enumModoPago.ACREEDOR)
 
                                 .AplicaRelacionBancosCXPFletes(Me.Grid2.Cell(i, Me.iGyFolioEmbarque).Text, valorNumerico(Me.Grid2.Cell(i, Me.iGyPagoFlete).Text))
                             End With
@@ -1205,10 +1206,16 @@ buscar_acreedor:
                         .CODIGO_MONEDA = oCuentaBancaria.CODIGO_MONEDA
                         .TOTAL_USD = valorNumerico(Me.txtImporteDolares.Text)
 
-                        bResultado = .InsertarPagosProveedoresAcreedores(Class_CXP_Afecta_Documentos.enumModoPago.ACREEDOR)
+                        bResultadoParcial = .InsertarPagosProveedoresAcreedores(Class_CXP_Afecta_Documentos.enumModoPago.ACREEDOR)
                     End With
                 End If
             End If
+
+            If bResultadoParcial = False Then
+                Return False
+            End If
+
+            bResultado = True
 
             Me.oBancosCXP.GeneraPoliza(Me.CboFacturasRecibidas.SelectedValue.ToString)
 
@@ -1699,7 +1706,7 @@ buscar_acreedor:
                 Me.Cambia_Estado(enumEstados.NUEVO)
                 Me.TxtCuentaBancaria.Enabled = False
                 Me.TxtFolio.Enabled = False
-                Exit Function
+                Return False
             Else
                 Me.TxtFolio.Text = Me.oBancosCXP.FOLIO_BANCO
                 Me.TxtCuentaBancaria.Enabled = False
@@ -1728,7 +1735,7 @@ buscar_acreedor:
                 Me.txtTipoCambio.Text = Format(oBancosCXP.TIPO_DE_CAMBIO, "###,##0.0000")
                 Me.txtImporteDolares.Text = FormatImporteContable(oBancosCXP.TOTAL_DOLARES)
 
-                If Me.oBancosCXP.CODIGO_MONEDA <> 1 Then '1=pesos
+                If Me.oBancosCXP.CODIGO_MONEDA_SAT <> "MXN" Then '1=pesos
                     'Me.ckbDolares.Checked = True
                     Me.cboMoneda.SelectedValue = 2
                 End If
