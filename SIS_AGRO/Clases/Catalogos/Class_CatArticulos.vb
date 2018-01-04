@@ -653,11 +653,11 @@ Public Class Class_CatArticulos
 
     Public Function ObtenerElementosFiltroProductosAgricolas(ByVal Filtro As String, ByVal Estatus As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dA As New SqlDataAdapter("SELECT A.CODIGO_ARTICULO,A.DESCRIPCION FROM CAT_ARTICULOS A INNER JOIN CAT_CULTIVOS C ON(A.CODIGO_CULTIVO=C.CODIGO_CULTIVO) WHERE PROTEGIDO='0' AND A.CODIGO_CULTIVO IS NOT NULL AND C.CODIGO_PLAZA=" & Usuario.Codigo_Plaza & " AND A.DESCRIPCION LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & Estatus & "' ORDER BY A.DESCRIPCION", Me._Conexion)
+        Dim dA As New SqlDataAdapter("SELECT A.CODIGO_ARTICULO,A.DESCRIPCION FROM CAT_ARTICULOS A INNER JOIN CAT_CULTIVOS C ON(A.CODIGO_CULTIVO=C.CODIGO_CULTIVO) WHERE A.PROTEGIDO='0' AND A.CODIGO_CULTIVO IS NOT NULL AND C.CODIGO_PLAZA=" & Usuario.Codigo_Plaza & " AND A.DESCRIPCION LIKE '" & Filtro.ToString & "%' AND A.ESTATUS='" & Estatus & "' ORDER BY A.DESCRIPCION", Me._Conexion)
         Try
             dA.Fill(dTable)
         Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerElementosFiltro", ex)
+            HandleError(Me._Nombre_Catalogo, "ObtenerElementosFiltroProductosAgricolas", ex)
         Finally
             dA.Dispose()
         End Try

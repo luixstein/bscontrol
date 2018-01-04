@@ -847,10 +847,12 @@ Busca:
             .Columns("DESCRIPCION").Width = 450
         End With
     End Sub
+
     Private Sub txtFiltro_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFiltro.KeyPress
         txtNoBeep(e)
         txtNoComilla(e)
     End Sub
+
     Private Sub txtFiltro_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtFiltro.KeyDown
         Dim oElementosFiltro As New Class_CatArticulos
         If e.KeyCode = Keys.Down Or e.KeyCode = Keys.Return Or e.KeyCode = Keys.Back Then
@@ -863,6 +865,7 @@ Busca:
             End With
         End If
     End Sub
+
     Private Sub CboEstatusFiltro_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CboEstatusFiltro.SelectedIndexChanged
         Dim oElementos As New Class_CatArticulos
         Me.Grid.DataSource = Nothing
