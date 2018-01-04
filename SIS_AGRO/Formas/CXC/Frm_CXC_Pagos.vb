@@ -296,7 +296,7 @@ enter:
             Select Case e.KeyCode
                 Case Keys.F6
 Buscar:
-                    Dim Busqueda = New Busqueda_General("CODIGO_CLIENTE AS CODIGO,NOMBRE_CLIENTE AS NOMBRE", "CAT_CLIENTES", "1=1 AND ESTATUS='A' and codigo_zona= " & Usuario.Codigo_Plaza, "NOMBRE", "NOMBRE_CLIENTE")
+                    Dim Busqueda = New Busqueda_General("CODIGO_CLIENTE AS CODIGO,NOMBRE_CLIENTE AS NOMBRE", "CAT_CLIENTES", "1=1 AND ESTATUS='A'", "NOMBRE", "NOMBRE_CLIENTE")
                     Busqueda.ShowDialog()
                     Me.TxtCodigoCliente.Text = "" & Busqueda.Tag.ToString
                     Busqueda.Dispose()
@@ -863,7 +863,7 @@ Buscar:
                 Me.TxtCodigoCliente.Focus()
                 Return False
             Else
-                sql = New Class_find("SELECT NOMBRE_CLIENTE,CUENTA_CONTABLE FROM CAT_CLIENTES WHERE CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' AND ESTATUS='A' AND CODIGO_ZONA=" & Usuario.Codigo_Plaza)
+                sql = New Class_find("SELECT NOMBRE_CLIENTE,CUENTA_CONTABLE FROM CAT_CLIENTES WHERE CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' AND ESTATUS='A'") 'AND CODIGO_ZONA=" & Usuario.Codigo_Plaza)
                 If sql.Result1 = "" Then
                     MsgBox("El código de cliente que intenta buscar no existe o esta dado de Baja, favor de intentar con otro código.", MsgBoxStyle.Exclamation, sProcedure)
                     Me.LblCliente.Text = ""
@@ -1021,7 +1021,7 @@ Buscar:
                             "CASE WHEN CODIGO_MONEDA_SAT='USD' THEN ROUND(SALDO/TIPO_DE_CAMBIO,2) ELSE ROUND(SALDO/" & dTipoCambio.ToString & ",2) END SALDO_DOLARES," &
                             "CASE WHEN TOTAL=SALDO THEN IMPUESTO ELSE 0 END IVA, " &
                             "VERSION_ESQUEMA_XML,CODIGO_METODO_PAGO,CODIGO_METODO_PAGO_EVENTO " &
-                            "FROM VENTA_GLOBAL WHERE CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' AND SALDO>0 " & sSaldoDlls & " AND CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " ORDER BY FECHA"
+                            "FROM VENTA_GLOBAL WHERE CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' AND SALDO>0 " & sSaldoDlls & " ORDER BY FECHA" 'AND CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " ORDER BY FECHA"
 
         cmd = New SqlCommand(sSQL, Conexion)
 
@@ -2845,7 +2845,9 @@ Buscar:
 
     Private Sub CalculaImportesPagoUSD(ByVal Renglon As Integer)
         Try
-            Dim oVenta As New Class_Ventas_Global(Me.GridVentas.Cell(Renglon, Me.iGyVentaFolio).Text)
+            Dim oVenta As New Class_Ventas_Global '(Me.GridVentas.Cell(Renglon, Me.iGyVentaFolio).Text)
+            oVenta.FOLIO_VENTA = Me.GridVentas.Cell(Renglon, Me.iGyVentaFolio).Text
+            oVenta.ConsultarSinFiltrarPlaza()
             Dim dTipoCambioPago As Decimal, dPesosViejos As Decimal, dPesosNuevos As Decimal, dDiferencia As Decimal, dImporteMonedaVenta As Decimal, dSaldoAnteriorMonedaVenta As Decimal, dSaldoAnteriorMonedaPago As Decimal
             Dim dSaldoUSD As Decimal, dPagoUSD As Decimal
 
@@ -2893,7 +2895,9 @@ Buscar:
 
     Private Sub CalculaImportesPagoMXN(ByVal Renglon As Integer)
         Try
-            Dim oVenta As New Class_Ventas_Global(Me.GridVentas.Cell(Renglon, Me.iGyVentaFolio).Text)
+            Dim oVenta As New Class_Ventas_Global '(Me.GridVentas.Cell(Renglon, Me.iGyVentaFolio).Text)
+            oVenta.FOLIO_VENTA = Me.GridVentas.Cell(Renglon, Me.iGyVentaFolio).Text
+            oVenta.ConsultarSinFiltrarPlaza()
             Dim dTipoCambioPago As Decimal, dPesosViejos As Decimal, dPesosNuevos As Decimal, dDiferencia As Decimal, dImporteMonedaVenta As Decimal, dSaldoAnteriorMonedaVenta As Decimal, dSaldoAnteriorMonedaPago As Decimal
             Dim dSaldoUSD As Decimal, dPagoUSD As Decimal, dSaldoMXN As Decimal
 

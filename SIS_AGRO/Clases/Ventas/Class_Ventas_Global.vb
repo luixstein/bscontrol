@@ -1159,6 +1159,135 @@ Public Class Class_Ventas_Global
         Return bResultado
     End Function
 
+    Public Function ConsultarSinFiltrarPlaza() As Boolean
+        Dim bResultado As Boolean = False
+
+        Dim sSQL As String = ""
+
+        sSQL = "SELECT G.* " &
+            ",U1.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO,U2.NOMBRE_USUARIO NOMBRE_USUARIO_CANCELO,CFD.FELECTRONICA_CER,CFD.FELECTRONICA_KEY,CFD.CONTRASEÑA, " &
+            "MP.NOMBRE_METODO_PAGO,RF.NOMBRE_REGIMEN_FISCAL,CFFE.SERIE," &
+            "(SELECT MAX(FOLIO_EMBARQUE) FROM EMB_EMBARQUE_GLOBAL WHERE FOLIO_VENTA=G.FOLIO_VENTA) FOLIO_EMBARQUE,DOC.NOMBRE_FORMATO,DOC.ES_FACTURA_EMBARQUE_EXTRANJERO, " &
+            "ISNULL((SELECT TOP 1 '1' FROM VENTA_DETALLE WHERE FOLIO_VENTA=G.FOLIO_VENTA AND LEN(LISTA_SERIES)>0),0) TIENE_SERIES " &
+            "FROM VENTA_GLOBAL G " &
+            "INNER JOIN CFD_CAT_METODOS_PAGO MP ON(G.CODIGO_METODO_PAGO=MP.CODIGO_METODO_PAGO) " &
+            "INNER JOIN CDF_CAT_TIPOS_REGIMENES_FISCALES RF ON(G.CODIGO_REGIMEN_FISCAL=RF.CODIGO_REGIMEN_FISCAL) " &
+            "INNER JOIN SIS_USUARIOS U1 ON(G.CODIGO_USUARIO_GRABO=U1.CODIGO_USUARIO) " &
+            "LEFT JOIN SIS_USUARIOS U2 ON(G.CODIGO_USUARIO_CANCELO=U2.CODIGO_USUARIO) " &
+            "LEFT JOIN SIS_CFD_CATALOGO_CERTIFICADOS CFD ON(G.ID_SIS_CFD_CATALOGO_CERTIFICADOS=CFD.ID_SIS_CFD_CATALOGO_CERTIFICADOS) " &
+            "LEFT JOIN CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS CFFE ON(G.IDCATALOGO_FOLIO_FELECTRONICA=CFFE.IDCATALOGO_FOLIO_FELECTRONICA)" &
+            "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(G.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
+            "WHERE G.FOLIO_VENTA='" & Replace(Me._FOLIO_VENTA, "'", "''") & "' "
+
+        Dim cmd As New SqlCommand(sSQL, Me._Conexion)
+        Dim dReader As SqlDataReader
+        With cmd
+            .CommandTimeout = 0
+            .CommandType = CommandType.Text
+            Try
+                Me._Conexion.Open()
+                dReader = .ExecuteReader()
+
+                If dReader.Read Then
+                    Me._ID_VENTA_GLOBAL = CInt(dReader("ID_VENTA_GLOBAL"))
+                    Me._FOLIO_VENTA = "" & dReader("FOLIO_VENTA").ToString()
+                    Me._FECHA = CDate(dReader("FECHA"))
+                    Me._FECHA_VENCIMIENTO = CDate(dReader("FECHA_VENCIMIENTO"))
+                    Me._FECHA_SERVIDOR = CDate(dReader("FECHA_SERVIDOR"))
+                    Me._CODIGO_CLIENTE = "" & dReader("CODIGO_CLIENTE").ToString()
+                    Me._CODIGO_DOCUMENTO = "" & dReader("CODIGO_DOCUMENTO").ToString()
+                    Me._CODIGO_VENDEDOR = CInt(dReader("CODIGO_VENDEDOR"))
+                    Me._FOLIO_VENTA = "" & dReader("FOLIO_VENTA").ToString()
+                    Me._SUBTOTAL = CDec(dReader("SUBTOTAL"))
+                    Me._IMPUESTO = CDec(dReader("IMPUESTO"))
+                    Me._TOTAL = CDec(dReader("TOTAL"))
+                    Me._DESCUENTO = CDec(dReader("DESCUENTO"))
+                    Me._SALDO = CDec(dReader("SALDO"))
+                    Me._COSTO = CDec(dReader("COSTO"))
+                    Me._CONDICIONES_DE_PAGO = "" & dReader("CONDICIONES_DE_PAGO").ToString()
+                    Me._ESTATUS_VENTA = "" & dReader("ESTATUS_VENTA").ToString()
+                    Me._CODIGO_USUARIO_GRABO = CInt(dReader("CODIGO_USUARIO_GRABO"))
+                    Me._FOLIO_REFERENCIA = "" & dReader("FOLIO_REFERENCIA").ToString()
+                    Me._TIPO_DE_CAMBIO = CDec(dReader("TIPO_DE_CAMBIO"))
+                    Me._CODIGO_ALMACEN = "" & dReader("CODIGO_ALMACEN").ToString()
+                    Me._CONCEPTO = "" & dReader("CONCEPTO").ToString()
+                    Me._CODIGO_PLAZA = (CInt(dReader("CODIGO_PLAZA")))
+                    Me._CODIGO_TIPO_NEGOCIACION = CInt(dReader("CODIGO_TIPO_NEGOCIACION"))
+                    Me._FOLIO_POLIZA = "" & dReader("FOLIO_POLIZA").ToString()
+                    Me._IMPUESTO_PORCENTAJE = CDec(dReader("IMPUESTO_PORCENTAJE"))
+                    Me._ES_FACTURA_ELECTRONICA = "" & dReader("ES_FACTURA_ELECTRONICA").ToString()
+                    Me._FOLIO_NUMERICO = CInt("" & dReader("FOLIO_NUMERICO").ToString())
+                    Me._IDCATALOGO_FOLIO_FELECTRONICA = CInt(valorNumerico(dReader("IDCATALOGO_FOLIO_FELECTRONICA").ToString))
+                    Me._ID_SIS_CFD_CATALOGO_CERTIFICADOS = "" & dReader("ID_SIS_CFD_CATALOGO_CERTIFICADOS").ToString()
+                    Me._CADENA_ORIGINAL = "" & dReader("CADENA_ORIGINAL").ToString()
+                    Me._SELLO_DIGITAL = "" & dReader("SELLO_DIGITAL").ToString()
+                    'Me._SELLO_REPROCESADO = "" & dReader("SELLO_REPROCESADO").ToString()
+                    Me._CODIGO_TIPO_MERCADO = "" & dReader("CODIGO_TIPO_MERCADO").ToString()
+                    Me._NOMBRE_USUARIO = "" & dReader("NOMBRE_USUARIO_GRABO").ToString()
+                    Me._FOLIO_REFERENCIA_USUARIO = "" & dReader("FOLIO_REFERENCIA_USUARIO").ToString()
+                    If Me._ESTATUS_VENTA = "C" Then
+                        Me._CODIGO_USUARIO_CANCELO = CInt(dReader("CODIGO_USUARIO_CANCELO"))
+                        Me._NOMBRE_USUARIO_CANCELO = dReader("NOMBRE_USUARIO_CANCELO").ToString
+                        Me._FECHA_CANCELACION = CDate(dReader("FECHA_DE_CANCELACION"))
+                        Me._FECHA_CANCELACION_SERVIDOR = CDate(dReader("FECHA_DE_CANCELACION_SERVIDOR"))
+                    End If
+                    Me._TIPO_VENTA = "" & dReader("TIPO_VENTA").ToString()
+                    Me._SALDO_DOLARES = CDec(dReader("SALDO_DOLARES"))
+                    Me._TOTAL_DOLARES = CDec(dReader("TOTAL_DOLARES"))
+                    Me._SUBTOTAL_USD = CDec(dReader("SUBTOTAL_USD"))
+                    Me._DESCUENTO_USD = CDec(dReader("DESCUENTO_USD"))
+                    Me._ES_VENTA_PUBLICO_GENERAL = "" & dReader("ES_VENTA_PUBLICO_GENERAL").ToString()
+                    Me._FOLIO_EMBARQUE = "" & dReader("FOLIO_EMBARQUE").ToString()
+                    Me._CODIGO_METODO_PAGO = dReader("CODIGO_METODO_PAGO").ToString
+                    Me._NOMBRE_METODO_PAGO = "" & dReader("NOMBRE_METODO_PAGO").ToString()
+                    Me._NOMBRE_REGIMEN_FISCAL = "" & dReader("NOMBRE_REGIMEN_FISCAL").ToString()
+                    Me._NUMERO_CUENTA_PAGO = "" & dReader("NUMERO_CUENTA_PAGO").ToString()
+                    Me._FELECTRONICA_CER = "" & dReader("FELECTRONICA_CER").ToString
+                    Me._FELECTRONICA_KEY = "" & dReader("FELECTRONICA_KEY").ToString
+                    Me._FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA = IIf(txtLEN("" & dReader("CONTRASEÑA").ToString) = True, Decrypt("" & dReader("CONTRASEÑA").ToString, "r7"), "").ToString
+                    Me._RETENCION = CDec(dReader("RETENCION"))
+                    Me._ADDENDA = "" & dReader("ADDENDA").ToString
+                    Me._FOLIO_FISCAL_SAT = "" & dReader("FOLIO_FISCAL_SAT").ToString
+                    Me._FECHA_TIMBRADO_SAT = "" & dReader("FECHA_TIMBRADO_SAT").ToString
+                    Me._NUMERO_SERIE_CERTIFICADO_SAT = "" & dReader("NUMERO_SERIE_CERTIFICADO_SAT").ToString
+                    Me._SELLO_SAT = IIf(txtLEN("" & dReader("SELLO_SAT").ToString) = True, "" & dReader("SELLO_SAT").ToString, "").ToString
+                    If txtLEN("" & dReader("CBB_IMAGE").ToString) = True Then
+                        Me._CBB_IMAGE = "" & dReader("CBB_IMAGE").ToString
+                    Else
+                        Me._CBB_IMAGE = "" '& dReader("CBB_IMAGE").ToString
+                    End If
+                    Me._TIMBRADO_CFDI = "" & dReader("TIMBRADO_CFDI").ToString
+                    Me._ESTATUS_CANCELACION_CFDI = "" & dReader("ESTATUS_CANCELACION_CFDI").ToString
+                    Me._TIMBRADO_DESCARTADO = "" & dReader("TIMBRADO_DESCARTADO").ToString
+                    Me._VERSION_ESQUEMA_XML = "" & dReader("VERSION_ESQUEMA_XML").ToString
+                    Me._SERIE = "" & Trim(dReader("SERIE").ToString)
+                    Me._TIENE_COMPLEMENTO_COMERCIO_EXTERIOR = CBool(dReader("TIENE_COMPLEMENTO_COMERCIO_EXTERIOR").ToString)
+                    Me._CODIGO_REGIMEN_FISCAL = "" & Trim(dReader("CODIGO_REGIMEN_FISCAL").ToString)
+                    Me._ES_FACTURA_EMBARQUE_EXTRANJERO = CBool(dReader("ES_FACTURA_EMBARQUE_EXTRANJERO"))
+                    Me._Nombre_Formato = "" & Trim(dReader("NOMBRE_FORMATO").ToString)
+                    Me._IEPS_TOTAL_DESGLOSADO = CDbl(dReader("IEPS_TOTAL_DESGLOSADO"))
+                    Me._IEPS_TOTAL_YA_INCLUIDO = CDbl(dReader("IEPS_TOTAL_YA_INCLUIDO"))
+                    Me._TIENE_SERIES = CBool(dReader("TIENE_SERIES"))
+                    Me._CODIGO_TIPO_CREDITO = "" & dReader("CODIGO_TIPO_CREDITO").ToString()
+                    Me._CODIGO_METODO_PAGO_EVENTO = "" & dReader("CODIGO_METODO_PAGO_EVENTO").ToString
+                    Me._CODIGO_USO_CFDI = "" & dReader("CODIGO_USO_CFDI").ToString
+                    Me._RFC_RECEPTOR = "" & dReader("RFC_RECEPTOR").ToString
+                    Me._CODIGO_MONEDA_SAT = "" & dReader("CODIGO_MONEDA_SAT").ToString
+
+                    bResultado = True
+                End If
+                dReader.Close()
+            Catch ex As Exception
+                HandleError(Me.Nombre_Catalogo, "Consultar", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+            End Try
+        End With
+
+        Return bResultado
+    End Function
+
     Public Function ObtenerDetalle(Optional ByVal bSinComentarios As Boolean = True) As DataTable
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
