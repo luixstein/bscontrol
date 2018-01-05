@@ -726,6 +726,7 @@ Friend Class cComprobante33
                 dSumaConceptosDescuentos = dSumaConceptosDescuentos + valorNumerico(Conceptos.Item(i).Descuento)
             Next
             dSumaConceptosImportes = Redondear(dSumaConceptosImportes, 2)
+            dSumaConceptosDescuentos = Redondear(dSumaConceptosDescuentos, 2)
 
             If Me.TipoDeComprobante = "I" Or Me.TipoDeComprobante = "E" Or Me.TipoDeComprobante = "N" Then
                 'If dSumaConceptosImportes <> valorNumerico(Me.subTotal) Then

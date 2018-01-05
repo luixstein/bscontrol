@@ -521,6 +521,34 @@ Public Class Catalogo_Productos_Agricolas
             Return False
         End If
 
+        If txtLEN(Me.txtCodigoUnidadSAT.Text) = False Then
+            MsgBox("Seleccione la clave de unidad del SAT.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.txtCodigoUnidadSAT.Focus()
+            Return False
+        End If
+
+        If txtLEN(Me.txtClaveProductoSAT.Text) = False Then
+            MsgBox("Seleccione la clave de producto/servicio del SAT.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.txtClaveProductoSAT.Focus()
+            Return False
+        End If
+
+        Dim oUnidadSAT As New Class_CFD_CatUnidades(Me.txtCodigoUnidadSAT.Text)
+
+        If oUnidadSAT.EXISTE = False Then
+            MsgBox("La clave de unidad del SAT no existe favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.txtCodigoUnidadSAT.Focus()
+            Return False
+        End If
+
+        Dim oProductoSAT As New Class_CFD_CatProductosServicios(Me.txtClaveProductoSAT.Text)
+
+        If oProductoSAT.EXISTE = False Then
+            MsgBox("La txtClaveProductoSAT de producto/servicio del SAT no existe favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.txtCodigoUnidadSAT.Focus()
+            Return False
+        End If
+
         For i = 1 To Me.Grid.Rows - 1
             If txtLEN(Me.Grid.Cell(i, Me.igyCodigoEmpaque).Text) = True Then
                 If valorNumerico(Me.Grid.Cell(i, Me.igyCantidad).Text) = 0 Then
