@@ -379,7 +379,7 @@ Public Class Class_CatArticulos
 
 #Region "Constructor y destructor"
     Public Sub New()
-        Me._Nombre_Catalogo = "Cat_Articulos"
+        Me._Nombre_Catalogo = "Class_CatArticulos"
         Me._Nombre_Reporte = "RPT_CATALOGO_PRODUCTOS"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
