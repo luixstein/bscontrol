@@ -1747,6 +1747,12 @@ CANCELAR:
                 End If
             End If
 
+            If Me.cboFormaPago.SelectedIndex = -1 Then
+                MsgBox("Asígne una forma de pago", MsgBoxStyle.Exclamation, sProcedure)
+                Me.cboFormaPago.Focus()
+                Return False
+            End If
+
             If txtLEN(Me.txtFolioEmbarque.Text) = True Then
                 Dim oEmbarques As New Class_Embarques_EmbarqueGlobal
                 oEmbarques.FOLIO_EMBARQUE = Me.txtFolioEmbarque.Text
