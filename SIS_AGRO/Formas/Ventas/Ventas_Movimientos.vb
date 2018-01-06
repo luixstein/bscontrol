@@ -485,7 +485,7 @@ Buscar:
     End Sub
 
     Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dpFecha.KeyPress, dpVencimiento.KeyPress, TxtCliente.KeyPress, TxtConcepto.KeyPress,
-        txtFolio.KeyPress, TxtReferencia.KeyPress, txtFolioEmbarque.KeyPress
+        txtFolio.KeyPress, TxtReferencia.KeyPress, txtFolioEmbarque.KeyPress, TxtConceptoCancelacion.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -751,6 +751,9 @@ Buscar:
 
             Me.TabControl1.SelectedIndex = 0
             Me.bClienteEsContribuyenteIEPS = False
+
+            Me.lblConceptoCancelacion.Visible = False
+            Me.TxtConceptoCancelacion.Visible = False
 
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
@@ -1032,6 +1035,9 @@ Buscar:
                     Me.cboUsoCFDI.Enabled = True
                     'Me.cboMetodoPago.Enabled = True
 
+                    Me.lblConceptoCancelacion.Visible = False
+                    Me.TxtConceptoCancelacion.Visible = False
+
                     If Me.Visible = True Then
                         Me.txtFolio.Focus()
                     End If
@@ -1058,6 +1064,9 @@ Buscar:
                     Me.tsslElaboro.Visible = True : Me.tsslElaboro.Text = "Elaboró: " + Me.oVenta.NOMBRE_USUARIO.ToUpper + " el " + Format(Me.dpFecha.Value, "dd/MMM/yy").ToUpper
                     Me.tsslCancelo.Visible = False : Me.tsslCancelo.Text = ""
 
+                    Me.lblConceptoCancelacion.Visible = False
+                    Me.TxtConceptoCancelacion.Visible = False
+
                     Me.TxtConcepto.Focus()
 
                 Case enumEstados.SUSTITUIDO
@@ -1081,6 +1090,9 @@ Buscar:
                     Me.tsslEstado.Text = "Estado: Consultando movimiento"
                     Me.tsslElaboro.Visible = True : Me.tsslElaboro.Text = "Elaboró: " + Me.oVenta.NOMBRE_USUARIO.ToUpper + " el " + Format(Me.dpFecha.Value, "dd/MMM/yy").ToUpper
                     Me.tsslCancelo.Visible = False : Me.tsslCancelo.Text = ""
+
+                    Me.lblConceptoCancelacion.Visible = False
+                    Me.TxtConceptoCancelacion.Visible = False
 
                     Me.tsbImprimir.Select()
 
@@ -1151,6 +1163,9 @@ Buscar:
                     Me.tsslElaboro.Visible = True : Me.tsslElaboro.Text = "Elaboró: " + Me.oVenta.NOMBRE_USUARIO.ToUpper + " el " + Format(Me.dpFecha.Value, "dd/MMM/yy").ToUpper
                     Me.tsslCancelo.Visible = False : Me.tsslCancelo.Text = ""
 
+                    Me.lblConceptoCancelacion.Visible = False
+                    Me.TxtConceptoCancelacion.Visible = False
+
                     Me.tsbImprimir.Select()
 
                 Case enumEstados.SUSTITUYENDO
@@ -1179,6 +1194,9 @@ Buscar:
                     Me.tsslEstado.Text = "Estado: Sustituyendo movimiento"
                     Me.tsslElaboro.Visible = True : Me.tsslElaboro.Text = "Elaboró: " + Me.oVenta.NOMBRE_USUARIO.ToUpper + " el " + Format(Me.dpFecha.Value, "dd/MMM/yy").ToUpper
                     Me.tsslCancelo.Visible = False : Me.tsslCancelo.Text = ""
+
+                    Me.lblConceptoCancelacion.Visible = False
+                    Me.TxtConceptoCancelacion.Visible = False
 
                     Me.tsbImprimir.Select()
 
@@ -1227,6 +1245,10 @@ Buscar:
                     Me.llblAgregarSeguimiento.Enabled = False
                     Me.cboMoneda.Enabled = False
                     Me.cboUsoCFDI.Enabled = False
+
+                    Me.lblConceptoCancelacion.Visible = True
+                    Me.TxtConceptoCancelacion.Visible = True
+                    Me.TxtConceptoCancelacion.ReadOnly = True
 
             End Select
 
@@ -1603,6 +1625,7 @@ Buscar:
         Dim oFirmaElectronica = New UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo
         Dim oUtileriasCancela As New Class_UtileriasFirmaElectronicaCancelacion
         Dim oPoliza As New Class_Contabilidad_Poliza_Global
+        Dim sConceptoCancelacion As String = ""
 
         If Me._EsPorEmbarqueExtranjero = False AndAlso oDocumento.ACCESIBLE_USUARIO = False Then
             MsgBox("Este documento no se puede cancelar directamente.", MsgBoxStyle.Exclamation, Me.Text)
@@ -1630,6 +1653,9 @@ Buscar:
             If oUtileriasCancela.CANCELA_DIRECTO = True Then
                 Me.oVenta.FECHA_CANCELACION = Date.Now
 
+                sConceptoCancelacion = InputBox("Ingrese el concepto de cancelación :", "Concepto de cancelación")
+                oVenta.CONCEPTO_CANCELACION = sConceptoCancelacion
+
                 GoTo CANCELAR
             Else
                 oUtileriasCancela = New Class_UtileriasFirmaElectronicaCancelacion
@@ -1643,6 +1669,9 @@ Buscar:
                     'MsgBox("Error al tratar de autorizar la cancelación fuera del periodo.", MsgBoxStyle.Exclamation, Me.Text)
                     Return False
                 End If
+
+                sConceptoCancelacion = oUtileriasCancela.CANCELACION_CONCEPTO
+                oVenta.CONCEPTO_CANCELACION = sConceptoCancelacion
 
                 'si no se autorizo
                 If oUtileriasCancela.CANCELACION_AUTORIZO = False Then
@@ -2646,6 +2675,8 @@ CANCELAR:
                 Me.cboTipoNegociacion.SelectedValue = Me.oVenta.CODIGO_TIPO_NEGOCIACION
                 Me.CboAlmacen.SelectedValue = Me.oVenta.CODIGO_ALMACEN
                 Me.cboVendedor.SelectedValue = Me.oVenta.CODIGO_VENDEDOR
+
+                Me.TxtConceptoCancelacion.Text = Me.oVenta.CONCEPTO_CANCELACION
 
                 'AgregaFormaPago99 'Así esta en vb6, pero aquí facilmente se quita el filtro y aparecerá el 99
                 dViewFormasPago.RowFilter = ""
