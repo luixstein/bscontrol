@@ -933,7 +933,7 @@ Friend Class cComprobante33
                         End If
                     End If
 
-                    If Me.Conceptos.Item(i).Traslados.Item(j).TipoFactor = "Exento" Then
+                    If Me.Conceptos.Item(i).Traslados.Item(j).TipoFactor = "Tasa" Or Me.Conceptos.Item(i).Traslados.Item(j).TipoFactor = "Cuota" Then
                         If Not (txtLEN(Me.Conceptos.Item(i).Traslados.Item(j).TasaOCuota) = True And txtLEN(Me.Conceptos.Item(i).Traslados.Item(j).Importe)) = True Then
                             MsgBox("Conceptos.Traslados.TipoFactor: Si el valor registrado es Tasa o Cuota, se deben registrar los atributos TasaOCuota e Importe.", vbExclamation, sProcedure) : Return False
                         End If
