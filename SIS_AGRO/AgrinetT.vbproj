@@ -644,6 +644,12 @@
     <Compile Include="Formas\CXC\Consultas\Rpt_CXC_AuxClientes.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\CXC\Consultas\Rpt_CXC_CalificaPropietario.designer.vb">
+      <DependentUpon>Rpt_CXC_CalificaPropietario.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\CXC\Consultas\Rpt_CXC_CalificaPropietario.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\CXC\Consultas\Rpt_CXC_Descuentos.designer.vb">
       <DependentUpon>Rpt_CXC_Descuentos.vb</DependentUpon>
     </Compile>
@@ -1847,6 +1853,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\CXC\Consultas\Rpt_CXC_AuxClientes.resx">
       <DependentUpon>Rpt_CXC_AuxClientes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\CXC\Consultas\Rpt_CXC_CalificaPropietario.resx">
+      <DependentUpon>Rpt_CXC_CalificaPropietario.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\CXC\Consultas\Rpt_CXC_Descuentos.resx">
       <DependentUpon>Rpt_CXC_Descuentos.vb</DependentUpon>

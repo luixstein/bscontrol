@@ -92,6 +92,8 @@ Public Class Class_Ventas_Global
     Private _CODIGO_USO_CFDI As String
     Private _RFC_RECEPTOR As String
     Private _CODIGO_MONEDA_SAT As String
+
+    Private _CONCEPTO_CANCELACION As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -731,6 +733,16 @@ Public Class Class_Ventas_Global
             Me._CODIGO_MONEDA_SAT = Value
         End Set
     End Property
+
+    Public Property CONCEPTO_CANCELACION() As String
+        Get
+            Return Me._CONCEPTO_CANCELACION
+        End Get
+        Set(Value As String)
+            Me._CONCEPTO_CANCELACION = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -988,6 +1000,8 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Plaza
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
             sqlParametro = .Parameters.Add("@FECHA_CANCELACION", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_CANCELACION
+            sqlParametro = .Parameters.Add("@CONCEPTO_CANCELACION", SqlDbType.NVarChar, 120) : sqlParametro.Value = Me._CONCEPTO_CANCELACION.ToUpper
+
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
@@ -1145,6 +1159,8 @@ Public Class Class_Ventas_Global
                     Me._RFC_RECEPTOR = "" & dReader("RFC_RECEPTOR").ToString
                     Me._CODIGO_MONEDA_SAT = "" & dReader("CODIGO_MONEDA_SAT").ToString
 
+                    Me._CONCEPTO_CANCELACION = "" & dReader("CONCEPTO_CANCELACION").ToString
+
                     bResultado = True
                 End If
                 dReader.Close()
@@ -1273,6 +1289,8 @@ Public Class Class_Ventas_Global
                     Me._CODIGO_USO_CFDI = "" & dReader("CODIGO_USO_CFDI").ToString
                     Me._RFC_RECEPTOR = "" & dReader("RFC_RECEPTOR").ToString
                     Me._CODIGO_MONEDA_SAT = "" & dReader("CODIGO_MONEDA_SAT").ToString
+
+                    Me._CONCEPTO_CANCELACION = "" & dReader("CONCEPTO_CANCELACION").ToString
 
                     bResultado = True
                 End If

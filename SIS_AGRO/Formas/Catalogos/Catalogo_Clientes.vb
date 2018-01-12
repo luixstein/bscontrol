@@ -522,7 +522,11 @@ busca:
         Me.DesplegarFormasPagoDolares()
 
         If Empresa_Sistema.VERSION_ESQUEMA_CFD >= "3.3" Then
-            Me.gbMetodoPago.Visible = False
+            'Me.gbMetodoPago.Visible = False
+            Me.lblDisplayNumCuenta.Visible = False
+            Me.txtNumeroCuenta.Visible = False
+            Me.lblDisplayNCuentaDlls.Visible = False
+            Me.txtNumeroCuentaDolares.Visible = False
         End If
     End Sub
 
