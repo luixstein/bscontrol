@@ -630,6 +630,14 @@ busca:
 
                     Me.cboFormaPago.Enabled = True
                     Me.cboFormaPagoUSD.Enabled = True
+
+                    If Me.cboFormaPago.SelectedValue Is Nothing Then
+                        Me.cboFormaPago.SelectedValue = "99"
+                    End If
+                    If Me.cboFormaPagoUSD.SelectedValue Is Nothing Then
+                        Me.cboFormaPagoUSD.SelectedValue = "99"
+                    End If
+
                     Me.CboEstatus.Enabled = True
                     Me.cboEstado.Enabled = True
                     Me.cboTipoPersona.Enabled = True
