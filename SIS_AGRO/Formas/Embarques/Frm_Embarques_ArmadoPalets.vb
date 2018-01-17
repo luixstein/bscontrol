@@ -78,7 +78,7 @@ Public Class Frm_Embarques_ArmadoPalets
     End Sub
 
     Private Sub btnImprimirEtiquetasCajas_Click(sender As Object, e As EventArgs) Handles btnImprimirEtiquetasCajas.Click
-        Me.oPaletsGlobal.GestionaEtiquetasCajas(Me.txtFolioPalet1Etiquetas.Text, Me.txtFolioPalet2Etiquetas.Text, Me.Font, "Cajas")
+        Me.oPaletsGlobal.GestionaEtiquetasCajas(Me.txtFolioPalet1Etiquetas.Text, Me.txtFolioPalet2Etiquetas.Text, Me.Font, "Cajas", IIf(Me.rbFormatoCaja1.Checked = True, "1", "2").ToString)
     End Sub
 
     Private Sub BtnArmarPalets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnArmarPalets.Click
@@ -86,6 +86,7 @@ Public Class Frm_Embarques_ArmadoPalets
             Me.Consultar()
         End If
     End Sub
+
     Private Sub tsbDesarmar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbDesarmarPalet.Click
         If Me.DesArmarPalet = True Then
             Me.Consultar()

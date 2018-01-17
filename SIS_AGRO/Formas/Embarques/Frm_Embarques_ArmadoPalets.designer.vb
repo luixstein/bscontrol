@@ -85,12 +85,16 @@ Partial Class Frm_Embarques_ArmadoPalets
         Me.TxtImporteTotal = New System.Windows.Forms.TextBox()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.btnImprimirEtiquetasCajas = New System.Windows.Forms.Button()
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.rbFormatoCaja1 = New System.Windows.Forms.RadioButton()
+        Me.rbFormatoCaja2 = New System.Windows.Forms.RadioButton()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.gbGeneraraSalida.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.gbGrid.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
         Me.SuspendLayout()
         '
         'tsMenu
@@ -719,11 +723,46 @@ Partial Class Frm_Embarques_ArmadoPalets
         Me.btnImprimirEtiquetasCajas.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnImprimirEtiquetasCajas.UseVisualStyleBackColor = True
         '
+        'GroupBox3
+        '
+        Me.GroupBox3.Controls.Add(Me.rbFormatoCaja1)
+        Me.GroupBox3.Controls.Add(Me.rbFormatoCaja2)
+        Me.GroupBox3.Location = New System.Drawing.Point(578, 196)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(146, 36)
+        Me.GroupBox3.TabIndex = 377
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "Formato caja :"
+        '
+        'rbFormatoCaja1
+        '
+        Me.rbFormatoCaja1.AutoSize = True
+        Me.rbFormatoCaja1.Checked = True
+        Me.rbFormatoCaja1.Location = New System.Drawing.Point(14, 16)
+        Me.rbFormatoCaja1.Name = "rbFormatoCaja1"
+        Me.rbFormatoCaja1.Size = New System.Drawing.Size(31, 17)
+        Me.rbFormatoCaja1.TabIndex = 372
+        Me.rbFormatoCaja1.TabStop = True
+        Me.rbFormatoCaja1.Text = "1"
+        Me.rbFormatoCaja1.UseVisualStyleBackColor = True
+        '
+        'rbFormatoCaja2
+        '
+        Me.rbFormatoCaja2.AutoSize = True
+        Me.rbFormatoCaja2.Location = New System.Drawing.Point(90, 16)
+        Me.rbFormatoCaja2.Name = "rbFormatoCaja2"
+        Me.rbFormatoCaja2.Size = New System.Drawing.Size(31, 17)
+        Me.rbFormatoCaja2.TabIndex = 373
+        Me.rbFormatoCaja2.TabStop = True
+        Me.rbFormatoCaja2.Text = "2"
+        Me.rbFormatoCaja2.UseVisualStyleBackColor = True
+        '
         'Frm_Embarques_ArmadoPalets
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(906, 568)
+        Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.btnImprimirEtiquetasCajas)
         Me.Controls.Add(Me.TxtImporteTotal)
         Me.Controls.Add(Me.Label3)
@@ -750,6 +789,8 @@ Partial Class Frm_Embarques_ArmadoPalets
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         Me.gbGrid.ResumeLayout(False)
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -816,4 +857,7 @@ Partial Class Frm_Embarques_ArmadoPalets
     Friend WithEvents txtCentroCosto As System.Windows.Forms.TextBox
     Friend WithEvents lblDisplayCentroCosto As System.Windows.Forms.Label
     Friend WithEvents lblCentroCosto As System.Windows.Forms.Label
+    Friend WithEvents GroupBox3 As GroupBox
+    Friend WithEvents rbFormatoCaja1 As RadioButton
+    Friend WithEvents rbFormatoCaja2 As RadioButton
 End Class

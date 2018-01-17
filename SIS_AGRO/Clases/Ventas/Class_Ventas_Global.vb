@@ -2255,7 +2255,7 @@ Public Class Class_Ventas_Global
                 .bTieneEmisor = True
                 '.Emisor.Curp = ""
                 .Emisor.Domicilio.Calle = Empresa_Sistema.CALLE
-                .Emisor.Domicilio.NumeroExterior = Empresa_Sistema.NUMERO_INTERIOR
+                .Emisor.Domicilio.NumeroExterior = Empresa_Sistema.NUMERO_EXTERIOR
                 '.Emisor.Domicilio.NumeroInterior = ""
                 '.Emisor.Domicilio.Colonia = ""
                 '.Emisor.Domicilio.Localidad = ""
