@@ -292,7 +292,7 @@ Public Class Class_Embarques_CajasProducidas
             sqlParametro = .Parameters.Add("@FOLIO_PRODUCCION", SqlDbType.NVarChar, 6) : sqlParametro.Value = Me._FOLIO_PRODUCCION
             sqlParametro = .Parameters.Add("@FECHA", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA
             sqlParametro = .Parameters.Add("@CODIGO_LOTE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_LOTE
-            sqlParametro = .Parameters.Add("@CODIGO_CULTIVO", SqlDbType.NVarChar, 4) : sqlParametro.Value = "01" 'DBNull.Value   'Me._CODIGO_CULTIVO.ToString
+            sqlParametro = .Parameters.Add("@CODIGO_CULTIVO", SqlDbType.NVarChar, 4) : sqlParametro.Value = "1" 'DBNull.Value   'Me._CODIGO_CULTIVO.ToString
             sqlParametro = .Parameters.Add("@NUMERO_MALLA", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._NUMERO_MALLA
             sqlParametro = .Parameters.Add("@NUMERO_CAJAS", SqlDbType.SmallInt) : sqlParametro.Value = Me._NUMERO_CAJAS
             sqlParametro = .Parameters.Add("@PESO_BALDE", SqlDbType.Money) : sqlParametro.Value = Me._PESO_BALDE
