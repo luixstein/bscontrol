@@ -775,7 +775,7 @@ Public Class Class_Embarques_PaletsGlobal
         End Try
     End Function
 
-    Public Function GestionaEtiquetasCajas(ByVal sFolioPalet1 As String, ByVal sFolioPalet2 As String, ByVal fFont As Font, ByVal sNombreImpresora As String) As Boolean
+    Public Function GestionaEtiquetasCajas(ByVal sFolioPalet1 As String, ByVal sFolioPalet2 As String, ByVal fFont As Font, ByVal sNombreImpresora As String, ByVal sFormatoCaja As String) As Boolean
         Dim dt As New DataTable
         Try
             Me.fFont = fFont
@@ -795,7 +795,14 @@ Public Class Class_Embarques_PaletsGlobal
             Dim btFormat As BarTender.Format
             Dim btMsgs As BarTender.Messages
 
-            Dim sFormatoEtiqueta As String = My.Settings.Ruta & "\Etiquetas\Caja.btw"
+            Dim sFormatoEtiqueta As String = ""
+
+            Select Case sFormatoCaja
+                Case "1"
+                    sFormatoEtiqueta = My.Settings.Ruta & "\Etiquetas\Caja.btw"
+                Case "2"
+                    sFormatoEtiqueta = My.Settings.Ruta & "\Etiquetas\Caja4x2.btw"
+            End Select
 
             btAPP = New BarTender.Application
             'btFormat = btAPP.Formats.Open(sFormatoEtiqueta, False, "Bar Code Printer T-0612")
