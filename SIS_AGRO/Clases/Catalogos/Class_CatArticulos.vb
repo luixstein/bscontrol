@@ -37,7 +37,7 @@ Public Class Class_CatArticulos
     'Private _NOMBRE_UNIDAD As String
     Private _CODIGO_PRODUCTO_SERVICIO As String
     Private _CODIGO_UNIDAD As String
-
+    Private _ID_SIS_CAT_IMPUESTOS As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -315,6 +315,15 @@ Public Class Class_CatArticulos
             Me._CODIGO_UNIDAD = VALUE
         End Set
     End Property
+
+    Public Property ID_SIS_CAT_IMPUESTOS() As String
+        Get
+            Return Me._ID_SIS_CAT_IMPUESTOS
+        End Get
+        Set(ByVal VALUE As String)
+            Me._ID_SIS_CAT_IMPUESTOS = VALUE
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -441,6 +450,7 @@ Public Class Class_CatArticulos
             sqlParametro = .Parameters.Add("@GRADO_TOXICIDAD", SqlDbType.SmallInt) : sqlParametro.Value = Me._GRADO_TOXICIDAD
             sqlParametro = .Parameters.Add("@CODIGO_PRODUCTO_SERVICIO", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_PRODUCTO_SERVICIO
             sqlParametro = .Parameters.Add("@CODIGO_UNIDAD", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_UNIDAD
+            sqlParametro = .Parameters.Add("@ID_SIS_CAT_IMPUESTOS", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._ID_SIS_CAT_IMPUESTOS
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = sAccion
 
             Try
@@ -571,6 +581,7 @@ Public Class Class_CatArticulos
 
                     Me._CODIGO_UNIDAD = "" & dReader("CODIGO_UNIDAD").ToString
                     Me._CODIGO_PRODUCTO_SERVICIO = "" & dReader("CODIGO_PRODUCTO_SERVICIO").ToString
+                    Me._ID_SIS_CAT_IMPUESTOS = "" & dReader("ID_SIS_CAT_IMPUESTOS").ToString
 
                     bResultado = True
                 End If
