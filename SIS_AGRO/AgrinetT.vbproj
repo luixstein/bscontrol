@@ -155,6 +155,8 @@
     <Compile Include="Clases\Administracion\Class_Sis_Administracion_Clientes.vb" />
     <Compile Include="Clases\Bancos\Class_Conciliacion_Bancaria.vb" />
     <Compile Include="Clases\Catalogos\Class_CatAgenciaAduanales.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatFormulas_Detalle.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatFormulas.vb" />
     <Compile Include="Clases\Catalogos\Class_CatAlmacenes.vb" />
     <Compile Include="Clases\Catalogos\Class_Catalogos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatArticulos.vb" />
@@ -366,6 +368,12 @@
       <DependentUpon>Sis_administracion_clientes.vb</DependentUpon>
     </Compile>
     <Compile Include="Formas\Administracion\Sis_administracion_clientes.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Formulas.designer.vb">
+      <DependentUpon>Catalogo_Formulas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Formulas.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Catalogos\Catalogo_ClientesCuentasBancarias.designer.vb">
@@ -1590,6 +1598,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_AgenciaAduanas.resx">
       <DependentUpon>Catalogo_AgenciaAduanas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Formulas.resx">
+      <DependentUpon>Catalogo_Formulas.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_Almacenes.resx">
       <DependentUpon>Catalogo_Almacenes.vb</DependentUpon>
