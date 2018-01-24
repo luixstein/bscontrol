@@ -77,8 +77,9 @@ Public Class Catalogo_Formulas
 #Region "Columnas Grid"
     Private iGyCodigoArticulo As Integer = 1
     Private iGyDescripcion As Integer = 2
-    Private iGyCantidad As Integer = 3
-    Private iGyIdFormulaDetalle As Integer = 4
+    Private iGyUnidad As Integer = 3
+    Private iGyCantidad As Integer = 4
+    Private iGyIdFormulaDetalle As Integer = 5
 #End Region
 
 #Region "Constructor y destructor"
@@ -255,6 +256,10 @@ Public Class Catalogo_Formulas
                     Me.TxtCodigoFormula.Text = .CODIGO_FORMULA.ToString
                     Me.TxtNombreFormula.Text = .NOMBRE_FORMULA.ToString
                     Me.TxtCodigoArticulo.Text = .CODIGO_ARTICULO.ToString
+
+                    Dim sql As New Class_find("SELECT DESCRIPCION FROM CAT_ARTICULOS WHERE CODIGO_ARTICULO='" & Me.TxtCodigoArticulo.Text & "'")
+                    Me.LblNombreProductoFinal.Text = sql.Result1.ToString
+
                     If .Estatus = "A" Then
                         Me.CboEstatus.SelectedIndex = 0
                     Else
@@ -312,10 +317,18 @@ Public Class Catalogo_Formulas
                                             Exit Sub
                                         End If
                                     Case enumEstados.EDICION
-                                        If .oFormulasDetalle.Actualizar() = False Then
-                                            MsgBox("Error al tratar de actualizar el detalle.", MsgBoxStyle.Exclamation, Me.Text)
-                                            Exit Sub
+                                        If txtLEN(Me.Grid1.Cell(i, Me.iGyIdFormulaDetalle).Text) = True Then
+                                            If .oFormulasDetalle.Actualizar() = False Then
+                                                MsgBox("Error al tratar de actualizar el detalle.", MsgBoxStyle.Exclamation, Me.Text)
+                                                Exit Sub
+                                            End If
+                                        Else 'Si no tiene id formula significa que se agrego un ingrediente nuevo a la formula y lo inserta
+                                            If .oFormulasDetalle.Insertar() = False Then
+                                                MsgBox("Error al tratar de insertar el detalle.", MsgBoxStyle.Exclamation, Me.Text)
+                                                Exit Sub
+                                            End If
                                         End If
+                                        
                                 End Select
                             End If
                         Next
@@ -381,7 +394,7 @@ Public Class Catalogo_Formulas
     Private Sub FormateaGrid()
         With Me.Grid1
             .AutoRedraw = False
-            .Cols = 5
+            .Cols = 6
             .DisplayFocusRect = False
             .DrawMode = FlexCell.DrawModeEnum.OwnerDraw
             .BorderStyle = FlexCell.BorderStyleEnum.FixedSingle
@@ -390,6 +403,7 @@ Public Class Catalogo_Formulas
 
             .Cell(0, Me.iGyCodigoArticulo).Text = "Código"
             .Cell(0, Me.iGyDescripcion).Text = "Descripción"
+            .Cell(0, Me.iGyUnidad).Text = "Unidad"
             .Cell(0, Me.iGyCantidad).Text = "Cantidad"
             .Cell(0, Me.iGyIdFormulaDetalle).Text = "Id formula detalle"
 
@@ -398,12 +412,14 @@ Public Class Catalogo_Formulas
             .Column(Me.iGyCantidad).Alignment = FlexCell.AlignmentEnum.RightCenter
 
             .Column(Me.iGyDescripcion).Locked = True
+            .Column(Me.iGyUnidad).Locked = True
 
-            .Column(Me.iGyCodigoArticulo).Width = 100
-            .Column(Me.iGyDescripcion).Width = 290
+            .Column(Me.iGyCodigoArticulo).Width = 80
+            .Column(Me.iGyDescripcion).Width = 255
+            .Column(Me.iGyUnidad).Width = 60
             .Column(Me.iGyCantidad).Width = 80
 
-            '.Column(Me.iGyIdFormulaDetalle).Visible = False
+            .Column(Me.iGyIdFormulaDetalle).Visible = False
 
             .AutoRedraw = True
             .Refresh()
@@ -442,18 +458,19 @@ LlenaLinea:
 
                             If StrCod = Empresa_Sistema.CODIGO_ARTICULO_NO_INVENTARIABLE_COMPRA_PROVEEDOR Then
                                 Me.Grid1.Cell(Renglon, Me.iGyDescripcion).Text = ""
+                                Me.Grid1.Cell(Renglon, Me.iGyUnidad).Text = ""
                                 Me.Grid1.Cell(Renglon, Me.iGyCantidad).Text = "0"
 
                                 Me.Grid1.Column(Me.iGyDescripcion).Locked = False
-                                'Me.Grid.Column(Me.igyUnidad).Locked = False
+                                Me.Grid1.Column(Me.iGyUnidad).Locked = False
                             Else
                                 If oArticulos.Existe = True Then
                                     Me.Grid1.Cell(Renglon, Me.iGyDescripcion).Text = oArticulos.DESCRIPCION
                                     Me.Grid1.Cell(Renglon, Me.iGyCantidad).Text = "0"
-                                    'Me.Grid.Cell(Renglon, Me.igyUnidad).Text = oArticulos.UNIDAD_VENTA
+                                    Me.Grid1.Cell(Renglon, Me.iGyUnidad).Text = oArticulos.UNIDAD_VENTA
 
                                     Me.Grid1.Column(Me.iGyDescripcion).Locked = True
-                                    'Me.Grid.Column(Me.igyUnidad).Locked = True
+                                    Me.Grid1.Column(Me.iGyUnidad).Locked = True
                                 End If
                             End If
 
@@ -497,6 +514,7 @@ BuscaArticulos:
                     If (Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.EDICION) Then
                         Me.Grid1.Selection.DeleteByRow()
                     End If
+
             End Select
 
         Catch ex As Exception
