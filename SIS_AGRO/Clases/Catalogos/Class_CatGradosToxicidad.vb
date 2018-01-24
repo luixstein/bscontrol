@@ -157,7 +157,7 @@ Public Class Class_CatGradosToxicidad
 
     Public Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("SELECT GRADO_TOXICIDAD,CAST(GRADO_TOXICIDAD AS NVARCHAR) + '-' + CAST(IEPS_PORCENTAJE AS NVARCHAR) + '%' DESCRIPCION,IEPS_PORCENTAJE FROM CAT_GRADOS_TOXICIDAD ORDER BY GRADO_TOXICIDAD", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT GRADO_TOXICIDAD,DESCRIPCION FROM CAT_GRADOS_TOXICIDAD ORDER BY GRADO_TOXICIDAD", Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception

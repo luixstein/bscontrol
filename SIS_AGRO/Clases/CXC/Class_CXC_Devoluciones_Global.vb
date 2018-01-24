@@ -66,7 +66,7 @@ Public Class Class_CXC_Devoluciones_Global
     Private _LEYENDA As String
     Private _FOLIO_FISCAL_CANCELACION_SAT As String
     Private _ESTATUS_CANCELACION_CFDI As String
-
+    Private _TIENE_IEPS_DESGLOSADO As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -449,6 +449,15 @@ Public Class Class_CXC_Devoluciones_Global
             Return Me._ESTATUS_CANCELACION_CFDI
         End Get
     End Property
+
+    Public Property TIENE_IEPS_DESGLOSADO() As Boolean
+        Get
+            Return Me._TIENE_IEPS_DESGLOSADO
+        End Get
+        Set(Value As Boolean)
+            Me._TIENE_IEPS_DESGLOSADO = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -598,6 +607,7 @@ Public Class Class_CXC_Devoluciones_Global
                 sqlParametro = .Parameters.Add("@CODIGO_METODO_PAGO_EVENTO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_METODO_PAGO_EVENTO
                 sqlParametro = .Parameters.Add("@CODIGO_USO_CFDI", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_USO_CFDI
                 sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_MONEDA_SAT
+                sqlParametro = .Parameters.Add("@TIENE_IEPS_DESGLOSADO", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._TIENE_IEPS_DESGLOSADO)
 
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
@@ -713,6 +723,8 @@ Public Class Class_CXC_Devoluciones_Global
                     Me._FELECTRONICA_CER = "" & dReader("FELECTRONICA_CER").ToString
                     Me._FELECTRONICA_KEY = "" & dReader("FELECTRONICA_KEY").ToString
                     Me._FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA = IIf(txtLEN("" & dReader("CONTRASEÑA").ToString) = True, Decrypt("" & dReader("CONTRASEÑA").ToString, "r7"), "").ToString
+
+                    Me._TIENE_IEPS_DESGLOSADO = CBool(dReader("_TIENE_IEPS_DESGLOSADO").ToString)
 
                     bResultado = True
                 End If

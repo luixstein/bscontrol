@@ -65,6 +65,7 @@ Public Class Ventas_Movimientos
     Private igyUtilidadUnitaria As Short = 27
     Private igyUtilidadTotal As Short = 28
     Private igyUtilidadPorcentaje As Short = 29
+    Private iGyID_SIS_CAT_IMPUESTOS As Short = 30
 #End Region
 
 #Region "Columnas grid series"
@@ -774,7 +775,7 @@ Buscar:
     Private Sub FormateaGrid()
         Try
             Me.Grid.AutoRedraw = False
-            Me.Grid.Cols = 30
+            Me.Grid.Cols = 31
 
             Me.Grid.Column(Me.igyCodigo).Width = 75
             Me.Grid.Column(Me.igyDescripcion).Width = 250
@@ -809,28 +810,25 @@ Buscar:
             Me.Grid.Cell(0, Me.igyCantidad).Text = "Cantidad"
             Me.Grid.Cell(0, Me.igyPrecio).Text = "Precio"
             Me.Grid.Cell(0, Me.igyPRECIO_TOTAL).Text = "Precio total"
-
             Me.Grid.Cell(0, Me.igyCantidadKilos).Text = "Cantidad x Kg"
             Me.Grid.Cell(0, Me.igyPrecioKilos).Text = "Precio x Kg"
-
             Me.Grid.Cell(0, Me.igyUnidad).Text = "Unidad"
             Me.Grid.Cell(0, Me.igyImpuestoPorcentaje).Text = "IVA %"
             Me.Grid.Cell(0, Me.igyImporte).Text = "Importe"
             Me.Grid.Cell(0, Me.igyImporteKilos).Text = "Importe x Kg"
-
             Me.Grid.Cell(0, Me.igyCuentaContable).Text = "Cuenta Contable"
             Me.Grid.Cell(0, Me.igyImpuestoImporte).Text = "IVA"
             Me.Grid.Cell(0, Me.igyIdOrigen).Text = "Id Articulo"
             Me.Grid.Cell(0, Me.igyEsProductoKilos).Text = "Es producto kilos"
-
             Me.Grid.Cell(0, Me.igyCodigoCentroCosto).Text = "Ccos"
             Me.Grid.Cell(0, Me.igyNombreCentroCosto).Text = "C.Costo"
-            Me.Grid.Column(Me.igyNombreCentroCosto).Alignment = FlexCell.AlignmentEnum.LeftCenter
-
             Me.Grid.Cell(0, Me.igyCosto).Text = "Costo"
             Me.Grid.Cell(0, Me.igyUtilidadUnitaria).Text = "Utilidad unitaria"
             Me.Grid.Cell(0, Me.igyUtilidadTotal).Text = "Utilidad total"
             Me.Grid.Cell(0, Me.igyUtilidadPorcentaje).Text = "% utilidad"
+            Me.Grid.Cell(0, Me.iGyID_SIS_CAT_IMPUESTOS).Text = "IVA?"
+
+            Me.Grid.Column(Me.igyNombreCentroCosto).Alignment = FlexCell.AlignmentEnum.LeftCenter
 
             Me.Grid.Column(Me.igyCantidad).Mask = FlexCell.MaskEnum.Numeric
             Me.Grid.Column(Me.igyCantidad).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
@@ -895,6 +893,7 @@ Buscar:
             Me.Grid.Column(Me.igyDescripcion).Locked = True
             Me.Grid.Column(Me.igyTipoControlInventariable).Locked = True
             Me.Grid.Column(Me.igyImporte).Locked = True
+            Me.Grid.Column(Me.igyImpuestoPorcentaje).Locked = True
             Me.Grid.Column(Me.igyImpuestoImporte).Visible = False
             Me.Grid.Column(Me.igyIdOrigen).Visible = False
             Me.Grid.Column(Me.igyUnidad).Locked = True
@@ -950,6 +949,8 @@ Buscar:
             Else
                 Me.Grid.Column(Me.igyPrecio).Locked = True
             End If
+
+            Me.Grid.Column(Me.iGyID_SIS_CAT_IMPUESTOS).Locked = True
 
         Catch ex As Exception
             HandleError(Me.Name, "FormateaGrid", ex)
@@ -1431,6 +1432,7 @@ Buscar:
                 ElseIf .CODIGO_TIPO_NEGOCIACION = 2 Then ' CONTADO
                     .CODIGO_TIPO_CREDITO = "NA"
                 End If
+                .TIENE_IEPS_DESGLOSADO = Me.bClienteEsContribuyenteIEPS
 
                 If Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.SUSTITUYENDO Then
                     If .Grabar("INSERTAR") = False Then
@@ -2792,7 +2794,7 @@ CANCELAR:
         Try
             Dim Columna As Integer, Renglon As Integer
             Dim StrCod As String, sCuentaContable As String = "", dCantidad As Decimal, dPrecio As Decimal, sCodigoCentroCosto As String
-            Dim oArticulos As Class_CatArticulos
+            Dim oArticulo As Class_CatArticulos
 
             'If Me.oDocumento.AFECTA_CXC = True And Me.Grid.Selection.FirstRow = Me.Grid.Rows - 1 Then
             '    Return
@@ -2809,8 +2811,8 @@ CANCELAR:
                 If Me.oDocumento.AFECTA_CONTABILIDAD = False Then
                     Return
                 Else
-                    oArticulos = New Class_CatArticulos(StrCod)
-                    If txtLEN(oArticulos.CODIGO_CULTIVO) = True Then
+                    oArticulo = New Class_CatArticulos(StrCod)
+                    If txtLEN(oArticulo.CODIGO_CULTIVO) = True Then
                         Return
                     End If
                 End If
@@ -2829,27 +2831,27 @@ CANCELAR:
                                 GoTo BuscaArticulos : Return
                             End If
 LlenaLinea:
-                            oArticulos = New Class_CatArticulos(StrCod)
-                            If oArticulos.Existe = False Then
+                            oArticulo = New Class_CatArticulos(StrCod)
+                            If oArticulo.Existe = False Then
                                 GoTo BuscaArticulos : Return
                             End If
 
-                            If oArticulos.Existe = False Then
+                            If oArticulo.Existe = False Then
                                 Me.Totales()
                                 Return
                             End If
 
                             If txtLEN(Me.txtFolioEmbarque.Text) = False Then
                                 Dim oPrecio As New tPrecioVenta
-                                oPrecio = Me.oVenta.GestionaPrecioVenta(oArticulos.CODIGO_ARTICULO, Me.TxtCliente.Text, Me.CboAlmacen.SelectedValue.ToString)
+                                oPrecio = Me.oVenta.GestionaPrecioVenta(oArticulo.CODIGO_ARTICULO, Me.TxtCliente.Text, Me.CboAlmacen.SelectedValue.ToString)
 
-                                Me.Grid.Cell(Renglon, Me.igyDescripcion).Text = oArticulos.DESCRIPCION
-                                Me.Grid.Cell(Renglon, Me.igyTipoControlInventariable).Text = oArticulos.TIPO_CONTROL_INVENTARIO
+                                Me.Grid.Cell(Renglon, Me.igyDescripcion).Text = oArticulo.DESCRIPCION
+                                Me.Grid.Cell(Renglon, Me.igyTipoControlInventariable).Text = oArticulo.TIPO_CONTROL_INVENTARIO
                                 Me.Grid.Cell(Renglon, Me.igyCantidad).Text = "0"
                                 Me.Grid.Cell(Renglon, Me.igyPrecio).Text = oPrecio.Precio.ToString
                                 Me.Grid.Cell(Renglon, Me.igyCosto).Text = oPrecio.Costo.ToString
-                                Me.Grid.Cell(Renglon, Me.igyUnidad).Text = oArticulos.UNIDAD_VENTA
-                                Me.Grid.Cell(Renglon, Me.igyIEPS_PORCENTAJE).Text = oArticulos.IEPS_PORCENTAJE.ToString
+                                Me.Grid.Cell(Renglon, Me.igyUnidad).Text = oArticulo.UNIDAD_VENTA
+                                Me.Grid.Cell(Renglon, Me.igyIEPS_PORCENTAJE).Text = oArticulo.IEPS_PORCENTAJE.ToString
                             Else
                                 Dim oEmbarques As New Class_Embarques_EmbarqueGlobal()
                                 oEmbarques.FOLIO_EMBARQUE = Me.txtFolioEmbarque.Text
@@ -2859,18 +2861,21 @@ LlenaLinea:
                                     Me.txtFolioEmbarque.Focus()
                                     Return
                                 Else
-                                    Me.Grid.Cell(Renglon, Me.igyDescripcion).Text = oArticulos.DESCRIPCION
-                                    Me.Grid.Cell(Renglon, Me.igyUnidad).Text = oArticulos.UNIDAD_VENTA
+                                    Me.Grid.Cell(Renglon, Me.igyDescripcion).Text = oArticulo.DESCRIPCION
+                                    Me.Grid.Cell(Renglon, Me.igyUnidad).Text = oArticulo.UNIDAD_VENTA
                                 End If
                             End If
 
-                            If oArticulos.TIENE_IMPUESTO = "1" Then
-                                Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Text = Plaza.Impuesto_Porcentaje.ToString
-                            Else
-                                Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Text = "0"
-                            End If
+                            Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Text = oArticulo.IMPUESTO_PORCENTAJE.ToString
+                            Me.Grid.Cell(Renglon, Me.iGyID_SIS_CAT_IMPUESTOS).Text = oArticulo.ID_SIS_CAT_IMPUESTOS
 
-                            If oArticulos.CODIGO_CULTIVO <> "" Then
+                            'If oArticulos.TIENE_IMPUESTO = "1" Then
+                            '    Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Text = Plaza.Impuesto_Porcentaje.ToString
+                            'Else
+                            '    Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Text = "0"
+                            'End If
+
+                            If oArticulo.CODIGO_CULTIVO <> "" Then
                                 Me.Grid.Cell(Renglon, Me.igyImpuestoImporte).Locked = True
                             Else
                                 Me.Grid.Cell(Renglon, Me.igyImpuestoImporte).Locked = False
@@ -2892,8 +2897,8 @@ LlenaLinea:
                             Me.Totales()
 
                         Case Me.igyCantidad  'Cantidad
-                            oArticulos = New Class_CatArticulos(StrCod)
-                            If dCantidad <= 0 And oArticulos.ES_PRODUCTO_KILOS = "0" Then
+                            oArticulo = New Class_CatArticulos(StrCod)
+                            If dCantidad <= 0 And oArticulo.ES_PRODUCTO_KILOS = "0" Then
                                 MsgBox("La cantidad debe de ser mayor a 0.", MsgBoxStyle.Exclamation, Me.Text)
                                 Me.Grid.Cell(Renglon, Me.igyDescripcion).SetFocus()
                                 Return
@@ -2921,8 +2926,8 @@ LlenaLinea:
                             End If
 
                         Case Me.igyPrecio  'Cantidad
-                            oArticulos = New Class_CatArticulos(StrCod)
-                            If dPrecio <= 0 And oArticulos.ES_PRODUCTO_KILOS = "0" Then
+                            oArticulo = New Class_CatArticulos(StrCod)
+                            If dPrecio <= 0 And oArticulo.ES_PRODUCTO_KILOS = "0" Then
                                 MsgBox("El precio debe de ser mayor a 0.", MsgBoxStyle.Exclamation, Me.Text)
                                 Me.Grid.Cell(Renglon, Me.igyCantidad).SetFocus()
                             End If
@@ -2970,8 +2975,8 @@ LlenaLinea:
 BuscaArticulos:
                     Select Case Columna
                         Case Me.igyCodigo 'Columna del Codigo de Articulo
-                            oArticulos = New Class_CatArticulos
-                            StrCod = oArticulos.BusquedaVisual_PorDescripcion_conExistencias(Me.CboAlmacen.SelectedValue.ToString)
+                            oArticulo = New Class_CatArticulos
+                            StrCod = oArticulo.BusquedaVisual_PorDescripcion_conExistencias(Me.CboAlmacen.SelectedValue.ToString)
                             If txtLEN(StrCod) = True Then
                                 Me.Grid.Cell(Renglon, Me.igyCodigo).Text = StrCod
                                 GoTo LlenaLinea : Return

@@ -24,6 +24,12 @@ Partial Class Catalogo_Productos_Agricolas
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Catalogo_Productos_Agricolas))
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.lblClaveProductoSAT = New System.Windows.Forms.Label()
+        Me.lblCodigoUnidadSAT = New System.Windows.Forms.Label()
+        Me.lblDisplayClaveProductoSAT = New System.Windows.Forms.Label()
+        Me.txtClaveProductoSAT = New System.Windows.Forms.TextBox()
+        Me.lblDisplayCodigoUnidadSAT = New System.Windows.Forms.Label()
+        Me.txtCodigoUnidadSAT = New System.Windows.Forms.TextBox()
         Me.LblNombreUnidadVenta = New System.Windows.Forms.Label()
         Me.txtCodigoUnidadVenta = New System.Windows.Forms.TextBox()
         Me.LblNombreEtiqueta = New System.Windows.Forms.Label()
@@ -74,12 +80,8 @@ Partial Class Catalogo_Productos_Agricolas
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.lblClaveProductoSAT = New System.Windows.Forms.Label()
-        Me.lblCodigoUnidadSAT = New System.Windows.Forms.Label()
-        Me.lblDisplayClaveProductoSAT = New System.Windows.Forms.Label()
-        Me.txtClaveProductoSAT = New System.Windows.Forms.TextBox()
-        Me.lblDisplayCodigoUnidadSAT = New System.Windows.Forms.Label()
-        Me.txtCodigoUnidadSAT = New System.Windows.Forms.TextBox()
+        Me.lblDisplayImpuestoIVA = New System.Windows.Forms.Label()
+        Me.cboImpuestoIVA = New System.Windows.Forms.ComboBox()
         Me.gBoxInformacion.SuspendLayout()
         Me.GpbFormulas.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
@@ -90,6 +92,8 @@ Partial Class Catalogo_Productos_Agricolas
         '
         'gBoxInformacion
         '
+        Me.gBoxInformacion.Controls.Add(Me.lblDisplayImpuestoIVA)
+        Me.gBoxInformacion.Controls.Add(Me.cboImpuestoIVA)
         Me.gBoxInformacion.Controls.Add(Me.lblClaveProductoSAT)
         Me.gBoxInformacion.Controls.Add(Me.lblCodigoUnidadSAT)
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayClaveProductoSAT)
@@ -130,10 +134,60 @@ Partial Class Catalogo_Productos_Agricolas
         Me.gBoxInformacion.Controls.Add(Me.TxtDescripcion)
         Me.gBoxInformacion.Location = New System.Drawing.Point(4, 26)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Size = New System.Drawing.Size(398, 386)
+        Me.gBoxInformacion.Size = New System.Drawing.Size(398, 413)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información de los artículos"
+        '
+        'lblClaveProductoSAT
+        '
+        Me.lblClaveProductoSAT.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.lblClaveProductoSAT.Location = New System.Drawing.Point(97, 367)
+        Me.lblClaveProductoSAT.Name = "lblClaveProductoSAT"
+        Me.lblClaveProductoSAT.Size = New System.Drawing.Size(294, 13)
+        Me.lblClaveProductoSAT.TabIndex = 247
+        '
+        'lblCodigoUnidadSAT
+        '
+        Me.lblCodigoUnidadSAT.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.lblCodigoUnidadSAT.Location = New System.Drawing.Point(97, 326)
+        Me.lblCodigoUnidadSAT.Name = "lblCodigoUnidadSAT"
+        Me.lblCodigoUnidadSAT.Size = New System.Drawing.Size(294, 13)
+        Me.lblCodigoUnidadSAT.TabIndex = 246
+        '
+        'lblDisplayClaveProductoSAT
+        '
+        Me.lblDisplayClaveProductoSAT.AutoSize = True
+        Me.lblDisplayClaveProductoSAT.Location = New System.Drawing.Point(10, 346)
+        Me.lblDisplayClaveProductoSAT.Name = "lblDisplayClaveProductoSAT"
+        Me.lblDisplayClaveProductoSAT.Size = New System.Drawing.Size(131, 13)
+        Me.lblDisplayClaveProductoSAT.TabIndex = 245
+        Me.lblDisplayClaveProductoSAT.Text = "Clave producto/serv SAT:"
+        '
+        'txtClaveProductoSAT
+        '
+        Me.txtClaveProductoSAT.Location = New System.Drawing.Point(13, 364)
+        Me.txtClaveProductoSAT.MaxLength = 10
+        Me.txtClaveProductoSAT.Name = "txtClaveProductoSAT"
+        Me.txtClaveProductoSAT.Size = New System.Drawing.Size(69, 20)
+        Me.txtClaveProductoSAT.TabIndex = 15
+        '
+        'lblDisplayCodigoUnidadSAT
+        '
+        Me.lblDisplayCodigoUnidadSAT.AutoSize = True
+        Me.lblDisplayCodigoUnidadSAT.Location = New System.Drawing.Point(10, 307)
+        Me.lblDisplayCodigoUnidadSAT.Name = "lblDisplayCodigoUnidadSAT"
+        Me.lblDisplayCodigoUnidadSAT.Size = New System.Drawing.Size(99, 13)
+        Me.lblDisplayCodigoUnidadSAT.TabIndex = 244
+        Me.lblDisplayCodigoUnidadSAT.Text = "Clave unidad SAT :"
+        '
+        'txtCodigoUnidadSAT
+        '
+        Me.txtCodigoUnidadSAT.Location = New System.Drawing.Point(13, 323)
+        Me.txtCodigoUnidadSAT.MaxLength = 10
+        Me.txtCodigoUnidadSAT.Name = "txtCodigoUnidadSAT"
+        Me.txtCodigoUnidadSAT.Size = New System.Drawing.Size(69, 20)
+        Me.txtCodigoUnidadSAT.TabIndex = 14
         '
         'LblNombreUnidadVenta
         '
@@ -148,7 +202,7 @@ Partial Class Catalogo_Productos_Agricolas
         'txtCodigoUnidadVenta
         '
         Me.txtCodigoUnidadVenta.Location = New System.Drawing.Point(97, 275)
-        Me.txtCodigoUnidadVenta.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtCodigoUnidadVenta.Margin = New System.Windows.Forms.Padding(2)
         Me.txtCodigoUnidadVenta.Name = "txtCodigoUnidadVenta"
         Me.txtCodigoUnidadVenta.Size = New System.Drawing.Size(62, 20)
         Me.txtCodigoUnidadVenta.TabIndex = 10
@@ -196,7 +250,7 @@ Partial Class Catalogo_Productos_Agricolas
         'txtCodigoEtiqueta
         '
         Me.txtCodigoEtiqueta.Location = New System.Drawing.Point(97, 105)
-        Me.txtCodigoEtiqueta.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtCodigoEtiqueta.Margin = New System.Windows.Forms.Padding(2)
         Me.txtCodigoEtiqueta.Name = "txtCodigoEtiqueta"
         Me.txtCodigoEtiqueta.Size = New System.Drawing.Size(45, 20)
         Me.txtCodigoEtiqueta.TabIndex = 3
@@ -204,7 +258,7 @@ Partial Class Catalogo_Productos_Agricolas
         'txtCodigoEnvase
         '
         Me.txtCodigoEnvase.Location = New System.Drawing.Point(97, 77)
-        Me.txtCodigoEnvase.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtCodigoEnvase.Margin = New System.Windows.Forms.Padding(2)
         Me.txtCodigoEnvase.Name = "txtCodigoEnvase"
         Me.txtCodigoEnvase.Size = New System.Drawing.Size(45, 20)
         Me.txtCodigoEnvase.TabIndex = 2
@@ -212,7 +266,7 @@ Partial Class Catalogo_Productos_Agricolas
         'txtCodigoTamaño
         '
         Me.txtCodigoTamaño.Location = New System.Drawing.Point(97, 50)
-        Me.txtCodigoTamaño.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtCodigoTamaño.Margin = New System.Windows.Forms.Padding(2)
         Me.txtCodigoTamaño.Name = "txtCodigoTamaño"
         Me.txtCodigoTamaño.Size = New System.Drawing.Size(45, 20)
         Me.txtCodigoTamaño.TabIndex = 1
@@ -220,7 +274,7 @@ Partial Class Catalogo_Productos_Agricolas
         'txtCodigoCultivo
         '
         Me.txtCodigoCultivo.Location = New System.Drawing.Point(97, 27)
-        Me.txtCodigoCultivo.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtCodigoCultivo.Margin = New System.Windows.Forms.Padding(2)
         Me.txtCodigoCultivo.Name = "txtCodigoCultivo"
         Me.txtCodigoCultivo.Size = New System.Drawing.Size(45, 20)
         Me.txtCodigoCultivo.TabIndex = 0
@@ -434,9 +488,9 @@ Partial Class Catalogo_Productos_Agricolas
         'GpbFormulas
         '
         Me.GpbFormulas.Controls.Add(Me.Grid)
-        Me.GpbFormulas.Location = New System.Drawing.Point(4, 416)
+        Me.GpbFormulas.Location = New System.Drawing.Point(4, 438)
         Me.GpbFormulas.Name = "GpbFormulas"
-        Me.GpbFormulas.Size = New System.Drawing.Size(1058, 226)
+        Me.GpbFormulas.Size = New System.Drawing.Size(1058, 207)
         Me.GpbFormulas.TabIndex = 2
         Me.GpbFormulas.TabStop = False
         '
@@ -455,7 +509,7 @@ Partial Class Catalogo_Productos_Agricolas
         Me.Grid.LockButton = True
         Me.Grid.Name = "Grid"
         Me.Grid.Rows = 1
-        Me.Grid.Size = New System.Drawing.Size(1039, 198)
+        Me.Grid.Size = New System.Drawing.Size(1039, 182)
         Me.Grid.TabIndex = 1
         Me.Grid.UncheckedImage = CType(resources.GetObject("Grid.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -603,55 +657,24 @@ Partial Class Catalogo_Productos_Agricolas
         Me.tssLabelEstado.Name = "tssLabelEstado"
         Me.tssLabelEstado.Size = New System.Drawing.Size(0, 17)
         '
-        'lblClaveProductoSAT
+        'lblDisplayImpuestoIVA
         '
-        Me.lblClaveProductoSAT.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.lblClaveProductoSAT.Location = New System.Drawing.Point(97, 367)
-        Me.lblClaveProductoSAT.Name = "lblClaveProductoSAT"
-        Me.lblClaveProductoSAT.Size = New System.Drawing.Size(294, 13)
-        Me.lblClaveProductoSAT.TabIndex = 247
+        Me.lblDisplayImpuestoIVA.AutoSize = True
+        Me.lblDisplayImpuestoIVA.Location = New System.Drawing.Point(10, 388)
+        Me.lblDisplayImpuestoIVA.Name = "lblDisplayImpuestoIVA"
+        Me.lblDisplayImpuestoIVA.Size = New System.Drawing.Size(30, 13)
+        Me.lblDisplayImpuestoIVA.TabIndex = 249
+        Me.lblDisplayImpuestoIVA.Text = "IVA :"
         '
-        'lblCodigoUnidadSAT
+        'cboImpuestoIVA
         '
-        Me.lblCodigoUnidadSAT.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.lblCodigoUnidadSAT.Location = New System.Drawing.Point(97, 326)
-        Me.lblCodigoUnidadSAT.Name = "lblCodigoUnidadSAT"
-        Me.lblCodigoUnidadSAT.Size = New System.Drawing.Size(294, 13)
-        Me.lblCodigoUnidadSAT.TabIndex = 246
-        '
-        'lblDisplayClaveProductoSAT
-        '
-        Me.lblDisplayClaveProductoSAT.AutoSize = True
-        Me.lblDisplayClaveProductoSAT.Location = New System.Drawing.Point(10, 346)
-        Me.lblDisplayClaveProductoSAT.Name = "lblDisplayClaveProductoSAT"
-        Me.lblDisplayClaveProductoSAT.Size = New System.Drawing.Size(131, 13)
-        Me.lblDisplayClaveProductoSAT.TabIndex = 245
-        Me.lblDisplayClaveProductoSAT.Text = "Clave producto/serv SAT:"
-        '
-        'txtClaveProductoSAT
-        '
-        Me.txtClaveProductoSAT.Location = New System.Drawing.Point(13, 364)
-        Me.txtClaveProductoSAT.MaxLength = 10
-        Me.txtClaveProductoSAT.Name = "txtClaveProductoSAT"
-        Me.txtClaveProductoSAT.Size = New System.Drawing.Size(69, 20)
-        Me.txtClaveProductoSAT.TabIndex = 15
-        '
-        'lblDisplayCodigoUnidadSAT
-        '
-        Me.lblDisplayCodigoUnidadSAT.AutoSize = True
-        Me.lblDisplayCodigoUnidadSAT.Location = New System.Drawing.Point(10, 307)
-        Me.lblDisplayCodigoUnidadSAT.Name = "lblDisplayCodigoUnidadSAT"
-        Me.lblDisplayCodigoUnidadSAT.Size = New System.Drawing.Size(99, 13)
-        Me.lblDisplayCodigoUnidadSAT.TabIndex = 244
-        Me.lblDisplayCodigoUnidadSAT.Text = "Clave unidad SAT :"
-        '
-        'txtCodigoUnidadSAT
-        '
-        Me.txtCodigoUnidadSAT.Location = New System.Drawing.Point(13, 323)
-        Me.txtCodigoUnidadSAT.MaxLength = 10
-        Me.txtCodigoUnidadSAT.Name = "txtCodigoUnidadSAT"
-        Me.txtCodigoUnidadSAT.Size = New System.Drawing.Size(69, 20)
-        Me.txtCodigoUnidadSAT.TabIndex = 14
+        Me.cboImpuestoIVA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboImpuestoIVA.FormattingEnabled = True
+        Me.cboImpuestoIVA.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
+        Me.cboImpuestoIVA.Location = New System.Drawing.Point(97, 385)
+        Me.cboImpuestoIVA.Name = "cboImpuestoIVA"
+        Me.cboImpuestoIVA.Size = New System.Drawing.Size(212, 21)
+        Me.cboImpuestoIVA.TabIndex = 16
         '
         'Catalogo_Productos_Agricolas
         '
@@ -740,4 +763,6 @@ Partial Class Catalogo_Productos_Agricolas
     Friend WithEvents txtClaveProductoSAT As TextBox
     Friend WithEvents lblDisplayCodigoUnidadSAT As Label
     Friend WithEvents txtCodigoUnidadSAT As TextBox
+    Friend WithEvents lblDisplayImpuestoIVA As Label
+    Friend WithEvents cboImpuestoIVA As ComboBox
 End Class

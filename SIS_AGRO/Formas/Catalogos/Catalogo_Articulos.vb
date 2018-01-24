@@ -176,7 +176,7 @@ Public Class Catalogo_Articulos
                     Me.CboEstatus.Enabled = False
                     Me.TxtUnidadVenta.Enabled = True
                     Me.chkInventariable.Enabled = True
-                    Me.chkImpuesto.Enabled = True
+                    Me.cboImpuestoIVA.Enabled = True
                     Me.cboLinea.Enabled = True
                     Me.CboFamilia.Enabled = True
                     Me.TxtPrecio.Enabled = True
@@ -198,7 +198,7 @@ Public Class Catalogo_Articulos
                     Me.CboEstatus.Enabled = True
                     Me.TxtUnidadVenta.Enabled = True
                     Me.chkInventariable.Enabled = True
-                    Me.chkImpuesto.Enabled = True
+                    Me.cboImpuestoIVA.Enabled = True
                     Me.cboLinea.Enabled = True
                     Me.CboFamilia.Enabled = True
                     Me.TxtPrecio.Enabled = True
@@ -303,6 +303,22 @@ Public Class Catalogo_Articulos
         End Try
     End Sub
 
+    Private Sub DesplegarImpuestosIVA()
+        Try
+            Dim oElementos As New Class_SisCatImpuestos
+            With Me.cboImpuestoIVA
+                .DisplayMember = "NOMBRE_IMPUESTO"
+                .ValueMember = "ID_SIS_CAT_IMPUESTOS"
+                Dim dView As New Data.DataView(oElementos.ObtenerElementos)
+                dView.Sort = "NOMBRE_IMPUESTO"
+                .DataSource = dView
+                .SelectedValue = "0" '0=IVA al 0
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarImpuestosIVA", ex)
+        End Try
+    End Sub
+
     Private Sub LlenaElemento(ByVal iCodigo_Elemento As String)
         Try
             Dim oElemento As New Class_CatArticulos
@@ -319,7 +335,10 @@ Public Class Catalogo_Articulos
                     Me.TxtUnidadVenta.Text = .UNIDAD_VENTA
                     'Me.LblNombreUnidad.Text = .NOMBRE_UNIDAD
                     Me.chkInventariable.Checked = CBool(.INVENTARIABLE.ToString)
-                    Me.chkImpuesto.Checked = CBool(.TIENE_IMPUESTO.ToString)
+
+                    'Me.chkImpuesto.Checked = CBool(.TIENE_IMPUESTO.ToString)
+                    Me.cboImpuestoIVA.SelectedValue = .ID_SIS_CAT_IMPUESTOS.ToString
+
                     Me.cboLinea.SelectedValue = .CODIGO_LINEA
                     Me.TxtPrecio.Text = .PRECIO.ToString
                     Me.CboFamilia.SelectedValue = .CODIGO_FAMILIA
@@ -368,7 +387,8 @@ Public Class Catalogo_Articulos
                         '.CODIGO_UNIDAD_VENTA = "NA"
                         .PROTEGIDO = "0"
                         .INVENTARIABLE = Convert.ToInt32(Me.chkInventariable.Checked).ToString
-                        .TIENE_IMPUESTO = Convert.ToInt32(Me.chkImpuesto.Checked).ToString
+                        '.TIENE_IMPUESTO = Convert.ToInt32(Me.chkImpuesto.Checked).ToString
+                        .ID_SIS_CAT_IMPUESTOS = Me.cboImpuestoIVA.SelectedValue.ToString
                         .CODIGO_LINEA = Me.cboLinea.SelectedValue.ToString
                         .CODIGO_FAMILIA = Me.CboFamilia.SelectedValue.ToString
                         .PRECIO = Convert.ToDecimal(Me.TxtPrecio.Text)
@@ -599,12 +619,12 @@ Public Class Catalogo_Articulos
 #End Region
 
 #Region "Eventos Genericos"
-    Private Sub CboEstatus_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboEstatus.KeyDown
+    Private Sub Controles_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboEstatus.KeyDown, CboFamilia.KeyDown, chkInventariable.KeyDown, chkEsSerializable.KeyDown, cboGradoToxicidad.KeyDown, cboLinea.KeyDown, TxtPrecio.KeyDown, cboImpuestoIVA.KeyDown
         txtTAB(e)
     End Sub
 
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtDescripcion.KeyPress, TxtUnidadVenta.KeyPress, cboLinea.KeyPress, CboFamilia.KeyPress, cboGradoToxicidad.KeyPress,
-             txtCodigoUnidadSAT.KeyPress, txtClaveProductoSAT.KeyPress
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtDescripcion.KeyPress, TxtUnidadVenta.KeyPress, cboLinea.KeyPress,
+        CboFamilia.KeyPress, cboGradoToxicidad.KeyPress, txtCodigoUnidadSAT.KeyPress, txtClaveProductoSAT.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -628,15 +648,6 @@ Public Class Catalogo_Articulos
         txtNoBeep(e)
     End Sub
 
-    Private Sub txtNumericos_Validating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs)
-        Dim t As TextBox
-        t = CType(sender, TextBox)
-        If Not IsNumeric(t.Text) Then
-            t.Text = Val(t.Text).ToString
-        Else
-            'Me.ErrorProvider.Clear()
-        End If
-    End Sub
 #End Region
 
 #Region "Keydown específicos"
@@ -647,17 +658,18 @@ Public Class Catalogo_Articulos
 
 #End Region
 
-    Private Sub CboFiltroHoja_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Refrescar()
-    End Sub
-
 #End Region
 
     Private Sub Catalogo_Articulos_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.DesplegarLineas()
-        Me.DesplegarFamilias()
-        Me.DesplegarElementos()
-        Me.DesplegarGradosToxicidad()
+        Try
+            Me.DesplegarLineas()
+            Me.DesplegarFamilias()
+            Me.DesplegarElementos()
+            Me.DesplegarGradosToxicidad()
+            Me.DesplegarImpuestosIVA()
+        Catch ex As Exception
+            HandleError(Me.Name, "Catalogo_Articulos_Load", ex)
+        End Try
     End Sub
 
     Private Sub DesplegarLineas()
@@ -716,43 +728,13 @@ Public Class Catalogo_Articulos
         End If
     End Sub
 
-    Private Sub chkInventariable_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs)
-        txtTAB(e)
-    End Sub
-
-    Private Sub cboImpuesto_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs)
-        txtTAB(e)
-    End Sub
-
-    Private Sub cboLinea_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboLinea.KeyDown
-        txtTAB(e)
-    End Sub
-
-    Private Sub TxtPrecio_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtPrecio.KeyDown
-        If e.KeyCode = Keys.Enter Then
-            txtTAB(e)
-        End If
-    End Sub
-
     Private Sub TxtPrecio_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtPrecio.KeyPress
         txtSoloNumerosDecimales(e, Me.TxtPrecio.Text)
         txtNoBeep(e)
     End Sub
 
-    Private Sub CboFamilia_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboFamilia.KeyDown
-        txtTAB(e)
-    End Sub
-
-    Private Sub chkInventariable_KeyDown_1(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles chkInventariable.KeyDown, chkEsSerializable.KeyDown, chkImpuesto.KeyDown
-        txtTAB(e)
-    End Sub
-
     Private Sub rbtDescripcion_CheckedChanged(sender As Object, e As EventArgs) Handles rbtDescripcion.CheckedChanged
         Me.txtFiltro.Focus()
-    End Sub
-
-    Private Sub cboGradoToxicidad_KeyDown(sender As Object, e As KeyEventArgs) Handles cboGradoToxicidad.KeyDown
-        txtTAB(e)
     End Sub
 
     Private Sub txtCodigoUnidadSAT_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCodigoUnidadSAT.KeyDown

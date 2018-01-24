@@ -92,8 +92,8 @@ Public Class Class_Ventas_Global
     Private _CODIGO_USO_CFDI As String
     Private _RFC_RECEPTOR As String
     Private _CODIGO_MONEDA_SAT As String
-
     Private _CONCEPTO_CANCELACION As String
+    Private _TIENE_IEPS_DESGLOSADO As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -743,6 +743,15 @@ Public Class Class_Ventas_Global
         End Set
     End Property
 
+    Public Property TIENE_IEPS_DESGLOSADO() As Boolean
+        Get
+            Return Me._TIENE_IEPS_DESGLOSADO
+        End Get
+        Set(Value As Boolean)
+            Me._TIENE_IEPS_DESGLOSADO = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -907,6 +916,7 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@CODIGO_METODO_PAGO_EVENTO", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_METODO_PAGO_EVENTO
             sqlParametro = .Parameters.Add("@CODIGO_USO_CFDI", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_USO_CFDI
             sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3) : sqlParametro.Value = "" & Me._CODIGO_MONEDA_SAT
+            sqlParametro = .Parameters.Add("@TIENE_IEPS_DESGLOSADO", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._TIENE_IEPS_DESGLOSADO)
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = sAccion 'INSERTAR,ACTUALIZAR
 
             Try
@@ -1158,8 +1168,8 @@ Public Class Class_Ventas_Global
                     Me._CODIGO_USO_CFDI = "" & dReader("CODIGO_USO_CFDI").ToString
                     Me._RFC_RECEPTOR = "" & dReader("RFC_RECEPTOR").ToString
                     Me._CODIGO_MONEDA_SAT = "" & dReader("CODIGO_MONEDA_SAT").ToString
-
                     Me._CONCEPTO_CANCELACION = "" & dReader("CONCEPTO_CANCELACION").ToString
+                    Me._TIENE_IEPS_DESGLOSADO = CBool(dReader("_TIENE_IEPS_DESGLOSADO").ToString)
 
                     bResultado = True
                 End If
@@ -1339,7 +1349,7 @@ Public Class Class_Ventas_Global
         Try
             sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.CANTIDAD,R.PRECIO,R.PRECIO_TOTAL,R.UNIDAD_VENTA,ISNULL(R.CANTIDAD_KILOS,0) CANTIDAD_KILOS,ISNULL(R.PRECIO_KILOS,0) PRECIO_KILOS,R.IMPUESTO_PORCENTAJE,R.IMPORTE," &
                 "ISNULL(R.IMPORTE_KILOS,0) IMPORTE_KILOS,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_VENTA_DETALLE,R.ES_PRODUCTO_KILOS,R.PRECIO_USD,R.IMPORTE_USD," &
-                "A.CODIGO_PRODUCTO_SERVICIO,A.CODIGO_UNIDAD,R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA,R.PRECIO_TOTAL " &
+                "A.CODIGO_PRODUCTO_SERVICIO,A.CODIGO_UNIDAD,R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA,R.PRECIO_TOTAL,R.ID_SIS_CAT_IMPUESTOS,R.GRADO_TOXICIDAD " &
                 "FROM VENTA_DETALLE R " &
                 "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
                 "WHERE R.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' " &
