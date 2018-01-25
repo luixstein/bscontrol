@@ -1068,7 +1068,7 @@ Module FacturacionElectronica33
             End If
 
             With Cfd
-                .FolioCompleto = oDevolucion.FOLIO_VENTA
+                .FolioCompleto = oDevolucion.FOLIO_DEVOLUCION
                 .Version = Empresa_Sistema.VERSION_ESQUEMA_CFD
                 .Serie = oDevolucion.SERIE
                 .Folio = oDevolucion.FOLIO_NUMERICO.ToString

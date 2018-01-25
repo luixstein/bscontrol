@@ -66,6 +66,7 @@ Public Class Ventas_Movimientos
     Private igyUtilidadTotal As Short = 28
     Private igyUtilidadPorcentaje As Short = 29
     Private iGyID_SIS_CAT_IMPUESTOS As Short = 30
+    Private iGyGRADO_TOXICIDAD As Short = 31
 #End Region
 
 #Region "Columnas grid series"
@@ -775,22 +776,19 @@ Buscar:
     Private Sub FormateaGrid()
         Try
             Me.Grid.AutoRedraw = False
-            Me.Grid.Cols = 31
+            Me.Grid.Cols = 32
 
             Me.Grid.Column(Me.igyCodigo).Width = 75
             Me.Grid.Column(Me.igyDescripcion).Width = 250
             Me.Grid.Column(Me.igyTipoControlInventariable).Width = 25
             Me.Grid.Column(Me.igyCantidad).Width = 90
             Me.Grid.Column(Me.igyPrecio).Width = 100
-
             Me.Grid.Column(Me.igyCantidadKilos).Width = 90
             Me.Grid.Column(Me.igyPrecioKilos).Width = 100
             'Me.Grid.Column(Me.igyImporteKilos).Width = 100
-
             Me.Grid.Column(Me.igyCodigoCentroCosto).Width = 100
             Me.Grid.Column(Me.igyCodigoCentroCosto).Visible = False
             Me.Grid.Column(Me.igyNombreCentroCosto).Width = 220
-
             Me.Grid.Column(Me.igyUnidad).Width = 75
             Me.Grid.Column(Me.igyImpuestoPorcentaje).Width = 70
             Me.Grid.Column(Me.igyImporte).Width = 100
@@ -798,11 +796,12 @@ Buscar:
             Me.Grid.Column(Me.igyImpuestoImporte).Width = 100
             Me.Grid.Column(Me.igyIdOrigen).Width = 100
             Me.Grid.Column(Me.igyEsProductoKilos).Width = 100
-
             Me.Grid.Column(Me.igyCosto).Width = 100
             Me.Grid.Column(Me.igyUtilidadUnitaria).Width = 100
             Me.Grid.Column(Me.igyUtilidadTotal).Width = 100
             Me.Grid.Column(Me.igyUtilidadPorcentaje).Width = 100
+            Me.Grid.Column(Me.iGyID_SIS_CAT_IMPUESTOS).Visible = True 'Ocultar
+            Me.Grid.Column(Me.iGyGRADO_TOXICIDAD).Visible = True 'Ocultar
 
             Me.Grid.Cell(0, Me.igyCodigo).Text = "Código"
             Me.Grid.Cell(0, Me.igyDescripcion).Text = "Descripción"
@@ -827,6 +826,7 @@ Buscar:
             Me.Grid.Cell(0, Me.igyUtilidadTotal).Text = "Utilidad total"
             Me.Grid.Cell(0, Me.igyUtilidadPorcentaje).Text = "% utilidad"
             Me.Grid.Cell(0, Me.iGyID_SIS_CAT_IMPUESTOS).Text = "IVA?"
+            Me.Grid.Cell(0, Me.iGyGRADO_TOXICIDAD).Text = "GradoTox"
 
             Me.Grid.Column(Me.igyNombreCentroCosto).Alignment = FlexCell.AlignmentEnum.LeftCenter
 
@@ -951,6 +951,7 @@ Buscar:
             End If
 
             Me.Grid.Column(Me.iGyID_SIS_CAT_IMPUESTOS).Locked = True
+            Me.Grid.Column(Me.iGyGRADO_TOXICIDAD).Locked = True
 
         Catch ex As Exception
             HandleError(Me.Name, "FormateaGrid", ex)
@@ -1498,6 +1499,8 @@ Buscar:
                         .oVentasDetalle.BASE_IEPS = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IEPS).Text)
                         .oVentasDetalle.BASE_IVA = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IVA).Text)
                         .oVentasDetalle.PRECIO_TOTAL = valorNumerico(Me.Grid.Cell(i, Me.igyPRECIO_TOTAL).Text)
+                        .oVentasDetalle.GRADO_TOXICIDAD = CInt(Me.Grid.Cell(i, Me.iGyGRADO_TOXICIDAD).Text)
+                        .oVentasDetalle.ID_SIS_CAT_IMPUESTOS = Me.Grid.Cell(i, Me.iGyID_SIS_CAT_IMPUESTOS).Text
 
                         If .oVentasDetalle.GrabaRenglon = False Then
                             MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, sProcedure)
@@ -2453,10 +2456,12 @@ CANCELAR:
 
     Private Sub Totales()
         Try
-            Dim i As Integer, dCantidad As Decimal, dPrecio As Decimal, dPrecioOriginal As Decimal, dPorcentajeIVA As Decimal, dImporte As Decimal, dImporteSustitucion As Decimal, iIDOrigen As Integer = 0, dImporteTotal As Double = 0
+            Dim i As Integer, dCantidad As Decimal, dPrecioCapturado As Decimal, dPrecioOriginal As Decimal, dPorcentajeIVA As Decimal, dImporte As Decimal, dImporteSustitucion As Decimal, iIDOrigen As Integer = 0, dImporteTotal As Double = 0
             Dim oArticulo As New Class_CatArticulos
             Dim dIEPS_PORCENTAJE As Decimal = 0, dIEPS_UNITARIO As Decimal = 0, dIEPS_IMPORTE As Decimal = 0, dBASE_IEPS As Decimal = 0, dBASE_IVA As Decimal = 0, dPRECIO_TOTAL As Decimal = 0, dIVA_IMPORTE As Decimal = 0
             Dim dtSubtotal As Decimal = 0, dtIEPS As Decimal = 0, dtImpuesto As Decimal = 0, dtTotal As Decimal = 0
+            Dim sID_SIS_CAT_IMPUESTOS As String = "", sGRADO_TOXICIDAD As String = "0" '0=NO GRAVA IEPS, Es este sistema no hay ieps de modo que lo forzamos a que no tengan para los cálculos.
+            Dim dPrecioConDescuento As Decimal, dImporteConDescuento As Decimal
 
             Me.lblSubtotal.Text = FormatImporteContable(0)
             Me.lblIEPSIncluido.Text = FormatImporteContable(0)
@@ -2475,43 +2480,55 @@ CANCELAR:
                     oArticulo = New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
                     'If oArticulo.ES_PRODUCTO_KILOS = "0" Then
                     If txtLEN(Me.Grid.Cell(i, Me.igyCantidad).Text) = True Then
+
+                        dCantidad = 0 : dPrecioCapturado = 0 : dPrecioConDescuento = 0 : iIDOrigen = 0 : dPorcentajeIVA = 0 : dIEPS_PORCENTAJE = 0 : sID_SIS_CAT_IMPUESTOS = "" : dImporteConDescuento = 0
+                        dBASE_IEPS = 0 : dIEPS_IMPORTE = 0 : dIEPS_UNITARIO = 0 : dBASE_IVA = 0 : dIVA_IMPORTE = 0 : dPRECIO_TOTAL = 0 : dPrecioOriginal = 0 : dImporte = 0 : dImporteTotal = 0 : dImporteSustitucion = 0
+
                         dCantidad = valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text)
-                        dPrecio = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text)
+                        dPrecioCapturado = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text)
+                        dPrecioConDescuento = dPrecioCapturado
                         iIDOrigen = CInt(valorNumericoD(Me.Grid.Cell(i, Me.igyIdOrigen).Text))
                         dPorcentajeIVA = valorNumericoD(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text)
+                        dIEPS_PORCENTAJE = valorNumericoD(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
+                        sID_SIS_CAT_IMPUESTOS = Me.Grid.Cell(i, Me.iGyID_SIS_CAT_IMPUESTOS).Text
+                        sGRADO_TOXICIDAD = Me.Grid.Cell(i, Me.iGyGRADO_TOXICIDAD).Text
 
-                        dIEPS_PORCENTAJE = CDec(valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text))
-                        dIEPS_UNITARIO = CDec(Redondear(dPrecio * (dIEPS_PORCENTAJE / 100), 4))
+                        dImporteConDescuento = RedondearD((dCantidad * dPrecioConDescuento), 2)
 
-                        dBASE_IEPS = RedondearD((dPrecio * dCantidad), 2)
+                        If sGRADO_TOXICIDAD <> "0" Then
+                            dBASE_IEPS = dImporteConDescuento
+                            dIEPS_IMPORTE = RedondearD(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2)
+                            dIEPS_UNITARIO = CDec(Redondear(dPrecioCapturado * (dIEPS_PORCENTAJE / 100), 4))
+                        End If
 
-                        dIEPS_IMPORTE = RedondearD(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2)
-                        dBASE_IVA = dIEPS_IMPORTE + dBASE_IEPS
-                        dIVA_IMPORTE = RedondearD(dBASE_IVA * ((dPorcentajeIVA / 100)), 2)
-                        dPRECIO_TOTAL = dPrecio
+                        If sID_SIS_CAT_IMPUESTOS <> "N" Then 'N=No grava iva, si es <>N = Si grava iva ya sea al 0,16,Exento(aún siendo exento ó 0 hay que llenar la base iva)
+                            dBASE_IVA = dImporteConDescuento + dIEPS_IMPORTE
+                            dIVA_IMPORTE = RedondearD(dBASE_IVA * ((dPorcentajeIVA / 100)), 2)
+                        End If
 
+                        dPRECIO_TOTAL = dPrecioCapturado
+
+                        If Me.bClienteEsContribuyenteIEPS = False And dPrecioCapturado > 0 Then 'Cuando no es contribuyente se le adjunta al precio el ieps, es decir se le incluye
+                            dPRECIO_TOTAL = RedondearD(dPrecioCapturado + dIEPS_UNITARIO, 3)
+                        End If
+
+                        Me.Grid.Cell(i, Me.igyPRECIO_TOTAL).Text = dPRECIO_TOTAL.ToString
                         Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text = dIEPS_UNITARIO.ToString
                         Me.Grid.Cell(i, Me.igyBASE_IEPS).Text = dBASE_IEPS.ToString
                         Me.Grid.Cell(i, Me.igyIEPS_IMPORTE).Text = dIEPS_IMPORTE.ToString
                         Me.Grid.Cell(i, Me.igyBASE_IVA).Text = dBASE_IVA.ToString
                         Me.Grid.Cell(i, Me.igyImpuestoImporte).Text = dIVA_IMPORTE.ToString
 
-                        If Me.bClienteEsContribuyenteIEPS = False And dPrecio > 0 Then 'Cuando no es contribuyente se le adjunta al precio el ieps, es decir se le incluye
-                            dPRECIO_TOTAL = RedondearD(dPrecio + dIEPS_UNITARIO, 3)
-                        End If
-
-                        Me.Grid.Cell(i, Me.igyPRECIO_TOTAL).Text = dPRECIO_TOTAL.ToString
-
                         'If Me.LblEstatus.Text <> "N" Then
                         If Me.LblEstatus.Text <> "N" AndAlso sTipoVenta <> "NM" Then
-                            dPrecioOriginal = Me.oVenta.ObtenerPrecioOriginal(iIDOrigen)
+                            dPrecioOriginal = CDec(Me.oVenta.ObtenerPrecioOriginal(iIDOrigen))
                         Else
                             dPrecioOriginal = 0 'dPrecio
                         End If
 
                         'If dCantidad > 0 Then
-                        dImporte = RedondearD((dPrecio * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD) 'no hacemos nada con este valor de momento
-                        dImporteTotal = RedondearD((dPRECIO_TOTAL * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                        dImporte = RedondearD((dCantidad * dPrecioCapturado), Empresa_Sistema.DECIMALES_CONTABILIDAD) 'no hacemos nada con este valor de momento
+                        dImporteTotal = RedondearD((dCantidad * dPRECIO_TOTAL), Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
                         dImporteSustitucion = RedondearD((dPrecioOriginal * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD)
                         dImporteSustitucion = valorNumericoD(RedondearD(dImporteSustitucion * ((dPorcentajeIVA / 100) + 1), Empresa_Sistema.DECIMALES_CONTABILIDAD).ToString)
@@ -2868,6 +2885,7 @@ LlenaLinea:
 
                             Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Text = oArticulo.IMPUESTO_PORCENTAJE.ToString
                             Me.Grid.Cell(Renglon, Me.iGyID_SIS_CAT_IMPUESTOS).Text = oArticulo.ID_SIS_CAT_IMPUESTOS
+                            Me.Grid.Cell(Renglon, Me.iGyGRADO_TOXICIDAD).Text = oArticulo.GRADO_TOXICIDAD
 
                             'If oArticulos.TIENE_IMPUESTO = "1" Then
                             '    Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Text = Plaza.Impuesto_Porcentaje.ToString

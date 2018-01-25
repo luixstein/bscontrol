@@ -42,6 +42,8 @@ Public Class Frm_CXC_Devoluciones
     Private igyIEPS_IMPORTE As Short = 14
     Private igyBASE_IEPS As Short = 15
     Private igyBASE_IVA As Short = 16
+    Private iGyID_SIS_CAT_IMPUESTOS As Short = 17
+    Private iGyGRADO_TOXICIDAD As Short = 18
 #End Region
 
 #Region "Columnas grid series"
@@ -365,22 +367,31 @@ busca:
     Private Sub FormateaGrid()
         Try
             Me.Grid.AutoRedraw = False
-            Me.Grid.Cols = 17
+            Me.Grid.Cols = 19
 
             Me.Grid.Column(Me.igyCodigo).Width = 75
-            Me.Grid.Column(Me.igyDescripcion).Width = 250
             Me.Grid.Column(Me.igyTipoControlInventariable).Width = 25
+            Me.Grid.Column(Me.igyDescripcion).Width = 250
             Me.Grid.Column(Me.igyCantidad).Width = 90
             Me.Grid.Column(Me.igyPrecio).Width = 100
+            Me.Grid.Column(Me.igyPRECIO_TOTAL).Width = 100
             Me.Grid.Column(Me.igyUnidad).Width = 75
             Me.Grid.Column(Me.igyImpuestoPorcentaje).Width = 70
             Me.Grid.Column(Me.igyImporte).Width = 100
-            Me.Grid.Column(Me.igyImpuestoImporte).Width = 100
-            Me.Grid.Column(Me.igyIdOrigen).Width = 100
+            Me.Grid.Column(Me.igyImpuestoImporte).Visible = False
+            Me.Grid.Column(Me.igyIdOrigen).Visible = False
+            Me.Grid.Column(Me.igyIEPS_PORCENTAJE).Visible = False
+            Me.Grid.Column(Me.igyIEPS_UNITARIO).Visible = False
+            Me.Grid.Column(Me.igyIEPS_IMPORTE).Visible = False
+            Me.Grid.Column(Me.igyBASE_IEPS).Visible = False
+            Me.Grid.Column(Me.igyBASE_IVA).Visible = False
+
+            Me.Grid.Column(Me.iGyID_SIS_CAT_IMPUESTOS).Visible = True 'Ocultar
+            Me.Grid.Column(Me.iGyGRADO_TOXICIDAD).Visible = True 'Ocultar
 
             Me.Grid.Cell(0, Me.igyCodigo).Text = "Código"
-            Me.Grid.Cell(0, Me.igyDescripcion).Text = "Descripción"
             Me.Grid.Cell(0, Me.igyTipoControlInventariable).Text = "Inv"
+            Me.Grid.Cell(0, Me.igyDescripcion).Text = "Descripción"
             Me.Grid.Cell(0, Me.igyCantidad).Text = "Cant devuelta"
             Me.Grid.Cell(0, Me.igyPrecio).Text = "Precio"
             Me.Grid.Cell(0, Me.igyPRECIO_TOTAL).Text = "Precio total"
@@ -389,6 +400,13 @@ busca:
             Me.Grid.Cell(0, Me.igyImporte).Text = "Importe"
             Me.Grid.Cell(0, Me.igyImpuestoImporte).Text = "IVA"
             Me.Grid.Cell(0, Me.igyIdOrigen).Text = "Id Articulo"
+            Me.Grid.Cell(0, Me.igyIEPS_PORCENTAJE).Text = "Ieps%"
+            Me.Grid.Cell(0, Me.igyIEPS_UNITARIO).Text = "IepsUnit"
+            Me.Grid.Cell(0, Me.igyIEPS_IMPORTE).Text = "IepsImpte"
+            Me.Grid.Cell(0, Me.igyBASE_IEPS).Text = "BASE_IEPS"
+            Me.Grid.Cell(0, Me.igyBASE_IVA).Text = "BASE_IVA"
+            Me.Grid.Cell(0, Me.iGyID_SIS_CAT_IMPUESTOS).Text = "IVA?"
+            Me.Grid.Cell(0, Me.iGyGRADO_TOXICIDAD).Text = "GradoTox"
 
             Me.Grid.Column(Me.igyCantidad).Mask = FlexCell.MaskEnum.Numeric
             Me.Grid.Column(Me.igyCantidad).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
@@ -426,13 +444,15 @@ busca:
             Me.Grid.Column(Me.igyUnidad).Locked = True
             Me.Grid.Column(Me.igyImpuestoPorcentaje).Locked = True
             Me.Grid.Column(Me.igyImporte).Locked = True
-            Me.Grid.Column(Me.igyImpuestoImporte).Visible = False
-            Me.Grid.Column(Me.igyIdOrigen).Visible = False
-            Me.Grid.Column(Me.igyIEPS_PORCENTAJE).Visible = False
-            Me.Grid.Column(Me.igyIEPS_UNITARIO).Visible = False
-            Me.Grid.Column(Me.igyIEPS_IMPORTE).Visible = False
-            Me.Grid.Column(Me.igyBASE_IEPS).Visible = False
-            Me.Grid.Column(Me.igyBASE_IVA).Visible = False
+            Me.Grid.Column(Me.igyImpuestoImporte).Locked = True
+            Me.Grid.Column(Me.igyIdOrigen).Locked = True
+            Me.Grid.Column(Me.igyIEPS_PORCENTAJE).Locked = True
+            Me.Grid.Column(Me.igyIEPS_UNITARIO).Locked = True
+            Me.Grid.Column(Me.igyIEPS_IMPORTE).Locked = True
+            Me.Grid.Column(Me.igyBASE_IEPS).Locked = True
+            Me.Grid.Column(Me.igyBASE_IVA).Locked = True
+            Me.Grid.Column(Me.iGyID_SIS_CAT_IMPUESTOS).Locked = True
+            Me.Grid.Column(Me.iGyGRADO_TOXICIDAD).Locked = True
 
 
         Catch ex As Exception
@@ -755,6 +775,7 @@ busca:
             If Me.Validar = False Then
                 Return False
             End If
+
             If Me.ValidaNumerosSerie = False Then
                 Return False
             End If
@@ -835,6 +856,8 @@ busca:
                             End If
                         End If
                         .oDetalle.LISTA_SERIES = sListaSeries
+                        .oDetalle.GRADO_TOXICIDAD = CInt(Me.Grid.Cell(i, Me.iGyGRADO_TOXICIDAD).Text)
+                        .oDetalle.ID_SIS_CAT_IMPUESTOS = Me.Grid.Cell(i, Me.iGyID_SIS_CAT_IMPUESTOS).Text
 
                         If .oDetalle.GrabaRenglon = False Then
                             MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, sProcedure)
@@ -1220,7 +1243,7 @@ busca_serie:
         Try
             If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios(Me.oDocumento.CODIGO_DOCUMENTO, Me.txtAlmacen.Text) = False Then
                 MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, Me.Text)
-                Exit Function
+                Return False
             End If
 
             If Me.lblEstatus.Text <> "N" Then
