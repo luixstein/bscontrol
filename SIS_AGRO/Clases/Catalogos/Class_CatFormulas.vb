@@ -335,7 +335,26 @@ Public Class Class_CatFormulas
             da.Fill(dTabla)
             da.Dispose()
         Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "ObtenerDetalleOrdenCompra", ex)
+            HandleError(Me.Nombre_Catalogo, "ObtenerDetalle", ex)
+        End Try
+        Return dTabla
+    End Function
+
+    Public Function ObtenerDetalleParaTransformaciones(ByVal sCodigoArticulo As String, ByVal sAlmacen As String) As System.Data.DataTable
+        Dim dTabla As New DataTable("ingredientes"), da As SqlDataAdapter
+        Dim sQL As String
+        sQL = "SELECT I.CODIGO_ARTICULO,A.DESCRIPCION,A.UNIDAD_VENTA,I.CANTIDAD,E.EXISTENCIA," & _
+        "CASE WHEN E.ULTIMO_COSTO > 0 THEN E.ULTIMO_COSTO WHEN E.ULTIMO_COSTO = 0 THEN A.PRECIO END AS COSTO," & _
+        "((CASE WHEN E.ULTIMO_COSTO > 0 THEN E.ULTIMO_COSTO WHEN E.ULTIMO_COSTO = 0 THEN A.PRECIO END) * I.CANTIDAD) AS TOTAL  " & _
+        "FROM CAT_FORMULAS_DETALLE I INNER JOIN CAT_FORMULAS F ON(I.CODIGO_FORMULA=F.CODIGO_FORMULA) INNER JOIN CAT_ARTICULOS A ON(I.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
+        "INNER JOIN INVENTARIO_EXISTENCIA_ARTICULOS E ON(I.CODIGO_ARTICULO=E.CODIGO_ARTICULO) WHERE F.CODIGO_ARTICULO ='" & sCodigoArticulo & "' AND E.CODIGO_ALMACEN = '" & sAlmacen & "' ORDER BY I.ID_FORMULA_DETALLE"
+
+        Try
+            da = New SqlDataAdapter(sQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtenerDetalleParaTransformaciones", ex)
         End Try
         Return dTabla
     End Function

@@ -916,6 +916,12 @@
     <Compile Include="Formas\Contabilidad\ProyectoSiembra.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\Inventarios\Transformaciones.designer.vb">
+      <DependentUpon>Transformaciones.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Inventarios\Transformaciones.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\Nomina\AfiliacionIMSS\Frm_Nomina_AltaBajaIntegracionSUA.Designer.vb">
       <DependentUpon>Frm_Nomina_AltaBajaIntegracionSUA.vb</DependentUpon>
     </Compile>
@@ -2020,6 +2026,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\CentrosCostos\InventariosDetalleCuentasContables.resx">
       <DependentUpon>InventariosDetalleCuentasContables.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Inventarios\Transformaciones.resx">
+      <DependentUpon>Transformaciones.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Inventarios\Inventarios_Movimientos.resx">
       <DependentUpon>Inventarios_Movimientos.vb</DependentUpon>

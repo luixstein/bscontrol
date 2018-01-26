@@ -62,6 +62,7 @@ Partial Public Class AppMenu
         Me.FamiliasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MnuCatInvLineas = New System.Windows.Forms.ToolStripMenuItem()
         Me.UnidadesDeVentaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.FormulasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.NominaToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ÁreasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConceptosDeActividadesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -222,7 +223,7 @@ Partial Public Class AppMenu
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
-        Me.FormulasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TransformacionesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -488,6 +489,12 @@ Partial Public Class AppMenu
         Me.UnidadesDeVentaToolStripMenuItem.Name = "UnidadesDeVentaToolStripMenuItem"
         Me.UnidadesDeVentaToolStripMenuItem.Size = New System.Drawing.Size(207, 26)
         Me.UnidadesDeVentaToolStripMenuItem.Text = "&Unidades de venta"
+        '
+        'FormulasToolStripMenuItem
+        '
+        Me.FormulasToolStripMenuItem.Name = "FormulasToolStripMenuItem"
+        Me.FormulasToolStripMenuItem.Size = New System.Drawing.Size(207, 26)
+        Me.FormulasToolStripMenuItem.Text = "Formulas"
         '
         'NominaToolStripMenuItem1
         '
@@ -1123,7 +1130,7 @@ Partial Public Class AppMenu
         '
         'MenuInventarios
         '
-        Me.MenuInventarios.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MovimientosToolStripMenuItem, Me.MnuInvReportes})
+        Me.MenuInventarios.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MovimientosToolStripMenuItem, Me.TransformacionesToolStripMenuItem, Me.MnuInvReportes})
         Me.MenuInventarios.Name = "MenuInventarios"
         Me.MenuInventarios.Size = New System.Drawing.Size(93, 24)
         Me.MenuInventarios.Tag = "0006"
@@ -1132,7 +1139,7 @@ Partial Public Class AppMenu
         'MovimientosToolStripMenuItem
         '
         Me.MovimientosToolStripMenuItem.Name = "MovimientosToolStripMenuItem"
-        Me.MovimientosToolStripMenuItem.Size = New System.Drawing.Size(170, 26)
+        Me.MovimientosToolStripMenuItem.Size = New System.Drawing.Size(200, 26)
         Me.MovimientosToolStripMenuItem.Tag = "0047"
         Me.MovimientosToolStripMenuItem.Text = "&Movimientos"
         '
@@ -1140,7 +1147,7 @@ Partial Public Class AppMenu
         '
         Me.MnuInvReportes.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MnuInvRepAuxiliar, Me.MnuInvRepExistencias, Me.InvRptGlobalDetalle, Me.LotesDeCostosToolStripMenuItem})
         Me.MnuInvReportes.Name = "MnuInvReportes"
-        Me.MnuInvReportes.Size = New System.Drawing.Size(170, 26)
+        Me.MnuInvReportes.Size = New System.Drawing.Size(200, 26)
         Me.MnuInvReportes.Tag = "0069"
         Me.MnuInvReportes.Text = "&Consultas"
         '
@@ -1518,11 +1525,11 @@ Partial Public Class AppMenu
         Me.pbLogo.TabStop = False
         Me.pbLogo.Visible = False
         '
-        'FormulasToolStripMenuItem
+        'TransformacionesToolStripMenuItem
         '
-        Me.FormulasToolStripMenuItem.Name = "FormulasToolStripMenuItem"
-        Me.FormulasToolStripMenuItem.Size = New System.Drawing.Size(207, 26)
-        Me.FormulasToolStripMenuItem.Text = "Formulas"
+        Me.TransformacionesToolStripMenuItem.Name = "TransformacionesToolStripMenuItem"
+        Me.TransformacionesToolStripMenuItem.Size = New System.Drawing.Size(200, 26)
+        Me.TransformacionesToolStripMenuItem.Text = "Transformaciones"
         '
         'AppMenu
         '
@@ -1753,4 +1760,5 @@ Partial Public Class AppMenu
     Friend WithEvents SaldosPropietariosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents CalificaPropietarioToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents FormulasToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents TransformacionesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class
