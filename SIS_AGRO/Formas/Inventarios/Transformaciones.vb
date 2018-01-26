@@ -61,45 +61,6 @@ Public Class Transformaciones
     Private Sub CmbDocumento_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
         txtTAB(e)
     End Sub
-
-    Private Sub TxtCodigoArticulo_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoArticulo.KeyDown
-        Dim oArticulo As New Class_CatArticulos
-        Dim sText As String
-
-        Select Case e.KeyCode
-            Case Keys.F6
-BuscarArticulo:
-                sText = oArticulo.BusquedaVisual_PorDescripcion
-
-                If Me.ValidaArticulo(sText) = False Then
-                    GoTo BuscarArticulo
-                End If
-                Me.TxtCodigoArticulo.Text = sText
-
-            Case Keys.Enter
-                oArticulo = New Class_CatArticulos(Me.TxtCodigoArticulo.Text)
-                If oArticulo.Existe = False Then
-                    Me.LblNombreProductoFinal.Text = "" : GoTo BuscarArticulo : Exit Sub
-                End If
-
-                If Me.ValidaArticulo(Me.TxtCodigoArticulo.Text) = False Then
-                    Me.LblNombreProductoFinal.Text = "" : GoTo BuscarArticulo : Exit Sub
-                End If
-
-                LblNombreProductoFinal.Text = oArticulo.DESCRIPCION
-                Me.ConsultaIngredientes()
-
-                txtTAB(e)
-        End Select
-    End Sub
-
-    Private Sub TxtConcepto_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtConcepto.KeyDown
-        Select Case e.KeyCode
-            Case Keys.Enter
-
-        End Select
-    End Sub
-
     Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtConcepto.KeyPress, TxtCodigoArticulo.KeyPress
         txtNoBeep(e)
     End Sub
@@ -110,6 +71,55 @@ BuscarArticulo:
         txtNoBeep(e)
     End Sub
 
+    Private Sub TxtCodigoArticulo_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoArticulo.KeyDown
+        Dim oArticulo As New Class_CatArticulos
+        Dim sText As String
+
+        Select Case e.KeyCode
+            Case Keys.F6
+BuscarArticulo:
+                sText = oArticulo.BusquedaVisual_PorDescripcion
+
+                If Me.ValidaArticulo(sText) = True Then
+                    Me.TxtCodigoArticulo.Text = sText
+                End If
+
+            Case Keys.Enter
+                oArticulo = New Class_CatArticulos(Me.TxtCodigoArticulo.Text)
+                If oArticulo.Existe = False Then
+                    Me.LblNombreProductoFinal.Text = "" : GoTo BuscarArticulo : Exit Sub
+                End If
+
+                If Me.ValidaArticulo(Me.TxtCodigoArticulo.Text) = True Then
+                    LblNombreProductoFinal.Text = oArticulo.DESCRIPCION
+                    Me.Consultar()
+                    txtTAB(e)
+                End If
+
+        End Select
+    End Sub
+
+    Private Sub TxtConcepto_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtConcepto.KeyDown
+        Select Case e.KeyCode
+            Case Keys.Enter
+
+        End Select
+    End Sub
+
+    Private Sub TxtCantidad_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCantidad.KeyDown
+        Select Case e.KeyCode
+            Case Keys.Enter
+                If valorNumerico(Me.TxtCantidad.Text) = 0 Then
+                    MsgBox("La cantidad debe ser mayor a 0.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.TxtCantidad.Focus()
+                    Exit Sub
+                End If
+
+                Me.Totales()
+                txtTAB(e)
+
+        End Select
+    End Sub
 #End Region
 
 #Region "Métodos y procedimientos"
@@ -118,12 +128,12 @@ BuscarArticulo:
         Try
             Me.TxtCodigoArticulo.Text = ""
             Me.LblNombreProductoFinal.Text = ""
-            Me.TxtExistencia.Text = ""
-            Me.TxtCantidad.Text = ""
-            Me.TxtCosto.Text = ""
-            Me.TxtCostoTotal.Text = ""
+            Me.TxtExistencia.Text = "0.00"
+            Me.TxtCantidad.Text = "0.00"
+            Me.TxtCosto.Text = "$ 0.00"
+            Me.TxtCostoTotal.Text = "$ 0.00"
             Me.TxtConcepto.Text = ""
-            Me.TxtTotal.Text = ""
+            Me.TxtTotal.Text = "$ 0.00"
             Me.Grid1.DataSource = Nothing
 
             Me.TxtExistencia.ReadOnly = True
@@ -157,94 +167,51 @@ BuscarArticulo:
         Dim i As Integer
         Dim sListaSeries As String = ""
 
-        'If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString, Me.CboAlmacenDestino.SelectedValue.ToString) = False Then
-        '    'MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar la transferencia.", MsgBoxStyle.Information, Me.Text)
-        '    Exit Function
-        'End If
-
-        If SiTieneRenglones() = False Then
-            MsgBox("Asígne los artículos del movimiento.", MsgBoxStyle.Exclamation, Me.Text)
+        If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
+            'MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar la transferencia.", MsgBoxStyle.Information, Me.Text)
             Exit Function
         End If
 
-        If Me.SiTieneCantidad() = False Then
-            MsgBox("La cantidad de los artículos debe de ser mayor a cero.", MsgBoxStyle.Exclamation, Me.Text)
-            Exit Function
+        If Me.ValidaExistenciaIngredientes() = False Then
+            Return bResultado
         End If
 
         Me.Totales()
 
-        Select Case Me.Estado
-            Case enumEstados.NUEVO, enumEstados.GRABADO
-                Me.oInventarios = New Class_Inventarios_Global
-                Try
-                    With oInventarios
-                        .CODIGO_ALMACEN1 = "" & Me.CboAlmacen.SelectedValue.ToString()
-                        .CONCEPTO = "" & Me.TxtConcepto.Text
-                        .CODIGO_USUARIO = CInt("" & Usuario.Codigo_Usuario)
-                        .CODIGO_PLAZA = Usuario.Codigo_Plaza
-
-                        Select Case Me.Estado
-                            Case enumEstados.NUEVO
-                                If .Insertar() = False Then
-                                    MsgBox("Error al tratar de insertar el movimiento de inventario.", MsgBoxStyle.Exclamation, Me.Text)
-                                    Exit Function
-                                End If
-
-                            Case enumEstados.GRABADO
-                                If Me.oInventarios.Actualizar() = False Then
-                                    MsgBox("Error al tratar de actualizar el movimiento de inventario.", MsgBoxStyle.Exclamation, Me.Text)
-                                    Exit Function
-                                End If
-                        End Select
-
-                        'se graba el detalle
-                        For i = 1 To Me.Grid1.Rows - 1
-                            If txtLEN(Me.Grid1.Cell(i, Me.iGyCodigo).Text) = True Then
-                                .NuevoRenglon()
-                                .oInventariosDetalle.FOLIO_MOVIMIENTO_INVENTARIO = .FOLIO_MOVIMIENTO_INVENTARIO
-                                .oInventariosDetalle.CODIGO_ARTICULO = Me.Grid1.Cell(i, Me.iGyCodigo).Text
-                                .oInventariosDetalle.CANTIDAD = valorNumerico(Me.Grid1.Cell(i, Me.iGyCantidad).Text)
-                                .oInventariosDetalle.COSTO = valorNumerico(Me.Grid1.Cell(i, Me.iGyCosto).Text)
-
-                                .oInventariosDetalle.LISTA_SERIES = sListaSeries
-
-                                If .oInventariosDetalle.GrabaRenglon() = False Then
-                                    MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Text)
-                                    Exit Function
-                                End If
-
-                                sListaSeries = ""
-                            End If
-                        Next
-
-                        Dim sListaCuentas As String = ""
-
-                        bResultado = True
-                        If Me.bAplicando = False Then
-                            MsgBox("Movimiento de inventario grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
-                        End If
-                    End With
-                Catch ex As Exception
-                    HandleError(Me.Name, "Grabar", ex)
-                Finally
-                    Me.oInventarios = Nothing
-                End Try
-        End Select
-
-            Return bResultado
     End Function
 
+    Private Sub Consultar()
+        Try
+            Me.ConsultaExistenciaProductoFinal()
+            Me.TxtCantidad.Text = "1.00"
+            Me.ConsultaIngredientes()
+            Me.Totales()
+
+        Catch ex As Exception
+            HandleError(Me.Text, "Consultar", ex)
+        End Try
+    End Sub
+
     Private Sub ConsultaIngredientes()
-        Dim oFormula As New Class_CatFormulas()
+        Dim oFormula As New Class_CatFormulas
 
         Try
             Me.Grid1.DataSource = oFormula.ObtenerDetalleParaTransformaciones(Me.TxtCodigoArticulo.Text, Me.CboAlmacen.SelectedValue.ToString)
             Me.FormateaGrid()
-            Me.Totales()
 
         Catch ex As Exception
             HandleError(Me.Text, "ConsultarIngredientes", ex)
+        End Try
+
+    End Sub
+
+    Private Sub ConsultaExistenciaProductoFinal()
+        Try
+            Dim sql As New Class_find("SELECT EXISTENCIA FROM INVENTARIO_EXISTENCIA_ARTICULOS WHERE CODIGO_ARTICULO = '" & Me.TxtCodigoArticulo.Text & "' AND CODIGO_ALMACEN = '" & Me.CboAlmacen.SelectedValue.ToString & "'")
+            Me.TxtExistencia.Text = sql.Result1.ToString
+
+        Catch ex As Exception
+            HandleError(Me.Text, "ConsultaExistenciaProductoFinal", ex)
         End Try
     End Sub
 
@@ -386,7 +353,8 @@ BuscarArticulo:
                 End If
             Next I
 
-            Me.TxtTotal.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyTotal))).ToString
+            Me.TxtCosto.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyTotal))).ToString
+            Me.TxtCostoTotal.Text = FormatImporteContable(valorNumerico(Me.TxtCosto.Text) * valorNumerico(Me.TxtCantidad.Text)).ToString
 
         Catch ex As Exception
             HandleError(Me.Name, "Totales", ex)
@@ -456,6 +424,44 @@ BuscarArticulo:
         End If
 
         bResultado = True
+        Return bResultado
+    End Function
+
+    Private Function ValidaExistenciaIngredientes() As Boolean
+        Const sProcedure = "ValidaExistenciaIngredientes"
+        Dim bResultado As Boolean = False
+        Dim dCantidadSumadaPorArticulos As Double, dExistencia As Double
+        Dim i As Integer, sCodigoArticulo As String = ""
+
+        Try
+            For i = 1 To Me.Grid1.Rows - 1
+                sCodigoArticulo = Me.Grid1.Cell(i, Me.iGyCodigo).Text
+                If txtLEN(sCodigoArticulo) = True Then
+                    Me.oArticulos = New Class_CatArticulos(sCodigoArticulo)
+                    If Me.oArticulos.INVENTARIABLE <> "0" Then
+                        dExistencia = oInventarios.Existencia(sCodigoArticulo, Me.CboAlmacen.SelectedValue.ToString)
+                        If dExistencia <= 0 Then
+                            Me.Show()
+                            MsgBox("El artículo " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " no tiene existencia. ", MsgBoxStyle.Exclamation, sProcedure)
+                            Exit Function
+                        Else
+                            dCantidadSumadaPorArticulos = CDbl(Me.Grid1.Cell(i, Me.iGyCantidad).Text)
+
+                            If valorNumerico(dCantidadSumadaPorArticulos.ToString) > valorNumerico(dExistencia.ToString) Then
+                                Me.Show()
+                                MsgBox("El Artículo " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " no tiene suficiente existencia.", MsgBoxStyle.Exclamation, sProcedure)
+                                Exit Function
+                            End If
+                        End If
+                    End If
+                End If
+            Next i
+
+            bResultado = True
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+
         Return bResultado
     End Function
 
