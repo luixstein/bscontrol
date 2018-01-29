@@ -46,6 +46,7 @@ Partial Class Transformaciones
         Me.LblCosto = New System.Windows.Forms.Label()
         Me.LblCostoTotal = New System.Windows.Forms.Label()
         Me.TxtTotal = New System.Windows.Forms.TextBox()
+        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
         Me.tsMenu.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -266,11 +267,22 @@ Partial Class Transformaciones
         Me.TxtTotal.Size = New System.Drawing.Size(175, 22)
         Me.TxtTotal.TabIndex = 394
         '
+        'ComboBox1
+        '
+        Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox1.FormattingEnabled = True
+        Me.ComboBox1.Location = New System.Drawing.Point(466, 37)
+        Me.ComboBox1.Margin = New System.Windows.Forms.Padding(4)
+        Me.ComboBox1.Name = "ComboBox1"
+        Me.ComboBox1.Size = New System.Drawing.Size(280, 24)
+        Me.ComboBox1.TabIndex = 395
+        '
         'Transformaciones
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1102, 609)
+        Me.Controls.Add(Me.ComboBox1)
         Me.Controls.Add(Me.TxtTotal)
         Me.Controls.Add(Me.LblCostoTotal)
         Me.Controls.Add(Me.LblCosto)
@@ -325,4 +337,5 @@ Partial Class Transformaciones
     Friend WithEvents LblCosto As System.Windows.Forms.Label
     Friend WithEvents LblCostoTotal As System.Windows.Forms.Label
     Friend WithEvents TxtTotal As System.Windows.Forms.TextBox
+    Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
 End Class

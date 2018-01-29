@@ -3,29 +3,22 @@
 Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Transformaciones
-    Private Estado As enumEstados
     Private oInventarios As New Class_Inventarios_Global
     Private oDocumentos As Class_Cat_tiposDocumentos
-    Private oArticulos As New Class_CatArticulos
+    Private oArticulo As New Class_CatArticulos
 
 #Region "Columnas grid"
     Private iGyCodigo As Integer = 1
     Private iGyDescripcion As Integer = 2
     Private iGyUnidad As Integer = 3
-    Private iGyCantidad As Integer = 4
-    Private iGyExistencia As Integer = 5
-    Private iGyCosto As Integer = 6
-    Private iGyTotal As Integer = 7
+    Private iGyCantidadOriginal As Integer = 4
+    Private iGyCantidadTotal As Integer = 5
+    Private iGyExistencia As Integer = 6
+    Private iGyCosto As Integer = 7
+    Private iGyTotal As Integer = 8
 #End Region
 
     Private bAplicando As Boolean
-
-    Private Enum enumEstados
-        NUEVO
-        GRABADO
-        APLICADO
-        CANCELADO
-    End Enum
 
 #Region "Propiedades"
 
@@ -37,9 +30,13 @@ Public Class Transformaciones
     End Sub
 
     Private Sub tsbGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbGrabar.Click
-        If Me.Grabar() = True Then
- 
-        End If
+        For i As Integer = 1 To Grid1.Rows - 1
+            Me.Grid1.Cell(i, Me.iGyCantidadTotal).Text = (valorNumerico(Me.Grid1.Cell(i, Me.iGyCantidadOriginal).Text) * valorNumerico(Me.TxtCantidad.Text)).ToString
+            Me.Grid1.Cell(i, Me.iGyTotal).Text = (valorNumerico(Me.Grid1.Cell(i, Me.iGyCantidadTotal).Text) * valorNumerico(Me.Grid1.Cell(i, Me.iGyCosto).Text)).ToString
+        Next
+        'If Me.Grabar() = True Then
+
+        'End If
     End Sub
 
     Private Sub tsbSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSalir.Click
@@ -72,21 +69,21 @@ Public Class Transformaciones
     End Sub
 
     Private Sub TxtCodigoArticulo_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoArticulo.KeyDown
-        Dim oArticulo As New Class_CatArticulos
         Dim sText As String
 
         Select Case e.KeyCode
             Case Keys.F6
 BuscarArticulo:
-                sText = oArticulo.BusquedaVisual_PorDescripcion
+                Me.oArticulo = New Class_CatArticulos
+                sText = Me.oArticulo.BusquedaVisual_PorDescripcion
 
                 If Me.ValidaArticulo(sText) = True Then
                     Me.TxtCodigoArticulo.Text = sText
                 End If
 
             Case Keys.Enter
-                oArticulo = New Class_CatArticulos(Me.TxtCodigoArticulo.Text)
-                If oArticulo.Existe = False Then
+                Me.oArticulo = New Class_CatArticulos(Me.TxtCodigoArticulo.Text)
+                If Me.oArticulo.Existe = False Then
                     Me.LblNombreProductoFinal.Text = "" : GoTo BuscarArticulo : Exit Sub
                 End If
 
@@ -130,8 +127,8 @@ BuscarArticulo:
             Me.LblNombreProductoFinal.Text = ""
             Me.TxtExistencia.Text = "0.00"
             Me.TxtCantidad.Text = "0.00"
-            Me.TxtCosto.Text = "$ 0.00"
-            Me.TxtCostoTotal.Text = "$ 0.00"
+            Me.TxtCosto.Text = ""
+            Me.TxtCostoTotal.Text = ""
             Me.TxtConcepto.Text = ""
             Me.TxtTotal.Text = "$ 0.00"
             Me.Grid1.DataSource = Nothing
@@ -164,13 +161,12 @@ BuscarArticulo:
 
     Function Grabar() As Boolean
         Dim bResultado As Boolean = False
-        Dim i As Integer
         Dim sListaSeries As String = ""
 
-        If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
-            'MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar la transferencia.", MsgBoxStyle.Information, Me.Text)
-            Exit Function
-        End If
+        'If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
+        '    'MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar la transferencia.", MsgBoxStyle.Information, Me.Text)
+        '    Exit Function
+        'End If
 
         If Me.ValidaExistenciaIngredientes() = False Then
             Return bResultado
@@ -186,6 +182,7 @@ BuscarArticulo:
             Me.TxtCantidad.Text = "1.00"
             Me.ConsultaIngredientes()
             Me.Totales()
+            Me.TxtCosto.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyTotal))).ToString
 
         Catch ex As Exception
             HandleError(Me.Text, "Consultar", ex)
@@ -196,7 +193,21 @@ BuscarArticulo:
         Dim oFormula As New Class_CatFormulas
 
         Try
-            Me.Grid1.DataSource = oFormula.ObtenerDetalleParaTransformaciones(Me.TxtCodigoArticulo.Text, Me.CboAlmacen.SelectedValue.ToString)
+            'Me.Grid1.DataSource = oFormula.ObtenerDetalleParaTransformaciones(Me.TxtCodigoArticulo.Text, Me.CboAlmacen.SelectedValue.ToString)
+            Dim dTabla As DataTable = oFormula.ObtenerDetalleParaTransformaciones(Me.TxtCodigoArticulo.Text, Me.CboAlmacen.SelectedValue.ToString)
+            Me.Grid1.AutoRedraw = False
+            Me.Grid1.Rows = 1 'Trae dos porque en docs nuevos se pone un row en blanco, y si se dejan aqui dos agrega a partir del 3 y queda un hueco
+            For Each dRow As DataRow In dTabla.Rows
+                Me.Grid1.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("UNIDAD_VENTA").ToString & Chr(9) & dRow("CANTIDAD").ToString & Chr(9) & dRow("EXISTENCIA").ToString & Chr(9) & _
+                                dRow("COSTO").ToString & Chr(9) & dRow("TOTAL").ToString & Chr(9))
+            Next
+
+            Me.Grid1.AutoRedraw = True
+            Me.Grid1.Refresh()
+
+            For i As Integer = 1 To Grid1.Rows - 1
+                Me.Grid1.Cell(i, Me.iGyCantidadTotal).Text = (valorNumerico(Me.Grid1.Cell(i, Me.iGyCantidadOriginal).Text) * valorNumerico(Me.TxtCantidad.Text)).ToString
+            Next
             Me.FormateaGrid()
 
         Catch ex As Exception
@@ -226,15 +237,15 @@ BuscarArticulo:
             For i = 1 To Me.Grid1.Rows - 1
                 sCodigoArticulo = Me.Grid1.Cell(i, Me.iGyCodigo).Text
                 If txtLEN(sCodigoArticulo) = True Then
-                    Me.oArticulos = New Class_CatArticulos(sCodigoArticulo)
-                    If Me.oArticulos.INVENTARIABLE <> "0" Then
+                    Me.oArticulo = New Class_CatArticulos(sCodigoArticulo)
+                    If Me.oArticulo.INVENTARIABLE <> "0" Then
                         dExistencia = oInventarios.Existencia(sCodigoArticulo, Me.CboAlmacen.SelectedValue.ToString)
                         If dExistencia <= 0 Then
                             Me.Show()
                             MsgBox("El artículo " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " que intenta agregar no tiene existencia. ", MsgBoxStyle.Exclamation, sProcedure)
                             Exit Function
-                        Else 
-                            dCantidadSumadaPorArticulos = CDbl(Me.Grid1.Cell(i, Me.iGyCantidad).Text)
+                        Else
+                            dCantidadSumadaPorArticulos = CDbl(Me.Grid1.Cell(i, Me.iGyCantidadTotal).Text)
 
                             If valorNumerico(dCantidadSumadaPorArticulos.ToString) > valorNumerico(dExistencia.ToString) Then
                                 Me.Show()
@@ -281,7 +292,7 @@ BuscarArticulo:
             With Me.Grid1
                 .AutoRedraw = False
 
-                .Cols = 8
+                .Cols = 9
 
                 .DisplayFocusRect = False
                 .DrawMode = FlexCell.DrawModeEnum.OwnerDraw
@@ -296,14 +307,19 @@ BuscarArticulo:
                 .Cell(0, Me.iGyCodigo).Text = "Codigo"
                 .Cell(0, Me.iGyDescripcion).Text = "Descripcion"
                 .Cell(0, Me.iGyUnidad).Text = "Unidad"
-                .Cell(0, Me.iGyCantidad).Text = "Cantidad"
+                .Cell(0, Me.iGyCantidadOriginal).Text = "Cantidad original"
+                .Cell(0, Me.iGyCantidadTotal).Text = "Cantidad total"
                 .Cell(0, Me.iGyExistencia).Text = "Existencia"
                 .Cell(0, Me.iGyCosto).Text = "Costo"
                 .Cell(0, Me.iGyTotal).Text = "Total"
 
-                .Column(Me.iGyCantidad).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyCantidad).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
-                .Column(Me.iGyCantidad).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyCantidadOriginal).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyCantidadOriginal).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
+                .Column(Me.iGyCantidadOriginal).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyCantidadTotal).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyCantidadTotal).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
+                .Column(Me.iGyCantidadTotal).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .Column(Me.iGyExistencia).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyExistencia).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
@@ -319,8 +335,9 @@ BuscarArticulo:
 
                 .Column(Me.iGyCodigo).Width = 100
                 .Column(Me.iGyDescripcion).Width = 190
-                .Column(Me.iGyUnidad).Width = 80
-                .Column(Me.iGyCantidad).Width = 80
+                .Column(Me.iGyUnidad).Width = 50
+                .Column(Me.iGyCantidadOriginal).Width = 80
+                .Column(Me.iGyCantidadTotal).Width = 80
                 .Column(Me.iGyExistencia).Width = 80
                 .Column(Me.iGyCosto).Width = 100
                 .Column(Me.iGyTotal).Width = 90
@@ -341,8 +358,8 @@ BuscarArticulo:
             Dim I As Integer
             Dim Dcantidad As Double, DPrecio As Double, dImporte As Double
             For I = 1 To Me.Grid1.Rows - 1
-                If Len("" & Me.Grid1.Cell(I, Me.iGyCantidad).Text) > 0 Then
-                    Dcantidad = Val(0 & Me.Grid1.Cell(I, Me.iGyCantidad).Text)
+                If Len("" & Me.Grid1.Cell(I, Me.iGyCantidadTotal).Text) > 0 Then
+                    Dcantidad = Val(0 & Me.Grid1.Cell(I, Me.iGyCantidadTotal).Text)
                     DPrecio = Val(0 & Me.Grid1.Cell(I, Me.iGyCosto).Text)
 
                     If Dcantidad > 0 Then
@@ -353,8 +370,14 @@ BuscarArticulo:
                 End If
             Next I
 
-            Me.TxtCosto.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyTotal))).ToString
+            'Me.TxtCosto.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyTotal))).ToString
             Me.TxtCostoTotal.Text = FormatImporteContable(valorNumerico(Me.TxtCosto.Text) * valorNumerico(Me.TxtCantidad.Text)).ToString
+            Me.TxtTotal.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyTotal))).ToString
+
+            For I = 1 To Grid1.Rows - 1
+                Me.Grid1.Cell(I, Me.iGyCantidadTotal).Text = (valorNumerico(Me.Grid1.Cell(I, Me.iGyCantidadOriginal).Text) * valorNumerico(Me.TxtCantidad.Text)).ToString
+                Me.Grid1.Cell(I, Me.iGyTotal).Text = (valorNumerico(Me.Grid1.Cell(I, Me.iGyCantidadTotal).Text) * valorNumerico(Me.Grid1.Cell(I, Me.iGyCosto).Text)).ToString
+            Next
 
         Catch ex As Exception
             HandleError(Me.Name, "Totales", ex)
@@ -401,7 +424,7 @@ BuscarArticulo:
             Dim i As Integer
             For i = 1 To Me.Grid1.Rows - 1
                 If txtLEN(Me.Grid1.Cell(i, Me.iGyCodigo).Text) = True Then
-                    If valorNumerico(Me.Grid1.Cell(i, Me.iGyCantidad).Text) = 0 Then
+                    If valorNumerico(Me.Grid1.Cell(i, Me.iGyCantidadTotal).Text) = 0 Then
                         Return False
                     End If
                 End If
@@ -437,15 +460,15 @@ BuscarArticulo:
             For i = 1 To Me.Grid1.Rows - 1
                 sCodigoArticulo = Me.Grid1.Cell(i, Me.iGyCodigo).Text
                 If txtLEN(sCodigoArticulo) = True Then
-                    Me.oArticulos = New Class_CatArticulos(sCodigoArticulo)
-                    If Me.oArticulos.INVENTARIABLE <> "0" Then
+                    Me.oArticulo = New Class_CatArticulos(sCodigoArticulo)
+                    If Me.oArticulo.INVENTARIABLE <> "0" Then
                         dExistencia = oInventarios.Existencia(sCodigoArticulo, Me.CboAlmacen.SelectedValue.ToString)
                         If dExistencia <= 0 Then
                             Me.Show()
                             MsgBox("El artículo " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " no tiene existencia. ", MsgBoxStyle.Exclamation, sProcedure)
                             Exit Function
                         Else
-                            dCantidadSumadaPorArticulos = CDbl(Me.Grid1.Cell(i, Me.iGyCantidad).Text)
+                            dCantidadSumadaPorArticulos = CDbl(Me.Grid1.Cell(i, Me.iGyCantidadTotal).Text)
 
                             If valorNumerico(dCantidadSumadaPorArticulos.ToString) > valorNumerico(dExistencia.ToString) Then
                                 Me.Show()
