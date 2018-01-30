@@ -6,6 +6,7 @@ Public Class Transformaciones
     Private oInventarios As New Class_Inventarios_Global
     Private oDocumentos As Class_Cat_tiposDocumentos
     Private oArticulo As New Class_CatArticulos
+    Private oFormaDetalleCuentas As InventariosDetalleCuentasContables
 
 #Region "Columnas grid"
     Private iGyCodigo As Integer = 1
@@ -30,13 +31,7 @@ Public Class Transformaciones
     End Sub
 
     Private Sub tsbGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbGrabar.Click
-        For i As Integer = 1 To Grid1.Rows - 1
-            Me.Grid1.Cell(i, Me.iGyCantidadTotal).Text = (valorNumerico(Me.Grid1.Cell(i, Me.iGyCantidadOriginal).Text) * valorNumerico(Me.TxtCantidad.Text)).ToString
-            Me.Grid1.Cell(i, Me.iGyTotal).Text = (valorNumerico(Me.Grid1.Cell(i, Me.iGyCantidadTotal).Text) * valorNumerico(Me.Grid1.Cell(i, Me.iGyCosto).Text)).ToString
-        Next
-        'If Me.Grabar() = True Then
-
-        'End If
+        Me.Grabar()
     End Sub
 
     Private Sub tsbSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSalir.Click
@@ -127,8 +122,8 @@ BuscarArticulo:
             Me.LblNombreProductoFinal.Text = ""
             Me.TxtExistencia.Text = "0.00"
             Me.TxtCantidad.Text = "0.00"
-            Me.TxtCosto.Text = ""
-            Me.TxtCostoTotal.Text = ""
+            Me.TxtCosto.Text = "$ 0.00"
+            Me.TxtCostoTotal.Text = "$ 0.00"
             Me.TxtConcepto.Text = ""
             Me.TxtTotal.Text = "$ 0.00"
             Me.Grid1.DataSource = Nothing
@@ -152,7 +147,7 @@ BuscarArticulo:
             FG_Grid_Limpiar(Me.Grid1)
             Me.Grid1.Rows = 2
             Me.FormateaGrid()
-            Me.Totales()
+            'Me.Totales()
 
         Catch ex As Exception
             HandleError(Me.Text, "InicializaGrid", ex)
@@ -163,17 +158,188 @@ BuscarArticulo:
         Dim bResultado As Boolean = False
         Dim sListaSeries As String = ""
 
-        'If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
-        '    'MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar la transferencia.", MsgBoxStyle.Information, Me.Text)
-        '    Exit Function
-        'End If
+        If txtLEN(Me.TxtCodigoArticulo.Text) = False Then
+            MsgBox("Inserte un código de producto final.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.TxtCodigoArticulo.Focus()
+            Exit Function
+        End If
+
+        If Me.ValidaArticulo(Me.TxtCodigoArticulo.Text) = False Then
+            Exit Function
+        End If
+
+        If valorNumerico(Me.TxtCantidad.Text) = 0 Then
+            MsgBox("La cantidad debe ser mayor a 0.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.TxtCantidad.Focus()
+            Exit Function
+        End If
+
+        If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios("SAI", Me.CboAlmacen.SelectedValue.ToString.ToString, "") = False Then
+            MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar salida de almacén.", MsgBoxStyle.Information, Me.Text)
+            Exit Function
+        End If
+
+        If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios("ENI", Me.CboAlmacen.SelectedValue.ToString.ToString, "") = False Then
+            MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar entrada de almacén.", MsgBoxStyle.Information, Me.Text)
+            Exit Function
+        End If
 
         If Me.ValidaExistenciaIngredientes() = False Then
-            Return bResultado
+            Exit Function
         End If
 
         Me.Totales()
 
+        'Salida de ingredientes
+        If Me.GrabaSalidaIngredientes() = False Then
+            Exit Function
+        End If
+        
+
+        'Entrada de producto final
+        If Me.GrabaEntradaProductoFinal() = False Then
+            Exit Function
+        End If
+
+        bResultado = True
+        MsgBox("Transformación realizada satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+
+        Return bResultado
+
+    End Function
+
+    Private Function GrabaSalidaIngredientes() As Boolean
+        Dim bResultado As Boolean = False
+        Dim folioSalida As String
+        Me.oInventarios = New Class_Inventarios_Global
+
+        Try
+            With oInventarios
+                .FOLIO_MOVIMIENTO_INVENTARIO = ""
+                .CODIGO_TIPO_DOCUMENTO = "SAI"
+                .FOLIO_REFERENCIA = ""
+                .CODIGO_ALMACEN1 = "" & Me.CboAlmacen.SelectedValue.ToString()
+                .FECHA = Now
+                .CONCEPTO = "" & Me.TxtConcepto.Text
+                .CODIGO_USUARIO = CInt("" & Usuario.Codigo_Usuario)
+                .CODIGO_PLAZA = Usuario.Codigo_Plaza
+                .TOTAL = valorNumerico(Me.TxtTotal.Text)
+                .FOLIO_EMBARQUE = ""
+
+                If .Insertar() = False Then
+                    MsgBox("Error al tratar de insertar el movimiento de salida de inventario.", MsgBoxStyle.Exclamation, Me.Text)
+                    Exit Function
+                End If
+                folioSalida = .FOLIO_MOVIMIENTO_INVENTARIO
+
+                'se graba el detalle
+                For i = 1 To Me.Grid1.Rows - 1
+                    If txtLEN(Me.Grid1.Cell(i, Me.iGyCodigo).Text) = True Then
+                        .NuevoRenglon()
+                        .oInventariosDetalle.FOLIO_MOVIMIENTO_INVENTARIO = .FOLIO_MOVIMIENTO_INVENTARIO
+                        .oInventariosDetalle.CODIGO_ARTICULO = Me.Grid1.Cell(i, Me.iGyCodigo).Text
+                        .oInventariosDetalle.CANTIDAD = valorNumerico(Me.Grid1.Cell(i, Me.iGyCantidadTotal).Text)
+                        .oInventariosDetalle.COSTO = valorNumerico(Me.Grid1.Cell(i, Me.iGyCosto).Text)
+                        .oInventariosDetalle.CUENTA_CONTABLE = "103000010002" 'Me.Grid1.Cell(i, Me.iGyCuentaContable).Text.ToString
+                        .oInventariosDetalle.IMPORTE = CDec(valorNumerico(Me.Grid1.Cell(i, Me.iGyTotal).Text.ToString))
+                        .oInventariosDetalle.ID_ADICIONAL = i 'CInt(valorNumerico(Me.Grid1.Cell(i, Me.iGyIDAdicional).Text))
+                        .oInventariosDetalle.LISTA_SERIES = ""
+
+                        If .oInventariosDetalle.GrabaRenglon() = False Then
+                            MsgBox("Error al tratar de grabar el detalle de la salida de inventario.", MsgBoxStyle.Exclamation, Me.Text)
+                            Exit Function
+                        End If
+
+                    End If
+                Next
+
+                Dim sListaCuentas As String = ""
+
+                If IsNothing(Me.oFormaDetalleCuentas) = False Then 'Si no esta vacia, osea si existe
+                    Me.oFormaDetalleCuentas.FolioMovimientoInventario = folioSalida 'Hasta aqui la forma auxuliar no tenia el folio
+                    sListaCuentas = Me.oFormaDetalleCuentas.ObtieneListaDetalleCuentas()
+                End If
+
+                If txtLEN(sListaCuentas) = True Then
+                    .oInventariosDetalle.GrabaDetalleCentroCostos(sListaCuentas, "SAI" & Usuario.Codigo_Plaza, Now, CBool(IIf(Me.oDocumentos.NATURALEZA_INVENTARIOS = "EN", True, False)))
+                End If
+
+                bResultado = True
+
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "GrabaSalidaIngredientes", ex)
+            Me.Consultar()
+        Finally
+            Me.oInventarios = Nothing
+        End Try
+
+        Return bResultado
+
+    End Function
+
+    Private Function GrabaEntradaProductoFinal() As Boolean
+        Dim bResultado As Boolean = False
+        Dim folioEntrada As String
+        Me.oInventarios = New Class_Inventarios_Global
+
+        Try
+            With oInventarios
+                .FOLIO_MOVIMIENTO_INVENTARIO = ""
+                .CODIGO_TIPO_DOCUMENTO = "ENI"
+                .FOLIO_REFERENCIA = ""
+                .CODIGO_ALMACEN1 = "" & Me.CboAlmacen.SelectedValue.ToString()
+                .FECHA = Now
+                .CONCEPTO = "" & Me.TxtConcepto.Text
+                .CODIGO_USUARIO = CInt("" & Usuario.Codigo_Usuario)
+                .CODIGO_PLAZA = Usuario.Codigo_Plaza
+                .TOTAL = valorNumerico(Me.TxtTotal.Text)
+                .FOLIO_EMBARQUE = ""
+
+                If .Insertar() = False Then
+                    MsgBox("Error al tratar de insertar el movimiento de entrada de inventario.", MsgBoxStyle.Exclamation, Me.Text)
+                    Exit Function
+                End If
+                folioEntrada = .FOLIO_MOVIMIENTO_INVENTARIO
+
+                'se graba el detalle
+                .NuevoRenglon()
+                .oInventariosDetalle.FOLIO_MOVIMIENTO_INVENTARIO = .FOLIO_MOVIMIENTO_INVENTARIO
+                .oInventariosDetalle.CODIGO_ARTICULO = Me.TxtCodigoArticulo.Text
+                .oInventariosDetalle.CANTIDAD = valorNumerico(Me.TxtCantidad.Text)
+                .oInventariosDetalle.COSTO = valorNumerico(Me.TxtCosto.Text)
+                .oInventariosDetalle.CUENTA_CONTABLE = "103000010002" 'Me.Grid1.Cell(i, Me.iGyCuentaContable).Text.ToString
+                .oInventariosDetalle.IMPORTE = CDec(valorNumerico(Me.TxtCostoTotal.Text))
+                .oInventariosDetalle.ID_ADICIONAL = 1
+                .oInventariosDetalle.LISTA_SERIES = ""
+
+                If .oInventariosDetalle.GrabaRenglon() = False Then
+                    MsgBox("Error al tratar de grabar el detalle de la entrada de inventario.", MsgBoxStyle.Exclamation, Me.Text)
+                    Exit Function
+                End If
+
+                Dim sListaCuentas As String = ""
+
+                If IsNothing(Me.oFormaDetalleCuentas) = False Then 'Si no esta vacia, osea si existe
+                    Me.oFormaDetalleCuentas.FolioMovimientoInventario = folioEntrada 'Hasta aqui la forma auxuliar no tenia el folio
+                    sListaCuentas = Me.oFormaDetalleCuentas.ObtieneListaDetalleCuentas()
+                End If
+
+                If txtLEN(sListaCuentas) = True Then
+                    .oInventariosDetalle.GrabaDetalleCentroCostos(sListaCuentas, "ENI" & Usuario.Codigo_Plaza, Now, CBool(IIf(Me.oDocumentos.NATURALEZA_INVENTARIOS = "EN", True, False)))
+                End If
+
+                bResultado = True
+
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "GrabaEntradaProductoFinal", ex)
+            Me.Consultar()
+        Finally
+            Me.oInventarios = Nothing
+        End Try
+
+        Return bResultado
     End Function
 
     Private Sub Consultar()
@@ -182,7 +348,6 @@ BuscarArticulo:
             Me.TxtCantidad.Text = "1.00"
             Me.ConsultaIngredientes()
             Me.Totales()
-            Me.TxtCosto.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyTotal))).ToString
 
         Catch ex As Exception
             HandleError(Me.Text, "Consultar", ex)
@@ -193,12 +358,11 @@ BuscarArticulo:
         Dim oFormula As New Class_CatFormulas
 
         Try
-            'Me.Grid1.DataSource = oFormula.ObtenerDetalleParaTransformaciones(Me.TxtCodigoArticulo.Text, Me.CboAlmacen.SelectedValue.ToString)
             Dim dTabla As DataTable = oFormula.ObtenerDetalleParaTransformaciones(Me.TxtCodigoArticulo.Text, Me.CboAlmacen.SelectedValue.ToString)
             Me.Grid1.AutoRedraw = False
             Me.Grid1.Rows = 1 'Trae dos porque en docs nuevos se pone un row en blanco, y si se dejan aqui dos agrega a partir del 3 y queda un hueco
             For Each dRow As DataRow In dTabla.Rows
-                Me.Grid1.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("UNIDAD_VENTA").ToString & Chr(9) & dRow("CANTIDAD").ToString & Chr(9) & dRow("EXISTENCIA").ToString & Chr(9) & _
+                Me.Grid1.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("UNIDAD_VENTA").ToString & Chr(9) & dRow("CANTIDAD_ORIGINAL").ToString & Chr(9) & dRow("CANTIDAD_TOTAL").ToString & Chr(9) & dRow("EXISTENCIA").ToString & Chr(9) & _
                                 dRow("COSTO").ToString & Chr(9) & dRow("TOTAL").ToString & Chr(9))
             Next
 
@@ -304,11 +468,11 @@ BuscarArticulo:
                 .CellBorderColorFixed = Color.Black
                 .GridColor = Color.FromArgb(148, 190, 231)
 
-                .Cell(0, Me.iGyCodigo).Text = "Codigo"
-                .Cell(0, Me.iGyDescripcion).Text = "Descripcion"
+                .Cell(0, Me.iGyCodigo).Text = "Código"
+                .Cell(0, Me.iGyDescripcion).Text = "Descripción"
                 .Cell(0, Me.iGyUnidad).Text = "Unidad"
-                .Cell(0, Me.iGyCantidadOriginal).Text = "Cantidad original"
-                .Cell(0, Me.iGyCantidadTotal).Text = "Cantidad total"
+                .Cell(0, Me.iGyCantidadOriginal).Text = "Cant. original"
+                .Cell(0, Me.iGyCantidadTotal).Text = "Cant. total"
                 .Cell(0, Me.iGyExistencia).Text = "Existencia"
                 .Cell(0, Me.iGyCosto).Text = "Costo"
                 .Cell(0, Me.iGyTotal).Text = "Total"
@@ -333,14 +497,14 @@ BuscarArticulo:
                 .Column(Me.iGyTotal).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
                 .Column(Me.iGyTotal).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.iGyCodigo).Width = 100
-                .Column(Me.iGyDescripcion).Width = 190
+                .Column(Me.iGyCodigo).Width = 70
+                .Column(Me.iGyDescripcion).Width = 210
                 .Column(Me.iGyUnidad).Width = 50
                 .Column(Me.iGyCantidadOriginal).Width = 80
                 .Column(Me.iGyCantidadTotal).Width = 80
                 .Column(Me.iGyExistencia).Width = 80
                 .Column(Me.iGyCosto).Width = 100
-                .Column(Me.iGyTotal).Width = 90
+                .Column(Me.iGyTotal).Width = 95
 
                 .Locked = True
 
@@ -370,14 +534,17 @@ BuscarArticulo:
                 End If
             Next I
 
-            'Me.TxtCosto.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyTotal))).ToString
-            Me.TxtCostoTotal.Text = FormatImporteContable(valorNumerico(Me.TxtCosto.Text) * valorNumerico(Me.TxtCantidad.Text)).ToString
-            Me.TxtTotal.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyTotal))).ToString
-
             For I = 1 To Grid1.Rows - 1
                 Me.Grid1.Cell(I, Me.iGyCantidadTotal).Text = (valorNumerico(Me.Grid1.Cell(I, Me.iGyCantidadOriginal).Text) * valorNumerico(Me.TxtCantidad.Text)).ToString
                 Me.Grid1.Cell(I, Me.iGyTotal).Text = (valorNumerico(Me.Grid1.Cell(I, Me.iGyCantidadTotal).Text) * valorNumerico(Me.Grid1.Cell(I, Me.iGyCosto).Text)).ToString
             Next
+
+            If valorNumerico(Me.TxtCosto.Text) = 0 Then
+                Me.TxtCosto.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyTotal))).ToString
+            End If
+
+            Me.TxtCostoTotal.Text = FormatImporteContable(valorNumerico(Me.TxtCosto.Text) * valorNumerico(Me.TxtCantidad.Text)).ToString
+            Me.TxtTotal.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyTotal))).ToString
 
         Catch ex As Exception
             HandleError(Me.Name, "Totales", ex)
@@ -396,42 +563,6 @@ BuscarArticulo:
             bResultado = False
         Catch ex As Exception
             HandleError(Me.Name, "SiTieneRenglones", ex)
-        End Try
-        Return bResultado
-    End Function
-
-    Private Function SiTieneImporte() As Boolean
-        Dim bResultado As Boolean = False
-        Try
-            Dim i As Integer
-            For i = 1 To Me.Grid1.Rows - 1
-                If txtLEN(Me.Grid1.Cell(i, Me.iGyCodigo).Text) = True Then
-                    'If valorNumerico(Me.Grid1.Cell(i, Me.iGyImporte).Text) = 0 Then
-                    '    Return False
-                    'End If
-                End If
-            Next
-            bResultado = True
-        Catch ex As Exception
-            HandleError(Me.Name, "SiTieneImporte", ex)
-        End Try
-        Return bResultado
-    End Function
-
-    Private Function SiTieneCantidad() As Boolean
-        Dim bResultado As Boolean = False
-        Try
-            Dim i As Integer
-            For i = 1 To Me.Grid1.Rows - 1
-                If txtLEN(Me.Grid1.Cell(i, Me.iGyCodigo).Text) = True Then
-                    If valorNumerico(Me.Grid1.Cell(i, Me.iGyCantidadTotal).Text) = 0 Then
-                        Return False
-                    End If
-                End If
-            Next
-            bResultado = True
-        Catch ex As Exception
-            HandleError(Me.Name, "SiTieneCantidad", ex)
         End Try
         Return bResultado
     End Function
@@ -455,6 +586,7 @@ BuscarArticulo:
         Dim bResultado As Boolean = False
         Dim dCantidadSumadaPorArticulos As Double, dExistencia As Double
         Dim i As Integer, sCodigoArticulo As String = ""
+        Me.oInventarios = New Class_Inventarios_Global
 
         Try
             For i = 1 To Me.Grid1.Rows - 1
@@ -462,7 +594,7 @@ BuscarArticulo:
                 If txtLEN(sCodigoArticulo) = True Then
                     Me.oArticulo = New Class_CatArticulos(sCodigoArticulo)
                     If Me.oArticulo.INVENTARIABLE <> "0" Then
-                        dExistencia = oInventarios.Existencia(sCodigoArticulo, Me.CboAlmacen.SelectedValue.ToString)
+                        dExistencia = Me.oInventarios.Existencia(sCodigoArticulo, Me.CboAlmacen.SelectedValue.ToString)
                         If dExistencia <= 0 Then
                             Me.Show()
                             MsgBox("El artículo " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " no tiene existencia. ", MsgBoxStyle.Exclamation, sProcedure)
