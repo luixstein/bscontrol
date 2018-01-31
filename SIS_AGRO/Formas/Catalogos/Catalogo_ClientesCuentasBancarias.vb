@@ -229,6 +229,14 @@ Buscar:
                     Me.txtCuentaEmisor.Focus()
                     Return False
                 End If
+
+                If Me.txtCuentaEmisor.Text.Length = 18 Then 'Si es clabe interbancaria
+                    If ValidarCLABEInterbancaria(Me.txtCuentaEmisor.Text) = False Then
+                        If MsgBox("La clabe interbancaria es muy probable que este incorrecta, seguro desea grabarla así ?", vbQuestion Or vbYesNo, "Validar") = vbNo Then
+                            Return False
+                        End If
+                    End If
+                End If
             End If
 
             'If Me.cboFormaPago.SelectedValue.ToString = "02" Or Me.cboFormaPago.SelectedValue.ToString = "03" Then '02=CHEQUE NOMINATIVO, 03=TRANSFERENCIA ELECTRONICA DE FONDOS

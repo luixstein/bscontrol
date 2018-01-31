@@ -1119,4 +1119,33 @@ Module Mod_Uti
         Return dVersion
     End Function
 
+    Public Function ValidarCLABEInterbancaria(ByVal sClave As String) As Boolean
+        Dim bResultado As Boolean = False
+        Try
+            Dim DigitoVerificadorAnterior, i, sumprod As Integer
+            Dim fpeso As String, DigitoVerificadorCalculado As Integer
+
+            fpeso = "37137137137137137"
+            If Len(sClave) = 18 Then
+                DigitoVerificadorAnterior = CInt(Mid(sClave, 18, 1)) 'Digito verificador
+                sumprod = 0
+                For i = 1 To Len(sClave) - 1  '17
+                    Dim c, fp, num As Integer
+                    c = CInt(Mid(sClave, i, 1))
+                    fp = CInt(Mid(fpeso, i, 1))
+                    num = (c * fp) Mod 10
+                    sumprod = sumprod + num
+                Next
+                DigitoVerificadorCalculado = (10 - (sumprod Mod 10)) Mod 10
+                If DigitoVerificadorCalculado = DigitoVerificadorAnterior Then
+                    bResultado = True
+                End If
+            End If
+
+        Catch ex As Exception
+            HandleError(nombreModulo, "ValidarCLABEInterbancaria", ex)
+        End Try
+
+        Return bResultado
+    End Function
 End Module
