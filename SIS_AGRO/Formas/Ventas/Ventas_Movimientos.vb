@@ -777,41 +777,48 @@ Buscar:
         Try
             Me.Grid.AutoRedraw = False
             Me.Grid.Cols = 32
-
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Column(Me.igyCodigo).Width = 75
-            Me.Grid.Column(Me.igyDescripcion).Width = 250
             Me.Grid.Column(Me.igyTipoControlInventariable).Width = 25
+            Me.Grid.Column(Me.igyDescripcion).Width = 250
             Me.Grid.Column(Me.igyCantidad).Width = 90
             Me.Grid.Column(Me.igyPrecio).Width = 100
-            Me.Grid.Column(Me.igyCantidadKilos).Width = 90
-            Me.Grid.Column(Me.igyPrecioKilos).Width = 100
-            'Me.Grid.Column(Me.igyImporteKilos).Width = 100
-            Me.Grid.Column(Me.igyCodigoCentroCosto).Width = 100
-            Me.Grid.Column(Me.igyCodigoCentroCosto).Visible = False
-            Me.Grid.Column(Me.igyNombreCentroCosto).Width = 220
+            Me.Grid.Column(Me.igyPRECIO_TOTAL).Width = 100
+            Me.Grid.Column(Me.igyCantidadKilos).Visible = False
             Me.Grid.Column(Me.igyUnidad).Width = 75
+            Me.Grid.Column(Me.igyPrecioKilos).Visible = False
             Me.Grid.Column(Me.igyImpuestoPorcentaje).Width = 70
             Me.Grid.Column(Me.igyImporte).Width = 100
+            Me.Grid.Column(Me.igyImporteKilos).Visible = False
             Me.Grid.Column(Me.igyCuentaContable).Width = 100
-            Me.Grid.Column(Me.igyImpuestoImporte).Width = 100
-            Me.Grid.Column(Me.igyIdOrigen).Width = 100
-            Me.Grid.Column(Me.igyEsProductoKilos).Width = 100
+            Me.Grid.Column(Me.igyImpuestoImporte).Visible = False
+            Me.Grid.Column(Me.igyIdOrigen).Visible = False
+            Me.Grid.Column(Me.igyEsProductoKilos).Visible = False
+            Me.Grid.Column(Me.igyCodigoCentroCosto).Width = 100
+            Me.Grid.Column(Me.igyNombreCentroCosto).Width = 220
+            Me.Grid.Column(Me.igyPrecioUSD).Width = 100
+            Me.Grid.Column(Me.igyImporteUSD).Width = 100
+            Me.Grid.Column(Me.igyIEPS_PORCENTAJE).Visible = False
+            Me.Grid.Column(Me.igyIEPS_UNITARIO).Visible = False
+            Me.Grid.Column(Me.igyIEPS_IMPORTE).Visible = False
+            Me.Grid.Column(Me.igyBASE_IEPS).Visible = False
+            Me.Grid.Column(Me.igyBASE_IVA).Visible = False
             Me.Grid.Column(Me.igyCosto).Width = 100
             Me.Grid.Column(Me.igyUtilidadUnitaria).Width = 100
             Me.Grid.Column(Me.igyUtilidadTotal).Width = 100
             Me.Grid.Column(Me.igyUtilidadPorcentaje).Width = 100
-            Me.Grid.Column(Me.iGyID_SIS_CAT_IMPUESTOS).Visible = True 'Ocultar
-            Me.Grid.Column(Me.iGyGRADO_TOXICIDAD).Visible = True 'Ocultar
-
+            Me.Grid.Column(Me.iGyID_SIS_CAT_IMPUESTOS).Visible = False  'Ocultar
+            Me.Grid.Column(Me.iGyGRADO_TOXICIDAD).Visible = False  'Ocultar
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Cell(0, Me.igyCodigo).Text = "Código"
-            Me.Grid.Cell(0, Me.igyDescripcion).Text = "Descripción"
             Me.Grid.Cell(0, Me.igyTipoControlInventariable).Text = "Inv"
+            Me.Grid.Cell(0, Me.igyDescripcion).Text = "Descripción"
             Me.Grid.Cell(0, Me.igyCantidad).Text = "Cantidad"
             Me.Grid.Cell(0, Me.igyPrecio).Text = "Precio"
             Me.Grid.Cell(0, Me.igyPRECIO_TOTAL).Text = "Precio total"
             Me.Grid.Cell(0, Me.igyCantidadKilos).Text = "Cantidad x Kg"
-            Me.Grid.Cell(0, Me.igyPrecioKilos).Text = "Precio x Kg"
             Me.Grid.Cell(0, Me.igyUnidad).Text = "Unidad"
+            Me.Grid.Cell(0, Me.igyPrecioKilos).Text = "Precio x Kg"
             Me.Grid.Cell(0, Me.igyImpuestoPorcentaje).Text = "IVA %"
             Me.Grid.Cell(0, Me.igyImporte).Text = "Importe"
             Me.Grid.Cell(0, Me.igyImporteKilos).Text = "Importe x Kg"
@@ -821,13 +828,20 @@ Buscar:
             Me.Grid.Cell(0, Me.igyEsProductoKilos).Text = "Es producto kilos"
             Me.Grid.Cell(0, Me.igyCodigoCentroCosto).Text = "Ccos"
             Me.Grid.Cell(0, Me.igyNombreCentroCosto).Text = "C.Costo"
+            Me.Grid.Cell(0, Me.igyPrecioUSD).Text = "PrecioUSD"
+            Me.Grid.Cell(0, Me.igyImporteUSD).Text = "ImporteUSD"
+            Me.Grid.Cell(0, Me.igyIEPS_PORCENTAJE).Text = "IEPS_%"
+            Me.Grid.Cell(0, Me.igyIEPS_UNITARIO).Text = "IEPS_UNIT"
+            Me.Grid.Cell(0, Me.igyIEPS_IMPORTE).Text = "IEPS_IMP"
+            Me.Grid.Cell(0, Me.igyBASE_IEPS).Text = "BASE_IEPS"
+            Me.Grid.Cell(0, Me.igyBASE_IVA).Text = "BASE_IVA"
             Me.Grid.Cell(0, Me.igyCosto).Text = "Costo"
             Me.Grid.Cell(0, Me.igyUtilidadUnitaria).Text = "Utilidad unitaria"
             Me.Grid.Cell(0, Me.igyUtilidadTotal).Text = "Utilidad total"
             Me.Grid.Cell(0, Me.igyUtilidadPorcentaje).Text = "% utilidad"
             Me.Grid.Cell(0, Me.iGyID_SIS_CAT_IMPUESTOS).Text = "IVA?"
             Me.Grid.Cell(0, Me.iGyGRADO_TOXICIDAD).Text = "GradoTox"
-
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Column(Me.igyNombreCentroCosto).Alignment = FlexCell.AlignmentEnum.LeftCenter
 
             Me.Grid.Column(Me.igyCantidad).Mask = FlexCell.MaskEnum.Numeric
@@ -889,25 +903,28 @@ Buscar:
             Me.Grid.Column(Me.igyUtilidadTotal).Mask = FlexCell.MaskEnum.Numeric
             Me.Grid.Column(Me.igyUtilidadTotal).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
             Me.Grid.Column(Me.igyUtilidadTotal).Alignment = FlexCell.AlignmentEnum.RightCenter
-
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Column(Me.igyDescripcion).Locked = True
             Me.Grid.Column(Me.igyTipoControlInventariable).Locked = True
             Me.Grid.Column(Me.igyImporte).Locked = True
             Me.Grid.Column(Me.igyImpuestoPorcentaje).Locked = True
-            Me.Grid.Column(Me.igyImpuestoImporte).Visible = False
-            Me.Grid.Column(Me.igyIdOrigen).Visible = False
             Me.Grid.Column(Me.igyUnidad).Locked = True
-
             Me.Grid.Column(Me.igyCosto).Locked = True
             Me.Grid.Column(Me.igyUtilidadUnitaria).Locked = True
             Me.Grid.Column(Me.igyUtilidadTotal).Locked = True
             Me.Grid.Column(Me.igyUtilidadPorcentaje).Locked = True
+            Me.Grid.Column(Me.igyPRECIO_TOTAL).Locked = True
 
-            Me.Grid.Column(Me.igyCantidadKilos).Visible = False
-            Me.Grid.Column(Me.igyPrecioKilos).Visible = False
-            Me.Grid.Column(Me.igyImporteKilos).Visible = False
-            Me.Grid.Column(Me.igyEsProductoKilos).Visible = False
+            If Usuario.PERMISO_CAMBIAR_PRECIO_VENTA = True Then
+                Me.Grid.Column(Me.igyPrecio).Locked = False
+            Else
+                Me.Grid.Column(Me.igyPrecio).Locked = True
+            End If
 
+            Me.Grid.Column(Me.igyNombreCentroCosto).Locked = True
+            Me.Grid.Column(Me.iGyID_SIS_CAT_IMPUESTOS).Locked = True
+            Me.Grid.Column(Me.iGyGRADO_TOXICIDAD).Locked = True
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             If Me.oDocumento.AFECTA_CXC = True Then
                 Me.Grid.Column(Me.igyCuentaContable).Visible = False 'True
                 Me.Grid.Column(Me.igyNombreCentroCosto).Visible = False  'True
@@ -917,6 +934,7 @@ Buscar:
             End If
 
             If Me._EsPorEmbarqueExtranjero = True Then
+                Me.Grid.Column(Me.igyPrecio).Locked = True 'Al ser un embarque el precio en mxn se bloquea porque el precio para timbrar será en usd.
                 Me.Grid.Column(Me.igyPrecioUSD).Visible = True
                 Me.Grid.Column(Me.igyImporteUSD).Visible = True
             Else
@@ -924,7 +942,6 @@ Buscar:
                 Me.Grid.Column(Me.igyImporteUSD).Visible = False
             End If
 
-            Me.Grid.Column(Me.igyNombreCentroCosto).Locked = True
             If Me.ckbMostrarUtilidad.Checked = True Then
                 Me.Grid.Column(Me.igyCosto).Visible = True
                 Me.Grid.Column(Me.igyUtilidadUnitaria).Visible = True
@@ -936,22 +953,7 @@ Buscar:
                 Me.Grid.Column(Me.igyUtilidadTotal).Visible = False
                 Me.Grid.Column(Me.igyUtilidadPorcentaje).Visible = False
             End If
-
-            Me.Grid.Column(Me.igyIEPS_PORCENTAJE).Visible = False
-            Me.Grid.Column(Me.igyIEPS_UNITARIO).Visible = False
-            Me.Grid.Column(Me.igyIEPS_IMPORTE).Visible = False
-            Me.Grid.Column(Me.igyBASE_IEPS).Visible = False
-            Me.Grid.Column(Me.igyBASE_IVA).Visible = False
-            Me.Grid.Column(Me.igyPRECIO_TOTAL).Locked = True
-
-            If Usuario.PERMISO_CAMBIAR_PRECIO_VENTA = True Then
-                Me.Grid.Column(Me.igyPrecio).Locked = False
-            Else
-                Me.Grid.Column(Me.igyPrecio).Locked = True
-            End If
-
-            Me.Grid.Column(Me.iGyID_SIS_CAT_IMPUESTOS).Locked = True
-            Me.Grid.Column(Me.iGyGRADO_TOXICIDAD).Locked = True
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
         Catch ex As Exception
             HandleError(Me.Name, "FormateaGrid", ex)
@@ -3228,7 +3230,19 @@ buscaCentrosCostos:
                                 "0" & Chr(9) &
                                 "SIN DEFINIR" & Chr(9) &
                                 dRow("PRECIO_USD").ToString & Chr(9) &
-                                dRow("IMPORTE_USD").ToString)
+                                dRow("IMPORTE_USD").ToString & Chr(9) &
+                                "0" & Chr(9) &
+                                "0" & Chr(9) &
+                                "0" & Chr(9) &
+                                "0" & Chr(9) &
+                                "0" & Chr(9) &
+                                "0" & Chr(9) &
+                                "0" & Chr(9) &
+                                "0" & Chr(9) &
+                                "0" & Chr(9) &
+                                dRow("ID_SIS_CAT_IMPUESTOS").ToString & Chr(9) &
+                                dRow("GRADO_TOXICIDAD").ToString
+                )
                 'Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + dRow("CUENTA_CONTABLE_BASE").ToString & Chr(9) & 'En agr esta así, pero aquí la cuenta es general
             Next
 
