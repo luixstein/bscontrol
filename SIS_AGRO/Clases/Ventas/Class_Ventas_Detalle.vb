@@ -38,6 +38,8 @@ Public Class Class_Ventas_Detalle
     Private _BASE_IEPS As Double
     Private _BASE_IVA As Double
     Private _PRECIO_TOTAL As Double
+    Private _ID_SIS_CAT_IMPUESTOS As String
+    Private _GRADO_TOXICIDAD As Integer
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -335,6 +337,24 @@ Public Class Class_Ventas_Detalle
         End Set
     End Property
 
+    Public Property ID_SIS_CAT_IMPUESTOS() As String
+        Get
+            Return Me._ID_SIS_CAT_IMPUESTOS
+        End Get
+        Set(ByVal Value As String)
+            Me._ID_SIS_CAT_IMPUESTOS = Value
+        End Set
+    End Property
+
+    Public Property GRADO_TOXICIDAD() As Integer
+        Get
+            Return Me._GRADO_TOXICIDAD
+        End Get
+        Set(ByVal Value As Integer)
+            Me._GRADO_TOXICIDAD = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -416,6 +436,8 @@ Public Class Class_Ventas_Detalle
             sqlParametro = .Parameters.Add("@BASE_IEPS", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IEPS
             sqlParametro = .Parameters.Add("@BASE_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IVA
             sqlParametro = .Parameters.Add("@PRECIO_TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._PRECIO_TOTAL
+            sqlParametro = .Parameters.Add("@GRADO_TOXICIDAD", SqlDbType.SmallInt) : sqlParametro.Value = Me._GRADO_TOXICIDAD
+            sqlParametro = .Parameters.Add("@ID_SIS_CAT_IMPUESTOS", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._ID_SIS_CAT_IMPUESTOS
 
             Try
                 Me._Conexion.Open()

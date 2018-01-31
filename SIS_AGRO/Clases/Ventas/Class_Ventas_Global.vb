@@ -92,8 +92,8 @@ Public Class Class_Ventas_Global
     Private _CODIGO_USO_CFDI As String
     Private _RFC_RECEPTOR As String
     Private _CODIGO_MONEDA_SAT As String
-
     Private _CONCEPTO_CANCELACION As String
+    Private _TIENE_IEPS_DESGLOSADO As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -743,6 +743,15 @@ Public Class Class_Ventas_Global
         End Set
     End Property
 
+    Public Property TIENE_IEPS_DESGLOSADO() As Boolean
+        Get
+            Return Me._TIENE_IEPS_DESGLOSADO
+        End Get
+        Set(Value As Boolean)
+            Me._TIENE_IEPS_DESGLOSADO = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -907,6 +916,7 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@CODIGO_METODO_PAGO_EVENTO", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_METODO_PAGO_EVENTO
             sqlParametro = .Parameters.Add("@CODIGO_USO_CFDI", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_USO_CFDI
             sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3) : sqlParametro.Value = "" & Me._CODIGO_MONEDA_SAT
+            sqlParametro = .Parameters.Add("@TIENE_IEPS_DESGLOSADO", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._TIENE_IEPS_DESGLOSADO)
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = sAccion 'INSERTAR,ACTUALIZAR
 
             Try
@@ -1158,8 +1168,8 @@ Public Class Class_Ventas_Global
                     Me._CODIGO_USO_CFDI = "" & dReader("CODIGO_USO_CFDI").ToString
                     Me._RFC_RECEPTOR = "" & dReader("RFC_RECEPTOR").ToString
                     Me._CODIGO_MONEDA_SAT = "" & dReader("CODIGO_MONEDA_SAT").ToString
-
                     Me._CONCEPTO_CANCELACION = "" & dReader("CONCEPTO_CANCELACION").ToString
+                    Me._TIENE_IEPS_DESGLOSADO = CBool(dReader("TIENE_IEPS_DESGLOSADO").ToString)
 
                     bResultado = True
                 End If
@@ -1311,16 +1321,17 @@ Public Class Class_Ventas_Global
         Dim sSQL As String
 
         Try
-            sSQL = "SELECT R.CODIGO_ARTICULO, " & _
-                "CASE WHEN A.ES_SERIALIZABLE = '1' THEN 'SER' WHEN A.INVENTARIABLE= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO, " & _
+            sSQL = "SELECT R.CODIGO_ARTICULO, " &
+                "CASE WHEN A.ES_SERIALIZABLE = '1' THEN 'SER' WHEN A.INVENTARIABLE= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO, " &
                 "R.DESCRIPCION,R.CANTIDAD,R.PRECIO,R.PRECIO_TOTAL,R.UNIDAD_VENTA,ISNULL(R.CANTIDAD_KILOS,0) CANTIDAD_KILOS,ISNULL(R.PRECIO_KILOS,0) PRECIO_KILOS,R.IMPUESTO_PORCENTAJE,R.IMPORTE,ISNULL(R.IMPORTE_KILOS,0) IMPORTE_KILOS, " &
                 "R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_VENTA_DETALLE,R.ES_PRODUCTO_KILOS,R.CODIGO_CENTRO_COSTO,CC.NOMBRE_CENTRO_COSTO,R.PRECIO_USD,R.IMPORTE_USD, " &
-                "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA,R.COSTO,(R.PRECIO - R.COSTO) UTILIDAD_UNITARIA,((R.PRECIO-R.COSTO)*R.CANTIDAD) UTILIDAD_TOTAL,CASE WHEN R.PRECIO > 0 THEN (((R.PRECIO-R.COSTO)/R.PRECIO)*100) ELSE 0 END UTILIDA_PORCENTAJE " & _
-                "FROM VENTA_DETALLE R " & _
-                "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
-                "INNER JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO=CC.CODIGO_CENTRO_COSTO) " & _
-                "WHERE R.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' " & _
-                IIf(bSinComentarios = True, " AND R.CODIGO_ARTICULO<>'-' ", " ").ToString & _
+                "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA,R.COSTO,(R.PRECIO - R.COSTO) UTILIDAD_UNITARIA,((R.PRECIO-R.COSTO)*R.CANTIDAD) UTILIDAD_TOTAL,CASE WHEN R.PRECIO > 0 THEN (((R.PRECIO-R.COSTO)/R.PRECIO)*100) ELSE 0 END UTILIDA_PORCENTAJE, " &
+                "R.ID_SIS_CAT_IMPUESTOS,R.GRADO_TOXICIDAD " &
+                "FROM VENTA_DETALLE R " &
+                "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
+                "INNER JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO=CC.CODIGO_CENTRO_COSTO) " &
+                "WHERE R.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' " &
+                IIf(bSinComentarios = True, " AND R.CODIGO_ARTICULO<>'-' ", " ").ToString &
                 "ORDER BY R.ID_VENTA_DETALLE"
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
@@ -1339,7 +1350,8 @@ Public Class Class_Ventas_Global
         Try
             sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.CANTIDAD,R.PRECIO,R.PRECIO_TOTAL,R.UNIDAD_VENTA,ISNULL(R.CANTIDAD_KILOS,0) CANTIDAD_KILOS,ISNULL(R.PRECIO_KILOS,0) PRECIO_KILOS,R.IMPUESTO_PORCENTAJE,R.IMPORTE," &
                 "ISNULL(R.IMPORTE_KILOS,0) IMPORTE_KILOS,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_VENTA_DETALLE,R.ES_PRODUCTO_KILOS,R.PRECIO_USD,R.IMPORTE_USD," &
-                "A.CODIGO_PRODUCTO_SERVICIO,A.CODIGO_UNIDAD,R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA,R.PRECIO_TOTAL " &
+                "A.CODIGO_PRODUCTO_SERVICIO,A.CODIGO_UNIDAD,R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA,R.PRECIO_TOTAL," &
+                "R.ID_SIS_CAT_IMPUESTOS,R.GRADO_TOXICIDAD " &
                 "FROM VENTA_DETALLE R " &
                 "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
                 "WHERE R.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' " &
@@ -1364,13 +1376,14 @@ Public Class Class_Ventas_Global
         Try
             'sSQL = "select CODIGO_ARTICULO,DESCRIPCION,DISPONIBLE,PRECIO,UNIDAD_VENTA,IMPUESTO_PORCENTAJE,IMPORTE,0,CUENTA_CONTABLE,IMPUESTO_IMPORTE,ID_VENTA_DETALLE from VENTA_DETALLE WHERE FOLIO_VENTA='" & Me._FOLIO_VENTA & "' AND DISPONIBLE>0 Order by ID_VENTA_DETALLE "
 
-            sSQL = "SELECT R.CODIGO_ARTICULO, " & _
-            "CASE WHEN A.ES_SERIALIZABLE = '1' THEN 'SER' WHEN A.INVENTARIABLE= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO, " & _
-            "R.DESCRIPCION,R.DISPONIBLE,R.PRECIO,R.PRECIO_TOTAL,R.UNIDAD_VENTA,ISNULL(R.CANTIDAD_KILOS,0) CANTIDAD_KILOS,ISNULL(R.PRECIO_KILOS,0) PRECIO_KILOS,R.IMPUESTO_PORCENTAJE,R.IMPORTE,ISNULL(R.IMPORTE_KILOS,0) IMPORTE_KILOS," & _
-            "R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_VENTA_DETALLE,R.ES_PRODUCTO_KILOS,R.CODIGO_CENTRO_COSTO,CC.NOMBRE_CENTRO_COSTO,R.CODIGO_CENTRO_COSTO,R.PRECIO_USD,R.IMPORTE_USD, " &
-            "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA,R.PRECIO_TOTAL,R.COSTO,(R.PRECIO - R.COSTO) UTILIDAD_UNITARIA,((R.PRECIO-R.COSTO)*R.CANTIDAD) UTILIDAD_TOTAL,CASE WHEN R.PRECIO > 0 THEN (((R.PRECIO-R.COSTO)/R.PRECIO)*100) ELSE 0 END UTILIDA_PORCENTAJE " & _
-            "FROM VENTA_DETALLE R " & _
-            "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
+            sSQL = "SELECT R.CODIGO_ARTICULO, " &
+            "CASE WHEN A.ES_SERIALIZABLE = '1' THEN 'SER' WHEN A.INVENTARIABLE= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO, " &
+            "R.DESCRIPCION,R.DISPONIBLE,R.PRECIO,R.PRECIO_TOTAL,R.UNIDAD_VENTA,ISNULL(R.CANTIDAD_KILOS,0) CANTIDAD_KILOS,ISNULL(R.PRECIO_KILOS,0) PRECIO_KILOS,R.IMPUESTO_PORCENTAJE,R.IMPORTE,ISNULL(R.IMPORTE_KILOS,0) IMPORTE_KILOS," &
+            "R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_VENTA_DETALLE,R.ES_PRODUCTO_KILOS,R.CODIGO_CENTRO_COSTO,CC.NOMBRE_CENTRO_COSTO,R.PRECIO_USD,R.IMPORTE_USD, " &
+            "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA,R.COSTO,(R.PRECIO - R.COSTO) UTILIDAD_UNITARIA,((R.PRECIO-R.COSTO)*R.CANTIDAD) UTILIDAD_TOTAL,CASE WHEN R.PRECIO > 0 THEN (((R.PRECIO-R.COSTO)/R.PRECIO)*100) ELSE 0 END UTILIDA_PORCENTAJE, " &
+            "R.ID_SIS_CAT_IMPUESTOS,R.GRADO_TOXICIDAD " &
+            "FROM VENTA_DETALLE R " &
+            "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
             "INNER JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO=CC.CODIGO_CENTRO_COSTO)" &
             "WHERE R.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' AND R.DISPONIBLE>0 " &
             "ORDER BY R.ID_VENTA_DETALLE "
@@ -1456,6 +1469,31 @@ Public Class Class_Ventas_Global
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "ObtenerPrecioOriginal", ex)
         End Try
+    End Function
+
+    Public Function ObtenerDetalleDisponiblesParaDevolucion() As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String
+        Try
+            sSQL = "SELECT R.CODIGO_ARTICULO, " &
+            "CASE WHEN A.ES_SERIALIZABLE = '1' THEN 'SER' WHEN A.INVENTARIABLE= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO, " &
+            "R.DESCRIPCION,R.DISPONIBLE,R.PRECIO,R.PRECIO_TOTAL,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE," &
+            "R.IMPUESTO_IMPORTE,R.ID_VENTA_DETALLE," &
+            "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA, " &
+            "R.ID_SIS_CAT_IMPUESTOS,R.GRADO_TOXICIDAD " &
+            "FROM VENTA_DETALLE R " &
+            "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
+            "WHERE R.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' AND R.DISPONIBLE>0 " &
+            "ORDER BY R.ID_VENTA_DETALLE "
+
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtenerDetalleDisponiblesParaDevolucion", ex)
+        End Try
+        Return dTabla
     End Function
 
     Public Function EsClienteDeContado(ByVal sCuentaContable As String, ByVal sCodigoZona As String) As Boolean
@@ -2501,32 +2539,6 @@ Public Class Class_Ventas_Global
             HandleError(Me.Nombre_Catalogo, sProcedure, ex)
         End Try
         Return oPrecioVenta
-    End Function
-
-    Public Function ObtenerDetalleDisponiblesParaDevolucion() As DataTable
-        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
-        Dim sSQL As String
-
-        Try
-
-            sSQL = "SELECT R.CODIGO_ARTICULO, " &
-            "CASE WHEN A.ES_SERIALIZABLE = '1' THEN 'SER' WHEN A.INVENTARIABLE= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO, " &
-            "R.DESCRIPCION,R.DISPONIBLE,R.PRECIO,R.PRECIO_TOTAL,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE," &
-            "R.IMPUESTO_IMPORTE,R.ID_VENTA_DETALLE," &
-            "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA " &
-            "FROM VENTA_DETALLE R " &
-            "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
-            "WHERE R.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' AND R.DISPONIBLE>0 " &
-            "ORDER BY R.ID_VENTA_DETALLE "
-
-            da = New SqlDataAdapter(sSQL, Me._Conexion)
-            da.Fill(dTabla)
-            da.Dispose()
-
-        Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "ObtenerDetalleDisponiblesParaDevolucion", ex)
-        End Try
-        Return dTabla
     End Function
 
     Public Function RecuperarXMLyPDF() As Boolean

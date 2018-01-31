@@ -13,7 +13,7 @@ Public Class Class_CatArticulos
     Private _ESTATUS As String
     Private _PROTEGIDO As String
     Private _INVENTARIABLE As String
-    Private _TIENE_IMPUESTO As String
+    'Private _TIENE_IMPUESTO As String
     Private _CODIGO_FAMILIA As String
     Private _CODIGO_LINEA As String
     Private _PRECIO As Decimal
@@ -37,7 +37,7 @@ Public Class Class_CatArticulos
     'Private _NOMBRE_UNIDAD As String
     Private _CODIGO_PRODUCTO_SERVICIO As String
     Private _CODIGO_UNIDAD As String
-
+    Private _ID_SIS_CAT_IMPUESTOS As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -47,6 +47,7 @@ Public Class Class_CatArticulos
     Private _DESCRIPCION_EXTRANJERA_PARTE_2 As String
     Private _TIPO_CONTROL_INVENTARIO As String
     Private _IEPS_PORCENTAJE As Decimal
+    Private _IMPUESTO_PORCENTAJE As Decimal
 #End Region
 
 #Region "Campos públicos"
@@ -124,14 +125,14 @@ Public Class Class_CatArticulos
         End Set
     End Property
 
-    Public Property TIENE_IMPUESTO() As String
-        Get
-            Return Me._TIENE_IMPUESTO
-        End Get
-        Set(ByVal VALUE As String)
-            Me._TIENE_IMPUESTO = VALUE
-        End Set
-    End Property
+    'Public Property TIENE_IMPUESTO() As String
+    '    Get
+    '        Return Me._TIENE_IMPUESTO
+    '    End Get
+    '    Set(ByVal VALUE As String)
+    '        Me._TIENE_IMPUESTO = VALUE
+    '    End Set
+    'End Property
 
     Public Property CODIGO_LINEA() As String
         Get
@@ -315,6 +316,15 @@ Public Class Class_CatArticulos
             Me._CODIGO_UNIDAD = VALUE
         End Set
     End Property
+
+    Public Property ID_SIS_CAT_IMPUESTOS() As String
+        Get
+            Return Me._ID_SIS_CAT_IMPUESTOS
+        End Get
+        Set(ByVal VALUE As String)
+            Me._ID_SIS_CAT_IMPUESTOS = VALUE
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -339,6 +349,12 @@ Public Class Class_CatArticulos
     Public ReadOnly Property IEPS_PORCENTAJE() As Decimal
         Get
             Return Me._IEPS_PORCENTAJE
+        End Get
+    End Property
+
+    Public ReadOnly Property IMPUESTO_PORCENTAJE() As Decimal
+        Get
+            Return Me._IMPUESTO_PORCENTAJE
         End Get
     End Property
 #End Region
@@ -425,7 +441,7 @@ Public Class Class_CatArticulos
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS.ToUpper
             sqlParametro = .Parameters.Add("@PROTEGIDO", SqlDbType.Char, 1) : sqlParametro.Value = Me._PROTEGIDO
             sqlParametro = .Parameters.Add("@INVENTARIABLE", SqlDbType.Char, 1) : sqlParametro.Value = Me._INVENTARIABLE
-            sqlParametro = .Parameters.Add("@TIENE_IMPUESTO", SqlDbType.Char, 1) : sqlParametro.Value = Me._TIENE_IMPUESTO
+            'sqlParametro = .Parameters.Add("@TIENE_IMPUESTO", SqlDbType.Char, 1) : sqlParametro.Value = Me._TIENE_IMPUESTO
             sqlParametro = .Parameters.Add("@CODIGO_FAMILIA", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_FAMILIA
             sqlParametro = .Parameters.Add("@CODIGO_LINEA", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_LINEA
             sqlParametro = .Parameters.Add("@PRECIO", SqlDbType.Money) : sqlParametro.Value = Me._PRECIO
@@ -441,6 +457,7 @@ Public Class Class_CatArticulos
             sqlParametro = .Parameters.Add("@GRADO_TOXICIDAD", SqlDbType.SmallInt) : sqlParametro.Value = Me._GRADO_TOXICIDAD
             sqlParametro = .Parameters.Add("@CODIGO_PRODUCTO_SERVICIO", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_PRODUCTO_SERVICIO
             sqlParametro = .Parameters.Add("@CODIGO_UNIDAD", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_UNIDAD
+            sqlParametro = .Parameters.Add("@ID_SIS_CAT_IMPUESTOS", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._ID_SIS_CAT_IMPUESTOS
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = sAccion
 
             Try
@@ -535,7 +552,7 @@ Public Class Class_CatArticulos
                     Me._UNIDAD_VENTA = Trim("" & dReader("UNIDAD_VENTA").ToString())
                     Me._ESTATUS = "" & dReader("ESTATUS").ToString()
                     Me._INVENTARIABLE = "" & dReader("INVENTARIABLE").ToString()
-                    Me._TIENE_IMPUESTO = "" & dReader("TIENE_IMPUESTO").ToString()
+                    'Me._TIENE_IMPUESTO = "" & dReader("TIENE_IMPUESTO").ToString()
                     Me._CODIGO_FAMILIA = "" & dReader("CODIGO_FAMILIA").ToString()
                     Me._CODIGO_LINEA = "" & dReader("CODIGO_LINEA").ToString()
                     Me._PRECIO = Convert.ToDecimal("" & dReader("PRECIO").ToString())
@@ -571,6 +588,8 @@ Public Class Class_CatArticulos
 
                     Me._CODIGO_UNIDAD = "" & dReader("CODIGO_UNIDAD").ToString
                     Me._CODIGO_PRODUCTO_SERVICIO = "" & dReader("CODIGO_PRODUCTO_SERVICIO").ToString
+                    Me._ID_SIS_CAT_IMPUESTOS = "" & dReader("ID_SIS_CAT_IMPUESTOS").ToString
+                    Me._IMPUESTO_PORCENTAJE = CDec("" & dReader("IMPUESTO_PORCENTAJE").ToString)
 
                     bResultado = True
                 End If

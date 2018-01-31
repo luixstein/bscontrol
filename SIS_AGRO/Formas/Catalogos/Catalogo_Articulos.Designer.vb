@@ -24,6 +24,8 @@ Partial Class Catalogo_Articulos
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Catalogo_Articulos))
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.lblDisplayImpuestoIVA = New System.Windows.Forms.Label()
+        Me.cboImpuestoIVA = New System.Windows.Forms.ComboBox()
         Me.lblClaveProductoSAT = New System.Windows.Forms.Label()
         Me.lblCodigoUnidadSAT = New System.Windows.Forms.Label()
         Me.lblDisplayClaveProductoSAT = New System.Windows.Forms.Label()
@@ -34,7 +36,6 @@ Partial Class Catalogo_Articulos
         Me.lblDisplayGradoToxicidad = New System.Windows.Forms.Label()
         Me.LblNombreUnidad = New System.Windows.Forms.Label()
         Me.chkEsSerializable = New System.Windows.Forms.CheckBox()
-        Me.chkImpuesto = New System.Windows.Forms.CheckBox()
         Me.chkInventariable = New System.Windows.Forms.CheckBox()
         Me.CboFamilia = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -80,6 +81,8 @@ Partial Class Catalogo_Articulos
         Me.gBoxInformacion.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.gBoxInformacion.Controls.Add(Me.lblDisplayImpuestoIVA)
+        Me.gBoxInformacion.Controls.Add(Me.cboImpuestoIVA)
         Me.gBoxInformacion.Controls.Add(Me.lblClaveProductoSAT)
         Me.gBoxInformacion.Controls.Add(Me.lblCodigoUnidadSAT)
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayClaveProductoSAT)
@@ -90,7 +93,6 @@ Partial Class Catalogo_Articulos
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayGradoToxicidad)
         Me.gBoxInformacion.Controls.Add(Me.LblNombreUnidad)
         Me.gBoxInformacion.Controls.Add(Me.chkEsSerializable)
-        Me.gBoxInformacion.Controls.Add(Me.chkImpuesto)
         Me.gBoxInformacion.Controls.Add(Me.chkInventariable)
         Me.gBoxInformacion.Controls.Add(Me.CboFamilia)
         Me.gBoxInformacion.Controls.Add(Me.Label1)
@@ -112,6 +114,25 @@ Partial Class Catalogo_Articulos
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información de los artículos"
+        '
+        'lblDisplayImpuestoIVA
+        '
+        Me.lblDisplayImpuestoIVA.AutoSize = True
+        Me.lblDisplayImpuestoIVA.Location = New System.Drawing.Point(10, 244)
+        Me.lblDisplayImpuestoIVA.Name = "lblDisplayImpuestoIVA"
+        Me.lblDisplayImpuestoIVA.Size = New System.Drawing.Size(30, 13)
+        Me.lblDisplayImpuestoIVA.TabIndex = 243
+        Me.lblDisplayImpuestoIVA.Text = "IVA :"
+        '
+        'cboImpuestoIVA
+        '
+        Me.cboImpuestoIVA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboImpuestoIVA.FormattingEnabled = True
+        Me.cboImpuestoIVA.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
+        Me.cboImpuestoIVA.Location = New System.Drawing.Point(97, 241)
+        Me.cboImpuestoIVA.Name = "cboImpuestoIVA"
+        Me.cboImpuestoIVA.Size = New System.Drawing.Size(212, 21)
+        Me.cboImpuestoIVA.TabIndex = 5
         '
         'lblClaveProductoSAT
         '
@@ -168,15 +189,15 @@ Partial Class Catalogo_Articulos
         Me.cboGradoToxicidad.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboGradoToxicidad.FormattingEnabled = True
         Me.cboGradoToxicidad.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
-        Me.cboGradoToxicidad.Location = New System.Drawing.Point(97, 376)
+        Me.cboGradoToxicidad.Location = New System.Drawing.Point(97, 266)
         Me.cboGradoToxicidad.Name = "cboGradoToxicidad"
         Me.cboGradoToxicidad.Size = New System.Drawing.Size(212, 21)
-        Me.cboGradoToxicidad.TabIndex = 10
+        Me.cboGradoToxicidad.TabIndex = 6
         '
         'lblDisplayGradoToxicidad
         '
         Me.lblDisplayGradoToxicidad.AutoSize = True
-        Me.lblDisplayGradoToxicidad.Location = New System.Drawing.Point(10, 379)
+        Me.lblDisplayGradoToxicidad.Location = New System.Drawing.Point(10, 269)
         Me.lblDisplayGradoToxicidad.Name = "lblDisplayGradoToxicidad"
         Me.lblDisplayGradoToxicidad.Size = New System.Drawing.Size(87, 13)
         Me.lblDisplayGradoToxicidad.TabIndex = 141
@@ -201,16 +222,6 @@ Partial Class Catalogo_Articulos
         Me.chkEsSerializable.Text = "Lleva control de series"
         Me.chkEsSerializable.UseVisualStyleBackColor = True
         '
-        'chkImpuesto
-        '
-        Me.chkImpuesto.AutoSize = True
-        Me.chkImpuesto.Location = New System.Drawing.Point(97, 241)
-        Me.chkImpuesto.Name = "chkImpuesto"
-        Me.chkImpuesto.Size = New System.Drawing.Size(43, 17)
-        Me.chkImpuesto.TabIndex = 5
-        Me.chkImpuesto.Text = "IVA"
-        Me.chkImpuesto.UseVisualStyleBackColor = True
-        '
         'chkInventariable
         '
         Me.chkInventariable.AutoSize = True
@@ -226,15 +237,15 @@ Partial Class Catalogo_Articulos
         Me.CboFamilia.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboFamilia.FormattingEnabled = True
         Me.CboFamilia.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
-        Me.CboFamilia.Location = New System.Drawing.Point(97, 296)
+        Me.CboFamilia.Location = New System.Drawing.Point(97, 321)
         Me.CboFamilia.Name = "CboFamilia"
         Me.CboFamilia.Size = New System.Drawing.Size(212, 21)
-        Me.CboFamilia.TabIndex = 7
+        Me.CboFamilia.TabIndex = 8
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(10, 299)
+        Me.Label1.Location = New System.Drawing.Point(10, 324)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(45, 13)
         Me.Label1.TabIndex = 138
@@ -243,7 +254,7 @@ Partial Class Catalogo_Articulos
         'LblDisplayCodigoPostalParticular
         '
         Me.LblDisplayCodigoPostalParticular.AutoSize = True
-        Me.LblDisplayCodigoPostalParticular.Location = New System.Drawing.Point(10, 326)
+        Me.LblDisplayCodigoPostalParticular.Location = New System.Drawing.Point(10, 351)
         Me.LblDisplayCodigoPostalParticular.Name = "LblDisplayCodigoPostalParticular"
         Me.LblDisplayCodigoPostalParticular.Size = New System.Drawing.Size(43, 13)
         Me.LblDisplayCodigoPostalParticular.TabIndex = 136
@@ -251,11 +262,11 @@ Partial Class Catalogo_Articulos
         '
         'TxtPrecio
         '
-        Me.TxtPrecio.Location = New System.Drawing.Point(97, 323)
+        Me.TxtPrecio.Location = New System.Drawing.Point(97, 348)
         Me.TxtPrecio.MaxLength = 0
         Me.TxtPrecio.Name = "TxtPrecio"
         Me.TxtPrecio.Size = New System.Drawing.Size(72, 20)
-        Me.TxtPrecio.TabIndex = 8
+        Me.TxtPrecio.TabIndex = 9
         Me.TxtPrecio.Text = "0"
         Me.TxtPrecio.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
@@ -264,15 +275,15 @@ Partial Class Catalogo_Articulos
         Me.cboLinea.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboLinea.FormattingEnabled = True
         Me.cboLinea.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
-        Me.cboLinea.Location = New System.Drawing.Point(97, 268)
+        Me.cboLinea.Location = New System.Drawing.Point(97, 293)
         Me.cboLinea.Name = "cboLinea"
         Me.cboLinea.Size = New System.Drawing.Size(212, 21)
-        Me.cboLinea.TabIndex = 6
+        Me.cboLinea.TabIndex = 7
         '
         'lblDisplayCod_Linea
         '
         Me.lblDisplayCod_Linea.AutoSize = True
-        Me.lblDisplayCod_Linea.Location = New System.Drawing.Point(10, 271)
+        Me.lblDisplayCod_Linea.Location = New System.Drawing.Point(10, 296)
         Me.lblDisplayCod_Linea.Name = "lblDisplayCod_Linea"
         Me.lblDisplayCod_Linea.Size = New System.Drawing.Size(39, 13)
         Me.lblDisplayCod_Linea.TabIndex = 134
@@ -281,7 +292,7 @@ Partial Class Catalogo_Articulos
         'LblEstatus
         '
         Me.LblEstatus.AutoSize = True
-        Me.LblEstatus.Location = New System.Drawing.Point(10, 352)
+        Me.LblEstatus.Location = New System.Drawing.Point(10, 377)
         Me.LblEstatus.Name = "LblEstatus"
         Me.LblEstatus.Size = New System.Drawing.Size(48, 13)
         Me.LblEstatus.TabIndex = 129
@@ -292,11 +303,11 @@ Partial Class Catalogo_Articulos
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
-        Me.CboEstatus.Location = New System.Drawing.Point(97, 349)
+        Me.CboEstatus.Location = New System.Drawing.Point(97, 374)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(72, 21)
-        Me.CboEstatus.TabIndex = 9
+        Me.CboEstatus.TabIndex = 10
         '
         'LblDisplayCodArticulo
         '
@@ -580,7 +591,6 @@ Partial Class Catalogo_Articulos
     Friend WithEvents CboFamilia As System.Windows.Forms.ComboBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents chkInventariable As System.Windows.Forms.CheckBox
-    Friend WithEvents chkImpuesto As System.Windows.Forms.CheckBox
     Friend WithEvents Grid As System.Windows.Forms.DataGridView
     Friend WithEvents rbtCodigoArticulo As System.Windows.Forms.RadioButton
     Friend WithEvents rbtDescripcion As System.Windows.Forms.RadioButton
@@ -597,4 +607,6 @@ Partial Class Catalogo_Articulos
     Friend WithEvents txtClaveProductoSAT As TextBox
     Friend WithEvents lblDisplayCodigoUnidadSAT As Label
     Friend WithEvents txtCodigoUnidadSAT As TextBox
+    Friend WithEvents lblDisplayImpuestoIVA As Label
+    Friend WithEvents cboImpuestoIVA As ComboBox
 End Class

@@ -30,6 +30,7 @@ Public Class Class_CXC_Global
     Private _FECHA_DE_CANCELACION As Date
     Private _FECHA_DE_CANCELACION_SERVIDOR As Date
     Private _TOTAL_DOLARES As Decimal
+
 #End Region
 
 #Region "Campos de sistema"
@@ -287,6 +288,7 @@ Public Class Class_CXC_Global
 #End Region
 
 #End Region
+
 #Region "Constructor y destructor"
     Public Sub New()
         Me._Conexion = New SqlConnection

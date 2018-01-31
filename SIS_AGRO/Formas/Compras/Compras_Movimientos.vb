@@ -1895,7 +1895,7 @@ Buscar:
         Try
             Dim Columna As Integer, Renglon As Integer
             Dim StrCod As String, sCuentaContable As String, dCantidad As Double, dPrecio As Double
-            Dim oArticulos As Class_CatArticulos
+            Dim oArticulo As Class_CatArticulos
             Dim oCuentas As New Class_CatCuentas 'Class_VWCatDeudoresDiversos
 
             If Me.oDocumento.AFECTA_CXP = True And Me.Grid.Selection.FirstRow = Me.Grid.Rows - 1 Then
@@ -1910,8 +1910,8 @@ Buscar:
 
             'ESTA VALIDACION SE PUSO PARA QUE A LOS ARTICULOS INVENTARIABLES NO LES PUEDAN CAMBIAR LA CUENTA CONTABLE CALCULADA AUTOMATICAMENTE
             If Columna = Me.igyCuentaContable Then
-                oArticulos = New Class_CatArticulos(StrCod)
-                If oArticulos.INVENTARIABLE = "1" Then
+                oArticulo = New Class_CatArticulos(StrCod)
+                If oArticulo.INVENTARIABLE = "1" Then
                     e.SuppressKeyPress = True
                     Exit Sub
                 End If
@@ -1923,12 +1923,12 @@ Buscar:
                     Select Case Columna
                         Case Me.igyCodigo
                             If txtLEN(StrCod) = False Then
-                                GoTo BuscaArticulos
+                                GoTo BuscaArticulos : Return
                             End If
 LlenaLinea:
-                            oArticulos = New Class_CatArticulos(StrCod)
-                            If oArticulos.Existe = False Then
-                                GoTo BuscaArticulos
+                            oArticulo = New Class_CatArticulos(StrCod)
+                            If oArticulo.Existe = False Then
+                                GoTo BuscaArticulos : Return
                             End If
 
                             If StrCod = Empresa_Sistema.CODIGO_ARTICULO_NO_INVENTARIABLE_COMPRA_PROVEEDOR Then
@@ -1941,22 +1941,23 @@ LlenaLinea:
                                 Me.Grid.Column(Me.igyDescripcion).Locked = False
                                 Me.Grid.Column(Me.igyUnidad).Locked = False
                             Else
-                                If oArticulos.Existe = True Then
-                                    Me.Grid.Cell(Renglon, Me.igyDescripcion).Text = oArticulos.DESCRIPCION
+                                If oArticulo.Existe = True Then
+                                    Me.Grid.Cell(Renglon, Me.igyDescripcion).Text = oArticulo.DESCRIPCION
                                     Me.Grid.Cell(Renglon, Me.igyCantidad).Text = "0"
                                     Me.Grid.Cell(Renglon, Me.igyPrecio).Text = "0" 'traer el ultimo precio del mismo proveedor y mismo articulo"
-                                    Me.Grid.Cell(Renglon, Me.igyUnidad).Text = oArticulos.UNIDAD_VENTA
+                                    Me.Grid.Cell(Renglon, Me.igyUnidad).Text = oArticulo.UNIDAD_VENTA
 
-                                    If oArticulos.TIENE_IMPUESTO = "1" Then
-                                        Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Text = Plaza.Impuesto_Porcentaje.ToString
-                                    Else
-                                        Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Text = "0"
-                                    End If
+                                    'If oArticulos.TIENE_IMPUESTO = "1" Then
+                                    '    Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Text = Plaza.Impuesto_Porcentaje.ToString
+                                    'Else
+                                    '    Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Text = "0"
+                                    'End If
+                                    Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Text = oArticulo.IMPUESTO_PORCENTAJE.ToString
 
                                     Me.Grid.Column(Me.igyDescripcion).Locked = True
                                     Me.Grid.Column(Me.igyUnidad).Locked = True
 
-                                    Me.Grid.Cell(Renglon, Me.igyIEPS_PORCENTAJE).Text = oArticulos.IEPS_PORCENTAJE.ToString
+                                    Me.Grid.Cell(Renglon, Me.igyIEPS_PORCENTAJE).Text = oArticulo.IEPS_PORCENTAJE.ToString
                                 End If
                             End If
 
@@ -2030,8 +2031,8 @@ BuscaArticulos:
                     Select Case Columna
                         Case Me.igyCodigo
                             If e.KeyCode = Keys.F6 Then
-                                oArticulos = New Class_CatArticulos
-                                StrCod = oArticulos.BusquedaVisualInventariables_PorDescripcion()
+                                oArticulo = New Class_CatArticulos
+                                StrCod = oArticulo.BusquedaVisualInventariables_PorDescripcion()
                                 If txtLEN(StrCod) = True Then
                                     Me.Grid.Cell(Renglon, Me.igyCodigo).Text = StrCod
                                     GoTo LlenaLinea
@@ -2039,7 +2040,7 @@ BuscaArticulos:
                             End If
                         Case Me.igyCuentaContable
 BuscarCuentas:
-                            oArticulos = New Class_CatArticulos(Me.Grid.Cell(Renglon, Me.igyCodigo).Text)
+                            oArticulo = New Class_CatArticulos(Me.Grid.Cell(Renglon, Me.igyCodigo).Text)
 
                             If e.KeyCode = Keys.F6 Then
                                 sCuentaContable = oCuentas.BusquedaVisual_PorCodigoConLike("1") '.BusquedaVisual_PorCodigoFiltrandoTipoOperacion()
@@ -2051,7 +2052,7 @@ BuscarCuentas:
                                 Return
                             End If
 
-                            If oArticulos.INVENTARIABLE = "0" Then
+                            If oArticulo.INVENTARIABLE = "0" Then
                                 If Mid(sCuentaContable, 1, 4) = Empresa_Sistema.CUENTA_CONTABLE_ALMACENES.ToString Then
                                     MsgBox("La cuenta para los artículos no inventariables no deben de empezar con " & Empresa_Sistema.CUENTA_CONTABLE_ALMACENES.ToString & ".", MsgBoxStyle.Exclamation, Me.Text)
                                     Return

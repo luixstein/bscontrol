@@ -217,8 +217,8 @@ Module FacturacionElectronica33
 
                 '003=IEPS,002=IVA
 
-                If oVenta.IEPS_TOTAL_DESGLOSADO > 0 Then 'Solamente si se le desglosan los ieps se mencionan, si es incluido no(como si no tuviera), por eso se pregunta por el total y no del renglón porque al ser inc si va tener ieps pero no es parte del xml
-                    If CDec(row("IEPS_PORCENTAJE").ToString) > 0 Then 'Este viene como 6,7,9
+                If oVenta.TIENE_IEPS_DESGLOSADO = True Then
+                    If row("GRADO_TOXICIDAD").ToString <> "0" Then '0=no graba ieps, <>0 significa que si graba ieps : 1-4=con alguna tasa,5=Exento(aún siendo exento hay que llenar la base ieps)
                         drBASE_IEPS = CDec(row("BASE_IEPS").ToString)
                         drIEPS_IMPORTE = CDec(row("IEPS_IMPORTE").ToString)
 
@@ -227,11 +227,15 @@ Module FacturacionElectronica33
                             drIEPS_IMPORTE = RedondearD(drIEPS_IMPORTE / dTIPO_DE_CAMBIO, 2)
                         End If
 
-                        ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.00"), "003", "Tasa", Format(drIEPS_PORCENTAJE, "0.#00000"), Format(drIEPS_IMPORTE, "##0.00"))
+                        If row("GRADO_TOXICIDAD").ToString = "5" Then '5=Ieps Exento
+                            ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.00"), "003", "Exento", "", "")
+                        Else
+                            ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.00"), "003", "Tasa", Format(drIEPS_PORCENTAJE, "0.#00000"), Format(drIEPS_IMPORTE, "##0.00"))
+                        End If
                     End If
                 End If
 
-                If drIMPUESTO_PORCENTAJE > 0 Then
+                If row("ID_SIS_CAT_IMPUESTOS").ToString <> "N" Then 'N=No grava iva, si es <>N = Si grava iva ya sea al 0,16,Exento(aún siendo exento ó 0 hay que llenar la base iva)
                     drBASE_IVA = CDec(row("BASE_IVA").ToString)
                     drIMPUESTO_IMPORTE = CDec(row("IMPUESTO_IMPORTE").ToString)
 
@@ -240,8 +244,38 @@ Module FacturacionElectronica33
                         drIMPUESTO_IMPORTE = RedondearD(drIMPUESTO_IMPORTE / dTIPO_DE_CAMBIO, 2)
                     End If
 
-                    ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Tasa", Format(drIMPUESTO_PORCENTAJE, "0.#00000"), Format(drIMPUESTO_IMPORTE, "##0.00"))
+                    If row("ID_SIS_CAT_IMPUESTOS").ToString = "E" Then 'E=Iva Exento
+                        ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Exento", "", "")
+                    Else
+                        ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Tasa", Format(drIMPUESTO_PORCENTAJE, "0.#00000"), Format(drIMPUESTO_IMPORTE, "##0.00"))
+                    End If
                 End If
+
+                'If oVenta.IEPS_TOTAL_DESGLOSADO > 0 Then 'Solamente si se le desglosan los ieps se mencionan, si es incluido no(como si no tuviera), por eso se pregunta por el total y no del renglón porque al ser inc si va tener ieps pero no es parte del xml
+                '    If CDec(row("IEPS_PORCENTAJE").ToString) > 0 Then 'Este viene como 6,7,9
+                '        drBASE_IEPS = CDec(row("BASE_IEPS").ToString)
+                '        drIEPS_IMPORTE = CDec(row("IEPS_IMPORTE").ToString)
+
+                '        If oVenta.CODIGO_MONEDA_SAT = "USD" Then
+                '            drBASE_IEPS = RedondearD(drBASE_IEPS / dTIPO_DE_CAMBIO, 2)
+                '            drIEPS_IMPORTE = RedondearD(drIEPS_IMPORTE / dTIPO_DE_CAMBIO, 2)
+                '        End If
+
+                '        ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.00"), "003", "Tasa", Format(drIEPS_PORCENTAJE, "0.#00000"), Format(drIEPS_IMPORTE, "##0.00"))
+                '    End If
+                'End If
+
+                'If drIMPUESTO_PORCENTAJE > 0 Then
+                '    drBASE_IVA = CDec(row("BASE_IVA").ToString)
+                '    drIMPUESTO_IMPORTE = CDec(row("IMPUESTO_IMPORTE").ToString)
+
+                '    If oVenta.CODIGO_MONEDA_SAT = "USD" Then
+                '        drBASE_IVA = RedondearD(drBASE_IVA / dTIPO_DE_CAMBIO, 2)
+                '        drIMPUESTO_IMPORTE = RedondearD(drIMPUESTO_IMPORTE / dTIPO_DE_CAMBIO, 2)
+                '    End If
+
+                '    ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Tasa", Format(drIMPUESTO_PORCENTAJE, "0.#00000"), Format(drIMPUESTO_IMPORTE, "##0.00"))
+                'End If
 
                 Cfd.Conceptos.Add(row("CODIGO_PRODUCTO_SERVICIO").ToString, row("CODIGO_ARTICULO").ToString,
                                   Format(drCantidad, "##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CANTIDAD)),
@@ -252,12 +286,13 @@ Module FacturacionElectronica33
             Next
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Impuestos'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            Dim arr() As iImpuestosTraslado33, dImpuestoIEPSImporte As Decimal, dImpuestoIVAImporte As Decimal
+            Dim arr() As iImpuestosTraslado33, dImpuestoIEPSImporte As Decimal, dImpuestoIVAImporte As Decimal, iEncontrados As Integer = 0
 
             ''IEPS, deben acumularse, puede ser que mas de un artículo tenga el mismo % de ieps, de modo que aquí se juntan en uno sólo.
-            If oVenta.IEPS_TOTAL_DESGLOSADO > 0 Then 'Solamente si se le desglosan los ieps se mencionan, si es incluido no(como si no tuviera), por eso se pregunta por el total y no del renglón porque al ser inc si va tener ieps pero no es parte del xml
-                arr = ImpuestosTrasladoAgrupados(Cfd)
+            iEncontrados = 0
+            arr = ImpuestosTrasladoAgrupados(Cfd, "003", iEncontrados)
 
+            If iEncontrados > 0 Then
                 For i = 1 To UBound(arr)
                     dImpuestoIEPSImporte = CDec(arr(i).Importe)
 
@@ -268,18 +303,43 @@ Module FacturacionElectronica33
             End If
 
             ''IVA
-            'Nota el total de iva ya esta acumulado y es un sólo tipo de iva por se obtiene directamente del documento(a diferencia del ieps)
-            If oVenta.IMPUESTO > 0 Then
-                'rsDocumento!IMPUESTO_PORCENTAJE viene como 16, se ocupa dividir
+            iEncontrados = 0
+            arr = ImpuestosTrasladoAgrupados(Cfd, "002", iEncontrados) 'comprobar aqui que agrupe 0 y 16 pero no exentos."
 
-                dImpuestoIVAImporte = CDec(oVenta.IMPUESTO)
+            If iEncontrados > 0 Then
+                For i = 1 To UBound(arr)
+                    dImpuestoIVAImporte = CDec(arr(i).Importe)
 
-                If oVenta.CODIGO_MONEDA_SAT = "USD" Then
-                    dImpuestoIVAImporte = RedondearD(dImpuestoIVAImporte / dTIPO_DE_CAMBIO, 2)
-                End If
-
-                Cfd.Impuestos.Traslados.Add("002", "Tasa", Format(oVenta.IMPUESTO_PORCENTAJE / CDec("100.00"), "0.#00000"), Format(dImpuestoIVAImporte, "#0.00"))
+                    Cfd.Impuestos.Traslados.Add(arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIVAImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
+                Next
             End If
+
+            ''IEPS, deben acumularse, puede ser que mas de un artículo tenga el mismo % de ieps, de modo que aquí se juntan en uno sólo.
+            'If oVenta.IEPS_TOTAL_DESGLOSADO > 0 Then 'Solamente si se le desglosan los ieps se mencionan, si es incluido no(como si no tuviera), por eso se pregunta por el total y no del renglón porque al ser inc si va tener ieps pero no es parte del xml
+            '    arr = ImpuestosTrasladoAgrupados(Cfd)
+
+            '    For i = 1 To UBound(arr)
+            '        dImpuestoIEPSImporte = CDec(arr(i).Importe)
+
+            '        'Nota, no es necesario preguntar si es en USD y dividir por el tipo de cambio porque este valor se llena con el desglose x concepto el cual ya esta en USD
+
+            '        Cfd.Impuestos.Traslados.Add(arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIEPSImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
+            '    Next
+            'End If
+
+            '''IVA
+            ''Nota el total de iva ya esta acumulado y es un sólo tipo de iva por se obtiene directamente del documento(a diferencia del ieps)
+            'If oVenta.IMPUESTO > 0 Then
+            '    'rsDocumento!IMPUESTO_PORCENTAJE viene como 16, se ocupa dividir
+
+            '    dImpuestoIVAImporte = CDec(oVenta.IMPUESTO)
+
+            '    If oVenta.CODIGO_MONEDA_SAT = "USD" Then
+            '        dImpuestoIVAImporte = RedondearD(dImpuestoIVAImporte / dTIPO_DE_CAMBIO, 2)
+            '    End If
+
+            '    Cfd.Impuestos.Traslados.Add("002", "Tasa", Format(oVenta.IMPUESTO_PORCENTAJE / CDec("100.00"), "0.#00000"), Format(dImpuestoIVAImporte, "#0.00"))
+            'End If
 
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''CCE COMPLEMENTO COMERCIO EXTERIOR''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -300,7 +360,7 @@ Module FacturacionElectronica33
             If Cfd.GeneraCFD(TipoComprobante.FACTURA_VENTA, sRutaXML) = True Then
                 bResultado = True
                 If bMostrarMensaje = True Then
-                    MsgBox("Factura sellada satisfactoriamente.", vbInformation, sProcedure)
+                    MsgBox("Factura timbrada satisfactoriamente.", vbInformation, sProcedure)
                 End If
             End If
 
@@ -311,22 +371,22 @@ Module FacturacionElectronica33
         Return bResultado
     End Function
 
-    Private Function ImpuestosTrasladoAgrupados(ByVal Cfd As cComprobante33) As iImpuestosTraslado33()
+    Private Function ImpuestosTrasladoAgrupados(ByVal Cfd As cComprobante33, ByVal sTipoImpuesto As String, ByRef iEncontrados As Integer) As iImpuestosTraslado33()
         Const sProcedure As String = "ImpuestosTrasladoAgrupados"
         Dim arr() As iImpuestosTraslado33
 
         Try
 
-            Dim i As Integer, j As Integer, c As Collection, X As Integer
+            Dim i As Integer, j As Integer, X As Integer
             Dim arrCount As Integer, bEncontrado As Boolean
 
-            c = New Collection
+            iEncontrados = 0 'Este esta byref para regresarse tipo output
 
             ''IEPS, deben acumularse, puede ser que mas de un artículo tenga el mismo % de ieps, de modo que aquí se juntan en uno sólo.
 
             For i = 1 To Cfd.Conceptos.Count
                 For j = 1 To Cfd.Conceptos.Item(i).Traslados.Count
-                    If Cfd.Conceptos.Item(i).Traslados.Item(j).Impuesto = "003" Then '003=ieps
+                    If Cfd.Conceptos.Item(i).Traslados.Item(j).Impuesto = sTipoImpuesto And Cfd.Conceptos.Item(i).Traslados.Item(j).TipoFactor <> "Exento" Then '003=ieps,002=iva
                         If arrCount = 0 Then
                             arrCount = arrCount + 1
                             ReDim Preserve arr(arrCount)
@@ -361,6 +421,8 @@ Module FacturacionElectronica33
                     End If
                 Next
             Next
+
+            iEncontrados = arrCount
 
         Catch ex As Exception
             HandleError(nombreModulo, sProcedure, ex)
@@ -904,12 +966,13 @@ Module FacturacionElectronica33
                                     IIf(drDESCUENTO_IMPORTE > 0, Format(drDESCUENTO_IMPORTE, "##0.00"), "").ToString, ConceptoImpuestoTraslados,)
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Impuestos'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            Dim arr() As iImpuestosTraslado33, dImpuestoIEPSImporte As Decimal, dImpuestoIVAImporte As Decimal
+            Dim arr() As iImpuestosTraslado33, dImpuestoIEPSImporte As Decimal, dImpuestoIVAImporte As Decimal, iEncontrados As Integer = 0
 
             'IEPS, deben acumularse, puede ser que mas de un artículo tenga el mismo % de ieps, de modo que aquí se juntan en uno sólo.
-            If oDescuento.IEPS_DESGLOSADO > 0 Then 'Solamente si se le desglosan los ieps se mencionan, si es incluido no(como si no tuviera), por eso se pregunta por el total y no del renglón porque al ser inc si va tener ieps pero no es parte del xml
-                arr = ImpuestosTrasladoAgrupados(Cfd)
+            iEncontrados = 0
+            arr = ImpuestosTrasladoAgrupados(Cfd, "003", iEncontrados)
 
+            If iEncontrados > 0 Then
                 For i = 1 To UBound(arr)
                     dImpuestoIEPSImporte = CDec(arr(i).Importe)
 
@@ -919,6 +982,7 @@ Module FacturacionElectronica33
                 Next
             End If
 
+            'Aqui no hay de momento ivas al 0 o exento, esto es un descuento directo, hay otra función para las notas de crédito x devolución
             ''IVA
             'Nota el total de iva ya esta acumulado y es un sólo tipo de iva por se obtiene directamente del documento(a diferencia del ieps)
             If oDescuento.IVA > 0 Then
@@ -932,6 +996,19 @@ Module FacturacionElectronica33
 
                 Cfd.Impuestos.Traslados.Add("002", "Tasa", Format(oDescuento.IMPUESTO_PORCENTAJE / CDec("100.00"), "0.#00000"), Format(dImpuestoIVAImporte, "#0.00"))
             End If
+
+            ''IEPS, deben acumularse, puede ser que mas de un artículo tenga el mismo % de ieps, de modo que aquí se juntan en uno sólo.
+            'If oDescuento.IEPS_DESGLOSADO > 0 Then 'Solamente si se le desglosan los ieps se mencionan, si es incluido no(como si no tuviera), por eso se pregunta por el total y no del renglón porque al ser inc si va tener ieps pero no es parte del xml
+            '    arr = ImpuestosTrasladoAgrupados(Cfd)
+
+            '    For i = 1 To UBound(arr)
+            '        dImpuestoIEPSImporte = CDec(arr(i).Importe)
+
+            '        'Nota, no es necesario preguntar si es en USD y dividir por el tipo de cambio porque este valor se llena con el desglose x concepto el cual ya esta en USD
+
+            '        Cfd.Impuestos.Traslados.Add(arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIEPSImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
+            '    Next
+            'End If
 
             'Fin de llenado de nodos del comprobante''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
@@ -991,7 +1068,7 @@ Module FacturacionElectronica33
             End If
 
             With Cfd
-                .FolioCompleto = oDevolucion.FOLIO_VENTA
+                .FolioCompleto = oDevolucion.FOLIO_DEVOLUCION
                 .Version = Empresa_Sistema.VERSION_ESQUEMA_CFD
                 .Serie = oDevolucion.SERIE
                 .Folio = oDevolucion.FOLIO_NUMERICO.ToString
@@ -1084,8 +1161,8 @@ Module FacturacionElectronica33
 
                 '003=IEPS,002=IVA
 
-                If oDevolucion.IEPS_DESGLOSADO > 0 Then 'Solamente si se le desglosan los ieps se mencionan, si es incluido no(como si no tuviera), por eso se pregunta por el total y no del renglón porque al ser inc si va tener ieps pero no es parte del xml
-                    If CDec(row("IEPS_PORCENTAJE").ToString) > 0 Then 'Este viene como 6,7,9
+                If oDevolucion.TIENE_IEPS_DESGLOSADO = True Then
+                    If row("GRADO_TOXICIDAD").ToString <> "0" Then '0=no graba ieps, <>0 significa que si graba ieps : 1-4=con alguna tasa,5=Exento(aún siendo exento hay que llenar la base ieps)
                         drBASE_IEPS = CDec(row("BASE_IEPS").ToString)
                         drIEPS_IMPORTE = CDec(row("IEPS_IMPORTE").ToString)
 
@@ -1094,11 +1171,15 @@ Module FacturacionElectronica33
                             drIEPS_IMPORTE = RedondearD(drIEPS_IMPORTE / dTIPO_DE_CAMBIO, 2)
                         End If
 
-                        ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.00"), "003", "Tasa", Format(drIEPS_PORCENTAJE, "0.#00000"), Format(drIEPS_IMPORTE, "##0.00"))
+                        If row("GRADO_TOXICIDAD").ToString = "5" Then '5=Ieps Exento
+                            ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.00"), "003", "Exento", "", "")
+                        Else
+                            ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.00"), "003", "Tasa", Format(drIEPS_PORCENTAJE, "0.#00000"), Format(drIEPS_IMPORTE, "##0.00"))
+                        End If
                     End If
                 End If
 
-                If drIMPUESTO_PORCENTAJE > 0 Then
+                If row("ID_SIS_CAT_IMPUESTOS").ToString <> "N" Then 'N=No grava iva, si es <>N = Si grava iva ya sea al 0,16,Exento(aún siendo exento ó 0 hay que llenar la base iva)
                     drBASE_IVA = CDec(row("BASE_IVA").ToString)
                     drIMPUESTO_IMPORTE = CDec(row("IMPUESTO_IMPORTE").ToString)
 
@@ -1107,8 +1188,38 @@ Module FacturacionElectronica33
                         drIMPUESTO_IMPORTE = RedondearD(drIMPUESTO_IMPORTE / dTIPO_DE_CAMBIO, 2)
                     End If
 
-                    ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Tasa", Format(drIMPUESTO_PORCENTAJE, "0.#00000"), Format(drIMPUESTO_IMPORTE, "##0.00"))
+                    If row("ID_SIS_CAT_IMPUESTOS").ToString = "E" Then 'E=Iva Exento
+                        ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Exento", "", "")
+                    Else
+                        ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Tasa", Format(drIMPUESTO_PORCENTAJE, "0.#00000"), Format(drIMPUESTO_IMPORTE, "##0.00"))
+                    End If
                 End If
+
+                'If oDevolucion.IEPS_DESGLOSADO > 0 Then 'Solamente si se le desglosan los ieps se mencionan, si es incluido no(como si no tuviera), por eso se pregunta por el total y no del renglón porque al ser inc si va tener ieps pero no es parte del xml
+                '    If CDec(row("IEPS_PORCENTAJE").ToString) > 0 Then 'Este viene como 6,7,9
+                '        drBASE_IEPS = CDec(row("BASE_IEPS").ToString)
+                '        drIEPS_IMPORTE = CDec(row("IEPS_IMPORTE").ToString)
+
+                '        If oDevolucion.CODIGO_MONEDA_SAT = "USD" Then
+                '            drBASE_IEPS = RedondearD(drBASE_IEPS / dTIPO_DE_CAMBIO, 2)
+                '            drIEPS_IMPORTE = RedondearD(drIEPS_IMPORTE / dTIPO_DE_CAMBIO, 2)
+                '        End If
+
+                '        ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.00"), "003", "Tasa", Format(drIEPS_PORCENTAJE, "0.#00000"), Format(drIEPS_IMPORTE, "##0.00"))
+                '    End If
+                'End If
+
+                'If drIMPUESTO_PORCENTAJE > 0 Then
+                '    drBASE_IVA = CDec(row("BASE_IVA").ToString)
+                '    drIMPUESTO_IMPORTE = CDec(row("IMPUESTO_IMPORTE").ToString)
+
+                '    If oDevolucion.CODIGO_MONEDA_SAT = "USD" Then
+                '        drBASE_IVA = RedondearD(drBASE_IVA / dTIPO_DE_CAMBIO, 2)
+                '        drIMPUESTO_IMPORTE = RedondearD(drIMPUESTO_IMPORTE / dTIPO_DE_CAMBIO, 2)
+                '    End If
+
+                '    ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Tasa", Format(drIMPUESTO_PORCENTAJE, "0.#00000"), Format(drIMPUESTO_IMPORTE, "##0.00"))
+                'End If
 
                 Cfd.Conceptos.Add(row("CODIGO_PRODUCTO_SERVICIO").ToString, row("CODIGO_ARTICULO").ToString,
                                   Format(drCantidad, "##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CANTIDAD)),
@@ -1119,12 +1230,13 @@ Module FacturacionElectronica33
             Next
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Impuestos'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            Dim arr() As iImpuestosTraslado33, dImpuestoIEPSImporte As Decimal, dImpuestoIVAImporte As Decimal
+            Dim arr() As iImpuestosTraslado33, dImpuestoIEPSImporte As Decimal, dImpuestoIVAImporte As Decimal, iEncontrados As Integer = 0
 
             ''IEPS, deben acumularse, puede ser que mas de un artículo tenga el mismo % de ieps, de modo que aquí se juntan en uno sólo.
-            If oDevolucion.IEPS_DESGLOSADO > 0 Then 'Solamente si se le desglosan los ieps se mencionan, si es incluido no(como si no tuviera), por eso se pregunta por el total y no del renglón porque al ser inc si va tener ieps pero no es parte del xml
-                arr = ImpuestosTrasladoAgrupados(Cfd)
+            iEncontrados = 0
+            arr = ImpuestosTrasladoAgrupados(Cfd, "003", iEncontrados)
 
+            If iEncontrados > 0 Then
                 For i = 1 To UBound(arr)
                     dImpuestoIEPSImporte = CDec(arr(i).Importe)
 
@@ -1135,25 +1247,50 @@ Module FacturacionElectronica33
             End If
 
             ''IVA
-            'Nota el total de iva ya esta acumulado y es un sólo tipo de iva por se obtiene directamente del documento(a diferencia del ieps)
-            If oDevolucion.IMPUESTO > 0 Then
-                'rsDocumento!IMPUESTO_PORCENTAJE viene como 16, se ocupa dividir
+            iEncontrados = 0
+            arr = ImpuestosTrasladoAgrupados(Cfd, "002", iEncontrados) 'comprobar aqui que agrupe 0 y 16 pero no exentos."
 
-                dImpuestoIVAImporte = CDec(oDevolucion.IMPUESTO)
+            If iEncontrados > 0 Then
+                For i = 1 To UBound(arr)
+                    dImpuestoIVAImporte = CDec(arr(i).Importe)
 
-                If oDevolucion.CODIGO_MONEDA_SAT = "USD" Then
-                    dImpuestoIVAImporte = RedondearD(dImpuestoIVAImporte / dTIPO_DE_CAMBIO, 2)
-                End If
-
-                Cfd.Impuestos.Traslados.Add("002", "Tasa", Format(oDevolucion.IMPUESTO_PORCENTAJE / CDec("100.00"), "0.#00000"), Format(dImpuestoIVAImporte, "#0.00"))
+                    Cfd.Impuestos.Traslados.Add(arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIVAImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
+                Next
             End If
+
+            ''IEPS, deben acumularse, puede ser que mas de un artículo tenga el mismo % de ieps, de modo que aquí se juntan en uno sólo.
+            'If oDevolucion.IEPS_DESGLOSADO > 0 Then 'Solamente si se le desglosan los ieps se mencionan, si es incluido no(como si no tuviera), por eso se pregunta por el total y no del renglón porque al ser inc si va tener ieps pero no es parte del xml
+            '    arr = ImpuestosTrasladoAgrupados(Cfd)
+
+            '    For i = 1 To UBound(arr)
+            '        dImpuestoIEPSImporte = CDec(arr(i).Importe)
+
+            '        'Nota, no es necesario preguntar si es en USD y dividir por el tipo de cambio porque este valor se llena con el desglose x concepto el cual ya esta en USD
+
+            '        Cfd.Impuestos.Traslados.Add(arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIEPSImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
+            '    Next
+            'End If
+
+            ''IVA
+            ''Nota el total de iva ya esta acumulado y es un sólo tipo de iva por se obtiene directamente del documento(a diferencia del ieps)
+            'If oDevolucion.IMPUESTO > 0 Then
+            '    'rsDocumento!IMPUESTO_PORCENTAJE viene como 16, se ocupa dividir
+
+            '    dImpuestoIVAImporte = CDec(oDevolucion.IMPUESTO)
+
+            '    If oDevolucion.CODIGO_MONEDA_SAT = "USD" Then
+            '        dImpuestoIVAImporte = RedondearD(dImpuestoIVAImporte / dTIPO_DE_CAMBIO, 2)
+            '    End If
+
+            '    Cfd.Impuestos.Traslados.Add("002", "Tasa", Format(oDevolucion.IMPUESTO_PORCENTAJE / CDec("100.00"), "0.#00000"), Format(dImpuestoIVAImporte, "#0.00"))
+            'End If
 
             'Fin de llenado de nodos del comprobante''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
             If Cfd.GeneraCFD(TipoComprobante.DEVOLUCION_CXC, sRutaXML) = True Then
                 bResultado = True
                 If bMostrarMensaje = True Then
-                    MsgBox("Devolución sellada satisfactoriamente.", vbInformation, sProcedure)
+                    MsgBox("Devolución timbrada satisfactoriamente.", vbInformation, sProcedure)
                 End If
             End If
 

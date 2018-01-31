@@ -250,6 +250,7 @@ Public Class Catalogo_Productos_Agricolas
             Me.LblNombreUnidadVenta.Text = "_"
             Me.txtCodigoUnidadSAT.Text = "" : Me.lblCodigoUnidadSAT.Text = ""
             Me.txtClaveProductoSAT.Text = "" : Me.lblClaveProductoSAT.Text = ""
+            Me.cboImpuestoIVA.SelectedValue = "0" '0=IVA al 0
 
             Me.InicializaGrid()
 
@@ -356,6 +357,22 @@ Public Class Catalogo_Productos_Agricolas
         End Try
     End Sub
 
+    Private Sub DesplegarImpuestosIVA()
+        Try
+            Dim oElementos As New Class_SisCatImpuestos
+            With Me.cboImpuestoIVA
+                .DisplayMember = "NOMBRE_IMPUESTO"
+                .ValueMember = "ID_SIS_CAT_IMPUESTOS"
+                Dim dView As New Data.DataView(oElementos.ObtenerElementos)
+                dView.Sort = "NOMBRE_IMPUESTO"
+                .DataSource = dView
+                .SelectedValue = "0" '0=IVA al 0
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarImpuestosIVA", ex)
+        End Try
+    End Sub
+
     Private Sub DesplegarElementos()
         Try
             Dim oElementos As New Class_CatArticulos
@@ -410,6 +427,8 @@ Public Class Catalogo_Productos_Agricolas
 
                     oUnidad = Nothing
                     oProductoServicio = Nothing
+
+                    Me.cboImpuestoIVA.SelectedValue = .ID_SIS_CAT_IMPUESTOS.ToString
                 End With
 
                 Dim sql As New Class_find("SELECT NOMBRE_CULTIVO FROM CAT_CULTIVOS WHERE CODIGO_CULTIVO='" & Me.txtCodigoCultivo.Text & "' ")
@@ -575,7 +594,8 @@ Public Class Catalogo_Productos_Agricolas
                         .UNIDAD_VENTA = Me.txtCodigoUnidadVenta.Text
                         .PROTEGIDO = "0"
                         .INVENTARIABLE = "0"
-                        .TIENE_IMPUESTO = "0"
+                        '.TIENE_IMPUESTO = "0"
+                        .ID_SIS_CAT_IMPUESTOS = Me.cboImpuestoIVA.SelectedValue.ToString
                         .CODIGO_LINEA = "0001"
                         .CODIGO_FAMILIA = Me.CboFamilia.SelectedValue.ToString
                         .PRECIO = Convert.ToDecimal(Me.TxtPrecio.Text)
@@ -947,10 +967,6 @@ Busca:
         If InStr(1, "0123456789." & Chr(8), e.KeyChar) = 0 Then
             e.KeyChar = CChar("")
         End If
-    End Sub
-
-    Private Sub CboFiltroHoja_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Refrescar()
     End Sub
 
     Private Sub TxtCantidadBultosXPalet_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCantidadBultosXPalet.KeyPress
