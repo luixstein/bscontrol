@@ -266,7 +266,16 @@ Public Class Catalogo_Formulas
                         Me.CboEstatus.SelectedIndex = 1
                     End If
 
-                    Me.Grid1.DataSource = .ObtenerDetalle(.CODIGO_FORMULA)
+                    'Me.Grid1.DataSource = .ObtenerDetalle(.CODIGO_FORMULA)
+                    'Consulta datos detalle
+                    Dim dTabla As DataTable = .ObtenerDetalle(.CODIGO_FORMULA)
+                    Me.Grid1.AutoRedraw = False
+                    Me.Grid1.Rows = 1 'Trae dos porque en docs nuevos se pone un row en blanco, y si se dejan aqui dos agrega a partir del 3 y queda un hueco
+                    For Each dRow As DataRow In dTabla.Rows
+                        Me.Grid1.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("UNIDAD_VENTA").ToString & Chr(9) & _
+                                         dRow("CANTIDAD").ToString & Chr(9) & dRow("ID_FORMULA_DETALLE").ToString & Chr(9))
+                    Next
+
                     Me.FormateaGrid()
 
                 End With
