@@ -27,6 +27,9 @@ Partial Class RptCentrosCostosNavegador
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.LblNombreTemporada = New System.Windows.Forms.Label()
+        Me.LblTemporada = New System.Windows.Forms.Label()
+        Me.TxtCodigoTemporada = New System.Windows.Forms.TextBox()
         Me.GridMovimientos = New FlexCell.Grid()
         Me.btnConsultar = New System.Windows.Forms.Button()
         Me.btnSubeNivel = New System.Windows.Forms.Button()
@@ -39,9 +42,6 @@ Partial Class RptCentrosCostosNavegador
         Me.DtFechaDesde = New System.Windows.Forms.DateTimePicker()
         Me.DtFechaHasta = New System.Windows.Forms.DateTimePicker()
         Me.LblDisplayFecha1 = New System.Windows.Forms.Label()
-        Me.TxtCodigoTemporada = New System.Windows.Forms.TextBox()
-        Me.LblTemporada = New System.Windows.Forms.Label()
-        Me.LblNombreTemporada = New System.Windows.Forms.Label()
         Me.ToolStrip1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
@@ -90,12 +90,37 @@ Partial Class RptCentrosCostosNavegador
         Me.GroupBox1.Controls.Add(Me.DtFechaHasta)
         Me.GroupBox1.Controls.Add(Me.LblDisplayFecha1)
         Me.GroupBox1.Location = New System.Drawing.Point(16, 34)
-        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Size = New System.Drawing.Size(1444, 875)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
+        '
+        'LblNombreTemporada
+        '
+        Me.LblNombreTemporada.AutoSize = True
+        Me.LblNombreTemporada.Location = New System.Drawing.Point(183, 23)
+        Me.LblNombreTemporada.Name = "LblNombreTemporada"
+        Me.LblNombreTemporada.Size = New System.Drawing.Size(12, 17)
+        Me.LblNombreTemporada.TabIndex = 241
+        Me.LblNombreTemporada.Text = "."
+        '
+        'LblTemporada
+        '
+        Me.LblTemporada.AutoSize = True
+        Me.LblTemporada.Location = New System.Drawing.Point(17, 21)
+        Me.LblTemporada.Name = "LblTemporada"
+        Me.LblTemporada.Size = New System.Drawing.Size(89, 17)
+        Me.LblTemporada.TabIndex = 240
+        Me.LblTemporada.Text = "Temporada :"
+        '
+        'TxtCodigoTemporada
+        '
+        Me.TxtCodigoTemporada.Location = New System.Drawing.Point(143, 20)
+        Me.TxtCodigoTemporada.Name = "TxtCodigoTemporada"
+        Me.TxtCodigoTemporada.Size = New System.Drawing.Size(34, 22)
+        Me.TxtCodigoTemporada.TabIndex = 239
         '
         'GridMovimientos
         '
@@ -110,7 +135,7 @@ Partial Class RptCentrosCostosNavegador
         Me.GridMovimientos.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.GridMovimientos.Location = New System.Drawing.Point(315, 160)
         Me.GridMovimientos.LockButton = True
-        Me.GridMovimientos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GridMovimientos.Margin = New System.Windows.Forms.Padding(4)
         Me.GridMovimientos.Name = "GridMovimientos"
         Me.GridMovimientos.Rows = 20
         Me.GridMovimientos.SelectionMode = FlexCell.SelectionModeEnum.ByColumn
@@ -124,7 +149,7 @@ Partial Class RptCentrosCostosNavegador
         Me.btnConsultar.Image = Global.BsControl.My.Resources.Resources._096
         Me.btnConsultar.ImageAlign = System.Drawing.ContentAlignment.TopLeft
         Me.btnConsultar.Location = New System.Drawing.Point(613, 42)
-        Me.btnConsultar.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnConsultar.Margin = New System.Windows.Forms.Padding(4)
         Me.btnConsultar.Name = "btnConsultar"
         Me.btnConsultar.Size = New System.Drawing.Size(153, 28)
         Me.btnConsultar.TabIndex = 237
@@ -134,7 +159,7 @@ Partial Class RptCentrosCostosNavegador
         'btnSubeNivel
         '
         Me.btnSubeNivel.Location = New System.Drawing.Point(315, 16)
-        Me.btnSubeNivel.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnSubeNivel.Margin = New System.Windows.Forms.Padding(4)
         Me.btnSubeNivel.Name = "btnSubeNivel"
         Me.btnSubeNivel.Size = New System.Drawing.Size(80, 26)
         Me.btnSubeNivel.TabIndex = 236
@@ -145,7 +170,7 @@ Partial Class RptCentrosCostosNavegador
         '
         Me.txtEjercido.BackColor = System.Drawing.SystemColors.Control
         Me.txtEjercido.Location = New System.Drawing.Point(572, 841)
-        Me.txtEjercido.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtEjercido.Margin = New System.Windows.Forms.Padding(4)
         Me.txtEjercido.MaxLength = 15
         Me.txtEjercido.Name = "txtEjercido"
         Me.txtEjercido.Size = New System.Drawing.Size(156, 22)
@@ -157,7 +182,7 @@ Partial Class RptCentrosCostosNavegador
         '
         Me.txtPresupuesto.BackColor = System.Drawing.SystemColors.Control
         Me.txtPresupuesto.Location = New System.Drawing.Point(737, 841)
-        Me.txtPresupuesto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtPresupuesto.Margin = New System.Windows.Forms.Padding(4)
         Me.txtPresupuesto.MaxLength = 15
         Me.txtPresupuesto.Name = "txtPresupuesto"
         Me.txtPresupuesto.Size = New System.Drawing.Size(156, 22)
@@ -180,7 +205,7 @@ Partial Class RptCentrosCostosNavegador
         Me.Grid.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.Grid.Location = New System.Drawing.Point(20, 85)
         Me.Grid.LockButton = True
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid.Name = "Grid"
         Me.Grid.Rows = 20
         Me.Grid.SelectionMode = FlexCell.SelectionModeEnum.ByColumn
@@ -191,7 +216,7 @@ Partial Class RptCentrosCostosNavegador
         'TxtCuenta2
         '
         Me.TxtCuenta2.Location = New System.Drawing.Point(1255, 50)
-        Me.TxtCuenta2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCuenta2.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCuenta2.MaxLength = 20
         Me.TxtCuenta2.Name = "TxtCuenta2"
         Me.TxtCuenta2.Size = New System.Drawing.Size(176, 22)
@@ -201,7 +226,7 @@ Partial Class RptCentrosCostosNavegador
         'TxtCuenta1
         '
         Me.TxtCuenta1.Location = New System.Drawing.Point(1255, 18)
-        Me.TxtCuenta1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCuenta1.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCuenta1.MaxLength = 20
         Me.TxtCuenta1.Name = "TxtCuenta1"
         Me.TxtCuenta1.Size = New System.Drawing.Size(176, 22)
@@ -222,7 +247,7 @@ Partial Class RptCentrosCostosNavegador
         '
         Me.DtFechaDesde.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.DtFechaDesde.Location = New System.Drawing.Point(143, 49)
-        Me.DtFechaDesde.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.DtFechaDesde.Margin = New System.Windows.Forms.Padding(4)
         Me.DtFechaDesde.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.DtFechaDesde.Name = "DtFechaDesde"
         Me.DtFechaDesde.Size = New System.Drawing.Size(176, 22)
@@ -233,7 +258,7 @@ Partial Class RptCentrosCostosNavegador
         '
         Me.DtFechaHasta.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.DtFechaHasta.Location = New System.Drawing.Point(403, 49)
-        Me.DtFechaHasta.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.DtFechaHasta.Margin = New System.Windows.Forms.Padding(4)
         Me.DtFechaHasta.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.DtFechaHasta.Name = "DtFechaHasta"
         Me.DtFechaHasta.Size = New System.Drawing.Size(176, 22)
@@ -250,31 +275,6 @@ Partial Class RptCentrosCostosNavegador
         Me.LblDisplayFecha1.TabIndex = 229
         Me.LblDisplayFecha1.Text = "Desde :"
         '
-        'TxtCodigoTemporada
-        '
-        Me.TxtCodigoTemporada.Location = New System.Drawing.Point(143, 20)
-        Me.TxtCodigoTemporada.Name = "TxtCodigoTemporada"
-        Me.TxtCodigoTemporada.Size = New System.Drawing.Size(34, 22)
-        Me.TxtCodigoTemporada.TabIndex = 239
-        '
-        'LblTemporada
-        '
-        Me.LblTemporada.AutoSize = True
-        Me.LblTemporada.Location = New System.Drawing.Point(17, 21)
-        Me.LblTemporada.Name = "LblTemporada"
-        Me.LblTemporada.Size = New System.Drawing.Size(89, 17)
-        Me.LblTemporada.TabIndex = 240
-        Me.LblTemporada.Text = "Temporada :"
-        '
-        'LblNombreTemporada
-        '
-        Me.LblNombreTemporada.AutoSize = True
-        Me.LblNombreTemporada.Location = New System.Drawing.Point(183, 23)
-        Me.LblNombreTemporada.Name = "LblNombreTemporada"
-        Me.LblNombreTemporada.Size = New System.Drawing.Size(12, 17)
-        Me.LblNombreTemporada.TabIndex = 241
-        Me.LblNombreTemporada.Text = "."
-        '
         'RptCentrosCostosNavegador
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -283,8 +283,7 @@ Partial Class RptCentrosCostosNavegador
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.ToolStrip1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
-        Me.MaximizeBox = False
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "RptCentrosCostosNavegador"
         Me.Text = "Navegador de costos"
         Me.ToolStrip1.ResumeLayout(False)
