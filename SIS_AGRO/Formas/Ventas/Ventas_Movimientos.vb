@@ -3061,6 +3061,9 @@ buscaCentrosCostos:
                             Me.Grid.Cell(Renglon, i).Text = "" 'Eliminamos los datos del resto de las columnas
                         Next
 
+                        Me.Grid.Cell(Renglon, Me.iGyGRADO_TOXICIDAD).Text = "0"
+                        Me.Grid.Cell(Renglon, Me.iGyID_SIS_CAT_IMPUESTOS).Text = "0"
+
                     End If
 
                     Me.Totales() 'Por si a un renglón que ya tiene un artículo(con importe) le dan f4
