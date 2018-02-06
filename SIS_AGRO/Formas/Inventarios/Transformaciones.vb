@@ -194,7 +194,6 @@ BuscarArticulo:
         If Me.GrabaSalidaIngredientes() = False Then
             Exit Function
         End If
-        
 
         'Entrada de producto final
         If Me.GrabaEntradaProductoFinal() = False Then
@@ -202,8 +201,8 @@ BuscarArticulo:
         End If
 
         bResultado = True
-        MsgBox("Transformación realizada satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
 
+        MsgBox("Transformación realizada exitosamente.", MsgBoxStyle.Exclamation, Me.Text)
         Return bResultado
 
     End Function
@@ -264,9 +263,22 @@ BuscarArticulo:
                     .oInventariosDetalle.GrabaDetalleCentroCostos(sListaCuentas, "SAI" & Usuario.Codigo_Plaza, Now, CBool(IIf(Me.oDocumentos.NATURALEZA_INVENTARIOS = "EN", True, False)))
                 End If
 
-                bResultado = True
-
             End With
+
+            Me.oInventarios = New Class_Inventarios_Global(folioSalida)
+
+            bResultado = Me.oInventarios.Aplicar()
+            If bResultado = True Then
+                If Me.oInventarios.AplicarPoliza() = False Then
+                    MsgBox("Error al intentar aplicar la poliza de salida.", MsgBoxStyle.Exclamation, Me.Text)
+                End If
+            Else
+                MsgBox("Error al intentar aplicar el movimiento de salida de inventario.", MsgBoxStyle.Exclamation, Me.Text)
+            End If
+
+            bResultado = True
+            'MsgBox("Transformación realizada satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+
         Catch ex As Exception
             HandleError(Me.Name, "GrabaSalidaIngredientes", ex)
             Me.Consultar()
@@ -329,9 +341,22 @@ BuscarArticulo:
                     .oInventariosDetalle.GrabaDetalleCentroCostos(sListaCuentas, "ENI" & Usuario.Codigo_Plaza, Now, CBool(IIf(Me.oDocumentos.NATURALEZA_INVENTARIOS = "EN", True, False)))
                 End If
 
-                bResultado = True
-
             End With
+
+            Me.oInventarios = New Class_Inventarios_Global(folioEntrada)
+
+            bResultado = Me.oInventarios.Aplicar()
+            If bResultado = True Then
+                If Me.oInventarios.AplicarPoliza() = False Then
+                    MsgBox("Error al intentar aplicar la poliza de entrada.", MsgBoxStyle.Exclamation, Me.Text)
+                End If
+            Else
+                MsgBox("Error al intentar aplicar el movimiento de entrada de inventario.", MsgBoxStyle.Exclamation, Me.Text)
+            End If
+
+            bResultado = True
+            'MsgBox("Transformación realizada satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+
         Catch ex As Exception
             HandleError(Me.Name, "GrabaEntradaProductoFinal", ex)
             Me.Consultar()
@@ -619,6 +644,66 @@ BuscarArticulo:
 
         Return bResultado
     End Function
+
+    'Private Function ValidaCuentasContable() As Boolean
+    '    Dim bResultado As Boolean = False
+    '    Dim i As Integer, sCuentaContable As String = ""
+    '    Try
+    '        Dim oCuentas = New Class_CatCuentas
+
+    '        For i = 1 To Me.Grid1.Rows - 1
+    '            If txtLEN(Me.Grid1.Cell(i, Me.iGyCodigo).Text) = True Then
+
+    '                'If IsNothing(Me.oFormaDetalleCuentas) = True Then
+    '                '    MsgBox("vacio Me.oFormaDetalleCuentas ???")
+    '                'End If
+
+    '                sCuentaContable = Me.Grid1.Cell(i, Me.iGyCuentaContable).Text
+
+    '                If IsNothing(Me.oFormaDetalleCuentas) = False AndAlso Me.oFormaDetalleCuentas.ValidaCuentaTengaDetalle(CInt(Me.Grid1.Cell(i, Me.iGyIDAdicional).Text)) = True Then 'Si es que tiene detalle de cuenta en la otra forma
+
+    '                    'No bajar la segunda validacion despues del andalso porque si no no va entrar al else si e sun renglón que tien su cuenta en el grid normal y no el oculto
+    '                    'Si es que tiene detalle de cuenta en la otra forma y si tambien se haya el id del renglon(puede haber renglones que no tengan, esos que no tienen no entran aqui si se tiene que preguntar)
+    '                    'No hay que hacer
+    '                    'MsgBox("andale")
+
+    '                    If txtLEN(sCuentaContable) = True Then
+    '                        MsgBox("Quite la cuenta contable del renglón : " & i & " , no se puede tener cuenta directa y también en detalle(la que se establece con el botón).", MsgBoxStyle.Exclamation, Me.Text)
+    '                        Return False
+    '                    End If
+
+    '                Else
+    '                    If txtLEN(sCuentaContable) = False Then
+    '                        MsgBox("Asígne la cuenta contable del renglón : " & i & " .", MsgBoxStyle.Exclamation, Me.Text)
+    '                        Return False
+    '                    End If
+
+    '                    'If sCuentaContable.StartsWith("1") = False Then
+    '                    '    MsgBox("La cuenta contable del renglón : " & i & " debe ser del rango de las miles(que empiezen con 1)." & vbCrLf & _
+    '                    '    "O debe en vez de poner cuenta, detallar con el botón de centros de costos.", MsgBoxStyle.Exclamation, Me.Name)
+    '                    '    Return False
+    '                    'End If
+
+    '                    oCuentas = New Class_CatCuentas(sCuentaContable)
+
+    '                    If oCuentas._Existe = False Then
+    '                        MsgBox("La cuenta contable del renglón : " & i & " no existe.", MsgBoxStyle.Exclamation, Me.Name)
+    '                        Return False
+    '                    ElseIf oCuentas.ESMAYOR = "1" Then
+    '                        MsgBox("La cuenta contable del renglón : " & i & " es de mayor.", MsgBoxStyle.Exclamation, Me.Name)
+    '                        Return False
+    '                    End If
+
+    '                End If
+
+    '            End If
+    '        Next
+    '        bResultado = True
+    '    Catch ex As Exception
+    '        HandleError(Me.Name, "ValidaCuentasContable", ex)
+    '    End Try
+    '    Return bResultado
+    'End Function
 
 #End Region
 
