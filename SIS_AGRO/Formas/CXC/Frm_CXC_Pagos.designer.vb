@@ -60,6 +60,7 @@ Partial Class Frm_CXC_Pagos
         Me.CboMedioDePago = New System.Windows.Forms.ComboBox()
         Me.LblDisplayMedioPago = New System.Windows.Forms.Label()
         Me.gbAgregaDocCliente = New System.Windows.Forms.GroupBox()
+        Me.chkEsBancoExtranjero = New System.Windows.Forms.CheckBox()
         Me.dtFechaCheque = New System.Windows.Forms.DateTimePicker()
         Me.lblDisplayFechaCheque = New System.Windows.Forms.Label()
         Me.dtFechaPagoCliente = New System.Windows.Forms.DateTimePicker()
@@ -453,6 +454,11 @@ Partial Class Frm_CXC_Pagos
         '
         'gbAgregaDocCliente
         '
+        Me.gbAgregaDocCliente.Controls.Add(Me.txtSPEI_cadenaCDA)
+        Me.gbAgregaDocCliente.Controls.Add(Me.cmdSeleccionaSPEI)
+        Me.gbAgregaDocCliente.Controls.Add(Me.txtSPEI_sello)
+        Me.gbAgregaDocCliente.Controls.Add(Me.chkEsBancoExtranjero)
+        Me.gbAgregaDocCliente.Controls.Add(Me.txtSPEI_numeroCertificado)
         Me.gbAgregaDocCliente.Controls.Add(Me.dtFechaCheque)
         Me.gbAgregaDocCliente.Controls.Add(Me.lblDisplayFechaCheque)
         Me.gbAgregaDocCliente.Controls.Add(Me.dtFechaPagoCliente)
@@ -490,6 +496,16 @@ Partial Class Frm_CXC_Pagos
         Me.gbAgregaDocCliente.TabStop = False
         Me.gbAgregaDocCliente.Text = "Documentos de pago :"
         '
+        'chkEsBancoExtranjero
+        '
+        Me.chkEsBancoExtranjero.Enabled = False
+        Me.chkEsBancoExtranjero.Location = New System.Drawing.Point(99, 118)
+        Me.chkEsBancoExtranjero.Name = "chkEsBancoExtranjero"
+        Me.chkEsBancoExtranjero.Size = New System.Drawing.Size(137, 21)
+        Me.chkEsBancoExtranjero.TabIndex = 385
+        Me.chkEsBancoExtranjero.Text = "Es banco extranjero ?"
+        Me.chkEsBancoExtranjero.UseVisualStyleBackColor = True
+        '
         'dtFechaCheque
         '
         Me.dtFechaCheque.Location = New System.Drawing.Point(788, 65)
@@ -518,14 +534,16 @@ Partial Class Frm_CXC_Pagos
         'CboBancos
         '
         Me.CboBancos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboBancos.Enabled = False
         Me.CboBancos.FormattingEnabled = True
-        Me.CboBancos.Location = New System.Drawing.Point(569, 85)
+        Me.CboBancos.Location = New System.Drawing.Point(475, 76)
         Me.CboBancos.Name = "CboBancos"
         Me.CboBancos.Size = New System.Drawing.Size(211, 21)
         Me.CboBancos.TabIndex = 8
         '
         'txtCuentaEmisor
         '
+        Me.txtCuentaEmisor.Enabled = False
         Me.txtCuentaEmisor.Location = New System.Drawing.Point(569, 38)
         Me.txtCuentaEmisor.MaxLength = 50
         Me.txtCuentaEmisor.Name = "txtCuentaEmisor"
@@ -571,7 +589,7 @@ Partial Class Frm_CXC_Pagos
         '
         Me.lblRFCEmisor.BackColor = System.Drawing.SystemColors.ControlLight
         Me.lblRFCEmisor.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblRFCEmisor.Location = New System.Drawing.Point(572, 116)
+        Me.lblRFCEmisor.Location = New System.Drawing.Point(578, 103)
         Me.lblRFCEmisor.Name = "lblRFCEmisor"
         Me.lblRFCEmisor.Size = New System.Drawing.Size(178, 13)
         Me.lblRFCEmisor.TabIndex = 340
@@ -579,7 +597,7 @@ Partial Class Frm_CXC_Pagos
         'lblDisplayRFCEmisor
         '
         Me.lblDisplayRFCEmisor.AutoSize = True
-        Me.lblDisplayRFCEmisor.Location = New System.Drawing.Point(392, 117)
+        Me.lblDisplayRFCEmisor.Location = New System.Drawing.Point(402, 102)
         Me.lblDisplayRFCEmisor.Name = "lblDisplayRFCEmisor"
         Me.lblDisplayRFCEmisor.Size = New System.Drawing.Size(67, 13)
         Me.lblDisplayRFCEmisor.TabIndex = 339
@@ -596,7 +614,7 @@ Partial Class Frm_CXC_Pagos
         '
         'txtRFCEmisor
         '
-        Me.txtRFCEmisor.Location = New System.Drawing.Point(465, 114)
+        Me.txtRFCEmisor.Location = New System.Drawing.Point(475, 99)
         Me.txtRFCEmisor.MaxLength = 13
         Me.txtRFCEmisor.Name = "txtRFCEmisor"
         Me.txtRFCEmisor.Size = New System.Drawing.Size(97, 20)
@@ -725,11 +743,11 @@ Partial Class Frm_CXC_Pagos
         'LblDisplayBanco
         '
         Me.LblDisplayBanco.AutoSize = True
-        Me.LblDisplayBanco.Location = New System.Drawing.Point(479, 86)
+        Me.LblDisplayBanco.Location = New System.Drawing.Point(479, 60)
         Me.LblDisplayBanco.Name = "LblDisplayBanco"
-        Me.LblDisplayBanco.Size = New System.Drawing.Size(84, 13)
+        Me.LblDisplayBanco.Size = New System.Drawing.Size(120, 13)
         Me.LblDisplayBanco.TabIndex = 314
-        Me.LblDisplayBanco.Text = "Banco emi nac :"
+        Me.LblDisplayBanco.Text = "Banco emisor nacional :"
         '
         'LblCliente
         '
@@ -870,46 +888,46 @@ Partial Class Frm_CXC_Pagos
         '
         'cmdSeleccionaSPEI
         '
-        Me.cmdSeleccionaSPEI.Location = New System.Drawing.Point(1045, 349)
+        Me.cmdSeleccionaSPEI.Location = New System.Drawing.Point(363, 116)
         Me.cmdSeleccionaSPEI.Name = "cmdSeleccionaSPEI"
         Me.cmdSeleccionaSPEI.Size = New System.Drawing.Size(106, 24)
         Me.cmdSeleccionaSPEI.TabIndex = 387
         Me.cmdSeleccionaSPEI.Text = "Selecciona SPEI"
         Me.cmdSeleccionaSPEI.UseVisualStyleBackColor = True
+        Me.cmdSeleccionaSPEI.Visible = False
         '
         'txtSPEI_cadenaCDA
         '
-        Me.txtSPEI_cadenaCDA.Location = New System.Drawing.Point(1048, 324)
+        Me.txtSPEI_cadenaCDA.Location = New System.Drawing.Point(691, 119)
         Me.txtSPEI_cadenaCDA.MaxLength = 0
         Me.txtSPEI_cadenaCDA.Name = "txtSPEI_cadenaCDA"
         Me.txtSPEI_cadenaCDA.Size = New System.Drawing.Size(103, 20)
         Me.txtSPEI_cadenaCDA.TabIndex = 386
+        Me.txtSPEI_cadenaCDA.Visible = False
         '
         'txtSPEI_sello
         '
-        Me.txtSPEI_sello.Location = New System.Drawing.Point(1048, 298)
+        Me.txtSPEI_sello.Location = New System.Drawing.Point(584, 119)
         Me.txtSPEI_sello.MaxLength = 0
         Me.txtSPEI_sello.Name = "txtSPEI_sello"
         Me.txtSPEI_sello.Size = New System.Drawing.Size(103, 20)
         Me.txtSPEI_sello.TabIndex = 385
+        Me.txtSPEI_sello.Visible = False
         '
         'txtSPEI_numeroCertificado
         '
-        Me.txtSPEI_numeroCertificado.Location = New System.Drawing.Point(1048, 272)
+        Me.txtSPEI_numeroCertificado.Location = New System.Drawing.Point(475, 120)
         Me.txtSPEI_numeroCertificado.MaxLength = 0
         Me.txtSPEI_numeroCertificado.Name = "txtSPEI_numeroCertificado"
         Me.txtSPEI_numeroCertificado.Size = New System.Drawing.Size(103, 20)
         Me.txtSPEI_numeroCertificado.TabIndex = 384
+        Me.txtSPEI_numeroCertificado.Visible = False
         '
         'Frm_CXC_Pagos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1152, 639)
-        Me.Controls.Add(Me.cmdSeleccionaSPEI)
-        Me.Controls.Add(Me.txtSPEI_cadenaCDA)
-        Me.Controls.Add(Me.txtSPEI_sello)
-        Me.Controls.Add(Me.txtSPEI_numeroCertificado)
         Me.Controls.Add(Me.btnVerCFDIS)
         Me.Controls.Add(Me.gbDocumentosPago)
         Me.Controls.Add(Me.gbAgregaDocCliente)
@@ -1019,4 +1037,5 @@ Partial Class Frm_CXC_Pagos
     Friend WithEvents txtSPEI_cadenaCDA As TextBox
     Friend WithEvents txtSPEI_sello As TextBox
     Friend WithEvents txtSPEI_numeroCertificado As TextBox
+    Friend WithEvents chkEsBancoExtranjero As CheckBox
 End Class

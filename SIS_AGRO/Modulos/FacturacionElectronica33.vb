@@ -327,7 +327,7 @@ Module FacturacionElectronica33
             '    Next
             'End If
 
-            '''IVA
+            ''IVA
             ''Nota el total de iva ya esta acumulado y es un sólo tipo de iva por se obtiene directamente del documento(a diferencia del ieps)
             'If oVenta.IMPUESTO > 0 Then
             '    'rsDocumento!IMPUESTO_PORCENTAJE viene como 16, se ocupa dividir
@@ -373,7 +373,8 @@ Module FacturacionElectronica33
 
     Private Function ImpuestosTrasladoAgrupados(ByVal Cfd As cComprobante33, ByVal sTipoImpuesto As String, ByRef iEncontrados As Integer) As iImpuestosTraslado33()
         Const sProcedure As String = "ImpuestosTrasladoAgrupados"
-        Dim arr() As iImpuestosTraslado33
+        'Dim arr() As iImpuestosTraslado33
+        Dim arr As iImpuestosTraslado33() = New iImpuestosTraslado33(-1) {} 'Para que no marque warning de null
 
         Try
 
@@ -726,7 +727,7 @@ Module FacturacionElectronica33
                 .Monto = Format(oPago.MONTO, "#0.00")
                 .NumOperacion = oBancoDetalle.FOLIO_DETALLE
                 .RfcEmisorCtaOrd = ""
-                .NomBancoOrdExt = ""
+                .NomBancoOrdExt = oBancoDetalle.NOMBRE_BANCO_EMISOR_EXTRANJERO
                 .CtaOrdenante = oBancoDetalle.CUENTA_EMISOR
                 .RfcEmisorCtaBen = ""
                 .CtaBeneficiario = oBancoDetalle.CUENTA_DESTINO

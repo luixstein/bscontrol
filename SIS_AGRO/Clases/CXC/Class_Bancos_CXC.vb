@@ -819,7 +819,8 @@ Public Class Class_Bancos_CXC
 
     Public Function AgregaDocumentoPago(ByVal sFolioBancoGlobal As String, ByVal sCodigoMetodoPago As String, ByVal sFolioDetalle As String, ByVal sCodigoBancoEmisorNacional As String,
                                        ByVal sCuentaEmisor As String, ByVal dFecha As Date,
-                                       ByVal sRFCEmisor As String, ByVal dMonto As Double, ByVal sCodigoMonedaSAT As String, ByVal dTipoCambio As Double, ByVal sCuentaDestino As String, ByVal sCodigoBancoDestinoNacional As String) As Long
+                                       ByVal sRFCEmisor As String, ByVal dMonto As Double, ByVal sCodigoMonedaSAT As String, ByVal dTipoCambio As Double, ByVal sCuentaDestino As String,
+                                        ByVal sCodigoBancoDestinoNacional As String, ByVal sNombreBancoEmisorExtranjero As String) As Long
 
         Dim lResultado As Long
 
@@ -846,6 +847,7 @@ Public Class Class_Bancos_CXC
             sqlParametro = .Parameters.Add("@MONTO", SqlDbType.Decimal) : sqlParametro.Value = dMonto
             sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3) : sqlParametro.Value = sCodigoMonedaSAT
             sqlParametro = .Parameters.Add("@TIPO_CAMBIO", SqlDbType.Decimal) : sqlParametro.Value = dTipoCambio
+            sqlParametro = .Parameters.Add("@NOMBRE_BANCO_EMISOR_EXTRANJERO", SqlDbType.NVarChar, 300) : sqlParametro.Value = sNombreBancoEmisorExtranjero
 
             Try
                 Me._Conexion.Open()
@@ -869,7 +871,7 @@ Public Class Class_Bancos_CXC
         Dim sSQL As String
 
         sSQL = "SELECT D.ID_BANCOS_DETALLE,D.CODIGO_METODO_PAGO,MP.NOMBRE_METODO_PAGO,D.FOLIO_DETALLE,D.CODIGO_BANCO_EMISOR_NACIONAL,CB.NOMBRE_BANCO,D.CUENTA_EMISOR," &
-        "D.FECHA, D.RFC_EMISOR, D.MONTO, D.CODIGO_MONEDA_SAT,D.CUENTA_DESTINO,D.CODIGO_BANCO_DESTINO_NACIONAL " &
+        "D.FECHA, D.RFC_EMISOR, D.MONTO, D.CODIGO_MONEDA_SAT,D.CUENTA_DESTINO,D.CODIGO_BANCO_DESTINO_NACIONAL,CASE WHEN LEN(D.NOMBRE_BANCO_EMISOR_EXTRANJERO)>1 THEN '1' ELSE '0' END ES_BANCO_EXTRANJERO " &
         "FROM BANCOS_DETALLE D " &
         "INNER JOIN BANCOS_GLOBAL G ON(D.FOLIO_BANCOS_GLOBAL=G.FOLIO_BANCO) " &
         "INNER JOIN CFD_CAT_METODOS_PAGO MP ON(D.CODIGO_METODO_PAGO=MP.CODIGO_METODO_PAGO) " &
@@ -879,7 +881,6 @@ Public Class Class_Bancos_CXC
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
-
             da.Dispose()
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, "ObtenerDetalleDocumentosPago", ex)

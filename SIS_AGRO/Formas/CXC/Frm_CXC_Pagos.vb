@@ -40,6 +40,7 @@ Public Class Frm_CXC_Pagos
     Private iGyDocCODIGO_MONEDA_SAT As Integer = 11
     Private iGyDocCUENTA_BENEFICIARIO As Integer = 12
     Private iGyDocCODIGO_BANCO_DESTINO_NACIONAL As Integer = 13
+    Private iGyDocES_BANCO_EXTRANJERO As Integer = 14
 #End Region
 
 #Region "Columnas grid venta"
@@ -496,13 +497,13 @@ Buscar:
                 Else
                     Me.dtFechaCheque.Visible = False : Me.lblDisplayFechaCheque.Visible = False
                 End If
-                If oFormaPago.PERMITE_SPEI = True Then
-                    Me.cmdSeleccionaSPEI.Visible = True
-                    Me.txtSPEI_cadenaCDA.Visible = True : Me.txtSPEI_numeroCertificado.Visible = True : Me.txtSPEI_sello.Visible = True
-                Else
-                    Me.cmdSeleccionaSPEI.Visible = False
-                    Me.txtSPEI_cadenaCDA.Visible = False : Me.txtSPEI_numeroCertificado.Visible = False : Me.txtSPEI_sello.Visible = False
-                End If
+                'If oFormaPago.PERMITE_SPEI = True Then
+                '    Me.cmdSeleccionaSPEI.Visible = True
+                '    Me.txtSPEI_cadenaCDA.Visible = True : Me.txtSPEI_numeroCertificado.Visible = True : Me.txtSPEI_sello.Visible = True
+                'Else
+                '    Me.cmdSeleccionaSPEI.Visible = False
+                '    Me.txtSPEI_cadenaCDA.Visible = False : Me.txtSPEI_numeroCertificado.Visible = False : Me.txtSPEI_sello.Visible = False
+                'End If
             Else
                 Me.txtCuentaEmisor.Text = ""
                 Me.CboBancos.SelectedIndex = -1
@@ -616,7 +617,7 @@ Buscar:
                 .DataSource = Nothing
                 FG_Grid_Limpiar(Me.GridDocumentosPago)
                 .Rows = 2
-                .Cols = 14
+                .Cols = 15
                 .DisplayRowNumber = True
                 Me.FormateaGridDocumentosPago()
             End With
@@ -790,6 +791,7 @@ Buscar:
                 .Column(Me.iGyDocCODIGO_MONEDA_SAT).Width = 60
                 .Column(Me.iGyDocCUENTA_BENEFICIARIO).Width = 0
                 .Column(Me.iGyDocCODIGO_BANCO_DESTINO_NACIONAL).Width = 0
+                .Column(Me.iGyDocES_BANCO_EXTRANJERO).Width = 0
 
                 .Cell(0, Me.iGyDocID_BANCOS_DETALLE).Text = ""
                 .Cell(0, Me.iGyDocCODIGO_FORMA_PAGO).Text = "Forma pago"
@@ -804,6 +806,7 @@ Buscar:
                 .Cell(0, Me.iGyDocCODIGO_MONEDA_SAT).Text = "Moneda"
                 .Cell(0, Me.iGyDocCUENTA_BENEFICIARIO).Text = "Cuenta beneficiario"
                 .Cell(0, Me.iGyDocCODIGO_BANCO_DESTINO_NACIONAL).Text = "Banco destino"
+                .Cell(0, Me.iGyDocES_BANCO_EXTRANJERO).Text = "EsBancoExtranjero"
 
                 .Column(Me.iGyDocFECHA).CellType = FlexCell.CellTypeEnum.DateTime
                 .Column(Me.iGyDocFECHA).FormatString = "dd-MMM-yy"
@@ -1035,7 +1038,11 @@ Buscar:
                 sMedioPago = sql.Result1
 
                 If Me.cboFormaPago.SelectedValue.ToString = "02" Or Me.cboFormaPago.SelectedValue.ToString = "03" Then '02=CHEQUE NOMINATIVO, 03=TRANSFERENCIA ELECTRONICA DE FONDOS
-                    oBanco = New Class_CatBancos(Me.CboBancos.SelectedValue.ToString)
+                    If Me.CboBancos.SelectedIndex <> -1 Then
+                        oBanco = New Class_CatBancos(Me.CboBancos.SelectedValue.ToString)
+                    Else
+                        oBanco = New Class_CatBancos("NA")
+                    End If
                 Else
                     oBanco = New Class_CatBancos("NA")
                 End If
@@ -1201,7 +1208,7 @@ Buscar:
         Me.oPolizaGlobal = New Class_Contabilidad_Poliza_Global(Me.TxtFolio.Text)
         Try
             If MsgBox("Deseas grabar el documento " & Me.CboDocumento.Text & " con el folio : " & Me.TxtFolio.Text & "?", CType(vbYesNo + vbQuestion, MsgBoxStyle), "Grabar") = MsgBoxResult.No Then
-                Exit Function
+                Return False
             End If
 
             Me.Totales()
@@ -1297,7 +1304,9 @@ Buscar:
                                   .Cell(i, Me.iGyDocCODIGO_BANCO_EMISOR_NACIONAL).Text, .Cell(i, Me.iGyDocCUENTA_EMISOR).Text,
                                   CDate(.Cell(i, Me.iGyDocFECHA).Text), .Cell(i, Me.iGyDocRFC_EMISOR).Text, valorNumerico(.Cell(i, Me.iGyDocMONTO).Text),
                                  .Cell(i, Me.iGyDocCODIGO_MONEDA_SAT).Text, valorNumerico(txtTipoCambio.Text),
-                                 .Cell(i, Me.iGyDocCUENTA_BENEFICIARIO).Text, .Cell(i, Me.iGyDocCODIGO_BANCO_DESTINO_NACIONAL).Text) 'El beneficiario es la empresa propia, el store lo llenará internamente
+                                 .Cell(i, Me.iGyDocCUENTA_BENEFICIARIO).Text, .Cell(i, Me.iGyDocCODIGO_BANCO_DESTINO_NACIONAL).Text,
+                                 IIf(.Cell(i, Me.iGyDocES_BANCO_EXTRANJERO).Text = "1", .Cell(i, Me.iGyDocNOMBRE_BANCO_EMISOR_NACIONAL).Text, "").ToString
+                        ) 'El beneficiario es la empresa propia, el store lo llenará internamente
 
                         If lID_BANCOS_DETALLE = 0 Then
                             Return False
@@ -2394,7 +2403,7 @@ Buscar:
     Private Function InicializaDocumentoPago() As Boolean
         Try
             Me.TxtCodigoCliente.Text = "" : Me.LblCliente.Text = ""
-            Me.cboFormaPago.SelectedValue = "3"
+            Me.cboFormaPago.SelectedValue = "03" '03=Transferencia
             Me.txtFolioDetalle.Text = ""
             Me.CboBancos.SelectedIndex = -1
             Me.txtCuentaEmisor.Text = ""
@@ -2406,6 +2415,7 @@ Buscar:
             Me.TxtReferencia.Text = ""
             Me.CkbAnticipo.Checked = False
             Me.cboCuentaEmisor.DataSource = Nothing
+            Me.chkEsBancoExtranjero.Checked = False
             Me.TxtCodigoCliente.Focus()
         Catch ex As Exception
             HandleError(Me.Name, "InicializaDocumentoPago", ex)
@@ -2466,11 +2476,6 @@ Buscar:
             Dim oFormaPago As New Class_CFD_CatFormasPago(Me.cboFormaPago.SelectedValue.ToString)
 
             If oFormaPago.ES_BANCARIZADO = True Then
-                If Me.CboBancos.SelectedIndex = -1 Then
-                    MsgBox("Asígne el banco de la cuenta bancaria.", vbExclamation, sProcedure)
-                    Me.CboBancos.Focus()
-                    Return False
-                End If
 
                 If txtLEN(Me.txtCuentaEmisor.Text) = False Then
                     MsgBox("Asígne la cuenta del emisor.", vbExclamation, Me.Name)
@@ -2487,6 +2492,13 @@ Buscar:
                 If oCuentaBancaria.CLABE_INTERBANCARIA.Length <> 18 Then
                     MsgBox("La clabe interbancaria de la cuenta destino(la que recibe los fondos) debe ser de 18 dígitos.", vbExclamation, Me.Name)
                     Return False
+                End If
+                If Me.chkEsBancoExtranjero.Checked = False Then
+                    If Me.CboBancos.SelectedIndex = -1 Then
+                        MsgBox("Asígne el banco de la cuenta bancaria.", vbExclamation, sProcedure)
+                        Me.CboBancos.Focus()
+                        Return False
+                    End If
                 End If
 
             Else
@@ -2574,11 +2586,19 @@ Buscar:
 
                 'If Me.cboFormaPago.SelectedValue.ToString = "02" Or Me.cboFormaPago.SelectedValue.ToString = "03" Then '02=CHEQUE NOMINATIVO, 03=TRANSFERENCIA ELECTRONICA DE FONDOS
                 If oFormaPago.ES_BANCARIZADO = True Then
-                    .Cell(r, Me.iGyDocCODIGO_BANCO_EMISOR_NACIONAL).Text = Me.CboBancos.SelectedValue.ToString
-                    .Cell(r, Me.iGyDocNOMBRE_BANCO_EMISOR_NACIONAL).Text = Me.CboBancos.Text
+                    Dim oCuentaEmisor As New Class_CatClientesCuentasBancarias(Me.cboCuentaEmisor.SelectedValue.ToString)
+
+                    If Me.chkEsBancoExtranjero.Checked = False Then 'Es banco nacional
+                        .Cell(r, Me.iGyDocCODIGO_BANCO_EMISOR_NACIONAL).Text = Me.CboBancos.SelectedValue.ToString
+                        .Cell(r, Me.iGyDocNOMBRE_BANCO_EMISOR_NACIONAL).Text = Me.CboBancos.Text
+                    Else 'Es banco extranjero
+                        .Cell(r, Me.iGyDocCODIGO_BANCO_EMISOR_NACIONAL).Text = "" 'Los bancos extranjeros no tienen código(ni catálogo), solamente tiene nombre y este es tecleado cada vez.
+                        .Cell(r, Me.iGyDocNOMBRE_BANCO_EMISOR_NACIONAL).Text = oCuentaEmisor.NOMBRE_BANCO_EMISOR_EXTRANJERO
+                    End If
                     .Cell(r, Me.iGyDocCUENTA_EMISOR).Text = Me.txtCuentaEmisor.Text.ToUpper
-                    .Cell(r, Me.iGyDocCUENTA_BENEFICIARIO).Text = oCuentaBancaria.CLABE_INTERBANCARIA
+                    .Cell(r, Me.iGyDocCUENTA_BENEFICIARIO).Text = oCuentaBancaria.CLABE_INTERBANCARIA 'Cuenta nuestra
                     .Cell(r, Me.iGyDocCODIGO_BANCO_DESTINO_NACIONAL).Text = oCuentaBancaria.CODIGO_BANCO
+                    .Cell(r, Me.iGyDocES_BANCO_EXTRANJERO).Text = Convert.ToInt32(Me.chkEsBancoExtranjero.Checked).ToString
                 End If
 
                 '.Cell(r, Me.iGyDocFECHA).Text = Format(Me.dtFechaDetalle.Value, "dd-MMM-yyyy")
@@ -2746,6 +2766,7 @@ Buscar:
             Me.cboFormaPago.SelectedValue = oCuenta.CODIGO_METODO_PAGO
             Me.txtCuentaEmisor.Text = oCuenta.CUENTA
             Me.CboBancos.SelectedValue = oCuenta.CODIGO_BANCO
+            Me.chkEsBancoExtranjero.Checked = oCuenta.ES_BANCO_EXTRANJERO
             bResultado = True
         Catch ex As Exception
             HandleError(Me.Name, "SeleccionaCuentaEmisor", ex)

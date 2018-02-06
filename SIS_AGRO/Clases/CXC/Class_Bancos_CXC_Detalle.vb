@@ -22,6 +22,7 @@ Public Class Class_Bancos_CXC_Detalle
     Private _MONTO As Decimal
     Private _CODIGO_MONEDA_SAT As String
     Private _TIPO_CAMBIO As Decimal
+    Private _NOMBRE_BANCO_EMISOR_EXTRANJERO As String
 #End Region
 
 #Region "Campos de sistema"
@@ -120,6 +121,12 @@ Public Class Class_Bancos_CXC_Detalle
         End Get
     End Property
 
+    Public ReadOnly Property NOMBRE_BANCO_EMISOR_EXTRANJERO() As String
+        Get
+            Return Me._NOMBRE_BANCO_EMISOR_EXTRANJERO
+        End Get
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -199,6 +206,7 @@ Public Class Class_Bancos_CXC_Detalle
                     Me._MONTO = CDec(dReader("MONTO").ToString)
                     Me._CODIGO_MONEDA_SAT = dReader("CODIGO_MONEDA_SAT").ToString
                     Me._TIPO_CAMBIO = CDec(dReader("TIPO_CAMBIO").ToString)
+                    Me._NOMBRE_BANCO_EMISOR_EXTRANJERO = dReader("NOMBRE_BANCO_EMISOR_EXTRANJERO").ToString
 
                     bResultado = True
                 End If

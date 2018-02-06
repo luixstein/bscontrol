@@ -69,9 +69,9 @@ Public Class Catalogo_Bancos
         Dim sMsg As String = ""
         Select Case Me.Estado
             Case enumEstados.EDICION
-                sMsg = " grabar las modificaciones del " & Me.msgElemento & " : " & Me.TxtCodigoBanco.Text
+                sMsg = " grabar las modificaciones del " & Me.msgElemento & " : " & Me.txtCodigoBanco.Text
             Case enumEstados.NUEVO
-                sMsg = " agregar el " & Me.msgElemento & " : " & Me.TxtCodigoBanco.Text
+                sMsg = " agregar el " & Me.msgElemento & " : " & Me.txtCodigoBanco.Text
         End Select
         sMsg = "Deseas " & sMsg & " ?"
         If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
@@ -89,7 +89,7 @@ Public Class Catalogo_Bancos
     End Sub
 
     Private Sub tsbImprimirListado_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbImprimirListado.Click
-        Me.oBancos.Imprimir_Listado()
+        'Me.oBancos.Imprimir_Listado()
     End Sub
 #End Region
 
@@ -147,9 +147,9 @@ Public Class Catalogo_Bancos
     End Sub
 
     Private Sub InicializaElemento()
-        Me.TxtCodigoBanco.Text = ""
-        Me.TxtNombreBanco.Text = ""
-        Me.CboEstatus.SelectedIndex = 0
+        Me.txtCodigoBanco.Text = ""
+        Me.txtNombreBanco.Text = ""
+        Me.CboEstatus.Text = "A"
     End Sub
 
     Private Sub DesplegarElementos()
@@ -158,20 +158,15 @@ Public Class Catalogo_Bancos
             .Columns("CODIGO_BANCO").Width = 150
             .Columns("NOMBRE_BANCO").Width = 200
         End With
-
     End Sub
 
     Private Sub LlenaElemento(ByVal iCodigo_Elemento As String)
         Me.oBancos.CODIGO_BANCO = iCodigo_Elemento
         If Me.oBancos.Consultar Then
             With Me.oBancos
-                Me.TxtCodigoBanco.Text = .CODIGO_BANCO.ToString
-                Me.TxtNombreBanco.Text = .NOMBRE_BANCO.ToString
-                If .Estatus = "A" Then
-                    Me.CboEstatus.SelectedIndex = 0
-                Else
-                    Me.CboEstatus.SelectedIndex = 1
-                End If
+                Me.txtCodigoBanco.Text = .CODIGO_BANCO.ToString
+                Me.txtNombreBanco.Text = .NOMBRE_BANCO.ToString
+                Me.CboEstatus.Text = .ESTATUS_BANCO
 
             End With
         End If
@@ -184,9 +179,9 @@ Public Class Catalogo_Bancos
                 Me.oBancos = New Class_CatBancos
                 Try
                     With Me.oBancos
-                        .CODIGO_BANCO = Me.TxtCodigoBanco.Text
-                        .NOMBRE_BANCO = Me.TxtNombreBanco.Text
-                        .Estatus = "A" 'Strings.Left(Me.CboEstatus.Text, 1)
+                        .CODIGO_BANCO = Me.txtCodigoBanco.Text
+                        .NOMBRE_BANCO = Me.txtNombreBanco.Text
+                        .ESTATUS_BANCO = "A" ' Me.CboEstatus.Text
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -287,11 +282,11 @@ Public Class Catalogo_Bancos
             tsbGrabar.PerformClick()
         End If
     End Sub
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombreBanco.KeyPress
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, txtNombreBanco.KeyPress
         txtNoBeep(e)
     End Sub
 
-    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombreBanco.KeyDown
+    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtNombreBanco.KeyDown
         If e.KeyCode = Keys.Return Then
             Select Case Me.Estado
                 Case enumEstados.EDICION
@@ -302,7 +297,7 @@ Public Class Catalogo_Bancos
         End If
     End Sub
 
-    Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoBanco.KeyPress
+    Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCodigoBanco.KeyPress
         Dim txt As TextBox = CType(sender, TextBox)
         txtNoBeep(e)
     End Sub

@@ -225,14 +225,18 @@ Public Class Catalogo_Clientes
         Try
             With Me.cboUsoCFDI
                 Dim dView As New Data.DataView(CType(IIf(Me.cboTipoPersona.Text = "FISICA", dtUsosCFDIPersonasFisicas, dtUsosCFDIPersonasMorales), DataTable))
-                Dim dRow() As DataRow
+                'Dim dRow() As DataRow'Modo original
+                Dim dRow As DataRow() = New DataRow(-1) {} 'De este modo no nos va marcar que el arreglo puede ser usado antes de tener algún valor(quedar null el arreglo)
+                'Dim dRow As New List(Of DataRow) 'De este otro modo no nos va marcar que el arreglo puede ser usado antes de tener algún valor(quedar null el arreglo)
                 Select Case Me.cboTipoPersona.Text
                     Case "FISICA"
                         dView = New Data.DataView(dtUsosCFDIPersonasFisicas)
                         dRow = dtUsosCFDIPersonasFisicas.Select("ES_DEFAULT='1'")
+                        'dRow = dtUsosCFDIPersonasFisicas.Select("ES_DEFAULT='1'").ToList
                     Case "MORAL"
                         dView = New Data.DataView(dtUsosCFDIPersonasMorales)
                         dRow = dtUsosCFDIPersonasMorales.Select("ES_DEFAULT='1'")
+                        'dRow = dtUsosCFDIPersonasMorales.Select("ES_DEFAULT='1'").ToList
                 End Select
 
                 .DisplayMember = "NOMBRE_USO_CFDI"
@@ -240,7 +244,8 @@ Public Class Catalogo_Clientes
                 .DataSource = dView
                 .SelectedIndex = -1
 
-                If dRow.Length > 0 Then
+                'If dRow.Length > 0 Then
+                If dRow.Count > 0 Then
                     .SelectedValue = dRow(0)("CODIGO_USO_CFDI")
                 End If
 
