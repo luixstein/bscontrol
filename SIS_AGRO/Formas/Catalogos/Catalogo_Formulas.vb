@@ -440,6 +440,7 @@ Public Class Catalogo_Formulas
             Dim Columna As Integer, Renglon As Integer
             Dim StrCod As String, dCantidad As Double
             Dim oArticulos As Class_CatArticulos
+            Dim i As Integer
 
             Columna = Me.Grid1.Selection.FirstCol
             Renglon = Me.Grid1.Selection.FirstRow
@@ -464,6 +465,13 @@ LlenaLinea:
                                 MsgBox("Los ingredientes deben ser distintos al producto final.", MsgBoxStyle.Exclamation, Me.Text)
                                 GoTo BuscaArticulos
                             End If
+
+                            For i = 1 To Me.Grid1.Rows - 1
+                                If Me.Grid1.Cell(i, Me.iGyCodigoArticulo).Text = StrCod And i <> Renglon Then
+                                    MsgBox("Ya existe ese ingrediente en el renglón " & i, MsgBoxStyle.Exclamation, Me.Text)
+                                    GoTo BuscaArticulos
+                                End If
+                            Next
 
                             If StrCod = Empresa_Sistema.CODIGO_ARTICULO_NO_INVENTARIABLE_COMPRA_PROVEEDOR Then
                                 Me.Grid1.Cell(Renglon, Me.iGyDescripcion).Text = ""
@@ -511,6 +519,13 @@ BuscaArticulos:
                                         MsgBox("Los ingredientes deben ser distintos al producto final.", MsgBoxStyle.Exclamation, Me.Text)
                                         GoTo BuscaArticulos
                                     End If
+
+                                    For i = 1 To Me.Grid1.Rows - 1
+                                        If Me.Grid1.Cell(i, Me.iGyCodigoArticulo).Text = StrCod And i <> Renglon Then
+                                            MsgBox("Ya existe ese ingrediente en el renglón " & i, MsgBoxStyle.Exclamation, Me.Text)
+                                            GoTo BuscaArticulos
+                                        End If
+                                    Next
 
                                     Me.Grid1.Cell(Renglon, Me.iGyCodigoArticulo).Text = StrCod
                                     GoTo LlenaLinea

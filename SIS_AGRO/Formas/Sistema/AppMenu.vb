@@ -1540,4 +1540,20 @@ Public Class AppMenu
         Child.Show()
 
     End Sub
+
+    Private Sub FormulasToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FormulasToolStripMenuItem.Click
+        Dim Child As New Catalogo_Formulas
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub TransformacionesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TransformacionesToolStripMenuItem.Click
+        Dim Child As New Transformaciones
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
 End Class

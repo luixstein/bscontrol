@@ -46,6 +46,9 @@ Partial Class Transformaciones
         Me.LblCosto = New System.Windows.Forms.Label()
         Me.LblCostoTotal = New System.Windows.Forms.Label()
         Me.TxtTotal = New System.Windows.Forms.TextBox()
+        Me.TxtCuentaContable = New System.Windows.Forms.TextBox()
+        Me.LblDisplayCuentaContable = New System.Windows.Forms.Label()
+        Me.LblNombreCuentaContable = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -266,11 +269,41 @@ Partial Class Transformaciones
         Me.TxtTotal.Size = New System.Drawing.Size(175, 22)
         Me.TxtTotal.TabIndex = 394
         '
+        'TxtCuentaContable
+        '
+        Me.TxtCuentaContable.Location = New System.Drawing.Point(612, 77)
+        Me.TxtCuentaContable.Name = "TxtCuentaContable"
+        Me.TxtCuentaContable.Size = New System.Drawing.Size(306, 22)
+        Me.TxtCuentaContable.TabIndex = 395
+        '
+        'LblDisplayCuentaContable
+        '
+        Me.LblDisplayCuentaContable.AutoSize = True
+        Me.LblDisplayCuentaContable.Location = New System.Drawing.Point(486, 80)
+        Me.LblDisplayCuentaContable.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayCuentaContable.Name = "LblDisplayCuentaContable"
+        Me.LblDisplayCuentaContable.Size = New System.Drawing.Size(119, 17)
+        Me.LblDisplayCuentaContable.TabIndex = 396
+        Me.LblDisplayCuentaContable.Text = "Cuenta contable :"
+        '
+        'LblNombreCuentaContable
+        '
+        Me.LblNombreCuentaContable.AutoSize = True
+        Me.LblNombreCuentaContable.Location = New System.Drawing.Point(609, 107)
+        Me.LblNombreCuentaContable.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNombreCuentaContable.Name = "LblNombreCuentaContable"
+        Me.LblNombreCuentaContable.Size = New System.Drawing.Size(16, 17)
+        Me.LblNombreCuentaContable.TabIndex = 397
+        Me.LblNombreCuentaContable.Text = "_"
+        '
         'Transformaciones
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1102, 609)
+        Me.Controls.Add(Me.LblNombreCuentaContable)
+        Me.Controls.Add(Me.LblDisplayCuentaContable)
+        Me.Controls.Add(Me.TxtCuentaContable)
         Me.Controls.Add(Me.TxtTotal)
         Me.Controls.Add(Me.LblCostoTotal)
         Me.Controls.Add(Me.LblCosto)
@@ -325,4 +358,7 @@ Partial Class Transformaciones
     Friend WithEvents LblCosto As System.Windows.Forms.Label
     Friend WithEvents LblCostoTotal As System.Windows.Forms.Label
     Friend WithEvents TxtTotal As System.Windows.Forms.TextBox
+    Friend WithEvents TxtCuentaContable As System.Windows.Forms.TextBox
+    Friend WithEvents LblDisplayCuentaContable As System.Windows.Forms.Label
+    Friend WithEvents LblNombreCuentaContable As System.Windows.Forms.Label
 End Class

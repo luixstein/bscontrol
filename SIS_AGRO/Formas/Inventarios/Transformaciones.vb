@@ -17,7 +17,6 @@ Public Class Transformaciones
     Private iGyExistencia As Integer = 6
     Private iGyCosto As Integer = 7
     Private iGyTotal As Integer = 8
-    Private iGyCuentaContable As Integer = 9
 #End Region
 
     Private bAplicando As Boolean
@@ -114,8 +113,41 @@ BuscarArticulo:
         End Select
     End Sub
 
-    Private Sub Grid1_KeyDown(ByVal Sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Grid1.KeyDown
-        Me.GestionaGrid(e)
+    Private Sub TxtCuentaContable_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCuentaContable.KeyDown
+        Dim oCuentas As New Class_CatCuentas, sCuentaContable As String
+
+        Select Case e.KeyCode
+            Case Keys.Enter
+                sCuentaContable = Me.TxtCuentaContable.Text
+
+                oCuentas = New Class_CatCuentas(sCuentaContable)
+
+                If oCuentas._Existe = True Then
+                    Me.TxtCuentaContable.Text = oCuentas.CUENTA_CONTABLE
+                    Me.LblNombreCuentaContable.Text = oCuentas.NOMBRE_CUENTA
+                Else
+                    Me.TxtCuentaContable.Text = ""
+                    Me.LblNombreCuentaContable.Text = ""
+                    GoTo BuscarCuentas : Exit Sub
+                End If
+
+            Case Keys.F6, Keys.F7
+BuscarCuentas:
+                If e.KeyCode = Keys.F6 Then
+                    sCuentaContable = oCuentas.BusquedaVisual_PorCodigo()
+                Else
+                    sCuentaContable = oCuentas.BusquedaVisual_PorDescripcion()
+                End If
+
+                If txtLEN(sCuentaContable) = True Then
+                    oCuentas = New Class_CatCuentas(sCuentaContable)
+                    If oCuentas._Existe = True Then
+                        Me.TxtCuentaContable.Text = oCuentas.CUENTA_CONTABLE
+                        Me.LblNombreCuentaContable.Text = oCuentas.NOMBRE_CUENTA
+                    End If
+                End If
+
+        End Select
     End Sub
 #End Region
 
@@ -131,6 +163,8 @@ BuscarArticulo:
             Me.TxtCostoTotal.Text = "$ 0.00"
             Me.TxtConcepto.Text = ""
             Me.TxtTotal.Text = "$ 0.00"
+            Me.TxtCuentaContable.Text = ""
+            Me.LblNombreCuentaContable.Text = ""
             Me.Grid1.DataSource = Nothing
 
             Me.TxtExistencia.ReadOnly = True
@@ -140,7 +174,7 @@ BuscarArticulo:
 
             Me.InicializaGrid()
 
-            'Me.Grid1.Locked = True
+            Me.Grid1.Locked = True
 
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
@@ -193,9 +227,11 @@ BuscarArticulo:
             Exit Function
         End If
 
-        'If Me.ValidaCuentasContable = False Then
-        '    Exit Function
-        'End If
+        If txtLEN(Me.TxtCuentaContable.Text) = False Then
+            MsgBox("Asígne una cuenta contable.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.TxtCuentaContable.Focus()
+            Exit Function
+        End If
 
         Me.Totales()
 
@@ -248,7 +284,7 @@ BuscarArticulo:
                         .oInventariosDetalle.CODIGO_ARTICULO = Me.Grid1.Cell(i, Me.iGyCodigo).Text
                         .oInventariosDetalle.CANTIDAD = valorNumerico(Me.Grid1.Cell(i, Me.iGyCantidadTotal).Text)
                         .oInventariosDetalle.COSTO = valorNumerico(Me.Grid1.Cell(i, Me.iGyCosto).Text)
-                        .oInventariosDetalle.CUENTA_CONTABLE = Me.Grid1.Cell(i, Me.iGyCuentaContable).Text.ToString
+                        .oInventariosDetalle.CUENTA_CONTABLE = Me.TxtCuentaContable.Text
                         .oInventariosDetalle.IMPORTE = CDec(valorNumerico(Me.Grid1.Cell(i, Me.iGyTotal).Text.ToString))
                         .oInventariosDetalle.ID_ADICIONAL = i 'CInt(valorNumerico(Me.Grid1.Cell(i, Me.iGyIDAdicional).Text))
                         .oInventariosDetalle.LISTA_SERIES = ""
@@ -490,7 +526,7 @@ BuscarArticulo:
             With Me.Grid1
                 .AutoRedraw = False
 
-                .Cols = 10
+                .Cols = 9
 
                 .DisplayFocusRect = False
                 .DrawMode = FlexCell.DrawModeEnum.OwnerDraw
@@ -510,7 +546,6 @@ BuscarArticulo:
                 .Cell(0, Me.iGyExistencia).Text = "Existencia"
                 .Cell(0, Me.iGyCosto).Text = "Costo"
                 .Cell(0, Me.iGyTotal).Text = "Total"
-                .Cell(0, Me.iGyCuentaContable).Text = "Cuenta contable"
 
                 .Column(Me.iGyCantidadOriginal).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyCantidadOriginal).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
@@ -540,18 +575,8 @@ BuscarArticulo:
                 .Column(Me.iGyExistencia).Width = 80
                 .Column(Me.iGyCosto).Width = 100
                 .Column(Me.iGyTotal).Width = 95
-                .Column(Me.iGyCuentaContable).Width = 100
 
-                .Column(Me.iGyCodigo).Locked = True
-                .Column(Me.iGyDescripcion).Locked = True
-                .Column(Me.iGyUnidad).Locked = True
-                .Column(Me.iGyCantidadOriginal).Locked = True
-                .Column(Me.iGyCantidadTotal).Locked = True
-                .Column(Me.iGyExistencia).Locked = True
-                .Column(Me.iGyCosto).Locked = True
-                .Column(Me.iGyTotal).Locked = True
-
-                '.Locked = True
+                .Locked = True
 
                 .AutoRedraw = True
                 .Refresh()
@@ -559,67 +584,6 @@ BuscarArticulo:
 
         Catch ex As Exception
             HandleError(Me.Name, "FormateaGrid", ex)
-        End Try
-    End Sub
-
-    Public Sub GestionaGrid(ByVal e As System.Windows.Forms.KeyEventArgs)
-        Try
-            Dim Columna As Integer, Renglon As Integer
-            Dim sCuentaContable As String
-            Dim oCuentas As New Class_CatCuentas
-
-            Select Case e.KeyCode
-                Case Keys.Enter
-                    Columna = Me.Grid1.Selection.FirstCol
-                    Renglon = Me.Grid1.Selection.FirstRow
-
-                    Select Case Columna
-                        Case Me.iGyCuentaContable
-                            sCuentaContable = Me.Grid1.Cell(Renglon, Me.iGyCuentaContable).Text
-
-                            oCuentas = New Class_CatCuentas(sCuentaContable)
-
-                            If oCuentas._Existe = True Then
-                                Me.Grid1.Cell(Renglon, Me.iGyCuentaContable).Text = oCuentas.CUENTA_CONTABLE
-                                'Me.Grid1.Cell(Renglon, Me.iGyNombreCuentaContable).Text = oCuentas.NOMBRE_CUENTA
-                            Else
-                                Me.Grid1.Cell(Renglon, Me.iGyCuentaContable).Text = ""
-                                'Me.Grid1.Cell(Renglon, Me.iGyNombreCuentaContable).Text = ""
-                                GoTo BuscarCuentas : Exit Sub
-                            End If
-                    End Select
-
-                Case Keys.F6, Keys.F7
-                    Columna = Me.Grid1.Selection.FirstCol
-                    Renglon = Me.Grid1.Selection.FirstRow
-
-                    Select Case Columna
-                        Case Me.iGyCuentaContable
-BuscarCuentas:
-
-                            If e.KeyCode = Keys.F6 Then
-                                sCuentaContable = oCuentas.BusquedaVisual_PorCodigo
-                            Else 'F7
-                                sCuentaContable = oCuentas.BusquedaVisual_PorDescripcion
-                            End If
-
-                            If sCuentaContable = "" Then
-                                Return
-                            End If
-
-                            If txtLEN(sCuentaContable) = True Then
-                                oCuentas = New Class_CatCuentas(sCuentaContable)
-                                If oCuentas._Existe = True Then
-                                    Me.Grid1.Cell(Renglon, Me.iGyCuentaContable).Text = oCuentas.CUENTA_CONTABLE
-                                    'Me.Grid1.Cell(Renglon, Me.iGyNombreCuentaContable).Text = oCuentas.NOMBRE_CUENTA
-                                    Me.Grid1.Cell(Renglon + 1, iGyCuentaContable).SetFocus()
-                                End If
-                            End If
-
-                    End Select
-            End Select
-        Catch ex As Exception
-
         End Try
     End Sub
 
@@ -725,56 +689,6 @@ BuscarCuentas:
 
         Return bResultado
     End Function
-
-    'Private Function ValidaCuentasContable() As Boolean
-    '    Dim bResultado As Boolean = False
-    '    Dim i As Integer, sCuentaContable As String = ""
-    '    Try
-    '        Dim oCuentas = New Class_CatCuentas
-
-    '        For i = 1 To Me.Grid1.Rows - 1
-    '            If txtLEN(Me.Grid1.Cell(i, Me.iGyCodigo).Text) = True Then
-
-    '                sCuentaContable = Me.Grid1.Cell(i, Me.iGyCuentaContable).Text
-
-    '                If IsNothing(Me.oFormaDetalleCuentas) = False AndAlso Me.oFormaDetalleCuentas.ValidaCuentaTengaDetalle(CInt(Me.Grid1.Cell(i, Me.iGyIDAdicional).Text)) = True Then 'Si es que tiene detalle de cuenta en la otra forma
-
-    '                    'No bajar la segunda validacion despues del andalso porque si no no va entrar al else si e sun renglón que tien su cuenta en el grid normal y no el oculto
-    '                    'Si es que tiene detalle de cuenta en la otra forma y si tambien se haya el id del renglon(puede haber renglones que no tengan, esos que no tienen no entran aqui si se tiene que preguntar)
-    '                    'No hay que hacer
-    '                    'MsgBox("andale")
-
-    '                    If txtLEN(sCuentaContable) = True Then
-    '                        MsgBox("Quite la cuenta contable del renglón : " & i & " , no se puede tener cuenta directa y también en detalle(la que se establece con el botón).", MsgBoxStyle.Exclamation, Me.Text)
-    '                        Return False
-    '                    End If
-
-    '                Else
-    '                    If txtLEN(sCuentaContable) = False Then
-    '                        MsgBox("Asígne la cuenta contable del renglón : " & i & " .", MsgBoxStyle.Exclamation, Me.Text)
-    '                        Return False
-    '                    End If
-
-    '                    oCuentas = New Class_CatCuentas(sCuentaContable)
-
-    '                    If oCuentas._Existe = False Then
-    '                        MsgBox("La cuenta contable del renglón : " & i & " no existe.", MsgBoxStyle.Exclamation, Me.Name)
-    '                        Return False
-    '                    ElseIf oCuentas.ESMAYOR = "1" Then
-    '                        MsgBox("La cuenta contable del renglón : " & i & " es de mayor.", MsgBoxStyle.Exclamation, Me.Name)
-    '                        Return False
-    '                    End If
-
-    '                End If
-
-    '            End If
-    '        Next
-    '        bResultado = True
-    '    Catch ex As Exception
-    '        HandleError(Me.Name, "ValidaCuentasContable", ex)
-    '    End Try
-    '    Return bResultado
-    'End Function
 
 #End Region
 

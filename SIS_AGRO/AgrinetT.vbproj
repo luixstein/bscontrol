@@ -159,6 +159,8 @@
     <Compile Include="Clases\Catalogos\Class_Catalogos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatArticulos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatClientesCuentasBancarias.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatFormulas.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatFormulas_Detalle.vb" />
     <Compile Include="Clases\Catalogos\Class_CatPropietarios.vb" />
     <Compile Include="Clases\Catalogos\Class_CatBancos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatCajasTransportes.vb" />
@@ -379,6 +381,12 @@
       <DependentUpon>Catalogo_Conceptos_Pagos.vb</DependentUpon>
     </Compile>
     <Compile Include="Formas\Catalogos\Catalogo_Conceptos_Pagos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Formulas.designer.vb">
+      <DependentUpon>Catalogo_Formulas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Formulas.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Catalogos\Catalogo_Propietarios.Designer.vb">
@@ -907,6 +915,12 @@
       <DependentUpon>ProyectoSiembra.vb</DependentUpon>
     </Compile>
     <Compile Include="Formas\Contabilidad\ProyectoSiembra.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Inventarios\Transformaciones.designer.vb">
+      <DependentUpon>Transformaciones.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Inventarios\Transformaciones.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Nomina\AfiliacionIMSS\Frm_Nomina_AltaBajaIntegracionSUA.Designer.vb">
@@ -1607,6 +1621,9 @@
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_Conceptos_Pagos.resx">
       <DependentUpon>Catalogo_Conceptos_Pagos.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Formulas.resx">
+      <DependentUpon>Catalogo_Formulas.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_Propietarios.resx">
       <DependentUpon>Catalogo_Propietarios.vb</DependentUpon>
     </EmbeddedResource>
@@ -2031,6 +2048,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Contabilidad\ProyectoSiembra.resx">
       <DependentUpon>ProyectoSiembra.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Inventarios\Transformaciones.resx">
+      <DependentUpon>Transformaciones.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Nomina\AfiliacionIMSS\Frm_Nomina_AltaBajaIntegracionSUA.resx">
       <DependentUpon>Frm_Nomina_AltaBajaIntegracionSUA.vb</DependentUpon>

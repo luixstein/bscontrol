@@ -147,6 +147,7 @@ Partial Public Class AppMenu
         Me.ConsultaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AuxiliarDeClientesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GlobalDeDocumentosToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CalificaPropietarioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.AplicaciónDeDocumentosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CapturaDePagosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -162,6 +163,7 @@ Partial Public Class AppMenu
         Me.PagosCobradosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuInventarios = New System.Windows.Forms.ToolStripMenuItem()
         Me.MovimientosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TransformacionesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MnuInvReportes = New System.Windows.Forms.ToolStripMenuItem()
         Me.MnuInvRepAuxiliar = New System.Windows.Forms.ToolStripMenuItem()
         Me.MnuInvRepExistencias = New System.Windows.Forms.ToolStripMenuItem()
@@ -221,7 +223,7 @@ Partial Public Class AppMenu
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
-        Me.CalificaPropietarioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.FormulasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -449,7 +451,7 @@ Partial Public Class AppMenu
         '
         'InventariosToolStripMenuItem
         '
-        Me.InventariosToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AlmacenesToolStripMenuItem, Me.ArticulosToolStripMenuItem, Me.FamiliasToolStripMenuItem, Me.MnuCatInvLineas, Me.UnidadesDeVentaToolStripMenuItem})
+        Me.InventariosToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AlmacenesToolStripMenuItem, Me.ArticulosToolStripMenuItem, Me.FamiliasToolStripMenuItem, Me.MnuCatInvLineas, Me.UnidadesDeVentaToolStripMenuItem, Me.FormulasToolStripMenuItem})
         Me.InventariosToolStripMenuItem.Name = "InventariosToolStripMenuItem"
         Me.InventariosToolStripMenuItem.Size = New System.Drawing.Size(214, 26)
         Me.InventariosToolStripMenuItem.Tag = "0021"
@@ -1032,6 +1034,12 @@ Partial Public Class AppMenu
         Me.GlobalDeDocumentosToolStripMenuItem1.Size = New System.Drawing.Size(235, 26)
         Me.GlobalDeDocumentosToolStripMenuItem1.Text = "Global de documentos"
         '
+        'CalificaPropietarioToolStripMenuItem
+        '
+        Me.CalificaPropietarioToolStripMenuItem.Name = "CalificaPropietarioToolStripMenuItem"
+        Me.CalificaPropietarioToolStripMenuItem.Size = New System.Drawing.Size(235, 26)
+        Me.CalificaPropietarioToolStripMenuItem.Text = "Califica propietario"
+        '
         'ToolStripMenuItem1
         '
         Me.ToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AplicaciónDeDocumentosToolStripMenuItem, Me.CapturaDePagosToolStripMenuItem, Me.PagosAAcredoresToolStripMenuItem, Me.DescuentosToolStripMenuItem1, Me.ConsultasToolStripMenuItem2, Me.ControlDePagosToolStripMenuItem, Me.PagosCobradosToolStripMenuItem})
@@ -1116,7 +1124,7 @@ Partial Public Class AppMenu
         '
         'MenuInventarios
         '
-        Me.MenuInventarios.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MovimientosToolStripMenuItem, Me.MnuInvReportes})
+        Me.MenuInventarios.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MovimientosToolStripMenuItem, Me.TransformacionesToolStripMenuItem, Me.MnuInvReportes})
         Me.MenuInventarios.Name = "MenuInventarios"
         Me.MenuInventarios.Size = New System.Drawing.Size(93, 24)
         Me.MenuInventarios.Tag = "0006"
@@ -1125,15 +1133,21 @@ Partial Public Class AppMenu
         'MovimientosToolStripMenuItem
         '
         Me.MovimientosToolStripMenuItem.Name = "MovimientosToolStripMenuItem"
-        Me.MovimientosToolStripMenuItem.Size = New System.Drawing.Size(170, 26)
+        Me.MovimientosToolStripMenuItem.Size = New System.Drawing.Size(200, 26)
         Me.MovimientosToolStripMenuItem.Tag = "0047"
         Me.MovimientosToolStripMenuItem.Text = "&Movimientos"
+        '
+        'TransformacionesToolStripMenuItem
+        '
+        Me.TransformacionesToolStripMenuItem.Name = "TransformacionesToolStripMenuItem"
+        Me.TransformacionesToolStripMenuItem.Size = New System.Drawing.Size(200, 26)
+        Me.TransformacionesToolStripMenuItem.Text = "Transformaciones"
         '
         'MnuInvReportes
         '
         Me.MnuInvReportes.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MnuInvRepAuxiliar, Me.MnuInvRepExistencias, Me.InvRptGlobalDetalle, Me.LotesDeCostosToolStripMenuItem})
         Me.MnuInvReportes.Name = "MnuInvReportes"
-        Me.MnuInvReportes.Size = New System.Drawing.Size(170, 26)
+        Me.MnuInvReportes.Size = New System.Drawing.Size(200, 26)
         Me.MnuInvReportes.Tag = "0069"
         Me.MnuInvReportes.Text = "&Consultas"
         '
@@ -1511,11 +1525,11 @@ Partial Public Class AppMenu
         Me.pbLogo.TabStop = False
         Me.pbLogo.Visible = False
         '
-        'CalificaPropietarioToolStripMenuItem
+        'FormulasToolStripMenuItem
         '
-        Me.CalificaPropietarioToolStripMenuItem.Name = "CalificaPropietarioToolStripMenuItem"
-        Me.CalificaPropietarioToolStripMenuItem.Size = New System.Drawing.Size(235, 26)
-        Me.CalificaPropietarioToolStripMenuItem.Text = "Califica propietario"
+        Me.FormulasToolStripMenuItem.Name = "FormulasToolStripMenuItem"
+        Me.FormulasToolStripMenuItem.Size = New System.Drawing.Size(207, 26)
+        Me.FormulasToolStripMenuItem.Text = "Formulas"
         '
         'AppMenu
         '
@@ -1745,4 +1759,6 @@ Partial Public Class AppMenu
     Friend WithEvents LotesCostosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents SaldosPropietariosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents CalificaPropietarioToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents TransformacionesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents FormulasToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class
