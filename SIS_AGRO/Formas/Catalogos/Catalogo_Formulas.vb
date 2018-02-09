@@ -362,6 +362,7 @@ Public Class Catalogo_Formulas
         Dim bResultado As Boolean = False
 
         Try
+
             If txtLEN(Me.TxtNombreFormula.Text) = False Then
                 MsgBox("Asígne nombre a la fórmula.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.TxtNombreFormula.Focus()
@@ -371,6 +372,19 @@ Public Class Catalogo_Formulas
             If txtLEN(Me.TxtCodigoArticulo.Text) = False Then
                 MsgBox("Asígne un producto final.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.TxtCodigoArticulo.Focus()
+                Return bResultado
+            End If
+
+            If Me.Grid1.DataSource Is Nothing Then
+                MsgBox("La fórmula debe tener al menos un ingrediente.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.Grid1.Rows = 2
+                Me.Grid1.Cell(1, Me.iGyCodigoArticulo).SetFocus()
+                Return bResultado
+            End If
+
+            If txtLEN(Me.Grid1.Cell(1, Me.iGyCodigoArticulo).Text) = False Then
+                MsgBox("La fórmula debe tener al menos un ingrediente.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.Grid1.Cell(1, Me.iGyCodigoArticulo).SetFocus()
                 Return bResultado
             End If
 
@@ -469,7 +483,7 @@ LlenaLinea:
                             For i = 1 To Me.Grid1.Rows - 1
                                 If Me.Grid1.Cell(i, Me.iGyCodigoArticulo).Text = StrCod And i <> Renglon Then
                                     MsgBox("Ya existe ese ingrediente en el renglón " & i, MsgBoxStyle.Exclamation, Me.Text)
-                                    GoTo BuscaArticulos
+                                    Exit Sub
                                 End If
                             Next
 
@@ -523,7 +537,7 @@ BuscaArticulos:
                                     For i = 1 To Me.Grid1.Rows - 1
                                         If Me.Grid1.Cell(i, Me.iGyCodigoArticulo).Text = StrCod And i <> Renglon Then
                                             MsgBox("Ya existe ese ingrediente en el renglón " & i, MsgBoxStyle.Exclamation, Me.Text)
-                                            GoTo BuscaArticulos
+                                            Exit Sub
                                         End If
                                     Next
 
@@ -536,6 +550,16 @@ BuscaArticulos:
 
                 Case Keys.F8, Keys.Delete
                     If (Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.EDICION) Then
+                        If Me.Estado = enumEstados.EDICION Then
+                            Dim oFormulaDetalle As New Class_CatFormulas_Detalle
+
+                            If oFormulaDetalle.EliminaIngrediente(CInt(Me.Grid1.Cell(Renglon, Me.iGyIdFormulaDetalle).Text)) = False Then
+                                MsgBox("Error al tratar de eliminar el ingrediente.", MsgBoxStyle.Exclamation, Me.Text)
+                                Exit Sub
+                            End If
+
+                        End If
+
                         Me.Grid1.Selection.DeleteByRow()
                     End If
 
@@ -651,7 +675,7 @@ Buscar:
                     Me.LblNombreProductoFinal.Text = oArticulo.DESCRIPCION
                 End If
 
-                txtTAB(e)
+                Me.Grid1.Cell(1, Me.iGyCodigoArticulo).SetFocus()
 
         End Select
     End Sub

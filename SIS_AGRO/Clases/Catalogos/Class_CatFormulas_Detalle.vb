@@ -196,6 +196,33 @@ Public Class Class_CatFormulas_Detalle
         Return bResultado
     End Function
 
+    Public Function EliminaIngrediente(ByVal Id_formula_detalle As Integer) As Boolean
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_CAT_FORMULAS_DETALLE_ELIMINA_INGREDIENTE"
+
+            sqlParametro = .Parameters.Add("@ID_FORMULA_DETALLE", SqlDbType.Int) : sqlParametro.Value = Id_formula_detalle
+
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
+    End Function
+
 #End Region
 
 End Class

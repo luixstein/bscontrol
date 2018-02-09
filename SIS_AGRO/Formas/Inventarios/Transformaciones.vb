@@ -365,7 +365,7 @@ BuscarCuentas:
                 .oInventariosDetalle.CODIGO_ARTICULO = Me.TxtCodigoArticulo.Text
                 .oInventariosDetalle.CANTIDAD = valorNumerico(Me.TxtCantidad.Text)
                 .oInventariosDetalle.COSTO = valorNumerico(Me.TxtCosto.Text)
-                .oInventariosDetalle.CUENTA_CONTABLE = "103000010002" 'Me.Grid1.Cell(i, Me.iGyCuentaContable).Text.ToString
+                .oInventariosDetalle.CUENTA_CONTABLE = Me.TxtCuentaContable.Text
                 .oInventariosDetalle.IMPORTE = CDec(valorNumerico(Me.TxtCostoTotal.Text))
                 .oInventariosDetalle.ID_ADICIONAL = 1
                 .oInventariosDetalle.LISTA_SERIES = ""
