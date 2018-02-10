@@ -24,6 +24,8 @@ Partial Class Catalogo_Productos_Agricolas
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Catalogo_Productos_Agricolas))
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.lblDisplayImpuestoIVA = New System.Windows.Forms.Label()
+        Me.cboImpuestoIVA = New System.Windows.Forms.ComboBox()
         Me.lblClaveProductoSAT = New System.Windows.Forms.Label()
         Me.lblCodigoUnidadSAT = New System.Windows.Forms.Label()
         Me.lblDisplayClaveProductoSAT = New System.Windows.Forms.Label()
@@ -80,8 +82,6 @@ Partial Class Catalogo_Productos_Agricolas
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.lblDisplayImpuestoIVA = New System.Windows.Forms.Label()
-        Me.cboImpuestoIVA = New System.Windows.Forms.ComboBox()
         Me.gBoxInformacion.SuspendLayout()
         Me.GpbFormulas.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
@@ -138,6 +138,24 @@ Partial Class Catalogo_Productos_Agricolas
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información de los artículos"
+        '
+        'lblDisplayImpuestoIVA
+        '
+        Me.lblDisplayImpuestoIVA.AutoSize = True
+        Me.lblDisplayImpuestoIVA.Location = New System.Drawing.Point(10, 388)
+        Me.lblDisplayImpuestoIVA.Name = "lblDisplayImpuestoIVA"
+        Me.lblDisplayImpuestoIVA.Size = New System.Drawing.Size(30, 13)
+        Me.lblDisplayImpuestoIVA.TabIndex = 249
+        Me.lblDisplayImpuestoIVA.Text = "IVA :"
+        '
+        'cboImpuestoIVA
+        '
+        Me.cboImpuestoIVA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboImpuestoIVA.FormattingEnabled = True
+        Me.cboImpuestoIVA.Location = New System.Drawing.Point(97, 385)
+        Me.cboImpuestoIVA.Name = "cboImpuestoIVA"
+        Me.cboImpuestoIVA.Size = New System.Drawing.Size(212, 21)
+        Me.cboImpuestoIVA.TabIndex = 16
         '
         'lblClaveProductoSAT
         '
@@ -656,25 +674,6 @@ Partial Class Catalogo_Productos_Agricolas
         '
         Me.tssLabelEstado.Name = "tssLabelEstado"
         Me.tssLabelEstado.Size = New System.Drawing.Size(0, 17)
-        '
-        'lblDisplayImpuestoIVA
-        '
-        Me.lblDisplayImpuestoIVA.AutoSize = True
-        Me.lblDisplayImpuestoIVA.Location = New System.Drawing.Point(10, 388)
-        Me.lblDisplayImpuestoIVA.Name = "lblDisplayImpuestoIVA"
-        Me.lblDisplayImpuestoIVA.Size = New System.Drawing.Size(30, 13)
-        Me.lblDisplayImpuestoIVA.TabIndex = 249
-        Me.lblDisplayImpuestoIVA.Text = "IVA :"
-        '
-        'cboImpuestoIVA
-        '
-        Me.cboImpuestoIVA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboImpuestoIVA.FormattingEnabled = True
-        Me.cboImpuestoIVA.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
-        Me.cboImpuestoIVA.Location = New System.Drawing.Point(97, 385)
-        Me.cboImpuestoIVA.Name = "cboImpuestoIVA"
-        Me.cboImpuestoIVA.Size = New System.Drawing.Size(212, 21)
-        Me.cboImpuestoIVA.TabIndex = 16
         '
         'Catalogo_Productos_Agricolas
         '

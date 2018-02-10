@@ -128,7 +128,6 @@ Partial Class Catalogo_Articulos
         '
         Me.cboImpuestoIVA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboImpuestoIVA.FormattingEnabled = True
-        Me.cboImpuestoIVA.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
         Me.cboImpuestoIVA.Location = New System.Drawing.Point(97, 241)
         Me.cboImpuestoIVA.Name = "cboImpuestoIVA"
         Me.cboImpuestoIVA.Size = New System.Drawing.Size(212, 21)

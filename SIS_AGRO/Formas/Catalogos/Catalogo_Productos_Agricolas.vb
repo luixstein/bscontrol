@@ -150,6 +150,7 @@ Public Class Catalogo_Productos_Agricolas
             Me.InicializaElemento()
             Me.DesplegarElementos()
             'Me.InicializaGrid()
+            Me.DesplegarImpuestosIVA()
         Catch ex As Exception
             HandleError(Me.Name, "Catalogo_Articulos_Load", ex)
         End Try
@@ -582,9 +583,9 @@ Public Class Catalogo_Productos_Agricolas
             Case enumEstados.NUEVO, enumEstados.EDICION
                 oElemento = New Class_CatArticulos
 
-                If Me.Estado = enumEstados.NUEVO Then
-                    Me.GeneraCodigoDescripcion()
-                End If
+                'If Me.Estado = enumEstados.NUEVO Then
+                '    Me.GeneraCodigoDescripcion()
+                'End If
 
                 Try
                     With oElemento
@@ -935,42 +936,23 @@ Busca:
         End Select
     End Sub
 
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtRangoPiezas.KeyPress, txtCodigoCultivo.KeyPress, txtCodigoEnvase.KeyPress, txtCodigoEtiqueta.KeyPress, txtCodigoTamaño.KeyPress, txtCodigoUnidadVenta.KeyPress
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtRangoPiezas.KeyPress, txtCodigoCultivo.KeyPress, txtCodigoEnvase.KeyPress, txtCodigoEtiqueta.KeyPress, txtCodigoTamaño.KeyPress,
+        txtCodigoUnidadVenta.KeyPress, txtCodigoUnidadSAT.KeyPress, txtClaveProductoSAT.KeyPress
         txtNoBeep(e)
     End Sub
 
-    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtRangoPiezas.KeyDown
-        If e.KeyCode = Keys.Return Then
-            Select Case Me.Estado
-                Case enumEstados.EDICION
-                    Me.CboEstatus.Focus()
-                Case enumEstados.NUEVO
-                    Me.Grid.Cell(1, Me.igyCodigoEmpaque).SetFocus()
-            End Select
-        End If
+    Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
+
     End Sub
 
-    Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtPrecio.KeyPress, TxtPeso.KeyPress
-        Dim txt As TextBox = CType(sender, TextBox)
-        txtNoBeep(e)
-    End Sub
-
-    Private Sub txtNumericos_Validating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs)
-        Dim t As TextBox
-        t = CType(sender, TextBox)
-        If Not IsNumeric(t.Text) Then
-            t.Text = Val(t.Text).ToString
-        End If
-    End Sub
-
-    Private Sub TxtPrecio_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtPrecio.KeyPress, TxtPeso.KeyPress
-        If InStr(1, "0123456789." & Chr(8), e.KeyChar) = 0 Then
-            e.KeyChar = CChar("")
-        End If
-    End Sub
-
-    Private Sub TxtCantidadBultosXPalet_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCantidadBultosXPalet.KeyPress
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCantidadBultosXPalet.KeyPress
         txtSoloNumerosEnteros(e)
+        txtNoBeep(e)
+    End Sub
+
+    Private Sub txtNumerosDecimalKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtPrecio.KeyPress, TxtPeso.KeyPress
+        Dim txt As TextBox = CType(sender, TextBox)
+        txtSoloNumerosDecimales(e, txt.Text)
         txtNoBeep(e)
     End Sub
 
@@ -978,6 +960,9 @@ Busca:
         Me.GestionaGrid(e)
     End Sub
 
+    Private Sub txt_Keydown2(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtPrecio.KeyDown, TxtPeso.KeyDown, chkInventariable.KeyDown, TxtCantidadBultosXPalet.KeyDown, TxtRangoPiezas.KeyDown
+        txtTAB(e)
+    End Sub
 #End Region
 
 #Region "Keydown especificos"
@@ -992,8 +977,7 @@ Busca:
                     oCultivos.Consultar()
                     Me.LblNombreCultivo.Text = oCultivos.NOMBRE_CULTIVO
                 Else
-                    MsgBox("No hay existencias en el catálogo de Cultivos.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Sub
+                    Me.LblNombreCultivo.Text = ""
                 End If
 
             Case Keys.Enter
@@ -1025,8 +1009,7 @@ Busca:
                     oElemento.Consultar()
                     Me.LblNombreTamaño.Text = oElemento.Nombre_Tamaño
                 Else
-                    MsgBox("No hay existencias en el catálogo de Tamaños.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Sub
+                    Me.LblNombreTamaño.Text = ""
                 End If
 
             Case Keys.Enter
@@ -1053,8 +1036,7 @@ Busca:
                     oElemento.Consultar()
                     Me.LblNombreEnvase.Text = oElemento.Nombre_Envase
                 Else
-                    MsgBox("No hay existencias en el catálogo de Envases.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Sub
+                    Me.LblNombreEnvase.Text = ""
                 End If
 
             Case Keys.Enter
@@ -1081,8 +1063,7 @@ Busca:
                     oElemento.Consultar()
                     Me.LblNombreEtiqueta.Text = oElemento.Nombre_Etiqueta
                 Else
-                    MsgBox("No hay existencias en el catálogo de Etíquetas.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Sub
+                    Me.LblNombreEtiqueta.Text = ""
                 End If
 
             Case Keys.Enter
@@ -1093,6 +1074,8 @@ Busca:
                         GoTo Busca
                     End If
                     Me.LblNombreEtiqueta.Text = oElemento.Nombre_Etiqueta
+
+                    Me.GeneraCodigoDescripcion()
                 End If
         End Select
         txtTAB(e)
@@ -1108,19 +1091,18 @@ Busca:
                 If txtLEN(Me.txtCodigoUnidadVenta.Text) = True Then
                     oElemento.Consultar()
                     Me.LblNombreUnidadVenta.Text = oElemento.Nombre_Unidad_Venta
-                Else
-                    MsgBox("No hay existencias en el catálogo de Unidades de Venta.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Sub
                 End If
 
             Case Keys.Enter
-
                 If txtLEN(Me.txtCodigoUnidadVenta.Text) = True Then
                     oElemento.Codigo_Unidad_Venta = Me.txtCodigoUnidadVenta.Text
                     If oElemento.Consultar() = False Then
-                        GoTo Busca
+                        GoTo Busca : Return
                     End If
                     Me.LblNombreUnidadVenta.Text = oElemento.Nombre_Unidad_Venta
+                Else
+                    Me.LblNombreUnidadVenta.Text = ""
+                    GoTo Busca : Return
                 End If
         End Select
         txtTAB(e)
