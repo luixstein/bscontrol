@@ -104,7 +104,7 @@ Partial Class Transformaciones
         Me.Grid1.Name = "Grid1"
         Me.Grid1.Rows = 20
         Me.Grid1.Size = New System.Drawing.Size(1076, 316)
-        Me.Grid1.TabIndex = 4
+        Me.Grid1.TabIndex = 5
         Me.Grid1.UncheckedImage = CType(resources.GetObject("Grid1.UncheckedImage"), System.Drawing.Bitmap)
         '
         'CboAlmacen
@@ -145,7 +145,7 @@ Partial Class Transformaciones
         Me.TxtConcepto.Multiline = True
         Me.TxtConcepto.Name = "TxtConcepto"
         Me.TxtConcepto.Size = New System.Drawing.Size(777, 53)
-        Me.TxtConcepto.TabIndex = 3
+        Me.TxtConcepto.TabIndex = 4
         '
         'LblStatus
         '
@@ -173,7 +173,7 @@ Partial Class Transformaciones
         Me.TxtCantidad.Location = New System.Drawing.Point(141, 174)
         Me.TxtCantidad.Name = "TxtCantidad"
         Me.TxtCantidad.Size = New System.Drawing.Size(100, 22)
-        Me.TxtCantidad.TabIndex = 2
+        Me.TxtCantidad.TabIndex = 3
         '
         'TxtCostoTotal
         '
@@ -268,7 +268,7 @@ Partial Class Transformaciones
         Me.TxtCuentaContable.Location = New System.Drawing.Point(612, 77)
         Me.TxtCuentaContable.Name = "TxtCuentaContable"
         Me.TxtCuentaContable.Size = New System.Drawing.Size(306, 22)
-        Me.TxtCuentaContable.TabIndex = 395
+        Me.TxtCuentaContable.TabIndex = 2
         '
         'LblDisplayCuentaContable
         '

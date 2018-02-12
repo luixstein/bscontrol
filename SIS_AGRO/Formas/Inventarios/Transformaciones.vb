@@ -47,13 +47,6 @@ Public Class Transformaciones
         Me.DesplegarAlmacenes()
     End Sub
 
-    Private Sub cboCentros_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
-        txtTAB(e)
-    End Sub
-
-    Private Sub CmbDocumento_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
-        txtTAB(e)
-    End Sub
     Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtConcepto.KeyPress, TxtCodigoFormula.KeyPress
         txtNoBeep(e)
     End Sub
@@ -61,6 +54,11 @@ Public Class Transformaciones
     Private Sub txtCantidad_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCantidad.KeyPress
         Dim txt As TextBox = CType(sender, TextBox)
         txtSoloNumerosDecimales(e, txt.Text)
+        txtNoBeep(e)
+    End Sub
+
+    Private Sub txtCuentaContable_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCuentaContable.KeyPress
+        txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
 
@@ -86,13 +84,6 @@ BuscaFormula:
                 Me.LblCodigoArticulo.Text = Me.oArticulo.DESCRIPCION 'Me.LblCodigoArticulo.Text & " " & Me.oArticulo.DESCRIPCION
                 Me.Consultar()
                 txtTAB(e)
-
-        End Select
-    End Sub
-
-    Private Sub TxtConcepto_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtConcepto.KeyDown
-        Select Case e.KeyCode
-            Case Keys.Enter
 
         End Select
     End Sub
@@ -130,6 +121,8 @@ BuscaFormula:
                     GoTo BuscarCuentas : Exit Sub
                 End If
 
+                txtTAB(e)
+
             Case Keys.F6, Keys.F7
 BuscarCuentas:
                 If e.KeyCode = Keys.F6 Then
@@ -154,6 +147,7 @@ BuscarCuentas:
 
     Private Sub Inicializa()
         Try
+            Me.tsbGrabar.Enabled = True
             Me.CboAlmacen.Enabled = True
             Me.TxtCodigoFormula.Enabled = True
             Me.TxtExistencia.Enabled = True
@@ -173,6 +167,7 @@ BuscarCuentas:
             Me.TxtConcepto.Text = ""
             Me.TxtCuentaContable.Text = ""
             Me.LblNombreCuentaContable.Text = ""
+            Me.LblCodigoArticulo.Text = ""
             Me.Grid1.DataSource = Nothing
 
             Me.TxtExistencia.ReadOnly = True
@@ -256,6 +251,7 @@ BuscarCuentas:
 
         MsgBox("Transformación realizada exitosamente.", MsgBoxStyle.Information, Me.Text)
 
+        Me.tsbGrabar.Enabled = False
         Me.CboAlmacen.Enabled = False
         Me.TxtCodigoFormula.Enabled = False
         Me.TxtExistencia.Enabled = False
