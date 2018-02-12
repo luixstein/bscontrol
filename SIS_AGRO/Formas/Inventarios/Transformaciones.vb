@@ -6,6 +6,7 @@ Public Class Transformaciones
     Private oInventarios As New Class_Inventarios_Global
     Private oDocumentos As Class_Cat_tiposDocumentos
     Private oArticulo As New Class_CatArticulos
+    Private oFormula As New Class_CatFormulas
     Private oFormaDetalleCuentas As InventariosDetalleCuentasContables
 
 #Region "Columnas grid"
@@ -53,7 +54,7 @@ Public Class Transformaciones
     Private Sub CmbDocumento_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
         txtTAB(e)
     End Sub
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtConcepto.KeyPress, TxtCodigoArticulo.KeyPress
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtConcepto.KeyPress, TxtCodigoFormula.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -63,30 +64,28 @@ Public Class Transformaciones
         txtNoBeep(e)
     End Sub
 
-    Private Sub TxtCodigoArticulo_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoArticulo.KeyDown
+    Private Sub TxtCodigoArticulo_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoFormula.KeyDown
         Dim sText As String
 
         Select Case e.KeyCode
             Case Keys.F6
-BuscarArticulo:
-                Me.oArticulo = New Class_CatArticulos
-                sText = Me.oArticulo.BusquedaVisual_PorDescripcion
-
-                If Me.ValidaArticulo(sText) = True Then
-                    Me.TxtCodigoArticulo.Text = sText
-                End If
+BuscaFormula:
+                Me.oFormula = New Class_CatFormulas
+                sText = Me.oFormula.BusquedaVisual_PorDescripcion
+                Me.TxtCodigoFormula.Text = sText
 
             Case Keys.Enter
-                Me.oArticulo = New Class_CatArticulos(Me.TxtCodigoArticulo.Text)
-                If Me.oArticulo.Existe = False Then
-                    Me.LblNombreProductoFinal.Text = "" : GoTo BuscarArticulo : Exit Sub
+                Me.oFormula = New Class_CatFormulas(Me.TxtCodigoFormula.Text)
+                If Me.oFormula.Existe = False Then
+                    Me.LblNombreProductoFinal.Text = "" : Me.LblCodigoArticulo.Text = "" : GoTo BuscaFormula : Exit Sub
                 End If
 
-                If Me.ValidaArticulo(Me.TxtCodigoArticulo.Text) = True Then
-                    LblNombreProductoFinal.Text = oArticulo.DESCRIPCION
-                    Me.Consultar()
-                    txtTAB(e)
-                End If
+                LblNombreProductoFinal.Text = oFormula.NOMBRE_FORMULA
+                'Me.LblCodigoArticulo.Text = Me.oFormula.CODIGO_ARTICULO
+                Me.oArticulo = New Class_CatArticulos(Me.oFormula.CODIGO_ARTICULO)
+                Me.LblCodigoArticulo.Text = Me.oArticulo.DESCRIPCION 'Me.LblCodigoArticulo.Text & " " & Me.oArticulo.DESCRIPCION
+                Me.Consultar()
+                txtTAB(e)
 
         End Select
     End Sub
@@ -155,14 +154,23 @@ BuscarCuentas:
 
     Private Sub Inicializa()
         Try
-            Me.TxtCodigoArticulo.Text = ""
+            Me.CboAlmacen.Enabled = True
+            Me.TxtCodigoFormula.Enabled = True
+            Me.TxtExistencia.Enabled = True
+            Me.TxtCuentaContable.Enabled = True
+            Me.TxtCantidad.Enabled = True
+            Me.TxtCosto.Enabled = True
+            Me.TxtCostoTotal.Enabled = True
+            Me.TxtConcepto.Enabled = True
+            Me.Grid1.Enabled = True
+
+            Me.TxtCodigoFormula.Text = ""
             Me.LblNombreProductoFinal.Text = ""
             Me.TxtExistencia.Text = "0.00"
             Me.TxtCantidad.Text = "0.00"
             Me.TxtCosto.Text = "$ 0.00"
             Me.TxtCostoTotal.Text = "$ 0.00"
             Me.TxtConcepto.Text = ""
-            Me.TxtTotal.Text = "$ 0.00"
             Me.TxtCuentaContable.Text = ""
             Me.LblNombreCuentaContable.Text = ""
             Me.Grid1.DataSource = Nothing
@@ -170,7 +178,6 @@ BuscarCuentas:
             Me.TxtExistencia.ReadOnly = True
             Me.TxtCosto.ReadOnly = True
             Me.TxtCostoTotal.ReadOnly = True
-            Me.TxtTotal.ReadOnly = True
 
             Me.InicializaGrid()
 
@@ -186,7 +193,6 @@ BuscarCuentas:
             FG_Grid_Limpiar(Me.Grid1)
             Me.Grid1.Rows = 2
             Me.FormateaGrid()
-            'Me.Totales()
 
         Catch ex As Exception
             HandleError(Me.Text, "InicializaGrid", ex)
@@ -197,13 +203,9 @@ BuscarCuentas:
         Dim bResultado As Boolean = False
         Dim sListaSeries As String = ""
 
-        If txtLEN(Me.TxtCodigoArticulo.Text) = False Then
-            MsgBox("Inserte un código de producto final.", MsgBoxStyle.Exclamation, Me.Text)
-            Me.TxtCodigoArticulo.Focus()
-            Exit Function
-        End If
-
-        If Me.ValidaArticulo(Me.TxtCodigoArticulo.Text) = False Then
+        If txtLEN(Me.TxtCodigoFormula.Text) = False Then
+            MsgBox("Inserte un código fórmula para el producto final.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.TxtCodigoFormula.Focus()
             Exit Function
         End If
 
@@ -220,6 +222,11 @@ BuscarCuentas:
 
         If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios("ENI", Me.CboAlmacen.SelectedValue.ToString.ToString, "") = False Then
             MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar entrada de almacén.", MsgBoxStyle.Information, Me.Text)
+            Exit Function
+        End If
+
+        If Me.SiTieneRenglones() = False Then
+            MsgBox("La fórmula no tiene ingredientes.", MsgBoxStyle.Exclamation, Me.Text)
             Exit Function
         End If
 
@@ -247,7 +254,17 @@ BuscarCuentas:
 
         bResultado = True
 
-        MsgBox("Transformación realizada exitosamente.", MsgBoxStyle.Exclamation, Me.Text)
+        MsgBox("Transformación realizada exitosamente.", MsgBoxStyle.Information, Me.Text)
+
+        Me.CboAlmacen.Enabled = False
+        Me.TxtCodigoFormula.Enabled = False
+        Me.TxtExistencia.Enabled = False
+        Me.TxtCuentaContable.Enabled = False
+        Me.TxtCantidad.Enabled = False
+        Me.TxtCosto.Enabled = False
+        Me.TxtCostoTotal.Enabled = False
+        Me.TxtConcepto.Enabled = False
+
         Return bResultado
 
     End Function
@@ -267,7 +284,7 @@ BuscarCuentas:
                 .CONCEPTO = "" & Me.TxtConcepto.Text
                 .CODIGO_USUARIO = CInt("" & Usuario.Codigo_Usuario)
                 .CODIGO_PLAZA = Usuario.Codigo_Plaza
-                .TOTAL = valorNumerico(Me.TxtTotal.Text)
+                .TOTAL = valorNumerico(Me.TxtCostoTotal.Text)
                 .FOLIO_EMBARQUE = ""
 
                 If .Insertar() = False Then
@@ -337,10 +354,15 @@ BuscarCuentas:
 
     Private Function GrabaEntradaProductoFinal() As Boolean
         Dim bResultado As Boolean = False
-        Dim folioEntrada As String
+        Dim folioEntrada As String, codigoProductoFinal As String
         Me.oInventarios = New Class_Inventarios_Global
 
         Try
+            Me.oFormula = New Class_CatFormulas(Me.TxtCodigoFormula.Text)
+            If Me.oFormula.Existe Then
+                codigoProductoFinal = Me.oFormula.CODIGO_ARTICULO
+            End If
+
             With oInventarios
                 .FOLIO_MOVIMIENTO_INVENTARIO = ""
                 .CODIGO_TIPO_DOCUMENTO = "ENI"
@@ -350,7 +372,7 @@ BuscarCuentas:
                 .CONCEPTO = "" & Me.TxtConcepto.Text
                 .CODIGO_USUARIO = CInt("" & Usuario.Codigo_Usuario)
                 .CODIGO_PLAZA = Usuario.Codigo_Plaza
-                .TOTAL = valorNumerico(Me.TxtTotal.Text)
+                .TOTAL = valorNumerico(Me.TxtCostoTotal.Text)
                 .FOLIO_EMBARQUE = ""
 
                 If .Insertar() = False Then
@@ -362,7 +384,7 @@ BuscarCuentas:
                 'se graba el detalle
                 .NuevoRenglon()
                 .oInventariosDetalle.FOLIO_MOVIMIENTO_INVENTARIO = .FOLIO_MOVIMIENTO_INVENTARIO
-                .oInventariosDetalle.CODIGO_ARTICULO = Me.TxtCodigoArticulo.Text
+                .oInventariosDetalle.CODIGO_ARTICULO = codigoProductoFinal
                 .oInventariosDetalle.CANTIDAD = valorNumerico(Me.TxtCantidad.Text)
                 .oInventariosDetalle.COSTO = valorNumerico(Me.TxtCosto.Text)
                 .oInventariosDetalle.CUENTA_CONTABLE = Me.TxtCuentaContable.Text
@@ -400,7 +422,6 @@ BuscarCuentas:
             End If
 
             bResultado = True
-            'MsgBox("Transformación realizada satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
 
         Catch ex As Exception
             HandleError(Me.Name, "GrabaEntradaProductoFinal", ex)
@@ -428,7 +449,7 @@ BuscarCuentas:
         Dim oFormula As New Class_CatFormulas
 
         Try
-            Dim dTabla As DataTable = oFormula.ObtenerDetalleParaTransformaciones(Me.TxtCodigoArticulo.Text, Me.CboAlmacen.SelectedValue.ToString)
+            Dim dTabla As DataTable = oFormula.ObtenerDetalleParaTransformaciones(Me.TxtCodigoFormula.Text, Me.CboAlmacen.SelectedValue.ToString)
             Me.Grid1.AutoRedraw = False
             Me.Grid1.Rows = 1 'Trae dos porque en docs nuevos se pone un row en blanco, y si se dejan aqui dos agrega a partir del 3 y queda un hueco
             For Each dRow As DataRow In dTabla.Rows
@@ -452,52 +473,13 @@ BuscarCuentas:
 
     Private Sub ConsultaExistenciaProductoFinal()
         Try
-            Dim sql As New Class_find("SELECT EXISTENCIA FROM INVENTARIO_EXISTENCIA_ARTICULOS WHERE CODIGO_ARTICULO = '" & Me.TxtCodigoArticulo.Text & "' AND CODIGO_ALMACEN = '" & Me.CboAlmacen.SelectedValue.ToString & "'")
+            Dim sql As New Class_find("SELECT E.EXISTENCIA FROM INVENTARIO_EXISTENCIA_ARTICULOS E INNER JOIN CAT_FORMULAS F ON(E.CODIGO_ARTICULO=F.CODIGO_ARTICULO) WHERE F.CODIGO_FORMULA = " & Me.TxtCodigoFormula.Text & " AND E.CODIGO_ALMACEN = '" & Me.CboAlmacen.SelectedValue.ToString & "'")
             Me.TxtExistencia.Text = sql.Result1.ToString
 
         Catch ex As Exception
             HandleError(Me.Text, "ConsultaExistenciaProductoFinal", ex)
         End Try
     End Sub
-
-    Private Function ValidarExistencias() As Boolean
-        Const sProcedure As String = "Validación de existencias de Articulos"
-        Dim bResultado As Boolean = False
-        Dim dCantidadSumadaPorArticulos As Double, dExistencia As Double
-        Dim i As Integer, sCodigoArticulo As String = ""
-
-        Try
-
-            For i = 1 To Me.Grid1.Rows - 1
-                sCodigoArticulo = Me.Grid1.Cell(i, Me.iGyCodigo).Text
-                If txtLEN(sCodigoArticulo) = True Then
-                    Me.oArticulo = New Class_CatArticulos(sCodigoArticulo)
-                    If Me.oArticulo.INVENTARIABLE <> "0" Then
-                        dExistencia = oInventarios.Existencia(sCodigoArticulo, Me.CboAlmacen.SelectedValue.ToString)
-                        If dExistencia <= 0 Then
-                            Me.Show()
-                            MsgBox("El artículo " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " que intenta agregar no tiene existencia. ", MsgBoxStyle.Exclamation, sProcedure)
-                            Exit Function
-                        Else
-                            dCantidadSumadaPorArticulos = CDbl(Me.Grid1.Cell(i, Me.iGyCantidadTotal).Text)
-
-                            If valorNumerico(dCantidadSumadaPorArticulos.ToString) > valorNumerico(dExistencia.ToString) Then
-                                Me.Show()
-                                MsgBox("El Artículo " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " no tiene suficiente existencia.", MsgBoxStyle.Exclamation, sProcedure)
-                                Exit Function
-                            End If
-                        End If
-                    End If
-                End If
-            Next i
-
-            bResultado = True
-        Catch ex As Exception
-            HandleError(Me.Name, sProcedure, ex)
-        End Try
-
-        Return bResultado
-    End Function
 
     Private Sub DesplegarAlmacenes()
         Try
@@ -614,7 +596,6 @@ BuscarCuentas:
             End If
 
             Me.TxtCostoTotal.Text = FormatImporteContable(valorNumerico(Me.TxtCosto.Text) * valorNumerico(Me.TxtCantidad.Text)).ToString
-            Me.TxtTotal.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyTotal))).ToString
 
         Catch ex As Exception
             HandleError(Me.Name, "Totales", ex)
@@ -634,20 +615,6 @@ BuscarCuentas:
         Catch ex As Exception
             HandleError(Me.Name, "SiTieneRenglones", ex)
         End Try
-        Return bResultado
-    End Function
-
-    Private Function ValidaArticulo(ByVal sCodigo As String) As Boolean
-        Dim bResultado As Boolean = False
-
-        Dim sql As New Class_find("SELECT 1 FROM CAT_FORMULAS WHERE CODIGO_ARTICULO='" & sCodigo & "'")
-
-        If txtLEN(sql.Result1.ToString) = False Then
-            MsgBox("No existe ninguna fórmula para ese producto.", MsgBoxStyle.Exclamation, Me.Text)
-            Return bResultado
-        End If
-
-        bResultado = True
         Return bResultado
     End Function
 

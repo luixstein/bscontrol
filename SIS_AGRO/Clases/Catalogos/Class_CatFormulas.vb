@@ -13,7 +13,7 @@ Public Class Class_CatFormulas
 #End Region
 
 #Region "Campos ligados a la tabla"
-
+    Private _Existe As Boolean
 #End Region
 
 #Region "Campos públicos"
@@ -96,6 +96,12 @@ Public Class Class_CatFormulas
         End Set
     End Property
 
+    Public ReadOnly Property Existe() As Boolean
+        Get
+            Return Me._Existe
+        End Get
+    End Property
+
 #End Region
 
 #End Region
@@ -115,8 +121,9 @@ Public Class Class_CatFormulas
         Me.New()
         Try
             Me.CODIGO_FORMULA = sFormula
-            If Me.Consultar = False Then
-                Throw New Exception("La fórmula no existe.")
+            If Me.Consultar = True Then
+                Me._Existe = True
+                'Throw New Exception("La fórmula no existe.")
             End If
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "New", ex)
@@ -340,14 +347,14 @@ Public Class Class_CatFormulas
         Return dTabla
     End Function
 
-    Public Function ObtenerDetalleParaTransformaciones(ByVal sCodigoArticulo As String, ByVal sAlmacen As String) As System.Data.DataTable
+    Public Function ObtenerDetalleParaTransformaciones(ByVal sCodigoFormula As String, ByVal sAlmacen As String) As System.Data.DataTable
         Dim dTabla As New DataTable("ingredientes"), da As SqlDataAdapter
         Dim sQL As String
         sQL = "SELECT I.CODIGO_ARTICULO,A.DESCRIPCION,A.UNIDAD_VENTA,I.CANTIDAD AS CANTIDAD_ORIGINAL,I.CANTIDAD AS CANTIDAD_TOTAL,E.EXISTENCIA," & _
         "CASE WHEN E.ULTIMO_COSTO > 0 THEN E.ULTIMO_COSTO WHEN E.ULTIMO_COSTO = 0 THEN A.PRECIO END AS COSTO," & _
         "((CASE WHEN E.ULTIMO_COSTO > 0 THEN E.ULTIMO_COSTO WHEN E.ULTIMO_COSTO = 0 THEN A.PRECIO END) * I.CANTIDAD) AS TOTAL  " & _
-        "FROM CAT_FORMULAS_DETALLE I INNER JOIN CAT_FORMULAS F ON(I.CODIGO_FORMULA=F.CODIGO_FORMULA) INNER JOIN CAT_ARTICULOS A ON(I.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
-        "INNER JOIN INVENTARIO_EXISTENCIA_ARTICULOS E ON(I.CODIGO_ARTICULO=E.CODIGO_ARTICULO) WHERE F.CODIGO_ARTICULO ='" & sCodigoArticulo & "' AND E.CODIGO_ALMACEN = '" & sAlmacen & "' ORDER BY I.ID_FORMULA_DETALLE"
+        "FROM CAT_FORMULAS_DETALLE I INNER JOIN CAT_ARTICULOS A ON(I.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
+        "INNER JOIN INVENTARIO_EXISTENCIA_ARTICULOS E ON(I.CODIGO_ARTICULO=E.CODIGO_ARTICULO) WHERE I.CODIGO_FORMULA ='" & sCodigoFormula & "' AND E.CODIGO_ALMACEN = '" & sAlmacen & "' ORDER BY I.ID_FORMULA_DETALLE"
 
         Try
             da = New SqlDataAdapter(sQL, Me._Conexion)

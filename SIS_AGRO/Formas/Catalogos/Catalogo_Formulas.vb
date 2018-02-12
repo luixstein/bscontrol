@@ -375,7 +375,7 @@ Public Class Catalogo_Formulas
                 Return bResultado
             End If
 
-            If Me.Grid1.DataSource Is Nothing Then
+            If Me.Grid1.Rows < 2 Then
                 MsgBox("La fórmula debe tener al menos un ingrediente.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.Grid1.Rows = 2
                 Me.Grid1.Cell(1, Me.iGyCodigoArticulo).SetFocus()
