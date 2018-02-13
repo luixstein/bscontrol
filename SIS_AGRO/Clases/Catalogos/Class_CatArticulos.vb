@@ -944,6 +944,14 @@ Public Class Class_CatArticulos
             MsgBox("El nombre del reporte no ha sido especificado, no hay nada que imprimir.", MsgBoxStyle.Critical, Me.Nombre_Catalogo)
         End If
     End Sub
+
+    Public Function CodigoSiguiente() As String
+        Dim Resultado As Integer
+        Dim sql As New Class_find("SELECT MAX(CAST(CODIGO_ARTICULO AS INT)) FROM CAT_ARTICULOS WHERE ISNUMERIC(CODIGO_ARTICULO)=1 AND CODIGO_ARTICULO<>'-'")
+        Resultado = CInt(sql.Result1) + 1
+        Return Resultado.ToString
+    End Function
+
 #End Region
 
 End Class

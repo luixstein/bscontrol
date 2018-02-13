@@ -225,7 +225,14 @@ Public Class Catalogo_Articulos
 
     Private Sub InicializaElemento()
         Try
-            Me.TxtCodArticulo.Text = ""
+            If Empresa_Sistema.CODIGO_ARTICULO_AUTOMATICO = True Then
+                Dim oArticulos As New Class_CatArticulos
+                Me.TxtCodArticulo.Text = oArticulos.CodigoSiguiente()
+                Me.TxtCodArticulo.Enabled = False
+            Else
+                Me.TxtCodArticulo.Text = ""
+            End If
+
             Me.TxtDescripcion.Text = ""
             Me.CboEstatus.SelectedIndex = 0
             Me.TxtUnidadVenta.Text = ""
