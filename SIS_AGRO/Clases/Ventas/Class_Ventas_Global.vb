@@ -895,7 +895,7 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@FOLIO_REFERENCIA_USUARIO", SqlDbType.NVarChar, 15) : sqlParametro.Value = "" & Me._FOLIO_REFERENCIA_USUARIO.ToUpper
             sqlParametro = .Parameters.Add("@TIPO_DE_CAMBIO", SqlDbType.Decimal) : sqlParametro.Value = Me._TIPO_DE_CAMBIO
             sqlParametro = .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_ALMACEN
-            sqlParametro = .Parameters.Add("@CONCEPTO", SqlDbType.NVarChar, 120) : sqlParametro.Value = "" & Me._CONCEPTO
+            sqlParametro = .Parameters.Add("@CONCEPTO", SqlDbType.NVarChar, 4000) : sqlParametro.Value = "" & Me._CONCEPTO
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PLAZA
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_NEGOCIACION", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_TIPO_NEGOCIACION
             sqlParametro = .Parameters.Add("@IMPUESTO_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_PORCENTAJE

@@ -30,51 +30,56 @@ Partial Class Ventas_Comentarios
         '
         'txtComentario
         '
-        Me.txtComentario.Location = New System.Drawing.Point(12, 27)
-        Me.txtComentario.MaxLength = 500
+        Me.txtComentario.Location = New System.Drawing.Point(16, 33)
+        Me.txtComentario.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtComentario.MaxLength = 4000
         Me.txtComentario.Multiline = True
         Me.txtComentario.Name = "txtComentario"
-        Me.txtComentario.Size = New System.Drawing.Size(768, 72)
+        Me.txtComentario.Size = New System.Drawing.Size(1023, 88)
         Me.txtComentario.TabIndex = 0
         Me.txtComentario.Text = "Capture aquí el comentario"
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(13, 8)
+        Me.Label1.Location = New System.Drawing.Point(17, 10)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(66, 13)
+        Me.Label1.Size = New System.Drawing.Size(88, 17)
         Me.Label1.TabIndex = 1
         Me.Label1.Text = "Comentario :"
         '
         'btnAceptar
         '
-        Me.btnAceptar.Location = New System.Drawing.Point(575, 105)
+        Me.btnAceptar.Location = New System.Drawing.Point(767, 129)
+        Me.btnAceptar.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.btnAceptar.Name = "btnAceptar"
-        Me.btnAceptar.Size = New System.Drawing.Size(101, 32)
+        Me.btnAceptar.Size = New System.Drawing.Size(135, 39)
         Me.btnAceptar.TabIndex = 340
         Me.btnAceptar.Text = "Aceptar"
         Me.btnAceptar.UseVisualStyleBackColor = True
         '
         'btnCancelar
         '
-        Me.btnCancelar.Location = New System.Drawing.Point(679, 105)
+        Me.btnCancelar.Location = New System.Drawing.Point(905, 129)
+        Me.btnCancelar.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.btnCancelar.Name = "btnCancelar"
-        Me.btnCancelar.Size = New System.Drawing.Size(101, 32)
+        Me.btnCancelar.Size = New System.Drawing.Size(135, 39)
         Me.btnCancelar.TabIndex = 341
         Me.btnCancelar.Text = "Cancelar"
         Me.btnCancelar.UseVisualStyleBackColor = True
         '
         'Ventas_Comentarios
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(787, 142)
+        Me.ClientSize = New System.Drawing.Size(1049, 175)
         Me.Controls.Add(Me.btnCancelar)
         Me.Controls.Add(Me.btnAceptar)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.txtComentario)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "Ventas_Comentarios"

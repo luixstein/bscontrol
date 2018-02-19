@@ -392,10 +392,11 @@ Partial Class Ventas_Movimientos
         '
         Me.TxtConcepto.Location = New System.Drawing.Point(112, 235)
         Me.TxtConcepto.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtConcepto.MaxLength = 160
+        Me.TxtConcepto.MaxLength = 4000
         Me.TxtConcepto.Multiline = True
         Me.TxtConcepto.Name = "TxtConcepto"
-        Me.TxtConcepto.Size = New System.Drawing.Size(721, 24)
+        Me.TxtConcepto.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.TxtConcepto.Size = New System.Drawing.Size(819, 54)
         Me.TxtConcepto.TabIndex = 10
         '
         'TxtReferencia
@@ -754,7 +755,7 @@ Partial Class Ventas_Movimientos
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsslEstado, Me.tsslElaboro, Me.tsslCancelo})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 746)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 777)
         Me.StatusStripEstado.Name = "StatusStripEstado"
         Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
         Me.StatusStripEstado.Size = New System.Drawing.Size(1339, 29)
@@ -843,7 +844,7 @@ Partial Class Ventas_Movimientos
         Me.frmDatos.Margin = New System.Windows.Forms.Padding(4)
         Me.frmDatos.Name = "frmDatos"
         Me.frmDatos.Padding = New System.Windows.Forms.Padding(4)
-        Me.frmDatos.Size = New System.Drawing.Size(1315, 267)
+        Me.frmDatos.Size = New System.Drawing.Size(1315, 297)
         Me.frmDatos.TabIndex = 0
         Me.frmDatos.TabStop = False
         '
@@ -1097,7 +1098,7 @@ Partial Class Ventas_Movimientos
         Me.gbTotales.Controls.Add(Me.lblSaldo)
         Me.gbTotales.Controls.Add(Me.lblDisplaySaldo)
         Me.gbTotales.Controls.Add(Me.gbDolares)
-        Me.gbTotales.Location = New System.Drawing.Point(11, 610)
+        Me.gbTotales.Location = New System.Drawing.Point(11, 640)
         Me.gbTotales.Margin = New System.Windows.Forms.Padding(4)
         Me.gbTotales.Name = "gbTotales"
         Me.gbTotales.Padding = New System.Windows.Forms.Padding(4)
@@ -1162,7 +1163,7 @@ Partial Class Ventas_Movimientos
         '
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
-        Me.TabControl1.Location = New System.Drawing.Point(11, 309)
+        Me.TabControl1.Location = New System.Drawing.Point(11, 339)
         Me.TabControl1.Margin = New System.Windows.Forms.Padding(4)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
@@ -1237,7 +1238,7 @@ Partial Class Ventas_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1339, 775)
+        Me.ClientSize = New System.Drawing.Size(1339, 806)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.gbTotales)
         Me.Controls.Add(Me.frmDatos)
