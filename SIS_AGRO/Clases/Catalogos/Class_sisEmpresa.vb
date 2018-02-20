@@ -97,6 +97,8 @@ Public NotInheritable Class Class_sisEmpresa
     'Codigos automaticos
     Private _CODIGO_ARTICULO_AUTOMATICO As Boolean
 
+    Private _CODIGO_ALMACEN_MATERIALES_EMPAQUE As String
+
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -598,6 +600,12 @@ Public NotInheritable Class Class_sisEmpresa
             Return Me._VERSION_CFDI_DLL
         End Get
     End Property
+
+    Public ReadOnly Property CODIGO_ALMACEN_MATERIALES_EMPAQUE() As String
+        Get
+            Return Me._CODIGO_ALMACEN_MATERIALES_EMPAQUE
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -953,6 +961,7 @@ Public NotInheritable Class Class_sisEmpresa
 
 					Me._CODIGO_ARTICULO_AUTOMATICO = CBool(dReader("CODIGO_ARTICULO_AUTOMATICO").ToString)
                     Me._VERSION_CFDI_DLL = "" & dReader("VERSION_CFDI_DLL").ToString
+                    Me._CODIGO_ALMACEN_MATERIALES_EMPAQUE = "" & dReader("CODIGO_ALMACEN_MATERIALES_EMPAQUE").ToString
 
                     dReader.Close()
                     bResultado = True
