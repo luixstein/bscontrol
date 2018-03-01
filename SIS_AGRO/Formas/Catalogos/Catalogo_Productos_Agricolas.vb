@@ -250,7 +250,7 @@ Public Class Catalogo_Productos_Agricolas
             Me.txtCodigoUnidadVenta.Text = ""
             Me.LblNombreUnidadVenta.Text = "_"
             Me.txtCodigoUnidadSAT.Text = "" : Me.lblCodigoUnidadSAT.Text = ""
-            Me.txtClaveProductoSAT.Text = "" : Me.lblClaveProductoSAT.Text = ""
+            Me.txtClaveProductoSAT.Text = "" : Me.lblClaveProductoSAT.Text = "" : Me.lblClaveProductoSATSimiliar.Text = ""
             Me.cboImpuestoIVA.SelectedValue = "0" '0=IVA al 0
 
             Me.InicializaGrid()
@@ -425,6 +425,7 @@ Public Class Catalogo_Productos_Agricolas
 
                     Me.lblCodigoUnidadSAT.Text = oUnidad.NOMBRE_UNIDAD
                     Me.lblClaveProductoSAT.Text = oProductoServicio.NOMBRE_PRODUCTO_SERVICIO
+                    Me.lblClaveProductoSATSimiliar.Text = oProductoServicio.NOMBRE_PRODUCTO_SERVICIO_SIMILAR
 
                     oUnidad = Nothing
                     oProductoServicio = Nothing
@@ -1154,15 +1155,16 @@ Buscar:
                     If txtLEN(sText) = True Then Me.txtClaveProductoSAT.Text = sText
                 Case Keys.Enter
                     If txtLEN(Me.txtClaveProductoSAT.Text) = False Then
-                        Me.lblClaveProductoSAT.Text = "" : GoTo Buscar : Exit Sub
+                        Me.lblClaveProductoSAT.Text = "" : Me.lblClaveProductoSATSimiliar.Text = "" : GoTo Buscar : Return
                     End If
 
                     oProductoSAT = New Class_CFD_CatProductosServicios(Me.txtClaveProductoSAT.Text)
 
                     If oProductoSAT.EXISTE = False Then
-                        Me.lblClaveProductoSAT.Text = "" : GoTo Buscar : Exit Sub
+                        Me.lblClaveProductoSAT.Text = "" : Me.lblClaveProductoSATSimiliar.Text = "" : GoTo Buscar : Return
                     Else
                         Me.lblClaveProductoSAT.Text = oProductoSAT.NOMBRE_PRODUCTO_SERVICIO
+                        Me.lblClaveProductoSATSimiliar.Text = oProductoSAT.NOMBRE_PRODUCTO_SERVICIO_SIMILAR
                     End If
 
                     txtTAB(e)

@@ -9,6 +9,7 @@ Public Class Class_CFD_CatProductosServicios
 #Region "Campos de la tabla"
     Private _CODIGO_PRODUCTO_SERVICIO As String
     Private _NOMBRE_PRODUCTO_SERVICIO As String
+    Private _NOMBRE_PRODUCTO_SERVICIO_SIMILAR As String
     Private _ESTATUS As String
 #End Region
 
@@ -46,6 +47,12 @@ Public Class Class_CFD_CatProductosServicios
     Public ReadOnly Property NOMBRE_PRODUCTO_SERVICIO() As String
         Get
             Return Me._NOMBRE_PRODUCTO_SERVICIO
+        End Get
+    End Property
+
+    Public ReadOnly Property NOMBRE_PRODUCTO_SERVICIO_SIMILAR() As String
+        Get
+            Return Me._NOMBRE_PRODUCTO_SERVICIO_SIMILAR
         End Get
     End Property
 
@@ -151,7 +158,7 @@ Public Class Class_CFD_CatProductosServicios
 
     Public Function ObtenerElementospoFiltro(sTipo As String, iNivel As Integer, sCodigo As String) As System.Data.DataTable
         Dim Sql, Filtro As String
-        Sql = " SELECT CODIGO_PRODUCTO_SERVICIO,NOMBRE_PRODUCTO_SERVICIO,NIVEL FROM CFDI_CAT_PRODUCTOS_Y_SERVICIOS WHERE TIPO = '" & sTipo & "' "
+        Sql = " SELECT CODIGO_PRODUCTO_SERVICIO,NOMBRE_PRODUCTO_SERVICIO,NOMBRE_PRODUCTO_SERVICIO_SIMILAR,NIVEL FROM CFDI_CAT_PRODUCTOS_Y_SERVICIOS WHERE TIPO='" & sTipo & "' "
         If iNivel = 1 Then
             Filtro = "  AND ( CODIGO_PRODUCTO_SERVICIO like (LEFT('" & sCodigo & "',2) +'%')   ) "
         ElseIf iNivel = 2 Then
@@ -194,6 +201,7 @@ Public Class Class_CFD_CatProductosServicios
                 If dReader.Read Then
                     Me._CODIGO_PRODUCTO_SERVICIO = dReader("CODIGO_PRODUCTO_SERVICIO").ToString
                     Me._NOMBRE_PRODUCTO_SERVICIO = dReader("NOMBRE_PRODUCTO_SERVICIO").ToString
+                    Me._NOMBRE_PRODUCTO_SERVICIO_SIMILAR = dReader("NOMBRE_PRODUCTO_SERVICIO_SIMILAR").ToString
                     Me._ESTATUS = dReader("ESTATUS").ToString
 
                     bResultado = True
@@ -213,10 +221,17 @@ Public Class Class_CFD_CatProductosServicios
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de productos/servicios por descripción."
-        f.sCampo = "NOMBRE_PRODUCTO_SERVICIO"
+        f.sCampo = "NOMBRE_PRODUCTO_SERVICIO,NOMBRE_PRODUCTO_SERVICIO_SIMILAR"
         f.sOrder = "NOMBRE_PRODUCTO_SERVICIO"
         f.sTable = "CFDI_CAT_PRODUCTOS_Y_SERVICIOS"
-        f.sQl = "SELECT CODIGO_PRODUCTO_SERVICIO,NOMBRE_PRODUCTO_SERVICIO FROM CFDI_CAT_PRODUCTOS_Y_SERVICIOS WHERE 1=1 AND "
+        f.sQl = "SELECT P.CODIGO_PRODUCTO_SERVICIO CODIGO_SAT,P.NOMBRE_PRODUCTO_SERVICIO,COALESCE(P.NOMBRE_PRODUCTO_SERVICIO_SIMILAR,'') NOMBRE_PRODUCTO_SERVICIO_SIMILAR," &
+            "(SELECT NOMBRE_PRODUCTO_SERVICIO FROM CFDI_CAT_PRODUCTOS_Y_SERVICIOS WHERE CODIGO_PRODUCTO_SERVICIO=LEFT(P.CODIGO_PRODUCTO_SERVICIO,LEN(P.CODIGO_PRODUCTO_SERVICIO)-2)+'00')CLASE, " &
+            "(SELECT NOMBRE_PRODUCTO_SERVICIO FROM CFDI_CAT_PRODUCTOS_Y_SERVICIOS WHERE CODIGO_PRODUCTO_SERVICIO=LEFT(P.CODIGO_PRODUCTO_SERVICIO,LEN(P.CODIGO_PRODUCTO_SERVICIO)-4)+'0000')GRUPO, " &
+            "(SELECT NOMBRE_PRODUCTO_SERVICIO FROM CFDI_CAT_PRODUCTOS_Y_SERVICIOS WHERE CODIGO_PRODUCTO_SERVICIO=LEFT(P.CODIGO_PRODUCTO_SERVICIO,LEN(P.CODIGO_PRODUCTO_SERVICIO)-6)+'000000')DIVISION " &
+            " FROM CFDI_CAT_PRODUCTOS_Y_SERVICIOS P WHERE 1=1 AND "
+        f.arrayWidthColumns = New Integer() {100, 400, 400, 300, 300, 300}
+        f.BuscaTodaCadena = True
+        f.BuscarDatatableLocal = True
         f.Inicia("")
         f.ShowDialog()
         Try

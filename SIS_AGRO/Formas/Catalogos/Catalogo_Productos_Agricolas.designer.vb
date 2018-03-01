@@ -82,6 +82,7 @@ Partial Class Catalogo_Productos_Agricolas
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.lblClaveProductoSATSimiliar = New System.Windows.Forms.Label()
         Me.gBoxInformacion.SuspendLayout()
         Me.GpbFormulas.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
@@ -92,6 +93,7 @@ Partial Class Catalogo_Productos_Agricolas
         '
         'gBoxInformacion
         '
+        Me.gBoxInformacion.Controls.Add(Me.lblClaveProductoSATSimiliar)
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayImpuestoIVA)
         Me.gBoxInformacion.Controls.Add(Me.cboImpuestoIVA)
         Me.gBoxInformacion.Controls.Add(Me.lblClaveProductoSAT)
@@ -142,7 +144,7 @@ Partial Class Catalogo_Productos_Agricolas
         'lblDisplayImpuestoIVA
         '
         Me.lblDisplayImpuestoIVA.AutoSize = True
-        Me.lblDisplayImpuestoIVA.Location = New System.Drawing.Point(10, 388)
+        Me.lblDisplayImpuestoIVA.Location = New System.Drawing.Point(262, 115)
         Me.lblDisplayImpuestoIVA.Name = "lblDisplayImpuestoIVA"
         Me.lblDisplayImpuestoIVA.Size = New System.Drawing.Size(30, 13)
         Me.lblDisplayImpuestoIVA.TabIndex = 249
@@ -152,10 +154,10 @@ Partial Class Catalogo_Productos_Agricolas
         '
         Me.cboImpuestoIVA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboImpuestoIVA.FormattingEnabled = True
-        Me.cboImpuestoIVA.Location = New System.Drawing.Point(97, 385)
+        Me.cboImpuestoIVA.Location = New System.Drawing.Point(265, 131)
         Me.cboImpuestoIVA.Name = "cboImpuestoIVA"
-        Me.cboImpuestoIVA.Size = New System.Drawing.Size(212, 21)
-        Me.cboImpuestoIVA.TabIndex = 16
+        Me.cboImpuestoIVA.Size = New System.Drawing.Size(129, 21)
+        Me.cboImpuestoIVA.TabIndex = 6
         '
         'lblClaveProductoSAT
         '
@@ -188,7 +190,7 @@ Partial Class Catalogo_Productos_Agricolas
         Me.txtClaveProductoSAT.MaxLength = 10
         Me.txtClaveProductoSAT.Name = "txtClaveProductoSAT"
         Me.txtClaveProductoSAT.Size = New System.Drawing.Size(69, 20)
-        Me.txtClaveProductoSAT.TabIndex = 15
+        Me.txtClaveProductoSAT.TabIndex = 16
         '
         'lblDisplayCodigoUnidadSAT
         '
@@ -205,7 +207,7 @@ Partial Class Catalogo_Productos_Agricolas
         Me.txtCodigoUnidadSAT.MaxLength = 10
         Me.txtCodigoUnidadSAT.Name = "txtCodigoUnidadSAT"
         Me.txtCodigoUnidadSAT.Size = New System.Drawing.Size(69, 20)
-        Me.txtCodigoUnidadSAT.TabIndex = 14
+        Me.txtCodigoUnidadSAT.TabIndex = 15
         '
         'LblNombreUnidadVenta
         '
@@ -223,7 +225,7 @@ Partial Class Catalogo_Productos_Agricolas
         Me.txtCodigoUnidadVenta.Margin = New System.Windows.Forms.Padding(2)
         Me.txtCodigoUnidadVenta.Name = "txtCodigoUnidadVenta"
         Me.txtCodigoUnidadVenta.Size = New System.Drawing.Size(62, 20)
-        Me.txtCodigoUnidadVenta.TabIndex = 10
+        Me.txtCodigoUnidadVenta.TabIndex = 11
         '
         'LblNombreEtiqueta
         '
@@ -300,7 +302,7 @@ Partial Class Catalogo_Productos_Agricolas
         'chkInventariable
         '
         Me.chkInventariable.AutoSize = True
-        Me.chkInventariable.Location = New System.Drawing.Point(198, 130)
+        Me.chkInventariable.Location = New System.Drawing.Point(182, 133)
         Me.chkInventariable.Name = "chkInventariable"
         Me.chkInventariable.Size = New System.Drawing.Size(87, 17)
         Me.chkInventariable.TabIndex = 5
@@ -331,7 +333,7 @@ Partial Class Catalogo_Productos_Agricolas
         Me.TxtRangoPiezas.MaxLength = 21
         Me.TxtRangoPiezas.Name = "TxtRangoPiezas"
         Me.TxtRangoPiezas.Size = New System.Drawing.Size(72, 20)
-        Me.TxtRangoPiezas.TabIndex = 12
+        Me.TxtRangoPiezas.TabIndex = 13
         Me.TxtRangoPiezas.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'LblDisplayBultosXPalets
@@ -349,7 +351,7 @@ Partial Class Catalogo_Productos_Agricolas
         Me.TxtCantidadBultosXPalet.MaxLength = 21
         Me.TxtCantidadBultosXPalet.Name = "TxtCantidadBultosXPalet"
         Me.TxtCantidadBultosXPalet.Size = New System.Drawing.Size(72, 20)
-        Me.TxtCantidadBultosXPalet.TabIndex = 11
+        Me.TxtCantidadBultosXPalet.TabIndex = 12
         Me.TxtCantidadBultosXPalet.Text = "0"
         Me.TxtCantidadBultosXPalet.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
@@ -368,7 +370,7 @@ Partial Class Catalogo_Productos_Agricolas
         Me.TxtPeso.MaxLength = 21
         Me.TxtPeso.Name = "TxtPeso"
         Me.TxtPeso.Size = New System.Drawing.Size(72, 20)
-        Me.TxtPeso.TabIndex = 9
+        Me.TxtPeso.TabIndex = 10
         Me.TxtPeso.Text = "0"
         Me.TxtPeso.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
@@ -417,7 +419,7 @@ Partial Class Catalogo_Productos_Agricolas
         Me.CboFamilia.Location = New System.Drawing.Point(97, 197)
         Me.CboFamilia.Name = "CboFamilia"
         Me.CboFamilia.Size = New System.Drawing.Size(294, 21)
-        Me.CboFamilia.TabIndex = 7
+        Me.CboFamilia.TabIndex = 8
         '
         'lblDisplayFamilia
         '
@@ -443,7 +445,7 @@ Partial Class Catalogo_Productos_Agricolas
         Me.TxtPrecio.MaxLength = 21
         Me.TxtPrecio.Name = "TxtPrecio"
         Me.TxtPrecio.Size = New System.Drawing.Size(72, 20)
-        Me.TxtPrecio.TabIndex = 8
+        Me.TxtPrecio.TabIndex = 9
         Me.TxtPrecio.Text = "0"
         Me.TxtPrecio.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
@@ -465,7 +467,7 @@ Partial Class Catalogo_Productos_Agricolas
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(72, 21)
-        Me.CboEstatus.TabIndex = 13
+        Me.CboEstatus.TabIndex = 14
         '
         'LblDisplayCodArticulo
         '
@@ -501,7 +503,7 @@ Partial Class Catalogo_Productos_Agricolas
         Me.TxtDescripcion.Multiline = True
         Me.TxtDescripcion.Name = "TxtDescripcion"
         Me.TxtDescripcion.Size = New System.Drawing.Size(294, 34)
-        Me.TxtDescripcion.TabIndex = 6
+        Me.TxtDescripcion.TabIndex = 7
         '
         'GpbFormulas
         '
@@ -675,6 +677,14 @@ Partial Class Catalogo_Productos_Agricolas
         Me.tssLabelEstado.Name = "tssLabelEstado"
         Me.tssLabelEstado.Size = New System.Drawing.Size(0, 17)
         '
+        'lblClaveProductoSATSimiliar
+        '
+        Me.lblClaveProductoSATSimiliar.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.lblClaveProductoSATSimiliar.Location = New System.Drawing.Point(97, 390)
+        Me.lblClaveProductoSATSimiliar.Name = "lblClaveProductoSATSimiliar"
+        Me.lblClaveProductoSATSimiliar.Size = New System.Drawing.Size(294, 13)
+        Me.lblClaveProductoSATSimiliar.TabIndex = 250
+        '
         'Catalogo_Productos_Agricolas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -764,4 +774,5 @@ Partial Class Catalogo_Productos_Agricolas
     Friend WithEvents txtCodigoUnidadSAT As TextBox
     Friend WithEvents lblDisplayImpuestoIVA As Label
     Friend WithEvents cboImpuestoIVA As ComboBox
+    Friend WithEvents lblClaveProductoSATSimiliar As Label
 End Class

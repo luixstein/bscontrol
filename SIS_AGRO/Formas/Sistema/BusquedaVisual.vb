@@ -112,6 +112,9 @@ Public Class BusquedaVisual
     Public Colwidths() As Integer
     Public iRows As Integer
 
+    Public BuscaTodaCadena As Boolean = False, BuscarDatatableLocal As Boolean = False, bIniciado As Boolean = False
+    Private dTablaLocal As New DataTable, vwLocal As New DataView
+
     Public Sub New()
         MyBase.New()
         '
@@ -208,15 +211,67 @@ Public Class BusquedaVisual
 
             Dim dsTable As New DataSet
 
-            Dim sCadena As String = sQl & "  " & sCampo & " like '" & sCodigo & "%' order by " & sOrder
+            If BuscaTodaCadena = True Then
+                sCodigo = "%" & sCodigo
+            End If
+
+            Dim sFiltro As String = "", sSplitResultado() As String, j As Integer, sCampoSeparado As String = ""
+            If Me.sCampo.Contains(",") = True Then 'Si se quiere filtrar por mas un campo
+                sSplitResultado = Split(sCampo, ",")
+                For j = 0 To UBound(sSplitResultado)
+                    sCampoSeparado = sSplitResultado(j)
+                    If j <> 0 Then
+                        sFiltro = sFiltro & " OR "
+                    End If
+                    sFiltro = sFiltro & sCampoSeparado & " like '" & sCodigo & "%' "
+                Next
+                sFiltro = "(" & sFiltro & ")"
+            Else
+                sFiltro = sCampo & " like '" & sCodigo & "%' "
+            End If
+
+            'Dim sCadena As String = sQl & "  " & sCampo & " like '" & sCodigo & "%' order by " & sOrder
+            Dim sCadena As String = sQl & "  " & sFiltro & " order by " & sOrder
 
             Dim daTable As SqlClient.SqlDataAdapter = New SqlClient.SqlDataAdapter(sCadena, Empresa_Sistema.conexion)
 
-            daTable.Fill(dsTable, sTable)
-            daTable.Dispose()
-            GridBusqueda.DataSource = dsTable.Tables(sTable)
-            iColumnas = dsTable.Tables(sTable).Columns.Count
-            iRows = dsTable.Tables(sTable).Rows.Count
+            If Me.BuscarDatatableLocal = True Then
+
+                If Me.bIniciado = False Then 'Llena una sola vez la tabla y vista local, y en las siguientes búsquedas ya busca directo sobre la vista
+                    daTable.Fill(dsTable, sTable)
+                    daTable.Dispose()
+
+                    dTablaLocal = dsTable.Tables(0)
+
+                    Me.bIniciado = True
+
+                    vwLocal = New DataView(dTablaLocal)
+                End If
+
+                vwLocal.RowFilter = sFiltro
+                'vwLocal.RowFilter = sCampo & " like '" & sCodigo & "%'"
+                'vwLocal.RowFilter = sCampo & " like '" & sCodigo & "%' OR SIMILAR LIKE '" & sCodigo & "%'"
+
+                'Estas dos formas son mas lentas.
+                'Dim dTablaFiltrada As DataTable
+                'dTablaFiltrada = dTablaLocal.Select(sCampo & " like '" & sCodigo & "%'").CopyToDataTable
+
+                'dTablaLocal.Select(sCampo & " like '" & sCodigo & "%'")
+                'dTablaFiltrada = vw.ToTable
+
+                GridBusqueda.DataSource = vwLocal 'dTablaFiltrada
+                iRows = vwLocal.Count
+                iColumnas = vwLocal.Table.Columns.Count
+                'iColumnas = dTablaFiltrada.Columns.Count
+                'iRows = dTablaFiltrada.Rows.Count
+            Else
+                daTable.Fill(dsTable, sTable)
+                daTable.Dispose()
+                GridBusqueda.DataSource = dsTable.Tables(sTable)
+                iColumnas = dsTable.Tables(sTable).Columns.Count
+                iRows = dsTable.Tables(sTable).Rows.Count
+            End If
+
         End If
 
         'Establece el ancho de las columnas

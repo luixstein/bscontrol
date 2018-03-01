@@ -1,8 +1,9 @@
-﻿Public Class BusquedaCatalogoProductosServicios
+﻿'Option Strict On
+
+Public Class BusquedaCatalogoProductosServicios
 
     Public iRows As Integer
     'Public bIsRowSelected As Boolean
-
 
     Private Sub CatalogoProductosServicios_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Me.CargarDivisiones()
@@ -14,7 +15,7 @@
             With Me.cboNivel1
                 .DisplayMember = "NOMBRE_PRODUCTO_SERVICIO"
                 .ValueMember = "CODIGO_PRODUCTO_SERVICIO"
-                Dim dView As New Data.DataView(oElementos.ObtenerElementosporNivel(cboTipo.Text, 1))
+                Dim dView As New Data.DataView(oElementos.ObtenerElementosporNivel(Me.cboTipo.Text, 1))
                 dView.Sort = "NOMBRE_PRODUCTO_SERVICIO"
                 .DataSource = dView
                 .SelectedIndex = -1
@@ -30,7 +31,7 @@
             With Me.cboNivel2
                 .DisplayMember = "NOMBRE_PRODUCTO_SERVICIO"
                 .ValueMember = "CODIGO_PRODUCTO_SERVICIO"
-                Dim dView As New Data.DataView(oElementos.ObtenerElementosporNivel(cboTipo.Text, 2, cboNivel1.SelectedValue))
+                Dim dView As New Data.DataView(oElementos.ObtenerElementosporNivel(Me.cboTipo.Text, 2, Me.cboNivel1.SelectedValue)) '.ToString))
                 dView.Sort = "NOMBRE_PRODUCTO_SERVICIO"
                 .DataSource = dView
                 .SelectedIndex = -1
@@ -46,7 +47,7 @@
             With Me.cboNivel3
                 .DisplayMember = "NOMBRE_PRODUCTO_SERVICIO"
                 .ValueMember = "CODIGO_PRODUCTO_SERVICIO"
-                Dim dView As New Data.DataView(oElementos.ObtenerElementosporNivel(cboTipo.Text, 3, cboNivel2.SelectedValue))
+                Dim dView As New Data.DataView(oElementos.ObtenerElementosporNivel(Me.cboTipo.Text, 3, Me.cboNivel2.SelectedValue)) '.ToString))
                 dView.Sort = "NOMBRE_PRODUCTO_SERVICIO"
                 .DataSource = dView
                 .SelectedIndex = -1
@@ -76,16 +77,16 @@
         Dim sCodigo As String
         Dim iNivel As Integer
         If (Me.cboNivel2.Text = "") Then
-            sCodigo = Me.cboNivel1.SelectedValue
+            sCodigo = Me.cboNivel1.SelectedValue.ToString
             iNivel = 1
         ElseIf (Me.cboNivel3.Text = "") Then
-            sCodigo = Me.cboNivel2.SelectedValue
+            sCodigo = Me.cboNivel2.SelectedValue.ToString
             iNivel = 2
         Else
-            sCodigo = Me.cboNivel3.SelectedValue
+            sCodigo = Me.cboNivel3.SelectedValue.ToString
             iNivel = 3
         End If
-        CargarValoresGrid(iNivel, sCodigo)
+        Me.CargarValoresGrid(iNivel, sCodigo)
     End Sub
 
     Private Sub CargarValoresGrid(iNivel As Integer, sCodigo As String)
@@ -115,7 +116,6 @@
     End Sub
 
     Private Sub Grid_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Grid.MouseDoubleClick
-
         Me.Close()
     End Sub
 

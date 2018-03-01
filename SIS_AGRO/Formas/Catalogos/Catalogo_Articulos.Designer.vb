@@ -69,6 +69,7 @@ Partial Class Catalogo_Articulos
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.lblClaveProductoSATSimiliar = New System.Windows.Forms.Label()
         Me.gBoxInformacion.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -81,6 +82,7 @@ Partial Class Catalogo_Articulos
         Me.gBoxInformacion.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.gBoxInformacion.Controls.Add(Me.lblClaveProductoSATSimiliar)
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayImpuestoIVA)
         Me.gBoxInformacion.Controls.Add(Me.cboImpuestoIVA)
         Me.gBoxInformacion.Controls.Add(Me.lblClaveProductoSAT)
@@ -110,7 +112,7 @@ Partial Class Catalogo_Articulos
         Me.gBoxInformacion.Controls.Add(Me.TxtDescripcion)
         Me.gBoxInformacion.Location = New System.Drawing.Point(8, 28)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Size = New System.Drawing.Size(397, 494)
+        Me.gBoxInformacion.Size = New System.Drawing.Size(397, 518)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información de los artículos"
@@ -154,9 +156,9 @@ Partial Class Catalogo_Articulos
         Me.lblDisplayClaveProductoSAT.AutoSize = True
         Me.lblDisplayClaveProductoSAT.Location = New System.Drawing.Point(10, 448)
         Me.lblDisplayClaveProductoSAT.Name = "lblDisplayClaveProductoSAT"
-        Me.lblDisplayClaveProductoSAT.Size = New System.Drawing.Size(131, 13)
+        Me.lblDisplayClaveProductoSAT.Size = New System.Drawing.Size(266, 13)
         Me.lblDisplayClaveProductoSAT.TabIndex = 239
-        Me.lblDisplayClaveProductoSAT.Text = "Clave producto/serv SAT:"
+        Me.lblDisplayClaveProductoSAT.Text = "Clave producto/serv SAT: (Puede buscar con F6 ó F7)"
         '
         'txtClaveProductoSAT
         '
@@ -373,7 +375,7 @@ Partial Class Catalogo_Articulos
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(411, 28)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(425, 494)
+        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(425, 518)
         Me.gBoxBusquedaRapida.TabIndex = 121
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
@@ -516,7 +518,7 @@ Partial Class Catalogo_Articulos
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssLabel, Me.tssLabelEstado})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 525)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 549)
         Me.StatusStripEstado.Name = "StatusStripEstado"
         Me.StatusStripEstado.Size = New System.Drawing.Size(848, 22)
         Me.StatusStripEstado.TabIndex = 120
@@ -533,11 +535,19 @@ Partial Class Catalogo_Articulos
         Me.tssLabelEstado.Name = "tssLabelEstado"
         Me.tssLabelEstado.Size = New System.Drawing.Size(0, 17)
         '
+        'lblClaveProductoSATSimiliar
+        '
+        Me.lblClaveProductoSATSimiliar.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.lblClaveProductoSATSimiliar.Location = New System.Drawing.Point(97, 492)
+        Me.lblClaveProductoSATSimiliar.Name = "lblClaveProductoSATSimiliar"
+        Me.lblClaveProductoSATSimiliar.Size = New System.Drawing.Size(294, 13)
+        Me.lblClaveProductoSATSimiliar.TabIndex = 244
+        '
         'Catalogo_Articulos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(848, 547)
+        Me.ClientSize = New System.Drawing.Size(848, 571)
         Me.Controls.Add(Me.gBoxInformacion)
         Me.Controls.Add(Me.gBoxBusquedaRapida)
         Me.Controls.Add(Me.tsMenu)
@@ -608,4 +618,5 @@ Partial Class Catalogo_Articulos
     Friend WithEvents txtCodigoUnidadSAT As TextBox
     Friend WithEvents lblDisplayImpuestoIVA As Label
     Friend WithEvents cboImpuestoIVA As ComboBox
+    Friend WithEvents lblClaveProductoSATSimiliar As Label
 End Class

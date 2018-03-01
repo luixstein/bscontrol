@@ -82,7 +82,7 @@ Partial Class BusquedaCatalogoProductosServicios
         Me.cboNivel2.FormattingEnabled = True
         Me.cboNivel2.Location = New System.Drawing.Point(350, 39)
         Me.cboNivel2.Name = "cboNivel2"
-        Me.cboNivel2.Size = New System.Drawing.Size(459, 21)
+        Me.cboNivel2.Size = New System.Drawing.Size(559, 21)
         Me.cboNivel2.TabIndex = 5
         '
         'Label3
@@ -100,7 +100,7 @@ Partial Class BusquedaCatalogoProductosServicios
         Me.cboNivel3.FormattingEnabled = True
         Me.cboNivel3.Location = New System.Drawing.Point(350, 66)
         Me.cboNivel3.Name = "cboNivel3"
-        Me.cboNivel3.Size = New System.Drawing.Size(402, 21)
+        Me.cboNivel3.Size = New System.Drawing.Size(559, 21)
         Me.cboNivel3.TabIndex = 7
         '
         'Label4

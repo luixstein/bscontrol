@@ -256,7 +256,7 @@ Public Class Catalogo_Articulos
             End If
 
             Me.txtCodigoUnidadSAT.Text = "" : Me.lblCodigoUnidadSAT.Text = ""
-            Me.txtClaveProductoSAT.Text = "" : Me.lblClaveProductoSAT.Text = ""
+            Me.txtClaveProductoSAT.Text = "" : Me.lblClaveProductoSAT.Text = "" : Me.lblClaveProductoSATSimiliar.Text = ""
         Catch ex As Exception
             HandleError(Me.Name, "InicializaElemento", ex)
         End Try
@@ -360,6 +360,7 @@ Public Class Catalogo_Articulos
 
                     Me.lblCodigoUnidadSAT.Text = oUnidad.NOMBRE_UNIDAD
                     Me.lblClaveProductoSAT.Text = oProductoServicio.NOMBRE_PRODUCTO_SERVICIO
+                    Me.lblClaveProductoSATSimiliar.Text = oProductoServicio.NOMBRE_PRODUCTO_SERVICIO_SIMILAR
 
                     oUnidad = Nothing
                     oProductoServicio = Nothing
@@ -782,24 +783,28 @@ Buscar:
                     oProductoSAT = New Class_CFD_CatProductosServicios
                     sText = oProductoSAT.BusquedaVisual_PorDescripcion
                     If txtLEN(sText) = True Then Me.txtClaveProductoSAT.Text = sText
+
                 Case Keys.Enter
                     If txtLEN(Me.txtClaveProductoSAT.Text) = False Then
-                        Me.lblClaveProductoSAT.Text = "" : GoTo Buscar : Exit Sub
+                        Me.lblClaveProductoSAT.Text = "" : Me.lblClaveProductoSATSimiliar.Text = "" : GoTo Buscar : Return
                     End If
 
                     oProductoSAT = New Class_CFD_CatProductosServicios(Me.txtClaveProductoSAT.Text)
 
                     If oProductoSAT.EXISTE = False Then
-                        Me.lblClaveProductoSAT.Text = "" : GoTo Buscar : Exit Sub
+                        Me.lblClaveProductoSAT.Text = "" : Me.lblClaveProductoSATSimiliar.Text = "" : GoTo Buscar : Return
                     Else
                         Me.lblClaveProductoSAT.Text = oProductoSAT.NOMBRE_PRODUCTO_SERVICIO
+                        Me.lblClaveProductoSATSimiliar.Text = oProductoSAT.NOMBRE_PRODUCTO_SERVICIO_SIMILAR
                     End If
 
                     txtTAB(e)
+
                 Case Keys.F7
                     oProductoSAT = New Class_CFD_CatProductosServicios
                     sText = oProductoSAT.BusquedaVisual_CatalogoProductosServicios
                     If txtLEN(sText) = True Then Me.txtClaveProductoSAT.Text = sText
+
             End Select
         Catch ex As Exception
             HandleError(Me.Name, "txtClaveProductoSAT_KeyDown", ex)
