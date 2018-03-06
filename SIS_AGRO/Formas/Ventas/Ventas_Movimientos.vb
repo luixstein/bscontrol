@@ -2661,6 +2661,7 @@ CANCELAR:
                 ElseIf sTipoVenta = "SR" Or sTipoVenta = "SCF" Then
                     'Me.CboDocumento.SelectedValue = "FCT" + Plaza.CODIGO_PLAZA.ToString
                     Me.CboDocumento.SelectedValue = sCodigoDocumentoFacturaExterno
+                    Me.oVenta = New Class_Ventas_Global(sVenta)
                     Me.GeneraFolio()
                     'Me.dpVencimiento.Value = Me.oVenta.FECHA_VENCIMIENTO
                 End If
