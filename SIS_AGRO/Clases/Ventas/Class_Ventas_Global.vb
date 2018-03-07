@@ -1744,6 +1744,7 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@FOLIO_FACTURA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_VENTA
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
             sqlParametro = .Parameters.Add("@FECHA_CANCELACION", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_CANCELACION
+            sqlParametro = .Parameters.Add("@CONCEPTO_CANCELACION", SqlDbType.NVarChar, 120) : sqlParametro.Value = Me._CONCEPTO_CANCELACION
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
