@@ -64,7 +64,7 @@ Public Class Catalogo_ClientesCuentasBancarias
     Private Sub Catalogo_ClientesCuentasBancarias_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.DesplegarFormasPago()
         If txtLEN(Me._ID_CUENTA) = True Then
-            Me.CargaDatos()
+            Me.Consultar()
         End If
         Me.CenterToParent()
     End Sub
@@ -90,7 +90,7 @@ Buscar:
         End Try
     End Sub
 
-    Private Sub txtBanco_KeyDown(sender As Object, e As KeyEventArgs) Handles txtBanco.KeyDown
+    Private Sub txtBanco_KeyDown(sender As Object, e As KeyEventArgs) Handles txtBancoCodigo.KeyDown
         Dim sText As String, oBancos As Class_CatBancos
         Try
             Select Case e.KeyCode
@@ -98,21 +98,51 @@ Buscar:
 Buscar:
                     oBancos = New Class_CatBancos
                     sText = oBancos.BusquedaVisual_PorDescripcion
-                    If txtLEN(sText) = True Then Me.txtBanco.Text = sText
+                    If txtLEN(sText) = True Then Me.txtBancoCodigo.Text = sText
 
                 Case Keys.Enter
-                    If txtLEN(Me.txtBanco.Text) = False Then
-                        Me.lblBanco.Text = "" : GoTo Buscar : Exit Sub
+                    If txtLEN(Me.txtBancoCodigo.Text) = False Then
+                        Me.txtBancoAlias.Text = ""
+                        Me.txtBancoNombre.Text = ""
+                        GoTo Buscar : Return
                     End If
-                    oBancos = New Class_CatBancos(Me.txtBanco.Text)
-                    Me.lblBanco.Text = oBancos.NOMBRE_BANCO
-
+                    oBancos = New Class_CatBancos(Me.txtBancoCodigo.Text)
+                    If oBancos.EXISTE = True Then
+                        Me.txtBancoAlias.Text = oBancos.NOMBRE_BANCO
+                        Me.txtBancoNombre.Text = oBancos.NOMBRE_LARGO
+                    Else
+                        GoTo Buscar : Return
+                    End If
             End Select
 
             oBancos = Nothing
         Catch ex As Exception
             HandleError(Me.Name, "txtBanco_KeyDown", ex)
         End Try
+    End Sub
+
+    Private Sub chkEsBancoExtranjero_CheckedChanged(sender As Object, e As EventArgs) Handles chkEsBancoExtranjero.CheckedChanged
+        Try
+            Me.txtBancoCodigo.Text = ""
+            Me.txtBancoNombre.Text = ""
+            Me.txtBancoAlias.Text = ""
+
+            Select Case Me.chkEsBancoExtranjero.Checked
+                Case False  'Es nacional
+                    Me.txtBancoCodigo.Visible = True : Me.lblDisplayBancoCodigo.Visible = True
+                    Me.txtBancoNombre.Enabled = False
+                    Me.txtBancoAlias.Visible = True : Me.lblDisplayBancoAlias.Visible = True
+                    Me.lblMsgBancoExtranjero.Visible = False
+                Case True 'Es extranjero
+                    Me.txtBancoCodigo.Visible = False : Me.lblDisplayBancoCodigo.Visible = False
+                    Me.txtBancoNombre.Enabled = True
+                    Me.txtBancoAlias.Visible = False : Me.lblDisplayBancoAlias.Visible = False
+                    Me.lblMsgBancoExtranjero.Visible = True
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Name, "txtBanco_KeyDown", ex)
+        End Try
+
     End Sub
 
 #Region "Eventos Genericos"
@@ -122,7 +152,7 @@ Buscar:
         End If
     End Sub
 
-    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCuentaEmisor.KeyPress, txtBanco.KeyPress
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCuentaEmisor.KeyPress, txtBancoCodigo.KeyPress
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
@@ -140,8 +170,10 @@ Buscar:
             Me.txtCuentaEmisor.Text = ""
             Me.cboFormaPago.SelectedIndex = -1
             Me.txtRFCEmisor.Text = ""
-            Me.txtBanco.Text = ""
-            Me.lblBanco.Text = ""
+            Me.txtBancoCodigo.Text = ""
+            Me.txtBancoNombre.Text = ""
+            Me.txtBancoAlias.Text = ""
+            Me.chkEsBancoExtranjero.Checked = False
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
         End Try
@@ -164,19 +196,29 @@ Buscar:
         End Try
     End Sub
 
-    Private Function CargaDatos() As Boolean
+    Private Function Consultar() As Boolean
         Try
             Dim oCuenta As New Class_CatClientesCuentasBancarias(Me._ID_CUENTA)
             With oCuenta
                 Me.txtCuentaEmisor.Text = .CUENTA
                 Me.cboFormaPago.SelectedValue = .CODIGO_METODO_PAGO
                 Me.txtRFCEmisor.Text = .RFC_EMISOR
-                Me.txtBanco.Text = .CODIGO_BANCO
-                Me.lblBanco.Text = .NOMBRE_BANCO
+
+                Me.chkEsBancoExtranjero.Checked = CBool(.ES_BANCO_EXTRANJERO)
+
+                'Va primero porque gestiona controles en su check
+                If .ES_BANCO_EXTRANJERO = False Then
+                    Me.txtBancoCodigo.Text = .CODIGO_BANCO
+                    Me.txtBancoAlias.Text = .NOMBRE_BANCO
+                    Me.txtBancoNombre.Text = .NOMBRE_BANCO_LARGO
+                Else
+                    Me.txtBancoNombre.Text = .NOMBRE_BANCO_EMISOR_EXTRANJERO
+                End If
+
             End With
             oCuenta = Nothing
         Catch ex As Exception
-            HandleError(Me.Name, "CargaDatos", ex)
+            HandleError(Me.Name, "Consultar", ex)
         End Try
     End Function
 
@@ -204,19 +246,6 @@ Buscar:
             Dim oFormaPago As New Class_CFD_CatFormasPago(Me.cboFormaPago.SelectedValue.ToString)
 
             If oFormaPago.ES_BANCARIZADO = True Then
-                If txtLEN(Me.txtBanco.Text) = False Then
-                    MsgBox("Asígne el banco de la cuenta bancaria.", vbExclamation, Me.Name)
-                    Me.txtBanco.Focus()
-                    Return False
-                End If
-
-                Dim oBanco As New Class_CatBancos(Me.txtBanco.Text)
-                If oBanco.EXISTE = False Then
-                    MsgBox("El banco seleccionado no existe.", vbExclamation, Me.Name)
-                    Me.txtBanco.Focus()
-                    Return False
-                End If
-                oBanco = Nothing
 
                 If txtLEN(Me.txtCuentaEmisor.Text) = False Then
                     MsgBox("Asígne la cuenta del emisor.", vbExclamation, Me.Name)
@@ -237,6 +266,30 @@ Buscar:
                         End If
                     End If
                 End If
+
+                If Me.chkEsBancoExtranjero.Checked = False Then 'Banco mexicano
+                    If txtLEN(Me.txtBancoCodigo.Text) = False Then
+                        MsgBox("Asígne el banco de la cuenta bancaria.", vbExclamation, Me.Name)
+                        Me.txtBancoCodigo.Focus()
+                        Return False
+                    End If
+
+                    Dim oBanco As New Class_CatBancos(Me.txtBancoCodigo.Text)
+                    If oBanco.EXISTE = False Then
+                        MsgBox("El banco seleccionado no existe.", vbExclamation, Me.Name)
+                        Me.txtBancoCodigo.Focus()
+                        Return False
+                    End If
+                    oBanco = Nothing
+
+                Else 'Banco extranjero, no se valida el código del banco, pero si el nombre
+                    If txtLEN(Me.txtBancoNombre.Text) = False Then
+                        MsgBox("Capture el nombre del banco extranjero.", vbExclamation, Me.Name)
+                        Me.txtBancoNombre.Focus()
+                        Exit Function
+                    End If
+                End If
+
             End If
 
             'If Me.cboFormaPago.SelectedValue.ToString = "02" Or Me.cboFormaPago.SelectedValue.ToString = "03" Then '02=CHEQUE NOMINATIVO, 03=TRANSFERENCIA ELECTRONICA DE FONDOS
@@ -287,7 +340,9 @@ Buscar:
                 .CUENTA = Me.txtCuentaEmisor.Text.ToUpper
                 .CODIGO_METODO_PAGO = Me.cboFormaPago.SelectedValue.ToString
                 .RFC_EMISOR = Me.txtRFCEmisor.Text.ToUpper
-                .CODIGO_BANCO = Me.txtBanco.Text.ToUpper
+                .CODIGO_BANCO = Me.txtBancoCodigo.Text.ToUpper
+                .ES_BANCO_EXTRANJERO = Me.chkEsBancoExtranjero.Checked
+                .NOMBRE_BANCO_EMISOR_EXTRANJERO = Me.txtBancoNombre.Text
 
                 Select Case Me._ACCION
                     Case EACCION.AGREGAR

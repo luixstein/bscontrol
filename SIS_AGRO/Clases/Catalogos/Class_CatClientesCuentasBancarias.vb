@@ -13,12 +13,14 @@ Public Class Class_CatClientesCuentasBancarias
     Private _CODIGO_METODO_PAGO As String
     Private _RFC_EMISOR As String
     Private _CODIGO_BANCO As String
-    Private _ESTATUS As String
+    Private _ES_BANCO_EXTRANJERO As Boolean
+    Private _NOMBRE_BANCO_EMISOR_EXTRANJERO As String
 #End Region
 
 #Region "Campos ligados a la tabla"
     Private _Existe As Boolean
     Private _NOMBRE_BANCO As String
+    Private _NOMBRE_BANCO_LARGO As String
 #End Region
 
 #Region "Campos de sistema"
@@ -89,17 +91,42 @@ Public Class Class_CatClientesCuentasBancarias
         End Set
     End Property
 
-    Public ReadOnly Property NOMBRE_BANCO() As String
+    Public Property ES_BANCO_EXTRANJERO() As Boolean
         Get
-            Return Me._NOMBRE_BANCO
+            Return Me._ES_BANCO_EXTRANJERO
         End Get
+        Set(ByVal Value As Boolean)
+            Me._ES_BANCO_EXTRANJERO = Value
+        End Set
     End Property
+
+    Public Property NOMBRE_BANCO_EMISOR_EXTRANJERO() As String
+        Get
+            Return Me._NOMBRE_BANCO_EMISOR_EXTRANJERO
+        End Get
+        Set(ByVal Value As String)
+            Me._NOMBRE_BANCO_EMISOR_EXTRANJERO = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
     Public ReadOnly Property Existe() As Boolean
         Get
             Return Me._Existe
+        End Get
+    End Property
+
+    Public ReadOnly Property NOMBRE_BANCO() As String
+        Get
+            Return Me._NOMBRE_BANCO
+        End Get
+    End Property
+
+    Public ReadOnly Property NOMBRE_BANCO_LARGO() As String
+        Get
+            Return Me._NOMBRE_BANCO_LARGO
         End Get
     End Property
 #End Region
@@ -128,7 +155,10 @@ Public Class Class_CatClientesCuentasBancarias
         Me._Nombre_Catalogo = "CAT_CLIENTES_CUENTAS_BANCARIAS"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "SELECT C.*,B.NOMBRE_BANCO FROM CAT_CLIENTES_CUENTAS_BANCARIAS C INNER JOIN CAT_BANCOS B ON(C.CODIGO_BANCO=B.CODIGO_BANCO) "
+        Me._QuerySelect =
+            "SELECT C.*,B.NOMBRE_BANCO,B.NOMBRE_LARGO NOMBRE_BANCO_LARGO " &
+            "FROM CAT_CLIENTES_CUENTAS_BANCARIAS C " &
+            "LEFT JOIN CAT_BANCOS B ON(C.CODIGO_BANCO=B.CODIGO_BANCO) "
         Me._QueryOrder = " ORDER BY C.CODIGO_CLIENTE"
     End Sub
 
@@ -170,6 +200,8 @@ Public Class Class_CatClientesCuentasBancarias
             sqlParametro = .Parameters.Add("@CODIGO_METODO_PAGO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_METODO_PAGO.ToUpper
             sqlParametro = .Parameters.Add("@RFC_EMISOR", SqlDbType.NVarChar, 13) : sqlParametro.Value = Me._RFC_EMISOR.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_BANCO", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_BANCO.ToUpper
+            sqlParametro = .Parameters.Add("@ES_BANCO_EXTRANJERO", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._ES_BANCO_EXTRANJERO)
+            sqlParametro = .Parameters.Add("@NOMBRE_BANCO_EMISOR_EXTRANJERO", SqlDbType.NVarChar, 300) : sqlParametro.Value = Me._NOMBRE_BANCO_EMISOR_EXTRANJERO.ToUpper
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = sAccion
 
             Try
@@ -205,8 +237,11 @@ Public Class Class_CatClientesCuentasBancarias
                     Me._CODIGO_CLIENTE = dReader("CODIGO_CLIENTE").ToString()
                     Me._CODIGO_METODO_PAGO = dReader("CODIGO_METODO_PAGO").ToString()
                     Me._RFC_EMISOR = dReader("RFC_EMISOR").ToString()
-                    Me._CODIGO_BANCO = dReader("CODIGO_BANCO").ToString()
-                    Me._NOMBRE_BANCO = dReader("NOMBRE_BANCO").ToString()
+                    Me._CODIGO_BANCO = "" & dReader("CODIGO_BANCO").ToString()
+                    Me._NOMBRE_BANCO = "" & dReader("NOMBRE_BANCO").ToString()
+                    Me._NOMBRE_BANCO_LARGO = "" & dReader("NOMBRE_BANCO_LARGO").ToString()
+                    Me._ES_BANCO_EXTRANJERO = CBool(dReader("ES_BANCO_EXTRANJERO").ToString())
+                    Me._NOMBRE_BANCO_EMISOR_EXTRANJERO = "" & dReader("NOMBRE_BANCO_EMISOR_EXTRANJERO").ToString()
 
                     bResultado = True
                 End If
@@ -223,17 +258,18 @@ Public Class Class_CatClientesCuentasBancarias
 
     Public Function ObtenerElementos(ByVal sCodigoCliente As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dsCat As New SqlDataAdapter("SELECT C.ID_CUENTA,C.CUENTA+'-'+M.NOMBRE_METODO_PAGO+'-'+B.NOMBRE_BANCO CUENTA_CLIENTE " &
+        Dim da As New SqlDataAdapter("SELECT C.ID_CUENTA,C.CUENTA+'-'+M.NOMBRE_METODO_PAGO+'-'+CASE WHEN C.ES_BANCO_EXTRANJERO='1' THEN C.NOMBRE_BANCO_EMISOR_EXTRANJERO ELSE B.NOMBRE_BANCO END CUENTA_CLIENTE " &
             "FROM CAT_CLIENTES_CUENTAS_BANCARIAS C " &
             "INNER JOIN CFD_CAT_METODOS_PAGO M ON(C.CODIGO_METODO_PAGO=M.CODIGO_METODO_PAGO)  " &
-            "INNER JOIN CAT_BANCOS B ON(C.CODIGO_BANCO=B.CODIGO_BANCO) " &
-            "WHERE C.CODIGO_CLIENTE='" & sReplace(sCodigoCliente) & "' ORDER BY M.NOMBRE_METODO_PAGO", Me._Conexion)
+            "LEFT JOIN CAT_BANCOS B ON(C.CODIGO_BANCO=B.CODIGO_BANCO) " &
+            "WHERE C.CODIGO_CLIENTE='" & sReplace(sCodigoCliente) & "' " &
+            "ORDER BY M.NOMBRE_METODO_PAGO", Me._Conexion)
         Try
-            dsCat.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
         Finally
-            dsCat.Dispose()
+            da.Dispose()
         End Try
         Return dTable
     End Function

@@ -726,7 +726,7 @@ Public Class Class_Embarques_PaletsGlobal
 
             Dim btAPP As BarTender.Application
             Dim btFormat As BarTender.Format
-            Dim btMsgs As BarTender.Messages
+            Dim btMsgs As BarTender.Messages = Nothing
             btAPP = New BarTender.Application
 
             For Each dRow As DataRow In dt.Rows
@@ -793,7 +793,7 @@ Public Class Class_Embarques_PaletsGlobal
             Dim sVoicePicker1 As String = "", sVoicePicker2 As String = ""
             Dim btAPP As BarTender.Application
             Dim btFormat As BarTender.Format
-            Dim btMsgs As BarTender.Messages
+            Dim btMsgs As BarTender.Messages = Nothing
 
             Dim sFormatoEtiqueta As String = ""
 
@@ -854,7 +854,7 @@ Public Class Class_Embarques_PaletsGlobal
         Try
             Dim btAPP As BarTender.Application
             Dim btFormat As BarTender.Format
-            Dim btMsgs As BarTender.Messages
+            Dim btMsgs As BarTender.Messages = Nothing
 
             Dim sFormatoEtiqueta As String = My.Settings.Ruta & "\Etiquetas\Palet.btw"
 
@@ -895,7 +895,7 @@ Public Class Class_Embarques_PaletsGlobal
             Dim sVoicePicker1 As String = "", sVoicePicker2 As String = ""
             Dim btAPP As BarTender.Application
             Dim btFormat As BarTender.Format
-            Dim btMsgs As BarTender.Messages
+            Dim btMsgs As BarTender.Messages = Nothing
 
             Dim sFormatoEtiqueta As String = My.Settings.Ruta & "\Etiquetas\Caja.btw"
 

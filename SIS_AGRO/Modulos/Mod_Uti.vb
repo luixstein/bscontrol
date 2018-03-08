@@ -699,7 +699,7 @@ Module Mod_Uti
 
     ' Subrutina que copia el archivo
     Public Function Copiar_Archivo(ByVal Origen As String, ByVal Destino As String) As Boolean
-        Dim t_Op As SHFILEOPSTRUCT
+        Dim t_Op As SHFILEOPSTRUCT = Nothing
         Try
             With t_Op
                 .hWnd = 0

@@ -447,7 +447,7 @@ Public Class SincronizaXMLNomina
                 Dim sCodigoTrabajador1 As String = "", sCodigoTrabajador2 As String = "", sCodigoTrabajador3 As String = "", sCodigoTrabajador4 As String = ""
                 Dim dImporte1 As Double, dImporte2 As Double, dImporte3 As Double, dImporte4 As Double
                 Dim sOrdenCaptura1 As String = "", sOrdenCaptura2 As String = "", sOrdenCaptura3 As String = "", sOrdenCaptura4 As String = ""
-                Dim dRowImpar As DataRow
+                Dim dRowImpar As DataRow = Nothing
 
                 For Each row In Hoja
                     Select Case j
