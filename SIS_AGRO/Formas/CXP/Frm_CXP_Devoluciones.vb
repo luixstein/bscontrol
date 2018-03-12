@@ -382,7 +382,6 @@ busca:
                     Me.tsbCancelar.Enabled = False
                     Me.tsbImprimir.Enabled = False
                     Me.tsbGrabar.Enabled = True
-                    Me.tsbEnviarCorreo.Enabled = False
 
                     Me.Grid.Locked = True 'Se habilitará hasta que asignen un folio de venta para consultar sus disponibles.
 
@@ -397,9 +396,6 @@ busca:
                     Me.txtConcepto.Enabled = True
                     Me.dtFecha.Enabled = True
 
-                    Me.tsbSellar.Visible = False
-                    Me.tsbCancelarTimbre.Visible = False
-
                     Me.tssEstado.Text = "Estado: Agregando nuevo movimiento"
 
                     If Me.Visible = True Then
@@ -411,7 +407,6 @@ busca:
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = True
                     Me.tsbImprimir.Enabled = True
-                    Me.tsbEnviarCorreo.Enabled = True
 
                     Me.Grid.Locked = True
                     Me.GridSeries.Locked = True
@@ -421,9 +416,6 @@ busca:
                     Me.txtFolioCompra.Enabled = False
                     Me.txtConcepto.Enabled = False
                     Me.dtFecha.Enabled = False
-
-                    Me.tsbSellar.Visible = False
-                    Me.tsbCancelarTimbre.Visible = False
 
                     Me.tssEstado.Text = "Estado: Consultando movimiento"
 
@@ -434,7 +426,6 @@ busca:
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = False
                     Me.tsbImprimir.Enabled = True
-                    Me.tsbEnviarCorreo.Enabled = True
 
                     Me.Grid.Locked = True
                     Me.GridSeries.Locked = True
@@ -444,9 +435,6 @@ busca:
                     Me.txtFolioCompra.Enabled = False
                     Me.txtConcepto.Enabled = False
                     Me.dtFecha.Enabled = False
-
-                    Me.tsbSellar.Visible = False
-                    Me.tsbCancelarTimbre.Visible = False
 
                     Me.tssEstado.Text = "Estado: Consultando movimiento"
 
