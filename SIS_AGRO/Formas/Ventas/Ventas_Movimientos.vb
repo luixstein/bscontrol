@@ -177,6 +177,7 @@ Public Class Ventas_Movimientos
         If Me.Consultar(True) = True Then
             Me.EstableceCuentasContables()
             Me.Totales()
+            Me.tsbTimbrar.Visible = False
         End If
 
         Me.Grid.Locked = True
@@ -1188,6 +1189,7 @@ Buscar:
                     'Me.Grid.Locked = True 'De momento no se permiten editar cantidades, o precios
                     Me.GridSeries.Locked = True 'De momento no permitimos manejo de series en sustituciones.
 
+                    Me.tsbTimbrar.Visible = False
                     Me.tsbCotizacionFactura.Visible = False
                     Me.tsbCotizacionRemision.Visible = False
                     Me.tsbRemisionVenta.Visible = False
@@ -1943,20 +1945,21 @@ CANCELAR:
                 Return False
             End If
 
-            If Me.oDocumento.AFECTA_INVENTARIOS = True Then
+            If Me.sTipoVenta <> "SR" AndAlso Me.oDocumento.AFECTA_INVENTARIOS = True Then
                 If Me.ValidarExistencias() = False Then
                     Return False
                 End If
-                If Me.oDocumento.AFECTA_CONTABILIDAD = True Then
-                    If Me.SiTieneCuentaContable() = False Then
-                        MsgBox("Asígne la cuenta contable a todos los renglones.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
-                    End If
+            End If
 
-                    If Me.ValidaCuentaContable = False Then
-                        MsgBox("Cuenta contable inválida.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
-                    End If
+            If Me.oDocumento.AFECTA_CONTABILIDAD = True Then
+                If Me.SiTieneCuentaContable() = False Then
+                    MsgBox("Asígne la cuenta contable a todos los renglones.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                If Me.ValidaCuentaContable = False Then
+                    MsgBox("Cuenta contable inválida.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 End If
             End If
 
