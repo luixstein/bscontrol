@@ -496,11 +496,11 @@ Public Class Catalogo_Cuentas_Bancarias
                 Return False
             End If
 
-            If txtLEN(Me.txtCuentaContable.Text) = False Then
-                MsgBox("Asígne la cuenta contable.", MsgBoxStyle.Exclamation, sProcedure)
-                Me.txtCuentaContable.Focus()
-                Return False
-            End If
+            'If txtLEN(Me.txtCuentaContable.Text) = False Then
+            '    MsgBox("Asígne la cuenta contable.", MsgBoxStyle.Exclamation, sProcedure)
+            '    Me.txtCuentaContable.Focus()
+            '    Return False
+            'End If
 
             If txtLEN(Me.txtClabeInterbancaria.Text) = False Then
                 MsgBox("Asígne la clabe interbancaria.", MsgBoxStyle.Exclamation, sProcedure)
