@@ -622,11 +622,12 @@ Partial Class Frm_CXC_Devoluciones
         '
         Me.lblVersionCFDI.AutoSize = True
         Me.lblVersionCFDI.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblVersionCFDI.Location = New System.Drawing.Point(942, 144)
+        Me.lblVersionCFDI.Location = New System.Drawing.Point(930, 145)
         Me.lblVersionCFDI.Name = "lblVersionCFDI"
-        Me.lblVersionCFDI.Size = New System.Drawing.Size(72, 20)
+        Me.lblVersionCFDI.Size = New System.Drawing.Size(34, 20)
         Me.lblVersionCFDI.TabIndex = 388
-        Me.lblVersionCFDI.Text = "0.0coke"
+        Me.lblVersionCFDI.Text = "0.0"
+        Me.lblVersionCFDI.Visible = False
         '
         'cboFormaPago
         '

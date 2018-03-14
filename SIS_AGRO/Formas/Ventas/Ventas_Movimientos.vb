@@ -855,12 +855,14 @@ Buscar:
             Me.Grid.Column(Me.igyCantidadKilos).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
             Me.Grid.Column(Me.igyCantidadKilos).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.igyPrecio).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
+            'Me.Grid.Column(Me.igyPrecio).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
+            Me.Grid.Column(Me.igyPrecio).FormatString = "$ ###,###,##0." & StrDup(6, "0")
             Me.Grid.Column(Me.igyPrecio).Mask = FlexCell.MaskEnum.Numeric
             Me.Grid.Column(Me.igyPrecio).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
             Me.Grid.Column(Me.igyPrecio).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.igyPRECIO_TOTAL).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
+            'Me.Grid.Column(Me.igyPRECIO_TOTAL).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
+            Me.Grid.Column(Me.igyPRECIO_TOTAL).FormatString = "$ ###,###,##0." & StrDup(6, "0")
             Me.Grid.Column(Me.igyPRECIO_TOTAL).Mask = FlexCell.MaskEnum.Numeric
             Me.Grid.Column(Me.igyPRECIO_TOTAL).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
             Me.Grid.Column(Me.igyPRECIO_TOTAL).Alignment = FlexCell.AlignmentEnum.RightCenter
@@ -2467,7 +2469,7 @@ CANCELAR:
             Dim oArticulo As New Class_CatArticulos
             Dim dIEPS_PORCENTAJE As Decimal = 0, dIEPS_UNITARIO As Decimal = 0, dIEPS_IMPORTE As Decimal = 0, dBASE_IEPS As Decimal = 0, dBASE_IVA As Decimal = 0, dPRECIO_TOTAL As Decimal = 0, dIVA_IMPORTE As Decimal = 0
             Dim dtSubtotal As Decimal = 0, dtIEPS As Decimal = 0, dtImpuesto As Decimal = 0, dtTotal As Decimal = 0
-            Dim sID_SIS_CAT_IMPUESTOS As String = "", sGRADO_TOXICIDAD As String = "0" '0=NO GRAVA IEPS, Es este sistema no hay ieps de modo que lo forzamos a que no tengan para los cálculos.
+            Dim sID_SIS_CAT_IMPUESTOS As String = "", sGRADO_TOXICIDAD As String = "0" '0=NO GRAVA IEPS
             Dim dPrecioConDescuento As Decimal, dImporteConDescuento As Decimal
 
             Me.lblSubtotal.Text = FormatImporteContable(0)
@@ -2488,7 +2490,7 @@ CANCELAR:
                     'If oArticulo.ES_PRODUCTO_KILOS = "0" Then
                     If txtLEN(Me.Grid.Cell(i, Me.igyCantidad).Text) = True Then
 
-                        dCantidad = 0 : dPrecioCapturado = 0 : dPrecioConDescuento = 0 : iIDOrigen = 0 : dPorcentajeIVA = 0 : dIEPS_PORCENTAJE = 0 : sID_SIS_CAT_IMPUESTOS = "" : dImporteConDescuento = 0
+                        dCantidad = 0 : dPrecioCapturado = 0 : dPrecioConDescuento = 0 : iIDOrigen = 0 : dPorcentajeIVA = 0 : dIEPS_PORCENTAJE = 0 : sID_SIS_CAT_IMPUESTOS = "" : sGRADO_TOXICIDAD = "" : dImporteConDescuento = 0
                         dBASE_IEPS = 0 : dIEPS_IMPORTE = 0 : dIEPS_UNITARIO = 0 : dBASE_IVA = 0 : dIVA_IMPORTE = 0 : dPRECIO_TOTAL = 0 : dPrecioOriginal = 0 : dImporte = 0 : dImporteTotal = 0 : dImporteSustitucion = 0
 
                         dCantidad = valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text)
@@ -2500,11 +2502,12 @@ CANCELAR:
                         sID_SIS_CAT_IMPUESTOS = Me.Grid.Cell(i, Me.iGyID_SIS_CAT_IMPUESTOS).Text
                         sGRADO_TOXICIDAD = Me.Grid.Cell(i, Me.iGyGRADO_TOXICIDAD).Text
 
-                        dImporteConDescuento = RedondearD((dCantidad * dPrecioConDescuento), 2)
+                        'dImporteConDescuento = RedondearD((dCantidad * dPrecioConDescuento), 2)
+                        dImporteConDescuento = RedondearD((dCantidad * dPrecioConDescuento), 6)
 
                         If sGRADO_TOXICIDAD <> "0" Then
                             dBASE_IEPS = dImporteConDescuento
-                            dIEPS_IMPORTE = RedondearD(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2)
+                            dIEPS_IMPORTE = RedondearD(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
                             dIEPS_UNITARIO = CDec(Redondear(dPrecioCapturado * (dIEPS_PORCENTAJE / 100), 4))
                         End If
 
@@ -2516,7 +2519,8 @@ CANCELAR:
                         dPRECIO_TOTAL = dPrecioCapturado
 
                         If Me.bClienteEsContribuyenteIEPS = False And dPrecioCapturado > 0 Then 'Cuando no es contribuyente se le adjunta al precio el ieps, es decir se le incluye
-                            dPRECIO_TOTAL = RedondearD(dPrecioCapturado + dIEPS_UNITARIO, 3)
+                            'dPRECIO_TOTAL = RedondearD(dPrecioCapturado + dIEPS_UNITARIO, 3)
+                            dPRECIO_TOTAL = RedondearD(dPrecioCapturado + dIEPS_UNITARIO, 6)
                         End If
 
                         Me.Grid.Cell(i, Me.igyPRECIO_TOTAL).Text = dPRECIO_TOTAL.ToString

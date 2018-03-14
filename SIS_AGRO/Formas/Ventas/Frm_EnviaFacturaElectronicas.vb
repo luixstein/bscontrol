@@ -47,11 +47,19 @@ Public Class Frm_EnviaFacturaElectronicas
     End Sub
 
     Private Sub tsbEnviar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbEnviar.Click
-        If Me.Validar() = True Then
-            Me.ProgresoBarra()
-            Me.EnviarCorreo()
-            Me.btnAgregarDocumentosClientes.PerformClick()
-        End If
+        Try
+            Me.tsbEnviar.Enabled = False
+            Application.DoEvents()
+            If Me.Validar() = True Then
+                Me.ProgresoBarra()
+                Me.EnviarCorreo()
+                Me.btnAgregarDocumentosClientes.PerformClick()
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, "tsbEnviar_Click", ex)
+            Me.tsbEnviar.Enabled = True
+            Application.DoEvents()
+        End Try
     End Sub
 
     Private Sub tsbSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSalir.Click
@@ -385,7 +393,7 @@ Buscar:
                                   "AND G.FECHA_PAGO BETWEEN '" & Format(Me.DtFechaDesde.Value, "yyyy-dd-MM") & "' AND '" & Format(Me.DtFechaHasta.Value, "yyyy-dd-MM 23:59:59") & "' " &
                                   IIf(Me.CboEstatus.Text <> "T", " AND G.ESTATUS_PAGO='" & Me.CboEstatus.Text & "' ", "").ToString &
                                   "" &
-                                  "ORDER BY FECHA", Conexion)
+                                  "ORDER BY FECHA DESC", Conexion)
 
         Dim dReader As SqlDataReader
         With cmd
@@ -649,7 +657,7 @@ Buscar:
                     Me.lblDisplayProgreso.Visible = False
                     Me.btnActualizaCorreo.Enabled = False
                     Me.btnAgregarDocumentosClientes.Enabled = False
-                    Me.ckbConSaldo.Checked = True
+                    Me.ckbConSaldo.Checked = False
                     Me.pbBarra.Visible = False
                     Me.Grid.Locked = False
                     'Me.gbAgregaDocCliente.Enabled = True

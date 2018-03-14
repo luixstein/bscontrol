@@ -386,8 +386,8 @@ busca:
             Me.Grid.Column(Me.igyBASE_IEPS).Visible = False
             Me.Grid.Column(Me.igyBASE_IVA).Visible = False
 
-            Me.Grid.Column(Me.iGyID_SIS_CAT_IMPUESTOS).Visible = True 'Ocultar
-            Me.Grid.Column(Me.iGyGRADO_TOXICIDAD).Visible = True 'Ocultar
+            Me.Grid.Column(Me.iGyID_SIS_CAT_IMPUESTOS).Visible = False 'Ocultar
+            Me.Grid.Column(Me.iGyGRADO_TOXICIDAD).Visible = False 'Ocultar
 
             Me.Grid.Cell(0, Me.igyCodigo).Text = "Código"
             Me.Grid.Cell(0, Me.igyTipoControlInventariable).Text = "Inv"
@@ -412,12 +412,14 @@ busca:
             Me.Grid.Column(Me.igyCantidad).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
             Me.Grid.Column(Me.igyCantidad).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.igyPrecio).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
+            'Me.Grid.Column(Me.igyPrecio).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
+            Me.Grid.Column(Me.igyPrecio).FormatString = "$ ###,###,##0." & StrDup(6, "0")
             Me.Grid.Column(Me.igyPrecio).Mask = FlexCell.MaskEnum.Numeric
             Me.Grid.Column(Me.igyPrecio).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
             Me.Grid.Column(Me.igyPrecio).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.igyPRECIO_TOTAL).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
+            'Me.Grid.Column(Me.igyPRECIO_TOTAL).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
+            Me.Grid.Column(Me.igyPRECIO_TOTAL).FormatString = "$ ###,###,##0." & StrDup(6, "0")
             Me.Grid.Column(Me.igyPRECIO_TOTAL).Mask = FlexCell.MaskEnum.Numeric
             Me.Grid.Column(Me.igyPRECIO_TOTAL).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
             Me.Grid.Column(Me.igyPRECIO_TOTAL).Alignment = FlexCell.AlignmentEnum.RightCenter
@@ -974,10 +976,12 @@ busca:
 
     Private Sub Totales()
         Try
-            Dim i As Integer, dCantidad As Decimal, dPrecio As Decimal, dPorcentajeIVA As Decimal, dImporte As Decimal, iIDOrigen As Integer = 0, dImporteTotal As Double = 0
+            Dim i As Integer, dCantidad As Decimal, dPrecioCapturado As Decimal, dPorcentajeIVA As Decimal, dImporte As Decimal, iIDOrigen As Integer = 0, dImporteTotal As Double = 0
             Dim oArticulo As New Class_CatArticulos
             Dim dIEPS_PORCENTAJE As Decimal = 0, dIEPS_UNITARIO As Decimal = 0, dIEPS_IMPORTE As Decimal = 0, dBASE_IEPS As Decimal = 0, dBASE_IVA As Decimal = 0, dPRECIO_TOTAL As Decimal = 0, dIVA_IMPORTE As Decimal = 0
             Dim dtSubtotal As Decimal = 0, dtIEPS As Decimal = 0, dtImpuesto As Decimal = 0, dtTotal As Decimal = 0
+            Dim sID_SIS_CAT_IMPUESTOS As String = "", sGRADO_TOXICIDAD As String = "0" '0=NO GRAVA IEPS
+            Dim dImporteConDescuento As Decimal
 
             Me.lblSubtotal.Text = FormatImporteContable(0)
             Me.lblIEPSIncluido.Text = FormatImporteContable(0)
@@ -994,34 +998,59 @@ busca:
                     oArticulo = New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
 
                     If txtLEN(Me.Grid.Cell(i, Me.igyCantidad).Text) = True Then
+
+                        dCantidad = 0 : dPrecioCapturado = 0 : iIDOrigen = 0 : dPorcentajeIVA = 0 : dIEPS_PORCENTAJE = 0 : sID_SIS_CAT_IMPUESTOS = "" : sGRADO_TOXICIDAD = "" : dImporteConDescuento = 0
+                        dBASE_IEPS = 0 : dIEPS_IMPORTE = 0 : dIEPS_UNITARIO = 0 : dBASE_IVA = 0 : dIVA_IMPORTE = 0 : dPRECIO_TOTAL = 0 : dImporte = 0 : dImporteTotal = 0
+
                         dCantidad = valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text)
-                        dPrecio = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text)
+                        dPrecioCapturado = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text)
                         iIDOrigen = CInt(valorNumericoD(Me.Grid.Cell(i, Me.igyIdOrigen).Text))
                         dPorcentajeIVA = valorNumericoD(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text)
+                        dIEPS_PORCENTAJE = valorNumericoD(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
+                        sID_SIS_CAT_IMPUESTOS = Me.Grid.Cell(i, Me.iGyID_SIS_CAT_IMPUESTOS).Text
+                        sGRADO_TOXICIDAD = Me.Grid.Cell(i, Me.iGyGRADO_TOXICIDAD).Text
 
-                        dIEPS_PORCENTAJE = CDec(valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text))
-                        dIEPS_UNITARIO = CDec(Redondear(dPrecio * (dIEPS_PORCENTAJE / 100), 4))
+                        '------------------------------------------------------------------------------------------------------------------------------------------------------------
+                        'Antes de cambios este codigo estaba
+                        'dBASE_IEPS = RedondearD((dPrecio * dCantidad), 2)
+                        'dIEPS_IMPORTE = RedondearD(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2)
+                        'dIEPS_UNITARIO = CDec(Redondear(dPrecio * (dIEPS_PORCENTAJE / 100), 4))
 
-                        dBASE_IEPS = RedondearD((dPrecio * dCantidad), 2)
+                        'dBASE_IVA = dIEPS_IMPORTE + dBASE_IEPS
+                        'dIVA_IMPORTE = RedondearD(dBASE_IVA * ((dPorcentajeIVA / 100)), 2)
+                        '------------------------------------------------------------------------------------------------------------------------------------------------------------
+                        'Ahora con la revisión esta así:
+                        'Obviamente en una dev el precio no va tener un descuento capturable, pero se usa este nombre para coincidir con el totals de facturacion
+                        dImporteConDescuento = RedondearD((dPrecioCapturado * dCantidad), 6)
 
-                        dIEPS_IMPORTE = RedondearD(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2)
-                        dBASE_IVA = dIEPS_IMPORTE + dBASE_IEPS
-                        dIVA_IMPORTE = RedondearD(dBASE_IVA * ((dPorcentajeIVA / 100)), 2)
-                        dPRECIO_TOTAL = dPrecio
+                        If sGRADO_TOXICIDAD <> "0" Then
+                            dBASE_IEPS = dImporteConDescuento
+                            dIEPS_IMPORTE = RedondearD(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
+                            dIEPS_UNITARIO = CDec(Redondear(dIEPS_PORCENTAJE * (dIEPS_PORCENTAJE / 100), 4))
+                        End If
+
+                        If sID_SIS_CAT_IMPUESTOS <> "N" Then 'N=No grava iva, si es <>N = Si grava iva ya sea al 0,16,Exento(aún siendo exento ó 0 hay que llenar la base iva)
+                            dBASE_IVA = dImporteConDescuento + dIEPS_IMPORTE
+                            dIVA_IMPORTE = RedondearD(dBASE_IVA * ((dPorcentajeIVA / 100)), 2)
+                        End If
+                        '------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+                        dPRECIO_TOTAL = dPrecioCapturado
+
+                        'Aqui seria bueno ver si en lugar de obtener esta propiedad de alguna forma salga el de la factura, que tal que cambian la propiedad del cliente ?
+                        If Me.oCliente.ES_CONTRIBUYENTE_IEPS = "0" And dPrecioCapturado > 0 Then 'Cuando no es contribuyente se le adjunta al precio el ieps, es decir se le incluye
+                            'dPRECIO_TOTAL = RedondearD(dPrecio + dIEPS_UNITARIO, 3)
+                            dPRECIO_TOTAL = RedondearD(dPrecioCapturado + dIEPS_UNITARIO, 6)
+                        End If
 
                         Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text = dIEPS_UNITARIO.ToString
                         Me.Grid.Cell(i, Me.igyBASE_IEPS).Text = dBASE_IEPS.ToString
                         Me.Grid.Cell(i, Me.igyIEPS_IMPORTE).Text = dIEPS_IMPORTE.ToString
                         Me.Grid.Cell(i, Me.igyBASE_IVA).Text = dBASE_IVA.ToString
                         Me.Grid.Cell(i, Me.igyImpuestoImporte).Text = dIVA_IMPORTE.ToString
-
-                        If Me.oCliente.ES_CONTRIBUYENTE_IEPS = "0" And dPrecio > 0 Then 'Cuando no es contribuyente se le adjunta al precio el ieps, es decir se le incluye
-                            dPRECIO_TOTAL = RedondearD(dPrecio + dIEPS_UNITARIO, 3)
-                        End If
-
                         Me.Grid.Cell(i, Me.igyPRECIO_TOTAL).Text = dPRECIO_TOTAL.ToString
 
-                        dImporte = RedondearD((dPrecio * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD) 'no hacemos nada con este valor de momento
+                        dImporte = RedondearD((dPrecioCapturado * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD) 'no hacemos nada con este valor de momento
                         dImporteTotal = RedondearD((dPRECIO_TOTAL * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
                         Me.Grid.Cell(i, Me.igyImporte).Text = dImporteTotal.ToString
