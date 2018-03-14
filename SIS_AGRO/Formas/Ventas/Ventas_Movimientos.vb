@@ -663,6 +663,8 @@ Buscar:
     End Sub
 
     Private Sub ckbMostrarUtilidad_CheckedChanged(sender As Object, e As EventArgs) Handles ckbMostrarUtilidad.CheckedChanged
+        Me.CalculaUtilidad()
+
         If Me.ckbMostrarUtilidad.Checked = True Then
             Me.Grid.Column(Me.igyCosto).Visible = True
             Me.Grid.Column(Me.igyUtilidadUnitaria).Visible = True
@@ -2994,6 +2996,7 @@ LlenaLinea:
                     End Select
 
                     Me.Totales()
+                    Me.CalculaUtilidad()
 
                 Case Keys.F6
 BuscaArticulos:
@@ -3799,6 +3802,25 @@ busca_serie:
         Catch ex As Exception
             HandleError(Me.Name, "DesplegarUsoCFDIPersonasMorales", ex)
         End Try
+    End Sub
+
+    Private Sub CalculaUtilidad()
+        Dim i As Integer
+        'utilidad unitaria = precio - costo
+        'utilidad total = importe - (costo * cantidad)
+        '% utilidad = Utilidad total / importe
+        With Me.Grid
+            For i = 1 To .Rows - 1
+                If txtLEN(.Cell(i, Me.igyCodigo).Text) = True AndAlso .Cell(i, Me.igyCodigo).Text <> "-" Then
+                    .Cell(i, Me.igyUtilidadUnitaria).Text = (valorNumerico(.Cell(i, Me.igyPrecio).Text) - valorNumerico(.Cell(i, Me.igyCosto).Text)).ToString
+                    .Cell(i, Me.igyUtilidadTotal).Text = (valorNumerico(.Cell(i, Me.igyImporte).Text) - (valorNumerico(.Cell(i, Me.igyCosto).Text) * valorNumerico(.Cell(i, Me.igyCantidad).Text))).ToString
+                    If valorNumerico(.Cell(i, Me.igyImporte).Text) > 0 Then
+                        .Cell(i, Me.igyUtilidadPorcentaje).Text = (valorNumerico(.Cell(i, Me.igyUtilidadTotal).Text) / valorNumerico(.Cell(i, Me.igyImporte).Text)).ToString
+                    End If
+                End If
+            Next
+        End With
+
     End Sub
 #End Region
 
