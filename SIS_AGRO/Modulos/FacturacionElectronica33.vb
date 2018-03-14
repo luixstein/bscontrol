@@ -228,9 +228,11 @@ Module FacturacionElectronica33
                         End If
 
                         If row("GRADO_TOXICIDAD").ToString = "5" Then '5=Ieps Exento
-                            ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.00"), "003", "Exento", "", "")
+                            'ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.00"), "003", "Exento", "", "")
+                            ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.000000"), "003", "Exento", "", "")
                         Else
-                            ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.00"), "003", "Tasa", Format(drIEPS_PORCENTAJE, "0.#00000"), Format(drIEPS_IMPORTE, "##0.00"))
+                            'ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.00"), "003", "Tasa", Format(drIEPS_PORCENTAJE, "0.#00000"), Format(drIEPS_IMPORTE, "##0.00"))
+                            ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.000000"), "003", "Tasa", Format(drIEPS_PORCENTAJE, "0.#00000"), Format(drIEPS_IMPORTE, "##0.00"))
                         End If
                     End If
                 End If
@@ -245,9 +247,11 @@ Module FacturacionElectronica33
                     End If
 
                     If row("ID_SIS_CAT_IMPUESTOS").ToString = "E" Then 'E=Iva Exento
-                        ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Exento", "", "")
+                        'ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Exento", "", "")
+                        ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.000000"), "002", "Exento", "", "")
                     Else
-                        ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Tasa", Format(drIMPUESTO_PORCENTAJE, "0.#00000"), Format(drIMPUESTO_IMPORTE, "##0.00"))
+                        'ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Tasa", Format(drIMPUESTO_PORCENTAJE, "0.#00000"), Format(drIMPUESTO_IMPORTE, "##0.00"))
+                        ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.000000"), "002", "Tasa", Format(drIMPUESTO_PORCENTAJE, "0.#00000"), Format(drIMPUESTO_IMPORTE, "##0.00"))
                     End If
                 End If
 
@@ -280,7 +284,7 @@ Module FacturacionElectronica33
                 Cfd.Conceptos.Add(row("CODIGO_PRODUCTO_SERVICIO").ToString, row("CODIGO_ARTICULO").ToString,
                                   Format(drCantidad, "##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CANTIDAD)),
                                   row("CODIGO_UNIDAD").ToString, row("UNIDAD_VENTA").ToString, fElectronicaValidaCampo(row("DESCRIPCION").ToString),
-                                  Format(drPrecio, "##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)),
+                                  Format(drPrecio, "##0." & StrDup(6, "0")),'Format(drPrecio, "##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO))
                                   Format(drImporte, "##0.00"),
                                   IIf(drDESCUENTO_IMPORTE > 0, Format(drDESCUENTO_IMPORTE, "##0.00"), "").ToString, ConceptoImpuestoTraslados,)
             Next

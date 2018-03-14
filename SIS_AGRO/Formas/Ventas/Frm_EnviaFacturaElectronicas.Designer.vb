@@ -23,36 +23,36 @@ Partial Class Frm_EnviaFacturaElectronicas
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Frm_EnviaFacturaElectronicas))
-        Me.gbFiltros = New System.Windows.Forms.GroupBox
-        Me.CboEstatus = New System.Windows.Forms.ComboBox
-        Me.btnAgregarDocumentosClientes = New System.Windows.Forms.Button
-        Me.ckbConSaldo = New System.Windows.Forms.CheckBox
-        Me.lblDisplayEstatus = New System.Windows.Forms.Label
-        Me.lblDisplayHasta = New System.Windows.Forms.Label
-        Me.DtFechaDesde = New System.Windows.Forms.DateTimePicker
-        Me.DtFechaHasta = New System.Windows.Forms.DateTimePicker
-        Me.LblDisplayDesde = New System.Windows.Forms.Label
-        Me.tsMenu = New System.Windows.Forms.ToolStrip
-        Me.tsbNuevo = New System.Windows.Forms.ToolStripButton
-        Me.tsbEnviar = New System.Windows.Forms.ToolStripButton
-        Me.tsbSalir = New System.Windows.Forms.ToolStripButton
-        Me.gbCliente = New System.Windows.Forms.GroupBox
-        Me.txtComentarios = New System.Windows.Forms.TextBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.lblNombreCliente = New System.Windows.Forms.Label
-        Me.btnActualizaCorreo = New System.Windows.Forms.Button
-        Me.txtCorreoCliente = New System.Windows.Forms.TextBox
-        Me.txtCodigoCliente = New System.Windows.Forms.TextBox
-        Me.lblDisplayCorreo = New System.Windows.Forms.Label
-        Me.lblDisplayCliente = New System.Windows.Forms.Label
-        Me.gbFacturas = New System.Windows.Forms.GroupBox
-        Me.CkbMarcarTodo = New System.Windows.Forms.CheckBox
-        Me.txtSaldo = New System.Windows.Forms.TextBox
-        Me.txtTotal = New System.Windows.Forms.TextBox
-        Me.Grid = New FlexCell.Grid
-        Me.pbBarra = New System.Windows.Forms.ProgressBar
-        Me.lblDisplayProgreso = New System.Windows.Forms.Label
-        Me.TxtFormatoXML = New System.Windows.Forms.TextBox
+        Me.gbFiltros = New System.Windows.Forms.GroupBox()
+        Me.CboEstatus = New System.Windows.Forms.ComboBox()
+        Me.btnAgregarDocumentosClientes = New System.Windows.Forms.Button()
+        Me.ckbConSaldo = New System.Windows.Forms.CheckBox()
+        Me.lblDisplayEstatus = New System.Windows.Forms.Label()
+        Me.lblDisplayHasta = New System.Windows.Forms.Label()
+        Me.DtFechaDesde = New System.Windows.Forms.DateTimePicker()
+        Me.DtFechaHasta = New System.Windows.Forms.DateTimePicker()
+        Me.LblDisplayDesde = New System.Windows.Forms.Label()
+        Me.tsMenu = New System.Windows.Forms.ToolStrip()
+        Me.tsbNuevo = New System.Windows.Forms.ToolStripButton()
+        Me.tsbEnviar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
+        Me.gbCliente = New System.Windows.Forms.GroupBox()
+        Me.txtComentarios = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.lblNombreCliente = New System.Windows.Forms.Label()
+        Me.btnActualizaCorreo = New System.Windows.Forms.Button()
+        Me.txtCorreoCliente = New System.Windows.Forms.TextBox()
+        Me.txtCodigoCliente = New System.Windows.Forms.TextBox()
+        Me.lblDisplayCorreo = New System.Windows.Forms.Label()
+        Me.lblDisplayCliente = New System.Windows.Forms.Label()
+        Me.gbFacturas = New System.Windows.Forms.GroupBox()
+        Me.CkbMarcarTodo = New System.Windows.Forms.CheckBox()
+        Me.txtSaldo = New System.Windows.Forms.TextBox()
+        Me.txtTotal = New System.Windows.Forms.TextBox()
+        Me.Grid = New FlexCell.Grid()
+        Me.pbBarra = New System.Windows.Forms.ProgressBar()
+        Me.lblDisplayProgreso = New System.Windows.Forms.Label()
+        Me.TxtFormatoXML = New System.Windows.Forms.TextBox()
         Me.gbFiltros.SuspendLayout()
         Me.tsMenu.SuspendLayout()
         Me.gbCliente.SuspendLayout()
@@ -103,7 +103,7 @@ Partial Class Frm_EnviaFacturaElectronicas
         Me.ckbConSaldo.Name = "ckbConSaldo"
         Me.ckbConSaldo.Size = New System.Drawing.Size(131, 17)
         Me.ckbConSaldo.TabIndex = 218
-        Me.ckbConSaldo.Text = "Solo ventas con saldo"
+        Me.ckbConSaldo.Text = "Sólo ventas con saldo"
         Me.ckbConSaldo.UseVisualStyleBackColor = True
         '
         'lblDisplayEstatus
@@ -369,9 +369,9 @@ Partial Class Frm_EnviaFacturaElectronicas
         Me.Controls.Add(Me.gbFiltros)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.MinimizeBox = False
+        Me.MaximizeBox = False
         Me.Name = "Frm_EnviaFacturaElectronicas"
-        Me.Text = "Envia factura electronicas"
+        Me.Text = "Envía facturas electrónicas"
         Me.gbFiltros.ResumeLayout(False)
         Me.gbFiltros.PerformLayout()
         Me.tsMenu.ResumeLayout(False)
