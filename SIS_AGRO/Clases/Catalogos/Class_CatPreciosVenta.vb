@@ -1,6 +1,7 @@
 ﻿Option Strict On
 Imports System.Data
 Imports System.Data.SqlClient
+Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Class_CatPreciosVenta
 
@@ -156,6 +157,15 @@ Public Class Class_CatPreciosVenta
         End Get
     End Property
 
+    Public Property Nombre_Reporte() As String
+        Get
+            Return Me._Nombre_Reporte
+        End Get
+        Set(ByVal value As String)
+            Me._Nombre_Reporte = value
+        End Set
+    End Property
+
     Public ReadOnly Property Existe() As Boolean
         Get
             Return Me._Existe
@@ -169,7 +179,7 @@ Public Class Class_CatPreciosVenta
 #Region "Constructor y destructor"
     Public Sub New()
         Me._Nombre_Catalogo = "Cat_PreciosVenta"
-        Me._Nombre_Reporte = ""
+        Me._Nombre_Reporte = "RPT_CATALOGO_PRECIOS_VENTA"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         Me._QuerySelect = ""
@@ -300,6 +310,29 @@ Public Class Class_CatPreciosVenta
 
         Return dt
     End Function
+
+    Public Sub Imprimir_Listado()
+        If Len(Nombre_Reporte) > 0 Then
+            Dim Rpt As New ReportDocument
+            Dim oReporte As Class_Reporte
+            Try
+                oReporte = New Class_Reporte(Nombre_Reporte, Rpt)
+
+                Dim frm As New Reporte(Rpt)
+                frm.CRViewer.ShowGroupTreeButton = False
+                frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
+                frm.Show()
+
+            Catch ex As Exception
+                HandleError(Me.Nombre_Catalogo, " Impresión del listado :" + Me.Nombre_Catalogo, ex)
+            Finally
+                oReporte = Nothing
+                'Rpt.Dispose()
+            End Try
+        Else
+            MsgBox("El nombre del reporte no ha sido especificado, no hay nada que imprimir.", MsgBoxStyle.Critical, Me.Nombre_Catalogo)
+        End If
+    End Sub
 
 #End Region
 End Class

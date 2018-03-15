@@ -215,7 +215,7 @@ buscar:
     End Sub
 
     Private Sub Imprimir()
-        '
+        oPrecios.Imprimir_Listado()
     End Sub
 
     Private Sub DesplegarLineas()
