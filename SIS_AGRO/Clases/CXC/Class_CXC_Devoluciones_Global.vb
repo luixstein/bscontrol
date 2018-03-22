@@ -547,7 +547,7 @@ Public Class Class_CXC_Devoluciones_Global
 #Region "Propiedades de campos de sistema"
     Public ReadOnly Property Nombre_Clase() As String
         Get
-            Return "Class_CXC_Descuentos"
+            Return "Class_CXC_Devoluciones_Global"
         End Get
     End Property
 #End Region
@@ -601,8 +601,8 @@ Public Class Class_CXC_Devoluciones_Global
                 sqlParametro = .Parameters.Add("@IEPS_INCLUIDO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_INCLUIDO
                 sqlParametro = .Parameters.Add("@IMPUESTO_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_PORCENTAJE
                 sqlParametro = .Parameters.Add("@CODIGO_USUARIO_GRABO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
-                sqlParametro = .Parameters.Add("@ES_COMPROBANTE_ELECTRONICO", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._ES_COMPROBANTE_ELECTRONICO
                 sqlParametro = .Parameters.Add("@ES_A_PUBLICO_GENERAL", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._ES_A_PUBLICO_GENERAL
+                sqlParametro = .Parameters.Add("@ES_COMPROBANTE_ELECTRONICO", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._ES_COMPROBANTE_ELECTRONICO
                 sqlParametro = .Parameters.Add("@CODIGO_METODO_PAGO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_METODO_PAGO
                 sqlParametro = .Parameters.Add("@CODIGO_METODO_PAGO_EVENTO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_METODO_PAGO_EVENTO
                 sqlParametro = .Parameters.Add("@CODIGO_USO_CFDI", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_USO_CFDI
@@ -821,7 +821,6 @@ Public Class Class_CXC_Devoluciones_Global
 
         Return bResultado
     End Function
-
 
     Public Function BusquedaVisual_PorFolio() As String
         Dim f As New BusquedaVisual

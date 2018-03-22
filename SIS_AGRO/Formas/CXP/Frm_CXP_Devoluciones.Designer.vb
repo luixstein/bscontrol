@@ -201,7 +201,7 @@ Partial Class Frm_CXP_Devoluciones
         Me.TabPage1.Controls.Add(Me.Grid)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage1.Size = New System.Drawing.Size(978, 212)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Artículos"
@@ -231,7 +231,7 @@ Partial Class Frm_CXP_Devoluciones
         Me.TabPage2.Controls.Add(Me.GridSeries)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage2.Size = New System.Drawing.Size(978, 212)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Series"
