@@ -55,6 +55,7 @@ Public Class Class_Bancos_CXC
     'Private _ABONO_CUENTA_BENEFICIARIO As String
     Private _CODIGO_MODULO As String
     Private _FECHA_CHEQUE As Date
+    Private _CFDIS_GENERADOS As Boolean
 #End Region
 
 #Region "Campos de sistema"
@@ -413,6 +414,11 @@ Public Class Class_Bancos_CXC
         End Set
     End Property
 
+    Public ReadOnly Property CFDIS_GENERADOS() As Boolean
+        Get
+            Return Me._CFDIS_GENERADOS
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedad Nombre de Clase"
@@ -565,6 +571,8 @@ Public Class Class_Bancos_CXC
                         Me._FECHA_CHEQUE = CType(dReader("BAN_FECHA_CHEQUE"), Date)
                     End If
 
+                    Me._CFDIS_GENERADOS = CBool(dReader("CFDIS_GENERADOS"))
+
                     bResultado = True
 
                 End If
@@ -617,7 +625,7 @@ Public Class Class_Bancos_CXC
         sSQL = "SELECT D.FOLIO_DETALLE,D.CODIGO_CLIENTE,C.NOMBRE_CLIENTE,D.FECHA,D.FOLIO_REFERENCIA,V.CODIGO_MONEDA_SAT,D.NOMBRE_MEDIO_PAGO,D.NOMBRE_BANCO,TOTAL_VENTA,SALDO_VENTA, " &
                "TOTAL_VENTA_DOLARES,SALDO_VENTA_DOLARES,IMPORTE_CAPTURADO PAGADO,TOTAL_DETALLE PAGADO_PESOS,0 SELECCION,D.FOLIO_REFERENCIA_USUARIO,D.FECHA_PAGO,0 IVAXPAGAR,0 DIFERENCIA, " &
                "V.VERSION_ESQUEMA_XML,V.CODIGO_METODO_PAGO,V.CODIGO_METODO_PAGO_EVENTO, " &
-               "D.IMPORTE_MONEDA_VENTA,D.SALDO_ANTERIOR_MONEDA_VENTA,D.SALDO_ANTERIOR_MONEDA_PAGO " &
+               "D.IMPORTE_MONEDA_VENTA,D.SALDO_ANTERIOR_MONEDA_VENTA,D.SALDO_ANTERIOR_MONEDA_PAGO,V.ES_FACTURA_ELECTRONICA " &
                "FROM VW_BANCOS_CXC_DETALLE D " &
                "INNER JOIN CAT_CLIENTES C ON (D.CODIGO_CLIENTE=C.CODIGO_CLIENTE) " &
                "INNER JOIN VENTA_GLOBAL V ON(D.FOLIO_REFERENCIA=V.FOLIO_VENTA) " &

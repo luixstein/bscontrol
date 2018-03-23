@@ -63,14 +63,13 @@ Public Class Frm_CXC_Pagos
     Private iGyVentaFechaPago As Integer = 17
     Private iGyVentaIvaPorPagar As Integer = 18
     Private iGyVentaDiferencia As Integer = 19
-
     Private iGyVentaVersionCFDI As Integer = 20
     Private iGyVentaFormaPago As Integer = 21
     Private iGyVentaMetodoPago As Integer = 22
     Private iGyVentaImporteMonedaVenta As Integer = 23
     Private iGyVentaSaldoAnteriorMonedaVenta As Integer = 24
     Private iGyVentaSaldoAnteriorMonedaPago As Integer = 25
-
+    Private iGyVentaEsFacturaElectronica As Integer = 26
 #End Region
 
 #Region "Opciones"
@@ -163,6 +162,22 @@ Public Class Frm_CXC_Pagos
     Private Sub cmdSeleccionaSPEI_Click(sender As Object, e As EventArgs) Handles cmdSeleccionaSPEI.Click
         Me.SeleccionarSPEI()
     End Sub
+    Private Sub btnGenerarCFDIS_Click(sender As Object, e As EventArgs) Handles btnGenerarCFDIS.Click
+        Dim bHuboTimbrados As Boolean = False
+
+        If MsgBox("Desea generar el cfdi de pagos ?", vbQuestion Or MsgBoxStyle.YesNo, Me.Text) = vbYes Then
+            If Me.ValidaVentasTimbradas = True Then
+                If Me.oBancosCXC.GestionaCFDI() = True Then
+                    bHuboTimbrados = Me.oBancosCXC.GeneraPagosElectronicos()
+                End If
+                Me.Consultar()
+                If bHuboTimbrados = True Then
+                    btnVerCFDIS_Click(sender, e)
+                End If
+            End If
+        End If
+
+    End Sub
 
 #End Region
 
@@ -179,11 +194,11 @@ Public Class Frm_CXC_Pagos
 
             Me.Cambia_Estado(enumEstados.NUEVO)
 
-            If My.Computer.Name = "PCSISTEMASJORGE" Then
-                Me.cmdPruebaPagoCFDI.Visible = True
-            Else
-                Me.cmdPruebaPagoCFDI.Visible = False
-            End If
+            'If My.Computer.Name = "PCSISTEMASJORGE" Then
+            '    Me.cmdPruebaPagoCFDI.Visible = True
+            'Else
+            '    Me.cmdPruebaPagoCFDI.Visible = False
+            'End If
 
         Catch ex As Exception
             HandleError(Me.Name, "Frm_CXC_Pagos_Load", ex)
@@ -602,7 +617,7 @@ Buscar:
 
             'Creamos el Grid
             Me.GridVentas.Rows = 2
-            Me.GridVentas.Cols = 26
+            Me.GridVentas.Cols = 27
             Me.GridVentas.DisplayRowNumber = True
 
             Me.FormateaGridVentas()
@@ -651,7 +666,6 @@ Buscar:
             Me.GridVentas.Column(Me.iGyVentaSeleccion).Width = 60
             Me.GridVentas.Column(Me.iGyVentaDiferencia).Width = 80
             Me.GridVentas.Column(Me.iGyVentaIvaPorPagar).Width = 60
-
             Me.GridVentas.Column(Me.iGyVentaFechaPago).Width = 65
             Me.GridVentas.Column(Me.iGyVentaVersionCFDI).Width = 50
             Me.GridVentas.Column(Me.iGyVentaFormaPago).Width = 60
@@ -659,6 +673,7 @@ Buscar:
             Me.GridVentas.Column(Me.iGyVentaImporteMonedaVenta).Width = 60
             Me.GridVentas.Column(Me.iGyVentaSaldoAnteriorMonedaPago).Width = 60
             Me.GridVentas.Column(Me.iGyVentaSaldoAnteriorMonedaVenta).Width = 60
+            Me.GridVentas.Column(Me.iGyVentaEsFacturaElectronica).Width = 60
 
             Me.GridVentas.Cell(0, Me.iGyVentaFOLIO_DETALLE).Text = "Folio pago"
             Me.GridVentas.Cell(0, Me.iGyVentaCodigoCliente).Text = "Código"
@@ -678,7 +693,6 @@ Buscar:
             Me.GridVentas.Cell(0, Me.iGyVentaReferencia).Text = "Referencia"
             Me.GridVentas.Cell(0, Me.iGyVentaDiferencia).Text = "Diferencia"
             Me.GridVentas.Cell(0, Me.iGyVentaIvaPorPagar).Text = "IvaXPagar"
-
             Me.GridVentas.Cell(0, Me.iGyVentaFechaPago).Text = "Fecha pago"
             Me.GridVentas.Cell(0, Me.iGyVentaVersionCFDI).Text = "V.CFDI"
             Me.GridVentas.Cell(0, Me.iGyVentaFormaPago).Text = "F. Pago"
@@ -686,6 +700,7 @@ Buscar:
             Me.GridVentas.Cell(0, Me.iGyVentaImporteMonedaVenta).Text = "ImporteMonedaVenta"
             Me.GridVentas.Cell(0, Me.iGyVentaSaldoAnteriorMonedaPago).Text = "SaldoAnteriorMonedaPago"
             Me.GridVentas.Cell(0, Me.iGyVentaSaldoAnteriorMonedaVenta).Text = "SaldoAnteriorMonedaVenta"
+            Me.GridVentas.Cell(0, Me.iGyVentaEsFacturaElectronica).Text = "FacElec"
 
             Me.DespliegaCombosGrid()
 
@@ -759,7 +774,6 @@ Buscar:
             Me.GridVentas.Column(Me.iGyVentaPagoPesos).Visible = False
             Me.GridVentas.Column(Me.iGyVentaDiferencia).Visible = False
             Me.GridVentas.Column(Me.iGyVentaIvaPorPagar).Visible = True
-
             Me.GridVentas.Column(Me.iGyVentaFechaPago).Visible = True
             Me.GridVentas.Column(Me.iGyVentaVersionCFDI).Visible = True
             Me.GridVentas.Column(Me.iGyVentaFormaPago).Visible = True
@@ -767,10 +781,11 @@ Buscar:
             Me.GridVentas.Column(Me.iGyVentaImporteMonedaVenta).Visible = False
             Me.GridVentas.Column(Me.iGyVentaSaldoAnteriorMonedaPago).Visible = False
             Me.GridVentas.Column(Me.iGyVentaSaldoAnteriorMonedaVenta).Visible = False
+            Me.GridVentas.Column(Me.iGyVentaEsFacturaElectronica).Visible = False
 
             'Me.Grid.Visible = True
         Catch ex As Exception
-            HandleError(Me.Name, "FormateaGrid", ex)
+            HandleError(Me.Name, "FormateaGridVentas", ex)
             'Me.Grid.Visible = True
         End Try
     End Sub
@@ -1023,8 +1038,8 @@ Buscar:
                             "TOTAL_DOLARES," &
                             "CASE WHEN CODIGO_MONEDA_SAT='USD' THEN ROUND(SALDO/TIPO_DE_CAMBIO,2) ELSE ROUND(SALDO/" & dTipoCambio.ToString & ",2) END SALDO_DOLARES," &
                             "CASE WHEN TOTAL=SALDO THEN IMPUESTO ELSE 0 END IVA, " &
-                            "VERSION_ESQUEMA_XML,CODIGO_METODO_PAGO,CODIGO_METODO_PAGO_EVENTO " &
-                            "FROM VENTA_GLOBAL WHERE CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' AND SALDO>0 " & sSaldoDlls & " ORDER BY FECHA" 'AND CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " ORDER BY FECHA"
+                            "VERSION_ESQUEMA_XML,CODIGO_METODO_PAGO,CODIGO_METODO_PAGO_EVENTO,ES_FACTURA_ELECTRONICA " &
+                            "FROM VENTA_GLOBAL WHERE CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' AND SALDO>0 " & sSaldoDlls & " AND CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " ORDER BY FECHA"
 
         cmd = New SqlCommand(sSQL, Conexion)
 
@@ -1092,6 +1107,7 @@ Buscar:
                             Me.GridVentas.Cell(i, Me.iGyVentaImporteMonedaVenta).Text = "0"
                             Me.GridVentas.Cell(i, Me.iGyVentaSaldoAnteriorMonedaVenta).Text = "0"
                             Me.GridVentas.Cell(i, Me.iGyVentaSaldoAnteriorMonedaPago).Text = "0"
+                            Me.GridVentas.Cell(i, Me.iGyVentaEsFacturaElectronica).Text = dReader("ES_FACTURA_ELECTRONICA").ToString
 
                             i = i + 1
                         End If
@@ -1496,6 +1512,9 @@ Buscar:
             End If
 
             If Me.ValidaSumasDocumentoPagos = False Then
+                Return False
+            End If
+            If Me.ValidaVentasTimbradas = False Then
                 Return False
             End If
 
@@ -2260,6 +2279,8 @@ Buscar:
                     Me.gbAgregaDocCliente.Enabled = False
                     Me.gbVentas.Enabled = False
                     Me.btnEliminarDocumentoPago.Enabled = True
+                    Me.btnVerCFDIS.Enabled = False
+                    Me.btnGenerarCFDIS.Enabled = False
 
                     'Me.gbTotales.Enabled = True
 
@@ -2283,6 +2304,14 @@ Buscar:
                     Me.gbVentas.Enabled = True 'Para que lo puedan recorrer
                     'Me.gbTotales.Enabled = False
                     Me.btnEliminarDocumentoPago.Enabled = False
+                    'Me.btnGenerarCFDIS.Enabled = True
+                    If Me.oBancosCXC.CFDIS_GENERADOS = True Then
+                        Me.btnVerCFDIS.Enabled = True
+                        Me.btnGenerarCFDIS.Enabled = False
+                    Else
+                        Me.btnVerCFDIS.Enabled = False
+                        Me.btnGenerarCFDIS.Enabled = True
+                    End If
 
                     Me.tsbImprimirPoliza.Select()
 
@@ -2306,6 +2335,13 @@ Buscar:
                     Me.gbVentas.Enabled = True 'Para que lo puedan recorrer
                     'Me.gbTotales.Enabled = False
                     Me.btnEliminarDocumentoPago.Enabled = False
+                    If Me.oBancosCXC.CFDIS_GENERADOS = True Then
+                        Me.btnVerCFDIS.Enabled = True
+                        Me.btnGenerarCFDIS.Enabled = False
+                    Else
+                        Me.btnVerCFDIS.Enabled = False
+                        Me.btnGenerarCFDIS.Enabled = False
+                    End If
 
                     Me.tsbImprimirPoliza.Select()
 
@@ -3130,6 +3166,37 @@ Buscar:
 
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Private Function ValidaVentasTimbradas() As Boolean
+        Dim bResultado As Boolean = False, dPago As Double, sFacturas As String = ""
+        Try
+            For i = 1 To Me.GridVentas.Rows - 1
+                dPago = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text)
+                If dPago > 0 Then
+
+                    'Si es una factura electrónica de crédito y no esta timbrada
+                    If Me.GridVentas.Cell(i, Me.iGyVentaEsFacturaElectronica).Text = "1" And Me.GridVentas.Cell(i, Me.iGyVentaFormaPago).Text = "99" And Me.GridVentas.Cell(i, Me.iGyVentaMetodoPago).Text = "PPD" And
+                        txtLEN(Me.GridVentas.Cell(i, Me.iGyVentaVersionCFDI).Text) = False Then
+
+                        sFacturas = sFacturas & Me.GridVentas.Cell(i, Me.iGyVentaFolio).Text & ","
+                    End If
+                End If
+            Next
+
+            If txtLEN(sFacturas) = True Then
+                If MsgBox("Las facturas " & sFacturas & " no estan timbradas. Si usted continua estas facturas no va formar parte del pago timbrado. " & vbCrLf &
+                               "Seguro desea continuar ?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo, Me.Text) = MsgBoxResult.No Then
+                    Return False
+                End If
+            End If
+
+            bResultado = True
+        Catch ex As Exception
+            HandleError(Me.Name, "ValidaVentasTimbradas", ex)
         End Try
 
         Return bResultado

@@ -141,7 +141,7 @@ Module FacturacionElectronica
                     If cfd.Sellar = True Then
 
                         If bMododemo = True Then
-                            MsgBox("Esta el timbrado en modo demo")
+                            MsgBox("Esta el timbrado en modo demo", vbInformation, sProcedure)
                             cfd.TimbrarDemo(sRutaXMLTimbrado, sFelectronicaCbbImagen)
                         Else
                             cfd.Timbrar(sRutaXMLTimbrado, sFelectronicaCbbImagen)
