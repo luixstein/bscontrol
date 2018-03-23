@@ -49,6 +49,7 @@ Public Class Frm_CXP_Devoluciones
     Private igySerieDescripcion As Short = 3
     Private igySerieIdInventarioLotesCostos As Short = 4
     Private igySerieNumeroSerie As Short = 5
+    Private igySerieIdOrigen As Short = 6
 #End Region
 
 #Region "Opciones"
@@ -249,6 +250,7 @@ busca:
                 .Columns.Add("DESCRIPCION", GetType(String))
                 .Columns.Add("ID_INVENTARIO_LOTES_COSTOS", GetType(String))
                 .Columns.Add("NUMERO_SERIE", GetType(String))
+                .Columns.Add("ID_COMPRA_DETALLE", GetType(String))
             End With
             Me.dtSeries.AcceptChanges()
 
@@ -266,6 +268,7 @@ busca:
                             dRow("DESCRIPCION") = Me.Grid.Cell(i, Me.igyDescripcion).Text
                             dRow("ID_INVENTARIO_LOTES_COSTOS") = ""
                             dRow("NUMERO_SERIE") = ""
+                            dRow("ID_COMPRA_DETALLE") = Me.Grid.Cell(i, Me.igyIdOrigen).Text
 
                             Me.dtSeries.Rows.Add(dRow)
                         Next
@@ -291,7 +294,7 @@ busca:
             Me.GridSeries.DataSource = Nothing
             FG_Grid_Limpiar(Me.GridSeries)
             Me.GridSeries.Rows = 2
-            Me.GridSeries.Cols = 6
+            Me.GridSeries.Cols = 7
             Me.FormateaGridSeries()
             'Me.Grid.Cell(1, Me.iGyIDAdicional).Text = "1"
         Catch ex As Exception
@@ -370,7 +373,6 @@ busca:
             Me.Grid.Column(Me.igyIEPS_IMPORTE).Visible = False
             Me.Grid.Column(Me.igyBASE_IEPS).Visible = False
             Me.Grid.Column(Me.igyBASE_IVA).Visible = False
-
 
         Catch ex As Exception
             HandleError(Me.Name, "FormateaGrid", ex)
@@ -665,6 +667,15 @@ busca:
                     dCantidad = valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text)
                     If dCantidad > 0 Then
                         .NuevoRenglon()
+
+                        If Me.dtSeries.Rows.Count > 0 Then
+                            For Each dRow In Me.dtSeries.Select("POSICION='" & i.ToString & "'")
+                                sListaSeries = sListaSeries & dRow("POSICION").ToString & "," & dRow("CODIGO_ARTICULO").ToString & "," & dRow("ID_INVENTARIO_LOTES_COSTOS").ToString & "," & dRow("NUMERO_SERIE").ToString & "|"
+                            Next
+                            If txtLEN(sListaSeries) = True Then
+                                sListaSeries = sListaSeries.Substring(0, sListaSeries.Length - 1) 'Para quitarle el último pipe que sale sobrando.
+                            End If
+                        End If
 
                         .oDetalle.FOLIO_DEVOLUCION = .FOLIO_DEVOLUCION
                         .oDetalle.CODIGO_ARTICULO = Me.Grid.Cell(i, Me.igyCodigo).Text.ToUpper
@@ -1042,7 +1053,8 @@ Sigue:
 busca_serie:
                             oSerie = New Class_Inventarios_Lotes_Series
                             sCodigoArticulo = .Cell(Renglon, Me.igySerieCodigo).Text
-                            sLote = oDevolucion.BusquedaVisualSeriesDevolucion(Me.txtFolioCompra.Text, sCodigoArticulo)
+                            'sLote = oDevolucion.BusquedaVisualSeriesDevolucion(Me.txtFolioCompra.Text, sCodigoArticulo)
+                            sLote = oDevolucion.BusquedaVisualSeriesDevolucion(Me.txtFolioCompra.Text, sCodigoArticulo, .Cell(Renglon, Me.igySerieIdOrigen).Text)
                             If txtLEN(sLote) = True Then
                                 If RepiteSerie(Renglon, sLote) = False Then
                                     Me.EstableceSerie(Renglon, sLote)
@@ -1089,7 +1101,7 @@ busca_serie:
                         '    End If
 
                     Case Keys.Delete
-                        e.SuppressKeyPress = True
+                        e.SuppressKeyPress = True 'No es válido eliminar renglones del grid de series.
                 End Select
             End With
 
@@ -1181,7 +1193,6 @@ busca_serie:
                 Return False
             End If
 
-            'FALTA:Validaciones de disponibles de series
             If Me.oCompra.TIENE_SERIES = True Then
 
                 If Me.ValidaNumerosSerie = False Then
@@ -1192,8 +1203,7 @@ busca_serie:
                     Return False
                 End If
 
-                MsgBox("FALTA:Validaciones de disponibles de series en los lotes de costos exactos", vbExclamation, sProcedure)
-                Return False
+                'Nota, las validaciones de disponibles de series en los lotes de costos exactos se hacen en el ValidaExistencia
             End If
 
             bResultado = True
@@ -1378,8 +1388,7 @@ busca_serie:
                 End If
             Next i
 
-            MsgBox("hay que ver si funciona bien esto de validar los disp de series")
-            Return False
+            'Aqui valida disponibles de lotes
             With Me.GridSeries
                 For i = 1 To .Rows - 1
                     If Len(.Cell(i, Me.igySeriePosicion).Text) > 0 Then

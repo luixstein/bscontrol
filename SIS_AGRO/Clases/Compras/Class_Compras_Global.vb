@@ -1,6 +1,5 @@
 ﻿Option Strict On
 
-Imports System.Data
 Imports System.Data.SqlClient
 Imports CrystalDecisions.CrystalReports.Engine
 

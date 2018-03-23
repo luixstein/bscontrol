@@ -590,21 +590,20 @@ Public Class Class_CXP_Devoluciones_Global
         End Try
     End Sub
 
-    Public Function BusquedaVisualSeriesDevolucion(ByVal FolioCompra As String, ByVal sCodigoArticulo As String) As String
+    Public Function BusquedaVisualSeriesDevolucion(ByVal FolioCompra As String, ByVal sCodigoArticulo As String, ByVal IdOrigen As String) As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         Dim oArticulo As New Class_CatArticulos(sCodigoArticulo)
 
         f.Text = "Búsqueda de series del artículo : " & oArticulo.DESCRIPCION
-        f.sCampo = "NUMERO_SERIE"
-        f.sOrder = "S.ID_INVENTARIO_LOTES_SALIDAS"
-        f.sTable = "INVENTARIO_MOVIMIENTOS_DETALLE"
-        f.sQl = "SELECT S.ID_INVENTARIO_LOTES_COSTOS,C.NUMERO_SERIE,DBO.FN_FORMAT_FECHA_CORTO(C.FECHA) " &
-                "FROM INVENTARIO_MOVIMIENTOS_DETALLE I " &
-                "INNER JOIN INVENTARIO_LOTES_SALIDAS S ON(I.ID_INVENTARIO_MOVIMIENTOS_DETALLE=S.ID_INVENTARIO_MOVIMIENTOS_DETALLE) " &
-                "INNER JOIN VW_INVENTARIO_LOTES_COSTOS_EXTENDIDO C ON(S.ID_INVENTARIO_LOTES_COSTOS=C.ID_INVENTARIO_LOTES_COSTOS) " &
-                "INNER JOIN CAT_ARTICULOS A ON(I.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
-                "WHERE I.FOLIO_MOVIMIENTO_INVENTARIO='" & sReplace(FolioCompra) & "' AND LEN(C.NUMERO_SERIE)>0 AND I.CODIGO_ARTICULO = '" & sReplace(sCodigoArticulo) & "' AND "
+        f.sCampo = "LC.NUMERO_SERIE"
+        f.sOrder = "LC.ID_INVENTARIO_LOTES_COSTOS"
+        f.sTable = "VW_INVENTARIO_LOTES_COSTOS_EXTENDIDO"
+        f.sQl = "SELECT LC.ID_INVENTARIO_LOTES_COSTOS,LC.NUMERO_SERIE,DBO.FN_FORMAT_FECHA_CORTO(LC.FECHA) " &
+                "FROM COMPRA_DETALLE R " &
+                "INNER JOIN INVENTARIO_MOVIMIENTOS_DETALLE IR ON(R.ID_COMPRA_DETALLE=IR.ID_ORIGEN AND R.FOLIO_COMPRA=IR.FOLIO_MOVIMIENTO_INVENTARIO) " &
+                "INNER JOIN VW_INVENTARIO_LOTES_COSTOS_EXTENDIDO LC ON(IR.ID_INVENTARIO_MOVIMIENTOS_DETALLE=LC.ID_INVENTARIO_MOVIMIENTOS_DETALLE) " &
+                "WHERE R.ID_COMPRA_DETALLE=" & IdOrigen.ToString & " AND R.FOLIO_COMPRA='" & FolioCompra & "' AND "
         f.Inicia("%")
         f.ShowDialog()
         Try
