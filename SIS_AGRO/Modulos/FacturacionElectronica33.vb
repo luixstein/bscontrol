@@ -20,7 +20,7 @@ Module FacturacionElectronica33
         Try
             Dim dFechaServidor As Date = Empresa_Sistema.FechaActualServidor
 
-            Dim sqlResult As New Class_find("SELECT E.VERSION,S.VERSION_CFDI_DLL FROM VERSION_ESQUEMA_CFD E,SIS_EMPRESA S WHERE '" & Format(dFecha, "yyyy-dd-MM hh:mm") & "'  BETWEEN E.FECHA_INICIAL AND E.FECHA_FINAL")
+            Dim sqlResult As New Class_find("SELECT E.VERSION,S.VERSION_CFDI_DLL FROM VERSION_ESQUEMA_CFD E,SIS_EMPRESA S WHERE '" & Format(dFecha, "yyyy-dd-MM HH:mm") & "'  BETWEEN E.FECHA_INICIAL AND E.FECHA_FINAL")
 
             'Nota1, no la copia en automático, porque ya lo debió haber hecho el gestionaArchivosCertificados
             'Nota2, se valida la versión que tenga el servidor en el instante por si tenemos fallo en la dll y se pare el timbrado.
@@ -40,7 +40,7 @@ Module FacturacionElectronica33
                 Return False
             End If
 
-            If CDate(Format(dFecha, "dd/MM/yyyy hh:mm:ss")) < dFechaServidor.AddDays(-3) Then
+            If CDate(Format(dFecha, "dd/MM/yyyy HH:mm:ss")) < dFechaServidor.AddDays(-3) Then
                 MsgBox("La fecha del documento es mayor de 72 horas de la fecha actual, el SAT no permite timbrar con fecha de más de 3 días.", vbExclamation, sProcedure)
                 Return False
             End If
@@ -497,8 +497,8 @@ Module FacturacionElectronica33
         Dim sRutaXML As String = "C:\Agrinet\FELECTRONICA\AGRINET_LAND\Xmls_Pdfs\CULIACAN\PX-1.xml"
 
         Try
-            ComprobanteFecha = Format(Date.Now, "yyyy-MM-dd") & "T" & Format(Date.Now, "hh:mm:ss")
-            PagoFechaPago = Format(Date.Now.AddDays(-1), "yyyy-MM-dd") & "T" & Format(Date.Now.AddDays(-1), "hh:mm:ss")
+            ComprobanteFecha = Format(Date.Now, "yyyy-MM-dd") & "T" & Format(Date.Now, "HH:mm:ss")
+            PagoFechaPago = Format(Date.Now.AddDays(-1), "yyyy-MM-dd") & "T" & Format(Date.Now.AddDays(-1), "HH:mm:ss")
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Datos globales''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             With Cfd
@@ -615,7 +615,7 @@ Module FacturacionElectronica33
             End If
 
             'Nota en el comprobante va la fecha del depósito.
-            ComprobanteFecha = Format(oBanco.FECHA, "yyyy-MM-dd") & "T" & Format(oBanco.FECHA_SERVIDOR, "hh:mm:ss")
+            ComprobanteFecha = Format(oBanco.FECHA, "yyyy-MM-dd") & "T" & Format(oBanco.FECHA_SERVIDOR, "HH:mm:ss")
 
             'Debemos validar la fecha del comprobante y no la del pago.
             If ValidaDatosGenerales(FechaSatAFechaNormal(ComprobanteFecha), oPago.FELECTRONICA_CER, oPago.FELECTRONICA_KEY, oPago.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA) = False Then
@@ -632,7 +632,7 @@ Module FacturacionElectronica33
                 tPlazaFacturaElectronica = Plaza 'Plaza ya cargada en el inicio de sesión del usuario.
             End If
 
-            PagoFechaPago = Format(oPago.FECHA_PAGO, "yyyy-MM-dd") & "T" & Format(oPago.FECHA_PAGO, "hh:mm:ss")
+            PagoFechaPago = Format(oPago.FECHA_PAGO, "yyyy-MM-dd") & "T" & Format(oPago.FECHA_PAGO, "HH:mm:ss")
 
             'No funcionó poder las 12 por ser antes que la fecha del comprobante(si es que es del mismo dia), ya la propia fecha_pago tiene la hora grabada necesaria
             'PagoFechaPago = Format(oPago.FECHA_PAGO, "yyyy-MM-dd") & "T" & "12:00:00" 'Fijos a las 12 todos para no pedir la hora de pago al cliente
@@ -726,7 +726,7 @@ Module FacturacionElectronica33
                 .MonedaP = oBancoDetalle.CODIGO_MONEDA_SAT
 
                 If .MonedaP <> "MXN" Then 'Dice el SAT, Si la clave es MXN (Peso Mexicano), no debe existir información en el campo TipoCambioP.
-                    .TipoCambioP = FormatTipoCambio(oBanco.TIPO_DE_CAMBIO)
+                    .TipoCambioP = FormatTipoCambio(oBanco.TIPO_DE_CAMBIO, False)
                 End If
 
                 .Monto = Format(oPago.MONTO, "#0.00")

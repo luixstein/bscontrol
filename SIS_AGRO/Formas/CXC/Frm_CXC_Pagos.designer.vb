@@ -205,6 +205,7 @@ Partial Class Frm_CXC_Pagos
         Me.cmdPruebaPagoCFDI.TabIndex = 378
         Me.cmdPruebaPagoCFDI.Text = "Prueba CFDI-Pago"
         Me.cmdPruebaPagoCFDI.UseVisualStyleBackColor = True
+        Me.cmdPruebaPagoCFDI.Visible = False
         '
         'TxtTotal
         '

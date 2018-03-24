@@ -1541,7 +1541,7 @@ Module FacturacionElectronica
                     Exit Function
                 End If
 
-                strCadena = strCadena & "|" & Replace(fElectronicaValidaCampo(row("rfc")), "-", "") & "|" & fElectronicaValidaCampo(strSerie) & "|" & fElectronicaValidaCampo(row("FOLIO_NUMERICO")) & "|" & fElectronicaValidaCampo(iAñoAprobacion & numeroAprobacion) & "|" & Format(row("fecha"), "dd/MM/yyyy hh:mm:ss") & "|" & Format(row("TOTAL"), "#########0.00") & "|" & Format(row("IMPUESTO"), "#########0.00") & "|" & "1" & "|" & "I"
+                strCadena = strCadena & "|" & Replace(fElectronicaValidaCampo(row("rfc")), "-", "") & "|" & fElectronicaValidaCampo(strSerie) & "|" & fElectronicaValidaCampo(row("FOLIO_NUMERICO")) & "|" & fElectronicaValidaCampo(iAñoAprobacion & numeroAprobacion) & "|" & Format(row("fecha"), "dd/MM/yyyy HH:mm:ss") & "|" & Format(row("TOTAL"), "#########0.00") & "|" & Format(row("IMPUESTO"), "#########0.00") & "|" & "1" & "|" & "I"
 
                 strCadena = strCadena & "||||"
 
@@ -1565,7 +1565,7 @@ Module FacturacionElectronica
                     Exit Function
                 End If
 
-                strCadena = strCadena & "|" & Replace(fElectronicaValidaCampo(row("rfc")), "-", "") & "|" & fElectronicaValidaCampo(strSerie) & "|" & fElectronicaValidaCampo(row("FOLIO_NUMERICO")) & "|" & fElectronicaValidaCampo(iAñoAprobacion & numeroAprobacion) & "|" & Format(row("FECHA"), "dd/MM/yyyy hh:mm:ss") & "|" & Format(row("TOTAL"), "#########0.00") & "|" & Format(row("IMPUESTO"), "#########0.00") & "|" & "0" & "|" & "I"
+                strCadena = strCadena & "|" & Replace(fElectronicaValidaCampo(row("rfc")), "-", "") & "|" & fElectronicaValidaCampo(strSerie) & "|" & fElectronicaValidaCampo(row("FOLIO_NUMERICO")) & "|" & fElectronicaValidaCampo(iAñoAprobacion & numeroAprobacion) & "|" & Format(row("FECHA"), "dd/MM/yyyy HH:mm:ss") & "|" & Format(row("TOTAL"), "#########0.00") & "|" & Format(row("IMPUESTO"), "#########0.00") & "|" & "0" & "|" & "I"
 
                 strCadena = strCadena & "||||"
 
@@ -1588,7 +1588,7 @@ Module FacturacionElectronica
             '            Exit Function
             '        End If
 
-            '        strCadena = strCadena & "|" & Replace(fElectronicaValidaCampo(dReader("rfc").ToString), "-", "") & "|" & fElectronicaValidaCampo(strSerie) & "|" & fElectronicaValidaCampo(dReader("FOLIO_NUMERICO").ToString) & "|" & fElectronicaValidaCampo(iAñoAprobacion & numeroAprobacion) & "|" & Format(dReader("fecha").Value, "dd/mm/yyyy hh:mm:ss") & "|" & Format(dReader("total").Value, "#########0.00") & "|" & Format(dReader("iva").Value, "#########0.00") & "|" & "1" & "|" & "E"
+            '        strCadena = strCadena & "|" & Replace(fElectronicaValidaCampo(dReader("rfc").ToString), "-", "") & "|" & fElectronicaValidaCampo(strSerie) & "|" & fElectronicaValidaCampo(dReader("FOLIO_NUMERICO").ToString) & "|" & fElectronicaValidaCampo(iAñoAprobacion & numeroAprobacion) & "|" & Format(dReader("fecha").Value, "dd/mm/yyyy HH:mm:ss") & "|" & Format(dReader("total").Value, "#########0.00") & "|" & Format(dReader("iva").Value, "#########0.00") & "|" & "1" & "|" & "E"
 
             '        strCadena = strCadena & "||||"
 
@@ -1616,7 +1616,7 @@ Module FacturacionElectronica
             '            Exit Function
             '        End If
 
-            '        strCadena = strCadena & "|" & Replace(fElectronicaValidaCampo(dReader("rfc").Value), "-", "") & "|" & fElectronicaValidaCampo(strSerie) & "|" & fElectronicaValidaCampo(dReader("FOLIO_NUMERICO").Value) & "|" & fElectronicaValidaCampo(iAñoAprobacion & numeroAprobacion) & "|" & Format(dReader("FECHA_CANCELACION").Value, "dd/mm/yyyy hh:mm:ss") & "|" & Format(dReader("total").Value, "#########0.00") & "|" & Format(dReader("iva").Value, "#########0.00") & "|" & "0" & "|" & "E"
+            '        strCadena = strCadena & "|" & Replace(fElectronicaValidaCampo(dReader("rfc").Value), "-", "") & "|" & fElectronicaValidaCampo(strSerie) & "|" & fElectronicaValidaCampo(dReader("FOLIO_NUMERICO").Value) & "|" & fElectronicaValidaCampo(iAñoAprobacion & numeroAprobacion) & "|" & Format(dReader("FECHA_CANCELACION").Value, "dd/mm/yyyy HH:mm:ss") & "|" & Format(dReader("total").Value, "#########0.00") & "|" & Format(dReader("iva").Value, "#########0.00") & "|" & "0" & "|" & "E"
 
             '        strCadena = strCadena & "||||"
             '        PrintLine(NúmeroArchivo, strCadena)
@@ -1978,7 +1978,7 @@ Module FacturacionElectronica
 
     '        'Agregamos los datos totales y Generales
     '        Cfd.Folio = dReader("FOLIO_NUMERICO").Value
-    '        Cfd.fecha = Format(dReader("fecha").Value, "yyyy-mm-dd") & "T" & Format(dReader("FECHA_SERVIDOR").Value, "hh:mm:ss")
+    '        Cfd.fecha = Format(dReader("fecha").Value, "yyyy-mm-dd") & "T" & Format(dReader("FECHA_SERVIDOR").Value, "HH:mm:ss")
     '        Cfd.tipoDeComprobante = "egreso"
     '        Cfd.formaDePago = "PAGO EN UNA SOLA EXHIBICION"
 
