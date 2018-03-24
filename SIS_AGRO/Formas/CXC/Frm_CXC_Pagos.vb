@@ -154,6 +154,7 @@ Public Class Frm_CXC_Pagos
         End Try
 
     End Sub
+
     Private Sub cmdPruebaPagoCFDI_Click(sender As Object, e As EventArgs) Handles cmdPruebaPagoCFDI.Click
         'Me.oBancosCXC.GeneraPagosElectronicos()
         GeneraPagoElectronico33Prueba()
@@ -162,6 +163,7 @@ Public Class Frm_CXC_Pagos
     Private Sub cmdSeleccionaSPEI_Click(sender As Object, e As EventArgs) Handles cmdSeleccionaSPEI.Click
         Me.SeleccionarSPEI()
     End Sub
+
     Private Sub btnGenerarCFDIS_Click(sender As Object, e As EventArgs) Handles btnGenerarCFDIS.Click
         Dim bHuboTimbrados As Boolean = False
 
