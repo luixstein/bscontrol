@@ -33,6 +33,7 @@ Partial Class Catalogo_Clientes
         Me.tsbImprimirListado = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.txtNumeroRegistroIdentificadorExtranjero = New System.Windows.Forms.MaskedTextBox()
         Me.lblDisplayUsoCFDI = New System.Windows.Forms.Label()
         Me.cboUsoCFDI = New System.Windows.Forms.ComboBox()
         Me.TxtIdRelacion = New System.Windows.Forms.TextBox()
@@ -41,7 +42,6 @@ Partial Class Catalogo_Clientes
         Me.TxtCodigoPropietario = New System.Windows.Forms.TextBox()
         Me.chkEsContribuyenteIEPS = New System.Windows.Forms.CheckBox()
         Me.lblDisplayNumeroRegistroIdentificadorExtranjero = New System.Windows.Forms.Label()
-        Me.txtNumeroRegistroIdentificadorExtranjero = New System.Windows.Forms.TextBox()
         Me.cboTipoMercado = New System.Windows.Forms.ComboBox()
         Me.lblDisplayTipoCliente = New System.Windows.Forms.Label()
         Me.lblDisplayTipoPersona = New System.Windows.Forms.Label()
@@ -211,6 +211,7 @@ Partial Class Catalogo_Clientes
         '
         'gBoxInformacion
         '
+        Me.gBoxInformacion.Controls.Add(Me.txtNumeroRegistroIdentificadorExtranjero)
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayUsoCFDI)
         Me.gBoxInformacion.Controls.Add(Me.cboUsoCFDI)
         Me.gBoxInformacion.Controls.Add(Me.TxtIdRelacion)
@@ -219,7 +220,6 @@ Partial Class Catalogo_Clientes
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigoPropietario)
         Me.gBoxInformacion.Controls.Add(Me.chkEsContribuyenteIEPS)
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayNumeroRegistroIdentificadorExtranjero)
-        Me.gBoxInformacion.Controls.Add(Me.txtNumeroRegistroIdentificadorExtranjero)
         Me.gBoxInformacion.Controls.Add(Me.cboTipoMercado)
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayTipoCliente)
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayTipoPersona)
@@ -244,6 +244,14 @@ Partial Class Catalogo_Clientes
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Datos generales"
+        '
+        'txtNumeroRegistroIdentificadorExtranjero
+        '
+        Me.txtNumeroRegistroIdentificadorExtranjero.Location = New System.Drawing.Point(106, 270)
+        Me.txtNumeroRegistroIdentificadorExtranjero.Mask = "000000000"
+        Me.txtNumeroRegistroIdentificadorExtranjero.Name = "txtNumeroRegistroIdentificadorExtranjero"
+        Me.txtNumeroRegistroIdentificadorExtranjero.Size = New System.Drawing.Size(100, 20)
+        Me.txtNumeroRegistroIdentificadorExtranjero.TabIndex = 11
         '
         'lblDisplayUsoCFDI
         '
@@ -315,14 +323,6 @@ Partial Class Catalogo_Clientes
         Me.lblDisplayNumeroRegistroIdentificadorExtranjero.Size = New System.Drawing.Size(105, 27)
         Me.lblDisplayNumeroRegistroIdentificadorExtranjero.TabIndex = 125
         Me.lblDisplayNumeroRegistroIdentificadorExtranjero.Text = "Num registro id extranjero (TAX ID) :"
-        '
-        'txtNumeroRegistroIdentificadorExtranjero
-        '
-        Me.txtNumeroRegistroIdentificadorExtranjero.Location = New System.Drawing.Point(116, 270)
-        Me.txtNumeroRegistroIdentificadorExtranjero.MaxLength = 100
-        Me.txtNumeroRegistroIdentificadorExtranjero.Name = "txtNumeroRegistroIdentificadorExtranjero"
-        Me.txtNumeroRegistroIdentificadorExtranjero.Size = New System.Drawing.Size(185, 20)
-        Me.txtNumeroRegistroIdentificadorExtranjero.TabIndex = 11
         '
         'cboTipoMercado
         '
@@ -1299,7 +1299,6 @@ Partial Class Catalogo_Clientes
     Friend WithEvents cboNombreXML As System.Windows.Forms.ComboBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents lblDisplayNumeroRegistroIdentificadorExtranjero As System.Windows.Forms.Label
-    Friend WithEvents txtNumeroRegistroIdentificadorExtranjero As System.Windows.Forms.TextBox
     Friend WithEvents Grid As System.Windows.Forms.DataGridView
     Friend WithEvents rbtNombreCliente As System.Windows.Forms.RadioButton
     Friend WithEvents rbtCodigoCliente As System.Windows.Forms.RadioButton
@@ -1320,4 +1319,5 @@ Partial Class Catalogo_Clientes
     Friend WithEvents TxtIdRelacion As System.Windows.Forms.TextBox
     Friend WithEvents lblDisplayUsoCFDI As Label
     Friend WithEvents cboUsoCFDI As ComboBox
+    Friend WithEvents txtNumeroRegistroIdentificadorExtranjero As MaskedTextBox
 End Class

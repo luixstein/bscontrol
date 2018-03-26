@@ -901,6 +901,13 @@ busca:
                 End If
             End If
 
+            If (Me.cboPais.SelectedValue.ToString = "USA" Or Me.cboPais.SelectedValue.ToString = "CAN") AndAlso txtLEN(Me.txtNumeroRegistroIdentificadorExtranjero.Text) = True Then
+                If Me.txtNumeroRegistroIdentificadorExtranjero.Text.Replace(" ", "").Length <> 9 Then
+                    MsgBox("El valor de Num registro id extranjero (TAX ID) debe ser de 9 dígitos, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+                    Return False
+                End If
+            End If
+
             Select Case Me.Estado
                 Case enumEstados.NUEVO, enumEstados.EDICION
                     oElemento = New Class_CatClientes
