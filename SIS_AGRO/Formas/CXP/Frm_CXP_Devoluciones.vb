@@ -413,6 +413,8 @@ busca:
                 .Column(Me.igySerieIdInventarioLotesCostos).Locked = True
                 .Column(Me.igySerieNumeroSerie).Locked = True
 
+                .Column(Me.igySerieIdOrigen).Visible = False
+
                 .AutoRedraw = True
                 .Refresh()
 
@@ -614,9 +616,12 @@ busca:
                     Me.txtSaldo.Text = FormatImporteContable(Me.oCompra.SALDO)
 
                     Me.Grid.DataSource = .ObtenerDetalle
+
+                    Me.GridSeries.DataSource = .ObtenerDetalleSeries
                 End With
 
                 Me.FormateaGrid()
+                Me.FormateaGridSeries()
 
                 bResultado = True
 
