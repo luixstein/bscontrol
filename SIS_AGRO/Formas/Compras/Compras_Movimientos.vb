@@ -575,11 +575,9 @@ Buscar:
 
                 If Me.oDocumento.AFECTA_CXP = True Then
                     .Column(Me.iGyBoton).Visible = True
-
                     .Column(Me.iGyNombreCuentaContable).Width = 70
                     .Column(Me.iGyBoton).Width = 70
                     .Column(Me.iGyIDAdicional).Visible = False '.Column(Me.iGyIDAdicional).Width = 70
-
                 Else
                     .Column(Me.iGyBoton).Visible = False
                     .Column(Me.iGyNombreCuentaContable).Visible = False
@@ -605,9 +603,10 @@ Buscar:
                 .Column(Me.igyCantidad).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
                 .Column(Me.igyCantidad).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.igyPrecio).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
+                '.Column(Me.igyPrecio).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
+                .Column(Me.igyPrecio).FormatString = "$ ###,###,##0." & StrDup(6, "0")
                 .Column(Me.igyPrecio).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.igyPrecio).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.igyPrecio).DecimalLength = 6 ' Empresa_Sistema.DECIMALES_PRECIO
                 .Column(Me.igyPrecio).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .Column(Me.igyImpuestoPorcentaje).Mask = FlexCell.MaskEnum.Numeric
@@ -934,18 +933,18 @@ Buscar:
         Dim i As Integer
 
         If MsgBox("Deseas grabar la " & Me.CboDocumento.Text & " con el folio : " & Me.txtFolioCompra.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Grabar") = MsgBoxResult.No Then
-            Exit Function
+            Return False
         End If
 
         If Me.oDocumento.AFECTA_INVENTARIOS = True Then
             If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
-                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, Me.Text)
-                Exit Function
+                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Exclamation, Me.Text)
+                Return False
             End If
         Else
             If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString) = False Then
-                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, Me.Text)
-                Exit Function
+                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Exclamation, Me.Text)
+                Return False
             End If
         End If
 
@@ -954,7 +953,7 @@ Buscar:
         End If
 
         If Me.ValidarOrdenCompra() = False Then
-            Exit Function
+            Return False
         End If
 
         Try
@@ -984,13 +983,13 @@ Buscar:
                 If Me.Estado = enumEstados.NUEVO Then
                     If .InsertarOrdenCompra() = False Then
                         MsgBox("Error al tratar de insertar el movimiento de compras.", MsgBoxStyle.Exclamation, Me.Text)
-                        Exit Function
+                        Return False
                     End If
                     Me.txtFolioCompra.Text = .FOLIO_COMPRA
                 Else
                     If .ActualizarOrdenCompra() = False Then
                         MsgBox("Error al tratar de actualizar el movimiento de compras.", MsgBoxStyle.Exclamation, Me.Text)
-                        Exit Function
+                        Return False
                     End If
                 End If
 
@@ -1016,7 +1015,7 @@ Buscar:
 
                         If .oComprasDetalle.GrabaRenglonOrdenCompra() = False Then
                             MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Text)
-                            Exit Function
+                            Return False
                         End If
                     End If
                 Next
@@ -1036,17 +1035,17 @@ Buscar:
         Dim bResultado As Boolean = False
         Dim i As Integer, sListaIDsDetalle As String = "", sListaSeries As String = ""
 
-        If MsgBox("Deseas aplicar la " & Me.CboDocumento.Text & " con el folio : " & Me.txtFolioCompra.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Grabar") = MsgBoxResult.No Then
-            Exit Function
+        If MsgBox("Deseas aplicar la " & Me.CboDocumento.Text & " con el folio : " & Me.txtFolioCompra.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Aplicar") = MsgBoxResult.No Then
+            Return False
         End If
 
         If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
-            MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, Me.Text)
-            Exit Function
+            MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Exclamation, Me.Text)
+            Return False
         End If
 
         If Me.ValidarCompra() = False Then
-            Exit Function
+            Return False
         End If
 
         Try
@@ -1077,7 +1076,7 @@ Buscar:
 
                 If .GrabaCompraGlobal() = False Then
                     MsgBox("Error al tratar de aplicar el movimiento de compras.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    Return False
                 End If
                 Me.txtFolioCompra.Text = .FOLIO_COMPRA
 
@@ -1116,7 +1115,7 @@ Buscar:
 
                         If .oComprasDetalle.GrabaRenglonCompra() = False Then
                             MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Text)
-                            Exit Function
+                            Return False
                             'Else
                             '    ya no se ocuparia esto, porque las series ya estan especificadas en el mismo renglon
                             '    sListaIDsDetalle = sListaIDsDetalle & i.ToString & "," & .oComprasDetalle.ID_COMPRA_DETALLE.ToString & "|"
@@ -1141,12 +1140,12 @@ Buscar:
 
                 'If Me.oCompras.AfectaInventarioCompra(sListaIDsDetalle, sListaSeries) = False Then
                 '    MsgBox("Error al tratar de afectar el inventario.", MsgBoxStyle.Exclamation, Me.Text)
-                '    Exit Function
+                '    RETURN FALSE
                 'End If
 
                 If Me.oCompras.AfectaInventarioCompra() = False Then
                     MsgBox("Error al tratar de afectar el inventario.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    Return False
                 End If
 
                 Me.txtFolioCompra.Text = .FOLIO_COMPRA.ToString
@@ -1164,7 +1163,7 @@ Buscar:
 
                 If Me.oCompras.AfectaContabilidadCompra = False Then
                     MsgBox("Error al tratar de afectar contabilidad.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    Return False
                 End If
 
                 bResultado = True
@@ -1800,8 +1799,9 @@ Buscar:
 
                     dIEPS_PORCENTAJE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
                     dIEPS_UNITARIO = Redondear(dPrecio * (dIEPS_PORCENTAJE / 100), 4)
-                    dBASE_IEPS = Redondear((dPrecio * dCantidad), 2)
-                    dIEPS_IMPORTE = Redondear(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2)
+                    'dBASE_IEPS = Redondear((dPrecio * dCantidad), 2)
+                    dBASE_IEPS = Redondear((dPrecio * dCantidad), 6)
+                    dIEPS_IMPORTE = Redondear(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
                     dBASE_IVA = dIEPS_IMPORTE + dBASE_IEPS
                     dIVA_IMPORTE = Redondear(dBASE_IVA * ((dPorcentajeIVA / 100)), 2)
 
