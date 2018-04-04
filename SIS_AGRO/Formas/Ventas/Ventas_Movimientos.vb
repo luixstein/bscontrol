@@ -858,13 +858,13 @@ Buscar:
             'Me.Grid.Column(Me.igyPrecio).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
             Me.Grid.Column(Me.igyPrecio).FormatString = "$ ###,###,##0." & StrDup(6, "0")
             Me.Grid.Column(Me.igyPrecio).Mask = FlexCell.MaskEnum.Numeric
-            Me.Grid.Column(Me.igyPrecio).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.igyPrecio).DecimalLength = 6 'Empresa_Sistema.DECIMALES_PRECIO
             Me.Grid.Column(Me.igyPrecio).Alignment = FlexCell.AlignmentEnum.RightCenter
 
             'Me.Grid.Column(Me.igyPRECIO_TOTAL).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
             Me.Grid.Column(Me.igyPRECIO_TOTAL).FormatString = "$ ###,###,##0." & StrDup(6, "0")
             Me.Grid.Column(Me.igyPRECIO_TOTAL).Mask = FlexCell.MaskEnum.Numeric
-            Me.Grid.Column(Me.igyPRECIO_TOTAL).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.igyPRECIO_TOTAL).DecimalLength = 6 'Empresa_Sistema.DECIMALES_PRECIO
             Me.Grid.Column(Me.igyPRECIO_TOTAL).Alignment = FlexCell.AlignmentEnum.RightCenter
 
             Me.Grid.Column(Me.igyPrecioKilos).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
