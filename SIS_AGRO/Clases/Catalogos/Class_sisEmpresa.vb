@@ -6,10 +6,7 @@ Public NotInheritable Class Class_sisEmpresa
 #Region "Campos"
 
 #Region "Campos de la tabla"
-    'DATOS DEL SISTEMA
     Private _VERSION_AGROCONTROL As Integer
-
-    'DATOS GENERALES DE LA EMPRESA
     Private _CODIGO_EMPRESA As Integer
     Private _Nombre_Empresa As String
     Private _Domicilio As String
@@ -30,7 +27,6 @@ Public NotInheritable Class Class_sisEmpresa
     Private _CODIGO_ESTADO As String
     Private _CODIGO_PAIS_SAT As String
     Private _CURP As String
-
     Private _Decimales_Para_Redondear As Integer
     Private _DECIMALES_CONTABILIDAD As Integer
     Private _VALIDA_EXISTENCIAS_KITS_VENTAS As Boolean
@@ -44,30 +40,21 @@ Public NotInheritable Class Class_sisEmpresa
     Private _CUENTA_CONTABLE_ALMACENES As String
     Private _DECIMALES_PESO_BULTOS As Integer
     Private _CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES As String
-
     Private _GTIN_BASE As String
     Private _CODIGO_EMPRESA_ASIGNADO_POR_MASTRONARDI As String
-
     Private _CODIGO_CONCEPTO_COSTO_PRODUCCION As String
-
     Private _CODIGO_TIPO_DOCUMENTO_SALIDA_EMPAQUE As String
-
     Private _CODIGO_FAMILIA_MATERIA_EMPAQUE As String
-
     Private _CUENTA_CONTABLE_MATERIA_EMPAQUE As String
     Private _CUENTA_CONTABLE_COSTOS_DIRECTOS_PRODUCCION As String
-
     Private _NUMERO_CLIENTE_BANCO As String
     Private _SUCURSAL_BANCO As String
     Private _NUMERO_CUENTA_BANCO As String
-
     Private _CUENTA_CONTABLE_PERDIDA_GANACIA_CAMBIARIA As String
     Private _CUENTA_CONTABLE_CONTRA_CUENTA_DOLARES As String
     Private _CUENTA_CONTABLE_PROVEEDORES_CONTRA_CUENTA_DOLARES As String
-
     Private _CODIGO_TAMAÑO_REZAGA As String
     Private _CODIGO_CONCEPTO_FLETE_EQUIPO As String
-
     Private _RFC_VENTA_PUBLICO_GENERAL As String
     Private _RFC_EXTRANJERO As String
     Private _FELECTRONICA_ACTIVA As Boolean
@@ -85,20 +72,15 @@ Public NotInheritable Class Class_sisEmpresa
     Private _CODIGO_REGIMEN_FISCAL As Integer
     Private _VERSION_ESQUEMA_CFD As String 'Se actualiza segun a esquema a utilizar
     Private _VERSION_CFDI_DLL As String
-
-    'AddendaSoriana
-    Private _CODIGO_PROVEDOR_SORIANA As String
-    Private _CODIGO_CLIENTE_SORIANA As String
-
+    Private _CODIGO_PROVEDOR_SORIANA As String 'AddendaSoriana
+    Private _CODIGO_CLIENTE_SORIANA As String 'AddendaSoriana
     Private _CODIGO_PRODUCTOR_SALIDA_INVENTARIABLE_AUTOMATICA As String
     Private _CODIGO_PRODUCTOR_HAPPY As String
     Private _CODIGO_TIPO_DOCUMENTO_TRANSFERENCIA_EMPAQUE As String
     Private _CODIGO_CONCEPTO_PAGO_CXP_DEFAULT As String
-    'Codigos automaticos
     Private _CODIGO_ARTICULO_AUTOMATICO As Boolean
-
     Private _CODIGO_ALMACEN_MATERIALES_EMPAQUE As String
-
+    Private _VALIDA_SERIES_REPETIDAS_EN_ENTRADAS As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -606,6 +588,12 @@ Public NotInheritable Class Class_sisEmpresa
             Return Me._CODIGO_ALMACEN_MATERIALES_EMPAQUE
         End Get
     End Property
+
+    Public ReadOnly Property VALIDA_SERIES_REPETIDAS_EN_ENTRADAS() As Boolean
+        Get
+            Return Me._VALIDA_SERIES_REPETIDAS_EN_ENTRADAS
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -901,7 +889,6 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._CUENTA_CONTABLE_ALMACENES = dReader("CUENTA_CONTABLE_ALMACENES")
                     Me._DECIMALES_PESO_BULTOS = CInt(dReader("DECIMALES_PESO_BULTOS"))
                     Me._CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES = dReader("CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES")
-
                     Me._RFC_VENTA_PUBLICO_GENERAL = dReader("RFC_VENTA_PUBLICO_GENERAL")
                     Me._RFC_EXTRANJERO = dReader("RFC_EXTRANJERO")
                     Me._CALLE = dReader("CALLE")
@@ -917,10 +904,8 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._CODIGO_ESTADO = "" & dReader("CODIGO_ESTADO")
                     Me._CODIGO_PAIS_SAT = "" & dReader("CODIGO_PAIS_SAT")
                     Me._CURP = "" & dReader("CURP")
-
                     Me._CODIGO_ESTADO_SAT = dReader("CODIGO_ESTADO_SAT")
                     Me._CODIGO_MUNICIPIO_SAT = dReader("CODIGO_MUNICIPIO_SAT")
-
                     Me._GTIN_BASE = "" & dReader("GTIN_BASE").ToString
                     Me._CODIGO_EMPRESA_ASIGNADO_POR_MASTRONARDI = "" & dReader("CODIGO_EMPRESA_ASIGNADO_POR_MASTRONARDI").ToString
                     Me._CODIGO_CONCEPTO_COSTO_PRODUCCION = "" & dReader("CODIGO_CONCEPTO_COSTO_PRODUCCION").ToString
@@ -931,7 +916,6 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._CUENTA_CONTABLE_PERDIDA_GANACIA_CAMBIARIA = "" & dReader("CUENTA_CONTABLE_PERDIDA_GANACIA_CAMBIARIA").ToString
                     Me._CUENTA_CONTABLE_CONTRA_CUENTA_DOLARES = "" & dReader("CUENTA_CONTABLE_CONTRA_CUENTA_DOLARES").ToString
                     Me._CUENTA_CONTABLE_PROVEEDORES_CONTRA_CUENTA_DOLARES = "" & dReader("CUENTA_CONTABLE_PROVEEDORES_CONTRA_CUENTA_DOLARES").ToString
-
                     Me._CODIGO_REGIMEN_FISCAL = CInt(dReader("CODIGO_REGIMEN_FISCAL"))
                     Me._VERSION_ESQUEMA_CFD = "" & dReader("VERSION_ESQUEMA_CFD").ToString
                     Me._NUMERO_CLIENTE_BANCO = "" & dReader("NUMERO_CLIENTE_BANCO").ToString
@@ -953,15 +937,14 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._FELECTRONICA_PASS_WS = "" & dReader("FELECTRONICA_PASS_WS").ToString
                     Me._FELECTRONICA_TIPO_CFD = "" & dReader("FELECTRONICA_TIPO_CFD").ToString
                     Me._FELECTRONICA_CCE_HABILITADO = CBool(dReader("FELECTRONICA_CCE_HABILITADO").ToString)
-
                     Me._CODIGO_PRODUCTOR_SALIDA_INVENTARIABLE_AUTOMATICA = "" & dReader("CODIGO_PRODUCTOR_SALIDA_INVENTARIABLE_AUTOMATICA").ToString
                     Me._CODIGO_PRODUCTOR_HAPPY = "" & dReader("CODIGO_PRODUCTOR_HAPPY").ToString
                     Me._CODIGO_TIPO_DOCUMENTO_TRANSFERENCIA_EMPAQUE = "" & dReader("CODIGO_TIPO_DOCUMENTO_TRANSFERENCIA_EMPAQUE").ToString
                     Me._CODIGO_CONCEPTO_PAGO_CXP_DEFAULT = "" & dReader("CODIGO_CONCEPTO_PAGO_CXP_DEFAULT").ToString
-
-					Me._CODIGO_ARTICULO_AUTOMATICO = CBool(dReader("CODIGO_ARTICULO_AUTOMATICO").ToString)
+                    Me._CODIGO_ARTICULO_AUTOMATICO = CBool(dReader("CODIGO_ARTICULO_AUTOMATICO").ToString)
                     Me._VERSION_CFDI_DLL = "" & dReader("VERSION_CFDI_DLL").ToString
                     Me._CODIGO_ALMACEN_MATERIALES_EMPAQUE = "" & dReader("CODIGO_ALMACEN_MATERIALES_EMPAQUE").ToString
+                    Me._VALIDA_SERIES_REPETIDAS_EN_ENTRADAS = CBool(dReader("VALIDA_SERIES_REPETIDAS_EN_ENTRADAS").ToString)
 
                     dReader.Close()
                     bResultado = True

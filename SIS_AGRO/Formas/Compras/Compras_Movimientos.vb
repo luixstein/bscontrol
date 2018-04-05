@@ -1644,13 +1644,14 @@ Buscar:
     End Function
 
     Private Function ValidarCompra() As Boolean
+        Const sProcedure As String = "ValidarCompra"
         Try
             If Plaza.ValidarPeriodoTrabajo(Me.DtpFecha.Value) = False Then
                 Return False
             End If
 
             If txtLEN(Me.txtFolioOC.Text) = False Then
-                MsgBox("Asígne la orden de compra de referencia.", MsgBoxStyle.Exclamation, "ValidarCompra")
+                MsgBox("Asígne la orden de compra de referencia.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.txtFolioOC.Focus()
                 Return False
             End If
@@ -1658,7 +1659,7 @@ Buscar:
             Me.oCompras = New Class_Compras_Global(Me.txtFolioOC.Text, Me.oCompras.ObtieneCodigoDocumentoOrdenCompra(Me.txtFolioOC.Text))
 
             If Me.oCompras.Existe = False Then
-                MsgBox("Asígne una orden de compra válida.", MsgBoxStyle.Exclamation, "ValidarCompra")
+                MsgBox("Asígne una orden de compra válida.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.txtFolioOC.Focus()
                 Return False
             End If
@@ -1667,7 +1668,7 @@ Buscar:
             For i = 1 To Grid.Rows - 1
                 If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
                     If Me.oCompras.ValidaCantidadDisponibleArticulo(CInt(Me.Grid.Cell(i, Me.igyIdArticulo).Text), CDbl(Me.Grid.Cell(i, Me.igyCantidad).Text)) = False Then
-                        MsgBox("La cantidad debe de ser menor al disponible.", MsgBoxStyle.Exclamation, Me.Text)
+                        MsgBox("La cantidad debe de ser menor al disponible.", MsgBoxStyle.Exclamation, sProcedure)
                         Me.Grid.Cell(i, Me.igyCantidad).SetFocus()
                         Return False
                     End If
@@ -1698,25 +1699,34 @@ Buscar:
             '    End If
             'Next
 
-            'Nota aqui no se pregunta antes si hay rows en dtSeries, porque puede ser que no e hayan dado al botón, en la siguiente validación si.
+            'Nota aqui no se pregunta antes si hay rows en dtSeries, porque puede ser que no le hayan dado al botón, en la siguiente validación si.
             If Me.ValidaNumerosSerie = False Then
                 Return False
             End If
 
             If IsNothing(Me.dtSeries) = False AndAlso Me.dtSeries.Rows.Count > 0 Then
-                If Me.HaySeriesRepetidas = True Then
-                    Return False
+
+                'NOTA: cuando sea false VALIDA_SERIES_REPETIDAS_EN_ENTRADAS no entrará a las dos validaciones internas debido a :
+                'Sobre validar HaySeriesRepetidas - Es porque en vez de usar series usan lotes, ejemplo se le compra a x proveedor 50 kilos de x producto del lote rh-587, las 50 unidades deberán tener el mismo lote
+                'Y sobre validar HaySeriesConExistenciasMismoArticulo - Al usar lotes es posible que en un compra pongan serie "2016", y en otra compra otra vez repitan "2016"( es más factible que se repitan entre diferentes compras)
+
+                If Empresa_Sistema.VALIDA_SERIES_REPETIDAS_EN_ENTRADAS = True Then
+
+                    If Me.HaySeriesRepetidas = True Then
+                        Return False
+                    End If
+
+                    If Me.HaySeriesConExistenciasMismoArticulo = True Then
+                        Return False
+                    End If
                 End If
 
-                If Me.HaySeriesConExistenciasMismoArticulo = True Then
-                    Return False
-                End If
             End If
 
             Return True
 
         Catch ex As Exception
-            HandleError(Me.Name, "ValidarCompra", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
     End Function
@@ -2149,7 +2159,7 @@ BuscarCuentas:
 
     Private Function ValidaCuentasContables() As Boolean
         Dim bResultado As Boolean = False
-        Dim sProcedure As String = "ValidaCuentasContables"
+        Const sProcedure As String = "ValidaCuentasContables"
         Dim i As Integer, sCuentaContable As String = ""
         Try
             Dim oCuentas As New Class_CatCuentas
