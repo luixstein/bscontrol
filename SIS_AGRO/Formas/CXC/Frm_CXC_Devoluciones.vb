@@ -168,6 +168,7 @@ busca:
     Private Sub Grid_KeyDown(ByVal Sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Grid.KeyDown
         Me.GestionaGrid(e)
     End Sub
+
     Private Sub GridSeries_KeyDown(ByVal Sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles GridSeries.KeyDown
         Me.GestionaGridSeries(e)
     End Sub
@@ -204,6 +205,7 @@ busca:
         Child.ShowDialog()
         Child.Dispose()
     End Sub
+
     Private Sub btnSeries_Click(sender As Object, e As EventArgs) Handles btnSeries.Click
         Me.PrepararSeries()
     End Sub
@@ -297,6 +299,7 @@ busca:
             HandleError(Me.Name, "InicializaGrid", ex)
         End Try
     End Sub
+
     Private Sub PrepararSeries()
         Try
             'Dim iUnidades As Integer
@@ -810,6 +813,8 @@ busca:
                     Else
                         If MsgBox("La factura no fue timbrada de modo que esta devolución tampoco será timbrada, seguro desea continuar de todas formas ?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Me.Name) = MsgBoxResult.No Then
                             Return False
+                        Else
+                            .ES_COMPROBANTE_ELECTRONICO = "0"
                         End If
                     End If
                 Else
@@ -1152,7 +1157,7 @@ Sigue:
                     Case Keys.F6
                         If Columna = Me.igySerieNumeroSerie AndAlso txtLEN(.Cell(Renglon, Me.igySeriePosicion).Text) = True Then
 busca_serie:
-                            oSerie = New Class_Inventarios_Lotes_Series
+                            'oSerie = New Class_Inventarios_Lotes_Series
                             sCodigoArticulo = .Cell(Renglon, Me.igySerieCodigo).Text
                             sLote = oDevolucion.BusquedaVisualSeriesDevolucion(Me.txtFolioVenta.Text, sCodigoArticulo)
                             If txtLEN(sLote) = True Then
@@ -1161,44 +1166,6 @@ busca_serie:
                                 End If
                             End If
                         End If
-
-                        'Case Keys.F7
-                        '    If Columna = Me.igySerieNumeroSerie AndAlso txtLEN(.Cell(Renglon, Me.igySeriePosicion).Text) = True Then
-                        '        oSerie = New Class_Inventarios_Lotes_Series
-                        '        sCodigoArticulo = .Cell(Renglon, Me.igySerieCodigo).Text
-                        '        If txtLEN(sCodigoArticulo) = False Then
-                        '            Return
-                        '        End If
-
-                        '        Dim lote As New Class_Inventarios_Lotes_Series.Lote
-                        '        lote = oSerie.BusquedaVisualSeriesMultiplesFolio(sCodigoArticulo, oVenta.CODIGO_ALMACEN)
-
-                        '        If txtLEN(lote.FolioMovimiento) = True Then
-
-                        '            Dim dtSeries As DataTable = oSerie.ObtieneRenglonesSeriesFolio(lote.FolioMovimiento, sCodigoArticulo)
-                        '            If dtSeries.Rows.Count = 0 Then
-                        '                MsgBox("No se encontraron series disponibles del artículo " & sCodigoArticulo & " del folio " & lote.FolioMovimiento, MsgBoxStyle.Exclamation, Me.Text)
-                        '                Return
-                        '            End If
-
-                        '            Dim i As Integer, iArticulosPendientes As Integer = Me.CantidadArticulosPendientesSerie(sCodigoArticulo) 'iArticulosEncontrados As Integer
-                        '            Dim iSeriesUsadas As Double = lote.Cantidad, iRowEncontrado As Integer = 0
-                        '            For i = 1 To Me.GridSeries.Rows - 1
-                        '                If iArticulosPendientes <= 0 Or iSeriesUsadas <= 0 Then
-                        '                    Exit For
-                        '                End If
-                        '                If Me.GridSeries.Cell(i, Me.igySerieCodigo).Text = sCodigoArticulo AndAlso txtLEN(Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text) = False Then
-                        '                    iArticulosPendientes -= 1
-                        '                    iSeriesUsadas -= 1
-                        '                    Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text = dtSeries.Rows(iRowEncontrado)("ID_INVENTARIO_LOTES_COSTOS").ToString
-                        '                    Me.GridSeries.Cell(i, Me.igySerieNumeroSerie).Text = dtSeries.Rows(iRowEncontrado)("NUMERO_SERIE").ToString
-                        '                    iRowEncontrado += 1 'empieza desde el 0
-                        '                End If
-                        '            Next
-
-
-                        '        End If
-                        '    End If
 
                     Case Keys.Delete
                         e.SuppressKeyPress = True

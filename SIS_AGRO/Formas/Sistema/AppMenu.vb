@@ -80,6 +80,7 @@ Public Class AppMenu
 
             If My.Settings.Servidor = "PCSISTEMASJORGE\SQL14" Then
                 sLogo = "\logo_AGRINET_LAND.jpg"
+                Me.pbLogo.Visible = True
             End If
 
             Dim sRutaLogoServidor As String = "\\" & Split(My.Settings.Servidor, "\")(0) & "\" & Microsoft.VisualBasic.Strings.Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & sLogo

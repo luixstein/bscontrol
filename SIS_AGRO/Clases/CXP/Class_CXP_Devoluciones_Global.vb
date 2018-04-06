@@ -543,7 +543,7 @@ Public Class Class_CXP_Devoluciones_Global
 
         sSQL = "SELECT DR.CODIGO_ARTICULO," &
             "CASE WHEN ART.ES_SERIALIZABLE = '1' THEN 'SER' WHEN ART.INVENTARIABLE= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO," &
-            "VR.DESCRIPCION,DR.CANTIDAD,DR.PRECIO,DR.PRECIO_TOTAL,VR.UNIDAD_VENTA,DR.IMPUESTO_PORCENTAJE,DR.IMPORTE,DR.IMPUESTO_IMPORTE,DR.ID_COMPRA_DETALLE,DR.IEPS_PORCENTAJE,DR.IEPS_UNITARIO,DR.IEPS_IMPORTE,DR.BASE_IEPS,DR.BASE_IVA " &
+            "VR.DESCRIPCION,DR.CANTIDAD,DR.PRECIO,VR.UNIDAD_VENTA,DR.IMPUESTO_PORCENTAJE,DR.IMPORTE,DR.IMPUESTO_IMPORTE,DR.ID_COMPRA_DETALLE,DR.IEPS_PORCENTAJE,DR.IEPS_UNITARIO,DR.IEPS_IMPORTE,DR.BASE_IEPS,DR.BASE_IVA " &
             "FROM CXP_DEVOLUCION_DETALLE DR " &
             "INNER JOIN CAT_ARTICULOS ART ON(DR.CODIGO_ARTICULO=ART.CODIGO_ARTICULO) " &
             "INNER JOIN COMPRA_DETALLE VR ON(DR.ID_COMPRA_DETALLE=VR.ID_COMPRA_DETALLE) " &
@@ -557,6 +557,36 @@ Public Class Class_CXP_Devoluciones_Global
             da.Dispose()
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, "ObtenerDetalle", ex)
+        End Try
+
+        Return dTabla
+    End Function
+
+    Public Function ObtenerDetalleSeries() As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String
+
+        'Private igySeriePosicion As Short = 1
+        'Private igySerieCodigo As Short = 2
+        'Private igySerieDescripcion As Short = 3
+        'Private igySerieIdInventarioLotesCostos As Short = 4
+        'Private igySerieNumeroSerie As Short = 5
+        'Private igySerieIdOrigen As Short = 6
+
+        sSQL = "SELECT 1 POSICION,I.CODIGO_ARTICULO,A.DESCRIPCION,S.ID_INVENTARIO_LOTES_COSTOS,C.NUMERO_SERIE,0 ID_COMPRA_DETALLE " &
+        "FROM INVENTARIO_MOVIMIENTOS_DETALLE I " &
+        "INNER JOIN INVENTARIO_LOTES_SALIDAS S ON(I.ID_INVENTARIO_MOVIMIENTOS_DETALLE=S.ID_INVENTARIO_MOVIMIENTOS_DETALLE) " &
+        "INNER JOIN INVENTARIO_LOTES_COSTOS C ON(S.ID_INVENTARIO_LOTES_COSTOS=C.ID_INVENTARIO_LOTES_COSTOS) " &
+        "INNER JOIN CAT_ARTICULOS A ON(I.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
+        "WHERE I.FOLIO_MOVIMIENTO_INVENTARIO='" & Me._FOLIO_DEVOLUCION & "' AND LEN(C.NUMERO_SERIE)>0 " &
+        "ORDER BY S.ID_INVENTARIO_LOTES_SALIDAS "
+
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, "ObtenerDetalleSeries", ex)
         End Try
 
         Return dTabla
@@ -590,6 +620,58 @@ Public Class Class_CXP_Devoluciones_Global
         End Try
     End Sub
 
+    Public Function BusquedaVisualSeriesDevolucion(ByVal FolioCompra As String, ByVal sCodigoArticulo As String, ByVal IdOrigen As String) As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        Dim oArticulo As New Class_CatArticulos(sCodigoArticulo)
+
+        f.Text = "Búsqueda de series del artículo : " & oArticulo.DESCRIPCION
+        f.sCampo = "LC.NUMERO_SERIE"
+        f.sOrder = "LC.ID_INVENTARIO_LOTES_COSTOS"
+        f.sTable = "VW_INVENTARIO_LOTES_COSTOS_EXTENDIDO"
+        f.sQl = "SELECT LC.ID_INVENTARIO_LOTES_COSTOS,LC.NUMERO_SERIE,DBO.FN_FORMAT_FECHA_CORTO(LC.FECHA) " &
+                "FROM COMPRA_DETALLE R " &
+                "INNER JOIN INVENTARIO_MOVIMIENTOS_DETALLE IR ON(R.ID_COMPRA_DETALLE=IR.ID_ORIGEN AND R.FOLIO_COMPRA=IR.FOLIO_MOVIMIENTO_INVENTARIO) " &
+                "INNER JOIN VW_INVENTARIO_LOTES_COSTOS_EXTENDIDO LC ON(IR.ID_INVENTARIO_MOVIMIENTOS_DETALLE=LC.ID_INVENTARIO_MOVIMIENTOS_DETALLE) " &
+                "WHERE R.ID_COMPRA_DETALLE=" & IdOrigen.ToString & " AND R.FOLIO_COMPRA='" & FolioCompra & "' AND "
+        f.Inicia("%")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, "BusquedaVisualSeriesDevolucion", ex)
+        End Try
+        Return Resultado
+    End Function
+
+    Public Function AplicarPoliza() As Boolean
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_CONTABILIDAD_ASIENTO_REPETITIVO_DEVOLUCION_CXP"
+
+            sqlParametro = .Parameters.Add("@FOLIO_DEVOLUCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_DEVOLUCION
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me.Nombre_Clase, "AplicarPoliza", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+
+        Return bResultado
+    End Function
 #End Region
 
 End Class
