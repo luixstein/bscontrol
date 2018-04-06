@@ -803,7 +803,7 @@ Public Class Class_CXC_Devoluciones_Global
             .Connection = Me._Conexion
             .CommandTimeout = 0
             .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_CONTABILIDAD_ASIENTO_REPETITIVO_DEVOLUCION"
+            .CommandText = "MP_CONTABILIDAD_ASIENTO_REPETITIVO_DEVOLUCION_CXC"
 
             sqlParametro = .Parameters.Add("@FOLIO_DEVOLUCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_DEVOLUCION
             Try

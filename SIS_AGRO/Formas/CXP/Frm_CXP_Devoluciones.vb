@@ -159,6 +159,13 @@ busca:
         End If
     End Sub
 
+    Private Sub LblPoliza_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles lblPoliza.LinkClicked
+        Dim Child As New Frm_Contabilidad_Captura_Polizas()
+        Child.FolioPolizaConsultaExterior = Me.lblPoliza.Text
+        Child.ShowDialog()
+        Child.Dispose()
+    End Sub
+
 #Region "Eventos Genericos"
     Private Sub txt_Enter(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim oTexBox As TextBox = CType(sender, TextBox)
@@ -181,6 +188,7 @@ busca:
         txtNoBeep(e)
     End Sub
 #End Region
+
 #End Region
 
 #Region "Métodos y procedimientos"
@@ -709,10 +717,11 @@ busca:
 
                 .AfectaInventarios()
 
-                'FALTA:Contabilidad
-                'PREGUNTAR SI ES EL DOC DE LA VENTA AFECTO A CONTA Y DECIR QUE NO AFECTARA A CONTA, QUE AVISEA SISTEMAs?
-
-                'FALTA:Timbrado
+                If oDocumento.AFECTA_CONTABILIDAD = True Then
+                    If .AplicarPoliza = False Then
+                        Return False
+                    End If
+                End If
 
             End With
 
