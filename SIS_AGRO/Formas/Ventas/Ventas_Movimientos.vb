@@ -251,6 +251,7 @@ Public Class Ventas_Movimientos
             Me.DesplegarFormasPago(False)
             Me.DesplegarTiposNegociaciones()
             Me.DesplegarTiposCredito()
+            Me.DesplegarTiposRelacionCFDI()
 
             Me.DesplegarDocumentos()
 
@@ -3809,22 +3810,42 @@ busca_serie:
     End Sub
 
     Private Sub CalculaUtilidad()
-        Dim i As Integer
-        'utilidad unitaria = precio - costo
-        'utilidad total = importe - (costo * cantidad)
-        '% utilidad = Utilidad total / importe
-        With Me.Grid
-            For i = 1 To .Rows - 1
-                If txtLEN(.Cell(i, Me.igyCodigo).Text) = True AndAlso .Cell(i, Me.igyCodigo).Text <> "-" Then
-                    .Cell(i, Me.igyUtilidadUnitaria).Text = (valorNumerico(.Cell(i, Me.igyPrecio).Text) - valorNumerico(.Cell(i, Me.igyCosto).Text)).ToString
-                    .Cell(i, Me.igyUtilidadTotal).Text = (valorNumerico(.Cell(i, Me.igyImporte).Text) - (valorNumerico(.Cell(i, Me.igyCosto).Text) * valorNumerico(.Cell(i, Me.igyCantidad).Text))).ToString
-                    If valorNumerico(.Cell(i, Me.igyImporte).Text) > 0 Then
-                        .Cell(i, Me.igyUtilidadPorcentaje).Text = (valorNumerico(.Cell(i, Me.igyUtilidadTotal).Text) / valorNumerico(.Cell(i, Me.igyImporte).Text)).ToString
+        Try
+            Dim i As Integer
+            'utilidad unitaria = precio - costo
+            'utilidad total = importe - (costo * cantidad)
+            '% utilidad = Utilidad total / importe
+            With Me.Grid
+                For i = 1 To .Rows - 1
+                    If txtLEN(.Cell(i, Me.igyCodigo).Text) = True AndAlso .Cell(i, Me.igyCodigo).Text <> "-" Then
+                        .Cell(i, Me.igyUtilidadUnitaria).Text = (valorNumerico(.Cell(i, Me.igyPrecio).Text) - valorNumerico(.Cell(i, Me.igyCosto).Text)).ToString
+                        .Cell(i, Me.igyUtilidadTotal).Text = (valorNumerico(.Cell(i, Me.igyImporte).Text) - (valorNumerico(.Cell(i, Me.igyCosto).Text) * valorNumerico(.Cell(i, Me.igyCantidad).Text))).ToString
+                        If valorNumerico(.Cell(i, Me.igyImporte).Text) > 0 Then
+                            .Cell(i, Me.igyUtilidadPorcentaje).Text = (valorNumerico(.Cell(i, Me.igyUtilidadTotal).Text) / valorNumerico(.Cell(i, Me.igyImporte).Text)).ToString
+                        End If
                     End If
-                End If
-            Next
-        End With
+                Next
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "CalculaUtilidad", ex)
+        End Try
+    End Sub
 
+    Private Sub DesplegarTiposRelacionCFDI()
+        Try
+            With Me.cboTipoRelacionCFDI
+                .DisplayMember = "NOMBRE_TIPO_RELACION_CFDI"
+                .ValueMember = "CODIGO_TIPO_RELACION_CFDI"
+                Dim dView As New Data.DataView(dtTiposRelacionCFDI)
+                dView.Sort = "NOMBRE_TIPO_RELACION_CFDI"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedIndex = -1
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarTiposRelacionCFDI", ex)
+        End Try
     End Sub
 #End Region
 

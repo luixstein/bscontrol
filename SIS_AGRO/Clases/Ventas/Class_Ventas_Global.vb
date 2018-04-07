@@ -94,6 +94,8 @@ Public Class Class_Ventas_Global
     Private _CODIGO_MONEDA_SAT As String
     Private _CONCEPTO_CANCELACION As String
     Private _TIENE_IEPS_DESGLOSADO As Boolean
+    Private _CODIGO_TIPO_RELACION_CFDI As String
+    Private _LISTA_CFDIS_RELACIONADOS As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -752,6 +754,24 @@ Public Class Class_Ventas_Global
         End Set
     End Property
 
+    Public Property CODIGO_TIPO_RELACION_CFDI() As String
+        Get
+            Return Me._CODIGO_TIPO_RELACION_CFDI
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_TIPO_RELACION_CFDI = Value
+        End Set
+    End Property
+
+    Public Property LISTA_CFDIS_RELACIONADOS() As String
+        Get
+            Return Me._LISTA_CFDIS_RELACIONADOS
+        End Get
+        Set(ByVal Value As String)
+            Me._LISTA_CFDIS_RELACIONADOS = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -917,6 +937,8 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@CODIGO_USO_CFDI", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_USO_CFDI
             sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3) : sqlParametro.Value = "" & Me._CODIGO_MONEDA_SAT
             sqlParametro = .Parameters.Add("@TIENE_IEPS_DESGLOSADO", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._TIENE_IEPS_DESGLOSADO)
+            sqlParametro = .Parameters.Add("@CODIGO_TIPO_RELACION_CFDI", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_TIPO_RELACION_CFDI
+            sqlParametro = .Parameters.Add("@LISTA_CFDIS_RELACIONADOS", SqlDbType.NVarChar, -1) : sqlParametro.Value = Me._LISTA_CFDIS_RELACIONADOS
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = sAccion 'INSERTAR,ACTUALIZAR
 
             Try
@@ -1170,6 +1192,7 @@ Public Class Class_Ventas_Global
                     Me._CODIGO_MONEDA_SAT = "" & dReader("CODIGO_MONEDA_SAT").ToString
                     Me._CONCEPTO_CANCELACION = "" & dReader("CONCEPTO_CANCELACION").ToString
                     Me._TIENE_IEPS_DESGLOSADO = CBool(dReader("TIENE_IEPS_DESGLOSADO").ToString)
+                    Me._CODIGO_TIPO_RELACION_CFDI = "" & dReader("CODIGO_TIPO_RELACION_CFDI").ToString
 
                     bResultado = True
                 End If

@@ -10,6 +10,7 @@ Module FacturacionElectronica33
     Public dtFormasPagoActivas As DataTable
 
     Public dtMetodosPago As DataTable
+    Public dtTiposRelacionCFDI As DataTable
 
     Private tPlazaFacturaElectronica As Class_SisPlazas
 

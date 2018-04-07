@@ -51,9 +51,7 @@ Partial Class Frm_CXC_Descuentos
         Me.cboFormaPago = New System.Windows.Forms.ComboBox()
         Me.lblMetodoPago = New System.Windows.Forms.Label()
         Me.cboMoneda = New System.Windows.Forms.ComboBox()
-        Me.cboUsoCFDI = New System.Windows.Forms.ComboBox()
         Me.btnNotaSiguiente = New System.Windows.Forms.Button()
-        Me.lblDisplayUsoCFDI = New System.Windows.Forms.Label()
         Me.btnNotaAnterior = New System.Windows.Forms.Button()
         Me.lblDisplayTipoCambio = New System.Windows.Forms.Label()
         Me.TxtConcepto2 = New System.Windows.Forms.TextBox()
@@ -91,6 +89,10 @@ Partial Class Frm_CXC_Descuentos
         Me.lblDisplaySubtotalDolares = New System.Windows.Forms.Label()
         Me.lblDisplayImpuestoDolares = New System.Windows.Forms.Label()
         Me.lblImpuestoPorcentaje = New System.Windows.Forms.Label()
+        Me.lblDisplayUsoCFDI = New System.Windows.Forms.Label()
+        Me.cboUsoCFDI = New System.Windows.Forms.ComboBox()
+        Me.cboTipoRelacionCFDI = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayTipoRelacionCFDI = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.gbFacturas.SuspendLayout()
@@ -250,6 +252,8 @@ Partial Class Frm_CXC_Descuentos
         '
         'gbGlobal
         '
+        Me.gbGlobal.Controls.Add(Me.cboTipoRelacionCFDI)
+        Me.gbGlobal.Controls.Add(Me.lblDisplayTipoRelacionCFDI)
         Me.gbGlobal.Controls.Add(Me.lblVersionCFDI)
         Me.gbGlobal.Controls.Add(Me.lblDisplayMetodoPago)
         Me.gbGlobal.Controls.Add(Me.btnCargarFacturas)
@@ -353,7 +357,7 @@ Partial Class Frm_CXC_Descuentos
         Me.cboMetodoPago.MaxLength = 1
         Me.cboMetodoPago.Name = "cboMetodoPago"
         Me.cboMetodoPago.Size = New System.Drawing.Size(301, 21)
-        Me.cboMetodoPago.TabIndex = 387
+        Me.cboMetodoPago.TabIndex = 8
         '
         'chkVentaPublicoGeneral
         '
@@ -361,7 +365,7 @@ Partial Class Frm_CXC_Descuentos
         Me.chkVentaPublicoGeneral.Location = New System.Drawing.Point(392, 147)
         Me.chkVentaPublicoGeneral.Name = "chkVentaPublicoGeneral"
         Me.chkVentaPublicoGeneral.Size = New System.Drawing.Size(164, 17)
-        Me.chkVentaPublicoGeneral.TabIndex = 6
+        Me.chkVentaPublicoGeneral.TabIndex = 10
         Me.chkVentaPublicoGeneral.Text = "Descuento al público general"
         Me.chkVentaPublicoGeneral.UseVisualStyleBackColor = True
         '
@@ -373,7 +377,7 @@ Partial Class Frm_CXC_Descuentos
         Me.cboFormaPago.Location = New System.Drawing.Point(103, 117)
         Me.cboFormaPago.Name = "cboFormaPago"
         Me.cboFormaPago.Size = New System.Drawing.Size(258, 21)
-        Me.cboFormaPago.TabIndex = 386
+        Me.cboFormaPago.TabIndex = 7
         '
         'lblMetodoPago
         '
@@ -391,17 +395,7 @@ Partial Class Frm_CXC_Descuentos
         Me.cboMoneda.Location = New System.Drawing.Point(103, 65)
         Me.cboMoneda.Name = "cboMoneda"
         Me.cboMoneda.Size = New System.Drawing.Size(83, 21)
-        Me.cboMoneda.TabIndex = 4
-        '
-        'cboUsoCFDI
-        '
-        Me.cboUsoCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboUsoCFDI.FormattingEnabled = True
-        Me.cboUsoCFDI.Location = New System.Drawing.Point(486, 66)
-        Me.cboUsoCFDI.MaxLength = 1
-        Me.cboUsoCFDI.Name = "cboUsoCFDI"
-        Me.cboUsoCFDI.Size = New System.Drawing.Size(301, 21)
-        Me.cboUsoCFDI.TabIndex = 385
+        Me.cboMoneda.TabIndex = 2
         '
         'btnNotaSiguiente
         '
@@ -411,15 +405,6 @@ Partial Class Frm_CXC_Descuentos
         Me.btnNotaSiguiente.TabIndex = 374
         Me.btnNotaSiguiente.Text = ">>"
         Me.btnNotaSiguiente.UseVisualStyleBackColor = True
-        '
-        'lblDisplayUsoCFDI
-        '
-        Me.lblDisplayUsoCFDI.AutoSize = True
-        Me.lblDisplayUsoCFDI.Location = New System.Drawing.Point(389, 69)
-        Me.lblDisplayUsoCFDI.Name = "lblDisplayUsoCFDI"
-        Me.lblDisplayUsoCFDI.Size = New System.Drawing.Size(76, 13)
-        Me.lblDisplayUsoCFDI.TabIndex = 388
-        Me.lblDisplayUsoCFDI.Text = "Uso del CFDI :"
         '
         'btnNotaAnterior
         '
@@ -446,7 +431,7 @@ Partial Class Frm_CXC_Descuentos
         Me.TxtConcepto2.MaxLength = 200
         Me.TxtConcepto2.Name = "TxtConcepto2"
         Me.TxtConcepto2.Size = New System.Drawing.Size(530, 20)
-        Me.TxtConcepto2.TabIndex = 9
+        Me.TxtConcepto2.TabIndex = 12
         '
         'txtTipoCambio
         '
@@ -455,7 +440,7 @@ Partial Class Frm_CXC_Descuentos
         Me.txtTipoCambio.MaxLength = 15
         Me.txtTipoCambio.Name = "txtTipoCambio"
         Me.txtTipoCambio.Size = New System.Drawing.Size(80, 20)
-        Me.txtTipoCambio.TabIndex = 5
+        Me.txtTipoCambio.TabIndex = 3
         Me.txtTipoCambio.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'lblDisplayConcepto2
@@ -499,7 +484,7 @@ Partial Class Frm_CXC_Descuentos
         Me.dtFecha.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dtFecha.Name = "dtFecha"
         Me.dtFecha.Size = New System.Drawing.Size(215, 20)
-        Me.dtFecha.TabIndex = 3
+        Me.dtFecha.TabIndex = 9
         '
         'LblCliente
         '
@@ -515,7 +500,7 @@ Partial Class Frm_CXC_Descuentos
         Me.TxtConcepto.MaxLength = 200
         Me.TxtConcepto.Name = "TxtConcepto"
         Me.TxtConcepto.Size = New System.Drawing.Size(530, 20)
-        Me.TxtConcepto.TabIndex = 8
+        Me.TxtConcepto.TabIndex = 11
         '
         'LblDisplayCliente
         '
@@ -541,7 +526,7 @@ Partial Class Frm_CXC_Descuentos
         Me.TxtCodigoCliente.MaxLength = 8
         Me.TxtCodigoCliente.Name = "TxtCodigoCliente"
         Me.TxtCodigoCliente.Size = New System.Drawing.Size(105, 20)
-        Me.TxtCodigoCliente.TabIndex = 2
+        Me.TxtCodigoCliente.TabIndex = 6
         '
         'LblDisplayFolio
         '
@@ -778,6 +763,44 @@ Partial Class Frm_CXC_Descuentos
         Me.lblImpuestoPorcentaje.Text = "0.00"
         Me.lblImpuestoPorcentaje.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
+        'lblDisplayUsoCFDI
+        '
+        Me.lblDisplayUsoCFDI.AutoSize = True
+        Me.lblDisplayUsoCFDI.Location = New System.Drawing.Point(389, 43)
+        Me.lblDisplayUsoCFDI.Name = "lblDisplayUsoCFDI"
+        Me.lblDisplayUsoCFDI.Size = New System.Drawing.Size(76, 13)
+        Me.lblDisplayUsoCFDI.TabIndex = 388
+        Me.lblDisplayUsoCFDI.Text = "Uso del CFDI :"
+        '
+        'cboUsoCFDI
+        '
+        Me.cboUsoCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboUsoCFDI.FormattingEnabled = True
+        Me.cboUsoCFDI.Location = New System.Drawing.Point(486, 40)
+        Me.cboUsoCFDI.MaxLength = 1
+        Me.cboUsoCFDI.Name = "cboUsoCFDI"
+        Me.cboUsoCFDI.Size = New System.Drawing.Size(338, 21)
+        Me.cboUsoCFDI.TabIndex = 4
+        '
+        'cboTipoRelacionCFDI
+        '
+        Me.cboTipoRelacionCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboTipoRelacionCFDI.FormattingEnabled = True
+        Me.cboTipoRelacionCFDI.Location = New System.Drawing.Point(486, 66)
+        Me.cboTipoRelacionCFDI.MaxLength = 1
+        Me.cboTipoRelacionCFDI.Name = "cboTipoRelacionCFDI"
+        Me.cboTipoRelacionCFDI.Size = New System.Drawing.Size(338, 21)
+        Me.cboTipoRelacionCFDI.TabIndex = 5
+        '
+        'lblDisplayTipoRelacionCFDI
+        '
+        Me.lblDisplayTipoRelacionCFDI.AutoSize = True
+        Me.lblDisplayTipoRelacionCFDI.Location = New System.Drawing.Point(389, 69)
+        Me.lblDisplayTipoRelacionCFDI.Name = "lblDisplayTipoRelacionCFDI"
+        Me.lblDisplayTipoRelacionCFDI.Size = New System.Drawing.Size(101, 13)
+        Me.lblDisplayTipoRelacionCFDI.TabIndex = 393
+        Me.lblDisplayTipoRelacionCFDI.Text = "Tipo relación CFDI :"
+        '
         'Frm_CXC_Descuentos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -868,8 +891,6 @@ Partial Class Frm_CXC_Descuentos
     Friend WithEvents cboMetodoPago As ComboBox
     Friend WithEvents cboFormaPago As ComboBox
     Friend WithEvents lblMetodoPago As Label
-    Friend WithEvents cboUsoCFDI As ComboBox
-    Friend WithEvents lblDisplayUsoCFDI As Label
     Friend WithEvents lblVersionCFDI As Label
     Friend WithEvents tsbEnviarCorreo As ToolStripButton
     Friend WithEvents gbDolares As GroupBox
@@ -880,4 +901,8 @@ Partial Class Frm_CXC_Descuentos
     Friend WithEvents lblDisplaySubtotalDolares As Label
     Friend WithEvents lblDisplayImpuestoDolares As Label
     Friend WithEvents lblImpuestoPorcentaje As Label
+    Friend WithEvents cboTipoRelacionCFDI As ComboBox
+    Friend WithEvents lblDisplayTipoRelacionCFDI As Label
+    Friend WithEvents cboUsoCFDI As ComboBox
+    Friend WithEvents lblDisplayUsoCFDI As Label
 End Class
