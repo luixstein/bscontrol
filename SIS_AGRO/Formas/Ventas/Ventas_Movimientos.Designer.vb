@@ -118,11 +118,11 @@ Partial Class Ventas_Movimientos
         Me.btnAgregaAddenda = New System.Windows.Forms.Button()
         Me.LblPoliza = New System.Windows.Forms.LinkLabel()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
-        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.tpArticulos = New System.Windows.Forms.TabPage()
         Me.Grid = New FlexCell.Grid()
-        Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.tpSeries = New System.Windows.Forms.TabPage()
         Me.GridSeries = New FlexCell.Grid()
-        Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.tpCFDIsRelacionados = New System.Windows.Forms.TabPage()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cboTipoRelacionCFDI = New System.Windows.Forms.ComboBox()
         Me.GridCFDIsRelacionados = New FlexCell.Grid()
@@ -133,9 +133,9 @@ Partial Class Ventas_Movimientos
         Me.frmDatos.SuspendLayout()
         Me.gbTotales.SuspendLayout()
         Me.TabControl1.SuspendLayout()
-        Me.TabPage1.SuspendLayout()
-        Me.TabPage2.SuspendLayout()
-        Me.TabPage3.SuspendLayout()
+        Me.tpArticulos.SuspendLayout()
+        Me.tpSeries.SuspendLayout()
+        Me.tpCFDIsRelacionados.SuspendLayout()
         Me.SuspendLayout()
         '
         'LblEstatus
@@ -1086,25 +1086,25 @@ Partial Class Ventas_Movimientos
         '
         'TabControl1
         '
-        Me.TabControl1.Controls.Add(Me.TabPage1)
-        Me.TabControl1.Controls.Add(Me.TabPage2)
-        Me.TabControl1.Controls.Add(Me.TabPage3)
+        Me.TabControl1.Controls.Add(Me.tpArticulos)
+        Me.TabControl1.Controls.Add(Me.tpSeries)
+        Me.TabControl1.Controls.Add(Me.tpCFDIsRelacionados)
         Me.TabControl1.Location = New System.Drawing.Point(8, 275)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(986, 238)
         Me.TabControl1.TabIndex = 1
         '
-        'TabPage1
+        'tpArticulos
         '
-        Me.TabPage1.Controls.Add(Me.Grid)
-        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
-        Me.TabPage1.Size = New System.Drawing.Size(978, 212)
-        Me.TabPage1.TabIndex = 0
-        Me.TabPage1.Text = "Artículos"
-        Me.TabPage1.UseVisualStyleBackColor = True
+        Me.tpArticulos.Controls.Add(Me.Grid)
+        Me.tpArticulos.Location = New System.Drawing.Point(4, 22)
+        Me.tpArticulos.Name = "tpArticulos"
+        Me.tpArticulos.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.tpArticulos.Size = New System.Drawing.Size(978, 212)
+        Me.tpArticulos.TabIndex = 0
+        Me.tpArticulos.Text = "Artículos"
+        Me.tpArticulos.UseVisualStyleBackColor = True
         '
         'Grid
         '
@@ -1125,16 +1125,16 @@ Partial Class Ventas_Movimientos
         Me.Grid.TabIndex = 2
         Me.Grid.UncheckedImage = CType(resources.GetObject("Grid.UncheckedImage"), System.Drawing.Bitmap)
         '
-        'TabPage2
+        'tpSeries
         '
-        Me.TabPage2.Controls.Add(Me.GridSeries)
-        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
-        Me.TabPage2.Size = New System.Drawing.Size(978, 212)
-        Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Series"
-        Me.TabPage2.UseVisualStyleBackColor = True
+        Me.tpSeries.Controls.Add(Me.GridSeries)
+        Me.tpSeries.Location = New System.Drawing.Point(4, 22)
+        Me.tpSeries.Name = "tpSeries"
+        Me.tpSeries.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.tpSeries.Size = New System.Drawing.Size(978, 212)
+        Me.tpSeries.TabIndex = 1
+        Me.tpSeries.Text = "Series"
+        Me.tpSeries.UseVisualStyleBackColor = True
         '
         'GridSeries
         '
@@ -1155,17 +1155,17 @@ Partial Class Ventas_Movimientos
         Me.GridSeries.TabIndex = 2
         Me.GridSeries.UncheckedImage = CType(resources.GetObject("GridSeries.UncheckedImage"), System.Drawing.Bitmap)
         '
-        'TabPage3
+        'tpCFDIsRelacionados
         '
-        Me.TabPage3.Controls.Add(Me.GridCFDIsRelacionados)
-        Me.TabPage3.Controls.Add(Me.Label3)
-        Me.TabPage3.Controls.Add(Me.cboTipoRelacionCFDI)
-        Me.TabPage3.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage3.Name = "TabPage3"
-        Me.TabPage3.Size = New System.Drawing.Size(978, 212)
-        Me.TabPage3.TabIndex = 2
-        Me.TabPage3.Text = "Relacionar CFDIs"
-        Me.TabPage3.UseVisualStyleBackColor = True
+        Me.tpCFDIsRelacionados.Controls.Add(Me.GridCFDIsRelacionados)
+        Me.tpCFDIsRelacionados.Controls.Add(Me.Label3)
+        Me.tpCFDIsRelacionados.Controls.Add(Me.cboTipoRelacionCFDI)
+        Me.tpCFDIsRelacionados.Location = New System.Drawing.Point(4, 22)
+        Me.tpCFDIsRelacionados.Name = "tpCFDIsRelacionados"
+        Me.tpCFDIsRelacionados.Size = New System.Drawing.Size(978, 212)
+        Me.tpCFDIsRelacionados.TabIndex = 2
+        Me.tpCFDIsRelacionados.Text = "Relacionar CFDIs"
+        Me.tpCFDIsRelacionados.UseVisualStyleBackColor = True
         '
         'Label3
         '
@@ -1235,10 +1235,10 @@ Partial Class Ventas_Movimientos
         Me.gbTotales.ResumeLayout(False)
         Me.gbTotales.PerformLayout()
         Me.TabControl1.ResumeLayout(False)
-        Me.TabPage1.ResumeLayout(False)
-        Me.TabPage2.ResumeLayout(False)
-        Me.TabPage3.ResumeLayout(False)
-        Me.TabPage3.PerformLayout()
+        Me.tpArticulos.ResumeLayout(False)
+        Me.tpSeries.ResumeLayout(False)
+        Me.tpCFDIsRelacionados.ResumeLayout(False)
+        Me.tpCFDIsRelacionados.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1320,9 +1320,9 @@ Partial Class Ventas_Movimientos
     Friend WithEvents btnFacturaAnterior As System.Windows.Forms.Button
     Friend WithEvents tsbEnviarCorreo As System.Windows.Forms.ToolStripButton
     Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
-    Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
+    Friend WithEvents tpArticulos As System.Windows.Forms.TabPage
     Friend WithEvents Grid As FlexCell.Grid
-    Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
+    Friend WithEvents tpSeries As System.Windows.Forms.TabPage
     Friend WithEvents GridSeries As FlexCell.Grid
     Friend WithEvents btnSeries As System.Windows.Forms.Button
     Friend WithEvents lblIEPS As System.Windows.Forms.Label
@@ -1342,7 +1342,7 @@ Partial Class Ventas_Movimientos
     Friend WithEvents tsbRecuperarXMLPDF As ToolStripButton
     Friend WithEvents lblConceptoCancelacion As System.Windows.Forms.Label
     Friend WithEvents TxtConceptoCancelacion As System.Windows.Forms.TextBox
-    Friend WithEvents TabPage3 As TabPage
+    Friend WithEvents tpCFDIsRelacionados As TabPage
     Friend WithEvents Label3 As Label
     Friend WithEvents cboTipoRelacionCFDI As ComboBox
     Friend WithEvents GridCFDIsRelacionados As FlexCell.Grid

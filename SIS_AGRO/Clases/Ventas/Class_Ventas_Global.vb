@@ -1863,8 +1863,8 @@ Public Class Class_Ventas_Global
         f.sCampo = "CODIGO_CLIENTE"
         f.sOrder = "FECHA"
         f.sTable = "VENTA_GLOBAL"
-        f.sQl = "SELECT V.FOLIO_VENTA,N.NOMBRE_TIPO_NEGOCIACION,V.FECHA,V.TOTAL FROM VENTA_GLOBAL V " & _
-        "INNER JOIN VENTAS_CAT_TIPOS_NEGOCIACION N ON(V.CODIGO_TIPO_NEGOCIACION=N.CODIGO_TIPO_NEGOCIACION) " & _
+        f.sQl = "SELECT V.FOLIO_VENTA,N.NOMBRE_TIPO_NEGOCIACION,V.FECHA,V.TOTAL FROM VENTA_GLOBAL V " &
+        "INNER JOIN VENTAS_CAT_TIPOS_NEGOCIACION N ON(V.CODIGO_TIPO_NEGOCIACION=N.CODIGO_TIPO_NEGOCIACION) " &
         "WHERE V.CODIGO_CLIENTE='" & sCodigoCliente.ToString & "' AND " 'V.CODIGO_TIPO_NEGOCIACION=2 And "
 
         f.Inicia("")
@@ -1875,6 +1875,28 @@ Public Class Class_Ventas_Global
             End If
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "BusquedaVisual_PorCliente", ex)
+        End Try
+        Return Resultado
+    End Function
+
+    Public Function BusquedaVisualFacturasClienteParaRelacionarCFDIs(ByVal sCodigoCliente As String) As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de ventas del cliente."
+        f.sCampo = "V.FOLIO_VENTA"
+        f.sOrder = "V.FECHA DESC"
+        f.sTable = "VENTA_GLOBAL"
+        f.sQl = "SELECT V.FOLIO_VENTA,V.ESTATUS_VENTA,DBO.FN_FORMAT_FECHA_CORTO(V.FECHA)FECHA,V.CONCEPTO,DBO.fn_FormatoNum(V.TOTAL,1,2) TOTAL,V.FOLIO_FISCAL_SAT FROM VENTA_GLOBAL V " &
+        "WHERE V.CODIGO_CLIENTE='" & sCodigoCliente.ToString & "' AND "
+        f.arrayWidthColumns = New Integer() {100, 60, 70, 250, 100, 300}
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "BusquedaVisualFacturasClienteParaRelacionarCFDIs", ex)
         End Try
         Return Resultado
     End Function
@@ -2610,6 +2632,27 @@ Public Class Class_Ventas_Global
         Return bResultado
     End Function
 
+    Public Function ObtieneFacturasRelacionadas() As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String
+
+        sSQL = "SELECT F.FOLIO_VENTA,F.FECHA,F.CONCEPTO,F.FOLIO_FISCAL_SAT,F.TOTAL " &
+                "FROM VENTAS_CFDI_RELACIONADOS VR " &
+                "INNER JOIN VENTA_GLOBAL F ON(VR.FOLIO_VENTA_RELACIONADA=F.FOLIO_VENTA) " &
+                "WHERE VR.FOLIO_VENTA='" & Me.FOLIO_VENTA & "'" &
+                "ORDER BY F.FECHA"
+
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+
+            da.Dispose()
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtieneFacturasRelacionadas", ex)
+        End Try
+
+        Return dTabla
+    End Function
 #End Region
 
 End Class

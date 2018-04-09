@@ -422,6 +422,7 @@ Buscar:
             Me.cboMetodoPago.SelectedValue = "PUE"
 
             Me.cboUsoCFDI.SelectedValue = "G02" 'G02=Devoluciones, descuentos o bonificaciones
+            Me.cboTipoRelacionCFDI.SelectedValue = "01" '01-Nota de crédito de los documentos relacionados
 
             Me.lblVersionCFDI.Text = ""
 

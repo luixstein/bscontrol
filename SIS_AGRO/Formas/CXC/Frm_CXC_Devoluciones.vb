@@ -119,6 +119,7 @@ Public Class Frm_CXC_Devoluciones
             Me.DesplegarMonedas()
             Me.DesplegarFormasPago(False)
             Me.DesplegarUsoCFDIPersonasFisicas()
+            Me.DesplegarTiposRelacionCFDI()
 
             Me.Inicializa()
             Me.Cambia_Estado(enumEstados.NUEVO)
@@ -274,6 +275,7 @@ busca:
             Me.cboFormaPago.SelectedValue = "99" ' "99-Por definir"  '99=Por definir
             Me.cboMetodoPago.SelectedValue = "PUE" ' "PUE-Pago en una sola exhibición"
             Me.cboUsoCFDI.SelectedValue = "G02" ' "G02-Devoluciones, descuentos o bonificaciones"
+            Me.cboTipoRelacionCFDI.SelectedValue = "03" '03-Devolución de mercancía sobre facturas o traslados previos
             Me.lblVersionCFDI.Text = ""
 
             Me.TabControl1.SelectedIndex = 0
@@ -529,6 +531,7 @@ busca:
             Me.cboUsoCFDI.Enabled = False
             Me.cboFormaPago.Enabled = False
             Me.cboMetodoPago.Enabled = False
+            Me.cboTipoRelacionCFDI.Enabled = False
 
             Me.chkVentaPublicoGeneral.Enabled = False
 
@@ -554,6 +557,7 @@ busca:
                     Me.dtFecha.Enabled = True
 
                     Me.cboFormaPago.Enabled = True
+                    Me.cboTipoRelacionCFDI.Enabled = True
 
                     Me.tssEstado.Text = "Estado: Agregando nuevo movimiento"
 
@@ -630,6 +634,7 @@ busca:
             Me.lblCliente.Text = Me.oCliente.NOMBRE_CLIENTE
             Me.txtAlmacen.Text = Me.oVenta.CODIGO_ALMACEN
             Me.lblAlmacen.Text = oAlmacen.NOMBRE_ALMACEN
+            Me.cboMoneda.Text = Me.oVenta.CODIGO_MONEDA_SAT
             Me.txtTipoCambio.Text = Me.oVenta.TIPO_DE_CAMBIO.ToString
             Me.chkVentaPublicoGeneral.Checked = CBool(Me.oVenta.ES_VENTA_PUBLICO_GENERAL)
             Me.txtSaldo.Text = FormatImporteContable(Me.oVenta.SALDO)
@@ -731,6 +736,12 @@ busca:
                     Me.cboUsoCFDI.SelectedIndex = -1
                 End If
 
+                If txtLEN("" & .CODIGO_USO_CFDI) = True Then
+                    Me.cboTipoRelacionCFDI.SelectedValue = .CODIGO_TIPO_RELACION_CFDI
+                Else
+                    Me.cboTipoRelacionCFDI.SelectedIndex = -1
+                End If
+
                 Me.tssElaboro.Text = "Elaboró : " & .NOMBRE_USUARIO_GRABO & " el " & Format(.FECHA_SERVIDOR, "dd-MMM-yyyy hh:mm tt")
                 If .ESTATUS_DEVOLUCION = "C" Then
                     Me.tssCancelo.Text = "Canceló : " & .NOMBRE_USUARIO_CANCELO & " el : " & Format(.FECHA_CANCELACION, "dd-MMM-yyyy hh:mm tt")
@@ -826,6 +837,7 @@ busca:
                 .CODIGO_METODO_PAGO_EVENTO = Me.cboMetodoPago.SelectedValue.ToString
                 .CODIGO_USO_CFDI = Me.cboUsoCFDI.SelectedValue.ToString
                 .CODIGO_MONEDA_SAT = Me.cboMoneda.Text
+                .CODIGO_TIPO_RELACION_CFDI = Me.cboTipoRelacionCFDI.SelectedValue.ToString
 
                 If .GrabaDevolucionGlobal = False Then
                     Return False
@@ -1499,6 +1511,22 @@ busca_serie:
         End Try
     End Function
 
+    Private Sub DesplegarTiposRelacionCFDI()
+        Try
+            With Me.cboTipoRelacionCFDI
+                .DisplayMember = "NOMBRE_TIPO_RELACION_CFDI"
+                .ValueMember = "CODIGO_TIPO_RELACION_CFDI"
+                Dim dView As New Data.DataView(dtTiposRelacionCFDI)
+                dView.Sort = "NOMBRE_TIPO_RELACION_CFDI"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedValue = "03" '03=Devolución de mercancía sobre facturas o traslados previos"
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarTiposRelacionCFDI", ex)
+        End Try
+    End Sub
 #End Region
 
 End Class

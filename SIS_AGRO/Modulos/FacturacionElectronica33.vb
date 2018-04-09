@@ -145,10 +145,35 @@ Module FacturacionElectronica33
                 .Confirmacion = ""
             End With
 
+
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''CfdiRelacionados''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-            'Cfd.CfdiRelacionados.TipoRelacion = "01"
-            'Cfd.CfdiRelacionados.Add ("F664C038-474C-414E-B40D-2E8C4A3EFCAC")
+            'Se pregunta por que no todas las facturas tienen relación.
+            If txtLEN("" & oVenta.CODIGO_TIPO_RELACION_CFDI) = True Then
+                Cfd.CfdiRelacionados.TipoRelacion = oVenta.CODIGO_TIPO_RELACION_CFDI
+
+                Dim dtFacturasRelacionadas As DataTable = oVenta.ObtieneFacturasRelacionadas
+                Dim FaltanUUIDRelacionados As Boolean = False
+
+                If dtFacturasRelacionadas.Rows.Count = 0 Then
+                    MsgBox("No se encontraron los cfdis relacionados(facturas) a la factura.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                For Each dRow As DataRow In dtFacturasRelacionadas.Rows
+                    If txtLEN("" & dRow("FOLIO_FISCAL_SAT").ToString) = False Then
+                        MsgBox("La factura " & dRow("FOLIO_VENTA").ToString & " no tiene UUID(posiblemente no esta timbrada).", vbExclamation, sProcedure)
+                        FaltanUUIDRelacionados = True
+                    End If
+
+                    Cfd.CfdiRelacionados.Add(dRow("FOLIO_FISCAL_SAT").ToString) 'uuids
+                Next
+
+                'En caso de que alguna factura no este timbrada se aborta el proceso.
+                If FaltanUUIDRelacionados = True Then
+                    Return False
+                End If
+            End If
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Emisor''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             With Cfd.Emisor
@@ -874,7 +899,7 @@ Module FacturacionElectronica33
 
             'En caso de que alguna factura no este timbrada se aborta el proceso.
             If FaltanUUIDRelacionados = True Then
-                Exit Function
+                Return False
             End If
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Emisor''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

@@ -77,7 +77,15 @@ Public Class Ventas_Movimientos
     Private igySerieNumeroSerie As Short = 5
 #End Region
 
-#Region "Campos/propiedades para facturas embarques extrajeros que se incian desde otra pantalla"
+#Region "Columnas grid CFDIs relacionados"
+    Private iGyGRFolio As Short = 1
+    Private iGyGRFecha As Short = 2
+    Private iGyGRConcepto As Short = 3
+    Private iGyGRUUID As Integer = 4
+    Private iGyGRTotal As Short = 5
+#End Region
+
+#Region "Campos/propiedades para facturas embarques extrajeros que se inician desde otra pantalla"
     Private _EsPorEmbarqueExtranjero As Boolean = False
     'Private sFolioEmbarqueExtranjero As String = ""
     Private _oEmbarqueExtranjero As Class_Embarques_EmbarqueGlobal
@@ -358,6 +366,13 @@ Buscar:
             '        Me.tsbRemisionVenta.Visible = False
             '    End If
         End If
+
+        If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
+            Me.tpCFDIsRelacionados.Enabled = True
+        Else
+            Me.tpCFDIsRelacionados.Enabled = False
+        End If
+
     End Sub
 
     Private Sub CmbAlmacen_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboAlmacen.SelectedIndexChanged
@@ -597,7 +612,6 @@ Buscar:
         txtNoBeep(e)
     End Sub
 
-
     Private Sub llblAgregarSeguimiento_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles llblAgregarSeguimiento.LinkClicked
         If txtLEN(Me.TxtCliente.Text) = False Then
             MsgBox("Debe de asignar un cliente", MsgBoxStyle.Exclamation, Me.Text)
@@ -696,6 +710,10 @@ Buscar:
     Private Sub cboMetodoPago_KeyDown(sender As Object, e As KeyEventArgs) Handles cboMetodoPago.KeyDown
         txtTAB(e)
     End Sub
+
+    Private Sub GridCFDIsRelacionados_KeyDown(ByVal Sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles GridCFDIsRelacionados.KeyDown
+        Me.GestionaGridCFDIsRelacionados(e)
+    End Sub
 #End Region
 
 #Region "Métodos y procedimientos"
@@ -760,6 +778,9 @@ Buscar:
 
             Me.lblConceptoCancelacion.Visible = False
             Me.TxtConceptoCancelacion.Visible = False
+
+            Me.cboTipoRelacionCFDI.SelectedIndex = -1
+            Me.InicializaGridCFDIsRelacionados()
 
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
@@ -990,6 +1011,9 @@ Buscar:
         Try
             Me.Estado = pEstado
 
+            Me.cboTipoRelacionCFDI.Enabled = False
+            Me.GridCFDIsRelacionados.Locked = True
+
             Select Case Me.Estado
                 Case enumEstados.NUEVO
                     Me.tsbNuevo.Enabled = True
@@ -1044,6 +1068,9 @@ Buscar:
                     Me.cboMoneda.Enabled = True
                     Me.cboUsoCFDI.Enabled = True
                     'Me.cboMetodoPago.Enabled = True
+
+                    Me.cboTipoRelacionCFDI.Enabled = True
+                    Me.GridCFDIsRelacionados.Locked = False
 
                     Me.lblConceptoCancelacion.Visible = False
                     Me.TxtConceptoCancelacion.Visible = False
@@ -1146,7 +1173,6 @@ Buscar:
                         Me.cboMoneda.Enabled = False
                         Me.cboUsoCFDI.Enabled = False
                         'Me.cboMetodoPago.Enabled = False
-
                     ElseIf Me.oDocumento.AFECTA_INVENTARIOS = True Then
                         Me.tsbCotizacionFactura.Visible = False
                         Me.tsbCotizacionRemision.Visible = False
@@ -1275,7 +1301,7 @@ Buscar:
     Function Grabar() As Boolean
         Const sProcedure As String = "Grabar"
         Dim bResultado As Boolean = False
-        Dim i As Integer, sMetodoPago As String = "", sUsoCFDI As String = "", sListaSeries As String = ""
+        Dim i As Integer, sMetodoPago As String = "", sUsoCFDI As String = "", sListaSeries As String = "", sCodigoTipoRelacionCFDI As String = "", sListaCFDIsRelacionados As String = ""
 
         Try
 
@@ -1367,6 +1393,28 @@ Buscar:
                 sUsoCFDI = Me.cboUsoCFDI.SelectedValue.ToString
             End If
 
+            If Me.cboTipoRelacionCFDI.SelectedIndex <> -1 Then
+                If Me.HayCFDIsRelacionadosRepetidos() = True Then
+                    Return False
+                End If
+
+                sCodigoTipoRelacionCFDI = Me.cboTipoRelacionCFDI.SelectedValue.ToString
+
+                For i = 1 To Me.GridCFDIsRelacionados.Rows - 1
+                    If txtLEN(Me.GridCFDIsRelacionados.Cell(i, Me.iGyGRFolio).Text) = True Then
+                        sListaCFDIsRelacionados = sListaCFDIsRelacionados & Me.GridCFDIsRelacionados.Cell(i, iGyGRFolio).Text & ","
+                    End If
+                Next
+
+                If txtLEN(sListaCFDIsRelacionados) = True Then
+                    sListaCFDIsRelacionados = sListaCFDIsRelacionados.Substring(0, sListaCFDIsRelacionados.Length - 1) 'Para quitarle la última coma que sale sobrando.
+                Else
+                    MsgBox("Seleccionó un tipo de relación CFDI, pero no indicó cuales son los CFDIs relacionados.", vbExclamation, sProcedure)
+                    Return False
+                End If
+            End If
+
+
             With Me.oVenta
                 .FOLIO_VENTA = Me.txtFolio.Text.ToUpper
                 .FECHA = Me.dpFecha.Value
@@ -1443,6 +1491,8 @@ Buscar:
                     .CODIGO_TIPO_CREDITO = "NA"
                 End If
                 .TIENE_IEPS_DESGLOSADO = Me.bClienteEsContribuyenteIEPS
+                .CODIGO_TIPO_RELACION_CFDI = sCodigoTipoRelacionCFDI
+                .LISTA_CFDIS_RELACIONADOS = sListaCFDIsRelacionados
 
                 If Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.SUSTITUYENDO Then
                     If .Grabar("INSERTAR") = False Then
@@ -2768,6 +2818,15 @@ CANCELAR:
                 If txtLEN("" & Me.oVenta.CODIGO_USO_CFDI) = True Then
                     Me.cboUsoCFDI.SelectedValue = Me.oVenta.CODIGO_USO_CFDI
                 End If
+
+                If txtLEN("" & Me.oVenta.CODIGO_TIPO_RELACION_CFDI) = True Then
+                    Me.cboTipoRelacionCFDI.SelectedValue = Me.oVenta.CODIGO_TIPO_RELACION_CFDI
+
+                    Me.GridCFDIsRelacionados.DataSource = Me.oVenta.ObtieneFacturasRelacionadas
+                    Me.FormateaGridCFDIsRelacionados()
+                Else
+                    Me.cboTipoRelacionCFDI.SelectedIndex = -1
+                End If
             End If
 
             bResultado = True
@@ -3847,6 +3906,148 @@ busca_serie:
             HandleError(Me.Name, "DesplegarTiposRelacionCFDI", ex)
         End Try
     End Sub
+
+    Private Sub InicializaGridCFDIsRelacionados()
+        Try
+            Me.GridCFDIsRelacionados.DataSource = Nothing
+            FG_Grid_Limpiar(Me.GridCFDIsRelacionados)
+            Me.GridCFDIsRelacionados.Rows = 2
+            Me.GridCFDIsRelacionados.Cols = 6
+            Me.FormateaGridCFDIsRelacionados()
+        Catch ex As Exception
+            HandleError(Me.Name, "InicializaGridCFDIsRelacionados", ex)
+        End Try
+    End Sub
+
+    Private Sub FormateaGridCFDIsRelacionados()
+        Try
+            With Me.GridCFDIsRelacionados
+                .AutoRedraw = False
+
+                .Column(Me.iGyGRFolio).Width = 100
+                .Column(Me.iGyGRFecha).Width = 80
+                .Column(Me.iGyGRConcepto).Width = 300
+                .Column(Me.iGyGRUUID).Width = 280
+                .Column(Me.iGyGRTotal).Width = 100
+
+                .Cell(0, Me.iGyGRFolio).Text = "Folio"
+                .Cell(0, Me.iGyGRFecha).Text = "Fecha"
+                .Cell(0, Me.iGyGRConcepto).Text = "Concepto"
+                .Cell(0, Me.iGyGRUUID).Text = "UUID"
+                .Cell(0, Me.iGyGRTotal).Text = "Total"
+
+                .Column(Me.iGyGRFolio).Locked = False
+                .Column(Me.iGyGRFecha).Locked = True
+                .Column(Me.iGyGRConcepto).Locked = True
+                .Column(Me.iGyGRUUID).Locked = True
+                .Column(Me.iGyGRTotal).Locked = True
+
+                .Column(Me.iGyGRFecha).CellType = FlexCell.CellTypeEnum.DateTime
+                .Column(Me.iGyGRFecha).FormatString = "dd-MMM-yy"
+
+                .Column(Me.iGyGRTotal).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyGRTotal).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyGRTotal).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyGRTotal).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .AutoRedraw = True
+                .Refresh()
+
+                '.Row(.Rows - 1).Locked = True 'Para bloquear la edición del último renglón
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "FormateaGridCFDIsRelacionados", ex)
+        End Try
+    End Sub
+
+    Private Sub GestionaGridCFDIsRelacionados(ByVal e As System.Windows.Forms.KeyEventArgs)
+        Try
+            If Me.GridCFDIsRelacionados.Locked = True Then
+                Return
+            End If
+
+            Dim Columna As Integer, Renglon As Integer, sFolio As String = "", oVenta As Class_Ventas_Global
+
+            Columna = Me.GridCFDIsRelacionados.Selection.FirstCol
+            Renglon = Me.GridCFDIsRelacionados.Selection.FirstRow
+            sFolio = Me.GridCFDIsRelacionados.Cell(Renglon, Me.iGyGRFolio).Text
+
+            Select Case e.KeyCode
+                Case Keys.Enter
+
+                    Select Case Columna
+                        Case Me.iGyGRFolio
+                            If txtLEN(sFolio) = False Then
+                                GoTo BuscaVentas : Return
+                            End If
+LlenaLinea:
+                            oVenta = New Class_Ventas_Global(sFolio)
+                            If oVenta.Existe = False Then
+                                GoTo BuscaVentas : Return
+                            End If
+
+                            Me.GridCFDIsRelacionados.Cell(Renglon, Me.iGyGRFecha).Text = oVenta.FECHA.ToString
+                            Me.GridCFDIsRelacionados.Cell(Renglon, Me.iGyGRConcepto).Text = oVenta.CONCEPTO
+                            Me.GridCFDIsRelacionados.Cell(Renglon, Me.iGyGRUUID).Text = oVenta.FOLIO_FISCAL_SAT
+                            Me.GridCFDIsRelacionados.Cell(Renglon, Me.iGyGRTotal).Text = oVenta.TOTAL.ToString
+                    End Select
+
+                    If Me.GridCFDIsRelacionados.Rows - 1 = Renglon Then
+                        Me.GridCFDIsRelacionados.Rows = Me.GridCFDIsRelacionados.Rows + 1
+                    End If
+
+                Case Keys.F6
+BuscaVentas:
+                    Select Case Columna
+                        Case Me.iGyGRFolio
+                            oVenta = New Class_Ventas_Global
+                            sFolio = oVenta.BusquedaVisualFacturasClienteParaRelacionarCFDIs(Me.TxtCliente.Text)
+                            If txtLEN(sFolio) = True Then
+                                Me.GridCFDIsRelacionados.Cell(Renglon, Me.iGyGRFolio).Text = sFolio
+                                GoTo LlenaLinea : Return
+                            End If
+                    End Select
+
+                Case Keys.F8 'Borrar renglón
+                    If (Me.Estado = enumEstados.NUEVO) Then
+                        Me.GridCFDIsRelacionados.Selection.DeleteByRow()
+                    End If
+
+                Case Keys.Delete 'Borrar renglón
+                    Return
+
+            End Select
+
+        Catch ex As Exception
+            HandleError(Me.Name, "GestionaGridCFDIsRelacionados", ex)
+        End Try
+    End Sub
+
+    Private Function HayCFDIsRelacionadosRepetidos() As Boolean
+        Const sProcedure As String = "HayCFDIsRelacionadosRepetidos"
+        Try
+            Dim i As Integer, j As Integer, sFolio As String = ""
+            For i = 1 To Me.GridCFDIsRelacionados.Rows - 1
+                If txtLEN(Me.GridCFDIsRelacionados.Cell(i, Me.iGyGRFolio).Text) = True Then
+                    sFolio = Me.GridCFDIsRelacionados.Cell(i, Me.iGyGRFolio).Text
+                    For j = i + 1 To Me.GridCFDIsRelacionados.Rows - 1
+                        If txtLEN(Me.GridCFDIsRelacionados.Cell(j, Me.iGyGRFolio).Text) = True Then
+                            If sFolio = Me.GridCFDIsRelacionados.Cell(j, Me.iGyGRFolio).Text And Me.GridCFDIsRelacionados.Rows > 2 Then
+                                MsgBox("El CFDI relacionado " & iGyGRFolio & " esta repetido en el renglón #" & i.ToString & " y en el #" & j.ToString, MsgBoxStyle.Exclamation, sProcedure)
+                                Me.GridCFDIsRelacionados.Cell(i, Me.iGyGRFolio).SetFocus()
+                                'Me.GridSemanaTrabajadores.Selection.DeleteByRow()
+                                Return True
+                            End If
+                        End If
+                    Next j
+                End If
+            Next i
+
+            Return False
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Function
 #End Region
 
 End Class
