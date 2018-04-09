@@ -217,7 +217,7 @@ busca:
         oTexBox.SelectAll()
     End Sub
 
-    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
+    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboTipoRelacionCFDI.KeyDown
         If e.KeyCode = Keys.Return Then
             SendKeys.Send("{TAB}")
         End If
@@ -736,7 +736,7 @@ busca:
                     Me.cboUsoCFDI.SelectedIndex = -1
                 End If
 
-                If txtLEN("" & .CODIGO_USO_CFDI) = True Then
+                If txtLEN("" & .CODIGO_TIPO_RELACION_CFDI) = True Then
                     Me.cboTipoRelacionCFDI.SelectedValue = .CODIGO_TIPO_RELACION_CFDI
                 Else
                     Me.cboTipoRelacionCFDI.SelectedIndex = -1

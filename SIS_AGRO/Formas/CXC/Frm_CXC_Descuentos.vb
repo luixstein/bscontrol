@@ -345,7 +345,7 @@ Buscar:
         oTexBox.SelectAll()
     End Sub
 
-    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dtFecha.KeyDown, cboFormaPago.KeyDown, cboMetodoPago.KeyDown, cboUsoCFDI.KeyDown
+    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dtFecha.KeyDown, cboFormaPago.KeyDown, cboMetodoPago.KeyDown, cboUsoCFDI.KeyDown, cboTipoRelacionCFDI.KeyDown
         If e.KeyCode = Keys.Return Then
             SendKeys.Send("{TAB}")
         End If
@@ -420,7 +420,6 @@ Buscar:
             End If
 
             Me.cboMetodoPago.SelectedValue = "PUE"
-
             Me.cboUsoCFDI.SelectedValue = "G02" 'G02=Devoluciones, descuentos o bonificaciones
             Me.cboTipoRelacionCFDI.SelectedValue = "01" '01-Nota de crédito de los documentos relacionados
 
@@ -963,7 +962,7 @@ Buscar:
                     Me.cboUsoCFDI.SelectedIndex = -1
                 End If
 
-                If txtLEN("" & Me.oDescuentosCXC.CODIGO_USO_CFDI) = True Then
+                If txtLEN("" & Me.oDescuentosCXC.CODIGO_TIPO_RELACION_CFDI) = True Then
                     Me.cboTipoRelacionCFDI.SelectedValue = Me.oDescuentosCXC.CODIGO_TIPO_RELACION_CFDI
                 Else
                     Me.cboTipoRelacionCFDI.SelectedIndex = -1
@@ -1136,6 +1135,7 @@ Buscar:
             Me.txtTipoCambio.Enabled = False
             Me.cboMetodoPago.Enabled = False
             Me.cboUsoCFDI.Enabled = False
+            Me.cboTipoRelacionCFDI.Enabled = False
 
             Me.Estado = pEstado
             Select Case Me.Estado
@@ -1426,6 +1426,21 @@ Buscar:
         End Try
     End Sub
 
+    Private Sub EnviarCorreo()
+        Try
+            Me.tsbEnviarCorreo.Enabled = False
+            Me.tsbEnviarCorreo.Text = "Enviando..."
+            Application.DoEvents()
+            Me.oDescuentosCXC.EnviarCorreo()
+        Catch ex As Exception
+            HandleError(Me.Name, "EnviarCorreo", ex)
+        Finally
+            Me.tsbEnviarCorreo.Text = "&Enviar correo"
+            Me.tsbEnviarCorreo.Enabled = True
+        End Try
+        Application.DoEvents()
+    End Sub
+
     Private Sub DesplegarTiposRelacionCFDI()
         Try
             With Me.cboTipoRelacionCFDI
@@ -1443,20 +1458,6 @@ Buscar:
         End Try
     End Sub
 
-    Private Sub EnviarCorreo()
-        Try
-            Me.tsbEnviarCorreo.Enabled = False
-            Me.tsbEnviarCorreo.Text = "Enviando..."
-            Application.DoEvents()
-            Me.oDescuentosCXC.EnviarCorreo()
-        Catch ex As Exception
-            HandleError(Me.Name, "EnviarCorreo", ex)
-        Finally
-            Me.tsbEnviarCorreo.Text = "&Enviar correo"
-            Me.tsbEnviarCorreo.Enabled = True
-        End Try
-        Application.DoEvents()
-    End Sub
 #End Region
 
 End Class
