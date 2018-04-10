@@ -615,7 +615,8 @@ Module FacturacionElectronica33
             End If
 
             'Nota en el comprobante va la fecha del depósito.
-            ComprobanteFecha = Format(oBanco.FECHA, "yyyy-MM-dd") & "T" & Format(oBanco.FECHA_SERVIDOR, "HH:mm:ss")
+            'ComprobanteFecha = Format(oBanco.FECHA, "yyyy-MM-dd") & "T" & Format(oBanco.FECHA_SERVIDOR, "HH:mm:ss")
+            ComprobanteFecha = Format(oBanco.FECHA_EMISION_CFDI, "yyyy-MM-dd") & "T" & Format(oBanco.FECHA_EMISION_CFDI, "HH:mm:ss")
 
             'Debemos validar la fecha del comprobante y no la del pago.
             If ValidaDatosGenerales(FechaSatAFechaNormal(ComprobanteFecha), oPago.FELECTRONICA_CER, oPago.FELECTRONICA_KEY, oPago.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA) = False Then

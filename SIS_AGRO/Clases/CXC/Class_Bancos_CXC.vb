@@ -56,6 +56,7 @@ Public Class Class_Bancos_CXC
     Private _CODIGO_MODULO As String
     Private _FECHA_CHEQUE As Date
     Private _CFDIS_GENERADOS As Boolean
+    Private _FECHA_EMISION_CFDI As Date
 #End Region
 
 #Region "Campos de sistema"
@@ -419,6 +420,16 @@ Public Class Class_Bancos_CXC
             Return Me._CFDIS_GENERADOS
         End Get
     End Property
+
+    Public Property FECHA_EMISION_CFDI() As Date
+        Get
+            Return Me._FECHA_EMISION_CFDI
+        End Get
+        Set(ByVal value As Date)
+            Me._FECHA_EMISION_CFDI = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedad Nombre de Clase"
@@ -572,6 +583,8 @@ Public Class Class_Bancos_CXC
                     End If
 
                     Me._CFDIS_GENERADOS = CBool(dReader("CFDIS_GENERADOS"))
+
+                    Me._FECHA_EMISION_CFDI = CType(dReader("BAN_FECHA_EMISION_CFDI"), Date)
 
                     bResultado = True
 

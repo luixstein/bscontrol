@@ -2044,6 +2044,7 @@ Buscar:
                 If Me.oBancosCXC.ESTATUS = "C" Then
                     Me.tssCancelo.Text = "Canceló : " & Me.oBancosCXC.NOMBRE_USUARIO_CANCELO & " el : " & Format(Me.oBancosCXC.FECHA_DE_CANCELACION_SERVIDOR, "dd-MMM-yyyy hh:mm tt")
                 End If
+                Me.tssFechaEmisionCFDI.Text = "Fecha emisión CFDI : " & Format(Me.oBancosCXC.FECHA_EMISION_CFDI, "dd-MMM-yyyy hh:mm:ss tt")
 
                 'Me.Grid.Visible = false
                 Me.GridVentas.DataSource = Me.oBancosCXC.ObtenerDetalle

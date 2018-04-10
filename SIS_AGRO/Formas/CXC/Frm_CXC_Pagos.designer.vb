@@ -106,6 +106,7 @@ Partial Class Frm_CXC_Pagos
         Me.GridDocumentosPago = New FlexCell.Grid()
         Me.btnVerCFDIS = New System.Windows.Forms.Button()
         Me.btnGenerarCFDIS = New System.Windows.Forms.Button()
+        Me.tssFechaEmisionCFDI = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbAgregaDocCliente.SuspendLayout()
@@ -843,7 +844,7 @@ Partial Class Frm_CXC_Pagos
         '
         'StatusStripEstado
         '
-        Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssEstado, Me.tssElaboro, Me.tssCancelo})
+        Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssEstado, Me.tssElaboro, Me.tssCancelo, Me.tssFechaEmisionCFDI})
         Me.StatusStripEstado.Location = New System.Drawing.Point(0, 615)
         Me.StatusStripEstado.Name = "StatusStripEstado"
         Me.StatusStripEstado.Size = New System.Drawing.Size(1152, 24)
@@ -933,6 +934,15 @@ Partial Class Frm_CXC_Pagos
         Me.btnGenerarCFDIS.TabIndex = 381
         Me.btnGenerarCFDIS.Text = "Generar CFDI's"
         Me.btnGenerarCFDIS.UseVisualStyleBackColor = True
+        '
+        'tssFechaEmisionCFDI
+        '
+        Me.tssFechaEmisionCFDI.BorderSides = CType((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
+        Me.tssFechaEmisionCFDI.Name = "tssFechaEmisionCFDI"
+        Me.tssFechaEmisionCFDI.Size = New System.Drawing.Size(121, 19)
+        Me.tssFechaEmisionCFDI.Text = "Fecha emisión CFDI :"
         '
         'Frm_CXC_Pagos
         '
@@ -1051,4 +1061,5 @@ Partial Class Frm_CXC_Pagos
     Friend WithEvents txtSPEI_numeroCertificado As TextBox
     Friend WithEvents chkEsBancoExtranjero As CheckBox
     Friend WithEvents btnGenerarCFDIS As Button
+    Friend WithEvents tssFechaEmisionCFDI As ToolStripStatusLabel
 End Class

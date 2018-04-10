@@ -806,19 +806,22 @@ busca:
                 .IEPS_INCLUIDO = valorNumericoD(Me.lblIEPSIncluido.Text)
                 .IMPUESTO_PORCENTAJE = CDec(IIf(valorNumericoD(Me.lblImpuesto.Text) > 0, "16", "0"))
 
+                .ES_COMPROBANTE_ELECTRONICO = "0" 'Por default ponemos que no es comprobante electrónico para no poner varios elses para establecerlo en el siguiente bloque de código.
                 If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
-                    If Me.oVenta.TIMBRADO_CFDI = "1" Then 'Si se timbró la venta, se considera que la dev será electrónica, nota también hay dev de remisiones que no afectaton timbre.
-                        .ES_COMPROBANTE_ELECTRONICO = "1"
-                        bTimbrar = True
-                    Else
-                        If MsgBox("La factura no fue timbrada de modo que esta devolución tampoco será timbrada, seguro desea continuar de todas formas ?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Me.Name) = MsgBoxResult.No Then
-                            Return False
+
+                    Dim oDocumentoReferencia As New Class_CatDocumentos(Me.oVenta.CODIGO_DOCUMENTO)
+
+                    'Validamos si el documento de venta es timbrable(puede ser rem que no timbra y no entraria aqui)
+                    If oDocumentoReferencia.TIMBRA_DOCUMENTO = True Then
+                        If Me.oVenta.TIMBRADO_CFDI = "1" Then 'Si se timbró la venta, se considera que la dev será electrónica.
+                            .ES_COMPROBANTE_ELECTRONICO = "1"
+                            bTimbrar = True
                         Else
-                            .ES_COMPROBANTE_ELECTRONICO = "0"
+                            If MsgBox("La factura no fue timbrada de modo que esta devolución tampoco será timbrada, seguro desea continuar de todas formas ?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Me.Name) = MsgBoxResult.No Then
+                                Return False
+                            End If
                         End If
                     End If
-                Else
-                    .ES_COMPROBANTE_ELECTRONICO = "0"
                 End If
 
                 .ES_A_PUBLICO_GENERAL = Convert.ToInt32(Me.chkVentaPublicoGeneral.Checked).ToString
