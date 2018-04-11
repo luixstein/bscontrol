@@ -607,6 +607,9 @@ Buscar:
             'Me.cboMoneda.Text = "MXN" no se debe inicializar por si dejaron seleccionada moneda en usd no debe perderse la moneda y demás datos de la cuenta
             Me.txtTipoCambio.Text = ""
 
+            Me.tssElaboro.Text = "Elaboró : "
+            Me.tssCancelo.Text = "Canceló : "
+            Me.tssFechaEmisionCFDI.Text = ""
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
         End Try
@@ -2273,6 +2276,7 @@ Buscar:
                     Me.tssEstado.Text = "Estado: agregando documento " & Me.CboDocumento.Text
                     Me.tssElaboro.Visible = False
                     Me.tssCancelo.Visible = False
+                    Me.tssFechaEmisionCFDI.Visible = False
                     Me.GridVentas.Locked = False
                     Me.TxtFolio.Enabled = True
                     Me.TxtCuentaBancaria.Enabled = True
@@ -2300,6 +2304,7 @@ Buscar:
                     Me.tssEstado.Text = "Estado: Consulta de " & Me.CboDocumento.Text
                     Me.tssElaboro.Visible = True
                     Me.tssCancelo.Visible = False
+                    Me.tssFechaEmisionCFDI.Visible = True
                     Me.GridVentas.Locked = True
                     Me.GridVentas.Cell(0, Me.iGyVentaPago).Text = "Pagado"
                     Me.GridVentas.Column(Me.iGyVentaSeleccion).Visible = False
@@ -2331,6 +2336,7 @@ Buscar:
                     Me.tssEstado.Text = "Estado: Consulta de " & Me.CboDocumento.Text
                     Me.tssElaboro.Visible = True
                     Me.tssCancelo.Visible = True
+                    Me.tssFechaEmisionCFDI.Visible = True
                     Me.GridVentas.Locked = True
                     Me.GridVentas.Cell(0, Me.iGyVentaPago).Text = "Pagado"
                     Me.GridVentas.Column(Me.iGyVentaSeleccion).Visible = False

@@ -635,7 +635,7 @@ Module FacturacionElectronica33
 
             PagoFechaPago = Format(oPago.FECHA_PAGO, "yyyy-MM-dd") & "T" & Format(oPago.FECHA_PAGO, "HH:mm:ss")
 
-            'No funcionó poder las 12 por ser antes que la fecha del comprobante(si es que es del mismo dia), ya la propia fecha_pago tiene la hora grabada necesaria
+            'No funcionó poner las 12 por ser antes que la fecha del comprobante(si es que es del mismo dia), ya la propia fecha_pago tiene la hora grabada necesaria
             'PagoFechaPago = Format(oPago.FECHA_PAGO, "yyyy-MM-dd") & "T" & "12:00:00" 'Fijos a las 12 todos para no pedir la hora de pago al cliente
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Datos globales''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
