@@ -41,7 +41,7 @@ Module Mod_main
 
     Public Sub EstableceDescripcionMenu()
         My.Forms.AppMenu.Text = Empresa_Sistema.NOMBRE_EMPRESA.ToString & " | Plaza: " & Usuario.Codigo_Plaza & "-" & Plaza.NOMBRE_PLAZA & " | Usuario: " & Usuario.Nombre_Usuario & " |  Ejercicio: " & Plaza.NOMBRE_EJERCICIO
-        My.Forms.AppMenu.ToolStripStatusLabel.Text = "Server: " & Empresa_Sistema.Servidor & " | BD: " & Empresa_Sistema.BaseDatos & " | " & String.Format("Revisión {0}", My.Application.Info.Version.ToString) &
+        My.Forms.AppMenu.ToolStripStatusLabel.Text = String.Format("Versión del sistema: {0}", My.Application.Info.Version.Revision.ToString) & " | Server: " & Empresa_Sistema.Servidor & " | BD: " & Empresa_Sistema.BaseDatos &
             " | CFDI=" & Empresa_Sistema.VERSION_ESQUEMA_CFD
     End Sub
 
