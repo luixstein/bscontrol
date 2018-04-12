@@ -800,7 +800,7 @@ Module FacturacionElectronica33
             If Cfd.GeneraCFD(TipoComprobante.PAGO_CXC, sRutaXML) = True Then
                 bResultado = True
                 If bMostrarMensaje = True Then
-                    MsgBox("Pago sellado satisfactoriamente.", vbInformation, sProcedure)
+                    MsgBox("Pago timbrado satisfactoriamente.", vbInformation, sProcedure)
                 End If
             End If
 
@@ -877,8 +877,7 @@ Module FacturacionElectronica33
             End With
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''CfdiRelacionados''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-            Cfd.CfdiRelacionados.TipoRelacion = oDescuento.CODIGO_TIPO_RELACION_CFDI '01=Nota de crédito de los documentos relacionados
+            Cfd.CfdiRelacionados.TipoRelacion = oDescuento.CODIGO_TIPO_RELACION_CFDI
 
             Dim dtFacturasRelacionadas As DataTable = oDescuento.ObtieneFacturasRelacionadas
             Dim FaltanUUIDRelacionados As Boolean = False
@@ -1047,7 +1046,7 @@ Module FacturacionElectronica33
             If Cfd.GeneraCFD(TipoComprobante.NOTA_CREDITO_CXC, sRutaXML) = True Then
                 bResultado = True
                 If bMostrarMensaje = True Then
-                    MsgBox("Nota de crédito sellada satisfactoriamente.", vbInformation, sProcedure)
+                    MsgBox("Nota de crédito timbrada satisfactoriamente.", vbInformation, sProcedure)
                 End If
             End If
 
