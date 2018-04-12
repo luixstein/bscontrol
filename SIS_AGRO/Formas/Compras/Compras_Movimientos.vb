@@ -152,6 +152,10 @@ Public Class Compras_Movimientos
     Private Sub btnSeleccionarArchivoSeries_Click(sender As Object, e As EventArgs) Handles btnSeleccionarArchivoSeries.Click
         Me.GestionaArchivoSeries()
     End Sub
+
+    Private Sub btnCopiarLote_Click(sender As Object, e As EventArgs) Handles btnCopiarLote.Click
+        Me.CopiarLote
+    End Sub
 #End Region
 
 #Region "Eventos de objetos"
@@ -172,6 +176,12 @@ Public Class Compras_Movimientos
             Me.DesplegarMonedas()
             Me.Inicializa()
             Me.Cambia_Estado(enumEstados.NUEVO)
+        End If
+
+        If Empresa_Sistema.VALIDA_SERIES_REPETIDAS_EN_ENTRADAS = True Then
+            Me.txtLote.Visible = False : Me.btnCopiarLote.Visible = False : Me.lblDisplayLote.Visible = False
+        Else
+            Me.txtLote.Visible = True : Me.btnCopiarLote.Visible = True : Me.lblDisplayLote.Visible = True
         End If
     End Sub
 
@@ -2128,6 +2138,7 @@ BuscarCuentas:
             End If
             Me.tsbGrabar.Visible = False
             Me.tsbAplicar.Visible = True
+            Me.tpSeries.Enabled = True
         Else
             Me.txtFolioOC.Visible = False : Me.lblDisplayFolioOC.Visible = False
             Me.txtFolioProveedor.Visible = False : Me.lblDisplayFolioProveedor.Visible = False
@@ -2141,6 +2152,7 @@ BuscarCuentas:
             End If
             Me.tsbGrabar.Visible = True
             Me.tsbAplicar.Visible = False
+            Me.tpSeries.Enabled = False
         End If
     End Sub
 
@@ -2664,7 +2676,7 @@ BuscarCuentas:
 
             If txtLEN(sArticulo) = False Then
                 MsgBox("Seleccione un artículo en la pantalla de series.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.TabPage2.Focus()
+                Me.tpSeries.Focus()
                 Return False
             End If
 
@@ -2781,5 +2793,28 @@ BuscarCuentas:
 
         Return False
     End Function
+
+    Private Sub CopiarLote()
+        Dim sProcedure As String = "CopiarLote"
+        Try
+            If Me.GridSeries.ActiveCell.Row <= 0 Then
+                MsgBox("Debe seleccionar un renglón para copiarle este lote a todos los artículos iguales al seleccionado.", MsgBoxStyle.Exclamation, sProcedure)
+                Return
+            End If
+
+            Dim sArticulo As String = Me.GridSeries.Cell(Me.GridSeries.ActiveCell.Row, Me.igySerieCodigo).Text
+
+            For i = 1 To Me.GridSeries.Rows - 1
+                If Me.GridSeries.Cell(i, Me.igySerieCodigo).Text = sArticulo Then
+                    Me.GridSeries.Cell(i, igySerieNumeroSerie).Text = Me.txtLote.Text
+                End If
+            Next
+
+            MsgBox("Listo", MsgBoxStyle.Information, sProcedure)
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
+
 #End Region
 End Class
