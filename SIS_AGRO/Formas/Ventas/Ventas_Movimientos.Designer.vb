@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Ventas_Movimientos
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class Ventas_Movimientos
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Ventas_Movimientos))
         Me.LblEstatus = New System.Windows.Forms.Label()
@@ -69,6 +69,8 @@ Partial Class Ventas_Movimientos
         Me.lblDisplayVendedor = New System.Windows.Forms.Label()
         Me.chkVentaPublicoGeneral = New System.Windows.Forms.CheckBox()
         Me.gbPesos = New System.Windows.Forms.GroupBox()
+        Me.lblDisplayDescuento = New System.Windows.Forms.Label()
+        Me.lblDescuento = New System.Windows.Forms.Label()
         Me.lblIEPS = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.lblTotal = New System.Windows.Forms.Label()
@@ -123,9 +125,9 @@ Partial Class Ventas_Movimientos
         Me.tpSeries = New System.Windows.Forms.TabPage()
         Me.GridSeries = New FlexCell.Grid()
         Me.tpCFDIsRelacionados = New System.Windows.Forms.TabPage()
+        Me.GridCFDIsRelacionados = New FlexCell.Grid()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cboTipoRelacionCFDI = New System.Windows.Forms.ComboBox()
-        Me.GridCFDIsRelacionados = New FlexCell.Grid()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -437,7 +439,7 @@ Partial Class Ventas_Movimientos
         'lblDisplayImpuestoPesos
         '
         Me.lblDisplayImpuestoPesos.AutoSize = True
-        Me.lblDisplayImpuestoPesos.Location = New System.Drawing.Point(6, 53)
+        Me.lblDisplayImpuestoPesos.Location = New System.Drawing.Point(6, 67)
         Me.lblDisplayImpuestoPesos.Name = "lblDisplayImpuestoPesos"
         Me.lblDisplayImpuestoPesos.Size = New System.Drawing.Size(56, 13)
         Me.lblDisplayImpuestoPesos.TabIndex = 244
@@ -446,7 +448,7 @@ Partial Class Ventas_Movimientos
         'lblDisplayTotalPesos
         '
         Me.lblDisplayTotalPesos.AutoSize = True
-        Me.lblDisplayTotalPesos.Location = New System.Drawing.Point(6, 72)
+        Me.lblDisplayTotalPesos.Location = New System.Drawing.Point(6, 84)
         Me.lblDisplayTotalPesos.Name = "lblDisplayTotalPesos"
         Me.lblDisplayTotalPesos.Size = New System.Drawing.Size(37, 13)
         Me.lblDisplayTotalPesos.TabIndex = 246
@@ -544,6 +546,8 @@ Partial Class Ventas_Movimientos
         '
         'gbPesos
         '
+        Me.gbPesos.Controls.Add(Me.lblDisplayDescuento)
+        Me.gbPesos.Controls.Add(Me.lblDescuento)
         Me.gbPesos.Controls.Add(Me.lblIEPS)
         Me.gbPesos.Controls.Add(Me.Label2)
         Me.gbPesos.Controls.Add(Me.lblTotal)
@@ -554,16 +558,36 @@ Partial Class Ventas_Movimientos
         Me.gbPesos.Controls.Add(Me.lblDisplayImpuestoPesos)
         Me.gbPesos.Location = New System.Drawing.Point(625, 0)
         Me.gbPesos.Name = "gbPesos"
-        Me.gbPesos.Size = New System.Drawing.Size(184, 97)
+        Me.gbPesos.Size = New System.Drawing.Size(189, 102)
         Me.gbPesos.TabIndex = 292
         Me.gbPesos.TabStop = False
         Me.gbPesos.Text = "Pesos"
+        '
+        'lblDisplayDescuento
+        '
+        Me.lblDisplayDescuento.AutoSize = True
+        Me.lblDisplayDescuento.Location = New System.Drawing.Point(6, 33)
+        Me.lblDisplayDescuento.Name = "lblDisplayDescuento"
+        Me.lblDisplayDescuento.Size = New System.Drawing.Size(65, 13)
+        Me.lblDisplayDescuento.TabIndex = 253
+        Me.lblDisplayDescuento.Text = "Descuento :"
+        '
+        'lblDescuento
+        '
+        Me.lblDescuento.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblDescuento.ForeColor = System.Drawing.Color.DarkBlue
+        Me.lblDescuento.Location = New System.Drawing.Point(70, 33)
+        Me.lblDescuento.Name = "lblDescuento"
+        Me.lblDescuento.Size = New System.Drawing.Size(110, 13)
+        Me.lblDescuento.TabIndex = 252
+        Me.lblDescuento.Text = "0.00"
+        Me.lblDescuento.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'lblIEPS
         '
         Me.lblIEPS.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblIEPS.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblIEPS.Location = New System.Drawing.Point(68, 35)
+        Me.lblIEPS.Location = New System.Drawing.Point(70, 50)
         Me.lblIEPS.Name = "lblIEPS"
         Me.lblIEPS.Size = New System.Drawing.Size(110, 13)
         Me.lblIEPS.TabIndex = 251
@@ -573,7 +597,7 @@ Partial Class Ventas_Movimientos
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(6, 34)
+        Me.Label2.Location = New System.Drawing.Point(6, 50)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(37, 13)
         Me.Label2.TabIndex = 250
@@ -583,7 +607,7 @@ Partial Class Ventas_Movimientos
         '
         Me.lblTotal.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblTotal.ForeColor = System.Drawing.Color.Crimson
-        Me.lblTotal.Location = New System.Drawing.Point(68, 72)
+        Me.lblTotal.Location = New System.Drawing.Point(70, 84)
         Me.lblTotal.Name = "lblTotal"
         Me.lblTotal.Size = New System.Drawing.Size(110, 13)
         Me.lblTotal.TabIndex = 249
@@ -594,7 +618,7 @@ Partial Class Ventas_Movimientos
         '
         Me.lblSubtotal.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblSubtotal.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblSubtotal.Location = New System.Drawing.Point(68, 16)
+        Me.lblSubtotal.Location = New System.Drawing.Point(70, 16)
         Me.lblSubtotal.Name = "lblSubtotal"
         Me.lblSubtotal.Size = New System.Drawing.Size(110, 13)
         Me.lblSubtotal.TabIndex = 247
@@ -605,7 +629,7 @@ Partial Class Ventas_Movimientos
         '
         Me.lblImpuesto.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblImpuesto.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblImpuesto.Location = New System.Drawing.Point(68, 54)
+        Me.lblImpuesto.Location = New System.Drawing.Point(70, 67)
         Me.lblImpuesto.Name = "lblImpuesto"
         Me.lblImpuesto.Size = New System.Drawing.Size(110, 13)
         Me.lblImpuesto.TabIndex = 248
@@ -813,7 +837,7 @@ Partial Class Ventas_Movimientos
         'TxtConceptoCancelacion
         '
         Me.TxtConceptoCancelacion.Location = New System.Drawing.Point(749, 128)
-        Me.TxtConceptoCancelacion.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TxtConceptoCancelacion.Margin = New System.Windows.Forms.Padding(2)
         Me.TxtConceptoCancelacion.MaxLength = 120
         Me.TxtConceptoCancelacion.Multiline = True
         Me.TxtConceptoCancelacion.Name = "TxtConceptoCancelacion"
@@ -1039,7 +1063,7 @@ Partial Class Ventas_Movimientos
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(853, 16)
+        Me.Label1.Location = New System.Drawing.Point(888, 16)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(77, 13)
         Me.Label1.TabIndex = 383
@@ -1049,7 +1073,7 @@ Partial Class Ventas_Movimientos
         '
         Me.lblIEPSIncluido.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblIEPSIncluido.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblIEPSIncluido.Location = New System.Drawing.Point(820, 34)
+        Me.lblIEPSIncluido.Location = New System.Drawing.Point(855, 34)
         Me.lblIEPSIncluido.Name = "lblIEPSIncluido"
         Me.lblIEPSIncluido.Size = New System.Drawing.Size(110, 13)
         Me.lblIEPSIncluido.TabIndex = 382
@@ -1100,7 +1124,7 @@ Partial Class Ventas_Movimientos
         Me.tpArticulos.Controls.Add(Me.Grid)
         Me.tpArticulos.Location = New System.Drawing.Point(4, 22)
         Me.tpArticulos.Name = "tpArticulos"
-        Me.tpArticulos.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.tpArticulos.Padding = New System.Windows.Forms.Padding(3)
         Me.tpArticulos.Size = New System.Drawing.Size(978, 212)
         Me.tpArticulos.TabIndex = 0
         Me.tpArticulos.Text = "Artículos"
@@ -1130,7 +1154,7 @@ Partial Class Ventas_Movimientos
         Me.tpSeries.Controls.Add(Me.GridSeries)
         Me.tpSeries.Location = New System.Drawing.Point(4, 22)
         Me.tpSeries.Name = "tpSeries"
-        Me.tpSeries.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.tpSeries.Padding = New System.Windows.Forms.Padding(3)
         Me.tpSeries.Size = New System.Drawing.Size(978, 212)
         Me.tpSeries.TabIndex = 1
         Me.tpSeries.Text = "Series"
@@ -1167,6 +1191,25 @@ Partial Class Ventas_Movimientos
         Me.tpCFDIsRelacionados.Text = "Relacionar CFDIs"
         Me.tpCFDIsRelacionados.UseVisualStyleBackColor = True
         '
+        'GridCFDIsRelacionados
+        '
+        Me.GridCFDIsRelacionados.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.GridCFDIsRelacionados.CheckedImage = CType(resources.GetObject("GridCFDIsRelacionados.CheckedImage"), System.Drawing.Bitmap)
+        Me.GridCFDIsRelacionados.Cols = 1
+        Me.GridCFDIsRelacionados.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
+        Me.GridCFDIsRelacionados.DefaultRowHeight = CType(24, Short)
+        Me.GridCFDIsRelacionados.DisplayRowNumber = True
+        Me.GridCFDIsRelacionados.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
+        Me.GridCFDIsRelacionados.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GridCFDIsRelacionados.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.GridCFDIsRelacionados.Location = New System.Drawing.Point(5, 46)
+        Me.GridCFDIsRelacionados.LockButton = True
+        Me.GridCFDIsRelacionados.Name = "GridCFDIsRelacionados"
+        Me.GridCFDIsRelacionados.Rows = 3
+        Me.GridCFDIsRelacionados.Size = New System.Drawing.Size(956, 160)
+        Me.GridCFDIsRelacionados.TabIndex = 385
+        Me.GridCFDIsRelacionados.UncheckedImage = CType(resources.GetObject("GridCFDIsRelacionados.UncheckedImage"), System.Drawing.Bitmap)
+        '
         'Label3
         '
         Me.Label3.AutoSize = True
@@ -1186,25 +1229,6 @@ Partial Class Ventas_Movimientos
         Me.cboTipoRelacionCFDI.Name = "cboTipoRelacionCFDI"
         Me.cboTipoRelacionCFDI.Size = New System.Drawing.Size(301, 21)
         Me.cboTipoRelacionCFDI.TabIndex = 383
-        '
-        'GridCFDIsRelacionados
-        '
-        Me.GridCFDIsRelacionados.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.GridCFDIsRelacionados.CheckedImage = CType(resources.GetObject("GridCFDIsRelacionados.CheckedImage"), System.Drawing.Bitmap)
-        Me.GridCFDIsRelacionados.Cols = 1
-        Me.GridCFDIsRelacionados.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
-        Me.GridCFDIsRelacionados.DefaultRowHeight = CType(24, Short)
-        Me.GridCFDIsRelacionados.DisplayRowNumber = True
-        Me.GridCFDIsRelacionados.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
-        Me.GridCFDIsRelacionados.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GridCFDIsRelacionados.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.GridCFDIsRelacionados.Location = New System.Drawing.Point(5, 46)
-        Me.GridCFDIsRelacionados.LockButton = True
-        Me.GridCFDIsRelacionados.Name = "GridCFDIsRelacionados"
-        Me.GridCFDIsRelacionados.Rows = 3
-        Me.GridCFDIsRelacionados.Size = New System.Drawing.Size(956, 160)
-        Me.GridCFDIsRelacionados.TabIndex = 385
-        Me.GridCFDIsRelacionados.UncheckedImage = CType(resources.GetObject("GridCFDIsRelacionados.UncheckedImage"), System.Drawing.Bitmap)
         '
         'Ventas_Movimientos
         '
@@ -1346,4 +1370,6 @@ Partial Class Ventas_Movimientos
     Friend WithEvents Label3 As Label
     Friend WithEvents cboTipoRelacionCFDI As ComboBox
     Friend WithEvents GridCFDIsRelacionados As FlexCell.Grid
+    Friend WithEvents lblDisplayDescuento As Label
+    Friend WithEvents lblDescuento As Label
 End Class

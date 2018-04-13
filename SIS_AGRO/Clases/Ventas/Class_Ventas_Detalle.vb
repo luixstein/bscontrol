@@ -1,5 +1,4 @@
 ﻿Option Strict On
-Imports System.Data
 Imports System.Data.SqlClient
 
 Public Class Class_Ventas_Detalle
@@ -40,6 +39,9 @@ Public Class Class_Ventas_Detalle
     Private _PRECIO_TOTAL As Double
     Private _ID_SIS_CAT_IMPUESTOS As String
     Private _GRADO_TOXICIDAD As Integer
+    Private _DESCUENTO_UNITARIO As Decimal
+    Private _DESCUENTO_IMPORTE As Decimal
+    Private _PRECIO_SIN_DESCUENTO As Decimal
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -355,6 +357,34 @@ Public Class Class_Ventas_Detalle
         End Set
     End Property
 
+    Public Property DESCUENTO_UNITARIO() As Decimal
+        Get
+            Return Me._DESCUENTO_UNITARIO
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._DESCUENTO_UNITARIO = Value
+        End Set
+    End Property
+
+    Public Property DESCUENTO_IMPORTE() As Decimal
+        Get
+            Return Me._DESCUENTO_IMPORTE
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._DESCUENTO_IMPORTE = Value
+        End Set
+    End Property
+
+    Public Property PRECIO_SIN_DESCUENTO() As Decimal
+        Get
+            Return Me._PRECIO_SIN_DESCUENTO
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._PRECIO_SIN_DESCUENTO = Value
+        End Set
+    End Property
+
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -438,6 +468,9 @@ Public Class Class_Ventas_Detalle
             sqlParametro = .Parameters.Add("@PRECIO_TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._PRECIO_TOTAL
             sqlParametro = .Parameters.Add("@GRADO_TOXICIDAD", SqlDbType.SmallInt) : sqlParametro.Value = Me._GRADO_TOXICIDAD
             sqlParametro = .Parameters.Add("@ID_SIS_CAT_IMPUESTOS", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._ID_SIS_CAT_IMPUESTOS
+            sqlParametro = .Parameters.Add("@DESCUENTO_UNITARIO", SqlDbType.Decimal) : sqlParametro.Value = Me._DESCUENTO_UNITARIO
+            sqlParametro = .Parameters.Add("@DESCUENTO_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._DESCUENTO_IMPORTE
+            sqlParametro = .Parameters.Add("@PRECIO_SIN_DESCUENTO", SqlDbType.Decimal) : sqlParametro.Value = Me._PRECIO_SIN_DESCUENTO
 
             Try
                 Me._Conexion.Open()
