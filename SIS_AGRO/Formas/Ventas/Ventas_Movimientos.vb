@@ -190,6 +190,11 @@ Public Class Ventas_Movimientos
             Me.EstableceCuentasContables()
             Me.Totales()
             Me.tsbTimbrar.Visible = False
+
+            If valorNumericoD(Me.lblDescuento.Text) > 0 Then
+                MsgBox("La remisión tenia descuento y este se heredó a la factura, revíse si va afectar el mismo descuento ." & vbCrLf & "(Si factura menos producto que en la remisión original usted debe establecer un descuento menor)", vbInformation, "Advertencia")
+            End If
+
         End If
 
         'No no puse porque entonces no se podrian poner comentarios en uns sustitución

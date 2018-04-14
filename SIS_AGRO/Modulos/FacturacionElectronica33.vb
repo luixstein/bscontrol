@@ -230,7 +230,7 @@ Module FacturacionElectronica33
                 Else
                     drPrecio = CDec(row("PRECIO_TOTAL").ToString)
                     drImporte = CDec(row("IMPORTE").ToString)
-                    drDESCUENTO_IMPORTE = CDec("0.00")
+                    drDESCUENTO_IMPORTE = CDec(row("DESCUENTO_IMPORTE").ToString)
 
                     If oVenta.CODIGO_MONEDA_SAT = "USD" Then
                         drPrecio = RedondearD(drPrecio / dTIPO_DE_CAMBIO, 3)
