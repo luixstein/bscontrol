@@ -67,6 +67,10 @@ Public Class Ventas_Movimientos
     Private igyUtilidadPorcentaje As Short = 29
     Private iGyID_SIS_CAT_IMPUESTOS As Short = 30
     Private iGyGRADO_TOXICIDAD As Short = 31
+    Private iGyDESCUENTO_UNITARIO As Short = 32
+    Private iGyDESCUENTO_IMPORTE As Short = 33
+    Private iGyPRECIO_CON_DESCUENTO As Short = 34
+
 #End Region
 
 #Region "Columnas grid series"
@@ -77,7 +81,15 @@ Public Class Ventas_Movimientos
     Private igySerieNumeroSerie As Short = 5
 #End Region
 
-#Region "Campos/propiedades para facturas embarques extrajeros que se incian desde otra pantalla"
+#Region "Columnas grid CFDIs relacionados"
+    Private iGyGRFolio As Short = 1
+    Private iGyGRFecha As Short = 2
+    Private iGyGRConcepto As Short = 3
+    Private iGyGRUUID As Integer = 4
+    Private iGyGRTotal As Short = 5
+#End Region
+
+#Region "Campos/propiedades para facturas embarques extrajeros que se inician desde otra pantalla"
     Private _EsPorEmbarqueExtranjero As Boolean = False
     'Private sFolioEmbarqueExtranjero As String = ""
     Private _oEmbarqueExtranjero As Class_Embarques_EmbarqueGlobal
@@ -178,9 +190,22 @@ Public Class Ventas_Movimientos
             Me.EstableceCuentasContables()
             Me.Totales()
             Me.tsbTimbrar.Visible = False
+
+            If valorNumericoD(Me.lblDescuento.Text) > 0 Then
+                MsgBox("La remisión tenia descuento y este se heredó a la factura, revíse si va afectar el mismo descuento ." & vbCrLf & "(Si factura menos producto que en la remisión original usted debe establecer un descuento menor)", vbInformation, "Advertencia")
+            End If
+
         End If
 
-        Me.Grid.Locked = True
+        'No no puse porque entonces no se podrian poner comentarios en uns sustitución
+        'Me.Grid.Row(Me.Grid.Rows - 1).Locked = True  'Para bloquear la edición del último renglón
+
+        'f6 que haria en una sust?, Queryable mejor no haya f6 , si borran de mas y quieren poner, Que le den nuevo y empiezen otra vez
+
+        'FALTA: confirmar si quitar bloqueo,s e quitó a pruebas 13abr18 para sust que permitan editar cantidades y precios
+        'Me.Grid.Locked = True
+
+        Me.Grid.Column(Me.igyCodigo).Locked = True 'No podrán cambiar códigos ni ponerlos con f6
     End Sub
 
     Private Sub tsbImprimir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbImprimir.Click
@@ -251,6 +276,7 @@ Public Class Ventas_Movimientos
             Me.DesplegarFormasPago(False)
             Me.DesplegarTiposNegociaciones()
             Me.DesplegarTiposCredito()
+            Me.DesplegarTiposRelacionCFDI()
 
             Me.DesplegarDocumentos()
 
@@ -357,6 +383,13 @@ Buscar:
             '        Me.tsbRemisionVenta.Visible = False
             '    End If
         End If
+
+        If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
+            Me.tpCFDIsRelacionados.Enabled = True
+        Else
+            Me.tpCFDIsRelacionados.Enabled = False
+        End If
+
     End Sub
 
     Private Sub CmbAlmacen_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboAlmacen.SelectedIndexChanged
@@ -596,7 +629,6 @@ Buscar:
         txtNoBeep(e)
     End Sub
 
-
     Private Sub llblAgregarSeguimiento_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles llblAgregarSeguimiento.LinkClicked
         If txtLEN(Me.TxtCliente.Text) = False Then
             MsgBox("Debe de asignar un cliente", MsgBoxStyle.Exclamation, Me.Text)
@@ -695,6 +727,10 @@ Buscar:
     Private Sub cboMetodoPago_KeyDown(sender As Object, e As KeyEventArgs) Handles cboMetodoPago.KeyDown
         txtTAB(e)
     End Sub
+
+    Private Sub GridCFDIsRelacionados_KeyDown(ByVal Sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles GridCFDIsRelacionados.KeyDown
+        Me.GestionaGridCFDIsRelacionados(e)
+    End Sub
 #End Region
 
 #Region "Métodos y procedimientos"
@@ -760,6 +796,9 @@ Buscar:
             Me.lblConceptoCancelacion.Visible = False
             Me.TxtConceptoCancelacion.Visible = False
 
+            Me.cboTipoRelacionCFDI.SelectedIndex = -1
+            Me.InicializaGridCFDIsRelacionados()
+
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
         End Try
@@ -779,7 +818,7 @@ Buscar:
     Private Sub FormateaGrid()
         Try
             Me.Grid.AutoRedraw = False
-            Me.Grid.Cols = 32
+            Me.Grid.Cols = 35
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Column(Me.igyCodigo).Width = 75
             Me.Grid.Column(Me.igyTipoControlInventariable).Width = 25
@@ -810,8 +849,11 @@ Buscar:
             Me.Grid.Column(Me.igyUtilidadUnitaria).Width = 100
             Me.Grid.Column(Me.igyUtilidadTotal).Width = 100
             Me.Grid.Column(Me.igyUtilidadPorcentaje).Width = 100
-            Me.Grid.Column(Me.iGyID_SIS_CAT_IMPUESTOS).Visible = False  'Ocultar
-            Me.Grid.Column(Me.iGyGRADO_TOXICIDAD).Visible = False  'Ocultar
+            Me.Grid.Column(Me.iGyID_SIS_CAT_IMPUESTOS).Visible = False
+            Me.Grid.Column(Me.iGyGRADO_TOXICIDAD).Visible = False
+            Me.Grid.Column(Me.iGyDESCUENTO_UNITARIO).Visible = False
+            Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Visible = True  'Ocultar
+            Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO).Visible = False
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Cell(0, Me.igyCodigo).Text = "Código"
             Me.Grid.Cell(0, Me.igyTipoControlInventariable).Text = "Inv"
@@ -844,6 +886,9 @@ Buscar:
             Me.Grid.Cell(0, Me.igyUtilidadPorcentaje).Text = "% utilidad"
             Me.Grid.Cell(0, Me.iGyID_SIS_CAT_IMPUESTOS).Text = "IVA?"
             Me.Grid.Cell(0, Me.iGyGRADO_TOXICIDAD).Text = "GradoTox"
+            Me.Grid.Cell(0, Me.iGyDESCUENTO_UNITARIO).Text = "DesUnit"
+            Me.Grid.Cell(0, Me.iGyDESCUENTO_IMPORTE).Text = "Descuento"
+            Me.Grid.Cell(0, Me.iGyPRECIO_CON_DESCUENTO).Text = "PrecioCDes"
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Column(Me.igyNombreCentroCosto).Alignment = FlexCell.AlignmentEnum.LeftCenter
 
@@ -908,6 +953,21 @@ Buscar:
             Me.Grid.Column(Me.igyUtilidadTotal).Mask = FlexCell.MaskEnum.Numeric
             Me.Grid.Column(Me.igyUtilidadTotal).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
             Me.Grid.Column(Me.igyUtilidadTotal).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Column(Me.iGyDESCUENTO_UNITARIO).FormatString = "$ ###,###,##0." & StrDup(6, "0")
+            Me.Grid.Column(Me.iGyDESCUENTO_UNITARIO).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.iGyDESCUENTO_UNITARIO).DecimalLength = 6 'Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.iGyDESCUENTO_UNITARIO).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+            Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO).FormatString = "$ ###,###,##0." & StrDup(6, "0")
+            Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO).DecimalLength = 6 'Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO).Alignment = FlexCell.AlignmentEnum.RightCenter
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Column(Me.igyDescripcion).Locked = True
             Me.Grid.Column(Me.igyTipoControlInventariable).Locked = True
@@ -929,6 +989,8 @@ Buscar:
             Me.Grid.Column(Me.igyNombreCentroCosto).Locked = True
             Me.Grid.Column(Me.iGyID_SIS_CAT_IMPUESTOS).Locked = True
             Me.Grid.Column(Me.iGyGRADO_TOXICIDAD).Locked = True
+            Me.Grid.Column(Me.iGyDESCUENTO_UNITARIO).Locked = True
+            Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO).Locked = True
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             If Me.oDocumento.AFECTA_CXC = True Then
                 Me.Grid.Column(Me.igyCuentaContable).Visible = False 'True
@@ -989,6 +1051,9 @@ Buscar:
         Try
             Me.Estado = pEstado
 
+            Me.cboTipoRelacionCFDI.Enabled = False
+            Me.GridCFDIsRelacionados.Locked = True
+
             Select Case Me.Estado
                 Case enumEstados.NUEVO
                     Me.tsbNuevo.Enabled = True
@@ -1043,6 +1108,9 @@ Buscar:
                     Me.cboMoneda.Enabled = True
                     Me.cboUsoCFDI.Enabled = True
                     'Me.cboMetodoPago.Enabled = True
+
+                    Me.cboTipoRelacionCFDI.Enabled = True
+                    Me.GridCFDIsRelacionados.Locked = False
 
                     Me.lblConceptoCancelacion.Visible = False
                     Me.TxtConceptoCancelacion.Visible = False
@@ -1145,7 +1213,6 @@ Buscar:
                         Me.cboMoneda.Enabled = False
                         Me.cboUsoCFDI.Enabled = False
                         'Me.cboMetodoPago.Enabled = False
-
                     ElseIf Me.oDocumento.AFECTA_INVENTARIOS = True Then
                         Me.tsbCotizacionFactura.Visible = False
                         Me.tsbCotizacionRemision.Visible = False
@@ -1201,8 +1268,9 @@ Buscar:
 
                     Me.txtPlazo.Enabled = False
                     Me.dpVencimiento.Enabled = False
+
                     Me.tsslEstado.Text = "Estado: Sustituyendo movimiento"
-                    Me.tsslElaboro.Visible = True : Me.tsslElaboro.Text = "Elaboró: " + Me.oVenta.NOMBRE_USUARIO.ToUpper + " el " + Format(Me.dpFecha.Value, "dd/MMM/yy").ToUpper
+                    Me.tsslElaboro.Visible = False : Me.tsslElaboro.Text = ""
                     Me.tsslCancelo.Visible = False : Me.tsslCancelo.Text = ""
 
                     Me.lblConceptoCancelacion.Visible = False
@@ -1274,7 +1342,7 @@ Buscar:
     Function Grabar() As Boolean
         Const sProcedure As String = "Grabar"
         Dim bResultado As Boolean = False
-        Dim i As Integer, sMetodoPago As String = "", sUsoCFDI As String = "", sListaSeries As String = ""
+        Dim i As Integer, sMetodoPago As String = "", sUsoCFDI As String = "", sListaSeries As String = "", sCodigoTipoRelacionCFDI As String = "", sListaCFDIsRelacionados As String = ""
 
         Try
 
@@ -1366,6 +1434,28 @@ Buscar:
                 sUsoCFDI = Me.cboUsoCFDI.SelectedValue.ToString
             End If
 
+            If Me.cboTipoRelacionCFDI.SelectedIndex <> -1 Then
+                If Me.HayCFDIsRelacionadosRepetidos() = True Then
+                    Return False
+                End If
+
+                sCodigoTipoRelacionCFDI = Me.cboTipoRelacionCFDI.SelectedValue.ToString
+
+                For i = 1 To Me.GridCFDIsRelacionados.Rows - 1
+                    If txtLEN(Me.GridCFDIsRelacionados.Cell(i, Me.iGyGRFolio).Text) = True Then
+                        sListaCFDIsRelacionados = sListaCFDIsRelacionados & Me.GridCFDIsRelacionados.Cell(i, iGyGRFolio).Text & ","
+                    End If
+                Next
+
+                If txtLEN(sListaCFDIsRelacionados) = True Then
+                    sListaCFDIsRelacionados = sListaCFDIsRelacionados.Substring(0, sListaCFDIsRelacionados.Length - 1) 'Para quitarle la última coma que sale sobrando.
+                Else
+                    MsgBox("Seleccionó un tipo de relación CFDI, pero no indicó cuales son los CFDIs relacionados.", vbExclamation, sProcedure)
+                    Return False
+                End If
+            End If
+
+
             With Me.oVenta
                 .FOLIO_VENTA = Me.txtFolio.Text.ToUpper
                 .FECHA = Me.dpFecha.Value
@@ -1383,7 +1473,7 @@ Buscar:
                     .SUBTOTAL_USD = valorNumerico(Me.lblTotalDolares.Text)
                     .DESCUENTO_USD = valorNumerico(Me.lblTotalDolares.Text)
                 Else 'En facturas normales
-                    .DESCUENTO = 0
+                    .DESCUENTO = valorNumerico(Me.lblDescuento.Text)
                     .TOTAL = valorNumerico(Me.lblTotal.Text)
                     .SUBTOTAL_USD = 0 'No aplica en facturas normales aunque estén en usd
                     .DESCUENTO_USD = 0 'No aplica en facturas normales aunque estén en usd
@@ -1416,7 +1506,7 @@ Buscar:
                 .FOLIO_REFERENCIA_USUARIO = ""
                 .TIPO_VENTA = sTipoVenta
 
-                .TOTAL_SUSTITUCION = 0 'Ahora se graba dentor del stored MP_VENTA_AFECTA_SUSTITUCION_REMISION
+                .TOTAL_SUSTITUCION = 0 'Ahora se graba dentro del stored MP_VENTA_AFECTA_SUSTITUCION_REMISION
                 'If Me.sTipoVenta = "NM" Then
                 '    .TOTAL_SUSTITUCION = 0
                 'Else
@@ -1442,6 +1532,8 @@ Buscar:
                     .CODIGO_TIPO_CREDITO = "NA"
                 End If
                 .TIENE_IEPS_DESGLOSADO = Me.bClienteEsContribuyenteIEPS
+                .CODIGO_TIPO_RELACION_CFDI = sCodigoTipoRelacionCFDI
+                .LISTA_CFDIS_RELACIONADOS = sListaCFDIsRelacionados
 
                 If Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.SUSTITUYENDO Then
                     If .Grabar("INSERTAR") = False Then
@@ -1463,7 +1555,7 @@ Buscar:
                         .oVentasDetalle.FOLIO_VENTA = Me.oVenta.FOLIO_VENTA.ToUpper
                         .oVentasDetalle.CODIGO_ARTICULO = Me.Grid.Cell(i, Me.igyCodigo).Text.ToUpper
                         .oVentasDetalle.CANTIDAD = valorNumerico(Me.Grid.Cell(i, Me.igyCantidad).Text)
-                        .oVentasDetalle.PRECIO = valorNumerico(Me.Grid.Cell(i, Me.igyPrecio).Text)
+                        '.oVentasDetalle.PRECIO = valorNumerico(Me.Grid.Cell(i, Me.igyPrecio).Text)
                         .oVentasDetalle.UNIDAD_VENTA = Me.Grid.Cell(i, Me.igyUnidad).Text.ToUpper
                         .oVentasDetalle.IMPUESTO_PORCENTAJE = CDbl(valorNumerico(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text))
                         .oVentasDetalle.IMPUESTO_IMPORTE = valorNumerico(Me.Grid.Cell(i, Me.igyImpuestoImporte).Text)
@@ -1509,6 +1601,11 @@ Buscar:
                         .oVentasDetalle.PRECIO_TOTAL = valorNumerico(Me.Grid.Cell(i, Me.igyPRECIO_TOTAL).Text)
                         .oVentasDetalle.GRADO_TOXICIDAD = CInt(Me.Grid.Cell(i, Me.iGyGRADO_TOXICIDAD).Text)
                         .oVentasDetalle.ID_SIS_CAT_IMPUESTOS = Me.Grid.Cell(i, Me.iGyID_SIS_CAT_IMPUESTOS).Text
+
+                        .oVentasDetalle.PRECIO_SIN_DESCUENTO = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text)
+                        .oVentasDetalle.PRECIO = valorNumericoD(Me.Grid.Cell(i, Me.iGyPRECIO_CON_DESCUENTO).Text)
+                        .oVentasDetalle.DESCUENTO_UNITARIO = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_UNITARIO).Text)
+                        .oVentasDetalle.DESCUENTO_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE).Text)
 
                         If .oVentasDetalle.GrabaRenglon = False Then
                             MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, sProcedure)
@@ -1856,6 +1953,11 @@ CANCELAR:
                 Return False
             End If
 
+            If valorNumericoD(Me.lblSubtotal.Text) <= 0 Then
+                MsgBox("El subtotal debe ser mayor a cero.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
             'Dim i As Integer
             'For i = 1 To Grid.Rows - 1
             '    If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
@@ -1967,6 +2069,10 @@ CANCELAR:
                 End If
             End If
 
+            If Me.ValidaDescuentos = False Then
+                Return False
+            End If
+
             bResultado = True
 
         Catch ex As Exception
@@ -1987,31 +2093,30 @@ CANCELAR:
             oSisAdministracionClientes.TOTAL_VENTA = CDbl(Me.lblTotal.Text)
 
             If oSisAdministracionClientes.Consultar = False Then
-                Exit Function
+                Return False
             End If
 
             bVentaAutorizadaPorRegla = False
             If oSisAdministracionClientes.VENTA_AUTORIZADA_POR_REGLA_CXC = "1" Then
                 bVentaAutorizadaPorRegla = True
-                ValidarReglasCreditoplazo = True
-                Exit Function
+                Return True
             ElseIf oSisAdministracionClientes.TIENE_VENTAS_CONTADO_VENCIDAS = "1" Then
                 If bMostrarMensajes = True Then
                     MsgBox("El cliente presenta ventas de contado vencidas, favor de contactar al depto de CXC.", vbExclamation, "ValidarReglasCreditoplazo")
                 End If
-                Exit Function
+                Return False
             Else
                 Select Case Me.cboTipoNegociacion.Text
                     'Case "CONTADO"
                     '    If oSisAdministracionClientes.TIENE_VENTAS_CONTADO_VENCIDAS = "1" Then
-                    '        Exit Function
+                    '        return false
                     '    End If
                     Case "CREDITO"
                         If CDbl(oSisAdministracionClientes.SaldoVencido) > 0 Then
                             If bMostrarMensajes = True Then
                                 MsgBox("El cliente presenta saldo vencido.", vbExclamation, "ValidarReglasCreditoplazo")
                             End If
-                            Exit Function
+                            Return False
                         End If
                 End Select
             End If
@@ -2021,7 +2126,7 @@ CANCELAR:
                     'SUSTITUCION DE COTIZACION A REMISION O FACTURA Y DE VENTA NORMAL
                     If oSisAdministracionClientes.TIENE_CREDITO_SUFICIENTE = "0" And Me.cboTipoNegociacion.Text = "CREDITO" Then
                         MsgBox("La venta que intenta realizar supera el limite de credito del cliente. No es posible realizar este movimiento.", MsgBoxStyle.Exclamation, Me.Text)
-                        Exit Function
+                        Return False
                     End If
                 End If
             End If
@@ -2153,6 +2258,9 @@ CANCELAR:
                 dDisponible = Me.oVenta.ObtenerDisponibleRenglon(CInt(Me.Grid.Cell(i, Me.igyIdOrigen).Text))
                 If valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text) > dDisponible Then
                     MsgBox("La cantidad del renglón #" & i & " es mayor al disponible.", MsgBoxStyle.Exclamation, "ValidarDisponibles")
+                    Me.Grid.Cell(i, Me.igyCantidad).Text = "0"
+                    Me.Totales()
+                    Me.Grid.Refresh()
                     Me.Grid.Cell(i, Me.igyDescripcion).SetFocus()
                     Return False
                 End If
@@ -2464,13 +2572,14 @@ CANCELAR:
     End Sub
 
     Private Sub Totales()
+        Const sProcedure As String = "Totales"
         Try
             Dim i As Integer, dCantidad As Decimal, dPrecioCapturado As Decimal, dPrecioOriginal As Decimal, dPorcentajeIVA As Decimal, dImporte As Decimal, dImporteSustitucion As Decimal, iIDOrigen As Integer = 0, dImporteTotal As Double = 0
             Dim oArticulo As New Class_CatArticulos
             Dim dIEPS_PORCENTAJE As Decimal = 0, dIEPS_UNITARIO As Decimal = 0, dIEPS_IMPORTE As Decimal = 0, dBASE_IEPS As Decimal = 0, dBASE_IVA As Decimal = 0, dPRECIO_TOTAL As Decimal = 0, dIVA_IMPORTE As Decimal = 0
-            Dim dtSubtotal As Decimal = 0, dtIEPS As Decimal = 0, dtImpuesto As Decimal = 0, dtTotal As Decimal = 0
+            Dim dtSubtotal As Decimal = 0, dtIEPS As Decimal = 0, dtImpuesto As Decimal = 0, dtTotal As Decimal = 0, dtDescuentos As Decimal = 0
             Dim sID_SIS_CAT_IMPUESTOS As String = "", sGRADO_TOXICIDAD As String = "0" '0=NO GRAVA IEPS
-            Dim dPrecioConDescuento As Decimal, dImporteConDescuento As Decimal
+            Dim dPrecioConDescuento As Decimal, dImporteConDescuento As Decimal, dDESCUENTO_UNITARIO As Decimal, dDESCUENTO_IMPORTE As Decimal
 
             Me.lblSubtotal.Text = FormatImporteContable(0)
             Me.lblIEPSIncluido.Text = FormatImporteContable(0)
@@ -2487,20 +2596,36 @@ CANCELAR:
             For i = 1 To Me.Grid.Rows - 1
                 If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
                     oArticulo = New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
-                    'If oArticulo.ES_PRODUCTO_KILOS = "0" Then
+
                     If txtLEN(Me.Grid.Cell(i, Me.igyCantidad).Text) = True Then
 
                         dCantidad = 0 : dPrecioCapturado = 0 : dPrecioConDescuento = 0 : iIDOrigen = 0 : dPorcentajeIVA = 0 : dIEPS_PORCENTAJE = 0 : sID_SIS_CAT_IMPUESTOS = "" : sGRADO_TOXICIDAD = "" : dImporteConDescuento = 0
                         dBASE_IEPS = 0 : dIEPS_IMPORTE = 0 : dIEPS_UNITARIO = 0 : dBASE_IVA = 0 : dIVA_IMPORTE = 0 : dPRECIO_TOTAL = 0 : dPrecioOriginal = 0 : dImporte = 0 : dImporteTotal = 0 : dImporteSustitucion = 0
+                        dDESCUENTO_UNITARIO = 0 : dDESCUENTO_IMPORTE = 0
 
                         dCantidad = valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text)
                         dPrecioCapturado = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text)
-                        dPrecioConDescuento = dPrecioCapturado
                         iIDOrigen = CInt(valorNumericoD(Me.Grid.Cell(i, Me.igyIdOrigen).Text))
                         dPorcentajeIVA = valorNumericoD(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text)
                         dIEPS_PORCENTAJE = valorNumericoD(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
                         sID_SIS_CAT_IMPUESTOS = Me.Grid.Cell(i, Me.iGyID_SIS_CAT_IMPUESTOS).Text
                         sGRADO_TOXICIDAD = Me.Grid.Cell(i, Me.iGyGRADO_TOXICIDAD).Text
+                        dDESCUENTO_UNITARIO = 0 'Se va calcular en base al descuento importe
+                        dDESCUENTO_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE).Text)
+
+                        dImporte = RedondearD((dCantidad * dPrecioCapturado), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+
+                        If dDESCUENTO_IMPORTE > 0 And dDESCUENTO_IMPORTE > dImporte Then
+                            MsgBox("El descuento no puede ser mayor que el importe.", vbExclamation, sProcedure)
+                            Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE).Text = "0"
+                            dDESCUENTO_IMPORTE = 0
+                        End If
+
+                        If dCantidad > 0 Then
+                            dDESCUENTO_UNITARIO = RedondearD(dDESCUENTO_IMPORTE / dCantidad, 6)
+                        End If
+
+                        dPrecioConDescuento = dPrecioCapturado - dDESCUENTO_UNITARIO
 
                         'dImporteConDescuento = RedondearD((dCantidad * dPrecioConDescuento), 2)
                         dImporteConDescuento = RedondearD((dCantidad * dPrecioConDescuento), 6)
@@ -2508,7 +2633,7 @@ CANCELAR:
                         If sGRADO_TOXICIDAD <> "0" Then
                             dBASE_IEPS = dImporteConDescuento
                             dIEPS_IMPORTE = RedondearD(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
-                            dIEPS_UNITARIO = CDec(Redondear(dPrecioCapturado * (dIEPS_PORCENTAJE / 100), 4))
+                            dIEPS_UNITARIO = CDec(Redondear(dPrecioConDescuento * (dIEPS_PORCENTAJE / 100), 4))
                         End If
 
                         If sID_SIS_CAT_IMPUESTOS <> "N" Then 'N=No grava iva, si es <>N = Si grava iva ya sea al 0,16,Exento(aún siendo exento ó 0 hay que llenar la base iva)
@@ -2523,70 +2648,29 @@ CANCELAR:
                             dPRECIO_TOTAL = RedondearD(dPrecioCapturado + dIEPS_UNITARIO, 6)
                         End If
 
+                        dImporteTotal = RedondearD((dCantidad * dPRECIO_TOTAL), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+
                         Me.Grid.Cell(i, Me.igyPRECIO_TOTAL).Text = dPRECIO_TOTAL.ToString
                         Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text = dIEPS_UNITARIO.ToString
                         Me.Grid.Cell(i, Me.igyBASE_IEPS).Text = dBASE_IEPS.ToString
                         Me.Grid.Cell(i, Me.igyIEPS_IMPORTE).Text = dIEPS_IMPORTE.ToString
                         Me.Grid.Cell(i, Me.igyBASE_IVA).Text = dBASE_IVA.ToString
                         Me.Grid.Cell(i, Me.igyImpuestoImporte).Text = dIVA_IMPORTE.ToString
-
-                        'If Me.LblEstatus.Text <> "N" Then
-                        If Me.LblEstatus.Text <> "N" AndAlso sTipoVenta <> "NM" Then
-                            dPrecioOriginal = CDec(Me.oVenta.ObtenerPrecioOriginal(iIDOrigen))
-                        Else
-                            dPrecioOriginal = 0 'dPrecio
-                        End If
-
-                        'If dCantidad > 0 Then
-                        dImporte = RedondearD((dCantidad * dPrecioCapturado), Empresa_Sistema.DECIMALES_CONTABILIDAD) 'no hacemos nada con este valor de momento
-                        dImporteTotal = RedondearD((dCantidad * dPRECIO_TOTAL), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-
-                        dImporteSustitucion = RedondearD((dPrecioOriginal * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                        dImporteSustitucion = valorNumericoD(RedondearD(dImporteSustitucion * ((dPorcentajeIVA / 100) + 1), Empresa_Sistema.DECIMALES_CONTABILIDAD).ToString)
-                        dTotalSustitucion = dTotalSustitucion + dImporteSustitucion
-
-                        'Me.Grid.Cell(i, Me.igyImporte).Text = dImporteTotal.ToString
+                        Me.Grid.Cell(i, Me.iGyDESCUENTO_UNITARIO).Text = dDESCUENTO_UNITARIO.ToString
+                        Me.Grid.Cell(i, Me.iGyPRECIO_CON_DESCUENTO).Text = dPrecioConDescuento.ToString
                         Me.Grid.Cell(i, Me.igyImporte).Text = dImporteTotal.ToString
-                        'Me.lblSubtotal.Text = FormatImporteContable(valorNumerico(Me.lblSubtotal.Text) + dImporte)
 
-                        'Me.Grid.Cell(i, Me.igyImpuestoImporte).Text = Redondear(dImporte * ((dPorcentajeIVA / 100)), Empresa_Sistema.DECIMALES_CONTABILIDAD).ToString
-                        '    'Else
-                        'Me.Grid.Cell(i, Me.igyImporte).Text = "0"
-                        'Me.Grid.Cell(i, Me.igyImpuestoImporte).Text = "0"
+                        'NOTA: Ahora todo lo relacionad a una sustitución, se genera y graba dentro del stored MP_VENTA_AFECTA_SUSTITUCION_REMISION
+                        'If Me.LblEstatus.Text <> "N" AndAlso sTipoVenta <> "NM" Then
+                        '    dPrecioOriginal = CDec(Me.oVenta.ObtenerPrecioOriginal(iIDOrigen))
+                        'Else
+                        '    dPrecioOriginal = 0 'dPrecio
                         'End If
+                        'dImporteSustitucion = RedondearD((dPrecioOriginal * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                        'dImporteSustitucion = valorNumericoD(RedondearD(dImporteSustitucion * ((dPorcentajeIVA / 100) + 1), Empresa_Sistema.DECIMALES_CONTABILIDAD).ToString)
+                        'dTotalSustitucion = dTotalSustitucion + dImporteSustitucion
                     End If
 
-                    'Else
-                    '    If txtLEN(Me.Grid.Cell(I, Me.igyCantidadKilos).Text) = True Then
-                    '        dCantidad = valorNumerico(Me.Grid.Cell(I, Me.igyCantidadKilos).Text)
-                    '        dPrecio = valorNumerico(Me.Grid.Cell(I, Me.igyPrecioKilos).Text)
-                    '        iIDOrigen = CInt(valorNumerico(Me.Grid.Cell(I, Me.igyIdOrigen).Text))
-
-                    '        'If Me.LblEstatus.Text <> "N" Then
-                    '        If Me.LblEstatus.Text <> "N" AndAlso sTipoVenta <> "NM" Then
-                    '            dPrecioOriginal = Me.oVenta.ObtenerPrecioOriginal(iIDOrigen)
-                    '        Else
-                    '            dPrecioOriginal = valorNumerico(Me.Grid.Cell(I, Me.igyPrecio).Text)
-                    '        End If
-
-                    '        dPorcentajeIVA = valorNumerico(Me.Grid.Cell(I, Me.igyImpuestoPorcentaje).Text)
-                    '        If dCantidad > 0 Then
-                    '            dImporte = Redondear((dPrecio * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-
-                    '            dImporteSustitucion = Redondear((dPrecioOriginal * valorNumerico(Me.Grid.Cell(I, Me.igyCantidadKilos).Text)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                    '            dImporteSustitucion = valorNumerico(Redondear(dImporteSustitucion * ((dPorcentajeIVA / 100) + 1), Empresa_Sistema.DECIMALES_CONTABILIDAD).ToString)
-                    '            dTotalSustitucion = dTotalSustitucion + dImporteSustitucion
-
-                    '            Me.Grid.Cell(I, Me.igyImporteKilos).Text = dImporte.ToString
-                    '            Me.lblSubtotal.Text = FormatImporteContable(valorNumerico(Me.lblSubtotal.Text) + dImporte)
-
-                    '            Me.Grid.Cell(I, Me.igyImpuestoImporte).Text = Redondear((valorNumerico(Me.Grid.Cell(I, Me.igyCantidad).Text) * valorNumerico(Me.Grid.Cell(I, Me.igyPrecio).Text)) * ((dPorcentajeIVA / 100)), Empresa_Sistema.DECIMALES_CONTABILIDAD).ToString
-                    '        Else
-                    '            Me.Grid.Cell(I, Me.igyImporteKilos).Text = "0"
-                    '            Me.Grid.Cell(I, Me.igyImpuestoImporte).Text = "0"
-                    '        End If
-                    '    End If
-                    'End If
                 End If
             Next i
 
@@ -2602,12 +2686,12 @@ CANCELAR:
             End If
 
             dtSubtotal = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyImporte)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            dtDescuentos = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.iGyDESCUENTO_IMPORTE)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
             dtImpuesto = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyImpuestoImporte)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            dtTotal = dtSubtotal + dtIEPS + dtImpuesto
-
-            Me.lblSaldo.Text = FormatImporteContable(valorNumerico(Me.lblSaldo.Text))
+            dtTotal = dtSubtotal - dtDescuentos + dtIEPS + dtImpuesto
 
             Me.lblSubtotal.Text = FormatImporteContable(dtSubtotal)
+            Me.lblDescuento.Text = FormatImporteContable(dtDescuentos)
             Me.lblImpuesto.Text = FormatImporteContable(dtImpuesto)
             Me.lblTotal.Text = FormatImporteContable(dtTotal)
 
@@ -2624,7 +2708,7 @@ CANCELAR:
             End If
 
         Catch ex As Exception
-            HandleError(Me.Name, "Totales", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
@@ -2671,7 +2755,7 @@ CANCELAR:
                     'Me.CboDocumento.SelectedValue = "FCT" + Plaza.CODIGO_PLAZA.ToString
                     Me.CboDocumento.SelectedValue = sCodigoDocumentoFacturaExterno
                     Me.oVenta = New Class_Ventas_Global(sVenta)
-                    Me.GeneraFolio()
+                    'Me.GeneraFolio()'No se ocupa volver a regenerar al cambiar el documento se inicializó y se genero folio
                     'Me.dpVencimiento.Value = Me.oVenta.FECHA_VENCIMIENTO
                 End If
 
@@ -2688,6 +2772,7 @@ CANCELAR:
                 End If
 
                 Me.lblSubtotal.Text = FormatImporteContable(Me.oVenta.SUBTOTAL)
+                Me.lblDescuento.Text = FormatImporteContable(Me.oVenta.DESCUENTO)
                 Me.lblImpuesto.Text = FormatImporteContable(Me.oVenta.IMPUESTO)
                 Me.lblTotal.Text = FormatImporteContable(Me.oVenta.TOTAL)
                 Me.lblIEPS.Text = FormatImporteContable(Me.oVenta.IEPS_TOTAL_DESGLOSADO)
@@ -2743,7 +2828,28 @@ CANCELAR:
                 Else
                     Me.TxtReferencia.Text = Me.oVenta.FOLIO_VENTA.ToString.ToUpper
                     Me.CboAlmacen.Enabled = False
-                    Me.Grid.DataSource = Me.oVenta.ObtenerDetalleSoloDisponibles
+
+                    'Ante se hacia de este modo pero al ser con datasource no es posible agregar mas comentarios o tener control con algunas cosas
+                    'Me.Grid.DataSource = Me.oVenta.ObtenerDetalleSoloDisponibles
+
+                    Dim dTabla As DataTable = Me.oVenta.ObtenerDetalleSoloDisponibles
+
+                    Me.InicializaGrid()
+                    Me.Grid.AutoRedraw = False
+                    Me.Grid.Rows = 1
+                    For Each dRow As DataRow In dTabla.Rows
+                        Me.Grid.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("TIPO_CONTROL_INVENTARIO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("DISPONIBLE").ToString & Chr(9) &
+                                        dRow("PRECIO").ToString & Chr(9) & dRow("PRECIO_TOTAL").ToString & Chr(9) & dRow("UNIDAD_VENTA").ToString & Chr(9) & dRow("CANTIDAD_KILOS").ToString & Chr(9) &
+                                        dRow("PRECIO_KILOS").ToString & Chr(9) & dRow("IMPUESTO_PORCENTAJE").ToString & Chr(9) & dRow("IMPORTE").ToString & Chr(9) & dRow("IMPORTE_KILOS").ToString & Chr(9) &
+                                        dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("IMPUESTO_IMPORTE").ToString & Chr(9) & dRow("ID_VENTA_DETALLE").ToString & Chr(9) & dRow("ES_PRODUCTO_KILOS").ToString & Chr(9) &
+                                        dRow("CODIGO_CENTRO_COSTO").ToString & Chr(9) & dRow("NOMBRE_CENTRO_COSTO").ToString & Chr(9) & dRow("PRECIO_USD").ToString & Chr(9) & dRow("IMPORTE_USD").ToString & Chr(9) &
+                                        dRow("IEPS_PORCENTAJE").ToString & Chr(9) & dRow("IEPS_UNITARIO").ToString & Chr(9) & dRow("IEPS_IMPORTE").ToString & Chr(9) & dRow("BASE_IEPS").ToString & Chr(9) &
+                                        dRow("BASE_IVA").ToString & Chr(9) & dRow("COSTO").ToString & Chr(9) & dRow("UTILIDAD_UNITARIA").ToString & Chr(9) & dRow("UTILIDAD_TOTAL").ToString & Chr(9) &
+                                        dRow("UTILIDA_PORCENTAJE").ToString & Chr(9) & dRow("ID_SIS_CAT_IMPUESTOS").ToString & Chr(9) & dRow("GRADO_TOXICIDAD").ToString & Chr(9) & dRow("DESCUENTO_UNITARIO").ToString & Chr(9) &
+                                        dRow("DESCUENTO_IMPORTE").ToString & Chr(9) & dRow("PRECIO_SIN_DESCUENTO").ToString & Chr(9))
+                    Next
+                    Me.Grid.Rows = Me.Grid.Rows + 1
+
                     Me.dpFecha.Value = Date.Now
 
                     If bEsRefrenciaSoloRenglones = True Then
@@ -2766,6 +2872,15 @@ CANCELAR:
 
                 If txtLEN("" & Me.oVenta.CODIGO_USO_CFDI) = True Then
                     Me.cboUsoCFDI.SelectedValue = Me.oVenta.CODIGO_USO_CFDI
+                End If
+
+                If txtLEN("" & Me.oVenta.CODIGO_TIPO_RELACION_CFDI) = True Then
+                    Me.cboTipoRelacionCFDI.SelectedValue = Me.oVenta.CODIGO_TIPO_RELACION_CFDI
+
+                    Me.GridCFDIsRelacionados.DataSource = Me.oVenta.ObtieneFacturasRelacionadas
+                    Me.FormateaGridCFDIsRelacionados()
+                Else
+                    Me.cboTipoRelacionCFDI.SelectedIndex = -1
                 End If
             End If
 
@@ -2790,6 +2905,9 @@ CANCELAR:
 
         Catch ex As Exception
             HandleError(Me.Name, "Consultar", ex)
+        Finally
+            Me.Grid.AutoRedraw = True
+            Me.Grid.Refresh()
         End Try
 
         Return bResultado
@@ -2820,6 +2938,7 @@ CANCELAR:
     End Function
 
     Private Sub GestionaGrid(ByVal e As System.Windows.Forms.KeyEventArgs)
+        Const sProcedure As String = "GestionaGrid"
         Try
             Dim Columna As Integer, Renglon As Integer
             Dim StrCod As String, sCuentaContable As String = "", dCantidad As Decimal, dPrecio As Decimal, sCodigoCentroCosto As String
@@ -2828,6 +2947,10 @@ CANCELAR:
             'If Me.oDocumento.AFECTA_CXC = True And Me.Grid.Selection.FirstRow = Me.Grid.Rows - 1 Then
             '    Return
             'End If
+
+            If Me.Grid.Row(Me.Grid.Selection.FirstRow).Locked = True Then 'Si esta bloqueado todo el renglón no se permite gestionarlo 
+                Return
+            End If
 
             Columna = Me.Grid.Selection.FirstCol
             Renglon = Me.Grid.Selection.FirstRow
@@ -2856,6 +2979,11 @@ CANCELAR:
 
                     Select Case Columna
                         Case Me.igyCodigo
+
+                            If Me.Grid.Column(Me.igyCodigo).Locked = True Then 'Si esta bloqueada la columna código no permite gestionarla
+                                Return
+                            End If
+
                             If txtLEN(StrCod) = False Then
                                 GoTo BuscaArticulos : Return
                             End If
@@ -2935,13 +3063,13 @@ LlenaLinea:
                             End If
 
                             If sTipoVenta <> "NM" Then
-                                If ValidarDisponible() = False Then
+                                If Me.ValidarDisponible() = False Then
                                     Return
                                 End If
                             End If
 
-                            If Me.oDocumento.AFECTA_INVENTARIOS = True Then
-                                If ValidarExistencias() = False Then
+                            If Me.oDocumento.AFECTA_INVENTARIOS = True And sTipoVenta <> "SR" Then
+                                If Me.ValidarExistencias() = False Then
                                     Return
                                 End If
                             End If
@@ -2958,7 +3086,7 @@ LlenaLinea:
                         Case Me.igyPrecio  'Cantidad
                             oArticulo = New Class_CatArticulos(StrCod)
                             If dPrecio <= 0 And oArticulo.ES_PRODUCTO_KILOS = "0" Then
-                                MsgBox("El precio debe de ser mayor a 0.", MsgBoxStyle.Exclamation, Me.Text)
+                                MsgBox("El precio debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
                                 Me.Grid.Cell(Renglon, Me.igyCantidad).SetFocus()
                             End If
 
@@ -2990,6 +3118,20 @@ LlenaLinea:
                                 Me.Grid.Rows = Me.Grid.Rows + 1
                             End If
 
+                        Case Me.iGyDESCUENTO_IMPORTE
+                            Dim dDESCUENTO_IMPORTE As Decimal = valorNumericoD(Me.Grid.Cell(Renglon, Me.iGyDESCUENTO_IMPORTE).Text)
+                            Dim dImporte As Decimal = RedondearD(dCantidad * dPrecio, 2)
+
+                            If dDESCUENTO_IMPORTE < 0 Then
+                                MsgBox("El descuento debe ser una cantidad positiva.", vbExclamation, sProcedure)
+                                Me.Grid.Cell(Renglon, Me.iGyDESCUENTO_IMPORTE).Text = "0"
+                            End If
+
+                            If dDESCUENTO_IMPORTE > dImporte Then
+                                MsgBox("El descuento no puede ser mayor que el importe.", vbExclamation, sProcedure)
+                                Me.Grid.Cell(Renglon, Me.iGyDESCUENTO_IMPORTE).Text = "0"
+                            End If
+
                     End Select
 
                     Select Case Columna
@@ -3006,6 +3148,11 @@ LlenaLinea:
 BuscaArticulos:
                     Select Case Columna
                         Case Me.igyCodigo 'Columna del Codigo de Articulo
+
+                            If Me.Grid.Column(Me.igyCodigo).Locked = True Then 'Si esta bloqueada la columna código no permite gestionarla
+                                Return
+                            End If
+
                             oArticulo = New Class_CatArticulos
                             StrCod = oArticulo.BusquedaVisual_PorDescripcion_conExistencias(Me.CboAlmacen.SelectedValue.ToString)
                             If txtLEN(StrCod) = True Then
@@ -3065,7 +3212,7 @@ buscaCentrosCostos:
                         Me.Grid.Cell(Renglon, Me.igyDescripcion).Text = oComentario.txtComentario.Text
 
                         If Me.Grid.Rows = Renglon + 1 Then Me.Grid.Rows = Me.Grid.Rows + 1
-                        Me.Grid.Cell(Renglon + 1, Me.igyCodigo).SetFocus()
+                        'Me.Grid.Cell(Renglon + 1, Me.igyCodigo).SetFocus()
 
                         For i = Me.igyDescripcion + 1 To Me.Grid.Cols - 1
                             Me.Grid.Cell(Renglon, i).Locked = True 'Bloqueamos el resto de las columnas
@@ -3092,7 +3239,7 @@ buscaCentrosCostos:
             End Select
 
         Catch ex As Exception
-            HandleError(Me.Name, "GestionaGrid", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
@@ -3809,23 +3956,218 @@ busca_serie:
     End Sub
 
     Private Sub CalculaUtilidad()
-        Dim i As Integer
-        'utilidad unitaria = precio - costo
-        'utilidad total = importe - (costo * cantidad)
-        '% utilidad = Utilidad total / importe
-        With Me.Grid
-            For i = 1 To .Rows - 1
-                If txtLEN(.Cell(i, Me.igyCodigo).Text) = True AndAlso .Cell(i, Me.igyCodigo).Text <> "-" Then
-                    .Cell(i, Me.igyUtilidadUnitaria).Text = (valorNumerico(.Cell(i, Me.igyPrecio).Text) - valorNumerico(.Cell(i, Me.igyCosto).Text)).ToString
-                    .Cell(i, Me.igyUtilidadTotal).Text = (valorNumerico(.Cell(i, Me.igyImporte).Text) - (valorNumerico(.Cell(i, Me.igyCosto).Text) * valorNumerico(.Cell(i, Me.igyCantidad).Text))).ToString
-                    If valorNumerico(.Cell(i, Me.igyImporte).Text) > 0 Then
-                        .Cell(i, Me.igyUtilidadPorcentaje).Text = (valorNumerico(.Cell(i, Me.igyUtilidadTotal).Text) / valorNumerico(.Cell(i, Me.igyImporte).Text)).ToString
+        Try
+            Dim i As Integer
+            'utilidad unitaria = precio - costo
+            'utilidad total = importe - (costo * cantidad)
+            '% utilidad = Utilidad total / importe
+            With Me.Grid
+                For i = 1 To .Rows - 1
+                    If txtLEN(.Cell(i, Me.igyCodigo).Text) = True AndAlso .Cell(i, Me.igyCodigo).Text <> "-" Then
+                        .Cell(i, Me.igyUtilidadUnitaria).Text = (valorNumerico(.Cell(i, Me.igyPrecio).Text) - valorNumerico(.Cell(i, Me.igyCosto).Text)).ToString
+                        .Cell(i, Me.igyUtilidadTotal).Text = (valorNumerico(.Cell(i, Me.igyImporte).Text) - (valorNumerico(.Cell(i, Me.igyCosto).Text) * valorNumerico(.Cell(i, Me.igyCantidad).Text))).ToString
+                        If valorNumerico(.Cell(i, Me.igyImporte).Text) > 0 Then
+                            .Cell(i, Me.igyUtilidadPorcentaje).Text = (valorNumerico(.Cell(i, Me.igyUtilidadTotal).Text) / valorNumerico(.Cell(i, Me.igyImporte).Text)).ToString
+                        End If
                     End If
-                End If
-            Next
-        End With
-
+                Next
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "CalculaUtilidad", ex)
+        End Try
     End Sub
+
+    Private Sub DesplegarTiposRelacionCFDI()
+        Try
+            With Me.cboTipoRelacionCFDI
+                .DisplayMember = "NOMBRE_TIPO_RELACION_CFDI"
+                .ValueMember = "CODIGO_TIPO_RELACION_CFDI"
+                Dim dView As New Data.DataView(dtTiposRelacionCFDI)
+                dView.Sort = "NOMBRE_TIPO_RELACION_CFDI"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedIndex = -1
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarTiposRelacionCFDI", ex)
+        End Try
+    End Sub
+
+    Private Sub InicializaGridCFDIsRelacionados()
+        Try
+            Me.GridCFDIsRelacionados.DataSource = Nothing
+            FG_Grid_Limpiar(Me.GridCFDIsRelacionados)
+            Me.GridCFDIsRelacionados.Rows = 2
+            Me.GridCFDIsRelacionados.Cols = 6
+            Me.FormateaGridCFDIsRelacionados()
+        Catch ex As Exception
+            HandleError(Me.Name, "InicializaGridCFDIsRelacionados", ex)
+        End Try
+    End Sub
+
+    Private Sub FormateaGridCFDIsRelacionados()
+        Try
+            With Me.GridCFDIsRelacionados
+                .AutoRedraw = False
+
+                .Column(Me.iGyGRFolio).Width = 100
+                .Column(Me.iGyGRFecha).Width = 80
+                .Column(Me.iGyGRConcepto).Width = 300
+                .Column(Me.iGyGRUUID).Width = 280
+                .Column(Me.iGyGRTotal).Width = 100
+
+                .Cell(0, Me.iGyGRFolio).Text = "Folio"
+                .Cell(0, Me.iGyGRFecha).Text = "Fecha"
+                .Cell(0, Me.iGyGRConcepto).Text = "Concepto"
+                .Cell(0, Me.iGyGRUUID).Text = "UUID"
+                .Cell(0, Me.iGyGRTotal).Text = "Total"
+
+                .Column(Me.iGyGRFolio).Locked = False
+                .Column(Me.iGyGRFecha).Locked = True
+                .Column(Me.iGyGRConcepto).Locked = True
+                .Column(Me.iGyGRUUID).Locked = True
+                .Column(Me.iGyGRTotal).Locked = True
+
+                .Column(Me.iGyGRFecha).CellType = FlexCell.CellTypeEnum.DateTime
+                .Column(Me.iGyGRFecha).FormatString = "dd-MMM-yy"
+
+                .Column(Me.iGyGRTotal).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyGRTotal).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyGRTotal).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyGRTotal).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .AutoRedraw = True
+                .Refresh()
+
+                '.Row(.Rows - 1).Locked = True 'Para bloquear la edición del último renglón
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "FormateaGridCFDIsRelacionados", ex)
+        End Try
+    End Sub
+
+    Private Sub GestionaGridCFDIsRelacionados(ByVal e As System.Windows.Forms.KeyEventArgs)
+        Try
+            If Me.GridCFDIsRelacionados.Locked = True Then
+                Return
+            End If
+
+            Dim Columna As Integer, Renglon As Integer, sFolio As String = "", oVenta As Class_Ventas_Global
+
+            Columna = Me.GridCFDIsRelacionados.Selection.FirstCol
+            Renglon = Me.GridCFDIsRelacionados.Selection.FirstRow
+            sFolio = Me.GridCFDIsRelacionados.Cell(Renglon, Me.iGyGRFolio).Text
+
+            Select Case e.KeyCode
+                Case Keys.Enter
+
+                    Select Case Columna
+                        Case Me.iGyGRFolio
+                            If txtLEN(sFolio) = False Then
+                                GoTo BuscaVentas : Return
+                            End If
+LlenaLinea:
+                            oVenta = New Class_Ventas_Global(sFolio)
+                            If oVenta.Existe = False Then
+                                GoTo BuscaVentas : Return
+                            End If
+
+                            Me.GridCFDIsRelacionados.Cell(Renglon, Me.iGyGRFecha).Text = oVenta.FECHA.ToString
+                            Me.GridCFDIsRelacionados.Cell(Renglon, Me.iGyGRConcepto).Text = oVenta.CONCEPTO
+                            Me.GridCFDIsRelacionados.Cell(Renglon, Me.iGyGRUUID).Text = oVenta.FOLIO_FISCAL_SAT
+                            Me.GridCFDIsRelacionados.Cell(Renglon, Me.iGyGRTotal).Text = oVenta.TOTAL.ToString
+                    End Select
+
+                    If Me.GridCFDIsRelacionados.Rows - 1 = Renglon Then
+                        Me.GridCFDIsRelacionados.Rows = Me.GridCFDIsRelacionados.Rows + 1
+                    End If
+
+                Case Keys.F6
+BuscaVentas:
+                    Select Case Columna
+                        Case Me.iGyGRFolio
+                            oVenta = New Class_Ventas_Global
+                            sFolio = oVenta.BusquedaVisualFacturasClienteParaRelacionarCFDIs(Me.TxtCliente.Text)
+                            If txtLEN(sFolio) = True Then
+                                Me.GridCFDIsRelacionados.Cell(Renglon, Me.iGyGRFolio).Text = sFolio
+                                GoTo LlenaLinea : Return
+                            End If
+                    End Select
+
+                Case Keys.F8 'Borrar renglón
+                    If (Me.Estado = enumEstados.NUEVO) Then
+                        Me.GridCFDIsRelacionados.Selection.DeleteByRow()
+                    End If
+
+                Case Keys.Delete 'Borrar renglón
+                    Return
+
+            End Select
+
+        Catch ex As Exception
+            HandleError(Me.Name, "GestionaGridCFDIsRelacionados", ex)
+        End Try
+    End Sub
+
+    Private Function HayCFDIsRelacionadosRepetidos() As Boolean
+        Const sProcedure As String = "HayCFDIsRelacionadosRepetidos"
+        Try
+            Dim i As Integer, j As Integer, sFolio As String = ""
+            For i = 1 To Me.GridCFDIsRelacionados.Rows - 1
+                If txtLEN(Me.GridCFDIsRelacionados.Cell(i, Me.iGyGRFolio).Text) = True Then
+                    sFolio = Me.GridCFDIsRelacionados.Cell(i, Me.iGyGRFolio).Text
+                    For j = i + 1 To Me.GridCFDIsRelacionados.Rows - 1
+                        If txtLEN(Me.GridCFDIsRelacionados.Cell(j, Me.iGyGRFolio).Text) = True Then
+                            If sFolio = Me.GridCFDIsRelacionados.Cell(j, Me.iGyGRFolio).Text And Me.GridCFDIsRelacionados.Rows > 2 Then
+                                MsgBox("El CFDI relacionado " & iGyGRFolio & " esta repetido en el renglón #" & i.ToString & " y en el #" & j.ToString, MsgBoxStyle.Exclamation, sProcedure)
+                                Me.GridCFDIsRelacionados.Cell(i, Me.iGyGRFolio).SetFocus()
+                                'Me.GridSemanaTrabajadores.Selection.DeleteByRow()
+                                Return True
+                            End If
+                        End If
+                    Next j
+                End If
+            Next i
+
+            Return False
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Function
+
+    Private Function ValidaDescuentos() As Boolean
+        Const sProcedure As String = "ValidaDescuentos"
+        Try
+            Dim i As Integer, dCantidad As Decimal = 0, dPrecio As Decimal = 0, dImporte As Decimal = 0, dDescuento As Decimal = 0
+            With Me.Grid
+                For i = 1 To .Rows - 1
+                    If txtLEN(.Cell(i, Me.igyCodigo).Text) = True AndAlso Me.Grid.Cell(i, Me.igyCodigo).Text <> "-" Then
+                        dCantidad = valorNumericoD(.Cell(i, Me.igyCantidad).Text)
+                        dPrecio = valorNumericoD(.Cell(i, Me.igyPrecio).Text)
+                        dImporte = RedondearD(dCantidad * dPrecio, 2)
+                        dDescuento = valorNumericoD(.Cell(i, Me.iGyDESCUENTO_IMPORTE).Text)
+
+                        If dDescuento < 0 Then
+                            MsgBox("El descuento debe ser una cantidad positiva, revise el renglón #" & i.ToString, vbExclamation, sProcedure)
+                            Return False
+                        End If
+
+                        If dDescuento > dImporte Then
+                            MsgBox("El descuento no puede ser mayor que el importe, revise el renglón #" & i.ToString, vbExclamation, sProcedure)
+                            Return False
+                        End If
+
+                    End If
+                Next
+            End With
+
+            Return True
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Function
+
 #End Region
 
 End Class

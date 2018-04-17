@@ -99,6 +99,8 @@ Partial Class Frm_CXC_Devoluciones
         Me.lblDisplayFolioVenta = New System.Windows.Forms.Label()
         Me.txtFolioVenta = New System.Windows.Forms.TextBox()
         Me.lblDisplayAlmacen = New System.Windows.Forms.Label()
+        Me.cboTipoRelacionCFDI = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayTipoRelacionCFDI = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -576,6 +578,8 @@ Partial Class Frm_CXC_Devoluciones
         '
         'frmDatos
         '
+        Me.frmDatos.Controls.Add(Me.cboTipoRelacionCFDI)
+        Me.frmDatos.Controls.Add(Me.lblDisplayTipoRelacionCFDI)
         Me.frmDatos.Controls.Add(Me.lblVersionCFDI)
         Me.frmDatos.Controls.Add(Me.cboFormaPago)
         Me.frmDatos.Controls.Add(Me.lblDisplayMetodoPago)
@@ -622,7 +626,7 @@ Partial Class Frm_CXC_Devoluciones
         '
         Me.lblVersionCFDI.AutoSize = True
         Me.lblVersionCFDI.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblVersionCFDI.Location = New System.Drawing.Point(930, 145)
+        Me.lblVersionCFDI.Location = New System.Drawing.Point(944, 16)
         Me.lblVersionCFDI.Name = "lblVersionCFDI"
         Me.lblVersionCFDI.Size = New System.Drawing.Size(34, 20)
         Me.lblVersionCFDI.TabIndex = 388
@@ -635,7 +639,7 @@ Partial Class Frm_CXC_Devoluciones
         Me.cboFormaPago.FormattingEnabled = True
         Me.cboFormaPago.Location = New System.Drawing.Point(84, 147)
         Me.cboFormaPago.Name = "cboFormaPago"
-        Me.cboFormaPago.Size = New System.Drawing.Size(205, 21)
+        Me.cboFormaPago.Size = New System.Drawing.Size(219, 21)
         Me.cboFormaPago.TabIndex = 7
         '
         'lblDisplayMetodoPago
@@ -737,7 +741,7 @@ Partial Class Frm_CXC_Devoluciones
         'txtFolioDescuento
         '
         Me.txtFolioDescuento.Enabled = False
-        Me.txtFolioDescuento.Location = New System.Drawing.Point(728, 73)
+        Me.txtFolioDescuento.Location = New System.Drawing.Point(891, 45)
         Me.txtFolioDescuento.MaxLength = 15
         Me.txtFolioDescuento.Name = "txtFolioDescuento"
         Me.txtFolioDescuento.ReadOnly = True
@@ -746,7 +750,7 @@ Partial Class Frm_CXC_Devoluciones
         '
         'lblDisplayFolioDescuento
         '
-        Me.lblDisplayFolioDescuento.Location = New System.Drawing.Point(657, 70)
+        Me.lblDisplayFolioDescuento.Location = New System.Drawing.Point(820, 42)
         Me.lblDisplayFolioDescuento.Name = "lblDisplayFolioDescuento"
         Me.lblDisplayFolioDescuento.Size = New System.Drawing.Size(65, 38)
         Me.lblDisplayFolioDescuento.TabIndex = 374
@@ -897,6 +901,25 @@ Partial Class Frm_CXC_Devoluciones
         Me.lblDisplayAlmacen.TabIndex = 239
         Me.lblDisplayAlmacen.Text = "Almacén :"
         '
+        'cboTipoRelacionCFDI
+        '
+        Me.cboTipoRelacionCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboTipoRelacionCFDI.FormattingEnabled = True
+        Me.cboTipoRelacionCFDI.Location = New System.Drawing.Point(602, 70)
+        Me.cboTipoRelacionCFDI.MaxLength = 1
+        Me.cboTipoRelacionCFDI.Name = "cboTipoRelacionCFDI"
+        Me.cboTipoRelacionCFDI.Size = New System.Drawing.Size(338, 21)
+        Me.cboTipoRelacionCFDI.TabIndex = 10
+        '
+        'lblDisplayTipoRelacionCFDI
+        '
+        Me.lblDisplayTipoRelacionCFDI.AutoSize = True
+        Me.lblDisplayTipoRelacionCFDI.Location = New System.Drawing.Point(495, 73)
+        Me.lblDisplayTipoRelacionCFDI.Name = "lblDisplayTipoRelacionCFDI"
+        Me.lblDisplayTipoRelacionCFDI.Size = New System.Drawing.Size(101, 13)
+        Me.lblDisplayTipoRelacionCFDI.TabIndex = 395
+        Me.lblDisplayTipoRelacionCFDI.Text = "Tipo relación CFDI :"
+        '
         'Frm_CXC_Devoluciones
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1007,4 +1030,6 @@ Partial Class Frm_CXC_Devoluciones
     Friend WithEvents cboMetodoPago As ComboBox
     Friend WithEvents lblFormaPago As Label
     Friend WithEvents lblVersionCFDI As Label
+    Friend WithEvents cboTipoRelacionCFDI As ComboBox
+    Friend WithEvents lblDisplayTipoRelacionCFDI As Label
 End Class

@@ -137,6 +137,7 @@ Public Class Frm_CXC_Descuentos
             Me.DesplegarMonedas()
             Me.DesplegarFormasPago(False)
             Me.DesplegarUsoCFDIPersonasFisicas() 'Finalmente sólo se usará el fijo G02 que sta en fisicas y morales
+            Me.DesplegarTiposRelacionCFDI()
 
             Me.Inicializa()
             Me.Cambia_Estado(enumEstados.NUEVO)
@@ -344,7 +345,7 @@ Buscar:
         oTexBox.SelectAll()
     End Sub
 
-    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dtFecha.KeyDown, cboFormaPago.KeyDown, cboMetodoPago.KeyDown, cboUsoCFDI.KeyDown
+    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dtFecha.KeyDown, cboFormaPago.KeyDown, cboMetodoPago.KeyDown, cboUsoCFDI.KeyDown, cboTipoRelacionCFDI.KeyDown
         If e.KeyCode = Keys.Return Then
             SendKeys.Send("{TAB}")
         End If
@@ -419,8 +420,8 @@ Buscar:
             End If
 
             Me.cboMetodoPago.SelectedValue = "PUE"
-
             Me.cboUsoCFDI.SelectedValue = "G02" 'G02=Devoluciones, descuentos o bonificaciones
+            Me.cboTipoRelacionCFDI.SelectedValue = "01" '01-Nota de crédito de los documentos relacionados
 
             Me.lblVersionCFDI.Text = ""
 
@@ -658,7 +659,7 @@ Buscar:
         Dim bResultado As Boolean = False
         Dim i As Integer
         Dim ListaDescuentos As String = ""
-        Dim sMetodoPago As String, sUsoCFDI As String
+        Dim sMetodoPago As String, sUsoCFDI As String, sCodigoTipoRelacionCFDI As String
 
         Try
             Me.GeneraFolio()
@@ -668,9 +669,11 @@ Buscar:
             If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
                 sMetodoPago = ""
                 sUsoCFDI = ""
+                sCodigoTipoRelacionCFDI = ""
             Else
                 sMetodoPago = Me.cboMetodoPago.SelectedValue.ToString
                 sUsoCFDI = Me.cboUsoCFDI.SelectedValue.ToString
+                sCodigoTipoRelacionCFDI = Me.cboTipoRelacionCFDI.SelectedValue.ToString
             End If
 
             For i = 1 To Me.Grid.Rows - 1
@@ -707,6 +710,7 @@ Buscar:
                 .CODIGO_MONEDA_SAT = Me.cboMoneda.Text
                 .LISTA_DESCUENTOS = ListaDescuentos
                 .IMPUESTO_PORCENTAJE = valorNumerico(Me.lblImpuestoPorcentaje.Text)
+                .CODIGO_TIPO_RELACION_CFDI = sCodigoTipoRelacionCFDI
 
                 If .Grabar() = True Then
                     bResultado = True
@@ -958,6 +962,12 @@ Buscar:
                     Me.cboUsoCFDI.SelectedIndex = -1
                 End If
 
+                If txtLEN("" & Me.oDescuentosCXC.CODIGO_TIPO_RELACION_CFDI) = True Then
+                    Me.cboTipoRelacionCFDI.SelectedValue = Me.oDescuentosCXC.CODIGO_TIPO_RELACION_CFDI
+                Else
+                    Me.cboTipoRelacionCFDI.SelectedIndex = -1
+                End If
+
                 Me.tssElaboro.Text = "Elaboró : " & Me.oDescuentosCXC.NOMBRE_USUARIO_GRABO & " el " & Format(Me.oDescuentosCXC.FECHA_SERVIDOR, "dd-MMM-yyyy hh:mm tt")
                 If Me.oDescuentosCXC.ESTATUS_DESCUENTO = "C" Then
                     Me.tssCancelo.Text = "Canceló : " & Me.oDescuentosCXC.NOMBRE_USUARIO_CANCELO & " el : " & Format(Me.oDescuentosCXC.FECHA_CANCELACION, "dd-MMM-yyyy hh:mm tt")
@@ -1125,6 +1135,7 @@ Buscar:
             Me.txtTipoCambio.Enabled = False
             Me.cboMetodoPago.Enabled = False
             Me.cboUsoCFDI.Enabled = False
+            Me.cboTipoRelacionCFDI.Enabled = False
 
             Me.Estado = pEstado
             Select Case Me.Estado
@@ -1139,6 +1150,7 @@ Buscar:
                     Me.TxtConcepto2.Enabled = True
                     Me.cboMoneda.Enabled = True
                     Me.cboFormaPago.Enabled = True
+                    Me.cboTipoRelacionCFDI.Enabled = True
                     Me.chkVentaPublicoGeneral.Enabled = True
                     Me.txtTipoCambio.Enabled = False
                     Me.tssEstado.Text = "Estado: agregando documento"
@@ -1163,6 +1175,7 @@ Buscar:
                     Me.TxtConcepto2.Enabled = False
                     Me.cboMoneda.Enabled = False
                     Me.cboFormaPago.Enabled = False
+                    Me.cboTipoRelacionCFDI.Enabled = False
                     Me.chkVentaPublicoGeneral.Enabled = False
                     Me.txtTipoCambio.Enabled = False
                     Me.tssEstado.Text = "Estado: consultando"
@@ -1184,6 +1197,7 @@ Buscar:
                     Me.TxtConcepto2.Enabled = False
                     Me.cboMoneda.Enabled = False
                     Me.cboFormaPago.Enabled = False
+                    Me.cboTipoRelacionCFDI.Enabled = False
                     Me.chkVentaPublicoGeneral.Enabled = False
                     Me.txtTipoCambio.Enabled = False
                     Me.tssEstado.Text = "Estado: consultando"
@@ -1426,6 +1440,24 @@ Buscar:
         End Try
         Application.DoEvents()
     End Sub
+
+    Private Sub DesplegarTiposRelacionCFDI()
+        Try
+            With Me.cboTipoRelacionCFDI
+                .DisplayMember = "NOMBRE_TIPO_RELACION_CFDI"
+                .ValueMember = "CODIGO_TIPO_RELACION_CFDI"
+                Dim dView As New Data.DataView(dtTiposRelacionCFDI)
+                dView.Sort = "NOMBRE_TIPO_RELACION_CFDI"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedValue = "01" '01-Nota de crédito de los documentos relacionados
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarTiposRelacionCFDI", ex)
+        End Try
+    End Sub
+
 #End Region
 
 End Class

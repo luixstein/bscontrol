@@ -94,6 +94,8 @@ Public Class Class_Ventas_Global
     Private _CODIGO_MONEDA_SAT As String
     Private _CONCEPTO_CANCELACION As String
     Private _TIENE_IEPS_DESGLOSADO As Boolean
+    Private _CODIGO_TIPO_RELACION_CFDI As String
+    Private _LISTA_CFDIS_RELACIONADOS As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -752,6 +754,24 @@ Public Class Class_Ventas_Global
         End Set
     End Property
 
+    Public Property CODIGO_TIPO_RELACION_CFDI() As String
+        Get
+            Return Me._CODIGO_TIPO_RELACION_CFDI
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_TIPO_RELACION_CFDI = Value
+        End Set
+    End Property
+
+    Public Property LISTA_CFDIS_RELACIONADOS() As String
+        Get
+            Return Me._LISTA_CFDIS_RELACIONADOS
+        End Get
+        Set(ByVal Value As String)
+            Me._LISTA_CFDIS_RELACIONADOS = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -917,6 +937,8 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@CODIGO_USO_CFDI", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_USO_CFDI
             sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3) : sqlParametro.Value = "" & Me._CODIGO_MONEDA_SAT
             sqlParametro = .Parameters.Add("@TIENE_IEPS_DESGLOSADO", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._TIENE_IEPS_DESGLOSADO)
+            sqlParametro = .Parameters.Add("@CODIGO_TIPO_RELACION_CFDI", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_TIPO_RELACION_CFDI
+            sqlParametro = .Parameters.Add("@LISTA_CFDIS_RELACIONADOS", SqlDbType.NVarChar, -1) : sqlParametro.Value = Me._LISTA_CFDIS_RELACIONADOS
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = sAccion 'INSERTAR,ACTUALIZAR
 
             Try
@@ -1170,6 +1192,7 @@ Public Class Class_Ventas_Global
                     Me._CODIGO_MONEDA_SAT = "" & dReader("CODIGO_MONEDA_SAT").ToString
                     Me._CONCEPTO_CANCELACION = "" & dReader("CONCEPTO_CANCELACION").ToString
                     Me._TIENE_IEPS_DESGLOSADO = CBool(dReader("TIENE_IEPS_DESGLOSADO").ToString)
+                    Me._CODIGO_TIPO_RELACION_CFDI = "" & dReader("CODIGO_TIPO_RELACION_CFDI").ToString
 
                     bResultado = True
                 End If
@@ -1323,10 +1346,10 @@ Public Class Class_Ventas_Global
         Try
             sSQL = "SELECT R.CODIGO_ARTICULO, " &
                 "CASE WHEN A.ES_SERIALIZABLE = '1' THEN 'SER' WHEN A.INVENTARIABLE= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO, " &
-                "R.DESCRIPCION,R.CANTIDAD,R.PRECIO,R.PRECIO_TOTAL,R.UNIDAD_VENTA,ISNULL(R.CANTIDAD_KILOS,0) CANTIDAD_KILOS,ISNULL(R.PRECIO_KILOS,0) PRECIO_KILOS,R.IMPUESTO_PORCENTAJE,R.IMPORTE,ISNULL(R.IMPORTE_KILOS,0) IMPORTE_KILOS, " &
+                "R.DESCRIPCION,R.CANTIDAD,R.PRECIO_SIN_DESCUENTO,R.PRECIO_TOTAL,R.UNIDAD_VENTA,ISNULL(R.CANTIDAD_KILOS,0) CANTIDAD_KILOS,ISNULL(R.PRECIO_KILOS,0) PRECIO_KILOS,R.IMPUESTO_PORCENTAJE,R.IMPORTE,ISNULL(R.IMPORTE_KILOS,0) IMPORTE_KILOS, " &
                 "R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_VENTA_DETALLE,R.ES_PRODUCTO_KILOS,R.CODIGO_CENTRO_COSTO,CC.NOMBRE_CENTRO_COSTO,R.PRECIO_USD,R.IMPORTE_USD, " &
                 "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA,R.COSTO,(R.PRECIO - R.COSTO) UTILIDAD_UNITARIA,((R.PRECIO-R.COSTO)*R.CANTIDAD) UTILIDAD_TOTAL,CASE WHEN R.PRECIO > 0 THEN (((R.PRECIO-R.COSTO)/R.PRECIO)*100) ELSE 0 END UTILIDA_PORCENTAJE, " &
-                "R.ID_SIS_CAT_IMPUESTOS,R.GRADO_TOXICIDAD " &
+                "R.ID_SIS_CAT_IMPUESTOS,R.GRADO_TOXICIDAD,R.DESCUENTO_UNITARIO,R.DESCUENTO_IMPORTE,R.PRECIO_SIN_DESCUENTO " &
                 "FROM VENTA_DETALLE R " &
                 "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
                 "INNER JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO=CC.CODIGO_CENTRO_COSTO) " &
@@ -1351,7 +1374,7 @@ Public Class Class_Ventas_Global
             sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.CANTIDAD,R.PRECIO,R.PRECIO_TOTAL,R.UNIDAD_VENTA,ISNULL(R.CANTIDAD_KILOS,0) CANTIDAD_KILOS,ISNULL(R.PRECIO_KILOS,0) PRECIO_KILOS,R.IMPUESTO_PORCENTAJE,R.IMPORTE," &
                 "ISNULL(R.IMPORTE_KILOS,0) IMPORTE_KILOS,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_VENTA_DETALLE,R.ES_PRODUCTO_KILOS,R.PRECIO_USD,R.IMPORTE_USD," &
                 "A.CODIGO_PRODUCTO_SERVICIO,A.CODIGO_UNIDAD,R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA,R.PRECIO_TOTAL," &
-                "R.ID_SIS_CAT_IMPUESTOS,R.GRADO_TOXICIDAD " &
+                "R.ID_SIS_CAT_IMPUESTOS,R.GRADO_TOXICIDAD,R.DESCUENTO_UNITARIO,R.DESCUENTO_IMPORTE " &
                 "FROM VENTA_DETALLE R " &
                 "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
                 "WHERE R.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' " &
@@ -1378,10 +1401,10 @@ Public Class Class_Ventas_Global
 
             sSQL = "SELECT R.CODIGO_ARTICULO, " &
             "CASE WHEN A.ES_SERIALIZABLE = '1' THEN 'SER' WHEN A.INVENTARIABLE= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO, " &
-            "R.DESCRIPCION,R.DISPONIBLE,R.PRECIO,R.PRECIO_TOTAL,R.UNIDAD_VENTA,ISNULL(R.CANTIDAD_KILOS,0) CANTIDAD_KILOS,ISNULL(R.PRECIO_KILOS,0) PRECIO_KILOS,R.IMPUESTO_PORCENTAJE,R.IMPORTE,ISNULL(R.IMPORTE_KILOS,0) IMPORTE_KILOS," &
+            "R.DESCRIPCION,R.DISPONIBLE,R.PRECIO_SIN_DESCUENTO PRECIO,R.PRECIO_TOTAL,R.UNIDAD_VENTA,ISNULL(R.CANTIDAD_KILOS,0) CANTIDAD_KILOS,ISNULL(R.PRECIO_KILOS,0) PRECIO_KILOS,R.IMPUESTO_PORCENTAJE,R.IMPORTE,ISNULL(R.IMPORTE_KILOS,0) IMPORTE_KILOS," &
             "R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_VENTA_DETALLE,R.ES_PRODUCTO_KILOS,R.CODIGO_CENTRO_COSTO,CC.NOMBRE_CENTRO_COSTO,R.PRECIO_USD,R.IMPORTE_USD, " &
             "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA,R.COSTO,(R.PRECIO - R.COSTO) UTILIDAD_UNITARIA,((R.PRECIO-R.COSTO)*R.CANTIDAD) UTILIDAD_TOTAL,CASE WHEN R.PRECIO > 0 THEN (((R.PRECIO-R.COSTO)/R.PRECIO)*100) ELSE 0 END UTILIDA_PORCENTAJE, " &
-            "R.ID_SIS_CAT_IMPUESTOS,R.GRADO_TOXICIDAD " &
+            "R.ID_SIS_CAT_IMPUESTOS,R.GRADO_TOXICIDAD,R.DESCUENTO_UNITARIO,R.DESCUENTO_IMPORTE,R.PRECIO PRECIO_SIN_DESCUENTO " &
             "FROM VENTA_DETALLE R " &
             "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
             "INNER JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO=CC.CODIGO_CENTRO_COSTO)" &
@@ -1840,8 +1863,8 @@ Public Class Class_Ventas_Global
         f.sCampo = "CODIGO_CLIENTE"
         f.sOrder = "FECHA"
         f.sTable = "VENTA_GLOBAL"
-        f.sQl = "SELECT V.FOLIO_VENTA,N.NOMBRE_TIPO_NEGOCIACION,V.FECHA,V.TOTAL FROM VENTA_GLOBAL V " & _
-        "INNER JOIN VENTAS_CAT_TIPOS_NEGOCIACION N ON(V.CODIGO_TIPO_NEGOCIACION=N.CODIGO_TIPO_NEGOCIACION) " & _
+        f.sQl = "SELECT V.FOLIO_VENTA,N.NOMBRE_TIPO_NEGOCIACION,V.FECHA,V.TOTAL FROM VENTA_GLOBAL V " &
+        "INNER JOIN VENTAS_CAT_TIPOS_NEGOCIACION N ON(V.CODIGO_TIPO_NEGOCIACION=N.CODIGO_TIPO_NEGOCIACION) " &
         "WHERE V.CODIGO_CLIENTE='" & sCodigoCliente.ToString & "' AND " 'V.CODIGO_TIPO_NEGOCIACION=2 And "
 
         f.Inicia("")
@@ -1852,6 +1875,28 @@ Public Class Class_Ventas_Global
             End If
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "BusquedaVisual_PorCliente", ex)
+        End Try
+        Return Resultado
+    End Function
+
+    Public Function BusquedaVisualFacturasClienteParaRelacionarCFDIs(ByVal sCodigoCliente As String) As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de ventas del cliente."
+        f.sCampo = "V.FOLIO_VENTA"
+        f.sOrder = "V.FECHA DESC"
+        f.sTable = "VENTA_GLOBAL"
+        f.sQl = "SELECT V.FOLIO_VENTA,V.ESTATUS_VENTA,DBO.FN_FORMAT_FECHA_CORTO(V.FECHA)FECHA,V.CONCEPTO,DBO.fn_FormatoNum(V.TOTAL,1,2) TOTAL,V.FOLIO_FISCAL_SAT FROM VENTA_GLOBAL V " &
+        "WHERE V.CODIGO_CLIENTE='" & sCodigoCliente.ToString & "' AND "
+        f.arrayWidthColumns = New Integer() {100, 60, 70, 250, 100, 300}
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "BusquedaVisualFacturasClienteParaRelacionarCFDIs", ex)
         End Try
         Return Resultado
     End Function
@@ -2587,6 +2632,27 @@ Public Class Class_Ventas_Global
         Return bResultado
     End Function
 
+    Public Function ObtieneFacturasRelacionadas() As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String
+
+        sSQL = "SELECT F.FOLIO_VENTA,F.FECHA,F.CONCEPTO,F.FOLIO_FISCAL_SAT,F.TOTAL " &
+                "FROM VENTAS_CFDI_RELACIONADOS VR " &
+                "INNER JOIN VENTA_GLOBAL F ON(VR.FOLIO_VENTA_RELACIONADA=F.FOLIO_VENTA) " &
+                "WHERE VR.FOLIO_VENTA='" & Me.FOLIO_VENTA & "'" &
+                "ORDER BY F.FECHA"
+
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+
+            da.Dispose()
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtieneFacturasRelacionadas", ex)
+        End Try
+
+        Return dTabla
+    End Function
 #End Region
 
 End Class

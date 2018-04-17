@@ -250,6 +250,7 @@
     <Compile Include="Clases\Catalogos\Class_SisEmpresaNomina.vb" />
     <Compile Include="Clases\Catalogos\SAT\Class_CFD_CatMetodosPago.vb" />
     <Compile Include="Clases\Catalogos\SAT\Class_CFD_CatProductosServicios.vb" />
+    <Compile Include="Clases\Catalogos\SAT\Class_CFD_CatTiposRelacionCFDI.vb" />
     <Compile Include="Clases\Catalogos\SAT\Class_CFD_CatUnidades.vb" />
     <Compile Include="Clases\Catalogos\SAT\Class_CFD_CatUsosCFDI.vb" />
     <Compile Include="Clases\CentrosCostos\Class_Centros_Costos_Global.vb" />

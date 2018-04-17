@@ -60,9 +60,9 @@ Partial Class RPT_INVENTARIOS_AUXILIAR_ARTICULOS
         '
         'lblArticulo
         '
-        Me.lblArticulo.Location = New System.Drawing.Point(162, 28)
+        Me.lblArticulo.Location = New System.Drawing.Point(192, 28)
         Me.lblArticulo.Name = "lblArticulo"
-        Me.lblArticulo.Size = New System.Drawing.Size(391, 13)
+        Me.lblArticulo.Size = New System.Drawing.Size(361, 13)
         Me.lblArticulo.TabIndex = 276
         Me.lblArticulo.Text = "_"
         '
@@ -80,7 +80,7 @@ Partial Class RPT_INVENTARIOS_AUXILIAR_ARTICULOS
         Me.TxtCodArticulo.Location = New System.Drawing.Point(84, 25)
         Me.TxtCodArticulo.MaxLength = 16
         Me.TxtCodArticulo.Name = "TxtCodArticulo"
-        Me.TxtCodArticulo.Size = New System.Drawing.Size(72, 20)
+        Me.TxtCodArticulo.Size = New System.Drawing.Size(102, 20)
         Me.TxtCodArticulo.TabIndex = 1
         '
         'CmbAlmacen
@@ -174,7 +174,7 @@ Partial Class RPT_INVENTARIOS_AUXILIAR_ARTICULOS
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.MaximizeBox = False
         Me.Name = "RPT_INVENTARIOS_AUXILIAR_ARTICULOS"
-        Me.Text = "Auxíliar de articulos"
+        Me.Text = "Auxiliar de articulos"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.ToolStrip1.ResumeLayout(False)

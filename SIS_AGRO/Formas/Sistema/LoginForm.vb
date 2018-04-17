@@ -145,6 +145,10 @@ Public Class LoginForm
             dtMetodosPago = oMetodosPago.ObtenerElementos
             oMetodosPago = Nothing
 
+            Dim oTiposRelacionCFDI As New Class_CFD_CatTiposRelacionCFDI
+            dtTiposRelacionCFDI = oTiposRelacionCFDI.ObtenerElementos
+            oTiposRelacionCFDI = Nothing
+
             If My.Settings.ModoSistema = "Reportes" Then
                 My.Forms.AppMenuReportes.Show()
             Else

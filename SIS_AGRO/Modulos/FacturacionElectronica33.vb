@@ -10,6 +10,7 @@ Module FacturacionElectronica33
     Public dtFormasPagoActivas As DataTable
 
     Public dtMetodosPago As DataTable
+    Public dtTiposRelacionCFDI As DataTable
 
     Private tPlazaFacturaElectronica As Class_SisPlazas
 
@@ -144,10 +145,35 @@ Module FacturacionElectronica33
                 .Confirmacion = ""
             End With
 
+
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''CfdiRelacionados''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-            'Cfd.CfdiRelacionados.TipoRelacion = "01"
-            'Cfd.CfdiRelacionados.Add ("F664C038-474C-414E-B40D-2E8C4A3EFCAC")
+            'Se pregunta por que no todas las facturas tienen relación.
+            If txtLEN("" & oVenta.CODIGO_TIPO_RELACION_CFDI) = True Then
+                Cfd.CfdiRelacionados.TipoRelacion = oVenta.CODIGO_TIPO_RELACION_CFDI
+
+                Dim dtFacturasRelacionadas As DataTable = oVenta.ObtieneFacturasRelacionadas
+                Dim FaltanUUIDRelacionados As Boolean = False
+
+                If dtFacturasRelacionadas.Rows.Count = 0 Then
+                    MsgBox("No se encontraron los cfdis relacionados(facturas) a la factura.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                For Each dRow As DataRow In dtFacturasRelacionadas.Rows
+                    If txtLEN("" & dRow("FOLIO_FISCAL_SAT").ToString) = False Then
+                        MsgBox("La factura " & dRow("FOLIO_VENTA").ToString & " no tiene UUID(posiblemente no esta timbrada).", vbExclamation, sProcedure)
+                        FaltanUUIDRelacionados = True
+                    End If
+
+                    Cfd.CfdiRelacionados.Add(dRow("FOLIO_FISCAL_SAT").ToString) 'uuids
+                Next
+
+                'En caso de que alguna factura no este timbrada se aborta el proceso.
+                If FaltanUUIDRelacionados = True Then
+                    Return False
+                End If
+            End If
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Emisor''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             With Cfd.Emisor
@@ -204,7 +230,7 @@ Module FacturacionElectronica33
                 Else
                     drPrecio = CDec(row("PRECIO_TOTAL").ToString)
                     drImporte = CDec(row("IMPORTE").ToString)
-                    drDESCUENTO_IMPORTE = CDec("0.00")
+                    drDESCUENTO_IMPORTE = CDec(row("DESCUENTO_IMPORTE").ToString)
 
                     If oVenta.CODIGO_MONEDA_SAT = "USD" Then
                         drPrecio = RedondearD(drPrecio / dTIPO_DE_CAMBIO, 3)
@@ -775,7 +801,7 @@ Module FacturacionElectronica33
             If Cfd.GeneraCFD(TipoComprobante.PAGO_CXC, sRutaXML) = True Then
                 bResultado = True
                 If bMostrarMensaje = True Then
-                    MsgBox("Pago sellado satisfactoriamente.", vbInformation, sProcedure)
+                    MsgBox("Pago timbrado satisfactoriamente.", vbInformation, sProcedure)
                 End If
             End If
 
@@ -852,8 +878,7 @@ Module FacturacionElectronica33
             End With
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''CfdiRelacionados''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-            Cfd.CfdiRelacionados.TipoRelacion = oDescuento.CODIGO_TIPO_RELACION_CFDI '01=Nota de crédito de los documentos relacionados
+            Cfd.CfdiRelacionados.TipoRelacion = oDescuento.CODIGO_TIPO_RELACION_CFDI
 
             Dim dtFacturasRelacionadas As DataTable = oDescuento.ObtieneFacturasRelacionadas
             Dim FaltanUUIDRelacionados As Boolean = False
@@ -874,7 +899,7 @@ Module FacturacionElectronica33
 
             'En caso de que alguna factura no este timbrada se aborta el proceso.
             If FaltanUUIDRelacionados = True Then
-                Exit Function
+                Return False
             End If
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Emisor''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -1022,7 +1047,7 @@ Module FacturacionElectronica33
             If Cfd.GeneraCFD(TipoComprobante.NOTA_CREDITO_CXC, sRutaXML) = True Then
                 bResultado = True
                 If bMostrarMensaje = True Then
-                    MsgBox("Nota de crédito sellada satisfactoriamente.", vbInformation, sProcedure)
+                    MsgBox("Nota de crédito timbrada satisfactoriamente.", vbInformation, sProcedure)
                 End If
             End If
 
