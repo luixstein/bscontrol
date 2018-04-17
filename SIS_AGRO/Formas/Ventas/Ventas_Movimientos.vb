@@ -202,9 +202,7 @@ Public Class Ventas_Movimientos
 
         'f6 que haria en una sust?, Queryable mejor no haya f6 , si borran de mas y quieren poner, Que le den nuevo y empiezen otra vez
 
-        'FALTA: confirmar si quitar bloqueo,s e quitó a pruebas 13abr18 para sust que permitan editar cantidades y precios
         'Me.Grid.Locked = True
-
         Me.Grid.Column(Me.igyCodigo).Locked = True 'No podrán cambiar códigos ni ponerlos con f6
     End Sub
 
