@@ -998,7 +998,7 @@ busca:
             Dim dIEPS_PORCENTAJE As Decimal = 0, dIEPS_UNITARIO As Decimal = 0, dIEPS_IMPORTE As Decimal = 0, dBASE_IEPS As Decimal = 0, dBASE_IVA As Decimal = 0, dPRECIO_TOTAL As Decimal = 0, dIVA_IMPORTE As Decimal = 0
             Dim dtSubtotal As Decimal = 0, dtIEPS As Decimal = 0, dtImpuesto As Decimal = 0, dtTotal As Decimal = 0
             Dim sID_SIS_CAT_IMPUESTOS As String = "", sGRADO_TOXICIDAD As String = "0" '0=NO GRAVA IEPS
-            Dim dImporteConDescuento As Decimal
+            Dim dPrecioConDescuento As Decimal, dImporteConDescuento As Decimal
 
             Me.lblSubtotal.Text = FormatImporteContable(0)
             Me.lblIEPSIncluido.Text = FormatImporteContable(0)
@@ -1016,60 +1016,52 @@ busca:
 
                     If txtLEN(Me.Grid.Cell(i, Me.igyCantidad).Text) = True Then
 
-                        dCantidad = 0 : dPrecioCapturado = 0 : iIDOrigen = 0 : dPorcentajeIVA = 0 : dIEPS_PORCENTAJE = 0 : sID_SIS_CAT_IMPUESTOS = "" : sGRADO_TOXICIDAD = "" : dImporteConDescuento = 0
+                        dCantidad = 0 : dPrecioCapturado = 0 : dPrecioConDescuento = 0 : iIDOrigen = 0 : dPorcentajeIVA = 0 : dIEPS_PORCENTAJE = 0 : sID_SIS_CAT_IMPUESTOS = "" : sGRADO_TOXICIDAD = "" : dImporteConDescuento = 0
                         dBASE_IEPS = 0 : dIEPS_IMPORTE = 0 : dIEPS_UNITARIO = 0 : dBASE_IVA = 0 : dIVA_IMPORTE = 0 : dPRECIO_TOTAL = 0 : dImporte = 0 : dImporteTotal = 0
 
                         dCantidad = valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text)
-                        dPrecioCapturado = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text)
+                        dPrecioCapturado = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text) 'Precio con descuento(si es que la factura tiene descuento)
                         iIDOrigen = CInt(valorNumericoD(Me.Grid.Cell(i, Me.igyIdOrigen).Text))
                         dPorcentajeIVA = valorNumericoD(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text)
                         dIEPS_PORCENTAJE = valorNumericoD(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
                         sID_SIS_CAT_IMPUESTOS = Me.Grid.Cell(i, Me.iGyID_SIS_CAT_IMPUESTOS).Text
                         sGRADO_TOXICIDAD = Me.Grid.Cell(i, Me.iGyGRADO_TOXICIDAD).Text
 
-                        '------------------------------------------------------------------------------------------------------------------------------------------------------------
-                        'Antes de cambios este codigo estaba
-                        'dBASE_IEPS = RedondearD((dPrecio * dCantidad), 2)
-                        'dIEPS_IMPORTE = RedondearD(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2)
-                        'dIEPS_UNITARIO = CDec(Redondear(dPrecio * (dIEPS_PORCENTAJE / 100), 4))
+                        dImporte = RedondearD((dCantidad * dPrecioCapturado), Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
-                        'dBASE_IVA = dIEPS_IMPORTE + dBASE_IEPS
-                        'dIVA_IMPORTE = RedondearD(dBASE_IVA * ((dPorcentajeIVA / 100)), 2)
-                        '------------------------------------------------------------------------------------------------------------------------------------------------------------
-                        'Ahora con la revisión esta así:
-                        'Obviamente en una dev el precio no va tener un descuento capturable, pero se usa este nombre para coincidir con el totals de facturacion
-                        dImporteConDescuento = RedondearD((dPrecioCapturado * dCantidad), 6)
+                        'Obviamente en una dev el precio no va tener un descuento capturable(que si lo trae la factura y aquí el campo igyPrecio ya esta con desc incluido) pero se usa este nombre para coincidir con el totales de facturacion
+
+                        dPrecioConDescuento = dPrecioCapturado - 0
+
+                        dImporteConDescuento = RedondearD((dCantidad * dPrecioConDescuento), 6)
 
                         If sGRADO_TOXICIDAD <> "0" Then
                             dBASE_IEPS = dImporteConDescuento
                             dIEPS_IMPORTE = RedondearD(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
-                            dIEPS_UNITARIO = CDec(Redondear(dIEPS_PORCENTAJE * (dIEPS_PORCENTAJE / 100), 4))
+                            dIEPS_UNITARIO = CDec(Redondear(dPrecioConDescuento * (dIEPS_PORCENTAJE / 100), 4))
                         End If
 
                         If sID_SIS_CAT_IMPUESTOS <> "N" Then 'N=No grava iva, si es <>N = Si grava iva ya sea al 0,16,Exento(aún siendo exento ó 0 hay que llenar la base iva)
                             dBASE_IVA = dImporteConDescuento + dIEPS_IMPORTE
                             dIVA_IMPORTE = RedondearD(dBASE_IVA * ((dPorcentajeIVA / 100)), 2)
                         End If
-                        '------------------------------------------------------------------------------------------------------------------------------------------------------------
 
                         dPRECIO_TOTAL = dPrecioCapturado
 
-                        'Aqui seria bueno ver si en lugar de obtener esta propiedad de alguna forma salga el de la factura, que tal que cambian la propiedad del cliente ?
-                        If Me.oCliente.ES_CONTRIBUYENTE_IEPS = "0" And dPrecioCapturado > 0 Then 'Cuando no es contribuyente se le adjunta al precio el ieps, es decir se le incluye
-                            'dPRECIO_TOTAL = RedondearD(dPrecio + dIEPS_UNITARIO, 3)
+                        'If Me.oCliente.ES_CONTRIBUYENTE_IEPS = "0" And dPrecioCapturado > 0 Then 'Cuando no es contribuyente se le adjunta al precio el ieps, es decir se le incluye
+                        If Me.oVenta.TIENE_IEPS_DESGLOSADO = False And dPrecioCapturado > 0 Then 'Cuando no es contribuyente se le adjunta al precio el ieps, es decir se le incluye
+                            'dPRECIO_TOTAL = RedondearD(dPrecioCapturado + dIEPS_UNITARIO, 3)
                             dPRECIO_TOTAL = RedondearD(dPrecioCapturado + dIEPS_UNITARIO, 6)
                         End If
 
+                        dImporteTotal = RedondearD((dCantidad * dPRECIO_TOTAL), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+
+                        Me.Grid.Cell(i, Me.igyPRECIO_TOTAL).Text = dPRECIO_TOTAL.ToString
                         Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text = dIEPS_UNITARIO.ToString
                         Me.Grid.Cell(i, Me.igyBASE_IEPS).Text = dBASE_IEPS.ToString
                         Me.Grid.Cell(i, Me.igyIEPS_IMPORTE).Text = dIEPS_IMPORTE.ToString
                         Me.Grid.Cell(i, Me.igyBASE_IVA).Text = dBASE_IVA.ToString
                         Me.Grid.Cell(i, Me.igyImpuestoImporte).Text = dIVA_IMPORTE.ToString
-                        Me.Grid.Cell(i, Me.igyPRECIO_TOTAL).Text = dPRECIO_TOTAL.ToString
-
-                        dImporte = RedondearD((dPrecioCapturado * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD) 'no hacemos nada con este valor de momento
-                        dImporteTotal = RedondearD((dPRECIO_TOTAL * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-
                         Me.Grid.Cell(i, Me.igyImporte).Text = dImporteTotal.ToString
                     End If
 
@@ -1078,7 +1070,7 @@ busca:
 
             dtIEPS = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyIEPS_IMPORTE)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
-            If Me.oCliente.ES_CONTRIBUYENTE_IEPS = "1" Then
+            If Me.oVenta.TIENE_IEPS_DESGLOSADO = True Then
                 Me.lblIEPSIncluido.Text = FormatImporteContable(0)
                 Me.lblIEPS.Text = FormatImporteContable(dtIEPS)
             Else

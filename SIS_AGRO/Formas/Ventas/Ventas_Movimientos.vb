@@ -1506,7 +1506,7 @@ Buscar:
                 .FOLIO_REFERENCIA_USUARIO = ""
                 .TIPO_VENTA = sTipoVenta
 
-                .TOTAL_SUSTITUCION = 0 'Ahora se graba dentor del stored MP_VENTA_AFECTA_SUSTITUCION_REMISION
+                .TOTAL_SUSTITUCION = 0 'Ahora se graba dentro del stored MP_VENTA_AFECTA_SUSTITUCION_REMISION
                 'If Me.sTipoVenta = "NM" Then
                 '    .TOTAL_SUSTITUCION = 0
                 'Else
@@ -2596,7 +2596,7 @@ CANCELAR:
             For i = 1 To Me.Grid.Rows - 1
                 If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
                     oArticulo = New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
-                    'If oArticulo.ES_PRODUCTO_KILOS = "0" Then
+
                     If txtLEN(Me.Grid.Cell(i, Me.igyCantidad).Text) = True Then
 
                         dCantidad = 0 : dPrecioCapturado = 0 : dPrecioConDescuento = 0 : iIDOrigen = 0 : dPorcentajeIVA = 0 : dIEPS_PORCENTAJE = 0 : sID_SIS_CAT_IMPUESTOS = "" : sGRADO_TOXICIDAD = "" : dImporteConDescuento = 0
@@ -2613,7 +2613,7 @@ CANCELAR:
                         dDESCUENTO_UNITARIO = 0 'Se va calcular en base al descuento importe
                         dDESCUENTO_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE).Text)
 
-                        dImporte = RedondearD((dCantidad * dPrecioCapturado), Empresa_Sistema.DECIMALES_CONTABILIDAD) 'no hacemos nada con este valor de momento
+                        dImporte = RedondearD((dCantidad * dPrecioCapturado), Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
                         If dDESCUENTO_IMPORTE > 0 And dDESCUENTO_IMPORTE > dImporte Then
                             MsgBox("El descuento no puede ser mayor que el importe.", vbExclamation, sProcedure)
@@ -2648,6 +2648,8 @@ CANCELAR:
                             dPRECIO_TOTAL = RedondearD(dPrecioCapturado + dIEPS_UNITARIO, 6)
                         End If
 
+                        dImporteTotal = RedondearD((dCantidad * dPRECIO_TOTAL), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+
                         Me.Grid.Cell(i, Me.igyPRECIO_TOTAL).Text = dPRECIO_TOTAL.ToString
                         Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text = dIEPS_UNITARIO.ToString
                         Me.Grid.Cell(i, Me.igyBASE_IEPS).Text = dBASE_IEPS.ToString
@@ -2656,64 +2658,19 @@ CANCELAR:
                         Me.Grid.Cell(i, Me.igyImpuestoImporte).Text = dIVA_IMPORTE.ToString
                         Me.Grid.Cell(i, Me.iGyDESCUENTO_UNITARIO).Text = dDESCUENTO_UNITARIO.ToString
                         Me.Grid.Cell(i, Me.iGyPRECIO_CON_DESCUENTO).Text = dPrecioConDescuento.ToString
-
-                        'If Me.LblEstatus.Text <> "N" Then
-                        If Me.LblEstatus.Text <> "N" AndAlso sTipoVenta <> "NM" Then
-                            dPrecioOriginal = CDec(Me.oVenta.ObtenerPrecioOriginal(iIDOrigen))
-                        Else
-                            dPrecioOriginal = 0 'dPrecio
-                        End If
-
-                        'If dCantidad > 0 Then
-
-                        dImporteTotal = RedondearD((dCantidad * dPRECIO_TOTAL), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-
-                        dImporteSustitucion = RedondearD((dPrecioOriginal * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                        dImporteSustitucion = valorNumericoD(RedondearD(dImporteSustitucion * ((dPorcentajeIVA / 100) + 1), Empresa_Sistema.DECIMALES_CONTABILIDAD).ToString)
-                        dTotalSustitucion = dTotalSustitucion + dImporteSustitucion
-
-                        'Me.Grid.Cell(i, Me.igyImporte).Text = dImporteTotal.ToString
                         Me.Grid.Cell(i, Me.igyImporte).Text = dImporteTotal.ToString
-                        'Me.lblSubtotal.Text = FormatImporteContable(valorNumerico(Me.lblSubtotal.Text) + dImporte)
 
-                        'Me.Grid.Cell(i, Me.igyImpuestoImporte).Text = Redondear(dImporte * ((dPorcentajeIVA / 100)), Empresa_Sistema.DECIMALES_CONTABILIDAD).ToString
-                        '    'Else
-                        'Me.Grid.Cell(i, Me.igyImporte).Text = "0"
-                        'Me.Grid.Cell(i, Me.igyImpuestoImporte).Text = "0"
+                        'NOTA: Ahora todo lo relacionad a una sustitución, se genera y graba dentro del stored MP_VENTA_AFECTA_SUSTITUCION_REMISION
+                        'If Me.LblEstatus.Text <> "N" AndAlso sTipoVenta <> "NM" Then
+                        '    dPrecioOriginal = CDec(Me.oVenta.ObtenerPrecioOriginal(iIDOrigen))
+                        'Else
+                        '    dPrecioOriginal = 0 'dPrecio
                         'End If
+                        'dImporteSustitucion = RedondearD((dPrecioOriginal * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                        'dImporteSustitucion = valorNumericoD(RedondearD(dImporteSustitucion * ((dPorcentajeIVA / 100) + 1), Empresa_Sistema.DECIMALES_CONTABILIDAD).ToString)
+                        'dTotalSustitucion = dTotalSustitucion + dImporteSustitucion
                     End If
 
-                    'Else
-                    '    If txtLEN(Me.Grid.Cell(I, Me.igyCantidadKilos).Text) = True Then
-                    '        dCantidad = valorNumerico(Me.Grid.Cell(I, Me.igyCantidadKilos).Text)
-                    '        dPrecio = valorNumerico(Me.Grid.Cell(I, Me.igyPrecioKilos).Text)
-                    '        iIDOrigen = CInt(valorNumerico(Me.Grid.Cell(I, Me.igyIdOrigen).Text))
-
-                    '        'If Me.LblEstatus.Text <> "N" Then
-                    '        If Me.LblEstatus.Text <> "N" AndAlso sTipoVenta <> "NM" Then
-                    '            dPrecioOriginal = Me.oVenta.ObtenerPrecioOriginal(iIDOrigen)
-                    '        Else
-                    '            dPrecioOriginal = valorNumerico(Me.Grid.Cell(I, Me.igyPrecio).Text)
-                    '        End If
-
-                    '        dPorcentajeIVA = valorNumerico(Me.Grid.Cell(I, Me.igyImpuestoPorcentaje).Text)
-                    '        If dCantidad > 0 Then
-                    '            dImporte = Redondear((dPrecio * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-
-                    '            dImporteSustitucion = Redondear((dPrecioOriginal * valorNumerico(Me.Grid.Cell(I, Me.igyCantidadKilos).Text)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                    '            dImporteSustitucion = valorNumerico(Redondear(dImporteSustitucion * ((dPorcentajeIVA / 100) + 1), Empresa_Sistema.DECIMALES_CONTABILIDAD).ToString)
-                    '            dTotalSustitucion = dTotalSustitucion + dImporteSustitucion
-
-                    '            Me.Grid.Cell(I, Me.igyImporteKilos).Text = dImporte.ToString
-                    '            Me.lblSubtotal.Text = FormatImporteContable(valorNumerico(Me.lblSubtotal.Text) + dImporte)
-
-                    '            Me.Grid.Cell(I, Me.igyImpuestoImporte).Text = Redondear((valorNumerico(Me.Grid.Cell(I, Me.igyCantidad).Text) * valorNumerico(Me.Grid.Cell(I, Me.igyPrecio).Text)) * ((dPorcentajeIVA / 100)), Empresa_Sistema.DECIMALES_CONTABILIDAD).ToString
-                    '        Else
-                    '            Me.Grid.Cell(I, Me.igyImporteKilos).Text = "0"
-                    '            Me.Grid.Cell(I, Me.igyImpuestoImporte).Text = "0"
-                    '        End If
-                    '    End If
-                    'End If
                 End If
             Next i
 
