@@ -157,7 +157,17 @@ Public Class Frm_CXC_Pagos
 
     Private Sub cmdPruebaPagoCFDI_Click(sender As Object, e As EventArgs) Handles cmdPruebaPagoCFDI.Click
         'Me.oBancosCXC.GeneraPagosElectronicos()
-        GeneraPagoElectronico33Prueba()
+        'GeneraPagoElectronico33Prueba()
+
+        Me.TxtCuentaBancaria.Text = "1"
+        TxtCuentaBancaria_KeyDown(Nothing, New KeyEventArgs(Keys.Enter))
+        TxtFolio_KeyDown(Nothing, New KeyEventArgs(Keys.Enter))
+        Me.TxtCodigoCliente.Text = "CN0002"
+        TxtCodigoCliente_KeyDown(Nothing, New KeyEventArgs(Keys.Enter))
+        Me.txtMonto.Text = "100"
+        Me.txtFolioDetalle.Text = "x1"
+
+
     End Sub
 
     Private Sub cmdSeleccionaSPEI_Click(sender As Object, e As EventArgs) Handles cmdSeleccionaSPEI.Click
@@ -196,11 +206,11 @@ Public Class Frm_CXC_Pagos
 
             Me.Cambia_Estado(enumEstados.NUEVO)
 
-            'If My.Computer.Name = "PCSISTEMASJORGE" Then
-            '    Me.cmdPruebaPagoCFDI.Visible = True
-            'Else
-            '    Me.cmdPruebaPagoCFDI.Visible = False
-            'End If
+            If My.Computer.Name = "PCSISTEMASJORGE" Then
+                Me.cmdPruebaPagoCFDI.Visible = True
+            Else
+                Me.cmdPruebaPagoCFDI.Visible = False
+            End If
 
         Catch ex As Exception
             HandleError(Me.Name, "Frm_CXC_Pagos_Load", ex)
@@ -432,9 +442,9 @@ Buscar:
     '    End If
     'End Sub
 
-    Private Sub CkbAnticipo_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CkbAnticipo.KeyDown
+    Private Sub chkAnticipo_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles chkAnticipo.KeyDown
         If e.KeyCode = Keys.Return Then
-            If Me.CkbAnticipo.Checked = False Then
+            If Me.chkAnticipo.Checked = True Then
                 Me.btnAgregarDocumentosClientes.Focus()
             End If
         End If
@@ -589,11 +599,11 @@ Buscar:
             'Me.CboMedioDePago.SelectedIndex = -1
             Me.CboMedioDePago.SelectedValue = 0
             Me.TxtReferencia.Text = ""
-            Me.txtMonto.Text = "" : Me.CkbAnticipo.Checked = False
+            Me.txtMonto.Text = "" : Me.chkAnticipo.Checked = False
 
             Me.TxtTotal.Text = ""
 
-            Me.InicializaGrid()
+            Me.InicializaGridVentas()
             Me.lstClientesAgregados.Items.Clear()
 
             Me.InicializaDocumentoPago()
@@ -615,7 +625,7 @@ Buscar:
         End Try
     End Sub
 
-    Private Sub InicializaGrid()
+    Private Sub InicializaGridVentas()
         Try
             Me.GridVentas.DataSource = Nothing
             FG_Grid_Limpiar(GridVentas)
@@ -901,21 +911,32 @@ Buscar:
                 Return False
             End If
 
-            Me.BorraDocumentosSinPago()
+            If Me.chkAnticipo.Checked = True Then
 
-            For iRow = 1 To Me.GridVentas.Rows - 1
-                If Me.GridVentas.Cell(iRow, Me.iGyVentaCodigoCliente).Text.Length > 0 AndAlso Me.TxtCodigoCliente.Text = Me.GridVentas.Cell(iRow, Me.iGyVentaCodigoCliente).Text Then
-                    If MsgBox("Ya asignó al cliente " & Me.TxtCodigoCliente.Text & " a la lista de pagos, esta seguro de volver agregarlo?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
-                        Return False
-                    Else
-                        Exit For
+                Me.CargaAnticipo()
+
+                Me.GridVentas.Refresh()
+                Me.GridVentas.Locked = True
+                'FALTA: Checar que columnas bloquear que no deberán cambiar en modo anticipo
+
+            Else
+                Me.BorraDocumentosSinPago()
+
+                For iRow = 1 To Me.GridVentas.Rows - 1
+                    If Me.GridVentas.Cell(iRow, Me.iGyVentaCodigoCliente).Text.Length > 0 AndAlso Me.TxtCodigoCliente.Text = Me.GridVentas.Cell(iRow, Me.iGyVentaCodigoCliente).Text Then
+                        If MsgBox("Ya asignó al cliente " & Me.TxtCodigoCliente.Text & " a la lista de pagos, esta seguro de volver agregarlo?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
+                            Return False
+                        Else
+                            Exit For
+                        End If
                     End If
-                End If
-            Next
+                Next
 
-            'Agregar al grid folios de ventas, que no hayan sido agregados, y en caso de que ya , en msg mostrarlo.
+                'Agregar al grid folios de ventas, que no hayan sido agregados, y en caso de que ya , en msg mostrarlo.
 
-            bResultado = Me.CargaFacturas()
+                bResultado = Me.CargaFacturas()
+                Me.GridVentas.Locked = False
+            End If
 
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
@@ -924,6 +945,7 @@ Buscar:
         Return bResultado
     End Function
 
+    'FALTA: borrar este proceso que no se usa
     Private Sub AgregarAnticipoClientes()
         Dim sql As Class_find, iRow As Integer
 
@@ -1101,7 +1123,7 @@ Buscar:
                             Me.GridVentas.Cell(i, Me.iGyVentaPago).Text = CStr(0)
                             Me.GridVentas.Cell(i, Me.iGyVentaPagoPesos).Text = CStr(0)
                             Me.GridVentas.Cell(i, Me.iGyVentaDiferencia).Text = CStr(0)
-                            Me.GridVentas.Cell(i, Me.iGyVentaSeleccion).Text = Me.CboMedioDePago.SelectedValue.ToString
+                            Me.GridVentas.Cell(i, Me.iGyVentaSeleccion).Text = "0"
                             Me.GridVentas.Cell(i, Me.iGyVentaReferencia).Text = Me.TxtReferencia.Text
                             Me.GridVentas.Cell(i, Me.iGyVentaIvaPorPagar).Text = dReader("IVA").ToString
 
@@ -1140,29 +1162,70 @@ Buscar:
 
     Private Sub CargaAnticipo()
         Dim Conexion As New SqlConnection(Empresa_Sistema.conexion)
-        Dim i As Integer = 1, oCliente As Class_CatClientes
+        Dim i As Integer = 1, oCliente As Class_CatClientes, oBanco As Class_CatBancos
 
         Try
+            Me.InicializaGridVentas()
+
             oCliente = New Class_CatClientes(sReplace(Me.TxtCodigoCliente.Text))
 
             i = Me.GridVentas.Rows - 1
-            Me.GridVentas.Rows = Me.GridVentas.Rows + 1
 
+            'Realmente este dato no se ocupa pero x estrucutura se registra, además que si es tarjeta bancaria si hay banco y sin embargo no no llega.
+            If Me.cboFormaPago.SelectedValue.ToString = "02" Or Me.cboFormaPago.SelectedValue.ToString = "03" Then '02=CHEQUE NOMINATIVO, 03=TRANSFERENCIA ELECTRONICA DE FONDOS
+                If Me.CboBancos.SelectedIndex <> -1 Then
+                    oBanco = New Class_CatBancos(Me.CboBancos.SelectedValue.ToString)
+                Else
+                    oBanco = New Class_CatBancos("NA")
+                End If
+            Else
+                oBanco = New Class_CatBancos("NA")
+            End If
+
+            'Me.GridVentas.Cell(i, Me.iGyCodigoCliente).Text = oCliente.CODIGO_CLIENTE
+            'Me.GridVentas.Cell(i, Me.iGyNombreCliente).Text = oCliente.NOMBRE_CLIENTE.ToString
+            'Me.GridVentas.Cell(i, Me.iGyFecha).Text = Me.dtFecha.Value.ToString
+            'Me.GridVentas.Cell(i, Me.iGyFolio).Text = ""
+            'Me.GridVentas.Cell(i, Me.iGyMedioPago).Text = Me.CboMedioDePago.Text
+            'Me.GridVentas.Cell(i, Me.iGyBanco).Text = Me.CboBancos.Text
+            'Me.GridVentas.Cell(i, Me.iGyTotal).Text = "0"
+            'Me.GridVentas.Cell(i, Me.iGySaldo).Text = "0"
+            'Me.GridVentas.Cell(i, Me.iGyTotalDlls).Text = "0"
+            'Me.GridVentas.Cell(i, Me.iGySaldoDlls).Text = "0"
+            'Me.GridVentas.Cell(i, Me.iGyPago).Text = Me.txtAnticipo.Text
+            'Me.GridVentas.Cell(i, Me.iGyDiferencia).Text = "0"
+            'Me.GridVentas.Cell(i, Me.iGySeleccion).Text = ""
+            'Me.GridVentas.Cell(i, Me.iGyReferencia).Text = Me.TxtReferencia.Text
+            'Me.GridVentas.Cell(i, Me.iGyIvaPorPagar).Text = "0"
+
+            Me.GridVentas.Cell(i, Me.iGyVentaFOLIO_DETALLE).Text = Me.txtFolioDetalle.Text.ToUpper
             Me.GridVentas.Cell(i, Me.iGyVentaCodigoCliente).Text = oCliente.CODIGO_CLIENTE
-            Me.GridVentas.Cell(i, Me.iGyVentaNombreCliente).Text = oCliente.NOMBRE_CLIENTE.ToString
-            Me.GridVentas.Cell(i, Me.iGyVentaFecha).Text = Me.dtFecha.Value.ToString
-            Me.GridVentas.Cell(i, Me.iGyVentaFolio).Text = ""
+            Me.GridVentas.Cell(i, Me.iGyVentaNombreCliente).Text = oCliente.NOMBRE_CLIENTE
+            'Me.GridVentas.Cell(i, Me.iGyVentaFecha).Text = dReader("FECHA").ToString
+            'Me.GridVentas.Cell(i, Me.iGyVentaFolio).Text = dReader("FOLIO_VENTA").ToString
+            'Me.GridVentas.Cell(i, Me.iGyVentaMoneda).Text = dReader("CODIGO_MONEDA_SAT").ToString
             Me.GridVentas.Cell(i, Me.iGyVentaMedioPago).Text = Me.CboMedioDePago.Text
-            Me.GridVentas.Cell(i, Me.iGyVentaBanco).Text = Me.CboBancos.Text
-            Me.GridVentas.Cell(i, Me.iGyVentaTotal).Text = "0"
-            Me.GridVentas.Cell(i, Me.iGyVentaSaldo).Text = "0"
-            Me.GridVentas.Cell(i, Me.iGyVentaTotalDlls).Text = "0"
-            Me.GridVentas.Cell(i, Me.iGyVentaSaldoDlls).Text = "0"
-            Me.GridVentas.Cell(i, Me.iGyVentaPago).Text = Me.txtMonto.Text
-            Me.GridVentas.Cell(i, Me.iGyVentaDiferencia).Text = "0"
-            Me.GridVentas.Cell(i, Me.iGyVentaSeleccion).Text = ""
-            Me.GridVentas.Cell(i, Me.iGyVentaReferencia).Text = Me.TxtReferencia.Text
-            Me.GridVentas.Cell(i, Me.iGyVentaIvaPorPagar).Text = "0"
+            Me.GridVentas.Cell(i, Me.iGyVentaBanco).Text = oBanco.NOMBRE_BANCO  ' Me.CboBancos.Text
+            'Me.GridVentas.Cell(i, Me.iGyVentaTotal).Text = dReader("TOTAL").ToString
+            'Me.GridVentas.Cell(i, Me.iGyVentaSaldo).Text = dReader("SALDO_MXN").ToString
+            'Me.GridVentas.Cell(i, Me.iGyVentaTotalDlls).Text = dReader("TOTAL_DOLARES").ToString
+            'Me.GridVentas.Cell(i, Me.iGyVentaSaldoDlls).Text = dReader("SALDO_DOLARES").ToString
+            Me.GridVentas.Cell(i, Me.iGyVentaPago).Text = valorNumericoD(Me.txtMonto.Text).ToString
+            'Me.GridVentas.Cell(i, Me.iGyVentaPagoPesos).Text = CStr(0)
+            'Me.GridVentas.Cell(i, Me.iGyVentaDiferencia).Text = CStr(0)
+            'Me.GridVentas.Cell(i, Me.iGyVentaSeleccion).Text = Me.CboMedioDePago.SelectedValue.ToString
+            'Me.GridVentas.Cell(i, Me.iGyVentaReferencia).Text = Me.TxtReferencia.Text
+            'Me.GridVentas.Cell(i, Me.iGyVentaIvaPorPagar).Text = dReader("IVA").ToString
+
+            'Me.GridVentas.Cell(i, Me.iGyVentaFechaPago).Text = FormatFechaCorta(dFechaPagoDefault)  'CType(dFechaPagoDefault, String)
+            'Me.GridVentas.Cell(i, Me.iGyVentaVersionCFDI).Text = dReader("VERSION_ESQUEMA_XML").ToString
+            'Me.GridVentas.Cell(i, Me.iGyVentaFormaPago).Text = dReader("CODIGO_METODO_PAGO").ToString
+            'Me.GridVentas.Cell(i, Me.iGyVentaMetodoPago).Text = "" & dReader("CODIGO_METODO_PAGO_EVENTO").ToString
+            'Me.GridVentas.Cell(i, Me.iGyVentaImporteMonedaVenta).Text = "0"
+            'Me.GridVentas.Cell(i, Me.iGyVentaSaldoAnteriorMonedaVenta).Text = "0"
+            'Me.GridVentas.Cell(i, Me.iGyVentaSaldoAnteriorMonedaPago).Text = "0"
+            'Me.GridVentas.Cell(i, Me.iGyVentaEsFacturaElectronica).Text = dReader("ES_FACTURA_ELECTRONICA").ToString
+
 
         Catch ex As Exception
             HandleError(Me.Text, "CargaAnticipo", ex)
@@ -2458,7 +2521,7 @@ Buscar:
             'Me.txtBeneficiario.Text = ""
             Me.txtMonto.Text = ""
             Me.TxtReferencia.Text = ""
-            Me.CkbAnticipo.Checked = False
+            Me.chkAnticipo.Checked = False
             Me.cboCuentaEmisor.DataSource = Nothing
             Me.chkEsBancoExtranjero.Checked = False
             Me.TxtCodigoCliente.Focus()
@@ -2711,6 +2774,8 @@ Buscar:
                         Exit Function
                     End If
 
+                    Me.GridVentas.AutoRedraw = False
+
                     'Eliminar facturas
                     While iRow <= Me.GridVentas.Rows - 1
                         If Me.GridVentas.Cell(iRow, Me.iGyVentaFOLIO_DETALLE).Text.ToUpper = sFolioPago.ToUpper Then
@@ -2728,6 +2793,9 @@ Buscar:
             End With
         Catch ex As Exception
             HandleError(Me.Name, "ExisteFolioPago", ex)
+        Finally
+            Me.GridVentas.AutoRedraw = False
+            Me.GridVentas.Refresh()
         End Try
         Return bResultado
     End Function
@@ -3061,7 +3129,7 @@ Buscar:
                         Me.GridVentas.Selection.DeleteByRow()
                         'e.SuppressKeyPress = True
                     Else
-                        Me.InicializaGrid()
+                        Me.InicializaGridVentas()
                     End If
             End Select
             Me.Totales()
@@ -3210,6 +3278,19 @@ Buscar:
 
         Return bResultado
     End Function
+
+    Private Sub chkPagoNoTimbrable_CheckedChanged(sender As Object, e As EventArgs) Handles chkPagoNoTimbrable.CheckedChanged
+        Select Case Me.chkPagoNoTimbrable.Checked
+            Case True
+                Me.chkAnticipo.Visible = True
+                Me.btnGenerarCFDIS.Visible = False
+                Me.btnVerCFDIS.Visible = False
+            Case False
+                Me.chkAnticipo.Visible = False
+                Me.btnGenerarCFDIS.Visible = True
+                Me.btnVerCFDIS.Visible = True
+        End Select
+    End Sub
 
 #End Region
 

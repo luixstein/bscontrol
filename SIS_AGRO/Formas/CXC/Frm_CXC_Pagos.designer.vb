@@ -87,7 +87,7 @@ Partial Class Frm_CXC_Pagos
         Me.cboFormaPago = New System.Windows.Forms.ComboBox()
         Me.cboMoneda = New System.Windows.Forms.ComboBox()
         Me.lblDisplayFormaPago = New System.Windows.Forms.Label()
-        Me.CkbAnticipo = New System.Windows.Forms.CheckBox()
+        Me.chkAnticipo = New System.Windows.Forms.CheckBox()
         Me.btnAgregarDocumentosClientes = New System.Windows.Forms.Button()
         Me.LblDisplayReferencia = New System.Windows.Forms.Label()
         Me.TxtReferencia = New System.Windows.Forms.TextBox()
@@ -101,12 +101,13 @@ Partial Class Frm_CXC_Pagos
         Me.tssEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssElaboro = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssCancelo = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.tssFechaEmisionCFDI = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gbDocumentosPago = New System.Windows.Forms.GroupBox()
         Me.btnEliminarDocumentoPago = New System.Windows.Forms.Button()
         Me.GridDocumentosPago = New FlexCell.Grid()
         Me.btnVerCFDIS = New System.Windows.Forms.Button()
         Me.btnGenerarCFDIS = New System.Windows.Forms.Button()
-        Me.tssFechaEmisionCFDI = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.chkPagoNoTimbrable = New System.Windows.Forms.CheckBox()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbAgregaDocCliente.SuspendLayout()
@@ -484,7 +485,7 @@ Partial Class Frm_CXC_Pagos
         Me.gbAgregaDocCliente.Controls.Add(Me.cboFormaPago)
         Me.gbAgregaDocCliente.Controls.Add(Me.cboMoneda)
         Me.gbAgregaDocCliente.Controls.Add(Me.lblDisplayFormaPago)
-        Me.gbAgregaDocCliente.Controls.Add(Me.CkbAnticipo)
+        Me.gbAgregaDocCliente.Controls.Add(Me.chkAnticipo)
         Me.gbAgregaDocCliente.Controls.Add(Me.btnAgregarDocumentosClientes)
         Me.gbAgregaDocCliente.Controls.Add(Me.LblDisplayReferencia)
         Me.gbAgregaDocCliente.Controls.Add(Me.TxtReferencia)
@@ -743,16 +744,16 @@ Partial Class Frm_CXC_Pagos
         Me.lblDisplayFormaPago.TabIndex = 327
         Me.lblDisplayFormaPago.Text = "Forma de pago :"
         '
-        'CkbAnticipo
+        'chkAnticipo
         '
-        Me.CkbAnticipo.AutoSize = True
-        Me.CkbAnticipo.Location = New System.Drawing.Point(292, 96)
-        Me.CkbAnticipo.Name = "CkbAnticipo"
-        Me.CkbAnticipo.Size = New System.Drawing.Size(64, 17)
-        Me.CkbAnticipo.TabIndex = 5
-        Me.CkbAnticipo.Text = "Anticipo"
-        Me.CkbAnticipo.UseVisualStyleBackColor = True
-        Me.CkbAnticipo.Visible = False
+        Me.chkAnticipo.AutoSize = True
+        Me.chkAnticipo.Location = New System.Drawing.Point(292, 96)
+        Me.chkAnticipo.Name = "chkAnticipo"
+        Me.chkAnticipo.Size = New System.Drawing.Size(64, 17)
+        Me.chkAnticipo.TabIndex = 5
+        Me.chkAnticipo.Text = "Anticipo"
+        Me.chkAnticipo.UseVisualStyleBackColor = True
+        Me.chkAnticipo.Visible = False
         '
         'btnAgregarDocumentosClientes
         '
@@ -878,6 +879,15 @@ Partial Class Frm_CXC_Pagos
         Me.tssCancelo.Size = New System.Drawing.Size(60, 19)
         Me.tssCancelo.Text = "Canceló :"
         '
+        'tssFechaEmisionCFDI
+        '
+        Me.tssFechaEmisionCFDI.BorderSides = CType((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
+        Me.tssFechaEmisionCFDI.Name = "tssFechaEmisionCFDI"
+        Me.tssFechaEmisionCFDI.Size = New System.Drawing.Size(121, 19)
+        Me.tssFechaEmisionCFDI.Text = "Fecha emisión CFDI :"
+        '
         'gbDocumentosPago
         '
         Me.gbDocumentosPago.Controls.Add(Me.btnEliminarDocumentoPago)
@@ -935,20 +945,22 @@ Partial Class Frm_CXC_Pagos
         Me.btnGenerarCFDIS.Text = "Generar CFDI's"
         Me.btnGenerarCFDIS.UseVisualStyleBackColor = True
         '
-        'tssFechaEmisionCFDI
+        'chkPagoNoTimbrable
         '
-        Me.tssFechaEmisionCFDI.BorderSides = CType((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) _
-            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
-            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
-        Me.tssFechaEmisionCFDI.Name = "tssFechaEmisionCFDI"
-        Me.tssFechaEmisionCFDI.Size = New System.Drawing.Size(121, 19)
-        Me.tssFechaEmisionCFDI.Text = "Fecha emisión CFDI :"
+        Me.chkPagoNoTimbrable.AutoSize = True
+        Me.chkPagoNoTimbrable.Location = New System.Drawing.Point(386, 0)
+        Me.chkPagoNoTimbrable.Name = "chkPagoNoTimbrable"
+        Me.chkPagoNoTimbrable.Size = New System.Drawing.Size(111, 17)
+        Me.chkPagoNoTimbrable.TabIndex = 382
+        Me.chkPagoNoTimbrable.Text = "Pago no timbrable"
+        Me.chkPagoNoTimbrable.UseVisualStyleBackColor = True
         '
         'Frm_CXC_Pagos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1152, 639)
+        Me.Controls.Add(Me.chkPagoNoTimbrable)
         Me.Controls.Add(Me.btnGenerarCFDIS)
         Me.Controls.Add(Me.btnVerCFDIS)
         Me.Controls.Add(Me.gbDocumentosPago)
@@ -1017,7 +1029,7 @@ Partial Class Frm_CXC_Pagos
     Friend WithEvents LblDisplayMedioPago As System.Windows.Forms.Label
     Friend WithEvents CboBancos As System.Windows.Forms.ComboBox
     Friend WithEvents CboMedioDePago As System.Windows.Forms.ComboBox
-    Friend WithEvents CkbAnticipo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkAnticipo As System.Windows.Forms.CheckBox
     Friend WithEvents tsbImprimirPoliza As System.Windows.Forms.ToolStripButton
     Friend WithEvents lblTipoCambio As System.Windows.Forms.Label
     Friend WithEvents txtTipoCambio As System.Windows.Forms.TextBox
@@ -1062,4 +1074,5 @@ Partial Class Frm_CXC_Pagos
     Friend WithEvents chkEsBancoExtranjero As CheckBox
     Friend WithEvents btnGenerarCFDIS As Button
     Friend WithEvents tssFechaEmisionCFDI As ToolStripStatusLabel
+    Friend WithEvents chkPagoNoTimbrable As CheckBox
 End Class
