@@ -57,6 +57,7 @@ Public Class Class_Bancos_CXC
     Private _FECHA_CHEQUE As Date
     Private _CFDIS_GENERADOS As Boolean
     Private _FECHA_EMISION_CFDI As Date
+    Private _ES_PAGO_VENTAS_NO_FISCALES As Boolean
 #End Region
 
 #Region "Campos de sistema"
@@ -430,6 +431,15 @@ Public Class Class_Bancos_CXC
         End Set
     End Property
 
+    Public Property ES_PAGO_VENTAS_NO_FISCALES() As Boolean
+        Get
+            Return Me._ES_PAGO_VENTAS_NO_FISCALES
+        End Get
+        Set(ByVal value As Boolean)
+            Me._ES_PAGO_VENTAS_NO_FISCALES = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedad Nombre de Clase"
@@ -506,6 +516,7 @@ Public Class Class_Bancos_CXC
             sqlParametro = .Parameters.Add("@TOTAL_DOLARES", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_DOLARES
             sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_MONEDA_SAT
             sqlParametro = .Parameters.Add("@FECHA_CHEQUE", SqlDbType.Date) : sqlParametro.Value = Me._FECHA_CHEQUE
+            sqlParametro = .Parameters.Add("@ES_PAGO_VENTAS_NO_FISCALES", SqlDbType.Bit) : sqlParametro.Value = Me._ES_PAGO_VENTAS_NO_FISCALES
 
             Try
                 Me._Conexion.Open()
@@ -528,7 +539,7 @@ Public Class Class_Bancos_CXC
         Dim bResultado As Boolean = False
 
         'VW_BANCOS_GLOBAL_CON_CXC_GLOBAL Where FOLIO_BANCO=
-        Dim cmd As New SqlCommand("SELECT V.*, CD.NOMBRE_FORMATO AS NOMBRE_FORMATO_DOCUMENTO,CB.NOMBRE_FORMATO AS NOMBRE_FORMATO_CHEQUE, S.CODIGO_MODULO " &
+        Dim cmd As New SqlCommand("SELECT V.*, CD.NOMBRE_FORMATO AS NOMBRE_FORMATO_DOCUMENTO,CB.NOMBRE_FORMATO AS NOMBRE_FORMATO_CHEQUE,S.CODIGO_MODULO " &
                                   "FROM VW_BANCOS_GLOBAL_CON_CXC_GLOBAL V " &
                                   "INNER JOIN SIS_CAT_DOCUMENTOS CD ON (V.BAN_CODIGO_DOCUMENTO=CD.CODIGO_DOCUMENTO) " &
                                   "INNER JOIN SIS_TIPOS_DOCUMENTOS S on(CD.CODIGO_TIPO_DOCUMENTO=S.CODIGO_TIPO_DOCUMENTO) " &
@@ -583,8 +594,8 @@ Public Class Class_Bancos_CXC
                     End If
 
                     Me._CFDIS_GENERADOS = CBool(dReader("CFDIS_GENERADOS"))
-
                     Me._FECHA_EMISION_CFDI = CType(dReader("BAN_FECHA_EMISION_CFDI"), Date)
+                    Me._ES_PAGO_VENTAS_NO_FISCALES = CBool(dReader("BAN_ES_PAGO_VENTAS_NO_FISCALES"))
 
                     bResultado = True
 
@@ -635,13 +646,13 @@ Public Class Class_Bancos_CXC
         Dim sSQL As String
 
         'CargaFacturasPagadas()---FOLIO_REFERENCIA_USUARIO no va
-        sSQL = "SELECT D.FOLIO_DETALLE,D.CODIGO_CLIENTE,C.NOMBRE_CLIENTE,D.FECHA,D.FOLIO_REFERENCIA,V.CODIGO_MONEDA_SAT,D.NOMBRE_MEDIO_PAGO,D.NOMBRE_BANCO,TOTAL_VENTA,SALDO_VENTA, " &
+        sSQL = "SELECT D.FOLIO_DETALLE,D.CODIGO_CLIENTE,C.NOMBRE_CLIENTE,D.FECHA,CASE WHEN D.ESTATUS_CXC='G' THEN 'ANTICIPO' ELSE D.FOLIO_REFERENCIA END FOLIO_REFERENCIA,V.CODIGO_MONEDA_SAT,D.NOMBRE_MEDIO_PAGO,D.NOMBRE_BANCO,TOTAL_VENTA,SALDO_VENTA, " &
                "TOTAL_VENTA_DOLARES,SALDO_VENTA_DOLARES,IMPORTE_CAPTURADO PAGADO,TOTAL_DETALLE PAGADO_PESOS,0 SELECCION,D.FOLIO_REFERENCIA_USUARIO,D.FECHA_PAGO,0 IVAXPAGAR,0 DIFERENCIA, " &
                "V.VERSION_ESQUEMA_XML,V.CODIGO_METODO_PAGO,V.CODIGO_METODO_PAGO_EVENTO, " &
                "D.IMPORTE_MONEDA_VENTA,D.SALDO_ANTERIOR_MONEDA_VENTA,D.SALDO_ANTERIOR_MONEDA_PAGO,V.ES_FACTURA_ELECTRONICA " &
                "FROM VW_BANCOS_CXC_DETALLE D " &
                "INNER JOIN CAT_CLIENTES C ON (D.CODIGO_CLIENTE=C.CODIGO_CLIENTE) " &
-               "INNER JOIN VENTA_GLOBAL V ON(D.FOLIO_REFERENCIA=V.FOLIO_VENTA) " &
+               "LEFT JOIN VENTA_GLOBAL V ON(D.FOLIO_REFERENCIA=V.FOLIO_VENTA) " &
                "WHERE D.FOLIO_BANCO='" & Me._FOLIO_BANCO & "' ORDER BY V.FECHA"
 
         '"TOTAL_VENTA_DOLARES,SALDO_VENTA_DOLARES,CASE WHEN(TOTAL_DETALLE_DOLARES>0) THEN TOTAL_DETALLE_DOLARES ELSE TOTAL_DETALLE END PAGADO,0 PAGADO_PESOS,0 SELECCION,D.FOLIO_REFERENCIA_USUARIO,D.FECHA_PAGO,0 IVAXPAGAR,0 DIFERENCIA, " &

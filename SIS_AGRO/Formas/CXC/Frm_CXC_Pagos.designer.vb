@@ -107,7 +107,7 @@ Partial Class Frm_CXC_Pagos
         Me.GridDocumentosPago = New FlexCell.Grid()
         Me.btnVerCFDIS = New System.Windows.Forms.Button()
         Me.btnGenerarCFDIS = New System.Windows.Forms.Button()
-        Me.chkPagoNoTimbrable = New System.Windows.Forms.CheckBox()
+        Me.chkVentasNoFiscales = New System.Windows.Forms.CheckBox()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbAgregaDocCliente.SuspendLayout()
@@ -168,6 +168,7 @@ Partial Class Frm_CXC_Pagos
         '
         'gbGlobal
         '
+        Me.gbGlobal.Controls.Add(Me.chkVentasNoFiscales)
         Me.gbGlobal.Controls.Add(Me.cmdPruebaPagoCFDI)
         Me.gbGlobal.Controls.Add(Me.TxtTotal)
         Me.gbGlobal.Controls.Add(Me.Label1)
@@ -194,7 +195,7 @@ Partial Class Frm_CXC_Pagos
         Me.gbGlobal.Controls.Add(Me.TxtCuentaBancaria)
         Me.gbGlobal.Location = New System.Drawing.Point(8, 28)
         Me.gbGlobal.Name = "gbGlobal"
-        Me.gbGlobal.Size = New System.Drawing.Size(1034, 133)
+        Me.gbGlobal.Size = New System.Drawing.Size(1034, 152)
         Me.gbGlobal.TabIndex = 0
         Me.gbGlobal.TabStop = False
         Me.gbGlobal.Text = "Datos"
@@ -235,7 +236,7 @@ Partial Class Frm_CXC_Pagos
         Me.lstClientesAgregados.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lstClientesAgregados.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.col_CodigoSocio, Me.col_NombreSocio, Me.col_Total})
         Me.lstClientesAgregados.GridLines = True
-        Me.lstClientesAgregados.Location = New System.Drawing.Point(634, 12)
+        Me.lstClientesAgregados.Location = New System.Drawing.Point(634, 21)
         Me.lstClientesAgregados.Name = "lstClientesAgregados"
         Me.lstClientesAgregados.Size = New System.Drawing.Size(371, 78)
         Me.lstClientesAgregados.TabIndex = 375
@@ -493,7 +494,7 @@ Partial Class Frm_CXC_Pagos
         Me.gbAgregaDocCliente.Controls.Add(Me.LblCliente)
         Me.gbAgregaDocCliente.Controls.Add(Me.LblDisplayCliente)
         Me.gbAgregaDocCliente.Controls.Add(Me.TxtCodigoCliente)
-        Me.gbAgregaDocCliente.Location = New System.Drawing.Point(8, 167)
+        Me.gbAgregaDocCliente.Location = New System.Drawing.Point(8, 188)
         Me.gbAgregaDocCliente.Name = "gbAgregaDocCliente"
         Me.gbAgregaDocCliente.Size = New System.Drawing.Size(1034, 140)
         Me.gbAgregaDocCliente.TabIndex = 1
@@ -818,9 +819,9 @@ Partial Class Frm_CXC_Pagos
         'gbVentas
         '
         Me.gbVentas.Controls.Add(Me.GridVentas)
-        Me.gbVentas.Location = New System.Drawing.Point(8, 409)
+        Me.gbVentas.Location = New System.Drawing.Point(8, 430)
         Me.gbVentas.Name = "gbVentas"
-        Me.gbVentas.Size = New System.Drawing.Size(1138, 203)
+        Me.gbVentas.Size = New System.Drawing.Size(1138, 182)
         Me.gbVentas.TabIndex = 2
         Me.gbVentas.TabStop = False
         Me.gbVentas.Text = "Ventas"
@@ -838,8 +839,8 @@ Partial Class Frm_CXC_Pagos
         Me.GridVentas.Location = New System.Drawing.Point(7, 19)
         Me.GridVentas.LockButton = True
         Me.GridVentas.Name = "GridVentas"
-        Me.GridVentas.Rows = 8
-        Me.GridVentas.Size = New System.Drawing.Size(1124, 178)
+        Me.GridVentas.Rows = 7
+        Me.GridVentas.Size = New System.Drawing.Size(1124, 157)
         Me.GridVentas.TabIndex = 0
         Me.GridVentas.UncheckedImage = CType(resources.GetObject("GridVentas.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -892,7 +893,7 @@ Partial Class Frm_CXC_Pagos
         '
         Me.gbDocumentosPago.Controls.Add(Me.btnEliminarDocumentoPago)
         Me.gbDocumentosPago.Controls.Add(Me.GridDocumentosPago)
-        Me.gbDocumentosPago.Location = New System.Drawing.Point(8, 313)
+        Me.gbDocumentosPago.Location = New System.Drawing.Point(8, 334)
         Me.gbDocumentosPago.Name = "gbDocumentosPago"
         Me.gbDocumentosPago.Size = New System.Drawing.Size(1034, 90)
         Me.gbDocumentosPago.TabIndex = 1
@@ -945,22 +946,21 @@ Partial Class Frm_CXC_Pagos
         Me.btnGenerarCFDIS.Text = "Generar CFDI's"
         Me.btnGenerarCFDIS.UseVisualStyleBackColor = True
         '
-        'chkPagoNoTimbrable
+        'chkVentasNoFiscales
         '
-        Me.chkPagoNoTimbrable.AutoSize = True
-        Me.chkPagoNoTimbrable.Location = New System.Drawing.Point(386, 0)
-        Me.chkPagoNoTimbrable.Name = "chkPagoNoTimbrable"
-        Me.chkPagoNoTimbrable.Size = New System.Drawing.Size(111, 17)
-        Me.chkPagoNoTimbrable.TabIndex = 382
-        Me.chkPagoNoTimbrable.Text = "Pago no timbrable"
-        Me.chkPagoNoTimbrable.UseVisualStyleBackColor = True
+        Me.chkVentasNoFiscales.AutoSize = True
+        Me.chkVentasNoFiscales.Location = New System.Drawing.Point(103, 129)
+        Me.chkVentasNoFiscales.Name = "chkVentasNoFiscales"
+        Me.chkVentasNoFiscales.Size = New System.Drawing.Size(112, 17)
+        Me.chkVentasNoFiscales.TabIndex = 382
+        Me.chkVentasNoFiscales.Text = "Ventas no fiscales"
+        Me.chkVentasNoFiscales.UseVisualStyleBackColor = True
         '
         'Frm_CXC_Pagos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1152, 639)
-        Me.Controls.Add(Me.chkPagoNoTimbrable)
         Me.Controls.Add(Me.btnGenerarCFDIS)
         Me.Controls.Add(Me.btnVerCFDIS)
         Me.Controls.Add(Me.gbDocumentosPago)
@@ -1074,5 +1074,5 @@ Partial Class Frm_CXC_Pagos
     Friend WithEvents chkEsBancoExtranjero As CheckBox
     Friend WithEvents btnGenerarCFDIS As Button
     Friend WithEvents tssFechaEmisionCFDI As ToolStripStatusLabel
-    Friend WithEvents chkPagoNoTimbrable As CheckBox
+    Friend WithEvents chkVentasNoFiscales As CheckBox
 End Class
