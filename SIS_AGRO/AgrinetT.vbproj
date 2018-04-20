@@ -161,6 +161,7 @@
     <Compile Include="Clases\Catalogos\Class_CatClientesCuentasBancarias.vb" />
     <Compile Include="Clases\Catalogos\Class_CatFormulas.vb" />
     <Compile Include="Clases\Catalogos\Class_CatFormulas_Detalle.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatProductos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatPropietarios.vb" />
     <Compile Include="Clases\Catalogos\Class_CatBancos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatCajasTransportes.vb" />
@@ -388,6 +389,12 @@
       <DependentUpon>Catalogo_Formulas.vb</DependentUpon>
     </Compile>
     <Compile Include="Formas\Catalogos\Catalogo_Formulas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Productos.Designer.vb">
+      <DependentUpon>Catalogo_Productos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Productos.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Catalogos\Catalogo_Propietarios.Designer.vb">
@@ -1624,6 +1631,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_Formulas.resx">
       <DependentUpon>Catalogo_Formulas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Productos.resx">
+      <DependentUpon>Catalogo_Productos.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_Propietarios.resx">
       <DependentUpon>Catalogo_Propietarios.vb</DependentUpon>
