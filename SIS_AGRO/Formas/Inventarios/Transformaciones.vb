@@ -350,7 +350,7 @@ BuscarCuentas:
 
     Private Function GrabaEntradaProductoFinal() As Boolean
         Dim bResultado As Boolean = False
-        Dim folioEntrada As String, codigoProductoFinal As String
+        Dim folioEntrada As String, codigoProductoFinal As String = ""
         Me.oInventarios = New Class_Inventarios_Global
 
         Try

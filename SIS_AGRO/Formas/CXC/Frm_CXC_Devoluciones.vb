@@ -1138,7 +1138,7 @@ Sigue:
 
     Private Sub GestionaGridSeries(ByVal e As System.Windows.Forms.KeyEventArgs)
         Dim sLote As String = "", sCodigoArticulo As String = ""
-        Dim oSerie As Class_Inventarios_Lotes_Series
+        'Dim oSerie As Class_Inventarios_Lotes_Series
         Try
             With Me.GridSeries
                 Dim Renglon As Integer = .Selection.FirstRow
