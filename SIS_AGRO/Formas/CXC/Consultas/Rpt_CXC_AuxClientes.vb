@@ -38,7 +38,7 @@ Public Class Rpt_CXC_AuxClientes
         txtNoBeep(e)
     End Sub
 
-    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoPropietario.KeyPress
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
@@ -68,6 +68,31 @@ Buscar:
         End Select
     End Sub
 
+    Private Sub txtCodigoPropietario_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoPropietario.KeyDown
+        Dim sText As String
+        Dim oPropietarios As New Class_CatPropietarios
+        Select Case e.KeyCode
+            Case Keys.F6
+Buscar:
+                sText = oPropietarios.BusquedaVisual_PorDescripcion
+                If txtLEN(sText) = True Then Me.TxtCodigoPropietario.Text = sText
+            Case Keys.Enter
+                If txtLEN(Me.TxtCodigoPropietario.Text) = False Then
+                    Me.LblNombrePropietario.Text = ""
+                    Me.DtFechaDesde.Focus()
+                    Exit Sub
+                End If
+
+                oPropietarios = New Class_CatPropietarios(Me.TxtCodigoPropietario.Text)
+                If oPropietarios.Existe = False Then
+                    Me.LblNombrePropietario.Text = "" : GoTo Buscar : Exit Sub
+                End If
+
+                Me.LblNombrePropietario.Text = oPropietarios.NOMBRE_PROPIETARIO
+                Me.DtFechaDesde.Focus()
+        End Select
+    End Sub
+
     Private Sub dpFechaInicio_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles DtFechaDesde.KeyDown
         If e.KeyCode = Keys.Return Then
             Me.DtFechaHasta.Focus()
@@ -86,6 +111,16 @@ Buscar:
         End If
     End Sub
 
+    Private Sub rbtAnalisis_CheckedChanged(sender As Object, e As EventArgs) Handles rbtAnalisis.CheckedChanged
+        If Me.rbtAnalisis.Checked = True Then
+            Me.TxtCodigoPropietario.Enabled = True
+        Else
+            Me.TxtCodigoPropietario.Enabled = False
+            Me.TxtCodigoPropietario.Text = ""
+            Me.LblNombrePropietario.Text = ""
+        End If
+    End Sub
+
 #End Region
 
 #Region "Métodos y procedimientos"
@@ -96,6 +131,7 @@ Buscar:
         Me.CboDocumentos.SelectedValue = "T"
         Me.DtFechaDesde.Value = CDate(Format(Date.Now, "01-MM-yyyy"))
         Me.DtFechaHasta.Value = Date.Now
+        Me.TxtCodigoPropietario.Enabled = False
     End Sub
 
     Private Sub DesplegarDocumentos()
@@ -117,14 +153,25 @@ Buscar:
         Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
         Dim FormatoReporte As String = ""
+        Dim oPropietarios As Class_CatPropietarios
         Try
 
             oClientes = New Class_CatClientes(Me.txtCodigoCliente.Text)
-            If Me.oClientes.Existe = False Then
+            If Me.oClientes.Existe = False And txtLEN(Me.TxtCodigoPropietario.Text) = False Then
                 MsgBox("El código de cliente que intenta buscar no existe o esta dado de Baja, favor de intentar con otro código.", MsgBoxStyle.Critical, "Validación de Cliente")
                 Me.lblNombreCliente.Text = ""
                 Me.txtCodigoCliente.Focus()
                 Exit Sub
+            End If
+
+            If txtLEN(Me.TxtCodigoPropietario.Text) = True Then
+                oPropietarios = New Class_CatPropietarios(Me.TxtCodigoPropietario.Text)
+                If oPropietarios.Existe = False Then
+                    MsgBox("El código de propietario que intenta buscar no existe o esta dado de Baja, favor de intentar con otro código.", MsgBoxStyle.Critical, "Validación de Propietario")
+                    Me.LblNombrePropietario.Text = ""
+                    Me.TxtCodigoPropietario.Focus()
+                    Exit Sub
+                End If
             End If
 
             If Me.ValidarPeriodo = False Then
@@ -149,6 +196,9 @@ Buscar:
             Rpt.SetParameterValue("@FECHA1", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
             Rpt.SetParameterValue("@FECHA2", "" & Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
             Rpt.SetParameterValue("@CODIGO_DOCUMENTO", "" & Me.CboDocumentos.SelectedValue.ToString)
+            If Me.rbtAnalisis.Checked = True Then
+                Rpt.SetParameterValue("@CODIGO_PROPIETARIO", IIf(txtLEN(Me.TxtCodigoPropietario.Text) = True, CInt(Me.TxtCodigoPropietario.Text), 0))
+            End If
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
@@ -174,4 +224,5 @@ Buscar:
         ValidarPeriodo = True
     End Function
 #End Region
+
 End Class

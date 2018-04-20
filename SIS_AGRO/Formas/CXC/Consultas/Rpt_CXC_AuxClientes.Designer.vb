@@ -24,6 +24,11 @@ Partial Class Rpt_CXC_AuxClientes
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Rpt_CXC_AuxClientes))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.LblNombrePropietario = New System.Windows.Forms.Label()
+        Me.LblPropietario = New System.Windows.Forms.Label()
+        Me.TxtCodigoPropietario = New System.Windows.Forms.TextBox()
+        Me.rbtAnalisis = New System.Windows.Forms.RadioButton()
+        Me.rbtAuxiliar = New System.Windows.Forms.RadioButton()
         Me.LblDisplayFechaFinal = New System.Windows.Forms.Label()
         Me.lblDisplayFechaInicio = New System.Windows.Forms.Label()
         Me.DtFechaHasta = New System.Windows.Forms.DateTimePicker()
@@ -36,14 +41,15 @@ Partial Class Rpt_CXC_AuxClientes
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
-        Me.rbtAuxiliar = New System.Windows.Forms.RadioButton()
-        Me.rbtAnalisis = New System.Windows.Forms.RadioButton()
         Me.GroupBox1.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.LblNombrePropietario)
+        Me.GroupBox1.Controls.Add(Me.LblPropietario)
+        Me.GroupBox1.Controls.Add(Me.TxtCodigoPropietario)
         Me.GroupBox1.Controls.Add(Me.rbtAnalisis)
         Me.GroupBox1.Controls.Add(Me.rbtAuxiliar)
         Me.GroupBox1.Controls.Add(Me.LblDisplayFechaFinal)
@@ -56,18 +62,70 @@ Partial Class Rpt_CXC_AuxClientes
         Me.GroupBox1.Controls.Add(Me.CboDocumentos)
         Me.GroupBox1.Controls.Add(Me.lblNombreCliente)
         Me.GroupBox1.Location = New System.Drawing.Point(16, 34)
-        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
-        Me.GroupBox1.Size = New System.Drawing.Size(531, 166)
+        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
+        Me.GroupBox1.Size = New System.Drawing.Size(531, 203)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Filtros"
         '
+        'LblNombrePropietario
+        '
+        Me.LblNombrePropietario.AutoSize = True
+        Me.LblNombrePropietario.Location = New System.Drawing.Point(191, 64)
+        Me.LblNombrePropietario.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNombrePropietario.Name = "LblNombrePropietario"
+        Me.LblNombrePropietario.Size = New System.Drawing.Size(12, 17)
+        Me.LblNombrePropietario.TabIndex = 275
+        Me.LblNombrePropietario.Text = "."
+        '
+        'LblPropietario
+        '
+        Me.LblPropietario.AutoSize = True
+        Me.LblPropietario.Location = New System.Drawing.Point(5, 64)
+        Me.LblPropietario.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblPropietario.Name = "LblPropietario"
+        Me.LblPropietario.Size = New System.Drawing.Size(85, 17)
+        Me.LblPropietario.TabIndex = 274
+        Me.LblPropietario.Text = "Propietario :"
+        '
+        'TxtCodigoPropietario
+        '
+        Me.TxtCodigoPropietario.Location = New System.Drawing.Point(117, 61)
+        Me.TxtCodigoPropietario.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtCodigoPropietario.MaxLength = 15
+        Me.TxtCodigoPropietario.Name = "TxtCodigoPropietario"
+        Me.TxtCodigoPropietario.Size = New System.Drawing.Size(64, 22)
+        Me.TxtCodigoPropietario.TabIndex = 273
+        Me.TxtCodigoPropietario.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'rbtAnalisis
+        '
+        Me.rbtAnalisis.AutoSize = True
+        Me.rbtAnalisis.Location = New System.Drawing.Point(388, 133)
+        Me.rbtAnalisis.Name = "rbtAnalisis"
+        Me.rbtAnalisis.Size = New System.Drawing.Size(122, 21)
+        Me.rbtAnalisis.TabIndex = 272
+        Me.rbtAnalisis.Text = "Analisis saldos"
+        Me.rbtAnalisis.UseVisualStyleBackColor = True
+        '
+        'rbtAuxiliar
+        '
+        Me.rbtAuxiliar.AutoSize = True
+        Me.rbtAuxiliar.Checked = True
+        Me.rbtAuxiliar.Location = New System.Drawing.Point(388, 92)
+        Me.rbtAuxiliar.Name = "rbtAuxiliar"
+        Me.rbtAuxiliar.Size = New System.Drawing.Size(119, 21)
+        Me.rbtAuxiliar.TabIndex = 271
+        Me.rbtAuxiliar.TabStop = True
+        Me.rbtAuxiliar.Text = "Auxiliar saldos"
+        Me.rbtAuxiliar.UseVisualStyleBackColor = True
+        '
         'LblDisplayFechaFinal
         '
         Me.LblDisplayFechaFinal.AutoSize = True
-        Me.LblDisplayFechaFinal.Location = New System.Drawing.Point(5, 105)
+        Me.LblDisplayFechaFinal.Location = New System.Drawing.Point(5, 133)
         Me.LblDisplayFechaFinal.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayFechaFinal.Name = "LblDisplayFechaFinal"
         Me.LblDisplayFechaFinal.Size = New System.Drawing.Size(53, 17)
@@ -77,7 +135,7 @@ Partial Class Rpt_CXC_AuxClientes
         'lblDisplayFechaInicio
         '
         Me.lblDisplayFechaInicio.AutoSize = True
-        Me.lblDisplayFechaInicio.Location = New System.Drawing.Point(5, 69)
+        Me.lblDisplayFechaInicio.Location = New System.Drawing.Point(5, 97)
         Me.lblDisplayFechaInicio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayFechaInicio.Name = "lblDisplayFechaInicio"
         Me.lblDisplayFechaInicio.Size = New System.Drawing.Size(57, 17)
@@ -88,8 +146,8 @@ Partial Class Rpt_CXC_AuxClientes
         '
         Me.DtFechaHasta.CustomFormat = "dd-MMM-yyyy"
         Me.DtFechaHasta.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.DtFechaHasta.Location = New System.Drawing.Point(117, 100)
-        Me.DtFechaHasta.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.DtFechaHasta.Location = New System.Drawing.Point(117, 128)
+        Me.DtFechaHasta.Margin = New System.Windows.Forms.Padding(4)
         Me.DtFechaHasta.Name = "DtFechaHasta"
         Me.DtFechaHasta.Size = New System.Drawing.Size(164, 22)
         Me.DtFechaHasta.TabIndex = 2
@@ -98,8 +156,8 @@ Partial Class Rpt_CXC_AuxClientes
         '
         Me.DtFechaDesde.CustomFormat = "dd-MMM-yyyy"
         Me.DtFechaDesde.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.DtFechaDesde.Location = New System.Drawing.Point(117, 64)
-        Me.DtFechaDesde.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.DtFechaDesde.Location = New System.Drawing.Point(117, 92)
+        Me.DtFechaDesde.Margin = New System.Windows.Forms.Padding(4)
         Me.DtFechaDesde.Name = "DtFechaDesde"
         Me.DtFechaDesde.Size = New System.Drawing.Size(164, 22)
         Me.DtFechaDesde.TabIndex = 1
@@ -117,7 +175,7 @@ Partial Class Rpt_CXC_AuxClientes
         'LblDisplayDocumento
         '
         Me.LblDisplayDocumento.AutoSize = True
-        Me.LblDisplayDocumento.Location = New System.Drawing.Point(5, 139)
+        Me.LblDisplayDocumento.Location = New System.Drawing.Point(5, 167)
         Me.LblDisplayDocumento.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayDocumento.Name = "LblDisplayDocumento"
         Me.LblDisplayDocumento.Size = New System.Drawing.Size(95, 17)
@@ -127,7 +185,7 @@ Partial Class Rpt_CXC_AuxClientes
         'txtCodigoCliente
         '
         Me.txtCodigoCliente.Location = New System.Drawing.Point(117, 28)
-        Me.txtCodigoCliente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCodigoCliente.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCodigoCliente.MaxLength = 15
         Me.txtCodigoCliente.Name = "txtCodigoCliente"
         Me.txtCodigoCliente.Size = New System.Drawing.Size(64, 22)
@@ -138,8 +196,8 @@ Partial Class Rpt_CXC_AuxClientes
         '
         Me.CboDocumentos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboDocumentos.FormattingEnabled = True
-        Me.CboDocumentos.Location = New System.Drawing.Point(117, 134)
-        Me.CboDocumentos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboDocumentos.Location = New System.Drawing.Point(117, 162)
+        Me.CboDocumentos.Margin = New System.Windows.Forms.Padding(4)
         Me.CboDocumentos.MaxLength = 1
         Me.CboDocumentos.Name = "CboDocumentos"
         Me.CboDocumentos.Size = New System.Drawing.Size(176, 24)
@@ -181,38 +239,16 @@ Partial Class Rpt_CXC_AuxClientes
         Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
         Me.tsbSalir.Text = "&Salir"
         '
-        'rbtAuxiliar
-        '
-        Me.rbtAuxiliar.AutoSize = True
-        Me.rbtAuxiliar.Checked = True
-        Me.rbtAuxiliar.Location = New System.Drawing.Point(338, 28)
-        Me.rbtAuxiliar.Name = "rbtAuxiliar"
-        Me.rbtAuxiliar.Size = New System.Drawing.Size(119, 21)
-        Me.rbtAuxiliar.TabIndex = 271
-        Me.rbtAuxiliar.TabStop = True
-        Me.rbtAuxiliar.Text = "Auxiliar saldos"
-        Me.rbtAuxiliar.UseVisualStyleBackColor = True
-        '
-        'rbtAnalisis
-        '
-        Me.rbtAnalisis.AutoSize = True
-        Me.rbtAnalisis.Location = New System.Drawing.Point(338, 69)
-        Me.rbtAnalisis.Name = "rbtAnalisis"
-        Me.rbtAnalisis.Size = New System.Drawing.Size(122, 21)
-        Me.rbtAnalisis.TabIndex = 272
-        Me.rbtAnalisis.Text = "Analisis saldos"
-        Me.rbtAnalisis.UseVisualStyleBackColor = True
-        '
         'Rpt_CXC_AuxClientes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(557, 207)
+        Me.ClientSize = New System.Drawing.Size(557, 246)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.GroupBox1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Rpt_CXC_AuxClientes"
         Me.Text = "Auxiliar de clientes"
@@ -239,4 +275,7 @@ Partial Class Rpt_CXC_AuxClientes
     Friend WithEvents tsbSalir As System.Windows.Forms.ToolStripButton
     Friend WithEvents rbtAnalisis As System.Windows.Forms.RadioButton
     Friend WithEvents rbtAuxiliar As System.Windows.Forms.RadioButton
+    Friend WithEvents LblNombrePropietario As System.Windows.Forms.Label
+    Friend WithEvents LblPropietario As System.Windows.Forms.Label
+    Friend WithEvents TxtCodigoPropietario As System.Windows.Forms.TextBox
 End Class
