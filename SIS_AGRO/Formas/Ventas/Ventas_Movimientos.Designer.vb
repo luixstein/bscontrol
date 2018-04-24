@@ -128,6 +128,7 @@ Partial Class Ventas_Movimientos
         Me.GridCFDIsRelacionados = New FlexCell.Grid()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cboTipoRelacionCFDI = New System.Windows.Forms.ComboBox()
+        Me.tsbSubirXML = New System.Windows.Forms.ToolStripButton()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -179,7 +180,7 @@ Partial Class Ventas_Movimientos
         'tsMenu
         '
         Me.tsMenu.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbImprimir, Me.tsbCancelar, Me.tsbCotizacionRemision, Me.tsbCotizacionFactura, Me.tsbRemisionVenta, Me.tsbCancelarTimbre, Me.tsbTimbrar, Me.tsbRecuperarXMLPDF, Me.tsbEnviarCorreo, Me.tsbSalir})
+        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbImprimir, Me.tsbCancelar, Me.tsbCotizacionRemision, Me.tsbCotizacionFactura, Me.tsbRemisionVenta, Me.tsbCancelarTimbre, Me.tsbTimbrar, Me.tsbRecuperarXMLPDF, Me.tsbEnviarCorreo, Me.tsbSubirXML, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(1004, 27)
@@ -1230,6 +1231,15 @@ Partial Class Ventas_Movimientos
         Me.cboTipoRelacionCFDI.Size = New System.Drawing.Size(301, 21)
         Me.cboTipoRelacionCFDI.TabIndex = 383
         '
+        'tsbSubirXML
+        '
+        Me.tsbSubirXML.Image = Global.BsControl.My.Resources.Resources._782
+        Me.tsbSubirXML.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbSubirXML.Name = "tsbSubirXML"
+        Me.tsbSubirXML.Size = New System.Drawing.Size(85, 24)
+        Me.tsbSubirXML.Text = "Subir XML"
+        Me.tsbSubirXML.Visible = False
+        '
         'Ventas_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1372,4 +1382,5 @@ Partial Class Ventas_Movimientos
     Friend WithEvents GridCFDIsRelacionados As FlexCell.Grid
     Friend WithEvents lblDisplayDescuento As Label
     Friend WithEvents lblDescuento As Label
+    Friend WithEvents tsbSubirXML As ToolStripButton
 End Class

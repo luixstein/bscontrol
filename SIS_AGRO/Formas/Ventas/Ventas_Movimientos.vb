@@ -145,17 +145,15 @@ Public Class Ventas_Movimientos
     End Sub
 
     Private Sub tsbCancelar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbCancelar.Click
-        If Me.oDocumento.AFECTA_CXC = True Then 'El Documento tiene que estar no cancelado para llegar aqui
-            If Me.oVenta.ESTATUS_VENTA = "A" Then
-                If Me.CancelarVenta = True Then  'Se cancelo el documento correctamente = true
-                    If Me.oVenta.VERSION_ESQUEMA_XML > "2.2" And oDocumento.TIMBRA_DOCUMENTO = True Then 'Si es CFDi
-                        Me.oVenta.CancelarTimbre()
-                    End If
-                    MsgBox("Movimiento de venta cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+        If Me.oVenta.ESTATUS_VENTA = "A" Or Me.oVenta.ESTATUS_VENTA = "G" Then
+            If Me.CancelarVenta = True Then  'Se cancelo el documento correctamente = true
+                If Me.oVenta.VERSION_ESQUEMA_XML > "2.2" And oDocumento.TIMBRA_DOCUMENTO = True Then 'Si es CFDi
+                    Me.oVenta.CancelarTimbre()
                 End If
-                Me.Consultar()
-                Me.GestionaCambioEstado()
+                MsgBox("Movimiento de venta cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
             End If
+            Me.Consultar()
+            Me.GestionaCambioEstado()
         End If
     End Sub
 
@@ -259,6 +257,10 @@ Public Class Ventas_Movimientos
 
     Private Sub btnSeries_Click(sender As Object, e As EventArgs) Handles btnSeries.Click
         Me.PrepararSeries()
+    End Sub
+
+    Private Sub tsbSubirXML_Click(sender As Object, e As EventArgs) Handles tsbSubirXML.Click
+        '
     End Sub
 #End Region
 
@@ -1428,6 +1430,17 @@ Buscar:
                 sMetodoPago = ""
                 sUsoCFDI = ""
             Else
+
+                If Me.cboMetodoPago.SelectedIndex = -1 Then
+                    MsgBox("Seleccione un método de pago.", vbExclamation, sProcedure)
+                    Return False
+                End If
+
+                If Me.cboUsoCFDI.SelectedIndex = -1 Then
+                    MsgBox("Seleccione un uso del CFDI.", vbExclamation, sProcedure)
+                    Return False
+                End If
+
                 sMetodoPago = Me.cboMetodoPago.SelectedValue.ToString
                 sUsoCFDI = Me.cboUsoCFDI.SelectedValue.ToString
             End If
@@ -1495,7 +1508,8 @@ Buscar:
                 .IMPUESTO_PORCENTAJE = Plaza.Impuesto_Porcentaje
                 'If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.AFECTA_CONTABILIDAD = True And oDocumento.AFECTA_INVENTARIOS = True Then
                 'If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.AFECTA_CONTABILIDAD = True And oDocumento.AFECTA_INVENTARIOS = True And oDocumento.TIMBRA_DOCUMENTO = True Then
-                If Empresa_Sistema.FELECTRONICA_ACTIVA = True And ((oDocumento.AFECTA_CONTABILIDAD = True And oDocumento.AFECTA_INVENTARIOS = True) Or Me._EsPorEmbarqueExtranjero = True) Then
+                'If Empresa_Sistema.FELECTRONICA_ACTIVA = True And ((oDocumento.AFECTA_CONTABILIDAD = True And oDocumento.AFECTA_INVENTARIOS = True) Or Me._EsPorEmbarqueExtranjero = True) Then
+                If Empresa_Sistema.FELECTRONICA_ACTIVA = True And (oDocumento.TIMBRA_DOCUMENTO = True Or Me._EsPorEmbarqueExtranjero = True) Then
                     .ES_FACTURA_ELECTRONICA = "1"
                 Else
                     .ES_FACTURA_ELECTRONICA = "0"
@@ -1729,6 +1743,7 @@ Buscar:
     'End Function
 
     Private Function CancelarVenta() As Boolean
+        Const sProcedure As String = "CancelarVenta"
         Dim bResultado As Boolean = False
         Dim oFirmaElectronica = New UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo
         Dim oUtileriasCancela As New Class_UtileriasFirmaElectronicaCancelacion
@@ -1740,12 +1755,19 @@ Buscar:
             Return False
         End If
 
-        If MsgBox("Deseas cancelar el movimiento de " & Me.CboDocumento.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "CancelarVenta") = MsgBoxResult.No Then
-            Return False
+        If Me.oDocumento.AFECTA_INVENTARIOS = True Then
+            If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
+                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+        Else
+            If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString) = False Then
+                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
         End If
 
-        If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
-            MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Exclamation, Me.Text)
+        If MsgBox("Deseas cancelar el movimiento de " & Me.CboDocumento.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, sProcedure) = MsgBoxResult.No Then
             Return False
         End If
 
@@ -1761,7 +1783,7 @@ Buscar:
             If oUtileriasCancela.CANCELA_DIRECTO = True Then
                 Me.oVenta.FECHA_CANCELACION = Date.Now
 
-                sConceptoCancelacion = InputBox("Ingrese el concepto de cancelación :", "Concepto de cancelación")
+                sConceptoCancelacion = InputBox("Ingrese el concepto de cancelación :", sProcedure)
                 oVenta.CONCEPTO_CANCELACION = sConceptoCancelacion
 
                 GoTo CANCELAR
@@ -1783,16 +1805,16 @@ Buscar:
 
                 'si no se autorizo
                 If oUtileriasCancela.CANCELACION_AUTORIZO = False Then
-                    MsgBox("No se autorizó la cancelación de movimiento.", MsgBoxStyle.Exclamation, Me.Text)
+                    MsgBox("No se autorizó la cancelación de movimiento.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
 
                 If oUtileriasCancela.GestionaCancelacionConInterfaz() = False Then
-                    MsgBox("Error al gestionar la cancelacion con interfaz", MsgBoxStyle.Information, Me.Text)
+                    MsgBox("Error al gestionar la cancelacion con interfaz", MsgBoxStyle.Information, sProcedure)
                     Return False
                 Else
                     If oUtileriasCancela.ES_FECHA_CANCELACION_VALIDA = "0" Then
-                        MsgBox("La fecha de cancelación debe de ser mayor o igual a la fecha del documento y debe estar en el mismo ejercicio.", vbExclamation, Me.Text)
+                        MsgBox("La fecha de cancelación debe de ser mayor o igual a la fecha del documento y debe estar en el mismo ejercicio.", vbExclamation, sProcedure)
                         Return False
                     End If
 
@@ -1816,7 +1838,7 @@ CANCELAR:
                         Return False
                     End If
                 Case Else
-                    MsgBox("El tipo de venta " & Me.oVenta.TIPO_VENTA & " no esta definido en el proceso de cancelación.", MsgBoxStyle.Exclamation, Me.Text)
+                    MsgBox("El tipo de venta " & Me.oVenta.TIPO_VENTA & " no esta definido en el proceso de cancelación.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
             End Select
 
@@ -1825,15 +1847,15 @@ CANCELAR:
                 oEmbarques.FOLIO_EMBARQUE = Me.txtFolioEmbarque.Text
 
                 If oEmbarques.GeneraMarcaFactura(Me.txtFolio.Text, False) = False Then
-                    MsgBox("Error al tratar de marcar el embarque como facturado.", MsgBoxStyle.Information, Me.Text)
+                    MsgBox("Error al tratar de marcar el embarque como facturado.", MsgBoxStyle.Information, sProcedure)
                 End If
             End If
 
-            'MsgBox("Movimiento de venta cancelado.", MsgBoxStyle.Information, Me.Text)
+            'MsgBox("Movimiento de venta cancelado.", MsgBoxStyle.Information, sProcedure)
             bResultado = True
 
         Catch ex As Exception
-            HandleError(Me.Name, "Cancelar", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado
