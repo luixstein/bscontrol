@@ -197,7 +197,12 @@ Buscar:
             Rpt.SetParameterValue("@FECHA2", "" & Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
             Rpt.SetParameterValue("@CODIGO_DOCUMENTO", "" & Me.CboDocumentos.SelectedValue.ToString)
             If Me.rbtAnalisis.Checked = True Then
-                Rpt.SetParameterValue("@CODIGO_PROPIETARIO", IIf(txtLEN(Me.TxtCodigoPropietario.Text) = True, CInt(Me.TxtCodigoPropietario.Text), 0))
+                If txtLEN(Me.TxtCodigoPropietario.Text) = True Then
+                    Rpt.SetParameterValue("@CODIGO_PROPIETARIO", CInt(Me.TxtCodigoPropietario.Text))
+                Else
+                    Rpt.SetParameterValue("@CODIGO_PROPIETARIO", 0)
+                End If
+
             End If
 
             Dim frm As New Reporte(Rpt)
