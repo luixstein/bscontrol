@@ -105,6 +105,9 @@ Partial Class Compras_Movimientos
         Me.tpArticulos = New System.Windows.Forms.TabPage()
         Me.Grid = New FlexCell.Grid()
         Me.tpSeries = New System.Windows.Forms.TabPage()
+        Me.lblDisplayLote = New System.Windows.Forms.Label()
+        Me.btnCopiarLote = New System.Windows.Forms.Button()
+        Me.txtLote = New System.Windows.Forms.TextBox()
         Me.GridSeries = New FlexCell.Grid()
         Me.btnSeries = New System.Windows.Forms.Button()
         Me.txtSaldoUSD = New System.Windows.Forms.TextBox()
@@ -115,9 +118,6 @@ Partial Class Compras_Movimientos
         Me.Label4 = New System.Windows.Forms.Label()
         Me.TxtConceptoCancelacion = New System.Windows.Forms.TextBox()
         Me.LblConceptoCancelacion = New System.Windows.Forms.Label()
-        Me.txtLote = New System.Windows.Forms.TextBox()
-        Me.btnCopiarLote = New System.Windows.Forms.Button()
-        Me.lblDisplayLote = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
@@ -926,6 +926,32 @@ Partial Class Compras_Movimientos
         Me.tpSeries.Text = "Series"
         Me.tpSeries.UseVisualStyleBackColor = True
         '
+        'lblDisplayLote
+        '
+        Me.lblDisplayLote.AutoSize = True
+        Me.lblDisplayLote.Location = New System.Drawing.Point(325, 158)
+        Me.lblDisplayLote.Name = "lblDisplayLote"
+        Me.lblDisplayLote.Size = New System.Drawing.Size(34, 13)
+        Me.lblDisplayLote.TabIndex = 331
+        Me.lblDisplayLote.Text = "Lote :"
+        '
+        'btnCopiarLote
+        '
+        Me.btnCopiarLote.Location = New System.Drawing.Point(497, 154)
+        Me.btnCopiarLote.Name = "btnCopiarLote"
+        Me.btnCopiarLote.Size = New System.Drawing.Size(109, 21)
+        Me.btnCopiarLote.TabIndex = 330
+        Me.btnCopiarLote.Text = "Copiar"
+        Me.btnCopiarLote.UseVisualStyleBackColor = True
+        '
+        'txtLote
+        '
+        Me.txtLote.Location = New System.Drawing.Point(384, 156)
+        Me.txtLote.MaxLength = 80
+        Me.txtLote.Name = "txtLote"
+        Me.txtLote.Size = New System.Drawing.Size(107, 20)
+        Me.txtLote.TabIndex = 10
+        '
         'GridSeries
         '
         Me.GridSeries.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
@@ -1026,32 +1052,6 @@ Partial Class Compras_Movimientos
         Me.LblConceptoCancelacion.TabIndex = 387
         Me.LblConceptoCancelacion.Text = "Concepto cancelación :"
         Me.LblConceptoCancelacion.Visible = False
-        '
-        'txtLote
-        '
-        Me.txtLote.Location = New System.Drawing.Point(384, 156)
-        Me.txtLote.MaxLength = 80
-        Me.txtLote.Name = "txtLote"
-        Me.txtLote.Size = New System.Drawing.Size(107, 20)
-        Me.txtLote.TabIndex = 10
-        '
-        'btnCopiarLote
-        '
-        Me.btnCopiarLote.Location = New System.Drawing.Point(497, 154)
-        Me.btnCopiarLote.Name = "btnCopiarLote"
-        Me.btnCopiarLote.Size = New System.Drawing.Size(109, 21)
-        Me.btnCopiarLote.TabIndex = 330
-        Me.btnCopiarLote.Text = "Copiar"
-        Me.btnCopiarLote.UseVisualStyleBackColor = True
-        '
-        'lblDisplayLote
-        '
-        Me.lblDisplayLote.AutoSize = True
-        Me.lblDisplayLote.Location = New System.Drawing.Point(325, 158)
-        Me.lblDisplayLote.Name = "lblDisplayLote"
-        Me.lblDisplayLote.Size = New System.Drawing.Size(34, 13)
-        Me.lblDisplayLote.TabIndex = 331
-        Me.lblDisplayLote.Text = "Lote :"
         '
         'Compras_Movimientos
         '

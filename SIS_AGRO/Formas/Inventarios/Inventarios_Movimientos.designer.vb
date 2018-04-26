@@ -84,7 +84,7 @@ Partial Class Inventarios_Movimientos
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbAplicar, Me.tsbCancelar, Me.tsbImprimir, Me.tsbEditarCostos, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1453, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1090, 27)
         Me.tsMenu.TabIndex = 223
         Me.tsMenu.Text = "tsMenu"
         '
@@ -93,7 +93,7 @@ Partial Class Inventarios_Movimientos
         Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
         Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbNuevo.Name = "tsbNuevo"
-        Me.tsbNuevo.Size = New System.Drawing.Size(76, 24)
+        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
         Me.tsbNuevo.Text = "&Nuevo"
         '
         'tsbGrabar
@@ -101,7 +101,7 @@ Partial Class Inventarios_Movimientos
         Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
         Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbGrabar.Name = "tsbGrabar"
-        Me.tsbGrabar.Size = New System.Drawing.Size(78, 24)
+        Me.tsbGrabar.Size = New System.Drawing.Size(66, 24)
         Me.tsbGrabar.Text = "&Grabar"
         '
         'tsbAplicar
@@ -109,7 +109,7 @@ Partial Class Inventarios_Movimientos
         Me.tsbAplicar.Image = CType(resources.GetObject("tsbAplicar.Image"), System.Drawing.Image)
         Me.tsbAplicar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbAplicar.Name = "tsbAplicar"
-        Me.tsbAplicar.Size = New System.Drawing.Size(80, 24)
+        Me.tsbAplicar.Size = New System.Drawing.Size(68, 24)
         Me.tsbAplicar.Text = "&Aplicar"
         '
         'tsbCancelar
@@ -117,7 +117,7 @@ Partial Class Inventarios_Movimientos
         Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
         Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbCancelar.Name = "tsbCancelar"
-        Me.tsbCancelar.Size = New System.Drawing.Size(94, 24)
+        Me.tsbCancelar.Size = New System.Drawing.Size(80, 24)
         Me.tsbCancelar.Text = " Cancelar"
         '
         'tsbImprimir
@@ -125,7 +125,7 @@ Partial Class Inventarios_Movimientos
         Me.tsbImprimir.Image = CType(resources.GetObject("tsbImprimir.Image"), System.Drawing.Image)
         Me.tsbImprimir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbImprimir.Name = "tsbImprimir"
-        Me.tsbImprimir.Size = New System.Drawing.Size(90, 24)
+        Me.tsbImprimir.Size = New System.Drawing.Size(77, 24)
         Me.tsbImprimir.Text = "&Imprimir"
         Me.tsbImprimir.ToolTipText = "Imprimir"
         '
@@ -134,7 +134,7 @@ Partial Class Inventarios_Movimientos
         Me.tsbEditarCostos.Image = Global.BsControl.My.Resources.Resources._782
         Me.tsbEditarCostos.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbEditarCostos.Name = "tsbEditarCostos"
-        Me.tsbEditarCostos.Size = New System.Drawing.Size(118, 24)
+        Me.tsbEditarCostos.Size = New System.Drawing.Size(98, 24)
         Me.tsbEditarCostos.Text = "&Editar costos"
         '
         'tsbSalir
@@ -142,26 +142,24 @@ Partial Class Inventarios_Movimientos
         Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
         Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
+        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
         Me.tsbSalir.Text = "&Salir"
         '
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(635, 496)
-        Me.Label6.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label6.Location = New System.Drawing.Point(476, 403)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(48, 17)
+        Me.Label6.Size = New System.Drawing.Size(37, 13)
         Me.Label6.TabIndex = 273
         Me.Label6.Text = "Total :"
         '
         'txtTotal
         '
-        Me.txtTotal.Location = New System.Drawing.Point(692, 492)
-        Me.txtTotal.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtTotal.Location = New System.Drawing.Point(519, 400)
         Me.txtTotal.Name = "txtTotal"
         Me.txtTotal.ReadOnly = True
-        Me.txtTotal.Size = New System.Drawing.Size(132, 22)
+        Me.txtTotal.Size = New System.Drawing.Size(100, 20)
         Me.txtTotal.TabIndex = 272
         Me.txtTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
@@ -174,14 +172,13 @@ Partial Class Inventarios_Movimientos
         Me.Grid1.DefaultRowHeight = CType(24, Short)
         Me.Grid1.DisplayRowNumber = True
         Me.Grid1.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
-        Me.Grid1.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Grid1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Grid1.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.Grid1.Location = New System.Drawing.Point(0, 0)
         Me.Grid1.LockButton = True
-        Me.Grid1.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid1.Name = "Grid1"
         Me.Grid1.Rows = 20
-        Me.Grid1.Size = New System.Drawing.Size(1421, 283)
+        Me.Grid1.Size = New System.Drawing.Size(1066, 230)
         Me.Grid1.TabIndex = 7
         Me.Grid1.UncheckedImage = CType(resources.GetObject("Grid1.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -189,77 +186,69 @@ Partial Class Inventarios_Movimientos
         '
         Me.CboAlmacen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboAlmacen.FormattingEnabled = True
-        Me.CboAlmacen.Location = New System.Drawing.Point(141, 65)
-        Me.CboAlmacen.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboAlmacen.Location = New System.Drawing.Point(106, 53)
         Me.CboAlmacen.Name = "CboAlmacen"
-        Me.CboAlmacen.Size = New System.Drawing.Size(280, 24)
+        Me.CboAlmacen.Size = New System.Drawing.Size(211, 21)
         Me.CboAlmacen.TabIndex = 3
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(28, 69)
-        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label3.Location = New System.Drawing.Point(21, 56)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(70, 17)
+        Me.Label3.Size = New System.Drawing.Size(54, 13)
         Me.Label3.TabIndex = 267
         Me.Label3.Text = "Almacén :"
         '
         'TxtFolioReferencia
         '
-        Me.TxtFolioReferencia.Location = New System.Drawing.Point(141, 96)
-        Me.TxtFolioReferencia.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtFolioReferencia.Location = New System.Drawing.Point(106, 78)
         Me.TxtFolioReferencia.MaxLength = 160
         Me.TxtFolioReferencia.Name = "TxtFolioReferencia"
-        Me.TxtFolioReferencia.Size = New System.Drawing.Size(179, 22)
+        Me.TxtFolioReferencia.Size = New System.Drawing.Size(135, 20)
         Me.TxtFolioReferencia.TabIndex = 5
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(28, 98)
-        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label2.Location = New System.Drawing.Point(21, 80)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(85, 17)
+        Me.Label2.Size = New System.Drawing.Size(65, 13)
         Me.Label2.TabIndex = 266
         Me.Label2.Text = "Referencia :"
         '
         'LblDisplayDireccionEmpresa
         '
         Me.LblDisplayDireccionEmpresa.AutoSize = True
-        Me.LblDisplayDireccionEmpresa.Location = New System.Drawing.Point(28, 132)
-        Me.LblDisplayDireccionEmpresa.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayDireccionEmpresa.Location = New System.Drawing.Point(21, 107)
         Me.LblDisplayDireccionEmpresa.Name = "LblDisplayDireccionEmpresa"
-        Me.LblDisplayDireccionEmpresa.Size = New System.Drawing.Size(76, 17)
+        Me.LblDisplayDireccionEmpresa.Size = New System.Drawing.Size(59, 13)
         Me.LblDisplayDireccionEmpresa.TabIndex = 265
         Me.LblDisplayDireccionEmpresa.Text = "Concepto :"
         '
         'TxtConcepto
         '
-        Me.TxtConcepto.Location = New System.Drawing.Point(141, 128)
-        Me.TxtConcepto.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtConcepto.Location = New System.Drawing.Point(106, 104)
         Me.TxtConcepto.MaxLength = 160
         Me.TxtConcepto.Multiline = True
         Me.TxtConcepto.Name = "TxtConcepto"
-        Me.TxtConcepto.Size = New System.Drawing.Size(777, 38)
+        Me.TxtConcepto.Size = New System.Drawing.Size(584, 32)
         Me.TxtConcepto.TabIndex = 6
         '
         'DtpFecha
         '
-        Me.DtpFecha.Location = New System.Drawing.Point(639, 66)
-        Me.DtpFecha.Margin = New System.Windows.Forms.Padding(4)
+        Me.DtpFecha.Location = New System.Drawing.Point(479, 54)
         Me.DtpFecha.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.DtpFecha.Name = "DtpFecha"
-        Me.DtpFecha.Size = New System.Drawing.Size(280, 22)
+        Me.DtpFecha.Size = New System.Drawing.Size(211, 20)
         Me.DtpFecha.TabIndex = 1
         '
         'LblFecha
         '
         Me.LblFecha.AutoSize = True
-        Me.LblFecha.Location = New System.Drawing.Point(556, 66)
-        Me.LblFecha.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblFecha.Location = New System.Drawing.Point(417, 54)
         Me.LblFecha.Name = "LblFecha"
-        Me.LblFecha.Size = New System.Drawing.Size(55, 17)
+        Me.LblFecha.Size = New System.Drawing.Size(43, 13)
         Me.LblFecha.TabIndex = 261
         Me.LblFecha.Text = "Fecha :"
         '
@@ -267,39 +256,35 @@ Partial Class Inventarios_Movimientos
         '
         Me.LblStatus.AutoSize = True
         Me.LblStatus.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.LblStatus.Location = New System.Drawing.Point(1199, 63)
-        Me.LblStatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblStatus.Location = New System.Drawing.Point(899, 51)
         Me.LblStatus.Name = "LblStatus"
-        Me.LblStatus.Size = New System.Drawing.Size(12, 17)
+        Me.LblStatus.Size = New System.Drawing.Size(10, 13)
         Me.LblStatus.TabIndex = 260
         Me.LblStatus.Text = "."
         '
         'lblDisplayStatus
         '
         Me.lblDisplayStatus.AutoSize = True
-        Me.lblDisplayStatus.Location = New System.Drawing.Point(1111, 63)
-        Me.lblDisplayStatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayStatus.Location = New System.Drawing.Point(833, 51)
         Me.lblDisplayStatus.Name = "lblDisplayStatus"
-        Me.lblDisplayStatus.Size = New System.Drawing.Size(63, 17)
+        Me.lblDisplayStatus.Size = New System.Drawing.Size(48, 13)
         Me.lblDisplayStatus.TabIndex = 259
         Me.lblDisplayStatus.Text = "Estatus :"
         '
         'TxtFolio
         '
-        Me.TxtFolio.Location = New System.Drawing.Point(639, 36)
-        Me.TxtFolio.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtFolio.Location = New System.Drawing.Point(479, 29)
         Me.TxtFolio.MaxLength = 20
         Me.TxtFolio.Name = "TxtFolio"
-        Me.TxtFolio.Size = New System.Drawing.Size(179, 22)
+        Me.TxtFolio.Size = New System.Drawing.Size(135, 20)
         Me.TxtFolio.TabIndex = 0
         '
         'LblDisplayFolio
         '
         Me.LblDisplayFolio.AutoSize = True
-        Me.LblDisplayFolio.Location = New System.Drawing.Point(567, 39)
-        Me.LblDisplayFolio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayFolio.Location = New System.Drawing.Point(425, 32)
         Me.LblDisplayFolio.Name = "LblDisplayFolio"
-        Me.LblDisplayFolio.Size = New System.Drawing.Size(46, 17)
+        Me.LblDisplayFolio.Size = New System.Drawing.Size(35, 13)
         Me.LblDisplayFolio.TabIndex = 258
         Me.LblDisplayFolio.Text = "Folio :"
         '
@@ -307,10 +292,9 @@ Partial Class Inventarios_Movimientos
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsslEstado, Me.tsslElaboro, Me.tsslCancelo})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 580)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 471)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1453, 29)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1090, 24)
         Me.StatusStripEstado.TabIndex = 257
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -320,7 +304,7 @@ Partial Class Inventarios_Movimientos
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
         Me.tsslEstado.Name = "tsslEstado"
-        Me.tsslEstado.Size = New System.Drawing.Size(58, 24)
+        Me.tsslEstado.Size = New System.Drawing.Size(46, 19)
         Me.tsslEstado.Text = "Estado"
         '
         'tsslElaboro
@@ -329,7 +313,7 @@ Partial Class Inventarios_Movimientos
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
         Me.tsslElaboro.Name = "tsslElaboro"
-        Me.tsslElaboro.Size = New System.Drawing.Size(72, 24)
+        Me.tsslElaboro.Size = New System.Drawing.Size(57, 19)
         Me.tsslElaboro.Text = "Elaboro :"
         '
         'tsslCancelo
@@ -338,26 +322,24 @@ Partial Class Inventarios_Movimientos
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
         Me.tsslCancelo.Name = "tsslCancelo"
-        Me.tsslCancelo.Size = New System.Drawing.Size(73, 24)
+        Me.tsslCancelo.Size = New System.Drawing.Size(60, 19)
         Me.tsslCancelo.Text = "Cancelo :"
         '
         'CboDocumento
         '
         Me.CboDocumento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboDocumento.FormattingEnabled = True
-        Me.CboDocumento.Location = New System.Drawing.Point(141, 34)
-        Me.CboDocumento.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboDocumento.Location = New System.Drawing.Point(106, 28)
         Me.CboDocumento.Name = "CboDocumento"
-        Me.CboDocumento.Size = New System.Drawing.Size(280, 24)
+        Me.CboDocumento.Size = New System.Drawing.Size(211, 21)
         Me.CboDocumento.TabIndex = 2
         '
         'LblDocumento
         '
         Me.LblDocumento.AutoSize = True
-        Me.LblDocumento.Location = New System.Drawing.Point(28, 38)
-        Me.LblDocumento.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDocumento.Location = New System.Drawing.Point(21, 31)
         Me.LblDocumento.Name = "LblDocumento"
-        Me.LblDocumento.Size = New System.Drawing.Size(88, 17)
+        Me.LblDocumento.Size = New System.Drawing.Size(68, 13)
         Me.LblDocumento.TabIndex = 256
         Me.LblDocumento.Text = "Documento :"
         '
@@ -365,121 +347,109 @@ Partial Class Inventarios_Movimientos
         '
         Me.CboAlmacenDestino.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboAlmacenDestino.FormattingEnabled = True
-        Me.CboAlmacenDestino.Location = New System.Drawing.Point(639, 95)
-        Me.CboAlmacenDestino.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboAlmacenDestino.Location = New System.Drawing.Point(479, 77)
         Me.CboAlmacenDestino.Name = "CboAlmacenDestino"
-        Me.CboAlmacenDestino.Size = New System.Drawing.Size(280, 24)
+        Me.CboAlmacenDestino.Size = New System.Drawing.Size(211, 21)
         Me.CboAlmacenDestino.TabIndex = 4
         '
         'lblAlmacenDestino
         '
         Me.lblAlmacenDestino.AutoSize = True
-        Me.lblAlmacenDestino.Location = New System.Drawing.Point(492, 98)
-        Me.lblAlmacenDestino.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblAlmacenDestino.Location = New System.Drawing.Point(369, 80)
         Me.lblAlmacenDestino.Name = "lblAlmacenDestino"
-        Me.lblAlmacenDestino.Size = New System.Drawing.Size(120, 17)
+        Me.lblAlmacenDestino.Size = New System.Drawing.Size(91, 13)
         Me.lblAlmacenDestino.TabIndex = 275
         Me.lblAlmacenDestino.Text = "Almacén destino :"
         '
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(1120, 95)
-        Me.Label8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label8.Location = New System.Drawing.Point(840, 77)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(54, 17)
+        Me.Label8.Size = New System.Drawing.Size(41, 13)
         Me.Label8.TabIndex = 285
         Me.Label8.Text = "Póliza :"
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(323, 496)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Location = New System.Drawing.Point(242, 403)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(103, 17)
+        Me.Label1.Size = New System.Drawing.Size(78, 13)
         Me.Label1.TabIndex = 288
         Me.Label1.Text = "Cantidad total :"
         '
         'txtTotalCantidad
         '
-        Me.txtTotalCantidad.Location = New System.Drawing.Point(435, 492)
-        Me.txtTotalCantidad.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtTotalCantidad.Location = New System.Drawing.Point(326, 400)
         Me.txtTotalCantidad.Name = "txtTotalCantidad"
         Me.txtTotalCantidad.ReadOnly = True
-        Me.txtTotalCantidad.Size = New System.Drawing.Size(132, 22)
+        Me.txtTotalCantidad.Size = New System.Drawing.Size(100, 20)
         Me.txtTotalCantidad.TabIndex = 287
         Me.txtTotalCantidad.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'LblPoliza
         '
         Me.LblPoliza.AutoSize = True
-        Me.LblPoliza.Location = New System.Drawing.Point(1199, 92)
-        Me.LblPoliza.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblPoliza.Location = New System.Drawing.Point(899, 75)
         Me.LblPoliza.Name = "LblPoliza"
-        Me.LblPoliza.Size = New System.Drawing.Size(16, 17)
+        Me.LblPoliza.Size = New System.Drawing.Size(13, 13)
         Me.LblPoliza.TabIndex = 329
         Me.LblPoliza.TabStop = True
         Me.LblPoliza.Text = "_"
         '
         'txtFolioEmbarque
         '
-        Me.txtFolioEmbarque.Location = New System.Drawing.Point(1052, 128)
-        Me.txtFolioEmbarque.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtFolioEmbarque.Location = New System.Drawing.Point(789, 104)
         Me.txtFolioEmbarque.MaxLength = 15
         Me.txtFolioEmbarque.Name = "txtFolioEmbarque"
-        Me.txtFolioEmbarque.Size = New System.Drawing.Size(179, 22)
+        Me.txtFolioEmbarque.Size = New System.Drawing.Size(135, 20)
         Me.txtFolioEmbarque.TabIndex = 330
         Me.txtFolioEmbarque.Visible = False
         '
         'lblDisplayFolioEmbarque
         '
         Me.lblDisplayFolioEmbarque.AutoSize = True
-        Me.lblDisplayFolioEmbarque.Location = New System.Drawing.Point(933, 132)
-        Me.lblDisplayFolioEmbarque.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayFolioEmbarque.Location = New System.Drawing.Point(700, 107)
         Me.lblDisplayFolioEmbarque.Name = "lblDisplayFolioEmbarque"
-        Me.lblDisplayFolioEmbarque.Size = New System.Drawing.Size(111, 17)
+        Me.lblDisplayFolioEmbarque.Size = New System.Drawing.Size(83, 13)
         Me.lblDisplayFolioEmbarque.TabIndex = 331
         Me.lblDisplayFolioEmbarque.Text = "Folio Embarque:"
         Me.lblDisplayFolioEmbarque.Visible = False
         '
         'txtFolioCopiarRenglones
         '
-        Me.txtFolioCopiarRenglones.Location = New System.Drawing.Point(1052, 36)
-        Me.txtFolioCopiarRenglones.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtFolioCopiarRenglones.Location = New System.Drawing.Point(789, 29)
         Me.txtFolioCopiarRenglones.MaxLength = 20
         Me.txtFolioCopiarRenglones.Name = "txtFolioCopiarRenglones"
-        Me.txtFolioCopiarRenglones.Size = New System.Drawing.Size(179, 22)
+        Me.txtFolioCopiarRenglones.Size = New System.Drawing.Size(135, 20)
         Me.txtFolioCopiarRenglones.TabIndex = 332
         Me.txtFolioCopiarRenglones.Visible = False
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(932, 38)
-        Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label4.Location = New System.Drawing.Point(699, 31)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(124, 17)
+        Me.Label4.Size = New System.Drawing.Size(92, 13)
         Me.Label4.TabIndex = 333
         Me.Label4.Text = "Copiar renglones :"
         Me.Label4.Visible = False
         '
         'btnDocumentoSiguiente
         '
-        Me.btnDocumentoSiguiente.Location = New System.Drawing.Point(861, 33)
-        Me.btnDocumentoSiguiente.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnDocumentoSiguiente.Location = New System.Drawing.Point(646, 27)
         Me.btnDocumentoSiguiente.Name = "btnDocumentoSiguiente"
-        Me.btnDocumentoSiguiente.Size = New System.Drawing.Size(33, 26)
+        Me.btnDocumentoSiguiente.Size = New System.Drawing.Size(25, 21)
         Me.btnDocumentoSiguiente.TabIndex = 382
         Me.btnDocumentoSiguiente.Text = ">"
         Me.btnDocumentoSiguiente.UseVisualStyleBackColor = True
         '
         'btnDocumentoAnterior
         '
-        Me.btnDocumentoAnterior.Location = New System.Drawing.Point(820, 33)
-        Me.btnDocumentoAnterior.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnDocumentoAnterior.Location = New System.Drawing.Point(615, 27)
         Me.btnDocumentoAnterior.Name = "btnDocumentoAnterior"
-        Me.btnDocumentoAnterior.Size = New System.Drawing.Size(33, 26)
+        Me.btnDocumentoAnterior.Size = New System.Drawing.Size(25, 21)
         Me.btnDocumentoAnterior.TabIndex = 381
         Me.btnDocumentoAnterior.Text = "<"
         Me.btnDocumentoAnterior.UseVisualStyleBackColor = True
@@ -487,40 +457,43 @@ Partial Class Inventarios_Movimientos
         'lblCodigoAlmacen1
         '
         Me.lblCodigoAlmacen1.AutoSize = True
-        Me.lblCodigoAlmacen1.Location = New System.Drawing.Point(431, 69)
-        Me.lblCodigoAlmacen1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblCodigoAlmacen1.Location = New System.Drawing.Point(323, 56)
         Me.lblCodigoAlmacen1.Name = "lblCodigoAlmacen1"
-        Me.lblCodigoAlmacen1.Size = New System.Drawing.Size(16, 17)
+        Me.lblCodigoAlmacen1.Size = New System.Drawing.Size(13, 13)
         Me.lblCodigoAlmacen1.TabIndex = 383
         Me.lblCodigoAlmacen1.Text = "_"
         '
         'lblCodigoAlmacen2
         '
         Me.lblCodigoAlmacen2.AutoSize = True
-        Me.lblCodigoAlmacen2.Location = New System.Drawing.Point(928, 100)
-        Me.lblCodigoAlmacen2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblCodigoAlmacen2.Location = New System.Drawing.Point(696, 81)
         Me.lblCodigoAlmacen2.Name = "lblCodigoAlmacen2"
-        Me.lblCodigoAlmacen2.Size = New System.Drawing.Size(16, 17)
+        Me.lblCodigoAlmacen2.Size = New System.Drawing.Size(13, 13)
         Me.lblCodigoAlmacen2.TabIndex = 384
         Me.lblCodigoAlmacen2.Text = "_"
         '
         'TabControl1
         '
+        Me.TabControl1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TabControl1.Controls.Add(Me.TpArticulos)
         Me.TabControl1.Controls.Add(Me.TpSeries)
-        Me.TabControl1.Location = New System.Drawing.Point(12, 173)
+        Me.TabControl1.Location = New System.Drawing.Point(9, 141)
+        Me.TabControl1.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(1429, 312)
+        Me.TabControl1.Size = New System.Drawing.Size(1072, 254)
         Me.TabControl1.TabIndex = 385
         '
         'TpArticulos
         '
         Me.TpArticulos.Controls.Add(Me.Grid1)
-        Me.TpArticulos.Location = New System.Drawing.Point(4, 25)
+        Me.TpArticulos.Location = New System.Drawing.Point(4, 22)
+        Me.TpArticulos.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.TpArticulos.Name = "TpArticulos"
-        Me.TpArticulos.Padding = New System.Windows.Forms.Padding(3)
-        Me.TpArticulos.Size = New System.Drawing.Size(1421, 283)
+        Me.TpArticulos.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TpArticulos.Size = New System.Drawing.Size(1064, 228)
         Me.TpArticulos.TabIndex = 0
         Me.TpArticulos.Text = "Artículos"
         Me.TpArticulos.UseVisualStyleBackColor = True
@@ -528,10 +501,11 @@ Partial Class Inventarios_Movimientos
         'TpSeries
         '
         Me.TpSeries.Controls.Add(Me.GridSeries)
-        Me.TpSeries.Location = New System.Drawing.Point(4, 25)
+        Me.TpSeries.Location = New System.Drawing.Point(4, 22)
+        Me.TpSeries.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.TpSeries.Name = "TpSeries"
-        Me.TpSeries.Padding = New System.Windows.Forms.Padding(3)
-        Me.TpSeries.Size = New System.Drawing.Size(1421, 283)
+        Me.TpSeries.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TpSeries.Size = New System.Drawing.Size(1064, 228)
         Me.TpSeries.TabIndex = 1
         Me.TpSeries.Text = "Series"
         Me.TpSeries.UseVisualStyleBackColor = True
@@ -545,31 +519,31 @@ Partial Class Inventarios_Movimientos
         Me.GridSeries.DefaultRowHeight = CType(24, Short)
         Me.GridSeries.DisplayRowNumber = True
         Me.GridSeries.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
-        Me.GridSeries.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GridSeries.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GridSeries.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.GridSeries.Location = New System.Drawing.Point(0, 0)
         Me.GridSeries.LockButton = True
-        Me.GridSeries.Margin = New System.Windows.Forms.Padding(4)
         Me.GridSeries.Name = "GridSeries"
         Me.GridSeries.Rows = 6
-        Me.GridSeries.Size = New System.Drawing.Size(1421, 283)
+        Me.GridSeries.Size = New System.Drawing.Size(1066, 230)
         Me.GridSeries.TabIndex = 386
         Me.GridSeries.UncheckedImage = CType(resources.GetObject("GridSeries.UncheckedImage"), System.Drawing.Bitmap)
         '
         'BtnSeries
         '
-        Me.BtnSeries.Location = New System.Drawing.Point(74, 496)
+        Me.BtnSeries.Location = New System.Drawing.Point(56, 403)
+        Me.BtnSeries.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.BtnSeries.Name = "BtnSeries"
-        Me.BtnSeries.Size = New System.Drawing.Size(158, 31)
+        Me.BtnSeries.Size = New System.Drawing.Size(118, 25)
         Me.BtnSeries.TabIndex = 386
         Me.BtnSeries.Text = "Detallar series"
         Me.BtnSeries.UseVisualStyleBackColor = True
         '
         'Inventarios_Movimientos
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1453, 609)
+        Me.ClientSize = New System.Drawing.Size(1090, 495)
         Me.Controls.Add(Me.BtnSeries)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.lblCodigoAlmacen2)
@@ -605,7 +579,6 @@ Partial Class Inventarios_Movimientos
         Me.Controls.Add(Me.LblDocumento)
         Me.Controls.Add(Me.tsMenu)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Inventarios_Movimientos"
         Me.Text = "Inventarios movimientos"
