@@ -568,9 +568,9 @@ Public Class Class_Bancos_CXC
                     Me._CONCEPTO1 = CType(dReader("BAN_CONCEPTO"), String)
                     Me._FOLIO_POLIZA = "" & dReader("BAN_FOLIO_POLIZA").ToString
                     Me._ESTATUS = CType(dReader("BAN_ESTATUS"), String)
-                    Me._CODIGO_Cliente = CType(dReader("CXC_CODIGO_CLIENTE"), String)
-                    Me._NOMBRE_Cliente = CType(dReader("CXC_NOMBRE_CLIENTE"), String)
-                    Me._CUENTA_CONTABLE_PESOS = CType(dReader("CXC_CUENTA_CONTABLE_CLIENTE"), String)
+                    Me._CODIGO_Cliente = "" & dReader("CXC_CODIGO_CLIENTE").ToString
+                    Me._NOMBRE_Cliente = "" & dReader("CXC_NOMBRE_CLIENTE").ToString
+                    Me._CUENTA_CONTABLE_PESOS = "" & dReader("CXC_CUENTA_CONTABLE_CLIENTE").ToString
                     Me._CUENTA_CONTABLE_DOLARES = "" & dReader("CXC_CUENTA_CONTABLE_DOLARES_CLIENTE").ToString
                     Me._FECHA = CType(dReader("BAN_FECHA"), Date)
                     Me._FECHA_SERVIDOR = CType(dReader("BAN_FECHA_SERVIDOR"), Date)

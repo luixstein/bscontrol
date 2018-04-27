@@ -1104,57 +1104,57 @@ Buscar:
 
                 dReader = .ExecuteReader()
 
+                Me.GridVentas.AutoRedraw = False
+
+                Me.InicializaGridVentas()
+                i = Me.GridVentas.Rows - 1
+
+                'Prepara un "posible" anticipo porque estos datos se pierden al darle al botón agregar, y si el cliente no tiene ventas con saldo no cargaria el grid y luego no se sabria de que cliente es el anticipo.
+                If Me.chkVentasNoFiscales.Checked = True Then
+                    'Evita cargar algunas columnas innesarias
+
+                    Me.GridVentas.Cell(i, Me.iGyVentaFOLIO_DETALLE).Text = Me.txtFolioDetalle.Text.ToUpper
+                    Me.GridVentas.Cell(i, Me.iGyVentaCodigoCliente).Text = oCliente.CODIGO_CLIENTE
+                    Me.GridVentas.Cell(i, Me.iGyVentaNombreCliente).Text = oCliente.NOMBRE_CLIENTE
+                    'Me.GridVentas.Cell(i, Me.iGyVentaFecha).Text = "?"
+                    Me.GridVentas.Cell(i, Me.iGyVentaFolio).Text = "" 'No se indica ningún folio
+                    'Me.GridVentas.Cell(i, Me.iGyVentaMoneda).Text ="?"
+                    Me.GridVentas.Cell(i, Me.iGyVentaMedioPago).Text = Me.CboMedioDePago.Text
+                    Me.GridVentas.Cell(i, Me.iGyVentaBanco).Text = oBanco.NOMBRE_BANCO  ' Me.CboBancos.Text
+                    'Me.GridVentas.Cell(i, Me.iGyVentaTotal).Text = "?"
+                    'Me.GridVentas.Cell(i, Me.iGyVentaSaldo).Text = "?"
+                    'Me.GridVentas.Cell(i, Me.iGyVentaTotalDlls).Text = "?"
+                    'Me.GridVentas.Cell(i, Me.iGyVentaSaldoDlls).Text = "?"
+                    Me.GridVentas.Cell(i, Me.iGyVentaPago).Text = "0" 'No se sabe de momento cuanto va ser de anticipo hasta grabar y sacar la suma de lo no aplicado
+                    Me.GridVentas.Cell(i, Me.iGyVentaPagoPesos).Text = "0"
+                    Me.GridVentas.Cell(i, Me.iGyVentaDiferencia).Text = CStr(0)
+                    Me.GridVentas.Cell(i, Me.iGyVentaSeleccion).Text = "0"
+                    Me.GridVentas.Cell(i, Me.iGyVentaReferencia).Text = Me.TxtReferencia.Text
+                    Me.GridVentas.Cell(i, Me.iGyVentaIvaPorPagar).Text = CStr(0)
+
+                    Me.GridVentas.Cell(i, Me.iGyVentaFechaPago).Text = FormatFechaCorta(dFechaPagoDefault)  'CType(dFechaPagoDefault, String)
+                    'Me.GridVentas.Cell(i, Me.iGyVentaVersionCFDI).Text = "?"
+                    'Me.GridVentas.Cell(i, Me.iGyVentaFormaPago).Text = "?"
+                    'Me.GridVentas.Cell(i, Me.iGyVentaMetodoPago).Text = "?"
+                    Me.GridVentas.Cell(i, Me.iGyVentaImporteMonedaVenta).Text = "0"
+                    Me.GridVentas.Cell(i, Me.iGyVentaSaldoAnteriorMonedaVenta).Text = "0"
+                    Me.GridVentas.Cell(i, Me.iGyVentaSaldoAnteriorMonedaPago).Text = "0"
+                    Me.GridVentas.Cell(i, Me.iGyVentaEsFacturaElectronica).Text = "0"
+
+                    Me.GridVentas.Row(i).Locked = True 'No podrán editar este renglón, y además recuerde
+                    Me.GridVentas.Row(i).Visible = False 'No se muestra al usuario cuando se esta haciendo el anticipo, no debe usarse para grabar un pago normal, sólo si hay anticipo
+
+                    Me.GridVentas.Rows += 1
+                    i = i + 1
+                End If
+
                 If dReader.HasRows = True Then
-
-                    Me.GridVentas.AutoRedraw = False
-
-                    Me.InicializaGridVentas()
-                    i = Me.GridVentas.Rows - 1
 
                     'Esto se usaria si es que se van a permitir agregar venta de otro cliente , de momento no es posible, el agregar sólo funciona una vez y deberian dar nuevo si queiren otras ventas.
                     'If Me.GridVentas.Cell(i, Me.iGyVentaCodigoCliente).Text.Length > 0 Then
                     '    Me.GridVentas.Rows += 1
                     '    i = i + 1
                     'End If
-
-                    'Prepara un "posible" anticipo porque estos datos se pierden al darle al botón agregar, y si el cliente no tiene ventas con saldo no cargaria el grid y luego no se sabria de que cliente es el anticipo.
-                    If Me.chkVentasNoFiscales.Checked = True Then
-                        'Evita cargar algunas columnas innesarias
-
-                        Me.GridVentas.Cell(i, Me.iGyVentaFOLIO_DETALLE).Text = Me.txtFolioDetalle.Text.ToUpper
-                        Me.GridVentas.Cell(i, Me.iGyVentaCodigoCliente).Text = oCliente.CODIGO_CLIENTE
-                        Me.GridVentas.Cell(i, Me.iGyVentaNombreCliente).Text = oCliente.NOMBRE_CLIENTE
-                        'Me.GridVentas.Cell(i, Me.iGyVentaFecha).Text = "?"
-                        Me.GridVentas.Cell(i, Me.iGyVentaFolio).Text = "" 'No se indica ningún folio
-                        'Me.GridVentas.Cell(i, Me.iGyVentaMoneda).Text ="?"
-                        Me.GridVentas.Cell(i, Me.iGyVentaMedioPago).Text = Me.CboMedioDePago.Text
-                        Me.GridVentas.Cell(i, Me.iGyVentaBanco).Text = oBanco.NOMBRE_BANCO  ' Me.CboBancos.Text
-                        'Me.GridVentas.Cell(i, Me.iGyVentaTotal).Text = "?"
-                        'Me.GridVentas.Cell(i, Me.iGyVentaSaldo).Text = "?"
-                        'Me.GridVentas.Cell(i, Me.iGyVentaTotalDlls).Text = "?"
-                        'Me.GridVentas.Cell(i, Me.iGyVentaSaldoDlls).Text = "?"
-                        Me.GridVentas.Cell(i, Me.iGyVentaPago).Text = "0" 'No se sabe de momento cuanto va ser de anticipo hasta grabar y sacar la suma de lo no aplicado
-                        Me.GridVentas.Cell(i, Me.iGyVentaPagoPesos).Text = "0"
-                        Me.GridVentas.Cell(i, Me.iGyVentaDiferencia).Text = CStr(0)
-                        Me.GridVentas.Cell(i, Me.iGyVentaSeleccion).Text = "0"
-                        Me.GridVentas.Cell(i, Me.iGyVentaReferencia).Text = Me.TxtReferencia.Text
-                        Me.GridVentas.Cell(i, Me.iGyVentaIvaPorPagar).Text = CStr(0)
-
-                        Me.GridVentas.Cell(i, Me.iGyVentaFechaPago).Text = FormatFechaCorta(dFechaPagoDefault)  'CType(dFechaPagoDefault, String)
-                        'Me.GridVentas.Cell(i, Me.iGyVentaVersionCFDI).Text = "?"
-                        'Me.GridVentas.Cell(i, Me.iGyVentaFormaPago).Text = "?"
-                        'Me.GridVentas.Cell(i, Me.iGyVentaMetodoPago).Text = "?"
-                        Me.GridVentas.Cell(i, Me.iGyVentaImporteMonedaVenta).Text = "0"
-                        Me.GridVentas.Cell(i, Me.iGyVentaSaldoAnteriorMonedaVenta).Text = "0"
-                        Me.GridVentas.Cell(i, Me.iGyVentaSaldoAnteriorMonedaPago).Text = "0"
-                        Me.GridVentas.Cell(i, Me.iGyVentaEsFacturaElectronica).Text = "0"
-
-                        Me.GridVentas.Row(i).Locked = True 'No podrán editar este renglón, y además recuerde
-                        Me.GridVentas.Row(i).Visible = False 'No se muestra al usuario cuando se esta haciendo el anticipo, no debe usarse para grabar un pago normal, sólo si hay anticipo
-
-                        Me.GridVentas.Rows += 1
-                        i = i + 1
-                    End If
 
                     'Aquí carga ventas con saldo
                     While dReader.Read()
@@ -1475,7 +1475,7 @@ Buscar:
 
             oBancosCXC.ES_PAGO_VENTAS_NO_FISCALES = Me.chkVentasNoFiscales.Checked
 
-            If oBancosCXC.Inserta_Global() = False Then
+            If oBancosCXC.Inserta_Global() = False Then '''''''''''''''''==========================Afectacion
                 Return False
             End If
 
@@ -1493,7 +1493,7 @@ Buscar:
                                   CDate(.Cell(i, Me.iGyDocFECHA).Text), .Cell(i, Me.iGyDocRFC_EMISOR).Text, valorNumerico(.Cell(i, Me.iGyDocMONTO).Text),
                                  .Cell(i, Me.iGyDocCODIGO_MONEDA_SAT).Text, valorNumerico(txtTipoCambio.Text),
                                  .Cell(i, Me.iGyDocCUENTA_BENEFICIARIO).Text, .Cell(i, Me.iGyDocCODIGO_BANCO_DESTINO_NACIONAL).Text,
-                                 IIf(.Cell(i, Me.iGyDocES_BANCO_EXTRANJERO).Text = "1", .Cell(i, Me.iGyDocNOMBRE_BANCO_EMISOR_NACIONAL).Text, "").ToString
+                                 IIf(.Cell(i, Me.iGyDocES_BANCO_EXTRANJERO).Text = "1", .Cell(i, Me.iGyDocNOMBRE_BANCO_EMISOR_NACIONAL).Text, "").ToString'''''''''''''''''==========================Afectacion
                         ) 'El beneficiario es la empresa propia, el store lo llenará internamente
 
                         If lID_BANCOS_DETALLE = 0 Then
@@ -1561,7 +1561,7 @@ Buscar:
                     oCxcAfectaDocumentos.SALDO_ANTERIOR_MONEDA_VENTA = CDec(Me.GridVentas.Cell(i, Me.iGyVentaSaldoAnteriorMonedaVenta).Text)
                     oCxcAfectaDocumentos.SALDO_ANTERIOR_MONEDA_PAGO = CDec(Me.GridVentas.Cell(i, Me.iGyVentaSaldoAnteriorMonedaPago).Text)
 
-                    bResultado = oCxcAfectaDocumentos.InsertarPagosClientes()
+                    bResultado = oCxcAfectaDocumentos.InsertarPagosClientes() '''''''''''''''''==========================Afectacion
                 End If
             Next i
 
