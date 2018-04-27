@@ -1014,6 +1014,9 @@ Public Class Class_CXC_Descuento
                 ConvierteXMLUTF8(sRutaXML)
 
                 bResultado = True
+
+                Process.Start(sRutaXML) 'Para abrir el xml
+
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "RecuperaXML", ex)
             Finally

@@ -7,6 +7,7 @@ Imports System.Net.Mail
 Imports System.Net.Security
 Imports System.Security.Cryptography.X509Certificates
 Imports System.Net
+Imports CFDIXML
 
 Public Class tPrecioVenta
     Public Precio As Decimal = 0
@@ -1976,6 +1977,9 @@ Public Class Class_Ventas_Global
                 ConvierteXMLUTF8(sRutaXML)
 
                 bResultado = True
+
+                Process.Start(sRutaXML) 'Para abrir el xml
+
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "RecuperaXML", ex)
             Finally
@@ -2054,7 +2058,7 @@ Public Class Class_Ventas_Global
     End Function
 
     Public Function EnviarCorreo() As Boolean
-        Dim sProcedure As String = "EnviarCorreo"
+        Const sProcedure As String = "EnviarCorreo"
         Dim Ret As Long, tabla() As String, n As Integer, archivos As String = sFelectronicaCarpetaXMLPDF & "\"
         Dim oCliente As Class_CatClientes
         Dim MyMailMsg As New Net.Mail.MailMessage
@@ -2160,7 +2164,7 @@ Public Class Class_Ventas_Global
 
     Public Function ValidarComercioExterior() As Boolean
         Dim bResultado As Boolean = False
-        Dim sProcedure As String = "ValidarComercioExterior"
+        Const sProcedure As String = "ValidarComercioExterior"
         Try
 
             If Me.Consultar() = False Then
@@ -2216,7 +2220,7 @@ Public Class Class_Ventas_Global
     End Function
 
     Public Function GeneraXmlComercioExterior10() As String
-        Dim sProcedure As String = "GeneraXmlComercioExterior10"
+        Const sProcedure As String = "GeneraXmlComercioExterior10"
         Dim sXmlComercioExterior As String = ""
         Try
 
@@ -2305,7 +2309,7 @@ Public Class Class_Ventas_Global
     End Function
 
     Public Function GeneraXmlComercioExterior11() As String
-        Dim sProcedure As String = "GeneraXmlComercioExterior11"
+        Const sProcedure As String = "GeneraXmlComercioExterior11"
         Dim sXmlComercioExterior As String = ""
         Try
 
@@ -2474,7 +2478,7 @@ Public Class Class_Ventas_Global
 
     Public Function CancelarTimbre() As Boolean
         Dim bResultado As Boolean = False
-        Dim sProcedure As String = "CancelarTimbre"
+        Const sProcedure As String = "CancelarTimbre"
         Try
             If Me.Consultar() = False Then 'Refrescamos la factura para tener los datos mas nuevos.
                 Return False
@@ -2511,7 +2515,7 @@ Public Class Class_Ventas_Global
 
     Public Function GeneraFacturaElectronica(ByVal bMensajes As Boolean, ByVal bGenerarPDF As Boolean) As Boolean
         Dim bResultado As Boolean = False
-        Dim sProcedure As String = "GeneraFacturaElectronica"
+        Const sProcedure As String = "GeneraFacturaElectronica"
         Dim sRutaXML As String
 
         Try
@@ -2544,14 +2548,14 @@ Public Class Class_Ventas_Global
     End Function
 
     Public Function ObtenerImpuestosIEPS() As DataTable
-        Dim sProcedure As String = "ObtenerImpuestosIEPS"
+        Const sProcedure As String = "ObtenerImpuestosIEPS"
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
 
         Try
-            sSQL = "SELECT R.IEPS_PORCENTAJE,SUM(R.IEPS_IMPORTE) SUMA_IEPS_IMPORTE " & _
-                        "FROM VENTA_GLOBAL G INNER JOIN VENTA_DETALLE R ON(G.FOLIO_VENTA=R.FOLIO_VENTA) " & _
-                        "WHERE G.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' AND R.IEPS_PORCENTAJE>0 " & _
+            sSQL = "SELECT R.IEPS_PORCENTAJE,SUM(R.IEPS_IMPORTE) SUMA_IEPS_IMPORTE " &
+                        "FROM VENTA_GLOBAL G INNER JOIN VENTA_DETALLE R ON(G.FOLIO_VENTA=R.FOLIO_VENTA) " &
+                        "WHERE G.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' AND R.IEPS_PORCENTAJE>0 " &
                         "GROUP BY R.IEPS_PORCENTAJE ORDER BY R.IEPS_PORCENTAJE"
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
@@ -2564,7 +2568,7 @@ Public Class Class_Ventas_Global
     End Function
 
     Public Function GestionaPrecioVenta(ByVal CodigoArticulo As String, ByVal CodigoCliente As String, ByVal CodigoAlmacen As String) As tPrecioVenta
-        Dim sProcedure As String = "GestionaPrecioVenta"
+        Const sProcedure As String = "GestionaPrecioVenta"
         Dim oPrecioVenta As New tPrecioVenta
         Dim dt As New DataTable
         Try
@@ -2588,7 +2592,7 @@ Public Class Class_Ventas_Global
     End Function
 
     Public Function RecuperarXMLyPDF() As Boolean
-        Dim sProcedure As String = "RecuperarXMLyPDF"
+        Const sProcedure As String = "RecuperarXMLyPDF"
         Dim bResultado As Boolean = False
 
         Dim oCliente As Class_CatClientes
@@ -2653,6 +2657,155 @@ Public Class Class_Ventas_Global
 
         Return dTabla
     End Function
+
+    Public Function SubeXMLExterno(ByVal sRutaXML As String) As Boolean
+        Const sProcedure As String = "SubeXMLExterno"
+        Dim bResultado As Boolean = False
+        Try
+            Dim oCFDI As New CFDIXML.ClassCFDI(sRutaXML, True)
+            Dim oDocumento As New Class_CatDocumentos(Me._CODIGO_DOCUMENTO)
+            Dim oCliente As New Class_CatClientes(Me._CODIGO_CLIENTE)
+            Dim oSQL As Class_find
+
+            If oCFDI.XMLCargado = False Then
+                Return False
+            End If
+
+            If oDocumento.TIMBRA_DOCUMENTO = True Then
+                MsgBox("La venta debe ser no timbrable, con esto se evita poder subir xml externos a ventas normales timbradas.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If (oDocumento.CODIGO_DOCUMENTO Like "F*") = False Then
+                MsgBox("La venta debe ser tipo factura.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If txtLEN(Me._FOLIO_FISCAL_SAT) = True Then
+                If MsgBox("Esta venta ya tiene ligado un XML con el UUID " & Me._FOLIO_FISCAL_SAT & ", esta seguro de querer cambiar el xml anterior por este nuevo xml?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
+                    Return False
+                End If
+            End If
+
+            If txtLEN(oCFDI.ComplementoTFD.UUID) = False Then
+                MsgBox("El XML no tiene el UUID.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If oCFDI.Comprobante.tipoDeComprobante <> "I" Then
+                MsgBox("El XML no es del tipo Ingreso.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If oCFDI.Emisor.rfc <> Empresa_Sistema.RFC Then
+                MsgBox("El RFC del emisor del XML(" & oCFDI.Emisor.rfc & ") es diferente al RFC de la empresa(" & Empresa_Sistema.RFC & ").", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If oCFDI.Receptor.rfc <> oCliente.RFC Then
+                MsgBox("El RFC del receptor del XML(" & oCFDI.Receptor.rfc & ") es diferente al RFC del cliente(" & oCliente.RFC & ").", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            oSQL = New Class_find("SELECT FOLIO_VENTA FROM VENTA_GLOBAL WHERE FOLIO_FISCAL_SAT='" & sReplace(Me._FOLIO_FISCAL_SAT) & "'")
+            If txtLEN(oSQL.Result1) = True Then
+                If MsgBox("Ya existe una venta " & oSQL.Result1 & " con este xml registrado." & vbCrLf &
+                          "Esta seguro de relacionar este xml?", vbQuestion Or MsgBoxStyle.YesNo) = MsgBoxResult.No Then
+                    Return False
+                End If
+            End If
+            oSQL = Nothing
+
+            Select Case oCFDI.Comprobante.Moneda
+                Case "MXN"
+                    If oCFDI.Comprobante.total <> Me._TOTAL Then
+                        If MsgBox("El total del comprobante del xml es de " & FormatImporteContable(oCFDI.Comprobante.total) & " MXN y el total de esta venta es de " & FormatImporteContable(Me._TOTAL) & vbCrLf &
+                                  "Esta seguro de relacionar este xml?", vbQuestion Or MsgBoxStyle.YesNo) = MsgBoxResult.No Then
+                            Return False
+                        End If
+                    End If
+                Case "USD"
+                    If oCFDI.Comprobante.total <> Me._TOTAL_DOLARES Then
+                        If MsgBox("El total del comprobante del xml es de " & FormatImporteContable(oCFDI.Comprobante.total) & " USD y el total de esta venta es de " & FormatImporteContable(Me._TOTAL_DOLARES) & vbCrLf &
+                                  "Esta seguro de relacionar este xml?", vbQuestion Or MsgBoxStyle.YesNo) = MsgBoxResult.No Then
+                            Return False
+                        End If
+                    End If
+                Case Else
+                    MsgBox("De momento este sistema no soporta monedas diferentes de MXN/USD.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+            End Select
+
+            'Busca el certificado
+            Dim sID_SIS_CFD_CATALOGO_CERTIFICADOS As String = "", sIDCATALOGO_FOLIO_FELECTRONICA As String = ""
+            oSQL = New Class_find("SELECT ID_SIS_CFD_CATALOGO_CERTIFICADOS FROM SIS_CFD_CATALOGO_CERTIFICADOS WHERE NUMERO_CERTIFICADO='" & sReplace(oCFDI.Comprobante.noCertificado) & "'")
+            sID_SIS_CFD_CATALOGO_CERTIFICADOS = oSQL.Result1
+            If txtLEN(sID_SIS_CFD_CATALOGO_CERTIFICADOS) = False Then
+                MsgBox("No se encontró en la tabla SIS_CFD_CATALOGO_CERTIFICADOS el certificado " & oCFDI.Comprobante.noCertificado & ". " & vbCrLf &
+                       "Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+            oSQL = Nothing
+
+            oSQL = New Class_find("SELECT TOP 1 IDCATALOGO_FOLIO_FELECTRONICA FROM CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS WHERE CODIGO_DOCUMENTO='" & sReplace(oDocumento.CODIGO_DOCUMENTO) & "' AND SERIE='" & sReplace(oCFDI.Comprobante.serie) & "' ORDER BY IDCATALOGO_FOLIO_FELECTRONICA DESC")
+            sIDCATALOGO_FOLIO_FELECTRONICA = oSQL.Result1
+            If txtLEN(sIDCATALOGO_FOLIO_FELECTRONICA) = False Then
+                MsgBox("No se encontró en la tabla CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS el documento y serie." & vbCrLf &
+                       "Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+            oSQL = Nothing
+
+            Dim cmd As New SqlCommand
+            Dim sqlParametro As SqlParameter
+
+            With cmd
+                .Connection = Me._Conexion
+                .CommandTimeout = 0
+                .CommandType = CommandType.StoredProcedure
+                .CommandText = "MP_VENTAS_CFD_GRABA_XML_EXTERNO"
+
+                Try
+                    Me._Conexion.Open()
+
+                    sqlParametro = .Parameters.Add("@FOLIO_VENTA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_VENTA
+                    sqlParametro = .Parameters.Add("@CADENA_XML", SqlDbType.Xml) : sqlParametro.Value = oCFDI.XMLSinDeclaracion
+                    sqlParametro = .Parameters.Add("@CODIGO_USUARIO_AGREGO_XML_EXTERNO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
+                    sqlParametro = .Parameters.Add("@FOLIO_NUMERICO", SqlDbType.Int) : sqlParametro.Value = oCFDI.Comprobante.folio
+                    sqlParametro = .Parameters.Add("@IDCATALOGO_FOLIO_FELECTRONICA", SqlDbType.SmallInt) : sqlParametro.Value = sIDCATALOGO_FOLIO_FELECTRONICA
+                    sqlParametro = .Parameters.Add("@ID_SIS_CFD_CATALOGO_CERTIFICADOS", SqlDbType.SmallInt) : sqlParametro.Value = sID_SIS_CFD_CATALOGO_CERTIFICADOS
+                    sqlParametro = .Parameters.Add("@VERSION_ESQUEMA_XML", SqlDbType.NVarChar, 6) : sqlParametro.Value = oCFDI.Comprobante.version
+                    sqlParametro = .Parameters.Add("@NUMERO_CERTIFICADO_DIGITAL", SqlDbType.NVarChar, 50) : sqlParametro.Value = oCFDI.Comprobante.noCertificado
+                    sqlParametro = .Parameters.Add("@CADENA_ORIGINAL", SqlDbType.NVarChar, 4000) : sqlParametro.Value = ""
+                    sqlParametro = .Parameters.Add("@SELLO_DIGITAL", SqlDbType.NVarChar, 2000) : sqlParametro.Value = oCFDI.Comprobante.sello
+                    sqlParametro = .Parameters.Add("@FOLIO_FISCAL_SAT", SqlDbType.NVarChar, 50) : sqlParametro.Value = oCFDI.ComplementoTFD.UUID
+                    sqlParametro = .Parameters.Add("@FECHA_TIMBRADO_SAT", SqlDbType.NVarChar, 20) : sqlParametro.Value = oCFDI.ComplementoTFD.FechaTimbrado
+                    sqlParametro = .Parameters.Add("@NUMERO_SERIE_CERTIFICADO_SAT", SqlDbType.NVarChar, 20) : sqlParametro.Value = oCFDI.ComplementoTFD.NoCertificadoSAT
+                    sqlParametro = .Parameters.Add("@SELLO_SAT", SqlDbType.NVarChar, 500) : sqlParametro.Value = oCFDI.ComplementoTFD.SelloSAT
+                    sqlParametro = .Parameters.Add("@CBB_IMAGE", SqlDbType.Image) : sqlParametro.Value = oCFDI.ComplementoTFD.CBBImage
+                    sqlParametro = .Parameters.Add("@RFCPROVCERTIF", SqlDbType.NVarChar, 13) : sqlParametro.Value = oCFDI.ComplementoTFD.RfcProvCertif
+                    sqlParametro = .Parameters.Add("@LEYENDA", SqlDbType.NVarChar, 200) : sqlParametro.Value = oCFDI.ComplementoTFD.Leyenda
+
+                    .ExecuteNonQuery()
+
+                    bResultado = True
+
+                Catch ex As Exception
+                    HandleError(Me._Nombre_Catalogo, sProcedure, ex)
+                Finally
+                    Me._Conexion.Close()
+                    cmd.Dispose()
+                    sqlParametro = Nothing
+                End Try
+            End With
+
+            oCFDI = Nothing
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
+        End Try
+        Return bResultado
+    End Function
+
 #End Region
 
 End Class
