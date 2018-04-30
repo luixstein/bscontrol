@@ -1493,7 +1493,7 @@ Buscar:
                                   CDate(.Cell(i, Me.iGyDocFECHA).Text), .Cell(i, Me.iGyDocRFC_EMISOR).Text, valorNumerico(.Cell(i, Me.iGyDocMONTO).Text),
                                  .Cell(i, Me.iGyDocCODIGO_MONEDA_SAT).Text, valorNumerico(txtTipoCambio.Text),
                                  .Cell(i, Me.iGyDocCUENTA_BENEFICIARIO).Text, .Cell(i, Me.iGyDocCODIGO_BANCO_DESTINO_NACIONAL).Text,
-                                 IIf(.Cell(i, Me.iGyDocES_BANCO_EXTRANJERO).Text = "1", .Cell(i, Me.iGyDocNOMBRE_BANCO_EMISOR_NACIONAL).Text, "").ToString'''''''''''''''''==========================Afectacion
+                                 IIf(.Cell(i, Me.iGyDocES_BANCO_EXTRANJERO).Text = "1", .Cell(i, Me.iGyDocNOMBRE_BANCO_EMISOR_NACIONAL).Text, "").ToString
                         ) 'El beneficiario es la empresa propia, el store lo llenará internamente
 
                         If lID_BANCOS_DETALLE = 0 Then
