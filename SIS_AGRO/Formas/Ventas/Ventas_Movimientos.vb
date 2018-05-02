@@ -147,10 +147,11 @@ Public Class Ventas_Movimientos
     Private Sub tsbCancelar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbCancelar.Click
         If Me.oVenta.ESTATUS_VENTA = "A" Or Me.oVenta.ESTATUS_VENTA = "G" Then
             If Me.CancelarVenta = True Then  'Se cancelo el documento correctamente = true
-                If Me.oVenta.VERSION_ESQUEMA_XML > "2.2" And oDocumento.TIMBRA_DOCUMENTO = True Then 'Si es CFDi
+                'If Me.oVenta.VERSION_ESQUEMA_XML > "2.2" And oDocumento.TIMBRA_DOCUMENTO = True Then 'Si es CFDi
+                If Me.oVenta.VERSION_ESQUEMA_XML > "2.2" And txtLEN(Me.oVenta.FOLIO_FISCAL_SAT) = True Then 'Puede ser un documento no timbrable que le subieron un xml externo
                     Me.oVenta.CancelarTimbre()
                 End If
-                MsgBox("Movimiento de venta cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+                MsgBox("Movimiento cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
             End If
             Me.Consultar()
             Me.GestionaCambioEstado()

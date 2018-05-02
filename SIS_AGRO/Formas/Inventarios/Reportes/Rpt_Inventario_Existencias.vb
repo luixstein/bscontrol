@@ -34,8 +34,7 @@ Public Class Rpt_Inventario_Existencias
     Private Sub Consultar()
         Dim StrFiltros As String = ""
         Dim FormatoDeReporte As String = ""
-        Dim Rpt As ReportDocument
-        Rpt = New ReportDocument
+        Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
 
         Try
@@ -73,45 +72,47 @@ Public Class Rpt_Inventario_Existencias
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
             frm.Show()
         Catch ex As Exception
-            HandleError(Me.Name, "Reporte de Existencias Actuales", ex)
+            HandleError(Me.Name, "Consultar", ex)
         Finally
             oReporte = Nothing
         End Try
     End Sub
 
     Private Sub DesplegarAlmacenes()
-        Dim oElementos As New Class_CatAlmacenes
-        With Me.CmbAlmacen
-            .DisplayMember = "NOMBRE_ALMACEN"
-            .ValueMember = "CODIGO_ALMACEN"
-
-            Dim dView As New Data.DataView(oElementos.ObtenerAlmacenesParaReportes)
-            dView.Sort = "NOMBRE_ALMACEN"
-            .DataSource = dView
-
-            If dView.Count > 0 Then
-                .SelectedIndex = 0
-            End If
-
-            .SelectedValue = Usuario.Codigo_Almacen
-        End With
+        Try
+            Dim oElementos As New Class_CatAlmacenes
+            With Me.CmbAlmacen
+                .DisplayMember = "NOMBRE_ALMACEN"
+                .ValueMember = "CODIGO_ALMACEN"
+                Dim dView As New Data.DataView(oElementos.ObtenerAlmacenesParaReportes)
+                dView.Sort = "NOMBRE_ALMACEN"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedIndex = 0
+                End If
+                .SelectedValue = Usuario.Codigo_Almacen
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarAlmacenes", ex)
+        End Try
     End Sub
 
     Private Sub DesplegarFamilias()
-        Dim oElementos As New Class_CatFamilias
-        With Me.CboFamilia
-            .DisplayMember = "Nombre_Familia"
-
-            .ValueMember = "codigo_Familia"
-
-            Dim dView As New Data.DataView(oElementos.ObtenerElementosParaReportes)
-            dView.Sort = "Nombre_Familia"
-            .DataSource = dView
-            If dView.Count > 0 Then
-                '.SelectedIndex = 0
-                .SelectedValue = "T"
-            End If
-        End With
+        Try
+            Dim oElementos As New Class_CatFamilias
+            With Me.CboFamilia
+                .DisplayMember = "NOMBRE_FAMILIA"
+                .ValueMember = "CODIGO_FAMILIA"
+                Dim dView As New Data.DataView(oElementos.ObtenerElementosParaReportes)
+                dView.Sort = "NOMBRE_FAMILIA"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedValue = "T"
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarFamilias", ex)
+        End Try
     End Sub
 
     Private Function ValidarPeriodo() As Boolean
@@ -123,9 +124,9 @@ Public Class Rpt_Inventario_Existencias
         If Me.DtFechaDesde.Value > Me.DtFechaHasta.Value Then
             MsgBox("Rango de fechas inválidas.", MsgBoxStyle.Exclamation, Me.Name)
             Me.DtFechaDesde.Focus()
-            Exit Function
+            Return False
         End If
-        ValidarPeriodo = True
+        Return True
     End Function
 #End Region
 
@@ -133,7 +134,7 @@ Public Class Rpt_Inventario_Existencias
 
 #End Region
 
-#Region " Eventos de TxtFiltro"
+#Region "Eventos de TxtFiltro"
 
 #End Region
 
@@ -149,7 +150,7 @@ Public Class Rpt_Inventario_Existencias
         End If
     End Sub
 
-    Private Sub txtKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
+    Private Sub txtKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodArticulo.KeyPress
         txtNoBeep(e)
     End Sub
 #End Region

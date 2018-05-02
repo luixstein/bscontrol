@@ -2707,10 +2707,10 @@ Public Class Class_Ventas_Global
                 Return False
             End If
 
-            oSQL = New Class_find("SELECT FOLIO_VENTA FROM VENTA_GLOBAL WHERE FOLIO_FISCAL_SAT='" & sReplace(Me._FOLIO_FISCAL_SAT) & "'")
+            oSQL = New Class_find("SELECT FOLIO_VENTA FROM VENTA_GLOBAL WHERE FOLIO_FISCAL_SAT='" & sReplace(oCFDI.ComplementoTFD.UUID) & "'")
             If txtLEN(oSQL.Result1) = True Then
-                If MsgBox("Ya existe una venta " & oSQL.Result1 & " con este xml registrado." & vbCrLf &
-                          "Esta seguro de relacionar este xml?", vbQuestion Or MsgBoxStyle.YesNo) = MsgBoxResult.No Then
+                If MsgBox("Ya existe una venta con el folio " & oSQL.Result1 & " con este xml registrado." & vbCrLf &
+                          "Esta seguro de relacionarlo(si lo hace va tener este xml asociado a más de una venta) ?", vbQuestion Or MsgBoxStyle.YesNo) = MsgBoxResult.No Then
                     Return False
                 End If
             End If
