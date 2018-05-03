@@ -2707,6 +2707,11 @@ Public Class Class_Ventas_Global
                 Return False
             End If
 
+            If Me._ESTATUS_VENTA = "C" And Me._ESTATUS_CANCELACION_CFDI = "1" Then
+                MsgBox("Esta venta ya tiene ligado un xml y esta cancelado el timbre, no es válido ponerle otro xml o se perderia la referencia de la cancelación del 1er xml.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
             oSQL = New Class_find("SELECT FOLIO_VENTA FROM VENTA_GLOBAL WHERE FOLIO_FISCAL_SAT='" & sReplace(oCFDI.ComplementoTFD.UUID) & "'")
             If txtLEN(oSQL.Result1) = True Then
                 If MsgBox("Ya existe una venta con el folio " & oSQL.Result1 & " con este xml registrado." & vbCrLf &
