@@ -128,6 +128,8 @@ Partial Class Ventas_Movimientos
         Me.GridCFDIsRelacionados = New FlexCell.Grid()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cboTipoRelacionCFDI = New System.Windows.Forms.ComboBox()
+        Me.lblUUID = New System.Windows.Forms.Label()
+        Me.txtUUID = New System.Windows.Forms.TextBox()
         Me.tsbSubirXML = New System.Windows.Forms.ToolStripButton()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
@@ -270,8 +272,8 @@ Partial Class Ventas_Movimientos
         Me.tsbRecuperarXMLPDF.Image = Global.BsControl.My.Resources.Resources._782
         Me.tsbRecuperarXMLPDF.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbRecuperarXMLPDF.Name = "tsbRecuperarXMLPDF"
-        Me.tsbRecuperarXMLPDF.Size = New System.Drawing.Size(129, 24)
-        Me.tsbRecuperarXMLPDF.Text = "Recuperar xml/pdf"
+        Me.tsbRecuperarXMLPDF.Size = New System.Drawing.Size(150, 24)
+        Me.tsbRecuperarXMLPDF.Text = "Recuperar/ver xml/pdf"
         Me.tsbRecuperarXMLPDF.Visible = False
         '
         'tsbEnviarCorreo
@@ -1043,6 +1045,8 @@ Partial Class Ventas_Movimientos
         '
         'gbTotales
         '
+        Me.gbTotales.Controls.Add(Me.txtUUID)
+        Me.gbTotales.Controls.Add(Me.lblUUID)
         Me.gbTotales.Controls.Add(Me.Label1)
         Me.gbTotales.Controls.Add(Me.lblIEPSIncluido)
         Me.gbTotales.Controls.Add(Me.btnSeries)
@@ -1092,7 +1096,7 @@ Partial Class Ventas_Movimientos
         '
         'btnAgregaAddenda
         '
-        Me.btnAgregaAddenda.Location = New System.Drawing.Point(318, 74)
+        Me.btnAgregaAddenda.Location = New System.Drawing.Point(852, 72)
         Me.btnAgregaAddenda.Name = "btnAgregaAddenda"
         Me.btnAgregaAddenda.Size = New System.Drawing.Size(113, 23)
         Me.btnAgregaAddenda.TabIndex = 339
@@ -1230,6 +1234,25 @@ Partial Class Ventas_Movimientos
         Me.cboTipoRelacionCFDI.Name = "cboTipoRelacionCFDI"
         Me.cboTipoRelacionCFDI.Size = New System.Drawing.Size(301, 21)
         Me.cboTipoRelacionCFDI.TabIndex = 383
+        '
+        'lblUUID
+        '
+        Me.lblUUID.AutoSize = True
+        Me.lblUUID.Location = New System.Drawing.Point(140, 77)
+        Me.lblUUID.Name = "lblUUID"
+        Me.lblUUID.Size = New System.Drawing.Size(40, 13)
+        Me.lblUUID.TabIndex = 384
+        Me.lblUUID.Text = "UUID :"
+        '
+        'txtUUID
+        '
+        Me.txtUUID.Location = New System.Drawing.Point(187, 75)
+        Me.txtUUID.MaxLength = 15
+        Me.txtUUID.Name = "txtUUID"
+        Me.txtUUID.ReadOnly = True
+        Me.txtUUID.Size = New System.Drawing.Size(256, 20)
+        Me.txtUUID.TabIndex = 385
+        Me.txtUUID.Text = "A4681950-24FA-49CA-9770-425129A4C130"
         '
         'tsbSubirXML
         '
@@ -1382,5 +1405,7 @@ Partial Class Ventas_Movimientos
     Friend WithEvents GridCFDIsRelacionados As FlexCell.Grid
     Friend WithEvents lblDisplayDescuento As Label
     Friend WithEvents lblDescuento As Label
+    Friend WithEvents txtUUID As TextBox
+    Friend WithEvents lblUUID As Label
     Friend WithEvents tsbSubirXML As ToolStripButton
 End Class

@@ -66,6 +66,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\_FuentesFer\Abaconet\AbacoNet_3.0\bin\Debug\cfdi.dll</HintPath>
     </Reference>
+    <Reference Include="CFDIXML, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\CFDIXML.dll</HintPath>
+    </Reference>
     <Reference Include="co32, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\co32.dll</HintPath>

@@ -147,10 +147,11 @@ Public Class Ventas_Movimientos
     Private Sub tsbCancelar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbCancelar.Click
         If Me.oVenta.ESTATUS_VENTA = "A" Or Me.oVenta.ESTATUS_VENTA = "G" Then
             If Me.CancelarVenta = True Then  'Se cancelo el documento correctamente = true
-                If Me.oVenta.VERSION_ESQUEMA_XML > "2.2" And oDocumento.TIMBRA_DOCUMENTO = True Then 'Si es CFDi
+                'If Me.oVenta.VERSION_ESQUEMA_XML > "2.2" And oDocumento.TIMBRA_DOCUMENTO = True Then 'Si es CFDi
+                If Me.oVenta.VERSION_ESQUEMA_XML > "2.2" And txtLEN(Me.oVenta.FOLIO_FISCAL_SAT) = True Then 'Puede ser un documento no timbrable que le subieron un xml externo
                     Me.oVenta.CancelarTimbre()
                 End If
-                MsgBox("Movimiento de venta cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+                MsgBox("Movimiento cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
             End If
             Me.Consultar()
             Me.GestionaCambioEstado()
@@ -206,11 +207,16 @@ Public Class Ventas_Movimientos
 
     Private Sub tsbImprimir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbImprimir.Click
         'If txtLEN(Me.oVenta.SELLO_DIGITAL) = False And Me.oDocumento.AFECTA_CONTABILIDAD = True Then
-        Me.oVenta.Consultar()
-        If Me.oVenta.VERSION_ESQUEMA_XML >= "3.2" Then
-            If txtLEN(Me.oVenta.FOLIO_FISCAL_SAT + Me.oVenta.FECHA_TIMBRADO_SAT + Me.oVenta.NUMERO_SERIE_CERTIFICADO_SAT + Me.oVenta.SELLO_SAT) = False And txtLEN(Me.oVenta.CBB_IMAGE.ToString) = False And Me.oDocumento.TIMBRA_DOCUMENTO = True Then
-                MsgBox("La factura debe de estar sellada para poder imprimir.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Sub
+        'Me.oVenta.Consultar()
+        'If Me.oVenta.VERSION_ESQUEMA_XML >= "3.2" Then
+        '    If txtLEN(Me.oVenta.FOLIO_FISCAL_SAT + Me.oVenta.FECHA_TIMBRADO_SAT + Me.oVenta.NUMERO_SERIE_CERTIFICADO_SAT + Me.oVenta.SELLO_SAT) = False And txtLEN(Me.oVenta.CBB_IMAGE.ToString) = False And Me.oDocumento.TIMBRA_DOCUMENTO = True Then
+        '        MsgBox("La factura debe de estar sellada para poder imprimir.", MsgBoxStyle.Exclamation, Me.Text)
+        '        Exit Sub
+        '    End If
+        'End If
+        If Me.oDocumento.TIMBRA_DOCUMENTO = True Then
+            If txtLEN(Me.oVenta.FOLIO_FISCAL_SAT) = False Then
+                MsgBox("Advertencia: esta venta no esta timbrada.", MsgBoxStyle.Exclamation, Me.Text)
             End If
         End If
         Me.oVenta.Imprimir()
@@ -218,6 +224,10 @@ Public Class Ventas_Movimientos
 
     Private Sub tsbTimbrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbTimbrar.Click
         If Me.oVenta.TIMBRADO_CFDI = "0" Then
+            If Me.oDocumento.TIMBRA_DOCUMENTO = False Then
+                MsgBox("Este tipo de documento no es timbrable.", vbExclamation, Me.Text)
+                Return
+            End If
             If Me.oVenta.GeneraFacturaElectronica(True, True) = True Then
                 Me.Consultar()
             Else
@@ -231,7 +241,7 @@ Public Class Ventas_Movimientos
     Private Sub tsbCancelarTimbre_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbCancelarTimbre.Click
         If Me.oVenta.CancelarTimbre() = True Then
             MsgBox("Timbre cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
-            Me.tsbCancelarTimbre.Enabled = False
+            Me.Consultar()
         End If
     End Sub
 
@@ -260,8 +270,9 @@ Public Class Ventas_Movimientos
     End Sub
 
     Private Sub tsbSubirXML_Click(sender As Object, e As EventArgs) Handles tsbSubirXML.Click
-        '
+        Me.SubirXML()
     End Sub
+
 #End Region
 
 #Region "Eventos de objetos"
@@ -783,12 +794,14 @@ Buscar:
             End If
 
             Me.lblVersionCFDI.Text = ""
+            Me.txtUUID.Text = ""
 
             'Estos no se gestionan en el cambiar el estado, se gestionan en el consultar
             Me.tsbTimbrar.Visible = False
             Me.tsbCancelarTimbre.Visible = False
             Me.tsbRecuperarXMLPDF.Visible = False
             Me.tsbEnviarCorreo.Visible = False
+            Me.tsbSubirXML.Visible = False
 
             Me.TabControl1.SelectedIndex = 0
             Me.bClienteEsContribuyenteIEPS = False
@@ -2745,6 +2758,7 @@ CANCELAR:
             Me.tsbCancelarTimbre.Visible = False
             Me.tsbRecuperarXMLPDF.Visible = False
             Me.tsbEnviarCorreo.Visible = False
+            Me.tsbSubirXML.Visible = False
 
             Dim sVenta As String = ""
 
@@ -2842,6 +2856,7 @@ CANCELAR:
                     Me.LblEstatus.Text = Me.oVenta.ESTATUS_VENTA.ToString.ToUpper
                     Me.Grid.DataSource = Me.oVenta.ObtenerDetalle(False) 'Que si muestre comentarios
                     Me.dpFecha.Value = CDate(Me.oVenta.FECHA)
+                    Me.txtUUID.Text = Me.oVenta.FOLIO_FISCAL_SAT
 
                     Me.GridSeries.DataSource = Me.oVenta.ObtenerDetalleSeries
                     Me.FormateaGridSeries()
@@ -2910,16 +2925,29 @@ CANCELAR:
 
             Me.txtFolio.Enabled = False
 
-            If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
-                If Me.oVenta.TIMBRADO_CFDI = "0" AndAlso Me.oVenta.TIMBRADO_DESCARTADO = "0" And Me.oVenta.VERSION_ESQUEMA_XML <> "2.2" Then
-                    Me.tsbTimbrar.Visible = True
-                ElseIf Me.oVenta.ESTATUS_VENTA = "C" AndAlso Me.oVenta.TIMBRADO_CFDI = "1" AndAlso Me.oVenta.TIMBRADO_DESCARTADO = "0" AndAlso Me.oVenta.ESTATUS_CANCELACION_CFDI = "0" Then
-                    Me.tsbCancelarTimbre.Visible = True
+            If Empresa_Sistema.FELECTRONICA_ACTIVA = True Then
+                If oDocumento.TIMBRA_DOCUMENTO = True Then
+                    If Me.oVenta.TIMBRADO_CFDI = "0" AndAlso Me.oVenta.TIMBRADO_DESCARTADO = "0" AndAlso Me.oVenta.VERSION_ESQUEMA_XML <> "2.2" Then
+                        Me.tsbTimbrar.Visible = True
+                    End If
                 End If
 
+                '*Nota1:Puede ser que sea una factura recapturada de otro sistema y no es timbrable, pero pudieron haberle subido un xml externo
                 If Me.oVenta.TIMBRADO_CFDI = "1" Then
                     Me.tsbRecuperarXMLPDF.Visible = True
                     Me.tsbEnviarCorreo.Visible = True
+                End If
+
+                'Sea o no timbrable el documento(recordar que hay facturas recapturas *Nota1) si esta cancelada y timbrada es prospecto para cancelarle el timbre
+                If Me.oVenta.ESTATUS_VENTA = "C" AndAlso Me.oVenta.TIMBRADO_CFDI = "1" AndAlso Me.oVenta.TIMBRADO_DESCARTADO = "0" AndAlso Me.oVenta.ESTATUS_CANCELACION_CFDI = "0" Then
+                    Me.tsbCancelarTimbre.Visible = True
+                End If
+            End If
+
+            'Si es una factura que no timbra(es recapturada de otro sistema)
+            If Empresa_Sistema.FELECTRONICA_ACTIVA = True AndAlso oDocumento.TIMBRA_DOCUMENTO = False Then
+                If (Me.oDocumento.CODIGO_DOCUMENTO Like "F*") = True Then
+                    Me.tsbSubirXML.Visible = True
                 End If
             End If
 
@@ -4186,6 +4214,41 @@ BuscaVentas:
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
+    End Function
+
+    Private Function SubirXML() As Boolean
+        Const sProcedure As String = "SubirXML"
+        Dim bResultado As Boolean = False
+        Try
+            Dim OpenFileDialog1 As New OpenFileDialog(), sRutaXML As String = ""
+
+            With OpenFileDialog1
+                .Filter = "xml files (*.xml)|*.xml"
+                .Title = "Seleccione un xml"
+                .RestoreDirectory = True
+                .Multiselect = False
+
+                If .ShowDialog() = DialogResult.OK Then
+                    sRutaXML = .FileName
+                End If
+            End With
+
+            OpenFileDialog1.Dispose()
+
+            If txtLEN(sRutaXML) = True Then
+                bResultado = Me.oVenta.SubeXMLExterno(sRutaXML)
+            End If
+
+            If bResultado = True Then
+                MsgBox("XML agregado satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
+                Me.Consultar()
+            End If
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+
+        Return bResultado
     End Function
 
 #End Region
