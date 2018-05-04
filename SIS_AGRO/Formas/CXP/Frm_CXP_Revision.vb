@@ -66,6 +66,14 @@ Public Class Frm_CXP_Revision
     Private iGyActivoImporte As Integer = 3
 #End Region
 
+#Region "Columnas grid facturas relacionadas"
+    Private iGyCodigoCliente As Integer = 1
+    Private iGyNombreCliente As Integer = 2
+    Private iGyFolioVenta As Integer = 3
+    Private iGyFechaVenta As Integer = 4
+    Private iGyGasto As Integer = 5
+#End Region
+
     Private sCodigoTipoDocumento As String = ""
 
 #Region "Opciones"
@@ -902,6 +910,35 @@ Buscar:
         End Try
     End Sub
 
+    Private Sub FormateaGridFacturasRelacionadas()
+        Try
+            With Me.GridFacturasRelacionadas
+                .Column(Me.iGyCodigoCliente).Width = 100
+                .Column(Me.iGyNombreCliente).Width = 100
+                .Column(Me.iGyFolioVenta).Width = 100
+                .Column(Me.iGyFechaVenta).Width = 100
+                .Column(Me.iGyGasto).Width = 100
+
+                .Cell(0, Me.iGyCodigoCliente).Text = "Código cliente"
+                .Cell(0, Me.iGyNombreCliente).Text = "Nombre cliente"
+                .Cell(0, Me.iGyFolioVenta).Text = "Folio venta"
+                .Cell(0, Me.iGyFechaVenta).Text = "Fecha venta"
+                .Cell(0, Me.iGyGasto).Text = "Gasto"
+
+                .Column(Me.iGyGasto).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyGasto).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyGasto).DecimalLength = 2
+                .Column(Me.iGyGasto).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyNombreCliente).Locked = True
+                .Column(Me.iGyFechaVenta).Locked = True
+
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "FormateaGridFacturasRelacionadas", ex)
+        End Try
+    End Sub
+
     Private Sub Cambia_Estado(ByVal pEstado As enumEstados)
         Try
             Me.Estado = pEstado
@@ -1219,9 +1256,9 @@ Buscar:
 
                             oCategoria = New Class_CatCategorias(Me.GridCuentas.Cell(Renglon, Me.iGyCodigoCategoria).Text)
                             If oCategoria.Existe = True Then
-                                Me.GridCuentas.Cell(Renglon, Me.iGyCodigoCategoria).Text = oCategoria.Codigo_Categoria
-                                Me.GridCuentas.Cell(Renglon, Me.iGyNombreCategoria).Text = oCategoria.Nombre_Categoria
-                                Me.GridCuentas.Cell(Renglon, Me.iGyCuentaContable).Text = oCategoria.Codigo_Tipo_Categoria
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCodigoCategoria).Text = oCategoria.CODIGO_CATEGORIA
+                                Me.GridCuentas.Cell(Renglon, Me.iGyNombreCategoria).Text = oCategoria.NOMBRE_CATEGORIA
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCuentaContable).Text = oCategoria.CODIGO_TIPO_CATEGORIA
                             Else
                                 Me.GridCuentas.Cell(Renglon, Me.iGyCodigoCategoria).Text = ""
                                 Me.GridCuentas.Cell(Renglon, Me.iGyNombreCategoria).Text = ""
@@ -1330,9 +1367,9 @@ busca_categoria:
 
                             If txtLEN(sCodigo) = True Then
                                 oCategoria = New Class_CatCategorias(sCodigo)
-                                Me.GridCuentas.Cell(Renglon, Me.iGyCodigoCategoria).Text = oCategoria.Codigo_Categoria.ToString
-                                Me.GridCuentas.Cell(Renglon, Me.iGyNombreCategoria).Text = oCategoria.Nombre_Categoria
-                                Me.GridCuentas.Cell(Renglon, Me.iGyCuentaContable).Text = oCategoria.Codigo_Tipo_Categoria
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCodigoCategoria).Text = oCategoria.CODIGO_CATEGORIA.ToString
+                                Me.GridCuentas.Cell(Renglon, Me.iGyNombreCategoria).Text = oCategoria.NOMBRE_CATEGORIA
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCuentaContable).Text = oCategoria.CODIGO_TIPO_CATEGORIA
                                 'Else
                                 '    GoTo busca_categoria
                                 '    Return
@@ -1498,6 +1535,44 @@ busca_cuenta_contable:
                 HandleError(Me.Name, "GestionaGridActivos", ex)
             End Try
 
+        End With
+    End Sub
+
+    Private Sub GestionaGridFacturasRelacionadas(ByVal e As System.Windows.Forms.KeyEventArgs)
+        Dim Columna As Integer, Renglon As Integer
+        Dim StrCod As String = ""
+        Dim sCodigo As String = "", sTipo As String = ""
+        Dim oCliente As New Class_CatClientes
+        Dim oVenta As New Class_Ventas_Global
+
+        With Me.GridFacturasRelacionadas
+            Try
+                Columna = .Selection.FirstCol
+                Renglon = .Selection.FirstRow
+
+                If .Column(Columna).Locked = True Then
+                    Return
+                End If
+
+                Select Case e.KeyCode
+                    Case Keys.F6
+                        Select Case Columna
+                            Case Me.iGyCodigoCliente
+                                sCodigo = oCliente.BusquedaVisual_PorDescripcion
+                                If txtLEN(sCodigo) = True Then
+                                    oCliente = New Class_CatClientes(sCodigo)
+                                    .Cell(Renglon, Me.iGyCodigoCliente).Text = sCodigo
+                                    .Cell(Renglon, iGyNombreCliente).Text = oCliente.NOMBRE_CLIENTE
+                                End If
+                                sCodigo = Nothing
+
+                            Case Me.iGyFolioVenta
+
+                        End Select
+                End Select
+            Catch ex As Exception
+
+            End Try
         End With
     End Sub
 
