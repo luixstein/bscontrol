@@ -89,11 +89,12 @@ Partial Class Frm_CXP_Revision
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.GridFacturasRelacionadas = New FlexCell.Grid()
-        Me.chkPromediarGasto = New System.Windows.Forms.CheckBox()
-        Me.LblDisplayTotalGasto = New System.Windows.Forms.Label()
+        Me.gbFacturasRelacionadas = New System.Windows.Forms.GroupBox()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.lblTotalGasto = New System.Windows.Forms.Label()
+        Me.LblDisplayTotalGasto = New System.Windows.Forms.Label()
+        Me.chkPromediarGasto = New System.Windows.Forms.CheckBox()
+        Me.GridFacturasRelacionadas = New FlexCell.Grid()
         Me.gbProveedor.SuspendLayout()
         Me.gbCompras.SuspendLayout()
         Me.gbCompraProveedor.SuspendLayout()
@@ -101,7 +102,7 @@ Partial Class Frm_CXP_Revision
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
+        Me.gbFacturasRelacionadas.SuspendLayout()
         Me.SuspendLayout()
         '
         'CboAlmacen
@@ -109,7 +110,7 @@ Partial Class Frm_CXP_Revision
         Me.CboAlmacen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboAlmacen.FormattingEnabled = True
         Me.CboAlmacen.Location = New System.Drawing.Point(91, 15)
-        Me.CboAlmacen.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboAlmacen.Margin = New System.Windows.Forms.Padding(4)
         Me.CboAlmacen.Name = "CboAlmacen"
         Me.CboAlmacen.Size = New System.Drawing.Size(280, 24)
         Me.CboAlmacen.TabIndex = 0
@@ -142,9 +143,9 @@ Partial Class Frm_CXP_Revision
         Me.gbProveedor.Controls.Add(Me.txtFolioCompra)
         Me.gbProveedor.Controls.Add(Me.LblDisplayFolio)
         Me.gbProveedor.Location = New System.Drawing.Point(16, 30)
-        Me.gbProveedor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbProveedor.Margin = New System.Windows.Forms.Padding(4)
         Me.gbProveedor.Name = "gbProveedor"
-        Me.gbProveedor.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbProveedor.Padding = New System.Windows.Forms.Padding(4)
         Me.gbProveedor.Size = New System.Drawing.Size(1331, 79)
         Me.gbProveedor.TabIndex = 1
         Me.gbProveedor.TabStop = False
@@ -152,7 +153,7 @@ Partial Class Frm_CXP_Revision
         'btnDocumentoSiguiente
         '
         Me.btnDocumentoSiguiente.Location = New System.Drawing.Point(276, 47)
-        Me.btnDocumentoSiguiente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnDocumentoSiguiente.Margin = New System.Windows.Forms.Padding(4)
         Me.btnDocumentoSiguiente.Name = "btnDocumentoSiguiente"
         Me.btnDocumentoSiguiente.Size = New System.Drawing.Size(33, 26)
         Me.btnDocumentoSiguiente.TabIndex = 380
@@ -192,7 +193,7 @@ Partial Class Frm_CXP_Revision
         'btnDocumentoAnterior
         '
         Me.btnDocumentoAnterior.Location = New System.Drawing.Point(239, 47)
-        Me.btnDocumentoAnterior.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnDocumentoAnterior.Margin = New System.Windows.Forms.Padding(4)
         Me.btnDocumentoAnterior.Name = "btnDocumentoAnterior"
         Me.btnDocumentoAnterior.Size = New System.Drawing.Size(33, 26)
         Me.btnDocumentoAnterior.TabIndex = 379
@@ -221,7 +222,7 @@ Partial Class Frm_CXP_Revision
         'TxtCodigoProveedor
         '
         Me.TxtCodigoProveedor.Location = New System.Drawing.Point(499, 47)
-        Me.TxtCodigoProveedor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodigoProveedor.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigoProveedor.MaxLength = 8
         Me.TxtCodigoProveedor.Name = "TxtCodigoProveedor"
         Me.TxtCodigoProveedor.Size = New System.Drawing.Size(109, 22)
@@ -230,7 +231,7 @@ Partial Class Frm_CXP_Revision
         'btnContinuar
         '
         Me.btnContinuar.Location = New System.Drawing.Point(1104, 47)
-        Me.btnContinuar.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnContinuar.Margin = New System.Windows.Forms.Padding(4)
         Me.btnContinuar.Name = "btnContinuar"
         Me.btnContinuar.Size = New System.Drawing.Size(144, 26)
         Me.btnContinuar.TabIndex = 3
@@ -242,7 +243,7 @@ Partial Class Frm_CXP_Revision
         Me.cboTipoGasto.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboTipoGasto.FormattingEnabled = True
         Me.cboTipoGasto.Location = New System.Drawing.Point(499, 15)
-        Me.cboTipoGasto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboTipoGasto.Margin = New System.Windows.Forms.Padding(4)
         Me.cboTipoGasto.Name = "cboTipoGasto"
         Me.cboTipoGasto.Size = New System.Drawing.Size(280, 24)
         Me.cboTipoGasto.TabIndex = 2
@@ -260,7 +261,7 @@ Partial Class Frm_CXP_Revision
         'txtFolioCompra
         '
         Me.txtFolioCompra.Location = New System.Drawing.Point(91, 48)
-        Me.txtFolioCompra.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFolioCompra.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFolioCompra.MaxLength = 15
         Me.txtFolioCompra.Name = "txtFolioCompra"
         Me.txtFolioCompra.Size = New System.Drawing.Size(135, 22)
@@ -288,9 +289,9 @@ Partial Class Frm_CXP_Revision
         Me.gbCompras.Controls.Add(Me.txtTotal)
         Me.gbCompras.Controls.Add(Me.GridCompras)
         Me.gbCompras.Location = New System.Drawing.Point(-7, 0)
-        Me.gbCompras.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbCompras.Margin = New System.Windows.Forms.Padding(4)
         Me.gbCompras.Name = "gbCompras"
-        Me.gbCompras.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbCompras.Padding = New System.Windows.Forms.Padding(4)
         Me.gbCompras.Size = New System.Drawing.Size(1331, 204)
         Me.gbCompras.TabIndex = 2
         Me.gbCompras.TabStop = False
@@ -299,7 +300,7 @@ Partial Class Frm_CXP_Revision
         'btnImprimirPoliza
         '
         Me.btnImprimirPoliza.Location = New System.Drawing.Point(1093, 64)
-        Me.btnImprimirPoliza.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnImprimirPoliza.Margin = New System.Windows.Forms.Padding(4)
         Me.btnImprimirPoliza.Name = "btnImprimirPoliza"
         Me.btnImprimirPoliza.Size = New System.Drawing.Size(144, 26)
         Me.btnImprimirPoliza.TabIndex = 215
@@ -309,7 +310,7 @@ Partial Class Frm_CXP_Revision
         'btnContinuarCompras
         '
         Me.btnContinuarCompras.Location = New System.Drawing.Point(1093, 97)
-        Me.btnContinuarCompras.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnContinuarCompras.Margin = New System.Windows.Forms.Padding(4)
         Me.btnContinuarCompras.Name = "btnContinuarCompras"
         Me.btnContinuarCompras.Size = New System.Drawing.Size(144, 26)
         Me.btnContinuarCompras.TabIndex = 0
@@ -332,7 +333,7 @@ Partial Class Frm_CXP_Revision
         '
         Me.ckbSaldos.AutoSize = True
         Me.ckbSaldos.Location = New System.Drawing.Point(104, 177)
-        Me.ckbSaldos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ckbSaldos.Margin = New System.Windows.Forms.Padding(4)
         Me.ckbSaldos.Name = "ckbSaldos"
         Me.ckbSaldos.Size = New System.Drawing.Size(204, 21)
         Me.ckbSaldos.TabIndex = 213
@@ -353,7 +354,7 @@ Partial Class Frm_CXP_Revision
         '
         Me.txtSaldo.Enabled = False
         Me.txtSaldo.Location = New System.Drawing.Point(771, 174)
-        Me.txtSaldo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtSaldo.Margin = New System.Windows.Forms.Padding(4)
         Me.txtSaldo.Name = "txtSaldo"
         Me.txtSaldo.Size = New System.Drawing.Size(132, 22)
         Me.txtSaldo.TabIndex = 211
@@ -363,7 +364,7 @@ Partial Class Frm_CXP_Revision
         '
         Me.txtTotal.Enabled = False
         Me.txtTotal.Location = New System.Drawing.Point(916, 174)
-        Me.txtTotal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtTotal.Margin = New System.Windows.Forms.Padding(4)
         Me.txtTotal.Name = "txtTotal"
         Me.txtTotal.Size = New System.Drawing.Size(132, 22)
         Me.txtTotal.TabIndex = 210
@@ -382,7 +383,7 @@ Partial Class Frm_CXP_Revision
         Me.GridCompras.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.GridCompras.Location = New System.Drawing.Point(12, 23)
         Me.GridCompras.LockButton = True
-        Me.GridCompras.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GridCompras.Margin = New System.Windows.Forms.Padding(4)
         Me.GridCompras.Name = "GridCompras"
         Me.GridCompras.Rows = 2
         Me.GridCompras.SelectionMode = FlexCell.SelectionModeEnum.ByRow
@@ -404,7 +405,7 @@ Partial Class Frm_CXP_Revision
         'DtpFechaFacturaProveedor
         '
         Me.DtpFechaFacturaProveedor.Location = New System.Drawing.Point(1031, 15)
-        Me.DtpFechaFacturaProveedor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.DtpFechaFacturaProveedor.Margin = New System.Windows.Forms.Padding(4)
         Me.DtpFechaFacturaProveedor.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.DtpFechaFacturaProveedor.Name = "DtpFechaFacturaProveedor"
         Me.DtpFechaFacturaProveedor.Size = New System.Drawing.Size(273, 22)
@@ -424,7 +425,7 @@ Partial Class Frm_CXP_Revision
         '
         Me.TxtRetencion.Enabled = False
         Me.TxtRetencion.Location = New System.Drawing.Point(809, 450)
-        Me.TxtRetencion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtRetencion.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtRetencion.MaxLength = 15
         Me.TxtRetencion.Name = "TxtRetencion"
         Me.TxtRetencion.Size = New System.Drawing.Size(121, 22)
@@ -475,7 +476,7 @@ Partial Class Frm_CXP_Revision
         'dtpFechaVencimiento
         '
         Me.dtpFechaVencimiento.Location = New System.Drawing.Point(1031, 44)
-        Me.dtpFechaVencimiento.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.dtpFechaVencimiento.Margin = New System.Windows.Forms.Padding(4)
         Me.dtpFechaVencimiento.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dtpFechaVencimiento.Name = "dtpFechaVencimiento"
         Me.dtpFechaVencimiento.Size = New System.Drawing.Size(273, 22)
@@ -504,7 +505,7 @@ Partial Class Frm_CXP_Revision
         'TxtConcepto
         '
         Me.TxtConcepto.Location = New System.Drawing.Point(139, 39)
-        Me.TxtConcepto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtConcepto.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtConcepto.MaxLength = 1000
         Me.TxtConcepto.Multiline = True
         Me.TxtConcepto.Name = "TxtConcepto"
@@ -556,9 +557,9 @@ Partial Class Frm_CXP_Revision
         Me.gbCompraProveedor.Controls.Add(Me.LblDisplayVencimiento)
         Me.gbCompraProveedor.Controls.Add(Me.LblDisplaySubTotal)
         Me.gbCompraProveedor.Location = New System.Drawing.Point(16, 110)
-        Me.gbCompraProveedor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbCompraProveedor.Margin = New System.Windows.Forms.Padding(4)
         Me.gbCompraProveedor.Name = "gbCompraProveedor"
-        Me.gbCompraProveedor.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbCompraProveedor.Padding = New System.Windows.Forms.Padding(4)
         Me.gbCompraProveedor.Size = New System.Drawing.Size(1331, 479)
         Me.gbCompraProveedor.TabIndex = 2
         Me.gbCompraProveedor.TabStop = False
@@ -566,7 +567,7 @@ Partial Class Frm_CXP_Revision
         'btnActualizaConcepto
         '
         Me.btnActualizaConcepto.Location = New System.Drawing.Point(761, 10)
-        Me.btnActualizaConcepto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnActualizaConcepto.Margin = New System.Windows.Forms.Padding(4)
         Me.btnActualizaConcepto.Name = "btnActualizaConcepto"
         Me.btnActualizaConcepto.Size = New System.Drawing.Size(145, 26)
         Me.btnActualizaConcepto.TabIndex = 380
@@ -606,7 +607,7 @@ Partial Class Frm_CXP_Revision
         Me.GridActivos.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.GridActivos.Location = New System.Drawing.Point(12, 267)
         Me.GridActivos.LockButton = True
-        Me.GridActivos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GridActivos.Margin = New System.Windows.Forms.Padding(4)
         Me.GridActivos.Name = "GridActivos"
         Me.GridActivos.Rows = 2
         Me.GridActivos.SelectionMode = FlexCell.SelectionModeEnum.ByCell
@@ -628,7 +629,7 @@ Partial Class Frm_CXP_Revision
         '
         Me.ckbDolares.AutoSize = True
         Me.ckbDolares.Location = New System.Drawing.Point(12, 450)
-        Me.ckbDolares.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ckbDolares.Margin = New System.Windows.Forms.Padding(4)
         Me.ckbDolares.Name = "ckbDolares"
         Me.ckbDolares.Size = New System.Drawing.Size(79, 21)
         Me.ckbDolares.TabIndex = 7
@@ -639,7 +640,7 @@ Partial Class Frm_CXP_Revision
         '
         Me.txtImporteDolares.Enabled = False
         Me.txtImporteDolares.Location = New System.Drawing.Point(233, 450)
-        Me.txtImporteDolares.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtImporteDolares.Margin = New System.Windows.Forms.Padding(4)
         Me.txtImporteDolares.MaxLength = 15
         Me.txtImporteDolares.Name = "txtImporteDolares"
         Me.txtImporteDolares.Size = New System.Drawing.Size(143, 22)
@@ -649,7 +650,7 @@ Partial Class Frm_CXP_Revision
         'txtTipoCambio
         '
         Me.txtTipoCambio.Location = New System.Drawing.Point(103, 450)
-        Me.txtTipoCambio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtTipoCambio.Margin = New System.Windows.Forms.Padding(4)
         Me.txtTipoCambio.MaxLength = 15
         Me.txtTipoCambio.Name = "txtTipoCambio"
         Me.txtTipoCambio.Size = New System.Drawing.Size(121, 22)
@@ -680,7 +681,7 @@ Partial Class Frm_CXP_Revision
         Me.GridCuentas.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.GridCuentas.Location = New System.Drawing.Point(12, 89)
         Me.GridCuentas.LockButton = True
-        Me.GridCuentas.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GridCuentas.Margin = New System.Windows.Forms.Padding(4)
         Me.GridCuentas.Name = "GridCuentas"
         Me.GridCuentas.Rows = 2
         Me.GridCuentas.SelectionMode = FlexCell.SelectionModeEnum.ByCell
@@ -691,7 +692,7 @@ Partial Class Frm_CXP_Revision
         'btnRegresar
         '
         Me.btnRegresar.Location = New System.Drawing.Point(1164, 446)
-        Me.btnRegresar.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnRegresar.Margin = New System.Windows.Forms.Padding(4)
         Me.btnRegresar.Name = "btnRegresar"
         Me.btnRegresar.Size = New System.Drawing.Size(144, 26)
         Me.btnRegresar.TabIndex = 14
@@ -702,7 +703,7 @@ Partial Class Frm_CXP_Revision
         '
         Me.txtPorciento.Enabled = False
         Me.txtPorciento.Location = New System.Drawing.Point(717, 450)
-        Me.txtPorciento.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtPorciento.Margin = New System.Windows.Forms.Padding(4)
         Me.txtPorciento.MaxLength = 15
         Me.txtPorciento.Name = "txtPorciento"
         Me.txtPorciento.Size = New System.Drawing.Size(72, 22)
@@ -713,7 +714,7 @@ Partial Class Frm_CXP_Revision
         '
         Me.txtTotalCompra.Enabled = False
         Me.txtTotalCompra.Location = New System.Drawing.Point(940, 450)
-        Me.txtTotalCompra.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtTotalCompra.Margin = New System.Windows.Forms.Padding(4)
         Me.txtTotalCompra.MaxLength = 15
         Me.txtTotalCompra.Name = "txtTotalCompra"
         Me.txtTotalCompra.ReadOnly = True
@@ -725,7 +726,7 @@ Partial Class Frm_CXP_Revision
         '
         Me.TxtIVA.Enabled = False
         Me.TxtIVA.Location = New System.Drawing.Point(592, 450)
-        Me.TxtIVA.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtIVA.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtIVA.MaxLength = 15
         Me.TxtIVA.Name = "TxtIVA"
         Me.TxtIVA.Size = New System.Drawing.Size(121, 22)
@@ -736,7 +737,7 @@ Partial Class Frm_CXP_Revision
         '
         Me.TxtSubTotal.Enabled = False
         Me.TxtSubTotal.Location = New System.Drawing.Point(461, 450)
-        Me.TxtSubTotal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtSubTotal.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtSubTotal.MaxLength = 15
         Me.TxtSubTotal.Name = "TxtSubTotal"
         Me.TxtSubTotal.Size = New System.Drawing.Size(121, 22)
@@ -746,7 +747,7 @@ Partial Class Frm_CXP_Revision
         'txtEmbarque
         '
         Me.txtEmbarque.Location = New System.Drawing.Point(576, 15)
-        Me.txtEmbarque.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtEmbarque.Margin = New System.Windows.Forms.Padding(4)
         Me.txtEmbarque.MaxLength = 60
         Me.txtEmbarque.Name = "txtEmbarque"
         Me.txtEmbarque.Size = New System.Drawing.Size(135, 22)
@@ -765,7 +766,7 @@ Partial Class Frm_CXP_Revision
         'txtFolioProveedor
         '
         Me.txtFolioProveedor.Location = New System.Drawing.Point(333, 15)
-        Me.txtFolioProveedor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFolioProveedor.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFolioProveedor.MaxLength = 60
         Me.txtFolioProveedor.Name = "txtFolioProveedor"
         Me.txtFolioProveedor.Size = New System.Drawing.Size(135, 22)
@@ -845,7 +846,7 @@ Partial Class Frm_CXP_Revision
         '
         'TabPage2
         '
-        Me.TabPage2.Controls.Add(Me.GroupBox1)
+        Me.TabPage2.Controls.Add(Me.gbFacturasRelacionadas)
         Me.TabPage2.Location = New System.Drawing.Point(4, 25)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
@@ -854,19 +855,59 @@ Partial Class Frm_CXP_Revision
         Me.TabPage2.Text = "TabPage2"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
-        'GroupBox1
+        'gbFacturasRelacionadas
         '
-        Me.GroupBox1.BackColor = System.Drawing.SystemColors.Control
-        Me.GroupBox1.Controls.Add(Me.lblTotalGasto)
-        Me.GroupBox1.Controls.Add(Me.LblDisplayTotalGasto)
-        Me.GroupBox1.Controls.Add(Me.chkPromediarGasto)
-        Me.GroupBox1.Controls.Add(Me.GridFacturasRelacionadas)
-        Me.GroupBox1.Location = New System.Drawing.Point(0, 0)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(1300, 206)
-        Me.GroupBox1.TabIndex = 0
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "GroupBox1"
+        Me.gbFacturasRelacionadas.BackColor = System.Drawing.SystemColors.Control
+        Me.gbFacturasRelacionadas.Controls.Add(Me.Button1)
+        Me.gbFacturasRelacionadas.Controls.Add(Me.lblTotalGasto)
+        Me.gbFacturasRelacionadas.Controls.Add(Me.LblDisplayTotalGasto)
+        Me.gbFacturasRelacionadas.Controls.Add(Me.chkPromediarGasto)
+        Me.gbFacturasRelacionadas.Controls.Add(Me.GridFacturasRelacionadas)
+        Me.gbFacturasRelacionadas.Location = New System.Drawing.Point(0, 0)
+        Me.gbFacturasRelacionadas.Name = "gbFacturasRelacionadas"
+        Me.gbFacturasRelacionadas.Size = New System.Drawing.Size(1300, 206)
+        Me.gbFacturasRelacionadas.TabIndex = 0
+        Me.gbFacturasRelacionadas.TabStop = False
+        Me.gbFacturasRelacionadas.Text = "Facturas relacionadas :"
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(1070, 116)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(104, 40)
+        Me.Button1.TabIndex = 385
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'lblTotalGasto
+        '
+        Me.lblTotalGasto.AutoSize = True
+        Me.lblTotalGasto.Location = New System.Drawing.Point(1141, 61)
+        Me.lblTotalGasto.Name = "lblTotalGasto"
+        Me.lblTotalGasto.Size = New System.Drawing.Size(16, 17)
+        Me.lblTotalGasto.TabIndex = 384
+        Me.lblTotalGasto.Text = "0"
+        '
+        'LblDisplayTotalGasto
+        '
+        Me.LblDisplayTotalGasto.AutoSize = True
+        Me.LblDisplayTotalGasto.Location = New System.Drawing.Point(1047, 61)
+        Me.LblDisplayTotalGasto.Name = "LblDisplayTotalGasto"
+        Me.LblDisplayTotalGasto.Size = New System.Drawing.Size(87, 17)
+        Me.LblDisplayTotalGasto.TabIndex = 383
+        Me.LblDisplayTotalGasto.Text = "Total gasto :"
+        '
+        'chkPromediarGasto
+        '
+        Me.chkPromediarGasto.AutoSize = True
+        Me.chkPromediarGasto.Checked = True
+        Me.chkPromediarGasto.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkPromediarGasto.Location = New System.Drawing.Point(1050, 22)
+        Me.chkPromediarGasto.Name = "chkPromediarGasto"
+        Me.chkPromediarGasto.Size = New System.Drawing.Size(134, 21)
+        Me.chkPromediarGasto.TabIndex = 382
+        Me.chkPromediarGasto.Text = "Promediar gasto"
+        Me.chkPromediarGasto.UseVisualStyleBackColor = True
         '
         'GridFacturasRelacionadas
         '
@@ -885,37 +926,9 @@ Partial Class Frm_CXP_Revision
         Me.GridFacturasRelacionadas.Name = "GridFacturasRelacionadas"
         Me.GridFacturasRelacionadas.Rows = 2
         Me.GridFacturasRelacionadas.SelectionMode = FlexCell.SelectionModeEnum.ByCell
-        Me.GridFacturasRelacionadas.Size = New System.Drawing.Size(1001, 155)
+        Me.GridFacturasRelacionadas.Size = New System.Drawing.Size(994, 155)
         Me.GridFacturasRelacionadas.TabIndex = 381
         Me.GridFacturasRelacionadas.UncheckedImage = CType(resources.GetObject("GridFacturasRelacionadas.UncheckedImage"), System.Drawing.Bitmap)
-        '
-        'chkPromediarGasto
-        '
-        Me.chkPromediarGasto.AutoSize = True
-        Me.chkPromediarGasto.Location = New System.Drawing.Point(1050, 22)
-        Me.chkPromediarGasto.Name = "chkPromediarGasto"
-        Me.chkPromediarGasto.Size = New System.Drawing.Size(134, 21)
-        Me.chkPromediarGasto.TabIndex = 382
-        Me.chkPromediarGasto.Text = "Promediar gasto"
-        Me.chkPromediarGasto.UseVisualStyleBackColor = True
-        '
-        'LblDisplayTotalGasto
-        '
-        Me.LblDisplayTotalGasto.AutoSize = True
-        Me.LblDisplayTotalGasto.Location = New System.Drawing.Point(1047, 61)
-        Me.LblDisplayTotalGasto.Name = "LblDisplayTotalGasto"
-        Me.LblDisplayTotalGasto.Size = New System.Drawing.Size(87, 17)
-        Me.LblDisplayTotalGasto.TabIndex = 383
-        Me.LblDisplayTotalGasto.Text = "Total gasto :"
-        '
-        'lblTotalGasto
-        '
-        Me.lblTotalGasto.AutoSize = True
-        Me.lblTotalGasto.Location = New System.Drawing.Point(1141, 61)
-        Me.lblTotalGasto.Name = "lblTotalGasto"
-        Me.lblTotalGasto.Size = New System.Drawing.Size(51, 17)
-        Me.lblTotalGasto.TabIndex = 384
-        Me.lblTotalGasto.Text = "Label4"
         '
         'Frm_CXP_Revision
         '
@@ -927,7 +940,7 @@ Partial Class Frm_CXP_Revision
         Me.Controls.Add(Me.gbCompraProveedor)
         Me.Controls.Add(Me.gbProveedor)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Frm_CXP_Revision"
         Me.Text = "Gastos"
@@ -942,8 +955,8 @@ Partial Class Frm_CXP_Revision
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage2.ResumeLayout(False)
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
+        Me.gbFacturasRelacionadas.ResumeLayout(False)
+        Me.gbFacturasRelacionadas.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1014,9 +1027,10 @@ Partial Class Frm_CXP_Revision
     Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
     Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
     Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
-    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents gbFacturasRelacionadas As System.Windows.Forms.GroupBox
     Friend WithEvents lblTotalGasto As System.Windows.Forms.Label
     Friend WithEvents LblDisplayTotalGasto As System.Windows.Forms.Label
     Friend WithEvents chkPromediarGasto As System.Windows.Forms.CheckBox
     Friend WithEvents GridFacturasRelacionadas As FlexCell.Grid
+    Friend WithEvents Button1 As System.Windows.Forms.Button
 End Class

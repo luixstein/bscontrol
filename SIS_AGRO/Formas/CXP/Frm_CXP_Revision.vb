@@ -67,11 +67,12 @@ Public Class Frm_CXP_Revision
 #End Region
 
 #Region "Columnas grid facturas relacionadas"
-    Private iGyCodigoCliente As Integer = 1
-    Private iGyNombreCliente As Integer = 2
-    Private iGyFolioVenta As Integer = 3
-    Private iGyFechaVenta As Integer = 4
-    Private iGyGasto As Integer = 5
+    Private iGyIdCentroCostosDetalleVentas As Integer = 1
+    Private iGyCodigoCliente As Integer = 2
+    Private iGyNombreCliente As Integer = 3
+    Private iGyFolioVenta As Integer = 4
+    Private iGyFechaVenta As Integer = 5
+    Private iGyGasto As Integer = 6
 #End Region
 
     Private sCodigoTipoDocumento As String = ""
@@ -263,6 +264,10 @@ Public Class Frm_CXP_Revision
 
     Private Sub btnActualizaConcepto_Click(sender As Object, e As EventArgs) Handles btnActualizaConcepto.Click
         Me.ActualizaConcepto()
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Me.GrabarGridFacturasRelacionadas()
     End Sub
 #End Region
 
@@ -508,6 +513,10 @@ Buscar:
         Child.Dispose()
     End Sub
 
+    Private Sub GridFacturasRelacionadas_KeyDown(ByVal Sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles GridFacturasRelacionadas.KeyDown
+        Me.GestionaGridFacturasRelacionadas(e)
+    End Sub
+
 #Region "Eventos Genericos"
     Private Sub txt_Enter(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim oTexBox As TextBox = CType(sender, TextBox)
@@ -708,10 +717,12 @@ Buscar:
             Me.ckbDolares.Checked = False
             Me.ckbDolares.Enabled = True
             Me.txtTipoCambio.Enabled = False
+            Me.lblTotalGasto.Text = "0"
 
             Me.InicializaGridCompras()
             Me.InicializaGridCuentas()
             Me.InicializaGridActivos()
+            Me.InicializaGridFacturasRelacionadas()
 
             Me.oCompras = New Class_Compras_Global("CA" & Usuario.Codigo_Plaza)
             Me.txtFolioCompra.Text = Me.oCompras.GeneraFolio
@@ -766,6 +777,20 @@ Buscar:
             Me.FormateaGridActivos()
         Catch ex As Exception
             HandleError(Me.Name, "InicializaGridActivos", ex)
+        End Try
+    End Sub
+
+    Private Sub InicializaGridFacturasRelacionadas()
+        Try
+            Me.GridFacturasRelacionadas.DataSource = Nothing
+            FG_Grid_Limpiar(Me.GridFacturasRelacionadas)
+            Me.GridFacturasRelacionadas.Rows = 2
+            Me.GridFacturasRelacionadas.Cols = 7
+            Me.FormateaGridFacturasRelacionadas()
+            Me.GridFacturasRelacionadas.Column(Me.iGyFolioVenta).Locked = True
+
+        Catch ex As Exception
+            HandleError(Me.Name, "InicializaGridFacturasRelacionadas", ex)
         End Try
     End Sub
 
@@ -914,7 +939,7 @@ Buscar:
         Try
             With Me.GridFacturasRelacionadas
                 .Column(Me.iGyCodigoCliente).Width = 100
-                .Column(Me.iGyNombreCliente).Width = 100
+                .Column(Me.iGyNombreCliente).Width = 300
                 .Column(Me.iGyFolioVenta).Width = 100
                 .Column(Me.iGyFechaVenta).Width = 100
                 .Column(Me.iGyGasto).Width = 100
@@ -930,8 +955,12 @@ Buscar:
                 .Column(Me.iGyGasto).DecimalLength = 2
                 .Column(Me.iGyGasto).Alignment = FlexCell.AlignmentEnum.RightCenter
 
+                .Column(Me.iGyFechaVenta).CellType = FlexCell.CellTypeEnum.DateTime
+                .Column(Me.iGyFechaVenta).FormatString = "dd-MMM-yy"
+
                 .Column(Me.iGyNombreCliente).Locked = True
                 .Column(Me.iGyFechaVenta).Locked = True
+                .Column(Me.iGyIdCentroCostosDetalleVentas).Visible = False
 
             End With
         Catch ex As Exception
@@ -1555,20 +1584,117 @@ busca_cuenta_contable:
                 End If
 
                 Select Case e.KeyCode
+                    Case Keys.Return
+                        Select Case Columna
+                            Case Me.iGyCodigoCliente
+                                sCodigo = .Cell(Renglon, Columna).Text
+                                If txtLEN(sCodigo) = False Then
+                                    GoTo BuscaCliente
+                                    Return
+                                End If
+
+                                oCliente = New Class_CatClientes(sCodigo)
+                                If oCliente.Existe = False Then
+                                    MsgBox("El código de cliente no existe o esta dado de baja.", MsgBoxStyle.Critical, Me.Name)
+                                    Return
+                                Else
+                                    .Cell(Renglon, Columna).Text = sCodigo.ToUpper
+                                    .Cell(Renglon, Me.iGyNombreCliente).Text = oCliente.NOMBRE_CLIENTE
+                                    .Column(Me.iGyFolioVenta).Locked = False
+                                End If
+                                sCodigo = Nothing
+
+                            Case Me.iGyFolioVenta
+                                If txtLEN(.Cell(Renglon, Me.iGyCodigoCliente).Text) = False Then
+                                    MsgBox("Asígne un código de cliente.", MsgBoxStyle.Exclamation, Me.Name)
+                                    .Cell(Renglon, Columna).Text = ""
+                                    .Cell(Renglon, Me.iGyCodigoCliente).SetFocus()
+                                    Return
+                                End If
+
+                                sCodigo = .Cell(Renglon, Columna).Text
+                                If txtLEN(sCodigo) = False Then
+                                    GoTo BuscaVenta
+                                    Return
+                                End If
+
+                                oVenta = New Class_Ventas_Global(sCodigo)
+                                If oVenta.Existe = False Then
+                                    MsgBox("El folio de venta no existe.", MsgBoxStyle.Critical, Me.Name)
+                                    Return
+                                Else
+                                    .Cell(Renglon, Me.iGyFolioVenta).Text = sCodigo.ToUpper
+                                    .Cell(Renglon, Me.iGyFechaVenta).Text = oVenta.FECHA.ToString
+                                    If Me.chkPromediarGasto.Checked Then
+                                        Me.PromediarGastoGridVentas()
+                                    End If
+                                    Me.TotalGridFacturasRelacionadas()
+                                End If
+                                sCodigo = Nothing
+
+                            Case Me.iGyGasto
+                                If txtLEN(.Cell(Renglon, Me.iGyCodigoCliente).Text) = False Then
+                                    MsgBox("Asígne un código de cliente.", MsgBoxStyle.Exclamation, Me.Name)
+                                    .Cell(Renglon, Columna).Text = ""
+                                    Return
+                                End If
+
+                                If txtLEN(.Cell(Renglon, Me.iGyFolioVenta).Text) = False Then
+                                    MsgBox("Asígne un folio de venta." + .Cell(Renglon, Me.iGyCodigoCliente).Text, MsgBoxStyle.Exclamation, Me.Name)
+                                    .Cell(Renglon, Columna).Text = ""
+                                    Return
+                                End If
+
+                                Me.TotalGridFacturasRelacionadas()
+
+                        End Select
+
+                        If .Rows = Renglon + 1 And txtLEN(.Cell(Renglon, Me.iGyCodigoCliente).Text) = True And txtLEN(.Cell(Renglon, Me.iGyGasto).Text) = True Then
+                            .Rows = .Rows + 1
+                        End If
+
+                        Select Case Columna
+                            Case Me.iGyGasto
+                                    .Cell(Renglon + 1, 0).SetFocus()
+                            Case Else
+                                .Cell(Renglon, Columna).SetFocus()
+                        End Select
+
                     Case Keys.F6
                         Select Case Columna
                             Case Me.iGyCodigoCliente
+BuscaCliente:
                                 sCodigo = oCliente.BusquedaVisual_PorDescripcion
                                 If txtLEN(sCodigo) = True Then
                                     oCliente = New Class_CatClientes(sCodigo)
                                     .Cell(Renglon, Me.iGyCodigoCliente).Text = sCodigo
                                     .Cell(Renglon, iGyNombreCliente).Text = oCliente.NOMBRE_CLIENTE
+                                    .Column(Me.iGyFolioVenta).Locked = False
                                 End If
                                 sCodigo = Nothing
 
                             Case Me.iGyFolioVenta
+                                If txtLEN(.Cell(Renglon, Me.iGyCodigoCliente).Text) = True Then
+BuscaVenta:
+                                    sCodigo = oVenta.BusquedaVisual_PorCliente(.Cell(Renglon, Me.iGyCodigoCliente).Text)
+                                    If txtLEN(sCodigo) = True Then
+                                        oVenta = New Class_Ventas_Global(sCodigo)
+                                        .Cell(Renglon, Me.iGyFolioVenta).Text = sCodigo
+                                        .Cell(Renglon, Me.iGyFechaVenta).Text = oVenta.FECHA.ToString
+                                        If Me.chkPromediarGasto.Checked Then
+                                            Me.PromediarGastoGridVentas()
+                                        End If
+                                        Me.TotalGridFacturasRelacionadas()
+
+                                    End If
+                                    sCodigo = Nothing
+                                End If
 
                         End Select
+
+                    Case Keys.F8 Or Keys.Delete
+                        .Selection.DeleteByRow()
+
                 End Select
             Catch ex As Exception
 
@@ -1583,6 +1709,39 @@ busca_cuenta_contable:
             Me.CalculaImporteDolares()
         Catch ex As Exception
             HandleError(Me.Name, "TotalizaGridCentrosCostosyActivos", ex)
+        End Try
+    End Sub
+
+    Private Sub TotalGridFacturasRelacionadas()
+        Try
+            Me.lblTotalGasto.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridFacturasRelacionadas, CShort(Me.iGyGasto)))
+
+        Catch ex As Exception
+            HandleError(Me.Name, "TotalGridFacturasRelacionadas", ex)
+        End Try
+    End Sub
+
+    Private Sub PromediarGastoGridVentas()
+        Dim i, columnas As Integer
+        Dim GastoPromedio As Decimal
+        Try
+            columnas = 0
+            For i = 1 To Me.GridFacturasRelacionadas.Rows - 1
+                If txtLEN(Me.GridFacturasRelacionadas.Cell(i, Me.iGyFolioVenta).Text) = True Then
+                    columnas = columnas + 1
+                End If
+            Next
+
+            GastoPromedio = CDec(Me.txtTotalCompra.Text) / columnas
+
+            For i = 1 To Me.GridFacturasRelacionadas.Rows - 1
+                If txtLEN(Me.GridFacturasRelacionadas.Cell(i, Me.iGyFolioVenta).Text) = True Then
+                    Me.GridFacturasRelacionadas.Cell(i, Me.iGyGasto).Text = GastoPromedio.ToString
+                End If
+            Next
+
+        Catch ex As Exception
+            HandleError(Me.Name, "PromediarGastoGridVentas", ex)
         End Try
     End Sub
 
@@ -1740,6 +1899,11 @@ busca_cuenta_contable:
                     End If
                     Me.txtFolioCompra.Text = .FOLIO_COMPRA
 
+                    If Me.GrabarGridFacturasRelacionadas = False Then
+                        MsgBox("Error al tratar de grabar facturas relacionadas", MsgBoxStyle.Exclamation, Me.Name)
+                        Exit Function
+                    End If
+
                     'Aplicar = True
                     MsgBox("Movimiento de compras aplicado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
 
@@ -1767,6 +1931,54 @@ busca_cuenta_contable:
             bResultado = True
         Catch ex As Exception
             HandleError(Me.Name, "GestionaGrabar", ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Private Function GrabarGridFacturasRelacionadas() As Boolean
+        Dim bResultado As Boolean = False
+        Dim i As Integer
+        Dim oDetalleVentas As New Class_Centros_Costos_Detalle_Ventas
+
+        Try
+
+            If valorNumerico(Me.txtTotalCompra.Text) <> valorNumerico(Me.lblTotalGasto.Text) Then
+                MsgBox("El total del gasto es distinto del gasto de las facturas.", MsgBoxStyle.Exclamation, Me.Name)
+                Return bResultado
+            End If
+
+            With oDetalleVentas
+                For i = 1 To Me.GridFacturasRelacionadas.Rows - 1
+
+                    If txtLEN(Me.GridFacturasRelacionadas.Cell(i, Me.iGyCodigoCliente).Text) = True AndAlso txtLEN(Me.GridFacturasRelacionadas.Cell(i, Me.iGyFolioVenta).Text) = True _
+                    AndAlso txtLEN(Me.GridFacturasRelacionadas.Cell(i, Me.iGyGasto).Text) = True Then
+                        .ID_CENTRO_COSTOS_DETALLE_VENTAS = Me.GridFacturasRelacionadas.Cell(i, Me.iGyIdCentroCostosDetalleVentas).Text
+                        .FOLIO_MOVIMIENTO = Me.txtFolioCompra.Text
+                        .FOLIO_VENTA = Me.GridFacturasRelacionadas.Cell(i, Me.iGyFolioVenta).Text
+                        .IMPORTE = valorNumerico(Me.GridFacturasRelacionadas.Cell(i, Me.iGyGasto).Text)
+
+                        If txtLEN(.ID_CENTRO_COSTOS_DETALLE_VENTAS) = True Then 'Si tiene id actualiza el renglon
+                            If .GrabaCentroCostosDetalleVentas("0") = False Then
+                                MsgBox("Error al actualizar el renglon " & i, MsgBoxStyle.Exclamation)
+                                Return bResultado
+                            End If
+                        Else 'Inserta renglon nuevo
+                            If .GrabaCentroCostosDetalleVentas("1") = False Then
+                                MsgBox("Error al insertar el renglon " & i, MsgBoxStyle.Exclamation)
+                                Return bResultado
+                            End If
+                        End If
+
+                    End If
+                Next
+
+                bResultado = True
+
+            End With
+
+        Catch ex As Exception
+            HandleError(Me.Name, "GrabarGridFacturasRelacionadas", ex)
         End Try
 
         Return bResultado
@@ -2136,6 +2348,12 @@ busca_cuenta_contable:
             'Renglones activos
             Me.GridActivos.DataSource = Me.oCompras.ObtenerDetalleGastosActivos()
             Me.FormateaGridActivos()
+
+            'Renglones facturas relacionadas
+            Dim oDetalleVentas As New Class_Centros_Costos_Detalle_Ventas
+            Me.GridFacturasRelacionadas.DataSource = oDetalleVentas.ObtenerDetalleVentas(Me.txtFolioCompra.Text)
+            Me.FormateaGridFacturasRelacionadas()
+            Me.lblTotalGasto.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridFacturasRelacionadas, CShort(Me.iGyGasto)))
 
             'Me.Cambia_Estado(enumEstados.SINORDENCOMPRA)
             Me.tsbEditarCostos.Enabled = True
