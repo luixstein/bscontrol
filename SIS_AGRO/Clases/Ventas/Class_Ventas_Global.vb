@@ -1978,8 +1978,6 @@ Public Class Class_Ventas_Global
 
                 bResultado = True
 
-                Process.Start(sRutaXML) 'Para abrir el xml
-
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "RecuperaXML", ex)
             Finally
@@ -2618,6 +2616,7 @@ Public Class Class_Ventas_Global
             sRutaPDF = archivos.ToString & sNombreXmlTimbrado & ".PDF"
 
             If Me.RecuperaXML(sRutaXML) = True Then
+                Process.Start(sRutaXML) 'Para abrir el xml
                 If Me.ExportarAPdf(sRutaPDF) = False Then
                     MsgBox("Se logró recuperar el XML pero no se logró generar el PDF del documento : " & Me._FOLIO_VENTA & ". Avíse al depto. de sistemas.", vbExclamation, sProcedure)
                     Return False
