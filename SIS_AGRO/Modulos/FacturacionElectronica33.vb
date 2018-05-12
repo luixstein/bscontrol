@@ -37,12 +37,12 @@ Module FacturacionElectronica33
             End If
 
             If sqlResult.Result1 <> Empresa_Sistema.VERSION_ESQUEMA_CFD Then
-                MsgBox("El esquema de documento es diferente al actual.", vbExclamation, sProcedure)
+                MsgBox("El esquema de documento(" & sqlResult.Result1 & ") es diferente al actual(" & Empresa_Sistema.VERSION_ESQUEMA_CFD & ").", vbExclamation, sProcedure)
                 Return False
             End If
 
             If CDate(Format(dFecha, "dd/MM/yyyy HH:mm:ss")) < dFechaServidor.AddDays(-3) Then
-                MsgBox("La fecha del documento es mayor de 72 horas de la fecha actual, el SAT no permite timbrar con fecha de más de 3 días.", vbExclamation, sProcedure)
+                MsgBox("La fecha del documento(" & CDate(Format(dFecha, "dd/MM/yyyy HH:mm:ss")).ToString & ") es mayor de 72 horas de la fecha actual(" & dFechaServidor.AddDays(-3) & "), el SAT no permite timbrar con fecha de más de 3 días.", vbExclamation, sProcedure)
                 Return False
             End If
 
@@ -144,7 +144,6 @@ Module FacturacionElectronica33
                 .LugarExpedicion = tPlazaFacturaElectronica.CODIGO_POSTAL
                 .Confirmacion = ""
             End With
-
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''CfdiRelacionados''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
