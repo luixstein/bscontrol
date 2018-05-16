@@ -841,7 +841,7 @@ Partial Class Frm_CXP_Revision
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage1.Size = New System.Drawing.Size(1296, 202)
         Me.TabPage1.TabIndex = 0
-        Me.TabPage1.Text = "TabPage1"
+        Me.TabPage1.Text = "Compras"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
         'TabPage2
@@ -852,7 +852,7 @@ Partial Class Frm_CXP_Revision
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage2.Size = New System.Drawing.Size(1296, 202)
         Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "TabPage2"
+        Me.TabPage2.Text = "Ventas"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
         'gbFacturasRelacionadas

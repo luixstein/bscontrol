@@ -952,7 +952,7 @@ Buscar:
 
                 .Column(Me.iGyGasto).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
                 .Column(Me.iGyGasto).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyGasto).DecimalLength = 2
+                .Column(Me.iGyGasto).DecimalLength = 4
                 .Column(Me.iGyGasto).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .Column(Me.iGyFechaVenta).CellType = FlexCell.CellTypeEnum.DateTime
