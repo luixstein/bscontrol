@@ -1059,14 +1059,14 @@ Public Class Class_CatClientes
         Return Resultado
     End Function
 
-    Public Function BusquedaVisual_PorDescripcionRegresandoRFC() As String
+    Public Function BusquedaVisual_PorDescripcionRegresandoRFC(Optional ByVal bValidaPlaza As Boolean = True) As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de clientes por Descripción."
         f.sCampo = "NOMBRE_CLIENTE"
         f.sOrder = "NOMBRE_CLIENTE"
         f.sTable = "CAT_CLIENTES"
-        f.sQl = "SELECT RFC,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE 1=1 AND ESTATUS='A' AND CODIGO_ZONA='" & Usuario.Codigo_Plaza.ToString & "' AND "
+        f.sQl = "SELECT RFC,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE 1=1 AND ESTATUS='A' " & IIf(bValidaPlaza = True, " AND PLAZA='" & Usuario.Codigo_Plaza.ToString & "'", "").ToString & " AND "
         f.Inicia("")
         f.ShowDialog()
         Try

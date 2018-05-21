@@ -81,6 +81,7 @@ Public NotInheritable Class Class_sisEmpresa
     Private _CODIGO_ARTICULO_AUTOMATICO As Boolean
     Private _CODIGO_ALMACEN_MATERIALES_EMPAQUE As String
     Private _VALIDA_SERIES_REPETIDAS_EN_ENTRADAS As Boolean
+    Private _PERMITE_CLIENTES_MULTIPLAZA As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -594,6 +595,13 @@ Public NotInheritable Class Class_sisEmpresa
             Return Me._VALIDA_SERIES_REPETIDAS_EN_ENTRADAS
         End Get
     End Property
+
+    Public ReadOnly Property PERMITE_CLIENTES_MULTIPLAZA() As Boolean
+        Get
+            Return Me._PERMITE_CLIENTES_MULTIPLAZA
+        End Get
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -945,6 +953,7 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._VERSION_CFDI_DLL = "" & dReader("VERSION_CFDI_DLL").ToString
                     Me._CODIGO_ALMACEN_MATERIALES_EMPAQUE = "" & dReader("CODIGO_ALMACEN_MATERIALES_EMPAQUE").ToString
                     Me._VALIDA_SERIES_REPETIDAS_EN_ENTRADAS = CBool(dReader("VALIDA_SERIES_REPETIDAS_EN_ENTRADAS").ToString)
+                    Me._PERMITE_CLIENTES_MULTIPLAZA = CBool(dReader("PERMITE_CLIENTES_MULTIPLAZA").ToString)
 
                     dReader.Close()
                     bResultado = True

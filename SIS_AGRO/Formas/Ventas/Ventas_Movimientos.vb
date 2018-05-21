@@ -331,18 +331,19 @@ Public Class Ventas_Movimientos
     End Sub
 
     Private Sub TxtCodigoCliente_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCliente.KeyDown
-        Dim sText As String
+        Dim sText As String = ""
         Select Case e.KeyCode
             Case Keys.F6
 Buscar:
-                sText = Me.oCliente.BusquedaVisualPlaza
-                If txtLEN(sText) = True Then Me.TxtCliente.Text = sText
-            Case Keys.Enter
-                If txtLEN(Me.TxtCliente.Text) = False Then
-                    Me.lblCliente.Text = "" : GoTo Buscar : Exit Sub
+                If Empresa_Sistema.PERMITE_CLIENTES_MULTIPLAZA = True Then
+                    sText = Me.oCliente.BusquedaVisual_PorDescripcionSinFiltroZona
+                Else
+                    sText = Me.oCliente.BusquedaVisualPlaza
                 End If
 
-                If Me.ConsultarCliente() = False Then
+                If txtLEN(sText) = True Then Me.TxtCliente.Text = sText
+            Case Keys.Enter
+                If txtLEN(Me.TxtCliente.Text) = False OrElse Me.ConsultarCliente() = False Then 'Con OrElse si la 1er condición se cumple no se evalua las siguientes
                     Me.lblCliente.Text = "" : GoTo Buscar : Exit Sub
                 End If
 

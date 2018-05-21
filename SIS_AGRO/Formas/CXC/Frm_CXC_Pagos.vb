@@ -324,17 +324,22 @@ enter:
             Select Case e.KeyCode
                 Case Keys.F6
 Buscar:
-                    Dim Busqueda = New Busqueda_General("CODIGO_CLIENTE AS CODIGO,NOMBRE_CLIENTE AS NOMBRE", "CAT_CLIENTES", "1=1 AND ESTATUS='A'", "NOMBRE", "NOMBRE_CLIENTE")
-                    Busqueda.ShowDialog()
-                    Me.TxtCodigoCliente.Text = "" & Busqueda.Tag.ToString
-                    Busqueda.Dispose()
+                    oCliente = New Class_CatClientes()
+
+                    If Empresa_Sistema.PERMITE_CLIENTES_MULTIPLAZA = True Then
+                        Me.TxtCodigoCliente.Text = oCliente.BusquedaVisual_PorDescripcionSinFiltroZona
+                    Else
+                        Me.TxtCodigoCliente.Text = oCliente.BusquedaVisual_PorDescripcion
+                    End If
+
+                    oCliente = Nothing
 
                 Case Keys.Enter
                     If txtLEN(Me.TxtCodigoCliente.Text) = False Then
-                        Me.LblCliente.Text = "" : Me.TxtCodigoCliente.Focus() : GoTo Buscar
+                        Me.LblCliente.Text = "" : Me.TxtCodigoCliente.Focus() : GoTo Buscar : Exit Sub
                     End If
+
                     oCliente = New Class_CatClientes(Me.TxtCodigoCliente.Text)
-                    'Dim sql As New Class_find("SELECT NOMBRE_CLIENTE,CUENTA_CONTABLE,CUENTA_CONTABLE_DOLARES FROM CAT_CLIENTES WHERE CODIGO_CLIENTE='" & Me.TxtCodigoCliente.Text & "' AND ESTATUS='A' and codigo_zona= " & Usuario.Codigo_Plaza)
                     If oCliente.Existe = False Then
                         MsgBox("El código de Cliente que intenta buscar no existe o esta dado de baja, favor de intentar con otro código.", MsgBoxStyle.Exclamation, "Validación de Clientes")
                         Me.LblCliente.Text = "" : GoTo Buscar : Exit Sub
@@ -468,7 +473,7 @@ Buscar:
                 Case Keys.F6
 Buscar:
                     oCliente = New Class_CatClientes
-                    sText = oCliente.BusquedaVisual_PorDescripcionRegresandoRFC
+                    sText = oCliente.BusquedaVisual_PorDescripcionRegresandoRFC(False)
                     If txtLEN(sText) = True Then Me.txtRFCEmisor.Text = sText
 
                 Case Keys.Enter
@@ -1073,7 +1078,7 @@ Buscar:
                             "V.VERSION_ESQUEMA_XML,V.CODIGO_METODO_PAGO,V.CODIGO_METODO_PAGO_EVENTO,V.ES_FACTURA_ELECTRONICA " &
                             "FROM VENTA_GLOBAL V " &
                             "LEFT JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(V.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
-                            "WHERE V.CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' AND V.SALDO>0 " & sSaldoDlls & " AND V.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA
+                            "WHERE V.CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' AND V.SALDO>0 " & sSaldoDlls ' & " AND V.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA
 
         If Me.chkVentasNoFiscales.Checked = True Then
             sSQL = sSQL & " AND DOC.AFECTA_CONTABILIDAD='0' " 'Para mostrar sólo remisiones, las cot no salen porque también se busca saldo>0 .

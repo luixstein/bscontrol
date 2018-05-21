@@ -76,7 +76,7 @@ Public Class Catalogo_ClientesCuentasBancarias
                 Case Keys.F6
 Buscar:
                     oCliente = New Class_CatClientes
-                    sText = oCliente.BusquedaVisual_PorDescripcionRegresandoRFC
+                    sText = oCliente.BusquedaVisual_PorDescripcionRegresandoRFC(False)
                     If txtLEN(sText) = True Then Me.txtRFCEmisor.Text = sText
 
                 Case Keys.Enter
