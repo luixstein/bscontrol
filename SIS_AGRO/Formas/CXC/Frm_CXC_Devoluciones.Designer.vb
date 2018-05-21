@@ -69,6 +69,8 @@ Partial Class Frm_CXC_Devoluciones
         Me.lblEstatus = New System.Windows.Forms.Label()
         Me.lblDisplayPoliza = New System.Windows.Forms.Label()
         Me.frmDatos = New System.Windows.Forms.GroupBox()
+        Me.cboTipoRelacionCFDI = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayTipoRelacionCFDI = New System.Windows.Forms.Label()
         Me.lblVersionCFDI = New System.Windows.Forms.Label()
         Me.cboFormaPago = New System.Windows.Forms.ComboBox()
         Me.lblDisplayMetodoPago = New System.Windows.Forms.Label()
@@ -99,8 +101,6 @@ Partial Class Frm_CXC_Devoluciones
         Me.lblDisplayFolioVenta = New System.Windows.Forms.Label()
         Me.txtFolioVenta = New System.Windows.Forms.TextBox()
         Me.lblDisplayAlmacen = New System.Windows.Forms.Label()
-        Me.cboTipoRelacionCFDI = New System.Windows.Forms.ComboBox()
-        Me.lblDisplayTipoRelacionCFDI = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -198,7 +198,7 @@ Partial Class Frm_CXC_Devoluciones
         'StatusStripEstado
         '
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssEstado, Me.tssElaboro, Me.tssCancelo})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 580)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 579)
         Me.StatusStripEstado.Name = "StatusStripEstado"
         Me.StatusStripEstado.Size = New System.Drawing.Size(992, 24)
         Me.StatusStripEstado.TabIndex = 242
@@ -622,6 +622,25 @@ Partial Class Frm_CXC_Devoluciones
         Me.frmDatos.TabIndex = 0
         Me.frmDatos.TabStop = False
         '
+        'cboTipoRelacionCFDI
+        '
+        Me.cboTipoRelacionCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboTipoRelacionCFDI.FormattingEnabled = True
+        Me.cboTipoRelacionCFDI.Location = New System.Drawing.Point(602, 70)
+        Me.cboTipoRelacionCFDI.MaxLength = 1
+        Me.cboTipoRelacionCFDI.Name = "cboTipoRelacionCFDI"
+        Me.cboTipoRelacionCFDI.Size = New System.Drawing.Size(338, 21)
+        Me.cboTipoRelacionCFDI.TabIndex = 10
+        '
+        'lblDisplayTipoRelacionCFDI
+        '
+        Me.lblDisplayTipoRelacionCFDI.AutoSize = True
+        Me.lblDisplayTipoRelacionCFDI.Location = New System.Drawing.Point(495, 73)
+        Me.lblDisplayTipoRelacionCFDI.Name = "lblDisplayTipoRelacionCFDI"
+        Me.lblDisplayTipoRelacionCFDI.Size = New System.Drawing.Size(101, 13)
+        Me.lblDisplayTipoRelacionCFDI.TabIndex = 395
+        Me.lblDisplayTipoRelacionCFDI.Text = "Tipo relación CFDI :"
+        '
         'lblVersionCFDI
         '
         Me.lblVersionCFDI.AutoSize = True
@@ -901,30 +920,11 @@ Partial Class Frm_CXC_Devoluciones
         Me.lblDisplayAlmacen.TabIndex = 239
         Me.lblDisplayAlmacen.Text = "Almacén :"
         '
-        'cboTipoRelacionCFDI
-        '
-        Me.cboTipoRelacionCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboTipoRelacionCFDI.FormattingEnabled = True
-        Me.cboTipoRelacionCFDI.Location = New System.Drawing.Point(602, 70)
-        Me.cboTipoRelacionCFDI.MaxLength = 1
-        Me.cboTipoRelacionCFDI.Name = "cboTipoRelacionCFDI"
-        Me.cboTipoRelacionCFDI.Size = New System.Drawing.Size(338, 21)
-        Me.cboTipoRelacionCFDI.TabIndex = 10
-        '
-        'lblDisplayTipoRelacionCFDI
-        '
-        Me.lblDisplayTipoRelacionCFDI.AutoSize = True
-        Me.lblDisplayTipoRelacionCFDI.Location = New System.Drawing.Point(495, 73)
-        Me.lblDisplayTipoRelacionCFDI.Name = "lblDisplayTipoRelacionCFDI"
-        Me.lblDisplayTipoRelacionCFDI.Size = New System.Drawing.Size(101, 13)
-        Me.lblDisplayTipoRelacionCFDI.TabIndex = 395
-        Me.lblDisplayTipoRelacionCFDI.Text = "Tipo relación CFDI :"
-        '
         'Frm_CXC_Devoluciones
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(992, 604)
+        Me.ClientSize = New System.Drawing.Size(992, 603)
         Me.Controls.Add(Me.frmDatos)
         Me.Controls.Add(Me.gbTotales)
         Me.Controls.Add(Me.TabControl1)

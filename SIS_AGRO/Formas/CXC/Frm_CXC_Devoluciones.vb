@@ -1522,6 +1522,7 @@ busca_serie:
             HandleError(Me.Name, "DesplegarTiposRelacionCFDI", ex)
         End Try
     End Sub
+
 #End Region
 
 End Class
