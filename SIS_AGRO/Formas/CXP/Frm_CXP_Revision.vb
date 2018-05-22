@@ -266,8 +266,13 @@ Public Class Frm_CXP_Revision
         Me.ActualizaConcepto()
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Me.GrabarGridFacturasRelacionadas()
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnGrabaDetalleVenta.Click
+        If Me.GrabarGridFacturasRelacionadas() = True Then
+            MsgBox("Detalle de venta actualizado correctamente.", MsgBoxStyle.Information, Me.Name)
+            Me.Consultar()
+        Else
+            MsgBox("No se pudo actualizar el detalle de venta", MsgBoxStyle.Exclamation, Me.Name)
+        End If
     End Sub
 #End Region
 
@@ -988,6 +993,8 @@ Buscar:
                     Me.btnImprimirPoliza.Visible = False
                     Me.tsbEditarCostos.Enabled = False
                     Me.btnActualizaConcepto.Visible = False
+                    Me.btnGrabaDetalleVenta.Enabled = False
+                    Me.TxtCodigoProveedor.Enabled = True
 
                 Case enumEstados.CONSULTA
                     Me.tsbGrabar.Enabled = False
@@ -1007,6 +1014,7 @@ Buscar:
                     Me.btnImprimirPoliza.Visible = False
                     Me.tsbEditarCostos.Enabled = False
                     Me.btnActualizaConcepto.Visible = False
+                    Me.btnGrabaDetalleVenta.Enabled = True
 
                 Case enumEstados.PAGODIRECTO
                     Me.tsbGrabar.Enabled = False
@@ -1623,8 +1631,14 @@ busca_cuenta_contable:
                                     MsgBox("El folio de venta no existe.", MsgBoxStyle.Critical, Me.Name)
                                     Return
                                 Else
+                                    If Me.ValidaFolioVenta(sCodigo, Renglon) = False Then
+                                        .Cell(Renglon, Me.iGyFolioVenta).Text = ""
+                                        Exit Sub
+                                    End If
+
                                     .Cell(Renglon, Me.iGyFolioVenta).Text = sCodigo.ToUpper
                                     .Cell(Renglon, Me.iGyFechaVenta).Text = oVenta.FECHA.ToString
+
                                     If Me.chkPromediarGasto.Checked Then
                                         Me.PromediarGastoGridVentas()
                                     End If
@@ -1677,10 +1691,16 @@ BuscaCliente:
                                 If txtLEN(.Cell(Renglon, Me.iGyCodigoCliente).Text) = True Then
 BuscaVenta:
                                     sCodigo = oVenta.BusquedaVisual_PorCliente(.Cell(Renglon, Me.iGyCodigoCliente).Text)
+
                                     If txtLEN(sCodigo) = True Then
+                                        If Me.ValidaFolioVenta(sCodigo, Renglon) = False Then
+                                            .Cell(Renglon, Me.iGyFolioVenta).Text = ""
+                                            Exit Sub
+                                        End If
                                         oVenta = New Class_Ventas_Global(sCodigo)
                                         .Cell(Renglon, Me.iGyFolioVenta).Text = sCodigo
                                         .Cell(Renglon, Me.iGyFechaVenta).Text = oVenta.FECHA.ToString
+
                                         If Me.chkPromediarGasto.Checked Then
                                             Me.PromediarGastoGridVentas()
                                         End If
@@ -2201,6 +2221,24 @@ BuscaVenta:
         Return bResultado
     End Function
 
+    Private Function ValidaFolioVenta(ByVal sFolio As String, ByVal row As Integer) As Boolean
+        Dim bResultado As Boolean = False
+        Dim i As Integer
+        Try
+            For i = 1 To row - 1
+                If Me.GridFacturasRelacionadas.Cell(i, Me.iGyFolioVenta).Text = sFolio Then
+                    MsgBox("El folio " & sFolio & " ya está capturado en el renglón " & i, MsgBoxStyle.Exclamation, Me.Name)
+                    Return bResultado
+                End If
+            Next
+
+            bResultado = True
+        Catch ex As Exception
+            HandleError(Me.Name, "ValidaFolioVenta", ex)
+        End Try
+        Return bResultado
+    End Function
+
     Private Sub CalculaImporteDolares()
         Try
             If txtLEN(Me.txtTotalCompra.Text) = True And valorNumerico(Me.txtTotalCompra.Text) > 0 Then
@@ -2351,7 +2389,17 @@ BuscaVenta:
 
             'Renglones facturas relacionadas
             Dim oDetalleVentas As New Class_Centros_Costos_Detalle_Ventas
-            Me.GridFacturasRelacionadas.DataSource = oDetalleVentas.ObtenerDetalleVentas(Me.txtFolioCompra.Text)
+            Dim dTabla As DataTable = oDetalleVentas.ObtenerDetalleVentas(Me.txtFolioCompra.Text)
+            'Me.GridFacturasRelacionadas.AutoRedraw = False
+            If dTabla.Rows.Count > 0 Then
+                Me.GridFacturasRelacionadas.Rows = 1
+            End If
+
+            For Each dRow As DataRow In dTabla.Rows
+                Me.GridFacturasRelacionadas.AddItem(dRow("ID_CENTRO_COSTOS_DETALLE_VENTAS").ToString & Chr(9) & dRow("CODIGO_CLIENTE").ToString & Chr(9) & dRow("NOMBRE_CLIENTE").ToString & Chr(9) & _
+                dRow("FOLIO_VENTA").ToString & Chr(9) & dRow("FECHA").ToString & Chr(9) & dRow("IMPORTE").ToString & Chr(9))
+            Next
+
             Me.FormateaGridFacturasRelacionadas()
             Me.lblTotalGasto.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridFacturasRelacionadas, CShort(Me.iGyGasto)))
 

@@ -90,7 +90,7 @@ Partial Class Frm_CXP_Revision
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.gbFacturasRelacionadas = New System.Windows.Forms.GroupBox()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.btnGrabaDetalleVenta = New System.Windows.Forms.Button()
         Me.lblTotalGasto = New System.Windows.Forms.Label()
         Me.LblDisplayTotalGasto = New System.Windows.Forms.Label()
         Me.chkPromediarGasto = New System.Windows.Forms.CheckBox()
@@ -858,7 +858,7 @@ Partial Class Frm_CXP_Revision
         'gbFacturasRelacionadas
         '
         Me.gbFacturasRelacionadas.BackColor = System.Drawing.SystemColors.Control
-        Me.gbFacturasRelacionadas.Controls.Add(Me.Button1)
+        Me.gbFacturasRelacionadas.Controls.Add(Me.btnGrabaDetalleVenta)
         Me.gbFacturasRelacionadas.Controls.Add(Me.lblTotalGasto)
         Me.gbFacturasRelacionadas.Controls.Add(Me.LblDisplayTotalGasto)
         Me.gbFacturasRelacionadas.Controls.Add(Me.chkPromediarGasto)
@@ -870,14 +870,14 @@ Partial Class Frm_CXP_Revision
         Me.gbFacturasRelacionadas.TabStop = False
         Me.gbFacturasRelacionadas.Text = "Facturas relacionadas :"
         '
-        'Button1
+        'btnGrabaDetalleVenta
         '
-        Me.Button1.Location = New System.Drawing.Point(1070, 116)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(104, 40)
-        Me.Button1.TabIndex = 385
-        Me.Button1.Text = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.btnGrabaDetalleVenta.Location = New System.Drawing.Point(1088, 108)
+        Me.btnGrabaDetalleVenta.Name = "btnGrabaDetalleVenta"
+        Me.btnGrabaDetalleVenta.Size = New System.Drawing.Size(145, 40)
+        Me.btnGrabaDetalleVenta.TabIndex = 385
+        Me.btnGrabaDetalleVenta.Text = "Grabar"
+        Me.btnGrabaDetalleVenta.UseVisualStyleBackColor = True
         '
         'lblTotalGasto
         '
@@ -1032,5 +1032,5 @@ Partial Class Frm_CXP_Revision
     Friend WithEvents LblDisplayTotalGasto As System.Windows.Forms.Label
     Friend WithEvents chkPromediarGasto As System.Windows.Forms.CheckBox
     Friend WithEvents GridFacturasRelacionadas As FlexCell.Grid
-    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents btnGrabaDetalleVenta As System.Windows.Forms.Button
 End Class
