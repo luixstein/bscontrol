@@ -952,8 +952,9 @@ Public Class Class_CatClientes
         f.sOrder = "NOMBRE_CLIENTE"
         f.sTable = "CAT_CLIENTES"
         'f.sQl = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES WHERE ESTATUS='A' AND PLAZA='" & Usuario.Codigo_Plaza.ToString & "' AND "
-        f.sQl = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE,(CALLE + ' ' +NUMERO_EXTERIOR + ' ' + COLONIA) DIRECCION FROM CAT_CLIENTES WHERE ESTATUS='A' AND PLAZA='" & Usuario.Codigo_Plaza.ToString & "' AND "
-        f.arrayWidthColumns = New Integer() {100, 400, 600}
+        f.sQl = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE,(CALLE + ' ' +NUMERO_EXTERIOR + ' ' + COLONIA) DIRECCION,(CIUDAD + ',' + ESTADO) CIUDAD FROM CAT_CLIENTES WHERE ESTATUS='A' AND PLAZA='" & _
+        Usuario.Codigo_Plaza.ToString & "' AND "
+        f.arrayWidthColumns = New Integer() {100, 400, 500, 300}
 
         f.Inicia("")
         f.ShowDialog()
