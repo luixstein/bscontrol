@@ -546,18 +546,19 @@ Buscar:
             If Me.cboMoneda.Text = "USD" Then
                 Me.txtTipoCambio.Visible = True : Me.txtTipoCambio.Enabled = True : Me.lblDisplayTipoCambio.Visible = True
                 Me.gbDolares.Visible = True
-
-                If txtLEN(Me.TxtCliente.Text) = True Then
-                    Me.EstableceFormaPagoCliente()
-                End If
             Else
                 Me.txtTipoCambio.Visible = False : Me.txtTipoCambio.Enabled = False : Me.lblDisplayTipoCambio.Visible = False
                 Me.gbDolares.Visible = False
-
-                If txtLEN(Me.TxtCliente.Text) = True Then
-                    Me.EstableceFormaPagoCliente()
-                End If
             End If
+
+            Select Case Me.cboTipoNegociacion.Text
+                Case "CREDITO"
+                    'No se cambia la forma de pago, debe seguir 99 siempre en crédito
+                Case "CONTADO"
+                    If txtLEN(Me.TxtCliente.Text) = True Then
+                        Me.EstableceFormaPagoCliente()
+                    End If
+            End Select
         Catch ex As Exception
             HandleError(Me.Name, "cboMoneda_SelectedIndexChanged", ex)
         End Try
