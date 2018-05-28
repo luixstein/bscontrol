@@ -146,7 +146,7 @@ Public Class Class_CatProductos
             .Connection = Me._Conexion
             .CommandTimeout = 0
             .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_CAT_PRODUCTOS_GRABAR"
+            .CommandText = "MP_CAT_PRODUCTOS_GRABA"
 
             sqlParametro = .Parameters.Add("@CODIGO_PRODUCTO", SqlDbType.Int) : sqlParametro.Value = 0
             sqlParametro = .Parameters.Add("@NOMBRE_PRODUCTO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_PRODUCTO.ToString.ToUpper
@@ -175,7 +175,7 @@ Public Class Class_CatProductos
             .Connection = Me._Conexion
             .CommandTimeout = 0
             .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_CAT_PRODUCTOS_GRABAR"
+            .CommandText = "MP_CAT_PRODUCTOS_GRABA"
 
             sqlParametro = .Parameters.Add("@CODIGO_PRODUCTO", SqlDbType.Int) : sqlParametro.Value = CInt(Me._CODIGO_PRODUCTO)
             sqlParametro = .Parameters.Add("@NOMBRE_PRODUCTO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_PRODUCTO.ToString.ToUpper
@@ -222,6 +222,19 @@ Public Class Class_CatProductos
             End Try
         End With
         Return bResultado
+    End Function
+
+    Public Function ObtenerRelacionProductosArticulos(ByVal sCodigoProducto As String) As System.Data.DataTable
+        Dim dTable As New DataTable
+        Dim da As New SqlDataAdapter("SELECT A.CODIGO_ARTICULO,A.DESCRIPCION FROM CAT_ARTICULOS A WHERE A.CODIGO_PRODUCTO =" & sCodigoProducto & " ORDER BY A.DESCRIPCION ", Me._Conexion)
+        Try
+            da.Fill(dTable)
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ObtenerRelacionProductosArticulos", ex)
+        Finally
+            da.Dispose()
+        End Try
+        Return dTable
     End Function
 
     Public Overrides Function ObtenerElementos() As System.Data.DataTable

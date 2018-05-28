@@ -202,6 +202,8 @@ Public Class Catalogo_Articulos
                     Me.cboLinea.Enabled = True
                     Me.CboFamilia.Enabled = True
                     Me.TxtPrecio.Enabled = True
+                    Me.txtFactorConversion.Enabled = True
+                    Me.txtCodigoProducto.Enabled = True
 
                 Case enumEstados.CONSULTA
                     Me.gBoxInformacion.Enabled = False
@@ -257,6 +259,11 @@ Public Class Catalogo_Articulos
 
             Me.txtCodigoUnidadSAT.Text = "" : Me.lblCodigoUnidadSAT.Text = ""
             Me.txtClaveProductoSAT.Text = "" : Me.lblClaveProductoSAT.Text = "" : Me.lblClaveProductoSATSimiliar.Text = ""
+
+            Me.txtFactorConversion.Text = "1.00"
+            Me.txtCodigoProducto.Text = ""
+            Me.lblNombreProducto.Text = ""
+
         Catch ex As Exception
             HandleError(Me.Name, "InicializaElemento", ex)
         End Try
@@ -362,6 +369,14 @@ Public Class Catalogo_Articulos
                     Me.lblClaveProductoSAT.Text = oProductoServicio.NOMBRE_PRODUCTO_SERVICIO
                     Me.lblClaveProductoSATSimiliar.Text = oProductoServicio.NOMBRE_PRODUCTO_SERVICIO_SIMILAR
 
+                    Me.txtFactorConversion.Text = .FACTOR_CONVERSION.ToString
+                    Me.txtCodigoProducto.Text = .CODIGO_PRODUCTO.ToString
+
+                    If txtLEN(Me.txtCodigoProducto.Text) = True Then
+                        Dim oProducto As New Class_CatProductos(Me.txtCodigoProducto.Text)
+                        Me.lblNombreProducto.Text = oProducto.NOMBRE_PRODUCTO
+                    End If
+
                     oUnidad = Nothing
                     oProductoServicio = Nothing
                 End With
@@ -404,6 +419,8 @@ Public Class Catalogo_Articulos
                         .GRADO_TOXICIDAD = Me.cboGradoToxicidad.SelectedValue.ToString
                         .CODIGO_UNIDAD = Me.txtCodigoUnidadSAT.Text
                         .CODIGO_PRODUCTO_SERVICIO = Me.txtClaveProductoSAT.Text
+                        .FACTOR_CONVERSION = Convert.ToDecimal(Me.txtFactorConversion.Text)
+                        .CODIGO_PRODUCTO = Me.txtCodigoProducto.Text
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -741,6 +758,16 @@ Public Class Catalogo_Articulos
         txtNoBeep(e)
     End Sub
 
+    Private Sub TxtFactorConversion_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFactorConversion.KeyPress
+        txtSoloNumerosDecimales(e, Me.txtFactorConversion.Text)
+        txtNoBeep(e)
+    End Sub
+
+    Private Sub TxtCodigoProducto_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCodigoProducto.KeyPress
+        txtSoloNumerosEnteros(e)
+        txtNoBeep(e)
+    End Sub
+
     Private Sub rbtDescripcion_CheckedChanged(sender As Object, e As EventArgs) Handles rbtDescripcion.CheckedChanged
         Me.txtFiltro.Focus()
     End Sub
@@ -810,4 +837,39 @@ Buscar:
             HandleError(Me.Name, "txtClaveProductoSAT_KeyDown", ex)
         End Try
     End Sub
+
+    Private Sub txtCodigoProducto_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCodigoProducto.KeyDown
+        Dim oProducto As New Class_CatProductos
+        Dim sCodigo As String
+
+        Try
+            Select Case e.KeyCode
+                Case Keys.F6
+Buscar:
+                    sCodigo = oProducto.BusquedaVisual_PorDescripcion
+                    If txtLEN(sCodigo) = True Then Me.txtCodigoProducto.Text = sCodigo
+
+                Case Keys.Enter
+                    If txtLEN(Me.txtCodigoProducto.Text) = False Then
+                        Me.lblNombreProducto.Text = ""
+                        GoTo Buscar
+                        Exit Sub
+                    End If
+
+                    oProducto = New Class_CatProductos(Me.txtCodigoProducto.Text)
+
+                    If oProducto.Existe = False Then
+                        Me.lblNombreProducto.Text = ""
+                        GoTo Buscar
+                        Exit Sub
+                    Else
+                        Me.lblNombreProducto.Text = oProducto.NOMBRE_PRODUCTO
+                    End If
+
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Name, "txtCodigoProducto_KeyDown", ex)
+        End Try
+    End Sub
+
 End Class

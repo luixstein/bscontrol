@@ -38,6 +38,8 @@ Public Class Class_CatArticulos
     Private _CODIGO_PRODUCTO_SERVICIO As String
     Private _CODIGO_UNIDAD As String
     Private _ID_SIS_CAT_IMPUESTOS As String
+    Private _FACTOR_CONVERSION As Decimal
+    Private _CODIGO_PRODUCTO As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -325,6 +327,24 @@ Public Class Class_CatArticulos
             Me._ID_SIS_CAT_IMPUESTOS = VALUE
         End Set
     End Property
+
+    Public Property FACTOR_CONVERSION() As Decimal
+        Get
+            Return Me._FACTOR_CONVERSION
+        End Get
+        Set(ByVal VALUE As Decimal)
+            Me._FACTOR_CONVERSION = VALUE
+        End Set
+    End Property
+
+    Public Property CODIGO_PRODUCTO() As String
+        Get
+            Return Me._CODIGO_PRODUCTO
+        End Get
+        Set(ByVal VALUE As String)
+            Me._CODIGO_PRODUCTO = VALUE
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -458,6 +478,12 @@ Public Class Class_CatArticulos
             sqlParametro = .Parameters.Add("@CODIGO_PRODUCTO_SERVICIO", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_PRODUCTO_SERVICIO
             sqlParametro = .Parameters.Add("@CODIGO_UNIDAD", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_UNIDAD
             sqlParametro = .Parameters.Add("@ID_SIS_CAT_IMPUESTOS", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._ID_SIS_CAT_IMPUESTOS
+            sqlParametro = .Parameters.Add("@FACTOR_CONVERSION", SqlDbType.Decimal) : sqlParametro.Value = Me._FACTOR_CONVERSION
+            If txtLEN(Me._CODIGO_PRODUCTO) = True Then
+                sqlParametro = .Parameters.Add("@CODIGO_PRODUCTO", SqlDbType.Int) : sqlParametro.Value = CInt(Me._CODIGO_PRODUCTO)
+            Else
+                sqlParametro = .Parameters.Add("@CODIGO_PRODUCTO", SqlDbType.Int) : sqlParametro.Value = DBNull.Value
+            End If
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = sAccion
 
             Try
@@ -590,6 +616,9 @@ Public Class Class_CatArticulos
                     Me._CODIGO_PRODUCTO_SERVICIO = "" & dReader("CODIGO_PRODUCTO_SERVICIO").ToString
                     Me._ID_SIS_CAT_IMPUESTOS = "" & dReader("ID_SIS_CAT_IMPUESTOS").ToString
                     Me._IMPUESTO_PORCENTAJE = CDec("" & dReader("IMPUESTO_PORCENTAJE").ToString)
+
+                    Me._FACTOR_CONVERSION = Convert.ToDecimal("" & dReader("FACTOR_CONVERSION").ToString)
+                    Me._CODIGO_PRODUCTO = "" & dReader("CODIGO_PRODUCTO").ToString
 
                     bResultado = True
                 End If

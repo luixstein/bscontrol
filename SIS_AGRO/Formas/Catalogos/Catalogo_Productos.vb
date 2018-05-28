@@ -84,8 +84,8 @@ Public Class Catalogo_Productos
         ' Add any initialization after the InitializeComponent() call.
 
         Try
-            Me.msgElemento = "Propietario"
-            Me.msgElementos = "Propietarios"
+            Me.msgElemento = "Producto"
+            Me.msgElementos = "Productos"
             Me.Run = False
             'Me.lstbElementos.ContextMenuStrip = Me.cMenuStripAccion
             Estado = enumEstados.CONSULTA
@@ -167,9 +167,8 @@ Public Class Catalogo_Productos
 
                 Me.TxtCodigo.Enabled = False
                 Me.TxtNombre.Enabled = True
-                Me.TxtLimiteCredito.Enabled = True
-                Me.TxtPlazo.Enabled = True
-                Me.GridClientes.Enabled = False
+                Me.CboEstatus.Enabled = False
+                Me.GridArticulos.Enabled = False
                 Me.InicializaElemento()
                 Me.TxtNombre.Focus()
 
@@ -184,9 +183,8 @@ Public Class Catalogo_Productos
 
                 Me.TxtCodigo.Enabled = False
                 Me.TxtNombre.Enabled = True
-                Me.TxtLimiteCredito.Enabled = True
-                Me.TxtPlazo.Enabled = True
-                Me.GridClientes.Enabled = True
+                Me.CboEstatus.Enabled = True
+                Me.GridArticulos.Enabled = True
                 Me.TxtNombre.Focus()
 
             Case enumEstados.CONSULTA
@@ -205,35 +203,25 @@ Public Class Catalogo_Productos
     Private Sub InicializaElemento()
         Me.TxtCodigo.Text = ""
         Me.TxtNombre.Text = ""
-        Me.TxtLimiteCredito.Text = ""
-        Me.TxtPlazo.Text = ""
-        Me.GridClientes.DataSource = Nothing
-        Me.GridProveedores.DataSource = Nothing
+        Me.CboEstatus.SelectedIndex = 0
+        Me.GridArticulos.DataSource = Nothing
     End Sub
 
     Private Sub DesplegarElementos()
         With Me.Grid
             .DataSource = oProducto.ObtenerElementosFiltro(Me.txtFiltro.Text)
-            .Columns("CODIGO_PROPIETARIO").Width = 60
-            .Columns("NOMBRE_PROPIETARIO").Width = 500
+            .Columns("CODIGO_PRODUCTO").Width = 60
+            .Columns("NOMBRE_PRODUCTO").Width = 500
         End With
     End Sub
 
-    'Private Sub DesplegarClientes()
-    '    With Me.GridClientes
-    '        .DataSource = oProducto.ObtenerRelacionPropietariosClientes(Me.TxtCodigo.Text)
-    '        .Columns("CODIGO_CLIENTE").Width = 60
-    '        .Columns("NOMBRE_CLIENTE").Width = 600
-    '    End With
-    'End Sub
-
-    'Private Sub DesplegarProveedores()
-    '    With Me.GridProveedores
-    '        .DataSource = oProducto.ObtenerRelacionPropietariosProveedores(Me.TxtCodigo.Text)
-    '        .Columns("CODIGO_PROVEEDOR").Width = 60
-    '        .Columns("NOMBRE_PROVEEDOR").Width = 600
-    '    End With
-    'End Sub
+    Private Sub DesplegarArticulos()
+        With Me.GridArticulos
+            .DataSource = oProducto.ObtenerRelacionProductosArticulos(Me.TxtCodigo.Text)
+            .Columns("CODIGO_ARTICULO").Width = 60
+            .Columns("DESCRIPCION").Width = 600
+        End With
+    End Sub
 
     Private Sub LlenaElemento(ByVal sCodigo_Elemento As String)
         Me.oProducto.CODIGO_PRODUCTO = sCodigo_Elemento
@@ -241,11 +229,15 @@ Public Class Catalogo_Productos
             With Me.oProducto
                 Me.TxtCodigo.Text = .CODIGO_PRODUCTO.ToString
                 Me.TxtNombre.Text = .NOMBRE_PRODUCTO.ToString
+                If .Estatus = "A" Then
+                    Me.CboEstatus.SelectedIndex = 0
+                Else
+                    Me.CboEstatus.SelectedIndex = 1
+                End If
 
             End With
 
-            'Me.DesplegarClientes()
-            'Me.DesplegarProveedores()
+            Me.DesplegarArticulos()
 
         End If
     End Sub
@@ -258,6 +250,7 @@ Public Class Catalogo_Productos
                     With Me.oProducto
                         .CODIGO_PRODUCTO = Me.TxtCodigo.Text
                         .NOMBRE_PRODUCTO = Me.TxtNombre.Text
+                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -292,20 +285,8 @@ Public Class Catalogo_Productos
     Private Function Validar() As Boolean
         Dim bResultado As Boolean = False
         If txtLEN(Me.TxtNombre.Text) = False Then
-            MsgBox("Agregue un nombre al Propietario.", MsgBoxStyle.Exclamation, Me.Text)
+            MsgBox("Asígne un nombre al Producto.", MsgBoxStyle.Exclamation, Me.Text)
             Me.TxtNombre.Focus()
-            Return bResultado
-        End If
-
-        If txtLEN(Me.TxtLimiteCredito.Text) = False Then
-            MsgBox("Capture un límite de crédito.", MsgBoxStyle.Exclamation, Me.Text)
-            Me.TxtLimiteCredito.Focus()
-            Return bResultado
-        End If
-
-        If txtLEN(Me.TxtPlazo.Text) = False Then
-            MsgBox("Capture un plazo.", MsgBoxStyle.Exclamation, Me.Text)
-            Me.TxtPlazo.Focus()
             Return bResultado
         End If
 
@@ -348,25 +329,25 @@ Public Class Catalogo_Productos
         txtNoBeep(e)
     End Sub
 
-    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombre.KeyDown, TxtLimiteCredito.KeyDown
+    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombre.KeyDown
         If e.KeyCode = Keys.Return Then
             txtTAB(e)
         End If
     End Sub
 
-    Private Sub txtPlazo_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtPlazo.KeyDown
+    Private Sub txtPlazo_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
         If e.KeyCode = Keys.Return Then
             tsbGrabar.PerformClick()
         End If
     End Sub
 
-    Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigo.KeyPress, TxtLimiteCredito.KeyPress
+    Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigo.KeyPress
         Dim txt As TextBox = CType(sender, TextBox)
         txtSoloNumerosDecimales(e, txt.Text)
         txtNoBeep(e)
     End Sub
 
-    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtPlazo.KeyPress
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub

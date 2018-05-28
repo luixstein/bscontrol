@@ -38,28 +38,23 @@ Partial Class Catalogo_Productos
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
-        Me.LblClientes = New System.Windows.Forms.Label()
-        Me.GridClientes = New System.Windows.Forms.DataGridView()
-        Me.TxtLimiteCredito = New System.Windows.Forms.TextBox()
-        Me.TxtPlazo = New System.Windows.Forms.TextBox()
-        Me.LblPlazo = New System.Windows.Forms.Label()
-        Me.LblLimiteCredito = New System.Windows.Forms.Label()
+        Me.LblArticulos = New System.Windows.Forms.Label()
+        Me.GridArticulos = New System.Windows.Forms.DataGridView()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.LblDisplayNombreCultivo = New System.Windows.Forms.Label()
         Me.TxtNombre = New System.Windows.Forms.TextBox()
         Me.LblCodigo = New System.Windows.Forms.Label()
         Me.TxtCodigo = New System.Windows.Forms.TextBox()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
-        Me.GridProveedores = New System.Windows.Forms.DataGridView()
-        Me.LblProveedores = New System.Windows.Forms.Label()
+        Me.lblEstatus = New System.Windows.Forms.Label()
+        Me.CboEstatus = New System.Windows.Forms.ComboBox()
         Me.tsMenu.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StatusStripEstado.SuspendLayout()
         Me.gBoxInformacion.SuspendLayout()
-        CType(Me.GridClientes, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.GridArticulos, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.GridProveedores, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'tsMenu
@@ -183,14 +178,10 @@ Partial Class Catalogo_Productos
         '
         'gBoxInformacion
         '
-        Me.gBoxInformacion.Controls.Add(Me.LblProveedores)
-        Me.gBoxInformacion.Controls.Add(Me.GridProveedores)
-        Me.gBoxInformacion.Controls.Add(Me.LblClientes)
-        Me.gBoxInformacion.Controls.Add(Me.GridClientes)
-        Me.gBoxInformacion.Controls.Add(Me.TxtLimiteCredito)
-        Me.gBoxInformacion.Controls.Add(Me.TxtPlazo)
-        Me.gBoxInformacion.Controls.Add(Me.LblPlazo)
-        Me.gBoxInformacion.Controls.Add(Me.LblLimiteCredito)
+        Me.gBoxInformacion.Controls.Add(Me.CboEstatus)
+        Me.gBoxInformacion.Controls.Add(Me.lblEstatus)
+        Me.gBoxInformacion.Controls.Add(Me.LblArticulos)
+        Me.gBoxInformacion.Controls.Add(Me.GridArticulos)
         Me.gBoxInformacion.Controls.Add(Me.Label2)
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayNombreCultivo)
         Me.gBoxInformacion.Controls.Add(Me.TxtNombre)
@@ -205,69 +196,31 @@ Partial Class Catalogo_Productos
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
         '
-        'LblClientes
+        'LblArticulos
         '
-        Me.LblClientes.AutoSize = True
-        Me.LblClientes.Location = New System.Drawing.Point(8, 167)
-        Me.LblClientes.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblClientes.Name = "LblClientes"
-        Me.LblClientes.Size = New System.Drawing.Size(66, 17)
-        Me.LblClientes.TabIndex = 113
-        Me.LblClientes.Text = "Clientes :"
+        Me.LblArticulos.AutoSize = True
+        Me.LblArticulos.Location = New System.Drawing.Point(8, 167)
+        Me.LblArticulos.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblArticulos.Name = "LblArticulos"
+        Me.LblArticulos.Size = New System.Drawing.Size(70, 17)
+        Me.LblArticulos.TabIndex = 113
+        Me.LblArticulos.Text = "Artículos :"
         '
-        'GridClientes
+        'GridArticulos
         '
-        Me.GridClientes.AllowUserToAddRows = False
-        Me.GridClientes.AllowUserToDeleteRows = False
-        Me.GridClientes.AllowUserToResizeColumns = False
-        Me.GridClientes.AllowUserToResizeRows = False
-        Me.GridClientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.GridClientes.Location = New System.Drawing.Point(8, 188)
-        Me.GridClientes.Margin = New System.Windows.Forms.Padding(4)
-        Me.GridClientes.Name = "GridClientes"
-        Me.GridClientes.ReadOnly = True
-        Me.GridClientes.RowHeadersVisible = False
-        Me.GridClientes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.GridClientes.Size = New System.Drawing.Size(604, 187)
-        Me.GridClientes.TabIndex = 112
-        '
-        'TxtLimiteCredito
-        '
-        Me.TxtLimiteCredito.Location = New System.Drawing.Point(136, 89)
-        Me.TxtLimiteCredito.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtLimiteCredito.MaxLength = 50
-        Me.TxtLimiteCredito.Name = "TxtLimiteCredito"
-        Me.TxtLimiteCredito.Size = New System.Drawing.Size(188, 22)
-        Me.TxtLimiteCredito.TabIndex = 2
-        '
-        'TxtPlazo
-        '
-        Me.TxtPlazo.Location = New System.Drawing.Point(136, 126)
-        Me.TxtPlazo.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtPlazo.MaxLength = 50
-        Me.TxtPlazo.Name = "TxtPlazo"
-        Me.TxtPlazo.Size = New System.Drawing.Size(188, 22)
-        Me.TxtPlazo.TabIndex = 3
-        '
-        'LblPlazo
-        '
-        Me.LblPlazo.AutoSize = True
-        Me.LblPlazo.Location = New System.Drawing.Point(8, 129)
-        Me.LblPlazo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblPlazo.Name = "LblPlazo"
-        Me.LblPlazo.Size = New System.Drawing.Size(51, 17)
-        Me.LblPlazo.TabIndex = 93
-        Me.LblPlazo.Text = "Plazo :"
-        '
-        'LblLimiteCredito
-        '
-        Me.LblLimiteCredito.AutoSize = True
-        Me.LblLimiteCredito.Location = New System.Drawing.Point(8, 92)
-        Me.LblLimiteCredito.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblLimiteCredito.Name = "LblLimiteCredito"
-        Me.LblLimiteCredito.Size = New System.Drawing.Size(120, 17)
-        Me.LblLimiteCredito.TabIndex = 92
-        Me.LblLimiteCredito.Text = "Límite de crédito :"
+        Me.GridArticulos.AllowUserToAddRows = False
+        Me.GridArticulos.AllowUserToDeleteRows = False
+        Me.GridArticulos.AllowUserToResizeColumns = False
+        Me.GridArticulos.AllowUserToResizeRows = False
+        Me.GridArticulos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.GridArticulos.Location = New System.Drawing.Point(8, 188)
+        Me.GridArticulos.Margin = New System.Windows.Forms.Padding(4)
+        Me.GridArticulos.Name = "GridArticulos"
+        Me.GridArticulos.ReadOnly = True
+        Me.GridArticulos.RowHeadersVisible = False
+        Me.GridArticulos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.GridArticulos.Size = New System.Drawing.Size(604, 187)
+        Me.GridArticulos.TabIndex = 112
         '
         'Label2
         '
@@ -320,33 +273,29 @@ Partial Class Catalogo_Productos
         '
         Me.ErrorProvider.ContainerControl = Me
         '
-        'GridProveedores
+        'lblEstatus
         '
-        Me.GridProveedores.AllowUserToAddRows = False
-        Me.GridProveedores.AllowUserToDeleteRows = False
-        Me.GridProveedores.AllowUserToResizeColumns = False
-        Me.GridProveedores.AllowUserToResizeRows = False
-        Me.GridProveedores.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.GridProveedores.Location = New System.Drawing.Point(8, 416)
-        Me.GridProveedores.Margin = New System.Windows.Forms.Padding(4)
-        Me.GridProveedores.Name = "GridProveedores"
-        Me.GridProveedores.ReadOnly = True
-        Me.GridProveedores.RowHeadersVisible = False
-        Me.GridProveedores.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.GridProveedores.Size = New System.Drawing.Size(604, 189)
-        Me.GridProveedores.TabIndex = 114
+        Me.lblEstatus.AutoSize = True
+        Me.lblEstatus.Location = New System.Drawing.Point(8, 92)
+        Me.lblEstatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblEstatus.Name = "lblEstatus"
+        Me.lblEstatus.Size = New System.Drawing.Size(63, 17)
+        Me.lblEstatus.TabIndex = 115
+        Me.lblEstatus.Text = "Estatus :"
         '
-        'LblProveedores
+        'CboEstatus
         '
-        Me.LblProveedores.AutoSize = True
-        Me.LblProveedores.Location = New System.Drawing.Point(8, 395)
-        Me.LblProveedores.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblProveedores.Name = "LblProveedores"
-        Me.LblProveedores.Size = New System.Drawing.Size(97, 17)
-        Me.LblProveedores.TabIndex = 115
-        Me.LblProveedores.Text = "Proveedores :"
+        Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboEstatus.FormattingEnabled = True
+        Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
+        Me.CboEstatus.Location = New System.Drawing.Point(103, 89)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboEstatus.MaxLength = 1
+        Me.CboEstatus.Name = "CboEstatus"
+        Me.CboEstatus.Size = New System.Drawing.Size(95, 24)
+        Me.CboEstatus.TabIndex = 116
         '
-        'Catalogo_Propietarios
+        'Catalogo_Productos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -358,9 +307,9 @@ Partial Class Catalogo_Productos
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
-        Me.Name = "Catalogo_Propietarios"
+        Me.Name = "Catalogo_Productos"
         Me.ShowIcon = False
-        Me.Text = "Catálogo de propietarios"
+        Me.Text = "Catálogo de productos"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()
         Me.gBoxBusquedaRapida.ResumeLayout(False)
@@ -370,9 +319,8 @@ Partial Class Catalogo_Productos
         Me.StatusStripEstado.PerformLayout()
         Me.gBoxInformacion.ResumeLayout(False)
         Me.gBoxInformacion.PerformLayout()
-        CType(Me.GridClientes, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.GridArticulos, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.GridProveedores, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -397,12 +345,8 @@ Partial Class Catalogo_Productos
     Friend WithEvents TxtCodigo As System.Windows.Forms.TextBox
     Friend WithEvents ErrorProvider As System.Windows.Forms.ErrorProvider
     Friend WithEvents Grid As System.Windows.Forms.DataGridView
-    Friend WithEvents TxtLimiteCredito As System.Windows.Forms.TextBox
-    Friend WithEvents TxtPlazo As System.Windows.Forms.TextBox
-    Friend WithEvents LblPlazo As System.Windows.Forms.Label
-    Friend WithEvents LblLimiteCredito As System.Windows.Forms.Label
-    Friend WithEvents GridClientes As System.Windows.Forms.DataGridView
-    Friend WithEvents LblClientes As System.Windows.Forms.Label
-    Friend WithEvents LblProveedores As System.Windows.Forms.Label
-    Friend WithEvents GridProveedores As System.Windows.Forms.DataGridView
+    Friend WithEvents GridArticulos As System.Windows.Forms.DataGridView
+    Friend WithEvents LblArticulos As System.Windows.Forms.Label
+    Friend WithEvents lblEstatus As System.Windows.Forms.Label
+    Friend WithEvents CboEstatus As System.Windows.Forms.ComboBox
 End Class
