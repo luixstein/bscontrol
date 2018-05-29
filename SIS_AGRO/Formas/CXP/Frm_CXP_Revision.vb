@@ -1689,8 +1689,9 @@ BuscaCliente:
 
                             Case Me.iGyFolioVenta
                                 If txtLEN(.Cell(Renglon, Me.iGyCodigoCliente).Text) = True Then
-BuscaVenta:
-                                    sCodigo = oVenta.BusquedaVisual_PorCliente(.Cell(Renglon, Me.iGyCodigoCliente).Text)
+
+BuscaVenta:                         'Se usa esta busqueda visual porque trae las facturas de un cliente especifico y deja buscarlas por codigo
+                                    sCodigo = oVenta.BusquedaVisualFacturasClienteParaRelacionarCFDIs(.Cell(Renglon, Me.iGyCodigoCliente).Text)
 
                                     If txtLEN(sCodigo) = True Then
                                         If Me.ValidaFolioVenta(sCodigo, Renglon) = False Then
@@ -1734,7 +1735,7 @@ BuscaVenta:
 
     Private Sub TotalGridFacturasRelacionadas()
         Try
-            Me.lblTotalGasto.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridFacturasRelacionadas, CShort(Me.iGyGasto)))
+            Me.lblTotalGasto.Text = "$ " & FG_Grid_SumaCol(Me.GridFacturasRelacionadas, CShort(Me.iGyGasto))
 
         Catch ex As Exception
             HandleError(Me.Name, "TotalGridFacturasRelacionadas", ex)
@@ -2401,7 +2402,7 @@ BuscaVenta:
             Next
 
             Me.FormateaGridFacturasRelacionadas()
-            Me.lblTotalGasto.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridFacturasRelacionadas, CShort(Me.iGyGasto)))
+            Me.lblTotalGasto.Text = "$ " & FG_Grid_SumaCol(Me.GridFacturasRelacionadas, CShort(Me.iGyGasto))
 
             'Me.Cambia_Estado(enumEstados.SINORDENCOMPRA)
             Me.tsbEditarCostos.Enabled = True
