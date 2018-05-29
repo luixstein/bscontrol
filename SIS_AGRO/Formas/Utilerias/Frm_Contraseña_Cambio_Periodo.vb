@@ -3,6 +3,18 @@
 Public Class Frm_Contraseña_Cambio_Periodo
     Public bContraseñaValida As Boolean = False
 
+    Enum eTipoContraseña
+        CambioPeriodo
+        PrecioMenorCosto
+    End Enum
+
+    Public TipoContraseña As eTipoContraseña = eTipoContraseña.CambioPeriodo
+    Public Mensaje As String = ""
+
+    Private Sub Frm_Contraseña_Cambio_Periodo_Load(sender As Object, e As EventArgs) Handles Me.Load
+        Me.lblMensaje.Text = Mensaje
+    End Sub
+
     Private Sub btnAceptar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAceptar.Click
         If Me.ValidaContraseña() = True Then
             bContraseñaValida = True
@@ -30,7 +42,14 @@ Public Class Frm_Contraseña_Cambio_Periodo
 #Region "Métodos y procedimientos"
     Private Function ValidaContraseña() As Boolean
         Try
-            Dim ValidaPass As New Class_find("SELECT CONTRASEÑA_PERIODO_TRABAJO_CONTABLE FROM SIS_EMPRESA")
+            Dim ValidaPass As Class_find = Nothing
+            Select Case Me.TipoContraseña
+                Case eTipoContraseña.CambioPeriodo
+                    ValidaPass = New Class_find("SELECT CONTRASEÑA_PERIODO_TRABAJO_CONTABLE FROM SIS_EMPRESA")
+                Case eTipoContraseña.PrecioMenorCosto
+                    ValidaPass = New Class_find("SELECT CONTRASEÑA_PRECIO_MENOR_COSTO FROM SIS_EMPRESA")
+            End Select
+
             If ValidaPass.Result1 = Me.txtCambioPeriodo.Text Then
                 ValidaContraseña = True
             Else

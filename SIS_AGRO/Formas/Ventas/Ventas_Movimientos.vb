@@ -1974,7 +1974,7 @@ CANCELAR:
                 Return False
             End If
 
-            If Me.SiTieneImporte() = False Then
+            If Me.SiTieneImporte() = False Then 'Aquí esta implícito la misma validación del precio 0
                 MsgBox("El importe de los renglones debe de ser mayor a cero.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
@@ -2105,6 +2105,10 @@ CANCELAR:
             End If
 
             If Me.ValidaDescuentos = False Then
+                Return False
+            End If
+
+            If Me.ValidaPrecios = False Then
                 Return False
             End If
 
@@ -3104,9 +3108,9 @@ LlenaLinea:
 
                             Me.Totales()
 
-                        Case Me.igyCantidad  'Cantidad
+                        Case Me.igyCantidad
                             oArticulo = New Class_CatArticulos(StrCod)
-                            If dCantidad <= 0 And oArticulo.ES_PRODUCTO_KILOS = "0" Then
+                            If dCantidad <= 0 Then
                                 MsgBox("La cantidad debe de ser mayor a 0.", MsgBoxStyle.Exclamation, Me.Text)
                                 Me.Grid.Cell(Renglon, Me.igyDescripcion).SetFocus()
                                 Return
@@ -3133,9 +3137,9 @@ LlenaLinea:
                                 'End If
                             End If
 
-                        Case Me.igyPrecio  'Cantidad
+                        Case Me.igyPrecio
                             oArticulo = New Class_CatArticulos(StrCod)
-                            If dPrecio <= 0 And oArticulo.ES_PRODUCTO_KILOS = "0" Then
+                            If dPrecio <= 0 Then
                                 MsgBox("El precio debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
                                 Me.Grid.Cell(Renglon, Me.igyCantidad).SetFocus()
                             End If
@@ -4252,6 +4256,40 @@ BuscaVentas:
 
         Return bResultado
     End Function
+
+    Private Function ValidaPrecios() As Boolean
+        Const sProcedure As String = "ValidaPrecios"
+        Try
+            Dim i As Integer, dPrecio As Decimal = 0, dCosto As Decimal = 0
+            With Me.Grid
+                For i = 1 To .Rows - 1
+                    If txtLEN(.Cell(i, Me.igyCodigo).Text) = True AndAlso Me.Grid.Cell(i, Me.igyCodigo).Text <> "-" Then
+                        dPrecio = valorNumericoD(.Cell(i, Me.igyPrecio).Text)
+                        dCosto = valorNumericoD(.Cell(i, Me.igyCosto).Text)
+
+                        If dPrecio < dCosto Then
+                            Dim validaPass As New Frm_Contraseña_Cambio_Periodo
+                            validaPass.Mensaje = "El precio del artículo " & .Cell(i, Me.igyDescripcion).Text & " es menor que el costo."
+                            validaPass.TipoContraseña = Frm_Contraseña_Cambio_Periodo.eTipoContraseña.PrecioMenorCosto
+                            validaPass.ShowDialog()
+
+                            If validaPass.bContraseñaValida = False Then
+                                Return False
+                            End If
+                            validaPass.Dispose()
+
+                        End If
+
+                    End If
+                Next
+            End With
+
+            Return True
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Function
+
 
 #End Region
 
