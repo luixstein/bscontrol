@@ -1963,6 +1963,11 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
         Dim oDetalleVentas As New Class_Centros_Costos_Detalle_Ventas
 
         Try
+            For i = 1 To Me.GridFacturasRelacionadas.Rows
+                If txtLEN(Me.GridFacturasRelacionadas.Cell(i, Me.iGyCodigoCliente).Text) = False Then
+                    Return True 'Si el grid de facturas no tiene renglones con datos no graba
+                End If
+            Next
 
             If valorNumerico(Me.txtTotalCompra.Text) <> valorNumerico(Me.lblTotalGasto.Text) Then
                 MsgBox("El total del gasto es distinto del gasto de las facturas.", MsgBoxStyle.Exclamation, Me.Name)
