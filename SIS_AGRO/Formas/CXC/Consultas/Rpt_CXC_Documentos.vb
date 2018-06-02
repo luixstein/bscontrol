@@ -135,6 +135,12 @@ busqueda_Visual:
         End If
     End Sub
 
+    Private Sub CboPlaza_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboPlaza.KeyDown
+        If e.KeyCode = Keys.Return Then
+            Me.CboZona.Focus()
+        End If
+    End Sub
+
     Private Sub CboTipoMercado_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboTipoMercado.KeyDown
         If e.KeyCode = Keys.Return Then
             Me.tsbImprimir.PerformClick()
@@ -189,9 +195,11 @@ Buscar:
             Me.DesplegarMercado()
             Me.DesplegarDocumentos()
             Me.DesplegarZona()
+            Me.DesplegarPlaza()
             ' Me.DesplegarEstatus()
             Me.CboTipoMercado.SelectedValue = "T"
             Me.CboDocumentos.SelectedValue = "T"
+            Me.cboPlaza.SelectedValue = 0
             Me.CboZona.SelectedValue = Plaza.CODIGO_ZONA_PRINCIPAL
             Me.CboEstatus.Text = "APLICADOS"
             'Me.ocultarcontroles()
@@ -254,6 +262,21 @@ Buscar:
         End Try
     End Sub
 
+    Private Sub DesplegarPlaza()
+        Try
+            Dim oElementos As New Class_SisPlazas
+            With Me.cboPlaza
+                .DisplayMember = "NOMBRE_PLAZA"
+                .ValueMember = "CODIGO_PLAZA"
+                Dim dView As New Data.DataView(oElementos.ObtenerElementosParaReporte)
+                dView.Sort = "NOMBRE_PLAZA"
+                .DataSource = dView
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarPlaza", ex)
+        End Try
+    End Sub
+
     'Private Sub DesplegarEstatus()
     '    Dim oElementos As New Class_CatEstatus
     '    With Me.CboEstatus
@@ -303,6 +326,7 @@ Buscar:
                 Rpt.SetParameterValue("@CODIGO_ZONA", Me.CboZona.SelectedValue.ToString)
                 Rpt.SetParameterValue("@MOSTRAR_BULTOS", "0")
                 Rpt.SetParameterValue("@CODIGO_PROPIETARIO", valorNumerico(Me.txtPropietario.Text))
+                Rpt.SetParameterValue("@CODIGO_PLAZA", Me.cboPlaza.SelectedValue.ToString)
             Else 'Depositos x bulto
                 Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.txtCodigoCliente.Text)
                 Rpt.SetParameterValue("@FECHA1", Format(Me.dpFechaInicio.Value, "yyyy-dd-MM"))
@@ -332,6 +356,7 @@ Buscar:
             Me.lblDisplayVendedor.Visible = True : Me.txtCodigoVendedor.Visible = True : Me.lblNombreVendedor.Visible = True
             Me.LblDisplayDocumento.Visible = True : Me.CboDocumentos.Visible = True
             Me.LblDisplayTipoMercado.Visible = True : Me.CboTipoMercado.Visible = True
+            Me.LblDisplayPlaza.Visible = False : Me.cboPlaza.Visible = False
         Else
             Me.lblDisplayFechaInicio.Visible = True : Me.dpFechaInicio.Visible = True ': Me.lblDisplayFechaInicio.Location = New Point(4, 54) :  : Me.dpFechaInicio.Location = New Point(88, 51)
             Me.LblDisplayFechaFinal.Visible = True : Me.dpFechaFinal.Visible = True ': Me.LblDisplayFechaFinal.Location = New Point(215, 54)  : Me.dpFechaFinal.Location = New Point(265, 50)
@@ -341,6 +366,7 @@ Buscar:
             Me.lblDisplayVendedor.Visible = False : Me.txtCodigoVendedor.Visible = False : Me.lblNombreVendedor.Visible = False
             Me.LblDisplayDocumento.Visible = False : Me.CboDocumentos.Visible = False
             Me.LblDisplayTipoMercado.Visible = False : Me.CboTipoMercado.Visible = False
+            Me.LblDisplayPlaza.Visible = True : Me.cboPlaza.Visible = True
         End If
     End Sub
 
