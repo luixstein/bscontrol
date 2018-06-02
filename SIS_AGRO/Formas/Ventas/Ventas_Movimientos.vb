@@ -306,7 +306,7 @@ Public Class Ventas_Movimientos
             Else '3.3 O Mayores
                 Me.txtNumeroCuentaPago.Visible = False : Me.lblDisplayNumeroCuentaPago.Visible = False
 
-                Me.cboFormaPago.Enabled = False
+                'Me.cboFormaPago.Enabled = False
                 Me.cboFormaPago.SelectedValue = "99" '"99-Por definir"
             End If
 
@@ -1215,7 +1215,7 @@ Buscar:
                         Me.cboMoneda.Enabled = False
                         Me.dpFecha.Enabled = False
                         Me.dpVencimiento.Enabled = False
-                        Me.cboFormaPago.Enabled = False
+                        'Me.cboFormaPago.Enabled = False
                         Me.cboVendedor.Enabled = False
                         Me.CboAlmacen.Enabled = False
                         Me.CboDocumento.Enabled = False
@@ -2046,14 +2046,14 @@ CANCELAR:
                                 End If
                                 Return False
                             End If
-                        Case "CREDITO"
-                            If Me.cboFormaPago.SelectedValue.ToString <> "99" Then
-                                MsgBox("La forma de pago debe ser 99-Por definir porque al ser venta de ""crédito"" no hay pago.", vbExclamation, sProcedure)
-                                If Me.cboFormaPago.Enabled = True Then
-                                    Me.cboFormaPago.Focus()
-                                End If
-                                Return False
-                            End If
+                        Case "CREDITO" 'SE PERMITIRA GRABAR A CREDITO CON OTRA FORMA DE PAGO
+                            'If Me.cboFormaPago.SelectedValue.ToString <> "99" Then
+                            '    MsgBox("La forma de pago debe ser 99-Por definir porque al ser venta de ""crédito"" no hay pago.", vbExclamation, sProcedure)
+                            '    If Me.cboFormaPago.Enabled = True Then
+                            '        Me.cboFormaPago.Focus()
+                            '    End If
+                            '    Return False
+                            'End If
                     End Select
 
                     If Me.cboUsoCFDI.SelectedIndex = -1 Then
@@ -3944,7 +3944,7 @@ busca_serie:
                     End If
 
                     '3.3 O Mayores
-                    Me.cboFormaPago.Enabled = False
+                    'Me.cboFormaPago.Enabled = False
 
                     'AgregaFormaPago99
                     dViewFormasPago.RowFilter = ""
