@@ -178,6 +178,11 @@ Public Class Ventas_Movimientos
     End Sub
 
     Private Sub tsbRemisionVenta_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbRemisionVenta.Click
+
+        If oVenta.SiRemisionTieneMovimientosAbonoParaEvitarSustitucion(Me.txtFolio.Text) = True Then 'Aqui aún no se convierte a rem, entonces el folio sale del txtFolio
+            Return
+        End If
+
         sTipoVenta = "SR" 'SUSTITUCION DE REMISION
 
         Dim oTF As New VentasSeleccionaTipoFactura
@@ -185,7 +190,7 @@ Public Class Ventas_Movimientos
 
         sCodigoDocumentoFacturaExterno = oTF.CboDocumento.SelectedValue.ToString
 
-        If Me.Consultar(True) = True Then
+        If Me.Consultar(True, False) = True Then
             Me.EstableceCuentasContables()
             Me.Totales()
             Me.tsbTimbrar.Visible = False
@@ -417,7 +422,7 @@ Buscar:
         End Select
     End Sub
 
-    Private Sub TxtFolioReferencia_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtReferencia.KeyDown
+    Private Sub TxtReferencia_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtReferencia.KeyDown
         Select Case e.KeyCode
             Case Keys.F6
                 Me.txtFolio.Text = Me.oVenta.BusquedaVisual_PorFolio
@@ -1445,7 +1450,6 @@ Buscar:
                 sMetodoPago = ""
                 sUsoCFDI = ""
             Else
-
                 If Me.cboMetodoPago.SelectedIndex = -1 Then
                     MsgBox("Seleccione un método de pago.", vbExclamation, sProcedure)
                     Return False
@@ -2088,6 +2092,12 @@ CANCELAR:
 
             If Me.sTipoVenta <> "SR" AndAlso Me.oDocumento.AFECTA_INVENTARIOS = True Then
                 If Me.ValidarExistencias() = False Then
+                    Return False
+                End If
+            End If
+
+            If Me.sTipoVenta = "SR" Then
+                If oVenta.SiRemisionTieneMovimientosAbonoParaEvitarSustitucion(Me.TxtReferencia.Text) = True Then 'Aqui ya se quiere convertir a remisión, entonces el folio sale del txtReferencia
                     Return False
                 End If
             End If

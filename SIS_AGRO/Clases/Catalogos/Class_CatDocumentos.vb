@@ -633,7 +633,8 @@ Public Class Class_CatDocumentos
     Public Function ObtenerTiposFacturas() As DataTable
         Dim dt As New DataTable
         Try
-            Using da As New SqlDataAdapter("SELECT CODIGO_DOCUMENTO,NOMBRE_TIPO_DOCUMENTO FROM VW_SIS_CAT_DOCUMENTOS_EXTENDIDO WHERE CODIGO_MODULO='VTA' AND AFECTA_CXC=1 AND AFECTA_CONTABILIDAD=1 ORDER BY NOMBRE_TIPO_DOCUMENTO", Me._Conexion)
+            Using da As New SqlDataAdapter("SELECT CODIGO_DOCUMENTO,NOMBRE_TIPO_DOCUMENTO FROM VW_SIS_CAT_DOCUMENTOS_EXTENDIDO " &
+                                           " WHERE CODIGO_MODULO='VTA' AND AFECTA_CXC=1 AND AFECTA_CONTABILIDAD=1 AND CODIGO_PLAZA=" & Usuario.Codigo_Plaza.ToString & " ORDER BY NOMBRE_TIPO_DOCUMENTO", Me._Conexion)
                 da.SelectCommand.CommandType = CommandType.Text
                 da.Fill(dt)
             End Using

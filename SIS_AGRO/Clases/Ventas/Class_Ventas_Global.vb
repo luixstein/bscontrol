@@ -2810,6 +2810,28 @@ Public Class Class_Ventas_Global
         Return bResultado
     End Function
 
+    Public Function SiRemisionTieneMovimientosAbonoParaEvitarSustitucion(ByVal sFolioRemision As String) As Boolean
+        Const sProcedure As String = "SiRemisionTieneMovimientosAbonoParaEvitarSustitucion"
+        Dim bResultado As Boolean = False
+        Try
+            'Dim oVenta As New Class_Ventas_Global(sFolioRemision)
+            Dim sql As New Class_find("SELECT TOP 1 FOLIO_CXC + ' - ' + DOC.NOMBRE_TIPO_DOCUMENTO FROM CXC_GLOBAL C " &
+                                      "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(C.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
+                                      "WHERE C.FOLIO_REFERENCIA='" & sReplace(sFolioRemision) & "' AND DOC.NATURALEZA_CXC='A' AND DOC.CODIGO_TIPO_DOCUMENTO NOT IN('SV_VTA','DD') AND ESTATUS_CXC='A' ")
+            'Nota, si permite que ya exista alguna sustitución(SV_VTA), o que sea una descuento x devolución(DD porque esta afecta al disp)
+
+            If txtLEN(sql.Result1) = True Then
+                MsgBox("La remisión tiene al menos un movimiento de abono(" & sql.Result1 & "), por lo cual no se puede sustituir. Cancele el movimiento de abono primero.", MsgBoxStyle.Exclamation, sProcedure)
+                bResultado = True
+            End If
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
+        End Try
+        Return bResultado
+    End Function
+
+
 #End Region
 
 End Class
