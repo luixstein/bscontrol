@@ -2057,7 +2057,16 @@ BuscaArticulos:
                                     Me.Grid.Cell(Renglon, Me.igyCodigo).Text = StrCod
                                     GoTo LlenaLinea
                                 End If
+
+                            ElseIf e.KeyCode = Keys.F7 Then
+                                oArticulo = New Class_CatArticulos
+                                StrCod = oArticulo.BusquedaVisualInventariables_PorCodigo()
+                                If txtLEN(StrCod) = True Then
+                                    Me.Grid.Cell(Renglon, Me.igyCodigo).Text = StrCod
+                                    GoTo LlenaLinea
+                                End If
                             End If
+
                         Case Me.igyCuentaContable
 BuscarCuentas:
                             oArticulo = New Class_CatArticulos(Me.Grid.Cell(Renglon, Me.igyCodigo).Text)

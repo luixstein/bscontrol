@@ -3254,6 +3254,23 @@ buscaCentrosCostos:
                     '    End If
                     '    Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = sCuentaContable
 
+                Case Keys.F7
+                    Select Case Columna
+                        Case Me.igyCodigo
+
+                            If Me.Grid.Column(Me.igyCodigo).Locked = True Then 'Si esta bloqueada la columna código no permite gestionarla
+                                Return
+                            End If
+
+                            oArticulo = New Class_CatArticulos
+                            StrCod = oArticulo.BusquedaVisual_PorCodigo_conExistencias(Me.CboAlmacen.SelectedValue.ToString)
+                            If txtLEN(StrCod) = True Then
+                                Me.Grid.Cell(Renglon, Me.igyCodigo).Text = StrCod
+                                GoTo LlenaLinea : Return
+                            End If
+
+                    End Select
+
                 Case Keys.F8 'Borrar renglón
                     If (Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.GRABADO) Then
                         Me.Grid.Selection.DeleteByRow()

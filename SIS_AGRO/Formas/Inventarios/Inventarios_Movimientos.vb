@@ -701,6 +701,21 @@ BuscaArticulos:
                                     End If
                                 End If
                                 Me.Grid1.Cell(Renglon, iGyCodigo).SetFocus()
+
+                            ElseIf e.KeyCode = Keys.F7 Then
+
+                                sCodArticulo = Me.oArticulos.BusquedaVisualInventariablesConExistencia_PorCodigo(Me.CboAlmacen.SelectedValue.ToString)
+                                If Len(sCodArticulo) > 0 Then
+                                    Me.Grid1.Cell(Renglon, Me.iGyDescripcion).Text = Me.oArticulos.BuscarNombreArticulo(sCodArticulo)
+                                    Me.Grid1.Cell(Renglon, Me.iGyCodigo).Text = sCodArticulo
+                                    Me.Grid1.Cell(Renglon, Me.iGyCosto).Text = DCosto.ToString
+                                    If Me._LlamdoExterior = False Then
+                                        Me.Grid1.Cell(Renglon, Me.iGyImporte).Text = "0"
+                                        Me.Grid1.Cell(Renglon, Me.iGyCantidad).Text = "0"
+                                    End If
+                                End If
+                                Me.Grid1.Cell(Renglon, iGyCodigo).SetFocus()
+
                             End If
 
                         Case Me.iGyCuentaContable
