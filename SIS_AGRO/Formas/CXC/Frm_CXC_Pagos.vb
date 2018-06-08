@@ -94,6 +94,10 @@ Public Class Frm_CXC_Pagos
         Me.ImprimirPoliza()
     End Sub
 
+    Private Sub tsbImprimirComprobante_Click(sender As Object, e As EventArgs) Handles tsbImprimirComprobante.Click
+        Me.ImprimirComprobante()
+    End Sub
+
     Private Sub tsbSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSalir.Click
         Me.Close()
     End Sub
@@ -2450,6 +2454,7 @@ Buscar:
                     Me.tsbGrabar.Enabled = True
                     Me.tsbCancelar.Enabled = False
                     Me.tsbImprimirPoliza.Enabled = False
+                    Me.tsbImprimirComprobante.Enabled = False
                     Me.CboDocumento.Enabled = True
                     Me.dtFecha.Enabled = True
                     Me.cboMoneda.Enabled = False
@@ -2479,6 +2484,7 @@ Buscar:
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = True
                     Me.tsbImprimirPoliza.Enabled = True
+                    Me.tsbImprimirComprobante.Enabled = True
                     Me.CboDocumento.Enabled = False
                     Me.dtFecha.Enabled = False
                     Me.cboMoneda.Enabled = False
@@ -2512,6 +2518,7 @@ Buscar:
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = False
                     Me.tsbImprimirPoliza.Enabled = True
+                    Me.tsbImprimirComprobante.Enabled = True
                     Me.CboDocumento.Enabled = False
                     Me.dtFecha.Enabled = False
                     Me.cboMoneda.Enabled = False
@@ -3432,6 +3439,27 @@ Buscar:
         End Select
     End Sub
 
+    Private Sub ImprimirComprobante()
+        Dim StrFiltros As String = ""
+        Dim FormatoDeReporte As String
+        Dim Rpt As New ReportDocument
+        Dim oReporte As Class_Reporte
+        Try
+            FormatoDeReporte = "DEPOSITO_CXC"
+            oReporte = New Class_Reporte(FormatoDeReporte, Rpt, False)
+            If Not oReporte.RptCargado Then
+                Exit Sub
+            End If
+            Rpt.SetParameterValue("@FOLIO_BANCO", Me.TxtFolio.Text)
+            Dim frm As New Reporte(Rpt)
+            frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
+            frm.Show()
+        Catch ex As Exception
+            HandleError(Me.Name, "ImprimirComprobante", ex)
+        Finally
+            oReporte = Nothing
+        End Try
+    End Sub
 #End Region
 
 End Class

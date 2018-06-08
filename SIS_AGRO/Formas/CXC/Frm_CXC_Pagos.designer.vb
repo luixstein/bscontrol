@@ -108,6 +108,7 @@ Partial Class Frm_CXC_Pagos
         Me.GridDocumentosPago = New FlexCell.Grid()
         Me.btnVerCFDIS = New System.Windows.Forms.Button()
         Me.btnGenerarCFDIS = New System.Windows.Forms.Button()
+        Me.tsbImprimirComprobante = New System.Windows.Forms.ToolStripButton()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbAgregaDocCliente.SuspendLayout()
@@ -119,7 +120,7 @@ Partial Class Frm_CXC_Pagos
         'tsMenu
         '
         Me.tsMenu.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimirPoliza, Me.tsbSalir})
+        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimirPoliza, Me.tsbImprimirComprobante, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(1152, 27)
@@ -960,6 +961,15 @@ Partial Class Frm_CXC_Pagos
         Me.btnGenerarCFDIS.Text = "Generar CFDI's"
         Me.btnGenerarCFDIS.UseVisualStyleBackColor = True
         '
+        'tsbImprimirComprobante
+        '
+        Me.tsbImprimirComprobante.Image = CType(resources.GetObject("tsbImprimirComprobante.Image"), System.Drawing.Image)
+        Me.tsbImprimirComprobante.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbImprimirComprobante.Name = "tsbImprimirComprobante"
+        Me.tsbImprimirComprobante.Size = New System.Drawing.Size(152, 24)
+        Me.tsbImprimirComprobante.Text = "Imprimir comprobante"
+        Me.tsbImprimirComprobante.ToolTipText = "Imprimir"
+        '
         'Frm_CXC_Pagos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1079,4 +1089,5 @@ Partial Class Frm_CXC_Pagos
     Friend WithEvents btnGenerarCFDIS As Button
     Friend WithEvents tssFechaEmisionCFDI As ToolStripStatusLabel
     Friend WithEvents chkVentasNoFiscales As CheckBox
+    Friend WithEvents tsbImprimirComprobante As ToolStripButton
 End Class
