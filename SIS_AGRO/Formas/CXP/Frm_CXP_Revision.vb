@@ -266,7 +266,7 @@ Public Class Frm_CXP_Revision
         Me.ActualizaConcepto()
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnGrabaDetalleVenta.Click
+    Private Sub btnGrabaDetalleVenta_Click(sender As Object, e As EventArgs) Handles btnGrabaDetalleVenta.Click
         If Me.GrabarGridFacturasRelacionadas() = True Then
             MsgBox("Detalle de venta actualizado correctamente.", MsgBoxStyle.Information, Me.Name)
             Me.Consultar()
@@ -1086,7 +1086,7 @@ Buscar:
                 Case enumEstados.SINORDENCOMPRA
                     Me.tsbGrabar.Enabled = True
 
-                    Me.gbProveedor.Enabled = False
+                    Me.gbProveedor.Enabled = True 'False
                     Me.gbCompraProveedor.Enabled = True
                     Me.gbCompras.Enabled = True
                     Me.txtFolioCompra.Enabled = False
@@ -1963,7 +1963,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
         Dim oDetalleVentas As New Class_Centros_Costos_Detalle_Ventas
 
         Try
-            For i = 1 To Me.GridFacturasRelacionadas.Rows
+            For i = 1 To Me.GridFacturasRelacionadas.Rows - 1
                 If txtLEN(Me.GridFacturasRelacionadas.Cell(i, Me.iGyCodigoCliente).Text) = False Then
                     Return True 'Si el grid de facturas no tiene renglones con datos no graba
                 End If
