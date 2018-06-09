@@ -9,13 +9,21 @@ Public Class Rpt_Inventario_Existencias
     Private Sub TxtCodArticulo_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodArticulo.KeyDown
         Dim oArticulos As New Class_CatArticulos
         Select Case e.KeyCode
-            Case Keys.F6
+            Case Keys.F6, Keys.F7
                 oArticulos = New Class_CatArticulos
-                Dim sArticulo As String = oArticulos.BusquedaVisual_PorDescripcion
+                Dim sArticulo As String = ""
+
+                If e.KeyCode = Keys.F6 Then
+                    sArticulo = oArticulos.BusquedaVisualInventariables_PorDescripcion
+                ElseIf e.KeyCode = Keys.F7 Then
+                    sArticulo = oArticulos.BusquedaVisualInventariables_PorCodigo
+                End If
+
                 If sArticulo.Length > 0 Then
                     Me.TxtCodArticulo.Text = sArticulo
                     Me.lblArticulo.Text = oArticulos.BuscarNombreArticulo(sArticulo)
                 End If
+
             Case Keys.Enter
                 Me.lblArticulo.Text = oArticulos.BuscarNombreArticulo(Me.TxtCodArticulo.Text)
                 If txtLEN(Me.lblArticulo.Text) = False Then
