@@ -1,6 +1,5 @@
 ﻿Option Strict On
 
-Imports System.Data
 Imports System.Data.SqlClient
 
 Public Class Class_Centros_Costos_Detalle_Ventas
@@ -173,7 +172,7 @@ Public Class Class_Centros_Costos_Detalle_Ventas
         Return dTabla
     End Function
 
-    Public Function GrabaCentroCostosDetalleVentas(ByVal Agregar As String) As Boolean
+    Public Function GrabaCentroCostosDetalleVentas() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -183,22 +182,16 @@ Public Class Class_Centros_Costos_Detalle_Ventas
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CENTRO_COSTOS_DETALLE_VENTAS_GRABA"
 
-            If txtLEN(Me._ID_CENTRO_COSTOS_DETALLE_VENTAS) = True Then
-                sqlParametro = .Parameters.Add("@ID_CENTRO_COSTOS_DETALLE_VENTAS", SqlDbType.Int) : sqlParametro.Value = CInt(Me._ID_CENTRO_COSTOS_DETALLE_VENTAS)
-            Else
-                sqlParametro = .Parameters.Add("@ID_CENTRO_COSTOS_DETALLE_VENTAS", SqlDbType.Int) : sqlParametro.Value = 0 'Inserta nuevo renglon
-            End If
-            sqlParametro = .Parameters.Add("@FOLIO_MOVIMIENTO", SqlDbType.NVarChar, 15) : sqlParametro.Value = "" & Me._FOLIO_MOVIMIENTO
-            sqlParametro = .Parameters.Add("@FOLIO_VENTA", SqlDbType.NVarChar, 15) : sqlParametro.Value = "" & Me._FOLIO_VENTA
+            sqlParametro = .Parameters.Add("@FOLIO_MOVIMIENTO", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_MOVIMIENTO
+            sqlParametro = .Parameters.Add("@FOLIO_VENTA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_VENTA
             sqlParametro = .Parameters.Add("@IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPORTE
-            sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char) : sqlParametro.Value = Agregar ' 1 = insertar , 0 = actualizar
 
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "ActualizaCostos", ex)
+                HandleError(Me.Nombre_Clase, "GrabaCentroCostosDetalleVentas", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -208,6 +201,32 @@ Public Class Class_Centros_Costos_Detalle_Ventas
         Return bResultado
     End Function
 
+    Public Function EliminaCentroCostosDetalleVentas(ByVal sFolioMovimiento As String) As Boolean
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_CENTRO_COSTOS_DETALLE_VENTAS_ELIMINA_TODO"
+
+            sqlParametro = .Parameters.Add("@FOLIO_MOVIMIENTO", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolioMovimiento
+
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me.Nombre_Clase, "EliminaCentroCostosDetalleVentas", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
+    End Function
 #End Region
 
 End Class

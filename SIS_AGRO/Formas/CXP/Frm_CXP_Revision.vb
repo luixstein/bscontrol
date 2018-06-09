@@ -267,11 +267,9 @@ Public Class Frm_CXP_Revision
     End Sub
 
     Private Sub btnGrabaDetalleVenta_Click(sender As Object, e As EventArgs) Handles btnGrabaDetalleVenta.Click
-        If Me.GrabarGridFacturasRelacionadas() = True Then
-            MsgBox("Detalle de venta actualizado correctamente.", MsgBoxStyle.Information, Me.Name)
+        If Me.GrabarVentasRelacionadas() = True Then
+            MsgBox("Detalle de venta grabado correctamente.", MsgBoxStyle.Information, Me.Name)
             Me.Consultar()
-        Else
-            MsgBox("No se pudo actualizar el detalle de venta", MsgBoxStyle.Exclamation, Me.Name)
         End If
     End Sub
 #End Region
@@ -305,7 +303,7 @@ Public Class Frm_CXP_Revision
             Select Case e.KeyCode
                 Case Keys.F6
 Buscar:
-                    Dim Busqueda = New Busqueda_General("P.CODIGO_PROVEEDOR AS CODIGO,P.NOMBRE_PROVEEDOR AS NOMBRE", "Cat_Proveedores P INNER JOIN SIS_TIPOS_PROVEEDORES T ON(P.CODIGO_TIPO_PROVEEDOR=T.CODIGO_TIPO_PROVEEDOR)", _
+                    Dim Busqueda = New Busqueda_General("P.CODIGO_PROVEEDOR AS CODIGO,P.NOMBRE_PROVEEDOR AS NOMBRE", "Cat_Proveedores P INNER JOIN SIS_TIPOS_PROVEEDORES T ON(P.CODIGO_TIPO_PROVEEDOR=T.CODIGO_TIPO_PROVEEDOR)",
                                                         " 1=1 and P.Estatus='A' AND P.CODIGO_PLAZA=" & Usuario.Codigo_Plaza & "AND T.REALIZA_COMPRAS_GASTOS_PAGOS='1'", "Nombre", "Nombre_Proveedor")
                     Busqueda.ShowDialog()
                     Me.TxtCodigoProveedor.Text = "" & Busqueda.Tag.ToString
@@ -318,7 +316,7 @@ Buscar:
                         GoTo Buscar
                         Exit Sub
                     End If
-                    Dim sql As New Class_find("Select P.NOMBRE_PROVEEDOR,P.CUENTA_CONTABLE,P.CUENTA_CONTABLE_DOLARES From CAT_PROVEEDORES P INNER JOIN SIS_TIPOS_PROVEEDORES T ON(P.CODIGO_TIPO_PROVEEDOR=T.CODIGO_TIPO_PROVEEDOR) " & _
+                    Dim sql As New Class_find("Select P.NOMBRE_PROVEEDOR,P.CUENTA_CONTABLE,P.CUENTA_CONTABLE_DOLARES From CAT_PROVEEDORES P INNER JOIN SIS_TIPOS_PROVEEDORES T ON(P.CODIGO_TIPO_PROVEEDOR=T.CODIGO_TIPO_PROVEEDOR) " &
                                               "Where P.CODIGO_PROVEEDOR='" & Me.TxtCodigoProveedor.Text & "' and P.Estatus='A' AND P.CODIGO_PLAZA=" & Usuario.Codigo_Plaza & " AND T.REALIZA_COMPRAS_GASTOS_PAGOS='1'")
                     If sql.Result1 = "" Then
                         MsgBox("El código de proveedor que intenta buscar no existe o esta dado de baja, favor de intentar con otro código.", MsgBoxStyle.Exclamation, "Validación de Proveedores")
@@ -528,7 +526,7 @@ Buscar:
         oTexBox.SelectAll()
     End Sub
 
-    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoProveedor.KeyDown, txtFolioProveedor.KeyDown, DtpFechaFacturaProveedor.KeyDown, _
+    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoProveedor.KeyDown, txtFolioProveedor.KeyDown, DtpFechaFacturaProveedor.KeyDown,
         TxtSubTotal.KeyDown, txtTotalCompra.KeyDown
         If e.KeyCode = Keys.Return Then
             SendKeys.Send("{TAB}")
@@ -564,7 +562,7 @@ Buscar:
         txtNoBeep(e)
     End Sub
 
-    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtConcepto.KeyPress, TxtCodigoProveedor.KeyPress, txtEmbarque.KeyPress, txtFolioProveedor.KeyPress, _
+    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtConcepto.KeyPress, TxtCodigoProveedor.KeyPress, txtEmbarque.KeyPress, txtFolioProveedor.KeyPress,
         DtpFechaFacturaProveedor.KeyPress, dtpFechaVencimiento.KeyPress, ckbDolares.KeyPress
         txtNoBeep(e)
     End Sub
@@ -722,7 +720,7 @@ Buscar:
             Me.ckbDolares.Checked = False
             Me.ckbDolares.Enabled = True
             Me.txtTipoCambio.Enabled = False
-            Me.lblTotalGasto.Text = "0"
+            Me.lblTotalFacturasRelacionadas.Text = "0"
 
             Me.InicializaGridCompras()
             Me.InicializaGridCuentas()
@@ -1084,7 +1082,11 @@ Buscar:
                     Me.btnActualizaConcepto.Visible = False
 
                 Case enumEstados.SINORDENCOMPRA
-                    Me.tsbGrabar.Enabled = True
+                    If Me.oCompras.Existe = True Then
+                        Me.tsbGrabar.Enabled = False
+                    Else
+                        Me.tsbGrabar.Enabled = True
+                    End If
 
                     Me.gbProveedor.Enabled = True 'False
                     Me.gbCompraProveedor.Enabled = True
@@ -1576,6 +1578,7 @@ busca_cuenta_contable:
     End Sub
 
     Private Sub GestionaGridFacturasRelacionadas(ByVal e As System.Windows.Forms.KeyEventArgs)
+        Dim sProcedure As String = "GestionaGridFacturasRelacionadas"
         Dim Columna As Integer, Renglon As Integer
         Dim StrCod As String = ""
         Dim sCodigo As String = "", sTipo As String = ""
@@ -1603,7 +1606,7 @@ busca_cuenta_contable:
 
                                 oCliente = New Class_CatClientes(sCodigo)
                                 If oCliente.Existe = False Then
-                                    MsgBox("El código de cliente no existe o esta dado de baja.", MsgBoxStyle.Critical, Me.Name)
+                                    MsgBox("El código de cliente no existe o esta dado de baja.", MsgBoxStyle.Critical, sProcedure)
                                     Return
                                 Else
                                     .Cell(Renglon, Columna).Text = sCodigo.ToUpper
@@ -1614,7 +1617,7 @@ busca_cuenta_contable:
 
                             Case Me.iGyFolioVenta
                                 If txtLEN(.Cell(Renglon, Me.iGyCodigoCliente).Text) = False Then
-                                    MsgBox("Asígne un código de cliente.", MsgBoxStyle.Exclamation, Me.Name)
+                                    MsgBox("Asígne un código de cliente.", MsgBoxStyle.Exclamation, sProcedure)
                                     .Cell(Renglon, Columna).Text = ""
                                     .Cell(Renglon, Me.iGyCodigoCliente).SetFocus()
                                     Return
@@ -1628,7 +1631,7 @@ busca_cuenta_contable:
 
                                 oVenta = New Class_Ventas_Global(sCodigo)
                                 If oVenta.Existe = False Then
-                                    MsgBox("El folio de venta no existe.", MsgBoxStyle.Critical, Me.Name)
+                                    MsgBox("El folio de venta no existe.", MsgBoxStyle.Critical, sProcedure)
                                     Return
                                 Else
                                     If Me.ValidaFolioVenta(sCodigo, Renglon) = False Then
@@ -1648,13 +1651,13 @@ busca_cuenta_contable:
 
                             Case Me.iGyGasto
                                 If txtLEN(.Cell(Renglon, Me.iGyCodigoCliente).Text) = False Then
-                                    MsgBox("Asígne un código de cliente.", MsgBoxStyle.Exclamation, Me.Name)
+                                    MsgBox("Asígne un código de cliente.", MsgBoxStyle.Exclamation, sProcedure)
                                     .Cell(Renglon, Columna).Text = ""
                                     Return
                                 End If
 
                                 If txtLEN(.Cell(Renglon, Me.iGyFolioVenta).Text) = False Then
-                                    MsgBox("Asígne un folio de venta." + .Cell(Renglon, Me.iGyCodigoCliente).Text, MsgBoxStyle.Exclamation, Me.Name)
+                                    MsgBox("Asígne un folio de venta." + .Cell(Renglon, Me.iGyCodigoCliente).Text, MsgBoxStyle.Exclamation, sProcedure)
                                     .Cell(Renglon, Columna).Text = ""
                                     Return
                                 End If
@@ -1669,7 +1672,7 @@ busca_cuenta_contable:
 
                         Select Case Columna
                             Case Me.iGyGasto
-                                    .Cell(Renglon + 1, 0).SetFocus()
+                                .Cell(Renglon + 1, 0).SetFocus()
                             Case Else
                                 .Cell(Renglon, Columna).SetFocus()
                         End Select
@@ -1713,12 +1716,20 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
 
                         End Select
 
-                    Case Keys.F8 Or Keys.Delete
-                        .Selection.DeleteByRow()
+                    Case Keys.F8, Keys.Delete
+                        If Renglon = 1 Then
+                            For i = 1 To Me.GridFacturasRelacionadas.Cols - 1
+                                Me.GridFacturasRelacionadas.Cell(Renglon, i).Text = ""
+                            Next
+                        Else
+                            .Selection.DeleteByRow()
+                        End If
+
+                        Me.TotalGridFacturasRelacionadas()
 
                 End Select
             Catch ex As Exception
-
+                HandleError(Me.Name, sProcedure, ex)
             End Try
         End With
     End Sub
@@ -1735,7 +1746,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
 
     Private Sub TotalGridFacturasRelacionadas()
         Try
-            Me.lblTotalGasto.Text = "$ " & FG_Grid_SumaCol(Me.GridFacturasRelacionadas, CShort(Me.iGyGasto))
+            Me.lblTotalFacturasRelacionadas.Text = "$ " & FG_Grid_SumaCol(Me.GridFacturasRelacionadas, CShort(Me.iGyGasto))
 
         Catch ex As Exception
             HandleError(Me.Name, "TotalGridFacturasRelacionadas", ex)
@@ -1870,7 +1881,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
 
                     For i = 1 To Me.GridCuentas.Rows - 1
                         If Me.GridCuentas.Cell(i, Me.iGyCuentaContable).Text <> "" And valorNumerico(Me.GridCuentas.Cell(i, Me.iGyImporte).Text) > 0 Then
-                            sCuentas = sCuentas & i & "," & Me.GridCuentas.Cell(i, Me.iGyTipo).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCodigoCentroCosto).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCodigoCategoria).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCodigoConcepto).Text & "," & _
+                            sCuentas = sCuentas & i & "," & Me.GridCuentas.Cell(i, Me.iGyTipo).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCodigoCentroCosto).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCodigoCategoria).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCodigoConcepto).Text & "," &
                             Me.GridCuentas.Cell(i, Me.iGyImporte).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCuentaContable).Text & "|"
                         End If
                     Next i
@@ -1880,7 +1891,6 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                             sListaActivos = sListaActivos & i & "," & Me.GridActivos.Cell(i, Me.iGyActivoCuentaContable).Text & "," & Me.GridActivos.Cell(i, Me.iGyActivoImporte).Text & "|"
                         End If
                     Next i
-
 
                     'Estructura anterior
                     'For i = 1 To Me.GridCuentas.Rows - 1
@@ -1904,7 +1914,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
 
                     If txtLEN(sCuentas) = False And txtLEN(sListaActivos) = False Then
                         MsgBox("Falta introducir los centros de costos o activos.", MsgBoxStyle.Exclamation, "Validación")
-                        Exit Function
+                        Return False
                     Else
                         If txtLEN(sCuentas) = True Then
                             sCuentas = sCuentas.Substring(0, sCuentas.Length - 1) 'Para quitarle el último pipe que sale sobrando.
@@ -1916,17 +1926,19 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
 
                     If .GrabaCompraGlobalSinOrden(sCuentas, sListaActivos) = False Then
                         MsgBox("Error al tratar de aplicar el movimiento de compras.", MsgBoxStyle.Exclamation, Me.Text)
-                        Exit Function
+                        Return False
                     End If
                     Me.txtFolioCompra.Text = .FOLIO_COMPRA
 
-                    If Me.GrabarGridFacturasRelacionadas = False Then
-                        MsgBox("Error al tratar de grabar facturas relacionadas", MsgBoxStyle.Exclamation, Me.Name)
-                        Exit Function
+                    If valorNumerico(Me.lblTotalFacturasRelacionadas.Text) > 0 Then
+                        If Me.GrabarVentasRelacionadas = False Then
+                            MsgBox("Error al tratar de grabar facturas relacionadas.", MsgBoxStyle.Exclamation, Me.Name)
+                            Return False
+                        End If
                     End If
 
                     'Aplicar = True
-                    MsgBox("Movimiento de compras aplicado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+                    MsgBox("Movimiento de gasto grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
 
                 End With
 
@@ -1934,7 +1946,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                 Dim sFolioProv As String
                 sFolioProv = Me.txtFolioProveedor.Text
                 If String.IsNullOrEmpty(sFolioProv) Then
-                    Exit Function
+                    Return False
                 Else
                     Me.oCompras.FOLIO_COMPRA = Me.txtFolioCompra.Text
                     Me.oCompras.FOLIO_PROVEEDOR = sFolioProv
@@ -1957,54 +1969,43 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
         Return bResultado
     End Function
 
-    Private Function GrabarGridFacturasRelacionadas() As Boolean
+    Private Function GrabarVentasRelacionadas() As Boolean
         Dim bResultado As Boolean = False
         Dim i As Integer
         Dim oDetalleVentas As New Class_Centros_Costos_Detalle_Ventas
 
         Try
-            For i = 1 To Me.GridFacturasRelacionadas.Rows - 1
-                If txtLEN(Me.GridFacturasRelacionadas.Cell(i, Me.iGyCodigoCliente).Text) = False Then
-                    Return True 'Si el grid de facturas no tiene renglones con datos no graba
-                End If
-            Next
+            'Eliminamos todas las ventas(si es que hay previamente grabadas)
+            If oDetalleVentas.EliminaCentroCostosDetalleVentas(Me.txtFolioCompra.Text) = False Then
+                Return False
+            End If
 
-            If valorNumerico(Me.txtTotalCompra.Text) <> valorNumerico(Me.lblTotalGasto.Text) Then
+            If valorNumerico(Me.txtTotalCompra.Text) <> valorNumerico(Me.lblTotalFacturasRelacionadas.Text) Then
                 MsgBox("El total del gasto es distinto del gasto de las facturas.", MsgBoxStyle.Exclamation, Me.Name)
-                Return bResultado
+                Return False
             End If
 
             With oDetalleVentas
                 For i = 1 To Me.GridFacturasRelacionadas.Rows - 1
-
                     If txtLEN(Me.GridFacturasRelacionadas.Cell(i, Me.iGyCodigoCliente).Text) = True AndAlso txtLEN(Me.GridFacturasRelacionadas.Cell(i, Me.iGyFolioVenta).Text) = True _
-                    AndAlso txtLEN(Me.GridFacturasRelacionadas.Cell(i, Me.iGyGasto).Text) = True Then
+                    AndAlso txtLEN(Me.GridFacturasRelacionadas.Cell(i, Me.iGyGasto).Text) = True AndAlso valorNumerico(Me.GridFacturasRelacionadas.Cell(i, Me.iGyGasto).Text) > 0 Then
                         .ID_CENTRO_COSTOS_DETALLE_VENTAS = Me.GridFacturasRelacionadas.Cell(i, Me.iGyIdCentroCostosDetalleVentas).Text
                         .FOLIO_MOVIMIENTO = Me.txtFolioCompra.Text
                         .FOLIO_VENTA = Me.GridFacturasRelacionadas.Cell(i, Me.iGyFolioVenta).Text
                         .IMPORTE = valorNumerico(Me.GridFacturasRelacionadas.Cell(i, Me.iGyGasto).Text)
 
-                        If txtLEN(.ID_CENTRO_COSTOS_DETALLE_VENTAS) = True Then 'Si tiene id actualiza el renglon
-                            If .GrabaCentroCostosDetalleVentas("0") = False Then
-                                MsgBox("Error al actualizar el renglon " & i, MsgBoxStyle.Exclamation)
-                                Return bResultado
-                            End If
-                        Else 'Inserta renglon nuevo
-                            If .GrabaCentroCostosDetalleVentas("1") = False Then
-                                MsgBox("Error al insertar el renglon " & i, MsgBoxStyle.Exclamation)
-                                Return bResultado
-                            End If
+                        If .GrabaCentroCostosDetalleVentas = False Then
+                            MsgBox("Error al insertar el renglon " & i, MsgBoxStyle.Exclamation)
+                            Return False
                         End If
-
                     End If
                 Next
 
                 bResultado = True
-
             End With
 
         Catch ex As Exception
-            HandleError(Me.Name, "GrabarGridFacturasRelacionadas", ex)
+            HandleError(Me.Name, "GrabarVentasRelacionadas", ex)
         End Try
 
         Return bResultado
@@ -2016,7 +2017,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
 
         Try
             If Plaza.ValidarPeriodoTrabajo(Me.dtpFechaVencimiento.Value) = False Then
-                Exit Function
+                Return False
             End If
 
             If Estado = enumEstados.PAGODIRECTO Then
@@ -2026,26 +2027,26 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                 sCodigoTipoDocumento = "CO"
                 If txtLEN(Me.txtFolioCompra.Text) = False Then
                     MsgBox("Favor de seleccionar una compra.", MsgBoxStyle.Exclamation, sProcedure)
-                    Exit Function
+                    Return False
                 End If
 
             ElseIf Estado = enumEstados.FLETEEMBARQUE Then
                 sCodigoTipoDocumento = "CA"
                 If txtLEN(Me.txtFolioCompra.Text) = False Then
                     MsgBox("Favor de seleccionar una compra.", MsgBoxStyle.Exclamation, sProcedure)
-                    Exit Function
+                    Return False
                 End If
 
             ElseIf Estado = enumEstados.SINORDENCOMPRA Then
                 sCodigoTipoDocumento = "CA"
 
                 'If MsgBox("Deseas agregar la compra ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, sProcedure) = MsgBoxResult.No Then
-                '    Exit Function
+                '    return false
                 'End If
 
                 'If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios("CO" & Usuario.Codigo_Plaza.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
                 '    MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, sProcedure)
-                '    Exit Function
+                '    return false
                 'End If
 
                 'Validar que hayan capturado todos los datos del frame2 requeridos(ver cuales son en el comentario de Continuar1)*racalco la cuentacontable
@@ -2053,22 +2054,22 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                 'Validar que si capturan IVA en $, también capturen el IVA en %
                 'If txtLEN(Me.txtCuenta.Text) = False Then
                 '    MsgBox("Falta introducir la cuenta contrable, favor de asignarle una.", MsgBoxStyle.Exclamation, "Validación")
-                '    Exit Function
+                '    return false
                 'Else
                 '    Dim oCuenta As New Class_CatCuentas
                 '    oCuenta = New Class_CatCuentas(Me.txtCuenta.Text)
                 '    If oCuenta._Existe = False Then
                 '        MsgBox("La cuenta contable que intenta grabar no existe favor de intentar con otro código.", MsgBoxStyle.Exclamation)
-                '        Exit Function
+                '        return false
                 '    ElseIf oCuenta.ESMAYOR = "1" Then
                 '        MsgBox("La cuenta contable no existe, favor de intentar con otro código.", MsgBoxStyle.Exclamation)
-                '        Exit Function
+                '        return false
                 '    End If
                 'End If
 
                 If valorNumerico(Me.TxtSubTotal.Text) <= 0 Then
                     MsgBox("Captúre los renglones.", MsgBoxStyle.Exclamation, sProcedure)
-                    Exit Function
+                    Return False
                 End If
                 Dim dSumaGridCuentas As Double = Redondear(FG_Grid_SumaCol(Me.GridCuentas, CShort(Me.iGyImporte)), 2)
                 Dim dSumaGridActivos As Double = Redondear(FG_Grid_SumaCol(Me.GridActivos, CShort(Me.iGyActivoImporte)), 2)
@@ -2076,12 +2077,12 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
 
                 If dSumaRenglones <> valorNumerico(Me.TxtSubTotal.Text) Then
                     MsgBox("La suma de los renglones $ " & dSumaRenglones & "no cuadra con el subtotal $ " & valorNumerico(Me.TxtSubTotal.Text), MsgBoxStyle.Exclamation, sProcedure)
-                    Exit Function
+                    Return False
                 End If
 
                 If valorNumerico(Me.txtTotalCompra.Text) <> CDbl(FormatNumber((valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.TxtIVA.Text) - valorNumerico(Me.TxtRetencion.Text)), 2)) Then
                     MsgBox("El total no esta correcto, favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
-                    Exit Function
+                    Return False
                 End If
 
                 'Me.txtTotalCompra.Text = (valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.TxtIVA.Text) - valorNumerico(Me.TxtRetencion.Text)).ToString
@@ -2089,20 +2090,20 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                     If valorNumerico(Me.txtPorciento.Text) = 0 Or txtLEN(Me.txtPorciento.Text) = False Then
                         MsgBox("No ha capturado el porcentaje del IVA, favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
                         Me.txtPorciento.Focus()
-                        Exit Function
+                        Return False
                     End If
                 ElseIf valorNumerico(Me.txtPorciento.Text) <> 0 Or txtLEN(Me.txtPorciento.Text) = False Then
                     If valorNumerico(Me.TxtIVA.Text) = 0 Or txtLEN(Me.TxtIVA.Text) = False Then
                         MsgBox("No ha capturado el total del IVA, favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
                         Me.TxtIVA.Focus()
-                        Exit Function
+                        Return False
                     End If
                 End If
 
                 If txtLEN(Me.txtFolioProveedor.Text) = False Then
                     MsgBox("Favor de asignar el folio de la factura del proveedor.", MsgBoxStyle.Exclamation, sProcedure)
                     Me.txtFolioProveedor.Focus()
-                    Exit Function
+                    Return False
                 End If
             End If
 
@@ -2112,13 +2113,20 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                 Me.CalculaImporteDolares()
                 If txtLEN(oProveedor.CUENTA_CONTABLE_DOLARES) = False Then
                     MsgBox("El proveedor no tiene una cuenta contable en dólares.", MsgBoxStyle.Exclamation, sProcedure)
-                    Exit Function
+                    Return False
                 End If
 
                 If valorNumerico(Me.txtTipoCambio.Text) <= 0 Then
                     MsgBox("Favor de asignar el tipo de cambio.", MsgBoxStyle.Exclamation, sProcedure)
                     Me.txtTipoCambio.Focus()
-                    Exit Function
+                    Return False
+                End If
+            End If
+
+            If valorNumerico(Me.lblTotalFacturasRelacionadas.Text) > 0 Then
+                If valorNumerico(Me.txtTotalCompra.Text) <> valorNumerico(Me.lblTotalFacturasRelacionadas.Text) Then
+                    MsgBox("El total del gasto es distinto del gasto de las facturas.", MsgBoxStyle.Exclamation, Me.Name)
+                    Return False
                 End If
             End If
 
@@ -2402,12 +2410,12 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
             End If
 
             For Each dRow As DataRow In dTabla.Rows
-                Me.GridFacturasRelacionadas.AddItem(dRow("ID_CENTRO_COSTOS_DETALLE_VENTAS").ToString & Chr(9) & dRow("CODIGO_CLIENTE").ToString & Chr(9) & dRow("NOMBRE_CLIENTE").ToString & Chr(9) & _
+                Me.GridFacturasRelacionadas.AddItem(dRow("ID_CENTRO_COSTOS_DETALLE_VENTAS").ToString & Chr(9) & dRow("CODIGO_CLIENTE").ToString & Chr(9) & dRow("NOMBRE_CLIENTE").ToString & Chr(9) &
                 dRow("FOLIO_VENTA").ToString & Chr(9) & dRow("FECHA").ToString & Chr(9) & dRow("IMPORTE").ToString & Chr(9))
             Next
 
             Me.FormateaGridFacturasRelacionadas()
-            Me.lblTotalGasto.Text = "$ " & FG_Grid_SumaCol(Me.GridFacturasRelacionadas, CShort(Me.iGyGasto))
+            Me.lblTotalFacturasRelacionadas.Text = "$ " & FG_Grid_SumaCol(Me.GridFacturasRelacionadas, CShort(Me.iGyGasto))
 
             'Me.Cambia_Estado(enumEstados.SINORDENCOMPRA)
             Me.tsbEditarCostos.Enabled = True
