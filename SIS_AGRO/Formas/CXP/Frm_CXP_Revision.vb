@@ -974,6 +974,7 @@ Buscar:
     Private Sub Cambia_Estado(ByVal pEstado As enumEstados)
         Try
             Me.Estado = pEstado
+
             Select Case Me.Estado
                 Case enumEstados.NUEVO
                     Me.tsbGrabar.Enabled = False
@@ -994,6 +995,9 @@ Buscar:
                     Me.btnGrabaDetalleVenta.Enabled = False
                     Me.TxtCodigoProveedor.Enabled = True
 
+                    Me.tsslElaboro.Visible = False : Me.tsslElaboro.Text = ""
+                    Me.tsslCancelo.Visible = False : Me.tsslCancelo.Text = ""
+
                 Case enumEstados.CONSULTA
                     Me.tsbGrabar.Enabled = False
 
@@ -1013,6 +1017,14 @@ Buscar:
                     Me.tsbEditarCostos.Enabled = False
                     Me.btnActualizaConcepto.Visible = False
                     Me.btnGrabaDetalleVenta.Enabled = True
+
+                    Me.tsslElaboro.Visible = True : Me.tsslElaboro.Text = "Elaboró : " + Me.oCompras.NOMBRE_USUARIO_GRABO.ToString + " el " + Format(Me.DtpFechaFacturaProveedor.Value, "dd/MMM/yy").ToUpper
+
+                    If Me.oCompras.ESTATUS = "C" Then
+                        Me.tsslCancelo.Visible = True : Me.tsslCancelo.Text = "Canceló : " + Me.oCompras.NOMBRE_USUARIO_CANCELO.ToString + " el " + Format(Me.oCompras.FECHA_CANCELACION, "dd/MMM/yy").ToUpper
+                    Else
+                        Me.tsslCancelo.Visible = False : Me.tsslCancelo.Text = ""
+                    End If
 
                 Case enumEstados.PAGODIRECTO
                     Me.tsbGrabar.Enabled = False
