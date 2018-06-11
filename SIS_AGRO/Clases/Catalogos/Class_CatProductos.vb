@@ -9,6 +9,7 @@ Public Class Class_CatProductos
 #Region "Campos de la tabla"
     Private _CODIGO_PRODUCTO As String
     Private _NOMBRE_PRODUCTO As String
+    Private _FACTOR_1 As Decimal
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -52,6 +53,15 @@ Public Class Class_CatProductos
         End Get
         Set(ByVal Value As String)
             Me._NOMBRE_PRODUCTO = Value
+        End Set
+    End Property
+
+    Public Property FACTOR_1() As Decimal
+        Get
+            Return Me._FACTOR_1
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._FACTOR_1 = Value
         End Set
     End Property
 
@@ -151,6 +161,7 @@ Public Class Class_CatProductos
             sqlParametro = .Parameters.Add("@CODIGO_PRODUCTO", SqlDbType.Int) : sqlParametro.Value = 0
             sqlParametro = .Parameters.Add("@NOMBRE_PRODUCTO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_PRODUCTO.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToUpper
+            sqlParametro = .Parameters.Add("@FACTOR_1", SqlDbType.Decimal) : sqlParametro.Value = Me._FACTOR_1
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "1"
             Try
                 Me._Conexion.Open()
@@ -180,6 +191,7 @@ Public Class Class_CatProductos
             sqlParametro = .Parameters.Add("@CODIGO_PRODUCTO", SqlDbType.Int) : sqlParametro.Value = CInt(Me._CODIGO_PRODUCTO)
             sqlParametro = .Parameters.Add("@NOMBRE_PRODUCTO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_PRODUCTO.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToUpper
+            sqlParametro = .Parameters.Add("@FACTOR_1", SqlDbType.Decimal) : sqlParametro.Value = Me._FACTOR_1
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "0"
             Try
                 Me._Conexion.Open()
@@ -211,6 +223,7 @@ Public Class Class_CatProductos
                     Me._CODIGO_PRODUCTO = dReader("CODIGO_PRODUCTO")
                     Me._NOMBRE_PRODUCTO = Trim("" & dReader("NOMBRE_PRODUCTO").ToString)
                     Me.Estatus = dReader("ESTATUS")
+                    Me._FACTOR_1 = dReader("FACTOR_1")
                     bResultado = True
                 End If
                 dReader.Close()

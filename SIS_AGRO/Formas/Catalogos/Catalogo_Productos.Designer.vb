@@ -38,6 +38,9 @@ Partial Class Catalogo_Productos
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.txtFactor1 = New System.Windows.Forms.TextBox()
+        Me.CboEstatus = New System.Windows.Forms.ComboBox()
+        Me.lblEstatus = New System.Windows.Forms.Label()
         Me.LblArticulos = New System.Windows.Forms.Label()
         Me.GridArticulos = New System.Windows.Forms.DataGridView()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -46,8 +49,7 @@ Partial Class Catalogo_Productos
         Me.LblCodigo = New System.Windows.Forms.Label()
         Me.TxtCodigo = New System.Windows.Forms.TextBox()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
-        Me.lblEstatus = New System.Windows.Forms.Label()
-        Me.CboEstatus = New System.Windows.Forms.ComboBox()
+        Me.lblFactor1 = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -178,6 +180,8 @@ Partial Class Catalogo_Productos
         '
         'gBoxInformacion
         '
+        Me.gBoxInformacion.Controls.Add(Me.lblFactor1)
+        Me.gBoxInformacion.Controls.Add(Me.txtFactor1)
         Me.gBoxInformacion.Controls.Add(Me.CboEstatus)
         Me.gBoxInformacion.Controls.Add(Me.lblEstatus)
         Me.gBoxInformacion.Controls.Add(Me.LblArticulos)
@@ -195,6 +199,37 @@ Partial Class Catalogo_Productos
         Me.gBoxInformacion.TabIndex = 27
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
+        '
+        'txtFactor1
+        '
+        Me.txtFactor1.Location = New System.Drawing.Point(103, 111)
+        Me.txtFactor1.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtFactor1.MaxLength = 2
+        Me.txtFactor1.Name = "txtFactor1"
+        Me.txtFactor1.Size = New System.Drawing.Size(75, 22)
+        Me.txtFactor1.TabIndex = 117
+        '
+        'CboEstatus
+        '
+        Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboEstatus.FormattingEnabled = True
+        Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
+        Me.CboEstatus.Location = New System.Drawing.Point(103, 79)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboEstatus.MaxLength = 1
+        Me.CboEstatus.Name = "CboEstatus"
+        Me.CboEstatus.Size = New System.Drawing.Size(95, 24)
+        Me.CboEstatus.TabIndex = 116
+        '
+        'lblEstatus
+        '
+        Me.lblEstatus.AutoSize = True
+        Me.lblEstatus.Location = New System.Drawing.Point(8, 82)
+        Me.lblEstatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblEstatus.Name = "lblEstatus"
+        Me.lblEstatus.Size = New System.Drawing.Size(63, 17)
+        Me.lblEstatus.TabIndex = 115
+        Me.lblEstatus.Text = "Estatus :"
         '
         'LblArticulos
         '
@@ -234,7 +269,7 @@ Partial Class Catalogo_Productos
         'LblDisplayNombreCultivo
         '
         Me.LblDisplayNombreCultivo.AutoSize = True
-        Me.LblDisplayNombreCultivo.Location = New System.Drawing.Point(8, 54)
+        Me.LblDisplayNombreCultivo.Location = New System.Drawing.Point(8, 52)
         Me.LblDisplayNombreCultivo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayNombreCultivo.Name = "LblDisplayNombreCultivo"
         Me.LblDisplayNombreCultivo.Size = New System.Drawing.Size(66, 17)
@@ -243,7 +278,7 @@ Partial Class Catalogo_Productos
         '
         'TxtNombre
         '
-        Me.TxtNombre.Location = New System.Drawing.Point(103, 50)
+        Me.TxtNombre.Location = New System.Drawing.Point(103, 49)
         Me.TxtNombre.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNombre.MaxLength = 200
         Me.TxtNombre.Name = "TxtNombre"
@@ -262,7 +297,7 @@ Partial Class Catalogo_Productos
         '
         'TxtCodigo
         '
-        Me.TxtCodigo.Location = New System.Drawing.Point(101, 18)
+        Me.TxtCodigo.Location = New System.Drawing.Point(103, 19)
         Me.TxtCodigo.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigo.MaxLength = 2
         Me.TxtCodigo.Name = "TxtCodigo"
@@ -273,27 +308,15 @@ Partial Class Catalogo_Productos
         '
         Me.ErrorProvider.ContainerControl = Me
         '
-        'lblEstatus
+        'lblFactor1
         '
-        Me.lblEstatus.AutoSize = True
-        Me.lblEstatus.Location = New System.Drawing.Point(8, 92)
-        Me.lblEstatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblEstatus.Name = "lblEstatus"
-        Me.lblEstatus.Size = New System.Drawing.Size(63, 17)
-        Me.lblEstatus.TabIndex = 115
-        Me.lblEstatus.Text = "Estatus :"
-        '
-        'CboEstatus
-        '
-        Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CboEstatus.FormattingEnabled = True
-        Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
-        Me.CboEstatus.Location = New System.Drawing.Point(103, 89)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
-        Me.CboEstatus.MaxLength = 1
-        Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(95, 24)
-        Me.CboEstatus.TabIndex = 116
+        Me.lblFactor1.AutoSize = True
+        Me.lblFactor1.Location = New System.Drawing.Point(8, 114)
+        Me.lblFactor1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblFactor1.Name = "lblFactor1"
+        Me.lblFactor1.Size = New System.Drawing.Size(68, 17)
+        Me.lblFactor1.TabIndex = 118
+        Me.lblFactor1.Text = "Factor 1 :"
         '
         'Catalogo_Productos
         '
@@ -349,4 +372,6 @@ Partial Class Catalogo_Productos
     Friend WithEvents LblArticulos As System.Windows.Forms.Label
     Friend WithEvents lblEstatus As System.Windows.Forms.Label
     Friend WithEvents CboEstatus As System.Windows.Forms.ComboBox
+    Friend WithEvents txtFactor1 As System.Windows.Forms.TextBox
+    Friend WithEvents lblFactor1 As System.Windows.Forms.Label
 End Class

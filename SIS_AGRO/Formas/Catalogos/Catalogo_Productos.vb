@@ -168,6 +168,7 @@ Public Class Catalogo_Productos
                 Me.TxtCodigo.Enabled = False
                 Me.TxtNombre.Enabled = True
                 Me.CboEstatus.Enabled = False
+                Me.txtFactor1.Enabled = True
                 Me.GridArticulos.Enabled = False
                 Me.InicializaElemento()
                 Me.TxtNombre.Focus()
@@ -184,6 +185,7 @@ Public Class Catalogo_Productos
                 Me.TxtCodigo.Enabled = False
                 Me.TxtNombre.Enabled = True
                 Me.CboEstatus.Enabled = True
+                Me.txtFactor1.Enabled = True
                 Me.GridArticulos.Enabled = True
                 Me.TxtNombre.Focus()
 
@@ -192,7 +194,7 @@ Public Class Catalogo_Productos
                 Me.gBoxBusquedaRapida.Enabled = True
                 Me.tssLabelEstado.Text = "Consultando"
                 Me.tsbNuevo.Enabled = True
-                Me.tsbEditar.Enabled = False
+                Me.tsbEditar.Enabled = True
                 Me.tsbGrabar.Enabled = False
                 Me.tsbCancelar.Enabled = False
                 Me.txtFiltro.Focus()
@@ -204,6 +206,7 @@ Public Class Catalogo_Productos
         Me.TxtCodigo.Text = ""
         Me.TxtNombre.Text = ""
         Me.CboEstatus.SelectedIndex = 0
+        Me.txtFactor1.Text = "1.00"
         Me.GridArticulos.DataSource = Nothing
     End Sub
 
@@ -229,6 +232,8 @@ Public Class Catalogo_Productos
             With Me.oProducto
                 Me.TxtCodigo.Text = .CODIGO_PRODUCTO.ToString
                 Me.TxtNombre.Text = .NOMBRE_PRODUCTO.ToString
+                Me.txtFactor1.Text = .FACTOR_1.ToString
+
                 If .Estatus = "A" Then
                     Me.CboEstatus.SelectedIndex = 0
                 Else
@@ -251,6 +256,7 @@ Public Class Catalogo_Productos
                         .CODIGO_PRODUCTO = Me.TxtCodigo.Text
                         .NOMBRE_PRODUCTO = Me.TxtNombre.Text
                         .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
+                        .FACTOR_1 = CDec(Me.txtFactor1.Text)
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -284,10 +290,18 @@ Public Class Catalogo_Productos
 
     Private Function Validar() As Boolean
         Dim bResultado As Boolean = False
+
         If txtLEN(Me.TxtNombre.Text) = False Then
             MsgBox("Asígne un nombre al Producto.", MsgBoxStyle.Exclamation, Me.Text)
             Me.TxtNombre.Focus()
             Return bResultado
+        End If
+
+        If txtLEN(Me.txtFactor1.Text) = False Then 'Si se deja en blanco pone 1 para grabarlo como default
+            'MsgBox("El factor 1 no puede estar en blanco.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.txtFactor1.Text = "1.00"
+            'Me.txtFactor1.Focus()
+            'Return bResultado
         End If
 
         bResultado = True
@@ -335,31 +349,15 @@ Public Class Catalogo_Productos
         End If
     End Sub
 
-    Private Sub txtPlazo_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
-        If e.KeyCode = Keys.Return Then
-            tsbGrabar.PerformClick()
-        End If
-    End Sub
-
-    Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigo.KeyPress
+    Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFactor1.KeyPress
         Dim txt As TextBox = CType(sender, TextBox)
         txtSoloNumerosDecimales(e, txt.Text)
         txtNoBeep(e)
     End Sub
 
-    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigo.KeyPress
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
-    End Sub
-
-    Private Sub txtNumericos_Validating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs)
-        Dim t As TextBox
-        t = CType(sender, TextBox)
-        If Not IsNumeric(t.Text) Then
-            t.Text = Val(t.Text).ToString
-        Else
-            Me.ErrorProvider.Clear()
-        End If
     End Sub
 #End Region
 
@@ -372,11 +370,6 @@ Public Class Catalogo_Productos
 
 #End Region
 
-    Private Sub CboFiltroHoja_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Refrescar()
-    End Sub
-
 #End Region
-
 
 End Class
