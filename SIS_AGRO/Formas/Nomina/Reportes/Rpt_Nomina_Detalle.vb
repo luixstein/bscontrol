@@ -41,7 +41,7 @@ Buscar:
                     Exit Sub
                 End If
 
-                oTrabajador = New Class_CatTrabajadores(Me.TxtCodigoTrabajador.Text)
+                oTrabajador = New Class_CatTrabajadores(Me.TxtCodigoTrabajador.Text, True)
                 If oTrabajador.Existe = False Then
                     Me.LblNombreTrabajador.Text = "" : GoTo Buscar : Exit Sub
                 End If
@@ -166,12 +166,21 @@ Buscar:
                 Exit Sub
             End If
 
+            Dim oTrabajador As New Class_CatTrabajadores
+            If txtLEN(Me.TxtCodigoTrabajador.Text) = True Then
+                oTrabajador = New Class_CatTrabajadores(Me.TxtCodigoTrabajador.Text, True)
+                If oTrabajador.Existe = False Then
+                    MsgBox("El trabajador no existe.", vbExclamation, Me.Name)
+                    Return
+                End If
+            End If
+
             Rpt.SetParameterValue("@ID_NOMINA_SEMANA1", CInt(Me.cboSemana1.SelectedValue.ToString))
             Rpt.SetParameterValue("@ID_NOMINA_SEMANA2", CInt(Me.cboSemana2.SelectedValue.ToString))
             Rpt.SetParameterValue("@CODIGO_CENTRO_COSTO", Me.CboCentroCosto.SelectedValue.ToString)
             Rpt.SetParameterValue("@CODIGO_CONCEPTO_ACTIVIDAD", Me.cboConceptoActividad.SelectedValue.ToString)
             Rpt.SetParameterValue("@CODIGO_SUB_ACTIVIDAD", Me.cboSubactividad.SelectedValue.ToString)
-            Rpt.SetParameterValue("@CODIGO_TRABAJADOR", Me.TxtCodigoTrabajador.Text)
+            Rpt.SetParameterValue("@CODIGO_TRABAJADOR", IIf(oTrabajador.Existe = True, oTrabajador.CODIGO_TRABAJADOR, "").ToString) 'No se debe poner el código directo del texbox porque tiene el código de temporada(que se repite)
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
