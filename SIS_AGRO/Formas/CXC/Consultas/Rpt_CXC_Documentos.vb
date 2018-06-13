@@ -22,7 +22,7 @@ Public Class Rpt_CXC_Documentos
         txtNoBeep(e)
     End Sub
 
-    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCuentaBancaria.KeyPress, CboZona.KeyPress, txtPropietario.KeyPress
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCuentaBancaria.KeyPress, CboZona.KeyPress, txtPropietario.KeyPress, txtCodigoUsuario.KeyPress
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
@@ -116,6 +116,35 @@ busqueda_Visual:
             End Select
         Catch ex As Exception
             HandleError(Me.Name, "txtCuentaBancaria_KeyDown", ex)
+        End Try
+    End Sub
+
+    Private Sub txtCodigoUsuario_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodigoUsuario.KeyDown
+        Try
+            Dim sText As String, oUsuario As New Class_sisUsuarios
+            Select Case e.KeyCode
+                Case Keys.F6
+Buscar:
+                    oUsuario = New Class_sisUsuarios
+                    sText = oUsuario.BusquedaVisual_PorDescripcion
+                    If txtLEN(sText) = True Then Me.txtCodigoUsuario.Text = sText
+                Case Keys.Return
+                    If txtLEN(Me.txtCodigoUsuario.Text) = False Then
+                        Me.LblNombreUsuario.Text = ""
+                        txtTAB(e)
+                        Return
+                    Else
+                        oUsuario = New Class_sisUsuarios(CInt(Me.txtCodigoUsuario.Text))
+                        If oUsuario.Existe = False Then
+                            Me.txtCodigoUsuario.Text = "" : Me.LblNombreUsuario.Text = ""
+                            GoTo Buscar : Exit Sub
+                        End If
+                        Me.LblNombreUsuario.Text = oUsuario.Nombre_Usuario
+                    End If
+                    txtTAB(e)
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Name, "txtCodigoUsuario_KeyDown", ex)
         End Try
     End Sub
 
@@ -326,7 +355,9 @@ Buscar:
                 Rpt.SetParameterValue("@CODIGO_ZONA", Me.CboZona.SelectedValue.ToString)
                 Rpt.SetParameterValue("@MOSTRAR_BULTOS", "0")
                 Rpt.SetParameterValue("@CODIGO_PROPIETARIO", valorNumerico(Me.txtPropietario.Text))
-                Rpt.SetParameterValue("@CODIGO_PLAZA", Me.cboPlaza.SelectedValue.ToString)
+                'Rpt.SetParameterValue("@CODIGO_PLAZA", Me.cboPlaza.SelectedValue.ToString)
+                Rpt.SetParameterValue("@FILTRAR_POR_FECHA_SERVIDOR", IIf(Me.rbtFechaDocumento.Checked = True, "1", "0"))
+                Rpt.SetParameterValue("@CODIGO_USUARIO_GRABO", IIf(txtLEN(Me.txtCodigoUsuario.Text) = True, Me.txtCodigoUsuario.Text, 0))
             Else 'Depositos x bulto
                 Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.txtCodigoCliente.Text)
                 Rpt.SetParameterValue("@FECHA1", Format(Me.dpFechaInicio.Value, "yyyy-dd-MM"))
@@ -357,6 +388,8 @@ Buscar:
             Me.LblDisplayDocumento.Visible = True : Me.CboDocumentos.Visible = True
             Me.LblDisplayTipoMercado.Visible = True : Me.CboTipoMercado.Visible = True
             Me.LblDisplayPlaza.Visible = False : Me.cboPlaza.Visible = False
+            Me.gpFiltroFecha.Visible = False
+            Me.lblCodigoUsuario.Visible = False : Me.LblNombreUsuario.Visible = False : Me.txtCodigoUsuario.Visible = False
         Else
             Me.lblDisplayFechaInicio.Visible = True : Me.dpFechaInicio.Visible = True ': Me.lblDisplayFechaInicio.Location = New Point(4, 54) :  : Me.dpFechaInicio.Location = New Point(88, 51)
             Me.LblDisplayFechaFinal.Visible = True : Me.dpFechaFinal.Visible = True ': Me.LblDisplayFechaFinal.Location = New Point(215, 54)  : Me.dpFechaFinal.Location = New Point(265, 50)
@@ -367,9 +400,10 @@ Buscar:
             Me.LblDisplayDocumento.Visible = False : Me.CboDocumentos.Visible = False
             Me.LblDisplayTipoMercado.Visible = False : Me.CboTipoMercado.Visible = False
             Me.LblDisplayPlaza.Visible = True : Me.cboPlaza.Visible = True
+            Me.gpFiltroFecha.Visible = True
+            Me.lblCodigoUsuario.Visible = True : Me.LblNombreUsuario.Visible = True : Me.txtCodigoUsuario.Visible = True
         End If
     End Sub
 
 #End Region
-
 End Class

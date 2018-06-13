@@ -35,6 +35,12 @@ Partial Class Rpt_CXC_Documentos
         Me.LblDisplayDocumento = New System.Windows.Forms.Label()
         Me.CboDocumentos = New System.Windows.Forms.ComboBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.LblNombreUsuario = New System.Windows.Forms.Label()
+        Me.txtCodigoUsuario = New System.Windows.Forms.TextBox()
+        Me.lblCodigoUsuario = New System.Windows.Forms.Label()
+        Me.gpFiltroFecha = New System.Windows.Forms.GroupBox()
+        Me.rbtFechaServidor = New System.Windows.Forms.RadioButton()
+        Me.rbtFechaDocumento = New System.Windows.Forms.RadioButton()
         Me.cboPlaza = New System.Windows.Forms.ComboBox()
         Me.LblDisplayPlaza = New System.Windows.Forms.Label()
         Me.lblDisplayPropietario = New System.Windows.Forms.Label()
@@ -60,6 +66,7 @@ Partial Class Rpt_CXC_Documentos
         Me.RdbGlobalCXC = New System.Windows.Forms.RadioButton()
         Me.ToolStrip1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
+        Me.gpFiltroFecha.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -172,6 +179,10 @@ Partial Class Rpt_CXC_Documentos
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.LblNombreUsuario)
+        Me.GroupBox1.Controls.Add(Me.txtCodigoUsuario)
+        Me.GroupBox1.Controls.Add(Me.lblCodigoUsuario)
+        Me.GroupBox1.Controls.Add(Me.gpFiltroFecha)
         Me.GroupBox1.Controls.Add(Me.cboPlaza)
         Me.GroupBox1.Controls.Add(Me.LblDisplayPlaza)
         Me.GroupBox1.Controls.Add(Me.lblDisplayPropietario)
@@ -202,10 +213,73 @@ Partial Class Rpt_CXC_Documentos
         Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox1.Size = New System.Drawing.Size(531, 412)
+        Me.GroupBox1.Size = New System.Drawing.Size(531, 436)
         Me.GroupBox1.TabIndex = 1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Filtros"
+        '
+        'LblNombreUsuario
+        '
+        Me.LblNombreUsuario.AutoSize = True
+        Me.LblNombreUsuario.Location = New System.Drawing.Point(191, 402)
+        Me.LblNombreUsuario.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNombreUsuario.Name = "LblNombreUsuario"
+        Me.LblNombreUsuario.Size = New System.Drawing.Size(12, 17)
+        Me.LblNombreUsuario.TabIndex = 385
+        Me.LblNombreUsuario.Text = "."
+        '
+        'txtCodigoUsuario
+        '
+        Me.txtCodigoUsuario.Location = New System.Drawing.Point(117, 399)
+        Me.txtCodigoUsuario.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtCodigoUsuario.MaxLength = 8
+        Me.txtCodigoUsuario.Name = "txtCodigoUsuario"
+        Me.txtCodigoUsuario.Size = New System.Drawing.Size(64, 22)
+        Me.txtCodigoUsuario.TabIndex = 384
+        Me.txtCodigoUsuario.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'lblCodigoUsuario
+        '
+        Me.lblCodigoUsuario.AutoSize = True
+        Me.lblCodigoUsuario.Location = New System.Drawing.Point(8, 402)
+        Me.lblCodigoUsuario.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblCodigoUsuario.Name = "lblCodigoUsuario"
+        Me.lblCodigoUsuario.Size = New System.Drawing.Size(107, 17)
+        Me.lblCodigoUsuario.TabIndex = 383
+        Me.lblCodigoUsuario.Text = "Código usuario:"
+        '
+        'gpFiltroFecha
+        '
+        Me.gpFiltroFecha.Controls.Add(Me.rbtFechaServidor)
+        Me.gpFiltroFecha.Controls.Add(Me.rbtFechaDocumento)
+        Me.gpFiltroFecha.Location = New System.Drawing.Point(288, 276)
+        Me.gpFiltroFecha.Name = "gpFiltroFecha"
+        Me.gpFiltroFecha.Size = New System.Drawing.Size(236, 50)
+        Me.gpFiltroFecha.TabIndex = 382
+        Me.gpFiltroFecha.TabStop = False
+        Me.gpFiltroFecha.Text = "Filtrar por fecha de:"
+        '
+        'rbtFechaServidor
+        '
+        Me.rbtFechaServidor.AutoSize = True
+        Me.rbtFechaServidor.Location = New System.Drawing.Point(129, 22)
+        Me.rbtFechaServidor.Name = "rbtFechaServidor"
+        Me.rbtFechaServidor.Size = New System.Drawing.Size(82, 21)
+        Me.rbtFechaServidor.TabIndex = 1
+        Me.rbtFechaServidor.Text = "Servidor"
+        Me.rbtFechaServidor.UseVisualStyleBackColor = True
+        '
+        'rbtFechaDocumento
+        '
+        Me.rbtFechaDocumento.AutoSize = True
+        Me.rbtFechaDocumento.Checked = True
+        Me.rbtFechaDocumento.Location = New System.Drawing.Point(7, 22)
+        Me.rbtFechaDocumento.Name = "rbtFechaDocumento"
+        Me.rbtFechaDocumento.Size = New System.Drawing.Size(101, 21)
+        Me.rbtFechaDocumento.TabIndex = 0
+        Me.rbtFechaDocumento.TabStop = True
+        Me.rbtFechaDocumento.Text = "Documento"
+        Me.rbtFechaDocumento.UseVisualStyleBackColor = True
         '
         'cboPlaza
         '
@@ -456,7 +530,7 @@ Partial Class Rpt_CXC_Documentos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(745, 459)
+        Me.ClientSize = New System.Drawing.Size(745, 477)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.ToolStrip1)
@@ -470,6 +544,8 @@ Partial Class Rpt_CXC_Documentos
         Me.ToolStrip1.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        Me.gpFiltroFecha.ResumeLayout(False)
+        Me.gpFiltroFecha.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         Me.ResumeLayout(False)
@@ -511,4 +587,10 @@ Partial Class Rpt_CXC_Documentos
     Friend WithEvents lblPropietario As Label
     Friend WithEvents cboPlaza As System.Windows.Forms.ComboBox
     Friend WithEvents LblDisplayPlaza As System.Windows.Forms.Label
+    Friend WithEvents gpFiltroFecha As System.Windows.Forms.GroupBox
+    Friend WithEvents rbtFechaServidor As System.Windows.Forms.RadioButton
+    Friend WithEvents rbtFechaDocumento As System.Windows.Forms.RadioButton
+    Friend WithEvents LblNombreUsuario As System.Windows.Forms.Label
+    Friend WithEvents txtCodigoUsuario As System.Windows.Forms.TextBox
+    Friend WithEvents lblCodigoUsuario As System.Windows.Forms.Label
 End Class
