@@ -11,6 +11,9 @@ Public Class Class_CFD_CatProductosServicios
     Private _NOMBRE_PRODUCTO_SERVICIO As String
     Private _NOMBRE_PRODUCTO_SERVICIO_SIMILAR As String
     Private _ESTATUS As String
+    Private _TIPO As String
+    Private _ESMAYOR As Boolean
+    Private _NIVEL As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -59,6 +62,24 @@ Public Class Class_CFD_CatProductosServicios
     Public ReadOnly Property ESTATUS() As String
         Get
             Return Me._ESTATUS
+        End Get
+    End Property
+
+    Public ReadOnly Property TIPO() As String
+        Get
+            Return Me._TIPO
+        End Get
+    End Property
+
+    Public ReadOnly Property ESMAYOR() As Boolean
+        Get
+            Return Me._ESMAYOR
+        End Get
+    End Property
+
+    Public ReadOnly Property NIVEL() As String
+        Get
+            Return Me._NIVEL
         End Get
     End Property
 #End Region
@@ -203,6 +224,9 @@ Public Class Class_CFD_CatProductosServicios
                     Me._NOMBRE_PRODUCTO_SERVICIO = dReader("NOMBRE_PRODUCTO_SERVICIO").ToString
                     Me._NOMBRE_PRODUCTO_SERVICIO_SIMILAR = dReader("NOMBRE_PRODUCTO_SERVICIO_SIMILAR").ToString
                     Me._ESTATUS = dReader("ESTATUS").ToString
+                    Me._TIPO = dReader("TIPO").ToString
+                    Me._ESMAYOR = CBool(dReader("ESMAYOR").ToString)
+                    Me._NIVEL = dReader("NIVEL").ToString
 
                     bResultado = True
                 End If

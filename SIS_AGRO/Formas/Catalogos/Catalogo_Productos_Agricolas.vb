@@ -565,8 +565,14 @@ Public Class Catalogo_Productos_Agricolas
         Dim oProductoSAT As New Class_CFD_CatProductosServicios(Me.txtClaveProductoSAT.Text)
 
         If oProductoSAT.EXISTE = False Then
-            MsgBox("La txtClaveProductoSAT de producto/servicio del SAT no existe favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
-            Me.txtCodigoUnidadSAT.Focus()
+            MsgBox("La clave de producto/servicio del SAT no existe favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.txtClaveProductoSAT.Focus()
+            Return False
+        ElseIf oProductoSAT.NIVEL = "1" Or oProductoSAT.NIVEL = "2" Then
+            MsgBox("La clave de producto/servicio del SAT no es de las permitidas de usar." & vbCrLf &
+                   "No puede terminar en 4 o 6 ceros." & vbCrLf &
+                   "Debe de ser de nivel 3(termina con 2 ceros) ó nivel 4(termina con 2 dígitos del 01 al 99)", MsgBoxStyle.Exclamation, Me.Text)
+            Me.txtClaveProductoSAT.Focus()
             Return False
         End If
 

@@ -1,7 +1,5 @@
 ﻿Option Strict On
-Imports System.Data
 Imports System.Data.SqlClient
-Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Catalogo_Proveedores
     Private oProveedores As New Class_CatProveedores
@@ -284,9 +282,9 @@ Public Class Catalogo_Proveedores
         Dim sMsg As String = ""
         Select Case Me.Estado
             Case enumEstados.EDICION
-                sMsg = " grabar las modificaciones del " & Me.msgElemento & " : " & Me.TxtCodProveedor.Text
+                sMsg = " grabar las modificaciones del " & Me.msgElemento & " : " & Me.TxtNomProveedor.Text
             Case enumEstados.NUEVO
-                sMsg = " agregar el " & Me.msgElemento & " : " & Me.TxtCodProveedor.Text
+                sMsg = " agregar el " & Me.msgElemento & " : " & Me.TxtNomProveedor.Text
         End Select
         sMsg = "Deseas " & sMsg & " ?"
         If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
@@ -535,11 +533,11 @@ Public Class Catalogo_Proveedores
             Exit Sub
         End If
 
-        If txtLEN(Me.txtDomicilio.Text) = False Then
-            MsgBox("Asígne el domicilio del proveedor.", MsgBoxStyle.Exclamation, Me.Text)
-            Me.txtDomicilio.Focus()
-            Exit Sub
-        End If
+        'If txtLEN(Me.txtDomicilio.Text) = False Then
+        '    MsgBox("Asígne el domicilio del proveedor.", MsgBoxStyle.Exclamation, Me.Text)
+        '    Me.txtDomicilio.Focus()
+        '    Exit Sub
+        'End If
 
         If txtLEN(Me.txtRFC.Text) = False Then
             MsgBox("Asígne el RFC del proveedor.", MsgBoxStyle.Exclamation, Me.Text)
