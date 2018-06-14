@@ -346,6 +346,7 @@ Buscar:
                 Rpt.SetParameterValue("@CODIGO_ZONA", Me.CboZona.SelectedValue.ToString)
                 Rpt.SetParameterValue("@CODIGO_TIPO_MERCADO", Me.CboTipoMercado.SelectedValue.ToString)
                 Rpt.SetParameterValue("@CODIGO_PROPIETARIO", valorNumerico(Me.txtPropietario.Text))
+                Rpt.SetParameterValue("@CODIGO_USUARIO_GRABO", IIf(txtLEN(Me.txtCodigoUsuario.Text) = True, Me.txtCodigoUsuario.Text, 0))
             ElseIf Me.RdbDetalleDepositos.Checked = True Then
                 Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.txtCodigoCliente.Text)
                 Rpt.SetParameterValue("@FECHA1", Format(Me.dpFechaInicio.Value, "yyyy-dd-MM"))
@@ -389,7 +390,6 @@ Buscar:
             Me.LblDisplayTipoMercado.Visible = True : Me.CboTipoMercado.Visible = True
             Me.LblDisplayPlaza.Visible = False : Me.cboPlaza.Visible = False
             Me.gpFiltroFecha.Visible = False
-            Me.lblCodigoUsuario.Visible = False : Me.LblNombreUsuario.Visible = False : Me.txtCodigoUsuario.Visible = False
         Else
             Me.lblDisplayFechaInicio.Visible = True : Me.dpFechaInicio.Visible = True ': Me.lblDisplayFechaInicio.Location = New Point(4, 54) :  : Me.dpFechaInicio.Location = New Point(88, 51)
             Me.LblDisplayFechaFinal.Visible = True : Me.dpFechaFinal.Visible = True ': Me.LblDisplayFechaFinal.Location = New Point(215, 54)  : Me.dpFechaFinal.Location = New Point(265, 50)
@@ -401,7 +401,6 @@ Buscar:
             Me.LblDisplayTipoMercado.Visible = False : Me.CboTipoMercado.Visible = False
             Me.LblDisplayPlaza.Visible = True : Me.cboPlaza.Visible = True
             Me.gpFiltroFecha.Visible = True
-            Me.lblCodigoUsuario.Visible = True : Me.LblNombreUsuario.Visible = True : Me.txtCodigoUsuario.Visible = True
         End If
     End Sub
 
