@@ -129,6 +129,12 @@ Public Class ConfiguracionUsuarios
                 Me.BtnActualizar.Enabled = False
                 Me.BtnRecurperar.Enabled = False
 
+                If Empresa_Sistema.CODIGO_VENDEDOR_POR_USUARIO = True Then
+                    Me.gpVendedor.Visible = True
+                Else
+                    Me.gpVendedor.Visible = False
+                End If
+
             Case enumEstados.EDICION
                 Me.gbInformacion.Enabled = True
                 Me.gBoxBusquedaRapida.Enabled = False
@@ -146,6 +152,12 @@ Public Class ConfiguracionUsuarios
                 Me.TxtNombreUsuario.Focus()
                 Me.BtnActualizar.Enabled = True
                 Me.BtnRecurperar.Enabled = True
+
+                If Empresa_Sistema.CODIGO_VENDEDOR_POR_USUARIO = True Then
+                    Me.gpVendedor.Visible = True
+                Else
+                    Me.gpVendedor.Visible = False
+                End If
 
             Case Else
                 Me.gbInformacion.Enabled = False
@@ -165,6 +177,13 @@ Public Class ConfiguracionUsuarios
                         Me.lstbElementos.SelectedIndex = iIndex
                     End If
                 End If
+
+                If Empresa_Sistema.CODIGO_VENDEDOR_POR_USUARIO = True Then
+                    Me.gpVendedor.Visible = True
+                Else
+                    Me.gpVendedor.Visible = False
+                End If
+
                 Me.txtFiltro.Focus()
 
         End Select
@@ -183,6 +202,16 @@ Public Class ConfiguracionUsuarios
         Me.CkbAdministrador.Checked = False
         Me.CkbClientes.Checked = False
         Me.CkbArmadoPalet.Checked = False
+
+        Me.txtCodigoVendedor.Text = ""
+        Me.lblNombreVendedor.Text = ""
+
+        If Empresa_Sistema.CODIGO_VENDEDOR_POR_USUARIO = True Then
+            Me.gpVendedor.Visible = True
+        Else
+            Me.gpVendedor.Visible = False
+        End If
+
     End Sub
 
     Private Sub DesplegarElementos()
@@ -413,6 +442,13 @@ Public Class ConfiguracionUsuarios
                 Me.txtClaveCorreo.Text = .CLAVE_CORREO.ToString
                 Me.CkbAdmonCreditos.Checked = CBool(.ADMON_CREDITOS)
                 Me.ckbVerCostos.Checked = CBool(.VER_COSTOS)
+                Me.txtCodigoVendedor.Text = .CODIGO_VENDEDOR
+
+                If txtLEN(Me.txtCodigoVendedor.Text) = True Then
+                    Dim oVendedor As New Class_CatVendedores(Me.txtCodigoVendedor.Text)
+                    If oVendedor.Existe = True Then Me.lblNombreVendedor.Text = oVendedor.NOMBRE_VENDEDOR
+                End If
+
             End With
         End If
         Me.TreeMenus()
@@ -452,6 +488,7 @@ Public Class ConfiguracionUsuarios
                         .CLAVE_CORREO = Me.txtClaveCorreo.Text
                         .ADMON_CREDITOS = Convert.ToInt32(Me.CkbAdmonCreditos.Checked)
                         .VER_COSTOS = ckbVerCostos.Checked
+                        .CODIGO_VENDEDOR = Me.txtCodigoVendedor.Text
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -821,13 +858,34 @@ Buscar:
         End Select
     End Sub
 
-    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoUsuarioImporta.KeyPress
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoUsuarioImporta.KeyPress, txtCodigoVendedor.KeyPress
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
 
 #End Region
 
+    Private Sub TxtCodigoVendedor_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodigoVendedor.KeyDown
+        Dim sText As String
+        Dim oVendedor As New Class_CatVendedores
+        Select Case e.KeyCode
+            Case Keys.F6
+Buscar:
+                sText = oVendedor.BusquedaVisual_PorDescripcion
+                If txtLEN(sText) = True Then Me.txtCodigoVendedor.Text = sText
+            Case Keys.Enter
+                If txtLEN(Me.txtCodigoVendedor.Text) = False Then
+                    Me.lblNombreVendedor.Text = "" : GoTo Buscar : Exit Sub
+                End If
+
+                oVendedor = New Class_CatVendedores(Me.txtCodigoVendedor.Text)
+                If oVendedor.Existe = False Then
+                    Me.lblNombreVendedor.Text = "" : GoTo Buscar : Exit Sub
+                End If
+
+                Me.lblNombreVendedor.Text = oVendedor.NOMBRE_VENDEDOR
+        End Select
+    End Sub
     Private Sub CboModulos_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles CboModulos.SelectedIndexChanged
         If Me.Visible = True Then
             Me.llenalistview()

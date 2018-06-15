@@ -82,6 +82,7 @@ Public NotInheritable Class Class_sisEmpresa
     Private _CODIGO_ALMACEN_MATERIALES_EMPAQUE As String
     Private _VALIDA_SERIES_REPETIDAS_EN_ENTRADAS As Boolean
     Private _PERMITE_CLIENTES_MULTIPLAZA As Boolean
+    Private _CODIGO_VENDEDOR_POR_USUARIO As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -602,6 +603,12 @@ Public NotInheritable Class Class_sisEmpresa
         End Get
     End Property
 
+    Public ReadOnly Property CODIGO_VENDEDOR_POR_USUARIO() As Boolean
+        Get
+            Return Me._CODIGO_VENDEDOR_POR_USUARIO
+        End Get
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -954,6 +961,7 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._CODIGO_ALMACEN_MATERIALES_EMPAQUE = "" & dReader("CODIGO_ALMACEN_MATERIALES_EMPAQUE").ToString
                     Me._VALIDA_SERIES_REPETIDAS_EN_ENTRADAS = CBool(dReader("VALIDA_SERIES_REPETIDAS_EN_ENTRADAS").ToString)
                     Me._PERMITE_CLIENTES_MULTIPLAZA = CBool(dReader("PERMITE_CLIENTES_MULTIPLAZA").ToString)
+                    Me._CODIGO_VENDEDOR_POR_USUARIO = CBool(dReader("CODIGO_VENDEDOR_POR_USUARIO").ToString)
 
                     dReader.Close()
                     bResultado = True

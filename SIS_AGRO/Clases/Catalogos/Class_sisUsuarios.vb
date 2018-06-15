@@ -25,6 +25,7 @@ Public Class Class_sisUsuarios
     Private _PERMISO_CAMBIAR_PRECIO_VENTA As Boolean
     Private _ADMON_CREDITOS As Integer
     Private _VER_COSTOS As Boolean
+    Private _CODIGO_VENDEDOR As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -213,6 +214,14 @@ Public Class Class_sisUsuarios
         End Set
     End Property
 
+    Public Property CODIGO_VENDEDOR() As String
+        Get
+            Return Me._CODIGO_VENDEDOR
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_VENDEDOR = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos de sistema"
@@ -302,6 +311,11 @@ Public Class Class_sisUsuarios
             sqlParametro = .Parameters.Add("@CLAVE_CORREO", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CLAVE_CORREO
             sqlParametro = .Parameters.Add("@ADMON_CREDITOS", SqlDbType.SmallInt) : sqlParametro.Value = Me._ADMON_CREDITOS
             sqlParametro = .Parameters.Add("@VER_COSTOS", SqlDbType.NVarChar, 1) : sqlParametro.Value = Convert.ToInt32(Me._VER_COSTOS).ToString
+            If txtLEN(Me._CODIGO_VENDEDOR) = True Then
+                sqlParametro = .Parameters.Add("@CODIGO_VENDEDOR", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_VENDEDOR)
+            Else
+                sqlParametro = .Parameters.Add("@CODIGO_VENDEDOR", SqlDbType.SmallInt) : sqlParametro.Value = DBNull.Value
+            End If
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "ACTUALIZAR"
 
             Try
@@ -352,6 +366,7 @@ Public Class Class_sisUsuarios
                     Me._PERMISO_CAMBIAR_PRECIO_VENTA = CBool(dReader("PERMISO_CAMBIAR_PRECIO_VENTA").ToString)
                     Me._ADMON_CREDITOS = CInt(dReader("ADMON_CREDITOS"))
                     Me._VER_COSTOS = CBool(dReader("VER_COSTOS").ToString)
+                    Me._CODIGO_VENDEDOR = "" & dReader("CODIGO_VENDEDOR").ToString
 
                     bResultado = True
                 End If
@@ -411,6 +426,11 @@ Public Class Class_sisUsuarios
             sqlParametro = .Parameters.Add("@CLAVE_CORREO", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CLAVE_CORREO
             sqlParametro = .Parameters.Add("@ADMON_CREDITOS", SqlDbType.SmallInt) : sqlParametro.Value = Me._ADMON_CREDITOS
             sqlParametro = .Parameters.Add("@VER_COSTOS", SqlDbType.NVarChar, 1) : sqlParametro.Value = Convert.ToInt32(Me._VER_COSTOS).ToString
+            If txtLEN(Me._CODIGO_VENDEDOR) = True Then
+                sqlParametro = .Parameters.Add("@CODIGO_VENDEDOR", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_VENDEDOR)
+            Else
+                sqlParametro = .Parameters.Add("@CODIGO_VENDEDOR", SqlDbType.SmallInt) : sqlParametro.Value = DBNull.Value
+            End If
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "INSERTAR"
 
             Try

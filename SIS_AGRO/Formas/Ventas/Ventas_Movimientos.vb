@@ -1135,6 +1135,10 @@ Buscar:
                     Me.lblConceptoCancelacion.Visible = False
                     Me.TxtConceptoCancelacion.Visible = False
 
+                    If Empresa_Sistema.CODIGO_VENDEDOR_POR_USUARIO = True AndAlso txtLEN(Usuario.CODIGO_VENDEDOR) = True Then
+                        Me.cboVendedor.SelectedValue = Usuario.CODIGO_VENDEDOR
+                    End If
+
                     If Me.Visible = True Then
                         Me.txtFolio.Focus()
                     End If
@@ -3389,7 +3393,12 @@ buscaCentrosCostos:
             Me.lblCliente.Text = Me.oCliente.NOMBRE_CLIENTE
             Me.txtPlazo.Text = Me.oCliente.DIAS_PLAZO.ToString
             Me.dpVencimiento.Value = Me.dpFecha.Value.AddDays(CDbl(Me.txtPlazo.Text))
-            Me.cboVendedor.SelectedValue = Me.oCliente.CODIGO_VENDEDOR
+
+            If Empresa_Sistema.CODIGO_VENDEDOR_POR_USUARIO = True AndAlso txtLEN(Usuario.CODIGO_VENDEDOR) = True Then
+                Me.cboVendedor.SelectedValue = Usuario.CODIGO_VENDEDOR
+            Else
+                Me.cboVendedor.SelectedValue = Me.oCliente.CODIGO_VENDEDOR
+            End If
 
             Dim bEstableceFormaPago As Boolean
 
