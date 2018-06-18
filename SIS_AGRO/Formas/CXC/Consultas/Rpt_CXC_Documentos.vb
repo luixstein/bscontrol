@@ -356,7 +356,7 @@ Buscar:
                 Rpt.SetParameterValue("@CODIGO_ZONA", Me.CboZona.SelectedValue.ToString)
                 Rpt.SetParameterValue("@MOSTRAR_BULTOS", "0")
                 Rpt.SetParameterValue("@CODIGO_PROPIETARIO", valorNumerico(Me.txtPropietario.Text))
-                'Rpt.SetParameterValue("@CODIGO_PLAZA", Me.cboPlaza.SelectedValue.ToString)
+                Rpt.SetParameterValue("@CODIGO_PLAZA", Me.cboPlaza.SelectedValue.ToString)
                 Rpt.SetParameterValue("@FILTRAR_POR_FECHA_SERVIDOR", IIf(Me.rbtFechaServidor.Checked = True, "1", "0"))
                 Rpt.SetParameterValue("@CODIGO_USUARIO_GRABO", IIf(txtLEN(Me.txtCodigoUsuario.Text) = True, Me.txtCodigoUsuario.Text, 0))
             Else 'Depositos x bulto
