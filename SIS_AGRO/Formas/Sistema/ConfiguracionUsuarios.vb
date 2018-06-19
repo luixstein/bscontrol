@@ -447,6 +447,8 @@ Public Class ConfiguracionUsuarios
                 If txtLEN(Me.txtCodigoVendedor.Text) = True Then
                     Dim oVendedor As New Class_CatVendedores(Me.txtCodigoVendedor.Text)
                     If oVendedor.Existe = True Then Me.lblNombreVendedor.Text = oVendedor.NOMBRE_VENDEDOR
+                Else
+                    Me.lblNombreVendedor.Text = ""
                 End If
 
             End With
