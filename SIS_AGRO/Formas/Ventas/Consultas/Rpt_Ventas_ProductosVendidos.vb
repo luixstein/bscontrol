@@ -55,6 +55,26 @@ Buscar:
         End Select
     End Sub
 
+    Private Sub Rdn_CheckedChanged(sender As Object, e As EventArgs) Handles RdnVentasPorCultivo.CheckedChanged, RdnVentasPorFacturas.CheckedChanged, RdnDevoluciones.CheckedChanged
+        If Me.RdnDevoluciones.Checked = True Then
+            Me.CboTipoDocumento.Visible = False
+            Me.lblDocumentos.Visible = False
+            Me.CkbFechaReferencia.Visible = False
+            Me.CboMercado.Visible = False
+            Me.CboCultivoAgricola.Visible = False
+            Me.LblDisplayMercado.Visible = False
+            Me.lblCultivoAgricola.Visible = False
+        Else
+            Me.CboTipoDocumento.Visible = True
+            Me.lblDocumentos.Visible = True
+            Me.CkbFechaReferencia.Visible = True
+            Me.CboMercado.Visible = True
+            Me.CboCultivoAgricola.Visible = True
+            Me.LblDisplayMercado.Visible = True
+            Me.lblCultivoAgricola.Visible = True
+        End If
+    End Sub
+
     Private Sub DesplegarAlmacen()
         Dim oAlmacen As New Class_CatAlmacenes
         Try
@@ -203,24 +223,29 @@ Buscar:
 
             If Me.RdnVentasPorFacturas.Checked = True Then
                 FormatoDeReporte = "RPT_VENTAS_AGRUPADO_FACTURA"
-            Else
+            ElseIf Me.RdnVentasPorCultivo.Checked = True Then
                 FormatoDeReporte = "RPT_VENTAS_AGRUPADO_CULTIVO"
+            Else
+                FormatoDeReporte = "RPT_CXC_DEVOLUCIONES"
             End If
 
             oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
             Rpt.SetParameterValue("@FECHA1", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
             Rpt.SetParameterValue("@FECHA2", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
-            Rpt.SetParameterValue("@CODIGO_TIPO_DOCUMENTO", Me.CboTipoDocumento.SelectedValue.ToString)
             Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.TxtCliente.Text)
             Rpt.SetParameterValue("@CODIGO_ZONA", Me.CboZona.SelectedValue.ToString)
-            Rpt.SetParameterValue("@FILTRAR_FECHA_REFERENCIA", IIf(Me.CkbFechaReferencia.Checked = True, "1", "0"))
             Rpt.SetParameterValue("@CODIGO_ARTICULO", Me.TxtCodigoProducto.Text)
             Rpt.SetParameterValue("@CODIGO_ALMACEN", Me.CboAlmacen.SelectedValue.ToString)
-            Rpt.SetParameterValue("@CODIGO_TIPO_MERCADO", Me.CboMercado.SelectedValue.ToString)
             Rpt.SetParameterValue("@CODIGO_LINEA", Me.CboLinea.SelectedValue.ToString)
             Rpt.SetParameterValue("@CODIGO_FAMILIA", Me.CboFamilia.SelectedValue.ToString)
-            Rpt.SetParameterValue("@CODIGO_CULTIVO", IIf(txtLEN(Me.CboCultivoAgricola.SelectedValue.ToString) = True, Me.CboCultivoAgricola.SelectedValue.ToString, "T"))
             Rpt.SetParameterValue("@CODIGO_USUARIO", Usuario.Codigo_Usuario.ToString)
+
+            If Me.RdnDevoluciones.Checked = False Then
+                Rpt.SetParameterValue("@CODIGO_TIPO_DOCUMENTO", Me.CboTipoDocumento.SelectedValue.ToString)
+                Rpt.SetParameterValue("@FILTRAR_FECHA_REFERENCIA", IIf(Me.CkbFechaReferencia.Checked = True, "1", "0"))
+                Rpt.SetParameterValue("@CODIGO_TIPO_MERCADO", Me.CboMercado.SelectedValue.ToString)
+                Rpt.SetParameterValue("@CODIGO_CULTIVO", IIf(txtLEN(Me.CboCultivoAgricola.SelectedValue.ToString) = True, Me.CboCultivoAgricola.SelectedValue.ToString, "T"))
+            End If
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
@@ -268,4 +293,5 @@ Buscar:
         ' Add any initialization after the InitializeComponent() call.
 
     End Sub
+
 End Class
