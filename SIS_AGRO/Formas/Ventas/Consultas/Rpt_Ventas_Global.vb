@@ -149,6 +149,23 @@ Buscar:
         End Try
     End Sub
 
+    Private Sub DesplegarPlazas()
+        Dim oPlazas As New Class_SisPlazas
+        Try
+            With Me.cboPlaza
+                .DisplayMember = "NOMBRE_PLAZA"
+                .ValueMember = "CODIGO_PLAZA"
+
+                Dim dView As New Data.DataView(oPlazas.ObtenerElementosParaReporte)
+                dView.Sort = "NOMBRE_PLAZA"
+                .DataSource = dView
+                .SelectedValue = 0
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarPlazas", ex)
+        End Try
+    End Sub
+
     Private Sub Rpt_Embarques_Empaque_Y_Embarque_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.DesplegarAlmacen()
         Me.DesplegarEstatusVentas()
@@ -157,6 +174,7 @@ Buscar:
         Me.DesplegarMercados()
         Me.DesplegarZonas()
         Me.DesplegarVendedores()
+        Me.DesplegarPlazas()
 
         Me.CboEstatus.SelectedValue = "A"
         Me.DtFechaDesde.Value = FechaActualINI()
@@ -222,6 +240,7 @@ Buscar:
             Rpt.SetParameterValue("@CODIGO_TIPO_NEGOCIACION", Me.CboNegociacion.SelectedValue.ToString)
             Rpt.SetParameterValue("@MOSTAR_CON_SALDO", IIf(Me.CkbSaldo.Checked = True, "1", "0"))
             Rpt.SetParameterValue("@CODIGO_VENDEDOR", Me.CboVendedores.SelectedValue)
+            Rpt.SetParameterValue("@CODIGO_PLAZA", Me.cboPlaza.SelectedValue)
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
