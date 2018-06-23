@@ -3275,14 +3275,14 @@ buscaCentrosCostos:
 
                     End Select
 
-                Case Keys.F8 'Borrar renglón
-                    If (Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.GRABADO) Then
+                Case Keys.F8, Keys.Delete  'Borrar renglón
+                    If (Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.GRABADO Or Me.Estado = enumEstados.SUSTITUYENDO) Then
                         Me.Grid.Selection.DeleteByRow()
                         Me.Totales()
                     End If
 
-                Case Keys.Delete 'Borrar renglón
-                    Return
+                'Case Keys.Delete 'Borrar renglón
+                'Return
 
                 Case Keys.F4 'Comentarios
 
