@@ -180,6 +180,7 @@ Public Class Catalogo_Formulas
                     Me.TxtCodigoFormula.Enabled = False
                     Me.TxtNombreFormula.Enabled = True
                     Me.TxtCodigoArticulo.Enabled = True
+                    Me.txtCostoProduccion.Enabled = True
                     Me.Grid1.Locked = False
 
                     Me.InicializaElemento()
@@ -201,6 +202,7 @@ Public Class Catalogo_Formulas
                     Me.TxtNombreFormula.Enabled = True
                     Me.CboEstatus.Enabled = True
                     Me.TxtCodigoArticulo.Enabled = True
+                    Me.txtCostoProduccion.Enabled = True
                     Me.Grid1.Locked = False
 
                     Me.TxtNombreFormula.Focus()
@@ -231,6 +233,7 @@ Public Class Catalogo_Formulas
         Me.CboEstatus.SelectedIndex = 0
         Me.TxtCodigoArticulo.Text = ""
         Me.LblNombreProductoFinal.Text = ""
+        Me.txtCostoProduccion.Text = "0.00"
 
         Me.InicializaGrid()
 
@@ -256,6 +259,7 @@ Public Class Catalogo_Formulas
                     Me.TxtCodigoFormula.Text = .CODIGO_FORMULA.ToString
                     Me.TxtNombreFormula.Text = .NOMBRE_FORMULA.ToString
                     Me.TxtCodigoArticulo.Text = .CODIGO_ARTICULO.ToString
+                    Me.txtCostoProduccion.Text = .PORCENTAJE_COSTO_PRODUCCION.ToString
 
                     Dim sql As New Class_find("SELECT DESCRIPCION FROM CAT_ARTICULOS WHERE CODIGO_ARTICULO='" & Me.TxtCodigoArticulo.Text & "'")
                     Me.LblNombreProductoFinal.Text = sql.Result1.ToString
@@ -298,6 +302,7 @@ Public Class Catalogo_Formulas
                         .NOMBRE_FORMULA = Me.TxtNombreFormula.Text
                         .CODIGO_ARTICULO = Me.TxtCodigoArticulo.Text
                         .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
+                        .PORCENTAJE_COSTO_PRODUCCION = CDec(Me.txtCostoProduccion.Text)
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -373,6 +378,10 @@ Public Class Catalogo_Formulas
                 MsgBox("Asígne un producto final.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.TxtCodigoArticulo.Focus()
                 Return bResultado
+            End If
+
+            If txtLEN(Me.txtCostoProduccion.Text) = False Then
+                Me.txtCostoProduccion.Text = "0.00"
             End If
 
             If Me.Grid1.Rows < 2 Then
@@ -639,6 +648,12 @@ BuscaArticulos:
 
     Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoFormula.KeyPress
         txtSoloNumerosEnteros(e)
+        txtNoBeep(e)
+    End Sub
+
+    Private Sub txtCantidad_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCostoProduccion.KeyPress
+        Dim txt As TextBox = CType(sender, TextBox)
+        txtSoloNumerosDecimales(e, txt.Text)
         txtNoBeep(e)
     End Sub
 #End Region
