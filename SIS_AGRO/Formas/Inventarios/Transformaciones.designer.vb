@@ -56,6 +56,8 @@ Partial Class Transformaciones
         Me.lblCostoMateria = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
+        Me.lblCuentaContable = New System.Windows.Forms.Label()
+        Me.lblNombreCuentaContable = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -104,12 +106,12 @@ Partial Class Transformaciones
         Me.Grid1.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
         Me.Grid1.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Grid1.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Grid1.Location = New System.Drawing.Point(13, 174)
+        Me.Grid1.Location = New System.Drawing.Point(13, 250)
         Me.Grid1.LockButton = True
         Me.Grid1.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid1.Name = "Grid1"
         Me.Grid1.Rows = 20
-        Me.Grid1.Size = New System.Drawing.Size(1076, 316)
+        Me.Grid1.Size = New System.Drawing.Size(1076, 312)
         Me.Grid1.TabIndex = 5
         Me.Grid1.UncheckedImage = CType(resources.GetObject("Grid1.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -136,7 +138,7 @@ Partial Class Transformaciones
         'LblDisplayDireccionEmpresa
         '
         Me.LblDisplayDireccionEmpresa.AutoSize = True
-        Me.LblDisplayDireccionEmpresa.Location = New System.Drawing.Point(441, 125)
+        Me.LblDisplayDireccionEmpresa.Location = New System.Drawing.Point(431, 189)
         Me.LblDisplayDireccionEmpresa.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayDireccionEmpresa.Name = "LblDisplayDireccionEmpresa"
         Me.LblDisplayDireccionEmpresa.Size = New System.Drawing.Size(76, 17)
@@ -145,12 +147,12 @@ Partial Class Transformaciones
         '
         'TxtConcepto
         '
-        Me.TxtConcepto.Location = New System.Drawing.Point(525, 113)
+        Me.TxtConcepto.Location = New System.Drawing.Point(515, 186)
         Me.TxtConcepto.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtConcepto.MaxLength = 160
         Me.TxtConcepto.Multiline = True
         Me.TxtConcepto.Name = "TxtConcepto"
-        Me.TxtConcepto.Size = New System.Drawing.Size(553, 53)
+        Me.TxtConcepto.Size = New System.Drawing.Size(574, 53)
         Me.TxtConcepto.TabIndex = 4
         '
         'LblStatus
@@ -167,7 +169,7 @@ Partial Class Transformaciones
         'StatusStripEstado
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 677)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 718)
         Me.StatusStripEstado.Name = "StatusStripEstado"
         Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
         Me.StatusStripEstado.Size = New System.Drawing.Size(1102, 22)
@@ -176,43 +178,43 @@ Partial Class Transformaciones
         '
         'TxtCantidad
         '
-        Me.TxtCantidad.Location = New System.Drawing.Point(300, 122)
+        Me.TxtCantidad.Location = New System.Drawing.Point(301, 186)
         Me.TxtCantidad.Name = "TxtCantidad"
         Me.TxtCantidad.Size = New System.Drawing.Size(100, 22)
         Me.TxtCantidad.TabIndex = 3
         '
         'TxtCostoTotal
         '
-        Me.TxtCostoTotal.Location = New System.Drawing.Point(950, 571)
+        Me.TxtCostoTotal.Location = New System.Drawing.Point(950, 632)
         Me.TxtCostoTotal.Name = "TxtCostoTotal"
         Me.TxtCostoTotal.Size = New System.Drawing.Size(128, 22)
         Me.TxtCostoTotal.TabIndex = 384
         '
         'TxtCostoUnitario
         '
-        Me.TxtCostoUnitario.Location = New System.Drawing.Point(950, 628)
+        Me.TxtCostoUnitario.Location = New System.Drawing.Point(950, 676)
         Me.TxtCostoUnitario.Name = "TxtCostoUnitario"
         Me.TxtCostoUnitario.Size = New System.Drawing.Size(128, 22)
         Me.TxtCostoUnitario.TabIndex = 385
         '
         'TxtExistencia
         '
-        Me.TxtExistencia.Location = New System.Drawing.Point(114, 122)
+        Me.TxtExistencia.Location = New System.Drawing.Point(99, 186)
         Me.TxtExistencia.Name = "TxtExistencia"
         Me.TxtExistencia.Size = New System.Drawing.Size(100, 22)
         Me.TxtExistencia.TabIndex = 386
         '
         'TxtCodigoFormula
         '
-        Me.TxtCodigoFormula.Location = New System.Drawing.Point(106, 77)
+        Me.TxtCodigoFormula.Location = New System.Drawing.Point(91, 111)
         Me.TxtCodigoFormula.Name = "TxtCodigoFormula"
         Me.TxtCodigoFormula.Size = New System.Drawing.Size(100, 22)
-        Me.TxtCodigoFormula.TabIndex = 1
+        Me.TxtCodigoFormula.TabIndex = 2
         '
         'LblDisplayFormula
         '
         Me.LblDisplayFormula.AutoSize = True
-        Me.LblDisplayFormula.Location = New System.Drawing.Point(28, 80)
+        Me.LblDisplayFormula.Location = New System.Drawing.Point(13, 114)
         Me.LblDisplayFormula.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayFormula.Name = "LblDisplayFormula"
         Me.LblDisplayFormula.Size = New System.Drawing.Size(71, 17)
@@ -222,7 +224,7 @@ Partial Class Transformaciones
         'LblDisplayExistencia
         '
         Me.LblDisplayExistencia.AutoSize = True
-        Me.LblDisplayExistencia.Location = New System.Drawing.Point(28, 125)
+        Me.LblDisplayExistencia.Location = New System.Drawing.Point(13, 189)
         Me.LblDisplayExistencia.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayExistencia.Name = "LblDisplayExistencia"
         Me.LblDisplayExistencia.Size = New System.Drawing.Size(79, 17)
@@ -232,7 +234,7 @@ Partial Class Transformaciones
         'LblNombreProductoFinal
         '
         Me.LblNombreProductoFinal.AutoSize = True
-        Me.LblNombreProductoFinal.Location = New System.Drawing.Point(213, 80)
+        Me.LblNombreProductoFinal.Location = New System.Drawing.Point(198, 114)
         Me.LblNombreProductoFinal.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblNombreProductoFinal.Name = "LblNombreProductoFinal"
         Me.LblNombreProductoFinal.Size = New System.Drawing.Size(16, 17)
@@ -242,7 +244,7 @@ Partial Class Transformaciones
         'LblCantidad
         '
         Me.LblCantidad.AutoSize = True
-        Me.LblCantidad.Location = New System.Drawing.Point(221, 125)
+        Me.LblCantidad.Location = New System.Drawing.Point(222, 189)
         Me.LblCantidad.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblCantidad.Name = "LblCantidad"
         Me.LblCantidad.Size = New System.Drawing.Size(72, 17)
@@ -252,7 +254,7 @@ Partial Class Transformaciones
         'LblCosto
         '
         Me.LblCosto.AutoSize = True
-        Me.LblCosto.Location = New System.Drawing.Point(840, 631)
+        Me.LblCosto.Location = New System.Drawing.Point(840, 679)
         Me.LblCosto.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblCosto.Name = "LblCosto"
         Me.LblCosto.Size = New System.Drawing.Size(103, 17)
@@ -262,7 +264,7 @@ Partial Class Transformaciones
         'LblCostoTotal
         '
         Me.LblCostoTotal.AutoSize = True
-        Me.LblCostoTotal.Location = New System.Drawing.Point(860, 574)
+        Me.LblCostoTotal.Location = New System.Drawing.Point(860, 635)
         Me.LblCostoTotal.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblCostoTotal.Name = "LblCostoTotal"
         Me.LblCostoTotal.Size = New System.Drawing.Size(83, 17)
@@ -271,15 +273,15 @@ Partial Class Transformaciones
         '
         'TxtCuentaContable
         '
-        Me.TxtCuentaContable.Location = New System.Drawing.Point(31, 537)
+        Me.TxtCuentaContable.Location = New System.Drawing.Point(181, 71)
         Me.TxtCuentaContable.Name = "TxtCuentaContable"
         Me.TxtCuentaContable.Size = New System.Drawing.Size(163, 22)
-        Me.TxtCuentaContable.TabIndex = 2
+        Me.TxtCuentaContable.TabIndex = 12
         '
         'LblDisplayProductoFinal
         '
         Me.LblDisplayProductoFinal.AutoSize = True
-        Me.LblDisplayProductoFinal.Location = New System.Drawing.Point(272, 80)
+        Me.LblDisplayProductoFinal.Location = New System.Drawing.Point(13, 150)
         Me.LblDisplayProductoFinal.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayProductoFinal.Name = "LblDisplayProductoFinal"
         Me.LblDisplayProductoFinal.Size = New System.Drawing.Size(103, 17)
@@ -289,7 +291,7 @@ Partial Class Transformaciones
         'LblCodigoArticulo
         '
         Me.LblCodigoArticulo.AutoSize = True
-        Me.LblCodigoArticulo.Location = New System.Drawing.Point(383, 80)
+        Me.LblCodigoArticulo.Location = New System.Drawing.Point(124, 150)
         Me.LblCodigoArticulo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblCodigoArticulo.Name = "LblCodigoArticulo"
         Me.LblCodigoArticulo.Size = New System.Drawing.Size(16, 17)
@@ -304,25 +306,25 @@ Partial Class Transformaciones
         Me.cboAlmacen2.Margin = New System.Windows.Forms.Padding(4)
         Me.cboAlmacen2.Name = "cboAlmacen2"
         Me.cboAlmacen2.Size = New System.Drawing.Size(313, 24)
-        Me.cboAlmacen2.TabIndex = 400
+        Me.cboAlmacen2.TabIndex = 1
         '
         'txtCostoMateriaPrima
         '
-        Me.txtCostoMateriaPrima.Location = New System.Drawing.Point(950, 508)
+        Me.txtCostoMateriaPrima.Location = New System.Drawing.Point(950, 569)
         Me.txtCostoMateriaPrima.Name = "txtCostoMateriaPrima"
         Me.txtCostoMateriaPrima.Size = New System.Drawing.Size(128, 22)
         Me.txtCostoMateriaPrima.TabIndex = 401
         '
         'txtCostoProduccion
         '
-        Me.txtCostoProduccion.Location = New System.Drawing.Point(950, 539)
+        Me.txtCostoProduccion.Location = New System.Drawing.Point(950, 600)
         Me.txtCostoProduccion.Name = "txtCostoProduccion"
         Me.txtCostoProduccion.Size = New System.Drawing.Size(128, 22)
         Me.txtCostoProduccion.TabIndex = 402
         '
         'txtPorcentajeCosto
         '
-        Me.txtPorcentajeCosto.Location = New System.Drawing.Point(855, 539)
+        Me.txtPorcentajeCosto.Location = New System.Drawing.Point(855, 600)
         Me.txtPorcentajeCosto.Name = "txtPorcentajeCosto"
         Me.txtPorcentajeCosto.Size = New System.Drawing.Size(61, 22)
         Me.txtPorcentajeCosto.TabIndex = 403
@@ -330,7 +332,7 @@ Partial Class Transformaciones
         'lblGastos
         '
         Me.lblGastos.AutoSize = True
-        Me.lblGastos.Location = New System.Drawing.Point(787, 542)
+        Me.lblGastos.Location = New System.Drawing.Point(787, 603)
         Me.lblGastos.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblGastos.Name = "lblGastos"
         Me.lblGastos.Size = New System.Drawing.Size(61, 17)
@@ -340,7 +342,7 @@ Partial Class Transformaciones
         'lblCostoMateria
         '
         Me.lblCostoMateria.AutoSize = True
-        Me.lblCostoMateria.Location = New System.Drawing.Point(801, 511)
+        Me.lblCostoMateria.Location = New System.Drawing.Point(801, 572)
         Me.lblCostoMateria.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblCostoMateria.Name = "lblCostoMateria"
         Me.lblCostoMateria.Size = New System.Drawing.Size(142, 17)
@@ -360,18 +362,40 @@ Partial Class Transformaciones
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(923, 542)
+        Me.Label2.Location = New System.Drawing.Point(923, 603)
         Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(20, 17)
         Me.Label2.TabIndex = 407
         Me.Label2.Text = "%"
         '
+        'lblCuentaContable
+        '
+        Me.lblCuentaContable.AutoSize = True
+        Me.lblCuentaContable.Location = New System.Drawing.Point(54, 74)
+        Me.lblCuentaContable.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblCuentaContable.Name = "lblCuentaContable"
+        Me.lblCuentaContable.Size = New System.Drawing.Size(119, 17)
+        Me.lblCuentaContable.TabIndex = 408
+        Me.lblCuentaContable.Text = "Cuenta contable :"
+        '
+        'lblNombreCuentaContable
+        '
+        Me.lblNombreCuentaContable.AutoSize = True
+        Me.lblNombreCuentaContable.Location = New System.Drawing.Point(351, 74)
+        Me.lblNombreCuentaContable.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblNombreCuentaContable.Name = "lblNombreCuentaContable"
+        Me.lblNombreCuentaContable.Size = New System.Drawing.Size(16, 17)
+        Me.lblNombreCuentaContable.TabIndex = 409
+        Me.lblNombreCuentaContable.Text = "_"
+        '
         'Transformaciones
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1102, 699)
+        Me.ClientSize = New System.Drawing.Size(1102, 740)
+        Me.Controls.Add(Me.lblNombreCuentaContable)
+        Me.Controls.Add(Me.lblCuentaContable)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.lblCostoMateria)
@@ -380,7 +404,6 @@ Partial Class Transformaciones
         Me.Controls.Add(Me.txtCostoProduccion)
         Me.Controls.Add(Me.txtCostoMateriaPrima)
         Me.Controls.Add(Me.cboAlmacen2)
-        Me.Controls.Add(Me.LblCodigoArticulo)
         Me.Controls.Add(Me.LblDisplayProductoFinal)
         Me.Controls.Add(Me.TxtCuentaContable)
         Me.Controls.Add(Me.LblCostoTotal)
@@ -402,6 +425,7 @@ Partial Class Transformaciones
         Me.Controls.Add(Me.LblStatus)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.tsMenu)
+        Me.Controls.Add(Me.LblCodigoArticulo)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
@@ -446,4 +470,6 @@ Partial Class Transformaciones
     Friend WithEvents lblCostoMateria As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents lblCuentaContable As System.Windows.Forms.Label
+    Friend WithEvents lblNombreCuentaContable As System.Windows.Forms.Label
 End Class

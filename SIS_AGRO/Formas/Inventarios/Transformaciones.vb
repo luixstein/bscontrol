@@ -106,44 +106,44 @@ nombreFormula:
         End Select
     End Sub
 
-    '    Private Sub TxtCuentaContable_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCuentaContable.KeyDown
-    '        Dim oCuentas As New Class_CatCuentas, sCuentaContable As String
+    Private Sub TxtCuentaContable_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCuentaContable.KeyDown
+        Dim oCuentas As New Class_CatCuentas, sCuentaContable As String
 
-    '        Select Case e.KeyCode
-    '            Case Keys.Enter
-    '                sCuentaContable = Me.TxtCuentaContable.Text
+        Select Case e.KeyCode
+            Case Keys.Enter
+                sCuentaContable = Me.TxtCuentaContable.Text
 
-    '                oCuentas = New Class_CatCuentas(sCuentaContable)
+                oCuentas = New Class_CatCuentas(sCuentaContable)
 
-    '                If oCuentas._Existe = True Then
-    '                    Me.TxtCuentaContable.Text = oCuentas.CUENTA_CONTABLE
-    '                    Me.LblNombreCuentaContable.Text = oCuentas.NOMBRE_CUENTA
-    '                Else
-    '                    Me.TxtCuentaContable.Text = ""
-    '                    Me.LblNombreCuentaContable.Text = ""
-    '                    GoTo BuscarCuentas : Exit Sub
-    '                End If
+                If oCuentas._Existe = True Then
+                    Me.TxtCuentaContable.Text = oCuentas.CUENTA_CONTABLE
+                    Me.LblNombreCuentaContable.Text = oCuentas.NOMBRE_CUENTA
+                Else
+                    Me.TxtCuentaContable.Text = ""
+                    Me.LblNombreCuentaContable.Text = ""
+                    GoTo BuscarCuentas : Exit Sub
+                End If
 
-    '                txtTAB(e)
+                txtTAB(e)
 
-    '            Case Keys.F6, Keys.F7
-    'BuscarCuentas:
-    '                If e.KeyCode = Keys.F6 Then
-    '                    sCuentaContable = oCuentas.BusquedaVisual_PorCodigo()
-    '                Else
-    '                    sCuentaContable = oCuentas.BusquedaVisual_PorDescripcion()
-    '                End If
+            Case Keys.F6, Keys.F7
+BuscarCuentas:
+                If e.KeyCode = Keys.F6 Then
+                    sCuentaContable = oCuentas.BusquedaVisual_PorCodigo()
+                Else
+                    sCuentaContable = oCuentas.BusquedaVisual_PorDescripcion()
+                End If
 
-    '                If txtLEN(sCuentaContable) = True Then
-    '                    oCuentas = New Class_CatCuentas(sCuentaContable)
-    '                    If oCuentas._Existe = True Then
-    '                        Me.TxtCuentaContable.Text = oCuentas.CUENTA_CONTABLE
-    '                        Me.LblNombreCuentaContable.Text = oCuentas.NOMBRE_CUENTA
-    '                    End If
-    '                End If
+                If txtLEN(sCuentaContable) = True Then
+                    oCuentas = New Class_CatCuentas(sCuentaContable)
+                    If oCuentas._Existe = True Then
+                        Me.TxtCuentaContable.Text = oCuentas.CUENTA_CONTABLE
+                        Me.LblNombreCuentaContable.Text = oCuentas.NOMBRE_CUENTA
+                    End If
+                End If
 
-    '        End Select
-    '    End Sub
+        End Select
+    End Sub
 #End Region
 
 #Region "Métodos y procedimientos"
@@ -156,7 +156,7 @@ nombreFormula:
 
             Me.TxtCodigoFormula.Enabled = True
             Me.TxtExistencia.Enabled = True
-            'Me.TxtCuentaContable.Enabled = True
+            Me.TxtCuentaContable.Enabled = True
             Me.TxtCantidad.Enabled = True
             Me.TxtConcepto.Enabled = True
             Me.txtCostoMateriaPrima.Enabled = True
@@ -170,6 +170,8 @@ nombreFormula:
             Me.LblNombreProductoFinal.Text = ""
             Me.TxtExistencia.Text = "0.00"
             Me.TxtCantidad.Text = "0.00"
+            Me.TxtCuentaContable.Text = ""
+            Me.lblNombreCuentaContable.Text = ""
 
             Me.TxtConcepto.Text = ""
             Me.TxtCuentaContable.Text = ""
@@ -189,7 +191,10 @@ nombreFormula:
             Me.txtCostoProduccion.ReadOnly = True
             Me.TxtCostoUnitario.ReadOnly = True
             Me.TxtCostoTotal.ReadOnly = True
-            Me.TxtCuentaContable.Visible = False
+
+            Me.TxtCuentaContable.Text = Empresa_Sistema.CUENTA_CONTABLE_COSTO_VENTAS
+            Dim oCuentas As New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_COSTO_VENTAS)
+            lblNombreCuentaContable.Text = oCuentas.NOMBRE_CUENTA
 
             Me.InicializaGrid()
 
@@ -317,7 +322,7 @@ nombreFormula:
                         .oInventariosDetalle.CODIGO_ARTICULO = Me.Grid1.Cell(i, Me.iGyCodigo).Text
                         .oInventariosDetalle.CANTIDAD = valorNumerico(Me.Grid1.Cell(i, Me.iGyCantidadTotal).Text)
                         .oInventariosDetalle.COSTO = valorNumerico(Me.Grid1.Cell(i, Me.iGyCosto).Text)
-                        .oInventariosDetalle.CUENTA_CONTABLE = "5300" 'Me.TxtCuentaContable.Text
+                        .oInventariosDetalle.CUENTA_CONTABLE = Me.TxtCuentaContable.Text
                         .oInventariosDetalle.IMPORTE = CDec(valorNumerico(Me.Grid1.Cell(i, Me.iGyTotal).Text.ToString))
                         .oInventariosDetalle.ID_ADICIONAL = i 'CInt(valorNumerico(Me.Grid1.Cell(i, Me.iGyIDAdicional).Text))
                         .oInventariosDetalle.LISTA_SERIES = ""
@@ -403,7 +408,7 @@ nombreFormula:
                 .oInventariosDetalle.CODIGO_ARTICULO = codigoProductoFinal
                 .oInventariosDetalle.CANTIDAD = valorNumerico(Me.TxtCantidad.Text)
                 .oInventariosDetalle.COSTO = valorNumerico(Me.TxtCostoUnitario.Text)
-                .oInventariosDetalle.CUENTA_CONTABLE = "5300"
+                .oInventariosDetalle.CUENTA_CONTABLE = Me.TxtCuentaContable.Text
                 .oInventariosDetalle.IMPORTE = CDec(valorNumerico(Me.TxtCostoTotal.Text))
                 .oInventariosDetalle.ID_ADICIONAL = 1
                 .oInventariosDetalle.LISTA_SERIES = ""

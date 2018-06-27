@@ -83,6 +83,7 @@ Public NotInheritable Class Class_sisEmpresa
     Private _VALIDA_SERIES_REPETIDAS_EN_ENTRADAS As Boolean
     Private _PERMITE_CLIENTES_MULTIPLAZA As Boolean
     Private _CODIGO_VENDEDOR_POR_USUARIO As Boolean
+    Private _CUENTA_CONTABLE_COSTO_VENTAS As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -609,6 +610,12 @@ Public NotInheritable Class Class_sisEmpresa
         End Get
     End Property
 
+    Public ReadOnly Property CUENTA_CONTABLE_COSTO_VENTAS() As String
+        Get
+            Return Me._CUENTA_CONTABLE_COSTO_VENTAS
+        End Get
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -962,6 +969,7 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._VALIDA_SERIES_REPETIDAS_EN_ENTRADAS = CBool(dReader("VALIDA_SERIES_REPETIDAS_EN_ENTRADAS").ToString)
                     Me._PERMITE_CLIENTES_MULTIPLAZA = CBool(dReader("PERMITE_CLIENTES_MULTIPLAZA").ToString)
                     Me._CODIGO_VENDEDOR_POR_USUARIO = CBool(dReader("CODIGO_VENDEDOR_POR_USUARIO").ToString)
+                    Me._CUENTA_CONTABLE_COSTO_VENTAS = "" & dReader("CUENTA_CONTABLE_COSTO_VENTAS").ToString
 
                     dReader.Close()
                     bResultado = True
