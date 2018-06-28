@@ -144,6 +144,13 @@ BuscarCuentas:
 
         End Select
     End Sub
+
+    Private Sub CboAlmacen_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CboAlmacen1.SelectedIndexChanged, cboAlmacen2.SelectedIndexChanged
+        If txtLEN(Me.TxtCodigoFormula.Text) = True Then
+            Me.Consultar()
+        End If
+
+    End Sub
 #End Region
 
 #Region "Métodos y procedimientos"
@@ -200,6 +207,8 @@ BuscarCuentas:
 
             Me.Grid1.Locked = True
 
+            Me.TxtCodigoFormula.Focus()
+
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
         End Try
@@ -237,7 +246,7 @@ BuscarCuentas:
             Exit Function
         End If
 
-        If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios("ENI", Me.CboAlmacen1.SelectedValue.ToString.ToString, "") = False Then
+        If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios("ENI", Me.cboAlmacen2.SelectedValue.ToString.ToString, "") = False Then
             MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar entrada de almacén.", MsgBoxStyle.Information, Me.Text)
             Exit Function
         End If
@@ -285,6 +294,7 @@ BuscarCuentas:
         Me.txtCostoProduccion.Enabled = False
         Me.TxtCostoUnitario.Enabled = False
         Me.TxtCostoTotal.Enabled = False
+        Me.TxtCuentaContable.Enabled = False
 
         Return bResultado
 
@@ -492,10 +502,14 @@ BuscarCuentas:
 
     End Sub
 
-    Private Sub ConsultaExistenciaProductoFinal()
+    Private Sub ConsultaExistenciaProductoFinal() 'La existencia se consulta en el almacen del producto terminado seleccionado
         Try
-            Dim sql As New Class_find("SELECT E.EXISTENCIA FROM INVENTARIO_EXISTENCIA_ARTICULOS E INNER JOIN CAT_FORMULAS F ON(E.CODIGO_ARTICULO=F.CODIGO_ARTICULO) WHERE F.CODIGO_FORMULA = " & Me.TxtCodigoFormula.Text & " AND E.CODIGO_ALMACEN = '" & Me.CboAlmacen1.SelectedValue.ToString & "'")
-            Me.TxtExistencia.Text = sql.Result1.ToString
+            Dim sql As New Class_find("SELECT E.EXISTENCIA FROM INVENTARIO_EXISTENCIA_ARTICULOS E INNER JOIN CAT_FORMULAS F ON(E.CODIGO_ARTICULO=F.CODIGO_ARTICULO) WHERE F.CODIGO_FORMULA = " & Me.TxtCodigoFormula.Text & " AND E.CODIGO_ALMACEN = '" & Me.cboAlmacen2.SelectedValue.ToString & "'")
+            If txtLEN(sql.Result1.ToString) = True Then
+                Me.TxtExistencia.Text = sql.Result1.ToString
+            Else
+                Me.TxtExistencia.Text = "0.00"
+            End If
 
         Catch ex As Exception
             HandleError(Me.Text, "ConsultaExistenciaProductoFinal", ex)
@@ -668,14 +682,14 @@ BuscarCuentas:
                         dExistencia = Me.oInventarios.Existencia(sCodigoArticulo, Me.CboAlmacen1.SelectedValue.ToString)
                         If dExistencia <= 0 Then
                             Me.Show()
-                            MsgBox("El artículo " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " no tiene existencia. ", MsgBoxStyle.Exclamation, sProcedure)
+                            MsgBox("El artículo " & Me.Grid1.Cell(i, Me.iGyCodigo).Text & " " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " no tiene existencia. ", MsgBoxStyle.Exclamation, sProcedure)
                             Exit Function
                         Else
                             dCantidadSumadaPorArticulos = CDbl(Me.Grid1.Cell(i, Me.iGyCantidadTotal).Text)
 
                             If valorNumerico(dCantidadSumadaPorArticulos.ToString) > valorNumerico(dExistencia.ToString) Then
                                 Me.Show()
-                                MsgBox("El Artículo " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " no tiene suficiente existencia.", MsgBoxStyle.Exclamation, sProcedure)
+                                MsgBox("El Artículo " & Me.Grid1.Cell(i, Me.iGyCodigo).Text & " " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " no tiene suficiente existencia.", MsgBoxStyle.Exclamation, sProcedure)
                                 Exit Function
                             End If
                         End If
