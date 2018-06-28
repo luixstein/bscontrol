@@ -2789,7 +2789,10 @@ CANCELAR:
             End If
 
             Me.Inicializa()
-            Me.oVenta = New Class_Ventas_Global(sVenta)
+            Dim oVentaLocal As New Class_Ventas_Global(sVenta)
+
+            'Me.oVenta = New Class_Ventas_Global(sVenta)
+            Me.oVenta = oVentaLocal
 
             If Me.oVenta.Existe = False Then
                 Me.Cambia_Estado(enumEstados.NUEVO)
@@ -2802,6 +2805,7 @@ CANCELAR:
 
                 If sTipoVenta = "NM" Then
                     Me.CboDocumento.SelectedValue = Me.oVenta.CODIGO_DOCUMENTO
+                    Me.oVenta = oVentaLocal 'Se hace de este modo porque si estan en un documento diferente al tecleado al cambiar el combo se inicializa y se pierde la venta cargada
                 ElseIf sTipoVenta = "SCR" Then
                     Me.CboDocumento.SelectedValue = "REM" + Plaza.CODIGO_PLAZA.ToString
                     Me.GeneraFolio()

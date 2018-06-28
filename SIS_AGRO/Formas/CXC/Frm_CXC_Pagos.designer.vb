@@ -28,6 +28,7 @@ Partial Class Frm_CXC_Pagos
         Me.tsbGrabar = New System.Windows.Forms.ToolStripButton()
         Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimirPoliza = New System.Windows.Forms.ToolStripButton()
+        Me.tsbImprimirComprobante = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.gbGlobal = New System.Windows.Forms.GroupBox()
         Me.chkVentasNoFiscales = New System.Windows.Forms.CheckBox()
@@ -108,7 +109,6 @@ Partial Class Frm_CXC_Pagos
         Me.GridDocumentosPago = New FlexCell.Grid()
         Me.btnVerCFDIS = New System.Windows.Forms.Button()
         Me.btnGenerarCFDIS = New System.Windows.Forms.Button()
-        Me.tsbImprimirComprobante = New System.Windows.Forms.ToolStripButton()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbAgregaDocCliente.SuspendLayout()
@@ -159,6 +159,15 @@ Partial Class Frm_CXC_Pagos
         Me.tsbImprimirPoliza.Size = New System.Drawing.Size(111, 24)
         Me.tsbImprimirPoliza.Text = "&Imprimir póliza"
         Me.tsbImprimirPoliza.ToolTipText = "Imprimir"
+        '
+        'tsbImprimirComprobante
+        '
+        Me.tsbImprimirComprobante.Image = CType(resources.GetObject("tsbImprimirComprobante.Image"), System.Drawing.Image)
+        Me.tsbImprimirComprobante.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbImprimirComprobante.Name = "tsbImprimirComprobante"
+        Me.tsbImprimirComprobante.Size = New System.Drawing.Size(152, 24)
+        Me.tsbImprimirComprobante.Text = "Imprimir comprobante"
+        Me.tsbImprimirComprobante.ToolTipText = "Imprimir"
         '
         'tsbSalir
         '
@@ -616,18 +625,18 @@ Partial Class Frm_CXC_Pagos
         '
         Me.btnEditarCuentaBancariaCliente.Location = New System.Drawing.Point(420, 60)
         Me.btnEditarCuentaBancariaCliente.Name = "btnEditarCuentaBancariaCliente"
-        Me.btnEditarCuentaBancariaCliente.Size = New System.Drawing.Size(53, 21)
+        Me.btnEditarCuentaBancariaCliente.Size = New System.Drawing.Size(53, 37)
         Me.btnEditarCuentaBancariaCliente.TabIndex = 344
-        Me.btnEditarCuentaBancariaCliente.Text = "Editar"
+        Me.btnEditarCuentaBancariaCliente.Text = "Editar cuenta"
         Me.btnEditarCuentaBancariaCliente.UseVisualStyleBackColor = True
         '
         'btnAgregarCuentaBancariaCliente
         '
         Me.btnAgregarCuentaBancariaCliente.Location = New System.Drawing.Point(364, 60)
         Me.btnAgregarCuentaBancariaCliente.Name = "btnAgregarCuentaBancariaCliente"
-        Me.btnAgregarCuentaBancariaCliente.Size = New System.Drawing.Size(53, 21)
+        Me.btnAgregarCuentaBancariaCliente.Size = New System.Drawing.Size(53, 37)
         Me.btnAgregarCuentaBancariaCliente.TabIndex = 343
-        Me.btnAgregarCuentaBancariaCliente.Text = "Agregar"
+        Me.btnAgregarCuentaBancariaCliente.Text = "Agregar cuenta"
         Me.btnAgregarCuentaBancariaCliente.UseVisualStyleBackColor = True
         '
         'lblDisplayCuenta
@@ -676,7 +685,7 @@ Partial Class Frm_CXC_Pagos
         '
         'btnLimpiarDocumentoPagos
         '
-        Me.btnLimpiarDocumentoPagos.Location = New System.Drawing.Point(924, 85)
+        Me.btnLimpiarDocumentoPagos.Location = New System.Drawing.Point(924, 102)
         Me.btnLimpiarDocumentoPagos.Name = "btnLimpiarDocumentoPagos"
         Me.btnLimpiarDocumentoPagos.Size = New System.Drawing.Size(75, 30)
         Me.btnLimpiarDocumentoPagos.TabIndex = 13
@@ -770,7 +779,7 @@ Partial Class Frm_CXC_Pagos
         '
         'btnAgregarDocumentosClientes
         '
-        Me.btnAgregarDocumentosClientes.Location = New System.Drawing.Point(845, 85)
+        Me.btnAgregarDocumentosClientes.Location = New System.Drawing.Point(845, 102)
         Me.btnAgregarDocumentosClientes.Name = "btnAgregarDocumentosClientes"
         Me.btnAgregarDocumentosClientes.Size = New System.Drawing.Size(75, 30)
         Me.btnAgregarDocumentosClientes.TabIndex = 12
@@ -960,15 +969,6 @@ Partial Class Frm_CXC_Pagos
         Me.btnGenerarCFDIS.TabIndex = 381
         Me.btnGenerarCFDIS.Text = "Generar CFDI's"
         Me.btnGenerarCFDIS.UseVisualStyleBackColor = True
-        '
-        'tsbImprimirComprobante
-        '
-        Me.tsbImprimirComprobante.Image = CType(resources.GetObject("tsbImprimirComprobante.Image"), System.Drawing.Image)
-        Me.tsbImprimirComprobante.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbImprimirComprobante.Name = "tsbImprimirComprobante"
-        Me.tsbImprimirComprobante.Size = New System.Drawing.Size(152, 24)
-        Me.tsbImprimirComprobante.Text = "Imprimir comprobante"
-        Me.tsbImprimirComprobante.ToolTipText = "Imprimir"
         '
         'Frm_CXC_Pagos
         '
