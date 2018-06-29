@@ -62,7 +62,7 @@ Public Class Transformaciones
         txtNoBeep(e)
     End Sub
 
-    Private Sub TxtCodigoArticulo_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoFormula.KeyDown
+    Private Sub TxtCodigoFormula_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoFormula.KeyDown
         Dim sText As String
 
         Select Case e.KeyCode
@@ -71,14 +71,17 @@ BuscaFormula:
                 Me.oFormula = New Class_CatFormulas
                 sText = Me.oFormula.BusquedaVisual_PorDescripcion
                 Me.TxtCodigoFormula.Text = sText
+                GoTo nombreFormula
 
             Case Keys.Enter
+nombreFormula:
                 Me.oFormula = New Class_CatFormulas(Me.TxtCodigoFormula.Text)
                 If Me.oFormula.Existe = False Then
-                    Me.LblNombreProductoFinal.Text = "" : Me.LblCodigoArticulo.Text = "" : GoTo BuscaFormula : Exit Sub
+                    Me.LblNombreProductoFinal.Text = "" : Me.LblCodigoArticulo.Text = "" : Me.txtPorcentajeCosto.Text = "0" : GoTo BuscaFormula : Exit Sub
                 End If
 
                 LblNombreProductoFinal.Text = oFormula.NOMBRE_FORMULA
+                Me.txtPorcentajeCosto.Text = oFormula.PORCENTAJE_COSTO_PRODUCCION.ToString
                 'Me.LblCodigoArticulo.Text = Me.oFormula.CODIGO_ARTICULO
                 Me.oArticulo = New Class_CatArticulos(Me.oFormula.CODIGO_ARTICULO)
                 Me.LblCodigoArticulo.Text = Me.oArticulo.DESCRIPCION 'Me.LblCodigoArticulo.Text & " " & Me.oArticulo.DESCRIPCION
@@ -141,6 +144,13 @@ BuscarCuentas:
 
         End Select
     End Sub
+
+    Private Sub CboAlmacen_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CboAlmacen1.SelectedIndexChanged, cboAlmacen2.SelectedIndexChanged
+        If txtLEN(Me.TxtCodigoFormula.Text) = True Then
+            Me.Consultar()
+        End If
+
+    End Sub
 #End Region
 
 #Region "Métodos y procedimientos"
@@ -148,35 +158,56 @@ BuscarCuentas:
     Private Sub Inicializa()
         Try
             Me.tsbGrabar.Enabled = True
-            Me.CboAlmacen.Enabled = True
+            Me.CboAlmacen1.Enabled = True
+            Me.cboAlmacen2.Enabled = True
+
             Me.TxtCodigoFormula.Enabled = True
             Me.TxtExistencia.Enabled = True
             Me.TxtCuentaContable.Enabled = True
             Me.TxtCantidad.Enabled = True
-            Me.TxtCosto.Enabled = True
-            Me.TxtCostoTotal.Enabled = True
             Me.TxtConcepto.Enabled = True
+            Me.txtCostoMateriaPrima.Enabled = True
+            Me.txtPorcentajeCosto.Enabled = True
+            Me.txtCostoProduccion.Enabled = True
+            Me.TxtCostoTotal.Enabled = True
+            Me.TxtCostoUnitario.Enabled = True
             Me.Grid1.Enabled = True
 
             Me.TxtCodigoFormula.Text = ""
             Me.LblNombreProductoFinal.Text = ""
             Me.TxtExistencia.Text = "0.00"
             Me.TxtCantidad.Text = "0.00"
-            Me.TxtCosto.Text = "$ 0.00"
-            Me.TxtCostoTotal.Text = "$ 0.00"
+            Me.TxtCuentaContable.Text = ""
+            Me.lblNombreCuentaContable.Text = ""
+
             Me.TxtConcepto.Text = ""
             Me.TxtCuentaContable.Text = ""
-            Me.LblNombreCuentaContable.Text = ""
             Me.LblCodigoArticulo.Text = ""
+
+            Me.txtCostoMateriaPrima.Text = "$ 0.00"
+            Me.txtPorcentajeCosto.Text = "0"
+            Me.txtCostoProduccion.Text = "$ 0.00"
+            Me.TxtCostoTotal.Text = "$ 0.00"
+            Me.TxtCostoUnitario.Text = "$ 0.00"
+
             Me.Grid1.DataSource = Nothing
 
             Me.TxtExistencia.ReadOnly = True
-            Me.TxtCosto.ReadOnly = True
+            Me.txtCostoMateriaPrima.ReadOnly = True
+            Me.txtPorcentajeCosto.ReadOnly = True
+            Me.txtCostoProduccion.ReadOnly = True
+            Me.TxtCostoUnitario.ReadOnly = True
             Me.TxtCostoTotal.ReadOnly = True
+
+            Me.TxtCuentaContable.Text = Empresa_Sistema.CUENTA_CONTABLE_COSTO_VENTAS
+            Dim oCuentas As New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_COSTO_VENTAS)
+            lblNombreCuentaContable.Text = oCuentas.NOMBRE_CUENTA
 
             Me.InicializaGrid()
 
             Me.Grid1.Locked = True
+
+            Me.TxtCodigoFormula.Focus()
 
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
@@ -210,12 +241,12 @@ BuscarCuentas:
             Exit Function
         End If
 
-        If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios("SAI", Me.CboAlmacen.SelectedValue.ToString.ToString, "") = False Then
+        If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios("SAI", Me.CboAlmacen1.SelectedValue.ToString.ToString, "") = False Then
             MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar salida de almacén.", MsgBoxStyle.Information, Me.Text)
             Exit Function
         End If
 
-        If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios("ENI", Me.CboAlmacen.SelectedValue.ToString.ToString, "") = False Then
+        If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios("ENI", Me.cboAlmacen2.SelectedValue.ToString.ToString, "") = False Then
             MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar entrada de almacén.", MsgBoxStyle.Information, Me.Text)
             Exit Function
         End If
@@ -252,14 +283,18 @@ BuscarCuentas:
         MsgBox("Transformación realizada exitosamente.", MsgBoxStyle.Information, Me.Text)
 
         Me.tsbGrabar.Enabled = False
-        Me.CboAlmacen.Enabled = False
+        Me.CboAlmacen1.Enabled = False
+        Me.cboAlmacen2.Enabled = False
         Me.TxtCodigoFormula.Enabled = False
         Me.TxtExistencia.Enabled = False
-        Me.TxtCuentaContable.Enabled = False
         Me.TxtCantidad.Enabled = False
-        Me.TxtCosto.Enabled = False
-        Me.TxtCostoTotal.Enabled = False
         Me.TxtConcepto.Enabled = False
+        Me.txtCostoMateriaPrima.Enabled = False
+        Me.txtPorcentajeCosto.Enabled = False
+        Me.txtCostoProduccion.Enabled = False
+        Me.TxtCostoUnitario.Enabled = False
+        Me.TxtCostoTotal.Enabled = False
+        Me.TxtCuentaContable.Enabled = False
 
         Return bResultado
 
@@ -275,7 +310,7 @@ BuscarCuentas:
                 .FOLIO_MOVIMIENTO_INVENTARIO = ""
                 .CODIGO_TIPO_DOCUMENTO = "SAI"
                 .FOLIO_REFERENCIA = ""
-                .CODIGO_ALMACEN1 = "" & Me.CboAlmacen.SelectedValue.ToString()
+                .CODIGO_ALMACEN1 = "" & Me.CboAlmacen1.SelectedValue.ToString()
                 .FECHA = Now
                 .CONCEPTO = "" & Me.TxtConcepto.Text
                 .CODIGO_USUARIO = CInt("" & Usuario.Codigo_Usuario)
@@ -363,7 +398,7 @@ BuscarCuentas:
                 .FOLIO_MOVIMIENTO_INVENTARIO = ""
                 .CODIGO_TIPO_DOCUMENTO = "ENI"
                 .FOLIO_REFERENCIA = ""
-                .CODIGO_ALMACEN1 = "" & Me.CboAlmacen.SelectedValue.ToString()
+                .CODIGO_ALMACEN1 = "" & Me.cboAlmacen2.SelectedValue.ToString()
                 .FECHA = Now
                 .CONCEPTO = "" & Me.TxtConcepto.Text
                 .CODIGO_USUARIO = CInt("" & Usuario.Codigo_Usuario)
@@ -382,7 +417,7 @@ BuscarCuentas:
                 .oInventariosDetalle.FOLIO_MOVIMIENTO_INVENTARIO = .FOLIO_MOVIMIENTO_INVENTARIO
                 .oInventariosDetalle.CODIGO_ARTICULO = codigoProductoFinal
                 .oInventariosDetalle.CANTIDAD = valorNumerico(Me.TxtCantidad.Text)
-                .oInventariosDetalle.COSTO = valorNumerico(Me.TxtCosto.Text)
+                .oInventariosDetalle.COSTO = valorNumerico(Me.TxtCostoUnitario.Text)
                 .oInventariosDetalle.CUENTA_CONTABLE = Me.TxtCuentaContable.Text
                 .oInventariosDetalle.IMPORTE = CDec(valorNumerico(Me.TxtCostoTotal.Text))
                 .oInventariosDetalle.ID_ADICIONAL = 1
@@ -445,7 +480,7 @@ BuscarCuentas:
         Dim oFormula As New Class_CatFormulas
 
         Try
-            Dim dTabla As DataTable = oFormula.ObtenerDetalleParaTransformaciones(Me.TxtCodigoFormula.Text, Me.CboAlmacen.SelectedValue.ToString)
+            Dim dTabla As DataTable = oFormula.ObtenerDetalleParaTransformaciones(Me.TxtCodigoFormula.Text, Me.CboAlmacen1.SelectedValue.ToString)
             Me.Grid1.AutoRedraw = False
             Me.Grid1.Rows = 1 'Trae dos porque en docs nuevos se pone un row en blanco, y si se dejan aqui dos agrega a partir del 3 y queda un hueco
             For Each dRow As DataRow In dTabla.Rows
@@ -467,10 +502,14 @@ BuscarCuentas:
 
     End Sub
 
-    Private Sub ConsultaExistenciaProductoFinal()
+    Private Sub ConsultaExistenciaProductoFinal() 'La existencia se consulta en el almacen del producto terminado seleccionado
         Try
-            Dim sql As New Class_find("SELECT E.EXISTENCIA FROM INVENTARIO_EXISTENCIA_ARTICULOS E INNER JOIN CAT_FORMULAS F ON(E.CODIGO_ARTICULO=F.CODIGO_ARTICULO) WHERE F.CODIGO_FORMULA = " & Me.TxtCodigoFormula.Text & " AND E.CODIGO_ALMACEN = '" & Me.CboAlmacen.SelectedValue.ToString & "'")
-            Me.TxtExistencia.Text = sql.Result1.ToString
+            Dim sql As New Class_find("SELECT E.EXISTENCIA FROM INVENTARIO_EXISTENCIA_ARTICULOS E INNER JOIN CAT_FORMULAS F ON(E.CODIGO_ARTICULO=F.CODIGO_ARTICULO) WHERE F.CODIGO_FORMULA = " & Me.TxtCodigoFormula.Text & " AND E.CODIGO_ALMACEN = '" & Me.cboAlmacen2.SelectedValue.ToString & "'")
+            If txtLEN(sql.Result1.ToString) = True Then
+                Me.TxtExistencia.Text = sql.Result1.ToString
+            Else
+                Me.TxtExistencia.Text = "0.00"
+            End If
 
         Catch ex As Exception
             HandleError(Me.Text, "ConsultaExistenciaProductoFinal", ex)
@@ -480,7 +519,21 @@ BuscarCuentas:
     Private Sub DesplegarAlmacenes()
         Try
             Dim oElementos As New Class_CatAlmacenes
-            With Me.CboAlmacen
+            With Me.CboAlmacen1
+                .DisplayMember = "NOMBRE_ALMACEN"
+
+                .ValueMember = "CODIGO_ALMACEN"
+
+                Dim dView As New Data.DataView(oElementos.ObtenerAlmacenes)
+                dView.Sort = "NOMBRE_ALMACEN"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedIndex = 0
+                End If
+                .SelectedValue = Usuario.Codigo_Almacen
+            End With
+
+            With Me.cboAlmacen2
                 .DisplayMember = "NOMBRE_ALMACEN"
 
                 .ValueMember = "CODIGO_ALMACEN"
@@ -587,11 +640,10 @@ BuscarCuentas:
                 Me.Grid1.Cell(I, Me.iGyTotal).Text = (valorNumerico(Me.Grid1.Cell(I, Me.iGyCantidadTotal).Text) * valorNumerico(Me.Grid1.Cell(I, Me.iGyCosto).Text)).ToString
             Next
 
-            If valorNumerico(Me.TxtCosto.Text) = 0 Then
-                Me.TxtCosto.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyTotal))).ToString
-            End If
-
-            Me.TxtCostoTotal.Text = FormatImporteContable(valorNumerico(Me.TxtCosto.Text) * valorNumerico(Me.TxtCantidad.Text)).ToString
+            Me.txtCostoMateriaPrima.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyTotal))).ToString
+            Me.txtCostoProduccion.Text = FormatImporteContable(valorNumerico(Me.txtCostoMateriaPrima.Text) * (valorNumerico(Me.txtPorcentajeCosto.Text)) / 100).ToString
+            Me.TxtCostoTotal.Text = FormatImporteContable(valorNumerico(Me.txtCostoMateriaPrima.Text) + valorNumerico(Me.txtCostoProduccion.Text)).ToString
+            Me.TxtCostoUnitario.Text = FormatImporteContable(valorNumerico(Me.TxtCostoTotal.Text) / valorNumerico(Me.TxtCantidad.Text)).ToString
 
         Catch ex As Exception
             HandleError(Me.Name, "Totales", ex)
@@ -627,17 +679,17 @@ BuscarCuentas:
                 If txtLEN(sCodigoArticulo) = True Then
                     Me.oArticulo = New Class_CatArticulos(sCodigoArticulo)
                     If Me.oArticulo.INVENTARIABLE <> "0" Then
-                        dExistencia = Me.oInventarios.Existencia(sCodigoArticulo, Me.CboAlmacen.SelectedValue.ToString)
+                        dExistencia = Me.oInventarios.Existencia(sCodigoArticulo, Me.CboAlmacen1.SelectedValue.ToString)
                         If dExistencia <= 0 Then
                             Me.Show()
-                            MsgBox("El artículo " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " no tiene existencia. ", MsgBoxStyle.Exclamation, sProcedure)
+                            MsgBox("El artículo " & Me.Grid1.Cell(i, Me.iGyCodigo).Text & " " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " no tiene existencia. ", MsgBoxStyle.Exclamation, sProcedure)
                             Exit Function
                         Else
                             dCantidadSumadaPorArticulos = CDbl(Me.Grid1.Cell(i, Me.iGyCantidadTotal).Text)
 
                             If valorNumerico(dCantidadSumadaPorArticulos.ToString) > valorNumerico(dExistencia.ToString) Then
                                 Me.Show()
-                                MsgBox("El Artículo " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " no tiene suficiente existencia.", MsgBoxStyle.Exclamation, sProcedure)
+                                MsgBox("El Artículo " & Me.Grid1.Cell(i, Me.iGyCodigo).Text & " " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " no tiene suficiente existencia.", MsgBoxStyle.Exclamation, sProcedure)
                                 Exit Function
                             End If
                         End If

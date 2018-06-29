@@ -46,6 +46,8 @@ Partial Public Class Catalogo_Formulas
         Me.TxtNombreFormula = New System.Windows.Forms.TextBox()
         Me.LblDisplayNombreFormula = New System.Windows.Forms.Label()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.txtCostoProduccion = New System.Windows.Forms.TextBox()
+        Me.lblPorcentajeCostoProduccion = New System.Windows.Forms.Label()
         Me.LblDisplayIngredientes = New System.Windows.Forms.Label()
         Me.Grid1 = New FlexCell.Grid()
         Me.LblNombreProductoFinal = New System.Windows.Forms.Label()
@@ -254,7 +256,7 @@ Partial Public Class Catalogo_Formulas
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(104, 24)
-        Me.CboEstatus.TabIndex = 4
+        Me.CboEstatus.TabIndex = 7
         '
         'LblEstatus
         '
@@ -289,6 +291,8 @@ Partial Public Class Catalogo_Formulas
         '
         Me.gBoxInformacion.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.gBoxInformacion.Controls.Add(Me.txtCostoProduccion)
+        Me.gBoxInformacion.Controls.Add(Me.lblPorcentajeCostoProduccion)
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayIngredientes)
         Me.gBoxInformacion.Controls.Add(Me.Grid1)
         Me.gBoxInformacion.Controls.Add(Me.LblNombreProductoFinal)
@@ -309,6 +313,25 @@ Partial Public Class Catalogo_Formulas
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
+        '
+        'txtCostoProduccion
+        '
+        Me.txtCostoProduccion.Location = New System.Drawing.Point(444, 90)
+        Me.txtCostoProduccion.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtCostoProduccion.MaxLength = 50
+        Me.txtCostoProduccion.Name = "txtCostoProduccion"
+        Me.txtCostoProduccion.Size = New System.Drawing.Size(104, 22)
+        Me.txtCostoProduccion.TabIndex = 2
+        '
+        'lblPorcentajeCostoProduccion
+        '
+        Me.lblPorcentajeCostoProduccion.AutoSize = True
+        Me.lblPorcentajeCostoProduccion.Location = New System.Drawing.Point(276, 93)
+        Me.lblPorcentajeCostoProduccion.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblPorcentajeCostoProduccion.Name = "lblPorcentajeCostoProduccion"
+        Me.lblPorcentajeCostoProduccion.Size = New System.Drawing.Size(160, 17)
+        Me.lblPorcentajeCostoProduccion.TabIndex = 98
+        Me.lblPorcentajeCostoProduccion.Text = "% costo de producción :"
         '
         'LblDisplayIngredientes
         '
@@ -337,7 +360,7 @@ Partial Public Class Catalogo_Formulas
         Me.Grid1.Name = "Grid1"
         Me.Grid1.Rows = 6
         Me.Grid1.Size = New System.Drawing.Size(688, 283)
-        Me.Grid1.TabIndex = 96
+        Me.Grid1.TabIndex = 4
         Me.Grid1.UncheckedImage = CType(resources.GetObject("Grid1.UncheckedImage"), System.Drawing.Bitmap)
         '
         'LblNombreProductoFinal
@@ -367,7 +390,7 @@ Partial Public Class Catalogo_Formulas
         Me.TxtCodigoArticulo.MaxLength = 50
         Me.TxtCodigoArticulo.Name = "TxtCodigoArticulo"
         Me.TxtCodigoArticulo.Size = New System.Drawing.Size(104, 22)
-        Me.TxtCodigoArticulo.TabIndex = 93
+        Me.TxtCodigoArticulo.TabIndex = 3
         '
         'Label2
         '
@@ -440,4 +463,6 @@ Partial Public Class Catalogo_Formulas
     Friend WithEvents TxtCodigoArticulo As System.Windows.Forms.TextBox
     Friend WithEvents Grid1 As FlexCell.Grid
     Friend WithEvents LblDisplayIngredientes As System.Windows.Forms.Label
+    Friend WithEvents txtCostoProduccion As System.Windows.Forms.TextBox
+    Friend WithEvents lblPorcentajeCostoProduccion As System.Windows.Forms.Label
 End Class
