@@ -1662,17 +1662,6 @@ Buscar:
                         MsgBox("Error al tratar de afectar inventarios en el movimiento de ventas.", MsgBoxStyle.Exclamation, sProcedure)
                         Return False
                     End If
-
-                    If oDocumento.AFECTA_CONTABILIDAD = True Then
-                        If .AplicarPoliza = False Then
-                            Return False
-                        End If
-                    End If
-                End If
-
-                If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
-                    Me.oVenta = New Class_Ventas_Global(Me.txtFolio.Text) 'Refrescar documento para evitar algún error por dato no cargado.
-                    Me.oVenta.GeneraFacturaElectronica(False, True)
                 End If
 
                 If Me.sTipoVenta = "SCR" Or sTipoVenta = "SCF" Then 'SUSTITUCION DE COTIZACION A REMISION O FACTURA
@@ -1683,6 +1672,18 @@ Buscar:
                     If .AfectaSustitucionRemision = False Then
                         Return False
                     End If
+                End If
+
+                'Aqui deb estar la póliza para asegurarse que se termine de afectar la sustitución, antes esto estaba al final dentro de oDocumento.AFECTA_INVENTARIOS
+                If oDocumento.AFECTA_CONTABILIDAD = True Then
+                    If .AplicarPoliza = False Then
+                        Return False
+                    End If
+                End If
+
+                If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
+                    Me.oVenta = New Class_Ventas_Global(Me.txtFolio.Text) 'Refrescar documento para evitar algún error por dato no cargado.
+                    Me.oVenta.GeneraFacturaElectronica(False, True)
                 End If
 
                 If bVentaAutorizadaPorRegla = True Then
