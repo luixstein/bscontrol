@@ -1086,6 +1086,8 @@ Buscar:
 
         If Me.chkVentasNoFiscales.Checked = True Then
             sSQL = sSQL & " AND DOC.AFECTA_CONTABILIDAD='0' " 'Para mostrar sólo remisiones, las cot no salen porque también se busca saldo>0 .
+        Else
+            sSQL = sSQL & " AND DOC.CODIGO_DOCUMENTO LIKE 'F%' "
         End If
 
         sSQL = sSQL & " ORDER BY V.FECHA"
