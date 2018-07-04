@@ -210,7 +210,7 @@ Public Class Catalogo_Articulos
                     Me.gBoxBusquedaRapida.Enabled = True
                     Me.tssLabelEstado.Text = "Consultando"
                     Me.tsbNuevo.Enabled = True
-                    Me.tsbEditar.Enabled = False
+                    Me.tsbEditar.Enabled = True
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = False
                     Me.tsbEliminar.Enabled = False
