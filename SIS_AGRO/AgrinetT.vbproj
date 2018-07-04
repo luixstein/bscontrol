@@ -62,9 +62,13 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="cfdi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="cadenaoriginal_3_3, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\_FuentesFer\Abaconet\AbacoNet_3.0\bin\Debug\cfdi.dll</HintPath>
+      <HintPath>bin\Debug\cadenaoriginal_3_3.dll</HintPath>
+    </Reference>
+    <Reference Include="cfdi, Version=1.0.0.3, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\cfdi.dll</HintPath>
     </Reference>
     <Reference Include="CFDIXML, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
