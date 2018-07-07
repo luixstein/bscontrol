@@ -1177,7 +1177,7 @@ Buscar:
                     Me.tsbImprimir.Enabled = True
                     Me.tsbEnviarCorreo.Enabled = False
 
-                    Me.frmDatos.Enabled = False
+                    Me.frmDatos.Enabled = True
                     Me.Grid.Locked = True
                     Me.GridSeries.Locked = True
 
