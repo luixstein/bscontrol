@@ -166,7 +166,7 @@ Public Class Sis_Documentos
                 Me.gBoxInformacion.Enabled = False
                 Me.gBoxBusquedaRapida.Enabled = True
                 Me.tssLabelEstado.Text = "Consultando"
-                Me.tsbEditar.Enabled = False
+                Me.tsbEditar.Enabled = True
                 Me.tsbGrabar.Enabled = False
                 Me.tsbCancelar.Enabled = False
                 Me.txtFiltro.Focus()
