@@ -1700,9 +1700,11 @@ Buscar:
                 Return False
             End If
 
-            If Me.chkVentasNoFiscales.Checked = False Then
-                If Me.ValidaVentasTimbradas = False Then
-                    Return False
+            If Me.oDocumento.TIMBRA_DOCUMENTO = True Then
+                If Me.chkVentasNoFiscales.Checked = False Then
+                    If Me.ValidaVentasTimbradas = False Then
+                        Return False
+                    End If
                 End If
             End If
 
