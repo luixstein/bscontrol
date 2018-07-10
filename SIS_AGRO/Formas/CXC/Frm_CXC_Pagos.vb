@@ -2656,6 +2656,7 @@ Buscar:
             Me.chkAnticipo.Checked = False
             Me.cboCuentaEmisor.DataSource = Nothing
             Me.chkEsBancoExtranjero.Checked = False
+            Me.chkVentasNoFiscales.Enabled = False
             Me.TxtCodigoCliente.Focus()
         Catch ex As Exception
             HandleError(Me.Name, "InicializaDocumentoPago", ex)
