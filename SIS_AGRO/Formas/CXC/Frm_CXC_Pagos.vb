@@ -2400,7 +2400,7 @@ Buscar:
             End If
 
             If bResultado = True Then
-                If Me.oDocumento.TIMBRA_DOCUMENTO = True Then
+                If Me.oDocumento.TIMBRA_DOCUMENTO = True And Me.oBancosCXC.CFDIS_GENERADOS = True Then
                     Me.oBancosCXC.CancelaPagosElectronicos()
                 End If
 
