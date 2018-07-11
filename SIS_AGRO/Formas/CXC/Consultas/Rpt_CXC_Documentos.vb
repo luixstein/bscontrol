@@ -188,7 +188,7 @@ Buscar:
         End If
     End Sub
 
-    Private Sub Rdb_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles RdbGlobalCXC.CheckedChanged, RdbDetalleCXC.CheckedChanged, RdbDetalleDepositos.CheckedChanged
+    Private Sub Rdb_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles RdbGlobalCXC.CheckedChanged, RdbDetalleCXC.CheckedChanged, RdbDetalleDepositos.CheckedChanged, rdbGlobalCxcPropietario.CheckedChanged
         Me.OcultarControles()
     End Sub
 
@@ -331,6 +331,8 @@ Buscar:
                 oReporte = New Class_Reporte("RPT_CXC_COBRANZA_DETALLE", Rpt)
             ElseIf Me.RdbDetalleDepositos.Checked = True Then
                 oReporte = New Class_Reporte("RPT_CXC_DETALLE_DEPOSITOS", Rpt)
+            ElseIf Me.rdbGlobalCxcPropietario.Checked = True Then
+                oReporte = New Class_Reporte("RPT_CXC_COBRANZA_GLOBAL_PROPIETARIOS", Rpt)
             Else 'If Me.rdbDetalleBultos.Checked = True Then
                 oReporte = New Class_Reporte("RPT_CXC_DETALLE_DEPOSITOS_BULTOS", Rpt)
             End If
@@ -339,7 +341,7 @@ Buscar:
                 Exit Sub
             End If
 
-            If Me.RdbGlobalCXC.Checked = True Or Me.RdbDetalleCXC.Checked = True Then
+            If Me.RdbGlobalCXC.Checked = True Or Me.RdbDetalleCXC.Checked = True Or Me.rdbGlobalCxcPropietario.Checked = True Then
                 Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.txtCodigoCliente.Text)
                 Rpt.SetParameterValue("@CODIGO_VENDEDOR", Me.txtCodigoVendedor.Text)
                 Rpt.SetParameterValue("@CODIGO_TIPO_DOCUMENTO", Me.CboDocumentos.SelectedValue.ToString)
@@ -380,7 +382,7 @@ Buscar:
     End Sub
 
     Private Sub OcultarControles()
-        If RdbGlobalCXC.Checked = True Or RdbDetalleCXC.Checked = True Then
+        If RdbGlobalCXC.Checked = True Or RdbDetalleCXC.Checked = True Or rdbGlobalCxcPropietario.Checked = True Then
             Me.lblDisplayFechaInicio.Visible = False : Me.dpFechaInicio.Visible = False
             Me.LblDisplayFechaFinal.Visible = False : Me.dpFechaFinal.Visible = False
             Me.lblDisplayEstatus.Visible = False : Me.CboEstatus.Visible = False
