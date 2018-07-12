@@ -1220,7 +1220,7 @@ Public Class Class_Ventas_Global
 
         sSQL = "SELECT G.* " &
             ",U1.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO,U2.NOMBRE_USUARIO NOMBRE_USUARIO_CANCELO,CFD.FELECTRONICA_CER,CFD.FELECTRONICA_KEY,CFD.CONTRASEÑA, " &
-            "MP.NOMBRE_METODO_PAGO,RF.NOMBRE_REGIMEN_FISCAL,CFFE.SERIE," &
+            "MP.NOMBRE_METODO_PAGO,RF.NOMBRE_REGIMEN_FISCAL,G.SERIE," &
             "(SELECT MAX(FOLIO_EMBARQUE) FROM EMB_EMBARQUE_GLOBAL WHERE FOLIO_VENTA=G.FOLIO_VENTA) FOLIO_EMBARQUE,DOC.NOMBRE_FORMATO,DOC.ES_FACTURA_EMBARQUE_EXTRANJERO, " &
             "ISNULL((SELECT TOP 1 '1' FROM VENTA_DETALLE WHERE FOLIO_VENTA=G.FOLIO_VENTA AND LEN(LISTA_SERIES)>0),0) TIENE_SERIES " &
             "FROM VENTA_GLOBAL G " &
@@ -1229,7 +1229,6 @@ Public Class Class_Ventas_Global
             "INNER JOIN SIS_USUARIOS U1 ON(G.CODIGO_USUARIO_GRABO=U1.CODIGO_USUARIO) " &
             "LEFT JOIN SIS_USUARIOS U2 ON(G.CODIGO_USUARIO_CANCELO=U2.CODIGO_USUARIO) " &
             "LEFT JOIN SIS_CFD_CATALOGO_CERTIFICADOS CFD ON(G.ID_SIS_CFD_CATALOGO_CERTIFICADOS=CFD.ID_SIS_CFD_CATALOGO_CERTIFICADOS) " &
-            "LEFT JOIN CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS CFFE ON(G.IDCATALOGO_FOLIO_FELECTRONICA=CFFE.IDCATALOGO_FOLIO_FELECTRONICA)" &
             "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(G.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
             "WHERE G.FOLIO_VENTA='" & Replace(Me._FOLIO_VENTA, "'", "''") & "' "
 
@@ -1821,46 +1820,6 @@ Public Class Class_Ventas_Global
     Public Sub NuevoRenglon()
         Me.oVentasDetalle = New Class_Ventas_Detalle
     End Sub
-
-    Public Function ObtenerFacturasMesAño(ByVal iMes As Integer, ByVal iAño As Integer) As DataTable
-        Dim dTabla As New DataTable("Facturas"), da As SqlDataAdapter
-        Dim sSQL As String
-
-        Try
-            sSQL = "SELECT CASE WHEN G.ES_VENTA_PUBLICO_GENERAL='1' THEN '" & Empresa_Sistema.RFC_VENTA_PUBLICO_GENERAL & "' ELSE CTE.RFC END rfc,G.FOLIO_NUMERICO,G.FECHA,G.TOTAL,G.IMPUESTO,G.ESTATUS_VENTA,FE.SERIE,FE.NUMERO_APROBACION,FE.ANIO_APROBACION,G.SELLO_DIGITAL " & _
-                    "FROM VENTA_GLOBAL G INNER JOIN CAT_CLIENTES CTE ON(G.CODIGO_CLIENTE=CTE.CODIGO_CLIENTE) INNER JOIN CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS FE ON(G.IDCATALOGO_FOLIO_FELECTRONICA=FE.IDCATALOGO_FOLIO_FELECTRONICA) " & _
-                    "WHERE G.CODIGO_DOCUMENTO IN(SELECT CODIGO_DOCUMENTO FROM VW_SIS_CAT_DOCUMENTOS_EXTENDIDO WHERE AFECTA_CONTABILIDAD='1' AND AFECTA_INVENTARIOS='1' AND AFECTA_CXC='1') AND G.ES_FACTURA_ELECTRONICA='1' " & _
-                    "AND YEAR(G.FECHA)=" & iAño & " AND MONTH(G.FECHA)=" & iMes & " ORDER BY G.CODIGO_PLAZA,G.FOLIO_NUMERICO "
-            da = New SqlDataAdapter(sSQL, Me._Conexion)
-            da.Fill(dTabla)
-            da.Dispose()
-
-        Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "ObtenerFacturasMesAño", ex)
-        End Try
-
-        Return dTabla
-    End Function
-
-    Public Function ObtenerFacturasCanceladasMesAño(ByVal iMes As Integer, ByVal iAño As Integer) As DataTable
-        Dim dTabla As New DataTable("Facturas"), da As SqlDataAdapter
-        Dim sSQL As String
-
-        Try
-            sSQL = "SELECT CASE WHEN G.ES_VENTA_PUBLICO_GENERAL='1' THEN '" & Empresa_Sistema.RFC_VENTA_PUBLICO_GENERAL & "' ELSE CTE.RFC END RFC,G.FOLIO_NUMERICO,G.FECHA,G.TOTAL,G.IMPUESTO,G.ESTATUS_VENTA,FE.SERIE,FE.NUMERO_APROBACION,FE.ANIO_APROBACION,G.SELLO_DIGITAL " & _
-                    "FROM VENTA_GLOBAL G INNER JOIN CAT_CLIENTES CTE ON(G.CODIGO_CLIENTE=CTE.CODIGO_CLIENTE) INNER JOIN CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS FE ON(G.IDCATALOGO_FOLIO_FELECTRONICA=FE.IDCATALOGO_FOLIO_FELECTRONICA) " & _
-                    "WHERE G.CODIGO_DOCUMENTO IN(SELECT CODIGO_DOCUMENTO FROM VW_SIS_CAT_DOCUMENTOS_EXTENDIDO WHERE AFECTA_CONTABILIDAD='1' AND AFECTA_INVENTARIOS='1' AND AFECTA_CXC='1') AND G.ES_FACTURA_ELECTRONICA='1' " & _
-                    "AND G.ESTATUS_VENTA='C' AND YEAR(G.FECHA_DE_CANCELACION)=" & iAño & " AND MONTH(G.FECHA_DE_CANCELACION)=" & iMes & " ORDER BY G.CODIGO_PLAZA,G.FOLIO_NUMERICO "
-            da = New SqlDataAdapter(sSQL, Me._Conexion)
-            da.Fill(dTabla)
-            da.Dispose()
-
-        Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerFacturasCanceladasMesAño", ex)
-        End Try
-
-        Return dTabla
-    End Function
 
     Public Function BusquedaVisual_PorCliente(Optional ByVal sCodigoCliente As String = "") As String
         Dim f As New BusquedaVisual
@@ -2755,15 +2714,6 @@ Public Class Class_Ventas_Global
                 Return False
             End If
             oSQL = Nothing
-
-            'oSQL = New Class_find("SELECT TOP 1 IDCATALOGO_FOLIO_FELECTRONICA FROM CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS WHERE CODIGO_DOCUMENTO='" & sReplace(oDocumento.CODIGO_DOCUMENTO) & "' AND SERIE='" & sReplace(oCFDI.Comprobante.serie) & "' ORDER BY IDCATALOGO_FOLIO_FELECTRONICA DESC")
-            'sIDCATALOGO_FOLIO_FELECTRONICA = oSQL.Result1
-            'If txtLEN(sIDCATALOGO_FOLIO_FELECTRONICA) = False Then
-            '    MsgBox("No se encontró en la tabla CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS el documento y serie." & vbCrLf &
-            '           "Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-            '    Return False
-            'End If
-            'oSQL = Nothing
 
             Dim cmd As New SqlCommand
             Dim sqlParametro As SqlParameter
