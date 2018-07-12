@@ -62,9 +62,13 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="cfdi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="cadenaoriginal_3_3, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\_FuentesFer\Abaconet\AbacoNet_3.0\bin\Debug\cfdi.dll</HintPath>
+      <HintPath>bin\Debug\cadenaoriginal_3_3.dll</HintPath>
+    </Reference>
+    <Reference Include="cfdi, Version=1.0.0.3, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\cfdi.dll</HintPath>
     </Reference>
     <Reference Include="CFDIXML, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -1090,12 +1094,6 @@
       <DependentUpon>SeleccionEmpresa.vb</DependentUpon>
     </Compile>
     <Compile Include="Formas\Sistema\SeleccionEmpresa.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formas\Utilerias\UtileriasGeneraInformeMensual.Designer.vb">
-      <DependentUpon>UtileriasGeneraInformeMensual.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Formas\Utilerias\UtileriasGeneraInformeMensual.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Ventas\Consultas\Rpt_Ventas_Global.designer.vb">
@@ -2170,9 +2168,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Utilerias\UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo.resx">
       <DependentUpon>UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formas\Utilerias\UtileriasGeneraInformeMensual.resx">
-      <DependentUpon>UtileriasGeneraInformeMensual.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Ventas\Consultas\Rpt_Ventas_Global.resx">
       <DependentUpon>Rpt_Ventas_Global.vb</DependentUpon>
