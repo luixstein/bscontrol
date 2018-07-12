@@ -617,14 +617,6 @@ Public Class AppMenu
         'Child.Show()
     End Sub
 
-    Private Sub InformeMensualToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles InformeMensualToolStripMenuItem.Click
-        Dim Child As New UtileriasGeneraInformeMensual
-        Child.MdiParent = Me
-        m_ChildFormNumber += 1
-        Child.StartPosition = FormStartPosition.CenterScreen
-        Child.Show()
-    End Sub
-
     Private Sub EmpaqueYEmbarqueToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EmpaqueYEmbarqueToolStripMenuItem.Click
         Dim Child As New Rpt_Embarques_Empaque_Y_Embarque
         Child.MdiParent = Me

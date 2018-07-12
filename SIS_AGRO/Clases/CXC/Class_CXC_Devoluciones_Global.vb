@@ -39,6 +39,7 @@ Public Class Class_CXC_Devoluciones_Global
     Private _FECHA_CANCELACION_SERVIDOR As Date
 
     Private _FOLIO_NUMERICO As String
+    Private _SERIE As String
     Private _ES_A_PUBLICO_GENERAL As String
     Private _ES_COMPROBANTE_ELECTRONICO As String
     Private _CODIGO_REGIMEN_FISCAL As String
@@ -48,7 +49,7 @@ Public Class Class_CXC_Devoluciones_Global
     Private _CODIGO_MONEDA_SAT As String
     Private _CODIGO_TIPO_RELACION_CFDI As String
 
-    Private _IDCATALOGO_FOLIO_FELECTRONICA As String
+    'Private _IDCATALOGO_FOLIO_FELECTRONICA As String
     Private _ID_SIS_CFD_CATALOGO_CERTIFICADOS As String
     Private _ENVIADA_POR_CORREO As Boolean
     Private _VERSION_ESQUEMA_XML As String
@@ -78,7 +79,6 @@ Public Class Class_CXC_Devoluciones_Global
     Private _NOMBRE_ALMACEN As String
     Private _NOMBRE_USUARIO_GRABO As String
     Private _NOMBRE_USUARIO_CANCELO As String
-    Private _SERIE As String
 
     Private _FELECTRONICA_CER As String
     Private _FELECTRONICA_KEY As String
@@ -295,6 +295,12 @@ Public Class Class_CXC_Devoluciones_Global
         End Get
     End Property
 
+    Public ReadOnly Property SERIE() As String
+        Get
+            Return Me._SERIE
+        End Get
+    End Property
+
     Public Property ES_A_PUBLICO_GENERAL() As String
         Get
             Return Me._ES_A_PUBLICO_GENERAL
@@ -366,11 +372,11 @@ Public Class Class_CXC_Devoluciones_Global
 
     ''''''''''''''''''''''''''
 
-    Public ReadOnly Property IDCATALOGO_FOLIO_FELECTRONICA() As String
-        Get
-            Return Me._IDCATALOGO_FOLIO_FELECTRONICA
-        End Get
-    End Property
+    'Public ReadOnly Property IDCATALOGO_FOLIO_FELECTRONICA() As String
+    '    Get
+    '        Return Me._IDCATALOGO_FOLIO_FELECTRONICA
+    '    End Get
+    'End Property
 
     Public ReadOnly Property ID_SIS_CFD_CATALOGO_CERTIFICADOS() As String
         Get
@@ -515,12 +521,6 @@ Public Class Class_CXC_Devoluciones_Global
         End Get
     End Property
 
-    Public ReadOnly Property SERIE() As String
-        Get
-            Return Me._SERIE
-        End Get
-    End Property
-
     Public ReadOnly Property FELECTRONICA_CER() As String
         Get
             Return Me._FELECTRONICA_CER
@@ -632,7 +632,7 @@ Public Class Class_CXC_Devoluciones_Global
                                   "S1.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO," &
                                     "DOC.NOMBRE_FORMATO,S2.NOMBRE_USUARIO NOMBRE_USUARIO_CANCELO," &
                                     "VG.CODIGO_ALMACEN,ALM.NOMBRE_ALMACEN,VG.CODIGO_CLIENTE,CTE.NOMBRE_CLIENTE," &
-                                    "CFD.FELECTRONICA_CER,CFD.FELECTRONICA_KEY,CFD.CONTRASEÑA,CFFE.SERIE " &
+                                    "CFD.FELECTRONICA_CER,CFD.FELECTRONICA_KEY,CFD.CONTRASEÑA " &
                                     "FROM CXC_DEVOLUCION_GLOBAL DG " &
                                     "INNER JOIN SIS_USUARIOS S1 ON(DG.CODIGO_USUARIO_GRABO=S1.CODIGO_USUARIO) " &
                                     "LEFT JOIN SIS_USUARIOS S2 ON(DG.CODIGO_USUARIO_CANCELO=S2.CODIGO_USUARIO) " &
@@ -641,8 +641,8 @@ Public Class Class_CXC_Devoluciones_Global
                                     "INNER JOIN CAT_CLIENTES CTE ON(VG.CODIGO_CLIENTE=CTE.CODIGO_CLIENTE) " &
                                     "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(DG.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
                                     "LEFT JOIN SIS_CFD_CATALOGO_CERTIFICADOS CFD ON(DG.ID_SIS_CFD_CATALOGO_CERTIFICADOS=CFD.ID_SIS_CFD_CATALOGO_CERTIFICADOS) " &
-                                    "LEFT JOIN CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS CFFE ON(DG.IDCATALOGO_FOLIO_FELECTRONICA=CFFE.IDCATALOGO_FOLIO_FELECTRONICA)" &
                                     "WHERE DG.FOLIO_DEVOLUCION='" & sReplace(Me._FOLIO_DEVOLUCION) & "' AND DG.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA.ToString, Me._Conexion)
+        '"LEFT JOIN CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS CFFE ON(DG.IDCATALOGO_FOLIO_FELECTRONICA=CFFE.IDCATALOGO_FOLIO_FELECTRONICA)" &
 
         Dim dReader As SqlDataReader
         With cmd
@@ -691,6 +691,7 @@ Public Class Class_CXC_Devoluciones_Global
                     Me._NOMBRE_ALMACEN = "" & dReader("NOMBRE_ALMACEN").ToString()
 
                     Me._FOLIO_NUMERICO = "" & dReader("FOLIO_NUMERICO").ToString()
+                    Me._SERIE = "" & Trim(dReader("SERIE").ToString)
                     Me._ES_A_PUBLICO_GENERAL = "" & dReader("ES_A_PUBLICO_GENERAL").ToString()
                     Me._ES_COMPROBANTE_ELECTRONICO = "" & dReader("ES_COMPROBANTE_ELECTRONICO").ToString()
                     Me._CODIGO_REGIMEN_FISCAL = "" & dReader("CODIGO_REGIMEN_FISCAL").ToString()
@@ -700,7 +701,7 @@ Public Class Class_CXC_Devoluciones_Global
                     Me._CODIGO_MONEDA_SAT = "" & dReader("CODIGO_MONEDA_SAT").ToString()
                     Me._CODIGO_TIPO_RELACION_CFDI = "" & dReader("CODIGO_TIPO_RELACION_CFDI").ToString()
 
-                    Me._IDCATALOGO_FOLIO_FELECTRONICA = "" & dReader("IDCATALOGO_FOLIO_FELECTRONICA").ToString()
+                    'Me._IDCATALOGO_FOLIO_FELECTRONICA = "" & dReader("IDCATALOGO_FOLIO_FELECTRONICA").ToString()
                     Me._ID_SIS_CFD_CATALOGO_CERTIFICADOS = "" & dReader("ID_SIS_CFD_CATALOGO_CERTIFICADOS").ToString()
                     Me._ENVIADA_POR_CORREO = CBool(dReader("ENVIADA_POR_CORREO").ToString())
                     Me._VERSION_ESQUEMA_XML = "" & dReader("VERSION_ESQUEMA_XML").ToString()
@@ -719,7 +720,6 @@ Public Class Class_CXC_Devoluciones_Global
                     Me._FOLIO_FISCAL_CANCELACION_SAT = "" & dReader("FOLIO_FISCAL_CANCELACION_SAT").ToString()
                     Me._ESTATUS_CANCELACION_CFDI = dReader("ESTATUS_CANCELACION_CFDI").ToString()
 
-                    Me._SERIE = "" & Trim(dReader("SERIE").ToString)
                     Me._FELECTRONICA_CER = "" & dReader("FELECTRONICA_CER").ToString
                     Me._FELECTRONICA_KEY = "" & dReader("FELECTRONICA_KEY").ToString
                     Me._FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA = IIf(txtLEN("" & dReader("CONTRASEÑA").ToString) = True, Decrypt("" & dReader("CONTRASEÑA").ToString, "r7"), "").ToString

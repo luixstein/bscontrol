@@ -40,7 +40,8 @@ Public Class Class_CXC_Descuento
 
     Private _ES_COMPROBANTE_ELECTRONICO As String
     Private _FOLIO_NUMERICO As Integer
-    Private _IDCATALOGO_FOLIO_FELECTRONICA As Integer
+    Private _SERIE As String
+    'Private _IDCATALOGO_FOLIO_FELECTRONICA As Integer
     Private _ID_SIS_CFD_CATALOGO_CERTIFICADOS As Integer
     Private _CADENA_ORIGINAL As String
     Private _SELLO_DIGITAL As String
@@ -60,12 +61,10 @@ Public Class Class_CXC_Descuento
     Private _ESTATUS_CANCELACION_CFDI As String
     Private _TIMBRADO_DESCARTADO As String
     Private _VERSION_ESQUEMA_XML As String
-    Private _SERIE As String
     Private _CODIGO_METODO_PAGO_EVENTO As String
     Private _CODIGO_USO_CFDI As String
     Private _CODIGO_MONEDA_SAT As String
     Private _CODIGO_TIPO_RELACION_CFDI As String
-
 #End Region
 
 #Region "Campos de control"
@@ -328,11 +327,17 @@ Public Class Class_CXC_Descuento
         End Get
     End Property
 
-    Public WriteOnly Property IDCATALOGO_FOLIO_FELECTRONICA() As Integer
-        Set(ByVal value As Integer)
-            Me._IDCATALOGO_FOLIO_FELECTRONICA = value
-        End Set
+    Public ReadOnly Property SERIE() As String
+        Get
+            Return Me._SERIE
+        End Get
     End Property
+
+    'Public WriteOnly Property IDCATALOGO_FOLIO_FELECTRONICA() As Integer
+    '    Set(ByVal value As Integer)
+    '        Me._IDCATALOGO_FOLIO_FELECTRONICA = value
+    '    End Set
+    'End Property
 
     Public Property ID_SIS_CFD_CATALOGO_CERTIFICADOS() As Integer
         Get
@@ -445,11 +450,6 @@ Public Class Class_CXC_Descuento
         End Get
     End Property
 
-    Public ReadOnly Property SERIE() As String
-        Get
-            Return Me._SERIE
-        End Get
-    End Property
     Public Property CODIGO_METODO_PAGO_EVENTO() As String
         Get
             Return Me._CODIGO_METODO_PAGO_EVENTO
@@ -547,6 +547,7 @@ Public Class Class_CXC_Descuento
         End Set
     End Property
 #End Region
+
 #End Region
 
 #Region "Constructor y destructor"
@@ -727,6 +728,7 @@ Public Class Class_CXC_Descuento
                     Me._RETENCION = CType(dReader("RETENCION"), Double)
                     Me._ES_COMPROBANTE_ELECTRONICO = CType(dReader("ES_COMPROBANTE_ELECTRONICO"), String)
                     Me._FOLIO_NUMERICO = CType(dReader("FOLIO_NUMERICO"), Integer)
+                    Me._SERIE = "" & Trim(dReader("SERIE").ToString)
                     'Me._IDCATALOGO_FOLIO_FELECTRONICA = CType(dReader("IDCATALOGO_FOLIO_FELECTRONICA"), Integer)
                     'Me._ID_SIS_CFD_CATALOGO_CERTIFICADOS = CType(dReader("ID_SIS_CFD_CATALOGO_CERTIFICADOS"), Integer)
                     'Me._CADENA_ORIGINAL = CType(dReader("CADENA_ORIGINAL"), String)
@@ -760,7 +762,6 @@ Public Class Class_CXC_Descuento
                     Me._ESTATUS_CANCELACION_CFDI = dReader("ESTATUS_CANCELACION_CFDI").ToString
                     Me._TIMBRADO_DESCARTADO = dReader("TIMBRADO_DESCARTADO").ToString
                     Me._VERSION_ESQUEMA_XML = "" & dReader("VERSION_ESQUEMA_XML").ToString
-                    Me._SERIE = "" & Trim(dReader("SERIE").ToString)
 
                     Me._Nombre_Formato = "" & Trim(dReader("NOMBRE_FORMATO").ToString)
                     Me._CODIGO_METODO_PAGO_EVENTO = "" & dReader("CODIGO_METODO_PAGO_EVENTO").ToString

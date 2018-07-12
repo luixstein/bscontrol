@@ -1096,12 +1096,6 @@
     <Compile Include="Formas\Sistema\SeleccionEmpresa.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Formas\Utilerias\UtileriasGeneraInformeMensual.Designer.vb">
-      <DependentUpon>UtileriasGeneraInformeMensual.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Formas\Utilerias\UtileriasGeneraInformeMensual.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Formas\Ventas\Consultas\Rpt_Ventas_Global.designer.vb">
       <DependentUpon>Rpt_Ventas_Global.vb</DependentUpon>
     </Compile>
@@ -2174,9 +2168,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Utilerias\UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo.resx">
       <DependentUpon>UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formas\Utilerias\UtileriasGeneraInformeMensual.resx">
-      <DependentUpon>UtileriasGeneraInformeMensual.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Ventas\Consultas\Rpt_Ventas_Global.resx">
       <DependentUpon>Rpt_Ventas_Global.vb</DependentUpon>

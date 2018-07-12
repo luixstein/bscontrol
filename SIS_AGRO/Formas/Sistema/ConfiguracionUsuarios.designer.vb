@@ -435,7 +435,7 @@ Partial Class ConfiguracionUsuarios
         Me.CboAlmacen2.FormattingEnabled = True
         Me.CboAlmacen2.Location = New System.Drawing.Point(90, 20)
         Me.CboAlmacen2.Name = "CboAlmacen2"
-        Me.CboAlmacen2.Size = New System.Drawing.Size(161, 21)
+        Me.CboAlmacen2.Size = New System.Drawing.Size(264, 21)
         Me.CboAlmacen2.TabIndex = 125
         '
         'BtnQuitar1
@@ -532,7 +532,7 @@ Partial Class ConfiguracionUsuarios
         Me.lblDisplayModulo.Name = "lblDisplayModulo"
         Me.lblDisplayModulo.Size = New System.Drawing.Size(48, 13)
         Me.lblDisplayModulo.TabIndex = 119
-        Me.lblDisplayModulo.Text = "Modulo :"
+        Me.lblDisplayModulo.Text = "Módulo :"
         '
         'TpPermisosTiposDocumentos
         '
@@ -594,7 +594,7 @@ Partial Class ConfiguracionUsuarios
         Me.CboAlmacen3.FormattingEnabled = True
         Me.CboAlmacen3.Location = New System.Drawing.Point(88, 80)
         Me.CboAlmacen3.Name = "CboAlmacen3"
-        Me.CboAlmacen3.Size = New System.Drawing.Size(179, 21)
+        Me.CboAlmacen3.Size = New System.Drawing.Size(215, 21)
         Me.CboAlmacen3.TabIndex = 139
         '
         'Label3
@@ -612,7 +612,7 @@ Partial Class ConfiguracionUsuarios
         Me.CboAlmacen4.FormattingEnabled = True
         Me.CboAlmacen4.Location = New System.Drawing.Point(88, 54)
         Me.CboAlmacen4.Name = "CboAlmacen4"
-        Me.CboAlmacen4.Size = New System.Drawing.Size(179, 21)
+        Me.CboAlmacen4.Size = New System.Drawing.Size(215, 21)
         Me.CboAlmacen4.TabIndex = 137
         '
         'CboModulos2
@@ -631,7 +631,7 @@ Partial Class ConfiguracionUsuarios
         Me.lblDisplayModulo3.Name = "lblDisplayModulo3"
         Me.lblDisplayModulo3.Size = New System.Drawing.Size(48, 13)
         Me.lblDisplayModulo3.TabIndex = 136
-        Me.lblDisplayModulo3.Text = "Modulo :"
+        Me.lblDisplayModulo3.Text = "Módulo :"
         '
         'BtnAgregar3
         '

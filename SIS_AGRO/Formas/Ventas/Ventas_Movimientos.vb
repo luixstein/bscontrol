@@ -3217,6 +3217,20 @@ LlenaLinea:
                     Me.Totales()
                     Me.CalculaUtilidad()
 
+                Case Keys.F9
+                    If Columna = Me.igyCodigo Then
+                        If Me.Grid.Column(Me.igyCodigo).Locked = True Then 'Si esta bloqueada la columna código no permite gestionarla
+                            Return
+                        End If
+
+                        oArticulo = New Class_CatArticulos
+                        StrCod = oArticulo.BusquedaVisual_PorDescripcion_conExistencias(Me.CboAlmacen.SelectedValue.ToString, False)
+                        If txtLEN(StrCod) = True Then
+                            Me.Grid.Cell(Renglon, Me.igyCodigo).Text = StrCod
+                            GoTo LlenaLinea : Return
+                        End If
+                    End If
+
                 Case Keys.F6
 BuscaArticulos:
                     Select Case Columna
@@ -3227,7 +3241,7 @@ BuscaArticulos:
                             End If
 
                             oArticulo = New Class_CatArticulos
-                            StrCod = oArticulo.BusquedaVisual_PorDescripcion_conExistencias(Me.CboAlmacen.SelectedValue.ToString)
+                            StrCod = oArticulo.BusquedaVisual_PorDescripcion_conExistencias(Me.CboAlmacen.SelectedValue.ToString, True)
                             If txtLEN(StrCod) = True Then
                                 Me.Grid.Cell(Renglon, Me.igyCodigo).Text = StrCod
                                 GoTo LlenaLinea : Return

@@ -49,7 +49,8 @@ Public Class Class_Ventas_Global
     Private _IMPUESTO_PORCENTAJE As Double
     Private _ES_FACTURA_ELECTRONICA As String
     Private _FOLIO_NUMERICO As Integer
-    Private _IDCATALOGO_FOLIO_FELECTRONICA As Integer
+    Private _SERIE As String
+    'Private _IDCATALOGO_FOLIO_FELECTRONICA As Integer
     Private _CADENA_ORIGINAL As String
     Private _SELLO_DIGITAL As String
     'Private _SELLO_REPROCESADO As String
@@ -86,7 +87,6 @@ Public Class Class_Ventas_Global
     Private _ESTATUS_CANCELACION_CFDI As String
     Private _TIMBRADO_DESCARTADO As String
     Private _VERSION_ESQUEMA_XML As String
-    Private _SERIE As String
     Private _TIENE_COMPLEMENTO_COMERCIO_EXTERIOR As Boolean
     Private _CODIGO_REGIMEN_FISCAL As String
     Private _CODIGO_METODO_PAGO_EVENTO As String
@@ -405,19 +405,22 @@ Public Class Class_Ventas_Global
         Get
             Return Me._FOLIO_NUMERICO
         End Get
-        'Set(ByVal Value As Integer)
-        '    Me._FOLIO_NUMERICO = Value
-        'End Set
     End Property
 
-    Public ReadOnly Property IDCATALOGO_FOLIO_FELECTRONICA() As Integer
+    Public ReadOnly Property SERIE() As String
         Get
-            Return Me._IDCATALOGO_FOLIO_FELECTRONICA
+            Return Me._SERIE
         End Get
-        'Set(ByVal Value As Integer)
-        '    Me._IDCATALOGO_FOLIO_FELECTRONICA = Value
-        'End Set
     End Property
+
+    'Public ReadOnly Property IDCATALOGO_FOLIO_FELECTRONICA() As Integer
+    '    Get
+    '        Return Me._IDCATALOGO_FOLIO_FELECTRONICA
+    '    End Get
+    '    'Set(ByVal Value As Integer)
+    '    '    Me._IDCATALOGO_FOLIO_FELECTRONICA = Value
+    '    'End Set
+    'End Property
 
     Public ReadOnly Property ID_SIS_CFD_CATALOGO_CERTIFICADOS() As String
         Get
@@ -605,7 +608,6 @@ Public Class Class_Ventas_Global
         End Set
     End Property
 
-    'CFD
     Public Property CODIGO_METODO_PAGO() As String
         Get
             Return Me._CODIGO_METODO_PAGO
@@ -615,7 +617,6 @@ Public Class Class_Ventas_Global
         End Set
     End Property
 
-    'CFD
     Public Property NUMERO_CUENTA_PAGO() As String
         Get
             Return Me._NUMERO_CUENTA_PAGO
@@ -635,63 +636,66 @@ Public Class Class_Ventas_Global
         End Set
     End Property
 
-    'CFDi
     Public ReadOnly Property FOLIO_FISCAL_SAT() As String
         Get
             Return Me._FOLIO_FISCAL_SAT
         End Get
     End Property
+
     Public ReadOnly Property FECHA_TIMBRADO_SAT() As String
         Get
             Return Me._FECHA_TIMBRADO_SAT
         End Get
     End Property
+
     Public ReadOnly Property NUMERO_SERIE_CERTIFICADO_SAT() As String
         Get
             Return Me._NUMERO_SERIE_CERTIFICADO_SAT
         End Get
     End Property
+
     Public ReadOnly Property SELLO_SAT() As String
         Get
             Return Me._SELLO_SAT
         End Get
     End Property
+
     Public ReadOnly Property CBB_IMAGE() As String
         Get
             Return Me._CBB_IMAGE
         End Get
     End Property
+
     'Public ReadOnly Property FOLIO_FISCAL_CANCELACION_SAT() As String
     '    Get
     '        Return Me._FOLIO_FISCAL_CANCELACION_SAT
     '    End Get
     'End Property
+
     Public ReadOnly Property TIMBRADO_CFDI() As String
         Get
             Return Me._TIMBRADO_CFDI
         End Get
     End Property
+
     Public ReadOnly Property ESTATUS_CANCELACION_CFDI() As String
         Get
             Return Me._ESTATUS_CANCELACION_CFDI
         End Get
     End Property
+
     Public ReadOnly Property TIMBRADO_DESCARTADO() As String
         Get
             Return Me._TIMBRADO_DESCARTADO
         End Get
     End Property
+
     Public ReadOnly Property VERSION_ESQUEMA_XML() As String
         Get
             Return Me._VERSION_ESQUEMA_XML
         End Get
     End Property
 
-    Public ReadOnly Property SERIE() As String
-        Get
-            Return Me._SERIE
-        End Get
-    End Property
     Public ReadOnly Property TIENE_COMPLEMENTO_COMERCIO_EXTERIOR() As Boolean
         Get
             Return Me._TIENE_COMPLEMENTO_COMERCIO_EXTERIOR
@@ -1082,8 +1086,6 @@ Public Class Class_Ventas_Global
 
         Dim sSQL As String = ""
 
-        '"MP.NOMBRE_METODO_PAGO,RF.NOMBRE_REGIMEN_FISCAL,CFFE.SERIE," &
-
         sSQL = "SELECT G.* " &
             ",U1.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO,U2.NOMBRE_USUARIO NOMBRE_USUARIO_CANCELO,CFD.FELECTRONICA_CER,CFD.FELECTRONICA_KEY,CFD.CONTRASEÑA, " &
             "MP.NOMBRE_METODO_PAGO,RF.NOMBRE_REGIMEN_FISCAL," &
@@ -1097,8 +1099,6 @@ Public Class Class_Ventas_Global
             "LEFT JOIN SIS_CFD_CATALOGO_CERTIFICADOS CFD ON(G.ID_SIS_CFD_CATALOGO_CERTIFICADOS=CFD.ID_SIS_CFD_CATALOGO_CERTIFICADOS) " &
             "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(G.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
             "WHERE G.FOLIO_VENTA='" & Replace(Me._FOLIO_VENTA, "'", "''") & "' AND G.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " "
-
-        '"LEFT JOIN CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS CFFE ON(G.IDCATALOGO_FOLIO_FELECTRONICA=CFFE.IDCATALOGO_FOLIO_FELECTRONICA)" &
 
         Dim cmd As New SqlCommand(sSQL, Me._Conexion)
         Dim dReader As SqlDataReader
@@ -1138,7 +1138,8 @@ Public Class Class_Ventas_Global
                     Me._IMPUESTO_PORCENTAJE = CDec(dReader("IMPUESTO_PORCENTAJE"))
                     Me._ES_FACTURA_ELECTRONICA = "" & dReader("ES_FACTURA_ELECTRONICA").ToString()
                     Me._FOLIO_NUMERICO = CInt("" & dReader("FOLIO_NUMERICO").ToString())
-                    Me._IDCATALOGO_FOLIO_FELECTRONICA = CInt(valorNumerico(dReader("IDCATALOGO_FOLIO_FELECTRONICA").ToString))
+                    Me._SERIE = "" & dReader("SERIE").ToString()
+                    'Me._IDCATALOGO_FOLIO_FELECTRONICA = CInt(valorNumerico(dReader("IDCATALOGO_FOLIO_FELECTRONICA").ToString))
                     Me._ID_SIS_CFD_CATALOGO_CERTIFICADOS = "" & dReader("ID_SIS_CFD_CATALOGO_CERTIFICADOS").ToString()
                     Me._CADENA_ORIGINAL = "" & dReader("CADENA_ORIGINAL").ToString()
                     Me._SELLO_DIGITAL = "" & dReader("SELLO_DIGITAL").ToString()
@@ -1270,7 +1271,8 @@ Public Class Class_Ventas_Global
                     Me._IMPUESTO_PORCENTAJE = CDec(dReader("IMPUESTO_PORCENTAJE"))
                     Me._ES_FACTURA_ELECTRONICA = "" & dReader("ES_FACTURA_ELECTRONICA").ToString()
                     Me._FOLIO_NUMERICO = CInt("" & dReader("FOLIO_NUMERICO").ToString())
-                    Me._IDCATALOGO_FOLIO_FELECTRONICA = CInt(valorNumerico(dReader("IDCATALOGO_FOLIO_FELECTRONICA").ToString))
+                    Me._SERIE = "" & dReader("SERIE").ToString()
+                    'Me._IDCATALOGO_FOLIO_FELECTRONICA = CInt(valorNumerico(dReader("IDCATALOGO_FOLIO_FELECTRONICA").ToString))
                     Me._ID_SIS_CFD_CATALOGO_CERTIFICADOS = "" & dReader("ID_SIS_CFD_CATALOGO_CERTIFICADOS").ToString()
                     Me._CADENA_ORIGINAL = "" & dReader("CADENA_ORIGINAL").ToString()
                     Me._SELLO_DIGITAL = "" & dReader("SELLO_DIGITAL").ToString()
@@ -2744,7 +2746,7 @@ Public Class Class_Ventas_Global
             End Select
 
             'Busca el certificado
-            Dim sID_SIS_CFD_CATALOGO_CERTIFICADOS As String = "", sIDCATALOGO_FOLIO_FELECTRONICA As String = ""
+            Dim sID_SIS_CFD_CATALOGO_CERTIFICADOS As String = "" ', sIDCATALOGO_FOLIO_FELECTRONICA As String = ""
             oSQL = New Class_find("SELECT ID_SIS_CFD_CATALOGO_CERTIFICADOS FROM SIS_CFD_CATALOGO_CERTIFICADOS WHERE NUMERO_CERTIFICADO='" & sReplace(oCFDI.Comprobante.noCertificado) & "'")
             sID_SIS_CFD_CATALOGO_CERTIFICADOS = oSQL.Result1
             If txtLEN(sID_SIS_CFD_CATALOGO_CERTIFICADOS) = False Then
@@ -2754,14 +2756,14 @@ Public Class Class_Ventas_Global
             End If
             oSQL = Nothing
 
-            oSQL = New Class_find("SELECT TOP 1 IDCATALOGO_FOLIO_FELECTRONICA FROM CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS WHERE CODIGO_DOCUMENTO='" & sReplace(oDocumento.CODIGO_DOCUMENTO) & "' AND SERIE='" & sReplace(oCFDI.Comprobante.serie) & "' ORDER BY IDCATALOGO_FOLIO_FELECTRONICA DESC")
-            sIDCATALOGO_FOLIO_FELECTRONICA = oSQL.Result1
-            If txtLEN(sIDCATALOGO_FOLIO_FELECTRONICA) = False Then
-                MsgBox("No se encontró en la tabla CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS el documento y serie." & vbCrLf &
-                       "Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
-                Return False
-            End If
-            oSQL = Nothing
+            'oSQL = New Class_find("SELECT TOP 1 IDCATALOGO_FOLIO_FELECTRONICA FROM CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS WHERE CODIGO_DOCUMENTO='" & sReplace(oDocumento.CODIGO_DOCUMENTO) & "' AND SERIE='" & sReplace(oCFDI.Comprobante.serie) & "' ORDER BY IDCATALOGO_FOLIO_FELECTRONICA DESC")
+            'sIDCATALOGO_FOLIO_FELECTRONICA = oSQL.Result1
+            'If txtLEN(sIDCATALOGO_FOLIO_FELECTRONICA) = False Then
+            '    MsgBox("No se encontró en la tabla CATALOGO_FOLIOS_FACTURAS_ELECTRONICAS el documento y serie." & vbCrLf &
+            '           "Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+            '    Return False
+            'End If
+            'oSQL = Nothing
 
             Dim cmd As New SqlCommand
             Dim sqlParametro As SqlParameter
@@ -2779,7 +2781,8 @@ Public Class Class_Ventas_Global
                     sqlParametro = .Parameters.Add("@CADENA_XML", SqlDbType.Xml) : sqlParametro.Value = oCFDI.XMLSinDeclaracion
                     sqlParametro = .Parameters.Add("@CODIGO_USUARIO_AGREGO_XML_EXTERNO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
                     sqlParametro = .Parameters.Add("@FOLIO_NUMERICO", SqlDbType.Int) : sqlParametro.Value = oCFDI.Comprobante.folio
-                    sqlParametro = .Parameters.Add("@IDCATALOGO_FOLIO_FELECTRONICA", SqlDbType.SmallInt) : sqlParametro.Value = sIDCATALOGO_FOLIO_FELECTRONICA
+                    sqlParametro = .Parameters.Add("@SERIE", SqlDbType.NVarChar, 10) : sqlParametro.Value = oCFDI.Comprobante.serie
+                    'sqlParametro = .Parameters.Add("@IDCATALOGO_FOLIO_FELECTRONICA", SqlDbType.SmallInt) : sqlParametro.Value = sIDCATALOGO_FOLIO_FELECTRONICA
                     sqlParametro = .Parameters.Add("@ID_SIS_CFD_CATALOGO_CERTIFICADOS", SqlDbType.SmallInt) : sqlParametro.Value = sID_SIS_CFD_CATALOGO_CERTIFICADOS
                     sqlParametro = .Parameters.Add("@VERSION_ESQUEMA_XML", SqlDbType.NVarChar, 6) : sqlParametro.Value = oCFDI.Comprobante.version
                     sqlParametro = .Parameters.Add("@NUMERO_CERTIFICADO_DIGITAL", SqlDbType.NVarChar, 50) : sqlParametro.Value = oCFDI.Comprobante.noCertificado

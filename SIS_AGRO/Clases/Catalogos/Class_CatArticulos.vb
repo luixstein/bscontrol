@@ -845,20 +845,21 @@ Public Class Class_CatArticulos
         Return Resultado
     End Function
 
-    Public Function BusquedaVisual_PorDescripcion_conExistencias(ByVal sAlmacen As String) As String
+    Public Function BusquedaVisual_PorDescripcion_conExistencias(ByVal sAlmacen As String, Optional ByVal bSoloConExistencias As Boolean = False) As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de Articulos por Descripción."
         f.sCampo = "A.DESCRIPCION"
         f.sOrder = "A.DESCRIPCION"
         f.sTable = "CAT_ARTICULOS"
-        f.sQl = "SELECT A.CODIGO_ARTICULO,A.DESCRIPCION,F.NOMBRE_FAMILIA,CONVERT(VARCHAR(50), CAST( ISNULL(I.EXISTENCIA,0) AS MONEY ),1) AS EXISTENCIA,CASE WHEN A.ES_SERIALIZABLE='1' THEN 'ES SERIADO' ELSE '' END " & _
-        "FROM CAT_ARTICULOS A " & _
-        "INNER JOIN CAT_FAMILIAS F ON(A.CODIGO_FAMILIA=F.CODIGO_FAMILIA) " & _
-        "LEFT JOIN CAT_CULTIVOS C ON (A.CODIGO_CULTIVO=C.CODIGO_CULTIVO) " & _
-        "LEFT JOIN INVENTARIO_EXISTENCIA_ARTICULOS I ON(I.CODIGO_ARTICULO=A.CODIGO_ARTICULO AND I.CODIGO_ALMACEN='" & sAlmacen & "') " & _
-        "WHERE A.PROTEGIDO=0 AND A.ESTATUS='A' AND (C.CODIGO_PLAZA=" & Usuario.Codigo_Plaza.ToString & " OR A.CODIGO_CULTIVO IS NULL) AND "
-
+        f.sQl = "SELECT A.CODIGO_ARTICULO,A.DESCRIPCION,F.NOMBRE_FAMILIA,CONVERT(VARCHAR(50), CAST( ISNULL(I.EXISTENCIA,0) AS MONEY ),1) AS EXISTENCIA,CASE WHEN A.ES_SERIALIZABLE='1' THEN 'ES SERIADO' ELSE '' END SERIADO, " &
+        "CASE WHEN A.INVENTARIABLE='1' THEN 'SI' ELSE 'NO' END INVENTARIABLE " &
+        "FROM CAT_ARTICULOS A " &
+        "INNER JOIN CAT_FAMILIAS F ON(A.CODIGO_FAMILIA=F.CODIGO_FAMILIA) " &
+        "LEFT JOIN CAT_CULTIVOS C ON (A.CODIGO_CULTIVO=C.CODIGO_CULTIVO) " &
+        "LEFT JOIN INVENTARIO_EXISTENCIA_ARTICULOS I ON(I.CODIGO_ARTICULO=A.CODIGO_ARTICULO AND I.CODIGO_ALMACEN='" & sAlmacen & "') " &
+        "WHERE A.PROTEGIDO=0 AND A.ESTATUS='A' AND (C.CODIGO_PLAZA=" & Usuario.Codigo_Plaza.ToString & " OR A.CODIGO_CULTIVO IS NULL) AND " &
+        IIf(bSoloConExistencias = True, "1=(CASE WHEN A.INVENTARIABLE=1 THEN (CASE WHEN I.EXISTENCIA>0 THEN 1 ELSE 0 END ) ELSE 1 END) AND", "").ToString
         f.arrayWidthColumns = New Integer() {150, 500, 250}
         f.Inicia("")
         f.ShowDialog()
