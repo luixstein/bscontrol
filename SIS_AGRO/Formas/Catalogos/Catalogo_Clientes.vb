@@ -1051,6 +1051,23 @@ busca:
                 .CUENTA_CONTABLE = Me.txtCuentaContable.Text
                 .CUENTA_CONTABLE_DOLARES = Me.txtCuentaContableDolares.Text
 
+                If Me.ValidaMovimientosCliente = False Then
+                    Exit Sub
+                End If
+
+                .Consultar()
+
+                If txtLEN(.CODIGO_PROPIETARIO) = True Then
+                    Dim sMsg As String
+                    sMsg = "El cliente " & Me.txtCodigoCliente.Text & " está ligado a un propietario, desea eliminar esta ligación?"
+                    If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
+                        .EliminaRelacionPropietario()
+                    Else
+                        Exit Sub
+                    End If
+
+                End If
+
                 If .EliminarCliente() Then
                     Eliminado = True
                 End If
@@ -1071,6 +1088,52 @@ busca:
             oElemento = Nothing
         End Try
     End Sub
+
+    Private Function ValidaMovimientosCliente() As Boolean
+        Dim sql As Class_find
+
+        'Cuenta contable
+        sql = New Class_find("SELECT 1 FROM CON_POLIZAS_DETALLE WHERE CUENTA_CONTABLE='" & Me.txtCuentaContable.Text & "'")
+
+        If txtLEN(sql.Result1) = True Then
+            MsgBox("No es posible eliminar cliente porque su cuenta contable tiene movimientos de pólizas.", MsgBoxStyle.Exclamation, Me.Name)
+            sql = Nothing
+            Return False
+        End If
+
+        'Cuenta contable dolares
+        If txtLEN(Me.txtCuentaContableDolares.Text) = True Then
+            sql = New Class_find("SELECT 1 FROM CON_POLIZAS_DETALLE WHERE CUENTA_CONTABLE='" & Me.txtCuentaContableDolares.Text & "'")
+
+            If txtLEN(sql.Result1) = True Then
+                MsgBox("No es posible eliminar cliente porque su cuenta contable en dólares tiene movimientos de pólizas.", MsgBoxStyle.Exclamation, Me.Name)
+                sql = Nothing
+                Return False
+            End If
+
+        End If
+
+        'Ventas
+        sql = New Class_find("SELECT 1 FROM VENTA_GLOBAL WHERE CODIGO_CLIENTE='" & Me.txtCodigoCliente.Text & "'")
+
+        If txtLEN(sql.Result1) = True Then
+            MsgBox("No es posible eliminar cliente porque tiene movimientos de ventas.", MsgBoxStyle.Exclamation, Me.Name)
+            sql = Nothing
+            Return False
+        End If
+
+        'CXC
+        sql = New Class_find("SELECT 1 FROM CXC_GLOBAL WHERE CODIGO_CLIENTE='" & Me.txtCodigoCliente.Text & "'")
+
+        If txtLEN(sql.Result1) = True Then
+            MsgBox("No es posible eliminar cliente porque tiene movimientos de cxc.", MsgBoxStyle.Exclamation, Me.Name)
+            sql = Nothing
+            Return False
+        End If
+
+        sql = Nothing
+        Return True
+    End Function
 
     Private Function IsEmailSyntaxValid(ByVal emailToValidate As String) As Boolean
         Return System.Text.RegularExpressions.Regex.IsMatch(emailToValidate, "^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$")

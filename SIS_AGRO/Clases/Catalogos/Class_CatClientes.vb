@@ -555,7 +555,7 @@ Public Class Class_CatClientes
         "C.CODIGO_VENDEDOR,C.CUENTA_CONTABLE,C.CUENTA_CONTABLE_DOLARES,C.LIMITE_CREDITO,C.DIAS_PLAZO,C.SALDO,C.PERMITIR_VENTA_CREDITO, " &
         "C.FECHA_ALTA,C.PLAZA,C.CORREO_CLIENTE,C.CODIGO_METODO_PAGO,C.NUMERO_CUENTA_PAGO,C.CODIGO_METODO_PAGO_DOLARES,C.NUMERO_CUENTA_PAGO_DOLARES,C.CODIGO_TIPO_MERCADO,C.FORMATO_NOMBRE_XML," &
         "C.CODIGO_ALMACEN, " &
-        "C.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO,C.CODIGO_MUNICIPIO,C.CODIGO_ESTADO,E.CODIGO_ESTADO_SAT,C.CODIGO_PAIS_SAT,M.NOMBRE_MUNICIPIO,E.NOMBRE_ESTADO,P.NOMBRE_PAIS,C.ES_CONTRIBUYENTE_IEPS,C.CODIGO_USO_CFDI " &
+        "C.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO,C.CODIGO_MUNICIPIO,C.CODIGO_ESTADO,E.CODIGO_ESTADO_SAT,C.CODIGO_PAIS_SAT,M.NOMBRE_MUNICIPIO,E.NOMBRE_ESTADO,P.NOMBRE_PAIS,C.ES_CONTRIBUYENTE_IEPS,C.CODIGO_USO_CFDI,C.CODIGO_PROPIETARIO " &
         "FROM CAT_CLIENTES C " &
         "LEFT JOIN CAT_MUNICIPIOS M ON(C.CODIGO_MUNICIPIO=M.CODIGO_MUNICIPIO) " &
         "LEFT JOIN SIS_ESTADOS E ON(C.CODIGO_ESTADO=E.CODIGO_ESTADO) " &
@@ -711,6 +711,8 @@ Public Class Class_CatClientes
 
                     Me._CODIGO_USO_CFDI = Trim("" & dReader("CODIGO_USO_CFDI").ToString)
 
+                    Me._CODIGO_PROPIETARIO = "" & dReader("CODIGO_PROPIETARIO").ToString
+
                     bResultado = True
                 End If
                 dReader.Close()
@@ -744,6 +746,33 @@ Public Class Class_CatClientes
                 bResultado = True
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "EliminarCliente", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
+    End Function
+
+    Public Function EliminaRelacionPropietario() As Boolean
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_CAT_CLIENTES_ELIMINA_RELACION_PROPIETARIO"
+
+            sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._CODIGO_CLIENTE.ToUpper
+
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, "EliminaRelacionPropietario", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
