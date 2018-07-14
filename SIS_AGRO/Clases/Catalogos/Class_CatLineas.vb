@@ -320,19 +320,6 @@ Public Class Class_CatLineas
         Return Resultado
     End Function
 
-    Public Function CodigoSiguiente() As String
-        Dim iLinea As Integer, sLinea As String
-        Dim Resultado As String = ""
-        Try
-            iLinea = Empresa_Sistema.CODIGO_LINEA
-            iLinea = iLinea + 1
-            sLinea = "0000" + iLinea.ToString
-            Resultado = sLinea.Substring(Len(sLinea) - 4)
-        Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "CodigoSiguiente", ex)
-        End Try
-        Return Resultado
-    End Function
 #End Region
 
 End Class

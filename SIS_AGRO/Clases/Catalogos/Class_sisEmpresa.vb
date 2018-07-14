@@ -32,9 +32,6 @@ Public NotInheritable Class Class_sisEmpresa
     Private _VALIDA_EXISTENCIAS_KITS_VENTAS As Boolean
     Private _DECIMALES_CANTIDAD As Integer
     Private _DECIMALES_PRECIO As Integer
-    Private _CODIGO_FAMILIA As Integer
-    Private _CODIGO_ALMACEN As Integer
-    Private _CODIGO_LINEA As Integer
     Private _CODIGO_ARTICULO_NO_INVENTARIABLE_COMPRA_PROVEEDOR As String
     Private _CODIGO_ARTICULO_NO_INVENTARIABLE_COMPRA_ACREEDOR As String
     Private _CUENTA_CONTABLE_ALMACENES As String
@@ -288,24 +285,6 @@ Public NotInheritable Class Class_sisEmpresa
     Public ReadOnly Property VALIDA_EXISTENCIAS_KITS_VENTAS() As Boolean
         Get
             Return Me._VALIDA_EXISTENCIAS_KITS_VENTAS
-        End Get
-    End Property
-
-    Public ReadOnly Property CODIGO_FAMILIA() As Integer
-        Get
-            Return Me._CODIGO_FAMILIA
-        End Get
-    End Property
-
-    Public ReadOnly Property CODIGO_ALMACEN() As Integer
-        Get
-            Return Me._CODIGO_ALMACEN
-        End Get
-    End Property
-
-    Public ReadOnly Property CODIGO_LINEA() As String
-        Get
-            Return Me._CODIGO_LINEA
         End Get
     End Property
 
@@ -909,9 +888,6 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._DECIMALES_CONTABILIDAD = CInt(dReader("DECIMALES_CONTABILIDAD"))
                     Me._DECIMALES_CANTIDAD = dReader("DECIMALES_CANTIDAD")
                     Me._DECIMALES_PRECIO = dReader("DECIMALES_PRECIO")
-                    Me._CODIGO_ALMACEN = "" & dReader("CODIGO_ALMACEN").ToString
-                    Me._CODIGO_FAMILIA = "" & dReader("CODIGO_FAMILIA").ToString
-                    Me._CODIGO_LINEA = "" & dReader("CODIGO_LINEA").ToString
                     Me._CODIGO_ARTICULO_NO_INVENTARIABLE_COMPRA_ACREEDOR = "" & dReader("CODIGO_ARTICULO_NO_INVENTARIABLE_COMPRA_ACREEDOR").ToString
                     Me._CODIGO_ARTICULO_NO_INVENTARIABLE_COMPRA_PROVEEDOR = "" & dReader("CODIGO_ARTICULO_NO_INVENTARIABLE_COMPRA_PROVEEDOR").ToString
                     Me._VERSION_AGROCONTROL = dReader("VERSION_AGRINET")

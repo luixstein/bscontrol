@@ -347,7 +347,7 @@ Public Class Class_CatAlmacenes
     Public Overrides Function BusquedaVisual_PorCodigo() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de Metodos de Almacenes por codigo."
+        f.Text = "Búsqueda de almacenes por código."
         f.sCampo = "CODIGO_ALMACEN"
         f.sOrder = "NOMBRE_ALMACEN"
         f.sTable = "CAT_ALMACENES"
@@ -367,7 +367,7 @@ Public Class Class_CatAlmacenes
     Public Overrides Function BusquedaVisual_PorDescripcion() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de Almacenes por Descripción."
+        f.Text = "Búsqueda de almacenes por descripción."
         f.sCampo = "NOMBRE_ALMACEN"
         f.sOrder = "NOMBRE_ALMACEN"
         f.sTable = "CAT_ALMACENES"
@@ -384,19 +384,6 @@ Public Class Class_CatAlmacenes
         Return Resultado
     End Function
 
-    Public Function CodigoSiguiente() As String
-        Dim iAlmacen As Integer, sAlmacen As String
-        Dim Resultado As String = ""
-        Try
-            iAlmacen = Empresa_Sistema.CODIGO_ALMACEN
-            iAlmacen = iAlmacen + 1
-            sAlmacen = "0000" + iAlmacen.ToString
-            Resultado = sAlmacen.Substring(Len(sAlmacen) - 4)
-        Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "CodigoSiguiente", ex)
-        End Try
-        Return Resultado
-    End Function
 #End Region
 
 End Class

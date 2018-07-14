@@ -340,19 +340,6 @@ Public Class Class_CatFamilias
         Return Resultado
     End Function
 
-    Public Function CodigoSiguiente() As String
-        Dim iFamilia As Integer, sFamilia As String
-        Dim Resultado As String = ""
-        Try
-            iFamilia = Empresa_Sistema.CODIGO_FAMILIA
-            iFamilia = iFamilia + 1
-            sFamilia = "0000" + iFamilia.ToString
-            Resultado = sFamilia.Substring(Len(sFamilia) - 4)
-        Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "CodigoSiguiente", ex)
-        End Try
-        Return Resultado
-    End Function
 #End Region
 
 End Class
