@@ -881,9 +881,10 @@ Public Class Class_CatArticulos
         f.sCampo = "A.DESCRIPCION"
         f.sOrder = "A.DESCRIPCION"
         f.sTable = "CAT_ARTICULOS"
-        f.sQl = "SELECT A.CODIGO_ARTICULO,A.DESCRIPCION,F.NOMBRE_FAMILIA " & _
-        "FROM CAT_ARTICULOS A " & _
-        "INNER JOIN CAT_FAMILIAS F ON(A.CODIGO_FAMILIA=F.CODIGO_FAMILIA) WHERE A.PROTEGIDO=0 AND A.ESTATUS='A' AND INVENTARIABLE='1' AND "
+        f.sQl = "SELECT A.CODIGO_ARTICULO,A.DESCRIPCION,F.NOMBRE_FAMILIA,CASE WHEN A.ES_SERIALIZABLE='1' THEN 'ES SERIADO' ELSE '' END SERIADO " &
+        "FROM CAT_ARTICULOS A " &
+        "INNER JOIN CAT_FAMILIAS F ON(A.CODIGO_FAMILIA=F.CODIGO_FAMILIA) " &
+        "WHERE A.PROTEGIDO=0 AND A.ESTATUS='A' AND A.INVENTARIABLE='1' AND "
         f.arrayWidthColumns = New Integer() {150, 500, 250}
         f.Inicia("")
         f.ShowDialog()
@@ -904,9 +905,10 @@ Public Class Class_CatArticulos
         f.sCampo = "A.CODIGO_ARTICULO"
         f.sOrder = "A.DESCRIPCION"
         f.sTable = "CAT_ARTICULOS"
-        f.sQl = "SELECT A.CODIGO_ARTICULO,A.DESCRIPCION,F.NOMBRE_FAMILIA " & _
-        "FROM CAT_ARTICULOS A " & _
-        "INNER JOIN CAT_FAMILIAS F ON(A.CODIGO_FAMILIA=F.CODIGO_FAMILIA) WHERE A.PROTEGIDO=0 AND A.ESTATUS='A' AND INVENTARIABLE='1' AND "
+        f.sQl = "SELECT A.CODIGO_ARTICULO,A.DESCRIPCION,F.NOMBRE_FAMILIA " &
+        "FROM CAT_ARTICULOS A " &
+        "INNER JOIN CAT_FAMILIAS F ON(A.CODIGO_FAMILIA=F.CODIGO_FAMILIA) " &
+        " WHERE A.PROTEGIDO=0 AND A.ESTATUS='A' AND INVENTARIABLE='1' AND "
         f.arrayWidthColumns = New Integer() {150, 500, 250}
         f.Inicia("")
         f.ShowDialog()
@@ -927,11 +929,11 @@ Public Class Class_CatArticulos
         f.sCampo = "A.DESCRIPCION"
         f.sOrder = "A.DESCRIPCION"
         f.sTable = "CAT_ARTICULOS"
-        f.sQl = "SELECT A.CODIGO_ARTICULO,A.DESCRIPCION,F.NOMBRE_FAMILIA,E.EXISTENCIA " & _
-        "FROM CAT_ARTICULOS A " & _
-        "INNER JOIN CAT_FAMILIAS F ON(A.CODIGO_FAMILIA=F.CODIGO_FAMILIA) " & _
-        "LEFT JOIN INVENTARIO_EXISTENCIA_ARTICULOS E ON(A.CODIGO_ARTICULO=E.CODIGO_ARTICULO AND E.CODIGO_ALMACEN='" & sReplace(sCodigoAlmacen) & "') " & _
-        "WHERE A.PROTEGIDO=0 AND A.ESTATUS='A' AND INVENTARIABLE='1' AND "
+        f.sQl = "SELECT A.CODIGO_ARTICULO,A.DESCRIPCION,F.NOMBRE_FAMILIA,E.EXISTENCIA " &
+        "FROM CAT_ARTICULOS A " &
+        "INNER JOIN CAT_FAMILIAS F ON(A.CODIGO_FAMILIA=F.CODIGO_FAMILIA) " &
+        "LEFT JOIN INVENTARIO_EXISTENCIA_ARTICULOS E ON(A.CODIGO_ARTICULO=E.CODIGO_ARTICULO AND E.CODIGO_ALMACEN='" & sReplace(sCodigoAlmacen) & "') " &
+        "WHERE A.PROTEGIDO=0 AND A.ESTATUS='A' AND A.INVENTARIABLE='1' AND "
         f.arrayWidthColumns = New Integer() {150, 500, 250}
         f.Inicia("")
         f.ShowDialog()
@@ -952,11 +954,11 @@ Public Class Class_CatArticulos
         f.sCampo = "A.CODIGO_ARTICULO"
         f.sOrder = "A.DESCRIPCION"
         f.sTable = "CAT_ARTICULOS"
-        f.sQl = "SELECT A.CODIGO_ARTICULO,A.DESCRIPCION,F.NOMBRE_FAMILIA,E.EXISTENCIA " & _
-        "FROM CAT_ARTICULOS A " & _
-        "INNER JOIN CAT_FAMILIAS F ON(A.CODIGO_FAMILIA=F.CODIGO_FAMILIA) " & _
-        "LEFT JOIN INVENTARIO_EXISTENCIA_ARTICULOS E ON(A.CODIGO_ARTICULO=E.CODIGO_ARTICULO AND E.CODIGO_ALMACEN='" & sReplace(sCodigoAlmacen) & "') " & _
-        "WHERE A.PROTEGIDO=0 AND A.ESTATUS='A' AND INVENTARIABLE='1' AND "
+        f.sQl = "SELECT A.CODIGO_ARTICULO,A.DESCRIPCION,F.NOMBRE_FAMILIA,E.EXISTENCIA " &
+        "FROM CAT_ARTICULOS A " &
+        "INNER JOIN CAT_FAMILIAS F ON(A.CODIGO_FAMILIA=F.CODIGO_FAMILIA) " &
+        "LEFT JOIN INVENTARIO_EXISTENCIA_ARTICULOS E ON(A.CODIGO_ARTICULO=E.CODIGO_ARTICULO AND E.CODIGO_ALMACEN='" & sReplace(sCodigoAlmacen) & "') " &
+        "WHERE A.PROTEGIDO=0 AND A.ESTATUS='A' AND A.INVENTARIABLE='1' AND "
         f.arrayWidthColumns = New Integer() {150, 500, 250}
         f.Inicia("")
         f.ShowDialog()
@@ -974,10 +976,10 @@ Public Class Class_CatArticulos
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de Articulos por Descripción."
-        f.sCampo = "Descripcion"
-        f.sOrder = "Descripcion"
-        f.sTable = "Cat_Articulos"
-        f.sQl = "Select CODIGO_ARTICULO,DESCRIPCION From Cat_Articulos Where 1=1 And Protegido=0 AND INVENTARIABLE='1' and CODIGO_FAMILIA='0008' AND "
+        f.sCampo = "DESCRIPCION"
+        f.sOrder = "DESCRIPCION"
+        f.sTable = "CAT_ARTICULOS"
+        f.sQl = "SELECT CODIGO_ARTICULO,DESCRIPCION FROM CAT_ARTICULOS WHERE PROTEGIDO=0 AND INVENTARIABLE='1' AND CODIGO_FAMILIA='0008' AND "
         f.arrayWidthColumns = New Integer() {150, 600}
         f.Inicia("")
         f.ShowDialog()
@@ -994,7 +996,7 @@ Public Class Class_CatArticulos
     Public Function BuscarNombreArticulo(ByVal sCodigoArticulo As String) As String
         Dim Resultado As String = ""
         Try
-            Dim sql As New Class_find("Select Descripcion From CAT_ARTICULOS Where CODIGO_Articulo='" & sCodigoArticulo & "' ")
+            Dim sql As New Class_find("SELECT DESCRIPCION FROM CAT_ARTICULOS WHERE CODIGO_ARTICULO='" & sCodigoArticulo & "' ")
             If sql.Result1 <> "" Then
                 Resultado = sql.Result1
             End If
@@ -1041,7 +1043,7 @@ Public Class Class_CatArticulos
                 frm.Show()
 
             Catch ex As Exception
-                HandleError(Me.Nombre_Catalogo, " Impresión del listado :" + Me.Nombre_Catalogo, ex)
+                HandleError(Me.Nombre_Catalogo, "Imprimir_Listado", ex)
             Finally
                 oReporte = Nothing
                 'Rpt.Dispose()

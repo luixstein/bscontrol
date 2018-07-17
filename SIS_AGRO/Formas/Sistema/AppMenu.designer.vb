@@ -493,7 +493,7 @@ Partial Public Class AppMenu
         '
         Me.FormulasToolStripMenuItem.Name = "FormulasToolStripMenuItem"
         Me.FormulasToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
-        Me.FormulasToolStripMenuItem.Text = "Formulas"
+        Me.FormulasToolStripMenuItem.Text = "Fórmulas"
         '
         'ProductosToolStripMenuItem1
         '
@@ -572,50 +572,50 @@ Partial Public Class AppMenu
         'CultivosToolStripMenuItem
         '
         Me.CultivosToolStripMenuItem.Name = "CultivosToolStripMenuItem"
-        Me.CultivosToolStripMenuItem.Size = New System.Drawing.Size(147, 22)
+        Me.CultivosToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.CultivosToolStripMenuItem.Text = "Cultivos"
         '
         'EnvasesToolStripMenuItem
         '
         Me.EnvasesToolStripMenuItem.Name = "EnvasesToolStripMenuItem"
-        Me.EnvasesToolStripMenuItem.Size = New System.Drawing.Size(147, 22)
+        Me.EnvasesToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.EnvasesToolStripMenuItem.Text = "Envases"
         '
         'EtiquetasToolStripMenuItem
         '
         Me.EtiquetasToolStripMenuItem.Name = "EtiquetasToolStripMenuItem"
-        Me.EtiquetasToolStripMenuItem.Size = New System.Drawing.Size(147, 22)
+        Me.EtiquetasToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.EtiquetasToolStripMenuItem.Text = "Etiquetas"
         '
         'TamañosToolStripMenuItem
         '
         Me.TamañosToolStripMenuItem.Name = "TamañosToolStripMenuItem"
-        Me.TamañosToolStripMenuItem.Size = New System.Drawing.Size(147, 22)
+        Me.TamañosToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.TamañosToolStripMenuItem.Text = "Tamaños"
         '
         'TiposEnvaseToolStripMenuItem
         '
         Me.TiposEnvaseToolStripMenuItem.Name = "TiposEnvaseToolStripMenuItem"
-        Me.TiposEnvaseToolStripMenuItem.Size = New System.Drawing.Size(147, 22)
+        Me.TiposEnvaseToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.TiposEnvaseToolStripMenuItem.Text = "Tipos envase"
         Me.TiposEnvaseToolStripMenuItem.Visible = False
         '
         'TiposTamañoToolStripMenuItem
         '
         Me.TiposTamañoToolStripMenuItem.Name = "TiposTamañoToolStripMenuItem"
-        Me.TiposTamañoToolStripMenuItem.Size = New System.Drawing.Size(147, 22)
+        Me.TiposTamañoToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.TiposTamañoToolStripMenuItem.Text = "Tipos tamaño"
         Me.TiposTamañoToolStripMenuItem.Visible = False
         '
         'ToolStripMenuItem2
         '
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(144, 6)
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(149, 6)
         '
         'ProductosToolStripMenuItem
         '
         Me.ProductosToolStripMenuItem.Name = "ProductosToolStripMenuItem"
-        Me.ProductosToolStripMenuItem.Size = New System.Drawing.Size(147, 22)
+        Me.ProductosToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.ProductosToolStripMenuItem.Text = "Productos"
         '
         'VentasToolStripMenuItem
