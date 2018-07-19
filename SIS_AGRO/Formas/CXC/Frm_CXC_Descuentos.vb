@@ -390,7 +390,7 @@ Buscar:
             Me.TxtConcepto.Text = ""
             Me.TxtConcepto2.Text = ""
             Me.LblPoliza.Text = ""
-            Me.LblStatus.Text = "N"
+            Me.LblStatus.Text = "NUEVO"
             Me.TxtCodigoCliente.Text = ""
             Me.LblCliente.Text = ""
             Me.cboMoneda.Text = "MXN"
@@ -892,9 +892,9 @@ Buscar:
 
     Private Sub GestionaCambioEstado()
         Select Case Me.LblStatus.Text
-            Case "A"
+            Case "APLICADO"
                 Me.Cambia_Estado(enumEstados.APLICADO)
-            Case "C"
+            Case "CANCELADO"
                 Me.Cambia_Estado(enumEstados.CANCELADO)
         End Select
     End Sub
@@ -929,12 +929,18 @@ Buscar:
                 Me.TxtFolio.Enabled = False
 
                 Me.dtFecha.Value = oDescuentosCXC.FECHA
-                Me.LblStatus.Text = oDescuentosCXC.ESTATUS_DESCUENTO
                 Me.TxtConcepto.Text = oDescuentosCXC.CONCEPTO1
                 Me.TxtConcepto2.Text = oDescuentosCXC.CONCEPTO2
                 Me.TxtCodigoCliente.Text = oDescuentosCXC.CODIGO_CLIENTE
                 Me.LblCliente.Text = oDescuentosCXC.NOMBRE_CLIENTE
                 Me.LblPoliza.Text = oDescuentosCXC.FOLIO_POLIZA.ToString
+
+                Select Case Me.oDescuentosCXC.ESTATUS_DESCUENTO
+                    Case "A"
+                        Me.LblStatus.Text = "APLICADO"
+                    Case "C"
+                        Me.LblStatus.Text = "CANCELADO"
+                End Select
 
                 Me.TxtSubTotal.Text = FormatImporteContable(oDescuentosCXC.SUBTOTAL)
                 Me.txtIEPS.Text = FormatImporteContable(oDescuentosCXC.IEPS_DESGLOSADO)
@@ -1025,12 +1031,12 @@ Buscar:
         'End If
 
         Select Case Me.LblStatus.Text
-            Case "N"
+            Case "NUEVO"
                 MsgBox("El documento no se ha grabado.", MsgBoxStyle.Exclamation, Me.Text)
                 Return False
-            Case "A"
+            Case "APLICADO"
                 'No hay restricciones
-            Case "C"
+            Case "CANCELADO"
                 MsgBox("Los documentos cancelados no se pueden volver a cancelar.", MsgBoxStyle.Exclamation, Me.Text)
                 Return False
         End Select

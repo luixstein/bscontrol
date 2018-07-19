@@ -425,7 +425,7 @@ Public Class Frm_CXP_Descuentos
         Me.TxtConcepto.Text = ""
         Me.TxtConcepto2.Text = ""
         Me.LblPoliza.Text = ""
-        Me.LblStatus.Text = "N"
+        Me.LblStatus.Text = "NUEVO"
         Me.TxtCodigoProveedor.Text = ""
         Me.LblProveedor.Text = ""
         Me.ckbDolares.Checked = False
@@ -1085,9 +1085,9 @@ Public Class Frm_CXP_Descuentos
 
     Private Sub GestionaCambioEstado()
         Select Case Me.LblStatus.Text
-            Case "A"
+            Case "APLICADO"
                 Me.Cambia_Estado(enumEstados.APLICADO)
-            Case "C"
+            Case "CANCELADO"
                 Me.Cambia_Estado(enumEstados.CANCELADO)
         End Select
     End Sub
@@ -1326,7 +1326,13 @@ Public Class Frm_CXP_Descuentos
                 Me.TxtFolio.Enabled = False
 
                 Me.dtFecha.Value = oDescuentosCXP.FECHA
-                Me.LblStatus.Text = oDescuentosCXP.ESTATUS_DESCUENTO
+
+                Select Case oDescuentosCXP.ESTATUS_DESCUENTO
+                    Case "A"
+                        Me.LblStatus.Text = "APLICADO"
+                    Case "C"
+                        Me.LblStatus.Text = "CANCELADO"
+                End Select
                 'Me.LblPoliza.Text = oDescuentosCXP.FOLIO_POLIZA
                 Me.TxtConcepto.Text = oDescuentosCXP.CONCEPTO1
                 Me.TxtConcepto2.Text = oDescuentosCXP.CONCEPTO2
@@ -1421,12 +1427,12 @@ Public Class Frm_CXP_Descuentos
         'End If
 
         Select Case Me.LblStatus.Text
-            Case "N"
+            Case "NUEVO"
                 MsgBox("El documento no se ha grabado.", MsgBoxStyle.Exclamation, Me.Text)
                 Exit Function
-            Case "A"
+            Case "APLICADO"
                 'No hay restricciones
-            Case "C"
+            Case "CANCELADO"
                 MsgBox("Los documentos cancelados no se pueden volver a cancelar.", MsgBoxStyle.Exclamation, Me.Text)
                 Exit Function
         End Select

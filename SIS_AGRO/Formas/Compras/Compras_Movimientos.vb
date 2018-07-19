@@ -465,7 +465,7 @@ Buscar:
             Me.DtpFechaFacturaProveedor.Value = Date.Now
             Me.txtPlazo.Text = "30"
             Me.dtpFechaVencimiento.Value = Date.Now.AddDays(CDbl(Me.txtPlazo.Text))
-            Me.LblEstatus.Text = "N"
+            Me.LblEstatus.Text = "NUEVO"
             Me.LblPoliza.Text = ""
 
             Me.TxtSubTotal.Text = FormatImporteContable(0)
@@ -678,13 +678,13 @@ Buscar:
 
     Private Sub GestionaCambioEstado()
         Select Case Me.LblEstatus.Text
-            Case "N"
+            Case "NUEVO"
                 Me.Cambia_Estado(enumEstados.NUEVO)
-            Case "G"
+            Case "GRABADO"
                 Me.Cambia_Estado(enumEstados.GRABADO)
-            Case "A"
+            Case "APLICADO"
                 Me.Cambia_Estado(enumEstados.APLICADO)
-            Case "C"
+            Case "CANCELADO"
                 Me.Cambia_Estado(enumEstados.CANCELADO)
         End Select
     End Sub
@@ -1238,7 +1238,18 @@ Buscar:
                 If bEsReferencia = False Then
                     Me.txtFolioCompra.Text = Me.oCompras.FOLIO_COMPRA.ToString.ToUpper
                     Me.txtFolioOC.Text = Me.oCompras.FOLIO_OC.ToString.ToUpper
-                    Me.LblEstatus.Text = Me.oCompras.ESTATUS.ToString.ToUpper
+
+                    Select Case Me.oCompras.ESTATUS.ToString.ToUpper
+                        Case "N"
+                            Me.LblEstatus.Text = "NUEVO"
+                        Case "G"
+                            Me.LblEstatus.Text = "GRABADO"
+                        Case "A"
+                            Me.LblEstatus.Text = "APLICADO"
+                        Case "C"
+                            Me.LblEstatus.Text = "CANCELADO"
+                    End Select
+
                     Me.txtFolioProveedor.Text = Me.oCompras.FOLIO_PROVEEDOR.ToString.ToUpper
 
                     Me.Grid.DataSource = Me.oCompras.ObtenerDetalle
@@ -1321,7 +1332,7 @@ Buscar:
 
                 If Me.oDocumento.AFECTA_CXP = True Then
                     Me.Grid.Row(Me.Grid.Rows - 1).Locked = True
-                    If Me.LblEstatus.Text = "N" Then
+                    If Me.LblEstatus.Text = "NUEVO" Then
                         If EstableceCuentaContableAlmacenDestino() = False Then
                             MsgBox("No se pudieron establecer las cuentas contables de los articulos inventariables.", MsgBoxStyle.Information, Me.Text)
                         End If

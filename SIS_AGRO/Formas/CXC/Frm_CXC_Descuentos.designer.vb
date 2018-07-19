@@ -40,6 +40,8 @@ Partial Class Frm_CXC_Descuentos
         Me.gbFacturas = New System.Windows.Forms.GroupBox()
         Me.Grid = New FlexCell.Grid()
         Me.gbGlobal = New System.Windows.Forms.GroupBox()
+        Me.cboTipoRelacionCFDI = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayTipoRelacionCFDI = New System.Windows.Forms.Label()
         Me.lblVersionCFDI = New System.Windows.Forms.Label()
         Me.lblDisplayMetodoPago = New System.Windows.Forms.Label()
         Me.btnCargarFacturas = New System.Windows.Forms.Button()
@@ -51,7 +53,9 @@ Partial Class Frm_CXC_Descuentos
         Me.cboFormaPago = New System.Windows.Forms.ComboBox()
         Me.lblMetodoPago = New System.Windows.Forms.Label()
         Me.cboMoneda = New System.Windows.Forms.ComboBox()
+        Me.cboUsoCFDI = New System.Windows.Forms.ComboBox()
         Me.btnNotaSiguiente = New System.Windows.Forms.Button()
+        Me.lblDisplayUsoCFDI = New System.Windows.Forms.Label()
         Me.btnNotaAnterior = New System.Windows.Forms.Button()
         Me.lblDisplayTipoCambio = New System.Windows.Forms.Label()
         Me.TxtConcepto2 = New System.Windows.Forms.TextBox()
@@ -89,10 +93,6 @@ Partial Class Frm_CXC_Descuentos
         Me.lblDisplaySubtotalDolares = New System.Windows.Forms.Label()
         Me.lblDisplayImpuestoDolares = New System.Windows.Forms.Label()
         Me.lblImpuestoPorcentaje = New System.Windows.Forms.Label()
-        Me.lblDisplayUsoCFDI = New System.Windows.Forms.Label()
-        Me.cboUsoCFDI = New System.Windows.Forms.ComboBox()
-        Me.cboTipoRelacionCFDI = New System.Windows.Forms.ComboBox()
-        Me.lblDisplayTipoRelacionCFDI = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.gbFacturas.SuspendLayout()
@@ -103,10 +103,11 @@ Partial Class Frm_CXC_Descuentos
         '
         'tsMenu
         '
+        Me.tsMenu.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimir, Me.tsbTimbrar, Me.tsbCancelarTimbre, Me.tsbRecuperarXMLPDF, Me.tsbEnviarCorreo, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(868, 25)
+        Me.tsMenu.Size = New System.Drawing.Size(1157, 27)
         Me.tsMenu.TabIndex = 2
         Me.tsMenu.Text = "tsMenu"
         '
@@ -115,7 +116,7 @@ Partial Class Frm_CXC_Descuentos
         Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
         Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbNuevo.Name = "tsbNuevo"
-        Me.tsbNuevo.Size = New System.Drawing.Size(62, 22)
+        Me.tsbNuevo.Size = New System.Drawing.Size(76, 24)
         Me.tsbNuevo.Text = "&Nuevo"
         '
         'tsbGrabar
@@ -123,7 +124,7 @@ Partial Class Frm_CXC_Descuentos
         Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
         Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbGrabar.Name = "tsbGrabar"
-        Me.tsbGrabar.Size = New System.Drawing.Size(62, 22)
+        Me.tsbGrabar.Size = New System.Drawing.Size(78, 24)
         Me.tsbGrabar.Text = "&Grabar"
         '
         'tsbCancelar
@@ -131,7 +132,7 @@ Partial Class Frm_CXC_Descuentos
         Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
         Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbCancelar.Name = "tsbCancelar"
-        Me.tsbCancelar.Size = New System.Drawing.Size(76, 22)
+        Me.tsbCancelar.Size = New System.Drawing.Size(94, 24)
         Me.tsbCancelar.Text = " Cancelar"
         '
         'tsbImprimir
@@ -139,7 +140,7 @@ Partial Class Frm_CXC_Descuentos
         Me.tsbImprimir.Image = CType(resources.GetObject("tsbImprimir.Image"), System.Drawing.Image)
         Me.tsbImprimir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbImprimir.Name = "tsbImprimir"
-        Me.tsbImprimir.Size = New System.Drawing.Size(73, 22)
+        Me.tsbImprimir.Size = New System.Drawing.Size(90, 24)
         Me.tsbImprimir.Text = "&Imprimir"
         Me.tsbImprimir.ToolTipText = "Imprimir"
         '
@@ -148,7 +149,7 @@ Partial Class Frm_CXC_Descuentos
         Me.tsbTimbrar.Image = Global.BsControl.My.Resources.Resources._782
         Me.tsbTimbrar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbTimbrar.Name = "tsbTimbrar"
-        Me.tsbTimbrar.Size = New System.Drawing.Size(69, 22)
+        Me.tsbTimbrar.Size = New System.Drawing.Size(85, 24)
         Me.tsbTimbrar.Text = "Timbrar"
         Me.tsbTimbrar.Visible = False
         '
@@ -157,7 +158,7 @@ Partial Class Frm_CXC_Descuentos
         Me.tsbCancelarTimbre.Image = Global.BsControl.My.Resources.Resources._782
         Me.tsbCancelarTimbre.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbCancelarTimbre.Name = "tsbCancelarTimbre"
-        Me.tsbCancelarTimbre.Size = New System.Drawing.Size(111, 22)
+        Me.tsbCancelarTimbre.Size = New System.Drawing.Size(138, 24)
         Me.tsbCancelarTimbre.Text = "Cancelar timbre"
         Me.tsbCancelarTimbre.Visible = False
         '
@@ -166,7 +167,7 @@ Partial Class Frm_CXC_Descuentos
         Me.tsbRecuperarXMLPDF.Image = Global.BsControl.My.Resources.Resources._782
         Me.tsbRecuperarXMLPDF.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbRecuperarXMLPDF.Name = "tsbRecuperarXMLPDF"
-        Me.tsbRecuperarXMLPDF.Size = New System.Drawing.Size(125, 22)
+        Me.tsbRecuperarXMLPDF.Size = New System.Drawing.Size(157, 24)
         Me.tsbRecuperarXMLPDF.Text = "Recuperar xml/pdf"
         Me.tsbRecuperarXMLPDF.Visible = False
         '
@@ -175,7 +176,7 @@ Partial Class Frm_CXC_Descuentos
         Me.tsbEnviarCorreo.Image = CType(resources.GetObject("tsbEnviarCorreo.Image"), System.Drawing.Image)
         Me.tsbEnviarCorreo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbEnviarCorreo.Name = "tsbEnviarCorreo"
-        Me.tsbEnviarCorreo.Size = New System.Drawing.Size(96, 22)
+        Me.tsbEnviarCorreo.Size = New System.Drawing.Size(120, 24)
         Me.tsbEnviarCorreo.Text = "&Enviar correo"
         '
         'tsbSalir
@@ -183,15 +184,17 @@ Partial Class Frm_CXC_Descuentos
         Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
         Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(49, 22)
+        Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
         Me.tsbSalir.Text = "&Salir"
         '
         'StatusStripEstado
         '
+        Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssEstado, Me.tssElaboro, Me.tssCancelo})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 519)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 639)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Size = New System.Drawing.Size(868, 24)
+        Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1157, 29)
         Me.StatusStripEstado.TabIndex = 241
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -201,7 +204,7 @@ Partial Class Frm_CXC_Descuentos
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
         Me.tssEstado.Name = "tssEstado"
-        Me.tssEstado.Size = New System.Drawing.Size(52, 19)
+        Me.tssEstado.Size = New System.Drawing.Size(65, 24)
         Me.tssEstado.Text = "Estado :"
         '
         'tssElaboro
@@ -210,7 +213,7 @@ Partial Class Frm_CXC_Descuentos
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
         Me.tssElaboro.Name = "tssElaboro"
-        Me.tssElaboro.Size = New System.Drawing.Size(60, 19)
+        Me.tssElaboro.Size = New System.Drawing.Size(76, 24)
         Me.tssElaboro.Text = "Elaboró : "
         '
         'tssCancelo
@@ -219,15 +222,17 @@ Partial Class Frm_CXC_Descuentos
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
         Me.tssCancelo.Name = "tssCancelo"
-        Me.tssCancelo.Size = New System.Drawing.Size(60, 19)
+        Me.tssCancelo.Size = New System.Drawing.Size(73, 24)
         Me.tssCancelo.Text = "Canceló :"
         '
         'gbFacturas
         '
         Me.gbFacturas.Controls.Add(Me.Grid)
-        Me.gbFacturas.Location = New System.Drawing.Point(12, 255)
+        Me.gbFacturas.Location = New System.Drawing.Point(16, 314)
+        Me.gbFacturas.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gbFacturas.Name = "gbFacturas"
-        Me.gbFacturas.Size = New System.Drawing.Size(844, 141)
+        Me.gbFacturas.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbFacturas.Size = New System.Drawing.Size(1125, 174)
         Me.gbFacturas.TabIndex = 1
         Me.gbFacturas.TabStop = False
         Me.gbFacturas.Text = "Facturas"
@@ -238,15 +243,17 @@ Partial Class Frm_CXC_Descuentos
         Me.Grid.CheckedImage = CType(resources.GetObject("Grid.CheckedImage"), System.Drawing.Bitmap)
         Me.Grid.Cols = 1
         Me.Grid.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
+        Me.Grid.DefaultRowHeight = CType(24, Short)
         Me.Grid.DisplayRowNumber = True
         Me.Grid.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
-        Me.Grid.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Grid.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Grid.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Grid.Location = New System.Drawing.Point(12, 19)
+        Me.Grid.Location = New System.Drawing.Point(16, 23)
         Me.Grid.LockButton = True
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Grid.Name = "Grid"
         Me.Grid.Rows = 20
-        Me.Grid.Size = New System.Drawing.Size(826, 119)
+        Me.Grid.Size = New System.Drawing.Size(1101, 146)
         Me.Grid.TabIndex = 0
         Me.Grid.UncheckedImage = CType(resources.GetObject("Grid.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -286,37 +293,63 @@ Partial Class Frm_CXC_Descuentos
         Me.gbGlobal.Controls.Add(Me.TxtFolio)
         Me.gbGlobal.Controls.Add(Me.lblDisplayStatus)
         Me.gbGlobal.Controls.Add(Me.LblStatus)
-        Me.gbGlobal.Location = New System.Drawing.Point(12, 28)
+        Me.gbGlobal.Location = New System.Drawing.Point(16, 34)
+        Me.gbGlobal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gbGlobal.Name = "gbGlobal"
-        Me.gbGlobal.Size = New System.Drawing.Size(844, 224)
+        Me.gbGlobal.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbGlobal.Size = New System.Drawing.Size(1125, 276)
         Me.gbGlobal.TabIndex = 0
         Me.gbGlobal.TabStop = False
         Me.gbGlobal.Text = "Datos"
+        '
+        'cboTipoRelacionCFDI
+        '
+        Me.cboTipoRelacionCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboTipoRelacionCFDI.FormattingEnabled = True
+        Me.cboTipoRelacionCFDI.Location = New System.Drawing.Point(648, 81)
+        Me.cboTipoRelacionCFDI.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboTipoRelacionCFDI.MaxLength = 1
+        Me.cboTipoRelacionCFDI.Name = "cboTipoRelacionCFDI"
+        Me.cboTipoRelacionCFDI.Size = New System.Drawing.Size(449, 24)
+        Me.cboTipoRelacionCFDI.TabIndex = 5
+        '
+        'lblDisplayTipoRelacionCFDI
+        '
+        Me.lblDisplayTipoRelacionCFDI.AutoSize = True
+        Me.lblDisplayTipoRelacionCFDI.Location = New System.Drawing.Point(519, 85)
+        Me.lblDisplayTipoRelacionCFDI.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayTipoRelacionCFDI.Name = "lblDisplayTipoRelacionCFDI"
+        Me.lblDisplayTipoRelacionCFDI.Size = New System.Drawing.Size(132, 17)
+        Me.lblDisplayTipoRelacionCFDI.TabIndex = 393
+        Me.lblDisplayTipoRelacionCFDI.Text = "Tipo relación CFDI :"
         '
         'lblVersionCFDI
         '
         Me.lblVersionCFDI.AutoSize = True
         Me.lblVersionCFDI.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblVersionCFDI.Location = New System.Drawing.Point(804, 178)
+        Me.lblVersionCFDI.Location = New System.Drawing.Point(1072, 219)
+        Me.lblVersionCFDI.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblVersionCFDI.Name = "lblVersionCFDI"
-        Me.lblVersionCFDI.Size = New System.Drawing.Size(34, 20)
+        Me.lblVersionCFDI.Size = New System.Drawing.Size(42, 25)
         Me.lblVersionCFDI.TabIndex = 391
         Me.lblVersionCFDI.Text = "0.0"
         '
         'lblDisplayMetodoPago
         '
         Me.lblDisplayMetodoPago.AutoSize = True
-        Me.lblDisplayMetodoPago.Location = New System.Drawing.Point(389, 120)
+        Me.lblDisplayMetodoPago.Location = New System.Drawing.Point(519, 148)
+        Me.lblDisplayMetodoPago.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayMetodoPago.Name = "lblDisplayMetodoPago"
-        Me.lblDisplayMetodoPago.Size = New System.Drawing.Size(91, 13)
+        Me.lblDisplayMetodoPago.Size = New System.Drawing.Size(119, 17)
         Me.lblDisplayMetodoPago.TabIndex = 390
         Me.lblDisplayMetodoPago.Text = "Método de pago :"
         '
         'btnCargarFacturas
         '
-        Me.btnCargarFacturas.Location = New System.Drawing.Point(12, 170)
+        Me.btnCargarFacturas.Location = New System.Drawing.Point(16, 209)
+        Me.btnCargarFacturas.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.btnCargarFacturas.Name = "btnCargarFacturas"
-        Me.btnCargarFacturas.Size = New System.Drawing.Size(164, 23)
+        Me.btnCargarFacturas.Size = New System.Drawing.Size(219, 28)
         Me.btnCargarFacturas.TabIndex = 7
         Me.btnCargarFacturas.Text = "Cargar facturas"
         Me.btnCargarFacturas.UseVisualStyleBackColor = True
@@ -325,26 +358,29 @@ Partial Class Frm_CXC_Descuentos
         '
         Me.CboDocumento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboDocumento.FormattingEnabled = True
-        Me.CboDocumento.Location = New System.Drawing.Point(103, 13)
+        Me.CboDocumento.Location = New System.Drawing.Point(137, 16)
+        Me.CboDocumento.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.CboDocumento.Name = "CboDocumento"
-        Me.CboDocumento.Size = New System.Drawing.Size(242, 21)
+        Me.CboDocumento.Size = New System.Drawing.Size(321, 24)
         Me.CboDocumento.TabIndex = 0
         '
         'LblDocumento
         '
         Me.LblDocumento.AutoSize = True
-        Me.LblDocumento.Location = New System.Drawing.Point(9, 17)
+        Me.LblDocumento.Location = New System.Drawing.Point(12, 21)
+        Me.LblDocumento.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDocumento.Name = "LblDocumento"
-        Me.LblDocumento.Size = New System.Drawing.Size(68, 13)
+        Me.LblDocumento.Size = New System.Drawing.Size(88, 17)
         Me.LblDocumento.TabIndex = 379
         Me.LblDocumento.Text = "Documento :"
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(9, 69)
+        Me.Label3.Location = New System.Drawing.Point(12, 85)
+        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(52, 13)
+        Me.Label3.Size = New System.Drawing.Size(67, 17)
         Me.Label3.TabIndex = 376
         Me.Label3.Text = "Moneda :"
         '
@@ -353,18 +389,20 @@ Partial Class Frm_CXC_Descuentos
         Me.cboMetodoPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboMetodoPago.Enabled = False
         Me.cboMetodoPago.FormattingEnabled = True
-        Me.cboMetodoPago.Location = New System.Drawing.Point(486, 117)
+        Me.cboMetodoPago.Location = New System.Drawing.Point(648, 144)
+        Me.cboMetodoPago.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.cboMetodoPago.MaxLength = 1
         Me.cboMetodoPago.Name = "cboMetodoPago"
-        Me.cboMetodoPago.Size = New System.Drawing.Size(301, 21)
+        Me.cboMetodoPago.Size = New System.Drawing.Size(400, 24)
         Me.cboMetodoPago.TabIndex = 8
         '
         'chkVentaPublicoGeneral
         '
         Me.chkVentaPublicoGeneral.AutoSize = True
-        Me.chkVentaPublicoGeneral.Location = New System.Drawing.Point(392, 147)
+        Me.chkVentaPublicoGeneral.Location = New System.Drawing.Point(523, 181)
+        Me.chkVentaPublicoGeneral.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.chkVentaPublicoGeneral.Name = "chkVentaPublicoGeneral"
-        Me.chkVentaPublicoGeneral.Size = New System.Drawing.Size(164, 17)
+        Me.chkVentaPublicoGeneral.Size = New System.Drawing.Size(214, 21)
         Me.chkVentaPublicoGeneral.TabIndex = 10
         Me.chkVentaPublicoGeneral.Text = "Descuento al público general"
         Me.chkVentaPublicoGeneral.UseVisualStyleBackColor = True
@@ -374,17 +412,19 @@ Partial Class Frm_CXC_Descuentos
         Me.cboFormaPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboFormaPago.Enabled = False
         Me.cboFormaPago.FormattingEnabled = True
-        Me.cboFormaPago.Location = New System.Drawing.Point(103, 117)
+        Me.cboFormaPago.Location = New System.Drawing.Point(137, 144)
+        Me.cboFormaPago.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.cboFormaPago.Name = "cboFormaPago"
-        Me.cboFormaPago.Size = New System.Drawing.Size(258, 21)
+        Me.cboFormaPago.Size = New System.Drawing.Size(343, 24)
         Me.cboFormaPago.TabIndex = 7
         '
         'lblMetodoPago
         '
         Me.lblMetodoPago.AutoSize = True
-        Me.lblMetodoPago.Location = New System.Drawing.Point(9, 120)
+        Me.lblMetodoPago.Location = New System.Drawing.Point(12, 148)
+        Me.lblMetodoPago.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblMetodoPago.Name = "lblMetodoPago"
-        Me.lblMetodoPago.Size = New System.Drawing.Size(84, 13)
+        Me.lblMetodoPago.Size = New System.Drawing.Size(112, 17)
         Me.lblMetodoPago.TabIndex = 389
         Me.lblMetodoPago.Text = "Forma de pago :"
         '
@@ -392,25 +432,49 @@ Partial Class Frm_CXC_Descuentos
         '
         Me.cboMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboMoneda.FormattingEnabled = True
-        Me.cboMoneda.Location = New System.Drawing.Point(103, 65)
+        Me.cboMoneda.Location = New System.Drawing.Point(137, 80)
+        Me.cboMoneda.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.cboMoneda.Name = "cboMoneda"
-        Me.cboMoneda.Size = New System.Drawing.Size(83, 21)
+        Me.cboMoneda.Size = New System.Drawing.Size(109, 24)
         Me.cboMoneda.TabIndex = 2
+        '
+        'cboUsoCFDI
+        '
+        Me.cboUsoCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboUsoCFDI.FormattingEnabled = True
+        Me.cboUsoCFDI.Location = New System.Drawing.Point(648, 49)
+        Me.cboUsoCFDI.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboUsoCFDI.MaxLength = 1
+        Me.cboUsoCFDI.Name = "cboUsoCFDI"
+        Me.cboUsoCFDI.Size = New System.Drawing.Size(449, 24)
+        Me.cboUsoCFDI.TabIndex = 4
         '
         'btnNotaSiguiente
         '
-        Me.btnNotaSiguiente.Location = New System.Drawing.Point(231, 39)
+        Me.btnNotaSiguiente.Location = New System.Drawing.Point(308, 48)
+        Me.btnNotaSiguiente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.btnNotaSiguiente.Name = "btnNotaSiguiente"
-        Me.btnNotaSiguiente.Size = New System.Drawing.Size(48, 21)
+        Me.btnNotaSiguiente.Size = New System.Drawing.Size(64, 26)
         Me.btnNotaSiguiente.TabIndex = 374
         Me.btnNotaSiguiente.Text = ">>"
         Me.btnNotaSiguiente.UseVisualStyleBackColor = True
         '
+        'lblDisplayUsoCFDI
+        '
+        Me.lblDisplayUsoCFDI.AutoSize = True
+        Me.lblDisplayUsoCFDI.Location = New System.Drawing.Point(519, 53)
+        Me.lblDisplayUsoCFDI.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayUsoCFDI.Name = "lblDisplayUsoCFDI"
+        Me.lblDisplayUsoCFDI.Size = New System.Drawing.Size(98, 17)
+        Me.lblDisplayUsoCFDI.TabIndex = 388
+        Me.lblDisplayUsoCFDI.Text = "Uso del CFDI :"
+        '
         'btnNotaAnterior
         '
-        Me.btnNotaAnterior.Location = New System.Drawing.Point(177, 39)
+        Me.btnNotaAnterior.Location = New System.Drawing.Point(236, 48)
+        Me.btnNotaAnterior.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.btnNotaAnterior.Name = "btnNotaAnterior"
-        Me.btnNotaAnterior.Size = New System.Drawing.Size(48, 21)
+        Me.btnNotaAnterior.Size = New System.Drawing.Size(64, 26)
         Me.btnNotaAnterior.TabIndex = 373
         Me.btnNotaAnterior.Text = "<<"
         Me.btnNotaAnterior.UseVisualStyleBackColor = True
@@ -419,139 +483,155 @@ Partial Class Frm_CXC_Descuentos
         '
         Me.lblDisplayTipoCambio.AutoSize = True
         Me.lblDisplayTipoCambio.Enabled = False
-        Me.lblDisplayTipoCambio.Location = New System.Drawing.Point(189, 69)
+        Me.lblDisplayTipoCambio.Location = New System.Drawing.Point(252, 85)
+        Me.lblDisplayTipoCambio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayTipoCambio.Name = "lblDisplayTipoCambio"
-        Me.lblDisplayTipoCambio.Size = New System.Drawing.Size(86, 13)
+        Me.lblDisplayTipoCambio.Size = New System.Drawing.Size(113, 17)
         Me.lblDisplayTipoCambio.TabIndex = 302
         Me.lblDisplayTipoCambio.Text = "Tipo de cambio :"
         '
         'TxtConcepto2
         '
-        Me.TxtConcepto2.Location = New System.Drawing.Point(257, 198)
+        Me.TxtConcepto2.Location = New System.Drawing.Point(343, 244)
+        Me.TxtConcepto2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtConcepto2.MaxLength = 200
         Me.TxtConcepto2.Name = "TxtConcepto2"
-        Me.TxtConcepto2.Size = New System.Drawing.Size(530, 20)
+        Me.TxtConcepto2.Size = New System.Drawing.Size(705, 22)
         Me.TxtConcepto2.TabIndex = 12
         '
         'txtTipoCambio
         '
         Me.txtTipoCambio.Enabled = False
-        Me.txtTipoCambio.Location = New System.Drawing.Point(281, 65)
+        Me.txtTipoCambio.Location = New System.Drawing.Point(375, 80)
+        Me.txtTipoCambio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtTipoCambio.MaxLength = 15
         Me.txtTipoCambio.Name = "txtTipoCambio"
-        Me.txtTipoCambio.Size = New System.Drawing.Size(80, 20)
+        Me.txtTipoCambio.Size = New System.Drawing.Size(105, 22)
         Me.txtTipoCambio.TabIndex = 3
         Me.txtTipoCambio.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'lblDisplayConcepto2
         '
         Me.lblDisplayConcepto2.AutoSize = True
-        Me.lblDisplayConcepto2.Location = New System.Drawing.Point(192, 200)
+        Me.lblDisplayConcepto2.Location = New System.Drawing.Point(256, 246)
+        Me.lblDisplayConcepto2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayConcepto2.Name = "lblDisplayConcepto2"
-        Me.lblDisplayConcepto2.Size = New System.Drawing.Size(65, 13)
+        Me.lblDisplayConcepto2.Size = New System.Drawing.Size(84, 17)
         Me.lblDisplayConcepto2.TabIndex = 320
         Me.lblDisplayConcepto2.Text = "Concepto2 :"
         '
         'LblPoliza
         '
         Me.LblPoliza.BackColor = System.Drawing.SystemColors.ControlLight
-        Me.LblPoliza.Location = New System.Drawing.Point(714, 17)
+        Me.LblPoliza.Location = New System.Drawing.Point(952, 21)
+        Me.LblPoliza.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblPoliza.Name = "LblPoliza"
-        Me.LblPoliza.Size = New System.Drawing.Size(110, 13)
+        Me.LblPoliza.Size = New System.Drawing.Size(147, 16)
         Me.LblPoliza.TabIndex = 291
         '
         'LblDisplayFecha
         '
         Me.LblDisplayFecha.AutoSize = True
-        Me.LblDisplayFecha.Location = New System.Drawing.Point(9, 148)
+        Me.LblDisplayFecha.Location = New System.Drawing.Point(12, 182)
+        Me.LblDisplayFecha.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayFecha.Name = "LblDisplayFecha"
-        Me.LblDisplayFecha.Size = New System.Drawing.Size(43, 13)
+        Me.LblDisplayFecha.Size = New System.Drawing.Size(55, 17)
         Me.LblDisplayFecha.TabIndex = 175
         Me.LblDisplayFecha.Text = "Fecha :"
         '
         'lblDisplayPoliza
         '
         Me.lblDisplayPoliza.AutoSize = True
-        Me.lblDisplayPoliza.Location = New System.Drawing.Point(659, 17)
+        Me.lblDisplayPoliza.Location = New System.Drawing.Point(879, 21)
+        Me.lblDisplayPoliza.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayPoliza.Name = "lblDisplayPoliza"
-        Me.lblDisplayPoliza.Size = New System.Drawing.Size(41, 13)
+        Me.lblDisplayPoliza.Size = New System.Drawing.Size(54, 17)
         Me.lblDisplayPoliza.TabIndex = 287
         Me.lblDisplayPoliza.Text = "Póliza :"
         '
         'dtFecha
         '
-        Me.dtFecha.Location = New System.Drawing.Point(103, 144)
+        Me.dtFecha.Location = New System.Drawing.Point(137, 177)
+        Me.dtFecha.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.dtFecha.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dtFecha.Name = "dtFecha"
-        Me.dtFecha.Size = New System.Drawing.Size(215, 20)
+        Me.dtFecha.Size = New System.Drawing.Size(285, 22)
         Me.dtFecha.TabIndex = 9
         '
         'LblCliente
         '
         Me.LblCliente.BackColor = System.Drawing.SystemColors.ControlLight
-        Me.LblCliente.Location = New System.Drawing.Point(214, 95)
+        Me.LblCliente.Location = New System.Drawing.Point(285, 117)
+        Me.LblCliente.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblCliente.Name = "LblCliente"
-        Me.LblCliente.Size = New System.Drawing.Size(376, 17)
+        Me.LblCliente.Size = New System.Drawing.Size(501, 21)
         Me.LblCliente.TabIndex = 239
         '
         'TxtConcepto
         '
-        Me.TxtConcepto.Location = New System.Drawing.Point(257, 173)
+        Me.TxtConcepto.Location = New System.Drawing.Point(343, 213)
+        Me.TxtConcepto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtConcepto.MaxLength = 200
         Me.TxtConcepto.Name = "TxtConcepto"
-        Me.TxtConcepto.Size = New System.Drawing.Size(530, 20)
+        Me.TxtConcepto.Size = New System.Drawing.Size(705, 22)
         Me.TxtConcepto.TabIndex = 11
         '
         'LblDisplayCliente
         '
         Me.LblDisplayCliente.AutoSize = True
-        Me.LblDisplayCliente.Location = New System.Drawing.Point(9, 95)
+        Me.LblDisplayCliente.Location = New System.Drawing.Point(12, 117)
+        Me.LblDisplayCliente.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayCliente.Name = "LblDisplayCliente"
-        Me.LblDisplayCliente.Size = New System.Drawing.Size(45, 13)
+        Me.LblDisplayCliente.Size = New System.Drawing.Size(59, 17)
         Me.LblDisplayCliente.TabIndex = 238
         Me.LblDisplayCliente.Text = "Cliente :"
         '
         'LblDisplayConcepto
         '
         Me.LblDisplayConcepto.AutoSize = True
-        Me.LblDisplayConcepto.Location = New System.Drawing.Point(192, 175)
+        Me.LblDisplayConcepto.Location = New System.Drawing.Point(256, 215)
+        Me.LblDisplayConcepto.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayConcepto.Name = "LblDisplayConcepto"
-        Me.LblDisplayConcepto.Size = New System.Drawing.Size(59, 13)
+        Me.LblDisplayConcepto.Size = New System.Drawing.Size(76, 17)
         Me.LblDisplayConcepto.TabIndex = 185
         Me.LblDisplayConcepto.Text = "Concepto :"
         '
         'TxtCodigoCliente
         '
-        Me.TxtCodigoCliente.Location = New System.Drawing.Point(103, 92)
+        Me.TxtCodigoCliente.Location = New System.Drawing.Point(137, 113)
+        Me.TxtCodigoCliente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtCodigoCliente.MaxLength = 8
         Me.TxtCodigoCliente.Name = "TxtCodigoCliente"
-        Me.TxtCodigoCliente.Size = New System.Drawing.Size(105, 20)
+        Me.TxtCodigoCliente.Size = New System.Drawing.Size(139, 22)
         Me.TxtCodigoCliente.TabIndex = 6
         '
         'LblDisplayFolio
         '
         Me.LblDisplayFolio.AutoSize = True
-        Me.LblDisplayFolio.Location = New System.Drawing.Point(9, 43)
+        Me.LblDisplayFolio.Location = New System.Drawing.Point(12, 53)
+        Me.LblDisplayFolio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayFolio.Name = "LblDisplayFolio"
-        Me.LblDisplayFolio.Size = New System.Drawing.Size(35, 13)
+        Me.LblDisplayFolio.Size = New System.Drawing.Size(46, 17)
         Me.LblDisplayFolio.TabIndex = 216
         Me.LblDisplayFolio.Text = "Folio :"
         '
         'TxtFolio
         '
         Me.TxtFolio.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtFolio.Location = New System.Drawing.Point(103, 40)
+        Me.TxtFolio.Location = New System.Drawing.Point(137, 49)
+        Me.TxtFolio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtFolio.MaxLength = 160
         Me.TxtFolio.Name = "TxtFolio"
-        Me.TxtFolio.Size = New System.Drawing.Size(105, 20)
+        Me.TxtFolio.Size = New System.Drawing.Size(139, 23)
         Me.TxtFolio.TabIndex = 1
         '
         'lblDisplayStatus
         '
         Me.lblDisplayStatus.AutoSize = True
-        Me.lblDisplayStatus.Location = New System.Drawing.Point(561, 17)
+        Me.lblDisplayStatus.Location = New System.Drawing.Point(689, 21)
+        Me.lblDisplayStatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayStatus.Name = "lblDisplayStatus"
-        Me.lblDisplayStatus.Size = New System.Drawing.Size(48, 13)
+        Me.lblDisplayStatus.Size = New System.Drawing.Size(63, 17)
         Me.lblDisplayStatus.TabIndex = 217
         Me.lblDisplayStatus.Text = "Estatus :"
         '
@@ -559,9 +639,10 @@ Partial Class Frm_CXC_Descuentos
         '
         Me.LblStatus.BackColor = System.Drawing.SystemColors.ControlLight
         Me.LblStatus.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.LblStatus.Location = New System.Drawing.Point(616, 17)
+        Me.LblStatus.Location = New System.Drawing.Point(760, 21)
+        Me.LblStatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblStatus.Name = "LblStatus"
-        Me.LblStatus.Size = New System.Drawing.Size(36, 13)
+        Me.LblStatus.Size = New System.Drawing.Size(109, 16)
         Me.LblStatus.TabIndex = 218
         '
         'gbTotales
@@ -574,9 +655,11 @@ Partial Class Frm_CXC_Descuentos
         Me.gbTotales.Controls.Add(Me.TxtSubTotal)
         Me.gbTotales.Controls.Add(Me.LblDisplayIVA)
         Me.gbTotales.Controls.Add(Me.TxtImpuesto)
-        Me.gbTotales.Location = New System.Drawing.Point(646, 402)
+        Me.gbTotales.Location = New System.Drawing.Point(861, 495)
+        Me.gbTotales.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gbTotales.Name = "gbTotales"
-        Me.gbTotales.Size = New System.Drawing.Size(204, 106)
+        Me.gbTotales.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbTotales.Size = New System.Drawing.Size(272, 130)
         Me.gbTotales.TabIndex = 244
         Me.gbTotales.TabStop = False
         Me.gbTotales.Text = "Total MXN :"
@@ -584,95 +667,105 @@ Partial Class Frm_CXC_Descuentos
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(6, 40)
+        Me.Label1.Location = New System.Drawing.Point(8, 49)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(37, 13)
+        Me.Label1.Size = New System.Drawing.Size(46, 17)
         Me.Label1.TabIndex = 322
         Me.Label1.Text = "IEPS :"
         '
         'txtIEPS
         '
         Me.txtIEPS.Enabled = False
-        Me.txtIEPS.Location = New System.Drawing.Point(83, 37)
+        Me.txtIEPS.Location = New System.Drawing.Point(111, 46)
+        Me.txtIEPS.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtIEPS.MaxLength = 160
         Me.txtIEPS.Name = "txtIEPS"
-        Me.txtIEPS.Size = New System.Drawing.Size(99, 20)
+        Me.txtIEPS.Size = New System.Drawing.Size(131, 22)
         Me.txtIEPS.TabIndex = 321
         Me.txtIEPS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'LblDisplayTotal
         '
         Me.LblDisplayTotal.AutoSize = True
-        Me.LblDisplayTotal.Location = New System.Drawing.Point(6, 82)
+        Me.LblDisplayTotal.Location = New System.Drawing.Point(8, 101)
+        Me.LblDisplayTotal.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayTotal.Name = "LblDisplayTotal"
-        Me.LblDisplayTotal.Size = New System.Drawing.Size(37, 13)
+        Me.LblDisplayTotal.Size = New System.Drawing.Size(48, 17)
         Me.LblDisplayTotal.TabIndex = 320
         Me.LblDisplayTotal.Text = "Total :"
         '
         'TxtTotal
         '
         Me.TxtTotal.Enabled = False
-        Me.TxtTotal.Location = New System.Drawing.Point(83, 79)
+        Me.TxtTotal.Location = New System.Drawing.Point(111, 97)
+        Me.TxtTotal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtTotal.MaxLength = 160
         Me.TxtTotal.Name = "TxtTotal"
-        Me.TxtTotal.Size = New System.Drawing.Size(99, 20)
+        Me.TxtTotal.Size = New System.Drawing.Size(131, 22)
         Me.TxtTotal.TabIndex = 319
         Me.TxtTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'LblDisplaySubtotal
         '
         Me.LblDisplaySubtotal.AutoSize = True
-        Me.LblDisplaySubtotal.Location = New System.Drawing.Point(6, 19)
+        Me.LblDisplaySubtotal.Location = New System.Drawing.Point(8, 23)
+        Me.LblDisplaySubtotal.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplaySubtotal.Name = "LblDisplaySubtotal"
-        Me.LblDisplaySubtotal.Size = New System.Drawing.Size(52, 13)
+        Me.LblDisplaySubtotal.Size = New System.Drawing.Size(68, 17)
         Me.LblDisplaySubtotal.TabIndex = 318
         Me.LblDisplaySubtotal.Text = "Subtotal :"
         '
         'TxtSubTotal
         '
         Me.TxtSubTotal.Enabled = False
-        Me.TxtSubTotal.Location = New System.Drawing.Point(83, 16)
+        Me.TxtSubTotal.Location = New System.Drawing.Point(111, 20)
+        Me.TxtSubTotal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtSubTotal.MaxLength = 160
         Me.TxtSubTotal.Name = "TxtSubTotal"
-        Me.TxtSubTotal.Size = New System.Drawing.Size(99, 20)
+        Me.TxtSubTotal.Size = New System.Drawing.Size(131, 22)
         Me.TxtSubTotal.TabIndex = 317
         Me.TxtSubTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'LblDisplayIVA
         '
         Me.LblDisplayIVA.AutoSize = True
-        Me.LblDisplayIVA.Location = New System.Drawing.Point(6, 61)
+        Me.LblDisplayIVA.Location = New System.Drawing.Point(8, 75)
+        Me.LblDisplayIVA.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayIVA.Name = "LblDisplayIVA"
-        Me.LblDisplayIVA.Size = New System.Drawing.Size(56, 13)
+        Me.LblDisplayIVA.Size = New System.Drawing.Size(73, 17)
         Me.LblDisplayIVA.TabIndex = 316
         Me.LblDisplayIVA.Text = "Impuesto :"
         '
         'TxtImpuesto
         '
         Me.TxtImpuesto.Enabled = False
-        Me.TxtImpuesto.Location = New System.Drawing.Point(83, 58)
+        Me.TxtImpuesto.Location = New System.Drawing.Point(111, 71)
+        Me.TxtImpuesto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtImpuesto.MaxLength = 160
         Me.TxtImpuesto.Name = "TxtImpuesto"
-        Me.TxtImpuesto.Size = New System.Drawing.Size(99, 20)
+        Me.TxtImpuesto.Size = New System.Drawing.Size(131, 22)
         Me.TxtImpuesto.TabIndex = 3
         Me.TxtImpuesto.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(464, 442)
+        Me.Label2.Location = New System.Drawing.Point(619, 544)
+        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(76, 13)
+        Me.Label2.Size = New System.Drawing.Size(98, 17)
         Me.Label2.TabIndex = 324
         Me.Label2.Text = "IEPS incluido :"
         '
         'txtIEPSIncluido
         '
         Me.txtIEPSIncluido.Enabled = False
-        Me.txtIEPSIncluido.Location = New System.Drawing.Point(541, 439)
+        Me.txtIEPSIncluido.Location = New System.Drawing.Point(721, 540)
+        Me.txtIEPSIncluido.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtIEPSIncluido.MaxLength = 160
         Me.txtIEPSIncluido.Name = "txtIEPSIncluido"
-        Me.txtIEPSIncluido.Size = New System.Drawing.Size(99, 20)
+        Me.txtIEPSIncluido.Size = New System.Drawing.Size(131, 22)
         Me.txtIEPSIncluido.TabIndex = 323
         Me.txtIEPSIncluido.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
@@ -684,9 +777,11 @@ Partial Class Frm_CXC_Descuentos
         Me.gbDolares.Controls.Add(Me.lblDisplayTotalDolares)
         Me.gbDolares.Controls.Add(Me.lblDisplaySubtotalDolares)
         Me.gbDolares.Controls.Add(Me.lblDisplayImpuestoDolares)
-        Me.gbDolares.Location = New System.Drawing.Point(282, 430)
+        Me.gbDolares.Location = New System.Drawing.Point(376, 529)
+        Me.gbDolares.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gbDolares.Name = "gbDolares"
-        Me.gbDolares.Size = New System.Drawing.Size(176, 78)
+        Me.gbDolares.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbDolares.Size = New System.Drawing.Size(235, 96)
         Me.gbDolares.TabIndex = 325
         Me.gbDolares.TabStop = False
         Me.gbDolares.Text = "Total USD :"
@@ -696,9 +791,10 @@ Partial Class Frm_CXC_Descuentos
         '
         Me.lblTotalDolares.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblTotalDolares.ForeColor = System.Drawing.Color.Crimson
-        Me.lblTotalDolares.Location = New System.Drawing.Point(68, 53)
+        Me.lblTotalDolares.Location = New System.Drawing.Point(91, 65)
+        Me.lblTotalDolares.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblTotalDolares.Name = "lblTotalDolares"
-        Me.lblTotalDolares.Size = New System.Drawing.Size(102, 13)
+        Me.lblTotalDolares.Size = New System.Drawing.Size(136, 16)
         Me.lblTotalDolares.TabIndex = 249
         Me.lblTotalDolares.Text = "0.00"
         Me.lblTotalDolares.TextAlign = System.Drawing.ContentAlignment.TopRight
@@ -707,9 +803,10 @@ Partial Class Frm_CXC_Descuentos
         '
         Me.lblSubtotalDolares.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblSubtotalDolares.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblSubtotalDolares.Location = New System.Drawing.Point(68, 16)
+        Me.lblSubtotalDolares.Location = New System.Drawing.Point(91, 20)
+        Me.lblSubtotalDolares.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblSubtotalDolares.Name = "lblSubtotalDolares"
-        Me.lblSubtotalDolares.Size = New System.Drawing.Size(102, 13)
+        Me.lblSubtotalDolares.Size = New System.Drawing.Size(136, 16)
         Me.lblSubtotalDolares.TabIndex = 247
         Me.lblSubtotalDolares.Text = "0.00"
         Me.lblSubtotalDolares.TextAlign = System.Drawing.ContentAlignment.TopRight
@@ -718,9 +815,10 @@ Partial Class Frm_CXC_Descuentos
         '
         Me.lblImpuestoDolares.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblImpuestoDolares.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblImpuestoDolares.Location = New System.Drawing.Point(68, 35)
+        Me.lblImpuestoDolares.Location = New System.Drawing.Point(91, 43)
+        Me.lblImpuestoDolares.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblImpuestoDolares.Name = "lblImpuestoDolares"
-        Me.lblImpuestoDolares.Size = New System.Drawing.Size(102, 13)
+        Me.lblImpuestoDolares.Size = New System.Drawing.Size(136, 16)
         Me.lblImpuestoDolares.TabIndex = 248
         Me.lblImpuestoDolares.Text = "0.00"
         Me.lblImpuestoDolares.TextAlign = System.Drawing.ContentAlignment.TopRight
@@ -728,27 +826,30 @@ Partial Class Frm_CXC_Descuentos
         'lblDisplayTotalDolares
         '
         Me.lblDisplayTotalDolares.AutoSize = True
-        Me.lblDisplayTotalDolares.Location = New System.Drawing.Point(6, 53)
+        Me.lblDisplayTotalDolares.Location = New System.Drawing.Point(8, 65)
+        Me.lblDisplayTotalDolares.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayTotalDolares.Name = "lblDisplayTotalDolares"
-        Me.lblDisplayTotalDolares.Size = New System.Drawing.Size(37, 13)
+        Me.lblDisplayTotalDolares.Size = New System.Drawing.Size(48, 17)
         Me.lblDisplayTotalDolares.TabIndex = 246
         Me.lblDisplayTotalDolares.Text = "Total :"
         '
         'lblDisplaySubtotalDolares
         '
         Me.lblDisplaySubtotalDolares.AutoSize = True
-        Me.lblDisplaySubtotalDolares.Location = New System.Drawing.Point(6, 16)
+        Me.lblDisplaySubtotalDolares.Location = New System.Drawing.Point(8, 20)
+        Me.lblDisplaySubtotalDolares.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplaySubtotalDolares.Name = "lblDisplaySubtotalDolares"
-        Me.lblDisplaySubtotalDolares.Size = New System.Drawing.Size(52, 13)
+        Me.lblDisplaySubtotalDolares.Size = New System.Drawing.Size(68, 17)
         Me.lblDisplaySubtotalDolares.TabIndex = 242
         Me.lblDisplaySubtotalDolares.Text = "Subtotal :"
         '
         'lblDisplayImpuestoDolares
         '
         Me.lblDisplayImpuestoDolares.AutoSize = True
-        Me.lblDisplayImpuestoDolares.Location = New System.Drawing.Point(6, 34)
+        Me.lblDisplayImpuestoDolares.Location = New System.Drawing.Point(8, 42)
+        Me.lblDisplayImpuestoDolares.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayImpuestoDolares.Name = "lblDisplayImpuestoDolares"
-        Me.lblDisplayImpuestoDolares.Size = New System.Drawing.Size(56, 13)
+        Me.lblDisplayImpuestoDolares.Size = New System.Drawing.Size(73, 17)
         Me.lblDisplayImpuestoDolares.TabIndex = 244
         Me.lblDisplayImpuestoDolares.Text = "Impuesto :"
         '
@@ -756,56 +857,19 @@ Partial Class Frm_CXC_Descuentos
         '
         Me.lblImpuestoPorcentaje.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblImpuestoPorcentaje.ForeColor = System.Drawing.Color.Crimson
-        Me.lblImpuestoPorcentaje.Location = New System.Drawing.Point(12, 399)
+        Me.lblImpuestoPorcentaje.Location = New System.Drawing.Point(16, 491)
+        Me.lblImpuestoPorcentaje.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblImpuestoPorcentaje.Name = "lblImpuestoPorcentaje"
-        Me.lblImpuestoPorcentaje.Size = New System.Drawing.Size(44, 13)
+        Me.lblImpuestoPorcentaje.Size = New System.Drawing.Size(59, 16)
         Me.lblImpuestoPorcentaje.TabIndex = 326
         Me.lblImpuestoPorcentaje.Text = "0.00"
         Me.lblImpuestoPorcentaje.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'lblDisplayUsoCFDI
-        '
-        Me.lblDisplayUsoCFDI.AutoSize = True
-        Me.lblDisplayUsoCFDI.Location = New System.Drawing.Point(389, 43)
-        Me.lblDisplayUsoCFDI.Name = "lblDisplayUsoCFDI"
-        Me.lblDisplayUsoCFDI.Size = New System.Drawing.Size(76, 13)
-        Me.lblDisplayUsoCFDI.TabIndex = 388
-        Me.lblDisplayUsoCFDI.Text = "Uso del CFDI :"
-        '
-        'cboUsoCFDI
-        '
-        Me.cboUsoCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboUsoCFDI.FormattingEnabled = True
-        Me.cboUsoCFDI.Location = New System.Drawing.Point(486, 40)
-        Me.cboUsoCFDI.MaxLength = 1
-        Me.cboUsoCFDI.Name = "cboUsoCFDI"
-        Me.cboUsoCFDI.Size = New System.Drawing.Size(338, 21)
-        Me.cboUsoCFDI.TabIndex = 4
-        '
-        'cboTipoRelacionCFDI
-        '
-        Me.cboTipoRelacionCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboTipoRelacionCFDI.FormattingEnabled = True
-        Me.cboTipoRelacionCFDI.Location = New System.Drawing.Point(486, 66)
-        Me.cboTipoRelacionCFDI.MaxLength = 1
-        Me.cboTipoRelacionCFDI.Name = "cboTipoRelacionCFDI"
-        Me.cboTipoRelacionCFDI.Size = New System.Drawing.Size(338, 21)
-        Me.cboTipoRelacionCFDI.TabIndex = 5
-        '
-        'lblDisplayTipoRelacionCFDI
-        '
-        Me.lblDisplayTipoRelacionCFDI.AutoSize = True
-        Me.lblDisplayTipoRelacionCFDI.Location = New System.Drawing.Point(389, 69)
-        Me.lblDisplayTipoRelacionCFDI.Name = "lblDisplayTipoRelacionCFDI"
-        Me.lblDisplayTipoRelacionCFDI.Size = New System.Drawing.Size(101, 13)
-        Me.lblDisplayTipoRelacionCFDI.TabIndex = 393
-        Me.lblDisplayTipoRelacionCFDI.Text = "Tipo relación CFDI :"
-        '
         'Frm_CXC_Descuentos
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(868, 543)
+        Me.ClientSize = New System.Drawing.Size(1157, 668)
         Me.Controls.Add(Me.lblImpuestoPorcentaje)
         Me.Controls.Add(Me.gbDolares)
         Me.Controls.Add(Me.Label2)
@@ -817,6 +881,7 @@ Partial Class Frm_CXC_Descuentos
         Me.Controls.Add(Me.tsMenu)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.KeyPreview = True
+        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.MaximizeBox = False
         Me.Name = "Frm_CXC_Descuentos"
         Me.Text = "Descuentos"

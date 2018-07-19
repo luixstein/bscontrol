@@ -231,16 +231,16 @@ Partial Class Frm_CXP_Pagos_Acreedores
         '
         Me.LblStatus.BackColor = System.Drawing.SystemColors.ControlLight
         Me.LblStatus.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.LblStatus.Location = New System.Drawing.Point(469, 91)
+        Me.LblStatus.Location = New System.Drawing.Point(490, 92)
         Me.LblStatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblStatus.Name = "LblStatus"
-        Me.LblStatus.Size = New System.Drawing.Size(48, 16)
+        Me.LblStatus.Size = New System.Drawing.Size(102, 16)
         Me.LblStatus.TabIndex = 218
         '
         'lblDisplayStatus
         '
         Me.lblDisplayStatus.AutoSize = True
-        Me.lblDisplayStatus.Location = New System.Drawing.Point(397, 91)
+        Me.lblDisplayStatus.Location = New System.Drawing.Point(418, 92)
         Me.lblDisplayStatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayStatus.Name = "lblDisplayStatus"
         Me.lblDisplayStatus.Size = New System.Drawing.Size(63, 17)
@@ -329,7 +329,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(529, 91)
+        Me.Label8.Location = New System.Drawing.Point(603, 91)
         Me.Label8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(54, 17)
@@ -618,7 +618,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
         'LblPoliza
         '
         Me.LblPoliza.BackColor = System.Drawing.SystemColors.ControlLight
-        Me.LblPoliza.Location = New System.Drawing.Point(592, 91)
+        Me.LblPoliza.Location = New System.Drawing.Point(666, 91)
         Me.LblPoliza.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblPoliza.Name = "LblPoliza"
         Me.LblPoliza.Size = New System.Drawing.Size(199, 16)

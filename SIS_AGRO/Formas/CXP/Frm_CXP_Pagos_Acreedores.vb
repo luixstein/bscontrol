@@ -661,7 +661,7 @@ buscar_acreedor:
     Private Sub Inicializa()
         Try
             Me.TxtFolio.Text = ""
-            Me.LblStatus.Text = "N"
+            Me.LblStatus.Text = "NUEVO"
             Me.LblPoliza.Text = ""
 
             Me.txtTipoCambio.Text = ""
@@ -964,7 +964,7 @@ buscar_acreedor:
 
     Private Sub Totales()
         Try
-            If Me.LblStatus.Text = "N" And Me.ModoPago = enumModoPago.ACREEDOR Then ' And Me.CkbPagoFleteEmbarques.Checked = False Then
+            If Me.LblStatus.Text = "NUEVO" And Me.ModoPago = enumModoPago.ACREEDOR Then ' And Me.CkbPagoFleteEmbarques.Checked = False Then
                 Exit Sub
             ElseIf Me.ModoPago = enumModoPago.PROVEEDOR Then
                 'Me.TxtImporte.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyPagoMXP)))
@@ -972,7 +972,7 @@ buscar_acreedor:
                 Me.TxtImporte.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyPagoMXP)) - FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyRetencion)))
             End If
 
-            If Me.LblStatus.Text = "N" And Me.CkbPagoFleteEmbarques.Checked = True Then
+            If Me.LblStatus.Text = "NUEVO" And Me.CkbPagoFleteEmbarques.Checked = True Then
                 If Me.ModoPago = enumModoPago.ACREEDOR Then
                     Me.TxtImporte.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid2, CShort(Me.iGyPagoFlete)))
                 Else
@@ -1388,9 +1388,9 @@ buscar_acreedor:
 
     Private Sub GestionaCambioEstado()
         Select Case Me.LblStatus.Text
-            Case "A"
+            Case "APLICADO"
                 Me.Cambia_Estado(enumEstados.APLICADO)
-            Case "C"
+            Case "CANCELADO"
                 Me.Cambia_Estado(enumEstados.CANCELADO)
         End Select
     End Sub
@@ -1720,9 +1720,15 @@ buscar_acreedor:
 
                 Me.CmbDocumento.SelectedValue = oBancosCXP.CODIGO_DOCUMENTO
                 Me.dtFecha.Value = oBancosCXP.FECHA
-                Me.LblStatus.Text = oBancosCXP.ESTATUS
                 Me.LblPoliza.Text = oBancosCXP.FOLIO_POLIZA
                 Me.TxtConcepto.Text = oBancosCXP.CONCEPTO1
+
+                Select Case oBancosCXP.ESTATUS
+                    Case "A"
+                        Me.LblStatus.Text = "APLICADO"
+                    Case "C"
+                        Me.LblStatus.Text = "CANCELADO"
+                End Select
 
                 Me.TxtCuentaBancaria.Text = oBancosCXP.ID_CUENTA_BANCARIA.ToString
                 Me.LblCuentaBancaria.Text = oBancosCXP.NOMBRE_CUENTA_BANCARIA
@@ -1918,12 +1924,12 @@ buscar_acreedor:
         'End If
 
         Select Case Me.LblStatus.Text
-            Case "N"
+            Case "NUEVO"
                 MsgBox("El documento no se ha grabado.", MsgBoxStyle.Exclamation, Me.Text)
                 Exit Function
-            Case "A"
+            Case "APLICADO"
                 'No hay restricciones
-            Case "C"
+            Case "CANCELADO"
                 MsgBox("Los documentos cancelados no se pueden volver a cancelar.", MsgBoxStyle.Exclamation, Me.Text)
                 Exit Function
         End Select

@@ -247,7 +247,7 @@ busca:
             Me.txtCliente.Text = "" : Me.lblCliente.Text = ""
             Me.txtConcepto.Text = ""
             Me.txtAlmacen.Text = "" : Me.lblAlmacen.Text = ""
-            Me.lblEstatus.Text = "N"
+            Me.lblEstatus.Text = "NUEVO"
             Me.lblPoliza.Text = ""
             Me.txtTipoCambio.Text = "0"
 
@@ -513,13 +513,13 @@ busca:
 
     Private Sub GestionaCambioEstado()
         Select Case Me.lblEstatus.Text
-            Case "N"
+            Case "NUEVO"
                 Me.Cambia_Estado(enumEstados.NUEVO)
-            Case "G"
+            Case "GRABADO"
                 Me.Cambia_Estado(enumEstados.GRABADO)
-            Case "A"
+            Case "APLICADO"
                 Me.Cambia_Estado(enumEstados.APLICADO)
-            Case "C"
+            Case "CANCELADO"
                 Me.Cambia_Estado(enumEstados.CANCELADO)
         End Select
     End Sub
@@ -699,10 +699,20 @@ busca:
                 Me.txtCliente.Text = .CODIGO_CLIENTE
                 Me.lblCliente.Text = .NOMBRE_CLIENTE
                 Me.txtConcepto.Text = .CONCEPTO
-                Me.lblEstatus.Text = .ESTATUS_DEVOLUCION
                 Me.lblPoliza.Text = .FOLIO_POLIZA
                 Me.txtAlmacen.Text = .CODIGO_ALMACEN
                 Me.lblAlmacen.Text = .NOMBRE_ALMACEN
+
+                Select Case .ESTATUS_DEVOLUCION
+                    Case "N"
+                        Me.lblEstatus.Text = "NUEVO"
+                    Case "G"
+                        Me.lblEstatus.Text = "GRABADO"
+                    Case "A"
+                        Me.lblEstatus.Text = "APLICADO"
+                    Case "C"
+                        Me.lblEstatus.Text = "CANCELADO"
+                End Select
 
                 Me.txtTipoCambio.Text = FormatTipoCambio(.TIPO_DE_CAMBIO)
                 Me.lblSubtotal.Text = FormatImporteContable(.SUBTOTAL)
@@ -1249,7 +1259,7 @@ busca_serie:
                 Return False
             End If
 
-            If Me.lblEstatus.Text <> "N" Then
+            If Me.lblEstatus.Text <> "NUEVO" Then
                 MsgBox("Debe de estar en un estado de nuevo para grabar este documento.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If

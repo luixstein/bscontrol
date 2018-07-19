@@ -372,7 +372,7 @@ Partial Class Frm_CXP_Descuentos
         Me.LblStatus.Location = New System.Drawing.Point(431, 26)
         Me.LblStatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblStatus.Name = "LblStatus"
-        Me.LblStatus.Size = New System.Drawing.Size(48, 16)
+        Me.LblStatus.Size = New System.Drawing.Size(103, 16)
         Me.LblStatus.TabIndex = 218
         '
         'gbFacturas

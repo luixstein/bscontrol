@@ -994,6 +994,7 @@ Buscar:
                     Me.btnActualizaConcepto.Visible = False
                     Me.btnGrabaDetalleVenta.Enabled = False
                     Me.TxtCodigoProveedor.Enabled = True
+                    Me.lblEstatus.Text = "NUEVO"
 
                     Me.tsslElaboro.Visible = False : Me.tsslElaboro.Text = ""
                     Me.tsslCancelo.Visible = False : Me.tsslCancelo.Text = ""
@@ -2383,6 +2384,13 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
             Dim oProveedor As New Class_CatProveedores(Me.TxtCodigoProveedor.Text)
             Me.LblProveedor.Text = oProveedor.Nombre_Proveedor.ToUpper
             Me.LblCuentaContableProveedor.Text = oProveedor.CUENTA_CONTABLE
+
+            Select Case oCompras.ESTATUS
+                Case "A"
+                    Me.lblEstatus.Text = "APLICADO"
+                Case "C"
+                    Me.lblEstatus.Text = "CANCELADO"
+            End Select
 
             Me.TxtConcepto.Text = Me.oCompras.CONCEPTO
             Me.DtpFechaFacturaProveedor.Value = Me.oCompras.FECHA

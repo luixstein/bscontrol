@@ -766,7 +766,7 @@ Buscar:
             Me.cboFormaPago.SelectedValue = "01" '01=Efectivo
 
             Me.lblCliente.Text = ""
-            Me.LblEstatus.Text = "N"
+            Me.LblEstatus.Text = "NUEVO"
             Me.LblPoliza.Text = ""
             Me.lblSaldo.Text = FormatImporteContable(0)
             Me.txtTipoCambio.Text = "0"
@@ -1052,17 +1052,17 @@ Buscar:
 
     Private Sub GestionaCambioEstado()
         Select Case Me.LblEstatus.Text
-            Case "N"
+            Case "NUEVO"
                 Me.Cambia_Estado(enumEstados.NUEVO)
-            Case "G"
+            Case "GRABADO"
                 Me.Cambia_Estado(enumEstados.GRABADO)
-            Case "A"
+            Case "APLICADO"
                 Me.Cambia_Estado(enumEstados.APLICADO)
-            Case "S"
+            Case "SUSTITUIDO"
                 Me.Cambia_Estado(enumEstados.SUSTITUIDO)
-            Case "C"
+            Case "CANCELADO"
                 Me.Cambia_Estado(enumEstados.CANCELADO)
-            Case "SY"
+            Case "SUSTITUYENDO"
                 Me.Cambia_Estado(enumEstados.SUSTITUYENDO)
         End Select
     End Sub
@@ -2875,7 +2875,21 @@ CANCELAR:
                 If bEsReferencia = False Then
                     Me.txtFolio.Text = Me.oVenta.FOLIO_VENTA.ToString.ToUpper
                     Me.TxtReferencia.Text = Me.oVenta.FOLIO_REFERENCIA.ToString.ToUpper
-                    Me.LblEstatus.Text = Me.oVenta.ESTATUS_VENTA.ToString.ToUpper
+
+                    Select Case Me.oVenta.ESTATUS_VENTA.ToString.ToUpper
+                        Case "N"
+                            Me.LblEstatus.Text = "NUEVO"
+                        Case "G"
+                            Me.LblEstatus.Text = "GRABADO"
+                        Case "A"
+                            Me.LblEstatus.Text = "APLICADO"
+                        Case "S"
+                            Me.LblEstatus.Text = "SUSTITUIDO"
+                        Case "C"
+                            Me.LblEstatus.Text = "CANCELADO"
+                        Case "SY"
+                            Me.LblEstatus.Text = "SUSTITUYENDO"
+                    End Select
                     Me.Grid.DataSource = Me.oVenta.ObtenerDetalle(False) 'Que si muestre comentarios
                     Me.dpFecha.Value = CDate(Me.oVenta.FECHA)
                     Me.txtUUID.Text = Me.oVenta.FOLIO_FISCAL_SAT
@@ -2910,9 +2924,9 @@ CANCELAR:
                     Me.dpFecha.Value = Date.Now
 
                     If bEsRefrenciaSoloRenglones = True Then
-                        Me.LblEstatus.Text = "N"
+                        Me.LblEstatus.Text = "NUEVO"
                     Else
-                        Me.LblEstatus.Text = "SY"
+                        Me.LblEstatus.Text = "SUSTITUYENDO"
                     End If
                 End If
 

@@ -98,6 +98,8 @@ Partial Class Frm_CXP_Revision
         Me.StatusStripEstatus = New System.Windows.Forms.StatusStrip()
         Me.tsslElaboro = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tsslCancelo = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.lblDisplayEstatus = New System.Windows.Forms.Label()
+        Me.lblEstatus = New System.Windows.Forms.Label()
         Me.gbProveedor.SuspendLayout()
         Me.gbCompras.SuspendLayout()
         Me.gbCompraProveedor.SuspendLayout()
@@ -131,6 +133,8 @@ Partial Class Frm_CXP_Revision
         '
         'gbProveedor
         '
+        Me.gbProveedor.Controls.Add(Me.lblEstatus)
+        Me.gbProveedor.Controls.Add(Me.lblDisplayEstatus)
         Me.gbProveedor.Controls.Add(Me.btnDocumentoSiguiente)
         Me.gbProveedor.Controls.Add(Me.LblPoliza)
         Me.gbProveedor.Controls.Add(Me.lblDilplayPoliza)
@@ -167,7 +171,7 @@ Partial Class Frm_CXP_Revision
         'LblPoliza
         '
         Me.LblPoliza.AutoSize = True
-        Me.LblPoliza.Location = New System.Drawing.Point(1203, 20)
+        Me.LblPoliza.Location = New System.Drawing.Point(1232, 20)
         Me.LblPoliza.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblPoliza.Name = "LblPoliza"
         Me.LblPoliza.Size = New System.Drawing.Size(16, 17)
@@ -178,7 +182,7 @@ Partial Class Frm_CXP_Revision
         'lblDilplayPoliza
         '
         Me.lblDilplayPoliza.AutoSize = True
-        Me.lblDilplayPoliza.Location = New System.Drawing.Point(1100, 20)
+        Me.lblDilplayPoliza.Location = New System.Drawing.Point(1161, 20)
         Me.lblDilplayPoliza.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDilplayPoliza.Name = "lblDilplayPoliza"
         Me.lblDilplayPoliza.Size = New System.Drawing.Size(54, 17)
@@ -210,7 +214,7 @@ Partial Class Frm_CXP_Revision
         Me.LblCuentaContableProveedor.Location = New System.Drawing.Point(788, 20)
         Me.LblCuentaContableProveedor.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblCuentaContableProveedor.Name = "LblCuentaContableProveedor"
-        Me.LblCuentaContableProveedor.Size = New System.Drawing.Size(261, 16)
+        Me.LblCuentaContableProveedor.Size = New System.Drawing.Size(198, 16)
         Me.LblCuentaContableProveedor.TabIndex = 292
         '
         'LblDisplayProveedor
@@ -962,6 +966,26 @@ Partial Class Frm_CXP_Revision
         Me.tsslCancelo.Size = New System.Drawing.Size(69, 20)
         Me.tsslCancelo.Text = "Canceló :"
         '
+        'lblDisplayEstatus
+        '
+        Me.lblDisplayEstatus.AutoSize = True
+        Me.lblDisplayEstatus.Location = New System.Drawing.Point(994, 20)
+        Me.lblDisplayEstatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayEstatus.Name = "lblDisplayEstatus"
+        Me.lblDisplayEstatus.Size = New System.Drawing.Size(63, 17)
+        Me.lblDisplayEstatus.TabIndex = 383
+        Me.lblDisplayEstatus.Text = "Estatus :"
+        '
+        'lblEstatus
+        '
+        Me.lblEstatus.AutoSize = True
+        Me.lblEstatus.Location = New System.Drawing.Point(1065, 20)
+        Me.lblEstatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblEstatus.Name = "lblEstatus"
+        Me.lblEstatus.Size = New System.Drawing.Size(16, 17)
+        Me.lblEstatus.TabIndex = 384
+        Me.lblEstatus.Text = "_"
+        '
         'Frm_CXP_Revision
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -1072,4 +1096,6 @@ Partial Class Frm_CXP_Revision
     Friend WithEvents StatusStripEstatus As System.Windows.Forms.StatusStrip
     Friend WithEvents tsslElaboro As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents tsslCancelo As System.Windows.Forms.ToolStripStatusLabel
+    Friend WithEvents lblDisplayEstatus As System.Windows.Forms.Label
+    Friend WithEvents lblEstatus As System.Windows.Forms.Label
 End Class

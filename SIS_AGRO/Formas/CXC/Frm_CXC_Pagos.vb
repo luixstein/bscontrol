@@ -599,7 +599,7 @@ Buscar:
             Me.dtFecha.Value = Date.Now
             Me.TxtConcepto.Text = ""
             Me.LblPoliza.Text = ""
-            Me.LblStatus.Text = "N"
+            Me.LblStatus.Text = "NUEVO"
 
             Me.TxtCodigoCliente.Text = ""
             Me.LblCliente.Text = ""
@@ -1741,9 +1741,9 @@ Buscar:
 
     Private Sub GestionaCambioEstado()
         Select Case Me.LblStatus.Text
-            Case "A"
+            Case "APLICADO"
                 Me.Cambia_Estado(enumEstados.APLICADO)
-            Case "C"
+            Case "CANCELADO"
                 Me.Cambia_Estado(enumEstados.CANCELADO)
         End Select
     End Sub
@@ -2222,7 +2222,7 @@ Buscar:
                 Me.CboDocumento.SelectedValue = oBancosCXC.CODIGO_DOCUMENTO
                 Me.dtFecha.Value = oBancosCXC.FECHA
                 Me.dtFechaCheque.Value = oBancosCXC.FECHA_CHEQUE
-                Me.LblStatus.Text = oBancosCXC.ESTATUS
+                'Me.LblStatus.Text = oBancosCXC.ESTATUS
                 Me.LblPoliza.Text = oBancosCXC.FOLIO_POLIZA
                 Me.TxtConcepto.Text = oBancosCXC.CONCEPTO1
                 Me.TxtCuentaBancaria.Text = oBancosCXC.ID_CUENTA_BANCARIA.ToString
@@ -2232,6 +2232,13 @@ Buscar:
                 'Me.LblCliente.Text = oBancosCXC.NOMBRE_Cliente
                 Me.txtTipoCambio.Text = oBancosCXC.TIPO_DE_CAMBIO.ToString
                 Me.TxtTotal.Text = FormatImporteContable(oBancosCXC.TOTAL)
+
+                Select Case oBancosCXC.ESTATUS
+                    Case "A"
+                        Me.LblStatus.Text = "APLICADO"
+                    Case "C"
+                        Me.LblStatus.Text = "CANCELADO"
+                End Select
 
                 Me.tssElaboro.Text = "Elaboró : " & Me.oBancosCXC.NOMBRE_USUARIO_GRABO & " el " & Format(Me.oBancosCXC.FECHA_SERVIDOR, "dd-MMM-yyyy hh:mm tt")
                 If Me.oBancosCXC.ESTATUS = "C" Then
@@ -2336,12 +2343,12 @@ Buscar:
         'End If
 
         Select Case Me.LblStatus.Text
-            Case "N"
+            Case "NUEVO"
                 MsgBox("El documento no se ha grabado.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
-            Case "A"
+            Case "APLICADO"
                 'No hay restricciones
-            Case "C"
+            Case "CANCELADO"
                 MsgBox("Los documentos cancelados no se pueden volver a cancelar.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
         End Select
