@@ -27,6 +27,7 @@ Public Class Class_Compras_Global
     Private _IMPUESTO As Double
     Private _TOTAL As Double
     Private _RETENCION As Double
+    Private _RETENCION_ISR As Double
     Private _IMPUESTO_PORCENTAJE As Double
     Private _SALDO As Double
     Private _TIPO_DE_CAMBIO As Double
@@ -247,6 +248,15 @@ Public Class Class_Compras_Global
         End Get
         Set(ByVal Value As Double)
             Me._RETENCION = Value
+        End Set
+    End Property
+
+    Public Property RETENCION_ISR() As Double
+        Get
+            Return Me._RETENCION_ISR
+        End Get
+        Set(ByVal Value As Double)
+            Me._RETENCION_ISR = Value
         End Set
     End Property
 
@@ -700,6 +710,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@IMPUESTO", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO
             sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL
             sqlParametro = .Parameters.Add("@RETENCION", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION
+            sqlParametro = .Parameters.Add("@RETENCION_ISR", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR
             sqlParametro = .Parameters.Add("@IMPUESTO_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_PORCENTAJE
             sqlParametro = .Parameters.Add("@TIPO_DE_CAMBIO", SqlDbType.Decimal) : sqlParametro.Value = Me.TIPO_DE_CAMBIO
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_GRABO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
@@ -750,6 +761,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@IMPUESTO_DINERO", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO
             sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL
             sqlParametro = .Parameters.Add("@RETENCION", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION
+            sqlParametro = .Parameters.Add("@RETENCION_ISR", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR
             sqlParametro = .Parameters.Add("@IMPUESTO_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_PORCENTAJE
             sqlParametro = .Parameters.Add("@TIPO_DE_CAMBIO", SqlDbType.Decimal) : sqlParametro.Value = Me._TIPO_DE_CAMBIO
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_GRABO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
@@ -942,6 +954,7 @@ Public Class Class_Compras_Global
                     Me._IMPUESTO_PORCENTAJE = CDbl(dReader("IMPUESTO_PORCENTAJE"))
                     Me._TOTAL = CDbl(dReader("TOTAL"))
                     Me._RETENCION = CDbl(dReader("RETENCION"))
+                    Me._RETENCION_ISR = CDbl(dReader("RETENCION_ISR"))
                     Me._SALDO = CDbl(dReader("SALDO"))
                     Me._TIPO_DE_CAMBIO = CDbl(dReader("TIPO_DE_CAMBIO"))
                     Me._ESTATUS = dReader("ESTATUS").ToString
