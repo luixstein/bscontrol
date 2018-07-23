@@ -137,6 +137,12 @@ Public Class Frm_CXP_Revision
         End Try
     End Sub
 
+    Private Sub tsbCancelar_Click(sender As Object, e As EventArgs) Handles tsbCancelar.Click
+        If Me.CancelarCompra = True Then
+            Me.Consultar()
+        End If
+    End Sub
+
     Private Sub tsbSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSalir.Click
         Me.Close()
     End Sub
@@ -1041,8 +1047,10 @@ Buscar:
 
                     If Me.oCompras.ESTATUS = "C" Then
                         Me.tsslCancelo.Visible = True : Me.tsslCancelo.Text = "Canceló : " + Me.oCompras.NOMBRE_USUARIO_CANCELO.ToString + " el " + Format(Me.oCompras.FECHA_CANCELACION, "dd/MMM/yy").ToUpper
+                        Me.tsbCancelar.Enabled = False
                     Else
                         Me.tsslCancelo.Visible = False : Me.tsslCancelo.Text = ""
+                        Me.tsbCancelar.Enabled = True
                     End If
 
                 Case enumEstados.PAGODIRECTO
@@ -2488,6 +2496,94 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
         Catch ex As Exception
             HandleError(Me.Name, "ActualizaConcepto", ex)
         End Try
+    End Function
+
+    Private Function CancelarCompra() As Boolean
+        Dim bResultado As Boolean = False
+
+        Dim oFirmaElectronica = New UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo
+        Dim oUtileriasCancela As New Class_UtileriasFirmaElectronicaCancelacion
+        Dim oPoliza As New Class_Contabilidad_Poliza_Global
+        Dim sConceptoCancelacion As String = ""
+
+        If MsgBox("Deseas cancelar el gasto " & Me.txtFolioCompra.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "CancelarCompra") = MsgBoxResult.No Then
+            Exit Function
+        End If
+
+        If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios("CO" & Plaza.CODIGO_PLAZA.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
+            MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento de inventarios.", MsgBoxStyle.Exclamation, Me.Text)
+            Exit Function
+        End If
+
+        'If Me.oCompras.ValidaExistencias() = False Then
+        '    Exit Function
+        'End If
+
+        Try
+            oUtileriasCancela.FOLIO_DOCUMENTO = Me.txtFolioCompra.Text.ToUpper
+            oUtileriasCancela.MODULO = Me.oCompras.CODIGO_MODULO
+            oUtileriasCancela.CODIGO_PLAZA = Usuario.Codigo_Plaza
+
+            If oUtileriasCancela.GestionaCancelacion() = False Then
+                Exit Function
+            End If
+
+            If oUtileriasCancela.CANCELA_DIRECTO = True Then
+                Me.oCompras.FECHA_CANCELACION = Date.Now
+
+                sConceptoCancelacion = InputBox("Ingrese un concepto de cancelación :", "Concepto de cancelación")
+                Me.oCompras.CONCEPTO_CANCELACION = sConceptoCancelacion
+
+                If Me.oCompras.CancelaCompra() = False Then
+                    Exit Function
+                End If
+            Else
+                oUtileriasCancela = New Class_UtileriasFirmaElectronicaCancelacion
+                oUtileriasCancela.FOLIO_DOCUMENTO = Me.txtFolioCompra.Text
+                oUtileriasCancela.FOLIO_POLIZA = Me.oCompras.FOLIO_POLIZA
+                oUtileriasCancela.CODIGO_DOCUMENTO = "CA" & Usuario.Codigo_Plaza.ToString
+                oUtileriasCancela.CODIGO_PLAZA = Usuario.Codigo_Plaza
+                oUtileriasCancela.MODULO = Me.oCompras.CODIGO_MODULO
+
+                If oUtileriasCancela.AutorizaCancelacionMovimientosFueraPeriodo() = False Then
+                    'MsgBox("Error al tratar de autorizar la cancelación fuera del periodo.", MsgBoxStyle.Exclamation, Me.Text)
+                    Exit Function
+                End If
+
+                sConceptoCancelacion = oUtileriasCancela.CANCELACION_CONCEPTO
+                Me.oCompras.CONCEPTO_CANCELACION = sConceptoCancelacion
+
+                'si no se autorizo
+                If oUtileriasCancela.CANCELACION_AUTORIZO = False Then
+                    MsgBox("No se autorizó la cancelación de movimiento.", MsgBoxStyle.Exclamation, Me.Text)
+                    Exit Function
+                End If
+
+                If oUtileriasCancela.GestionaCancelacionConInterfaz() = False Then
+                    MsgBox("Error al gestionar la cancelacion con interfaz", MsgBoxStyle.Information, Me.Text)
+                    Exit Function
+                Else
+                    If oUtileriasCancela.ES_FECHA_CANCELACION_VALIDA = "0" Then
+                        MsgBox("La fecha de cancelación debe de ser mayor o igual a la fecha del documento y debe estar en el mismo ejercicio.", vbExclamation, Me.Text)
+                        Exit Function
+                    End If
+
+                    Me.oCompras.FECHA_CANCELACION = oUtileriasCancela.FECHA_CANCELACION
+
+                    If Me.oCompras.CancelaCompra() = False Then
+                        MsgBox("Error al intentar cancelar el movimiento de inventario.", MsgBoxStyle.Exclamation, Me.Text)
+                        Exit Function
+                    End If
+                End If
+            End If
+
+            MsgBox("Gasto cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+            bResultado = True
+        Catch ex As Exception
+            HandleError(Me.Name, "CancelarCompra", ex)
+        End Try
+
+        Return bResultado
     End Function
 #End Region
 

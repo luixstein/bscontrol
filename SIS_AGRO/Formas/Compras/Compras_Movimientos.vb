@@ -1403,7 +1403,7 @@ Buscar:
             If oUtileriasCancela.CANCELA_DIRECTO = True Then
                 Me.oCompras.FECHA_CANCELACION = Date.Now
 
-                sConceptoCancelacion = InputBox("Ingrese un concepto de cancelación :", "Conepto de cancelación")
+                sConceptoCancelacion = InputBox("Ingrese un concepto de cancelación :", "Concepto de cancelación")
                 Me.oCompras.CONCEPTO_CANCELACION = sConceptoCancelacion
 
                 If Me.oCompras.CancelaCompra() = False Then
