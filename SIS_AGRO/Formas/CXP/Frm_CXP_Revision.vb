@@ -273,9 +273,11 @@ Public Class Frm_CXP_Revision
     End Sub
 
     Private Sub btnGrabaDetalleVenta_Click(sender As Object, e As EventArgs) Handles btnGrabaDetalleVenta.Click
-        If Me.GrabarVentasRelacionadas() = True Then
-            MsgBox("Detalle de venta grabado correctamente.", MsgBoxStyle.Information, Me.Name)
-            Me.Consultar()
+        If Me.ValidaVentas = True Then 'Esta validación no se llama desde GrabarVentasRelacionadas, porque este grabar se manda también desde el GestionaGrabar y no queremos que ya que grabe el gasto pregunte sobre las ventas.
+            If Me.GrabarVentasRelacionadas() = True Then
+                MsgBox("Detalle de venta grabado correctamente.", MsgBoxStyle.Information, Me.Name)
+                Me.Consultar()
+            End If
         End If
     End Sub
 #End Region
@@ -2011,19 +2013,43 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
         Return bResultado
     End Function
 
+    Private Function ValidaVentas() As Boolean
+        Const sProcedure As String = "ValidaVentas"
+        Dim bResultado As Boolean = False
+        Try
+            If valorNumerico(Me.lblTotalFacturasRelacionadas.Text) > 0 Then
+                If valorNumerico(Me.lblTotalFacturasRelacionadas.Text) > valorNumerico(Me.txtTotalCompra.Text) Then
+                    MsgBox("El total de las ventas es mayor que el del gasto.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                If valorNumerico(Me.lblTotalFacturasRelacionadas.Text) < valorNumerico(Me.txtTotalCompra.Text) Then
+                    If MsgBox("El total de las ventas es menor que el del gasto, seguro desea continuar? ", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
+                        Return False
+                    End If
+                End If
+            End If
+
+            bResultado = True
+        Catch ex As Exception
+            HandleError(Me.Name, "ValidaVentas", ex)
+        End Try
+
+        Return bResultado
+    End Function
+
     Private Function GrabarVentasRelacionadas() As Boolean
+        Const sProcedure As String = "GrabarVentasRelacionadas"
         Dim bResultado As Boolean = False
         Dim i As Integer
         Dim oDetalleVentas As New Class_Centros_Costos_Detalle_Ventas
 
         Try
+
+            'Nota aquí no hay validaciones , se hacen por fuera.
+
             'Eliminamos todas las ventas(si es que hay previamente grabadas)
             If oDetalleVentas.EliminaCentroCostosDetalleVentas(Me.txtFolioCompra.Text) = False Then
-                Return False
-            End If
-
-            If valorNumerico(Me.txtTotalCompra.Text) <> valorNumerico(Me.lblTotalFacturasRelacionadas.Text) Then
-                MsgBox("El total del gasto es distinto del gasto de las facturas.", MsgBoxStyle.Exclamation, Me.Name)
                 Return False
             End If
 
@@ -2037,7 +2063,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                         .IMPORTE = valorNumerico(Me.GridFacturasRelacionadas.Cell(i, Me.iGyGasto).Text)
 
                         If .GrabaCentroCostosDetalleVentas = False Then
-                            MsgBox("Error al insertar el renglon " & i, MsgBoxStyle.Exclamation)
+                            MsgBox("Error al insertar el renglón " & i, MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         End If
                     End If
@@ -2047,7 +2073,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
             End With
 
         Catch ex As Exception
-            HandleError(Me.Name, "GrabarVentasRelacionadas", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado
@@ -2165,11 +2191,8 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                 End If
             End If
 
-            If valorNumerico(Me.lblTotalFacturasRelacionadas.Text) > 0 Then
-                If valorNumerico(Me.txtTotalCompra.Text) <> valorNumerico(Me.lblTotalFacturasRelacionadas.Text) Then
-                    MsgBox("El total del gasto es distinto del gasto de las facturas.", MsgBoxStyle.Exclamation, Me.Name)
-                    Return False
-                End If
+            If Me.ValidaVentas = False Then
+                Return False
             End If
 
             bResultado = True
