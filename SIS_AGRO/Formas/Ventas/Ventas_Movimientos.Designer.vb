@@ -167,7 +167,7 @@ Partial Class Ventas_Movimientos
         'txtFolio
         '
         Me.txtFolio.Location = New System.Drawing.Point(112, 50)
-        Me.txtFolio.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtFolio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtFolio.MaxLength = 15
         Me.txtFolio.Name = "txtFolio"
         Me.txtFolio.Size = New System.Drawing.Size(109, 22)
@@ -310,7 +310,7 @@ Partial Class Ventas_Movimientos
         Me.CboDocumento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboDocumento.FormattingEnabled = True
         Me.CboDocumento.Location = New System.Drawing.Point(112, 18)
-        Me.CboDocumento.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboDocumento.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.CboDocumento.Name = "CboDocumento"
         Me.CboDocumento.Size = New System.Drawing.Size(272, 24)
         Me.CboDocumento.TabIndex = 0
@@ -331,7 +331,7 @@ Partial Class Ventas_Movimientos
         Me.dpFecha.CustomFormat = "dd-MMM-yyyy"
         Me.dpFecha.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.dpFecha.Location = New System.Drawing.Point(561, 76)
-        Me.dpFecha.Margin = New System.Windows.Forms.Padding(4)
+        Me.dpFecha.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.dpFecha.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dpFecha.Name = "dpFecha"
         Me.dpFecha.Size = New System.Drawing.Size(119, 22)
@@ -353,7 +353,7 @@ Partial Class Ventas_Movimientos
         Me.dpVencimiento.CustomFormat = "dd-MMM-yyyy"
         Me.dpVencimiento.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.dpVencimiento.Location = New System.Drawing.Point(563, 107)
-        Me.dpVencimiento.Margin = New System.Windows.Forms.Padding(4)
+        Me.dpVencimiento.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.dpVencimiento.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dpVencimiento.Name = "dpVencimiento"
         Me.dpVencimiento.Size = New System.Drawing.Size(119, 22)
@@ -391,7 +391,7 @@ Partial Class Ventas_Movimientos
         'TxtCliente
         '
         Me.TxtCliente.Location = New System.Drawing.Point(112, 171)
-        Me.TxtCliente.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtCliente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtCliente.MaxLength = 8
         Me.TxtCliente.Name = "TxtCliente"
         Me.TxtCliente.Size = New System.Drawing.Size(109, 22)
@@ -410,7 +410,7 @@ Partial Class Ventas_Movimientos
         'TxtConcepto
         '
         Me.TxtConcepto.Location = New System.Drawing.Point(112, 235)
-        Me.TxtConcepto.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtConcepto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtConcepto.MaxLength = 4000
         Me.TxtConcepto.Multiline = True
         Me.TxtConcepto.Name = "TxtConcepto"
@@ -422,7 +422,7 @@ Partial Class Ventas_Movimientos
         '
         Me.TxtReferencia.Enabled = False
         Me.TxtReferencia.Location = New System.Drawing.Point(112, 79)
-        Me.TxtReferencia.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtReferencia.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtReferencia.MaxLength = 15
         Me.TxtReferencia.Name = "TxtReferencia"
         Me.TxtReferencia.Size = New System.Drawing.Size(109, 22)
@@ -443,7 +443,7 @@ Partial Class Ventas_Movimientos
         Me.CboAlmacen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboAlmacen.FormattingEnabled = True
         Me.CboAlmacen.Location = New System.Drawing.Point(953, 44)
-        Me.CboAlmacen.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboAlmacen.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.CboAlmacen.Name = "CboAlmacen"
         Me.CboAlmacen.Size = New System.Drawing.Size(272, 24)
         Me.CboAlmacen.TabIndex = 18
@@ -501,7 +501,7 @@ Partial Class Ventas_Movimientos
         'txtPlazo
         '
         Me.txtPlazo.Location = New System.Drawing.Point(789, 76)
-        Me.txtPlazo.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtPlazo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtPlazo.MaxLength = 3
         Me.txtPlazo.Name = "txtPlazo"
         Me.txtPlazo.Size = New System.Drawing.Size(43, 22)
@@ -532,7 +532,7 @@ Partial Class Ventas_Movimientos
         Me.cboTipoMercado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboTipoMercado.FormattingEnabled = True
         Me.cboTipoMercado.Location = New System.Drawing.Point(533, 14)
-        Me.cboTipoMercado.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboTipoMercado.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.cboTipoMercado.Name = "cboTipoMercado"
         Me.cboTipoMercado.Size = New System.Drawing.Size(272, 24)
         Me.cboTipoMercado.TabIndex = 1
@@ -542,7 +542,7 @@ Partial Class Ventas_Movimientos
         Me.cboTipoNegociacion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboTipoNegociacion.FormattingEnabled = True
         Me.cboTipoNegociacion.Location = New System.Drawing.Point(112, 108)
-        Me.cboTipoNegociacion.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboTipoNegociacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.cboTipoNegociacion.Name = "cboTipoNegociacion"
         Me.cboTipoNegociacion.Size = New System.Drawing.Size(109, 24)
         Me.cboTipoNegociacion.TabIndex = 5
@@ -562,7 +562,7 @@ Partial Class Ventas_Movimientos
         Me.cboVendedor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboVendedor.FormattingEnabled = True
         Me.cboVendedor.Location = New System.Drawing.Point(953, 15)
-        Me.cboVendedor.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboVendedor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.cboVendedor.Name = "cboVendedor"
         Me.cboVendedor.Size = New System.Drawing.Size(272, 24)
         Me.cboVendedor.TabIndex = 17
@@ -581,7 +581,7 @@ Partial Class Ventas_Movimientos
         '
         Me.chkVentaPublicoGeneral.AutoSize = True
         Me.chkVentaPublicoGeneral.Location = New System.Drawing.Point(227, 84)
-        Me.chkVentaPublicoGeneral.Margin = New System.Windows.Forms.Padding(4)
+        Me.chkVentaPublicoGeneral.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.chkVentaPublicoGeneral.Name = "chkVentaPublicoGeneral"
         Me.chkVentaPublicoGeneral.Size = New System.Drawing.Size(183, 21)
         Me.chkVentaPublicoGeneral.TabIndex = 4
@@ -601,9 +601,9 @@ Partial Class Ventas_Movimientos
         Me.gbPesos.Controls.Add(Me.lblDisplaySubtotalPesos)
         Me.gbPesos.Controls.Add(Me.lblDisplayImpuestoPesos)
         Me.gbPesos.Location = New System.Drawing.Point(833, 0)
-        Me.gbPesos.Margin = New System.Windows.Forms.Padding(4)
+        Me.gbPesos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gbPesos.Name = "gbPesos"
-        Me.gbPesos.Padding = New System.Windows.Forms.Padding(4)
+        Me.gbPesos.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gbPesos.Size = New System.Drawing.Size(252, 126)
         Me.gbPesos.TabIndex = 292
         Me.gbPesos.TabStop = False
@@ -698,9 +698,9 @@ Partial Class Ventas_Movimientos
         Me.gbDolares.Controls.Add(Me.lblDisplaySubtotalDolares)
         Me.gbDolares.Controls.Add(Me.lblDisplayImpuestoDolares)
         Me.gbDolares.Location = New System.Drawing.Point(599, 23)
-        Me.gbDolares.Margin = New System.Windows.Forms.Padding(4)
+        Me.gbDolares.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gbDolares.Name = "gbDolares"
-        Me.gbDolares.Padding = New System.Windows.Forms.Padding(4)
+        Me.gbDolares.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gbDolares.Size = New System.Drawing.Size(235, 96)
         Me.gbDolares.TabIndex = 293
         Me.gbDolares.TabStop = False
@@ -884,9 +884,9 @@ Partial Class Ventas_Movimientos
         Me.frmDatos.Controls.Add(Me.txtPlazo)
         Me.frmDatos.Controls.Add(Me.LblDisplayTipoSocio)
         Me.frmDatos.Location = New System.Drawing.Point(11, 34)
-        Me.frmDatos.Margin = New System.Windows.Forms.Padding(4)
+        Me.frmDatos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.frmDatos.Name = "frmDatos"
-        Me.frmDatos.Padding = New System.Windows.Forms.Padding(4)
+        Me.frmDatos.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.frmDatos.Size = New System.Drawing.Size(1315, 297)
         Me.frmDatos.TabIndex = 0
         Me.frmDatos.TabStop = False
@@ -917,7 +917,7 @@ Partial Class Ventas_Movimientos
         Me.cboFormaPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboFormaPago.FormattingEnabled = True
         Me.cboFormaPago.Location = New System.Drawing.Point(112, 203)
-        Me.cboFormaPago.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboFormaPago.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.cboFormaPago.Name = "cboFormaPago"
         Me.cboFormaPago.Size = New System.Drawing.Size(272, 24)
         Me.cboFormaPago.TabIndex = 9
@@ -938,7 +938,7 @@ Partial Class Ventas_Movimientos
         Me.cboUsoCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboUsoCFDI.FormattingEnabled = True
         Me.cboUsoCFDI.Location = New System.Drawing.Point(563, 139)
-        Me.cboUsoCFDI.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboUsoCFDI.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.cboUsoCFDI.MaxLength = 1
         Me.cboUsoCFDI.Name = "cboUsoCFDI"
         Me.cboUsoCFDI.Size = New System.Drawing.Size(400, 24)
@@ -960,7 +960,7 @@ Partial Class Ventas_Movimientos
         Me.cboMetodoPago.Enabled = False
         Me.cboMetodoPago.FormattingEnabled = True
         Me.cboMetodoPago.Location = New System.Drawing.Point(563, 204)
-        Me.cboMetodoPago.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboMetodoPago.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.cboMetodoPago.MaxLength = 1
         Me.cboMetodoPago.Name = "cboMetodoPago"
         Me.cboMetodoPago.Size = New System.Drawing.Size(400, 24)
@@ -981,7 +981,7 @@ Partial Class Ventas_Movimientos
         Me.CboTipoCredito.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboTipoCredito.FormattingEnabled = True
         Me.CboTipoCredito.Location = New System.Drawing.Point(953, 106)
-        Me.CboTipoCredito.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboTipoCredito.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.CboTipoCredito.Name = "CboTipoCredito"
         Me.CboTipoCredito.Size = New System.Drawing.Size(272, 24)
         Me.CboTipoCredito.TabIndex = 20
@@ -1000,7 +1000,7 @@ Partial Class Ventas_Movimientos
         '
         Me.ckbMostrarUtilidad.AutoSize = True
         Me.ckbMostrarUtilidad.Location = New System.Drawing.Point(953, 233)
-        Me.ckbMostrarUtilidad.Margin = New System.Windows.Forms.Padding(4)
+        Me.ckbMostrarUtilidad.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.ckbMostrarUtilidad.Name = "ckbMostrarUtilidad"
         Me.ckbMostrarUtilidad.Size = New System.Drawing.Size(127, 21)
         Me.ckbMostrarUtilidad.TabIndex = 375
@@ -1022,7 +1022,7 @@ Partial Class Ventas_Movimientos
         Me.cboMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboMoneda.FormattingEnabled = True
         Me.cboMoneda.Location = New System.Drawing.Point(112, 139)
-        Me.cboMoneda.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboMoneda.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.cboMoneda.Name = "cboMoneda"
         Me.cboMoneda.Size = New System.Drawing.Size(109, 24)
         Me.cboMoneda.TabIndex = 6
@@ -1030,7 +1030,7 @@ Partial Class Ventas_Movimientos
         'btnFacturaSiguiente
         '
         Me.btnFacturaSiguiente.Location = New System.Drawing.Point(313, 50)
-        Me.btnFacturaSiguiente.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnFacturaSiguiente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.btnFacturaSiguiente.Name = "btnFacturaSiguiente"
         Me.btnFacturaSiguiente.Size = New System.Drawing.Size(72, 26)
         Me.btnFacturaSiguiente.TabIndex = 372
@@ -1040,7 +1040,7 @@ Partial Class Ventas_Movimientos
         'btnFacturaAnterior
         '
         Me.btnFacturaAnterior.Location = New System.Drawing.Point(227, 50)
-        Me.btnFacturaAnterior.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnFacturaAnterior.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.btnFacturaAnterior.Name = "btnFacturaAnterior"
         Me.btnFacturaAnterior.Size = New System.Drawing.Size(72, 26)
         Me.btnFacturaAnterior.TabIndex = 371
@@ -1061,7 +1061,7 @@ Partial Class Ventas_Movimientos
         '
         Me.txtTipoCambio.Enabled = False
         Me.txtTipoCambio.Location = New System.Drawing.Point(341, 142)
-        Me.txtTipoCambio.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtTipoCambio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtTipoCambio.MaxLength = 8
         Me.txtTipoCambio.Name = "txtTipoCambio"
         Me.txtTipoCambio.Size = New System.Drawing.Size(87, 22)
@@ -1072,7 +1072,7 @@ Partial Class Ventas_Movimientos
         'txtNumeroCuentaPago
         '
         Me.txtNumeroCuentaPago.Location = New System.Drawing.Point(561, 46)
-        Me.txtNumeroCuentaPago.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtNumeroCuentaPago.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtNumeroCuentaPago.MaxLength = 4
         Me.txtNumeroCuentaPago.Name = "txtNumeroCuentaPago"
         Me.txtNumeroCuentaPago.Size = New System.Drawing.Size(119, 22)
@@ -1112,7 +1112,7 @@ Partial Class Ventas_Movimientos
         'txtFolioEmbarque
         '
         Me.txtFolioEmbarque.Location = New System.Drawing.Point(953, 76)
-        Me.txtFolioEmbarque.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtFolioEmbarque.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtFolioEmbarque.MaxLength = 60
         Me.txtFolioEmbarque.Name = "txtFolioEmbarque"
         Me.txtFolioEmbarque.Size = New System.Drawing.Size(119, 22)
@@ -1145,9 +1145,9 @@ Partial Class Ventas_Movimientos
         Me.gbTotales.Controls.Add(Me.lblDisplaySaldo)
         Me.gbTotales.Controls.Add(Me.gbDolares)
         Me.gbTotales.Location = New System.Drawing.Point(11, 640)
-        Me.gbTotales.Margin = New System.Windows.Forms.Padding(4)
+        Me.gbTotales.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gbTotales.Name = "gbTotales"
-        Me.gbTotales.Padding = New System.Windows.Forms.Padding(4)
+        Me.gbTotales.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gbTotales.Size = New System.Drawing.Size(1315, 133)
         Me.gbTotales.TabIndex = 2
         Me.gbTotales.TabStop = False
@@ -1155,7 +1155,7 @@ Partial Class Ventas_Movimientos
         'txtUUID
         '
         Me.txtUUID.Location = New System.Drawing.Point(249, 92)
-        Me.txtUUID.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtUUID.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtUUID.MaxLength = 15
         Me.txtUUID.Name = "txtUUID"
         Me.txtUUID.ReadOnly = True
@@ -1198,7 +1198,7 @@ Partial Class Ventas_Movimientos
         'btnSeries
         '
         Me.btnSeries.Location = New System.Drawing.Point(12, 80)
-        Me.btnSeries.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnSeries.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.btnSeries.Name = "btnSeries"
         Me.btnSeries.Size = New System.Drawing.Size(145, 39)
         Me.btnSeries.TabIndex = 381
@@ -1208,7 +1208,7 @@ Partial Class Ventas_Movimientos
         'btnAgregaAddenda
         '
         Me.btnAgregaAddenda.Location = New System.Drawing.Point(1136, 89)
-        Me.btnAgregaAddenda.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnAgregaAddenda.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.btnAgregaAddenda.Name = "btnAgregaAddenda"
         Me.btnAgregaAddenda.Size = New System.Drawing.Size(151, 28)
         Me.btnAgregaAddenda.TabIndex = 339
@@ -1232,7 +1232,7 @@ Partial Class Ventas_Movimientos
         Me.TabControl1.Controls.Add(Me.tpSeries)
         Me.TabControl1.Controls.Add(Me.tpCFDIsRelacionados)
         Me.TabControl1.Location = New System.Drawing.Point(11, 338)
-        Me.TabControl1.Margin = New System.Windows.Forms.Padding(4)
+        Me.TabControl1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(1315, 293)
@@ -1242,9 +1242,9 @@ Partial Class Ventas_Movimientos
         '
         Me.tpArticulos.Controls.Add(Me.Grid)
         Me.tpArticulos.Location = New System.Drawing.Point(4, 25)
-        Me.tpArticulos.Margin = New System.Windows.Forms.Padding(4)
+        Me.tpArticulos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.tpArticulos.Name = "tpArticulos"
-        Me.tpArticulos.Padding = New System.Windows.Forms.Padding(4)
+        Me.tpArticulos.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.tpArticulos.Size = New System.Drawing.Size(1307, 264)
         Me.tpArticulos.TabIndex = 0
         Me.tpArticulos.Text = "Artículos"
@@ -1263,7 +1263,7 @@ Partial Class Ventas_Movimientos
         Me.Grid.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.Grid.Location = New System.Drawing.Point(4, 7)
         Me.Grid.LockButton = True
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Grid.Name = "Grid"
         Me.Grid.Rows = 8
         Me.Grid.Size = New System.Drawing.Size(1292, 251)
@@ -1274,9 +1274,9 @@ Partial Class Ventas_Movimientos
         '
         Me.tpSeries.Controls.Add(Me.GridSeries)
         Me.tpSeries.Location = New System.Drawing.Point(4, 25)
-        Me.tpSeries.Margin = New System.Windows.Forms.Padding(4)
+        Me.tpSeries.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.tpSeries.Name = "tpSeries"
-        Me.tpSeries.Padding = New System.Windows.Forms.Padding(4)
+        Me.tpSeries.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.tpSeries.Size = New System.Drawing.Size(1307, 264)
         Me.tpSeries.TabIndex = 1
         Me.tpSeries.Text = "Series"
@@ -1295,7 +1295,7 @@ Partial Class Ventas_Movimientos
         Me.GridSeries.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.GridSeries.Location = New System.Drawing.Point(7, 7)
         Me.GridSeries.LockButton = True
-        Me.GridSeries.Margin = New System.Windows.Forms.Padding(4)
+        Me.GridSeries.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.GridSeries.Name = "GridSeries"
         Me.GridSeries.Rows = 6
         Me.GridSeries.Size = New System.Drawing.Size(1288, 244)
@@ -1308,7 +1308,7 @@ Partial Class Ventas_Movimientos
         Me.tpCFDIsRelacionados.Controls.Add(Me.Label3)
         Me.tpCFDIsRelacionados.Controls.Add(Me.cboTipoRelacionCFDI)
         Me.tpCFDIsRelacionados.Location = New System.Drawing.Point(4, 25)
-        Me.tpCFDIsRelacionados.Margin = New System.Windows.Forms.Padding(4)
+        Me.tpCFDIsRelacionados.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.tpCFDIsRelacionados.Name = "tpCFDIsRelacionados"
         Me.tpCFDIsRelacionados.Size = New System.Drawing.Size(1307, 264)
         Me.tpCFDIsRelacionados.TabIndex = 2
@@ -1328,7 +1328,7 @@ Partial Class Ventas_Movimientos
         Me.GridCFDIsRelacionados.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.GridCFDIsRelacionados.Location = New System.Drawing.Point(7, 57)
         Me.GridCFDIsRelacionados.LockButton = True
-        Me.GridCFDIsRelacionados.Margin = New System.Windows.Forms.Padding(4)
+        Me.GridCFDIsRelacionados.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.GridCFDIsRelacionados.Name = "GridCFDIsRelacionados"
         Me.GridCFDIsRelacionados.Rows = 3
         Me.GridCFDIsRelacionados.Size = New System.Drawing.Size(1275, 197)
@@ -1351,7 +1351,7 @@ Partial Class Ventas_Movimientos
         Me.cboTipoRelacionCFDI.Enabled = False
         Me.cboTipoRelacionCFDI.FormattingEnabled = True
         Me.cboTipoRelacionCFDI.Location = New System.Drawing.Point(149, 23)
-        Me.cboTipoRelacionCFDI.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboTipoRelacionCFDI.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.cboTipoRelacionCFDI.MaxLength = 1
         Me.cboTipoRelacionCFDI.Name = "cboTipoRelacionCFDI"
         Me.cboTipoRelacionCFDI.Size = New System.Drawing.Size(400, 24)
@@ -1361,7 +1361,6 @@ Partial Class Ventas_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.AutoScroll = True
         Me.ClientSize = New System.Drawing.Size(1339, 806)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.gbTotales)
@@ -1371,7 +1370,7 @@ Partial Class Ventas_Movimientos
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.KeyPreview = True
-        Me.Margin = New System.Windows.Forms.Padding(4)
+        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.MaximizeBox = False
         Me.Name = "Ventas_Movimientos"
         Me.Text = "Documentos de Ventas"
