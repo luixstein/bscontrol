@@ -597,12 +597,9 @@ Buscar:
             Case Keys.Enter
                 If valorNumerico(Me.TxtRetencionIVA.Text) > 0 Then
                     Me.TxtRetencionIVA.Text = FormatImporteContable(CDbl(Me.TxtRetencionIVA.Text))
-                    'Me.txtTotalCompra.Text = FormatImporteContable(valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.TxtIVA.Text) - valorNumerico(Me.TxtRetencionIVA.Text))
                 Else
                     Me.TxtRetencionIVA.Text = FormatImporteContable(0)
-                    'Me.txtTotalCompra.Text = FormatImporteContable(valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.TxtIVA.Text) - valorNumerico(Me.TxtRetencionIVA.Text))
                 End If
-                'Me.CalculaImporteDolares()
 
                 Me.TotalizaGridCentrosCostosyActivos()
                 Me.txtRetencionISR.Focus()
