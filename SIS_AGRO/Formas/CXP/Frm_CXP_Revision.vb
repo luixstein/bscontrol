@@ -653,10 +653,10 @@ Buscar:
     Private Sub txtTotalCompra_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtTotalCompra.KeyDown
         Select Case e.KeyCode
             Case Keys.Enter
-                If valorNumerico(Me.txtTotalCompra.Text) > 0 Then
-                    Me.txtTotalCompra.Text = FormatImporteContable(CDbl(Me.txtTotalCompra.Text))
-                    Me.txtTotalCompra.Text = FormatImporteContable(valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.TxtIVA.Text) - valorNumerico(Me.TxtRetencionIVA.Text))
-                End If
+                'If valorNumerico(Me.txtTotalCompra.Text) > 0 Then
+                '    Me.txtTotalCompra.Text = FormatImporteContable(CDbl(Me.txtTotalCompra.Text))
+                '    Me.txtTotalCompra.Text = FormatImporteContable(valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.TxtIVA.Text) - valorNumerico(Me.TxtRetencionIVA.Text))
+                'End If
                 Me.tsbGrabar.Select()
         End Select
     End Sub
@@ -1884,6 +1884,9 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
         Dim sCuentas As String = "", sListaActivos As String = ""
         Dim i As Integer
         Dim sProveedor As String = Me.TxtCodigoProveedor.Text
+
+        Me.TotalizaGridCentrosCostosyActivos()
+        'Me.Totales()
 
         If Me.ValidarCompra = False Then
             Return False
