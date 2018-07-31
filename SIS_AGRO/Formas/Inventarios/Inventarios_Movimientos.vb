@@ -386,6 +386,7 @@ busca:
                     Me.txtFolioEmbarque.Enabled = True
                     Me.Grid1.Locked = False
                     Me.GridSeries.Locked = False
+                    Me.BtnSeries.Enabled = True
 
                     Me.OcultaControles()
 
@@ -418,6 +419,7 @@ busca:
                     Me.txtFolioEmbarque.Enabled = True
                     Me.Grid1.Locked = False
                     Me.GridSeries.Locked = False
+                    Me.BtnSeries.Enabled = True
 
                     Me.OcultaControles()
 
@@ -910,6 +912,7 @@ BuscarCuentas:
                                     For Each dRow In Me.dtSeries.Select("POSICION='" & i.ToString & "'")
                                         sListaSeries = sListaSeries & dRow("POSICION").ToString & "," & dRow("CODIGO_ARTICULO").ToString & "," & dRow("ID_INVENTARIO_LOTES_COSTOS").ToString & "," & dRow("NUMERO_SERIE").ToString & "|"
                                     Next
+
                                     If txtLEN(sListaSeries) = True Then
                                         sListaSeries = sListaSeries.Substring(0, sListaSeries.Length - 1) 'Para quitarle el último pipe que sale sobrando.
                                     End If
@@ -1756,7 +1759,7 @@ BuscarCuentas:
             End If
             Me.tsbCancelar.Visible = False
             Me.txtFolioEmbarque.Visible = True : Me.lblDisplayFolioEmbarque.Visible = True
-            Me.BtnSeries.Enabled = True
+            Me.GridSeries.Column(Me.igySerieNumeroSerie).Locked = True
 
         Else
             Me.CboAlmacenDestino.Visible = False
@@ -1768,11 +1771,7 @@ BuscarCuentas:
             Me.tsbCancelar.Visible = True
             Me.txtFolioEmbarque.Text = "" 'Se forza a blanco por si tenia algo capturado.
             Me.txtFolioEmbarque.Visible = False : Me.lblDisplayFolioEmbarque.Visible = False
-            If Me.CboDocumento.Text <> "SALIDA" Then
-                Me.BtnSeries.Enabled = False
-            Else
-                Me.BtnSeries.Enabled = True
-            End If
+            Me.GridSeries.Column(Me.igySerieNumeroSerie).Locked = True
         End If
     End Sub
 
@@ -1988,6 +1987,10 @@ BuscarCuentas:
 
             Me.FormateaGridSeries()
 
+            If Me.CboDocumento.Text = "ENTRADA" Then
+                Me.GridSeries.Column(Me.igySerieNumeroSerie).Locked = False
+            End If
+
             Me.TabControl1.SelectedIndex = 1
 
         Catch ex As Exception
@@ -2053,6 +2056,11 @@ BuscarCuentas:
             With Me.GridSeries
                 Dim Renglon As Integer = .Selection.FirstRow
                 Dim Columna As Integer = .Selection.FirstCol
+
+                If Me.CboDocumento.Text = "ENTRADA" Then
+                    Exit Sub
+                End If
+
                 Select Case e.KeyCode
                     Case Keys.Return
                         If Columna = Me.igySerieNumeroSerie AndAlso txtLEN(.Cell(Renglon, Me.igySeriePosicion).Text) = True Then
@@ -2125,6 +2133,7 @@ busca_serie:
                     Case Keys.Delete
                         e.SuppressKeyPress = True
                 End Select
+
             End With
 
         Catch ex As Exception
@@ -2255,23 +2264,43 @@ busca_serie:
         Try
             Me.dtSeries.AcceptChanges()
 
-            For i = 1 To Me.GridSeries.Rows - 1
-                If txtLEN(Me.GridSeries.Cell(i, Me.igySerieCodigo).Text) = True Then
-                    For z = i + 1 To Me.GridSeries.Rows - 1
-                        If Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text = Me.GridSeries.Cell(z, Me.igySerieIdInventarioLotesCostos).Text Then
-                            RenglonRepetido = z
+            If Me.CboDocumento.Text = "ENTRADA" Then 'Compara numeros de serie
+                For i = 1 To Me.GridSeries.Rows - 1
+                    If txtLEN(Me.GridSeries.Cell(i, Me.igySerieCodigo).Text) = True Then
+                        For z = i + 1 To Me.GridSeries.Rows - 1
+                            If Me.GridSeries.Cell(i, Me.igySerieNumeroSerie).Text = Me.GridSeries.Cell(z, Me.igySerieNumeroSerie).Text Then
+                                RenglonRepetido = z
 
-                            MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text & _
-                                   " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf & _
-                                   "", MsgBoxStyle.Exclamation)
-                            Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
+                                MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text & _
+                                       " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf & _
+                                       "", MsgBoxStyle.Exclamation)
+                                Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
 
-                            Return True
+                                Return True
 
-                        End If
-                    Next
-                End If
-            Next
+                            End If
+                        Next
+                    End If
+                Next
+            Else 'Compara Id inventarios lotes costos
+                For i = 1 To Me.GridSeries.Rows - 1
+                    If txtLEN(Me.GridSeries.Cell(i, Me.igySerieCodigo).Text) = True Then
+                        For z = i + 1 To Me.GridSeries.Rows - 1
+                            If Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text = Me.GridSeries.Cell(z, Me.igySerieIdInventarioLotesCostos).Text Then
+                                RenglonRepetido = z
+
+                                MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text & _
+                                       " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf & _
+                                       "", MsgBoxStyle.Exclamation)
+                                Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
+
+                                Return True
+
+                            End If
+                        Next
+                    End If
+                Next
+            End If
         Catch ex As Exception
             HandleError(Me.Name, "HaySeriesRepetidas", ex)
         End Try
