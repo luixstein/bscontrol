@@ -1036,6 +1036,11 @@ BuscarCuentas:
             End If
         End If
 
+        If Me.CboDocumento.Text = "ENTRADA" And Me.GridSeries.Rows > 1 Then
+            MsgBox("La cancelación de ENTRADAS con series no esta soportada, debe hacerse una salida manualmente.", MsgBoxStyle.Exclamation, Me.Text)
+            Exit Function
+        End If
+
         If Me.oDocumentos.ES_TRANSFERENCIA = "1" Then
             If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString, Me.CboAlmacenDestino.SelectedValue.ToString) = False Then
                 MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar la transferencia.", MsgBoxStyle.Exclamation, Me.Text)
