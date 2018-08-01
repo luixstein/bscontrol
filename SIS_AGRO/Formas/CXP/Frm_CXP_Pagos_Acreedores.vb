@@ -510,7 +510,6 @@ buscar_acreedor:
                         Me.Grid1.Cell(Renglon, Me.iGyPagoMXP).Text = "0"
                         Me.Grid1.Cell(Renglon, Me.iGyPagoUSD).Text = "0"
                         Me.Grid1.Cell(Renglon, Me.iGyPagarImpuesto).Text = "0"
-                        'Me.Grid1.Cell(Renglon, Me.iGyRetencion).Text = "0"
                     End If
                 End If
 
@@ -968,7 +967,6 @@ buscar_acreedor:
                 Exit Sub
             ElseIf Me.ModoPago = enumModoPago.PROVEEDOR Then
                 Me.TxtImporte.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyPagoMXP))) 'Esté total ya consideró la retención en Gastos
-                'Me.txtRetencion.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyRetencion)))
             End If
 
             If Me.LblStatus.Text = "NUEVO" And Me.CkbPagoFleteEmbarques.Checked = True Then
@@ -976,7 +974,6 @@ buscar_acreedor:
                     Me.TxtImporte.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid2, CShort(Me.iGyPagoFlete)))
                 Else
                     Me.TxtImporte.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyPagoMXP)))
-                    'Me.txtRetencion.Text = 0 ' FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyRetencion)))
                 End If
             End If
 
