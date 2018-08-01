@@ -586,8 +586,7 @@ Buscar:
             Case Keys.Enter
                 If valorNumerico(Me.TxtSubTotal.Text) > 0 Then
                     Me.TxtSubTotal.Text = FormatImporteContable(CDbl(Me.TxtSubTotal.Text))
-                    Me.txtTotalCompra.Text = FormatImporteContable(valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.TxtIVA.Text) - valorNumerico(Me.TxtRetencionIVA.Text))
-                    Me.CalculaImporteDolares()
+                    Me.TotalizaGridCentrosCostosyActivos()
                 End If
         End Select
     End Sub
@@ -626,14 +625,12 @@ Buscar:
                 If valorNumerico(Me.TxtIVA.Text) > 0 Then
                     Me.TxtIVA.Text = FormatImporteContable(CDbl(Me.TxtIVA.Text))
                     Me.txtPorciento.Text = "16"
-                    Me.txtTotalCompra.Text = FormatImporteContable(valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.TxtIVA.Text) - valorNumerico(Me.TxtRetencionIVA.Text))
-                    Me.CalculaImporteDolares()
+                    Me.TotalizaGridCentrosCostosyActivos()
                     Me.txtPorciento.Focus()
                 Else
                     Me.TxtIVA.Text = FormatImporteContable(0)
-                    Me.txtTotalCompra.Text = FormatImporteContable(valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.TxtIVA.Text) - valorNumerico(Me.TxtRetencionIVA.Text))
+                    Me.TotalizaGridCentrosCostosyActivos()
                     Me.txtPorciento.Text = "0"
-                    Me.CalculaImporteDolares()
                     Me.TxtRetencionIVA.Focus()
                 End If
         End Select
@@ -644,7 +641,7 @@ Buscar:
             Case Keys.Enter
                 If valorNumerico(Me.txtPorciento.Text) > 0 Then
                     Me.txtPorciento.Text = CDbl(Me.txtPorciento.Text).ToString
-                    Me.txtTotalCompra.Text = FormatImporteContable(valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.TxtIVA.Text) - valorNumerico(Me.TxtRetencionIVA.Text))
+                    Me.TotalizaGridCentrosCostosyActivos()
                 End If
                 Me.TxtRetencionIVA.Focus()
         End Select
@@ -653,10 +650,7 @@ Buscar:
     Private Sub txtTotalCompra_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtTotalCompra.KeyDown
         Select Case e.KeyCode
             Case Keys.Enter
-                'If valorNumerico(Me.txtTotalCompra.Text) > 0 Then
-                '    Me.txtTotalCompra.Text = FormatImporteContable(CDbl(Me.txtTotalCompra.Text))
-                '    Me.txtTotalCompra.Text = FormatImporteContable(valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.TxtIVA.Text) - valorNumerico(Me.TxtRetencionIVA.Text))
-                'End If
+                Me.TotalizaGridCentrosCostosyActivos()
                 Me.tsbGrabar.Select()
         End Select
     End Sub
