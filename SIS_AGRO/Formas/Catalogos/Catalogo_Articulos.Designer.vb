@@ -24,6 +24,9 @@ Partial Class Catalogo_Articulos
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Catalogo_Articulos))
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.lblNombreProducto = New System.Windows.Forms.Label()
+        Me.lblCodigoProducto = New System.Windows.Forms.Label()
+        Me.txtCodigoProducto = New System.Windows.Forms.TextBox()
         Me.LblFactorConversion = New System.Windows.Forms.Label()
         Me.txtFactorConversion = New System.Windows.Forms.TextBox()
         Me.lblClaveProductoSATSimiliar = New System.Windows.Forms.Label()
@@ -72,9 +75,8 @@ Partial Class Catalogo_Articulos
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.txtCodigoProducto = New System.Windows.Forms.TextBox()
-        Me.lblCodigoProducto = New System.Windows.Forms.Label()
-        Me.lblNombreProducto = New System.Windows.Forms.Label()
+        Me.cboImpuestoFlete = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayImpuestoFlete = New System.Windows.Forms.Label()
         Me.gBoxInformacion.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -87,6 +89,8 @@ Partial Class Catalogo_Articulos
         Me.gBoxInformacion.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.gBoxInformacion.Controls.Add(Me.lblDisplayImpuestoFlete)
+        Me.gBoxInformacion.Controls.Add(Me.cboImpuestoFlete)
         Me.gBoxInformacion.Controls.Add(Me.lblNombreProducto)
         Me.gBoxInformacion.Controls.Add(Me.lblCodigoProducto)
         Me.gBoxInformacion.Controls.Add(Me.txtCodigoProducto)
@@ -124,15 +128,44 @@ Partial Class Catalogo_Articulos
         Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
         Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
-        Me.gBoxInformacion.Size = New System.Drawing.Size(529, 743)
+        Me.gBoxInformacion.Size = New System.Drawing.Size(529, 775)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información de los artículos"
         '
+        'lblNombreProducto
+        '
+        Me.lblNombreProducto.AutoSize = True
+        Me.lblNombreProducto.Location = New System.Drawing.Point(167, 741)
+        Me.lblNombreProducto.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblNombreProducto.Name = "lblNombreProducto"
+        Me.lblNombreProducto.Size = New System.Drawing.Size(16, 17)
+        Me.lblNombreProducto.TabIndex = 249
+        Me.lblNombreProducto.Text = "_"
+        '
+        'lblCodigoProducto
+        '
+        Me.lblCodigoProducto.AutoSize = True
+        Me.lblCodigoProducto.Location = New System.Drawing.Point(14, 718)
+        Me.lblCodigoProducto.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblCodigoProducto.Name = "lblCodigoProducto"
+        Me.lblCodigoProducto.Size = New System.Drawing.Size(120, 17)
+        Me.lblCodigoProducto.TabIndex = 248
+        Me.lblCodigoProducto.Text = "Código producto :"
+        '
+        'txtCodigoProducto
+        '
+        Me.txtCodigoProducto.Location = New System.Drawing.Point(170, 715)
+        Me.txtCodigoProducto.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtCodigoProducto.MaxLength = 10
+        Me.txtCodigoProducto.Name = "txtCodigoProducto"
+        Me.txtCodigoProducto.Size = New System.Drawing.Size(91, 22)
+        Me.txtCodigoProducto.TabIndex = 247
+        '
         'LblFactorConversion
         '
         Me.LblFactorConversion.AutoSize = True
-        Me.LblFactorConversion.Location = New System.Drawing.Point(13, 645)
+        Me.LblFactorConversion.Location = New System.Drawing.Point(13, 678)
         Me.LblFactorConversion.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblFactorConversion.Name = "LblFactorConversion"
         Me.LblFactorConversion.Size = New System.Drawing.Size(149, 17)
@@ -141,7 +174,7 @@ Partial Class Catalogo_Articulos
         '
         'txtFactorConversion
         '
-        Me.txtFactorConversion.Location = New System.Drawing.Point(170, 642)
+        Me.txtFactorConversion.Location = New System.Drawing.Point(170, 675)
         Me.txtFactorConversion.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFactorConversion.MaxLength = 0
         Me.txtFactorConversion.Name = "txtFactorConversion"
@@ -153,7 +186,7 @@ Partial Class Catalogo_Articulos
         'lblClaveProductoSATSimiliar
         '
         Me.lblClaveProductoSATSimiliar.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.lblClaveProductoSATSimiliar.Location = New System.Drawing.Point(129, 606)
+        Me.lblClaveProductoSATSimiliar.Location = New System.Drawing.Point(129, 639)
         Me.lblClaveProductoSATSimiliar.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblClaveProductoSATSimiliar.Name = "lblClaveProductoSATSimiliar"
         Me.lblClaveProductoSATSimiliar.Size = New System.Drawing.Size(392, 16)
@@ -182,7 +215,7 @@ Partial Class Catalogo_Articulos
         'lblClaveProductoSAT
         '
         Me.lblClaveProductoSAT.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.lblClaveProductoSAT.Location = New System.Drawing.Point(129, 577)
+        Me.lblClaveProductoSAT.Location = New System.Drawing.Point(129, 610)
         Me.lblClaveProductoSAT.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblClaveProductoSAT.Name = "lblClaveProductoSAT"
         Me.lblClaveProductoSAT.Size = New System.Drawing.Size(392, 16)
@@ -191,7 +224,7 @@ Partial Class Catalogo_Articulos
         'lblCodigoUnidadSAT
         '
         Me.lblCodigoUnidadSAT.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.lblCodigoUnidadSAT.Location = New System.Drawing.Point(129, 527)
+        Me.lblCodigoUnidadSAT.Location = New System.Drawing.Point(129, 560)
         Me.lblCodigoUnidadSAT.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblCodigoUnidadSAT.Name = "lblCodigoUnidadSAT"
         Me.lblCodigoUnidadSAT.Size = New System.Drawing.Size(392, 16)
@@ -200,7 +233,7 @@ Partial Class Catalogo_Articulos
         'lblDisplayClaveProductoSAT
         '
         Me.lblDisplayClaveProductoSAT.AutoSize = True
-        Me.lblDisplayClaveProductoSAT.Location = New System.Drawing.Point(13, 551)
+        Me.lblDisplayClaveProductoSAT.Location = New System.Drawing.Point(13, 584)
         Me.lblDisplayClaveProductoSAT.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayClaveProductoSAT.Name = "lblDisplayClaveProductoSAT"
         Me.lblDisplayClaveProductoSAT.Size = New System.Drawing.Size(350, 17)
@@ -209,7 +242,7 @@ Partial Class Catalogo_Articulos
         '
         'txtClaveProductoSAT
         '
-        Me.txtClaveProductoSAT.Location = New System.Drawing.Point(17, 574)
+        Me.txtClaveProductoSAT.Location = New System.Drawing.Point(17, 607)
         Me.txtClaveProductoSAT.Margin = New System.Windows.Forms.Padding(4)
         Me.txtClaveProductoSAT.MaxLength = 10
         Me.txtClaveProductoSAT.Name = "txtClaveProductoSAT"
@@ -219,7 +252,7 @@ Partial Class Catalogo_Articulos
         'lblDisplayCodigoUnidadSAT
         '
         Me.lblDisplayCodigoUnidadSAT.AutoSize = True
-        Me.lblDisplayCodigoUnidadSAT.Location = New System.Drawing.Point(13, 503)
+        Me.lblDisplayCodigoUnidadSAT.Location = New System.Drawing.Point(13, 536)
         Me.lblDisplayCodigoUnidadSAT.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayCodigoUnidadSAT.Name = "lblDisplayCodigoUnidadSAT"
         Me.lblDisplayCodigoUnidadSAT.Size = New System.Drawing.Size(129, 17)
@@ -228,7 +261,7 @@ Partial Class Catalogo_Articulos
         '
         'txtCodigoUnidadSAT
         '
-        Me.txtCodigoUnidadSAT.Location = New System.Drawing.Point(17, 523)
+        Me.txtCodigoUnidadSAT.Location = New System.Drawing.Point(17, 556)
         Me.txtCodigoUnidadSAT.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCodigoUnidadSAT.MaxLength = 10
         Me.txtCodigoUnidadSAT.Name = "txtCodigoUnidadSAT"
@@ -293,7 +326,7 @@ Partial Class Catalogo_Articulos
         Me.CboFamilia.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboFamilia.FormattingEnabled = True
         Me.CboFamilia.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
-        Me.CboFamilia.Location = New System.Drawing.Point(129, 395)
+        Me.CboFamilia.Location = New System.Drawing.Point(129, 428)
         Me.CboFamilia.Margin = New System.Windows.Forms.Padding(4)
         Me.CboFamilia.Name = "CboFamilia"
         Me.CboFamilia.Size = New System.Drawing.Size(281, 24)
@@ -302,7 +335,7 @@ Partial Class Catalogo_Articulos
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(13, 399)
+        Me.Label1.Location = New System.Drawing.Point(13, 432)
         Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(60, 17)
@@ -312,7 +345,7 @@ Partial Class Catalogo_Articulos
         'LblDisplayCodigoPostalParticular
         '
         Me.LblDisplayCodigoPostalParticular.AutoSize = True
-        Me.LblDisplayCodigoPostalParticular.Location = New System.Drawing.Point(13, 432)
+        Me.LblDisplayCodigoPostalParticular.Location = New System.Drawing.Point(13, 465)
         Me.LblDisplayCodigoPostalParticular.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayCodigoPostalParticular.Name = "LblDisplayCodigoPostalParticular"
         Me.LblDisplayCodigoPostalParticular.Size = New System.Drawing.Size(56, 17)
@@ -321,7 +354,7 @@ Partial Class Catalogo_Articulos
         '
         'TxtPrecio
         '
-        Me.TxtPrecio.Location = New System.Drawing.Point(129, 428)
+        Me.TxtPrecio.Location = New System.Drawing.Point(129, 461)
         Me.TxtPrecio.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtPrecio.MaxLength = 0
         Me.TxtPrecio.Name = "TxtPrecio"
@@ -335,7 +368,7 @@ Partial Class Catalogo_Articulos
         Me.cboLinea.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboLinea.FormattingEnabled = True
         Me.cboLinea.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
-        Me.cboLinea.Location = New System.Drawing.Point(129, 361)
+        Me.cboLinea.Location = New System.Drawing.Point(129, 394)
         Me.cboLinea.Margin = New System.Windows.Forms.Padding(4)
         Me.cboLinea.Name = "cboLinea"
         Me.cboLinea.Size = New System.Drawing.Size(281, 24)
@@ -344,7 +377,7 @@ Partial Class Catalogo_Articulos
         'lblDisplayCod_Linea
         '
         Me.lblDisplayCod_Linea.AutoSize = True
-        Me.lblDisplayCod_Linea.Location = New System.Drawing.Point(13, 364)
+        Me.lblDisplayCod_Linea.Location = New System.Drawing.Point(13, 397)
         Me.lblDisplayCod_Linea.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayCod_Linea.Name = "lblDisplayCod_Linea"
         Me.lblDisplayCod_Linea.Size = New System.Drawing.Size(51, 17)
@@ -354,7 +387,7 @@ Partial Class Catalogo_Articulos
         'LblEstatus
         '
         Me.LblEstatus.AutoSize = True
-        Me.LblEstatus.Location = New System.Drawing.Point(13, 464)
+        Me.LblEstatus.Location = New System.Drawing.Point(13, 497)
         Me.LblEstatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblEstatus.Name = "LblEstatus"
         Me.LblEstatus.Size = New System.Drawing.Size(63, 17)
@@ -366,7 +399,7 @@ Partial Class Catalogo_Articulos
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
-        Me.CboEstatus.Location = New System.Drawing.Point(129, 460)
+        Me.CboEstatus.Location = New System.Drawing.Point(129, 493)
         Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
@@ -446,7 +479,7 @@ Partial Class Catalogo_Articulos
         Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
         Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
-        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(567, 743)
+        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(567, 775)
         Me.gBoxBusquedaRapida.TabIndex = 121
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
@@ -593,7 +626,7 @@ Partial Class Catalogo_Articulos
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssLabel, Me.tssLabelEstado})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 783)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 815)
         Me.StatusStripEstado.Name = "StatusStripEstado"
         Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
         Me.StatusStripEstado.Size = New System.Drawing.Size(1131, 25)
@@ -611,40 +644,32 @@ Partial Class Catalogo_Articulos
         Me.tssLabelEstado.Name = "tssLabelEstado"
         Me.tssLabelEstado.Size = New System.Drawing.Size(0, 20)
         '
-        'txtCodigoProducto
+        'cboImpuestoFlete
         '
-        Me.txtCodigoProducto.Location = New System.Drawing.Point(170, 682)
-        Me.txtCodigoProducto.Margin = New System.Windows.Forms.Padding(4)
-        Me.txtCodigoProducto.MaxLength = 10
-        Me.txtCodigoProducto.Name = "txtCodigoProducto"
-        Me.txtCodigoProducto.Size = New System.Drawing.Size(91, 22)
-        Me.txtCodigoProducto.TabIndex = 247
+        Me.cboImpuestoFlete.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboImpuestoFlete.FormattingEnabled = True
+        Me.cboImpuestoFlete.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
+        Me.cboImpuestoFlete.Location = New System.Drawing.Point(129, 359)
+        Me.cboImpuestoFlete.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboImpuestoFlete.Name = "cboImpuestoFlete"
+        Me.cboImpuestoFlete.Size = New System.Drawing.Size(281, 24)
+        Me.cboImpuestoFlete.TabIndex = 250
         '
-        'lblCodigoProducto
+        'lblDisplayImpuestoFlete
         '
-        Me.lblCodigoProducto.AutoSize = True
-        Me.lblCodigoProducto.Location = New System.Drawing.Point(14, 685)
-        Me.lblCodigoProducto.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblCodigoProducto.Name = "lblCodigoProducto"
-        Me.lblCodigoProducto.Size = New System.Drawing.Size(120, 17)
-        Me.lblCodigoProducto.TabIndex = 248
-        Me.lblCodigoProducto.Text = "Código producto :"
-        '
-        'lblNombreProducto
-        '
-        Me.lblNombreProducto.AutoSize = True
-        Me.lblNombreProducto.Location = New System.Drawing.Point(167, 708)
-        Me.lblNombreProducto.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblNombreProducto.Name = "lblNombreProducto"
-        Me.lblNombreProducto.Size = New System.Drawing.Size(16, 17)
-        Me.lblNombreProducto.TabIndex = 249
-        Me.lblNombreProducto.Text = "_"
+        Me.lblDisplayImpuestoFlete.AutoSize = True
+        Me.lblDisplayImpuestoFlete.Location = New System.Drawing.Point(13, 362)
+        Me.lblDisplayImpuestoFlete.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayImpuestoFlete.Name = "lblDisplayImpuestoFlete"
+        Me.lblDisplayImpuestoFlete.Size = New System.Drawing.Size(104, 17)
+        Me.lblDisplayImpuestoFlete.TabIndex = 251
+        Me.lblDisplayImpuestoFlete.Text = "Impuesto flete :"
         '
         'Catalogo_Articulos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1131, 808)
+        Me.ClientSize = New System.Drawing.Size(1131, 840)
         Me.Controls.Add(Me.gBoxInformacion)
         Me.Controls.Add(Me.gBoxBusquedaRapida)
         Me.Controls.Add(Me.tsMenu)
@@ -722,4 +747,6 @@ Partial Class Catalogo_Articulos
     Friend WithEvents lblNombreProducto As System.Windows.Forms.Label
     Friend WithEvents lblCodigoProducto As System.Windows.Forms.Label
     Friend WithEvents txtCodigoProducto As System.Windows.Forms.TextBox
+    Friend WithEvents lblDisplayImpuestoFlete As System.Windows.Forms.Label
+    Friend WithEvents cboImpuestoFlete As System.Windows.Forms.ComboBox
 End Class

@@ -180,6 +180,7 @@ Public Class Catalogo_Articulos
                     Me.cboLinea.Enabled = True
                     Me.CboFamilia.Enabled = True
                     Me.TxtPrecio.Enabled = True
+                    Me.cboImpuestoFlete.Enabled = True
 
                     Me.InicializaElemento()
 
@@ -204,6 +205,7 @@ Public Class Catalogo_Articulos
                     Me.TxtPrecio.Enabled = True
                     Me.txtFactorConversion.Enabled = True
                     Me.txtCodigoProducto.Enabled = True
+                    Me.cboImpuestoFlete.Enabled = True
 
                 Case enumEstados.CONSULTA
                     Me.gBoxInformacion.Enabled = False
@@ -263,6 +265,7 @@ Public Class Catalogo_Articulos
             Me.txtFactorConversion.Text = "1.00"
             Me.txtCodigoProducto.Text = ""
             Me.lblNombreProducto.Text = ""
+            Me.cboImpuestoFlete.SelectedValue = "0" 'SIN FLETE
 
         Catch ex As Exception
             HandleError(Me.Name, "InicializaElemento", ex)
@@ -333,6 +336,22 @@ Public Class Catalogo_Articulos
         End Try
     End Sub
 
+    Private Sub DesplegarImpuestosFlete()
+        Try
+            Dim oElementos As New Class_SisCatImpuestosFlete
+            With Me.cboImpuestoFlete
+                .DisplayMember = "NOMBRE_IMPUESTO_FLETE"
+                .ValueMember = "ID_SIS_CAT_IMPUESTOS_FLETE"
+                Dim dView As New Data.DataView(oElementos.ObtenerElementos)
+                dView.Sort = "NOMBRE_IMPUESTO_FLETE"
+                .DataSource = dView
+                .SelectedValue = "0" '0=No aplica(Graba null en la tabla)
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarImpuestosFletes", ex)
+        End Try
+    End Sub
+
     Private Sub LlenaElemento(ByVal iCodigo_Elemento As String)
         Try
             Dim oElemento As New Class_CatArticulos
@@ -376,6 +395,8 @@ Public Class Catalogo_Articulos
                         Dim oProducto As New Class_CatProductos(Me.txtCodigoProducto.Text)
                         Me.lblNombreProducto.Text = oProducto.NOMBRE_PRODUCTO
                     End If
+
+                    Me.cboImpuestoFlete.SelectedValue = .ID_SIS_CAT_IMPUESTOS_FLETE.ToString
 
                     oUnidad = Nothing
                     oProductoServicio = Nothing
@@ -421,6 +442,7 @@ Public Class Catalogo_Articulos
                         .CODIGO_PRODUCTO_SERVICIO = Me.txtClaveProductoSAT.Text
                         .FACTOR_CONVERSION = Convert.ToDecimal(Me.txtFactorConversion.Text)
                         .CODIGO_PRODUCTO = Me.txtCodigoProducto.Text
+                        .ID_SIS_CAT_IMPUESTOS_FLETE = Me.cboImpuestoFlete.SelectedValue.ToString
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -698,6 +720,7 @@ Public Class Catalogo_Articulos
             Me.DesplegarElementos()
             Me.DesplegarGradosToxicidad()
             Me.DesplegarImpuestosIVA()
+            Me.DesplegarImpuestosFlete()
         Catch ex As Exception
             HandleError(Me.Name, "Catalogo_Articulos_Load", ex)
         End Try

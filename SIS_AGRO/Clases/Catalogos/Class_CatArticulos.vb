@@ -40,6 +40,7 @@ Public Class Class_CatArticulos
     Private _ID_SIS_CAT_IMPUESTOS As String
     Private _FACTOR_CONVERSION As Decimal
     Private _CODIGO_PRODUCTO As String
+    Private _ID_SIS_CAT_IMPUESTOS_FLETE As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -50,6 +51,7 @@ Public Class Class_CatArticulos
     Private _TIPO_CONTROL_INVENTARIO As String
     Private _IEPS_PORCENTAJE As Decimal
     Private _IMPUESTO_PORCENTAJE As Decimal
+    Private _IMPUESTO_FLETE_PORCENTAJE As Decimal
 #End Region
 
 #Region "Campos públicos"
@@ -345,6 +347,15 @@ Public Class Class_CatArticulos
             Me._CODIGO_PRODUCTO = VALUE
         End Set
     End Property
+
+    Public Property ID_SIS_CAT_IMPUESTOS_FLETE() As String
+        Get
+            Return Me._ID_SIS_CAT_IMPUESTOS_FLETE
+        End Get
+        Set(ByVal VALUE As String)
+            Me._ID_SIS_CAT_IMPUESTOS_FLETE = VALUE
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -375,6 +386,12 @@ Public Class Class_CatArticulos
     Public ReadOnly Property IMPUESTO_PORCENTAJE() As Decimal
         Get
             Return Me._IMPUESTO_PORCENTAJE
+        End Get
+    End Property
+
+    Public ReadOnly Property IMPUESTO_FLETE_PORCENTAJE() As Decimal
+        Get
+            Return Me._IMPUESTO_FLETE_PORCENTAJE
         End Get
     End Property
 #End Region
@@ -479,6 +496,7 @@ Public Class Class_CatArticulos
             sqlParametro = .Parameters.Add("@CODIGO_UNIDAD", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_UNIDAD
             sqlParametro = .Parameters.Add("@ID_SIS_CAT_IMPUESTOS", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._ID_SIS_CAT_IMPUESTOS
             sqlParametro = .Parameters.Add("@FACTOR_CONVERSION", SqlDbType.Decimal) : sqlParametro.Value = Me._FACTOR_CONVERSION
+            sqlParametro = .Parameters.Add("@ID_SIS_CAT_IMPUESTOS_FLETE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._ID_SIS_CAT_IMPUESTOS_FLETE
             If txtLEN(Me._CODIGO_PRODUCTO) = True Then
                 sqlParametro = .Parameters.Add("@CODIGO_PRODUCTO", SqlDbType.Int) : sqlParametro.Value = CInt(Me._CODIGO_PRODUCTO)
             Else
@@ -616,9 +634,11 @@ Public Class Class_CatArticulos
                     Me._CODIGO_PRODUCTO_SERVICIO = "" & dReader("CODIGO_PRODUCTO_SERVICIO").ToString
                     Me._ID_SIS_CAT_IMPUESTOS = "" & dReader("ID_SIS_CAT_IMPUESTOS").ToString
                     Me._IMPUESTO_PORCENTAJE = CDec("" & dReader("IMPUESTO_PORCENTAJE").ToString)
-
                     Me._FACTOR_CONVERSION = Convert.ToDecimal("" & dReader("FACTOR_CONVERSION").ToString)
                     Me._CODIGO_PRODUCTO = "" & dReader("CODIGO_PRODUCTO").ToString
+
+                    Me._ID_SIS_CAT_IMPUESTOS_FLETE = "" & dReader("ID_SIS_CAT_IMPUESTOS_FLETE").ToString
+                    Me._IMPUESTO_FLETE_PORCENTAJE = CDec("" & dReader("IMPUESTO_FLETE_PORCENTAJE").ToString)
 
                     bResultado = True
                 End If
