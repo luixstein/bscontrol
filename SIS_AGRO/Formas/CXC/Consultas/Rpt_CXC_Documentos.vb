@@ -232,6 +232,7 @@ Buscar:
             Me.CboZona.SelectedValue = Plaza.CODIGO_ZONA_PRINCIPAL
             Me.CboEstatus.Text = "APLICADOS"
             'Me.ocultarcontroles()
+            Me.chkClientesSaldoVencido.Checked = False
             Me.dpFechaInicio.Value = CDate(Format(Date.Now, "01-MM-yyyy"))
             Me.dpFechaFinal.Value = Date.Now
         Catch ex As Exception
@@ -341,6 +342,8 @@ Buscar:
                 Exit Sub
             End If
 
+            MsgBox(IIf(Me.chkClientesSaldoVencido.Checked = True, "1", "0"))
+
             If Me.RdbGlobalCXC.Checked = True Or Me.RdbDetalleCXC.Checked = True Or Me.rdbGlobalCxcPropietario.Checked = True Then
                 Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.txtCodigoCliente.Text)
                 Rpt.SetParameterValue("@CODIGO_VENDEDOR", Me.txtCodigoVendedor.Text)
@@ -349,6 +352,7 @@ Buscar:
                 Rpt.SetParameterValue("@CODIGO_TIPO_MERCADO", Me.CboTipoMercado.SelectedValue.ToString)
                 Rpt.SetParameterValue("@CODIGO_PROPIETARIO", valorNumerico(Me.txtPropietario.Text))
                 Rpt.SetParameterValue("@CODIGO_USUARIO_GRABO", IIf(txtLEN(Me.txtCodigoUsuario.Text) = True, Me.txtCodigoUsuario.Text, 0))
+                Rpt.SetParameterValue("@SOLO_CON_SALDO_VENCIDO", IIf(Me.chkClientesSaldoVencido.Checked = True, "1", "0"))
             ElseIf Me.RdbDetalleDepositos.Checked = True Then
                 Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.txtCodigoCliente.Text)
                 Rpt.SetParameterValue("@FECHA1", Format(Me.dpFechaInicio.Value, "yyyy-dd-MM"))
@@ -392,6 +396,7 @@ Buscar:
             Me.LblDisplayTipoMercado.Visible = True : Me.CboTipoMercado.Visible = True
             Me.LblDisplayPlaza.Visible = False : Me.cboPlaza.Visible = False
             Me.gpFiltroFecha.Visible = False
+            Me.chkClientesSaldoVencido.Visible = True
         Else
             Me.lblDisplayFechaInicio.Visible = True : Me.dpFechaInicio.Visible = True ': Me.lblDisplayFechaInicio.Location = New Point(4, 54) :  : Me.dpFechaInicio.Location = New Point(88, 51)
             Me.LblDisplayFechaFinal.Visible = True : Me.dpFechaFinal.Visible = True ': Me.LblDisplayFechaFinal.Location = New Point(215, 54)  : Me.dpFechaFinal.Location = New Point(265, 50)
@@ -403,6 +408,7 @@ Buscar:
             Me.LblDisplayTipoMercado.Visible = False : Me.CboTipoMercado.Visible = False
             Me.LblDisplayPlaza.Visible = True : Me.cboPlaza.Visible = True
             Me.gpFiltroFecha.Visible = True
+            Me.chkClientesSaldoVencido.Visible = False
         End If
     End Sub
 
