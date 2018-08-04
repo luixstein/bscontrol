@@ -70,6 +70,9 @@ Public Class Ventas_Movimientos
     Private iGyDESCUENTO_UNITARIO As Short = 32
     Private iGyDESCUENTO_IMPORTE As Short = 33
     Private iGyPRECIO_CON_DESCUENTO As Short = 34
+    Private iGyIdSisCatImpuestosFlete As Short = 35
+    Private iGyFletePorcentaje As Short = 36
+    Private iGyFleteImporte As Short = 37
 
 #End Region
 
@@ -776,6 +779,7 @@ Buscar:
             Me.lblSubtotal.Text = FormatImporteContable(0)
             Me.lblImpuesto.Text = FormatImporteContable(0)
             Me.lblTotal.Text = FormatImporteContable(0)
+            Me.lblTotalRetencion.Text = FormatImporteContable(0)
 
             Me.dpFecha.Value = Date.Now
             Me.dpVencimiento.Value = Me.dpFecha.Value.AddDays(CDbl(Me.txtPlazo.Text))
@@ -838,7 +842,7 @@ Buscar:
     Private Sub FormateaGrid()
         Try
             Me.Grid.AutoRedraw = False
-            Me.Grid.Cols = 35
+            Me.Grid.Cols = 38
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Column(Me.igyCodigo).Width = 75
             Me.Grid.Column(Me.igyTipoControlInventariable).Width = 25
@@ -874,6 +878,9 @@ Buscar:
             Me.Grid.Column(Me.iGyDESCUENTO_UNITARIO).Visible = False
             Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Visible = True  'Ocultar
             Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO).Visible = False
+            Me.Grid.Column(Me.iGyIdSisCatImpuestosFlete).Visible = False
+            Me.Grid.Column(Me.iGyFletePorcentaje).Visible = False
+            Me.Grid.Column(Me.iGyFleteImporte).Visible = False
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Cell(0, Me.igyCodigo).Text = "Código"
             Me.Grid.Cell(0, Me.igyTipoControlInventariable).Text = "Inv"
@@ -909,6 +916,9 @@ Buscar:
             Me.Grid.Cell(0, Me.iGyDESCUENTO_UNITARIO).Text = "DesUnit"
             Me.Grid.Cell(0, Me.iGyDESCUENTO_IMPORTE).Text = "Descuento"
             Me.Grid.Cell(0, Me.iGyPRECIO_CON_DESCUENTO).Text = "PrecioCDes"
+            Me.Grid.Cell(0, Me.iGyIdSisCatImpuestosFlete).Text = "ID ImpuestoFlete"
+            Me.Grid.Cell(0, Me.iGyFletePorcentaje).Text = "Flete porcentaje"
+            Me.Grid.Cell(0, Me.iGyFleteImporte).Text = "Flete importe"
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Column(Me.igyNombreCentroCosto).Alignment = FlexCell.AlignmentEnum.LeftCenter
 
@@ -1011,6 +1021,9 @@ Buscar:
             Me.Grid.Column(Me.iGyGRADO_TOXICIDAD).Locked = True
             Me.Grid.Column(Me.iGyDESCUENTO_UNITARIO).Locked = True
             Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO).Locked = True
+            Me.Grid.Column(Me.iGyIdSisCatImpuestosFlete).Locked = True
+            Me.Grid.Column(Me.iGyFletePorcentaje).Locked = True
+            Me.Grid.Column(Me.iGyFleteImporte).Locked = True
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             If Me.oDocumento.AFECTA_CXC = True Then
                 Me.Grid.Column(Me.igyCuentaContable).Visible = False 'True
@@ -1497,6 +1510,7 @@ Buscar:
 
                 .SUBTOTAL = valorNumerico(Me.lblSubtotal.Text)
                 .IMPUESTO = valorNumerico(Me.lblImpuesto.Text)
+                .RETENCION_IVA = valorNumerico(Me.lblTotalRetencion.Text)
 
                 If Me._EsPorEmbarqueExtranjero = True Then
                     .DESCUENTO = valorNumerico(Me.lblTotal.Text) 'Se invierten los valores para forzar a un total 0 usd porque es en consignacion
@@ -1638,6 +1652,8 @@ Buscar:
                         .oVentasDetalle.PRECIO = valorNumericoD(Me.Grid.Cell(i, Me.iGyPRECIO_CON_DESCUENTO).Text)
                         .oVentasDetalle.DESCUENTO_UNITARIO = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_UNITARIO).Text)
                         .oVentasDetalle.DESCUENTO_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE).Text)
+                        .oVentasDetalle.ID_SIS_CAT_IMPUESTOS_FLETE = Me.Grid.Cell(i, Me.iGyIdSisCatImpuestosFlete).Text
+                        .oVentasDetalle.RETENCION_IVA_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.iGyFleteImporte).Text)
 
                         If .oVentasDetalle.GrabaRenglon = False Then
                             MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, sProcedure)
@@ -2630,6 +2646,7 @@ CANCELAR:
             Dim dIEPS_PORCENTAJE As Decimal = 0, dIEPS_UNITARIO As Decimal = 0, dIEPS_IMPORTE As Decimal = 0, dBASE_IEPS As Decimal = 0, dBASE_IVA As Decimal = 0, dPRECIO_TOTAL As Decimal = 0, dIVA_IMPORTE As Decimal = 0
             Dim dtSubtotal As Decimal = 0, dtIEPS As Decimal = 0, dtImpuesto As Decimal = 0, dtTotal As Decimal = 0, dtDescuentos As Decimal = 0
             Dim sID_SIS_CAT_IMPUESTOS As String = "", sGRADO_TOXICIDAD As String = "0" '0=NO GRAVA IEPS
+            Dim sID_SIS_CAT_IMPUESTOS_FLETES As String = "", dFLETE_IMPORTE As Decimal = 0, dtFLETE As Decimal = 0, dPorcentajeFlete As Decimal
             Dim dPrecioConDescuento As Decimal, dImporteConDescuento As Decimal, dDESCUENTO_UNITARIO As Decimal, dDESCUENTO_IMPORTE As Decimal
 
             Me.lblSubtotal.Text = FormatImporteContable(0)
@@ -2637,6 +2654,7 @@ CANCELAR:
             Me.lblIEPS.Text = FormatImporteContable(0)
             Me.lblImpuesto.Text = FormatImporteContable(0)
             Me.lblTotal.Text = FormatImporteContable(0)
+            Me.lblTotalRetencion.Text = FormatImporteContable(0)
 
             Me.lblSubtotalDolares.Text = FormatImporteContable(0)
             Me.lblImpuestoDolares.Text = FormatImporteContable(0)
@@ -2652,7 +2670,7 @@ CANCELAR:
 
                         dCantidad = 0 : dPrecioCapturado = 0 : dPrecioConDescuento = 0 : iIDOrigen = 0 : dPorcentajeIVA = 0 : dIEPS_PORCENTAJE = 0 : sID_SIS_CAT_IMPUESTOS = "" : sGRADO_TOXICIDAD = "" : dImporteConDescuento = 0
                         dBASE_IEPS = 0 : dIEPS_IMPORTE = 0 : dIEPS_UNITARIO = 0 : dBASE_IVA = 0 : dIVA_IMPORTE = 0 : dPRECIO_TOTAL = 0 : dPrecioOriginal = 0 : dImporte = 0 : dImporteTotal = 0 : dImporteSustitucion = 0
-                        dDESCUENTO_UNITARIO = 0 : dDESCUENTO_IMPORTE = 0
+                        dDESCUENTO_UNITARIO = 0 : dDESCUENTO_IMPORTE = 0 : dFLETE_IMPORTE = 0 : sID_SIS_CAT_IMPUESTOS_FLETES = "" : dPorcentajeFlete = 0
 
                         dCantidad = valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text)
                         dPrecioCapturado = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text)
@@ -2663,6 +2681,8 @@ CANCELAR:
                         sGRADO_TOXICIDAD = Me.Grid.Cell(i, Me.iGyGRADO_TOXICIDAD).Text
                         dDESCUENTO_UNITARIO = 0 'Se va calcular en base al descuento importe
                         dDESCUENTO_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE).Text)
+                        sID_SIS_CAT_IMPUESTOS_FLETES = Me.Grid.Cell(i, Me.iGyIdSisCatImpuestosFlete).Text
+                        dPorcentajeFlete = valorNumericoD(Me.Grid.Cell(i, Me.iGyFletePorcentaje).Text)
 
                         dImporte = RedondearD((dCantidad * dPrecioCapturado), Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
@@ -2692,6 +2712,10 @@ CANCELAR:
                             dIVA_IMPORTE = RedondearD(dBASE_IVA * ((dPorcentajeIVA / 100)), 2)
                         End If
 
+                        If sID_SIS_CAT_IMPUESTOS_FLETES <> "0" Then
+                            dFLETE_IMPORTE = RedondearD(dBASE_IVA * ((dPorcentajeFlete / 100)), 2)
+                        End If
+
                         dPRECIO_TOTAL = dPrecioCapturado
 
                         If Me.bClienteEsContribuyenteIEPS = False And dPrecioCapturado > 0 Then 'Cuando no es contribuyente se le adjunta al precio el ieps, es decir se le incluye
@@ -2710,6 +2734,7 @@ CANCELAR:
                         Me.Grid.Cell(i, Me.iGyDESCUENTO_UNITARIO).Text = dDESCUENTO_UNITARIO.ToString
                         Me.Grid.Cell(i, Me.iGyPRECIO_CON_DESCUENTO).Text = dPrecioConDescuento.ToString
                         Me.Grid.Cell(i, Me.igyImporte).Text = dImporteTotal.ToString
+                        Me.Grid.Cell(i, Me.iGyFleteImporte).Text = dFLETE_IMPORTE.ToString
 
                         'NOTA: Ahora todo lo relacionad a una sustitución, se genera y graba dentro del stored MP_VENTA_AFECTA_SUSTITUCION_REMISION
                         'If Me.LblEstatus.Text <> "N" AndAlso sTipoVenta <> "NM" Then
@@ -2739,12 +2764,14 @@ CANCELAR:
             dtSubtotal = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyImporte)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
             dtDescuentos = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.iGyDESCUENTO_IMPORTE)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
             dtImpuesto = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyImpuestoImporte)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            dtTotal = dtSubtotal - dtDescuentos + dtIEPS + dtImpuesto
+            dtFLETE = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.iGyFleteImporte)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            dtTotal = dtSubtotal - dtDescuentos + dtIEPS + dtImpuesto - dtFLETE
 
             Me.lblSubtotal.Text = FormatImporteContable(dtSubtotal)
             Me.lblDescuento.Text = FormatImporteContable(dtDescuentos)
             Me.lblImpuesto.Text = FormatImporteContable(dtImpuesto)
             Me.lblTotal.Text = FormatImporteContable(dtTotal)
+            Me.lblTotalRetencion.Text = FormatImporteContable(dtFLETE)
 
             If valorNumerico(Me.txtTipoCambio.Text) > 0 Then
                 Me.lblSubtotalDolares.Text = FormatImporteContable(Redondear(valorNumerico(Me.lblSubtotal.Text) / valorNumerico(Me.txtTipoCambio.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD))
@@ -2833,6 +2860,7 @@ CANCELAR:
                 Me.lblTotal.Text = FormatImporteContable(Me.oVenta.TOTAL)
                 Me.lblIEPS.Text = FormatImporteContable(Me.oVenta.IEPS_TOTAL_DESGLOSADO)
                 Me.lblIEPSIncluido.Text = FormatImporteContable(Me.oVenta.IEPS_TOTAL_YA_INCLUIDO)
+                Me.lblTotalRetencion.Text = FormatImporteContable(Me.oVenta.RETENCION_IVA)
 
                 Me.cboMoneda.Text = Me.oVenta.CODIGO_MONEDA_SAT 'Nota debe llenarse primero la moneda porque tiene evento change que llena la forma de pago segpun el cte, y asi se consulta correcto.
                 Me.txtTipoCambio.Text = Me.oVenta.TIPO_DE_CAMBIO.ToString
@@ -3110,6 +3138,8 @@ LlenaLinea:
                             Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Text = oArticulo.IMPUESTO_PORCENTAJE.ToString
                             Me.Grid.Cell(Renglon, Me.iGyID_SIS_CAT_IMPUESTOS).Text = oArticulo.ID_SIS_CAT_IMPUESTOS
                             Me.Grid.Cell(Renglon, Me.iGyGRADO_TOXICIDAD).Text = oArticulo.GRADO_TOXICIDAD
+                            Me.Grid.Cell(Renglon, Me.iGyIdSisCatImpuestosFlete).Text = oArticulo.ID_SIS_CAT_IMPUESTOS_FLETE.ToString
+                            Me.Grid.Cell(Renglon, Me.iGyFletePorcentaje).Text = oArticulo.IMPUESTO_FLETE_PORCENTAJE.ToString
 
                             'If oArticulos.TIENE_IMPUESTO = "1" Then
                             '    Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Text = Plaza.Impuesto_Porcentaje.ToString

@@ -213,15 +213,17 @@ Module FacturacionElectronica33
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Conceptos'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Dim ConceptoImpuestoTraslados As iConceptoImpuestoTraslados33
-            'Dim ConceptoImpuestoRetenciones As iConceptoImpuestoRetenciones33
+            Dim ConceptoImpuestoRetenciones As iConceptoImpuestoRetenciones33
 
             Dim drImporte As Decimal, drPrecio As Decimal, drCantidad As Decimal, drDESCUENTO_IMPORTE As Decimal, drIMPUESTO_PORCENTAJE As Decimal
             Dim drBASE_IEPS As Decimal, drBASE_IVA As Decimal, drIMPUESTO_IMPORTE As Decimal, drIEPS_IMPORTE As Decimal, drIEPS_PORCENTAJE As Decimal
+            Dim drRetencionIVA As Decimal, drRetencionPorcentaje As Decimal
 
             For Each row As DataRow In oVenta.ObtenerDetalleParaCFDI.Rows
                 drCantidad = CDec(row("CANTIDAD").ToString)
                 drIMPUESTO_PORCENTAJE = CDec(row("IMPUESTO_PORCENTAJE").ToString) / CDec("100.00")
                 drIEPS_PORCENTAJE = CDec(row("IEPS_PORCENTAJE").ToString) / CDec("100.00")
+                drRetencionPorcentaje = CDec(row("RETENCION_IVA_PORCENTAJE").ToString) / CDec("100.00")
                 If oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
                     drPrecio = CDec(row("PRECIO_USD").ToString)
                     drImporte = CDec(row("IMPORTE_USD").ToString)
@@ -239,6 +241,7 @@ Module FacturacionElectronica33
                 End If
 
                 ConceptoImpuestoTraslados = New iConceptoImpuestoTraslados33
+                ConceptoImpuestoRetenciones = New iConceptoImpuestoRetenciones33
 
                 '003=IEPS,002=IVA
 
@@ -265,10 +268,12 @@ Module FacturacionElectronica33
                 If row("ID_SIS_CAT_IMPUESTOS").ToString <> "N" Then 'N=No grava iva, si es <>N = Si grava iva ya sea al 0,16,Exento(aún siendo exento ó 0 hay que llenar la base iva)
                     drBASE_IVA = CDec(row("BASE_IVA").ToString)
                     drIMPUESTO_IMPORTE = CDec(row("IMPUESTO_IMPORTE").ToString)
+                    drRetencionIVA = CDec(row("RETENCION_IVA_IMPORTE").ToString)
 
                     If oVenta.CODIGO_MONEDA_SAT = "USD" Then
                         drBASE_IVA = RedondearD(drBASE_IVA / dTIPO_DE_CAMBIO, 2)
                         drIMPUESTO_IMPORTE = RedondearD(drIMPUESTO_IMPORTE / dTIPO_DE_CAMBIO, 2)
+                        drRetencionIVA = RedondearD(drRetencionIVA / dTIPO_DE_CAMBIO, 2)
                     End If
 
                     If row("ID_SIS_CAT_IMPUESTOS").ToString = "E" Then 'E=Iva Exento
@@ -277,7 +282,12 @@ Module FacturacionElectronica33
                     Else
                         'ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Tasa", Format(drIMPUESTO_PORCENTAJE, "0.#00000"), Format(drIMPUESTO_IMPORTE, "##0.00"))
                         ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.000000"), "002", "Tasa", Format(drIMPUESTO_PORCENTAJE, "0.#00000"), Format(drIMPUESTO_IMPORTE, "##0.00"))
+
+                        If row("ID_SIS_CAT_IMPUESTOS_FLETE").ToString <> "0" Then
+                            ConceptoImpuestoRetenciones.Add(Format(drBASE_IVA, "##0.000000"), "002", "Tasa", Format(drRetencionPorcentaje, "0.#00000"), Format(drRetencionIVA, "##0.00"))
+                        End If
                     End If
+
                 End If
 
                 'If oVenta.IEPS_TOTAL_DESGLOSADO > 0 Then 'Solamente si se le desglosan los ieps se mencionan, si es incluido no(como si no tuviera), por eso se pregunta por el total y no del renglón porque al ser inc si va tener ieps pero no es parte del xml
@@ -312,11 +322,12 @@ Module FacturacionElectronica33
                                   row("CODIGO_UNIDAD").ToString, row("UNIDAD_VENTA").ToString, fElectronicaValidaCampo(row("DESCRIPCION").ToString),
                                   Format(drPrecio, "##0." & StrDup(6, "0")),
                                   Format(drImporte, "##0.00"),
-                                  IIf(drDESCUENTO_IMPORTE > 0, Format(drDESCUENTO_IMPORTE, "##0.00"), "").ToString, ConceptoImpuestoTraslados, )
+                                  IIf(drDESCUENTO_IMPORTE > 0, Format(drDESCUENTO_IMPORTE, "##0.00"), "").ToString, ConceptoImpuestoTraslados, ConceptoImpuestoRetenciones)
             Next
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Impuestos'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Dim arr() As iImpuestosTraslado33, dImpuestoIEPSImporte As Decimal, dImpuestoIVAImporte As Decimal, iEncontrados As Integer = 0
+            Dim arr2() As iImpuestosRetencion33, dRetencionIvaImporte As Decimal
 
             ''IEPS, deben acumularse, puede ser que mas de un artículo tenga el mismo % de ieps, de modo que aquí se juntan en uno sólo.
             iEncontrados = 0
@@ -341,6 +352,17 @@ Module FacturacionElectronica33
                     dImpuestoIVAImporte = CDec(arr(i).Importe)
 
                     Cfd.Impuestos.Traslados.Add(arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIVAImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
+                Next
+            End If
+
+            ''RETENCION IVA
+            iEncontrados = 0
+            arr2 = ImpuestosRetenidosAgrupados(Cfd, iEncontrados)
+
+            If iEncontrados > 0 Then
+                For i = 1 To UBound(arr2)
+                    dRetencionIvaImporte = CDec(arr2(i).Importe)
+                    Cfd.Impuestos.Retenciones.Add(arr2(i).Impuesto, Format(dRetencionIvaImporte, "#0.00"))
                 Next
             End If
 
@@ -449,6 +471,59 @@ Module FacturacionElectronica33
 
                             bEncontrado = False
                         End If
+                    End If
+                Next
+            Next
+
+            iEncontrados = arrCount
+
+        Catch ex As Exception
+            HandleError(nombreModulo, sProcedure, ex)
+        End Try
+
+        Return arr
+    End Function
+
+    Private Function ImpuestosRetenidosAgrupados(ByVal Cfd As cComprobante33, ByRef iEncontrados As Integer) As iImpuestosRetencion33()
+        Const sProcedure As String = "ImpuestosRetenidosAgrupados"
+        Dim arr As iImpuestosRetencion33() = New iImpuestosRetencion33(-1) {} 'Para que no marque warning de null, arrCount As Integer, bEncontrado As Boolean
+
+        Try
+            Dim i As Integer, j As Integer, x As Integer
+            Dim arrCount As Integer, bEncontrado As Boolean
+
+            iEncontrados = 0 'Este esta byref para regresarse tipo output
+
+            For i = 1 To Cfd.Conceptos.Count
+                For j = 1 To Cfd.Conceptos.Item(i).Retenciones.Count
+                    'Cfd.Conceptos.Item(i).Retenciones.Item(j)
+
+                    If arrCount = 0 Then
+                        arrCount = arrCount + 1
+                        ReDim Preserve arr(arrCount)
+
+                        arr(arrCount) = New iImpuestosRetencion33
+                        arr(arrCount).Impuesto = Cfd.Conceptos.Item(i).Retenciones.Item(j).Impuesto
+                        arr(arrCount).Importe = Cfd.Conceptos.Item(i).Retenciones.Item(j).Importe
+                    Else
+                        For x = 1 To arrCount
+                            If arr(x).Impuesto = Cfd.Conceptos.Item(i).Retenciones.Item(j).Impuesto Then
+                                arr(x).Importe = (valorNumerico(arr(x).Importe) + valorNumerico(Cfd.Conceptos.Item(i).Retenciones.Item(j).Importe)).ToString  'Son strings por eso el cast
+                                bEncontrado = True
+                                Exit For
+                            End If
+                        Next
+
+                        If bEncontrado = False Then
+                            arrCount = arrCount + 1
+                            ReDim Preserve arr(arrCount)
+
+                            arr(arrCount) = New iImpuestosRetencion33
+                            arr(arrCount).Impuesto = Cfd.Conceptos.Item(i).Retenciones.Item(j).Impuesto
+                            arr(arrCount).Importe = Cfd.Conceptos.Item(i).Retenciones.Item(j).Importe
+                        End If
+
+                        bEncontrado = False
                     End If
                 Next
             Next

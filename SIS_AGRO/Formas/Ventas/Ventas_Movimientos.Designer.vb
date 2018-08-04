@@ -131,6 +131,8 @@ Partial Class Ventas_Movimientos
         Me.GridCFDIsRelacionados = New FlexCell.Grid()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cboTipoRelacionCFDI = New System.Windows.Forms.ComboBox()
+        Me.lblTotalRetencion = New System.Windows.Forms.Label()
+        Me.lblDisplayRetencion = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -481,7 +483,7 @@ Partial Class Ventas_Movimientos
         'lblDisplayTotalPesos
         '
         Me.lblDisplayTotalPesos.AutoSize = True
-        Me.lblDisplayTotalPesos.Location = New System.Drawing.Point(8, 103)
+        Me.lblDisplayTotalPesos.Location = New System.Drawing.Point(8, 122)
         Me.lblDisplayTotalPesos.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayTotalPesos.Name = "lblDisplayTotalPesos"
         Me.lblDisplayTotalPesos.Size = New System.Drawing.Size(48, 17)
@@ -590,6 +592,8 @@ Partial Class Ventas_Movimientos
         '
         'gbPesos
         '
+        Me.gbPesos.Controls.Add(Me.lblDisplayRetencion)
+        Me.gbPesos.Controls.Add(Me.lblTotalRetencion)
         Me.gbPesos.Controls.Add(Me.lblDisplayDescuento)
         Me.gbPesos.Controls.Add(Me.lblDescuento)
         Me.gbPesos.Controls.Add(Me.lblIEPS)
@@ -604,7 +608,7 @@ Partial Class Ventas_Movimientos
         Me.gbPesos.Margin = New System.Windows.Forms.Padding(4)
         Me.gbPesos.Name = "gbPesos"
         Me.gbPesos.Padding = New System.Windows.Forms.Padding(4)
-        Me.gbPesos.Size = New System.Drawing.Size(252, 126)
+        Me.gbPesos.Size = New System.Drawing.Size(252, 154)
         Me.gbPesos.TabIndex = 292
         Me.gbPesos.TabStop = False
         Me.gbPesos.Text = "Pesos"
@@ -657,7 +661,7 @@ Partial Class Ventas_Movimientos
         '
         Me.lblTotal.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblTotal.ForeColor = System.Drawing.Color.Crimson
-        Me.lblTotal.Location = New System.Drawing.Point(93, 103)
+        Me.lblTotal.Location = New System.Drawing.Point(93, 122)
         Me.lblTotal.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblTotal.Name = "lblTotal"
         Me.lblTotal.Size = New System.Drawing.Size(147, 16)
@@ -798,7 +802,7 @@ Partial Class Ventas_Movimientos
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsslEstado, Me.tsslElaboro, Me.tsslCancelo})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 777)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 806)
         Me.StatusStripEstado.Name = "StatusStripEstado"
         Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
         Me.StatusStripEstado.Size = New System.Drawing.Size(1339, 29)
@@ -1144,11 +1148,11 @@ Partial Class Ventas_Movimientos
         Me.gbTotales.Controls.Add(Me.lblSaldo)
         Me.gbTotales.Controls.Add(Me.lblDisplaySaldo)
         Me.gbTotales.Controls.Add(Me.gbDolares)
-        Me.gbTotales.Location = New System.Drawing.Point(11, 640)
+        Me.gbTotales.Location = New System.Drawing.Point(12, 640)
         Me.gbTotales.Margin = New System.Windows.Forms.Padding(4)
         Me.gbTotales.Name = "gbTotales"
         Me.gbTotales.Padding = New System.Windows.Forms.Padding(4)
-        Me.gbTotales.Size = New System.Drawing.Size(1315, 133)
+        Me.gbTotales.Size = New System.Drawing.Size(1315, 162)
         Me.gbTotales.TabIndex = 2
         Me.gbTotales.TabStop = False
         '
@@ -1357,12 +1361,34 @@ Partial Class Ventas_Movimientos
         Me.cboTipoRelacionCFDI.Size = New System.Drawing.Size(400, 24)
         Me.cboTipoRelacionCFDI.TabIndex = 383
         '
+        'lblTotalRetencion
+        '
+        Me.lblTotalRetencion.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblTotalRetencion.ForeColor = System.Drawing.Color.DarkBlue
+        Me.lblTotalRetencion.Location = New System.Drawing.Point(93, 102)
+        Me.lblTotalRetencion.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblTotalRetencion.Name = "lblTotalRetencion"
+        Me.lblTotalRetencion.Size = New System.Drawing.Size(147, 16)
+        Me.lblTotalRetencion.TabIndex = 254
+        Me.lblTotalRetencion.Text = "0.00"
+        Me.lblTotalRetencion.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'lblDisplayRetencion
+        '
+        Me.lblDisplayRetencion.AutoSize = True
+        Me.lblDisplayRetencion.Location = New System.Drawing.Point(8, 102)
+        Me.lblDisplayRetencion.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayRetencion.Name = "lblDisplayRetencion"
+        Me.lblDisplayRetencion.Size = New System.Drawing.Size(80, 17)
+        Me.lblDisplayRetencion.TabIndex = 255
+        Me.lblDisplayRetencion.Text = "Retención :"
+        '
         'Ventas_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
-        Me.ClientSize = New System.Drawing.Size(1339, 806)
+        Me.ClientSize = New System.Drawing.Size(1339, 835)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.gbTotales)
         Me.Controls.Add(Me.frmDatos)
@@ -1504,4 +1530,6 @@ Partial Class Ventas_Movimientos
     Friend WithEvents txtUUID As TextBox
     Friend WithEvents lblUUID As Label
     Friend WithEvents tsbSubirXML As ToolStripButton
+    Friend WithEvents lblDisplayRetencion As System.Windows.Forms.Label
+    Friend WithEvents lblTotalRetencion As System.Windows.Forms.Label
 End Class
