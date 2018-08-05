@@ -114,49 +114,49 @@ Module FacturacionElectronica
         Dim bResultado As Boolean = False, bMododemo As Boolean = False
 
         Try
-            'If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "DANIEL-PC" Or Usuario.Codigo_Usuario = 1 Then
-            '    MsgBox("Las computadoras de sistemas no deben timbrar documentos." & vbCrLf & "Ni el dba(por protección de timbrar por error estando en pruebas).", MsgBoxStyle.Exclamation, sProcedure)
-            '    Return False
-            'Else
             If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "DANIEL-PC" Or Usuario.Codigo_Usuario = 1 Then
-                bMododemo = True
-            End If
-
-            Using cfd As New clsCFDI(sRutaXML, Empresa_Sistema.BaseDatos, Empresa_Sistema.Servidor,
-                              sFelectronicaArchivoPFX, Decrypt(Empresa_Sistema.FELECTRONICA_CONTRASENIA_PFX, "ex8"),
-                              Empresa_Sistema.FELECTRONICA_USER_WS, Empresa_Sistema.FELECTRONICA_PASS_WS, True)
-
-                'If txtLEN(cfd.RecuperarTimbrePorSerieFolio(sSerie, iFolioNumerico, Empresa_Sistema.RFC, sFelectronicaCbbImagen)) = True Then
-                '    If cfd.Recuperado = True Then
-                '        Dim sRutaXMLTimbrado As String = sFelectronicaCarpetaXmlsTimbrados & "\" & sFolioDocumentoSistema & ".xml"
-                '        'cfd.Timbrar(sRutaXMLTimbrado, sFelectronicaCbbImagen)
-                '        docXml.LoadXml(cfd.RecuperarTimbrePorSerieFolio(sSerie, iFolioNumerico, Empresa_Sistema.RFC, sFelectronicaCbbImagen))
-                '        docXml.Save(sRutaXMLTimbrado)
-                '        bResultado = True
-                '    End If
-                'Else
-
-                Dim sRutaXMLTimbrado As String = sFelectronicaCarpetaXmlsTimbrados & "\" & sFolioDocumentoSistema & ".xml"
-
-                If cfd.Sellar = True Then
-
-                    If bMododemo = True Then
-                        MsgBox("Esta el timbrado en modo demo", vbInformation, sProcedure)
-                        cfd.TimbrarDemo(sRutaXMLTimbrado, sFelectronicaCbbImagen)
-                    Else
-                        cfd.Timbrar(sRutaXMLTimbrado, sFelectronicaCbbImagen)
-                    End If
-
-                    If cfd.Timbrado = True Then
-                        If GrabaCadenaOriginalYSelloComprobanteElectronico(cfd, tipoComprobante) = True Then
-                            bResultado = True
-                        End If
-                    End If
-
+                MsgBox("Las computadoras de sistemas no deben timbrar documentos." & vbCrLf & "Ni el dba(por protección de timbrar por error estando en pruebas).", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            Else
+                If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "DANIEL-PC" Or Usuario.Codigo_Usuario = 1 Then
+                    bMododemo = True
                 End If
-                'End If
-            End Using
-            'End If
+
+                Using cfd As New clsCFDI(sRutaXML, Empresa_Sistema.BaseDatos, Empresa_Sistema.Servidor,
+                                  sFelectronicaArchivoPFX, Decrypt(Empresa_Sistema.FELECTRONICA_CONTRASENIA_PFX, "ex8"),
+                                  Empresa_Sistema.FELECTRONICA_USER_WS, Empresa_Sistema.FELECTRONICA_PASS_WS, True)
+
+                    'If txtLEN(cfd.RecuperarTimbrePorSerieFolio(sSerie, iFolioNumerico, Empresa_Sistema.RFC, sFelectronicaCbbImagen)) = True Then
+                    '    If cfd.Recuperado = True Then
+                    '        Dim sRutaXMLTimbrado As String = sFelectronicaCarpetaXmlsTimbrados & "\" & sFolioDocumentoSistema & ".xml"
+                    '        'cfd.Timbrar(sRutaXMLTimbrado, sFelectronicaCbbImagen)
+                    '        docXml.LoadXml(cfd.RecuperarTimbrePorSerieFolio(sSerie, iFolioNumerico, Empresa_Sistema.RFC, sFelectronicaCbbImagen))
+                    '        docXml.Save(sRutaXMLTimbrado)
+                    '        bResultado = True
+                    '    End If
+                    'Else
+
+                    Dim sRutaXMLTimbrado As String = sFelectronicaCarpetaXmlsTimbrados & "\" & sFolioDocumentoSistema & ".xml"
+
+                    If cfd.Sellar = True Then
+
+                        If bMododemo = True Then
+                            MsgBox("Esta el timbrado en modo demo", vbInformation, sProcedure)
+                            cfd.TimbrarDemo(sRutaXMLTimbrado, sFelectronicaCbbImagen)
+                        Else
+                            cfd.Timbrar(sRutaXMLTimbrado, sFelectronicaCbbImagen)
+                        End If
+
+                        If cfd.Timbrado = True Then
+                            If GrabaCadenaOriginalYSelloComprobanteElectronico(cfd, tipoComprobante) = True Then
+                                bResultado = True
+                            End If
+                        End If
+
+                    End If
+                    'End If
+                End Using
+            End If
 
         Catch ex As Exception
             HandleError(nombreModulo, sProcedure, ex)
