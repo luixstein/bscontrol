@@ -1797,6 +1797,13 @@ Buscar:
                 MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
+
+            If Empresa_Sistema.VALIDAR_CANCELACION_VENTAS = True Then
+                If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios("CV_VTA" & Usuario.Codigo_Plaza.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
+                    MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para cancelar el documento.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+            End If
         Else
             If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString) = False Then
                 MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Exclamation, sProcedure)

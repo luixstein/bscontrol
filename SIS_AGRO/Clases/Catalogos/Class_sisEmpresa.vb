@@ -82,6 +82,7 @@ Public NotInheritable Class Class_sisEmpresa
     Private _CODIGO_VENDEDOR_POR_USUARIO As Boolean
     Private _CUENTA_CONTABLE_COSTO_VENTAS As String
     Private _CORREO_EMPRESA As String
+    Private _VALIDAR_CANCELACION_VENTAS As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -602,6 +603,12 @@ Public NotInheritable Class Class_sisEmpresa
         End Get
     End Property
 
+    Public ReadOnly Property VALIDAR_CANCELACION_VENTAS() As Boolean
+        Get
+            Return Me._VALIDAR_CANCELACION_VENTAS
+        End Get
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -954,6 +961,7 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._CODIGO_VENDEDOR_POR_USUARIO = CBool(dReader("CODIGO_VENDEDOR_POR_USUARIO").ToString)
                     Me._CUENTA_CONTABLE_COSTO_VENTAS = "" & dReader("CUENTA_CONTABLE_COSTO_VENTAS").ToString
                     Me._CORREO_EMPRESA = "" & dReader("CORREO_EMPRESA").ToString
+                    Me._VALIDAR_CANCELACION_VENTAS = CBool(dReader("VALIDAR_CANCELACION_VENTAS").ToString)
 
                     dReader.Close()
                     bResultado = True
