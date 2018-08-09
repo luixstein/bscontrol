@@ -2952,7 +2952,8 @@ CANCELAR:
                                         dRow("IEPS_PORCENTAJE").ToString & Chr(9) & dRow("IEPS_UNITARIO").ToString & Chr(9) & dRow("IEPS_IMPORTE").ToString & Chr(9) & dRow("BASE_IEPS").ToString & Chr(9) &
                                         dRow("BASE_IVA").ToString & Chr(9) & dRow("COSTO").ToString & Chr(9) & dRow("UTILIDAD_UNITARIA").ToString & Chr(9) & dRow("UTILIDAD_TOTAL").ToString & Chr(9) &
                                         dRow("UTILIDA_PORCENTAJE").ToString & Chr(9) & dRow("ID_SIS_CAT_IMPUESTOS").ToString & Chr(9) & dRow("GRADO_TOXICIDAD").ToString & Chr(9) & dRow("DESCUENTO_UNITARIO").ToString & Chr(9) &
-                                        dRow("DESCUENTO_IMPORTE").ToString & Chr(9) & dRow("PRECIO_SIN_DESCUENTO").ToString & Chr(9))
+                                        dRow("DESCUENTO_IMPORTE").ToString & Chr(9) & dRow("PRECIO_SIN_DESCUENTO").ToString & Chr(9) &
+                                        dRow("ID_SIS_CAT_IMPUESTOS_FLETE").ToString & Chr(9) & dRow("RETENCION_IVA_IMPORTE").ToString & Chr(9) & dRow("RETENCION_IVA_PORCENTAJE").ToString & Chr(9))
                     Next
                     Me.Grid.Rows = Me.Grid.Rows + 1
 
