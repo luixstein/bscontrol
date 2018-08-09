@@ -342,8 +342,6 @@ Buscar:
                 Exit Sub
             End If
 
-            MsgBox(IIf(Me.chkClientesSaldoVencido.Checked = True, "1", "0"))
-
             If Me.RdbGlobalCXC.Checked = True Or Me.RdbDetalleCXC.Checked = True Or Me.rdbGlobalCxcPropietario.Checked = True Then
                 Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.txtCodigoCliente.Text)
                 Rpt.SetParameterValue("@CODIGO_VENDEDOR", Me.txtCodigoVendedor.Text)
