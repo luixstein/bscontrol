@@ -80,6 +80,7 @@ Public Class Catalogo_Formulas
     Private iGyUnidad As Integer = 3
     Private iGyCantidad As Integer = 4
     Private iGyIdFormulaDetalle As Integer = 5
+    Private iGyBorrar As Integer = 6
 #End Region
 
 #Region "Constructor y destructor"
@@ -204,6 +205,7 @@ Public Class Catalogo_Formulas
                     Me.TxtCodigoArticulo.Enabled = True
                     Me.txtCostoProduccion.Enabled = True
                     Me.Grid1.Locked = False
+                    Me.Grid1.Rows = Me.Grid1.Rows + 1
 
                     Me.TxtNombreFormula.Focus()
 
@@ -277,8 +279,10 @@ Public Class Catalogo_Formulas
                     Me.Grid1.Rows = 1 'Trae dos porque en docs nuevos se pone un row en blanco, y si se dejan aqui dos agrega a partir del 3 y queda un hueco
                     For Each dRow As DataRow In dTabla.Rows
                         Me.Grid1.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("UNIDAD_VENTA").ToString & Chr(9) & _
-                                         dRow("CANTIDAD").ToString & Chr(9) & dRow("ID_FORMULA_DETALLE").ToString & Chr(9))
+                                         dRow("CANTIDAD").ToString & Chr(9) & dRow("ID_FORMULA_DETALLE").ToString & Chr(9) & "0" & Chr(9)) '0 es para la columna Borrar
                     Next
+
+                    If Me.Grid1.Rows = 1 Then Me.Grid1.Rows = 2
 
                     Me.FormateaGrid()
 
@@ -330,8 +334,14 @@ Public Class Catalogo_Formulas
                                             MsgBox("Error al tratar de insertar el detalle.", MsgBoxStyle.Exclamation, Me.Text)
                                             Exit Sub
                                         End If
+
                                     Case enumEstados.EDICION
-                                        If txtLEN(Me.Grid1.Cell(i, Me.iGyIdFormulaDetalle).Text) = True Then
+                                        If txtLEN(Me.Grid1.Cell(i, Me.iGyIdFormulaDetalle).Text) = True And Me.Grid1.Cell(i, Me.iGyBorrar).Text = "1" Then
+                                            If .oFormulasDetalle.EliminaIngrediente(CInt(Me.Grid1.Cell(i, Me.iGyIdFormulaDetalle).Text)) = False Then
+                                                MsgBox("Error al tratar de eliminar el ingrediente.", MsgBoxStyle.Exclamation, Me.Text)
+                                                Exit Sub
+                                            End If
+                                        ElseIf txtLEN(Me.Grid1.Cell(i, Me.iGyIdFormulaDetalle).Text) = True And Me.Grid1.Cell(i, Me.iGyBorrar).Text = "0" Then
                                             If .oFormulasDetalle.Actualizar() = False Then
                                                 MsgBox("Error al tratar de actualizar el detalle.", MsgBoxStyle.Exclamation, Me.Text)
                                                 Exit Sub
@@ -342,7 +352,7 @@ Public Class Catalogo_Formulas
                                                 Exit Sub
                                             End If
                                         End If
-                                        
+
                                 End Select
                             End If
                         Next
@@ -365,6 +375,7 @@ Public Class Catalogo_Formulas
 
     Private Function Validar() As Boolean
         Dim bResultado As Boolean = False
+        Dim sinElementos As Boolean
 
         Try
 
@@ -384,24 +395,52 @@ Public Class Catalogo_Formulas
                 Me.txtCostoProduccion.Text = "0.00"
             End If
 
-            If Me.Grid1.Rows < 2 Then
-                MsgBox("La fórmula debe tener al menos un ingrediente.", MsgBoxStyle.Exclamation, Me.Text)
+            If Me.Grid1.Rows < 2 Then 'No deberia entrar a esta condicion
+                MsgBox("La fórmula debe tener al menos un ingrediente(Sin renglones).", MsgBoxStyle.Exclamation, Me.Text)
                 Me.Grid1.Rows = 2
                 Me.Grid1.Cell(1, Me.iGyCodigoArticulo).SetFocus()
                 Return bResultado
             End If
 
-            If txtLEN(Me.Grid1.Cell(1, Me.iGyCodigoArticulo).Text) = False Then
+            'If txtLEN(Me.Grid1.Cell(1, Me.iGyCodigoArticulo).Text) = False Then
+            '    MsgBox("La fórmula debe tener al menos un ingrediente.", MsgBoxStyle.Exclamation, Me.Text)
+            '    Me.Grid1.Cell(1, Me.iGyCodigoArticulo).SetFocus()
+            '    Return bResultado
+            'End If
+
+            sinElementos = True
+            For i As Integer = 1 To Me.Grid1.Rows - 1
+                If Me.Grid1.Cell(i, Me.iGyBorrar).Text = "0" AndAlso txtLEN(Me.Grid1.Cell(i, Me.iGyCodigoArticulo).Text) = True Then
+                    sinElementos = False
+                    Exit For
+                End If
+            Next
+
+            If sinElementos = True Then
                 MsgBox("La fórmula debe tener al menos un ingrediente.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.Grid1.Cell(1, Me.iGyCodigoArticulo).SetFocus()
                 Return bResultado
             End If
 
             For i As Integer = 1 To Me.Grid1.Rows - 1
-                If Me.Grid1.Cell(i, Me.iGyCodigoArticulo).Text = Me.TxtCodigoArticulo.Text Then
-                    MsgBox("Los ingredientes deben ser distintos al producto final.", MsgBoxStyle.Exclamation, Me.Text)
-                    Me.Grid1.Cell(i, Me.iGyCodigoArticulo).SetFocus()
-                    Return bResultado
+                If txtLEN(Me.Grid1.Cell(i, Me.iGyCodigoArticulo).Text) = True Then
+                    For z As Integer = i + 1 To Me.Grid1.Rows - 1
+                        If Me.Grid1.Cell(i, Me.iGyCodigoArticulo).Text = Me.Grid1.Cell(z, Me.iGyCodigoArticulo).Text Then
+                            MsgBox("El ingrediente del renglon " & z & " esta repetido.", MsgBoxStyle.Exclamation, Me.Text)
+                            Return bResultado
+                        End If
+                    Next
+
+                    If Me.Grid1.Cell(i, Me.iGyCodigoArticulo).Text = Me.TxtCodigoArticulo.Text Then
+                        MsgBox("Los ingredientes deben ser distintos al producto final.", MsgBoxStyle.Exclamation, Me.Text)
+                        Me.Grid1.Cell(i, Me.iGyCodigoArticulo).SetFocus()
+                        Return bResultado
+                    End If
+
+                    If valorNumericoD(Me.Grid1.Cell(i, Me.iGyCantidad).Text) = 0 Then
+                        MsgBox("La cantidad del ingrediente del renglón " & i & " debe ser mayor a 0.", MsgBoxStyle.Exclamation, Me.Text)
+                        Return bResultado
+                    End If
                 End If
             Next
 
@@ -426,7 +465,7 @@ Public Class Catalogo_Formulas
     Private Sub FormateaGrid()
         With Me.Grid1
             .AutoRedraw = False
-            .Cols = 6
+            .Cols = 7
             .DisplayFocusRect = False
             .DrawMode = FlexCell.DrawModeEnum.OwnerDraw
             .BorderStyle = FlexCell.BorderStyleEnum.FixedSingle
@@ -438,9 +477,10 @@ Public Class Catalogo_Formulas
             .Cell(0, Me.iGyUnidad).Text = "Unidad"
             .Cell(0, Me.iGyCantidad).Text = "Cantidad"
             .Cell(0, Me.iGyIdFormulaDetalle).Text = "Id formula detalle"
+            .Cell(0, Me.iGyBorrar).Text = "Borrar"
 
             .Column(Me.iGyCantidad).Mask = FlexCell.MaskEnum.Numeric
-            .Column(Me.iGyCantidad).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
+            .Column(Me.iGyCantidad).DecimalLength = 5 'Empresa_Sistema.DECIMALES_CANTIDAD
             .Column(Me.iGyCantidad).Alignment = FlexCell.AlignmentEnum.RightCenter
 
             .Column(Me.iGyDescripcion).Locked = True
@@ -452,6 +492,9 @@ Public Class Catalogo_Formulas
             .Column(Me.iGyCantidad).Width = 80
 
             .Column(Me.iGyIdFormulaDetalle).Visible = False
+            .Column(Me.iGyBorrar).Visible = False
+
+            .Column(Me.iGyCodigoArticulo).Locked = False
 
             .AutoRedraw = True
             .Refresh()
@@ -490,7 +533,7 @@ LlenaLinea:
                             End If
 
                             For i = 1 To Me.Grid1.Rows - 1
-                                If Me.Grid1.Cell(i, Me.iGyCodigoArticulo).Text = StrCod And i <> Renglon Then
+                                If Me.Grid1.Cell(i, Me.iGyCodigoArticulo).Text = StrCod And i <> Renglon And Me.Grid1.Cell(i, Me.iGyBorrar).Text = "0" Then
                                     MsgBox("Ya existe ese ingrediente en el renglón " & i, MsgBoxStyle.Exclamation, Me.Text)
                                     Exit Sub
                                 End If
@@ -513,6 +556,8 @@ LlenaLinea:
                                     Me.Grid1.Column(Me.iGyUnidad).Locked = True
                                 End If
                             End If
+
+                            Me.Grid1.Cell(Renglon, iGyBorrar).Text = "0"
 
                         Case Me.iGyCantidad
                             If dCantidad <= 0 Then
@@ -544,7 +589,7 @@ BuscaArticulos:
                                     End If
 
                                     For i = 1 To Me.Grid1.Rows - 1
-                                        If Me.Grid1.Cell(i, Me.iGyCodigoArticulo).Text = StrCod And i <> Renglon Then
+                                        If Me.Grid1.Cell(i, Me.iGyCodigoArticulo).Text = StrCod And i <> Renglon And Me.Grid1.Cell(i, Me.iGyBorrar).Text = "0" Then
                                             MsgBox("Ya existe ese ingrediente en el renglón " & i, MsgBoxStyle.Exclamation, Me.Text)
                                             Exit Sub
                                         End If
@@ -558,18 +603,15 @@ BuscaArticulos:
                     End Select
 
                 Case Keys.F8, Keys.Delete
-                    If (Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.EDICION) Then
-                        If Me.Estado = enumEstados.EDICION Then
-                            Dim oFormulaDetalle As New Class_CatFormulas_Detalle
-
-                            If oFormulaDetalle.EliminaIngrediente(CInt(Me.Grid1.Cell(Renglon, Me.iGyIdFormulaDetalle).Text)) = False Then
-                                MsgBox("Error al tratar de eliminar el ingrediente.", MsgBoxStyle.Exclamation, Me.Text)
-                                Exit Sub
-                            End If
-
+                    If Me.Estado = enumEstados.EDICION Then
+                        If txtLEN(Me.Grid1.Cell(Renglon, Me.iGyCodigoArticulo).Text) Then
+                            Me.Grid1.Cell(Renglon, Me.iGyBorrar).Text = "1" 'El renglon queda pendiente para eliminarse al grabar
+                            Me.Grid1.Row(Renglon).Visible = False
                         End If
 
+                    ElseIf Me.Estado = enumEstados.NUEVO Then
                         Me.Grid1.Selection.DeleteByRow()
+                        If Me.Grid1.Rows = 1 Then Me.Grid1.Rows = 2
                     End If
 
             End Select

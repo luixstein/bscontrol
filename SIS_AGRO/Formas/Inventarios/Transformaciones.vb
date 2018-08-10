@@ -312,7 +312,7 @@ BuscarCuentas:
                 .FOLIO_REFERENCIA = ""
                 .CODIGO_ALMACEN1 = "" & Me.CboAlmacen1.SelectedValue.ToString()
                 .FECHA = Now
-                .CONCEPTO = "" & Me.TxtConcepto.Text
+                .CONCEPTO = "SALIDA POR TRANSFORMACIÓN PARA " & Me.LblNombreProductoFinal.Text & " : " & Me.TxtConcepto.Text
                 .CODIGO_USUARIO = CInt("" & Usuario.Codigo_Usuario)
                 .CODIGO_PLAZA = Usuario.Codigo_Plaza
                 .TOTAL = valorNumerico(Me.TxtCostoTotal.Text)
@@ -400,7 +400,7 @@ BuscarCuentas:
                 .FOLIO_REFERENCIA = ""
                 .CODIGO_ALMACEN1 = "" & Me.cboAlmacen2.SelectedValue.ToString()
                 .FECHA = Now
-                .CONCEPTO = "" & Me.TxtConcepto.Text
+                .CONCEPTO = "ENTRADA POR TRANSFORMACIÓN PARA " & Me.LblNombreProductoFinal.Text & " : " & Me.TxtConcepto.Text
                 .CODIGO_USUARIO = CInt("" & Usuario.Codigo_Usuario)
                 .CODIGO_PLAZA = Usuario.Codigo_Plaza
                 .TOTAL = valorNumerico(Me.TxtCostoTotal.Text)
@@ -481,6 +481,7 @@ BuscarCuentas:
 
         Try
             Dim dTabla As DataTable = oFormula.ObtenerDetalleParaTransformaciones(Me.TxtCodigoFormula.Text, Me.CboAlmacen1.SelectedValue.ToString)
+
             Me.Grid1.AutoRedraw = False
             Me.Grid1.Rows = 1 'Trae dos porque en docs nuevos se pone un row en blanco, y si se dejan aqui dos agrega a partir del 3 y queda un hueco
             For Each dRow As DataRow In dTabla.Rows
@@ -579,11 +580,11 @@ BuscarCuentas:
                 .Cell(0, Me.iGyTotal).Text = "Total"
 
                 .Column(Me.iGyCantidadOriginal).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyCantidadOriginal).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
+                .Column(Me.iGyCantidadOriginal).DecimalLength = 5 'Empresa_Sistema.DECIMALES_CANTIDAD
                 .Column(Me.iGyCantidadOriginal).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .Column(Me.iGyCantidadTotal).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyCantidadTotal).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
+                .Column(Me.iGyCantidadTotal).DecimalLength = 5 'Empresa_Sistema.DECIMALES_CANTIDAD
                 .Column(Me.iGyCantidadTotal).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .Column(Me.iGyExistencia).Mask = FlexCell.MaskEnum.Numeric
