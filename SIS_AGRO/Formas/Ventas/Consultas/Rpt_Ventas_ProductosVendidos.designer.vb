@@ -56,6 +56,7 @@ Partial Class Rpt_Ventas_ProductosVendidos
         Me.DtFechaDesde = New System.Windows.Forms.DateTimePicker()
         Me.LblFamilia = New System.Windows.Forms.Label()
         Me.CboFamilia = New System.Windows.Forms.ComboBox()
+        Me.chkSoloUtilidadNegativa = New System.Windows.Forms.CheckBox()
         Me.ToolStrip1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -138,6 +139,7 @@ Partial Class Rpt_Ventas_ProductosVendidos
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.chkSoloUtilidadNegativa)
         Me.GroupBox2.Controls.Add(Me.lblCultivoAgricola)
         Me.GroupBox2.Controls.Add(Me.CboCultivoAgricola)
         Me.GroupBox2.Controls.Add(Me.LblNombreProducto)
@@ -427,6 +429,17 @@ Partial Class Rpt_Ventas_ProductosVendidos
         Me.CboFamilia.Size = New System.Drawing.Size(408, 24)
         Me.CboFamilia.TabIndex = 8
         '
+        'chkSoloUtilidadNegativa
+        '
+        Me.chkSoloUtilidadNegativa.AutoSize = True
+        Me.chkSoloUtilidadNegativa.Location = New System.Drawing.Point(136, 349)
+        Me.chkSoloUtilidadNegativa.Margin = New System.Windows.Forms.Padding(4)
+        Me.chkSoloUtilidadNegativa.Name = "chkSoloUtilidadNegativa"
+        Me.chkSoloUtilidadNegativa.Size = New System.Drawing.Size(238, 21)
+        Me.chkSoloUtilidadNegativa.TabIndex = 399
+        Me.chkSoloUtilidadNegativa.Text = "Solo ventas con utilidad negativa"
+        Me.chkSoloUtilidadNegativa.UseVisualStyleBackColor = True
+        '
         'Rpt_Ventas_ProductosVendidos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -483,4 +496,5 @@ Partial Class Rpt_Ventas_ProductosVendidos
     Friend WithEvents lblCultivoAgricola As System.Windows.Forms.Label
     Friend WithEvents CboCultivoAgricola As System.Windows.Forms.ComboBox
     Friend WithEvents RdnDevoluciones As System.Windows.Forms.RadioButton
+    Friend WithEvents chkSoloUtilidadNegativa As System.Windows.Forms.CheckBox
 End Class

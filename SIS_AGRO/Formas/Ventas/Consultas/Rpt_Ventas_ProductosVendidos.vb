@@ -245,6 +245,7 @@ Buscar:
                 Rpt.SetParameterValue("@FILTRAR_FECHA_REFERENCIA", IIf(Me.CkbFechaReferencia.Checked = True, "1", "0"))
                 Rpt.SetParameterValue("@CODIGO_TIPO_MERCADO", Me.CboMercado.SelectedValue.ToString)
                 Rpt.SetParameterValue("@CODIGO_CULTIVO", IIf(txtLEN(Me.CboCultivoAgricola.SelectedValue.ToString) = True, Me.CboCultivoAgricola.SelectedValue.ToString, "T"))
+                Rpt.SetParameterValue("@SOLO_CON_UTILIDAD_NEGATIVA", IIf(Me.chkSoloUtilidadNegativa.Checked = True, "1", "0"))
             End If
 
             Dim frm As New Reporte(Rpt)
