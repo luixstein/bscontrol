@@ -602,7 +602,7 @@ busca:
                     Me.txtAlmacen.Text = .CODIGO_ALMACEN
                     Me.lblAlmacen.Text = .NOMBRE_ALMACEN
 
-                    Select Case Me.lblEstatus.Text
+                    Select Case .ESTATUS_DEVOLUCION
                         Case "N"
                             Me.lblEstatus.Text = "NUEVO"
                         Case "G"
@@ -1393,7 +1393,7 @@ busca_serie:
             Next
 
             For i = 1 To Me.Grid.Rows - 1
-                If Len(Me.Grid.Cell(i, Me.igyCodigo).Text) > 0 Then
+                If Len(Me.Grid.Cell(i, Me.igyCodigo).Text) > 0 And valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text) > 0 Then
                     dExistencia = oInventarios.Existencia(Me.Grid.Cell(i, Me.igyCodigo).Text, Me.txtAlmacen.Text)
                     oArticulos = New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
                     If oArticulos.INVENTARIABLE = "1" Then
