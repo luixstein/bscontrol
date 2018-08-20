@@ -62,6 +62,7 @@ Partial Class Transformaciones
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.GridSeries = New FlexCell.Grid()
+        Me.btnDetallarSeries = New System.Windows.Forms.Button()
         Me.tsMenu.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -115,7 +116,7 @@ Partial Class Transformaciones
         Me.Grid1.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.Grid1.Location = New System.Drawing.Point(0, 0)
         Me.Grid1.LockButton = True
-        Me.Grid1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Grid1.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid1.Name = "Grid1"
         Me.Grid1.Rows = 20
         Me.Grid1.Size = New System.Drawing.Size(1076, 314)
@@ -127,7 +128,7 @@ Partial Class Transformaciones
         Me.CboAlmacen1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboAlmacen1.FormattingEnabled = True
         Me.CboAlmacen1.Location = New System.Drawing.Point(181, 37)
-        Me.CboAlmacen1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboAlmacen1.Margin = New System.Windows.Forms.Padding(4)
         Me.CboAlmacen1.Name = "CboAlmacen1"
         Me.CboAlmacen1.Size = New System.Drawing.Size(313, 24)
         Me.CboAlmacen1.TabIndex = 0
@@ -155,7 +156,7 @@ Partial Class Transformaciones
         'TxtConcepto
         '
         Me.TxtConcepto.Location = New System.Drawing.Point(515, 186)
-        Me.TxtConcepto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtConcepto.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtConcepto.MaxLength = 160
         Me.TxtConcepto.Multiline = True
         Me.TxtConcepto.Name = "TxtConcepto"
@@ -318,7 +319,7 @@ Partial Class Transformaciones
         Me.cboAlmacen2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboAlmacen2.FormattingEnabled = True
         Me.cboAlmacen2.Location = New System.Drawing.Point(728, 37)
-        Me.cboAlmacen2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboAlmacen2.Margin = New System.Windows.Forms.Padding(4)
         Me.cboAlmacen2.Name = "cboAlmacen2"
         Me.cboAlmacen2.Size = New System.Drawing.Size(313, 24)
         Me.cboAlmacen2.TabIndex = 1
@@ -427,7 +428,7 @@ Partial Class Transformaciones
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage1.Size = New System.Drawing.Size(1076, 310)
         Me.TabPage1.TabIndex = 0
-        Me.TabPage1.Text = "TabPage1"
+        Me.TabPage1.Text = "Productos"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
         'TabPage2
@@ -438,7 +439,7 @@ Partial Class Transformaciones
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage2.Size = New System.Drawing.Size(1076, 310)
         Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "TabPage2"
+        Me.TabPage2.Text = "Series"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
         'GridSeries
@@ -461,11 +462,21 @@ Partial Class Transformaciones
         Me.GridSeries.TabIndex = 411
         Me.GridSeries.UncheckedImage = CType(resources.GetObject("GridSeries.UncheckedImage"), System.Drawing.Bitmap)
         '
+        'btnDetallarSeries
+        '
+        Me.btnDetallarSeries.Location = New System.Drawing.Point(99, 631)
+        Me.btnDetallarSeries.Name = "btnDetallarSeries"
+        Me.btnDetallarSeries.Size = New System.Drawing.Size(183, 42)
+        Me.btnDetallarSeries.TabIndex = 411
+        Me.btnDetallarSeries.Text = "Detallar series"
+        Me.btnDetallarSeries.UseVisualStyleBackColor = True
+        '
         'Transformaciones
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1101, 752)
+        Me.Controls.Add(Me.btnDetallarSeries)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.lblNombreCuentaContable)
         Me.Controls.Add(Me.lblCuentaContable)
@@ -499,7 +510,7 @@ Partial Class Transformaciones
         Me.Controls.Add(Me.tsMenu)
         Me.Controls.Add(Me.LblCodigoArticulo)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Transformaciones"
         Me.Text = "Transformaciones"
@@ -551,4 +562,5 @@ Partial Class Transformaciones
     Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
     Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
     Friend WithEvents GridSeries As FlexCell.Grid
+    Friend WithEvents btnDetallarSeries As System.Windows.Forms.Button
 End Class
