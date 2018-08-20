@@ -439,7 +439,6 @@ Public Class Class_CXC_Pago_CFDI_Global
                     Me._ES_A_PUBLICO_GENERAL = CBool(dReader("ES_A_PUBLICO_GENERAL").ToString)
                     Me._FECHA_PAGO = CDate(dReader("FECHA_PAGO").ToString)
                     Me._MONTO = CDec(dReader("MONTO").ToString)
-                    Me._IDCATALOGO_FOLIO_FELECTRONICA = "" & dReader("IDCATALOGO_FOLIO_FELECTRONICA").ToString
                     Me._ID_SIS_CFD_CATALOGO_CERTIFICADOS = "" & dReader("ID_SIS_CFD_CATALOGO_CERTIFICADOS").ToString
                     Me._ENVIADA_POR_CORREO = CBool(dReader("ENVIADA_POR_CORREO").ToString)
                     Me._VERSION_ESQUEMA_XML = "" & dReader("VERSION_ESQUEMA_XML").ToString
