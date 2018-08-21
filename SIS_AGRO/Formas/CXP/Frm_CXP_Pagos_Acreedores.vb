@@ -235,7 +235,7 @@ Public Class Frm_CXP_Pagos_Acreedores
                 Case Keys.F6
 busqueda_Visual:
                     oCuentaBancaria = New Class_CatCuentasBancarias
-                    Dim sIdCodigoBanco As String = oCuentaBancaria.BusquedaVisual_PorDescripcion
+                    Dim sIdCodigoBanco As String = oCuentaBancaria.BusquedaVisual_PorDescripcionSoloActivos
 
                     If txtLEN(sIdCodigoBanco) = True Then
                         Me.TxtCuentaBancaria.Text = sIdCodigoBanco

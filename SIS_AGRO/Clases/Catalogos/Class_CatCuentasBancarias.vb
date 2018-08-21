@@ -484,6 +484,26 @@ Public Class Class_CatCuentasBancarias
         BusquedaVisual_PorDescripcion = Resultado
     End Function
 
+    Public Function BusquedaVisual_PorDescripcionSoloActivos() As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de Cuentas_Bancarias por Descripción."
+        f.sCampo = "NOMBRE_Cuenta_Bancaria"
+        f.sOrder = "NOMBRE_Cuenta_Bancaria"
+        f.sTable = "CAT_CUENTAS_BANCARIAS"
+        f.sQl = "SELECT ID_Cuenta_Bancaria,NOMBRE_Cuenta_Bancaria,CUENTA_CONTABLE_PESOS,CODIGO_MONEDA_SAT FROM CAT_CUENTAS_BANCARIAS WHERE 1=1 AND ESTATUS_CUENTA_BANCARIA='A' AND "
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcionSoloActivos", ex)
+        End Try
+        BusquedaVisual_PorDescripcionSoloActivos = Resultado
+    End Function
+
 #End Region
 
 End Class
