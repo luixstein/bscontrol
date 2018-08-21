@@ -265,6 +265,7 @@
     <Compile Include="Clases\Catalogos\SAT\Class_CFD_CatUsosCFDI.vb" />
     <Compile Include="Clases\CentrosCostos\Class_Centros_Costos_Detalle_Ventas.vb" />
     <Compile Include="Clases\CentrosCostos\Class_Centros_Costos_Global.vb" />
+    <Compile Include="Clases\Contabilidad\Class_Contabilidad_IVA_Acreditable_DIOT.vb" />
     <Compile Include="Clases\Contabilidad\Class_ProyectoSiembra.vb" />
     <Compile Include="Clases\Compras\Class_Compras_Detalle.vb" />
     <Compile Include="Clases\Compras\Class_Compras_Global.vb" />
