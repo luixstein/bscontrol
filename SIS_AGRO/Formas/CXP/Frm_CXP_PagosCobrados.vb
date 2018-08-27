@@ -26,6 +26,10 @@ Public Class Frm_CXP_PagosCobrados
     Private Sub btnMarcarTodos_Click(sender As Object, e As EventArgs) Handles btnMarcarTodos.Click
         Me.MarcarTodos()
     End Sub
+
+    Private Sub btnDesmarcarTodos_Click(sender As Object, e As EventArgs) Handles btnDesmarcarTodos.Click
+        Me.DesmarcarTodos()
+    End Sub
 #End Region
 
 #Region "Eventos de objetos"
@@ -167,7 +171,19 @@ Public Class Frm_CXP_PagosCobrados
             HandleError(Me.Name, "MarcarTodos", ex)
         End Try
     End Sub
-#End Region
 
+    Private Sub DesmarcarTodos()
+        Try
+            For i As Integer = 1 To Me.Grid.Rows - 1
+                If txtLEN(Me.Grid.Cell(i, Me.iGyFolio).Text) = True Then
+                    Me.Grid.Cell(i, Me.iGyCobrado).Text = "0"
+                End If
+            Next
+        Catch ex As Exception
+            HandleError(Me.Name, "DesmarcarTodos", ex)
+        End Try
+    End Sub
+
+#End Region
 
 End Class

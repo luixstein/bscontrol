@@ -35,6 +35,7 @@ Partial Class Frm_CXP_PagosCobrados
         Me.ProgressBar = New System.Windows.Forms.ProgressBar()
         Me.lblMsgGrabado = New System.Windows.Forms.Label()
         Me.btnMarcarTodos = New System.Windows.Forms.Button()
+        Me.btnDesmarcarTodos = New System.Windows.Forms.Button()
         Me.gbVentas.SuspendLayout()
         Me.tsMenu.SuspendLayout()
         Me.SuspendLayout()
@@ -69,7 +70,7 @@ Partial Class Frm_CXP_PagosCobrados
         '
         'dtFechaMes
         '
-        Me.dtFechaMes.CustomFormat = "MMM/yyyy"
+        Me.dtFechaMes.CustomFormat = ""
         Me.dtFechaMes.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.dtFechaMes.Location = New System.Drawing.Point(51, 33)
         Me.dtFechaMes.Name = "dtFechaMes"
@@ -158,11 +159,21 @@ Partial Class Frm_CXP_PagosCobrados
         Me.btnMarcarTodos.Text = "&Marcar todos"
         Me.btnMarcarTodos.UseVisualStyleBackColor = True
         '
+        'btnDesmarcarTodos
+        '
+        Me.btnDesmarcarTodos.Location = New System.Drawing.Point(497, 31)
+        Me.btnDesmarcarTodos.Name = "btnDesmarcarTodos"
+        Me.btnDesmarcarTodos.Size = New System.Drawing.Size(118, 23)
+        Me.btnDesmarcarTodos.TabIndex = 9
+        Me.btnDesmarcarTodos.Text = "&Desmarcar todos"
+        Me.btnDesmarcarTodos.UseVisualStyleBackColor = True
+        '
         'Frm_CXP_PagosCobrados
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(992, 553)
+        Me.Controls.Add(Me.btnDesmarcarTodos)
         Me.Controls.Add(Me.btnMarcarTodos)
         Me.Controls.Add(Me.lblMsgGrabado)
         Me.Controls.Add(Me.ProgressBar)
@@ -195,4 +206,5 @@ Partial Class Frm_CXP_PagosCobrados
     Friend WithEvents ProgressBar As System.Windows.Forms.ProgressBar
     Friend WithEvents lblMsgGrabado As System.Windows.Forms.Label
     Friend WithEvents btnMarcarTodos As System.Windows.Forms.Button
+    Friend WithEvents btnDesmarcarTodos As System.Windows.Forms.Button
 End Class

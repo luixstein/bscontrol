@@ -1,12 +1,9 @@
 ﻿Option Strict On
-Imports System.Data
-Imports System.Data.SqlClient
 Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Frm_Contabilidad_IVA_Acreditable
 
     Private FormatoDeReporte As String
-
 
 #Region "Constructor y destructor"
     Public Sub New()
@@ -132,8 +129,7 @@ Buscar:
 
     Private Sub Imprimir()
         Dim StrFiltros As String = ""
-        Dim Rpt As ReportDocument
-        Rpt = New ReportDocument
+        Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
         Try
             If Me.ValidarPeriodo = False Then
@@ -176,7 +172,6 @@ Buscar:
         Finally
             oReporte = Nothing
         End Try
-
     End Sub
 
     Private Sub DesplegarEjercicios()
@@ -184,7 +179,6 @@ Buscar:
         With Me.CmbEjercicio
             .DisplayMember = "NOMBRE_EJERCICIO"
             .ValueMember = "ID_CON_EJERCICIO"
-
             Dim dView As New Data.DataView(oElementos.ObtenerEjercicios)
             .DataSource = dView
             If dView.Count > 0 Then
@@ -204,7 +198,8 @@ Buscar:
             Me.DtFechaDesde.Focus()
             Exit Function
         End If
-        ValidarPeriodo = True
+
+        Return True
     End Function
 
     Private Function GeneraArchivoBatch() As Boolean
@@ -222,7 +217,7 @@ Buscar:
 
             oIVA = Nothing
         Catch ex As Exception
-            HandleError(Me.Name, "Imprimir", ex)
+            HandleError(Me.Name, "GeneraArchivoBatch", ex)
         End Try
         Return bResultado
     End Function

@@ -83,6 +83,7 @@ Public Class Class_Contabilidad_IVA_Acreditable_DIOT
 
 #Region "Métodos y procedimientos"
     Public Function GeneraArchivoBatch(ByVal sFecha1 As String, ByVal sFecha2 As String, ByVal sUsarFechaCobro As String) As Boolean
+        Dim bResultado As Boolean = False
         Dim sCarpeta As String, sArchivo As String
         Dim cmd As New SqlCommand, dReader As SqlDataReader, sqlParametro As SqlParameter
         Dim strStreamW As Stream = Nothing, strStreamWriter As StreamWriter = Nothing
@@ -138,6 +139,8 @@ Public Class Class_Contabilidad_IVA_Acreditable_DIOT
                     'Me._CodigoCliente = "" & dReader("CODIGO_CLIENTE")
 
                     dReader.Close()
+
+                    bResultado = True
                 Catch ex As Exception
                     HandleError(Me.Nombre_Clase, "Consultar", ex)
                 Finally
@@ -148,16 +151,19 @@ Public Class Class_Contabilidad_IVA_Acreditable_DIOT
 
             strStreamWriter.Close() 'Cerramos
 
-            GeneraArchivoBatch = True
-
             'Me._TotalActos0 = FormatImporteContable(dTotalActos0, True)
             'Me._TotalActos16 = FormatImporteContable(dTotalActos16, True)
             'Me._TotalActos = FormatImporteContable(dTotalActos0 + dTotalActos10 + dTotalActos15 + dTotalActos11 + dTotalActos16, True)
 
-            MsgBox("El archivo fue generado con éxito en la ruta: " & sArchivo, vbInformation, Me.Nombre_Clase)
+            If bResultado = True Then
+                MsgBox("El archivo fue generado con éxito en la ruta: " & vbCrLf & sArchivo, vbInformation, Me.Nombre_Clase)
+            End If
+
         Catch ex As Exception
-            HandleError("GeneraArchivoBatch", Me.Nombre_Clase, ex)
+            HandleError(Me.Nombre_Clase, "GeneraArchivoBatch", ex)
         End Try
+
+        Return bResultado
     End Function
 
 #End Region
