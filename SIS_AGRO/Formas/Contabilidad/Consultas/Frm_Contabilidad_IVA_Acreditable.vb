@@ -23,7 +23,6 @@ Public Class Frm_Contabilidad_IVA_Acreditable
 #End Region
 
 #Region "Opciones"
-
     Private Sub tsbImprimir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbImprimir.Click
         Me.Imprimir()
     End Sub
@@ -32,92 +31,12 @@ Public Class Frm_Contabilidad_IVA_Acreditable
         Me.Close()
     End Sub
 
+    Private Sub cmdGeneraArchivoBatch_Click(sender As Object, e As EventArgs) Handles cmdGeneraArchivoBatch.Click
+        Me.GeneraArchivoBatch()
+    End Sub
 #End Region
 
-#Region "Métodos y procedimientos"
-
-    Private Sub Inicializa()
-        Me.CmbEjercicio.SelectedValue = Plaza.ID_CON_EJERCICIO
-        Me.DtFechaDesde.Value = Plaza.FECHA_INICIO
-        Me.DtFechaHasta.Value = Plaza.FECHA_FINAL
-        Me.txtCodigoProveedor.Text = ""
-        Me.lblNombreProveedor.Text = ""
-        Me.CmbEstatusIva.SelectedIndex = 0
-        Me.CmbEstatusPoliza.SelectedIndex = 0
-    End Sub
-
-    Private Sub Imprimir()
-        Dim StrFiltros As String = ""
-        Dim Rpt As ReportDocument
-        Rpt = New ReportDocument
-        Dim oReporte As Class_Reporte
-        Try
-            If Me.ValidarPeriodo = False Then
-                Exit Sub
-            End If
-
-            If Me.RdbDetalle.Checked = True And Me.RdbProveedor.Checked = True Then
-                Me.FormatoDeReporte = "RPT_CONTABILIDAD_IVA_ACREDITABLE_DETALLE_11_16"
-            ElseIf Me.RdbGlobal.Checked = True And Me.RdbProveedor.Checked = True Then
-                Me.FormatoDeReporte = "RPT_CONTABILIDAD_IVA_ACREDITABLE_GLOBAL_11_16"
-            ElseIf Me.RdbGlobal.Checked = True And Me.RdbPoliza.Checked = True Then
-                Me.FormatoDeReporte = "RPT_CONTABILIDAD_IVA_ACREDITABLE_GLOBAL_POLIZA"
-            Else
-                Me.FormatoDeReporte = "RPT_CONTABILIDAD_IVA_ACREDITABLE_DETALLE_POLIZA"
-            End If
-
-            oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
-            If Not oReporte.RptCargado Then
-                Exit Sub
-            End If
-
-            Rpt.SetParameterValue("@FECHA_INICIO", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
-            Rpt.SetParameterValue("@FECHA_FINAL", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
-            Rpt.SetParameterValue("@ID_CON_EJERCICIO", Me.CmbEjercicio.SelectedValue)
-            Rpt.SetParameterValue("@CODIGO_PROVEEDOR", "" & Me.txtCodigoProveedor.Text)
-            Rpt.SetParameterValue("@ESTATUS_IVA", Me.CmbEstatusIva.Text)
-            Rpt.SetParameterValue("@ESTATUS_POLIZA", Me.CmbEstatusPoliza.Text)
-
-            Dim frm As New Reporte(Rpt)
-            frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
-            frm.Show()
-        Catch ex As Exception
-            HandleError(Me.Name, "Imprimir", ex)
-        Finally
-            oReporte = Nothing
-        End Try
-
-    End Sub
-
-    Private Sub DesplegarEjercicios()
-        Dim oElementos As New Class_Contabilidad_Ejercicios
-        With Me.CmbEjercicio
-            .DisplayMember = "NOMBRE_EJERCICIO"
-            .ValueMember = "ID_CON_EJERCICIO"
-
-            Dim dView As New Data.DataView(oElementos.ObtenerEjercicios)
-            .DataSource = dView
-            If dView.Count > 0 Then
-                .SelectedIndex = 0
-            End If
-        End With
-    End Sub
-
-    Private Function ValidarPeriodo() As Boolean
-        Me.DtFechaDesde.Enabled = False
-        Me.DtFechaDesde.Enabled = True
-        Me.DtFechaHasta.Enabled = False
-        Me.DtFechaHasta.Enabled = True
-
-        If Me.DtFechaDesde.Value > Me.DtFechaHasta.Value Then
-            MsgBox("Rango de fechas inválidas.", MsgBoxStyle.Exclamation, Me.Name)
-            Me.DtFechaDesde.Focus()
-            Exit Function
-        End If
-        ValidarPeriodo = True
-    End Function
-
-#End Region
+#Region "Eventos"
 
     Private Sub CmbEjercicio_SelectedIndexChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmbEjercicio.SelectedIndexChanged
         Dim sql As Class_find
@@ -189,5 +108,125 @@ Buscar:
                 Child.Dispose()
         End Select
     End Sub
+
+    Private Sub rbFormatoSAT_CheckedChanged(sender As Object, e As EventArgs) Handles rbFormatoSAT.CheckedChanged
+        If Me.rbFormatoSAT.Checked = True Then
+            Me.gbAgrupado.Visible = False
+        Else
+            Me.gbAgrupado.Visible = True
+        End If
+    End Sub
+#End Region
+
+#Region "Métodos y procedimientos"
+
+    Private Sub Inicializa()
+        Me.CmbEjercicio.SelectedValue = Plaza.ID_CON_EJERCICIO
+        Me.DtFechaDesde.Value = Plaza.FECHA_INICIO
+        Me.DtFechaHasta.Value = Plaza.FECHA_FINAL
+        Me.txtCodigoProveedor.Text = ""
+        Me.lblNombreProveedor.Text = ""
+        Me.CmbEstatusIva.SelectedIndex = 0
+        Me.CmbEstatusPoliza.SelectedIndex = 0
+    End Sub
+
+    Private Sub Imprimir()
+        Dim StrFiltros As String = ""
+        Dim Rpt As ReportDocument
+        Rpt = New ReportDocument
+        Dim oReporte As Class_Reporte
+        Try
+            If Me.ValidarPeriodo = False Then
+                Exit Sub
+            End If
+
+            If Me.RdbDetalle.Checked = True And Me.RdbProveedor.Checked = True Then
+                Me.FormatoDeReporte = "RPT_CONTABILIDAD_IVA_ACREDITABLE_DETALLE_11_16"
+            ElseIf Me.RdbDetalle.Checked = True And Me.RdbPoliza.Checked = True Then
+                Me.FormatoDeReporte = "RPT_CONTABILIDAD_IVA_ACREDITABLE_DETALLE_POLIZA"
+            ElseIf Me.RdbGlobal.Checked = True And Me.RdbProveedor.Checked = True Then
+                Me.FormatoDeReporte = "RPT_CONTABILIDAD_IVA_ACREDITABLE_GLOBAL_11_16"
+            ElseIf Me.RdbGlobal.Checked = True And Me.RdbPoliza.Checked = True Then
+                Me.FormatoDeReporte = "RPT_CONTABILIDAD_IVA_ACREDITABLE_GLOBAL_POLIZA"
+            ElseIf Me.rbFormatoSAT.Checked = True Then
+                Me.FormatoDeReporte = "RPT_CONTABILIDAD_IVA_ACREDITABLE_DETALLE_SAT"
+            Else
+                MsgBox("Formato no válido.", MsgBoxStyle.Exclamation, "Imprimir")
+                Exit Sub
+            End If
+
+            oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
+            If Not oReporte.RptCargado Then
+                Exit Sub
+            End If
+
+            Rpt.SetParameterValue("@FECHA_INICIO", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
+            Rpt.SetParameterValue("@FECHA_FINAL", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
+            Rpt.SetParameterValue("@ID_CON_EJERCICIO", Me.CmbEjercicio.SelectedValue)
+            Rpt.SetParameterValue("@CODIGO_PROVEEDOR", "" & Me.txtCodigoProveedor.Text)
+            Rpt.SetParameterValue("@ESTATUS_IVA", Me.CmbEstatusIva.Text)
+            Rpt.SetParameterValue("@ESTATUS_POLIZA", Me.CmbEstatusPoliza.Text)
+            Rpt.SetParameterValue("@USAR_FECHA_COBRO", Convert.ToInt32(Me.chkFilrarCobradosMes.Checked))
+
+            Dim frm As New Reporte(Rpt)
+            frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
+            frm.Show()
+        Catch ex As Exception
+            HandleError(Me.Name, "Imprimir", ex)
+        Finally
+            oReporte = Nothing
+        End Try
+
+    End Sub
+
+    Private Sub DesplegarEjercicios()
+        Dim oElementos As New Class_Contabilidad_Ejercicios
+        With Me.CmbEjercicio
+            .DisplayMember = "NOMBRE_EJERCICIO"
+            .ValueMember = "ID_CON_EJERCICIO"
+
+            Dim dView As New Data.DataView(oElementos.ObtenerEjercicios)
+            .DataSource = dView
+            If dView.Count > 0 Then
+                .SelectedIndex = 0
+            End If
+        End With
+    End Sub
+
+    Private Function ValidarPeriodo() As Boolean
+        Me.DtFechaDesde.Enabled = False
+        Me.DtFechaDesde.Enabled = True
+        Me.DtFechaHasta.Enabled = False
+        Me.DtFechaHasta.Enabled = True
+
+        If Me.DtFechaDesde.Value > Me.DtFechaHasta.Value Then
+            MsgBox("Rango de fechas inválidas.", MsgBoxStyle.Exclamation, Me.Name)
+            Me.DtFechaDesde.Focus()
+            Exit Function
+        End If
+        ValidarPeriodo = True
+    End Function
+
+    Private Function GeneraArchivoBatch() As Boolean
+        Dim bResultado As Boolean = False
+        Try
+            Dim oIVA As New Class_Contabilidad_IVA_Acreditable_DIOT()
+            bResultado = oIVA.GeneraArchivoBatch(Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"), Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"), _
+                                    Convert.ToInt32(Me.chkFilrarCobradosMes.Checked).ToString)
+
+            Me.lblTotalActos0.Text = FormatImporteContable(oIVA.TotalActos0)
+            Me.lblTotalActos16.Text = FormatImporteContable(oIVA.TotalActos16)
+            Me.lblTotalActos.Text = FormatImporteContable(oIVA.TotalActos)
+            Me.lblTotalIVAAcreditable16.Text = FormatImporteContable(oIVA.TotalIVAAcreditable16)
+            Me.lblTotalIVARetenido4.Text = FormatImporteContable(oIVA.TotalIVARetenido4)
+
+            oIVA = Nothing
+        Catch ex As Exception
+            HandleError(Me.Name, "Imprimir", ex)
+        End Try
+        Return bResultado
+    End Function
+#End Region
+
 
 End Class
