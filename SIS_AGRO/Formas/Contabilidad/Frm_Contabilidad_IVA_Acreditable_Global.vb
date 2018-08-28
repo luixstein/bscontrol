@@ -92,7 +92,7 @@ Public Class Frm_Contabilidad_IVA_Acreditable_Global
 #Region "Eventos de objetos"
 #Region "Eventos"
     Private Sub Frm_Contabilidad_IVA_Acreditable_General_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Inicializa()
+        Me.Inicializa()
         Me.Cambia_Estado(enumEstados.NUEVO)
 
         If txtLEN(Me._FolioPolizaConsultaExterior) = True Then

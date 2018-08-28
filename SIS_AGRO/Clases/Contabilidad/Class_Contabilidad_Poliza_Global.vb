@@ -676,14 +676,14 @@ Public Class Class_Contabilidad_Poliza_Global
             If dTabla.Rows.Count > 0 Then
                 If CDbl(dTabla.Rows(0)("IVA_10")) > 0 Or CDbl(dTabla.Rows(0)("IVA_15")) > 0 Or _
                    CDbl(dTabla.Rows(0)("IVA_11")) > 0 Or CDbl(dTabla.Rows(0)("IVA_16")) > 0 Then
-                    ConsiderarParaControlIVAAcreditable = True
+                    bResultado = True
                 End If
             End If
 
             dTabla.Dispose()
 
             '2-Si no, entonces busca si es una póliza de egresos que afectó a bancos, tenga o no cuentas de iva. Para grabar actos al cero de polizas de egresos directas.
-            If ConsiderarParaControlIVAAcreditable = False Then
+            If bResultado = False Then
                 Dim sql As New Class_find("SELECT DBO.FN_CONTABILIDAD_SI_ES_POLIZA_EGRESO_AFECTA_BANCOS('" & Me._FOLIO_POLIZA & "')")
                 If sql.Result1 = "1" Then
                     bResultado = True

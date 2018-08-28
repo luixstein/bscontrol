@@ -143,6 +143,15 @@ Public Class Frm_CXP_Pagos_Acreedores
     Private Sub btnDocumentoSiguiente_Click(sender As Object, e As EventArgs) Handles btnDocumentoSiguiente.Click
         Me.Navegador("Siguiente")
     End Sub
+
+    Private Sub tsbIvaAcreditable_Click(sender As Object, e As EventArgs) Handles tsbIvaAcreditable.Click
+        Dim oIVA As New Frm_Contabilidad_IVA_Acreditable_Global
+        oIVA.FolioPolizaConsultaExterior = Me.TxtFolio.Text
+        oIVA.FechaPolizaConsultaExterior = Me.dtFecha.Value
+
+        oIVA.ShowDialog()
+        oIVA.Dispose()
+    End Sub
 #End Region
 
 #Region "Eventos de objetos"
@@ -2075,6 +2084,7 @@ buscar_acreedor:
                     Me.tsbGrabar.Enabled = True
                     Me.tsbCancelar.Enabled = False
                     Me.tsbImprimir.Enabled = False
+                    Me.tsbIvaAcreditable.Enabled = False
 
                     Select Case Me.ModoPago
                         Case enumModoPago.PROVEEDOR
@@ -2121,6 +2131,8 @@ buscar_acreedor:
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = True
                     Me.tsbImprimir.Enabled = True
+                    Me.tsbIvaAcreditable.Enabled = True
+
                     Me.CmbDocumento.Enabled = False
                     Me.dtFecha.Enabled = False
                     'Me.ckbDolares.Enabled = False
@@ -2151,6 +2163,8 @@ buscar_acreedor:
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = False
                     Me.tsbImprimir.Enabled = True
+                    Me.tsbIvaAcreditable.Enabled = False
+
                     Me.CmbDocumento.Enabled = False
                     Me.dtFecha.Enabled = False
                     'Me.ckbDolares.Enabled = False
@@ -2177,6 +2191,7 @@ buscar_acreedor:
                     Me.tsbImprimir.Select()
                     Me.Grid2.Locked = True
             End Select
+
         Catch ex As Exception
             HandleError(Me.Name, "Cambia_Estado", ex)
         End Try
