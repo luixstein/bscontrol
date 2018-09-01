@@ -27,6 +27,7 @@ Public Class Transformaciones
     Private igySerieDescripcion As Short = 3
     Private igySerieIdInventarioLotesCostos As Short = 4
     Private igySerieNumeroSerie As Short = 5
+    Private igyIdProductoFinal As Short = 6
 #End Region
 
     Private bAplicando As Boolean
@@ -497,11 +498,20 @@ BuscarCuentas:
                     sListaSeriesBase = "1," & codigoProductoFinal & ",0,"
 
                     For i = 1 To CInt(Me.TxtCantidad.Text)
-                        sListaSeriesCompleta = sListaSeriesBase & "SeriePrueba" & i & "|" 'Falta definir mecanismo para generar series para el producto final
+                        'For z = 1 To Me.GridSeries.Rows - 1
+                        '    If CInt(Me.GridSeries.Cell(z, Me.igyIdProductoFinal).Text) = i Then
+                        '        sListaSeriesCompleta = sListaSeriesCompleta & Me.GridSeries.Cell(z, Me.igySerieNumeroSerie).Text & ","
+                        '    End If
+                        'Next
+
+                        For Each dRow In Me.dtSeries.Select("ID_PRODUCTO_FINAL='" & i.ToString & "'")
+                            sListaSeriesCompleta = sListaSeriesCompleta & dRow("NUMERO_SERIE").ToString & "-"
+                        Next
                     Next
 
                     If txtLEN(sListaSeriesCompleta) = True Then
-                        sListaSeriesCompleta = sListaSeriesCompleta.Substring(0, sListaSeriesCompleta.Length - 1) 'Para quitarle el último pipe que sale sobrando.
+                        sListaSeriesCompleta = sListaSeriesCompleta.Substring(0, sListaSeriesCompleta.Length - 1) 'Para quitarle la ultima coma que sale sobrando.
+                        sListaSeriesCompleta = sListaSeriesBase & sListaSeriesCompleta
                     End If
                 End If
 
@@ -707,7 +717,7 @@ BuscarCuentas:
         Try
             With Me.GridSeries
                 .AutoRedraw = False
-                .Cols = 6
+                .Cols = 7
 
                 .DisplayFocusRect = False
                 .DrawMode = FlexCell.DrawModeEnum.OwnerDraw
@@ -725,12 +735,14 @@ BuscarCuentas:
                 .Cell(0, Me.igySerieDescripcion).Text = "Descripción"
                 .Cell(0, Me.igySerieIdInventarioLotesCostos).Text = "Id lote"
                 .Cell(0, Me.igySerieNumeroSerie).Text = "Número de serie"
+                .Cell(0, Me.igyIdProductoFinal).Text = "Numero de producto final"
 
                 .Column(Me.igySeriePosicion).Locked = True
                 .Column(Me.igySerieCodigo).Locked = True
                 .Column(Me.igySerieDescripcion).Locked = True
                 .Column(Me.igySerieIdInventarioLotesCostos).Locked = True
                 .Column(Me.igySerieNumeroSerie).Locked = True
+                .Column(Me.igyIdProductoFinal).Locked = True
 
                 .AutoRedraw = True
                 .Refresh()
@@ -933,16 +945,24 @@ busca_serie:
                 .Columns.Add("DESCRIPCION", GetType(String))
                 .Columns.Add("ID_INVENTARIO_LOTES_COSTOS", GetType(String))
                 .Columns.Add("NUMERO_SERIE", GetType(String))
+                .Columns.Add("ID_PRODUCTO_FINAL", GetType(String))
             End With
             Me.dtSeries.AcceptChanges()
 
             Dim dRow As DataRow
 
+            Dim n As Integer = 0, count As Integer = 0, idProductoFinal As Integer = 0
+
             For i = 1 To Me.Grid1.Rows - 1
                 If txtLEN(Me.Grid1.Cell(i, Me.iGyCodigo).Text) = True Then 'AndAlso Me.Grid1.Cell(i, Me.iGyCodigo).Text <> "-" AndAlso CInt(Me.Grid1.Cell(i, Me.iGyCantidadTotal).Text) > 0 Then
                     Dim oArticulo As New Class_CatArticulos(Me.Grid1.Cell(i, Me.iGyCodigo).Text)
                     If oArticulo.Existe = True AndAlso oArticulo.ES_SERIALIZABLE = True AndAlso oArticulo.INVENTARIABLE = "1" Then
+                        idProductoFinal = 1
+                        count = 0
+
                         For j = 1 To CInt(Me.Grid1.Cell(i, Me.iGyCantidadTotal).Text)
+                            n = CInt(Me.Grid1.Cell(i, Me.iGyCantidadOriginal).Text)
+
                             dRow = Me.dtSeries.NewRow
 
                             dRow("POSICION") = i
@@ -950,8 +970,15 @@ busca_serie:
                             dRow("DESCRIPCION") = Me.Grid1.Cell(i, Me.iGyDescripcion).Text
                             dRow("ID_INVENTARIO_LOTES_COSTOS") = ""
                             dRow("NUMERO_SERIE") = ""
+                            dRow("ID_PRODUCTO_FINAL") = idProductoFinal
 
                             Me.dtSeries.Rows.Add(dRow)
+
+                            count = count + 1
+                            If count = n Then
+                                count = 0
+                                idProductoFinal = idProductoFinal + 1
+                            End If
                         Next
                     End If
                 End If
