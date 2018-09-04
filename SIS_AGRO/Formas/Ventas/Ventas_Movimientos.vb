@@ -1652,7 +1652,11 @@ Buscar:
                         .oVentasDetalle.PRECIO = valorNumericoD(Me.Grid.Cell(i, Me.iGyPRECIO_CON_DESCUENTO).Text)
                         .oVentasDetalle.DESCUENTO_UNITARIO = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_UNITARIO).Text)
                         .oVentasDetalle.DESCUENTO_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE).Text)
-                        .oVentasDetalle.ID_SIS_CAT_IMPUESTOS_FLETE = Me.Grid.Cell(i, Me.iGyIdSisCatImpuestosFlete).Text
+                        If txtLEN(Me.Grid.Cell(i, Me.iGyIdSisCatImpuestosFlete).Text) = False Then
+                            .oVentasDetalle.ID_SIS_CAT_IMPUESTOS_FLETE = "0" 'Sin flete
+                        Else
+                            .oVentasDetalle.ID_SIS_CAT_IMPUESTOS_FLETE = Me.Grid.Cell(i, Me.iGyIdSisCatImpuestosFlete).Text
+                        End If
                         .oVentasDetalle.RETENCION_IVA_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.iGyFleteImporte).Text)
 
                         If .oVentasDetalle.GrabaRenglon = False Then
