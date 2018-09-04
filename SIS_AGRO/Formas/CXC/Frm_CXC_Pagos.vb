@@ -1065,24 +1065,28 @@ Buscar:
         'If Me.cboMoneda.Text = "USD" Then
         'sSaldoDlls = " AND SALDO_DOLARES>0 "
         'End If
+        oCliente = New Class_CatClientes(sReplace(Me.TxtCodigoCliente.Text))
 
         Dim sSQLSaldoMXN As String = ""
 
         If bHayVentasEnUSD = True Then
-            sSQLSaldoMXN = "CASE WHEN CODIGO_MONEDA_SAT='USD' THEN ROUND((ROUND(SALDO/TIPO_DE_CAMBIO,2))*" & dTipoCambio.ToString & ",2) ELSE SALDO END SALDO_MXN,"
+            sSQLSaldoMXN = "CASE WHEN CODIGO_MONEDA_SAT='USD' THEN ROUND((ROUND(V.SALDO/V.TIPO_DE_CAMBIO,2))*" & dTipoCambio.ToString & ",2) ELSE V.SALDO END SALDO_MXN,"
         Else
-            sSQLSaldoMXN = "SALDO SALDO_MXN,"
+            sSQLSaldoMXN = "V.SALDO SALDO_MXN,"
         End If
 
-        Dim sSQL As String = "SELECT V.FECHA,V.FOLIO_VENTA,V.CODIGO_MONEDA_SAT,V.TOTAL," &
+        Dim sSQL As String = "SELECT V.CODIGO_CLIENTE,CTE.NOMBRE_CLIENTE,V.FECHA,V.FOLIO_VENTA,V.CODIGO_MONEDA_SAT,V.TOTAL," &
                             sSQLSaldoMXN &
                             "V.TOTAL_DOLARES," &
                             "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN ROUND(V.SALDO/V.TIPO_DE_CAMBIO,2) ELSE ROUND(V.SALDO/" & dTipoCambio.ToString & ",2) END SALDO_DOLARES," &
                             "CASE WHEN V.TOTAL=V.SALDO THEN V.IMPUESTO ELSE 0 END IVA, " &
                             "V.VERSION_ESQUEMA_XML,V.CODIGO_METODO_PAGO,V.CODIGO_METODO_PAGO_EVENTO,V.ES_FACTURA_ELECTRONICA " &
                             "FROM VENTA_GLOBAL V " &
+                            "INNER JOIN CAT_CLIENTES CTE ON(V.CODIGO_CLIENTE=CTE.CODIGO_CLIENTE)" &
                             "LEFT JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(V.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
-                            "WHERE V.CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' AND V.SALDO>0 " & sSaldoDlls ' & " AND V.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA
+                            "WHERE V.RFC_RECEPTOR='" & oCliente.RFC & "' AND V.SALDO>0 " & sSaldoDlls ' & " AND V.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA
+
+        '"WHERE V.CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' AND V.SALDO>0 " & sSaldoDlls ' & " AND V.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA
 
         If Me.chkVentasNoFiscales.Checked = True Then
             sSQL = sSQL & " AND DOC.AFECTA_CONTABILIDAD='0' " 'Para mostrar sólo remisiones, las cot no salen porque también se busca saldo>0 .
@@ -1098,7 +1102,7 @@ Buscar:
             .CommandTimeout = 0
             .CommandType = CommandType.Text
             Try
-                oCliente = New Class_CatClientes(sReplace(Me.TxtCodigoCliente.Text))
+
 
                 sql = New Class_find("SELECT NOMBRE_MEDIO_PAGO FROM SIS_MEDIOS_PAGO WHERE ID_MEDIO_PAGO=" & sReplace(Me.CboMedioDePago.SelectedValue.ToString) & " AND ESTATUS='A'")
                 sMedioPago = sql.Result1
@@ -1176,8 +1180,8 @@ Buscar:
                             Me.GridVentas.Rows = Me.GridVentas.Rows + 1
 
                             Me.GridVentas.Cell(i, Me.iGyVentaFOLIO_DETALLE).Text = Me.txtFolioDetalle.Text.ToUpper
-                            Me.GridVentas.Cell(i, Me.iGyVentaCodigoCliente).Text = oCliente.CODIGO_CLIENTE
-                            Me.GridVentas.Cell(i, Me.iGyVentaNombreCliente).Text = oCliente.NOMBRE_CLIENTE
+                            Me.GridVentas.Cell(i, Me.iGyVentaCodigoCliente).Text = dReader("CODIGO_CLIENTE").ToString 'oCliente.CODIGO_CLIENTE
+                            Me.GridVentas.Cell(i, Me.iGyVentaNombreCliente).Text = dReader("NOMBRE_CLIENTE").ToString 'oCliente.NOMBRE_CLIENTE
                             Me.GridVentas.Cell(i, Me.iGyVentaFecha).Text = dReader("FECHA").ToString
                             Me.GridVentas.Cell(i, Me.iGyVentaFolio).Text = dReader("FOLIO_VENTA").ToString
                             Me.GridVentas.Cell(i, Me.iGyVentaMoneda).Text = dReader("CODIGO_MONEDA_SAT").ToString
