@@ -342,7 +342,7 @@ Module FacturacionElectronica
         Return bResultado
     End Function
 
-    Private Function GrabaCancelacionYAcuseXML(ByVal sFolioFacturaSistema As String, ByRef sAcuseCancelacionXML As String, ByVal sTipoComprobanteElectronico As TipoComprobante) As Boolean
+    Private Function GrabaCancelacionYAcuseXML(ByVal sFolioDocumentoSistema As String, ByRef sAcuseCancelacionXML As String, ByVal sTipoComprobanteElectronico As TipoComprobante) As Boolean
         Const sProcedure As String = "GrabaCancelacionYAcuseXML"
         Dim bResultado As Boolean = False
 
@@ -358,19 +358,19 @@ Module FacturacionElectronica
                 Select Case sTipoComprobanteElectronico
                     Case TipoComprobante.FACTURA_VENTA '"FACTURA_VENTA"
                         .CommandText = "MP_VENTAS_FACTURACION_ELECTRONICA_CANCELA_Y_GUARDA_ACUSE_XML"
-                        sqlParametro = .Parameters.Add("@FOLIO_VENTA", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolioFacturaSistema
+                        sqlParametro = .Parameters.Add("@FOLIO_VENTA", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolioDocumentoSistema
 
                     Case TipoComprobante.NOTA_CREDITO_CXC '"NOTA_CREDITO_CXC"
                         .CommandText = "MP_CXC_NOTAS_CREDITO_ELECTRONICA_CANCELA_Y_GUARDA_ACUSE_XML"
-                        sqlParametro = .Parameters.Add("@FOLIO_DESCUENTO", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolioFacturaSistema
+                        sqlParametro = .Parameters.Add("@FOLIO_DESCUENTO", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolioDocumentoSistema
 
                     Case TipoComprobante.PAGO_CXC
                         .CommandText = "MP_CFD_CXC_PAGOS_CANCELA_Y_GUARDA_ACUSE_XML"
-                        sqlParametro = .Parameters.Add("@FOLIO_DESCUENTO", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolioFacturaSistema
+                        sqlParametro = .Parameters.Add("@FOLIO_PAGO", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolioDocumentoSistema
 
                     Case TipoComprobante.DEVOLUCION_CXC
                         .CommandText = "MP_CFD_CXC_DEVOLUCIONES_CANCELA_Y_GUARDA_ACUSE_XML"
-                        sqlParametro = .Parameters.Add("@FOLIO_DEVOLUCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolioFacturaSistema
+                        sqlParametro = .Parameters.Add("@FOLIO_DEVOLUCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolioDocumentoSistema
 
                     Case Else
                         MsgBox("No se indicó el tipo de comprobante electrónico generado para grabar los datos de cancelación del documento.", MsgBoxStyle.Exclamation, sProcedure)
