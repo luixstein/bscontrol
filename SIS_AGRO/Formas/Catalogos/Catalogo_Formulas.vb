@@ -81,6 +81,7 @@ Public Class Catalogo_Formulas
     Private iGyCantidad As Integer = 4
     Private iGyIdFormulaDetalle As Integer = 5
     Private iGyBorrar As Integer = 6
+    Private iGyEsSeriado As Integer = 7
 #End Region
 
 #Region "Constructor y destructor"
@@ -279,7 +280,7 @@ Public Class Catalogo_Formulas
                     Me.Grid1.Rows = 1 'Trae dos porque en docs nuevos se pone un row en blanco, y si se dejan aqui dos agrega a partir del 3 y queda un hueco
                     For Each dRow As DataRow In dTabla.Rows
                         Me.Grid1.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("UNIDAD_VENTA").ToString & Chr(9) & _
-                                         dRow("CANTIDAD").ToString & Chr(9) & dRow("ID_FORMULA_DETALLE").ToString & Chr(9) & "0" & Chr(9)) '0 es para la columna Borrar
+                                         dRow("CANTIDAD").ToString & Chr(9) & dRow("ID_FORMULA_DETALLE").ToString & Chr(9) & "0" & Chr(9) & dRow("ES_SERIALIZABLE").ToString & Chr(9)) '0 es para la columna Borrar
                     Next
 
                     If Me.Grid1.Rows = 1 Then Me.Grid1.Rows = 2
@@ -444,6 +445,17 @@ Public Class Catalogo_Formulas
                 End If
             Next
 
+            Dim oArticulo As Class_CatArticulos = New Class_CatArticulos(Me.TxtCodigoArticulo.Text)
+
+            If oArticulo.ES_SERIALIZABLE = False Then
+                For i = 1 To Me.Grid1.Rows - 1
+                    If Me.Grid1.Cell(i, Me.iGyEsSeriado).Text = "SI" Then
+                        MsgBox("El producto final debe ser serializable si uno de sus ingredientes lleva series.", MsgBoxStyle.Exclamation, Me.Text)
+                        Return bResultado
+                    End If
+                Next
+            End If
+
             bResultado = True
         Catch ex As Exception
             HandleError(Me.Name, "Validar", ex)
@@ -465,7 +477,7 @@ Public Class Catalogo_Formulas
     Private Sub FormateaGrid()
         With Me.Grid1
             .AutoRedraw = False
-            .Cols = 7
+            .Cols = 8
             .DisplayFocusRect = False
             .DrawMode = FlexCell.DrawModeEnum.OwnerDraw
             .BorderStyle = FlexCell.BorderStyleEnum.FixedSingle
@@ -478,6 +490,7 @@ Public Class Catalogo_Formulas
             .Cell(0, Me.iGyCantidad).Text = "Cantidad"
             .Cell(0, Me.iGyIdFormulaDetalle).Text = "Id formula detalle"
             .Cell(0, Me.iGyBorrar).Text = "Borrar"
+            .Cell(0, Me.iGyEsSeriado).Text = "Es seriado"
 
             .Column(Me.iGyCantidad).Mask = FlexCell.MaskEnum.Numeric
             .Column(Me.iGyCantidad).DecimalLength = 5 'Empresa_Sistema.DECIMALES_CANTIDAD
@@ -485,11 +498,13 @@ Public Class Catalogo_Formulas
 
             .Column(Me.iGyDescripcion).Locked = True
             .Column(Me.iGyUnidad).Locked = True
+            .Column(Me.iGyEsSeriado).Locked = True
 
             .Column(Me.iGyCodigoArticulo).Width = 80
             .Column(Me.iGyDescripcion).Width = 255
             .Column(Me.iGyUnidad).Width = 60
             .Column(Me.iGyCantidad).Width = 80
+            .Column(Me.iGyEsSeriado).Width = 80
 
             .Column(Me.iGyIdFormulaDetalle).Visible = False
             .Column(Me.iGyBorrar).Visible = False
@@ -543,6 +558,11 @@ LlenaLinea:
                                 Me.Grid1.Cell(Renglon, Me.iGyDescripcion).Text = ""
                                 Me.Grid1.Cell(Renglon, Me.iGyUnidad).Text = ""
                                 Me.Grid1.Cell(Renglon, Me.iGyCantidad).Text = "0"
+                                If oArticulos.ES_SERIALIZABLE = True Then
+                                    Me.Grid1.Cell(Renglon, Me.iGyEsSeriado).Text = "SI"
+                                Else
+                                    Me.Grid1.Cell(Renglon, Me.iGyEsSeriado).Text = "NO"
+                                End If
 
                                 Me.Grid1.Column(Me.iGyDescripcion).Locked = False
                                 Me.Grid1.Column(Me.iGyUnidad).Locked = False
@@ -551,6 +571,11 @@ LlenaLinea:
                                     Me.Grid1.Cell(Renglon, Me.iGyDescripcion).Text = oArticulos.DESCRIPCION
                                     Me.Grid1.Cell(Renglon, Me.iGyCantidad).Text = "0"
                                     Me.Grid1.Cell(Renglon, Me.iGyUnidad).Text = oArticulos.UNIDAD_VENTA
+                                    If oArticulos.ES_SERIALIZABLE = True Then
+                                        Me.Grid1.Cell(Renglon, Me.iGyEsSeriado).Text = "SI"
+                                    Else
+                                        Me.Grid1.Cell(Renglon, Me.iGyEsSeriado).Text = "NO"
+                                    End If
 
                                     Me.Grid1.Column(Me.iGyDescripcion).Locked = True
                                     Me.Grid1.Column(Me.iGyUnidad).Locked = True
@@ -747,5 +772,4 @@ Buscar:
 #End Region
 
 #End Region
-
 End Class

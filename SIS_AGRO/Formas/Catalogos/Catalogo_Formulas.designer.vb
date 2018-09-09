@@ -69,7 +69,7 @@ Partial Public Class Catalogo_Formulas
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbEditar, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimirListado, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1316, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1355, 27)
         Me.tsMenu.TabIndex = 3
         Me.tsMenu.Text = "tsMenu"
         '
@@ -134,7 +134,7 @@ Partial Public Class Catalogo_Formulas
         Me.StatusStripEstado.Location = New System.Drawing.Point(0, 537)
         Me.StatusStripEstado.Name = "StatusStripEstado"
         Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1316, 25)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1355, 25)
         Me.StatusStripEstado.TabIndex = 5
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -148,7 +148,7 @@ Partial Public Class Catalogo_Formulas
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.Name = "txtFiltro"
         Me.txtFiltro.Size = New System.Drawing.Size(401, 22)
         Me.txtFiltro.TabIndex = 0
@@ -173,10 +173,10 @@ Partial Public Class Catalogo_Formulas
         Me.gBoxBusquedaRapida.Controls.Add(Me.cboEstatusFiltro)
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
-        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(765, 34)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(810, 34)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(535, 498)
         Me.gBoxBusquedaRapida.TabIndex = 1
         Me.gBoxBusquedaRapida.TabStop = False
@@ -198,7 +198,7 @@ Partial Public Class Catalogo_Formulas
         Me.cboEstatusFiltro.FormattingEnabled = True
         Me.cboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
         Me.cboEstatusFiltro.Location = New System.Drawing.Point(485, 18)
-        Me.cboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.cboEstatusFiltro.MaxLength = 1
         Me.cboEstatusFiltro.Name = "cboEstatusFiltro"
         Me.cboEstatusFiltro.Size = New System.Drawing.Size(40, 24)
@@ -212,7 +212,7 @@ Partial Public Class Catalogo_Formulas
         Me.Grid.AllowUserToResizeRows = False
         Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.Grid.Location = New System.Drawing.Point(8, 50)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid.Name = "Grid"
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
@@ -227,7 +227,7 @@ Partial Public Class Catalogo_Formulas
         'TxtCodigoFormula
         '
         Me.TxtCodigoFormula.Location = New System.Drawing.Point(143, 18)
-        Me.TxtCodigoFormula.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodigoFormula.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigoFormula.MaxLength = 4
         Me.TxtCodigoFormula.Name = "TxtCodigoFormula"
         Me.TxtCodigoFormula.Size = New System.Drawing.Size(75, 22)
@@ -249,7 +249,7 @@ Partial Public Class Catalogo_Formulas
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.CboEstatus.Location = New System.Drawing.Point(143, 90)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(104, 24)
@@ -268,7 +268,7 @@ Partial Public Class Catalogo_Formulas
         'TxtNombreFormula
         '
         Me.TxtNombreFormula.Location = New System.Drawing.Point(143, 50)
-        Me.TxtNombreFormula.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtNombreFormula.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNombreFormula.MaxLength = 50
         Me.TxtNombreFormula.Name = "TxtNombreFormula"
         Me.TxtNombreFormula.Size = New System.Drawing.Size(439, 22)
@@ -301,10 +301,10 @@ Partial Public Class Catalogo_Formulas
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayCodFormula)
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigoFormula)
         Me.gBoxInformacion.Location = New System.Drawing.Point(16, 34)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
-        Me.gBoxInformacion.Size = New System.Drawing.Size(741, 498)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
+        Me.gBoxInformacion.Size = New System.Drawing.Size(786, 498)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
@@ -312,7 +312,7 @@ Partial Public Class Catalogo_Formulas
         'txtCostoProduccion
         '
         Me.txtCostoProduccion.Location = New System.Drawing.Point(444, 90)
-        Me.txtCostoProduccion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCostoProduccion.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCostoProduccion.MaxLength = 50
         Me.txtCostoProduccion.Name = "txtCostoProduccion"
         Me.txtCostoProduccion.Size = New System.Drawing.Size(104, 22)
@@ -351,10 +351,10 @@ Partial Public Class Catalogo_Formulas
         Me.Grid1.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.Grid1.Location = New System.Drawing.Point(11, 207)
         Me.Grid1.LockButton = True
-        Me.Grid1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Grid1.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid1.Name = "Grid1"
         Me.Grid1.Rows = 6
-        Me.Grid1.Size = New System.Drawing.Size(723, 283)
+        Me.Grid1.Size = New System.Drawing.Size(767, 283)
         Me.Grid1.TabIndex = 4
         Me.Grid1.UncheckedImage = CType(resources.GetObject("Grid1.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -381,7 +381,7 @@ Partial Public Class Catalogo_Formulas
         'TxtCodigoArticulo
         '
         Me.TxtCodigoArticulo.Location = New System.Drawing.Point(143, 130)
-        Me.TxtCodigoArticulo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodigoArticulo.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigoArticulo.MaxLength = 50
         Me.TxtCodigoArticulo.Name = "TxtCodigoArticulo"
         Me.TxtCodigoArticulo.Size = New System.Drawing.Size(104, 22)
@@ -400,13 +400,13 @@ Partial Public Class Catalogo_Formulas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1316, 562)
+        Me.ClientSize = New System.Drawing.Size(1355, 562)
         Me.Controls.Add(Me.tsMenu)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.gBoxBusquedaRapida)
         Me.Controls.Add(Me.gBoxInformacion)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Formulas"
         Me.ShowIcon = False

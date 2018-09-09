@@ -348,7 +348,7 @@ Public Class Class_CatFormulas
     Public Function ObtenerDetalle(ByVal sCodigoFormula As String) As System.Data.DataTable
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
-        sSQL = "SELECT F.CODIGO_ARTICULO,A.DESCRIPCION,A.UNIDAD_VENTA,F.CANTIDAD,F.ID_FORMULA_DETALLE FROM CAT_FORMULAS_DETALLE F " & _
+        sSQL = "SELECT F.CODIGO_ARTICULO,A.DESCRIPCION,A.UNIDAD_VENTA,F.CANTIDAD,F.ID_FORMULA_DETALLE,(CASE WHEN A.ES_SERIALIZABLE = '0' THEN 'NO' ELSE 'SI' END) ES_SERIALIZABLE FROM CAT_FORMULAS_DETALLE F " & _
             "INNER JOIN CAT_ARTICULOS A ON(F.CODIGO_ARTICULO=A.CODIGO_ARTICULO) WHERE F.CODIGO_FORMULA =" & sCodigoFormula & " ORDER BY F.ID_FORMULA_DETALLE "
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
