@@ -457,6 +457,7 @@ BuscarCuentas:
         Dim bResultado As Boolean = False
         Dim folioEntrada As String, codigoProductoFinal As String = ""
         Me.oInventarios = New Class_Inventarios_Global
+        Dim sListaSeries As String = ""
         Dim sListaSeriesCompleta As String = ""
         Dim sListaSeriesBase As String = ""
 
@@ -498,21 +499,22 @@ BuscarCuentas:
                     sListaSeriesBase = "1," & codigoProductoFinal & ",0,"
 
                     For i = 1 To CInt(Me.TxtCantidad.Text)
-                        'For z = 1 To Me.GridSeries.Rows - 1
-                        '    If CInt(Me.GridSeries.Cell(z, Me.igyIdProductoFinal).Text) = i Then
-                        '        sListaSeriesCompleta = sListaSeriesCompleta & Me.GridSeries.Cell(z, Me.igySerieNumeroSerie).Text & ","
-                        '    End If
-                        'Next
 
                         For Each dRow In Me.dtSeries.Select("ID_PRODUCTO_FINAL='" & i.ToString & "'")
-                            sListaSeriesCompleta = sListaSeriesCompleta & dRow("NUMERO_SERIE").ToString & "-"
+                            sListaSeries = sListaSeries & dRow("NUMERO_SERIE").ToString & "-"
                         Next
+
+                        If txtLEN(sListaSeries) = True Then
+                            sListaSeries = sListaSeries.Substring(0, sListaSeries.Length - 1) 'Para quitarle la ultima coma que sale sobrando.
+                            sListaSeriesCompleta = sListaSeriesCompleta & sListaSeriesBase & sListaSeries & "|"
+                        End If
+
+                        sListaSeries = ""
+
                     Next
 
-                    If txtLEN(sListaSeriesCompleta) = True Then
-                        sListaSeriesCompleta = sListaSeriesCompleta.Substring(0, sListaSeriesCompleta.Length - 1) 'Para quitarle la ultima coma que sale sobrando.
-                        sListaSeriesCompleta = sListaSeriesBase & sListaSeriesCompleta
-                    End If
+                    sListaSeriesCompleta = sListaSeriesCompleta.Substring(0, sListaSeriesCompleta.Length - 1) 'Para quitarle el ultimo pipe que sale sobrando.
+                    
                 End If
 
                 .oInventariosDetalle.LISTA_SERIES = sListaSeriesCompleta
