@@ -280,6 +280,15 @@ enter:
                     Me.cboMoneda.SelectedIndex = -1
                     Me.cboMoneda.Text = oCuentaBancaria.CODIGO_MONEDA_SAT
 
+                    Me.chkVentasNoFiscales.Enabled = False 'Siempre va estar deshabilitado, se va marcar sólo dependiendo de si la cuenta es o no fiscal. En el cambiar estado no cambia este valor
+                    If oCuentaBancaria.ES_CUENTA_FISCAL = True Then 'Si es cuenta fiscal, sólo va permitir pagos de remisiones
+                        Me.chkVentasNoFiscales.Checked = False
+                        Me.lblEsCuentaFiscal.Text = "Sólo facturas"
+                    Else 'Si es cuenta no fiscal sólo va permitir pagos de remisiones
+                        Me.chkVentasNoFiscales.Checked = True
+                        Me.lblEsCuentaFiscal.Text = "Sólo remisiones"
+                    End If
+
                     Me.GeneraFolio()
                     Me.TxtFolio.Focus()
 
@@ -626,7 +635,8 @@ Buscar:
             'Me.cboMoneda.Text = "MXN" no se debe inicializar por si dejaron seleccionada moneda en usd no debe perderse la moneda y demás datos de la cuenta
             Me.txtTipoCambio.Text = ""
 
-            Me.chkVentasNoFiscales.Checked = False
+            'Me.chkVentasNoFiscales.Checked = False'No se debe inicializar, cuando se consulta un doc, o cuando den enter a una cuenta se carga.
+            'Me.lblEsCuentaFiscal.Text = "Sólo facturas'No se debe inicializar, cuando se consulta un doc, o cuando den enter a una cuenta se carga.
 
             Me.tssElaboro.Text = "Elaboró : "
             Me.tssCancelo.Text = "Canceló : "
@@ -2262,6 +2272,12 @@ Buscar:
                 Me.cboMoneda.Text = oBancosCXC.CODIGO_MONEDA_SAT
                 Me.chkVentasNoFiscales.Checked = oBancosCXC.ES_PAGO_VENTAS_NO_FISCALES
 
+                If Me.chkVentasNoFiscales.Checked = False Then 'Si es cuenta fiscal(si no esta marcado el check)
+                    Me.lblEsCuentaFiscal.Text = "Sólo facturas"
+                Else 'Si es cuenta no fiscal sólo va permitir pagos de remisiones
+                    Me.lblEsCuentaFiscal.Text = "Sólo remisiones"
+                End If
+
                 bResultado = True
 
                 Me.GestionaCambioEstado()
@@ -2491,7 +2507,7 @@ Buscar:
                     Me.btnEliminarDocumentoPago.Enabled = True
                     Me.btnVerCFDIS.Enabled = False
                     Me.btnGenerarCFDIS.Enabled = False
-                    Me.chkVentasNoFiscales.Enabled = True
+                    Me.chkVentasNoFiscales.Enabled = False' Antes estaba true, pero ahora como se llena sólo dependiendo de si la cuenta es o no fiscal, nunca se habilita
 
                     'Me.gbTotales.Enabled = True
 
@@ -3476,6 +3492,7 @@ Buscar:
             oReporte = Nothing
         End Try
     End Sub
+
 #End Region
 
 End Class

@@ -284,6 +284,7 @@ Public Class Catalogo_Cuentas_Bancarias
             Me.TxtCodigoProveedor.Enabled = False
             Me.txtCuentaContable.Enabled = False
             Me.LblNombreProveedor.Text = ""
+            Me.chkEsCuentaFiscal.Checked = True
         Catch ex As Exception
             HandleError(Me.Name, "InicializaElemento", ex)
         End Try
@@ -345,6 +346,8 @@ Public Class Catalogo_Cuentas_Bancarias
                     Else
                         Me.CboEstatus.SelectedIndex = 1
                     End If
+
+                    Me.chkEsCuentaFiscal.Checked = .ES_CUENTA_FISCAL
                 End With
 
             End If
@@ -429,6 +432,7 @@ Public Class Catalogo_Cuentas_Bancarias
                         .NOMBRE_FORMATO = Me.TxtFormatoReporte.Text
                         .ESTATUS_CUENTA_BANCARIA = Strings.Left(Me.CboEstatus.Text, 1)
                         .CODIGO_PROVEEDOR = Me.TxtCodigoProveedor.Text
+                        .ES_CUENTA_FISCAL = Me.chkEsCuentaFiscal.Checked
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -436,7 +440,7 @@ Public Class Catalogo_Cuentas_Bancarias
                                 '    oProveedor.Codigo_Proveedor = Strings.Left(Me.TxtCodigoProveedor.Text, 2) & Strings.Right("0000" & CInt(Me.TxtCodigoProveedor.Text).ToString, 4)
                                 '    oProveedor.Consultar()
                                 '    .CUENTA_CONTABLE_PESOS = oProveedor.CUENTA_CONTABLE
-                                If .Insertar() Then
+                                If .Grabar("INSERTAR") = True Then
                                     bResultado = True
                                     Me.Estado = enumEstados.NUEVO
                                     oProveedor = Nothing
@@ -444,7 +448,7 @@ Public Class Catalogo_Cuentas_Bancarias
                                 'End If
 
                             Case enumEstados.EDICION
-                                If .Actualizar() Then
+                                If .Grabar("ACTUALIZAR") = True Then
                                     bResultado = True
                                     Me.Estado = enumEstados.CONSULTA
                                 End If

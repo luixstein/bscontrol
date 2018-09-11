@@ -75,6 +75,7 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TxtSucursal = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
+        Me.chkEsCuentaFiscal = New System.Windows.Forms.CheckBox()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.cMenuStripAccion.SuspendLayout()
@@ -152,7 +153,7 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssLabel, Me.tssLabelEstado})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 512)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 544)
         Me.StatusStripEstado.Name = "StatusStripEstado"
         Me.StatusStripEstado.Size = New System.Drawing.Size(726, 22)
         Me.StatusStripEstado.TabIndex = 5
@@ -197,7 +198,7 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(329, 28)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(384, 480)
+        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(384, 512)
         Me.gBoxBusquedaRapida.TabIndex = 1
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
@@ -235,7 +236,7 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
         Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(372, 431)
+        Me.Grid.Size = New System.Drawing.Size(372, 463)
         Me.Grid.TabIndex = 109
         '
         'ErrorProvider
@@ -301,6 +302,7 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         '
         Me.gBoxInformacion.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.gBoxInformacion.Controls.Add(Me.chkEsCuentaFiscal)
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayClabeInterbancaria)
         Me.gBoxInformacion.Controls.Add(Me.txtClabeInterbancaria)
         Me.gBoxInformacion.Controls.Add(Me.LblNombreProveedor)
@@ -338,7 +340,7 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.gBoxInformacion.Controls.Add(Me.TxtIDCuenta)
         Me.gBoxInformacion.Location = New System.Drawing.Point(7, 28)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Size = New System.Drawing.Size(316, 480)
+        Me.gBoxInformacion.Size = New System.Drawing.Size(316, 512)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
@@ -595,11 +597,21 @@ Partial Public Class Catalogo_Cuentas_Bancarias
         Me.Label2.TabIndex = 91
         Me.Label2.Text = ".."
         '
+        'chkEsCuentaFiscal
+        '
+        Me.chkEsCuentaFiscal.AutoSize = True
+        Me.chkEsCuentaFiscal.Location = New System.Drawing.Point(113, 482)
+        Me.chkEsCuentaFiscal.Name = "chkEsCuentaFiscal"
+        Me.chkEsCuentaFiscal.Size = New System.Drawing.Size(110, 17)
+        Me.chkEsCuentaFiscal.TabIndex = 14
+        Me.chkEsCuentaFiscal.Text = "Es cuenta fiscal ?"
+        Me.chkEsCuentaFiscal.UseVisualStyleBackColor = True
+        '
         'Catalogo_Cuentas_Bancarias
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(726, 534)
+        Me.ClientSize = New System.Drawing.Size(726, 566)
         Me.Controls.Add(Me.tsMenu)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.gBoxInformacion)
@@ -679,4 +691,5 @@ Partial Public Class Catalogo_Cuentas_Bancarias
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents lblDisplayClabeInterbancaria As Label
     Friend WithEvents txtClabeInterbancaria As TextBox
+    Friend WithEvents chkEsCuentaFiscal As CheckBox
 End Class

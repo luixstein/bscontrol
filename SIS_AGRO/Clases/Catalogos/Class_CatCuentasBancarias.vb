@@ -1,9 +1,9 @@
 ﻿Option Strict On
 
 Imports System.Data.SqlClient
+Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Class_CatCuentasBancarias
-    Inherits Class_Catalogos
 
 #Region "Campos"
 
@@ -24,6 +24,7 @@ Public Class Class_CatCuentasBancarias
     Private _CODIGO_MONEDA As String
     Private _CODIGO_MONEDA_SAT As String
     Private _CODIGO_PROVEEDOR As String
+    Private _ES_CUENTA_FISCAL As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -192,6 +193,16 @@ Public Class Class_CatCuentasBancarias
             Me._CODIGO_PROVEEDOR = VALUE
         End Set
     End Property
+
+    Public Property ES_CUENTA_FISCAL As Boolean
+        Get
+            Return Me._ES_CUENTA_FISCAL
+        End Get
+        Set(ByVal VALUE As Boolean)
+            Me._ES_CUENTA_FISCAL = VALUE
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -217,13 +228,13 @@ Public Class Class_CatCuentasBancarias
 #End Region
 
 #Region "Propiedades de campos de sistema"
-    Public Overrides ReadOnly Property Nombre_Catalogo() As String
+    Public ReadOnly Property Nombre_Catalogo() As String
         Get
             Return Me._Nombre_Catalogo
         End Get
     End Property
 
-    Public Overrides Property Nombre_Reporte() As String
+    Public Property Nombre_Reporte() As String
         Get
             Return Me._Nombre_Reporte
         End Get
@@ -268,7 +279,7 @@ Public Class Class_CatCuentasBancarias
 #End Region
 
 #Region "Métodos y procedimientos"
-    Public Overrides Function Actualizar() As Boolean
+    Public Function Grabar(ByVal sAccion As String) As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -278,7 +289,7 @@ Public Class Class_CatCuentasBancarias
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_CUENTAS_BANCARIAS_GRABA"
 
-            sqlParametro = .Parameters.Add("@ID_CUENTA_BANCARIA", SqlDbType.SmallInt) : sqlParametro.Value = Me._ID_CUENTA_BANCARIA
+            sqlParametro = .Parameters.Add("@ID_CUENTA_BANCARIA", SqlDbType.SmallInt) : sqlParametro.Direction = ParameterDirection.InputOutput : sqlParametro.Value = Me._ID_CUENTA_BANCARIA
             sqlParametro = .Parameters.Add("@NOMBRE_CUENTA_BANCARIA", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_CUENTA_BANCARIA.ToUpper
             sqlParametro = .Parameters.Add("@SUCURSAL", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._SUCURSAL.ToUpper
             sqlParametro = .Parameters.Add("@CLABE_INTERBANCARIA", SqlDbType.NVarChar, 18) : sqlParametro.Value = Me._CLABE_INTERBANCARIA
@@ -290,17 +301,21 @@ Public Class Class_CatCuentasBancarias
             sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_PESOS", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_PESOS
             sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_DOLARES", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_DOLARES
             sqlParametro = .Parameters.Add("@NOMBRE_FORMATO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_FORMATO.ToUpper
-            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "ACTUALIZAR"
+            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = sAccion
             sqlParametro = .Parameters.Add("@CODIGO_PROVEEDOR", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._CODIGO_PROVEEDOR
             sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_MONEDA_SAT
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Plaza
+            sqlParametro = .Parameters.Add("@ES_CUENTA_FISCAL", SqlDbType.SmallInt) : sqlParametro.Value = Convert.ToInt32(Me._ES_CUENTA_FISCAL)
 
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
+                If sAccion = "INSERTAR" Then
+                    Me._ID_CUENTA_BANCARIA = CType(.Parameters("@ID_CUENTA_BANCARIA").Value, Integer)
+                End If
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
+                HandleError(Me._Nombre_Catalogo, "Grabar", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -313,7 +328,7 @@ Public Class Class_CatCuentasBancarias
     ''' <summary>
     ''' Carga al objeto con todos los datos del registro.
     ''' </summary>
-    Public Overrides Function Consultar() As Boolean
+    Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand(Me._QuerySelect & " WHERE B.ID_CUENTA_BANCARIA=" & Me._ID_CUENTA_BANCARIA, Me._Conexion)
         Dim dReader As SqlDataReader
@@ -342,6 +357,7 @@ Public Class Class_CatCuentasBancarias
                     Me._CODIGO_MONEDA_SAT = "" & dReader("CODIGO_MONEDA_SAT").ToString
                     Me._CODIGO_PROVEEDOR = "" & dReader("CODIGO_PROVEEDOR").ToString
                     Me._NOMBRE_MONEDA = "" & dReader("NOMBRE_MONEDA").ToString
+                    Me._ES_CUENTA_FISCAL = CBool(dReader("ES_CUENTA_FISCAL").ToString)
 
                     bResultado = True
                 End If
@@ -356,53 +372,10 @@ Public Class Class_CatCuentasBancarias
         Return bResultado
     End Function
 
-    Public Overrides Function Insertar() As Boolean
-        Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand
-        Dim sqlParametro As SqlParameter
-        With cmd
-            .Connection = Me._Conexion
-            .CommandTimeout = 0
-            .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_CAT_CUENTAS_BANCARIAS_GRABA"
-
-            sqlParametro = .Parameters.Add("@ID_CUENTA_BANCARIA", SqlDbType.SmallInt) : sqlParametro.Direction = ParameterDirection.InputOutput : sqlParametro.Value = Me._ID_CUENTA_BANCARIA
-            sqlParametro = .Parameters.Add("@NOMBRE_CUENTA_BANCARIA", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_CUENTA_BANCARIA.ToUpper
-            sqlParametro = .Parameters.Add("@SUCURSAL", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._SUCURSAL.ToUpper
-            sqlParametro = .Parameters.Add("@CLABE_INTERBANCARIA", SqlDbType.NVarChar, 18) : sqlParametro.Value = Me._CLABE_INTERBANCARIA
-            sqlParametro = .Parameters.Add("@NUMERO_DE_CUENTA_BANCARIA", SqlDbType.NVarChar, 18) : sqlParametro.Value = Me._NUMERO_DE_CUENTA_BANCARIA
-            sqlParametro = .Parameters.Add("@TELEFONO", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._TELEFONO
-            sqlParametro = .Parameters.Add("@ESTATUS_CUENTA_BANCARIA", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS_CUENTA_BANCARIA.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_BANCO", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_BANCO
-            sqlParametro = .Parameters.Add("@FOLIO_CHEQUE", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_CHEQUE
-            sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_PESOS", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_PESOS
-            sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_DOLARES", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_DOLARES
-            sqlParametro = .Parameters.Add("@NOMBRE_FORMATO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_FORMATO.ToUpper
-            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "INSERTAR"
-            sqlParametro = .Parameters.Add("@CODIGO_PROVEEDOR", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._CODIGO_PROVEEDOR
-            sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_MONEDA_SAT
-            sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Plaza
-
-            Try
-                Me._Conexion.Open()
-                .ExecuteNonQuery()
-                Me._ID_CUENTA_BANCARIA = CType(.Parameters("@ID_CUENTA_BANCARIA").Value, Integer)
-                bResultado = True
-            Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Insertar", ex)
-            Finally
-                Me._Conexion.Close()
-                cmd.Dispose()
-                sqlParametro = Nothing
-            End Try
-        End With
-        Return bResultado
-    End Function
-
     ''' <summary>
     ''' Devuelve un datatable con todos los registros de la tabla
     ''' </summary>
-    Public Overrides Function ObtenerElementos() As System.Data.DataTable
+    Public Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
         Dim ds As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
         Try
@@ -441,7 +414,7 @@ Public Class Class_CatCuentasBancarias
         Return dTable
     End Function
 
-    Public Overrides Function BusquedaVisual_PorCodigo() As String
+    Public Function BusquedaVisual_PorCodigo() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de Cuentas_Bancarias por Código."
@@ -464,7 +437,7 @@ Public Class Class_CatCuentasBancarias
     ''' <summary>
     ''' Despliega la búsqueda visual por descripción.
     ''' </summary>
-    Public Overrides Function BusquedaVisual_PorDescripcion() As String
+    Public Function BusquedaVisual_PorDescripcion() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de Cuentas_Bancarias por Descripción."
@@ -504,6 +477,28 @@ Public Class Class_CatCuentasBancarias
         BusquedaVisual_PorDescripcionSoloActivos = Resultado
     End Function
 
+    Public Sub Imprimir_Listado()   'Función para ver la búsqueda visual por descripción.
+        If Len(Nombre_Reporte) > 0 Then
+            Dim Rpt As New ReportDocument
+            Dim oReporte As Class_Reporte
+            Try
+                oReporte = New Class_Reporte(Nombre_Reporte, Rpt)
+
+                Dim frm As New Reporte(Rpt)
+                frm.CRViewer.ShowGroupTreeButton = False
+                frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
+                frm.Show()
+
+            Catch ex As Exception
+                HandleError(Me.Nombre_Catalogo, "Imprimir_Listado", ex)
+            Finally
+                oReporte = Nothing
+                'Rpt.Dispose()
+            End Try
+        Else
+            MsgBox("El nombre del reporte no ha sido especificado, no hay nada que imprimir.", MsgBoxStyle.Critical, Me.Nombre_Catalogo)
+        End If
+    End Sub
 #End Region
 
 End Class
