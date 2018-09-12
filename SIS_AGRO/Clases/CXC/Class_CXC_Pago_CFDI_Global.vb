@@ -627,16 +627,16 @@ Public Class Class_CXC_Pago_CFDI_Global
         Try
             oCliente = New Class_CatClientes(Me._CODIGO_CLIENTE)
 
-            If txtLEN(oCliente.CORREO_CLIENTE) = False Then
-                MsgBox("El cliente no tiene correo configurado.", MsgBoxStyle.Exclamation, sProcedure)
-                Dim oActualizar As New Catalogo_Clientes_ActualizaCorreo(oCliente)
+            If txtLEN(oCliente.CORREO_CLIENTE_PAGOS) = False Then
+                MsgBox("El cliente no tiene correo para pagos configurado.", MsgBoxStyle.Exclamation, sProcedure)
+                Dim oActualizar As New Catalogo_Clientes_ActualizaCorreo(oCliente, True)
                 oActualizar.ShowDialog()
                 If oActualizar.bActualizado = False Then
                     Return False
                 End If
             End If
 
-            tabla = Split(oCliente.CORREO_CLIENTE, ";")
+            tabla = Split(oCliente.CORREO_CLIENTE_PAGOS, ";")
 
             For n = 0 To UBound(tabla, 1)
                 If IsEmailSyntaxValid(tabla(n)) = False Then

@@ -277,8 +277,8 @@ Public Class Catalogo_Clientes
     Private Sub txt_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtRfc.KeyDown, txtPais.KeyDown, txtNumeroTelefono.KeyDown,
     txtNumeroInterior.KeyDown, txtNumeroExterior.KeyDown, txtNumeroCelular.KeyDown, TxtNombreCliente.KeyDown, txtLocalidad.KeyDown, txtLimiteCredito.KeyDown, txtDiasPlazo.KeyDown, txtCurp.KeyDown,
     txtColonia.KeyDown, txtCodigoCliente.KeyDown, txtCalle.KeyDown, DpFecha.KeyDown, chkPermitirVentaCredito.KeyDown, cboZona.KeyDown, cboVendedor.KeyDown, cboTipoPersona.KeyDown,
-    cboTipoMercado.KeyDown, CboEstatus.KeyDown, cboEstado.KeyDown, cboFormaPago.KeyDown, txtNumeroCuenta.KeyDown, txtCiudad.KeyDown, txtCorreoCliente.KeyDown, cboFormaPagoUSD.KeyDown, txtNumeroCuentaDolares.KeyDown,
-    txtNumeroRegistroIdentificadorExtranjero.KeyDown, cboPais.KeyDown, cboMunicipio.KeyDown, chkEsContribuyenteIEPS.KeyDown, cboNombreXML.KeyDown, cboUsoCFDI.KeyDown
+    cboTipoMercado.KeyDown, CboEstatus.KeyDown, cboEstado.KeyDown, cboFormaPago.KeyDown, txtNumeroCuenta.KeyDown, txtCiudad.KeyDown, cboFormaPagoUSD.KeyDown, txtNumeroCuentaDolares.KeyDown,
+    txtNumeroRegistroIdentificadorExtranjero.KeyDown, cboPais.KeyDown, cboMunicipio.KeyDown, chkEsContribuyenteIEPS.KeyDown, cboNombreXML.KeyDown, cboUsoCFDI.KeyDown, txtCorreoClientePagos.KeyDown
         txtTAB(e)
     End Sub
 
@@ -287,7 +287,7 @@ Public Class Catalogo_Clientes
     txtLocalidad.KeyPress, txtLimiteCredito.KeyPress, txtDiasPlazo.KeyPress, txtCurp.KeyPress, txtCuentaContableDolares.KeyPress, txtCuentaContable.KeyPress,
     txtColonia.KeyPress, txtCodigoPostal.KeyPress, txtCodigoCliente.KeyPress, txtCiudad.KeyPress, txtCalle.KeyPress, DpFecha.KeyPress, chkPermitirVentaCredito.KeyPress,
     cboZona.KeyPress, cboVendedor.KeyPress, cboTipoPersona.KeyPress, cboTipoMercado.KeyPress, CboEstatus.KeyPress, cboEstado.KeyPress, txtCorreoCliente.KeyPress,
-    cboFormaPago.KeyPress, cboFormaPagoUSD.KeyPress, txtNumeroRegistroIdentificadorExtranjero.KeyPress, cboPais.KeyPress, cboMunicipio.KeyPress
+    cboFormaPago.KeyPress, cboFormaPagoUSD.KeyPress, txtNumeroRegistroIdentificadorExtranjero.KeyPress, cboPais.KeyPress, cboMunicipio.KeyPress, txtCorreoClientePagos.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -422,6 +422,15 @@ busca:
         End Select
         txtTAB(e)
     End Sub
+
+    Private Sub TxtCorreoCliente_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCorreoCliente.KeyDown
+        If e.KeyCode = Keys.Return Then
+            If txtLEN(Me.txtCorreoClientePagos.Text) = False Then
+                Me.txtCorreoClientePagos.Text = Me.txtCorreoCliente.Text
+            End If
+        End If
+    End Sub
+
 
 #End Region
 
@@ -574,6 +583,7 @@ busca:
                     Me.txtDiasPlazo.Enabled = True
                     Me.txtLimiteCredito.Enabled = True
                     Me.txtCorreoCliente.Enabled = True
+                    Me.txtCorreoClientePagos.Enabled = True
                     Me.txtNumeroCuenta.Enabled = False
                     Me.txtNumeroCuentaDolares.Enabled = False
                     Me.txtNumeroRegistroIdentificadorExtranjero.Enabled = True
@@ -629,6 +639,7 @@ busca:
                     Me.txtLimiteCredito.Enabled = True
                     Me.chkPermitirVentaCredito.Enabled = True
                     Me.txtCorreoCliente.Enabled = True
+                    Me.txtCorreoClientePagos.Enabled = True
                     Me.txtNumeroCuenta.Enabled = False
                     Me.txtNumeroCuentaDolares.Enabled = False
                     Me.txtNumeroRegistroIdentificadorExtranjero.Enabled = True
@@ -692,6 +703,7 @@ busca:
                     Me.txtLimiteCredito.Enabled = False
                     Me.tssLabelEstado.Text = "Consultando"
                     Me.txtCorreoCliente.Enabled = False
+                    Me.txtCorreoClientePagos.Enabled = False
                     Me.txtNumeroCuenta.Enabled = False
                     Me.txtNumeroCuentaDolares.Enabled = False
                     Me.txtNumeroRegistroIdentificadorExtranjero.Enabled = False
@@ -741,6 +753,7 @@ busca:
             Me.txtDiasPlazo.Text = ""
             Me.txtLimiteCredito.Text = ""
             Me.txtCorreoCliente.Text = ""
+            Me.txtCorreoClientePagos.Text = ""
             Me.txtNumeroCuenta.Text = ""
             Me.txtNumeroCuentaDolares.Text = ""
             Me.cboPais.SelectedIndex = -1
@@ -942,6 +955,7 @@ busca:
                         .FECHA_ALTA = Me.DpFecha.Value
                         .PLAZA = Usuario.Codigo_Plaza.ToString
                         .CORREO_CLIENTE = Me.txtCorreoCliente.Text
+                        .CORREO_CLIENTE_PAGOS = Me.txtCorreoClientePagos.Text
                         .CODIGO_METODO_PAGO = Me.cboFormaPago.SelectedValue.ToString
                         .NUMERO_CUENTA_PAGO = Me.txtNumeroCuenta.Text
                         If Not (Me.cboFormaPagoUSD.SelectedValue Is Nothing) Then
@@ -1260,6 +1274,7 @@ busca:
                     Me.cboVendedor.SelectedValue = .CODIGO_VENDEDOR
                     Me.cboZona.SelectedValue = .CODIGO_ZONA
                     Me.txtCorreoCliente.Text = .CORREO_CLIENTE.ToString
+                    Me.txtCorreoClientePagos.Text = .CORREO_CLIENTE_PAGOS.ToString
 
                     If .TIPO_PERSONA = "M" Then
                         Me.cboTipoPersona.Text = "MORAL"

@@ -413,6 +413,8 @@ BuscarCuentas:
                         End If
 
                     End If
+
+                    sListaSeries = ""
                 Next
 
                 Dim sListaCuentas As String = ""
@@ -731,6 +733,7 @@ BuscarCuentas:
                 .Column(Me.igySerieDescripcion).Width = 370
                 .Column(Me.igySerieIdInventarioLotesCostos).Visible = False
                 .Column(Me.igySerieNumeroSerie).Width = 250
+                .Column(Me.igyIdProductoFinal).Visible = False
 
                 .Cell(0, Me.igySeriePosicion).Text = "Posición"
                 .Cell(0, Me.igySerieCodigo).Text = "Código"

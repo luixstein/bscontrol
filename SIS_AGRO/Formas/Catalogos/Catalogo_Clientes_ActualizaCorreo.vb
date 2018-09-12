@@ -5,6 +5,7 @@ Public Class Catalogo_Clientes_ActualizaCorreo
 #Region "Campos"
     Private _bActualizado As Boolean = False
     Private _oCliente As Class_CatClientes
+    Private CorreoParaPagos As Boolean = False
 #End Region
 
 #Region "Propiedades"
@@ -31,7 +32,7 @@ Public Class Catalogo_Clientes_ActualizaCorreo
 #End Region
 
 #Region "Métodos y procedimientos"
-    Public Sub New(ByRef oCliente As Class_CatClientes) ' aqui si es byref para editarlo en memoria y regresarlo editado '(ByVal sCodigoCliente As String)
+    Public Sub New(ByRef oCliente As Class_CatClientes, Optional ByVal CorreoDePagos As Boolean = False) ' aqui si es byref para editarlo en memoria y regresarlo editado '(ByVal sCodigoCliente As String)
 
         ' This call is required by the designer.
         InitializeComponent()
@@ -40,10 +41,15 @@ Public Class Catalogo_Clientes_ActualizaCorreo
         'Me._oCliente = New Class_CatClientes(sCodigoCliente)
 
         Me._oCliente = oCliente
+        Me.CorreoParaPagos = CorreoDePagos
 
         Me.txtCodigoCliente.Text = Me._oCliente.CODIGO_CLIENTE
         Me.lblNombreCliente.Text = Me._oCliente.NOMBRE_CLIENTE
-        Me.txtCorreoCliente.Text = Trim(Me._oCliente.CORREO_CLIENTE)
+        If CorreoParaPagos = True Then
+            Me.txtCorreoCliente.Text = Trim(Me._oCliente.CORREO_CLIENTE_PAGOS)
+        Else
+            Me.txtCorreoCliente.Text = Trim(Me._oCliente.CORREO_CLIENTE)
+        End If
     End Sub
 
     Private Function ActualizaCorreo() As Boolean
@@ -59,11 +65,23 @@ Public Class Catalogo_Clientes_ActualizaCorreo
                 End If
             Next
 
-            Me._oCliente.CORREO_CLIENTE = Trim(Me.txtCorreoCliente.Text)
-            If Me._oCliente.ActualizarCorreo = True Then
-                Me._bActualizado = True
-                Me.Hide()
+            If Me.CorreoParaPagos = True Then
+                Me._oCliente.CORREO_CLIENTE_PAGOS = Trim(Me.txtCorreoCliente.Text)
+
+                If Me._oCliente.ActualizarCorreo("1") = True Then
+                    Me._bActualizado = True
+                    Me.Hide()
+                End If
+            Else
+                Me._oCliente.CORREO_CLIENTE = Trim(Me.txtCorreoCliente.Text)
+
+                If Me._oCliente.ActualizarCorreo = True Then
+                    Me._bActualizado = True
+                    Me.Hide()
+                End If
             End If
+
+            
         Catch ex As Exception
             HandleError(Me.Name, "ActualizaCorreo", ex)
         End Try
