@@ -979,17 +979,17 @@ BuscarCuentas:
                 Exit Function
             End If
 
-            If Me.SiTieneImporte() = False Then
-                MsgBox("El importe de los renglones debe de ser mayor a cero.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
-            End If
+            'If Me.SiTieneImporte() = False Then
+            '    MsgBox("El importe de los renglones debe de ser mayor a cero.", MsgBoxStyle.Exclamation, Me.Text)
+            '    Exit Function
+            'End If
 
             Me.Totales()
 
-            If valorNumerico(Me.txtTotal.Text) = 0 Then
-                MsgBox("El importe total debe de ser mayor a cero.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
-            End If
+            'If valorNumerico(Me.txtTotal.Text) = 0 Then
+            '    MsgBox("El importe total debe de ser mayor a cero.", MsgBoxStyle.Exclamation, Me.Text)
+            '    Exit Function
+            'End If
 
             If Me._LlamdoExterior = True Then
                 If Me.Grabar() = False Then 'Razón no identificada de porque cuando se trata de exterior lo graba despues de validar, y cuando es normal lo graba antes de validar
