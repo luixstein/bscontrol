@@ -64,6 +64,7 @@ Buscar:
             Me.CboCultivoAgricola.Visible = False
             Me.LblDisplayMercado.Visible = False
             Me.lblCultivoAgricola.Visible = False
+            Me.cboVendedor.Visible = False
         Else
             Me.CboTipoDocumento.Visible = True
             Me.lblDocumentos.Visible = True
@@ -72,6 +73,7 @@ Buscar:
             Me.CboCultivoAgricola.Visible = True
             Me.LblDisplayMercado.Visible = True
             Me.lblCultivoAgricola.Visible = True
+            Me.cboVendedor.Visible = True
         End If
     End Sub
 
@@ -194,6 +196,23 @@ Buscar:
         End Try
     End Sub
 
+    Private Sub DesplegarVendedores()
+        Dim oVendedores As New Class_CatVendedores
+        Try
+            With Me.cboVendedor
+                .DisplayMember = "NOMBRE_VENDEDOR"
+                .ValueMember = "CODIGO_VENDEDOR"
+
+                Dim dView As New Data.DataView(oVendedores.ObtenerVendedoresParaReportes())
+                dView.Sort = "NOMBRE_VENDEDOR"
+                .DataSource = dView
+                .SelectedValue = 0
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarVendedores", ex)
+        End Try
+    End Sub
+
     Private Sub Rpt_Embarques_Empaque_Y_Embarque_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.DesplegarTiposDocumentos()
         Me.DesplegarZonas()
@@ -202,6 +221,7 @@ Buscar:
         Me.DesplegarLineas()
         Me.DesplegarFamilias()
         Me.DesplegarCultivos()
+        Me.DesplegarVendedores()
 
         Me.DtFechaDesde.Value = FechaActualINI()
         Me.DtFechaHasta.Value = Date.Now
@@ -239,6 +259,7 @@ Buscar:
             Rpt.SetParameterValue("@CODIGO_LINEA", Me.CboLinea.SelectedValue.ToString)
             Rpt.SetParameterValue("@CODIGO_FAMILIA", Me.CboFamilia.SelectedValue.ToString)
             Rpt.SetParameterValue("@CODIGO_USUARIO", Usuario.Codigo_Usuario.ToString)
+            Rpt.SetParameterValue("@CODIGO_VENDEDOR", Me.cboVendedor.SelectedValue)
 
             If Me.RdnDevoluciones.Checked = False Then
                 Rpt.SetParameterValue("@CODIGO_TIPO_DOCUMENTO", Me.CboTipoDocumento.SelectedValue.ToString)
@@ -273,12 +294,12 @@ Buscar:
     End Function
 
     Private Sub TxtCodArticulo_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboTipoDocumento.KeyPress, CboZona.KeyPress, TxtCliente.KeyPress, CkbFechaReferencia.KeyPress, _
-    TxtCodigoProducto.KeyPress, CboAlmacen.KeyPress, CboMercado.KeyPress, CboLinea.KeyPress, CboFamilia.KeyPress, CboCultivoAgricola.KeyPress, DtFechaHasta.KeyPress, DtFechaDesde.KeyPress, DtFechaHasta.KeyPress, DtFechaDesde.KeyPress
+    TxtCodigoProducto.KeyPress, CboAlmacen.KeyPress, CboMercado.KeyPress, CboLinea.KeyPress, CboFamilia.KeyPress, CboCultivoAgricola.KeyPress, DtFechaHasta.KeyPress, DtFechaDesde.KeyPress, DtFechaHasta.KeyPress, DtFechaDesde.KeyPress, cboVendedor.KeyPress
         txtNoBeep(e)
     End Sub
 
     Private Sub cboCultivo_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboTipoDocumento.KeyDown, CboZona.KeyDown, TxtCliente.KeyDown, CkbFechaReferencia.KeyDown, _
-    TxtCodigoProducto.KeyDown, CboAlmacen.KeyDown, CboMercado.KeyDown, CboLinea.KeyDown, CboFamilia.KeyDown, CboCultivoAgricola.KeyDown, DtFechaHasta.KeyDown, DtFechaDesde.KeyDown
+    TxtCodigoProducto.KeyDown, CboAlmacen.KeyDown, CboMercado.KeyDown, CboLinea.KeyDown, CboFamilia.KeyDown, CboCultivoAgricola.KeyDown, DtFechaHasta.KeyDown, DtFechaDesde.KeyDown, cboVendedor.KeyDown
         txtTAB(e)
     End Sub
 

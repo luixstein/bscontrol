@@ -31,6 +31,7 @@ Partial Class Rpt_Ventas_ProductosVendidos
         Me.RdnVentasPorFacturas = New System.Windows.Forms.RadioButton()
         Me.RdnVentasPorCultivo = New System.Windows.Forms.RadioButton()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.chkSoloUtilidadNegativa = New System.Windows.Forms.CheckBox()
         Me.lblCultivoAgricola = New System.Windows.Forms.Label()
         Me.CboCultivoAgricola = New System.Windows.Forms.ComboBox()
         Me.LblNombreProducto = New System.Windows.Forms.Label()
@@ -56,7 +57,8 @@ Partial Class Rpt_Ventas_ProductosVendidos
         Me.DtFechaDesde = New System.Windows.Forms.DateTimePicker()
         Me.LblFamilia = New System.Windows.Forms.Label()
         Me.CboFamilia = New System.Windows.Forms.ComboBox()
-        Me.chkSoloUtilidadNegativa = New System.Windows.Forms.CheckBox()
+        Me.cboVendedor = New System.Windows.Forms.ComboBox()
+        Me.lblVendedor = New System.Windows.Forms.Label()
         Me.ToolStrip1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -139,6 +141,8 @@ Partial Class Rpt_Ventas_ProductosVendidos
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.lblVendedor)
+        Me.GroupBox2.Controls.Add(Me.cboVendedor)
         Me.GroupBox2.Controls.Add(Me.chkSoloUtilidadNegativa)
         Me.GroupBox2.Controls.Add(Me.lblCultivoAgricola)
         Me.GroupBox2.Controls.Add(Me.CboCultivoAgricola)
@@ -169,10 +173,21 @@ Partial Class Rpt_Ventas_ProductosVendidos
         Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox2.Size = New System.Drawing.Size(679, 378)
+        Me.GroupBox2.Size = New System.Drawing.Size(679, 421)
         Me.GroupBox2.TabIndex = 0
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Filtros"
+        '
+        'chkSoloUtilidadNegativa
+        '
+        Me.chkSoloUtilidadNegativa.AutoSize = True
+        Me.chkSoloUtilidadNegativa.Location = New System.Drawing.Point(136, 387)
+        Me.chkSoloUtilidadNegativa.Margin = New System.Windows.Forms.Padding(4)
+        Me.chkSoloUtilidadNegativa.Name = "chkSoloUtilidadNegativa"
+        Me.chkSoloUtilidadNegativa.Size = New System.Drawing.Size(238, 21)
+        Me.chkSoloUtilidadNegativa.TabIndex = 399
+        Me.chkSoloUtilidadNegativa.Text = "Solo ventas con utilidad negativa"
+        Me.chkSoloUtilidadNegativa.UseVisualStyleBackColor = True
         '
         'lblCultivoAgricola
         '
@@ -429,22 +444,33 @@ Partial Class Rpt_Ventas_ProductosVendidos
         Me.CboFamilia.Size = New System.Drawing.Size(408, 24)
         Me.CboFamilia.TabIndex = 8
         '
-        'chkSoloUtilidadNegativa
+        'cboVendedor
         '
-        Me.chkSoloUtilidadNegativa.AutoSize = True
-        Me.chkSoloUtilidadNegativa.Location = New System.Drawing.Point(136, 349)
-        Me.chkSoloUtilidadNegativa.Margin = New System.Windows.Forms.Padding(4)
-        Me.chkSoloUtilidadNegativa.Name = "chkSoloUtilidadNegativa"
-        Me.chkSoloUtilidadNegativa.Size = New System.Drawing.Size(238, 21)
-        Me.chkSoloUtilidadNegativa.TabIndex = 399
-        Me.chkSoloUtilidadNegativa.Text = "Solo ventas con utilidad negativa"
-        Me.chkSoloUtilidadNegativa.UseVisualStyleBackColor = True
+        Me.cboVendedor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboVendedor.FormattingEnabled = True
+        Me.cboVendedor.Items.AddRange(New Object() {"A", "B"})
+        Me.cboVendedor.Location = New System.Drawing.Point(136, 348)
+        Me.cboVendedor.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboVendedor.MaxLength = 1
+        Me.cboVendedor.Name = "cboVendedor"
+        Me.cboVendedor.Size = New System.Drawing.Size(408, 24)
+        Me.cboVendedor.TabIndex = 400
+        '
+        'lblVendedor
+        '
+        Me.lblVendedor.AutoSize = True
+        Me.lblVendedor.Location = New System.Drawing.Point(15, 351)
+        Me.lblVendedor.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblVendedor.Name = "lblVendedor"
+        Me.lblVendedor.Size = New System.Drawing.Size(78, 17)
+        Me.lblVendedor.TabIndex = 401
+        Me.lblVendedor.Text = "Vendedor :"
         '
         'Rpt_Ventas_ProductosVendidos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(980, 423)
+        Me.ClientSize = New System.Drawing.Size(980, 467)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.ToolStrip1)
@@ -497,4 +523,6 @@ Partial Class Rpt_Ventas_ProductosVendidos
     Friend WithEvents CboCultivoAgricola As System.Windows.Forms.ComboBox
     Friend WithEvents RdnDevoluciones As System.Windows.Forms.RadioButton
     Friend WithEvents chkSoloUtilidadNegativa As System.Windows.Forms.CheckBox
+    Friend WithEvents lblVendedor As System.Windows.Forms.Label
+    Friend WithEvents cboVendedor As System.Windows.Forms.ComboBox
 End Class
