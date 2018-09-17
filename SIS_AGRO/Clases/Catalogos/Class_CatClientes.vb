@@ -23,7 +23,7 @@ Public Class Class_CatClientes
     Private _CIUDAD As String
     Private _LOCALIDAD As String
     Private _ESTADO As String
-    Private _PAIS As String
+    'Private _PAIS As String
     Private _CODIGO_POSTAL As String
     Private _CODIGO_ZONA As String
     Private _CODIGO_VENDEDOR As String
@@ -221,14 +221,14 @@ Public Class Class_CatClientes
         End Set
     End Property
 
-    Public Property PAIS() As String
-        Get
-            Return Me._PAIS
-        End Get
-        Set(ByVal Value As String)
-            Me._PAIS = Value
-        End Set
-    End Property
+    'Public Property PAIS() As String
+    '    Get
+    '        Return Me._PAIS
+    '    End Get
+    '    Set(ByVal Value As String)
+    '        Me._PAIS = Value
+    '    End Set
+    'End Property
 
     Public Property CODIGO_POSTAL() As String
         Get
@@ -561,7 +561,7 @@ Public Class Class_CatClientes
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         Me._QuerySelect = "SELECT C.CODIGO_CLIENTE,C.NOMBRE_CLIENTE,C.Estatus,C.RFC,C.TIPO_PERSONA,C.CURP,C.TELEFONO,C.CELULAR, " &
-        "C.CALLE,C.NUMERO_EXTERIOR,C.NUMERO_INTERIOR,C.COLONIA,C.CIUDAD,C.LOCALIDAD,C.ESTADO,C.PAIS,C.CODIGO_POSTAL,C.CODIGO_ZONA, " &
+        "C.CALLE,C.NUMERO_EXTERIOR,C.NUMERO_INTERIOR,C.COLONIA,C.CIUDAD,C.LOCALIDAD,C.ESTADO,C.CODIGO_POSTAL,C.CODIGO_ZONA, " &
         "C.CODIGO_VENDEDOR,C.CUENTA_CONTABLE,C.CUENTA_CONTABLE_DOLARES,C.LIMITE_CREDITO,C.DIAS_PLAZO,C.SALDO,C.PERMITIR_VENTA_CREDITO, " &
         "C.FECHA_ALTA,C.PLAZA,C.CORREO_CLIENTE,C.CODIGO_METODO_PAGO,C.NUMERO_CUENTA_PAGO,C.CODIGO_METODO_PAGO_DOLARES,C.NUMERO_CUENTA_PAGO_DOLARES,C.CODIGO_TIPO_MERCADO,C.FORMATO_NOMBRE_XML," &
         "C.CODIGO_ALMACEN, " &
@@ -605,7 +605,7 @@ Public Class Class_CatClientes
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_CLIENTES_GRABAR"
 
-            sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_CLIENTE.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_CLIENTE.ToUpper : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@NOMBRE_CLIENTE", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._NOMBRE_CLIENTE.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS.ToUpper
             sqlParametro = .Parameters.Add("@RFC", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._RFC.ToString.ToUpper
@@ -620,7 +620,7 @@ Public Class Class_CatClientes
             sqlParametro = .Parameters.Add("@CIUDAD", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._CIUDAD.ToString.ToUpper
             sqlParametro = .Parameters.Add("@LOCALIDAD", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._LOCALIDAD.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ESTADO", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._ESTADO.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@PAIS", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._PAIS.ToString.ToUpper
+            'sqlParametro = .Parameters.Add("@PAIS", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._PAIS.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_POSTAL", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_POSTAL.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_ZONA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ZONA.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_VENDEDOR", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_VENDEDOR.ToString.ToUpper
@@ -651,8 +651,13 @@ Public Class Class_CatClientes
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
                 bResultado = True
+
+                If Me._AGREGAR = "1" Then
+                    Me._CODIGO_CLIENTE = "" & .Parameters("@CODIGO_CLIENTE").Value.ToString 'Código de nuevo cliente generado
+                End If
+
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
+                HandleError(Me._Nombre_Catalogo, "Grabar", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -689,7 +694,6 @@ Public Class Class_CatClientes
                     Me._CIUDAD = "" & dReader("CIUDAD").ToString
                     Me._LOCALIDAD = "" & dReader("LOCALIDAD").ToString
                     Me._ESTADO = "" & dReader("ESTADO").ToString
-                    Me._PAIS = "" & dReader("PAIS").ToString
                     Me._CODIGO_POSTAL = "" & dReader("CODIGO_POSTAL").ToString
                     Me._CODIGO_ZONA = "" & dReader("CODIGO_ZONA").ToString
                     Me._CODIGO_VENDEDOR = "" & dReader("CODIGO_VENDEDOR").ToString
@@ -1225,7 +1229,7 @@ Public Class Class_CatClientes
                 frm.Show()
 
             Catch ex As Exception
-                HandleError(Me.Nombre_Catalogo, " Impresión del listado :" + Me.Nombre_Catalogo, ex)
+                HandleError(Me.Nombre_Catalogo, "Imprimir_Listado", ex)
             Finally
                 oReporte = Nothing
                 'Rpt.Dispose()

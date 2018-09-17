@@ -848,47 +848,46 @@ Buscar:
         End Try
     End Function
 
-    Private Function ValidarDatosCliente() As Boolean
-        Try
-            If txtLEN(Me.oCliente.NOMBRE_CLIENTE) = False Or Me.oCliente.NOMBRE_CLIENTE = "." Then
-                MsgBox("El dato ''Nombre'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.TxtCodigoCliente.Focus()
-                Return False
-            ElseIf txtLEN(Me.oCliente.RFC) = False Or Me.oCliente.RFC = "." Then
-                MsgBox("El dato ''RFC'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.TxtCodigoCliente.Focus()
-                Return False
-            ElseIf txtLEN(Me.oCliente.CALLE) = False Or Me.oCliente.CALLE = "." Then
-                MsgBox("El dato ''Calle'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.TxtCodigoCliente.Focus()
-                Return False
-            ElseIf txtLEN(Me.oCliente.NUMERO_EXTERIOR) = False Or Me.oCliente.NUMERO_EXTERIOR = "." Then
-                MsgBox("El dato ''Número exterior'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.TxtCodigoCliente.Focus()
-                Return False
-            ElseIf txtLEN(Me.oCliente.CIUDAD) = False Or Me.oCliente.CIUDAD = "." Then
-                MsgBox("El dato ''Municipio'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.TxtCodigoCliente.Focus()
-                Return False
-            ElseIf txtLEN(Me.oCliente.ESTADO) = False Or Me.oCliente.ESTADO = "." Then
-                MsgBox("El dato ''Estado'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.TxtCodigoCliente.Focus()
-                Return False
-            ElseIf txtLEN(Me.oCliente.PAIS) = False Or Me.oCliente.PAIS = "." Then
-                MsgBox("El dato ''País'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.TxtCodigoCliente.Focus()
-                Return False
-            ElseIf txtLEN(Me.oCliente.CODIGO_POSTAL) = False Or Me.oCliente.CODIGO_POSTAL = "." Then
-                MsgBox("El dato ''Código postal'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.TxtCodigoCliente.Focus()
-                Return False
-            End If
-            Return True
-        Catch ex As Exception
-            HandleError(Me.Name, "ValidarDatosCliente", ex)
-        End Try
-
-    End Function
+    'Private Function ValidarDatosCliente() As Boolean
+    '    Try
+    '        If txtLEN(Me.oCliente.NOMBRE_CLIENTE) = False Or Me.oCliente.NOMBRE_CLIENTE = "." Then
+    '            MsgBox("El dato ''Nombre'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
+    '            Me.TxtCodigoCliente.Focus()
+    '            Return False
+    '        ElseIf txtLEN(Me.oCliente.RFC) = False Or Me.oCliente.RFC = "." Then
+    '            MsgBox("El dato ''RFC'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
+    '            Me.TxtCodigoCliente.Focus()
+    '            Return False
+    '        ElseIf txtLEN(Me.oCliente.CALLE) = False Or Me.oCliente.CALLE = "." Then
+    '            MsgBox("El dato ''Calle'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
+    '            Me.TxtCodigoCliente.Focus()
+    '            Return False
+    '        ElseIf txtLEN(Me.oCliente.NUMERO_EXTERIOR) = False Or Me.oCliente.NUMERO_EXTERIOR = "." Then
+    '            MsgBox("El dato ''Número exterior'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
+    '            Me.TxtCodigoCliente.Focus()
+    '            Return False
+    '        ElseIf txtLEN(Me.oCliente.CIUDAD) = False Or Me.oCliente.CIUDAD = "." Then
+    '            MsgBox("El dato ''Municipio'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
+    '            Me.TxtCodigoCliente.Focus()
+    '            Return False
+    '        ElseIf txtLEN(Me.oCliente.ESTADO) = False Or Me.oCliente.ESTADO = "." Then
+    '            MsgBox("El dato ''Estado'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
+    '            Me.TxtCodigoCliente.Focus()
+    '            Return False
+    '        ElseIf txtLEN(Me.oCliente.PAIS) = False Or Me.oCliente.PAIS = "." Then
+    '            MsgBox("El dato ''País'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
+    '            Me.TxtCodigoCliente.Focus()
+    '            Return False
+    '        ElseIf txtLEN(Me.oCliente.CODIGO_POSTAL) = False Or Me.oCliente.CODIGO_POSTAL = "." Then
+    '            MsgBox("El dato ''Código postal'' del cliente no esta capturado.", MsgBoxStyle.Exclamation, Me.Text)
+    '            Me.TxtCodigoCliente.Focus()
+    '            Return False
+    '        End If
+    '        Return True
+    '    Catch ex As Exception
+    '        HandleError(Me.Name, "ValidarDatosCliente", ex)
+    '    End Try
+    'End Function
 
     Private Sub GestionaCambioEstado()
         Select Case Me.LblStatus.Text

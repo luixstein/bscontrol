@@ -258,23 +258,7 @@ Public Class Catalogo_Clientes
 
 #Region "Eventos Genericos"
 
-    'Private Sub txt_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles    _
-    '        _
-    '         _
-
-    '    txtTAB(e)
-    'End Sub
-
-    'Private Sub txt_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles  _
-    '      _
-    '      _
-    '       _
-    '       _
-
-    '    txtNoBeep(e)
-    'End Sub
-
-    Private Sub txt_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtRfc.KeyDown, txtPais.KeyDown, txtNumeroTelefono.KeyDown,
+    Private Sub txt_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtRfc.KeyDown, txtNumeroTelefono.KeyDown,
     txtNumeroInterior.KeyDown, txtNumeroExterior.KeyDown, txtNumeroCelular.KeyDown, TxtNombreCliente.KeyDown, txtLocalidad.KeyDown, txtLimiteCredito.KeyDown, txtDiasPlazo.KeyDown, txtCurp.KeyDown,
     txtColonia.KeyDown, txtCodigoCliente.KeyDown, txtCalle.KeyDown, DpFecha.KeyDown, chkPermitirVentaCredito.KeyDown, cboZona.KeyDown, cboVendedor.KeyDown, cboTipoPersona.KeyDown,
     cboTipoMercado.KeyDown, CboEstatus.KeyDown, cboEstado.KeyDown, cboFormaPago.KeyDown, txtNumeroCuenta.KeyDown, txtCiudad.KeyDown, cboFormaPagoUSD.KeyDown, txtNumeroCuentaDolares.KeyDown,
@@ -282,8 +266,7 @@ Public Class Catalogo_Clientes
         txtTAB(e)
     End Sub
 
-    Private Sub txt_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtRfc.KeyPress,
-    txtPais.KeyPress, txtNumeroTelefono.KeyPress, txtNumeroInterior.KeyPress, txtNumeroExterior.KeyPress, txtNumeroCelular.KeyPress, TxtNombreCliente.KeyPress,
+    Private Sub txt_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtRfc.KeyPress, txtNumeroTelefono.KeyPress, txtNumeroInterior.KeyPress, txtNumeroExterior.KeyPress, txtNumeroCelular.KeyPress, TxtNombreCliente.KeyPress,
     txtLocalidad.KeyPress, txtLimiteCredito.KeyPress, txtDiasPlazo.KeyPress, txtCurp.KeyPress, txtCuentaContableDolares.KeyPress, txtCuentaContable.KeyPress,
     txtColonia.KeyPress, txtCodigoPostal.KeyPress, txtCodigoCliente.KeyPress, txtCiudad.KeyPress, txtCalle.KeyPress, DpFecha.KeyPress, chkPermitirVentaCredito.KeyPress,
     cboZona.KeyPress, cboVendedor.KeyPress, cboTipoPersona.KeyPress, cboTipoMercado.KeyPress, CboEstatus.KeyPress, cboEstado.KeyPress, txtCorreoCliente.KeyPress,
@@ -573,7 +556,6 @@ busca:
                     Me.txtCodigoPostal.Enabled = True
                     Me.txtColonia.Enabled = True
                     Me.txtLocalidad.Enabled = True
-                    Me.txtPais.Enabled = True
                     Me.cboPais.Enabled = True
                     Me.cboEstado.Enabled = True
                     Me.cboMunicipio.Enabled = True
@@ -593,7 +575,7 @@ busca:
                     Me.CboEstatus.Enabled = False
                     Me.cboEstado.Enabled = True
                     Me.cboTipoPersona.Enabled = True
-                    'Me.cboZona.Enabled = True
+                    Me.cboZona.Enabled = True
                     Me.cboVendedor.Enabled = True
                     Me.cboNombreXML.Enabled = True
                     Me.chkPermitirVentaCredito.Enabled = True
@@ -629,7 +611,6 @@ busca:
                     Me.txtCodigoPostal.Enabled = True
                     Me.txtColonia.Enabled = True
                     Me.txtLocalidad.Enabled = True
-                    Me.txtPais.Enabled = True
                     Me.cboPais.Enabled = True
                     Me.cboEstado.Enabled = True
                     Me.cboMunicipio.Enabled = True
@@ -657,7 +638,7 @@ busca:
                     Me.CboEstatus.Enabled = True
                     Me.cboEstado.Enabled = True
                     Me.cboTipoPersona.Enabled = True
-                    'Me.cboZona.Enabled = True
+                    Me.cboZona.Enabled = True
                     Me.cboVendedor.Enabled = True
                     Me.cboNombreXML.Enabled = True
                     Me.TxtCodigoAlmacen.Enabled = True
@@ -693,7 +674,6 @@ busca:
                     Me.txtCodigoPostal.Enabled = False
                     Me.txtColonia.Enabled = False
                     Me.txtLocalidad.Enabled = False
-                    Me.txtPais.Enabled = False
                     Me.cboPais.Enabled = False
                     Me.cboEstado.Enabled = False
                     Me.cboMunicipio.Enabled = False
@@ -713,7 +693,7 @@ busca:
                     Me.CboEstatus.Enabled = False
                     Me.cboEstado.Enabled = False
                     Me.cboTipoPersona.Enabled = False
-                    'Me.cboZona.Enabled = False
+                    Me.cboZona.Enabled = False
                     Me.cboVendedor.Enabled = False
                     Me.cboNombreXML.Enabled = False
                     Me.chkPermitirVentaCredito.Enabled = False
@@ -747,7 +727,6 @@ busca:
             Me.txtCodigoPostal.Text = ""
             Me.txtColonia.Text = ""
             Me.txtLocalidad.Text = ""
-            Me.txtPais.Text = "MEXICO"
             Me.txtCuentaContable.Text = ""
             Me.txtCuentaContableDolares.Text = ""
             Me.txtDiasPlazo.Text = ""
@@ -756,7 +735,7 @@ busca:
             Me.txtCorreoClientePagos.Text = ""
             Me.txtNumeroCuenta.Text = ""
             Me.txtNumeroCuentaDolares.Text = ""
-            Me.cboPais.SelectedIndex = -1
+            Me.cboPais.SelectedValue = "MEX"
             Me.cboEstado.SelectedIndex = -1
             Me.cboMunicipio.SelectedIndex = -1
 
@@ -778,59 +757,6 @@ busca:
             HandleError(Me.Name, "InicializaElemento", ex)
         End Try
     End Sub
-
-    'Private Sub LlenaElemento(ByVal iCodigo_Elemento As String)
-    '    Dim oElemento As New Class_CatClientes
-    '    oElemento.CODIGO_CLIENTE = iCodigo_Elemento
-    '    If oElemento.Consultar Then
-    '        With oElemento
-    '            Me.txtCodigoCliente.Text = .CODIGO_CLIENTE
-    '            Me.TxtNombreCliente.Text = .NOMBRE_CLIENTE
-    '            Me.txtRfc.Text = .RFC
-    '            Me.txtCurp.Text = .CURP
-    '            Me.txtNumeroCelular.Text = .CELULAR
-    '            Me.txtNumeroExterior.Text = .NUMERO_EXTERIOR
-    '            Me.txtNumeroInterior.Text = .NUMERO_INTERIOR
-    '            Me.txtNumeroTelefono.Text = .TELEFONO
-    '            Me.txtCalle.Text = .CALLE
-    '            Me.txtCiudad.Text = .CIUDAD
-    '            Me.txtCodigoPostal.Text = .CODIGO_POSTAL
-    '            Me.txtColonia.Text = .COLONIA
-    '            Me.txtLocalidad.Text = .LOCALIDAD
-    '            Me.txtPais.Text = .PAIS
-    '            Me.txtCuentaContable.Text = .CUENTA_CONTABLE
-    '            Me.txtCuentaContableDolares.Text = .CUENTA_CONTABLE_DOLARES
-    '            Me.txtDiasPlazo.Text = .DIAS_PLAZO.ToString
-    '            Me.txtLimiteCredito.Text = .LIMITE_CREDITO.ToString
-
-    '            Me.CboEstatus.Text = .Estatus
-    '            Me.cboEstado.Text = .ESTADO
-    '            Me.cboVendedor.SelectedValue = .CODIGO_VENDEDOR
-    '            Me.cboZona.SelectedValue = .CODIGO_ZONA
-
-    '            If .TIPO_PERSONA = "M" Then
-    '                Me.cboTipoPersona.Text = "MORAL"
-    '            Else
-    '                Me.cboTipoPersona.Text = "FISICA"
-    '            End If
-
-    '            If .PERMITIR_VENTA_CREDITO = "1" Then
-    '                Me.chkPermitirVentaCredito.Checked = True
-    '            Else
-    '                Me.chkPermitirVentaCredito.Checked = False
-    '            End If
-
-    '            If Me.txtCodigoCliente.Text.Remove(1, 4) = "N" Then
-    '                Me.cboTipoMercado.SelectedIndex = 1
-    '            Else
-    '                Me.cboTipoMercado.SelectedIndex = 0
-    '            End If
-
-    '            Me.DpFecha.Value = .FECHA_ALTA
-    '        End With
-    '    End If
-    '    oElemento = Nothing
-    'End Sub
 
     Private Function Grabar_Elemento() As Boolean
         Dim bResultado As Boolean = False
@@ -944,7 +870,6 @@ busca:
                         .CIUDAD = Me.txtCiudad.Text
                         .LOCALIDAD = Me.txtLocalidad.Text
                         .ESTADO = Me.cboEstado.Text
-                        .PAIS = Me.txtPais.Text
                         .CODIGO_POSTAL = Me.txtCodigoPostal.Text
                         .CODIGO_ZONA = Me.cboZona.SelectedValue.ToString
                         .CODIGO_VENDEDOR = Me.cboVendedor.SelectedValue.ToString
@@ -1156,7 +1081,6 @@ busca:
     Private Function LlenaComboEstatus() As Boolean
         Me.CboEstatus.Items.Add("A")
         Me.CboEstatus.Items.Add("B")
-
         Me.CboEstatus.SelectedItem = "A"
     End Function
 
@@ -1247,7 +1171,6 @@ busca:
                     Me.txtCodigoPostal.Text = .CODIGO_POSTAL
                     Me.txtColonia.Text = .COLONIA
                     Me.txtLocalidad.Text = .LOCALIDAD
-                    Me.txtPais.Text = .PAIS
                     'Me.cboEstado.SelectedValue = .ESTADO
 
                     If txtLEN(.CODIGO_PAIS_SAT) = True Then

@@ -1035,7 +1035,8 @@ Module FacturacionElectronica
                             .estado = fElectronicaValidaCampo(oCliente.NOMBRE_ESTADO) 'Ver nota de municipio
                         End If
 
-                        If txtLEN(oCliente.CODIGO_PAIS_SAT) = False And txtLEN(oCliente.PAIS) = True Then 'Tiene escrito el pais mano y no calza con ninguno del catálogo del sat, se forza a que falle
+                        'If txtLEN(oCliente.CODIGO_PAIS_SAT) = False And txtLEN(oCliente.PAIS) = True Then 'Tiene escrito el pais mano y no calza con ninguno del catálogo del sat, se forza a que falle
+                        If txtLEN(oCliente.CODIGO_PAIS_SAT) = False Then 'Tiene escrito el pais mano y no calza con ninguno del catálogo del sat, se forza a que falle
                             .pais = "."
                         Else
                             .pais = fElectronicaValidaCampo(oCliente.NOMBRE_PAIS) 'Ver nota de municipio
@@ -1301,7 +1302,8 @@ Module FacturacionElectronica
                         .estado = fElectronicaValidaCampo(oCliente.NOMBRE_ESTADO) 'Ver nota de municipio
                     End If
 
-                    If txtLEN(oCliente.CODIGO_PAIS_SAT) = False And txtLEN(oCliente.PAIS) = True Then 'Tiene escrito el pais mano y no calza con ninguno del catálogo del sat, se forza a que falle
+                    'If txtLEN(oCliente.CODIGO_PAIS_SAT) = False And txtLEN(oCliente.PAIS) = True Then 'Tiene escrito el pais mano y no calza con ninguno del catálogo del sat, se forza a que falle
+                    If txtLEN(oCliente.CODIGO_PAIS_SAT) = False Then 'Tiene escrito el pais mano y no calza con ninguno del catálogo del sat, se forza a que falle
                         .pais = "."
                     Else
                         .pais = fElectronicaValidaCampo(oCliente.NOMBRE_PAIS) 'Ver nota de municipio
