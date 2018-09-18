@@ -180,7 +180,12 @@ Public Class Frm_CXC_Descuentos
             Select Case e.KeyCode
                 Case Keys.F6
 Buscar:
-                    sText = Me.oCliente.BusquedaVisual_PorDescripcion
+                    If Empresa_Sistema.PERMITE_CLIENTES_MULTIPLAZA = True Then
+                        sText = Me.oCliente.BusquedaVisual_PorDescripcionSinFiltroZona
+                    Else
+                        sText = Me.oCliente.BusquedaVisualPlaza
+                    End If
+
                     If txtLEN(sText) = True Then Me.TxtCodigoCliente.Text = sText
 
                 Case Keys.Enter
