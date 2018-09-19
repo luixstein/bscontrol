@@ -284,9 +284,11 @@ enter:
                     If oCuentaBancaria.ES_CUENTA_FISCAL = True Then 'Si es cuenta fiscal, sólo va permitir pagos de remisiones
                         Me.chkVentasNoFiscales.Checked = False
                         Me.lblEsCuentaFiscal.Text = "Sólo facturas"
+                        Me.cboTipoVentas.Text = "MISMO RFC CLIENTE"
                     Else 'Si es cuenta no fiscal sólo va permitir pagos de remisiones
                         Me.chkVentasNoFiscales.Checked = True
                         Me.lblEsCuentaFiscal.Text = "Sólo remisiones"
+                        Me.cboTipoVentas.Text = "MISMO CODIGO CLIENTE"
                     End If
 
                     Me.GeneraFolio()
@@ -1022,9 +1024,10 @@ Buscar:
         Dim bResultado As Boolean = False
 
         Dim Conexion As New SqlConnection(Empresa_Sistema.conexion)
-        Dim i As Integer = 1, oCliente As Class_CatClientes, sMedioPago As String, oBanco As Class_CatBancos, sSaldoDlls As String = "", dFechaPagoDefault As Date
+        Dim i As Integer = 1, oCliente As New Class_CatClientes, sMedioPago As String, oBanco As Class_CatBancos, sSaldoDlls As String = "", dFechaPagoDefault As Date
         Dim sql As Class_find, dTipoCambio As Decimal = valorNumericoD(Me.txtTipoCambio.Text)
         Dim cmd As SqlCommand, dReader As SqlDataReader, bHayVentasEnUSD As Boolean = False
+        Dim sSQL As String = ""
 
         dFechaPagoDefault = CDate(Me.GridDocumentosPago.Cell(1, Me.iGyDocFECHA).Text)
 
@@ -1035,11 +1038,39 @@ Buscar:
         Try
             Conexion.Open()
 
+            oCliente = New Class_CatClientes(sReplace(Me.TxtCodigoCliente.Text))
+
+            If oCliente.Existe = False Then
+                Return False
+            End If
+
             If Me.cboMoneda.Text = "MXN" Then
                 'Si el pago es en MXN y hay facturas en USD, se necesita el tipo de cambio(aunque la cuenta bancaria este en MXN)
 
-                cmd = New SqlCommand("SELECT TOP 1 '1' HAY_VENTAS_EN_USD " &
-                                     "FROM VENTA_GLOBAL WHERE CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' AND SALDO>0 " & sSaldoDlls & " AND CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND CODIGO_MONEDA_SAT='USD'", Conexion)
+                'sSQL = "SELECT TOP 1 '1' HAY_VENTAS_EN_USD " &
+                '                     "FROM VENTA_GLOBAL V WHERE V.CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' AND SALDO>0 " & sSaldoDlls & " AND CODIGO_MONEDA_SAT='USD'"
+
+                sSQL = "SELECT TOP 1 '1' HAY_VENTAS_EN_USD " &
+                            "FROM VENTA_GLOBAL V " &
+                            "LEFT JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(V.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
+                            "WHERE 1=1 "
+
+                Select Case Me.cboTipoVentas.Text
+                    Case "MISMO RFC CLIENTE"
+                        sSQL = sSQL & " AND V.RFC_RECEPTOR='" & oCliente.RFC & "' "
+                    Case "MISMO CODIGO CLIENTE"
+                        sSQL = sSQL & " AND V.CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' "
+                End Select
+
+                sSQL = sSQL & " AND V.SALDO>0 AND V.CODIGO_MONEDA_SAT='USD' " ' & " AND V.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA
+
+                If Me.chkVentasNoFiscales.Checked = True Then
+                    sSQL = sSQL & " AND DOC.AFECTA_CONTABILIDAD='0' " 'Para mostrar sólo remisiones, las cot no salen porque también se busca saldo>0 .
+                Else
+                    sSQL = sSQL & " AND DOC.CODIGO_DOCUMENTO LIKE 'F%' "
+                End If
+
+                cmd = New SqlCommand(sSQL, Conexion)
 
                 With cmd
                     .CommandTimeout = 0
@@ -1075,7 +1106,6 @@ Buscar:
         'If Me.cboMoneda.Text = "USD" Then
         'sSaldoDlls = " AND SALDO_DOLARES>0 "
         'End If
-        oCliente = New Class_CatClientes(sReplace(Me.TxtCodigoCliente.Text))
 
         Dim sSQLSaldoMXN As String = ""
 
@@ -1085,7 +1115,7 @@ Buscar:
             sSQLSaldoMXN = "V.SALDO SALDO_MXN,"
         End If
 
-        Dim sSQL As String = "SELECT V.CODIGO_CLIENTE,CTE.NOMBRE_CLIENTE,V.FECHA,V.FOLIO_VENTA,V.CODIGO_MONEDA_SAT,V.TOTAL," &
+        sSQL = "SELECT V.CODIGO_CLIENTE,CTE.NOMBRE_CLIENTE,V.FECHA,V.FOLIO_VENTA,V.CODIGO_MONEDA_SAT,V.TOTAL," &
                             sSQLSaldoMXN &
                             "V.TOTAL_DOLARES," &
                             "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN ROUND(V.SALDO/V.TIPO_DE_CAMBIO,2) ELSE ROUND(V.SALDO/" & dTipoCambio.ToString & ",2) END SALDO_DOLARES," &
@@ -1094,9 +1124,18 @@ Buscar:
                             "FROM VENTA_GLOBAL V " &
                             "INNER JOIN CAT_CLIENTES CTE ON(V.CODIGO_CLIENTE=CTE.CODIGO_CLIENTE)" &
                             "LEFT JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(V.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
-                            "WHERE V.RFC_RECEPTOR='" & oCliente.RFC & "' AND V.SALDO>0 " & sSaldoDlls ' & " AND V.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA
-
+                            "WHERE 1=1 "
+        '"WHERE V.RFC_RECEPTOR='" & oCliente.RFC & "' AND V.SALDO>0 " & sSaldoDlls ' & " AND V.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA
         '"WHERE V.CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' AND V.SALDO>0 " & sSaldoDlls ' & " AND V.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA
+
+        Select Case Me.cboTipoVentas.Text
+            Case "MISMO RFC CLIENTE"
+                sSQL = sSQL & " AND V.RFC_RECEPTOR='" & oCliente.RFC & "' "
+            Case "MISMO CODIGO CLIENTE"
+                sSQL = sSQL & " AND V.CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' "
+        End Select
+
+        sSQL = sSQL & " AND V.SALDO>0 " & sSaldoDlls ' & " AND V.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA
 
         If Me.chkVentasNoFiscales.Checked = True Then
             sSQL = sSQL & " AND DOC.AFECTA_CONTABILIDAD='0' " 'Para mostrar sólo remisiones, las cot no salen porque también se busca saldo>0 .
