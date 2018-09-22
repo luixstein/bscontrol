@@ -1,5 +1,4 @@
-﻿Imports System.Data
-Imports System.Data.SqlClient
+﻿Imports System.Data.SqlClient
 
 Public Class Class_CatTiendasSoriana
     'Inherits Class_Catalogos
@@ -125,7 +124,7 @@ Public Class Class_CatTiendasSoriana
         Me._Nombre_Reporte = "RPT_CAT_TIENDAS_SORIANA.rpt"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "Select ID_TIENDA_SORIANA,CODIGO_TIENDA_SORIANA,NOMBRE_TIENDA_SORIANA " & _
+        Me._QuerySelect = "Select ID_TIENDA_SORIANA,CODIGO_TIENDA_SORIANA,NOMBRE_TIENDA_SORIANA " &
         "FROM CAT_TIENDAS_SORIANA"
         Me._QueryOrder = " ORDER BY NOMBRE_TIENDA_SORIANA"
     End Sub                                                         'Inicializa al objeto.
@@ -156,35 +155,8 @@ Public Class Class_CatTiendasSoriana
 
 #Region "Métodos y procedimientos"
 
-    Public Function Actualizar() As Boolean
-        'Dim cmd As New SqlCommand
-        'Dim sqlParametro As SqlParameter
-        'With cmd
-        '    .Connection = Me._Conexion
-        '    .CommandTimeout = 0
-        '    .CommandType = CommandType.StoredProcedure
-        '    .CommandText = "MP_CAT_CLIENTES_GRABAR"
-
-        '    sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_CLIENTE.ToUpper
-        '    sqlParametro = .Parameters.Add("@NOMBRE_CLIENTE", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._NOMBRE_CLIENTE.ToUpper
-        '    sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS.ToUpper
-        '    sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._AGREGAR.ToString
-        '    Try
-        '        Me._Conexion.Open()
-        '        .ExecuteNonQuery()
-        '        Actualizar = True
-        '    Catch ex As Exception
-        '        HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
-        '    Finally
-        '        Me._Conexion.Close()
-        '        cmd.Dispose()
-        '        sqlParametro = Nothing
-        '    End Try
-
-        'End With
-    End Function                        'Actualiza un elemento del catálogo.
-
     Public Function Consultar() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand(Me._QuerySelect & " WHERE CODIGO_TIENDA_SORIANA='" & Me._CODIGO_TIENDA_SORIANA & "' ", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
@@ -198,7 +170,7 @@ Public Class Class_CatTiendasSoriana
                     Me._ID_TIENDA_SORIANA = "" & dReader("ID_TIENDA_SORIANA")
                     Me._CODIGO_TIENDA_SORIANA = "" & dReader("CODIGO_TIENDA_SORIANA")
                     Me._NOMBRE_TIENDA_SORIANA = "" & dReader("NOMBRE_TIENDA_SORIANA")
-                    Consultar = True
+                    bResultado = True
                 End If
                 dReader.Close()
             Catch ex As Exception
@@ -208,49 +180,21 @@ Public Class Class_CatTiendasSoriana
                 cmd.Dispose()
             End Try
         End With
-
-    End Function        'Consulta un elemento del catálogo.
-
-    Public Function Insertar() As Boolean
-        'Dim cmd As New SqlCommand
-        'Dim sqlParametro As SqlParameter
-        'With cmd
-        '    .Connection = Me._Conexion
-        '    .CommandTimeout = 0
-        '    .CommandType = CommandType.StoredProcedure
-        '    .CommandText = "MP_CAT_CLIENTES_GRABAR"
-
-        '    sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_CLIENTE.ToUpper
-        '    sqlParametro = .Parameters.Add("@NOMBRE_CLIENTE", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._NOMBRE_CLIENTE.ToUpper
-        '    sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS.ToUpper
-        '    sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._AGREGAR.ToString
-        '    Try
-        '        Me._Conexion.Open()
-        '        .ExecuteNonQuery()
-        '        Insertar = True
-        '    Catch ex As Exception
-        '        HandleError(Me._Nombre_Catalogo, "Insertar", ex)
-        '    Finally
-        '        Me._Conexion.Close()
-        '        cmd.Dispose()
-        '        sqlParametro = Nothing
-        '    End Try
-
-        'End With
-    End Function                          'Inserta un elemento al catálogo.
+        Return bResultado
+    End Function
 
     Public Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dsCat_Vendedores As New SqlDataAdapter("SELECT CODIGO_TIENDA_SORIANA,NOMBRE_TIENDA_SORIANA FROM CAT_TIENDAS_SORIANA ORDER BY NOMBRE_TIENDA_SORIANA", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_TIENDA_SORIANA,NOMBRE_TIENDA_SORIANA FROM CAT_TIENDAS_SORIANA ORDER BY NOMBRE_TIENDA_SORIANA", Me._Conexion)
         Try
-            dsCat_Vendedores.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
         Finally
-            dsCat_Vendedores.Dispose()
+            da.Dispose()
         End Try
         Return dTable
-    End Function    'Obtiene una lita completa de los elementos del catalogo en un datatable.
+    End Function
 
     Public Function BusquedaVisual_PorCodigo() As String
         Dim f As New BusquedaVisual
@@ -294,14 +238,12 @@ Public Class Class_CatTiendasSoriana
 
     Public Function CodigoSiguiente(ByVal sCodigoTipoMercado As String) As String
         Dim iCliente As Integer, sCliente As String
-        CodigoSiguiente = ""
         Dim Resultado As String = ""
         Try
-
             Dim CodigoCliente As New Class_find("SELECT CASE WHEN " & sCodigoTipoMercado & "='0001' THEN CODIGO_CLIENTES_EXPORTACION ELSE CODIGO_CLIENTES_NACIONAL END FROM SIS_PLAZAS WHERE CODIGO_PLAZA =" & Usuario.Codigo_Plaza.ToString)
             If txtLEN(CodigoCliente.Result1) = False Then
-                MsgBox("No se encontro el siguiente codigo de cliente.", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
-                Exit Function
+                MsgBox("No se encontró el siguiente código de cliente.", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
+                Return ""
             End If
 
             iCliente = CodigoCliente.Result1.Substring(2)
@@ -316,29 +258,4 @@ Public Class Class_CatTiendasSoriana
 
 #End Region
 
-#Region "Eventos de objetos"
-
-
-#Region "Eventos de la lista de elementos"
-
-#End Region
-
-#Region " Eventos de TxtFiltro"
-
-#End Region
-
-#Region "Eventos Genericos"
-
-#End Region
-
-
-#Region "Keydown específicos"
-
-
-#End Region
-
-#Region "Validating específicos"
-
-#End Region
-#End Region
 End Class

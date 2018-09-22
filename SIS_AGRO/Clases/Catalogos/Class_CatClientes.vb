@@ -23,7 +23,6 @@ Public Class Class_CatClientes
     Private _CIUDAD As String
     Private _LOCALIDAD As String
     Private _ESTADO As String
-    'Private _PAIS As String
     Private _CODIGO_POSTAL As String
     Private _CODIGO_ZONA As String
     Private _CODIGO_VENDEDOR As String
@@ -220,15 +219,6 @@ Public Class Class_CatClientes
             Me._ESTADO = Value
         End Set
     End Property
-
-    'Public Property PAIS() As String
-    '    Get
-    '        Return Me._PAIS
-    '    End Get
-    '    Set(ByVal Value As String)
-    '        Me._PAIS = Value
-    '    End Set
-    'End Property
 
     Public Property CODIGO_POSTAL() As String
         Get
@@ -608,7 +598,7 @@ Public Class Class_CatClientes
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_CLIENTE.ToUpper : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@NOMBRE_CLIENTE", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._NOMBRE_CLIENTE.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS.ToUpper
-            sqlParametro = .Parameters.Add("@RFC", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._RFC.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@RFC", SqlDbType.NVarChar, 13) : sqlParametro.Value = Me._RFC.ToString.ToUpper
             sqlParametro = .Parameters.Add("@TIPO_PERSONA", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._TIPO_PERSONA.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CURP", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._CURP.ToString.ToUpper
             sqlParametro = .Parameters.Add("@TELEFONO", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._TELEFONO.ToString.ToUpper
@@ -620,7 +610,6 @@ Public Class Class_CatClientes
             sqlParametro = .Parameters.Add("@CIUDAD", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._CIUDAD.ToString.ToUpper
             sqlParametro = .Parameters.Add("@LOCALIDAD", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._LOCALIDAD.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ESTADO", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._ESTADO.ToString.ToUpper
-            'sqlParametro = .Parameters.Add("@PAIS", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._PAIS.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_POSTAL", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_POSTAL.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_ZONA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ZONA.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_VENDEDOR", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_VENDEDOR.ToString.ToUpper

@@ -782,7 +782,13 @@ busca:
                         Return False
                     End If
                 Next
+            End If
 
+            If txtLEN(Me.txtRfc.Text) = True Then
+                If ValidaRFC(Me.txtRfc.Text, Strings.Left(Me.cboTipoPersona.Text, 1)) = False Then
+                    Me.txtRfc.Focus()
+                    Return False
+                End If
             End If
 
             If Me.cboPais.SelectedIndex = -1 Then
@@ -800,7 +806,7 @@ busca:
             End If
 
             If Me.cboFormaPago.SelectedValue Is Nothing Then
-                MsgBox("Seleccione el método de pago.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("Seleccione la forma de pago.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.cboFormaPago.Focus()
                 Return False
             End If

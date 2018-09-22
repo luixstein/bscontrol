@@ -1005,6 +1005,11 @@ Module Mod_Uti
         Dim bResultado As Boolean = False
         Try
             Dim sFecha As String
+
+            If sRFC = Empresa_Sistema.RFC_VENTA_PUBLICO_GENERAL Or sRFC = Empresa_Sistema.RFC_EXTRANJERO Then
+                Return True
+            End If
+
             Select Case sTipoPersona
                 Case "F"
                     If Len(sRFC) <> 13 Then
@@ -1013,19 +1018,19 @@ Module Mod_Uti
                     End If
 
                     If SoloLetrasSinAcentos(Mid(sRFC, 1, 4)) = False Then
-                        MsgBox("El RFC no tiene la estructura correcta en las 4 primeras letras(rfc=4 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanumericos), favor de revisar.", vbExclamation, nombreModulo)
+                        MsgBox("El RFC para personas físicas no tiene la estructura correcta en las 4 primeras letras(rfc=4 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanuméricos), favor de revisar.", vbExclamation, nombreModulo)
                         Return False
                     End If
 
                     sFecha = Mid(sRFC, 5, 6) '"dd/mm/yyyy" rfc=aammdd
                     sFecha = Mid(sFecha, 5, 2) & "/" & Mid(sFecha, 3, 2) & "/" & Mid(sFecha, 1, 2)
                     If IsDate(sFecha) = False Then
-                        MsgBox("El RFC no tiene la estructura correcta de la fecha(rfc=4 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanumericos), favor de revisar.", vbExclamation, nombreModulo)
+                        MsgBox("El RFC para personas físicas no tiene la estructura correcta de la fecha(rfc=4 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanuméricos), favor de revisar.", vbExclamation, nombreModulo)
                         Return False
                     End If
 
                     If SoloAlfanumericos(Mid(sRFC, 11, 3)) = False Then
-                        MsgBox("El RFC no tiene la estructura correcta en las 3 últimos alfanumericos(rfc=4 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanumericos), favor de revisar.", vbExclamation, nombreModulo)
+                        MsgBox("El RFC para personas físicas no tiene la estructura correcta en las 3 últimos alfanuméricos(rfc=4 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanuméricos), favor de revisar.", vbExclamation, nombreModulo)
                         Return False
                     End If
 
@@ -1038,7 +1043,7 @@ Module Mod_Uti
                     End If
 
                     If SoloLetrasSinAcentos(Mid(sRFC, 1, 3)) = False Then
-                        MsgBox("El RFC no tiene la estructura correcta en las 3 primeras letras(rfc=3 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanumericos), favor de revisar.", vbExclamation, nombreModulo)
+                        MsgBox("El RFC para personas morales no tiene la estructura correcta en las 3 primeras letras(rfc=3 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanuméricos), favor de revisar.", vbExclamation, nombreModulo)
                         Return False
                     End If
 
@@ -1052,12 +1057,12 @@ Module Mod_Uti
                     'sFecha = año & "/" & mes & "/" & dia
                     sFecha = dia & "/" & mes & "/" & año
                     If IsDate(sFecha) = False Or CDbl(mes) > 12 Then 'si no es una fecha valida o el mes valido(porque el isdate da true tanto en 05/20/999  como en 20/05/99)
-                        MsgBox("El RFC no tiene la estructura correcta de la fecha(rfc=3 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanumericos), favor de revisar.", vbExclamation, nombreModulo)
+                        MsgBox("El RFC para personas morales no tiene la estructura correcta de la fecha(rfc=3 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanuméricos), favor de revisar.", vbExclamation, nombreModulo)
                         Return False
                     End If
 
                     If SoloAlfanumericos(Mid(sRFC, 10, 3)) = False Then
-                        MsgBox("El RFC no tiene la estructura correcta en las 3 últimos alfanumericos(rfc=3 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanumericos), favor de revisar.", vbExclamation, nombreModulo)
+                        MsgBox("El RFC para personas morales no tiene la estructura correcta en las 3 últimos alfanuméricos(rfc=3 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanuméricos), favor de revisar.", vbExclamation, nombreModulo)
                         Return False
                     End If
 
