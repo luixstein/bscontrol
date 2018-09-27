@@ -1107,7 +1107,7 @@ Buscar:
                         .oComprasDetalle.ID_ADICIONAL = CInt(valorNumerico(Me.Grid.Cell(i, Me.iGyIDAdicional).Text))
 
                         If Me.dtSeries.Rows.Count > 0 Then
-                            For Each dRow In Me.dtSeries.Select("POSICION=" & i.ToString)
+                            For Each dRow In Me.dtSeries.Select("POSICION='" & i.ToString & "'")
                                 sListaSeries = sListaSeries & dRow("POSICION").ToString & "," & dRow("CODIGO_ARTICULO").ToString & "," & dRow("NUMERO_SERIE").ToString & "|"
                             Next
                             If txtLEN(sListaSeries) = True Then
