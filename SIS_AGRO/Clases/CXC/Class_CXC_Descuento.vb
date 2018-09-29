@@ -65,6 +65,9 @@ Public Class Class_CXC_Descuento
     Private _CODIGO_USO_CFDI As String
     Private _CODIGO_MONEDA_SAT As String
     Private _CODIGO_TIPO_RELACION_CFDI As String
+
+    Private _RETENCION_IVA As Double
+    Private _RETENCION_IVA_PORCENTAJE As Double
 #End Region
 
 #Region "Campos de control"
@@ -485,6 +488,24 @@ Public Class Class_CXC_Descuento
             Me._CODIGO_TIPO_RELACION_CFDI = Value
         End Set
     End Property
+
+    Public Property RETENCION_IVA() As Double
+        Get
+            Return Me._RETENCION_IVA
+        End Get
+        Set(ByVal Value As Double)
+            Me._RETENCION_IVA = Value
+        End Set
+    End Property
+
+    Public Property RETENCION_IVA_PORCENTAJE() As Double
+        Get
+            Return Me._RETENCION_IVA_PORCENTAJE
+        End Get
+        Set(ByVal Value As Double)
+            Me._RETENCION_IVA_PORCENTAJE = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedad Nombre de Clase"
@@ -768,6 +789,9 @@ Public Class Class_CXC_Descuento
                     Me._CODIGO_USO_CFDI = "" & dReader("CODIGO_USO_CFDI").ToString
                     Me._CODIGO_MONEDA_SAT = "" & dReader("CODIGO_MONEDA_SAT").ToString
                     Me._CODIGO_TIPO_RELACION_CFDI = "" & dReader("CODIGO_TIPO_RELACION_CFDI").ToString
+
+                    Me._RETENCION_IVA = CType(dReader("RETENCION_IVA"), Double)
+                    Me._RETENCION_IVA_PORCENTAJE = CType(dReader("RETENCION_IVA_PORCENTAJE"), Double)
 
                     bResultado = True
 
