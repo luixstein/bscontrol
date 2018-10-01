@@ -1062,12 +1062,14 @@ Module FacturacionElectronica33
                 If oDescuento.CODIGO_MONEDA_SAT = "USD" Then
                     drBASE_IVA = RedondearD(drBASE_IVA / dTIPO_DE_CAMBIO, 2)
                     drIMPUESTO_IMPORTE = RedondearD(drIMPUESTO_IMPORTE / dTIPO_DE_CAMBIO, 2)
+                    If drRetencionIVA > 0 Then
+                        drRetencionIVA = RedondearD(drRetencionIVA / dTIPO_DE_CAMBIO, 2)
+                    End If
                 End If
 
                 ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Tasa", Format(drIMPUESTO_PORCENTAJE, "0.#00000"), Format(drIMPUESTO_IMPORTE, "##0.00"))
 
                 If drRetencionIVA > 0 Then
-                    drRetencionIVA = RedondearD(drRetencionIVA / dTIPO_DE_CAMBIO, 2)
                     ConceptoImpuestoRetenciones.Add(Format(drBASE_IVA, "##0.000000"), "002", "Tasa", Format(drRetencionPorcentaje, "0.#00000"), Format(drRetencionIVA, "##0.00"))
                 End If
 
