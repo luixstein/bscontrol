@@ -1034,7 +1034,7 @@ Module FacturacionElectronica33
                 drBASE_IVA = RedondearD(drIMPUESTO_IMPORTE / drIMPUESTO_PORCENTAJE, 2) 'Se obtiene hacia atras para no tener complicaciones de calculos
             End If
             drRetencionIVA = CDec(oDescuento.RETENCION_IVA)
-            drRetencionPorcentaje = CDec(oDescuento.RETENCION_IVA_PORCENTAJE)
+            drRetencionPorcentaje = CDec(oDescuento.RETENCION_IVA_PORCENTAJE) / 100
 
             ConceptoImpuestoTraslados = New iConceptoImpuestoTraslados33
             ConceptoImpuestoRetenciones = New iConceptoImpuestoRetenciones33
