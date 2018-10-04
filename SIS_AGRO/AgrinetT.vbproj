@@ -265,6 +265,8 @@
     <Compile Include="Clases\Catalogos\SAT\Class_CFD_CatUsosCFDI.vb" />
     <Compile Include="Clases\CentrosCostos\Class_Centros_Costos_Detalle_Ventas.vb" />
     <Compile Include="Clases\CentrosCostos\Class_Centros_Costos_Global.vb" />
+    <Compile Include="Clases\Contabilidad\Class_Contabilidad_Electronica.vb" />
+    <Compile Include="Clases\Contabilidad\Class_Contabilidad_Electronica_CatalogoTiposArchivos.vb" />
     <Compile Include="Clases\Contabilidad\Class_Contabilidad_IVA_Acreditable_DIOT.vb" />
     <Compile Include="Clases\Contabilidad\Class_ProyectoSiembra.vb" />
     <Compile Include="Clases\Compras\Class_Compras_Detalle.vb" />
@@ -652,6 +654,12 @@
       <DependentUpon>Frm_Proyecto_presupuesto.vb</DependentUpon>
     </Compile>
     <Compile Include="Formas\Contabilidad\Consultas\Frm_Proyecto_presupuesto.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\ContabilidadElectronicaGeneraXMLs.Designer.vb">
+      <DependentUpon>ContabilidadElectronicaGeneraXMLs.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Contabilidad\ContabilidadElectronicaGeneraXMLs.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Contabilidad\Frm_AbrirCerrar_Ejercicio.Designer.vb">
@@ -1866,6 +1874,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Contabilidad\Consultas\Frm_Proyecto_presupuesto.resx">
       <DependentUpon>Frm_Proyecto_presupuesto.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Contabilidad\ContabilidadElectronicaGeneraXMLs.resx">
+      <DependentUpon>ContabilidadElectronicaGeneraXMLs.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Contabilidad\Contabilidad_Periodos.resx">
       <DependentUpon>Contabilidad_Periodos.vb</DependentUpon>

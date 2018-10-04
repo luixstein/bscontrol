@@ -26,6 +26,12 @@ Module FacturacionElectronica
         DEVOLUCION_CXC
     End Enum
 
+    Public Enum TipoArchivoContabilidadElectronica
+        CATALOGO_CUENTAS
+        BALANZA_COMPROBACION
+        POLIZAS
+    End Enum
+
     Public Structure Certificado
         Dim noCertificado As String
         Dim Certificado As String
@@ -1594,4 +1600,164 @@ Module FacturacionElectronica
         Return sMensaje
     End Function
 
+    Public Function GestionaExistanArchivosContabilidadElectronica() As Boolean
+        Dim bResultado As Boolean = False
+        Dim sNombreServidor As String
+        Dim sCarpetaTrabajoServer, sCarpetaTrabajoLocal As String
+        Dim sCadenaOriginalCatalogoCuentasServer, sCadenaOriginalBalanzaComprobacionServer, sCadenaOriginalPolizasServer As String
+
+        Const sProcedure As String = "GestionaExistanArchivosContabilidadElectronica"
+
+        Try
+            sNombreServidor = Split(My.Settings.Servidor, "\")(0)
+            sCarpetaTrabajoServer = "\\" & sNombreServidor & "\" & Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & "\" & "CONTABILIDAD_ELECTRONICA"
+            sCarpetaTrabajoLocal = My.Settings.Ruta & "\CONTABILIDAD_ELECTRONICA"
+
+            sContabilidadElectronicaCarpeta = sCarpetaTrabajoLocal & "\" & My.Settings.BaseDatos
+
+            'Crea las carpetas relacionadas a la contabilidad electrónica en caso de que el usuario no la tenga en su equipo.
+            If Len(Dir(sCarpetaTrabajoLocal, FileAttribute.Directory)) = 0 Then
+                MkDir(sCarpetaTrabajoLocal)
+            End If
+            If Len(Dir(sContabilidadElectronicaCarpeta, FileAttribute.Directory)) = 0 Then
+                MkDir(sContabilidadElectronicaCarpeta)
+            End If
+
+            sContabilidadElectronicaArchivoCadenaOriginalLocalCatalogoCuentas = sCarpetaTrabajoLocal & "\" & Empresa_Sistema.CONTAELECTRONICA_CADENA_ORIGINAL_CATALOGO_CUENTAS
+            sContabilidadElectronicaArchivoCadenaOriginalLocalBalanzaComprobacion = sCarpetaTrabajoLocal & "\" & Empresa_Sistema.CONTAELECTRONICA_CADENA_ORIGINAL_BALANZA_COMPROBACION
+            sContabilidadElectronicaArchivoCadenaOriginalLocalPolizas = sCarpetaTrabajoLocal & "\" & Empresa_Sistema.CONTAELECTRONICA_CADENA_ORIGINAL_POLIZAS
+
+            sCadenaOriginalCatalogoCuentasServer = sCarpetaTrabajoServer & "\" & Empresa_Sistema.CONTAELECTRONICA_CADENA_ORIGINAL_CATALOGO_CUENTAS
+            sCadenaOriginalBalanzaComprobacionServer = sCarpetaTrabajoServer & "\" & Empresa_Sistema.CONTAELECTRONICA_CADENA_ORIGINAL_BALANZA_COMPROBACION
+            sCadenaOriginalPolizasServer = sCarpetaTrabajoServer & "\" & Empresa_Sistema.CONTAELECTRONICA_CADENA_ORIGINAL_POLIZAS
+
+            If Len(Dir(sContabilidadElectronicaArchivoCadenaOriginalLocalCatalogoCuentas)) = 0 Then
+                If Len(Dir(sCadenaOriginalCatalogoCuentasServer)) = 0 OrElse Copiar_Archivo(sCadenaOriginalCatalogoCuentasServer, sContabilidadElectronicaArchivoCadenaOriginalLocalCatalogoCuentas) = False Then
+                    MsgBox("No existe en el servidor el archivo de la cadena original para el catálogo de cuentas, no podrá generar contabilidad eletrónica en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+            End If
+
+            If Len(Dir(sContabilidadElectronicaArchivoCadenaOriginalLocalBalanzaComprobacion)) = 0 Then
+                If Len(Dir(sCadenaOriginalBalanzaComprobacionServer)) = 0 OrElse Copiar_Archivo(sCadenaOriginalBalanzaComprobacionServer, sContabilidadElectronicaArchivoCadenaOriginalLocalBalanzaComprobacion) = False Then
+                    MsgBox("No existe en el servidor el archivo de la cadena original para la balanza de comprobación, no podrá generar contabilidad eletrónica en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+            End If
+
+            If Len(Dir(sContabilidadElectronicaArchivoCadenaOriginalLocalPolizas)) = 0 Then
+                If Len(Dir(sCadenaOriginalPolizasServer)) = 0 OrElse Copiar_Archivo(sCadenaOriginalPolizasServer, sContabilidadElectronicaArchivoCadenaOriginalLocalPolizas) = False Then
+                    MsgBox("No existe en el servidor el archivo de la cadena original para las pólizas, no podrá generar contabilidad eletrónica en este equipo. Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+            End If
+
+            bResultado = True
+        Catch ex As Exception
+            HandleError(nombreModulo, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Public Function GenerarSelloContabilidadElectronicaConChilkat(ByRef xmlDoc As MSXML2.DOMDocument60, tipoContabilidad As TipoArchivoContabilidadElectronica) As FacturaElectronica
+        Dim f As FacturaElectronica
+        Const sProcedure As String = "GenerarSelloContabilidadElectronicaConChilkat"
+
+        f.NumeroCertificadoDigital = ""
+        f.IdCfdCertificado = Nothing
+        f.CadenaOriginal = ""
+        f.SelloDigital = ""
+
+        Dim pkey As New CHILKATCERTIFICATELib.privateKey
+        Dim success As Integer
+        Dim pkeyXml As String
+        Dim rsa As New CHILKATRSALib.ChilkatRsa
+        Dim base64Sig As String
+        Try
+            pkey.LoadPkcs8EncryptedFile(sFelectronicaArchivoKEYLocal, Empresa_Sistema.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA)
+
+            pkeyXml = pkey.GetXml()
+
+            success = rsa.UnlockComponent(CK_KEY)
+            If (success <> 1) Then
+                Debug.Print(rsa.LastErrorText & vbCrLf)
+                Return f
+                Exit Function
+            End If
+
+            success = rsa.ImportPrivateKey(pkeyXml)
+            If (success <> 1) Then
+                Debug.Print(rsa.LastErrorText & vbCrLf)
+                Return f
+                Exit Function
+            End If
+
+            rsa.Charset = "utf-8"
+            rsa.EncodingMode = "base64"
+            rsa.LittleEndian = 0
+
+            'MsgBox("moverle a este para usar una o x cadena original")
+            f.CadenaOriginal = GetCadenaOriginalContabilidadElectronica(xmlDoc, tipoContabilidad)
+            If txtLEN(f.CadenaOriginal) = False Or Len(f.CadenaOriginal) <= 3 Then
+                MsgBox("Error al intentar generar la cadena original(quedó vacía).", MsgBoxStyle.Exclamation, sProcedure)
+                Return f
+                Exit Function
+            End If
+
+            base64Sig = rsa.SignStringENC(f.CadenaOriginal, "sha1")
+
+            f.SelloDigital = base64Sig
+        Catch ex As Exception
+            HandleError(nombreModulo, sProcedure, ex)
+        End Try
+        Return f
+    End Function
+
+    Public Function GetCadenaOriginalContabilidadElectronica(ByRef xmlDoc As MSXML2.DOMDocument60, tipoContabilidad As TipoArchivoContabilidadElectronica) As String
+        Dim sCadenaOriginal As String = ""
+        Const sProcedure As String = "GetCadenaOriginalContabilidadElectronica"
+
+        Dim xslt As New MSXML2.XSLTemplate60
+        Dim xslDoc As New MSXML2.FreeThreadedDOMDocument60
+        Dim xslProc As MSXML2.IXSLProcessor
+
+        Dim fileXSLT As String = ""
+        Select Case tipoContabilidad
+            Case TipoArchivoContabilidadElectronica.CATALOGO_CUENTAS
+                fileXSLT = sContabilidadElectronicaArchivoCadenaOriginalLocalCatalogoCuentas
+            Case TipoArchivoContabilidadElectronica.BALANZA_COMPROBACION
+                fileXSLT = sContabilidadElectronicaArchivoCadenaOriginalLocalBalanzaComprobacion
+            Case TipoArchivoContabilidadElectronica.POLIZAS
+                fileXSLT = sContabilidadElectronicaArchivoCadenaOriginalLocalPolizas
+        End Select
+
+        Try
+            xslDoc.async = False
+            xslDoc.load(fileXSLT)
+
+            Dim myErr As Object
+            If (xslDoc.parseError.errorCode <> 0) Then
+                myErr = xslDoc.parseError
+                MsgBox("Error en la hoja de estilo: " & myErr.reason, MsgBoxStyle.Critical, sProcedure)
+            Else
+                xslDoc.setProperty("ResolveExternals", True) ' Esta línea es importante ya que sin ella el proceso no se ejecutará de manera correcta
+                xslt.stylesheet = xslDoc
+
+                If (xmlDoc.parseError.errorCode <> 0) Then
+                    myErr = xmlDoc.parseError
+                    MsgBox("Error en el documento XML: " & myErr.reason, MsgBoxStyle.Critical, sProcedure)
+                Else
+                    xslProc = xslt.createProcessor()
+                    xslProc.input = xmlDoc
+                    xslProc.transform()
+                    sCadenaOriginal = xslProc.output
+                End If
+            End If
+        Catch ex As Exception
+            HandleError(nombreModulo, sProcedure, ex)
+        End Try
+
+        Return sCadenaOriginal
+    End Function
 End Module

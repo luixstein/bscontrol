@@ -1,9 +1,13 @@
 ﻿Option Strict On
-Imports System.Data
 Imports System.Data.SqlClient
+Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Class_CatCuentas
-    Inherits Class_Catalogos
+
+    Public Enum FiltroCuenta
+        CODIGO_CUENTA
+        NOMBRE_CUENTA
+    End Enum
 
 #Region "Campos"
 
@@ -20,6 +24,10 @@ Public Class Class_CatCuentas
     Private _CUENTA_CONTABLE As String
     Private _PROTEGIDO As String
     Private _CODIGO_PLAZA As Integer
+    Private _CODIGO_AGRUPADOR As String
+    Private _SUBCUENTADE As String
+    Private _NIVEL As Integer
+    Private _ESTATUS As String
 #End Region
 
 #Region "Campos de sistema"
@@ -32,6 +40,8 @@ Public Class Class_CatCuentas
 
 #Region "Campos ligados a la tabla"
     Public _Existe As Boolean 'lectura
+    Private _NOMBRE_CUENTA_SAT As String
+    Private _CLONAR_CODIGO_AGRUPADOR_MISMO_NIVEL As String = "0"
     Private _NOMBRE_CUENTA_NIVELES_COMPLETOS As String
 #End Region
 
@@ -145,9 +155,50 @@ Public Class Class_CatCuentas
         End Set
     End Property
 
+    Public Property CODIGO_AGRUPADOR() As String
+        Get
+            Return Me._CODIGO_AGRUPADOR
+        End Get
+        Set(ByVal value As String)
+            Me._CODIGO_AGRUPADOR = value
+        End Set
+    End Property
+
+    Public ReadOnly Property SUBCUENTADE() As String
+        Get
+            Return Me._SUBCUENTADE
+        End Get
+    End Property
+
+    Public ReadOnly Property NIVEL() As Integer
+        Get
+            Return Me._NIVEL
+        End Get
+    End Property
+
+    Public Property ESTATUS() As String
+        Get
+            Return Me._ESTATUS
+        End Get
+        Set(ByVal Value As String)
+            Me._ESTATUS = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
+    Public ReadOnly Property NOMBRE_CUENTA_SAT() As String
+        Get
+            Return Me._NOMBRE_CUENTA_SAT
+        End Get
+    End Property
+
+    Public WriteOnly Property CLONAR_CODIGO_AGRUPADOR_MISMO_NIVEL As String
+        Set(value As String)
+            Me._CLONAR_CODIGO_AGRUPADOR_MISMO_NIVEL = value
+        End Set
+    End Property
+
     Public ReadOnly Property NOMBRE_CUENTA_NIVELES_COMPLETOS() As String
         Get
             Return Me._NOMBRE_CUENTA_NIVELES_COMPLETOS
@@ -162,13 +213,13 @@ Public Class Class_CatCuentas
 #End Region
 
 #Region "Propiedades de campos de sistema"
-    Public Overrides ReadOnly Property Nombre_Catalogo() As String
+    Public ReadOnly Property Nombre_Catalogo() As String
         Get
             Return Me._Nombre_Catalogo
         End Get
     End Property
 
-    Public Overrides Property Nombre_Reporte() As String
+    Public Property Nombre_Reporte() As String
         Get
             Return Me._Nombre_Reporte
         End Get
@@ -187,8 +238,10 @@ Public Class Class_CatCuentas
         Me._Nombre_Reporte = "RPT_CATALOGO_CUENTAS_CONTABLES"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "SELECT *,dbo.FN_CONTABILIDAD_NOMBRE_CUENTA_NIVELES_COMPLETOS(CUENTA_CONTABLE) NOMBRE_CUENTA_NIVELES_COMPLETOS FROM CON_CAT_CUENTAS "
-        Me._QueryOrder = " ORDER BY NIVEL1,NIVEL2,NIVEL3,NIVEL4,NIVEL5"
+        Me._QuerySelect = "SELECT C.*,S.NOMBRE_CUENTA_SAT,dbo.FN_CONTABILIDAD_NOMBRE_CUENTA_NIVELES_COMPLETOS(CUENTA_CONTABLE) NOMBRE_CUENTA_NIVELES_COMPLETOS " &
+            "FROM CON_CAT_CUENTAS C " &
+            "LEFT JOIN CAT_CUENTAS_SAT S ON(C.CODIGO_AGRUPADOR=S.CODIGO_AGRUPADOR) "
+        Me._QueryOrder = " ORDER BY C.NIVEL1,C.NIVEL2,C.NIVEL3,C.NIVEL4,C.NIVEL5"
     End Sub
 
     Public Sub New(ByVal sCuenta As String)
@@ -210,7 +263,7 @@ Public Class Class_CatCuentas
 #End Region
 
 #Region "Métodos y procedimientos"
-    Public Overrides Function Actualizar() As Boolean
+    Public Function Grabar(ByVal sAccion As String) As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -229,14 +282,15 @@ Public Class Class_CatCuentas
             sqlParametro = .Parameters.Add("@TIPO_CONTABILIDAD", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._TIPO_CONTABILIDAD.ToUpper
             sqlParametro = .Parameters.Add("@PROTEGIDO", SqlDbType.Char, 1) : sqlParametro.Value = "0"
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me.CODIGO_PLAZA
-            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "ACTUALIZAR"
-
+            sqlParametro = .Parameters.Add("@CODIGO_AGRUPADOR", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_AGRUPADOR
+            sqlParametro = .Parameters.Add("@CLONAR_CODIGO_AGRUPADOR_MISMO_NIVEL", SqlDbType.Char, 1) : sqlParametro.Value = Me._CLONAR_CODIGO_AGRUPADOR_MISMO_NIVEL
+            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = sAccion 'INSERTAR,ACTUALIZAR
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
+                HandleError(Me._Nombre_Catalogo, "Grabar", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -250,7 +304,7 @@ Public Class Class_CatCuentas
     ''' <summary>
     ''' Carga al objeto con todos los datos del registro.
     ''' </summary>
-    Public Overrides Function Consultar() As Boolean
+    Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand(Me._QuerySelect & " WHERE CUENTA_CONTABLE='" & Me._CUENTA_CONTABLE & "' ", Me._Conexion)
         Dim dReader As SqlDataReader
@@ -274,8 +328,12 @@ Public Class Class_CatCuentas
                     Me._CUENTA_CONTABLE = Trim("" & dReader("CUENTA_CONTABLE").ToString)
                     Me._PROTEGIDO = Trim("" & dReader("PROTEGIDO").ToString)
                     Me._CODIGO_PLAZA = CInt(dReader("CODIGO_PLAZA").ToString)
+                    Me._CODIGO_AGRUPADOR = Trim("" & dReader("CODIGO_AGRUPADOR").ToString)
+                    Me._NOMBRE_CUENTA_SAT = Trim("" & dReader("NOMBRE_CUENTA_SAT").ToString)
+                    Me._SUBCUENTADE = Trim("" & dReader("SUBCUENTADE").ToString)
+                    Me._NIVEL = CInt(dReader("NIVEL").ToString)
                     Me._NOMBRE_CUENTA_NIVELES_COMPLETOS = Trim("" & dReader("NOMBRE_CUENTA_NIVELES_COMPLETOS").ToString)
-                    Me.Estatus = Trim("" & dReader("ESTATUS").ToString)
+                    Me._ESTATUS = "" & dReader("ESTATUS").ToString
 
                     bResultado = True
                 End If
@@ -285,42 +343,6 @@ Public Class Class_CatCuentas
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
-            End Try
-        End With
-
-        Return bResultado
-    End Function
-
-    Public Overrides Function Insertar() As Boolean
-        Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand
-        Dim sqlParametro As SqlParameter
-        With cmd
-            .Connection = Me._Conexion
-            .CommandTimeout = 0
-            .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_CAT_CUENTAS_GRABA"
-
-            sqlParametro = .Parameters.Add("@NIVEL1", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._NIVEL1
-            sqlParametro = .Parameters.Add("@NIVEL2", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._NIVEL2
-            sqlParametro = .Parameters.Add("@NIVEL3", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._NIVEL3
-            sqlParametro = .Parameters.Add("@NIVEL4", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._NIVEL4
-            sqlParametro = .Parameters.Add("@NIVEL5", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._NIVEL5
-            sqlParametro = .Parameters.Add("@NOMBRE_CUENTA", SqlDbType.NVarChar, 120) : sqlParametro.Value = Me._NOMBRE_CUENTA.ToUpper
-            sqlParametro = .Parameters.Add("@TIPO_CONTABILIDAD", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._TIPO_CONTABILIDAD.ToUpper
-            sqlParametro = .Parameters.Add("@PROTEGIDO", SqlDbType.Char, 1) : sqlParametro.Value = "0"
-            sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me.CODIGO_PLAZA
-            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "INSERTAR"
-            Try
-                Me._Conexion.Open()
-                .ExecuteNonQuery()
-                bResultado = True
-            Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Insertar", ex)
-            Finally
-                Me._Conexion.Close()
-                cmd.Dispose()
-                sqlParametro = Nothing
             End Try
         End With
 
@@ -356,13 +378,13 @@ Public Class Class_CatCuentas
     ''' <summary>
     ''' Devuelve un datatable con todos los registros de la tabla
     ''' </summary>
-    Public Overrides Function ObtenerElementos() As System.Data.DataTable
+    Public Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
 
         'Dim DSCAT As New SqlDataAdapter("SELECT CUENTA_CONTABLE,(LEFT(CAST(CUENTA_CONTABLE AS NVARCHAR(20)) + '                   ',20) + ' ' + NOMBRE_CUENTA) AS NOMBRE_CUENTA FROM CON_CAT_CUENTAS ORDER BY CUENTA_CONTABLE", Me._Conexion)
-        Dim dA As New SqlDataAdapter("SELECT C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA " & _
-                                     "FROM CON_CAT_CUENTAS C INNER JOIN SIS_PLAZAS P ON(C.CODIGO_PLAZA=P.CODIGO_PLAZA) " & _
-                                     "" & _
+        Dim dA As New SqlDataAdapter("SELECT C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA " &
+                                     "FROM CON_CAT_CUENTAS C INNER JOIN SIS_PLAZAS P ON(C.CODIGO_PLAZA=P.CODIGO_PLAZA) " &
+                                     "" &
                                      "ORDER BY C.CUENTA_CONTABLE", Me._Conexion)
         Try
             dA.Fill(dTable)
@@ -374,12 +396,36 @@ Public Class Class_CatCuentas
         Return dTable
     End Function
 
-    Public Function ObtenerElementosN(Optional ByVal sPlaza As String = "") As System.Data.DataTable
+    Public Function ObtenerElementosN(ByVal TipoBusqueda As FiltroCuenta, ByVal sFiltro As String, ByVal sCodigoAgrupador As String, Optional ByVal sPlaza As String = "") As System.Data.DataTable
         Dim dTable As New DataTable
-        'Dim DSCAT As New SqlDataAdapter("SELECT CUENTA_CONTABLE,(LEFT(CAST(CUENTA_CONTABLE AS NVARCHAR(20)) + '                   ',20) + ' ' + NOMBRE_CUENTA) AS NOMBRE_CUENTA FROM CON_CAT_CUENTAS ORDER BY CUENTA_CONTABLE", Me._Conexion)
-        Dim dA As New SqlDataAdapter("SELECT C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA " & _
-                                     "FROM CON_CAT_CUENTAS C INNER JOIN SIS_PLAZAS P ON(C.CODIGO_PLAZA=P.CODIGO_PLAZA) " & _
-                                     IIf(txtLEN(sPlaza) = True, " AND C.CODIGO_PLAZA=" & sReplace(sPlaza), " ").ToString & _
+        Dim sWhere As String = ""
+
+        If txtLEN(sFiltro) = True Then
+            Select Case TipoBusqueda
+                Case FiltroCuenta.CODIGO_CUENTA
+                    sWhere = " AND C.CUENTA_CONTABLE LIKE '" & sReplace(sFiltro) & "%' "
+                Case FiltroCuenta.NOMBRE_CUENTA
+                    sWhere = " AND C.NOMBRE_CUENTA LIKE '" & sReplace(sFiltro) & "%' "
+            End Select
+        End If
+
+        If txtLEN(sCodigoAgrupador) = True And sCodigoAgrupador <> "TODAS" Then
+            Select Case sCodigoAgrupador
+                Case "SIN CODIGO AGRUPADOR"
+                    sWhere = sWhere & " AND C.CODIGO_AGRUPADOR IS NULL AND NIVEL IN(1,2) "
+                Case "CON CODIGO AGRUPADOR"
+                    sWhere = sWhere & " AND C.CODIGO_AGRUPADOR IS NOT NULL AND NIVEL IN(1,2) "
+            End Select
+        End If
+
+        If txtLEN(sPlaza) = True Then
+            sWhere = sWhere & " AND C.CODIGO_PLAZA=" & sReplace(sPlaza) & " "
+        End If
+
+        Dim dA As New SqlDataAdapter("SELECT C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA,C.CODIGO_AGRUPADOR,S.NOMBRE_CUENTA_SAT " &
+                                     "FROM CON_CAT_CUENTAS C INNER JOIN SIS_PLAZAS P ON(C.CODIGO_PLAZA=P.CODIGO_PLAZA) " &
+                                     "LEFT JOIN CAT_CUENTAS_SAT S ON(C.CODIGO_AGRUPADOR=S.CODIGO_AGRUPADOR)" &
+                                     "WHERE 1=1 " & sWhere &
                                      "ORDER BY C.CUENTA_CONTABLE", Me._Conexion)
         Try
             dA.Fill(dTable)
@@ -404,7 +450,7 @@ Public Class Class_CatCuentas
         Return dTable
     End Function
 
-    Public Overrides Function BusquedaVisual_PorCodigo() As String
+    Public Function BusquedaVisual_PorCodigo() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de Cuenta Contable por Código."
@@ -448,7 +494,7 @@ Public Class Class_CatCuentas
     ''' <summary>
     ''' Despliega la búsqueda visual por descripción.
     ''' </summary>
-    Public Overrides Function BusquedaVisual_PorDescripcion() As String
+    Public Function BusquedaVisual_PorDescripcion() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de Cuentas Contables por Descripción."
@@ -697,6 +743,26 @@ Public Class Class_CatCuentas
         Return dTable
     End Function
 
+    Public Sub Imprimir_Listado()   'Función para ver la búsqueda visual por descripción.
+        If Len(Nombre_Reporte) > 0 Then
+            Dim Rpt As New ReportDocument
+            Dim oReporte As Class_Reporte
+            Try
+                oReporte = New Class_Reporte(Nombre_Reporte, Rpt)
+                Dim frm As New Reporte(Rpt)
+                frm.CRViewer.ShowGroupTreeButton = False
+                frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
+                frm.Show()
+            Catch ex As Exception
+                HandleError(Me.Nombre_Catalogo, "Imprimir_Listado", ex)
+            Finally
+                oReporte = Nothing
+                'Rpt.Dispose()
+            End Try
+        Else
+            MsgBox("El nombre del reporte no ha sido especificado.", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
+        End If
+    End Sub
 #End Region
 
 End Class
