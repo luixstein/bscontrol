@@ -375,7 +375,7 @@ Partial Class Catalogo_Cuentas_Contables
         'txtCodigoAgrupador
         '
         Me.txtCodigoAgrupador.Location = New System.Drawing.Point(70, 306)
-        Me.txtCodigoAgrupador.MaxLength = 4
+        Me.txtCodigoAgrupador.MaxLength = 10
         Me.txtCodigoAgrupador.Name = "txtCodigoAgrupador"
         Me.txtCodigoAgrupador.Size = New System.Drawing.Size(57, 20)
         Me.txtCodigoAgrupador.TabIndex = 10

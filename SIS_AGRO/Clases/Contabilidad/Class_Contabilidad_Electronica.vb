@@ -219,16 +219,18 @@ Public Class Class_Contabilidad_Electronica
             Dim xmlDoc As New MSXML2.DOMDocument60
             xmlDoc.loadXML(oXML.InnerXml)
 
-            'Esto se ocupaba cuando era versión1.1
+            'Esto se ocupaba cuando era versión 1.1
             'Dim sTemp As String
             'sTemp = xmlDoc.xml
             'sTemp = Replace(xmlDoc.xml, """www.sat.gob.mx/", """http://www.sat.gob.mx/") 'Se tienen que poner los http porque si no marca error el sello, pero el xml no debe guardarse con los https
             'xmlDoc.loadXML(sTemp)
 
-            fElectronica = GenerarSelloContabilidadElectronicaConChilkat(xmlDoc, TipoArchivoContabilidadElectronica.CATALOGO_CUENTAS)
+            'fElectronica = GenerarSelloContabilidadElectronicaConChilkat(xmlDoc, TipoArchivoContabilidadElectronica.CATALOGO_CUENTAS)
+            fElectronica = GenerarSelloContabilidadElectronicaConPFX(sRutaXML, TipoArchivoContabilidadElectronica.CATALOGO_CUENTAS)
 
             If txtLEN(fElectronica.SelloDigital) = False Then
-                Exit Function
+                MsgBox("No se generó el sello digital.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
             End If
 
             oXML.Item("catalogocuentas:Catalogo").Attributes("Sello").Value = fElectronica.SelloDigital
@@ -348,9 +350,9 @@ Public Class Class_Contabilidad_Electronica
                     sValidaciones += x & vbCrLf
                 Next
 
-                If MsgBox("Hay validaciones que no se cumplieron y son : " & vbCrLf & _
-                      sValidaciones & vbCrLf & _
-                      "Esta seguro de querer generar el xml dela balanza de todas formas?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, sProcedure) = MsgBoxResult.No Then
+                If MsgBox("Hay validaciones que no se cumplieron y son : " & vbCrLf &
+                      sValidaciones & vbCrLf &
+                      "Esta seguro de querer generar el xml de la balanza de todas formas?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, sProcedure) = MsgBoxResult.No Then
 
                     Me.ReporteBalanzaComprobacion(dFecha, iCodigoTipoArchivo, iCodigoEjercicio, iPruebas)
 
@@ -393,14 +395,17 @@ Public Class Class_Contabilidad_Electronica
             Dim xmlDoc As New MSXML2.DOMDocument60
             xmlDoc.loadXML(oXML.InnerXml)
 
-            Dim sTemp As String
-            sTemp = xmlDoc.xml
-            sTemp = Replace(xmlDoc.xml, """www.sat.gob.mx/", """http://www.sat.gob.mx/") 'Se tienen que poner los http porque si no marca error el sello, pero el xml no debe guardarse con los https
-            xmlDoc.loadXML(sTemp)
+            'Esto se ocupaba cuando era versión 1.1
+            'Dim sTemp As String
+            'sTemp = xmlDoc.xml
+            'sTemp = Replace(xmlDoc.xml, """www.sat.gob.mx/", """http://www.sat.gob.mx/") 'Se tienen que poner los http porque si no marca error el sello, pero el xml no debe guardarse con los https
+            'xmlDoc.loadXML(sTemp)
 
-            fElectronica = GenerarSelloContabilidadElectronicaConChilkat(xmlDoc, TipoArchivoContabilidadElectronica.BALANZA_COMPROBACION)
+            'fElectronica = GenerarSelloContabilidadElectronicaConChilkat(xmlDoc, TipoArchivoContabilidadElectronica.BALANZA_COMPROBACION)
+            fElectronica = GenerarSelloContabilidadElectronicaConPFX(sRutaXML, TipoArchivoContabilidadElectronica.BALANZA_COMPROBACION)
 
             If txtLEN(fElectronica.SelloDigital) = False Then
+                MsgBox("No se generó el sello digital.", MsgBoxStyle.Exclamation, sProcedure)
                 Exit Function
             End If
 

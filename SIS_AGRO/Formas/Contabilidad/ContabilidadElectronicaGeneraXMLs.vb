@@ -31,6 +31,7 @@
         Me.CmbEjercicio.SelectedValue = Plaza.ID_CON_EJERCICIO
         Me.lblMsg.Visible = False : Me.lblMsg.Text = ""
         Me.dtFechaModificacionBalanza.Value = Date.Now
+        Me.dtFecha.Value = Date.Now
     End Sub
 
     Private Sub dtFecha_ValueChanged(sender As Object, e As EventArgs) Handles dtFecha.ValueChanged
