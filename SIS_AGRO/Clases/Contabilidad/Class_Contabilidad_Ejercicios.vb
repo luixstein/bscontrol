@@ -118,7 +118,7 @@ Public Class Class_Contabilidad_Ejercicios
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         Me._QuerySelect = "SELECT * FROM CON_EJERCICIOS "
         Me._QueryOrder = " ORDER BY ID_CON_EJERCICIO"
-    End Sub                                                         'Inicializa al objeto.
+    End Sub
 
     Public Sub New(ByVal iEjercicio As Integer)
         Me.New()
@@ -140,6 +140,7 @@ Public Class Class_Contabilidad_Ejercicios
 
 #Region "Métodos y procedimientos"
     Public Function Consultar() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand(Me._QuerySelect & " WHERE ID_CON_EJERCICIO='" & Me._ID_CON_EJERCICIO & "' ", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
@@ -161,7 +162,7 @@ Public Class Class_Contabilidad_Ejercicios
                         Me._CODIGO_USUARIO_CIERRE = CInt(dReader("CODIGO_USUARIO_CIERRE").ToString)
                         Me._FECHA_CIERRE = CDate(dReader("FECHA_CIERRE").ToString)
                     End If
-                    Consultar = True
+                    bResultado = True
                 End If
 
                 dReader.Close()
@@ -172,22 +173,37 @@ Public Class Class_Contabilidad_Ejercicios
                 cmd.Dispose()
             End Try
         End With
+        Return bResultado
     End Function
 
     Public Function ObtenerEjercicios() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dsCaDocumentos As New SqlDataAdapter("SELECT ID_CON_EJERCICIO,NOMBRE_EJERCICIO,TIPO_CONTABILIDAD FROM CON_EJERCICIOS ORDER BY TIPO_CONTABILIDAD DESC, NOMBRE_EJERCICIO", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT ID_CON_EJERCICIO,NOMBRE_EJERCICIO,TIPO_CONTABILIDAD FROM CON_EJERCICIOS ORDER BY TIPO_CONTABILIDAD DESC, NOMBRE_EJERCICIO", Me._Conexion)
         Try
-            dsCaDocumentos.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me.NombreClase, "ObtenerEjercicios", ex)
         Finally
-            dsCaDocumentos.Dispose()
+            da.Dispose()
         End Try
-        ObtenerEjercicios = dTable
+        Return dTable
+    End Function
+
+    Public Function ObtenerEjerciciosFiscales() As System.Data.DataTable
+        Dim dTable As New DataTable
+        Dim da As New SqlDataAdapter("SELECT ID_CON_EJERCICIO,NOMBRE_EJERCICIO,TIPO_CONTABILIDAD FROM CON_EJERCICIOS WHERE TIPO_CONTABILIDAD='FS' ORDER BY NOMBRE_EJERCICIO", Me._Conexion)
+        Try
+            da.Fill(dTable)
+        Catch ex As Exception
+            HandleError(Me.NombreClase, "ObtenerEjerciciosFiscales", ex)
+        Finally
+            da.Dispose()
+        End Try
+        Return dTable
     End Function
 
     Public Function Actualizar(ByVal iIdEjercicio As Integer, ByVal sCuentacontable As String, ByVal bCerrarEjercicio As Boolean) As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -204,7 +220,7 @@ Public Class Class_Contabilidad_Ejercicios
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                Actualizar = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me.NombreClase, "Actualizar", ex)
             Finally
@@ -213,6 +229,8 @@ Public Class Class_Contabilidad_Ejercicios
                 sqlParametro = Nothing
             End Try
         End With
+
+        Return bResultado
     End Function
 
     Public Function ValidarPolizas(ByVal iIdEjercicio As Integer, ByVal sValidar As String) As System.Data.DataTable
@@ -229,10 +247,9 @@ Public Class Class_Contabilidad_Ejercicios
 
         Catch ex As Exception
             HandleError(Me.NombreClase, "ValidarPolizas", ex)
-        Finally
-          
         End Try
-        ValidarPolizas = dt
+
+        Return dt
     End Function
 #End Region
 
