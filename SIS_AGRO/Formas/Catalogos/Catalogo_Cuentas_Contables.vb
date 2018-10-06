@@ -1,4 +1,7 @@
 ﻿Option Strict On
+Imports System.Data
+Imports System.Data.SqlClient
+Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Catalogo_Cuentas_Contables
 
@@ -82,8 +85,12 @@ Public Class Catalogo_Cuentas_Contables
 #End Region
 
 #Region "Constructor y destructor"
+    'Inicializa al objeto.
     Sub New()
+
+        ' This call is required by the Windows Form Designer.
         InitializeComponent()
+        ' Add any initialization after the InitializeComponent() call.
 
         Try
             Me.msgElemento = "Cuenta Contable"
@@ -96,22 +103,18 @@ Public Class Catalogo_Cuentas_Contables
             Me.DesplegaPlazas()
             Me.DesplegarElementos()
             Me.rdbNombreCuenta.Checked = True
-
-            Me.cboFiltroCodigoAgrupador.Items.Add("TODAS")
-            Me.cboFiltroCodigoAgrupador.Items.Add("SIN CODIGO AGRUPADOR")
-            Me.cboFiltroCodigoAgrupador.Items.Add("CON CODIGO AGRUPADOR")
-            Me.cboFiltroCodigoAgrupador.Text = "TODAS"
-
             Me.Run = True
         Catch ex As Exception
             HandleError(Me.Name, "New", ex)
         End Try
+
     End Sub
 
     Protected Overrides Sub Finalize()
         'Me._Conexion.Dispose()
         MyBase.Finalize()
     End Sub
+
 #End Region
 
 #Region "Opciones"
@@ -179,13 +182,15 @@ Public Class Catalogo_Cuentas_Contables
 
     Private Sub tsbImprimirListado_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbImprimirListado.Click
         Dim oElementos As New Class_CatCuentas
+
         oElementos.Imprimir_Listado()
+
         oElementos = Nothing
     End Sub
 #End Region
 
 #Region "Eventos de objetos"
-    Private Sub Catalogo_Cuentas_Contables_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Catalogo_Cuentas_Contables_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         'Me.DesplegaTiposContabilidad()
         'Me.DesplegaPlazas()
     End Sub
@@ -201,43 +206,6 @@ Public Class Catalogo_Cuentas_Contables
             Me.DesplegarElementos()
         End If
     End Sub
-
-    Private Sub txtCodigoAgrupador_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCodigoAgrupador.KeyDown
-        Dim sText As String
-        Try
-            Dim oCuentaSAT As Class_CatCuentasSAT
-            Select Case e.KeyCode
-                Case Keys.F6
-Buscar:
-                    oCuentaSAT = New Class_CatCuentasSAT
-                    sText = oCuentaSAT.BusquedaVisual_PorDescripcion
-                    If txtLEN(sText) = True Then Me.txtCodigoAgrupador.Text = sText
-                Case Keys.Return
-                    If txtLEN(Me.txtCodigoAgrupador.Text) = False Then
-                        Me.lblNombreCuentaSAT.Text = ""
-                        GoTo Buscar : Exit Sub
-                    End If
-
-                    oCuentaSAT = New Class_CatCuentasSAT(Me.txtCodigoAgrupador.Text)
-                    If oCuentaSAT.Existe = False Then
-                        Me.lblNombreCuentaSAT.Text = "" : GoTo Buscar : Exit Sub
-                    Else
-                        Me.lblNombreCuentaSAT.Text = oCuentaSAT.NOMBRE_CUENTA_SAT
-                    End If
-
-                    Me.chkClonarCodigoAgrupador.Focus()
-            End Select
-        Catch ex As Exception
-            HandleError(Me.Name, "txtCodigoAgrupador_KeyDown", ex)
-        End Try
-    End Sub
-
-    Private Sub cboFiltroCodigoAgrupador_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboFiltroCodigoAgrupador.SelectedIndexChanged
-        If Me.Run = True Then
-            Me.DesplegarElementos()
-        End If
-    End Sub
-
 #Region "Eventos de la lista de elementos"
 
     Private Sub Grid_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles Grid.CellClick
@@ -271,29 +239,59 @@ Buscar:
     'End Sub
 #End Region
 
-#Region "Eventos de TxtFiltro"
+#Region " Eventos de TxtFiltro"
     Private Sub txtFiltro_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFiltro.TextChanged
-        Me.DesplegarElementos()
+        Dim oElementos As New Class_CatCuentas
+
+        Me.Grid.DataSource = Nothing
+
+        With Me.Grid
+            If rdbNombreCuenta.Checked = True Then
+                .DataSource = oElementos.ObtenerElementosFiltroNombreCuenta(Me.txtFiltro.Text)
+            Else
+                .DataSource = oElementos.ObtenerElementosFiltroCuenta(Me.txtFiltro.Text)
+            End If
+            .Columns("CUENTA_CONTABLE").Width = 120
+            .Columns("NOMBRE_CUENTA").Width = 300
+        End With
     End Sub
 
     Private Sub txtFiltro_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFiltro.KeyPress
         txtNoBeep(e)
         txtNoComilla(e)
     End Sub
+
+    Private Sub txtFiltro_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtFiltro.KeyDown
+        Dim oElementosFiltro As New Class_CatCuentas
+        If e.KeyCode = Keys.Down Or e.KeyCode = Keys.Return Or e.KeyCode = Keys.Back Then
+            Me.Grid.DataSource = Nothing
+
+            With Me.Grid
+                If rdbNombreCuenta.Checked = True Then
+                    .DataSource = oElementosFiltro.ObtenerElementosFiltroNombreCuenta(Me.txtFiltro.Text)
+                Else
+                    .DataSource = oElementosFiltro.ObtenerElementosFiltroCuenta(Me.txtFiltro.Text)
+                End If
+                .Columns("CUENTA_CONTABLE").Width = 120
+                .Columns("NOMBRE_CUENTA").Width = 300
+            End With
+        End If
+
+    End Sub
 #End Region
 
 #Region "Eventos Genericos"
+
     Private Sub CboPlazas_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboPlaza.KeyDown
         If e.KeyCode = Keys.Return Then
             tsbGrabar.PerformClick()
         End If
     End Sub
-
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtNombreCuenta.KeyPress, CmbNaturaleza.KeyPress, txtCodigoAgrupador.KeyPress, chkClonarCodigoAgrupador.KeyPress
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CmbNaturaleza.KeyPress, TxtNombreCuenta.KeyPress
         txtNoBeep(e)
     End Sub
 
-    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombreCuenta.KeyDown, TxtNivel5.KeyDown, TxtNivel4.KeyDown, TxtNivel3.KeyDown, TxtNivel2.KeyDown, TxtNivel1.KeyDown, CmbNaturaleza.KeyDown
+    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombreCuenta.KeyDown, TxtNivel1.KeyDown, TxtNivel2.KeyDown, TxtNivel3.KeyDown, TxtNivel4.KeyDown, TxtNivel5.KeyDown, CmbNaturaleza.KeyDown
         If e.KeyCode = Keys.Return Then
             Select Case Me.Estado
                 Case enumEstados.EDICION
@@ -304,11 +302,11 @@ Buscar:
         End If
     End Sub
 
-    Private Sub Txt_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TxtNivel5.LostFocus, TxtNivel4.LostFocus, TxtNivel3.LostFocus, TxtNivel2.LostFocus, TxtNivel1.LostFocus
+    Private Sub Txt_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TxtNivel1.LostFocus, TxtNivel2.LostFocus, TxtNivel3.LostFocus, TxtNivel4.LostFocus, TxtNivel5.LostFocus
         'Me.LblCuenta.Text = Me.TxtMayor.Text & Me.TxtSubcuenta.Text & Me.TxtNivel3.Text
     End Sub
 
-    Private Sub Txt_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles TxtNivel4.LostFocus, TxtNivel5.LostFocus, TxtNivel3.Leave, TxtNivel2.Leave, TxtNivel1.Leave
+    Private Sub Txt_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles TxtNivel1.Leave, TxtNivel2.Leave, TxtNivel3.Leave, TxtNivel4.LostFocus, TxtNivel5.LostFocus
         'Me.LblCuenta.Text = Me.TxtMayor.Text & Me.TxtSubcuenta.Text & Me.TxtNivel3.Text
     End Sub
 
@@ -318,12 +316,12 @@ Buscar:
     '    txtNoBeep(e)
     'End Sub
 
-    Private Sub TxtNivel3_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TxtNivel3.TextChanged, TxtNivel2.TextChanged, TxtNivel1.TextChanged
+    Private Sub TxtNivel3_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TxtNivel1.TextChanged, TxtNivel3.TextChanged, TxtNivel2.TextChanged
         Me.LblCuenta.Text = Me.TxtNivel1.Text & Me.TxtNivel2.Text & Me.TxtNivel3.Text & Me.TxtNivel4.Text & Me.TxtNivel5.Text
         Application.DoEvents()
     End Sub
 
-    Private Sub txtSaltoAutomatico_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtNivel5.KeyPress, TxtNivel4.KeyPress, TxtNivel3.KeyPress, TxtNivel2.KeyPress, TxtNivel1.KeyPress
+    Private Sub txtSaltoAutomatico_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtNivel1.KeyPress, TxtNivel3.KeyPress, TxtNivel2.KeyPress, TxtNivel4.KeyPress, TxtNivel5.KeyPress
         Dim txt As TextBox = CType(sender, TextBox)
         Dim oCuenta As Class_CatCuentas
 
@@ -397,165 +395,134 @@ Buscar:
 #End Region
 
 #Region "Métodos y procedimientos"
+
     Private Sub Refrescar()
         Me.DesplegarElementos()
     End Sub
 
     Private Sub Cambia_Estado()
-        Try
-            'Dim iIndex As Integer
-            Select Case Me.Estado
-                Case enumEstados.NUEVO
-                    Me.gBoxInformacion.Enabled = True
-                    Me.gBoxBusquedaRapida.Enabled = False
-                    Me.tssLabelEstado.Text = "Agregando"
-                    Me.tsbNuevo.Enabled = False
-                    Me.tsbEditar.Enabled = False
-                    Me.tsbGrabar.Enabled = True
-                    Me.tsbEliminar.Enabled = False
-                    Me.tsbCancelar.Enabled = True
+        'Dim iIndex As Integer
+        Select Case Me.Estado
+            Case enumEstados.NUEVO
+                Me.gBoxInformacion.Enabled = True
+                Me.gBoxBusquedaRapida.Enabled = False
+                Me.tssLabelEstado.Text = "Agregando"
+                Me.tsbNuevo.Enabled = False
+                Me.tsbEditar.Enabled = False
+                Me.tsbGrabar.Enabled = True
+                Me.tsbEliminar.Enabled = False
+                Me.tsbCancelar.Enabled = True
 
-                    Me.TxtNivel1.Enabled = True
-                    Me.TxtNivel2.Enabled = True
-                    Me.TxtNivel3.Enabled = True
-                    Me.TxtNivel4.Enabled = True
-                    Me.TxtNivel5.Enabled = True
-                    Me.TxtNombreCuenta.Enabled = True
-                    Me.CmbMayor.Enabled = False
-                    Me.CmbNaturaleza.Enabled = False
+                Me.TxtNivel1.Enabled = True
+                Me.TxtNivel2.Enabled = True
+                Me.TxtNivel3.Enabled = True
+                Me.TxtNivel4.Enabled = True
+                Me.TxtNivel5.Enabled = True
+                Me.TxtNombreCuenta.Enabled = True
+                Me.CmbMayor.Enabled = False
+                Me.CmbNaturaleza.Enabled = False
 
-                    Me.InicializaElemento()
+                Me.InicializaElemento()
 
-                    Me.TxtNivel1.Focus()
+                Me.TxtNivel1.Focus()
 
-                Case enumEstados.EDICION
-                    Me.gBoxInformacion.Enabled = True
-                    Me.gBoxBusquedaRapida.Enabled = False
-                    Me.tssLabelEstado.Text = "Editando"
-                    Me.tsbNuevo.Enabled = False
-                    Me.tsbEditar.Enabled = False
-                    Me.tsbGrabar.Enabled = True
-                    Me.tsbEliminar.Enabled = True
-                    Me.tsbCancelar.Enabled = True
+            Case enumEstados.EDICION
+                Me.gBoxInformacion.Enabled = True
+                Me.gBoxBusquedaRapida.Enabled = False
+                Me.tssLabelEstado.Text = "Editando"
+                Me.tsbNuevo.Enabled = False
+                Me.tsbEditar.Enabled = False
+                Me.tsbGrabar.Enabled = True
+                Me.tsbEliminar.Enabled = True
+                Me.tsbCancelar.Enabled = True
 
-                    Me.TxtNivel1.Enabled = False
-                    Me.TxtNivel2.Enabled = False
-                    Me.TxtNivel3.Enabled = False
-                    Me.TxtNivel4.Enabled = False
-                    Me.TxtNivel5.Enabled = False
-                    Me.TxtNombreCuenta.Enabled = True
-                    Me.CmbMayor.Enabled = False
-                    Me.CmbNaturaleza.Enabled = False
+                Me.TxtNivel1.Enabled = False
+                Me.TxtNivel2.Enabled = False
+                Me.TxtNivel3.Enabled = False
+                Me.TxtNivel4.Enabled = False
+                Me.TxtNivel5.Enabled = False
+                Me.TxtNombreCuenta.Enabled = True
+                Me.CmbMayor.Enabled = False
+                Me.CmbNaturaleza.Enabled = False
 
-                Case enumEstados.CONSULTA
-                    Me.gBoxInformacion.Enabled = False
-                    Me.gBoxBusquedaRapida.Enabled = True
-                    Me.tssLabelEstado.Text = "Consultando"
-                    Me.tsbNuevo.Enabled = True
-                    Me.tsbEditar.Enabled = False
-                    Me.tsbGrabar.Enabled = False
-                    Me.tsbEliminar.Enabled = False
-                    Me.tsbCancelar.Enabled = False
+            Case enumEstados.CONSULTA
+                Me.gBoxInformacion.Enabled = False
+                Me.gBoxBusquedaRapida.Enabled = True
+                Me.tssLabelEstado.Text = "Consultando"
+                Me.tsbNuevo.Enabled = True
+                Me.tsbEditar.Enabled = False
+                Me.tsbGrabar.Enabled = False
+                Me.tsbEliminar.Enabled = False
+                Me.tsbCancelar.Enabled = False
 
-                    Me.txtFiltro.Focus()
+                Me.txtFiltro.Focus()
 
-            End Select
-            Application.DoEvents()
-
-        Catch ex As Exception
-            HandleError(Me.Name, "Cambia_Estado", ex)
-        End Try
+        End Select
+        Application.DoEvents()
     End Sub
 
     Private Sub InicializaElemento()
-        Try
-            Me.TxtNombreCuenta.Text = ""
-            Me.TxtNivel2.Text = "" : Me.lblNivel1NombreCuenta.Text = ""
-            Me.TxtNivel3.Text = "" : Me.lblNivel2NombreCuenta.Text = ""
-            Me.TxtNivel4.Text = "" : Me.lblNivel3NombreCuenta.Text = ""
-            Me.TxtNivel5.Text = "" : Me.lblNivel4NombreCuenta.Text = ""
-            Me.LblCuenta.Text = ""
-            Me.cmbTipoContabilidad.SelectedValue = "NM"
-            Me.txtCodigoAgrupador.Text = ""
-            Me.lblNombreCuentaSAT.Text = ""
-            'Me.rdbNombreCuenta.Checked = True
-            Me.chkClonarCodigoAgrupador.Checked = False
-            'Me.lblMsg.Visible = False
-            Me.cboFiltroCodigoAgrupador.Text = "TODAS"
-        Catch ex As Exception
-            HandleError(Me.Name, "InicializaElemento", ex)
-        End Try
+        Me.TxtNombreCuenta.Text = ""
+        Me.TxtNivel2.Text = "" : Me.lblNivel1NombreCuenta.Text = ""
+        Me.TxtNivel3.Text = "" : Me.lblNivel2NombreCuenta.Text = ""
+        Me.TxtNivel4.Text = "" : Me.lblNivel3NombreCuenta.Text = ""
+        Me.TxtNivel5.Text = "" : Me.lblNivel4NombreCuenta.Text = ""
+        Me.LblCuenta.Text = ""
+        Me.cmbTipoContabilidad.SelectedValue = "NM"
+        Me.rdbNombreCuenta.Checked = True
     End Sub
 
     Private Sub DesplegarElementos()
-        Try
-            Dim oElementos As New Class_CatCuentas
-            With Me.Grid
-                If Me.rdbCuenta.Checked = True Then
-                    .DataSource = oElementos.ObtenerElementosN(Class_CatCuentas.FiltroCuenta.CODIGO_CUENTA, Me.txtFiltro.Text, Me.cboFiltroCodigoAgrupador.Text, IIf(Me.cboPlazaParaFiltro.SelectedValue.ToString <> "0", Me.cboPlazaParaFiltro.SelectedValue.ToString, "").ToString)
-                Else
-                    .DataSource = oElementos.ObtenerElementosN(Class_CatCuentas.FiltroCuenta.NOMBRE_CUENTA, Me.txtFiltro.Text, Me.cboFiltroCodigoAgrupador.Text, IIf(Me.cboPlazaParaFiltro.SelectedValue.ToString <> "0", Me.cboPlazaParaFiltro.SelectedValue.ToString, "").ToString)
-                End If
-
-                .Columns("CUENTA_CONTABLE").Width = 120
-                .Columns("NOMBRE_CUENTA").Width = 300
-                .Columns("NOMBRE_PLAZA").Width = 100
-                .Columns("CODIGO_AGRUPADOR").Width = 50
-                .Columns("NOMBRE_CUENTA_SAT").Width = 200
-            End With
-        Catch ex As Exception
-            HandleError(Me.Name, "DesplegarElementos", ex)
-        End Try
+        Dim oElementos As New Class_CatCuentas
+        With Me.Grid
+            .DataSource = oElementos.ObtenerElementosN(IIf(Me.cboPlazaParaFiltro.SelectedValue.ToString <> "0", Me.cboPlazaParaFiltro.SelectedValue.ToString, "").ToString)
+            .Columns("CUENTA_CONTABLE").Width = 120
+            .Columns("NOMBRE_CUENTA").Width = 300
+            .Columns("NOMBRE_PLAZA").Width = 100
+        End With
     End Sub
 
     Private Sub LlenaElemento(ByVal iCodigo_Elemento As String)
-        Try
-            Dim oElemento As New Class_CatCuentas
-            oElemento.CUENTA_CONTABLE = iCodigo_Elemento
-            If oElemento.Consultar Then
-                With oElemento
+        Dim oElemento As New Class_CatCuentas
+        oElemento.CUENTA_CONTABLE = iCodigo_Elemento
+        If oElemento.Consultar Then
+            With oElemento
 
-                    Dim oSubCuentas As New Class_find("SELECT " &
-                "(SELECT NOMBRE_CUENTA FROM CON_CAT_CUENTAS WHERE CUENTA_CONTABLE=C.NIVEL1), " &
-                "CASE WHEN LEN(C.NIVEL2)>0 THEN (SELECT NOMBRE_CUENTA FROM CON_CAT_CUENTAS WHERE CUENTA_CONTABLE=C.NIVEL1+C.NIVEL2)						ELSE '' END, " &
-                "CASE WHEN LEN(C.NIVEL3)>0 THEN (SELECT NOMBRE_CUENTA FROM CON_CAT_CUENTAS WHERE CUENTA_CONTABLE=C.NIVEL1+C.NIVEL2+C.NIVEL3)			ELSE '' END, " &
-                "CASE WHEN LEN(C.NIVEL4)>0 THEN (SELECT NOMBRE_CUENTA FROM CON_CAT_CUENTAS WHERE CUENTA_CONTABLE=C.NIVEL1+C.NIVEL2+C.NIVEL3+C.NIVEL4)	ELSE '' END " &
+                Dim oSubCuentas As New Class_find("SELECT " & _
+                "(SELECT NOMBRE_CUENTA FROM CON_CAT_CUENTAS WHERE CUENTA_CONTABLE=C.NIVEL1), " & _
+                "CASE WHEN LEN(C.NIVEL2)>0 THEN (SELECT NOMBRE_CUENTA FROM CON_CAT_CUENTAS WHERE CUENTA_CONTABLE=C.NIVEL1+C.NIVEL2)						ELSE '' END, " & _
+                "CASE WHEN LEN(C.NIVEL3)>0 THEN (SELECT NOMBRE_CUENTA FROM CON_CAT_CUENTAS WHERE CUENTA_CONTABLE=C.NIVEL1+C.NIVEL2+C.NIVEL3)			ELSE '' END, " & _
+                "CASE WHEN LEN(C.NIVEL4)>0 THEN (SELECT NOMBRE_CUENTA FROM CON_CAT_CUENTAS WHERE CUENTA_CONTABLE=C.NIVEL1+C.NIVEL2+C.NIVEL3+C.NIVEL4)	ELSE '' END " & _
                 "FROM CON_CAT_CUENTAS C WHERE CUENTA_CONTABLE='" & .CUENTA_CONTABLE & "'")
 
-                    Me.TxtNivel1.Text = .NIVEL1
-                    Me.TxtNivel2.Text = .NIVEL2
-                    Me.TxtNivel3.Text = .NIVEL3
-                    Me.TxtNivel4.Text = .NIVEL4
-                    Me.TxtNivel5.Text = .NIVEL5
+                Me.TxtNivel1.Text = .NIVEL1
+                Me.TxtNivel2.Text = .NIVEL2
+                Me.TxtNivel3.Text = .NIVEL3
+                Me.TxtNivel4.Text = .NIVEL4
+                Me.TxtNivel5.Text = .NIVEL5
 
-                    Me.lblNivel1NombreCuenta.Text = oSubCuentas.Result1
-                    Me.lblNivel2NombreCuenta.Text = oSubCuentas.Result2
-                    Me.lblNivel3NombreCuenta.Text = oSubCuentas.Result3
-                    Me.lblNivel4NombreCuenta.Text = oSubCuentas.Result4
+                Me.lblNivel1NombreCuenta.Text = oSubCuentas.Result1
+                Me.lblNivel2NombreCuenta.Text = oSubCuentas.Result2
+                Me.lblNivel3NombreCuenta.Text = oSubCuentas.Result3
+                Me.lblNivel4NombreCuenta.Text = oSubCuentas.Result4
 
-                    Me.TxtNombreCuenta.Text = .NOMBRE_CUENTA
-                    Me.LblCuenta.Text = .CUENTA_CONTABLE
-                    If .NATURALEZA_CONTABLE = "D" Then
-                        Me.CmbNaturaleza.Text = "DEUDOR"
-                    Else
-                        Me.CmbNaturaleza.Text = "ACREEDOR"
-                    End If
-                    If .ESMAYOR = "1" Then
-                        Me.CmbMayor.Text = "MAYOR"
-                    Else
-                        Me.CmbMayor.Text = "ACEPTA CARGOS"
-                    End If
-                    Me.cmbTipoContabilidad.SelectedValue = .TIPO_CONTABILIDAD
-                    Me.cboPlaza.SelectedValue = .CODIGO_PLAZA
-
-                    Me.txtCodigoAgrupador.Text = .CODIGO_AGRUPADOR
-                    Me.lblNombreCuentaSAT.Text = .NOMBRE_CUENTA_SAT
-                End With
-            End If
-            oElemento = Nothing
-        Catch ex As Exception
-            HandleError(Me.Name, "LlenaElemento", ex)
-        End Try
+                Me.TxtNombreCuenta.Text = .NOMBRE_CUENTA
+                Me.LblCuenta.Text = .CUENTA_CONTABLE
+                If .NATURALEZA_CONTABLE = "D" Then
+                    Me.CmbNaturaleza.Text = "DEUDOR"
+                Else
+                    Me.CmbNaturaleza.Text = "ACREEDOR"
+                End If
+                If .ESMAYOR = "1" Then
+                    Me.CmbMayor.Text = "MAYOR"
+                Else
+                    Me.CmbMayor.Text = "ACEPTA CARGOS"
+                End If
+                Me.cmbTipoContabilidad.SelectedValue = .TIPO_CONTABILIDAD
+                Me.cboPlaza.SelectedValue = .CODIGO_PLAZA
+            End With
+        End If
+        oElemento = Nothing
     End Sub
 
     Private Function ValidaLongitudNiveles() As Boolean
@@ -563,61 +530,61 @@ Buscar:
             If Me.TxtNivel1.TextLength < EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL1 Then
                 MsgBox("El 1er nivel debe de ser de " & EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL1 & " caracteres.", vbExclamation, Me.Text)
                 Me.TxtNivel1.Focus()
-                Return False
+                Exit Function
             End If
         End If
         If Me.TxtNivel2.TextLength > 0 Then
             If Me.TxtNivel2.TextLength < EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL1 Then
                 MsgBox("El 2do nivel debe de ser de " & EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL2 & " caracteres.", vbExclamation, Me.Text)
                 Me.TxtNivel2.Focus()
-                Return False
+                Exit Function
             End If
         End If
         If Me.TxtNivel3.TextLength > 0 Then
             If Me.TxtNivel3.TextLength < EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL2 Then
                 MsgBox("El 3er nivel debe de ser de " & EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL3 & " caracteres.", vbExclamation, Me.Text)
                 Me.TxtNivel3.Focus()
-                Return False
+                Exit Function
             End If
         End If
         If Me.TxtNivel4.TextLength > 0 Then
             If Me.TxtNivel4.TextLength < EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL3 Then
                 MsgBox("El 4to nivel debe de ser de " & EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL4 & " caracteres.", vbExclamation, Me.Text)
                 Me.TxtNivel4.Focus()
-                Return False
+                Exit Function
             End If
         End If
         If Me.TxtNivel5.TextLength > 0 Then
             If Me.TxtNivel5.TextLength < EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL4 Then
                 MsgBox("El 5to nivel debe de ser de " & EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL5 & " caracteres.", vbExclamation, Me.Text)
                 Me.TxtNivel5.Focus()
-                Return False
+                Exit Function
             End If
         End If
         If (Me.TxtNivel2.TextLength > 0 Or Me.TxtNivel3.TextLength > 0) And Me.TxtNivel1.TextLength = 0 Then
             MsgBox("Formato inválido, no capturó la cuenta de mayor.", vbExclamation, Me.Text)
             Me.TxtNivel1.Focus()
-            Return False
+            Exit Function
         End If
         If Me.TxtNivel3.TextLength > 0 And Me.TxtNivel2.TextLength = 0 Then
             MsgBox("Formato inválido, no capturó la subcuenta.", vbExclamation, Me.Text)
             Me.TxtNivel2.Focus()
-            Return False
+            Exit Function
         End If
 
-        Return True
+        ValidaLongitudNiveles = True
     End Function
 
-    Private Function Grabar_Elemento() As Boolean
+    Private Sub Grabar_Elemento()
         Dim oElemento As New Class_CatCuentas
-        Dim bResultado As Boolean = False
+        Dim Grabado As Boolean = False
         'Dim iIndex As Integer = Me.lstbElementos.SelectedIndex
 
         Me.LblCuenta.Text = Me.TxtNivel1.Text & Me.TxtNivel2.Text & Me.TxtNivel3.Text & Me.TxtNivel4.Text & Me.TxtNivel5.Text
 
         If txtLEN(Me.TxtNombreCuenta.Text) = False Then
             MsgBox("Captúre el nombre de la cuenta contable.", MsgBoxStyle.Exclamation, Me.Name)
-            Return False
+            Exit Sub
         End If
 
         'If ValidaLongitudNiveles() = False Then
@@ -645,23 +612,21 @@ Buscar:
                         End If
                         .TIPO_CONTABILIDAD = Me.cmbTipoContabilidad.SelectedValue.ToString
                         .CODIGO_PLAZA = CInt(Me.cboPlaza.SelectedValue)
-                        .CODIGO_AGRUPADOR = Me.txtCodigoAgrupador.Text
-                        .CLONAR_CODIGO_AGRUPADOR_MISMO_NIVEL = Convert.ToInt32(Me.chkClonarCodigoAgrupador.Checked).ToString
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
-                                If .Grabar("INSERTAR") Then
-                                    bResultado = True
+                                If .Insertar() Then
+                                    Grabado = True
                                     Me.Estado = enumEstados.NUEVO
                                 End If
                             Case enumEstados.EDICION
-                                If .Grabar("ACTUALIZAR") Then
-                                    bResultado = True
+                                If .Actualizar() Then
+                                    Grabado = True
                                     Me.Estado = enumEstados.CONSULTA
                                 End If
                         End Select
 
-                        If bResultado = True Then
+                        If Grabado Then
                             MsgBox(Me.msgElemento & " grabada satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
                             Me.Refrescar()
                             Me.Cambia_Estado()
@@ -676,54 +641,45 @@ Buscar:
                     oElemento = Nothing
                 End Try
         End Select
-
-        Return bResultado
-    End Function
+    End Sub
 
     Private Sub DesplegaTiposContabilidad()
-        Try
-            Dim oElementos As New Class_CatTiposContabilidad
-            With Me.cmbTipoContabilidad
-                .DisplayMember = "NOMBRE_TIPO_CONTABILIDAD"
-                .ValueMember = "TIPO_CONTABILIDAD"
-                Dim dView As New Data.DataView(oElementos.ObtenerElementos)
-                dView.Sort = "NOMBRE_TIPO_CONTABILIDAD"
-                .DataSource = dView
-                If dView.Count > 0 Then
-                    '.SelectedIndex = 0
-                    .SelectedValue = "NM"
-                End If
-            End With
-        Catch ex As Exception
-            HandleError(Me.Name, "DesplegaTiposContabilidad", ex)
-        End Try
+        Dim oElementos As New Class_CatTiposContabilidad
+        With Me.cmbTipoContabilidad
+            .DisplayMember = "NOMBRE_TIPO_CONTABILIDAD"
+            .ValueMember = "TIPO_CONTABILIDAD"
+            Dim dView As New Data.DataView(oElementos.ObtenerElementos)
+            dView.Sort = "NOMBRE_TIPO_CONTABILIDAD"
+            .DataSource = dView
+            If dView.Count > 0 Then
+                '.SelectedIndex = 0
+                .SelectedValue = "NM"
+            End If
+        End With
     End Sub
 
     Private Sub DesplegaPlazas()
-        Try
-            Dim oElementos As New Class_SisPlazas
-            With Me.cboPlaza
-                .DisplayMember = "NOMBRE_PLAZA"
-                .ValueMember = "CODIGO_PLAZA"
+        Dim oElementos As New Class_SisPlazas
+        With Me.cboPlaza
+            .DisplayMember = "NOMBRE_PLAZA"
+            .ValueMember = "CODIGO_PLAZA"
 
-                Dim dView As New Data.DataView(oElementos.ObtenerElementosParaReporte)
-                dView.Sort = "NOMBRE_PLAZA"
-                .DataSource = dView
-            End With
-            With Me.cboPlazaParaFiltro
-                .DisplayMember = "NOMBRE_PLAZA"
-                .ValueMember = "CODIGO_PLAZA"
+            Dim dView As New Data.DataView(oElementos.ObtenerElementosParaReporte)
+            dView.Sort = "NOMBRE_PLAZA"
+            .DataSource = dView
+        End With
+        With Me.cboPlazaParaFiltro
+            .DisplayMember = "NOMBRE_PLAZA"
+            .ValueMember = "CODIGO_PLAZA"
 
-                Dim dView As New Data.DataView(oElementos.ObtenerElementosParaReporte)
-                dView.Sort = "NOMBRE_PLAZA"
-                .DataSource = dView
-                .SelectedValue = 0
-            End With
-        Catch ex As Exception
-            HandleError(Me.Name, "DesplegaPlazas", ex)
-        End Try
+            Dim dView As New Data.DataView(oElementos.ObtenerElementosParaReporte)
+            dView.Sort = "NOMBRE_PLAZA"
+            .DataSource = dView
+            .SelectedValue = 0
+        End With
     End Sub
 
 #End Region
+
 
 End Class

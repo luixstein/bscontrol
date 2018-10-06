@@ -16,12 +16,6 @@ Module Mod_Uti
     Public sFelectronicaCarpetaXmlsTimbrados As String = "", sFelectronicaCarpetaXmlsAcusesCancelacion As String = "", sFelectronicaArchivoPFX As String = ""
     Public sFelectronicaCbbImagen As String
     Public sFelectronicaDLLCFDILocal As String
-
-    Public sContabilidadElectronicaCarpeta As String
-    Public sContabilidadElectronicaArchivoCadenaOriginalLocalCatalogoCuentas As String
-    Public sContabilidadElectronicaArchivoCadenaOriginalLocalBalanzaComprobacion As String
-    Public sContabilidadElectronicaArchivoCadenaOriginalLocalPolizas As String
-
     Public bSistemaDirecto As Boolean
 
     Private Declare Function SQLDataSources Lib "ODBC32.DLL" (ByVal henv As Integer,

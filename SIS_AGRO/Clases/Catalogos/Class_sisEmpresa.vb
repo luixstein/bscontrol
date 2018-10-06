@@ -83,10 +83,6 @@ Public NotInheritable Class Class_sisEmpresa
     Private _CUENTA_CONTABLE_COSTO_VENTAS As String
     Private _CORREO_EMPRESA As String
     Private _VALIDAR_CANCELACION_VENTAS As Boolean
-    Private _CONTAELECTRONICA_ACTIVA As Boolean
-    Private _CONTAELECTRONICA_CADENA_ORIGINAL_CATALOGO_CUENTAS As String
-    Private _CONTAELECTRONICA_CADENA_ORIGINAL_BALANZA_COMPROBACION As String
-    Private _CONTAELECTRONICA_CADENA_ORIGINAL_POLIZAS As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -144,7 +140,6 @@ Public NotInheritable Class Class_sisEmpresa
             Return Me._CODIGO_EMPRESA
         End Get
     End Property
-
     Public Property NOMBRE_EMPRESA() As String
         Get
             Return _Nombre_Empresa
@@ -153,7 +148,6 @@ Public NotInheritable Class Class_sisEmpresa
             Me._Nombre_Empresa = value
         End Set
     End Property
-
     Public Property DOMICILIO() As String
         Get
             Return _Domicilio
@@ -162,7 +156,6 @@ Public NotInheritable Class Class_sisEmpresa
             Me._Domicilio = value
         End Set
     End Property
-
     Public Property CIUDAD() As String
         Get
             Return _Ciudad
@@ -171,7 +164,6 @@ Public NotInheritable Class Class_sisEmpresa
             Me._Ciudad = value
         End Set
     End Property
-
     Public Property RFC() As String
         Get
             Return _Rfc
@@ -180,7 +172,6 @@ Public NotInheritable Class Class_sisEmpresa
             Me._Rfc = value
         End Set
     End Property
-
     Public Property TELEFONO() As String
         Get
             Return _Telefono
@@ -189,55 +180,46 @@ Public NotInheritable Class Class_sisEmpresa
             Me._Telefono = value
         End Set
     End Property
-
     Public ReadOnly Property ESTADO() As String
         Get
             Return Me._Estado
         End Get
     End Property
-
     Public ReadOnly Property CALLE() As String
         Get
             Return Me._CALLE
         End Get
     End Property
-
     Public ReadOnly Property NUMERO_EXTERIOR() As String
         Get
             Return Me._NUMERO_EXTERIOR
         End Get
     End Property
-
     Public ReadOnly Property NUMERO_INTERIOR() As String
         Get
             Return Me._NUMERO_INTERIOR
         End Get
     End Property
-
     Public ReadOnly Property COLONIA() As String
         Get
             Return Me._COLONIA
         End Get
     End Property
-
     Public ReadOnly Property LOCALIDAD() As String
         Get
             Return Me._LOCALIDAD
         End Get
     End Property
-
     Public ReadOnly Property PAIS() As String
         Get
             Return Me._PAIS
         End Get
     End Property
-
     Public ReadOnly Property CODIGO_POSTAL() As String
         Get
             Return Me._CODIGO_POSTAL
         End Get
     End Property
-
     Public ReadOnly Property CODIGO_COLONIA_SAT() As String
         Get
             Return Me._CODIGO_COLONIA_SAT
@@ -627,29 +609,6 @@ Public NotInheritable Class Class_sisEmpresa
         End Get
     End Property
 
-    Public ReadOnly Property CONTAELECTRONICA_ACTIVA() As Boolean
-        Get
-            Return Me._CONTAELECTRONICA_ACTIVA
-        End Get
-    End Property
-
-    Public ReadOnly Property CONTAELECTRONICA_CADENA_ORIGINAL_CATALOGO_CUENTAS() As String
-        Get
-            Return Me._CONTAELECTRONICA_CADENA_ORIGINAL_CATALOGO_CUENTAS
-        End Get
-    End Property
-
-    Public ReadOnly Property CONTAELECTRONICA_CADENA_ORIGINAL_BALANZA_COMPROBACION() As String
-        Get
-            Return Me._CONTAELECTRONICA_CADENA_ORIGINAL_BALANZA_COMPROBACION
-        End Get
-    End Property
-
-    Public ReadOnly Property CONTAELECTRONICA_CADENA_ORIGINAL_POLIZAS() As String
-        Get
-            Return Me._CONTAELECTRONICA_CADENA_ORIGINAL_POLIZAS
-        End Get
-    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -1003,11 +962,6 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._CUENTA_CONTABLE_COSTO_VENTAS = "" & dReader("CUENTA_CONTABLE_COSTO_VENTAS").ToString
                     Me._CORREO_EMPRESA = "" & dReader("CORREO_EMPRESA").ToString
                     Me._VALIDAR_CANCELACION_VENTAS = CBool(dReader("VALIDAR_CANCELACION_VENTAS").ToString)
-
-                    Me._CONTAELECTRONICA_ACTIVA = CBool(dReader("CONTAELECTRONICA_ACTIVA"))
-                    Me._CONTAELECTRONICA_CADENA_ORIGINAL_CATALOGO_CUENTAS = "" & dReader("CONTAELECTRONICA_CADENA_ORIGINAL_CATALOGO_CUENTAS").ToString
-                    Me._CONTAELECTRONICA_CADENA_ORIGINAL_BALANZA_COMPROBACION = "" & dReader("CONTAELECTRONICA_CADENA_ORIGINAL_BALANZA_COMPROBACION").ToString
-                    Me._CONTAELECTRONICA_CADENA_ORIGINAL_POLIZAS = "" & dReader("CONTAELECTRONICA_CADENA_ORIGINAL_POLIZAS").ToString
 
                     dReader.Close()
                     bResultado = True

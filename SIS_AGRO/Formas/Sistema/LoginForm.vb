@@ -129,10 +129,6 @@ Public Class LoginForm
                 'End If
             End If
 
-            If Empresa_Sistema.CONTAELECTRONICA_ACTIVA = True Then
-                GestionaExistanArchivosContabilidadElectronica()
-            End If
-
             TDelegateCrystal()
 
             Dim oUsosCFDI As New Class_CFD_CatUsosCFDI
