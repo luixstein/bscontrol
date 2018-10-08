@@ -125,7 +125,8 @@ Buscar:
                 Dim dView As New Data.DataView(oZonas.ObtenerZonasParaReportes())
                 dView.Sort = "NOMBRE_ZONA"
                 .DataSource = dView
-                .Text = "TODOS"
+                .SelectedValue = "T"
+                '.Text = "TODOS"
             End With
         Catch ex As Exception
             HandleError(Me.Name, "DesplegarZonas", ex)

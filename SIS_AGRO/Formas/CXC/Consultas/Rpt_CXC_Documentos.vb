@@ -229,7 +229,7 @@ Buscar:
             Me.CboTipoMercado.SelectedValue = "T"
             Me.CboDocumentos.SelectedValue = "T"
             Me.cboPlaza.SelectedValue = 0
-            Me.CboZona.SelectedValue = Plaza.CODIGO_ZONA_PRINCIPAL
+            Me.CboZona.SelectedValue = "T" 'Plaza.CODIGO_ZONA_PRINCIPAL
             Me.CboEstatus.Text = "APLICADOS"
             'Me.ocultarcontroles()
             Me.chkClientesSaldoVencido.Checked = False
