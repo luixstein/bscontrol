@@ -2873,6 +2873,8 @@ CANCELAR:
                 Me.lblIEPSIncluido.Text = FormatImporteContable(Me.oVenta.IEPS_TOTAL_YA_INCLUIDO)
                 Me.lblTotalRetencion.Text = FormatImporteContable(Me.oVenta.RETENCION_IVA)
 
+                Me.bClienteEsContribuyenteIEPS = CBool(Me.oCliente.ES_CONTRIBUYENTE_IEPS)
+
                 Me.cboMoneda.Text = Me.oVenta.CODIGO_MONEDA_SAT 'Nota debe llenarse primero la moneda porque tiene evento change que llena la forma de pago segpun el cte, y asi se consulta correcto.
                 Me.txtTipoCambio.Text = Me.oVenta.TIPO_DE_CAMBIO.ToString
 
