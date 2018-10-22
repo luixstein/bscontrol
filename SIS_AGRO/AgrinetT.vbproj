@@ -74,7 +74,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\CatalogoCuentas_1_2.dll</HintPath>
     </Reference>
-    <Reference Include="cfdi, Version=1.0.0.3, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="cfdi, Version=1.0.0.7, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\cfdi.dll</HintPath>
     </Reference>
@@ -340,6 +340,8 @@
     <Compile Include="Clases\Facturacion_Electronica\cComplementoPagos.vb" />
     <Compile Include="Clases\Facturacion_Electronica\cComprobante.vb" />
     <Compile Include="Clases\Facturacion_Electronica\cComprobante33.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ClasesCFDI.vb" />
+    <Compile Include="Clases\Facturacion_Electronica\ClassCFDI.vb" />
     <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\1.0\Class_CFDI_cce_ComercioExterior.vb" />
     <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\1.0\Class_CFDI_cce_Destinatario.vb" />
     <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\1.0\Class_CFDI_cce_Emisor.vb" />
@@ -384,6 +386,7 @@
     <Compile Include="Clases\Nomina\Class_Nomina_SUA.vb" />
     <Compile Include="Clases\Utilerias\Class_Archivo.vb" />
     <Compile Include="Clases\Utilerias\Class_Imagenes.vb" />
+    <Compile Include="Clases\Utilerias\cNum2Text.vb" />
     <Compile Include="dsTrabajadores.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

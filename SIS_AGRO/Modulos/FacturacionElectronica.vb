@@ -127,46 +127,51 @@ Module FacturacionElectronica
             If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "DANIEL-PC" Or Usuario.Codigo_Usuario = 1 Then
                 MsgBox("Las computadoras de sistemas no deben timbrar documentos." & vbCrLf & "Ni el dba(por protección de timbrar por error estando en pruebas).", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
-            Else
-                If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "DANIEL-PC" Or Usuario.Codigo_Usuario = 1 Then
-                    bMododemo = True
-                End If
-
-                Using cfd As New clsCFDI(sRutaXML, Empresa_Sistema.BaseDatos, Empresa_Sistema.Servidor,
-                                  sFelectronicaArchivoPFX, Decrypt(Empresa_Sistema.FELECTRONICA_CONTRASENIA_PFX, "ex8"),
-                                  Empresa_Sistema.FELECTRONICA_USER_WS, Empresa_Sistema.FELECTRONICA_PASS_WS, True)
-
-                    'If txtLEN(cfd.RecuperarTimbrePorSerieFolio(sSerie, iFolioNumerico, Empresa_Sistema.RFC, sFelectronicaCbbImagen)) = True Then
-                    '    If cfd.Recuperado = True Then
-                    '        Dim sRutaXMLTimbrado As String = sFelectronicaCarpetaXmlsTimbrados & "\" & sFolioDocumentoSistema & ".xml"
-                    '        'cfd.Timbrar(sRutaXMLTimbrado, sFelectronicaCbbImagen)
-                    '        docXml.LoadXml(cfd.RecuperarTimbrePorSerieFolio(sSerie, iFolioNumerico, Empresa_Sistema.RFC, sFelectronicaCbbImagen))
-                    '        docXml.Save(sRutaXMLTimbrado)
-                    '        bResultado = True
-                    '    End If
-                    'Else
-
-                    Dim sRutaXMLTimbrado As String = sFelectronicaCarpetaXmlsTimbrados & "\" & sFolioDocumentoSistema & ".xml"
-
-                    If cfd.Sellar = True Then
-
-                        If bMododemo = True Then
-                            MsgBox("Esta el timbrado en modo demo", vbInformation, sProcedure)
-                            cfd.TimbrarDemo(sRutaXMLTimbrado, sFelectronicaCbbImagen)
-                        Else
-                            cfd.Timbrar(sRutaXMLTimbrado, sFelectronicaCbbImagen)
-                        End If
-
-                        If cfd.Timbrado = True Then
-                            If GrabaCadenaOriginalYSelloComprobanteElectronico(cfd, tipoComprobante) = True Then
-                                bResultado = True
-                            End If
-                        End If
-
-                    End If
-                    'End If
-                End Using
             End If
+
+            Dim sUserWS As String = Empresa_Sistema.FELECTRONICA_USER_WS
+            Dim sContraseñaWS As String = Empresa_Sistema.FELECTRONICA_PASS_WS
+
+            'Note que aquí se sobreescribe el usuario a demo y en el new no se usan las propiedades de Empresa_Sistema
+            If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "DANIEL-PC" Or Usuario.Codigo_Usuario = 1 Then
+                bMododemo = True
+                sUserWS = "demo.demo"
+                sContraseñaWS = "demo"
+            End If
+
+            Using cfd As New clsCFDI(sRutaXML, Empresa_Sistema.BaseDatos, Empresa_Sistema.Servidor,
+                sFelectronicaArchivoPFX, Empresa_Sistema.FELECTRONICA_CONTRASENIA_PFX, sUserWS, sContraseñaWS, True)
+
+                'If txtLEN(cfd.RecuperarTimbrePorSerieFolio(sSerie, iFolioNumerico, Empresa_Sistema.RFC, sFelectronicaCbbImagen)) = True Then
+                '    If cfd.Recuperado = True Then
+                '        Dim sRutaXMLTimbrado As String = sFelectronicaCarpetaXmlsTimbrados & "\" & sFolioDocumentoSistema & ".xml"
+                '        'cfd.Timbrar(sRutaXMLTimbrado, sFelectronicaCbbImagen)
+                '        docXml.LoadXml(cfd.RecuperarTimbrePorSerieFolio(sSerie, iFolioNumerico, Empresa_Sistema.RFC, sFelectronicaCbbImagen))
+                '        docXml.Save(sRutaXMLTimbrado)
+                '        bResultado = True
+                '    End If
+                'Else
+
+                Dim sRutaXMLTimbrado As String = sFelectronicaCarpetaXmlsTimbrados & "\" & sFolioDocumentoSistema & ".xml"
+
+                If cfd.Sellar = True Then
+
+                    If bMododemo = True Then
+                        MsgBox("Esta el timbrado en modo demo", vbInformation, sProcedure)
+                        cfd.TimbrarDemo(sRutaXMLTimbrado, sFelectronicaCbbImagen)
+                    Else
+                        cfd.Timbrar(sRutaXMLTimbrado, sFelectronicaCbbImagen)
+                    End If
+
+                    If cfd.Timbrado = True Then
+                        If GrabaCadenaOriginalYSelloComprobanteElectronico(cfd, tipoComprobante) = True Then
+                            bResultado = True
+                        End If
+                    End If
+
+                End If
+                'End If
+            End Using
 
         Catch ex As Exception
             HandleError(nombreModulo, sProcedure, ex)
@@ -174,7 +179,6 @@ Module FacturacionElectronica
 
         Return bResultado
     End Function
-
 
     Public Function GestionaCertificado(ByVal FechaDocumento As Date) As Certificado
         Dim CKCert As New CHILKATCERTIFICATELib.ChilkatCert, dFechaServidor As Date
@@ -213,129 +217,84 @@ Module FacturacionElectronica
         Return c
     End Function
 
-    Public Function CancelarCFDIVenta(ByVal oVenta As Class_Ventas_Global, ByVal TipoComprobante As TipoComprobante) As Boolean
-        Dim bResultado As Boolean = False
-        Const sProcedure As String = "CancelarCFDIVenta"
-        Try
-            bResultado = CancelarCFDI(oVenta.FOLIO_VENTA, oVenta.SERIE, oVenta.FOLIO_NUMERICO, oVenta.FOLIO_FISCAL_SAT, oVenta.TIMBRADO_CFDI, TipoComprobante)
-        Catch ex As Exception
-            HandleError(nombreModulo, sProcedure, ex)
-        End Try
-        Return bResultado
-    End Function
-
-    Public Function CancelarCFDIDescuento(ByVal oDescuento As Class_CXC_Descuento, ByVal TipoComprobante As TipoComprobante) As Boolean
-        Dim bResultado As Boolean
-        Const sProcedure As String = "CancelarCFDIDescuento"
-        Try
-            bResultado = CancelarCFDI(oDescuento.FOLIO_DESCUENTO, oDescuento.SERIE, oDescuento.FOLIO_NUMERICO, oDescuento.FOLIO_FISCAL_SAT, oDescuento.TIMBRADO_CFDI, TipoComprobante)
-        Catch ex As Exception
-            HandleError(nombreModulo, sProcedure, ex)
-        End Try
-        Return bResultado
-    End Function
-
-    Public Function CancelarCFDIPago(ByVal oPago As Class_CXC_Pago_CFDI_Global, ByVal TipoComprobante As TipoComprobante) As Boolean
-        Dim bResultado As Boolean = False
-        Const sProcedure As String = "CancelarCFDIPago"
-        Try
-            bResultado = CancelarCFDI(oPago.FOLIO_PAGO, oPago.SERIE, oPago.FOLIO_NUMERICO, oPago.FOLIO_FISCAL_SAT, oPago.TIMBRADO_CFDI, TipoComprobante)
-        Catch ex As Exception
-            HandleError(nombreModulo, sProcedure, ex)
-        End Try
-        Return bResultado
-    End Function
-
-    Public Function CancelarCFDIDevolucion(ByVal oDevolucion As Class_CXC_Devoluciones_Global, ByVal TipoComprobante As TipoComprobante) As Boolean
-        Dim bResultado As Boolean = False
-        Const sProcedure As String = "CancelarCFDIDevolucion"
-        Try
-            bResultado = CancelarCFDI(oDevolucion.FOLIO_DEVOLUCION, oDevolucion.SERIE, oDevolucion.FOLIO_NUMERICO, oDevolucion.FOLIO_FISCAL_SAT, oDevolucion.TIMBRADO_CFDI, TipoComprobante)
-        Catch ex As Exception
-            HandleError(nombreModulo, sProcedure, ex)
-        End Try
-        Return bResultado
-    End Function
-
-    Private Function CancelarCFDI(ByVal sFolioDocumentoSistema As String, ByVal sSerie As String, ByVal iFolioNumerico As Integer, ByVal sFolioFiscalSat As String, ByVal sDocumentoYaEstaTimbrado As String, ByVal sTipoComprobante As TipoComprobante) As Boolean
+    Public Function CancelarCFDI(ByVal sFolioDocumentoSistema As String, ByVal sSerie As String, ByVal iFolioNumerico As Integer, ByVal sFolioFiscalSat As String, ByVal sDocumentoYaEstaTimbrado As String, ByVal sTipoComprobante As TipoComprobante,
+                                 ByVal sCadenaXML As String) As Boolean
         Const sProcedure As String = "CancelarCFDI"
+
         Dim bResultado As Boolean = False, bGraboAcuse As Boolean = False
 
         Dim ArchivoXmlAcuseCancelacion As String = sFelectronicaCarpetaXmlsAcusesCancelacion & "\AcuseCancelacion_" & sFolioDocumentoSistema & ".xml" ' "la ruta de los xml de acuses de cancelacion"
         Dim sUUID As String = "" ' "el folio del sat del documento"
         Dim sXml As String = ""
-        'Dim sSerie As String = Left(sFolioDocumentoSistema, 3).ToString
-        'Dim iFolioNumerico As Integer = sFolioDocumentoSistema.Substring(4, Len(sFolioDocumentoSistema) - 4)
         Dim sAcuseCancelacion As String = ""
 
         Dim bModoDemo As Boolean = False
 
         Try
+            Dim cfdi As New ClassCFDI(sCadenaXML, False)
+
+            If cfdi.XMLCargado = False Then
+                MsgBox("No se logró cargar el xml, se abortó el proceso de cancelar el timbre.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
 
             If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "PCSISTEMASFER" Or Usuario.Nombre_Usuario = "DBA" Then
                 MsgBox("Las computadoras de sistemas no deben cancelar timbres.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
-            Else
-
-                If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "PCSISTEMASFER" Or Usuario.Nombre_Usuario = "DBA" Then
-                    bModoDemo = True
-                End If
-
-                If bModoDemo = True Then
-                    MsgBox("La cancelación de timbres esta modo demo")
-
-                    Using cfd As New clsCFDI(Empresa_Sistema.BaseDatos, Empresa_Sistema.Servidor,
-                                         sFelectronicaArchivoPFX, Decrypt(Empresa_Sistema.FELECTRONICA_CONTRASENIA_PFX, "ex8"),
-                                         "demo.demo", "demo", True)
-
-                        sUUID = sFolioFiscalSat
-
-                        cfd.CancelarTimbre(Empresa_Sistema.RFC, sUUID, ArchivoXmlAcuseCancelacion)
-
-                        If cfd.Cancelado = True Then
-                            bResultado = True 'Marcamos true sin hacer lo del acuse, porque no es importante grabarlo
-                            bGraboAcuse = GrabaCancelacionYAcuseXML(sFolioDocumentoSistema, cfd.XmlAcuseCancelacionTimbre, sTipoComprobante)
-                        End If
-                    End Using
-
-                Else
-                    Using cfd As New clsCFDI(Empresa_Sistema.BaseDatos, Empresa_Sistema.Servidor,
-                                         sFelectronicaArchivoPFX, Decrypt(Empresa_Sistema.FELECTRONICA_CONTRASENIA_PFX, "ex8"),
-                                         Empresa_Sistema.FELECTRONICA_USER_WS, Empresa_Sistema.FELECTRONICA_PASS_WS, True)
-
-                        If sDocumentoYaEstaTimbrado = "0" Then
-                            'Recuperar 
-                            sXml = cfd.RecuperarTimbrePorSerieFolio(sSerie, iFolioNumerico, Empresa_Sistema.RFC, sFelectronicaCbbImagen)
-                            If cfd.Recuperado = False Then 'No se recupero
-                                If sXml = "ErrorDLL" Then
-                                    'No descarta el timbre por algun otro error, que no necesariamente signifca que no exista el timbre
-                                    Return False
-                                End If
-                                DescartarTimbrado(sFolioDocumentoSistema, sTipoComprobante) 'ActualizaEstatusTimbradoDescartado(Folio, sTipoComprobanteElectronico)
-                                Return False
-                            Else
-                                sXml = Replace(sXml, "<?xml version=""1.0"" encoding=""UTF-8""?>", "")
-                                'Se recupero 'sFolioFacturaSistema, sXml, 
-                                If GrabaCadenaOriginalYSelloComprobanteElectronico(cfd, sTipoComprobante) = False Then
-                                    Return False
-                                End If
-                            End If
-                            sUUID = cfd.Complemento.UUID
-                        Else
-                            sUUID = sFolioFiscalSat
-                        End If
-
-                        cfd.CancelarTimbre(Empresa_Sistema.RFC, sUUID, ArchivoXmlAcuseCancelacion)
-
-                        If cfd.Cancelado = True Then
-                            bResultado = True 'Marcamos true sin hacer lo del acuse, porque no es importante grabarlo
-                            bGraboAcuse = GrabaCancelacionYAcuseXML(sFolioDocumentoSistema, cfd.XmlAcuseCancelacionTimbre, sTipoComprobante)
-                        End If
-                    End Using
-
-                End If
-
             End If
+
+            If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "PCSISTEMASFER" Or Usuario.Nombre_Usuario = "DBA" Then
+                bModoDemo = True
+            End If
+
+            Dim sUserWS As String = Empresa_Sistema.FELECTRONICA_USER_WS
+            Dim sContraseñaWS As String = Empresa_Sistema.FELECTRONICA_PASS_WS
+
+            'Note que aquí se sobreescribe el usuario a demo y en el new no se usan las propiedades de Empresa_Sistema
+            If bModoDemo = True Then
+                MsgBox("La cancelación de timbres esta modo demo !!", vbExclamation, sProcedure)
+                sUserWS = "demo.demo"
+                sContraseñaWS = "demo"
+            End If
+
+            Using cfd As New clsCFDI(Empresa_Sistema.BaseDatos, Empresa_Sistema.Servidor,
+                                     sFelectronicaArchivoPFX, Empresa_Sistema.FELECTRONICA_CONTRASENIA_PFX,
+                                     sUserWS, sContraseñaWS, True, sFelectronicaArchivoKEYLocal)
+
+                If sDocumentoYaEstaTimbrado = "0" Then
+                    'Recuperar 
+                    sXml = cfd.RecuperarTimbrePorSerieFolio(sSerie, iFolioNumerico, Empresa_Sistema.RFC, sFelectronicaCbbImagen)
+                    If cfd.Recuperado = False Then 'No se recupero
+                        If sXml = "ErrorDLL" Then
+                            'No descarta el timbre por algun otro error, que no necesariamente signifca que no exista el timbre
+                            Return False
+                        End If
+                        DescartarTimbrado(sFolioDocumentoSistema, sTipoComprobante) 'ActualizaEstatusTimbradoDescartado(Folio, sTipoComprobanteElectronico)
+                        Return False
+                    Else
+                        sXml = Replace(sXml, "<?xml version=""1.0"" encoding=""UTF-8""?>", "")
+                        'Se recupero 'sFolioFacturaSistema, sXml, 
+                        If GrabaCadenaOriginalYSelloComprobanteElectronico(cfd, sTipoComprobante) = False Then
+                            Return False
+                        End If
+                    End If
+                    sUUID = cfd.Complemento.UUID
+                Else
+                    sUUID = sFolioFiscalSat
+                End If
+
+                'cfd.CancelarTimbre(Empresa_Sistema.RFC, sUUID, ArchivoXmlAcuseCancelacion)'V1
+                cfd.CancelarTimbreV2(cfdi.Emisor.rfc, cfdi.Receptor.rfc, sUUID, cfdi.Comprobante.total, ArchivoXmlAcuseCancelacion) 'V2
+
+                If cfd.Cancelado = True Then
+                    bResultado = True 'Marcamos true sin hacer lo del acuse, porque no es importante grabarlo
+                    bGraboAcuse = GrabaCancelacionYAcuseXML(sFolioDocumentoSistema, cfd.XmlAcuseCancelacionTimbre, sTipoComprobante)
+                Else 'En caso de que no lo haya podido cancelar es posible que haya regresado algún mensaje importante, se debe de grabar.
+                    If txtLEN(cfd.MensajeErrorCancelarTimbre) = True Then
+                        GuardarMensajeErrorCancelarTimbre(sFolioDocumentoSistema, cfd.MensajeErrorCancelarTimbre, sTipoComprobante)
+                    End If
+                End If
+            End Using
 
             If bResultado = True Then
                 If bGraboAcuse = False Then
@@ -402,6 +361,41 @@ Module FacturacionElectronica
             _Conexion.Close()
             HandleError(nombreModulo, sProcedure, ex)
         End Try
+        Return bResultado
+    End Function
+
+    Public Function GuardarMensajeErrorCancelarTimbre(ByVal sFolioFacturaSistema As String, ByVal sMensajeError As String, ByVal sTipoComprobanteElectronico As TipoComprobante) As Boolean
+        Const sProcedure As String = "GuardarMensajeErrorCancelarTimbre"
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        Try
+            With cmd
+                .Connection = _Conexion
+                .CommandTimeout = 0
+                .CommandType = CommandType.StoredProcedure
+
+                .Parameters.Clear()
+
+                .CommandText = "MP_CFDI_GRABA_ERROR_CANCELAR_TIMBRE"
+
+                sqlParametro = .Parameters.Add("@FOLIO", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolioFacturaSistema
+                sqlParametro = .Parameters.Add("@MENSAJE_ERROR_CANCELAR_TIMBRE", SqlDbType.NVarChar, 300) : sqlParametro.Value = sMensajeError
+                sqlParametro = .Parameters.Add("@TIPO_COMPROBANTE", SqlDbType.NVarChar, 30) : sqlParametro.Value = sTipoComprobanteElectronico
+
+                _Conexion.Open()
+                .ExecuteNonQuery()
+
+            End With
+            cmd = Nothing
+            bResultado = True
+            _Conexion.Close()
+
+        Catch ex As Exception
+            HandleError(nombreModulo, sProcedure, ex)
+            _Conexion.Close()
+        End Try
+
         Return bResultado
     End Function
 
@@ -1749,7 +1743,7 @@ Module FacturacionElectronica
             'sha1 = Nothing
 
             'Versión sha256
-            Dim objCert As New X509Certificates.X509Certificate2(sFelectronicaArchivoPFX, Decrypt(Empresa_Sistema.FELECTRONICA_CONTRASENIA_PFX, "ex8"), X509KeyStorageFlags.Exportable)
+            Dim objCert As New X509Certificates.X509Certificate2(sFelectronicaArchivoPFX, Empresa_Sistema.FELECTRONICA_CONTRASENIA_PFX, X509KeyStorageFlags.Exportable)
             Dim lRSA As RSACryptoServiceProvider = DirectCast(objCert.PrivateKey, RSACryptoServiceProvider)
             Dim privateKey1 As New RSACryptoServiceProvider()
             privateKey1.ImportParameters(lRSA.ExportParameters(True))

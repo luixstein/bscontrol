@@ -1,6 +1,7 @@
 ﻿Option Strict On
 
 Imports CrystalDecisions.CrystalReports.Engine
+Imports System.Xml
 Imports System.IO
 
 Module Mod_Uti
@@ -1158,5 +1159,36 @@ Module Mod_Uti
         End Try
 
         Return bResultado
+    End Function
+
+    Public Function LeeValorXML(Valor As XmlNode) As String
+        Dim result As String = ""
+        Try
+            If Valor IsNot Nothing Then
+                result = Valor.Value
+            End If
+        Catch
+            result = ""
+        End Try
+        Return result.ToUpper
+    End Function
+
+    Public Function TieneValorXML(Valor As XmlNode) As Boolean
+        Dim result As Boolean = False
+        Try
+            If Valor IsNot Nothing Then
+                result = True
+            End If
+        Catch
+            result = False
+        End Try
+        Return result
+    End Function
+
+    Public Function numletra(ByVal acant As String, Optional ByVal Moneda As String = "PESO", Optional ByVal sMn As String = " M.N.") As String
+        Dim T As New cNum2Text, strnum As String
+        strnum = CStr(acant) : Call Comas(strnum)
+        numletra = T.NUMERO2LETRA(strnum, , 2, Moneda, , , , sMn)
+        T = Nothing
     End Function
 End Module

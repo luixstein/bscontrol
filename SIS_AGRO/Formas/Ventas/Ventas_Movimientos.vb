@@ -2808,6 +2808,7 @@ CANCELAR:
     End Sub
 
     Private Function Consultar(Optional ByVal bEsReferencia As Boolean = False, Optional ByVal bEsRefrenciaSoloRenglones As Boolean = False) As Boolean
+        Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
         Try
             Me.tsbTimbrar.Visible = False
@@ -3019,6 +3020,7 @@ CANCELAR:
                 'Sea o no timbrable el documento(recordar que hay facturas recapturas *Nota1) si esta cancelada y timbrada es prospecto para cancelarle el timbre
                 If Me.oVenta.ESTATUS_VENTA = "C" AndAlso Me.oVenta.TIMBRADO_CFDI = "1" AndAlso Me.oVenta.TIMBRADO_DESCARTADO = "0" AndAlso Me.oVenta.ESTATUS_CANCELACION_CFDI = "0" Then
                     Me.tsbCancelarTimbre.Visible = True
+                    MsgBox("Por favor cancele el timbre de este movimiento que actualmente esta cancelado.", MsgBoxStyle.Exclamation, sProcedure)
                 End If
             End If
 
@@ -3030,7 +3032,7 @@ CANCELAR:
             End If
 
         Catch ex As Exception
-            HandleError(Me.Name, "Consultar", ex)
+            HandleError(Me.Name, sProcedure, ex)
         Finally
             Me.Grid.AutoRedraw = True
             Me.Grid.Refresh()
