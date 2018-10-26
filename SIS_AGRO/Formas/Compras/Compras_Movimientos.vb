@@ -36,21 +36,23 @@ Public Class Compras_Movimientos
     Private igyDescripcion As Short = 2
     Private igyCantidad As Short = 3
     Private igyPrecio As Short = 4
-    Private igyUnidad As Short = 5
-    Private igyImpuestoPorcentaje As Short = 6
-    Private igyImporte As Short = 7
-    Private igyCuentaContable As Short = 8
-    Private igyImpuestoImporte As Short = 9
-    Private igyIdArticulo As Short = 10
-    Private iGyNombreCuentaContable As Integer = 11
-    Private iGyBoton As Integer = 12
-    Private iGyIDAdicional As Integer = 13
+    Private igyCosto As Short = 5
+    Private igyUnidad As Short = 6
+    Private igyImpuestoPorcentaje As Short = 7
+    Private igyImporte As Short = 8
+    Private igyCuentaContable As Short = 9
+    Private igyImpuestoImporte As Short = 10
+    Private igyIdArticulo As Short = 11
+    Private iGyNombreCuentaContable As Integer = 12
+    Private iGyBoton As Integer = 13
+    Private iGyIDAdicional As Integer = 14
 
-    Private igyIEPS_PORCENTAJE As Short = 14
-    Private igyIEPS_UNITARIO As Short = 15
-    Private igyIEPS_IMPORTE As Short = 16
-    Private igyBASE_IEPS As Short = 17
-    Private igyBASE_IVA As Short = 18
+    Private igyIEPS_PORCENTAJE As Short = 15
+    Private igyIEPS_UNITARIO As Short = 16
+    Private igyIEPS_IMPORTE As Short = 17
+    Private igyBASE_IEPS As Short = 18
+    Private igyBASE_IVA As Short = 19
+
 #End Region
 
 #Region "Columnas grid series"
@@ -570,7 +572,7 @@ Buscar:
                 .FixedRowColStyle = FlexCell.FixedRowColStyleEnum.Flat
 
                 .Rows = 2
-                .Cols = 19
+                .Cols = 20
 
                 .Column(Me.igyCodigo).Width = 75
                 .Column(Me.igyDescripcion).Width = 250
@@ -582,6 +584,7 @@ Buscar:
                 .Column(Me.igyCuentaContable).Width = 100
                 .Column(Me.igyImpuestoImporte).Width = 100
                 .Column(Me.igyIdArticulo).Width = 100
+                .Column(Me.igyCosto).Width = 100
 
                 If Me.oDocumento.AFECTA_CXP = True Then
                     .Column(Me.iGyBoton).Visible = True
@@ -608,6 +611,7 @@ Buscar:
                 .Cell(0, Me.iGyNombreCuentaContable).Text = "Nombre cuenta"
                 .Cell(0, Me.iGyBoton).Text = "Costos"
                 .Cell(0, Me.iGyIDAdicional).Text = "IdAdicional"
+                .Cell(0, Me.igyCosto).Text = "Costo"
 
                 .Column(Me.igyCantidad).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.igyCantidad).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
@@ -618,6 +622,11 @@ Buscar:
                 .Column(Me.igyPrecio).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.igyPrecio).DecimalLength = 6 ' Empresa_Sistema.DECIMALES_PRECIO
                 .Column(Me.igyPrecio).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.igyCosto).FormatString = "$ ###,###,##0." & StrDup(6, "0")
+                .Column(Me.igyCosto).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.igyCosto).DecimalLength = 6 ' Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.igyCosto).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .Column(Me.igyImpuestoPorcentaje).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.igyImpuestoPorcentaje).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
@@ -667,6 +676,10 @@ Buscar:
                 .Column(Me.igyIEPS_IMPORTE).Visible = False
                 .Column(Me.igyBASE_IEPS).Visible = False
                 .Column(Me.igyBASE_IVA).Visible = False
+
+                If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = False Then
+                    .Column(Me.igyCosto).Visible = False
+                End If
 
                 .AutoRedraw = True
                 .Refresh()
@@ -990,6 +1003,10 @@ Buscar:
                 .PREDIO = Me.txtPredio.Text
                 .CONFIRMO = Me.txtConfirmo.Text
 
+                If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = True Then
+                    .COSTO = FG_Grid_SumaCol(Me.Grid, Me.igyCosto)
+                End If
+
                 If Me.Estado = enumEstados.NUEVO Then
                     If .InsertarOrdenCompra() = False Then
                         MsgBox("Error al tratar de insertar el movimiento de compras.", MsgBoxStyle.Exclamation, Me.Text)
@@ -1022,6 +1039,10 @@ Buscar:
                         .oComprasDetalle.IEPS_IMPORTE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_IMPORTE).Text)
                         .oComprasDetalle.BASE_IEPS = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IEPS).Text)
                         .oComprasDetalle.BASE_IVA = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IVA).Text)
+
+                        If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = True Then
+                            .oComprasDetalle.COSTO = valorNumerico(Me.Grid.Cell(i, Me.igyCosto).Text)
+                        End If
 
                         If .oComprasDetalle.GrabaRenglonOrdenCompra() = False Then
                             MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Text)
@@ -1083,6 +1104,7 @@ Buscar:
                 .CON_CARGO_A = Me.txtConCargoA.Text
                 .PREDIO = Me.txtPredio.Text
                 .CONFIRMO = Me.txtConfirmo.Text
+                .COSTO = FG_Grid_SumaCol(Me.Grid, Me.igyCosto)
 
                 If .GrabaCompraGlobal() = False Then
                     MsgBox("Error al tratar de aplicar el movimiento de compras.", MsgBoxStyle.Exclamation, Me.Text)
@@ -1122,6 +1144,7 @@ Buscar:
                         .oComprasDetalle.IEPS_IMPORTE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_IMPORTE).Text)
                         .oComprasDetalle.BASE_IEPS = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IEPS).Text)
                         .oComprasDetalle.BASE_IVA = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IVA).Text)
+                        .oComprasDetalle.COSTO = valorNumerico(Me.Grid.Cell(i, Me.igyCosto).Text)
 
                         If .oComprasDetalle.GrabaRenglonCompra() = False Then
                             MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Text)

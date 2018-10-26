@@ -61,6 +61,7 @@ Public Class Class_Compras_Global
     Private _IMPUESTO_USD As Double
 
     Private _CONCEPTO_CANCELACION As String
+    Private _COSTO As Double
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -488,6 +489,15 @@ Public Class Class_Compras_Global
         End Set
     End Property
 
+    Public Property COSTO() As Double
+        Get
+            Return Me._COSTO
+        End Get
+        Set(value As Double)
+            Me._COSTO = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -618,6 +628,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@CON_CARGO_A", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CON_CARGO_A.ToUpper
             sqlParametro = .Parameters.Add("@PREDIO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._PREDIO.ToUpper
             sqlParametro = .Parameters.Add("@CONFIRMO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONFIRMO.ToUpper
+            sqlParametro = .Parameters.Add("COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO
 
             Try
                 Me._Conexion.Open()
@@ -667,6 +678,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@CON_CARGO_A", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CON_CARGO_A.ToUpper
             sqlParametro = .Parameters.Add("@PREDIO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._PREDIO.ToUpper
             sqlParametro = .Parameters.Add("@CONFIRMO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONFIRMO.ToUpper
+            sqlParametro = .Parameters.Add("COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO
 
             Try
                 Me._Conexion.Open()
@@ -722,6 +734,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@PREDIO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._PREDIO.ToUpper
             sqlParametro = .Parameters.Add("@CONFIRMO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONFIRMO.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_GASTO", SqlDbType.NVarChar, 80) : sqlParametro.Value = "2" 'CON ORDEN DE COMPRA
+            sqlParametro = .Parameters.Add("COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
@@ -1009,7 +1022,7 @@ Public Class Class_Compras_Global
         sSQL = "With DC(ID_ADICIONAL, CUENTA_CONTABLE) " &
                 "AS " &
                 "(SELECT ID_ADICIONAL,MAX(CUENTA_CONTABLE) FROM CENTRO_COSTOS_MOVIMIENTOS_DETALLE WHERE FOLIO_MOVIMIENTO='" & Me._FOLIO_COMPRA & "' GROUP BY FOLIO_MOVIMIENTO,ID_ADICIONAL) " &
-                "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.CANTIDAD,R.PRECIO,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_COMPRA_DETALLE, " &
+                "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.CANTIDAD,R.PRECIO,R.COSTO,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_COMPRA_DETALLE, " &
                 "CASE WHEN DC.CUENTA_CONTABLE IS NOT NULL THEN 'Tiene detalle -->>' ELSE C.NOMBRE_CUENTA END NOMBRE_CUENTA, " &
                 "'' Boton,R.ID_ADICIONAL, " &
                 "R.IEPS_PORCENTAJE,R.IEPS_PORCENTAJE,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA " &
@@ -1031,7 +1044,7 @@ Public Class Class_Compras_Global
     Public Function ObtenerDetalleOrdenCompra() As DataTable
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
-        sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.DISPONIBLE,R.PRECIO,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_COMPRA_DETALLE, " &
+        sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.DISPONIBLE,R.PRECIO,R.COSTO,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_COMPRA_DETALLE, " &
             "'' NOMBRE_CUENTA,'' Boton,ROW_NUMBER() OVER(ORDER BY R.ID_COMPRA_DETALLE) ID_ADICIONAL, " &
             "R.IEPS_PORCENTAJE,R.IEPS_PORCENTAJE,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA " &
             "FROM COMPRA_DETALLE R " &

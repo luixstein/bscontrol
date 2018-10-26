@@ -28,6 +28,7 @@ Public Class Class_Compras_Detalle
     Private _IEPS_IMPORTE As Double
     Private _BASE_IEPS As Double
     Private _BASE_IVA As Double
+    Private _COSTO As Double
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -229,6 +230,15 @@ Public Class Class_Compras_Detalle
             Me._BASE_IVA = Value
         End Set
     End Property
+
+    Public Property COSTO() As Double
+        Get
+            Return Me._COSTO
+        End Get
+        Set(value As Double)
+            Me._COSTO = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -301,6 +311,7 @@ Public Class Class_Compras_Detalle
             sqlParametro = .Parameters.Add("@IEPS_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_IMPORTE
             sqlParametro = .Parameters.Add("@BASE_IEPS", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IEPS
             sqlParametro = .Parameters.Add("@BASE_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IVA
+            sqlParametro = .Parameters.Add("COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO
 
             Try
                 Me._Conexion.Open()
@@ -346,6 +357,7 @@ Public Class Class_Compras_Detalle
             sqlParametro = .Parameters.Add("@IEPS_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_IMPORTE
             sqlParametro = .Parameters.Add("@BASE_IEPS", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IEPS
             sqlParametro = .Parameters.Add("@BASE_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IVA
+            sqlParametro = .Parameters.Add("COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO
 
             Try
                 Me._Conexion.Open()

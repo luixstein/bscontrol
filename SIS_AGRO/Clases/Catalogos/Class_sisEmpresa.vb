@@ -87,6 +87,7 @@ Public NotInheritable Class Class_sisEmpresa
     Private _CONTAELECTRONICA_CADENA_ORIGINAL_CATALOGO_CUENTAS As String
     Private _CONTAELECTRONICA_CADENA_ORIGINAL_BALANZA_COMPROBACION As String
     Private _CONTAELECTRONICA_CADENA_ORIGINAL_POLIZAS As String
+    Private _CONTROL_COSTOS_COMPRAS As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -650,6 +651,12 @@ Public NotInheritable Class Class_sisEmpresa
             Return Me._CONTAELECTRONICA_CADENA_ORIGINAL_POLIZAS
         End Get
     End Property
+
+    Public ReadOnly Property CONTROL_COSTOS_COMPRAS As Boolean
+        Get
+            Return Me._CONTROL_COSTOS_COMPRAS
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -1008,6 +1015,7 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._CONTAELECTRONICA_CADENA_ORIGINAL_CATALOGO_CUENTAS = "" & dReader("CONTAELECTRONICA_CADENA_ORIGINAL_CATALOGO_CUENTAS").ToString
                     Me._CONTAELECTRONICA_CADENA_ORIGINAL_BALANZA_COMPROBACION = "" & dReader("CONTAELECTRONICA_CADENA_ORIGINAL_BALANZA_COMPROBACION").ToString
                     Me._CONTAELECTRONICA_CADENA_ORIGINAL_POLIZAS = "" & dReader("CONTAELECTRONICA_CADENA_ORIGINAL_POLIZAS").ToString
+                    Me._CONTROL_COSTOS_COMPRAS = CBool(dReader("CONTROL_COSTOS_COMPRAS"))
 
                     dReader.Close()
                     bResultado = True
