@@ -2039,6 +2039,10 @@ LlenaLinea:
                                 Me.Grid.Cell(Renglon, Me.igyPrecio).SetFocus()
                             End If
 
+                            If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = True AndAlso Me.Estado = enumEstados.NUEVO Then
+                                Me.Grid.Cell(Renglon, Me.igyCosto).Text = Me.Grid.Cell(Renglon, Me.igyPrecio).Text
+                            End If
+
                         Case Me.igyImpuestoPorcentaje
                             Me.Totales()
 
