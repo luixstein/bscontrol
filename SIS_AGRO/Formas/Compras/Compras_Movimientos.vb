@@ -1004,7 +1004,13 @@ Buscar:
                 .CONFIRMO = Me.txtConfirmo.Text
 
                 If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = True Then
-                    .COSTO = FG_Grid_SumaCol(Me.Grid, Me.igyCosto)
+                    Dim CostoTotal As Double = 0, z As Integer
+
+                    For z = 1 To Me.Grid.Rows - 1
+                        CostoTotal = CostoTotal + (valorNumerico(Me.Grid.Cell(z, Me.igyCantidad).Text) * valorNumerico(Me.Grid.Cell(z, Me.igyCosto).Text))
+                    Next
+
+                    .COSTO = CostoTotal
                 End If
 
                 If Me.Estado = enumEstados.NUEVO Then
@@ -1104,7 +1110,16 @@ Buscar:
                 .CON_CARGO_A = Me.txtConCargoA.Text
                 .PREDIO = Me.txtPredio.Text
                 .CONFIRMO = Me.txtConfirmo.Text
-                .COSTO = FG_Grid_SumaCol(Me.Grid, Me.igyCosto)
+
+                If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = True Then
+                    Dim CostoTotal As Double = 0, z As Integer
+
+                    For z = 1 To Me.Grid.Rows - 1
+                        CostoTotal = CostoTotal + (valorNumerico(Me.Grid.Cell(z, Me.igyCantidad).Text) * valorNumerico(Me.Grid.Cell(z, Me.igyCosto).Text))
+                    Next
+
+                    .COSTO = CostoTotal
+                End If
 
                 If .GrabaCompraGlobal() = False Then
                     MsgBox("Error al tratar de aplicar el movimiento de compras.", MsgBoxStyle.Exclamation, Me.Text)
