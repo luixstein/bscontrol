@@ -1164,6 +1164,46 @@ Public Class Class_CXC_Devoluciones_Global
         Return bResultado
     End Function
 
+    Private Function RecuperaXML() As String
+        Dim sResultado As String = ""
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        Dim docXml As Xml.XmlDocument = New Xml.XmlDocument
+
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_CFDI_DEVOLUCIONES_CXC_RECUPERA_CADENA_XML"
+
+            sqlParametro = .Parameters.Add("@FOLIO_DEVOLUCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_DEVOLUCION
+            sqlParametro = .Parameters.Add("@CADENA_XML", SqlDbType.Xml) : sqlParametro.Direction = ParameterDirection.Output : sqlParametro.Value = "" 'XmlDoc.OuterXml
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+
+                'Agrega al documento XML la cadena que ya esta grabada
+                docXml.LoadXml(.Parameters("@CADENA_XML").Value.ToString)
+                'Crea el nodo principal o primera linea <?xml version="1.0"?>
+                Dim Nodo As Xml.XmlDeclaration
+                Nodo = docXml.CreateXmlDeclaration("1.0", "utf-8", Nothing)
+                'Agrega el nodo al documento
+                Dim root As Xml.XmlElement = docXml.DocumentElement
+                docXml.InsertBefore(Nodo, root)
+
+                sResultado = docXml.InnerXml
+            Catch ex As Exception
+                HandleError(Me.Nombre_Clase, "RecuperaXML", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+
+        Return sResultado
+    End Function
+
     Public Function RecuperarXMLyPDF() As Boolean
         Dim sProcedure As String = "RecuperarXMLyPDF"
         Dim bResultado As Boolean = False
@@ -1237,12 +1277,13 @@ Public Class Class_CXC_Devoluciones_Global
                 Return False
             End If
 
-            If CancelarCFDIDevolucion(Me, TipoComprobante.DEVOLUCION_CXC) = False Then
-                MsgBox("El timbre no se pudo cancelar. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+            Dim sCadenaXML As String = Me.RecuperaXML()
+            If txtLEN(sCadenaXML) = False Then
+                MsgBox("No se logró recuperar el xml para poder cancelar el timbre.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
-            Else
-                bResultado = True
             End If
+
+            bResultado = CancelarCFDI(Me.FOLIO_DEVOLUCION, Me.SERIE, CInt(Me.FOLIO_NUMERICO), Me.FOLIO_FISCAL_SAT, Me.TIMBRADO_CFDI, TipoComprobante.DEVOLUCION_CXC, sCadenaXML)
 
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, sProcedure, ex)

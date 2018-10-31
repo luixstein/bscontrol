@@ -992,7 +992,7 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._FELECTRONICA_CER = dReader("FELECTRONICA_CER")
                     Me._FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA = IIf(txtLEN("" & dReader("FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA")) = True, Decrypt("" & dReader("FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA"), "r7"), "")
                     Me._FELECTRONICA_PFX = "" & dReader("FELECTRONICA_PFX").ToString
-                    Me._FELECTRONICA_CONTRASENIA_PFX = "" & dReader("FELECTRONICA_CONTRASENIA_PFX").ToString
+                    Me._FELECTRONICA_CONTRASENIA_PFX = Decrypt("" & dReader("FELECTRONICA_CONTRASENIA_PFX").ToString, "r7")
                     Me._FELECTRONICA_USER_WS = "" & dReader("FELECTRONICA_USER_WS").ToString
                     Me._FELECTRONICA_PASS_WS = "" & dReader("FELECTRONICA_PASS_WS").ToString
                     Me._FELECTRONICA_TIPO_CFD = "" & dReader("FELECTRONICA_TIPO_CFD").ToString

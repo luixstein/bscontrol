@@ -904,6 +904,7 @@ Buscar:
     End Sub
 
     Private Function Consultar() As Boolean
+        Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
         Dim sFolio As String = Me.TxtFolio.Text
 
@@ -995,6 +996,7 @@ Buscar:
                         Me.tsbTimbrar.Visible = True
                     ElseIf Me.oDescuentosCXC.ESTATUS_DESCUENTO = "C" AndAlso Me.oDescuentosCXC.TIMBRADO_CFDI = "1" AndAlso Me.oDescuentosCXC.TIMBRADO_DESCARTADO = "0" AndAlso Me.oDescuentosCXC.ESTATUS_CANCELACION_CFDI = "0" Then
                         Me.tsbCancelarTimbre.Visible = True
+                        MsgBox("Por favor cancele el timbre de este movimiento que actualmente esta cancelado.", MsgBoxStyle.Exclamation, sProcedure)
                     End If
 
                     If Me.oDescuentosCXC.TIMBRADO_CFDI = "1" Then
@@ -1005,7 +1007,7 @@ Buscar:
             End If
 
         Catch ex As Exception
-            HandleError(Me.Name, "Consultar", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado

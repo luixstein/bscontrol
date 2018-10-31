@@ -664,6 +664,7 @@ busca:
     End Function
 
     Private Function Consultar() As Boolean
+        Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
         Dim sFolio As String = Me.txtFolioDevolucion.Text
 
@@ -776,6 +777,7 @@ busca:
                     Me.tsbTimbrar.Visible = True
                 ElseIf Me.oDevolucion.ESTATUS_DEVOLUCION = "C" AndAlso Me.oDevolucion.TIMBRADO_CFDI = "1" AndAlso Me.oDevolucion.TIMBRADO_DESCARTADO = "0" AndAlso Me.oDevolucion.ESTATUS_CANCELACION_CFDI = "0" Then
                     Me.tsbCancelarTimbre.Visible = True
+                    MsgBox("Por favor cancele el timbre de este movimiento que actualmente esta cancelado.", MsgBoxStyle.Exclamation, sProcedure)
                 End If
 
                 If Me.oDevolucion.TIMBRADO_CFDI = "1" Then
