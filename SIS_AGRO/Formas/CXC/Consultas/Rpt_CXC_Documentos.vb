@@ -18,7 +18,7 @@ Public Class Rpt_CXC_Documentos
 #Region "Eventos"
 #Region "Eventos Genericos"
     Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCodigoCliente.KeyPress, txtCodigoVendedor.KeyPress, CboDocumentos.KeyPress, CboTipoMercado.KeyPress,
-         CboEstatus.KeyPress, dpFechaInicio.KeyPress, dpFechaFinal.KeyPress, txtCuentaBancaria.KeyPress, CboZona.KeyPress
+         CboEstatus.KeyPress, dpFechaInicio.KeyPress, dpFechaFinal.KeyPress, txtCuentaBancaria.KeyPress, CboZona.KeyPress, rbtDocumentoVenta.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -363,6 +363,7 @@ Buscar:
                 Rpt.SetParameterValue("@CODIGO_PLAZA", Me.cboPlaza.SelectedValue.ToString)
                 Rpt.SetParameterValue("@FILTRAR_POR_FECHA_SERVIDOR", IIf(Me.rbtFechaServidor.Checked = True, "1", "0"))
                 Rpt.SetParameterValue("@CODIGO_USUARIO_GRABO", IIf(txtLEN(Me.txtCodigoUsuario.Text) = True, Me.txtCodigoUsuario.Text, 0))
+                Rpt.SetParameterValue("@FILTRAR_POR_FECHA_VENTA", IIf(Me.rbtDocumentoVenta.Checked = True, "1", "0"))
             Else 'Depositos x bulto
                 Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.txtCodigoCliente.Text)
                 Rpt.SetParameterValue("@FECHA1", Format(Me.dpFechaInicio.Value, "yyyy-dd-MM"))

@@ -35,6 +35,7 @@ Partial Class Rpt_CXC_Documentos
         Me.LblDisplayDocumento = New System.Windows.Forms.Label()
         Me.CboDocumentos = New System.Windows.Forms.ComboBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.chkClientesSaldoVencido = New System.Windows.Forms.CheckBox()
         Me.LblNombreUsuario = New System.Windows.Forms.Label()
         Me.txtCodigoUsuario = New System.Windows.Forms.TextBox()
         Me.lblCodigoUsuario = New System.Windows.Forms.Label()
@@ -65,7 +66,7 @@ Partial Class Rpt_CXC_Documentos
         Me.RdbDetalleCXC = New System.Windows.Forms.RadioButton()
         Me.RdbGlobalCXC = New System.Windows.Forms.RadioButton()
         Me.rdbGlobalCxcPropietario = New System.Windows.Forms.RadioButton()
-        Me.chkClientesSaldoVencido = New System.Windows.Forms.CheckBox()
+        Me.rbtDocumentoVenta = New System.Windows.Forms.RadioButton()
         Me.ToolStrip1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.gpFiltroFecha.SuspendLayout()
@@ -78,7 +79,7 @@ Partial Class Rpt_CXC_Documentos
         Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbImprimir, Me.tsbSalir})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
-        Me.ToolStrip1.Size = New System.Drawing.Size(749, 27)
+        Me.ToolStrip1.Size = New System.Drawing.Size(899, 27)
         Me.ToolStrip1.TabIndex = 2
         Me.ToolStrip1.Text = "ToolStrip1"
         '
@@ -216,10 +217,21 @@ Partial Class Rpt_CXC_Documentos
         Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox1.Size = New System.Drawing.Size(531, 464)
+        Me.GroupBox1.Size = New System.Drawing.Size(671, 464)
         Me.GroupBox1.TabIndex = 1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Filtros"
+        '
+        'chkClientesSaldoVencido
+        '
+        Me.chkClientesSaldoVencido.AutoSize = True
+        Me.chkClientesSaldoVencido.Location = New System.Drawing.Point(7, 428)
+        Me.chkClientesSaldoVencido.Name = "chkClientesSaldoVencido"
+        Me.chkClientesSaldoVencido.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.chkClientesSaldoVencido.Size = New System.Drawing.Size(228, 21)
+        Me.chkClientesSaldoVencido.TabIndex = 386
+        Me.chkClientesSaldoVencido.Text = "Solo clientes con saldo vencido"
+        Me.chkClientesSaldoVencido.UseVisualStyleBackColor = True
         '
         'LblNombreUsuario
         '
@@ -253,13 +265,14 @@ Partial Class Rpt_CXC_Documentos
         '
         'gpFiltroFecha
         '
+        Me.gpFiltroFecha.Controls.Add(Me.rbtDocumentoVenta)
         Me.gpFiltroFecha.Controls.Add(Me.rbtFechaServidor)
         Me.gpFiltroFecha.Controls.Add(Me.rbtFechaDocumento)
         Me.gpFiltroFecha.Location = New System.Drawing.Point(288, 276)
         Me.gpFiltroFecha.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.gpFiltroFecha.Name = "gpFiltroFecha"
         Me.gpFiltroFecha.Padding = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.gpFiltroFecha.Size = New System.Drawing.Size(236, 50)
+        Me.gpFiltroFecha.Size = New System.Drawing.Size(376, 50)
         Me.gpFiltroFecha.TabIndex = 382
         Me.gpFiltroFecha.TabStop = False
         Me.gpFiltroFecha.Text = "Filtrar por fecha de:"
@@ -545,22 +558,22 @@ Partial Class Rpt_CXC_Documentos
         Me.rdbGlobalCxcPropietario.Text = "Est. cta. glob propietario"
         Me.rdbGlobalCxcPropietario.UseVisualStyleBackColor = True
         '
-        'chkClientesSaldoVencido
+        'rbtDocumentoVenta
         '
-        Me.chkClientesSaldoVencido.AutoSize = True
-        Me.chkClientesSaldoVencido.Location = New System.Drawing.Point(7, 428)
-        Me.chkClientesSaldoVencido.Name = "chkClientesSaldoVencido"
-        Me.chkClientesSaldoVencido.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.chkClientesSaldoVencido.Size = New System.Drawing.Size(228, 21)
-        Me.chkClientesSaldoVencido.TabIndex = 386
-        Me.chkClientesSaldoVencido.Text = "Solo clientes con saldo vencido"
-        Me.chkClientesSaldoVencido.UseVisualStyleBackColor = True
+        Me.rbtDocumentoVenta.AutoSize = True
+        Me.rbtDocumentoVenta.Location = New System.Drawing.Point(226, 22)
+        Me.rbtDocumentoVenta.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.rbtDocumentoVenta.Name = "rbtDocumentoVenta"
+        Me.rbtDocumentoVenta.Size = New System.Drawing.Size(140, 21)
+        Me.rbtDocumentoVenta.TabIndex = 2
+        Me.rbtDocumentoVenta.Text = "Documento venta"
+        Me.rbtDocumentoVenta.UseVisualStyleBackColor = True
         '
         'Rpt_CXC_Documentos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(749, 504)
+        Me.ClientSize = New System.Drawing.Size(899, 504)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.ToolStrip1)
@@ -625,4 +638,5 @@ Partial Class Rpt_CXC_Documentos
     Friend WithEvents lblCodigoUsuario As System.Windows.Forms.Label
     Friend WithEvents rdbGlobalCxcPropietario As System.Windows.Forms.RadioButton
     Friend WithEvents chkClientesSaldoVencido As System.Windows.Forms.CheckBox
+    Friend WithEvents rbtDocumentoVenta As System.Windows.Forms.RadioButton
 End Class
