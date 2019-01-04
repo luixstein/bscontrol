@@ -18,12 +18,18 @@ Public Class Rpt_CXC_Documentos
 #Region "Eventos"
 #Region "Eventos Genericos"
     Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCodigoCliente.KeyPress, txtCodigoVendedor.KeyPress, CboDocumentos.KeyPress, CboTipoMercado.KeyPress,
-         CboEstatus.KeyPress, dpFechaInicio.KeyPress, dpFechaFinal.KeyPress, txtCuentaBancaria.KeyPress, CboZona.KeyPress, rbtDocumentoVenta.KeyPress
+         CboEstatus.KeyPress, dpFechaInicio.KeyPress, dpFechaFinal.KeyPress, txtCuentaBancaria.KeyPress, CboZona.KeyPress, rbtDocumentoVenta.KeyPress, rbtCobranzaAnticipo.KeyPress
         txtNoBeep(e)
     End Sub
 
     Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCuentaBancaria.KeyPress, CboZona.KeyPress, txtPropietario.KeyPress, txtCodigoUsuario.KeyPress
         txtSoloNumerosEnteros(e)
+        txtNoBeep(e)
+    End Sub
+
+    Private Sub txtSoloNumericosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTipoCambio.KeyPress
+        Dim txt As TextBox = CType(sender, TextBox)
+        txtSoloNumerosDecimales(e, txt.Text)
         txtNoBeep(e)
     End Sub
 #End Region
@@ -188,7 +194,7 @@ Buscar:
         End If
     End Sub
 
-    Private Sub Rdb_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles RdbGlobalCXC.CheckedChanged, RdbDetalleCXC.CheckedChanged, RdbDetalleDepositos.CheckedChanged, rdbGlobalCxcPropietario.CheckedChanged
+    Private Sub Rdb_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles RdbGlobalCXC.CheckedChanged, RdbDetalleCXC.CheckedChanged, RdbDetalleDepositos.CheckedChanged, rdbGlobalCxcPropietario.CheckedChanged, rbtCobranzaAnticipo.CheckedChanged
         Me.OcultarControles()
     End Sub
 
@@ -334,8 +340,10 @@ Buscar:
                 oReporte = New Class_Reporte("RPT_CXC_DETALLE_DEPOSITOS", Rpt)
             ElseIf Me.rdbGlobalCxcPropietario.Checked = True Then
                 oReporte = New Class_Reporte("RPT_CXC_COBRANZA_GLOBAL_PROPIETARIOS", Rpt)
-            Else 'If Me.rdbDetalleBultos.Checked = True Then
+            ElseIf Me.rdbDetalleBultos.Checked = True Then
                 oReporte = New Class_Reporte("RPT_CXC_DETALLE_DEPOSITOS_BULTOS", Rpt)
+            Else
+                oReporte = New Class_Reporte("RPT_CXC_COBRANZA_CON_ANTICIPOS", Rpt)
             End If
 
             If Not oReporte.RptCargado Then
@@ -364,6 +372,22 @@ Buscar:
                 Rpt.SetParameterValue("@FILTRAR_POR_FECHA_SERVIDOR", IIf(Me.rbtFechaServidor.Checked = True, "1", "0"))
                 Rpt.SetParameterValue("@CODIGO_USUARIO_GRABO", IIf(txtLEN(Me.txtCodigoUsuario.Text) = True, Me.txtCodigoUsuario.Text, 0))
                 Rpt.SetParameterValue("@FILTRAR_POR_FECHA_VENTA", IIf(Me.rbtDocumentoVenta.Checked = True, "1", "0"))
+            ElseIf Me.rbtCobranzaAnticipo.Checked = True Then
+                Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.txtCodigoCliente.Text)
+                Rpt.SetParameterValue("@CODIGO_VENDEDOR", Me.txtCodigoVendedor.Text)
+                Rpt.SetParameterValue("@CODIGO_TIPO_DOCUMENTO", Me.CboDocumentos.SelectedValue.ToString)
+                Rpt.SetParameterValue("@CODIGO_ZONA", Me.CboZona.SelectedValue.ToString)
+                Rpt.SetParameterValue("@CODIGO_TIPO_MERCADO", Me.CboTipoMercado.SelectedValue.ToString)
+                Rpt.SetParameterValue("@CODIGO_PROPIETARIO", valorNumerico(Me.txtPropietario.Text))
+                Rpt.SetParameterValue("@CODIGO_USUARIO_GRABO", IIf(txtLEN(Me.txtCodigoUsuario.Text) = True, Me.txtCodigoUsuario.Text, 0))
+                If txtLEN(Me.txtTipoCambio.Text) = True Then
+                    Rpt.SetParameterValue("@TIPO_CAMBIO", valorNumerico(Me.txtTipoCambio.Text))
+                Else
+                    MsgBox("Capture un tipo de cambio", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.txtTipoCambio.Focus()
+                    Exit Sub
+                End If
+
             Else 'Depositos x bulto
                 Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.txtCodigoCliente.Text)
                 Rpt.SetParameterValue("@FECHA1", Format(Me.dpFechaInicio.Value, "yyyy-dd-MM"))
@@ -396,6 +420,19 @@ Buscar:
             Me.LblDisplayPlaza.Visible = False : Me.cboPlaza.Visible = False
             Me.gpFiltroFecha.Visible = False
             Me.chkClientesSaldoVencido.Visible = True
+            Me.lblTipoCambio.Visible = False : Me.txtTipoCambio.Visible = False
+        ElseIf Me.rbtCobranzaAnticipo.Checked = True Then
+            Me.lblDisplayFechaInicio.Visible = False : Me.dpFechaInicio.Visible = False
+            Me.LblDisplayFechaFinal.Visible = False : Me.dpFechaFinal.Visible = False
+            Me.lblDisplayEstatus.Visible = False : Me.CboEstatus.Visible = False
+            Me.lblDisplayCuentaBancaria.Visible = False : Me.txtCuentaBancaria.Visible = False : Me.lblCuentaBancaria.Visible = False
+            Me.lblDisplayVendedor.Visible = True : Me.txtCodigoVendedor.Visible = True : Me.lblNombreVendedor.Visible = True
+            Me.LblDisplayDocumento.Visible = True : Me.CboDocumentos.Visible = True
+            Me.LblDisplayTipoMercado.Visible = True : Me.CboTipoMercado.Visible = True
+            Me.LblDisplayPlaza.Visible = False : Me.cboPlaza.Visible = False
+            Me.gpFiltroFecha.Visible = False
+            Me.lblTipoCambio.Visible = True : Me.txtTipoCambio.Visible = True
+            Me.chkClientesSaldoVencido.Visible = False
         Else
             Me.lblDisplayFechaInicio.Visible = True : Me.dpFechaInicio.Visible = True ': Me.lblDisplayFechaInicio.Location = New Point(4, 54) :  : Me.dpFechaInicio.Location = New Point(88, 51)
             Me.LblDisplayFechaFinal.Visible = True : Me.dpFechaFinal.Visible = True ': Me.LblDisplayFechaFinal.Location = New Point(215, 54)  : Me.dpFechaFinal.Location = New Point(265, 50)
@@ -408,6 +445,7 @@ Buscar:
             Me.LblDisplayPlaza.Visible = True : Me.cboPlaza.Visible = True
             Me.gpFiltroFecha.Visible = True
             Me.chkClientesSaldoVencido.Visible = False
+            Me.lblTipoCambio.Visible = False : Me.txtTipoCambio.Visible = False
         End If
     End Sub
 
