@@ -768,7 +768,11 @@ Buscar:
                         Me.txtFolioProveedor.Enabled = True
                         Me.txtEntregarA.Enabled = True
                         Me.txtSolicito.Enabled = True
+
                         Me.txtTipoCambio.Enabled = False
+                        Dim sender As New Object, e As New EventArgs
+                        cboMoneda_SelectedIndexChanged(sender, e) 'Al ser oc, en el nuevo puede quedar bloqueado el tpcam, de este modo refrescamos
+
                         Me.txtPlazo.Enabled = True
                         'Me.TxtRetencion.Enabled = True
                         'Me.TxtConcepto.Enabled = True
@@ -808,8 +812,12 @@ Buscar:
                     Me.tsbPasarOrdenACompra.Visible = False
                     Me.tsbEditarCostos.Visible = False
 
+                    Me.txtTipoCambio.Enabled = False
                     If Me.oDocumento.AFECTA_CXP = False Then 'Si no afecta, entonces es una oc y si se permite el botón.
                         Me.tsbPasarOrdenACompra.Visible = True
+
+                        Dim sender As New Object, e As New EventArgs
+                        cboMoneda_SelectedIndexChanged(sender, e) 'Al ser oc, en el nuevo puede quedar bloqueado el tpcam, de este modo refrescamos
                     End If
 
                     Me.DtpFecha.Enabled = True
@@ -821,7 +829,6 @@ Buscar:
                     Me.txtFolioProveedor.Enabled = True
                     Me.txtEntregarA.Enabled = True
                     Me.txtSolicito.Enabled = True
-                    Me.txtTipoCambio.Enabled = False
                     Me.txtPlazo.Enabled = True
                     'Me.TxtRetencion.Enabled = True
                     'Me.TxtConcepto.Enabled = True
