@@ -1003,9 +1003,39 @@ Module Mod_Uti
 
 
         Catch ex As Exception
-            HandleError("Mod_Uti", "ArchivoToByte", ex)
+            HandleError(nombreModulo, "ArchivoToByte", ex)
         End Try
         Return data
+    End Function
+
+    Public Function ValidacionesRFC(ByVal sRFC As String) As Boolean
+        Const sProcedure As String = "ValidacionesRFC"
+        Dim bResultado As Boolean = False
+
+        Try
+            If Len(sRFC) < 12 Or Len(sRFC) > 13 Then
+                MsgBox("El RFC no cumple con la longitud requerida de 12 o 13 caracteres, este rfc es de " & sRFC.Length.ToString & " caracteres.", vbExclamation, sProcedure)
+                Return False
+            End If
+
+            Select Case Len(sRFC)
+                Case 12 'Persona Moral
+                    If ValidaRFC(sRFC, "M") = False Then
+                        Return False
+                    End If
+                Case 13 'Persona Física
+                    If ValidaRFC(sRFC, "F") = False Then
+                        Return False
+                    End If
+            End Select
+
+            bResultado = True
+
+        Catch ex As Exception
+            HandleError(nombreModulo, sProcedure, ex)
+        End Try
+
+        Return bResultado
     End Function
 
     Public Function ValidaRFC(ByVal sRFC As String, ByVal sTipoPersona As String) As Boolean
@@ -1037,7 +1067,7 @@ Module Mod_Uti
                     End If
 
                     If SoloAlfanumericos(Mid(sRFC, 11, 3)) = False Then
-                        MsgBox("El RFC para personas físicas no tiene la estructura correcta en las 3 últimos alfanuméricos(rfc=4 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanuméricos), favor de revisar.", vbExclamation, nombreModulo)
+                        MsgBox("El RFC para personas físicas no tiene la estructura correcta en los 3 últimos alfanuméricos(rfc=4 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanuméricos), favor de revisar.", vbExclamation, nombreModulo)
                         Return False
                     End If
 
@@ -1063,13 +1093,13 @@ Module Mod_Uti
 
                     'sFecha = año & "/" & mes & "/" & dia
                     sFecha = dia & "/" & mes & "/" & año
-                    If IsDate(sFecha) = False Or CDbl(mes) > 12 Then 'si no es una fecha valida o el mes valido(porque el isdate da true tanto en 05/20/999  como en 20/05/99)
+                    If IsDate(sFecha) = False OrElse CDbl(mes) > 12 Then 'si no es una fecha valida o el mes valido(porque el isdate da true tanto en 05/20/999  como en 20/05/99)
                         MsgBox("El RFC para personas morales no tiene la estructura correcta de la fecha(rfc=3 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanuméricos), favor de revisar.", vbExclamation, nombreModulo)
                         Return False
                     End If
 
                     If SoloAlfanumericos(Mid(sRFC, 10, 3)) = False Then
-                        MsgBox("El RFC para personas morales no tiene la estructura correcta en las 3 últimos alfanuméricos(rfc=3 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanuméricos), favor de revisar.", vbExclamation, nombreModulo)
+                        MsgBox("El RFC para personas morales no tiene la estructura correcta en los 3 últimos alfanuméricos(rfc=3 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanuméricos), favor de revisar.", vbExclamation, nombreModulo)
                         Return False
                     End If
 
@@ -1087,6 +1117,7 @@ Module Mod_Uti
     End Function
 
     Public Function SoloLetrasSinAcentos(ByVal sCadena As String) As Boolean
+        Dim bResultado As Boolean = False
         Try
             Dim i As Integer, letra As String, bError As Boolean
             For i = 1 To Len(sCadena)
@@ -1096,14 +1127,16 @@ Module Mod_Uti
                 End If
             Next
             If bError = False Then
-                SoloLetrasSinAcentos = True
+                bResultado = True
             End If
         Catch ex As Exception
             HandleError(nombreModulo, "SoloLetrasSinAcentos", ex)
         End Try
+        Return bResultado
     End Function
 
     Public Function SoloAlfanumericos(ByVal sCadena As String) As Boolean
+        Dim bResultado As Boolean = False
         Try
             Dim i As Integer, letra As String, bError As Boolean
             For i = 1 To Len(sCadena)
@@ -1114,11 +1147,12 @@ Module Mod_Uti
                 'KeyAscii >= vbKey0 And KeyAscii <= vbKey9
             Next
             If bError = False Then
-                SoloAlfanumericos = True
+                bResultado = True
             End If
         Catch ex As Exception
             HandleError(nombreModulo, "SoloAlfanumericos", ex)
         End Try
+        Return bResultado
     End Function
 
     Public Function VersionArchivo(ByVal sFile As String) As Double

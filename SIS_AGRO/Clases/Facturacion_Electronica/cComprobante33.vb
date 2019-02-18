@@ -699,21 +699,9 @@ Friend Class cComprobante33
             'Nota, las validaciones de datos requerido(obligatorios) ya se validan al ir contruyendo el xml, estas validaciones son las que harpa el proveedor pac.
 
             '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-            If Len(Me.Receptor.Rfc) < 12 Or Len(Me.Receptor.Rfc) > 13 Then
-                MsgBox("El RFC del cliente no cumple con la longitud requerida.", vbExclamation, sProcedure)
+            If ValidacionesRFC(Me.Receptor.Rfc) = False Then
                 Return False
             End If
-
-            Select Case Len(Me.Receptor.Rfc)
-                Case 12 'Persona Moral
-                    If ValidaRFC(Me.Receptor.Rfc, "M") = False Then
-                        Return False
-                    End If
-                Case 13 'Persona Física
-                    If ValidaRFC(Me.Receptor.Rfc, "F") = False Then
-                        Return False
-                    End If
-            End Select
             '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
             'SubTotal

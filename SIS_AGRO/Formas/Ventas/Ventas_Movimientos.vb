@@ -1954,6 +1954,14 @@ CANCELAR:
                 End If
             End If
 
+            If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
+                If Me.chkVentaPublicoGeneral.Checked = False Then
+                    If ValidacionesRFC(Me.oCliente.RFC) = False Then
+                        Return False
+                    End If
+                End If
+            End If
+
             If Me.cboFormaPago.SelectedIndex = -1 Then
                 MsgBox("Asígne una forma de pago", MsgBoxStyle.Exclamation, sProcedure)
                 Me.cboFormaPago.Focus()
