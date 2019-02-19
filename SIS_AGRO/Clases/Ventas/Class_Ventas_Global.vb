@@ -2563,9 +2563,15 @@ Public Class Class_Ventas_Global
                     MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
                 Else
                     bResultado = True
+
+                    'Actualiza el rfc_receptor en la factura para registrar el rfc exacto con el que la timbraron porque puede ser que hayan grabado con un rfc que no es válido, y ese dato se queda incorrecto para cuando ya lo corrigen
+                    'en el catálgo de clientes.
+                    Me.ActualizaRFCReceptor()
+
                     If bGenerarPDF = True Then
                         Me.ExportarAPdf()
                     End If
+
                 End If
                 'Else
                 '    Me.RecuperarFacturaElectronicaLocal(bMensajes)
@@ -2856,6 +2862,50 @@ Public Class Class_Ventas_Global
         Return bResultado
     End Function
 
+    Public Function ActualizaRFCReceptor() As Boolean
+        Const sProcedure As String = "ActualizaRFCReceptor"
+        Dim bResultado As Boolean = False
+        Try
+            Dim sReceptorRFC As String = ""
+            If Me.ES_VENTA_PUBLICO_GENERAL = "1" Then
+                sReceptorRFC = Empresa_Sistema.RFC_VENTA_PUBLICO_GENERAL
+            Else
+                Dim oCliente As New Class_CatClientes(Me.CODIGO_CLIENTE)
+                sReceptorRFC = fElectronicaValidaCampo(Replace(oCliente.RFC, "-", ""))
+            End If
+
+            Dim cmd As New SqlCommand
+            Dim sqlParametro As SqlParameter
+
+            With cmd
+                .Connection = Me._Conexion
+                .CommandTimeout = 0
+                .CommandType = CommandType.StoredProcedure
+                .CommandText = "MP_VENTAS_ACTUALIZA_RFC_RECEPTOR"
+
+                Try
+                    Me._Conexion.Open()
+
+                    sqlParametro = .Parameters.Add("@FOLIO_VENTA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_VENTA
+                    sqlParametro = .Parameters.Add("@RFC_RECEPTOR", SqlDbType.NVarChar, 13) : sqlParametro.Value = sReceptorRFC
+                    .ExecuteNonQuery()
+
+                    bResultado = True
+
+                Catch ex As Exception
+                    HandleError(Me._Nombre_Catalogo, sProcedure, ex)
+                Finally
+                    Me._Conexion.Close()
+                    cmd.Dispose()
+                    sqlParametro = Nothing
+                End Try
+            End With
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
+        End Try
+        Return bResultado
+    End Function
 
 #End Region
 
