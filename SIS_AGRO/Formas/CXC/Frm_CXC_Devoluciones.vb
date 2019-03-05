@@ -648,7 +648,9 @@ busca:
             Me.Grid.Locked = False
             Me.Grid.DataSource = dTabla
             Me.FormateaGrid()
-            Me.Grid.Row(Me.Grid.Rows - 1).Locked = True 'Para bloquear la edición del último rengló que sale automáticamente.
+
+            'Me.Grid.Row(Me.Grid.Rows - 1).Locked = True 'Para bloquear la edición del último rengló que sale automáticamente.
+            Me.Grid.Row(Me.Grid.Rows - 1).Visible = False 'Lo anterior hace que se comporte raro el grid, si se hace cambio en la cantidad del último renglón, enter, luego con mouse click al renglón * y luego click a otro control se pierde el cambio.
 
             Me.txtFolioDevolucion.Enabled = False 'Se bloqueda por si quedó habilitado.
             Me.txtFolioVenta.Enabled = False 'Se bloquea, si se ocupa cambiar que le den nuevo.
