@@ -103,9 +103,12 @@ Public Class Rpt_CentroCostos
         Dim formato As String
         If Me.RbtAgrupado.Checked = True Then
             formato = "RPT_CENTRO_COSTOS_AGRUPADO"
-        Else
+        ElseIf Me.RbtDetallado.Checked = True Then
             formato = "RPT_CENTRO_COSTOS_DETALLADO"
+        Else
+            formato = "RPT_CENTRO_COSTOS_VENTAS_RELACIONADAS"
         End If
+
         Dim StrFiltros As String = ""
         Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte

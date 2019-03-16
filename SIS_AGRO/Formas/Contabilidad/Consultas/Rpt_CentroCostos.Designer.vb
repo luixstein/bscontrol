@@ -39,6 +39,7 @@ Partial Class Rpt_CentroCostos
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.DtFechaDesde = New System.Windows.Forms.DateTimePicker()
         Me.DtFechaHasta = New System.Windows.Forms.DateTimePicker()
+        Me.RbtVentasRel = New System.Windows.Forms.RadioButton()
         Me.ToolStrip1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
@@ -174,6 +175,7 @@ Partial Class Rpt_CentroCostos
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.RbtVentasRel)
         Me.GroupBox1.Controls.Add(Me.RbtAgrupado)
         Me.GroupBox1.Controls.Add(Me.RbtDetallado)
         Me.GroupBox1.Location = New System.Drawing.Point(19, 174)
@@ -200,11 +202,21 @@ Partial Class Rpt_CentroCostos
         Me.DtFechaHasta.Size = New System.Drawing.Size(114, 22)
         Me.DtFechaHasta.TabIndex = 393
         '
+        'RbtVentasRel
+        '
+        Me.RbtVentasRel.AutoSize = True
+        Me.RbtVentasRel.Location = New System.Drawing.Point(251, 21)
+        Me.RbtVentasRel.Name = "RbtVentasRel"
+        Me.RbtVentasRel.Size = New System.Drawing.Size(231, 21)
+        Me.RbtVentasRel.TabIndex = 391
+        Me.RbtVentasRel.Text = "Detalle con ventas relacionadas"
+        Me.RbtVentasRel.UseVisualStyleBackColor = True
+        '
         'Rpt_CentroCostos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(605, 241)
+        Me.ClientSize = New System.Drawing.Size(605, 238)
         Me.Controls.Add(Me.DtFechaHasta)
         Me.Controls.Add(Me.DtFechaDesde)
         Me.Controls.Add(Me.GroupBox1)
@@ -246,4 +258,5 @@ Partial Class Rpt_CentroCostos
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents DtFechaDesde As System.Windows.Forms.DateTimePicker
     Friend WithEvents DtFechaHasta As System.Windows.Forms.DateTimePicker
+    Friend WithEvents RbtVentasRel As System.Windows.Forms.RadioButton
 End Class
