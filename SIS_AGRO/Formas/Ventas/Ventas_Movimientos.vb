@@ -1002,7 +1002,7 @@ Buscar:
             Me.Grid.Column(Me.igyDescripcion).Locked = True
             Me.Grid.Column(Me.igyTipoControlInventariable).Locked = True
             Me.Grid.Column(Me.igyImporte).Locked = True
-            Me.Grid.Column(Me.igyImpuestoPorcentaje).Locked = True
+            Me.Grid.Column(Me.igyImpuestoPorcentaje).Locked = False ' True
             Me.Grid.Column(Me.igyUnidad).Locked = True
             Me.Grid.Column(Me.igyCosto).Locked = True
             Me.Grid.Column(Me.igyUtilidadUnitaria).Locked = True

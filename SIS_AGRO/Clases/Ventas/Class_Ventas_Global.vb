@@ -12,6 +12,8 @@ Imports CFDIXML
 Public Class tPrecioVenta
     Public Precio As Decimal = 0
     Public Costo As Decimal = 0
+    Public IdSisCatImpuestos As String = ""
+    Public ImpuestoPorcentaje As Decimal = 0
 End Class
 
 Public Class Class_Ventas_Global
@@ -2616,12 +2618,19 @@ Public Class Class_Ventas_Global
                     .Parameters.Add("@CODIGO_ARTICULO", SqlDbType.NVarChar, 16).Value = CodigoArticulo
                     .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8).Value = CodigoCliente
                     .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4).Value = CodigoAlmacen
+                    .Parameters.Add("@CODIGO_PLAZA", SqlDbType.NVarChar, 4).Value = Usuario.Codigo_Plaza
                 End With
 
                 da.Fill(dt)
             End Using
-            oPrecioVenta.Precio = CDec(dt.Rows(0)("PRECIO").ToString)
-            oPrecioVenta.Costo = CDec(dt.Rows(0)("COSTO").ToString)
+
+            With oPrecioVenta
+                .Precio = CDec(dt.Rows(0)("PRECIO").ToString)
+                .Costo = CDec(dt.Rows(0)("COSTO").ToString)
+                .IdSisCatImpuestos = dt.Rows(0)("ID_SIS_CAT_IMPUESTOS").ToString
+                .ImpuestoPorcentaje = CDec(dt.Rows(0)("IMPUESTO_PORCENTAJE").ToString)
+            End With
+
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, sProcedure, ex)
         End Try
