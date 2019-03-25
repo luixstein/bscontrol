@@ -873,7 +873,7 @@ Buscar:
             Me.Grid.Column(Me.igyUtilidadUnitaria).Width = 100
             Me.Grid.Column(Me.igyUtilidadTotal).Width = 100
             Me.Grid.Column(Me.igyUtilidadPorcentaje).Width = 100
-            Me.Grid.Column(Me.iGyID_SIS_CAT_IMPUESTOS).Visible = False
+            Me.Grid.Column(Me.iGyID_SIS_CAT_IMPUESTOS).Visible = True 'False
             Me.Grid.Column(Me.iGyGRADO_TOXICIDAD).Visible = False
             Me.Grid.Column(Me.iGyDESCUENTO_UNITARIO).Visible = False
             Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Visible = True  'Ocultar
@@ -1002,7 +1002,7 @@ Buscar:
             Me.Grid.Column(Me.igyDescripcion).Locked = True
             Me.Grid.Column(Me.igyTipoControlInventariable).Locked = True
             Me.Grid.Column(Me.igyImporte).Locked = True
-            Me.Grid.Column(Me.igyImpuestoPorcentaje).Locked = False ' True
+            Me.Grid.Column(Me.igyImpuestoPorcentaje).Locked = True 'De momento va quedar bloqueado , va llenarse dependiendo del iva de la plaza
             Me.Grid.Column(Me.igyUnidad).Locked = True
             Me.Grid.Column(Me.igyCosto).Locked = True
             Me.Grid.Column(Me.igyUtilidadUnitaria).Locked = True
@@ -3134,10 +3134,10 @@ LlenaLinea:
                                 Return
                             End If
 
-                            If txtLEN(Me.txtFolioEmbarque.Text) = False Then
-                                Dim oPrecio As New tPrecioVenta
-                                oPrecio = Me.oVenta.GestionaPrecioVenta(oArticulo.CODIGO_ARTICULO, Me.TxtCliente.Text, Me.CboAlmacen.SelectedValue.ToString)
+                            Dim oPrecio As New tPrecioVenta
+                            oPrecio = Me.oVenta.GestionaPrecioVenta(oArticulo.CODIGO_ARTICULO, Me.TxtCliente.Text, Me.CboAlmacen.SelectedValue.ToString)
 
+                            If txtLEN(Me.txtFolioEmbarque.Text) = False Then
                                 Me.Grid.Cell(Renglon, Me.igyDescripcion).Text = oArticulo.DESCRIPCION
                                 Me.Grid.Cell(Renglon, Me.igyTipoControlInventariable).Text = oArticulo.TIPO_CONTROL_INVENTARIO
                                 Me.Grid.Cell(Renglon, Me.igyCantidad).Text = "0"
@@ -3159,17 +3159,12 @@ LlenaLinea:
                                 End If
                             End If
 
-                            Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Text = oArticulo.IMPUESTO_PORCENTAJE.ToString
-                            Me.Grid.Cell(Renglon, Me.iGyID_SIS_CAT_IMPUESTOS).Text = oArticulo.ID_SIS_CAT_IMPUESTOS
+                            Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Text = oPrecio.ImpuestoPorcentaje.ToString   'oArticulo.IMPUESTO_PORCENTAJE.ToString
+                            Me.Grid.Cell(Renglon, Me.iGyID_SIS_CAT_IMPUESTOS).Text = oPrecio.IdSisCatImpuestos   'oArticulo.ID_SIS_CAT_IMPUESTOS
+
                             Me.Grid.Cell(Renglon, Me.iGyGRADO_TOXICIDAD).Text = oArticulo.GRADO_TOXICIDAD
                             Me.Grid.Cell(Renglon, Me.iGyIdSisCatImpuestosFlete).Text = oArticulo.ID_SIS_CAT_IMPUESTOS_FLETE.ToString
                             Me.Grid.Cell(Renglon, Me.iGyFletePorcentaje).Text = oArticulo.IMPUESTO_FLETE_PORCENTAJE.ToString
-
-                            'If oArticulos.TIENE_IMPUESTO = "1" Then
-                            '    Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Text = Plaza.Impuesto_Porcentaje.ToString
-                            'Else
-                            '    Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Text = "0"
-                            'End If
 
                             If oArticulo.CODIGO_CULTIVO <> "" Then
                                 Me.Grid.Cell(Renglon, Me.igyImpuestoImporte).Locked = True
