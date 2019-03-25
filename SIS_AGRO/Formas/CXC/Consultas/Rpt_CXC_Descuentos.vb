@@ -46,7 +46,12 @@ Public Class Rpt_CXC_Descuentos
         Select Case e.KeyCode
             Case Keys.F6
 Buscar:
-                sText = Me.oClientes.BusquedaVisual_PorDescripcion
+                If Empresa_Sistema.PERMITE_CLIENTES_MULTIPLAZA = True Then
+                    sText = Me.oClientes.BusquedaVisual_PorDescripcionSinFiltroZona
+                Else
+                    sText = Me.oClientes.BusquedaVisual_PorDescripcion
+                End If
+
                 If txtLEN(sText) = True Then Me.txtCodigoCliente.Text = sText
             Case Keys.Enter
                 If txtLEN(Me.txtCodigoCliente.Text) = False Then
