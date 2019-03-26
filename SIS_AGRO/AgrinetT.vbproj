@@ -1097,6 +1097,12 @@
     <Compile Include="Formas\Utilerias\frmEmbarquesMasivos.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\Utilerias\Frm_CFDI_GrabaImagenQR.Designer.vb">
+      <DependentUpon>Frm_CFDI_GrabaImagenQR.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Utilerias\Frm_CFDI_GrabaImagenQR.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\Utilerias\Frm_Monitor_CFDi.Designer.vb">
       <DependentUpon>Frm_Monitor_CFDi.vb</DependentUpon>
     </Compile>
