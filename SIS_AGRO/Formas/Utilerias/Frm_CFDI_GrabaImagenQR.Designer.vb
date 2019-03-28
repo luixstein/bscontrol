@@ -31,6 +31,7 @@ Partial Class Frm_CFDI_GrabaImagenQR
         '
         'cboTipoDocumento
         '
+        Me.cboTipoDocumento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboTipoDocumento.FormattingEnabled = True
         Me.cboTipoDocumento.Location = New System.Drawing.Point(103, 26)
         Me.cboTipoDocumento.Name = "cboTipoDocumento"

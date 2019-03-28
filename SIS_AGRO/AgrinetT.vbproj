@@ -2182,6 +2182,9 @@
     <EmbeddedResource Include="Formas\Utilerias\frmEmbarquesMasivos.resx">
       <DependentUpon>frmEmbarquesMasivos.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Utilerias\Frm_CFDI_GrabaImagenQR.resx">
+      <DependentUpon>Frm_CFDI_GrabaImagenQR.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formas\Utilerias\Frm_Contraseña_Cambio_Periodo.resx">
       <DependentUpon>Frm_Contraseña_Cambio_Periodo.vb</DependentUpon>
     </EmbeddedResource>

@@ -1840,73 +1840,63 @@ Module FacturacionElectronica
         Return CadenaOriginal
     End Function
 
-    Private Function CFDI_GrabaImagenQR(ByVal sTipoComprobanteElectronico As String, ByVal sFolio As String) As Boolean
+    Public Function CFDI_GrabaImagenQR(ByVal sTipoComprobanteElectronico As String, ByVal sFolio As String) As Boolean
         Const sProcedure As String = "CFDI_GrabaImagenQR"
-        Dim bResultado As Boolean = False ', vlCadena As String = ""
-        'Dim ImagenCBB As Byte()
-        Dim sXML As String = ""
+        Dim bResultado As Boolean = False
+        Dim sCadenaXML As String = ""
 
         Try
             Dim cmd As New SqlCommand
             Dim sqlParametro As SqlParameter
 
-            'vlRutaBidimensional = "" 'Ruta dinamica temporal, gettempfile
-
-            'hacer select al xml de cada documento
             Select Case sTipoComprobanteElectronico
-                Case TipoComprobante.FACTURA_VENTA '"FACTURA_VENTA"
-                    .CommandText = "MP_CFD_VENTAS_GRABA_DATOS_DIGITALES"
-                    sqlParametro = .Parameters.Add("@FOLIO_VENTA", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolio
+                Case "FACTURA_VENTA"
+                    Dim oVenta As New Class_Ventas_Global(sFolio)
+                    If oVenta.Existe = False Then
+                        MsgBox("No se encontró el documento.", MsgBoxStyle.Exclamation, sProcedure)
+                    Else
+                        sCadenaXML = oVenta.RecuperaXML
+                    End If
 
-                Case TipoComprobante.NOTA_CREDITO_CXC '"NOTA_CREDITO_CXC"
-                    .CommandText = "MP_CFD_CXC_NOTAS_CREDITO_GRABA_DATOS_DIGITALES"
-                    sqlParametro = .Parameters.Add("@FOLIO_DESCUENTO", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolio
+                Case "NOTA_CREDITO_CXC"
+                    Dim oNota As New Class_CXC_Descuento(sFolio)
+                    If oNota.Existe = False Then
+                        MsgBox("No se encontró el documento.", MsgBoxStyle.Exclamation, sProcedure)
+                    Else
+                        sCadenaXML = oNota.RecuperaXML
+                    End If
 
-                Case TipoComprobante.PAGO_CXC
-                    .CommandText = "MP_CFD_CXC_PAGOS_GRABA_DATOS_DIGITALES"
-                    sqlParametro = .Parameters.Add("@FOLIO_PAGO", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolio
+                Case "PAGO_CXC"
+                    Dim oPagoCXC As New Class_CXC_Pago_CFDI_Global(sFolio)
+                    If oPagoCXC.EXISTE = False Then
+                        MsgBox("No se encontró el documento.", MsgBoxStyle.Exclamation, sProcedure)
+                    Else
+                        sCadenaXML = oPagoCXC.RecuperaXML
+                    End If
 
-                Case TipoComprobante.DEVOLUCION_CXC
-                    .CommandText = "MP_CFD_CXC_DEVOLUCIONES_GRABA_DATOS_DIGITALES"
-                    sqlParametro = .Parameters.Add("@FOLIO_DEVOLUCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolio
+                Case "DEVOLUCION_CXC"
+                    Dim oDevolucion As New Class_CXC_Devoluciones_Global(sFolio)
+                    If oDevolucion.Existe = False Then
+                        MsgBox("No se encontró el documento.", MsgBoxStyle.Exclamation, sProcedure)
+                    Else
+                        sCadenaXML = oDevolucion.RecuperaXML
+                    End If
 
                 Case Else
-                    MsgBox("No se indicó el tipo de comprobante electrónico generado para grabar los datos digitales del documento.", MsgBoxStyle.Exclamation, sProcedure)
-                    cmd = Nothing
+                    MsgBox("Tipo de comprobante inválido.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
             End Select
 
-            Dim Cfdi As New CFDIXML.ClassCFDI(sXML, False)
+            If txtLEN(sCadenaXML) = False Then
+                MsgBox("No se logró recuperar la cadena del xml.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            Dim Cfdi As New CFDIXML.ClassCFDI(sCadenaXML, False)
 
             If Cfdi.XMLCargado = False Then
                 Return False
             End If
-
-            'vlCadena = "https://verificacfdi.facturaelectronica.sat.gob.mx/default.aspx?"
-            'vlCadena += "&id=" & Cfdi.ComplementoTFD.UUID
-            'vlCadena += "&re=" & Cfdi.Emisor.rfc
-            'vlCadena += "&rr=" & Cfdi.Receptor.rfc
-            'vlCadena += "&tt=" & Format(Cfdi.Comprobante.total, "###.00")
-            'vlCadena += "&fe=" & Right(Cfdi.Comprobante.sello, 8)
-
-            'bCreoImagen = Bidimensional.CreaBidimensional(vlCadena, vlRutaBidimensional, "Byte", 3, 0, "L", "Jpeg")
-
-            'If bCreoImagen = False Then
-            '    MsgBox("Ha ocurrido un error al generar el código bidimensional.", MsgBoxStyle.Exclamation, sProcedure)
-            '    Return False
-            'End If
-
-            ''CARGAR FOTOGRAFIA
-            'Dim fsFoto As System.IO.FileStream
-            'fsFoto = New System.IO.FileStream(vlRutaBidimensional, FileMode.OpenOrCreate, FileAccess.Read)
-            'Dim fiFoto As FileInfo = New FileInfo(vlRutaBidimensional)
-            'Dim Temp As Long = fiFoto.Length
-            'Dim lung As Long = Convert.ToInt32(Temp)
-            'Dim picture(CInt(lung)) As Byte
-            'fsFoto.Read(picture, 0, CInt(lung))
-            'fsFoto.Close()
-
-            'ImagenCBB = picture
 
             With cmd
                 .Connection = _Conexion
@@ -1914,24 +1904,24 @@ Module FacturacionElectronica
                 .CommandType = CommandType.StoredProcedure
 
                 Select Case sTipoComprobanteElectronico
-                    Case TipoComprobante.FACTURA_VENTA '"FACTURA_VENTA"
-                        .CommandText = "MP_CFD_VENTAS_GRABA_DATOS_DIGITALES"
+                    Case "FACTURA_VENTA"
+                        .CommandText = "MP_CFD_VENTAS_GRABA_IMAGEN_QR"
                         sqlParametro = .Parameters.Add("@FOLIO_VENTA", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolio
 
-                    Case TipoComprobante.NOTA_CREDITO_CXC '"NOTA_CREDITO_CXC"
-                        .CommandText = "MP_CFD_CXC_NOTAS_CREDITO_GRABA_DATOS_DIGITALES"
+                    Case "NOTA_CREDITO_CXC"
+                        .CommandText = "MP_CFD_CXC_NOTAS_CREDITO_GRABA_IMAGEN_QR"
                         sqlParametro = .Parameters.Add("@FOLIO_DESCUENTO", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolio
 
-                    Case TipoComprobante.PAGO_CXC
-                        .CommandText = "MP_CFD_CXC_PAGOS_GRABA_DATOS_DIGITALES"
+                    Case "PAGO_CXC"
+                        .CommandText = "MP_CFD_CXC_PAGOS_GRABA_IMAGEN_QR"
                         sqlParametro = .Parameters.Add("@FOLIO_PAGO", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolio
 
-                    Case TipoComprobante.DEVOLUCION_CXC
-                        .CommandText = "MP_CFD_CXC_DEVOLUCIONES_GRABA_DATOS_DIGITALES"
+                    Case ".DEVOLUCION_CXC"
+                        .CommandText = "MP_CFD_CXC_DEVOLUCIONESGRABA_IMAGEN_QR"
                         sqlParametro = .Parameters.Add("@FOLIO_DEVOLUCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolio
 
                     Case Else
-                        MsgBox("No se indicó el tipo de comprobante electrónico generado para grabar los datos digitales del documento.", MsgBoxStyle.Exclamation, sProcedure)
+                        MsgBox("Tipo de comprobante electrónico inválido.", MsgBoxStyle.Exclamation, sProcedure)
                         cmd = Nothing
                         Return False
                 End Select
