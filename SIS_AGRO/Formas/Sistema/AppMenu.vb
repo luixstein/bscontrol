@@ -1565,4 +1565,12 @@ Public Class AppMenu
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
     End Sub
+
+    Private Sub GrabaImagenQRToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles GrabaImagenQRToolStripMenuItem.Click
+        Dim Child As New Frm_CFDI_GrabaImagenQR
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
 End Class

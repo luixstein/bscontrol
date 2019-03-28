@@ -1121,7 +1121,7 @@ Public Class Class_CXC_Devoluciones_Global
         Return bResultado
     End Function
 
-    Private Function RecuperaXML(ByVal sRutaXML As String) As Boolean
+    Public Function RecuperaXML(ByVal sRutaXML As String) As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -1164,7 +1164,7 @@ Public Class Class_CXC_Devoluciones_Global
         Return bResultado
     End Function
 
-    Private Function RecuperaXML() As String
+    Public Function RecuperaXML() As String
         Dim sResultado As String = ""
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter

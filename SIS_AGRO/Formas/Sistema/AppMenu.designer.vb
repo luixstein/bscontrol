@@ -116,6 +116,7 @@ Partial Public Class AppMenu
         Me.SelecciónDeEjerciciosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AbrircerrarEjerciciosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ContraseñasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ElectrónicaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip = New System.Windows.Forms.MenuStrip()
         Me.VentasToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
@@ -224,7 +225,7 @@ Partial Public Class AppMenu
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
-        Me.ElectrónicaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.GrabaImagenQRToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -686,7 +687,7 @@ Partial Public Class AppMenu
         '
         Me.MenuContabilidadMovimientos.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CapturaDePolizasToolStripMenuItem, Me.IVAAcreditableToolStripMenuItem, Me.PólizasDeCostosToolStripMenuItem})
         Me.MenuContabilidadMovimientos.Name = "MenuContabilidadMovimientos"
-        Me.MenuContabilidadMovimientos.Size = New System.Drawing.Size(152, 22)
+        Me.MenuContabilidadMovimientos.Size = New System.Drawing.Size(144, 22)
         Me.MenuContabilidadMovimientos.Tag = "0048"
         Me.MenuContabilidadMovimientos.Text = "&Movimientos"
         '
@@ -713,7 +714,7 @@ Partial Public Class AppMenu
         '
         Me.ConsultasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AuxiliarDeMayorToolStripMenuItem, Me.RelacionesAnaliticasToolStripMenuItem, Me.CostosToolStripMenuItem, Me.CostoDeProduccionToolStripMenuItem, Me.EstadosFinancierosToolStripMenuItem, Me.IvaPorAcreditarToolStripMenuItem, Me.PolizaDeEgresosToolStripMenuItem, Me.PresupuestoToolStripMenuItem, Me.ReporteGlobalDePolizasToolStripMenuItem, Me.SaldosDeCuentasToolStripMenuItem, Me.ConceptosDeINEGIToolStripMenuItem, Me.NavegadorDePresupuestosToolStripMenuItem, Me.NavegadorDeCostosToolStripMenuItem, Me.ReporteDeCostosToolStripMenuItem})
         Me.ConsultasToolStripMenuItem.Name = "ConsultasToolStripMenuItem"
-        Me.ConsultasToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.ConsultasToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
         Me.ConsultasToolStripMenuItem.Tag = "0050"
         Me.ConsultasToolStripMenuItem.Text = "&Consultas"
         '
@@ -811,7 +812,7 @@ Partial Public Class AppMenu
         '
         Me.MenuiContabilidadProcesos.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SelecciónDeEjerciciosToolStripMenuItem, Me.AbrircerrarEjerciciosToolStripMenuItem})
         Me.MenuiContabilidadProcesos.Name = "MenuiContabilidadProcesos"
-        Me.MenuiContabilidadProcesos.Size = New System.Drawing.Size(152, 22)
+        Me.MenuiContabilidadProcesos.Size = New System.Drawing.Size(144, 22)
         Me.MenuiContabilidadProcesos.Tag = "0056"
         Me.MenuiContabilidadProcesos.Text = "&Procesos"
         '
@@ -831,8 +832,14 @@ Partial Public Class AppMenu
         'ContraseñasToolStripMenuItem
         '
         Me.ContraseñasToolStripMenuItem.Name = "ContraseñasToolStripMenuItem"
-        Me.ContraseñasToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.ContraseñasToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
         Me.ContraseñasToolStripMenuItem.Text = "C&ontraseñas"
+        '
+        'ElectrónicaToolStripMenuItem
+        '
+        Me.ElectrónicaToolStripMenuItem.Name = "ElectrónicaToolStripMenuItem"
+        Me.ElectrónicaToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
+        Me.ElectrónicaToolStripMenuItem.Text = "Electrónica"
         '
         'MenuSalir
         '
@@ -1445,7 +1452,7 @@ Partial Public Class AppMenu
         '
         'UtileriasToolStripMenuItem
         '
-        Me.UtileriasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AdministracionToolStripMenuItem, Me.ConfiguraciónDeUsuariosToolStripMenuItem, Me.MonitoDeTimbradosToolStripMenuItem, Me.EmbarquesMasivosToolStripMenuItem})
+        Me.UtileriasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AdministracionToolStripMenuItem, Me.ConfiguraciónDeUsuariosToolStripMenuItem, Me.MonitoDeTimbradosToolStripMenuItem, Me.EmbarquesMasivosToolStripMenuItem, Me.GrabaImagenQRToolStripMenuItem})
         Me.UtileriasToolStripMenuItem.Name = "UtileriasToolStripMenuItem"
         Me.UtileriasToolStripMenuItem.Size = New System.Drawing.Size(61, 20)
         Me.UtileriasToolStripMenuItem.Text = "Utilerias"
@@ -1527,11 +1534,11 @@ Partial Public Class AppMenu
         Me.pbLogo.TabStop = False
         Me.pbLogo.Visible = False
         '
-        'ElectrónicaToolStripMenuItem
+        'GrabaImagenQRToolStripMenuItem
         '
-        Me.ElectrónicaToolStripMenuItem.Name = "ElectrónicaToolStripMenuItem"
-        Me.ElectrónicaToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
-        Me.ElectrónicaToolStripMenuItem.Text = "Electrónica"
+        Me.GrabaImagenQRToolStripMenuItem.Name = "GrabaImagenQRToolStripMenuItem"
+        Me.GrabaImagenQRToolStripMenuItem.Size = New System.Drawing.Size(213, 22)
+        Me.GrabaImagenQRToolStripMenuItem.Text = "Graba imagen QR"
         '
         'AppMenu
         '
@@ -1763,4 +1770,5 @@ Partial Public Class AppMenu
     Friend WithEvents FormulasToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ProductosToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ElectrónicaToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents GrabaImagenQRToolStripMenuItem As ToolStripMenuItem
 End Class

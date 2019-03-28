@@ -8,6 +8,7 @@ Imports System.Security.Cryptography
 Imports System.Security.Cryptography.X509Certificates
 Imports System.Xml.XPath
 Imports System.Text
+Imports QRCodeLib
 
 Module FacturacionElectronica
 
@@ -1839,4 +1840,107 @@ Module FacturacionElectronica
         Return CadenaOriginal
     End Function
 
+    Public Function CFDI_GrabaImagenQR(ByVal sTipoComprobanteElectronico As String, ByVal sFolio As String) As Boolean
+        Const sProcedure As String = "CFDI_GrabaImagenQR"
+        Dim bResultado As Boolean = False
+        Dim sCadenaXML As String = ""
+
+        Try
+            Dim cmd As New SqlCommand
+            Dim sqlParametro As SqlParameter
+
+            Select Case sTipoComprobanteElectronico
+                Case "FACTURA_VENTA"
+                    Dim oVenta As New Class_Ventas_Global(sFolio)
+                    If oVenta.Existe = False Then
+                        MsgBox("No se encontró el documento.", MsgBoxStyle.Exclamation, sProcedure)
+                    Else
+                        sCadenaXML = oVenta.RecuperaXML
+                    End If
+
+                Case "NOTA_CREDITO_CXC"
+                    Dim oNota As New Class_CXC_Descuento(sFolio)
+                    If oNota.Existe = False Then
+                        MsgBox("No se encontró el documento.", MsgBoxStyle.Exclamation, sProcedure)
+                    Else
+                        sCadenaXML = oNota.RecuperaXML
+                    End If
+
+                Case "PAGO_CXC"
+                    Dim oPagoCXC As New Class_CXC_Pago_CFDI_Global(sFolio)
+                    If oPagoCXC.EXISTE = False Then
+                        MsgBox("No se encontró el documento.", MsgBoxStyle.Exclamation, sProcedure)
+                    Else
+                        sCadenaXML = oPagoCXC.RecuperaXML
+                    End If
+
+                Case "DEVOLUCION_CXC"
+                    Dim oDevolucion As New Class_CXC_Devoluciones_Global(sFolio)
+                    If oDevolucion.Existe = False Then
+                        MsgBox("No se encontró el documento.", MsgBoxStyle.Exclamation, sProcedure)
+                    Else
+                        sCadenaXML = oDevolucion.RecuperaXML
+                    End If
+
+                Case Else
+                    MsgBox("Tipo de comprobante inválido.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+            End Select
+
+            If txtLEN(sCadenaXML) = False Then
+                MsgBox("No se logró recuperar la cadena del xml.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            Dim Cfdi As New CFDIXML.ClassCFDI(sCadenaXML, False)
+
+            If Cfdi.XMLCargado = False Then
+                Return False
+            End If
+
+            With cmd
+                .Connection = _Conexion
+                .CommandTimeout = 0
+                .CommandType = CommandType.StoredProcedure
+
+                Select Case sTipoComprobanteElectronico
+                    Case "FACTURA_VENTA"
+                        .CommandText = "MP_CFD_VENTAS_GRABA_IMAGEN_QR"
+                        sqlParametro = .Parameters.Add("@FOLIO_VENTA", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolio
+
+                    Case "NOTA_CREDITO_CXC"
+                        .CommandText = "MP_CFD_CXC_NOTAS_CREDITO_GRABA_IMAGEN_QR"
+                        sqlParametro = .Parameters.Add("@FOLIO_DESCUENTO", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolio
+
+                    Case "PAGO_CXC"
+                        .CommandText = "MP_CFD_CXC_PAGOS_GRABA_IMAGEN_QR"
+                        sqlParametro = .Parameters.Add("@FOLIO_PAGO", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolio
+
+                    Case ".DEVOLUCION_CXC"
+                        .CommandText = "MP_CFD_CXC_DEVOLUCIONESGRABA_IMAGEN_QR"
+                        sqlParametro = .Parameters.Add("@FOLIO_DEVOLUCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolio
+
+                    Case Else
+                        MsgBox("Tipo de comprobante electrónico inválido.", MsgBoxStyle.Exclamation, sProcedure)
+                        cmd = Nothing
+                        Return False
+                End Select
+
+                sqlParametro = .Parameters.Add("@CBB_IMAGE", SqlDbType.Image) : sqlParametro.Value = Cfdi.ComplementoTFD.CBBImage
+
+                _Conexion.Open()
+                .ExecuteNonQuery()
+            End With
+            cmd = Nothing
+            bResultado = True
+
+            _Conexion.Close()
+
+        Catch ex As Exception
+            _Conexion.Close()
+            HandleError(nombreModulo, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
 End Module
