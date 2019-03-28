@@ -291,7 +291,7 @@ Public Class Class_CatConceptos
         f.sCampo = "Nombre_CONCEPTO"
         f.sOrder = "Nombre_CONCEPTO"
         f.sTable = "CAT_CONCEPTOS"
-        f.sQl = "Select Codigo_CONCEPTO,Nombre_CONCEPTO From CAT_CONCEPTOS Where 1=1 And"
+        f.sQl = "Select Codigo_CONCEPTO,Nombre_CONCEPTO From CAT_CONCEPTOS Where 1=1 And ESTATUS='A' AND "
         f.Inicia("")
         f.ShowDialog()
         Try

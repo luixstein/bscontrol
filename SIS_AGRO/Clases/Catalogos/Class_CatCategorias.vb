@@ -305,7 +305,7 @@ Public Class Class_CatCategorias
         f.sCampo = "NOMBRE_CATEGORIA"
         f.sOrder = "NOMBRE_CATEGORIA"
         f.sTable = "CAT_CATEGORIAS"
-        f.sQl = "SELECT CODIGO_CATEGORIA,NOMBRE_CATEGORIA FROM CAT_CATEGORIAS Where 1=1 And"
+        f.sQl = "SELECT CODIGO_CATEGORIA,NOMBRE_CATEGORIA FROM CAT_CATEGORIAS Where 1=1 AND ESTATUS='A' And"
         f.Inicia("")
         f.ShowDialog()
         Try
