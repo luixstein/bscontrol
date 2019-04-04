@@ -137,7 +137,15 @@ Public Class Frm_CXC_Pagos
 
     Private Sub btnAgregarCuentaBancariaCliente_Click(sender As Object, e As EventArgs) Handles btnAgregarCuentaBancariaCliente.Click
         'Dim oCuentas As New Catalogo_ClientesCuentasBancarias(Catalogo_ClientesCuentasBancarias.Accion.AGREGAR)
-        Me.GestionaAltaEdicionCuentaBancariaCliente(True)
+        If txtLEN(Me.TxtCodigoCliente.Text) = False Then
+            MsgBox("Seleccione primero un cliente.", MsgBoxStyle.Exclamation, Me.Text)
+            If Me.TxtCodigoCliente.Enabled = True Then
+                Me.TxtCodigoCliente.Focus()
+            End If
+            Return
+        Else
+            Me.GestionaAltaEdicionCuentaBancariaCliente(True)
+        End If
     End Sub
 
     Private Sub btnEditarCuentaBancariaCliente_Click(sender As Object, e As EventArgs) Handles btnEditarCuentaBancariaCliente.Click
