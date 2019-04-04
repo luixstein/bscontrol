@@ -60,7 +60,7 @@ Partial Class Catalogo_Zonas
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbEditar, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimirListado, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(859, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(644, 27)
         Me.tsMenu.TabIndex = 12
         Me.tsMenu.Text = "tsMenu"
         '
@@ -69,7 +69,7 @@ Partial Class Catalogo_Zonas
         Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
         Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbNuevo.Name = "tsbNuevo"
-        Me.tsbNuevo.Size = New System.Drawing.Size(76, 24)
+        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
         Me.tsbNuevo.Text = "&Nuevo"
         '
         'tsbEditar
@@ -77,7 +77,7 @@ Partial Class Catalogo_Zonas
         Me.tsbEditar.Image = CType(resources.GetObject("tsbEditar.Image"), System.Drawing.Image)
         Me.tsbEditar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbEditar.Name = "tsbEditar"
-        Me.tsbEditar.Size = New System.Drawing.Size(72, 24)
+        Me.tsbEditar.Size = New System.Drawing.Size(61, 24)
         Me.tsbEditar.Text = "&Editar"
         '
         'tsbGrabar
@@ -85,7 +85,7 @@ Partial Class Catalogo_Zonas
         Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
         Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbGrabar.Name = "tsbGrabar"
-        Me.tsbGrabar.Size = New System.Drawing.Size(78, 24)
+        Me.tsbGrabar.Size = New System.Drawing.Size(66, 24)
         Me.tsbGrabar.Text = "&Grabar"
         '
         'tsbCancelar
@@ -93,7 +93,7 @@ Partial Class Catalogo_Zonas
         Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
         Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbCancelar.Name = "tsbCancelar"
-        Me.tsbCancelar.Size = New System.Drawing.Size(90, 24)
+        Me.tsbCancelar.Size = New System.Drawing.Size(77, 24)
         Me.tsbCancelar.Text = "&Cancelar"
         '
         'tsbImprimirListado
@@ -101,7 +101,7 @@ Partial Class Catalogo_Zonas
         Me.tsbImprimirListado.Image = CType(resources.GetObject("tsbImprimirListado.Image"), System.Drawing.Image)
         Me.tsbImprimirListado.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbImprimirListado.Name = "tsbImprimirListado"
-        Me.tsbImprimirListado.Size = New System.Drawing.Size(139, 24)
+        Me.tsbImprimirListado.Size = New System.Drawing.Size(115, 24)
         Me.tsbImprimirListado.Text = "&Imprimir listado"
         '
         'tsbSalir
@@ -109,30 +109,29 @@ Partial Class Catalogo_Zonas
         Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
         Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
+        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
         Me.tsbSalir.Text = "&Salir"
         '
         'StatusStripEstado
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssLabel, Me.tssLabelEstado})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 679)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 550)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
-        Me.StatusStripEstado.Size = New System.Drawing.Size(859, 25)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(644, 22)
         Me.StatusStripEstado.TabIndex = 13
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
         'tssLabel
         '
         Me.tssLabel.Name = "tssLabel"
-        Me.tssLabel.Size = New System.Drawing.Size(61, 20)
+        Me.tssLabel.Size = New System.Drawing.Size(48, 17)
         Me.tssLabel.Text = "Estado :"
         '
         'tssLabelEstado
         '
         Me.tssLabelEstado.Name = "tssLabelEstado"
-        Me.tssLabelEstado.Size = New System.Drawing.Size(0, 20)
+        Me.tssLabelEstado.Size = New System.Drawing.Size(0, 17)
         '
         'gBoxInformacion
         '
@@ -143,11 +142,9 @@ Partial Class Catalogo_Zonas
         Me.gBoxInformacion.Controls.Add(Me.TxtNombreZona)
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayCodCultivo)
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigoZona)
-        Me.gBoxInformacion.Location = New System.Drawing.Point(16, 34)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
+        Me.gBoxInformacion.Location = New System.Drawing.Point(12, 28)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
-        Me.gBoxInformacion.Size = New System.Drawing.Size(413, 634)
+        Me.gBoxInformacion.Size = New System.Drawing.Size(310, 515)
         Me.gBoxInformacion.TabIndex = 11
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
@@ -155,78 +152,69 @@ Partial Class Catalogo_Zonas
         'cboPlaza
         '
         Me.cboPlaza.FormattingEnabled = True
-        Me.cboPlaza.Location = New System.Drawing.Point(103, 82)
-        Me.cboPlaza.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboPlaza.Location = New System.Drawing.Point(77, 67)
         Me.cboPlaza.Name = "cboPlaza"
-        Me.cboPlaza.Size = New System.Drawing.Size(301, 24)
+        Me.cboPlaza.Size = New System.Drawing.Size(227, 21)
         Me.cboPlaza.TabIndex = 2
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(8, 86)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Location = New System.Drawing.Point(6, 70)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(51, 17)
+        Me.Label1.Size = New System.Drawing.Size(39, 13)
         Me.Label1.TabIndex = 92
         Me.Label1.Text = "Plaza :"
         '
         'Label2
         '
-        Me.Label2.Location = New System.Drawing.Point(161, -140)
-        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label2.Location = New System.Drawing.Point(121, -114)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(241, 16)
+        Me.Label2.Size = New System.Drawing.Size(181, 13)
         Me.Label2.TabIndex = 91
         Me.Label2.Text = ".."
         '
         'LblDisplayNombreCultivo
         '
         Me.LblDisplayNombreCultivo.AutoSize = True
-        Me.LblDisplayNombreCultivo.Location = New System.Drawing.Point(8, 54)
-        Me.LblDisplayNombreCultivo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayNombreCultivo.Location = New System.Drawing.Point(6, 44)
         Me.LblDisplayNombreCultivo.Name = "LblDisplayNombreCultivo"
-        Me.LblDisplayNombreCultivo.Size = New System.Drawing.Size(66, 17)
+        Me.LblDisplayNombreCultivo.Size = New System.Drawing.Size(50, 13)
         Me.LblDisplayNombreCultivo.TabIndex = 74
         Me.LblDisplayNombreCultivo.Text = "Nombre :"
         '
         'TxtNombreZona
         '
-        Me.TxtNombreZona.Location = New System.Drawing.Point(103, 50)
-        Me.TxtNombreZona.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtNombreZona.MaxLength = 50
+        Me.TxtNombreZona.Location = New System.Drawing.Point(77, 41)
+        Me.TxtNombreZona.MaxLength = 60
         Me.TxtNombreZona.Name = "TxtNombreZona"
-        Me.TxtNombreZona.Size = New System.Drawing.Size(301, 22)
+        Me.TxtNombreZona.Size = New System.Drawing.Size(227, 20)
         Me.TxtNombreZona.TabIndex = 1
         '
         'LblDisplayCodCultivo
         '
         Me.LblDisplayCodCultivo.AutoSize = True
-        Me.LblDisplayCodCultivo.Location = New System.Drawing.Point(8, 22)
-        Me.LblDisplayCodCultivo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayCodCultivo.Location = New System.Drawing.Point(6, 18)
         Me.LblDisplayCodCultivo.Name = "LblDisplayCodCultivo"
-        Me.LblDisplayCodCultivo.Size = New System.Drawing.Size(49, 17)
+        Me.LblDisplayCodCultivo.Size = New System.Drawing.Size(38, 13)
         Me.LblDisplayCodCultivo.TabIndex = 8
         Me.LblDisplayCodCultivo.Text = "Zona :"
         '
         'TxtCodigoZona
         '
-        Me.TxtCodigoZona.Location = New System.Drawing.Point(101, 18)
-        Me.TxtCodigoZona.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtCodigoZona.Location = New System.Drawing.Point(76, 15)
         Me.TxtCodigoZona.MaxLength = 2
         Me.TxtCodigoZona.Name = "TxtCodigoZona"
-        Me.TxtCodigoZona.Size = New System.Drawing.Size(75, 22)
+        Me.TxtCodigoZona.Size = New System.Drawing.Size(57, 20)
         Me.TxtCodigoZona.TabIndex = 0
         '
         'gBoxBusquedaRapida
         '
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
-        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(439, 34)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
+        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(329, 28)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
-        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(407, 633)
+        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(305, 514)
         Me.gBoxBusquedaRapida.TabIndex = 10
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
@@ -238,23 +226,21 @@ Partial Class Catalogo_Zonas
         Me.Grid.AllowUserToResizeColumns = False
         Me.Grid.AllowUserToResizeRows = False
         Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Grid.Location = New System.Drawing.Point(8, 53)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
+        Me.Grid.Location = New System.Drawing.Point(6, 43)
         Me.Grid.Name = "Grid"
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
         Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(389, 572)
+        Me.Grid.Size = New System.Drawing.Size(292, 465)
         Me.Grid.TabIndex = 115
         '
         'txtFiltro
         '
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtFiltro.Location = New System.Drawing.Point(6, 19)
         Me.txtFiltro.Name = "txtFiltro"
-        Me.txtFiltro.Size = New System.Drawing.Size(389, 22)
+        Me.txtFiltro.Size = New System.Drawing.Size(293, 20)
         Me.txtFiltro.TabIndex = 0
         '
         'ErrorProvider
@@ -263,14 +249,13 @@ Partial Class Catalogo_Zonas
         '
         'Catalogo_Zonas
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(859, 704)
+        Me.ClientSize = New System.Drawing.Size(644, 572)
         Me.Controls.Add(Me.tsMenu)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.gBoxInformacion)
         Me.Controls.Add(Me.gBoxBusquedaRapida)
-        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Zonas"
         Me.ShowIcon = False

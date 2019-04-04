@@ -157,7 +157,7 @@ Public Class Class_CatZonas
             .CommandText = "MP_CAT_ZONAS_GRABA"
 
             sqlParametro = .Parameters.Add("@CODIGO_ZONA", SqlDbType.SmallInt, 2) : sqlParametro.Value = Me._CODIGO_ZONA
-            sqlParametro = .Parameters.Add("@NOMBRE_ZONA", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_ZONA.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@NOMBRE_ZONA", SqlDbType.NVarChar, 60) : sqlParametro.Value = Me._NOMBRE_ZONA.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt, 2) : sqlParametro.Value = Me._CODIGO_PLAZA
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._Agregar.ToString
             Try
@@ -214,7 +214,7 @@ Public Class Class_CatZonas
             .CommandText = "MP_CAT_ZONAS_GRABA"
 
             sqlParametro = .Parameters.Add("@CODIGO_ZONA", SqlDbType.SmallInt, 2) : sqlParametro.Value = Me._CODIGO_ZONA
-            sqlParametro = .Parameters.Add("@NOMBRE_ZONA", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_ZONA.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@NOMBRE_ZONA", SqlDbType.NVarChar, 60) : sqlParametro.Value = Me._NOMBRE_ZONA.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt, 2) : sqlParametro.Value = Me._CODIGO_PLAZA
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._Agregar.ToString
 
