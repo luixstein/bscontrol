@@ -31,12 +31,14 @@ Partial Class Rpt_Ventas_ProductosVendidos
         Me.RdnVentasPorFacturas = New System.Windows.Forms.RadioButton()
         Me.RdnVentasPorCultivo = New System.Windows.Forms.RadioButton()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.lblVendedor = New System.Windows.Forms.Label()
+        Me.cboVendedor = New System.Windows.Forms.ComboBox()
         Me.chkSoloUtilidadNegativa = New System.Windows.Forms.CheckBox()
         Me.lblCultivoAgricola = New System.Windows.Forms.Label()
         Me.CboCultivoAgricola = New System.Windows.Forms.ComboBox()
         Me.LblNombreProducto = New System.Windows.Forms.Label()
         Me.TxtCodigoProducto = New System.Windows.Forms.TextBox()
-        Me.Label4 = New System.Windows.Forms.Label()
+        Me.LblDisplayProducto = New System.Windows.Forms.Label()
         Me.LblDisplayZona = New System.Windows.Forms.Label()
         Me.CboZona = New System.Windows.Forms.ComboBox()
         Me.CboMercado = New System.Windows.Forms.ComboBox()
@@ -57,8 +59,7 @@ Partial Class Rpt_Ventas_ProductosVendidos
         Me.DtFechaDesde = New System.Windows.Forms.DateTimePicker()
         Me.LblFamilia = New System.Windows.Forms.Label()
         Me.CboFamilia = New System.Windows.Forms.ComboBox()
-        Me.cboVendedor = New System.Windows.Forms.ComboBox()
-        Me.lblVendedor = New System.Windows.Forms.Label()
+        Me.rdnVtaUtilidadGasto = New System.Windows.Forms.RadioButton()
         Me.ToolStrip1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -92,6 +93,7 @@ Partial Class Rpt_Ventas_ProductosVendidos
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.rdnVtaUtilidadGasto)
         Me.GroupBox1.Controls.Add(Me.RdnDevoluciones)
         Me.GroupBox1.Controls.Add(Me.RdnVentasPorFacturas)
         Me.GroupBox1.Controls.Add(Me.RdnVentasPorCultivo)
@@ -99,7 +101,7 @@ Partial Class Rpt_Ventas_ProductosVendidos
         Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox1.Size = New System.Drawing.Size(267, 116)
+        Me.GroupBox1.Size = New System.Drawing.Size(267, 154)
         Me.GroupBox1.TabIndex = 4
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Reportes"
@@ -148,7 +150,7 @@ Partial Class Rpt_Ventas_ProductosVendidos
         Me.GroupBox2.Controls.Add(Me.CboCultivoAgricola)
         Me.GroupBox2.Controls.Add(Me.LblNombreProducto)
         Me.GroupBox2.Controls.Add(Me.TxtCodigoProducto)
-        Me.GroupBox2.Controls.Add(Me.Label4)
+        Me.GroupBox2.Controls.Add(Me.LblDisplayProducto)
         Me.GroupBox2.Controls.Add(Me.LblDisplayZona)
         Me.GroupBox2.Controls.Add(Me.CboZona)
         Me.GroupBox2.Controls.Add(Me.CboMercado)
@@ -177,6 +179,28 @@ Partial Class Rpt_Ventas_ProductosVendidos
         Me.GroupBox2.TabIndex = 0
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Filtros"
+        '
+        'lblVendedor
+        '
+        Me.lblVendedor.AutoSize = True
+        Me.lblVendedor.Location = New System.Drawing.Point(15, 351)
+        Me.lblVendedor.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblVendedor.Name = "lblVendedor"
+        Me.lblVendedor.Size = New System.Drawing.Size(78, 17)
+        Me.lblVendedor.TabIndex = 401
+        Me.lblVendedor.Text = "Vendedor :"
+        '
+        'cboVendedor
+        '
+        Me.cboVendedor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboVendedor.FormattingEnabled = True
+        Me.cboVendedor.Items.AddRange(New Object() {"A", "B"})
+        Me.cboVendedor.Location = New System.Drawing.Point(136, 348)
+        Me.cboVendedor.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboVendedor.MaxLength = 1
+        Me.cboVendedor.Name = "cboVendedor"
+        Me.cboVendedor.Size = New System.Drawing.Size(408, 24)
+        Me.cboVendedor.TabIndex = 400
         '
         'chkSoloUtilidadNegativa
         '
@@ -229,15 +253,15 @@ Partial Class Rpt_Ventas_ProductosVendidos
         Me.TxtCodigoProducto.Size = New System.Drawing.Size(95, 22)
         Me.TxtCodigoProducto.TabIndex = 4
         '
-        'Label4
+        'LblDisplayProducto
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(15, 156)
-        Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(73, 17)
-        Me.Label4.TabIndex = 395
-        Me.Label4.Text = "Producto :"
+        Me.LblDisplayProducto.AutoSize = True
+        Me.LblDisplayProducto.Location = New System.Drawing.Point(15, 156)
+        Me.LblDisplayProducto.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayProducto.Name = "LblDisplayProducto"
+        Me.LblDisplayProducto.Size = New System.Drawing.Size(73, 17)
+        Me.LblDisplayProducto.TabIndex = 395
+        Me.LblDisplayProducto.Text = "Producto :"
         '
         'LblDisplayZona
         '
@@ -444,27 +468,16 @@ Partial Class Rpt_Ventas_ProductosVendidos
         Me.CboFamilia.Size = New System.Drawing.Size(408, 24)
         Me.CboFamilia.TabIndex = 8
         '
-        'cboVendedor
+        'rdnVtaUtilidadGasto
         '
-        Me.cboVendedor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboVendedor.FormattingEnabled = True
-        Me.cboVendedor.Items.AddRange(New Object() {"A", "B"})
-        Me.cboVendedor.Location = New System.Drawing.Point(136, 348)
-        Me.cboVendedor.Margin = New System.Windows.Forms.Padding(4)
-        Me.cboVendedor.MaxLength = 1
-        Me.cboVendedor.Name = "cboVendedor"
-        Me.cboVendedor.Size = New System.Drawing.Size(408, 24)
-        Me.cboVendedor.TabIndex = 400
-        '
-        'lblVendedor
-        '
-        Me.lblVendedor.AutoSize = True
-        Me.lblVendedor.Location = New System.Drawing.Point(15, 351)
-        Me.lblVendedor.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblVendedor.Name = "lblVendedor"
-        Me.lblVendedor.Size = New System.Drawing.Size(78, 17)
-        Me.lblVendedor.TabIndex = 401
-        Me.lblVendedor.Text = "Vendedor :"
+        Me.rdnVtaUtilidadGasto.AutoSize = True
+        Me.rdnVtaUtilidadGasto.Location = New System.Drawing.Point(21, 111)
+        Me.rdnVtaUtilidadGasto.Margin = New System.Windows.Forms.Padding(4)
+        Me.rdnVtaUtilidadGasto.Name = "rdnVtaUtilidadGasto"
+        Me.rdnVtaUtilidadGasto.Size = New System.Drawing.Size(195, 21)
+        Me.rdnVtaUtilidadGasto.TabIndex = 3
+        Me.rdnVtaUtilidadGasto.Text = "Ventas utilidad con gastos"
+        Me.rdnVtaUtilidadGasto.UseVisualStyleBackColor = True
         '
         'Rpt_Ventas_ProductosVendidos
         '
@@ -518,11 +531,12 @@ Partial Class Rpt_Ventas_ProductosVendidos
     Friend WithEvents CboFamilia As System.Windows.Forms.ComboBox
     Friend WithEvents LblNombreProducto As System.Windows.Forms.Label
     Friend WithEvents TxtCodigoProducto As System.Windows.Forms.TextBox
-    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents LblDisplayProducto As System.Windows.Forms.Label
     Friend WithEvents lblCultivoAgricola As System.Windows.Forms.Label
     Friend WithEvents CboCultivoAgricola As System.Windows.Forms.ComboBox
     Friend WithEvents RdnDevoluciones As System.Windows.Forms.RadioButton
     Friend WithEvents chkSoloUtilidadNegativa As System.Windows.Forms.CheckBox
     Friend WithEvents lblVendedor As System.Windows.Forms.Label
     Friend WithEvents cboVendedor As System.Windows.Forms.ComboBox
+    Friend WithEvents rdnVtaUtilidadGasto As System.Windows.Forms.RadioButton
 End Class

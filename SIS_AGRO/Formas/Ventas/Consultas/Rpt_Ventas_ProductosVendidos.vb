@@ -55,7 +55,7 @@ Buscar:
         End Select
     End Sub
 
-    Private Sub Rdn_CheckedChanged(sender As Object, e As EventArgs) Handles RdnVentasPorCultivo.CheckedChanged, RdnVentasPorFacturas.CheckedChanged, RdnDevoluciones.CheckedChanged
+    Private Sub Rdn_CheckedChanged(sender As Object, e As EventArgs) Handles RdnVentasPorCultivo.CheckedChanged, RdnVentasPorFacturas.CheckedChanged, RdnDevoluciones.CheckedChanged, rdnVtaUtilidadGasto.CheckedChanged
         If Me.RdnDevoluciones.Checked = True Then
             Me.CboTipoDocumento.Visible = False
             Me.lblDocumentos.Visible = False
@@ -65,6 +65,33 @@ Buscar:
             Me.LblDisplayMercado.Visible = False
             Me.lblCultivoAgricola.Visible = False
             Me.cboVendedor.Visible = False
+
+            Me.LblDisplayProducto.Visible = True
+            Me.TxtCodigoProducto.Visible = True
+            Me.LblNombreProducto.Visible = True
+            Me.LblDisplayLinea.Visible = True
+            Me.CboLinea.Visible = True
+            Me.LblFamilia.Visible = True
+            Me.CboFamilia.Visible = True
+
+        ElseIf Me.rdnVtaUtilidadGasto.Checked = True Then
+            Me.CboTipoDocumento.Visible = True
+            Me.lblDocumentos.Visible = True
+            Me.CkbFechaReferencia.Visible = False
+            Me.CboMercado.Visible = True
+            Me.CboCultivoAgricola.Visible = False
+            Me.LblDisplayMercado.Visible = True
+            Me.lblCultivoAgricola.Visible = False
+            Me.cboVendedor.Visible = True
+
+            Me.LblDisplayProducto.Visible = False
+            Me.TxtCodigoProducto.Visible = False
+            Me.LblNombreProducto.Visible = False
+            Me.LblDisplayLinea.Visible = False
+            Me.CboLinea.Visible = False
+            Me.LblFamilia.Visible = False
+            Me.CboFamilia.Visible = False
+
         Else
             Me.CboTipoDocumento.Visible = True
             Me.lblDocumentos.Visible = True
@@ -74,6 +101,15 @@ Buscar:
             Me.LblDisplayMercado.Visible = True
             Me.lblCultivoAgricola.Visible = True
             Me.cboVendedor.Visible = True
+
+            Me.LblDisplayProducto.Visible = True
+            Me.TxtCodigoProducto.Visible = True
+            Me.LblNombreProducto.Visible = True
+            Me.LblDisplayLinea.Visible = True
+            Me.CboLinea.Visible = True
+            Me.LblFamilia.Visible = True
+            Me.CboFamilia.Visible = True
+
         End If
     End Sub
 
@@ -246,8 +282,10 @@ Buscar:
                 FormatoDeReporte = "RPT_VENTAS_AGRUPADO_FACTURA"
             ElseIf Me.RdnVentasPorCultivo.Checked = True Then
                 FormatoDeReporte = "RPT_VENTAS_AGRUPADO_CULTIVO"
-            Else
+            ElseIf Me.RdnDevoluciones.Checked = True Then
                 FormatoDeReporte = "RPT_CXC_DEVOLUCIONES"
+            Else
+                FormatoDeReporte = "RPT_VENTAS_UTILIDAD_CON_GASTO"
             End If
 
             oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
@@ -255,19 +293,25 @@ Buscar:
             Rpt.SetParameterValue("@FECHA2", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
             Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.TxtCliente.Text)
             Rpt.SetParameterValue("@CODIGO_ZONA", Me.CboZona.SelectedValue.ToString)
-            Rpt.SetParameterValue("@CODIGO_ARTICULO", Me.TxtCodigoProducto.Text)
             Rpt.SetParameterValue("@CODIGO_ALMACEN", Me.CboAlmacen.SelectedValue.ToString)
-            Rpt.SetParameterValue("@CODIGO_LINEA", Me.CboLinea.SelectedValue.ToString)
-            Rpt.SetParameterValue("@CODIGO_FAMILIA", Me.CboFamilia.SelectedValue.ToString)
             Rpt.SetParameterValue("@CODIGO_USUARIO", Usuario.Codigo_Usuario.ToString)
             Rpt.SetParameterValue("@CODIGO_VENDEDOR", Me.cboVendedor.SelectedValue)
+
+            If Me.rdnVtaUtilidadGasto.Checked = False Then
+                Rpt.SetParameterValue("@CODIGO_ARTICULO", Me.TxtCodigoProducto.Text)
+                Rpt.SetParameterValue("@CODIGO_LINEA", Me.CboLinea.SelectedValue.ToString)
+                Rpt.SetParameterValue("@CODIGO_FAMILIA", Me.CboFamilia.SelectedValue.ToString)
+            End If
 
             If Me.RdnDevoluciones.Checked = False Then
                 Rpt.SetParameterValue("@CODIGO_TIPO_DOCUMENTO", Me.CboTipoDocumento.SelectedValue.ToString)
                 Rpt.SetParameterValue("@FILTRAR_FECHA_REFERENCIA", IIf(Me.CkbFechaReferencia.Checked = True, "1", "0"))
                 Rpt.SetParameterValue("@CODIGO_TIPO_MERCADO", Me.CboMercado.SelectedValue.ToString)
-                Rpt.SetParameterValue("@CODIGO_CULTIVO", IIf(txtLEN(Me.CboCultivoAgricola.SelectedValue.ToString) = True, Me.CboCultivoAgricola.SelectedValue.ToString, "T"))
                 Rpt.SetParameterValue("@SOLO_CON_UTILIDAD_NEGATIVA", IIf(Me.chkSoloUtilidadNegativa.Checked = True, "1", "0"))
+
+                If Me.rdnVtaUtilidadGasto.Checked = False Then
+                    Rpt.SetParameterValue("@CODIGO_CULTIVO", IIf(txtLEN(Me.CboCultivoAgricola.SelectedValue.ToString) = True, Me.CboCultivoAgricola.SelectedValue.ToString, "T"))
+                End If
             End If
 
             Dim frm As New Reporte(Rpt)
