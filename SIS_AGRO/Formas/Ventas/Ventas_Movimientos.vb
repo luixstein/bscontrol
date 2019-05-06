@@ -907,7 +907,7 @@ Buscar:
             Me.Grid.Cell(0, Me.igyIEPS_IMPORTE).Text = "IEPS_IMP"
             Me.Grid.Cell(0, Me.igyBASE_IEPS).Text = "BASE_IEPS"
             Me.Grid.Cell(0, Me.igyBASE_IVA).Text = "BASE_IVA"
-            Me.Grid.Cell(0, Me.igyCosto).Text = "Costo"
+            Me.Grid.Cell(0, Me.igyCosto).Text = "Costo Unit"
             Me.Grid.Cell(0, Me.igyUtilidadUnitaria).Text = "Utilidad unitaria"
             Me.Grid.Cell(0, Me.igyUtilidadTotal).Text = "Utilidad total"
             Me.Grid.Cell(0, Me.igyUtilidadPorcentaje).Text = "% utilidad"
@@ -1500,6 +1500,10 @@ Buscar:
                 End If
             End If
 
+            If Me.GestionaValorColumaCostoCapturaNoInventariables = False Then
+                Return False
+            End If
+
             With Me.oVenta
                 .FOLIO_VENTA = Me.txtFolio.Text.ToUpper
                 .FECHA = Me.dpFecha.Value
@@ -1658,6 +1662,10 @@ Buscar:
                             .oVentasDetalle.ID_SIS_CAT_IMPUESTOS_FLETE = Me.Grid.Cell(i, Me.iGyIdSisCatImpuestosFlete).Text
                         End If
                         .oVentasDetalle.RETENCION_IVA_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.iGyFleteImporte).Text)
+
+                        If Me.Grid.Cell(i, Me.igyTipoControlInventariable).Text = "NIV" Then
+                            .oVentasDetalle.COSTO = valorNumericoD(Me.Grid.Cell(i, Me.igyCosto).Text)
+                        End If
 
                         If .oVentasDetalle.GrabaRenglon = False Then
                             MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, sProcedure)
@@ -3051,12 +3059,12 @@ CANCELAR:
 
     Private Function EstableceCuentasContables() As Boolean
         Try
-            Dim I As Integer
+            Dim i As Integer
 
-            For I = 1 To Me.Grid.Rows - 1
-                Dim oArticulos = New Class_CatArticulos(Me.Grid.Cell(I, Me.igyCodigo).Text)
+            For i = 1 To Me.Grid.Rows - 1
+                Dim oArticulos = New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
                 If oArticulos.Existe = True Then
-                    Me.Grid.Cell(I, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString
+                    Me.Grid.Cell(i, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString
                     'If txtLEN(oArticulos.CODIGO_CULTIVO) = True Then
                     '    'Me.Grid.Cell(I, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + "00" + oArticulos.CODIGO_CULTIVO.ToString 'En agr esta así, pero aquí la cuenta es general
                     '    Me.Grid.Cell(I, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString
@@ -3070,6 +3078,57 @@ CANCELAR:
 
         Catch ex As Exception
             HandleError(Me.Name, "EstableceCuentasContables", ex)
+        End Try
+    End Function
+
+    Private Function GestionaColumaCostoCapturaNoInventariables() As Boolean
+        Try
+            Dim i As Integer, bEncontroNoInventariables As Boolean = False
+
+            For i = 1 To Me.Grid.Rows - 1
+                If Me.Grid.Cell(i, Me.igyTipoControlInventariable).Text = "NIV" Then
+                    bEncontroNoInventariables = True
+                    Exit For
+                End If
+            Next
+
+            If bEncontroNoInventariables = True Then
+                Me.Grid.Column(Me.igyCosto).Locked = False 'Permite que tecleen el costo
+                Me.Grid.Column(Me.igyCosto).Visible = True
+
+                Return True
+            Else
+                Me.Grid.Column(Me.igyCosto).Locked = True
+
+                If Me.ckbMostrarUtilidad.Checked = False Then 'Solamente si no estaba el check oculta la columna, sino queda como ya estuviera
+                    Me.Grid.Column(Me.igyCosto).Visible = False
+                End If
+
+            End If
+
+        Catch ex As Exception
+            HandleError(Me.Name, "GestionaColumaCostoCapturaNoInventariables", ex)
+        End Try
+    End Function
+
+    Private Function GestionaValorColumaCostoCapturaNoInventariables() As Boolean
+        Try
+            Dim i As Integer, bEncontroNoInventariablesSinCosto As Boolean = False
+
+            For i = 1 To Me.Grid.Rows - 1
+                If Me.Grid.Cell(i, Me.igyTipoControlInventariable).Text = "NIV" AndAlso valorNumerico(Me.Grid.Cell(i, Me.igyCosto).Text) <= 0 Then
+                    MsgBox("Capture por favor el costo del renglón " & i & " ya que es un artículo de servicio.", MsgBoxStyle.Exclamation, Me.Text)
+                    bEncontroNoInventariablesSinCosto = True
+                    Exit For
+                End If
+            Next
+
+            If bEncontroNoInventariablesSinCosto = False Then
+                Return True
+            End If
+
+        Catch ex As Exception
+            HandleError(Me.Name, "GestionaColumaCostoCapturaNoInventariables", ex)
         End Try
     End Function
 
@@ -3145,6 +3204,8 @@ LlenaLinea:
                                 Me.Grid.Cell(Renglon, Me.igyCosto).Text = oPrecio.Costo.ToString
                                 Me.Grid.Cell(Renglon, Me.igyUnidad).Text = oArticulo.UNIDAD_VENTA
                                 Me.Grid.Cell(Renglon, Me.igyIEPS_PORCENTAJE).Text = oArticulo.IEPS_PORCENTAJE.ToString
+
+                                Me.GestionaColumaCostoCapturaNoInventariables()
                             Else
                                 Dim oEmbarques As New Class_Embarques_EmbarqueGlobal()
                                 oEmbarques.FOLIO_EMBARQUE = Me.txtFolioEmbarque.Text

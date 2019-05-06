@@ -493,6 +493,7 @@ Public Class Class_Ventas_Detalle
             sqlParametro = .Parameters.Add("@PRECIO_SIN_DESCUENTO", SqlDbType.Decimal) : sqlParametro.Value = Me._PRECIO_SIN_DESCUENTO
             sqlParametro = .Parameters.Add("@ID_SIS_CAT_IMPUESTOS_FLETE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._ID_SIS_CAT_IMPUESTOS_FLETE.ToString
             sqlParametro = .Parameters.Add("@RETENCION_IVA_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_IMPORTE
+            sqlParametro = .Parameters.Add("@COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO 'Para el caso de inventariables este costo no es el real(luego se calcula), para los no inventariables si es costo real.
 
             Try
                 Me._Conexion.Open()
