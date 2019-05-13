@@ -2862,6 +2862,7 @@ CANCELAR:
                 ElseIf sTipoVenta = "SCR" Then
                     Me.CboDocumento.SelectedValue = "REM" + Plaza.CODIGO_PLAZA.ToString
                     Me.GeneraFolio()
+                    Me.oVenta = oVentaLocal
                 ElseIf sTipoVenta = "SR" Or sTipoVenta = "SCF" Then
                     'Me.CboDocumento.SelectedValue = "FCT" + Plaza.CODIGO_PLAZA.ToString
                     Me.CboDocumento.SelectedValue = sCodigoDocumentoFacturaExterno
