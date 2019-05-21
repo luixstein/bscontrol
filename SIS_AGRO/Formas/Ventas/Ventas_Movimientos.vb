@@ -2088,13 +2088,14 @@ CANCELAR:
 
                     Select Case Me.cboTipoNegociacion.Text
                         Case "CONTADO"
-                            If Me.cboFormaPago.SelectedValue.ToString = "99" Then
-                                MsgBox("La forma de pago no puede ser 99-Por definir porque al ser venta de ""contado"" entonces se sabe como se esta pagando el documento.", vbExclamation, sProcedure)
-                                If Me.cboFormaPago.Enabled = True Then
-                                    Me.cboFormaPago.Focus()
-                                End If
-                                Return False
-                            End If
+                            'Se quitó la restricción, biologos ocupa facturar un auto a una aseguradora con PUE-99
+                            'If Me.cboFormaPago.SelectedValue.ToString = "99" Then
+                            '    MsgBox("La forma de pago no puede ser 99-Por definir porque al ser venta de ""contado"" entonces se sabe como se esta pagando el documento.", vbExclamation, sProcedure)
+                            '    If Me.cboFormaPago.Enabled = True Then
+                            '        Me.cboFormaPago.Focus()
+                            '    End If
+                            '    Return False
+                            'End If
                         Case "CREDITO" 'SE PERMITIRA GRABAR A CREDITO CON OTRA FORMA DE PAGO
                             'If Me.cboFormaPago.SelectedValue.ToString <> "99" Then
                             '    MsgBox("La forma de pago debe ser 99-Por definir porque al ser venta de ""crédito"" no hay pago.", vbExclamation, sProcedure)
@@ -4107,6 +4108,9 @@ busca_serie:
                     If txtLEN(Me.TxtCliente.Text) = True Then
                         If bCargandoVenta = False Then
                             Me.EstableceFormaPagoCliente()
+                        End If
+                        If Me.cboFormaPago.SelectedValue.ToString = "99" Then
+                            Me.cboFormaPago.SelectedIndex = -1
                         End If
                     Else
                         Me.lblCliente.Text = ""
