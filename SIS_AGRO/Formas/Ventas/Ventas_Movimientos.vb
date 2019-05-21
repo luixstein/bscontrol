@@ -4100,8 +4100,9 @@ busca_serie:
                         Return
                     End If
 
+                    'Se quitó la restricción, biologos ocupa facturar un auto a una aseguradora con PUE-99
                     'Quitamos el "99-Por definir" ya que sólo es para crédito
-                    dViewFormasPago.RowFilter = "CODIGO_METODO_PAGO<>'99'"
+                    'dViewFormasPago.RowFilter = "CODIGO_METODO_PAGO<>'99'"
 
                     If txtLEN(Me.TxtCliente.Text) = True Then
                         If bCargandoVenta = False Then
