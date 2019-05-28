@@ -1181,6 +1181,12 @@
     <Compile Include="Formas\Ventas\Ventas_Comentarios.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\Ventas\Ventas_Modifica_Costos.Designer.vb">
+      <DependentUpon>Ventas_Modifica_Costos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Ventas\Ventas_Modifica_Costos.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\Ventas\Ventas_Movimientos.designer.vb">
       <DependentUpon>Ventas_Movimientos.vb</DependentUpon>
     </Compile>
@@ -2232,6 +2238,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Ventas\Ventas_Comentarios.resx">
       <DependentUpon>Ventas_Comentarios.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Ventas\Ventas_Modifica_Costos.resx">
+      <DependentUpon>Ventas_Modifica_Costos.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Ventas\Ventas_Modifica_Precios.resx">
       <DependentUpon>Ventas_Modifica_Precios.vb</DependentUpon>
