@@ -565,6 +565,7 @@ Public Class Class_Ventas_Detalle
             .CommandText = "MP_VENTA_MODIFICA_COSTO_DETALLE"
 
             sqlParametro = .Parameters.Add("@FOLIO_VENTA", SqlDbType.NVarChar, 15) : sqlParametro.Value = "" & Me._FOLIO_VENTA
+            sqlParametro = .Parameters.Add("@ID_VENTA_DETALLE", SqlDbType.Int) : sqlParametro.Value = "" & Me._ID_VENTA_DETALLE
             sqlParametro = .Parameters.Add("@CODIGO_ARTICULO", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_ARTICULO
             sqlParametro = .Parameters.Add("@COSTO_NUEVO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO_NUEVO
   

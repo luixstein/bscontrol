@@ -59,6 +59,7 @@ Public Class Ventas_Modifica_Costos
             Me.TxtCliente.Text = ""
             Me.txtPlazo.Text = Plaza.PLAZO_VENTA_CONTADO.ToString
             Me.TxtConcepto.Text = ""
+            Me.tsbGrabar.Enabled = False
 
             Me.chkVentaPublicoGeneral.Checked = False
 
@@ -182,10 +183,10 @@ Public Class Ventas_Modifica_Costos
         Select Case Me.Estado
             Case enumEstados.NUEVO
                 Me.tsbNuevo.Enabled = True
-                Me.tsbGrabar.Enabled = True
+                Me.tsbGrabar.Enabled = False
 
                 Me.frmDatos.Enabled = True
-                Me.Grid.Locked = True
+                Me.Grid.Locked = False
 
                 Me.tsslEstado.Text = "Estado: Agregando nuevo movimiento"
                 Me.tsslElaboro.Visible = False : Me.tsslElaboro.Text = ""
@@ -198,7 +199,7 @@ Public Class Ventas_Modifica_Costos
 
             Case enumEstados.APLICADO
                 Me.tsbNuevo.Enabled = True
-                Me.tsbGrabar.Enabled = True
+                Me.tsbGrabar.Enabled = False
 
                 Me.frmDatos.Enabled = False
                 Me.Grid.Locked = True
@@ -215,8 +216,26 @@ Public Class Ventas_Modifica_Costos
     Function Grabar() As Boolean
         Dim i As Integer
         Try
+
+            If txtLEN(Me.txtFolio.Text) = False Then
+                MsgBox("Asígne un folio de venta.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtFolio.Focus()
+                Exit Function
+            End If
+
+            If txtLEN(Me.Grid.Cell(1, Me.igyCodigo).Text) = False Then
+                MsgBox("No se han cargado los datos de la venta", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtFolio.Focus()
+                Exit Function
+            End If
+
             If MsgBox("Deseas actualizar los costos de la venta con el folio : " & Me.txtFolio.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Grabar") = MsgBoxResult.No Then
                 Exit Function
+            End If
+
+            If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios(Me.oVenta.CODIGO_DOCUMENTO, Me.CboAlmacen.SelectedValue.ToString) = False Then
+                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Exclamation, Me.Text)
+                Return False
             End If
 
             If Validar() = False Then
@@ -232,6 +251,7 @@ Public Class Ventas_Modifica_Costos
                     .oVentasDetalle.FOLIO_VENTA = Me.oVenta.FOLIO_VENTA.ToUpper
                     .oVentasDetalle.CODIGO_ARTICULO = Me.Grid.Cell(i, Me.igyCodigo).Text
                     .oVentasDetalle.COSTO_NUEVO = valorNumerico(Me.Grid.Cell(i, Me.igyCosto).Text)
+                    .oVentasDetalle.ID_VENTA_DETALLE = CInt(Me.Grid.Cell(i, Me.igyIdArticulo).Text)
 
                     If .oVentasDetalle.ActualizaCostoVenta = False Then
                         MsgBox("Error al tratar de actualizar el costo de los renglones.", MsgBoxStyle.Exclamation, Me.Text)
@@ -255,6 +275,24 @@ Public Class Ventas_Modifica_Costos
 
     Private Function Validar() As Boolean
         Dim i As Integer
+        Dim sFolioVenta As Class_Ventas_Global
+
+        'Valida folio de venta
+        sFolioVenta = New Class_Ventas_Global(Me.txtFolio.Text)
+        If sFolioVenta.Existe = False Then
+            MsgBox("El folio " & Me.txtFolio.Text & " no existe", MsgBoxStyle.Exclamation, Me.Text)
+            Me.txtFolio.Focus()
+            Validar = False
+            Exit Function
+
+        Else
+            If sFolioVenta.ESTATUS_VENTA = "B" Then
+                MsgBox("El folio " & Me.txtFolio.Text & " tiene estatus B", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtFolio.Focus()
+                Validar = False
+                Exit Function
+            End If
+        End If
 
         'Valida que los costos no sean negativos
         For i = 1 To Me.Grid.Rows - 1
@@ -358,6 +396,11 @@ Public Class Ventas_Modifica_Costos
                         MsgBox("El costo no debe ser negativo.", MsgBoxStyle.Exclamation, Me.Text)
                         Me.Grid.Cell(Renglon, Me.igyCantidad).SetFocus()
                     End If
+
+                    If txtLEN(Me.Grid.Cell(Renglon + 1, Me.igyCodigo).Text) = True Then
+                        Me.Grid.Cell(Renglon + 1, Me.igyCantidad).SetFocus()
+                    End If
+
                 End If
 
                 Call Totales()
@@ -412,8 +455,6 @@ Public Class Ventas_Modifica_Costos
 
         Consultar = True
 
-        Me.GestionaCambioEstado()
-
         Me.txtFolio.Enabled = False
 
     End Function
@@ -431,6 +472,8 @@ buscar:
                     If Consultar() = False Then
                         Me.cboTipoNegociacion.Focus()
                     End If
+
+                    Me.tsbGrabar.Enabled = True
                 Else
                     GoTo buscar
                 End If

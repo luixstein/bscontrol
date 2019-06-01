@@ -1576,6 +1576,7 @@ Public Class AppMenu
 
     Private Sub ModificaCostoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ModificaCostoToolStripMenuItem.Click
         Dim Child As New Ventas_Modifica_Costos
+        Child.MdiParent = Me
         m_ChildFormNumber += 1
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
