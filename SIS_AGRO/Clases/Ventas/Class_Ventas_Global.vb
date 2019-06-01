@@ -1092,6 +1092,33 @@ Public Class Class_Ventas_Global
         Return bResultado
     End Function
 
+    Public Function ActualizaCostoTotalGlobal() As Boolean
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_VENTA_MODIFICA_COSTO_GLOBAL"
+
+            sqlParametro = .Parameters.Add("@FOLIO_VENTA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_VENTA
+
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, "ActualizaCostoTotalGlobal", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
+    End Function
+
     Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
 
@@ -1495,6 +1522,29 @@ Public Class Class_Ventas_Global
             HandleError(Me.Nombre_Catalogo, "ObtenerDetalleSeries", ex)
         End Try
         Return dTabla
+    End Function
+
+    Public Function ObtenerDetalleCambiarCosto() As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String
+
+        Try
+            sSQL = "SELECT R.CODIGO_ARTICULO, " &
+                "R.DESCRIPCION,R.CANTIDAD,R.COSTO,R.PRECIO_TOTAL,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE, " &
+                "R.IMPUESTO_IMPORTE,R.IMPORTE,R.ID_VENTA_DETALLE " &
+                "FROM VENTA_DETALLE R " &
+                "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
+                "WHERE R.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' " &
+                "ORDER BY R.ID_VENTA_DETALLE"
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtenerDetalle", ex)
+        End Try
+        Return dTabla
+
     End Function
 
     Public Function ObtenerDisponibleRenglon(ByVal iIdArticulo As Integer) As Decimal

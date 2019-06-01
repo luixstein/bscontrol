@@ -44,6 +44,8 @@ Public Class Class_Ventas_Detalle
     Private _PRECIO_SIN_DESCUENTO As Decimal
     Private _ID_SIS_CAT_IMPUESTOS_FLETE As String
     Private _RETENCION_IVA_IMPORTE As Decimal
+
+    Private _COSTO_NUEVO As Double
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -404,6 +406,15 @@ Public Class Class_Ventas_Detalle
         End Set
     End Property
 
+    Public Property COSTO_NUEVO() As Double
+        Get
+            Return Me._COSTO_NUEVO
+        End Get
+        Set(ByVal Value As Double)
+            Me._COSTO_NUEVO = Value
+        End Set
+    End Property
+
 
 #End Region
 
@@ -528,6 +539,36 @@ Public Class Class_Ventas_Detalle
             sqlParametro = .Parameters.Add("@IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPORTE
             sqlParametro = .Parameters.Add("@IMPUESTO_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_IMPORTE
 
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Clase, "ActualizaPrecioRemision", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
+    End Function
+
+    Public Function ActualizaCostoVenta() As Boolean
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_VENTA_MODIFICA_COSTO_DETALLE"
+
+            sqlParametro = .Parameters.Add("@FOLIO_VENTA", SqlDbType.NVarChar, 15) : sqlParametro.Value = "" & Me._FOLIO_VENTA
+            sqlParametro = .Parameters.Add("@ID_VENTA_DETALLE", SqlDbType.Int) : sqlParametro.Value = "" & Me._ID_VENTA_DETALLE
+            sqlParametro = .Parameters.Add("@CODIGO_ARTICULO", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_ARTICULO
+            sqlParametro = .Parameters.Add("@COSTO_NUEVO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO_NUEVO
+  
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
