@@ -73,7 +73,6 @@ Public Class Ventas_Movimientos
     Private iGyIdSisCatImpuestosFlete As Short = 35
     Private iGyFletePorcentaje As Short = 36
     Private iGyFleteImporte As Short = 37
-
 #End Region
 
 #Region "Columnas grid series"
@@ -3087,6 +3086,18 @@ CANCELAR:
         Try
             Dim i As Integer, bEncontroNoInventariables As Boolean = False
 
+            Me.Grid.AutoRedraw = False
+
+            'Si el usuario no tiene acceso a ver costos borramos todos los costos de los que no sean no-inventariables(sólo estos podrá ver)
+            If Usuario.VER_COSTOS = False Then
+                For i = 1 To Me.Grid.Rows - 1
+                    If Me.Grid.Cell(i, Me.igyTipoControlInventariable).Text <> "NIV" Then 'NIV=No inventariables
+                        Me.Grid.Cell(i, Me.igyCosto).Text = ""
+                    End If
+                Next
+            End If
+
+            'Nota no se puede juntar con el anterior ciclo porque aquél sólo aplica si no se tiene acceso a costos
             For i = 1 To Me.Grid.Rows - 1
                 If Me.Grid.Cell(i, Me.igyTipoControlInventariable).Text = "NIV" Then
                     bEncontroNoInventariables = True
@@ -3105,11 +3116,12 @@ CANCELAR:
                 If Me.ckbMostrarUtilidad.Checked = False Then 'Solamente si no estaba el check oculta la columna, sino queda como ya estuviera
                     Me.Grid.Column(Me.igyCosto).Visible = False
                 End If
-
             End If
 
         Catch ex As Exception
             HandleError(Me.Name, "GestionaColumaCostoCapturaNoInventariables", ex)
+        Finally
+            Me.Grid.AutoRedraw = True : Me.Grid.Refresh()
         End Try
     End Function
 
