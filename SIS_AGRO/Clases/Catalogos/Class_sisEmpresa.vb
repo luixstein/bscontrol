@@ -89,6 +89,7 @@ Public NotInheritable Class Class_sisEmpresa
     Private _CONTAELECTRONICA_CADENA_ORIGINAL_POLIZAS As String
     Private _CONTROL_COSTOS_COMPRAS As Boolean
     Private _TIMBRA_CFDI_HORA_ACTUAL As Boolean
+    Private _VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES As Double
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -664,6 +665,13 @@ Public NotInheritable Class Class_sisEmpresa
             Return Me._TIMBRA_CFDI_HORA_ACTUAL
         End Get
     End Property
+
+    Public ReadOnly Property VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES As Double
+        Get
+            Return Me._VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES
+        End Get
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -1024,6 +1032,7 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._CONTAELECTRONICA_CADENA_ORIGINAL_POLIZAS = "" & dReader("CONTAELECTRONICA_CADENA_ORIGINAL_POLIZAS").ToString
                     Me._CONTROL_COSTOS_COMPRAS = CBool(dReader("CONTROL_COSTOS_COMPRAS"))
                     Me._TIMBRA_CFDI_HORA_ACTUAL = CBool(dReader("TIMBRA_CFDI_HORA_ACTUAL"))
+                    Me._VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES = CDbl(dReader("VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES").ToString)
 
                     dReader.Close()
                     bResultado = True

@@ -1499,10 +1499,6 @@ Buscar:
                 End If
             End If
 
-            If Me.GestionaValorColumaCostoCapturaNoInventariables = False Then
-                Return False
-            End If
-
             With Me.oVenta
                 .FOLIO_VENTA = Me.txtFolio.Text.ToUpper
                 .FECHA = Me.dpFecha.Value
@@ -2164,6 +2160,11 @@ CANCELAR:
             End If
 
             If Me.ValidaPrecios = False Then
+                Return False
+            End If
+
+            If Me.ValidaValorColumaCostoCapturaNoInventariables = False Then
+                Me.GestionaColumaCostoCapturaNoInventariables()
                 Return False
             End If
 
@@ -2962,12 +2963,18 @@ CANCELAR:
                     'Ante se hacia de este modo pero al ser con datasource no es posible agregar mas comentarios o tener control con algunas cosas
                     'Me.Grid.DataSource = Me.oVenta.ObtenerDetalleSoloDisponibles
 
-                    Dim dTabla As DataTable = Me.oVenta.ObtenerDetalleSoloDisponibles
+                    Dim dTabla As DataTable = Me.oVenta.ObtenerDetalleSoloDisponibles ', dCostoUnitario As Double = 0
 
                     Me.InicializaGrid()
                     Me.Grid.AutoRedraw = False
                     Me.Grid.Rows = 1
                     For Each dRow As DataRow In dTabla.Rows
+
+                        'dCostoUnitario = CDbl(dRow("COSTO").ToString)
+                        'If dCostoUnitario <= 0 AndAlso Empresa_Sistema.VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES > 0 Then
+                        '    dCostoUnitario = Empresa_Sistema.VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES
+                        'End If
+
                         Me.Grid.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("TIPO_CONTROL_INVENTARIO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("DISPONIBLE").ToString & Chr(9) &
                                         dRow("PRECIO").ToString & Chr(9) & dRow("PRECIO_TOTAL").ToString & Chr(9) & dRow("UNIDAD_VENTA").ToString & Chr(9) & dRow("CANTIDAD_KILOS").ToString & Chr(9) &
                                         dRow("PRECIO_KILOS").ToString & Chr(9) & dRow("IMPUESTO_PORCENTAJE").ToString & Chr(9) & dRow("IMPORTE").ToString & Chr(9) & dRow("IMPORTE_KILOS").ToString & Chr(9) &
@@ -2988,34 +2995,40 @@ CANCELAR:
                     Else
                         Me.LblEstatus.Text = "SUSTITUYENDO"
                     End If
+
                 End If
 
                 Me.FormateaGrid()
+
+                If bEsReferencia = True Then 'Si estan jalando un doc en otro, va tratar de gestionar los costos de los no inventariables
+                    Me.GestionaColumaCostoCapturaNoInventariables() 'Va después de formatear el grid porque se oculta en el la columna costo
+                End If
+
                 Me.dpVencimiento.Value = Me.oVenta.FECHA_VENCIMIENTO
-                Me.txtPlazo.Text = DateDiff(DateInterval.Day, Me.dpFecha.Value, Me.dpVencimiento.Value.AddDays(1)).ToString
+                    Me.txtPlazo.Text = DateDiff(DateInterval.Day, Me.dpFecha.Value, Me.dpVencimiento.Value.AddDays(1)).ToString
 
-                Select Case Me.oCliente.TIPO_PERSONA
-                    Case "F"
-                        Me.DesplegarUsoCFDIPersonasFisicas()
-                    Case "M"
-                        Me.DesplegarUsoCFDIPersonasMorales()
-                End Select
+                    Select Case Me.oCliente.TIPO_PERSONA
+                        Case "F"
+                            Me.DesplegarUsoCFDIPersonasFisicas()
+                        Case "M"
+                            Me.DesplegarUsoCFDIPersonasMorales()
+                    End Select
 
-                If txtLEN("" & Me.oVenta.CODIGO_USO_CFDI) = True Then
-                    Me.cboUsoCFDI.SelectedValue = Me.oVenta.CODIGO_USO_CFDI
+                    If txtLEN("" & Me.oVenta.CODIGO_USO_CFDI) = True Then
+                        Me.cboUsoCFDI.SelectedValue = Me.oVenta.CODIGO_USO_CFDI
+                    End If
+
+                    If txtLEN("" & Me.oVenta.CODIGO_TIPO_RELACION_CFDI) = True Then
+                        Me.cboTipoRelacionCFDI.SelectedValue = Me.oVenta.CODIGO_TIPO_RELACION_CFDI
+
+                        Me.GridCFDIsRelacionados.DataSource = Me.oVenta.ObtieneFacturasRelacionadas
+                        Me.FormateaGridCFDIsRelacionados()
+                    Else
+                        Me.cboTipoRelacionCFDI.SelectedIndex = -1
+                    End If
                 End If
 
-                If txtLEN("" & Me.oVenta.CODIGO_TIPO_RELACION_CFDI) = True Then
-                    Me.cboTipoRelacionCFDI.SelectedValue = Me.oVenta.CODIGO_TIPO_RELACION_CFDI
-
-                    Me.GridCFDIsRelacionados.DataSource = Me.oVenta.ObtieneFacturasRelacionadas
-                    Me.FormateaGridCFDIsRelacionados()
-                Else
-                    Me.cboTipoRelacionCFDI.SelectedIndex = -1
-                End If
-            End If
-
-            bResultado = True
+                bResultado = True
 
             Me.GestionaCambioEstado()
 
@@ -3100,7 +3113,12 @@ CANCELAR:
             'Nota no se puede juntar con el anterior ciclo porque aquél sólo aplica si no se tiene acceso a costos
             For i = 1 To Me.Grid.Rows - 1
                 If Me.Grid.Cell(i, Me.igyTipoControlInventariable).Text = "NIV" Then
-                    bEncontroNoInventariables = True
+                    If Empresa_Sistema.VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES > 0 Then
+                        If valorNumerico(Me.Grid.Cell(i, Me.igyCosto).Text) <= 0 Then 'Si no tiene costo y la empresa tiene configurado por default se asigna
+                            Me.Grid.Cell(i, Me.igyCosto).Text = Empresa_Sistema.VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES.ToString
+                        End If
+                    End If
+                        bEncontroNoInventariables = True
                     Exit For
                 End If
             Next
@@ -3125,7 +3143,7 @@ CANCELAR:
         End Try
     End Function
 
-    Private Function GestionaValorColumaCostoCapturaNoInventariables() As Boolean
+    Private Function ValidaValorColumaCostoCapturaNoInventariables() As Boolean
         Try
             Dim i As Integer, bEncontroNoInventariablesSinCosto As Boolean = False
 
@@ -3142,7 +3160,7 @@ CANCELAR:
             End If
 
         Catch ex As Exception
-            HandleError(Me.Name, "GestionaColumaCostoCapturaNoInventariables", ex)
+            HandleError(Me.Name, "ValidaValorColumaCostoCapturaNoInventariables", ex)
         End Try
     End Function
 
