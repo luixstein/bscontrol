@@ -1957,6 +1957,13 @@ CANCELAR:
                 End If
             End If
 
+            Dim oVendedor As New Class_CatVendedores(Me.cboVendedor.SelectedValue.ToString)
+            If oVendedor.Status = "B" Then
+                MsgBox("El vendedor que asígnado a la venta esta dado de baja", MsgBoxStyle.Exclamation, sProcedure)
+                Me.cboVendedor.Focus()
+                Return False
+            End If
+
             If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
                 If Me.chkVentaPublicoGeneral.Checked = False Then
                     If ValidacionesRFC(Me.oCliente.RFC) = False Then
