@@ -373,7 +373,7 @@ Friend Class cComplementoPagos
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-            Dim dRow() As DataRow = dtFormasPagoTodas.Select("CODIGO_METODO_PAGO=" & Me.FormaDePagoP)
+            Dim dRow() As DataRow = dtFormasPagoTodas.Select("CODIGO_METODO_PAGO='" & Me.FormaDePagoP & "'")
             If dRow.Length = 0 Then
                 MsgBox("No se encontró en memoria la forma de pago " & Me.FormaDePagoP & " .", vbExclamation, sProcedure)
                 Exit Function
