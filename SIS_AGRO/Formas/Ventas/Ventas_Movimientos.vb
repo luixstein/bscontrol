@@ -1314,6 +1314,11 @@ Buscar:
 
                     Me.tsbImprimir.Select()
 
+                    If sTipoVenta = "SR" Then 'Remision a venta 
+                        Me.cboTipoRelacionCFDI.Enabled = True
+                        Me.GridCFDIsRelacionados.Locked = False
+                    End If
+
                 Case enumEstados.CANCELADO
                     Me.tsbNuevo.Enabled = True
                     Me.tsbGrabar.Enabled = False
