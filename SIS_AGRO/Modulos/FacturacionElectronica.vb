@@ -137,7 +137,7 @@ Module FacturacionElectronica
             If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "DANIEL-PC" Or Usuario.Codigo_Usuario = 1 Then
                 bMododemo = True
                 sUserWS = "demo.demo"
-                sContraseñaWS = "demo"
+                sContraseñaWS = "R3FL?W9M7EX8" ' "demo", antes era demo
             End If
 
             Using cfd As New clsCFDI(sRutaXML, Empresa_Sistema.BaseDatos, Empresa_Sistema.Servidor,
@@ -255,7 +255,7 @@ Module FacturacionElectronica
             If bModoDemo = True Then
                 MsgBox("La cancelación de timbres esta modo demo !!", vbExclamation, sProcedure)
                 sUserWS = "demo.demo"
-                sContraseñaWS = "demo"
+                sContraseñaWS = "R3FL?W9M7EX8" ' "demo", antes era demo
             End If
 
             Using cfd As New clsCFDI(Empresa_Sistema.BaseDatos, Empresa_Sistema.Servidor,
