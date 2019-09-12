@@ -2521,6 +2521,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
         Dim oFirmaElectronica = New UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo
         Dim oUtileriasCancela As New Class_UtileriasFirmaElectronicaCancelacion
         Dim oPoliza As New Class_Contabilidad_Poliza_Global
+        Dim oDetalleVentas As New Class_Centros_Costos_Detalle_Ventas
         Dim sConceptoCancelacion As String = ""
 
         If MsgBox("Deseas cancelar el gasto " & Me.txtFolioCompra.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "CancelarCompra") = MsgBoxResult.No Then
@@ -2592,6 +2593,11 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                         Exit Function
                     End If
                 End If
+            End If
+
+            If oDetalleVentas.EliminaCentroCostosDetalleVentas(Me.txtFolioCompra.Text) = False Then
+                MsgBox("Error al eliminar las facturas relacionadas, avise al departamento de sistemas.", MsgBoxStyle.Exclamation, Me.Text)
+                Exit Function
             End If
 
             MsgBox("Gasto cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
