@@ -32,7 +32,7 @@ Public Class Ventas_Movimientos
 
     Private bCargandoVenta As Boolean
     Private sTipoVentaAnterior As String, sMonedaAnterior As String, dViewFormasPago As New Data.DataView
-    Private bClienteEsContribuyenteIEPS As Boolean = False
+    Private bClienteEsContribuyenteIEPS As Boolean = False, bCrearonColumnas As Boolean = False
 #End Region
 
 #Region "Columnas grid ventas"
@@ -41,38 +41,48 @@ Public Class Ventas_Movimientos
     Private igyDescripcion As Short = 3
     Private igyCantidad As Short = 4
     Private igyPrecio As Short = 5
-    Private igyPRECIO_TOTAL As Short = 6
-    Private igyUnidad As Short = 7
-    Private igyCantidadKilos As Short = 8
-    Private igyPrecioKilos As Short = 9
-    Private igyImpuestoPorcentaje As Short = 10
-    Private igyImporte As Short = 11
-    Private igyImporteKilos As Short = 12
-    Private igyCuentaContable As Short = 13
-    Private igyImpuestoImporte As Short = 14
-    Private igyIdOrigen As Short = 15
-    Private igyEsProductoKilos As Short = 16
-    Private igyCodigoCentroCosto As Short = 17
-    Private igyNombreCentroCosto As Short = 18
-    Private igyPrecioUSD As Short = 19
-    Private igyImporteUSD As Short = 20
-    Private igyIEPS_PORCENTAJE As Short = 21
-    Private igyIEPS_UNITARIO As Short = 22
-    Private igyIEPS_IMPORTE As Short = 23
-    Private igyBASE_IEPS As Short = 24
-    Private igyBASE_IVA As Short = 25
-    Private igyCosto As Short = 26
-    Private igyUtilidadUnitaria As Short = 27
-    Private igyUtilidadTotal As Short = 28
-    Private igyUtilidadPorcentaje As Short = 29
-    Private iGyID_SIS_CAT_IMPUESTOS As Short = 30
-    Private iGyGRADO_TOXICIDAD As Short = 31
-    Private iGyDESCUENTO_UNITARIO As Short = 32
-    Private iGyDESCUENTO_IMPORTE As Short = 33
-    Private iGyPRECIO_CON_DESCUENTO As Short = 34
-    Private iGyIdSisCatImpuestosFlete As Short = 35
-    Private iGyFletePorcentaje As Short = 36
-    Private iGyFleteImporte As Short = 37
+    Private igyPrecio_USD As Short = 6
+    Private igyPRECIO_TOTAL As Short = 7
+    Private igyPRECIO_TOTAL_USD As Short = 8
+    Private igyUnidad As Short = 9
+    Private igyCantidadKilos As Short = 10
+    Private igyPrecioKilos As Short = 11
+    Private igyImpuestoPorcentaje As Short = 12
+    Private igyImporte As Short = 13
+    Private igyImporte_USD As Short = 14
+    Private igyImporteKilos As Short = 15
+    Private igyCuentaContable As Short = 16
+    Private igyImpuestoImporte As Short = 17
+    Private igyImpuestoImporte_USD As Short = 18
+    Private igyIdOrigen As Short = 19
+    Private igyEsProductoKilos As Short = 20
+    Private igyCodigoCentroCosto As Short = 21
+    Private igyNombreCentroCosto As Short = 22
+    Private igyIEPS_PORCENTAJE As Short = 23
+    Private igyIEPS_UNITARIO As Short = 24
+    Private igyIEPS_UNITARIO_USD As Short = 25
+    Private igyIEPS_IMPORTE As Short = 26
+    Private igyIEPS_IMPORTE_USD As Short = 27
+    Private igyBASE_IEPS As Short = 28
+    Private igyBASE_IEPS_USD As Short = 29
+    Private igyBASE_IVA As Short = 30
+    Private igyBASE_IVA_USD As Short = 31
+    Private igyCosto As Short = 32
+    Private igyUtilidadUnitaria As Short = 33
+    Private igyUtilidadTotal As Short = 34
+    Private igyUtilidadPorcentaje As Short = 35
+    Private iGyID_SIS_CAT_IMPUESTOS As Short = 36
+    Private iGyGRADO_TOXICIDAD As Short = 37
+    Private iGyDESCUENTO_UNITARIO As Short = 38
+    Private iGyDESCUENTO_UNITARIO_USD As Short = 39
+    Private iGyDESCUENTO_IMPORTE As Short = 40
+    Private iGyDESCUENTO_IMPORTE_USD As Short = 41
+    Private iGyPRECIO_CON_DESCUENTO As Short = 42
+    Private iGyPRECIO_CON_DESCUENTO_USD As Short = 43
+    Private iGyIdSisCatImpuestosFlete As Short = 44
+    Private iGyFletePorcentaje As Short = 45
+    Private iGyFleteImporte As Short = 46
+    Private iGyFleteImporte_USD As Short = 47
 #End Region
 
 #Region "Columnas grid series"
@@ -299,6 +309,7 @@ Public Class Ventas_Movimientos
             Me.DesplegarDocumentos()
 
             Me.Inicializa()
+            Me.bCrearonColumnas = True
 
             Me.Cambia_Estado(enumEstados.NUEVO)
 
@@ -553,9 +564,34 @@ Buscar:
             If Me.cboMoneda.Text = "USD" Then
                 Me.txtTipoCambio.Visible = True : Me.txtTipoCambio.Enabled = True : Me.lblDisplayTipoCambio.Visible = True
                 Me.gbDolares.Visible = True
+
+                If Me.bCrearonColumnas = True Then
+                    Me.Grid.Column(Me.igyPrecio).Locked = True
+                    Me.Grid.Column(Me.igyPrecio_USD).Locked = False
+                    Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Locked = False
+
+                    Me.Grid.Column(Me.igyPrecio_USD).Visible = True
+                    Me.Grid.Column(Me.igyPRECIO_TOTAL_USD).Visible = True
+                    Me.Grid.Column(Me.igyImporte_USD).Visible = True
+                    Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Visible = True
+                End If
+
             Else
                 Me.txtTipoCambio.Visible = False : Me.txtTipoCambio.Enabled = False : Me.lblDisplayTipoCambio.Visible = False
                 Me.gbDolares.Visible = False
+
+                If Me.bCrearonColumnas = True Then
+                    Me.Grid.Column(Me.igyPrecio).Locked = False
+                    Me.Grid.Column(Me.igyPrecio_USD).Locked = True
+                    Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Locked = True
+
+                    Me.Grid.Column(Me.igyPrecio_USD).Visible = False
+                    Me.Grid.Column(Me.igyPRECIO_TOTAL_USD).Visible = False
+                    Me.Grid.Column(Me.igyImporte_USD).Visible = False
+                    Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Visible = False
+
+                End If
+
             End If
 
             Select Case Me.cboTipoNegociacion.Text
@@ -841,33 +877,39 @@ Buscar:
     Private Sub FormateaGrid()
         Try
             Me.Grid.AutoRedraw = False
-            Me.Grid.Cols = 38
+            Me.Grid.Cols = 48
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Column(Me.igyCodigo).Width = 75
             Me.Grid.Column(Me.igyTipoControlInventariable).Width = 25
             Me.Grid.Column(Me.igyDescripcion).Width = 250
             Me.Grid.Column(Me.igyCantidad).Width = 90
             Me.Grid.Column(Me.igyPrecio).Width = 100
+            Me.Grid.Column(Me.igyPrecio_USD).Width = 100
             Me.Grid.Column(Me.igyPRECIO_TOTAL).Width = 100
+            Me.Grid.Column(Me.igyPRECIO_TOTAL_USD).Width = 100
             Me.Grid.Column(Me.igyCantidadKilos).Visible = False
             Me.Grid.Column(Me.igyUnidad).Width = 75
             Me.Grid.Column(Me.igyPrecioKilos).Visible = False
             Me.Grid.Column(Me.igyImpuestoPorcentaje).Width = 70
             Me.Grid.Column(Me.igyImporte).Width = 100
+            Me.Grid.Column(Me.igyImporte_USD).Width = 100
             Me.Grid.Column(Me.igyImporteKilos).Visible = False
             Me.Grid.Column(Me.igyCuentaContable).Width = 100
             Me.Grid.Column(Me.igyImpuestoImporte).Visible = False
+            Me.Grid.Column(Me.igyImpuestoImporte_USD).Visible = False
             Me.Grid.Column(Me.igyIdOrigen).Visible = False
             Me.Grid.Column(Me.igyEsProductoKilos).Visible = False
             Me.Grid.Column(Me.igyCodigoCentroCosto).Width = 100
             Me.Grid.Column(Me.igyNombreCentroCosto).Width = 220
-            Me.Grid.Column(Me.igyPrecioUSD).Width = 100
-            Me.Grid.Column(Me.igyImporteUSD).Width = 100
             Me.Grid.Column(Me.igyIEPS_PORCENTAJE).Visible = False
             Me.Grid.Column(Me.igyIEPS_UNITARIO).Visible = False
+            Me.Grid.Column(Me.igyIEPS_UNITARIO_USD).Visible = False
             Me.Grid.Column(Me.igyIEPS_IMPORTE).Visible = False
+            Me.Grid.Column(Me.igyIEPS_IMPORTE_USD).Visible = False
             Me.Grid.Column(Me.igyBASE_IEPS).Visible = False
+            Me.Grid.Column(Me.igyBASE_IEPS_USD).Visible = False
             Me.Grid.Column(Me.igyBASE_IVA).Visible = False
+            Me.Grid.Column(Me.igyBASE_IVA_USD).Visible = False
             Me.Grid.Column(Me.igyCosto).Width = 100
             Me.Grid.Column(Me.igyUtilidadUnitaria).Width = 100
             Me.Grid.Column(Me.igyUtilidadTotal).Width = 100
@@ -875,37 +917,47 @@ Buscar:
             Me.Grid.Column(Me.iGyID_SIS_CAT_IMPUESTOS).Visible = False
             Me.Grid.Column(Me.iGyGRADO_TOXICIDAD).Visible = False
             Me.Grid.Column(Me.iGyDESCUENTO_UNITARIO).Visible = False
+            Me.Grid.Column(Me.iGyDESCUENTO_UNITARIO_USD).Visible = False
             Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Visible = True  'Ocultar
+            Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Visible = True  'Ocultar
             Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO).Visible = False
+            Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).Visible = False
             Me.Grid.Column(Me.iGyIdSisCatImpuestosFlete).Visible = False
             Me.Grid.Column(Me.iGyFletePorcentaje).Visible = False
             Me.Grid.Column(Me.iGyFleteImporte).Visible = False
+            Me.Grid.Column(Me.iGyFleteImporte_USD).Visible = False
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Cell(0, Me.igyCodigo).Text = "Código"
             Me.Grid.Cell(0, Me.igyTipoControlInventariable).Text = "Inv"
             Me.Grid.Cell(0, Me.igyDescripcion).Text = "Descripción"
             Me.Grid.Cell(0, Me.igyCantidad).Text = "Cantidad"
             Me.Grid.Cell(0, Me.igyPrecio).Text = "Precio"
+            Me.Grid.Cell(0, Me.igyPrecio_USD).Text = "Precio_USD"
             Me.Grid.Cell(0, Me.igyPRECIO_TOTAL).Text = "Precio total"
+            Me.Grid.Cell(0, Me.igyPRECIO_TOTAL_USD).Text = "Precio total_USD"
             Me.Grid.Cell(0, Me.igyCantidadKilos).Text = "Cantidad x Kg"
             Me.Grid.Cell(0, Me.igyUnidad).Text = "Unidad"
             Me.Grid.Cell(0, Me.igyPrecioKilos).Text = "Precio x Kg"
             Me.Grid.Cell(0, Me.igyImpuestoPorcentaje).Text = "IVA %"
             Me.Grid.Cell(0, Me.igyImporte).Text = "Importe"
+            Me.Grid.Cell(0, Me.igyImporte_USD).Text = "Importe_USD"
             Me.Grid.Cell(0, Me.igyImporteKilos).Text = "Importe x Kg"
             Me.Grid.Cell(0, Me.igyCuentaContable).Text = "Cuenta Contable"
             Me.Grid.Cell(0, Me.igyImpuestoImporte).Text = "IVA"
+            Me.Grid.Cell(0, Me.igyImpuestoImporte_USD).Text = "IVA_USD"
             Me.Grid.Cell(0, Me.igyIdOrigen).Text = "Id Articulo"
             Me.Grid.Cell(0, Me.igyEsProductoKilos).Text = "Es producto kilos"
             Me.Grid.Cell(0, Me.igyCodigoCentroCosto).Text = "Ccos"
             Me.Grid.Cell(0, Me.igyNombreCentroCosto).Text = "C.Costo"
-            Me.Grid.Cell(0, Me.igyPrecioUSD).Text = "PrecioUSD"
-            Me.Grid.Cell(0, Me.igyImporteUSD).Text = "ImporteUSD"
             Me.Grid.Cell(0, Me.igyIEPS_PORCENTAJE).Text = "IEPS_%"
             Me.Grid.Cell(0, Me.igyIEPS_UNITARIO).Text = "IEPS_UNIT"
+            Me.Grid.Cell(0, Me.igyIEPS_UNITARIO_USD).Text = "IEPS_UNIT_USD"
             Me.Grid.Cell(0, Me.igyIEPS_IMPORTE).Text = "IEPS_IMP"
+            Me.Grid.Cell(0, Me.igyIEPS_IMPORTE_USD).Text = "IEPS_IMP_USD"
             Me.Grid.Cell(0, Me.igyBASE_IEPS).Text = "BASE_IEPS"
+            Me.Grid.Cell(0, Me.igyBASE_IEPS_USD).Text = "BASE_IEPS_USD"
             Me.Grid.Cell(0, Me.igyBASE_IVA).Text = "BASE_IVA"
+            Me.Grid.Cell(0, Me.igyBASE_IVA_USD).Text = "BASE_IVA_USD"
             Me.Grid.Cell(0, Me.igyCosto).Text = "Costo Unit"
             Me.Grid.Cell(0, Me.igyUtilidadUnitaria).Text = "Utilidad unitaria"
             Me.Grid.Cell(0, Me.igyUtilidadTotal).Text = "Utilidad total"
@@ -913,11 +965,15 @@ Buscar:
             Me.Grid.Cell(0, Me.iGyID_SIS_CAT_IMPUESTOS).Text = "IVA?"
             Me.Grid.Cell(0, Me.iGyGRADO_TOXICIDAD).Text = "GradoTox"
             Me.Grid.Cell(0, Me.iGyDESCUENTO_UNITARIO).Text = "DesUnit"
+            Me.Grid.Cell(0, Me.iGyDESCUENTO_UNITARIO_USD).Text = "DesUnit_USD"
             Me.Grid.Cell(0, Me.iGyDESCUENTO_IMPORTE).Text = "Descuento"
+            Me.Grid.Cell(0, Me.iGyDESCUENTO_IMPORTE_USD).Text = "Descuento_USD"
             Me.Grid.Cell(0, Me.iGyPRECIO_CON_DESCUENTO).Text = "PrecioCDes"
+            Me.Grid.Cell(0, Me.iGyPRECIO_CON_DESCUENTO_USD).Text = "PrecioCDes_USD"
             Me.Grid.Cell(0, Me.iGyIdSisCatImpuestosFlete).Text = "ID ImpuestoFlete"
             Me.Grid.Cell(0, Me.iGyFletePorcentaje).Text = "Flete porcentaje"
             Me.Grid.Cell(0, Me.iGyFleteImporte).Text = "Flete importe"
+            Me.Grid.Cell(0, Me.iGyFleteImporte_USD).Text = "Flete importe_USD"
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Column(Me.igyNombreCentroCosto).Alignment = FlexCell.AlignmentEnum.LeftCenter
 
@@ -1032,13 +1088,23 @@ Buscar:
                 Me.Grid.Column(Me.igyNombreCentroCosto).Visible = False
             End If
 
+            Me.Grid.Column(Me.igyPrecio_USD).Visible = False
+            Me.Grid.Column(Me.igyPRECIO_TOTAL_USD).Visible = False
+            Me.Grid.Column(Me.igyImporte_USD).Visible = False
+            Me.Grid.Column(Me.igyImpuestoImporte_USD).Visible = False
+            Me.Grid.Column(Me.igyIEPS_UNITARIO_USD).Visible = False
+            Me.Grid.Column(Me.igyIEPS_IMPORTE_USD).Visible = False
+            Me.Grid.Column(Me.igyBASE_IEPS_USD).Visible = False
+            Me.Grid.Column(Me.igyBASE_IVA_USD).Visible = False
+            Me.Grid.Column(Me.iGyDESCUENTO_UNITARIO_USD).Visible = False
+            Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Visible = False
+            Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).Visible = False
+            Me.Grid.Column(Me.iGyFleteImporte_USD).Visible = False
+
             If Me._EsPorEmbarqueExtranjero = True Then
                 Me.Grid.Column(Me.igyPrecio).Locked = True 'Al ser un embarque el precio en mxn se bloquea porque el precio para timbrar será en usd.
-                Me.Grid.Column(Me.igyPrecioUSD).Visible = True
-                Me.Grid.Column(Me.igyImporteUSD).Visible = True
-            Else
-                Me.Grid.Column(Me.igyPrecioUSD).Visible = False
-                Me.Grid.Column(Me.igyImporteUSD).Visible = False
+                Me.Grid.Column(Me.igyPrecio_USD).Visible = True
+                Me.Grid.Column(Me.igyImporte_USD).Visible = True
             End If
 
             If Me.ckbMostrarUtilidad.Checked = True Then
@@ -1640,8 +1706,8 @@ Buscar:
 
                         .oVentasDetalle.LISTA_SERIES = sListaSeries
 
-                        .oVentasDetalle.PRECIO_USD = valorNumerico(Me.Grid.Cell(i, Me.igyPrecioUSD).Text)
-                        .oVentasDetalle.IMPORTE_USD = valorNumerico(Me.Grid.Cell(i, Me.igyImporteUSD).Text)
+                        .oVentasDetalle.PRECIO_USD = valorNumerico(Me.Grid.Cell(i, Me.igyPrecio_USD).Text)
+                        .oVentasDetalle.IMPORTE_USD = valorNumerico(Me.Grid.Cell(i, Me.igyImporte_USD).Text)
 
                         .oVentasDetalle.IEPS_PORCENTAJE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
                         .oVentasDetalle.IEPS_UNITARIO = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text)
@@ -2681,13 +2747,20 @@ CANCELAR:
     Private Sub Totales()
         Const sProcedure As String = "Totales"
         Try
-            Dim i As Integer, dCantidad As Decimal, dPrecioCapturado As Decimal, dPrecioOriginal As Decimal, dPorcentajeIVA As Decimal, dImporte As Decimal, dImporteSustitucion As Decimal, iIDOrigen As Integer = 0, dImporteTotal As Double = 0
+            Dim i As Integer, dCantidad As Decimal, dPorcentajeIVA As Decimal, iIDOrigen As Integer = 0, dIEPS_PORCENTAJE As Decimal = 0
+
+            Dim dPrecioCapturado As Decimal, dPrecioOriginal As Decimal, dImporte As Decimal, dImporteSustitucion As Decimal, dImporteTotal As Decimal = 0
+            Dim dPrecioConDescuento As Decimal, dImporteConDescuento As Decimal, dDESCUENTO_UNITARIO As Decimal, dDESCUENTO_IMPORTE As Decimal
+            Dim dIEPS_UNITARIO As Decimal = 0, dIEPS_IMPORTE As Decimal = 0, dBASE_IEPS As Decimal = 0, dBASE_IVA As Decimal = 0, dPRECIO_TOTAL As Decimal = 0, dIVA_IMPORTE As Decimal = 0
+
             Dim oArticulo As New Class_CatArticulos
-            Dim dIEPS_PORCENTAJE As Decimal = 0, dIEPS_UNITARIO As Decimal = 0, dIEPS_IMPORTE As Decimal = 0, dBASE_IEPS As Decimal = 0, dBASE_IVA As Decimal = 0, dPRECIO_TOTAL As Decimal = 0, dIVA_IMPORTE As Decimal = 0
             Dim dtSubtotal As Decimal = 0, dtIEPS As Decimal = 0, dtImpuesto As Decimal = 0, dtTotal As Decimal = 0, dtDescuentos As Decimal = 0
             Dim sID_SIS_CAT_IMPUESTOS As String = "", sGRADO_TOXICIDAD As String = "0" '0=NO GRAVA IEPS
             Dim sID_SIS_CAT_IMPUESTOS_FLETES As String = "", dFLETE_IMPORTE As Decimal = 0, dtFLETE As Decimal = 0, dPorcentajeFlete As Decimal
-            Dim dPrecioConDescuento As Decimal, dImporteConDescuento As Decimal, dDESCUENTO_UNITARIO As Decimal, dDESCUENTO_IMPORTE As Decimal
+
+            Dim dPrecioCapturado_USD As Decimal = 0, dImporte_USD As Decimal, dImporteTotal_USD As Decimal = 0
+            Dim dPrecioConDescuento_USD As Decimal = 0, dImporteConDescuento_USD As Decimal = 0, dDESCUENTO_UNITARIO_USD As Decimal = 0, dDESCUENTO_IMPORTE_USD As Decimal = 0
+            Dim dIEPS_UNITARIO_USD As Decimal = 0, dIEPS_IMPORTE_USD As Decimal = 0, dBASE_IEPS_USD As Decimal = 0, dBASE_IVA_USD As Decimal = 0, dPRECIO_TOTAL_USD As Decimal = 0, dIVA_IMPORTE_USD As Decimal = 0
 
             Me.lblSubtotal.Text = FormatImporteContable(0)
             Me.lblIEPSIncluido.Text = FormatImporteContable(0)
@@ -2712,6 +2785,8 @@ CANCELAR:
                         dBASE_IEPS = 0 : dIEPS_IMPORTE = 0 : dIEPS_UNITARIO = 0 : dBASE_IVA = 0 : dIVA_IMPORTE = 0 : dPRECIO_TOTAL = 0 : dPrecioOriginal = 0 : dImporte = 0 : dImporteTotal = 0 : dImporteSustitucion = 0
                         dDESCUENTO_UNITARIO = 0 : dDESCUENTO_IMPORTE = 0 : dFLETE_IMPORTE = 0 : sID_SIS_CAT_IMPUESTOS_FLETES = "" : dPorcentajeFlete = 0
 
+                        dPrecioCapturado_USD = 0
+
                         dCantidad = valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text)
                         dPrecioCapturado = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text)
                         iIDOrigen = CInt(valorNumericoD(Me.Grid.Cell(i, Me.igyIdOrigen).Text))
@@ -2724,6 +2799,21 @@ CANCELAR:
                         sID_SIS_CAT_IMPUESTOS_FLETES = Me.Grid.Cell(i, Me.iGyIdSisCatImpuestosFlete).Text
                         dPorcentajeFlete = valorNumericoD(Me.Grid.Cell(i, Me.iGyFletePorcentaje).Text)
 
+                        dPrecioCapturado_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio_USD).Text)
+                        dDESCUENTO_UNITARIO_USD = 0 'Se va calcular en base al descuento importe
+                        dDESCUENTO_IMPORTE_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE).Text)
+
+                        ''''''''
+
+                        dImporte_USD = RedondearD((dCantidad * dPrecioCapturado_USD), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+
+                        If dDESCUENTO_IMPORTE_USD > 0 And dDESCUENTO_IMPORTE_USD > dImporte_USD Then
+                            MsgBox("El descuento no puede ser mayor que el importe.", vbExclamation, sProcedure)
+                            Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE).Text = "0"
+                            dDESCUENTO_IMPORTE = 0
+                        End If
+
+                        ''''''''
                         dImporte = RedondearD((dCantidad * dPrecioCapturado), Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
                         If dDESCUENTO_IMPORTE > 0 And dDESCUENTO_IMPORTE > dImporte Then
@@ -2819,7 +2909,7 @@ CANCELAR:
 
                 If Not Me._oEmbarqueExtranjero Is Nothing Then
                     'Es por embarque extranjero, la columna se calculó desde que se obtuvieron los renglones y se debe hacer por siuma directa para no tener diferencias de decimales.
-                    Me.lblTotalDolares.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImporteUSD), Empresa_Sistema.DECIMALES_CONTABILIDAD))
+                    Me.lblTotalDolares.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImporte_USD), Empresa_Sistema.DECIMALES_CONTABILIDAD))
                 Else
                     Me.lblTotalDolares.Text = FormatImporteContable(Redondear(valorNumerico(Me.lblTotal.Text) / valorNumerico(Me.txtTipoCambio.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD))
                 End If
@@ -3017,30 +3107,30 @@ CANCELAR:
                 End If
 
                 Me.dpVencimiento.Value = Me.oVenta.FECHA_VENCIMIENTO
-                    Me.txtPlazo.Text = DateDiff(DateInterval.Day, Me.dpFecha.Value, Me.dpVencimiento.Value.AddDays(1)).ToString
+                Me.txtPlazo.Text = DateDiff(DateInterval.Day, Me.dpFecha.Value, Me.dpVencimiento.Value.AddDays(1)).ToString
 
-                    Select Case Me.oCliente.TIPO_PERSONA
-                        Case "F"
-                            Me.DesplegarUsoCFDIPersonasFisicas()
-                        Case "M"
-                            Me.DesplegarUsoCFDIPersonasMorales()
-                    End Select
+                Select Case Me.oCliente.TIPO_PERSONA
+                    Case "F"
+                        Me.DesplegarUsoCFDIPersonasFisicas()
+                    Case "M"
+                        Me.DesplegarUsoCFDIPersonasMorales()
+                End Select
 
-                    If txtLEN("" & Me.oVenta.CODIGO_USO_CFDI) = True Then
-                        Me.cboUsoCFDI.SelectedValue = Me.oVenta.CODIGO_USO_CFDI
-                    End If
-
-                    If txtLEN("" & Me.oVenta.CODIGO_TIPO_RELACION_CFDI) = True Then
-                        Me.cboTipoRelacionCFDI.SelectedValue = Me.oVenta.CODIGO_TIPO_RELACION_CFDI
-
-                        Me.GridCFDIsRelacionados.DataSource = Me.oVenta.ObtieneFacturasRelacionadas
-                        Me.FormateaGridCFDIsRelacionados()
-                    Else
-                        Me.cboTipoRelacionCFDI.SelectedIndex = -1
-                    End If
+                If txtLEN("" & Me.oVenta.CODIGO_USO_CFDI) = True Then
+                    Me.cboUsoCFDI.SelectedValue = Me.oVenta.CODIGO_USO_CFDI
                 End If
 
-                bResultado = True
+                If txtLEN("" & Me.oVenta.CODIGO_TIPO_RELACION_CFDI) = True Then
+                    Me.cboTipoRelacionCFDI.SelectedValue = Me.oVenta.CODIGO_TIPO_RELACION_CFDI
+
+                    Me.GridCFDIsRelacionados.DataSource = Me.oVenta.ObtieneFacturasRelacionadas
+                    Me.FormateaGridCFDIsRelacionados()
+                Else
+                    Me.cboTipoRelacionCFDI.SelectedIndex = -1
+                End If
+            End If
+
+            bResultado = True
 
             Me.GestionaCambioEstado()
 
@@ -3130,7 +3220,7 @@ CANCELAR:
                             Me.Grid.Cell(i, Me.igyCosto).Text = Empresa_Sistema.VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES.ToString
                         End If
                     End If
-                        bEncontroNoInventariables = True
+                    bEncontroNoInventariables = True
                     Exit For
                 End If
             Next
@@ -3327,6 +3417,13 @@ LlenaLinea:
                             End If
 
                         Case Me.igyPrecio
+                            oArticulo = New Class_CatArticulos(StrCod)
+                            If dPrecio <= 0 Then
+                                MsgBox("El precio debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
+                                Me.Grid.Cell(Renglon, Me.igyCantidad).SetFocus()
+                            End If
+
+                        Case Me.igyPrecio_USD
                             oArticulo = New Class_CatArticulos(StrCod)
                             If dPrecio <= 0 Then
                                 MsgBox("El precio debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
