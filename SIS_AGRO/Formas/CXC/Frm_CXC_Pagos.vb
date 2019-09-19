@@ -1769,6 +1769,13 @@ Buscar:
                 End If
             End If
 
+            'Valida que se haya agregado el documento de pago al grid
+            If Me.GridDocumentosPago.Cell(1, Me.iGyDocCODIGO_FORMA_PAGO).Text = "" Then 'Si no hay codigo de forma de pago no se agrego
+                MsgBox("Agregue los datos del documento de pago.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.btnAgregarDocumentosClientes.Focus()
+                Return False
+            End If
+
             bResultado = True
 
         Catch ex As Exception
@@ -2554,7 +2561,7 @@ Buscar:
                     Me.btnEliminarDocumentoPago.Enabled = True
                     Me.btnVerCFDIS.Enabled = False
                     Me.btnGenerarCFDIS.Enabled = False
-                    Me.chkVentasNoFiscales.Enabled = False' Antes estaba true, pero ahora como se llena sólo dependiendo de si la cuenta es o no fiscal, nunca se habilita
+                    Me.chkVentasNoFiscales.Enabled = False ' Antes estaba true, pero ahora como se llena sólo dependiendo de si la cuenta es o no fiscal, nunca se habilita
 
                     'Me.gbTotales.Enabled = True
 
