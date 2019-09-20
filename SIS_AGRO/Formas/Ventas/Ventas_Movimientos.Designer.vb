@@ -80,12 +80,12 @@ Partial Class Ventas_Movimientos
         Me.lblSubtotal = New System.Windows.Forms.Label()
         Me.lblImpuesto = New System.Windows.Forms.Label()
         Me.gbDolares = New System.Windows.Forms.GroupBox()
-        Me.lblTotalDolares = New System.Windows.Forms.Label()
-        Me.lblSubtotalDolares = New System.Windows.Forms.Label()
-        Me.lblImpuestoDolares = New System.Windows.Forms.Label()
-        Me.lblDisplayTotalDolares = New System.Windows.Forms.Label()
-        Me.lblDisplaySubtotalDolares = New System.Windows.Forms.Label()
-        Me.lblDisplayImpuestoDolares = New System.Windows.Forms.Label()
+        Me.lblTotal_USD = New System.Windows.Forms.Label()
+        Me.lblSubtotal_USD = New System.Windows.Forms.Label()
+        Me.lblImpuesto_USD = New System.Windows.Forms.Label()
+        Me.lblDisplayTotal_USD = New System.Windows.Forms.Label()
+        Me.lblDisplaySubtotal_USD = New System.Windows.Forms.Label()
+        Me.lblDisplayImpuesto_USD = New System.Windows.Forms.Label()
         Me.lblSaldo = New System.Windows.Forms.Label()
         Me.lblDisplaySaldo = New System.Windows.Forms.Label()
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
@@ -133,12 +133,12 @@ Partial Class Ventas_Movimientos
         Me.GridCFDIsRelacionados = New FlexCell.Grid()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cboTipoRelacionCFDI = New System.Windows.Forms.ComboBox()
-        Me.Label4 = New System.Windows.Forms.Label()
+        Me.lblDisplayTotalRetencion_USD = New System.Windows.Forms.Label()
         Me.lblTotalRetencion_USD = New System.Windows.Forms.Label()
-        Me.Label6 = New System.Windows.Forms.Label()
+        Me.lblDisplayDescuento_USD = New System.Windows.Forms.Label()
         Me.lblDescuento_USD = New System.Windows.Forms.Label()
         Me.lblIEPS_USD = New System.Windows.Forms.Label()
-        Me.Label9 = New System.Windows.Forms.Label()
+        Me.lblDisplayIEPS_USD = New System.Windows.Forms.Label()
         Me.lblIEPSIncluido_USD = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
@@ -194,7 +194,7 @@ Partial Class Ventas_Movimientos
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbImprimir, Me.tsbCancelar, Me.tsbCotizacionRemision, Me.tsbCotizacionFactura, Me.tsbRemisionVenta, Me.tsbCancelarTimbre, Me.tsbTimbrar, Me.tsbRecuperarXMLPDF, Me.tsbEnviarCorreo, Me.tsbSubirXML, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1004, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1589, 27)
         Me.tsMenu.TabIndex = 3
         Me.tsMenu.Text = "tsMenu"
         '
@@ -460,7 +460,7 @@ Partial Class Ventas_Movimientos
         'lblDisplayImpuestoPesos
         '
         Me.lblDisplayImpuestoPesos.AutoSize = True
-        Me.lblDisplayImpuestoPesos.Location = New System.Drawing.Point(6, 67)
+        Me.lblDisplayImpuestoPesos.Location = New System.Drawing.Point(6, 64)
         Me.lblDisplayImpuestoPesos.Name = "lblDisplayImpuestoPesos"
         Me.lblDisplayImpuestoPesos.Size = New System.Drawing.Size(56, 13)
         Me.lblDisplayImpuestoPesos.TabIndex = 244
@@ -469,7 +469,7 @@ Partial Class Ventas_Movimientos
         'lblDisplayTotalPesos
         '
         Me.lblDisplayTotalPesos.AutoSize = True
-        Me.lblDisplayTotalPesos.Location = New System.Drawing.Point(6, 99)
+        Me.lblDisplayTotalPesos.Location = New System.Drawing.Point(6, 96)
         Me.lblDisplayTotalPesos.Name = "lblDisplayTotalPesos"
         Me.lblDisplayTotalPesos.Size = New System.Drawing.Size(37, 13)
         Me.lblDisplayTotalPesos.TabIndex = 246
@@ -579,7 +579,7 @@ Partial Class Ventas_Movimientos
         Me.gbPesos.Controls.Add(Me.lblDisplayTotalPesos)
         Me.gbPesos.Controls.Add(Me.lblDisplaySubtotalPesos)
         Me.gbPesos.Controls.Add(Me.lblDisplayImpuestoPesos)
-        Me.gbPesos.Location = New System.Drawing.Point(625, 0)
+        Me.gbPesos.Location = New System.Drawing.Point(630, 0)
         Me.gbPesos.Name = "gbPesos"
         Me.gbPesos.Size = New System.Drawing.Size(189, 125)
         Me.gbPesos.TabIndex = 292
@@ -589,7 +589,7 @@ Partial Class Ventas_Movimientos
         'lblDisplayRetencion
         '
         Me.lblDisplayRetencion.AutoSize = True
-        Me.lblDisplayRetencion.Location = New System.Drawing.Point(6, 83)
+        Me.lblDisplayRetencion.Location = New System.Drawing.Point(6, 80)
         Me.lblDisplayRetencion.Name = "lblDisplayRetencion"
         Me.lblDisplayRetencion.Size = New System.Drawing.Size(62, 13)
         Me.lblDisplayRetencion.TabIndex = 255
@@ -599,9 +599,9 @@ Partial Class Ventas_Movimientos
         '
         Me.lblTotalRetencion.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblTotalRetencion.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblTotalRetencion.Location = New System.Drawing.Point(70, 83)
+        Me.lblTotalRetencion.Location = New System.Drawing.Point(70, 80)
         Me.lblTotalRetencion.Name = "lblTotalRetencion"
-        Me.lblTotalRetencion.Size = New System.Drawing.Size(110, 13)
+        Me.lblTotalRetencion.Size = New System.Drawing.Size(107, 13)
         Me.lblTotalRetencion.TabIndex = 254
         Me.lblTotalRetencion.Text = "0.00"
         Me.lblTotalRetencion.TextAlign = System.Drawing.ContentAlignment.TopRight
@@ -609,7 +609,7 @@ Partial Class Ventas_Movimientos
         'lblDisplayDescuento
         '
         Me.lblDisplayDescuento.AutoSize = True
-        Me.lblDisplayDescuento.Location = New System.Drawing.Point(6, 33)
+        Me.lblDisplayDescuento.Location = New System.Drawing.Point(6, 32)
         Me.lblDisplayDescuento.Name = "lblDisplayDescuento"
         Me.lblDisplayDescuento.Size = New System.Drawing.Size(65, 13)
         Me.lblDisplayDescuento.TabIndex = 253
@@ -619,9 +619,9 @@ Partial Class Ventas_Movimientos
         '
         Me.lblDescuento.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblDescuento.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblDescuento.Location = New System.Drawing.Point(70, 33)
+        Me.lblDescuento.Location = New System.Drawing.Point(70, 32)
         Me.lblDescuento.Name = "lblDescuento"
-        Me.lblDescuento.Size = New System.Drawing.Size(110, 13)
+        Me.lblDescuento.Size = New System.Drawing.Size(107, 13)
         Me.lblDescuento.TabIndex = 252
         Me.lblDescuento.Text = "0.00"
         Me.lblDescuento.TextAlign = System.Drawing.ContentAlignment.TopRight
@@ -630,9 +630,9 @@ Partial Class Ventas_Movimientos
         '
         Me.lblIEPS.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblIEPS.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblIEPS.Location = New System.Drawing.Point(70, 50)
+        Me.lblIEPS.Location = New System.Drawing.Point(70, 48)
         Me.lblIEPS.Name = "lblIEPS"
-        Me.lblIEPS.Size = New System.Drawing.Size(110, 13)
+        Me.lblIEPS.Size = New System.Drawing.Size(107, 13)
         Me.lblIEPS.TabIndex = 251
         Me.lblIEPS.Text = "0.00"
         Me.lblIEPS.TextAlign = System.Drawing.ContentAlignment.TopRight
@@ -640,7 +640,7 @@ Partial Class Ventas_Movimientos
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(6, 50)
+        Me.Label2.Location = New System.Drawing.Point(6, 48)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(37, 13)
         Me.Label2.TabIndex = 250
@@ -650,9 +650,9 @@ Partial Class Ventas_Movimientos
         '
         Me.lblTotal.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblTotal.ForeColor = System.Drawing.Color.Crimson
-        Me.lblTotal.Location = New System.Drawing.Point(70, 99)
+        Me.lblTotal.Location = New System.Drawing.Point(70, 96)
         Me.lblTotal.Name = "lblTotal"
-        Me.lblTotal.Size = New System.Drawing.Size(110, 13)
+        Me.lblTotal.Size = New System.Drawing.Size(107, 13)
         Me.lblTotal.TabIndex = 249
         Me.lblTotal.Text = "0.00"
         Me.lblTotal.TextAlign = System.Drawing.ContentAlignment.TopRight
@@ -663,7 +663,7 @@ Partial Class Ventas_Movimientos
         Me.lblSubtotal.ForeColor = System.Drawing.Color.DarkBlue
         Me.lblSubtotal.Location = New System.Drawing.Point(70, 16)
         Me.lblSubtotal.Name = "lblSubtotal"
-        Me.lblSubtotal.Size = New System.Drawing.Size(110, 13)
+        Me.lblSubtotal.Size = New System.Drawing.Size(107, 13)
         Me.lblSubtotal.TabIndex = 247
         Me.lblSubtotal.Text = "0.00"
         Me.lblSubtotal.TextAlign = System.Drawing.ContentAlignment.TopRight
@@ -672,94 +672,94 @@ Partial Class Ventas_Movimientos
         '
         Me.lblImpuesto.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblImpuesto.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblImpuesto.Location = New System.Drawing.Point(70, 67)
+        Me.lblImpuesto.Location = New System.Drawing.Point(70, 64)
         Me.lblImpuesto.Name = "lblImpuesto"
-        Me.lblImpuesto.Size = New System.Drawing.Size(110, 13)
+        Me.lblImpuesto.Size = New System.Drawing.Size(107, 13)
         Me.lblImpuesto.TabIndex = 248
         Me.lblImpuesto.Text = "0.00"
         Me.lblImpuesto.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'gbDolares
         '
-        Me.gbDolares.Controls.Add(Me.Label4)
+        Me.gbDolares.Controls.Add(Me.lblDisplayTotalRetencion_USD)
         Me.gbDolares.Controls.Add(Me.lblTotalRetencion_USD)
-        Me.gbDolares.Controls.Add(Me.Label6)
+        Me.gbDolares.Controls.Add(Me.lblDisplayDescuento_USD)
         Me.gbDolares.Controls.Add(Me.lblDescuento_USD)
         Me.gbDolares.Controls.Add(Me.lblIEPS_USD)
-        Me.gbDolares.Controls.Add(Me.Label9)
-        Me.gbDolares.Controls.Add(Me.lblTotalDolares)
-        Me.gbDolares.Controls.Add(Me.lblSubtotalDolares)
-        Me.gbDolares.Controls.Add(Me.lblImpuestoDolares)
-        Me.gbDolares.Controls.Add(Me.lblDisplayTotalDolares)
-        Me.gbDolares.Controls.Add(Me.lblDisplaySubtotalDolares)
-        Me.gbDolares.Controls.Add(Me.lblDisplayImpuestoDolares)
+        Me.gbDolares.Controls.Add(Me.lblDisplayIEPS_USD)
+        Me.gbDolares.Controls.Add(Me.lblTotal_USD)
+        Me.gbDolares.Controls.Add(Me.lblSubtotal_USD)
+        Me.gbDolares.Controls.Add(Me.lblImpuesto_USD)
+        Me.gbDolares.Controls.Add(Me.lblDisplayTotal_USD)
+        Me.gbDolares.Controls.Add(Me.lblDisplaySubtotal_USD)
+        Me.gbDolares.Controls.Add(Me.lblDisplayImpuesto_USD)
         Me.gbDolares.Location = New System.Drawing.Point(449, 0)
         Me.gbDolares.Name = "gbDolares"
-        Me.gbDolares.Size = New System.Drawing.Size(189, 125)
+        Me.gbDolares.Size = New System.Drawing.Size(185, 125)
         Me.gbDolares.TabIndex = 293
         Me.gbDolares.TabStop = False
         Me.gbDolares.Text = "Dólares"
         Me.gbDolares.Visible = False
         '
-        'lblTotalDolares
+        'lblTotal_USD
         '
-        Me.lblTotalDolares.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.lblTotalDolares.ForeColor = System.Drawing.Color.Crimson
-        Me.lblTotalDolares.Location = New System.Drawing.Point(65, 99)
-        Me.lblTotalDolares.Name = "lblTotalDolares"
-        Me.lblTotalDolares.Size = New System.Drawing.Size(110, 13)
-        Me.lblTotalDolares.TabIndex = 249
-        Me.lblTotalDolares.Text = "0.00"
-        Me.lblTotalDolares.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.lblTotal_USD.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblTotal_USD.ForeColor = System.Drawing.Color.Crimson
+        Me.lblTotal_USD.Location = New System.Drawing.Point(68, 96)
+        Me.lblTotal_USD.Name = "lblTotal_USD"
+        Me.lblTotal_USD.Size = New System.Drawing.Size(107, 13)
+        Me.lblTotal_USD.TabIndex = 249
+        Me.lblTotal_USD.Text = "0.00"
+        Me.lblTotal_USD.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'lblSubtotalDolares
+        'lblSubtotal_USD
         '
-        Me.lblSubtotalDolares.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.lblSubtotalDolares.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblSubtotalDolares.Location = New System.Drawing.Point(65, 16)
-        Me.lblSubtotalDolares.Name = "lblSubtotalDolares"
-        Me.lblSubtotalDolares.Size = New System.Drawing.Size(110, 13)
-        Me.lblSubtotalDolares.TabIndex = 247
-        Me.lblSubtotalDolares.Text = "0.00"
-        Me.lblSubtotalDolares.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.lblSubtotal_USD.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblSubtotal_USD.ForeColor = System.Drawing.Color.DarkBlue
+        Me.lblSubtotal_USD.Location = New System.Drawing.Point(68, 16)
+        Me.lblSubtotal_USD.Name = "lblSubtotal_USD"
+        Me.lblSubtotal_USD.Size = New System.Drawing.Size(107, 13)
+        Me.lblSubtotal_USD.TabIndex = 247
+        Me.lblSubtotal_USD.Text = "0.00"
+        Me.lblSubtotal_USD.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'lblImpuestoDolares
+        'lblImpuesto_USD
         '
-        Me.lblImpuestoDolares.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.lblImpuestoDolares.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblImpuestoDolares.Location = New System.Drawing.Point(65, 67)
-        Me.lblImpuestoDolares.Name = "lblImpuestoDolares"
-        Me.lblImpuestoDolares.Size = New System.Drawing.Size(110, 13)
-        Me.lblImpuestoDolares.TabIndex = 248
-        Me.lblImpuestoDolares.Text = "0.00"
-        Me.lblImpuestoDolares.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.lblImpuesto_USD.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblImpuesto_USD.ForeColor = System.Drawing.Color.DarkBlue
+        Me.lblImpuesto_USD.Location = New System.Drawing.Point(68, 64)
+        Me.lblImpuesto_USD.Name = "lblImpuesto_USD"
+        Me.lblImpuesto_USD.Size = New System.Drawing.Size(107, 13)
+        Me.lblImpuesto_USD.TabIndex = 248
+        Me.lblImpuesto_USD.Text = "0.00"
+        Me.lblImpuesto_USD.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'lblDisplayTotalDolares
+        'lblDisplayTotal_USD
         '
-        Me.lblDisplayTotalDolares.AutoSize = True
-        Me.lblDisplayTotalDolares.Location = New System.Drawing.Point(1, 99)
-        Me.lblDisplayTotalDolares.Name = "lblDisplayTotalDolares"
-        Me.lblDisplayTotalDolares.Size = New System.Drawing.Size(37, 13)
-        Me.lblDisplayTotalDolares.TabIndex = 246
-        Me.lblDisplayTotalDolares.Text = "Total :"
+        Me.lblDisplayTotal_USD.AutoSize = True
+        Me.lblDisplayTotal_USD.Location = New System.Drawing.Point(1, 96)
+        Me.lblDisplayTotal_USD.Name = "lblDisplayTotal_USD"
+        Me.lblDisplayTotal_USD.Size = New System.Drawing.Size(37, 13)
+        Me.lblDisplayTotal_USD.TabIndex = 246
+        Me.lblDisplayTotal_USD.Text = "Total :"
         '
-        'lblDisplaySubtotalDolares
+        'lblDisplaySubtotal_USD
         '
-        Me.lblDisplaySubtotalDolares.AutoSize = True
-        Me.lblDisplaySubtotalDolares.Location = New System.Drawing.Point(1, 16)
-        Me.lblDisplaySubtotalDolares.Name = "lblDisplaySubtotalDolares"
-        Me.lblDisplaySubtotalDolares.Size = New System.Drawing.Size(52, 13)
-        Me.lblDisplaySubtotalDolares.TabIndex = 242
-        Me.lblDisplaySubtotalDolares.Text = "Subtotal :"
+        Me.lblDisplaySubtotal_USD.AutoSize = True
+        Me.lblDisplaySubtotal_USD.Location = New System.Drawing.Point(1, 16)
+        Me.lblDisplaySubtotal_USD.Name = "lblDisplaySubtotal_USD"
+        Me.lblDisplaySubtotal_USD.Size = New System.Drawing.Size(52, 13)
+        Me.lblDisplaySubtotal_USD.TabIndex = 242
+        Me.lblDisplaySubtotal_USD.Text = "Subtotal :"
         '
-        'lblDisplayImpuestoDolares
+        'lblDisplayImpuesto_USD
         '
-        Me.lblDisplayImpuestoDolares.AutoSize = True
-        Me.lblDisplayImpuestoDolares.Location = New System.Drawing.Point(1, 67)
-        Me.lblDisplayImpuestoDolares.Name = "lblDisplayImpuestoDolares"
-        Me.lblDisplayImpuestoDolares.Size = New System.Drawing.Size(56, 13)
-        Me.lblDisplayImpuestoDolares.TabIndex = 244
-        Me.lblDisplayImpuestoDolares.Text = "Impuesto :"
+        Me.lblDisplayImpuesto_USD.AutoSize = True
+        Me.lblDisplayImpuesto_USD.Location = New System.Drawing.Point(1, 64)
+        Me.lblDisplayImpuesto_USD.Name = "lblDisplayImpuesto_USD"
+        Me.lblDisplayImpuesto_USD.Size = New System.Drawing.Size(56, 13)
+        Me.lblDisplayImpuesto_USD.TabIndex = 244
+        Me.lblDisplayImpuesto_USD.Text = "Impuesto :"
         '
         'lblSaldo
         '
@@ -786,7 +786,7 @@ Partial Class Ventas_Movimientos
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsslEstado, Me.tsslElaboro, Me.tsslCancelo})
         Me.StatusStripEstado.Location = New System.Drawing.Point(0, 654)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1004, 24)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1589, 24)
         Me.StatusStripEstado.TabIndex = 315
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -1120,7 +1120,6 @@ Partial Class Ventas_Movimientos
         Me.txtUUID.ReadOnly = True
         Me.txtUUID.Size = New System.Drawing.Size(256, 20)
         Me.txtUUID.TabIndex = 385
-        Me.txtUUID.Text = "A4681950-24FA-49CA-9770-425129A4C130"
         '
         'lblUUID
         '
@@ -1187,7 +1186,7 @@ Partial Class Ventas_Movimientos
         Me.TabControl1.Location = New System.Drawing.Point(8, 275)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(986, 238)
+        Me.TabControl1.Size = New System.Drawing.Size(1578, 238)
         Me.TabControl1.TabIndex = 1
         '
         'tpArticulos
@@ -1196,7 +1195,7 @@ Partial Class Ventas_Movimientos
         Me.tpArticulos.Location = New System.Drawing.Point(4, 22)
         Me.tpArticulos.Name = "tpArticulos"
         Me.tpArticulos.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
-        Me.tpArticulos.Size = New System.Drawing.Size(978, 212)
+        Me.tpArticulos.Size = New System.Drawing.Size(1570, 212)
         Me.tpArticulos.TabIndex = 0
         Me.tpArticulos.Text = "Artículos"
         Me.tpArticulos.UseVisualStyleBackColor = True
@@ -1216,7 +1215,7 @@ Partial Class Ventas_Movimientos
         Me.Grid.LockButton = True
         Me.Grid.Name = "Grid"
         Me.Grid.Rows = 8
-        Me.Grid.Size = New System.Drawing.Size(969, 204)
+        Me.Grid.Size = New System.Drawing.Size(1561, 204)
         Me.Grid.TabIndex = 2
         Me.Grid.UncheckedImage = CType(resources.GetObject("Grid.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -1301,42 +1300,42 @@ Partial Class Ventas_Movimientos
         Me.cboTipoRelacionCFDI.Size = New System.Drawing.Size(301, 21)
         Me.cboTipoRelacionCFDI.TabIndex = 383
         '
-        'Label4
+        'lblDisplayTotalRetencion_USD
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(1, 81)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(62, 13)
-        Me.Label4.TabIndex = 261
-        Me.Label4.Text = "Retención :"
+        Me.lblDisplayTotalRetencion_USD.AutoSize = True
+        Me.lblDisplayTotalRetencion_USD.Location = New System.Drawing.Point(1, 80)
+        Me.lblDisplayTotalRetencion_USD.Name = "lblDisplayTotalRetencion_USD"
+        Me.lblDisplayTotalRetencion_USD.Size = New System.Drawing.Size(62, 13)
+        Me.lblDisplayTotalRetencion_USD.TabIndex = 261
+        Me.lblDisplayTotalRetencion_USD.Text = "Retención :"
         '
         'lblTotalRetencion_USD
         '
         Me.lblTotalRetencion_USD.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblTotalRetencion_USD.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblTotalRetencion_USD.Location = New System.Drawing.Point(65, 83)
+        Me.lblTotalRetencion_USD.Location = New System.Drawing.Point(68, 80)
         Me.lblTotalRetencion_USD.Name = "lblTotalRetencion_USD"
-        Me.lblTotalRetencion_USD.Size = New System.Drawing.Size(110, 13)
+        Me.lblTotalRetencion_USD.Size = New System.Drawing.Size(107, 13)
         Me.lblTotalRetencion_USD.TabIndex = 260
         Me.lblTotalRetencion_USD.Text = "0.00"
         Me.lblTotalRetencion_USD.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'Label6
+        'lblDisplayDescuento_USD
         '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(1, 31)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(65, 13)
-        Me.Label6.TabIndex = 259
-        Me.Label6.Text = "Descuento :"
+        Me.lblDisplayDescuento_USD.AutoSize = True
+        Me.lblDisplayDescuento_USD.Location = New System.Drawing.Point(1, 32)
+        Me.lblDisplayDescuento_USD.Name = "lblDisplayDescuento_USD"
+        Me.lblDisplayDescuento_USD.Size = New System.Drawing.Size(65, 13)
+        Me.lblDisplayDescuento_USD.TabIndex = 259
+        Me.lblDisplayDescuento_USD.Text = "Descuento :"
         '
         'lblDescuento_USD
         '
         Me.lblDescuento_USD.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblDescuento_USD.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblDescuento_USD.Location = New System.Drawing.Point(65, 33)
+        Me.lblDescuento_USD.Location = New System.Drawing.Point(68, 32)
         Me.lblDescuento_USD.Name = "lblDescuento_USD"
-        Me.lblDescuento_USD.Size = New System.Drawing.Size(110, 13)
+        Me.lblDescuento_USD.Size = New System.Drawing.Size(107, 13)
         Me.lblDescuento_USD.TabIndex = 258
         Me.lblDescuento_USD.Text = "0.00"
         Me.lblDescuento_USD.TextAlign = System.Drawing.ContentAlignment.TopRight
@@ -1345,21 +1344,21 @@ Partial Class Ventas_Movimientos
         '
         Me.lblIEPS_USD.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblIEPS_USD.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblIEPS_USD.Location = New System.Drawing.Point(65, 50)
+        Me.lblIEPS_USD.Location = New System.Drawing.Point(68, 48)
         Me.lblIEPS_USD.Name = "lblIEPS_USD"
-        Me.lblIEPS_USD.Size = New System.Drawing.Size(110, 13)
+        Me.lblIEPS_USD.Size = New System.Drawing.Size(107, 13)
         Me.lblIEPS_USD.TabIndex = 257
         Me.lblIEPS_USD.Text = "0.00"
         Me.lblIEPS_USD.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'Label9
+        'lblDisplayIEPS_USD
         '
-        Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(1, 48)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(37, 13)
-        Me.Label9.TabIndex = 256
-        Me.Label9.Text = "IEPS :"
+        Me.lblDisplayIEPS_USD.AutoSize = True
+        Me.lblDisplayIEPS_USD.Location = New System.Drawing.Point(1, 48)
+        Me.lblDisplayIEPS_USD.Name = "lblDisplayIEPS_USD"
+        Me.lblDisplayIEPS_USD.Size = New System.Drawing.Size(37, 13)
+        Me.lblDisplayIEPS_USD.TabIndex = 256
+        Me.lblDisplayIEPS_USD.Text = "IEPS :"
         '
         'lblIEPSIncluido_USD
         '
@@ -1377,7 +1376,7 @@ Partial Class Ventas_Movimientos
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
-        Me.ClientSize = New System.Drawing.Size(1004, 678)
+        Me.ClientSize = New System.Drawing.Size(1589, 678)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.gbTotales)
         Me.Controls.Add(Me.frmDatos)
@@ -1452,12 +1451,12 @@ Partial Class Ventas_Movimientos
     Friend WithEvents lblSubtotal As System.Windows.Forms.Label
     Friend WithEvents lblImpuesto As System.Windows.Forms.Label
     Friend WithEvents gbDolares As System.Windows.Forms.GroupBox
-    Friend WithEvents lblTotalDolares As System.Windows.Forms.Label
-    Friend WithEvents lblSubtotalDolares As System.Windows.Forms.Label
-    Friend WithEvents lblImpuestoDolares As System.Windows.Forms.Label
-    Friend WithEvents lblDisplayTotalDolares As System.Windows.Forms.Label
-    Friend WithEvents lblDisplaySubtotalDolares As System.Windows.Forms.Label
-    Friend WithEvents lblDisplayImpuestoDolares As System.Windows.Forms.Label
+    Friend WithEvents lblTotal_USD As System.Windows.Forms.Label
+    Friend WithEvents lblSubtotal_USD As System.Windows.Forms.Label
+    Friend WithEvents lblImpuesto_USD As System.Windows.Forms.Label
+    Friend WithEvents lblDisplayTotal_USD As System.Windows.Forms.Label
+    Friend WithEvents lblDisplaySubtotal_USD As System.Windows.Forms.Label
+    Friend WithEvents lblDisplayImpuesto_USD As System.Windows.Forms.Label
     Friend WithEvents lblSaldo As System.Windows.Forms.Label
     Friend WithEvents lblDisplaySaldo As System.Windows.Forms.Label
     Friend WithEvents StatusStripEstado As System.Windows.Forms.StatusStrip
@@ -1520,11 +1519,11 @@ Partial Class Ventas_Movimientos
     Friend WithEvents tsbSubirXML As ToolStripButton
     Friend WithEvents lblDisplayRetencion As System.Windows.Forms.Label
     Friend WithEvents lblTotalRetencion As System.Windows.Forms.Label
-    Friend WithEvents Label4 As Label
+    Friend WithEvents lblDisplayTotalRetencion_USD As Label
     Friend WithEvents lblTotalRetencion_USD As Label
-    Friend WithEvents Label6 As Label
+    Friend WithEvents lblDisplayDescuento_USD As Label
     Friend WithEvents lblDescuento_USD As Label
     Friend WithEvents lblIEPS_USD As Label
-    Friend WithEvents Label9 As Label
+    Friend WithEvents lblDisplayIEPS_USD As Label
     Friend WithEvents lblIEPSIncluido_USD As Label
 End Class
