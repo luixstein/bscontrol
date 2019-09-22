@@ -33,6 +33,7 @@ Public Class Ventas_Movimientos
     Private bCargandoVenta As Boolean
     Private sTipoVentaAnterior As String, sMonedaAnterior As String, dViewFormasPago As New Data.DataView
     Private bClienteEsContribuyenteIEPS As Boolean = False, bCrearonColumnas As Boolean = False
+    Private iDecimalesPrecio As Integer = 6
 #End Region
 
 #Region "Columnas grid ventas"
@@ -569,6 +570,7 @@ Buscar:
                     'Estas 3 columnas son editables, y se gestiona su bloqueo/desbloqueo según el tipo de moneda
                     Me.Grid.Column(Me.igyPrecio).Locked = True
                     Me.Grid.Column(Me.igyPrecio_USD).Locked = False
+                    Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Locked = True
                     Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Locked = False
 
                     Me.Grid.Column(Me.igyPrecio_USD).Visible = True
@@ -585,6 +587,7 @@ Buscar:
                     'Estas 3 columnas son editables, y se gestiona su bloqueo/desbloqueo según el tipo de moneda
                     Me.Grid.Column(Me.igyPrecio).Locked = False
                     Me.Grid.Column(Me.igyPrecio_USD).Locked = True
+                    Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Locked = False
                     Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Locked = True
 
                     Me.Grid.Column(Me.igyPrecio_USD).Visible = False
@@ -678,7 +681,7 @@ Buscar:
     Private Sub txtTipoCambio_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtTipoCambio.KeyDown
         Select Case e.KeyCode
             Case Keys.Enter
-                Totales()
+                Me.Totales()
         End Select
     End Sub
 
@@ -988,27 +991,27 @@ Buscar:
             Me.Grid.Column(Me.igyCantidadKilos).Alignment = FlexCell.AlignmentEnum.RightCenter
 
             'Me.Grid.Column(Me.igyPrecio).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
-            Me.Grid.Column(Me.igyPrecio).FormatString = "$ ###,###,##0." & StrDup(6, "0")
+            Me.Grid.Column(Me.igyPrecio).FormatString = "$ ###,###,##0." & StrDup(Me.iDecimalesPrecio, "0")
             Me.Grid.Column(Me.igyPrecio).Mask = FlexCell.MaskEnum.Numeric
-            Me.Grid.Column(Me.igyPrecio).DecimalLength = 6 'Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.igyPrecio).DecimalLength = Me.iDecimalesPrecio 'Empresa_Sistema.DECIMALES_PRECIO
             Me.Grid.Column(Me.igyPrecio).Alignment = FlexCell.AlignmentEnum.RightCenter
 
             'Me.Grid.Column(Me.igyPrecio_USD).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
-            Me.Grid.Column(Me.igyPrecio_USD).FormatString = "$ ###,###,##0." & StrDup(6, "0")
+            Me.Grid.Column(Me.igyPrecio_USD).FormatString = "$ ###,###,##0." & StrDup(Me.iDecimalesPrecio, "0")
             Me.Grid.Column(Me.igyPrecio_USD).Mask = FlexCell.MaskEnum.Numeric
-            Me.Grid.Column(Me.igyPrecio_USD).DecimalLength = 6 'Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.igyPrecio_USD).DecimalLength = Me.iDecimalesPrecio 'Empresa_Sistema.DECIMALES_PRECIO
             Me.Grid.Column(Me.igyPrecio_USD).Alignment = FlexCell.AlignmentEnum.RightCenter
 
             'Me.Grid.Column(Me.igyPRECIO_TOTAL).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
-            Me.Grid.Column(Me.igyPRECIO_TOTAL).FormatString = "$ ###,###,##0." & StrDup(6, "0")
+            Me.Grid.Column(Me.igyPRECIO_TOTAL).FormatString = "$ ###,###,##0." & StrDup(Me.iDecimalesPrecio, "0")
             Me.Grid.Column(Me.igyPRECIO_TOTAL).Mask = FlexCell.MaskEnum.Numeric
-            Me.Grid.Column(Me.igyPRECIO_TOTAL).DecimalLength = 6 'Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.igyPRECIO_TOTAL).DecimalLength = Me.iDecimalesPrecio 'Empresa_Sistema.DECIMALES_PRECIO
             Me.Grid.Column(Me.igyPRECIO_TOTAL).Alignment = FlexCell.AlignmentEnum.RightCenter
 
             'Me.Grid.Column(Me.igyPRECIO_TOTAL_USD).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
-            Me.Grid.Column(Me.igyPRECIO_TOTAL_USD).FormatString = "$ ###,###,##0." & StrDup(6, "0")
+            Me.Grid.Column(Me.igyPRECIO_TOTAL_USD).FormatString = "$ ###,###,##0." & StrDup(Me.iDecimalesPrecio, "0")
             Me.Grid.Column(Me.igyPRECIO_TOTAL_USD).Mask = FlexCell.MaskEnum.Numeric
-            Me.Grid.Column(Me.igyPRECIO_TOTAL_USD).DecimalLength = 6 'Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.igyPRECIO_TOTAL_USD).DecimalLength = Me.iDecimalesPrecio 'Empresa_Sistema.DECIMALES_PRECIO
             Me.Grid.Column(Me.igyPRECIO_TOTAL_USD).Alignment = FlexCell.AlignmentEnum.RightCenter
 
             Me.Grid.Column(Me.igyPrecioKilos).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO)
@@ -1062,9 +1065,9 @@ Buscar:
             Me.Grid.Column(Me.igyUtilidadTotal).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
             Me.Grid.Column(Me.igyUtilidadTotal).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.iGyDESCUENTO_UNITARIO).FormatString = "$ ###,###,##0." & StrDup(6, "0")
+            Me.Grid.Column(Me.iGyDESCUENTO_UNITARIO).FormatString = "$ ###,###,##0." & StrDup(Me.iDecimalesPrecio, "0")
             Me.Grid.Column(Me.iGyDESCUENTO_UNITARIO).Mask = FlexCell.MaskEnum.Numeric
-            Me.Grid.Column(Me.iGyDESCUENTO_UNITARIO).DecimalLength = 6 'Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.iGyDESCUENTO_UNITARIO).DecimalLength = Me.iDecimalesPrecio 'Empresa_Sistema.DECIMALES_PRECIO
             Me.Grid.Column(Me.iGyDESCUENTO_UNITARIO).Alignment = FlexCell.AlignmentEnum.RightCenter
 
             Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
@@ -1072,14 +1075,14 @@ Buscar:
             Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
             Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO).FormatString = "$ ###,###,##0." & StrDup(6, "0")
+            Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO).FormatString = "$ ###,###,##0." & StrDup(Me.iDecimalesPrecio, "0")
             Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO).Mask = FlexCell.MaskEnum.Numeric
-            Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO).DecimalLength = 6 'Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO).DecimalLength = Me.iDecimalesPrecio 'Empresa_Sistema.DECIMALES_PRECIO
             Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).FormatString = "$ ###,###,##0." & StrDup(6, "0")
+            Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).FormatString = "$ ###,###,##0." & StrDup(Me.iDecimalesPrecio, "0")
             Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).Mask = FlexCell.MaskEnum.Numeric
-            Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).DecimalLength = 6 'Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).DecimalLength = Me.iDecimalesPrecio 'Empresa_Sistema.DECIMALES_PRECIO
             Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).Alignment = FlexCell.AlignmentEnum.RightCenter
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Column(Me.igyDescripcion).Locked = True
@@ -1747,8 +1750,9 @@ Buscar:
 
                         .oVentasDetalle.LISTA_SERIES = sListaSeries
 
-                        .oVentasDetalle.PRECIO_USD = valorNumerico(Me.Grid.Cell(i, Me.igyPrecio_USD).Text)
-                        .oVentasDetalle.IMPORTE_USD = valorNumerico(Me.Grid.Cell(i, Me.igyImporte_USD).Text)
+                        'nota ahora que de momento no hay embarques, estos se llenan mas abajo, ver notas
+                        '.oVentasDetalle.PRECIO_USD = valorNumerico(Me.Grid.Cell(i, Me.igyPrecio_USD).Text)
+                        '.oVentasDetalle.IMPORTE_USD = valorNumerico(Me.Grid.Cell(i, Me.igyImporte_USD).Text)
 
                         .oVentasDetalle.IEPS_PORCENTAJE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
                         .oVentasDetalle.IEPS_UNITARIO = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text)
@@ -1773,6 +1777,23 @@ Buscar:
                         If Me.Grid.Cell(i, Me.igyTipoControlInventariable).Text = "NIV" Then
                             .oVentasDetalle.COSTO = valorNumericoD(Me.Grid.Cell(i, Me.igyCosto).Text)
                         End If
+
+                        ''''
+                        .oVentasDetalle.IMPUESTO_IMPORTE_USD = valorNumerico(Me.Grid.Cell(i, Me.igyImpuestoImporte_USD).Text)
+                        .oVentasDetalle.IMPORTE_USD = valorNumerico(Me.Grid.Cell(i, Me.igyImporte_USD).Text)
+                        '.oVentasDetalle.PRECIO_USD = valorNumerico(Me.Grid.Cell(i, Me.igyPrecio_USD).Text) 'nota ahora que de momento no hay embarques este dato no sale directo de la columna precio
+                        .oVentasDetalle.IMPORTE_USD = valorNumerico(Me.Grid.Cell(i, Me.igyImporte_USD).Text)
+                        .oVentasDetalle.IEPS_UNITARIO_USD = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_UNITARIO_USD).Text)
+                        .oVentasDetalle.IEPS_IMPORTE_USD = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_IMPORTE_USD).Text)
+                        .oVentasDetalle.BASE_IEPS_USD = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IEPS_USD).Text)
+                        .oVentasDetalle.BASE_IVA_USD = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IVA_USD).Text)
+                        .oVentasDetalle.PRECIO_TOTAL_USD = valorNumerico(Me.Grid.Cell(i, Me.igyPRECIO_TOTAL_USD).Text)
+                        .oVentasDetalle.PRECIO_SIN_DESCUENTO_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio_USD).Text)
+                        .oVentasDetalle.PRECIO_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyPRECIO_CON_DESCUENTO_USD).Text)
+                        .oVentasDetalle.DESCUENTO_UNITARIO_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_UNITARIO_USD).Text)
+                        .oVentasDetalle.DESCUENTO_IMPORTE_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE_USD).Text)
+                        .oVentasDetalle.RETENCION_IVA_IMPORTE_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyFleteImporte_USD).Text)
+                        ''''
 
                         If .oVentasDetalle.GrabaRenglon = False Then
                             MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, sProcedure)
@@ -2788,7 +2809,7 @@ CANCELAR:
     Private Sub Totales()
         Const sProcedure As String = "Totales"
         Try
-            Dim i As Integer, dCantidad As Decimal, dPorcentajeIVA As Decimal, iIDOrigen As Integer = 0, dIEPS_PORCENTAJE As Decimal = 0
+            Dim i As Integer, dCantidad As Decimal, dPorcentajeIVA As Decimal, iIDOrigen As Integer = 0, dIEPS_PORCENTAJE As Decimal = 0, dTipoCambio As Decimal = 0
 
             Dim dPrecioCapturado As Decimal, dPrecioOriginal As Decimal, dImporte As Decimal, dImporteSustitucion As Decimal, dImporteTotal As Decimal = 0
             Dim dPrecioConDescuento As Decimal, dImporteConDescuento As Decimal, dDESCUENTO_UNITARIO As Decimal, dDESCUENTO_IMPORTE As Decimal
@@ -2805,6 +2826,8 @@ CANCELAR:
             Dim dFLETE_IMPORTE_USD As Decimal = 0, dtFLETE_USD As Decimal = 0
 
             Dim dtSubtotal_USD As Decimal = 0, dtIEPS_USD As Decimal = 0, dtImpuesto_USD As Decimal = 0, dtTotal_USD As Decimal = 0, dtDescuentos_USD As Decimal = 0
+
+            dTipoCambio = valorNumericoD(Me.txtTipoCambio.Text)
 
             Me.lblSubtotal.Text = FormatImporteContable(0)
             Me.lblIEPSIncluido.Text = FormatImporteContable(0)
@@ -2823,153 +2846,184 @@ CANCELAR:
             dTotalSustitucion = 0
 
             For i = 1 To Me.Grid.Rows - 1
-                If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
-                    oArticulo = New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
+                If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = False Then
+                    Continue For
+                End If
 
-                    If txtLEN(Me.Grid.Cell(i, Me.igyCantidad).Text) = True Then
+                oArticulo = New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
 
-                        dCantidad = 0 : dPrecioCapturado = 0 : dPrecioConDescuento = 0 : iIDOrigen = 0 : dPorcentajeIVA = 0 : dIEPS_PORCENTAJE = 0 : sID_SIS_CAT_IMPUESTOS = "" : sGRADO_TOXICIDAD = "" : dImporteConDescuento = 0
-                        dBASE_IEPS = 0 : dIEPS_IMPORTE = 0 : dIEPS_UNITARIO = 0 : dBASE_IVA = 0 : dIVA_IMPORTE = 0 : dPRECIO_TOTAL = 0 : dPrecioOriginal = 0 : dImporte = 0 : dImporteTotal = 0 : dImporteSustitucion = 0
-                        dDESCUENTO_UNITARIO = 0 : dDESCUENTO_IMPORTE = 0 : dFLETE_IMPORTE = 0 : sID_SIS_CAT_IMPUESTOS_FLETES = "" : dPorcentajeFlete = 0
+                If txtLEN(Me.Grid.Cell(i, Me.igyCantidad).Text) = False Then
+                    Continue For
+                End If
 
-                        dPrecioCapturado_USD = 0
+                dCantidad = 0 : dPrecioCapturado = 0 : dPrecioConDescuento = 0 : iIDOrigen = 0 : dPorcentajeIVA = 0 : dIEPS_PORCENTAJE = 0 : sID_SIS_CAT_IMPUESTOS = "" : sGRADO_TOXICIDAD = "" : dImporteConDescuento = 0
+                dBASE_IEPS = 0 : dIEPS_IMPORTE = 0 : dIEPS_UNITARIO = 0 : dBASE_IVA = 0 : dIVA_IMPORTE = 0 : dPRECIO_TOTAL = 0 : dPrecioOriginal = 0 : dImporte = 0 : dImporteTotal = 0 : dImporteSustitucion = 0
+                dDESCUENTO_UNITARIO = 0 : dDESCUENTO_IMPORTE = 0 : dFLETE_IMPORTE = 0 : sID_SIS_CAT_IMPUESTOS_FLETES = "" : dPorcentajeFlete = 0
 
-                        dCantidad = valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text)
-                        dPrecioCapturado = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text)
-                        iIDOrigen = CInt(valorNumericoD(Me.Grid.Cell(i, Me.igyIdOrigen).Text))
-                        dPorcentajeIVA = valorNumericoD(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text)
-                        dIEPS_PORCENTAJE = valorNumericoD(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
-                        sID_SIS_CAT_IMPUESTOS = Me.Grid.Cell(i, Me.iGyID_SIS_CAT_IMPUESTOS).Text
-                        sGRADO_TOXICIDAD = Me.Grid.Cell(i, Me.iGyGRADO_TOXICIDAD).Text
-                        dDESCUENTO_UNITARIO = 0 'Se va calcular en base al descuento importe
-                        dDESCUENTO_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE).Text)
-                        sID_SIS_CAT_IMPUESTOS_FLETES = Me.Grid.Cell(i, Me.iGyIdSisCatImpuestosFlete).Text
-                        dPorcentajeFlete = valorNumericoD(Me.Grid.Cell(i, Me.iGyFletePorcentaje).Text)
+                dPrecioCapturado_USD = 0
 
-                        dPrecioCapturado_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio_USD).Text)
-                        dDESCUENTO_UNITARIO_USD = 0 'Se va calcular en base al descuento importe
-                        dDESCUENTO_IMPORTE_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE).Text)
+                dCantidad = valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text)
+                dPrecioCapturado = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text)
+                iIDOrigen = CInt(valorNumericoD(Me.Grid.Cell(i, Me.igyIdOrigen).Text))
+                dPorcentajeIVA = valorNumericoD(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text)
+                dIEPS_PORCENTAJE = valorNumericoD(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
+                sID_SIS_CAT_IMPUESTOS = Me.Grid.Cell(i, Me.iGyID_SIS_CAT_IMPUESTOS).Text
+                sGRADO_TOXICIDAD = Me.Grid.Cell(i, Me.iGyGRADO_TOXICIDAD).Text
+                dDESCUENTO_UNITARIO = 0 'Se va calcular en base al descuento importe
+                dDESCUENTO_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE).Text)
+                sID_SIS_CAT_IMPUESTOS_FLETES = Me.Grid.Cell(i, Me.iGyIdSisCatImpuestosFlete).Text
+                dPorcentajeFlete = valorNumericoD(Me.Grid.Cell(i, Me.iGyFletePorcentaje).Text)
 
-                        ''''''''
-                        '''''''''''''''''''''''''''''''USD
-                        dImporte_USD = RedondearD((dCantidad * dPrecioCapturado_USD), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                dPrecioCapturado_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio_USD).Text)
+                dDESCUENTO_UNITARIO_USD = 0 'Se va calcular en base al descuento importe
+                dDESCUENTO_IMPORTE_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE_USD).Text)
 
-                        If dDESCUENTO_IMPORTE_USD > 0 And dDESCUENTO_IMPORTE_USD > dImporte_USD Then
-                            MsgBox("El descuento no puede ser mayor que el importe.", vbExclamation, sProcedure)
-                            Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE_USD).Text = "0"
-                            dDESCUENTO_IMPORTE_USD = 0
-                        End If
+                '''''''''''''''''''''''''''''''USD
+                If Me.cboMoneda.Text = "USD" Then
+                    ''''''''''''''''
+                    'Calculasmo los otros valores en MXN capturables(que si bien no se capturaron se emularán)
+                    dPrecioCapturado = dPrecioCapturado_USD * valorNumericoD(Me.txtTipoCambio.Text)
+                    dPrecioCapturado = RedondearD(dPrecioCapturado, Me.iDecimalesPrecio)
 
-                        If dCantidad > 0 Then
-                            dDESCUENTO_UNITARIO_USD = RedondearD(dDESCUENTO_IMPORTE_USD / dCantidad, 6)
-                        End If
+                    dDESCUENTO_IMPORTE = dDESCUENTO_IMPORTE_USD * valorNumericoD(Me.txtTipoCambio.Text)
+                    dDESCUENTO_IMPORTE = RedondearD(dDESCUENTO_IMPORTE, Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
-                        dPrecioConDescuento_USD = dPrecioCapturado_USD - dDESCUENTO_UNITARIO_USD
+                    Me.Grid.Cell(i, Me.igyPrecio).Text = dPrecioCapturado.ToString
+                    Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE).Text = dDESCUENTO_IMPORTE.ToString
 
-                        'dImporteConDescuento_USD = RedondearD((dCantidad * dPrecioConDescuento_USD), 2)
-                        dImporteConDescuento_USD = RedondearD((dCantidad * dPrecioConDescuento_USD), 6)
+                    ''''''''''''''''
 
-                        If sGRADO_TOXICIDAD <> "0" Then
-                            dBASE_IEPS_USD = dImporteConDescuento_USD
-                            dIEPS_IMPORTE_USD = RedondearD(dBASE_IEPS_USD * (dIEPS_PORCENTAJE / 100), 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
-                            dIEPS_UNITARIO_USD = CDec(Redondear(dPrecioConDescuento_USD * (dIEPS_PORCENTAJE / 100), 4))
-                        End If
+                    'De ahi en adelante todo el código equivale al código original en MXN que existia antes de capturar precios en USD
+                    dImporte_USD = RedondearD((dCantidad * dPrecioCapturado_USD), Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
-                        If sID_SIS_CAT_IMPUESTOS <> "N" Then 'N=No grava iva, si es <>N = Si grava iva ya sea al 0,16,Exento(aún siendo exento ó 0 hay que llenar la base iva)
-                            dBASE_IVA_USD = dImporteConDescuento_USD + dIEPS_IMPORTE_USD
-                            dIVA_IMPORTE_USD = RedondearD(dBASE_IVA_USD * ((dPorcentajeIVA / 100)), 2)
-                        End If
-
-                        If sID_SIS_CAT_IMPUESTOS_FLETES <> "0" Then
-                            dFLETE_IMPORTE_USD = RedondearD(dBASE_IVA_USD * ((dPorcentajeFlete / 100)), 2)
-                        End If
-
-                        dPRECIO_TOTAL_USD = dPrecioCapturado_USD
-
-                        If Me.bClienteEsContribuyenteIEPS = False And dPrecioCapturado_USD > 0 Then 'Cuando no es contribuyente se le adjunta al precio el ieps, es decir se le incluye
-                            'dPRECIO_TOTAL_usd = RedondearD(dPrecioCapturado + dIEPS_UNITARIO, 3)
-                            dPRECIO_TOTAL_USD = RedondearD(dPrecioCapturado_USD + dIEPS_UNITARIO_USD, 6)
-                        End If
-
-                        dImporteTotal_USD = RedondearD((dCantidad * dPRECIO_TOTAL_USD), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-
-                        Me.Grid.Cell(i, Me.igyPRECIO_TOTAL_USD).Text = dPRECIO_TOTAL_USD.ToString
-                        Me.Grid.Cell(i, Me.igyIEPS_UNITARIO_USD).Text = dIEPS_UNITARIO_USD.ToString
-                        Me.Grid.Cell(i, Me.igyBASE_IEPS_USD).Text = dBASE_IEPS_USD.ToString
-                        Me.Grid.Cell(i, Me.igyIEPS_IMPORTE_USD).Text = dIEPS_IMPORTE_USD.ToString
-                        Me.Grid.Cell(i, Me.igyBASE_IVA_USD).Text = dBASE_IVA_USD.ToString
-                        Me.Grid.Cell(i, Me.igyImpuestoImporte_USD).Text = dIVA_IMPORTE_USD.ToString
-                        Me.Grid.Cell(i, Me.iGyDESCUENTO_UNITARIO_USD).Text = dDESCUENTO_UNITARIO_USD.ToString
-                        Me.Grid.Cell(i, Me.iGyPRECIO_CON_DESCUENTO_USD).Text = dPrecioConDescuento_USD.ToString
-                        Me.Grid.Cell(i, Me.igyImporte_USD).Text = dImporteTotal_USD.ToString
-                        Me.Grid.Cell(i, Me.iGyFleteImporte_USD).Text = dFLETE_IMPORTE_USD.ToString
-
-                        ''''''''
-                        ''''''''''''''''''''''''''''''MXN
-                        dImporte = RedondearD((dCantidad * dPrecioCapturado), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-
-                        If dDESCUENTO_IMPORTE > 0 And dDESCUENTO_IMPORTE > dImporte Then
-                            MsgBox("El descuento no puede ser mayor que el importe.", vbExclamation, sProcedure)
-                            Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE).Text = "0"
-                            dDESCUENTO_IMPORTE = 0
-                        End If
-
-                        If dCantidad > 0 Then
-                            dDESCUENTO_UNITARIO = RedondearD(dDESCUENTO_IMPORTE / dCantidad, 6)
-                        End If
-
-                        dPrecioConDescuento = dPrecioCapturado - dDESCUENTO_UNITARIO
-
-                        'dImporteConDescuento = RedondearD((dCantidad * dPrecioConDescuento), 2)
-                        dImporteConDescuento = RedondearD((dCantidad * dPrecioConDescuento), 6)
-
-                        If sGRADO_TOXICIDAD <> "0" Then
-                            dBASE_IEPS = dImporteConDescuento
-                            dIEPS_IMPORTE = RedondearD(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
-                            dIEPS_UNITARIO = CDec(Redondear(dPrecioConDescuento * (dIEPS_PORCENTAJE / 100), 4))
-                        End If
-
-                        If sID_SIS_CAT_IMPUESTOS <> "N" Then 'N=No grava iva, si es <>N = Si grava iva ya sea al 0,16,Exento(aún siendo exento ó 0 hay que llenar la base iva)
-                            dBASE_IVA = dImporteConDescuento + dIEPS_IMPORTE
-                            dIVA_IMPORTE = RedondearD(dBASE_IVA * ((dPorcentajeIVA / 100)), 2)
-                        End If
-
-                        If sID_SIS_CAT_IMPUESTOS_FLETES <> "0" Then
-                            dFLETE_IMPORTE = RedondearD(dBASE_IVA * ((dPorcentajeFlete / 100)), 2)
-                        End If
-
-                        dPRECIO_TOTAL = dPrecioCapturado
-
-                        If Me.bClienteEsContribuyenteIEPS = False And dPrecioCapturado > 0 Then 'Cuando no es contribuyente se le adjunta al precio el ieps, es decir se le incluye
-                            'dPRECIO_TOTAL = RedondearD(dPrecioCapturado + dIEPS_UNITARIO, 3)
-                            dPRECIO_TOTAL = RedondearD(dPrecioCapturado + dIEPS_UNITARIO, 6)
-                        End If
-
-                        dImporteTotal = RedondearD((dCantidad * dPRECIO_TOTAL), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-
-                        Me.Grid.Cell(i, Me.igyPRECIO_TOTAL).Text = dPRECIO_TOTAL.ToString
-                        Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text = dIEPS_UNITARIO.ToString
-                        Me.Grid.Cell(i, Me.igyBASE_IEPS).Text = dBASE_IEPS.ToString
-                        Me.Grid.Cell(i, Me.igyIEPS_IMPORTE).Text = dIEPS_IMPORTE.ToString
-                        Me.Grid.Cell(i, Me.igyBASE_IVA).Text = dBASE_IVA.ToString
-                        Me.Grid.Cell(i, Me.igyImpuestoImporte).Text = dIVA_IMPORTE.ToString
-                        Me.Grid.Cell(i, Me.iGyDESCUENTO_UNITARIO).Text = dDESCUENTO_UNITARIO.ToString
-                        Me.Grid.Cell(i, Me.iGyPRECIO_CON_DESCUENTO).Text = dPrecioConDescuento.ToString
-                        Me.Grid.Cell(i, Me.igyImporte).Text = dImporteTotal.ToString
-                        Me.Grid.Cell(i, Me.iGyFleteImporte).Text = dFLETE_IMPORTE.ToString
-
-                        'NOTA: Ahora todo lo relacionad a una sustitución, se genera y graba dentro del stored MP_VENTA_AFECTA_SUSTITUCION_REMISION
-                        'If Me.LblEstatus.Text <> "N" AndAlso sTipoVenta <> "NM" Then
-                        '    dPrecioOriginal = CDec(Me.oVenta.ObtenerPrecioOriginal(iIDOrigen))
-                        'Else
-                        '    dPrecioOriginal = 0 'dPrecio
-                        'End If
-                        'dImporteSustitucion = RedondearD((dPrecioOriginal * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                        'dImporteSustitucion = valorNumericoD(RedondearD(dImporteSustitucion * ((dPorcentajeIVA / 100) + 1), Empresa_Sistema.DECIMALES_CONTABILIDAD).ToString)
-                        'dTotalSustitucion = dTotalSustitucion + dImporteSustitucion
+                    If dDESCUENTO_IMPORTE_USD > 0 And dDESCUENTO_IMPORTE_USD > dImporte_USD Then
+                        MsgBox("El descuento no puede ser mayor que el importe.", vbExclamation, sProcedure)
+                        Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE_USD).Text = "0"
+                        dDESCUENTO_IMPORTE_USD = 0
                     End If
 
+                    If dCantidad > 0 Then
+                        dDESCUENTO_UNITARIO_USD = RedondearD(dDESCUENTO_IMPORTE_USD / dCantidad, 6)
+                    End If
+
+                    dPrecioConDescuento_USD = dPrecioCapturado_USD - dDESCUENTO_UNITARIO_USD
+
+                    'dImporteConDescuento_USD = RedondearD((dCantidad * dPrecioConDescuento_USD), 2)
+                    dImporteConDescuento_USD = RedondearD((dCantidad * dPrecioConDescuento_USD), 6)
+
+                    If sGRADO_TOXICIDAD <> "0" Then
+                        dBASE_IEPS_USD = dImporteConDescuento_USD
+                        dIEPS_IMPORTE_USD = RedondearD(dBASE_IEPS_USD * (dIEPS_PORCENTAJE / 100), 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
+                        dIEPS_UNITARIO_USD = CDec(Redondear(dPrecioConDescuento_USD * (dIEPS_PORCENTAJE / 100), 4))
+                    End If
+
+                    If sID_SIS_CAT_IMPUESTOS <> "N" Then 'N=No grava iva, si es <>N = Si grava iva ya sea al 0,16,Exento(aún siendo exento ó 0 hay que llenar la base iva)
+                        dBASE_IVA_USD = dImporteConDescuento_USD + dIEPS_IMPORTE_USD
+                        dIVA_IMPORTE_USD = RedondearD(dBASE_IVA_USD * ((dPorcentajeIVA / 100)), 2)
+                    End If
+
+                    If sID_SIS_CAT_IMPUESTOS_FLETES <> "0" Then
+                        dFLETE_IMPORTE_USD = RedondearD(dBASE_IVA_USD * ((dPorcentajeFlete / 100)), 2)
+                    End If
+
+                    dPRECIO_TOTAL_USD = dPrecioCapturado_USD
+
+                    If Me.bClienteEsContribuyenteIEPS = False And dPrecioCapturado_USD > 0 Then 'Cuando no es contribuyente se le adjunta al precio el ieps, es decir se le incluye
+                        'dPRECIO_TOTAL_usd = RedondearD(dPrecioCapturado + dIEPS_UNITARIO, 3)
+                        dPRECIO_TOTAL_USD = RedondearD(dPrecioCapturado_USD + dIEPS_UNITARIO_USD, 6)
+                    End If
+
+                    dImporteTotal_USD = RedondearD((dCantidad * dPRECIO_TOTAL_USD), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+
+                    Me.Grid.Cell(i, Me.igyPRECIO_TOTAL_USD).Text = dPRECIO_TOTAL_USD.ToString
+                    Me.Grid.Cell(i, Me.igyIEPS_UNITARIO_USD).Text = dIEPS_UNITARIO_USD.ToString
+                    Me.Grid.Cell(i, Me.igyBASE_IEPS_USD).Text = dBASE_IEPS_USD.ToString
+                    Me.Grid.Cell(i, Me.igyIEPS_IMPORTE_USD).Text = dIEPS_IMPORTE_USD.ToString
+                    Me.Grid.Cell(i, Me.igyBASE_IVA_USD).Text = dBASE_IVA_USD.ToString
+                    Me.Grid.Cell(i, Me.igyImpuestoImporte_USD).Text = dIVA_IMPORTE_USD.ToString
+                    Me.Grid.Cell(i, Me.iGyDESCUENTO_UNITARIO_USD).Text = dDESCUENTO_UNITARIO_USD.ToString
+                    Me.Grid.Cell(i, Me.iGyPRECIO_CON_DESCUENTO_USD).Text = dPrecioConDescuento_USD.ToString
+                    Me.Grid.Cell(i, Me.igyImporte_USD).Text = dImporteTotal_USD.ToString
+                    Me.Grid.Cell(i, Me.iGyFleteImporte_USD).Text = dFLETE_IMPORTE_USD.ToString
                 End If
+
+                ''''''''''''''''''''''''''''''MXN(Este cálculo hace no importa que sea venta en USD, el precio aunque nono este capturado se calculó con el tipo de cambio)
+                'dImporte = RedondearD((dCantidad * dPrecioCapturado), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                dImporte = RedondearD(dImporte_USD * dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
+
+                If dDESCUENTO_IMPORTE > 0 And dDESCUENTO_IMPORTE > dImporte Then
+                    MsgBox("El descuento no puede ser mayor que el importe.", vbExclamation, sProcedure)
+                    Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE).Text = "0"
+                    dDESCUENTO_IMPORTE = 0
+                End If
+
+                If dCantidad > 0 Then
+                    'dDESCUENTO_UNITARIO = RedondearD(dDESCUENTO_IMPORTE / dCantidad, 6)
+                    dDESCUENTO_UNITARIO = RedondearD(dDESCUENTO_UNITARIO_USD * dTipoCambio, 6)
+                End If
+
+                dPrecioConDescuento = dPrecioCapturado - dDESCUENTO_UNITARIO
+
+                'dImporteConDescuento = RedondearD((dCantidad * dPrecioConDescuento), 2)
+                'dImporteConDescuento = RedondearD((dCantidad * dPrecioConDescuento), 6)
+                'dImporteConDescuento = RedondearD((dCantidad * dPrecioConDescuento), 6)
+                dImporteConDescuento = RedondearD((dImporteConDescuento_USD * dTipoCambio), 6)
+
+                If sGRADO_TOXICIDAD <> "0" Then
+                    'dBASE_IEPS = dImporteConDescuento
+                    'dIEPS_IMPORTE = RedondearD(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
+                    'dIEPS_UNITARIO = CDec(Redondear(dPrecioConDescuento * (dIEPS_PORCENTAJE / 100), 4))
+
+                    dBASE_IEPS = RedondearD(dBASE_IEPS_USD * dTipoCambio, 6)
+                    dIEPS_IMPORTE = RedondearD(dIEPS_IMPORTE_USD * dTipoCambio, 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
+                    dIEPS_UNITARIO = CDec(Redondear(dIEPS_UNITARIO_USD * dTipoCambio, 4))
+                End If
+
+                If sID_SIS_CAT_IMPUESTOS <> "N" Then 'N=No grava iva, si es <>N = Si grava iva ya sea al 0,16,Exento(aún siendo exento ó 0 hay que llenar la base iva)
+                    'dBASE_IVA = dImporteConDescuento + dIEPS_IMPORTE
+                    'dIVA_IMPORTE = RedondearD(dBASE_IVA * ((dPorcentajeIVA / 100)), 2)
+
+                    dBASE_IVA = RedondearD(dBASE_IVA_USD * dTipoCambio, 6)
+                    dIVA_IMPORTE = RedondearD(dIVA_IMPORTE_USD * dTipoCambio, 2)
+                End If
+
+                If sID_SIS_CAT_IMPUESTOS_FLETES <> "0" Then
+                    'dFLETE_IMPORTE = RedondearD(dBASE_IVA * ((dPorcentajeFlete / 100)), 2)
+                    dFLETE_IMPORTE = RedondearD(dFLETE_IMPORTE_USD * dTipoCambio, 2)
+                End If
+
+                dPRECIO_TOTAL = dPrecioCapturado
+
+                If Me.bClienteEsContribuyenteIEPS = False And dPrecioCapturado > 0 Then 'Cuando no es contribuyente se le adjunta al precio el ieps, es decir se le incluye
+                    'dPRECIO_TOTAL = RedondearD(dPrecioCapturado + dIEPS_UNITARIO, 3)
+                    'dPRECIO_TOTAL = RedondearD(dPrecioCapturado + dIEPS_UNITARIO, 6)
+                    dPRECIO_TOTAL = RedondearD(dPRECIO_TOTAL_USD * dTipoCambio, 6)
+                End If
+
+                'dImporteTotal = RedondearD((dCantidad * dPRECIO_TOTAL), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                dImporteTotal = RedondearD(dImporteTotal_USD * dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
+
+                Me.Grid.Cell(i, Me.igyPRECIO_TOTAL).Text = dPRECIO_TOTAL.ToString
+                Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text = dIEPS_UNITARIO.ToString
+                Me.Grid.Cell(i, Me.igyBASE_IEPS).Text = dBASE_IEPS.ToString
+                Me.Grid.Cell(i, Me.igyIEPS_IMPORTE).Text = dIEPS_IMPORTE.ToString
+                Me.Grid.Cell(i, Me.igyBASE_IVA).Text = dBASE_IVA.ToString
+                Me.Grid.Cell(i, Me.igyImpuestoImporte).Text = dIVA_IMPORTE.ToString
+                Me.Grid.Cell(i, Me.iGyDESCUENTO_UNITARIO).Text = dDESCUENTO_UNITARIO.ToString
+                Me.Grid.Cell(i, Me.iGyPRECIO_CON_DESCUENTO).Text = dPrecioConDescuento.ToString
+                Me.Grid.Cell(i, Me.igyImporte).Text = dImporteTotal.ToString
+                Me.Grid.Cell(i, Me.iGyFleteImporte).Text = dFLETE_IMPORTE.ToString
+
+                'NOTA: Ahora todo lo relacionad a una sustitución, se genera y graba dentro del stored MP_VENTA_AFECTA_SUSTITUCION_REMISION
+                'If Me.LblEstatus.Text <> "N" AndAlso sTipoVenta <> "NM" Then
+                '    dPrecioOriginal = CDec(Me.oVenta.ObtenerPrecioOriginal(iIDOrigen))
+                'Else
+                '    dPrecioOriginal = 0 'dPrecio
+                'End If
+                'dImporteSustitucion = RedondearD((dPrecioOriginal * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                'dImporteSustitucion = valorNumericoD(RedondearD(dImporteSustitucion * ((dPorcentajeIVA / 100) + 1), Empresa_Sistema.DECIMALES_CONTABILIDAD).ToString)
+                'dTotalSustitucion = dTotalSustitucion + dImporteSustitucion
+
             Next i
 
             '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -2989,7 +3043,7 @@ CANCELAR:
             dtDescuentos_USD = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.iGyDESCUENTO_IMPORTE_USD)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
             dtImpuesto_USD = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyImpuestoImporte_USD)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
             dtFLETE_USD = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.iGyFleteImporte_USD)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            dtTotal_USD = dtSubtotal - dtDescuentos_USD + dtIEPS_USD + dtImpuesto_USD - dtFLETE_USD
+            dtTotal_USD = dtSubtotal_USD - dtDescuentos_USD + dtIEPS_USD + dtImpuesto_USD - dtFLETE_USD
 
             Me.lblSubtotal_USD.Text = FormatImporteContable(dtSubtotal_USD)
             Me.lblDescuento_USD.Text = FormatImporteContable(dtDescuentos_USD)
@@ -3581,6 +3635,10 @@ LlenaLinea:
                             End If
 
                         Case Me.iGyDESCUENTO_IMPORTE
+                            If Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Locked = True Then
+                                Exit Select
+                            End If
+
                             Dim dDESCUENTO_IMPORTE As Decimal = valorNumericoD(Me.Grid.Cell(Renglon, Me.iGyDESCUENTO_IMPORTE).Text)
                             Dim dImporte As Decimal = RedondearD(dCantidad * dPrecio, 2)
 
@@ -3595,6 +3653,10 @@ LlenaLinea:
                             End If
 
                         Case Me.iGyDESCUENTO_IMPORTE_USD
+                            If Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Locked = True Then
+                                Exit Select
+                            End If
+
                             Dim dDESCUENTO_IMPORTE_USD As Decimal = valorNumericoD(Me.Grid.Cell(Renglon, Me.iGyDESCUENTO_IMPORTE_USD).Text)
                             Dim dImporte_USD As Decimal = RedondearD(dCantidad * dPrecio_USD, 2)
 

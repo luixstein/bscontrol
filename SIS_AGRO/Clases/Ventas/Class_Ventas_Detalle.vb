@@ -28,8 +28,6 @@ Public Class Class_Ventas_Detalle
     Private _ES_PRODUCTO_KILOS As String
     Private _CODIGO_CENTRO_COSTO As String
     Private _LISTA_SERIES As String
-    Private _PRECIO_USD As Double
-    Private _IMPORTE_USD As Double
 
     Private _IEPS_PORCENTAJE As Double
     Private _IEPS_UNITARIO As Double
@@ -46,6 +44,21 @@ Public Class Class_Ventas_Detalle
     Private _RETENCION_IVA_IMPORTE As Decimal
 
     Private _COSTO_NUEVO As Double
+
+    Private _PRECIO_USD As Double
+    Private _IMPORTE_USD As Double
+
+    Private _IMPUESTO_IMPORTE_USD As Double
+    Private _IEPS_UNITARIO_USD As Double
+    Private _IEPS_IMPORTE_USD As Double
+    Private _BASE_IEPS_USD As Double
+    Private _BASE_IVA_USD As Double
+    Private _PRECIO_TOTAL_USD As Double
+    Private _DESCUENTO_UNITARIO_USD As Decimal
+    Private _DESCUENTO_IMPORTE_USD As Decimal
+    Private _PRECIO_SIN_DESCUENTO_USD As Decimal
+    Private _RETENCION_IVA_IMPORTE_USD As Decimal
+
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -271,24 +284,6 @@ Public Class Class_Ventas_Detalle
         End Set
     End Property
 
-    Public Property PRECIO_USD() As Double
-        Get
-            Return Me._PRECIO_USD
-        End Get
-        Set(ByVal Value As Double)
-            Me._PRECIO_USD = Value
-        End Set
-    End Property
-
-    Public Property IMPORTE_USD() As Double
-        Get
-            Return Me._IMPORTE_USD
-        End Get
-        Set(ByVal Value As Double)
-            Me._IMPORTE_USD = Value
-        End Set
-    End Property
-
     Public Property IEPS_PORCENTAJE() As Double
         Get
             Return Me._IEPS_PORCENTAJE
@@ -415,6 +410,114 @@ Public Class Class_Ventas_Detalle
         End Set
     End Property
 
+    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    Public Property PRECIO_USD() As Double
+        Get
+            Return Me._PRECIO_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._PRECIO_USD = Value
+        End Set
+    End Property
+
+    Public Property IMPORTE_USD() As Double
+        Get
+            Return Me._IMPORTE_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._IMPORTE_USD = Value
+        End Set
+    End Property
+
+    Public Property IMPUESTO_IMPORTE_USD() As Double
+        Get
+            Return Me._IMPUESTO_IMPORTE_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._IMPUESTO_IMPORTE_USD = Value
+        End Set
+    End Property
+
+    Public Property IEPS_UNITARIO_USD() As Double
+        Get
+            Return Me._IEPS_UNITARIO_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._IEPS_UNITARIO_USD = Value
+        End Set
+    End Property
+
+    Public Property IEPS_IMPORTE_USD() As Double
+        Get
+            Return Me._IEPS_IMPORTE_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._IEPS_IMPORTE_USD = Value
+        End Set
+    End Property
+
+    Public Property BASE_IEPS_USD() As Double
+        Get
+            Return Me._BASE_IEPS_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._BASE_IEPS_USD = Value
+        End Set
+    End Property
+
+    Public Property BASE_IVA_USD() As Double
+        Get
+            Return Me._BASE_IVA_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._BASE_IVA_USD = Value
+        End Set
+    End Property
+
+    Public Property PRECIO_TOTAL_USD() As Double
+        Get
+            Return Me._PRECIO_TOTAL_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._PRECIO_TOTAL_USD = Value
+        End Set
+    End Property
+
+    Public Property DESCUENTO_UNITARIO_USD() As Decimal
+        Get
+            Return Me._DESCUENTO_UNITARIO_USD
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._DESCUENTO_UNITARIO_USD = Value
+        End Set
+    End Property
+
+    Public Property DESCUENTO_IMPORTE_USD() As Decimal
+        Get
+            Return Me._DESCUENTO_IMPORTE_USD
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._DESCUENTO_IMPORTE_USD = Value
+        End Set
+    End Property
+
+    Public Property PRECIO_SIN_DESCUENTO_USD() As Decimal
+        Get
+            Return Me._PRECIO_SIN_DESCUENTO_USD
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._PRECIO_SIN_DESCUENTO_USD = Value
+        End Set
+    End Property
+
+    Public Property RETENCION_IVA_IMPORTE_USD() As Decimal
+        Get
+            Return Me._RETENCION_IVA_IMPORTE_USD
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._RETENCION_IVA_IMPORTE_USD = Value
+        End Set
+    End Property
 
 #End Region
 
@@ -505,6 +608,17 @@ Public Class Class_Ventas_Detalle
             sqlParametro = .Parameters.Add("@ID_SIS_CAT_IMPUESTOS_FLETE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._ID_SIS_CAT_IMPUESTOS_FLETE.ToString
             sqlParametro = .Parameters.Add("@RETENCION_IVA_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_IMPORTE
             sqlParametro = .Parameters.Add("@COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO 'Para el caso de inventariables este costo no es el real(luego se calcula), para los no inventariables si es costo real.
+
+            sqlParametro = .Parameters.Add("@IMPUESTO_IMPORTE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_IMPORTE_USD
+            sqlParametro = .Parameters.Add("@IEPS_UNITARIO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_UNITARIO_USD
+            sqlParametro = .Parameters.Add("@IEPS_IMPORTE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_IMPORTE_USD
+            sqlParametro = .Parameters.Add("@BASE_IEPS_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IEPS_USD
+            sqlParametro = .Parameters.Add("@BASE_IVA_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IVA_USD
+            sqlParametro = .Parameters.Add("@PRECIO_TOTAL_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._PRECIO_TOTAL_USD
+            sqlParametro = .Parameters.Add("@DESCUENTO_UNITARIO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._DESCUENTO_UNITARIO_USD
+            sqlParametro = .Parameters.Add("@DESCUENTO_IMPORTE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._DESCUENTO_IMPORTE_USD
+            sqlParametro = .Parameters.Add("@PRECIO_SIN_DESCUENTO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._PRECIO_SIN_DESCUENTO_USD
+            sqlParametro = .Parameters.Add("@RETENCION_IVA_IMPORTE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_IMPORTE_USD
 
             Try
                 Me._Conexion.Open()
