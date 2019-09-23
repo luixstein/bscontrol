@@ -27,7 +27,6 @@ Public Class Class_Ventas_Global
     Private _CODIGO_CLIENTE As String
     Private _CODIGO_DOCUMENTO As String
     Private _CODIGO_VENDEDOR As Integer
-
     Private _SUBTOTAL As Double
     Private _DESCUENTO As Double
     Private _IEPS_TOTAL_DESGLOSADO As Double
@@ -35,7 +34,6 @@ Public Class Class_Ventas_Global
     Private _IMPUESTO As Double
     Private _RETENCION_IVA As Double
     Private _TOTAL As Double
-
     Private _SALDO As Double
     Private _COSTO As Double
     Private _ESTATUS_VENTA As String
@@ -67,10 +65,6 @@ Public Class Class_Ventas_Global
     Private _ES_VENTA_PUBLICO_GENERAL As String
     Private _TOTAl_SUSTITUCION As Double
     Private _FOLIO_EMBARQUE As String
-    Private _TOTAL_DOLARES As Double
-    Private _SALDO_DOLARES As Double
-    Private _SUBTOTAL_USD As Double
-    Private _DESCUENTO_USD As Double
     Private _VENTA_TOTAL As Double
     Private _CONDICIONES_DE_PAGO As String
     Private _CODIGO_TIPO_CREDITO As String
@@ -98,6 +92,18 @@ Public Class Class_Ventas_Global
     Private _TIENE_IEPS_DESGLOSADO As Boolean
     Private _CODIGO_TIPO_RELACION_CFDI As String
     Private _LISTA_CFDIS_RELACIONADOS As String
+
+    Private _TOTAL_DOLARES As Double
+    Private _SALDO_DOLARES As Double
+    Private _SUBTOTAL_USD As Double
+    Private _DESCUENTO_USD As Double
+    Private _IMPUESTO_USD As Double
+    Private _TOTAL_SUSTITUCION_USD As Double
+    Private _RETENCION_USD As Double
+    Private _IEPS_TOTAL_DESGLOSADO_USD As Double
+    Private _IEPS_TOTAL_YA_INCLUIDO_USD As Double
+    Private _RETENCION_IVA_USD As Double
+
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -555,42 +561,6 @@ Public Class Class_Ventas_Global
         End Set
     End Property
 
-    Public Property TOTAL_DOLARES() As Double
-        Get
-            Return Me._TOTAL_DOLARES
-        End Get
-        Set(ByVal Value As Double)
-            Me._TOTAL_DOLARES = Value
-        End Set
-    End Property
-
-    Public Property SALDO_DOLARES() As Double
-        Get
-            Return Me._SALDO_DOLARES
-        End Get
-        Set(ByVal Value As Double)
-            Me._SALDO_DOLARES = Value
-        End Set
-    End Property
-
-    Public Property SUBTOTAL_USD() As Double
-        Get
-            Return Me._SUBTOTAL_USD
-        End Get
-        Set(ByVal Value As Double)
-            Me._SUBTOTAL_USD = Value
-        End Set
-    End Property
-
-    Public Property DESCUENTO_USD() As Double
-        Get
-            Return Me._DESCUENTO_USD
-        End Get
-        Set(ByVal Value As Double)
-            Me._DESCUENTO_USD = Value
-        End Set
-    End Property
-
     Public Property VENTA_TOTAL() As Double
         Get
             Return Me._VENTA_TOTAL
@@ -786,6 +756,91 @@ Public Class Class_Ventas_Global
             Me._LISTA_CFDIS_RELACIONADOS = Value
         End Set
     End Property
+
+    Public Property TOTAL_DOLARES() As Double
+        Get
+            Return Me._TOTAL_DOLARES
+        End Get
+        Set(ByVal Value As Double)
+            Me._TOTAL_DOLARES = Value
+        End Set
+    End Property
+
+    Public Property SALDO_DOLARES() As Double
+        Get
+            Return Me._SALDO_DOLARES
+        End Get
+        Set(ByVal Value As Double)
+            Me._SALDO_DOLARES = Value
+        End Set
+    End Property
+
+    Public Property SUBTOTAL_USD() As Double
+        Get
+            Return Me._SUBTOTAL_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._SUBTOTAL_USD = Value
+        End Set
+    End Property
+
+    Public Property IMPUESTO_USD() As Double
+        Get
+            Return Me._IMPUESTO_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._IMPUESTO_USD = Value
+        End Set
+    End Property
+
+
+    ''------
+    Public Property TOTAL_SUSTITUCION_USD() As Double
+        Get
+            Return Me._TOTAL_SUSTITUCION_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._TOTAL_SUSTITUCION_USD = Value
+        End Set
+    End Property
+
+    Public Property RETENCION_USD() As Double
+        Get
+            Return Me._RETENCION_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._RETENCION_USD = Value
+        End Set
+    End Property
+
+    Public Property IEPS_TOTAL_DESGLOSADO_USD() As Double
+        Get
+            Return Me._IEPS_TOTAL_DESGLOSADO_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._IEPS_TOTAL_DESGLOSADO_USD = Value
+        End Set
+    End Property
+
+    Public Property IEPS_TOTAL_YA_INCLUIDO_USD() As Double
+        Get
+            Return Me._IEPS_TOTAL_YA_INCLUIDO_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._IEPS_TOTAL_YA_INCLUIDO_USD = Value
+        End Set
+    End Property
+
+    Public Property RETENCION_IVA_USD() As Double
+        Get
+            Return Me._RETENCION_IVA_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._RETENCION_IVA_USD = Value
+        End Set
+    End Property
+
+    PORQUE HAY DPS RETENCIONES ?, UNA A SECAS Y OTRA CON IVA?
 
 #End Region
 

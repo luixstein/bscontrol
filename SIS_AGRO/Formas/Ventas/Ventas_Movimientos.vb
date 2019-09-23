@@ -1695,6 +1695,10 @@ Buscar:
                 .CODIGO_TIPO_RELACION_CFDI = sCodigoTipoRelacionCFDI
                 .LISTA_CFDIS_RELACIONADOS = sListaCFDIsRelacionados
 
+
+
+
+
                 If Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.SUSTITUYENDO Then
                     If .Grabar("INSERTAR") = False Then
                         MsgBox("Error al tratar de insertar el movimiento de ventas.", MsgBoxStyle.Exclamation, sProcedure)
@@ -1750,8 +1754,8 @@ Buscar:
 
                         .oVentasDetalle.LISTA_SERIES = sListaSeries
 
-                        'nota ahora que de momento no hay embarques, estos se llenan mas abajo, ver notas
-                        '.oVentasDetalle.PRECIO_USD = valorNumerico(Me.Grid.Cell(i, Me.igyPrecio_USD).Text)
+                        'nota ahora que de momento no hay embarques, estos se llenan mas abajo de diferente modo, ver notas
+                        '.oVentasDetalle.PRECIO_USD = valorNumerico(Me.Grid.Cell(i, Me.igyPrecio_USD).Text 'nota ahora que de momento no hay embarques este dato no sale directo de la columna precio
                         '.oVentasDetalle.IMPORTE_USD = valorNumerico(Me.Grid.Cell(i, Me.igyImporte_USD).Text)
 
                         .oVentasDetalle.IEPS_PORCENTAJE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
@@ -1781,15 +1785,13 @@ Buscar:
                         ''''
                         .oVentasDetalle.IMPUESTO_IMPORTE_USD = valorNumerico(Me.Grid.Cell(i, Me.igyImpuestoImporte_USD).Text)
                         .oVentasDetalle.IMPORTE_USD = valorNumerico(Me.Grid.Cell(i, Me.igyImporte_USD).Text)
-                        '.oVentasDetalle.PRECIO_USD = valorNumerico(Me.Grid.Cell(i, Me.igyPrecio_USD).Text) 'nota ahora que de momento no hay embarques este dato no sale directo de la columna precio
-                        .oVentasDetalle.IMPORTE_USD = valorNumerico(Me.Grid.Cell(i, Me.igyImporte_USD).Text)
                         .oVentasDetalle.IEPS_UNITARIO_USD = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_UNITARIO_USD).Text)
                         .oVentasDetalle.IEPS_IMPORTE_USD = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_IMPORTE_USD).Text)
                         .oVentasDetalle.BASE_IEPS_USD = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IEPS_USD).Text)
                         .oVentasDetalle.BASE_IVA_USD = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IVA_USD).Text)
                         .oVentasDetalle.PRECIO_TOTAL_USD = valorNumerico(Me.Grid.Cell(i, Me.igyPRECIO_TOTAL_USD).Text)
                         .oVentasDetalle.PRECIO_SIN_DESCUENTO_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio_USD).Text)
-                        .oVentasDetalle.PRECIO_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyPRECIO_CON_DESCUENTO_USD).Text)
+                        .oVentasDetalle.PRECIO_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyPRECIO_CON_DESCUENTO_USD).Text) 'Revisar por si se habilita nuevamente los embarques
                         .oVentasDetalle.DESCUENTO_UNITARIO_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_UNITARIO_USD).Text)
                         .oVentasDetalle.DESCUENTO_IMPORTE_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE_USD).Text)
                         .oVentasDetalle.RETENCION_IVA_IMPORTE_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyFleteImporte_USD).Text)
