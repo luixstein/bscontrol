@@ -894,9 +894,9 @@ Module FacturacionElectronica
                     Next
                 End If
 
-                If oVenta.RETENCION > 0 Then
-                    Cfd.Impuestos.Retenciones.Add("IVA", "0", Format(oVenta.RETENCION, "#0.00")) 'escribirlo a mano
-                End If
+                'If oVenta.RETENCION > 0 Then
+                '    Cfd.Impuestos.Retenciones.Add("IVA", "0", Format(oVenta.RETENCION, "#0.00")) 'escribirlo a mano
+                'End If
 
             End If
 

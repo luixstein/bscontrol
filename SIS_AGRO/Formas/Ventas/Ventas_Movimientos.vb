@@ -545,7 +545,7 @@ Buscar:
             Case Keys.F6
                 Me.txtFolio.Text = Me.oVenta.BusquedaVisual_PorFolio
             Case Keys.Enter
-                If Consultar() = False Then
+                If Me.Consultar() = False Then
                     Me.cboTipoNegociacion.Focus()
                 End If
         End Select
@@ -562,42 +562,7 @@ Buscar:
 
     Private Sub cboMoneda_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboMoneda.SelectedIndexChanged
         Try
-            If Me.cboMoneda.Text = "USD" Then
-                Me.txtTipoCambio.Visible = True : Me.txtTipoCambio.Enabled = True : Me.lblDisplayTipoCambio.Visible = True
-                Me.gbDolares.Visible = True
-
-                If Me.bCrearonColumnas = True Then 'Esta esto porque por cuestiones de eventos se lanza primero este antes de inicializar la 1era vez la forma.
-                    'Estas 3 columnas son editables, y se gestiona su bloqueo/desbloqueo según el tipo de moneda
-                    Me.Grid.Column(Me.igyPrecio).Locked = True
-                    Me.Grid.Column(Me.igyPrecio_USD).Locked = False
-                    Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Locked = True
-                    Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Locked = False
-
-                    Me.Grid.Column(Me.igyPrecio_USD).Visible = True
-                    Me.Grid.Column(Me.igyPRECIO_TOTAL_USD).Visible = True
-                    Me.Grid.Column(Me.igyImporte_USD).Visible = True
-                    Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Visible = True
-                End If
-
-            Else 'Es moneda en MXN
-                Me.txtTipoCambio.Visible = False : Me.txtTipoCambio.Enabled = False : Me.lblDisplayTipoCambio.Visible = False
-                Me.gbDolares.Visible = False
-
-                If Me.bCrearonColumnas = True Then
-                    'Estas 3 columnas son editables, y se gestiona su bloqueo/desbloqueo según el tipo de moneda
-                    Me.Grid.Column(Me.igyPrecio).Locked = False
-                    Me.Grid.Column(Me.igyPrecio_USD).Locked = True
-                    Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Locked = False
-                    Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Locked = True
-
-                    Me.Grid.Column(Me.igyPrecio_USD).Visible = False
-                    Me.Grid.Column(Me.igyPRECIO_TOTAL_USD).Visible = False
-                    Me.Grid.Column(Me.igyImporte_USD).Visible = False
-                    Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Visible = False
-
-                End If
-
-            End If
+            Me.GestionaMoneda
 
             Select Case Me.cboTipoNegociacion.Text
                 Case "CREDITO"
@@ -639,7 +604,7 @@ Buscar:
     Private Sub cboTipoNegociacion_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboTipoNegociacion.SelectedIndexChanged
         Try
             If sTipoVenta = "NM" Then
-                If Me.cboTipoNegociacion.SelectedIndex <> -1 AndAlso Me.cboTipoNegociacion.SelectedValue.ToString = "1" Then
+                If Me.cboTipoNegociacion.SelectedIndex <> -1 AndAlso Me.cboTipoNegociacion.SelectedValue.ToString = "1" Then 'CREDITO
                     Me.txtPlazo.Enabled = True
                 Else
                     Me.txtPlazo.Enabled = False
@@ -647,12 +612,14 @@ Buscar:
                 End If
             End If
 
-            If CInt(cboTipoNegociacion.SelectedValue) = 1 Then ' CREDITO
-                Me.LblTipoCredito.Visible = True
-                Me.CboTipoCredito.Visible = True
-            ElseIf CInt(cboTipoNegociacion.SelectedValue) = 2 Then ' CONTADO
-                Me.LblTipoCredito.Visible = False
-                Me.CboTipoCredito.Visible = False
+            If Me.cboTipoNegociacion.SelectedIndex <> -1 Then 'Si esta con -1 entonces .SelectedValue regresa null por eso no se pregunta
+                If CInt(Me.cboTipoNegociacion.SelectedValue.ToString) = 1 Then 'CREDITO
+                    Me.lblTipoCredito.Visible = True
+                    Me.CboTipoCredito.Visible = True
+                ElseIf CInt(Me.cboTipoNegociacion.SelectedValue) = 2 Then 'CONTADO
+                    Me.lblTipoCredito.Visible = False
+                    Me.CboTipoCredito.Visible = False
+                End If
             End If
 
             Me.EstableceMetodoPago()
@@ -1098,7 +1065,7 @@ Buscar:
             Me.Grid.Column(Me.igyPRECIO_TOTAL).Locked = True
             Me.Grid.Column(Me.igyPRECIO_TOTAL_USD).Locked = True
 
-            MsgBox("aqui falta ver si esta ok porque eso deberia definirse al cambiar el tipo de moneda, aunque si consultan habra que planear bien esto")
+            'MsgBox("aqui falta ver si esta ok porque eso deberia definirse al cambiar el tipo de moneda, aunque si consultan habra que planear bien esto")
             If Usuario.PERMISO_CAMBIAR_PRECIO_VENTA = True Then
                 Me.Grid.Column(Me.igyPrecio).Locked = False
                 Me.Grid.Column(Me.igyPrecio_USD).Locked = False
@@ -1239,7 +1206,7 @@ Buscar:
                     Me.txtFolio.Enabled = True
                     Me.CboAlmacen.Enabled = True
 
-                    Me.LblTipoCredito.Enabled = True
+                    Me.lblTipoCredito.Enabled = True
                     Me.CboTipoCredito.Enabled = True
 
                     Me.cboMoneda.Enabled = True
@@ -1349,7 +1316,7 @@ Buscar:
                         Me.cboTipoNegociacion.Enabled = False
                         Me.txtFolioEmbarque.Enabled = False
                         Me.llblAgregarSeguimiento.Enabled = False
-                        Me.LblTipoCredito.Enabled = False
+                        Me.lblTipoCredito.Enabled = False
                         Me.CboTipoCredito.Enabled = False
                         Me.cboMoneda.Enabled = False
                         Me.cboUsoCFDI.Enabled = False
@@ -1485,13 +1452,14 @@ Buscar:
         End Try
     End Sub
 
-    Function Grabar() As Boolean
+    Private Function Grabar() As Boolean
         Const sProcedure As String = "Grabar"
         Dim bResultado As Boolean = False
         Dim i As Integer, sMetodoPago As String = "", sUsoCFDI As String = "", sListaSeries As String = "", sCodigoTipoRelacionCFDI As String = "", sListaCFDIsRelacionados As String = ""
 
         Try
             If Me._EsPorEmbarqueExtranjero = True Then
+                'Revisar todo lo relacionado porque se quito funcionalidad de facturas de emabrques en varias partes.
                 MsgBox("No esta de momento activada el control de embarques.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
@@ -1626,21 +1594,35 @@ Buscar:
                 .IMPUESTO = valorNumerico(Me.lblImpuesto.Text)
                 .RETENCION_IVA = valorNumerico(Me.lblTotalRetencion.Text)
 
-                If Me._EsPorEmbarqueExtranjero = True Then
-                    .DESCUENTO = valorNumerico(Me.lblTotal.Text) 'Se invierten los valores para forzar a un total 0 usd porque es en consignacion
-                    .TOTAL = 0 'Se invierten los valores para forzar a un total 0 usd porque es en consignacion
-                    .SUBTOTAL_USD = valorNumerico(Me.lblTotal_USD.Text)
-                    .DESCUENTO_USD = valorNumerico(Me.lblTotal_USD.Text)
-                Else 'En facturas normales
-                    .DESCUENTO = valorNumerico(Me.lblDescuento.Text)
-                    .TOTAL = valorNumerico(Me.lblTotal.Text)
-                    .SUBTOTAL_USD = 0 'No aplica en facturas normales aunque estén en usd
-                    .DESCUENTO_USD = 0 'No aplica en facturas normales aunque estén en usd
-                End If
+                'Asi estaba cuando existian embarques
+                'If Me._EsPorEmbarqueExtranjero = True Then
+                '    .DESCUENTO = valorNumerico(Me.lblTotal.Text) 'Se invierten los valores para forzar a un total 0 usd porque es en consignacion
+                '    .TOTAL = 0 'Se invierten los valores para forzar a un total 0 usd porque es en consignacion
+                '    .SUBTOTAL_USD = valorNumerico(Me.lblTotal_USD.Text)
+                '    .DESCUENTO_USD = valorNumerico(Me.lblTotal_USD.Text)
+                'Else 'En facturas normales
+                '    .DESCUENTO = valorNumerico(Me.lblDescuento.Text)
+                '    .TOTAL = valorNumerico(Me.lblTotal.Text)
+                '    .SUBTOTAL_USD = 0 'No aplica en facturas normales aunque estén en usd
+                '    .DESCUENTO_USD = 0 'No aplica en facturas normales aunque estén en usd
+                'End If
+
+                .DESCUENTO = valorNumerico(Me.lblDescuento.Text)
+                .TOTAL = valorNumerico(Me.lblTotal.Text)
+                .SUBTOTAL_USD = valorNumerico(Me.lblSubtotal_USD.Text)
+                .DESCUENTO_USD = valorNumerico(Me.lblDescuento_USD.Text)
 
                 If Me.cboMoneda.Text = "USD" Then
                     .TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text)
                     .TOTAL_DOLARES = valorNumerico(Me.lblTotal_USD.Text)
+                    .SUBTOTAL_USD = valorNumerico(Me.lblSubtotal_USD.Text)
+                    .DESCUENTO_USD = valorNumerico(Me.lblDescuento_USD.Text)
+
+                    .IMPUESTO_USD = valorNumerico(Me.lblImpuesto_USD.Text)
+                    .TOTAL_SUSTITUCION_USD = 0
+                    .IEPS_TOTAL_DESGLOSADO_USD = valorNumerico(Me.lblIEPS_USD.Text)
+                    .IEPS_TOTAL_YA_INCLUIDO_USD = valorNumerico(Me.lblIEPSIncluido_USD.Text)
+                    .RETENCION_IVA_USD = valorNumerico(Me.lblTotalRetencion_USD.Text)
                 Else
                     .TIPO_DE_CAMBIO = 0
                 End If
@@ -1694,10 +1676,6 @@ Buscar:
                 .TIENE_IEPS_DESGLOSADO = Me.bClienteEsContribuyenteIEPS
                 .CODIGO_TIPO_RELACION_CFDI = sCodigoTipoRelacionCFDI
                 .LISTA_CFDIS_RELACIONADOS = sListaCFDIsRelacionados
-
-
-
-
 
                 If Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.SUSTITUYENDO Then
                     If .Grabar("INSERTAR") = False Then
@@ -1767,8 +1745,8 @@ Buscar:
                         .oVentasDetalle.GRADO_TOXICIDAD = CInt(Me.Grid.Cell(i, Me.iGyGRADO_TOXICIDAD).Text)
                         .oVentasDetalle.ID_SIS_CAT_IMPUESTOS = Me.Grid.Cell(i, Me.iGyID_SIS_CAT_IMPUESTOS).Text
 
-                        .oVentasDetalle.PRECIO_SIN_DESCUENTO = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text)
-                        .oVentasDetalle.PRECIO = valorNumericoD(Me.Grid.Cell(i, Me.iGyPRECIO_CON_DESCUENTO).Text)
+                        .oVentasDetalle.PRECIO_SIN_DESCUENTO = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text) 'El precio tecleado no se graba en precio, se graba en precio_sin_descuento porque para reportear se ocupa el con_descuentos
+                        .oVentasDetalle.PRECIO = valorNumericoD(Me.Grid.Cell(i, Me.iGyPRECIO_CON_DESCUENTO).Text) 'Este es el precio que se usa para reportear y debe venir con descuentos
                         .oVentasDetalle.DESCUENTO_UNITARIO = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_UNITARIO).Text)
                         .oVentasDetalle.DESCUENTO_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE).Text)
                         If txtLEN(Me.Grid.Cell(i, Me.iGyIdSisCatImpuestosFlete).Text) = False Then
@@ -1782,7 +1760,7 @@ Buscar:
                             .oVentasDetalle.COSTO = valorNumericoD(Me.Grid.Cell(i, Me.igyCosto).Text)
                         End If
 
-                        ''''
+                        ''''CAMPOS EN USD
                         .oVentasDetalle.IMPUESTO_IMPORTE_USD = valorNumerico(Me.Grid.Cell(i, Me.igyImpuestoImporte_USD).Text)
                         .oVentasDetalle.IMPORTE_USD = valorNumerico(Me.Grid.Cell(i, Me.igyImporte_USD).Text)
                         .oVentasDetalle.IEPS_UNITARIO_USD = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_UNITARIO_USD).Text)
@@ -1790,7 +1768,7 @@ Buscar:
                         .oVentasDetalle.BASE_IEPS_USD = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IEPS_USD).Text)
                         .oVentasDetalle.BASE_IVA_USD = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IVA_USD).Text)
                         .oVentasDetalle.PRECIO_TOTAL_USD = valorNumerico(Me.Grid.Cell(i, Me.igyPRECIO_TOTAL_USD).Text)
-                        .oVentasDetalle.PRECIO_SIN_DESCUENTO_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio_USD).Text)
+                        .oVentasDetalle.PRECIO_SIN_DESCUENTO_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio_USD).Text) 'Ver nota de PRECIO_SIN_DESCUENTO(en mxn), mismo criterio.
                         .oVentasDetalle.PRECIO_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyPRECIO_CON_DESCUENTO_USD).Text) 'Revisar por si se habilita nuevamente los embarques
                         .oVentasDetalle.DESCUENTO_UNITARIO_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_UNITARIO_USD).Text)
                         .oVentasDetalle.DESCUENTO_IMPORTE_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE_USD).Text)
@@ -2830,6 +2808,8 @@ CANCELAR:
             Dim dtSubtotal_USD As Decimal = 0, dtIEPS_USD As Decimal = 0, dtImpuesto_USD As Decimal = 0, dtTotal_USD As Decimal = 0, dtDescuentos_USD As Decimal = 0
 
             dTipoCambio = valorNumericoD(Me.txtTipoCambio.Text)
+            dTipoCambio = RedondearD(dTipoCambio, 4)
+            Me.txtTipoCambio.Text = Format(dTipoCambio, "##0.0000")
 
             Me.lblSubtotal.Text = FormatImporteContable(0)
             Me.lblIEPSIncluido.Text = FormatImporteContable(0)
@@ -2884,10 +2864,10 @@ CANCELAR:
                 If Me.cboMoneda.Text = "USD" Then
                     ''''''''''''''''
                     'Calculasmo los otros valores en MXN capturables(que si bien no se capturaron se emularán)
-                    dPrecioCapturado = dPrecioCapturado_USD * valorNumericoD(Me.txtTipoCambio.Text)
+                    dPrecioCapturado = dPrecioCapturado_USD * dTipoCambio
                     dPrecioCapturado = RedondearD(dPrecioCapturado, Me.iDecimalesPrecio)
 
-                    dDESCUENTO_IMPORTE = dDESCUENTO_IMPORTE_USD * valorNumericoD(Me.txtTipoCambio.Text)
+                    dDESCUENTO_IMPORTE = dDESCUENTO_IMPORTE_USD * dTipoCambio
                     dDESCUENTO_IMPORTE = RedondearD(dDESCUENTO_IMPORTE, Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
                     Me.Grid.Cell(i, Me.igyPrecio).Text = dPrecioCapturado.ToString
@@ -2947,63 +2927,93 @@ CANCELAR:
                     Me.Grid.Cell(i, Me.iGyPRECIO_CON_DESCUENTO_USD).Text = dPrecioConDescuento_USD.ToString
                     Me.Grid.Cell(i, Me.igyImporte_USD).Text = dImporteTotal_USD.ToString
                     Me.Grid.Cell(i, Me.iGyFleteImporte_USD).Text = dFLETE_IMPORTE_USD.ToString
+
+                    ''''''''''''''''''''''''''''''MXN(Este cálculo se hace en para calcular los valores en MXN a partir de los USD,note que también en moneda en MXN direco hace el cálculo-parecido)
+                    'Redondeando a la misma cifra que si hubiera sido en MXN directo
+                    dImporte = RedondearD(dImporte_USD * dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
+
+                    If dDESCUENTO_IMPORTE > 0 And dDESCUENTO_IMPORTE > dImporte Then
+                        MsgBox("El descuento no puede ser mayor que el importe.", vbExclamation, sProcedure)
+                        Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE).Text = "0"
+                        dDESCUENTO_IMPORTE = 0
+                    End If
+
+                    If dCantidad > 0 Then
+                        dDESCUENTO_UNITARIO = RedondearD(dDESCUENTO_UNITARIO_USD * dTipoCambio, 6)
+                    End If
+
+                    dPrecioConDescuento = dPrecioCapturado - dDESCUENTO_UNITARIO
+
+                    dImporteConDescuento = RedondearD((dImporteConDescuento_USD * dTipoCambio), 6)
+
+                    If sGRADO_TOXICIDAD <> "0" Then
+                        dBASE_IEPS = RedondearD(dBASE_IEPS_USD * dTipoCambio, 6)
+                        dIEPS_IMPORTE = RedondearD(dIEPS_IMPORTE_USD * dTipoCambio, 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
+                        dIEPS_UNITARIO = CDec(Redondear(dIEPS_UNITARIO_USD * dTipoCambio, 4))
+                    End If
+
+                    If sID_SIS_CAT_IMPUESTOS <> "N" Then 'N=No grava iva, si es <>N = Si grava iva ya sea al 0,16,Exento(aún siendo exento ó 0 hay que llenar la base iva)
+                        dBASE_IVA = RedondearD(dBASE_IVA_USD * dTipoCambio, 6)
+                        dIVA_IMPORTE = RedondearD(dIVA_IMPORTE_USD * dTipoCambio, 2)
+                    End If
+
+                    If sID_SIS_CAT_IMPUESTOS_FLETES <> "0" Then
+                        dFLETE_IMPORTE = RedondearD(dFLETE_IMPORTE_USD * dTipoCambio, 2)
+                    End If
+
+                    dPRECIO_TOTAL = dPrecioCapturado
+
+                    If Me.bClienteEsContribuyenteIEPS = False And dPrecioCapturado > 0 Then 'Cuando no es contribuyente se le adjunta al precio el ieps, es decir se le incluye
+                        dPRECIO_TOTAL = RedondearD(dPRECIO_TOTAL_USD * dTipoCambio, 6)
+                    End If
+
+                    'dImporteTotal = RedondearD((dCantidad * dPRECIO_TOTAL), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                    dImporteTotal = RedondearD(dImporteTotal_USD * dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
+
+                Else ''''''''''''''''''''''''''''''MXN
+
+                    'dImporte = RedondearD((dCantidad * dPrecioCapturado), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+
+                    If dDESCUENTO_IMPORTE > 0 And dDESCUENTO_IMPORTE > dImporte Then
+                        MsgBox("El descuento no puede ser mayor que el importe.", vbExclamation, sProcedure)
+                        Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE).Text = "0"
+                        dDESCUENTO_IMPORTE = 0
+                    End If
+
+                    If dCantidad > 0 Then
+                        dDESCUENTO_UNITARIO = RedondearD(dDESCUENTO_IMPORTE / dCantidad, 6)
+                    End If
+
+                    dPrecioConDescuento = dPrecioCapturado - dDESCUENTO_UNITARIO
+
+                    'dImporteConDescuento = RedondearD((dCantidad * dPrecioConDescuento), 2)
+                    'dImporteConDescuento = RedondearD((dCantidad * dPrecioConDescuento), 6)
+                    dImporteConDescuento = RedondearD((dCantidad * dPrecioConDescuento), 6)
+
+                    If sGRADO_TOXICIDAD <> "0" Then
+                        dBASE_IEPS = dImporteConDescuento
+                        dIEPS_IMPORTE = RedondearD(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
+                        dIEPS_UNITARIO = CDec(Redondear(dPrecioConDescuento * (dIEPS_PORCENTAJE / 100), 4))
+                    End If
+
+                    If sID_SIS_CAT_IMPUESTOS <> "N" Then 'N=No grava iva, si es <>N = Si grava iva ya sea al 0,16,Exento(aún siendo exento ó 0 hay que llenar la base iva)
+                        dBASE_IVA = dImporteConDescuento + dIEPS_IMPORTE
+                        dIVA_IMPORTE = RedondearD(dBASE_IVA * ((dPorcentajeIVA / 100)), 2)
+                    End If
+
+                    If sID_SIS_CAT_IMPUESTOS_FLETES <> "0" Then
+                        dFLETE_IMPORTE = RedondearD(dBASE_IVA * ((dPorcentajeFlete / 100)), 2)
+                    End If
+
+                    dPRECIO_TOTAL = dPrecioCapturado
+
+                    If Me.bClienteEsContribuyenteIEPS = False And dPrecioCapturado > 0 Then 'Cuando no es contribuyente se le adjunta al precio el ieps, es decir se le incluye
+                        'dPRECIO_TOTAL = RedondearD(dPrecioCapturado + dIEPS_UNITARIO, 3)
+                        dPRECIO_TOTAL = RedondearD(dPrecioCapturado + dIEPS_UNITARIO, 6)
+                    End If
+
+                    dImporteTotal = RedondearD((dCantidad * dPRECIO_TOTAL), Empresa_Sistema.DECIMALES_CONTABILIDAD)
                 End If
-
-                ''''''''''''''''''''''''''''''MXN(Este cálculo hace no importa que sea venta en USD, el precio aunque nono este capturado se calculó con el tipo de cambio)
-                'dImporte = RedondearD((dCantidad * dPrecioCapturado), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                dImporte = RedondearD(dImporte_USD * dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
-
-                If dDESCUENTO_IMPORTE > 0 And dDESCUENTO_IMPORTE > dImporte Then
-                    MsgBox("El descuento no puede ser mayor que el importe.", vbExclamation, sProcedure)
-                    Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE).Text = "0"
-                    dDESCUENTO_IMPORTE = 0
-                End If
-
-                If dCantidad > 0 Then
-                    'dDESCUENTO_UNITARIO = RedondearD(dDESCUENTO_IMPORTE / dCantidad, 6)
-                    dDESCUENTO_UNITARIO = RedondearD(dDESCUENTO_UNITARIO_USD * dTipoCambio, 6)
-                End If
-
-                dPrecioConDescuento = dPrecioCapturado - dDESCUENTO_UNITARIO
-
-                'dImporteConDescuento = RedondearD((dCantidad * dPrecioConDescuento), 2)
-                'dImporteConDescuento = RedondearD((dCantidad * dPrecioConDescuento), 6)
-                'dImporteConDescuento = RedondearD((dCantidad * dPrecioConDescuento), 6)
-                dImporteConDescuento = RedondearD((dImporteConDescuento_USD * dTipoCambio), 6)
-
-                If sGRADO_TOXICIDAD <> "0" Then
-                    'dBASE_IEPS = dImporteConDescuento
-                    'dIEPS_IMPORTE = RedondearD(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
-                    'dIEPS_UNITARIO = CDec(Redondear(dPrecioConDescuento * (dIEPS_PORCENTAJE / 100), 4))
-
-                    dBASE_IEPS = RedondearD(dBASE_IEPS_USD * dTipoCambio, 6)
-                    dIEPS_IMPORTE = RedondearD(dIEPS_IMPORTE_USD * dTipoCambio, 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
-                    dIEPS_UNITARIO = CDec(Redondear(dIEPS_UNITARIO_USD * dTipoCambio, 4))
-                End If
-
-                If sID_SIS_CAT_IMPUESTOS <> "N" Then 'N=No grava iva, si es <>N = Si grava iva ya sea al 0,16,Exento(aún siendo exento ó 0 hay que llenar la base iva)
-                    'dBASE_IVA = dImporteConDescuento + dIEPS_IMPORTE
-                    'dIVA_IMPORTE = RedondearD(dBASE_IVA * ((dPorcentajeIVA / 100)), 2)
-
-                    dBASE_IVA = RedondearD(dBASE_IVA_USD * dTipoCambio, 6)
-                    dIVA_IMPORTE = RedondearD(dIVA_IMPORTE_USD * dTipoCambio, 2)
-                End If
-
-                If sID_SIS_CAT_IMPUESTOS_FLETES <> "0" Then
-                    'dFLETE_IMPORTE = RedondearD(dBASE_IVA * ((dPorcentajeFlete / 100)), 2)
-                    dFLETE_IMPORTE = RedondearD(dFLETE_IMPORTE_USD * dTipoCambio, 2)
-                End If
-
-                dPRECIO_TOTAL = dPrecioCapturado
-
-                If Me.bClienteEsContribuyenteIEPS = False And dPrecioCapturado > 0 Then 'Cuando no es contribuyente se le adjunta al precio el ieps, es decir se le incluye
-                    'dPRECIO_TOTAL = RedondearD(dPrecioCapturado + dIEPS_UNITARIO, 3)
-                    'dPRECIO_TOTAL = RedondearD(dPrecioCapturado + dIEPS_UNITARIO, 6)
-                    dPRECIO_TOTAL = RedondearD(dPRECIO_TOTAL_USD * dTipoCambio, 6)
-                End If
-
-                'dImporteTotal = RedondearD((dCantidad * dPRECIO_TOTAL), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                dImporteTotal = RedondearD(dImporteTotal_USD * dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
                 Me.Grid.Cell(i, Me.igyPRECIO_TOTAL).Text = dPRECIO_TOTAL.ToString
                 Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text = dIEPS_UNITARIO.ToString
@@ -3079,15 +3089,15 @@ CANCELAR:
             Me.lblTotalRetencion.Text = FormatImporteContable(dtFLETE)
 
             '20Sep19, al desarrollar para teclar precios en usd se quitó de momento la funcionalidad de embarques, que de querer usarse necesitará revisión
-            'If valorNumerico(Me.txtTipoCambio.Text) > 0 Then
-            '    Me.lblSubtotal_USD.Text = FormatImporteContable(Redondear(valorNumerico(Me.lblSubtotal.Text) / valorNumerico(Me.txtTipoCambio.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD))
-            '    Me.lblImpuesto_USD.Text = FormatImporteContable(Redondear(valorNumerico(Me.lblImpuesto.Text) / valorNumerico(Me.txtTipoCambio.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD))
+            'If dTipoCambio > 0 Then
+            '    Me.lblSubtotal_USD.Text = FormatImporteContable(Redondear(valorNumerico(Me.lblSubtotal.Text) / dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD))
+            '    Me.lblImpuesto_USD.Text = FormatImporteContable(Redondear(valorNumerico(Me.lblImpuesto.Text) / dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD))
 
             '    If Not Me._oEmbarqueExtranjero Is Nothing Then
             '        'Es por embarque extranjero, la columna se calculó desde que se obtuvieron los renglones y se debe hacer por siuma directa para no tener diferencias de decimales.
             '        Me.lblTotal_USD.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImporte_USD), Empresa_Sistema.DECIMALES_CONTABILIDAD))
             '    Else
-            '        Me.lblTotal_USD.Text = FormatImporteContable(Redondear(valorNumerico(Me.lblTotal.Text) / valorNumerico(Me.txtTipoCambio.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD))
+            '        Me.lblTotal_USD.Text = FormatImporteContable(Redondear(valorNumerico(Me.lblTotal.Text) / dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD))
             '    End If
             'End If
             '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -3131,185 +3141,196 @@ CANCELAR:
                 Me.Cambia_Estado(enumEstados.NUEVO)
                 Me.CboDocumento.Enabled = False
                 Return False
+            End If
+
+            Me.lblVersionCFDI.Text = "" & oVenta.VERSION_ESQUEMA_XML
+
+            Me.DesplegarFormasPago(True) 'Para forzar a que muestre todos incluso los que están dados de baja porque al consultarlos fallaria si no estuvieran.
+
+            If sTipoVenta = "NM" Then
+                Me.CboDocumento.SelectedValue = Me.oVenta.CODIGO_DOCUMENTO
+                Me.oVenta = oVentaLocal 'Se hace de este modo porque si estan en un documento diferente al tecleado al cambiar el combo se inicializa y se pierde la venta cargada
+            ElseIf sTipoVenta = "SCR" Then
+                Me.CboDocumento.SelectedValue = "REM" + Plaza.CODIGO_PLAZA.ToString
+                Me.GeneraFolio()
+                Me.oVenta = oVentaLocal
+            ElseIf sTipoVenta = "SR" Or sTipoVenta = "SCF" Then
+                'Me.CboDocumento.SelectedValue = "FCT" + Plaza.CODIGO_PLAZA.ToString
+                Me.CboDocumento.SelectedValue = sCodigoDocumentoFacturaExterno
+                Me.oVenta = New Class_Ventas_Global(sVenta)
+                'Me.GeneraFolio()'No se ocupa volver a regenerar al cambiar el documento se inicializó y se genero folio
+                'Me.dpVencimiento.Value = Me.oVenta.FECHA_VENCIMIENTO
+            End If
+
+            Me.TxtCliente.Text = Me.oVenta.CODIGO_CLIENTE
+            Me.TxtConcepto.Text = Me.oVenta.CONCEPTO
+            Me.txtFolioEmbarque.Text = Me.oVenta.FOLIO_EMBARQUE
+
+            Me.oCliente = New Class_CatClientes(Me.TxtCliente.Text)
+            Me.lblCliente.Text = Me.oCliente.NOMBRE_CLIENTE
+
+            If bEsReferencia = False Then
+                Me.LblPoliza.Text = Me.oVenta.FOLIO_POLIZA
+                Me.lblSaldo.Text = FormatImporteContable(Me.oVenta.SALDO)
+            End If
+
+            Me.lblSubtotal.Text = FormatImporteContable(Me.oVenta.SUBTOTAL)
+            Me.lblDescuento.Text = FormatImporteContable(Me.oVenta.DESCUENTO)
+            Me.lblImpuesto.Text = FormatImporteContable(Me.oVenta.IMPUESTO)
+            Me.lblTotal.Text = FormatImporteContable(Me.oVenta.TOTAL)
+            Me.lblIEPS.Text = FormatImporteContable(Me.oVenta.IEPS_TOTAL_DESGLOSADO)
+            Me.lblIEPSIncluido.Text = FormatImporteContable(Me.oVenta.IEPS_TOTAL_YA_INCLUIDO)
+            Me.lblTotalRetencion.Text = FormatImporteContable(Me.oVenta.RETENCION_IVA)
+
+            Me.bClienteEsContribuyenteIEPS = CBool(Me.oCliente.ES_CONTRIBUYENTE_IEPS)
+
+            Me.cboMoneda.Text = Me.oVenta.CODIGO_MONEDA_SAT 'Nota debe llenarse primero la moneda porque tiene evento change que llena la forma de pago segun el cte, y asi se consulta correcto.
+            Me.txtTipoCambio.Text = Format(Me.oVenta.TIPO_DE_CAMBIO, "##0.0000")
+
+            If Me.oVenta.TIPO_DE_CAMBIO > 0 Then
+                'Me.lblSubtotal_USD.Text = FormatImporteContable(Me.oVenta.SUBTOTAL / Me.oVenta.TIPO_DE_CAMBIO).ToString
+                'Me.lblImpuesto_USD.Text = FormatImporteContable(Me.oVenta.IMPUESTO / Me.oVenta.TIPO_DE_CAMBIO).ToString
+                'Me.lblTotal_USD.Text = FormatImporteContable(Me.oVenta.TOTAL / Me.oVenta.TIPO_DE_CAMBIO).ToString
+
+                Me.lblSubtotal_USD.Text = FormatImporteContable(Me.oVenta.SUBTOTAL_USD)
+                Me.lblDescuento_USD.Text = FormatImporteContable(Me.oVenta.DESCUENTO_USD)
+                Me.lblImpuesto_USD.Text = FormatImporteContable(Me.oVenta.IMPUESTO_USD)
+                Me.lblTotal_USD.Text = FormatImporteContable(Me.oVenta.TOTAL_DOLARES)
+                Me.lblIEPS_USD.Text = FormatImporteContable(Me.oVenta.IEPS_TOTAL_DESGLOSADO_USD)
+                Me.lblIEPSIncluido_USD.Text = FormatImporteContable(Me.oVenta.IEPS_TOTAL_YA_INCLUIDO_USD)
+                Me.lblTotalRetencion_USD.Text = FormatImporteContable(Me.oVenta.RETENCION_IVA_USD)
+            End If
+
+            Me.cboTipoMercado.SelectedValue = Me.oVenta.CODIGO_TIPO_MERCADO
+            Me.cboTipoNegociacion.SelectedValue = Me.oVenta.CODIGO_TIPO_NEGOCIACION
+            Me.CboAlmacen.SelectedValue = Me.oVenta.CODIGO_ALMACEN
+            Me.cboVendedor.SelectedValue = Me.oVenta.CODIGO_VENDEDOR
+
+            Me.TxtConceptoCancelacion.Text = Me.oVenta.CONCEPTO_CANCELACION
+
+            'AgregaFormaPago99 'Así esta en vb6, pero aquí facilmente se quita el filtro y aparecerá el 99
+            dViewFormasPago.RowFilter = ""
+
+            Me.cboFormaPago.SelectedValue = Me.oVenta.CODIGO_METODO_PAGO
+            Me.txtNumeroCuentaPago.Text = Me.oVenta.NUMERO_CUENTA_PAGO.ToString
+
+            If txtLEN("" & Me.oVenta.CODIGO_METODO_PAGO_EVENTO) = True Then
+                Me.cboMetodoPago.SelectedValue = Me.oVenta.CODIGO_METODO_PAGO_EVENTO
             Else
-                Me.lblVersionCFDI.Text = "" & oVenta.VERSION_ESQUEMA_XML
+                Me.cboMetodoPago.SelectedIndex = -1
+            End If
 
-                Me.DesplegarFormasPago(True) 'Para forzar a que muestre todos incluso los que están dados de baja porque al consultarlos fallaria si no estuvieran.
+            If Me.oVenta.ES_VENTA_PUBLICO_GENERAL = "1" Then
+                Me.chkVentaPublicoGeneral.Checked = True
+            Else
+                Me.chkVentaPublicoGeneral.Checked = False
+            End If
 
-                If sTipoVenta = "NM" Then
-                    Me.CboDocumento.SelectedValue = Me.oVenta.CODIGO_DOCUMENTO
-                    Me.oVenta = oVentaLocal 'Se hace de este modo porque si estan en un documento diferente al tecleado al cambiar el combo se inicializa y se pierde la venta cargada
-                ElseIf sTipoVenta = "SCR" Then
-                    Me.CboDocumento.SelectedValue = "REM" + Plaza.CODIGO_PLAZA.ToString
-                    Me.GeneraFolio()
-                    Me.oVenta = oVentaLocal
-                ElseIf sTipoVenta = "SR" Or sTipoVenta = "SCF" Then
-                    'Me.CboDocumento.SelectedValue = "FCT" + Plaza.CODIGO_PLAZA.ToString
-                    Me.CboDocumento.SelectedValue = sCodigoDocumentoFacturaExterno
-                    Me.oVenta = New Class_Ventas_Global(sVenta)
-                    'Me.GeneraFolio()'No se ocupa volver a regenerar al cambiar el documento se inicializó y se genero folio
-                    'Me.dpVencimiento.Value = Me.oVenta.FECHA_VENCIMIENTO
-                End If
+            If Me.oVenta.CODIGO_TIPO_CREDITO <> "NA" Then
+                Me.CboTipoCredito.SelectedValue = Me.oVenta.CODIGO_TIPO_CREDITO
+            End If
 
-                Me.TxtCliente.Text = Me.oVenta.CODIGO_CLIENTE
-                Me.TxtConcepto.Text = Me.oVenta.CONCEPTO
-                Me.txtFolioEmbarque.Text = Me.oVenta.FOLIO_EMBARQUE
+            If bEsReferencia = False Then
+                Me.txtFolio.Text = Me.oVenta.FOLIO_VENTA.ToString.ToUpper
+                Me.TxtReferencia.Text = Me.oVenta.FOLIO_REFERENCIA.ToString.ToUpper
 
-                Me.oCliente = New Class_CatClientes(Me.TxtCliente.Text)
-                Me.lblCliente.Text = Me.oCliente.NOMBRE_CLIENTE
-
-                If bEsReferencia = False Then
-                    Me.LblPoliza.Text = Me.oVenta.FOLIO_POLIZA
-                    Me.lblSaldo.Text = FormatImporteContable(Me.oVenta.SALDO)
-                End If
-
-                Me.lblSubtotal.Text = FormatImporteContable(Me.oVenta.SUBTOTAL)
-                Me.lblDescuento.Text = FormatImporteContable(Me.oVenta.DESCUENTO)
-                Me.lblImpuesto.Text = FormatImporteContable(Me.oVenta.IMPUESTO)
-                Me.lblTotal.Text = FormatImporteContable(Me.oVenta.TOTAL)
-                Me.lblIEPS.Text = FormatImporteContable(Me.oVenta.IEPS_TOTAL_DESGLOSADO)
-                Me.lblIEPSIncluido.Text = FormatImporteContable(Me.oVenta.IEPS_TOTAL_YA_INCLUIDO)
-                Me.lblTotalRetencion.Text = FormatImporteContable(Me.oVenta.RETENCION_IVA)
-
-                Me.bClienteEsContribuyenteIEPS = CBool(Me.oCliente.ES_CONTRIBUYENTE_IEPS)
-
-                Me.cboMoneda.Text = Me.oVenta.CODIGO_MONEDA_SAT 'Nota debe llenarse primero la moneda porque tiene evento change que llena la forma de pago segpun el cte, y asi se consulta correcto.
-                Me.txtTipoCambio.Text = Me.oVenta.TIPO_DE_CAMBIO.ToString
-
-                If Me.oVenta.TIPO_DE_CAMBIO > 0 Then
-                    Me.lblSubtotal_USD.Text = FormatImporteContable(Me.oVenta.SUBTOTAL / Me.oVenta.TIPO_DE_CAMBIO).ToString
-                    Me.lblImpuesto_USD.Text = FormatImporteContable(Me.oVenta.IMPUESTO / Me.oVenta.TIPO_DE_CAMBIO).ToString
-                    Me.lblTotal_USD.Text = FormatImporteContable(Me.oVenta.TOTAL / Me.oVenta.TIPO_DE_CAMBIO).ToString
-                End If
-
-                Me.cboTipoMercado.SelectedValue = Me.oVenta.CODIGO_TIPO_MERCADO
-                Me.cboTipoNegociacion.SelectedValue = Me.oVenta.CODIGO_TIPO_NEGOCIACION
-                Me.CboAlmacen.SelectedValue = Me.oVenta.CODIGO_ALMACEN
-                Me.cboVendedor.SelectedValue = Me.oVenta.CODIGO_VENDEDOR
-
-                Me.TxtConceptoCancelacion.Text = Me.oVenta.CONCEPTO_CANCELACION
-
-                'AgregaFormaPago99 'Así esta en vb6, pero aquí facilmente se quita el filtro y aparecerá el 99
-                dViewFormasPago.RowFilter = ""
-
-                Me.cboFormaPago.SelectedValue = Me.oVenta.CODIGO_METODO_PAGO
-                Me.txtNumeroCuentaPago.Text = Me.oVenta.NUMERO_CUENTA_PAGO.ToString
-
-                If txtLEN("" & Me.oVenta.CODIGO_METODO_PAGO_EVENTO) = True Then
-                    Me.cboMetodoPago.SelectedValue = Me.oVenta.CODIGO_METODO_PAGO_EVENTO
-                Else
-                    Me.cboMetodoPago.SelectedIndex = -1
-                End If
-
-                If Me.oVenta.ES_VENTA_PUBLICO_GENERAL = "1" Then
-                    Me.chkVentaPublicoGeneral.Checked = True
-                Else
-                    Me.chkVentaPublicoGeneral.Checked = False
-                End If
-
-                If Me.oVenta.CODIGO_TIPO_CREDITO <> "NA" Then
-                    Me.CboTipoCredito.SelectedValue = Me.oVenta.CODIGO_TIPO_CREDITO
-                End If
-
-                If bEsReferencia = False Then
-                    Me.txtFolio.Text = Me.oVenta.FOLIO_VENTA.ToString.ToUpper
-                    Me.TxtReferencia.Text = Me.oVenta.FOLIO_REFERENCIA.ToString.ToUpper
-
-                    Select Case Me.oVenta.ESTATUS_VENTA.ToString.ToUpper
-                        Case "N"
-                            Me.LblEstatus.Text = "NUEVO"
-                        Case "G"
-                            Me.LblEstatus.Text = "GRABADO"
-                        Case "A"
-                            Me.LblEstatus.Text = "APLICADO"
-                        Case "S"
-                            Me.LblEstatus.Text = "SUSTITUIDO"
-                        Case "C"
-                            Me.LblEstatus.Text = "CANCELADO"
-                        Case "SY"
-                            Me.LblEstatus.Text = "SUSTITUYENDO"
-                    End Select
-                    Me.Grid.DataSource = Me.oVenta.ObtenerDetalle(False) 'Que si muestre comentarios
-                    Me.dpFecha.Value = CDate(Me.oVenta.FECHA)
-                    Me.txtUUID.Text = Me.oVenta.FOLIO_FISCAL_SAT
-
-                    Me.GridSeries.DataSource = Me.oVenta.ObtenerDetalleSeries
-                    Me.FormateaGridSeries()
-                Else
-                    Me.TxtReferencia.Text = Me.oVenta.FOLIO_VENTA.ToString.ToUpper
-                    Me.CboAlmacen.Enabled = False
-
-                    'Ante se hacia de este modo pero al ser con datasource no es posible agregar mas comentarios o tener control con algunas cosas
-                    'Me.Grid.DataSource = Me.oVenta.ObtenerDetalleSoloDisponibles
-
-                    Dim dTabla As DataTable = Me.oVenta.ObtenerDetalleSoloDisponibles ', dCostoUnitario As Double = 0
-
-                    Me.InicializaGrid()
-                    Me.Grid.AutoRedraw = False
-                    Me.Grid.Rows = 1
-                    For Each dRow As DataRow In dTabla.Rows
-
-                        'dCostoUnitario = CDbl(dRow("COSTO").ToString)
-                        'If dCostoUnitario <= 0 AndAlso Empresa_Sistema.VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES > 0 Then
-                        '    dCostoUnitario = Empresa_Sistema.VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES
-                        'End If
-
-                        Me.Grid.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("TIPO_CONTROL_INVENTARIO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("DISPONIBLE").ToString & Chr(9) &
-                                        dRow("PRECIO").ToString & Chr(9) & dRow("PRECIO_TOTAL").ToString & Chr(9) & dRow("UNIDAD_VENTA").ToString & Chr(9) & dRow("CANTIDAD_KILOS").ToString & Chr(9) &
-                                        dRow("PRECIO_KILOS").ToString & Chr(9) & dRow("IMPUESTO_PORCENTAJE").ToString & Chr(9) & dRow("IMPORTE").ToString & Chr(9) & dRow("IMPORTE_KILOS").ToString & Chr(9) &
-                                        dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("IMPUESTO_IMPORTE").ToString & Chr(9) & dRow("ID_VENTA_DETALLE").ToString & Chr(9) & dRow("ES_PRODUCTO_KILOS").ToString & Chr(9) &
-                                        dRow("CODIGO_CENTRO_COSTO").ToString & Chr(9) & dRow("NOMBRE_CENTRO_COSTO").ToString & Chr(9) & dRow("PRECIO_USD").ToString & Chr(9) & dRow("IMPORTE_USD").ToString & Chr(9) &
-                                        dRow("IEPS_PORCENTAJE").ToString & Chr(9) & dRow("IEPS_UNITARIO").ToString & Chr(9) & dRow("IEPS_IMPORTE").ToString & Chr(9) & dRow("BASE_IEPS").ToString & Chr(9) &
-                                        dRow("BASE_IVA").ToString & Chr(9) & dRow("COSTO").ToString & Chr(9) & dRow("UTILIDAD_UNITARIA").ToString & Chr(9) & dRow("UTILIDAD_TOTAL").ToString & Chr(9) &
-                                        dRow("UTILIDA_PORCENTAJE").ToString & Chr(9) & dRow("ID_SIS_CAT_IMPUESTOS").ToString & Chr(9) & dRow("GRADO_TOXICIDAD").ToString & Chr(9) & dRow("DESCUENTO_UNITARIO").ToString & Chr(9) &
-                                        dRow("DESCUENTO_IMPORTE").ToString & Chr(9) & dRow("PRECIO_SIN_DESCUENTO").ToString & Chr(9) &
-                                        dRow("ID_SIS_CAT_IMPUESTOS_FLETE").ToString & Chr(9) & dRow("RETENCION_IVA_IMPORTE").ToString & Chr(9) & dRow("RETENCION_IVA_PORCENTAJE").ToString & Chr(9))
-                    Next
-                    Me.Grid.Rows = Me.Grid.Rows + 1
-
-                    Me.dpFecha.Value = Date.Now
-
-                    If bEsRefrenciaSoloRenglones = True Then
+                Select Case Me.oVenta.ESTATUS_VENTA.ToString.ToUpper
+                    Case "N"
                         Me.LblEstatus.Text = "NUEVO"
-                    Else
+                    Case "G"
+                        Me.LblEstatus.Text = "GRABADO"
+                    Case "A"
+                        Me.LblEstatus.Text = "APLICADO"
+                    Case "S"
+                        Me.LblEstatus.Text = "SUSTITUIDO"
+                    Case "C"
+                        Me.LblEstatus.Text = "CANCELADO"
+                    Case "SY"
                         Me.LblEstatus.Text = "SUSTITUYENDO"
-                    End If
-
-                End If
-
-                Me.FormateaGrid()
-
-                If bEsReferencia = True Then 'Si estan jalando un doc en otro, va tratar de gestionar los costos de los no inventariables
-                    Me.GestionaColumaCostoCapturaNoInventariables() 'Va después de formatear el grid porque se oculta en el la columna costo
-                End If
-
-                Me.dpVencimiento.Value = Me.oVenta.FECHA_VENCIMIENTO
-                Me.txtPlazo.Text = DateDiff(DateInterval.Day, Me.dpFecha.Value, Me.dpVencimiento.Value.AddDays(1)).ToString
-
-                Select Case Me.oCliente.TIPO_PERSONA
-                    Case "F"
-                        Me.DesplegarUsoCFDIPersonasFisicas()
-                    Case "M"
-                        Me.DesplegarUsoCFDIPersonasMorales()
                 End Select
 
-                If txtLEN("" & Me.oVenta.CODIGO_USO_CFDI) = True Then
-                    Me.cboUsoCFDI.SelectedValue = Me.oVenta.CODIGO_USO_CFDI
-                End If
+                Me.Grid.DataSource = Me.oVenta.ObtenerDetalle(False) 'Que si muestre comentarios
+                Me.dpFecha.Value = CDate(Me.oVenta.FECHA)
+                Me.txtUUID.Text = Me.oVenta.FOLIO_FISCAL_SAT
 
-                If txtLEN("" & Me.oVenta.CODIGO_TIPO_RELACION_CFDI) = True Then
-                    Me.cboTipoRelacionCFDI.SelectedValue = Me.oVenta.CODIGO_TIPO_RELACION_CFDI
+                Me.GridSeries.DataSource = Me.oVenta.ObtenerDetalleSeries
+                Me.FormateaGridSeries()
 
-                    Me.GridCFDIsRelacionados.DataSource = Me.oVenta.ObtieneFacturasRelacionadas
-                    Me.FormateaGridCFDIsRelacionados()
+            Else 'Si se esta jalando una referencia
+                Me.TxtReferencia.Text = Me.oVenta.FOLIO_VENTA.ToString.ToUpper
+                Me.CboAlmacen.Enabled = False
+
+                'Ante se hacia de este modo pero al ser con datasource no es posible agregar mas comentarios o tener control con algunas cosas
+                'Me.Grid.DataSource = Me.oVenta.ObtenerDetalleSoloDisponibles
+
+                Dim dTabla As DataTable = Me.oVenta.ObtenerDetalleSoloDisponibles ', dCostoUnitario As Double = 0
+
+                Me.InicializaGrid()
+                Me.Grid.AutoRedraw = False
+                Me.Grid.Rows = 1
+                For Each dRow As DataRow In dTabla.Rows
+
+                    'dCostoUnitario = CDbl(dRow("COSTO").ToString)
+                    'If dCostoUnitario <= 0 AndAlso Empresa_Sistema.VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES > 0 Then
+                    '    dCostoUnitario = Empresa_Sistema.VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES
+                    'End If
+
+                    Me.Grid.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("TIPO_CONTROL_INVENTARIO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("DISPONIBLE").ToString & Chr(9) &
+                                    dRow("PRECIO").ToString & Chr(9) & dRow("PRECIO_TOTAL").ToString & Chr(9) & dRow("UNIDAD_VENTA").ToString & Chr(9) & dRow("CANTIDAD_KILOS").ToString & Chr(9) &
+                                    dRow("PRECIO_KILOS").ToString & Chr(9) & dRow("IMPUESTO_PORCENTAJE").ToString & Chr(9) & dRow("IMPORTE").ToString & Chr(9) & dRow("IMPORTE_KILOS").ToString & Chr(9) &
+                                    dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("IMPUESTO_IMPORTE").ToString & Chr(9) & dRow("ID_VENTA_DETALLE").ToString & Chr(9) & dRow("ES_PRODUCTO_KILOS").ToString & Chr(9) &
+                                    dRow("CODIGO_CENTRO_COSTO").ToString & Chr(9) & dRow("NOMBRE_CENTRO_COSTO").ToString & Chr(9) & dRow("PRECIO_USD").ToString & Chr(9) & dRow("IMPORTE_USD").ToString & Chr(9) &
+                                    dRow("IEPS_PORCENTAJE").ToString & Chr(9) & dRow("IEPS_UNITARIO").ToString & Chr(9) & dRow("IEPS_IMPORTE").ToString & Chr(9) & dRow("BASE_IEPS").ToString & Chr(9) &
+                                    dRow("BASE_IVA").ToString & Chr(9) & dRow("COSTO").ToString & Chr(9) & dRow("UTILIDAD_UNITARIA").ToString & Chr(9) & dRow("UTILIDAD_TOTAL").ToString & Chr(9) &
+                                    dRow("UTILIDA_PORCENTAJE").ToString & Chr(9) & dRow("ID_SIS_CAT_IMPUESTOS").ToString & Chr(9) & dRow("GRADO_TOXICIDAD").ToString & Chr(9) & dRow("DESCUENTO_UNITARIO").ToString & Chr(9) &
+                                    dRow("DESCUENTO_IMPORTE").ToString & Chr(9) & dRow("PRECIO_SIN_DESCUENTO").ToString & Chr(9) &
+                                    dRow("ID_SIS_CAT_IMPUESTOS_FLETE").ToString & Chr(9) & dRow("RETENCION_IVA_IMPORTE").ToString & Chr(9) & dRow("RETENCION_IVA_PORCENTAJE").ToString & Chr(9))
+                Next
+                Me.Grid.Rows = Me.Grid.Rows + 1
+
+                Me.dpFecha.Value = Date.Now
+
+                If bEsRefrenciaSoloRenglones = True Then
+                    Me.LblEstatus.Text = "NUEVO"
                 Else
-                    Me.cboTipoRelacionCFDI.SelectedIndex = -1
+                    Me.LblEstatus.Text = "SUSTITUYENDO"
                 End If
+
+            End If
+
+            Me.FormateaGrid()
+
+            If bEsReferencia = True Then 'Si estan jalando un doc en otro, va tratar de gestionar los costos de los no inventariables
+                Me.GestionaColumaCostoCapturaNoInventariables() 'Va después de formatear el grid porque se oculta en el la columna costo
+            End If
+
+            Me.dpVencimiento.Value = Me.oVenta.FECHA_VENCIMIENTO
+            Me.txtPlazo.Text = DateDiff(DateInterval.Day, Me.dpFecha.Value, Me.dpVencimiento.Value.AddDays(1)).ToString
+
+            Select Case Me.oCliente.TIPO_PERSONA
+                Case "F"
+                    Me.DesplegarUsoCFDIPersonasFisicas()
+                Case "M"
+                    Me.DesplegarUsoCFDIPersonasMorales()
+            End Select
+
+            If txtLEN("" & Me.oVenta.CODIGO_USO_CFDI) = True Then
+                Me.cboUsoCFDI.SelectedValue = Me.oVenta.CODIGO_USO_CFDI
+            End If
+
+            If txtLEN("" & Me.oVenta.CODIGO_TIPO_RELACION_CFDI) = True Then
+                Me.cboTipoRelacionCFDI.SelectedValue = Me.oVenta.CODIGO_TIPO_RELACION_CFDI
+
+                Me.GridCFDIsRelacionados.DataSource = Me.oVenta.ObtieneFacturasRelacionadas
+                Me.FormateaGridCFDIsRelacionados()
+            Else
+                Me.cboTipoRelacionCFDI.SelectedIndex = -1
             End If
 
             bResultado = True
 
             Me.GestionaCambioEstado()
+            Me.GestionaMoneda()
 
             Me.txtFolio.Enabled = False
 
@@ -4816,7 +4837,42 @@ BuscaVentas:
         End Try
     End Function
 
+    Private Sub GestionaMoneda()
+        If Me.cboMoneda.Text = "USD" Then
+            Me.txtTipoCambio.Visible = True : Me.txtTipoCambio.Enabled = True : Me.lblDisplayTipoCambio.Visible = True
+            Me.gbDolares.Visible = True
 
+            If Me.bCrearonColumnas = True Then 'Esta esto porque por cuestiones de eventos se lanza primero este antes de inicializar la 1era vez la forma.
+                'Estas 3 columnas son editables, y se gestiona su bloqueo/desbloqueo según el tipo de moneda
+                Me.Grid.Column(Me.igyPrecio).Locked = True
+                Me.Grid.Column(Me.igyPrecio_USD).Locked = False
+                Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Locked = True
+                Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Locked = False
+
+                Me.Grid.Column(Me.igyPrecio_USD).Visible = True
+                Me.Grid.Column(Me.igyPRECIO_TOTAL_USD).Visible = True
+                Me.Grid.Column(Me.igyImporte_USD).Visible = True
+                Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Visible = True
+            End If
+
+        Else 'Es moneda en MXN o esta en blanco
+            Me.txtTipoCambio.Visible = False : Me.txtTipoCambio.Enabled = False : Me.lblDisplayTipoCambio.Visible = False
+            Me.gbDolares.Visible = False
+
+            If Me.bCrearonColumnas = True Then
+                'Estas 3 columnas son editables, y se gestiona su bloqueo/desbloqueo según el tipo de moneda
+                Me.Grid.Column(Me.igyPrecio).Locked = False
+                Me.Grid.Column(Me.igyPrecio_USD).Locked = True
+                Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Locked = False
+                Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Locked = True
+
+                Me.Grid.Column(Me.igyPrecio_USD).Visible = False
+                Me.Grid.Column(Me.igyPRECIO_TOTAL_USD).Visible = False
+                Me.Grid.Column(Me.igyImporte_USD).Visible = False
+                Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Visible = False
+            End If
+        End If
+    End Sub
 #End Region
 
 End Class

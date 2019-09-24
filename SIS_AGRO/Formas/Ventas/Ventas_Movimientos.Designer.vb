@@ -80,6 +80,12 @@ Partial Class Ventas_Movimientos
         Me.lblSubtotal = New System.Windows.Forms.Label()
         Me.lblImpuesto = New System.Windows.Forms.Label()
         Me.gbDolares = New System.Windows.Forms.GroupBox()
+        Me.lblDisplayTotalRetencion_USD = New System.Windows.Forms.Label()
+        Me.lblTotalRetencion_USD = New System.Windows.Forms.Label()
+        Me.lblDisplayDescuento_USD = New System.Windows.Forms.Label()
+        Me.lblDescuento_USD = New System.Windows.Forms.Label()
+        Me.lblIEPS_USD = New System.Windows.Forms.Label()
+        Me.lblDisplayIEPS_USD = New System.Windows.Forms.Label()
         Me.lblTotal_USD = New System.Windows.Forms.Label()
         Me.lblSubtotal_USD = New System.Windows.Forms.Label()
         Me.lblImpuesto_USD = New System.Windows.Forms.Label()
@@ -102,7 +108,7 @@ Partial Class Ventas_Movimientos
         Me.cboMetodoPago = New System.Windows.Forms.ComboBox()
         Me.lblDisplayUsoCFDI = New System.Windows.Forms.Label()
         Me.CboTipoCredito = New System.Windows.Forms.ComboBox()
-        Me.LblTipoCredito = New System.Windows.Forms.Label()
+        Me.lblTipoCredito = New System.Windows.Forms.Label()
         Me.ckbMostrarUtilidad = New System.Windows.Forms.CheckBox()
         Me.LblDisplayMoneda = New System.Windows.Forms.Label()
         Me.cboMoneda = New System.Windows.Forms.ComboBox()
@@ -117,6 +123,7 @@ Partial Class Ventas_Movimientos
         Me.txtFolioEmbarque = New System.Windows.Forms.TextBox()
         Me.lblDisplayFolioEmbarque = New System.Windows.Forms.Label()
         Me.gbTotales = New System.Windows.Forms.GroupBox()
+        Me.lblIEPSIncluido_USD = New System.Windows.Forms.Label()
         Me.txtUUID = New System.Windows.Forms.TextBox()
         Me.lblUUID = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -133,13 +140,6 @@ Partial Class Ventas_Movimientos
         Me.GridCFDIsRelacionados = New FlexCell.Grid()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cboTipoRelacionCFDI = New System.Windows.Forms.ComboBox()
-        Me.lblDisplayTotalRetencion_USD = New System.Windows.Forms.Label()
-        Me.lblTotalRetencion_USD = New System.Windows.Forms.Label()
-        Me.lblDisplayDescuento_USD = New System.Windows.Forms.Label()
-        Me.lblDescuento_USD = New System.Windows.Forms.Label()
-        Me.lblIEPS_USD = New System.Windows.Forms.Label()
-        Me.lblDisplayIEPS_USD = New System.Windows.Forms.Label()
-        Me.lblIEPSIncluido_USD = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -701,6 +701,66 @@ Partial Class Ventas_Movimientos
         Me.gbDolares.Text = "Dólares"
         Me.gbDolares.Visible = False
         '
+        'lblDisplayTotalRetencion_USD
+        '
+        Me.lblDisplayTotalRetencion_USD.AutoSize = True
+        Me.lblDisplayTotalRetencion_USD.Location = New System.Drawing.Point(1, 80)
+        Me.lblDisplayTotalRetencion_USD.Name = "lblDisplayTotalRetencion_USD"
+        Me.lblDisplayTotalRetencion_USD.Size = New System.Drawing.Size(62, 13)
+        Me.lblDisplayTotalRetencion_USD.TabIndex = 261
+        Me.lblDisplayTotalRetencion_USD.Text = "Retención :"
+        '
+        'lblTotalRetencion_USD
+        '
+        Me.lblTotalRetencion_USD.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblTotalRetencion_USD.ForeColor = System.Drawing.Color.DarkBlue
+        Me.lblTotalRetencion_USD.Location = New System.Drawing.Point(68, 80)
+        Me.lblTotalRetencion_USD.Name = "lblTotalRetencion_USD"
+        Me.lblTotalRetencion_USD.Size = New System.Drawing.Size(107, 13)
+        Me.lblTotalRetencion_USD.TabIndex = 260
+        Me.lblTotalRetencion_USD.Text = "0.00"
+        Me.lblTotalRetencion_USD.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'lblDisplayDescuento_USD
+        '
+        Me.lblDisplayDescuento_USD.AutoSize = True
+        Me.lblDisplayDescuento_USD.Location = New System.Drawing.Point(1, 32)
+        Me.lblDisplayDescuento_USD.Name = "lblDisplayDescuento_USD"
+        Me.lblDisplayDescuento_USD.Size = New System.Drawing.Size(65, 13)
+        Me.lblDisplayDescuento_USD.TabIndex = 259
+        Me.lblDisplayDescuento_USD.Text = "Descuento :"
+        '
+        'lblDescuento_USD
+        '
+        Me.lblDescuento_USD.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblDescuento_USD.ForeColor = System.Drawing.Color.DarkBlue
+        Me.lblDescuento_USD.Location = New System.Drawing.Point(68, 32)
+        Me.lblDescuento_USD.Name = "lblDescuento_USD"
+        Me.lblDescuento_USD.Size = New System.Drawing.Size(107, 13)
+        Me.lblDescuento_USD.TabIndex = 258
+        Me.lblDescuento_USD.Text = "0.00"
+        Me.lblDescuento_USD.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'lblIEPS_USD
+        '
+        Me.lblIEPS_USD.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblIEPS_USD.ForeColor = System.Drawing.Color.DarkBlue
+        Me.lblIEPS_USD.Location = New System.Drawing.Point(68, 48)
+        Me.lblIEPS_USD.Name = "lblIEPS_USD"
+        Me.lblIEPS_USD.Size = New System.Drawing.Size(107, 13)
+        Me.lblIEPS_USD.TabIndex = 257
+        Me.lblIEPS_USD.Text = "0.00"
+        Me.lblIEPS_USD.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'lblDisplayIEPS_USD
+        '
+        Me.lblDisplayIEPS_USD.AutoSize = True
+        Me.lblDisplayIEPS_USD.Location = New System.Drawing.Point(1, 48)
+        Me.lblDisplayIEPS_USD.Name = "lblDisplayIEPS_USD"
+        Me.lblDisplayIEPS_USD.Size = New System.Drawing.Size(37, 13)
+        Me.lblDisplayIEPS_USD.TabIndex = 256
+        Me.lblDisplayIEPS_USD.Text = "IEPS :"
+        '
         'lblTotal_USD
         '
         Me.lblTotal_USD.BackColor = System.Drawing.SystemColors.ButtonHighlight
@@ -828,7 +888,7 @@ Partial Class Ventas_Movimientos
         Me.frmDatos.Controls.Add(Me.cboMetodoPago)
         Me.frmDatos.Controls.Add(Me.lblDisplayUsoCFDI)
         Me.frmDatos.Controls.Add(Me.CboTipoCredito)
-        Me.frmDatos.Controls.Add(Me.LblTipoCredito)
+        Me.frmDatos.Controls.Add(Me.lblTipoCredito)
         Me.frmDatos.Controls.Add(Me.ckbMostrarUtilidad)
         Me.frmDatos.Controls.Add(Me.LblDisplayMoneda)
         Me.frmDatos.Controls.Add(Me.cboMoneda)
@@ -886,7 +946,7 @@ Partial Class Ventas_Movimientos
         'TxtConceptoCancelacion
         '
         Me.TxtConceptoCancelacion.Location = New System.Drawing.Point(749, 128)
-        Me.TxtConceptoCancelacion.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TxtConceptoCancelacion.Margin = New System.Windows.Forms.Padding(2)
         Me.TxtConceptoCancelacion.MaxLength = 120
         Me.TxtConceptoCancelacion.Multiline = True
         Me.TxtConceptoCancelacion.Name = "TxtConceptoCancelacion"
@@ -961,14 +1021,14 @@ Partial Class Ventas_Movimientos
         Me.CboTipoCredito.Size = New System.Drawing.Size(205, 21)
         Me.CboTipoCredito.TabIndex = 20
         '
-        'LblTipoCredito
+        'lblTipoCredito
         '
-        Me.LblTipoCredito.AutoSize = True
-        Me.LblTipoCredito.Location = New System.Drawing.Point(639, 88)
-        Me.LblTipoCredito.Name = "LblTipoCredito"
-        Me.LblTipoCredito.Size = New System.Drawing.Size(69, 13)
-        Me.LblTipoCredito.TabIndex = 376
-        Me.LblTipoCredito.Text = "Tipo crédito :"
+        Me.lblTipoCredito.AutoSize = True
+        Me.lblTipoCredito.Location = New System.Drawing.Point(639, 88)
+        Me.lblTipoCredito.Name = "lblTipoCredito"
+        Me.lblTipoCredito.Size = New System.Drawing.Size(69, 13)
+        Me.lblTipoCredito.TabIndex = 376
+        Me.lblTipoCredito.Text = "Tipo crédito :"
         '
         'ckbMostrarUtilidad
         '
@@ -1112,6 +1172,17 @@ Partial Class Ventas_Movimientos
         Me.gbTotales.TabIndex = 2
         Me.gbTotales.TabStop = False
         '
+        'lblIEPSIncluido_USD
+        '
+        Me.lblIEPSIncluido_USD.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblIEPSIncluido_USD.ForeColor = System.Drawing.Color.DarkBlue
+        Me.lblIEPSIncluido_USD.Location = New System.Drawing.Point(855, 50)
+        Me.lblIEPSIncluido_USD.Name = "lblIEPSIncluido_USD"
+        Me.lblIEPSIncluido_USD.Size = New System.Drawing.Size(110, 13)
+        Me.lblIEPSIncluido_USD.TabIndex = 386
+        Me.lblIEPSIncluido_USD.Text = "0.00"
+        Me.lblIEPSIncluido_USD.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
         'txtUUID
         '
         Me.txtUUID.Location = New System.Drawing.Point(175, 74)
@@ -1194,7 +1265,7 @@ Partial Class Ventas_Movimientos
         Me.tpArticulos.Controls.Add(Me.Grid)
         Me.tpArticulos.Location = New System.Drawing.Point(4, 22)
         Me.tpArticulos.Name = "tpArticulos"
-        Me.tpArticulos.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.tpArticulos.Padding = New System.Windows.Forms.Padding(3)
         Me.tpArticulos.Size = New System.Drawing.Size(1570, 212)
         Me.tpArticulos.TabIndex = 0
         Me.tpArticulos.Text = "Artículos"
@@ -1224,8 +1295,8 @@ Partial Class Ventas_Movimientos
         Me.tpSeries.Controls.Add(Me.GridSeries)
         Me.tpSeries.Location = New System.Drawing.Point(4, 22)
         Me.tpSeries.Name = "tpSeries"
-        Me.tpSeries.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
-        Me.tpSeries.Size = New System.Drawing.Size(978, 212)
+        Me.tpSeries.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpSeries.Size = New System.Drawing.Size(1570, 212)
         Me.tpSeries.TabIndex = 1
         Me.tpSeries.Text = "Series"
         Me.tpSeries.UseVisualStyleBackColor = True
@@ -1256,7 +1327,7 @@ Partial Class Ventas_Movimientos
         Me.tpCFDIsRelacionados.Controls.Add(Me.cboTipoRelacionCFDI)
         Me.tpCFDIsRelacionados.Location = New System.Drawing.Point(4, 22)
         Me.tpCFDIsRelacionados.Name = "tpCFDIsRelacionados"
-        Me.tpCFDIsRelacionados.Size = New System.Drawing.Size(978, 212)
+        Me.tpCFDIsRelacionados.Size = New System.Drawing.Size(1570, 212)
         Me.tpCFDIsRelacionados.TabIndex = 2
         Me.tpCFDIsRelacionados.Text = "Relacionar CFDIs"
         Me.tpCFDIsRelacionados.UseVisualStyleBackColor = True
@@ -1299,77 +1370,6 @@ Partial Class Ventas_Movimientos
         Me.cboTipoRelacionCFDI.Name = "cboTipoRelacionCFDI"
         Me.cboTipoRelacionCFDI.Size = New System.Drawing.Size(301, 21)
         Me.cboTipoRelacionCFDI.TabIndex = 383
-        '
-        'lblDisplayTotalRetencion_USD
-        '
-        Me.lblDisplayTotalRetencion_USD.AutoSize = True
-        Me.lblDisplayTotalRetencion_USD.Location = New System.Drawing.Point(1, 80)
-        Me.lblDisplayTotalRetencion_USD.Name = "lblDisplayTotalRetencion_USD"
-        Me.lblDisplayTotalRetencion_USD.Size = New System.Drawing.Size(62, 13)
-        Me.lblDisplayTotalRetencion_USD.TabIndex = 261
-        Me.lblDisplayTotalRetencion_USD.Text = "Retención :"
-        '
-        'lblTotalRetencion_USD
-        '
-        Me.lblTotalRetencion_USD.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.lblTotalRetencion_USD.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblTotalRetencion_USD.Location = New System.Drawing.Point(68, 80)
-        Me.lblTotalRetencion_USD.Name = "lblTotalRetencion_USD"
-        Me.lblTotalRetencion_USD.Size = New System.Drawing.Size(107, 13)
-        Me.lblTotalRetencion_USD.TabIndex = 260
-        Me.lblTotalRetencion_USD.Text = "0.00"
-        Me.lblTotalRetencion_USD.TextAlign = System.Drawing.ContentAlignment.TopRight
-        '
-        'lblDisplayDescuento_USD
-        '
-        Me.lblDisplayDescuento_USD.AutoSize = True
-        Me.lblDisplayDescuento_USD.Location = New System.Drawing.Point(1, 32)
-        Me.lblDisplayDescuento_USD.Name = "lblDisplayDescuento_USD"
-        Me.lblDisplayDescuento_USD.Size = New System.Drawing.Size(65, 13)
-        Me.lblDisplayDescuento_USD.TabIndex = 259
-        Me.lblDisplayDescuento_USD.Text = "Descuento :"
-        '
-        'lblDescuento_USD
-        '
-        Me.lblDescuento_USD.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.lblDescuento_USD.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblDescuento_USD.Location = New System.Drawing.Point(68, 32)
-        Me.lblDescuento_USD.Name = "lblDescuento_USD"
-        Me.lblDescuento_USD.Size = New System.Drawing.Size(107, 13)
-        Me.lblDescuento_USD.TabIndex = 258
-        Me.lblDescuento_USD.Text = "0.00"
-        Me.lblDescuento_USD.TextAlign = System.Drawing.ContentAlignment.TopRight
-        '
-        'lblIEPS_USD
-        '
-        Me.lblIEPS_USD.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.lblIEPS_USD.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblIEPS_USD.Location = New System.Drawing.Point(68, 48)
-        Me.lblIEPS_USD.Name = "lblIEPS_USD"
-        Me.lblIEPS_USD.Size = New System.Drawing.Size(107, 13)
-        Me.lblIEPS_USD.TabIndex = 257
-        Me.lblIEPS_USD.Text = "0.00"
-        Me.lblIEPS_USD.TextAlign = System.Drawing.ContentAlignment.TopRight
-        '
-        'lblDisplayIEPS_USD
-        '
-        Me.lblDisplayIEPS_USD.AutoSize = True
-        Me.lblDisplayIEPS_USD.Location = New System.Drawing.Point(1, 48)
-        Me.lblDisplayIEPS_USD.Name = "lblDisplayIEPS_USD"
-        Me.lblDisplayIEPS_USD.Size = New System.Drawing.Size(37, 13)
-        Me.lblDisplayIEPS_USD.TabIndex = 256
-        Me.lblDisplayIEPS_USD.Text = "IEPS :"
-        '
-        'lblIEPSIncluido_USD
-        '
-        Me.lblIEPSIncluido_USD.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.lblIEPSIncluido_USD.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblIEPSIncluido_USD.Location = New System.Drawing.Point(855, 50)
-        Me.lblIEPSIncluido_USD.Name = "lblIEPSIncluido_USD"
-        Me.lblIEPSIncluido_USD.Size = New System.Drawing.Size(110, 13)
-        Me.lblIEPSIncluido_USD.TabIndex = 386
-        Me.lblIEPSIncluido_USD.Text = "0.00"
-        Me.lblIEPSIncluido_USD.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Ventas_Movimientos
         '
@@ -1499,7 +1499,7 @@ Partial Class Ventas_Movimientos
     Friend WithEvents cboMoneda As System.Windows.Forms.ComboBox
     Friend WithEvents ckbMostrarUtilidad As System.Windows.Forms.CheckBox
     Friend WithEvents CboTipoCredito As System.Windows.Forms.ComboBox
-    Friend WithEvents LblTipoCredito As System.Windows.Forms.Label
+    Friend WithEvents lblTipoCredito As System.Windows.Forms.Label
     Friend WithEvents cboUsoCFDI As ComboBox
     Friend WithEvents lblDisplayMetodoPago As Label
     Friend WithEvents cboMetodoPago As ComboBox
