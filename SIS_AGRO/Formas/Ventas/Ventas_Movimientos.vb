@@ -780,13 +780,22 @@ Buscar:
             Me.LblPoliza.Text = ""
             Me.lblSaldo.Text = FormatImporteContable(0)
             Me.txtTipoCambio.Text = "0"
-            Me.lblSubtotal_USD.Text = FormatImporteContable(0)
-            Me.lblImpuesto_USD.Text = FormatImporteContable(0)
-            Me.lblTotal_USD.Text = FormatImporteContable(0)
+
             Me.lblSubtotal.Text = FormatImporteContable(0)
+            Me.lblDescuento.Text = FormatImporteContable(0)
             Me.lblImpuesto.Text = FormatImporteContable(0)
             Me.lblTotal.Text = FormatImporteContable(0)
             Me.lblTotalRetencion.Text = FormatImporteContable(0)
+            Me.lblIEPS.Text = FormatImporteContable(0)
+            Me.lblIEPSIncluido.Text = FormatImporteContable(0)
+
+            Me.lblSubtotal_USD.Text = FormatImporteContable(0)
+            Me.lblDescuento_USD.Text = FormatImporteContable(0)
+            Me.lblImpuesto_USD.Text = FormatImporteContable(0)
+            Me.lblTotal_USD.Text = FormatImporteContable(0)
+            Me.lblTotalRetencion_USD.Text = FormatImporteContable(0)
+            Me.lblIEPS_USD.Text = FormatImporteContable(0)
+            Me.lblIEPSIncluido_USD.Text = FormatImporteContable(0)
 
             Me.dpFecha.Value = Date.Now
             Me.dpVencimiento.Value = Me.dpFecha.Value.AddDays(CDbl(Me.txtPlazo.Text))

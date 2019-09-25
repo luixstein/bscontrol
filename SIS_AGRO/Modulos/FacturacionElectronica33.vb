@@ -106,19 +106,33 @@ Module FacturacionElectronica33
             dTIPO_DE_CAMBIO = CDec(oVenta.TIPO_DE_CAMBIO)
 
             If oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
-                dSubTotal = CDec(oVenta.TOTAL_DOLARES)
-                dDescuento = CDec(oVenta.DESCUENTO_USD)
-                dTotal = 0
-            Else
+                MsgBox("De momento no se pueden timbrar facturas de embarques extranjeros", vbExclamation, sProcedure)
+                Return False
+                '    dSubTotal = CDec(oVenta.TOTAL_DOLARES)
+                '    dDescuento = CDec(oVenta.DESCUENTO_USD)
+                '    dTotal = 0
+                'Else
+                '    dSubTotal = CDec(oVenta.SUBTOTAL)
+                '    dDescuento = CDec(oVenta.DESCUENTO)
+                '    dTotal = CDec(oVenta.TOTAL)
+
+                '    If oVenta.CODIGO_MONEDA_SAT = "USD" Then
+                '        dSubTotal = RedondearD(dSubTotal / dTIPO_DE_CAMBIO, 2)
+                '        dDescuento = RedondearD(dDescuento / dTIPO_DE_CAMBIO, 2)
+                '        dTotal = RedondearD(dTotal / dTIPO_DE_CAMBIO, 2)
+                '    End If
+            End If
+
+            If oVenta.CODIGO_MONEDA_SAT = "MXN" Then
                 dSubTotal = CDec(oVenta.SUBTOTAL)
                 dDescuento = CDec(oVenta.DESCUENTO)
                 dTotal = CDec(oVenta.TOTAL)
-
-                If oVenta.CODIGO_MONEDA_SAT = "USD" Then
-                    dSubTotal = RedondearD(dSubTotal / dTIPO_DE_CAMBIO, 2)
-                    dDescuento = RedondearD(dDescuento / dTIPO_DE_CAMBIO, 2)
-                    dTotal = RedondearD(dTotal / dTIPO_DE_CAMBIO, 2)
-                End If
+            ElseIf oVenta.CODIGO_MONEDA_SAT = "USD" Then
+                dSubTotal = CDec(oVenta.SUBTOTAL_USD)
+                dDescuento = CDec(oVenta.DESCUENTO_USD)
+                dTotal = CDec(oVenta.TOTAL_DOLARES)
+            Else
+                MsgBox("Moneda SAT inválida no se pueden timbrar facturas de embarques extranjeros", vbExclamation, sProcedure)
             End If
 
             With Cfd
@@ -224,20 +238,32 @@ Module FacturacionElectronica33
                 drIMPUESTO_PORCENTAJE = CDec(row("IMPUESTO_PORCENTAJE").ToString) / CDec("100.00")
                 drIEPS_PORCENTAJE = CDec(row("IEPS_PORCENTAJE").ToString) / CDec("100.00")
                 drRetencionPorcentaje = CDec(row("RETENCION_IVA_PORCENTAJE").ToString) / CDec("100.00")
-                If oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
-                    drPrecio = CDec(row("PRECIO_USD").ToString)
-                    drImporte = CDec(row("IMPORTE_USD").ToString)
-                    drDESCUENTO_IMPORTE = CDec(row("IMPORTE_USD").ToString)
-                Else
+
+                'Ver nota principal sobre embarques de extranjero
+                'If oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
+                '    drPrecio = CDec(row("PRECIO_USD").ToString)
+                '    drImporte = CDec(row("IMPORTE_USD").ToString)
+                '    drDESCUENTO_IMPORTE = CDec(row("IMPORTE_USD").ToString)
+                'Else
+                '    drPrecio = CDec(row("PRECIO_TOTAL").ToString)
+                '    drImporte = CDec(row("IMPORTE").ToString)
+                '    drDESCUENTO_IMPORTE = CDec(row("DESCUENTO_IMPORTE").ToString)
+
+                '    If oVenta.CODIGO_MONEDA_SAT = "USD" Then
+                '        drPrecio = RedondearD(drPrecio / dTIPO_DE_CAMBIO, 3)
+                '        drImporte = RedondearD(drImporte / dTIPO_DE_CAMBIO, 2)
+                '        drDESCUENTO_IMPORTE = RedondearD(drDESCUENTO_IMPORTE / dTIPO_DE_CAMBIO, 2)
+                '    End If
+                'End If
+
+                If oVenta.CODIGO_MONEDA_SAT = "MXN" Then
                     drPrecio = CDec(row("PRECIO_TOTAL").ToString)
                     drImporte = CDec(row("IMPORTE").ToString)
                     drDESCUENTO_IMPORTE = CDec(row("DESCUENTO_IMPORTE").ToString)
-
-                    If oVenta.CODIGO_MONEDA_SAT = "USD" Then
-                        drPrecio = RedondearD(drPrecio / dTIPO_DE_CAMBIO, 3)
-                        drImporte = RedondearD(drImporte / dTIPO_DE_CAMBIO, 2)
-                        drDESCUENTO_IMPORTE = RedondearD(drDESCUENTO_IMPORTE / dTIPO_DE_CAMBIO, 2)
-                    End If
+                ElseIf oVenta.CODIGO_MONEDA_SAT = "USD" Then
+                    drPrecio = CDec(row("PRECIO_TOTAL_USD").ToString)
+                    drImporte = CDec(row("IMPORTE_USD").ToString)
+                    drDESCUENTO_IMPORTE = CDec(row("DESCUENTO_IMPORTE_USD").ToString)
                 End If
 
                 ConceptoImpuestoTraslados = New iConceptoImpuestoTraslados33
@@ -247,12 +273,20 @@ Module FacturacionElectronica33
 
                 If oVenta.TIENE_IEPS_DESGLOSADO = True Then
                     If row("GRADO_TOXICIDAD").ToString <> "0" Then '0=no graba ieps, <>0 significa que si graba ieps : 1-4=con alguna tasa,5=Exento(aún siendo exento hay que llenar la base ieps)
-                        drBASE_IEPS = CDec(row("BASE_IEPS").ToString)
-                        drIEPS_IMPORTE = CDec(row("IEPS_IMPORTE").ToString)
+                        'drBASE_IEPS = CDec(row("BASE_IEPS").ToString)
+                        'drIEPS_IMPORTE = CDec(row("IEPS_IMPORTE").ToString)
 
-                        If oVenta.CODIGO_MONEDA_SAT = "USD" Then
-                            drBASE_IEPS = RedondearD(drBASE_IEPS / dTIPO_DE_CAMBIO, 2)
-                            drIEPS_IMPORTE = RedondearD(drIEPS_IMPORTE / dTIPO_DE_CAMBIO, 2)
+                        'If oVenta.CODIGO_MONEDA_SAT = "USD" Then
+                        '    drBASE_IEPS = RedondearD(drBASE_IEPS / dTIPO_DE_CAMBIO, 2)
+                        '    drIEPS_IMPORTE = RedondearD(drIEPS_IMPORTE / dTIPO_DE_CAMBIO, 2)
+                        'End If
+
+                        If oVenta.CODIGO_MONEDA_SAT = "MXN" Then
+                            drBASE_IEPS = CDec(row("BASE_IEPS").ToString)
+                            drIEPS_IMPORTE = CDec(row("IEPS_IMPORTE").ToString)
+                        ElseIf oVenta.CODIGO_MONEDA_SAT = "USD" Then
+                            drBASE_IEPS = CDec(row("BASE_IEPS_USD").ToString)
+                            drIEPS_IMPORTE = CDec(row("IEPS_IMPORTE_USD").ToString)
                         End If
 
                         If row("GRADO_TOXICIDAD").ToString = "5" Then '5=Ieps Exento
@@ -266,14 +300,24 @@ Module FacturacionElectronica33
                 End If
 
                 If row("ID_SIS_CAT_IMPUESTOS").ToString <> "N" Then 'N=No grava iva, si es <>N = Si grava iva ya sea al 0,16,Exento(aún siendo exento ó 0 hay que llenar la base iva)
-                    drBASE_IVA = CDec(row("BASE_IVA").ToString)
-                    drIMPUESTO_IMPORTE = CDec(row("IMPUESTO_IMPORTE").ToString)
-                    drRetencionIVA = CDec(row("RETENCION_IVA_IMPORTE").ToString)
+                    'drBASE_IVA = CDec(row("BASE_IVA").ToString)
+                    'drIMPUESTO_IMPORTE = CDec(row("IMPUESTO_IMPORTE").ToString)
+                    'drRetencionIVA = CDec(row("RETENCION_IVA_IMPORTE").ToString)
 
-                    If oVenta.CODIGO_MONEDA_SAT = "USD" Then
-                        drBASE_IVA = RedondearD(drBASE_IVA / dTIPO_DE_CAMBIO, 2)
-                        drIMPUESTO_IMPORTE = RedondearD(drIMPUESTO_IMPORTE / dTIPO_DE_CAMBIO, 2)
-                        drRetencionIVA = RedondearD(drRetencionIVA / dTIPO_DE_CAMBIO, 2)
+                    'If oVenta.CODIGO_MONEDA_SAT = "USD" Then
+                    '    drBASE_IVA = RedondearD(drBASE_IVA / dTIPO_DE_CAMBIO, 2)
+                    '    drIMPUESTO_IMPORTE = RedondearD(drIMPUESTO_IMPORTE / dTIPO_DE_CAMBIO, 2)
+                    '    drRetencionIVA = RedondearD(drRetencionIVA / dTIPO_DE_CAMBIO, 2)
+                    'End If
+
+                    If oVenta.CODIGO_MONEDA_SAT = "MXN" Then
+                        drBASE_IVA = CDec(row("BASE_IVA").ToString)
+                        drIMPUESTO_IMPORTE = CDec(row("IMPUESTO_IMPORTE").ToString)
+                        drRetencionIVA = CDec(row("RETENCION_IVA_IMPORTE").ToString)
+                    ElseIf oVenta.CODIGO_MONEDA_SAT = "USD" Then
+                        drBASE_IVA = CDec(row("BASE_IVA_USD").ToString)
+                        drIMPUESTO_IMPORTE = CDec(row("IMPUESTO_IMPORTE_USD").ToString)
+                        drRetencionIVA = CDec(row("RETENCION_IVA_IMPORTE_USD").ToString)
                     End If
 
                     If row("ID_SIS_CAT_IMPUESTOS").ToString = "E" Then 'E=Iva Exento
