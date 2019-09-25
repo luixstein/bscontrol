@@ -1600,8 +1600,18 @@ Buscar:
                 .CODIGO_VENDEDOR = CInt(Me.cboVendedor.SelectedValue.ToString)
 
                 .SUBTOTAL = valorNumerico(Me.lblSubtotal.Text)
+                .DESCUENTO = valorNumerico(Me.lblDescuento.Text)
                 .IMPUESTO = valorNumerico(Me.lblImpuesto.Text)
+                .IEPS_TOTAL_DESGLOSADO = valorNumerico(Me.lblIEPS.Text)
+                .IEPS_TOTAL_YA_INCLUIDO = valorNumerico(Me.lblIEPSIncluido.Text)
                 .RETENCION_IVA = valorNumerico(Me.lblTotalRetencion.Text)
+                .TOTAL = valorNumerico(Me.lblTotal.Text)
+                .TOTAL_SUSTITUCION = 0 'Ahora se graba dentro del stored MP_VENTA_AFECTA_SUSTITUCION_REMISION
+                'If Me.sTipoVenta = "NM" Then
+                '    .TOTAL_SUSTITUCION = 0
+                'Else
+                '    .TOTAL_SUSTITUCION = dTotalSustitucion
+                'End If
 
                 'Asi estaba cuando existian embarques
                 'If Me._EsPorEmbarqueExtranjero = True Then
@@ -1616,24 +1626,26 @@ Buscar:
                 '    .DESCUENTO_USD = 0 'No aplica en facturas normales aunque estén en usd
                 'End If
 
-                .DESCUENTO = valorNumerico(Me.lblDescuento.Text)
-                .TOTAL = valorNumerico(Me.lblTotal.Text)
-                .SUBTOTAL_USD = valorNumerico(Me.lblSubtotal_USD.Text)
-                .DESCUENTO_USD = valorNumerico(Me.lblDescuento_USD.Text)
-
                 If Me.cboMoneda.Text = "USD" Then
                     .TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text)
-                    .TOTAL_DOLARES = valorNumerico(Me.lblTotal_USD.Text)
                     .SUBTOTAL_USD = valorNumerico(Me.lblSubtotal_USD.Text)
                     .DESCUENTO_USD = valorNumerico(Me.lblDescuento_USD.Text)
-
                     .IMPUESTO_USD = valorNumerico(Me.lblImpuesto_USD.Text)
-                    .TOTAL_SUSTITUCION_USD = 0
                     .IEPS_TOTAL_DESGLOSADO_USD = valorNumerico(Me.lblIEPS_USD.Text)
                     .IEPS_TOTAL_YA_INCLUIDO_USD = valorNumerico(Me.lblIEPSIncluido_USD.Text)
                     .RETENCION_IVA_USD = valorNumerico(Me.lblTotalRetencion_USD.Text)
+                    .TOTAL_DOLARES = valorNumerico(Me.lblTotal_USD.Text)
+                    .TOTAL_SUSTITUCION_USD = 0
                 Else
                     .TIPO_DE_CAMBIO = 0
+                    .SUBTOTAL_USD = 0
+                    .DESCUENTO_USD = 0
+                    .IMPUESTO_USD = 0
+                    .IEPS_TOTAL_DESGLOSADO_USD = 0
+                    .IEPS_TOTAL_YA_INCLUIDO_USD = 0
+                    .RETENCION_IVA_USD = 0
+                    .TOTAL_DOLARES = 0
+                    '.TOTAL_SUSTITUCION = 0, ya esta más arriba
                 End If
 
                 .COSTO = 0
@@ -1657,18 +1669,8 @@ Buscar:
                 .FOLIO_REFERENCIA_USUARIO = ""
                 .TIPO_VENTA = sTipoVenta
 
-                .TOTAL_SUSTITUCION = 0 'Ahora se graba dentro del stored MP_VENTA_AFECTA_SUSTITUCION_REMISION
-                'If Me.sTipoVenta = "NM" Then
-                '    .TOTAL_SUSTITUCION = 0
-                'Else
-                '    .TOTAL_SUSTITUCION = dTotalSustitucion
-                'End If
-
                 .ES_VENTA_PUBLICO_GENERAL = Convert.ToInt32(Me.chkVentaPublicoGeneral.Checked).ToString
                 .FOLIO_EMBARQUE = Me.txtFolioEmbarque.Text.ToUpper
-
-                .IEPS_TOTAL_DESGLOSADO = valorNumerico(Me.lblIEPS.Text)
-                .IEPS_TOTAL_YA_INCLUIDO = valorNumerico(Me.lblIEPSIncluido.Text)
 
                 .CODIGO_METODO_PAGO = Me.cboFormaPago.SelectedValue.ToString
                 .NUMERO_CUENTA_PAGO = Me.txtNumeroCuentaPago.Text
@@ -1706,7 +1708,6 @@ Buscar:
                         .oVentasDetalle.FOLIO_VENTA = Me.oVenta.FOLIO_VENTA.ToUpper
                         .oVentasDetalle.CODIGO_ARTICULO = Me.Grid.Cell(i, Me.igyCodigo).Text.ToUpper
                         .oVentasDetalle.CANTIDAD = valorNumerico(Me.Grid.Cell(i, Me.igyCantidad).Text)
-                        '.oVentasDetalle.PRECIO = valorNumerico(Me.Grid.Cell(i, Me.igyPrecio).Text)
                         .oVentasDetalle.UNIDAD_VENTA = Me.Grid.Cell(i, Me.igyUnidad).Text.ToUpper
                         .oVentasDetalle.IMPUESTO_PORCENTAJE = CDbl(valorNumerico(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text))
                         .oVentasDetalle.IMPUESTO_IMPORTE = valorNumerico(Me.Grid.Cell(i, Me.igyImpuestoImporte).Text)
@@ -1754,8 +1755,9 @@ Buscar:
                         .oVentasDetalle.GRADO_TOXICIDAD = CInt(Me.Grid.Cell(i, Me.iGyGRADO_TOXICIDAD).Text)
                         .oVentasDetalle.ID_SIS_CAT_IMPUESTOS = Me.Grid.Cell(i, Me.iGyID_SIS_CAT_IMPUESTOS).Text
 
-                        .oVentasDetalle.PRECIO_SIN_DESCUENTO = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text) 'El precio tecleado no se graba en precio, se graba en precio_sin_descuento porque para reportear se ocupa el con_descuentos
+                        .oVentasDetalle.PRECIO_SIN_DESCUENTO = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text) 'El precio tecleado no se graba en el campo precio en cambio se graba en precio_sin_descuento porque para reportear se ocupa el con_descuentos
                         .oVentasDetalle.PRECIO = valorNumericoD(Me.Grid.Cell(i, Me.iGyPRECIO_CON_DESCUENTO).Text) 'Este es el precio que se usa para reportear y debe venir con descuentos
+                        '.oVentasDetalle.PRECIO = valorNumerico(Me.Grid.Cell(i, Me.igyPrecio).Text)
                         .oVentasDetalle.DESCUENTO_UNITARIO = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_UNITARIO).Text)
                         .oVentasDetalle.DESCUENTO_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE).Text)
                         If txtLEN(Me.Grid.Cell(i, Me.iGyIdSisCatImpuestosFlete).Text) = False Then
@@ -1777,8 +1779,8 @@ Buscar:
                         .oVentasDetalle.BASE_IEPS_USD = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IEPS_USD).Text)
                         .oVentasDetalle.BASE_IVA_USD = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IVA_USD).Text)
                         .oVentasDetalle.PRECIO_TOTAL_USD = valorNumerico(Me.Grid.Cell(i, Me.igyPRECIO_TOTAL_USD).Text)
-                        .oVentasDetalle.PRECIO_SIN_DESCUENTO_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio_USD).Text) 'Ver nota de PRECIO_SIN_DESCUENTO(en mxn), mismo criterio.
-                        .oVentasDetalle.PRECIO_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyPRECIO_CON_DESCUENTO_USD).Text) 'Revisar por si se habilita nuevamente los embarques
+                        .oVentasDetalle.PRECIO_SIN_DESCUENTO_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio_USD).Text) 'Ver nota mas arriba de PRECIO_SIN_DESCUENTO(en MXN), mismo criterio.
+                        .oVentasDetalle.PRECIO_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyPRECIO_CON_DESCUENTO_USD).Text) 'Ver nota mas arriba de PRECIO(en MXN); Revisar por si se habilita nuevamente los embarques
                         .oVentasDetalle.DESCUENTO_UNITARIO_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_UNITARIO_USD).Text)
                         .oVentasDetalle.DESCUENTO_IMPORTE_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE_USD).Text)
                         .oVentasDetalle.RETENCION_IVA_IMPORTE_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyFleteImporte_USD).Text)
@@ -3284,17 +3286,55 @@ CANCELAR:
                     '    dCostoUnitario = Empresa_Sistema.VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES
                     'End If
 
-                    Me.Grid.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("TIPO_CONTROL_INVENTARIO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("DISPONIBLE").ToString & Chr(9) &
-                                    dRow("PRECIO").ToString & Chr(9) & dRow("PRECIO_TOTAL").ToString & Chr(9) & dRow("UNIDAD_VENTA").ToString & Chr(9) & dRow("CANTIDAD_KILOS").ToString & Chr(9) &
-                                    dRow("PRECIO_KILOS").ToString & Chr(9) & dRow("IMPUESTO_PORCENTAJE").ToString & Chr(9) & dRow("IMPORTE").ToString & Chr(9) & dRow("IMPORTE_KILOS").ToString & Chr(9) &
-                                    dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("IMPUESTO_IMPORTE").ToString & Chr(9) & dRow("ID_VENTA_DETALLE").ToString & Chr(9) & dRow("ES_PRODUCTO_KILOS").ToString & Chr(9) &
-                                    dRow("CODIGO_CENTRO_COSTO").ToString & Chr(9) & dRow("NOMBRE_CENTRO_COSTO").ToString & Chr(9) & dRow("PRECIO_USD").ToString & Chr(9) & dRow("IMPORTE_USD").ToString & Chr(9) &
-                                    dRow("IEPS_PORCENTAJE").ToString & Chr(9) & dRow("IEPS_UNITARIO").ToString & Chr(9) & dRow("IEPS_IMPORTE").ToString & Chr(9) & dRow("BASE_IEPS").ToString & Chr(9) &
-                                    dRow("BASE_IVA").ToString & Chr(9) & dRow("COSTO").ToString & Chr(9) & dRow("UTILIDAD_UNITARIA").ToString & Chr(9) & dRow("UTILIDAD_TOTAL").ToString & Chr(9) &
-                                    dRow("UTILIDA_PORCENTAJE").ToString & Chr(9) & dRow("ID_SIS_CAT_IMPUESTOS").ToString & Chr(9) & dRow("GRADO_TOXICIDAD").ToString & Chr(9) & dRow("DESCUENTO_UNITARIO").ToString & Chr(9) &
-                                    dRow("DESCUENTO_IMPORTE").ToString & Chr(9) & dRow("PRECIO_SIN_DESCUENTO").ToString & Chr(9) &
-                                    dRow("ID_SIS_CAT_IMPUESTOS_FLETE").ToString & Chr(9) & dRow("RETENCION_IVA_IMPORTE").ToString & Chr(9) & dRow("RETENCION_IVA_PORCENTAJE").ToString & Chr(9))
+                    Me.Grid.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) &
+                                    dRow("TIPO_CONTROL_INVENTARIO").ToString & Chr(9) &
+                                    dRow("DESCRIPCION").ToString & Chr(9) &
+                                    dRow("DISPONIBLE").ToString & Chr(9) &
+                                    dRow("PRECIO_SIN_DESCUENTO").ToString & Chr(9) &
+                                    dRow("PRECIO_SIN_DESCUENTO_USD").ToString & Chr(9) &
+                                    dRow("PRECIO_TOTAL").ToString & Chr(9) &
+                                    dRow("PRECIO_TOTAL_USD").ToString & Chr(9) &
+                                    dRow("UNIDAD_VENTA").ToString & Chr(9) &
+                                    dRow("CANTIDAD_KILOS").ToString & Chr(9) &
+                                    dRow("PRECIO_KILOS").ToString & Chr(9) &
+                                    dRow("IMPUESTO_PORCENTAJE").ToString & Chr(9) &
+                                    dRow("IMPORTE").ToString & Chr(9) &
+                                    dRow("IMPORTE_USD").ToString & Chr(9) &
+                                    dRow("IMPORTE_KILOS").ToString & Chr(9) &
+                                    dRow("CUENTA_CONTABLE").ToString & Chr(9) &
+                                    dRow("IMPUESTO_IMPORTE").ToString & Chr(9) &
+                                    dRow("IMPUESTO_IMPORTE_USD").ToString & Chr(9) &
+                                    dRow("ID_VENTA_DETALLE").ToString & Chr(9) &
+                                    dRow("ES_PRODUCTO_KILOS").ToString & Chr(9) &
+                                    dRow("CODIGO_CENTRO_COSTO").ToString & Chr(9) &
+                                    dRow("NOMBRE_CENTRO_COSTO").ToString & Chr(9) &
+                                    dRow("IEPS_PORCENTAJE").ToString & Chr(9) &
+                                    dRow("IEPS_UNITARIO").ToString & Chr(9) &
+                                    dRow("IEPS_UNITARIO_USD").ToString & Chr(9) &
+                                    dRow("IEPS_IMPORTE").ToString & Chr(9) &
+                                    dRow("IEPS_IMPORTE_USD").ToString & Chr(9) &
+                                    dRow("BASE_IEPS").ToString & Chr(9) &
+                                    dRow("BASE_IEPS_USD").ToString & Chr(9) &
+                                    dRow("BASE_IVA").ToString & Chr(9) &
+                                    dRow("BASE_IVA_USD").ToString & Chr(9) &
+                                    dRow("COSTO").ToString & Chr(9) &
+                                    dRow("UTILIDAD_UNITARIA").ToString & Chr(9) &
+                                    dRow("UTILIDAD_TOTAL").ToString & Chr(9) &
+                                    dRow("UTILIDAD_PORCENTAJE").ToString & Chr(9) &
+                                    dRow("ID_SIS_CAT_IMPUESTOS").ToString & Chr(9) &
+                                    dRow("GRADO_TOXICIDAD").ToString & Chr(9) &
+                                    dRow("DESCUENTO_UNITARIO").ToString & Chr(9) &
+                                    dRow("DESCUENTO_UNITARIO_USD").ToString & Chr(9) &
+                                    dRow("DESCUENTO_IMPORTE").ToString & Chr(9) &
+                                    dRow("DESCUENTO_IMPORTE_USD").ToString & Chr(9) &
+                                    dRow("PRECIO").ToString & Chr(9) &
+                                    dRow("PRECIO_USD").ToString & Chr(9) &
+                                    dRow("ID_SIS_CAT_IMPUESTOS_FLETE").ToString & Chr(9) &
+                                    dRow("RETENCION_IVA_PORCENTAJE").ToString & Chr(9) &
+                                    dRow("RETENCION_IVA_IMPORTE").ToString & Chr(9) &
+                                    dRow("RETENCION_IVA_IMPORTE_USD").ToString & Chr(9))
                 Next
+
                 Me.Grid.Rows = Me.Grid.Rows + 1
 
                 Me.dpFecha.Value = Date.Now

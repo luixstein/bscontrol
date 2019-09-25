@@ -825,7 +825,7 @@ Partial Class Ventas_Movimientos
         '
         Me.lblSaldo.AutoSize = True
         Me.lblSaldo.ForeColor = System.Drawing.Color.Crimson
-        Me.lblSaldo.Location = New System.Drawing.Point(194, 16)
+        Me.lblSaldo.Location = New System.Drawing.Point(213, 16)
         Me.lblSaldo.Name = "lblSaldo"
         Me.lblSaldo.Size = New System.Drawing.Size(10, 13)
         Me.lblSaldo.TabIndex = 298
@@ -836,9 +836,9 @@ Partial Class Ventas_Movimientos
         Me.lblDisplaySaldo.AutoSize = True
         Me.lblDisplaySaldo.Location = New System.Drawing.Point(140, 16)
         Me.lblDisplaySaldo.Name = "lblDisplaySaldo"
-        Me.lblDisplaySaldo.Size = New System.Drawing.Size(40, 13)
+        Me.lblDisplaySaldo.Size = New System.Drawing.Size(67, 13)
         Me.lblDisplaySaldo.TabIndex = 297
-        Me.lblDisplaySaldo.Text = "Saldo :"
+        Me.lblDisplaySaldo.Text = "Saldo MXN :"
         '
         'StatusStripEstado
         '
@@ -1185,7 +1185,7 @@ Partial Class Ventas_Movimientos
         '
         'txtUUID
         '
-        Me.txtUUID.Location = New System.Drawing.Point(175, 74)
+        Me.txtUUID.Location = New System.Drawing.Point(53, 103)
         Me.txtUUID.MaxLength = 15
         Me.txtUUID.Name = "txtUUID"
         Me.txtUUID.ReadOnly = True
@@ -1195,7 +1195,7 @@ Partial Class Ventas_Movimientos
         'lblUUID
         '
         Me.lblUUID.AutoSize = True
-        Me.lblUUID.Location = New System.Drawing.Point(128, 76)
+        Me.lblUUID.Location = New System.Drawing.Point(6, 105)
         Me.lblUUID.Name = "lblUUID"
         Me.lblUUID.Size = New System.Drawing.Size(40, 13)
         Me.lblUUID.TabIndex = 384
