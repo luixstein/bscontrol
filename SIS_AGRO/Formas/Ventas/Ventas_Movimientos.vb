@@ -648,7 +648,19 @@ Buscar:
     Private Sub txtTipoCambio_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtTipoCambio.KeyDown
         Select Case e.KeyCode
             Case Keys.Enter
-                Me.Totales()
+                Me.Totales() 'Nota dentro lo formatea
+
+                If Me.cboMoneda.Text = "USD" Then
+                    If valorNumericoD(Me.txtTipoCambio.Text) <= 0 Then
+                        Me.txtTipoCambio.Text = "0"
+                        e.Handled = False
+                        MsgBox("Capture el tipo de cambio por favor.", vbExclamation, Me.Name)
+                    End If
+                End If
+
+                If Me.TxtCliente.Enabled = True AndAlso txtLEN(Me.TxtCliente.Text) = True Then
+                    Me.TxtCliente.Focus()
+                End If
         End Select
     End Sub
 
@@ -779,6 +791,7 @@ Buscar:
             Me.LblEstatus.Text = "NUEVO"
             Me.LblPoliza.Text = ""
             Me.lblSaldo.Text = FormatImporteContable(0)
+            Me.lblSaldoDolares.Text = FormatImporteContable(0)
             Me.txtTipoCambio.Text = "0"
 
             Me.lblSubtotal.Text = FormatImporteContable(0)
@@ -899,8 +912,8 @@ Buscar:
             Me.Grid.Column(Me.iGyGRADO_TOXICIDAD).Visible = False
             Me.Grid.Column(Me.iGyDESCUENTO_UNITARIO).Visible = False
             Me.Grid.Column(Me.iGyDESCUENTO_UNITARIO_USD).Visible = False
-            Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Visible = True  'Ocultar
-            Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Visible = True  'Ocultar
+            Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Width = 100
+            Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Width = 100
             Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO).Visible = False
             Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).Visible = False
             Me.Grid.Column(Me.iGyIdSisCatImpuestosFlete).Visible = False
@@ -3113,6 +3126,11 @@ CANCELAR:
             'End If
             '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
+            If dtTotal > 0 Then
+                Me.cboMoneda.Enabled = False
+                'Me.TxtCliente.Enabled =False 
+            End If
+
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
@@ -3183,6 +3201,7 @@ CANCELAR:
             If bEsReferencia = False Then
                 Me.LblPoliza.Text = Me.oVenta.FOLIO_POLIZA
                 Me.lblSaldo.Text = FormatImporteContable(Me.oVenta.SALDO)
+                Me.lblSaldoDolares.Text = FormatImporteContable(Me.oVenta.SALDO_DOLARES)
             End If
 
             Me.lblSubtotal.Text = FormatImporteContable(Me.oVenta.SUBTOTAL)
@@ -3554,6 +3573,14 @@ CANCELAR:
                         Return
                     End If
 
+                    If Columna <> Me.igyCodigo Then
+                        If txtLEN(Me.Grid.Cell(Renglon, Me.igyCodigo).Text) = False Then
+                            MsgBox("Debe de asignar primero un artículo", MsgBoxStyle.Exclamation, sProcedure)
+                            e.SuppressKeyPress = True
+                            Return
+                        End If
+                    End If
+
                     Select Case Columna
                         Case Me.igyCodigo
 
@@ -3631,17 +3658,20 @@ LlenaLinea:
                                 'End If
                             End If
 
+                            Me.Grid.Cell(Renglon, Me.igyCantidad).SetFocus()  'Para que se vaya a igyPrecio_USD ponemos una celda anterior
+
                             Me.Grid.Column(Me.igyDescripcion).Locked = True
 
                             Me.Totales()
 
                         Case Me.igyCantidad
-                            oArticulo = New Class_CatArticulos(StrCod)
                             If dCantidad <= 0 Then
                                 MsgBox("La cantidad debe de ser mayor a 0.", MsgBoxStyle.Exclamation, Me.Text)
                                 Me.Grid.Cell(Renglon, Me.igyDescripcion).SetFocus()
                                 Return
                             End If
+
+                            oArticulo = New Class_CatArticulos(StrCod)
 
                             If sTipoVenta <> "NM" Then
                                 If Me.ValidarDisponible() = False Then
@@ -3664,18 +3694,26 @@ LlenaLinea:
                                 'End If
                             End If
 
+                            If Me.cboMoneda.Text = "USD" Then
+                                Me.Grid.Cell(Renglon, Me.igyPrecio).SetFocus() 'Para que se vaya a igyPrecio_USD ponemos una celda anterior
+                            End If
+
                         Case Me.igyPrecio
                             oArticulo = New Class_CatArticulos(StrCod)
-                            If dPrecio <= 0 Then
-                                MsgBox("El precio debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
-                                Me.Grid.Cell(Renglon, Me.igyCantidad).SetFocus()
+                            If Me.cboMoneda.Text = "USD" Then
+                                'Avanza de todas formas estará bloqueado                                    
+                            Else
+                                If dPrecio <= 0 Then
+                                    MsgBox("El precio debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
+                                    Me.Grid.Cell(Renglon, Me.igyCantidad).SetFocus() 'Para que se vaya a igyPrecio ponemos una celda anterior
+                                End If
                             End If
 
                         Case Me.igyPrecio_USD
                             oArticulo = New Class_CatArticulos(StrCod)
                             If dPrecio_USD <= 0 Then
                                 MsgBox("El precio debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
-                                Me.Grid.Cell(Renglon, Me.igyCantidad).SetFocus()
+                                Me.Grid.Cell(Renglon, Me.igyPrecio).SetFocus() 'Para que se vaya a igyPrecio_USD ponemos una celda anterior
                             End If
 
                         Case Me.igyImpuestoPorcentaje
@@ -4890,6 +4928,8 @@ BuscaVentas:
         If Me.cboMoneda.Text = "USD" Then
             Me.txtTipoCambio.Visible = True : Me.txtTipoCambio.Enabled = True : Me.lblDisplayTipoCambio.Visible = True
             Me.gbDolares.Visible = True
+            Me.lblSaldoDolares.Visible = True : Me.lblDisplaySaldoDolares.Visible = True
+            Me.lblIEPSIncluido_USD.Visible = True : Me.lblDisplayIEPSIncluido_USD.Visible = True
 
             If Me.bCrearonColumnas = True Then 'Esta esto porque por cuestiones de eventos se lanza primero este antes de inicializar la 1era vez la forma.
                 'Estas 3 columnas son editables, y se gestiona su bloqueo/desbloqueo según el tipo de moneda
@@ -4902,11 +4942,18 @@ BuscaVentas:
                 Me.Grid.Column(Me.igyPRECIO_TOTAL_USD).Visible = True
                 Me.Grid.Column(Me.igyImporte_USD).Visible = True
                 Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Visible = True
+
+                Me.Grid.Column(Me.igyPRECIO_TOTAL).Visible = False
+                Me.Grid.Column(Me.igyImporte).Visible = False
+                Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Visible = False
             End If
 
         Else 'Es moneda en MXN o esta en blanco
+            Me.txtTipoCambio.Text = "0"
             Me.txtTipoCambio.Visible = False : Me.txtTipoCambio.Enabled = False : Me.lblDisplayTipoCambio.Visible = False
             Me.gbDolares.Visible = False
+            Me.lblSaldoDolares.Visible = False : Me.lblDisplaySaldoDolares.Visible = False
+            Me.lblIEPSIncluido_USD.Visible = False : Me.lblDisplayIEPSIncluido_USD.Visible = False
 
             If Me.bCrearonColumnas = True Then
                 'Estas 3 columnas son editables, y se gestiona su bloqueo/desbloqueo según el tipo de moneda
@@ -4919,6 +4966,10 @@ BuscaVentas:
                 Me.Grid.Column(Me.igyPRECIO_TOTAL_USD).Visible = False
                 Me.Grid.Column(Me.igyImporte_USD).Visible = False
                 Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Visible = False
+
+                Me.Grid.Column(Me.igyPRECIO_TOTAL).Visible = True
+                Me.Grid.Column(Me.igyImporte).Visible = True
+                Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Visible = True
             End If
         End If
     End Sub

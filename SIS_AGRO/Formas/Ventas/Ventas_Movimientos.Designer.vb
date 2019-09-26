@@ -123,6 +123,8 @@ Partial Class Ventas_Movimientos
         Me.txtFolioEmbarque = New System.Windows.Forms.TextBox()
         Me.lblDisplayFolioEmbarque = New System.Windows.Forms.Label()
         Me.gbTotales = New System.Windows.Forms.GroupBox()
+        Me.lblSaldoDolares = New System.Windows.Forms.Label()
+        Me.lblDisplaySaldoDolares = New System.Windows.Forms.Label()
         Me.lblIEPSIncluido_USD = New System.Windows.Forms.Label()
         Me.txtUUID = New System.Windows.Forms.TextBox()
         Me.lblUUID = New System.Windows.Forms.Label()
@@ -140,6 +142,8 @@ Partial Class Ventas_Movimientos
         Me.GridCFDIsRelacionados = New FlexCell.Grid()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cboTipoRelacionCFDI = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayIEPSIncluido = New System.Windows.Forms.Label()
+        Me.lblDisplayIEPSIncluido_USD = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -194,7 +198,7 @@ Partial Class Ventas_Movimientos
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbImprimir, Me.tsbCancelar, Me.tsbCotizacionRemision, Me.tsbCotizacionFactura, Me.tsbRemisionVenta, Me.tsbCancelarTimbre, Me.tsbTimbrar, Me.tsbRecuperarXMLPDF, Me.tsbEnviarCorreo, Me.tsbSubirXML, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1589, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1290, 27)
         Me.tsMenu.TabIndex = 3
         Me.tsMenu.Text = "tsMenu"
         '
@@ -584,7 +588,7 @@ Partial Class Ventas_Movimientos
         Me.gbPesos.Size = New System.Drawing.Size(189, 125)
         Me.gbPesos.TabIndex = 292
         Me.gbPesos.TabStop = False
-        Me.gbPesos.Text = "Pesos"
+        Me.gbPesos.Text = "MXN :"
         '
         'lblDisplayRetencion
         '
@@ -698,7 +702,7 @@ Partial Class Ventas_Movimientos
         Me.gbDolares.Size = New System.Drawing.Size(185, 125)
         Me.gbDolares.TabIndex = 293
         Me.gbDolares.TabStop = False
-        Me.gbDolares.Text = "Dólares"
+        Me.gbDolares.Text = "USD :"
         Me.gbDolares.Visible = False
         '
         'lblDisplayTotalRetencion_USD
@@ -823,13 +827,14 @@ Partial Class Ventas_Movimientos
         '
         'lblSaldo
         '
-        Me.lblSaldo.AutoSize = True
+        Me.lblSaldo.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblSaldo.ForeColor = System.Drawing.Color.Crimson
         Me.lblSaldo.Location = New System.Drawing.Point(213, 16)
         Me.lblSaldo.Name = "lblSaldo"
-        Me.lblSaldo.Size = New System.Drawing.Size(10, 13)
+        Me.lblSaldo.Size = New System.Drawing.Size(107, 13)
         Me.lblSaldo.TabIndex = 298
-        Me.lblSaldo.Text = "."
+        Me.lblSaldo.Text = "0.00"
+        Me.lblSaldo.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'lblDisplaySaldo
         '
@@ -846,7 +851,7 @@ Partial Class Ventas_Movimientos
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsslEstado, Me.tsslElaboro, Me.tsslCancelo})
         Me.StatusStripEstado.Location = New System.Drawing.Point(0, 654)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1589, 24)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1290, 24)
         Me.StatusStripEstado.TabIndex = 315
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -1151,6 +1156,10 @@ Partial Class Ventas_Movimientos
         '
         'gbTotales
         '
+        Me.gbTotales.Controls.Add(Me.lblDisplayIEPSIncluido_USD)
+        Me.gbTotales.Controls.Add(Me.lblDisplayIEPSIncluido)
+        Me.gbTotales.Controls.Add(Me.lblSaldoDolares)
+        Me.gbTotales.Controls.Add(Me.lblDisplaySaldoDolares)
         Me.gbTotales.Controls.Add(Me.lblIEPSIncluido_USD)
         Me.gbTotales.Controls.Add(Me.txtUUID)
         Me.gbTotales.Controls.Add(Me.lblUUID)
@@ -1172,11 +1181,33 @@ Partial Class Ventas_Movimientos
         Me.gbTotales.TabIndex = 2
         Me.gbTotales.TabStop = False
         '
+        'lblSaldoDolares
+        '
+        Me.lblSaldoDolares.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblSaldoDolares.ForeColor = System.Drawing.Color.Crimson
+        Me.lblSaldoDolares.Location = New System.Drawing.Point(213, 32)
+        Me.lblSaldoDolares.Name = "lblSaldoDolares"
+        Me.lblSaldoDolares.Size = New System.Drawing.Size(107, 13)
+        Me.lblSaldoDolares.TabIndex = 388
+        Me.lblSaldoDolares.Text = "0.00"
+        Me.lblSaldoDolares.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.lblSaldoDolares.Visible = False
+        '
+        'lblDisplaySaldoDolares
+        '
+        Me.lblDisplaySaldoDolares.AutoSize = True
+        Me.lblDisplaySaldoDolares.Location = New System.Drawing.Point(140, 32)
+        Me.lblDisplaySaldoDolares.Name = "lblDisplaySaldoDolares"
+        Me.lblDisplaySaldoDolares.Size = New System.Drawing.Size(66, 13)
+        Me.lblDisplaySaldoDolares.TabIndex = 387
+        Me.lblDisplaySaldoDolares.Text = "Saldo USD :"
+        Me.lblDisplaySaldoDolares.Visible = False
+        '
         'lblIEPSIncluido_USD
         '
         Me.lblIEPSIncluido_USD.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblIEPSIncluido_USD.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblIEPSIncluido_USD.Location = New System.Drawing.Point(855, 50)
+        Me.lblIEPSIncluido_USD.Location = New System.Drawing.Point(825, 48)
         Me.lblIEPSIncluido_USD.Name = "lblIEPSIncluido_USD"
         Me.lblIEPSIncluido_USD.Size = New System.Drawing.Size(110, 13)
         Me.lblIEPSIncluido_USD.TabIndex = 386
@@ -1214,7 +1245,7 @@ Partial Class Ventas_Movimientos
         '
         Me.lblIEPSIncluido.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblIEPSIncluido.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblIEPSIncluido.Location = New System.Drawing.Point(855, 34)
+        Me.lblIEPSIncluido.Location = New System.Drawing.Point(825, 32)
         Me.lblIEPSIncluido.Name = "lblIEPSIncluido"
         Me.lblIEPSIncluido.Size = New System.Drawing.Size(110, 13)
         Me.lblIEPSIncluido.TabIndex = 382
@@ -1257,7 +1288,7 @@ Partial Class Ventas_Movimientos
         Me.TabControl1.Location = New System.Drawing.Point(8, 275)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(1578, 238)
+        Me.TabControl1.Size = New System.Drawing.Size(1279, 238)
         Me.TabControl1.TabIndex = 1
         '
         'tpArticulos
@@ -1266,7 +1297,7 @@ Partial Class Ventas_Movimientos
         Me.tpArticulos.Location = New System.Drawing.Point(4, 22)
         Me.tpArticulos.Name = "tpArticulos"
         Me.tpArticulos.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpArticulos.Size = New System.Drawing.Size(1570, 212)
+        Me.tpArticulos.Size = New System.Drawing.Size(1271, 212)
         Me.tpArticulos.TabIndex = 0
         Me.tpArticulos.Text = "Artículos"
         Me.tpArticulos.UseVisualStyleBackColor = True
@@ -1286,7 +1317,7 @@ Partial Class Ventas_Movimientos
         Me.Grid.LockButton = True
         Me.Grid.Name = "Grid"
         Me.Grid.Rows = 8
-        Me.Grid.Size = New System.Drawing.Size(1561, 204)
+        Me.Grid.Size = New System.Drawing.Size(1266, 204)
         Me.Grid.TabIndex = 2
         Me.Grid.UncheckedImage = CType(resources.GetObject("Grid.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -1371,12 +1402,30 @@ Partial Class Ventas_Movimientos
         Me.cboTipoRelacionCFDI.Size = New System.Drawing.Size(301, 21)
         Me.cboTipoRelacionCFDI.TabIndex = 383
         '
+        'lblDisplayIEPSIncluido
+        '
+        Me.lblDisplayIEPSIncluido.AutoSize = True
+        Me.lblDisplayIEPSIncluido.Location = New System.Drawing.Point(941, 32)
+        Me.lblDisplayIEPSIncluido.Name = "lblDisplayIEPSIncluido"
+        Me.lblDisplayIEPSIncluido.Size = New System.Drawing.Size(31, 13)
+        Me.lblDisplayIEPSIncluido.TabIndex = 389
+        Me.lblDisplayIEPSIncluido.Text = "MXN"
+        '
+        'lblDisplayIEPSIncluido_USD
+        '
+        Me.lblDisplayIEPSIncluido_USD.AutoSize = True
+        Me.lblDisplayIEPSIncluido_USD.Location = New System.Drawing.Point(941, 48)
+        Me.lblDisplayIEPSIncluido_USD.Name = "lblDisplayIEPSIncluido_USD"
+        Me.lblDisplayIEPSIncluido_USD.Size = New System.Drawing.Size(30, 13)
+        Me.lblDisplayIEPSIncluido_USD.TabIndex = 390
+        Me.lblDisplayIEPSIncluido_USD.Text = "USD"
+        '
         'Ventas_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
-        Me.ClientSize = New System.Drawing.Size(1589, 678)
+        Me.ClientSize = New System.Drawing.Size(1290, 678)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.gbTotales)
         Me.Controls.Add(Me.frmDatos)
@@ -1526,4 +1575,8 @@ Partial Class Ventas_Movimientos
     Friend WithEvents lblIEPS_USD As Label
     Friend WithEvents lblDisplayIEPS_USD As Label
     Friend WithEvents lblIEPSIncluido_USD As Label
+    Friend WithEvents lblSaldoDolares As Label
+    Friend WithEvents lblDisplaySaldoDolares As Label
+    Friend WithEvents lblDisplayIEPSIncluido_USD As Label
+    Friend WithEvents lblDisplayIEPSIncluido As Label
 End Class
