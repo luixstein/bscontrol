@@ -655,10 +655,11 @@ Buscar:
                         Me.txtTipoCambio.Text = "0"
                         e.Handled = False
                         MsgBox("Capture el tipo de cambio por favor.", vbExclamation, Me.Name)
+                        Return
                     End If
                 End If
 
-                If Me.TxtCliente.Enabled = True AndAlso txtLEN(Me.TxtCliente.Text) = True Then
+                If Me.TxtCliente.Enabled = True Then
                     Me.TxtCliente.Focus()
                 End If
         End Select
@@ -3658,7 +3659,14 @@ LlenaLinea:
                                 'End If
                             End If
 
-                            Me.Grid.Cell(Renglon, Me.igyCantidad).SetFocus()  'Para que se vaya a igyPrecio_USD ponemos una celda anterior
+                            If e.KeyCode = Keys.F6 Then
+                                If valorNumericoD(Me.Grid.Cell(Renglon, Me.igyCantidad).Text) = 0 Then
+                                    Me.Grid.Cell(Renglon, Me.igyCantidad).Text = ""
+                                End If
+                                Me.Grid.Cell(Renglon, Me.igyCantidad).SetFocus()  'Para que se vaya a igyPrecio_USD ponemos una celda anterior
+                            Else 'Es por el enter
+                                Me.Grid.Cell(Renglon, Me.igyDescripcion).SetFocus()  'Para que se vaya a igyPrecio_USD ponemos una celda anterior
+                            End If
 
                             Me.Grid.Column(Me.igyDescripcion).Locked = True
 
