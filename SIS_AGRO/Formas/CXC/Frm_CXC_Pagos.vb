@@ -428,9 +428,15 @@ Buscar:
     End Sub
 
     Private Sub txtTipoCambio_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtTipoCambio.KeyDown
+        Dim dTipoCambio As Decimal = 0
         If e.KeyCode = Keys.Return Then
+            dTipoCambio = valorNumericoD(Me.txtTipoCambio.Text)
+            dTipoCambio = RedondearD(dTipoCambio, 4)
+            Me.txtTipoCambio.Text = Format(dTipoCambio, "##0.0000")
+
             If valorNumerico(Me.txtTipoCambio.Text) <= 0 Or valorNumerico(Me.txtTipoCambio.Text) > 30 Then
                 MsgBox("Tipo de cambio incorrecto.", MsgBoxStyle.Exclamation, "Validación de tipo de cambio.")
+                Me.txtTipoCambio.Text = Format(0, "##0.0000")
                 Exit Sub
             Else
                 Me.CalculaImporteDolares()
@@ -578,6 +584,64 @@ Buscar:
         If Me.cboCuentaEmisor.SelectedIndex <> -1 Then
             Me.SeleccionaCuentaEmisor()
         End If
+    End Sub
+
+
+    Private Sub Grid1_CellChanging(ByVal Sender As Object, ByVal e As FlexCell.Grid.CellChangingEventArgs) Handles GridVentas.CellChanging
+        Try
+            Dim Columna As Integer = e.Col, Renglon As Integer = e.Row
+            Dim dPago As Double
+            If e.Col = Me.iGyVentaSeleccion And e.Row > 0 Then
+                If Me.GridVentas.Cell(Renglon, Me.iGyVentaSeleccion).Text = "1" And Me.ClickSinEjecutar = False Then
+                    If Me.cboMoneda.Text = "USD" Then
+                        If valorNumerico(Me.txtTipoCambio.Text) <= 0 Or valorNumerico(Me.txtTipoCambio.Text) > 30 Then
+                            MsgBox("Tipo de cambio incorrecto.", MsgBoxStyle.Exclamation, "Validación de tipo de cambio.")
+                            Me.txtTipoCambio.Focus()
+                            Exit Sub
+                        End If
+
+                        dPago = valorNumerico(Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldoDlls).Text)
+                        If dPago > 0 Then
+                            Me.ClickSinEjecutar = True
+                            Me.GridVentas.Cell(Renglon, Me.iGyVentaPago).Text = dPago.ToString
+                            CalculaImportesPagoUSD(Renglon)
+                            Me.ClickSinEjecutar = False
+                        End If
+                    Else
+                        dPago = valorNumerico(Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldo).Text)
+                        If dPago > 0 Then
+                            Me.ClickSinEjecutar = True
+                            Me.GridVentas.Cell(Renglon, Me.iGyVentaPago).Text = dPago.ToString
+                            CalculaImportesPagoMXN(Renglon)
+                            Me.ClickSinEjecutar = False
+                        End If
+                    End If
+
+                Else
+                    Me.BorraPago(Renglon)
+                End If
+            End If
+
+            If Me.bConsultando = False Then
+                Me.Totales()
+            End If
+
+        Catch ex As Exception
+            HandleError(Me.Name, "Grid1_CellChanging", ex)
+        End Try
+    End Sub
+
+    Private Sub chkVentasNoFiscales_CheckedChanged(sender As Object, e As EventArgs) Handles chkVentasNoFiscales.CheckedChanged
+        Select Case Me.chkVentasNoFiscales.Checked
+            Case True
+                'Me.chkAnticipo.Visible = True
+                Me.btnGenerarCFDIS.Visible = False
+                Me.btnVerCFDIS.Visible = False
+            Case False
+                'Me.chkAnticipo.Visible = False
+                Me.btnGenerarCFDIS.Visible = True
+                Me.btnVerCFDIS.Visible = True
+        End Select
     End Sub
 
 #Region "Eventos Genericos"
@@ -1547,6 +1611,7 @@ Buscar:
 
             oBancosCXC.ES_PAGO_VENTAS_NO_FISCALES = Me.chkVentasNoFiscales.Checked
 
+            'Inserta en BANCOS_GLOBAL
             If oBancosCXC.Inserta_Global() = False Then '''''''''''''''''==========================Afectacion
                 Return False
             End If
@@ -1560,6 +1625,7 @@ Buscar:
                     sFolioPago = Me.GridDocumentosPago.Cell(i, Me.iGyDocFOLIO_DETALLE).Text.ToUpper
 
                     If txtLEN(sFolioPago) = True Then
+                        'Inserta en BANCOS_DETALLE
                         lID_BANCOS_DETALLE = oBancosCXC.AgregaDocumentoPago(Me.TxtFolio.Text, .Cell(i, Me.iGyDocCODIGO_FORMA_PAGO).Text, .Cell(i, Me.iGyDocFOLIO_DETALLE).Text,
                                   .Cell(i, Me.iGyDocCODIGO_BANCO_EMISOR_NACIONAL).Text, .Cell(i, Me.iGyDocCUENTA_EMISOR).Text,
                                   CDate(.Cell(i, Me.iGyDocFECHA).Text), .Cell(i, Me.iGyDocRFC_EMISOR).Text, valorNumerico(.Cell(i, Me.iGyDocMONTO).Text),
@@ -1609,6 +1675,10 @@ Buscar:
 
                         'Else
                         '    oCxcAfectaDocumentos.TOTAL = dPago
+                    Else 'MXN
+                        If Me.GridVentas.Cell(i, Me.iGyVentaMoneda).Text = "USD" Then 'Si estan pagando en MXN una venta en USD, falta establecer el total_dolares para poder restarlo directamente en saldo_dolares de la misma
+                            oCxcAfectaDocumentos.TOTAL_DOLARES = CDec(Me.GridVentas.Cell(i, Me.iGyVentaImporteMonedaVenta).Text)
+                        End If
                     End If
 
                     oCxcAfectaDocumentos.TOTAL = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPagoPesos).Text)
@@ -2291,7 +2361,7 @@ Buscar:
                 Me.LblCuentaContableCuentaBancaria.Text = oBancosCXC.CUENTA_BANCARIA_PESOS
                 'me.TxtCodigoCliente.Text = oBancosCXC.CODIGO_Cliente
                 'Me.LblCliente.Text = oBancosCXC.NOMBRE_Cliente
-                Me.txtTipoCambio.Text = oBancosCXC.TIPO_DE_CAMBIO.ToString
+                Me.txtTipoCambio.Text = Format(oBancosCXC.TIPO_DE_CAMBIO, "##0.0000")
                 Me.TxtTotal.Text = FormatImporteContable(oBancosCXC.TOTAL)
 
                 Select Case oBancosCXC.ESTATUS
@@ -3145,57 +3215,13 @@ Buscar:
         Return bResultado
     End Function
 
-    Private Sub Grid1_CellChanging(ByVal Sender As Object, ByVal e As FlexCell.Grid.CellChangingEventArgs) Handles GridVentas.CellChanging
-        Try
-            Dim Columna As Integer = e.Col, Renglon As Integer = e.Row
-            Dim dPago As Double
-            If e.Col = Me.iGyVentaSeleccion And e.Row > 0 Then
-                If Me.GridVentas.Cell(Renglon, Me.iGyVentaSeleccion).Text = "1" And Me.ClickSinEjecutar = False Then
-                    If Me.cboMoneda.Text = "USD" Then
-                        If valorNumerico(Me.txtTipoCambio.Text) <= 0 Or valorNumerico(Me.txtTipoCambio.Text) > 30 Then
-                            MsgBox("Tipo de cambio incorrecto.", MsgBoxStyle.Exclamation, "Validación de tipo de cambio.")
-                            Me.txtTipoCambio.Focus()
-                            Exit Sub
-                        End If
-
-                        dPago = valorNumerico(Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldoDlls).Text)
-                        If dPago > 0 Then
-                            Me.ClickSinEjecutar = True
-                            Me.GridVentas.Cell(Renglon, Me.iGyVentaPago).Text = dPago.ToString
-                            CalculaImportesPagoUSD(Renglon)
-                            Me.ClickSinEjecutar = False
-                        End If
-                    Else
-                        dPago = valorNumerico(Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldo).Text)
-                        If dPago > 0 Then
-                            Me.ClickSinEjecutar = True
-                            Me.GridVentas.Cell(Renglon, Me.iGyVentaPago).Text = dPago.ToString
-                            CalculaImportesPagoMXN(Renglon)
-                            Me.ClickSinEjecutar = False
-                        End If
-                    End If
-
-                Else
-                    Me.BorraPago(Renglon)
-                End If
-            End If
-
-            If Me.bConsultando = False Then
-                Me.Totales()
-            End If
-
-        Catch ex As Exception
-            HandleError(Me.Name, "Grid1_CellChanging", ex)
-        End Try
-    End Sub
-
     Private Sub CalculaImporteDolares()
         Try
             Dim i As Integer, dPago As Double
             For i = 1 To Me.GridVentas.Rows - 1
                 dPago = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text)
                 If dPago > 0 Then
-                    CalculaImportesPagoUSD(i)
+                    Me.CalculaImportesPagoUSD(i)
                 End If
             Next i
         Catch ex As Exception
@@ -3216,10 +3242,10 @@ Buscar:
             dPesosNuevos = RedondearD(CDec(dPagoUSD * dTipoCambioPago), 2)
 
             If oVenta.CODIGO_MONEDA_SAT = "MXN" Then
-
                 dSaldoUSD = RedondearD(CDec(oVenta.SALDO) / dTipoCambioPago, 2) 'Es una factura en MXN, no tiene un saldo en USD, pero así lo virtualizamos
 
-                If dPesosNuevos > oVenta.SALDO Then
+                'If dPesosNuevos > oVenta.SALDO Then'Si por diferencia de decimales se pasan lo pesos a afectar, se ajustan(esto porque se esta pagando en usd una vta en mxn)
+                If dSaldoUSD = dPagoUSD Then 'Si están pagado los dólares a tpcam actual, entonces están saldando
                     dPesosNuevos = CDec(oVenta.SALDO)
                 End If
 
@@ -3227,11 +3253,13 @@ Buscar:
 
                 dImporteMonedaVenta = dPesosNuevos
                 dSaldoAnteriorMonedaVenta = CDec(oVenta.SALDO)
-                dSaldoAnteriorMonedaPago = RedondearD(CDec(oVenta.SALDO) / dTipoCambioPago, 2)
+                dSaldoAnteriorMonedaPago = dSaldoUSD
+
             Else 'USD
                 dPesosViejos = RedondearD(CDec(dPagoUSD * oVenta.TIPO_DE_CAMBIO), 2)
 
-                dSaldoUSD = RedondearD(CDec(oVenta.SALDO) / CDec(oVenta.TIPO_DE_CAMBIO), 2)
+                'dSaldoUSD = RedondearD(CDec(oVenta.SALDO) / CDec(oVenta.TIPO_DE_CAMBIO), 2)
+                dSaldoUSD = CDec(oVenta.SALDO_DOLARES) 'Ahora el saldo en usd ya no se calcula, ya esta definido en el campo, aunque falta revisar que lo afecte descuentos(y cancelacion) y devoluciones(y cancelación)
 
                 dImporteMonedaVenta = dPagoUSD
                 dSaldoAnteriorMonedaVenta = dSaldoUSD
@@ -3265,14 +3293,16 @@ Buscar:
             dTipoCambioPago = valorNumericoD(Me.txtTipoCambio.Text)
 
             If oVenta.CODIGO_MONEDA_SAT = "USD" Then
-                dSaldoUSD = RedondearD(CDec(oVenta.SALDO) / CDec(oVenta.TIPO_DE_CAMBIO), 2) 'Si bien hay un oVenta.SALDO_DOLARES, no se confia en este dato porque no se si se afecte con descuentos y otros movs
+                'dSaldoUSD = RedondearD(CDec(oVenta.SALDO) / CDec(oVenta.TIPO_DE_CAMBIO), 2) 'Si bien hay un oVenta.SALDO_DOLARES, no se confia en este dato porque no se si se afecte con descuentos y otros movs
+                dSaldoUSD = CDec(oVenta.SALDO_DOLARES) 'Ahora el saldo en usd ya no se calcula, ya esta definido en el campo, aunque falta revisar que lo afecte descuentos(y cancelacion) y devoluciones(y cancelación)
                 dSaldoMXN = RedondearD(dSaldoUSD * dTipoCambioPago, 2) 'Actualizamos el saldo en MXN a tipo de cambio actual(los pesos que nos debe ahora son otros)
                 dPagoUSD = RedondearD(dPesosNuevos / dTipoCambioPago, 2) 'Simulamos que fuimos al banco a cambiar los mxn por usd
                 dPesosViejos = RedondearD(dPagoUSD * CDec(oVenta.TIPO_DE_CAMBIO), 2) 'Esto es lo que realmente se va abonar en cxc
 
                 dImporteMonedaVenta = dPagoUSD
                 dSaldoAnteriorMonedaVenta = dSaldoUSD
-                dSaldoAnteriorMonedaPago = RedondearD(dSaldoUSD * dTipoCambioPago, 2)
+                dSaldoAnteriorMonedaPago = dSaldoMXN
+
             Else 'MXN
                 dPesosViejos = dPesosNuevos
                 dSaldoMXN = CDec(oVenta.SALDO)
@@ -3327,7 +3357,7 @@ Buscar:
                                         Exit Sub
                                     End If
 
-                                    CalculaImportesPagoUSD(Renglon)
+                                    Me.CalculaImportesPagoUSD(Renglon)
 
                                 Else 'MXN
                                     If dPago > valorNumerico(Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldo).Text) And Me.GridVentas.Locked = False Then
@@ -3338,7 +3368,7 @@ Buscar:
                                         Exit Sub
                                     End If
 
-                                    CalculaImportesPagoMXN(Renglon)
+                                    Me.CalculaImportesPagoMXN(Renglon)
 
                                 End If
 
@@ -3504,19 +3534,6 @@ Buscar:
 
         Return bResultado
     End Function
-
-    Private Sub chkVentasNoFiscales_CheckedChanged(sender As Object, e As EventArgs) Handles chkVentasNoFiscales.CheckedChanged
-        Select Case Me.chkVentasNoFiscales.Checked
-            Case True
-                'Me.chkAnticipo.Visible = True
-                Me.btnGenerarCFDIS.Visible = False
-                Me.btnVerCFDIS.Visible = False
-            Case False
-                'Me.chkAnticipo.Visible = False
-                Me.btnGenerarCFDIS.Visible = True
-                Me.btnVerCFDIS.Visible = True
-        End Select
-    End Sub
 
     Private Sub ImprimirComprobante()
         Dim StrFiltros As String = ""
