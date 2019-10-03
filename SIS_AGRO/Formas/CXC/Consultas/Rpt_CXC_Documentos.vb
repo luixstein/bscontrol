@@ -18,7 +18,7 @@ Public Class Rpt_CXC_Documentos
 #Region "Eventos"
 #Region "Eventos Genericos"
     Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCodigoCliente.KeyPress, txtCodigoVendedor.KeyPress, CboDocumentos.KeyPress, CboTipoMercado.KeyPress,
-         CboEstatus.KeyPress, dpFechaInicio.KeyPress, dpFechaFinal.KeyPress, txtCuentaBancaria.KeyPress, CboZona.KeyPress, rbtDocumentoVenta.KeyPress, rbtCobranzaAnticipo.KeyPress
+         CboEstatus.KeyPress, dpFechaInicio.KeyPress, dpFechaFinal.KeyPress, txtCuentaBancaria.KeyPress, CboZona.KeyPress, rbtDocumentoVenta.KeyPress, rbtCobranzaAnticipo.KeyPress, rbtPropietariosConAnticipos.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -348,8 +348,10 @@ Buscar:
                 oReporte = New Class_Reporte("RPT_CXC_COBRANZA_GLOBAL_PROPIETARIOS", Rpt)
             ElseIf Me.rdbDetalleBultos.Checked = True Then
                 oReporte = New Class_Reporte("RPT_CXC_DETALLE_DEPOSITOS_BULTOS", Rpt)
-            Else
+            ElseIf Me.rbtCobranzaAnticipo.Checked = True Then
                 oReporte = New Class_Reporte("RPT_CXC_COBRANZA_CON_ANTICIPOS", Rpt)
+            Else
+                oReporte = New Class_Reporte("RPT_CXC_COBRANZA_PROPIETARIOS_CON_ANTICIPOS", Rpt)
             End If
 
             If Not oReporte.RptCargado Then
@@ -378,7 +380,7 @@ Buscar:
                 Rpt.SetParameterValue("@FILTRAR_POR_FECHA_SERVIDOR", IIf(Me.rbtFechaServidor.Checked = True, "1", "0"))
                 Rpt.SetParameterValue("@CODIGO_USUARIO_GRABO", IIf(txtLEN(Me.txtCodigoUsuario.Text) = True, Me.txtCodigoUsuario.Text, 0))
                 Rpt.SetParameterValue("@FILTRAR_POR_FECHA_VENTA", IIf(Me.rbtDocumentoVenta.Checked = True, "1", "0"))
-            ElseIf Me.rbtCobranzaAnticipo.Checked = True Then
+            ElseIf Me.rbtCobranzaAnticipo.Checked = True Or Me.rbtPropietariosConAnticipos.Checked Then
                 Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.txtCodigoCliente.Text)
                 Rpt.SetParameterValue("@CODIGO_VENDEDOR", Me.txtCodigoVendedor.Text)
                 Rpt.SetParameterValue("@CODIGO_TIPO_DOCUMENTO", Me.CboDocumentos.SelectedValue.ToString)
@@ -427,7 +429,7 @@ Buscar:
             Me.gpFiltroFecha.Visible = False
             Me.chkClientesSaldoVencido.Visible = True
             Me.lblTipoCambio.Visible = False : Me.txtTipoCambio.Visible = False
-        ElseIf Me.rbtCobranzaAnticipo.Checked = True Then
+        ElseIf Me.rbtCobranzaAnticipo.Checked = True Or Me.rbtPropietariosConAnticipos.Checked = True Then
             Me.lblDisplayFechaInicio.Visible = False : Me.dpFechaInicio.Visible = False
             Me.LblDisplayFechaFinal.Visible = False : Me.dpFechaFinal.Visible = False
             Me.lblDisplayEstatus.Visible = False : Me.CboEstatus.Visible = False
@@ -456,4 +458,5 @@ Buscar:
     End Sub
 
 #End Region
+
 End Class

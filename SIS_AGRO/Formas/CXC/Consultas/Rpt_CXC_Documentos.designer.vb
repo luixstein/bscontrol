@@ -64,6 +64,7 @@ Partial Class Rpt_CXC_Documentos
         Me.LblDisplayTipoMercado = New System.Windows.Forms.Label()
         Me.CboTipoMercado = New System.Windows.Forms.ComboBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.rbtPropietariosConAnticipos = New System.Windows.Forms.RadioButton()
         Me.rbtCobranzaAnticipo = New System.Windows.Forms.RadioButton()
         Me.rdbDetalleBultos = New System.Windows.Forms.RadioButton()
         Me.RdbDetalleDepositos = New System.Windows.Forms.RadioButton()
@@ -522,6 +523,7 @@ Partial Class Rpt_CXC_Documentos
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.rbtPropietariosConAnticipos)
         Me.GroupBox2.Controls.Add(Me.rbtCobranzaAnticipo)
         Me.GroupBox2.Controls.Add(Me.rdbDetalleBultos)
         Me.GroupBox2.Controls.Add(Me.RdbDetalleDepositos)
@@ -532,10 +534,21 @@ Partial Class Rpt_CXC_Documentos
         Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox2.Size = New System.Drawing.Size(200, 241)
+        Me.GroupBox2.Size = New System.Drawing.Size(200, 259)
         Me.GroupBox2.TabIndex = 0
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Reporte"
+        '
+        'rbtPropietariosConAnticipos
+        '
+        Me.rbtPropietariosConAnticipos.AutoSize = True
+        Me.rbtPropietariosConAnticipos.Location = New System.Drawing.Point(17, 166)
+        Me.rbtPropietariosConAnticipos.Margin = New System.Windows.Forms.Padding(4)
+        Me.rbtPropietariosConAnticipos.Name = "rbtPropietariosConAnticipos"
+        Me.rbtPropietariosConAnticipos.Size = New System.Drawing.Size(156, 38)
+        Me.rbtPropietariosConAnticipos.TabIndex = 270
+        Me.rbtPropietariosConAnticipos.Text = "Est. cta. propietario " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "con anticipos"
+        Me.rbtPropietariosConAnticipos.UseVisualStyleBackColor = True
         '
         'rbtCobranzaAnticipo
         '
@@ -551,7 +564,7 @@ Partial Class Rpt_CXC_Documentos
         'rdbDetalleBultos
         '
         Me.rdbDetalleBultos.AutoSize = True
-        Me.rdbDetalleBultos.Location = New System.Drawing.Point(17, 167)
+        Me.rdbDetalleBultos.Location = New System.Drawing.Point(17, 212)
         Me.rdbDetalleBultos.Margin = New System.Windows.Forms.Padding(4)
         Me.rdbDetalleBultos.Name = "rdbDetalleBultos"
         Me.rdbDetalleBultos.Size = New System.Drawing.Size(122, 21)
@@ -679,4 +692,5 @@ Partial Class Rpt_CXC_Documentos
     Friend WithEvents rbtCobranzaAnticipo As System.Windows.Forms.RadioButton
     Friend WithEvents lblTipoCambio As System.Windows.Forms.Label
     Friend WithEvents txtTipoCambio As System.Windows.Forms.TextBox
+    Friend WithEvents rbtPropietariosConAnticipos As System.Windows.Forms.RadioButton
 End Class
