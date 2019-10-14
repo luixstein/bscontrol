@@ -1581,4 +1581,12 @@ Public Class AppMenu
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
     End Sub
+
+    Private Sub TipoCambioDiaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TipoCambioDiaToolStripMenuItem.Click
+        Dim Child As New TipoCambioDia
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
 End Class

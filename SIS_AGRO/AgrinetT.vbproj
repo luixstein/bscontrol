@@ -179,6 +179,7 @@
     <Compile Include="Clases\Catalogos\Class_Catalogos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatArticulos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatClientesCuentasBancarias.vb" />
+    <Compile Include="Clases\Catalogos\Class_TipoCambioDia.vb" />
     <Compile Include="Clases\Catalogos\Class_CatFormulas.vb" />
     <Compile Include="Clases\Catalogos\Class_CatFormulas_Detalle.vb" />
     <Compile Include="Clases\Catalogos\Class_CatProductos.vb" />
@@ -1125,6 +1126,12 @@
       <DependentUpon>SeleccionEmpresa.vb</DependentUpon>
     </Compile>
     <Compile Include="Formas\Sistema\SeleccionEmpresa.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Utilerias\TipoCambioDia.Designer.vb">
+      <DependentUpon>TipoCambioDia.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Utilerias\TipoCambioDia.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Ventas\Consultas\Rpt_Ventas_Global.designer.vb">
@@ -2208,6 +2215,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Sistema\Servidor.resx">
       <DependentUpon>Servidor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Utilerias\TipoCambioDia.resx">
+      <DependentUpon>TipoCambioDia.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Utilerias\UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo.resx">
       <DependentUpon>UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo.vb</DependentUpon>
