@@ -362,9 +362,28 @@ Buscar:
     End Sub
 
     Private Sub cboMoneda_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboMoneda.SelectedIndexChanged
-        If Me.cboMoneda.SelectedIndex = 1 Then
-            Me.txtTipoCambio.Enabled = True
-            Me.gbUSD.Visible = True
+        If Me.cboMoneda.SelectedIndex = 1 Then 'USD
+            If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = False Then
+                Me.txtTipoCambio.Enabled = True
+                Me.gbUSD.Visible = True
+            Else
+                Me.txtTipoCambio.Enabled = False
+
+                Dim oTipoCambio As New Class_TipoCambioDia
+                oTipoCambio.FECHA_TIPO_CAMBIO = Format(Date.Now, "yyyy-dd-MM")
+Consultar:
+                If oTipoCambio.Consultar() = True Then
+                    Me.txtTipoCambio.Text = oTipoCambio.TIPO_CAMBIO.ToString
+
+                Else
+                    If MsgBox("No se ha capturado el tipo de cambio de hoy. ¿Desea capturarlo?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Tipo de cambio del día") = MsgBoxResult.Yes Then
+                        Dim oTipoCambioForma As New TipoCambioDia
+                        oTipoCambioForma.ShowDialog()
+                        GoTo Consultar
+                    End If
+
+                End If
+            End If
         Else
             Me.txtTipoCambio.Enabled = False
             Me.gbUSD.Visible = False

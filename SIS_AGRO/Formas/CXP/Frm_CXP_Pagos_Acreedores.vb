@@ -2117,7 +2117,7 @@ buscar_acreedor:
                     Me.TxtCuentaBancaria.Enabled = True
                     'Me.ckbDolares.Enabled = False
                     Me.cboMoneda.Enabled = False
-                    Me.txtTipoCambio.Enabled = True
+                    'Me.txtTipoCambio.Enabled = True
                     Me.txtImporteDolares.Enabled = False
                     Me.CboFacturasRecibidas.Enabled = True
                     Me.lblFacturasRecibidas.Enabled = True
@@ -2610,11 +2610,31 @@ BuscaEmbarque:
 
     Private Sub ObtieneTipoCambioDia()
         Try
-            Dim oTipoCambio As New Class_CatTiposCambio(Me.dtFecha.Value)
-            If oTipoCambio.Existe = True Then
-                Me.txtTipoCambio.Text = Format(oTipoCambio.TIPO_DE_CAMBIO, "###,##0.0000")
+            If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = False Then
+                Dim oTipoCambio As New Class_CatTiposCambio(Me.dtFecha.Value)
+                If oTipoCambio.Existe = True Then
+                    Me.txtTipoCambio.Text = Format(oTipoCambio.TIPO_DE_CAMBIO, "###,##0.0000")
+                End If
+                oTipoCambio = Nothing
+            Else
+                Me.txtTipoCambio.Enabled = False
+                Dim oTipoCambio As New Class_TipoCambioDia
+                oTipoCambio.FECHA_TIPO_CAMBIO = Format(Me.dtFecha.Value, "yyyy-dd-mm") 'Format(Date.Now, "yyyy-dd-MM")
+Consultar:
+                If oTipoCambio.Consultar() = True Then
+                    Me.txtTipoCambio.Text = oTipoCambio.TIPO_CAMBIO.ToString
+
+                Else
+                    If MsgBox("No se ha capturado el tipo de cambio de hoy. ¿Desea capturarlo?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Tipo de cambio del día") = MsgBoxResult.Yes Then
+                        Dim oTipoCambioForma As New TipoCambioDia
+                        oTipoCambioForma.ShowDialog()
+                        GoTo Consultar
+                    End If
+
+                End If
+
             End If
-            oTipoCambio = Nothing
+
         Catch ex As Exception
             HandleError(Me.Name, "ObtieneTipoCambioDia", ex)
         End Try

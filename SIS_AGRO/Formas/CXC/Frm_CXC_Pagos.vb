@@ -394,11 +394,36 @@ Buscar:
     Private Sub cboMoneda_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboMoneda.SelectedIndexChanged
         Try
             If Me.cboMoneda.Text = "USD" Then
-                Me.txtTipoCambio.Enabled = True
-                'Me.txtTotalDolares.Enabled = True
-                Me.lblTipoCambio.Enabled = True
-                ' Me.lblTotalDolares.Enabled = True
-                Me.txtTipoCambio.Focus()
+                If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = False Then
+                    Me.txtTipoCambio.Enabled = True
+                    Me.lblTipoCambio.Enabled = True
+                    Me.txtTipoCambio.Focus()
+
+                Else
+                    Me.txtTipoCambio.Enabled = False
+                    Me.lblTipoCambio.Enabled = True
+
+                    Dim oTipoCambio As New Class_TipoCambioDia
+                    oTipoCambio.FECHA_TIPO_CAMBIO = Format(Date.Now, "yyyy-dd-MM")
+Consultar:
+                    If oTipoCambio.Consultar() = True Then
+                        Me.txtTipoCambio.Text = oTipoCambio.TIPO_CAMBIO.ToString
+
+                    Else
+                        If MsgBox("No se ha capturado el tipo de cambio de hoy. ¿Desea capturarlo?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Tipo de cambio del día") = MsgBoxResult.Yes Then
+                            Dim oTipoCambioForma As New TipoCambioDia
+                            oTipoCambioForma.ShowDialog()
+                            GoTo Consultar
+                        End If
+
+                    End If
+                End If
+
+                'Me.txtTipoCambio.Enabled = True
+                ''Me.txtTotalDolares.Enabled = True
+                'Me.lblTipoCambio.Enabled = True
+                '' Me.lblTotalDolares.Enabled = True
+                'Me.txtTipoCambio.Focus()
 
                 'Me.Grid.Column(Me.iGyFolio).Width = 50
                 'Me.Grid.Column(Me.iGyFecha).Width = 60
