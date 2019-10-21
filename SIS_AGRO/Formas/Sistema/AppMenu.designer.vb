@@ -226,11 +226,11 @@ Partial Public Class AppMenu
         Me.CostoCorteAcarreoEmpaqueYEmbarqueToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.pbLogo = New System.Windows.Forms.PictureBox()
         Me.AcuicolaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DivisionesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ParametrosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.RelacionParametrosDocumentosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.pbLogo = New System.Windows.Forms.PictureBox()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -1542,19 +1542,6 @@ Partial Public Class AppMenu
         Me.MenuSalir2.Size = New System.Drawing.Size(50, 24)
         Me.MenuSalir2.Text = "&Salir"
         '
-        'pbLogo
-        '
-        Me.pbLogo.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.pbLogo.Enabled = False
-        Me.pbLogo.Location = New System.Drawing.Point(700, 74)
-        Me.pbLogo.Margin = New System.Windows.Forms.Padding(4)
-        Me.pbLogo.Name = "pbLogo"
-        Me.pbLogo.Size = New System.Drawing.Size(573, 238)
-        Me.pbLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.pbLogo.TabIndex = 17
-        Me.pbLogo.TabStop = False
-        Me.pbLogo.Visible = False
-        '
         'AcuicolaToolStripMenuItem
         '
         Me.AcuicolaToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DivisionesToolStripMenuItem, Me.ParametrosToolStripMenuItem, Me.RelacionParametrosDocumentosToolStripMenuItem})
@@ -1579,6 +1566,19 @@ Partial Public Class AppMenu
         Me.RelacionParametrosDocumentosToolStripMenuItem.Name = "RelacionParametrosDocumentosToolStripMenuItem"
         Me.RelacionParametrosDocumentosToolStripMenuItem.Size = New System.Drawing.Size(307, 26)
         Me.RelacionParametrosDocumentosToolStripMenuItem.Text = "Relacion parametros documentos"
+        '
+        'pbLogo
+        '
+        Me.pbLogo.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.pbLogo.Enabled = False
+        Me.pbLogo.Location = New System.Drawing.Point(700, 74)
+        Me.pbLogo.Margin = New System.Windows.Forms.Padding(4)
+        Me.pbLogo.Name = "pbLogo"
+        Me.pbLogo.Size = New System.Drawing.Size(573, 238)
+        Me.pbLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbLogo.TabIndex = 17
+        Me.pbLogo.TabStop = False
+        Me.pbLogo.Visible = False
         '
         'AppMenu
         '

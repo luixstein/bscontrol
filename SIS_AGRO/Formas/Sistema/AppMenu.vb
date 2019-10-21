@@ -1581,4 +1581,20 @@ Public Class AppMenu
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
     End Sub
+
+    Private Sub DivisionesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DivisionesToolStripMenuItem.Click
+        Dim Child As New Catalogo_Divisiones_Acuicola
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ParametrosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ParametrosToolStripMenuItem.Click
+        Dim Child As New Catalogo_Parametros_Acuicola
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
 End Class

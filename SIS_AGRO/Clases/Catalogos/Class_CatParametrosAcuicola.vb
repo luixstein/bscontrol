@@ -341,7 +341,7 @@ Public Class Class_CatParametrosAcuicola
     Public Function CodigoSiguiente() As String
         Dim Resultado As Integer
         Try
-            Dim sql As New Class_find("SELECT MAX(CODIGO_PARAMETRO) FROM CAT_PARAMETROS_ACUICOLA")
+            Dim sql As New Class_find("SELECT ISNULL(MAX(CODIGO_PARAMETRO),0) FROM CAT_PARAMETROS_ACUICOLA")
             Resultado = CType(sql.Result1, Integer) + 1
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "CodigoSiguiente", ex)
