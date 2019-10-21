@@ -179,6 +179,9 @@
     <Compile Include="Clases\Catalogos\Class_Catalogos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatArticulos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatClientesCuentasBancarias.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatRelParametrosAcuicolaDocumentos.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatDivisionesAcuicola.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatParametrosAcuicola.vb" />
     <Compile Include="Clases\Catalogos\Class_CatFormulas.vb" />
     <Compile Include="Clases\Catalogos\Class_CatFormulas_Detalle.vb" />
     <Compile Include="Clases\Catalogos\Class_CatProductos.vb" />
@@ -407,6 +410,12 @@
     <Compile Include="Formas\Catalogos\Catalogo_ClientesCuentasBancarias.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Divisiones_Acuicola.Designer.vb">
+      <DependentUpon>Catalogo_Divisiones_Acuicola.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Divisiones_Acuicola.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\Catalogos\Catalogo_Conceptos_Pagos.Designer.vb">
       <DependentUpon>Catalogo_Conceptos_Pagos.vb</DependentUpon>
     </Compile>
@@ -615,6 +624,12 @@
       <DependentUpon>Cat_Nomina_UnidadMedicaFamiliar.vb</DependentUpon>
     </Compile>
     <Compile Include="Formas\Catalogos\Nomina\Cat_Nomina_UnidadMedicaFamiliar.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogo_Conceptos.Designer.vb">
+      <DependentUpon>Catalogo_Conceptos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogo_Conceptos.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\CentrosCostos\FrmCostosEdicion.Designer.vb">
@@ -1666,6 +1681,9 @@
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_ClientesCuentasBancarias.resx">
       <DependentUpon>Catalogo_ClientesCuentasBancarias.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Divisiones_Acuicola.resx">
+      <DependentUpon>Catalogo_Divisiones_Acuicola.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_Conceptos_Pagos.resx">
       <DependentUpon>Catalogo_Conceptos_Pagos.vb</DependentUpon>
     </EmbeddedResource>
@@ -1840,6 +1858,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Nomina\Cat_Nomina_UnidadMedicaFamiliar.resx">
       <DependentUpon>Cat_Nomina_UnidadMedicaFamiliar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogo_Conceptos.resx">
+      <DependentUpon>Catalogo_Conceptos.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\CentrosCostos\FrmCostosEdicion.resx">
       <DependentUpon>FrmCostosEdicion.vb</DependentUpon>
