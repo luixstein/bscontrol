@@ -232,7 +232,7 @@ Public Class Class_CatParametrosAcuicola
 
     Public Overrides Function Consultar() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand("Select * from Cat_Parametros_Acuicola Where Codigo_Parametros='" & Replace(Me._Codigo_Parametro, "'", "''") & "'", Me._Conexion)
+        Dim cmd As New SqlCommand("Select * from Cat_Parametros_Acuicola Where Codigo_Parametro='" & Replace(Me._Codigo_Parametro, "'", "''") & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -244,6 +244,8 @@ Public Class Class_CatParametrosAcuicola
                 If dReader.Read Then
                     Me._Codigo_Parametro = "" & dReader("CODIGO_PARAMETRO").ToString
                     Me._Nombre_Parametro = Trim("" & dReader("NOMBRE_PARAMETRO").ToString)
+                    Me._Tipo_dato = "" & dReader("TIPO_DATO")
+                    Me._Tipo_Informacion = "" & dReader("TIPO_INFORMACION")
                     Me.Estatus = "" & dReader("ESTATUS").ToString
                     bResultado = True
                 End If

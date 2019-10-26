@@ -173,6 +173,8 @@ Public Class Catalogo_Parametros_Acuicola
 
                     Me.TxtCodigo.Enabled = False
                     Me.TxtNombre.Enabled = True
+                    Me.cboTipoDato.Enabled = True
+                    Me.cboTipoInfo.Enabled = True
                     Me.CboEstatus.Enabled = False
 
                     Me.InicializaElemento()
@@ -189,6 +191,8 @@ Public Class Catalogo_Parametros_Acuicola
 
                     Me.TxtCodigo.Enabled = False
                     Me.TxtNombre.Enabled = True
+                    Me.cboTipoDato.Enabled = True
+                    Me.cboTipoInfo.Enabled = True
                     Me.CboEstatus.Enabled = True
                     Me.TxtNombre.Focus()
 
@@ -211,6 +215,8 @@ Public Class Catalogo_Parametros_Acuicola
     Private Sub InicializaElemento()
         Me.TxtCodigo.Text = ""
         Me.TxtNombre.Text = ""
+        Me.cboTipoDato.SelectedIndex = 0
+        Me.cboTipoInfo.SelectedIndex = 0
         Me.CboEstatus.SelectedIndex = 0
     End Sub
 
@@ -233,6 +239,19 @@ Public Class Catalogo_Parametros_Acuicola
                 With Me.oParametro
                     Me.TxtCodigo.Text = .Codigo_Parametro.ToString
                     Me.TxtNombre.Text = .Nombre_Parametro.ToString
+
+                    If .Tipo_Dato = "T" Then
+                        Me.cboTipoDato.SelectedIndex = 0
+                    Else
+                        Me.cboTipoDato.SelectedIndex = 1
+                    End If
+
+                    If .Tipo_Informacion = "U" Then
+                        Me.cboTipoInfo.SelectedIndex = 0
+                    Else
+                        Me.cboTipoInfo.SelectedIndex = 1
+                    End If
+
                     If .Estatus = "A" Then
                         Me.CboEstatus.SelectedIndex = 0
                     Else
@@ -253,6 +272,8 @@ Public Class Catalogo_Parametros_Acuicola
                     With Me.oParametro
                         .Codigo_Parametro = Me.TxtCodigo.Text
                         .Nombre_Parametro = Me.TxtNombre.Text
+                        .Tipo_Dato = Strings.Left(Me.cboTipoDato.Text, 1)
+                        .Tipo_Informacion = Strings.Left(Me.cboTipoInfo.Text, 1)
                         .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         Select Case Me.Estado
                             Case enumEstados.NUEVO

@@ -38,6 +38,8 @@ Partial Class Catalogo_Parametros_Acuicola
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.lblTipoInformacion = New System.Windows.Forms.Label()
+        Me.lblTipoDato = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.LblNombreConcepto = New System.Windows.Forms.Label()
         Me.TxtNombre = New System.Windows.Forms.TextBox()
@@ -46,6 +48,8 @@ Partial Class Catalogo_Parametros_Acuicola
         Me.LblCodigo = New System.Windows.Forms.Label()
         Me.TxtCodigo = New System.Windows.Forms.TextBox()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
+        Me.cboTipoInfo = New System.Windows.Forms.ComboBox()
+        Me.cboTipoDato = New System.Windows.Forms.ComboBox()
         Me.tsMenu.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -175,6 +179,10 @@ Partial Class Catalogo_Parametros_Acuicola
         '
         'gBoxInformacion
         '
+        Me.gBoxInformacion.Controls.Add(Me.cboTipoDato)
+        Me.gBoxInformacion.Controls.Add(Me.cboTipoInfo)
+        Me.gBoxInformacion.Controls.Add(Me.lblTipoInformacion)
+        Me.gBoxInformacion.Controls.Add(Me.lblTipoDato)
         Me.gBoxInformacion.Controls.Add(Me.Label2)
         Me.gBoxInformacion.Controls.Add(Me.LblNombreConcepto)
         Me.gBoxInformacion.Controls.Add(Me.TxtNombre)
@@ -190,6 +198,26 @@ Partial Class Catalogo_Parametros_Acuicola
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
+        '
+        'lblTipoInformacion
+        '
+        Me.lblTipoInformacion.AutoSize = True
+        Me.lblTipoInformacion.Location = New System.Drawing.Point(8, 116)
+        Me.lblTipoInformacion.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblTipoInformacion.Name = "lblTipoInformacion"
+        Me.lblTipoInformacion.Size = New System.Drawing.Size(117, 17)
+        Me.lblTipoInformacion.TabIndex = 93
+        Me.lblTipoInformacion.Text = "Tipo información:"
+        '
+        'lblTipoDato
+        '
+        Me.lblTipoDato.AutoSize = True
+        Me.lblTipoDato.Location = New System.Drawing.Point(8, 86)
+        Me.lblTipoDato.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblTipoDato.Name = "lblTipoDato"
+        Me.lblTipoDato.Size = New System.Drawing.Size(72, 17)
+        Me.lblTipoDato.TabIndex = 92
+        Me.lblTipoDato.Text = "Tipo dato:"
         '
         'Label2
         '
@@ -212,17 +240,17 @@ Partial Class Catalogo_Parametros_Acuicola
         '
         'TxtNombre
         '
-        Me.TxtNombre.Location = New System.Drawing.Point(103, 50)
+        Me.TxtNombre.Location = New System.Drawing.Point(133, 53)
         Me.TxtNombre.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNombre.MaxLength = 50
         Me.TxtNombre.Name = "TxtNombre"
-        Me.TxtNombre.Size = New System.Drawing.Size(301, 22)
+        Me.TxtNombre.Size = New System.Drawing.Size(271, 22)
         Me.TxtNombre.TabIndex = 1
         '
         'LblEstatus
         '
         Me.LblEstatus.AutoSize = True
-        Me.LblEstatus.Location = New System.Drawing.Point(8, 91)
+        Me.LblEstatus.Location = New System.Drawing.Point(8, 159)
         Me.LblEstatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblEstatus.Name = "LblEstatus"
         Me.LblEstatus.Size = New System.Drawing.Size(63, 17)
@@ -234,7 +262,7 @@ Partial Class Catalogo_Parametros_Acuicola
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
-        Me.CboEstatus.Location = New System.Drawing.Point(101, 89)
+        Me.CboEstatus.Location = New System.Drawing.Point(133, 156)
         Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
@@ -253,7 +281,7 @@ Partial Class Catalogo_Parametros_Acuicola
         '
         'TxtCodigo
         '
-        Me.TxtCodigo.Location = New System.Drawing.Point(101, 18)
+        Me.TxtCodigo.Location = New System.Drawing.Point(133, 19)
         Me.TxtCodigo.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigo.MaxLength = 2
         Me.TxtCodigo.Name = "TxtCodigo"
@@ -263,6 +291,30 @@ Partial Class Catalogo_Parametros_Acuicola
         'ErrorProvider
         '
         Me.ErrorProvider.ContainerControl = Me
+        '
+        'cboTipoInfo
+        '
+        Me.cboTipoInfo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboTipoInfo.FormattingEnabled = True
+        Me.cboTipoInfo.Items.AddRange(New Object() {"UNICO", "DETALLE"})
+        Me.cboTipoInfo.Location = New System.Drawing.Point(133, 113)
+        Me.cboTipoInfo.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboTipoInfo.MaxLength = 1
+        Me.cboTipoInfo.Name = "cboTipoInfo"
+        Me.cboTipoInfo.Size = New System.Drawing.Size(96, 24)
+        Me.cboTipoInfo.TabIndex = 96
+        '
+        'cboTipoDato
+        '
+        Me.cboTipoDato.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboTipoDato.FormattingEnabled = True
+        Me.cboTipoDato.Items.AddRange(New Object() {"TEXTO", "NUMERICO"})
+        Me.cboTipoDato.Location = New System.Drawing.Point(133, 83)
+        Me.cboTipoDato.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboTipoDato.MaxLength = 1
+        Me.cboTipoDato.Name = "cboTipoDato"
+        Me.cboTipoDato.Size = New System.Drawing.Size(96, 24)
+        Me.cboTipoDato.TabIndex = 97
         '
         'Catalogo_Parametros_Acuicola
         '
@@ -315,4 +367,8 @@ Partial Class Catalogo_Parametros_Acuicola
     Friend WithEvents TxtCodigo As System.Windows.Forms.TextBox
     Friend WithEvents ErrorProvider As System.Windows.Forms.ErrorProvider
     Friend WithEvents Grid As System.Windows.Forms.DataGridView
+    Friend WithEvents lblTipoInformacion As System.Windows.Forms.Label
+    Friend WithEvents lblTipoDato As System.Windows.Forms.Label
+    Friend WithEvents cboTipoDato As System.Windows.Forms.ComboBox
+    Friend WithEvents cboTipoInfo As System.Windows.Forms.ComboBox
 End Class
