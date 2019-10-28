@@ -1597,4 +1597,12 @@ Public Class AppMenu
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
     End Sub
+
+    Private Sub RelacionParametrosDocumentosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RelacionParametrosDocumentosToolStripMenuItem.Click
+        Dim Child As New Catalogo_Relacion_Parametros_Acuicola_Documentos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
 End Class

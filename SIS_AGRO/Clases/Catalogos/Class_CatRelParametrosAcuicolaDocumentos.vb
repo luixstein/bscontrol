@@ -206,9 +206,37 @@ Public Class Class_CatRelParametrosAcuicolaDocumentos
         Return bResultado
     End Function
 
+    Public Function Eliminar() As Boolean
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_CAT_REL_PARAMETROS_ACUICOLA_DOCUMENTOS_ELIMINA"
+
+            sqlParametro = .Parameters.Add("@CODIGO_TIPO_DOCUMENTO", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._Codigo_Tipo_Documento
+            sqlParametro = .Parameters.Add("@CODIGO_PARAMETRO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Parametro)
+            sqlParametro = .Parameters.Add("@POSICION", SqlDbType.SmallInt) : sqlParametro.Value = Me._Posicion
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, "Eliminar", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
+    End Function
+
     Public Overrides Function Consultar() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand("Select * from Cat_Rel_Parametros_Acuicola_Documentos Where Codigo_Tipo_Documento='" & Replace(Me._Codigo_Tipo_Documento, "'", "''") & "'", Me._Conexion)
+        Dim cmd As New SqlCommand("Select CODIGO_TIPO_DOCUMENTO from Cat_Rel_Parametros_Acuicola_Documentos Where Codigo_Tipo_Documento='" & Replace(Me._Codigo_Tipo_Documento, "'", "''") & "' GROUP BY CODIGO_TIPO_DOCUMENTO", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -219,8 +247,8 @@ Public Class Class_CatRelParametrosAcuicolaDocumentos
 
                 If dReader.Read Then
                     Me._Codigo_Tipo_Documento = "" & dReader("CODIGO_TIPO_DOCUMENTO").ToString
-                    Me._Codigo_Parametro = "" & dReader("CODIGO_PARAMETRO").ToString
-                    Me._Posicion = dReader("POSICION")
+                    'Me._Codigo_Parametro = "" & dReader("CODIGO_PARAMETRO").ToString
+                    'Me._Posicion = dReader("POSICION")
                     bResultado = True
                 End If
                 dReader.Close()
@@ -232,6 +260,21 @@ Public Class Class_CatRelParametrosAcuicolaDocumentos
             End Try
         End With
         Return bResultado
+    End Function
+
+    Public Function ObtenerDetalle(ByVal sCodigoTipoDocumento As String) As System.Data.DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String
+        sSQL = "SELECT R.POSICION,R.CODIGO_PARAMETRO,P.NOMBRE_PARAMETRO FROM CAT_REL_PARAMETROS_ACUICOLA_DOCUMENTOS R " & _
+        "INNER JOIN CAT_PARAMETROS_ACUICOLA P ON(R.CODIGO_PARAMETRO=P.CODIGO_PARAMETRO) WHERE R.CODIGO_TIPO_DOCUMENTO = '" & sCodigoTipoDocumento & "' ORDER BY R.POSICION "
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtenerDetalle", ex)
+        End Try
+        Return dTabla
     End Function
 
     Public Overrides Function ObtenerElementos() As System.Data.DataTable
@@ -263,7 +306,9 @@ Public Class Class_CatRelParametrosAcuicolaDocumentos
 
     Public Function ObtenerElementosFiltro(ByVal Filtro As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("SELECT CODIGO_TIPO_DOCUMENTO, CODIGO_PARAMETRO FROM CAT_REL_PARAMETROS_ACUICOLA_DOCUMENTOS WHERE CODIGO_TIPO_DOCUMENTO LIKE '" & Filtro.ToString & "%' ORDER BY CODIGO_TIPO_DOCUMENTO", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT R.CODIGO_TIPO_DOCUMENTO,MAX(D.NOMBRE_TIPO_DOCUMENTO) AS NOMBRE_TIPO_DOCUMENTO FROM CAT_REL_PARAMETROS_ACUICOLA_DOCUMENTOS R " & _
+                                    "INNER JOIN SIS_TIPOS_DOCUMENTOS D ON(R.CODIGO_TIPO_DOCUMENTO=D.CODIGO_TIPO_DOCUMENTO) " & _
+                                    "WHERE R.CODIGO_TIPO_DOCUMENTO LIKE '" & Filtro.ToString & "%' GROUP BY R.CODIGO_TIPO_DOCUMENTO ORDER BY R.CODIGO_TIPO_DOCUMENTO", Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
@@ -272,6 +317,46 @@ Public Class Class_CatRelParametrosAcuicolaDocumentos
             da.Dispose()
         End Try
         Return dTable
+    End Function
+
+    Public Function BusquedaVisual_Docs_Acuicola_PorDescripcion() As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de documentos por nombre."
+        f.sCampo = "NOMBRE_TIPO_DOCUMENTO"
+        f.sOrder = "NOMBRE_TIPO_DOCUMENTO"
+        f.sTable = "SIS_TIPOS_DOCUMENTOS"
+        f.sQl = "SELECT CODIGO_TIPO_DOCUMENTO,NOMBRE_TIPO_DOCUMENTO FROM SIS_TIPOS_DOCUMENTOS WHERE 1=1 AND CODIGO_MODULO = 'ACU' AND "
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_Docs_Acuicola_PorDescripcion", ex)
+        End Try
+        Return Resultado
+    End Function
+
+    Public Function BusquedaVisual_Docs_Acuicola_Porcodigo() As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de documentos por código."
+        f.sCampo = "CODIGO_TIPO_DOCUMENTO"
+        f.sOrder = "NOMBRE_TIPO_DOCUMENTO"
+        f.sTable = "SIS_TIPOS_DOCUMENTOS"
+        f.sQl = "SELECT CODIGO_TIPO_DOCUMENTO,NOMBRE_TIPO_DOCUMENTO FROM SIS_TIPOS_DOCUMENTOS WHERE 1=1 AND CODIGO_MODULO = 'ACU' AND "
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_Docs_Acuicola_Porcodigo", ex)
+        End Try
+        Return Resultado
     End Function
 
     Public Overrides Function BusquedaVisual_PorCodigo() As String

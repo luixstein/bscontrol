@@ -92,6 +92,10 @@ Partial Public Class AppMenu
         Me.PropietariosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PlazasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DocumentosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AcuicolaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DivisionesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ParametrosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.RelacionParametrosDocumentosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuContabilidad = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuContabilidadMovimientos = New System.Windows.Forms.ToolStripMenuItem()
         Me.CapturaDePolizasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -226,10 +230,6 @@ Partial Public Class AppMenu
         Me.CostoCorteAcarreoEmpaqueYEmbarqueToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AcuicolaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.DivisionesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ParametrosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.RelacionParametrosDocumentosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
@@ -680,6 +680,31 @@ Partial Public Class AppMenu
         Me.DocumentosToolStripMenuItem.Name = "DocumentosToolStripMenuItem"
         Me.DocumentosToolStripMenuItem.Size = New System.Drawing.Size(214, 26)
         Me.DocumentosToolStripMenuItem.Text = "Documentos"
+        '
+        'AcuicolaToolStripMenuItem
+        '
+        Me.AcuicolaToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DivisionesToolStripMenuItem, Me.ParametrosToolStripMenuItem, Me.RelacionParametrosDocumentosToolStripMenuItem})
+        Me.AcuicolaToolStripMenuItem.Name = "AcuicolaToolStripMenuItem"
+        Me.AcuicolaToolStripMenuItem.Size = New System.Drawing.Size(214, 26)
+        Me.AcuicolaToolStripMenuItem.Text = "Acuicola"
+        '
+        'DivisionesToolStripMenuItem
+        '
+        Me.DivisionesToolStripMenuItem.Name = "DivisionesToolStripMenuItem"
+        Me.DivisionesToolStripMenuItem.Size = New System.Drawing.Size(307, 26)
+        Me.DivisionesToolStripMenuItem.Text = "Divisiones"
+        '
+        'ParametrosToolStripMenuItem
+        '
+        Me.ParametrosToolStripMenuItem.Name = "ParametrosToolStripMenuItem"
+        Me.ParametrosToolStripMenuItem.Size = New System.Drawing.Size(307, 26)
+        Me.ParametrosToolStripMenuItem.Text = "Parametros"
+        '
+        'RelacionParametrosDocumentosToolStripMenuItem
+        '
+        Me.RelacionParametrosDocumentosToolStripMenuItem.Name = "RelacionParametrosDocumentosToolStripMenuItem"
+        Me.RelacionParametrosDocumentosToolStripMenuItem.Size = New System.Drawing.Size(307, 26)
+        Me.RelacionParametrosDocumentosToolStripMenuItem.Text = "Relacion parametros documentos"
         '
         'MenuContabilidad
         '
@@ -1541,31 +1566,6 @@ Partial Public Class AppMenu
         Me.MenuSalir2.Name = "MenuSalir2"
         Me.MenuSalir2.Size = New System.Drawing.Size(50, 24)
         Me.MenuSalir2.Text = "&Salir"
-        '
-        'AcuicolaToolStripMenuItem
-        '
-        Me.AcuicolaToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DivisionesToolStripMenuItem, Me.ParametrosToolStripMenuItem, Me.RelacionParametrosDocumentosToolStripMenuItem})
-        Me.AcuicolaToolStripMenuItem.Name = "AcuicolaToolStripMenuItem"
-        Me.AcuicolaToolStripMenuItem.Size = New System.Drawing.Size(214, 26)
-        Me.AcuicolaToolStripMenuItem.Text = "Acuicola"
-        '
-        'DivisionesToolStripMenuItem
-        '
-        Me.DivisionesToolStripMenuItem.Name = "DivisionesToolStripMenuItem"
-        Me.DivisionesToolStripMenuItem.Size = New System.Drawing.Size(307, 26)
-        Me.DivisionesToolStripMenuItem.Text = "Divisiones"
-        '
-        'ParametrosToolStripMenuItem
-        '
-        Me.ParametrosToolStripMenuItem.Name = "ParametrosToolStripMenuItem"
-        Me.ParametrosToolStripMenuItem.Size = New System.Drawing.Size(307, 26)
-        Me.ParametrosToolStripMenuItem.Text = "Parametros"
-        '
-        'RelacionParametrosDocumentosToolStripMenuItem
-        '
-        Me.RelacionParametrosDocumentosToolStripMenuItem.Name = "RelacionParametrosDocumentosToolStripMenuItem"
-        Me.RelacionParametrosDocumentosToolStripMenuItem.Size = New System.Drawing.Size(307, 26)
-        Me.RelacionParametrosDocumentosToolStripMenuItem.Text = "Relacion parametros documentos"
         '
         'pbLogo
         '
