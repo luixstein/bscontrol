@@ -231,6 +231,7 @@ Partial Public Class AppMenu
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
+        Me.ParametrosDetalleToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -683,7 +684,7 @@ Partial Public Class AppMenu
         '
         'AcuicolaToolStripMenuItem
         '
-        Me.AcuicolaToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DivisionesToolStripMenuItem, Me.ParametrosToolStripMenuItem, Me.RelacionParametrosDocumentosToolStripMenuItem})
+        Me.AcuicolaToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DivisionesToolStripMenuItem, Me.ParametrosToolStripMenuItem, Me.ParametrosDetalleToolStripMenuItem, Me.RelacionParametrosDocumentosToolStripMenuItem})
         Me.AcuicolaToolStripMenuItem.Name = "AcuicolaToolStripMenuItem"
         Me.AcuicolaToolStripMenuItem.Size = New System.Drawing.Size(214, 26)
         Me.AcuicolaToolStripMenuItem.Text = "Acuicola"
@@ -1580,6 +1581,12 @@ Partial Public Class AppMenu
         Me.pbLogo.TabStop = False
         Me.pbLogo.Visible = False
         '
+        'ParametrosDetalleToolStripMenuItem
+        '
+        Me.ParametrosDetalleToolStripMenuItem.Name = "ParametrosDetalleToolStripMenuItem"
+        Me.ParametrosDetalleToolStripMenuItem.Size = New System.Drawing.Size(307, 26)
+        Me.ParametrosDetalleToolStripMenuItem.Text = "Parametros detalle"
+        '
         'AppMenu
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -1817,4 +1824,5 @@ Partial Public Class AppMenu
     Friend WithEvents DivisionesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ParametrosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RelacionParametrosDocumentosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ParametrosDetalleToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

@@ -162,7 +162,7 @@ Public Class Catalogo_Relacion_Parametros_Acuicola_Documentos
 
 #Region "Métodos y procedimientos"
     Private Sub Refrescar()
-        'Me.DesplegarElementos()
+        Me.DesplegarElementos()
     End Sub
 
     Private Sub Cambia_Estado()

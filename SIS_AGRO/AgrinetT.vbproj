@@ -179,6 +179,7 @@
     <Compile Include="Clases\Catalogos\Class_Catalogos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatArticulos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatClientesCuentasBancarias.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatParametrosAcuicolaDetalle.vb" />
     <Compile Include="Clases\Catalogos\Class_CatDivisionesAcuicola.vb" />
     <Compile Include="Clases\Catalogos\Class_CatFormulas.vb" />
     <Compile Include="Clases\Catalogos\Class_CatFormulas_Detalle.vb" />
@@ -408,6 +409,12 @@
       <DependentUpon>Catalogo_ClientesCuentasBancarias.vb</DependentUpon>
     </Compile>
     <Compile Include="Formas\Catalogos\Catalogo_ClientesCuentasBancarias.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Parametros_Acuicola_Detalle.Designer.vb">
+      <DependentUpon>Catalogo_Parametros_Acuicola_Detalle.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Parametros_Acuicola_Detalle.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Catalogos\Catalogo_Relacion_Parametros_Acuicola_Documentos.Designer.vb">
@@ -1686,6 +1693,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_ClientesCuentasBancarias.resx">
       <DependentUpon>Catalogo_ClientesCuentasBancarias.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Parametros_Acuicola_Detalle.resx">
+      <DependentUpon>Catalogo_Parametros_Acuicola_Detalle.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_Relacion_Parametros_Acuicola_Documentos.resx">
       <DependentUpon>Catalogo_Relacion_Parametros_Acuicola_Documentos.vb</DependentUpon>
