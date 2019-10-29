@@ -1581,4 +1581,12 @@ Public Class AppMenu
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
     End Sub
+
+    Private Sub CapturaParametrosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CapturaParametrosToolStripMenuItem.Click
+        Dim Child As New AcuicolaCapturaParametrosDetalle
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
 End Class

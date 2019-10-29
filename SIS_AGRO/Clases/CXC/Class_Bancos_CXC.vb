@@ -73,10 +73,6 @@ Public Class Class_Bancos_CXC
     Private _Nombre_Formato As String
 #End Region
 
-#Region "Campos privados"
-
-#End Region
-
 #End Region
 
 #Region "Propiedades"
