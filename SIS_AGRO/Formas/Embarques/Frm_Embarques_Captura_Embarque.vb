@@ -1691,7 +1691,7 @@ Buscar:
                 dView.Sort = "NOMBRE_ESTADO"
                 .DataSource = dView
                 If dView.Count > 0 Then
-                    .SelectedValue = -1 'oClientes.ESTADO
+                    .SelectedIndex = -1 'oClientes.ESTADO
                 End If
             End With
         Catch ex As Exception
@@ -1709,7 +1709,7 @@ Buscar:
             dView.Sort = "NOMBRE_ALMACEN"
             .DataSource = dView
             If dView.Count > 0 Then
-                .SelectedValue = -1
+                .SelectedIndex = -1
             End If
         End With
     End Sub
