@@ -25,6 +25,7 @@ Partial Class AcuicolaCapturaParametrosDetalle
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(AcuicolaCapturaParametrosDetalle))
         Me.tsMenu = New System.Windows.Forms.ToolStrip()
         Me.tsbNuevo = New System.Windows.Forms.ToolStripButton()
+        Me.tsbGrabar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.btnFolioSiguiente = New System.Windows.Forms.Button()
@@ -42,10 +43,13 @@ Partial Class AcuicolaCapturaParametrosDetalle
         Me.cboTurno = New System.Windows.Forms.ComboBox()
         Me.gbParametros = New System.Windows.Forms.GroupBox()
         Me.Grid = New FlexCell.Grid()
-        Me.tsbGrabar = New System.Windows.Forms.ToolStripButton()
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tsslEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tsslElaboro = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.lblDisplayStatus = New System.Windows.Forms.Label()
+        Me.lblEstatus = New System.Windows.Forms.Label()
+        Me.txtConcepto = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbParametros.SuspendLayout()
@@ -69,6 +73,14 @@ Partial Class AcuicolaCapturaParametrosDetalle
         Me.tsbNuevo.Size = New System.Drawing.Size(62, 22)
         Me.tsbNuevo.Text = "&Nuevo"
         '
+        'tsbGrabar
+        '
+        Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
+        Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbGrabar.Name = "tsbGrabar"
+        Me.tsbGrabar.Size = New System.Drawing.Size(62, 22)
+        Me.tsbGrabar.Text = "&Grabar"
+        '
         'tsbImprimir
         '
         Me.tsbImprimir.Image = CType(resources.GetObject("tsbImprimir.Image"), System.Drawing.Image)
@@ -91,7 +103,7 @@ Partial Class AcuicolaCapturaParametrosDetalle
         Me.btnFolioSiguiente.Location = New System.Drawing.Point(265, 13)
         Me.btnFolioSiguiente.Name = "btnFolioSiguiente"
         Me.btnFolioSiguiente.Size = New System.Drawing.Size(54, 21)
-        Me.btnFolioSiguiente.TabIndex = 3
+        Me.btnFolioSiguiente.TabIndex = 2
         Me.btnFolioSiguiente.Text = ">>"
         Me.btnFolioSiguiente.UseVisualStyleBackColor = True
         '
@@ -100,7 +112,7 @@ Partial Class AcuicolaCapturaParametrosDetalle
         Me.btnFolioAnterior.Location = New System.Drawing.Point(205, 13)
         Me.btnFolioAnterior.Name = "btnFolioAnterior"
         Me.btnFolioAnterior.Size = New System.Drawing.Size(54, 21)
-        Me.btnFolioAnterior.TabIndex = 2
+        Me.btnFolioAnterior.TabIndex = 1
         Me.btnFolioAnterior.Text = "<<"
         Me.btnFolioAnterior.UseVisualStyleBackColor = True
         '
@@ -119,7 +131,7 @@ Partial Class AcuicolaCapturaParametrosDetalle
         Me.txtFolio.MaxLength = 15
         Me.txtFolio.Name = "txtFolio"
         Me.txtFolio.Size = New System.Drawing.Size(111, 20)
-        Me.txtFolio.TabIndex = 1
+        Me.txtFolio.TabIndex = 0
         '
         'LblFecha
         '
@@ -139,10 +151,14 @@ Partial Class AcuicolaCapturaParametrosDetalle
         Me.dtFecha.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dtFecha.Name = "dtFecha"
         Me.dtFecha.Size = New System.Drawing.Size(148, 20)
-        Me.dtFecha.TabIndex = 4
+        Me.dtFecha.TabIndex = 3
         '
         'gbGlobal
         '
+        Me.gbGlobal.Controls.Add(Me.txtConcepto)
+        Me.gbGlobal.Controls.Add(Me.Label1)
+        Me.gbGlobal.Controls.Add(Me.lblDisplayStatus)
+        Me.gbGlobal.Controls.Add(Me.lblEstatus)
         Me.gbGlobal.Controls.Add(Me.txtCiclo)
         Me.gbGlobal.Controls.Add(Me.lblDisplayCiclo)
         Me.gbGlobal.Controls.Add(Me.lblDisplayDivision)
@@ -167,7 +183,7 @@ Partial Class AcuicolaCapturaParametrosDetalle
         Me.txtCiclo.MaxLength = 15
         Me.txtCiclo.Name = "txtCiclo"
         Me.txtCiclo.Size = New System.Drawing.Size(55, 20)
-        Me.txtCiclo.TabIndex = 7
+        Me.txtCiclo.TabIndex = 6
         '
         'lblDisplayCiclo
         '
@@ -194,7 +210,7 @@ Partial Class AcuicolaCapturaParametrosDetalle
         Me.cboDivision.Location = New System.Drawing.Point(88, 92)
         Me.cboDivision.Name = "cboDivision"
         Me.cboDivision.Size = New System.Drawing.Size(171, 21)
-        Me.cboDivision.TabIndex = 6
+        Me.cboDivision.TabIndex = 5
         '
         'lblDisplayTurno
         '
@@ -212,7 +228,7 @@ Partial Class AcuicolaCapturaParametrosDetalle
         Me.cboTurno.Location = New System.Drawing.Point(88, 65)
         Me.cboTurno.Name = "cboTurno"
         Me.cboTurno.Size = New System.Drawing.Size(111, 21)
-        Me.cboTurno.TabIndex = 5
+        Me.cboTurno.TabIndex = 4
         '
         'gbParametros
         '
@@ -243,14 +259,6 @@ Partial Class AcuicolaCapturaParametrosDetalle
         Me.Grid.TabIndex = 1
         Me.Grid.UncheckedImage = CType(resources.GetObject("Grid.UncheckedImage"), System.Drawing.Bitmap)
         '
-        'tsbGrabar
-        '
-        Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
-        Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbGrabar.Name = "tsbGrabar"
-        Me.tsbGrabar.Size = New System.Drawing.Size(62, 22)
-        Me.tsbGrabar.Text = "&Grabar"
-        '
         'StatusStripEstado
         '
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsslEstado, Me.tsslElaboro})
@@ -277,6 +285,42 @@ Partial Class AcuicolaCapturaParametrosDetalle
         Me.tsslElaboro.Name = "tsslElaboro"
         Me.tsslElaboro.Size = New System.Drawing.Size(57, 19)
         Me.tsslElaboro.Text = "Elaboró :"
+        '
+        'lblDisplayStatus
+        '
+        Me.lblDisplayStatus.AutoSize = True
+        Me.lblDisplayStatus.Location = New System.Drawing.Point(372, 17)
+        Me.lblDisplayStatus.Name = "lblDisplayStatus"
+        Me.lblDisplayStatus.Size = New System.Drawing.Size(48, 13)
+        Me.lblDisplayStatus.TabIndex = 388
+        Me.lblDisplayStatus.Text = "Estatus :"
+        '
+        'lblEstatus
+        '
+        Me.lblEstatus.AutoSize = True
+        Me.lblEstatus.ForeColor = System.Drawing.SystemColors.ActiveCaption
+        Me.lblEstatus.Location = New System.Drawing.Point(426, 17)
+        Me.lblEstatus.Name = "lblEstatus"
+        Me.lblEstatus.Size = New System.Drawing.Size(10, 13)
+        Me.lblEstatus.TabIndex = 389
+        Me.lblEstatus.Text = "."
+        '
+        'txtConcepto
+        '
+        Me.txtConcepto.Location = New System.Drawing.Point(205, 119)
+        Me.txtConcepto.MaxLength = 100
+        Me.txtConcepto.Name = "txtConcepto"
+        Me.txtConcepto.Size = New System.Drawing.Size(580, 20)
+        Me.txtConcepto.TabIndex = 7
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(149, 122)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(59, 13)
+        Me.Label1.TabIndex = 391
+        Me.Label1.Text = "Concepto :"
         '
         'AcuicolaCapturaParametrosDetalle
         '
@@ -326,4 +370,8 @@ Partial Class AcuicolaCapturaParametrosDetalle
     Friend WithEvents StatusStripEstado As StatusStrip
     Friend WithEvents tsslEstado As ToolStripStatusLabel
     Friend WithEvents tsslElaboro As ToolStripStatusLabel
+    Friend WithEvents lblDisplayStatus As Label
+    Friend WithEvents lblEstatus As Label
+    Friend WithEvents txtConcepto As TextBox
+    Friend WithEvents Label1 As Label
 End Class

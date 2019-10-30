@@ -237,6 +237,19 @@ Public Class Class_CatDivisionesAcuicola
         Return dTable
     End Function
 
+    Public Function ObtenerElementosActivos() As System.Data.DataTable
+        Dim dTable As New DataTable
+        Dim da As New SqlDataAdapter("SELECT CODIGO_DIVISION,NOMBRE_DIVISION FROM CAT_DIVISIONES_ACUICOLA WHERE ESTATUS='A' ORDER BY NOMBRE_DIVISION ", Me._Conexion)
+        Try
+            da.Fill(dTable)
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ObtenerElementosActivos", ex)
+        Finally
+            da.Dispose()
+        End Try
+        Return dTable
+    End Function
+
     Public Function ObtenerElementosParaReportes() As System.Data.DataTable
         Dim dTable As New DataTable
         Dim da As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)

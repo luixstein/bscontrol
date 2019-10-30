@@ -294,7 +294,7 @@ Public Class Class_Acuicola_Parametros_Global
         f.sCampo = "G.FOLIO_PARAMETROS"
         f.sOrder = "G.FOLIO_PARAMETROS"
         f.sTable = "ACUICOLA_PARAMETROS_GLOBAL"
-        f.sQl = "SELECT G.FOLIO_PARAMETROS,DBO.FN_FORMAT_FECHA_CORTO(DG.FECHA) FECHA,G.CONCEPTO " &
+        f.sQl = "SELECT G.FOLIO_PARAMETROS,DBO.FN_FORMAT_FECHA_CORTO(G.FECHA) FECHA,G.CONCEPTO " &
             "FROM ACUICOLA_PARAMETROS_GLOBAL G " &
             "WHERE G.CODIGO_PLAZA='" & Usuario.Codigo_Plaza & "' AND "
         f.Inicia("")
@@ -330,6 +330,10 @@ Public Class Class_Acuicola_Parametros_Global
 
         Return dTabla
     End Function
+
+    Public Sub NuevoRenglon()
+        Me.oDetalle = New Class_CXP_Devoluciones_Detalle
+    End Sub
 #End Region
 
 End Class

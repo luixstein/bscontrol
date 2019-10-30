@@ -30,7 +30,9 @@
     End Sub
 
     Private Sub tsbGrabar_Click(sender As Object, e As EventArgs) Handles tsbGrabar.Click
-        'FALTA
+        If Me.Grabar = True Then
+            Me.Consultar()
+        End If
     End Sub
 
     Private Sub tsbImprimir_Click(sender As Object, e As EventArgs) Handles tsbImprimir.Click
@@ -40,6 +42,14 @@
     Private Sub tsbSalir_Click(sender As Object, e As EventArgs) Handles tsbSalir.Click
         Me.Close()
     End Sub
+
+    Private Sub btnFolioAnterior_Click(sender As Object, e As EventArgs) Handles btnFolioAnterior.Click
+        Me.Navegador("Anterior")
+    End Sub
+
+    Private Sub btnFolioSiguiente_Click(sender As Object, e As EventArgs) Handles btnFolioSiguiente.Click
+        Me.Navegador("Siguiente")
+    End Sub
 #End Region
 
 #Region "Eventos de objetos"
@@ -47,11 +57,8 @@
         Try
             Me.DesplegarTurnos()
             Me.DesplegarDivisiones()
-            'Me.DesplegarLotes()
-            'Me.DesplegarDocumentos() 'Se puso aqui y no al principio, porque este a su vez inicializa, y el inicialzia selecciona cosas como el turno que aún ni se crean.
 
             Me.Inicializa()
-
             Me.Cambia_Estado(enumEstados.NUEVO)
 
         Catch ex As Exception
@@ -61,7 +68,6 @@
 
     Private Sub CboDocumento_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
         Try
-            'Me.oVenta.CODIGO_DOCUMENTO = Me.CboDocumento.SelectedValue.ToString
             'Me.oDocumento = New Class_CatDocumentos(Me.cboDocumento.SelectedValue.ToString)
             Me.oDocumento = New Class_CatDocumentos("PAR_ACU" & Plaza.CODIGO_PLAZA.ToString)
             Me.Inicializa()
@@ -72,8 +78,11 @@
     End Sub
 
     Private Sub txtCiclo_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCiclo.KeyDown
-        'Nota descartada, Precargar grid con parametros a capturar, si ya existen con datos entonces cargarlos (si la plantilla cambió entonces no se van a traer los diferentes parámetros usados)
-        'Nota, que en el enter sólo permita ciclos del proyecto de siembra del año
+        If e.KeyCode = Keys.Return Then
+            If txtLEN(Me.txtCiclo.Text) > 0 Then
+                Me.Grid.Focus()
+            End If
+        End If
     End Sub
 
     Private Sub txtFolio_KeyDown(sender As Object, e As KeyEventArgs) Handles txtFolio.KeyDown
@@ -126,8 +135,11 @@
             Me.cboTurno.SelectedIndex = 0
             Me.cboDivision.SelectedIndex = -1
             Me.txtCiclo.Text = ""
+            Me.lblEstatus.Text = "N"
 
             Me.InicializaGrid()
+
+            Me.tsslElaboro.Text = ""
 
             Me.GeneraFolio()
         Catch ex As Exception
@@ -205,9 +217,21 @@
         End Try
     End Sub
 
+    Private Sub GestionaCambioEstado()
+        Select Case Me.lblEstatus.Text
+            Case "N"
+                Me.Cambia_Estado(enumEstados.NUEVO)
+            Case "G"
+                Me.Cambia_Estado(enumEstados.GRABADO)
+                'Case "A"
+                '    Me.Cambia_Estado(enumEstados.APLICADO)
+                'Case "C"
+                '    Me.Cambia_Estado(enumEstados.CANCELADO)
+        End Select
+    End Sub
+
     Private Sub Cambia_Estado(ByVal pEstado As enumEstados)
         Try
-            'Me.gbAgregaDocCliente.Enabled = False 'Se habilita hasta asignar una cuenta bancaria
 
             Me.Estado = pEstado
             Select Case Me.Estado
@@ -217,7 +241,7 @@
                     Me.txtCiclo.Enabled = True
 
                     Me.tsslEstado.Text = "Estado: Agregando nuevo movimiento"
-                    Me.tsslElaboro.Visible = False : Me.tsslElaboro.Text = ""
+                    Me.tsslElaboro.Visible = False
 
                     If Me.Visible = True Then
                         Me.dtFecha.Focus()
@@ -269,15 +293,14 @@
         End Try
     End Sub
 
-
     Private Sub DesplegarDivisiones()
-        Dim oLugarEntrega As New Class_CatDivisiones
+        Dim oDivisiones As New Class_CatDivisionesAcuicola
         Try
             With Me.cboDivision
-                .DisplayMember = "NOMBRE_LUGAR_ENTREGA"
-                .ValueMember = "CODIGO_LUGAR_ENTREGA"
-                Dim dView As New Data.DataView(oLugarEntrega.ObtenerElementos())
-                dView.Sort = "NOMBRE_LUGAR_ENTREGA"
+                .DisplayMember = "NOMBRE_DIVISION"
+                .ValueMember = "CODIGO_DIVISION"
+                Dim dView As New Data.DataView(oDivisiones.ObtenerElementosActivos)
+                dView.Sort = "NOMBRE_DIVISION"
                 .DataSource = dView
                 If dView.Count > 0 Then
                     .SelectedIndex = -1
@@ -296,8 +319,36 @@
         Try
             Me.Inicializa()
 
+            Me.oParametros = New Class_Acuicola_Parametros_Global(sFolio)
 
-            Me.tsslElaboro.Text = "Elaboró: " + Me.oParametros.NOMBRE_USUARIO_GRABO.ToUpper + " el " + Format(Me.oParametros.FECHA_SERVIDOR, "dd/MMM/yy hh:mm tt").ToUpper
+            Me.txtFolio.Enabled = False
+
+            If Me.oParametros.Existe = False Then
+                Me.GeneraFolio()
+                Me.Cambia_Estado(enumEstados.NUEVO)
+                Return False
+            End If
+
+            With Me.oParametros
+                Me.dtFecha.Value = .FECHA
+                MsgBox("FALTA llenar turno")
+                'Me.cboTurno.Text =
+                Me.cboDivision.SelectedValue = .CODIGO_DIVISION.ToString
+                Me.txtCiclo.Text = .CICLO.ToString
+                Me.txtConcepto.Text = .CONCEPTO
+                Me.lblEstatus.Text = .ESTATUS
+
+                'LLENAR GRID
+                Me.Grid.DataSource = Me.oParametros.ObtenerDetalle
+
+                Me.tsslElaboro.Text = "Elaboró: " + .NOMBRE_USUARIO_GRABO.ToUpper + " el " + Format(.FECHA_SERVIDOR, "dd/MMM/yy hh:mm tt").ToUpper
+            End With
+
+            Me.FormateaGrid()
+
+            bResultado = True
+
+            Me.GestionaCambioEstado()
 
         Catch ex As Exception
             HandleError(Me.Name, "Consultar", ex)
@@ -306,43 +357,181 @@
         Return bResultado
     End Function
 
+    Private Function Grabar() As Boolean
+        Dim bResultado As Boolean = False
+
+        Try
+            Select Case Me.Estado
+                Case enumEstados.NUEVO, enumEstados.GRABADO
+                    'Continua
+                Case Else
+                    MsgBox("Estatus no válido para grabar.", MsgBoxStyle.Exclamation, Me.Name)
+                    Return False
+            End Select
+
+            If Me.Validar = False Then
+                Return False
+            End If
+
+            Me.GeneraFolio()
+
+            Me.oParametros = New Class_Acuicola_Parametros_Global
+
+            With Me.oParametros
+                .FOLIO_PARAMETROS = Me.txtFolio.Text
+                .CODIGO_DOCUMENTO = Me.oDocumento.CODIGO_DOCUMENTO
+                .CICLO = Me.txtCiclo.Text
+                .CODIGO_DIVISION = CInt(Me.cboDivision.SelectedValue)
+                .FECHA = Me.dtFecha.Value
+                .CONCEPTO = Me.txtConcepto.Text.ToUpper.Trim
+                .TURNO = Me.cboTurno.Text.Substring(0, 1)
+
+                If .GrabaParametrosGlobal(IIf(Me.Estado = enumEstados.NUEVO, "INSERTAR", "ACTUALIZAR").ToString) Then
+                    Return False
+                End If
+
+                Me.txtFolio.Text = .FOLIO_PARAMETROS
+
+                Dim i As Integer = 0
+
+                For i = 1 To Me.Grid.Rows - 1
+                    .NuevoRenglon()
+
+                    .oDetalle.FOLIO_PARAMETROS = Me.txtFolio.Text
+
+                Next
+
+                MsgBox("FALTA GRABAR DETALLE GRID")
+            End With
+
+            bResultado = True
+
+        Catch ex As Exception
+            HandleError(Me.Name, "Grabar", ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Private Function Validar() As Boolean
+        Dim dResultado As Boolean = False
+        Const sProcedure As String = "Validar"
+
+        Try
+            If Me.cboTurno.SelectedIndex = -1 Then
+                MsgBox("Seleccione el turno.", vbExclamation, sProcedure)
+                If Me.cboTurno.Enabled = True Then
+                    Me.cboTurno.Focus()
+                End If
+                Return False
+            End If
+
+            If Me.cboDivision.SelectedIndex = -1 Then
+                MsgBox("Seleccione la división.", vbExclamation, sProcedure)
+                If Me.cboDivision.Enabled = True Then
+                    Me.cboDivision.Focus()
+                End If
+                Return False
+            End If
+
+            If txtLEN(Me.txtCiclo.Text) = 0 Then
+                MsgBox("Capture el ciclo.", vbExclamation, sProcedure)
+                If Me.txtCiclo.Enabled = True Then
+                    Me.txtCiclo.Focus()
+                End If
+                Return False
+            End If
+
+            MsgBox("FALTA validar que haya renglones(que haya al menos un renglón con datos.)")
+
+            dResultado = True
+
+        Catch ex As Exception
+            HandleError(Me.Name, "Validar", ex)
+        End Try
+
+        Return dResultado
+    End Function
+
     Private Sub GestionaGrid(ByVal e As System.Windows.Forms.KeyEventArgs)
         Dim sProcedure As String = "GestionaGrid"
         Try
+            MsgBox("FALTA gestionar grid, f6 que busque lote en proyecot de siembra donde exista la divisoón")
+
             Dim Columna As Integer, Renglon As Integer, dCantidad As Decimal
 
             Columna = Me.Grid.Selection.FirstCol
             Renglon = Me.Grid.Selection.FirstRow
-            dCantidad = CDec(valorNumerico(Me.Grid.Cell(Renglon, Me.igyCantidad).Text))
+            '            dCantidad = CDec(valorNumerico(Me.Grid.Cell(Renglon, Me.igyCantidad).Text))
 
-            Select Case e.KeyCode
-                Case Keys.Enter
-                    Select Case Columna
-                        Case Me.igyCantidad
-                            If dCantidad <= 0 Then
-                                Me.Grid.Cell(Renglon, Me.igyCantidad).Text = "0"
-                                Me.Grid.Refresh()
-                                'MsgBox("La cantidad debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
-                                Me.Grid.Cell(Renglon, Me.igyDescripcion).SetFocus()
-                                GoTo Sigue
-                            End If
-                            If Me.ValidarDisponible(Renglon) = False Then
-                                Me.Grid.Cell(Renglon, Me.igyCantidad).Text = "0"
-                                Me.Grid.Refresh() 'Si no se pone , no se refresca el 0 de inmediato, hasta que se mueva el foco al parecer.
-                                Me.Grid.Cell(Renglon, Me.igyDescripcion).SetFocus()
-                                GoTo Sigue
-                            End If
-                    End Select
-Sigue:
-                    Me.Totales()
+            '            Select Case e.KeyCode
+            '                Case Keys.Enter
+            '                    Select Case Columna
+            '                        Case Me.igyCantidad
+            '                            If dCantidad <= 0 Then
+            '                                Me.Grid.Cell(Renglon, Me.igyCantidad).Text = "0"
+            '                                Me.Grid.Refresh()
+            '                                'MsgBox("La cantidad debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
+            '                                Me.Grid.Cell(Renglon, Me.igyDescripcion).SetFocus()
+            '                                GoTo Sigue
+            '                            End If
+            '                            If Me.ValidarDisponible(Renglon) = False Then
+            '                                Me.Grid.Cell(Renglon, Me.igyCantidad).Text = "0"
+            '                                Me.Grid.Refresh() 'Si no se pone , no se refresca el 0 de inmediato, hasta que se mueva el foco al parecer.
+            '                                Me.Grid.Cell(Renglon, Me.igyDescripcion).SetFocus()
+            '                                GoTo Sigue
+            '                            End If
+            '                    End Select
+            'Sigue:
+            '                    Me.Totales()
 
-                Case Keys.F6
-                    'FALTA
+            '                Case Keys.F6
+            '                    'FALTA
 
-            End Select
+            '            End Select
 
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
+
+    Private Sub Navegador(ByVal sTipoDeBusqueda As String)
+        Try
+            Dim iFolio As Integer, sFolio As String
+            If txtLEN(Me.txtFolio.Text) = False Then
+                Me.txtFolio.Text = Me.oDocumento.GeneraFolio
+            End If
+
+            If sTipoDeBusqueda = "Anterior" Then
+                sFolio = Me.txtFolio.Text.Substring(0, Me.txtFolio.Text.IndexOf("-"))
+                iFolio = CInt(Strings.Right(Me.txtFolio.Text, Len(Me.txtFolio.Text) - (Len(sFolio) + 1))) ' Me.oVenta.FOLIO_NUMERICO
+                iFolio = iFolio - 1
+                sFolio = sFolio + "-" + iFolio.ToString
+
+                Me.txtFolio.Text = sFolio
+
+                If iFolio > 0 Then
+                    Me.Consultar()
+                Else
+                    Me.Inicializa()
+                    Me.Cambia_Estado(enumEstados.NUEVO)
+                End If
+
+            ElseIf sTipoDeBusqueda = "Siguiente" Then
+                sFolio = Me.txtFolio.Text.Substring(0, Me.txtFolio.Text.IndexOf("-"))
+                iFolio = CInt(Strings.Right(Me.txtFolio.Text, Len(Me.txtFolio.Text) - (Len(sFolio) + 1)))
+                iFolio = iFolio + 1
+                sFolio = sFolio + "-" + iFolio.ToString
+
+                Me.txtFolio.Text = sFolio
+
+                If iFolio > 0 Then
+                    Me.Consultar()
+                End If
+            End If
+
+        Catch ex As Exception
+            HandleError(Me.Name, "NavegadorNotas", ex)
         End Try
     End Sub
 #End Region
