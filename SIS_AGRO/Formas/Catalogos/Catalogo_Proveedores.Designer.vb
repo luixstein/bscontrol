@@ -183,7 +183,7 @@ Partial Class Catalogo_Proveedores
         'btnGenerarCuentaDolares
         '
         Me.btnGenerarCuentaDolares.Location = New System.Drawing.Point(240, 447)
-        Me.btnGenerarCuentaDolares.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.btnGenerarCuentaDolares.Margin = New System.Windows.Forms.Padding(2)
         Me.btnGenerarCuentaDolares.Name = "btnGenerarCuentaDolares"
         Me.btnGenerarCuentaDolares.Size = New System.Drawing.Size(92, 19)
         Me.btnGenerarCuentaDolares.TabIndex = 149
@@ -193,7 +193,7 @@ Partial Class Catalogo_Proveedores
         'txtCURP
         '
         Me.txtCURP.Location = New System.Drawing.Point(296, 168)
-        Me.txtCURP.MaxLength = 30
+        Me.txtCURP.MaxLength = 18
         Me.txtCURP.Name = "txtCURP"
         Me.txtCURP.Size = New System.Drawing.Size(140, 20)
         Me.txtCURP.TabIndex = 4
@@ -569,7 +569,7 @@ Partial Class Catalogo_Proveedores
         '
         Me.rbtCodigoProveedor.AutoSize = True
         Me.rbtCodigoProveedor.Location = New System.Drawing.Point(107, 18)
-        Me.rbtCodigoProveedor.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.rbtCodigoProveedor.Margin = New System.Windows.Forms.Padding(2)
         Me.rbtCodigoProveedor.Name = "rbtCodigoProveedor"
         Me.rbtCodigoProveedor.Size = New System.Drawing.Size(109, 17)
         Me.rbtCodigoProveedor.TabIndex = 112
@@ -581,7 +581,7 @@ Partial Class Catalogo_Proveedores
         Me.rbtNombreProveedor.AutoSize = True
         Me.rbtNombreProveedor.Checked = True
         Me.rbtNombreProveedor.Location = New System.Drawing.Point(6, 18)
-        Me.rbtNombreProveedor.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.rbtNombreProveedor.Margin = New System.Windows.Forms.Padding(2)
         Me.rbtNombreProveedor.Name = "rbtNombreProveedor"
         Me.rbtNombreProveedor.Size = New System.Drawing.Size(62, 17)
         Me.rbtNombreProveedor.TabIndex = 111

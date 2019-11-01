@@ -530,31 +530,36 @@ Public Class Catalogo_Proveedores
         If txtLEN(Me.TxtNomProveedor.Text) = False Then
             MsgBox("Asígne el nombre del proveedor.", MsgBoxStyle.Exclamation, Me.Text)
             Me.TxtNomProveedor.Focus()
-            Exit Sub
+            Return
         End If
 
         'If txtLEN(Me.txtDomicilio.Text) = False Then
         '    MsgBox("Asígne el domicilio del proveedor.", MsgBoxStyle.Exclamation, Me.Text)
         '    Me.txtDomicilio.Focus()
-        '    Exit Sub
+        '    Return
         'End If
 
         If txtLEN(Me.txtRFC.Text) = False Then
             MsgBox("Asígne el RFC del proveedor.", MsgBoxStyle.Exclamation, Me.Text)
             Me.txtRFC.Focus()
-            Exit Sub
+            Return
+        Else
+            If ValidaRFC(Me.txtRFC.Text, IIf(Len(Me.txtRFC.Text) = 12, "M", "F").ToString) = False Then
+                Me.txtRFC.Focus()
+                Return
+            End If
         End If
 
         If txtLEN(Me.TxtPlazo.Text) = False Then
             MsgBox("Asígne el plazo del proveedor.", MsgBoxStyle.Exclamation, Me.Text)
             Me.TxtPlazo.Focus()
-            Exit Sub
+            Return
         End If
 
         'If txtLEN(Me.txtCuentaContable.Text) = False Then
         '    MsgBox("Asígne la cuenta contable del proveedor.", MsgBoxStyle.Exclamation, Me.Text)
         '    Me.txtCuentaContable.Focus()
-        '    Exit Sub
+        '    Return
         'End If
 
         Dim oCuentas As New Class_CatCuentas
@@ -563,24 +568,24 @@ Public Class Catalogo_Proveedores
         'If oCuentas.Consultar() = False Then
         '    MsgBox("La cuenta contable no existe.", MsgBoxStyle.Exclamation, Me.Text)
         '    Me.txtCuentaContable.Focus()
-        '    Exit Sub
+        '    Return
         'End If
 
         'If Me.TxtNomProveedor.Text <> oCuentas.NOMBRE_CUENTA Then
         '    MsgBox("El nombre de la cuenta contable debe de ser igual al nombre del proveedor.", MsgBoxStyle.Exclamation, Me.Text)
         '    Me.txtCuentaContable.Focus()
-        '    Exit Sub
+        '    Return
         'End If
 
         'If oCuentas.isCuentaContableValida(Me.txtCuentaContable.Text) = False Then
         '    MsgBox("La cuenta contable debe de ser de operación.", MsgBoxStyle.Exclamation, Me.Text)
         '    Me.txtCuentaContable.Focus()
-        '    Exit Sub
+        '    Return
         'End If
 
         'If Me.ValidarCuentaTipoProveedor() = False Then
         '    Me.txtCuentaContable.Focus()
-        '    Exit Sub
+        '    Return
         'End If
 
         If txtLEN(Me.txtCuentaContableDolares.Text) = True Then
@@ -589,19 +594,19 @@ Public Class Catalogo_Proveedores
             If oCuentas.Consultar() = False Then
                 MsgBox("La cuenta contable en dólares no existe.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.txtCuentaContableDolares.Focus()
-                Exit Sub
+                Return
             End If
 
             'If Me.TxtNomProveedor.Text.ToUpper <> oCuentas.NOMBRE_CUENTA Then
             '    MsgBox("El nombre de la cuenta contable en dolares debe de ser igual al nombre del proveedor.", MsgBoxStyle.Exclamation, Me.Text)
             '    Me.txtCuentaContable.Focus()
-            '    Exit Sub
+            '    Return
             'End If
 
             If oCuentas.isCuentaContableValida(Me.txtCuentaContableDolares.Text) = False Then
                 MsgBox("La cuenta contable en dólares debe de ser de operación.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.txtCuentaContable.Focus()
-                Exit Sub
+                Return
             End If
         End If
 

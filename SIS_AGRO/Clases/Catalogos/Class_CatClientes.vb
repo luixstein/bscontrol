@@ -596,7 +596,7 @@ Public Class Class_CatClientes
             .CommandText = "MP_CAT_CLIENTES_GRABAR"
 
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_CLIENTE.ToUpper : sqlParametro.Direction = ParameterDirection.InputOutput
-            sqlParametro = .Parameters.Add("@NOMBRE_CLIENTE", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._NOMBRE_CLIENTE.ToUpper
+            sqlParametro = .Parameters.Add("@NOMBRE_CLIENTE", SqlDbType.NVarChar, 120) : sqlParametro.Value = Me._NOMBRE_CLIENTE.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS.ToUpper
             sqlParametro = .Parameters.Add("@RFC", SqlDbType.NVarChar, 13) : sqlParametro.Value = Me._RFC.ToString.ToUpper
             sqlParametro = .Parameters.Add("@TIPO_PERSONA", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._TIPO_PERSONA.ToString.ToUpper

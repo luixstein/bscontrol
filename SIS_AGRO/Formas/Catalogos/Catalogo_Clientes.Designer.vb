@@ -409,7 +409,7 @@ Partial Class Catalogo_Clientes
         'txtCurp
         '
         Me.txtCurp.Location = New System.Drawing.Point(76, 163)
-        Me.txtCurp.MaxLength = 30
+        Me.txtCurp.MaxLength = 18
         Me.txtCurp.Name = "txtCurp"
         Me.txtCurp.Size = New System.Drawing.Size(130, 20)
         Me.txtCurp.TabIndex = 7
@@ -443,7 +443,7 @@ Partial Class Catalogo_Clientes
         'TxtNombreCliente
         '
         Me.TxtNombreCliente.Location = New System.Drawing.Point(77, 111)
-        Me.TxtNombreCliente.MaxLength = 80
+        Me.TxtNombreCliente.MaxLength = 120
         Me.TxtNombreCliente.Name = "TxtNombreCliente"
         Me.TxtNombreCliente.Size = New System.Drawing.Size(312, 20)
         Me.TxtNombreCliente.TabIndex = 4
@@ -717,7 +717,7 @@ Partial Class Catalogo_Clientes
         'BtnGeneraCuentaContableDolares
         '
         Me.BtnGeneraCuentaContableDolares.Location = New System.Drawing.Point(115, 65)
-        Me.BtnGeneraCuentaContableDolares.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.BtnGeneraCuentaContableDolares.Margin = New System.Windows.Forms.Padding(2)
         Me.BtnGeneraCuentaContableDolares.Name = "BtnGeneraCuentaContableDolares"
         Me.BtnGeneraCuentaContableDolares.Size = New System.Drawing.Size(126, 19)
         Me.BtnGeneraCuentaContableDolares.TabIndex = 75
@@ -969,7 +969,7 @@ Partial Class Catalogo_Clientes
         '
         Me.rbtCodigoCliente.AutoSize = True
         Me.rbtCodigoCliente.Location = New System.Drawing.Point(100, 15)
-        Me.rbtCodigoCliente.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.rbtCodigoCliente.Margin = New System.Windows.Forms.Padding(2)
         Me.rbtCodigoCliente.Name = "rbtCodigoCliente"
         Me.rbtCodigoCliente.Size = New System.Drawing.Size(92, 17)
         Me.rbtCodigoCliente.TabIndex = 116
@@ -981,7 +981,7 @@ Partial Class Catalogo_Clientes
         Me.rbtNombreCliente.AutoSize = True
         Me.rbtNombreCliente.Checked = True
         Me.rbtNombreCliente.Location = New System.Drawing.Point(6, 15)
-        Me.rbtNombreCliente.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.rbtNombreCliente.Margin = New System.Windows.Forms.Padding(2)
         Me.rbtNombreCliente.Name = "rbtNombreCliente"
         Me.rbtNombreCliente.Size = New System.Drawing.Size(62, 17)
         Me.rbtNombreCliente.TabIndex = 115

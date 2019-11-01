@@ -1054,7 +1054,7 @@ Module Mod_Uti
                         Return False
                     End If
 
-                    If SoloLetrasSinAcentos(Mid(sRFC, 1, 4)) = False Then
+                    If RFCValidaSegmento1(Mid(sRFC, 1, 4)) = False Then
                         MsgBox("El RFC para personas físicas no tiene la estructura correcta en las 4 primeras letras(rfc=4 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanuméricos), favor de revisar.", vbExclamation, nombreModulo)
                         Return False
                     End If
@@ -1066,7 +1066,7 @@ Module Mod_Uti
                         Return False
                     End If
 
-                    If SoloAlfanumericos(Mid(sRFC, 11, 3)) = False Then
+                    If RFCValidaSegmento3(Mid(sRFC, 11, 3)) = False Then
                         MsgBox("El RFC para personas físicas no tiene la estructura correcta en los 3 últimos alfanuméricos(rfc=4 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanuméricos), favor de revisar.", vbExclamation, nombreModulo)
                         Return False
                     End If
@@ -1079,7 +1079,7 @@ Module Mod_Uti
                         Return False
                     End If
 
-                    If SoloLetrasSinAcentos(Mid(sRFC, 1, 3)) = False Then
+                    If RFCValidaSegmento1(Mid(sRFC, 1, 3)) = False Then
                         MsgBox("El RFC para personas morales no tiene la estructura correcta en las 3 primeras letras(rfc=3 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanuméricos), favor de revisar.", vbExclamation, nombreModulo)
                         Return False
                     End If
@@ -1098,7 +1098,7 @@ Module Mod_Uti
                         Return False
                     End If
 
-                    If SoloAlfanumericos(Mid(sRFC, 10, 3)) = False Then
+                    If RFCValidaSegmento3(Mid(sRFC, 10, 3)) = False Then
                         MsgBox("El RFC para personas morales no tiene la estructura correcta en los 3 últimos alfanuméricos(rfc=3 letras + 6 digitos fecha(aa/mm/dd) + 3 alfanuméricos), favor de revisar.", vbExclamation, nombreModulo)
                         Return False
                     End If
@@ -1116,13 +1116,20 @@ Module Mod_Uti
         Return bResultado
     End Function
 
-    Public Function SoloLetrasSinAcentos(ByVal sCadena As String) As Boolean
+    'con expresiones regulars podria ser
+    '^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$
+    '^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])([A-Z]|[0-9]){2}([A]|[0-9]){1})?$
+    '^(([ÑA-Z|ña-z|&]{3}|[A-Z|a-z]{4})\d{2}((0[1-9]|1[012])(0[1-9]|1\d|2[0-8])|(0[13456789]|1[012])(29|30)|(0[13578]|1[02])31)(\w{2})([A|a|0-9]{1}))$|^(([ÑA-Z|ña-z|&]{3}|[A-Z|a-z]{4})([02468][048]|[13579][26])0229)(\w{2})([A|a|0-9]{1})$
+
+    Public Function RFCValidaSegmento1(ByVal sCadena As String) As Boolean
         Dim bResultado As Boolean = False
         Try
             Dim i As Integer, letra As String, bError As Boolean
             For i = 1 To Len(sCadena)
                 letra = Mid(sCadena, i, 1)
-                If Not ((letra >= "A" And letra <= "Z") Or (letra >= "a" And letra <= "z")) Then
+                If Not ((letra >= "A" And letra <= "Z") Or (letra >= "a" And letra <= "z") Or letra.ToUpper = "Ñ") Then
+                    'Nota, también deberia soportar ampersand pero aun falta ver como afecta al xml y la cadena_original
+                    'cuando esto pase, El reemplazado del caracter & por &amp; es solo para el XML, no para la cadena original 
                     bError = True
                 End If
             Next
@@ -1130,12 +1137,12 @@ Module Mod_Uti
                 bResultado = True
             End If
         Catch ex As Exception
-            HandleError(nombreModulo, "SoloLetrasSinAcentos", ex)
+            HandleError(nombreModulo, "RFCValidaSegmento1", ex)
         End Try
         Return bResultado
     End Function
 
-    Public Function SoloAlfanumericos(ByVal sCadena As String) As Boolean
+    Public Function RFCValidaSegmento3(ByVal sCadena As String) As Boolean
         Dim bResultado As Boolean = False
         Try
             Dim i As Integer, letra As String, bError As Boolean
@@ -1150,7 +1157,7 @@ Module Mod_Uti
                 bResultado = True
             End If
         Catch ex As Exception
-            HandleError(nombreModulo, "SoloAlfanumericos", ex)
+            HandleError(nombreModulo, "RFCValidaSegmento3", ex)
         End Try
         Return bResultado
     End Function
