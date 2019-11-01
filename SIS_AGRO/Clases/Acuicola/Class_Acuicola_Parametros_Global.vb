@@ -332,7 +332,7 @@ Public Class Class_Acuicola_Parametros_Global
     End Function
 
     Public Sub NuevoRenglon()
-        Me.oDetalle = New Class_CXP_Devoluciones_Detalle
+        Me.oDetalle = New Class_Acuicola_Parametros_Detalle
     End Sub
 #End Region
 
