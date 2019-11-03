@@ -79,8 +79,9 @@
 
     Private Sub txtCiclo_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCiclo.KeyDown
         If e.KeyCode = Keys.Return Then
-            If txtLEN(Me.txtCiclo.Text) > 0 Then
-                Me.Grid.Focus()
+            If txtLEN(Me.txtCiclo.Text) = True AndAlso CInt(Me.txtCiclo.Text) > 0 Then
+                Me.Grid.Locked = False
+                Me.Grid.Cell(1, Me.iGyNombreLote).SetFocus()
             End If
         End If
     End Sub
@@ -136,11 +137,11 @@
             Me.cboDivision.SelectedIndex = -1
             Me.txtCiclo.Text = ""
             Me.lblEstatus.Text = "N"
+            Me.oDocumento = New Class_CatDocumentos("PAR_ACU" & Plaza.CODIGO_PLAZA.ToString)
 
             Me.InicializaGrid()
 
             Me.tsslElaboro.Text = ""
-
             Me.GeneraFolio()
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
@@ -158,6 +159,8 @@
             Me.Grid.DisplayRowNumber = True
 
             Me.FormateaGrid()
+            Me.Grid.Locked = True
+            Me.Grid.Cell(1, Me.iGyIdCapturaParametroDetalle).Text = "0"
         Catch ex As Exception
             HandleError(Me.Name, "InicializaGrid", ex)
         End Try
@@ -166,6 +169,9 @@
     Private Sub FormateaGrid()
         Try
             With Me.Grid
+                .AutoRedraw = False
+                .Cols = 7
+
                 .Column(Me.iGyIdCapturaParametroDetalle).Width = 80
                 .Column(Me.iGyIDProyectoSiembra).Width = 80
                 .Column(Me.iGyCodigoLote).Width = 80
@@ -184,9 +190,9 @@
                 .Column(Me.iGyIDProyectoSiembra).Locked = True
                 .Column(Me.iGyCodigoLote).Locked = True
 
-                .Column(Me.iGyIdCapturaParametroDetalle).Visible = False
-                .Column(Me.iGyIDProyectoSiembra).Visible = False
-                .Column(Me.iGyCodigoLote).Visible = False
+                '.Column(Me.iGyIdCapturaParametroDetalle).Visible = False
+                '.Column(Me.iGyIDProyectoSiembra).Visible = False
+                '.Column(Me.iGyCodigoLote).Visible = False
 
                 .Column(Me.iGyOxigeno).FormatString = "##0.00"
                 .Column(Me.iGyOxigeno).Mask = FlexCell.MaskEnum.Numeric
@@ -197,7 +203,8 @@
                 .Column(Me.iGyTemperatura).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyTemperatura).DecimalLength = 2
 
-                .Locked = True
+                .Locked = False
+                .AutoRedraw = True
                 .Refresh()
             End With
 
@@ -330,21 +337,29 @@
             End If
 
             With Me.oParametros
+                Me.txtFolio.Text = .FOLIO_PARAMETROS
                 Me.dtFecha.Value = .FECHA
-                MsgBox("FALTA llenar turno")
-                'Me.cboTurno.Text =
+
+                Select Case .TURNO
+                    Case "M"
+                        Me.cboTurno.SelectedIndex = 0 'Mañana
+                    Case "T"
+                        Me.cboTurno.SelectedIndex = 1 'Tarde
+                    Case "N"
+                        Me.cboTurno.SelectedIndex = 2 'Noche
+                End Select
+
                 Me.cboDivision.SelectedValue = .CODIGO_DIVISION.ToString
                 Me.txtCiclo.Text = .CICLO.ToString
                 Me.txtConcepto.Text = .CONCEPTO
                 Me.lblEstatus.Text = .ESTATUS
-
-                'LLENAR GRID
-                Me.Grid.DataSource = Me.oParametros.ObtenerDetalle
-
                 Me.tsslElaboro.Text = "Elaboró: " + .NOMBRE_USUARIO_GRABO.ToUpper + " el " + Format(.FECHA_SERVIDOR, "dd/MMM/yy hh:mm tt").ToUpper
             End With
 
+            'LLENAR GRID
+            Me.Grid.DataSource = Me.oParametros.ObtenerDetalle
             Me.FormateaGrid()
+            Me.Grid.Locked = False
 
             bResultado = True
 
@@ -356,6 +371,7 @@
 
         Return bResultado
     End Function
+
 
     Private Function Grabar() As Boolean
         Dim bResultado As Boolean = False
@@ -370,6 +386,7 @@
             End Select
 
             If Me.Validar = False Then
+
                 Return False
             End If
 
@@ -386,7 +403,8 @@
                 .CONCEPTO = Me.txtConcepto.Text.ToUpper.Trim
                 .TURNO = Me.cboTurno.Text.Substring(0, 1)
 
-                If .GrabaParametrosGlobal(IIf(Me.Estado = enumEstados.NUEVO, "INSERTAR", "ACTUALIZAR").ToString) Then
+                If .GrabaParametrosGlobal(IIf(Me.Estado = enumEstados.NUEVO, "INSERTAR", "ACTUALIZAR").ToString) = False Then
+                    MsgBox("Error al tratar de grabar el parametro.", MsgBoxStyle.Exclamation, Me.Name)
                     Return False
                 End If
 
@@ -395,16 +413,26 @@
                 Dim i As Integer = 0
 
                 For i = 1 To Me.Grid.Rows - 1
-                    .NuevoRenglon()
+                    If Me.Grid.Cell(i, Me.iGyIdCapturaParametroDetalle).Text <> "0" Then
+                        .NuevoRenglon()
+                        .oDetalle.FOLIO_PARAMETROS = Me.txtFolio.Text
+                        .oDetalle.ID_ACUICOLA_PARAMETROS_DETALLE = Me.Grid.Cell(i, Me.iGyIdCapturaParametroDetalle).Text
+                        .oDetalle.ID_PROYECTO_SIEMBRA = Me.Grid.Cell(i, Me.iGyIDProyectoSiembra).Text
+                        .oDetalle.CODIGO_LOTE = Me.Grid.Cell(i, Me.iGyCodigoLote).Text
+                        .oDetalle.OXIGENO = Me.Grid.Cell(i, Me.iGyOxigeno).Text
+                        .oDetalle.TEMPERATURA = Me.Grid.Cell(i, Me.iGyTemperatura).Text
 
-                    .oDetalle.FOLIO_PARAMETROS = Me.txtFolio.Text
+                        If .oDetalle.GrabaRenglon() = False Then
+                            MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Name)
+                            Return False
+                        End If
 
+                    End If
                 Next
-
-                MsgBox("FALTA GRABAR DETALLE GRID")
             End With
 
             bResultado = True
+            MsgBox("Parametro acuicola grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
 
         Catch ex As Exception
             HandleError(Me.Name, "Grabar", ex)
@@ -416,6 +444,7 @@
     Private Function Validar() As Boolean
         Dim dResultado As Boolean = False
         Const sProcedure As String = "Validar"
+        'Dim i As Integer
 
         Try
             If Me.cboTurno.SelectedIndex = -1 Then
@@ -442,7 +471,11 @@
                 Return False
             End If
 
-            MsgBox("FALTA validar que haya renglones(que haya al menos un renglón con datos.)")
+            If Me.Grid.Cell(1, Me.iGyIdCapturaParametroDetalle).Text = "0" Then
+                MsgBox("Capture el detalle de los parametros.", MsgBoxStyle.Exclamation, Me.Name)
+                Me.Grid.Cell(1, Me.iGyNombreLote).SetFocus()
+                Return False
+            End If
 
             dResultado = True
 
@@ -456,12 +489,48 @@
     Private Sub GestionaGrid(ByVal e As System.Windows.Forms.KeyEventArgs)
         Dim sProcedure As String = "GestionaGrid"
         Try
-            MsgBox("FALTA gestionar grid, f6 que busque lote en proyecot de siembra donde exista la divisoón")
 
-            Dim Columna As Integer, Renglon As Integer, dCantidad As Decimal
+            Dim Columna As Integer, Renglon As Integer, sCodigo As String
 
             Columna = Me.Grid.Selection.FirstCol
             Renglon = Me.Grid.Selection.FirstRow
+
+            Select Case e.KeyCode
+                Case Keys.Enter
+                    Select Case Columna
+                        Case Me.iGyNombreLote
+                            If txtLEN(Me.Grid.Cell(Renglon, Me.iGyNombreLote).Text) = False Then
+                                GoTo Busqueda
+                            End If
+
+                        Case Me.iGyTemperatura
+                            If Me.Grid.Rows > 2 Then
+                                Me.Grid.Cell(Renglon, Me.iGyIdCapturaParametroDetalle).Text = CInt(Me.Grid.Cell(Renglon - 1, Me.iGyIdCapturaParametroDetalle).Text) + 1
+                            Else
+                                Me.Grid.Cell(Renglon, Me.iGyIdCapturaParametroDetalle).Text = CInt(Me.Grid.Cell(Renglon, Me.iGyIdCapturaParametroDetalle).Text) + 1
+                            End If
+
+                            If Me.Grid.Rows - 1 = Renglon Then
+                                Me.Grid.Rows = Me.Grid.Rows + 1
+                                Me.Grid.Cell(Renglon + 1, Me.iGyIdCapturaParametroDetalle).Text = "0"
+                            End If
+
+                    End Select
+
+                Case Keys.F6
+                    Select Case Columna
+                        Case Me.iGyNombreLote
+
+Busqueda:
+                            sCodigo = oParametros.BusquedaVisual_Lote_ParametrosDetalle_PorNombre(Me.cboDivision.SelectedValue.ToString, Me.txtCiclo.Text, Me.dtFecha.Value.Year.ToString)
+                            Me.Grid.Cell(Renglon, Me.iGyIDProyectoSiembra).Text = sCodigo
+                            Dim sql As New Class_find("SELECT P.CODIGO_LOTE,L.NOMBRE_LOTE FROM PROYECTO_SIEMBRA_ACUICOLA P INNER JOIN CAT_LOTES L ON(P.CODIGO_LOTE=L.CODIGO_LOTE) WHERE P.ID_PROYECTO_SIEMBRA =" & sCodigo)
+
+                            Me.Grid.Cell(Renglon, Me.iGyCodigoLote).Text = sql.Result1
+                            Me.Grid.Cell(Renglon, Me.iGyNombreLote).Text = sql.Result2
+
+                    End Select
+            End Select
             '            dCantidad = CDec(valorNumerico(Me.Grid.Cell(Renglon, Me.igyCantidad).Text))
 
             '            Select Case e.KeyCode

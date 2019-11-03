@@ -207,7 +207,7 @@ Public Class Class_Acuicola_Parametros_Global
                 sqlParametro = .Parameters.Add("@TURNO", SqlDbType.Char, 1) : sqlParametro.Value = Me._TURNO
                 sqlParametro = .Parameters.Add("@CODIGO_USUARIO_GRABO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
                 sqlParametro = .Parameters.Add("@CONCEPTO", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._CONCEPTO
-                sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = sAccion
+                sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = sAccion
 
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
@@ -233,10 +233,10 @@ Public Class Class_Acuicola_Parametros_Global
     Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
 
-        Dim cmd As New SqlCommand("SELECT G.*,U1.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO, " &
+        Dim cmd As New SqlCommand("SELECT G.*,U1.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO " &
                                   "FROM ACUICOLA_PARAMETROS_GLOBAL G " &
                                   "INNER JOIN SIS_USUARIOS U1 ON(G.CODIGO_USUARIO_GRABO=U1.CODIGO_USUARIO) " &
-                                  "WHERE G.FOLIO_PARAMETROS" & Me._FOLIO_PARAMETROS)
+                                  "WHERE G.FOLIO_PARAMETROS='" & Me._FOLIO_PARAMETROS & "'", Me._Conexion)
 
         Dim dReader As SqlDataReader
         With cmd
@@ -259,6 +259,7 @@ Public Class Class_Acuicola_Parametros_Global
                     Me._CODIGO_USUARIO_GRABO = CInt(dReader("CODIGO_USUARIO_GRABO"))
                     Me._NOMBRE_USUARIO_GRABO = "" & dReader("NOMBRE_USUARIO_GRABO").ToString()
                     Me._CONCEPTO = "" & dReader("CONCEPTO").ToString()
+                    Me._ESTATUS = "" & dReader("ESTATUS").ToString
 
                     bResultado = True
                 End If
@@ -305,6 +306,27 @@ Public Class Class_Acuicola_Parametros_Global
             End If
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, "BusquedaVisual_PorFolio", ex)
+        End Try
+        Return Resultado
+    End Function
+
+    Public Function BusquedaVisual_Lote_ParametrosDetalle_PorNombre(sCodigoDivision As String, sCiclo As String, sAño As String) As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de lotes por nombre."
+        f.sCampo = "P.CODIGO_LOTE"
+        f.sOrder = "L.NOMBRE_LOTE"
+        f.sTable = "ACUICOLA_PARAMETROS_GLOBAL"
+        f.sQl = "SELECT P.ID_PROYECTO_SIEMBRA,P.CODIGO_LOTE,L.NOMBRE_LOTE FROM PROYECTO_SIEMBRA_ACUICOLA P INNER JOIN CAT_LOTES L ON(P.CODIGO_LOTE=L.CODIGO_LOTE) " & _
+                "WHERE P.CODIGO_DIVISION = '" & sCodigoDivision & "' AND P.CICLO = '" & sCiclo & "' AND YEAR(P.FECHA_INICIO)=" & sAño & " AND "
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, "BusquedaVisual_Lote_ParametrosDetalle_PorNombre", ex)
         End Try
         Return Resultado
     End Function
