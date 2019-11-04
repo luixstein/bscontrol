@@ -507,7 +507,7 @@
                 oParametroDetalle = New Class_CatParametrosAcuicolaDetalle(Me.Grid.Cell(i, Me.iGyCodigoLote).Text)
 
                 If Len(Me.Grid.Cell(i, Me.iGyCanastas).Text) <> oParametroDetalle.Numero_Canastas Then
-                    MsgBox("Las canastas permitidas para el lote " & Me.Grid.Cell(i, Me.iGyNombreLote).Text & " debe ser " & oParametroDetalle.Numero_Canastas, MsgBoxStyle.Exclamation, Me.Name)
+                    MsgBox("Las canastas permitidas para el estanque #" & Me.Grid.Cell(i, Me.iGyNombreLote).Text & " debe ser " & oParametroDetalle.Numero_Canastas, MsgBoxStyle.Exclamation, Me.Name)
                     Me.Grid.Cell(i, Me.iGyCanastas).SetFocus()
                     Return False
                 End If
