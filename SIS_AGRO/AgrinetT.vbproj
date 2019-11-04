@@ -172,7 +172,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="Clases\Acuicola\Class_Acuicola_Parametria_Detalle.vb" />
+    <Compile Include="Clases\Acuicola\Class_Acuicola_Alimentacion_Detalle.vb" />
+    <Compile Include="Clases\Acuicola\Class_Acuicola_Parametria_Global.vb" />
     <Compile Include="Clases\Acuicola\Class_Acuicola_Parametros_Detalle.vb" />
+    <Compile Include="Clases\Acuicola\Class_Acuicola_Alimentacion_Global.vb" />
     <Compile Include="Clases\Acuicola\Class_Acuicola_Parametros_Global.vb" />
     <Compile Include="Clases\Acuicola\Class_Acuicola_CapturaParametros.vb" />
     <Compile Include="Clases\Administracion\Class_Sis_Administracion_Clientes.vb" />
@@ -401,6 +405,18 @@
     </Compile>
     <Compile Include="dsTrabajadores.vb">
       <DependentUpon>dsTrabajadores.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Acuicola\AcuicolaCapturaParametria.Designer.vb">
+      <DependentUpon>AcuicolaCapturaParametria.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Acuicola\AcuicolaCapturaParametria.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Acuicola\AcuicolaCapturaAlimentacion.Designer.vb">
+      <DependentUpon>AcuicolaCapturaAlimentacion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Acuicola\AcuicolaCapturaAlimentacion.vb">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Acuicola\AcuicolaCapturaParametrosDetalle.Designer.vb">
       <DependentUpon>AcuicolaCapturaParametrosDetalle.vb</DependentUpon>
@@ -1685,6 +1701,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Formas\Acuicola\AcuicolaCapturaParametria.resx">
+      <DependentUpon>AcuicolaCapturaParametria.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Acuicola\AcuicolaCapturaAlimentacion.resx">
+      <DependentUpon>AcuicolaCapturaAlimentacion.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formas\Acuicola\AcuicolaCapturaParametrosDetalle.resx">
       <DependentUpon>AcuicolaCapturaParametrosDetalle.vb</DependentUpon>
     </EmbeddedResource>
