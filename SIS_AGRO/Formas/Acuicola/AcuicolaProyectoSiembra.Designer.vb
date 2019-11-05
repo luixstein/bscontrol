@@ -46,6 +46,8 @@ Partial Class AcuicolaProyectoSiembra
         Me.lblDisplayIDProyectoSiembra = New System.Windows.Forms.Label()
         Me.txtIDProyectoSiembra = New System.Windows.Forms.TextBox()
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.cboAñoFiltro = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.cboEstatusFiltro = New System.Windows.Forms.ComboBox()
         Me.Grid = New System.Windows.Forms.DataGridView()
@@ -187,7 +189,7 @@ Partial Class AcuicolaProyectoSiembra
         '
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
-        Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
+        Me.CboEstatus.Items.AddRange(New Object() {"A", "B"})
         Me.CboEstatus.Location = New System.Drawing.Point(259, 18)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
@@ -269,6 +271,8 @@ Partial Class AcuicolaProyectoSiembra
         '
         'gBoxBusquedaRapida
         '
+        Me.gBoxBusquedaRapida.Controls.Add(Me.Label2)
+        Me.gBoxBusquedaRapida.Controls.Add(Me.cboAñoFiltro)
         Me.gBoxBusquedaRapida.Controls.Add(Me.Label1)
         Me.gBoxBusquedaRapida.Controls.Add(Me.cboEstatusFiltro)
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
@@ -278,6 +282,24 @@ Partial Class AcuicolaProyectoSiembra
         Me.gBoxBusquedaRapida.TabIndex = 1
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Listado"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(481, 22)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(32, 13)
+        Me.Label2.TabIndex = 392
+        Me.Label2.Text = "Año :"
+        '
+        'cboAñoFiltro
+        '
+        Me.cboAñoFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboAñoFiltro.FormattingEnabled = True
+        Me.cboAñoFiltro.Location = New System.Drawing.Point(519, 19)
+        Me.cboAñoFiltro.Name = "cboAñoFiltro"
+        Me.cboAñoFiltro.Size = New System.Drawing.Size(67, 21)
+        Me.cboAñoFiltro.TabIndex = 391
         '
         'Label1
         '
@@ -391,4 +413,6 @@ Partial Class AcuicolaProyectoSiembra
     Friend WithEvents StatusStripEstado As StatusStrip
     Friend WithEvents tssLabel As ToolStripStatusLabel
     Friend WithEvents tssLabelEstado As ToolStripStatusLabel
+    Friend WithEvents Label2 As Label
+    Friend WithEvents cboAñoFiltro As ComboBox
 End Class

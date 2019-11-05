@@ -35,6 +35,10 @@ Public Class AcuicolaProyectoSiembra
         ' Add any initialization after the InitializeComponent() call.
 
         Try
+            Me.DesplegarDivisiones()
+            Me.DesplegarLotes()
+            Me.DesplegarAños()
+
             Me.msgElemento = "proyecto de siembra"
             Me.Run = False
             'Me.lstbElementos.ContextMenuStrip = Me.cMenuStripAccion
@@ -103,6 +107,13 @@ Public Class AcuicolaProyectoSiembra
 #End Region
 
 #Region "Eventos de objetos"
+
+    Private Sub AcuicolaProyectoSiembra_Load(sender As Object, e As EventArgs) Handles Me.Load
+        'Me.DesplegarDivisiones()
+        'Me.DesplegarLotes()
+        'Me.DesplegarAños()
+    End Sub
+
 #Region "Eventos de la lista de elementos"
     Private Sub Grid_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles Grid.CellClick
         Me.LlenaElemento(Me.Grid.CurrentRow.Cells("ID_PROYECTO_SIEMBRA").Value.ToString)
@@ -136,6 +147,12 @@ Public Class AcuicolaProyectoSiembra
         Me.Grid.DataSource = Nothing
         Me.DesplegarElementos()
     End Sub
+
+    Private Sub cboAñoFiltro_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboAñoFiltro.SelectedIndexChanged
+        Me.Grid.DataSource = Nothing
+        Me.DesplegarElementos()
+    End Sub
+
 #End Region
 
 #Region "Eventos Genericos"
@@ -163,7 +180,9 @@ Public Class AcuicolaProyectoSiembra
 
 #Region "Keydown específicos"
     Private Sub txtHA_KeyDown(sender As Object, e As KeyEventArgs) Handles txtHA.KeyDown
-        '
+        If e.KeyCode = Keys.Return Then
+            Me.tsbGrabar.PerformClick()
+        End If
     End Sub
 #End Region
 
@@ -248,183 +267,115 @@ Public Class AcuicolaProyectoSiembra
     End Sub
 
     Private Sub DesplegarElementos()
-        'Try
-        '    With Me.Grid
-        '        .DataSource = oProyecto.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
-        '        .Columns("CODIGO_ALMACEN").Width = 50
-        '        .Columns("NOMBRE_ALMACEN").Width = 200
-        '        .Columns("NOMBRE_ALMACEN").Width = 200
-        '        .Columns("NOMBRE_ALMACEN").Width = 200
-        '        .Columns("NOMBRE_ALMACEN").Width = 200
-        '        .Columns("NOMBRE_ALMACEN").Width = 200
-        '        .Columns("NOMBRE_ALMACEN").Width = 200
-        '    End With
-        'Catch ex As Exception
-        '    HandleError(Me.Name, "DesplegarElementos", ex)
-        'End Try
+        Try
+            With Me.Grid
+                .DataSource = oProyecto.ObtenerElementosFiltro(Me.cboEstatusFiltro.Text, Me.cboAñoFiltro.Text)
+                .Columns("ID_PROYECTO_SIEMBRA").Width = 50
+                .Columns("Ciclo").Width = 100
+                .Columns("Fecha inicio").Width = 110
+                .Columns("División").Width = 220
+                .Columns("Lote").Width = 100
+                .Columns("HA").Width = 50
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarElementos", ex)
+        End Try
     End Sub
 
     Private Sub LlenaElemento(ByVal iCodigo_Elemento As String)
-        'Try
-        '    Me.oProyecto.CODIGO_ALMACEN = iCodigo_Elemento
-        '    If Me.oProyecto.Consultar Then
-        '        With Me.oProyecto
-        '            Me.TxtCodigoAlmacen.Text = .CODIGO_ALMACEN.ToString
-        '            Me.TxtNombreAlmacen.Text = .NOMBRE_ALMACEN.ToString
-        '            Me.txtCuentaContable.Text = .CUENTA_CONTABLE
-        '            Dim sql As New Class_find("Select NOMBRE_CUENTA From CON_CAT_CUENTAS Where CUENTA_CONTABLE='" & txtCuentaContable.Text & "' ")
-        '            If sql.Result1 = "" Then
-        '            Else
-        '                lblNombreCuenta.Text = sql.Result1
-        '            End If
-        '            sql = Nothing
-
-        '            Me.txtCodigoZona.Text = .CODIGO_ZONA
-        '            sql = New Class_find("Select NOMBRE_ZONA From CAT_ZONAS Where CODIGO_ZONA='" & txtCodigoZona.Text & "' ")
-        '            If sql.Result1 = "" Then
-        '            Else
-        '                lblNombreZona.Text = sql.Result1
-        '            End If
-        '            sql = Nothing
-
-        '            Me.TxtCodigoCategoria.Text = .CODIGO_CATEGORIA
-        '            sql = New Class_find("Select NOMBRE_CATEGORIA From CAT_CATEGORIAS Where CODIGO_CATEGORIA='" & TxtCodigoCategoria.Text & "' ")
-        '            If sql.Result1 = "" Then
-        '            Else
-        '                LblNombreCategoria.Text = sql.Result1
-        '            End If
-        '            sql = Nothing
-
-        '            If .Estatus = "A" Then
-        '                Me.CboEstatus.SelectedIndex = 0
-        '            Else
-        '                Me.CboEstatus.SelectedIndex = 1
-        '            End If
-
-        '        End With
-        '    End If
-        'Catch ex As Exception
-        '    HandleError(Me.Name, "LlenaElemento", ex)
-        'End Try
+        Try
+            Me.oProyecto = New Class_ProyectoSiembraAcuicola(CInt(iCodigo_Elemento))
+            If Me.oProyecto.Consultar = True Then
+                With Me.oProyecto
+                    Me.txtIDProyectoSiembra.Text = .ID_PROYECTO_SIEMBRA.ToString
+                    Me.CboEstatus.Text = .ESTATUS
+                    Me.cboDivision.SelectedValue = .CODIGO_DIVISION.ToString
+                    Me.txtCiclo.Text = .CICLO.ToString
+                    Me.dtFecha.Value = .FECHA_INICIO
+                    Me.cboLote.SelectedValue = .CODIGO_LOTE
+                    Me.txtHA.Text = .HA.ToString
+                End With
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, "LlenaElemento", ex)
+        End Try
     End Sub
 
     Private Sub Grabar()
-        'Dim Grabado As Boolean = False
-        'Select Case Me.Estado
-        '    Case enumEstados.NUEVO, enumEstados.EDICION
-        '        Try
-        '            With Me.oProyecto
+        Dim bResultado As Boolean = False
+        Select Case Me.Estado
+            Case enumEstados.NUEVO, enumEstados.EDICION
+                Try
+                    With Me.oProyecto
+                        .ID_PROYECTO_SIEMBRA = CInt("0" & Me.txtIDProyectoSiembra.Text)
+                        .CICLO = CInt(Me.txtCiclo.Text)
+                        .FECHA_INICIO = Me.dtFecha.Value
+                        .CODIGO_DIVISION = CInt(Me.cboDivision.SelectedValue.ToString)
+                        .CODIGO_LOTE = Me.cboLote.SelectedValue.ToString
+                        .HA = valorNumericoD(Me.txtHA.Text)
+                        .ESTATUS = Me.CboEstatus.Text
 
-        '                .CODIGO_ALMACEN = Me.TxtCodigoAlmacen.Text
-        '                .NOMBRE_ALMACEN = Me.TxtNombreAlmacen.Text
-        '                '.Cuenta_Contable = Me.txtCuentaContable.Text
-        '                .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
-        '                .CODIGO_ZONA = Me.txtCodigoZona.Text
-        '                .CODIGO_CATEGORIA = Me.TxtCodigoCategoria.Text
 
-        '                Select Case Me.Estado
-        '                    Case enumEstados.NUEVO
-        '                        Me.oProyecto = New Class_CatAlmacenes
+                        Select Case Me.Estado
+                            Case enumEstados.NUEVO
+                                If .Grabar("INSERTAR") = True Then
+                                    bResultado = True
+                                    Me.Estado = enumEstados.CONSULTA
+                                End If
+                            Case enumEstados.EDICION
+                                If .Grabar("ACTUALIZAR") = True Then
+                                    bResultado = True
+                                    Me.Estado = enumEstados.CONSULTA
+                                End If
+                        End Select
 
-        '                        .GENERAR_CATEGORIA = Me.chkCrearCategoria.Checked
-        '                        .CODIGO_TIPO_CATEGORIA = Me.txtTipoCategoria.Text
+                    End With
 
-        '                        If .Insertar() = True Then
-        '                            Grabado = True
-        '                            Me.Estado = enumEstados.CONSULTA
+                    If bResultado = True Then
+                        MsgBox(Me.msgElemento & " grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
+                        Me.Refrescar()
+                        Me.Cambia_Estado()
+                    End If
 
-        '                        End If
-        '                    Case enumEstados.EDICION
-        '                        Me.oProyecto = New Class_CatAlmacenes(Me.TxtCodigoAlmacen.Text)
-
-        '                        If .NOMBRE_ALMACEN.ToUpper <> Me.TxtNombreAlmacen.Text.ToUpper Then
-        '                            If MsgBox("Modificó el nombre del almacén, automáticamente el sistema también cambiará el nombre de la cuenta contable." & vbCrLf &
-        '                                      "Desea continuar?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Me.Text) = MsgBoxResult.No Then
-        '                                Exit Sub
-        '                            End If
-        '                        End If
-
-        '                        .GENERAR_CATEGORIA = False
-        '                        .CODIGO_TIPO_CATEGORIA = ""
-
-        '                        If .Actualizar() = True Then
-        '                            Grabado = True
-        '                            Me.Estado = enumEstados.CONSULTA
-        '                        End If
-        '                End Select
-
-        '                If Grabado = True Then
-        '                    MsgBox(Me.msgElemento & " grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
-        '                    Me.Refrescar()
-        '                    Me.Cambia_Estado()
-        '                End If
-
-        '            End With
-        '        Catch ex As Exception
-        '            HandleError(Me.Name, "Grabar", ex)
-        '            Me.Estado = enumEstados.CONSULTA
-        '            Me.Cambia_Estado()
-        '        End Try
-        'End Select
+                Catch ex As Exception
+                    HandleError(Me.Name, "Grabar", ex)
+                    Me.Estado = enumEstados.CONSULTA
+                    Me.Cambia_Estado()
+                End Try
+        End Select
     End Sub
 
     Private Function Validar() As Boolean
-        '    Dim bResultado As Boolean = False
+        Dim bResultado As Boolean = False
 
-        '    Try
-        '        If txtLEN(Me.TxtNombreAlmacen.Text) = False Then
-        '            MsgBox("Asígne nombre al almacén", MsgBoxStyle.Exclamation, Me.Text)
-        '            Me.TxtNombreAlmacen.Focus()
-        '            Return bResultado
-        '        End If
+        Try
+            If Me.cboDivision.SelectedIndex = -1 Then
+                MsgBox("Seleccione la división.", MsgBoxStyle.Exclamation, Me.Text)
+                Return False
+            End If
 
-        '        If txtLEN(Me.txtCodigoZona.Text) = False Then
-        '            Me.lblNombreZona.Text = ""
-        '            MsgBox("Asígne un código de zona.", MsgBoxStyle.Exclamation, Me.Text)
-        '            Me.txtCodigoZona.Focus()
-        '            Return bResultado
-        '        Else
-        '            Dim sql1 As New Class_find("SELECT CODIGO_ZONA FROM CAT_ZONAS WHERE CODIGO_ZONA='" & Me.txtCodigoZona.Text & "' ")
+            If valorNumericoD(Me.txtCiclo.Text) <= 0 Then
+                MsgBox("Asíge el ciclo.", MsgBoxStyle.Exclamation, Me.Text)
+                Return False
+            End If
 
-        '            If txtLEN(sql1.Result1) = False Then
-        '                MsgBox("El código de zona no existe.", MsgBoxStyle.Exclamation, Me.Text)
-        '                Me.txtCodigoZona.Focus()
-        '                Return bResultado
-        '            End If
-        '        End If
+            If Me.cboLote.SelectedIndex = -1 Then
+                MsgBox("Seleccione el estanque.", MsgBoxStyle.Exclamation, Me.Text)
+                Return False
+            End If
 
-        '        Select Case Me.chkCrearCategoria.Checked
-        '            Case False
-        '                If txtLEN(Me.TxtCodigoCategoria.Text) = False Then
-        '                    MsgBox("Seleccione una categoría, en caso de no tener, puede usar la 0.", MsgBoxStyle.Exclamation, Me.Text)
-        '                    Me.TxtCodigoCategoria.Focus()
-        '                    Return False
-        '                End If
-        '            Case True
-        '                If txtLEN(Me.txtTipoCategoria.Text) = False Then
-        '                    MsgBox("Seleccione el tipo de categoría.", MsgBoxStyle.Exclamation, Me.Text)
-        '                    Me.txtTipoCategoria.Focus()
-        '                    Return False
-        '                End If
-        '        End Select
+            If valorNumericoD(Me.txtHA.Text) <= 0 Then
+                MsgBox("Asíge las hectáreas.", MsgBoxStyle.Exclamation, Me.Text)
+                Return False
+            End If
 
-        '        'Me.oCuenta.CUENTA_CONTABLE = Me.txtCuentaContable.Text
-        '        'If Me.oCuenta.Consultar = False Then
-        '        '    MsgBox("La cuenta contable que intenta guardar no es válida, favor de revisar", MsgBoxStyle.Exclamation, "Validación de la cuenta contable")
-        '        '    Me.txtCuentaContable.Focus()
-        '        '    Exit Sub
-        '        'End If
-        '        'If oCuenta.isCuentaContableValida(Me.txtCuentaContable.Text, False) = False Then
-        '        '    MsgBox("La cuenta contable del almacen debe de ser de mayor", MsgBoxStyle.Exclamation, Me.Text)
-        '        '    Me.txtCuentaContable.Focus()
-        '        '    Exit Sub
-        '        'End If
+            bResultado = True
 
-        '        bResultado = True
-        '    Catch ex As Exception
-        '        HandleError(Me.Name, "Validar", ex)
-        '    End Try
-        '    Return bResultado
+        Catch ex As Exception
+            HandleError(Me.Name, "Validar", ex)
+        End Try
+
+        Return bResultado
     End Function
 
     Private Sub DesplegarDivisiones()
@@ -442,6 +393,35 @@ Public Class AcuicolaProyectoSiembra
             End With
         Catch ex As Exception
             HandleError(Me.Name, "DesplegarDivisiones", ex)
+        End Try
+    End Sub
+
+    Private Sub DesplegarLotes()
+        Dim oLotes As New Class_CatLotes
+        Try
+            With Me.cboLote
+                .DisplayMember = "NOMBRE_LOTE"
+                .ValueMember = "CODIGO_LOTE"
+                Dim dView As New Data.DataView(oLotes.ObtenerElementosActivos)
+                dView.Sort = "NOMBRE_LOTE"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedIndex = -1
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarLotes", ex)
+        End Try
+    End Sub
+
+    Private Sub DesplegarAños()
+        Try
+            For i = 2000 To 2200
+                Me.cboAñoFiltro.Items.Add(i.ToString)
+            Next
+            Me.cboAñoFiltro.Text = Date.Now.Year.ToString
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarLotes", ex)
         End Try
     End Sub
 
