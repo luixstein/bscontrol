@@ -179,6 +179,7 @@
     <Compile Include="Clases\Acuicola\Class_Acuicola_Alimentacion_Global.vb" />
     <Compile Include="Clases\Acuicola\Class_Acuicola_Parametros_Global.vb" />
     <Compile Include="Clases\Acuicola\Class_Acuicola_CapturaParametros.vb" />
+    <Compile Include="Clases\Acuicola\Class_ProyectoSiembraAcuicola.vb" />
     <Compile Include="Clases\Administracion\Class_Sis_Administracion_Clientes.vb" />
     <Compile Include="Clases\Bancos\Class_Conciliacion_Bancaria.vb" />
     <Compile Include="Clases\Catalogos\Class_CatAgenciaAduanales.vb" />
@@ -422,6 +423,12 @@
       <DependentUpon>AcuicolaCapturaParametrosDetalle.vb</DependentUpon>
     </Compile>
     <Compile Include="Formas\Acuicola\AcuicolaCapturaParametrosDetalle.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Acuicola\AcuicolaProyectoSiembra.Designer.vb">
+      <DependentUpon>AcuicolaProyectoSiembra.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Acuicola\AcuicolaProyectoSiembra.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Administracion\Sis_administracion_clientes.Designer.vb">
@@ -1709,6 +1716,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Acuicola\AcuicolaCapturaParametrosDetalle.resx">
       <DependentUpon>AcuicolaCapturaParametrosDetalle.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Acuicola\AcuicolaProyectoSiembra.resx">
+      <DependentUpon>AcuicolaProyectoSiembra.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Administracion\Sis_administracion_clientes.resx">
       <DependentUpon>Sis_administracion_clientes.vb</DependentUpon>

@@ -91,12 +91,12 @@ Partial Public Class AppMenu
         Me.ZonasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PropietariosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PlazasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.DocumentosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AcuicolaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DivisionesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ParametrosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ParametrosDetalleToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.RelacionParametrosDocumentosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DocumentosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuContabilidad = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuContabilidadMovimientos = New System.Windows.Forms.ToolStripMenuItem()
         Me.CapturaDePolizasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -236,6 +236,7 @@ Partial Public Class AppMenu
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
+        Me.ProyectoSiembraAcuícolaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -584,50 +585,50 @@ Partial Public Class AppMenu
         'CultivosToolStripMenuItem
         '
         Me.CultivosToolStripMenuItem.Name = "CultivosToolStripMenuItem"
-        Me.CultivosToolStripMenuItem.Size = New System.Drawing.Size(147, 22)
+        Me.CultivosToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.CultivosToolStripMenuItem.Text = "Cultivos"
         '
         'EnvasesToolStripMenuItem
         '
         Me.EnvasesToolStripMenuItem.Name = "EnvasesToolStripMenuItem"
-        Me.EnvasesToolStripMenuItem.Size = New System.Drawing.Size(147, 22)
+        Me.EnvasesToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.EnvasesToolStripMenuItem.Text = "Envases"
         '
         'EtiquetasToolStripMenuItem
         '
         Me.EtiquetasToolStripMenuItem.Name = "EtiquetasToolStripMenuItem"
-        Me.EtiquetasToolStripMenuItem.Size = New System.Drawing.Size(147, 22)
+        Me.EtiquetasToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.EtiquetasToolStripMenuItem.Text = "Etiquetas"
         '
         'TamañosToolStripMenuItem
         '
         Me.TamañosToolStripMenuItem.Name = "TamañosToolStripMenuItem"
-        Me.TamañosToolStripMenuItem.Size = New System.Drawing.Size(147, 22)
+        Me.TamañosToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.TamañosToolStripMenuItem.Text = "Tamaños"
         '
         'TiposEnvaseToolStripMenuItem
         '
         Me.TiposEnvaseToolStripMenuItem.Name = "TiposEnvaseToolStripMenuItem"
-        Me.TiposEnvaseToolStripMenuItem.Size = New System.Drawing.Size(147, 22)
+        Me.TiposEnvaseToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.TiposEnvaseToolStripMenuItem.Text = "Tipos envase"
         Me.TiposEnvaseToolStripMenuItem.Visible = False
         '
         'TiposTamañoToolStripMenuItem
         '
         Me.TiposTamañoToolStripMenuItem.Name = "TiposTamañoToolStripMenuItem"
-        Me.TiposTamañoToolStripMenuItem.Size = New System.Drawing.Size(147, 22)
+        Me.TiposTamañoToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.TiposTamañoToolStripMenuItem.Text = "Tipos tamaño"
         Me.TiposTamañoToolStripMenuItem.Visible = False
         '
         'ToolStripMenuItem2
         '
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(144, 6)
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(149, 6)
         '
         'ProductosToolStripMenuItem
         '
         Me.ProductosToolStripMenuItem.Name = "ProductosToolStripMenuItem"
-        Me.ProductosToolStripMenuItem.Size = New System.Drawing.Size(147, 22)
+        Me.ProductosToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.ProductosToolStripMenuItem.Text = "Productos"
         '
         'VentasToolStripMenuItem
@@ -679,15 +680,9 @@ Partial Public Class AppMenu
         Me.PlazasToolStripMenuItem.Size = New System.Drawing.Size(178, 22)
         Me.PlazasToolStripMenuItem.Text = "Plazas"
         '
-        'DocumentosToolStripMenuItem
-        '
-        Me.DocumentosToolStripMenuItem.Name = "DocumentosToolStripMenuItem"
-        Me.DocumentosToolStripMenuItem.Size = New System.Drawing.Size(178, 22)
-        Me.DocumentosToolStripMenuItem.Text = "Documentos"
-        '
         'AcuicolaToolStripMenuItem
         '
-        Me.AcuicolaToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DivisionesToolStripMenuItem, Me.ParametrosToolStripMenuItem, Me.ParametrosDetalleToolStripMenuItem, Me.RelacionParametrosDocumentosToolStripMenuItem})
+        Me.AcuicolaToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DivisionesToolStripMenuItem, Me.ParametrosToolStripMenuItem, Me.ParametrosDetalleToolStripMenuItem, Me.RelacionParametrosDocumentosToolStripMenuItem, Me.ProyectoSiembraAcuícolaToolStripMenuItem})
         Me.AcuicolaToolStripMenuItem.Name = "AcuicolaToolStripMenuItem"
         Me.AcuicolaToolStripMenuItem.Size = New System.Drawing.Size(178, 22)
         Me.AcuicolaToolStripMenuItem.Text = "Acuicola"
@@ -718,6 +713,12 @@ Partial Public Class AppMenu
         Me.RelacionParametrosDocumentosToolStripMenuItem.Text = "Relacion parametros documentos"
         Me.RelacionParametrosDocumentosToolStripMenuItem.Visible = False
         '
+        'DocumentosToolStripMenuItem
+        '
+        Me.DocumentosToolStripMenuItem.Name = "DocumentosToolStripMenuItem"
+        Me.DocumentosToolStripMenuItem.Size = New System.Drawing.Size(178, 22)
+        Me.DocumentosToolStripMenuItem.Text = "Documentos"
+        '
         'MenuContabilidad
         '
         Me.MenuContabilidad.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuContabilidadMovimientos, Me.ConsultasToolStripMenuItem, Me.MenuiContabilidadProcesos, Me.ContraseñasToolStripMenuItem, Me.ElectrónicaToolStripMenuItem})
@@ -730,7 +731,7 @@ Partial Public Class AppMenu
         '
         Me.MenuContabilidadMovimientos.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CapturaDePolizasToolStripMenuItem, Me.IVAAcreditableToolStripMenuItem, Me.PólizasDeCostosToolStripMenuItem})
         Me.MenuContabilidadMovimientos.Name = "MenuContabilidadMovimientos"
-        Me.MenuContabilidadMovimientos.Size = New System.Drawing.Size(144, 22)
+        Me.MenuContabilidadMovimientos.Size = New System.Drawing.Size(152, 22)
         Me.MenuContabilidadMovimientos.Tag = "0048"
         Me.MenuContabilidadMovimientos.Text = "&Movimientos"
         '
@@ -757,7 +758,7 @@ Partial Public Class AppMenu
         '
         Me.ConsultasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AuxiliarDeMayorToolStripMenuItem, Me.RelacionesAnaliticasToolStripMenuItem, Me.CostosToolStripMenuItem, Me.CostoDeProduccionToolStripMenuItem, Me.EstadosFinancierosToolStripMenuItem, Me.IvaPorAcreditarToolStripMenuItem, Me.PolizaDeEgresosToolStripMenuItem, Me.PresupuestoToolStripMenuItem, Me.ReporteGlobalDePolizasToolStripMenuItem, Me.SaldosDeCuentasToolStripMenuItem, Me.ConceptosDeINEGIToolStripMenuItem, Me.NavegadorDePresupuestosToolStripMenuItem, Me.NavegadorDeCostosToolStripMenuItem, Me.ReporteDeCostosToolStripMenuItem})
         Me.ConsultasToolStripMenuItem.Name = "ConsultasToolStripMenuItem"
-        Me.ConsultasToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
+        Me.ConsultasToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.ConsultasToolStripMenuItem.Tag = "0050"
         Me.ConsultasToolStripMenuItem.Text = "&Consultas"
         '
@@ -855,7 +856,7 @@ Partial Public Class AppMenu
         '
         Me.MenuiContabilidadProcesos.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SelecciónDeEjerciciosToolStripMenuItem, Me.AbrircerrarEjerciciosToolStripMenuItem})
         Me.MenuiContabilidadProcesos.Name = "MenuiContabilidadProcesos"
-        Me.MenuiContabilidadProcesos.Size = New System.Drawing.Size(144, 22)
+        Me.MenuiContabilidadProcesos.Size = New System.Drawing.Size(152, 22)
         Me.MenuiContabilidadProcesos.Tag = "0056"
         Me.MenuiContabilidadProcesos.Text = "&Procesos"
         '
@@ -875,13 +876,13 @@ Partial Public Class AppMenu
         'ContraseñasToolStripMenuItem
         '
         Me.ContraseñasToolStripMenuItem.Name = "ContraseñasToolStripMenuItem"
-        Me.ContraseñasToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
+        Me.ContraseñasToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.ContraseñasToolStripMenuItem.Text = "C&ontraseñas"
         '
         'ElectrónicaToolStripMenuItem
         '
         Me.ElectrónicaToolStripMenuItem.Name = "ElectrónicaToolStripMenuItem"
-        Me.ElectrónicaToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
+        Me.ElectrónicaToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.ElectrónicaToolStripMenuItem.Text = "Electrónica"
         '
         'MenuSalir
@@ -1614,6 +1615,12 @@ Partial Public Class AppMenu
         Me.pbLogo.TabStop = False
         Me.pbLogo.Visible = False
         '
+        'ProyectoSiembraAcuícolaToolStripMenuItem
+        '
+        Me.ProyectoSiembraAcuícolaToolStripMenuItem.Name = "ProyectoSiembraAcuícolaToolStripMenuItem"
+        Me.ProyectoSiembraAcuícolaToolStripMenuItem.Size = New System.Drawing.Size(252, 22)
+        Me.ProyectoSiembraAcuícolaToolStripMenuItem.Text = "Proyecto siembra acuícola"
+        '
         'AppMenu
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1855,4 +1862,5 @@ Partial Public Class AppMenu
     Friend WithEvents CapturaParámetrosToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CapturaAlimentaciónToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CapturaParametríaToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ProyectoSiembraAcuícolaToolStripMenuItem As ToolStripMenuItem
 End Class

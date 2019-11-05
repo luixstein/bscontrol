@@ -1,5 +1,4 @@
 Option Strict On
-Imports System.Data
 Imports System.Data.SqlClient
 
 Public Class Catalogo_Almacenes
@@ -28,6 +27,7 @@ Public Class Catalogo_Almacenes
     Private msgElemento As String
     Private msgElementos As String
 #End Region
+
 #Region "Campos de sistema"
     Private _Nombre_Catalogo As String
     Private _Nombre_Reporte As String
@@ -55,6 +55,7 @@ Public Class Catalogo_Almacenes
 #Region "Propiedades de campos privados"
 
 #End Region
+
 #Region "Propiedades de campos de sistema"
     Public ReadOnly Property Nombre_Catalogo() As String
         Get
@@ -613,9 +614,9 @@ Enter:
 
 #End Region
 
-    Private Sub CboFiltroHoja_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.Refrescar()
-    End Sub
+    'Private Sub CboFiltroHoja_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    '    Me.Refrescar()
+    'End Sub
 
     Private Sub chkCrearCategoria_CheckedChanged(sender As Object, e As EventArgs) Handles chkCrearCategoria.CheckedChanged
         If Me.chkCrearCategoria.Checked = True AndAlso Me.Estado = enumEstados.NUEVO Then
