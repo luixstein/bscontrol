@@ -38,6 +38,10 @@ Partial Class Catalogo_Parametros_Acuicola_Detalle
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.txtID = New System.Windows.Forms.TextBox()
+        Me.LblNombreDivision = New System.Windows.Forms.Label()
+        Me.lblCodigoDivision = New System.Windows.Forms.Label()
+        Me.TxtCodigoDivision = New System.Windows.Forms.TextBox()
         Me.lblNombreLote = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.LblNumeroCanastas = New System.Windows.Forms.Label()
@@ -174,6 +178,10 @@ Partial Class Catalogo_Parametros_Acuicola_Detalle
         '
         'gBoxInformacion
         '
+        Me.gBoxInformacion.Controls.Add(Me.txtID)
+        Me.gBoxInformacion.Controls.Add(Me.LblNombreDivision)
+        Me.gBoxInformacion.Controls.Add(Me.lblCodigoDivision)
+        Me.gBoxInformacion.Controls.Add(Me.TxtCodigoDivision)
         Me.gBoxInformacion.Controls.Add(Me.lblNombreLote)
         Me.gBoxInformacion.Controls.Add(Me.Label2)
         Me.gBoxInformacion.Controls.Add(Me.LblNumeroCanastas)
@@ -189,10 +197,49 @@ Partial Class Catalogo_Parametros_Acuicola_Detalle
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
         '
+        'txtID
+        '
+        Me.txtID.Location = New System.Drawing.Point(80, 183)
+        Me.txtID.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtID.MaxLength = 50
+        Me.txtID.Name = "txtID"
+        Me.txtID.Size = New System.Drawing.Size(97, 22)
+        Me.txtID.TabIndex = 96
+        Me.txtID.Visible = False
+        '
+        'LblNombreDivision
+        '
+        Me.LblNombreDivision.AutoSize = True
+        Me.LblNombreDivision.Location = New System.Drawing.Point(189, 26)
+        Me.LblNombreDivision.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNombreDivision.Name = "LblNombreDivision"
+        Me.LblNombreDivision.Size = New System.Drawing.Size(16, 17)
+        Me.LblNombreDivision.TabIndex = 95
+        Me.LblNombreDivision.Text = "_"
+        '
+        'lblCodigoDivision
+        '
+        Me.lblCodigoDivision.AutoSize = True
+        Me.lblCodigoDivision.Location = New System.Drawing.Point(13, 26)
+        Me.lblCodigoDivision.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblCodigoDivision.Name = "lblCodigoDivision"
+        Me.lblCodigoDivision.Size = New System.Drawing.Size(107, 17)
+        Me.lblCodigoDivision.TabIndex = 94
+        Me.lblCodigoDivision.Text = "Código división:"
+        '
+        'TxtCodigoDivision
+        '
+        Me.TxtCodigoDivision.Location = New System.Drawing.Point(128, 23)
+        Me.TxtCodigoDivision.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtCodigoDivision.MaxLength = 4
+        Me.TxtCodigoDivision.Name = "TxtCodigoDivision"
+        Me.TxtCodigoDivision.Size = New System.Drawing.Size(49, 22)
+        Me.TxtCodigoDivision.TabIndex = 0
+        '
         'lblNombreLote
         '
         Me.lblNombreLote.AutoSize = True
-        Me.lblNombreLote.Location = New System.Drawing.Point(184, 22)
+        Me.lblNombreLote.Location = New System.Drawing.Point(189, 66)
         Me.lblNombreLote.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblNombreLote.Name = "lblNombreLote"
         Me.lblNombreLote.Size = New System.Drawing.Size(16, 17)
@@ -211,7 +258,7 @@ Partial Class Catalogo_Parametros_Acuicola_Detalle
         'LblNumeroCanastas
         '
         Me.LblNumeroCanastas.AutoSize = True
-        Me.LblNumeroCanastas.Location = New System.Drawing.Point(8, 73)
+        Me.LblNumeroCanastas.Location = New System.Drawing.Point(8, 113)
         Me.LblNumeroCanastas.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblNumeroCanastas.Name = "LblNumeroCanastas"
         Me.LblNumeroCanastas.Size = New System.Drawing.Size(147, 17)
@@ -220,17 +267,17 @@ Partial Class Catalogo_Parametros_Acuicola_Detalle
         '
         'TxtNumeroCanastas
         '
-        Me.TxtNumeroCanastas.Location = New System.Drawing.Point(163, 70)
+        Me.TxtNumeroCanastas.Location = New System.Drawing.Point(163, 110)
         Me.TxtNumeroCanastas.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNumeroCanastas.MaxLength = 50
         Me.TxtNumeroCanastas.Name = "TxtNumeroCanastas"
         Me.TxtNumeroCanastas.Size = New System.Drawing.Size(97, 22)
-        Me.TxtNumeroCanastas.TabIndex = 1
+        Me.TxtNumeroCanastas.TabIndex = 2
         '
         'LblCodigo
         '
         Me.LblCodigo.AutoSize = True
-        Me.LblCodigo.Location = New System.Drawing.Point(8, 22)
+        Me.LblCodigo.Location = New System.Drawing.Point(13, 66)
         Me.LblCodigo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblCodigo.Name = "LblCodigo"
         Me.LblCodigo.Size = New System.Drawing.Size(87, 17)
@@ -239,12 +286,12 @@ Partial Class Catalogo_Parametros_Acuicola_Detalle
         '
         'TxtCodigoLote
         '
-        Me.TxtCodigoLote.Location = New System.Drawing.Point(101, 19)
+        Me.TxtCodigoLote.Location = New System.Drawing.Point(128, 63)
         Me.TxtCodigoLote.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigoLote.MaxLength = 4
         Me.TxtCodigoLote.Name = "TxtCodigoLote"
-        Me.TxtCodigoLote.Size = New System.Drawing.Size(75, 22)
-        Me.TxtCodigoLote.TabIndex = 0
+        Me.TxtCodigoLote.Size = New System.Drawing.Size(49, 22)
+        Me.TxtCodigoLote.TabIndex = 1
         '
         'ErrorProvider
         '
@@ -264,7 +311,7 @@ Partial Class Catalogo_Parametros_Acuicola_Detalle
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Parametros_Acuicola_Detalle"
         Me.ShowIcon = False
-        Me.Text = "Catálogo conceptos"
+        Me.Text = "Catálogo parametros acuícola detalle"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()
         Me.gBoxBusquedaRapida.ResumeLayout(False)
@@ -300,4 +347,8 @@ Partial Class Catalogo_Parametros_Acuicola_Detalle
     Friend WithEvents ErrorProvider As System.Windows.Forms.ErrorProvider
     Friend WithEvents Grid As System.Windows.Forms.DataGridView
     Friend WithEvents lblNombreLote As System.Windows.Forms.Label
+    Friend WithEvents LblNombreDivision As System.Windows.Forms.Label
+    Friend WithEvents lblCodigoDivision As System.Windows.Forms.Label
+    Friend WithEvents TxtCodigoDivision As System.Windows.Forms.TextBox
+    Friend WithEvents txtID As System.Windows.Forms.TextBox
 End Class

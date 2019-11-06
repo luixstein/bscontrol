@@ -82,7 +82,7 @@
 
     Private Sub txtCiclo_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCiclo.KeyDown
         If e.KeyCode = Keys.Return Then
-            If txtLEN(Me.txtCiclo.Text) = True AndAlso CInt(Me.txtCiclo.Text) > 0 Then
+            If txtLEN(Me.txtCiclo.Text) = True AndAlso CInt(Me.txtCiclo.Text) > 0 AndAlso Me.cboDivision.SelectedIndex <> -1 Then
                 Me.Grid.Locked = False
                 Me.Grid.Cell(1, Me.iGyNombreLote).SetFocus()
             End If
@@ -108,8 +108,23 @@
     End Sub
 
     Private Sub Grid_KeyDown(Sender As Object, e As KeyEventArgs) Handles Grid.KeyDown
-        'Que el f6 de lotes(estanques) sólo cargue los del plan según la división y ciclo, y año
         Me.GestionaGrid(e)
+    End Sub
+
+    Private Sub Grid_MouseClick(sender As Object, e As MouseEventArgs) Handles Grid.MouseClick
+        If Me.cboDivision.SelectedIndex = -1 Then
+            MsgBox("Seleccione una división.", MsgBoxStyle.Exclamation, Me.Name)
+            Me.cboDivision.Focus()
+            Exit Sub
+        End If
+
+        If txtLEN(Me.txtCiclo.Text) = False Then
+            MsgBox("Capture el ciclo.", MsgBoxStyle.Exclamation, Me.Name)
+            Me.txtCiclo.Focus()
+            Exit Sub
+        End If
+
+        Me.Grid.Locked = False
     End Sub
 
 #Region "Eventos Genericos"
@@ -199,9 +214,9 @@
                 .Column(Me.iGyIDProyectoSiembra).Locked = True
                 .Column(Me.iGyCodigoLote).Locked = True
 
-                '.Column(Me.iGyIdCapturaParametroDetalle).Visible = False
-                '.Column(Me.iGyIDProyectoSiembra).Visible = False
-                '.Column(Me.iGyCodigoLote).Visible = False
+                .Column(Me.iGyIdCapturaAlimentacionDetalle).Visible = False
+                .Column(Me.iGyIDProyectoSiembra).Visible = False
+                .Column(Me.iGyCodigoLote).Visible = False
 
                 .Column(Me.iGyAlimento).FormatString = "##0"
                 .Column(Me.iGyAlimento).Mask = FlexCell.MaskEnum.Numeric
@@ -495,7 +510,7 @@
                 Return False
             End If
 
-            If Me.Grid.Cell(1, Me.iGyIdCapturaAlimentacionDetalle).Text = "0" Then
+            If Me.Grid.Rows = 2 And Me.Grid.Cell(1, Me.iGyIdCapturaAlimentacionDetalle).Text = "0" Then
                 MsgBox("Capture el detalle de la alimentación.", MsgBoxStyle.Exclamation, Me.Name)
                 Me.Grid.Cell(1, Me.iGyNombreLote).SetFocus()
                 Return False
@@ -504,12 +519,51 @@
             Dim oParametroDetalle As Class_CatParametrosAcuicolaDetalle
 
             For i = 1 To Me.Grid.Rows - 1
-                oParametroDetalle = New Class_CatParametrosAcuicolaDetalle(Me.Grid.Cell(i, Me.iGyCodigoLote).Text)
+                If Me.Grid.Cell(i, Me.iGyIdCapturaAlimentacionDetalle).Text <> "0" Then
 
-                If Len(Me.Grid.Cell(i, Me.iGyCanastas).Text) <> oParametroDetalle.Numero_Canastas Then
-                    MsgBox("Las canastas permitidas para el estanque #" & Me.Grid.Cell(i, Me.iGyNombreLote).Text & " debe ser " & oParametroDetalle.Numero_Canastas, MsgBoxStyle.Exclamation, Me.Name)
-                    Me.Grid.Cell(i, Me.iGyCanastas).SetFocus()
-                    Return False
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyAlimento).Text) = False Then
+                        MsgBox("Capture el alimento del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                        Me.Grid.Cell(i, Me.iGyAlimento).SetFocus()
+                        Return False
+                    End If
+
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyCanastas).Text) = False Then
+                        MsgBox("Capture las canastas del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                        Me.Grid.Cell(i, Me.iGyCanastas).SetFocus()
+                        Return False
+                    End If
+
+                    oParametroDetalle = New Class_CatParametrosAcuicolaDetalle(Me.cboDivision.SelectedValue, Me.Grid.Cell(i, Me.iGyCodigoLote).Text)
+
+                    If oParametroDetalle.Existe = True Then
+                        If Len(Me.Grid.Cell(i, Me.iGyCanastas).Text) <> oParametroDetalle.Numero_Canastas Then
+                            MsgBox("Las canastas permitidas para el estanque #" & Me.Grid.Cell(i, Me.iGyNombreLote).Text & " debe ser " & oParametroDetalle.Numero_Canastas, MsgBoxStyle.Exclamation, Me.Name)
+                            Me.Grid.Cell(i, Me.iGyCanastas).SetFocus()
+                            Return False
+                        End If
+                    Else
+                        MsgBox("Las canastas para el estanque #" & Me.Grid.Cell(i, Me.iGyNombreLote).Text & " de la división " & Me.cboDivision.Text & " no han sido definidas en el catalogo.", MsgBoxStyle.Exclamation, Me.Name)
+                        Return False
+                    End If
+
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyMuertos).Text) = False Then
+                        MsgBox("Capture los muertos del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                        Me.Grid.Cell(i, Me.iGyMuertos).SetFocus()
+                        Return False
+                    End If
+
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyOxigeno).Text) = False Then
+                        MsgBox("Capture el oxígeno del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                        Me.Grid.Cell(i, Me.iGyOxigeno).SetFocus()
+                        Return False
+                    End If
+
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyTemperatura).Text) = False Then
+                        MsgBox("Capture la temperatura del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                        Me.Grid.Cell(i, Me.iGyOxigeno).SetFocus()
+                        Return False
+                    End If
+
                 End If
             Next
 
@@ -526,6 +580,7 @@
         Dim sProcedure As String = "GestionaGrid"
         Try
 
+            Dim sql As Class_find
             Dim Columna As Integer, Renglon As Integer, sCodigo As String
 
             Columna = Me.Grid.Selection.FirstCol
@@ -535,16 +590,11 @@
                 Case Keys.Enter
                     Select Case Columna
                         Case Me.iGyNombreLote
-                            If txtLEN(Me.Grid.Cell(Renglon, Me.iGyNombreLote).Text) = False Then
+                            If txtLEN(Me.Grid.Cell(Renglon, Me.iGyNombreLote).Text) = False Or txtLEN(Me.Grid.Cell(Renglon, Me.iGyIDProyectoSiembra).Text) = False Then
                                 GoTo Busqueda
                             End If
 
                         Case Me.iGyTemperatura
-                            If Me.Grid.Rows > 2 Then
-                                Me.Grid.Cell(Renglon, Me.iGyIdCapturaAlimentacionDetalle).Text = CInt(Me.Grid.Cell(Renglon - 1, Me.iGyIdCapturaAlimentacionDetalle).Text) + 1
-                            Else
-                                Me.Grid.Cell(Renglon, Me.iGyIdCapturaAlimentacionDetalle).Text = CInt(Me.Grid.Cell(Renglon, Me.iGyIdCapturaAlimentacionDetalle).Text) + 1
-                            End If
 
                             If Me.Grid.Rows - 1 = Renglon Then
                                 Me.Grid.Rows = Me.Grid.Rows + 1
@@ -560,40 +610,19 @@
 Busqueda:
                             sCodigo = oAlimentacion.BusquedaVisual_Lote_ProyectoSiembra_PorNombre(Me.cboDivision.SelectedValue.ToString, Me.txtCiclo.Text, Me.dtFecha.Value.Year.ToString)
                             Me.Grid.Cell(Renglon, Me.iGyIDProyectoSiembra).Text = sCodigo
-                            Dim sql As New Class_find("SELECT P.CODIGO_LOTE,L.NOMBRE_LOTE FROM PROYECTO_SIEMBRA_ACUICOLA P INNER JOIN CAT_LOTES L ON(P.CODIGO_LOTE=L.CODIGO_LOTE) WHERE P.ID_PROYECTO_SIEMBRA =" & sCodigo)
+                            sql = New Class_find("SELECT P.CODIGO_LOTE,L.NOMBRE_LOTE FROM PROYECTO_SIEMBRA_ACUICOLA P INNER JOIN CAT_LOTES L ON(P.CODIGO_LOTE=L.CODIGO_LOTE) WHERE P.ID_PROYECTO_SIEMBRA =" & sCodigo)
 
                             Me.Grid.Cell(Renglon, Me.iGyCodigoLote).Text = sql.Result1
                             Me.Grid.Cell(Renglon, Me.iGyNombreLote).Text = sql.Result2
 
+                            If Me.Grid.Rows > 2 Then
+                                Me.Grid.Cell(Renglon, Me.iGyIdCapturaAlimentacionDetalle).Text = CInt(Me.Grid.Cell(Renglon - 1, Me.iGyIdCapturaAlimentacionDetalle).Text) + 1
+                            Else
+                                Me.Grid.Cell(Renglon, Me.iGyIdCapturaAlimentacionDetalle).Text = CInt(Me.Grid.Cell(Renglon, Me.iGyIdCapturaAlimentacionDetalle).Text) + 1
+                            End If
+
                     End Select
             End Select
-            '            dCantidad = CDec(valorNumerico(Me.Grid.Cell(Renglon, Me.igyCantidad).Text))
-
-            '            Select Case e.KeyCode
-            '                Case Keys.Enter
-            '                    Select Case Columna
-            '                        Case Me.igyCantidad
-            '                            If dCantidad <= 0 Then
-            '                                Me.Grid.Cell(Renglon, Me.igyCantidad).Text = "0"
-            '                                Me.Grid.Refresh()
-            '                                'MsgBox("La cantidad debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
-            '                                Me.Grid.Cell(Renglon, Me.igyDescripcion).SetFocus()
-            '                                GoTo Sigue
-            '                            End If
-            '                            If Me.ValidarDisponible(Renglon) = False Then
-            '                                Me.Grid.Cell(Renglon, Me.igyCantidad).Text = "0"
-            '                                Me.Grid.Refresh() 'Si no se pone , no se refresca el 0 de inmediato, hasta que se mueva el foco al parecer.
-            '                                Me.Grid.Cell(Renglon, Me.igyDescripcion).SetFocus()
-            '                                GoTo Sigue
-            '                            End If
-            '                    End Select
-            'Sigue:
-            '                    Me.Totales()
-
-            '                Case Keys.F6
-            '                    'FALTA
-
-            '            End Select
 
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)

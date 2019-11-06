@@ -79,7 +79,7 @@
 
     Private Sub txtCiclo_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCiclo.KeyDown
         If e.KeyCode = Keys.Return Then
-            If txtLEN(Me.txtCiclo.Text) = True AndAlso CInt(Me.txtCiclo.Text) > 0 Then
+            If txtLEN(Me.txtCiclo.Text) = True AndAlso CInt(Me.txtCiclo.Text) > 0 AndAlso Me.cboDivision.SelectedIndex <> -1 Then
                 Me.Grid.Locked = False
                 Me.Grid.Cell(1, Me.iGyNombreLote).SetFocus()
             End If
@@ -105,9 +105,25 @@
     End Sub
 
     Private Sub Grid_KeyDown(Sender As Object, e As KeyEventArgs) Handles Grid.KeyDown
-        'Que el f6 de lotes(estanques) sólo cargue los del plan según la división y ciclo, y año
         Me.GestionaGrid(e)
     End Sub
+
+    Private Sub Grid_MouseClick(sender As Object, e As MouseEventArgs) Handles Grid.MouseClick
+        If Me.cboDivision.SelectedIndex = -1 Then
+            MsgBox("Seleccione una división.", MsgBoxStyle.Exclamation, Me.Name)
+            Me.cboDivision.Focus()
+            Exit Sub
+        End If
+
+        If txtLEN(Me.txtCiclo.Text) = False Then
+            MsgBox("Capture el ciclo.", MsgBoxStyle.Exclamation, Me.Name)
+            Me.txtCiclo.Focus()
+            Exit Sub
+        End If
+
+        Me.Grid.Locked = False
+    End Sub
+
 
 #Region "Eventos Genericos"
     Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dtFecha.KeyDown, cboTurno.KeyDown, cboDivision.KeyDown
@@ -190,9 +206,9 @@
                 .Column(Me.iGyIDProyectoSiembra).Locked = True
                 .Column(Me.iGyCodigoLote).Locked = True
 
-                '.Column(Me.iGyIdCapturaParametroDetalle).Visible = False
-                '.Column(Me.iGyIDProyectoSiembra).Visible = False
-                '.Column(Me.iGyCodigoLote).Visible = False
+                .Column(Me.iGyIdCapturaParametroDetalle).Visible = False
+                .Column(Me.iGyIDProyectoSiembra).Visible = False
+                .Column(Me.iGyCodigoLote).Visible = False
 
                 .Column(Me.iGyOxigeno).FormatString = "##0.00"
                 .Column(Me.iGyOxigeno).Mask = FlexCell.MaskEnum.Numeric
@@ -444,7 +460,7 @@
     Private Function Validar() As Boolean
         Dim dResultado As Boolean = False
         Const sProcedure As String = "Validar"
-        'Dim i As Integer
+        Dim i As Integer
 
         Try
             If Me.cboTurno.SelectedIndex = -1 Then
@@ -471,11 +487,36 @@
                 Return False
             End If
 
-            If Me.Grid.Cell(1, Me.iGyIdCapturaParametroDetalle).Text = "0" Then
+            If Me.Grid.Rows = 2 And Me.Grid.Cell(1, Me.iGyIdCapturaParametroDetalle).Text = "0" Then
                 MsgBox("Capture el detalle de los parametros.", MsgBoxStyle.Exclamation, Me.Name)
                 Me.Grid.Cell(1, Me.iGyNombreLote).SetFocus()
                 Return False
             End If
+
+            For i = 1 To Me.Grid.Rows - 1
+                If Me.Grid.Cell(i, Me.iGyIdCapturaParametroDetalle).Text <> "0" Then
+
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyCodigoLote).Text) = False Then
+                        MsgBox("Capture el estanque del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                        Me.Grid.Cell(i, Me.iGyCodigoLote).SetFocus()
+                        Return False
+                    End If
+
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyOxigeno).Text) = False Then
+                        MsgBox("Capture el oxígeno del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                        Me.Grid.Cell(i, Me.iGyOxigeno).SetFocus()
+                        Return False
+                    End If
+
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyTemperatura).Text) = False Then
+                        MsgBox("Capture la temperatura del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                        Me.Grid.Cell(i, Me.iGyTemperatura).SetFocus()
+                        Return False
+                    End If
+
+                End If
+            Next
+
 
             dResultado = True
 
@@ -499,7 +540,7 @@
                 Case Keys.Enter
                     Select Case Columna
                         Case Me.iGyNombreLote
-                            If txtLEN(Me.Grid.Cell(Renglon, Me.iGyNombreLote).Text) = False Then
+                            If txtLEN(Me.Grid.Cell(Renglon, Me.iGyNombreLote).Text) = False Or txtLEN(Me.Grid.Cell(Renglon, Me.iGyIDProyectoSiembra).Text) = False Then
                                 GoTo Busqueda
                             End If
 
@@ -531,33 +572,6 @@ Busqueda:
 
                     End Select
             End Select
-            '            dCantidad = CDec(valorNumerico(Me.Grid.Cell(Renglon, Me.igyCantidad).Text))
-
-            '            Select Case e.KeyCode
-            '                Case Keys.Enter
-            '                    Select Case Columna
-            '                        Case Me.igyCantidad
-            '                            If dCantidad <= 0 Then
-            '                                Me.Grid.Cell(Renglon, Me.igyCantidad).Text = "0"
-            '                                Me.Grid.Refresh()
-            '                                'MsgBox("La cantidad debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
-            '                                Me.Grid.Cell(Renglon, Me.igyDescripcion).SetFocus()
-            '                                GoTo Sigue
-            '                            End If
-            '                            If Me.ValidarDisponible(Renglon) = False Then
-            '                                Me.Grid.Cell(Renglon, Me.igyCantidad).Text = "0"
-            '                                Me.Grid.Refresh() 'Si no se pone , no se refresca el 0 de inmediato, hasta que se mueva el foco al parecer.
-            '                                Me.Grid.Cell(Renglon, Me.igyDescripcion).SetFocus()
-            '                                GoTo Sigue
-            '                            End If
-            '                    End Select
-            'Sigue:
-            '                    Me.Totales()
-
-            '                Case Keys.F6
-            '                    'FALTA
-
-            '            End Select
 
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)

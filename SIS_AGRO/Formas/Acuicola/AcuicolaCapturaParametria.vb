@@ -83,7 +83,7 @@
 
     Private Sub txtCiclo_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCiclo.KeyDown
         If e.KeyCode = Keys.Return Then
-            If txtLEN(Me.txtCiclo.Text) = True AndAlso CInt(Me.txtCiclo.Text) > 0 Then
+            If txtLEN(Me.txtCiclo.Text) = True AndAlso CInt(Me.txtCiclo.Text) > 0 AndAlso Me.cboDivision.SelectedIndex <> -1 Then
                 Me.Grid.Locked = False
                 Me.Grid.Cell(1, Me.iGyNombreLote).SetFocus()
             End If
@@ -109,9 +109,25 @@
     End Sub
 
     Private Sub Grid_KeyDown(Sender As Object, e As KeyEventArgs) Handles Grid.KeyDown
-        'Que el f6 de lotes(estanques) sólo cargue los del plan según la división y ciclo, y año
         Me.GestionaGrid(e)
     End Sub
+
+    Private Sub Grid_MouseClick(sender As Object, e As MouseEventArgs) Handles Grid.MouseClick
+        If Me.cboDivision.SelectedIndex = -1 Then
+            MsgBox("Seleccione una división.", MsgBoxStyle.Exclamation, Me.Name)
+            Me.cboDivision.Focus()
+            Exit Sub
+        End If
+
+        If txtLEN(Me.txtCiclo.Text) = False Then
+            MsgBox("Capture el ciclo.", MsgBoxStyle.Exclamation, Me.Name)
+            Me.txtCiclo.Focus()
+            Exit Sub
+        End If
+
+        Me.Grid.Locked = False
+    End Sub
+
 
 #Region "Eventos Genericos"
     Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dtFecha.KeyDown, cboTurno.KeyDown, cboDivision.KeyDown
@@ -202,9 +218,9 @@
                 .Column(Me.iGyIDProyectoSiembra).Locked = True
                 .Column(Me.iGyCodigoLote).Locked = True
 
-                '.Column(Me.iGyIdCapturaParametroDetalle).Visible = False
-                '.Column(Me.iGyIDProyectoSiembra).Visible = False
-                '.Column(Me.iGyCodigoLote).Visible = False
+                .Column(Me.iGyIdCapturaParametriaDetalle).Visible = False
+                .Column(Me.iGyIDProyectoSiembra).Visible = False
+                .Column(Me.iGyCodigoLote).Visible = False
 
                 .Column(Me.iGyPeso).FormatString = "##0.00"
                 .Column(Me.iGyPeso).Mask = FlexCell.MaskEnum.Numeric
@@ -475,7 +491,7 @@
     Private Function Validar() As Boolean
         Dim dResultado As Boolean = False
         Const sProcedure As String = "Validar"
-        'Dim i As Integer
+        Dim i As Integer
 
         Try
             If Me.cboTurno.SelectedIndex = -1 Then
@@ -502,11 +518,59 @@
                 Return False
             End If
 
-            If Me.Grid.Cell(1, Me.iGyIdCapturaParametriaDetalle).Text = "0" Then
-                MsgBox("Capture el detalle de la parametria.", MsgBoxStyle.Exclamation, Me.Name)
+            If Me.Grid.Rows = 2 And Me.Grid.Cell(1, Me.iGyIdCapturaParametriaDetalle).Text = "0" Then
+                MsgBox("Capture el detalle de la parametría.", MsgBoxStyle.Exclamation, Me.Name)
                 Me.Grid.Cell(1, Me.iGyNombreLote).SetFocus()
                 Return False
             End If
+
+            For i = 1 To Me.Grid.Rows - 1
+                If Me.Grid.Cell(i, Me.iGyIdCapturaParametriaDetalle).Text <> "0" Then
+
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyCodigoLote).Text) = False Then
+                        MsgBox("Capture el estanque del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                        Me.Grid.Cell(i, Me.iGyCodigoLote).SetFocus()
+                        Return False
+                    End If
+
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyPeso).Text) = False Then
+                        MsgBox("Capture el peso del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                        Me.Grid.Cell(i, Me.iGyPeso).SetFocus()
+                        Return False
+                    End If
+
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyOrganismos).Text) = False Then
+                        MsgBox("Capture los organismos del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                        Me.Grid.Cell(i, Me.iGyOrganismos).SetFocus()
+                        Return False
+                    End If
+
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyGramaje).Text) = False Then
+                        MsgBox("Capture el gramaje del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                        Me.Grid.Cell(i, Me.iGyGramaje).SetFocus()
+                        Return False
+                    End If
+
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyIncremento).Text) = False Then
+                        MsgBox("Capture el incremento del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                        Me.Grid.Cell(i, Me.iGyIncremento).SetFocus()
+                        Return False
+                    End If
+
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyTarrallazos).Text) = False Then
+                        MsgBox("Capture los tarrallazos del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                        Me.Grid.Cell(i, Me.iGyTarrallazos).SetFocus()
+                        Return False
+                    End If
+
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyMuertos).Text) = False Then
+                        MsgBox("Capture los muertos del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                        Me.Grid.Cell(i, Me.iGyMuertos).SetFocus()
+                        Return False
+                    End If
+                End If
+
+            Next
 
             dResultado = True
 
@@ -530,7 +594,7 @@
                 Case Keys.Enter
                     Select Case Columna
                         Case Me.iGyNombreLote
-                            If txtLEN(Me.Grid.Cell(Renglon, Me.iGyNombreLote).Text) = False Then
+                            If txtLEN(Me.Grid.Cell(Renglon, Me.iGyNombreLote).Text) = False Or txtLEN(Me.Grid.Cell(Renglon, Me.iGyIDProyectoSiembra).Text) = False Then
                                 GoTo Busqueda
                             End If
 

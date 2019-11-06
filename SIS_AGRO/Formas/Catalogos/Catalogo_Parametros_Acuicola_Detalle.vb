@@ -169,6 +169,7 @@ Public Class Catalogo_Parametros_Acuicola_Detalle
                     Me.tsbGrabar.Enabled = True
                     Me.tsbCancelar.Enabled = True
 
+                    Me.TxtCodigoDivision.Enabled = True
                     Me.TxtCodigoLote.Enabled = True
                     Me.TxtNumeroCanastas.Enabled = True
 
@@ -184,7 +185,8 @@ Public Class Catalogo_Parametros_Acuicola_Detalle
                     Me.tsbGrabar.Enabled = True
                     Me.tsbCancelar.Enabled = True
 
-                    Me.TxtCodigoLote.Enabled = False
+                    Me.TxtCodigoDivision.Enabled = True
+                    Me.TxtCodigoLote.Enabled = True
                     Me.TxtNumeroCanastas.Enabled = True
                     Me.TxtNumeroCanastas.Focus()
 
@@ -205,6 +207,9 @@ Public Class Catalogo_Parametros_Acuicola_Detalle
     End Sub
 
     Private Sub InicializaElemento()
+        Me.txtID.Text = ""
+        Me.TxtCodigoDivision.Text = ""
+        Me.LblNombreDivision.Text = ""
         Me.TxtCodigoLote.Text = ""
         Me.lblNombreLote.Text = ""
         Me.TxtNumeroCanastas.Text = ""
@@ -214,26 +219,38 @@ Public Class Catalogo_Parametros_Acuicola_Detalle
         Try
             With Me.Grid
                 .DataSource = oParametroDetalle.ObtenerElementosFiltro("%")
-                .Columns("CODIGO_LOTE").Width = 50
+                .Columns("CODIGO_DIVISION").Width = 50
+                .Columns("NOMBRE_DIVISION").Width = 200
+                .Columns("CODIGO_LOTE").Width = 30
                 .Columns("NOMBRE_LOTE").Width = 200
+                .Columns("CODIGO_LOTE").Visible = False
             End With
         Catch ex As Exception
             HandleError(Me.Name, "DesplegarElementos", ex)
         End Try
     End Sub
 
-    Private Sub LlenaElemento(ByVal sCodigo_Elemento As String)
+    Private Sub LlenaElemento(ByVal sCodigo_Division As String, ByVal sCodigo_Lote As String)
         Try
-            Me.oParametroDetalle.Codigo_Lote = sCodigo_Elemento
+            Me.oParametroDetalle.Codigo_Division = CInt(sCodigo_Division)
+            Me.oParametroDetalle.Codigo_Lote = sCodigo_Lote
             If Me.oParametroDetalle.Consultar Then
                 With Me.oParametroDetalle
+                    Me.txtID.Text = .Id_Cat_Parametros_Acuicola_Detalle.ToString
+                    Me.TxtCodigoDivision.Text = .Codigo_Division.ToString
                     Me.TxtCodigoLote.Text = .Codigo_Lote.ToString
-                    Dim sql As New Class_find("SELECT NOMBRE_LOTE FROM CAT_LOTES WHERE CODIGO_LOTE='" & Me.TxtCodigoLote.Text & "'")
+                    Me.TxtNumeroCanastas.Text = .Numero_Canastas.ToString
+
+                    Dim sql As New Class_find("SELECT NOMBRE_DIVISION FROM CAT_DIVISIONES_ACUICOLA WHERE CODIGO_DIVISION='" & Me.TxtCodigoDivision.Text & "'")
+                    If txtLEN(sql.Result1) = True Then
+                        Me.LblNombreDivision.Text = sql.Result1
+                    End If
+
+                    sql = New Class_find("SELECT NOMBRE_LOTE FROM CAT_LOTES WHERE CODIGO_LOTE='" & Me.TxtCodigoLote.Text & "'")
                     If txtLEN(sql.Result1) = True Then
                         Me.lblNombreLote.Text = sql.Result1
                     End If
 
-                    Me.TxtNumeroCanastas.Text = .Numero_Canastas.ToString
                 End With
             End If
         Catch ex As Exception
@@ -247,6 +264,7 @@ Public Class Catalogo_Parametros_Acuicola_Detalle
             Case enumEstados.NUEVO, enumEstados.EDICION
                 Try
                     With Me.oParametroDetalle
+                        .Codigo_Division = CInt(Me.TxtCodigoDivision.Text)
                         .Codigo_Lote = Me.TxtCodigoLote.Text
                         .Numero_Canastas = CInt(TxtNumeroCanastas.Text)
 
@@ -257,6 +275,8 @@ Public Class Catalogo_Parametros_Acuicola_Detalle
                                     Me.Estado = enumEstados.NUEVO
                                 End If
                             Case enumEstados.EDICION
+                                .Id_Cat_Parametros_Acuicola_Detalle = CInt(Me.txtID.Text)
+
                                 If .Actualizar() = True Then
                                     Grabado = True
                                 End If
@@ -283,7 +303,20 @@ Public Class Catalogo_Parametros_Acuicola_Detalle
         Dim bResultado As Boolean = False
         Try
             If txtLEN(Me.TxtCodigoLote.Text) = False Then
+                MsgBox("Captúre el código de división.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.TxtCodigoLote.Focus()
+                Return False
+            End If
+
+            If txtLEN(Me.TxtCodigoLote.Text) = False Then
                 MsgBox("Captúre el código de lote.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.TxtCodigoLote.Focus()
+                Return False
+            End If
+
+            oParametroDetalle = New Class_CatParametrosAcuicolaDetalle(Me.TxtCodigoDivision.Text, Me.TxtCodigoLote.Text)
+            If oParametroDetalle.Existe = True Then
+                MsgBox("Ya existe un parametro con la división " & Me.TxtCodigoDivision.Text & " " & Me.LblNombreDivision.Text & " y el lote " & Me.TxtCodigoLote.Text & " " & Me.lblNombreLote.Text, MsgBoxStyle.Exclamation, Me.Name)
                 Me.TxtCodigoLote.Focus()
                 Return False
             End If
@@ -308,7 +341,7 @@ Public Class Catalogo_Parametros_Acuicola_Detalle
 #Region "Eventos de la lista de elementos"
 
     Private Sub Grid_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles Grid.CellClick
-        Me.LlenaElemento(Me.Grid.CurrentRow.Cells("CODIGO_LOTE").Value.ToString)
+        Me.LlenaElemento(Me.Grid.CurrentRow.Cells("CODIGO_DIVISION").Value.ToString, Me.Grid.CurrentRow.Cells("CODIGO_LOTE").Value.ToString)
     End Sub
 
     Private Sub Grid_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles Grid.CellDoubleClick
@@ -319,47 +352,51 @@ Public Class Catalogo_Parametros_Acuicola_Detalle
 
 #Region " Eventos de TxtFiltro"
     Private Sub txtFiltro_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFiltro.TextChanged
-        Dim oElementos As New Class_CatConceptos
+        Dim oElementos As New Class_CatParametrosAcuicolaDetalle
         Me.Grid.DataSource = Nothing
 
         With Me.Grid
             .DataSource = oElementos.ObtenerElementosFiltro(Me.txtFiltro.Text)
-            .Columns("CODIGO_LOTE").Width = 50
+            .Columns("CODIGO_DIVISION").Width = 50
+            .Columns("NOMBRE_DIVISION").Width = 200
+            .Columns("CODIGO_LOTE").Width = 30
             .Columns("NOMBRE_LOTE").Width = 200
+            .Columns("CODIGO_LOTE").Visible = False
         End With
     End Sub
 
-    Private Sub txtFiltro_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFiltro.KeyPress, TxtCodigoLote.KeyPress
+    Private Sub txtFiltro_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFiltro.KeyPress
         txtNoBeep(e)
         txtNoComilla(e)
     End Sub
 
     Private Sub txtFiltro_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtFiltro.KeyDown
-        Dim oElementosFiltro As New Class_CatConceptos
+        Dim oElementosFiltro As New Class_CatParametrosAcuicolaDetalle
         If e.KeyCode = Keys.Down Or e.KeyCode = Keys.Return Or e.KeyCode = Keys.Back Then
             Me.Grid.DataSource = Nothing
 
             With Me.Grid
                 .DataSource = oElementosFiltro.ObtenerElementosFiltro(Me.txtFiltro.Text)
-                .Columns("CODIGO_LOTE").Width = 50
+                .Columns("CODIGO_DIVISION").Width = 50
+                .Columns("NOMBRE_DIVISION").Width = 200
+                .Columns("CODIGO_LOTE").Width = 30
                 .Columns("NOMBRE_LOTE").Width = 200
+                .Columns("CODIGO_LOTE").Visible = False
             End With
         End If
     End Sub
+
 #End Region
 
 #Region "Eventos Genericos"
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtNumeroCanastas.KeyPress
-        txtNoBeep(e)
-    End Sub
 
     Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNumeroCanastas.KeyDown
         If e.KeyCode = Keys.Return Then
-            txtTAB(e)
+            Me.tsbGrabar.PerformClick()
         End If
     End Sub
 
-    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtNumeroCanastas.KeyPress
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtNumeroCanastas.KeyPress, TxtCodigoDivision.KeyPress, TxtCodigoLote.KeyPress
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
@@ -385,8 +422,37 @@ Buscar:
                     oLote.Codigo_Lote = Me.TxtCodigoLote.Text
                     If oLote.Consultar = True Then
                         Me.lblNombreLote.Text = oLote.Nombre_Lote
+                        txtTAB(e)
                     Else
                         Me.lblNombreLote.Text = "" : GoTo Buscar : Exit Sub
+                    End If
+
+                End If
+
+        End Select
+    End Sub
+
+    Private Sub TxtCodigoDivision_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtCodigoDivision.KeyDown
+        Dim sText As String
+        Dim oDivision As New Class_CatDivisionesAcuicola
+
+        Select Case e.KeyCode
+            Case Keys.F6
+Buscar:
+                sText = oDivision.BusquedaVisual_PorDescripcion
+                If txtLEN(sText) = True Then
+                    Me.TxtCodigoDivision.Text = sText
+                End If
+
+            Case Keys.Enter
+
+                If txtLEN(Me.TxtCodigoDivision.Text) = True Then
+                    oDivision.Codigo_Division = Me.TxtCodigoDivision.Text
+                    If oDivision.Consultar = True Then
+                        Me.LblNombreDivision.Text = oDivision.Nombre_Division
+                        txtTAB(e)
+                    Else
+                        Me.LblNombreDivision.Text = "" : GoTo Buscar : Exit Sub
                     End If
 
                 End If

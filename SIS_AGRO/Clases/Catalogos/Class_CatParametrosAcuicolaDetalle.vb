@@ -7,6 +7,8 @@ Public Class Class_CatParametrosAcuicolaDetalle
 #Region "Campos"
 
 #Region "Campos de la tabla"
+    Private _Id_Cat_Parametros_Acuicola_Detalle As Integer
+    Private _Codigo_Division As Integer
     Private _Codigo_Lote As String
     Private _Numero_canastas As Integer
 #End Region
@@ -37,6 +39,23 @@ Public Class Class_CatParametrosAcuicolaDetalle
 #Region "Propiedades"
 
 #Region "Propiedades Campos de la tabla"
+    Public Property Id_Cat_Parametros_Acuicola_Detalle() As Integer
+        Get
+            Return Me._Id_Cat_Parametros_Acuicola_Detalle
+        End Get
+        Set(ByVal Value As Integer)
+            Me._Id_Cat_Parametros_Acuicola_Detalle = Value
+        End Set
+    End Property
+
+    Public Property Codigo_Division() As Integer
+        Get
+            Return Me._Codigo_Division
+        End Get
+        Set(ByVal Value As Integer)
+            Me._Codigo_Division = Value
+        End Set
+    End Property
     Public Property Codigo_Lote() As String
         Get
             Return Me._Codigo_Lote
@@ -112,9 +131,10 @@ Public Class Class_CatParametrosAcuicolaDetalle
         Me._QueryOrder = " Order by codigo_lote"
     End Sub                                                         'Inicializa al objeto.
 
-    Public Sub New(ByVal sCodigoLote As String)
+    Public Sub New(ByVal sCodigoDivision As String, ByVal sCodigoLote As String)
         Me.New()
         Try
+            Me._Codigo_Division = sCodigoDivision
             Me._Codigo_Lote = sCodigoLote
             If Me.Consultar = True Then
                 Me._Existe = True
@@ -147,13 +167,15 @@ Public Class Class_CatParametrosAcuicolaDetalle
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_PARAMETROS_ACUICOLA_DETALLE_GRABA"
 
+            sqlParametro = .Parameters.Add("@ID_CAT_PARAMETROS_ACUICOLA_DETALLE", SqlDbType.Int) : sqlParametro.Value = 0
+            sqlParametro = .Parameters.Add("@CODIGO_DIVISION", SqlDbType.SmallInt) : sqlParametro.Value = Me._Codigo_Division
             sqlParametro = .Parameters.Add("@CODIGO_LOTE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._Codigo_Lote.ToUpper.ToString
             sqlParametro = .Parameters.Add("@NUMERO_CANASTAS", SqlDbType.SmallInt) : sqlParametro.Value = Me._Numero_canastas
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "1"
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                Me._Codigo_Lote = .Parameters("@CODIGO_LOTE").Value.ToString
+                Me._Id_Cat_Parametros_Acuicola_Detalle = .Parameters("@ID_CAT_PARAMETROS_ACUICOLA_DETALLE").Value.ToString
                 bResultado = True
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "Insertar", ex)
@@ -176,6 +198,8 @@ Public Class Class_CatParametrosAcuicolaDetalle
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_PARAMETROS_ACUICOLA_DETALLE_GRABA"
 
+            sqlParametro = .Parameters.Add("@ID_CAT_PARAMETROS_ACUICOLA_DETALLE", SqlDbType.Int) : sqlParametro.Value = Me._Id_Cat_Parametros_Acuicola_Detalle
+            sqlParametro = .Parameters.Add("@CODIGO_DIVISION", SqlDbType.SmallInt) : sqlParametro.Value = Me._Codigo_Division
             sqlParametro = .Parameters.Add("@CODIGO_LOTE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._Codigo_Lote.ToUpper.ToString
             sqlParametro = .Parameters.Add("@NUMERO_CANASTAS", SqlDbType.SmallInt) : sqlParametro.Value = Me._Numero_canastas
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "0"
@@ -196,7 +220,7 @@ Public Class Class_CatParametrosAcuicolaDetalle
 
     Public Overrides Function Consultar() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand("Select * from CAT_PARAMETROS_ACUICOLA_DETALLE Where Codigo_Lote='" & Replace(Me._Codigo_Lote, "'", "''") & "'", Me._Conexion)
+        Dim cmd As New SqlCommand("Select * from CAT_PARAMETROS_ACUICOLA_DETALLE Where Codigo_division =" & Replace(Me._Codigo_Division, "'", "''") & " and Codigo_Lote='" & Replace(Me._Codigo_Lote, "'", "''") & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -206,6 +230,8 @@ Public Class Class_CatParametrosAcuicolaDetalle
                 dReader = .ExecuteReader()
 
                 If dReader.Read Then
+                    Me._Id_Cat_Parametros_Acuicola_Detalle = dReader("ID_CAT_PARAMETROS_ACUICOLA_DETALLE")
+                    Me._Codigo_Division = dReader("CODIGO_DIVISION")
                     Me._Codigo_Lote = "" & dReader("CODIGO_LOTE").ToString
                     Me._Numero_canastas = CInt(dReader("NUMERO_CANASTAS"))
                     bResultado = True
@@ -250,7 +276,8 @@ Public Class Class_CatParametrosAcuicolaDetalle
 
     Public Function ObtenerElementosFiltro(ByVal Filtro As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("SELECT P.CODIGO_LOTE, L.NOMBRE_LOTE FROM CAT_PARAMETROS_ACUICOLA_DETALLE P INNER JOIN CAT_LOTES L ON(P.CODIGO_LOTE=L.CODIGO_LOTE) WHERE L.NOMBRE_LOTE LIKE '" & Filtro.ToString & "%' ORDER BY L.NOMBRE_LOTE", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT P.CODIGO_DIVISION, D.NOMBRE_DIVISION,P.CODIGO_LOTE,L.NOMBRE_LOTE FROM CAT_PARAMETROS_ACUICOLA_DETALLE P INNER JOIN CAT_DIVISIONES_ACUICOLA D ON(P.CODIGO_DIVISION=D.CODIGO_DIVISION) " & _
+                                     "INNER JOIN CAT_LOTES L ON(P.CODIGO_LOTE=L.CODIGO_LOTE) WHERE D.NOMBRE_DIVISION LIKE '" & Filtro.ToString & "%' ORDER BY D.NOMBRE_DIVISION", Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
