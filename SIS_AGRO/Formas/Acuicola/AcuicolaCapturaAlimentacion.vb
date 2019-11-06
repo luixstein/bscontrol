@@ -622,6 +622,7 @@ Busqueda:
                             End If
 
                     End Select
+
             End Select
 
         Catch ex As Exception

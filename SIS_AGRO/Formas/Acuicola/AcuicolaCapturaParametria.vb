@@ -599,12 +599,6 @@
                             End If
 
                         Case Me.iGyMuertos
-                            If Me.Grid.Rows > 2 Then
-                                Me.Grid.Cell(Renglon, Me.iGyIdCapturaParametriaDetalle).Text = CInt(Me.Grid.Cell(Renglon - 1, Me.iGyIdCapturaParametriaDetalle).Text) + 1
-                            Else
-                                Me.Grid.Cell(Renglon, Me.iGyIdCapturaParametriaDetalle).Text = CInt(Me.Grid.Cell(Renglon, Me.iGyIdCapturaParametriaDetalle).Text) + 1
-                            End If
-
                             If Me.Grid.Rows - 1 = Renglon Then
                                 Me.Grid.Rows = Me.Grid.Rows + 1
                                 Me.Grid.Cell(Renglon + 1, Me.iGyIdCapturaParametriaDetalle).Text = "0"
@@ -623,6 +617,12 @@ Busqueda:
 
                             Me.Grid.Cell(Renglon, Me.iGyCodigoLote).Text = sql.Result1
                             Me.Grid.Cell(Renglon, Me.iGyNombreLote).Text = sql.Result2
+
+                            If Me.Grid.Rows > 2 Then
+                                Me.Grid.Cell(Renglon, Me.iGyIdCapturaParametriaDetalle).Text = CInt(Me.Grid.Cell(Renglon - 1, Me.iGyIdCapturaParametriaDetalle).Text) + 1
+                            Else
+                                Me.Grid.Cell(Renglon, Me.iGyIdCapturaParametriaDetalle).Text = CInt(Me.Grid.Cell(Renglon, Me.iGyIdCapturaParametriaDetalle).Text) + 1
+                            End If
 
                     End Select
             End Select
