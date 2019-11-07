@@ -373,9 +373,16 @@
             End With
 
             'LLENAR GRID
-            Me.Grid.DataSource = Me.oParametros.ObtenerDetalle
+            'Me.Grid.DataSource = Me.oParametros.ObtenerDetalle
+            Dim dTabla As DataTable = Me.oParametros.ObtenerDetalle
+            Me.Grid.Rows = 1
+            For Each dRow As DataRow In dTabla.Rows
+                Me.Grid.AddItem(dRow("ID_ACUICOLA_PARAMETROS_DETALLE").ToString & Chr(9) & dRow("ID_PROYECTO_SIEMBRA").ToString & Chr(9) & dRow("CODIGO_LOTE").ToString & Chr(9) & _
+                                 dRow("NOMBRE_LOTE").ToString & Chr(9) & dRow("OXIGENO").ToString & Chr(9) & dRow("TEMPERATURA").ToString & Chr(9))
+            Next
             Me.FormateaGrid()
-            Me.Grid.Locked = False
+            Me.Grid.Rows = Me.Grid.Rows + 1
+            Me.Grid.Cell(Me.Grid.Rows - 1, Me.iGyIdCapturaParametroDetalle).Text = "0"
 
             bResultado = True
 
@@ -406,7 +413,9 @@
                 Return False
             End If
 
-            Me.GeneraFolio()
+            If lblEstatus.Text <> "G" Then
+                Me.GeneraFolio()
+            End If
 
             Me.oParametros = New Class_Acuicola_Parametros_Global
 
@@ -559,8 +568,17 @@
 Busqueda:
                             sCodigo = oParametros.BusquedaVisual_Lote_ParametrosDetalle_PorNombre(Me.cboDivision.SelectedValue.ToString, Me.txtCiclo.Text, Me.dtFecha.Value.Year.ToString)
                             Me.Grid.Cell(Renglon, Me.iGyIDProyectoSiembra).Text = sCodigo
-                            Dim sql As New Class_find("SELECT P.CODIGO_LOTE,L.NOMBRE_LOTE FROM PROYECTO_SIEMBRA_ACUICOLA P INNER JOIN CAT_LOTES L ON(P.CODIGO_LOTE=L.CODIGO_LOTE) WHERE P.ID_PROYECTO_SIEMBRA =" & sCodigo)
 
+                            For i = Renglon + 1 To Me.Grid.Rows - 1
+                                If Me.Grid.Cell(i, Me.iGyIDProyectoSiembra).Text = sCodigo Then
+                                    MsgBox("El estanque #" & Me.Grid.Cell(i, Me.iGyNombreLote).Text & " ya se encuentra capturado en el renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                                    Me.Grid.Cell(Renglon, Me.iGyIDProyectoSiembra).Text = ""
+                                    Me.Grid.Cell(Renglon, Me.iGyCodigoLote).SetFocus()
+                                    Exit Sub
+                                End If
+                            Next
+
+                            Dim sql As New Class_find("SELECT P.CODIGO_LOTE,L.NOMBRE_LOTE FROM PROYECTO_SIEMBRA_ACUICOLA P INNER JOIN CAT_LOTES L ON(P.CODIGO_LOTE=L.CODIGO_LOTE) WHERE P.ID_PROYECTO_SIEMBRA =" & sCodigo)
                             Me.Grid.Cell(Renglon, Me.iGyCodigoLote).Text = sql.Result1
                             Me.Grid.Cell(Renglon, Me.iGyNombreLote).Text = sql.Result2
 

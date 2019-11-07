@@ -313,11 +313,11 @@ Public Class Class_Acuicola_Parametros_Global
     Public Function BusquedaVisual_Lote_ParametrosDetalle_PorNombre(sCodigoDivision As String, sCiclo As String, sAño As String) As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de lotes por nombre."
-        f.sCampo = "P.CODIGO_LOTE"
+        f.Text = "Búsqueda de estanques por nombre."
+        f.sCampo = "L.NOMBRE_LOTE"
         f.sOrder = "L.NOMBRE_LOTE"
         f.sTable = "ACUICOLA_PARAMETROS_GLOBAL"
-        f.sQl = "SELECT P.ID_PROYECTO_SIEMBRA,P.CODIGO_LOTE,L.NOMBRE_LOTE FROM PROYECTO_SIEMBRA_ACUICOLA P INNER JOIN CAT_LOTES L ON(P.CODIGO_LOTE=L.CODIGO_LOTE) " & _
+        f.sQl = "SELECT P.ID_PROYECTO_SIEMBRA,P.CODIGO_LOTE,L.NOMBRE_LOTE AS ESTANQUE FROM PROYECTO_SIEMBRA_ACUICOLA P INNER JOIN CAT_LOTES L ON(P.CODIGO_LOTE=L.CODIGO_LOTE) " & _
                 "WHERE P.CODIGO_DIVISION = '" & sCodigoDivision & "' AND P.CICLO = '" & sCiclo & "' AND YEAR(P.FECHA_INICIO)=" & sAño & " AND "
         f.Inicia("")
         f.ShowDialog()
