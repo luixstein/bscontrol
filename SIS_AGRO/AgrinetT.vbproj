@@ -2484,6 +2484,11 @@
   <ItemGroup>
     <Content Include="IconoPral.ico" />
     <Content Include="icono.ico" />
+    <None Include="Resources\pdf11.png" />
+    <None Include="Resources\pdf2.png" />
+    <None Include="Resources\pdf1 - copia.png" />
+    <None Include="Resources\pdf1.png" />
+    <None Include="Resources\xml1.png" />
     <None Include="Resources\alb.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

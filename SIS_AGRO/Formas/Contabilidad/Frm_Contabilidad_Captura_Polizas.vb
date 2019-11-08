@@ -1,7 +1,6 @@
 ﻿Option Strict On
 
 Imports CrystalDecisions.CrystalReports.Engine
-Imports System.Data.SqlClient
 
 Public Class Frm_Contabilidad_Captura_Polizas
     Private _ChildParaGrabar As Boolean
@@ -114,7 +113,6 @@ Public Class Frm_Contabilidad_Captura_Polizas
 #End Region
 
 #Region "Opciones"
-
     Private Sub tsbNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbNuevo.Click
         Me.Inicializa()
         Me.Cambia_Estado(enumEstados.NUEVO)
@@ -190,6 +188,26 @@ Public Class Frm_Contabilidad_Captura_Polizas
 
     Private Sub btnDocumentoSiguiente_Click(sender As Object, e As EventArgs) Handles btnDocumentoSiguiente.Click
         Me.Navegador("Siguiente")
+    End Sub
+
+    Private Sub btnAgregarXML_Click(sender As Object, e As EventArgs) Handles btnAgregarXML.Click
+        Me.AgregarXML
+    End Sub
+
+    Private Sub btnAgregarPDF_Click(sender As Object, e As EventArgs) Handles btnAgregarPDF.Click
+        MsgBox("FALTA")
+    End Sub
+
+    Private Sub btnVerXML_Click(sender As Object, e As EventArgs) Handles btnVerXML.Click
+        MsgBox("FALTA")
+    End Sub
+
+    Private Sub btnVerPDF_Click(sender As Object, e As EventArgs) Handles btnVerPDF.Click
+        MsgBox("FALTA")
+    End Sub
+
+    Private Sub btnEliminarXML_Click(sender As Object, e As EventArgs) Handles btnEliminarXML.Click
+        MsgBox("FALTA")
     End Sub
 #End Region
 
@@ -477,6 +495,8 @@ Public Class Frm_Contabilidad_Captura_Polizas
             Me.InicializaGrid()
 
             Me.oPoliza = New Class_Contabilidad_Poliza_Global
+
+            Me.InicializaGridXML()
 
             Me.GeneraFolio()
         Catch ex As Exception
@@ -1849,6 +1869,54 @@ Public Class Frm_Contabilidad_Captura_Polizas
             Me.Grid1.Refresh()
         End Try
     End Sub
+
+    Private Sub InicializaGridXML()
+        Try
+            Me.GridXMLs.DataSource = Nothing
+            FG_Grid_Limpiar(GridXMLs)
+
+            'Creamos el Grid
+            Me.GridXMLs.Rows = 2
+            Me.GridXMLs.Cols = 14
+            Me.GridXMLs.DisplayRowNumber = True
+
+            Me.FormateaGridXMLs()
+        Catch ex As Exception
+            HandleError(Me.Text, "InicializaGridXML", ex)
+        End Try
+    End Sub
+
+    Private Sub FormateaGridXMLs()
+        Try
+
+        Catch ex As Exception
+            HandleError(Me.Text, "FormateaGridXMLs", ex)
+        End Try
+    End Sub
+
+    Private Function AgregarXML() As Boolean
+        Const sProcedure As String = "AgregarXML"
+        Try
+            Dim sRutaXML As String = Me.oPoliza.BuscarXML
+
+            If txtLEN(sRutaXML) = False Then
+                Return False
+            End If
+
+            Dim oCFDI As New ClassCFDI(sRutaXML, True)
+
+            If oCFDI.XMLCargado = False Then
+                Return False
+            End If
+
+            Me.GridXMLs.AddItem(oCFDI.ComplementoTFD.UUID & Chr(9))
+
+            'Validar que no repita uuid
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Function
 
 #End Region
 
