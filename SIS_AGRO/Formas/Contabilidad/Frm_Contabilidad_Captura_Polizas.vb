@@ -35,6 +35,23 @@ Public Class Frm_Contabilidad_Captura_Polizas
     'Private iGyNombreCentroCosto As Integer = 8
 #End Region
 
+#Region "Columnas grid xmls"
+    Private iGyGridXMLTipoComprobante As Integer = 1
+    Private iGyGridXMLNombrePDF As Integer = 2
+    Private iGyGridXMLFecha As Integer = 3
+    Private iGyGridXMLFolio As Integer = 4
+    Private iGyGridXMLUUID As Integer = 5
+    Private iGyGridXMLEmisorRFC As Integer = 6
+    Private iGyGridXMLEmisorNombre As Integer = 7
+    Private iGyGridXMLSubtotal As Integer = 8
+    Private iGyGridXMLImpuestosTrasladados As Integer = 9
+    Private iGyGridXMLImpuestosRetenidos As Integer = 10
+    Private iGyGridXMLTotal As Integer = 11
+    Private iGyGridXMLMoneda As Integer = 12
+    Private iGyGridXMLRutaXML As Integer = 13
+    Private iGyGridXMLRutaPDF As Integer = 14
+#End Region
+
 #Region "Propiedades"
     Public WriteOnly Property ChildParaGrabar() As Boolean
         Set(ByVal Value As Boolean)
@@ -195,11 +212,11 @@ Public Class Frm_Contabilidad_Captura_Polizas
     End Sub
 
     Private Sub btnAgregarPDF_Click(sender As Object, e As EventArgs) Handles btnAgregarPDF.Click
-        MsgBox("FALTA")
+        Me.AgregarPDF
     End Sub
 
     Private Sub btnVerXML_Click(sender As Object, e As EventArgs) Handles btnVerXML.Click
-        MsgBox("FALTA")
+        Me.VerXML()
     End Sub
 
     Private Sub btnVerPDF_Click(sender As Object, e As EventArgs) Handles btnVerPDF.Click
@@ -499,6 +516,8 @@ Public Class Frm_Contabilidad_Captura_Polizas
             Me.InicializaGridXML()
 
             Me.GeneraFolio()
+
+            Me.TabControl1.SelectedIndex = 0
         Catch ex As Exception
             HandleError(Me.Text, "Inicializa", ex)
         End Try
@@ -1360,58 +1379,79 @@ Public Class Frm_Contabilidad_Captura_Polizas
             If Me.oPoliza.Existe = False Then
                 Me.Cambia_Estado(enumEstados.NUEVO)
                 Me.TxtFolio.Enabled = False
-                Exit Function
-            Else
-                Me.DtpFecha.Value = oPoliza.FECHA 'Se llena primero la fecha porque se piede al generar el folio cuando se ejecuta la siguiente linea que llena el codigo tipo documento
-                Me.CmbDocumento.SelectedValue = oPoliza.CODIGO_TIPO_DOCUMENTO
-                Me.oPoliza.FOLIO_POLIZA = sFolio
-                Me.TxtFolio.Text = oPoliza.FOLIO_POLIZA
-                Me.LblCodigoEstatus.Text = oPoliza.ESTATUS_POLIZA
-                Me.lblEstatus.Text = oPoliza.ESTATUS
-                Me.lblFolioOrigen.Text = oPoliza.FOLIO_ORIGEN
-                Me.TxtConcepto1.Text = oPoliza.CONCEPTO1
-                Me.TxtConcepto2.Text = oPoliza.CONCEPTO2
-
-                Me.TxtTotalCargos.Text = FormatImporteContable(oPoliza.CARGO)
-                Me.TxtTotalAbonos.Text = FormatImporteContable(oPoliza.ABONO)
-                Me.txtTotalDiferenciaCargosAbonos.Text = FormatImporteContable(oPoliza.CARGO - oPoliza.ABONO)
-
-                If oPoliza.CODIGO_TIPO_DOCUMENTO = "E" Then
-                    Me.CboFacturasRecibidas.SelectedValue = oPoliza.CODIGO_LISTA_FACTURAS_RECIBIDAS.ToString
-                End If
-
-                Me.Grid1.AutoRedraw = False
-
-                dTabla = Me.oPoliza.ObtenerDetalle '.Rows.Count
-                Me.Grid1.Rows = 1
-                For Each dRow As DataRow In dTabla.Rows
-                    Me.Grid1.AddItem(dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("NOMBRE_CUENTA").ToString & Chr(9) & dRow("CONCEPTO").ToString & Chr(9) & dRow("NATURALEZA_CONTABLE").ToString & Chr(9) & dRow("CARGO").ToString & Chr(9) &
-                                    dRow("ABONO").ToString & Chr(9)) ' & dRow("CODIGO_CENTRO_COSTO").ToString & Chr(9) & dRow("NOMBRE_CENTRO_COSTO").ToString & Chr(9))
-                Next
-
-                Me.FormateaGrid()
-
-                Me.GestionaCambioEstado()
-                'TIENE CONTRA POLIZA
-                If txtLEN(Me.oPoliza.FOLIO_CONTRAPOLIZA) = True Then
-                    Me.LnkContrapoliza.Text = Me.oPoliza.FOLIO_CONTRAPOLIZA.ToString
-                    Me.LnkContrapoliza.Visible = True
-                    Me.lblDisplayContraPoliza.Visible = True
-                Else 'ES CONTRA POLIZA
-                    Dim sql As New Class_find("SELECT 1 FROM CON_POLIZAS_GLOBAL WHERE FOLIO_ORIGEN<>FOLIO_POLIZA AND FOLIO_ORIGEN IN (SELECT FOLIO_POLIZA FROM CON_POLIZAS_GLOBAL ) " &
-                                              "and  FOLIO_POLIZA='" & Me.TxtFolio.Text & "'")
-                    If txtLEN(sql.Result1) = True Then
-                        Me.Cambia_Estado(enumEstados.CONTRAPOLIZA)
-                    End If
-                End If
-
-                Me.tssElaboro.Text = "Elaboró : " & Me.oPoliza.NOMBRE_USUARIO_GRABO & " el " & Format(Me.oPoliza.FECHA_SERVIDOR, "dd-MMM-yyyy hh:mm tt")
-                If Me.oPoliza.ESTATUS_POLIZA = "C" Then
-                    Me.tssCancelo.Text = "Canceló : " & Me.oPoliza.NOMBRE_USUARIO_CANCELO & " el : " & Format(Me.oPoliza.FECHA_CANCELACION_SERVIDOR, "dd-MMM-yyyy hh:mm tt")
-                    Me.tssCancelo.Visible = True
-                End If
-
+                Return False
             End If
+
+            Me.DtpFecha.Value = oPoliza.FECHA 'Se llena primero la fecha porque se piede al generar el folio cuando se ejecuta la siguiente linea que llena el codigo tipo documento
+            Me.CmbDocumento.SelectedValue = oPoliza.CODIGO_TIPO_DOCUMENTO
+            Me.oPoliza.FOLIO_POLIZA = sFolio
+            Me.TxtFolio.Text = oPoliza.FOLIO_POLIZA
+            Me.LblCodigoEstatus.Text = oPoliza.ESTATUS_POLIZA
+            Me.lblEstatus.Text = oPoliza.ESTATUS
+            Me.lblFolioOrigen.Text = oPoliza.FOLIO_ORIGEN
+            Me.TxtConcepto1.Text = oPoliza.CONCEPTO1
+            Me.TxtConcepto2.Text = oPoliza.CONCEPTO2
+
+            Me.TxtTotalCargos.Text = FormatImporteContable(oPoliza.CARGO)
+            Me.TxtTotalAbonos.Text = FormatImporteContable(oPoliza.ABONO)
+            Me.txtTotalDiferenciaCargosAbonos.Text = FormatImporteContable(oPoliza.CARGO - oPoliza.ABONO)
+
+            If oPoliza.CODIGO_TIPO_DOCUMENTO = "E" Then
+                Me.CboFacturasRecibidas.SelectedValue = oPoliza.CODIGO_LISTA_FACTURAS_RECIBIDAS.ToString
+            End If
+
+            Me.Grid1.AutoRedraw = False
+
+            dTabla = Me.oPoliza.ObtenerDetalle '.Rows.Count
+            Me.Grid1.Rows = 1
+            For Each dRow As DataRow In dTabla.Rows
+                Me.Grid1.AddItem(dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("NOMBRE_CUENTA").ToString & Chr(9) & dRow("CONCEPTO").ToString & Chr(9) & dRow("NATURALEZA_CONTABLE").ToString & Chr(9) & dRow("CARGO").ToString & Chr(9) &
+                            dRow("ABONO").ToString & Chr(9)) ' & dRow("CODIGO_CENTRO_COSTO").ToString & Chr(9) & dRow("NOMBRE_CENTRO_COSTO").ToString & Chr(9))
+            Next
+
+            Me.FormateaGrid()
+
+            Me.GestionaCambioEstado()
+            'TIENE CONTRA POLIZA
+            If txtLEN(Me.oPoliza.FOLIO_CONTRAPOLIZA) = True Then
+                Me.LnkContrapoliza.Text = Me.oPoliza.FOLIO_CONTRAPOLIZA.ToString
+                Me.LnkContrapoliza.Visible = True
+                Me.lblDisplayContraPoliza.Visible = True
+            Else 'ES CONTRA POLIZA
+                Dim sql As New Class_find("SELECT 1 FROM CON_POLIZAS_GLOBAL WHERE FOLIO_ORIGEN<>FOLIO_POLIZA AND FOLIO_ORIGEN IN (SELECT FOLIO_POLIZA FROM CON_POLIZAS_GLOBAL ) " &
+                                        "and  FOLIO_POLIZA='" & Me.TxtFolio.Text & "'")
+                If txtLEN(sql.Result1) = True Then
+                    Me.Cambia_Estado(enumEstados.CONTRAPOLIZA)
+                End If
+            End If
+
+            Me.tssElaboro.Text = "Elaboró : " & Me.oPoliza.NOMBRE_USUARIO_GRABO & " el " & Format(Me.oPoliza.FECHA_SERVIDOR, "dd-MMM-yyyy hh:mm tt")
+            If Me.oPoliza.ESTATUS_POLIZA = "C" Then
+                Me.tssCancelo.Text = "Canceló : " & Me.oPoliza.NOMBRE_USUARIO_CANCELO & " el : " & Format(Me.oPoliza.FECHA_CANCELACION_SERVIDOR, "dd-MMM-yyyy hh:mm tt")
+                Me.tssCancelo.Visible = True
+            End If
+
+            'Consulta grid de xmls.
+            If txtLEN(Me.GridXMLs.Cell(Me.GridXMLs.Rows - 1, Me.iGyGridXMLUUID).Text) = False Then
+                Me.GridXMLs.Row(Me.GridXMLs.Rows - 1).Delete()
+            End If
+
+            Me.GridXMLs.AutoRedraw = False
+            Dim dtXMLs As New DataTable
+            dtXMLs = Me.oPoliza.ObtieneXMLs
+            For Each dRow As DataRow In dtXMLs.Rows
+                Dim oCFDI As New ClassCFDI(dRow("CADENA_XML").ToString, False)
+                If oCFDI.XMLCargado = True Then
+                    With oCFDI.Comprobante
+                        'Nota estos datos también pudieran salir de la tabla EXPEDIENTES_BS..XML_REPOSITORIO_GLOBAL
+                        Me.GridXMLs.AddItem(.tipoDeComprobante & Chr(9) & "" & Chr(9) & .fecha & Chr(9) & .folioCompleto & Chr(9) & oCFDI.ComplementoTFD.UUID & Chr(9) & oCFDI.Emisor.rfc & Chr(9) & oCFDI.Emisor.nombre & Chr(9) &
+                                        .subTotal & Chr(9) & oCFDI.Impuestos.totalImpuestosTrasladados & Chr(9) & oCFDI.Impuestos.totalImpuestosRetenidos & Chr(9) & .total & Chr(9) & .Moneda & Chr(9) & "" & Chr(9) & "")
+                    End With
+                End If
+                oCFDI = Nothing
+            Next
+            dtXMLs.Dispose()
+
             bResultado = True
 
         Catch ex As Exception
@@ -1419,6 +1459,8 @@ Public Class Frm_Contabilidad_Captura_Polizas
         Finally
             Me.Grid1.AutoRedraw = True
             Me.Grid1.Refresh()
+            Me.GridXMLs.AutoRedraw = True
+            Me.GridXMLs.Refresh()
         End Try
 
         Return bResultado
@@ -1877,7 +1919,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
 
             'Creamos el Grid
             Me.GridXMLs.Rows = 2
-            Me.GridXMLs.Cols = 14
+            Me.GridXMLs.Cols = 15
             Me.GridXMLs.DisplayRowNumber = True
 
             Me.FormateaGridXMLs()
@@ -1888,6 +1930,54 @@ Public Class Frm_Contabilidad_Captura_Polizas
 
     Private Sub FormateaGridXMLs()
         Try
+            Me.GridXMLs.Column(Me.iGyGridXMLTipoComprobante).Width = 25
+            Me.GridXMLs.Column(Me.iGyGridXMLNombrePDF).Width = 70
+            Me.GridXMLs.Column(Me.iGyGridXMLFecha).Width = 60
+            Me.GridXMLs.Column(Me.iGyGridXMLFolio).Width = 70
+            Me.GridXMLs.Column(Me.iGyGridXMLUUID).Width = 180
+            Me.GridXMLs.Column(Me.iGyGridXMLEmisorRFC).Width = 90
+            Me.GridXMLs.Column(Me.iGyGridXMLEmisorNombre).Width = 170
+            Me.GridXMLs.Column(Me.iGyGridXMLSubtotal).Width = 80
+            Me.GridXMLs.Column(Me.iGyGridXMLImpuestosTrasladados).Width = 80
+            Me.GridXMLs.Column(Me.iGyGridXMLImpuestosRetenidos).Width = 50
+            Me.GridXMLs.Column(Me.iGyGridXMLTotal).Width = 80
+            Me.GridXMLs.Column(Me.iGyGridXMLMoneda).Width = 30
+            Me.GridXMLs.Column(Me.iGyGridXMLRutaXML).Visible = False
+            Me.GridXMLs.Column(Me.iGyGridXMLRutaPDF).Visible = False
+
+            Me.GridXMLs.Cell(0, Me.iGyGridXMLTipoComprobante).Text = "Tipo"
+            Me.GridXMLs.Cell(0, Me.iGyGridXMLNombrePDF).Text = "NombrePDF"
+            Me.GridXMLs.Cell(0, Me.iGyGridXMLFecha).Text = "Fecha"
+            Me.GridXMLs.Cell(0, Me.iGyGridXMLFolio).Text = "Folio"
+            Me.GridXMLs.Cell(0, Me.iGyGridXMLUUID).Text = "UUID"
+            Me.GridXMLs.Cell(0, Me.iGyGridXMLEmisorRFC).Text = "Emisor RFC"
+            Me.GridXMLs.Cell(0, Me.iGyGridXMLEmisorNombre).Text = "Emisor nombre"
+            Me.GridXMLs.Cell(0, Me.iGyGridXMLSubtotal).Text = "Subtotal"
+            Me.GridXMLs.Cell(0, Me.iGyGridXMLImpuestosTrasladados).Text = "Imp.Tras"
+            Me.GridXMLs.Cell(0, Me.iGyGridXMLImpuestosRetenidos).Text = "Imp.Ret"
+            Me.GridXMLs.Cell(0, Me.iGyGridXMLTotal).Text = "Total"
+            Me.GridXMLs.Cell(0, Me.iGyGridXMLMoneda).Text = "Mon."
+            Me.GridXMLs.Cell(0, Me.iGyGridXMLRutaXML).Text = "RutaXML"
+            Me.GridXMLs.Cell(0, Me.iGyGridXMLRutaPDF).Text = "RutaPDF"
+
+            Me.GridXMLs.Column(Me.iGyGridXMLSubtotal).Mask = FlexCell.MaskEnum.Numeric
+            Me.GridXMLs.Column(Me.iGyGridXMLSubtotal).DecimalLength = 2
+            Me.GridXMLs.Column(Me.iGyGridXMLSubtotal).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.GridXMLs.Column(Me.iGyGridXMLImpuestosTrasladados).Mask = FlexCell.MaskEnum.Numeric
+            Me.GridXMLs.Column(Me.iGyGridXMLImpuestosTrasladados).DecimalLength = 2
+            Me.GridXMLs.Column(Me.iGyGridXMLImpuestosTrasladados).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.GridXMLs.Column(Me.iGyGridXMLImpuestosRetenidos).Mask = FlexCell.MaskEnum.Numeric
+            Me.GridXMLs.Column(Me.iGyGridXMLImpuestosRetenidos).DecimalLength = 2
+            Me.GridXMLs.Column(Me.iGyGridXMLImpuestosRetenidos).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.GridXMLs.Column(Me.iGyGridXMLTotal).Mask = FlexCell.MaskEnum.Numeric
+            Me.GridXMLs.Column(Me.iGyGridXMLTotal).DecimalLength = 2
+            Me.GridXMLs.Column(Me.iGyGridXMLTotal).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            'Me.GridXMLs.Column(Me.iGyNombreCuenta).Locked = True
+            Me.GridXMLs.Locked = True
 
         Catch ex As Exception
             HandleError(Me.Text, "FormateaGridXMLs", ex)
@@ -1895,9 +1985,11 @@ Public Class Frm_Contabilidad_Captura_Polizas
     End Sub
 
     Private Function AgregarXML() As Boolean
+        Dim bResultado As Boolean = False
         Const sProcedure As String = "AgregarXML"
+
         Try
-            Dim sRutaXML As String = Me.oPoliza.BuscarXML
+            Dim sRutaXML As String = Me.oPoliza.BuscarXML 'Aquí ya se valida que sea del emisor.rfc sea el rfc de esta empresa.
 
             If txtLEN(sRutaXML) = False Then
                 Return False
@@ -1909,13 +2001,103 @@ Public Class Frm_Contabilidad_Captura_Polizas
                 Return False
             End If
 
-            Me.GridXMLs.AddItem(oCFDI.ComplementoTFD.UUID & Chr(9))
+            For i As Integer = 1 To Me.GridXMLs.Rows - 1
+                If Me.GridXMLs.Cell(Me.GridXMLs.Rows - 1, Me.iGyGridXMLUUID).Text.ToUpper = oCFDI.ComplementoTFD.UUID.ToUpper Then
+                    MsgBox("El UUID de este XML ya se agregó.", vbExclamation, sProcedure)
+                    Return False
+                End If
+            Next
 
-            'Validar que no repita uuid
+            Me.GridXMLs.AutoRedraw = False
+
+            If txtLEN(Me.GridXMLs.Cell(Me.GridXMLs.Rows - 1, Me.iGyGridXMLUUID).Text) = False Then
+                Me.GridXMLs.Row(Me.GridXMLs.Rows - 1).Delete()
+            End If
+
+            With oCFDI.Comprobante
+                Me.GridXMLs.AddItem(.tipoDeComprobante & Chr(9) & "" & Chr(9) & .fecha & Chr(9) & .folioCompleto & Chr(9) & oCFDI.ComplementoTFD.UUID & Chr(9) & oCFDI.Emisor.rfc & Chr(9) & oCFDI.Emisor.nombre & Chr(9) &
+                                    .subTotal & Chr(9) & oCFDI.Impuestos.totalImpuestosTrasladados & Chr(9) & oCFDI.Impuestos.totalImpuestosRetenidos & Chr(9) & .total & Chr(9) & .Moneda & Chr(9) & sRutaXML & Chr(9) & "")
+            End With
+
+            bResultado = True
+
+            Me.TotalizaGridXMLs
 
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
+        Finally
+            Me.GridXMLs.AutoRedraw = True
+            Me.GridXMLs.Refresh()
         End Try
+
+        Return bResultado
+    End Function
+
+    Private Sub TotalizaGridXMLs()
+        Const sProcedure As String = "TotalizaGridXMLs"
+        Try
+            Me.txtSubtotal.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridXMLs, CShort(Me.iGyGridXMLSubtotal)))
+            Me.txtImpuestosTrasladados.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridXMLs, CShort(Me.iGyGridXMLImpuestosTrasladados)))
+            Me.txtImpuestosRetenidos.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridXMLs, CShort(Me.iGyGridXMLImpuestosRetenidos)))
+            Me.txtTotal.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridXMLs, CShort(Me.iGyGridXMLTotal)))
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
+
+    Private Function VerXML() As Boolean
+        Const sProcedure As String = "VerXML"
+        Dim bResultado As Boolean = False
+
+        Try
+            Dim Renglon As Integer = Me.GridXMLs.Selection.FirstRow
+            Dim sUUID As String = Me.GridXMLs.Cell(Renglon, Me.iGyGridXMLUUID).Text
+            Dim sRutaXML As String = Me.GridXMLs.Cell(Renglon, Me.iGyGridXMLRutaXML).Text
+
+            If Renglon = 0 Then
+                MsgBox("No ha seleccionado un renglón.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If txtLEN(sUUID) = False Then
+                MsgBox("No hay agregado un XML en este renglón.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If txtLEN(sRutaXML) = True Then
+                Process.Start(sRutaXML)
+            Else 'Es un XML que ya fue grabado y recordemos que en la consulta no hay ruta porque este dato no se graba(porque lo pueden mover los usuarios físicamente)
+                bResultado = Me.oPoliza.AbrirXML(sUUID)
+            End If
+
+            bResultado = True
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Private Function AgregarPDF() As Boolean
+        Const sProcedure As String = "AgregarPDF"
+        Dim bResultado As Boolean = False
+
+        Try
+            Dim sRutaPDF As String = Me.oPoliza.BuscarPDF
+
+            If txtLEN(sRutaPDF) = False Then
+                Return False
+            End If
+
+            MsgBox("FALTA ver si es un doc nuevo poner sólo ruta, y si la póliza ya tiene estatus G/A/C ya existe irlo actualizar directo.")
+
+
+            bResultado = True
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+
+        Return bResultado
     End Function
 
 #End Region
