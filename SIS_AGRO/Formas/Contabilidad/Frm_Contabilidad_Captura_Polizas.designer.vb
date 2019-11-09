@@ -80,14 +80,15 @@ Partial Class Frm_Contabilidad_Captura_Polizas
         Me.btnVerPDF = New System.Windows.Forms.Button()
         Me.btnEliminarXML = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.txtSubtotal = New System.Windows.Forms.MaskedTextBox()
-        Me.txtImpuestosTrasladados = New System.Windows.Forms.MaskedTextBox()
-        Me.txtImpuestosRetenidos = New System.Windows.Forms.MaskedTextBox()
-        Me.txtTotal = New System.Windows.Forms.MaskedTextBox()
+        Me.txtXMLsSubtotal = New System.Windows.Forms.MaskedTextBox()
+        Me.txtXMLsImpuestosTrasladados = New System.Windows.Forms.MaskedTextBox()
+        Me.txtXMLsImpuestosRetenidos = New System.Windows.Forms.MaskedTextBox()
+        Me.txtXMLsTotal = New System.Windows.Forms.MaskedTextBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
+        Me.lblXMLPDFMsg = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.GbPolizaGlogal.SuspendLayout()
@@ -475,14 +476,15 @@ Partial Class Frm_Contabilidad_Captura_Polizas
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.lblXMLPDFMsg)
         Me.TabPage2.Controls.Add(Me.Label5)
         Me.TabPage2.Controls.Add(Me.Label4)
         Me.TabPage2.Controls.Add(Me.Label3)
         Me.TabPage2.Controls.Add(Me.Label2)
-        Me.TabPage2.Controls.Add(Me.txtTotal)
-        Me.TabPage2.Controls.Add(Me.txtImpuestosRetenidos)
-        Me.TabPage2.Controls.Add(Me.txtImpuestosTrasladados)
-        Me.TabPage2.Controls.Add(Me.txtSubtotal)
+        Me.TabPage2.Controls.Add(Me.txtXMLsTotal)
+        Me.TabPage2.Controls.Add(Me.txtXMLsImpuestosRetenidos)
+        Me.TabPage2.Controls.Add(Me.txtXMLsImpuestosTrasladados)
+        Me.TabPage2.Controls.Add(Me.txtXMLsSubtotal)
         Me.TabPage2.Controls.Add(Me.Label1)
         Me.TabPage2.Controls.Add(Me.btnEliminarXML)
         Me.TabPage2.Controls.Add(Me.btnVerPDF)
@@ -689,41 +691,41 @@ Partial Class Frm_Contabilidad_Captura_Polizas
         Me.Label1.TabIndex = 233
         Me.Label1.Text = "Totales :"
         '
-        'txtSubtotal
+        'txtXMLsSubtotal
         '
-        Me.txtSubtotal.Location = New System.Drawing.Point(688, 308)
-        Me.txtSubtotal.Name = "txtSubtotal"
-        Me.txtSubtotal.ReadOnly = True
-        Me.txtSubtotal.Size = New System.Drawing.Size(79, 20)
-        Me.txtSubtotal.TabIndex = 234
-        Me.txtSubtotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.txtXMLsSubtotal.Location = New System.Drawing.Point(688, 308)
+        Me.txtXMLsSubtotal.Name = "txtXMLsSubtotal"
+        Me.txtXMLsSubtotal.ReadOnly = True
+        Me.txtXMLsSubtotal.Size = New System.Drawing.Size(79, 20)
+        Me.txtXMLsSubtotal.TabIndex = 234
+        Me.txtXMLsSubtotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
-        'txtImpuestosTrasladados
+        'txtXMLsImpuestosTrasladados
         '
-        Me.txtImpuestosTrasladados.Location = New System.Drawing.Point(773, 308)
-        Me.txtImpuestosTrasladados.Name = "txtImpuestosTrasladados"
-        Me.txtImpuestosTrasladados.ReadOnly = True
-        Me.txtImpuestosTrasladados.Size = New System.Drawing.Size(79, 20)
-        Me.txtImpuestosTrasladados.TabIndex = 235
-        Me.txtImpuestosTrasladados.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.txtXMLsImpuestosTrasladados.Location = New System.Drawing.Point(773, 308)
+        Me.txtXMLsImpuestosTrasladados.Name = "txtXMLsImpuestosTrasladados"
+        Me.txtXMLsImpuestosTrasladados.ReadOnly = True
+        Me.txtXMLsImpuestosTrasladados.Size = New System.Drawing.Size(79, 20)
+        Me.txtXMLsImpuestosTrasladados.TabIndex = 235
+        Me.txtXMLsImpuestosTrasladados.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
-        'txtImpuestosRetenidos
+        'txtXMLsImpuestosRetenidos
         '
-        Me.txtImpuestosRetenidos.Location = New System.Drawing.Point(858, 308)
-        Me.txtImpuestosRetenidos.Name = "txtImpuestosRetenidos"
-        Me.txtImpuestosRetenidos.ReadOnly = True
-        Me.txtImpuestosRetenidos.Size = New System.Drawing.Size(79, 20)
-        Me.txtImpuestosRetenidos.TabIndex = 236
-        Me.txtImpuestosRetenidos.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.txtXMLsImpuestosRetenidos.Location = New System.Drawing.Point(858, 308)
+        Me.txtXMLsImpuestosRetenidos.Name = "txtXMLsImpuestosRetenidos"
+        Me.txtXMLsImpuestosRetenidos.ReadOnly = True
+        Me.txtXMLsImpuestosRetenidos.Size = New System.Drawing.Size(79, 20)
+        Me.txtXMLsImpuestosRetenidos.TabIndex = 236
+        Me.txtXMLsImpuestosRetenidos.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
-        'txtTotal
+        'txtXMLsTotal
         '
-        Me.txtTotal.Location = New System.Drawing.Point(943, 308)
-        Me.txtTotal.Name = "txtTotal"
-        Me.txtTotal.ReadOnly = True
-        Me.txtTotal.Size = New System.Drawing.Size(79, 20)
-        Me.txtTotal.TabIndex = 237
-        Me.txtTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.txtXMLsTotal.Location = New System.Drawing.Point(943, 308)
+        Me.txtXMLsTotal.Name = "txtXMLsTotal"
+        Me.txtXMLsTotal.ReadOnly = True
+        Me.txtXMLsTotal.Size = New System.Drawing.Size(79, 20)
+        Me.txtXMLsTotal.TabIndex = 237
+        Me.txtXMLsTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Label2
         '
@@ -760,6 +762,19 @@ Partial Class Frm_Contabilidad_Captura_Polizas
         Me.Label5.Size = New System.Drawing.Size(31, 13)
         Me.Label5.TabIndex = 241
         Me.Label5.Text = "Total"
+        '
+        'lblXMLPDFMsg
+        '
+        Me.lblXMLPDFMsg.AutoSize = True
+        Me.lblXMLPDFMsg.BackColor = System.Drawing.SystemColors.HotTrack
+        Me.lblXMLPDFMsg.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblXMLPDFMsg.ForeColor = System.Drawing.SystemColors.Window
+        Me.lblXMLPDFMsg.Location = New System.Drawing.Point(55, 269)
+        Me.lblXMLPDFMsg.Name = "lblXMLPDFMsg"
+        Me.lblXMLPDFMsg.Size = New System.Drawing.Size(214, 15)
+        Me.lblXMLPDFMsg.TabIndex = 242
+        Me.lblXMLPDFMsg.Text = "PDF relacionado correctamente."
+        Me.lblXMLPDFMsg.Visible = False
         '
         'Frm_Contabilidad_Captura_Polizas
         '
@@ -850,12 +865,13 @@ Partial Class Frm_Contabilidad_Captura_Polizas
     Friend WithEvents btnVerXML As Button
     Friend WithEvents btnEliminarXML As Button
     Friend WithEvents Label1 As Label
-    Friend WithEvents txtTotal As MaskedTextBox
-    Friend WithEvents txtImpuestosRetenidos As MaskedTextBox
-    Friend WithEvents txtImpuestosTrasladados As MaskedTextBox
-    Friend WithEvents txtSubtotal As MaskedTextBox
+    Friend WithEvents txtXMLsTotal As MaskedTextBox
+    Friend WithEvents txtXMLsImpuestosRetenidos As MaskedTextBox
+    Friend WithEvents txtXMLsImpuestosTrasladados As MaskedTextBox
+    Friend WithEvents txtXMLsSubtotal As MaskedTextBox
     Friend WithEvents Label5 As Label
     Friend WithEvents Label4 As Label
     Friend WithEvents Label3 As Label
     Friend WithEvents Label2 As Label
+    Friend WithEvents lblXMLPDFMsg As Label
 End Class

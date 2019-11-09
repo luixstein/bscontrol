@@ -881,24 +881,24 @@ Public Class Class_Contabilidad_Poliza_Global
                 sRutaXML = Path.Combine(Path.GetDirectoryName(sRutaXML), sNombreArchivoXML) 'Regenera la ruta luego de remover y renombrar el archivo quitándole los caracteres extras.
             End If
 
-            Dim oCDFI As New CFDIXML.ClassCFDI(sRutaXML, True) 'Internamente: ya se valida que este timbrado
+            Dim oCFDI As New CFDIXML.ClassCFDI(sRutaXML, True) 'Internamente: ya se valida que este timbrado
 
-            If oCDFI.XMLCargado = False Then
+            If oCFDI.XMLCargado = False Then
                 Return ""
             End If
 
-            If oCDFI.Receptor.rfc <> Empresa_Sistema.RFC Then
+            If oCFDI.Receptor.rfc <> Empresa_Sistema.RFC Then
                 MsgBox("En el XML el RFC del receptor es " & vbCrLf &
-                        oCDFI.Receptor.rfc & " y el de esta empresa es " & vbCrLf &
+                        oCFDI.Receptor.rfc & " y el de esta empresa es " & vbCrLf &
                         Empresa_Sistema.RFC & vbCrLf &
                         "No es posible agregar este XML.", MsgBoxStyle.Exclamation, sProcedure)
                 Return ""
             End If
 
             If txtLEN(sRFC_Proveedor) = True Then
-                If oCDFI.Emisor.rfc <> sRFC_Proveedor Then
+                If oCFDI.Emisor.rfc <> sRFC_Proveedor Then
                     If MsgBox("En el XML el RFC del emisor es " & vbCrLf &
-                               oCDFI.Emisor.rfc & IIf(oCDFI.Emisor.nombre.Length > 0, "  " & oCDFI.Emisor.nombre, "").ToString & vbCrLf &
+                               oCFDI.Emisor.rfc & IIf(oCFDI.Emisor.nombre.Length > 0, "  " & oCFDI.Emisor.nombre, "").ToString & vbCrLf &
                                "y el del proveedor en el sistema es " & vbCrLf &
                                sRFC_Proveedor & vbCrLf &
                                "Esta seguro de querer relacionarlo de todas formas ?", vbQuestion Or MsgBoxStyle.YesNo, "Confirmación") = MsgBoxResult.No Then
@@ -908,14 +908,16 @@ Public Class Class_Contabilidad_Poliza_Global
             End If
 
             If bValidarTipoComprobanteIngreso = True Then
-                If oCDFI.Comprobante.TipoDeComprobante <> "I" Then
-                    MsgBox("Esta agregando un xml con el tipo comprobante " & oCDFI.Comprobante.TipoDeComprobante & " ." & vbCrLf &
+                If oCFDI.Comprobante.TipoDeComprobante <> "I" Then
+                    MsgBox("Esta agregando un xml con el tipo comprobante " & oCFDI.Comprobante.TipoDeComprobante & " ." & vbCrLf &
                            "Sólo se permite tipo I=Ingreso, si quiere agregar de otro tipo abra la póliza y desde ahí lo agrega.", vbExclamation, sProcedure)
                     Return ""
                 End If
             End If
 
             sResultado = sRutaXML
+
+            oCFDI = Nothing
 
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, sProcedure, ex)
@@ -1016,6 +1018,8 @@ Public Class Class_Contabilidad_Poliza_Global
                     sqlParametro = Nothing
                 End Try
             End With
+
+            oCFDI = Nothing
 
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, sProcedure, ex)
@@ -1126,13 +1130,19 @@ Public Class Class_Contabilidad_Poliza_Global
 
             If dReader.Read = True Then
                 Archivo.NombreArchivo = "" & dReader("PDF_NOMBRE").ToString
-                Archivo.Archivo = CType(dReader("PDF_ARCHIVO"), Byte())
+
+                If txtLEN(Archivo.NombreArchivo) = True Then 'Si no tiene nombre de archivopdf es porque no se le ha grabado un pdf.
+                    Archivo.Archivo = CType(dReader("PDF_ARCHIVO"), Byte())
+
+                    AbrirArchivo(Archivo)
+
+                    bResultado = True
+                Else
+                    MsgBox("Este xml no tiene archivo PDF.", vbExclamation, sProcedure)
+                End If
+
             End If
             dReader.Close()
-
-            AbrirArchivo(Archivo)
-
-            bResultado = True
 
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, sProcedure, ex)
@@ -1160,11 +1170,24 @@ Public Class Class_Contabilidad_Poliza_Global
         Return bResultado
     End Function
 
+    Public Function ObtienePDFNombre(ByVal sUUID As String) As String
+        Const sProcedure As String = "ObtienePDFNombre"
+        Dim sResultado As String = ""
+
+        Try
+            sResultado = New Class_find("SELECT PDF_NOMBRE FROM EXPEDIENTES_BS..XML_REPOSITORIO_GLOBAL WHERE UUID='" & sReplace(sUUID) & "' AND PDF_ARCHIVO IS NOT NULL").Result1
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
+        End Try
+
+        Return sResultado
+    End Function
+
     Public Function ObtieneXMLs() As DataTable
         Dim sProcedure As String = "ObtieneXMLs"
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
-        sSQL = "SELECT R.UUID,X.CADENA_XML " &
+        sSQL = "SELECT R.UUID,X.CADENA_XML,X.PDF_NOMBRE " &
                "FROM CONTABILIDAD_POLIZA_RELACION_XML R " &
                "INNER JOIN EXPEDIENTES_BS..XML_REPOSITORIO_GLOBAL X ON(R.UUID=X.UUID) " &
                "WHERE R.FOLIO_POLIZA='" & Me._FOLIO_POLIZA & "' " &
@@ -1177,6 +1200,77 @@ Public Class Class_Contabilidad_Poliza_Global
             HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
         Return dTabla
+    End Function
+
+    Public Function EliminarRelacionTodosXMLs() As Boolean
+        Dim bResultado As Boolean = False
+        Dim sProcedure As String = "EliminarRelacionTodosXMLs"
+
+        Try
+            Dim cmd As New SqlCommand
+            Dim sqlParametro As SqlParameter
+            With cmd
+                .Connection = Me._Conexion
+                .CommandTimeout = 0
+                .CommandType = CommandType.StoredProcedure
+                .CommandText = "MP_CONTABILIDAD_ELIMINA_RELACION_TODOS_XMLS"
+
+                sqlParametro = .Parameters.Add("@FOLIO_POLIZA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_POLIZA
+
+                Try
+                    Me._Conexion.Open()
+                    .ExecuteNonQuery()
+                    bResultado = True
+                Catch ex As Exception
+                    HandleError(Me.Nombre_Clase, sProcedure, ex)
+                Finally
+                    Me._Conexion.Close()
+                    cmd.Dispose()
+                    sqlParametro = Nothing
+                End Try
+            End With
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Public Function EliminarRelacionUnXML(ByVal sUUID As String) As Boolean 'Realmente no se borran los xml's porque pueden estarse usando en otros documentos.
+        Dim bResultado As Boolean = False
+        Dim sProcedure As String = "EliminarRelacionUnXML"
+
+        Try
+            Dim cmd As New SqlCommand
+            Dim sqlParametro As SqlParameter
+            With cmd
+                .Connection = Me._Conexion
+                .CommandTimeout = 0
+                .CommandType = CommandType.StoredProcedure
+                .CommandText = "MP_CONTABILIDAD_ELIMINA_RELACION_UN_XML"
+
+                sqlParametro = .Parameters.Add("@FOLIO_POLIZA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_POLIZA
+                sqlParametro = .Parameters.Add("@UUID", SqlDbType.NVarChar, 36) : sqlParametro.Value = sUUID
+
+                Try
+                    Me._Conexion.Open()
+                    .ExecuteNonQuery()
+                    bResultado = True
+                Catch ex As Exception
+                    HandleError(Me.Nombre_Clase, sProcedure, ex)
+                Finally
+                    Me._Conexion.Close()
+                    cmd.Dispose()
+                    sqlParametro = Nothing
+                End Try
+            End With
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
+        End Try
+
+        Return bResultado
     End Function
 
 #End Region
