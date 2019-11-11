@@ -158,6 +158,14 @@ Public Class Compras_Movimientos
     Private Sub btnCopiarLote_Click(sender As Object, e As EventArgs) Handles btnCopiarLote.Click
         Me.CopiarLote
     End Sub
+
+    Private Sub tsbAgregarXML_Click(sender As Object, e As EventArgs) Handles tsbAgregarXML.Click
+        Me.AgregarXML
+    End Sub
+
+    Private Sub tsbAgregarPDF_Click(sender As Object, e As EventArgs) Handles tsbAgregarPDF.Click
+        Me.AgregarPDF()
+    End Sub
 #End Region
 
 #Region "Eventos de objetos"
@@ -706,6 +714,9 @@ Buscar:
         Try
             Me.Estado = pEstado
 
+            Me.tsbAgregarXML.Visible = False
+            Me.tsbAgregarPDF.Visible = False
+
             Select Case Me.Estado
                 Case enumEstados.NUEVO
                     Me.tsbNuevo.Enabled = True
@@ -861,6 +872,9 @@ Buscar:
 
                     If Me.Estado = enumEstados.APLICADO And Me.oDocumento.AFECTA_CXP = True Then
                         Me.tsbEditarCostos.Visible = True
+
+                        Me.tsbAgregarXML.Visible = True
+                        Me.tsbAgregarPDF.Visible = True
                     End If
 
                     Me.DtpFecha.Enabled = False
@@ -907,6 +921,13 @@ Buscar:
                     Me.tsbCancelar.Enabled = False
                     Me.tsbImprimir.Enabled = True
                     Me.tsbEditarCostos.Visible = False
+
+                    If Me.oDocumento.AFECTA_CXP = True Then
+                        Me.tsbEditarCostos.Visible = True
+
+                        Me.tsbAgregarXML.Visible = True
+                        Me.tsbAgregarPDF.Visible = True
+                    End If
 
                     Me.DtpFecha.Enabled = False
                     Me.CboAlmacen.Enabled = False
@@ -1279,109 +1300,129 @@ Buscar:
                 Me.txtFolioCompra.Enabled = False
                 Me.CboDocumento.Enabled = False
                 Return False
+            End If
+
+            If bEsReferencia = False Then
+                Me.txtFolioCompra.Text = Me.oCompras.FOLIO_COMPRA.ToString.ToUpper
+                Me.txtFolioOC.Text = Me.oCompras.FOLIO_OC.ToString.ToUpper
+
+                Select Case Me.oCompras.ESTATUS.ToString.ToUpper
+                    Case "N"
+                        Me.LblEstatus.Text = "NUEVO"
+                    Case "G"
+                        Me.LblEstatus.Text = "GRABADO"
+                    Case "A"
+                        Me.LblEstatus.Text = "APLICADO"
+                    Case "C"
+                        Me.LblEstatus.Text = "CANCELADO"
+                End Select
+
+                Me.txtFolioProveedor.Text = Me.oCompras.FOLIO_PROVEEDOR.ToString.ToUpper
+
+                Me.Grid.DataSource = Me.oCompras.ObtenerDetalle
+                'If Me.oDocumento.AFECTA_CXP = True Then
+                '    Me.Grid.DataSource = Me.oCompras.ObtenerDetalle
+                'Else
+                '    Me.Grid.DataSource = Me.oCompras.ObtenerDetalleOrdenCompra
+                'End If
+
+                Me.GridSeries.DataSource = Me.oCompras.ObtenerDetalleSeries
+                Me.FormateaGridSeries()
             Else
-                If bEsReferencia = False Then
-                    Me.txtFolioCompra.Text = Me.oCompras.FOLIO_COMPRA.ToString.ToUpper
-                    Me.txtFolioOC.Text = Me.oCompras.FOLIO_OC.ToString.ToUpper
+                Me.txtFolioOC.Text = Me.oCompras.FOLIO_COMPRA.ToString.ToUpper
+                Me.txtFolioCompra.Enabled = False
+                Me.Grid.DataSource = Me.oCompras.ObtenerDetalleOrdenCompra
+            End If
 
-                    Select Case Me.oCompras.ESTATUS.ToString.ToUpper
-                        Case "N"
-                            Me.LblEstatus.Text = "NUEVO"
-                        Case "G"
-                            Me.LblEstatus.Text = "GRABADO"
-                        Case "A"
-                            Me.LblEstatus.Text = "APLICADO"
-                        Case "C"
-                            Me.LblEstatus.Text = "CANCELADO"
-                    End Select
+            Me.CboAlmacen.SelectedValue = Me.oCompras.CODIGO_ALMACEN
+            Me.txtProveedor.Text = Me.oCompras.CODIGO_PROVEEDOR
+            Me.oProveedores = New Class_CatProveedores(Me.oCompras.CODIGO_PROVEEDOR)
+            Me.lblProveedor.Text = oProveedores.Nombre_Proveedor.ToUpper
 
-                    Me.txtFolioProveedor.Text = Me.oCompras.FOLIO_PROVEEDOR.ToString.ToUpper
+            Me.txtPlazo.Text = Me.oCompras.PLAZO.ToString
+            Me.dtpFechaVencimiento.Value = CDate(Me.oCompras.FECHA_VENCIMIENTO)
 
-                    Me.Grid.DataSource = Me.oCompras.ObtenerDetalle
-                    'If Me.oDocumento.AFECTA_CXP = True Then
-                    '    Me.Grid.DataSource = Me.oCompras.ObtenerDetalle
-                    'Else
-                    '    Me.Grid.DataSource = Me.oCompras.ObtenerDetalleOrdenCompra
-                    'End If
+            'Esto va antes de los totales, porque se va ejecutar el checked de los dolares
+            If Me.oCompras.TIPO_DE_CAMBIO > 0 Then
+                Me.txtTipoCambio.Text = Me.oCompras.TIPO_DE_CAMBIO.ToString
+                Me.cboMoneda.SelectedIndex = 1
+            Else
+                Me.txtTipoCambio.Text = "0"
+                Me.cboMoneda.SelectedIndex = 0
+            End If
 
-                    Me.GridSeries.DataSource = Me.oCompras.ObtenerDetalleSeries
-                    Me.FormateaGridSeries()
+            If bEsReferencia = False Then 'Estos datos no tienen que llenarse si se esta aplicando una oc(jalando a una co)
+                Me.TxtSubTotal.Text = FormatImporteContable(Me.oCompras.SUBTOTAL)
+                Me.txtIEPS.Text = FormatImporteContable(Me.oCompras.IEPS_TOTAL_DESGLOSADO)
+                Me.txtIVA.Text = FormatImporteContable(Me.oCompras.IMPUESTO)
+                Me.TxtRetencion.Text = FormatImporteContable(Me.oCompras.RETENCION)
+                Me.txtTotal.Text = FormatImporteContable(Me.oCompras.TOTAL)
+                Me.txtSaldoMXP.Text = FormatImporteContable(Me.oCompras.SALDO)
+                Me.txtSaldoUSD.Text = FormatImporteContable(Me.oCompras.SALDO_DOLARES)
 
-                Else
-                    Me.txtFolioOC.Text = Me.oCompras.FOLIO_COMPRA.ToString.ToUpper
-                    Me.txtFolioCompra.Enabled = False
-                    Me.Grid.DataSource = Me.oCompras.ObtenerDetalleOrdenCompra
-                End If
+                Me.TxtSubTotalUSD.Text = FormatImporteContable(Me.oCompras.SUBTOTAL_USD)
+                Me.txtIVAUSD.Text = FormatImporteContable(Me.oCompras.IMPUESTO_USD)
+                Me.txtTotalUSD.Text = FormatImporteContable(Me.oCompras.TOTAL_DOLARES)
+            Else
+                Me.Totales()
+            End If
 
-                Me.CboAlmacen.SelectedValue = Me.oCompras.CODIGO_ALMACEN
-                Me.txtProveedor.Text = Me.oCompras.CODIGO_PROVEEDOR
-                Me.oProveedores = New Class_CatProveedores(Me.oCompras.CODIGO_PROVEEDOR)
-                Me.lblProveedor.Text = oProveedores.Nombre_Proveedor.ToUpper
+            If Me.oCompras.CODIGO_TIPO_GASTO = "3" Then
+                Me.LblPoliza.Text = Me.oCompras.FOLIO_EMBARQUE
+            Else
+                Me.LblPoliza.Text = Me.oCompras.FOLIO_POLIZA
+            End If
 
-                Me.txtPlazo.Text = Me.oCompras.PLAZO.ToString
-                Me.dtpFechaVencimiento.Value = CDate(Me.oCompras.FECHA_VENCIMIENTO)
+            Me.txtEntregarA.Text = Me.oCompras.ENTREGAR_A.ToString.ToUpper
+            Me.txtSolicito.Text = Me.oCompras.SOLICITO.ToString.ToUpper
+            Me.TxtConcepto.Text = Me.oCompras.CONCEPTO.ToString.ToUpper
+            Me.txtConCargoA.Text = Me.oCompras.CON_CARGO_A.ToString.ToUpper
+            Me.txtPredio.Text = Me.oCompras.PREDIO.ToString.ToUpper
+            Me.txtConfirmo.Text = Me.oCompras.CONFIRMO.ToString.ToUpper
+            Me.txtConCargoA.Text = Me.oCompras.CON_CARGO_A.ToString.ToUpper
+            Me.txtPredio.Text = Me.oCompras.PREDIO.ToString.ToUpper
+            Me.txtConfirmo.Text = Me.oCompras.CONFIRMO.ToString.ToUpper
+            Me.txtFolioProveedor.Text = Me.oCompras.FOLIO_PROVEEDOR
+            Me.TxtConceptoCancelacion.Text = Me.oCompras.CONCEPTO_CANCELACION
 
-                'Esto va antes de los totales, porque se va ejecutar el checked de los dolares
-                If Me.oCompras.TIPO_DE_CAMBIO > 0 Then
-                    Me.txtTipoCambio.Text = Me.oCompras.TIPO_DE_CAMBIO.ToString
-                    Me.cboMoneda.SelectedIndex = 1
-                Else
-                    Me.txtTipoCambio.Text = "0"
-                    Me.cboMoneda.SelectedIndex = 0
-                End If
+            Me.DtpFecha.Value = CDate(Me.oCompras.FECHA)
+            Me.dtpFechaVencimiento.Value = Me.DtpFecha.Value.AddDays(CDbl(Me.txtPlazo.Text))
 
-                If bEsReferencia = False Then 'Estos datos no tienen que llenarse si se esta aplicando una oc(jalando a una co)
-                    Me.TxtSubTotal.Text = FormatImporteContable(Me.oCompras.SUBTOTAL)
-                    Me.txtIEPS.Text = FormatImporteContable(Me.oCompras.IEPS_TOTAL_DESGLOSADO)
-                    Me.txtIVA.Text = FormatImporteContable(Me.oCompras.IMPUESTO)
-                    Me.TxtRetencion.Text = FormatImporteContable(Me.oCompras.RETENCION)
-                    Me.txtTotal.Text = FormatImporteContable(Me.oCompras.TOTAL)
-                    Me.txtSaldoMXP.Text = FormatImporteContable(Me.oCompras.SALDO)
-                    Me.txtSaldoUSD.Text = FormatImporteContable(Me.oCompras.SALDO_DOLARES)
+            If Me.oCompras.FECHA_FACTURA_PROVEEDOR = Nothing Then
+                Me.DtpFechaFacturaProveedor.Value = Now
+            Else
+                Me.DtpFechaFacturaProveedor.Value = CDate(Me.oCompras.FECHA_FACTURA_PROVEEDOR)
+            End If
 
-                    Me.TxtSubTotalUSD.Text = FormatImporteContable(Me.oCompras.SUBTOTAL_USD)
-                    Me.txtIVAUSD.Text = FormatImporteContable(Me.oCompras.IMPUESTO_USD)
-                    Me.txtTotalUSD.Text = FormatImporteContable(Me.oCompras.TOTAL_DOLARES)
-                Else
-                    Me.Totales()
-                End If
+            Me.FormateaGrid()
 
-                If Me.oCompras.CODIGO_TIPO_GASTO = "3" Then
-                    Me.LblPoliza.Text = Me.oCompras.FOLIO_EMBARQUE
-                Else
-                    Me.LblPoliza.Text = Me.oCompras.FOLIO_POLIZA
-                End If
-
-                Me.txtEntregarA.Text = Me.oCompras.ENTREGAR_A.ToString.ToUpper
-                Me.txtSolicito.Text = Me.oCompras.SOLICITO.ToString.ToUpper
-                Me.TxtConcepto.Text = Me.oCompras.CONCEPTO.ToString.ToUpper
-                Me.txtConCargoA.Text = Me.oCompras.CON_CARGO_A.ToString.ToUpper
-                Me.txtPredio.Text = Me.oCompras.PREDIO.ToString.ToUpper
-                Me.txtConfirmo.Text = Me.oCompras.CONFIRMO.ToString.ToUpper
-                Me.txtConCargoA.Text = Me.oCompras.CON_CARGO_A.ToString.ToUpper
-                Me.txtPredio.Text = Me.oCompras.PREDIO.ToString.ToUpper
-                Me.txtConfirmo.Text = Me.oCompras.CONFIRMO.ToString.ToUpper
-                Me.txtFolioProveedor.Text = Me.oCompras.FOLIO_PROVEEDOR
-                Me.TxtConceptoCancelacion.Text = Me.oCompras.CONCEPTO_CANCELACION
-
-                Me.DtpFecha.Value = CDate(Me.oCompras.FECHA)
-                Me.dtpFechaVencimiento.Value = Me.DtpFecha.Value.AddDays(CDbl(Me.txtPlazo.Text))
-
-                If Me.oCompras.FECHA_FACTURA_PROVEEDOR = Nothing Then
-                    Me.DtpFechaFacturaProveedor.Value = Now
-                Else
-                    Me.DtpFechaFacturaProveedor.Value = CDate(Me.oCompras.FECHA_FACTURA_PROVEEDOR)
-                End If
-
-                Me.FormateaGrid()
-
-                If Me.oDocumento.AFECTA_CXP = True Then
-                    Me.Grid.Row(Me.Grid.Rows - 1).Locked = True
-                    If Me.LblEstatus.Text = "NUEVO" Then
-                        If EstableceCuentaContableAlmacenDestino() = False Then
-                            MsgBox("No se pudieron establecer las cuentas contables de los articulos inventariables.", MsgBoxStyle.Information, Me.Text)
-                        End If
+            If Me.oDocumento.AFECTA_CXP = True Then
+                Me.Grid.Row(Me.Grid.Rows - 1).Locked = True
+                If Me.LblEstatus.Text = "NUEVO" Then
+                    If EstableceCuentaContableAlmacenDestino() = False Then
+                        MsgBox("No se pudieron establecer las cuentas contables de los articulos inventariables.", MsgBoxStyle.Information, Me.Text)
                     End If
+                End If
+
+                Dim sUUID As String = Me.oCompras.UUID
+                If txtLEN(sUUID) = True Then
+                    Me.tsbAgregarXML.Text = "Ver XML"
+
+                    Dim oPoliza As New Class_Contabilidad_Poliza_Global(Me.txtFolioCompra.Text)
+                    If oPoliza.Existe = False Then
+                        Return False
+                    End If
+
+                    If oPoliza.TienePDF(sUUID) = True Then
+                        Me.tsbAgregarPDF.Text = "Ver PDF"
+                    Else
+                        Me.tsbAgregarPDF.Text = "Agregar PDF"
+                    End If
+
+                    oPoliza = Nothing
+                Else
+                    Me.tsbAgregarXML.Text = "Agregar XML"
+                    Me.tsbAgregarPDF.Text = "Agregar PDF"
                 End If
             End If
 
@@ -1398,6 +1439,8 @@ Buscar:
 
         Catch ex As Exception
             HandleError(Me.Name, "Consultar", ex)
+        Finally
+            Application.DoEvents()
         End Try
 
         Return bResultado
@@ -2885,5 +2928,98 @@ BuscarCuentas:
         End Try
     End Sub
 
+    Private Function AgregarXML() As Boolean
+        Dim bResultado As Boolean = False
+        Dim sProcedure As String = "AgregarXML"
+        Dim oPoliza As Class_Contabilidad_Poliza_Global
+
+        Try
+            oPoliza = New Class_Contabilidad_Poliza_Global(Me.txtFolioCompra.Text)
+            If oPoliza.Existe = False Then
+                Return False
+            End If
+
+            Select Case Me.tsbAgregarXML.Text
+                Case "Agregar XML"
+                    Dim sRutaXML As String = oPoliza.BuscarXML(New Class_CatProveedores(Me.txtProveedor.Text).RFC, True)
+
+                    If txtLEN(sRutaXML) = True Then
+                        bResultado = oPoliza.AgregarXMLPDF(sRutaXML, "") 'Mandamos sin pdf
+                    End If
+
+                    If bResultado = True Then
+                        Me.tsbAgregarXML.Text = "Ver XML"
+                    End If
+
+                Case "Ver XML"
+                    Dim sUUID As String = Me.oCompras.UUID
+
+                    If txtLEN(sUUID) = False Then
+                        MsgBox("No se encontró el UUID de la compra", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+
+                    bResultado = oPoliza.AbrirXML(sUUID)
+
+            End Select
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        Finally
+            oPoliza = Nothing
+            Application.DoEvents()
+        End Try
+
+        Return bResultado
+    End Function
+
+    Private Function AgregarPDF() As Boolean
+        Dim bResultado As Boolean = False
+        Dim sProcedure As String = "AgregarPDF"
+        Dim oPoliza As Class_Contabilidad_Poliza_Global
+
+        Try
+            Dim sUUID As String = Me.oCompras.UUID
+            Dim sRutaPDF As String = ""
+
+            If txtLEN(sUUID) = False Then
+                MsgBox("Esta compra no tiene relacionado ningún XML.", vbExclamation, sProcedure)
+                Return False
+            End If
+
+            oPoliza = New Class_Contabilidad_Poliza_Global(Me.txtFolioCompra.Text)
+            If oPoliza.Existe = False Then
+                Return False
+            End If
+
+            Select Case Me.tsbAgregarPDF.Text
+                Case "Agregar PDF"
+                    sRutaPDF = oPoliza.BuscarPDF()
+
+                    If txtLEN(sRutaPDF) = True Then
+                        bResultado = oPoliza.AgregarPDF(sUUID, sRutaPDF)
+                    End If
+
+                    If bResultado = True Then
+                        Me.tsbAgregarPDF.Text = "Ver PDF"
+                    End If
+
+                    oPoliza = Nothing
+
+                Case "Ver PDF"
+                    oPoliza.AbrirPDF(sUUID)
+            End Select
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        Finally
+            oPoliza = Nothing
+            Application.DoEvents()
+        End Try
+
+        Return bResultado
+    End Function
+
 #End Region
+
 End Class

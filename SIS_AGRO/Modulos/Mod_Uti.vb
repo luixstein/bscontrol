@@ -1232,4 +1232,55 @@ Module Mod_Uti
         numletra = T.NUMERO2LETRA(strnum, , 2, Moneda, , , , sMn)
         T = Nothing
     End Function
+
+    Public Function AbrirArchivo(ByVal Archivo As Class_Archivo) As Boolean
+        Try
+            'GoTo otra_forma
+            'Bind the image data to an image control
+            Dim ms As New MemoryStream(Archivo.Archivo)
+            'Dim bmp As Bitmap = New Bitmap(ms)
+            'ItemImage.Image = bmp
+            'Me.PictureBox1.Image = bmp
+
+            Dim sPath As String = Path.GetTempPath & Application.ProductName
+            If Directory.Exists(sPath) = False Then
+                Directory.CreateDirectory(sPath)
+            End If
+            'Dim sTempFileName As String = Path.ChangeExtension(sPath, Path.GetExtension(Application.StartupPath & "\" & Archivo.NombreArchivo)) 'Application.StartupPath & "\" & Archivo.NombreArchivo
+            Dim sTempFileName As String = sPath & "\" & Archivo.NombreArchivo
+            'sTempFileName = Application.StartupPath & "\" & Archivo.NombreArchivo
+            Using fs As New FileStream(sTempFileName, FileMode.OpenOrCreate, FileAccess.Write)
+                'Using fs As New FileStream(sTempFileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None, Archivo.Archivo.Length, FileOptions.DeleteOnClose)
+                fs.Write(Archivo.Archivo, 0, Archivo.Archivo.Length)
+                fs.Flush()
+                fs.Close()
+            End Using
+
+            System.Diagnostics.Process.Start(sTempFileName)
+
+otra_forma:
+            'Dim sFilePath As String
+            'sFilePath = System.IO.Path.GetTempFileName()
+            'System.IO.File.Move(sFilePath, System.IO.Path.ChangeExtension(sFilePath, ".pdf"))
+            'sFilePath = System.IO.Path.ChangeExtension(sFilePath, ".pdf")
+            'System.IO.File.WriteAllBytes(sFilePath, Archivo.Archivo)
+            'Using p As New System.Diagnostics.Process
+            '    p.StartInfo = New System.Diagnostics.ProcessStartInfo(sFilePath)
+            '    p.Start()
+            '    p.WaitForExit()
+            '    Try
+            '        System.IO.File.Delete(sFilePath)
+            '    Catch
+            '    End Try
+            'End Using
+
+            ms.Flush()
+            ms.Dispose()
+
+            Return True
+
+        Catch ex As Exception
+            HandleError(nombreModulo, "AbrirArchivo", ex)
+        End Try
+    End Function
 End Module

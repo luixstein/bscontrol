@@ -280,6 +280,14 @@ Public Class Frm_CXP_Revision
             End If
         End If
     End Sub
+
+    Private Sub tsbAgregarXML_Click(sender As Object, e As EventArgs) Handles tsbAgregarXML.Click
+        Me.AgregarXML
+    End Sub
+
+    Private Sub tsbAgregarPDF_Click(sender As Object, e As EventArgs) Handles tsbAgregarPDF.Click
+        Me.AgregarPDF()
+    End Sub
 #End Region
 
 #Region "Eventos"
@@ -992,6 +1000,9 @@ Buscar:
         Try
             Me.Estado = pEstado
 
+            Me.tsbAgregarXML.Visible = False
+            Me.tsbAgregarPDF.Visible = False
+
             Select Case Me.Estado
                 Case enumEstados.NUEVO
                     Me.tsbGrabar.Enabled = False
@@ -1045,6 +1056,9 @@ Buscar:
                         Me.tsslCancelo.Visible = False : Me.tsslCancelo.Text = ""
                         Me.tsbCancelar.Enabled = True
                     End If
+
+                    Me.tsbAgregarXML.Visible = True
+                    Me.tsbAgregarPDF.Visible = True
 
                 Case enumEstados.PAGODIRECTO
                     Me.tsbGrabar.Enabled = False
@@ -2484,6 +2498,28 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
             Me.FormateaGridFacturasRelacionadas()
             Me.lblTotalFacturasRelacionadas.Text = "$ " & FG_Grid_SumaCol(Me.GridFacturasRelacionadas, CShort(Me.iGyGasto))
 
+            Dim sUUID As String = Me.oCompras.UUID
+
+            If txtLEN(sUUID) = True Then
+                Me.tsbAgregarXML.Text = "Ver XML"
+
+                Dim oPoliza As New Class_Contabilidad_Poliza_Global(Me.txtFolioCompra.Text)
+                If oPoliza.Existe = False Then
+                    Return False
+                End If
+
+                If oPoliza.TienePDF(sUUID) = True Then
+                    Me.tsbAgregarPDF.Text = "Ver PDF"
+                Else
+                    Me.tsbAgregarPDF.Text = "Agregar PDF"
+                End If
+
+                oPoliza = Nothing
+            Else
+                Me.tsbAgregarXML.Text = "Agregar XML"
+                Me.tsbAgregarPDF.Text = "Agregar PDF"
+            End If
+
             'Me.Cambia_Estado(enumEstados.SINORDENCOMPRA)
             Me.tsbEditarCostos.Enabled = True
             Me.Cambia_Estado(enumEstados.CONSULTA)
@@ -2604,6 +2640,98 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
             bResultado = True
         Catch ex As Exception
             HandleError(Me.Name, "CancelarCompra", ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Private Function AgregarXML() As Boolean
+        Dim bResultado As Boolean = False
+        Dim sProcedure As String = "AgregarXML"
+        Dim oPoliza As Class_Contabilidad_Poliza_Global
+
+        Try
+            oPoliza = New Class_Contabilidad_Poliza_Global(Me.txtFolioCompra.Text)
+            If oPoliza.Existe = False Then
+                Return False
+            End If
+
+            Select Case Me.tsbAgregarXML.Text
+                Case "Agregar XML"
+                    Dim sRutaXML As String = oPoliza.BuscarXML(New Class_CatProveedores(Me.TxtCodigoProveedor.Text).RFC, True)
+
+                    If txtLEN(sRutaXML) = True Then
+                        bResultado = oPoliza.AgregarXMLPDF(sRutaXML, "") 'Mandamos sin pdf
+                    End If
+
+                    If bResultado = True Then
+                        Me.tsbAgregarXML.Text = "Ver XML"
+                    End If
+
+                Case "Ver XML"
+                    Dim sUUID As String = Me.oCompras.UUID
+
+                    If txtLEN(sUUID) = False Then
+                        MsgBox("No se encontró el UUID de la compra", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+
+                    bResultado = oPoliza.AbrirXML(sUUID)
+
+            End Select
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        Finally
+            oPoliza = Nothing
+            Application.DoEvents()
+        End Try
+
+        Return bResultado
+    End Function
+
+    Private Function AgregarPDF() As Boolean
+        Dim bResultado As Boolean = False
+        Dim sProcedure As String = "AgregarPDF"
+        Dim oPoliza As Class_Contabilidad_Poliza_Global
+
+        Try
+            Dim sUUID As String = Me.oCompras.UUID
+            Dim sRutaPDF As String = ""
+
+            If txtLEN(sUUID) = False Then
+                MsgBox("Esta compra no tiene relacionado ningún XML.", vbExclamation, sProcedure)
+                Return False
+            End If
+
+            oPoliza = New Class_Contabilidad_Poliza_Global(Me.txtFolioCompra.Text)
+            If oPoliza.Existe = False Then
+                Return False
+            End If
+
+            Select Case Me.tsbAgregarPDF.Text
+                Case "Agregar PDF"
+                    sRutaPDF = oPoliza.BuscarPDF()
+
+                    If txtLEN(sRutaPDF) = True Then
+                        bResultado = oPoliza.AgregarPDF(sUUID, sRutaPDF)
+                    End If
+
+                    If bResultado = True Then
+                        Me.tsbAgregarPDF.Text = "Ver PDF"
+                    End If
+
+                    oPoliza = Nothing
+
+                Case "Ver PDF"
+                    oPoliza.AbrirPDF(sUUID)
+            End Select
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        Finally
+            oPoliza = Nothing
+            Application.DoEvents()
         End Try
 
         Return bResultado

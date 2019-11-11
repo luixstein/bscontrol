@@ -1,6 +1,7 @@
 ﻿Option Strict On
 Imports System.Data
 Imports System.Data.SqlClient
+Imports System.IO
 
 Public Class Class_Contabilidad_Poliza_Global
 
@@ -839,6 +840,436 @@ Public Class Class_Contabilidad_Poliza_Global
                 sqlParametro = Nothing
             End Try
         End With
+
+        Return bResultado
+    End Function
+
+    Public Function BuscarXML(Optional ByVal sRFC_Proveedor As String = "", Optional bValidarTipoComprobanteIngreso As Boolean = False) As String
+        Dim sResultado As String = ""
+        Dim sProcedure As String = "BuscarXML"
+        Dim Dialog As New OpenFileDialog
+        Dim sRutaXML As String = "", sNombreArchivoXML As String = ""
+
+        Try
+            With Dialog
+                .Filter = "XML files (*.XML)|*.XML"
+                .RestoreDirectory = True
+                .FileName = ""
+                .Multiselect = False
+                .DefaultExt = ".XML"
+
+                If .ShowDialog() = DialogResult.OK Then
+                    sRutaXML = .FileName
+                End If
+            End With
+
+            If txtLEN(sRutaXML) = False Then
+                Return ""
+            End If
+
+            sNombreArchivoXML = Path.GetFileName(sRutaXML)
+
+            sNombreArchivoXML = sNombreArchivoXML.Substring(0, sNombreArchivoXML.Length() - 4) 'Le quita la extensión .xml al nombre del archivo, no se usa Path.GetFileNameWithoutExtension porque no funciona debidamente cuando trae puntos extras.
+
+            If (sNombreArchivoXML.IndexOf(".") > 0 Or sNombreArchivoXML.IndexOf(",") > 0) Then 'Si el nombre de archivo(ya sin extensión) tiene algún punto/coma debemos quitarlo.
+                sNombreArchivoXML = sNombreArchivoXML.Replace(".", "")
+                sNombreArchivoXML = sNombreArchivoXML.Replace(",", "")
+                sNombreArchivoXML = sNombreArchivoXML + ".xml"
+
+                My.Computer.FileSystem.RenameFile(sRutaXML, sNombreArchivoXML) 'Renombramos físicamente al archivo para que ya no tenga esos caracteres extras.
+
+                sRutaXML = Path.Combine(Path.GetDirectoryName(sRutaXML), sNombreArchivoXML) 'Regenera la ruta luego de remover y renombrar el archivo quitándole los caracteres extras.
+            End If
+
+            Dim oCFDI As New CFDIXML.ClassCFDI(sRutaXML, True) 'Internamente: ya se valida que este timbrado
+
+            If oCFDI.XMLCargado = False Then
+                Return ""
+            End If
+
+            If oCFDI.Receptor.rfc <> Empresa_Sistema.RFC Then
+                MsgBox("En el XML el RFC del receptor es " & vbCrLf &
+                        oCFDI.Receptor.rfc & " y el de esta empresa es " & vbCrLf &
+                        Empresa_Sistema.RFC & vbCrLf &
+                        "No es posible agregar este XML.", MsgBoxStyle.Exclamation, sProcedure)
+                Return ""
+            End If
+
+            If txtLEN(sRFC_Proveedor) = True Then
+                If oCFDI.Emisor.rfc <> sRFC_Proveedor Then
+                    If MsgBox("En el XML el RFC del emisor es " & vbCrLf &
+                               oCFDI.Emisor.rfc & IIf(oCFDI.Emisor.nombre.Length > 0, "  " & oCFDI.Emisor.nombre, "").ToString & vbCrLf &
+                               "y el del proveedor en el sistema es " & vbCrLf &
+                               sRFC_Proveedor & vbCrLf &
+                               "Esta seguro de querer relacionarlo de todas formas ?", vbQuestion Or MsgBoxStyle.YesNo, "Confirmación") = MsgBoxResult.No Then
+                        Return ""
+                    End If
+                End If
+            End If
+
+            If bValidarTipoComprobanteIngreso = True Then
+                If oCFDI.Comprobante.TipoDeComprobante <> "I" Then
+                    MsgBox("Esta agregando un xml con el tipo comprobante " & oCFDI.Comprobante.TipoDeComprobante & " ." & vbCrLf &
+                           "Sólo se permite tipo I=Ingreso, si quiere agregar de otro tipo abra la póliza y desde ahí lo agrega.", vbExclamation, sProcedure)
+                    Return ""
+                End If
+            End If
+
+            sResultado = sRutaXML
+
+            oCFDI = Nothing
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
+        Finally
+            Dialog.Dispose()
+        End Try
+
+        Return sResultado
+    End Function
+
+    Public Function BuscarPDF() As String
+        Dim sResultado As String = ""
+        Dim sProcedure As String = "BuscarPDF"
+        Dim Dialog As New OpenFileDialog
+        Dim sRutaPDF As String = "", sNombreArchivoPDF As String = ""
+
+        Try
+            With Dialog
+                .Filter = "PDF files (*.PDF)|*.PDF"
+                .RestoreDirectory = True
+                .FileName = ""
+                .Multiselect = False
+                .DefaultExt = ".PDF"
+
+                If .ShowDialog() = DialogResult.OK Then
+                    sRutaPDF = .FileName
+                End If
+            End With
+
+            If txtLEN(sRutaPDF) = False Then
+                Return ""
+            End If
+
+            sNombreArchivoPDF = Path.GetFileName(sRutaPDF)
+
+            sNombreArchivoPDF = sNombreArchivoPDF.Substring(0, sNombreArchivoPDF.Length() - 4) 'Le quita la extensión .pdf al nombre del archivo, no se usa Path.GetFileNameWithoutExtension porque no funciona debidamente cuando trae puntos extras.
+
+            If (sNombreArchivoPDF.IndexOf(".") > 0 Or sNombreArchivoPDF.IndexOf(",") > 0) Then 'Si el nombre de archivo(ya sin extensión) tiene algún punto/coma debemos quitarlo.
+                sNombreArchivoPDF = sNombreArchivoPDF.Replace(".", "")
+                sNombreArchivoPDF = sNombreArchivoPDF.Replace(",", "")
+                sNombreArchivoPDF = sNombreArchivoPDF + ".pdf"
+
+                My.Computer.FileSystem.RenameFile(sRutaPDF, sNombreArchivoPDF) 'Renombramos físicamente al archivo para que ya no tenga esos caracteres extras.
+
+                sRutaPDF = Path.Combine(Path.GetDirectoryName(sRutaPDF), sNombreArchivoPDF) 'Regenera la ruta luego de remover y renombrar el archivo quitándole los caracteres extras.
+            End If
+
+            sResultado = sRutaPDF
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
+        Finally
+            Dialog.Dispose()
+        End Try
+
+        Return sResultado
+    End Function
+
+    Public Function AgregarXMLPDF(ByVal sRutaXML As String, ByVal sRutaPDF As String) As Boolean
+        Dim bResultado As Boolean = False
+        Dim sProcedure As String = "AgregarXML"
+        Dim ArchivoPDF As Byte() = Nothing, sNombrePDF As String = ""
+
+        Try
+            If txtLEN(sRutaPDF) = True Then
+                ArchivoPDF = ArchivoToByte(sRutaPDF)
+                sNombrePDF = Path.GetFileName(sRutaPDF)
+            End If
+
+            Dim oCFDI As New CFDIXML.ClassCFDI(sRutaXML, True) 'Internamente: ya se valida que este timbrado
+
+            If oCFDI.XMLCargado = False Then
+                Return False
+            End If
+
+            Dim cmd As New SqlCommand
+            Dim sqlParametro As SqlParameter
+            With cmd
+                .Connection = Me._Conexion
+                .CommandTimeout = 0
+                .CommandType = CommandType.StoredProcedure
+                .CommandText = "MP_CONTABILIDAD_SUBIR_XML_PDF"
+
+                sqlParametro = .Parameters.Add("@FOLIO_POLIZA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_POLIZA
+                sqlParametro = .Parameters.Add("@CADENA_XML", SqlDbType.Xml) : sqlParametro.Value = oCFDI.XMLSinDeclaracion
+                sqlParametro = .Parameters.Add("@PDF_ARCHIVO", SqlDbType.Image) : sqlParametro.Value = IIf(txtLEN(sRutaPDF) = True, ArchivoPDF, DBNull.Value)
+                sqlParametro = .Parameters.Add("@PDF_NOMBRE", SqlDbType.NVarChar, 100) : sqlParametro.Value = sNombrePDF
+
+                Try
+                    Me._Conexion.Open()
+                    .ExecuteNonQuery()
+                    bResultado = True
+                Catch ex As Exception
+                    HandleError(Me.Nombre_Clase, sProcedure, ex)
+                Finally
+                    Me._Conexion.Close()
+                    cmd.Dispose()
+                    sqlParametro = Nothing
+                End Try
+            End With
+
+            oCFDI = Nothing
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Public Function AgregarPDF(ByVal sUUID As String, ByVal sRutaPDF As String) As Boolean
+        Dim bResultado As Boolean = False
+        Dim sProcedure As String = "AgregarPDF"
+        Dim ArchivoPDF As Byte() = Nothing, sNombrePDF As String = ""
+
+        Try
+            If txtLEN(sRutaPDF) = False Then
+                MsgBox("No indicó la ruta del archivo PDF.", vbExclamation, sProcedure)
+                Return False
+            End If
+
+            ArchivoPDF = ArchivoToByte(sRutaPDF)
+            sNombrePDF = Path.GetFileName(sRutaPDF)
+
+            Dim cmd As New SqlCommand
+            Dim sqlParametro As SqlParameter
+            With cmd
+                .Connection = Me._Conexion
+                .CommandTimeout = 0
+                .CommandType = CommandType.StoredProcedure
+                .CommandText = "MP_CONTABILIDAD_SUBIR_PDF"
+
+                sqlParametro = .Parameters.Add("@UUID", SqlDbType.NVarChar, 36) : sqlParametro.Value = sUUID
+                sqlParametro = .Parameters.Add("@PDF_ARCHIVO", SqlDbType.Image) : sqlParametro.Value = ArchivoPDF ' DBNull.Value    
+                sqlParametro = .Parameters.Add("@PDF_NOMBRE", SqlDbType.NVarChar, 100) : sqlParametro.Value = sNombrePDF
+
+                Try
+                    Me._Conexion.Open()
+                    .ExecuteNonQuery()
+                    bResultado = True
+                Catch ex As Exception
+                    HandleError(Me.Nombre_Clase, sProcedure, ex)
+                Finally
+                    Me._Conexion.Close()
+                    cmd.Dispose()
+                    sqlParametro = Nothing
+                End Try
+            End With
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Public Function AbrirXML(ByVal sUUID As String) As Boolean
+        Const sProcedure As String = "AbrirXML"
+        Dim bResultado As Boolean = False
+
+        Try
+            Dim sRutaXML As String = Path.Combine(Path.GetTempPath, sUUID & ".xml")
+            Dim docXml As Xml.XmlDocument = New Xml.XmlDocument
+            Dim sCadenaXML As String = New Class_find("SELECT CADENA_XML FROM EXPEDIENTES_BS..XML_REPOSITORIO_GLOBAL WHERE UUID='" & sReplace(sUUID) & "'").Result1
+
+            If txtLEN(sCadenaXML) = False Then
+                MsgBox("No se encontró la cadena del XML del UUID.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            'Agrega al documento XML la cadena que ya esta grabada
+            docXml.LoadXml(sCadenaXML)
+            'Crea el nodo principal o primera linea <?xml version="1.0"?>
+            Dim Nodo As Xml.XmlDeclaration
+            Nodo = docXml.CreateXmlDeclaration("1.0", "utf-8", Nothing)
+            'Agrega el nodo al documento
+            Dim root As Xml.XmlElement = docXml.DocumentElement
+            docXml.InsertBefore(Nodo, root)
+
+            docXml.Save(sRutaXML)
+            ConvierteXMLUTF8(sRutaXML)
+
+            Process.Start(sRutaXML) 'Para abrir el xml
+
+            bResultado = True
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Public Function AbrirPDF(ByVal sUUID As String) As Boolean
+        Const sProcedure As String = "AbrirPDF"
+        Dim bResultado As Boolean = False
+
+        Dim Archivo As New Class_Archivo()
+        Dim cn As New SqlConnection(Empresa_Sistema.conexion)
+        Dim cmd As New SqlCommand()
+        Try
+            cn.Open()
+
+            cmd.Connection = cn
+            cmd.CommandText = "SELECT PDF_ARCHIVO,PDF_NOMBRE FROM EXPEDIENTES_BS..XML_REPOSITORIO_GLOBAL " +
+                                     "WHERE UUID='" & sReplace(sUUID) & "'"
+
+            Dim dReader As SqlDataReader = cmd.ExecuteReader
+            Dim obj As New Object, sFileName As String = ""
+
+            If dReader.Read = True Then
+                Archivo.NombreArchivo = "" & dReader("PDF_NOMBRE").ToString
+
+                If txtLEN(Archivo.NombreArchivo) = True Then 'Si no tiene nombre de archivopdf es porque no se le ha grabado un pdf.
+                    Archivo.Archivo = CType(dReader("PDF_ARCHIVO"), Byte())
+
+                    AbrirArchivo(Archivo)
+
+                    bResultado = True
+                Else
+                    MsgBox("Este xml no tiene archivo PDF.", vbExclamation, sProcedure)
+                End If
+
+            End If
+            dReader.Close()
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
+        Finally
+            cn.Close()
+            cn.Dispose()
+            cmd.Dispose()
+        End Try
+
+        Return bResultado
+    End Function
+
+    Public Function TienePDF(ByVal sUUID As String) As Boolean
+        Const sProcedure As String = "TienePDF"
+        Dim bResultado As Boolean = False
+
+        Try
+            If txtLEN(New Class_find("SELECT 1 FROM EXPEDIENTES_BS..XML_REPOSITORIO_GLOBAL WHERE UUID='" & sReplace(sUUID) & "' AND PDF_ARCHIVO IS NOT NULL").Result1) = True Then
+                bResultado = True
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Public Function ObtienePDFNombre(ByVal sUUID As String) As String
+        Const sProcedure As String = "ObtienePDFNombre"
+        Dim sResultado As String = ""
+
+        Try
+            sResultado = New Class_find("SELECT PDF_NOMBRE FROM EXPEDIENTES_BS..XML_REPOSITORIO_GLOBAL WHERE UUID='" & sReplace(sUUID) & "' AND PDF_ARCHIVO IS NOT NULL").Result1
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
+        End Try
+
+        Return sResultado
+    End Function
+
+    Public Function ObtieneXMLs() As DataTable
+        Dim sProcedure As String = "ObtieneXMLs"
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String
+        'sSQL = "SELECT R.UUID,X.CADENA_XML,X.PDF_NOMBRE " &
+        sSQL = "SELECT X.* " &
+               "FROM CONTABILIDAD_POLIZA_RELACION_XML R " &
+               "INNER JOIN EXPEDIENTES_BS..XML_REPOSITORIO_GLOBAL X ON(R.UUID=X.UUID) " &
+               "WHERE R.FOLIO_POLIZA='" & Me._FOLIO_POLIZA & "' " &
+               "ORDER BY R.ID_POLIZA_RELACION_XML"
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
+        End Try
+        Return dTabla
+    End Function
+
+    Public Function EliminarRelacionTodosXMLs() As Boolean
+        Dim bResultado As Boolean = False
+        Dim sProcedure As String = "EliminarRelacionTodosXMLs"
+
+        Try
+            Dim cmd As New SqlCommand
+            Dim sqlParametro As SqlParameter
+            With cmd
+                .Connection = Me._Conexion
+                .CommandTimeout = 0
+                .CommandType = CommandType.StoredProcedure
+                .CommandText = "MP_CONTABILIDAD_ELIMINA_RELACION_TODOS_XMLS"
+
+                sqlParametro = .Parameters.Add("@FOLIO_POLIZA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_POLIZA
+
+                Try
+                    Me._Conexion.Open()
+                    .ExecuteNonQuery()
+                    bResultado = True
+                Catch ex As Exception
+                    HandleError(Me.Nombre_Clase, sProcedure, ex)
+                Finally
+                    Me._Conexion.Close()
+                    cmd.Dispose()
+                    sqlParametro = Nothing
+                End Try
+            End With
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Public Function EliminarRelacionUnXML(ByVal sUUID As String) As Boolean 'Realmente no se borran los xml's porque pueden estarse usando en otros documentos.
+        Dim bResultado As Boolean = False
+        Dim sProcedure As String = "EliminarRelacionUnXML"
+
+        Try
+            Dim cmd As New SqlCommand
+            Dim sqlParametro As SqlParameter
+            With cmd
+                .Connection = Me._Conexion
+                .CommandTimeout = 0
+                .CommandType = CommandType.StoredProcedure
+                .CommandText = "MP_CONTABILIDAD_ELIMINA_RELACION_UN_XML"
+
+                sqlParametro = .Parameters.Add("@FOLIO_POLIZA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_POLIZA
+                sqlParametro = .Parameters.Add("@UUID", SqlDbType.NVarChar, 36) : sqlParametro.Value = sUUID
+
+                Try
+                    Me._Conexion.Open()
+                    .ExecuteNonQuery()
+                    bResultado = True
+                Catch ex As Exception
+                    HandleError(Me.Nombre_Clase, sProcedure, ex)
+                Finally
+                    Me._Conexion.Close()
+                    cmd.Dispose()
+                    sqlParametro = Nothing
+                End Try
+            End With
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
+        End Try
 
         Return bResultado
     End Function
