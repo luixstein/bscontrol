@@ -78,7 +78,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\cfdi.dll</HintPath>
     </Reference>
-    <Reference Include="CFDIXML, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="CFDIXML, Version=1.0.0.7, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\CFDIXML.dll</HintPath>
     </Reference>
@@ -353,7 +353,6 @@
     <Compile Include="Clases\Facturacion_Electronica\cComprobante.vb" />
     <Compile Include="Clases\Facturacion_Electronica\cComprobante33.vb" />
     <Compile Include="Clases\Facturacion_Electronica\ClasesCFDI.vb" />
-    <Compile Include="Clases\Facturacion_Electronica\ClassCFDI.vb" />
     <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\1.0\Class_CFDI_cce_ComercioExterior.vb" />
     <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\1.0\Class_CFDI_cce_Destinatario.vb" />
     <Compile Include="Clases\Facturacion_Electronica\ComercioExterior\1.0\Class_CFDI_cce_Emisor.vb" />

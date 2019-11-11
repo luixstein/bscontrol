@@ -1187,7 +1187,8 @@ Public Class Class_Contabilidad_Poliza_Global
         Dim sProcedure As String = "ObtieneXMLs"
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
-        sSQL = "SELECT R.UUID,X.CADENA_XML,X.PDF_NOMBRE " &
+        'sSQL = "SELECT R.UUID,X.CADENA_XML,X.PDF_NOMBRE " &
+        sSQL = "SELECT X.* " &
                "FROM CONTABILIDAD_POLIZA_RELACION_XML R " &
                "INNER JOIN EXPEDIENTES_BS..XML_REPOSITORIO_GLOBAL X ON(R.UUID=X.UUID) " &
                "WHERE R.FOLIO_POLIZA='" & Me._FOLIO_POLIZA & "' " &

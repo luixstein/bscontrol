@@ -9,6 +9,7 @@ Imports System.Security.Cryptography.X509Certificates
 Imports System.Xml.XPath
 Imports System.Text
 Imports QRCodeLib
+Imports CFDIXML
 
 Module FacturacionElectronica
 
@@ -285,7 +286,7 @@ Module FacturacionElectronica
                 End If
 
                 'cfd.CancelarTimbre(Empresa_Sistema.RFC, sUUID, ArchivoXmlAcuseCancelacion)'V1
-                cfd.CancelarTimbreV2(cfdi.Emisor.rfc, cfdi.Receptor.rfc, sUUID, cfdi.Comprobante.total, ArchivoXmlAcuseCancelacion) 'V2
+                cfd.CancelarTimbreV2(cfdi.Emisor.rfc, cfdi.Receptor.rfc, sUUID, cfdi.Comprobante.Total, ArchivoXmlAcuseCancelacion) 'V2
 
                 If cfd.Cancelado = True Then
                     bResultado = True 'Marcamos true sin hacer lo del acuse, porque no es importante grabarlo
@@ -1826,14 +1827,14 @@ Module FacturacionElectronica
                     XSL.Load(GetType(PolizasPeriodo_1_2))
             End Select
 
-            XSL.Transform(myXPathDoc, Nothing, MS)
-            CadenaOriginal = Encoding.UTF8.GetString(MS.ToArray()).Trim
+            XSL.Transform(myXPathDoc, Nothing, ms)
+            CadenaOriginal = Encoding.UTF8.GetString(ms.ToArray()).Trim
             CadenaOriginal = Replace(CadenaOriginal, "﻿", "") 'Quita un caracter extraño al inicio de la cadena
 
         Catch ex As Exception
             HandleError(nombreModulo, sProcedure, ex)
         Finally
-            MS.Dispose()
+            ms.Dispose()
             XSL = Nothing
         End Try
 

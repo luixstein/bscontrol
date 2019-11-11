@@ -2,6 +2,7 @@
 
 Imports CrystalDecisions.CrystalReports.Engine
 Imports System.IO
+Imports CFDIXML
 
 Public Class Frm_Contabilidad_Captura_Polizas
     Private _ChildParaGrabar As Boolean
@@ -1472,15 +1473,21 @@ Public Class Frm_Contabilidad_Captura_Polizas
             Dim dtXMLs As New DataTable
             dtXMLs = Me.oPoliza.ObtieneXMLs
             For Each dRow As DataRow In dtXMLs.Rows
-                Dim oCFDI As New ClassCFDI(dRow("CADENA_XML").ToString, False)
-                If oCFDI.XMLCargado = True Then
-                    With oCFDI.Comprobante
-                        'Nota estos datos también pudieran salir de la tabla EXPEDIENTES_BS..XML_REPOSITORIO_GLOBAL
-                        Me.GridXMLs.AddItem(.tipoDeComprobante & Chr(9) & dRow("PDF_NOMBRE").ToString & Chr(9) & .fecha & Chr(9) & .folioCompleto & Chr(9) & oCFDI.ComplementoTFD.UUID & Chr(9) & oCFDI.Emisor.rfc & Chr(9) & oCFDI.Emisor.nombre & Chr(9) &
-                                        .subTotal & Chr(9) & oCFDI.Impuestos.totalImpuestosTrasladados & Chr(9) & oCFDI.Impuestos.totalImpuestosRetenidos & Chr(9) & .total & Chr(9) & .Moneda & Chr(9) & "" & Chr(9) & "")
-                    End With
-                End If
-                oCFDI = Nothing
+
+                'No se usó este método porque los datos ya están en la tabla, además para el complemento de pagos habria que hacer un if para traer el total y la modena del complemento(en el caso de la tabla están reutilizados los del nodo comprobante)
+                'Dim oCFDI As New ClassCFDI(dRow("CADENA_XML").ToString, False)
+                'If oCFDI.XMLCargado = True Then
+                '    With oCFDI.Comprobante
+                '        Me.GridXMLs.AddItem(.tipoDeComprobante & Chr(9) & dRow("PDF_NOMBRE").ToString & Chr(9) & .fecha & Chr(9) & .folioCompleto & Chr(9) & oCFDI.ComplementoTFD.UUID & Chr(9) & oCFDI.Emisor.rfc & Chr(9) & oCFDI.Emisor.nombre & Chr(9) &
+                '                        .subTotal & Chr(9) & oCFDI.Impuestos.totalImpuestosTrasladados & Chr(9) & oCFDI.Impuestos.totalImpuestosRetenidos & Chr(9) & .total & Chr(9) & .Moneda & Chr(9) & "" & Chr(9) & "")
+                '    End With
+                'End If
+                'oCFDI = Nothing
+
+                Me.GridXMLs.AddItem(dRow("TIPO_DE_COMPROBANTE").ToString & Chr(9) & dRow("PDF_NOMBRE").ToString & Chr(9) & dRow("FECHA").ToString & Chr(9) & dRow("FOLIO").ToString & Chr(9) & dRow("UUID").ToString & Chr(9) &
+                                    dRow("EMISOR_RFC").ToString & Chr(9) & dRow("EMISOR_NOMBRE").ToString & Chr(9) & dRow("SUBTOTAL").ToString & Chr(9) &
+                                    dRow("TOTAL_IMPUESTOS_TRASLADADOS").ToString & Chr(9) & dRow("TOTAL_IMPUESTOS_RETENIDOS").ToString & Chr(9) & dRow("TOTAL").ToString & Chr(9) & dRow("MONEDA").ToString & Chr(9) & "" & Chr(9) & "")
+
             Next
             dtXMLs.Dispose()
             Me.TotalizaGridXMLs()
@@ -2063,15 +2070,18 @@ Public Class Frm_Contabilidad_Captura_Polizas
                 Me.lblXMLPDFMsg.Visible = True
             End If
 
-            sPDFNombre = Me.oPoliza.ObtienePDFNombre(oCFDI.ComplementoTFD.UUID) 'Si agregen xml que ya existe, es posible que ya tenga el pdf, vamos a cargar el nombre pdf, no la ruta porque no la tenemos ni la grabaremos nunca(el usuario las puede mover)
+            sPDFNombre = Me.oPoliza.ObtienePDFNombre(oCFDI.ComplementoTFD.UUID) 'Si agregan un xml que ya existe, es posible que ya tenga el pdf, vamos a cargar el nombre pdf, no la ruta porque no la tenemos ni la grabaremos nunca(el usuario las puede mover)
 
             If txtLEN(sPDFNombre) = True Then
                 MsgBox("Este XML ya tiene un PDF relacionado, puede abrirlo para corrobar que este correcto, si no para corregirlo.", MsgBoxStyle.Information, sProcedure)
             End If
 
             With oCFDI.Comprobante
-                Me.GridXMLs.AddItem(.tipoDeComprobante & Chr(9) & sPDFNombre & Chr(9) & .fecha & Chr(9) & .folioCompleto & Chr(9) & oCFDI.ComplementoTFD.UUID & Chr(9) & oCFDI.Emisor.rfc & Chr(9) & oCFDI.Emisor.nombre & Chr(9) &
-                                    .subTotal & Chr(9) & oCFDI.Impuestos.totalImpuestosTrasladados & Chr(9) & oCFDI.Impuestos.totalImpuestosRetenidos & Chr(9) & .total & Chr(9) & .Moneda & Chr(9) & sRutaXML & Chr(9) & "")
+                Me.GridXMLs.AddItem(.TipoDeComprobante & Chr(9) & sPDFNombre & Chr(9) & .Fecha & Chr(9) & .FolioCompleto & Chr(9) & oCFDI.ComplementoTFD.UUID & Chr(9) & oCFDI.Emisor.rfc & Chr(9) & oCFDI.Emisor.nombre & Chr(9) &
+                                    .SubTotal & Chr(9) & oCFDI.Impuestos.totalImpuestosTrasladados & Chr(9) & oCFDI.Impuestos.totalImpuestosRetenidos & Chr(9) &
+                                    CDec(IIf(.TipoDeComprobante = "P", oCFDI.ComplementoPago.Monto, .Total).ToString) & Chr(9) &
+                                    IIf(.TipoDeComprobante = "P", oCFDI.ComplementoPago.MonedaP, .Moneda).ToString & Chr(9) &
+                                    sRutaXML & Chr(9) & "")
             End With
 
             bResultado = True
