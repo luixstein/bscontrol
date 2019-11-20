@@ -1754,6 +1754,30 @@ Public Class Class_Compras_Global
             oReporte = Nothing
         End Try
     End Sub
+
+    Public Function UUID() As String
+        Const sProcedure As String = "UUID"
+        Dim sResultado As String = ""
+        Try
+            ''Selecciona el 1er uuid que tenga relacionadola compra partiendo primero de tipo I=Ingreso, y si no hay ingreso tomaria la 1era que encuentre de cualquier tipo
+            'sResultado = New Class_find("SELECT TOP 1 RX.UUID FROM CONTABILIDAD_POLIZA_RELACION_XML RX " &
+            '                                        "INNER JOIN EXPEDIENTES_BS..XML_REPOSITORIO_GLOBAL XRP ON(RX.UUID=XRP.UUID)" &
+            '                                        "WHERE RX.FOLIO_POLIZA ='" & Me._FOLIO_COMPRA & "' " &
+            '                                        "ORDER BY CASE WHEN XRP.TIPO_DE_COMPROBANTE='I' THEN 1 ELSE 2 END,RX.ID_POLIZA_RELACION_XML").Result1
+
+            sResultado = New Class_find("SELECT TOP 1 RX.UUID FROM CONTABILIDAD_POLIZA_RELACION_XML RX " &
+                                                    "INNER JOIN EXPEDIENTES_BS..XML_REPOSITORIO_GLOBAL XRP ON(RX.UUID=XRP.UUID)" &
+                                                    "WHERE RX.FOLIO_POLIZA ='" & Me._FOLIO_COMPRA & "' " &
+                                                    "AND XRP.TIPO_DE_COMPROBANTE='I'" &
+                                                    "ORDER BY RX.ID_POLIZA_RELACION_XML").Result1
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
+        End Try
+
+        Return sResultado
+    End Function
+
 #End Region
 
 End Class

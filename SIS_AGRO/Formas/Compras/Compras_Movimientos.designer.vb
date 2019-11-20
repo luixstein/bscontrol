@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Compras_Movimientos
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class Compras_Movimientos
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Compras_Movimientos))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
@@ -69,15 +69,7 @@ Partial Class Compras_Movimientos
         Me.LblDisplayFolio = New System.Windows.Forms.Label()
         Me.CboDocumento = New System.Windows.Forms.ComboBox()
         Me.LblDisplayDocumento = New System.Windows.Forms.Label()
-        Me.tsbNuevo = New System.Windows.Forms.ToolStripButton()
-        Me.tsbGrabar = New System.Windows.Forms.ToolStripButton()
-        Me.tsbAplicar = New System.Windows.Forms.ToolStripButton()
-        Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
-        Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.tsMenu = New System.Windows.Forms.ToolStrip()
-        Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
-        Me.tsbPasarOrdenACompra = New System.Windows.Forms.ToolStripButton()
-        Me.tsbEditarCostos = New System.Windows.Forms.ToolStripButton()
         Me.txtSaldoMXP = New System.Windows.Forms.TextBox()
         Me.lblDisplaySaldoMXP = New System.Windows.Forms.Label()
         Me.LblDisplayRetencion = New System.Windows.Forms.Label()
@@ -103,12 +95,10 @@ Partial Class Compras_Movimientos
         Me.gbUSD = New System.Windows.Forms.GroupBox()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.tpArticulos = New System.Windows.Forms.TabPage()
-        Me.Grid = New FlexCell.Grid()
         Me.tpSeries = New System.Windows.Forms.TabPage()
         Me.lblDisplayLote = New System.Windows.Forms.Label()
         Me.btnCopiarLote = New System.Windows.Forms.Button()
         Me.txtLote = New System.Windows.Forms.TextBox()
-        Me.GridSeries = New FlexCell.Grid()
         Me.btnSeries = New System.Windows.Forms.Button()
         Me.txtSaldoUSD = New System.Windows.Forms.TextBox()
         Me.lblDisplaySaldoUSD = New System.Windows.Forms.Label()
@@ -118,6 +108,18 @@ Partial Class Compras_Movimientos
         Me.Label4 = New System.Windows.Forms.Label()
         Me.TxtConceptoCancelacion = New System.Windows.Forms.TextBox()
         Me.LblConceptoCancelacion = New System.Windows.Forms.Label()
+        Me.Grid = New FlexCell.Grid()
+        Me.GridSeries = New FlexCell.Grid()
+        Me.tsbNuevo = New System.Windows.Forms.ToolStripButton()
+        Me.tsbGrabar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbAplicar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
+        Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
+        Me.tsbPasarOrdenACompra = New System.Windows.Forms.ToolStripButton()
+        Me.tsbEditarCostos = New System.Windows.Forms.ToolStripButton()
+        Me.tsbAgregarXML = New System.Windows.Forms.ToolStripButton()
+        Me.tsbAgregarPDF = New System.Windows.Forms.ToolStripButton()
         Me.GroupBox1.SuspendLayout()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
@@ -579,80 +581,15 @@ Partial Class Compras_Movimientos
         Me.LblDisplayDocumento.TabIndex = 277
         Me.LblDisplayDocumento.Text = "Documento :"
         '
-        'tsbNuevo
-        '
-        Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
-        Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbNuevo.Name = "tsbNuevo"
-        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
-        Me.tsbNuevo.Text = "&Nuevo"
-        '
-        'tsbGrabar
-        '
-        Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
-        Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbGrabar.Name = "tsbGrabar"
-        Me.tsbGrabar.Size = New System.Drawing.Size(66, 24)
-        Me.tsbGrabar.Text = "&Grabar"
-        '
-        'tsbAplicar
-        '
-        Me.tsbAplicar.Image = Global.BsControl.My.Resources.Resources._782
-        Me.tsbAplicar.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbAplicar.Name = "tsbAplicar"
-        Me.tsbAplicar.Size = New System.Drawing.Size(68, 24)
-        Me.tsbAplicar.Text = "&Aplicar"
-        '
-        'tsbImprimir
-        '
-        Me.tsbImprimir.Image = CType(resources.GetObject("tsbImprimir.Image"), System.Drawing.Image)
-        Me.tsbImprimir.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbImprimir.Name = "tsbImprimir"
-        Me.tsbImprimir.Size = New System.Drawing.Size(77, 24)
-        Me.tsbImprimir.Text = "&Imprimir"
-        Me.tsbImprimir.ToolTipText = "Imprimir"
-        '
-        'tsbSalir
-        '
-        Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
-        Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
-        Me.tsbSalir.Text = "&Salir"
-        '
         'tsMenu
         '
         Me.tsMenu.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbAplicar, Me.tsbCancelar, Me.tsbImprimir, Me.tsbSalir, Me.tsbPasarOrdenACompra, Me.tsbEditarCostos})
+        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbAplicar, Me.tsbCancelar, Me.tsbImprimir, Me.tsbSalir, Me.tsbPasarOrdenACompra, Me.tsbEditarCostos, Me.tsbAgregarXML, Me.tsbAgregarPDF})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(1029, 27)
         Me.tsMenu.TabIndex = 3
         Me.tsMenu.Text = "tsMenu"
-        '
-        'tsbCancelar
-        '
-        Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
-        Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbCancelar.Name = "tsbCancelar"
-        Me.tsbCancelar.Size = New System.Drawing.Size(80, 24)
-        Me.tsbCancelar.Text = " Cancelar"
-        '
-        'tsbPasarOrdenACompra
-        '
-        Me.tsbPasarOrdenACompra.Image = Global.BsControl.My.Resources.Resources._096
-        Me.tsbPasarOrdenACompra.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbPasarOrdenACompra.Name = "tsbPasarOrdenACompra"
-        Me.tsbPasarOrdenACompra.Size = New System.Drawing.Size(112, 24)
-        Me.tsbPasarOrdenACompra.Text = "&Pasar a compra"
-        '
-        'tsbEditarCostos
-        '
-        Me.tsbEditarCostos.Image = Global.BsControl.My.Resources.Resources._782
-        Me.tsbEditarCostos.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbEditarCostos.Name = "tsbEditarCostos"
-        Me.tsbEditarCostos.Size = New System.Drawing.Size(98, 24)
-        Me.tsbEditarCostos.Text = "&Editar costos"
         '
         'txtSaldoMXP
         '
@@ -893,25 +830,6 @@ Partial Class Compras_Movimientos
         Me.tpArticulos.Text = "Artículos"
         Me.tpArticulos.UseVisualStyleBackColor = True
         '
-        'Grid
-        '
-        Me.Grid.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.Grid.CheckedImage = CType(resources.GetObject("Grid.CheckedImage"), System.Drawing.Bitmap)
-        Me.Grid.Cols = 1
-        Me.Grid.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
-        Me.Grid.DefaultRowHeight = CType(24, Short)
-        Me.Grid.DisplayRowNumber = True
-        Me.Grid.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
-        Me.Grid.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Grid.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Grid.Location = New System.Drawing.Point(1, 6)
-        Me.Grid.LockButton = True
-        Me.Grid.Name = "Grid"
-        Me.Grid.Rows = 6
-        Me.Grid.Size = New System.Drawing.Size(998, 166)
-        Me.Grid.TabIndex = 0
-        Me.Grid.UncheckedImage = CType(resources.GetObject("Grid.UncheckedImage"), System.Drawing.Bitmap)
-        '
         'tpSeries
         '
         Me.tpSeries.Controls.Add(Me.lblDisplayLote)
@@ -951,25 +869,6 @@ Partial Class Compras_Movimientos
         Me.txtLote.Name = "txtLote"
         Me.txtLote.Size = New System.Drawing.Size(107, 20)
         Me.txtLote.TabIndex = 10
-        '
-        'GridSeries
-        '
-        Me.GridSeries.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.GridSeries.CheckedImage = CType(resources.GetObject("GridSeries.CheckedImage"), System.Drawing.Bitmap)
-        Me.GridSeries.Cols = 1
-        Me.GridSeries.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
-        Me.GridSeries.DefaultRowHeight = CType(24, Short)
-        Me.GridSeries.DisplayRowNumber = True
-        Me.GridSeries.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
-        Me.GridSeries.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GridSeries.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.GridSeries.Location = New System.Drawing.Point(3, 6)
-        Me.GridSeries.LockButton = True
-        Me.GridSeries.Name = "GridSeries"
-        Me.GridSeries.Rows = 6
-        Me.GridSeries.Size = New System.Drawing.Size(999, 149)
-        Me.GridSeries.TabIndex = 1
-        Me.GridSeries.UncheckedImage = CType(resources.GetObject("GridSeries.UncheckedImage"), System.Drawing.Bitmap)
         '
         'btnSeries
         '
@@ -1052,6 +951,125 @@ Partial Class Compras_Movimientos
         Me.LblConceptoCancelacion.TabIndex = 387
         Me.LblConceptoCancelacion.Text = "Concepto cancelación :"
         Me.LblConceptoCancelacion.Visible = False
+        '
+        'Grid
+        '
+        Me.Grid.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.Grid.CheckedImage = CType(resources.GetObject("Grid.CheckedImage"), System.Drawing.Bitmap)
+        Me.Grid.Cols = 1
+        Me.Grid.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
+        Me.Grid.DefaultRowHeight = CType(24, Short)
+        Me.Grid.DisplayRowNumber = True
+        Me.Grid.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
+        Me.Grid.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Grid.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.Grid.Location = New System.Drawing.Point(1, 6)
+        Me.Grid.LockButton = True
+        Me.Grid.Name = "Grid"
+        Me.Grid.Rows = 6
+        Me.Grid.Size = New System.Drawing.Size(998, 166)
+        Me.Grid.TabIndex = 0
+        Me.Grid.UncheckedImage = CType(resources.GetObject("Grid.UncheckedImage"), System.Drawing.Bitmap)
+        '
+        'GridSeries
+        '
+        Me.GridSeries.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.GridSeries.CheckedImage = CType(resources.GetObject("GridSeries.CheckedImage"), System.Drawing.Bitmap)
+        Me.GridSeries.Cols = 1
+        Me.GridSeries.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
+        Me.GridSeries.DefaultRowHeight = CType(24, Short)
+        Me.GridSeries.DisplayRowNumber = True
+        Me.GridSeries.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
+        Me.GridSeries.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GridSeries.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.GridSeries.Location = New System.Drawing.Point(3, 6)
+        Me.GridSeries.LockButton = True
+        Me.GridSeries.Name = "GridSeries"
+        Me.GridSeries.Rows = 6
+        Me.GridSeries.Size = New System.Drawing.Size(999, 149)
+        Me.GridSeries.TabIndex = 1
+        Me.GridSeries.UncheckedImage = CType(resources.GetObject("GridSeries.UncheckedImage"), System.Drawing.Bitmap)
+        '
+        'tsbNuevo
+        '
+        Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
+        Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbNuevo.Name = "tsbNuevo"
+        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
+        Me.tsbNuevo.Text = "&Nuevo"
+        '
+        'tsbGrabar
+        '
+        Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
+        Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbGrabar.Name = "tsbGrabar"
+        Me.tsbGrabar.Size = New System.Drawing.Size(66, 24)
+        Me.tsbGrabar.Text = "&Grabar"
+        '
+        'tsbAplicar
+        '
+        Me.tsbAplicar.Image = Global.BsControl.My.Resources.Resources._782
+        Me.tsbAplicar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbAplicar.Name = "tsbAplicar"
+        Me.tsbAplicar.Size = New System.Drawing.Size(68, 24)
+        Me.tsbAplicar.Text = "&Aplicar"
+        '
+        'tsbCancelar
+        '
+        Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
+        Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbCancelar.Name = "tsbCancelar"
+        Me.tsbCancelar.Size = New System.Drawing.Size(77, 24)
+        Me.tsbCancelar.Text = "&Cancelar"
+        '
+        'tsbImprimir
+        '
+        Me.tsbImprimir.Image = CType(resources.GetObject("tsbImprimir.Image"), System.Drawing.Image)
+        Me.tsbImprimir.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbImprimir.Name = "tsbImprimir"
+        Me.tsbImprimir.Size = New System.Drawing.Size(77, 24)
+        Me.tsbImprimir.Text = "&Imprimir"
+        Me.tsbImprimir.ToolTipText = "Imprimir"
+        '
+        'tsbSalir
+        '
+        Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
+        Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbSalir.Name = "tsbSalir"
+        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
+        Me.tsbSalir.Text = "&Salir"
+        '
+        'tsbPasarOrdenACompra
+        '
+        Me.tsbPasarOrdenACompra.Image = Global.BsControl.My.Resources.Resources._096
+        Me.tsbPasarOrdenACompra.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbPasarOrdenACompra.Name = "tsbPasarOrdenACompra"
+        Me.tsbPasarOrdenACompra.Size = New System.Drawing.Size(112, 24)
+        Me.tsbPasarOrdenACompra.Text = "&Pasar a compra"
+        '
+        'tsbEditarCostos
+        '
+        Me.tsbEditarCostos.Image = Global.BsControl.My.Resources.Resources._782
+        Me.tsbEditarCostos.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbEditarCostos.Name = "tsbEditarCostos"
+        Me.tsbEditarCostos.Size = New System.Drawing.Size(98, 24)
+        Me.tsbEditarCostos.Text = "&Editar costos"
+        '
+        'tsbAgregarXML
+        '
+        Me.tsbAgregarXML.Image = Global.BsControl.My.Resources.Resources.xml1
+        Me.tsbAgregarXML.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbAgregarXML.Name = "tsbAgregarXML"
+        Me.tsbAgregarXML.Size = New System.Drawing.Size(100, 24)
+        Me.tsbAgregarXML.Text = "Agregar &XML"
+        '
+        'tsbAgregarPDF
+        '
+        Me.tsbAgregarPDF.Image = Global.BsControl.My.Resources.Resources.pdf11
+        Me.tsbAgregarPDF.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbAgregarPDF.Name = "tsbAgregarPDF"
+        Me.tsbAgregarPDF.Size = New System.Drawing.Size(97, 24)
+        Me.tsbAgregarPDF.Text = "Agregar PD&F"
         '
         'Compras_Movimientos
         '
@@ -1198,4 +1216,6 @@ Partial Class Compras_Movimientos
     Friend WithEvents lblDisplayLote As Label
     Friend WithEvents btnCopiarLote As Button
     Friend WithEvents txtLote As TextBox
+    Friend WithEvents tsbAgregarPDF As ToolStripButton
+    Friend WithEvents tsbAgregarXML As ToolStripButton
 End Class

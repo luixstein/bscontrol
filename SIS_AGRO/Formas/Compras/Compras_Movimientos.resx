@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="tsMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="tsbNuevo.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -144,6 +147,14 @@
         +QPmZ8OJHrju0gAAAABJRU5ErkJggg==
 </value>
   </data>
+  <data name="tsbCancelar.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABSSURBVDhPzY1BCgAgCAT9/6eLIGHBdVPq0ECXdEb7igGv
+        QtjDgIrIOQbYUvYfYJGy7GCkLTvP5HaESeUIk51jRMlOOkNZBRZ0XpUlHfnq0MZsAlwyOcdS2Fx6AAAA
+        AElFTkSuQmCC
+</value>
+  </data>
   <data name="tsbImprimir.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -169,17 +180,6 @@
         2YHGwtxaBQenoQJeDp0S9idXYUhwBxfjApVoPUYPOpFHgG9hW/Az1gsTp/0wIQ3EpDSALSF73wcwneQD
         VcIuqOK3QRXtClW4M74Hr0OfL7WuAJTP6tAX5IbBI9sxKNqJAbaGRR54L9qBkVB3KEJcoQh2wWjgBiiE
         TuhnzV9b7q4A/v6Ra5FAIBD8ASnlA3b0Q6yCAAAAAElFTkSuQmCC
-</value>
-  </data>
-  <metadata name="tsMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <data name="tsbCancelar.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABSSURBVDhPzY1BCgAgCAT9/6eLIGHBdVPq0ECXdEb7igGv
-        QtjDgIrIOQbYUvYfYJGy7GCkLTvP5HaESeUIk51jRMlOOkNZBRZ0XpUlHfnq0MZsAlwyOcdS2Fx6AAAA
-        AElFTkSuQmCC
 </value>
   </data>
   <metadata name="StatusStripEstado.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
