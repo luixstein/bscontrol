@@ -218,9 +218,9 @@
                 .Column(Me.iGyIDProyectoSiembra).Visible = False
                 .Column(Me.iGyCodigoLote).Visible = False
 
-                .Column(Me.iGyAlimento).FormatString = "##0"
+                .Column(Me.iGyAlimento).FormatString = "##0.00"
                 .Column(Me.iGyAlimento).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyAlimento).DecimalLength = 0
+                .Column(Me.iGyAlimento).DecimalLength = 2
 
                 .Column(Me.iGyCanastas).Mask = FlexCell.MaskEnum.Digital
                 .Column(Me.iGyCanastas).DecimalLength = 0
