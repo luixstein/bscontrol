@@ -28,6 +28,7 @@ Public Class Class_CatProveedores
     Private _CURP As String
     Private _PROTEGIDO As Boolean
     Private _CODIGO_PROPIETARIO As String
+    Private _LIMITE_CREDITO As Double
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -226,6 +227,15 @@ Public Class Class_CatProveedores
             Return Me._PROTEGIDO
         End Get
     End Property
+
+    Public Property LIMITE_CREDITO() As Double
+        Get
+            Return Me._LIMITE_CREDITO
+        End Get
+        Set(ByVal Value As Double)
+            Me._LIMITE_CREDITO = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -343,6 +353,7 @@ Public Class Class_CatProveedores
             sqlParametro = .Parameters.Add("@CONTACTO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONTACTO.ToUpper
             sqlParametro = .Parameters.Add("@CONTACTO_TELEFONO_CELULAR", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONTACTO_TELEFONO_CELULAR.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PLAZA
+            sqlParametro = .Parameters.Add("@LIMITE_CREDITO", SqlDbType.Decimal) : sqlParametro.Value = Me._LIMITE_CREDITO
 
             If txtLEN(Me._CODIGO_PROPIETARIO) = True Then
                 sqlParametro = .Parameters.Add("@CODIGO_PROPIETARIO", SqlDbType.Int) : sqlParametro.Value = CInt(Me._CODIGO_PROPIETARIO)
@@ -397,6 +408,8 @@ Public Class Class_CatProveedores
             sqlParametro = .Parameters.Add("@CONTACTO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONTACTO.ToUpper
             sqlParametro = .Parameters.Add("@CONTACTO_TELEFONO_CELULAR", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONTACTO_TELEFONO_CELULAR.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PLAZA
+            sqlParametro = .Parameters.Add("@LIMITE_CREDITO", SqlDbType.Decimal) : sqlParametro.Value = Me._LIMITE_CREDITO
+
             If txtLEN(Me._CODIGO_PROPIETARIO) = True Then
                 sqlParametro = .Parameters.Add("@CODIGO_PROPIETARIO", SqlDbType.Int) : sqlParametro.Value = CInt(Me._CODIGO_PROPIETARIO)
             Else
@@ -485,6 +498,7 @@ Public Class Class_CatProveedores
                     Me._CURP = "" & dReader("CURP").ToString()
                     Me._PROTEGIDO = CBool(dReader("PROTEGIDO").ToString())
                     Me._CODIGO_PROPIETARIO = "" & dReader("CODIGO_PROPIETARIO").ToString()
+                    Me._LIMITE_CREDITO = Convert.ToDouble(dReader("LIMITE_CREDITO"))
 
                     If txtLEN(dReader("ID_CUENTA_BANCARIA").ToString()) = True Then
                         Me._CuentaBancaria = New Class_CatCuentasBancarias(CInt(dReader("ID_CUENTA_BANCARIA").ToString()))

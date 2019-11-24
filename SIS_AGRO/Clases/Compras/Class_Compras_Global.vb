@@ -62,6 +62,8 @@ Public Class Class_Compras_Global
 
     Private _CONCEPTO_CANCELACION As String
     Private _COSTO As Double
+
+    Private _FECHA_ENTREGA As Date
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -498,6 +500,15 @@ Public Class Class_Compras_Global
         End Set
     End Property
 
+    Public Property FECHA_ENTREGA() As Date
+        Get
+            Return Me._FECHA_ENTREGA
+        End Get
+        Set(value As Date)
+            Me._FECHA_ENTREGA = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -629,6 +640,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@PREDIO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._PREDIO.ToUpper
             sqlParametro = .Parameters.Add("@CONFIRMO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONFIRMO.ToUpper
             sqlParametro = .Parameters.Add("COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO
+            sqlParametro = .Parameters.Add("@FECHA_ENTREGA", SqlDbType.DateTime) : sqlParametro.Value = "" & Me._FECHA_ENTREGA
 
             Try
                 Me._Conexion.Open()
@@ -679,6 +691,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@PREDIO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._PREDIO.ToUpper
             sqlParametro = .Parameters.Add("@CONFIRMO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONFIRMO.ToUpper
             sqlParametro = .Parameters.Add("COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO
+            sqlParametro = .Parameters.Add("@FECHA_ENTREGA", SqlDbType.DateTime) : sqlParametro.Value = "" & Me._FECHA_ENTREGA
 
             Try
                 Me._Conexion.Open()
@@ -735,6 +748,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@CONFIRMO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONFIRMO.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_GASTO", SqlDbType.NVarChar, 80) : sqlParametro.Value = "2" 'CON ORDEN DE COMPRA
             sqlParametro = .Parameters.Add("COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO
+            sqlParametro = .Parameters.Add("@FECHA_ENTREGA", SqlDbType.DateTime) : sqlParametro.Value = "" & Me._FECHA_ENTREGA
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
@@ -999,6 +1013,7 @@ Public Class Class_Compras_Global
                     Me._TIENE_SERIES = CBool(dReader("TIENE_SERIES"))
 
                     Me._CONCEPTO_CANCELACION = dReader("CONCEPTO_CANCELACION").ToString
+                    Me._FECHA_ENTREGA = CDate(dReader("FECHA_ENTREGA"))
 
                     bResultado = True
                 End If

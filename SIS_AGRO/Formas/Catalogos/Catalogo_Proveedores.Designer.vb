@@ -24,6 +24,8 @@ Partial Class Catalogo_Proveedores
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Catalogo_Proveedores))
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.LblLimiteCredito = New System.Windows.Forms.Label()
+        Me.TxtLimiteCredito = New System.Windows.Forms.TextBox()
         Me.LblNombrePropietario = New System.Windows.Forms.Label()
         Me.TxtCodigoPropietario = New System.Windows.Forms.TextBox()
         Me.LblCodigoPropietario = New System.Windows.Forms.Label()
@@ -96,6 +98,8 @@ Partial Class Catalogo_Proveedores
         '
         'gBoxInformacion
         '
+        Me.gBoxInformacion.Controls.Add(Me.LblLimiteCredito)
+        Me.gBoxInformacion.Controls.Add(Me.TxtLimiteCredito)
         Me.gBoxInformacion.Controls.Add(Me.LblNombrePropietario)
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigoPropietario)
         Me.gBoxInformacion.Controls.Add(Me.LblCodigoPropietario)
@@ -136,45 +140,70 @@ Partial Class Catalogo_Proveedores
         Me.gBoxInformacion.Controls.Add(Me.TxtPlazo)
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayNomProveedor)
         Me.gBoxInformacion.Controls.Add(Me.TxtNomProveedor)
-        Me.gBoxInformacion.Location = New System.Drawing.Point(5, 28)
+        Me.gBoxInformacion.Location = New System.Drawing.Point(7, 34)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Size = New System.Drawing.Size(442, 616)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
+        Me.gBoxInformacion.Size = New System.Drawing.Size(589, 758)
         Me.gBoxInformacion.TabIndex = 1
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información de los Proveedores"
         '
+        'LblLimiteCredito
+        '
+        Me.LblLimiteCredito.AutoSize = True
+        Me.LblLimiteCredito.Location = New System.Drawing.Point(285, 373)
+        Me.LblLimiteCredito.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblLimiteCredito.Name = "LblLimiteCredito"
+        Me.LblLimiteCredito.Size = New System.Drawing.Size(120, 17)
+        Me.LblLimiteCredito.TabIndex = 156
+        Me.LblLimiteCredito.Text = "Limite de credito :"
+        '
+        'TxtLimiteCredito
+        '
+        Me.TxtLimiteCredito.Enabled = False
+        Me.TxtLimiteCredito.Location = New System.Drawing.Point(413, 368)
+        Me.TxtLimiteCredito.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtLimiteCredito.Name = "TxtLimiteCredito"
+        Me.TxtLimiteCredito.Size = New System.Drawing.Size(132, 22)
+        Me.TxtLimiteCredito.TabIndex = 10
+        '
         'LblNombrePropietario
         '
         Me.LblNombrePropietario.AutoSize = True
-        Me.LblNombrePropietario.Location = New System.Drawing.Point(108, 67)
+        Me.LblNombrePropietario.Location = New System.Drawing.Point(144, 82)
+        Me.LblNombrePropietario.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblNombrePropietario.Name = "LblNombrePropietario"
-        Me.LblNombrePropietario.Size = New System.Drawing.Size(13, 13)
+        Me.LblNombrePropietario.Size = New System.Drawing.Size(16, 17)
         Me.LblNombrePropietario.TabIndex = 154
         Me.LblNombrePropietario.Text = "_"
         '
         'TxtCodigoPropietario
         '
-        Me.TxtCodigoPropietario.Location = New System.Drawing.Point(110, 46)
+        Me.TxtCodigoPropietario.Location = New System.Drawing.Point(147, 57)
+        Me.TxtCodigoPropietario.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigoPropietario.MaxLength = 8
         Me.TxtCodigoPropietario.Name = "TxtCodigoPropietario"
-        Me.TxtCodigoPropietario.Size = New System.Drawing.Size(72, 20)
+        Me.TxtCodigoPropietario.Size = New System.Drawing.Size(95, 22)
         Me.TxtCodigoPropietario.TabIndex = 152
         '
         'LblCodigoPropietario
         '
         Me.LblCodigoPropietario.AutoSize = True
-        Me.LblCodigoPropietario.Location = New System.Drawing.Point(10, 48)
+        Me.LblCodigoPropietario.Location = New System.Drawing.Point(13, 59)
+        Me.LblCodigoPropietario.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblCodigoPropietario.Name = "LblCodigoPropietario"
-        Me.LblCodigoPropietario.Size = New System.Drawing.Size(85, 13)
+        Me.LblCodigoPropietario.Size = New System.Drawing.Size(114, 17)
         Me.LblCodigoPropietario.TabIndex = 151
         Me.LblCodigoPropietario.Text = "Cod Propietario :"
         '
         'chkProtegido
         '
         Me.chkProtegido.AutoSize = True
-        Me.chkProtegido.Location = New System.Drawing.Point(334, 580)
+        Me.chkProtegido.Location = New System.Drawing.Point(445, 714)
+        Me.chkProtegido.Margin = New System.Windows.Forms.Padding(4)
         Me.chkProtegido.Name = "chkProtegido"
-        Me.chkProtegido.Size = New System.Drawing.Size(121, 17)
+        Me.chkProtegido.Size = New System.Drawing.Size(160, 21)
         Me.chkProtegido.TabIndex = 150
         Me.chkProtegido.Text = "Protegido(no visible)"
         Me.chkProtegido.UseVisualStyleBackColor = True
@@ -182,62 +211,68 @@ Partial Class Catalogo_Proveedores
         '
         'btnGenerarCuentaDolares
         '
-        Me.btnGenerarCuentaDolares.Location = New System.Drawing.Point(240, 447)
-        Me.btnGenerarCuentaDolares.Margin = New System.Windows.Forms.Padding(2)
+        Me.btnGenerarCuentaDolares.Location = New System.Drawing.Point(320, 550)
+        Me.btnGenerarCuentaDolares.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnGenerarCuentaDolares.Name = "btnGenerarCuentaDolares"
-        Me.btnGenerarCuentaDolares.Size = New System.Drawing.Size(92, 19)
+        Me.btnGenerarCuentaDolares.Size = New System.Drawing.Size(123, 23)
         Me.btnGenerarCuentaDolares.TabIndex = 149
         Me.btnGenerarCuentaDolares.Text = "Generar cuenta en dolares"
         Me.btnGenerarCuentaDolares.UseVisualStyleBackColor = True
         '
         'txtCURP
         '
-        Me.txtCURP.Location = New System.Drawing.Point(296, 168)
+        Me.txtCURP.Location = New System.Drawing.Point(395, 207)
+        Me.txtCURP.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCURP.MaxLength = 18
         Me.txtCURP.Name = "txtCURP"
-        Me.txtCURP.Size = New System.Drawing.Size(140, 20)
+        Me.txtCURP.Size = New System.Drawing.Size(185, 22)
         Me.txtCURP.TabIndex = 4
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(247, 171)
+        Me.Label2.Location = New System.Drawing.Point(329, 210)
+        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(43, 13)
+        Me.Label2.Size = New System.Drawing.Size(54, 17)
         Me.Label2.TabIndex = 148
         Me.Label2.Text = "CURP :"
         '
         'lblCuentaContabledolares
         '
         Me.lblCuentaContabledolares.AutoSize = True
-        Me.lblCuentaContabledolares.Location = New System.Drawing.Point(107, 470)
+        Me.lblCuentaContabledolares.Location = New System.Drawing.Point(143, 578)
+        Me.lblCuentaContabledolares.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblCuentaContabledolares.Name = "lblCuentaContabledolares"
-        Me.lblCuentaContabledolares.Size = New System.Drawing.Size(13, 13)
+        Me.lblCuentaContabledolares.Size = New System.Drawing.Size(16, 17)
         Me.lblCuentaContabledolares.TabIndex = 146
         Me.lblCuentaContabledolares.Text = "_"
         '
         'txtCuentaContableDolares
         '
-        Me.txtCuentaContableDolares.Location = New System.Drawing.Point(110, 448)
+        Me.txtCuentaContableDolares.Location = New System.Drawing.Point(147, 551)
+        Me.txtCuentaContableDolares.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCuentaContableDolares.MaxLength = 15
         Me.txtCuentaContableDolares.Name = "txtCuentaContableDolares"
-        Me.txtCuentaContableDolares.Size = New System.Drawing.Size(100, 20)
-        Me.txtCuentaContableDolares.TabIndex = 14
+        Me.txtCuentaContableDolares.Size = New System.Drawing.Size(132, 22)
+        Me.txtCuentaContableDolares.TabIndex = 15
         '
         'Label3
         '
-        Me.Label3.Location = New System.Drawing.Point(10, 451)
+        Me.Label3.Location = New System.Drawing.Point(13, 555)
+        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(94, 34)
+        Me.Label3.Size = New System.Drawing.Size(125, 42)
         Me.Label3.TabIndex = 145
         Me.Label3.Text = "Cuenta contable en dolares :"
         '
         'lblCuenta
         '
         Me.lblCuenta.AutoSize = True
-        Me.lblCuenta.Location = New System.Drawing.Point(107, 431)
+        Me.lblCuenta.Location = New System.Drawing.Point(143, 530)
+        Me.lblCuenta.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblCuenta.Name = "lblCuenta"
-        Me.lblCuenta.Size = New System.Drawing.Size(13, 13)
+        Me.lblCuenta.Size = New System.Drawing.Size(16, 17)
         Me.lblCuenta.TabIndex = 143
         Me.lblCuenta.Text = "_"
         '
@@ -247,206 +282,231 @@ Partial Class Catalogo_Proveedores
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Controls.Add(Me.txtContactoNombre)
         Me.GroupBox1.Controls.Add(Me.lblDisplayContacto)
-        Me.GroupBox1.Location = New System.Drawing.Point(6, 488)
+        Me.GroupBox1.Location = New System.Drawing.Point(8, 601)
+        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(393, 74)
+        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
+        Me.GroupBox1.Size = New System.Drawing.Size(524, 91)
         Me.GroupBox1.TabIndex = 142
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Contacto"
         '
         'txtContactoTelefonoCelular
         '
-        Me.txtContactoTelefonoCelular.Location = New System.Drawing.Point(104, 45)
+        Me.txtContactoTelefonoCelular.Location = New System.Drawing.Point(139, 55)
+        Me.txtContactoTelefonoCelular.Margin = New System.Windows.Forms.Padding(4)
         Me.txtContactoTelefonoCelular.MaxLength = 30
         Me.txtContactoTelefonoCelular.Name = "txtContactoTelefonoCelular"
-        Me.txtContactoTelefonoCelular.Size = New System.Drawing.Size(281, 20)
+        Me.txtContactoTelefonoCelular.Size = New System.Drawing.Size(373, 22)
         Me.txtContactoTelefonoCelular.TabIndex = 1
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(4, 47)
+        Me.Label1.Location = New System.Drawing.Point(5, 58)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(64, 13)
+        Me.Label1.Size = New System.Drawing.Size(82, 17)
         Me.Label1.TabIndex = 138
         Me.Label1.Text = "Tel/celular :"
         '
         'txtContactoNombre
         '
-        Me.txtContactoNombre.Location = New System.Drawing.Point(104, 19)
+        Me.txtContactoNombre.Location = New System.Drawing.Point(139, 23)
+        Me.txtContactoNombre.Margin = New System.Windows.Forms.Padding(4)
         Me.txtContactoNombre.MaxLength = 80
         Me.txtContactoNombre.Name = "txtContactoNombre"
-        Me.txtContactoNombre.Size = New System.Drawing.Size(281, 20)
+        Me.txtContactoNombre.Size = New System.Drawing.Size(373, 22)
         Me.txtContactoNombre.TabIndex = 0
         '
         'lblDisplayContacto
         '
         Me.lblDisplayContacto.AutoSize = True
-        Me.lblDisplayContacto.Location = New System.Drawing.Point(4, 22)
+        Me.lblDisplayContacto.Location = New System.Drawing.Point(5, 27)
+        Me.lblDisplayContacto.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayContacto.Name = "lblDisplayContacto"
-        Me.lblDisplayContacto.Size = New System.Drawing.Size(50, 13)
+        Me.lblDisplayContacto.Size = New System.Drawing.Size(66, 17)
         Me.lblDisplayContacto.TabIndex = 136
         Me.lblDisplayContacto.Text = "Nombre :"
         '
         'DTPFechaApertura
         '
         Me.DTPFechaApertura.Enabled = False
-        Me.DTPFechaApertura.Location = New System.Drawing.Point(110, 357)
+        Me.DTPFechaApertura.Location = New System.Drawing.Point(147, 439)
+        Me.DTPFechaApertura.Margin = New System.Windows.Forms.Padding(4)
         Me.DTPFechaApertura.Name = "DTPFechaApertura"
-        Me.DTPFechaApertura.Size = New System.Drawing.Size(200, 20)
-        Me.DTPFechaApertura.TabIndex = 11
+        Me.DTPFechaApertura.Size = New System.Drawing.Size(265, 22)
+        Me.DTPFechaApertura.TabIndex = 12
         '
         'cboTipoProveedor
         '
         Me.cboTipoProveedor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboTipoProveedor.FormattingEnabled = True
-        Me.cboTipoProveedor.Location = New System.Drawing.Point(110, 385)
+        Me.cboTipoProveedor.Location = New System.Drawing.Point(147, 474)
+        Me.cboTipoProveedor.Margin = New System.Windows.Forms.Padding(4)
         Me.cboTipoProveedor.Name = "cboTipoProveedor"
-        Me.cboTipoProveedor.Size = New System.Drawing.Size(281, 21)
-        Me.cboTipoProveedor.TabIndex = 12
+        Me.cboTipoProveedor.Size = New System.Drawing.Size(373, 24)
+        Me.cboTipoProveedor.TabIndex = 13
         '
         'txtRFC
         '
-        Me.txtRFC.Location = New System.Drawing.Point(110, 168)
+        Me.txtRFC.Location = New System.Drawing.Point(147, 207)
+        Me.txtRFC.Margin = New System.Windows.Forms.Padding(4)
         Me.txtRFC.MaxLength = 13
         Me.txtRFC.Name = "txtRFC"
-        Me.txtRFC.Size = New System.Drawing.Size(120, 20)
+        Me.txtRFC.Size = New System.Drawing.Size(159, 22)
         Me.txtRFC.TabIndex = 3
         '
         'txtDomicilio
         '
-        Me.txtDomicilio.Location = New System.Drawing.Point(110, 115)
+        Me.txtDomicilio.Location = New System.Drawing.Point(147, 142)
+        Me.txtDomicilio.Margin = New System.Windows.Forms.Padding(4)
         Me.txtDomicilio.MaxLength = 120
         Me.txtDomicilio.Multiline = True
         Me.txtDomicilio.Name = "txtDomicilio"
-        Me.txtDomicilio.Size = New System.Drawing.Size(327, 47)
+        Me.txtDomicilio.Size = New System.Drawing.Size(435, 57)
         Me.txtDomicilio.TabIndex = 2
         '
         'txtCuentaContable
         '
-        Me.txtCuentaContable.Location = New System.Drawing.Point(110, 410)
+        Me.txtCuentaContable.Location = New System.Drawing.Point(147, 505)
+        Me.txtCuentaContable.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCuentaContable.MaxLength = 15
         Me.txtCuentaContable.Name = "txtCuentaContable"
-        Me.txtCuentaContable.Size = New System.Drawing.Size(100, 20)
-        Me.txtCuentaContable.TabIndex = 13
+        Me.txtCuentaContable.Size = New System.Drawing.Size(132, 22)
+        Me.txtCuentaContable.TabIndex = 14
         '
         'txtSaldo
         '
         Me.txtSaldo.Enabled = False
-        Me.txtSaldo.Location = New System.Drawing.Point(110, 331)
+        Me.txtSaldo.Location = New System.Drawing.Point(147, 407)
+        Me.txtSaldo.Margin = New System.Windows.Forms.Padding(4)
         Me.txtSaldo.Name = "txtSaldo"
-        Me.txtSaldo.Size = New System.Drawing.Size(100, 20)
-        Me.txtSaldo.TabIndex = 10
+        Me.txtSaldo.Size = New System.Drawing.Size(132, 22)
+        Me.txtSaldo.TabIndex = 11
         '
         'txtFax
         '
-        Me.txtFax.Location = New System.Drawing.Point(110, 275)
+        Me.txtFax.Location = New System.Drawing.Point(147, 338)
+        Me.txtFax.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFax.MaxLength = 30
         Me.txtFax.Name = "txtFax"
-        Me.txtFax.Size = New System.Drawing.Size(197, 20)
+        Me.txtFax.Size = New System.Drawing.Size(261, 22)
         Me.txtFax.TabIndex = 8
         '
         'txtCorreoElectronico
         '
-        Me.txtCorreoElectronico.Location = New System.Drawing.Point(110, 248)
+        Me.txtCorreoElectronico.Location = New System.Drawing.Point(147, 305)
+        Me.txtCorreoElectronico.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCorreoElectronico.MaxLength = 50
         Me.txtCorreoElectronico.Name = "txtCorreoElectronico"
-        Me.txtCorreoElectronico.Size = New System.Drawing.Size(281, 20)
+        Me.txtCorreoElectronico.Size = New System.Drawing.Size(373, 22)
         Me.txtCorreoElectronico.TabIndex = 7
         '
         'txtCelular
         '
-        Me.txtCelular.Location = New System.Drawing.Point(110, 221)
+        Me.txtCelular.Location = New System.Drawing.Point(147, 272)
+        Me.txtCelular.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCelular.MaxLength = 30
         Me.txtCelular.Name = "txtCelular"
-        Me.txtCelular.Size = New System.Drawing.Size(197, 20)
+        Me.txtCelular.Size = New System.Drawing.Size(261, 22)
         Me.txtCelular.TabIndex = 6
         '
         'txtTelefono
         '
-        Me.txtTelefono.Location = New System.Drawing.Point(110, 194)
+        Me.txtTelefono.Location = New System.Drawing.Point(147, 239)
+        Me.txtTelefono.Margin = New System.Windows.Forms.Padding(4)
         Me.txtTelefono.MaxLength = 30
         Me.txtTelefono.Name = "txtTelefono"
-        Me.txtTelefono.Size = New System.Drawing.Size(197, 20)
+        Me.txtTelefono.Size = New System.Drawing.Size(261, 22)
         Me.txtTelefono.TabIndex = 5
         '
         'lblDisplayCuentaContable
         '
-        Me.lblDisplayCuentaContable.Location = New System.Drawing.Point(10, 412)
+        Me.lblDisplayCuentaContable.Location = New System.Drawing.Point(13, 507)
+        Me.lblDisplayCuentaContable.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayCuentaContable.Name = "lblDisplayCuentaContable"
-        Me.lblDisplayCuentaContable.Size = New System.Drawing.Size(91, 34)
+        Me.lblDisplayCuentaContable.Size = New System.Drawing.Size(121, 42)
         Me.lblDisplayCuentaContable.TabIndex = 141
         Me.lblDisplayCuentaContable.Text = "Cuenta contable en pesos :"
         '
         'lblDisplayFechaApertura
         '
         Me.lblDisplayFechaApertura.AutoSize = True
-        Me.lblDisplayFechaApertura.Location = New System.Drawing.Point(10, 358)
+        Me.lblDisplayFechaApertura.Location = New System.Drawing.Point(13, 441)
+        Me.lblDisplayFechaApertura.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayFechaApertura.Name = "lblDisplayFechaApertura"
-        Me.lblDisplayFechaApertura.Size = New System.Drawing.Size(63, 13)
+        Me.lblDisplayFechaApertura.Size = New System.Drawing.Size(82, 17)
         Me.lblDisplayFechaApertura.TabIndex = 140
         Me.lblDisplayFechaApertura.Text = "Fecha alta :"
         '
         'lblDisplaySaldo
         '
         Me.lblDisplaySaldo.AutoSize = True
-        Me.lblDisplaySaldo.Location = New System.Drawing.Point(10, 331)
+        Me.lblDisplaySaldo.Location = New System.Drawing.Point(13, 407)
+        Me.lblDisplaySaldo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplaySaldo.Name = "lblDisplaySaldo"
-        Me.lblDisplaySaldo.Size = New System.Drawing.Size(40, 13)
+        Me.lblDisplaySaldo.Size = New System.Drawing.Size(52, 17)
         Me.lblDisplaySaldo.TabIndex = 139
         Me.lblDisplaySaldo.Text = "Saldo :"
         '
         'lblDisplayCorreoElectronico
         '
         Me.lblDisplayCorreoElectronico.AutoSize = True
-        Me.lblDisplayCorreoElectronico.Location = New System.Drawing.Point(10, 249)
+        Me.lblDisplayCorreoElectronico.Location = New System.Drawing.Point(13, 306)
+        Me.lblDisplayCorreoElectronico.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayCorreoElectronico.Name = "lblDisplayCorreoElectronico"
-        Me.lblDisplayCorreoElectronico.Size = New System.Drawing.Size(99, 13)
+        Me.lblDisplayCorreoElectronico.Size = New System.Drawing.Size(132, 17)
         Me.lblDisplayCorreoElectronico.TabIndex = 138
         Me.lblDisplayCorreoElectronico.Text = "Correo electrónico :"
         '
         'lblDisplayCelular
         '
         Me.lblDisplayCelular.AutoSize = True
-        Me.lblDisplayCelular.Location = New System.Drawing.Point(10, 223)
+        Me.lblDisplayCelular.Location = New System.Drawing.Point(13, 274)
+        Me.lblDisplayCelular.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayCelular.Name = "lblDisplayCelular"
-        Me.lblDisplayCelular.Size = New System.Drawing.Size(45, 13)
+        Me.lblDisplayCelular.Size = New System.Drawing.Size(60, 17)
         Me.lblDisplayCelular.TabIndex = 137
         Me.lblDisplayCelular.Text = "Celular :"
         '
         'lblDisplayFax
         '
         Me.lblDisplayFax.AutoSize = True
-        Me.lblDisplayFax.Location = New System.Drawing.Point(10, 277)
+        Me.lblDisplayFax.Location = New System.Drawing.Point(13, 341)
+        Me.lblDisplayFax.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayFax.Name = "lblDisplayFax"
-        Me.lblDisplayFax.Size = New System.Drawing.Size(30, 13)
+        Me.lblDisplayFax.Size = New System.Drawing.Size(38, 17)
         Me.lblDisplayFax.TabIndex = 136
         Me.lblDisplayFax.Text = "Fax :"
         '
         'lblDisplayTelefono
         '
         Me.lblDisplayTelefono.AutoSize = True
-        Me.lblDisplayTelefono.Location = New System.Drawing.Point(10, 196)
+        Me.lblDisplayTelefono.Location = New System.Drawing.Point(13, 241)
+        Me.lblDisplayTelefono.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayTelefono.Name = "lblDisplayTelefono"
-        Me.lblDisplayTelefono.Size = New System.Drawing.Size(55, 13)
+        Me.lblDisplayTelefono.Size = New System.Drawing.Size(72, 17)
         Me.lblDisplayTelefono.TabIndex = 135
         Me.lblDisplayTelefono.Text = "Teléfono :"
         '
         'lblDisplayTipoProveedor
         '
         Me.lblDisplayTipoProveedor.AutoSize = True
-        Me.lblDisplayTipoProveedor.Location = New System.Drawing.Point(10, 388)
+        Me.lblDisplayTipoProveedor.Location = New System.Drawing.Point(13, 478)
+        Me.lblDisplayTipoProveedor.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayTipoProveedor.Name = "lblDisplayTipoProveedor"
-        Me.lblDisplayTipoProveedor.Size = New System.Drawing.Size(85, 13)
+        Me.lblDisplayTipoProveedor.Size = New System.Drawing.Size(113, 17)
         Me.lblDisplayTipoProveedor.TabIndex = 130
         Me.lblDisplayTipoProveedor.Text = "Tipo proveedor :"
         '
         'LblEstatus
         '
         Me.LblEstatus.AutoSize = True
-        Me.LblEstatus.Location = New System.Drawing.Point(10, 582)
+        Me.LblEstatus.Location = New System.Drawing.Point(13, 716)
+        Me.LblEstatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblEstatus.Name = "LblEstatus"
-        Me.LblEstatus.Size = New System.Drawing.Size(48, 13)
+        Me.LblEstatus.Size = New System.Drawing.Size(63, 17)
         Me.LblEstatus.TabIndex = 129
         Me.LblEstatus.Text = "Estatus :"
         '
@@ -455,79 +515,88 @@ Partial Class Catalogo_Proveedores
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
-        Me.CboEstatus.Location = New System.Drawing.Point(110, 578)
+        Me.CboEstatus.Location = New System.Drawing.Point(147, 711)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(72, 21)
+        Me.CboEstatus.Size = New System.Drawing.Size(95, 24)
         Me.CboEstatus.TabIndex = 18
         '
         'LblDisplayCodProveedor
         '
         Me.LblDisplayCodProveedor.AutoSize = True
-        Me.LblDisplayCodProveedor.Location = New System.Drawing.Point(10, 22)
+        Me.LblDisplayCodProveedor.Location = New System.Drawing.Point(13, 27)
+        Me.LblDisplayCodProveedor.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayCodProveedor.Name = "LblDisplayCodProveedor"
-        Me.LblDisplayCodProveedor.Size = New System.Drawing.Size(84, 13)
+        Me.LblDisplayCodProveedor.Size = New System.Drawing.Size(111, 17)
         Me.LblDisplayCodProveedor.TabIndex = 127
         Me.LblDisplayCodProveedor.Text = "Cod Proveedor :"
         '
         'TxtCodProveedor
         '
-        Me.TxtCodProveedor.Location = New System.Drawing.Point(110, 19)
+        Me.TxtCodProveedor.Location = New System.Drawing.Point(147, 23)
+        Me.TxtCodProveedor.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodProveedor.MaxLength = 8
         Me.TxtCodProveedor.Name = "TxtCodProveedor"
-        Me.TxtCodProveedor.Size = New System.Drawing.Size(72, 20)
+        Me.TxtCodProveedor.Size = New System.Drawing.Size(95, 22)
         Me.TxtCodProveedor.TabIndex = 0
         '
         'LblDisplayRFC
         '
         Me.LblDisplayRFC.AutoSize = True
-        Me.LblDisplayRFC.Location = New System.Drawing.Point(10, 171)
+        Me.LblDisplayRFC.Location = New System.Drawing.Point(13, 210)
+        Me.LblDisplayRFC.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayRFC.Name = "LblDisplayRFC"
-        Me.LblDisplayRFC.Size = New System.Drawing.Size(34, 13)
+        Me.LblDisplayRFC.Size = New System.Drawing.Size(43, 17)
         Me.LblDisplayRFC.TabIndex = 125
         Me.LblDisplayRFC.Text = "RFC :"
         '
         'LblDisplayDomicilio
         '
         Me.LblDisplayDomicilio.AutoSize = True
-        Me.LblDisplayDomicilio.Location = New System.Drawing.Point(10, 117)
+        Me.LblDisplayDomicilio.Location = New System.Drawing.Point(13, 144)
+        Me.LblDisplayDomicilio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayDomicilio.Name = "LblDisplayDomicilio"
-        Me.LblDisplayDomicilio.Size = New System.Drawing.Size(55, 13)
+        Me.LblDisplayDomicilio.Size = New System.Drawing.Size(72, 17)
         Me.LblDisplayDomicilio.TabIndex = 124
         Me.LblDisplayDomicilio.Text = "Domicilio :"
         '
         'LblDisplayPlazo
         '
         Me.LblDisplayPlazo.AutoSize = True
-        Me.LblDisplayPlazo.Location = New System.Drawing.Point(10, 303)
+        Me.LblDisplayPlazo.Location = New System.Drawing.Point(13, 373)
+        Me.LblDisplayPlazo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayPlazo.Name = "LblDisplayPlazo"
-        Me.LblDisplayPlazo.Size = New System.Drawing.Size(39, 13)
+        Me.LblDisplayPlazo.Size = New System.Drawing.Size(51, 17)
         Me.LblDisplayPlazo.TabIndex = 123
         Me.LblDisplayPlazo.Text = "Plazo :"
         '
         'TxtPlazo
         '
-        Me.TxtPlazo.Location = New System.Drawing.Point(110, 301)
+        Me.TxtPlazo.Location = New System.Drawing.Point(147, 370)
+        Me.TxtPlazo.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtPlazo.MaxLength = 3
         Me.TxtPlazo.Name = "TxtPlazo"
-        Me.TxtPlazo.Size = New System.Drawing.Size(57, 20)
+        Me.TxtPlazo.Size = New System.Drawing.Size(75, 22)
         Me.TxtPlazo.TabIndex = 9
         '
         'LblDisplayNomProveedor
         '
         Me.LblDisplayNomProveedor.AutoSize = True
-        Me.LblDisplayNomProveedor.Location = New System.Drawing.Point(10, 91)
+        Me.LblDisplayNomProveedor.Location = New System.Drawing.Point(13, 112)
+        Me.LblDisplayNomProveedor.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayNomProveedor.Name = "LblDisplayNomProveedor"
-        Me.LblDisplayNomProveedor.Size = New System.Drawing.Size(50, 13)
+        Me.LblDisplayNomProveedor.Size = New System.Drawing.Size(66, 17)
         Me.LblDisplayNomProveedor.TabIndex = 122
         Me.LblDisplayNomProveedor.Text = "Nombre :"
         '
         'TxtNomProveedor
         '
-        Me.TxtNomProveedor.Location = New System.Drawing.Point(110, 89)
+        Me.TxtNomProveedor.Location = New System.Drawing.Point(147, 110)
+        Me.TxtNomProveedor.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNomProveedor.MaxLength = 130
         Me.TxtNomProveedor.Name = "TxtNomProveedor"
-        Me.TxtNomProveedor.Size = New System.Drawing.Size(327, 20)
+        Me.TxtNomProveedor.Size = New System.Drawing.Size(435, 22)
         Me.TxtNomProveedor.TabIndex = 1
         '
         'gBoxBusquedaRapida
@@ -538,9 +607,11 @@ Partial Class Catalogo_Proveedores
         Me.gBoxBusquedaRapida.Controls.Add(Me.rbtNombreProveedor)
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
-        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(454, 28)
+        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(605, 34)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(467, 555)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
+        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(623, 683)
         Me.gBoxBusquedaRapida.TabIndex = 1
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
@@ -550,28 +621,30 @@ Partial Class Catalogo_Proveedores
         Me.CboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatusFiltro.FormattingEnabled = True
         Me.CboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
-        Me.CboEstatusFiltro.Location = New System.Drawing.Point(417, 42)
+        Me.CboEstatusFiltro.Location = New System.Drawing.Point(556, 52)
+        Me.CboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatusFiltro.MaxLength = 1
         Me.CboEstatusFiltro.Name = "CboEstatusFiltro"
-        Me.CboEstatusFiltro.Size = New System.Drawing.Size(43, 21)
+        Me.CboEstatusFiltro.Size = New System.Drawing.Size(56, 24)
         Me.CboEstatusFiltro.TabIndex = 149
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(370, 46)
+        Me.Label4.Location = New System.Drawing.Point(493, 57)
+        Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(48, 13)
+        Me.Label4.Size = New System.Drawing.Size(63, 17)
         Me.Label4.TabIndex = 150
         Me.Label4.Text = "Estatus :"
         '
         'rbtCodigoProveedor
         '
         Me.rbtCodigoProveedor.AutoSize = True
-        Me.rbtCodigoProveedor.Location = New System.Drawing.Point(107, 18)
-        Me.rbtCodigoProveedor.Margin = New System.Windows.Forms.Padding(2)
+        Me.rbtCodigoProveedor.Location = New System.Drawing.Point(143, 22)
+        Me.rbtCodigoProveedor.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.rbtCodigoProveedor.Name = "rbtCodigoProveedor"
-        Me.rbtCodigoProveedor.Size = New System.Drawing.Size(109, 17)
+        Me.rbtCodigoProveedor.Size = New System.Drawing.Size(142, 21)
         Me.rbtCodigoProveedor.TabIndex = 112
         Me.rbtCodigoProveedor.Text = "Código proveedor"
         Me.rbtCodigoProveedor.UseVisualStyleBackColor = True
@@ -580,10 +653,10 @@ Partial Class Catalogo_Proveedores
         '
         Me.rbtNombreProveedor.AutoSize = True
         Me.rbtNombreProveedor.Checked = True
-        Me.rbtNombreProveedor.Location = New System.Drawing.Point(6, 18)
-        Me.rbtNombreProveedor.Margin = New System.Windows.Forms.Padding(2)
+        Me.rbtNombreProveedor.Location = New System.Drawing.Point(8, 22)
+        Me.rbtNombreProveedor.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.rbtNombreProveedor.Name = "rbtNombreProveedor"
-        Me.rbtNombreProveedor.Size = New System.Drawing.Size(62, 17)
+        Me.rbtNombreProveedor.Size = New System.Drawing.Size(79, 21)
         Me.rbtNombreProveedor.TabIndex = 111
         Me.rbtNombreProveedor.TabStop = True
         Me.rbtNombreProveedor.Text = "Nombre"
@@ -596,21 +669,23 @@ Partial Class Catalogo_Proveedores
         Me.Grid.AllowUserToResizeColumns = False
         Me.Grid.AllowUserToResizeRows = False
         Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Grid.Location = New System.Drawing.Point(6, 68)
+        Me.Grid.Location = New System.Drawing.Point(8, 84)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid.Name = "Grid"
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
         Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(455, 477)
+        Me.Grid.Size = New System.Drawing.Size(607, 587)
         Me.Grid.TabIndex = 110
         '
         'txtFiltro
         '
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtFiltro.Location = New System.Drawing.Point(6, 44)
+        Me.txtFiltro.Location = New System.Drawing.Point(8, 54)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.Name = "txtFiltro"
-        Me.txtFiltro.Size = New System.Drawing.Size(360, 20)
+        Me.txtFiltro.Size = New System.Drawing.Size(479, 22)
         Me.txtFiltro.TabIndex = 0
         '
         'tsMenu
@@ -619,7 +694,7 @@ Partial Class Catalogo_Proveedores
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbEditar, Me.tsbGrabar, Me.tsbEliminar, Me.tsbCancelar, Me.tsbImprimirListado, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(926, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1235, 27)
         Me.tsMenu.TabIndex = 2
         Me.tsMenu.Text = "tsMenu"
         '
@@ -628,7 +703,7 @@ Partial Class Catalogo_Proveedores
         Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
         Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbNuevo.Name = "tsbNuevo"
-        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
+        Me.tsbNuevo.Size = New System.Drawing.Size(76, 24)
         Me.tsbNuevo.Text = "&Nuevo"
         '
         'tsbEditar
@@ -636,7 +711,7 @@ Partial Class Catalogo_Proveedores
         Me.tsbEditar.Image = CType(resources.GetObject("tsbEditar.Image"), System.Drawing.Image)
         Me.tsbEditar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbEditar.Name = "tsbEditar"
-        Me.tsbEditar.Size = New System.Drawing.Size(61, 24)
+        Me.tsbEditar.Size = New System.Drawing.Size(72, 24)
         Me.tsbEditar.Text = "&Editar"
         '
         'tsbGrabar
@@ -644,7 +719,7 @@ Partial Class Catalogo_Proveedores
         Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
         Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbGrabar.Name = "tsbGrabar"
-        Me.tsbGrabar.Size = New System.Drawing.Size(66, 24)
+        Me.tsbGrabar.Size = New System.Drawing.Size(78, 24)
         Me.tsbGrabar.Text = "&Grabar"
         '
         'tsbEliminar
@@ -652,7 +727,7 @@ Partial Class Catalogo_Proveedores
         Me.tsbEliminar.Image = CType(resources.GetObject("tsbEliminar.Image"), System.Drawing.Image)
         Me.tsbEliminar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbEliminar.Name = "tsbEliminar"
-        Me.tsbEliminar.Size = New System.Drawing.Size(74, 24)
+        Me.tsbEliminar.Size = New System.Drawing.Size(87, 24)
         Me.tsbEliminar.Text = "Eliminar"
         '
         'tsbCancelar
@@ -660,7 +735,7 @@ Partial Class Catalogo_Proveedores
         Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
         Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbCancelar.Name = "tsbCancelar"
-        Me.tsbCancelar.Size = New System.Drawing.Size(77, 24)
+        Me.tsbCancelar.Size = New System.Drawing.Size(90, 24)
         Me.tsbCancelar.Text = "&Cancelar"
         '
         'tsbImprimirListado
@@ -668,7 +743,7 @@ Partial Class Catalogo_Proveedores
         Me.tsbImprimirListado.Image = CType(resources.GetObject("tsbImprimirListado.Image"), System.Drawing.Image)
         Me.tsbImprimirListado.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbImprimirListado.Name = "tsbImprimirListado"
-        Me.tsbImprimirListado.Size = New System.Drawing.Size(115, 24)
+        Me.tsbImprimirListado.Size = New System.Drawing.Size(139, 24)
         Me.tsbImprimirListado.Text = "&Imprimir listado"
         '
         'tsbSalir
@@ -676,40 +751,42 @@ Partial Class Catalogo_Proveedores
         Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
         Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
+        Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
         Me.tsbSalir.Text = "&Salir"
         '
         'StatusStripEstado
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssLabel, Me.tssLabelEstado})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 644)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 795)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Size = New System.Drawing.Size(926, 22)
+        Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1235, 25)
         Me.StatusStripEstado.TabIndex = 128
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
         'tssLabel
         '
         Me.tssLabel.Name = "tssLabel"
-        Me.tssLabel.Size = New System.Drawing.Size(48, 17)
+        Me.tssLabel.Size = New System.Drawing.Size(61, 20)
         Me.tssLabel.Text = "Estado :"
         '
         'tssLabelEstado
         '
         Me.tssLabelEstado.Name = "tssLabelEstado"
-        Me.tssLabelEstado.Size = New System.Drawing.Size(0, 17)
+        Me.tssLabelEstado.Size = New System.Drawing.Size(0, 20)
         '
         'Catalogo_Proveedores
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(926, 666)
+        Me.ClientSize = New System.Drawing.Size(1235, 820)
         Me.Controls.Add(Me.gBoxInformacion)
         Me.Controls.Add(Me.gBoxBusquedaRapida)
         Me.Controls.Add(Me.tsMenu)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Proveedores"
         Me.ShowIcon = False
@@ -792,4 +869,6 @@ Partial Class Catalogo_Proveedores
     Friend WithEvents TxtCodigoPropietario As System.Windows.Forms.TextBox
     Friend WithEvents LblCodigoPropietario As System.Windows.Forms.Label
     Friend WithEvents LblNombrePropietario As System.Windows.Forms.Label
+    Friend WithEvents LblLimiteCredito As System.Windows.Forms.Label
+    Friend WithEvents TxtLimiteCredito As System.Windows.Forms.TextBox
 End Class

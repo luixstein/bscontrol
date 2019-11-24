@@ -473,6 +473,7 @@ Buscar:
 
             Me.DtpFecha.Value = Date.Now
             Me.DtpFechaFacturaProveedor.Value = Date.Now
+            Me.dtpFechaEntrega.Value = Date.Now
             Me.txtPlazo.Text = "30"
             Me.dtpFechaVencimiento.Value = Date.Now.AddDays(CDbl(Me.txtPlazo.Text))
             Me.LblEstatus.Text = "NUEVO"
@@ -754,6 +755,7 @@ Buscar:
                         Me.txtIVA.Enabled = True
                         Me.btnSeries.Enabled = True
                         Me.btnSeleccionarArchivoSeries.Enabled = True
+                        Me.dtpFechaEntrega.Enabled = True
 
                         Me.tsslEstado.Text = "Estado: Agregando nuevo movimiento"
                         Me.tsslElaboro.Visible = False : Me.tsslElaboro.Text = ""
@@ -805,6 +807,7 @@ Buscar:
                         Me.tsslElaboro.Visible = False : Me.tsslElaboro.Text = ""
                         Me.tsslCancelo.Visible = False : Me.tsslCancelo.Text = ""
                         Me.DtpFechaFacturaProveedor.Visible = False : Me.lblDisplayFechaFacturaProveedor.Visible = False
+                        Me.dtpFechaEntrega.Enabled = True
 
                         If Me.Visible = True Then
                             Me.txtFolioCompra.Focus()
@@ -859,6 +862,7 @@ Buscar:
 
                     Me.LblConceptoCancelacion.Visible = False
                     Me.TxtConceptoCancelacion.Visible = False
+                    Me.dtpFechaEntrega.Enabled = True
 
                     Me.TxtConcepto.Focus()
 
@@ -913,6 +917,7 @@ Buscar:
 
                     Me.LblConceptoCancelacion.Visible = False
                     Me.TxtConceptoCancelacion.Visible = False
+                    Me.dtpFechaEntrega.Enabled = False
 
                 Case enumEstados.CANCELADO
                     Me.tsbNuevo.Enabled = True
@@ -961,6 +966,8 @@ Buscar:
                         Me.DtpFechaFacturaProveedor.Visible = False : Me.lblDisplayFechaFacturaProveedor.Visible = False
                     End If
 
+                    Me.dtpFechaEntrega.Enabled = False
+
                     Me.tsbImprimir.Select()
 
                     Me.LblConceptoCancelacion.Visible = True
@@ -1007,6 +1014,19 @@ Buscar:
             Return False
         End If
 
+        If Empresa_Sistema.VALIDAR_LIMITE_CREDITO_PROVEEDORES = True Then
+            Dim saldoProveedor As Decimal = 0
+            oProveedores = New Class_CatProveedores(Me.txtProveedor.Text)
+
+            Dim sql As New Class_find("SELECT ISNULL(SUM(SALDO),0) AS SALDO FROM COMPRA_GLOBAL WHERE CODIGO_PROVEEDOR='" & Me.txtProveedor.Text & "'")
+            saldoProveedor = CDec(sql.Result1)
+
+            If (saldoProveedor + CDec(Me.txtTotal.Text)) > oProveedores.LIMITE_CREDITO Then
+                MsgBox("La compra que intenta realizar supera el limite de credito del proveedor. No es posible realizar este movimiento.", MsgBoxStyle.Exclamation, Me.Text)
+                Return False
+            End If
+        End If
+
         Try
             With Me.oCompras
                 .FOLIO_COMPRA = Me.txtFolioCompra.Text
@@ -1030,6 +1050,7 @@ Buscar:
                 .CON_CARGO_A = Me.txtConCargoA.Text
                 .PREDIO = Me.txtPredio.Text
                 .CONFIRMO = Me.txtConfirmo.Text
+                .FECHA_ENTREGA = Me.dtpFechaEntrega.Value
 
                 If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = True Then
                     Dim CostoTotal As Double = 0, z As Integer
@@ -1138,6 +1159,7 @@ Buscar:
                 .CON_CARGO_A = Me.txtConCargoA.Text
                 .PREDIO = Me.txtPredio.Text
                 .CONFIRMO = Me.txtConfirmo.Text
+                .FECHA_ENTREGA = Me.dtpFechaEntrega.Value
 
                 If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = True Then
                     Dim CostoTotal As Double = 0, z As Integer
@@ -1387,6 +1409,7 @@ Buscar:
 
             Me.DtpFecha.Value = CDate(Me.oCompras.FECHA)
             Me.dtpFechaVencimiento.Value = Me.DtpFecha.Value.AddDays(CDbl(Me.txtPlazo.Text))
+            Me.dtpFechaEntrega.Value = CDate(Me.oCompras.FECHA_ENTREGA)
 
             If Me.oCompras.FECHA_FACTURA_PROVEEDOR = Nothing Then
                 Me.DtpFechaFacturaProveedor.Value = Now

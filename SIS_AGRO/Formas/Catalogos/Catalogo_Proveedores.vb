@@ -356,6 +356,7 @@ Public Class Catalogo_Proveedores
                     Me.txtContactoNombre.Enabled = True
                     Me.txtContactoTelefonoCelular.Enabled = True
                     Me.CboEstatus.Enabled = False
+                    Me.TxtLimiteCredito.Enabled = True
 
                     Me.InicializaElemento()
                     Me.DesplegaTiposProveedores(True)
@@ -393,6 +394,8 @@ Public Class Catalogo_Proveedores
                     If txtLEN(Me.txtCuentaContableDolares.Text) = False Then
                         Me.btnGenerarCuentaDolares.Enabled = True
                     End If
+
+                    Me.TxtLimiteCredito.Enabled = True
 
                 Case enumEstados.CONSULTA
                     Me.gBoxInformacion.Enabled = False
@@ -440,6 +443,7 @@ Public Class Catalogo_Proveedores
             Me.chkProtegido.Checked = False
             Me.TxtCodigoPropietario.Text = ""
             Me.LblNombrePropietario.Text = ""
+            Me.TxtLimiteCredito.Text = "0"
 
             'Me.TxtCodProveedor.Text = Me.oProveedores.CodigoSiguiente
         Catch ex As Exception
@@ -484,6 +488,7 @@ Public Class Catalogo_Proveedores
                     Me.txtContactoNombre.Text = .Contacto
                     Me.txtContactoTelefonoCelular.Text = .Contacto_Telefono_Celular
                     Me.TxtCodigoPropietario.Text = .CODIGO_PROPIETARIO
+                    Me.TxtLimiteCredito.Text = .LIMITE_CREDITO.ToString
                     If .Estatus = "A" Then
                         Me.CboEstatus.SelectedIndex = 0
                     Else
@@ -553,6 +558,12 @@ Public Class Catalogo_Proveedores
         If txtLEN(Me.TxtPlazo.Text) = False Then
             MsgBox("Asígne el plazo del proveedor.", MsgBoxStyle.Exclamation, Me.Text)
             Me.TxtPlazo.Focus()
+            Return
+        End If
+
+        If txtLEN(Me.TxtLimiteCredito.Text) = False Then
+            MsgBox("Asígne un límite de credito del proveedor.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.TxtLimiteCredito.Focus()
             Return
         End If
 
@@ -641,6 +652,7 @@ Public Class Catalogo_Proveedores
                         .CODIGO_PLAZA = Usuario.Codigo_Plaza
                         .CURP = Me.txtCURP.Text.ToUpper
                         .CODIGO_PROPIETARIO = Me.TxtCodigoPropietario.Text
+                        .LIMITE_CREDITO = Convert.ToDouble(Me.TxtLimiteCredito.Text)
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -891,7 +903,7 @@ Public Class Catalogo_Proveedores
         End If
     End Sub
 
-    Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
+    Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtLimiteCredito.KeyPress
         Dim txt As TextBox = CType(sender, TextBox)
         txtSoloNumerosDecimales(e, txt.Text)
         txtNoBeep(e)
@@ -1169,6 +1181,13 @@ busqueda_Visual:
     End Sub
 
     Private Sub txtCURP_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCURP.KeyDown
+        Select Case e.KeyCode
+            Case Keys.Return
+                txtTAB(e)
+        End Select
+    End Sub
+
+    Private Sub txtLimiteCredito_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtLimiteCredito.KeyDown
         Select Case e.KeyCode
             Case Keys.Return
                 txtTAB(e)
