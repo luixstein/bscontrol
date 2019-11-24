@@ -225,6 +225,7 @@ Public Class Inventarios_Movimientos
             Me.Inicializa()
             Me.DesplegarDocumentos()
             Me.DesplegarAlmacenes()
+            Me.DesplegarConceptosInventarios()
             Me.Cambia_Estado(enumEstados.NUEVO)
         End If
     End Sub
@@ -387,6 +388,7 @@ busca:
                     Me.Grid1.Locked = False
                     Me.GridSeries.Locked = False
                     Me.BtnSeries.Enabled = True
+                    Me.CboConceptoInventario.Enabled = True
 
                     Me.OcultaControles()
 
@@ -420,6 +422,7 @@ busca:
                     Me.Grid1.Locked = False
                     Me.GridSeries.Locked = False
                     Me.BtnSeries.Enabled = True
+                    Me.CboConceptoInventario.Enabled = False
 
                     Me.OcultaControles()
 
@@ -446,6 +449,7 @@ busca:
                     Me.Grid1.Locked = True
                     Me.BtnSeries.Enabled = False
                     Me.GridSeries.Locked = True
+                    Me.CboConceptoInventario.Enabled = False
 
                     Me.tsbImprimir.Select()
 
@@ -470,6 +474,7 @@ busca:
                     Me.Grid1.Locked = True
                     Me.BtnSeries.Enabled = False
                     Me.GridSeries.Locked = False
+                    Me.CboConceptoInventario.Enabled = False
 
                     Me.tsbImprimir.Select()
             End Select
@@ -519,6 +524,7 @@ busca:
         Try
             Me.DesplegarDocumentos(False)
             Me.DesplegarAlmacenes()
+            Me.DesplegarConceptosInventarios()
 
             Me.CboDocumento.SelectedValue = Me._CodigoDocumentoParaGrabar.ToString
 
@@ -880,6 +886,7 @@ BuscarCuentas:
                         .CODIGO_PLAZA = Usuario.Codigo_Plaza
                         .TOTAL = valorNumerico(Me.txtTotal.Text)
                         .FOLIO_EMBARQUE = Me.txtFolioEmbarque.Text
+                        .CODIGO_CONCEPTO_INVENTARIOS = CInt(Me.CboConceptoInventario.SelectedValue)
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -1258,6 +1265,28 @@ BuscarCuentas:
         End Try
     End Sub
 
+    Private Sub DesplegarConceptosInventarios()
+        Try
+            Dim oElementos As New Class_CatConceptosInventarios
+            With Me.CboConceptoInventario
+                .DisplayMember = "NOMBRE_CONCEPTO_INVENTARIOS"
+                .ValueMember = "CODIGO_CONCEPTO_INVENTARIOS"
+
+                Dim dView As New Data.DataView(oElementos.ObtenerElementos)
+                dView.Sort = "NOMBRE_CONCEPTO_INVENTARIOS"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedIndex = 0
+                End If
+                .SelectedValue = 0
+            End With
+
+            Me.GeneraFolio()
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarConceptosInventarios", ex)
+        End Try
+    End Sub
+
     Private Function BusquedaVisual_PorDescripcion() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
@@ -1357,6 +1386,7 @@ BuscarCuentas:
                 Me.LblPoliza.Text = oInventarios.FOLIO_POLIZA
                 Me.DtpFecha.Value = CDate(oInventarios.FECHA)
                 Me.txtFolioEmbarque.Text = oInventarios.FOLIO_EMBARQUE
+                Me.CboConceptoInventario.SelectedValue = oInventarios.CODIGO_CONCEPTO_INVENTARIOS
 
                 'Consulta datos detalle
                 'Me.Grid1.DataSource = Me.oInventarios.ObtenerDetalle

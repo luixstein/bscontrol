@@ -26,6 +26,7 @@ Public Class Class_Inventarios_Global
     Private _ESTA_CANCELADO As String
     Private _ESTATUS As String
     Private _FOLIO_EMBARQUE As String
+    Private _CODIGO_CONCEPTO_INVENTARIOS As Integer
 
 #End Region
 
@@ -218,6 +219,15 @@ Public Class Class_Inventarios_Global
             Me._FOLIO_EMBARQUE = Value
         End Set
     End Property
+
+    Public Property CODIGO_CONCEPTO_INVENTARIOS() As Integer
+        Get
+            Return Me._CODIGO_CONCEPTO_INVENTARIOS
+        End Get
+        Set(ByVal Value As Integer)
+            Me._CODIGO_CONCEPTO_INVENTARIOS = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -314,6 +324,8 @@ Public Class Class_Inventarios_Global
             sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "ACTUALIZAR"
             sqlParametro = .Parameters.Add("@FOLIO_EMBARQUE", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_EMBARQUE.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_CONCEPTO_INVENTARIOS", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CONCEPTO_INVENTARIOS
+
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
@@ -352,6 +364,8 @@ Public Class Class_Inventarios_Global
             sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "INSERTAR"
             sqlParametro = .Parameters.Add("@FOLIO_EMBARQUE", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_EMBARQUE.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_CONCEPTO_INVENTARIOS", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CONCEPTO_INVENTARIOS
+
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
@@ -465,6 +479,7 @@ Public Class Class_Inventarios_Global
                     End If
 
                     Me._FOLIO_EMBARQUE = "" & dReader("FOLIO_EMBARQUE").ToString()
+                    Me._CODIGO_CONCEPTO_INVENTARIOS = CInt(dReader("CODIGO_CONCEPTO_INVENTARIOS"))
 
                     bResultado = True
                 End If

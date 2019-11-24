@@ -1645,4 +1645,12 @@ Public Class AppMenu
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
     End Sub
+
+    Private Sub ConceptosInventariosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConceptosInventariosToolStripMenuItem.Click
+        Dim Child As New Catalogo_Conceptos_Inventarios
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
 End Class
