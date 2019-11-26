@@ -488,7 +488,7 @@ Public Class Catalogo_Proveedores
                     Me.txtContactoNombre.Text = .Contacto
                     Me.txtContactoTelefonoCelular.Text = .Contacto_Telefono_Celular
                     Me.TxtCodigoPropietario.Text = .CODIGO_PROPIETARIO
-                    Me.TxtLimiteCredito.Text = .LIMITE_CREDITO.ToString
+                    Me.TxtLimiteCredito.Text = FormatImporteContable(.LIMITE_CREDITO)
                     If .Estatus = "A" Then
                         Me.CboEstatus.SelectedIndex = 0
                     Else
@@ -652,7 +652,7 @@ Public Class Catalogo_Proveedores
                         .CODIGO_PLAZA = Usuario.Codigo_Plaza
                         .CURP = Me.txtCURP.Text.ToUpper
                         .CODIGO_PROPIETARIO = Me.TxtCodigoPropietario.Text
-                        .LIMITE_CREDITO = Convert.ToDouble(Me.TxtLimiteCredito.Text)
+                        .LIMITE_CREDITO = valorNumericoD(Me.TxtLimiteCredito.Text)
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -1190,6 +1190,7 @@ busqueda_Visual:
     Private Sub txtLimiteCredito_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtLimiteCredito.KeyDown
         Select Case e.KeyCode
             Case Keys.Return
+                Me.TxtLimiteCredito.Text = FormatImporteContable(CDbl(Me.TxtLimiteCredito.Text))
                 txtTAB(e)
         End Select
     End Sub

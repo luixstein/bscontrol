@@ -1019,10 +1019,12 @@ Buscar:
             oProveedores = New Class_CatProveedores(Me.txtProveedor.Text)
 
             Dim sql As New Class_find("SELECT ISNULL(SUM(SALDO),0) AS SALDO FROM COMPRA_GLOBAL WHERE CODIGO_PROVEEDOR='" & Me.txtProveedor.Text & "'")
-            saldoProveedor = CDec(sql.Result1)
+            saldoProveedor = CDec(sql.Result1) + CDec(Me.txtTotal.Text)
 
-            If (saldoProveedor + CDec(Me.txtTotal.Text)) > oProveedores.LIMITE_CREDITO Then
-                MsgBox("La compra que intenta realizar supera el limite de credito del proveedor. No es posible realizar este movimiento.", MsgBoxStyle.Exclamation, Me.Text)
+            If saldoProveedor > oProveedores.LIMITE_CREDITO Then
+                MsgBox("La compra que intenta realizar más el saldo del proveedor " & vbCrLf & "son " & FormatImporteContable(saldoProveedor) &
+                       " y supera al límite de crédito de " & FormatImporteContable(oProveedores.LIMITE_CREDITO) & ". " & vbCrLf &
+                       "No es posible realizar este movimiento.", MsgBoxStyle.Exclamation, Me.Text)
                 Return False
             End If
         End If
