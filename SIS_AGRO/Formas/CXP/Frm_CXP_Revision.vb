@@ -1923,7 +1923,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                     .SUBTOTAL = valorNumerico(Me.TxtSubTotal.Text)
                     .IMPUESTO = valorNumerico(Me.TxtIVA.Text)
                     .TOTAL = valorNumerico(Me.txtTotalCompra.Text)
-                    .RETENCION = valorNumerico(Me.TxtRetencionIVA.Text)
+                    .RETENCION_IVA = valorNumerico(Me.TxtRetencionIVA.Text)
                     .RETENCION_ISR = valorNumerico(Me.txtRetencionISR.Text)
                     .IMPUESTO_PORCENTAJE = CDbl(Me.txtPorciento.Text)
                     .TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text)
@@ -2469,7 +2469,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
             Me.TxtSubTotal.Text = FormatImporteContable(Me.oCompras.SUBTOTAL)
             Me.TxtIVA.Text = FormatImporteContable(Me.oCompras.IMPUESTO)
             Me.txtPorciento.Text = Me.oCompras.IMPUESTO_PORCENTAJE.ToString
-            Me.TxtRetencionIVA.Text = FormatImporteContable(Me.oCompras.RETENCION)
+            Me.TxtRetencionIVA.Text = FormatImporteContable(Me.oCompras.RETENCION_IVA)
             Me.txtRetencionISR.Text = FormatImporteContable(Me.oCompras.RETENCION_ISR)
             Me.txtTotalCompra.Text = FormatImporteContable(Me.oCompras.TOTAL)
             Me.txtImporteDolares.Text = FormatImporteContable(Me.oCompras.TOTAL_DOLARES)

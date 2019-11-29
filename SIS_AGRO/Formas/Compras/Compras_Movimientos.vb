@@ -13,9 +13,7 @@ Public Class Compras_Movimientos
     Private bEsReferencia As Boolean
     Private bIVAModificado As Boolean
     Private Estado As enumEstados
-
     Private _ConsultaExterior As Boolean
-
     Private dPorcentajeIVAGlobal As Double = 0
 
     Private Enum enumEstados
@@ -27,8 +25,8 @@ Public Class Compras_Movimientos
     End Enum
 
     Private oFormaDetalleCuentas As InventariosDetalleCuentasContables
-
     Private dtSeries As DataTable
+    Private bCrearonColumnas As Boolean = False
 #End Region
 
 #Region "Columnas grid compras"
@@ -36,22 +34,28 @@ Public Class Compras_Movimientos
     Private igyDescripcion As Short = 2
     Private igyCantidad As Short = 3
     Private igyPrecio As Short = 4
-    Private igyCosto As Short = 5
-    Private igyUnidad As Short = 6
-    Private igyImpuestoPorcentaje As Short = 7
-    Private igyImporte As Short = 8
-    Private igyCuentaContable As Short = 9
-    Private igyImpuestoImporte As Short = 10
-    Private igyIdArticulo As Short = 11
-    Private iGyNombreCuentaContable As Integer = 12
-    Private iGyBoton As Integer = 13
-    Private iGyIDAdicional As Integer = 14
-
-    Private igyIEPS_PORCENTAJE As Short = 15
-    Private igyIEPS_UNITARIO As Short = 16
-    Private igyIEPS_IMPORTE As Short = 17
-    Private igyBASE_IEPS As Short = 18
-    Private igyBASE_IVA As Short = 19
+    Private igyPRECIO_USD As Short = 5
+    Private igyCosto As Short = 6
+    Private igyUnidad As Short = 7
+    Private igyImpuestoPorcentaje As Short = 8
+    Private igyImporte As Short = 9
+    Private igyIMPORTE_USD As Short = 10
+    Private igyCuentaContable As Short = 11
+    Private igyImpuestoImporte As Short = 12
+    Private igyIMPUESTO_IMPORTE_USD As Short = 13
+    Private igyIdArticulo As Short = 14
+    Private iGyNombreCuentaContable As Integer = 15
+    Private iGyBoton As Integer = 16
+    Private iGyIDAdicional As Integer = 17
+    Private igyIEPS_PORCENTAJE As Short = 18
+    Private igyIEPS_UNITARIO As Short = 19
+    Private igyIEPS_UNITARIO_USD As Short = 20
+    Private igyIEPS_IMPORTE As Short = 21
+    Private igyIEPS_IMPORTE_USD As Short = 22
+    Private igyBASE_IEPS As Short = 23
+    Private igyBASE_IEPS_USD As Short = 24
+    Private igyBASE_IVA As Short = 25
+    Private igyBASE_IVA_USD As Short = 26
 
 #End Region
 
@@ -185,6 +189,8 @@ Public Class Compras_Movimientos
             Me.DesplegarAlmacenes()
             Me.DesplegarMonedas()
             Me.Inicializa()
+            Me.bCrearonColumnas = True
+
             Me.Cambia_Estado(enumEstados.NUEVO)
         End If
 
@@ -370,14 +376,7 @@ Buscar:
     End Sub
 
     Private Sub cboMoneda_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboMoneda.SelectedIndexChanged
-        If Me.cboMoneda.SelectedIndex = 1 Then
-            Me.txtTipoCambio.Enabled = True
-            Me.gbUSD.Visible = True
-        Else
-            Me.txtTipoCambio.Enabled = False
-            Me.gbUSD.Visible = False
-        End If
-        Me.TotalesUSD()
+        Me.GestionaMoneda()
     End Sub
 
     Private Sub txtTipoCambio_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtTipoCambio.KeyDown
@@ -402,7 +401,7 @@ Buscar:
         Me.GestionaDetalleCuentas()
     End Sub
 
-    Private Sub TxtRetencion_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtRetencion.KeyDown
+    Private Sub TxtRetencion_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtRetencionIVA.KeyDown
         Select Case e.KeyCode
             Case Keys.Enter
                 Me.Totales()
@@ -414,7 +413,7 @@ Buscar:
     Private Sub txtIVA_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtIVA.KeyDown
         Select Case e.KeyCode
             Case Keys.Enter
-                Me.txtTotal.Text = FormatImporteContable((valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.txtIVA.Text)) - valorNumerico(Me.TxtRetencion.Text))
+                Me.txtTotal.Text = FormatImporteContable((valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.txtIVA.Text)) - valorNumerico(Me.txtRetencionIVA.Text))
                 Me.bIVAModificado = True
         End Select
     End Sub
@@ -425,8 +424,8 @@ Buscar:
 #End Region
 
 #Region "Eventos Genericos"
-    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFolioCompra.KeyPress, txtFolioOC.KeyPress, txtProveedor.KeyPress, txtFolioProveedor.KeyPress, _
-    txtEntregarA.KeyPress, txtSolicito.KeyPress, TxtConcepto.KeyPress, txtConCargoA.KeyPress, txtPredio.KeyPress, txtConfirmo.KeyPress, _
+    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFolioCompra.KeyPress, txtFolioOC.KeyPress, txtProveedor.KeyPress, txtFolioProveedor.KeyPress,
+    txtEntregarA.KeyPress, txtSolicito.KeyPress, TxtConcepto.KeyPress, txtConCargoA.KeyPress, txtPredio.KeyPress, txtConfirmo.KeyPress,
     DtpFecha.KeyPress, dtpFechaVencimiento.KeyPress
         txtNoBeep(e)
     End Sub
@@ -436,7 +435,7 @@ Buscar:
         txtNoBeep(e)
     End Sub
 
-    Private Sub txtNumerosDecimalKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtRetencion.KeyPress, txtTipoCambio.KeyPress, txtIVA.KeyPress
+    Private Sub txtNumerosDecimalKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtRetencionIVA.KeyPress, txtTipoCambio.KeyPress, txtIVA.KeyPress
         Dim txt As TextBox = CType(sender, TextBox)
         txtSoloNumerosDecimales(e, txt.Text)
         txtNoBeep(e)
@@ -482,16 +481,16 @@ Buscar:
             Me.TxtSubTotal.Text = FormatImporteContable(0)
             Me.txtIEPS.Text = FormatImporteContable(0)
             Me.txtIVA.Text = FormatImporteContable(0)
-            Me.TxtRetencion.Text = FormatImporteContable(0)
+            Me.txtRetencionIVA.Text = FormatImporteContable(0)
             Me.txtTotal.Text = FormatImporteContable(0)
-            Me.txtSaldoMXP.Text = FormatImporteContable(0)
-            Me.txtSaldoUSD.Text = FormatImporteContable(0)
+            Me.txtSaldo_MXP.Text = FormatImporteContable(0)
+            Me.txtSaldo_USD.Text = FormatImporteContable(0)
             Me.dPorcentajeIVAGlobal = 0
             Me.lblIVAcalculado.Text = "0" : Me.lblIVAcalculado.Visible = True
 
-            Me.TxtSubTotalUSD.Text = FormatImporteContable(0)
-            Me.txtIVAUSD.Text = FormatImporteContable(0)
-            Me.txtTotalUSD.Text = FormatImporteContable(0)
+            Me.TxtSubTotal_USD.Text = FormatImporteContable(0)
+            Me.txtIVA_USD.Text = FormatImporteContable(0)
+            Me.txtTotal_USD.Text = FormatImporteContable(0)
 
             Me.InicializaGrid()
             Me.InicializaGridSeries()
@@ -570,6 +569,7 @@ Buscar:
     Private Sub FormateaGrid()
         Try
             With Me.Grid
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 .AutoRedraw = False
 
                 '.DefaultFont = New Font("Tahoma", 8)
@@ -581,47 +581,64 @@ Buscar:
                 .FixedRowColStyle = FlexCell.FixedRowColStyleEnum.Flat
 
                 .Rows = 2
-                .Cols = 20
+                .Cols = 27
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
                 .Column(Me.igyCodigo).Width = 75
                 .Column(Me.igyDescripcion).Width = 250
                 .Column(Me.igyCantidad).Width = 90
                 .Column(Me.igyPrecio).Width = 100
+                .Column(Me.igyPRECIO_USD).Width = 100
+                .Column(Me.igyCosto).Width = 100
                 .Column(Me.igyUnidad).Width = 75
                 .Column(Me.igyImpuestoPorcentaje).Width = 70
                 .Column(Me.igyImporte).Width = 100
+                .Column(Me.igyIMPORTE_USD).Width = 100
                 .Column(Me.igyCuentaContable).Width = 100
                 .Column(Me.igyImpuestoImporte).Width = 100
+                .Column(Me.igyIMPUESTO_IMPORTE_USD).Width = 100
                 .Column(Me.igyIdArticulo).Width = 100
-                .Column(Me.igyCosto).Width = 100
+                .Column(Me.iGyNombreCuentaContable).Width = 70
+                .Column(Me.iGyBoton).Width = 70
+                .Column(Me.iGyIDAdicional).Width = 100
+                .Column(Me.igyIEPS_PORCENTAJE).Width = 100
+                .Column(Me.igyIEPS_UNITARIO).Width = 100
+                .Column(Me.igyIEPS_UNITARIO_USD).Width = 100
+                .Column(Me.igyIEPS_IMPORTE).Width = 100
+                .Column(Me.igyIEPS_IMPORTE_USD).Width = 100
+                .Column(Me.igyBASE_IEPS).Width = 100
+                .Column(Me.igyBASE_IEPS_USD).Width = 100
+                .Column(Me.igyBASE_IVA).Width = 100
+                .Column(Me.igyBASE_IVA_USD).Width = 100
 
-                If Me.oDocumento.AFECTA_CXP = True Then
-                    .Column(Me.iGyBoton).Visible = True
-                    .Column(Me.iGyNombreCuentaContable).Width = 70
-                    .Column(Me.iGyBoton).Width = 70
-                    .Column(Me.iGyIDAdicional).Visible = False '.Column(Me.iGyIDAdicional).Width = 70
-                Else
-                    .Column(Me.iGyBoton).Visible = False
-                    .Column(Me.iGyNombreCuentaContable).Visible = False
-                    .Column(Me.iGyBoton).Visible = False
-                    .Column(Me.iGyIDAdicional).Visible = False
-                End If
-
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 .Cell(0, Me.igyCodigo).Text = "Código"
                 .Cell(0, Me.igyDescripcion).Text = "Descripción"
                 .Cell(0, Me.igyCantidad).Text = "Cantidad"
                 .Cell(0, Me.igyPrecio).Text = "Precio"
+                .Cell(0, Me.igyPRECIO_USD).Text = "Precio_USD"
+                .Cell(0, Me.igyCosto).Text = "Costo"
                 .Cell(0, Me.igyUnidad).Text = "Unidad"
                 .Cell(0, Me.igyImpuestoPorcentaje).Text = "IVA %"
                 .Cell(0, Me.igyImporte).Text = "Importe"
+                .Cell(0, Me.igyIMPORTE_USD).Text = "Importe_USD"
                 .Cell(0, Me.igyCuentaContable).Text = "Cuenta Contable"
                 .Cell(0, Me.igyImpuestoImporte).Text = "IVA"
+                .Cell(0, Me.igyIMPUESTO_IMPORTE_USD).Text = "IVA_USD"
                 .Cell(0, Me.igyIdArticulo).Text = "Id Articulo"
                 .Cell(0, Me.iGyNombreCuentaContable).Text = "Nombre cuenta"
                 .Cell(0, Me.iGyBoton).Text = "Costos"
                 .Cell(0, Me.iGyIDAdicional).Text = "IdAdicional"
-                .Cell(0, Me.igyCosto).Text = "Costo"
-
+                .Cell(0, Me.igyIEPS_PORCENTAJE).Text = "IEPS_PORCENTAJE"
+                .Cell(0, Me.igyIEPS_UNITARIO).Text = "IEPS_UNITARIO"
+                .Cell(0, Me.igyIEPS_UNITARIO_USD).Text = "IEPS_UNITARIO_USD"
+                .Cell(0, Me.igyIEPS_IMPORTE).Text = "IEPS_IMPORTE"
+                .Cell(0, Me.igyIEPS_IMPORTE_USD).Text = "IEPS_IMPORTE_USD"
+                .Cell(0, Me.igyBASE_IEPS).Text = "BASE_IEPS"
+                .Cell(0, Me.igyBASE_IEPS_USD).Text = "BASE_IEPS_USD"
+                .Cell(0, Me.igyBASE_IVA).Text = "BASE_IVA"
+                .Cell(0, Me.igyBASE_IVA_USD).Text = "BASE_IVA_USD"
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 .Column(Me.igyCantidad).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.igyCantidad).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
                 .Column(Me.igyCantidad).Alignment = FlexCell.AlignmentEnum.RightCenter
@@ -631,6 +648,11 @@ Buscar:
                 .Column(Me.igyPrecio).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.igyPrecio).DecimalLength = 6 ' Empresa_Sistema.DECIMALES_PRECIO
                 .Column(Me.igyPrecio).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.igyPRECIO_USD).FormatString = "$ ###,###,##0." & StrDup(6, "0")
+                .Column(Me.igyPRECIO_USD).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.igyPRECIO_USD).DecimalLength = 6 ' Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.igyPRECIO_USD).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .Column(Me.igyCosto).FormatString = "$ ###,###,##0." & StrDup(6, "0")
                 .Column(Me.igyCosto).Mask = FlexCell.MaskEnum.Numeric
@@ -646,17 +668,25 @@ Buscar:
                 .Column(Me.igyImporte).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
                 .Column(Me.igyImporte).Alignment = FlexCell.AlignmentEnum.RightCenter
 
+                .Column(Me.igyIMPORTE_USD).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.igyIMPORTE_USD).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.igyIMPORTE_USD).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.igyIMPORTE_USD).Alignment = FlexCell.AlignmentEnum.RightCenter
+
                 .Column(Me.igyCuentaContable).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .Column(Me.igyImpuestoImporte).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.igyImpuestoImporte).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
                 .Column(Me.igyImpuestoImporte).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.igyIdArticulo).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.igyIMPUESTO_IMPORTE_USD).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.igyIMPUESTO_IMPORTE_USD).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.igyIMPUESTO_IMPORTE_USD).Alignment = FlexCell.AlignmentEnum.RightCenter
 
+                .Column(Me.igyIdArticulo).Mask = FlexCell.MaskEnum.Numeric
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 .Column(Me.igyImporte).Locked = True
-                .Column(Me.igyImpuestoImporte).Visible = False
-                .Column(Me.igyIdArticulo).Visible = False
+                .Column(Me.igyIMPORTE_USD).Locked = True
 
                 If bEsReferencia = True Then
                     .Column(Me.igyCodigo).Locked = True
@@ -677,18 +707,37 @@ Buscar:
 
                 .Column(Me.iGyNombreCuentaContable).Locked = True
                 .Column(Me.iGyIDAdicional).Locked = True
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                .Column(Me.igyImpuestoImporte).Visible = False
+                .Column(Me.igyIMPUESTO_IMPORTE_USD).Visible = False
+                .Column(Me.igyIdArticulo).Visible = False
 
-                .Column(Me.iGyBoton).CellType = FlexCell.CellTypeEnum.Button
+                If Me.oDocumento.AFECTA_CXP = True Then
+                    .Column(Me.iGyBoton).Visible = True
+                    .Column(Me.iGyNombreCuentaContable).Visible = True
+                    .Column(Me.iGyIDAdicional).Visible = False '.Column(Me.iGyIDAdicional).Width = 70
+                Else
+                    .Column(Me.iGyBoton).Visible = False
+                    .Column(Me.iGyNombreCuentaContable).Visible = False
+                    .Column(Me.iGyIDAdicional).Visible = False
+                End If
 
                 .Column(Me.igyIEPS_PORCENTAJE).Visible = False
                 .Column(Me.igyIEPS_UNITARIO).Visible = False
+                .Column(Me.igyIEPS_UNITARIO_USD).Visible = False
                 .Column(Me.igyIEPS_IMPORTE).Visible = False
+                .Column(Me.igyIEPS_IMPORTE_USD).Visible = False
                 .Column(Me.igyBASE_IEPS).Visible = False
+                .Column(Me.igyBASE_IEPS_USD).Visible = False
                 .Column(Me.igyBASE_IVA).Visible = False
+                .Column(Me.igyBASE_IVA_USD).Visible = False
 
                 If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = False Then
                     .Column(Me.igyCosto).Visible = False
                 End If
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                .Column(Me.iGyBoton).CellType = FlexCell.CellTypeEnum.Button
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
                 .AutoRedraw = True
                 .Refresh()
@@ -738,14 +787,15 @@ Buscar:
                         Me.txtFolioProveedor.Enabled = True
                         Me.txtEntregarA.Enabled = False
                         Me.txtSolicito.Enabled = False
+                        Me.txtConCargoA.Enabled = False
+                        Me.txtPredio.Enabled = False
+                        Me.txtConfirmo.Enabled = False
+
                         Me.txtTipoCambio.Enabled = False
                         Me.txtPlazo.Enabled = True
                         'Me.TxtRetencion.Enabled = False
                         'Me.TxtConcepto.Enabled = False
                         Me.TxtConcepto.ReadOnly = True
-                        Me.txtConCargoA.Enabled = False
-                        Me.txtPredio.Enabled = False
-                        Me.txtConfirmo.Enabled = False
                         Me.Grid.Locked = False
                         Me.GridSeries.Locked = False
                         Me.DtpFechaFacturaProveedor.Enabled = True
@@ -781,6 +831,9 @@ Buscar:
                         Me.txtFolioProveedor.Enabled = True
                         Me.txtEntregarA.Enabled = True
                         Me.txtSolicito.Enabled = True
+                        Me.txtConCargoA.Enabled = True
+                        Me.txtPredio.Enabled = True
+                        Me.txtConfirmo.Enabled = True
 
                         Me.txtTipoCambio.Enabled = False
                         Dim sender As New Object, e As New EventArgs
@@ -790,9 +843,6 @@ Buscar:
                         'Me.TxtRetencion.Enabled = True
                         'Me.TxtConcepto.Enabled = True
                         Me.TxtConcepto.ReadOnly = False
-                        Me.txtConCargoA.Enabled = True
-                        Me.txtPredio.Enabled = True
-                        Me.txtConfirmo.Enabled = True
                         Me.Grid.Locked = False
                         Me.GridSeries.Locked = True
                         Me.DtpFechaFacturaProveedor.Enabled = False
@@ -843,6 +893,10 @@ Buscar:
                     Me.txtFolioProveedor.Enabled = True
                     Me.txtEntregarA.Enabled = True
                     Me.txtSolicito.Enabled = True
+                    Me.txtConCargoA.Enabled = True
+                    Me.txtPredio.Enabled = True
+                    Me.txtConfirmo.Enabled = True
+
                     Me.txtPlazo.Enabled = True
                     'Me.TxtRetencion.Enabled = True
                     'Me.TxtConcepto.Enabled = True
@@ -889,11 +943,18 @@ Buscar:
                     Me.txtProveedor.Enabled = False
                     Me.txtEntregarA.Enabled = False
                     Me.txtSolicito.Enabled = False
+                    Me.txtConCargoA.Enabled = False
+                    Me.txtPredio.Enabled = False
+                    Me.txtConfirmo.Enabled = False
+
                     Me.txtTipoCambio.Enabled = False
                     Me.txtPlazo.Enabled = False
                     'Me.TxtRetencion.Enabled = False
                     'Me.TxtConcepto.Enabled = False
                     Me.TxtConcepto.ReadOnly = True
+                    Me.txtConCargoA.Enabled = False
+                    Me.txtPredio.Enabled = False
+                    Me.txtConfirmo.Enabled = False
                     Me.Grid.Locked = True
                     Me.GridSeries.Locked = True
                     If Me.oDocumento.AFECTA_CXP = True Then
@@ -911,6 +972,7 @@ Buscar:
                     Me.tsslCancelo.Visible = False : Me.tsslCancelo.Text = ""
                     'Me.DtpFechaFacturaProveedor.Visible = True : Me.lblDisplayFechaFacturaProveedor.Visible = True
                     Me.DtpFechaFacturaProveedor.Enabled = False
+                    Me.cboMoneda.Enabled = False
                     Me.txtFolioProveedor.Enabled = False
 
                     Me.tsbImprimir.Select()
@@ -943,6 +1005,10 @@ Buscar:
                     Me.txtFolioProveedor.Enabled = False
                     Me.txtEntregarA.Enabled = False
                     Me.txtSolicito.Enabled = False
+                    Me.txtConCargoA.Enabled = False
+                    Me.txtPredio.Enabled = False
+                    Me.txtConfirmo.Enabled = False
+
                     Me.txtTipoCambio.Enabled = False
                     Me.txtPlazo.Enabled = False
                     'Me.TxtRetencion.Enabled = False
@@ -951,6 +1017,7 @@ Buscar:
                     Me.Grid.Locked = True
                     Me.GridSeries.Locked = True
                     Me.DtpFechaFacturaProveedor.Enabled = False
+                    Me.cboMoneda.Enabled = False
                     Me.BtnActualizaFolioProv.Visible = False
                     Me.btnActualizaConcepto.Visible = False
                     Me.txtIVA.Enabled = False
@@ -1043,7 +1110,7 @@ Buscar:
                 .IEPS_TOTAL_DESGLOSADO = valorNumerico(Me.txtIEPS.Text)
                 .IMPUESTO = valorNumerico(Me.txtIVA.Text)
                 .TOTAL = valorNumerico(Me.txtTotal.Text)
-                .RETENCION = valorNumerico(Me.TxtRetencion.Text)
+                .RETENCION_IVA = valorNumerico(Me.txtRetencionIVA.Text)
                 .IMPUESTO_PORCENTAJE = dPorcentajeIVAGlobal
                 .TIPO_DE_CAMBIO = CDbl(IIf(Me.cboMoneda.SelectedIndex = 1, valorNumerico(Me.txtTipoCambio.Text), 0))
                 .ENTREGAR_A = Me.txtEntregarA.Text
@@ -1065,13 +1132,13 @@ Buscar:
                 End If
 
                 If Me.Estado = enumEstados.NUEVO Then
-                    If .InsertarOrdenCompra() = False Then
+                    If .GrabarOrdenCompraGlobal("INSERTAR") = False Then
                         MsgBox("Error al tratar de insertar el movimiento de compras.", MsgBoxStyle.Exclamation, Me.Text)
                         Return False
                     End If
                     Me.txtFolioCompra.Text = .FOLIO_COMPRA
-                Else
-                    If .ActualizarOrdenCompra() = False Then
+                Else 'Se esta consultando por tanto ya existe.
+                    If .GrabarOrdenCompraGlobal("ACTUALIZAR") = False Then
                         MsgBox("Error al tratar de actualizar el movimiento de compras.", MsgBoxStyle.Exclamation, Me.Text)
                         Return False
                     End If
@@ -1152,7 +1219,7 @@ Buscar:
                 .SUBTOTAL = valorNumerico(Me.TxtSubTotal.Text)
                 .IMPUESTO = valorNumerico(Me.txtIVA.Text)
                 .TOTAL = valorNumerico(Me.txtTotal.Text)
-                .RETENCION = valorNumerico(Me.TxtRetencion.Text)
+                .RETENCION_IVA = valorNumerico(Me.txtRetencionIVA.Text)
                 .IMPUESTO_PORCENTAJE = dPorcentajeIVAGlobal
                 .TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text)
                 .ENTREGAR_A = Me.txtEntregarA.Text
@@ -1379,14 +1446,16 @@ Buscar:
                 Me.TxtSubTotal.Text = FormatImporteContable(Me.oCompras.SUBTOTAL)
                 Me.txtIEPS.Text = FormatImporteContable(Me.oCompras.IEPS_TOTAL_DESGLOSADO)
                 Me.txtIVA.Text = FormatImporteContable(Me.oCompras.IMPUESTO)
-                Me.TxtRetencion.Text = FormatImporteContable(Me.oCompras.RETENCION)
+                Me.txtRetencionIVA.Text = FormatImporteContable(Me.oCompras.RETENCION_IVA)
                 Me.txtTotal.Text = FormatImporteContable(Me.oCompras.TOTAL)
-                Me.txtSaldoMXP.Text = FormatImporteContable(Me.oCompras.SALDO)
-                Me.txtSaldoUSD.Text = FormatImporteContable(Me.oCompras.SALDO_DOLARES)
+                Me.txtSaldo_MXP.Text = FormatImporteContable(Me.oCompras.SALDO)
+                Me.txtSaldo_USD.Text = FormatImporteContable(Me.oCompras.SALDO_DOLARES)
 
-                Me.TxtSubTotalUSD.Text = FormatImporteContable(Me.oCompras.SUBTOTAL_USD)
-                Me.txtIVAUSD.Text = FormatImporteContable(Me.oCompras.IMPUESTO_USD)
-                Me.txtTotalUSD.Text = FormatImporteContable(Me.oCompras.TOTAL_DOLARES)
+                Me.TxtSubTotal_USD.Text = FormatImporteContable(Me.oCompras.SUBTOTAL_USD)
+                Me.txtIEPS_USD.Text = FormatImporteContable(Me.oCompras.IEPS_TOTAL_DESGLOSADO)
+                Me.txtIVA_USD.Text = FormatImporteContable(Me.oCompras.IMPUESTO_USD)
+                Me.txtRetencionIVA_USD.Text = FormatImporteContable(Me.oCompras.RETENCION_IVA)
+                Me.txtTotal_USD.Text = FormatImporteContable(Me.oCompras.TOTAL_DOLARES)
             Else
                 Me.Totales()
             End If
@@ -1460,6 +1529,7 @@ Buscar:
             End If
 
             Me.GestionaCambioEstado()
+            Me.GestionaMoneda()
             Me.txtFolioCompra.Enabled = False
 
         Catch ex As Exception
@@ -1906,67 +1976,106 @@ Buscar:
     End Sub
 
     Private Sub DesplegarMonedas()
-        Dim oMoneda As New Class_CatMonedas
-        Dim dTable As New DataTable
+        Try
+            Dim oMoneda As New Class_CatMonedas
+            Dim dTable As New DataTable
 
-        With Me.cboMoneda
-            .DisplayMember = "NOMBRE"
-            .ValueMember = "CODIGO_MONEDA"
-            dTable = oMoneda.ObtenerElementos
-            dTable.Rows(2).Delete() 'Quita Euros del DataTable
-            .DataSource = dTable
-            .SelectedValue = 1
-        End With
+            With Me.cboMoneda
+                .DisplayMember = "CODIGO_MONEDA_SAT"
+                .ValueMember = "CODIGO_MONEDA"
+                dTable = oMoneda.ObtenerElementos
+                dTable.Rows(2).Delete() 'Quita Euros del DataTable
+                .DataSource = dTable
+                .SelectedValue = 1
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarMonedas", ex)
+        End Try
     End Sub
 
     Private Function Totales(Optional ByVal bIva As Boolean = False) As Boolean
         Dim bResultado As Boolean = False
         Try
-            Dim i As Integer
-            Dim dCantidad As Double, dPrecio As Double, dPorcentajeIVA As Double, dImporte As Double
-            Dim dIEPS_PORCENTAJE As Double = 0, dIEPS_UNITARIO As Double = 0, dIEPS_IMPORTE As Double = 0, dBASE_IEPS As Double = 0, dBASE_IVA As Double = 0, dPRECIO_TOTAL As Double = 0, dIVA_IMPORTE As Double = 0
+            Dim i As Integer, dTipoCambio As Decimal = 0
+            Dim dCantidad As Decimal, dPrecio As Decimal, dPorcentajeIVA As Decimal, dImporte As Decimal
+            Dim dIEPS_PORCENTAJE As Decimal = 0, dIEPS_UNITARIO As Decimal = 0, dIEPS_IMPORTE As Decimal = 0, dBASE_IEPS As Decimal = 0, dBASE_IVA As Decimal = 0, dPRECIO_TOTAL As Decimal = 0, dIVA_IMPORTE As Decimal = 0
+
+            Dim dPrecio_USD As Decimal = 0, dImporte_USD As Decimal = 0
+            Dim dIEPS_UNITARIO_USD As Decimal = 0, dIEPS_IMPORTE_USD As Decimal = 0, dBASE_IEPS_USD As Decimal = 0, dBASE_IVA_USD As Decimal = 0, dIVA_IMPORTE_USD As Decimal = 0
+
+            Dim oArticulo As New Class_CatArticulos
+
+            dTipoCambio = valorNumericoD(Me.txtTipoCambio.Text)
+            dTipoCambio = RedondearD(dTipoCambio, 4)
+            Me.txtTipoCambio.Text = Format(dTipoCambio, "##0.0000")
 
             Me.TxtSubTotal.Text = FormatImporteContable(0)
             Me.txtIEPS.Text = FormatImporteContable(0)
             'Me.txtIVA.Text = FormatImporteContable(0)
             Me.txtTotal.Text = FormatImporteContable(0)
 
-            Me.TxtSubTotalUSD.Text = FormatImporteContable(0)
-            Me.txtIVAUSD.Text = FormatImporteContable(0)
-            Me.txtTotalUSD.Text = FormatImporteContable(0)
+            Me.TxtSubTotal_USD.Text = FormatImporteContable(0)
+            Me.txtIEPS_USD.Text = FormatImporteContable(0)
+            Me.txtIVA_USD.Text = FormatImporteContable(0)
+            Me.txtTotal_USD.Text = FormatImporteContable(0)
 
             For i = 1 To Me.Grid.Rows - 1
-                If txtLEN(Me.Grid.Cell(i, Me.igyCantidad).Text) = True Then
-                    dCantidad = valorNumerico(Me.Grid.Cell(i, Me.igyCantidad).Text)
-                    dPrecio = valorNumerico(Me.Grid.Cell(i, Me.igyPrecio).Text)
-                    dPorcentajeIVA = valorNumerico(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text)
-
-                    dIEPS_PORCENTAJE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
-                    dIEPS_UNITARIO = Redondear(dPrecio * (dIEPS_PORCENTAJE / 100), 4)
-                    'dBASE_IEPS = Redondear((dPrecio * dCantidad), 2)
-                    dBASE_IEPS = Redondear((dPrecio * dCantidad), 6)
-                    dIEPS_IMPORTE = Redondear(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
-                    dBASE_IVA = dIEPS_IMPORTE + dBASE_IEPS
-                    dIVA_IMPORTE = Redondear(dBASE_IVA * ((dPorcentajeIVA / 100)), 2)
-
-                    dImporte = Redondear((dPrecio * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD) 'no hacemos nada con este valor de momento
-
-                    Me.Grid.Cell(i, Me.igyImporte).Text = dImporte.ToString
-                    Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text = dIEPS_UNITARIO.ToString
-                    Me.Grid.Cell(i, Me.igyBASE_IEPS).Text = dBASE_IEPS.ToString
-                    Me.Grid.Cell(i, Me.igyIEPS_IMPORTE).Text = dIEPS_IMPORTE.ToString
-                    Me.Grid.Cell(i, Me.igyBASE_IVA).Text = dBASE_IVA.ToString
-                    Me.Grid.Cell(i, Me.igyImpuestoImporte).Text = dIVA_IMPORTE.ToString
-
-                    'If dCantidad > 0 Then
-                    '    dImporte = Redondear((dPrecio * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                    '    Me.Grid.Cell(i, Me.igyImporte).Text = dImporte.ToString
-                    '    Me.Grid.Cell(i, Me.igyImpuestoImporte).Text = Redondear(dImporte * ((dPorcentajeIVA / 100)), Empresa_Sistema.DECIMALES_CONTABILIDAD).ToString
-                    'Else
-                    '    Me.Grid.Cell(i, Me.igyImporte).Text = "0"
-                    '    Me.Grid.Cell(i, Me.igyImpuestoImporte).Text = "0"
-                    'End If
+                If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = False Then
+                    Continue For
                 End If
+
+                oArticulo = New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
+
+                If txtLEN(Me.Grid.Cell(i, Me.igyCantidad).Text) = False Then
+                    Continue For
+                End If
+
+                dCantidad = 0 : dPrecio = 0 : dPorcentajeIVA = 0 : dIEPS_PORCENTAJE = 0 : dIEPS_UNITARIO = 0 : dBASE_IEPS = 0 : dIEPS_IMPORTE = 0 : dBASE_IVA = 0 : dIVA_IMPORTE = 0 : dImporte = 0
+
+                dCantidad = valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text)
+                dPrecio = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text)
+                dPrecio_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyPRECIO_USD).Text)
+                dPorcentajeIVA = valorNumericoD(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text)
+
+                '''''''''''''''''''''''''''''''USD
+                If Me.cboMoneda.Text = "USD" Then
+                    ''''''''''''''''
+                    'Calculamos los otros valores en MXN capturables(que si bien no se capturaron se emularán)
+                    dPrecio = dPrecio_USD * dTipoCambio
+                    dPrecio = RedondearD(dPrecio, Empresa_Sistema.DECIMALES_CANTIDAD)
+
+                    Me.Grid.Cell(i, Me.igyPrecio).Text = dPrecio.ToString
+                    ''''''''''''''''
+
+                Else ''''''''''''''''''''''''''MXN
+
+                End If
+
+                dIEPS_PORCENTAJE = valorNumericoD(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
+                dIEPS_UNITARIO = RedondearD(dPrecio * (dIEPS_PORCENTAJE / 100), 4)
+                'dBASE_IEPS = Redondear((dPrecio * dCantidad), 2)
+                dBASE_IEPS = RedondearD((dPrecio * dCantidad), 6)
+                dIEPS_IMPORTE = RedondearD(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
+                dBASE_IVA = dIEPS_IMPORTE + dBASE_IEPS
+                dIVA_IMPORTE = RedondearD(dBASE_IVA * ((dPorcentajeIVA / 100)), 2)
+
+                dImporte = RedondearD((dPrecio * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD) 'no hacemos nada con este valor de momento
+
+                Me.Grid.Cell(i, Me.igyImporte).Text = dImporte.ToString
+                Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text = dIEPS_UNITARIO.ToString
+                Me.Grid.Cell(i, Me.igyBASE_IEPS).Text = dBASE_IEPS.ToString
+                Me.Grid.Cell(i, Me.igyIEPS_IMPORTE).Text = dIEPS_IMPORTE.ToString
+                Me.Grid.Cell(i, Me.igyBASE_IVA).Text = dBASE_IVA.ToString
+                Me.Grid.Cell(i, Me.igyImpuestoImporte).Text = dIVA_IMPORTE.ToString
+
+                'If dCantidad > 0 Then
+                '    dImporte = Redondear((dPrecio * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                '    Me.Grid.Cell(i, Me.igyImporte).Text = dImporte.ToString
+                '    Me.Grid.Cell(i, Me.igyImpuestoImporte).Text = Redondear(dImporte * ((dPorcentajeIVA / 100)), Empresa_Sistema.DECIMALES_CONTABILIDAD).ToString
+                'Else
+                '    Me.Grid.Cell(i, Me.igyImporte).Text = "0"
+                '    Me.Grid.Cell(i, Me.igyImpuestoImporte).Text = "0"
+                'End If
             Next i
 
             Me.TxtSubTotal.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImporte), Empresa_Sistema.DECIMALES_CONTABILIDAD))
@@ -1991,7 +2100,7 @@ Buscar:
                 'End If
             End If
 
-            Me.txtTotal.Text = FormatImporteContable((valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.txtIEPS.Text) + valorNumerico(Me.txtIVA.Text)) - valorNumerico(Me.TxtRetencion.Text))
+            Me.txtTotal.Text = FormatImporteContable((valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.txtIEPS.Text) + valorNumerico(Me.txtIVA.Text)) - valorNumerico(Me.txtRetencionIVA.Text))
 
             Me.TotalesUSD()
 
@@ -2015,9 +2124,9 @@ Buscar:
                 dTotalUSD = Redondear(valorNumerico(Me.txtTotal.Text) / dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
             End If
 
-            Me.TxtSubTotalUSD.Text = FormatImporteContable(dSubtotalUSD)
-            Me.txtIVAUSD.Text = FormatImporteContable(dIVAUSD)
-            Me.txtTotalUSD.Text = FormatImporteContable(dTotalUSD)
+            Me.TxtSubTotal_USD.Text = FormatImporteContable(dSubtotalUSD)
+            Me.txtIVA_USD.Text = FormatImporteContable(dIVAUSD)
+            Me.txtTotal_USD.Text = FormatImporteContable(dTotalUSD)
 
         Catch ex As Exception
             HandleError(Me.Name, "TotalesUSD", ex)
@@ -2036,9 +2145,10 @@ Buscar:
     End Function
 
     Private Sub GestionaGrid(ByVal e As System.Windows.Forms.KeyEventArgs)
+        Const sProcedure As String = "GestionaGrid"
         Try
             Dim Columna As Integer, Renglon As Integer
-            Dim StrCod As String, sCuentaContable As String, dCantidad As Double, dPrecio As Double
+            Dim StrCod As String, sCuentaContable As String, dCantidad As Decimal, dPrecio As Decimal, dPrecio_USD As Decimal = 0
             Dim oArticulo As Class_CatArticulos
             Dim oCuentas As New Class_CatCuentas 'Class_VWCatDeudoresDiversos
 
@@ -2046,11 +2156,16 @@ Buscar:
                 Exit Sub
             End If
 
+            If Not (Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.GRABADO) Then
+                Exit Sub
+            End If
+
             Columna = Me.Grid.Selection.FirstCol
             Renglon = Me.Grid.Selection.FirstRow
             StrCod = Me.Grid.Cell(Renglon, Me.igyCodigo).Text
-            dCantidad = valorNumerico(Me.Grid.Cell(Renglon, Me.igyCantidad).Text)
-            dPrecio = valorNumerico(Me.Grid.Cell(Renglon, Me.igyPrecio).Text)
+            dCantidad = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyCantidad).Text)
+            dPrecio = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPrecio).Text)
+            dPrecio_USD = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPRECIO_USD).Text)
 
             'ESTA VALIDACION SE PUSO PARA QUE A LOS ARTICULOS INVENTARIABLES NO LES PUEDAN CAMBIAR LA CUENTA CONTABLE CALCULADA AUTOMATICAMENTE
             If Columna = Me.igyCuentaContable Then
@@ -2079,6 +2194,7 @@ LlenaLinea:
                                 Me.Grid.Cell(Renglon, Me.igyDescripcion).Text = ""
                                 Me.Grid.Cell(Renglon, Me.igyCantidad).Text = "0"
                                 Me.Grid.Cell(Renglon, Me.igyPrecio).Text = "0"
+                                Me.Grid.Cell(Renglon, Me.igyPRECIO_USD).Text = "0"
                                 Me.Grid.Cell(Renglon, Me.igyUnidad).Text = "PZA"
                                 Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Text = "0"
 
@@ -2089,6 +2205,7 @@ LlenaLinea:
                                     Me.Grid.Cell(Renglon, Me.igyDescripcion).Text = oArticulo.DESCRIPCION
                                     Me.Grid.Cell(Renglon, Me.igyCantidad).Text = "0"
                                     Me.Grid.Cell(Renglon, Me.igyPrecio).Text = "0" 'traer el ultimo precio del mismo proveedor y mismo articulo"
+                                    Me.Grid.Cell(Renglon, Me.igyPRECIO_USD).Text = "0" 'traer el ultimo precio del mismo proveedor y mismo articulo"
                                     Me.Grid.Cell(Renglon, Me.igyUnidad).Text = oArticulo.UNIDAD_VENTA
 
                                     'If oArticulos.TIENE_IMPUESTO = "1" Then
@@ -2123,14 +2240,29 @@ LlenaLinea:
                                 End If
                             End If
 
+                            If Me.cboMoneda.Text = "USD" Then
+                                Me.Grid.Cell(Renglon, Me.igyPrecio).SetFocus() 'Para que se vaya a igyPrecio_USD ponemos una celda anterior
+                            End If
+
                         Case Me.igyPrecio
-                            If dPrecio <= 0 Then
-                                MsgBox("El precio debe de ser mayor a 0.", MsgBoxStyle.Exclamation, Me.Text)
-                                Me.Grid.Cell(Renglon, Me.igyPrecio).SetFocus()
+                            If Me.cboMoneda.Text = "USD" Then
+                                'Avanza de todas formas estará bloqueado                                    
+                            Else
+                                If dPrecio <= 0 Then
+                                    MsgBox("El precio debe de ser mayor a 0.", MsgBoxStyle.Exclamation, Me.Text)
+                                    Me.Grid.Cell(Renglon, Me.igyPrecio).SetFocus()
+                                End If
                             End If
 
                             If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = True AndAlso Me.Estado = enumEstados.NUEVO Then
                                 Me.Grid.Cell(Renglon, Me.igyCosto).Text = Me.Grid.Cell(Renglon, Me.igyPrecio).Text
+                            End If
+
+                        Case Me.igyPRECIO_USD
+                            oArticulo = New Class_CatArticulos(StrCod)
+                            If dPrecio_USD <= 0 Then
+                                MsgBox("El precio debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
+                                Me.Grid.Cell(Renglon, Me.igyPrecio).SetFocus() 'Para que se vaya a igyPrecio_USD ponemos una celda anterior
                             End If
 
                         Case Me.igyImpuestoPorcentaje
@@ -2262,35 +2394,39 @@ BuscarCuentas:
     End Sub
 
     Private Sub OcultarControles()
-        If Me.oDocumento.AFECTA_CXP = True Then
-            Me.txtFolioOC.Visible = True : Me.lblDisplayFolioOC.Visible = True
-            Me.txtFolioProveedor.Visible = True : Me.lblDisplayFolioProveedor.Visible = True
-            Me.txtSaldoMXP.Visible = True : Me.lblDisplaySaldoMXP.Visible = True
-            Me.txtSaldoUSD.Visible = True : Me.lblDisplaySaldoUSD.Visible = True
-            Me.BtnActualizaFolioProv.Visible = True
-            Me.btnActualizaConcepto.Visible = True
+        Try
+            If Me.oDocumento.AFECTA_CXP = True Then
+                Me.txtFolioOC.Visible = True : Me.lblDisplayFolioOC.Visible = True
+                Me.txtFolioProveedor.Visible = True : Me.lblDisplayFolioProveedor.Visible = True
+                Me.txtSaldo_MXP.Visible = True : Me.lblDisplaySaldo_MXP.Visible = True
+                Me.txtSaldo_USD.Visible = True : Me.lblDisplaySaldo_USD.Visible = True
+                Me.BtnActualizaFolioProv.Visible = True
+                Me.btnActualizaConcepto.Visible = True
 
-            If Me.Grid.Cols > 1 Then
-                Me.Grid.Column(Me.igyCuentaContable).Visible = True
-            End If
-            Me.tsbGrabar.Visible = False
-            Me.tsbAplicar.Visible = True
-            Me.tpSeries.Enabled = True
-        Else
-            Me.txtFolioOC.Visible = False : Me.lblDisplayFolioOC.Visible = False
-            Me.txtFolioProveedor.Visible = False : Me.lblDisplayFolioProveedor.Visible = False
-            Me.txtSaldoMXP.Visible = False : Me.lblDisplaySaldoMXP.Visible = False
-            Me.txtSaldoUSD.Visible = False : Me.lblDisplaySaldoUSD.Visible = False
-            Me.BtnActualizaFolioProv.Visible = False
-            Me.btnActualizaConcepto.Visible = False
+                If Me.Grid.Cols > 1 Then
+                    Me.Grid.Column(Me.igyCuentaContable).Visible = True
+                End If
+                Me.tsbGrabar.Visible = False
+                Me.tsbAplicar.Visible = True
+                Me.tpSeries.Enabled = True
+            Else
+                Me.txtFolioOC.Visible = False : Me.lblDisplayFolioOC.Visible = False
+                Me.txtFolioProveedor.Visible = False : Me.lblDisplayFolioProveedor.Visible = False
+                Me.txtSaldo_MXP.Visible = False : Me.lblDisplaySaldo_MXP.Visible = False
+                Me.txtSaldo_USD.Visible = False : Me.lblDisplaySaldo_USD.Visible = False
+                Me.BtnActualizaFolioProv.Visible = False
+                Me.btnActualizaConcepto.Visible = False
 
-            If Me.Grid.Cols > 1 Then
-                Me.Grid.Column(Me.igyCuentaContable).Visible = False
+                If Me.Grid.Cols > 1 Then
+                    Me.Grid.Column(Me.igyCuentaContable).Visible = False
+                End If
+                Me.tsbGrabar.Visible = True
+                Me.tsbAplicar.Visible = False
+                Me.tpSeries.Enabled = False
             End If
-            Me.tsbGrabar.Visible = True
-            Me.tsbAplicar.Visible = False
-            Me.tpSeries.Enabled = False
-        End If
+        Catch ex As Exception
+            HandleError(Me.Name, "OcultarControles", ex)
+        End Try
     End Sub
 
     Private Function SiTieneCuentaContable() As Boolean
@@ -2310,6 +2446,7 @@ BuscarCuentas:
         Dim bResultado As Boolean = False
         Const sProcedure As String = "ValidaCuentasContables"
         Dim i As Integer, sCuentaContable As String = ""
+
         Try
             Dim oCuentas As New Class_CatCuentas
 
@@ -2343,7 +2480,7 @@ BuscarCuentas:
                             'End If
 
                             If sCuentaContable.StartsWith("1") = False Then
-                                MsgBox("La cuenta contable del renglón : " & i & " debe ser del rango de las miles(que empiezen con 1)." & vbCrLf & _
+                                MsgBox("La cuenta contable del renglón : " & i & " debe ser del rango de las miles(que empiezen con 1)." & vbCrLf &
                                 "O debe en vez de poner cuenta, detallar con el botón de centros de costos.", MsgBoxStyle.Exclamation, Me.Name)
                                 Return False
                             End If
@@ -2368,13 +2505,13 @@ BuscarCuentas:
                         Else
 
                             If IsNothing(Me.oFormaDetalleCuentas) = True Then
-                                MsgBox("No ha especificado el detalle de la cuentas contables con el botón." & vbCrLf & _
+                                MsgBox("No ha especificado el detalle de la cuentas contables con el botón." & vbCrLf &
                                        "Revíse el renglón #" & i, MsgBoxStyle.Exclamation, sProcedure)
                                 Return False
                             End If
 
                             If Me.oFormaDetalleCuentas.ValidaCuentaTengaDetalle(CInt(Me.Grid.Cell(i, Me.iGyIDAdicional).Text)) = False Then
-                                MsgBox("No ha especificado el detalle de la cuentas contables con el botón." & vbCrLf & _
+                                MsgBox("No ha especificado el detalle de la cuentas contables con el botón." & vbCrLf &
                                        "Revíse el renglón #" & i, MsgBoxStyle.Exclamation, sProcedure)
                                 Return False
                             End If
@@ -2384,7 +2521,7 @@ BuscarCuentas:
                     Else 'Si es inventariable
 
                         If sCuentaContable.StartsWith("1") = False Then
-                            MsgBox("La cuenta contable del renglón : " & i & " debe ser del rango de las miles(que empiezen con 1)." & vbCrLf & _
+                            MsgBox("La cuenta contable del renglón : " & i & " debe ser del rango de las miles(que empiezen con 1)." & vbCrLf &
                             "O debe en vez de poner cuenta, detallar con el botón de centros de costos.", MsgBoxStyle.Exclamation, Me.Name)
                             Return False
                         End If
@@ -2398,7 +2535,7 @@ BuscarCuentas:
                             MsgBox("La cuenta contable del renglón : " & i & " es de mayor.", MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         ElseIf (Me.Grid.Cell(i, Me.igyCuentaContable).Text Like Empresa_Sistema.CUENTA_CONTABLE_ALMACENES & "*") = False Then
-                            MsgBox("La cuenta para los artículos inventariables debe de empezar con " & Empresa_Sistema.CUENTA_CONTABLE_ALMACENES & "." & vbCrLf & _
+                            MsgBox("La cuenta para los artículos inventariables debe de empezar con " & Empresa_Sistema.CUENTA_CONTABLE_ALMACENES & "." & vbCrLf &
                                    "Revíse el renglón #" & i, MsgBoxStyle.Exclamation, Me.Text)
                             Return False
                         End If
@@ -2423,7 +2560,7 @@ BuscarCuentas:
                 If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
                     oArticulos = New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
                     If oArticulos.INVENTARIABLE = "1" Then
-                        sCuentaContable = oAlmacenes.Cuenta_Contable.ToString + oArticulos.ObtenerFamiliaArticulo(Me.Grid.Cell(i, Me.igyCodigo).Text).ToString
+                        sCuentaContable = oAlmacenes.CUENTA_CONTABLE.ToString + oArticulos.ObtenerFamiliaArticulo(Me.Grid.Cell(i, Me.igyCodigo).Text).ToString
                         oCuenta = New Class_CatCuentas(sCuentaContable)
 
                         Me.Grid.Cell(i, Me.igyCuentaContable).Text = sCuentaContable
@@ -2885,8 +3022,8 @@ BuscarCuentas:
                         If Me.GridSeries.Cell(i, Me.igySerieNumeroSerie).Text = Me.GridSeries.Cell(z, Me.igySerieNumeroSerie).Text Then
                             RenglonRepetido = z
 
-                            MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text & _
-                                   " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf & _
+                            MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text &
+                                   " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf &
                                    "", MsgBoxStyle.Exclamation)
                             Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
 
@@ -3044,6 +3181,59 @@ BuscarCuentas:
 
         Return bResultado
     End Function
+
+    Private Sub GestionaMoneda()
+        Const sProcedure As String = "GestionaMoneda"
+        Try
+            If Me.cboMoneda.Text = "USD" Then
+                Me.txtTipoCambio.Visible = True : Me.txtTipoCambio.Enabled = True : Me.LblDisplayTipoCambio.Visible = True
+                Me.gbUSD.Visible = True
+                If Me.oDocumento.AFECTA_CXP = True Then
+                    Me.txtSaldo_USD.Visible = True : Me.lblDisplaySaldo_USD.Visible = True
+                    Me.txtSaldo_MXP.Visible = True : Me.lblDisplaySaldo_MXP.Visible = True
+                Else
+                    Me.txtSaldo_USD.Visible = False : Me.lblDisplaySaldo_USD.Visible = False
+                    Me.txtSaldo_MXP.Visible = False : Me.lblDisplaySaldo_MXP.Visible = False
+                End If
+
+                If Me.bCrearonColumnas = True Then 'Esta esto porque por cuestiones de eventos se lanza primero este antes de inicializar la 1era vez la forma.
+                    'Estas 3 columnas son editables, y se gestiona su bloqueo/desbloqueo según el tipo de moneda
+                    Me.Grid.Column(Me.igyPrecio).Locked = True 'Se bloquea el precio en MXM
+                    Me.Grid.Column(Me.igyPRECIO_USD).Locked = False 'Se habilita el precio en USD
+
+                    Me.Grid.Column(Me.igyPRECIO_USD).Visible = True
+                    Me.Grid.Column(Me.igyIMPORTE_USD).Visible = True
+                    Me.Grid.Column(Me.igyImporte).Visible = False
+                End If
+
+            Else 'Es moneda en MXN o esta en blanco
+                Me.txtTipoCambio.Text = "0"
+                Me.txtTipoCambio.Visible = False : Me.txtTipoCambio.Enabled = False : Me.LblDisplayTipoCambio.Visible = False
+                Me.gbUSD.Visible = False
+                If Me.oDocumento.AFECTA_CXC = True Then
+                    Me.txtSaldo_USD.Visible = False : Me.lblDisplaySaldo_USD.Visible = False
+                    Me.txtSaldo_MXP.Visible = True : Me.lblDisplaySaldo_MXP.Visible = True
+                Else
+                    Me.txtSaldo_USD.Visible = False : Me.lblDisplaySaldo_USD.Visible = False
+                    Me.txtSaldo_MXP.Visible = False : Me.lblDisplaySaldo_MXP.Visible = False
+                End If
+
+                If Me.bCrearonColumnas = True Then
+                    'Estas 3 columnas son editables, y se gestiona su bloqueo/desbloqueo según el tipo de moneda
+                    Me.Grid.Column(Me.igyPrecio).Locked = False 'Se habilita el precio en MXN
+                    Me.Grid.Column(Me.igyPRECIO_USD).Locked = True 'Se bloquea el precio en USD
+
+                    Me.Grid.Column(Me.igyPRECIO_USD).Visible = False
+                    Me.Grid.Column(Me.igyIMPORTE_USD).Visible = False
+                    Me.Grid.Column(Me.igyImporte).Visible = True
+                End If
+            End If
+
+            Me.TotalesUSD()
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
 
 #End Region
 

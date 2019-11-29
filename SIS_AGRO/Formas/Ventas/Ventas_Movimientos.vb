@@ -311,6 +311,7 @@ Public Class Ventas_Movimientos
 
             Me.Inicializa()
             Me.bCrearonColumnas = True
+            Me.GestionaMoneda()
 
             Me.Cambia_Estado(enumEstados.NUEVO)
 
@@ -2866,7 +2867,6 @@ CANCELAR:
                 dCantidad = 0 : dPrecioCapturado = 0 : dPrecioConDescuento = 0 : iIDOrigen = 0 : dPorcentajeIVA = 0 : dIEPS_PORCENTAJE = 0 : sID_SIS_CAT_IMPUESTOS = "" : sGRADO_TOXICIDAD = "" : dImporteConDescuento = 0
                 dBASE_IEPS = 0 : dIEPS_IMPORTE = 0 : dIEPS_UNITARIO = 0 : dBASE_IVA = 0 : dIVA_IMPORTE = 0 : dPRECIO_TOTAL = 0 : dPrecioOriginal = 0 : dImporte = 0 : dImporteTotal = 0 : dImporteSustitucion = 0
                 dDESCUENTO_UNITARIO = 0 : dDESCUENTO_IMPORTE = 0 : dFLETE_IMPORTE = 0 : sID_SIS_CAT_IMPUESTOS_FLETES = "" : dPorcentajeFlete = 0
-
                 dPrecioCapturado_USD = 0
 
                 dCantidad = valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text)
@@ -2888,7 +2888,7 @@ CANCELAR:
                 '''''''''''''''''''''''''''''''USD
                 If Me.cboMoneda.Text = "USD" Then
                     ''''''''''''''''
-                    'Calculasmo los otros valores en MXN capturables(que si bien no se capturaron se emularán)
+                    'Calculamos los otros valores en MXN capturables(que si bien no se capturaron se emularán)
                     dPrecioCapturado = dPrecioCapturado_USD * dTipoCambio
                     dPrecioCapturado = RedondearD(dPrecioCapturado, Me.iDecimalesPrecio)
 
@@ -2995,7 +2995,7 @@ CANCELAR:
                     'dImporteTotal = RedondearD((dCantidad * dPRECIO_TOTAL), Empresa_Sistema.DECIMALES_CONTABILIDAD)
                     dImporteTotal = RedondearD(dImporteTotal_USD * dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
-                Else ''''''''''''''''''''''''''''''MXN
+                Else '''''''''''''''''''''''''''MXN
 
                     'dImporte = RedondearD((dCantidad * dPrecioCapturado), Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
@@ -3551,9 +3551,9 @@ CANCELAR:
             Columna = Me.Grid.Selection.FirstCol
             Renglon = Me.Grid.Selection.FirstRow
             StrCod = Me.Grid.Cell(Renglon, Me.igyCodigo).Text
-            dCantidad = CDec(valorNumerico(Me.Grid.Cell(Renglon, Me.igyCantidad).Text))
-            dPrecio = CDec(valorNumerico(Me.Grid.Cell(Renglon, Me.igyPrecio).Text))
-            dPrecio_USD = CDec(valorNumerico(Me.Grid.Cell(Renglon, Me.igyPrecio_USD).Text))
+            dCantidad = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyCantidad).Text)
+            dPrecio = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPrecio).Text)
+            dPrecio_USD = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPrecio_USD).Text)
 
             'ESTA VALIDACION SE PUSO PARA QUE A LOS PRODUCTOS AGRICOLAS NO LES PUEDAN CAMBIAR LA CUENTA CONTABLE CALCULADA AUTOMATICAMENTE
             If Columna = Me.igyCuentaContable Then
@@ -4933,53 +4933,72 @@ BuscaVentas:
     End Function
 
     Private Sub GestionaMoneda()
-        If Me.cboMoneda.Text = "USD" Then
-            Me.txtTipoCambio.Visible = True : Me.txtTipoCambio.Enabled = True : Me.lblDisplayTipoCambio.Visible = True
-            Me.gbDolares.Visible = True
-            Me.lblSaldoDolares.Visible = True : Me.lblDisplaySaldoDolares.Visible = True
-            Me.lblIEPSIncluido_USD.Visible = True : Me.lblDisplayIEPSIncluido_USD.Visible = True
+        Const sProcedure As String = "GestionaMoneda"
+        Try
+            If Me.cboMoneda.Text = "USD" Then
+                Me.txtTipoCambio.Visible = True : Me.txtTipoCambio.Enabled = True : Me.lblDisplayTipoCambio.Visible = True
+                Me.gbDolares.Visible = True
+                If Me.oDocumento.AFECTA_CXC = True Then
+                    Me.lblSaldoDolares.Visible = True : Me.lblDisplaySaldoDolares.Visible = True
+                    Me.lblSaldo.Visible = True : Me.lblDisplaySaldo.Visible = True
+                Else
+                    Me.lblSaldoDolares.Visible = False : Me.lblDisplaySaldoDolares.Visible = False
+                    Me.lblSaldo.Visible = False : Me.lblDisplaySaldo.Visible = False
+                End If
+                Me.lblIEPSIncluido_USD.Visible = True : Me.lblDisplayIEPSIncluido_USD.Visible = True
 
-            If Me.bCrearonColumnas = True Then 'Esta esto porque por cuestiones de eventos se lanza primero este antes de inicializar la 1era vez la forma.
-                'Estas 3 columnas son editables, y se gestiona su bloqueo/desbloqueo según el tipo de moneda
-                Me.Grid.Column(Me.igyPrecio).Locked = True
-                Me.Grid.Column(Me.igyPrecio_USD).Locked = False
-                Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Locked = True
-                Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Locked = False
+                If Me.bCrearonColumnas = True Then 'Esta esto porque por cuestiones de eventos se lanza primero este antes de inicializar la 1era vez la forma.
+                    'Estas 3 columnas son editables, y se gestiona su bloqueo/desbloqueo según el tipo de moneda
+                    Me.Grid.Column(Me.igyPrecio).Locked = True
+                    Me.Grid.Column(Me.igyPrecio_USD).Locked = False
+                    Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Locked = True
+                    Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Locked = False
 
-                Me.Grid.Column(Me.igyPrecio_USD).Visible = True
-                Me.Grid.Column(Me.igyPRECIO_TOTAL_USD).Visible = True
-                Me.Grid.Column(Me.igyImporte_USD).Visible = True
-                Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Visible = True
+                    Me.Grid.Column(Me.igyPrecio_USD).Visible = True
+                    Me.Grid.Column(Me.igyPRECIO_TOTAL_USD).Visible = True
+                    Me.Grid.Column(Me.igyImporte_USD).Visible = True
+                    Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Visible = True
 
-                Me.Grid.Column(Me.igyPRECIO_TOTAL).Visible = False
-                Me.Grid.Column(Me.igyImporte).Visible = False
-                Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Visible = False
+                    Me.Grid.Column(Me.igyPRECIO_TOTAL).Visible = False
+                    Me.Grid.Column(Me.igyImporte).Visible = False
+                    Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Visible = False
+                End If
+
+            Else 'Es moneda en MXN o esta en blanco
+                Me.txtTipoCambio.Text = "0"
+                Me.txtTipoCambio.Visible = False : Me.txtTipoCambio.Enabled = False : Me.lblDisplayTipoCambio.Visible = False
+                Me.gbDolares.Visible = False
+                If Me.oDocumento.AFECTA_CXC = True Then
+                    Me.lblSaldoDolares.Visible = False : Me.lblDisplaySaldoDolares.Visible = False
+                    Me.lblSaldo.Visible = True : Me.lblDisplaySaldo.Visible = True
+                Else
+                    Me.lblSaldoDolares.Visible = False : Me.lblDisplaySaldoDolares.Visible = False
+                    Me.lblSaldo.Visible = False : Me.lblDisplaySaldo.Visible = False
+                End If
+                Me.lblSaldoDolares.Visible = False : Me.lblDisplaySaldoDolares.Visible = False
+                Me.lblIEPSIncluido_USD.Visible = False : Me.lblDisplayIEPSIncluido_USD.Visible = False
+
+                If Me.bCrearonColumnas = True Then
+                    'Estas 3 columnas son editables, y se gestiona su bloqueo/desbloqueo según el tipo de moneda
+                    Me.Grid.Column(Me.igyPrecio).Locked = False
+                    Me.Grid.Column(Me.igyPrecio_USD).Locked = True
+                    Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Locked = False
+                    Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Locked = True
+
+                    Me.Grid.Column(Me.igyPrecio_USD).Visible = False
+                    Me.Grid.Column(Me.igyPRECIO_TOTAL_USD).Visible = False
+                    Me.Grid.Column(Me.igyImporte_USD).Visible = False
+                    Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Visible = False
+
+                    Me.Grid.Column(Me.igyPRECIO_TOTAL).Visible = True
+                    Me.Grid.Column(Me.igyImporte).Visible = True
+                    Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Visible = True
+                End If
             End If
 
-        Else 'Es moneda en MXN o esta en blanco
-            Me.txtTipoCambio.Text = "0"
-            Me.txtTipoCambio.Visible = False : Me.txtTipoCambio.Enabled = False : Me.lblDisplayTipoCambio.Visible = False
-            Me.gbDolares.Visible = False
-            Me.lblSaldoDolares.Visible = False : Me.lblDisplaySaldoDolares.Visible = False
-            Me.lblIEPSIncluido_USD.Visible = False : Me.lblDisplayIEPSIncluido_USD.Visible = False
-
-            If Me.bCrearonColumnas = True Then
-                'Estas 3 columnas son editables, y se gestiona su bloqueo/desbloqueo según el tipo de moneda
-                Me.Grid.Column(Me.igyPrecio).Locked = False
-                Me.Grid.Column(Me.igyPrecio_USD).Locked = True
-                Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Locked = False
-                Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Locked = True
-
-                Me.Grid.Column(Me.igyPrecio_USD).Visible = False
-                Me.Grid.Column(Me.igyPRECIO_TOTAL_USD).Visible = False
-                Me.Grid.Column(Me.igyImporte_USD).Visible = False
-                Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Visible = False
-
-                Me.Grid.Column(Me.igyPRECIO_TOTAL).Visible = True
-                Me.Grid.Column(Me.igyImporte).Visible = True
-                Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Visible = True
-            End If
-        End If
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Sub
 #End Region
 

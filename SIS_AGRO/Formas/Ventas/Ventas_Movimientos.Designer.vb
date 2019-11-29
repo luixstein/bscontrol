@@ -123,6 +123,8 @@ Partial Class Ventas_Movimientos
         Me.txtFolioEmbarque = New System.Windows.Forms.TextBox()
         Me.lblDisplayFolioEmbarque = New System.Windows.Forms.Label()
         Me.gbTotales = New System.Windows.Forms.GroupBox()
+        Me.lblDisplayIEPSIncluido_USD = New System.Windows.Forms.Label()
+        Me.lblDisplayIEPSIncluido = New System.Windows.Forms.Label()
         Me.lblSaldoDolares = New System.Windows.Forms.Label()
         Me.lblDisplaySaldoDolares = New System.Windows.Forms.Label()
         Me.lblIEPSIncluido_USD = New System.Windows.Forms.Label()
@@ -142,8 +144,6 @@ Partial Class Ventas_Movimientos
         Me.GridCFDIsRelacionados = New FlexCell.Grid()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cboTipoRelacionCFDI = New System.Windows.Forms.ComboBox()
-        Me.lblDisplayIEPSIncluido = New System.Windows.Forms.Label()
-        Me.lblDisplayIEPSIncluido_USD = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -466,9 +466,9 @@ Partial Class Ventas_Movimientos
         Me.lblDisplayImpuestoPesos.AutoSize = True
         Me.lblDisplayImpuestoPesos.Location = New System.Drawing.Point(6, 64)
         Me.lblDisplayImpuestoPesos.Name = "lblDisplayImpuestoPesos"
-        Me.lblDisplayImpuestoPesos.Size = New System.Drawing.Size(56, 13)
+        Me.lblDisplayImpuestoPesos.Size = New System.Drawing.Size(30, 13)
         Me.lblDisplayImpuestoPesos.TabIndex = 244
-        Me.lblDisplayImpuestoPesos.Text = "Impuesto :"
+        Me.lblDisplayImpuestoPesos.Text = "IVA :"
         '
         'lblDisplayTotalPesos
         '
@@ -685,10 +685,10 @@ Partial Class Ventas_Movimientos
         '
         'gbDolares
         '
+        Me.gbDolares.Controls.Add(Me.lblDescuento_USD)
         Me.gbDolares.Controls.Add(Me.lblDisplayTotalRetencion_USD)
         Me.gbDolares.Controls.Add(Me.lblTotalRetencion_USD)
         Me.gbDolares.Controls.Add(Me.lblDisplayDescuento_USD)
-        Me.gbDolares.Controls.Add(Me.lblDescuento_USD)
         Me.gbDolares.Controls.Add(Me.lblIEPS_USD)
         Me.gbDolares.Controls.Add(Me.lblDisplayIEPS_USD)
         Me.gbDolares.Controls.Add(Me.lblTotal_USD)
@@ -821,9 +821,9 @@ Partial Class Ventas_Movimientos
         Me.lblDisplayImpuesto_USD.AutoSize = True
         Me.lblDisplayImpuesto_USD.Location = New System.Drawing.Point(1, 64)
         Me.lblDisplayImpuesto_USD.Name = "lblDisplayImpuesto_USD"
-        Me.lblDisplayImpuesto_USD.Size = New System.Drawing.Size(56, 13)
+        Me.lblDisplayImpuesto_USD.Size = New System.Drawing.Size(30, 13)
         Me.lblDisplayImpuesto_USD.TabIndex = 244
-        Me.lblDisplayImpuesto_USD.Text = "Impuesto :"
+        Me.lblDisplayImpuesto_USD.Text = "IVA :"
         '
         'lblSaldo
         '
@@ -1181,6 +1181,24 @@ Partial Class Ventas_Movimientos
         Me.gbTotales.TabIndex = 2
         Me.gbTotales.TabStop = False
         '
+        'lblDisplayIEPSIncluido_USD
+        '
+        Me.lblDisplayIEPSIncluido_USD.AutoSize = True
+        Me.lblDisplayIEPSIncluido_USD.Location = New System.Drawing.Point(941, 48)
+        Me.lblDisplayIEPSIncluido_USD.Name = "lblDisplayIEPSIncluido_USD"
+        Me.lblDisplayIEPSIncluido_USD.Size = New System.Drawing.Size(30, 13)
+        Me.lblDisplayIEPSIncluido_USD.TabIndex = 390
+        Me.lblDisplayIEPSIncluido_USD.Text = "USD"
+        '
+        'lblDisplayIEPSIncluido
+        '
+        Me.lblDisplayIEPSIncluido.AutoSize = True
+        Me.lblDisplayIEPSIncluido.Location = New System.Drawing.Point(941, 32)
+        Me.lblDisplayIEPSIncluido.Name = "lblDisplayIEPSIncluido"
+        Me.lblDisplayIEPSIncluido.Size = New System.Drawing.Size(31, 13)
+        Me.lblDisplayIEPSIncluido.TabIndex = 389
+        Me.lblDisplayIEPSIncluido.Text = "MXN"
+        '
         'lblSaldoDolares
         '
         Me.lblSaldoDolares.BackColor = System.Drawing.SystemColors.ButtonHighlight
@@ -1327,7 +1345,7 @@ Partial Class Ventas_Movimientos
         Me.tpSeries.Location = New System.Drawing.Point(4, 22)
         Me.tpSeries.Name = "tpSeries"
         Me.tpSeries.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpSeries.Size = New System.Drawing.Size(1570, 212)
+        Me.tpSeries.Size = New System.Drawing.Size(1271, 212)
         Me.tpSeries.TabIndex = 1
         Me.tpSeries.Text = "Series"
         Me.tpSeries.UseVisualStyleBackColor = True
@@ -1358,7 +1376,7 @@ Partial Class Ventas_Movimientos
         Me.tpCFDIsRelacionados.Controls.Add(Me.cboTipoRelacionCFDI)
         Me.tpCFDIsRelacionados.Location = New System.Drawing.Point(4, 22)
         Me.tpCFDIsRelacionados.Name = "tpCFDIsRelacionados"
-        Me.tpCFDIsRelacionados.Size = New System.Drawing.Size(1570, 212)
+        Me.tpCFDIsRelacionados.Size = New System.Drawing.Size(1271, 212)
         Me.tpCFDIsRelacionados.TabIndex = 2
         Me.tpCFDIsRelacionados.Text = "Relacionar CFDIs"
         Me.tpCFDIsRelacionados.UseVisualStyleBackColor = True
@@ -1401,24 +1419,6 @@ Partial Class Ventas_Movimientos
         Me.cboTipoRelacionCFDI.Name = "cboTipoRelacionCFDI"
         Me.cboTipoRelacionCFDI.Size = New System.Drawing.Size(301, 21)
         Me.cboTipoRelacionCFDI.TabIndex = 383
-        '
-        'lblDisplayIEPSIncluido
-        '
-        Me.lblDisplayIEPSIncluido.AutoSize = True
-        Me.lblDisplayIEPSIncluido.Location = New System.Drawing.Point(941, 32)
-        Me.lblDisplayIEPSIncluido.Name = "lblDisplayIEPSIncluido"
-        Me.lblDisplayIEPSIncluido.Size = New System.Drawing.Size(31, 13)
-        Me.lblDisplayIEPSIncluido.TabIndex = 389
-        Me.lblDisplayIEPSIncluido.Text = "MXN"
-        '
-        'lblDisplayIEPSIncluido_USD
-        '
-        Me.lblDisplayIEPSIncluido_USD.AutoSize = True
-        Me.lblDisplayIEPSIncluido_USD.Location = New System.Drawing.Point(941, 48)
-        Me.lblDisplayIEPSIncluido_USD.Name = "lblDisplayIEPSIncluido_USD"
-        Me.lblDisplayIEPSIncluido_USD.Size = New System.Drawing.Size(30, 13)
-        Me.lblDisplayIEPSIncluido_USD.TabIndex = 390
-        Me.lblDisplayIEPSIncluido_USD.Text = "USD"
         '
         'Ventas_Movimientos
         '
