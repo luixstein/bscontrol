@@ -1998,12 +1998,15 @@ Buscar:
         Try
             Dim i As Integer, dTipoCambio As Decimal = 0
             Dim dCantidad As Decimal, dPrecio As Decimal, dPorcentajeIVA As Decimal, dImporte As Decimal
-            Dim dIEPS_PORCENTAJE As Decimal = 0, dIEPS_UNITARIO As Decimal = 0, dIEPS_IMPORTE As Decimal = 0, dBASE_IEPS As Decimal = 0, dBASE_IVA As Decimal = 0, dPRECIO_TOTAL As Decimal = 0, dIVA_IMPORTE As Decimal = 0
+            Dim dIEPS_PORCENTAJE As Decimal = 0, dIEPS_UNITARIO As Decimal = 0, dIEPS_IMPORTE As Decimal = 0, dBASE_IEPS As Decimal = 0, dBASE_IVA As Decimal = 0, dIVA_IMPORTE As Decimal = 0
 
             Dim dPrecio_USD As Decimal = 0, dImporte_USD As Decimal = 0
             Dim dIEPS_UNITARIO_USD As Decimal = 0, dIEPS_IMPORTE_USD As Decimal = 0, dBASE_IEPS_USD As Decimal = 0, dBASE_IVA_USD As Decimal = 0, dIVA_IMPORTE_USD As Decimal = 0
 
             Dim oArticulo As New Class_CatArticulos
+
+            Dim dtSubtotal As Decimal = 0, dtIEPS As Decimal = 0, dtImpuesto As Decimal = 0, dtTotal As Decimal = 0, dtRetencionIVA As Decimal = 0, dtRetencionISR As Decimal = 0
+            Dim dtSubtotal_USD As Decimal = 0, dtIEPS_USD As Decimal = 0, dtImpuesto_USD As Decimal = 0, dtTotal_USD As Decimal = 0, dtRetencionIVA_USD As Decimal = 0, dtRetencionISR_USD As Decimal = 0
 
             dTipoCambio = valorNumericoD(Me.txtTipoCambio.Text)
             dTipoCambio = RedondearD(dTipoCambio, 4)
@@ -2036,6 +2039,7 @@ Buscar:
                 dPrecio = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text)
                 dPrecio_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyPRECIO_USD).Text)
                 dPorcentajeIVA = valorNumericoD(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text)
+                dIEPS_PORCENTAJE = valorNumericoD(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
 
                 '''''''''''''''''''''''''''''''USD
                 If Me.cboMoneda.Text = "USD" Then
@@ -2046,20 +2050,42 @@ Buscar:
 
                     Me.Grid.Cell(i, Me.igyPrecio).Text = dPrecio.ToString
                     ''''''''''''''''
+                    dIEPS_UNITARIO_USD = RedondearD(dPrecio_USD * (dIEPS_PORCENTAJE / 100), 4)
+                    'dBASE_IEPS_USD = Redondear((dPrecio_USD * dCantidad), 2)
+                    dBASE_IEPS_USD = RedondearD((dPrecio_USD * dCantidad), 6)
+                    dIEPS_IMPORTE_USD = RedondearD(dBASE_IEPS_USD * (dIEPS_PORCENTAJE / 100), 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
+                    dBASE_IVA_USD = dIEPS_IMPORTE_USD + dBASE_IEPS_USD
+                    dIVA_IMPORTE_USD = RedondearD(dBASE_IVA_USD * ((dPorcentajeIVA / 100)), 2)
+
+                    dImporte_USD = RedondearD((dPrecio_USD * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD) 'no hacemos nada con este valor de momento
+
+                    Me.Grid.Cell(i, Me.igyIMPORTE_USD).Text = dImporte_USD.ToString
+                    Me.Grid.Cell(i, Me.igyIEPS_UNITARIO_USD).Text = dIEPS_UNITARIO_USD.ToString
+                    Me.Grid.Cell(i, Me.igyBASE_IEPS_USD).Text = dBASE_IEPS_USD.ToString
+                    Me.Grid.Cell(i, Me.igyIEPS_IMPORTE_USD).Text = dIEPS_IMPORTE_USD.ToString
+                    Me.Grid.Cell(i, Me.igyBASE_IVA_USD).Text = dBASE_IVA_USD.ToString
+                    Me.Grid.Cell(i, Me.igyIMPUESTO_IMPORTE_USD).Text = dIVA_IMPORTE_USD.ToString
+
+                    ''''''''''''''''''''''''''''''MXN(Este cálculo se hace en para calcular los valores en MXN a partir de los USD,note que también en moneda en MXN direco hace el cálculo-parecido)
+                    dIEPS_UNITARIO = RedondearD(dIEPS_UNITARIO_USD * dTipoCambio, 4)
+                    'dBASE_IEPS = Redondear((dBASE_IEPS_USD * dTipoCambio), 2)
+                    dBASE_IEPS = RedondearD((dBASE_IEPS_USD * dTipoCambio), 6)
+                    dIEPS_IMPORTE = RedondearD(dIEPS_IMPORTE * dTipoCambio, 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
+                    dBASE_IVA = dIEPS_IMPORTE + dBASE_IEPS
+                    dIVA_IMPORTE = RedondearD(dIVA_IMPORTE_USD * dTipoCambio, 2)
+
+                    dImporte = RedondearD((dImporte_USD * dTipoCambio), Empresa_Sistema.DECIMALES_CONTABILIDAD) 'no hacemos nada con este valor de momento
 
                 Else ''''''''''''''''''''''''''MXN
+                    dIEPS_UNITARIO = RedondearD(dPrecio * (dIEPS_PORCENTAJE / 100), 4)
+                    'dBASE_IEPS = Redondear((dPrecio * dCantidad), 2)
+                    dBASE_IEPS = RedondearD((dPrecio * dCantidad), 6)
+                    dIEPS_IMPORTE = RedondearD(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
+                    dBASE_IVA = dIEPS_IMPORTE + dBASE_IEPS
+                    dIVA_IMPORTE = RedondearD(dBASE_IVA * ((dPorcentajeIVA / 100)), 2)
 
+                    dImporte = RedondearD((dPrecio * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD) 'no hacemos nada con este valor de momento
                 End If
-
-                dIEPS_PORCENTAJE = valorNumericoD(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
-                dIEPS_UNITARIO = RedondearD(dPrecio * (dIEPS_PORCENTAJE / 100), 4)
-                'dBASE_IEPS = Redondear((dPrecio * dCantidad), 2)
-                dBASE_IEPS = RedondearD((dPrecio * dCantidad), 6)
-                dIEPS_IMPORTE = RedondearD(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
-                dBASE_IVA = dIEPS_IMPORTE + dBASE_IEPS
-                dIVA_IMPORTE = RedondearD(dBASE_IVA * ((dPorcentajeIVA / 100)), 2)
-
-                dImporte = RedondearD((dPrecio * dCantidad), Empresa_Sistema.DECIMALES_CONTABILIDAD) 'no hacemos nada con este valor de momento
 
                 Me.Grid.Cell(i, Me.igyImporte).Text = dImporte.ToString
                 Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text = dIEPS_UNITARIO.ToString
@@ -2078,12 +2104,20 @@ Buscar:
                 'End If
             Next i
 
-            Me.TxtSubTotal.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImporte), Empresa_Sistema.DECIMALES_CONTABILIDAD))
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            '''''''''''''''''''''''''''''''TOTALES MXN
+            dtSubtotal = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyImporte)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            dtIEPS = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyIEPS_IMPORTE)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            dtImpuesto = CDec(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImpuestoImporte), Empresa_Sistema.DECIMALES_CONTABILIDAD))
+            dtRetencionIVA_USD = RedondearD(valorNumericoD(Me.txtRetencionIVA.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            dtRetencionISR_USD = RedondearD(valorNumericoD(Me.txtRetencionISR.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
-            Me.txtIEPS.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyIEPS_IMPORTE), Empresa_Sistema.DECIMALES_CONTABILIDAD))
-
-            Me.lblIVAcalculado.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImpuestoImporte), Empresa_Sistema.DECIMALES_CONTABILIDAD))
+            Me.TxtSubTotal.Text = FormatImporteContable(dtSubtotal)
+            Me.txtIEPS.Text = FormatImporteContable(dtIEPS)
+            Me.lblIVAcalculado.Text = FormatImporteContable(dtImpuesto)
             'Me.txtIVA.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImpuestoImporte), Empresa_Sistema.DECIMALES_CONTABILIDAD))
+            Me.txtRetencionIVA.Text = FormatImporteContable(dtRetencionIVA)
+            Me.txtRetencionISR.Text = FormatImporteContable(dtRetencionISR)
 
             'Se quitó de momento funcionalidad para poder editar el iva total a mano, hay que rediseñar solución. 24abr
             If bIva = False Then
@@ -2100,9 +2134,29 @@ Buscar:
                 'End If
             End If
 
-            Me.txtTotal.Text = FormatImporteContable((valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.txtIEPS.Text) + valorNumerico(Me.txtIVA.Text)) - valorNumerico(Me.txtRetencionIVA.Text))
+            dtTotal = dtSubtotal + dtIEPS + 0 - dtRetencionIVA - dtRetencionISR
+            dtTotal = RedondearD(dtTotal, Empresa_Sistema.DECIMALES_CONTABILIDAD) 'De todas formas se redondea porque a veces al hacer restas aparecen tropos.
 
-            Me.TotalesUSD()
+            Me.txtTotal.Text = FormatImporteContable((valorNumericoD(Me.TxtSubTotal.Text) + valorNumericoD(Me.txtIEPS.Text) + valorNumericoD(Me.txtIVA.Text)) - valorNumericoD(Me.txtRetencionIVA.Text) - valorNumericoD(Me.txtRetencionISR.Text))
+
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            '''''''''''''''''''''''''''''''TOTALES USD
+            dtSubtotal_USD = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyIMPORTE_USD)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            dtIEPS_USD = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyIEPS_IMPORTE_USD)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            dtImpuesto_USD = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyIMPUESTO_IMPORTE_USD)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            dtRetencionIVA_USD = RedondearD(valorNumericoD(Me.txtRetencionIVA_USD.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            dtRetencionISR_USD = RedondearD(valorNumericoD(Me.txtRetencionISR_USD.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            dtTotal_USD = dtSubtotal_USD + dtIEPS_USD + dtImpuesto_USD - dtRetencionIVA_USD - dtRetencionISR_USD
+            dtTotal_USD = RedondearD(dtTotal_USD, Empresa_Sistema.DECIMALES_CONTABILIDAD) 'De todas formas se redondea porque a veces al hacer restas aparecen tropos.
+
+            Me.TxtSubTotal_USD.Text = FormatImporteContable(dtSubtotal_USD)
+            Me.txtIEPS_USD.Text = FormatImporteContable(dtIEPS_USD)
+            Me.txtIVA_USD.Text = FormatImporteContable(dtImpuesto_USD)
+            Me.txtRetencionIVA_USD.Text = FormatImporteContable(dtRetencionIVA_USD)
+            Me.txtRetencionISR_USD.Text = FormatImporteContable(dtRetencionISR_USD)
+            Me.txtTotal_USD.Text = FormatImporteContable(dtTotal_USD)
+
+            'Me.TotalesUSD()
 
             bResultado = True
 
@@ -2113,25 +2167,25 @@ Buscar:
         Return bResultado
     End Function
 
-    Private Sub TotalesUSD()
-        Try
-            Dim dTipoCambio As Double = valorNumerico(Me.txtTipoCambio.Text)
-            Dim dSubtotalUSD As Double = 0, dIVAUSD As Double = 0, dTotalUSD As Double = 0
+    'Private Sub TotalesUSD()
+    '    Try
+    '        Dim dTipoCambio As Double = valorNumerico(Me.txtTipoCambio.Text)
+    '        Dim dSubtotalUSD As Double = 0, dIVAUSD As Double = 0, dTotalUSD As Double = 0
 
-            If dTipoCambio > 0 And Me.cboMoneda.SelectedIndex = 1 Then 'Si no esta chequeado en usd , no va entrar aqui y van a quedan en ceros(simulando que se inicilizaron)
-                dSubtotalUSD = Redondear(valorNumerico(Me.TxtSubTotal.Text) / dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                dIVAUSD = Redondear(valorNumerico(Me.txtIVA.Text) / dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                dTotalUSD = Redondear(valorNumerico(Me.txtTotal.Text) / dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            End If
+    '        If dTipoCambio > 0 And Me.cboMoneda.SelectedIndex = 1 Then 'Si no esta chequeado en usd , no va entrar aqui y van a quedan en ceros(simulando que se inicilizaron)
+    '            dSubtotalUSD = Redondear(valorNumerico(Me.TxtSubTotal.Text) / dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
+    '            dIVAUSD = Redondear(valorNumerico(Me.txtIVA.Text) / dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
+    '            dTotalUSD = Redondear(valorNumerico(Me.txtTotal.Text) / dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
+    '        End If
 
-            Me.TxtSubTotal_USD.Text = FormatImporteContable(dSubtotalUSD)
-            Me.txtIVA_USD.Text = FormatImporteContable(dIVAUSD)
-            Me.txtTotal_USD.Text = FormatImporteContable(dTotalUSD)
+    '        Me.TxtSubTotal_USD.Text = FormatImporteContable(dSubtotalUSD)
+    '        Me.txtIVA_USD.Text = FormatImporteContable(dIVAUSD)
+    '        Me.txtTotal_USD.Text = FormatImporteContable(dTotalUSD)
 
-        Catch ex As Exception
-            HandleError(Me.Name, "TotalesUSD", ex)
-        End Try
-    End Sub
+    '    Catch ex As Exception
+    '        HandleError(Me.Name, "TotalesUSD", ex)
+    '    End Try
+    'End Sub
 
     Private Function GeneraFolio() As Boolean
         Try
@@ -2140,7 +2194,7 @@ Buscar:
             End If
             Return txtLEN(Me.txtFolioCompra.Text)
         Catch ex As Exception
-            HandleError(Me.Name, "TotalesUSD", ex)
+            HandleError(Me.Name, "GeneraFolio", ex)
         End Try
     End Function
 
