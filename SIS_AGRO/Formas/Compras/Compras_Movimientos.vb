@@ -56,7 +56,6 @@ Public Class Compras_Movimientos
     Private igyBASE_IEPS_USD As Short = 24
     Private igyBASE_IVA As Short = 25
     Private igyBASE_IVA_USD As Short = 26
-
 #End Region
 
 #Region "Columnas grid series"
@@ -401,6 +400,17 @@ Buscar:
 
     Private Sub Grid_ButtonClick(ByVal Sender As System.Object, ByVal e As FlexCell.Grid.ButtonClickEventArgs) Handles Grid.ButtonClick
         Me.GestionaDetalleCuentas()
+    End Sub
+
+    Private Sub Grid_Enter(sender As Object, e As EventArgs) Handles Grid.Enter
+        If Me.cboMoneda.Text = "USD" Then
+            If valorNumericoD(Me.txtTipoCambio.Text) <= 0 Then
+                MsgBox("Asígne el tipo de cambio por favor.", MsgBoxStyle.Exclamation, Me.Text)
+                If Me.txtTipoCambio.Enabled = True Then
+                    Me.txtTipoCambio.Focus()
+                End If
+            End If
+        End If
     End Sub
 
     Private Sub TxtRetencion_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtRetencionIVA.KeyDown
@@ -903,8 +913,8 @@ Buscar:
                     If Me.oDocumento.AFECTA_CXP = False Then 'Si no afecta, entonces es una oc y si se permite el botón.
                         Me.tsbPasarOrdenACompra.Visible = True
 
-                        Dim sender As New Object, e As New EventArgs
-                        cboMoneda_SelectedIndexChanged(sender, e) 'Al ser oc, en el nuevo puede quedar bloqueado el tpcam, de este modo refrescamos
+                        'Dim sender As New Object, e As New EventArgs
+                        'cboMoneda_SelectedIndexChanged(sender, e) 'Al ser oc, en el nuevo puede quedar bloqueado el tpcam, de este modo refrescamos
                     End If
 
                     Me.DtpFecha.Enabled = True
@@ -1076,7 +1086,8 @@ Buscar:
         End Try
     End Sub
 
-    Function Grabar() As Boolean
+    Private Function Grabar() As Boolean
+        Const sProcedure As String = "Grabar"
         Dim bResultado As Boolean = False
         Dim i As Integer
 
@@ -1086,12 +1097,12 @@ Buscar:
 
         If Me.oDocumento.AFECTA_INVENTARIOS = True Then
             If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
-                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
         Else
             If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString) = False Then
-                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
         End If
@@ -1114,7 +1125,7 @@ Buscar:
             If saldoProveedor > oProveedores.LIMITE_CREDITO Then
                 MsgBox("La compra que intenta realizar más el saldo del proveedor " & vbCrLf & "son " & FormatImporteContable(saldoProveedor) &
                        " y supera al límite de crédito de " & FormatImporteContable(oProveedores.LIMITE_CREDITO) & ". " & vbCrLf &
-                       "No es posible realizar este movimiento.", MsgBoxStyle.Exclamation, Me.Text)
+                       "No es posible realizar este movimiento.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
         End If
@@ -1154,15 +1165,24 @@ Buscar:
                     .COSTO = CostoTotal
                 End If
 
+                .CODIGO_MONEDA = IIf(Me.cboMoneda.Text = "USD", "2", "1").ToString '1=MXN,2=USD
+
+                .SUBTOTAL_USD = valorNumerico(Me.TxtSubTotal_USD.Text)
+                .IEPS_TOTAL_DESGLOSADO_USD = valorNumerico(Me.txtIEPS_USD.Text)
+                .IMPUESTO_USD = valorNumerico(Me.txtIVA_USD.Text)
+                .TOTAL_DOLARES = valorNumerico(Me.txtTotal_USD.Text)
+                .RETENCION_IVA_USD = valorNumerico(Me.txtRetencionIVA_USD.Text)
+                .RETENCION_ISR_USD = valorNumerico(Me.txtRetencionISR_USD.Text)
+
                 If Me.Estado = enumEstados.NUEVO Then
                     If .GrabarOrdenCompraGlobal("INSERTAR") = False Then
-                        MsgBox("Error al tratar de insertar el movimiento de compras.", MsgBoxStyle.Exclamation, Me.Text)
+                        MsgBox("Error al tratar de insertar el movimiento de compras.", MsgBoxStyle.Exclamation, sProcedure)
                         Return False
                     End If
                     Me.txtFolioCompra.Text = .FOLIO_COMPRA
                 Else 'Se esta consultando por tanto ya existe.
                     If .GrabarOrdenCompraGlobal("ACTUALIZAR") = False Then
-                        MsgBox("Error al tratar de actualizar el movimiento de compras.", MsgBoxStyle.Exclamation, Me.Text)
+                        MsgBox("Error al tratar de actualizar el movimiento de compras.", MsgBoxStyle.Exclamation, sProcedure)
                         Return False
                     End If
                 End If
@@ -1171,6 +1191,7 @@ Buscar:
                 For i = 1 To Me.Grid.Rows - 1
                     If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
                         .NuevoRenglon()
+
                         .oComprasDetalle.FOLIO_COMPRA = .FOLIO_COMPRA.ToString
                         .oComprasDetalle.CODIGO_ARTICULO = Me.Grid.Cell(i, Me.igyCodigo).Text.ToUpper
                         .oComprasDetalle.DESCRIPCION = Me.Grid.Cell(i, Me.igyDescripcion).Text.ToUpper
@@ -1180,7 +1201,6 @@ Buscar:
                         .oComprasDetalle.IMPUESTO_PORCENTAJE = valorNumerico(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text)
                         .oComprasDetalle.IMPUESTO_IMPORTE = Val(Me.Grid.Cell(i, Me.igyImpuestoImporte).Text)
                         .oComprasDetalle.IMPORTE = Val(Me.Grid.Cell(i, Me.igyImporte).Text)
-
                         .oComprasDetalle.IEPS_PORCENTAJE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
                         .oComprasDetalle.IEPS_UNITARIO = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text)
                         .oComprasDetalle.IEPS_IMPORTE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_IMPORTE).Text)
@@ -1189,21 +1209,42 @@ Buscar:
 
                         If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = True Then
                             .oComprasDetalle.COSTO = valorNumerico(Me.Grid.Cell(i, Me.igyCosto).Text)
+                        Else
+                            .oComprasDetalle.COSTO = 0
+                        End If
+
+                        If Me.cboMoneda.Text = "USD" Then
+                            .oComprasDetalle.PRECIO_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyPRECIO_USD).Text)
+                            .oComprasDetalle.IMPUESTO_IMPORTE_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyIMPUESTO_IMPORTE_USD).Text)
+                            .oComprasDetalle.IMPORTE_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyIMPORTE_USD).Text)
+                            .oComprasDetalle.IEPS_UNITARIO_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyIEPS_UNITARIO_USD).Text)
+                            .oComprasDetalle.IEPS_IMPORTE_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyIEPS_IMPORTE_USD).Text)
+                            .oComprasDetalle.BASE_IEPS_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyBASE_IEPS_USD).Text)
+                            .oComprasDetalle.BASE_IVA_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyBASE_IVA_USD).Text)
+                        Else 'Por seguridad mejor no se toma del grid(que deberia ser 0, pero si se quedara inicializado), (en el gestiona moneda se borran cuando cambian a mxn)
+                            .oComprasDetalle.PRECIO_USD = 0
+                            .oComprasDetalle.IMPUESTO_IMPORTE_USD = 0
+                            .oComprasDetalle.IMPORTE_USD = 0
+                            .oComprasDetalle.IEPS_UNITARIO_USD = 0
+                            .oComprasDetalle.IEPS_IMPORTE_USD = 0
+                            .oComprasDetalle.BASE_IEPS_USD = 0
+                            .oComprasDetalle.BASE_IVA_USD = 0
                         End If
 
                         If .oComprasDetalle.GrabaRenglonOrdenCompra() = False Then
-                            MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Text)
+                            MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         End If
                     End If
                 Next
+
                 bResultado = True
                 Me.txtFolioCompra.Text = .FOLIO_COMPRA.ToString
-                MsgBox("Movimiento de compras grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+                MsgBox("Documento grabado satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
 
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "Grabar", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado
@@ -1457,29 +1498,35 @@ Buscar:
             Me.dtpFechaVencimiento.Value = CDate(Me.oCompras.FECHA_VENCIMIENTO)
 
             'Esto va antes de los totales, porque se va ejecutar el checked de los dolares
-            If Me.oCompras.TIPO_DE_CAMBIO > 0 Then
-                Me.txtTipoCambio.Text = Me.oCompras.TIPO_DE_CAMBIO.ToString
-                Me.cboMoneda.SelectedIndex = 1
-            Else
-                Me.txtTipoCambio.Text = "0"
-                Me.cboMoneda.SelectedIndex = 0
-            End If
+            Me.cboMoneda.SelectedValue = Me.oCompras.CODIGO_MONEDA
+            Me.txtTipoCambio.Text = Format(Me.oCompras.TIPO_DE_CAMBIO, "##0.0000")
+            'If Me.oCompras.TIPO_DE_CAMBIO > 0 Then
+            '    Me.txtTipoCambio.Text = Me.oCompras.TIPO_DE_CAMBIO.ToString
+            '    Me.cboMoneda.SelectedIndex = 1
+            'Else
+            '    Me.txtTipoCambio.Text = "0"
+            '    Me.cboMoneda.SelectedIndex = 0
+            'End If
 
             If bEsReferencia = False Then 'Estos datos no tienen que llenarse si se esta aplicando una oc(jalando a una co)
                 Me.TxtSubTotal.Text = FormatImporteContable(Me.oCompras.SUBTOTAL)
                 Me.txtIEPS.Text = FormatImporteContable(Me.oCompras.IEPS_TOTAL_DESGLOSADO)
                 Me.txtIVA.Text = FormatImporteContable(Me.oCompras.IMPUESTO)
                 Me.txtRetencionIVA.Text = FormatImporteContable(Me.oCompras.RETENCION_IVA)
+                Me.txtRetencionISR.Text = FormatImporteContable(Me.oCompras.RETENCION_ISR)
                 Me.txtTotal.Text = FormatImporteContable(Me.oCompras.TOTAL)
+
+                Me.TxtSubTotal_USD.Text = FormatImporteContable(Me.oCompras.SUBTOTAL_USD)
+                Me.txtIEPS_USD.Text = FormatImporteContable(Me.oCompras.IEPS_TOTAL_DESGLOSADO_USD)
+                Me.txtIVA_USD.Text = FormatImporteContable(Me.oCompras.IMPUESTO_USD)
+                Me.txtRetencionIVA_USD.Text = FormatImporteContable(Me.oCompras.RETENCION_IVA_USD)
+                Me.txtRetencionISR_USD.Text = FormatImporteContable(Me.oCompras.RETENCION_ISR_USD)
+                Me.txtTotal_USD.Text = FormatImporteContable(Me.oCompras.TOTAL_DOLARES)
+
                 Me.txtSaldo_MXP.Text = FormatImporteContable(Me.oCompras.SALDO)
                 Me.txtSaldo_USD.Text = FormatImporteContable(Me.oCompras.SALDO_DOLARES)
 
-                Me.TxtSubTotal_USD.Text = FormatImporteContable(Me.oCompras.SUBTOTAL_USD)
-                Me.txtIEPS_USD.Text = FormatImporteContable(Me.oCompras.IEPS_TOTAL_DESGLOSADO)
-                Me.txtIVA_USD.Text = FormatImporteContable(Me.oCompras.IMPUESTO_USD)
-                Me.txtRetencionIVA_USD.Text = FormatImporteContable(Me.oCompras.RETENCION_IVA)
-                Me.txtTotal_USD.Text = FormatImporteContable(Me.oCompras.TOTAL_DOLARES)
-            Else
+            Else 'Se jaló una referencia y se debe recalcular los totales.
                 Me.Totales()
             End If
 
@@ -1713,44 +1760,45 @@ Buscar:
     End Function
 
     Private Function ValidarOrdenCompra() As Boolean
+        Const sProcedure As String = "ValidarOrdenCompra"
         Dim bPrimerIVAEncontrado As Boolean, bHayArticulos As Boolean = False
         Dim oArticulos As Class_CatArticulos
 
         Try
             If Plaza.ValidarPeriodoTrabajo(Me.DtpFecha.Value) = False Then
-                Exit Function
+                Return False
             End If
 
             If txtLEN(Me.txtFolioCompra.Text) = False Then
-                MsgBox("Asigne un folio válido.", MsgBoxStyle.Exclamation, "ValidarOrdenCompra")
-                Exit Function
+                MsgBox("Asigne un folio válido.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
             End If
 
             If txtLEN(Me.txtProveedor.Text) = False Then
-                MsgBox("Asigne un proveedor.", MsgBoxStyle.Exclamation, "ValidarOrdenCompra")
+                MsgBox("Asigne un proveedor.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.txtProveedor.Focus()
-                Exit Function
+                Return False
             End If
 
             Me.oProveedores = New Class_CatProveedores(Me.txtProveedor.Text)
             If Me.oProveedores.Existe = False Then
-                MsgBox("Asigne un proveedor válido.", MsgBoxStyle.Exclamation, "ValidarOrdenCompra")
+                MsgBox("Asigne un proveedor válido.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.txtProveedor.Focus()
-                Exit Function
+                Return False
             End If
 
-            Dim sql As New Class_find("SELECT T.REALIZA_COMPRAS_GASTOS_PAGOS FROM CAT_PROVEEDORES P INNER JOIN SIS_TIPOS_PROVEEDORES T ON(P.CODIGO_TIPO_PROVEEDOR=T.CODIGO_TIPO_PROVEEDOR)" &
+            Dim sql As New Class_find("Select T.REALIZA_COMPRAS_GASTOS_PAGOS FROM CAT_PROVEEDORES P INNER JOIN SIS_TIPOS_PROVEEDORES T On(P.CODIGO_TIPO_PROVEEDOR=T.CODIGO_TIPO_PROVEEDOR)" &
                                       " WHERE P.CODIGO_PROVEEDOR='" & Me.txtProveedor.Text & "'")
             If sql.Result1 = "0" Then
                 MsgBox("El proveedor " & Me.txtProveedor.Text & "no puede realizar movimientos de compras.", MsgBoxStyle.Information, Me.Text)
                 Me.txtProveedor.Focus()
-                Exit Function
+                Return False
             End If
 
             If txtLEN(Me.oProveedores.CUENTA_CONTABLE) = False Then
-                MsgBox("El proveedor no tiene una cuenta contable en pesos asignada.", MsgBoxStyle.Exclamation, "ValidarOrdenCompra")
+                MsgBox("El proveedor no tiene una cuenta contable en pesos asignada.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.txtProveedor.Focus()
-                Exit Function
+                Return False
             End If
 
             If Mid(Me.oProveedores.CUENTA_CONTABLE, 1, 1) <> "2" Then
@@ -1758,45 +1806,61 @@ Buscar:
                 MsgBox("La cuenta contable del proveedor debe empezar con '2'.", MsgBoxStyle.Information, Me.Text)
                 Me.lblProveedor.Text = ""
                 Me.txtProveedor.Focus()
-                Exit Function
+                Return False
             End If
 
-            If Me.cboMoneda.SelectedIndex = 1 Then
+            If Me.cboMoneda.Text = "USD" Then
                 If txtLEN(Me.oProveedores.CUENTA_CONTABLE_DOLARES) = False Then
-                    MsgBox("El proveedor no tiene una cuenta contable en dólares asignada.", MsgBoxStyle.Exclamation, "ValidarOrdenCompra")
+                    MsgBox("El proveedor no tiene una cuenta contable en dólares asignada.", MsgBoxStyle.Exclamation, sProcedure)
                     Me.txtProveedor.Focus()
-                    Exit Function
+                    Return False
+                End If
+
+                If valorNumericoD(Me.txtTipoCambio.Text) <= 0 Then
+                    MsgBox("Capture el tipo de cambio.", MsgBoxStyle.Exclamation, sProcedure)
+                    If Me.txtTipoCambio.Enabled = True Then
+                        Me.txtTipoCambio.Focus()
+                    End If
+                    Return False
+                End If
+
+                If Not (valorNumericoD(Me.txtTipoCambio.Text) >= 15 And valorNumericoD(Me.txtTipoCambio.Text) <= 25) Then
+                    MsgBox("El tipo de cambio se sale del rango de 15 a 30.", MsgBoxStyle.Exclamation, sProcedure)
+                    If Me.txtTipoCambio.Enabled = True Then
+                        Me.txtTipoCambio.Focus()
+                    End If
+                    Return False
                 End If
             End If
 
             'If txtLEN(Me.txtEntregarA.Text) = False Then
-            '    MsgBox("Asigne el nombre de la persona a la que se le va a entregar.", MsgBoxStyle.Exclamation, "ValidarOrdenCompra")
+            '    MsgBox("Asigne el nombre de la persona a la que se le va a entregar.", MsgBoxStyle.Exclamation, sProcedure)
             '    Me.txtEntregarA.Focus()
-            '    Exit Function
+            '    return false
             'End If
 
             'If txtLEN(Me.txtSolicito.Text) = False Then
-            '    MsgBox("Asigne el nombre de la persona que solicitó.", MsgBoxStyle.Exclamation, "ValidarOrdenCompra")
+            '    MsgBox("Asigne el nombre de la persona que solicitó.", MsgBoxStyle.Exclamation, sProcedure)
             '    Me.txtSolicito.Focus()
-            '    Exit Function
+            '    return false
             'End If
 
             'If txtLEN(Me.txtConCargoA.Text) = False Then
-            '    MsgBox("Asigne el cargo a.", MsgBoxStyle.Exclamation, "ValidarOrdenCompra")
+            '    MsgBox("Asigne el cargo a.", MsgBoxStyle.Exclamation, sProcedure)
             '    Me.txtConCargoA.Focus()
-            '    Exit Function
+            '    return false
             'End If
 
             'If txtLEN(Me.txtPredio.Text) = False Then
-            '    MsgBox("Asigne un predio válido.", MsgBoxStyle.Exclamation, "ValidarOrdenCompra")
+            '    MsgBox("Asigne un predio válido.", MsgBoxStyle.Exclamation, sProcedure)
             '    Me.txtPredio.Focus()
-            '    Exit Function
+            '    return false
             'End If
 
             'If txtLEN(Me.txtConfirmo.Text) = False Then
-            '    MsgBox("Asigne el nombre de la persona que confirmo los precios.", MsgBoxStyle.Exclamation, "ValidarOrdenCompra")
+            '    MsgBox("Asigne el nombre de la persona que confirmo los precios.", MsgBoxStyle.Exclamation, sProcedure)
             '    Me.txtConfirmo.Focus()
-            '    Exit Function
+            '    return false
             'End If
 
             Me.dPorcentajeIVAGlobal = 0
@@ -1807,39 +1871,39 @@ Buscar:
                     oArticulos = New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
 
                     If oArticulos.Existe = False Then
-                        MsgBox("El artículo no existe.", MsgBoxStyle.Exclamation, "ValidarOrdenCompra")
+                        MsgBox("El artículo no existe.", MsgBoxStyle.Exclamation, sProcedure)
                         Me.Grid.Cell(i, Me.igyCodigo).SetFocus()
-                        Exit Function
+                        Return False
                     End If
 
                     If txtLEN(Me.Grid.Cell(i, Me.igyDescripcion).Text) = False Then
-                        MsgBox("El artículo no tiene descripción.", MsgBoxStyle.Exclamation, "ValidarOrdenCompra")
+                        MsgBox("El artículo no tiene descripción.", MsgBoxStyle.Exclamation, sProcedure)
                         Me.Grid.Cell(i, Me.igyDescripcion).SetFocus()
-                        Exit Function
+                        Return False
                     End If
 
                     If valorNumerico(Me.Grid.Cell(i, Me.igyCantidad).Text) <= 0 Then
-                        MsgBox("La cantidad del artículo debe de ser mayor a 0.", MsgBoxStyle.Exclamation, "ValidarOrdenCompra")
+                        MsgBox("La cantidad del artículo debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
                         Me.Grid.Cell(i, Me.igyCantidad).SetFocus()
-                        Exit Function
+                        Return False
                     End If
 
                     If valorNumerico(Me.Grid.Cell(i, Me.igyPrecio).Text) <= 0 Then
-                        MsgBox("El precio del artículo debe de ser mayor a 0.", MsgBoxStyle.Exclamation, "ValidarOrdenCompra")
+                        MsgBox("El precio del artículo debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
                         Me.Grid.Cell(i, Me.igyPrecio).SetFocus()
-                        Exit Function
+                        Return False
                     End If
 
                     If txtLEN(Me.Grid.Cell(i, Me.igyUnidad).Text) = False Then
-                        MsgBox("El artículo no tiene unidad de venta.", MsgBoxStyle.Exclamation, "ValidarOrdenCompra")
+                        MsgBox("El artículo no tiene unidad de venta.", MsgBoxStyle.Exclamation, sProcedure)
                         Me.Grid.Cell(i, Me.igyUnidad).SetFocus()
-                        Exit Function
+                        Return False
                     End If
 
                     If txtLEN(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text) = False Then
-                        MsgBox("El artículo no tiene un porcentaje de iva.", MsgBoxStyle.Exclamation, "ValidarOrdenCompra")
+                        MsgBox("El artículo no tiene un porcentaje de iva.", MsgBoxStyle.Exclamation, sProcedure)
                         Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).SetFocus()
-                        Exit Function
+                        Return False
                     End If
 
                     If valorNumerico(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text) > 0 Then
@@ -1848,8 +1912,8 @@ Buscar:
                             bPrimerIVAEncontrado = True
                         Else
                             If dPorcentajeIVAGlobal <> valorNumerico(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text) Then
-                                MsgBox("No se pueden tener diferentes porcentajes de IVA.", MsgBoxStyle.Exclamation, "ValidarOrdenCompra")
-                                Exit Function
+                                MsgBox("No se pueden tener diferentes porcentajes de IVA.", MsgBoxStyle.Exclamation, sProcedure)
+                                Return False
                             End If
                         End If
                     End If
@@ -1860,11 +1924,11 @@ Buscar:
 
             If bHayArticulos = False Then
                 MsgBox("Captúre el detalle del movimiento.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+                Return False
             End If
 
         Catch ex As Exception
-            HandleError(Me.Name, "ValidarOrdenCompra", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return True
@@ -2009,7 +2073,7 @@ Buscar:
                 dTable = oMoneda.ObtenerElementos
                 dTable.Rows(2).Delete() 'Quita Euros del DataTable
                 .DataSource = dTable
-                .SelectedValue = 1
+                .SelectedValue = 1 '1=MXN
             End With
         Catch ex As Exception
             HandleError(Me.Name, "DesplegarMonedas", ex)
@@ -2017,6 +2081,7 @@ Buscar:
     End Sub
 
     Private Function Totales(Optional ByVal bIva As Boolean = False) As Boolean
+        Const sProcedure As String = "Totales"
         Dim bResultado As Boolean = False
         Try
             Dim i As Integer, dTipoCambio As Decimal = 0
@@ -2137,7 +2202,7 @@ Buscar:
 
             Me.TxtSubTotal_USD.Text = FormatImporteContable(dtSubtotal_USD)
             Me.txtIEPS_USD.Text = FormatImporteContable(dtIEPS_USD)
-            Me.lblIVAcalculado_USD.Text = FormatImporteContable(dtImpuesto_USD)
+            Me.lblIVAcalculado_USD.Text = FormatImporteContable(dtImpuesto_USD) 'Este siempre será el iva con el cálculo de la información en el grid y sirve para ver que tan diferente es del txtIva que puede ser manipulado.
             'Me.txtIVA_USD.Text = FormatImporteContable(dtImpuesto_USD)'No se pone todavia en el txt, dependende del modo de bIva
             Me.txtRetencionIVA_USD.Text = FormatImporteContable(dtRetencionIVA_USD)
             Me.txtRetencionISR_USD.Text = FormatImporteContable(dtRetencionISR_USD)
@@ -2147,11 +2212,11 @@ Buscar:
                     'If valorNumerico(Me.lblIVAcalculado.Text) > 0 And valorNumerico(Me.txtIVA.Text) = 0 Then
                     Me.txtIVA_USD.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyIMPUESTO_IMPORTE_USD), Empresa_Sistema.DECIMALES_CONTABILIDAD))
                 Else
-                    Me.txtIVA_USD.Text = FormatImporteContable(valorNumerico(Me.txtIVA_USD.Text))
+                    Me.txtIVA_USD.Text = FormatImporteContable(RedondearD(valorNumericoD(Me.txtIVA_USD.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)) 'Es posible iva tecleado se deja aunque se redondea a 2 cifras decimales
                     'ElseIf valorNumerico(Me.lblIVAcalculado.Text) <> valorNumerico(Me.txtIVA.Text) Then
                     'If valorNumerico(Me.txtIVA.Text) > valorNumerico(Me.lblIVAcalculado.Text) - 1 And valorNumerico(Me.txtIVA.Text) > valorNumerico(Me.lblIVAcalculado.Text) + 1 Then
                     If Not (valorNumerico(Me.txtIVA_USD.Text) >= valorNumerico(Me.lblIVAcalculado_USD.Text) - 1 And valorNumerico(Me.txtIVA_USD.Text) <= valorNumerico(Me.lblIVAcalculado_USD.Text) + 1) Then
-                        MsgBox("El IVA asignado no es correcto, favor de verificar.", MsgBoxStyle.Exclamation, Me.Name)
+                        MsgBox("El IVA asignado no es correcto(puede manipularse hasta +- un peso), favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
                         Me.txtIVA_USD.Focus()
                         Return False
                     End If
@@ -2217,7 +2282,7 @@ Buscar:
             bResultado = True
 
         Catch ex As Exception
-            HandleError(Me.Name, "Totales", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado
@@ -2376,7 +2441,7 @@ LlenaLinea:
                             End If
 
                         Case Me.igyImpuestoPorcentaje
-                            Me.Totales()
+                            'Me.Totales()'Ya se hace al final para todas las columnas.
 
                         Case Me.igyCuentaContable 'Enter
                             'oCuentas = New Class_VWCatDeudoresDiversos(Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text) ' Class_CatCuentas(Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text)
@@ -2411,9 +2476,10 @@ LlenaLinea:
                             Me.Grid.Cell(Renglon + 1, Me.iGyIDAdicional).Text = (valorNumerico(Me.Grid.Cell(Renglon, Me.iGyIDAdicional).Text) + 1).ToString
                     End Select
 
-                    Me.Totales(True)
+                    'Me.Totales(True)
+                    Me.Totales()
 
-                Case Keys.F2
+                Case Keys.F2 'Establece el artículo para no inventariables.
                     Me.Grid.Cell(Renglon, Me.igyCodigo).Text = Empresa_Sistema.CODIGO_ARTICULO_NO_INVENTARIABLE_COMPRA_PROVEEDOR
 
                 Case Keys.F6, Keys.F7
@@ -3292,7 +3358,7 @@ BuscarCuentas:
         Return bResultado
     End Function
 
-    Private Sub GestionaMoneda()
+    Private Sub GestionaMoneda(Optional ByVal bInicializa As Boolean = False)creado falta uar, la idea es que del consultar no iniclaiza, pero si del cambiar en el combo
         Const sProcedure As String = "GestionaMoneda"
         Try
             If Me.cboMoneda.Text = "USD" Then
@@ -3344,9 +3410,21 @@ BuscarCuentas:
                 Me.txtIVA.ReadOnly = False 'Si se está en modo MXN no será editable el de USD
                 Me.txtIVA_USD.ReadOnly = True
 
+                For i As Integer = 1 To Me.Grid.Rows - 1
+                    Me.Grid.Cell(i, Me.igyPRECIO_USD).Text = "0"
+                    Me.Grid.Cell(i, Me.igyIMPORTE_USD).Text = "0"
+                    Me.Grid.Cell(i, Me.igyIMPUESTO_IMPORTE_USD).Text = "0"
+                    Me.Grid.Cell(i, Me.igyIEPS_UNITARIO_USD).Text = "0"
+                    Me.Grid.Cell(i, Me.igyIEPS_IMPORTE_USD).Text = "0"
+                    Me.Grid.Cell(i, Me.igyBASE_IEPS_USD).Text = "0"
+                    Me.Grid.Cell(i, Me.igyBASE_IVA_USD).Text = "0"
+                Next
+
+
+
             End If
 
-            Me.Totales()
+            'Me.Totales()
             'Me.TotalesUSD()
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)

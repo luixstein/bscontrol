@@ -447,10 +447,13 @@ Public Class Class_Compras_Global
         End Set
     End Property
 
-    Public ReadOnly Property CODIGO_MONEDA As String
+    Public Property CODIGO_MONEDA As String
         Get
             Return Me._CODIGO_MONEDA
         End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_MONEDA = Value
+        End Set
     End Property
 
     Public Property SUBTOTAL_USD As Double
@@ -641,6 +644,7 @@ Public Class Class_Compras_Global
 
 #Region "Métodos y procedimientos"
     Public Function GrabarOrdenCompraGlobal(ByVal sAccion As String) As Boolean
+        Const sProcedure As String = "GrabarOrdenCompraGlobal"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -664,6 +668,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@IMPUESTO", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO
             sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL
             sqlParametro = .Parameters.Add("@RETENCION_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA
+            sqlParametro = .Parameters.Add("@RETENCION_ISR", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR
             sqlParametro = .Parameters.Add("@IMPUESTO_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_PORCENTAJE
             sqlParametro = .Parameters.Add("@TIPO_DE_CAMBIO", SqlDbType.Decimal) : sqlParametro.Value = Me.TIPO_DE_CAMBIO
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_GRABO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
@@ -675,6 +680,13 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@CONFIRMO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONFIRMO.ToUpper
             sqlParametro = .Parameters.Add("@COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO
             sqlParametro = .Parameters.Add("@FECHA_ENTREGA", SqlDbType.DateTime) : sqlParametro.Value = "" & Me._FECHA_ENTREGA
+            sqlParametro = .Parameters.Add("@CODIGO_MONEDA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_MONEDA
+            sqlParametro = .Parameters.Add("@SUBTOTAL_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL_USD
+            sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO_USD
+            sqlParametro = .Parameters.Add("@IMPUESTO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_USD
+            sqlParametro = .Parameters.Add("@TOTAL_DOLARES", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_DOLARES
+            sqlParametro = .Parameters.Add("@RETENCION_IVA_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_USD
+            sqlParametro = .Parameters.Add("@RETENCION_ISR_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_USD
 
             Try
                 Me._Conexion.Open()
@@ -682,7 +694,7 @@ Public Class Class_Compras_Global
                 bResultado = True
                 Me._FOLIO_COMPRA = "" & .Parameters("@FOLIO_COMPRA").Value.ToString
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "GrabarOrdenCompraGlobal", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -693,6 +705,7 @@ Public Class Class_Compras_Global
     End Function
 
     Public Function GrabaCompraGlobal() As Boolean
+        Const sProcedure As String = "GrabaCompraGlobal"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -738,7 +751,7 @@ Public Class Class_Compras_Global
                 bResultado = True
                 Me._FOLIO_COMPRA = "" & .Parameters("@FOLIO_COMPRA").Value.ToString
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "GrabaCompraGlobal", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -749,6 +762,7 @@ Public Class Class_Compras_Global
     End Function
 
     Public Function GrabaCompraGlobalSinOrden(ByVal sListaCentrosCostos As String, ByVal sListaActivos As String) As Boolean
+        Const sProcedure As String = "GrabaCompraGlobalSinOrden"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -787,7 +801,7 @@ Public Class Class_Compras_Global
                 bResultado = True
                 Me._FOLIO_COMPRA = "" & .Parameters("@FOLIO_COMPRA").Value.ToString
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "GrabaCompraGlobalSinOrden", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -799,6 +813,7 @@ Public Class Class_Compras_Global
 
     'Public Function AfectaInventarioCompra(ByVal sListaIDsDetalle As String, ByVal sListaSeries As String) As Boolean
     Public Function AfectaInventarioCompra() As Boolean
+        Const sProcedure As String = "AfectaInventarioCompra"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -817,7 +832,7 @@ Public Class Class_Compras_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "AfectaInventarioCompra", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -828,6 +843,7 @@ Public Class Class_Compras_Global
     End Function
 
     Public Function AfectaContabilidadCompra() As Boolean
+        Const sProcedure As String = "AfectaContabilidadCompra"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -844,7 +860,7 @@ Public Class Class_Compras_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "AfectaContabilidadCompra", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -868,6 +884,7 @@ Public Class Class_Compras_Global
     End Function
 
     Public Function CancelaOrdenCompra() As Boolean
+        Const sProcedure As String = "CancelaOrdenCompra"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -888,7 +905,7 @@ Public Class Class_Compras_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "CancelaOrdenCompra", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -899,6 +916,7 @@ Public Class Class_Compras_Global
     End Function
 
     Public Function CancelaCompra() As Boolean
+        Const sProcedure As String = "CancelaCompra"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -919,7 +937,7 @@ Public Class Class_Compras_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "CancelaCompra", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -930,6 +948,7 @@ Public Class Class_Compras_Global
     End Function
 
     Public Function Consultar() As Boolean
+        Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand(Me._QuerySelect & " WHERE G.FOLIO_COMPRA='" & sReplace(Me._FOLIO_COMPRA) & "' AND CODIGO_DOCUMENTO='" & sReplace(Me._CODIGO_DOCUMENTO) & "'  AND G.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " ", Me._Conexion)
         Dim dReader As SqlDataReader
@@ -1004,7 +1023,7 @@ Public Class Class_Compras_Global
                 End If
                 dReader.Close()
             Catch ex As Exception
-                HandleError(Me.Nombre_Catalogo, "Consultar", ex)
+                HandleError(Me.Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()

@@ -104,6 +104,7 @@ Partial Class Compras_Movimientos
         Me.lblDisplaySubTotal_USD = New System.Windows.Forms.Label()
         Me.TxtSubTotal_USD = New System.Windows.Forms.MaskedTextBox()
         Me.gbUSD = New System.Windows.Forms.GroupBox()
+        Me.lblIVAcalculado_USD = New System.Windows.Forms.Label()
         Me.txtRetencionISR_USD = New System.Windows.Forms.TextBox()
         Me.lblDisplayRetencionISR_USD = New System.Windows.Forms.Label()
         Me.lblDisplayRetencionIVA_USD = New System.Windows.Forms.Label()
@@ -132,7 +133,6 @@ Partial Class Compras_Movimientos
         Me.txtRetencionISR = New System.Windows.Forms.TextBox()
         Me.lblDisplayRetencionISR = New System.Windows.Forms.Label()
         Me.lblDisplayRetencionIVA = New System.Windows.Forms.Label()
-        Me.lblIVAcalculado_USD = New System.Windows.Forms.Label()
         Me.gbGlobal.SuspendLayout()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
@@ -840,9 +840,10 @@ Partial Class Compras_Movimientos
         'lblIVAcalculado
         '
         Me.lblIVAcalculado.AutoSize = True
-        Me.lblIVAcalculado.Location = New System.Drawing.Point(844, 515)
+        Me.lblIVAcalculado.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblIVAcalculado.Location = New System.Drawing.Point(4, 60)
         Me.lblIVAcalculado.Name = "lblIVAcalculado"
-        Me.lblIVAcalculado.Size = New System.Drawing.Size(22, 13)
+        Me.lblIVAcalculado.Size = New System.Drawing.Size(15, 9)
         Me.lblIVAcalculado.TabIndex = 331
         Me.lblIVAcalculado.Text = "0.0"
         '
@@ -923,6 +924,16 @@ Partial Class Compras_Movimientos
         Me.gbUSD.TabStop = False
         Me.gbUSD.Text = "Totales USD :"
         Me.gbUSD.Visible = False
+        '
+        'lblIVAcalculado_USD
+        '
+        Me.lblIVAcalculado_USD.AutoSize = True
+        Me.lblIVAcalculado_USD.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblIVAcalculado_USD.Location = New System.Drawing.Point(4, 60)
+        Me.lblIVAcalculado_USD.Name = "lblIVAcalculado_USD"
+        Me.lblIVAcalculado_USD.Size = New System.Drawing.Size(15, 9)
+        Me.lblIVAcalculado_USD.TabIndex = 394
+        Me.lblIVAcalculado_USD.Text = "0.0"
         '
         'txtRetencionISR_USD
         '
@@ -1189,6 +1200,7 @@ Partial Class Compras_Movimientos
         Me.gbMXN.Controls.Add(Me.txtIEPS)
         Me.gbMXN.Controls.Add(Me.lblDisplayIEPS)
         Me.gbMXN.Controls.Add(Me.txtTotal)
+        Me.gbMXN.Controls.Add(Me.lblIVAcalculado)
         Me.gbMXN.Controls.Add(Me.lblDisplayTotal)
         Me.gbMXN.Controls.Add(Me.txtRetencionIVA)
         Me.gbMXN.Controls.Add(Me.lblDisplayRetenciones)
@@ -1232,15 +1244,6 @@ Partial Class Compras_Movimientos
         Me.lblDisplayRetencionIVA.Text = "IVA :"
         Me.lblDisplayRetencionIVA.Visible = False
         '
-        'lblIVAcalculado_USD
-        '
-        Me.lblIVAcalculado_USD.AutoSize = True
-        Me.lblIVAcalculado_USD.Location = New System.Drawing.Point(15, 60)
-        Me.lblIVAcalculado_USD.Name = "lblIVAcalculado_USD"
-        Me.lblIVAcalculado_USD.Size = New System.Drawing.Size(22, 13)
-        Me.lblIVAcalculado_USD.TabIndex = 394
-        Me.lblIVAcalculado_USD.Text = "0.0"
-        '
         'Compras_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1255,7 +1258,6 @@ Partial Class Compras_Movimientos
         Me.Controls.Add(Me.lblDisplaySaldo_USD)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.gbUSD)
-        Me.Controls.Add(Me.lblIVAcalculado)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.txtSaldo_MXP)
         Me.Controls.Add(Me.lblDisplaySaldo_MXP)
