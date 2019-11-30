@@ -132,6 +132,7 @@ Partial Class Compras_Movimientos
         Me.txtRetencionISR = New System.Windows.Forms.TextBox()
         Me.lblDisplayRetencionISR = New System.Windows.Forms.Label()
         Me.lblDisplayRetencionIVA = New System.Windows.Forms.Label()
+        Me.lblIVAcalculado_USD = New System.Windows.Forms.Label()
         Me.gbGlobal.SuspendLayout()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
@@ -850,7 +851,6 @@ Partial Class Compras_Movimientos
         Me.txtIVA_USD.Location = New System.Drawing.Point(83, 57)
         Me.txtIVA_USD.MaxLength = 80
         Me.txtIVA_USD.Name = "txtIVA_USD"
-        Me.txtIVA_USD.ReadOnly = True
         Me.txtIVA_USD.Size = New System.Drawing.Size(133, 20)
         Me.txtIVA_USD.TabIndex = 337
         Me.txtIVA_USD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
@@ -902,6 +902,7 @@ Partial Class Compras_Movimientos
         '
         'gbUSD
         '
+        Me.gbUSD.Controls.Add(Me.lblIVAcalculado_USD)
         Me.gbUSD.Controls.Add(Me.txtRetencionISR_USD)
         Me.gbUSD.Controls.Add(Me.lblDisplayRetencionISR_USD)
         Me.gbUSD.Controls.Add(Me.lblDisplayRetencionIVA_USD)
@@ -1231,6 +1232,15 @@ Partial Class Compras_Movimientos
         Me.lblDisplayRetencionIVA.Text = "IVA :"
         Me.lblDisplayRetencionIVA.Visible = False
         '
+        'lblIVAcalculado_USD
+        '
+        Me.lblIVAcalculado_USD.AutoSize = True
+        Me.lblIVAcalculado_USD.Location = New System.Drawing.Point(15, 60)
+        Me.lblIVAcalculado_USD.Name = "lblIVAcalculado_USD"
+        Me.lblIVAcalculado_USD.Size = New System.Drawing.Size(22, 13)
+        Me.lblIVAcalculado_USD.TabIndex = 394
+        Me.lblIVAcalculado_USD.Text = "0.0"
+        '
         'Compras_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1382,4 +1392,5 @@ Partial Class Compras_Movimientos
     Friend WithEvents lblDisplayRetencionIVA_USD As Label
     Friend WithEvents txtRetencionIVA_USD As TextBox
     Friend WithEvents lblDisplayRetenciones_USD As Label
+    Friend WithEvents lblIVAcalculado_USD As Label
 End Class

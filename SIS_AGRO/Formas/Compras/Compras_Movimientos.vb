@@ -382,7 +382,9 @@ Buscar:
     Private Sub txtTipoCambio_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtTipoCambio.KeyDown
         Select Case e.KeyCode
             Case Keys.Enter
-                Me.TotalesUSD()
+                Me.txtTipoCambio.Text = Format(valorNumericoD(Me.txtTipoCambio.Text), "##0.0000")
+                'Me.TotalesUSD()
+                Me.Totales()
                 SendKeys.Send("{TAB}")
         End Select
     End Sub
@@ -413,7 +415,19 @@ Buscar:
     Private Sub txtIVA_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtIVA.KeyDown
         Select Case e.KeyCode
             Case Keys.Enter
-                Me.txtTotal.Text = FormatImporteContable((valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.txtIVA.Text)) - valorNumerico(Me.txtRetencionIVA.Text))
+                Me.txtIVA.Text = FormatImporteContable(valorNumericoD(Me.txtIVA.Text), True)
+                'Me.txtTotal.Text = FormatImporteContable((valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.txtIVA.Text)) - valorNumerico(Me.txtRetencionIVA.Text) - valorNumerico(Me.txtRetencionISR.Text))
+                Me.Totales(True)
+                Me.bIVAModificado = True
+        End Select
+    End Sub
+
+    Private Sub txtIVA_USD_KeyDown(sender As Object, e As KeyEventArgs) Handles txtIVA_USD.KeyDown
+        Select Case e.KeyCode
+            Case Keys.Enter
+                Me.txtIVA_USD.Text = FormatImporteContable(valorNumericoD(Me.txtIVA_USD.Text), True)
+                'Me.txtTotal_USD.Text = FormatImporteContable((valorNumerico(Me.TxtSubTotal_USD.Text) + valorNumerico(Me.txtIVA_USD.Text)) - valorNumerico(Me.txtRetencionIVA_USD.Text) - valorNumerico(Me.txtRetencionISR_USD.Text))
+                Me.Totales(True)
                 Me.bIVAModificado = True
         End Select
     End Sub
@@ -435,7 +449,8 @@ Buscar:
         txtNoBeep(e)
     End Sub
 
-    Private Sub txtNumerosDecimalKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtRetencionIVA.KeyPress, txtTipoCambio.KeyPress, txtIVA.KeyPress
+    Private Sub txtNumerosDecimalKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTipoCambio.KeyPress, txtIVA.KeyPress, txtIVA_USD.KeyPress, txtRetencionIVA.KeyPress, txtRetencionIVA_USD.KeyPress,
+            txtRetencionISR.KeyPress, txtRetencionISR_USD.KeyPress
         Dim txt As TextBox = CType(sender, TextBox)
         txtSoloNumerosDecimales(e, txt.Text)
         txtNoBeep(e)
@@ -478,19 +493,27 @@ Buscar:
             Me.LblEstatus.Text = "NUEVO"
             Me.LblPoliza.Text = ""
 
+            Me.dPorcentajeIVAGlobal = 0
+
+            Me.txtSaldo_MXP.Text = FormatImporteContable(0)
+            Me.txtSaldo_USD.Text = FormatImporteContable(0)
+
+            Me.lblIVAcalculado.Text = "0" : Me.lblIVAcalculado.Visible = True
+            Me.lblIVAcalculado_USD.Text = "0" : Me.lblIVAcalculado_USD.Visible = True
+
             Me.TxtSubTotal.Text = FormatImporteContable(0)
             Me.txtIEPS.Text = FormatImporteContable(0)
             Me.txtIVA.Text = FormatImporteContable(0)
-            Me.txtRetencionIVA.Text = FormatImporteContable(0)
             Me.txtTotal.Text = FormatImporteContable(0)
-            Me.txtSaldo_MXP.Text = FormatImporteContable(0)
-            Me.txtSaldo_USD.Text = FormatImporteContable(0)
-            Me.dPorcentajeIVAGlobal = 0
-            Me.lblIVAcalculado.Text = "0" : Me.lblIVAcalculado.Visible = True
+            Me.txtRetencionIVA.Text = FormatImporteContable(0)
+            Me.txtRetencionISR.Text = FormatImporteContable(0)
 
             Me.TxtSubTotal_USD.Text = FormatImporteContable(0)
+            Me.txtIEPS_USD.Text = FormatImporteContable(0)
             Me.txtIVA_USD.Text = FormatImporteContable(0)
             Me.txtTotal_USD.Text = FormatImporteContable(0)
+            Me.txtRetencionIVA_USD.Text = FormatImporteContable(0)
+            Me.txtRetencionISR_USD.Text = FormatImporteContable(0)
 
             Me.InicializaGrid()
             Me.InicializaGridSeries()
@@ -2014,12 +2037,12 @@ Buscar:
 
             Me.TxtSubTotal.Text = FormatImporteContable(0)
             Me.txtIEPS.Text = FormatImporteContable(0)
-            'Me.txtIVA.Text = FormatImporteContable(0)
+            'Me.txtIVA.Text = FormatImporteContable(0)'No se inicializa porque puede venir modificado
             Me.txtTotal.Text = FormatImporteContable(0)
 
             Me.TxtSubTotal_USD.Text = FormatImporteContable(0)
             Me.txtIEPS_USD.Text = FormatImporteContable(0)
-            Me.txtIVA_USD.Text = FormatImporteContable(0)
+            'Me.txtIVA_USD.Text = FormatImporteContable(0)
             Me.txtTotal_USD.Text = FormatImporteContable(0)
 
             For i = 1 To Me.Grid.Rows - 1
@@ -2105,58 +2128,91 @@ Buscar:
             Next i
 
             '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            '''''''''''''''''''''''''''''''TOTALES MXN
-            dtSubtotal = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyImporte)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            dtIEPS = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyIEPS_IMPORTE)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            dtImpuesto = CDec(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImpuestoImporte), Empresa_Sistema.DECIMALES_CONTABILIDAD))
-            dtRetencionIVA_USD = RedondearD(valorNumericoD(Me.txtRetencionIVA.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            dtRetencionISR_USD = RedondearD(valorNumericoD(Me.txtRetencionISR.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-
-            Me.TxtSubTotal.Text = FormatImporteContable(dtSubtotal)
-            Me.txtIEPS.Text = FormatImporteContable(dtIEPS)
-            Me.lblIVAcalculado.Text = FormatImporteContable(dtImpuesto)
-            'Me.txtIVA.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImpuestoImporte), Empresa_Sistema.DECIMALES_CONTABILIDAD))
-            Me.txtRetencionIVA.Text = FormatImporteContable(dtRetencionIVA)
-            Me.txtRetencionISR.Text = FormatImporteContable(dtRetencionISR)
-
-            'Se quitó de momento funcionalidad para poder editar el iva total a mano, hay que rediseñar solución. 24abr
-            If bIva = False Then
-                'If valorNumerico(Me.lblIVAcalculado.Text) > 0 And valorNumerico(Me.txtIVA.Text) = 0 Then
-                Me.txtIVA.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImpuestoImporte), Empresa_Sistema.DECIMALES_CONTABILIDAD))
-            Else
-                Me.txtIVA.Text = FormatImporteContable(valorNumerico(Me.txtIVA.Text))
-                'ElseIf valorNumerico(Me.lblIVAcalculado.Text) <> valorNumerico(Me.txtIVA.Text) Then
-                If valorNumerico(Me.txtIVA.Text) > valorNumerico(Me.lblIVAcalculado.Text) - 1 And valorNumerico(Me.txtIVA.Text) > valorNumerico(Me.lblIVAcalculado.Text) + 1 Then
-                    MsgBox("El IVA asignado no es correcto, favor de verificar.", MsgBoxStyle.Exclamation, Me.Name)
-                    Me.txtIVA.Focus()
-                    Return False
-                End If
-                'End If
-            End If
-
-            dtTotal = dtSubtotal + dtIEPS + 0 - dtRetencionIVA - dtRetencionISR
-            dtTotal = RedondearD(dtTotal, Empresa_Sistema.DECIMALES_CONTABILIDAD) 'De todas formas se redondea porque a veces al hacer restas aparecen tropos.
-
-            Me.txtTotal.Text = FormatImporteContable((valorNumericoD(Me.TxtSubTotal.Text) + valorNumericoD(Me.txtIEPS.Text) + valorNumericoD(Me.txtIVA.Text)) - valorNumericoD(Me.txtRetencionIVA.Text) - valorNumericoD(Me.txtRetencionISR.Text))
-
-            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             '''''''''''''''''''''''''''''''TOTALES USD
             dtSubtotal_USD = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyIMPORTE_USD)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
             dtIEPS_USD = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyIEPS_IMPORTE_USD)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
             dtImpuesto_USD = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyIMPUESTO_IMPORTE_USD)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
             dtRetencionIVA_USD = RedondearD(valorNumericoD(Me.txtRetencionIVA_USD.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
             dtRetencionISR_USD = RedondearD(valorNumericoD(Me.txtRetencionISR_USD.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            dtTotal_USD = dtSubtotal_USD + dtIEPS_USD + dtImpuesto_USD - dtRetencionIVA_USD - dtRetencionISR_USD
-            dtTotal_USD = RedondearD(dtTotal_USD, Empresa_Sistema.DECIMALES_CONTABILIDAD) 'De todas formas se redondea porque a veces al hacer restas aparecen tropos.
 
             Me.TxtSubTotal_USD.Text = FormatImporteContable(dtSubtotal_USD)
             Me.txtIEPS_USD.Text = FormatImporteContable(dtIEPS_USD)
-            Me.txtIVA_USD.Text = FormatImporteContable(dtImpuesto_USD)
+            Me.lblIVAcalculado_USD.Text = FormatImporteContable(dtImpuesto_USD)
+            'Me.txtIVA_USD.Text = FormatImporteContable(dtImpuesto_USD)'No se pone todavia en el txt, dependende del modo de bIva
             Me.txtRetencionIVA_USD.Text = FormatImporteContable(dtRetencionIVA_USD)
             Me.txtRetencionISR_USD.Text = FormatImporteContable(dtRetencionISR_USD)
+
+            If Me.cboMoneda.Text = "USD" Then
+                If bIva = False Then
+                    'If valorNumerico(Me.lblIVAcalculado.Text) > 0 And valorNumerico(Me.txtIVA.Text) = 0 Then
+                    Me.txtIVA_USD.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyIMPUESTO_IMPORTE_USD), Empresa_Sistema.DECIMALES_CONTABILIDAD))
+                Else
+                    Me.txtIVA_USD.Text = FormatImporteContable(valorNumerico(Me.txtIVA_USD.Text))
+                    'ElseIf valorNumerico(Me.lblIVAcalculado.Text) <> valorNumerico(Me.txtIVA.Text) Then
+                    'If valorNumerico(Me.txtIVA.Text) > valorNumerico(Me.lblIVAcalculado.Text) - 1 And valorNumerico(Me.txtIVA.Text) > valorNumerico(Me.lblIVAcalculado.Text) + 1 Then
+                    If Not (valorNumerico(Me.txtIVA_USD.Text) >= valorNumerico(Me.lblIVAcalculado_USD.Text) - 1 And valorNumerico(Me.txtIVA_USD.Text) <= valorNumerico(Me.lblIVAcalculado_USD.Text) + 1) Then
+                        MsgBox("El IVA asignado no es correcto, favor de verificar.", MsgBoxStyle.Exclamation, Me.Name)
+                        Me.txtIVA_USD.Focus()
+                        Return False
+                    End If
+                    'End If
+                End If
+            End If
+
+            dtImpuesto_USD = valorNumericoD(Me.txtIVA_USD.Text) 'Sobreecribe el impuesto con que quedó finalmente(ya se manual o calculado).
+
+            'Nota el impuesto en MXN va ser conversión directa de del usd por si lo editaron manualmente.
+            dtImpuesto = RedondearD(dtImpuesto_USD * dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.txtIVA.Text = FormatImporteContable(dtImpuesto)
+
+            dtTotal_USD = dtSubtotal_USD + dtIEPS_USD + dtImpuesto_USD - dtRetencionIVA_USD - dtRetencionISR_USD
+            dtTotal_USD = RedondearD(dtTotal_USD, Empresa_Sistema.DECIMALES_CONTABILIDAD) 'De todas formas se redondea porque a veces al hacer restas aparecen tropos.
             Me.txtTotal_USD.Text = FormatImporteContable(dtTotal_USD)
 
             'Me.TotalesUSD()
+
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            '''''''''''''''''''''''''''''''TOTALES MXN
+            dtSubtotal = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyImporte)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            dtIEPS = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyIEPS_IMPORTE)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            If Me.cboMoneda.Text = "MXN" Then
+                dtImpuesto = CDec(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImpuestoImporte), Empresa_Sistema.DECIMALES_CONTABILIDAD))
+                'Nota si fuera en USd ya viene calculado este dato.
+            End If
+
+            dtRetencionIVA = RedondearD(valorNumericoD(Me.txtRetencionIVA.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            dtRetencionISR = RedondearD(valorNumericoD(Me.txtRetencionISR.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+
+            Me.TxtSubTotal.Text = FormatImporteContable(dtSubtotal)
+            Me.txtIEPS.Text = FormatImporteContable(dtIEPS)
+            Me.lblIVAcalculado.Text = FormatImporteContable(dtImpuesto)
+            'Me.txtIVA.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImpuestoImporte), Empresa_Sistema.DECIMALES_CONTABILIDAD))'No se pone todavia en el txt, dependende del modo de bIva
+            Me.txtRetencionIVA.Text = FormatImporteContable(dtRetencionIVA)
+            Me.txtRetencionISR.Text = FormatImporteContable(dtRetencionISR)
+
+            If Me.cboMoneda.Text = "MXN" Then 'Nota se pregunta algo similiar en la parte de los usd, no se mezclan funcionalidad por el orden de como se leen los elementos.
+                If bIva = False Then
+                    'If valorNumerico(Me.lblIVAcalculado.Text) > 0 And valorNumerico(Me.txtIVA.Text) = 0 Then
+                    Me.txtIVA.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyImpuestoImporte), Empresa_Sistema.DECIMALES_CONTABILIDAD))
+                Else
+                    Me.txtIVA.Text = FormatImporteContable(valorNumerico(Me.txtIVA.Text))
+                    'ElseIf valorNumerico(Me.lblIVAcalculado.Text) <> valorNumerico(Me.txtIVA.Text) Then
+                    'If valorNumerico(Me.txtIVA.Text) > valorNumerico(Me.lblIVAcalculado.Text) - 1 And valorNumerico(Me.txtIVA.Text) > valorNumerico(Me.lblIVAcalculado.Text) + 1 Then
+                    If Not (valorNumerico(Me.txtIVA.Text) >= valorNumerico(Me.lblIVAcalculado.Text) - 1 And valorNumerico(Me.txtIVA.Text) <= valorNumerico(Me.lblIVAcalculado.Text) + 1) Then
+                        MsgBox("El IVA asignado no es correcto, favor de verificar.", MsgBoxStyle.Exclamation, Me.Name)
+                        Me.txtIVA.Focus()
+                        Return False
+                    End If
+                    'End If
+                End If
+
+                dtImpuesto = valorNumericoD(Me.txtIVA.Text) 'Sobreecribe el impuesto con que quedó finalmente(ya se manual o calculado).
+            End If
+
+            dtTotal = dtSubtotal + dtIEPS + dtImpuesto - dtRetencionIVA - dtRetencionISR
+            dtTotal = RedondearD(dtTotal, Empresa_Sistema.DECIMALES_CONTABILIDAD) 'De todas formas se redondea porque a veces al hacer restas aparecen tropos.
+
+            Me.txtTotal.Text = FormatImporteContable(dtTotal)
 
             bResultado = True
 
@@ -3260,6 +3316,9 @@ BuscarCuentas:
                     Me.Grid.Column(Me.igyImporte).Visible = False
                 End If
 
+                Me.txtIVA.ReadOnly = True 'Si se está en modo USD no será editable el de MXN
+                Me.txtIVA_USD.ReadOnly = False
+
             Else 'Es moneda en MXN o esta en blanco
                 Me.txtTipoCambio.Text = "0"
                 Me.txtTipoCambio.Visible = False : Me.txtTipoCambio.Enabled = False : Me.LblDisplayTipoCambio.Visible = False
@@ -3281,9 +3340,14 @@ BuscarCuentas:
                     Me.Grid.Column(Me.igyIMPORTE_USD).Visible = False
                     Me.Grid.Column(Me.igyImporte).Visible = True
                 End If
+
+                Me.txtIVA.ReadOnly = False 'Si se está en modo MXN no será editable el de USD
+                Me.txtIVA_USD.ReadOnly = True
+
             End If
 
-            Me.TotalesUSD()
+            Me.Totales()
+            'Me.TotalesUSD()
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
