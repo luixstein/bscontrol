@@ -1942,7 +1942,7 @@ BuscarCuentas:
             'Me.oDocumentos = New Class_Cat_tiposDocumentos(Me.CboDocumento.SelectedValue.ToString)
             If Me.oDocumentos.ES_TRANSFERENCIA = "1" Then
                 If Me.EstableceCuentaContableAlmacenDestino() = False Then
-                    MsgBox("Error al tratar de asígnar la cuenta contable del almacen destino.", MsgBoxStyle.Information, Me.Text)
+                    MsgBox("Error al tratar de asígnar la cuenta contable del almacen destino.", MsgBoxStyle.Exclamation, Me.Text)
                     Exit Sub
                 End If
             End If
@@ -2022,7 +2022,8 @@ BuscarCuentas:
 
             Me.FormateaGridSeries()
 
-            If Me.CboDocumento.Text = "ENTRADA" Then
+            'If Me.CboDocumento.Text = "ENTRADA" Then
+            If Me.CboDocumento.SelectedValue.ToString = "EN" Or Me.CboDocumento.SelectedValue.ToString = "ER" Then
                 Me.GridSeries.Column(Me.igySerieNumeroSerie).Locked = False
             End If
 

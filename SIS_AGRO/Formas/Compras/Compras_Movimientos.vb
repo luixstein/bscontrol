@@ -375,7 +375,7 @@ Buscar:
     End Sub
 
     Private Sub cboMoneda_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboMoneda.SelectedIndexChanged
-        Me.GestionaMoneda()
+        Me.GestionaMoneda(True)
     End Sub
 
     Private Sub txtTipoCambio_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtTipoCambio.KeyDown
@@ -1457,6 +1457,9 @@ Buscar:
                 Return False
             End If
 
+            Me.cboMoneda.SelectedValue = Me.oCompras.CODIGO_MONEDA
+            Me.txtTipoCambio.Text = Format(Me.oCompras.TIPO_DE_CAMBIO, "##0.0000")
+
             If bEsReferencia = False Then
                 Me.txtFolioCompra.Text = Me.oCompras.FOLIO_COMPRA.ToString.ToUpper
                 Me.txtFolioOC.Text = Me.oCompras.FOLIO_OC.ToString.ToUpper
@@ -1498,8 +1501,8 @@ Buscar:
             Me.dtpFechaVencimiento.Value = CDate(Me.oCompras.FECHA_VENCIMIENTO)
 
             'Esto va antes de los totales, porque se va ejecutar el checked de los dolares
-            Me.cboMoneda.SelectedValue = Me.oCompras.CODIGO_MONEDA
-            Me.txtTipoCambio.Text = Format(Me.oCompras.TIPO_DE_CAMBIO, "##0.0000")
+            'Me.cboMoneda.SelectedValue = Me.oCompras.CODIGO_MONEDA
+            'Me.txtTipoCambio.Text = Format(Me.oCompras.TIPO_DE_CAMBIO, "##0.0000")
             'If Me.oCompras.TIPO_DE_CAMBIO > 0 Then
             '    Me.txtTipoCambio.Text = Me.oCompras.TIPO_DE_CAMBIO.ToString
             '    Me.cboMoneda.SelectedIndex = 1
@@ -2222,13 +2225,13 @@ Buscar:
                     End If
                     'End If
                 End If
+
+                dtImpuesto_USD = valorNumericoD(Me.txtIVA_USD.Text) 'Sobreecribe el impuesto con que quedó finalmente(ya se manual o calculado).
+
+                'Nota el impuesto en MXN va ser conversión directa de del usd por si lo editaron manualmente.
+                dtImpuesto = RedondearD(dtImpuesto_USD * dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                Me.txtIVA.Text = FormatImporteContable(dtImpuesto)
             End If
-
-            dtImpuesto_USD = valorNumericoD(Me.txtIVA_USD.Text) 'Sobreecribe el impuesto con que quedó finalmente(ya se manual o calculado).
-
-            'Nota el impuesto en MXN va ser conversión directa de del usd por si lo editaron manualmente.
-            dtImpuesto = RedondearD(dtImpuesto_USD * dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            Me.txtIVA.Text = FormatImporteContable(dtImpuesto)
 
             dtTotal_USD = dtSubtotal_USD + dtIEPS_USD + dtImpuesto_USD - dtRetencionIVA_USD - dtRetencionISR_USD
             dtTotal_USD = RedondearD(dtTotal_USD, Empresa_Sistema.DECIMALES_CONTABILIDAD) 'De todas formas se redondea porque a veces al hacer restas aparecen tropos.
@@ -3358,9 +3361,15 @@ BuscarCuentas:
         Return bResultado
     End Function
 
-    Private Sub GestionaMoneda(Optional ByVal bInicializa As Boolean = False)creado falta uar, la idea es que del consultar no iniclaiza, pero si del cambiar en el combo
+    Private Sub GestionaMoneda(Optional ByVal bInicializa As Boolean = False) 'creado falta uar, la idea es que del consultar no iniclaiza, pero si del cambiar en el combo
         Const sProcedure As String = "GestionaMoneda"
         Try
+            If bInicializa = True Then 'De momento no se permite tener lleno el grid y cambiar de moneda, es mas complicado tener que andar inicializando los valores separados (globales grid) de monedas alternas.
+                Me.InicializaGrid()
+                Me.InicializaGridSeries()
+                Me.Totales()
+            End If
+
             If Me.cboMoneda.Text = "USD" Then
                 Me.txtTipoCambio.Visible = True : Me.txtTipoCambio.Enabled = True : Me.LblDisplayTipoCambio.Visible = True
                 Me.gbUSD.Visible = True
