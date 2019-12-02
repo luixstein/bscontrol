@@ -64,6 +64,7 @@ Partial Public Class AppMenu
         Me.UnidadesDeVentaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.FormulasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ProductosToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ConceptosInventariosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.NominaToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ÁreasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConceptosDeActividadesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -237,7 +238,7 @@ Partial Public Class AppMenu
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
-        Me.ConceptosInventariosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TipoCambioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -516,6 +517,12 @@ Partial Public Class AppMenu
         Me.ProductosToolStripMenuItem1.Size = New System.Drawing.Size(230, 26)
         Me.ProductosToolStripMenuItem1.Text = "Productos"
         '
+        'ConceptosInventariosToolStripMenuItem
+        '
+        Me.ConceptosInventariosToolStripMenuItem.Name = "ConceptosInventariosToolStripMenuItem"
+        Me.ConceptosInventariosToolStripMenuItem.Size = New System.Drawing.Size(230, 26)
+        Me.ConceptosInventariosToolStripMenuItem.Text = "Conceptos inventarios"
+        '
         'NominaToolStripMenuItem1
         '
         Me.NominaToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ÁreasToolStripMenuItem, Me.ConceptosDeActividadesToolStripMenuItem, Me.PuestosToolStripMenuItem, Me.PuntosDePagoToolStripMenuItem, Me.TiposDeDeduccionesToolStripMenuItem, Me.TiposDePercepcionesToolStripMenuItem, Me.TrabajadoresToolStripMenuItem, Me.OtroTipoDePercepciónToolStripMenuItem, Me.UnidadMedicaFamiliarToolStripMenuItem})
@@ -739,7 +746,7 @@ Partial Public Class AppMenu
         '
         Me.MenuContabilidadMovimientos.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CapturaDePolizasToolStripMenuItem, Me.IVAAcreditableToolStripMenuItem, Me.PólizasDeCostosToolStripMenuItem})
         Me.MenuContabilidadMovimientos.Name = "MenuContabilidadMovimientos"
-        Me.MenuContabilidadMovimientos.Size = New System.Drawing.Size(181, 26)
+        Me.MenuContabilidadMovimientos.Size = New System.Drawing.Size(170, 26)
         Me.MenuContabilidadMovimientos.Tag = "0048"
         Me.MenuContabilidadMovimientos.Text = "&Movimientos"
         '
@@ -766,7 +773,7 @@ Partial Public Class AppMenu
         '
         Me.ConsultasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AuxiliarDeMayorToolStripMenuItem, Me.RelacionesAnaliticasToolStripMenuItem, Me.CostosToolStripMenuItem, Me.CostoDeProduccionToolStripMenuItem, Me.EstadosFinancierosToolStripMenuItem, Me.IvaPorAcreditarToolStripMenuItem, Me.PolizaDeEgresosToolStripMenuItem, Me.PresupuestoToolStripMenuItem, Me.ReporteGlobalDePolizasToolStripMenuItem, Me.SaldosDeCuentasToolStripMenuItem, Me.ConceptosDeINEGIToolStripMenuItem, Me.NavegadorDePresupuestosToolStripMenuItem, Me.NavegadorDeCostosToolStripMenuItem, Me.ReporteDeCostosToolStripMenuItem})
         Me.ConsultasToolStripMenuItem.Name = "ConsultasToolStripMenuItem"
-        Me.ConsultasToolStripMenuItem.Size = New System.Drawing.Size(181, 26)
+        Me.ConsultasToolStripMenuItem.Size = New System.Drawing.Size(170, 26)
         Me.ConsultasToolStripMenuItem.Tag = "0050"
         Me.ConsultasToolStripMenuItem.Text = "&Consultas"
         '
@@ -864,7 +871,7 @@ Partial Public Class AppMenu
         '
         Me.MenuiContabilidadProcesos.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SelecciónDeEjerciciosToolStripMenuItem, Me.AbrircerrarEjerciciosToolStripMenuItem})
         Me.MenuiContabilidadProcesos.Name = "MenuiContabilidadProcesos"
-        Me.MenuiContabilidadProcesos.Size = New System.Drawing.Size(181, 26)
+        Me.MenuiContabilidadProcesos.Size = New System.Drawing.Size(170, 26)
         Me.MenuiContabilidadProcesos.Tag = "0056"
         Me.MenuiContabilidadProcesos.Text = "&Procesos"
         '
@@ -884,13 +891,13 @@ Partial Public Class AppMenu
         'ContraseñasToolStripMenuItem
         '
         Me.ContraseñasToolStripMenuItem.Name = "ContraseñasToolStripMenuItem"
-        Me.ContraseñasToolStripMenuItem.Size = New System.Drawing.Size(181, 26)
+        Me.ContraseñasToolStripMenuItem.Size = New System.Drawing.Size(170, 26)
         Me.ContraseñasToolStripMenuItem.Text = "C&ontraseñas"
         '
         'ElectrónicaToolStripMenuItem
         '
         Me.ElectrónicaToolStripMenuItem.Name = "ElectrónicaToolStripMenuItem"
-        Me.ElectrónicaToolStripMenuItem.Size = New System.Drawing.Size(181, 26)
+        Me.ElectrónicaToolStripMenuItem.Size = New System.Drawing.Size(170, 26)
         Me.ElectrónicaToolStripMenuItem.Text = "Electrónica"
         '
         'MenuSalir
@@ -912,7 +919,7 @@ Partial Public Class AppMenu
         '
         'VentasToolStripMenuItem1
         '
-        Me.VentasToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DocumentosDeVentaToolStripMenuItem, Me.DevolucionesToolStripMenuItem, Me.CambioDePrecioRemisionToolStripMenuItem, Me.ToolStripMenuItem3, Me.ConsultaToolStripMenuItem1, Me.EnvioDeFacturasElectronicasToolStripMenuItem, Me.CapturaVentassemanalesToolStripMenuItem, Me.ModificaCostoToolStripMenuItem})
+        Me.VentasToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DocumentosDeVentaToolStripMenuItem, Me.DevolucionesToolStripMenuItem, Me.CambioDePrecioRemisionToolStripMenuItem, Me.ToolStripMenuItem3, Me.ConsultaToolStripMenuItem1, Me.EnvioDeFacturasElectronicasToolStripMenuItem, Me.CapturaVentassemanalesToolStripMenuItem, Me.ModificaCostoToolStripMenuItem, Me.TipoCambioToolStripMenuItem})
         Me.VentasToolStripMenuItem1.Name = "VentasToolStripMenuItem1"
         Me.VentasToolStripMenuItem1.Size = New System.Drawing.Size(64, 24)
         Me.VentasToolStripMenuItem1.Text = "Ventas"
@@ -1618,7 +1625,7 @@ Partial Public Class AppMenu
         Me.pbLogo.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pbLogo.Enabled = False
         Me.pbLogo.Location = New System.Drawing.Point(700, 74)
-        Me.pbLogo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.pbLogo.Margin = New System.Windows.Forms.Padding(4)
         Me.pbLogo.Name = "pbLogo"
         Me.pbLogo.Size = New System.Drawing.Size(573, 238)
         Me.pbLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -1626,11 +1633,11 @@ Partial Public Class AppMenu
         Me.pbLogo.TabStop = False
         Me.pbLogo.Visible = False
         '
-        'ConceptosInventariosToolStripMenuItem
+        'TipoCambioToolStripMenuItem
         '
-        Me.ConceptosInventariosToolStripMenuItem.Name = "ConceptosInventariosToolStripMenuItem"
-        Me.ConceptosInventariosToolStripMenuItem.Size = New System.Drawing.Size(230, 26)
-        Me.ConceptosInventariosToolStripMenuItem.Text = "Conceptos inventarios"
+        Me.TipoCambioToolStripMenuItem.Name = "TipoCambioToolStripMenuItem"
+        Me.TipoCambioToolStripMenuItem.Size = New System.Drawing.Size(280, 26)
+        Me.TipoCambioToolStripMenuItem.Text = "Tipo cambio"
         '
         'AppMenu
         '
@@ -1643,7 +1650,7 @@ Partial Public Class AppMenu
         Me.Controls.Add(Me.StatusStrip)
         Me.HelpProvider.SetHelpKeyword(Me, "F1")
         Me.IsMdiContainer = True
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "AppMenu"
         Me.HelpProvider.SetShowHelp(Me, True)
         Me.Text = "AppMenu"
@@ -1876,4 +1883,5 @@ Partial Public Class AppMenu
     Friend WithEvents CapturaParametríaToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ProyectoSiembraAcuícolaToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ConceptosInventariosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents TipoCambioToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

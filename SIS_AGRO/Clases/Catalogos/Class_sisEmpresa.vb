@@ -91,6 +91,7 @@ Public NotInheritable Class Class_sisEmpresa
     Private _TIMBRA_CFDI_HORA_ACTUAL As Boolean
     Private _VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES As Double
     Private _VALIDAR_LIMITE_CREDITO_PROVEEDORES As Boolean
+    Private _TIPO_CAMBIO_POR_DIA As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -679,6 +680,12 @@ Public NotInheritable Class Class_sisEmpresa
         End Get
     End Property
 
+    Public ReadOnly Property TIPO_CAMBIO_POR_DIA As Boolean
+        Get
+            Return Me._TIPO_CAMBIO_POR_DIA
+        End Get
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -1041,6 +1048,7 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._TIMBRA_CFDI_HORA_ACTUAL = CBool(dReader("TIMBRA_CFDI_HORA_ACTUAL"))
                     Me._VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES = CDbl(dReader("VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES").ToString)
                     Me._VALIDAR_LIMITE_CREDITO_PROVEEDORES = CBool(dReader("VALIDAR_LIMITE_CREDITO_PROVEEDORES"))
+                    Me._TIPO_CAMBIO_POR_DIA = CBool(dReader("TIPO_CAMBIO_POR_DIA"))
 
                     dReader.Close()
                     bResultado = True
