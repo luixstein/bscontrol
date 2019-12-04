@@ -3,7 +3,7 @@
 Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Inventarios_Movimientos
-    Private _LlamdoExterior As Boolean
+    Private _LlamadoExterior As Boolean
     Private _CodigoDocumentoParaGrabar As String
     Private _AplicadoExterior As Boolean
     Private _FolioEmbarque As String
@@ -50,9 +50,9 @@ Public Class Inventarios_Movimientos
     End Enum
 
 #Region "Propiedades"
-    Public WriteOnly Property LlamdoExterior() As Boolean
+    Public WriteOnly Property LlamadoExterior() As Boolean
         Set(ByVal Value As Boolean)
-            Me._LlamdoExterior = Value
+            Me._LlamadoExterior = Value
         End Set
     End Property
 
@@ -160,7 +160,7 @@ Public Class Inventarios_Movimientos
         'Dim dTabla As DataTable
         'Dim dCajaCarton As Boolean
 
-        If Me._LlamdoExterior = True Then
+        If Me._LlamadoExterior = True Then
 
             Me.InicializaExterno()
 
@@ -266,6 +266,9 @@ Public Class Inventarios_Movimientos
     Private Sub CmbDocumento_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboDocumento.SelectedIndexChanged
         Me.OcultaControles()
         Me.GeneraFolio()
+
+        Me.InicializaGrid()
+        Me.InicializaGridSeries()
     End Sub
 
     Private Sub CmbAlmacen_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboAlmacen.KeyDown
@@ -397,7 +400,7 @@ busca:
                     End If
 
                 Case enumEstados.GRABADO
-                    If Me._LlamdoExterior = True And txtLEN(Me.FolioEmbarque) = True Then
+                    If Me._LlamadoExterior = True And txtLEN(Me.FolioEmbarque) = True Then
                         Return 'Los controles ya se activaron/desactivaron en el inicializaExterno
                     End If
 
@@ -580,6 +583,7 @@ busca:
     End Sub
 
     Private Sub GestionaGrid(ByVal e As System.Windows.Forms.KeyEventArgs)
+        Const sProcedure As String = "GestionaGrid"
         Try
             Dim Columna As Integer, Renglon As Integer
             Dim StrCod As String, DCosto As Double, sCuentaContable As String, sCodArticulo As String, sNaturalezaInventarios As String, dExistencia As Double, sCantidad As String
@@ -587,19 +591,23 @@ busca:
 
             Me.oArticulos = New Class_CatArticulos
 
+            Columna = Me.Grid1.Selection.FirstCol
+            Renglon = Me.Grid1.Selection.FirstRow
+            StrCod = Me.Grid1.Cell(Renglon, iGyCodigo).Text
+
             Select Case e.KeyCode
                 Case Keys.Enter
-                    Columna = Me.Grid1.Selection.FirstCol
-                    Renglon = Me.Grid1.Selection.FirstRow
-                    StrCod = Me.Grid1.Cell(Renglon, iGyCodigo).Text
                     sCantidad = Me.Grid1.Cell(Renglon, iGyCantidad).Text
 
                     Me.oArticulos.CODIGO_ARTICULO = StrCod
                     If Me.oArticulos.Consultar() = False Then
+                        Me.Grid1.Cell(Renglon, iGyCodigo).Text = ""
                         GoTo BuscaArticulos
+                        Return
                     End If
 
                     If oArticulos.ESTATUS = "B" Then
+                        MsgBox("Este artículo esta dado de baja.", vbExclamation, sProcedure)
                         oArticulos.CODIGO_ARTICULO = ""
                         oArticulos.DESCRIPCION = ""
                     End If
@@ -608,9 +616,9 @@ busca:
                     Select Case Columna
                         Case Me.iGyCodigo
                             If Me.oArticulos.DESCRIPCION = "" Then
-                                MsgBox("El código de artículo que intenta buscar no existe o esta dado de baja, favor de intentar con otro código.", MsgBoxStyle.Exclamation, "Validación de artículos")
+                                MsgBox("El código de artículo que intenta buscar no existe o esta dado de baja, favor de intentar con otro código.", MsgBoxStyle.Exclamation, sProcedure)
                                 Me.Grid1.Cell(Renglon, iGyCodigo).SetFocus()
-                                Exit Sub
+                                Return
                             Else
                                 DCosto = 0
                                 If sNaturalezaInventarios = "SA" Then
@@ -621,7 +629,7 @@ busca:
                                 End If
                                 Me.Grid1.Cell(Renglon, Me.iGyDescripcion).Text = Me.oArticulos.DESCRIPCION
                                 Me.Grid1.Cell(Renglon, Me.iGyCosto).Text = DCosto.ToString
-                                If Me._LlamdoExterior = False Then
+                                If Me._LlamadoExterior = False Then
                                     Me.Grid1.Cell(Renglon, Me.iGyImporte).Text = "0"
                                     Me.Grid1.Cell(Renglon, Me.iGyCantidad).Text = "0"
                                 End If
@@ -636,7 +644,7 @@ busca:
                                     dExistencia = oInventarios.Existencia(Me.Grid1.Cell(Renglon, Me.iGyCodigo).Text, Me.CboAlmacen.SelectedValue.ToString)
                                     If valorNumerico(sCantidad) > valorNumerico(dExistencia.ToString) Then 'if capturaron>existencia
                                         Dim dDiferencia As Double = valorNumerico(sCantidad) - dExistencia
-                                        MsgBox("El artículo que intenta agregar no tiene suficiente existencia." & vbCrLf & _
+                                        MsgBox("El artículo que intenta agregar no tiene suficiente existencia." & vbCrLf &
                                                 "Existencia " & Format(dExistencia, "###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CANTIDAD)) & ", faltan " & Format(dDiferencia, "###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CANTIDAD)), MsgBoxStyle.Exclamation, "Validación de existencias")
                                         'Me.Grid1.Cell(Renglon, Me.iGyCantidad).Text = "0"
                                         'Me.Grid1.Cell(Renglon, Me.iGyDescripcion).SetFocus()
@@ -691,8 +699,9 @@ busca:
 
                 Case Keys.F6, Keys.F7
 
-                    Columna = Me.Grid1.Selection.FirstCol
-                    Renglon = Me.Grid1.Selection.FirstRow
+                    If txtLEN(StrCod) = False And Columna = Me.iGyCuentaContable Then
+                        Return
+                    End If
 
                     Select Case Columna
                         Case Me.iGyCodigo
@@ -703,7 +712,7 @@ BuscaArticulos:
                                     Me.Grid1.Cell(Renglon, Me.iGyDescripcion).Text = Me.oArticulos.BuscarNombreArticulo(sCodArticulo)
                                     Me.Grid1.Cell(Renglon, Me.iGyCodigo).Text = sCodArticulo
                                     Me.Grid1.Cell(Renglon, Me.iGyCosto).Text = DCosto.ToString
-                                    If Me._LlamdoExterior = False Then
+                                    If Me._LlamadoExterior = False Then
                                         Me.Grid1.Cell(Renglon, Me.iGyImporte).Text = "0"
                                         Me.Grid1.Cell(Renglon, Me.iGyCantidad).Text = "0"
                                     End If
@@ -717,7 +726,7 @@ BuscaArticulos:
                                     Me.Grid1.Cell(Renglon, Me.iGyDescripcion).Text = Me.oArticulos.BuscarNombreArticulo(sCodArticulo)
                                     Me.Grid1.Cell(Renglon, Me.iGyCodigo).Text = sCodArticulo
                                     Me.Grid1.Cell(Renglon, Me.iGyCosto).Text = DCosto.ToString
-                                    If Me._LlamdoExterior = False Then
+                                    If Me._LlamadoExterior = False Then
                                         Me.Grid1.Cell(Renglon, Me.iGyImporte).Text = "0"
                                         Me.Grid1.Cell(Renglon, Me.iGyCantidad).Text = "0"
                                     End If
@@ -779,9 +788,7 @@ BuscarCuentas:
                     '                End If
 
                 Case Keys.F8, Keys.Delete
-                    Renglon = Me.Grid1.Selection.FirstRow
-
-                    If Me._LlamdoExterior = True Then
+                    If Me._LlamadoExterior = True Then
                         MsgBox("No se permiten eliminar renglones en las salidas de empaque de embarques.", MsgBoxStyle.Exclamation, Me.Text)
                         e.SuppressKeyPress = True
                         Return
@@ -967,7 +974,7 @@ BuscarCuentas:
         Dim bResultado As Boolean = False
         Try
 
-            If Me._LlamdoExterior = False Then
+            If Me._LlamadoExterior = False Then
                 If MsgBox("Deseas aplicar el movimiento de " & CboDocumento.Text & "?", CType(vbYesNo + vbQuestion, MsgBoxStyle), "Grabando movimientos de inventarios") = MsgBoxResult.No Then
                     Exit Function
                 End If
@@ -998,7 +1005,7 @@ BuscarCuentas:
             '    Exit Function
             'End If
 
-            If Me._LlamdoExterior = True Then
+            If Me._LlamadoExterior = True Then
                 If Me.Grabar() = False Then 'Razón no identificada de porque cuando se trata de exterior lo graba despues de validar, y cuando es normal lo graba antes de validar
                     Exit Function
                 End If
@@ -1161,7 +1168,7 @@ BuscarCuentas:
                             MsgBox("El artículo " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " que intenta agregar no tiene existencia. ", MsgBoxStyle.Exclamation, sProcedure)
                             Exit Function
                         Else
-                            If Me._LlamdoExterior = False Then
+                            If Me._LlamadoExterior = False Then
                                 'dCantidadSumadaPorArticulos = CDbl(dt.Compute("sum(CANTIDAD)", "CODIGO_ARTICULO='" & Me.Grid1.Cell(i, Me.iGyCodigo).Text & "'"))
                                 dCantidadSumadaPorArticulos = FG_Grid_ComputeCol(Me.Grid1, sCodigoArticulo, Me.iGyCodigo, Me.iGyCantidad)
                             Else
@@ -1314,7 +1321,7 @@ BuscarCuentas:
                 Exit Function
             End If
 
-            If Me._LlamdoExterior = True And Me._ConsultaExteriorSalida = False Then
+            If Me._LlamadoExterior = True And Me._ConsultaExteriorSalida = False Then
                 'Dim sCaracter As String = "", VarString As String = ""
                 'Dim sql As New Class_find("select max(FOLIO_MOVIMIENTO_INVENTARIO)FOLIO_MOVIMIENTO_INVENTARIO from INVENTARIO_MOVIMIENTOS_GLOBAL where  FOLIO_REFERENCIA='" & Me.TxtFolioReferencia.Text & "'")
                 'sFolio = Me.TxtFolioReferencia.Text
@@ -1335,7 +1342,7 @@ BuscarCuentas:
                 ''Me.TxtFolio.Text = Empresa_Sistema.CODIGO_TIPO_DOCUMENTO_SALIDA_EMPAQUE.ToString & sCaracter & Me.CboAlmacen.SelectedValue.ToString & "-" & sFolio
                 'Me.TxtFolio.Text = _CodigoDocumentoParaGrabar.ToString & sCaracter & Me.CboAlmacen.SelectedValue.ToString & "-" & sFolio
 
-            ElseIf Me._LlamdoExterior = False And Me._ConsultaExteriorSalida = False Then
+            ElseIf Me._LlamadoExterior = False And Me._ConsultaExteriorSalida = False Then
                 Me.oInventarios = New Class_Inventarios_Global
                 Me.oInventarios.CODIGO_TIPO_DOCUMENTO = Me.CboDocumento.SelectedValue.ToString
                 Me.oInventarios.CODIGO_ALMACEN1 = Me.CboAlmacen.SelectedValue.ToString
@@ -1354,7 +1361,7 @@ BuscarCuentas:
             Me.oInventarios = New Class_Inventarios_Global()
             Dim sFolio As String = Me.TxtFolio.Text
 
-            If Me._LlamdoExterior = True And txtLEN(Me.FolioEmbarque) = True Then
+            If Me._LlamadoExterior = True And txtLEN(Me.FolioEmbarque) = True Then
                 'No debe inicializar, ya se ejecutó el inicializaExterno
             Else
                 Me.Inicializa()
@@ -1364,67 +1371,74 @@ BuscarCuentas:
 
             If Me.oInventarios.Consultar = False Then
                 Me.Cambia_Estado(enumEstados.NUEVO)
-                Exit Function
+                Return False
+            End If
+
+            If Me.CboDocumento.SelectedValue.ToString <> oInventarios.CODIGO_TIPO_DOCUMENTO Then
+                Me.GeneraFolio()
+                Return False
+            End If
+
+            Me.TxtFolio.Text = oInventarios.FOLIO_MOVIMIENTO_INVENTARIO.ToString.ToUpper
+            Me.CboDocumento.SelectedValue = oInventarios.CODIGO_TIPO_DOCUMENTO.ToString.ToUpper
+
+            Me.LblStatus.Text = oInventarios.ESTATUS.ToUpper
+            Me.CboAlmacen.SelectedValue = oInventarios.CODIGO_ALMACEN1.ToString.ToUpper
+
+            If oInventarios.CODIGO_TIPO_DOCUMENTO.ToString.ToUpper = "TRI" Then
+                Me.CboAlmacenDestino.SelectedValue = oInventarios.CODIGO_ALMACEN2.ToString.ToUpper
+            End If
+            Me.TxtFolioReferencia.Text = oInventarios.FOLIO_REFERENCIA.ToString.ToUpper
+            Me.TxtConcepto.Text = oInventarios.CONCEPTO.ToString.ToUpper
+            Me.txtTotal.Text = FormatImporteContable(oInventarios.TOTAL)
+            Me.LblPoliza.Text = oInventarios.FOLIO_POLIZA
+            Me.DtpFecha.Value = CDate(oInventarios.FECHA)
+            Me.txtFolioEmbarque.Text = oInventarios.FOLIO_EMBARQUE
+            Me.CboConceptoInventario.SelectedValue = oInventarios.CODIGO_CONCEPTO_INVENTARIOS
+
+            'Consulta datos detalle
+            'Me.Grid1.DataSource = Me.oInventarios.ObtenerDetalle
+            Dim dTabla As DataTable = Me.oInventarios.ObtenerDetalle
+            Me.Grid1.AutoRedraw = False
+            Me.Grid1.Rows = 1 'Trae dos porque en docs nuevos se pone un row en blanco, y si se dejan aqui dos agrega a partir del 3 y queda un hueco
+            For Each dRow As DataRow In dTabla.Rows
+                Me.Grid1.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("CANTIDAD").ToString & Chr(9) & dRow("COSTO_DETALLE").ToString & Chr(9) & dRow("IMPORTE").ToString & Chr(9) &
+                                dRow("Boton").ToString & Chr(9) & dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("NOMBRE_CUENTA").ToString & Chr(9) & dRow("ID_ADICIONAL").ToString & Chr(9))
+            Next
+
+            If Me.LblStatus.Text = "G" Then
+                Me.Grid1.Rows = Me.Grid1.Rows + 1
+
+                Me.Grid1.Cell(Me.Grid1.Rows - 1, Me.iGyIDAdicional).Text = (CInt(Me.Grid1.Cell(Me.Grid1.Rows - 2, Me.iGyIDAdicional).Text) + 1).ToString
+            End If
+
+            Me.Grid1.AutoRedraw = True
+            Me.Grid1.Refresh()
+            Me.FormateaGrid()
+
+            Me.dtSeries = oInventarios.ObtenerDetalleSeries(Me.TxtFolio.Text)
+            Me.GridSeries.DataSource = dtSeries
+            Me.FormateaGridSeries()
+
+            'Aqui ya esta locked true igySerieNumeroSerie(lo hizo en el FormateaGridSeries)
+            If dtSeries.Rows.Count > 0 Then 'En este punto esta bloqueado el campo para teclear la serie
+                If Me.CboDocumento.SelectedValue.ToString = "ENI" Or Me.CboDocumento.SelectedValue.ToString = "ER" Then
+                    Me.GridSeries.Column(Me.igySerieNumeroSerie).Locked = False
+                End If
+                'Nota si fueran salidas o transferencias no se ocupa desbloquedar porqu dejaria teclear y no es asi, debe ser con F6 la selección, y el F6 funciona aún con locked true
+            End If
+
+            'Me.Totales() 'Nota, no debemos totalizar al consultar porque pudieramos ocultar errores de grabado si es que los hay, como nos pasó cuando no actualizabamos el importe de salidas aplicadas
+
+            Me.txtTotalCantidad.Text = FormatCantidad(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyCantidad))) 'Esta valor no se graba en el total, por eso se calcula aquí
+
+            Me.oFormaDetalleCuentas = New InventariosDetalleCuentasContables(Me.TxtFolio.Text)
+
+            If Me.oFormaDetalleCuentas.dTablaPrepoliza.Rows.Count = 0 Then
+                Me.oFormaDetalleCuentas = Nothing 'Forza para dejarla vacia
             Else
-                If Me.CboDocumento.SelectedValue.ToString <> oInventarios.CODIGO_TIPO_DOCUMENTO Then
-                    Me.GeneraFolio()
-                    Exit Function
-                End If
+                'Consultar
 
-                Me.TxtFolio.Text = oInventarios.FOLIO_MOVIMIENTO_INVENTARIO.ToString.ToUpper
-                Me.CboDocumento.SelectedValue = oInventarios.CODIGO_TIPO_DOCUMENTO.ToString.ToUpper
-
-                Me.LblStatus.Text = oInventarios.ESTATUS.ToUpper
-                Me.CboAlmacen.SelectedValue = oInventarios.CODIGO_ALMACEN1.ToString.ToUpper
-
-                If oInventarios.CODIGO_TIPO_DOCUMENTO.ToString.ToUpper = "TRI" Then
-                    Me.CboAlmacenDestino.SelectedValue = oInventarios.CODIGO_ALMACEN2.ToString.ToUpper
-                End If
-                Me.TxtFolioReferencia.Text = oInventarios.FOLIO_REFERENCIA.ToString.ToUpper
-                Me.TxtConcepto.Text = oInventarios.CONCEPTO.ToString.ToUpper
-                Me.txtTotal.Text = FormatImporteContable(oInventarios.TOTAL)
-                Me.LblPoliza.Text = oInventarios.FOLIO_POLIZA
-                Me.DtpFecha.Value = CDate(oInventarios.FECHA)
-                Me.txtFolioEmbarque.Text = oInventarios.FOLIO_EMBARQUE
-                Me.CboConceptoInventario.SelectedValue = oInventarios.CODIGO_CONCEPTO_INVENTARIOS
-
-                'Consulta datos detalle
-                'Me.Grid1.DataSource = Me.oInventarios.ObtenerDetalle
-                Dim dTabla As DataTable = Me.oInventarios.ObtenerDetalle
-                Me.Grid1.AutoRedraw = False
-                Me.Grid1.Rows = 1 'Trae dos porque en docs nuevos se pone un row en blanco, y si se dejan aqui dos agrega a partir del 3 y queda un hueco
-                For Each dRow As DataRow In dTabla.Rows
-                    Me.Grid1.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("CANTIDAD").ToString & Chr(9) & dRow("COSTO_DETALLE").ToString & Chr(9) & dRow("IMPORTE").ToString & Chr(9) & _
-                                    dRow("Boton").ToString & Chr(9) & dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("NOMBRE_CUENTA").ToString & Chr(9) & dRow("ID_ADICIONAL").ToString & Chr(9))
-                Next
-
-                If Me.LblStatus.Text = "G" Then
-                    Me.Grid1.Rows = Me.Grid1.Rows + 1
-
-                    Me.Grid1.Cell(Me.Grid1.Rows - 1, Me.iGyIDAdicional).Text = (CInt(Me.Grid1.Cell(Me.Grid1.Rows - 2, Me.iGyIDAdicional).Text) + 1).ToString
-                End If
-
-                Me.Grid1.AutoRedraw = True
-                Me.Grid1.Refresh()
-                Me.FormateaGrid()
-
-                Me.dtSeries = oInventarios.ObtenerDetalleSeries(Me.TxtFolio.Text)
-                Me.GridSeries.DataSource = dtSeries
-                Me.FormateaGridSeries()
-
-
-                'Me.Totales() 'Nota, no debemos totalizar al consultar porque pudieramos ocultar errores de grabado si es que los hay, como nos pasó cuando no actualizabamos el importe de salidas aplicadas
-
-                Me.txtTotalCantidad.Text = FormatCantidad(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyCantidad))) 'Esta valor no se graba en el total, por eso se calcula aquí
-
-                Me.oFormaDetalleCuentas = New InventariosDetalleCuentasContables(Me.TxtFolio.Text)
-
-                If Me.oFormaDetalleCuentas.dTablaPrepoliza.Rows.Count = 0 Then
-                    Me.oFormaDetalleCuentas = Nothing 'Forza para dejarla vacia
-                Else
-                    'Consultar
-
-                End If
             End If
 
             bResultado = True
@@ -1438,12 +1452,12 @@ BuscarCuentas:
             End If
 
             Me.Cambia_Estado(Me.Estado)
+
         Catch ex As Exception
             HandleError(Me.Name, "Consultar", ex)
         End Try
 
         Return bResultado
-
     End Function
 
     'Private Sub FormateaGrid()
@@ -1620,9 +1634,9 @@ BuscarCuentas:
             Dim oAlmacenes = New Class_CatAlmacenes(Me.CboAlmacenDestino.SelectedValue.ToString)
             Dim oArticulos = New Class_CatArticulos
 
-            For I = 1 To Me.Grid1.Rows - 1
-                If txtLEN(Me.Grid1.Cell(I, Me.iGyCodigo).Text) = True Then
-                    Me.Grid1.Cell(i, Me.iGyCuentaContable).Text = oAlmacenes.Cuenta_Contable.ToString + oArticulos.ObtenerFamiliaArticulo(Me.Grid1.Cell(i, Me.iGyCodigo).Text).ToString
+            For i = 1 To Me.Grid1.Rows - 1
+                If txtLEN(Me.Grid1.Cell(i, Me.iGyCodigo).Text) = True Then
+                    Me.Grid1.Cell(i, Me.iGyCuentaContable).Text = oAlmacenes.CUENTA_CONTABLE.ToString + oArticulos.ObtenerFamiliaArticulo(Me.Grid1.Cell(i, Me.iGyCodigo).Text).ToString
                 End If
             Next
             bResultado = True
@@ -1785,7 +1799,7 @@ BuscarCuentas:
             Me.CboAlmacenDestino.Visible = True
             Me.lblAlmacenDestino.Visible = True
             Me.lblCodigoAlmacen2.Visible = True
-            If Me._LlamdoExterior = False And Me._ConsultaExteriorSalida = False Then
+            If Me._LlamadoExterior = False And Me._ConsultaExteriorSalida = False Then
                 Me.Grid1.Column(Me.iGyCuentaContable).Locked = True
                 Me.Grid1.Column(Me.iGyImporte).Locked = True
             End If
@@ -1794,19 +1808,19 @@ BuscarCuentas:
             End If
             Me.tsbCancelar.Visible = False
             Me.txtFolioEmbarque.Visible = True : Me.lblDisplayFolioEmbarque.Visible = True
-            Me.GridSeries.Column(Me.igySerieNumeroSerie).Locked = True
+            'Me.GridSeries.Column(Me.igySerieNumeroSerie).Locked = True
 
         Else
             Me.CboAlmacenDestino.Visible = False
             Me.lblAlmacenDestino.Visible = False
             Me.lblCodigoAlmacen2.Visible = False
-            If Me._LlamdoExterior = False And Me._ConsultaExteriorSalida = False Then
+            If Me._LlamadoExterior = False And Me._ConsultaExteriorSalida = False Then
                 Me.Grid1.Column(Me.iGyCuentaContable).Locked = False
             End If
             Me.tsbCancelar.Visible = True
             Me.txtFolioEmbarque.Text = "" 'Se forza a blanco por si tenia algo capturado.
             Me.txtFolioEmbarque.Visible = False : Me.lblDisplayFolioEmbarque.Visible = False
-            Me.GridSeries.Column(Me.igySerieNumeroSerie).Locked = True
+            'Me.GridSeries.Column(Me.igySerieNumeroSerie).Locked = True
         End If
     End Sub
 
@@ -1948,7 +1962,7 @@ BuscarCuentas:
             End If
 
             If Me.Aplicar() = True Then
-                If Me._LlamdoExterior = True Then
+                If Me._LlamadoExterior = True Then
 
                     'Se quitó 17dic16 porque ahora se hace una sola salida para todo el embarque y se marca desde el mismo embarque
                     'Me.oPalet.MarcaSalidaPalet()
@@ -1963,7 +1977,7 @@ BuscarCuentas:
                 Me.Consultar()
 
             Else
-                If Me._LlamdoExterior = False Then
+                If Me._LlamadoExterior = False Then
                     Me.Consultar()
                 Else
                     Me.Visible = True
@@ -1975,11 +1989,12 @@ BuscarCuentas:
     End Sub
 
     Private Sub PrepararSeries()
+        Const sProcedure As String = "PrepararSeries"
         Try
             'Dim iUnidades As Integer
 
             If IsNothing(Me.dtSeries) = False AndAlso Me.dtSeries.Rows.Count > 0 Then
-                If MsgBox("Hay series ya especificadas, si continua tendrá que recapturar todas." & vbCrLf & "Esta seguro de continuar ?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.No Then
+                If MsgBox("Hay series ya especificadas, si continua tendrá que recapturar todas." & vbCrLf & "Esta seguro de continuar ?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
                     Return
                 End If
             End If
@@ -2022,15 +2037,21 @@ BuscarCuentas:
 
             Me.FormateaGridSeries()
 
-            'If Me.CboDocumento.Text = "ENTRADA" Then
-            If Me.CboDocumento.SelectedValue.ToString = "EN" Or Me.CboDocumento.SelectedValue.ToString = "ER" Then
-                Me.GridSeries.Column(Me.igySerieNumeroSerie).Locked = False
+            If Me.dtSeries.Rows.Count > 0 Then
+                'If Me.CboDocumento.Text = "ENTRADA" Then
+                'Para salidas o transferencias no se ocupa locked porque usa el f6 y este no se bloquea con locked
+                If Me.CboDocumento.SelectedValue.ToString = "ENI" Or Me.CboDocumento.SelectedValue.ToString = "ER" Then 'ENI=Entrada directam, ER=Entrada compra.
+                    Me.GridSeries.Column(Me.igySerieNumeroSerie).Locked = False
+                End If
+
+                Me.TabControl1.SelectedIndex = 1
+            Else
+                Me.GridSeries.Column(Me.igySerieNumeroSerie).Locked = True
+                MsgBox("No hay series por detallar.", MsgBoxStyle.Exclamation, sProcedure)
             End If
 
-            Me.TabControl1.SelectedIndex = 1
-
         Catch ex As Exception
-            HandleError(Me.Name, "PrepararSeries", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
@@ -2089,11 +2110,21 @@ BuscarCuentas:
         Dim sLote As String = "", sCodigoArticulo As String = ""
         Dim oSerie As Class_Inventarios_Lotes_Series
         Try
+            If Me.dtSeries.Rows.Count = 0 Then
+                Return
+            End If
+
+            If Not (Me.LblStatus.Text = "G" Or Me.LblStatus.Text = "") Then 'Si no es G=Grabado, ""=Blanco para nuevo
+                Return
+            End If
+
             With Me.GridSeries
                 Dim Renglon As Integer = .Selection.FirstRow
                 Dim Columna As Integer = .Selection.FirstCol
 
-                If Me.CboDocumento.Text = "ENTRADA" Then
+                'If Me.CboDocumento.Text = "ENTRADA" Then
+                If Me.CboDocumento.SelectedValue.ToString = "ENI" Or Me.CboDocumento.SelectedValue.ToString = "ER" Then 'Se sale porque se permite teclear directo, y la duplicación se valuid al grabar asi que 
+                    'este gestiona sirve mas para las salidas y transferencias.
                     Exit Sub
                 End If
 

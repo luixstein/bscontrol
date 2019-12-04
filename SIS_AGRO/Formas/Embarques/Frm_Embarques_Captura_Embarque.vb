@@ -1287,7 +1287,7 @@ Buscar:
             Dim oInventario As New Inventarios_Movimientos
             oInventario.StartPosition = FormStartPosition.CenterScreen
 
-            oInventario.LlamdoExterior = True
+            oInventario.LlamadoExterior = True
             oInventario.CodigoDocumentoParaGrabar = "SEI"
             oInventario.FolioEmbarque = Me.txtFolioEmbarque.Text
 
@@ -2303,7 +2303,7 @@ BuscaPalet:
             Dim oInventario As New Inventarios_Movimientos
             oInventario.StartPosition = FormStartPosition.CenterScreen
 
-            oInventario.LlamdoExterior = True
+            oInventario.LlamadoExterior = True
             oInventario.CodigoDocumentoParaGrabar = "SEI"
             oInventario.FolioEmbarque = Me.txtFolioEmbarque.Text
             oInventario.ConsultaExteriorSalida = True
