@@ -3,6 +3,8 @@
 Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Inventarios_Movimientos
+
+#Region "Campos privados"
     Private _LlamadoExterior As Boolean
     Private _CodigoDocumentoParaGrabar As String
     Private _AplicadoExterior As Boolean
@@ -16,6 +18,18 @@ Public Class Inventarios_Movimientos
     Private oArticulos As New Class_CatArticulos
     Private dtSeries As DataTable
 
+    Private bAplicando As Boolean
+    Private oPalet As Class_Embarques_PaletsGlobal
+    Private oFormaDetalleCuentas As InventariosDetalleCuentasContables
+
+    Private Enum enumEstados
+        NUEVO
+        GRABADO
+        APLICADO
+        CANCELADO
+    End Enum
+#End Region
+
 #Region "Columnas grid"
     Private iGyCodigo As Integer = 1
     Private iGyDescripcion As Integer = 2
@@ -26,6 +40,9 @@ Public Class Inventarios_Movimientos
     Private iGyCuentaContable As Integer = 7
     Private iGyNombreCuentaContable As Integer = 8
     Private iGyIDAdicional As Integer = 9
+    Private iGyCostoDetalleBase As Integer = 10 'Es el costo original sin flete.
+    Private iGyFleteDetalle As Integer = 11
+    Private iGyIDCompraDetalle As Integer = 12
 #End Region
 
 #Region "Columnas grid series"
@@ -35,19 +52,6 @@ Public Class Inventarios_Movimientos
     Private igySerieIdInventarioLotesCostos As Short = 4
     Private igySerieNumeroSerie As Short = 5
 #End Region
-
-    Private bAplicando As Boolean
-
-    Private oPalet As Class_Embarques_PaletsGlobal
-
-    Private oFormaDetalleCuentas As InventariosDetalleCuentasContables
-
-    Private Enum enumEstados
-        NUEVO
-        GRABADO
-        APLICADO
-        CANCELADO
-    End Enum
 
 #Region "Propiedades"
     Public WriteOnly Property LlamadoExterior() As Boolean
@@ -125,7 +129,9 @@ Public Class Inventarios_Movimientos
 
     Private Sub tsbCancelar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbCancelar.Click
         If Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "ENI" Or Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "SAI" Then
-            Me.Cancelar()
+            If Me.Cancelar() = True Then
+                Me.Consultar()
+            End If
         End If
     End Sub
 
@@ -153,6 +159,18 @@ Public Class Inventarios_Movimientos
             HandleError(Me.Name, "tsbEditarCostos_Click", ex)
         End Try
     End Sub
+
+    Private Sub btnConsultarOrdenCompra_Click(sender As Object, e As EventArgs) Handles btnConsultarOrdenCompra.Click
+        Me.ConsultarOrdenCompra()
+    End Sub
+
+    Private Sub btnNuevaOrdenCompra_Click(sender As Object, e As EventArgs) Handles btnNuevaOrdenCompra.Click
+        Me.InicializaOrdenCompra()
+    End Sub
+
+    Private Sub btnProrratearFleteOrdenCompra_Click(sender As Object, e As EventArgs) Handles btnProrratearFleteOrdenCompra.Click
+        Me.ProrratearFlete()
+    End Sub
 #End Region
 
 #Region "Eventos"
@@ -167,7 +185,7 @@ Public Class Inventarios_Movimientos
             Me.TxtFolio.Text = Me._FolioEmbarque
             Me.Consultar()
 
-            If Me.LblStatus.Text = "A" Then
+            If Me.lblStatus.Text = "A" Then
                 Me.tsbEditarCostos.Enabled = True
             End If
 
@@ -238,7 +256,7 @@ Public Class Inventarios_Movimientos
         Me.GestionaGridSeries(e)
     End Sub
 
-    Private Sub BtnSeries_Click(sender As Object, e As EventArgs) Handles BtnSeries.Click
+    Private Sub BtnSeries_Click(sender As Object, e As EventArgs) Handles btnSeries.Click
         Me.PrepararSeries()
     End Sub
 
@@ -349,16 +367,43 @@ busca:
         End Try
     End Sub
 
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles DtpFecha.KeyPress, TxtConcepto.KeyPress, TxtFolio.KeyPress, TxtFolioReferencia.KeyPress, txtFolioEmbarque.KeyPress
-        txtNoBeep(e)
-    End Sub
-
-    Private Sub LblPoliza_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LblPoliza.LinkClicked
+    Private Sub LblPoliza_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles lblPoliza.LinkClicked
         Dim Child As New Frm_Contabilidad_Captura_Polizas()
-        Child.FolioPolizaConsultaExterior = Me.LblPoliza.Text
+        Child.FolioPolizaConsultaExterior = Me.lblPoliza.Text
         Child.ShowDialog()
         Child.Dispose()
     End Sub
+
+    Private Sub txtFolioOrdenCompra_KeyDown(sender As Object, e As KeyEventArgs) Handles txtFolioOrdenCompra.KeyDown
+        Select Case e.KeyCode
+            Case Keys.F6
+buscar:
+                MsgBox("FALTA")
+            Case Keys.Return
+                If txtLEN(Me.txtFolioOrdenCompra.Text) = True Then
+                    Me.btnConsultarOrdenCompra.Focus()
+                Else
+                    GoTo buscar : Exit Sub
+                End If
+        End Select
+    End Sub
+
+    Private Sub txtFlete_KeyDown(sender As Object, e As KeyEventArgs) Handles txtFleteOrdenCompra.KeyDown
+        '
+    End Sub
+
+#Region "Eventos Genericos"
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles DtpFecha.KeyPress, TxtConcepto.KeyPress, TxtFolio.KeyPress, TxtFolioReferencia.KeyPress, txtFolioEmbarque.KeyPress,
+        txtFolioOrdenCompra.KeyPress
+        txtNoBeep(e)
+    End Sub
+
+    Private Sub txtSoloNumerosDecimales_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFleteOrdenCompra.KeyPress
+        Dim txt As TextBox = CType(sender, TextBox)
+        txtSoloNumerosDecimales(e, txt.Text)
+        txtNoBeep(e)
+    End Sub
+#End Region
 
 #End Region
 
@@ -367,6 +412,13 @@ busca:
     Private Sub Cambia_Estado(ByVal pEstado As enumEstados)
         Try
             Me.Estado = pEstado
+
+            'Me.gbOrdenCompra.Visible = False
+            Me.btnConsultarOrdenCompra.Enabled = False
+            Me.btnProrratearFleteOrdenCompra.Enabled = False
+            Me.btnNuevaOrdenCompra.Enabled = False
+            Me.txtFolioOrdenCompra.Enabled = False
+
 
             Select Case Me.Estado
                 Case enumEstados.NUEVO
@@ -390,10 +442,15 @@ busca:
                     Me.txtFolioEmbarque.Enabled = True
                     Me.Grid1.Locked = False
                     Me.GridSeries.Locked = False
-                    Me.BtnSeries.Enabled = True
+                    Me.btnSeries.Enabled = True
                     Me.CboConceptoInventario.Enabled = True
 
                     Me.OcultaControles()
+
+                    'If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ER" Then
+                    '    Me.gbOrdenCompra.Visible = True
+                    '    Me.Grid1.Locked = True 'No deja ingresarle nada hasta que agreguen una orden de compra con el botón
+                    'End If
 
                     If Me.Visible = True Then
                         Me.TxtFolio.Focus()
@@ -405,7 +462,6 @@ busca:
                     End If
 
                     Me.tsslEstado.Text = "ESTADO: CONSULTANDO MOVIMIENTO"
-                    Me.tsslElaboro.Text = "ELABORO: " + Me.oInventarios.NOMBRE_USUARIO.ToUpper + " EL " + Format(Me.DtpFecha.Value, "dd/MMM/yy")
                     Me.tsslCancelo.Text = ""
                     Me.tsbNuevo.Enabled = True
                     Me.tsbGrabar.Enabled = True
@@ -424,16 +480,20 @@ busca:
                     Me.txtFolioEmbarque.Enabled = True
                     Me.Grid1.Locked = False
                     Me.GridSeries.Locked = False
-                    Me.BtnSeries.Enabled = True
+                    Me.btnSeries.Enabled = True
                     Me.CboConceptoInventario.Enabled = False
 
                     Me.OcultaControles()
+
+                    'If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ER" Then
+                    '    Me.gbOrdenCompra.Visible = True
+                    '    Me.Grid1.Locked = False  'Si ya existe entonces ya establecieron una orden de compra.
+                    'End If
 
                     Me.TxtConcepto.Focus()
 
                 Case enumEstados.APLICADO
                     Me.tsslEstado.Text = "ESTADO: CONSULTANDO MOVIMIENTO"
-                    Me.tsslElaboro.Text = "ELABORO: " + Me.oInventarios.NOMBRE_USUARIO.ToUpper + " EL " + Format(Me.DtpFecha.Value, "dd/MMM/yy")
                     Me.tsslCancelo.Text = ""
                     Me.tsbNuevo.Enabled = True
                     Me.tsbGrabar.Enabled = False
@@ -450,7 +510,7 @@ busca:
                     Me.CboAlmacenDestino.Enabled = False
                     Me.txtFolioEmbarque.Enabled = False
                     Me.Grid1.Locked = True
-                    Me.BtnSeries.Enabled = False
+                    Me.btnSeries.Enabled = False
                     Me.GridSeries.Locked = True
                     Me.CboConceptoInventario.Enabled = False
 
@@ -458,8 +518,6 @@ busca:
 
                 Case enumEstados.CANCELADO
                     Me.tsslEstado.Text = "ESTADO: CONSULTANDO MOVIMIENTO"
-                    Me.tsslElaboro.Text = "ELABORO: " + Me.oInventarios.NOMBRE_USUARIO.ToUpper + " EL " + Format(Me.DtpFecha.Value, "dd/MMM/yy")
-                    Me.tsslCancelo.Text = "CANCELO: " + Me.oInventarios.NOMBRE_USUARIO_CANCELO.ToUpper + " EL " + Format(Me.oInventarios.FECHA_CANCELACION, "dd/MMM/yy")
                     Me.tsbNuevo.Enabled = True
                     Me.tsbGrabar.Enabled = False
                     Me.tsbAplicar.Enabled = False
@@ -475,7 +533,7 @@ busca:
                     Me.CboAlmacenDestino.Enabled = False
                     Me.txtFolioEmbarque.Enabled = False
                     Me.Grid1.Locked = True
-                    Me.BtnSeries.Enabled = False
+                    Me.btnSeries.Enabled = False
                     Me.GridSeries.Locked = False
                     Me.CboConceptoInventario.Enabled = False
 
@@ -497,14 +555,14 @@ busca:
             Me.TxtConcepto.Text = ""
             Me.DtpFecha.Value = Date.Now
             Me.Grid1.DataSource = Nothing
-            Me.LblPoliza.Text = ""
+            Me.lblPoliza.Text = ""
 
             Me.InicializaGrid()
             Me.InicializaGridSeries()
 
             Me.DtpFecha.Value = Date.Now
             Me.TxtConcepto.Text = ""
-            Me.LblStatus.Text = ""
+            Me.lblStatus.Text = ""
 
             Me.txtFolioEmbarque.Text = ""
 
@@ -515,6 +573,12 @@ busca:
             Me.oFormaDetalleCuentas = Nothing 'New InventariosDetalleCuentasContables
 
             Me.dtSeries = New DataTable("Series")
+
+            Me.txtFolioOrdenCompra.Text = ""
+            Me.txtFleteOrdenCompra.Text = ""
+            Me.txtProveedor.Text = ""
+            Me.dtpFechaEntrega.Value = Date.Now
+            Me.cboEntradasAnterioresOrdenCompra.DataSource = Nothing
 
             Me.TabControl1.SelectedIndex = 0
 
@@ -543,7 +607,7 @@ busca:
                 Me.CboAlmacenDestino.Visible = False
             End If
 
-            Me.LblPoliza.Text = ""
+            Me.lblPoliza.Text = ""
 
             Me.InicializaGrid()
 
@@ -934,6 +998,10 @@ BuscarCuentas:
 
                                 .oInventariosDetalle.LISTA_SERIES = sListaSeries
 
+                                .oInventariosDetalle.COSTO_DETALLE_BASE = valorNumericoD(Me.Grid1.Cell(i, Me.iGyCostoDetalleBase).Text.ToString)
+                                .oInventariosDetalle.FLETE_DETALLE = valorNumericoD(Me.Grid1.Cell(i, Me.iGyFleteDetalle).Text.ToString)
+                                .oInventariosDetalle.ID_COMPRA_DETALLE = CInt("0" & Me.Grid1.Cell(i, Me.iGyIDCompraDetalle).Text)
+
                                 If .oInventariosDetalle.GrabaRenglon() = False Then
                                     MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Text)
                                     Exit Function
@@ -971,49 +1039,50 @@ BuscarCuentas:
     End Function
 
     Function Aplicar() As Boolean
+        Const sProcedure As String = "Aplicar"
         Dim bResultado As Boolean = False
         Try
 
             If Me._LlamadoExterior = False Then
-                If MsgBox("Deseas aplicar el movimiento de " & CboDocumento.Text & "?", CType(vbYesNo + vbQuestion, MsgBoxStyle), "Grabando movimientos de inventarios") = MsgBoxResult.No Then
-                    Exit Function
+                If MsgBox("Deseas aplicar el movimiento de " & CboDocumento.Text & "?", CType(vbYesNo + vbQuestion, MsgBoxStyle), sProcedure) = MsgBoxResult.No Then
+                    Return False
                 End If
 
                 If Me.Grabar() = False Then 'Razón no identificada de porque cuando se trata de exterior lo graba despues de validar, y cuando es normal lo graba antes de validar
-                    Exit Function
+                    Return False
                 End If
             End If
 
             'If SiTieneCuentaContable() = False Then
             '    MsgBox("Asígne la cuenta contable de todos los renglones.", MsgBoxStyle.Exclamation, Me.Text)
-            '    Exit Function
+            '    return false
             'End If
 
             If Me.ValidaCuentasContable = False Then
-                Exit Function
+                Return False
             End If
 
             'If Me.SiTieneImporte() = False Then
             '    MsgBox("El importe de los renglones debe de ser mayor a cero.", MsgBoxStyle.Exclamation, Me.Text)
-            '    Exit Function
+            '    return false
             'End If
 
             Me.Totales()
 
             'If valorNumerico(Me.txtTotal.Text) = 0 Then
             '    MsgBox("El importe total debe de ser mayor a cero.", MsgBoxStyle.Exclamation, Me.Text)
-            '    Exit Function
+            '    return false
             'End If
 
             If Me._LlamadoExterior = True Then
                 If Me.Grabar() = False Then 'Razón no identificada de porque cuando se trata de exterior lo graba despues de validar, y cuando es normal lo graba antes de validar
-                    Exit Function
+                    Return False
                 End If
             Else
                 If Me.oDocumentos.ES_TRANSFERENCIA = "1" Then
-                    If EstableceCuentaContableAlmacenDestino() = False Then
-                        MsgBox("Error al tratar de asígnar la cuenta contable del almacen destino.", MsgBoxStyle.Exclamation, Me.Text)
-                        Exit Function
+                    If Me.EstableceCuentaContableAlmacenDestino() = False Then
+                        MsgBox("Error al tratar de asígnar la cuenta contable del almacen destino.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
                     End If
                 End If
             End If
@@ -1021,64 +1090,69 @@ BuscarCuentas:
             Me.oInventarios = New Class_Inventarios_Global(Me.TxtFolio.Text)
 
             bResultado = Me.oInventarios.Aplicar()
+
             If bResultado = True Then
-                If Me.oInventarios.AplicarPoliza() = False Then
-                    MsgBox("Error al intentar aplicar la poliza.", MsgBoxStyle.Exclamation, Me.Text)
+                If Me.oDocumentos.AFECTA_CONTABILIDAD = "1" Then
+                    If Me.oInventarios.AplicarPoliza() = False Then
+                        MsgBox("Error al intentar aplicar la póliza.", MsgBoxStyle.Exclamation, sProcedure)
+                    End If
                 End If
-            Else
-                MsgBox("Error al intentar aplicar el movimiento de inventario.", MsgBoxStyle.Exclamation, Me.Text)
             End If
+
         Catch ex As Exception
-            HandleError(Me.Name, "Aplicar", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado
     End Function
 
     Private Function Cancelar() As Boolean
-        Dim oFirmaElectronica = New UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo
+        Const sProcedure As String = "Cancelar"
+        Dim bResultado As Boolean = False
+
+        Dim oFirmaElectronica As New UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo
         Dim oUtileriasCancela As New Class_UtileriasFirmaElectronicaCancelacion
         Dim oPoliza As New Class_Contabilidad_Poliza_Global
 
         If Me.oDocumentos.ES_CANCELABLE = "0" Then
-            MsgBox("Este documento no se puede cancelar directamente por el usuario.", MsgBoxStyle.Exclamation, Me.Text)
-            Exit Function
+            MsgBox("Este documento no se puede cancelar directamente por el usuario.", MsgBoxStyle.Exclamation, sProcedure)
+            Return False
         ElseIf Me.oDocumentos.ES_CANCELABLE = "2" Then
             If Me.oInventarios.ESTATUS <> "G" Then
-                MsgBox("Este documento sólo se puede cancelar si esta en estatus de GRABADO.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+                MsgBox("Este documento sólo se puede cancelar si esta en estatus de GRABADO.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
             End If
         End If
 
         If Me.CboDocumento.Text = "ENTRADA" And Me.GridSeries.Rows > 1 Then
-            MsgBox("La cancelación de ENTRADAS con series no esta soportada, debe hacerse una salida manualmente.", MsgBoxStyle.Exclamation, Me.Text)
-            Exit Function
+            MsgBox("La cancelación de ENTRADAS con series no esta soportada, debe hacerse una salida manualmente.", MsgBoxStyle.Exclamation, sProcedure)
+            Return False
         End If
 
         If Me.oDocumentos.ES_TRANSFERENCIA = "1" Then
             If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString, Me.CboAlmacenDestino.SelectedValue.ToString) = False Then
-                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar la transferencia.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar la transferencia.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
             End If
         Else
             If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString, "") = False Then
                 'MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento de inventarios.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+                Return False
             End If
         End If
 
         If Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "ENI" And Me.oInventarios.ESTATUS = "A" Then
             If Me.ValidarExistencias() = False Then
-                Exit Function
+                Return False
             End If
         End If
 
-        If MsgBox("Deseas cancelar el movimiento de " & CboDocumento.Text & "?", CType(vbYesNo + vbQuestion, MsgBoxStyle), "cancelando movimientos de inventarios") = MsgBoxResult.No Then
-            Exit Function
+        If MsgBox("Deseas cancelar el movimiento de " & CboDocumento.Text & "?", CType(vbYesNo + vbQuestion, MsgBoxStyle), sProcedure) = MsgBoxResult.No Then
+            Return False
         End If
 
         'If PLAZA.ValidarPeriodoTrabajo(Date.Now) = False Then 'Para cancelar se valida con la fecha de la maquina
-        '    Exit Function
+        '    return false
         'End If
 
         Try
@@ -1087,14 +1161,14 @@ BuscarCuentas:
             oUtileriasCancela.CODIGO_PLAZA = Usuario.Codigo_Plaza
 
             If oUtileriasCancela.GestionaCancelacion() = False Then
-                Exit Function
+                Return False
             End If
 
             If oUtileriasCancela.CANCELA_DIRECTO = True Then
                 Me.oInventarios.FECHA_CANCELACION = Date.Now
 
                 If Me.oInventarios.Cancelar() = False Then
-                    Exit Function
+                    Return False
                 End If
             Else
                 oUtileriasCancela = New Class_UtileriasFirmaElectronicaCancelacion
@@ -1106,52 +1180,55 @@ BuscarCuentas:
 
                 If oUtileriasCancela.AutorizaCancelacionMovimientosFueraPeriodo() = False Then
                     'MsgBox("Error al tratar de autorizar la cancelación fuera del periodo.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    Return False
                 End If
 
                 'si no se autorizo
                 If oUtileriasCancela.CANCELACION_AUTORIZO = False Then
-                    MsgBox("No se autorizó la cancelación de movimiento.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    MsgBox("No se autorizó la cancelación de movimiento.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 End If
 
                 If oUtileriasCancela.GestionaCancelacionConInterfaz() = False Then
-                    MsgBox("Error al gestionar la cancelacion con interfaz", MsgBoxStyle.Information, Me.Text)
-                    Exit Function
+                    MsgBox("Error al gestionar la cancelacion con interfaz", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 Else
                     If oUtileriasCancela.ES_FECHA_CANCELACION_VALIDA = "0" Then
-                        MsgBox("La fecha de cancelación debe de ser mayor o igual a la fecha del documento y debe estar en el mismo ejercicio.", vbExclamation, Me.Text)
-                        Exit Function
+                        MsgBox("La fecha de cancelación debe de ser mayor o igual a la fecha del documento y debe estar en el mismo ejercicio.", vbExclamation, sProcedure)
+                        Return False
                     End If
 
                     Me.oInventarios.FECHA_CANCELACION = oUtileriasCancela.FECHA_CANCELACION  'CDate(Format(oUtileriasCancela.CANCELACION_NUEVA_FECHA_CANCELACION, "dd/MM/yyyy")) + " " + CDate(Format(Now, "hh:mm"))
                     'oPoliza.ID_CON_PERIODO = oUtileriasCancela.PERIODO_CANCELACION_INTERFAZ
 
                     If Me.oInventarios.Cancelar() = False Then
-                        MsgBox("Error al intentar cancelar el movimiento de inventario.", MsgBoxStyle.Exclamation, Me.Text)
-                        Exit Function
+                        MsgBox("Error al intentar cancelar el movimiento de inventario.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
                     End If
                 End If
             End If
 
-            MsgBox("Movimiento de inventario cancelado.", MsgBoxStyle.Information, Me.Text)
-            Cancelar = True
-            Me.Consultar()
+            MsgBox("Movimiento de inventario cancelado satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
+            bResultado = True
+
         Catch ex As Exception
-            HandleError(Me.Name, "Cancelar", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
+
+        Return bResultado
     End Function
 
     Private Function ValidarExistencias() As Boolean
-        Const sProcedure As String = "Validación de existencias de Articulos"
+        Const sProcedure As String = "ValidarExistencias"
         Dim bResultado As Boolean = False
+
         Dim dCantidadSumadaPorArticulos As Double, dExistencia As Double
         Dim i As Integer, sCodigoArticulo As String = ""
 
         Try
             'If oInventarios.NATURALEZA_INVENTARIOS = "EN" Then
             '    ValidarExistencias = True
-            '    Exit Function
+            '    return false
             'End If
 
             'Este método ya no funciona porque le grid no se llena con datasource sino con ciclo, porque con datasource ya no funciona el f8, no borra
@@ -1166,7 +1243,7 @@ BuscarCuentas:
                         If dExistencia <= 0 Then
                             Me.Show()
                             MsgBox("El artículo " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " que intenta agregar no tiene existencia. ", MsgBoxStyle.Exclamation, sProcedure)
-                            Exit Function
+                            Return False
                         Else
                             If Me._LlamadoExterior = False Then
                                 'dCantidadSumadaPorArticulos = CDbl(dt.Compute("sum(CANTIDAD)", "CODIGO_ARTICULO='" & Me.Grid1.Cell(i, Me.iGyCodigo).Text & "'"))
@@ -1178,7 +1255,7 @@ BuscarCuentas:
                             If valorNumerico(dCantidadSumadaPorArticulos.ToString) > valorNumerico(dExistencia.ToString) Then
                                 Me.Show()
                                 MsgBox("El Artículo " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " no tiene suficiente existencia.", MsgBoxStyle.Exclamation, sProcedure)
-                                Exit Function
+                                Return False
                             End If
                         End If
                     End If
@@ -1382,7 +1459,7 @@ BuscarCuentas:
             Me.TxtFolio.Text = oInventarios.FOLIO_MOVIMIENTO_INVENTARIO.ToString.ToUpper
             Me.CboDocumento.SelectedValue = oInventarios.CODIGO_TIPO_DOCUMENTO.ToString.ToUpper
 
-            Me.LblStatus.Text = oInventarios.ESTATUS.ToUpper
+            Me.lblStatus.Text = oInventarios.ESTATUS.ToUpper
             Me.CboAlmacen.SelectedValue = oInventarios.CODIGO_ALMACEN1.ToString.ToUpper
 
             If oInventarios.CODIGO_TIPO_DOCUMENTO.ToString.ToUpper = "TRI" Then
@@ -1391,7 +1468,7 @@ BuscarCuentas:
             Me.TxtFolioReferencia.Text = oInventarios.FOLIO_REFERENCIA.ToString.ToUpper
             Me.TxtConcepto.Text = oInventarios.CONCEPTO.ToString.ToUpper
             Me.txtTotal.Text = FormatImporteContable(oInventarios.TOTAL)
-            Me.LblPoliza.Text = oInventarios.FOLIO_POLIZA
+            Me.lblPoliza.Text = oInventarios.FOLIO_POLIZA
             Me.DtpFecha.Value = CDate(oInventarios.FECHA)
             Me.txtFolioEmbarque.Text = oInventarios.FOLIO_EMBARQUE
             Me.CboConceptoInventario.SelectedValue = oInventarios.CODIGO_CONCEPTO_INVENTARIOS
@@ -1406,7 +1483,7 @@ BuscarCuentas:
                                 dRow("Boton").ToString & Chr(9) & dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("NOMBRE_CUENTA").ToString & Chr(9) & dRow("ID_ADICIONAL").ToString & Chr(9))
             Next
 
-            If Me.LblStatus.Text = "G" Then
+            If Me.lblStatus.Text = "G" Then
                 Me.Grid1.Rows = Me.Grid1.Rows + 1
 
                 Me.Grid1.Cell(Me.Grid1.Rows - 1, Me.iGyIDAdicional).Text = (CInt(Me.Grid1.Cell(Me.Grid1.Rows - 2, Me.iGyIDAdicional).Text) + 1).ToString
@@ -1438,20 +1515,25 @@ BuscarCuentas:
                 Me.oFormaDetalleCuentas = Nothing 'Forza para dejarla vacia
             Else
                 'Consultar
-
             End If
 
             bResultado = True
 
-            If Me.LblStatus.Text = "G" Then
+            If Me.lblStatus.Text = "G" Then
                 Me.Estado = enumEstados.GRABADO
-            ElseIf Me.LblStatus.Text = "A" Then
+            ElseIf Me.lblStatus.Text = "A" Then
                 Me.Estado = enumEstados.APLICADO
-            ElseIf Me.LblStatus.Text = "C" Then
+            ElseIf Me.lblStatus.Text = "C" Then
                 Me.Estado = enumEstados.CANCELADO
             End If
 
             Me.Cambia_Estado(Me.Estado)
+
+            Me.tsslElaboro.Text = "ELABORO: " + Me.oInventarios.NOMBRE_USUARIO.ToUpper + " EL " + Format(Me.DtpFecha.Value, "dd/MMM/yy")
+
+            If Me.lblStatus.Text = "C" Then
+                Me.tsslCancelo.Text = "CANCELO: " + Me.oInventarios.NOMBRE_USUARIO_CANCELO.ToUpper + " EL " + Format(Me.oInventarios.FECHA_CANCELACION, "dd/MMM/yy")
+            End If
 
         Catch ex As Exception
             HandleError(Me.Name, "Consultar", ex)
@@ -1505,10 +1587,7 @@ BuscarCuentas:
         Try
             With Me.Grid1
                 .AutoRedraw = False
-
-                '.Cols = 1
-                .Cols = 10
-
+                .Cols = 13
                 '.DefaultFont = New Font("Tahoma", 8)
                 .DisplayFocusRect = False
                 '.DisplayDateTimeMask = True
@@ -1530,9 +1609,13 @@ BuscarCuentas:
                 .Cell(0, Me.iGyCantidad).Text = "Cantidad"
                 .Cell(0, Me.iGyCosto).Text = "Costo"
                 .Cell(0, Me.iGyImporte).Text = "Total"
+                .Cell(0, Me.iGyBoton).Text = "Costos"
                 .Cell(0, Me.iGyCuentaContable).Text = "CuentaContable"
                 .Cell(0, Me.iGyNombreCuentaContable).Text = "Nombre cuenta"
-                .Cell(0, Me.iGyBoton).Text = "Costos"
+                .Cell(0, Me.iGyIDAdicional).Text = "IDAdicional"
+                .Cell(0, Me.iGyCostoDetalleBase).Text = "CostoDetalleBase"
+                .Cell(0, Me.iGyFleteDetalle).Text = "FleteDetalle"
+                .Cell(0, Me.iGyIDCompraDetalle).Text = "IDCompraDetalle "
 
                 .Column(Me.iGyCantidad).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyCantidad).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
@@ -1545,6 +1628,14 @@ BuscarCuentas:
                 .Column(Me.iGyImporte).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyImporte).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
                 .Column(Me.iGyImporte).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyCostoDetalleBase).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyCostoDetalleBase).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.iGyCostoDetalleBase).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyFleteDetalle).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyFleteDetalle).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.iGyFleteDetalle).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .Column(Me.iGyCuentaContable).Alignment = FlexCell.AlignmentEnum.RightCenter
                 .Column(Me.iGyDescripcion).Locked = True
@@ -1562,12 +1653,13 @@ BuscarCuentas:
                 .Column(Me.iGyNombreCuentaContable).Width = 220
                 .Column(Me.iGyIDAdicional).Visible = False
 
-                .AutoRedraw = True
-                .Refresh()
             End With
 
         Catch ex As Exception
             HandleError(Me.Name, "FormateaGrid", ex)
+        Finally
+            Me.Grid1.AutoRedraw = True
+            Me.Grid1.Refresh()
         End Try
     End Sub
 
@@ -1591,6 +1683,9 @@ BuscarCuentas:
             Me.txtTotalCantidad.Text = FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyCantidad)).ToString
 
             Me.txtTotal.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyImporte))).ToString
+
+            'FALTA
+            Me.txtTotalBase.Text = "0" 'FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyImporte))).ToString
         Catch ex As Exception
             HandleError(Me.Name, "Totales", ex)
         End Try
@@ -1625,25 +1720,6 @@ BuscarCuentas:
                     'oPoliza = Nothing
                 End Try
         End Select
-    End Function
-
-    Private Function EstableceCuentaContableAlmacenDestino() As Boolean
-        Dim bResultado As Boolean = False
-        Dim i As Integer
-        Try
-            Dim oAlmacenes = New Class_CatAlmacenes(Me.CboAlmacenDestino.SelectedValue.ToString)
-            Dim oArticulos = New Class_CatArticulos
-
-            For i = 1 To Me.Grid1.Rows - 1
-                If txtLEN(Me.Grid1.Cell(i, Me.iGyCodigo).Text) = True Then
-                    Me.Grid1.Cell(i, Me.iGyCuentaContable).Text = oAlmacenes.CUENTA_CONTABLE.ToString + oArticulos.ObtenerFamiliaArticulo(Me.Grid1.Cell(i, Me.iGyCodigo).Text).ToString
-                End If
-            Next
-            bResultado = True
-        Catch ex As Exception
-            HandleError(Me.Name, "EstableceCuentaContableAlmacenDestino", ex)
-        End Try
-        Return bResultado
     End Function
 
     Private Function SiTieneRenglones() As Boolean
@@ -1794,34 +1870,43 @@ BuscarCuentas:
     End Function
 
     Private Sub OcultaControles()
-        Me.oDocumentos = New Class_Cat_tiposDocumentos(Me.CboDocumento.SelectedValue.ToString)
-        If Me.oDocumentos.ES_TRANSFERENCIA = "1" Then
-            Me.CboAlmacenDestino.Visible = True
-            Me.lblAlmacenDestino.Visible = True
-            Me.lblCodigoAlmacen2.Visible = True
-            If Me._LlamadoExterior = False And Me._ConsultaExteriorSalida = False Then
-                Me.Grid1.Column(Me.iGyCuentaContable).Locked = True
-                Me.Grid1.Column(Me.iGyImporte).Locked = True
+        Try
+            Me.oDocumentos = New Class_Cat_tiposDocumentos(Me.CboDocumento.SelectedValue.ToString)
+            If Me.oDocumentos.ES_TRANSFERENCIA = "1" Then
+                Me.CboAlmacenDestino.Visible = True
+                Me.lblAlmacenDestino.Visible = True
+                Me.lblCodigoAlmacen2.Visible = True
+                If Me._LlamadoExterior = False And Me._ConsultaExteriorSalida = False Then
+                    Me.Grid1.Column(Me.iGyCuentaContable).Locked = True
+                    Me.Grid1.Column(Me.iGyImporte).Locked = True
+                End If
+                If txtLEN(Me._CodigoAlmacenHappy) = True Then
+                    Me.CboAlmacenDestino.SelectedValue = Me._CodigoAlmacenHappy
+                End If
+                Me.tsbCancelar.Visible = False
+                Me.txtFolioEmbarque.Visible = True : Me.lblDisplayFolioEmbarque.Visible = True
+                'Me.GridSeries.Column(Me.igySerieNumeroSerie).Locked = True
+            Else
+                Me.CboAlmacenDestino.Visible = False
+                Me.lblAlmacenDestino.Visible = False
+                Me.lblCodigoAlmacen2.Visible = False
+                If Me._LlamadoExterior = False And Me._ConsultaExteriorSalida = False Then
+                    Me.Grid1.Column(Me.iGyCuentaContable).Locked = False
+                End If
+                Me.tsbCancelar.Visible = True
+                Me.txtFolioEmbarque.Text = "" 'Se forza a blanco por si tenia algo capturado.
+                Me.txtFolioEmbarque.Visible = False : Me.lblDisplayFolioEmbarque.Visible = False
+                'Me.GridSeries.Column(Me.igySerieNumeroSerie).Locked = True
             End If
-            If txtLEN(Me._CodigoAlmacenHappy) = True Then
-                Me.CboAlmacenDestino.SelectedValue = Me._CodigoAlmacenHappy
-            End If
-            Me.tsbCancelar.Visible = False
-            Me.txtFolioEmbarque.Visible = True : Me.lblDisplayFolioEmbarque.Visible = True
-            'Me.GridSeries.Column(Me.igySerieNumeroSerie).Locked = True
 
-        Else
-            Me.CboAlmacenDestino.Visible = False
-            Me.lblAlmacenDestino.Visible = False
-            Me.lblCodigoAlmacen2.Visible = False
-            If Me._LlamadoExterior = False And Me._ConsultaExteriorSalida = False Then
-                Me.Grid1.Column(Me.iGyCuentaContable).Locked = False
+            Me.gbOrdenCompra.Visible = False
+            If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ER" Then
+                Me.gbOrdenCompra.Visible = True
             End If
-            Me.tsbCancelar.Visible = True
-            Me.txtFolioEmbarque.Text = "" 'Se forza a blanco por si tenia algo capturado.
-            Me.txtFolioEmbarque.Visible = False : Me.lblDisplayFolioEmbarque.Visible = False
-            'Me.GridSeries.Column(Me.igySerieNumeroSerie).Locked = True
-        End If
+
+        Catch ex As Exception
+            HandleError(Me.Name, "OcultaControles", ex)
+        End Try
     End Sub
 
     Private Function ValidaEmbarque() As Boolean
@@ -2114,7 +2199,7 @@ BuscarCuentas:
                 Return
             End If
 
-            If Not (Me.LblStatus.Text = "G" Or Me.LblStatus.Text = "") Then 'Si no es G=Grabado, ""=Blanco para nuevo
+            If Not (Me.lblStatus.Text = "G" Or Me.lblStatus.Text = "") Then 'Si no es G=Grabado, ""=Blanco para nuevo
                 Return
             End If
 
@@ -2232,18 +2317,16 @@ busca_serie:
                         If ID_INVENTARIO_LOTES_COSTOS = Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text Then
                             RenglonRepetido = i
 
-                            MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text & _
-                                   " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf & _
+                            MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text &
+                                   " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf &
                                    "", MsgBoxStyle.Exclamation)
                             Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
 
                             Return True
 
                         End If
-
                     End If
                 End If
-
             Next
         Catch ex As Exception
             HandleError(Me.Name, "RepiteSerie", ex)
@@ -2338,8 +2421,8 @@ busca_serie:
                             If Me.GridSeries.Cell(i, Me.igySerieNumeroSerie).Text = Me.GridSeries.Cell(z, Me.igySerieNumeroSerie).Text Then
                                 RenglonRepetido = z
 
-                                MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text & _
-                                       " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf & _
+                                MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text &
+                                       " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf &
                                        "", MsgBoxStyle.Exclamation)
                                 Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
 
@@ -2356,8 +2439,8 @@ busca_serie:
                             If Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text = Me.GridSeries.Cell(z, Me.igySerieIdInventarioLotesCostos).Text Then
                                 RenglonRepetido = z
 
-                                MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text & _
-                                       " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf & _
+                                MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text &
+                                       " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf &
                                        "", MsgBoxStyle.Exclamation)
                                 Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
 
@@ -2375,6 +2458,190 @@ busca_serie:
         Return False
     End Function
 
+    Private Function ConsultarOrdenCompra() As Boolean
+        Const sProcedure As String = "ConsultarOrdenCompra"
+        Dim bResultado As Boolean = False
+        Try
+            If txtLEN(Me.txtFolioOrdenCompra.Text) = False Then
+                MsgBox("Indique el folio de la orden de compra.", MsgBoxStyle.Exclamation, sProcedure)
+                If Me.txtFolioOrdenCompra.Enabled = True Then
+                    Me.txtFolioOrdenCompra.Focus()
+                End If
+                Return False
+            End If
+
+            Dim oOrdenCompra As New Class_Compras_Global(Me.txtFolioOrdenCompra.Text, "OC" & Plaza.CODIGO_PLAZA.ToString)
+
+            If oOrdenCompra.Existe = False Then
+                MsgBox("La orden de compra no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                If Me.txtFolioOrdenCompra.Enabled = True Then
+                    Me.txtFolioOrdenCompra.Focus()
+                End If
+                Return False
+            End If
+
+            If Not (oOrdenCompra.ESTATUS = "G" Or oOrdenCompra.ESTATUS = "R") Then
+                MsgBox("La orden de compra no esta en estatus G(Grabada) o R(Parcialmente recepcionada).", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            Dim oOC As New Class_find("SELECT OC.FOLIO_COMPRA FROM COMPRA_GLOBAL OC INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(OC.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
+            "WHERE OC.FOLIO_COMPRA='" & sReplace(Me.txtFolioOrdenCompra.Text) & "' AND DOC.CODIGO_TIPO_DOCUMENTO='OC' ")
+
+            If txtLEN(oOC.Result1) = False Then
+                MsgBox("Este documento no es una orden de compra.", vbExclamation, sProcedure)
+                Return False
+            End If
+
+            Dim oProveedor As New Class_CatProveedores(oOrdenCompra.CODIGO_PROVEEDOR)
+
+            Me.txtProveedor.Text = oOrdenCompra.CODIGO_PROVEEDOR & "-" & oProveedor.Nombre_Proveedor
+            Me.dtpFechaEntrega.Value = oOrdenCompra.FECHA_ENTREGA
+
+            MsgBox("FALTA")
+            Me.cboEntradasAnterioresOrdenCompra.DataSource = Nothing 'Llenar combo entradas anteriores
+
+            Me.InicializaGrid()
+            Me.InicializaGridSeries()
+
+            Dim dTabla As DataTable = Me.oInventarios.ObtenerDetalleDisponiblesOrdenCompra(Me.txtFolioOrdenCompra.Text)
+            Me.Grid1.AutoRedraw = False
+            Me.Grid1.Rows = 1
+            For Each dRow As DataRow In dTabla.Rows
+                Me.Grid1.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("CANTIDAD").ToString & Chr(9) & dRow("COSTO_DETALLE").ToString & Chr(9) & dRow("IMPORTE").ToString & Chr(9) &
+                                dRow("Boton").ToString & Chr(9) & dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("NOMBRE_CUENTA").ToString & Chr(9) & dRow("ID_ADICIONAL").ToString & Chr(9) &
+                                dRow("COSTO_DETALLE").ToString & Chr(9) & "0" & Chr(9) & dRow("ID_COMPRA_DETALLE").ToString & Chr(9)) 'El 0 es para el flete pero todavia no lo calculamos
+
+            Next
+
+            bResultado = True
+
+            If valorNumericoD(Me.txtFleteOrdenCompra.Text) > 0 Then
+                Me.ProrratearFlete()
+            End If
+
+            Me.EstableceCuentaContableAlmacenDestino()
+
+            Me.Grid1.Locked = False 'Podria estar bloqueado si era un docto nuevo
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        Finally
+            Me.Grid1.AutoRedraw = True
+            Me.Grid1.Refresh()
+            Me.txtFolioOrdenCompra.Enabled = False
+            Me.btnConsultarOrdenCompra.Enabled = False
+        End Try
+
+        Return bResultado
+    End Function
+
+    Private Sub InicializaOrdenCompra()
+        Try
+            'Estos datos que se establezcan en blando deberán también establecerse en el inicializa normal
+            Me.txtFolioOrdenCompra.Text = ""
+            Me.txtFleteOrdenCompra.Text = ""
+            Me.txtProveedor.Text = ""
+            Me.dtpFechaEntrega.Value = Date.Now
+            Me.cboEntradasAnterioresOrdenCompra.DataSource = Nothing
+
+            Me.InicializaGrid()
+            Me.InicializaGridSeries()
+            If Me.txtFolioOrdenCompra.Enabled = True Then
+                Me.txtFolioOrdenCompra.Focus()
+            End If
+
+            Me.txtFolioOrdenCompra.Enabled = True
+            Me.btnConsultarOrdenCompra.Enabled = True
+
+            Me.Totales()
+        Catch ex As Exception
+            HandleError(Me.Name, "InicializaOrdenCompra", ex)
+        End Try
+    End Sub
+
+    Private Function ProrratearFlete() As Boolean
+        Const sProcedure As String = "ProrratearFlete"
+        Dim bResultado As Boolean = False
+        Try
+            Dim dFlete As Decimal = valorNumericoD(Me.txtFleteOrdenCompra.Text)
+            Dim dCantidadTotal As Decimal = CDec(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyCantidad)))
+            Dim dCantidad As Decimal = 0
+
+            If dFlete <= 0 Then
+                MsgBox("Falta capturar el flete total.", vbExclamation, sProcedure)
+                Return False
+            End If
+
+            If dCantidadTotal <= 0 Then
+                MsgBox("El total de la cantidad de todos los artículos es de 0, no se puede calcular el prorrateo.", vbExclamation, sProcedure)
+                Return False
+            End If
+
+            For i As Integer = 1 To Me.Grid1.Rows - 1
+                dCantidad = valorNumericoD(Me.Grid1.Cell(i, Me.iGyCantidad).Text)
+                Me.Grid1.Cell(i, Me.iGyCosto).Text = RedondearD((dCantidad / dCantidadTotal) * dFlete, Empresa_Sistema.DECIMALES_PRECIO).ToString
+            Next
+
+            bResultado = True
+
+            Me.Totales()
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    'Esta originalmente esta función en vez del nueva que esta mas completa.
+    'Private Function EstableceCuentaContableAlmacenDestino() As Boolean
+    '    Dim bResultado As Boolean = False
+    '    Dim i As Integer
+    '    Try
+    '        Dim oAlmacenes = New Class_CatAlmacenes(Me.CboAlmacenDestino.SelectedValue.ToString)
+    '        Dim oArticulos = New Class_CatArticulos
+
+    '        For i = 1 To Me.Grid1.Rows - 1
+    '            If txtLEN(Me.Grid1.Cell(i, Me.iGyCodigo).Text) = True Then
+    '                Me.Grid1.Cell(i, Me.iGyCuentaContable).Text = oAlmacenes.CUENTA_CONTABLE.ToString + oArticulos.ObtenerFamiliaArticulo(Me.Grid1.Cell(i, Me.iGyCodigo).Text).ToString
+    '            End If
+    '        Next
+    '        bResultado = True
+    '    Catch ex As Exception
+    '        HandleError(Me.Name, "EstableceCuentaContableAlmacenDestino", ex)
+    '    End Try
+    '    Return bResultado
+    'End Function
+
+    Private Function EstableceCuentaContableAlmacenDestino() As Boolean
+        Try
+            Dim oAlmacenes As New Class_CatAlmacenes(Me.CboAlmacen.SelectedValue.ToString), i As Integer, sCuentaContable As String = "", oCuenta As Class_CatCuentas
+            Dim oArticulos As Class_CatArticulos
+
+            For i = 1 To Me.Grid1.Rows - 1
+                If txtLEN(Me.Grid1.Cell(i, Me.iGyCodigo).Text) = True Then
+                    oArticulos = New Class_CatArticulos(Me.Grid1.Cell(i, Me.iGyCodigo).Text)
+                    If oArticulos.INVENTARIABLE = "1" Then
+                        sCuentaContable = oAlmacenes.CUENTA_CONTABLE.ToString + oArticulos.ObtenerFamiliaArticulo(Me.Grid1.Cell(i, Me.iGyCodigo).Text).ToString
+                        oCuenta = New Class_CatCuentas(sCuentaContable)
+
+                        Me.Grid1.Cell(i, Me.iGyCuentaContable).Text = sCuentaContable
+                        If oCuenta._Existe = True Then
+                            Me.Grid1.Cell(i, Me.iGyNombreCuentaContable).Text = oCuenta.NOMBRE_CUENTA
+                        Else
+                            Me.Grid1.Cell(i, Me.iGyNombreCuentaContable).Text = ""
+                        End If
+
+                    End If
+                End If
+            Next
+
+            Return True
+        Catch ex As Exception
+            HandleError(Me.Name, "EstableceCuentaContableAlmacenDestino", ex)
+        End Try
+    End Function
 #End Region
 
 End Class

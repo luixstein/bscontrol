@@ -507,16 +507,16 @@ Public Class Class_Inventarios_Global
             '        "WHERE I.FOLIO_MOVIMIENTO_INVENTARIO='" & Me._FOLIO_MOVIMIENTO_INVENTARIO & "' ORDER BY I.ID_INVENTARIO_MOVIMIENTOS_DETALLE--A.DESCRIPCION"
 
             'Las primeras 3 líneas construyen una tabla que nos trae al menos una cuenta del detalle para poder indicar que si tiene detalle, hace así y no en el mismo select principal porque se tendria que andar agrupando y haciendo varios max
-            sSQL = "With DC(ID_ADICIONAL, CUENTA_CONTABLE) " & _
-                    "AS " & _
-                    "(SELECT ID_ADICIONAL,MAX(CUENTA_CONTABLE) FROM CENTRO_COSTOS_MOVIMIENTOS_DETALLE WHERE FOLIO_MOVIMIENTO=@FOLIO_MOVIMIENTO_INVENTARIO GROUP BY FOLIO_MOVIMIENTO,ID_ADICIONAL) " & _
-                    "SELECT I.CODIGO_ARTICULO,A.DESCRIPCION,I.CANTIDAD,I.COSTO_DETALLE,I.IMPORTE,I.CUENTA_CONTABLE,CASE WHEN DC.CUENTA_CONTABLE IS NOT NULL THEN 'Tiene detalle -->>' ELSE C.NOMBRE_CUENTA END NOMBRE_CUENTA, " & _
-                    "'' Boton,I.ID_ADICIONAL " & _
-                    "FROM INVENTARIO_MOVIMIENTOS_DETALLE I  " & _
-                    "INNER JOIN CAT_ARTICULOS A ON (A.CODIGO_ARTICULO=I.CODIGO_ARTICULO)  " & _
-                    "LEFT JOIN CON_CAT_CUENTAS C ON(I.CUENTA_CONTABLE=C.CUENTA_CONTABLE) " & _
-                    "LEFT JOIN DC ON(I.ID_ADICIONAL=DC.ID_ADICIONAL) " & _
-                    "WHERE I.FOLIO_MOVIMIENTO_INVENTARIO=@FOLIO_MOVIMIENTO_INVENTARIO " & _
+            sSQL = "With DC(ID_ADICIONAL, CUENTA_CONTABLE) " &
+                    "AS " &
+                    "(SELECT ID_ADICIONAL,MAX(CUENTA_CONTABLE) FROM CENTRO_COSTOS_MOVIMIENTOS_DETALLE WHERE FOLIO_MOVIMIENTO=@FOLIO_MOVIMIENTO_INVENTARIO GROUP BY FOLIO_MOVIMIENTO,ID_ADICIONAL) " &
+                    "SELECT I.CODIGO_ARTICULO,A.DESCRIPCION,I.CANTIDAD,I.COSTO_DETALLE,I.IMPORTE,I.CUENTA_CONTABLE,CASE WHEN DC.CUENTA_CONTABLE IS NOT NULL THEN 'Tiene detalle -->>' ELSE C.NOMBRE_CUENTA END NOMBRE_CUENTA, " &
+                    "'' Boton,I.ID_ADICIONAL " &
+                    "FROM INVENTARIO_MOVIMIENTOS_DETALLE I  " &
+                    "INNER JOIN CAT_ARTICULOS A ON(A.CODIGO_ARTICULO=I.CODIGO_ARTICULO)  " &
+                    "LEFT JOIN CON_CAT_CUENTAS C ON(I.CUENTA_CONTABLE=C.CUENTA_CONTABLE) " &
+                    "LEFT JOIN DC ON(I.ID_ADICIONAL=DC.ID_ADICIONAL) " &
+                    "WHERE I.FOLIO_MOVIMIENTO_INVENTARIO=@FOLIO_MOVIMIENTO_INVENTARIO " &
                     "ORDER BY I.ID_INVENTARIO_MOVIMIENTOS_DETALLE"
 
             Using da As New SqlDataAdapter(sSQL, Me._Conexion)
@@ -532,6 +532,36 @@ Public Class Class_Inventarios_Global
 
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "ObtenerDetalle", ex)
+        End Try
+
+        Return dTabla
+    End Function
+
+    Public Function ObtenerDetalleDisponiblesOrdenCompra(ByVal sFolioOrdenCompra As String) As DataTable
+        Dim dTabla As New DataTable("detalle")
+        Dim sSQL As String
+
+        Try
+            sSQL = "SELECT R.CODIGO_ARTICULO,A.DESCRIPCION,R.DISPONIBLE CANTIDAD,R.PRECIO COSTO_DETALLE,R.IMPORTE,'' CUENTA_CONTABLE,'' NOMBRE_CUENTA, " &
+                    "'' Boton,ROW_NUMBER() OVER(ORDER BY R.ID_COMPRA_DETALLE) ID_ADICIONAL,R.ID_COMPRA_DETALLE " &
+                    "FROM COMPRA_DETALLE R  " &
+                    "INNER JOIN CAT_ARTICULOS A ON(A.CODIGO_ARTICULO=R.CODIGO_ARTICULO)  " &
+                    "WHERE R.FOLIO_COMPRA=@FOLIO_ORDEN_COMPRA AND R.DISPONIBLE>0 AND A.INVENTARIABLE='1' " &
+                    "ORDER BY R.ID_COMPRA_DETALLE"
+
+            Using da As New SqlDataAdapter(sSQL, Me._Conexion)
+
+                da.SelectCommand.CommandType = CommandType.Text
+
+                With da.SelectCommand
+                    .Parameters.Add("@FOLIO_ORDEN_COMPRA", SqlDbType.NVarChar, 15).Value = sFolioOrdenCompra
+                End With
+
+                da.Fill(dTabla)
+            End Using
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtenerDetalleDisponiblesOrdenCompra", ex)
         End Try
 
         Return dTabla
