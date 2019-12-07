@@ -147,6 +147,7 @@ Public Class Class_CatTiposCambio
 
             sqlParametro = .Parameters.Add("@FECHA", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA
             sqlParametro = .Parameters.Add("@TIPO_DE_CAMBIO", SqlDbType.Decimal) : sqlParametro.Value = Me._TIPO_DE_CAMBIO
+
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()

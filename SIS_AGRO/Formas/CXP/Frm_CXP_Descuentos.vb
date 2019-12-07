@@ -197,12 +197,20 @@ Public Class Frm_CXP_Descuentos
             Me.lblTipoCambio.Enabled = True
             Me.lblTotalDolares.Enabled = True
             Me.txtTipoCambio.Focus()
+
+            If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
+                ObtenerTipoCambioDia()
+            End If
         Else
             Me.txtTipoCambio.Enabled = False : Me.txtTipoCambio.Text = ""
             'Me.txtTotalDolares.Enabled = False
             Me.lblTipoCambio.Enabled = False
             Me.lblTotalDolares.Enabled = False : Me.txtImporteDolares.Text = ""
         End If
+    End Sub
+
+    Private Sub dtFecha_ValueChanged(sender As Object, e As EventArgs) Handles dtFecha.ValueChanged
+        ObtenerTipoCambioDia()
     End Sub
 
     Private Sub txtTipoCambio_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtTipoCambio.KeyDown
@@ -1761,5 +1769,20 @@ Buscar:
 
         Return bResultado
     End Function
+
+    Private Sub ObtenerTipoCambioDia()
+        Dim oTipoCambio As New Class_CatTiposCambio(Me.dtFecha.Value)
+        Me.txtTipoCambio.Enabled = False
+        Me.txtTipoCambio.Text = "0"
+
+        If oTipoCambio.Existe AndAlso oTipoCambio.TIPO_DE_CAMBIO > 0 Then
+            Me.txtTipoCambio.Text = oTipoCambio.TIPO_DE_CAMBIO.ToString
+        Else
+            If Me.ckbDolares.Checked = True Then
+                MsgBox("No se ha capturado el tipo de cambio del día.", MsgBoxStyle.Exclamation, Me.Text)
+            End If
+        End If
+
+    End Sub
 
 End Class

@@ -191,6 +191,7 @@ busca:
             If Me.cboMoneda.Text = "USD" Then
                 Me.txtTipoCambio.Visible = True : Me.txtTipoCambio.Enabled = True : Me.lblDisplayTipoCambio.Visible = True
                 Me.gbDolares.Visible = True
+
             Else
                 Me.txtTipoCambio.Visible = False : Me.txtTipoCambio.Enabled = False : Me.lblDisplayTipoCambio.Visible = False
                 Me.gbDolares.Visible = False

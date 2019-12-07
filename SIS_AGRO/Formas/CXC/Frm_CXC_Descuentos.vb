@@ -374,6 +374,7 @@ Buscar:
             If Me.cboMoneda.Text = "USD" Then
                 Me.txtTipoCambio.Visible = True : Me.txtTipoCambio.Enabled = True : Me.lblDisplayTipoCambio.Visible = True 'El tipo de cambio siempre estará readonly true(aunque este enabled), se llenará automáticamente.
                 Me.gbDolares.Visible = True
+                ObtenerTipoCambioDia()
             Else
                 Me.txtTipoCambio.Visible = False : Me.txtTipoCambio.Enabled = False : Me.lblDisplayTipoCambio.Visible = False
                 Me.gbDolares.Visible = False
@@ -381,6 +382,10 @@ Buscar:
         Catch ex As Exception
             HandleError(Me.Name, "cboMoneda_SelectedIndexChanged", ex)
         End Try
+    End Sub
+
+    Private Sub dtFecha_ValueChanged(sender As Object, e As EventArgs) Handles dtFecha.ValueChanged
+        ObtenerTipoCambioDia()
     End Sub
 
 #End Region
@@ -1468,6 +1473,21 @@ Buscar:
         Catch ex As Exception
             HandleError(Me.Name, "DesplegarTiposRelacionCFDI", ex)
         End Try
+    End Sub
+
+    Private Sub ObtenerTipoCambioDia()
+        Dim oTipoCambio As New Class_CatTiposCambio(Me.dtFecha.Value)
+        Me.txtTipoCambio.Enabled = False
+        Me.txtTipoCambio.Text = "0"
+
+        If oTipoCambio.Existe AndAlso oTipoCambio.TIPO_DE_CAMBIO > 0 Then
+            Me.txtTipoCambio.Text = oTipoCambio.TIPO_DE_CAMBIO.ToString
+        Else
+            If Me.cboMoneda.Text = "USD" Then
+                MsgBox("No se ha capturado el tipo de cambio del día.", MsgBoxStyle.Exclamation, Me.Text)
+            End If
+        End If
+
     End Sub
 
 #End Region

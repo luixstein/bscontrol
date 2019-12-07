@@ -351,6 +351,10 @@ Buscar:
 
     Private Sub DtpFecha_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DtpFecha.ValueChanged
         Me.dtpFechaVencimiento.Value = Me.DtpFecha.Value.AddDays(CDbl(Me.txtPlazo.Text))
+
+        If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
+            ObtenerTipoCambioDia()
+        End If
     End Sub
 
     Private Sub txtPlazo_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtPlazo.KeyDown
@@ -373,6 +377,10 @@ Buscar:
         If Me.cboMoneda.SelectedIndex = 1 Then
             Me.txtTipoCambio.Enabled = True
             Me.gbUSD.Visible = True
+
+            If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
+                ObtenerTipoCambioDia()
+            End If
         Else
             Me.txtTipoCambio.Enabled = False
             Me.gbUSD.Visible = False
@@ -3044,6 +3052,21 @@ BuscarCuentas:
 
         Return bResultado
     End Function
+
+    Private Sub ObtenerTipoCambioDia()
+        Dim oTipoCambio As New Class_CatTiposCambio(Me.DtpFecha.Value)
+        Me.txtTipoCambio.Enabled = False
+        Me.txtTipoCambio.Text = "0"
+
+        If oTipoCambio.Existe AndAlso oTipoCambio.TIPO_DE_CAMBIO > 0 Then
+            Me.txtTipoCambio.Text = oTipoCambio.TIPO_DE_CAMBIO.ToString
+        Else
+            If Me.cboMoneda.SelectedIndex = 1 Then
+                MsgBox("No se ha capturado el tipo de cambio del día.", MsgBoxStyle.Exclamation, Me.Text)
+            End If
+        End If
+
+    End Sub
 
 #End Region
 

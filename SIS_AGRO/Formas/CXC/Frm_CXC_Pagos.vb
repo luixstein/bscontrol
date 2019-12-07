@@ -408,6 +408,10 @@ Buscar:
                 Me.GridVentas.Column(Me.iGyVentaSaldoDlls).Visible = True
                 Me.GridVentas.Column(Me.iGyVentaDiferencia).Visible = True
                 Me.GridVentas.Column(Me.iGyVentaPagoPesos).Visible = True
+
+                If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
+                    ObtenerTipoCambioDia()
+                End If
             Else
                 Me.txtTipoCambio.Enabled = False : Me.txtTipoCambio.Text = ""
                 'Me.txtTotalDolares.Enabled = False
@@ -425,6 +429,12 @@ Buscar:
         Catch ex As Exception
             HandleError(Me.Name, "cboMoneda_SelectedIndexChanged", ex)
         End Try
+    End Sub
+
+    Private Sub dtFecha_ValueChanged(sender As Object, e As EventArgs) Handles dtFecha.ValueChanged
+        If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
+            ObtenerTipoCambioDia()
+        End If
     End Sub
 
     Private Sub txtTipoCambio_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtTipoCambio.KeyDown
@@ -2328,6 +2338,11 @@ Buscar:
         Try
             Me.GridVentas.Visible = False
             Me.Inicializa()
+
+            If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
+                ObtenerTipoCambioDia()
+            End If
+
             Me.oBancosCXC = New Class_Bancos_CXC(sFolio)
             Me.oPolizaGlobal = New Class_Contabilidad_Poliza_Global(sFolio)
 
@@ -3562,6 +3577,21 @@ Buscar:
         Finally
             oReporte = Nothing
         End Try
+    End Sub
+
+    Private Sub ObtenerTipoCambioDia()
+        Dim oTipoCambio As New Class_CatTiposCambio(Me.dtFecha.Value)
+        Me.txtTipoCambio.Enabled = False
+        Me.txtTipoCambio.Text = "0"
+
+        If oTipoCambio.Existe AndAlso oTipoCambio.TIPO_DE_CAMBIO > 0 Then
+            Me.txtTipoCambio.Text = oTipoCambio.TIPO_DE_CAMBIO.ToString
+        Else
+            If Me.cboMoneda.Text = "USD" Then
+                MsgBox("No se ha capturado el tipo de cambio del día.", MsgBoxStyle.Exclamation, Me.Text)
+            End If
+        End If
+
     End Sub
 
 #End Region

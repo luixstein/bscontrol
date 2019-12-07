@@ -634,6 +634,14 @@ buscar_acreedor:
         Me.ObtieneTipoCambioDia()
     End Sub
 
+    Private Sub cboMoneda_SelectedValueChanged(sender As Object, e As EventArgs) Handles cboMoneda.SelectedValueChanged
+        If Me.cboMoneda.SelectedValue = 2 Then
+            If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
+                ObtieneTipoCambioDia()
+            End If
+        End If
+    End Sub
+
 #Region "Eventos Genericos"
     Private Sub txt_Enter(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim oTexBox As TextBox = CType(sender, TextBox)
@@ -2117,7 +2125,13 @@ buscar_acreedor:
                     Me.TxtCuentaBancaria.Enabled = True
                     'Me.ckbDolares.Enabled = False
                     Me.cboMoneda.Enabled = False
-                    Me.txtTipoCambio.Enabled = True
+
+                    If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
+                        Me.txtTipoCambio.Enabled = False
+                    Else
+                        Me.txtTipoCambio.Enabled = True
+                    End If
+
                     Me.txtImporteDolares.Enabled = False
                     Me.CboFacturasRecibidas.Enabled = True
                     Me.lblFacturasRecibidas.Enabled = True
@@ -2611,9 +2625,25 @@ BuscaEmbarque:
     Private Sub ObtieneTipoCambioDia()
         Try
             Dim oTipoCambio As New Class_CatTiposCambio(Me.dtFecha.Value)
-            If oTipoCambio.Existe = True Then
-                Me.txtTipoCambio.Text = Format(oTipoCambio.TIPO_DE_CAMBIO, "###,##0.0000")
+
+            If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
+                Me.txtTipoCambio.Enabled = False
+                Me.txtTipoCambio.Text = "0"
+
+                If oTipoCambio.Existe AndAlso oTipoCambio.TIPO_DE_CAMBIO > 0 Then
+                    Me.txtTipoCambio.Text = Format(oTipoCambio.TIPO_DE_CAMBIO, "###,##0.0000")
+                Else
+                    If Me.cboMoneda.SelectedValue = 2 Then
+                        MsgBox("No se ha capturado el tipo de cambio del día.", MsgBoxStyle.Exclamation, Me.Text)
+                    End If
+                End If
+
+            Else
+                If oTipoCambio.Existe = True Then
+                    Me.txtTipoCambio.Text = Format(oTipoCambio.TIPO_DE_CAMBIO, "###,##0.0000")
+                End If
             End If
+            
             oTipoCambio = Nothing
         Catch ex As Exception
             HandleError(Me.Name, "ObtieneTipoCambioDia", ex)

@@ -229,9 +229,9 @@ Partial Class Frm_CXC_Descuentos
         '
         Me.gbFacturas.Controls.Add(Me.Grid)
         Me.gbFacturas.Location = New System.Drawing.Point(16, 314)
-        Me.gbFacturas.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbFacturas.Margin = New System.Windows.Forms.Padding(4)
         Me.gbFacturas.Name = "gbFacturas"
-        Me.gbFacturas.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbFacturas.Padding = New System.Windows.Forms.Padding(4)
         Me.gbFacturas.Size = New System.Drawing.Size(1125, 174)
         Me.gbFacturas.TabIndex = 1
         Me.gbFacturas.TabStop = False
@@ -250,7 +250,7 @@ Partial Class Frm_CXC_Descuentos
         Me.Grid.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.Grid.Location = New System.Drawing.Point(16, 23)
         Me.Grid.LockButton = True
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid.Name = "Grid"
         Me.Grid.Rows = 20
         Me.Grid.Size = New System.Drawing.Size(1101, 146)
@@ -294,9 +294,9 @@ Partial Class Frm_CXC_Descuentos
         Me.gbGlobal.Controls.Add(Me.lblDisplayStatus)
         Me.gbGlobal.Controls.Add(Me.LblStatus)
         Me.gbGlobal.Location = New System.Drawing.Point(16, 34)
-        Me.gbGlobal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbGlobal.Margin = New System.Windows.Forms.Padding(4)
         Me.gbGlobal.Name = "gbGlobal"
-        Me.gbGlobal.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbGlobal.Padding = New System.Windows.Forms.Padding(4)
         Me.gbGlobal.Size = New System.Drawing.Size(1125, 276)
         Me.gbGlobal.TabIndex = 0
         Me.gbGlobal.TabStop = False
@@ -307,7 +307,7 @@ Partial Class Frm_CXC_Descuentos
         Me.cboTipoRelacionCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboTipoRelacionCFDI.FormattingEnabled = True
         Me.cboTipoRelacionCFDI.Location = New System.Drawing.Point(648, 81)
-        Me.cboTipoRelacionCFDI.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboTipoRelacionCFDI.Margin = New System.Windows.Forms.Padding(4)
         Me.cboTipoRelacionCFDI.MaxLength = 1
         Me.cboTipoRelacionCFDI.Name = "cboTipoRelacionCFDI"
         Me.cboTipoRelacionCFDI.Size = New System.Drawing.Size(449, 24)
@@ -347,7 +347,7 @@ Partial Class Frm_CXC_Descuentos
         'btnCargarFacturas
         '
         Me.btnCargarFacturas.Location = New System.Drawing.Point(16, 209)
-        Me.btnCargarFacturas.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnCargarFacturas.Margin = New System.Windows.Forms.Padding(4)
         Me.btnCargarFacturas.Name = "btnCargarFacturas"
         Me.btnCargarFacturas.Size = New System.Drawing.Size(219, 28)
         Me.btnCargarFacturas.TabIndex = 7
@@ -359,7 +359,7 @@ Partial Class Frm_CXC_Descuentos
         Me.CboDocumento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboDocumento.FormattingEnabled = True
         Me.CboDocumento.Location = New System.Drawing.Point(137, 16)
-        Me.CboDocumento.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboDocumento.Margin = New System.Windows.Forms.Padding(4)
         Me.CboDocumento.Name = "CboDocumento"
         Me.CboDocumento.Size = New System.Drawing.Size(321, 24)
         Me.CboDocumento.TabIndex = 0
@@ -390,7 +390,7 @@ Partial Class Frm_CXC_Descuentos
         Me.cboMetodoPago.Enabled = False
         Me.cboMetodoPago.FormattingEnabled = True
         Me.cboMetodoPago.Location = New System.Drawing.Point(648, 144)
-        Me.cboMetodoPago.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboMetodoPago.Margin = New System.Windows.Forms.Padding(4)
         Me.cboMetodoPago.MaxLength = 1
         Me.cboMetodoPago.Name = "cboMetodoPago"
         Me.cboMetodoPago.Size = New System.Drawing.Size(400, 24)
@@ -400,7 +400,7 @@ Partial Class Frm_CXC_Descuentos
         '
         Me.chkVentaPublicoGeneral.AutoSize = True
         Me.chkVentaPublicoGeneral.Location = New System.Drawing.Point(523, 181)
-        Me.chkVentaPublicoGeneral.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.chkVentaPublicoGeneral.Margin = New System.Windows.Forms.Padding(4)
         Me.chkVentaPublicoGeneral.Name = "chkVentaPublicoGeneral"
         Me.chkVentaPublicoGeneral.Size = New System.Drawing.Size(214, 21)
         Me.chkVentaPublicoGeneral.TabIndex = 10
@@ -413,7 +413,7 @@ Partial Class Frm_CXC_Descuentos
         Me.cboFormaPago.Enabled = False
         Me.cboFormaPago.FormattingEnabled = True
         Me.cboFormaPago.Location = New System.Drawing.Point(137, 144)
-        Me.cboFormaPago.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboFormaPago.Margin = New System.Windows.Forms.Padding(4)
         Me.cboFormaPago.Name = "cboFormaPago"
         Me.cboFormaPago.Size = New System.Drawing.Size(343, 24)
         Me.cboFormaPago.TabIndex = 7
@@ -433,7 +433,7 @@ Partial Class Frm_CXC_Descuentos
         Me.cboMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboMoneda.FormattingEnabled = True
         Me.cboMoneda.Location = New System.Drawing.Point(137, 80)
-        Me.cboMoneda.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboMoneda.Margin = New System.Windows.Forms.Padding(4)
         Me.cboMoneda.Name = "cboMoneda"
         Me.cboMoneda.Size = New System.Drawing.Size(109, 24)
         Me.cboMoneda.TabIndex = 2
@@ -443,7 +443,7 @@ Partial Class Frm_CXC_Descuentos
         Me.cboUsoCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboUsoCFDI.FormattingEnabled = True
         Me.cboUsoCFDI.Location = New System.Drawing.Point(648, 49)
-        Me.cboUsoCFDI.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboUsoCFDI.Margin = New System.Windows.Forms.Padding(4)
         Me.cboUsoCFDI.MaxLength = 1
         Me.cboUsoCFDI.Name = "cboUsoCFDI"
         Me.cboUsoCFDI.Size = New System.Drawing.Size(449, 24)
@@ -452,7 +452,7 @@ Partial Class Frm_CXC_Descuentos
         'btnNotaSiguiente
         '
         Me.btnNotaSiguiente.Location = New System.Drawing.Point(308, 48)
-        Me.btnNotaSiguiente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnNotaSiguiente.Margin = New System.Windows.Forms.Padding(4)
         Me.btnNotaSiguiente.Name = "btnNotaSiguiente"
         Me.btnNotaSiguiente.Size = New System.Drawing.Size(64, 26)
         Me.btnNotaSiguiente.TabIndex = 374
@@ -472,7 +472,7 @@ Partial Class Frm_CXC_Descuentos
         'btnNotaAnterior
         '
         Me.btnNotaAnterior.Location = New System.Drawing.Point(236, 48)
-        Me.btnNotaAnterior.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnNotaAnterior.Margin = New System.Windows.Forms.Padding(4)
         Me.btnNotaAnterior.Name = "btnNotaAnterior"
         Me.btnNotaAnterior.Size = New System.Drawing.Size(64, 26)
         Me.btnNotaAnterior.TabIndex = 373
@@ -482,7 +482,6 @@ Partial Class Frm_CXC_Descuentos
         'lblDisplayTipoCambio
         '
         Me.lblDisplayTipoCambio.AutoSize = True
-        Me.lblDisplayTipoCambio.Enabled = False
         Me.lblDisplayTipoCambio.Location = New System.Drawing.Point(252, 85)
         Me.lblDisplayTipoCambio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayTipoCambio.Name = "lblDisplayTipoCambio"
@@ -493,7 +492,7 @@ Partial Class Frm_CXC_Descuentos
         'TxtConcepto2
         '
         Me.TxtConcepto2.Location = New System.Drawing.Point(343, 244)
-        Me.TxtConcepto2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtConcepto2.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtConcepto2.MaxLength = 200
         Me.TxtConcepto2.Name = "TxtConcepto2"
         Me.TxtConcepto2.Size = New System.Drawing.Size(705, 22)
@@ -503,7 +502,7 @@ Partial Class Frm_CXC_Descuentos
         '
         Me.txtTipoCambio.Enabled = False
         Me.txtTipoCambio.Location = New System.Drawing.Point(375, 80)
-        Me.txtTipoCambio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtTipoCambio.Margin = New System.Windows.Forms.Padding(4)
         Me.txtTipoCambio.MaxLength = 15
         Me.txtTipoCambio.Name = "txtTipoCambio"
         Me.txtTipoCambio.Size = New System.Drawing.Size(105, 22)
@@ -552,7 +551,7 @@ Partial Class Frm_CXC_Descuentos
         'dtFecha
         '
         Me.dtFecha.Location = New System.Drawing.Point(137, 177)
-        Me.dtFecha.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.dtFecha.Margin = New System.Windows.Forms.Padding(4)
         Me.dtFecha.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dtFecha.Name = "dtFecha"
         Me.dtFecha.Size = New System.Drawing.Size(285, 22)
@@ -570,7 +569,7 @@ Partial Class Frm_CXC_Descuentos
         'TxtConcepto
         '
         Me.TxtConcepto.Location = New System.Drawing.Point(343, 213)
-        Me.TxtConcepto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtConcepto.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtConcepto.MaxLength = 200
         Me.TxtConcepto.Name = "TxtConcepto"
         Me.TxtConcepto.Size = New System.Drawing.Size(705, 22)
@@ -599,7 +598,7 @@ Partial Class Frm_CXC_Descuentos
         'TxtCodigoCliente
         '
         Me.TxtCodigoCliente.Location = New System.Drawing.Point(137, 113)
-        Me.TxtCodigoCliente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodigoCliente.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigoCliente.MaxLength = 8
         Me.TxtCodigoCliente.Name = "TxtCodigoCliente"
         Me.TxtCodigoCliente.Size = New System.Drawing.Size(139, 22)
@@ -619,7 +618,7 @@ Partial Class Frm_CXC_Descuentos
         '
         Me.TxtFolio.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TxtFolio.Location = New System.Drawing.Point(137, 49)
-        Me.TxtFolio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtFolio.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtFolio.MaxLength = 160
         Me.TxtFolio.Name = "TxtFolio"
         Me.TxtFolio.Size = New System.Drawing.Size(139, 23)
@@ -656,9 +655,9 @@ Partial Class Frm_CXC_Descuentos
         Me.gbTotales.Controls.Add(Me.LblDisplayIVA)
         Me.gbTotales.Controls.Add(Me.TxtImpuesto)
         Me.gbTotales.Location = New System.Drawing.Point(861, 495)
-        Me.gbTotales.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbTotales.Margin = New System.Windows.Forms.Padding(4)
         Me.gbTotales.Name = "gbTotales"
-        Me.gbTotales.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbTotales.Padding = New System.Windows.Forms.Padding(4)
         Me.gbTotales.Size = New System.Drawing.Size(272, 130)
         Me.gbTotales.TabIndex = 244
         Me.gbTotales.TabStop = False
@@ -678,7 +677,7 @@ Partial Class Frm_CXC_Descuentos
         '
         Me.txtIEPS.Enabled = False
         Me.txtIEPS.Location = New System.Drawing.Point(111, 46)
-        Me.txtIEPS.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtIEPS.Margin = New System.Windows.Forms.Padding(4)
         Me.txtIEPS.MaxLength = 160
         Me.txtIEPS.Name = "txtIEPS"
         Me.txtIEPS.Size = New System.Drawing.Size(131, 22)
@@ -699,7 +698,7 @@ Partial Class Frm_CXC_Descuentos
         '
         Me.TxtTotal.Enabled = False
         Me.TxtTotal.Location = New System.Drawing.Point(111, 97)
-        Me.TxtTotal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtTotal.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtTotal.MaxLength = 160
         Me.TxtTotal.Name = "TxtTotal"
         Me.TxtTotal.Size = New System.Drawing.Size(131, 22)
@@ -720,7 +719,7 @@ Partial Class Frm_CXC_Descuentos
         '
         Me.TxtSubTotal.Enabled = False
         Me.TxtSubTotal.Location = New System.Drawing.Point(111, 20)
-        Me.TxtSubTotal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtSubTotal.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtSubTotal.MaxLength = 160
         Me.TxtSubTotal.Name = "TxtSubTotal"
         Me.TxtSubTotal.Size = New System.Drawing.Size(131, 22)
@@ -741,7 +740,7 @@ Partial Class Frm_CXC_Descuentos
         '
         Me.TxtImpuesto.Enabled = False
         Me.TxtImpuesto.Location = New System.Drawing.Point(111, 71)
-        Me.TxtImpuesto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtImpuesto.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtImpuesto.MaxLength = 160
         Me.TxtImpuesto.Name = "TxtImpuesto"
         Me.TxtImpuesto.Size = New System.Drawing.Size(131, 22)
@@ -762,7 +761,7 @@ Partial Class Frm_CXC_Descuentos
         '
         Me.txtIEPSIncluido.Enabled = False
         Me.txtIEPSIncluido.Location = New System.Drawing.Point(721, 540)
-        Me.txtIEPSIncluido.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtIEPSIncluido.Margin = New System.Windows.Forms.Padding(4)
         Me.txtIEPSIncluido.MaxLength = 160
         Me.txtIEPSIncluido.Name = "txtIEPSIncluido"
         Me.txtIEPSIncluido.Size = New System.Drawing.Size(131, 22)
@@ -778,9 +777,9 @@ Partial Class Frm_CXC_Descuentos
         Me.gbDolares.Controls.Add(Me.lblDisplaySubtotalDolares)
         Me.gbDolares.Controls.Add(Me.lblDisplayImpuestoDolares)
         Me.gbDolares.Location = New System.Drawing.Point(376, 529)
-        Me.gbDolares.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbDolares.Margin = New System.Windows.Forms.Padding(4)
         Me.gbDolares.Name = "gbDolares"
-        Me.gbDolares.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbDolares.Padding = New System.Windows.Forms.Padding(4)
         Me.gbDolares.Size = New System.Drawing.Size(235, 96)
         Me.gbDolares.TabIndex = 325
         Me.gbDolares.TabStop = False
@@ -881,7 +880,7 @@ Partial Class Frm_CXC_Descuentos
         Me.Controls.Add(Me.tsMenu)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.KeyPreview = True
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Frm_CXC_Descuentos"
         Me.Text = "Descuentos"

@@ -562,7 +562,7 @@ Buscar:
 
     Private Sub cboMoneda_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboMoneda.SelectedIndexChanged
         Try
-            Me.GestionaMoneda
+            Me.GestionaMoneda()
 
             Select Case Me.cboTipoNegociacion.Text
                 Case "CREDITO"
@@ -572,6 +572,7 @@ Buscar:
                         Me.EstableceFormaPagoCliente()
                     End If
             End Select
+
         Catch ex As Exception
             HandleError(Me.Name, "cboMoneda_SelectedIndexChanged", ex)
         End Try
@@ -636,6 +637,10 @@ Buscar:
 
     Private Sub dpFecha_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles dpFecha.ValueChanged
         Me.dpVencimiento.Value = Me.dpFecha.Value.AddDays(valorNumerico(Me.txtPlazo.Text))
+
+        If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True And Me.cboMoneda.Text = "USD" Then
+            ObtenerTipoCambioDia()
+        End If
     End Sub
 
     Private Sub LblPoliza_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LblPoliza.LinkClicked
@@ -754,12 +759,20 @@ Buscar:
     End Sub
 
     Private Sub cboMoneda_KeyDown(sender As Object, e As KeyEventArgs) Handles cboMoneda.KeyDown
-        If Me.cboMoneda.Text = "USD" And Me.txtTipoCambio.Enabled = True Then
-            Me.txtTipoCambio.Focus()
+        If Me.cboMoneda.Text = "USD" Then
+            If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
+                ObtenerTipoCambioDia()
+            End If
+
+            If Me.txtTipoCambio.Enabled = True Then
+                Me.txtTipoCambio.Focus()
+            End If
+
         ElseIf Me.TxtCliente.Enabled = True Then
             Me.TxtCliente.Focus()
         End If
     End Sub
+
 
     Private Sub cboUsoCFDI_KeyDown(sender As Object, e As KeyEventArgs) Handles cboUsoCFDI.KeyDown
         txtTAB(e)
@@ -4956,6 +4969,10 @@ BuscaVentas:
                 Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Visible = False
             End If
 
+            If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
+                ObtenerTipoCambioDia()
+            End If
+
         Else 'Es moneda en MXN o esta en blanco
             Me.txtTipoCambio.Text = "0"
             Me.txtTipoCambio.Visible = False : Me.txtTipoCambio.Enabled = False : Me.lblDisplayTipoCambio.Visible = False
@@ -4980,6 +4997,21 @@ BuscaVentas:
                 Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Visible = True
             End If
         End If
+    End Sub
+
+    Private Sub ObtenerTipoCambioDia()
+        Dim oTipoCambio As New Class_CatTiposCambio(Me.dpFecha.Value)
+        Me.txtTipoCambio.Enabled = False
+        Me.txtTipoCambio.Text = "0"
+
+        If oTipoCambio.Existe AndAlso oTipoCambio.TIPO_DE_CAMBIO > 0 Then
+            Me.txtTipoCambio.Text = oTipoCambio.TIPO_DE_CAMBIO.ToString
+        Else
+            If Me.cboMoneda.Text = "USD" Then
+                MsgBox("No se ha capturado el tipo de cambio del día.", MsgBoxStyle.Exclamation, Me.Text)
+            End If
+        End If
+
     End Sub
 #End Region
 

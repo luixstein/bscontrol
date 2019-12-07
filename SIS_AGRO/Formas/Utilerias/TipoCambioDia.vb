@@ -5,7 +5,7 @@
 
         ' This call is required by the designer.
         InitializeComponent()
-        Me.Label1.Text = "Tipo de cambio de hoy " & Date.Now.ToShortDateString & " :"
+        Me.dpFecha.Value = Date.Now
         Consultar()
 
     End Sub
@@ -30,7 +30,7 @@
 
     Private Sub Consultar()
 
-        oTipoCambioDia.FECHA = Date.Now
+        oTipoCambioDia.FECHA = Me.dpFecha.Value
         If oTipoCambioDia.Consultar = True And oTipoCambioDia.TIPO_DE_CAMBIO <> 0 Then
             Me.TxtTipoCambio.Text = oTipoCambioDia.TIPO_DE_CAMBIO.ToString
             Me.tsbGrabar.Enabled = False
@@ -62,7 +62,7 @@
         oTipoCambioDia = New Class_CatTiposCambio()
         Try
             With Me.oTipoCambioDia
-                .FECHA = Date.Now
+                .FECHA = Me.dpFecha.Value
                 .TIPO_DE_CAMBIO = CDec(Me.TxtTipoCambio.Text)
 
                 If .GrabarTipoCambio() = False Then
@@ -81,5 +81,9 @@
     Private Sub TxtTipoCambio_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TxtTipoCambio.KeyPress
         txtSoloNumerosDecimales(e, Me.TxtTipoCambio.Text)
         txtNoBeep(e)
+    End Sub
+
+    Private Sub dpFecha_ValueChanged(sender As Object, e As EventArgs) Handles dpFecha.ValueChanged
+        Consultar()
     End Sub
 End Class

@@ -27,6 +27,7 @@ Partial Class TipoCambioDia
         Me.tsbGrabar = New System.Windows.Forms.ToolStripButton()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TxtTipoCambio = New System.Windows.Forms.TextBox()
+        Me.dpFecha = New System.Windows.Forms.DateTimePicker()
         Me.tsMenu.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -54,9 +55,9 @@ Partial Class TipoCambioDia
         Me.Label1.Location = New System.Drawing.Point(13, 43)
         Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(152, 17)
+        Me.Label1.Size = New System.Drawing.Size(136, 17)
         Me.Label1.TabIndex = 23
-        Me.Label1.Text = "Tipo de cambio de hoy"
+        Me.Label1.Text = "Tipo de cambio del :"
         '
         'TxtTipoCambio
         '
@@ -68,11 +69,24 @@ Partial Class TipoCambioDia
         Me.TxtTipoCambio.TabIndex = 24
         Me.TxtTipoCambio.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
+        'dpFecha
+        '
+        Me.dpFecha.Cursor = System.Windows.Forms.Cursors.Default
+        Me.dpFecha.CustomFormat = "dd-MMM-yyyy"
+        Me.dpFecha.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.dpFecha.Location = New System.Drawing.Point(157, 38)
+        Me.dpFecha.Margin = New System.Windows.Forms.Padding(4)
+        Me.dpFecha.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
+        Me.dpFecha.Name = "dpFecha"
+        Me.dpFecha.Size = New System.Drawing.Size(136, 22)
+        Me.dpFecha.TabIndex = 25
+        '
         'TipoCambioDia
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(323, 163)
+        Me.Controls.Add(Me.dpFecha)
         Me.Controls.Add(Me.TxtTipoCambio)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.tsMenu)
@@ -88,4 +102,5 @@ Partial Class TipoCambioDia
     Friend WithEvents tsbGrabar As System.Windows.Forms.ToolStripButton
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents TxtTipoCambio As System.Windows.Forms.TextBox
+    Friend WithEvents dpFecha As System.Windows.Forms.DateTimePicker
 End Class
