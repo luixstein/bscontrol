@@ -377,7 +377,7 @@ BuscarCuentas:
                 .TOTAL = valorNumerico(Me.TxtCostoTotal.Text)
                 .FOLIO_EMBARQUE = ""
 
-                If .Insertar() = False Then
+                If .Grabar("INSERTAR") = False Then
                     MsgBox("Error al tratar de insertar el movimiento de salida de inventario.", MsgBoxStyle.Exclamation, Me.Text)
                     Exit Function
                 End If
@@ -481,7 +481,7 @@ BuscarCuentas:
                 .TOTAL = valorNumerico(Me.TxtCostoTotal.Text)
                 .FOLIO_EMBARQUE = ""
 
-                If .Insertar() = False Then
+                If .Grabar("INSERTAR") = False Then
                     MsgBox("Error al tratar de insertar el movimiento de entrada de inventario.", MsgBoxStyle.Exclamation, Me.Text)
                     Exit Function
                 End If

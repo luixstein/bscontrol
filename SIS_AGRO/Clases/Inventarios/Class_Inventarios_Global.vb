@@ -1,5 +1,4 @@
 ﻿Option Strict On
-Imports System.Data
 Imports System.Data.SqlClient
 
 Public Class Class_Inventarios_Global
@@ -27,7 +26,8 @@ Public Class Class_Inventarios_Global
     Private _ESTATUS As String
     Private _FOLIO_EMBARQUE As String
     Private _CODIGO_CONCEPTO_INVENTARIOS As Integer
-
+    Private _COSTO_TOTAL_BASE As Decimal = 0
+    Private _FLETE_TOTAL As Decimal = 0
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -228,6 +228,24 @@ Public Class Class_Inventarios_Global
             Me._CODIGO_CONCEPTO_INVENTARIOS = Value
         End Set
     End Property
+
+    Public Property COSTO_TOTAL_BASE() As Decimal
+        Get
+            Return Me._COSTO_TOTAL_BASE
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._COSTO_TOTAL_BASE = Value
+        End Set
+    End Property
+
+    Public Property FLETE_TOTAL() As Decimal
+        Get
+            Return Me._FLETE_TOTAL
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._FLETE_TOTAL = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -250,6 +268,7 @@ Public Class Class_Inventarios_Global
 #Region "Propiedades de campos privados"
 
 #End Region
+
 #Region "Propiedades de campos de sistema"
     Public ReadOnly Property Nombre_Catalogo() As String
         Get
@@ -302,7 +321,7 @@ Public Class Class_Inventarios_Global
 #End Region
 
 #Region "Métodos y procedimientos"
-    Public Function Actualizar() As Boolean
+    Public Function Grabar(ByVal sAccion As String) As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -312,7 +331,7 @@ Public Class Class_Inventarios_Global
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_INVENTARIOS_MOVIMIENTOS_GRABA_GLOBAL"
 
-            sqlParametro = .Parameters.Add("@FOLIO_MOVIMIENTO_INVENTARIO", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_MOVIMIENTO_INVENTARIO.ToUpper
+            sqlParametro = .Parameters.Add("@FOLIO_MOVIMIENTO_INVENTARIO", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_MOVIMIENTO_INVENTARIO.ToUpper : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_DOCUMENTO", SqlDbType.NVarChar, 10) : sqlParametro.Value = "" & Me._CODIGO_TIPO_DOCUMENTO.ToUpper
             sqlParametro = .Parameters.Add("@FOLIO_REFERENCIA", SqlDbType.NVarChar, 15) : sqlParametro.Value = "" & Me._FOLIO_REFERENCIA.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_ALMACEN1", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_ALMACEN1
@@ -322,9 +341,11 @@ Public Class Class_Inventarios_Global
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO", SqlDbType.SmallInt) : sqlParametro.Value = "" & Me._CODIGO_USUARIO
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PLAZA
             sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL
-            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "ACTUALIZAR"
+            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = sAccion ' "ACTUALIZAR", "INSERTAR"
             sqlParametro = .Parameters.Add("@FOLIO_EMBARQUE", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_EMBARQUE.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_CONCEPTO_INVENTARIOS", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CONCEPTO_INVENTARIOS
+            sqlParametro = .Parameters.Add("@COSTO_TOTAL_BASE", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO_TOTAL_BASE
+            sqlParametro = .Parameters.Add("@FLETE_TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._FLETE_TOTAL
 
             Try
                 Me._Conexion.Open()
@@ -333,46 +354,6 @@ Public Class Class_Inventarios_Global
                 Me._FOLIO_MOVIMIENTO_INVENTARIO = "" & .Parameters("@FOLIO_MOVIMIENTO_INVENTARIO").Value.ToString
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
-            Finally
-                Me._Conexion.Close()
-                cmd.Dispose()
-                sqlParametro = Nothing
-            End Try
-        End With
-        Return bResultado
-    End Function
-
-    Public Function Insertar() As Boolean
-        Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand
-        Dim sqlParametro As SqlParameter
-        With cmd
-            .Connection = Me._Conexion
-            .CommandTimeout = 0
-            .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_INVENTARIOS_MOVIMIENTOS_GRABA_GLOBAL"
-
-            sqlParametro = .Parameters.Add("@FOLIO_MOVIMIENTO_INVENTARIO", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_MOVIMIENTO_INVENTARIO.ToString : sqlParametro.Direction = ParameterDirection.InputOutput
-            sqlParametro = .Parameters.Add("@CODIGO_TIPO_DOCUMENTO", SqlDbType.NVarChar, 10) : sqlParametro.Value = "" & Me._CODIGO_TIPO_DOCUMENTO.ToUpper
-            sqlParametro = .Parameters.Add("@FOLIO_REFERENCIA", SqlDbType.NVarChar, 15) : sqlParametro.Value = "" & Me._FOLIO_REFERENCIA.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_ALMACEN1", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_ALMACEN1
-            sqlParametro = .Parameters.Add("@CODIGO_ALMACEN2", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_ALMACEN2
-            sqlParametro = .Parameters.Add("@FECHA", SqlDbType.SmallDateTime) : sqlParametro.Value = "" & Me._FECHA
-            sqlParametro = .Parameters.Add("@CONCEPTO", SqlDbType.NVarChar, 160) : sqlParametro.Value = "" & Me._CONCEPTO.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_USUARIO", SqlDbType.SmallInt) : sqlParametro.Value = "" & Me._CODIGO_USUARIO
-            sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PLAZA
-            sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL
-            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "INSERTAR"
-            sqlParametro = .Parameters.Add("@FOLIO_EMBARQUE", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_EMBARQUE.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_CONCEPTO_INVENTARIOS", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CONCEPTO_INVENTARIOS
-
-            Try
-                Me._Conexion.Open()
-                .ExecuteNonQuery()
-                bResultado = True
-                Me._FOLIO_MOVIMIENTO_INVENTARIO = "" & .Parameters("@FOLIO_MOVIMIENTO_INVENTARIO").Value.ToString
-            Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Insertar", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
