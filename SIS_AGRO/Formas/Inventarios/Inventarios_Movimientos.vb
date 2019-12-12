@@ -34,15 +34,15 @@ Public Class Inventarios_Movimientos
     Private iGyCodigo As Integer = 1
     Private iGyDescripcion As Integer = 2
     Private iGyCantidad As Integer = 3
-    Private iGyCosto As Integer = 4
-    Private iGyImporte As Integer = 5
+    Private iGyCosto As Integer = 4 'en db es COSTO_DETALLE_BASE
+    Private iGyImporte As Integer = 5 'en db es IMPORTE_BASE
     Private iGyBoton As Integer = 6
     Private iGyCuentaContable As Integer = 7
     Private iGyNombreCuentaContable As Integer = 8
     Private iGyIDAdicional As Integer = 9
-    Private iGyCostoDetalleBase As Integer = 10 'Es el costo original sin flete.
-    Private iGyFleteDetalle As Integer = 11
-    Private iGyImporteBase As Integer = 12
+    Private iGyFleteDetalleImporte As Integer = 10
+    Private iGyCostoMasFlete As Integer = 11 'en db es COSTO
+    Private iGyImporteMasFlete As Integer = 12 'en db es IMPORTE
     Private iGyIDCompraDetalle As Integer = 13
 #End Region
 
@@ -283,11 +283,12 @@ Public Class Inventarios_Movimientos
     End Sub
 
     Private Sub CmbDocumento_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboDocumento.SelectedIndexChanged
-        Me.OcultaControles()
         Me.GeneraFolio()
 
         Me.InicializaGrid()
         Me.InicializaGridSeries()
+
+        Me.OcultaControles()
     End Sub
 
     Private Sub CmbAlmacen_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboAlmacen.KeyDown
@@ -390,7 +391,10 @@ buscar:
     End Sub
 
     Private Sub txtFlete_KeyDown(sender As Object, e As KeyEventArgs) Handles txtFleteOrdenCompra.KeyDown
-        '
+        If e.KeyCode = Keys.Return Then
+            Me.txtFleteOrdenCompra.Text = FormatImporteContable(valorNumericoD(Me.txtFleteOrdenCompra.Text))
+            Me.btnProrratearFleteOrdenCompra.Focus()
+        End If
     End Sub
 
 #Region "Eventos Genericos"
@@ -411,6 +415,7 @@ buscar:
 #Region "Métodos y procedimientos"
 
     Private Sub Cambia_Estado(ByVal pEstado As enumEstados)
+        Const sProcedure As String = "Cambia_Estado"
         Try
             Me.Estado = pEstado
 
@@ -419,7 +424,6 @@ buscar:
             Me.btnProrratearFleteOrdenCompra.Enabled = False
             Me.btnNuevaOrdenCompra.Enabled = False
             Me.txtFolioOrdenCompra.Enabled = False
-
 
             Select Case Me.Estado
                 Case enumEstados.NUEVO
@@ -543,15 +547,16 @@ buscar:
             Application.DoEvents()
 
         Catch ex As Exception
-            HandleError(Me.Name, "Cambia_Estado", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub Inicializa()
+        Const sProcedure As String = "Inicializa"
         Try
             Me.TxtFolio.Text = ""
             Me.txtTotal.Text = ""
-            Me.txtTotalBase.Text = ""
+            Me.txtTotalMasFlete.Text = ""
             Me.txtTotalCantidad.Text = ""
             Me.TxtFolioReferencia.Text = ""
             Me.TxtConcepto.Text = ""
@@ -585,11 +590,12 @@ buscar:
             Me.TabControl1.SelectedIndex = 0
 
         Catch ex As Exception
-            HandleError(Me.Name, "Inicializa", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub InicializaExterno()
+        Const sProcedure As String = "InicializaExterno"
         Try
             Me.DesplegarDocumentos(False)
             Me.DesplegarAlmacenes()
@@ -630,12 +636,14 @@ buscar:
             Me.tsslEstado.Text = "ESTADO: AGREGANDO NUEVO MOVIMIENTO"
             Me.tsslElaboro.Text = ""
             Me.tsslCancelo.Visible = False
+
         Catch ex As Exception
-            HandleError(Me.Name, "InicializaExterno", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub InicializaGrid()
+        Const sProcedure As String = "InicializaGrid"
         Try
             FG_Grid_Limpiar(Me.Grid1)
             Me.Grid1.Rows = 2
@@ -644,7 +652,7 @@ buscar:
 
             Me.Grid1.Cell(1, Me.iGyIDAdicional).Text = "1"
         Catch ex As Exception
-            HandleError(Me.Text, "InicializaGrid", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
@@ -679,19 +687,19 @@ buscar:
                     End If
                     sNaturalezaInventarios = oInventarios.NaturalezaInventarios(Me.CboDocumento.SelectedValue.ToString)
 
-                    Private iGyCodigo As Integer = 1
-                    Private iGyDescripcion As Integer = 2
-                    Private iGyCantidad As Integer = 3
-                    Private iGyCosto As Integer = 4
-                    Private iGyImporte As Integer = 5
-                    Private iGyBoton As Integer = 6
-                    Private iGyCuentaContable As Integer = 7
-                    Private iGyNombreCuentaContable As Integer = 8
-                    Private iGyIDAdicional As Integer = 9
-                    Private iGyCostoDetalleBase As Integer = 10 'Es el costo original sin flete.
-                    Private iGyFleteDetalle As Integer = 11
-                    Private iGyImporteBase As Integer = 12
-                    Private iGyIDCompraDetalle As Integer = 13
+                    'Private iGyCodigo As Integer = 1
+                    'Private iGyDescripcion As Integer = 2
+                    'Private iGyCantidad As Integer = 3
+                    'Private iGyCosto As Integer = 4
+                    'Private iGyImporte As Integer = 5
+                    'Private iGyBoton As Integer = 6
+                    'Private iGyCuentaContable As Integer = 7
+                    'Private iGyNombreCuentaContable As Integer = 8
+                    'Private iGyIDAdicional As Integer = 9
+                    'Private iGyCostoDetalleBase As Integer = 10 'Es el costo original sin flete.
+                    'Private iGyFleteDetalle As Integer = 11
+                    'Private iGyImporteBase As Integer = 12
+                    'Private iGyIDCompraDetalle As Integer = 13
 
                     Select Case Columna
                         Case Me.iGyCodigo
@@ -781,7 +789,7 @@ buscar:
 
                 Case Keys.F6, Keys.F7
 
-                    If txtLEN(StrCod) = False And Columna = Me.iGyCuentaContable Then
+                    If (txtLEN(StrCod) = False And Columna = Me.iGyCuentaContable) Or (Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ER") Then
                         Return
                     End If
 
@@ -871,7 +879,7 @@ BuscarCuentas:
 
                 Case Keys.F8, Keys.Delete
                     If Me._LlamadoExterior = True Then
-                        MsgBox("No se permiten eliminar renglones en las salidas de empaque de embarques.", MsgBoxStyle.Exclamation, Me.Text)
+                        MsgBox("No se permiten eliminar renglones en las salidas de empaque de embarques.", MsgBoxStyle.Exclamation, sProcedure)
                         e.SuppressKeyPress = True
                         Return
                     End If
@@ -891,7 +899,7 @@ BuscarCuentas:
             End Select
 
         Catch ex As Exception
-            HandleError(Me.Name, "GestionaGrid", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
@@ -903,12 +911,12 @@ BuscarCuentas:
 
         If Me.oDocumentos.ES_TRANSFERENCIA = "1" Then
             If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString, Me.CboAlmacenDestino.SelectedValue.ToString) = False Then
-                'MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar la transferencia.", MsgBoxStyle.Information, Me.Text)
+                'MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar la transferencia.", MsgBoxStyle.Information, sProcedure)
                 Return False
             End If
         Else
             If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString, "") = False Then
-                'MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento de inventarios.", MsgBoxStyle.Information, Me.Text)
+                'MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento de inventarios.", MsgBoxStyle.Information, sProcedure)
                 Return False
             End If
         End If
@@ -1021,12 +1029,12 @@ BuscarCuentas:
 
                                 .oInventariosDetalle.LISTA_SERIES = sListaSeries
 
-                                .oInventariosDetalle.COSTO_DETALLE_BASE = valorNumericoD(Me.Grid1.Cell(i, Me.iGyCostoDetalleBase).Text.ToString)
-                                .oInventariosDetalle.FLETE_DETALLE = valorNumericoD(Me.Grid1.Cell(i, Me.iGyFleteDetalle).Text.ToString)
+                                .oInventariosDetalle.COSTO_DETALLE_BASE = valorNumericoD(Me.Grid1.Cell(i, Me.iGyCostoMasFlete).Text.ToString)
+                                .oInventariosDetalle.FLETE_DETALLE = valorNumericoD(Me.Grid1.Cell(i, Me.iGyFleteDetalleImporte).Text.ToString)
                                 .oInventariosDetalle.ID_COMPRA_DETALLE = CInt("0" & Me.Grid1.Cell(i, Me.iGyIDCompraDetalle).Text)
 
                                 If .oInventariosDetalle.GrabaRenglon() = False Then
-                                    MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Text)
+                                    MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, sProcedure)
                                     Return False
                                 End If
 
@@ -1077,7 +1085,7 @@ BuscarCuentas:
             End If
 
             'If SiTieneCuentaContable() = False Then
-            '    MsgBox("Asígne la cuenta contable de todos los renglones.", MsgBoxStyle.Exclamation, Me.Text)
+            '    MsgBox("Asígne la cuenta contable de todos los renglones.", MsgBoxStyle.Exclamation, sProcedure)
             '    return false
             'End If
 
@@ -1086,14 +1094,14 @@ BuscarCuentas:
             End If
 
             'If Me.SiTieneImporte() = False Then
-            '    MsgBox("El importe de los renglones debe de ser mayor a cero.", MsgBoxStyle.Exclamation, Me.Text)
+            '    MsgBox("El importe de los renglones debe de ser mayor a cero.", MsgBoxStyle.Exclamation, sProcedure)
             '    return false
             'End If
 
             Me.Totales()
 
             'If valorNumerico(Me.txtTotal.Text) = 0 Then
-            '    MsgBox("El importe total debe de ser mayor a cero.", MsgBoxStyle.Exclamation, Me.Text)
+            '    MsgBox("El importe total debe de ser mayor a cero.", MsgBoxStyle.Exclamation, sProcedure)
             '    return false
             'End If
 
@@ -1159,7 +1167,7 @@ BuscarCuentas:
             End If
         Else
             If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString, "") = False Then
-                'MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento de inventarios.", MsgBoxStyle.Exclamation, Me.Text)
+                'MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento de inventarios.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
         End If
@@ -1202,7 +1210,7 @@ BuscarCuentas:
                 oUtileriasCancela.MODULO = Me.oInventarios.CODIGO_MODULO
 
                 If oUtileriasCancela.AutorizaCancelacionMovimientosFueraPeriodo() = False Then
-                    'MsgBox("Error al tratar de autorizar la cancelación fuera del periodo.", MsgBoxStyle.Exclamation, Me.Text)
+                    'MsgBox("Error al tratar de autorizar la cancelación fuera del periodo.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
 
@@ -1322,7 +1330,6 @@ BuscarCuentas:
             With Me.CboDocumento
                 .DisplayMember = "NOMBRE_TIPO_DOCUMENTO"
                 .ValueMember = "CODIGO_TIPO_DOCUMENTO"
-
                 Dim dView As New Data.DataView(oElementos.ObtenerTipoDocumentos("INV", Usuario.Codigo_Plaza.ToString, IIf(bAccesibileUsuarios = True, " ESTATUS_DOCUMENTO='A' AND ACCESIBLE_USUARIO='1' ", " ESTATUS_DOCUMENTO='A' ").ToString))
                 dView.Sort = "NOMBRE_TIPO_DOCUMENTO"
                 .DataSource = dView
@@ -1341,9 +1348,7 @@ BuscarCuentas:
             Dim oElementos As New Class_CatAlmacenes
             With Me.CboAlmacen
                 .DisplayMember = "NOMBRE_ALMACEN"
-
                 .ValueMember = "CODIGO_ALMACEN"
-
                 Dim dView As New Data.DataView(oElementos.ObtenerAlmacenes)
                 dView.Sort = "NOMBRE_ALMACEN"
                 .DataSource = dView
@@ -1356,7 +1361,6 @@ BuscarCuentas:
             With Me.CboAlmacenDestino
                 .DisplayMember = "NOMBRE_ALMACEN"
                 .ValueMember = "CODIGO_ALMACEN"
-
                 Dim dView As New Data.DataView(oElementos.ObtenerAlmacenes)
                 dView.Sort = "NOMBRE_ALMACEN"
                 .DataSource = dView
@@ -1378,7 +1382,6 @@ BuscarCuentas:
             With Me.CboConceptoInventario
                 .DisplayMember = "NOMBRE_CONCEPTO_INVENTARIOS"
                 .ValueMember = "CODIGO_CONCEPTO_INVENTARIOS"
-
                 Dim dView As New Data.DataView(oElementos.ObtenerElementos)
                 dView.Sort = "NOMBRE_CONCEPTO_INVENTARIOS"
                 .DataSource = dView
@@ -1491,7 +1494,7 @@ BuscarCuentas:
             Me.TxtFolioReferencia.Text = oInventarios.FOLIO_REFERENCIA.ToString.ToUpper
             Me.TxtConcepto.Text = oInventarios.CONCEPTO.ToString.ToUpper
             Me.txtTotal.Text = FormatImporteContable(oInventarios.TOTAL)
-            Me.txtTotalBase.Text = FormatImporteContable(oInventarios.COSTO_TOTAL_BASE)
+            Me.txtTotalMasFlete.Text = FormatImporteContable(oInventarios.COSTO_TOTAL_BASE)
             Me.lblPoliza.Text = oInventarios.FOLIO_POLIZA
             Me.DtpFecha.Value = CDate(oInventarios.FECHA)
             Me.txtFolioEmbarque.Text = oInventarios.FOLIO_EMBARQUE
@@ -1503,14 +1506,20 @@ BuscarCuentas:
             Me.Grid1.AutoRedraw = False
             Me.Grid1.Rows = 1 'Trae dos porque en docs nuevos se pone un row en blanco, y si se dejan aqui dos agrega a partir del 3 y queda un hueco
             For Each dRow As DataRow In dTabla.Rows
-                Me.Grid1.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("CANTIDAD").ToString & Chr(9) & dRow("COSTO_DETALLE").ToString & Chr(9) & dRow("IMPORTE").ToString & Chr(9) &
-                                dRow("Boton").ToString & Chr(9) & dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("NOMBRE_CUENTA").ToString & Chr(9) & dRow("ID_ADICIONAL").ToString & Chr(9))
+                Me.Grid1.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("CANTIDAD").ToString & Chr(9) & dRow("COSTO_DETALLE_BASE").ToString & Chr(9) & dRow("IMPORTE_BASE").ToString & Chr(9) &
+                                dRow("Boton").ToString & Chr(9) & dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("NOMBRE_CUENTA").ToString & Chr(9) & dRow("ID_ADICIONAL").ToString & Chr(9) &
+                                dRow("FLETE_DETALLE_IMPORTE").ToString & Chr(9) & dRow("COSTO_DETALLE").ToString & Chr(9) & dRow("IMPORTE_BASE").ToString & Chr(9) & dRow("ID_COMPRA_DETALLE").ToString & Chr(9))
             Next
 
             If Me.lblStatus.Text = "G" Then
                 Me.Grid1.Rows = Me.Grid1.Rows + 1
 
-                Me.Grid1.Cell(Me.Grid1.Rows - 1, Me.iGyIDAdicional).Text = (CInt(Me.Grid1.Cell(Me.Grid1.Rows - 2, Me.iGyIDAdicional).Text) + 1).ToString
+                If dTabla.Rows.Count > 0 Then
+                    Me.Grid1.Cell(Me.Grid1.Rows - 1, Me.iGyIDAdicional).Text = (CInt(Me.Grid1.Cell(Me.Grid1.Rows - 2, Me.iGyIDAdicional).Text) + 1).ToString
+                Else
+                    Me.Grid1.Cell(Me.Grid1.Rows - 1, Me.iGyIDAdicional).Text = "1"
+                End If
+
             End If
 
             Me.Grid1.AutoRedraw = True
@@ -1637,10 +1646,10 @@ BuscarCuentas:
                 .Cell(0, Me.iGyCuentaContable).Text = "CuentaContable"
                 .Cell(0, Me.iGyNombreCuentaContable).Text = "Nombre cuenta"
                 .Cell(0, Me.iGyIDAdicional).Text = "IDAdicional"
-                .Cell(0, Me.iGyCostoDetalleBase).Text = "CostoDetalleBase"
-                .Cell(0, Me.iGyFleteDetalle).Text = "FleteDetalle"
-                .Cell(0, Me.iGyImporteBase).Text = "ImporteBase "
-                .Cell(0, Me.iGyIDCompraDetalle).Text = "IDCompraDetalle "
+                .Cell(0, Me.iGyCostoMasFlete).Text = "Costo+Flete"
+                .Cell(0, Me.iGyFleteDetalleImporte).Text = "FleteImporte"
+                .Cell(0, Me.iGyImporteMasFlete).Text = "Importe+Flete"
+                .Cell(0, Me.iGyIDCompraDetalle).Text = "IDCompraDetalle"
 
                 .Column(Me.iGyCantidad).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyCantidad).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
@@ -1654,13 +1663,13 @@ BuscarCuentas:
                 .Column(Me.iGyImporte).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
                 .Column(Me.iGyImporte).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.iGyCostoDetalleBase).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyCostoDetalleBase).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
-                .Column(Me.iGyCostoDetalleBase).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyCostoMasFlete).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyCostoMasFlete).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.iGyCostoMasFlete).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.iGyFleteDetalle).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyFleteDetalle).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
-                .Column(Me.iGyFleteDetalle).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyFleteDetalleImporte).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyFleteDetalleImporte).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.iGyFleteDetalleImporte).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .Column(Me.iGyCuentaContable).Alignment = FlexCell.AlignmentEnum.RightCenter
 
@@ -1668,8 +1677,8 @@ BuscarCuentas:
                 .Column(Me.iGyImporte).Locked = True
                 .Column(Me.iGyNombreCuentaContable).Locked = True
                 .Column(Me.iGyIDAdicional).Locked = True
-                .Column(Me.iGyCostoDetalleBase).Locked = True
-                .Column(Me.iGyImporteBase).Locked = True
+                .Column(Me.iGyCostoMasFlete).Locked = True
+                .Column(Me.iGyImporteMasFlete).Locked = True
                 .Column(Me.iGyIDCompraDetalle).Locked = True
 
                 .Column(Me.iGyBoton).CellType = FlexCell.CellTypeEnum.Button
@@ -1681,10 +1690,10 @@ BuscarCuentas:
                 .Column(Me.iGyImporte).Width = 100
                 .Column(Me.iGyCuentaContable).Width = 110
                 .Column(Me.iGyNombreCuentaContable).Width = 220
-                .Column(Me.iGyIDAdicional).Visible = True 'FALTA deben quedar invisibles
-                .Column(Me.iGyCostoDetalleBase).Visible = True 'FALTA deben quedar invisibles
-                .Column(Me.iGyImporteBase).Visible = True 'FALTA deben quedar invisibles
-                .Column(Me.iGyIDCompraDetalle).Visible = True 'FALTA deben quedar invisibles
+                .Column(Me.iGyIDAdicional).Visible = False
+                .Column(Me.iGyCostoMasFlete).Visible = False
+                .Column(Me.iGyImporteMasFlete).Visible = False
+                .Column(Me.iGyIDCompraDetalle).Visible = False
 
             End With
 
@@ -1697,38 +1706,61 @@ BuscarCuentas:
     End Sub
 
     Private Sub Totales()
+        Const sProcedure As String = "Totales"
         Try
-            Dim I As Integer
-            Dim dCantidad As Decimal = 0, dPrecio As Decimal = 0, dImporte As Decimal = 0, dFlete As Decimal = 0
-            For I = 1 To Me.Grid1.Rows - 1
-                If Len("" & Me.Grid1.Cell(I, Me.iGyCantidad).Text) > 0 Then
-                    dCantidad = valorNumericoD(0 & Me.Grid1.Cell(I, Me.iGyCantidad).Text)
-                    dPrecio = valorNumericoD(0 & Me.Grid1.Cell(I, Me.iGyCosto).Text)
-                    dFlete = valorNumericoD(0 & Me.Grid1.Cell(I, Me.iGyFleteDetalle).Text)
+            Dim i As Integer
+            Dim dCantidad As Decimal = 0, dCosto As Decimal = 0, dImporte As Decimal = 0, dFleteImporte As Decimal = 0, dCostoMasFlete As Decimal = 0, dImporteMasFlete As Decimal = 0
+            Dim dFleteTotal As Decimal = 0
+            For i = 1 To Me.Grid1.Rows - 1
+                If Len("" & Me.Grid1.Cell(i, Me.iGyCantidad).Text) > 0 Then
+                    dCantidad = valorNumericoD(0 & Me.Grid1.Cell(i, Me.iGyCantidad).Text)
+                    dCosto = valorNumericoD(0 & Me.Grid1.Cell(i, Me.iGyCosto).Text)
+                    dFleteImporte = valorNumericoD(0 & Me.Grid1.Cell(i, Me.iGyFleteDetalleImporte).Text)
+
+                    '.Column(Me.iGyCosto).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                    '.Column(Me.iGyImporte).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+
+                    If dFleteImporte > 0 Then
+                        dCostoMasFlete = dCosto + (dFleteImporte / dCantidad) 'Calcula un flete unitario en esta división (que no se usa para el importe total para no tener tropos)
+                    Else
+                        dCostoMasFlete = dCosto
+                    End If
 
                     If dCantidad > 0 Then
-                        dImporte = (dPrecio * dCantidad)
-                        dImporte = RedondearD(dImporte)
-                        Me.Grid1.Cell(I, Me.iGyImporte).Text = dImporte.ToString
-                        'Else
-                        '    Me.Grid1.Cell(I, Me.iGyImporte).Text = ""
-                        '    Me.Grid1.Cell(I, Me.iGyImporteBase).Text = ""
+                        dImporte = (dCosto * dCantidad)
+                        dImporte = RedondearD(dImporte, Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                        dImporteMasFlete = dImporte + dFleteImporte
+
+                        Me.Grid1.Cell(i, Me.iGyImporte).Text = dImporte.ToString
+                        Me.Grid1.Cell(i, Me.iGyCostoMasFlete).Text = dCostoMasFlete.ToString
+                        Me.Grid1.Cell(i, Me.iGyImporteMasFlete).Text = dImporteMasFlete.ToString
+                    Else
+                        Me.Grid1.Cell(i, Me.iGyImporte).Text = ""
+                        Me.Grid1.Cell(i, Me.iGyFleteDetalleImporte).Text = ""
+                        Me.Grid1.Cell(i, Me.iGyCostoMasFlete).Text = ""
+                        Me.Grid1.Cell(i, Me.iGyImporteMasFlete).Text = ""
+
+                        dFleteImporte = 0 'Para que si habia no se vaya acumular
                     End If
+
+                    dFleteTotal += dFleteImporte
                 End If
-            Next I
+            Next i
+
+            dFleteTotal = RedondearD(dFleteTotal, Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
             Me.txtTotalCantidad.Text = FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyCantidad)).ToString
-
             Me.txtTotal.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyImporte))).ToString
+            Me.txtTotalMasFlete.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyImporteMasFlete))).ToString
+            Me.txtTotalFlete.Text = FormatImporteContable(dFleteTotal)
 
-            'FALTA
-            Me.txtTotalBase.Text = "0" 'FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyImporte))).ToString
         Catch ex As Exception
-            HandleError(Me.Name, "Totales", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Function GrabarPoliza() As Boolean
+        Const sProcedure As String = "GrabarPoliza"
         Dim Bgrabado As Boolean = False
         Dim Error1 As String = ""
 
@@ -1744,13 +1776,13 @@ BuscarCuentas:
             Case enumEstados.NUEVO, enumEstados.GRABADO
                 Try
                     If oInventarios.AplicarPoliza() = True Then
-                        MsgBox("La póliza fue grabada y contabilizada con éxito.", MsgBoxStyle.Information, "Contabilidad")
+                        MsgBox("La póliza fue grabada y contabilizada con éxito.", MsgBoxStyle.Information, sProcedure)
                     Else
-                        MsgBox("La póliza no pudo grabarse.", MsgBoxStyle.Exclamation, "Contabilización de pólizas.")
+                        MsgBox("La póliza no pudo grabarse.", MsgBoxStyle.Exclamation, sProcedure)
                     End If
 
                 Catch ex As Exception
-                    HandleError(Me.Name, "GrabarPoliza", ex)
+                    HandleError(Me.Name, sProcedure, ex)
                     Me.Estado = enumEstados.NUEVO
                     Me.Cambia_Estado(Me.Estado)
                 Finally
@@ -1760,6 +1792,7 @@ BuscarCuentas:
     End Function
 
     Private Function SiTieneRenglones() As Boolean
+        Const sProcedure As String = "SiTieneRenglones"
         Dim bResultado As Boolean = False
         Dim i As Integer
         Try
@@ -1770,7 +1803,7 @@ BuscarCuentas:
             Next
             bResultado = False
         Catch ex As Exception
-            HandleError(Me.Name, "SiTieneRenglones", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
         Return bResultado
     End Function
@@ -1811,6 +1844,7 @@ BuscarCuentas:
     'End Function
 
     Private Function ValidaCuentasContable() As Boolean
+        Const sProcedure As String = "ValidaCuentasContable"
         Dim bResultado As Boolean = False
         Dim i As Integer, sCuentaContable As String = ""
         Try
@@ -1833,29 +1867,29 @@ BuscarCuentas:
                         'MsgBox("andale")
 
                         If txtLEN(sCuentaContable) = True Then
-                            MsgBox("Quite la cuenta contable del renglón : " & i & " , no se puede tener cuenta directa y también en detalle(la que se establece con el botón).", MsgBoxStyle.Exclamation, Me.Text)
+                            MsgBox("Quite la cuenta contable del renglón : " & i & " , no se puede tener cuenta directa y también en detalle(la que se establece con el botón).", MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         End If
 
                     Else
                         If txtLEN(sCuentaContable) = False Then
-                            MsgBox("Asígne la cuenta contable del renglón : " & i & " .", MsgBoxStyle.Exclamation, Me.Text)
+                            MsgBox("Asígne la cuenta contable del renglón : " & i & " .", MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         End If
 
                         'If sCuentaContable.StartsWith("1") = False Then
                         '    MsgBox("La cuenta contable del renglón : " & i & " debe ser del rango de las miles(que empiezen con 1)." & vbCrLf & _
-                        '    "O debe en vez de poner cuenta, detallar con el botón de centros de costos.", MsgBoxStyle.Exclamation, Me.Name)
+                        '    "O debe en vez de poner cuenta, detallar con el botón de centros de costos.", MsgBoxStyle.Exclamation, sProcedure)
                         '    Return False
                         'End If
 
                         oCuentas = New Class_CatCuentas(sCuentaContable)
 
                         If oCuentas._Existe = False Then
-                            MsgBox("La cuenta contable del renglón : " & i & " no existe.", MsgBoxStyle.Exclamation, Me.Name)
+                            MsgBox("La cuenta contable del renglón : " & i & " no existe.", MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         ElseIf oCuentas.ESMAYOR = "1" Then
-                            MsgBox("La cuenta contable del renglón : " & i & " es de mayor.", MsgBoxStyle.Exclamation, Me.Name)
+                            MsgBox("La cuenta contable del renglón : " & i & " es de mayor.", MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         End If
 
@@ -1865,12 +1899,13 @@ BuscarCuentas:
             Next
             bResultado = True
         Catch ex As Exception
-            HandleError(Me.Name, "ValidaCuentasContable", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
         Return bResultado
     End Function
 
     Private Function SiTieneImporte() As Boolean
+        Const sProcedure As String = "SiTieneImporte"
         Dim bResultado As Boolean = False
         Try
             Dim i As Integer
@@ -1883,12 +1918,13 @@ BuscarCuentas:
             Next
             bResultado = True
         Catch ex As Exception
-            HandleError(Me.Name, "SiTieneImporte", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
         Return bResultado
     End Function
 
     Private Function SiTieneCantidad() As Boolean
+        Const sProcedure As String = "SiTieneCantidad"
         Dim bResultado As Boolean = False
         Try
             Dim i As Integer
@@ -1901,12 +1937,13 @@ BuscarCuentas:
             Next
             bResultado = True
         Catch ex As Exception
-            HandleError(Me.Name, "SiTieneCantidad", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
         Return bResultado
     End Function
 
     Private Sub OcultaControles()
+        Const sProcedure As String = "OcultaControles"
         Try
             Me.oDocumentos = New Class_Cat_tiposDocumentos(Me.CboDocumento.SelectedValue.ToString)
             If Me.oDocumentos.ES_TRANSFERENCIA = "1" Then
@@ -1937,37 +1974,57 @@ BuscarCuentas:
             End If
 
             Me.gbOrdenCompra.Visible = False
+            'Me.Grid1.Locked = False
+            'Me.Grid1.Column(Me.iGyCodigo).Locked = False
+            Me.Grid1.Column(Me.iGyFleteDetalleImporte).Visible = False
+            Me.Grid1.Column(Me.iGyCostoMasFlete).Visible = False
+            Me.Grid1.Column(Me.iGyImporteMasFlete).Visible = False
+
             If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ER" Then
                 Me.gbOrdenCompra.Visible = True
+                'Me.Grid1.Locked = True
+                'Me.Grid1.Column(Me.iGyCodigo).Locked = True
+                Me.Grid1.Column(Me.iGyFleteDetalleImporte).Visible = True
+                Me.Grid1.Column(Me.iGyCostoMasFlete).Visible = True
+                Me.Grid1.Column(Me.iGyImporteMasFlete).Visible = True
+
+                Me.btnConsultarOrdenCompra.Enabled = True
+                Me.btnProrratearFleteOrdenCompra.Enabled = True
+                Me.btnNuevaOrdenCompra.Enabled = True
+                Me.txtFolioOrdenCompra.Enabled = True
             End If
 
+            'Revisar luego si lockear columnas, aqui es problemático hacerlo porque puede ser que desbloquee columnas o controles que deberian estar bloqueadas(que manipula el cambiar estado)
+
         Catch ex As Exception
-            HandleError(Me.Name, "OcultaControles", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Function ValidaEmbarque() As Boolean
+        Const sProcedure As String = "ValidaEmbarque"
         Dim bResultado As Boolean = False
         Try
             Dim oEmbarque As New Class_Embarques_EmbarqueGlobal(Me.txtFolioEmbarque.Text, True)
             If oEmbarque.Existe = False Then
-                MsgBox("El folio de embarque no existe.", MsgBoxStyle.Exclamation, Me.Name)
+                MsgBox("El folio de embarque no existe.", MsgBoxStyle.Exclamation, sProcedure)
             Else
                 Dim oSql As New Class_find("SELECT 1 FROM INVENTARIO_MOVIMIENTOS_GLOBAL WHERE FOLIO_EMBARQUE='" & sReplace(Me.txtFolioEmbarque.Text) & "' AND FOLIO_MOVIMIENTO_INVENTARIO<>'" & sReplace(Me.TxtFolio.Text) & "'")
                 If txtLEN(oSql.Result1) = True Then
-                    MsgBox("El folio de embarque ya fue usado en otro movimiento, no es posible repetirlo.", MsgBoxStyle.Exclamation, Me.Name)
+                    MsgBox("El folio de embarque ya fue usado en otro movimiento, no es posible repetirlo.", MsgBoxStyle.Exclamation, sProcedure)
                 Else
                     bResultado = True
                 End If
             End If
             oEmbarque = Nothing
         Catch ex As Exception
-            HandleError(Me.Name, "ValidaEmbarque", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
         Return bResultado
     End Function
 
     Private Sub Navegador(ByVal sTipoDeBusqueda As String)
+        Const sProcedure As String = "Navegador"
         Try
             Dim iFolio As Integer, sFolio As String, iPosicion As Integer, sFolioParte2 As String
             If txtLEN(Me.TxtFolio.Text) = False Then
@@ -2013,18 +2070,19 @@ BuscarCuentas:
                 End If
             End If
         Catch ex As Exception
-            HandleError(Me.Name, "Navegador", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub GestionaDetalleCuentas()
+        Const sProcedure As String = "GestionaDetalleCuentas"
         Dim iRenglon As Integer = 0
         Try
             iRenglon = Me.Grid1.ActiveCell.Row 'Me.Grid1.Selection.FirstRow
             'iRenglon = CInt(Me.Grid1.Cell(Me.Grid1.ActiveCell.Row, Me.iGyIDAdicional).Text)
 
             If valorNumerico(Me.Grid1.Cell(iRenglon, Me.iGyImporte).Text) = 0 Then
-                MsgBox("No ha capturado el artículo con su cantidad y precio.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("No ha capturado el artículo con su cantidad y precio.", MsgBoxStyle.Exclamation, sProcedure)
                 Exit Sub
             End If
 
@@ -2051,21 +2109,23 @@ BuscarCuentas:
                 End If
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "GestionaDetalleCuentas", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Function EliminaDetalleCuentasContables(ByVal IDAdicional As Integer) As Integer
+        Const sProcedure As String = "EliminaDetalleCuentasContables"
         Try
             If IsNothing(Me.oFormaDetalleCuentas) = False Then 'Si no esta vacia, osea si existe
                 Me.oFormaDetalleCuentas.EliminaRelacion(IDAdicional)
             End If
         Catch ex As Exception
-            HandleError(Me.Name, "EliminaDetalleCuentasContables", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Function
 
     Private Sub GestionaAplicacion()
+        Const sProcedure As String = "GestionaAplicacion"
         Try
             Me.bAplicando = True
 
@@ -2078,7 +2138,7 @@ BuscarCuentas:
             'Me.oDocumentos = New Class_Cat_tiposDocumentos(Me.CboDocumento.SelectedValue.ToString)
             If Me.oDocumentos.ES_TRANSFERENCIA = "1" Then
                 If Me.EstableceCuentaContableAlmacenDestino() = False Then
-                    MsgBox("Error al tratar de asígnar la cuenta contable del almacen destino.", MsgBoxStyle.Exclamation, Me.Text)
+                    MsgBox("Error al tratar de asígnar la cuenta contable del almacen destino.", MsgBoxStyle.Exclamation, sProcedure)
                     Exit Sub
                 End If
             End If
@@ -2090,12 +2150,12 @@ BuscarCuentas:
                     'Me.oPalet.MarcaSalidaPalet()
 
                     Me._AplicadoExterior = True
-                    'MsgBox("El movimiento de Inventario fue Aplicado con exito", MsgBoxStyle.Information, "Aplicando Movimientos de Inventarios")
+                    'MsgBox("El movimiento de Inventario fue Aplicado con exito", MsgBoxStyle.Information, sProcedure)
                     Me.Close()
                     Exit Sub
                 End If
 
-                MsgBox("El movimiento de Inventario fue Aplicado con éxito", MsgBoxStyle.Information, "Aplicando Movimientos de Inventarios")
+                MsgBox("El movimiento de Inventario fue Aplicado con éxito", MsgBoxStyle.Information, sProcedure)
                 Me.Consultar()
 
             Else
@@ -2106,7 +2166,7 @@ BuscarCuentas:
                 End If
             End If
         Catch ex As Exception
-            HandleError(Me.Name, "GestionaAplicacion", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
@@ -2178,6 +2238,7 @@ BuscarCuentas:
     End Sub
 
     Private Sub FormateaGridSeries()
+        Const sProcedure As String = "FormateaGridSeries"
         Try
             With Me.GridSeries
                 .AutoRedraw = False
@@ -2211,11 +2272,12 @@ BuscarCuentas:
                 .Row(.Rows - 1).Locked = True 'Para bloquear la edición del último renglón
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "FormateaGridSeries", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub InicializaGridSeries()
+        Const sProcedure As String = "InicializaGridSeries"
         Try
             Me.GridSeries.DataSource = Nothing
             FG_Grid_Limpiar(Me.GridSeries)
@@ -2224,11 +2286,12 @@ BuscarCuentas:
             Me.FormateaGridSeries()
             'Me.Grid.Cell(1, Me.iGyIDAdicional).Text = "1"
         Catch ex As Exception
-            HandleError(Me.Name, "InicializaGridSeries", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub GestionaGridSeries(ByVal e As System.Windows.Forms.KeyEventArgs)
+        Const sProcedure As String = "GestionaGridSeries"
         Dim sLote As String = "", sCodigoArticulo As String = ""
         Dim oSerie As Class_Inventarios_Lotes_Series
         Try
@@ -2296,7 +2359,7 @@ busca_serie:
 
                                 Dim dtSeries As DataTable = oSerie.ObtieneRenglonesSeriesFolio(lote.FolioMovimiento, sCodigoArticulo)
                                 If dtSeries.Rows.Count = 0 Then
-                                    MsgBox("No se encontraron series disponibles del artículo " & sCodigoArticulo & " del folio " & lote.FolioMovimiento, MsgBoxStyle.Exclamation, Me.Text)
+                                    MsgBox("No se encontraron series disponibles del artículo " & sCodigoArticulo & " del folio " & lote.FolioMovimiento, MsgBoxStyle.Exclamation, sProcedure)
                                     Return
                                 End If
 
@@ -2326,11 +2389,12 @@ busca_serie:
             End With
 
         Catch ex As Exception
-            HandleError(Me.Name, "GestionaGridSeries", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Function EstableceSerie(ByVal Renglon As Integer, ByVal ID_INVENTARIO_LOTES_COSTOS As String) As Boolean
+        Const sProcedure As String = "EstableceSerie"
         Try
             Dim oSerie As New Class_Inventarios_Lotes_Series(ID_INVENTARIO_LOTES_COSTOS)
             If oSerie.Existe = True Then
@@ -2339,11 +2403,12 @@ busca_serie:
                 Return True
             End If
         Catch ex As Exception
-            HandleError(Me.Name, "EstableceSerie", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Function
 
     Private Function RepiteSerie(ByVal Renglon As Integer, ByVal ID_INVENTARIO_LOTES_COSTOS As String) As Boolean
+        Const sProcedure As String = "RepiteSerie"
         Dim RenglonRepetido As Integer
         Try
             Me.dtSeries.AcceptChanges()
@@ -2356,7 +2421,7 @@ busca_serie:
 
                             MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text &
                                    " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf &
-                                   "", MsgBoxStyle.Exclamation)
+                                   "", MsgBoxStyle.Exclamation, sProcedure)
                             Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
 
                             Return True
@@ -2366,11 +2431,12 @@ busca_serie:
                 End If
             Next
         Catch ex As Exception
-            HandleError(Me.Name, "RepiteSerie", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Function
 
     Private Function CantidadArticulosPendientesSerie(ByVal sCodigoArticulo As String) As Integer
+        Const sProcedure As String = "CantidadArticulosPendientesSerie"
         Dim iArticulosEncontrados As Integer = 0
         Try
             For i = 1 To Me.GridSeries.Rows - 1
@@ -2379,12 +2445,13 @@ busca_serie:
                 End If
             Next
         Catch ex As Exception
-            HandleError(Me.Name, "CantidadArticulosPendientesSerie", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
         Return iArticulosEncontrados
     End Function
 
     Private Function ValidaNumerosSerie() As Boolean
+        Const sProcedure As String = "ValidaNumerosSerie"
         Try
             Dim dtSeriesTemp As New DataTable("Series")
             With dtSeriesTemp
@@ -2416,17 +2483,17 @@ busca_serie:
             dtSeriesTemp.AcceptChanges()
 
             If Me.dtSeries.Rows.Count <> dtSeriesTemp.Rows.Count Then
-                MsgBox("Tiene que volver a detallar todas las series porque no corresponden los artículos.", MsgBoxStyle.Exclamation)
+                MsgBox("Tiene que volver a detallar todas las series porque no corresponden los artículos.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
 
             i = 0
             For Each d As DataRow In dtSeriesTemp.Rows
                 If d("POSICION").ToString <> Me.dtSeries.Rows(i)("POSICION").ToString Then
-                    MsgBox("Tiene que volver a detallar todas las series porque no corresponden los artículos.", MsgBoxStyle.Exclamation)
+                    MsgBox("Tiene que volver a detallar todas las series porque no corresponden los artículos.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 ElseIf d("CODIGO_ARTICULO").ToString <> Me.dtSeries.Rows(i)("CODIGO_ARTICULO").ToString Then
-                    MsgBox("Tiene que volver a detallar todas las series porque no corresponden los artículos.", MsgBoxStyle.Exclamation)
+                    MsgBox("Tiene que volver a detallar todas las series porque no corresponden los artículos.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
                 i += 1
@@ -2434,24 +2501,25 @@ busca_serie:
 
             For Each d As DataRow In Me.dtSeries.Rows
                 If txtLEN(d("NUMERO_SERIE").ToString) = False Then
-                    MsgBox("Faltan de capturar series, favor de revisar.", MsgBoxStyle.Exclamation)
+                    MsgBox("Faltan de capturar series, favor de revisar.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
             Next
 
             Return True
         Catch ex As Exception
-            HandleError(Me.Name, "ValidaNumerosSerie", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Function
 
     Private Function HaySeriesRepetidas() As Boolean
+        Const sProcedure As String = "HaySeriesRepetidas"
         Dim RenglonRepetido As Integer
 
         Try
             Me.dtSeries.AcceptChanges()
 
-            If Me.CboDocumento.Text = "ENTRADA" Then 'Compara numeros de serie
+            If Me.CboDocumento.SelectedValue.ToString = "ENI" Or Me.CboDocumento.SelectedValue.ToString = "ER" Then 'ENI=Entrada, ER=Entrada recepcion compras
                 For i = 1 To Me.GridSeries.Rows - 1
                     If txtLEN(Me.GridSeries.Cell(i, Me.igySerieCodigo).Text) = True Then
                         For z = i + 1 To Me.GridSeries.Rows - 1
@@ -2460,7 +2528,7 @@ busca_serie:
 
                                 MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text &
                                        " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf &
-                                       "", MsgBoxStyle.Exclamation)
+                                       "", MsgBoxStyle.Exclamation, sProcedure)
                                 Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
 
                                 Return True
@@ -2478,7 +2546,7 @@ busca_serie:
 
                                 MsgBox("La serie " & Me.GridSeries.Cell(RenglonRepetido, igySerieNumeroSerie).Text &
                                        " del artículo " & Me.GridSeries.Cell(RenglonRepetido, igySerieCodigo).Text & " esta repetida en el renglón " & RenglonRepetido & "." & vbCrLf &
-                                       "", MsgBoxStyle.Exclamation)
+                                       "", MsgBoxStyle.Exclamation, sProcedure)
                                 Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
 
                                 Return True
@@ -2489,7 +2557,7 @@ busca_serie:
                 Next
             End If
         Catch ex As Exception
-            HandleError(Me.Name, "HaySeriesRepetidas", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return False
@@ -2540,6 +2608,7 @@ busca_serie:
 
             Me.InicializaGrid()
             Me.InicializaGridSeries()
+            Me.OcultaControles()
 
             Dim dTabla As DataTable = Me.oInventarios.ObtenerDetalleDisponiblesOrdenCompra(Me.txtFolioOrdenCompra.Text)
             Me.Grid1.AutoRedraw = False
@@ -2547,7 +2616,7 @@ busca_serie:
             For Each dRow As DataRow In dTabla.Rows
                 Me.Grid1.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("CANTIDAD").ToString & Chr(9) & dRow("COSTO_DETALLE").ToString & Chr(9) & dRow("IMPORTE").ToString & Chr(9) &
                                 dRow("Boton").ToString & Chr(9) & dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("NOMBRE_CUENTA").ToString & Chr(9) & dRow("ID_ADICIONAL").ToString & Chr(9) &
-                                dRow("COSTO_DETALLE").ToString & Chr(9) & "0" & Chr(9) & dRow("ID_COMPRA_DETALLE").ToString & Chr(9)) 'El 0 es para el flete pero todavia no lo calculamos
+                                "0" & Chr(9) & dRow("COSTO_DETALLE").ToString & Chr(9) & dRow("IMPORTE").ToString & Chr(9) & dRow("ID_COMPRA_DETALLE").ToString & Chr(9)) 'El 0 es para el flete pero todavia no lo calculamos
 
             Next
 
@@ -2561,19 +2630,21 @@ busca_serie:
 
             Me.Grid1.Locked = False 'Podria estar bloqueado si era un docto nuevo
 
+            Me.txtFolioOrdenCompra.Enabled = False
+            Me.btnConsultarOrdenCompra.Enabled = False
+
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         Finally
             Me.Grid1.AutoRedraw = True
             Me.Grid1.Refresh()
-            Me.txtFolioOrdenCompra.Enabled = False
-            Me.btnConsultarOrdenCompra.Enabled = False
         End Try
 
         Return bResultado
     End Function
 
     Private Sub InicializaOrdenCompra()
+        Const sProcedure As String = "InicializaOrdenCompra"
         Try
             'Estos datos que se establezcan en blando deberán también establecerse en el inicializa normal
             Me.txtFolioOrdenCompra.Text = ""
@@ -2584,16 +2655,15 @@ busca_serie:
 
             Me.InicializaGrid()
             Me.InicializaGridSeries()
-            If Me.txtFolioOrdenCompra.Enabled = True Then
-                Me.txtFolioOrdenCompra.Focus()
-            End If
 
             Me.txtFolioOrdenCompra.Enabled = True
+            Me.txtFolioOrdenCompra.Focus()
+
             Me.btnConsultarOrdenCompra.Enabled = True
 
             Me.Totales()
         Catch ex As Exception
-            HandleError(Me.Name, "InicializaOrdenCompra", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
@@ -2601,11 +2671,11 @@ busca_serie:
         Const sProcedure As String = "ProrratearFlete"
         Dim bResultado As Boolean = False
         Try
-            Dim dFlete As Decimal = valorNumericoD(Me.txtFleteOrdenCompra.Text)
+            Dim dFleteTotal As Decimal = valorNumericoD(Me.txtFleteOrdenCompra.Text)
             Dim dCantidadTotal As Decimal = CDec(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyCantidad)))
-            Dim dCantidad As Decimal = 0
+            Dim dCantidad As Decimal = 0, dCosto As Decimal = 0, dFleteImporte As Decimal = 0
 
-            If dFlete <= 0 Then
+            If dFleteTotal <= 0 Then
                 MsgBox("Falta capturar el flete total.", vbExclamation, sProcedure)
                 Return False
             End If
@@ -2616,8 +2686,17 @@ busca_serie:
             End If
 
             For i As Integer = 1 To Me.Grid1.Rows - 1
+                If txtLEN(Me.Grid1.Cell(i, Me.iGyCodigo).Text) = False Then
+                    Continue For
+                End If
+
                 dCantidad = valorNumericoD(Me.Grid1.Cell(i, Me.iGyCantidad).Text)
-                Me.Grid1.Cell(i, Me.iGyCosto).Text = RedondearD((dCantidad / dCantidadTotal) * dFlete, Empresa_Sistema.DECIMALES_PRECIO).ToString
+                dCosto = valorNumericoD(Me.Grid1.Cell(i, Me.iGyCosto).Text)
+                dFleteImporte = RedondearD((dCantidad / dCantidadTotal) * dFleteTotal, Empresa_Sistema.DECIMALES_CONTABILIDAD)
+
+                Me.Grid1.Cell(i, Me.iGyFleteDetalleImporte).Text = dFleteImporte.ToString
+                'Me.Grid1.Cell(i, Me.iGyCostoMasFlete).Text = RedondearD(dCosto + (dFleteImporte / dCantidad), Empresa_Sistema.DECIMALES_PRECIO).ToString 'Simula un flete unitario para tener un costo mas flete(que no se usa para importe-flete por tropos)
+                'Me.Grid1.Cell(i, Me.iGyImporteMasFlete).Text = (valorNumericoD(Me.Grid1.Cell(i, Me.iGyImporte).Text) + dFleteImporte).ToString
             Next
 
             bResultado = True
@@ -2634,7 +2713,7 @@ busca_serie:
     Private Function ValidaFlete() As Boolean
         Const sProcedure As String = "ValidaFlete"
         Try
-            Dim dFlete As Decimal = CDec(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyFleteDetalle)))
+            Dim dFlete As Decimal = CDec(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyFleteDetalleImporte)))
             Dim dDiferencia As Decimal = RedondearD(valorNumericoD(Me.txtFleteOrdenCompra.Text) - dFlete, 2)
             If dDiferencia <> 0 Then
                 MsgBox("La suma de los fletes de los artículos es de " & FormatImporteContable(dFlete) & " y la especificada es de " & FormatImporteContable(valorNumericoD(Me.txtFleteOrdenCompra.Text)), vbExclamation, sProcedure)
@@ -2668,6 +2747,7 @@ busca_serie:
     'End Function
 
     Private Function EstableceCuentaContableAlmacenDestino() As Boolean
+        Const sProcedure As String = "EstableceCuentaContableAlmacenDestino"
         Try
             Dim oAlmacenes As New Class_CatAlmacenes(Me.CboAlmacen.SelectedValue.ToString), i As Integer, sCuentaContable As String = "", oCuenta As Class_CatCuentas
             Dim oArticulos As Class_CatArticulos
@@ -2692,10 +2772,9 @@ busca_serie:
 
             Return True
         Catch ex As Exception
-            HandleError(Me.Name, "EstableceCuentaContableAlmacenDestino", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Function
-
 
 #End Region
 

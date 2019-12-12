@@ -86,7 +86,8 @@ Partial Class Inventarios_Movimientos
         Me.btnNuevaOrdenCompra = New System.Windows.Forms.Button()
         Me.btnConsultarOrdenCompra = New System.Windows.Forms.Button()
         Me.cboEntradasAnterioresOrdenCompra = New System.Windows.Forms.ComboBox()
-        Me.txtTotalBase = New System.Windows.Forms.MaskedTextBox()
+        Me.txtTotalMasFlete = New System.Windows.Forms.MaskedTextBox()
+        Me.txtTotalFlete = New System.Windows.Forms.MaskedTextBox()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.TpSeries.SuspendLayout()
@@ -101,7 +102,7 @@ Partial Class Inventarios_Movimientos
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbAplicar, Me.tsbCancelar, Me.tsbImprimir, Me.tsbEditarCostos, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1090, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1308, 27)
         Me.tsMenu.TabIndex = 223
         Me.tsMenu.Text = "tsMenu"
         '
@@ -164,7 +165,7 @@ Partial Class Inventarios_Movimientos
         '
         'txtTotal
         '
-        Me.txtTotal.Location = New System.Drawing.Point(518, 539)
+        Me.txtTotal.Location = New System.Drawing.Point(431, 539)
         Me.txtTotal.Name = "txtTotal"
         Me.txtTotal.ReadOnly = True
         Me.txtTotal.Size = New System.Drawing.Size(100, 20)
@@ -283,7 +284,7 @@ Partial Class Inventarios_Movimientos
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsslEstado, Me.tsslElaboro, Me.tsslCancelo})
         Me.StatusStripEstado.Location = New System.Drawing.Point(0, 563)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1090, 24)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1308, 24)
         Me.StatusStripEstado.TabIndex = 257
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -362,7 +363,7 @@ Partial Class Inventarios_Movimientos
         'lblDisplayTotales
         '
         Me.lblDisplayTotales.AutoSize = True
-        Me.lblDisplayTotales.Location = New System.Drawing.Point(241, 539)
+        Me.lblDisplayTotales.Location = New System.Drawing.Point(252, 542)
         Me.lblDisplayTotales.Name = "lblDisplayTotales"
         Me.lblDisplayTotales.Size = New System.Drawing.Size(48, 13)
         Me.lblDisplayTotales.TabIndex = 288
@@ -496,7 +497,7 @@ Partial Class Inventarios_Movimientos
         Me.TpSeries.Margin = New System.Windows.Forms.Padding(2)
         Me.TpSeries.Name = "TpSeries"
         Me.TpSeries.Padding = New System.Windows.Forms.Padding(2)
-        Me.TpSeries.Size = New System.Drawing.Size(1064, 269)
+        Me.TpSeries.Size = New System.Drawing.Size(1291, 269)
         Me.TpSeries.TabIndex = 1
         Me.TpSeries.Text = "Series"
         Me.TpSeries.UseVisualStyleBackColor = True
@@ -527,7 +528,7 @@ Partial Class Inventarios_Movimientos
         Me.TpArticulos.Margin = New System.Windows.Forms.Padding(2)
         Me.TpArticulos.Name = "TpArticulos"
         Me.TpArticulos.Padding = New System.Windows.Forms.Padding(2)
-        Me.TpArticulos.Size = New System.Drawing.Size(1064, 269)
+        Me.TpArticulos.Size = New System.Drawing.Size(1291, 269)
         Me.TpArticulos.TabIndex = 0
         Me.TpArticulos.Text = "Artículos"
         Me.TpArticulos.UseVisualStyleBackColor = True
@@ -547,7 +548,7 @@ Partial Class Inventarios_Movimientos
         Me.Grid1.LockButton = True
         Me.Grid1.Name = "Grid1"
         Me.Grid1.Rows = 10
-        Me.Grid1.Size = New System.Drawing.Size(1066, 265)
+        Me.Grid1.Size = New System.Drawing.Size(1289, 265)
         Me.Grid1.TabIndex = 7
         Me.Grid1.UncheckedImage = CType(resources.GetObject("Grid1.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -559,7 +560,7 @@ Partial Class Inventarios_Movimientos
         Me.TabControl1.Margin = New System.Windows.Forms.Padding(2)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(1072, 295)
+        Me.TabControl1.Size = New System.Drawing.Size(1299, 295)
         Me.TabControl1.TabIndex = 385
         '
         'txtProveedor
@@ -703,21 +704,31 @@ Partial Class Inventarios_Movimientos
         Me.cboEntradasAnterioresOrdenCompra.Size = New System.Drawing.Size(242, 21)
         Me.cboEntradasAnterioresOrdenCompra.TabIndex = 398
         '
-        'txtTotalBase
+        'txtTotalMasFlete
         '
-        Me.txtTotalBase.Location = New System.Drawing.Point(680, 539)
-        Me.txtTotalBase.Name = "txtTotalBase"
-        Me.txtTotalBase.ReadOnly = True
-        Me.txtTotalBase.Size = New System.Drawing.Size(100, 20)
-        Me.txtTotalBase.TabIndex = 396
-        Me.txtTotalBase.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.txtTotalMasFlete.Location = New System.Drawing.Point(1172, 539)
+        Me.txtTotalMasFlete.Name = "txtTotalMasFlete"
+        Me.txtTotalMasFlete.ReadOnly = True
+        Me.txtTotalMasFlete.Size = New System.Drawing.Size(100, 20)
+        Me.txtTotalMasFlete.TabIndex = 396
+        Me.txtTotalMasFlete.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'txtTotalFlete
+        '
+        Me.txtTotalFlete.Location = New System.Drawing.Point(1042, 539)
+        Me.txtTotalFlete.Name = "txtTotalFlete"
+        Me.txtTotalFlete.ReadOnly = True
+        Me.txtTotalFlete.Size = New System.Drawing.Size(100, 20)
+        Me.txtTotalFlete.TabIndex = 397
+        Me.txtTotalFlete.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Inventarios_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1090, 587)
-        Me.Controls.Add(Me.txtTotalBase)
+        Me.ClientSize = New System.Drawing.Size(1308, 587)
+        Me.Controls.Add(Me.txtTotalFlete)
+        Me.Controls.Add(Me.txtTotalMasFlete)
         Me.Controls.Add(Me.gbOrdenCompra)
         Me.Controls.Add(Me.lblConceptoInventario)
         Me.Controls.Add(Me.CboConceptoInventario)
@@ -834,5 +845,6 @@ Partial Class Inventarios_Movimientos
     Friend WithEvents cboEntradasAnterioresOrdenCompra As ComboBox
     Friend WithEvents btnNuevaOrdenCompra As Button
     Friend WithEvents btnConsultarOrdenCompra As Button
-    Friend WithEvents txtTotalBase As MaskedTextBox
+    Friend WithEvents txtTotalMasFlete As MaskedTextBox
+    Friend WithEvents txtTotalFlete As MaskedTextBox
 End Class
