@@ -16,8 +16,9 @@ Public Class Class_Inventarios_Detalle
     Private _ID_ADICIONAL As Integer = 0
     Private _LISTA_SERIES As String
 
+    Private _FLETE_DETALLE_IMPORTE As Decimal = 0
     Private _COSTO_DETALLE_BASE As Decimal = 0
-    Private _FLETE_DETALLE As Decimal = 0
+    Private _IMPORTE_BASE As Decimal = 0
     Private _ID_COMPRA_DETALLE As Integer = Nothing
 #End Region
 
@@ -118,6 +119,15 @@ Public Class Class_Inventarios_Detalle
         End Set
     End Property
 
+    Public Property FLETE_DETALLE_IMPORTE() As Decimal
+        Get
+            Return Me._FLETE_DETALLE_IMPORTE
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._FLETE_DETALLE_IMPORTE = Value
+        End Set
+    End Property
+
     Public Property COSTO_DETALLE_BASE() As Decimal
         Get
             Return Me._COSTO_DETALLE_BASE
@@ -127,12 +137,12 @@ Public Class Class_Inventarios_Detalle
         End Set
     End Property
 
-    Public Property FLETE_DETALLE() As Decimal
+    Public Property IMPORTE_BASE() As Decimal
         Get
-            Return Me._FLETE_DETALLE
+            Return Me._IMPORTE_BASE
         End Get
         Set(ByVal Value As Decimal)
-            Me._FLETE_DETALLE = Value
+            Me._IMPORTE_BASE = Value
         End Set
     End Property
 
@@ -219,8 +229,9 @@ Public Class Class_Inventarios_Detalle
             sqlParametro = .Parameters.Add("@ID_ADICIONAL", SqlDbType.Int) : sqlParametro.Value = Me._ID_ADICIONAL
             sqlParametro = .Parameters.Add("@LISTA_SERIES", SqlDbType.NVarChar) : sqlParametro.Value = Me._LISTA_SERIES.ToUpper
 
+            sqlParametro = .Parameters.Add("@FLETE_DETALLE_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._FLETE_DETALLE_IMPORTE
             sqlParametro = .Parameters.Add("@COSTO_DETALLE_BASE", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO_DETALLE_BASE
-            sqlParametro = .Parameters.Add("@FLETE_DETALLE", SqlDbType.Decimal) : sqlParametro.Value = Me._FLETE_DETALLE
+            sqlParametro = .Parameters.Add("@IMPORTE_BASE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPORTE_BASE
             sqlParametro = .Parameters.Add("@ID_COMPRA_DETALLE", SqlDbType.Int) : sqlParametro.Value = Me._ID_COMPRA_DETALLE
 
             Try

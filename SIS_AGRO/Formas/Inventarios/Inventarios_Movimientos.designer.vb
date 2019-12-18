@@ -165,7 +165,7 @@ Partial Class Inventarios_Movimientos
         '
         'txtTotal
         '
-        Me.txtTotal.Location = New System.Drawing.Point(431, 539)
+        Me.txtTotal.Location = New System.Drawing.Point(518, 539)
         Me.txtTotal.Name = "txtTotal"
         Me.txtTotal.ReadOnly = True
         Me.txtTotal.Size = New System.Drawing.Size(100, 20)
@@ -715,7 +715,7 @@ Partial Class Inventarios_Movimientos
         '
         'txtTotalFlete
         '
-        Me.txtTotalFlete.Location = New System.Drawing.Point(1042, 539)
+        Me.txtTotalFlete.Location = New System.Drawing.Point(1013, 539)
         Me.txtTotalFlete.Name = "txtTotalFlete"
         Me.txtTotalFlete.ReadOnly = True
         Me.txtTotalFlete.Size = New System.Drawing.Size(100, 20)

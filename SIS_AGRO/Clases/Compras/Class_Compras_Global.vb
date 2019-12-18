@@ -1429,10 +1429,10 @@ Public Class Class_Compras_Global
         Return Resultado
     End Function
 
-    Public Function ValidaCantidadDisponibleArticulo(ByVal iIdArticulo As Integer, ByVal dCantidad As Double) As Boolean
+    Public Function ValidaCantidadDisponibleArticulo(ByVal IDCompraDetalle As Integer, ByVal dCantidad As Double) As Boolean
         Dim dDisponible As String = ""
         Try
-            Dim sql As New Class_find("SELECT DISPONIBLE FROM COMPRA_DETALLE WHERE ID_COMPRA_DETALLE=" & iIdArticulo)
+            Dim sql As New Class_find("SELECT DISPONIBLE FROM COMPRA_DETALLE WHERE ID_COMPRA_DETALLE=" & IDCompraDetalle)
             If txtLEN(sql.Result1) = True Then
                 If dCantidad <= CDbl(sql.Result1) Then
                     Return True
@@ -1441,6 +1441,19 @@ Public Class Class_Compras_Global
             sql = Nothing
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "ValidaCantidadDisponibleArticulo", ex)
+        End Try
+    End Function
+
+    Public Function ValidaExistaIDCompraDetalle(ByVal IDCompraDetalle As Integer) As Boolean
+        Dim dDisponible As String = ""
+        Try
+            Dim sql As New Class_find("SELECT 1 FROM COMPRA_DETALLE WHERE FOLIO_COMRA='" & Me._FOLIO_COMPRA & "' AND ID_COMPRA_DETALLE=" & IDCompraDetalle)
+            If txtLEN(sql.Result1) = True Then
+                Return True
+            End If
+            sql = Nothing
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ValidaExistaIDCompraDetalle", ex)
         End Try
     End Function
 

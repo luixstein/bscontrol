@@ -968,6 +968,12 @@ BuscarCuentas:
             Return False
         End If
 
+        If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ER" Then
+            If Me.ValidaCantidadesDisponiblesOrdenCompra() = False Then
+                Return False
+            End If
+        End If
+
         'Me.oInventarios = New Class_Inventarios_Global
 
         Select Case Me.Estado
@@ -977,7 +983,13 @@ BuscarCuentas:
                     With oInventarios
                         .FOLIO_MOVIMIENTO_INVENTARIO = Me.TxtFolio.Text.ToUpper
                         .CODIGO_TIPO_DOCUMENTO = "" & Me.CboDocumento.SelectedValue.ToString()
-                        .FOLIO_REFERENCIA = Me.TxtFolioReferencia.Text
+
+                        If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ER" Then 'ER=Entrada por compra
+                            .FOLIO_REFERENCIA = Me.txtFolioOrdenCompra.Text 'Se graba el folio de la orden de compra como folio de referencias.
+                        Else
+                            .FOLIO_REFERENCIA = Me.TxtFolioReferencia.Text
+                        End If
+
                         .CODIGO_ALMACEN1 = "" & Me.CboAlmacen.SelectedValue.ToString()
                         If Me.oDocumentos.ES_TRANSFERENCIA = "1" Then
                             .CODIGO_ALMACEN2 = "" & Me.CboAlmacenDestino.SelectedValue.ToString()
@@ -1012,9 +1024,9 @@ BuscarCuentas:
                                 .oInventariosDetalle.FOLIO_MOVIMIENTO_INVENTARIO = .FOLIO_MOVIMIENTO_INVENTARIO
                                 .oInventariosDetalle.CODIGO_ARTICULO = Me.Grid1.Cell(i, Me.iGyCodigo).Text
                                 .oInventariosDetalle.CANTIDAD = valorNumerico(Me.Grid1.Cell(i, Me.iGyCantidad).Text)
-                                .oInventariosDetalle.COSTO = valorNumerico(Me.Grid1.Cell(i, Me.iGyCosto).Text)
+                                .oInventariosDetalle.COSTO = valorNumerico(Me.Grid1.Cell(i, Me.iGyCostoMasFlete).Text)
                                 .oInventariosDetalle.CUENTA_CONTABLE = Me.Grid1.Cell(i, Me.iGyCuentaContable).Text.ToString
-                                .oInventariosDetalle.IMPORTE = CDec(valorNumerico(Me.Grid1.Cell(i, Me.iGyImporte).Text.ToString))
+                                .oInventariosDetalle.IMPORTE = CDec(valorNumerico(Me.Grid1.Cell(i, Me.iGyImporteMasFlete).Text.ToString))
                                 .oInventariosDetalle.ID_ADICIONAL = CInt(valorNumerico(Me.Grid1.Cell(i, Me.iGyIDAdicional).Text))
 
                                 If Me.dtSeries.Rows.Count > 0 Then
@@ -1026,11 +1038,11 @@ BuscarCuentas:
                                         sListaSeries = sListaSeries.Substring(0, sListaSeries.Length - 1) 'Para quitarle el último pipe que sale sobrando.
                                     End If
                                 End If
-
                                 .oInventariosDetalle.LISTA_SERIES = sListaSeries
 
-                                .oInventariosDetalle.COSTO_DETALLE_BASE = valorNumericoD(Me.Grid1.Cell(i, Me.iGyCostoMasFlete).Text.ToString)
-                                .oInventariosDetalle.FLETE_DETALLE = valorNumericoD(Me.Grid1.Cell(i, Me.iGyFleteDetalleImporte).Text.ToString)
+                                .oInventariosDetalle.FLETE_DETALLE_IMPORTE = valorNumericoD(Me.Grid1.Cell(i, Me.iGyFleteDetalleImporte).Text.ToString)
+                                .oInventariosDetalle.COSTO_DETALLE_BASE = valorNumericoD(Me.Grid1.Cell(i, Me.iGyCosto).Text.ToString)
+                                .oInventariosDetalle.IMPORTE_BASE = valorNumericoD(Me.Grid1.Cell(i, Me.iGyImporte).Text.ToString)
                                 .oInventariosDetalle.ID_COMPRA_DETALLE = CInt("0" & Me.Grid1.Cell(i, Me.iGyIDCompraDetalle).Text)
 
                                 If .oInventariosDetalle.GrabaRenglon() = False Then
@@ -1663,15 +1675,19 @@ BuscarCuentas:
                 .Column(Me.iGyImporte).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
                 .Column(Me.iGyImporte).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.iGyCostoMasFlete).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyCostoMasFlete).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
-                .Column(Me.iGyCostoMasFlete).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyCuentaContable).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .Column(Me.iGyFleteDetalleImporte).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyFleteDetalleImporte).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
                 .Column(Me.iGyFleteDetalleImporte).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.iGyCuentaContable).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyCostoMasFlete).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyCostoMasFlete).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.iGyCostoMasFlete).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyImporteMasFlete).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyImporteMasFlete).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyImporteMasFlete).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .Column(Me.iGyDescripcion).Locked = True
                 .Column(Me.iGyImporte).Locked = True
@@ -2131,7 +2147,7 @@ BuscarCuentas:
 
             If Me.oInventarios.NATURALEZA_INVENTARIOS <> "EN" Then
                 If Me.ValidarExistencias() = False Then
-                    Exit Sub
+                    Return
                 End If
             End If
 
@@ -2139,7 +2155,13 @@ BuscarCuentas:
             If Me.oDocumentos.ES_TRANSFERENCIA = "1" Then
                 If Me.EstableceCuentaContableAlmacenDestino() = False Then
                     MsgBox("Error al tratar de asígnar la cuenta contable del almacen destino.", MsgBoxStyle.Exclamation, sProcedure)
-                    Exit Sub
+                    Return
+                End If
+            End If
+
+            If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ER" Then
+                If Me.ValidaCantidadesDisponiblesOrdenCompra() = False Then
+                    Return
                 End If
             End If
 
@@ -2152,12 +2174,11 @@ BuscarCuentas:
                     Me._AplicadoExterior = True
                     'MsgBox("El movimiento de Inventario fue Aplicado con exito", MsgBoxStyle.Information, sProcedure)
                     Me.Close()
-                    Exit Sub
+                    Return
                 End If
 
-                MsgBox("El movimiento de Inventario fue Aplicado con éxito", MsgBoxStyle.Information, sProcedure)
+                MsgBox("El movimiento de inventario fue aplicado con éxito", MsgBoxStyle.Information, sProcedure)
                 Me.Consultar()
-
             Else
                 If Me._LlamadoExterior = False Then
                     Me.Consultar()
@@ -2695,6 +2716,8 @@ busca_serie:
                 dFleteImporte = RedondearD((dCantidad / dCantidadTotal) * dFleteTotal, Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
                 Me.Grid1.Cell(i, Me.iGyFleteDetalleImporte).Text = dFleteImporte.ToString
+
+                'Esto se hace en el totales
                 'Me.Grid1.Cell(i, Me.iGyCostoMasFlete).Text = RedondearD(dCosto + (dFleteImporte / dCantidad), Empresa_Sistema.DECIMALES_PRECIO).ToString 'Simula un flete unitario para tener un costo mas flete(que no se usa para importe-flete por tropos)
                 'Me.Grid1.Cell(i, Me.iGyImporteMasFlete).Text = (valorNumericoD(Me.Grid1.Cell(i, Me.iGyImporte).Text) + dFleteImporte).ToString
             Next
@@ -2775,6 +2798,49 @@ busca_serie:
             HandleError(Me.Name, sProcedure, ex)
         End Try
     End Function
+
+    Private Function ValidaCantidadesDisponiblesOrdenCompra() As Boolean
+        Const sProcedure As String = "ValidaCantidadesDisponiblesOrdenCompra"
+        Try
+            Dim i As Integer, IDCompraDetalle As Integer = 0
+
+            Dim oOC As New Class_Compras_Global(Me.txtFolioOrdenCompra.Text, "OC" & Plaza.CODIGO_PLAZA.ToString)
+
+            If oOC.Existe = False Then
+                MsgBox("Asígne una orden de compra válida.", MsgBoxStyle.Exclamation, sProcedure)
+                Me.txtFolioOrdenCompra.Focus()
+                Return False
+            End If
+
+            For i = 1 To Me.Grid1.Rows - 1
+                If txtLEN(Me.Grid1.Cell(i, Me.iGyCodigo).Text) = True Then
+                    IDCompraDetalle = CInt(Me.Grid1.Cell(i, Me.iGyIDCompraDetalle).Text)
+
+                    If IDCompraDetalle <= 0 Then
+                        MsgBox("El renglón #" & i.ToString & " no esta relacionado a un renglón de la orden de compra.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+
+                    If oOC.ValidaExistaIDCompraDetalle(IDCompraDetalle) = False Then
+                        MsgBox("El id de compra detalle del renglón " & i.ToString & " no corresponde a esta orden de compra.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+
+                    If oOC.ValidaCantidadDisponibleArticulo(IDCompraDetalle, CDbl(Me.Grid1.Cell(i, Me.iGyCantidad).Text)) = False Then
+                        MsgBox("La cantidad debe de ser menor al disponible.", MsgBoxStyle.Exclamation, sProcedure)
+                        Me.Grid1.Cell(i, Me.iGyCantidad).SetFocus()
+                        Return False
+                    End If
+                End If
+            Next i
+
+            Return True
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Function
+
+
 
 #End Region
 
