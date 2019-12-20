@@ -15,7 +15,7 @@ Public Class Class_Inventarios_Global
     Private _CONCEPTO As String
     Private _CODIGO_USUARIO As Integer
     Private _CODIGO_PLAZA As Integer
-    Private _TOTAL As Double
+    Private _TOTAL As Decimal
     Private _NATURALEZA_INVENTARIOS As String
     Private _FOLIO_POLIZA As String
     Private _FECHA_CANCELACION As Date
@@ -139,11 +139,11 @@ Public Class Class_Inventarios_Global
         End Set
     End Property
 
-    Public Property TOTAL() As Double
+    Public Property TOTAL() As Decimal
         Get
             Return Me._TOTAL
         End Get
-        Set(ByVal Value As Double)
+        Set(ByVal Value As Decimal)
             Me._TOTAL = Value
         End Set
     End Property
@@ -439,7 +439,7 @@ Public Class Class_Inventarios_Global
                     Me._CODIGO_ALMACEN2 = "" & dReader("CODIGO_ALMACEN2").ToString()
                     Me._CONCEPTO = "" & dReader("CONCEPTO").ToString()
                     Me._CODIGO_PLAZA = Convert.ToInt32(dReader("CODIGO_PLAZA"))
-                    Me._TOTAL = CDbl(dReader("COSTO_TOTAL"))
+                    Me._TOTAL = CDec(dReader("COSTO_TOTAL"))
                     Me._NATURALEZA_INVENTARIOS = "" & dReader("NATURALEZA_INVENTARIOS").ToString()
                     Me._FOLIO_POLIZA = "" & dReader("FOLIO_POLIZA").ToString()
                     Me._FECHA = CDate(dReader("FECHA"))
@@ -461,6 +461,9 @@ Public Class Class_Inventarios_Global
 
                     Me._FOLIO_EMBARQUE = "" & dReader("FOLIO_EMBARQUE").ToString()
                     Me._CODIGO_CONCEPTO_INVENTARIOS = CInt(dReader("CODIGO_CONCEPTO_INVENTARIOS"))
+
+                    Me._COSTO_TOTAL_BASE = CDec(dReader("COSTO_TOTAL_BASE"))
+                    Me._FLETE_TOTAL = CDec(dReader("FLETE_TOTAL"))
 
                     bResultado = True
                 End If

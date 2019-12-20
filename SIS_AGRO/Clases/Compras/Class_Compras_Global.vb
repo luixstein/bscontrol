@@ -1350,9 +1350,9 @@ Public Class Class_Compras_Global
         f.sCampo = "FOLIO_COMPRA"
         f.sOrder = "FECHA DESC"
         f.sTable = "COMPRA_GLOBAL"
-        f.sQl = "SELECT G.FOLIO_COMPRA,P.NOMBRE_PROVEEDOR,G.FECHA,G.ESTATUS FROM COMPRA_GLOBAL G " & _
-        "INNER JOIN CAT_PROVEEDORES P ON(G.CODIGO_PROVEEDOR =P.CODIGO_PROVEEDOR) " & _
-        "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO T ON(G.CODIGO_DOCUMENTO=T.CODIGO_DOCUMENTO) " & _
+        f.sQl = "SELECT G.FOLIO_COMPRA,P.NOMBRE_PROVEEDOR,G.FECHA,G.ESTATUS FROM COMPRA_GLOBAL G " &
+        "INNER JOIN CAT_PROVEEDORES P ON(G.CODIGO_PROVEEDOR =P.CODIGO_PROVEEDOR) " &
+        "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO T ON(G.CODIGO_DOCUMENTO=T.CODIGO_DOCUMENTO) " &
         "WHERE T.CODIGO_DOCUMENTO LIKE 'OC%' AND T.AFECTA_CONTABILIDAD='0' AND G.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND "
 
         If txtLEN(sEstatus) = True Then
@@ -1367,6 +1367,31 @@ Public Class Class_Compras_Global
             End If
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "BusquedaVisual_OrdenesCompra", ex)
+        End Try
+        Return Resultado
+    End Function
+
+    Public Function BusquedaVisual_OrdenesCompraParaInventarios() As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de compras por folio."
+        f.sCampo = "FOLIO_COMPRA"
+        f.sOrder = "FECHA ASC"
+        f.sTable = "COMPRA_GLOBAL"
+        f.sQl = "SELECT G.FOLIO_COMPRA,P.NOMBRE_PROVEEDOR,G.FECHA,G.ESTATUS FROM COMPRA_GLOBAL G " &
+        "INNER JOIN CAT_PROVEEDORES P ON(G.CODIGO_PROVEEDOR=P.CODIGO_PROVEEDOR) " &
+        "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO T ON(G.CODIGO_DOCUMENTO=T.CODIGO_DOCUMENTO) " &
+        "WHERE T.CODIGO_DOCUMENTO LIKE 'OC%' AND T.AFECTA_CONTABILIDAD='0' AND G.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND " &
+        "G.ESTATUS=IN('G','R') "
+
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_OrdenesCompraParaInventarios", ex)
         End Try
         Return Resultado
     End Function
@@ -1447,7 +1472,7 @@ Public Class Class_Compras_Global
     Public Function ValidaExistaIDCompraDetalle(ByVal IDCompraDetalle As Integer) As Boolean
         Dim dDisponible As String = ""
         Try
-            Dim sql As New Class_find("SELECT 1 FROM COMPRA_DETALLE WHERE FOLIO_COMRA='" & Me._FOLIO_COMPRA & "' AND ID_COMPRA_DETALLE=" & IDCompraDetalle)
+            Dim sql As New Class_find("SELECT 1 FROM COMPRA_DETALLE WHERE FOLIO_COMPRA='" & Me._FOLIO_COMPRA & "' AND ID_COMPRA_DETALLE=" & IDCompraDetalle)
             If txtLEN(sql.Result1) = True Then
                 Return True
             End If
@@ -1810,6 +1835,21 @@ Public Class Class_Compras_Global
         Return sResultado
     End Function
 
+    Public Function ObtieneEntradasOC(ByVal sFolioOrdenCompra As String) As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String = ("SELECT FOLIO_MOVIMIENTO_INVENTARIO,FECHA " &
+                              "FROM INVENTARIO_MOVIMIENTOS_GLOBAL " &
+                              "WHERE CODIGO_TIPO_DOCUMENTO LIKE 'ER%' AND ESTATUS='A' AND FOLIO_REFERENCIA='" & sFolioOrdenCompra & "' " &
+                              "ORDER BY FECHA ")
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtieneEntradasOC", ex)
+        End Try
+        Return dTabla
+    End Function
 #End Region
 
 End Class

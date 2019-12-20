@@ -632,6 +632,7 @@ Partial Class Inventarios_Movimientos
         Me.txtFleteOrdenCompra.Name = "txtFleteOrdenCompra"
         Me.txtFleteOrdenCompra.Size = New System.Drawing.Size(135, 20)
         Me.txtFleteOrdenCompra.TabIndex = 395
+        Me.txtFleteOrdenCompra.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'btnProrratearFleteOrdenCompra
         '

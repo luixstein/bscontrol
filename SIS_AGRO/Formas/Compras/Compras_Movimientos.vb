@@ -445,12 +445,26 @@ Buscar:
     Private Sub GridSeries_KeyDown(ByVal Sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles GridSeries.KeyDown
         Me.GestionaGridSeries(e)
     End Sub
+
+    Private Sub txtFolioOC_Inventarios_KeyDown(sender As Object, e As KeyEventArgs) Handles txtFolioOC_Inventarios.KeyDown
+        Select Case e.KeyCode
+            Case Keys.F6
+Buscar:
+                Me.txtFolioOC_Inventarios.Text = Me.oCompras.BusquedaVisual_OrdenesCompraParaInventarios()
+            Case Keys.Enter
+                If txtLEN(Me.txtFolioOC_Inventarios.Text) = False Then
+                    GoTo Buscar : Exit Sub
+                End If
+                Me.btnTraerTodasEntradasInventarios.Focus()
+        End Select
+    End Sub
+
 #End Region
 
 #Region "Eventos Genericos"
     Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFolioCompra.KeyPress, txtFolioOC.KeyPress, txtProveedor.KeyPress, txtFolioProveedor.KeyPress,
     txtEntregarA.KeyPress, txtSolicito.KeyPress, TxtConcepto.KeyPress, txtConCargoA.KeyPress, txtPredio.KeyPress, txtConfirmo.KeyPress,
-    DtpFecha.KeyPress, dtpFechaVencimiento.KeyPress
+    DtpFecha.KeyPress, dtpFechaVencimiento.KeyPress, txtFolioOC_Inventarios.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -474,6 +488,7 @@ Buscar:
     End Sub
 
 #End Region
+
 #End Region
 
 #Region "Métodos y procedimientos"
@@ -2588,6 +2603,8 @@ BuscarCuentas:
                 Me.tsbGrabar.Visible = False
                 Me.tsbAplicar.Visible = True
                 Me.tpSeries.Enabled = True
+
+                Me.TabControl1.TabPages(2).Enabled = True
             Else
                 Me.txtFolioOC.Visible = False : Me.lblDisplayFolioOC.Visible = False
                 Me.txtFolioProveedor.Visible = False : Me.lblDisplayFolioProveedor.Visible = False
@@ -2602,6 +2619,8 @@ BuscarCuentas:
                 Me.tsbGrabar.Visible = True
                 Me.tsbAplicar.Visible = False
                 Me.tpSeries.Enabled = False
+
+                Me.TabControl1.TabPages(2).Enabled = False
             End If
         Catch ex As Exception
             HandleError(Me.Name, "OcultarControles", ex)
@@ -3440,6 +3459,98 @@ BuscarCuentas:
         End Try
     End Sub
 
+    Private Sub btnTraerTodasEntradasInventarios_Click(sender As Object, e As EventArgs) Handles btnTraerTodasEntradasInventarios.Click
+        Me.TraerTodasEntradasInventarios
+    End Sub
+
+    Private Sub btnAgregarTodasEntradasInventarios_Click(sender As Object, e As EventArgs) Handles btnAgregarTodasEntradasInventarios.Click
+        Me.AgregarTodasEntradasInventarios
+    End Sub
+
+    Private Sub btnArgegarSeleccionadaEntradasInventarios_Click(sender As Object, e As EventArgs) Handles btnAgregarSeleccionadaEntradasInventarios.Click
+        Me.AgregarSeleccionadaEntradasInventarios
+    End Sub
+
+    Private Sub btnListoEntradasInventarios_Click(sender As Object, e As EventArgs) Handles btnListoEntradasInventarios.Click
+        Me.ListoEntradasInventarios
+    End Sub
+
+    Private Function TraerTodasEntradasInventarios() As Boolean
+        Const sProcedure As String = "TraerTodasEntradasInventarios"
+        Try
+            If txtLEN(Me.txtFolioOC_Inventarios.Text) = False Then
+                MsgBox("Capture el folio de la orden de compra.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            Dim oCompraLocal As New Class_Compras_Global(Me.txtFolioOC_Inventarios.Text, "OC" & Usuario.Codigo_Plaza.ToString)
+
+            If oCompraLocal.Existe = False Then
+                MsgBox("La orden de compra indicada no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            'La 1era vez el proveedor va estar en blanco, desde la segunda vez ya estará cargado con el proveedor de la 1er oc agregada.
+            If txtLEN(Me.txtProveedor.Text) = False Then
+                Me.txtProveedor.Text = oCompraLocal.CODIGO_PROVEEDOR
+                Me.lblProveedor.Text = New Class_CatProveedores(Me.txtProveedor.Text).Nombre_Proveedor
+            End If
+
+            If oCompraLocal.CODIGO_PROVEEDOR <> Me.txtProveedor.Text Then
+                MsgBox("el proveedor de la orden de compra no es igual al de la compra que esta elaborando.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            For Each dRow As DataRow In Me.oCompras.ObtieneEntradasOC(Me.txtFolioOC_Inventarios.Text).Rows
+                Dim sFolioEntrada As String = dRow("FOLIO_MOVIMIENTO_INVENTARIO").ToString
+
+                Dim bYaExiste As Boolean = False
+                For Each i In lstEntradasInventarios.Items
+                    If i.ToString = sFolioEntrada Then
+                        MsgBox("Ya existe en el listado el folio " & sFolioEntrada, vbExclamation, sProcedure)
+                        bYaExiste = True
+                    End If
+                Next
+                If bYaExiste = False Then
+                    Me.lstEntradasInventarios.Items.Add(sFolioEntrada)
+                End If
+            Next
+
+            Me.txtFolioOC_Inventarios.Text = ""
+            Me.txtFolioOC_Inventarios.Focus()
+
+            Return True
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Function
+
+    Private Function AgregarTodasEntradasInventarios() As Boolean
+        Const sProcedure As String = "AgregarTodasEntradasInventarios"
+        Try
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Function
+
+    Private Function AgregarSeleccionadaEntradasInventarios() As Boolean
+        Const sProcedure As String = "AgregarSeleccionadaEntradasInventarios"
+        Try
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Function
+
+    Private Function ListoEntradasInventarios() As Boolean
+        Const sProcedure As String = "ListoEntradasInventarios"
+        Try
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Function
 #End Region
 
 End Class

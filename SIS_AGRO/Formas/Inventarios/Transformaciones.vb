@@ -374,7 +374,7 @@ BuscarCuentas:
                 .CONCEPTO = "SALIDA POR TRANSFORMACIÓN PARA " & Me.LblNombreProductoFinal.Text & " : " & Me.TxtConcepto.Text
                 .CODIGO_USUARIO = CInt("" & Usuario.Codigo_Usuario)
                 .CODIGO_PLAZA = Usuario.Codigo_Plaza
-                .TOTAL = valorNumerico(Me.TxtCostoTotal.Text)
+                .TOTAL = valorNumericoD(Me.TxtCostoTotal.Text)
                 .FOLIO_EMBARQUE = ""
 
                 If .Grabar("INSERTAR") = False Then
@@ -478,7 +478,7 @@ BuscarCuentas:
                 .CONCEPTO = "ENTRADA POR TRANSFORMACIÓN PARA " & Me.LblNombreProductoFinal.Text & " : " & Me.TxtConcepto.Text
                 .CODIGO_USUARIO = CInt("" & Usuario.Codigo_Usuario)
                 .CODIGO_PLAZA = Usuario.Codigo_Plaza
-                .TOTAL = valorNumerico(Me.TxtCostoTotal.Text)
+                .TOTAL = valorNumericoD(Me.TxtCostoTotal.Text)
                 .FOLIO_EMBARQUE = ""
 
                 If .Grabar("INSERTAR") = False Then

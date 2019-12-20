@@ -129,10 +129,12 @@ Public Class Inventarios_Movimientos
     End Sub
 
     Private Sub tsbCancelar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbCancelar.Click
-        If Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "ENI" Or Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "SAI" Then
+        If Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "ENI" Or Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "SAI" Or Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "ER" Then
             If Me.Cancelar() = True Then
                 Me.Consultar()
             End If
+        Else
+            MsgBox("Este documento no es cancelable.", vbExclamation, Me.Name)
         End If
     End Sub
 
@@ -998,14 +1000,16 @@ BuscarCuentas:
                         .CONCEPTO = "" & Me.TxtConcepto.Text
                         .CODIGO_USUARIO = CInt("" & Usuario.Codigo_Usuario)
                         .CODIGO_PLAZA = Usuario.Codigo_Plaza
-                        .TOTAL = valorNumerico(Me.txtTotal.Text)
+                        .TOTAL = valorNumericoD(Me.txtTotalMasFlete.Text)
                         .FOLIO_EMBARQUE = Me.txtFolioEmbarque.Text
                         .CODIGO_CONCEPTO_INVENTARIOS = CInt(Me.CboConceptoInventario.SelectedValue)
+                        .COSTO_TOTAL_BASE = valorNumericoD(Me.txtTotal.Text)
+                        .FLETE_TOTAL = valorNumericoD(Me.txtTotalFlete.Text)
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 If .Grabar("INSERTAR") = False Then
-                                    MsgBox("Error al tratar de insertar el movimiento de inventario.", MsgBoxStyle.Exclamation, sProcedure)
+                                    MsgBox("Error al tratar de agregar el movimiento de inventario.", MsgBoxStyle.Exclamation, sProcedure)
                                     Return False
                                 End If
                                 Me.TxtFolio.Text = .FOLIO_MOVIMIENTO_INVENTARIO
@@ -1021,6 +1025,7 @@ BuscarCuentas:
                         For i = 1 To Me.Grid1.Rows - 1
                             If txtLEN(Me.Grid1.Cell(i, Me.iGyCodigo).Text) = True Then
                                 .NuevoRenglon()
+
                                 .oInventariosDetalle.FOLIO_MOVIMIENTO_INVENTARIO = .FOLIO_MOVIMIENTO_INVENTARIO
                                 .oInventariosDetalle.CODIGO_ARTICULO = Me.Grid1.Cell(i, Me.iGyCodigo).Text
                                 .oInventariosDetalle.CANTIDAD = valorNumerico(Me.Grid1.Cell(i, Me.iGyCantidad).Text)
@@ -1494,23 +1499,30 @@ BuscarCuentas:
                 Return False
             End If
 
-            Me.TxtFolio.Text = oInventarios.FOLIO_MOVIMIENTO_INVENTARIO.ToString.ToUpper
-            Me.CboDocumento.SelectedValue = oInventarios.CODIGO_TIPO_DOCUMENTO.ToString.ToUpper
+            Me.TxtFolio.Text = oInventarios.FOLIO_MOVIMIENTO_INVENTARIO.ToUpper
+            Me.CboDocumento.SelectedValue = oInventarios.CODIGO_TIPO_DOCUMENTO.ToUpper
 
             Me.lblStatus.Text = oInventarios.ESTATUS.ToUpper
-            Me.CboAlmacen.SelectedValue = oInventarios.CODIGO_ALMACEN1.ToString.ToUpper
+            Me.CboAlmacen.SelectedValue = oInventarios.CODIGO_ALMACEN1.ToUpper
 
             If oInventarios.CODIGO_TIPO_DOCUMENTO.ToString.ToUpper = "TRI" Then
-                Me.CboAlmacenDestino.SelectedValue = oInventarios.CODIGO_ALMACEN2.ToString.ToUpper
+                Me.CboAlmacenDestino.SelectedValue = oInventarios.CODIGO_ALMACEN2.ToUpper
             End If
-            Me.TxtFolioReferencia.Text = oInventarios.FOLIO_REFERENCIA.ToString.ToUpper
-            Me.TxtConcepto.Text = oInventarios.CONCEPTO.ToString.ToUpper
-            Me.txtTotal.Text = FormatImporteContable(oInventarios.TOTAL)
-            Me.txtTotalMasFlete.Text = FormatImporteContable(oInventarios.COSTO_TOTAL_BASE)
+            Me.TxtFolioReferencia.Text = oInventarios.FOLIO_REFERENCIA.ToUpper
+            Me.TxtConcepto.Text = oInventarios.CONCEPTO.ToUpper
+            Me.txtTotal.Text = FormatImporteContable(oInventarios.COSTO_TOTAL_BASE)
             Me.lblPoliza.Text = oInventarios.FOLIO_POLIZA
             Me.DtpFecha.Value = CDate(oInventarios.FECHA)
             Me.txtFolioEmbarque.Text = oInventarios.FOLIO_EMBARQUE
             Me.CboConceptoInventario.SelectedValue = oInventarios.CODIGO_CONCEPTO_INVENTARIOS
+
+            Me.txtTotalMasFlete.Text = FormatImporteContable(oInventarios.TOTAL)
+
+            If Me.CboDocumento.SelectedValue.ToString = "ER" Then
+                Me.txtFolioOrdenCompra.Text = oInventarios.FOLIO_REFERENCIA
+                Me.txtFleteOrdenCompra.Text = FormatImporteContable(oInventarios.FLETE_TOTAL)
+                Me.txtTotalFlete.Text = FormatImporteContable(oInventarios.FLETE_TOTAL)
+            End If
 
             'Consulta datos detalle
             'Me.Grid1.DataSource = Me.oInventarios.ObtenerDetalle
@@ -2645,6 +2657,8 @@ busca_serie:
 
             If valorNumericoD(Me.txtFleteOrdenCompra.Text) > 0 Then
                 Me.ProrratearFlete()
+            Else
+                Me.Totales()
             End If
 
             Me.EstableceCuentaContableAlmacenDestino()
@@ -2821,6 +2835,7 @@ busca_serie:
                         Return False
                     End If
 
+                    'Valida que el IDCompraDetalle le pertenezca a la orden de compra seleccionada.
                     If oOC.ValidaExistaIDCompraDetalle(IDCompraDetalle) = False Then
                         MsgBox("El id de compra detalle del renglón " & i.ToString & " no corresponde a esta orden de compra.", MsgBoxStyle.Exclamation, sProcedure)
                         Return False
