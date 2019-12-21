@@ -16,6 +16,7 @@ Public Class Ventas_Movimientos
     Private dTotalSustitucion As Double = 0
     Private bVentaAutorizadaPorRegla As Boolean
     Private dPorcentajeIVAGlobal As Double = 0
+    Private EsFacturaVariasRemisiones As Boolean = False
 
     Private Enum enumEstados
         NUEVO
@@ -100,6 +101,13 @@ Public Class Ventas_Movimientos
     Private iGyGRConcepto As Short = 3
     Private iGyGRUUID As Integer = 4
     Private iGyGRTotal As Short = 5
+#End Region
+
+#Region "Columnas grid Facturas varias remisiones"
+    Private iGyFolio As Short = 1
+    Private iGyFecha As Short = 2
+    Private iGyTotal As Short = 3
+    Private iGyMoneda As Short = 4
 #End Region
 
 #Region "Campos/propiedades para facturas embarques extrajeros que se inician desde otra pantalla"
@@ -417,8 +425,10 @@ Buscar:
 
         If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
             Me.tpCFDIsRelacionados.Enabled = True
+            Me.tpFacturasRemisiones.Enabled = True
         Else
             Me.tpCFDIsRelacionados.Enabled = False
+            Me.tpFacturasRemisiones.Enabled = False
         End If
 
     End Sub
@@ -785,6 +795,19 @@ Buscar:
     Private Sub GridCFDIsRelacionados_KeyDown(ByVal Sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles GridCFDIsRelacionados.KeyDown
         Me.GestionaGridCFDIsRelacionados(e)
     End Sub
+
+    Private Sub GridFacturasVariasRemisiones_KeyDown(ByVal Sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles GridFacturasVariasRemisiones.KeyDown
+        Me.GestionaGridFacturasVariasRemisiones(e)
+    End Sub
+
+    Private Sub btnCargarRemisiones_Click(sender As Object, e As EventArgs) Handles btnCargarRemisiones.Click
+        Me.CargaRemisionesCliente()
+    End Sub
+
+    Private Sub btnAceptar_Click(sender As Object, e As EventArgs) Handles btnAceptar.Click
+        CargaDetalleRemisiones()
+    End Sub
+
 #End Region
 
 #Region "Métodos y procedimientos"
@@ -865,6 +888,9 @@ Buscar:
 
             Me.cboTipoRelacionCFDI.SelectedIndex = -1
             Me.InicializaGridCFDIsRelacionados()
+
+            Me.InicializaGridFacturasVariasRemisiones()
+            EsFacturaVariasRemisiones = False
 
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
@@ -1088,6 +1114,11 @@ Buscar:
             Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).DecimalLength = Me.iDecimalesPrecio 'Empresa_Sistema.DECIMALES_PRECIO
             Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).Alignment = FlexCell.AlignmentEnum.RightCenter
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            Me.Grid.Column(igyCodigo).Locked = False
+            Me.Grid.Column(igyCantidad).Locked = False
+            Me.Grid.Column(igyCantidadKilos).Locked = False
+            Me.Grid.Column(igyCodigoCentroCosto).Locked = False
+            Me.Grid.Column(igyPrecio).Locked = False
             Me.Grid.Column(Me.igyDescripcion).Locked = True
             Me.Grid.Column(Me.igyTipoControlInventariable).Locked = True
             Me.Grid.Column(Me.igyImporte).Locked = True
@@ -1259,6 +1290,10 @@ Buscar:
                         Me.cboVendedor.SelectedValue = Usuario.CODIGO_VENDEDOR
                     End If
 
+                    EsFacturaVariasRemisiones = False
+                    Me.btnAceptar.Enabled = True
+                    Me.btnCargarRemisiones.Enabled = True
+
                     If Me.Visible = True Then
                         Me.txtFolio.Focus()
                     End If
@@ -1273,6 +1308,7 @@ Buscar:
                     Me.frmDatos.Enabled = True
                     Me.Grid.Locked = False
                     Me.GridSeries.Locked = True
+                    Me.GridFacturasVariasRemisiones.Locked = True
 
                     Me.btnAgregaAddenda.Visible = False
 
@@ -1288,6 +1324,9 @@ Buscar:
                     Me.lblConceptoCancelacion.Visible = False
                     Me.TxtConceptoCancelacion.Visible = False
 
+                    Me.btnAceptar.Enabled = False
+                    Me.btnCargarRemisiones.Enabled = False
+
                     Me.TxtConcepto.Focus()
 
                 Case enumEstados.SUSTITUIDO
@@ -1300,6 +1339,7 @@ Buscar:
                     Me.frmDatos.Enabled = True
                     Me.Grid.Locked = True
                     Me.GridSeries.Locked = True
+                    Me.GridFacturasVariasRemisiones.Locked = True
 
                     Me.btnAgregaAddenda.Visible = False
 
@@ -1315,6 +1355,9 @@ Buscar:
                     Me.lblConceptoCancelacion.Visible = False
                     Me.TxtConceptoCancelacion.Visible = False
 
+                    Me.btnAceptar.Enabled = False
+                    Me.btnCargarRemisiones.Enabled = False
+
                     Me.tsbImprimir.Select()
 
                 Case enumEstados.APLICADO
@@ -1327,6 +1370,7 @@ Buscar:
                     'Me.frmDatos.Enabled = False
                     Me.Grid.Locked = True
                     Me.GridSeries.Locked = True
+                    Me.GridFacturasVariasRemisiones.Locked = True
 
                     If Me.oDocumento.AFECTA_CONTABILIDAD = True Then
                         Me.tsbCotizacionFactura.Visible = False
@@ -1386,6 +1430,9 @@ Buscar:
                     Me.lblConceptoCancelacion.Visible = False
                     Me.TxtConceptoCancelacion.Visible = False
 
+                    Me.btnAceptar.Enabled = False
+                    Me.btnCargarRemisiones.Enabled = False
+
                     Me.tsbImprimir.Select()
 
                 Case enumEstados.SUSTITUYENDO
@@ -1403,6 +1450,7 @@ Buscar:
                     Me.frmDatos.Enabled = True
                     'Me.Grid.Locked = True 'De momento no se permiten editar cantidades, o precios
                     Me.GridSeries.Locked = True 'De momento no permitimos manejo de series en sustituciones.
+                    Me.GridFacturasVariasRemisiones.Locked = True
 
                     Me.tsbTimbrar.Visible = False
                     Me.tsbCotizacionFactura.Visible = False
@@ -1419,6 +1467,9 @@ Buscar:
 
                     Me.lblConceptoCancelacion.Visible = False
                     Me.TxtConceptoCancelacion.Visible = False
+
+                    Me.btnAceptar.Enabled = False
+                    Me.btnCargarRemisiones.Enabled = False
 
                     Me.tsbImprimir.Select()
 
@@ -1437,6 +1488,7 @@ Buscar:
                     'Me.frmDatos.Enabled = False
                     Me.Grid.Locked = True
                     Me.GridSeries.Locked = True
+                    Me.GridFacturasVariasRemisiones.Locked = True
 
                     Me.btnAgregaAddenda.Visible = False
 
@@ -1477,6 +1529,8 @@ Buscar:
                     Me.TxtConceptoCancelacion.Visible = True
                     Me.TxtConceptoCancelacion.ReadOnly = True
 
+                    Me.btnAceptar.Enabled = False
+                    Me.btnCargarRemisiones.Enabled = False
             End Select
 
             'Me.tsbSellarFacturaElectronica.Visible = False
@@ -1617,6 +1671,30 @@ Buscar:
                     Return False
                 End If
             End If
+
+
+            If EsFacturaVariasRemisiones = True Then 'Primero se deben cancelar las remisiones que se quieren facturar
+                Dim FoliosRemisiones As String = ""
+
+                For i = 1 To Me.GridFacturasVariasRemisiones.Rows - 1
+                    FoliosRemisiones = FoliosRemisiones & Me.GridFacturasVariasRemisiones.Cell(i, Me.iGyFolio).Text & "|"
+                Next
+
+                FoliosRemisiones = FoliosRemisiones.Substring(0, FoliosRemisiones.Length - 1) 'Para quitarle el último pipe que sale sobrando
+
+                oVenta.CODIGO_PLAZA = Plaza.CODIGO_PLAZA
+                oVenta.CODIGO_USUARIO_CANCELO = Usuario.Codigo_Usuario
+                oVenta.FECHA_CANCELACION = Date.Now
+                oVenta.CONCEPTO_CANCELACION = "CANCELACION POR FACTURACION DE VARIAS REMISIONES"
+
+                If oVenta.CancelaMultiplesRemisiones(FoliosRemisiones) = False Then
+                    MsgBox("Error al cancelar las remisiones que se quieren facturar.", MsgBoxStyle.Exclamation, Me.Name)
+                    Return False
+                End If
+
+
+            End If
+
 
             With Me.oVenta
                 .FOLIO_VENTA = Me.txtFolio.Text.ToUpper
@@ -1878,6 +1956,15 @@ Buscar:
                     End If
                 End If
 
+                If EsFacturaVariasRemisiones = True Then
+                    For i = 1 To Me.GridFacturasVariasRemisiones.Rows - 1
+                        If oVenta.GrabaRelacionRemisionFactura(Me.GridFacturasVariasRemisiones.Cell(i, Me.iGyFolio).Text) = False Then
+                            MsgBox("Error al grabar la relación de la remisión " & Me.GridFacturasVariasRemisiones.Cell(i, Me.iGyFolio).Text, MsgBoxStyle.Exclamation, Me.Name)
+                            Return False
+                        End If
+                    Next
+                End If
+
                 bResultado = True
                 MsgBox("Movimiento de ventas grabado satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
 
@@ -1885,6 +1972,9 @@ Buscar:
                     Me._GrabadaFacturaEmbarqueExtranjero = True
                     Me.Hide()
                 End If
+
+                EsFacturaVariasRemisiones = False
+
             End With
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
@@ -2289,7 +2379,7 @@ CANCELAR:
                 Return False
             End If
 
-            If Me.sTipoVenta <> "SR" AndAlso Me.oDocumento.AFECTA_INVENTARIOS = True Then
+            If Me.sTipoVenta <> "SR" AndAlso Me.oDocumento.AFECTA_INVENTARIOS = True AndAlso EsFacturaVariasRemisiones = False Then
                 If Me.ValidarExistencias() = False Then
                     Return False
                 End If
@@ -3442,6 +3532,10 @@ CANCELAR:
                     Me.tsbSubirXML.Visible = True
                 End If
             End If
+
+            Me.GridFacturasVariasRemisiones.DataSource = oVenta.ObtenerRelacionFacturasRemisiones(oVenta.FOLIO_VENTA)
+            Me.FormateaGridFacturasVariasRemisiones()
+            Me.GridFacturasVariasRemisiones.Locked = True
 
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
@@ -4844,6 +4938,114 @@ BuscaVentas:
             HandleError(Me.Name, sProcedure, ex)
         End Try
     End Function
+
+    Private Sub InicializaGridFacturasVariasRemisiones()
+        Try
+            Me.GridFacturasVariasRemisiones.DataSource = Nothing
+            FG_Grid_Limpiar(Me.GridFacturasVariasRemisiones)
+            Me.GridFacturasVariasRemisiones.Rows = 2
+            Me.GridFacturasVariasRemisiones.Cols = 5
+            Me.FormateaGridFacturasVariasRemisiones()
+        Catch ex As Exception
+            HandleError(Me.Name, "InicializaGridFacturasVariasRemisiones", ex)
+        End Try
+    End Sub
+
+    Private Sub FormateaGridFacturasVariasRemisiones()
+        Try
+            With Me.GridFacturasVariasRemisiones
+                .Column(Me.iGyFolio).Width = 120
+                .Column(Me.iGyFecha).Width = 100
+                .Column(Me.iGyTotal).Width = 300
+                .Column(Me.iGyMoneda).Width = 100
+
+                .Cell(0, Me.iGyFolio).Text = "Folio"
+                .Cell(0, Me.iGyFecha).Text = "Fecha"
+                .Cell(0, Me.iGyTotal).Text = "Total"
+                .Cell(0, Me.iGyMoneda).Text = "Moneda"
+
+                .Column(Me.iGyFolio).Locked = True
+                .Column(Me.iGyFecha).Locked = True
+                .Column(Me.iGyTotal).Locked = True
+                .Column(Me.iGyMoneda).Locked = True
+
+                .Column(Me.iGyFecha).CellType = FlexCell.CellTypeEnum.DateTime
+                .Column(Me.iGyFecha).FormatString = "dd-MMM-yy"
+
+                .Column(Me.iGyTotal).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyTotal).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyTotal).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyTotal).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Locked = False
+
+                .AutoRedraw = True
+                .Refresh()
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "FormateaGridSeries", ex)
+        End Try
+    End Sub
+
+    Private Sub GestionaGridFacturasVariasRemisiones(ByVal e As System.Windows.Forms.KeyEventArgs)
+        Try
+            With Me.GridFacturasVariasRemisiones
+                Dim Renglon As Integer = .Selection.FirstRow
+                Dim Columna As Integer = .Selection.FirstCol
+
+                Select Case e.KeyCode
+                    Case Keys.F8
+                        .Selection.DeleteByRow()
+                    Case Keys.Delete
+                        Return
+                End Select
+            End With
+
+        Catch ex As Exception
+            HandleError(Me.Name, "GestionaGridFacturasVariasRemisiones", ex)
+        End Try
+    End Sub
+
+    Private Sub CargaRemisionesCliente()
+        If txtLEN(Me.TxtCliente.Text) = False Then
+            MsgBox("Capture un código de cliente.", MsgBoxStyle.Exclamation, Me.Name)
+            Me.TxtCliente.Focus()
+            Exit Sub
+        End If
+
+        Me.GridFacturasVariasRemisiones.DataSource = oVenta.ObtenerRemisionesCliente(Me.TxtCliente.Text)
+        Me.FormateaGridFacturasVariasRemisiones()
+
+    End Sub
+
+    Private Sub CargaDetalleRemisiones()
+        Dim i As Integer
+        Dim FoliosRemisiones As String = ""
+
+        Me.GridFacturasVariasRemisiones.Locked = True
+
+        For i = 1 To Me.GridFacturasVariasRemisiones.Rows - 1
+            FoliosRemisiones = FoliosRemisiones & "'" & Me.GridFacturasVariasRemisiones.Cell(i, Me.iGyFolio).Text & "',"
+        Next
+
+        FoliosRemisiones = Strings.Left(FoliosRemisiones, FoliosRemisiones.Length - 1) 'Quita la ultima coma
+
+        Me.Grid.DataSource = oVenta.ObtenerDetalleVariasRemisiones(FoliosRemisiones)
+        Me.FormateaGrid()
+
+        Me.Totales()
+        Me.CalculaUtilidad()
+
+        With Me.Grid
+            .Column(igyCodigo).Locked = True
+            .Column(igyCantidad).Locked = True
+            .Column(igyCantidadKilos).Locked = True
+            .Column(igyCodigoCentroCosto).Locked = True
+        End With
+        Me.TabControl1.SelectTab(0) 'Muestra el tab de articulos
+
+        EsFacturaVariasRemisiones = True
+    End Sub
 
     Private Function ValidaDescuentos() As Boolean
         Const sProcedure As String = "ValidaDescuentos"

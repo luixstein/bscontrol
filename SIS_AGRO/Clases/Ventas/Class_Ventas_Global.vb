@@ -1722,6 +1722,72 @@ Public Class Class_Ventas_Global
         Return dTabla
     End Function
 
+    Public Function ObtenerRemisionesCliente(ByVal sCodigoCliente As String) As DataTable
+        Dim dTabla As New DataTable("remisiones"), da As SqlDataAdapter
+        Dim sSQL As String
+
+        sSQL = "SELECT V.FOLIO_VENTA,DBO.FN_FECHA_SIN_HORA(V.FECHA),V.TOTAL,V.CODIGO_MONEDA_SAT FROM VENTA_GLOBAL V INNER JOIN SIS_CAT_DOCUMENTOS D ON(V.CODIGO_DOCUMENTO=D.CODIGO_DOCUMENTO) " & _
+               "WHERE D.CODIGO_TIPO_DOCUMENTO = 'REM' AND V.ESTATUS_VENTA = 'A' AND V.CODIGO_CLIENTE = '" & sCodigoCliente & "' ORDER BY V.FECHA "
+
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtenerRemisionesCliente", ex)
+        End Try
+        Return dTabla
+    End Function
+
+    Public Function ObtenerDetalleVariasRemisiones(ByVal sFoliosRemisiones As String) As DataTable
+        Dim dTabla As New DataTable("detalleRemisiones"), da As SqlDataAdapter
+        Dim sSQL As String
+
+        Try
+
+            sSQL = "SELECT R.CODIGO_ARTICULO, " & _
+                   "CASE WHEN MAX(A.ES_SERIALIZABLE) = '1' THEN 'SER' WHEN MAX(A.INVENTARIABLE)= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO, " & _
+                   "MAX(R.DESCRIPCION) DESCRIPCION,SUM(R.CANTIDAD) CANTIDAD,MAX(R.PRECIO_SIN_DESCUENTO) PRECIO_SIN_DESCUENTO,MAX(R.PRECIO_SIN_DESCUENTO_USD) PRECIO_SIN_DESCUENTO_USD,MAX(R.PRECIO_TOTAL) PRECIO_TOTAL,MAX(R.PRECIO_TOTAL_USD) PRECIO_TOTAL_USD,MAX(R.UNIDAD_VENTA) UNIDAD_VENTA,ISNULL(SUM(R.CANTIDAD_KILOS),0) CANTIDAD_KILOS,ISNULL(MAX(R.PRECIO_KILOS),0) PRECIO_KILOS," & _
+                   "MAX(R.IMPUESTO_PORCENTAJE) IMPUESTO_PORCENTAJE,SUM(R.IMPORTE) IMPORTE,SUM(R.IMPORTE_USD) IMPORTE_USD,ISNULL(SUM(R.IMPORTE_KILOS),0) IMPORTE_KILOS,(SELECT CUENTA_CONTABLE_VENTAS FROM SIS_PLAZAS WHERE CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & ") CUENTA_CONTABLE,SUM(R.IMPUESTO_IMPORTE) IMPUESTO_IMPORTE,SUM(R.IMPUESTO_IMPORTE_USD) IMPUESTO_IMPORTE_USD,'' ID_VENTA_DETALLE,MAX(R.ES_PRODUCTO_KILOS) ES_PRODUCTO_KILOS,MAX(R.CODIGO_CENTRO_COSTO) CODIGO_CENTRO_COSTO,MAX(CC.NOMBRE_CENTRO_COSTO) NOMBRE_CENTRO_COSTO," & _
+                   "MAX(R.IEPS_PORCENTAJE) IEPS_PORCENTAJE,MAX(R.IEPS_UNITARIO) IEPS_UNITARIO,MAX(R.IEPS_UNITARIO_USD) IEPS_UNITARIO_USD,SUM(R.IEPS_IMPORTE) IEPS_IMPORTE,SUM(R.IEPS_IMPORTE_USD) IEPS_IMPORTE_USD,SUM(R.BASE_IEPS) BASE_IEPS,SUM(R.BASE_IEPS_USD) BASE_IEPS_USD,SUM(R.BASE_IVA) BASE_IVA,SUM(R.BASE_IVA_USD) BASE_IVA_USD," & _
+                   "MAX(R.COSTO) COSTO,(R.PRECIO - MAX(R.COSTO)) UTILIDAD_UNITARIA,((R.PRECIO-MAX(R.COSTO))*SUM(R.CANTIDAD)) UTILIDAD_TOTAL,CASE WHEN R.PRECIO > 0 THEN (((R.PRECIO-MAX(R.COSTO))/R.PRECIO)*100) ELSE 0 END UTILIDA_PORCENTAJE," & _
+                   "MAX(R.ID_SIS_CAT_IMPUESTOS) ID_SIS_CAT_IMPUESTOS,MAX(R.GRADO_TOXICIDAD) GRADO_TOXICIDAD,MAX(R.DESCUENTO_UNITARIO) DESCUENTO_UNITARIO,MAX(R.DESCUENTO_UNITARIO_USD) DESCUENTO_UNITARIO_USD,SUM(R.DESCUENTO_IMPORTE) DESCUENTO_IMPORTE,SUM(R.DESCUENTO_IMPORTE_USD) DESCUENTO_IMPORTE_USD,MAX(R.PRECIO_SIN_DESCUENTO) PRECIO_SIN_DESCUENTO,MAX(R.PRECIO_SIN_DESCUENTO_USD) PRECIO_SIN_DESCUENTO_USD, " & _
+                   "MAX(R.ID_SIS_CAT_IMPUESTOS_FLETE) ID_SIS_CAT_IMPUESTOS_FLETE,MAX(F.PORCENTAJE) RETENCION_IVA_PORCENTAJE,SUM(R.RETENCION_IVA_IMPORTE) RETENCION_IVA_IMPORTE,SUM(R.RETENCION_IVA_IMPORTE_USD) RETENCION_IVA_IMPORTE_USD " & _
+                   "FROM VENTA_DETALLE R " & _
+                   "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
+                   "INNER JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO=CC.CODIGO_CENTRO_COSTO) " & _
+                   "LEFT JOIN SIS_CAT_IMPUESTOS_FLETES F ON(R.ID_SIS_CAT_IMPUESTOS_FLETE=F.ID_SIS_CAT_IMPUESTOS_FLETE) " & _
+                   "WHERE R.FOLIO_VENTA IN(" & sFoliosRemisiones & ") " & _
+                   "GROUP BY R.CODIGO_ARTICULO,R.PRECIO ORDER BY MAX(R.DESCRIPCION) "
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtenerDetalleVariasRemisiones", ex)
+        End Try
+        Return dTabla
+    End Function
+
+    Public Function ObtenerRelacionFacturasRemisiones(ByVal sFolioFactura As String) As DataTable
+        Dim dTabla As New DataTable("RelacionFacturasRemisiones"), da As SqlDataAdapter
+        Dim sSQL As String
+
+        Try
+
+            sSQL = "SELECT G.FOLIO_VENTA,DBO.FN_FECHA_SIN_HORA(G.FECHA) FECHA,G.TOTAL,G.CODIGO_MONEDA_SAT " & _
+                   "FROM VENTAS_RELACION_FACTURAS_REMISIONES R INNER JOIN VENTA_GLOBAL G ON(R.FOLIO_REMISION=G.FOLIO_VENTA) WHERE R.FOLIO_FACTURA='" & sFolioFactura & "' ORDER BY FECHA"
+
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtenerRelacionFacturasRemisiones", ex)
+        End Try
+        Return dTabla
+    End Function
+
     Public Function EsClienteDeContado(ByVal sCuentaContable As String, ByVal sCodigoZona As String) As Boolean
         Dim bResultado As Boolean = False
         Try
@@ -2913,7 +2979,7 @@ Public Class Class_Ventas_Global
                 Return False
             End If
 
-            If oCFDI.Comprobante.tipoDeComprobante <> "I" Then
+            If oCFDI.Comprobante.TipoDeComprobante <> "I" Then
                 MsgBox("El XML no es del tipo Ingreso.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
@@ -2944,15 +3010,15 @@ Public Class Class_Ventas_Global
 
             Select Case oCFDI.Comprobante.Moneda
                 Case "MXN"
-                    If oCFDI.Comprobante.total <> Me._TOTAL Then
-                        If MsgBox("El total del comprobante del xml es de " & FormatImporteContable(oCFDI.Comprobante.total) & " MXN y el total de esta venta es de " & FormatImporteContable(Me._TOTAL) & vbCrLf &
+                    If oCFDI.Comprobante.Total <> Me._TOTAL Then
+                        If MsgBox("El total del comprobante del xml es de " & FormatImporteContable(oCFDI.Comprobante.Total) & " MXN y el total de esta venta es de " & FormatImporteContable(Me._TOTAL) & vbCrLf &
                                   "Esta seguro de relacionar este xml?", vbQuestion Or MsgBoxStyle.YesNo) = MsgBoxResult.No Then
                             Return False
                         End If
                     End If
                 Case "USD"
-                    If oCFDI.Comprobante.total <> Me._TOTAL_DOLARES Then
-                        If MsgBox("El total del comprobante del xml es de " & FormatImporteContable(oCFDI.Comprobante.total) & " USD y el total de esta venta es de " & FormatImporteContable(Me._TOTAL_DOLARES) & vbCrLf &
+                    If oCFDI.Comprobante.Total <> Me._TOTAL_DOLARES Then
+                        If MsgBox("El total del comprobante del xml es de " & FormatImporteContable(oCFDI.Comprobante.Total) & " USD y el total de esta venta es de " & FormatImporteContable(Me._TOTAL_DOLARES) & vbCrLf &
                                   "Esta seguro de relacionar este xml?", vbQuestion Or MsgBoxStyle.YesNo) = MsgBoxResult.No Then
                             Return False
                         End If
@@ -2964,10 +3030,10 @@ Public Class Class_Ventas_Global
 
             'Busca el certificado
             Dim sID_SIS_CFD_CATALOGO_CERTIFICADOS As String = "" ', sIDCATALOGO_FOLIO_FELECTRONICA As String = ""
-            oSQL = New Class_find("SELECT ID_SIS_CFD_CATALOGO_CERTIFICADOS FROM SIS_CFD_CATALOGO_CERTIFICADOS WHERE NUMERO_CERTIFICADO='" & sReplace(oCFDI.Comprobante.noCertificado) & "'")
+            oSQL = New Class_find("SELECT ID_SIS_CFD_CATALOGO_CERTIFICADOS FROM SIS_CFD_CATALOGO_CERTIFICADOS WHERE NUMERO_CERTIFICADO='" & sReplace(oCFDI.Comprobante.NoCertificado) & "'")
             sID_SIS_CFD_CATALOGO_CERTIFICADOS = oSQL.Result1
             If txtLEN(sID_SIS_CFD_CATALOGO_CERTIFICADOS) = False Then
-                MsgBox("No se encontró en la tabla SIS_CFD_CATALOGO_CERTIFICADOS el certificado " & oCFDI.Comprobante.noCertificado & ". " & vbCrLf &
+                MsgBox("No se encontró en la tabla SIS_CFD_CATALOGO_CERTIFICADOS el certificado " & oCFDI.Comprobante.NoCertificado & ". " & vbCrLf &
                        "Avíse al depto. de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
@@ -2988,14 +3054,14 @@ Public Class Class_Ventas_Global
                     sqlParametro = .Parameters.Add("@FOLIO_VENTA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_VENTA
                     sqlParametro = .Parameters.Add("@CADENA_XML", SqlDbType.Xml) : sqlParametro.Value = oCFDI.XMLSinDeclaracion
                     sqlParametro = .Parameters.Add("@CODIGO_USUARIO_AGREGO_XML_EXTERNO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
-                    sqlParametro = .Parameters.Add("@FOLIO_NUMERICO", SqlDbType.Int) : sqlParametro.Value = oCFDI.Comprobante.folio
-                    sqlParametro = .Parameters.Add("@SERIE", SqlDbType.NVarChar, 10) : sqlParametro.Value = oCFDI.Comprobante.serie
+                    sqlParametro = .Parameters.Add("@FOLIO_NUMERICO", SqlDbType.Int) : sqlParametro.Value = oCFDI.Comprobante.Folio
+                    sqlParametro = .Parameters.Add("@SERIE", SqlDbType.NVarChar, 10) : sqlParametro.Value = oCFDI.Comprobante.Serie
                     'sqlParametro = .Parameters.Add("@IDCATALOGO_FOLIO_FELECTRONICA", SqlDbType.SmallInt) : sqlParametro.Value = sIDCATALOGO_FOLIO_FELECTRONICA
                     sqlParametro = .Parameters.Add("@ID_SIS_CFD_CATALOGO_CERTIFICADOS", SqlDbType.SmallInt) : sqlParametro.Value = sID_SIS_CFD_CATALOGO_CERTIFICADOS
-                    sqlParametro = .Parameters.Add("@VERSION_ESQUEMA_XML", SqlDbType.NVarChar, 6) : sqlParametro.Value = oCFDI.Comprobante.version
-                    sqlParametro = .Parameters.Add("@NUMERO_CERTIFICADO_DIGITAL", SqlDbType.NVarChar, 50) : sqlParametro.Value = oCFDI.Comprobante.noCertificado
+                    sqlParametro = .Parameters.Add("@VERSION_ESQUEMA_XML", SqlDbType.NVarChar, 6) : sqlParametro.Value = oCFDI.Comprobante.Version
+                    sqlParametro = .Parameters.Add("@NUMERO_CERTIFICADO_DIGITAL", SqlDbType.NVarChar, 50) : sqlParametro.Value = oCFDI.Comprobante.NoCertificado
                     sqlParametro = .Parameters.Add("@CADENA_ORIGINAL", SqlDbType.NVarChar, 4000) : sqlParametro.Value = ""
-                    sqlParametro = .Parameters.Add("@SELLO_DIGITAL", SqlDbType.NVarChar, 2000) : sqlParametro.Value = oCFDI.Comprobante.sello
+                    sqlParametro = .Parameters.Add("@SELLO_DIGITAL", SqlDbType.NVarChar, 2000) : sqlParametro.Value = oCFDI.Comprobante.Sello
                     sqlParametro = .Parameters.Add("@FOLIO_FISCAL_SAT", SqlDbType.NVarChar, 50) : sqlParametro.Value = oCFDI.ComplementoTFD.UUID
                     sqlParametro = .Parameters.Add("@FECHA_TIMBRADO_SAT", SqlDbType.NVarChar, 20) : sqlParametro.Value = oCFDI.ComplementoTFD.FechaTimbrado
                     sqlParametro = .Parameters.Add("@NUMERO_SERIE_CERTIFICADO_SAT", SqlDbType.NVarChar, 20) : sqlParametro.Value = oCFDI.ComplementoTFD.NoCertificadoSAT
@@ -3087,6 +3153,65 @@ Public Class Class_Ventas_Global
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, sProcedure, ex)
         End Try
+        Return bResultado
+    End Function
+
+    Public Function CancelaMultiplesRemisiones(ByVal sFoliosRemision As String) As Boolean
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_VENTA_CANCELA_MULTIPLES_REMISIONES"
+
+            sqlParametro = .Parameters.Add("@LISTA_FOLIOS_REMISIONES", SqlDbType.NVarChar) : sqlParametro.Value = sFoliosRemision
+            sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Plaza
+            sqlParametro = .Parameters.Add("@CODIGO_USUARIO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
+            sqlParametro = .Parameters.Add("@FECHA_CANCELACION", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_CANCELACION
+            sqlParametro = .Parameters.Add("@CONCEPTO_CANCELACION", SqlDbType.NVarChar, 120) : sqlParametro.Value = Me._CONCEPTO_CANCELACION.ToUpper
+
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, "CancelaMultiplesRemisiones", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
+    End Function
+
+    Public Function GrabaRelacionRemisionFactura(ByVal sFolioRemision As String) As Boolean
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_VENTAS_RELACION_FACTURAS_REMISIONES_GRABA"
+
+            sqlParametro = .Parameters.Add("@FOLIO_FACTURA", SqlDbType.NVarChar) : sqlParametro.Value = Me._FOLIO_VENTA
+            sqlParametro = .Parameters.Add("@FOLIO_REMISION", SqlDbType.NVarChar) : sqlParametro.Value = sFolioRemision
+
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, "GrabaRelacionRemisionFactura", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
         Return bResultado
     End Function
 
