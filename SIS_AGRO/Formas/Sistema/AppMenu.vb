@@ -1654,7 +1654,7 @@ Public Class AppMenu
         Child.Show()
     End Sub
 
-    Private Sub TipoCambioToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TipoCambioToolStripMenuItem.Click
+    Private Sub TipoCambioDelDiaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TipoCambioDelDiaToolStripMenuItem.Click
         Dim Child As New TipoCambioDia
         Child.MdiParent = Me
         m_ChildFormNumber += 1

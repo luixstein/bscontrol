@@ -238,7 +238,7 @@ Partial Public Class AppMenu
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
-        Me.TipoCambioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TipoCambioDelDiaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -919,7 +919,7 @@ Partial Public Class AppMenu
         '
         'VentasToolStripMenuItem1
         '
-        Me.VentasToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DocumentosDeVentaToolStripMenuItem, Me.DevolucionesToolStripMenuItem, Me.CambioDePrecioRemisionToolStripMenuItem, Me.ToolStripMenuItem3, Me.ConsultaToolStripMenuItem1, Me.EnvioDeFacturasElectronicasToolStripMenuItem, Me.CapturaVentassemanalesToolStripMenuItem, Me.ModificaCostoToolStripMenuItem, Me.TipoCambioToolStripMenuItem})
+        Me.VentasToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DocumentosDeVentaToolStripMenuItem, Me.DevolucionesToolStripMenuItem, Me.CambioDePrecioRemisionToolStripMenuItem, Me.ToolStripMenuItem3, Me.ConsultaToolStripMenuItem1, Me.EnvioDeFacturasElectronicasToolStripMenuItem, Me.CapturaVentassemanalesToolStripMenuItem, Me.ModificaCostoToolStripMenuItem})
         Me.VentasToolStripMenuItem1.Name = "VentasToolStripMenuItem1"
         Me.VentasToolStripMenuItem1.Size = New System.Drawing.Size(64, 24)
         Me.VentasToolStripMenuItem1.Text = "Ventas"
@@ -1543,7 +1543,7 @@ Partial Public Class AppMenu
         '
         'UtileriasToolStripMenuItem
         '
-        Me.UtileriasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AdministracionToolStripMenuItem, Me.ConfiguraciónDeUsuariosToolStripMenuItem, Me.MonitoDeTimbradosToolStripMenuItem, Me.EmbarquesMasivosToolStripMenuItem, Me.GrabaImagenQRToolStripMenuItem})
+        Me.UtileriasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AdministracionToolStripMenuItem, Me.ConfiguraciónDeUsuariosToolStripMenuItem, Me.MonitoDeTimbradosToolStripMenuItem, Me.EmbarquesMasivosToolStripMenuItem, Me.GrabaImagenQRToolStripMenuItem, Me.TipoCambioDelDiaToolStripMenuItem})
         Me.UtileriasToolStripMenuItem.Name = "UtileriasToolStripMenuItem"
         Me.UtileriasToolStripMenuItem.Size = New System.Drawing.Size(75, 24)
         Me.UtileriasToolStripMenuItem.Text = "Utilerias"
@@ -1633,11 +1633,11 @@ Partial Public Class AppMenu
         Me.pbLogo.TabStop = False
         Me.pbLogo.Visible = False
         '
-        'TipoCambioToolStripMenuItem
+        'TipoCambioDelDiaToolStripMenuItem
         '
-        Me.TipoCambioToolStripMenuItem.Name = "TipoCambioToolStripMenuItem"
-        Me.TipoCambioToolStripMenuItem.Size = New System.Drawing.Size(280, 26)
-        Me.TipoCambioToolStripMenuItem.Text = "Tipo cambio"
+        Me.TipoCambioDelDiaToolStripMenuItem.Name = "TipoCambioDelDiaToolStripMenuItem"
+        Me.TipoCambioDelDiaToolStripMenuItem.Size = New System.Drawing.Size(256, 26)
+        Me.TipoCambioDelDiaToolStripMenuItem.Text = "Tipo cambio del dia"
         '
         'AppMenu
         '
@@ -1883,5 +1883,5 @@ Partial Public Class AppMenu
     Friend WithEvents CapturaParametríaToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ProyectoSiembraAcuícolaToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ConceptosInventariosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents TipoCambioToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents TipoCambioDelDiaToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class
