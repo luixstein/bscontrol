@@ -122,14 +122,13 @@ Partial Class Compras_Movimientos
         Me.GridSeries = New FlexCell.Grid()
         Me.tpEntradas = New System.Windows.Forms.TabPage()
         Me.btnTraerTodasEntradasInventarios = New System.Windows.Forms.Button()
-        Me.btnListoEntradasInventarios = New System.Windows.Forms.Button()
         Me.btnAgregarSeleccionadaEntradasInventarios = New System.Windows.Forms.Button()
         Me.btnAgregarTodasEntradasInventarios = New System.Windows.Forms.Button()
         Me.lblDisplayEntradasInventarios = New System.Windows.Forms.Label()
         Me.lstEntradasInventarios = New System.Windows.Forms.ListBox()
         Me.lblDisplayFolioOC_Inventarios = New System.Windows.Forms.Label()
         Me.txtFolioOC_Inventarios = New System.Windows.Forms.TextBox()
-        Me.Grid1 = New FlexCell.Grid()
+        Me.GridEntradas = New FlexCell.Grid()
         Me.btnSeries = New System.Windows.Forms.Button()
         Me.txtSaldo_USD = New System.Windows.Forms.TextBox()
         Me.lblDisplaySaldo_USD = New System.Windows.Forms.Label()
@@ -1122,14 +1121,13 @@ Partial Class Compras_Movimientos
         'tpEntradas
         '
         Me.tpEntradas.Controls.Add(Me.btnTraerTodasEntradasInventarios)
-        Me.tpEntradas.Controls.Add(Me.btnListoEntradasInventarios)
         Me.tpEntradas.Controls.Add(Me.btnAgregarSeleccionadaEntradasInventarios)
         Me.tpEntradas.Controls.Add(Me.btnAgregarTodasEntradasInventarios)
         Me.tpEntradas.Controls.Add(Me.lblDisplayEntradasInventarios)
         Me.tpEntradas.Controls.Add(Me.lstEntradasInventarios)
         Me.tpEntradas.Controls.Add(Me.lblDisplayFolioOC_Inventarios)
         Me.tpEntradas.Controls.Add(Me.txtFolioOC_Inventarios)
-        Me.tpEntradas.Controls.Add(Me.Grid1)
+        Me.tpEntradas.Controls.Add(Me.GridEntradas)
         Me.tpEntradas.Location = New System.Drawing.Point(4, 22)
         Me.tpEntradas.Name = "tpEntradas"
         Me.tpEntradas.Padding = New System.Windows.Forms.Padding(3)
@@ -1146,15 +1144,6 @@ Partial Class Compras_Movimientos
         Me.btnTraerTodasEntradasInventarios.TabIndex = 333
         Me.btnTraerTodasEntradasInventarios.Text = "Traer entradas"
         Me.btnTraerTodasEntradasInventarios.UseVisualStyleBackColor = True
-        '
-        'btnListoEntradasInventarios
-        '
-        Me.btnListoEntradasInventarios.Location = New System.Drawing.Point(765, 146)
-        Me.btnListoEntradasInventarios.Name = "btnListoEntradasInventarios"
-        Me.btnListoEntradasInventarios.Size = New System.Drawing.Size(127, 21)
-        Me.btnListoEntradasInventarios.TabIndex = 332
-        Me.btnListoEntradasInventarios.Text = "Listo"
-        Me.btnListoEntradasInventarios.UseVisualStyleBackColor = True
         '
         'btnAgregarSeleccionadaEntradasInventarios
         '
@@ -1207,24 +1196,24 @@ Partial Class Compras_Movimientos
         Me.txtFolioOC_Inventarios.Size = New System.Drawing.Size(120, 20)
         Me.txtFolioOC_Inventarios.TabIndex = 9
         '
-        'Grid1
+        'GridEntradas
         '
-        Me.Grid1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.Grid1.CheckedImage = CType(resources.GetObject("Grid1.CheckedImage"), System.Drawing.Bitmap)
-        Me.Grid1.Cols = 1
-        Me.Grid1.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
-        Me.Grid1.DefaultRowHeight = CType(24, Short)
-        Me.Grid1.DisplayRowNumber = True
-        Me.Grid1.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
-        Me.Grid1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Grid1.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Grid1.Location = New System.Drawing.Point(6, 6)
-        Me.Grid1.LockButton = True
-        Me.Grid1.Name = "Grid1"
-        Me.Grid1.Rows = 6
-        Me.Grid1.Size = New System.Drawing.Size(427, 166)
-        Me.Grid1.TabIndex = 1
-        Me.Grid1.UncheckedImage = CType(resources.GetObject("Grid1.UncheckedImage"), System.Drawing.Bitmap)
+        Me.GridEntradas.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.GridEntradas.CheckedImage = CType(resources.GetObject("GridEntradas.CheckedImage"), System.Drawing.Bitmap)
+        Me.GridEntradas.Cols = 1
+        Me.GridEntradas.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
+        Me.GridEntradas.DefaultRowHeight = CType(24, Short)
+        Me.GridEntradas.DisplayRowNumber = True
+        Me.GridEntradas.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
+        Me.GridEntradas.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GridEntradas.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.GridEntradas.Location = New System.Drawing.Point(6, 6)
+        Me.GridEntradas.LockButton = True
+        Me.GridEntradas.Name = "GridEntradas"
+        Me.GridEntradas.Rows = 6
+        Me.GridEntradas.Size = New System.Drawing.Size(427, 166)
+        Me.GridEntradas.TabIndex = 1
+        Me.GridEntradas.UncheckedImage = CType(resources.GetObject("GridEntradas.UncheckedImage"), System.Drawing.Bitmap)
         '
         'btnSeries
         '
@@ -1517,12 +1506,11 @@ Partial Class Compras_Movimientos
     Friend WithEvents lblDisplayRetenciones_USD As Label
     Friend WithEvents lblIVAcalculado_USD As Label
     Friend WithEvents tpEntradas As TabPage
-    Friend WithEvents Grid1 As FlexCell.Grid
+    Friend WithEvents GridEntradas As FlexCell.Grid
     Friend WithEvents lblDisplayFolioOC_Inventarios As Label
     Friend WithEvents txtFolioOC_Inventarios As TextBox
     Friend WithEvents lblDisplayEntradasInventarios As Label
     Friend WithEvents lstEntradasInventarios As ListBox
-    Friend WithEvents btnListoEntradasInventarios As Button
     Friend WithEvents btnAgregarSeleccionadaEntradasInventarios As Button
     Friend WithEvents btnAgregarTodasEntradasInventarios As Button
     Friend WithEvents btnTraerTodasEntradasInventarios As Button

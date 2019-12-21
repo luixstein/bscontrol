@@ -689,20 +689,6 @@ buscar:
                     End If
                     sNaturalezaInventarios = oInventarios.NaturalezaInventarios(Me.CboDocumento.SelectedValue.ToString)
 
-                    'Private iGyCodigo As Integer = 1
-                    'Private iGyDescripcion As Integer = 2
-                    'Private iGyCantidad As Integer = 3
-                    'Private iGyCosto As Integer = 4
-                    'Private iGyImporte As Integer = 5
-                    'Private iGyBoton As Integer = 6
-                    'Private iGyCuentaContable As Integer = 7
-                    'Private iGyNombreCuentaContable As Integer = 8
-                    'Private iGyIDAdicional As Integer = 9
-                    'Private iGyCostoDetalleBase As Integer = 10 'Es el costo original sin flete.
-                    'Private iGyFleteDetalle As Integer = 11
-                    'Private iGyImporteBase As Integer = 12
-                    'Private iGyIDCompraDetalle As Integer = 13
-
                     Select Case Columna
                         Case Me.iGyCodigo
                             If Me.oArticulos.DESCRIPCION = "" Then
@@ -744,8 +730,11 @@ buscar:
                                     End If
                                 End If
                             End If
-                            DCosto = valorNumerico(Me.oInventarios.oInventariosDetalle.Obtener_Costo(Me.Grid1.Cell(Renglon, Me.iGyCodigo).Text, Me.CboAlmacen.SelectedValue.ToString, valorNumerico(Me.Grid1.Cell(Renglon, Me.iGyCantidad).Text)).ToString)
-                            Me.Grid1.Cell(Renglon, Me.iGyCosto).Text = DCosto.ToString
+
+                            If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO <> "ER" Then 'Para las entradas por recepción de compras no se sobreescribe ni pierde el precio.
+                                DCosto = valorNumerico(Me.oInventarios.oInventariosDetalle.Obtener_Costo(Me.Grid1.Cell(Renglon, Me.iGyCodigo).Text, Me.CboAlmacen.SelectedValue.ToString, valorNumerico(Me.Grid1.Cell(Renglon, Me.iGyCantidad).Text)).ToString)
+                                Me.Grid1.Cell(Renglon, Me.iGyCosto).Text = DCosto.ToString
+                            End If
 
                         Case Me.iGyCuentaContable 'Enter
                             If Me.oDocumentos.ES_TRANSFERENCIA <> "1" Then
@@ -1138,7 +1127,6 @@ BuscarCuentas:
             Me.oInventarios = New Class_Inventarios_Global(Me.TxtFolio.Text)
 
             bResultado = Me.oInventarios.Aplicar()
-
             If bResultado = True Then
                 If Me.oDocumentos.AFECTA_CONTABILIDAD = "1" Then
                     If Me.oInventarios.AplicarPoliza() = False Then
@@ -2636,14 +2624,19 @@ busca_serie:
             Me.txtProveedor.Text = oOrdenCompra.CODIGO_PROVEEDOR & "-" & oProveedor.Nombre_Proveedor
             Me.dtpFechaEntrega.Value = oOrdenCompra.FECHA_ENTREGA
 
-            MsgBox("FALTA")
-            Me.cboEntradasAnterioresOrdenCompra.DataSource = Nothing 'Llenar combo entradas anteriores
+
+
+            'MsgBox("FALTA")
+            Me.cboEntradasAnterioresOrdenCompra.DataSource = oOrdenCompra.ObtieneEntradasAnterioresOrdenCompra(Me.txtFolioOrdenCompra.Text) 'Llenar combo entradas anteriores
+            Me.cboEntradasAnterioresOrdenCompra.DisplayMember = "INFORMACION"
+            Me.cboEntradasAnterioresOrdenCompra.ValueMember = "FOLIO_MOVIMIENTO_INVENTARIO"
+
 
             Me.InicializaGrid()
             Me.InicializaGridSeries()
             Me.OcultaControles()
 
-            Dim dTabla As DataTable = Me.oInventarios.ObtenerDetalleDisponiblesOrdenCompra(Me.txtFolioOrdenCompra.Text)
+            Dim dTabla As DataTable = oOrdenCompra.ObtenerDetalleDisponiblesOrdenCompra(Me.txtFolioOrdenCompra.Text)
             Me.Grid1.AutoRedraw = False
             Me.Grid1.Rows = 1
             For Each dRow As DataRow In dTabla.Rows
@@ -2854,8 +2847,6 @@ busca_serie:
             HandleError(Me.Name, sProcedure, ex)
         End Try
     End Function
-
-
 
 #End Region
 

@@ -522,36 +522,6 @@ Public Class Class_Inventarios_Global
         Return dTabla
     End Function
 
-    Public Function ObtenerDetalleDisponiblesOrdenCompra(ByVal sFolioOrdenCompra As String) As DataTable
-        Dim dTabla As New DataTable("detalle")
-        Dim sSQL As String
-
-        Try
-            sSQL = "SELECT R.CODIGO_ARTICULO,A.DESCRIPCION,R.DISPONIBLE CANTIDAD,R.PRECIO COSTO_DETALLE,R.IMPORTE,'' CUENTA_CONTABLE,'' NOMBRE_CUENTA, " &
-                    "'' Boton,ROW_NUMBER() OVER(ORDER BY R.ID_COMPRA_DETALLE) ID_ADICIONAL,R.ID_COMPRA_DETALLE " &
-                    "FROM COMPRA_DETALLE R  " &
-                    "INNER JOIN CAT_ARTICULOS A ON(A.CODIGO_ARTICULO=R.CODIGO_ARTICULO)  " &
-                    "WHERE R.FOLIO_COMPRA=@FOLIO_ORDEN_COMPRA AND R.DISPONIBLE>0 AND A.INVENTARIABLE='1' " &
-                    "ORDER BY R.ID_COMPRA_DETALLE"
-
-            Using da As New SqlDataAdapter(sSQL, Me._Conexion)
-
-                da.SelectCommand.CommandType = CommandType.Text
-
-                With da.SelectCommand
-                    .Parameters.Add("@FOLIO_ORDEN_COMPRA", SqlDbType.NVarChar, 15).Value = sFolioOrdenCompra
-                End With
-
-                da.Fill(dTabla)
-            End Using
-
-        Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "ObtenerDetalleDisponiblesOrdenCompra", ex)
-        End Try
-
-        Return dTabla
-    End Function
-
     ''' <summary>
     ''' Obtiene a todos los elementos del catálogo.
     ''' </summary>
@@ -778,6 +748,37 @@ Public Class Class_Inventarios_Global
         Return dTabla
     End Function
 
+    Public Function ObtenerDetalleDisponiblesEntradasPorOrdenCompra(ByVal sListadoFoliosEntradas As String) As DataTable
+        Dim dTabla As New DataTable("detalle")
+        Dim sSQL As String
+
+        Try
+            'Dim aListado() As String = sListadoFoliosEntradas.Split(CType(",", Char()))
+
+            'sSQL = "SELECT R.CODIGO_ARTICULO,A.DESCRIPCION,R.DISPONIBLE CANTIDAD,R.PRECIO COSTO_DETALLE,R.IMPORTE,'' CUENTA_CONTABLE,'' NOMBRE_CUENTA, " &
+            '        "'' Boton,ROW_NUMBER() OVER(ORDER BY R.ID_COMPRA_DETALLE) ID_ADICIONAL,R.ID_COMPRA_DETALLE " &
+            '        "FROM COMPRA_DETALLE R  " &
+            '        "INNER JOIN CAT_ARTICULOS A ON(A.CODIGO_ARTICULO=R.CODIGO_ARTICULO)  " &
+            '        "WHERE R.FOLIO_COMPRA=@FOLIO_ORDEN_COMPRA AND R.DISPONIBLE>0 AND A.INVENTARIABLE='1' " &
+            '        "ORDER BY R.ID_COMPRA_DETALLE"
+
+            'Using da As New SqlDataAdapter(sSQL, Me._Conexion)
+
+            '    da.SelectCommand.CommandType = CommandType.Text
+
+            '    With da.SelectCommand
+            '        .Parameters.Add("@FOLIO_ORDEN_COMPRA", SqlDbType.NVarChar, 15).Value = sFolioOrdenCompra
+            '    End With
+
+            '    da.Fill(dTabla)
+            'End Using
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtenerDetalleDisponiblesEntradasPorOrdenCompra", ex)
+        End Try
+
+        Return dTabla
+    End Function
 #End Region
 
 End Class

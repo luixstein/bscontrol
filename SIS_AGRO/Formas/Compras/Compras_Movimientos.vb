@@ -65,6 +65,12 @@ Public Class Compras_Movimientos
     Private igySerieNumeroSerie As Short = 4
 #End Region
 
+#Region "Columnas grid entradas"
+    Private igyGridEFolioEntrada As Short = 1
+    Private igyGridEFechaEntrada As Short = 2
+
+#End Region
+
 #Region "Propiedades"
     Public WriteOnly Property ConsultaExterior() As Boolean
         Set(ByVal value As Boolean)
@@ -542,6 +548,7 @@ Buscar:
 
             Me.InicializaGrid()
             Me.InicializaGridSeries()
+            Me.InicializaGridEntradas()
 
             Me.oCompras = New Class_Compras_Global(Me.CboDocumento.SelectedValue.ToString)
             Me.oProveedores = New Class_CatProveedores
@@ -554,6 +561,9 @@ Buscar:
             Me.oFormaDetalleCuentas = Nothing 'New InventariosDetalleCuentasContables
 
             Me.dtSeries = New DataTable("Series")
+
+            Me.txtFolioOC_Inventarios.Text = ""
+            Me.lstEntradasInventarios.Items.Clear()
 
             Me.TabControl1.SelectedIndex = 0
         Catch ex As Exception
@@ -3471,10 +3481,6 @@ BuscarCuentas:
         Me.AgregarSeleccionadaEntradasInventarios
     End Sub
 
-    Private Sub btnListoEntradasInventarios_Click(sender As Object, e As EventArgs) Handles btnListoEntradasInventarios.Click
-        Me.ListoEntradasInventarios
-    End Sub
-
     Private Function TraerTodasEntradasInventarios() As Boolean
         Const sProcedure As String = "TraerTodasEntradasInventarios"
         Try
@@ -3483,22 +3489,31 @@ BuscarCuentas:
                 Return False
             End If
 
-            Dim oCompraLocal As New Class_Compras_Global(Me.txtFolioOC_Inventarios.Text, "OC" & Usuario.Codigo_Plaza.ToString)
+            Dim oOrdenCompraLocal As New Class_Compras_Global(Me.txtFolioOC_Inventarios.Text, "OC" & Usuario.Codigo_Plaza.ToString)
 
-            If oCompraLocal.Existe = False Then
+            If oOrdenCompraLocal.Existe = False Then
                 MsgBox("La orden de compra indicada no existe.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
 
             'La 1era vez el proveedor va estar en blanco, desde la segunda vez ya estará cargado con el proveedor de la 1er oc agregada.
             If txtLEN(Me.txtProveedor.Text) = False Then
-                Me.txtProveedor.Text = oCompraLocal.CODIGO_PROVEEDOR
+                Me.txtProveedor.Text = oOrdenCompraLocal.CODIGO_PROVEEDOR
                 Me.lblProveedor.Text = New Class_CatProveedores(Me.txtProveedor.Text).Nombre_Proveedor
             End If
 
-            If oCompraLocal.CODIGO_PROVEEDOR <> Me.txtProveedor.Text Then
-                MsgBox("el proveedor de la orden de compra no es igual al de la compra que esta elaborando.", MsgBoxStyle.Exclamation, sProcedure)
+            If oOrdenCompraLocal.CODIGO_PROVEEDOR <> Me.txtProveedor.Text Then
+                MsgBox("El proveedor de la orden de compra no es igual al de la compra que esta elaborando.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
+            End If
+
+            If Me.TieneAgregadasEntradasInventario() = False Then
+                Me.CboAlmacen.SelectedValue = oOrdenCompraLocal.CODIGO_ALMACEN
+            Else
+                If oOrdenCompraLocal.CODIGO_ALMACEN <> Me.CboAlmacen.SelectedValue.ToString Then
+                    MsgBox("El almacén de la orden de compra no es igual al de la compra que esta elaborando.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
             End If
 
             For Each dRow As DataRow In Me.oCompras.ObtieneEntradasOC(Me.txtFolioOC_Inventarios.Text).Rows
@@ -3525,10 +3540,91 @@ BuscarCuentas:
         End Try
     End Function
 
+    Private Sub InicializaGridEntradas()
+        Const sProcedure As String = "InicializaGridEntradas"
+        Try
+            Me.GridEntradas.DataSource = Nothing
+            FG_Grid_Limpiar(Me.GridEntradas)
+            Me.GridEntradas.Rows = 2
+            Me.GridEntradas.Cols = 3
+            Me.FormateaGridEntradas()
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
+
+    Private Sub FormateaGridEntradas()
+        Const sProcedure As String = "FormateaGridEntradas"
+        Try
+            With Me.GridEntradas
+                .AutoRedraw = False
+
+                '.DefaultFont = New Font("Tahoma", 8)
+                .DisplayFocusRect = False
+                '.DisplayDateTimeMask = True
+                '.ExtendLastCol = True
+                .DrawMode = FlexCell.DrawModeEnum.OwnerDraw
+                .BorderStyle = FlexCell.BorderStyleEnum.FixedSingle
+                .FixedRowColStyle = FlexCell.FixedRowColStyleEnum.Flat
+
+                .Column(Me.igyGridEFolioEntrada).Width = 150
+                .Column(Me.igyGridEFechaEntrada).Width = 150
+
+                .Cell(0, Me.igyGridEFolioEntrada).Text = "Entrada"
+                .Cell(0, Me.igyGridEFechaEntrada).Text = "Fecha"
+
+                .Column(Me.igyGridEFolioEntrada).Locked = True
+                .Column(Me.igyGridEFechaEntrada).Locked = True
+
+                .AutoRedraw = True
+                .Refresh()
+
+                .Row(.Rows - 1).Locked = True 'Para bloquear la edición del último renglón
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
+
+    Private Function TieneAgregadasEntradasInventario() As Boolean
+        Const sProcedure As String = "TieneAgregadasEntradasInventario"
+        Try
+            For i As Integer = 1 To Me.GridEntradas.Rows - 1
+                If txtLEN(Me.GridEntradas.Cell(i, Me.igyGridEFolioEntrada).Text) = True Then
+                    Return True
+                End If
+            Next
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+        Return False
+    End Function
+
     Private Function AgregarTodasEntradasInventarios() As Boolean
         Const sProcedure As String = "AgregarTodasEntradasInventarios"
         Try
+            If Me.lstEntradasInventarios.Items.Count = 0 Then
+                MsgBox("No hay ninguna entrada en el listado.", vbExclamation, sProcedure)
+                Return False
+            End If
 
+            For Each i In Me.lstEntradasInventarios.Items
+                For j As Integer = 1 To Me.GridEntradas.Rows - 1
+                    If i.ToString = Me.GridEntradas.Cell(j, Me.igyGridEFolioEntrada).Text Then
+                        MsgBox("La entrada " & i.ToString & " ya se agregó al listado.", vbExclamation, sProcedure)
+                        Return False
+                    End If
+                Next
+                For j As Integer = 1 To Me.GridEntradas.Rows - 1
+                    Me.GridEntradas.Rows += 1
+                    Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEFolioEntrada).Text = i.ToString()
+                Next
+            Next
+
+            If Me.GeneraGridArticulosEntradasInventarios() = True Then
+                Me.lstEntradasInventarios.Items.Clear()
+                Return True
+            End If
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
@@ -3537,16 +3633,52 @@ BuscarCuentas:
     Private Function AgregarSeleccionadaEntradasInventarios() As Boolean
         Const sProcedure As String = "AgregarSeleccionadaEntradasInventarios"
         Try
+            If Me.lstEntradasInventarios.Items.Count = 0 Then
+                MsgBox("No hay ninguna entrada en el listado.", vbExclamation, sProcedure)
+                Return False
+            End If
 
+            If IsNothing(Me.lstEntradasInventarios.SelectedItem) = True Then
+                MsgBox("Falta que seleccione alguna entrada.", vbExclamation, sProcedure)
+                Return False
+            End If
+
+            For j As Integer = 1 To Me.GridEntradas.Rows - 1
+                If Me.lstEntradasInventarios.SelectedItem.ToString = Me.GridEntradas.Cell(j, Me.igyGridEFolioEntrada).Text Then
+                    MsgBox("La entrada " & Me.lstEntradasInventarios.SelectedItem.ToString & " ya se agregó al listado.", vbExclamation, sProcedure)
+                    Return False
+                End If
+            Next
+
+            If Me.GeneraGridArticulosEntradasInventarios() = True Then
+                Return True
+            End If
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
     End Function
 
-    Private Function ListoEntradasInventarios() As Boolean
-        Const sProcedure As String = "ListoEntradasInventarios"
+    Private Function GeneraGridArticulosEntradasInventarios() As Boolean
+        Const sProcedure As String = "GeneraGridArticulosEntradasInventarios"
         Try
+            Dim i As Integer = 0, sFolioEntrada As String = "", sListaFoliosEntradas As String = ""
 
+            Me.InicializaGrid()
+            Me.InicializaGridSeries()
+
+            MsgBox("FALTA, ver como llenar las series, o mas bien no se ocupa porque no se afectará existencias.")
+
+            For i = 1 To Me.GridEntradas.Rows - 1
+                sFolioEntrada = Me.GridEntradas.Cell(i, Me.igyGridEFolioEntrada).Text
+
+                If txtLEN(sFolioEntrada) = True Then
+                    sListaFoliosEntradas &= sFolioEntrada & ","
+                End If
+
+                'inventarios detalle full join compras detalle cuando inventarios.cant>0 o que articulo.inv='n'
+            Next
+
+            Return True
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
