@@ -735,13 +735,11 @@ Public Class Class_Inventarios_Global
 
     Public Function ObtenerDetalleSeries(ByVal sFolio As String) As DataTable
         Dim dTabla As New DataTable, da As SqlDataAdapter
-
         Try
 
             da = New SqlDataAdapter("EXEC MP_INVENTARIOS_CONSULTA_TABLA_SERIES @FOLIO_MOVIMIENTO_INVENTARIO='" & sFolio & "'", Me._Conexion)
             da.Fill(dTabla)
             da.Dispose()
-
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "ObtenerDetalleSeries", ex)
         End Try
@@ -749,36 +747,25 @@ Public Class Class_Inventarios_Global
     End Function
 
     Public Function ObtenerDetalleDisponiblesEntradasPorOrdenCompra(ByVal sListadoFoliosEntradas As String) As DataTable
-        Dim dTabla As New DataTable("detalle")
-        Dim sSQL As String
-
+        Dim dTabla As New DataTable
         Try
-            'Dim aListado() As String = sListadoFoliosEntradas.Split(CType(",", Char()))
+            Using da As New SqlDataAdapter("MP_INVENTARIOS_OBTIENE_DETALLE_DISPONIBLES_ENTRADAS_POR_ORDEN_COMPRA", Me._Conexion)
 
-            'sSQL = "SELECT R.CODIGO_ARTICULO,A.DESCRIPCION,R.DISPONIBLE CANTIDAD,R.PRECIO COSTO_DETALLE,R.IMPORTE,'' CUENTA_CONTABLE,'' NOMBRE_CUENTA, " &
-            '        "'' Boton,ROW_NUMBER() OVER(ORDER BY R.ID_COMPRA_DETALLE) ID_ADICIONAL,R.ID_COMPRA_DETALLE " &
-            '        "FROM COMPRA_DETALLE R  " &
-            '        "INNER JOIN CAT_ARTICULOS A ON(A.CODIGO_ARTICULO=R.CODIGO_ARTICULO)  " &
-            '        "WHERE R.FOLIO_COMPRA=@FOLIO_ORDEN_COMPRA AND R.DISPONIBLE>0 AND A.INVENTARIABLE='1' " &
-            '        "ORDER BY R.ID_COMPRA_DETALLE"
+                da.SelectCommand.CommandType = CommandType.StoredProcedure
 
-            'Using da As New SqlDataAdapter(sSQL, Me._Conexion)
+                With da.SelectCommand
+                    .Parameters.Add("@LISTA_FOLIOS_ENTRADAS_INVENTARIOS", SqlDbType.NVarChar, -1).Value = sListadoFoliosEntradas
+                End With
 
-            '    da.SelectCommand.CommandType = CommandType.Text
-
-            '    With da.SelectCommand
-            '        .Parameters.Add("@FOLIO_ORDEN_COMPRA", SqlDbType.NVarChar, 15).Value = sFolioOrdenCompra
-            '    End With
-
-            '    da.Fill(dTabla)
-            'End Using
-
+                da.Fill(dTabla)
+            End Using
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "ObtenerDetalleDisponiblesEntradasPorOrdenCompra", ex)
         End Try
 
         Return dTabla
     End Function
+
 #End Region
 
 End Class

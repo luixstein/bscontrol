@@ -65,6 +65,7 @@ Public Class Class_Compras_Global
     Private _COSTO As Double
 
     Private _FECHA_ENTREGA As Date
+    Private _ES_INVENTARIABLE As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -546,6 +547,15 @@ Public Class Class_Compras_Global
         End Set
     End Property
 
+    Public Property ES_INVENTARIABLE() As Boolean
+        Get
+            Return Me._ES_INVENTARIABLE
+        End Get
+        Set(value As Boolean)
+            Me._ES_INVENTARIABLE = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -687,6 +697,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@TOTAL_DOLARES", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_DOLARES
             sqlParametro = .Parameters.Add("@RETENCION_IVA_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_USD
             sqlParametro = .Parameters.Add("@RETENCION_ISR_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_USD
+            sqlParametro = .Parameters.Add("@ES_INVENTARIABLE", SqlDbType.Char, 1) : sqlParametro.Value = Me._ES_INVENTARIABLE
 
             Try
                 Me._Conexion.Open()
@@ -730,7 +741,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO
             sqlParametro = .Parameters.Add("@IMPUESTO", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO
             sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL
-            sqlParametro = .Parameters.Add("@RETENCION", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA
+            sqlParametro = .Parameters.Add("@RETENCION_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA
             sqlParametro = .Parameters.Add("@RETENCION_ISR", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR
             sqlParametro = .Parameters.Add("@IMPUESTO_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_PORCENTAJE
             sqlParametro = .Parameters.Add("@TIPO_DE_CAMBIO", SqlDbType.Decimal) : sqlParametro.Value = Me.TIPO_DE_CAMBIO
@@ -784,7 +795,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@SUBTOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL
             sqlParametro = .Parameters.Add("@IMPUESTO_DINERO", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO
             sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL
-            sqlParametro = .Parameters.Add("@RETENCION", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA
+            sqlParametro = .Parameters.Add("@RETENCION_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA
             sqlParametro = .Parameters.Add("@RETENCION_ISR", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR
             sqlParametro = .Parameters.Add("@IMPUESTO_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_PORCENTAJE
             sqlParametro = .Parameters.Add("@TIPO_DE_CAMBIO", SqlDbType.Decimal) : sqlParametro.Value = Me._TIPO_DE_CAMBIO
@@ -1018,6 +1029,8 @@ Public Class Class_Compras_Global
                     Me._TIENE_SERIES = CBool(dReader("TIENE_SERIES"))
                     Me._CONCEPTO_CANCELACION = dReader("CONCEPTO_CANCELACION").ToString
                     Me._FECHA_ENTREGA = CDate(dReader("FECHA_ENTREGA"))
+
+                    Me._ES_INVENTARIABLE = CBool(dReader("ES_INVENTARIABLE"))
 
                     bResultado = True
                 End If
@@ -1839,7 +1852,7 @@ Public Class Class_Compras_Global
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String = ("SELECT FOLIO_MOVIMIENTO_INVENTARIO,FECHA " &
                               "FROM INVENTARIO_MOVIMIENTOS_GLOBAL " &
-                              "WHERE CODIGO_TIPO_DOCUMENTO LIKE 'ER%' AND ESTATUS='A' AND FOLIO_REFERENCIA='" & sFolioOrdenCompra & "' " &
+                              "WHERE CODIGO_TIPO_DOCUMENTO LIKE 'ER%' AND ESTA_CANCELADO='0' AND ESTATUS='A' AND FOLIO_REFERENCIA='" & sFolioOrdenCompra & "' " &
                               "ORDER BY FECHA ")
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
@@ -1885,7 +1898,7 @@ Public Class Class_Compras_Global
         Dim sSQL As String
 
         Try
-            sSQL = "SELECT FOLIO_MOVIMIENTO_INVENTARIO,FOLIO_MOVIMIENTO_INVENTARIO+','+ESTATUS+','+DBO.FN_FORMAT_FECHA_CORTO(FECHA) INFORMACION " &
+            sSQL = "SELECT FOLIO_MOVIMIENTO_INVENTARIO,FOLIO_MOVIMIENTO_INVENTARIO+','+DBO.FN_FORMAT_FECHA_CORTO(FECHA)+','+CASE WHEN ESTA_CANCELADO='1' THEN 'CANCELADO' ELSE 'ACTIVO' END INFORMACION " &
                 "FROM INVENTARIO_MOVIMIENTOS_GLOBAL " &
                 "WHERE CODIGO_TIPO_DOCUMENTO='ER' AND FOLIO_REFERENCIA=@FOLIO_ORDEN_COMPRA " &
                 "ORDER BY FECHA"

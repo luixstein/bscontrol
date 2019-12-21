@@ -524,6 +524,8 @@ Buscar:
             Me.LblEstatus.Text = "NUEVO"
             Me.LblPoliza.Text = ""
 
+            Me.chkEsInventariable.Checked = True
+
             Me.dPorcentajeIVAGlobal = 0
 
             Me.txtSaldo_MXP.Text = FormatImporteContable(0)
@@ -844,16 +846,17 @@ Buscar:
                         Me.txtProveedor.Enabled = False
                         Me.txtFolioProveedor.Enabled = True
                         Me.txtEntregarA.Enabled = False
-                        Me.txtSolicito.Enabled = False
-                        Me.txtConCargoA.Enabled = False
-                        Me.txtPredio.Enabled = False
-                        Me.txtConfirmo.Enabled = False
+                        Me.txtSolicito.Enabled = True 'changed
+                        Me.txtConCargoA.Enabled = True 'changed
+                        Me.txtPredio.Enabled = True 'changed
+                        Me.txtConfirmo.Enabled = True 'changed
+                        Me.chkEsInventariable.Enabled = True
 
-                        Me.txtTipoCambio.Enabled = False
+                        Me.txtTipoCambio.Enabled = True 'changed
                         Me.txtPlazo.Enabled = True
                         'Me.TxtRetencion.Enabled = False
                         'Me.TxtConcepto.Enabled = False
-                        Me.TxtConcepto.ReadOnly = True
+                        Me.TxtConcepto.ReadOnly = False 'changed
                         Me.Grid.Locked = False
                         Me.GridSeries.Locked = False
                         Me.DtpFechaFacturaProveedor.Enabled = True
@@ -954,6 +957,7 @@ Buscar:
                     Me.txtConCargoA.Enabled = True
                     Me.txtPredio.Enabled = True
                     Me.txtConfirmo.Enabled = True
+                    Me.chkEsInventariable.Enabled = True
 
                     Me.txtPlazo.Enabled = True
                     'Me.TxtRetencion.Enabled = True
@@ -1004,15 +1008,14 @@ Buscar:
                     Me.txtConCargoA.Enabled = False
                     Me.txtPredio.Enabled = False
                     Me.txtConfirmo.Enabled = False
+                    Me.chkEsInventariable.Enabled = False
 
                     Me.txtTipoCambio.Enabled = False
                     Me.txtPlazo.Enabled = False
                     'Me.TxtRetencion.Enabled = False
                     'Me.TxtConcepto.Enabled = False
                     Me.TxtConcepto.ReadOnly = True
-                    Me.txtConCargoA.Enabled = False
-                    Me.txtPredio.Enabled = False
-                    Me.txtConfirmo.Enabled = False
+
                     Me.Grid.Locked = True
                     Me.GridSeries.Locked = True
                     If Me.oDocumento.AFECTA_CXP = True Then
@@ -1066,6 +1069,7 @@ Buscar:
                     Me.txtConCargoA.Enabled = False
                     Me.txtPredio.Enabled = False
                     Me.txtConfirmo.Enabled = False
+                    Me.chkEsInventariable.Enabled = False
 
                     Me.txtTipoCambio.Enabled = False
                     Me.txtPlazo.Enabled = False
@@ -1198,6 +1202,8 @@ Buscar:
                 .TOTAL_DOLARES = valorNumerico(Me.txtTotal_USD.Text)
                 .RETENCION_IVA_USD = valorNumerico(Me.txtRetencionIVA_USD.Text)
                 .RETENCION_ISR_USD = valorNumerico(Me.txtRetencionISR_USD.Text)
+
+                .ES_INVENTARIABLE = Me.chkEsInventariable.Checked
 
                 If Me.Estado = enumEstados.NUEVO Then
                     If .GrabarOrdenCompraGlobal("INSERTAR") = False Then
@@ -1586,12 +1592,14 @@ Buscar:
                 Me.DtpFechaFacturaProveedor.Value = CDate(Me.oCompras.FECHA_FACTURA_PROVEEDOR)
             End If
 
+            Me.chkEsInventariable.Checked = Me.oCompras.ES_INVENTARIABLE
+
             Me.FormateaGrid()
 
             If Me.oDocumento.AFECTA_CXP = True Then
                 Me.Grid.Row(Me.Grid.Rows - 1).Locked = True
                 If Me.LblEstatus.Text = "NUEVO" Then
-                    If EstableceCuentaContableAlmacenDestino() = False Then
+                    If Me.EstableceCuentaContableAlmacen() = False Then
                         MsgBox("No se pudieron establecer las cuentas contables de los articulos inventariables.", MsgBoxStyle.Information, Me.Text)
                     End If
                 End If
@@ -2759,7 +2767,7 @@ BuscarCuentas:
         Return bResultado
     End Function
 
-    Private Function EstableceCuentaContableAlmacenDestino() As Boolean
+    Private Function EstableceCuentaContableAlmacen() As Boolean
         Try
             Dim oAlmacenes As New Class_CatAlmacenes(Me.CboAlmacen.SelectedValue.ToString), i As Integer, sCuentaContable As String = "", oCuenta As Class_CatCuentas
             Dim oArticulos As Class_CatArticulos
@@ -2784,7 +2792,7 @@ BuscarCuentas:
 
             Return True
         Catch ex As Exception
-            HandleError(Me.Name, "EstableceCuentaContableAlmacenDestino", ex)
+            HandleError(Me.Name, "EstableceCuentaContableAlmacen", ex)
         End Try
     End Function
 
@@ -3470,15 +3478,19 @@ BuscarCuentas:
     End Sub
 
     Private Sub btnTraerTodasEntradasInventarios_Click(sender As Object, e As EventArgs) Handles btnTraerTodasEntradasInventarios.Click
-        Me.TraerTodasEntradasInventarios
+        Me.TraerTodasEntradasInventarios()
     End Sub
 
     Private Sub btnAgregarTodasEntradasInventarios_Click(sender As Object, e As EventArgs) Handles btnAgregarTodasEntradasInventarios.Click
-        Me.AgregarTodasEntradasInventarios
+        Me.AgregarTodasEntradasInventarios()
     End Sub
 
     Private Sub btnArgegarSeleccionadaEntradasInventarios_Click(sender As Object, e As EventArgs) Handles btnAgregarSeleccionadaEntradasInventarios.Click
-        Me.AgregarSeleccionadaEntradasInventarios
+        Me.AgregarSeleccionadaEntradasInventarios()
+    End Sub
+
+    Private Sub btnBorrarTodasEntradasInventarios_Click(sender As Object, e As EventArgs) Handles btnBorrarTodasEntradasInventarios.Click
+        Me.BorrarTodasEntradasInventarios()
     End Sub
 
     Private Function TraerTodasEntradasInventarios() As Boolean
@@ -3509,6 +3521,7 @@ BuscarCuentas:
 
             If Me.TieneAgregadasEntradasInventario() = False Then
                 Me.CboAlmacen.SelectedValue = oOrdenCompraLocal.CODIGO_ALMACEN
+                Me.cboMoneda.Text = oOrdenCompraLocal.CODIGO_MONEDA
             Else
                 If oOrdenCompraLocal.CODIGO_ALMACEN <> Me.CboAlmacen.SelectedValue.ToString Then
                     MsgBox("El almacén de la orden de compra no es igual al de la compra que esta elaborando.", MsgBoxStyle.Exclamation, sProcedure)
@@ -3615,16 +3628,18 @@ BuscarCuentas:
                         Return False
                     End If
                 Next
-                For j As Integer = 1 To Me.GridEntradas.Rows - 1
-                    Me.GridEntradas.Rows += 1
-                    Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEFolioEntrada).Text = i.ToString()
-                Next
+            Next
+
+            For Each i In Me.lstEntradasInventarios.Items
+                Me.GridEntradas.Rows += 1
+                Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEFolioEntrada).Text = i.ToString()
             Next
 
             If Me.GeneraGridArticulosEntradasInventarios() = True Then
                 Me.lstEntradasInventarios.Items.Clear()
                 Return True
             End If
+
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
@@ -3643,16 +3658,24 @@ BuscarCuentas:
                 Return False
             End If
 
+            Dim sFolioEntrada As String = Me.lstEntradasInventarios.SelectedItem.ToString
+
             For j As Integer = 1 To Me.GridEntradas.Rows - 1
-                If Me.lstEntradasInventarios.SelectedItem.ToString = Me.GridEntradas.Cell(j, Me.igyGridEFolioEntrada).Text Then
-                    MsgBox("La entrada " & Me.lstEntradasInventarios.SelectedItem.ToString & " ya se agregó al listado.", vbExclamation, sProcedure)
+                If sFolioEntrada = Me.GridEntradas.Cell(j, Me.igyGridEFolioEntrada).Text Then
+                    MsgBox("La entrada " & sFolioEntrada & " ya se agregó al listado.", vbExclamation, sProcedure)
                     Return False
                 End If
             Next
 
+            Me.GridEntradas.Rows += 1
+            Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEFolioEntrada).Text = Me.lstEntradasInventarios.SelectedItem.ToString
+
+            Me.lstEntradasInventarios.Items.Remove(sFolioEntrada)
+
             If Me.GeneraGridArticulosEntradasInventarios() = True Then
                 Return True
             End If
+
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
@@ -3665,24 +3688,49 @@ BuscarCuentas:
 
             Me.InicializaGrid()
             Me.InicializaGridSeries()
+            Me.Totales()
 
-            MsgBox("FALTA, ver como llenar las series, o mas bien no se ocupa porque no se afectará existencias.")
+            'MsgBox("FALTA, ver como llenar las series, o mas bien no se ocupa porque no se afectará existencias.")
 
             For i = 1 To Me.GridEntradas.Rows - 1
                 sFolioEntrada = Me.GridEntradas.Cell(i, Me.igyGridEFolioEntrada).Text
 
                 If txtLEN(sFolioEntrada) = True Then
-                    sListaFoliosEntradas &= sFolioEntrada & ","
+                    sListaFoliosEntradas &= sFolioEntrada & "|"
                 End If
 
                 'inventarios detalle full join compras detalle cuando inventarios.cant>0 o que articulo.inv='n'
             Next
+
+            Dim oInventarios As New Class_Inventarios_Global
+
+            Me.Grid.DataSource = oInventarios.ObtenerDetalleDisponiblesEntradasPorOrdenCompra(sListaFoliosEntradas)
+            Me.FormateaGrid()
+
+            Me.Totales()
+
+            Me.EstableceCuentaContableAlmacen()
 
             Return True
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
     End Function
+
+    Private Sub BorrarTodasEntradasInventarios()
+        Const sProcedure As String = "BorrarTodasEntradasInventarios"
+        Try
+            Me.txtFolioOC_Inventarios.Text = ""
+            Me.lstEntradasInventarios.Items.Clear()
+            Me.InicializaGrid()
+            Me.InicializaGridSeries()
+            Me.InicializaGridEntradas()
+            Me.Totales()
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
+
 #End Region
 
 End Class

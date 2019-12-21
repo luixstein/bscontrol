@@ -2624,13 +2624,9 @@ busca_serie:
             Me.txtProveedor.Text = oOrdenCompra.CODIGO_PROVEEDOR & "-" & oProveedor.Nombre_Proveedor
             Me.dtpFechaEntrega.Value = oOrdenCompra.FECHA_ENTREGA
 
-
-
-            'MsgBox("FALTA")
             Me.cboEntradasAnterioresOrdenCompra.DataSource = oOrdenCompra.ObtieneEntradasAnterioresOrdenCompra(Me.txtFolioOrdenCompra.Text) 'Llenar combo entradas anteriores
             Me.cboEntradasAnterioresOrdenCompra.DisplayMember = "INFORMACION"
             Me.cboEntradasAnterioresOrdenCompra.ValueMember = "FOLIO_MOVIMIENTO_INVENTARIO"
-
 
             Me.InicializaGrid()
             Me.InicializaGridSeries()

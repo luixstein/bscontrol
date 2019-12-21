@@ -121,6 +121,7 @@ Partial Class Compras_Movimientos
         Me.txtLote = New System.Windows.Forms.TextBox()
         Me.GridSeries = New FlexCell.Grid()
         Me.tpEntradas = New System.Windows.Forms.TabPage()
+        Me.btnBorrarTodasEntradasInventarios = New System.Windows.Forms.Button()
         Me.btnTraerTodasEntradasInventarios = New System.Windows.Forms.Button()
         Me.btnAgregarSeleccionadaEntradasInventarios = New System.Windows.Forms.Button()
         Me.btnAgregarTodasEntradasInventarios = New System.Windows.Forms.Button()
@@ -142,6 +143,7 @@ Partial Class Compras_Movimientos
         Me.txtRetencionISR = New System.Windows.Forms.TextBox()
         Me.lblDisplayRetencionISR = New System.Windows.Forms.Label()
         Me.lblDisplayRetencionIVA = New System.Windows.Forms.Label()
+        Me.chkEsInventariable = New System.Windows.Forms.CheckBox()
         Me.gbGlobal.SuspendLayout()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
@@ -155,6 +157,7 @@ Partial Class Compras_Movimientos
         '
         'gbGlobal
         '
+        Me.gbGlobal.Controls.Add(Me.chkEsInventariable)
         Me.gbGlobal.Controls.Add(Me.lblDisplayFechaEntrega)
         Me.gbGlobal.Controls.Add(Me.dtpFechaEntrega)
         Me.gbGlobal.Controls.Add(Me.LblDisplayMoneda)
@@ -1120,6 +1123,7 @@ Partial Class Compras_Movimientos
         '
         'tpEntradas
         '
+        Me.tpEntradas.Controls.Add(Me.btnBorrarTodasEntradasInventarios)
         Me.tpEntradas.Controls.Add(Me.btnTraerTodasEntradasInventarios)
         Me.tpEntradas.Controls.Add(Me.btnAgregarSeleccionadaEntradasInventarios)
         Me.tpEntradas.Controls.Add(Me.btnAgregarTodasEntradasInventarios)
@@ -1135,6 +1139,15 @@ Partial Class Compras_Movimientos
         Me.tpEntradas.TabIndex = 2
         Me.tpEntradas.Text = "Entradas inventario"
         Me.tpEntradas.UseVisualStyleBackColor = True
+        '
+        'btnBorrarTodasEntradasInventarios
+        '
+        Me.btnBorrarTodasEntradasInventarios.Location = New System.Drawing.Point(763, 146)
+        Me.btnBorrarTodasEntradasInventarios.Name = "btnBorrarTodasEntradasInventarios"
+        Me.btnBorrarTodasEntradasInventarios.Size = New System.Drawing.Size(127, 21)
+        Me.btnBorrarTodasEntradasInventarios.TabIndex = 334
+        Me.btnBorrarTodasEntradasInventarios.Text = "Borrar todas"
+        Me.btnBorrarTodasEntradasInventarios.UseVisualStyleBackColor = True
         '
         'btnTraerTodasEntradasInventarios
         '
@@ -1352,6 +1365,16 @@ Partial Class Compras_Movimientos
         Me.lblDisplayRetencionIVA.Text = "IVA :"
         Me.lblDisplayRetencionIVA.Visible = False
         '
+        'chkEsInventariable
+        '
+        Me.chkEsInventariable.AutoSize = True
+        Me.chkEsInventariable.Location = New System.Drawing.Point(80, 146)
+        Me.chkEsInventariable.Name = "chkEsInventariable"
+        Me.chkEsInventariable.Size = New System.Drawing.Size(110, 17)
+        Me.chkEsInventariable.TabIndex = 385
+        Me.chkEsInventariable.Text = "Es inventariable ?"
+        Me.chkEsInventariable.UseVisualStyleBackColor = True
+        '
         'Compras_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1514,4 +1537,6 @@ Partial Class Compras_Movimientos
     Friend WithEvents btnAgregarSeleccionadaEntradasInventarios As Button
     Friend WithEvents btnAgregarTodasEntradasInventarios As Button
     Friend WithEvents btnTraerTodasEntradasInventarios As Button
+    Friend WithEvents btnBorrarTodasEntradasInventarios As Button
+    Friend WithEvents chkEsInventariable As CheckBox
 End Class
