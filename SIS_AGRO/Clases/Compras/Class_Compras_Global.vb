@@ -697,7 +697,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@TOTAL_DOLARES", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_DOLARES
             sqlParametro = .Parameters.Add("@RETENCION_IVA_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_USD
             sqlParametro = .Parameters.Add("@RETENCION_ISR_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_USD
-            sqlParametro = .Parameters.Add("@ES_INVENTARIABLE", SqlDbType.Char, 1) : sqlParametro.Value = Me._ES_INVENTARIABLE
+            sqlParametro = .Parameters.Add("@ES_INVENTARIABLE", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._ES_INVENTARIABLE)
 
             Try
                 Me._Conexion.Open()
@@ -756,6 +756,15 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_GASTO", SqlDbType.NVarChar, 80) : sqlParametro.Value = "2" 'CON ORDEN DE COMPRA
             sqlParametro = .Parameters.Add("@COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO
             sqlParametro = .Parameters.Add("@FECHA_ENTREGA", SqlDbType.DateTime) : sqlParametro.Value = "" & Me._FECHA_ENTREGA
+            sqlParametro = .Parameters.Add("@CODIGO_MONEDA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_MONEDA
+            sqlParametro = .Parameters.Add("@SUBTOTAL_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL_USD
+            sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO_USD
+            sqlParametro = .Parameters.Add("@IMPUESTO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_USD
+            sqlParametro = .Parameters.Add("@TOTAL_DOLARES", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_DOLARES
+            sqlParametro = .Parameters.Add("@RETENCION_IVA_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_USD
+            sqlParametro = .Parameters.Add("@RETENCION_ISR_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_USD
+            sqlParametro = .Parameters.Add("@ES_INVENTARIABLE", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._ES_INVENTARIABLE)
+
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
@@ -1057,7 +1066,7 @@ Public Class Class_Compras_Global
                 "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.CANTIDAD,R.PRECIO,R.PRECIO_USD,R.COSTO,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE,R.IMPORTE_USD,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.IMPUESTO_IMPORTE_USD,R.ID_COMPRA_DETALLE, " &
                 "CASE WHEN DC.CUENTA_CONTABLE IS NOT NULL THEN 'Tiene detalle -->>' ELSE C.NOMBRE_CUENTA END NOMBRE_CUENTA, " &
                 "'' Boton,R.ID_ADICIONAL, " &
-                "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_UNITARIO_USD,R.IEPS_IMPORTE,R.IEPS_IMPORTE_USD,R.BASE_IEPS,R.BASE_IEPS_USD,R.BASE_IVA,R.BASE_IVA_USD " &
+                "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_UNITARIO_USD,R.IEPS_IMPORTE,R.IEPS_IMPORTE_USD,R.BASE_IEPS,R.BASE_IEPS_USD,R.BASE_IVA,R.BASE_IVA_USD,R.ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA " &
                 "FROM COMPRA_DETALLE R " &
                 "LEFT JOIN CON_CAT_CUENTAS C ON(R.CUENTA_CONTABLE=C.CUENTA_CONTABLE) " &
                 "LEFT JOIN DC ON(R.ID_ADICIONAL=DC.ID_ADICIONAL) " &
@@ -1078,7 +1087,7 @@ Public Class Class_Compras_Global
         Dim sSQL As String
         sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.DISPONIBLE,R.PRECIO,R.PRECIO_USD,R.COSTO,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE,R.IMPORTE_USD,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.IMPUESTO_IMPORTE_USD,R.ID_COMPRA_DETALLE, " &
             "'' NOMBRE_CUENTA,'' Boton,ROW_NUMBER() OVER(ORDER BY R.ID_COMPRA_DETALLE) ID_ADICIONAL, " &
-            "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_UNITARIO_USD,R.IEPS_IMPORTE,R.IEPS_IMPORTE_USD,R.BASE_IEPS,R.BASE_IEPS_USD,R.BASE_IVA,R.BASE_IVA_USD " &
+            "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_UNITARIO_USD,R.IEPS_IMPORTE,R.IEPS_IMPORTE_USD,R.BASE_IEPS,R.BASE_IEPS_USD,R.BASE_IVA,R.BASE_IVA_USD,R.ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA " &
             "FROM COMPRA_DETALLE R " &
             "WHERE R.FOLIO_COMPRA = '" & Me._FOLIO_COMPRA & "' " &
             "AND R.DISPONIBLE>0 " &
@@ -1894,6 +1903,7 @@ Public Class Class_Compras_Global
     End Function
 
     Public Function ObtieneEntradasAnterioresOrdenCompra(ByVal sFolioOrdenCompra As String) As DataTable
+        Const sProcedure As String = "ObtieneEntradasAnterioresOrdenCompra"
         Dim dTabla As New DataTable("detalle")
         Dim sSQL As String
 
@@ -1914,10 +1924,39 @@ Public Class Class_Compras_Global
             End Using
 
         Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "ObtieneEntradasAnterioresOrdenCompra", ex)
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
         End Try
 
         Return dTabla
+    End Function
+
+    Public Function GrabaRelacionEntradaInventario(ByVal sFolioEntradaInventario As String) As Boolean
+        Const sProcedure As String = "GrabaRelacionEntradaInventario"
+        Dim bResultado As Boolean = True
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_COMPRAS_GRABA_RELACION_ENTRADA_INVENTARIO"
+
+            sqlParametro = .Parameters.Add("@FOLIO_COMPRA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_COMPRA
+            sqlParametro = .Parameters.Add("@FOLIO_MOVIMIENTO_INVENTARIO", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolioEntradaInventario
+
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
     End Function
 #End Region
 

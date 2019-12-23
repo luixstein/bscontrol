@@ -24,6 +24,7 @@ Partial Class Compras_Movimientos
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Compras_Movimientos))
         Me.gbGlobal = New System.Windows.Forms.GroupBox()
+        Me.chkEsInventariable = New System.Windows.Forms.CheckBox()
         Me.lblDisplayFechaEntrega = New System.Windows.Forms.Label()
         Me.dtpFechaEntrega = New System.Windows.Forms.DateTimePicker()
         Me.LblDisplayMoneda = New System.Windows.Forms.Label()
@@ -121,15 +122,16 @@ Partial Class Compras_Movimientos
         Me.txtLote = New System.Windows.Forms.TextBox()
         Me.GridSeries = New FlexCell.Grid()
         Me.tpEntradas = New System.Windows.Forms.TabPage()
+        Me.gbEntradas = New System.Windows.Forms.GroupBox()
+        Me.GridEntradas = New FlexCell.Grid()
         Me.btnBorrarTodasEntradasInventarios = New System.Windows.Forms.Button()
+        Me.txtFolioOC_Inventarios = New System.Windows.Forms.TextBox()
         Me.btnTraerTodasEntradasInventarios = New System.Windows.Forms.Button()
+        Me.lblDisplayFolioOC_Inventarios = New System.Windows.Forms.Label()
         Me.btnAgregarSeleccionadaEntradasInventarios = New System.Windows.Forms.Button()
+        Me.lstEntradasInventarios = New System.Windows.Forms.ListBox()
         Me.btnAgregarTodasEntradasInventarios = New System.Windows.Forms.Button()
         Me.lblDisplayEntradasInventarios = New System.Windows.Forms.Label()
-        Me.lstEntradasInventarios = New System.Windows.Forms.ListBox()
-        Me.lblDisplayFolioOC_Inventarios = New System.Windows.Forms.Label()
-        Me.txtFolioOC_Inventarios = New System.Windows.Forms.TextBox()
-        Me.GridEntradas = New FlexCell.Grid()
         Me.btnSeries = New System.Windows.Forms.Button()
         Me.txtSaldo_USD = New System.Windows.Forms.TextBox()
         Me.lblDisplaySaldo_USD = New System.Windows.Forms.Label()
@@ -143,7 +145,6 @@ Partial Class Compras_Movimientos
         Me.txtRetencionISR = New System.Windows.Forms.TextBox()
         Me.lblDisplayRetencionISR = New System.Windows.Forms.Label()
         Me.lblDisplayRetencionIVA = New System.Windows.Forms.Label()
-        Me.chkEsInventariable = New System.Windows.Forms.CheckBox()
         Me.gbGlobal.SuspendLayout()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
@@ -152,6 +153,7 @@ Partial Class Compras_Movimientos
         Me.tpArticulos.SuspendLayout()
         Me.tpSeries.SuspendLayout()
         Me.tpEntradas.SuspendLayout()
+        Me.gbEntradas.SuspendLayout()
         Me.gbMXN.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -210,6 +212,16 @@ Partial Class Compras_Movimientos
         Me.gbGlobal.Size = New System.Drawing.Size(1019, 211)
         Me.gbGlobal.TabIndex = 0
         Me.gbGlobal.TabStop = False
+        '
+        'chkEsInventariable
+        '
+        Me.chkEsInventariable.AutoSize = True
+        Me.chkEsInventariable.Location = New System.Drawing.Point(80, 146)
+        Me.chkEsInventariable.Name = "chkEsInventariable"
+        Me.chkEsInventariable.Size = New System.Drawing.Size(110, 17)
+        Me.chkEsInventariable.TabIndex = 385
+        Me.chkEsInventariable.Text = "Es inventariable ?"
+        Me.chkEsInventariable.UseVisualStyleBackColor = True
         '
         'lblDisplayFechaEntrega
         '
@@ -1123,15 +1135,7 @@ Partial Class Compras_Movimientos
         '
         'tpEntradas
         '
-        Me.tpEntradas.Controls.Add(Me.btnBorrarTodasEntradasInventarios)
-        Me.tpEntradas.Controls.Add(Me.btnTraerTodasEntradasInventarios)
-        Me.tpEntradas.Controls.Add(Me.btnAgregarSeleccionadaEntradasInventarios)
-        Me.tpEntradas.Controls.Add(Me.btnAgregarTodasEntradasInventarios)
-        Me.tpEntradas.Controls.Add(Me.lblDisplayEntradasInventarios)
-        Me.tpEntradas.Controls.Add(Me.lstEntradasInventarios)
-        Me.tpEntradas.Controls.Add(Me.lblDisplayFolioOC_Inventarios)
-        Me.tpEntradas.Controls.Add(Me.txtFolioOC_Inventarios)
-        Me.tpEntradas.Controls.Add(Me.GridEntradas)
+        Me.tpEntradas.Controls.Add(Me.gbEntradas)
         Me.tpEntradas.Location = New System.Drawing.Point(4, 22)
         Me.tpEntradas.Name = "tpEntradas"
         Me.tpEntradas.Padding = New System.Windows.Forms.Padding(3)
@@ -1140,74 +1144,22 @@ Partial Class Compras_Movimientos
         Me.tpEntradas.Text = "Entradas inventario"
         Me.tpEntradas.UseVisualStyleBackColor = True
         '
-        'btnBorrarTodasEntradasInventarios
+        'gbEntradas
         '
-        Me.btnBorrarTodasEntradasInventarios.Location = New System.Drawing.Point(763, 146)
-        Me.btnBorrarTodasEntradasInventarios.Name = "btnBorrarTodasEntradasInventarios"
-        Me.btnBorrarTodasEntradasInventarios.Size = New System.Drawing.Size(127, 21)
-        Me.btnBorrarTodasEntradasInventarios.TabIndex = 334
-        Me.btnBorrarTodasEntradasInventarios.Text = "Borrar todas"
-        Me.btnBorrarTodasEntradasInventarios.UseVisualStyleBackColor = True
-        '
-        'btnTraerTodasEntradasInventarios
-        '
-        Me.btnTraerTodasEntradasInventarios.Location = New System.Drawing.Point(666, 9)
-        Me.btnTraerTodasEntradasInventarios.Name = "btnTraerTodasEntradasInventarios"
-        Me.btnTraerTodasEntradasInventarios.Size = New System.Drawing.Size(127, 21)
-        Me.btnTraerTodasEntradasInventarios.TabIndex = 333
-        Me.btnTraerTodasEntradasInventarios.Text = "Traer entradas"
-        Me.btnTraerTodasEntradasInventarios.UseVisualStyleBackColor = True
-        '
-        'btnAgregarSeleccionadaEntradasInventarios
-        '
-        Me.btnAgregarSeleccionadaEntradasInventarios.Location = New System.Drawing.Point(763, 73)
-        Me.btnAgregarSeleccionadaEntradasInventarios.Name = "btnAgregarSeleccionadaEntradasInventarios"
-        Me.btnAgregarSeleccionadaEntradasInventarios.Size = New System.Drawing.Size(127, 21)
-        Me.btnAgregarSeleccionadaEntradasInventarios.TabIndex = 331
-        Me.btnAgregarSeleccionadaEntradasInventarios.Text = "Agregar seleccionada"
-        Me.btnAgregarSeleccionadaEntradasInventarios.UseVisualStyleBackColor = True
-        '
-        'btnAgregarTodasEntradasInventarios
-        '
-        Me.btnAgregarTodasEntradasInventarios.Location = New System.Drawing.Point(763, 46)
-        Me.btnAgregarTodasEntradasInventarios.Name = "btnAgregarTodasEntradasInventarios"
-        Me.btnAgregarTodasEntradasInventarios.Size = New System.Drawing.Size(127, 21)
-        Me.btnAgregarTodasEntradasInventarios.TabIndex = 330
-        Me.btnAgregarTodasEntradasInventarios.Text = "Agregar todas"
-        Me.btnAgregarTodasEntradasInventarios.UseVisualStyleBackColor = True
-        '
-        'lblDisplayEntradasInventarios
-        '
-        Me.lblDisplayEntradasInventarios.Location = New System.Drawing.Point(454, 46)
-        Me.lblDisplayEntradasInventarios.Name = "lblDisplayEntradasInventarios"
-        Me.lblDisplayEntradasInventarios.Size = New System.Drawing.Size(66, 54)
-        Me.lblDisplayEntradasInventarios.TabIndex = 281
-        Me.lblDisplayEntradasInventarios.Text = "Entradas inventarios:"
-        '
-        'lstEntradasInventarios
-        '
-        Me.lstEntradasInventarios.FormattingEnabled = True
-        Me.lstEntradasInventarios.Location = New System.Drawing.Point(527, 46)
-        Me.lstEntradasInventarios.Name = "lstEntradasInventarios"
-        Me.lstEntradasInventarios.Size = New System.Drawing.Size(230, 121)
-        Me.lstEntradasInventarios.TabIndex = 280
-        '
-        'lblDisplayFolioOC_Inventarios
-        '
-        Me.lblDisplayFolioOC_Inventarios.AutoSize = True
-        Me.lblDisplayFolioOC_Inventarios.Location = New System.Drawing.Point(454, 9)
-        Me.lblDisplayFolioOC_Inventarios.Name = "lblDisplayFolioOC_Inventarios"
-        Me.lblDisplayFolioOC_Inventarios.Size = New System.Drawing.Size(53, 13)
-        Me.lblDisplayFolioOC_Inventarios.TabIndex = 279
-        Me.lblDisplayFolioOC_Inventarios.Text = "Folio OC :"
-        '
-        'txtFolioOC_Inventarios
-        '
-        Me.txtFolioOC_Inventarios.Location = New System.Drawing.Point(527, 6)
-        Me.txtFolioOC_Inventarios.MaxLength = 80
-        Me.txtFolioOC_Inventarios.Name = "txtFolioOC_Inventarios"
-        Me.txtFolioOC_Inventarios.Size = New System.Drawing.Size(120, 20)
-        Me.txtFolioOC_Inventarios.TabIndex = 9
+        Me.gbEntradas.Controls.Add(Me.GridEntradas)
+        Me.gbEntradas.Controls.Add(Me.btnBorrarTodasEntradasInventarios)
+        Me.gbEntradas.Controls.Add(Me.txtFolioOC_Inventarios)
+        Me.gbEntradas.Controls.Add(Me.btnTraerTodasEntradasInventarios)
+        Me.gbEntradas.Controls.Add(Me.lblDisplayFolioOC_Inventarios)
+        Me.gbEntradas.Controls.Add(Me.btnAgregarSeleccionadaEntradasInventarios)
+        Me.gbEntradas.Controls.Add(Me.lstEntradasInventarios)
+        Me.gbEntradas.Controls.Add(Me.btnAgregarTodasEntradasInventarios)
+        Me.gbEntradas.Controls.Add(Me.lblDisplayEntradasInventarios)
+        Me.gbEntradas.Location = New System.Drawing.Point(3, 7)
+        Me.gbEntradas.Name = "gbEntradas"
+        Me.gbEntradas.Size = New System.Drawing.Size(1002, 168)
+        Me.gbEntradas.TabIndex = 335
+        Me.gbEntradas.TabStop = False
         '
         'GridEntradas
         '
@@ -1220,13 +1172,82 @@ Partial Class Compras_Movimientos
         Me.GridEntradas.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
         Me.GridEntradas.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GridEntradas.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.GridEntradas.Location = New System.Drawing.Point(6, 6)
+        Me.GridEntradas.Location = New System.Drawing.Point(6, 14)
         Me.GridEntradas.LockButton = True
         Me.GridEntradas.Name = "GridEntradas"
         Me.GridEntradas.Rows = 6
-        Me.GridEntradas.Size = New System.Drawing.Size(427, 166)
+        Me.GridEntradas.Size = New System.Drawing.Size(427, 148)
         Me.GridEntradas.TabIndex = 1
         Me.GridEntradas.UncheckedImage = CType(resources.GetObject("GridEntradas.UncheckedImage"), System.Drawing.Bitmap)
+        '
+        'btnBorrarTodasEntradasInventarios
+        '
+        Me.btnBorrarTodasEntradasInventarios.Location = New System.Drawing.Point(756, 127)
+        Me.btnBorrarTodasEntradasInventarios.Name = "btnBorrarTodasEntradasInventarios"
+        Me.btnBorrarTodasEntradasInventarios.Size = New System.Drawing.Size(127, 21)
+        Me.btnBorrarTodasEntradasInventarios.TabIndex = 334
+        Me.btnBorrarTodasEntradasInventarios.Text = "Borrar todas"
+        Me.btnBorrarTodasEntradasInventarios.UseVisualStyleBackColor = True
+        '
+        'txtFolioOC_Inventarios
+        '
+        Me.txtFolioOC_Inventarios.Location = New System.Drawing.Point(520, 13)
+        Me.txtFolioOC_Inventarios.MaxLength = 80
+        Me.txtFolioOC_Inventarios.Name = "txtFolioOC_Inventarios"
+        Me.txtFolioOC_Inventarios.Size = New System.Drawing.Size(120, 20)
+        Me.txtFolioOC_Inventarios.TabIndex = 9
+        '
+        'btnTraerTodasEntradasInventarios
+        '
+        Me.btnTraerTodasEntradasInventarios.Location = New System.Drawing.Point(659, 16)
+        Me.btnTraerTodasEntradasInventarios.Name = "btnTraerTodasEntradasInventarios"
+        Me.btnTraerTodasEntradasInventarios.Size = New System.Drawing.Size(127, 21)
+        Me.btnTraerTodasEntradasInventarios.TabIndex = 333
+        Me.btnTraerTodasEntradasInventarios.Text = "Traer entradas"
+        Me.btnTraerTodasEntradasInventarios.UseVisualStyleBackColor = True
+        '
+        'lblDisplayFolioOC_Inventarios
+        '
+        Me.lblDisplayFolioOC_Inventarios.AutoSize = True
+        Me.lblDisplayFolioOC_Inventarios.Location = New System.Drawing.Point(447, 16)
+        Me.lblDisplayFolioOC_Inventarios.Name = "lblDisplayFolioOC_Inventarios"
+        Me.lblDisplayFolioOC_Inventarios.Size = New System.Drawing.Size(53, 13)
+        Me.lblDisplayFolioOC_Inventarios.TabIndex = 279
+        Me.lblDisplayFolioOC_Inventarios.Text = "Folio OC :"
+        '
+        'btnAgregarSeleccionadaEntradasInventarios
+        '
+        Me.btnAgregarSeleccionadaEntradasInventarios.Location = New System.Drawing.Point(756, 80)
+        Me.btnAgregarSeleccionadaEntradasInventarios.Name = "btnAgregarSeleccionadaEntradasInventarios"
+        Me.btnAgregarSeleccionadaEntradasInventarios.Size = New System.Drawing.Size(127, 21)
+        Me.btnAgregarSeleccionadaEntradasInventarios.TabIndex = 331
+        Me.btnAgregarSeleccionadaEntradasInventarios.Text = "Agregar seleccionada"
+        Me.btnAgregarSeleccionadaEntradasInventarios.UseVisualStyleBackColor = True
+        '
+        'lstEntradasInventarios
+        '
+        Me.lstEntradasInventarios.FormattingEnabled = True
+        Me.lstEntradasInventarios.Location = New System.Drawing.Point(520, 53)
+        Me.lstEntradasInventarios.Name = "lstEntradasInventarios"
+        Me.lstEntradasInventarios.Size = New System.Drawing.Size(230, 95)
+        Me.lstEntradasInventarios.TabIndex = 280
+        '
+        'btnAgregarTodasEntradasInventarios
+        '
+        Me.btnAgregarTodasEntradasInventarios.Location = New System.Drawing.Point(756, 53)
+        Me.btnAgregarTodasEntradasInventarios.Name = "btnAgregarTodasEntradasInventarios"
+        Me.btnAgregarTodasEntradasInventarios.Size = New System.Drawing.Size(127, 21)
+        Me.btnAgregarTodasEntradasInventarios.TabIndex = 330
+        Me.btnAgregarTodasEntradasInventarios.Text = "Agregar todas"
+        Me.btnAgregarTodasEntradasInventarios.UseVisualStyleBackColor = True
+        '
+        'lblDisplayEntradasInventarios
+        '
+        Me.lblDisplayEntradasInventarios.Location = New System.Drawing.Point(447, 53)
+        Me.lblDisplayEntradasInventarios.Name = "lblDisplayEntradasInventarios"
+        Me.lblDisplayEntradasInventarios.Size = New System.Drawing.Size(66, 54)
+        Me.lblDisplayEntradasInventarios.TabIndex = 281
+        Me.lblDisplayEntradasInventarios.Text = "Entradas inventarios:"
         '
         'btnSeries
         '
@@ -1365,16 +1386,6 @@ Partial Class Compras_Movimientos
         Me.lblDisplayRetencionIVA.Text = "IVA :"
         Me.lblDisplayRetencionIVA.Visible = False
         '
-        'chkEsInventariable
-        '
-        Me.chkEsInventariable.AutoSize = True
-        Me.chkEsInventariable.Location = New System.Drawing.Point(80, 146)
-        Me.chkEsInventariable.Name = "chkEsInventariable"
-        Me.chkEsInventariable.Size = New System.Drawing.Size(110, 17)
-        Me.chkEsInventariable.TabIndex = 385
-        Me.chkEsInventariable.Text = "Es inventariable ?"
-        Me.chkEsInventariable.UseVisualStyleBackColor = True
-        '
         'Compras_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1411,7 +1422,8 @@ Partial Class Compras_Movimientos
         Me.tpSeries.ResumeLayout(False)
         Me.tpSeries.PerformLayout()
         Me.tpEntradas.ResumeLayout(False)
-        Me.tpEntradas.PerformLayout()
+        Me.gbEntradas.ResumeLayout(False)
+        Me.gbEntradas.PerformLayout()
         Me.gbMXN.ResumeLayout(False)
         Me.gbMXN.PerformLayout()
         Me.ResumeLayout(False)
@@ -1539,4 +1551,5 @@ Partial Class Compras_Movimientos
     Friend WithEvents btnTraerTodasEntradasInventarios As Button
     Friend WithEvents btnBorrarTodasEntradasInventarios As Button
     Friend WithEvents chkEsInventariable As CheckBox
+    Friend WithEvents gbEntradas As GroupBox
 End Class

@@ -56,6 +56,7 @@ Public Class Compras_Movimientos
     Private igyBASE_IEPS_USD As Short = 24
     Private igyBASE_IVA As Short = 25
     Private igyBASE_IVA_USD As Short = 26
+    Private igyID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA As Short = 27
 #End Region
 
 #Region "Columnas grid series"
@@ -92,10 +93,14 @@ Public Class Compras_Movimientos
     End Sub
 
     Private Sub tsbAplicar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbAplicar.Click
-        If Me.ValidarOrdenCompra() = True Then
-            If Me.Aplicar() = True Then
-                Me.Consultar()
+        If Me.chkEsInventariable.Checked = False Then
+            If Me.ValidarOrdenCompra() = False Then
+                Return
             End If
+        End If
+
+        If Me.Aplicar() = True Then
+            Me.Consultar()
         End If
     End Sub
 
@@ -116,7 +121,11 @@ Public Class Compras_Movimientos
     End Sub
 
     Private Sub tsbPasarOrdenACompra_Click(sender As Object, e As EventArgs) Handles tsbPasarOrdenACompra.Click
-        Me.PasarOrdenACompra()
+        If Me.chkEsInventariable.Checked = True Then
+            MsgBox("No es posible pasar una orden de compra inventariable a compra, debe hacer la compra directo y relacionando las entradas de inventario.", vbExclamation, Me.Name)
+        Else
+            Me.PasarOrdenACompra()
+        End If
     End Sub
 
     Private Sub tsbSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSalir.Click
@@ -174,6 +183,22 @@ Public Class Compras_Movimientos
 
     Private Sub tsbAgregarPDF_Click(sender As Object, e As EventArgs) Handles tsbAgregarPDF.Click
         Me.AgregarPDF()
+    End Sub
+
+    Private Sub btnTraerTodasEntradasInventarios_Click(sender As Object, e As EventArgs) Handles btnTraerTodasEntradasInventarios.Click
+        Me.TraerTodasEntradasInventarios()
+    End Sub
+
+    Private Sub btnAgregarTodasEntradasInventarios_Click(sender As Object, e As EventArgs) Handles btnAgregarTodasEntradasInventarios.Click
+        Me.AgregarTodasEntradasInventarios()
+    End Sub
+
+    Private Sub btnAgregarSeleccionadaEntradasInventarios_Click(sender As Object, e As EventArgs) Handles btnAgregarSeleccionadaEntradasInventarios.Click
+        Me.AgregarSeleccionadaEntradasInventarios()
+    End Sub
+
+    Private Sub btnBorrarTodasEntradasInventarios_Click(sender As Object, e As EventArgs) Handles btnBorrarTodasEntradasInventarios.Click
+        Me.BorrarTodasEntradasInventarios()
     End Sub
 #End Region
 
@@ -465,6 +490,14 @@ Buscar:
         End Select
     End Sub
 
+    Private Sub chkEsInventariable_CheckedChanged(sender As Object, e As EventArgs) Handles chkEsInventariable.CheckedChanged
+        If Me.chkEsInventariable.Checked = True Then
+            Me.gbEntradas.Enabled = True
+        Else
+            Me.gbEntradas.Enabled = False
+        End If
+    End Sub
+
 #End Region
 
 #Region "Eventos Genericos"
@@ -641,7 +674,7 @@ Buscar:
                 .FixedRowColStyle = FlexCell.FixedRowColStyleEnum.Flat
 
                 .Rows = 2
-                .Cols = 27
+                .Cols = 28
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
                 .Column(Me.igyCodigo).Width = 75
@@ -670,6 +703,7 @@ Buscar:
                 .Column(Me.igyBASE_IEPS_USD).Width = 100
                 .Column(Me.igyBASE_IVA).Width = 100
                 .Column(Me.igyBASE_IVA_USD).Width = 100
+                .Column(Me.igyID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA).Width = 100
 
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 .Cell(0, Me.igyCodigo).Text = "Código"
@@ -698,6 +732,8 @@ Buscar:
                 .Cell(0, Me.igyBASE_IEPS_USD).Text = "BASE_IEPS_USD"
                 .Cell(0, Me.igyBASE_IVA).Text = "BASE_IVA"
                 .Cell(0, Me.igyBASE_IVA_USD).Text = "BASE_IVA_USD"
+                .Cell(0, Me.igyID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA).Text = "ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA"
+
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 .Column(Me.igyCantidad).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.igyCantidad).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
@@ -767,6 +803,8 @@ Buscar:
 
                 .Column(Me.iGyNombreCuentaContable).Locked = True
                 .Column(Me.iGyIDAdicional).Locked = True
+                .Column(Me.igyID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA).Locked = True
+
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 .Column(Me.igyImpuestoImporte).Visible = False
                 .Column(Me.igyIMPUESTO_IMPORTE_USD).Visible = False
@@ -791,6 +829,7 @@ Buscar:
                 .Column(Me.igyBASE_IEPS_USD).Visible = False
                 .Column(Me.igyBASE_IVA).Visible = False
                 .Column(Me.igyBASE_IVA_USD).Visible = False
+                .Column(Me.igyID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA).Visible = False
 
                 If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = False Then
                     .Column(Me.igyCosto).Visible = False
@@ -826,6 +865,12 @@ Buscar:
 
             Me.tsbAgregarXML.Visible = False
             Me.tsbAgregarPDF.Visible = False
+            'Me.tpEntradas.Enabled = False
+            Me.chkEsInventariable.Enabled = False
+            Me.btnTraerTodasEntradasInventarios.Enabled = False
+            Me.btnAgregarTodasEntradasInventarios.Enabled = False
+            Me.btnAgregarSeleccionadaEntradasInventarios.Enabled = False
+            Me.btnBorrarTodasEntradasInventarios.Enabled = False
 
             Select Case Me.Estado
                 Case enumEstados.NUEVO
@@ -834,6 +879,8 @@ Buscar:
                     Me.tsbImprimir.Enabled = False
                     Me.tsbPasarOrdenACompra.Visible = False
                     Me.tsbEditarCostos.Visible = False
+
+                    Me.chkEsInventariable.Enabled = True
 
                     If Me.oDocumento.AFECTA_CXP = True Then
                         Me.tsbGrabar.Enabled = False
@@ -850,7 +897,12 @@ Buscar:
                         Me.txtConCargoA.Enabled = True 'changed
                         Me.txtPredio.Enabled = True 'changed
                         Me.txtConfirmo.Enabled = True 'changed
-                        Me.chkEsInventariable.Enabled = True
+
+                        'Me.tpEntradas.Enabled = True' NO SIRVE PONERLO EN FALSE Y LUEGO DE ALGUN MODO EL HABILKTIAR LA PESTAÑA EN EL OCULTA HACE ENABLED EL GROUP COMPELTO
+                        Me.btnTraerTodasEntradasInventarios.Enabled = True
+                        Me.btnAgregarTodasEntradasInventarios.Enabled = True
+                        Me.btnAgregarSeleccionadaEntradasInventarios.Enabled = True
+                        Me.btnBorrarTodasEntradasInventarios.Enabled = True
 
                         Me.txtTipoCambio.Enabled = True 'changed
                         Me.txtPlazo.Enabled = True
@@ -1008,7 +1060,6 @@ Buscar:
                     Me.txtConCargoA.Enabled = False
                     Me.txtPredio.Enabled = False
                     Me.txtConfirmo.Enabled = False
-                    Me.chkEsInventariable.Enabled = False
 
                     Me.txtTipoCambio.Enabled = False
                     Me.txtPlazo.Enabled = False
@@ -1069,7 +1120,6 @@ Buscar:
                     Me.txtConCargoA.Enabled = False
                     Me.txtPredio.Enabled = False
                     Me.txtConfirmo.Enabled = False
-                    Me.chkEsInventariable.Enabled = False
 
                     Me.txtTipoCambio.Enabled = False
                     Me.txtPlazo.Enabled = False
@@ -1195,7 +1245,6 @@ Buscar:
                 End If
 
                 .CODIGO_MONEDA = IIf(Me.cboMoneda.Text = "USD", "2", "1").ToString '1=MXN,2=USD
-
                 .SUBTOTAL_USD = valorNumerico(Me.TxtSubTotal_USD.Text)
                 .IEPS_TOTAL_DESGLOSADO_USD = valorNumerico(Me.txtIEPS_USD.Text)
                 .IMPUESTO_USD = valorNumerico(Me.txtIVA_USD.Text)
@@ -1282,15 +1331,16 @@ Buscar:
     End Function
 
     Function Aplicar() As Boolean
+        Const sProcedure As String = "Aplicar"
         Dim bResultado As Boolean = False
         Dim i As Integer, sListaIDsDetalle As String = "", sListaSeries As String = ""
 
-        If MsgBox("Deseas aplicar la " & Me.CboDocumento.Text & " con el folio : " & Me.txtFolioCompra.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Aplicar") = MsgBoxResult.No Then
+        If MsgBox("Deseas aplicar la " & Me.CboDocumento.Text & " con el folio : " & Me.txtFolioCompra.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, sProcedure) = MsgBoxResult.No Then
             Return False
         End If
 
         If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
-            MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Exclamation, Me.Text)
+            MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Exclamation, sProcedure)
             Return False
         End If
 
@@ -1323,7 +1373,6 @@ Buscar:
                 .CON_CARGO_A = Me.txtConCargoA.Text
                 .PREDIO = Me.txtPredio.Text
                 .CONFIRMO = Me.txtConfirmo.Text
-                .FECHA_ENTREGA = Me.dtpFechaEntrega.Value
 
                 If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = True Then
                     Dim CostoTotal As Double = 0, z As Integer
@@ -1335,53 +1384,86 @@ Buscar:
                     .COSTO = CostoTotal
                 End If
 
+                .FECHA_ENTREGA = Me.dtpFechaEntrega.Value
+                .CODIGO_MONEDA = IIf(Me.cboMoneda.Text = "USD", "2", "1").ToString '1=MXN,2=USD
+                .SUBTOTAL_USD = valorNumerico(Me.TxtSubTotal_USD.Text)
+                .IEPS_TOTAL_DESGLOSADO_USD = valorNumerico(Me.txtIEPS_USD.Text)
+                .IMPUESTO_USD = valorNumerico(Me.txtIVA_USD.Text)
+                .TOTAL_DOLARES = valorNumerico(Me.txtTotal_USD.Text)
+                .RETENCION_IVA_USD = valorNumerico(Me.txtRetencionIVA_USD.Text)
+                .RETENCION_ISR_USD = valorNumerico(Me.txtRetencionISR_USD.Text)
+                .ES_INVENTARIABLE = Me.chkEsInventariable.Checked
+
                 If .GrabaCompraGlobal() = False Then
-                    MsgBox("Error al tratar de aplicar el movimiento de compras.", MsgBoxStyle.Exclamation, Me.Text)
+                    MsgBox("Error al tratar de grabar el global de la compra, abortará el proceso.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
                 Me.txtFolioCompra.Text = .FOLIO_COMPRA
 
                 'se graba el detalle
                 For i = 1 To Me.Grid.Rows - 1
-                    If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
-                        .NuevoRenglon()
-                        .oComprasDetalle.FOLIO_COMPRA = .FOLIO_COMPRA.ToString
-                        .oComprasDetalle.CODIGO_ARTICULO = Me.Grid.Cell(i, Me.igyCodigo).Text.ToUpper
-                        .oComprasDetalle.CANTIDAD = valorNumerico(Me.Grid.Cell(i, Me.igyCantidad).Text)
-                        .oComprasDetalle.PRECIO = valorNumerico(Me.Grid.Cell(i, Me.igyPrecio).Text)
-                        .oComprasDetalle.UNIDAD_VENTA = Me.Grid.Cell(i, Me.igyUnidad).Text.ToUpper
-                        .oComprasDetalle.IMPUESTO_PORCENTAJE = valorNumerico(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text)
-                        .oComprasDetalle.IMPUESTO_IMPORTE = valorNumerico(Me.Grid.Cell(i, Me.igyImpuestoImporte).Text)
-                        .oComprasDetalle.IMPORTE = valorNumerico(Me.Grid.Cell(i, Me.igyImporte).Text)
-                        .oComprasDetalle.ID_ORIGEN = CInt(Me.Grid.Cell(i, Me.igyIdArticulo).Text)
-                        .oComprasDetalle.CUENTA_CONTABLE = Me.Grid.Cell(i, Me.igyCuentaContable).Text
-                        .oComprasDetalle.ID_ADICIONAL = CInt(valorNumerico(Me.Grid.Cell(i, Me.iGyIDAdicional).Text))
+                    If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = False Then
+                        Continue For
+                    End If
 
-                        If Me.dtSeries.Rows.Count > 0 Then
-                            For Each dRow In Me.dtSeries.Select("POSICION='" & i.ToString & "'")
-                                sListaSeries = sListaSeries & dRow("POSICION").ToString & "," & dRow("CODIGO_ARTICULO").ToString & "," & dRow("NUMERO_SERIE").ToString & "|"
-                            Next
-                            If txtLEN(sListaSeries) = True Then
-                                sListaSeries = sListaSeries.Substring(0, sListaSeries.Length - 1) 'Para quitarle el último pipe que sale sobrando.
-                            End If
+                    .NuevoRenglon()
+
+                    .oComprasDetalle.FOLIO_COMPRA = .FOLIO_COMPRA.ToString
+                    .oComprasDetalle.CODIGO_ARTICULO = Me.Grid.Cell(i, Me.igyCodigo).Text.ToUpper
+                    .oComprasDetalle.CANTIDAD = valorNumerico(Me.Grid.Cell(i, Me.igyCantidad).Text)
+                    .oComprasDetalle.PRECIO = valorNumerico(Me.Grid.Cell(i, Me.igyPrecio).Text)
+                    .oComprasDetalle.UNIDAD_VENTA = Me.Grid.Cell(i, Me.igyUnidad).Text.ToUpper
+                    .oComprasDetalle.IMPUESTO_PORCENTAJE = valorNumerico(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text)
+                    .oComprasDetalle.IMPUESTO_IMPORTE = valorNumerico(Me.Grid.Cell(i, Me.igyImpuestoImporte).Text)
+                    .oComprasDetalle.IMPORTE = valorNumerico(Me.Grid.Cell(i, Me.igyImporte).Text)
+                    .oComprasDetalle.ID_ORIGEN = CInt(Me.Grid.Cell(i, Me.igyIdArticulo).Text)
+                    .oComprasDetalle.CUENTA_CONTABLE = Me.Grid.Cell(i, Me.igyCuentaContable).Text
+                    .oComprasDetalle.ID_ADICIONAL = CInt(valorNumerico(Me.Grid.Cell(i, Me.iGyIDAdicional).Text))
+
+                    If Me.dtSeries.Rows.Count > 0 Then
+                        For Each dRow In Me.dtSeries.Select("POSICION='" & i.ToString & "'")
+                            sListaSeries = sListaSeries & dRow("POSICION").ToString & "," & dRow("CODIGO_ARTICULO").ToString & "," & dRow("NUMERO_SERIE").ToString & "|"
+                        Next
+                        If txtLEN(sListaSeries) = True Then
+                            sListaSeries = sListaSeries.Substring(0, sListaSeries.Length - 1) 'Para quitarle el último pipe que sale sobrando.
                         End If
+                    End If
 
-                        .oComprasDetalle.LISTA_SERIES = sListaSeries
+                    .oComprasDetalle.LISTA_SERIES = sListaSeries
 
-                        .oComprasDetalle.IEPS_PORCENTAJE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
-                        .oComprasDetalle.IEPS_UNITARIO = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text)
-                        .oComprasDetalle.IEPS_IMPORTE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_IMPORTE).Text)
-                        .oComprasDetalle.BASE_IEPS = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IEPS).Text)
-                        .oComprasDetalle.BASE_IVA = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IVA).Text)
-                        .oComprasDetalle.COSTO = valorNumerico(Me.Grid.Cell(i, Me.igyCosto).Text)
+                    .oComprasDetalle.IEPS_PORCENTAJE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
+                    .oComprasDetalle.IEPS_UNITARIO = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_UNITARIO).Text)
+                    .oComprasDetalle.IEPS_IMPORTE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_IMPORTE).Text)
+                    .oComprasDetalle.BASE_IEPS = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IEPS).Text)
+                    .oComprasDetalle.BASE_IVA = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IVA).Text)
+                    .oComprasDetalle.COSTO = valorNumerico(Me.Grid.Cell(i, Me.igyCosto).Text)
 
-                        If .oComprasDetalle.GrabaRenglonCompra() = False Then
-                            MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Text)
-                            Return False
-                            'Else
-                            '    ya no se ocuparia esto, porque las series ya estan especificadas en el mismo renglon
-                            '    sListaIDsDetalle = sListaIDsDetalle & i.ToString & "," & .oComprasDetalle.ID_COMPRA_DETALLE.ToString & "|"
-                        End If
+                    If Me.cboMoneda.Text = "USD" Then
+                        .oComprasDetalle.PRECIO_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyPRECIO_USD).Text)
+                        .oComprasDetalle.IMPUESTO_IMPORTE_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyIMPUESTO_IMPORTE_USD).Text)
+                        .oComprasDetalle.IMPORTE_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyIMPORTE_USD).Text)
+                        .oComprasDetalle.IEPS_UNITARIO_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyIEPS_UNITARIO_USD).Text)
+                        .oComprasDetalle.IEPS_IMPORTE_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyIEPS_IMPORTE_USD).Text)
+                        .oComprasDetalle.BASE_IEPS_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyBASE_IEPS_USD).Text)
+                        .oComprasDetalle.BASE_IVA_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyBASE_IVA_USD).Text)
+                    Else 'Por seguridad mejor no se toma del grid(que deberia ser 0, pero si se quedara inicializado), (en el gestiona moneda se borran cuando cambian a mxn)
+                        .oComprasDetalle.PRECIO_USD = 0
+                        .oComprasDetalle.IMPUESTO_IMPORTE_USD = 0
+                        .oComprasDetalle.IMPORTE_USD = 0
+                        .oComprasDetalle.IEPS_UNITARIO_USD = 0
+                        .oComprasDetalle.IEPS_IMPORTE_USD = 0
+                        .oComprasDetalle.BASE_IEPS_USD = 0
+                        .oComprasDetalle.BASE_IVA_USD = 0
+                    End If
+
+                    .oComprasDetalle.ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA = CInt(0 & valorNumerico(Me.Grid.Cell(i, Me.igyID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA).Text))
+
+                    If .oComprasDetalle.GrabaRenglonCompra() = False Then
+                        MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                        'Else
+                        '    ya no se ocuparia esto, porque las series ya estan especificadas en el mismo renglon
+                        '    sListaIDsDetalle = sListaIDsDetalle & i.ToString & "," & .oComprasDetalle.ID_COMPRA_DETALLE.ToString & "|"
                     End If
 
                     sListaSeries = ""
@@ -1405,16 +1487,22 @@ Buscar:
                 '    RETURN FALSE
                 'End If
 
-                If Me.oCompras.AfectaInventarioCompra() = False Then
-                    MsgBox("Error al tratar de afectar el inventario.", MsgBoxStyle.Exclamation, Me.Text)
-                    Return False
-                End If
+                If Me.chkEsInventariable.Checked = True Then
+                    'If Me.oCompras.AfectaInventarioCompra() = False Then
+                    '    MsgBox("Error al tratar de afectar el inventario.", MsgBoxStyle.Exclamation, sProcedure)
+                    '    Return False
+                    'End If
 
-                Me.txtFolioCompra.Text = .FOLIO_COMPRA.ToString
+                    For i = 1 To Me.GridEntradas.Rows - 1
+                        If txtLEN(Me.GridEntradas.Cell(i, Me.igyGridEFolioEntrada).Text) = True Then
+                            .GrabaRelacionEntradaInventario(Me.GridEntradas.Cell(i, Me.igyGridEFolioEntrada).Text)
+                        End If
+                    Next
+                End If
 
                 Dim sListaCuentas As String = ""
 
-                If IsNothing(Me.oFormaDetalleCuentas) = False Then 'Si no esta vacia, osea si existe
+                If IsNothing(Me.oFormaDetalleCuentas) = False Then 'Si no esta vacia(osea que si existe)
                     Me.oFormaDetalleCuentas.FolioMovimientoInventario = Me.txtFolioCompra.Text 'Hasta aqui la forma auxiliar no tenia el folio
                     sListaCuentas = Me.oFormaDetalleCuentas.ObtieneListaDetalleCuentas()
                 End If
@@ -1423,18 +1511,23 @@ Buscar:
                     .oComprasDetalle.GrabaDetalleCentroCostos(sListaCuentas, Me.CboDocumento.SelectedValue.ToString, Me.DtpFecha.Value)
                 End If
 
-                If Me.oCompras.AfectaContabilidadCompra = False Then
-                    MsgBox("Error al tratar de afectar contabilidad.", MsgBoxStyle.Exclamation, Me.Text)
-                    Return False
+                If Me.chkEsInventariable.Checked = True Then
+                    MsgBox("FALTA la póliza recortada de este pasivo !", MsgBoxStyle.Critical, sProcedure)
+                Else
+                    If Me.oCompras.AfectaContabilidadCompra = False Then
+                        MsgBox("Error al tratar de afectar contabilidad.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
                 End If
 
                 bResultado = True
 
-                MsgBox("Movimiento de compras aplicado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+                MsgBox("Movimiento de compras aplicado satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
 
             End With
+
         Catch ex As Exception
-            HandleError(Me.Name, "Aplicar", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado
@@ -1461,7 +1554,7 @@ Buscar:
         End Try
     End Function
 
-    Private Function Consultar(Optional ByVal bEsReferencia As Boolean = False) As Boolean
+    Private Function Consultar(Optional ByVal bEsReferencia As Boolean = False, Optional ByVal bPasandoOCaCO As Boolean = False) As Boolean
         Dim bResultado As Boolean = False
         Dim sCompra As String = Me.txtFolioCompra.Text
         Dim sOrdenCompra As String = Me.txtFolioOC.Text
@@ -1530,6 +1623,7 @@ Buscar:
 
             Me.txtPlazo.Text = Me.oCompras.PLAZO.ToString
             Me.dtpFechaVencimiento.Value = CDate(Me.oCompras.FECHA_VENCIMIENTO)
+            Me.chkEsInventariable.Checked = Me.oCompras.ES_INVENTARIABLE
 
             'Esto va antes de los totales, porque se va ejecutar el checked de los dolares
             'Me.cboMoneda.SelectedValue = Me.oCompras.CODIGO_MONEDA
@@ -1592,8 +1686,6 @@ Buscar:
                 Me.DtpFechaFacturaProveedor.Value = CDate(Me.oCompras.FECHA_FACTURA_PROVEEDOR)
             End If
 
-            Me.chkEsInventariable.Checked = Me.oCompras.ES_INVENTARIABLE
-
             Me.FormateaGrid()
 
             If Me.oDocumento.AFECTA_CXP = True Then
@@ -1636,7 +1728,14 @@ Buscar:
 
             Me.GestionaCambioEstado()
             Me.GestionaMoneda()
+            Me.OcultarControles()
+
             Me.txtFolioCompra.Enabled = False
+
+            If bPasandoOCaCO = True Then 'Si estan convieriendo una oc de no inv a compra, de inmediato quitamos check y bloqueamos.
+                Me.chkEsInventariable.Checked = False
+                Me.chkEsInventariable.Enabled = False
+            End If
 
         Catch ex As Exception
             HandleError(Me.Name, "Consultar", ex)
@@ -1958,8 +2057,19 @@ Buscar:
                 End If
             Next i
 
+            If Me.chkEsInventariable.Checked = False Then 'Si es de servicios
+                If Me.ValidaQueTodosSeanNoInventariables(True) = False Then 'Todos deben ser no inv
+                    Return False
+                End If
+            Else 'Es inventariable, pueden ser todos inv, o revueltos, pero no puros noinv
+                If Me.ValidaQueTodosSeanNoInventariables(False) = True Then
+                    MsgBox("Este es un documento inventariable y agregó solamente artículos no inventariables.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+            End If
+
             If bHayArticulos = False Then
-                MsgBox("Captúre el detalle del movimiento.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("Captúre el detalle del movimiento.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
 
@@ -1973,36 +2083,9 @@ Buscar:
     Private Function ValidarCompra() As Boolean
         Const sProcedure As String = "ValidarCompra"
         Try
+            Dim bTieneRenglones As Boolean = False
+
             If Plaza.ValidarPeriodoTrabajo(Me.DtpFecha.Value) = False Then
-                Return False
-            End If
-
-            If txtLEN(Me.txtFolioOC.Text) = False Then
-                MsgBox("Asígne la orden de compra de referencia.", MsgBoxStyle.Exclamation, sProcedure)
-                Me.txtFolioOC.Focus()
-                Return False
-            End If
-
-            Me.oCompras = New Class_Compras_Global(Me.txtFolioOC.Text, Me.oCompras.ObtieneCodigoDocumentoOrdenCompra(Me.txtFolioOC.Text))
-
-            If Me.oCompras.Existe = False Then
-                MsgBox("Asígne una orden de compra válida.", MsgBoxStyle.Exclamation, sProcedure)
-                Me.txtFolioOC.Focus()
-                Return False
-            End If
-
-            Dim i As Integer
-            For i = 1 To Grid.Rows - 1
-                If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
-                    If Me.oCompras.ValidaCantidadDisponibleArticulo(CInt(Me.Grid.Cell(i, Me.igyIdArticulo).Text), CDbl(Me.Grid.Cell(i, Me.igyCantidad).Text)) = False Then
-                        MsgBox("La cantidad debe de ser menor al disponible.", MsgBoxStyle.Exclamation, sProcedure)
-                        Me.Grid.Cell(i, Me.igyCantidad).SetFocus()
-                        Return False
-                    End If
-                End If
-            Next i
-
-            If Me.ValidaCuentasContables = False Then
                 Return False
             End If
 
@@ -2026,28 +2109,75 @@ Buscar:
             '    End If
             'Next
 
-            'Nota aqui no se pregunta antes si hay rows en dtSeries, porque puede ser que no le hayan dado al botón, en la siguiente validación si.
-            If Me.ValidaNumerosSerie = False Then
+            For i = 1 To Me.Grid.Rows - 1
+                If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
+                    bTieneRenglones = True
+                    Exit For
+                End If
+            Next
+
+            If bTieneRenglones = False Then
+                MsgBox("No hay artículos agregados, favor de revisar.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
 
-            If IsNothing(Me.dtSeries) = False AndAlso Me.dtSeries.Rows.Count > 0 Then
-
-                'NOTA: cuando sea false VALIDA_SERIES_REPETIDAS_EN_ENTRADAS no entrará a las dos validaciones internas debido a :
-                'Sobre validar HaySeriesRepetidas - Es porque en vez de usar series usan lotes, ejemplo se le compra a x proveedor 50 kilos de x producto del lote rh-587, las 50 unidades deberán tener el mismo lote
-                'Y sobre validar HaySeriesConExistenciasMismoArticulo - Al usar lotes es posible que en un compra pongan serie "2016", y en otra compra otra vez repitan "2016"( es más factible que se repitan entre diferentes compras)
-
-                If Empresa_Sistema.VALIDA_SERIES_REPETIDAS_EN_ENTRADAS = True Then
-
-                    If Me.HaySeriesRepetidas = True Then
-                        Return False
-                    End If
-
-                    If Me.HaySeriesConExistenciasMismoArticulo = True Then
-                        Return False
-                    End If
+            If Me.chkEsInventariable.Checked = True Then
+                If Me.TieneAgregadasEntradasInventario() = False Then
+                    MsgBox("Este documento es inventarible y usted no detalló entradas de inventarios, favor de revisar.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 End If
 
+                'Ya no se validan series en ningún momento , porque estas ese llevan ahora en las entradas.
+                ''Nota aqui no se pregunta antes si hay rows en dtSeries, porque puede ser que no le hayan dado al botón, en la siguiente validación si.
+                'If Me.ValidaNumerosSerie = False Then
+                '    Return False
+                'End If
+
+                'If IsNothing(Me.dtSeries) = False AndAlso Me.dtSeries.Rows.Count > 0 Then
+
+                '    'NOTA: cuando sea false VALIDA_SERIES_REPETIDAS_EN_ENTRADAS no entrará a las dos validaciones internas debido a :
+                '    'Sobre validar HaySeriesRepetidas - Es porque en vez de usar series usan lotes, ejemplo se le compra a x proveedor 50 kilos de x producto del lote rh-587, las 50 unidades deberán tener el mismo lote
+                '    'Y sobre validar HaySeriesConExistenciasMismoArticulo - Al usar lotes es posible que en un compra pongan serie "2016", y en otra compra otra vez repitan "2016"( es más factible que se repitan entre diferentes compras)
+
+                '    If Empresa_Sistema.VALIDA_SERIES_REPETIDAS_EN_ENTRADAS = True Then
+
+                '        If Me.HaySeriesRepetidas = True Then
+                '            Return False
+                '        End If
+
+                '        If Me.HaySeriesConExistenciasMismoArticulo = True Then
+                '            Return False
+                '        End If
+                '    End If
+                'End If
+
+            Else 'Es de servicio
+                If Me.TieneAgregadasEntradasInventario() = True Then
+                    MsgBox("Este documento es no inventarible y usted detalló salidas de inventarios, favor de revisar.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                If txtLEN(Me.txtFolioOC.Text) = False Then
+                    MsgBox("Asígne la orden de compra de referencia.", MsgBoxStyle.Exclamation, sProcedure)
+                    Me.txtFolioOC.Focus()
+                    Return False
+                End If
+
+                Me.oCompras = New Class_Compras_Global(Me.txtFolioOC.Text, Me.oCompras.ObtieneCodigoDocumentoOrdenCompra(Me.txtFolioOC.Text))
+
+                If Me.oCompras.Existe = False Then
+                    MsgBox("Asígne una orden de compra válida.", MsgBoxStyle.Exclamation, sProcedure)
+                    Me.txtFolioOC.Focus()
+                    Return False
+                End If
+
+                If Me.ValidaDisponiblesOCaCO = False Then
+                    Return False
+                End If
+            End If
+
+            If Me.ValidaCuentasContables = False Then
+                Return False
             End If
 
             Return True
@@ -2437,14 +2567,14 @@ LlenaLinea:
 
                         Case Me.igyCantidad
                             If dCantidad <= 0 Then
-                                MsgBox("La cantidad debe de ser mayor a 0.", MsgBoxStyle.Exclamation, Me.Text)
+                                MsgBox("La cantidad debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
                                 Me.Grid.Cell(Renglon, Me.igyCantidad).SetFocus()
                                 Exit Sub
                             End If
 
                             If Me.oDocumento.AFECTA_CXP = True Then
                                 If Me.oCompras.ValidaCantidadDisponibleArticulo(CInt(Me.Grid.Cell(Renglon, Me.igyIdArticulo).Text), dCantidad) = False Then
-                                    MsgBox("La cantidad debe de ser menor al disponible.", MsgBoxStyle.Exclamation, Me.Text)
+                                    MsgBox("La cantidad debe de ser menor al disponible.", MsgBoxStyle.Exclamation, sProcedure)
                                     Me.Grid.Cell(Renglon, Me.igyCantidad).Text = Me.oCompras.ObtenerDisponibleArticulo(CInt(Me.Grid.Cell(Renglon, Me.igyIdArticulo).Text)).ToString
                                     Me.Grid.Refresh()
                                     Exit Sub
@@ -2460,7 +2590,7 @@ LlenaLinea:
                                 'Avanza de todas formas estará bloqueado                                    
                             Else
                                 If dPrecio <= 0 Then
-                                    MsgBox("El precio debe de ser mayor a 0.", MsgBoxStyle.Exclamation, Me.Text)
+                                    MsgBox("El precio debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
                                     Me.Grid.Cell(Renglon, Me.igyPrecio).SetFocus()
                                 End If
                             End If
@@ -2555,7 +2685,7 @@ BuscarCuentas:
 
                             If oArticulo.INVENTARIABLE = "0" Then
                                 If Mid(sCuentaContable, 1, 4) = Empresa_Sistema.CUENTA_CONTABLE_ALMACENES.ToString Then
-                                    MsgBox("La cuenta para los artículos no inventariables no deben de empezar con " & Empresa_Sistema.CUENTA_CONTABLE_ALMACENES.ToString & ".", MsgBoxStyle.Exclamation, Me.Text)
+                                    MsgBox("La cuenta para los artículos no inventariables no deben de empezar con " & Empresa_Sistema.CUENTA_CONTABLE_ALMACENES.ToString & ".", MsgBoxStyle.Exclamation, sProcedure)
                                     Return
                                 End If
                             End If
@@ -2580,7 +2710,7 @@ BuscarCuentas:
 
                     '                    If oArticulos.INVENTARIABLE = "0" Then
                     '                        If Mid(sCuentaContable, 1, 4) = Empresa_Sistema.CUENTA_CONTABLE_ALMACENES.ToString Then
-                    '                            MsgBox("La cuenta para los artículos no inventariables no deben de empezar con " & Empresa_Sistema.CUENTA_CONTABLE_ALMACENES.ToString & ".", MsgBoxStyle.Exclamation, Me.Text)
+                    '                            MsgBox("La cuenta para los artículos no inventariables no deben de empezar con " & Empresa_Sistema.CUENTA_CONTABLE_ALMACENES.ToString & ".", MsgBoxStyle.Exclamation, sProcedure)
                     '                            Exit Sub
                     '                        End If
                     '                    End If
@@ -2589,19 +2719,24 @@ BuscarCuentas:
 
                 Case Keys.F8, Keys.Delete
                     If (Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.GRABADO) Then
-                        Dim IDAdicional As Integer = CInt(Me.Grid.Cell(Renglon, Me.iGyIDAdicional).Text)
+                        Dim IDAdicional As Integer = 0
+                        If txtLEN(Me.Grid.Cell(Renglon, Me.iGyIDAdicional).Text) = True Then
+                            IDAdicional = CInt(Me.Grid.Cell(Renglon, Me.iGyIDAdicional).Text)
+                        End If
 
                         'MsgBox(Me.Grid.Rows.ToString)
                         Me.Grid.Selection.DeleteByRow()
                         'MsgBox(Me.Grid.Rows.ToString)
                         Me.Totales()
 
-                        Me.EliminaDetalleCuentasContables(IDAdicional)
+                        If IDAdicional > 0 Then
+                            Me.EliminaDetalleCuentasContables(IDAdicional)
+                        End If
                     End If
             End Select
 
         Catch ex As Exception
-            HandleError(Me.Name, "GestionaGrid", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
@@ -2622,7 +2757,7 @@ BuscarCuentas:
                 Me.tsbAplicar.Visible = True
                 Me.tpSeries.Enabled = True
 
-                Me.TabControl1.TabPages(2).Enabled = True
+                Me.TabControl1.TabPages(2).Enabled = True 'Entradas inventarios
             Else
                 Me.txtFolioOC.Visible = False : Me.lblDisplayFolioOC.Visible = False
                 Me.txtFolioProveedor.Visible = False : Me.lblDisplayFolioProveedor.Visible = False
@@ -2638,7 +2773,7 @@ BuscarCuentas:
                 Me.tsbAplicar.Visible = False
                 Me.tpSeries.Enabled = False
 
-                Me.TabControl1.TabPages(2).Enabled = False
+                Me.TabControl1.TabPages(2).Enabled = False 'Entradas inventarios
             End If
         Catch ex As Exception
             HandleError(Me.Name, "OcultarControles", ex)
@@ -2858,7 +2993,7 @@ BuscarCuentas:
             Me.CboDocumento.SelectedValue = "CO" & Usuario.Codigo_Plaza.ToString
             Me.Cambia_Estado(enumEstados.NUEVO)
             Me.txtFolioOC.Text = sFolioOC
-            Me.Consultar(True)
+            Me.Consultar(True, True)
         Catch ex As Exception
             HandleError(Me.Name, "PasarOrdenACompra", ex)
         End Try
@@ -3466,8 +3601,6 @@ BuscarCuentas:
                     Me.Grid.Cell(i, Me.igyBASE_IVA_USD).Text = "0"
                 Next
 
-
-
             End If
 
             'Me.Totales()
@@ -3477,21 +3610,23 @@ BuscarCuentas:
         End Try
     End Sub
 
-    Private Sub btnTraerTodasEntradasInventarios_Click(sender As Object, e As EventArgs) Handles btnTraerTodasEntradasInventarios.Click
-        Me.TraerTodasEntradasInventarios()
-    End Sub
-
-    Private Sub btnAgregarTodasEntradasInventarios_Click(sender As Object, e As EventArgs) Handles btnAgregarTodasEntradasInventarios.Click
-        Me.AgregarTodasEntradasInventarios()
-    End Sub
-
-    Private Sub btnArgegarSeleccionadaEntradasInventarios_Click(sender As Object, e As EventArgs) Handles btnAgregarSeleccionadaEntradasInventarios.Click
-        Me.AgregarSeleccionadaEntradasInventarios()
-    End Sub
-
-    Private Sub btnBorrarTodasEntradasInventarios_Click(sender As Object, e As EventArgs) Handles btnBorrarTodasEntradasInventarios.Click
-        Me.BorrarTodasEntradasInventarios()
-    End Sub
+    Private Function ValidaDisponiblesOCaCO() As Boolean
+        Const sProcedure As String = "ValidaDisponiblesOCaCO"
+        Try
+            Dim i As Integer
+            For i = 1 To Grid.Rows - 1
+                If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
+                    If Me.oCompras.ValidaCantidadDisponibleArticulo(CInt(Me.Grid.Cell(i, Me.igyIdArticulo).Text), CDbl(Me.Grid.Cell(i, Me.igyCantidad).Text)) = False Then
+                        MsgBox("La cantidad debe de ser menor al disponible.", MsgBoxStyle.Exclamation, sProcedure)
+                        Me.Grid.Cell(i, Me.igyCantidad).SetFocus()
+                        Return False
+                    End If
+                End If
+            Next i
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Function
 
     Private Function TraerTodasEntradasInventarios() As Boolean
         Const sProcedure As String = "TraerTodasEntradasInventarios"
@@ -3690,8 +3825,6 @@ BuscarCuentas:
             Me.InicializaGridSeries()
             Me.Totales()
 
-            'MsgBox("FALTA, ver como llenar las series, o mas bien no se ocupa porque no se afectará existencias.")
-
             For i = 1 To Me.GridEntradas.Rows - 1
                 sFolioEntrada = Me.GridEntradas.Cell(i, Me.igyGridEFolioEntrada).Text
 
@@ -3699,7 +3832,6 @@ BuscarCuentas:
                     sListaFoliosEntradas &= sFolioEntrada & "|"
                 End If
 
-                'inventarios detalle full join compras detalle cuando inventarios.cant>0 o que articulo.inv='n'
             Next
 
             Dim oInventarios As New Class_Inventarios_Global
@@ -3710,6 +3842,9 @@ BuscarCuentas:
             Me.Totales()
 
             Me.EstableceCuentaContableAlmacen()
+
+            Me.chkEsInventariable.Checked = True
+            Me.chkEsInventariable.Enabled = False 'Lo bloqueamos para que no haya hack
 
             Return True
         Catch ex As Exception
@@ -3730,6 +3865,28 @@ BuscarCuentas:
             HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
+
+    Private Function ValidaQueTodosSeanNoInventariables(ByVal bEnviarMsg As Boolean) As Boolean
+        Const sProcedure As String = "ValidaQueTodosSeanNoInventariables"
+        Try
+            Dim i As Integer
+            For i = 1 To Grid.Rows - 1
+                If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
+                    Dim oArticulo As New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
+                    If oArticulo.INVENTARIABLE = "1" Then
+                        If bEnviarMsg = True Then
+                            MsgBox("El artículo del renglón #" & i.ToString & " es inventariable.", vbExclamation, sProcedure)
+                        End If
+                        Return False
+                    End If
+                End If
+            Next i
+
+            Return True
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Function
 
 #End Region
 

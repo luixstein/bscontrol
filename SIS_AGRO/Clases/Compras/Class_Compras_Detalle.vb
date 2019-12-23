@@ -29,6 +29,7 @@ Public Class Class_Compras_Detalle
     Private _BASE_IEPS As Double
     Private _BASE_IVA As Double
     Private _COSTO As Double
+    Private _ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA As Integer = 0
 
     Private _PRECIO_USD As Decimal
     Private _IMPORTE_USD As Decimal
@@ -248,6 +249,15 @@ Public Class Class_Compras_Detalle
         End Set
     End Property
 
+    Public Property ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA() As Integer
+        Get
+            Return Me._ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA
+        End Get
+        Set(value As Integer)
+            Me._ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA = value
+        End Set
+    End Property
+
     Public Property PRECIO_USD() As Decimal
         Get
             Return Me._PRECIO_USD
@@ -439,7 +449,15 @@ Public Class Class_Compras_Detalle
             sqlParametro = .Parameters.Add("@IEPS_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_IMPORTE
             sqlParametro = .Parameters.Add("@BASE_IEPS", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IEPS
             sqlParametro = .Parameters.Add("@BASE_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IVA
-            sqlParametro = .Parameters.Add("COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO
+            sqlParametro = .Parameters.Add("@COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO
+            sqlParametro = .Parameters.Add("@PRECIO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._PRECIO_USD
+            sqlParametro = .Parameters.Add("@IMPORTE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPORTE_USD
+            sqlParametro = .Parameters.Add("@IMPUESTO_IMPORTE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_IMPORTE_USD
+            sqlParametro = .Parameters.Add("@IEPS_UNITARIO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_UNITARIO_USD
+            sqlParametro = .Parameters.Add("@IEPS_IMPORTE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_IMPORTE_USD
+            sqlParametro = .Parameters.Add("@BASE_IEPS_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IEPS_USD
+            sqlParametro = .Parameters.Add("@BASE_IVA_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IVA_USD
+            sqlParametro = .Parameters.Add("@ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA", SqlDbType.Int) : sqlParametro.Value = Me._ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA
 
             Try
                 Me._Conexion.Open()
