@@ -128,6 +128,10 @@ Public Class Compras_Movimientos
         End If
     End Sub
 
+    Private Sub tsbRecepcionarEntrada_Click(sender As Object, e As EventArgs) Handles tsbRecepcionarEntrada.Click
+        Me.RecepcionarEntrada
+    End Sub
+
     Private Sub tsbSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSalir.Click
         Me.Close()
     End Sub
@@ -852,6 +856,8 @@ Buscar:
                 Me.Cambia_Estado(enumEstados.NUEVO)
             Case "GRABADO"
                 Me.Cambia_Estado(enumEstados.GRABADO)
+            Case "PARCIALMENTE RECEPCIONADO"
+                Me.Cambia_Estado(enumEstados.PARCIALMENTE_RECEPCIONADO)
             Case "APLICADO"
                 Me.Cambia_Estado(enumEstados.APLICADO)
             Case "CANCELADO"
@@ -863,6 +869,7 @@ Buscar:
         Try
             Me.Estado = pEstado
 
+            Me.tsbRecepcionarEntrada.Visible = False
             Me.tsbAgregarXML.Visible = False
             Me.tsbAgregarPDF.Visible = False
             'Me.tpEntradas.Enabled = False
@@ -992,6 +999,7 @@ Buscar:
                     Me.txtTipoCambio.Enabled = False
                     If Me.oDocumento.AFECTA_CXP = False Then 'Si no afecta, entonces es una oc y si se permite el botón.
                         Me.tsbPasarOrdenACompra.Visible = True
+                        Me.tsbRecepcionarEntrada.Visible = True
 
                         'Dim sender As New Object, e As New EventArgs
                         'cboMoneda_SelectedIndexChanged(sender, e) 'Al ser oc, en el nuevo puede quedar bloqueado el tpcam, de este modo refrescamos
@@ -1488,16 +1496,21 @@ Buscar:
                 'End If
 
                 If Me.chkEsInventariable.Checked = True Then
+                    'Nota, Ya no se afecta inventarios de ninguna forma al aplicar(porque ahora se hacen entradas en inventario), pero si a los disponibles cuando no es inventariable.
                     'If Me.oCompras.AfectaInventarioCompra() = False Then
                     '    MsgBox("Error al tratar de afectar el inventario.", MsgBoxStyle.Exclamation, sProcedure)
                     '    Return False
                     'End If
-
                     For i = 1 To Me.GridEntradas.Rows - 1
                         If txtLEN(Me.GridEntradas.Cell(i, Me.igyGridEFolioEntrada).Text) = True Then
                             .GrabaRelacionEntradaInventario(Me.GridEntradas.Cell(i, Me.igyGridEFolioEntrada).Text)
                         End If
                     Next
+                Else 'Es de servicios(las oc's se convierten en co's y si se lleva el control de los disponibles del modo anterior)
+                    If Me.oCompras.AfectaCantidadesDisponiblesOrdenCompra(False) = False Then
+                        MsgBox("Error al tratar de afectar las cantidades disponibles de la orden de compra.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
                 End If
 
                 Dim sListaCuentas As String = ""
@@ -1511,13 +1524,9 @@ Buscar:
                     .oComprasDetalle.GrabaDetalleCentroCostos(sListaCuentas, Me.CboDocumento.SelectedValue.ToString, Me.DtpFecha.Value)
                 End If
 
-                If Me.chkEsInventariable.Checked = True Then
-                    MsgBox("FALTA la póliza recortada de este pasivo !", MsgBoxStyle.Critical, sProcedure)
-                Else
-                    If Me.oCompras.AfectaContabilidadCompra = False Then
-                        MsgBox("Error al tratar de afectar contabilidad.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
-                    End If
+                If Me.oCompras.AfectaContabilidadCompra = False Then
+                    MsgBox("Error al tratar de afectar contabilidad.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 End If
 
                 bResultado = True
@@ -1555,6 +1564,7 @@ Buscar:
     End Function
 
     Private Function Consultar(Optional ByVal bEsReferencia As Boolean = False, Optional ByVal bPasandoOCaCO As Boolean = False) As Boolean
+        Const sProcedure As String = ""
         Dim bResultado As Boolean = False
         Dim sCompra As String = Me.txtFolioCompra.Text
         Dim sOrdenCompra As String = Me.txtFolioOC.Text
@@ -1593,6 +1603,8 @@ Buscar:
                         Me.LblEstatus.Text = "NUEVO"
                     Case "G"
                         Me.LblEstatus.Text = "GRABADO"
+                    Case "R"
+                        Me.LblEstatus.Text = "PARCIALMENTE RECEPCIONADO"
                     Case "A"
                         Me.LblEstatus.Text = "APLICADO"
                     Case "C"
@@ -1692,7 +1704,7 @@ Buscar:
                 Me.Grid.Row(Me.Grid.Rows - 1).Locked = True
                 If Me.LblEstatus.Text = "NUEVO" Then
                     If Me.EstableceCuentaContableAlmacen() = False Then
-                        MsgBox("No se pudieron establecer las cuentas contables de los articulos inventariables.", MsgBoxStyle.Information, Me.Text)
+                        MsgBox("No se pudieron establecer las cuentas contables de los artículos inventariables.", MsgBoxStyle.Information, sProcedure)
                     End If
                 End If
 
@@ -1722,9 +1734,12 @@ Buscar:
 
             If bEsReferencia = True Then
                 If Me.oCompras.ESTATUS = "A" Then
-                    MsgBox("La oc especificada ya esta aplicada en la compra(s) " & Me.oCompras.ListaComprasAplicaronOc(Me.txtFolioOC.Text), MsgBoxStyle.Exclamation, Me.Text)
+                    MsgBox("La oc especificada ya esta aplicada en la compra(s) " & Me.oCompras.ListaComprasAplicaronOc(Me.txtFolioOC.Text), MsgBoxStyle.Exclamation, sProcedure)
                 End If
             End If
+
+            Me.GridEntradas.DataSource = Me.oCompras.ObtieneListadoEntradas
+            Me.FormateaGridEntradas()
 
             Me.GestionaCambioEstado()
             Me.GestionaMoneda()
@@ -1738,7 +1753,7 @@ Buscar:
             End If
 
         Catch ex As Exception
-            HandleError(Me.Name, "Consultar", ex)
+            HandleError(Me.Name, sProcedure, ex)
         Finally
             Application.DoEvents()
         End Try
@@ -1747,6 +1762,7 @@ Buscar:
     End Function
 
     Private Function CancelarCompra() As Boolean
+        Const sProcedure As String = "CancelarCompra"
         Dim bResultado As Boolean = False
 
         Dim oFirmaElectronica = New UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo
@@ -1754,29 +1770,36 @@ Buscar:
         Dim oPoliza As New Class_Contabilidad_Poliza_Global
         Dim sConceptoCancelacion As String = ""
 
-        If MsgBox("Deseas cancelar el movimiento de " & Me.CboDocumento.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "CancelarCompra") = MsgBoxResult.No Then
-            Exit Function
+        If MsgBox("Deseas cancelar el movimiento de " & Me.CboDocumento.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, sProcedure) = MsgBoxResult.No Then
+            Return False
         End If
 
         If _ConsultaExterior = True Then
             If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios("CO" & Plaza.CODIGO_PLAZA.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
-                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento de inventarios.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento de inventarios.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
             End If
         Else
             If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
-                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento de inventarios.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento de inventarios.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
             End If
         End If
 
-        If Me.oCompras.ValidaExistencias() = False Then
-            Exit Function
+        If Me.oCompras.ES_INVENTARIABLE = True Then
+            If Me.oCompras.ObtieneListadoEntradas.Rows.Count = 0 Then 'Si no tienen entradas esta compra es del modo anterior(donde una oc se convertia en oc, y la misma co era la entrada) y si afectarán existencias.
+                If Me.oCompras.ValidaExistencias() = False Then
+                    Return False
+                End If
+            Else
+                'Continua, no hay validación de existencias, porque el cancelar una compra del nuevo modo(con entradas de inventarios) no afecta existencias(pero si disponibles si es del modo anterior por eso continua y dentro
+                'del stored de cancelación la distingue para no afectar existencias sino solamente disponibles).
+            End If
         End If
 
         'no se ocupa por que para eso esta la interfaz
         'If PLAZA.ValidarPeriodoTrabajo(Me.oCompras.FECHA) = False Then 'Para cancelar se valida con la fecha de la maquina
-        '    Exit Function
+        '    return false
         'End If
 
         Try
@@ -1785,7 +1808,7 @@ Buscar:
             oUtileriasCancela.CODIGO_PLAZA = Usuario.Codigo_Plaza
 
             If oUtileriasCancela.GestionaCancelacion() = False Then
-                Exit Function
+                Return False
             End If
 
             If oUtileriasCancela.CANCELA_DIRECTO = True Then
@@ -1795,7 +1818,7 @@ Buscar:
                 Me.oCompras.CONCEPTO_CANCELACION = sConceptoCancelacion
 
                 If Me.oCompras.CancelaCompra() = False Then
-                    Exit Function
+                    Return False
                 End If
             Else
                 oUtileriasCancela = New Class_UtileriasFirmaElectronicaCancelacion
@@ -1807,7 +1830,7 @@ Buscar:
 
                 If oUtileriasCancela.AutorizaCancelacionMovimientosFueraPeriodo() = False Then
                     'MsgBox("Error al tratar de autorizar la cancelación fuera del periodo.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    Return False
                 End If
 
                 sConceptoCancelacion = oUtileriasCancela.CANCELACION_CONCEPTO
@@ -1815,80 +1838,82 @@ Buscar:
 
                 'si no se autorizo
                 If oUtileriasCancela.CANCELACION_AUTORIZO = False Then
-                    MsgBox("No se autorizó la cancelación de movimiento.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    MsgBox("No se autorizó la cancelación de movimiento.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 End If
 
                 If oUtileriasCancela.GestionaCancelacionConInterfaz() = False Then
-                    MsgBox("Error al gestionar la cancelacion con interfaz", MsgBoxStyle.Information, Me.Text)
-                    Exit Function
+                    MsgBox("Error al gestionar la cancelacion con interfaz", MsgBoxStyle.Information, sProcedure)
+                    Return False
                 Else
                     If oUtileriasCancela.ES_FECHA_CANCELACION_VALIDA = "0" Then
-                        MsgBox("La fecha de cancelación debe de ser mayor o igual a la fecha del documento y debe estar en el mismo ejercicio.", vbExclamation, Me.Text)
-                        Exit Function
+                        MsgBox("La fecha de cancelación debe de ser mayor o igual a la fecha del documento y debe estar en el mismo ejercicio.", vbExclamation, sProcedure)
+                        Return False
                     End If
 
                     Me.oCompras.FECHA_CANCELACION = oUtileriasCancela.FECHA_CANCELACION
 
                     If Me.oCompras.CancelaCompra() = False Then
-                        MsgBox("Error al intentar cancelar el movimiento de inventario.", MsgBoxStyle.Exclamation, Me.Text)
-                        Exit Function
+                        MsgBox("Error al intentar cancelar el movimiento de inventario.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
                     End If
                 End If
             End If
 
-            MsgBox("Compra cancelada satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+            MsgBox("Compra cancelada satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
             bResultado = True
+
         Catch ex As Exception
-            HandleError(Me.Name, "CancelarCompra", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado
     End Function
 
     Private Function CancelaOrdenCompra() As Boolean
+        Const sProcedure As String = "CancelaOrdenCompra"
         Dim bResultado As Boolean = False
         Dim sConceptoCancelacion As String = ""
 
         Try
-            If MsgBox("Deseas Cancelar el documento " & CboDocumento.Text & "  con el Folio: " & txtFolioCompra.Text & "?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "CancelaOrdenCompra") = MsgBoxResult.No Then
-                Exit Function
+            If MsgBox("Deseas Cancelar el documento " & CboDocumento.Text & "  con el Folio: " & txtFolioCompra.Text & "?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, sProcedure) = MsgBoxResult.No Then
+                Return False
             End If
 
             If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString) = False Then
-                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, Me.Text)
-                Exit Function
+                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, sProcedure)
+                Return False
             End If
 
             'No se necesita
             'If PLAZA.ValidarPeriodoTrabajo(Me.DtpFecha.Value) = False Then
-            '    Exit Function
+            '    return false
             'End If
 
             Select Case Me.oCompras.ESTATUS
                 Case "C"
-                    MsgBox("No se puede cancelar la order de compra por que ya esta cancelada.", MsgBoxStyle.Exclamation, "CancelaOrdenCompra")
-                    Exit Function
+                    MsgBox("No se puede cancelar la order de compra por que ya esta cancelada.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 Case "R"
-                    MsgBox("No se puede cancelar la orden de compra si esta parcialmente recepcionada.", MsgBoxStyle.Exclamation, "CancelaOrdenCompra")
-                    Exit Function
+                    MsgBox("No se puede cancelar la orden de compra si esta parcialmente recepcionada.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 Case "A"
-                    MsgBox("No se puede cancelar la orden de compra si esta aplicada.", MsgBoxStyle.Exclamation, "CancelaOrdenCompra")
-                    Exit Function
+                    MsgBox("No se puede cancelar la orden de compra si esta aplicada.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
             End Select
 
             sConceptoCancelacion = InputBox("Ingrese un concepto de cancelación :", "Concepto de cancelación")
             Me.oCompras.CONCEPTO_CANCELACION = sConceptoCancelacion
 
             If Me.oCompras.CancelaOrdenCompra = False Then
-                Exit Function
+                Return False
             End If
 
-            MsgBox("La orden de compra fue cancelada exitosamente.", MsgBoxStyle.Information, "CancelaOrdenCompra")
+            MsgBox("Orden de compra cancelada satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
             bResultado = True
 
         Catch ex As Exception
-            HandleError(Me.Name, "CancelaOrdenCompra", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado
@@ -3533,7 +3558,7 @@ BuscarCuentas:
         Return bResultado
     End Function
 
-    Private Sub GestionaMoneda(Optional ByVal bInicializa As Boolean = False) 'creado falta uar, la idea es que del consultar no iniclaiza, pero si del cambiar en el combo
+    Private Sub GestionaMoneda(Optional ByVal bInicializa As Boolean = False) 'creado falta usar, la idea es que del consultar no inicializa, pero si del cambiar en el combo
         Const sProcedure As String = "GestionaMoneda"
         Try
             If bInicializa = True Then 'De momento no se permite tener lleno el grid y cambiar de moneda, es mas complicado tener que andar inicializando los valores separados (globales grid) de monedas alternas.
@@ -3617,12 +3642,14 @@ BuscarCuentas:
             For i = 1 To Grid.Rows - 1
                 If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
                     If Me.oCompras.ValidaCantidadDisponibleArticulo(CInt(Me.Grid.Cell(i, Me.igyIdArticulo).Text), CDbl(Me.Grid.Cell(i, Me.igyCantidad).Text)) = False Then
-                        MsgBox("La cantidad debe de ser menor al disponible.", MsgBoxStyle.Exclamation, sProcedure)
+                        MsgBox("La cantidad debe de ser menor al disponible de la orden de compra en el renglón #" & i.ToString, MsgBoxStyle.Exclamation, sProcedure)
                         Me.Grid.Cell(i, Me.igyCantidad).SetFocus()
                         Return False
                     End If
                 End If
             Next i
+
+            Return True
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
@@ -3664,8 +3691,9 @@ BuscarCuentas:
                 End If
             End If
 
+            Me.lstEntradasInventarios.Items.Clear()
             For Each dRow As DataRow In Me.oCompras.ObtieneEntradasOC(Me.txtFolioOC_Inventarios.Text).Rows
-                Dim sFolioEntrada As String = dRow("FOLIO_MOVIMIENTO_INVENTARIO").ToString
+                Dim sFolioEntrada As String = String.Format("{0},{1}", dRow("FOLIO_MOVIMIENTO_INVENTARIO").ToString, dRow("FECHA").ToString)
 
                 Dim bYaExiste As Boolean = False
                 For Each i In lstEntradasInventarios.Items
@@ -3751,23 +3779,30 @@ BuscarCuentas:
     Private Function AgregarTodasEntradasInventarios() As Boolean
         Const sProcedure As String = "AgregarTodasEntradasInventarios"
         Try
+            Dim sFolioEntrada As String = "", sFecha As String = ""
+
             If Me.lstEntradasInventarios.Items.Count = 0 Then
                 MsgBox("No hay ninguna entrada en el listado.", vbExclamation, sProcedure)
                 Return False
             End If
 
             For Each i In Me.lstEntradasInventarios.Items
+                sFolioEntrada = Split(i.ToString, ",")(0).ToString
                 For j As Integer = 1 To Me.GridEntradas.Rows - 1
-                    If i.ToString = Me.GridEntradas.Cell(j, Me.igyGridEFolioEntrada).Text Then
-                        MsgBox("La entrada " & i.ToString & " ya se agregó al listado.", vbExclamation, sProcedure)
+                    If sFolioEntrada = Me.GridEntradas.Cell(j, Me.igyGridEFolioEntrada).Text Then
+                        MsgBox("La entrada " & sFolioEntrada & " ya se agregó al listado.", vbExclamation, sProcedure)
                         Return False
                     End If
                 Next
             Next
 
             For Each i In Me.lstEntradasInventarios.Items
+                sFolioEntrada = Split(i.ToString, ",")(0).ToString
+                sFecha = Split(i.ToString, ",")(1).ToString
+
                 Me.GridEntradas.Rows += 1
-                Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEFolioEntrada).Text = i.ToString()
+                Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEFolioEntrada).Text = sFolioEntrada
+                Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEFechaEntrada).Text = sFecha
             Next
 
             If Me.GeneraGridArticulosEntradasInventarios() = True Then
@@ -3783,6 +3818,8 @@ BuscarCuentas:
     Private Function AgregarSeleccionadaEntradasInventarios() As Boolean
         Const sProcedure As String = "AgregarSeleccionadaEntradasInventarios"
         Try
+            Dim sFolioEntrada As String = "", sFecha As String = ""
+
             If Me.lstEntradasInventarios.Items.Count = 0 Then
                 MsgBox("No hay ninguna entrada en el listado.", vbExclamation, sProcedure)
                 Return False
@@ -3793,7 +3830,8 @@ BuscarCuentas:
                 Return False
             End If
 
-            Dim sFolioEntrada As String = Me.lstEntradasInventarios.SelectedItem.ToString
+            sFolioEntrada = Split(Me.lstEntradasInventarios.SelectedItem.ToString, ",")(0).ToString
+            sFecha = Split(Me.lstEntradasInventarios.SelectedItem.ToString, ",")(1).ToString
 
             For j As Integer = 1 To Me.GridEntradas.Rows - 1
                 If sFolioEntrada = Me.GridEntradas.Cell(j, Me.igyGridEFolioEntrada).Text Then
@@ -3803,11 +3841,11 @@ BuscarCuentas:
             Next
 
             Me.GridEntradas.Rows += 1
-            Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEFolioEntrada).Text = Me.lstEntradasInventarios.SelectedItem.ToString
-
-            Me.lstEntradasInventarios.Items.Remove(sFolioEntrada)
+            Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEFolioEntrada).Text = sFolioEntrada
+            Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEFechaEntrada).Text = sFecha
 
             If Me.GeneraGridArticulosEntradasInventarios() = True Then
+                Me.lstEntradasInventarios.Items.RemoveAt(Me.lstEntradasInventarios.SelectedIndex)
                 Return True
             End If
 
@@ -3881,6 +3919,22 @@ BuscarCuentas:
                     End If
                 End If
             Next i
+
+            Return True
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Function
+
+    Private Function RecepcionarEntrada() As Boolean
+        Const sProcedure As String = "RecepcionarEntrada"
+        Try
+            MsgBox("FALTA programar")
+
+            If Me.chkEsInventariable.Checked = False Then
+                MsgBox("Esta orden no es inventariable.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
 
             Return True
         Catch ex As Exception

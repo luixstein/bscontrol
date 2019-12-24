@@ -862,6 +862,35 @@ Public Class Class_Compras_Global
         Return bResultado
     End Function
 
+    Public Function AfectaCantidadesDisponiblesOrdenCompra(ByVal bEsCancelacion As Boolean) As Boolean
+        Const sProcedure As String = "AfectaCantidadesDisponiblesOrdenCompra"
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_COMPRAS_AFECTA_CANTIDADES_PENDIENTES_POR_RECIBIR_ORDEN_COMPRA"
+
+            sqlParametro = .Parameters.Add("@FOLIO_COMPRA", SqlDbType.NVarChar, 15) : sqlParametro.Value = "" & Me._FOLIO_COMPRA
+            sqlParametro = .Parameters.Add("@CANCELACION", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(bEsCancelacion)
+
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
+    End Function
+
     Public Function AfectaContabilidadCompra() As Boolean
         Const sProcedure As String = "AfectaContabilidadCompra"
         Dim bResultado As Boolean = False
@@ -952,6 +981,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_CANCELO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
             sqlParametro = .Parameters.Add("@FECHA_CANCELACION", SqlDbType.SmallDateTime) : sqlParametro.Value = Me.FECHA_CANCELACION
             sqlParametro = .Parameters.Add("@CONCEPTO_CANCELACION", SqlDbType.NVarChar, 1000) : sqlParametro.Value = Me._CONCEPTO_CANCELACION.ToUpper
+
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
@@ -964,6 +994,7 @@ Public Class Class_Compras_Global
                 sqlParametro = Nothing
             End Try
         End With
+
         Return bResultado
     End Function
 
@@ -1638,10 +1669,13 @@ Public Class Class_Compras_Global
         If bConSaldo = True Then
             sSaldo = "AND SALDO<>0"
         End If
-        Dim sSQL As String = ("SELECT FOLIO_COMPRA,FOLIO_OC,ISNULL(FOLIO_EMBARQUE,'') FOLIO_EMBARQUE,isnull(Convert(varchar(10),FECHA, 103),'') FECHA,ISNULL(Convert(varchar(10),FECHA_CONTRARECIBO, 103),'') , ISNULL(Convert(varchar(10),FECHA_PROGRAMACION, 103),''), " & _
-                              "FOLIO_PROVEEDOR, ISNULL(Convert(varchar(10),FECHA_FACTURA_PROVEEDOR, 103),''), SALDO,SUBTOTAL,IMPUESTO,RETENCION,TOTAL,CONCEPTO,CODIGO_TIPO_GASTO,ISNULL(CONTRARECIBO_HECHO ,'0'), IMPUESTO_PORCENTAJE " & _
-                              "FROM COMPRA_GLOBAL WHERE CODIGO_PROVEEDOR='" & sReplace(CodigoProveedor) & "' AND CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND CODIGO_TIPO_GASTO=" & iTipoCompra.ToString & _
-                              " AND CODIGO_ALMACEN='" & sCodigoAlmacen & "' " & sSaldo & " ORDER BY CAST(FECHA AS DATETIME) ")
+        Dim sSQL As String = ("SELECT FOLIO_COMPRA,FOLIO_OC,ISNULL(FOLIO_EMBARQUE,'') FOLIO_EMBARQUE,ISNULL(Convert(varchar(10),FECHA, 103),'') FECHA,ISNULL(Convert(varchar(10),FECHA_CONTRARECIBO, 103),'')," &
+                              "ISNULL(Convert(varchar(10),FECHA_PROGRAMACION, 103),''), " &
+                              "FOLIO_PROVEEDOR, ISNULL(Convert(varchar(10),FECHA_FACTURA_PROVEEDOR, 103),''),SALDO,SUBTOTAL,IMPUESTO,RETENCION_IVA,TOTAL,CONCEPTO,CODIGO_TIPO_GASTO,ISNULL(CONTRARECIBO_HECHO ,'0'),IMPUESTO_PORCENTAJE " &
+                              "FROM COMPRA_GLOBAL " &
+                              "WHERE CODIGO_PROVEEDOR='" & sReplace(CodigoProveedor) & "' AND CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND CODIGO_TIPO_GASTO=" & iTipoCompra.ToString &
+                              " AND CODIGO_ALMACEN='" & sCodigoAlmacen & "' " & sSaldo &
+                              " ORDER BY CAST(FECHA AS DATETIME)")
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
@@ -1859,7 +1893,7 @@ Public Class Class_Compras_Global
 
     Public Function ObtieneEntradasOC(ByVal sFolioOrdenCompra As String) As DataTable
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
-        Dim sSQL As String = ("SELECT FOLIO_MOVIMIENTO_INVENTARIO,FECHA " &
+        Dim sSQL As String = ("SELECT FOLIO_MOVIMIENTO_INVENTARIO,DBO.FN_FORMAT_FECHA_CORTO(FECHA)FECHA " &
                               "FROM INVENTARIO_MOVIMIENTOS_GLOBAL " &
                               "WHERE CODIGO_TIPO_DOCUMENTO LIKE 'ER%' AND ESTA_CANCELADO='0' AND ESTATUS='A' AND FOLIO_REFERENCIA='" & sFolioOrdenCompra & "' " &
                               "ORDER BY FECHA ")
@@ -1869,6 +1903,23 @@ Public Class Class_Compras_Global
             da.Dispose()
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "ObtieneEntradasOC", ex)
+        End Try
+        Return dTabla
+    End Function
+
+    Public Function ObtieneListadoEntradas() As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String = ("SELECT R.FOLIO_MOVIMIENTO_INVENTARIO,DBO.FN_FORMAT_FECHA_CORTO(G.FECHA)FECHA " &
+                              "FROM COMPRAS_RELACION_ENTRADAS_INVENTARIOS R " &
+                              "INNER JOIN INVENTARIO_MOVIMIENTOS_GLOBAL G ON(R.FOLIO_MOVIMIENTO_INVENTARIO=G.FOLIO_MOVIMIENTO_INVENTARIO)" &
+                              "WHERE R.FOLIO_COMPRA='" & Me._FOLIO_COMPRA & "' " &
+                              "ORDER BY ID")
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtieneListadoEntradas", ex)
         End Try
         Return dTabla
     End Function

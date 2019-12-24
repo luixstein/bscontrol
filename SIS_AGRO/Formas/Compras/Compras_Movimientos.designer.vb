@@ -145,6 +145,7 @@ Partial Class Compras_Movimientos
         Me.txtRetencionISR = New System.Windows.Forms.TextBox()
         Me.lblDisplayRetencionISR = New System.Windows.Forms.Label()
         Me.lblDisplayRetencionIVA = New System.Windows.Forms.Label()
+        Me.tsbRecepcionarEntrada = New System.Windows.Forms.ToolStripButton()
         Me.gbGlobal.SuspendLayout()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
@@ -421,7 +422,7 @@ Partial Class Compras_Movimientos
         '
         Me.LblEstatus.AutoSize = True
         Me.LblEstatus.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.LblEstatus.Location = New System.Drawing.Point(872, 42)
+        Me.LblEstatus.Location = New System.Drawing.Point(837, 42)
         Me.LblEstatus.Name = "LblEstatus"
         Me.LblEstatus.Size = New System.Drawing.Size(13, 13)
         Me.LblEstatus.TabIndex = 298
@@ -430,7 +431,7 @@ Partial Class Compras_Movimientos
         'lblDisplayStatus
         '
         Me.lblDisplayStatus.AutoSize = True
-        Me.lblDisplayStatus.Location = New System.Drawing.Point(798, 42)
+        Me.lblDisplayStatus.Location = New System.Drawing.Point(783, 42)
         Me.lblDisplayStatus.Name = "lblDisplayStatus"
         Me.lblDisplayStatus.Size = New System.Drawing.Size(48, 13)
         Me.lblDisplayStatus.TabIndex = 297
@@ -643,7 +644,7 @@ Partial Class Compras_Movimientos
         'tsMenu
         '
         Me.tsMenu.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbAplicar, Me.tsbCancelar, Me.tsbImprimir, Me.tsbSalir, Me.tsbPasarOrdenACompra, Me.tsbEditarCostos, Me.tsbAgregarXML, Me.tsbAgregarPDF})
+        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbAplicar, Me.tsbCancelar, Me.tsbImprimir, Me.tsbSalir, Me.tsbPasarOrdenACompra, Me.tsbRecepcionarEntrada, Me.tsbEditarCostos, Me.tsbAgregarXML, Me.tsbAgregarPDF})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(1029, 27)
@@ -1228,6 +1229,7 @@ Partial Class Compras_Movimientos
         '
         Me.lstEntradasInventarios.FormattingEnabled = True
         Me.lstEntradasInventarios.Location = New System.Drawing.Point(520, 53)
+        Me.lstEntradasInventarios.MultiColumn = True
         Me.lstEntradasInventarios.Name = "lstEntradasInventarios"
         Me.lstEntradasInventarios.Size = New System.Drawing.Size(230, 95)
         Me.lstEntradasInventarios.TabIndex = 280
@@ -1258,6 +1260,7 @@ Partial Class Compras_Movimientos
         Me.btnSeries.TabIndex = 380
         Me.btnSeries.Text = "Detallar series"
         Me.btnSeries.UseVisualStyleBackColor = True
+        Me.btnSeries.Visible = False
         '
         'txtSaldo_USD
         '
@@ -1290,6 +1293,7 @@ Partial Class Compras_Movimientos
         Me.btnSeleccionarArchivoSeries.TabIndex = 383
         Me.btnSeleccionarArchivoSeries.Text = "Seleccionar archivo con series"
         Me.btnSeleccionarArchivoSeries.UseVisualStyleBackColor = True
+        Me.btnSeleccionarArchivoSeries.Visible = False
         '
         'txtIEPS
         '
@@ -1385,6 +1389,14 @@ Partial Class Compras_Movimientos
         Me.lblDisplayRetencionIVA.TabIndex = 386
         Me.lblDisplayRetencionIVA.Text = "IVA :"
         Me.lblDisplayRetencionIVA.Visible = False
+        '
+        'tsbRecepcionarEntrada
+        '
+        Me.tsbRecepcionarEntrada.Image = Global.BsControl.My.Resources.Resources._096
+        Me.tsbRecepcionarEntrada.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbRecepcionarEntrada.Name = "tsbRecepcionarEntrada"
+        Me.tsbRecepcionarEntrada.Size = New System.Drawing.Size(139, 24)
+        Me.tsbRecepcionarEntrada.Text = "&Recepcionar entrada"
         '
         'Compras_Movimientos
         '
@@ -1552,4 +1564,5 @@ Partial Class Compras_Movimientos
     Friend WithEvents btnBorrarTodasEntradasInventarios As Button
     Friend WithEvents chkEsInventariable As CheckBox
     Friend WithEvents gbEntradas As GroupBox
+    Friend WithEvents tsbRecepcionarEntrada As ToolStripButton
 End Class
