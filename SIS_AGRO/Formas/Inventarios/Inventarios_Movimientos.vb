@@ -5,12 +5,15 @@ Imports CrystalDecisions.CrystalReports.Engine
 Public Class Inventarios_Movimientos
 
 #Region "Campos privados"
-    Private _LlamadoExterior As Boolean
+    Private _LlamadoExteriorGenerarSalidaEmbarque As Boolean
     Private _CodigoDocumentoParaGrabar As String
     Private _AplicadoExterior As Boolean
     Private _FolioEmbarque As String
     Private _ConsultaExteriorSalida As Boolean
     Private _CodigoAlmacenHappy As String
+
+    Private _LlamadoExteriorRecepcionarEntradaOrdenCompra As Boolean
+    Private _FolioOrdenCompra As String
 
     Private Estado As enumEstados
     Private oInventarios As New Class_Inventarios_Global
@@ -55,9 +58,9 @@ Public Class Inventarios_Movimientos
 #End Region
 
 #Region "Propiedades"
-    Public WriteOnly Property LlamadoExterior() As Boolean
+    Public WriteOnly Property LlamadoExteriorGenerarSalidaEmbarque() As Boolean
         Set(ByVal Value As Boolean)
-            Me._LlamadoExterior = Value
+            Me._LlamadoExteriorGenerarSalidaEmbarque = Value
         End Set
     End Property
 
@@ -91,6 +94,21 @@ Public Class Inventarios_Movimientos
     Public WriteOnly Property CodigoAlmacenHappy() As String
         Set(ByVal Value As String)
             Me._CodigoAlmacenHappy = Value
+        End Set
+    End Property
+
+    Public Property FolioOrdenCompra() As String
+        Get
+            Return Me._FolioOrdenCompra
+        End Get
+        Set(ByVal value As String)
+            Me._FolioOrdenCompra = value
+        End Set
+    End Property
+
+    Public WriteOnly Property LlamadoExteriorRecepcionarEntradaOrdenCompra() As Boolean
+        Set(ByVal Value As Boolean)
+            Me._LlamadoExteriorRecepcionarEntradaOrdenCompra = Value
         End Set
     End Property
 
@@ -181,7 +199,7 @@ Public Class Inventarios_Movimientos
         'Dim dTabla As DataTable
         'Dim dCajaCarton As Boolean
 
-        If Me._LlamadoExterior = True Then
+        If Me._LlamadoExteriorGenerarSalidaEmbarque = True Then
 
             Me.InicializaExterno()
 
@@ -242,6 +260,24 @@ Public Class Inventarios_Movimientos
             Me.Consultar()
             Me.tsbNuevo.Enabled = False
             Me.tsbCancelar.Enabled = False
+
+        ElseIf Me._LlamadoExteriorRecepcionarEntradaOrdenCompra = True Then
+            Me.Inicializa()
+            Me.DesplegarDocumentos()
+            Me.DesplegarAlmacenes()
+            Me.DesplegarConceptosInventarios()
+            Me.Cambia_Estado(enumEstados.NUEVO)
+
+            Me.CboDocumento.SelectedValue = Me._CodigoDocumentoParaGrabar
+            Me.txtFolioOrdenCompra.Text = Me._FolioOrdenCompra
+            Me.ConsultarOrdenCompra()
+
+            Me.tsbNuevo.Enabled = False
+            Me.tsbCancelar.Enabled = False
+            Me.TxtFolio.Enabled = False
+            Me.btnDocumentoAnterior.Enabled = False
+            Me.btnDocumentoSiguiente.Enabled = False
+
         Else
             Me.Inicializa()
             Me.DesplegarDocumentos()
@@ -464,7 +500,7 @@ buscar:
                     End If
 
                 Case enumEstados.GRABADO
-                    If Me._LlamadoExterior = True And txtLEN(Me.FolioEmbarque) = True Then
+                    If Me._LlamadoExteriorGenerarSalidaEmbarque = True And txtLEN(Me.FolioEmbarque) = True Then
                         Return 'Los controles ya se activaron/desactivaron en el inicializaExterno
                     End If
 
@@ -705,7 +741,7 @@ buscar:
                                 End If
                                 Me.Grid1.Cell(Renglon, Me.iGyDescripcion).Text = Me.oArticulos.DESCRIPCION
                                 Me.Grid1.Cell(Renglon, Me.iGyCosto).Text = DCosto.ToString
-                                If Me._LlamadoExterior = False Then
+                                If Me._LlamadoExteriorGenerarSalidaEmbarque = False Then
                                     Me.Grid1.Cell(Renglon, Me.iGyImporte).Text = "0"
                                     Me.Grid1.Cell(Renglon, Me.iGyCantidad).Text = "0"
                                     Me.Grid1.Cell(Renglon, Me.iGyImporte).Text = "0"
@@ -793,7 +829,7 @@ BuscaArticulos:
                                     Me.Grid1.Cell(Renglon, Me.iGyDescripcion).Text = Me.oArticulos.BuscarNombreArticulo(sCodArticulo)
                                     Me.Grid1.Cell(Renglon, Me.iGyCodigo).Text = sCodArticulo
                                     Me.Grid1.Cell(Renglon, Me.iGyCosto).Text = DCosto.ToString
-                                    If Me._LlamadoExterior = False Then
+                                    If Me._LlamadoExteriorGenerarSalidaEmbarque = False Then
                                         Me.Grid1.Cell(Renglon, Me.iGyImporte).Text = "0"
                                         Me.Grid1.Cell(Renglon, Me.iGyCantidad).Text = "0"
                                     End If
@@ -807,7 +843,7 @@ BuscaArticulos:
                                     Me.Grid1.Cell(Renglon, Me.iGyDescripcion).Text = Me.oArticulos.BuscarNombreArticulo(sCodArticulo)
                                     Me.Grid1.Cell(Renglon, Me.iGyCodigo).Text = sCodArticulo
                                     Me.Grid1.Cell(Renglon, Me.iGyCosto).Text = DCosto.ToString
-                                    If Me._LlamadoExterior = False Then
+                                    If Me._LlamadoExteriorGenerarSalidaEmbarque = False Then
                                         Me.Grid1.Cell(Renglon, Me.iGyImporte).Text = "0"
                                         Me.Grid1.Cell(Renglon, Me.iGyCantidad).Text = "0"
                                     End If
@@ -869,7 +905,7 @@ BuscarCuentas:
                     '                End If
 
                 Case Keys.F8, Keys.Delete
-                    If Me._LlamadoExterior = True Then
+                    If Me._LlamadoExteriorGenerarSalidaEmbarque = True Then
                         MsgBox("No se permiten eliminar renglones en las salidas de empaque de embarques.", MsgBoxStyle.Exclamation, sProcedure)
                         e.SuppressKeyPress = True
                         Return
@@ -1080,7 +1116,7 @@ BuscarCuentas:
         Const sProcedure As String = "Aplicar"
         Dim bResultado As Boolean = False
         Try
-            If Me._LlamadoExterior = False Then
+            If Me._LlamadoExteriorGenerarSalidaEmbarque = False Then
                 If MsgBox("Deseas aplicar el movimiento de " & CboDocumento.Text & "?", CType(vbYesNo + vbQuestion, MsgBoxStyle), sProcedure) = MsgBoxResult.No Then
                     Return False
                 End If
@@ -1111,7 +1147,7 @@ BuscarCuentas:
             '    return false
             'End If
 
-            If Me._LlamadoExterior = True Then
+            If Me._LlamadoExteriorGenerarSalidaEmbarque = True Then
                 If Me.Grabar() = False Then 'Razón no identificada de porque cuando se trata de exterior lo graba despues de validar, y cuando es normal lo graba antes de validar
                     Return False
                 End If
@@ -1281,7 +1317,7 @@ BuscarCuentas:
                             MsgBox("El artículo " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " que intenta agregar no tiene existencia. ", MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         Else
-                            If Me._LlamadoExterior = False Then
+                            If Me._LlamadoExteriorGenerarSalidaEmbarque = False Then
                                 'dCantidadSumadaPorArticulos = CDbl(dt.Compute("sum(CANTIDAD)", "CODIGO_ARTICULO='" & Me.Grid1.Cell(i, Me.iGyCodigo).Text & "'"))
                                 dCantidadSumadaPorArticulos = FG_Grid_ComputeCol(Me.Grid1, sCodigoArticulo, Me.iGyCodigo, Me.iGyCantidad)
                             Else
@@ -1429,7 +1465,7 @@ BuscarCuentas:
                 Exit Function
             End If
 
-            If Me._LlamadoExterior = True And Me._ConsultaExteriorSalida = False Then
+            If Me._LlamadoExteriorGenerarSalidaEmbarque = True And Me._ConsultaExteriorSalida = False Then
                 'Dim sCaracter As String = "", VarString As String = ""
                 'Dim sql As New Class_find("select max(FOLIO_MOVIMIENTO_INVENTARIO)FOLIO_MOVIMIENTO_INVENTARIO from INVENTARIO_MOVIMIENTOS_GLOBAL where  FOLIO_REFERENCIA='" & Me.TxtFolioReferencia.Text & "'")
                 'sFolio = Me.TxtFolioReferencia.Text
@@ -1450,7 +1486,7 @@ BuscarCuentas:
                 ''Me.TxtFolio.Text = Empresa_Sistema.CODIGO_TIPO_DOCUMENTO_SALIDA_EMPAQUE.ToString & sCaracter & Me.CboAlmacen.SelectedValue.ToString & "-" & sFolio
                 'Me.TxtFolio.Text = _CodigoDocumentoParaGrabar.ToString & sCaracter & Me.CboAlmacen.SelectedValue.ToString & "-" & sFolio
 
-            ElseIf Me._LlamadoExterior = False And Me._ConsultaExteriorSalida = False Then
+            ElseIf Me._LlamadoExteriorGenerarSalidaEmbarque = False And Me._ConsultaExteriorSalida = False Then
                 Me.oInventarios = New Class_Inventarios_Global
                 Me.oInventarios.CODIGO_TIPO_DOCUMENTO = Me.CboDocumento.SelectedValue.ToString
                 Me.oInventarios.CODIGO_ALMACEN1 = Me.CboAlmacen.SelectedValue.ToString
@@ -1469,7 +1505,7 @@ BuscarCuentas:
             Me.oInventarios = New Class_Inventarios_Global()
             Dim sFolio As String = Me.TxtFolio.Text
 
-            If Me._LlamadoExterior = True And txtLEN(Me.FolioEmbarque) = True Then
+            If Me._LlamadoExteriorGenerarSalidaEmbarque = True And txtLEN(Me.FolioEmbarque) = True Then
                 'No debe inicializar, ya se ejecutó el inicializaExterno
             Else
                 Me.Inicializa()
@@ -1966,7 +2002,7 @@ BuscarCuentas:
                 Me.CboAlmacenDestino.Visible = True
                 Me.lblAlmacenDestino.Visible = True
                 Me.lblCodigoAlmacen2.Visible = True
-                If Me._LlamadoExterior = False And Me._ConsultaExteriorSalida = False Then
+                If Me._LlamadoExteriorGenerarSalidaEmbarque = False And Me._ConsultaExteriorSalida = False Then
                     Me.Grid1.Column(Me.iGyCuentaContable).Locked = True
                     Me.Grid1.Column(Me.iGyImporte).Locked = True
                 End If
@@ -1980,7 +2016,7 @@ BuscarCuentas:
                 Me.CboAlmacenDestino.Visible = False
                 Me.lblAlmacenDestino.Visible = False
                 Me.lblCodigoAlmacen2.Visible = False
-                If Me._LlamadoExterior = False And Me._ConsultaExteriorSalida = False Then
+                If Me._LlamadoExteriorGenerarSalidaEmbarque = False And Me._ConsultaExteriorSalida = False Then
                     Me.Grid1.Column(Me.iGyCuentaContable).Locked = False
                 End If
                 Me.tsbCancelar.Visible = True
@@ -2166,7 +2202,7 @@ BuscarCuentas:
             End If
 
             If Me.Aplicar() = True Then
-                If Me._LlamadoExterior = True Then
+                If Me._LlamadoExteriorGenerarSalidaEmbarque = True Then
 
                     'Se quitó 17dic16 porque ahora se hace una sola salida para todo el embarque y se marca desde el mismo embarque
                     'Me.oPalet.MarcaSalidaPalet()
@@ -2175,12 +2211,19 @@ BuscarCuentas:
                     'MsgBox("El movimiento de Inventario fue Aplicado con exito", MsgBoxStyle.Information, sProcedure)
                     Me.Close()
                     Return
+
+                ElseIf Me._LlamadoExteriorRecepcionarEntradaOrdenCompra = True Then
+                    Me._AplicadoExterior = True
+                    'MsgBox("El movimiento de Inventario fue Aplicado con exito", MsgBoxStyle.Information, sProcedure)
+                    Me.Close()
+                    Return
+
                 End If
 
                 MsgBox("El movimiento de inventario fue aplicado con éxito", MsgBoxStyle.Information, sProcedure)
                 Me.Consultar()
             Else
-                If Me._LlamadoExterior = False Then
+                If Me._LlamadoExteriorGenerarSalidaEmbarque = False Then
                     Me.Consultar()
                 Else
                     Me.Visible = True

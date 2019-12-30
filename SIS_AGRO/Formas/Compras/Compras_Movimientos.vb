@@ -69,7 +69,7 @@ Public Class Compras_Movimientos
 #Region "Columnas grid entradas"
     Private igyGridEFolioEntrada As Short = 1
     Private igyGridEFechaEntrada As Short = 2
-
+    Private igyGridEEstaCancelado As Short = 3
 #End Region
 
 #Region "Propiedades"
@@ -1738,7 +1738,12 @@ Buscar:
                 End If
             End If
 
-            Me.GridEntradas.DataSource = Me.oCompras.ObtieneListadoEntradas
+            If Me.oDocumento.AFECTA_CXP = True Then
+                Me.GridEntradas.DataSource = Me.oCompras.ObtieneListadoEntradas
+            Else
+                Me.GridEntradas.DataSource = Me.oCompras.ObtieneListadoEntradasOrdenCompra
+            End If
+
             Me.FormateaGridEntradas()
 
             Me.GestionaCambioEstado()
@@ -2149,6 +2154,10 @@ Buscar:
             If Me.chkEsInventariable.Checked = True Then
                 If Me.TieneAgregadasEntradasInventario() = False Then
                     MsgBox("Este documento es inventarible y usted no detalló entradas de inventarios, favor de revisar.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                If Me.ValidaEntradasInventario = False Then
                     Return False
                 End If
 
@@ -3722,7 +3731,7 @@ BuscarCuentas:
             Me.GridEntradas.DataSource = Nothing
             FG_Grid_Limpiar(Me.GridEntradas)
             Me.GridEntradas.Rows = 2
-            Me.GridEntradas.Cols = 3
+            Me.GridEntradas.Cols = 4
             Me.FormateaGridEntradas()
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
@@ -3744,13 +3753,16 @@ BuscarCuentas:
                 .FixedRowColStyle = FlexCell.FixedRowColStyleEnum.Flat
 
                 .Column(Me.igyGridEFolioEntrada).Width = 150
-                .Column(Me.igyGridEFechaEntrada).Width = 150
+                .Column(Me.igyGridEFechaEntrada).Width = 100
+                .Column(Me.igyGridEEstaCancelado).Width = 100
 
                 .Cell(0, Me.igyGridEFolioEntrada).Text = "Entrada"
                 .Cell(0, Me.igyGridEFechaEntrada).Text = "Fecha"
+                .Cell(0, Me.igyGridEEstaCancelado).Text = "Estatus"
 
                 .Column(Me.igyGridEFolioEntrada).Locked = True
                 .Column(Me.igyGridEFechaEntrada).Locked = True
+                .Column(Me.igyGridEEstaCancelado).Locked = True
 
                 .AutoRedraw = True
                 .Refresh()
@@ -3797,12 +3809,15 @@ BuscarCuentas:
             Next
 
             For Each i In Me.lstEntradasInventarios.Items
+                Dim oEntrada As New Class_Inventarios_Global(sFolioEntrada)
+
                 sFolioEntrada = Split(i.ToString, ",")(0).ToString
                 sFecha = Split(i.ToString, ",")(1).ToString
 
                 Me.GridEntradas.Rows += 1
                 Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEFolioEntrada).Text = sFolioEntrada
                 Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEFechaEntrada).Text = sFecha
+                Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEEstaCancelado).Text = IIf(oEntrada.ESTA_CANCELADO = "1", "CANCELADO", "ACTIVO").ToString
             Next
 
             If Me.GeneraGridArticulosEntradasInventarios() = True Then
@@ -3840,9 +3855,12 @@ BuscarCuentas:
                 End If
             Next
 
+            Dim oEntrada As New Class_Inventarios_Global(sFolioEntrada)
+
             Me.GridEntradas.Rows += 1
             Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEFolioEntrada).Text = sFolioEntrada
             Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEFechaEntrada).Text = sFecha
+            Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEEstaCancelado).Text = IIf(oEntrada.ESTA_CANCELADO = "1", "CANCELADO", "ACTIVO").ToString
 
             If Me.GeneraGridArticulosEntradasInventarios() = True Then
                 Me.lstEntradasInventarios.Items.RemoveAt(Me.lstEntradasInventarios.SelectedIndex)
@@ -3929,12 +3947,36 @@ BuscarCuentas:
     Private Function RecepcionarEntrada() As Boolean
         Const sProcedure As String = "RecepcionarEntrada"
         Try
-            MsgBox("FALTA programar")
+            Dim sFolioOC As String = Me.txtFolioCompra.Text
 
             If Me.chkEsInventariable.Checked = False Then
                 MsgBox("Esta orden no es inventariable.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
+
+            Dim oInventario As New Inventarios_Movimientos
+            oInventario.StartPosition = FormStartPosition.CenterScreen
+
+            oInventario.LlamadoExteriorRecepcionarEntradaOrdenCompra = True
+            oInventario.CodigoDocumentoParaGrabar = "ER" 'ER=ENTRADA RECEPCION COMPRA
+            oInventario.FolioOrdenCompra = Me.txtFolioCompra.Text
+
+            oInventario.ShowDialog()
+            oInventario.Visible = False
+
+            If oInventario.AplicadoExterior = True Then 'Si se aplicó la entrada de inventarios, simulamos que el usuario va capturar la factura(compra) precargando los datos.
+                Me.Inicializa()
+                Me.CboDocumento.SelectedValue = "CO" & Usuario.Codigo_Plaza.ToString
+                Me.Cambia_Estado(enumEstados.NUEVO)
+
+                Me.txtFolioOC_Inventarios.Text = sFolioOC
+                If Me.TraerTodasEntradasInventarios() = True Then
+                    Me.AgregarTodasEntradasInventarios()
+                End If
+                Me.TabControl1.SelectedIndex = 2
+            End If
+
+            oInventario.Dispose()
 
             Return True
         Catch ex As Exception
@@ -3942,6 +3984,37 @@ BuscarCuentas:
         End Try
     End Function
 
+    Private Function ValidaEntradasInventario() As Boolean
+        Const sProcedure As String = "ValidaEntradasInventario"
+        Dim bResultado As Boolean = False
+        Try
+            Dim sFolioEntrada As String = ""
+            For i As Integer = 1 To Me.GridEntradas.Rows - 1
+                sFolioEntrada = Me.GridEntradas.Cell(i, Me.igyGridEFolioEntrada).Text
+                If txtLEN(sFolioEntrada) = True Then
+                    Dim oEntrada As New Class_Inventarios_Global(sFolioEntrada)
+
+                    If oEntrada.Existe = False Then
+                        MsgBox("No se encontró la entrada " & sFolioEntrada, vbExclamation, sProcedure)
+                        Return False
+                    ElseIf oEntrada.ESTA_CANCELADO = "1" Then
+                        MsgBox("La entrada " & sFolioEntrada & " esta cancelada.", vbExclamation, sProcedure)
+                        Return False
+                    ElseIf oEntrada.ESTATUS <> "A" Then
+                        MsgBox("La entrada " & sFolioEntrada & " no esta en estatus de aplicada.", vbExclamation, sProcedure)
+                        Return False
+                    End If
+
+                End If
+            Next
+
+            bResultado = True
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
 #End Region
 
 End Class

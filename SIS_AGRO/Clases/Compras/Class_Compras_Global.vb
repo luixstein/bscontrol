@@ -1913,13 +1913,29 @@ Public Class Class_Compras_Global
                               "FROM COMPRAS_RELACION_ENTRADAS_INVENTARIOS R " &
                               "INNER JOIN INVENTARIO_MOVIMIENTOS_GLOBAL G ON(R.FOLIO_MOVIMIENTO_INVENTARIO=G.FOLIO_MOVIMIENTO_INVENTARIO)" &
                               "WHERE R.FOLIO_COMPRA='" & Me._FOLIO_COMPRA & "' " &
-                              "ORDER BY ID")
+                              "ORDER BY R.ID")
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
             da.Dispose()
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "ObtieneListadoEntradas", ex)
+        End Try
+        Return dTabla
+    End Function
+
+    Public Function ObtieneListadoEntradasOrdenCompra() As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String = ("SELECT G.FOLIO_MOVIMIENTO_INVENTARIO,DBO.FN_FORMAT_FECHA_CORTO(G.FECHA)FECHA,CASE WHEN G.ESTA_CANCELADO='1' THEN 'CANCELADO' ELSE 'ACTIVO' END ESTA_CANCELADO " &
+                              "FROM INVENTARIO_MOVIMIENTOS_GLOBAL G " &
+                              "WHERE G.CODIGO_TIPO_DOCUMENTO='ER' AND G.FOLIO_REFERENCIA='" & Me._FOLIO_COMPRA & "' " &
+                              "ORDER BY G.ID_INVENTARIO_MOVIMIENTOS_GLOBAL")
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtieneListadoEntradasOrdenCompra", ex)
         End Try
         Return dTabla
     End Function
