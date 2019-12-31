@@ -1,4 +1,5 @@
 ﻿Option Strict On
+
 Imports System.IO
 Imports CrystalDecisions.CrystalReports.Engine
 
@@ -151,6 +152,15 @@ Public Class Inventarios_Movimientos
         If Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "ENI" Or Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "SAI" Or Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "ER" Then
             If Me.Cancelar() = True Then
                 Me.Consultar()
+            End If
+        ElseIf Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "TRI" Then
+            If Me.Estado <> enumEstados.GRABADO Then
+                MsgBox("Las transferencias son cancelables sólo si están en estatus de grabado. Si esta aplicada debe hacer una transferencia contraria.", vbExclamation, Me.Name)
+                Return
+            Else
+                If Me.Cancelar() = True Then
+                    Me.Consultar()
+                End If
             End If
         Else
             MsgBox("Este documento no es cancelable.", vbExclamation, Me.Name)
@@ -1734,6 +1744,8 @@ BuscarCuentas:
                 .Column(Me.iGyImporteMasFlete).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
                 .Column(Me.iGyImporteMasFlete).Alignment = FlexCell.AlignmentEnum.RightCenter
 
+                .Column(Me.iGyBoton).CellType = FlexCell.CellTypeEnum.Button
+
                 .Column(Me.iGyDescripcion).Locked = True
                 .Column(Me.iGyImporte).Locked = True
                 .Column(Me.iGyNombreCuentaContable).Locked = True
@@ -1741,8 +1753,6 @@ BuscarCuentas:
                 .Column(Me.iGyCostoMasFlete).Locked = True
                 .Column(Me.iGyImporteMasFlete).Locked = True
                 .Column(Me.iGyIDCompraDetalle).Locked = True
-
-                .Column(Me.iGyBoton).CellType = FlexCell.CellTypeEnum.Button
 
                 .Column(Me.iGyCodigo).Width = 100
                 .Column(Me.iGyDescripcion).Width = 190
@@ -2007,6 +2017,13 @@ BuscarCuentas:
         Const sProcedure As String = "OcultaControles"
         Try
             Me.oDocumentos = New Class_Cat_tiposDocumentos(Me.CboDocumento.SelectedValue.ToString)
+
+            If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ER" Or Me.oDocumentos.NATURALEZA_INVENTARIOS = "SA" Then
+                Me.Grid1.Column(Me.iGyCosto).Locked = True
+            Else
+                Me.Grid1.Column(Me.iGyCosto).Locked = False
+            End If
+
             If Me.oDocumentos.ES_TRANSFERENCIA = "1" Then
                 Me.CboAlmacenDestino.Visible = True
                 Me.lblAlmacenDestino.Visible = True
@@ -2019,6 +2036,9 @@ BuscarCuentas:
                     Me.CboAlmacenDestino.SelectedValue = Me._CodigoAlmacenHappy
                 End If
                 Me.tsbCancelar.Visible = False
+                If Me.Estado = enumEstados.GRABADO Then
+                    Me.tsbCancelar.Visible = True
+                End If
                 Me.txtFolioEmbarque.Visible = True : Me.lblDisplayFolioEmbarque.Visible = True
                 'Me.GridSeries.Column(Me.igySerieNumeroSerie).Locked = True
             Else
