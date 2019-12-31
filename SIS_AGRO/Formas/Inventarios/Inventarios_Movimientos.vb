@@ -1,5 +1,5 @@
 ﻿Option Strict On
-
+Imports System.IO
 Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Inventarios_Movimientos
@@ -21,7 +21,7 @@ Public Class Inventarios_Movimientos
     Private oArticulos As New Class_CatArticulos
     Private dtSeries As DataTable
 
-    Private bAplicando As Boolean
+    'Private bAplicando As Boolean
     Private oPalet As Class_Embarques_PaletsGlobal
     Private oFormaDetalleCuentas As InventariosDetalleCuentasContables
 
@@ -121,7 +121,7 @@ Public Class Inventarios_Movimientos
     End Sub
 
     Private Sub tsbGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbGrabar.Click
-        Me.bAplicando = False
+        'Me.bAplicando = False
         If txtLEN(Me.TxtFolio.Text) = True Then
             If Me.Grabar() = True Then
                 If Me.Consultar() = True Then
@@ -133,9 +133,10 @@ Public Class Inventarios_Movimientos
 
     Private Sub tsbAplicar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbAplicar.Click
         If Me.Estado = enumEstados.NUEVO Then
-            If Me.Grabar() = True Then
-                Me.Consultar()
-                Me.GestionaAplicacion()
+            If Me.Grabar(False) = True Then
+                If Me.Consultar() = True Then
+                    Me.GestionaAplicacion()
+                End If
             End If
         Else
             Me.GestionaAplicacion()
@@ -297,6 +298,10 @@ Public Class Inventarios_Movimientos
 
     Private Sub BtnSeries_Click(sender As Object, e As EventArgs) Handles btnSeries.Click
         Me.PrepararSeries()
+    End Sub
+
+    Private Sub btnSeleccionarArchivoSeries_Click(sender As Object, e As EventArgs) Handles btnSeleccionarArchivoSeries.Click
+        Me.GestionaArchivoSeries()
     End Sub
 
     Private Sub Grid_ButtonClick(ByVal Sender As System.Object, ByVal e As FlexCell.Grid.ButtonClickEventArgs) Handles Grid1.ButtonClick
@@ -930,7 +935,7 @@ BuscarCuentas:
         End Try
     End Sub
 
-    Function Grabar() As Boolean
+    Private Function Grabar(Optional ByVal bMensaje As Boolean = True) As Boolean
         Const sProcedure As String = "Grabar"
         Dim bResultado As Boolean = False
         Dim i As Integer
@@ -948,8 +953,9 @@ BuscarCuentas:
             End If
         End If
 
-        If Me.bAplicando = False Then
-            If MsgBox("Deseas grabar el movimiento de " & CboDocumento.Text & "?", CType(vbYesNo + vbQuestion, MsgBoxStyle), sProcedure) = MsgBoxResult.No Then
+        'If Me.bAplicando = False Then
+        If bMensaje = True Then
+            If MsgBox("Deseas grabar el movimiento de " & Me.CboDocumento.Text & "?", CType(vbYesNo + vbQuestion, MsgBoxStyle), sProcedure) = MsgBoxResult.No Then
                 Return False
             End If
         End If
@@ -1096,7 +1102,8 @@ BuscarCuentas:
                         End If
 
                         bResultado = True
-                        If Me.bAplicando = False Then
+                        'If Me.bAplicando = False Then
+                        If bMensaje = True Then
                             MsgBox("Movimiento de inventario grabado satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
                         End If
                     End With
@@ -1121,7 +1128,7 @@ BuscarCuentas:
                     Return False
                 End If
 
-                If Me.Grabar() = False Then 'Razón no identificada de porque cuando se trata de exterior lo graba despues de validar, y cuando es normal lo graba antes de validar
+                If Me.Grabar(False) = False Then 'Razón no identificada de porque cuando se trata de exterior lo graba despues de validar, y cuando es normal lo graba antes de validar
                     Return False
                 End If
             End If
@@ -1148,7 +1155,7 @@ BuscarCuentas:
             'End If
 
             If Me._LlamadoExteriorGenerarSalidaEmbarque = True Then
-                If Me.Grabar() = False Then 'Razón no identificada de porque cuando se trata de exterior lo graba despues de validar, y cuando es normal lo graba antes de validar
+                If Me.Grabar(False) = False Then 'Razón no identificada de porque cuando se trata de exterior lo graba despues de validar, y cuando es normal lo graba antes de validar
                     Return False
                 End If
             Else
@@ -1196,9 +1203,11 @@ BuscarCuentas:
             End If
         End If
 
-        If Me.CboDocumento.Text = "ENTRADA" And Me.GridSeries.Rows > 1 Then
-            MsgBox("La cancelación de ENTRADAS con series no esta soportada, debe hacerse una salida manualmente.", MsgBoxStyle.Exclamation, sProcedure)
-            Return False
+        If Me.oInventarios.ESTATUS = "A" Then 'En G si se permite.
+            If (Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "ENI" Or Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "ER") And Me.GridSeries.Rows > 1 Then
+                MsgBox("La cancelación de ENTRADAS con series no esta soportada, debe hacerse una salida manualmente.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
         End If
 
         If Me.oDocumentos.ES_TRANSFERENCIA = "1" Then
@@ -2179,7 +2188,7 @@ BuscarCuentas:
     Private Sub GestionaAplicacion()
         Const sProcedure As String = "GestionaAplicacion"
         Try
-            Me.bAplicando = True
+            'Me.bAplicando = True
 
             If Me.oInventarios.NATURALEZA_INVENTARIOS <> "EN" Then
                 If Me.ValidarExistencias() = False Then
@@ -2887,6 +2896,97 @@ busca_serie:
         End Try
     End Function
 
+    Private Function GestionaArchivoSeries() As Boolean
+        Dim bResultado As Boolean = False
+        Dim sRutaArchivo As String = "", sTextLine As String = "", sArticulo As String = "", iRenglon As Integer = 0
+        Dim iSeriesEstablecidas As Integer = 0, iArticulosEncontrados As Integer = 0, i As Integer = 1, iEstablecidos As Integer = 0
+        Try
+            'iRenglon = Me.GridSeries.ActiveCell.Row
+            iRenglon = Me.GridSeries.Selection.FirstRow
+
+            If iRenglon = 0 Then
+                MsgBox("Seleccione un artículo en la pantalla de series.", MsgBoxStyle.Exclamation, Me.Text)
+                Return False
+            End If
+
+            sArticulo = Me.GridSeries.Cell(iRenglon, Me.igySerieCodigo).Text
+
+            If txtLEN(sArticulo) = False Then
+                MsgBox("Seleccione un artículo en la pantalla de series.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.TpSeries.Focus()
+                Return False
+            End If
+
+            sRutaArchivo = Me.SeleccionarArchivo
+
+            If txtLEN(sRutaArchivo) = False Then
+                Return False
+            End If
+
+            iArticulosEncontrados = Me.CantidadArticulosSerie(sArticulo)
+
+            Using reader As StreamReader = New StreamReader(sRutaArchivo)
+                sTextLine = reader.ReadLine
+
+                Do While (Not sTextLine Is Nothing) Or Not (iEstablecidos <= iArticulosEncontrados)
+                    If txtLEN(sTextLine) = True Then
+                        For i = i To Me.GridSeries.Rows - 1
+                            If Me.GridSeries.Cell(i, Me.igySerieCodigo).Text = sArticulo Then
+                                Me.GridSeries.Cell(i, Me.igySerieNumeroSerie).Text = sTextLine
+                                iEstablecidos += 1
+                                i += 1
+                                Exit For
+                            End If
+                        Next
+                    End If
+                    sTextLine = reader.ReadLine
+                Loop
+            End Using
+
+        Catch ex As Exception
+            HandleError(Me.Name, "GestionaArchivoSeries", ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Private Function SeleccionarArchivo() As String
+        Dim sRutaArchivo As String = ""
+        Try
+            With OpenFileDialog1
+                '.InitialDirectory = Me.txtRutaArchivo.Text
+                .Filter = "txt files (*.txt)|*.txt"
+                '.FilterIndex = 2
+                .RestoreDirectory = True
+                .FileName = ""
+                .Multiselect = False
+                .DefaultExt = ".txt"
+
+                If .ShowDialog() = DialogResult.OK Then
+                    sRutaArchivo = .FileName
+                End If
+
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "Seleccionar", ex)
+        End Try
+
+        Return sRutaArchivo
+    End Function
+
+    Private Function CantidadArticulosSerie(ByVal sCodigoArticulo As String) As Integer
+        Dim iArticulosEncontrados As Integer = 0
+        Try
+            For i = 1 To Me.GridSeries.Rows - 1
+                If Me.GridSeries.Cell(i, Me.igySerieCodigo).Text = sCodigoArticulo Then
+                    iArticulosEncontrados += 1
+                End If
+            Next
+        Catch ex As Exception
+            HandleError(Me.Name, "CantidadArticulosSerie", ex)
+        End Try
+        Return iArticulosEncontrados
+    End Function
 #End Region
 
 End Class

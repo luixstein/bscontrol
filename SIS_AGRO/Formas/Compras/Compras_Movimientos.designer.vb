@@ -80,6 +80,7 @@ Partial Class Compras_Movimientos
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.tsbPasarOrdenACompra = New System.Windows.Forms.ToolStripButton()
+        Me.tsbRecepcionarEntrada = New System.Windows.Forms.ToolStripButton()
         Me.tsbEditarCostos = New System.Windows.Forms.ToolStripButton()
         Me.tsbAgregarXML = New System.Windows.Forms.ToolStripButton()
         Me.tsbAgregarPDF = New System.Windows.Forms.ToolStripButton()
@@ -145,7 +146,7 @@ Partial Class Compras_Movimientos
         Me.txtRetencionISR = New System.Windows.Forms.TextBox()
         Me.lblDisplayRetencionISR = New System.Windows.Forms.Label()
         Me.lblDisplayRetencionIVA = New System.Windows.Forms.Label()
-        Me.tsbRecepcionarEntrada = New System.Windows.Forms.ToolStripButton()
+        Me.lblAyuda = New System.Windows.Forms.Label()
         Me.gbGlobal.SuspendLayout()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
@@ -707,6 +708,14 @@ Partial Class Compras_Movimientos
         Me.tsbPasarOrdenACompra.Name = "tsbPasarOrdenACompra"
         Me.tsbPasarOrdenACompra.Size = New System.Drawing.Size(112, 24)
         Me.tsbPasarOrdenACompra.Text = "&Pasar a compra"
+        '
+        'tsbRecepcionarEntrada
+        '
+        Me.tsbRecepcionarEntrada.Image = Global.BsControl.My.Resources.Resources._096
+        Me.tsbRecepcionarEntrada.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbRecepcionarEntrada.Name = "tsbRecepcionarEntrada"
+        Me.tsbRecepcionarEntrada.Size = New System.Drawing.Size(139, 24)
+        Me.tsbRecepcionarEntrada.Text = "&Recepcionar entrada"
         '
         'tsbEditarCostos
         '
@@ -1390,19 +1399,21 @@ Partial Class Compras_Movimientos
         Me.lblDisplayRetencionIVA.Text = "IVA :"
         Me.lblDisplayRetencionIVA.Visible = False
         '
-        'tsbRecepcionarEntrada
+        'lblAyuda
         '
-        Me.tsbRecepcionarEntrada.Image = Global.BsControl.My.Resources.Resources._096
-        Me.tsbRecepcionarEntrada.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbRecepcionarEntrada.Name = "tsbRecepcionarEntrada"
-        Me.tsbRecepcionarEntrada.Size = New System.Drawing.Size(139, 24)
-        Me.tsbRecepcionarEntrada.Text = "&Recepcionar entrada"
+        Me.lblAyuda.AutoSize = True
+        Me.lblAyuda.Location = New System.Drawing.Point(3, 554)
+        Me.lblAyuda.Name = "lblAyuda"
+        Me.lblAyuda.Size = New System.Drawing.Size(369, 13)
+        Me.lblAyuda.TabIndex = 389
+        Me.lblAyuda.Text = "*F4 para agregar comentarios, F8 para eliminar renglones, F6/F7 para buscar"
         '
         'Compras_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1029, 611)
+        Me.Controls.Add(Me.lblAyuda)
         Me.Controls.Add(Me.gbMXN)
         Me.Controls.Add(Me.LblConceptoCancelacion)
         Me.Controls.Add(Me.TxtConceptoCancelacion)
@@ -1565,4 +1576,5 @@ Partial Class Compras_Movimientos
     Friend WithEvents chkEsInventariable As CheckBox
     Friend WithEvents gbEntradas As GroupBox
     Friend WithEvents tsbRecepcionarEntrada As ToolStripButton
+    Friend WithEvents lblAyuda As Label
 End Class

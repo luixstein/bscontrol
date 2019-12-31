@@ -1909,7 +1909,7 @@ Public Class Class_Compras_Global
 
     Public Function ObtieneListadoEntradas() As DataTable
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
-        Dim sSQL As String = ("SELECT R.FOLIO_MOVIMIENTO_INVENTARIO,DBO.FN_FORMAT_FECHA_CORTO(G.FECHA)FECHA " &
+        Dim sSQL As String = ("SELECT R.FOLIO_MOVIMIENTO_INVENTARIO,DBO.FN_FORMAT_FECHA_CORTO(G.FECHA)FECHA,CASE WHEN G.ESTA_CANCELADO='1' THEN 'CANCELADO' ELSE 'ACTIVO' END ESTA_CANCELADO " &
                               "FROM COMPRAS_RELACION_ENTRADAS_INVENTARIOS R " &
                               "INNER JOIN INVENTARIO_MOVIMIENTOS_GLOBAL G ON(R.FOLIO_MOVIMIENTO_INVENTARIO=G.FOLIO_MOVIMIENTO_INVENTARIO)" &
                               "WHERE R.FOLIO_COMPRA='" & Me._FOLIO_COMPRA & "' " &

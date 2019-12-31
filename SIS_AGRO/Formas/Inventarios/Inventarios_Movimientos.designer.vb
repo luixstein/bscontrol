@@ -88,6 +88,8 @@ Partial Class Inventarios_Movimientos
         Me.cboEntradasAnterioresOrdenCompra = New System.Windows.Forms.ComboBox()
         Me.txtTotalMasFlete = New System.Windows.Forms.MaskedTextBox()
         Me.txtTotalFlete = New System.Windows.Forms.MaskedTextBox()
+        Me.btnSeleccionarArchivoSeries = New System.Windows.Forms.Button()
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.TpSeries.SuspendLayout()
@@ -464,10 +466,10 @@ Partial Class Inventarios_Movimientos
         '
         'btnSeries
         '
-        Me.btnSeries.Location = New System.Drawing.Point(11, 531)
+        Me.btnSeries.Location = New System.Drawing.Point(3, 512)
         Me.btnSeries.Margin = New System.Windows.Forms.Padding(2)
         Me.btnSeries.Name = "btnSeries"
-        Me.btnSeries.Size = New System.Drawing.Size(118, 25)
+        Me.btnSeries.Size = New System.Drawing.Size(162, 25)
         Me.btnSeries.TabIndex = 386
         Me.btnSeries.Text = "Detallar series"
         Me.btnSeries.UseVisualStyleBackColor = True
@@ -497,7 +499,7 @@ Partial Class Inventarios_Movimientos
         Me.TpSeries.Margin = New System.Windows.Forms.Padding(2)
         Me.TpSeries.Name = "TpSeries"
         Me.TpSeries.Padding = New System.Windows.Forms.Padding(2)
-        Me.TpSeries.Size = New System.Drawing.Size(1291, 269)
+        Me.TpSeries.Size = New System.Drawing.Size(1291, 253)
         Me.TpSeries.TabIndex = 1
         Me.TpSeries.Text = "Series"
         Me.TpSeries.UseVisualStyleBackColor = True
@@ -528,7 +530,7 @@ Partial Class Inventarios_Movimientos
         Me.TpArticulos.Margin = New System.Windows.Forms.Padding(2)
         Me.TpArticulos.Name = "TpArticulos"
         Me.TpArticulos.Padding = New System.Windows.Forms.Padding(2)
-        Me.TpArticulos.Size = New System.Drawing.Size(1291, 269)
+        Me.TpArticulos.Size = New System.Drawing.Size(1291, 253)
         Me.TpArticulos.TabIndex = 0
         Me.TpArticulos.Text = "Artículos"
         Me.TpArticulos.UseVisualStyleBackColor = True
@@ -548,7 +550,7 @@ Partial Class Inventarios_Movimientos
         Me.Grid1.LockButton = True
         Me.Grid1.Name = "Grid1"
         Me.Grid1.Rows = 10
-        Me.Grid1.Size = New System.Drawing.Size(1289, 265)
+        Me.Grid1.Size = New System.Drawing.Size(1289, 249)
         Me.Grid1.TabIndex = 7
         Me.Grid1.UncheckedImage = CType(resources.GetObject("Grid1.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -560,7 +562,7 @@ Partial Class Inventarios_Movimientos
         Me.TabControl1.Margin = New System.Windows.Forms.Padding(2)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(1299, 295)
+        Me.TabControl1.Size = New System.Drawing.Size(1299, 279)
         Me.TabControl1.TabIndex = 385
         '
         'txtProveedor
@@ -723,11 +725,26 @@ Partial Class Inventarios_Movimientos
         Me.txtTotalFlete.TabIndex = 397
         Me.txtTotalFlete.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
+        'btnSeleccionarArchivoSeries
+        '
+        Me.btnSeleccionarArchivoSeries.Enabled = False
+        Me.btnSeleccionarArchivoSeries.Location = New System.Drawing.Point(3, 536)
+        Me.btnSeleccionarArchivoSeries.Name = "btnSeleccionarArchivoSeries"
+        Me.btnSeleccionarArchivoSeries.Size = New System.Drawing.Size(162, 25)
+        Me.btnSeleccionarArchivoSeries.TabIndex = 398
+        Me.btnSeleccionarArchivoSeries.Text = "Seleccionar archivo con series"
+        Me.btnSeleccionarArchivoSeries.UseVisualStyleBackColor = True
+        '
+        'OpenFileDialog1
+        '
+        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
+        '
         'Inventarios_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1308, 587)
+        Me.Controls.Add(Me.btnSeleccionarArchivoSeries)
         Me.Controls.Add(Me.txtTotalFlete)
         Me.Controls.Add(Me.txtTotalMasFlete)
         Me.Controls.Add(Me.gbOrdenCompra)
@@ -848,4 +865,6 @@ Partial Class Inventarios_Movimientos
     Friend WithEvents btnConsultarOrdenCompra As Button
     Friend WithEvents txtTotalMasFlete As MaskedTextBox
     Friend WithEvents txtTotalFlete As MaskedTextBox
+    Friend WithEvents btnSeleccionarArchivoSeries As Button
+    Friend WithEvents OpenFileDialog1 As OpenFileDialog
 End Class

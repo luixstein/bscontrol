@@ -817,12 +817,11 @@ Buscar:
                 If Me.oDocumento.AFECTA_CXP = True Then
                     .Column(Me.iGyBoton).Visible = True
                     .Column(Me.iGyNombreCuentaContable).Visible = True
-                    .Column(Me.iGyIDAdicional).Visible = False '.Column(Me.iGyIDAdicional).Width = 70
                 Else
                     .Column(Me.iGyBoton).Visible = False
                     .Column(Me.iGyNombreCuentaContable).Visible = False
-                    .Column(Me.iGyIDAdicional).Visible = False
                 End If
+                .Column(Me.iGyIDAdicional).Visible = True  'False
 
                 .Column(Me.igyIEPS_PORCENTAJE).Visible = False
                 .Column(Me.igyIEPS_UNITARIO).Visible = False
@@ -1614,6 +1613,19 @@ Buscar:
                 Me.txtFolioProveedor.Text = Me.oCompras.FOLIO_PROVEEDOR.ToString.ToUpper
 
                 Me.Grid.DataSource = Me.oCompras.ObtenerDetalle
+
+                For i = 1 To Me.Grid.Rows - 1
+                    If Me.Grid.Cell(i, Me.igyCodigo).Text = "-" Then
+                        For j = Me.igyDescripcion + 1 To Me.Grid.Cols - 1
+                            Me.Grid.Cell(i, j).Locked = True 'Bloqueamos el resto de las columnas
+
+                            If j <> iGyIDAdicional Then
+                                Me.Grid.Cell(i, j).Text = "" 'Eliminamos los datos del resto de las columnas excepto el IDAdicional
+                            End If
+                        Next
+                    End If
+                Next
+
                 'If Me.oDocumento.AFECTA_CXP = True Then
                 '    Me.Grid.DataSource = Me.oCompras.ObtenerDetalle
                 'Else
@@ -2030,10 +2042,12 @@ Buscar:
 
             Me.dPorcentajeIVAGlobal = 0
 
-            Dim i As Integer
-            For i = 1 To Grid.Rows - 1
-                If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
-                    oArticulos = New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
+            Dim i As Integer, sArticulo As String = ""
+            For i = 1 To Me.Grid.Rows - 1
+                sArticulo = Me.Grid.Cell(i, Me.igyCodigo).Text
+
+                If txtLEN(sArticulo) = True And sArticulo <> "-" Then ' "-" es para comentarios
+                    oArticulos = New Class_CatArticulos(sArticulo)
 
                     If oArticulos.Existe = False Then
                         MsgBox("El artículo no existe.", MsgBoxStyle.Exclamation, sProcedure)
@@ -2528,11 +2542,11 @@ Buscar:
             Dim oCuentas As New Class_CatCuentas 'Class_VWCatDeudoresDiversos
 
             If Me.oDocumento.AFECTA_CXP = True And Me.Grid.Selection.FirstRow = Me.Grid.Rows - 1 Then
-                Exit Sub
+                Return
             End If
 
             If Not (Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.GRABADO) Then
-                Exit Sub
+                Return
             End If
 
             Columna = Me.Grid.Selection.FirstCol
@@ -2547,12 +2561,15 @@ Buscar:
                 oArticulo = New Class_CatArticulos(StrCod)
                 If oArticulo.INVENTARIABLE = "1" Then
                     e.SuppressKeyPress = True
-                    Exit Sub
+                    Return
                 End If
             End If
 
             Select Case e.KeyCode
                 Case Keys.Enter
+                    If StrCod = "-" Then
+                        Return
+                    End If
 
                     Select Case Columna
                         Case Me.igyCodigo
@@ -2603,7 +2620,7 @@ LlenaLinea:
                             If dCantidad <= 0 Then
                                 MsgBox("La cantidad debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
                                 Me.Grid.Cell(Renglon, Me.igyCantidad).SetFocus()
-                                Exit Sub
+                                Return
                             End If
 
                             If Me.oDocumento.AFECTA_CXP = True Then
@@ -2611,7 +2628,7 @@ LlenaLinea:
                                     MsgBox("La cantidad debe de ser menor al disponible.", MsgBoxStyle.Exclamation, sProcedure)
                                     Me.Grid.Cell(Renglon, Me.igyCantidad).Text = Me.oCompras.ObtenerDisponibleArticulo(CInt(Me.Grid.Cell(Renglon, Me.igyIdArticulo).Text)).ToString
                                     Me.Grid.Refresh()
-                                    Exit Sub
+                                    Return
                                 End If
                             End If
 
@@ -2663,7 +2680,7 @@ LlenaLinea:
                             Else
                                 Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = ""
                                 Me.Grid.Cell(Renglon, Me.iGyNombreCuentaContable).Text = ""
-                                GoTo BuscarCuentas : Exit Sub
+                                GoTo BuscarCuentas : Return
                             End If
 
                             Me.Grid.Cell(Renglon + 1, Me.igyImporte).SetFocus()
@@ -2672,7 +2689,10 @@ LlenaLinea:
 
                     Select Case Columna
                         Case Me.igyImpuestoPorcentaje
-                            If Me.Grid.Rows = Renglon + 1 Then Me.Grid.Rows = Me.Grid.Rows + 1
+                            If Me.Grid.Rows = Renglon + 1 Then
+                                Me.Grid.Rows = Me.Grid.Rows + 1
+                            End If
+
                             Me.Grid.Cell(Renglon + 1, Me.iGyIDAdicional).Text = (valorNumerico(Me.Grid.Cell(Renglon, Me.iGyIDAdicional).Text) + 1).ToString
                     End Select
 
@@ -2737,7 +2757,7 @@ BuscarCuentas:
                     '                    If sCuentaContable = "" Then
                     '                        Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = ""
                     '                        Me.Grid.Refresh()
-                    '                        Exit Sub
+                    '                        return
                     '                    End If
 
                     '                    oArticulos = New Class_CatArticulos(Me.Grid.Cell(Renglon, Me.igyCodigo).Text)
@@ -2745,13 +2765,13 @@ BuscarCuentas:
                     '                    If oArticulos.INVENTARIABLE = "0" Then
                     '                        If Mid(sCuentaContable, 1, 4) = Empresa_Sistema.CUENTA_CONTABLE_ALMACENES.ToString Then
                     '                            MsgBox("La cuenta para los artículos no inventariables no deben de empezar con " & Empresa_Sistema.CUENTA_CONTABLE_ALMACENES.ToString & ".", MsgBoxStyle.Exclamation, sProcedure)
-                    '                            Exit Sub
+                    '                            return
                     '                        End If
                     '                    End If
 
                     '                    Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = sCuentaContable
 
-                Case Keys.F8, Keys.Delete
+                Case Keys.F8, Keys.Delete 'Elimina el renglón seleccionado.
                     If (Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.GRABADO) Then
                         Dim IDAdicional As Integer = 0
                         If txtLEN(Me.Grid.Cell(Renglon, Me.iGyIDAdicional).Text) = True Then
@@ -2767,6 +2787,45 @@ BuscarCuentas:
                             Me.EliminaDetalleCuentasContables(IDAdicional)
                         End If
                     End If
+
+                Case Keys.F4 'Comentarios
+                    If Me.oDocumento.AFECTA_CXP = True Then 'Los comentarios sólo son permitidos en las órdenes de compra.
+                        Return
+                    End If
+
+                    Dim oComentario As New Ventas_Comentarios
+                    If StrCod = "-" Then 'Si el código anterior era comentario mostramos el mismo comentario para editarlo, si es un producto lo dejamos en blanco
+                        oComentario.txtComentario.Text = Me.Grid.Cell(Renglon, Me.igyDescripcion).Text
+                    End If
+                    oComentario.ShowDialog()
+
+                    If oComentario.Aceptar = True Then
+                        Me.Grid.Cell(Renglon, Me.igyCodigo).Text = "-"
+                        Me.Grid.Cell(Renglon, Me.igyDescripcion).Text = oComentario.txtComentario.Text
+                        Me.Grid.Cell(Renglon, Me.iGyIDAdicional).Text = (valorNumerico(Me.Grid.Cell(Renglon, Me.iGyIDAdicional).Text)).ToString
+
+                        If Me.Grid.Rows = Renglon + 1 Then
+                            Me.Grid.Rows = Me.Grid.Rows + 1
+                            Me.Grid.Cell(Renglon + 1, Me.iGyIDAdicional).Text = (valorNumerico(Me.Grid.Cell(Renglon, Me.iGyIDAdicional).Text) + 1).ToString
+                        End If
+
+                        'Me.Grid.Cell(Renglon + 1, Me.igyCodigo).SetFocus()
+
+                        For i = Me.igyDescripcion + 1 To Me.Grid.Cols - 1
+                            Me.Grid.Cell(Renglon, i).Locked = True 'Bloqueamos el resto de las columnas
+
+                            If i <> iGyIDAdicional Then
+                                Me.Grid.Cell(Renglon, i).Text = "" 'Eliminamos los datos del resto de las columnas
+                            End If
+                        Next
+
+                        'Me.Grid.Cell(Renglon, Me.iGyGRADO_TOXICIDAD).Text = "0"
+                        'Me.Grid.Cell(Renglon, Me.iGyID_SIS_CAT_IMPUESTOS).Text = "0"
+                        '
+                    End If
+
+                    Me.Totales() 'Por si a un renglón que ya tiene un artículo(con importe) le dan f4
+                    oComentario.Dispose()
             End Select
 
         Catch ex As Exception
@@ -3339,7 +3398,7 @@ BuscarCuentas:
                 Return False
             End If
 
-            sRutaArchivo = Me.Seleccionar
+            sRutaArchivo = Me.SeleccionarArchivo
 
             If txtLEN(sRutaArchivo) = False Then
                 Return False
@@ -3372,7 +3431,7 @@ BuscarCuentas:
         Return bResultado
     End Function
 
-    Private Function Seleccionar() As String
+    Private Function SeleccionarArchivo() As String
         Dim sRutaArchivo As String = ""
         Try
             With OpenFileDialog1
@@ -3392,6 +3451,7 @@ BuscarCuentas:
         Catch ex As Exception
             HandleError(Me.Name, "Seleccionar", ex)
         End Try
+
         Return sRutaArchivo
     End Function
 
@@ -3925,11 +3985,12 @@ BuscarCuentas:
     Private Function ValidaQueTodosSeanNoInventariables(ByVal bEnviarMsg As Boolean) As Boolean
         Const sProcedure As String = "ValidaQueTodosSeanNoInventariables"
         Try
-            Dim i As Integer
-            For i = 1 To Grid.Rows - 1
-                If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
-                    Dim oArticulo As New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
-                    If oArticulo.INVENTARIABLE = "1" Then
+            Dim i As Integer, sArticulo As String = ""
+            For i = 1 To Me.Grid.Rows - 1
+                sArticulo = Me.Grid.Cell(i, Me.igyCodigo).Text
+                If txtLEN(sArticulo) = True And sArticulo <> "-" Then '"-" es para comentarios
+                    Dim oArticulo As New Class_CatArticulos(sArticulo)
+                    If oArticulo.INVENTARIABLE = "1" Then 'Con un artículo que sea inventariable podemos decir de inmediato que no todos son no inventariables.
                         If bEnviarMsg = True Then
                             MsgBox("El artículo del renglón #" & i.ToString & " es inventariable.", vbExclamation, sProcedure)
                         End If
@@ -3973,7 +4034,7 @@ BuscarCuentas:
                 If Me.TraerTodasEntradasInventarios() = True Then
                     Me.AgregarTodasEntradasInventarios()
                 End If
-                Me.TabControl1.SelectedIndex = 2
+                Me.TabControl1.SelectedIndex = 0
             End If
 
             oInventario.Dispose()
