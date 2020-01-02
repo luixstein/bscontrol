@@ -93,7 +93,7 @@ Public Class Compras_Movimientos
     End Sub
 
     Private Sub tsbAplicar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbAplicar.Click
-        If Me.chkEsInventariable.Checked = False Then
+        If Me.chkEsInventariable.Checked = False Then 'Sólo si es de servicios se valida la orden de compra, si es inven dentro el mismo aplicar hay validaciones para checar las entradas de inventarios.
             If Me.ValidarOrdenCompra() = False Then
                 Return
             End If
@@ -1615,7 +1615,7 @@ Buscar:
                 Me.Grid.DataSource = Me.oCompras.ObtenerDetalle
 
                 For i = 1 To Me.Grid.Rows - 1
-                    If Me.Grid.Cell(i, Me.igyCodigo).Text = "-" Then
+                    If Me.Grid.Cell(i, Me.igyCodigo).Text = "-" Then 'Si es comentario
                         For j = Me.igyDescripcion + 1 To Me.Grid.Cols - 1
                             Me.Grid.Cell(i, j).Locked = True 'Bloqueamos el resto de las columnas
 
@@ -2167,7 +2167,7 @@ Buscar:
 
             If Me.chkEsInventariable.Checked = True Then
                 If Me.TieneAgregadasEntradasInventario() = False Then
-                    MsgBox("Este documento es inventarible y usted no detalló entradas de inventarios, favor de revisar.", MsgBoxStyle.Exclamation, sProcedure)
+                    MsgBox("Este documento es inventariable y usted no detalló entradas de inventarios, favor de revisar.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
 
@@ -2201,7 +2201,7 @@ Buscar:
 
             Else 'Es de servicio
                 If Me.TieneAgregadasEntradasInventario() = True Then
-                    MsgBox("Este documento es no inventarible y usted detalló salidas de inventarios, favor de revisar.", MsgBoxStyle.Exclamation, sProcedure)
+                    MsgBox("Este documento es no inventariable y usted detalló salidas de inventarios, favor de revisar.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
 
