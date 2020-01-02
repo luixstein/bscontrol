@@ -516,7 +516,7 @@ BuscarCuentas:
                     Next
 
                     sListaSeriesCompleta = sListaSeriesCompleta.Substring(0, sListaSeriesCompleta.Length - 1) 'Para quitarle el ultimo pipe que sale sobrando.
-                    
+
                 End If
 
                 .oInventariosDetalle.LISTA_SERIES = sListaSeriesCompleta

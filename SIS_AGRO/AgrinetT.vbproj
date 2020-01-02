@@ -431,6 +431,12 @@
     <Compile Include="Formas\Acuicola\AcuicolaProyectoSiembra.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\Acuicola\Consultas\Rpt_Acuicola_Global.Designer.vb">
+      <DependentUpon>Rpt_Acuicola_Global.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Acuicola\Consultas\Rpt_Acuicola_Global.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\Administracion\Sis_administracion_clientes.Designer.vb">
       <DependentUpon>Sis_administracion_clientes.vb</DependentUpon>
     </Compile>
@@ -1731,6 +1737,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Acuicola\AcuicolaProyectoSiembra.resx">
       <DependentUpon>AcuicolaProyectoSiembra.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Acuicola\Consultas\Rpt_Acuicola_Global.resx">
+      <DependentUpon>Rpt_Acuicola_Global.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Administracion\Sis_administracion_clientes.resx">
       <DependentUpon>Sis_administracion_clientes.vb</DependentUpon>

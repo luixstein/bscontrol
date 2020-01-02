@@ -225,6 +225,7 @@ Partial Public Class AppMenu
         Me.CapturaParámetrosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CapturaAlimentaciónToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CapturaParametríaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ConsultasToolStripMenuItem5 = New System.Windows.Forms.ToolStripMenuItem()
         Me.UtileriasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AdministracionToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ClientesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -232,13 +233,14 @@ Partial Public Class AppMenu
         Me.MonitoDeTimbradosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.EmbarquesMasivosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GrabaImagenQRToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TipoCambioDelDiaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip2 = New System.Windows.Forms.MenuStrip()
         Me.CostoDeProduccionToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.CostoCorteAcarreoEmpaqueYEmbarqueToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.GlobalDeDocumentosToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
-        Me.TipoCambioDelDiaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -1518,7 +1520,7 @@ Partial Public Class AppMenu
         '
         'MenuAcuicola
         '
-        Me.MenuAcuicola.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CapturaParámetrosToolStripMenuItem, Me.CapturaAlimentaciónToolStripMenuItem, Me.CapturaParametríaToolStripMenuItem})
+        Me.MenuAcuicola.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CapturaParámetrosToolStripMenuItem, Me.CapturaAlimentaciónToolStripMenuItem, Me.CapturaParametríaToolStripMenuItem, Me.ConsultasToolStripMenuItem5})
         Me.MenuAcuicola.Name = "MenuAcuicola"
         Me.MenuAcuicola.Size = New System.Drawing.Size(78, 24)
         Me.MenuAcuicola.Text = "Acuicola"
@@ -1540,6 +1542,13 @@ Partial Public Class AppMenu
         Me.CapturaParametríaToolStripMenuItem.Name = "CapturaParametríaToolStripMenuItem"
         Me.CapturaParametríaToolStripMenuItem.Size = New System.Drawing.Size(226, 26)
         Me.CapturaParametríaToolStripMenuItem.Text = "Captura parametría"
+        '
+        'ConsultasToolStripMenuItem5
+        '
+        Me.ConsultasToolStripMenuItem5.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.GlobalDeDocumentosToolStripMenuItem2})
+        Me.ConsultasToolStripMenuItem5.Name = "ConsultasToolStripMenuItem5"
+        Me.ConsultasToolStripMenuItem5.Size = New System.Drawing.Size(226, 26)
+        Me.ConsultasToolStripMenuItem5.Text = "Consultas"
         '
         'UtileriasToolStripMenuItem
         '
@@ -1585,6 +1594,12 @@ Partial Public Class AppMenu
         Me.GrabaImagenQRToolStripMenuItem.Size = New System.Drawing.Size(256, 26)
         Me.GrabaImagenQRToolStripMenuItem.Text = "Graba imagen QR"
         '
+        'TipoCambioDelDiaToolStripMenuItem
+        '
+        Me.TipoCambioDelDiaToolStripMenuItem.Name = "TipoCambioDelDiaToolStripMenuItem"
+        Me.TipoCambioDelDiaToolStripMenuItem.Size = New System.Drawing.Size(256, 26)
+        Me.TipoCambioDelDiaToolStripMenuItem.Text = "Tipo cambio del dia"
+        '
         'MenuStrip2
         '
         Me.MenuStrip2.ImageScalingSize = New System.Drawing.Size(20, 20)
@@ -1620,6 +1635,12 @@ Partial Public Class AppMenu
         Me.MenuSalir2.Size = New System.Drawing.Size(50, 24)
         Me.MenuSalir2.Text = "&Salir"
         '
+        'GlobalDeDocumentosToolStripMenuItem2
+        '
+        Me.GlobalDeDocumentosToolStripMenuItem2.Name = "GlobalDeDocumentosToolStripMenuItem2"
+        Me.GlobalDeDocumentosToolStripMenuItem2.Size = New System.Drawing.Size(235, 26)
+        Me.GlobalDeDocumentosToolStripMenuItem2.Text = "Global de documentos"
+        '
         'pbLogo
         '
         Me.pbLogo.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -1632,12 +1653,6 @@ Partial Public Class AppMenu
         Me.pbLogo.TabIndex = 17
         Me.pbLogo.TabStop = False
         Me.pbLogo.Visible = False
-        '
-        'TipoCambioDelDiaToolStripMenuItem
-        '
-        Me.TipoCambioDelDiaToolStripMenuItem.Name = "TipoCambioDelDiaToolStripMenuItem"
-        Me.TipoCambioDelDiaToolStripMenuItem.Size = New System.Drawing.Size(256, 26)
-        Me.TipoCambioDelDiaToolStripMenuItem.Text = "Tipo cambio del dia"
         '
         'AppMenu
         '
@@ -1884,4 +1899,6 @@ Partial Public Class AppMenu
     Friend WithEvents ProyectoSiembraAcuícolaToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ConceptosInventariosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents TipoCambioDelDiaToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ConsultasToolStripMenuItem5 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents GlobalDeDocumentosToolStripMenuItem2 As System.Windows.Forms.ToolStripMenuItem
 End Class

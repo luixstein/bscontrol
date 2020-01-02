@@ -1661,4 +1661,12 @@ Public Class AppMenu
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
     End Sub
+
+    Private Sub GlobalDeDocumentosToolStripMenuItem2_Click(sender As Object, e As EventArgs) Handles GlobalDeDocumentosToolStripMenuItem2.Click
+        Dim Child As New Rpt_Acuicola_Global
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
 End Class
