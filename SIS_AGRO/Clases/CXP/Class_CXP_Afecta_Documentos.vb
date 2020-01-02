@@ -1,5 +1,5 @@
 ﻿Option Strict On
-Imports System.Data
+
 Imports System.Data.SqlClient
 
 Public Class Class_CXP_Afecta_Documentos
@@ -21,7 +21,7 @@ Public Class Class_CXP_Afecta_Documentos
     Private _SUBTOTAL As Double
     Private _IMPUESTO As Double
     Private _TOTAL As Double
-    Private _RETENCION As Double
+    Private _RETENCION_IVA As Double
     Private _TIPO_DE_CAMBIO As Double
     Private _MODULO As String
     Private _FOLIO_BANCO As String
@@ -137,9 +137,9 @@ Public Class Class_CXP_Afecta_Documentos
         End Set
     End Property
 
-    Public WriteOnly Property RETENCION() As Double
+    Public WriteOnly Property RETENCION_IVA() As Double
         Set(ByVal value As Double)
-            Me._RETENCION = value
+            Me._RETENCION_IVA = value
         End Set
     End Property
 
@@ -202,7 +202,7 @@ Public Class Class_CXP_Afecta_Documentos
 #Region "Constructor y destructor"
     Public Sub New()
         Me._Conexion = New SqlConnection
-        Me._Conexion.ConnectionString = Empresa_Sistema.Conexion
+        Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         ' Me.oDocumento = New Class_CatDocumentos()
     End Sub
 
@@ -235,7 +235,7 @@ Public Class Class_CXP_Afecta_Documentos
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PLAZA
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_GRABO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
             sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL
-            sqlParametro = .Parameters.Add("@RETENCION", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION
+            sqlParametro = .Parameters.Add("@RETENCION_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA
             sqlParametro = .Parameters.Add("@TIPO_DE_CAMBIO", SqlDbType.Decimal) : sqlParametro.Value = Me._TIPO_DE_CAMBIO
             sqlParametro = .Parameters.Add("@FOLIO_BANCO", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_BANCO
             sqlParametro = .Parameters.Add("@ES_PROVEEDOR", SqlDbType.Char, 1) : sqlParametro.Value = IIf(Me.ModoPago = enumModoPago.PROVEEDOR, "1", "0")
@@ -340,7 +340,7 @@ Public Class Class_CXP_Afecta_Documentos
             sqlParametro = .Parameters.Add("@SUBTOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL
             sqlParametro = .Parameters.Add("@IMPUESTO", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO
             sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL
-            sqlParametro = .Parameters.Add("@RETENCION", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION
+            sqlParametro = .Parameters.Add("@RETENCION", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA
             sqlParametro = .Parameters.Add("@TIPO_DE_CAMBIO", SqlDbType.Decimal) : sqlParametro.Value = Me._TIPO_DE_CAMBIO
             sqlParametro = .Parameters.Add("@CODIGO_MODULO", SqlDbType.NVarChar, 4) : sqlParametro.Value = "CXP"
             sqlParametro = .Parameters.Add("@AFECTA_SALDO_CATALOGOS", SqlDbType.Char, 1) : sqlParametro.Value = "1"

@@ -1171,7 +1171,7 @@ buscar_acreedor:
                             .CONCEPTO2 = ""
                             .CODIGO_PLAZA = Usuario.Codigo_Plaza
                             .TOTAL = valorNumerico(Me.Grid1.Cell(i, Me.iGyPagoMXP).Text)
-                            .RETENCION = valorNumerico(Me.Grid1.Cell(i, Me.iGyRetencion).Text)
+                            .RETENCION_IVA = valorNumerico(Me.Grid1.Cell(i, Me.iGyRetencion).Text)
                             .TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text)
                             .FOLIO_BANCO = Me.TxtFolio.Text 'Se tiene que poner el del texbox porque se regreso el folio al Inserta_Global
                             .MODULO = "CXP"

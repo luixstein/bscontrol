@@ -29,6 +29,15 @@ Public Class Class_Compras_Detalle
     Private _BASE_IEPS As Double
     Private _BASE_IVA As Double
     Private _COSTO As Double
+    Private _ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA As Integer = 0
+
+    Private _PRECIO_USD As Decimal
+    Private _IMPORTE_USD As Decimal
+    Private _IMPUESTO_IMPORTE_USD As Decimal
+    Private _IEPS_UNITARIO_USD As Decimal
+    Private _IEPS_IMPORTE_USD As Decimal
+    Private _BASE_IEPS_USD As Decimal
+    Private _BASE_IVA_USD As Decimal
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -239,6 +248,78 @@ Public Class Class_Compras_Detalle
             Me._COSTO = value
         End Set
     End Property
+
+    Public Property ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA() As Integer
+        Get
+            Return Me._ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA
+        End Get
+        Set(value As Integer)
+            Me._ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA = value
+        End Set
+    End Property
+
+    Public Property PRECIO_USD() As Decimal
+        Get
+            Return Me._PRECIO_USD
+        End Get
+        Set(value As Decimal)
+            Me._PRECIO_USD = value
+        End Set
+    End Property
+
+    Public Property IMPORTE_USD() As Decimal
+        Get
+            Return Me._IMPORTE_USD
+        End Get
+        Set(value As Decimal)
+            Me._IMPORTE_USD = value
+        End Set
+    End Property
+
+    Public Property IMPUESTO_IMPORTE_USD() As Decimal
+        Get
+            Return Me._IMPUESTO_IMPORTE_USD
+        End Get
+        Set(value As Decimal)
+            Me._IMPUESTO_IMPORTE_USD = value
+        End Set
+    End Property
+
+    Public Property IEPS_UNITARIO_USD() As Decimal
+        Get
+            Return Me._IEPS_UNITARIO_USD
+        End Get
+        Set(value As Decimal)
+            Me._IEPS_UNITARIO_USD = value
+        End Set
+    End Property
+
+    Public Property IEPS_IMPORTE_USD() As Decimal
+        Get
+            Return Me._IEPS_IMPORTE_USD
+        End Get
+        Set(value As Decimal)
+            Me._IEPS_IMPORTE_USD = value
+        End Set
+    End Property
+
+    Public Property BASE_IEPS_USD() As Decimal
+        Get
+            Return Me._BASE_IEPS_USD
+        End Get
+        Set(value As Decimal)
+            Me._BASE_IEPS_USD = value
+        End Set
+    End Property
+
+    Public Property BASE_IVA_USD() As Decimal
+        Get
+            Return Me._BASE_IVA_USD
+        End Get
+        Set(value As Decimal)
+            Me._BASE_IVA_USD = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -289,13 +370,15 @@ Public Class Class_Compras_Detalle
 
 #Region "Métodos y procedimientos"
     Public Function GrabaRenglonOrdenCompra() As Boolean
+        Const sProcedure As String = "GrabaRenglonOrdenCompra"
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
             .Connection = Me._Conexion
             .CommandTimeout = 0
             .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_COMPRAS_GRABA_ORDEN_COMPRA_GLOBAL_DETALLE"
+            .CommandText = "MP_COMPRAS_GRABA_ORDEN_COMPRA_DETALLE"
 
             sqlParametro = .Parameters.Add("@FOLIO_COMPRA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_COMPRA
             sqlParametro = .Parameters.Add("@CODIGO_ARTICULO", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_ARTICULO
@@ -311,23 +394,32 @@ Public Class Class_Compras_Detalle
             sqlParametro = .Parameters.Add("@IEPS_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_IMPORTE
             sqlParametro = .Parameters.Add("@BASE_IEPS", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IEPS
             sqlParametro = .Parameters.Add("@BASE_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IVA
-            sqlParametro = .Parameters.Add("COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO
+            sqlParametro = .Parameters.Add("@COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO
+            sqlParametro = .Parameters.Add("@PRECIO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._PRECIO_USD
+            sqlParametro = .Parameters.Add("@IMPORTE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPORTE_USD
+            sqlParametro = .Parameters.Add("@IMPUESTO_IMPORTE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_IMPORTE_USD
+            sqlParametro = .Parameters.Add("@IEPS_UNITARIO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_UNITARIO_USD
+            sqlParametro = .Parameters.Add("@IEPS_IMPORTE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_IMPORTE_USD
+            sqlParametro = .Parameters.Add("@BASE_IEPS_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IEPS_USD
+            sqlParametro = .Parameters.Add("@BASE_IVA_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IVA_USD
 
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                GrabaRenglonOrdenCompra = True
+                bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "GrabaRenglonOrdenCompra", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
                 sqlParametro = Nothing
             End Try
         End With
+        Return bResultado
     End Function
 
     Public Function GrabaRenglonCompra() As Boolean
+        Const sProcedure As String = "GrabaRenglonCompra"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -357,7 +449,15 @@ Public Class Class_Compras_Detalle
             sqlParametro = .Parameters.Add("@IEPS_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_IMPORTE
             sqlParametro = .Parameters.Add("@BASE_IEPS", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IEPS
             sqlParametro = .Parameters.Add("@BASE_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IVA
-            sqlParametro = .Parameters.Add("COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO
+            sqlParametro = .Parameters.Add("@COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO
+            sqlParametro = .Parameters.Add("@PRECIO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._PRECIO_USD
+            sqlParametro = .Parameters.Add("@IMPORTE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPORTE_USD
+            sqlParametro = .Parameters.Add("@IMPUESTO_IMPORTE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_IMPORTE_USD
+            sqlParametro = .Parameters.Add("@IEPS_UNITARIO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_UNITARIO_USD
+            sqlParametro = .Parameters.Add("@IEPS_IMPORTE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_IMPORTE_USD
+            sqlParametro = .Parameters.Add("@BASE_IEPS_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IEPS_USD
+            sqlParametro = .Parameters.Add("@BASE_IVA_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IVA_USD
+            sqlParametro = .Parameters.Add("@ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA", SqlDbType.Int) : sqlParametro.Value = Me._ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA
 
             Try
                 Me._Conexion.Open()
@@ -367,7 +467,7 @@ Public Class Class_Compras_Detalle
 
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "GrabaRenglonCompra", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -378,6 +478,7 @@ Public Class Class_Compras_Detalle
     End Function
 
     Public Function GrabaDetalleCentroCostos(ByVal sListaCuentas As String, ByVal sCodigoDocumento As String, ByVal dFecha As DateTime) As Boolean
+        Const sProcedure As String = "GrabaDetalleCentroCostos"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -399,7 +500,7 @@ Public Class Class_Compras_Detalle
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "GrabaDetalleCentroCostos", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()

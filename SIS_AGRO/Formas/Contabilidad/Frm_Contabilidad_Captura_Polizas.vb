@@ -1402,6 +1402,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
     End Sub
 
     Private Function Consultar() As Boolean
+        Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
         Dim sFolio As String = Me.TxtFolio.Text, dTabla As DataTable
 
@@ -1425,10 +1426,6 @@ Public Class Frm_Contabilidad_Captura_Polizas
             Me.TxtConcepto1.Text = oPoliza.CONCEPTO1
             Me.TxtConcepto2.Text = oPoliza.CONCEPTO2
 
-            Me.TxtTotalCargos.Text = FormatImporteContable(oPoliza.CARGO)
-            Me.TxtTotalAbonos.Text = FormatImporteContable(oPoliza.ABONO)
-            Me.txtTotalDiferenciaCargosAbonos.Text = FormatImporteContable(oPoliza.CARGO - oPoliza.ABONO)
-
             If oPoliza.CODIGO_TIPO_DOCUMENTO = "E" Then
                 Me.CboFacturasRecibidas.SelectedValue = oPoliza.CODIGO_LISTA_FACTURAS_RECIBIDAS.ToString
             End If
@@ -1443,6 +1440,15 @@ Public Class Frm_Contabilidad_Captura_Polizas
             Next
 
             Me.FormateaGrid()
+
+            'Me.TxtTotalCargos.Text = FormatImporteContable(oPoliza.CARGO)
+            'Me.TxtTotalAbonos.Text = FormatImporteContable(oPoliza.ABONO)
+            'Me.txtTotalDiferenciaCargosAbonos.Text = FormatImporteContable(oPoliza.CARGO - oPoliza.ABONO)
+
+            'Se cambió para sumarizar lo que este en grid(del mismo modo que en totales, porque a veces pudieran estar en 0 los totales)
+            Me.TxtTotalCargos.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, 5))
+            Me.TxtTotalAbonos.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, 6))
+            Me.txtTotalDiferenciaCargosAbonos.Text = FormatImporteContable(valorNumericoD(Me.TxtTotalCargos.Text) - valorNumericoD(Me.TxtTotalAbonos.Text))
 
             Me.GestionaCambioEstado()
             'TIENE CONTRA POLIZA
@@ -1495,7 +1501,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
             bResultado = True
 
         Catch ex As Exception
-            HandleError(Me.Name, "Consultar", ex)
+            HandleError(Me.Name, sProcedure, ex)
         Finally
             Me.Grid1.AutoRedraw = True
             Me.Grid1.Refresh()
@@ -1523,9 +1529,14 @@ Public Class Frm_Contabilidad_Captura_Polizas
     End Sub
 
     Public Sub Totales()
-        Me.TxtTotalCargos.Text = FormatImporteContable(FG_Grid_SumaCol(Grid1, 5))
-        Me.TxtTotalAbonos.Text = FormatImporteContable(FG_Grid_SumaCol(Grid1, 6))
-        Me.txtTotalDiferenciaCargosAbonos.Text = FormatImporteContable(valorNumerico(Me.TxtTotalCargos.Text) - valorNumerico(Me.TxtTotalAbonos.Text))
+        Const sProcedure As String = "Totales"
+        Try
+            Me.TxtTotalCargos.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, 5))
+            Me.TxtTotalAbonos.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, 6))
+            Me.txtTotalDiferenciaCargosAbonos.Text = FormatImporteContable(valorNumericoD(Me.TxtTotalCargos.Text) - valorNumericoD(Me.TxtTotalAbonos.Text))
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Sub
 
     Private Function ValidaCuentasContables() As Boolean

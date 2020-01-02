@@ -1888,6 +1888,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
     End Sub
 
     Private Function GestionaGrabar() As Boolean
+        Const sProcedure As String = "GestionaGrabar"
         Dim bResultado As Boolean = False
         Dim sCuentas As String = "", sListaActivos As String = ""
         Dim i As Integer
@@ -1923,7 +1924,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                     .SUBTOTAL = valorNumerico(Me.TxtSubTotal.Text)
                     .IMPUESTO = valorNumerico(Me.TxtIVA.Text)
                     .TOTAL = valorNumerico(Me.txtTotalCompra.Text)
-                    .RETENCION = valorNumerico(Me.TxtRetencionIVA.Text)
+                    .RETENCION_IVA = valorNumerico(Me.TxtRetencionIVA.Text)
                     .RETENCION_ISR = valorNumerico(Me.txtRetencionISR.Text)
                     .IMPUESTO_PORCENTAJE = CDbl(Me.txtPorciento.Text)
                     .TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text)
@@ -1965,7 +1966,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                     'Next i
 
                     If txtLEN(sCuentas) = False And txtLEN(sListaActivos) = False Then
-                        MsgBox("Falta introducir los centros de costos o activos.", MsgBoxStyle.Exclamation, "Validación")
+                        MsgBox("Falta introducir los centros de costos o activos.", MsgBoxStyle.Exclamation, sProcedure)
                         Return False
                     Else
                         If txtLEN(sCuentas) = True Then
@@ -1977,20 +1978,20 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                     End If
 
                     If .GrabaCompraGlobalSinOrden(sCuentas, sListaActivos) = False Then
-                        MsgBox("Error al tratar de aplicar el movimiento de compras.", MsgBoxStyle.Exclamation, Me.Text)
+                        MsgBox("Error al tratar de aplicar el movimiento de compras.", MsgBoxStyle.Exclamation, sProcedure)
                         Return False
                     End If
                     Me.txtFolioCompra.Text = .FOLIO_COMPRA
 
                     If valorNumerico(Me.lblTotalFacturasRelacionadas.Text) > 0 Then
                         If Me.GrabarVentasRelacionadas = False Then
-                            MsgBox("Error al tratar de grabar facturas relacionadas.", MsgBoxStyle.Exclamation, Me.Name)
+                            MsgBox("Error al tratar de grabar facturas relacionadas.", MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         End If
                     End If
 
                     'Aplicar = True
-                    MsgBox("Movimiento de gasto grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+                    MsgBox("Movimiento de gasto grabado satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
 
                 End With
 
@@ -2007,15 +2008,16 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                     Me.oCompras.ActualizaDatosContraRecibos()
                 End If
 
-                MsgBox("Movimiento de compras se actualizó satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+                MsgBox("Movimiento de compras se actualizó satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
             End If
 
             Me.Inicializa()
             Me.TxtCodigoProveedor.Text = sProveedor
 
             bResultado = True
+
         Catch ex As Exception
-            HandleError(Me.Name, "GestionaGrabar", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado
@@ -2469,7 +2471,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
             Me.TxtSubTotal.Text = FormatImporteContable(Me.oCompras.SUBTOTAL)
             Me.TxtIVA.Text = FormatImporteContable(Me.oCompras.IMPUESTO)
             Me.txtPorciento.Text = Me.oCompras.IMPUESTO_PORCENTAJE.ToString
-            Me.TxtRetencionIVA.Text = FormatImporteContable(Me.oCompras.RETENCION)
+            Me.TxtRetencionIVA.Text = FormatImporteContable(Me.oCompras.RETENCION_IVA)
             Me.txtRetencionISR.Text = FormatImporteContable(Me.oCompras.RETENCION_ISR)
             Me.txtTotalCompra.Text = FormatImporteContable(Me.oCompras.TOTAL)
             Me.txtImporteDolares.Text = FormatImporteContable(Me.oCompras.TOTAL_DOLARES)
@@ -2552,6 +2554,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
     End Function
 
     Private Function CancelarCompra() As Boolean
+        Const sProcedure As String = "CancelarCompra"
         Dim bResultado As Boolean = False
 
         Dim oFirmaElectronica = New UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo
@@ -2560,17 +2563,17 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
         Dim oDetalleVentas As New Class_Centros_Costos_Detalle_Ventas
         Dim sConceptoCancelacion As String = ""
 
-        If MsgBox("Deseas cancelar el gasto " & Me.txtFolioCompra.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "CancelarCompra") = MsgBoxResult.No Then
-            Exit Function
+        If MsgBox("Deseas cancelar el gasto " & Me.txtFolioCompra.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, sProcedure) = MsgBoxResult.No Then
+            Return False
         End If
 
         If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios("CO" & Plaza.CODIGO_PLAZA.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
-            MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento de inventarios.", MsgBoxStyle.Exclamation, Me.Text)
-            Exit Function
+            MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento de inventarios.", MsgBoxStyle.Exclamation, sProcedure)
+            Return False
         End If
 
         'If Me.oCompras.ValidaExistencias() = False Then
-        '    Exit Function
+        '    return false
         'End If
 
         Try
@@ -2579,7 +2582,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
             oUtileriasCancela.CODIGO_PLAZA = Usuario.Codigo_Plaza
 
             If oUtileriasCancela.GestionaCancelacion() = False Then
-                Exit Function
+                Return False
             End If
 
             If oUtileriasCancela.CANCELA_DIRECTO = True Then
@@ -2589,7 +2592,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                 Me.oCompras.CONCEPTO_CANCELACION = sConceptoCancelacion
 
                 If Me.oCompras.CancelaCompra() = False Then
-                    Exit Function
+                    Return False
                 End If
             Else
                 oUtileriasCancela = New Class_UtileriasFirmaElectronicaCancelacion
@@ -2601,7 +2604,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
 
                 If oUtileriasCancela.AutorizaCancelacionMovimientosFueraPeriodo() = False Then
                     'MsgBox("Error al tratar de autorizar la cancelación fuera del periodo.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    Return False
                 End If
 
                 sConceptoCancelacion = oUtileriasCancela.CANCELACION_CONCEPTO
@@ -2609,37 +2612,39 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
 
                 'si no se autorizo
                 If oUtileriasCancela.CANCELACION_AUTORIZO = False Then
-                    MsgBox("No se autorizó la cancelación de movimiento.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    MsgBox("No se autorizó la cancelación de movimiento.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 End If
 
                 If oUtileriasCancela.GestionaCancelacionConInterfaz() = False Then
-                    MsgBox("Error al gestionar la cancelacion con interfaz", MsgBoxStyle.Information, Me.Text)
-                    Exit Function
+                    MsgBox("Error al gestionar la cancelacion con interfaz", MsgBoxStyle.Information, sProcedure)
+                    Return False
                 Else
                     If oUtileriasCancela.ES_FECHA_CANCELACION_VALIDA = "0" Then
-                        MsgBox("La fecha de cancelación debe de ser mayor o igual a la fecha del documento y debe estar en el mismo ejercicio.", vbExclamation, Me.Text)
-                        Exit Function
+                        MsgBox("La fecha de cancelación debe de ser mayor o igual a la fecha del documento y debe estar en el mismo ejercicio.", vbExclamation, sProcedure)
+                        Return False
                     End If
 
                     Me.oCompras.FECHA_CANCELACION = oUtileriasCancela.FECHA_CANCELACION
 
                     If Me.oCompras.CancelaCompra() = False Then
-                        MsgBox("Error al intentar cancelar el movimiento de inventario.", MsgBoxStyle.Exclamation, Me.Text)
-                        Exit Function
+                        MsgBox("Error al intentar cancelar el movimiento de inventario.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
                     End If
                 End If
             End If
 
             If oDetalleVentas.EliminaCentroCostosDetalleVentas(Me.txtFolioCompra.Text) = False Then
-                MsgBox("Error al eliminar las facturas relacionadas, avise al departamento de sistemas.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+                MsgBox("Error al eliminar las facturas relacionadas, avise al departamento de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
             End If
 
-            MsgBox("Gasto cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+            MsgBox("Gasto cancelado satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
+
             bResultado = True
+
         Catch ex As Exception
-            HandleError(Me.Name, "CancelarCompra", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado

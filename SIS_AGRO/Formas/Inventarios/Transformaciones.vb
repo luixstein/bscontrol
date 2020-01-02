@@ -374,10 +374,10 @@ BuscarCuentas:
                 .CONCEPTO = "SALIDA POR TRANSFORMACIÓN PARA " & Me.LblNombreProductoFinal.Text & " : " & Me.TxtConcepto.Text
                 .CODIGO_USUARIO = CInt("" & Usuario.Codigo_Usuario)
                 .CODIGO_PLAZA = Usuario.Codigo_Plaza
-                .TOTAL = valorNumerico(Me.TxtCostoTotal.Text)
+                .TOTAL = valorNumericoD(Me.TxtCostoTotal.Text)
                 .FOLIO_EMBARQUE = ""
 
-                If .Insertar() = False Then
+                If .Grabar("INSERTAR") = False Then
                     MsgBox("Error al tratar de insertar el movimiento de salida de inventario.", MsgBoxStyle.Exclamation, Me.Text)
                     Exit Function
                 End If
@@ -478,10 +478,10 @@ BuscarCuentas:
                 .CONCEPTO = "ENTRADA POR TRANSFORMACIÓN PARA " & Me.LblNombreProductoFinal.Text & " : " & Me.TxtConcepto.Text
                 .CODIGO_USUARIO = CInt("" & Usuario.Codigo_Usuario)
                 .CODIGO_PLAZA = Usuario.Codigo_Plaza
-                .TOTAL = valorNumerico(Me.TxtCostoTotal.Text)
+                .TOTAL = valorNumericoD(Me.TxtCostoTotal.Text)
                 .FOLIO_EMBARQUE = ""
 
-                If .Insertar() = False Then
+                If .Grabar("INSERTAR") = False Then
                     MsgBox("Error al tratar de insertar el movimiento de entrada de inventario.", MsgBoxStyle.Exclamation, Me.Text)
                     Exit Function
                 End If

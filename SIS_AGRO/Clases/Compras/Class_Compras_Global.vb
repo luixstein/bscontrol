@@ -26,7 +26,7 @@ Public Class Class_Compras_Global
     Private _IEPS_TOTAL_DESGLOSADO As Double
     Private _IMPUESTO As Double
     Private _TOTAL As Double
-    Private _RETENCION As Double
+    Private _RETENCION_IVA As Double
     Private _RETENCION_ISR As Double
     Private _IMPUESTO_PORCENTAJE As Double
     Private _SALDO As Double
@@ -45,25 +45,27 @@ Public Class Class_Compras_Global
     Private _NOMBRE_USUARIO_CANCELO As String
     Private _FECHA_CANCELACION As Date
     Private _FECHA_CANCELACION_SERVIDOR As Date
-
     Private _CONTRARECIBO_HECHO As String
     Private _FECHA_CONTRARECIBO As Date
     Private _FECHA_PROGRAMACION As Date
     Private _FOLIO_EMBARQUE As String
     Private _CODIGO_TIPO_GASTO As String
-
     Private _SALDO_IMPUESTO As Double
+    Private _CODIGO_MONEDA As String
+
+    Private _SUBTOTAL_USD As Double
+    Private _IEPS_TOTAL_DESGLOSADO_USD As Double
+    Private _IMPUESTO_USD As Double
+    Private _RETENCION_IVA_USD As Double
+    Private _RETENCION_ISR_USD As Double
     Private _TOTAL_DOLARES As Double
     Private _SALDO_DOLARES As Double
-
-    Private _CODIGO_MONEDA As String
-    Private _SUBTOTAL_USD As Double
-    Private _IMPUESTO_USD As Double
 
     Private _CONCEPTO_CANCELACION As String
     Private _COSTO As Double
 
     Private _FECHA_ENTREGA As Date
+    Private _ES_INVENTARIABLE As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -245,12 +247,12 @@ Public Class Class_Compras_Global
         End Set
     End Property
 
-    Public Property RETENCION() As Double
+    Public Property RETENCION_IVA() As Double
         Get
-            Return Me._RETENCION
+            Return Me._RETENCION_IVA
         End Get
         Set(ByVal Value As Double)
-            Me._RETENCION = Value
+            Me._RETENCION_IVA = Value
         End Set
     End Property
 
@@ -446,12 +448,57 @@ Public Class Class_Compras_Global
         End Set
     End Property
 
-    Public Property SALDO_DOLARES() As Double
+    Public Property CODIGO_MONEDA As String
         Get
-            Return Me._SALDO_DOLARES
+            Return Me._CODIGO_MONEDA
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_MONEDA = Value
+        End Set
+    End Property
+
+    Public Property SUBTOTAL_USD As Double
+        Get
+            Return Me._SUBTOTAL_USD
         End Get
         Set(ByVal Value As Double)
-            Me._SALDO_DOLARES = Value
+            Me._SUBTOTAL_USD = Value
+        End Set
+    End Property
+
+    Public Property IEPS_TOTAL_DESGLOSADO_USD As Double
+        Get
+            Return Me._IEPS_TOTAL_DESGLOSADO_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._IEPS_TOTAL_DESGLOSADO_USD = Value
+        End Set
+    End Property
+
+    Public Property IMPUESTO_USD As Double
+        Get
+            Return Me._IMPUESTO_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._IMPUESTO_USD = Value
+        End Set
+    End Property
+
+    Public Property RETENCION_IVA_USD As Double
+        Get
+            Return Me._RETENCION_IVA_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._RETENCION_IVA_USD = Value
+        End Set
+    End Property
+
+    Public Property RETENCION_ISR_USD As Double
+        Get
+            Return Me._RETENCION_ISR_USD
+        End Get
+        Set(ByVal Value As Double)
+            Me._RETENCION_ISR_USD = Value
         End Set
     End Property
 
@@ -464,22 +511,13 @@ Public Class Class_Compras_Global
         End Set
     End Property
 
-    Public ReadOnly Property CODIGO_MONEDA As String
+    Public Property SALDO_DOLARES() As Double
         Get
-            Return Me._CODIGO_MONEDA
+            Return Me._SALDO_DOLARES
         End Get
-    End Property
-
-    Public ReadOnly Property SUBTOTAL_USD As Double
-        Get
-            Return Me._SUBTOTAL_USD
-        End Get
-    End Property
-
-    Public ReadOnly Property IMPUESTO_USD As Double
-        Get
-            Return Me._IMPUESTO_USD
-        End Get
+        Set(ByVal Value As Double)
+            Me._SALDO_DOLARES = Value
+        End Set
     End Property
 
     Public Property CONCEPTO_CANCELACION() As String
@@ -506,6 +544,15 @@ Public Class Class_Compras_Global
         End Get
         Set(value As Date)
             Me._FECHA_ENTREGA = value
+        End Set
+    End Property
+
+    Public Property ES_INVENTARIABLE() As Boolean
+        Get
+            Return Me._ES_INVENTARIABLE
+        End Get
+        Set(value As Boolean)
+            Me._ES_INVENTARIABLE = value
         End Set
     End Property
 
@@ -606,7 +653,8 @@ Public Class Class_Compras_Global
 #End Region
 
 #Region "Métodos y procedimientos"
-    Public Function ActualizarOrdenCompra() As Boolean
+    Public Function GrabarOrdenCompraGlobal(ByVal sAccion As String) As Boolean
+        Const sProcedure As String = "GrabarOrdenCompraGlobal"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -616,8 +664,8 @@ Public Class Class_Compras_Global
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_COMPRAS_GRABA_ORDEN_COMPRA_GLOBAL"
 
-            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "ACTUALIZAR"
-            sqlParametro = .Parameters.Add("@FOLIO_COMPRA", SqlDbType.NVarChar, 15) : sqlParametro.Value = "" & Me._FOLIO_COMPRA
+            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = sAccion '"INSERTAR"  "ACTUALIZAR"
+            sqlParametro = .Parameters.Add("@FOLIO_COMPRA", SqlDbType.NVarChar, 15) : sqlParametro.Value = "" & Me._FOLIO_COMPRA : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@CODIGO_DOCUMENTO", SqlDbType.NVarChar, 10) : sqlParametro.Value = "" & Me._CODIGO_DOCUMENTO
             sqlParametro = .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_ALMACEN
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PLAZA
@@ -629,7 +677,8 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO
             sqlParametro = .Parameters.Add("@IMPUESTO", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO
             sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL
-            sqlParametro = .Parameters.Add("@RETENCION", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION
+            sqlParametro = .Parameters.Add("@RETENCION_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA
+            sqlParametro = .Parameters.Add("@RETENCION_ISR", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR
             sqlParametro = .Parameters.Add("@IMPUESTO_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_PORCENTAJE
             sqlParametro = .Parameters.Add("@TIPO_DE_CAMBIO", SqlDbType.Decimal) : sqlParametro.Value = Me.TIPO_DE_CAMBIO
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_GRABO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
@@ -639,59 +688,16 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@CON_CARGO_A", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CON_CARGO_A.ToUpper
             sqlParametro = .Parameters.Add("@PREDIO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._PREDIO.ToUpper
             sqlParametro = .Parameters.Add("@CONFIRMO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONFIRMO.ToUpper
-            sqlParametro = .Parameters.Add("COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO
+            sqlParametro = .Parameters.Add("@COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO
             sqlParametro = .Parameters.Add("@FECHA_ENTREGA", SqlDbType.DateTime) : sqlParametro.Value = "" & Me._FECHA_ENTREGA
-
-            Try
-                Me._Conexion.Open()
-                .ExecuteNonQuery()
-                bResultado = True
-            Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "ActualizarOrdenCompra", ex)
-            Finally
-                Me._Conexion.Close()
-                cmd.Dispose()
-                sqlParametro = Nothing
-            End Try
-        End With
-        Return bResultado
-    End Function
-
-    Public Function InsertarOrdenCompra() As Boolean
-        Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand
-        Dim sqlParametro As SqlParameter
-        With cmd
-            .Connection = Me._Conexion
-            .CommandTimeout = 0
-            .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_COMPRAS_GRABA_ORDEN_COMPRA_GLOBAL"
-
-            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "INSERTAR"
-            sqlParametro = .Parameters.Add("@FOLIO_COMPRA", SqlDbType.NVarChar, 15) : sqlParametro.Direction = ParameterDirection.InputOutput
-            sqlParametro = .Parameters.Add("@CODIGO_DOCUMENTO", SqlDbType.NVarChar, 10) : sqlParametro.Value = "" & Me._CODIGO_DOCUMENTO
-            sqlParametro = .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_ALMACEN
-            sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PLAZA
-            sqlParametro = .Parameters.Add("@FECHA", SqlDbType.DateTime) : sqlParametro.Value = "" & Me._FECHA
-            sqlParametro = .Parameters.Add("@CODIGO_PROVEEDOR", SqlDbType.NVarChar, 8) : sqlParametro.Value = "" & Me._CODIGO_PROVEEDOR
-            sqlParametro = .Parameters.Add("@PLAZO", SqlDbType.Int) : sqlParametro.Value = Me._PLAZO
-            sqlParametro = .Parameters.Add("@FECHA_VENCIMIENTO", SqlDbType.DateTime) : sqlParametro.Value = "" & Me._FECHA_VENCIMIENTO
-            sqlParametro = .Parameters.Add("@SUBTOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL
-            sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO
-            sqlParametro = .Parameters.Add("@IMPUESTO", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO
-            sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL
-            sqlParametro = .Parameters.Add("@RETENCION", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION
-            sqlParametro = .Parameters.Add("@IMPUESTO_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_PORCENTAJE
-            sqlParametro = .Parameters.Add("@TIPO_DE_CAMBIO", SqlDbType.Decimal) : sqlParametro.Value = Me.TIPO_DE_CAMBIO
-            sqlParametro = .Parameters.Add("@CODIGO_USUARIO_GRABO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
-            sqlParametro = .Parameters.Add("@ENTREGAR_A", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._ENTREGAR_A.ToUpper
-            sqlParametro = .Parameters.Add("@SOLICITO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._SOLICITO.ToUpper
-            sqlParametro = .Parameters.Add("@CONCEPTO", SqlDbType.NVarChar, 1000) : sqlParametro.Value = Me._CONCEPTO.ToUpper
-            sqlParametro = .Parameters.Add("@CON_CARGO_A", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CON_CARGO_A.ToUpper
-            sqlParametro = .Parameters.Add("@PREDIO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._PREDIO.ToUpper
-            sqlParametro = .Parameters.Add("@CONFIRMO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONFIRMO.ToUpper
-            sqlParametro = .Parameters.Add("COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO
-            sqlParametro = .Parameters.Add("@FECHA_ENTREGA", SqlDbType.DateTime) : sqlParametro.Value = "" & Me._FECHA_ENTREGA
+            sqlParametro = .Parameters.Add("@CODIGO_MONEDA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_MONEDA
+            sqlParametro = .Parameters.Add("@SUBTOTAL_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL_USD
+            sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO_USD
+            sqlParametro = .Parameters.Add("@IMPUESTO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_USD
+            sqlParametro = .Parameters.Add("@TOTAL_DOLARES", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_DOLARES
+            sqlParametro = .Parameters.Add("@RETENCION_IVA_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_USD
+            sqlParametro = .Parameters.Add("@RETENCION_ISR_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_USD
+            sqlParametro = .Parameters.Add("@ES_INVENTARIABLE", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._ES_INVENTARIABLE)
 
             Try
                 Me._Conexion.Open()
@@ -699,7 +705,7 @@ Public Class Class_Compras_Global
                 bResultado = True
                 Me._FOLIO_COMPRA = "" & .Parameters("@FOLIO_COMPRA").Value.ToString
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "InsertarOrdenCompra", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -710,6 +716,7 @@ Public Class Class_Compras_Global
     End Function
 
     Public Function GrabaCompraGlobal() As Boolean
+        Const sProcedure As String = "GrabaCompraGlobal"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -734,7 +741,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO
             sqlParametro = .Parameters.Add("@IMPUESTO", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO
             sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL
-            sqlParametro = .Parameters.Add("@RETENCION", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION
+            sqlParametro = .Parameters.Add("@RETENCION_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA
             sqlParametro = .Parameters.Add("@RETENCION_ISR", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR
             sqlParametro = .Parameters.Add("@IMPUESTO_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_PORCENTAJE
             sqlParametro = .Parameters.Add("@TIPO_DE_CAMBIO", SqlDbType.Decimal) : sqlParametro.Value = Me.TIPO_DE_CAMBIO
@@ -747,15 +754,24 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@PREDIO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._PREDIO.ToUpper
             sqlParametro = .Parameters.Add("@CONFIRMO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONFIRMO.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_GASTO", SqlDbType.NVarChar, 80) : sqlParametro.Value = "2" 'CON ORDEN DE COMPRA
-            sqlParametro = .Parameters.Add("COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO
+            sqlParametro = .Parameters.Add("@COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO
             sqlParametro = .Parameters.Add("@FECHA_ENTREGA", SqlDbType.DateTime) : sqlParametro.Value = "" & Me._FECHA_ENTREGA
+            sqlParametro = .Parameters.Add("@CODIGO_MONEDA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_MONEDA
+            sqlParametro = .Parameters.Add("@SUBTOTAL_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL_USD
+            sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO_USD
+            sqlParametro = .Parameters.Add("@IMPUESTO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_USD
+            sqlParametro = .Parameters.Add("@TOTAL_DOLARES", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_DOLARES
+            sqlParametro = .Parameters.Add("@RETENCION_IVA_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_USD
+            sqlParametro = .Parameters.Add("@RETENCION_ISR_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_USD
+            sqlParametro = .Parameters.Add("@ES_INVENTARIABLE", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._ES_INVENTARIABLE)
+
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
                 bResultado = True
                 Me._FOLIO_COMPRA = "" & .Parameters("@FOLIO_COMPRA").Value.ToString
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "GrabaCompraGlobal", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -766,6 +782,7 @@ Public Class Class_Compras_Global
     End Function
 
     Public Function GrabaCompraGlobalSinOrden(ByVal sListaCentrosCostos As String, ByVal sListaActivos As String) As Boolean
+        Const sProcedure As String = "GrabaCompraGlobalSinOrden"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -787,7 +804,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@SUBTOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL
             sqlParametro = .Parameters.Add("@IMPUESTO_DINERO", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO
             sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL
-            sqlParametro = .Parameters.Add("@RETENCION", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION
+            sqlParametro = .Parameters.Add("@RETENCION_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA
             sqlParametro = .Parameters.Add("@RETENCION_ISR", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR
             sqlParametro = .Parameters.Add("@IMPUESTO_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_PORCENTAJE
             sqlParametro = .Parameters.Add("@TIPO_DE_CAMBIO", SqlDbType.Decimal) : sqlParametro.Value = Me._TIPO_DE_CAMBIO
@@ -804,7 +821,7 @@ Public Class Class_Compras_Global
                 bResultado = True
                 Me._FOLIO_COMPRA = "" & .Parameters("@FOLIO_COMPRA").Value.ToString
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "GrabaCompraGlobalSinOrden", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -816,6 +833,7 @@ Public Class Class_Compras_Global
 
     'Public Function AfectaInventarioCompra(ByVal sListaIDsDetalle As String, ByVal sListaSeries As String) As Boolean
     Public Function AfectaInventarioCompra() As Boolean
+        Const sProcedure As String = "AfectaInventarioCompra"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -834,7 +852,36 @@ Public Class Class_Compras_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "AfectaInventarioCompra", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
+    End Function
+
+    Public Function AfectaCantidadesDisponiblesOrdenCompra(ByVal bEsCancelacion As Boolean) As Boolean
+        Const sProcedure As String = "AfectaCantidadesDisponiblesOrdenCompra"
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_COMPRAS_AFECTA_CANTIDADES_PENDIENTES_POR_RECIBIR_ORDEN_COMPRA"
+
+            sqlParametro = .Parameters.Add("@FOLIO_COMPRA", SqlDbType.NVarChar, 15) : sqlParametro.Value = "" & Me._FOLIO_COMPRA
+            sqlParametro = .Parameters.Add("@CANCELACION", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(bEsCancelacion)
+
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -845,6 +892,7 @@ Public Class Class_Compras_Global
     End Function
 
     Public Function AfectaContabilidadCompra() As Boolean
+        Const sProcedure As String = "AfectaContabilidadCompra"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -861,7 +909,7 @@ Public Class Class_Compras_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "AfectaContabilidadCompra", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -885,6 +933,7 @@ Public Class Class_Compras_Global
     End Function
 
     Public Function CancelaOrdenCompra() As Boolean
+        Const sProcedure As String = "CancelaOrdenCompra"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -905,7 +954,7 @@ Public Class Class_Compras_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "CancelaOrdenCompra", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -916,6 +965,7 @@ Public Class Class_Compras_Global
     End Function
 
     Public Function CancelaCompra() As Boolean
+        Const sProcedure As String = "CancelaCompra"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -931,22 +981,25 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_CANCELO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
             sqlParametro = .Parameters.Add("@FECHA_CANCELACION", SqlDbType.SmallDateTime) : sqlParametro.Value = Me.FECHA_CANCELACION
             sqlParametro = .Parameters.Add("@CONCEPTO_CANCELACION", SqlDbType.NVarChar, 1000) : sqlParametro.Value = Me._CONCEPTO_CANCELACION.ToUpper
+
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "CancelaCompra", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
                 sqlParametro = Nothing
             End Try
         End With
+
         Return bResultado
     End Function
 
     Public Function Consultar() As Boolean
+        Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand(Me._QuerySelect & " WHERE G.FOLIO_COMPRA='" & sReplace(Me._FOLIO_COMPRA) & "' AND CODIGO_DOCUMENTO='" & sReplace(Me._CODIGO_DOCUMENTO) & "'  AND G.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " ", Me._Conexion)
         Dim dReader As SqlDataReader
@@ -980,7 +1033,7 @@ Public Class Class_Compras_Global
                     Me._IMPUESTO = CDbl(dReader("IMPUESTO"))
                     Me._IMPUESTO_PORCENTAJE = CDbl(dReader("IMPUESTO_PORCENTAJE"))
                     Me._TOTAL = CDbl(dReader("TOTAL"))
-                    Me._RETENCION = CDbl(dReader("RETENCION"))
+                    Me._RETENCION_IVA = CDbl(dReader("RETENCION_IVA"))
                     Me._RETENCION_ISR = CDbl(dReader("RETENCION_ISR"))
                     Me._SALDO = CDbl(dReader("SALDO"))
                     Me._TIPO_DE_CAMBIO = CDbl(dReader("TIPO_DE_CAMBIO"))
@@ -1003,23 +1056,27 @@ Public Class Class_Compras_Global
                     Me._FOLIO_EMBARQUE = dReader("FOLIO_EMBARQUE").ToString
                     Me._CODIGO_TIPO_GASTO = dReader("CODIGO_TIPO_GASTO").ToString
                     Me._SALDO_IMPUESTO = CDbl(dReader("SALDO_IMPUESTO"))
+                    Me._CODIGO_MONEDA = dReader("CODIGO_MONEDA").ToString
 
+                    Me._SUBTOTAL_USD = CDbl(dReader("SUBTOTAL_USD"))
+                    Me._IEPS_TOTAL_DESGLOSADO_USD = CDbl(dReader("IEPS_TOTAL_DESGLOSADO_USD"))
+                    Me._IMPUESTO_USD = CDbl(dReader("IMPUESTO_USD"))
+                    Me._RETENCION_IVA_USD = CDbl(dReader("RETENCION_IVA_USD"))
+                    Me._RETENCION_ISR_USD = CDbl(dReader("RETENCION_ISR_USD"))
                     Me._TOTAL_DOLARES = CDbl(dReader("TOTAL_DOLARES"))
                     Me._SALDO_DOLARES = CDbl(dReader("SALDO_DOLARES"))
 
-                    Me._CODIGO_MONEDA = dReader("CODIGO_MONEDA").ToString
-                    Me._SUBTOTAL_USD = CDbl(dReader("SUBTOTAL_USD"))
-                    Me._IMPUESTO_USD = CDbl(dReader("IMPUESTO_USD"))
                     Me._TIENE_SERIES = CBool(dReader("TIENE_SERIES"))
-
                     Me._CONCEPTO_CANCELACION = dReader("CONCEPTO_CANCELACION").ToString
                     Me._FECHA_ENTREGA = CDate(dReader("FECHA_ENTREGA"))
+
+                    Me._ES_INVENTARIABLE = CBool(dReader("ES_INVENTARIABLE"))
 
                     bResultado = True
                 End If
                 dReader.Close()
             Catch ex As Exception
-                HandleError(Me.Nombre_Catalogo, "Consultar", ex)
+                HandleError(Me.Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -1033,14 +1090,14 @@ Public Class Class_Compras_Global
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
 
-        'Las primeras 3 líneas construyen una tabla que nos trae al menos una cuenta del detalle para poder indicar que si tiene detalle, hace así y no en el mismo select principal porque se tendria que andar agrupando y haciendo varios max
+        'Las primeras 3 líneas construyen una tabla que nos trae al menos una cuenta del detalle para poder indicar que si tiene detalle, se hace así y no en el mismo select principal porque se tendria que andar agrupando y haciendo varios max
         sSQL = "With DC(ID_ADICIONAL, CUENTA_CONTABLE) " &
                 "AS " &
                 "(SELECT ID_ADICIONAL,MAX(CUENTA_CONTABLE) FROM CENTRO_COSTOS_MOVIMIENTOS_DETALLE WHERE FOLIO_MOVIMIENTO='" & Me._FOLIO_COMPRA & "' GROUP BY FOLIO_MOVIMIENTO,ID_ADICIONAL) " &
-                "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.CANTIDAD,R.PRECIO,R.COSTO,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_COMPRA_DETALLE, " &
+                "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.CANTIDAD,R.PRECIO,R.PRECIO_USD,R.COSTO,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE,R.IMPORTE_USD,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.IMPUESTO_IMPORTE_USD,R.ID_COMPRA_DETALLE, " &
                 "CASE WHEN DC.CUENTA_CONTABLE IS NOT NULL THEN 'Tiene detalle -->>' ELSE C.NOMBRE_CUENTA END NOMBRE_CUENTA, " &
                 "'' Boton,R.ID_ADICIONAL, " &
-                "R.IEPS_PORCENTAJE,R.IEPS_PORCENTAJE,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA " &
+                "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_UNITARIO_USD,R.IEPS_IMPORTE,R.IEPS_IMPORTE_USD,R.BASE_IEPS,R.BASE_IEPS_USD,R.BASE_IVA,R.BASE_IVA_USD,R.ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA " &
                 "FROM COMPRA_DETALLE R " &
                 "LEFT JOIN CON_CAT_CUENTAS C ON(R.CUENTA_CONTABLE=C.CUENTA_CONTABLE) " &
                 "LEFT JOIN DC ON(R.ID_ADICIONAL=DC.ID_ADICIONAL) " &
@@ -1059,9 +1116,9 @@ Public Class Class_Compras_Global
     Public Function ObtenerDetalleOrdenCompra() As DataTable
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
-        sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.DISPONIBLE,R.PRECIO,R.COSTO,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.ID_COMPRA_DETALLE, " &
+        sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.DISPONIBLE,R.PRECIO,R.PRECIO_USD,R.COSTO,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE,R.IMPORTE_USD,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.IMPUESTO_IMPORTE_USD,R.ID_COMPRA_DETALLE, " &
             "'' NOMBRE_CUENTA,'' Boton,ROW_NUMBER() OVER(ORDER BY R.ID_COMPRA_DETALLE) ID_ADICIONAL, " &
-            "R.IEPS_PORCENTAJE,R.IEPS_PORCENTAJE,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA " &
+            "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_UNITARIO_USD,R.IEPS_IMPORTE,R.IEPS_IMPORTE_USD,R.BASE_IEPS,R.BASE_IEPS_USD,R.BASE_IVA,R.BASE_IVA_USD,R.ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA " &
             "FROM COMPRA_DETALLE R " &
             "WHERE R.FOLIO_COMPRA = '" & Me._FOLIO_COMPRA & "' " &
             "AND R.DISPONIBLE>0 " &
@@ -1346,9 +1403,9 @@ Public Class Class_Compras_Global
         f.sCampo = "FOLIO_COMPRA"
         f.sOrder = "FECHA DESC"
         f.sTable = "COMPRA_GLOBAL"
-        f.sQl = "SELECT G.FOLIO_COMPRA,P.NOMBRE_PROVEEDOR,G.FECHA,G.ESTATUS FROM COMPRA_GLOBAL G " & _
-        "INNER JOIN CAT_PROVEEDORES P ON(G.CODIGO_PROVEEDOR =P.CODIGO_PROVEEDOR) " & _
-        "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO T ON(G.CODIGO_DOCUMENTO=T.CODIGO_DOCUMENTO) " & _
+        f.sQl = "SELECT G.FOLIO_COMPRA,P.NOMBRE_PROVEEDOR,G.FECHA,G.ESTATUS FROM COMPRA_GLOBAL G " &
+        "INNER JOIN CAT_PROVEEDORES P ON(G.CODIGO_PROVEEDOR =P.CODIGO_PROVEEDOR) " &
+        "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO T ON(G.CODIGO_DOCUMENTO=T.CODIGO_DOCUMENTO) " &
         "WHERE T.CODIGO_DOCUMENTO LIKE 'OC%' AND T.AFECTA_CONTABILIDAD='0' AND G.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND "
 
         If txtLEN(sEstatus) = True Then
@@ -1363,6 +1420,31 @@ Public Class Class_Compras_Global
             End If
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "BusquedaVisual_OrdenesCompra", ex)
+        End Try
+        Return Resultado
+    End Function
+
+    Public Function BusquedaVisual_OrdenesCompraParaInventarios() As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de compras por folio."
+        f.sCampo = "FOLIO_COMPRA"
+        f.sOrder = "FECHA ASC"
+        f.sTable = "COMPRA_GLOBAL"
+        f.sQl = "SELECT G.FOLIO_COMPRA,P.NOMBRE_PROVEEDOR,G.FECHA,G.ESTATUS FROM COMPRA_GLOBAL G " &
+        "INNER JOIN CAT_PROVEEDORES P ON(G.CODIGO_PROVEEDOR=P.CODIGO_PROVEEDOR) " &
+        "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO T ON(G.CODIGO_DOCUMENTO=T.CODIGO_DOCUMENTO) " &
+        "WHERE T.CODIGO_DOCUMENTO LIKE 'OC%' AND T.AFECTA_CONTABILIDAD='0' AND G.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND " &
+        "G.ESTATUS=IN('G','R') "
+
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_OrdenesCompraParaInventarios", ex)
         End Try
         Return Resultado
     End Function
@@ -1425,10 +1507,10 @@ Public Class Class_Compras_Global
         Return Resultado
     End Function
 
-    Public Function ValidaCantidadDisponibleArticulo(ByVal iIdArticulo As Integer, ByVal dCantidad As Double) As Boolean
+    Public Function ValidaCantidadDisponibleArticulo(ByVal IDCompraDetalle As Integer, ByVal dCantidad As Double) As Boolean
         Dim dDisponible As String = ""
         Try
-            Dim sql As New Class_find("SELECT DISPONIBLE FROM COMPRA_DETALLE WHERE ID_COMPRA_DETALLE=" & iIdArticulo)
+            Dim sql As New Class_find("SELECT DISPONIBLE FROM COMPRA_DETALLE WHERE ID_COMPRA_DETALLE=" & IDCompraDetalle)
             If txtLEN(sql.Result1) = True Then
                 If dCantidad <= CDbl(sql.Result1) Then
                     Return True
@@ -1437,6 +1519,19 @@ Public Class Class_Compras_Global
             sql = Nothing
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "ValidaCantidadDisponibleArticulo", ex)
+        End Try
+    End Function
+
+    Public Function ValidaExistaIDCompraDetalle(ByVal IDCompraDetalle As Integer) As Boolean
+        Dim dDisponible As String = ""
+        Try
+            Dim sql As New Class_find("SELECT 1 FROM COMPRA_DETALLE WHERE FOLIO_COMPRA='" & Me._FOLIO_COMPRA & "' AND ID_COMPRA_DETALLE=" & IDCompraDetalle)
+            If txtLEN(sql.Result1) = True Then
+                Return True
+            End If
+            sql = Nothing
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ValidaExistaIDCompraDetalle", ex)
         End Try
     End Function
 
@@ -1574,10 +1669,13 @@ Public Class Class_Compras_Global
         If bConSaldo = True Then
             sSaldo = "AND SALDO<>0"
         End If
-        Dim sSQL As String = ("SELECT FOLIO_COMPRA,FOLIO_OC,ISNULL(FOLIO_EMBARQUE,'') FOLIO_EMBARQUE,isnull(Convert(varchar(10),FECHA, 103),'') FECHA,ISNULL(Convert(varchar(10),FECHA_CONTRARECIBO, 103),'') , ISNULL(Convert(varchar(10),FECHA_PROGRAMACION, 103),''), " & _
-                              "FOLIO_PROVEEDOR, ISNULL(Convert(varchar(10),FECHA_FACTURA_PROVEEDOR, 103),''), SALDO,SUBTOTAL,IMPUESTO,RETENCION,TOTAL,CONCEPTO,CODIGO_TIPO_GASTO,ISNULL(CONTRARECIBO_HECHO ,'0'), IMPUESTO_PORCENTAJE " & _
-                              "FROM COMPRA_GLOBAL WHERE CODIGO_PROVEEDOR='" & sReplace(CodigoProveedor) & "' AND CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND CODIGO_TIPO_GASTO=" & iTipoCompra.ToString & _
-                              " AND CODIGO_ALMACEN='" & sCodigoAlmacen & "' " & sSaldo & " ORDER BY CAST(FECHA AS DATETIME) ")
+        Dim sSQL As String = ("SELECT FOLIO_COMPRA,FOLIO_OC,ISNULL(FOLIO_EMBARQUE,'') FOLIO_EMBARQUE,ISNULL(Convert(varchar(10),FECHA, 103),'') FECHA,ISNULL(Convert(varchar(10),FECHA_CONTRARECIBO, 103),'')," &
+                              "ISNULL(Convert(varchar(10),FECHA_PROGRAMACION, 103),''), " &
+                              "FOLIO_PROVEEDOR, ISNULL(Convert(varchar(10),FECHA_FACTURA_PROVEEDOR, 103),''),SALDO,SUBTOTAL,IMPUESTO,RETENCION_IVA,TOTAL,CONCEPTO,CODIGO_TIPO_GASTO,ISNULL(CONTRARECIBO_HECHO ,'0'),IMPUESTO_PORCENTAJE " &
+                              "FROM COMPRA_GLOBAL " &
+                              "WHERE CODIGO_PROVEEDOR='" & sReplace(CodigoProveedor) & "' AND CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND CODIGO_TIPO_GASTO=" & iTipoCompra.ToString &
+                              " AND CODIGO_ALMACEN='" & sCodigoAlmacen & "' " & sSaldo &
+                              " ORDER BY CAST(FECHA AS DATETIME)")
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
@@ -1793,6 +1891,140 @@ Public Class Class_Compras_Global
         Return sResultado
     End Function
 
+    Public Function ObtieneEntradasOC(ByVal sFolioOrdenCompra As String) As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String = ("SELECT FOLIO_MOVIMIENTO_INVENTARIO,DBO.FN_FORMAT_FECHA_CORTO(FECHA)FECHA " &
+                              "FROM INVENTARIO_MOVIMIENTOS_GLOBAL " &
+                              "WHERE CODIGO_TIPO_DOCUMENTO LIKE 'ER%' AND ESTA_CANCELADO='0' AND ESTATUS='A' AND FOLIO_REFERENCIA='" & sFolioOrdenCompra & "' " &
+                              "ORDER BY FECHA ")
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtieneEntradasOC", ex)
+        End Try
+        Return dTabla
+    End Function
+
+    Public Function ObtieneListadoEntradas() As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String = ("SELECT R.FOLIO_MOVIMIENTO_INVENTARIO,DBO.FN_FORMAT_FECHA_CORTO(G.FECHA)FECHA,CASE WHEN G.ESTA_CANCELADO='1' THEN 'CANCELADO' ELSE 'ACTIVO' END ESTA_CANCELADO " &
+                              "FROM COMPRAS_RELACION_ENTRADAS_INVENTARIOS R " &
+                              "INNER JOIN INVENTARIO_MOVIMIENTOS_GLOBAL G ON(R.FOLIO_MOVIMIENTO_INVENTARIO=G.FOLIO_MOVIMIENTO_INVENTARIO)" &
+                              "WHERE R.FOLIO_COMPRA='" & Me._FOLIO_COMPRA & "' " &
+                              "ORDER BY R.ID")
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtieneListadoEntradas", ex)
+        End Try
+        Return dTabla
+    End Function
+
+    Public Function ObtieneListadoEntradasOrdenCompra() As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String = ("SELECT G.FOLIO_MOVIMIENTO_INVENTARIO,DBO.FN_FORMAT_FECHA_CORTO(G.FECHA)FECHA,CASE WHEN G.ESTA_CANCELADO='1' THEN 'CANCELADO' ELSE 'ACTIVO' END ESTA_CANCELADO " &
+                              "FROM INVENTARIO_MOVIMIENTOS_GLOBAL G " &
+                              "WHERE G.CODIGO_TIPO_DOCUMENTO='ER' AND G.FOLIO_REFERENCIA='" & Me._FOLIO_COMPRA & "' " &
+                              "ORDER BY G.ID_INVENTARIO_MOVIMIENTOS_GLOBAL")
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtieneListadoEntradasOrdenCompra", ex)
+        End Try
+        Return dTabla
+    End Function
+
+    Public Function ObtenerDetalleDisponiblesOrdenCompra(ByVal sFolioOrdenCompra As String) As DataTable
+        Dim dTabla As New DataTable("detalle")
+        Dim sSQL As String
+
+        Try
+            sSQL = "SELECT R.CODIGO_ARTICULO,A.DESCRIPCION,R.DISPONIBLE CANTIDAD,R.PRECIO COSTO_DETALLE,R.IMPORTE,'' CUENTA_CONTABLE,'' NOMBRE_CUENTA, " &
+                    "'' Boton,ROW_NUMBER() OVER(ORDER BY R.ID_COMPRA_DETALLE) ID_ADICIONAL,R.ID_COMPRA_DETALLE " &
+                    "FROM COMPRA_DETALLE R  " &
+                    "INNER JOIN CAT_ARTICULOS A ON(A.CODIGO_ARTICULO=R.CODIGO_ARTICULO)  " &
+                    "WHERE R.FOLIO_COMPRA=@FOLIO_ORDEN_COMPRA AND R.DISPONIBLE>0 AND A.INVENTARIABLE='1' " &
+                    "ORDER BY R.ID_COMPRA_DETALLE"
+
+            Using da As New SqlDataAdapter(sSQL, Me._Conexion)
+                da.SelectCommand.CommandType = CommandType.Text
+
+                With da.SelectCommand
+                    .Parameters.Add("@FOLIO_ORDEN_COMPRA", SqlDbType.NVarChar, 15).Value = sFolioOrdenCompra
+                End With
+
+                da.Fill(dTabla)
+            End Using
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtenerDetalleDisponiblesOrdenCompra", ex)
+        End Try
+
+        Return dTabla
+    End Function
+
+    Public Function ObtieneEntradasAnterioresOrdenCompra(ByVal sFolioOrdenCompra As String) As DataTable
+        Const sProcedure As String = "ObtieneEntradasAnterioresOrdenCompra"
+        Dim dTabla As New DataTable("detalle")
+        Dim sSQL As String
+
+        Try
+            sSQL = "SELECT FOLIO_MOVIMIENTO_INVENTARIO,FOLIO_MOVIMIENTO_INVENTARIO+','+DBO.FN_FORMAT_FECHA_CORTO(FECHA)+','+CASE WHEN ESTA_CANCELADO='1' THEN 'CANCELADO' ELSE 'ACTIVO' END INFORMACION " &
+                "FROM INVENTARIO_MOVIMIENTOS_GLOBAL " &
+                "WHERE CODIGO_TIPO_DOCUMENTO='ER' AND FOLIO_REFERENCIA=@FOLIO_ORDEN_COMPRA " &
+                "ORDER BY FECHA"
+
+            Using da As New SqlDataAdapter(sSQL, Me._Conexion)
+                da.SelectCommand.CommandType = CommandType.Text
+
+                With da.SelectCommand
+                    .Parameters.Add("@FOLIO_ORDEN_COMPRA", SqlDbType.NVarChar, 15).Value = sFolioOrdenCompra
+                End With
+
+                da.Fill(dTabla)
+            End Using
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
+        End Try
+
+        Return dTabla
+    End Function
+
+    Public Function GrabaRelacionEntradaInventario(ByVal sFolioEntradaInventario As String) As Boolean
+        Const sProcedure As String = "GrabaRelacionEntradaInventario"
+        Dim bResultado As Boolean = True
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_COMPRAS_GRABA_RELACION_ENTRADA_INVENTARIO"
+
+            sqlParametro = .Parameters.Add("@FOLIO_COMPRA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_COMPRA
+            sqlParametro = .Parameters.Add("@FOLIO_MOVIMIENTO_INVENTARIO", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolioEntradaInventario
+
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
+    End Function
 #End Region
 
 End Class

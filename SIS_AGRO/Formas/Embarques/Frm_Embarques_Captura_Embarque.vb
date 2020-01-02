@@ -1287,7 +1287,7 @@ Buscar:
             Dim oInventario As New Inventarios_Movimientos
             oInventario.StartPosition = FormStartPosition.CenterScreen
 
-            oInventario.LlamdoExterior = True
+            oInventario.LlamadoExteriorGenerarSalidaEmbarque = True
             oInventario.CodigoDocumentoParaGrabar = "SEI"
             oInventario.FolioEmbarque = Me.txtFolioEmbarque.Text
 
@@ -2151,7 +2151,7 @@ BuscaPalet:
             'Por protección se valida esto(aunque el botón seguramente estará bloqueado desde el consultar).
             'If Me.oEmbarque.ES_FACTURA_EMBARQUE_EXTRANJERO = False Then
             If txtLEN(Me.oEmbarque.CODIGO_TIPO_DOCUMENTO_FACTURA_EMBARQUE_EXTRANJERO) = False Then
-                MsgBox("Sólo embarques al extranjero se pueden facturar desde esta pantalla. " & vbCrLf & _
+                MsgBox("Sólo embarques al extranjero se pueden facturar desde esta pantalla. " & vbCrLf &
                        "Los nacionales se hacen directamente en la pantalla de facturación.", MsgBoxStyle.Exclamation, Me.Text)
                 Return False
             End If
@@ -2245,7 +2245,7 @@ BuscaPalet:
             'Por protección se valida esto(aunque el botón seguramente estará bloqueado desde el consultar).
             'If Me.oEmbarque.ES_FACTURA_EMBARQUE_EXTRANJERO = False Then
             If txtLEN(Me.oEmbarque.CODIGO_TIPO_DOCUMENTO_FACTURA_EMBARQUE_EXTRANJERO) = False Then
-                MsgBox("Sólo embarques al extranjero se les puede cancelar la facturar desde esta pantalla. " & vbCrLf & _
+                MsgBox("Sólo embarques al extranjero se les puede cancelar la facturar desde esta pantalla. " & vbCrLf &
                        "Los nacionales se hacen directamente en la pantalla de facturación.", MsgBoxStyle.Exclamation, Me.Text)
                 Return False
             End If
@@ -2303,7 +2303,7 @@ BuscaPalet:
             Dim oInventario As New Inventarios_Movimientos
             oInventario.StartPosition = FormStartPosition.CenterScreen
 
-            oInventario.LlamdoExterior = True
+            oInventario.LlamadoExteriorGenerarSalidaEmbarque = True
             oInventario.CodigoDocumentoParaGrabar = "SEI"
             oInventario.FolioEmbarque = Me.txtFolioEmbarque.Text
             oInventario.ConsultaExteriorSalida = True
@@ -2354,7 +2354,7 @@ BuscaPalet:
     Private Sub DesplegarEmpaques()
         Try
             Dim oElementos As New Class_CatEmpaques
-            With Me.CboEmpaque
+            With Me.cboEmpaque
                 .DisplayMember = "NOMBRE_EMPAQUE"
                 .ValueMember = "CODIGO_EMPAQUE"
                 Dim dView As New Data.DataView(oElementos.ObtenerElementosParaCapturaPalets)
