@@ -433,7 +433,7 @@ busca:
         Select Case e.KeyCode
             Case Keys.F6
 buscar:
-                MsgBox("FALTA")
+                'MsgBox("FALTA")
             Case Keys.Return
                 If txtLEN(Me.txtFolioOrdenCompra.Text) = True Then
                     Me.btnConsultarOrdenCompra.Focus()
