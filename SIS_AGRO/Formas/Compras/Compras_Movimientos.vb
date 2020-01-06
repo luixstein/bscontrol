@@ -4040,6 +4040,7 @@ BuscarCuentas:
             oInventario.LlamadoExteriorRecepcionarEntradaOrdenCompra = True
             oInventario.CodigoDocumentoParaGrabar = "ER" 'ER=ENTRADA RECEPCION COMPRA
             oInventario.FolioOrdenCompra = Me.txtFolioCompra.Text
+            oInventario.CodigoAlmacenOrdenCompra = Me.CboAlmacen.SelectedValue.ToString
 
             oInventario.ShowDialog()
             oInventario.Visible = False
