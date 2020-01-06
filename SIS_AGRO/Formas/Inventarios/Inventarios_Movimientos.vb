@@ -15,6 +15,7 @@ Public Class Inventarios_Movimientos
 
     Private _LlamadoExteriorRecepcionarEntradaOrdenCompra As Boolean
     Private _FolioOrdenCompra As String
+    Private _CodigoAlmacenOrdenCompra As String
 
     Private Estado As enumEstados
     Private oInventarios As New Class_Inventarios_Global
@@ -104,6 +105,15 @@ Public Class Inventarios_Movimientos
         End Get
         Set(ByVal value As String)
             Me._FolioOrdenCompra = value
+        End Set
+    End Property
+
+    Public Property CodigoAlmacenOrdenCompra() As String
+        Get
+            Return Me._CodigoAlmacenOrdenCompra
+        End Get
+        Set(ByVal value As String)
+            Me._CodigoAlmacenOrdenCompra = value
         End Set
     End Property
 
@@ -281,6 +291,7 @@ Public Class Inventarios_Movimientos
 
             Me.CboDocumento.SelectedValue = Me._CodigoDocumentoParaGrabar
             Me.txtFolioOrdenCompra.Text = Me._FolioOrdenCompra
+            Me.CboAlmacen.SelectedValue = Me._CodigoAlmacenOrdenCompra
             Me.ConsultarOrdenCompra()
 
             Me.tsbNuevo.Enabled = False
