@@ -974,7 +974,7 @@ BuscarCuentas:
             Return False
         End If
 
-        If SiTieneRenglones() = False Then
+        If Me.SiTieneRenglones() = False Then
             MsgBox("Asígne los artículos del movimiento.", MsgBoxStyle.Exclamation, sProcedure)
             Return False
         End If
@@ -1012,7 +1012,7 @@ BuscarCuentas:
         End If
 
         If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ER" Then
-            If Me.ValidaCantidadesDisponiblesOrdenCompra() = False Then
+            If Me.ValidaOrdenCompra = False Then
                 Return False
             End If
         End If
@@ -2691,6 +2691,11 @@ busca_serie:
                 Return False
             End If
 
+            If Me.CboAlmacen.SelectedValue.ToString <> oOrdenCompra.CODIGO_ALMACEN Then
+                MsgBox("La orden de compra tiene el almacén " & oOrdenCompra.CODIGO_ALMACEN & " y es diferente al que tiene seleccionado en este movimiento.", vbExclamation, sProcedure)
+                Return False
+            End If
+
             Dim oProveedor As New Class_CatProveedores(oOrdenCompra.CODIGO_PROVEEDOR)
 
             Me.txtProveedor.Text = oOrdenCompra.CODIGO_PROVEEDOR & "-" & oProveedor.Nombre_Proveedor
@@ -2917,6 +2922,7 @@ busca_serie:
     End Function
 
     Private Function GestionaArchivoSeries() As Boolean
+        Const sProcedure As String = "GestionaArchivoSeries"
         Dim bResultado As Boolean = False
         Dim sRutaArchivo As String = "", sTextLine As String = "", sArticulo As String = "", iRenglon As Integer = 0
         Dim iSeriesEstablecidas As Integer = 0, iArticulosEncontrados As Integer = 0, i As Integer = 1, iEstablecidos As Integer = 0
@@ -2964,13 +2970,14 @@ busca_serie:
             End Using
 
         Catch ex As Exception
-            HandleError(Me.Name, "GestionaArchivoSeries", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado
     End Function
 
     Private Function SeleccionarArchivo() As String
+        Const sProcedure As String = "SeleccionarArchivo"
         Dim sRutaArchivo As String = ""
         Try
             With OpenFileDialog1
@@ -2988,13 +2995,14 @@ busca_serie:
 
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "Seleccionar", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return sRutaArchivo
     End Function
 
     Private Function CantidadArticulosSerie(ByVal sCodigoArticulo As String) As Integer
+        Const sProcedure As String = "CantidadArticulosSerie"
         Dim iArticulosEncontrados As Integer = 0
         Try
             For i = 1 To Me.GridSeries.Rows - 1
@@ -3003,10 +3011,64 @@ busca_serie:
                 End If
             Next
         Catch ex As Exception
-            HandleError(Me.Name, "CantidadArticulosSerie", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
         Return iArticulosEncontrados
     End Function
+
+    Private Function ValidaOrdenCompra() As Boolean
+        Const sProcedure As String = "ValidaOrdenCompra"
+        Dim bResultado As Boolean = False
+        Try
+            If txtLEN(Me.txtFolioOrdenCompra.Text) = False Then
+                MsgBox("Indique el folio de la orden de compra.", MsgBoxStyle.Exclamation, sProcedure)
+                If Me.txtFolioOrdenCompra.Enabled = True Then
+                    Me.txtFolioOrdenCompra.Focus()
+                End If
+                Return False
+            End If
+
+            Dim oOrdenCompra As New Class_Compras_Global(Me.txtFolioOrdenCompra.Text, "OC" & Plaza.CODIGO_PLAZA.ToString)
+
+            If oOrdenCompra.Existe = False Then
+                MsgBox("La orden de compra no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                If Me.txtFolioOrdenCompra.Enabled = True Then
+                    Me.txtFolioOrdenCompra.Focus()
+                End If
+                Return False
+            End If
+
+            If Not (oOrdenCompra.ESTATUS = "G" Or oOrdenCompra.ESTATUS = "R") Then
+                MsgBox("La orden de compra no esta en estatus G(Grabada) o R(Parcialmente recepcionada).", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            Dim oOC As New Class_find("SELECT OC.FOLIO_COMPRA FROM COMPRA_GLOBAL OC INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(OC.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
+            "WHERE OC.FOLIO_COMPRA='" & sReplace(Me.txtFolioOrdenCompra.Text) & "' AND DOC.CODIGO_TIPO_DOCUMENTO='OC' ")
+
+            If txtLEN(oOC.Result1) = False Then
+                MsgBox("Este documento no es una orden de compra.", vbExclamation, sProcedure)
+                Return False
+            End If
+
+            If Me.CboAlmacen.SelectedValue.ToString <> oOrdenCompra.CODIGO_ALMACEN Then
+                MsgBox("La orden de compra tiene el almacén " & oOrdenCompra.CODIGO_ALMACEN & " y es diferente al que tiene seleccionado en este movimiento.", vbExclamation, sProcedure)
+                Return False
+            End If
+
+            If Me.ValidaCantidadesDisponiblesOrdenCompra() = False Then
+                Return False
+            End If
+
+            bResultado = True
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
 #End Region
 
 End Class

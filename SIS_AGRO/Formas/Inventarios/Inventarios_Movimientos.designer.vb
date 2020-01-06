@@ -558,7 +558,7 @@ Partial Class Inventarios_Movimientos
         '
         Me.TabControl1.Controls.Add(Me.TpArticulos)
         Me.TabControl1.Controls.Add(Me.TpSeries)
-        Me.TabControl1.Location = New System.Drawing.Point(7, 233)
+        Me.TabControl1.Location = New System.Drawing.Point(9, 233)
         Me.TabControl1.Margin = New System.Windows.Forms.Padding(2)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
