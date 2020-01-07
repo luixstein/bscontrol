@@ -1224,13 +1224,6 @@ BuscarCuentas:
             End If
         End If
 
-        If Me.oInventarios.ESTATUS = "A" Then 'En G si se permite.
-            If (Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "ENI" Or Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "ER") And Me.GridSeries.Rows > 1 Then
-                MsgBox("La cancelación de ENTRADAS con series no esta soportada, debe hacerse una salida manualmente.", MsgBoxStyle.Exclamation, sProcedure)
-                Return False
-            End If
-        End If
-
         If Me.oDocumentos.ES_TRANSFERENCIA = "1" Then
             If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString, Me.CboAlmacenDestino.SelectedValue.ToString) = False Then
                 MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar la transferencia.", MsgBoxStyle.Exclamation, sProcedure)
