@@ -1236,8 +1236,8 @@ BuscarCuentas:
             End If
         End If
 
-        If Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "ENI" And Me.oInventarios.ESTATUS = "A" Then
-            If Me.ValidarExistencias() = False Then
+        If (Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "ENI" OR Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "ER") And Me.oInventarios.ESTATUS = "A" Then
+            If oInventarios.ValidaExistencias() = False Then 'Esta funcion porque tambien valida series
                 Return False
             End If
         End If
