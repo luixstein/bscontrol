@@ -1790,6 +1790,7 @@ Buscar:
         Dim oUtileriasCancela As New Class_UtileriasFirmaElectronicaCancelacion
         Dim oPoliza As New Class_Contabilidad_Poliza_Global
         Dim sConceptoCancelacion As String = ""
+        Dim CancelarEntradas As Boolean = False
 
         If MsgBox("Deseas cancelar el movimiento de " & Me.CboDocumento.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, sProcedure) = MsgBoxResult.No Then
             Return False
@@ -1815,6 +1816,9 @@ Buscar:
             Else
                 'Continua, no hay validación de existencias, porque el cancelar una compra del nuevo modo(con entradas de inventarios) no afecta existencias(pero si disponibles si es del modo anterior por eso continua y dentro
                 'del stored de cancelación la distingue para no afectar existencias sino solamente disponibles).
+                If MsgBox("La compra tiene ENTRADAS DE INVENTARIO POR RECEPCION, Desea cancelarlas ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, sProcedure) = MsgBoxResult.Yes Then
+                    CancelarEntradas = True
+                End If
             End If
         End If
 
@@ -1839,6 +1843,7 @@ Buscar:
                 Me.oCompras.CONCEPTO_CANCELACION = sConceptoCancelacion
 
                 If Me.oCompras.CancelaCompra() = False Then
+                    MsgBox("Error al intentar cancelar el compra.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
             Else
@@ -1875,10 +1880,44 @@ Buscar:
                     Me.oCompras.FECHA_CANCELACION = oUtileriasCancela.FECHA_CANCELACION
 
                     If Me.oCompras.CancelaCompra() = False Then
-                        MsgBox("Error al intentar cancelar el movimiento de inventario.", MsgBoxStyle.Exclamation, sProcedure)
+                        MsgBox("Error al intentar cancelar el compra.", MsgBoxStyle.Exclamation, sProcedure)
                         Return False
                     End If
                 End If
+            End If
+
+            'Cancelar entradas
+            If CancelarEntradas Then
+                Dim oInventarios As Class_Inventarios_Global
+                Dim EntradaNoCancelada As Boolean = False
+                Dim foliosNoCancelados As String = ""
+
+                For i = 1 To Me.GridEntradas.Rows - 1
+                    If txtLEN(Me.GridEntradas.Cell(i, Me.igyGridEFolioEntrada).Text) Then
+                        oInventarios = New Class_Inventarios_Global(Me.GridEntradas.Cell(i, Me.igyGridEFolioEntrada).Text)
+
+                        If oInventarios.Existe Then
+                            If oInventarios.ValidaExistencias() = False Then
+                                foliosNoCancelados = foliosNoCancelados & Me.GridEntradas.Cell(i, Me.igyGridEFolioEntrada).Text & ","
+                                EntradaNoCancelada = True
+                                Continue For
+                            End If
+
+                            oInventarios.FECHA_CANCELACION = Me.oCompras.FECHA_CANCELACION
+                            If oInventarios.Cancelar() = False Then
+                                foliosNoCancelados = foliosNoCancelados & Me.GridEntradas.Cell(i, Me.igyGridEFolioEntrada).Text & ","
+                                EntradaNoCancelada = True
+                            End If
+                        End If
+
+                    End If
+                Next
+
+                If EntradaNoCancelada Then
+                    foliosNoCancelados = foliosNoCancelados.Substring(0, foliosNoCancelados.Length - 1) 'Quita la ultima coma
+                    MsgBox("Las entradas " & foliosNoCancelados & " no pudieron ser canceladas, debera hacerse manualmente.", MsgBoxStyle.Exclamation, sProcedure)
+                End If
+
             End If
 
             MsgBox("Compra cancelada satisfactoriamente.", MsgBoxStyle.Information, sProcedure)

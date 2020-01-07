@@ -766,6 +766,85 @@ Public Class Class_Inventarios_Global
         Return dTabla
     End Function
 
+    Public Function ValidaExistencias() As Boolean
+        Dim bResultado As Boolean = False
+        Dim dTabla As DataTable
+        Dim sSQL As String, da As SqlDataAdapter
+        Try
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            ''Primero evaluamos los artículos que no son seriados.
+            sSQL = "SELECT I.CODIGO_ARTICULO,MAX(A.DESCRIPCION) DESCRIPCION,SUM(I.CANTIDAD) CANTIDAD,MAX(ALM.NOMBRE_ALMACEN) NOMBRE_ALMACEN " &
+                "FROM INVENTARIO_MOVIMIENTOS_DETALLE I " &
+                "INNER JOIN INVENTARIO_MOVIMIENTOS_GLOBAL G ON(I.FOLIO_MOVIMIENTO_INVENTARIO=G.FOLIO_MOVIMIENTO_INVENTARIO) " &
+                "INNER JOIN INVENTARIO_LOTES_COSTOS L ON(I.ID_INVENTARIO_MOVIMIENTOS_DETALLE=L.ID_INVENTARIO_MOVIMIENTOS_DETALLE) " &
+                "INNER JOIN CAT_ARTICULOS A ON(I.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
+                "LEFT JOIN INVENTARIO_EXISTENCIA_ARTICULOS E ON(I.CODIGO_ARTICULO=E.CODIGO_ARTICULO AND G.CODIGO_ALMACEN1=E.CODIGO_ALMACEN) " &
+                "INNER JOIN CAT_ALMACENES ALM ON(G.CODIGO_ALMACEN1=ALM.CODIGO_ALMACEN) " &
+                "WHERE I.FOLIO_MOVIMIENTO_INVENTARIO='" & Me._FOLIO_MOVIMIENTO_INVENTARIO & "' AND LEN(L.NUMERO_SERIE)=0 " &
+                "GROUP BY I.CODIGO_ARTICULO " &
+                "HAVING SUM(I.CANTIDAD)>ISNULL(MAX(E.EXISTENCIA),0) "
+
+            dTabla = New DataTable("detalle")
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+
+            For Each dRow As DataRow In dTabla.Rows
+                MsgBox("No hay existencia suficiente del artículo " & dRow("DESCRIPCION").ToString & " en el almacén " & dRow("NOMBRE_ALMACEN").ToString & ".", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
+                Return False
+            Next
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            'Luego los que si son seriados.
+            sSQL = "SELECT I.CODIGO_ARTICULO,A.DESCRIPCION,I.CANTIDAD,C.NUMERO_SERIE " &
+                "FROM INVENTARIO_MOVIMIENTOS_DETALLE I " &
+                "INNER JOIN INVENTARIO_LOTES_COSTOS C ON(I.ID_INVENTARIO_MOVIMIENTOS_DETALLE=C.ID_INVENTARIO_MOVIMIENTOS_DETALLE) " &
+                "INNER JOIN CAT_ARTICULOS A ON(I.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
+                "WHERE I.FOLIO_MOVIMIENTO_INVENTARIO='" & Me._FOLIO_MOVIMIENTO_INVENTARIO & "' AND LEN(C.NUMERO_SERIE)>0 AND C.CANTIDAD_ORIGINAL>C.CANTIDAD_DISPONIBLE"
+
+            dTabla = New DataTable("detalle")
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+
+            For Each dRow As DataRow In dTabla.Rows
+                MsgBox("No hay existencia suficiente del artículo " & dRow("DESCRIPCION").ToString & " con el número de serie " & dRow("NUMERO_SERIE").ToString & ".", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
+                Return False
+            Next
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            'Esta validación es simple protección para evitar que catexis quede negativo, digamos que un seriado tiene disp en costos, pero no en caexis
+            'Esta validación es la validación base que ya existia para validar agrupando por artículos por si repiten renglones en el movimiento, se suman y se validan vs catexis
+
+            sSQL = "SELECT I.CODIGO_ARTICULO,MAX(A.DESCRIPCION) DESCRIPCION,SUM(I.CANTIDAD) CANTIDAD,ISNULL(MAX(E.EXISTENCIA),0)EXISTENCIA,MAX(ALM.NOMBRE_ALMACEN) NOMBRE_ALMACEN " &
+            "FROM INVENTARIO_MOVIMIENTOS_DETALLE I " &
+            "INNER JOIN INVENTARIO_MOVIMIENTOS_GLOBAL G ON(I.FOLIO_MOVIMIENTO_INVENTARIO=G.FOLIO_MOVIMIENTO_INVENTARIO) " &
+            "INNER JOIN CAT_ARTICULOS A ON(I.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
+            "LEFT JOIN INVENTARIO_EXISTENCIA_ARTICULOS E ON(I.CODIGO_ARTICULO=E.CODIGO_ARTICULO AND G.CODIGO_ALMACEN1=E.CODIGO_ALMACEN) " &
+            "INNER JOIN CAT_ALMACENES ALM ON(G.CODIGO_ALMACEN1=ALM.CODIGO_ALMACEN) " &
+            "WHERE I.FOLIO_MOVIMIENTO_INVENTARIO='" & Me._FOLIO_MOVIMIENTO_INVENTARIO & "'" &
+            "GROUP BY I.CODIGO_ARTICULO " &
+            "HAVING SUM(I.CANTIDAD)>ISNULL(MAX(E.EXISTENCIA),0) "
+
+            dTabla = New DataTable("detalle")
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+
+            For Each dRow As DataRow In dTabla.Rows
+                MsgBox("No hay existencia suficiente del artículo " & dRow("DESCRIPCION").ToString & " en el almacén " & dRow("NOMBRE_ALMACEN").ToString & ".", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
+                Return False
+            Next
+
+            bResultado = True
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ValidaExistencias", ex)
+        End Try
+
+        Return bResultado
+    End Function
+
 #End Region
 
 End Class
