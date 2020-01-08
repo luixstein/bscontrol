@@ -254,6 +254,11 @@ Public Class Compras_Movimientos
             Me.Cambia_Estado(enumEstados.NUEVO)
             'Me.txtFolioCompra.Focus()
         End If
+
+        If Empresa_Sistema.TIPO_CAMBIO_POR_DIA Then
+            Me.ObtenerTipoCambioDia()
+        End If
+
     End Sub
 
     Private Sub CboAlmacen_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboAlmacen.KeyDown
@@ -3718,6 +3723,10 @@ BuscarCuentas:
                 Me.txtIVA.ReadOnly = True 'Si se está en modo USD no será editable el de MXN
                 Me.txtIVA_USD.ReadOnly = False
 
+                If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
+                    Me.ObtenerTipoCambioDia()
+                End If
+
             Else 'Es moneda en MXN o esta en blanco
                 Me.txtTipoCambio.Text = "0"
                 Me.txtTipoCambio.Visible = False : Me.txtTipoCambio.Enabled = False : Me.LblDisplayTipoCambio.Visible = False
@@ -4088,6 +4097,10 @@ BuscarCuentas:
                 Me.Inicializa()
                 Me.CboDocumento.SelectedValue = "CO" & Usuario.Codigo_Plaza.ToString
                 Me.Cambia_Estado(enumEstados.NUEVO)
+
+                If Empresa_Sistema.TIPO_CAMBIO_POR_DIA Then
+                    Me.ObtenerTipoCambioDia()
+                End If
 
                 Me.txtFolioOC_Inventarios.Text = sFolioOC
                 If Me.TraerTodasEntradasInventarios() = True Then

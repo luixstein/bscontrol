@@ -10,36 +10,19 @@
 
     End Sub
 
-
-    Private Sub tsbGrabar_Click(sender As Object, e As EventArgs) Handles tsbGrabar.Click
-        If MsgBox("Deseas grabar el tipo de cambio del día ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Grabar") = MsgBoxResult.Yes Then
-            If Me.Grabar() = True Then
-                MsgBox("Tipo de cambio del día grabado correctamente.", MsgBoxStyle.Information, Me.Name)
-                Me.Consultar()
-            End If
-
-        End If
-
-    End Sub
-
-    Private Sub txtTipoCambio_KeyDown(sender As Object, e As System.Windows.Forms.KeyEventArgs) Handles txtTipoCambio.KeyDown
-        If e.KeyCode = Keys.Enter Then
-            Me.tsbGrabar.PerformClick()
-        End If
-    End Sub
-
     Private Sub Consultar()
 
         oTipoCambioDia.FECHA = Me.dpFecha.Value
-        If oTipoCambioDia.Consultar = True And oTipoCambioDia.TIPO_DE_CAMBIO <> 0 Then
-            Me.TxtTipoCambio.Text = oTipoCambioDia.TIPO_DE_CAMBIO.ToString
-            Me.tsbGrabar.Enabled = False
-            Me.TxtTipoCambio.Enabled = False
-
-        Else
-            Me.TxtTipoCambio.Text = "0"
-            Me.tsbGrabar.Enabled = True
-            Me.TxtTipoCambio.Enabled = True
+        If oTipoCambioDia.Consultar = True Then
+            If oTipoCambioDia.TIPO_DE_CAMBIO <> 0 Then
+                Me.TxtTipoCambio.Text = oTipoCambioDia.TIPO_DE_CAMBIO.ToString
+                Me.tsbGrabar.Enabled = False
+                Me.TxtTipoCambio.Enabled = False
+            Else
+                Me.TxtTipoCambio.Text = "0"
+                Me.tsbGrabar.Enabled = True
+                Me.TxtTipoCambio.Enabled = True
+            End If
         End If
 
     End Sub
@@ -78,6 +61,21 @@
         Return bResultado
     End Function
 
+    Private Sub tsbGrabar_Click(sender As Object, e As EventArgs) Handles tsbGrabar.Click
+        If MsgBox("Deseas grabar el tipo de cambio del día ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Grabar") = MsgBoxResult.Yes Then
+            If Me.Grabar() = True Then
+                MsgBox("Tipo de cambio del día grabado correctamente.", MsgBoxStyle.Information, Me.Name)
+                Me.Consultar()
+            End If
+        End If
+    End Sub
+
+    Private Sub txtTipoCambio_KeyDown(sender As Object, e As System.Windows.Forms.KeyEventArgs) Handles TxtTipoCambio.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            Me.tsbGrabar.PerformClick()
+        End If
+    End Sub
+
     Private Sub TxtTipoCambio_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TxtTipoCambio.KeyPress
         txtSoloNumerosDecimales(e, Me.TxtTipoCambio.Text)
         txtNoBeep(e)
@@ -86,4 +84,15 @@
     Private Sub dpFecha_ValueChanged(sender As Object, e As EventArgs) Handles dpFecha.ValueChanged
         Consultar()
     End Sub
+
+    Private Sub dpFecha_KeyDown(sender As Object, e As KeyEventArgs) Handles dpFecha.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            Consultar()
+        End If
+    End Sub
+
+    Private Sub dpFecha_KeyPress(sender As Object, e As KeyPressEventArgs) Handles dpFecha.KeyPress
+        txtNoBeep(e)
+    End Sub
+    
 End Class
