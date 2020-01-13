@@ -466,6 +466,7 @@ Partial Class Inventarios_Movimientos
         '
         'btnSeries
         '
+        Me.btnSeries.Enabled = False
         Me.btnSeries.Location = New System.Drawing.Point(3, 512)
         Me.btnSeries.Margin = New System.Windows.Forms.Padding(2)
         Me.btnSeries.Name = "btnSeries"

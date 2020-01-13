@@ -512,6 +512,7 @@ buscar:
                     Me.Grid1.Locked = False
                     Me.GridSeries.Locked = False
                     Me.btnSeries.Enabled = True
+                    Me.btnSeleccionarArchivoSeries.Enabled = True
                     Me.CboConceptoInventario.Enabled = True
 
                     Me.OcultaControles()
@@ -550,6 +551,7 @@ buscar:
                     Me.Grid1.Locked = False
                     Me.GridSeries.Locked = False
                     Me.btnSeries.Enabled = True
+                    Me.btnSeleccionarArchivoSeries.Enabled = True
                     Me.CboConceptoInventario.Enabled = False
 
                     Me.OcultaControles()
@@ -580,6 +582,7 @@ buscar:
                     Me.txtFolioEmbarque.Enabled = False
                     Me.Grid1.Locked = True
                     Me.btnSeries.Enabled = False
+                    Me.btnSeleccionarArchivoSeries.Enabled = False
                     Me.GridSeries.Locked = True
                     Me.CboConceptoInventario.Enabled = False
 
@@ -603,6 +606,7 @@ buscar:
                     Me.txtFolioEmbarque.Enabled = False
                     Me.Grid1.Locked = True
                     Me.btnSeries.Enabled = False
+                    Me.btnSeleccionarArchivoSeries.Enabled = False
                     Me.GridSeries.Locked = False
                     Me.CboConceptoInventario.Enabled = False
 

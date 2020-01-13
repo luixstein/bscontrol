@@ -1346,7 +1346,7 @@ Buscar:
         Return bResultado
     End Function
 
-    Function Aplicar() As Boolean
+    Private Function Aplicar() As Boolean
         Const sProcedure As String = "Aplicar"
         Dim bResultado As Boolean = False
         Dim i As Integer, sListaIDsDetalle As String = "", sListaSeries As String = ""
@@ -4107,6 +4107,9 @@ BuscarCuentas:
                     Me.AgregarTodasEntradasInventarios()
                 End If
                 Me.TabControl1.SelectedIndex = 0
+
+                Dim sender As New Object, e As New EventArgs
+                tsbAplicar_Click(sender, e)
             End If
 
             oInventario.Dispose()
