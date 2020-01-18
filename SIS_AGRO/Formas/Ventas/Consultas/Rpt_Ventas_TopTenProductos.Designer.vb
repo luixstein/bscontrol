@@ -98,7 +98,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox1.Size = New System.Drawing.Size(1273, 128)
+        Me.GroupBox1.Size = New System.Drawing.Size(1290, 128)
         Me.GroupBox1.TabIndex = 4
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Filtros"
@@ -223,6 +223,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.TxtUtilidadMaxima.Name = "TxtUtilidadMaxima"
         Me.TxtUtilidadMaxima.Size = New System.Drawing.Size(64, 22)
         Me.TxtUtilidadMaxima.TabIndex = 6
+        Me.TxtUtilidadMaxima.Text = "100"
         '
         'LblUtilidadMaxima
         '
@@ -358,7 +359,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.DtFechaHasta.Margin = New System.Windows.Forms.Padding(4)
         Me.DtFechaHasta.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.DtFechaHasta.Name = "DtFechaHasta"
-        Me.DtFechaHasta.Size = New System.Drawing.Size(112, 22)
+        Me.DtFechaHasta.Size = New System.Drawing.Size(136, 22)
         Me.DtFechaHasta.TabIndex = 11
         Me.DtFechaHasta.Value = New Date(2009, 9, 26, 0, 0, 0, 0)
         '
@@ -380,7 +381,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.DtFechaDesde.Margin = New System.Windows.Forms.Padding(4)
         Me.DtFechaDesde.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.DtFechaDesde.Name = "DtFechaDesde"
-        Me.DtFechaDesde.Size = New System.Drawing.Size(112, 22)
+        Me.DtFechaDesde.Size = New System.Drawing.Size(136, 22)
         Me.DtFechaDesde.TabIndex = 10
         Me.DtFechaDesde.Value = New Date(2009, 9, 26, 0, 0, 0, 0)
         '
@@ -401,7 +402,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.Grid.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid.Name = "Grid"
         Me.Grid.Rows = 20
-        Me.Grid.Size = New System.Drawing.Size(1253, 395)
+        Me.Grid.Size = New System.Drawing.Size(1269, 395)
         Me.Grid.TabIndex = 223
         Me.Grid.UncheckedImage = CType(resources.GetObject("Grid.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -416,7 +417,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.gbConsulta.Margin = New System.Windows.Forms.Padding(4)
         Me.gbConsulta.Name = "gbConsulta"
         Me.gbConsulta.Padding = New System.Windows.Forms.Padding(4)
-        Me.gbConsulta.Size = New System.Drawing.Size(1273, 489)
+        Me.gbConsulta.Size = New System.Drawing.Size(1290, 489)
         Me.gbConsulta.TabIndex = 224
         Me.gbConsulta.TabStop = False
         Me.gbConsulta.Text = "Consulta"
@@ -470,7 +471,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.ToolStrip2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbConsultar, Me.tsbImprimir, Me.tsbSalir})
         Me.ToolStrip2.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip2.Name = "ToolStrip2"
-        Me.ToolStrip2.Size = New System.Drawing.Size(1295, 27)
+        Me.ToolStrip2.Size = New System.Drawing.Size(1317, 27)
         Me.ToolStrip2.TabIndex = 225
         Me.ToolStrip2.Text = "ToolStrip2"
         '
@@ -502,7 +503,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1295, 688)
+        Me.ClientSize = New System.Drawing.Size(1317, 688)
         Me.Controls.Add(Me.gbConsulta)
         Me.Controls.Add(Me.ToolStrip2)
         Me.Controls.Add(Me.GroupBox1)

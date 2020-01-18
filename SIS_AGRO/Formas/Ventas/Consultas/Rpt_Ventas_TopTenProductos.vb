@@ -274,8 +274,9 @@ Public Class Rpt_Ventas_TopTenProductos
 
 
         'Me.CboSemana1.Text = "2011-26" '& DatePart("ww", TemporadaActiva.FECHA1, FirstDayOfWeek.Sunday, FirstWeekOfYear.FirstFullWeek).ToString
-        Me.DtFechaDesde.Value = CDate("2011-06-26")
         'Me.CboSemana2.Text = Format(Now, "yyyy-") & Format(CInt(DatePart("ww", Now, FirstDayOfWeek.Sunday, FirstWeekOfYear.FirstFullWeek).ToString) - 1, "00")
+
+        Me.DtFechaDesde.Value = FechaActualINI()
         Me.DtFechaHasta.Value = Now
 
         'Me.cboCultivo.Focus()
@@ -642,6 +643,32 @@ Public Class Rpt_Ventas_TopTenProductos
         End If
     End Sub
 
+    Private Function Validar() As Boolean
+        If Me.RbtnCategoria.Checked = True Then
+            If txtLEN(Me.TxtCategoria.Text) = False Then
+                MsgBox("Capture una categoría.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.TxtCategoria.Focus()
+                Return False
+            End If
+        End If
+
+        If Me.RbtnPorcentaje.Checked = True Then
+            If txtLEN(Me.TxtPorcentaje.Text) = False Then
+                MsgBox("Capture un porcentaje.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.TxtPorcentaje.Focus()
+                Return False
+            End If
+        End If
+
+        If txtLEN(Me.TxtUtilidadMaxima.Text) = False Then
+            MsgBox("Capture la utilidad maxima.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.TxtUtilidadMaxima.Focus()
+            Return False
+        End If
+
+        Return True
+    End Function
+
     Public Sub Consultar()
         Dim dt As New DataTable
         Try
@@ -657,6 +684,11 @@ Public Class Rpt_Ventas_TopTenProductos
             End If
 
             If Me.ValidarPeriodo = False Then
+                Exit Sub
+            End If
+
+            If Me.Validar() = False Then
+
                 Exit Sub
             End If
 
@@ -701,7 +733,7 @@ Public Class Rpt_Ventas_TopTenProductos
                         .Add(New SqlParameter("@FECHA1", SqlDbType.NVarChar, 20)).Value = Format(Me.DtFechaDesde.Value, "yyyy-dd-MM")
                         .Add(New SqlParameter("@FECHA2", SqlDbType.NVarChar, 20)).Value = Format(Me.DtFechaHasta.Value, "yyyy-dd-MM")
                         .Add(New SqlParameter("@CODIGO_ZONA", SqlDbType.NVarChar, 2)).Value = Me.CboZona.SelectedValue.ToString
-                        .Add(New SqlParameter("@PORCENTAJE", SqlDbType.SmallInt)).Value = CInt(Me.TxtPorcentaje.Text)
+                        .Add(New SqlParameter("@PORCENTAJE", SqlDbType.SmallInt)).Value = IIf(txtLEN(Me.TxtPorcentaje.Text), CInt(Me.TxtPorcentaje.Text), 0)
                         .Add(New SqlParameter("@DESCRIPCION", SqlDbType.NVarChar, 30)).Value = Me.TxtDescripcion.Text.ToUpper
                         .Add(New SqlParameter("@MIN", SqlDbType.NVarChar, 4)).Value = Me.TxtMin.Text
                         .Add(New SqlParameter("@TIPO_PAGO", SqlDbType.NVarChar, 1)).Value = Me.cboTipoPago.SelectedValue.ToString

@@ -226,6 +226,7 @@ Partial Public Class AppMenu
         Me.CapturaAlimentaciónToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CapturaParametríaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConsultasToolStripMenuItem5 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.GlobalDeDocumentosToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.UtileriasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AdministracionToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ClientesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -239,7 +240,6 @@ Partial Public Class AppMenu
         Me.CostoCorteAcarreoEmpaqueYEmbarqueToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.GlobalDeDocumentosToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
@@ -973,14 +973,12 @@ Partial Public Class AppMenu
         Me.TopTenClientesToolStripMenuItem.Name = "TopTenClientesToolStripMenuItem"
         Me.TopTenClientesToolStripMenuItem.Size = New System.Drawing.Size(214, 26)
         Me.TopTenClientesToolStripMenuItem.Text = "TopTen Clientes"
-        Me.TopTenClientesToolStripMenuItem.Visible = False
         '
         'TopTenProductosToolStripMenuItem
         '
         Me.TopTenProductosToolStripMenuItem.Name = "TopTenProductosToolStripMenuItem"
         Me.TopTenProductosToolStripMenuItem.Size = New System.Drawing.Size(214, 26)
         Me.TopTenProductosToolStripMenuItem.Text = "TopTen Productos"
-        Me.TopTenProductosToolStripMenuItem.Visible = False
         '
         'ComparativoToolStripMenuItem
         '
@@ -1550,6 +1548,12 @@ Partial Public Class AppMenu
         Me.ConsultasToolStripMenuItem5.Size = New System.Drawing.Size(226, 26)
         Me.ConsultasToolStripMenuItem5.Text = "Consultas"
         '
+        'GlobalDeDocumentosToolStripMenuItem2
+        '
+        Me.GlobalDeDocumentosToolStripMenuItem2.Name = "GlobalDeDocumentosToolStripMenuItem2"
+        Me.GlobalDeDocumentosToolStripMenuItem2.Size = New System.Drawing.Size(235, 26)
+        Me.GlobalDeDocumentosToolStripMenuItem2.Text = "Global de documentos"
+        '
         'UtileriasToolStripMenuItem
         '
         Me.UtileriasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AdministracionToolStripMenuItem, Me.ConfiguraciónDeUsuariosToolStripMenuItem, Me.MonitoDeTimbradosToolStripMenuItem, Me.EmbarquesMasivosToolStripMenuItem, Me.GrabaImagenQRToolStripMenuItem, Me.TipoCambioDelDiaToolStripMenuItem})
@@ -1634,12 +1638,6 @@ Partial Public Class AppMenu
         Me.MenuSalir2.Name = "MenuSalir2"
         Me.MenuSalir2.Size = New System.Drawing.Size(50, 24)
         Me.MenuSalir2.Text = "&Salir"
-        '
-        'GlobalDeDocumentosToolStripMenuItem2
-        '
-        Me.GlobalDeDocumentosToolStripMenuItem2.Name = "GlobalDeDocumentosToolStripMenuItem2"
-        Me.GlobalDeDocumentosToolStripMenuItem2.Size = New System.Drawing.Size(235, 26)
-        Me.GlobalDeDocumentosToolStripMenuItem2.Text = "Global de documentos"
         '
         'pbLogo
         '
