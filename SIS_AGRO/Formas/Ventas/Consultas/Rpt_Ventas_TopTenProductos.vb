@@ -537,7 +537,7 @@ Public Class Rpt_Ventas_TopTenProductos
             Me.txtSum4.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyVenta)))
             Me.txtSum2.Text = FormatImporteContable(CDbl(Me.Grid.Cell(1, Me.igyCosto).Text))
         Else
-            Me.txtSum1.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyVenta)))
+            Me.txtSum1.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyPTCVenta)))
         End If
     End Sub
 
@@ -698,7 +698,6 @@ Public Class Rpt_Ventas_TopTenProductos
             End If
 
             dt.Dispose()
-            Me.Totales()
 
         Catch ex As Exception
             HandleError(Me.Name, "Consultar", ex)
