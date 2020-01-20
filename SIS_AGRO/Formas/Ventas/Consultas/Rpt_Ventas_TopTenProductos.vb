@@ -263,42 +263,30 @@ Public Class Rpt_Ventas_TopTenProductos
 
 
     Private Sub Rpt_Ventas_TopTenProductos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        'Me.DesplegarCultivos()
-        'Me.DesplegarSemana1()
-        'Me.DesplegarSemana2()
-        'Me.DesplegarMercado()
         Me.DesplegarZona()
         Me.DesplegarDocumentos()
         Me.DesplegarOrden()
         Me.DesplegarTipoPago()
 
-
-        'Me.CboSemana1.Text = "2011-26" '& DatePart("ww", TemporadaActiva.FECHA1, FirstDayOfWeek.Sunday, FirstWeekOfYear.FirstFullWeek).ToString
-        'Me.CboSemana2.Text = Format(Now, "yyyy-") & Format(CInt(DatePart("ww", Now, FirstDayOfWeek.Sunday, FirstWeekOfYear.FirstFullWeek).ToString) - 1, "00")
-
         Me.DtFechaDesde.Value = FechaActualINI()
         Me.DtFechaHasta.Value = Now
-
-        'Me.cboCultivo.Focus()
+        Me.txtTipoCambio.Text = "0"
 
         Me.Inicializa()
         Me.InicializaGrid()
+        'Me.ocultarElementos()
 
         If Me._ConsultaExterior = True Then
-            'Me.CboSemana1.SelectedValue = Me._TopTenConsultaExteriorSemana1.ToString
-            'Me.CboSemana2.SelectedValue = Me._TopTenConsultaExteriorSemana2.ToString
             Me.DtFechaDesde.Value = CDate(Me._TopTenConsultaExteriorDia1)
             Me.DtFechaHasta.Value = CDate(Me._TopTenConsultaExteriorDia2)
-            'Me.cboCultivo.SelectedValue = Me._TopTenConsultaExteriorCodCultivo.ToString
             Me.TxtCliente.Text = Me._TopTenConsultaExteriorCliente.ToString
-            'Me.txtTipoCambio.Text = Me._TopTenConsultaExteriorTipoCambio.ToString
             Me.CboZona.SelectedValue = Me._TopTenConsultaExteriorZona.ToString
-            'Me.cboMercado.SelectedValue = Me._TopTenConsultaExteriorMercado.ToString
 
             Me.GroupBox1.Enabled = False
             Me.Consultar()
-            'Child.TopTenConsultaExteriorPresentacion 
         End If
+
+
 
         If Me.ModoAgrupado = enumModoAgrupado.CLIENTES Then
             Me.Text = "Reporte TopTen de Clientes"
@@ -318,26 +306,19 @@ Public Class Rpt_Ventas_TopTenProductos
 
         'Columna = Me.Grid.Selection.FirstCol
         'Renglon = Me.Grid.Selection.FirstRow
-        ''If Columna = Me.igyPresentacion Then
-        ''    Exit Sub
-        ''End If
 
         'If Me._ConsultaExterior = True Then
         '    Exit Sub
         'End If
 
-        'vdg = Me.Grid.Cell(Renglon, Me.igyCodigo).Text 'Grid.Rows(Renglon).Cell("FOLIO_POLIZA")
+        'vdg = Me.Grid.Cell(Renglon, Me.igyCodigo).Text
 
         'Dim Child As New Rpt_Ventas_TopTenProductos()
-        ''Child.TopTenConsultaExteriorSemana1 = Me.CboSemana1.SelectedValue.ToString
-        ''Child.TopTenConsultaExteriorSemana2 = Me.CboSemana2.SelectedValue.ToString
         'Child.TopTenConsultaExteriorDia1 = Me.DtFechaDesde.Value.ToString
         'Child.TopTenConsultaExteriorDia2 = Me.DtFechaHasta.Value.ToString
-        ''Child.TopTenConsultaExteriorPresentacion = Me.Grid.Cell(Renglon, Me.igyPresentacion).Text
 
         'If Me.ModoAgrupado = enumModoAgrupado.CLIENTES Then
         '    Child.ModoAgrupado = Rpt_Ventas_TopTenProductos.enumModoAgrupado.PRODUCTOS
-        '    'Child.TopTenConsultaExteriorCodCultivo = Me.cboCultivo.SelectedValue.ToString
         '    Child.TopTenConsultaExteriorCliente = vdg
         'Else
         '    Child.ModoAgrupado = Rpt_Ventas_TopTenProductos.enumModoAgrupado.CLIENTES
@@ -371,83 +352,6 @@ Public Class Rpt_Ventas_TopTenProductos
     End Sub
 
     Private Sub FormateaGrid()
-        'Me.Grid.Column(Me.igyCodigo).Width = 70
-        'Me.Grid.Column(Me.igyDescripcion).Width = 300
-        'Me.Grid.Column(Me.igyCantidad).Width = 100
-        'Me.Grid.Column(Me.igyPresentacion).Width = 80
-        'Me.Grid.Column(Me.igyImporte).Width = 80
-        'Me.Grid.Column(Me.igyPrecioPromedio).Width = 80
-        'Me.Grid.Column(Me.igyPorcParticipacion).Width = 80
-        'Me.Grid.Column(Me.igyPartAcumulada).Width = 80
-        'Me.Grid.Column(Me.igyImporteTotalDolares).Width = 80
-        'Me.Grid.Column(Me.igyImporteTotalPesos).Width = 80
-        'Me.Grid.Column(Me.igyPrecioPromedioDolares).Width = 80
-        'Me.Grid.Column(Me.igyPrecioPromedioPesos).Width = 80
-
-        'Me.Grid.Cell(0, Me.igyCodigo).Text = "Código"
-        'Me.Grid.Cell(0, Me.igyDescripcion).Text = "Descripción"
-        'Me.Grid.Cell(0, Me.igyCantidad).Text = "Cant."
-        'Me.Grid.Cell(0, Me.igyPresentacion).Text = "Presentación."
-        'Me.Grid.Cell(0, Me.igyImporte).Text = "Venta."
-        'Me.Grid.Cell(0, Me.igyPrecioPromedio).Text = "Precio prom."
-        'Me.Grid.Cell(0, Me.igyPorcParticipacion).Text = "Part."
-        'Me.Grid.Cell(0, Me.igyPartAcumulada).Text = "Part. Acum."
-        'Me.Grid.Cell(0, Me.igyImporteTotalDolares).Text = "Importe total dolares."
-        'Me.Grid.Cell(0, Me.igyImporteTotalPesos).Text = "Importe total pesos."
-        'Me.Grid.Cell(0, Me.igyPrecioPromedioDolares).Text = "Precio prom. dolares"
-        'Me.Grid.Cell(0, Me.igyPrecioPromedioPesos).Text = "Precio prom. pesos"
-
-        'Me.Grid.Column(Me.igyPresentacion).Alignment = FlexCell.AlignmentEnum.CenterCenter
-        'Me.Grid.Column(Me.igyPorcParticipacion).Alignment = FlexCell.AlignmentEnum.RightCenter
-        'Me.Grid.Column(Me.igyPartAcumulada).Alignment = FlexCell.AlignmentEnum.RightCenter
-
-        'Me.Grid.Column(Me.igyCantidad).Mask = FlexCell.MaskEnum.Numeric
-        'Me.Grid.Column(Me.igyCantidad).DecimalLength = 0
-        'Me.Grid.Column(Me.igyCantidad).Alignment = FlexCell.AlignmentEnum.RightCenter
-
-        'Me.Grid.Column(Me.igyPrecioPromedio).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-        'Me.Grid.Column(Me.igyPrecioPromedio).Mask = FlexCell.MaskEnum.Numeric
-        'Me.Grid.Column(Me.igyPrecioPromedio).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
-        'Me.Grid.Column(Me.igyPrecioPromedio).Alignment = FlexCell.AlignmentEnum.RightCenter
-
-        'Me.Grid.Column(Me.igyImporteTotalDolares).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-        'Me.Grid.Column(Me.igyImporteTotalDolares).Mask = FlexCell.MaskEnum.Numeric
-        'Me.Grid.Column(Me.igyImporteTotalDolares).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-        'Me.Grid.Column(Me.igyImporteTotalDolares).Alignment = FlexCell.AlignmentEnum.RightCenter
-
-        'Me.Grid.Column(Me.igyImporte).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-        'Me.Grid.Column(Me.igyImporte).Mask = FlexCell.MaskEnum.Numeric
-        'Me.Grid.Column(Me.igyImporte).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-        'Me.Grid.Column(Me.igyImporte).Alignment = FlexCell.AlignmentEnum.RightCenter
-
-        'Me.Grid.Column(Me.igyCodigo).Visible = True
-        'Me.Grid.Column(Me.igyDescripcion).Visible = True
-
-        'Me.Grid.Column(Me.igyCantidad).Visible = True
-        'Me.Grid.Column(Me.igyPresentacion).Visible = True
-        'Me.Grid.Column(Me.igyImporte).Visible = True
-        'Me.Grid.Column(Me.igyPorcParticipacion).Visible = True
-        'Me.Grid.Column(Me.igyPartAcumulada).Visible = True
-        'Me.Grid.Column(Me.igyPrecioPromedio).Visible = True
-
-        'Me.Grid.Column(Me.igyImporteTotalDolares).Visible = False
-        'Me.Grid.Column(Me.igyImporteTotalPesos).Visible = False
-        'Me.Grid.Column(Me.igyPrecioPromedioDolares).Visible = False
-        'Me.Grid.Column(Me.igyPrecioPromedioPesos).Visible = False
-
-        'Me.Grid.Column(Me.igyCodigo).Locked = True
-        'Me.Grid.Column(Me.igyDescripcion).Locked = True
-        'Me.Grid.Column(Me.igyCantidad).Locked = True
-        'Me.Grid.Column(Me.igyPresentacion).Locked = True
-        'Me.Grid.Column(Me.igyImporte).Locked = True
-        'Me.Grid.Column(Me.igyPrecioPromedio).Locked = True
-        'Me.Grid.Column(Me.igyPorcParticipacion).Locked = True
-        'Me.Grid.Column(Me.igyPartAcumulada).Locked = True
-        'Me.Grid.Column(Me.igyImporteTotalDolares).Locked = True
-        'Me.Grid.Column(Me.igyImporteTotalPesos).Locked = True
-        'Me.Grid.Column(Me.igyPrecioPromedioDolares).Locked = True
-        'Me.Grid.Column(Me.igyPrecioPromedioPesos).Locked = True
-
         Me.Grid.Column(Me.igyCodigo).Width = 70
         Me.Grid.Column(Me.igyDescripcion).Width = 300
         Me.Grid.Column(Me.igyCantidad).Width = 100
@@ -578,7 +482,6 @@ Public Class Rpt_Ventas_TopTenProductos
         Me.Grid.Column(Me.igyPTCVentaNetaPesos).Width = 100
         Me.Grid.Column(Me.igyPTCPrecioPromDolares).Width = 80
         Me.Grid.Column(Me.igyPTCPrecioPromPesos).Width = 80
-        'Me.Grid.Column(Me.igyImporteTotalPesos).Width = 80
 
         Me.Grid.Cell(0, Me.igyPTCCodigo).Text = "Código"
         Me.Grid.Cell(0, Me.igyPTCDescripcion).Text = "Descripción"
@@ -634,39 +537,49 @@ Public Class Rpt_Ventas_TopTenProductos
             Me.txtSum4.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyVenta)))
             Me.txtSum2.Text = FormatImporteContable(CDbl(Me.Grid.Cell(1, Me.igyCosto).Text))
         Else
-            'Me.txtSum1.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyCantidad)))
-            'Me.txtSum3.Text = FormatImporteContable(CDbl(Me.Grid.Cell(1, Me.igyPTCVentaNetaDolares).Text))
-            'Me.txtSum4.Text = FormatImporteContable(Me.Grid.Cell(2, Me.igyPTCVentaNetaPesos).Text)
-            'Me.txtSum4.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyCantidad)))
-            'Me.txtSum5.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyCantidad)))
-            'Me.txtSum6.Text = FormatImporteContable(CDbl(Me.Grid.Cell(1, Me.igyPTCVentaNetaPesos).Text))
+            Me.txtSum1.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyVenta)))
         End If
     End Sub
 
     Private Function Validar() As Boolean
-        If Me.RbtnCategoria.Checked = True Then
-            If txtLEN(Me.TxtCategoria.Text) = False Then
-                MsgBox("Capture una categoría.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.TxtCategoria.Focus()
-                Return False
-            End If
+
+        If Me._ConsultaExterior = True Then
+            Return True
         End If
 
-        If Me.RbtnPorcentaje.Checked = True Then
-            If txtLEN(Me.TxtPorcentaje.Text) = False Then
-                MsgBox("Capture un porcentaje.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.TxtPorcentaje.Focus()
+        If ModoAgrupado = enumModoAgrupado.PRODUCTOS Then
+            If Me.RbtnCategoria.Checked = True Then
+                If txtLEN(Me.TxtCategoria.Text) = False Then
+                    MsgBox("Capture una categoría.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.TxtCategoria.Focus()
+                    Return False
+                End If
+            End If
+
+            If Me.RbtnPorcentaje.Checked = True Then
+                If txtLEN(Me.TxtPorcentaje.Text) = False Then
+                    MsgBox("Capture un porcentaje.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.TxtPorcentaje.Focus()
+                    Return False
+                End If
+            End If
+
+            If txtLEN(Me.TxtUtilidadMaxima.Text) = False Then
+                MsgBox("Capture la utilidad maxima.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.TxtUtilidadMaxima.Focus()
                 Return False
             End If
-        End If
 
-        If txtLEN(Me.TxtUtilidadMaxima.Text) = False Then
-            MsgBox("Capture la utilidad maxima.", MsgBoxStyle.Exclamation, Me.Text)
-            Me.TxtUtilidadMaxima.Focus()
-            Return False
+        Else
+
+            If txtLEN(Me.txtTipoCambio.Text) = False Then
+                Me.txtTipoCambio.Text = "0"
+            End If
+
         End If
 
         Return True
+
     End Function
 
     Public Sub Consultar()
@@ -695,30 +608,6 @@ Public Class Rpt_Ventas_TopTenProductos
             Dim sqlParametro As New SqlParameter
 
             If Me.ModoAgrupado = enumModoAgrupado.PRODUCTOS Then
-                'Using da As New SqlDataAdapter("MP_RPT_Q_VENTAS_TOP_PRODUCTOS", Empresa_Sistema.conexion)
-                '    da.SelectCommand.CommandType = CommandType.StoredProcedure
-                '    dt = New DataTable
-                '    With da.SelectCommand
-                '        .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me.TxtCliente.Text
-                '        .Parameters.Add("@CODIGO_DOCUMENTO", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me.CboDocumento.SelectedValue
-                '        .Parameters.Add("@FECHA1", SqlDbType.NVarChar, 20) : sqlParametro.Value = Format(Me.DtFechaDesde.Value, "yyyy-dd-MM")
-                '        .Parameters.Add("@FECHA2", SqlDbType.NVarChar, 20) : sqlParametro.Value = Format(Me.DtFechaHasta.Value, "yyyy-dd-MM")
-                '        .Parameters.Add("@CODIGO_ZONA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me.CboZona.SelectedValue.ToString
-                '        .Parameters.Add("@PORCENTAJE", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me.TxtPorcentaje.Text)
-                '        .Parameters.Add("@DESCRIPCION", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me.TxtDescripcion.Text.ToUpper
-                '        .Parameters.Add("@MIN", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me.TxtMin.Text
-                '        .Parameters.Add("@TIPO_PAGO", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me.cboTipoPago.SelectedValue.ToString
-                '        .Parameters.Add("@UTILIDAD_MAXIMA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me.TxtUtilidadMaxima.Text)
-                '        .Parameters.Add("@CATEGORIA", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me.TxtCategoria.Text
-                '        .Parameters.Add("@FILTRAR_VALOR", SqlDbType.NVarChar, 1) : sqlParametro.Value = IIf(Me.RbtnCategoria.Checked = True, "C", "P")
-                '        .Parameters.Add("@CODIGOS_PRODUCTOS", SqlDbType.NVarChar, 2000) : sqlParametro.Value = Me.CboZona.SelectedValue.ToString
-                '        .Parameters.Add("@ORDEN", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me.CboZona.SelectedValue.ToString
-                '        '.Parameters.Add("@COD_USU_EJECUTO", SqlDbType.NVarChar, 2) : sqlParametro.Value = 1 'Usuario.Codigo_Usuario.ToString
-                '        '.Parameters.Add("@SISTEMA", SqlDbType.NVarChar, 20) : sqlParametro.Value = "BS"
-                '    End With
-
-                '    da.Fill(dt)
-                'End Using
                 Using connection As SqlConnection = New SqlConnection(Empresa_Sistema.conexion)
                     Dim command As SqlCommand
                     Dim da As SqlDataAdapter
@@ -748,25 +637,29 @@ Public Class Rpt_Ventas_TopTenProductos
 
                     da.Fill(dt)
 
+                    dt.Columns.Remove("IDTRANS")
+
                 End Using
             Else
-                Using da As New SqlDataAdapter("MP_RPT_Q_TOPTEN_CLIENTES", Empresa_Sistema.conexion) 'Falta actualizar el stored
-                    da.SelectCommand.CommandType = CommandType.StoredProcedure
+                Using connection As SqlConnection = New SqlConnection(Empresa_Sistema.conexion)
+                    Dim command As SqlCommand
+                    Dim da As SqlDataAdapter
 
-                    With da.SelectCommand
-                        '.Parameters.Add("@FECHA1_SEMANA", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me.CboSemana1.Text
-                        '.Parameters.Add("@FECHA2_SEMANA", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me.CboSemana2.Text
-                        .Parameters.Add("@FECHA1_DIA", SqlDbType.NVarChar, 20) : sqlParametro.Value = Format(Me.DtFechaDesde.Value, "yyyy-dd-MM")
-                        .Parameters.Add("@FECHA2_DIA", SqlDbType.NVarChar, 20) : sqlParametro.Value = Format(Me.DtFechaHasta.Value, "yyyy-dd-MM")
-                        '.Parameters.Add("@CODIGO_CULTIVO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me.cboCultivo.SelectedValue.ToString()
-                        .Parameters.Add("@UNIDAD_VENTA", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._TopTenConsultaExteriorPresentacion.ToString
-                        .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me.TxtCliente.Text
-                        '.Parameters.Add("@TIPO_CAMBIO", SqlDbType.Decimal) : sqlParametro.Value = valorNumerico(Me.txtTipoCambio.Text)
-                        .Parameters.Add("@CODIGO_ZONA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me.CboZona.SelectedValue.ToString
-                        '.Parameters.Add("@CODIGO_TIPO_MERCADO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me.cboMercado.SelectedValue.ToString
+                    command = New SqlCommand("MP_RPT_Q_TOPTEN_CLIENTES", connection)
+                    command.CommandType = CommandType.StoredProcedure
+                    da = New SqlDataAdapter(command)
+                    dt = New DataTable
+                    With command.Parameters
+                        .Add("@FECHA1_DIA", SqlDbType.NVarChar, 20).Value = Format(Me.DtFechaDesde.Value, "yyyy-dd-MM")
+                        .Add("@FECHA2_DIA", SqlDbType.NVarChar, 20).Value = Format(Me.DtFechaHasta.Value, "yyyy-dd-MM")
+                        .Add("@UNIDAD_VENTA", SqlDbType.NVarChar, 10).Value = Me._TopTenConsultaExteriorPresentacion.ToString
+                        .Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8).Value = Me.TxtCliente.Text
+                        .Add("@TIPO_CAMBIO", SqlDbType.Decimal).Value = valorNumerico(Me.txtTipoCambio.Text)
+                        .Add("@CODIGO_ZONA", SqlDbType.NVarChar, 2).Value = Me.CboZona.SelectedValue.ToString
                     End With
 
                     da.Fill(dt)
+
                 End Using
             End If
 
@@ -776,7 +669,7 @@ Public Class Rpt_Ventas_TopTenProductos
             dt.Columns.Remove("EMPRESA_ESTADO")
             dt.Columns.Remove("EMPRESA_RFC")
             dt.Columns.Remove("EMPRESA_TELEFONO")
-            dt.Columns.Remove("IDTRANS")
+
             dt.Columns.Remove("FILTROS_TEXTO")
 
             If Me.ModoAgrupado = enumModoAgrupado.PRODUCTOS Then
@@ -798,8 +691,6 @@ Public Class Rpt_Ventas_TopTenProductos
             If Me.Grid.Rows = 1 Then
                 Me.Grid.Rows = 2
                 Me.txtSum1.Text = FormatNumber(0)
-                'Me.txtSum5.Text = FormatImporteContable(0)
-                'Me.txtSum3.Text = FormatImporteContable(0)
                 Me.txtSum4.Text = FormatImporteContable(0)
                 Me.txtSum2.Text = FormatImporteContable(0)
             Else
@@ -807,7 +698,7 @@ Public Class Rpt_Ventas_TopTenProductos
             End If
 
             dt.Dispose()
-            'Me.Totales()
+            Me.Totales()
 
         Catch ex As Exception
             HandleError(Me.Name, "Consultar", ex)
@@ -843,9 +734,9 @@ Public Class Rpt_Ventas_TopTenProductos
                 Rpt.SetParameterValue("@FECHA1", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
                 Rpt.SetParameterValue("@FECHA2", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
                 Rpt.SetParameterValue("@CODIGO_ZONA", Me.CboZona.SelectedValue.ToString())
-                Rpt.SetParameterValue("@PORCENTAJE", CInt(Me.TxtPorcentaje.Text))
+                Rpt.SetParameterValue("@PORCENTAJE", IIf(txtLEN(Me.TxtPorcentaje.Text), CInt(Me.TxtPorcentaje.Text), 0))
                 Rpt.SetParameterValue("@DESCRIPCION", Me.TxtDescripcion.Text.ToUpper)
-                Rpt.SetParameterValue("@MIN", CInt(Me.TxtMin.Text))
+                Rpt.SetParameterValue("@MIN", Me.TxtMin.Text)
                 Rpt.SetParameterValue("@TIPO_PAGO", Me.cboTipoPago.SelectedValue.ToString)
                 Rpt.SetParameterValue("@UTILIDAD_MAXIMA", CInt(Me.TxtUtilidadMaxima.Text))
                 Rpt.SetParameterValue("@CATEGORIA", Me.TxtCategoria.Text)
@@ -855,19 +746,15 @@ Public Class Rpt_Ventas_TopTenProductos
                 Rpt.SetParameterValue("@COD_USU_EJECUTO", Usuario.Codigo_Usuario.ToString)
                 Rpt.SetParameterValue("@SISTEMA", "BS")
             Else
-                FormatoDeReporte = "RPT_MP_Q_TOPTEN_CLIENTES" 'Falta actualizar el stored
+                FormatoDeReporte = "RPT_MP_Q_TOPTEN_CLIENTES"
 
                 oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
-                'Rpt.SetParameterValue("@FECHA1_SEMANA", Me.CboSemana1.Text)
-                'Rpt.SetParameterValue("@FECHA2_SEMANA", Me.CboSemana2.Text)
                 Rpt.SetParameterValue("@FECHA1_DIA", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
                 Rpt.SetParameterValue("@FECHA2_DIA", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
-                'Rpt.SetParameterValue("@CODIGO_CULTIVO", Me.cboCultivo.SelectedValue.ToString())
                 Rpt.SetParameterValue("@UNIDAD_VENTA", Me._TopTenConsultaExteriorPresentacion.ToString)
                 Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.TxtCliente.Text)
-                'Rpt.SetParameterValue("@TIPO_CAMBIO", valorNumerico(Me.txtTipoCambio.Text))
+                Rpt.SetParameterValue("@TIPO_CAMBIO", valorNumerico(Me.txtTipoCambio.Text))
                 Rpt.SetParameterValue("@CODIGO_ZONA", Me.CboZona.SelectedValue)
-                'Rpt.SetParameterValue("@CODIGO_TIPO_MERCADO", Me.cboMercado.SelectedValue)
             End If
 
             Dim frm As New Reporte(Rpt)

@@ -62,6 +62,8 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.tsbConsultar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
+        Me.txtTipoCambio = New System.Windows.Forms.TextBox()
+        Me.lblTipoCambio = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.GbFiltrarValor.SuspendLayout()
         Me.gbConsulta.SuspendLayout()
@@ -70,6 +72,8 @@ Partial Class Rpt_Ventas_TopTenProductos
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.lblTipoCambio)
+        Me.GroupBox1.Controls.Add(Me.txtTipoCambio)
         Me.GroupBox1.Controls.Add(Me.cboTipoPago)
         Me.GroupBox1.Controls.Add(Me.LblTipoPago)
         Me.GroupBox1.Controls.Add(Me.GbFiltrarValor)
@@ -499,6 +503,26 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
         Me.tsbSalir.Text = "&Salir"
         '
+        'txtTipoCambio
+        '
+        Me.txtTipoCambio.Location = New System.Drawing.Point(1145, 96)
+        Me.txtTipoCambio.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtTipoCambio.MaxLength = 3
+        Me.txtTipoCambio.Name = "txtTipoCambio"
+        Me.txtTipoCambio.Size = New System.Drawing.Size(64, 22)
+        Me.txtTipoCambio.TabIndex = 396
+        Me.txtTipoCambio.Text = "0"
+        '
+        'lblTipoCambio
+        '
+        Me.lblTipoCambio.AutoSize = True
+        Me.lblTipoCambio.Location = New System.Drawing.Point(1024, 99)
+        Me.lblTipoCambio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblTipoCambio.Name = "lblTipoCambio"
+        Me.lblTipoCambio.Size = New System.Drawing.Size(113, 17)
+        Me.lblTipoCambio.TabIndex = 397
+        Me.lblTipoCambio.Text = "Tipo de cambio :"
+        '
         'Rpt_Ventas_TopTenProductos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -564,4 +588,6 @@ Partial Class Rpt_Ventas_TopTenProductos
     Friend WithEvents cboTipoPago As System.Windows.Forms.ComboBox
     Friend WithEvents LblTipoPago As System.Windows.Forms.Label
     Friend WithEvents lblDisplayTotalPesos As System.Windows.Forms.Label
+    Friend WithEvents lblTipoCambio As System.Windows.Forms.Label
+    Friend WithEvents txtTipoCambio As System.Windows.Forms.TextBox
 End Class
