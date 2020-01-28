@@ -1,8 +1,7 @@
-﻿Imports System.Data
-Imports System.Data.SqlClient
+﻿Imports System.Data.SqlClient
+Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Class_CatAlmacenes
-    Inherits Class_Catalogos
 
 #Region "Campos"
 
@@ -12,6 +11,8 @@ Public Class Class_CatAlmacenes
     Private _CUENTA_CONTABLE As String
     Private _CODIGO_ZONA As String
     Private _CODIGO_CATEGORIA As String
+    Private _ESTATUS As String
+    Private _ES_FISCAL As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -82,6 +83,25 @@ Public Class Class_CatAlmacenes
             Me._CODIGO_CATEGORIA = Value
         End Set
     End Property
+
+    Public Property ESTATUS() As String
+        Get
+            Return Me._ESTATUS
+        End Get
+        Set(ByVal VALUE As String)
+            Me._ESTATUS = VALUE
+        End Set
+    End Property
+
+    Public Property ES_FISCAL() As Boolean
+        Get
+            Return Me._ES_FISCAL
+        End Get
+        Set(ByVal VALUE As Boolean)
+            Me._ES_FISCAL = VALUE
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -108,13 +128,13 @@ Public Class Class_CatAlmacenes
 
 #Region "Propiedades de campos de sistema"
 
-    Public Overrides ReadOnly Property Nombre_Catalogo() As String
+    Public ReadOnly Property Nombre_Catalogo() As String
         Get
             Return Me._Nombre_Catalogo
         End Get
     End Property
 
-    Public Overrides Property Nombre_Reporte() As String
+    Public Property Nombre_Reporte() As String
         Get
             Return Me._Nombre_Reporte
         End Get
@@ -126,6 +146,11 @@ Public Class Class_CatAlmacenes
 #End Region
 
 #End Region
+
+    Public Enum eAccion
+        ACTUALIZAR
+        INSERTAR
+    End Enum
 
 #Region "Constructor y destructor"
 
@@ -156,13 +181,8 @@ Public Class Class_CatAlmacenes
     End Sub
 #End Region
 
-#Region "Opciones"
-
-#End Region
-
 #Region "Métodos y procedimientos"
-
-    Public Overrides Function Insertar() As Boolean
+    Public Function Grabar(ByVal Accion As eAccion) As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -174,22 +194,27 @@ Public Class Class_CatAlmacenes
 
             sqlParametro = .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_ALMACEN.ToUpper : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@NOMBRE_ALMACEN", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._NOMBRE_ALMACEN.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@Estatus", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.ESTATUS.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.Char, 1) : sqlParametro.Value = Usuario.Codigo_Plaza
             sqlParametro = .Parameters.Add("@CODIGO_ZONA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ZONA
             sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_CATEGORIA)) : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@GENERAR_CATEGORIA", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._GENERAR_CATEGORIA)
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_TIPO_CATEGORIA))
-            sqlParametro = .Parameters.Add("@Agregar", SqlDbType.Char, 1) : sqlParametro.Value = "1"
+            sqlParametro = .Parameters.Add("@ES_FISCAL", SqlDbType.Char) : sqlParametro.Value = Convert.ToInt32(Me._ES_FISCAL)
+            sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = IIf(Accion = eAccion.INSERTAR, "1", "0").ToString
 
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
                 bResultado = True
-                Me._CODIGO_ALMACEN = "" & .Parameters("@CODIGO_ALMACEN").Value.ToString
-                Me._CODIGO_CATEGORIA = "" & .Parameters("@CODIGO_CATEGORIA").Value.ToString
+
+                If Accion = eAccion.INSERTAR Then
+                    Me._CODIGO_ALMACEN = "" & .Parameters("@CODIGO_ALMACEN").Value.ToString
+                    Me._CODIGO_CATEGORIA = "" & .Parameters("@CODIGO_CATEGORIA").Value.ToString
+                End If
+
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Insertar", ex)
+                HandleError(Me._Nombre_Catalogo, "Grabar", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -199,43 +224,7 @@ Public Class Class_CatAlmacenes
         Return bResultado
     End Function
 
-    Public Overrides Function Actualizar() As Boolean
-        Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand
-        Dim sqlParametro As SqlParameter
-        With cmd
-            .Connection = Me._Conexion
-            .CommandTimeout = 0
-            .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_CAT_ALMACENES_GRABA"
-
-            sqlParametro = .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_ALMACEN.ToUpper
-            sqlParametro = .Parameters.Add("@NOMBRE_ALMACEN", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._NOMBRE_ALMACEN.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToString.ToUpper
-            'sqlParametro = .Parameters.Add("@CUENTA_CONTABLE", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE
-            sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.Char, 1) : sqlParametro.Value = Usuario.Codigo_Plaza
-            sqlParametro = .Parameters.Add("@CODIGO_ZONA", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_ZONA
-            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CATEGORIA
-            sqlParametro = .Parameters.Add("@GENERAR_CATEGORIA", SqlDbType.Char, 1) : sqlParametro.Value = "0"
-            sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = 0
-            sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "0"
-
-            Try
-                Me._Conexion.Open()
-                .ExecuteNonQuery()
-                bResultado = True
-            Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
-            Finally
-                Me._Conexion.Close()
-                cmd.Dispose()
-                sqlParametro = Nothing
-            End Try
-        End With
-        Return bResultado
-    End Function
-
-    Public Overrides Function Consultar() As Boolean
+    Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand("SELECT * FROM CAT_ALMACENES WHERE CODIGO_ALMACEN='" & Replace(Me._CODIGO_ALMACEN, "'", "''") & "'", Me._Conexion)
         Dim dReader As SqlDataReader
@@ -250,9 +239,11 @@ Public Class Class_CatAlmacenes
                     Me._CODIGO_ALMACEN = "" & dReader("CODIGO_ALMACEN").ToString
                     Me._NOMBRE_ALMACEN = Trim("" & dReader("NOMBRE_ALMACEN").ToString)
                     Me._CUENTA_CONTABLE = Trim("" & dReader("CUENTA_CONTABLE").ToString)
-                    Me.Estatus = "" & dReader("ESTATUS").ToString
+                    Me.ESTATUS = "" & dReader("ESTATUS").ToString
                     Me._CODIGO_ZONA = "" & dReader("CODIGO_ZONA").ToString
                     Me._CODIGO_CATEGORIA = "" & dReader("CODIGO_CATEGORIA").ToString
+                    Me._ES_FISCAL = CBool(dReader("ES_FISCAL").ToString)
+
                     bResultado = True
                 End If
                 dReader.Close()
@@ -266,7 +257,7 @@ Public Class Class_CatAlmacenes
         Return bResultado
     End Function
 
-    Public Overrides Function ObtenerElementos() As System.Data.DataTable
+    Public Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
         Dim dsCAT_ALMACENES As New SqlDataAdapter(Me._QuerySELECT & Me._QueryOrder, Me._Conexion)
         Try
@@ -344,7 +335,7 @@ Public Class Class_CatAlmacenes
         Return dTable
     End Function
 
-    Public Overrides Function BusquedaVisual_PorCodigo() As String
+    Public Function BusquedaVisual_PorCodigo() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de almacenes por código."
@@ -364,7 +355,7 @@ Public Class Class_CatAlmacenes
         Return Resultado
     End Function
 
-    Public Overrides Function BusquedaVisual_PorDescripcion() As String
+    Public Function BusquedaVisual_PorDescripcion() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de almacenes por descripción."
@@ -384,6 +375,28 @@ Public Class Class_CatAlmacenes
         Return Resultado
     End Function
 
+    Public Sub Imprimir_Listado()   'Función para ver la búsqueda visual por descripción.
+        If Len(Nombre_Reporte) > 0 Then
+            Dim Rpt As New ReportDocument
+            Dim oReporte As Class_Reporte
+            Try
+                oReporte = New Class_Reporte(Nombre_Reporte, Rpt)
+
+                Dim frm As New Reporte(Rpt)
+                frm.CRViewer.ShowGroupTreeButton = False
+                frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
+                frm.Show()
+
+            Catch ex As Exception
+                HandleError(Me.Nombre_Catalogo, "Imprimir_Listado", ex)
+            Finally
+                oReporte = Nothing
+                'Rpt.Dispose()
+            End Try
+        Else
+            MsgBox("El nombre del reporte no ha sido especificado, no hay nada que imprimir.", MsgBoxStyle.Critical, Me.Nombre_Catalogo)
+        End If
+    End Sub
 #End Region
 
 End Class
