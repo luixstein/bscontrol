@@ -444,7 +444,8 @@ busca:
         Select Case e.KeyCode
             Case Keys.F6
 buscar:
-                'MsgBox("FALTA")
+                Dim oCompras As New Class_Compras_Global()
+                Me.txtFolioOrdenCompra.Text = oCompras.BusquedaVisual_OrdenesCompra() 'Si es OC
             Case Keys.Return
                 If txtLEN(Me.txtFolioOrdenCompra.Text) = True Then
                     Me.btnConsultarOrdenCompra.Focus()
