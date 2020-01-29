@@ -66,6 +66,7 @@ Public Class Class_Compras_Global
 
     Private _FECHA_ENTREGA As Date
     Private _ES_INVENTARIABLE As Boolean
+    Private _ES_FISCAL As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -556,6 +557,15 @@ Public Class Class_Compras_Global
         End Set
     End Property
 
+    Public Property ES_FISCAL() As Boolean
+        Get
+            Return Me._ES_FISCAL
+        End Get
+        Set(value As Boolean)
+            Me._ES_FISCAL = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -764,6 +774,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@RETENCION_IVA_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_USD
             sqlParametro = .Parameters.Add("@RETENCION_ISR_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_USD
             sqlParametro = .Parameters.Add("@ES_INVENTARIABLE", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._ES_INVENTARIABLE)
+            sqlParametro = .Parameters.Add("@ES_FISCAL", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._ES_FISCAL)
 
             Try
                 Me._Conexion.Open()
@@ -1071,6 +1082,7 @@ Public Class Class_Compras_Global
                     Me._FECHA_ENTREGA = CDate(dReader("FECHA_ENTREGA"))
 
                     Me._ES_INVENTARIABLE = CBool(dReader("ES_INVENTARIABLE"))
+                    Me._ES_FISCAL = CBool(dReader("ES_FISCAL"))
 
                     bResultado = True
                 End If

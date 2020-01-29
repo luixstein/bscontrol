@@ -322,6 +322,7 @@ Public Class Catalogo_Almacenes
                         .ESTATUS = Strings.Left(Me.CboEstatus.Text, 1)
                         .CODIGO_ZONA = Me.txtCodigoZona.Text
                         .CODIGO_CATEGORIA = Me.TxtCodigoCategoria.Text
+                        .ES_FISCAL = Me.chkEsFiscal.Checked
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
