@@ -11,6 +11,7 @@
     End Sub
 
     Private Sub Consultar()
+        oTipoCambioDia = New Class_CatTiposCambio
 
         oTipoCambioDia.FECHA = Me.dpFecha.Value
         If oTipoCambioDia.Consultar = True Then

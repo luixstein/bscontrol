@@ -4109,7 +4109,6 @@ BuscarCuentas:
                 Me.TabControl1.SelectedIndex = 0
 
                 Dim sender As New Object, e As New EventArgs
-                tsbAplicar_Click(sender, e)
             End If
 
             oInventario.Dispose()
