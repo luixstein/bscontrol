@@ -85,6 +85,10 @@ BuscaFormula:
 
             Case Keys.Enter
 nombreFormula:
+                If txtLEN(Me.TxtCodigoFormula.Text) = False Then
+                    Exit Sub
+                End If
+
                 Me.oFormula = New Class_CatFormulas(Me.TxtCodigoFormula.Text)
                 If Me.oFormula.Existe = False Then
                     Me.LblNombreProductoFinal.Text = "" : Me.LblCodigoArticulo.Text = "" : Me.txtPorcentajeCosto.Text = "0" : GoTo BuscaFormula : Exit Sub
