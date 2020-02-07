@@ -3810,12 +3810,15 @@ BuscarCuentas:
             If txtLEN(Me.txtProveedor.Text) = False Then
                 Me.txtProveedor.Text = oOrdenCompraLocal.CODIGO_PROVEEDOR
                 Me.lblProveedor.Text = New Class_CatProveedores(Me.txtProveedor.Text).Nombre_Proveedor
+                Me.txtPlazo.Text = New Class_CatProveedores(Me.txtProveedor.Text).Plazo.ToString
             End If
 
             If oOrdenCompraLocal.CODIGO_PROVEEDOR <> Me.txtProveedor.Text Then
                 MsgBox("El proveedor de la orden de compra no es igual al de la compra que esta elaborando.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
+
+            Me.cboMoneda.SelectedValue = oOrdenCompraLocal.CODIGO_MONEDA
 
             If Me.TieneAgregadasEntradasInventario() = False Then
                 Me.CboAlmacen.SelectedValue = oOrdenCompraLocal.CODIGO_ALMACEN
