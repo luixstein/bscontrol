@@ -3506,6 +3506,11 @@ CANCELAR:
 
             Me.txtFolio.Enabled = False
 
+            'Si es cotizacion si permitira editar
+            If Me.oVenta.CODIGO_DOCUMENTO = "CTZ" & Plaza.CODIGO_PLAZA.ToString And Me.oVenta.ESTATUS_VENTA = "G" Then
+                Me.Grid.Locked = False
+            End If
+
             If Empresa_Sistema.FELECTRONICA_ACTIVA = True Then
                 If oDocumento.TIMBRA_DOCUMENTO = True Then
                     If Me.oVenta.TIMBRADO_CFDI = "0" AndAlso Me.oVenta.TIMBRADO_DESCARTADO = "0" AndAlso Me.oVenta.VERSION_ESQUEMA_XML <> "2.2" Then
