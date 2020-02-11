@@ -1369,9 +1369,9 @@ Buscar:
             Return False
         End If
 
-        Dim oAlmacen As New Class_CatAlmacenes(Me.CboAlmacen.SelectedValue.ToString)
-
         Try
+            Dim oAlmacen As New Class_CatAlmacenes(Me.CboAlmacen.SelectedValue.ToString)
+
             With Me.oCompras
                 .FOLIO_COMPRA = Me.txtFolioCompra.Text
                 .CODIGO_DOCUMENTO = Me.CboDocumento.SelectedValue.ToString

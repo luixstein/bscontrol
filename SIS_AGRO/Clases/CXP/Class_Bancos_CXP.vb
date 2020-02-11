@@ -54,6 +54,8 @@ Public Class Class_Bancos_CXP
     Private _RETENCION As Double
     Private _CODIGO_CONCEPTO_PAGO_CXP As String
 
+    Private _ES_PAGO_VENTAS_NO_FISCALES As Boolean
+
 #End Region
 
 #Region "Campos de sistema"
@@ -402,6 +404,15 @@ Public Class Class_Bancos_CXP
             Me._CODIGO_CONCEPTO_PAGO_CXP = value
         End Set
     End Property
+
+    Public Property ES_PAGO_VENTAS_NO_FISCALES() As Boolean
+        Get
+            Return Me._ES_PAGO_VENTAS_NO_FISCALES
+        End Get
+        Set(ByVal value As Boolean)
+            Me._ES_PAGO_VENTAS_NO_FISCALES = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedad Nombre de Clase"
@@ -496,6 +507,7 @@ Public Class Class_Bancos_CXP
             sqlParametro = .Parameters.Add("@TOTAL_DOLARES", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_DOLARES
             sqlParametro = .Parameters.Add("@ABONO_CUENTA_BENEFICIARIO", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._ABONO_CUENTA_BENEFICIARIO
             sqlParametro = .Parameters.Add("@CODIGO_CONCEPTO_PAGO_CXP", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CONCEPTO_PAGO_CXP
+            sqlParametro = .Parameters.Add("@ES_PAGO_VENTAS_NO_FISCALES", SqlDbType.Bit) : sqlParametro.Value = Convert.ToInt32(Me._ES_PAGO_VENTAS_NO_FISCALES)
 
             Try
                 Me._Conexion.Open()
@@ -566,6 +578,7 @@ Public Class Class_Bancos_CXP
                     Me._CODIGO_CONCEPTO_PAGO_CXP = CType(dReader("CODIGO_CONCEPTO_PAGO_CXP"), String)
                     Me._CODIGO_MONEDA_SAT = CType(dReader("CODIGO_MONEDA_SAT"), String)
                     Me._NOMBRE_MONEDA = CType(dReader("NOMBRE_MONEDA"), String)
+                    Me._ES_PAGO_VENTAS_NO_FISCALES = CBool(dReader("ES_PAGO_VENTAS_NO_FISCALES"))
 
                     bResultado = True
 

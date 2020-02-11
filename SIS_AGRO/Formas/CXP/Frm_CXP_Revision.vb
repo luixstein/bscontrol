@@ -1908,6 +1908,8 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
         End If
 
         Try
+            Dim oAlmacen As New Class_CatAlmacenes(Me.CboAlmacen.SelectedValue.ToString)
+
             If Estado = enumEstados.SINORDENCOMPRA Then
                 With Me.oCompras
                     .FOLIO_COMPRA = Me.txtFolioCompra.Text
@@ -1977,6 +1979,8 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                         End If
                     End If
 
+                    .ES_FISCAL = oAlmacen.ES_FISCAL
+
                     If .GrabaCompraGlobalSinOrden(sCuentas, sListaActivos) = False Then
                         MsgBox("Error al tratar de aplicar el movimiento de compras.", MsgBoxStyle.Exclamation, sProcedure)
                         Return False
@@ -1990,7 +1994,6 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                         End If
                     End If
 
-                    'Aplicar = True
                     MsgBox("Movimiento de gasto grabado satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
 
                 End With
