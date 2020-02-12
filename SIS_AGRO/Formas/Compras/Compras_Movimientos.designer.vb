@@ -147,6 +147,7 @@ Partial Class Compras_Movimientos
         Me.lblDisplayRetencionISR = New System.Windows.Forms.Label()
         Me.lblDisplayRetencionIVA = New System.Windows.Forms.Label()
         Me.lblAyuda = New System.Windows.Forms.Label()
+        Me.chkEsFiscal = New System.Windows.Forms.CheckBox()
         Me.gbGlobal.SuspendLayout()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
@@ -161,6 +162,7 @@ Partial Class Compras_Movimientos
         '
         'gbGlobal
         '
+        Me.gbGlobal.Controls.Add(Me.chkEsFiscal)
         Me.gbGlobal.Controls.Add(Me.chkEsInventariable)
         Me.gbGlobal.Controls.Add(Me.lblDisplayFechaEntrega)
         Me.gbGlobal.Controls.Add(Me.dtpFechaEntrega)
@@ -1408,6 +1410,17 @@ Partial Class Compras_Movimientos
         Me.lblAyuda.TabIndex = 389
         Me.lblAyuda.Text = "*F4 para agregar comentarios, F8 para eliminar renglones, F6/F7 para buscar"
         '
+        'chkEsFiscal
+        '
+        Me.chkEsFiscal.AutoSize = True
+        Me.chkEsFiscal.Enabled = False
+        Me.chkEsFiscal.Location = New System.Drawing.Point(196, 146)
+        Me.chkEsFiscal.Name = "chkEsFiscal"
+        Me.chkEsFiscal.Size = New System.Drawing.Size(74, 17)
+        Me.chkEsFiscal.TabIndex = 386
+        Me.chkEsFiscal.Text = "Es fiscal ?"
+        Me.chkEsFiscal.UseVisualStyleBackColor = True
+        '
         'Compras_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1577,4 +1590,5 @@ Partial Class Compras_Movimientos
     Friend WithEvents gbEntradas As GroupBox
     Friend WithEvents tsbRecepcionarEntrada As ToolStripButton
     Friend WithEvents lblAyuda As Label
+    Friend WithEvents chkEsFiscal As CheckBox
 End Class

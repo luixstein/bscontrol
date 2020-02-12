@@ -232,18 +232,23 @@ Public Class Catalogo_Almacenes
     End Sub
 
     Private Sub InicializaElemento()
-        Me.TxtCodigoAlmacen.Text = ""
-        Me.TxtNombreAlmacen.Text = ""
-        Me.txtCuentaContable.Text = ""
-        Me.lblNombreCuenta.Text = ""
-        Me.txtCodigoZona.Text = ""
-        Me.lblNombreZona.Text = ""
-        Me.TxtCodigoCategoria.Text = ""
-        Me.LblNombreCategoria.Text = ""
-        Me.CboEstatus.SelectedIndex = 0
-        Me.txtTipoCategoria.Text = ""
-        Me.lblTipoCategoria.Text = ""
-        Me.chkCrearCategoria.Checked = False
+        Try
+            Me.TxtCodigoAlmacen.Text = ""
+            Me.TxtNombreAlmacen.Text = ""
+            Me.txtCuentaContable.Text = ""
+            Me.lblNombreCuenta.Text = ""
+            Me.txtCodigoZona.Text = ""
+            Me.lblNombreZona.Text = ""
+            Me.TxtCodigoCategoria.Text = ""
+            Me.LblNombreCategoria.Text = ""
+            Me.CboEstatus.SelectedIndex = 0
+            Me.txtTipoCategoria.Text = ""
+            Me.lblTipoCategoria.Text = ""
+            Me.chkCrearCategoria.Checked = False
+            Me.chkEsFiscal.Checked = True
+        Catch ex As Exception
+            HandleError(Me.Name, "InicializaElemento", ex)
+        End Try
     End Sub
 
     Private Sub DesplegarElementos()
@@ -295,6 +300,8 @@ Public Class Catalogo_Almacenes
                         Me.CboEstatus.SelectedIndex = 1
                     End If
 
+                    Me.chkEsFiscal.Checked = CBool(.ES_FISCAL)
+
                 End With
             End If
         Catch ex As Exception
@@ -302,8 +309,8 @@ Public Class Catalogo_Almacenes
         End Try
     End Sub
 
-    Private Sub Grabar()
-        Dim Grabado As Boolean = False
+    Private Function Grabar() As Boolean
+        Dim bResultado As Boolean = False
         Select Case Me.Estado
             Case enumEstados.NUEVO, enumEstados.EDICION
                 Try
@@ -312,9 +319,10 @@ Public Class Catalogo_Almacenes
                         .CODIGO_ALMACEN = Me.TxtCodigoAlmacen.Text
                         .NOMBRE_ALMACEN = Me.TxtNombreAlmacen.Text
                         '.Cuenta_Contable = Me.txtCuentaContable.Text
-                        .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
+                        .ESTATUS = Strings.Left(Me.CboEstatus.Text, 1)
                         .CODIGO_ZONA = Me.txtCodigoZona.Text
                         .CODIGO_CATEGORIA = Me.TxtCodigoCategoria.Text
+                        .ES_FISCAL = Me.chkEsFiscal.Checked
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -323,8 +331,8 @@ Public Class Catalogo_Almacenes
                                 .GENERAR_CATEGORIA = Me.chkCrearCategoria.Checked
                                 .CODIGO_TIPO_CATEGORIA = Me.txtTipoCategoria.Text
 
-                                If .Insertar() = True Then
-                                    Grabado = True
+                                If .Grabar(Class_CatAlmacenes.eAccion.INSERTAR) = True Then
+                                    bResultado = True
                                     Me.Estado = enumEstados.CONSULTA
 
                                 End If
@@ -332,22 +340,22 @@ Public Class Catalogo_Almacenes
                                 Me.oAlmacenes = New Class_CatAlmacenes(Me.TxtCodigoAlmacen.Text)
 
                                 If .NOMBRE_ALMACEN.ToUpper <> Me.TxtNombreAlmacen.Text.ToUpper Then
-                                    If MsgBox("Modificó el nombre del almacén, automáticamente el sistema también cambiará el nombre de la cuenta contable." & vbCrLf & _
+                                    If MsgBox("Modificó el nombre del almacén, automáticamente el sistema también cambiará el nombre de la cuenta contable." & vbCrLf &
                                               "Desea continuar?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Me.Text) = MsgBoxResult.No Then
-                                        Exit Sub
+                                        Return False
                                     End If
                                 End If
 
                                 .GENERAR_CATEGORIA = False
                                 .CODIGO_TIPO_CATEGORIA = ""
 
-                                If .Actualizar() = True Then
-                                    Grabado = True
+                                If .Grabar(Class_CatAlmacenes.eAccion.ACTUALIZAR) = True Then
+                                    bResultado = True
                                     Me.Estado = enumEstados.CONSULTA
                                 End If
                         End Select
 
-                        If Grabado = True Then
+                        If bResultado = True Then
                             MsgBox(Me.msgElemento & " grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
                             Me.Refrescar()
                             Me.Cambia_Estado()
@@ -360,7 +368,9 @@ Public Class Catalogo_Almacenes
                     Me.Cambia_Estado()
                 End Try
         End Select
-    End Sub
+
+        Return bResultado
+    End Function
 
     Private Function Validar() As Boolean
         Dim bResultado As Boolean = False

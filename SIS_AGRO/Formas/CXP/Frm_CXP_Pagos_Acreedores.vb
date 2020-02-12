@@ -1126,6 +1126,8 @@ buscar_acreedor:
             '    Exit Function
             'End If
 
+            Dim oCuentaOrigen As New Class_CatCuentasBancarias(Me.TxtCuentaBancaria.Text)
+
             With oBancosCXP
                 .FOLIO_BANCO = Me.TxtFolio.Text
                 .ID_CUENTA_BANCARIA = CInt(Me.TxtCuentaBancaria.Text)
@@ -1147,6 +1149,13 @@ buscar_acreedor:
                 Else
                     .CODIGO_CONCEPTO_PAGO_CXP = 1
                 End If
+
+                If oCuentaOrigen.ES_CUENTA_FISCAL = True Then
+                    .ES_PAGO_VENTAS_NO_FISCALES = False 'Es fiscal(Va negado para los que si son fiscales)
+                Else
+                    .ES_PAGO_VENTAS_NO_FISCALES = True 'Es no fiscal
+                End If
+
 
                 If .Inserta_Global = False Then
                     Return False
@@ -1236,7 +1245,9 @@ buscar_acreedor:
 
             bResultado = True
 
-            Me.oBancosCXP.GeneraPoliza(Me.CboFacturasRecibidas.SelectedValue.ToString)
+            If oCuentaOrigen.ES_CUENTA_FISCAL = True Then
+                Me.oBancosCXP.GeneraPoliza(Me.CboFacturasRecibidas.SelectedValue.ToString)
+            End If
 
         Catch ex As Exception
             HandleError(Me.Name, "Grabar", ex)
@@ -1311,7 +1322,7 @@ buscar_acreedor:
                     Return False
                 End If
 
-                Dim i As Integer
+                Dim i As Integer, oCompra As Class_Compras_Global
                 For i = 1 To Grid1.Rows - 1
                     If valorNumerico(Me.Grid1.Cell(i, Me.iGyPagoMXP).Text) > 0 And txtLEN(Me.Grid1.Cell(i, Me.iGyFolio).Text) = True Then
                         If valorNumerico(Me.Grid1.Cell(i, Me.iGyPagoMXP).Text) > valorNumerico(Me.Grid1.Cell(i, Me.iGySaldoMXP).Text) Then
@@ -1323,7 +1334,21 @@ buscar_acreedor:
                             MsgBox("El proveedor/cuenta destino no tiene cuenta contable en moneda extranjera.", MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         End If
+
+                        oCompra = New Class_Compras_Global(Me.Grid1.Cell(i, Me.iGyFolio).Text, Me.Grid1.Cell(i, Me.iGyCodigoDocumento).Text)
+
+                        If oCuentaOrigen.ES_CUENTA_FISCAL <> oCompra.ES_FISCAL Then
+                            If oCuentaOrigen.ES_CUENTA_FISCAL = True Then
+                                MsgBox("Esta cuenta bancaria es ""fiscal"" y la compra " & oCompra.FOLIO_COMPRA & " es no fiscal, no puede hacer el pago.", MsgBoxStyle.Exclamation, sProcedure)
+                            Else
+                                MsgBox("Esta cuenta bancaria es ""no fiscal"" y la compra " & oCompra.FOLIO_COMPRA & " es fiscal, no puede hacer el pago.", MsgBoxStyle.Exclamation, sProcedure)
+                            End If
+
+                            Return False
+                        End If
+
                     End If
+
                 Next i
             End If
 
@@ -1914,6 +1939,7 @@ buscar_acreedor:
     End Function
 
     Private Function CancelaPagosCXP() As Boolean
+        Const sProcedure As String = "CancelaPagosCXP"
         Dim bResultado As Boolean = False
         Dim oFirmaElectronica = New UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo
         Dim oUtileriasCancela As New Class_UtileriasFirmaElectronicaCancelacion
@@ -1922,29 +1948,29 @@ buscar_acreedor:
 
         'Me.oBancosCXP = New Class_Bancos_CXP(sFolio)
 
-        If MsgBox("Deseas cancelar el movimiento de " & Me.CmbDocumento.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "CancelarCompra") = MsgBoxResult.No Then
-            Exit Function
+        If MsgBox("Deseas cancelar el movimiento de " & Me.CmbDocumento.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, sProcedure) = MsgBoxResult.No Then
+            Return False
         End If
 
         If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CmbDocumento.SelectedValue.ToString) = False Then
-            MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento de inventarios.", MsgBoxStyle.Exclamation, Me.Text)
-            Exit Function
+            MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento de inventarios.", MsgBoxStyle.Exclamation, sProcedure)
+            Return False
         End If
 
         'no se ocupa por que para eso esta la interfaz
         'If PLAZA.ValidarPeriodoTrabajo(Date.Now) = False Then 'Para cancelar se valida con la fecha de la maquina
-        '    Exit Function
+        '    return false
         'End If
 
         Select Case Me.LblStatus.Text
             Case "NUEVO"
-                MsgBox("El documento no se ha grabado.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+                MsgBox("El documento no se ha grabado.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
             Case "APLICADO"
                 'No hay restricciones
             Case "CANCELADO"
-                MsgBox("Los documentos cancelados no se pueden volver a cancelar.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+                MsgBox("Los documentos cancelados no se pueden volver a cancelar.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
         End Select
 
         Try
@@ -1953,13 +1979,13 @@ buscar_acreedor:
             oUtileriasCancela.CODIGO_PLAZA = Usuario.Codigo_Plaza
 
             If oUtileriasCancela.GestionaCancelacion() = False Then
-                Exit Function
+                Return False
             End If
 
             If oUtileriasCancela.CANCELA_DIRECTO = True Then
                 Me.oBancosCXP.FECHA_DE_CANCELACION = Date.Now
                 If Me.oBancosCXP.CancelaBancosCxp() = False Then
-                    Exit Function
+                    Return False
                 End If
             Else
                 oUtileriasCancela = New Class_UtileriasFirmaElectronicaCancelacion
@@ -1970,51 +1996,52 @@ buscar_acreedor:
                 oUtileriasCancela.MODULO = Me.oBancosCXP.CODIGO_MODULO
 
                 If oUtileriasCancela.AutorizaCancelacionMovimientosFueraPeriodo() = False Then
-                    MsgBox("Error al tratar de autorizar la cancelación fuera del periodo.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    MsgBox("Error al tratar de autorizar la cancelación fuera del periodo.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 End If
 
                 'si no se autorizo
                 If oUtileriasCancela.CANCELACION_AUTORIZO = False Then
-                    MsgBox("No se autorizó la cancelación de movimiento.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    MsgBox("No se autorizó la cancelación de movimiento.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 End If
 
                 If oUtileriasCancela.GestionaCancelacionConInterfaz() = False Then
-                    MsgBox("Error al gestionar la cancelacion con interfaz", MsgBoxStyle.Information, Me.Text)
-                    Exit Function
+                    MsgBox("Error al gestionar la cancelacion con interfaz", MsgBoxStyle.Information, sProcedure)
+                    Return False
                 Else
                     If oUtileriasCancela.ES_FECHA_CANCELACION_VALIDA = "0" Then
-                        MsgBox("La fecha de cancelación debe de ser mayor o igual a la fecha del documento y debe estar en el mismo ejercicio.", vbExclamation, Me.Text)
-                        Exit Function
+                        MsgBox("La fecha de cancelación debe de ser mayor o igual a la fecha del documento y debe estar en el mismo ejercicio.", vbExclamation, sProcedure)
+                        Return False
                     End If
 
                     Me.oBancosCXP.FECHA_DE_CANCELACION = oUtileriasCancela.FECHA_CANCELACION
 
                     If Me.oBancosCXP.CancelaBancosCxp() = False Then
-                        MsgBox("Error al intentar cancelar el movimiento de documento de banco.", MsgBoxStyle.Exclamation, Me.Text)
-                        Exit Function
+                        MsgBox("Error al intentar cancelar el movimiento de documento de banco.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
                     End If
 
                     'If Me.oBancosCXP.CancelaBancosCxpFletes() = False Then
-                    '    MsgBox("Error al intentar cancelar el movimiento de salgo de fletes.", MsgBoxStyle.Exclamation, Me.Text)
-                    '    Exit Function
+                    '    MsgBox("Error al intentar cancelar el movimiento de salgo de fletes.", MsgBoxStyle.Exclamation, sProcedure)
+                    '    return false
                     'End If
                 End If
             End If
 
             If oBancosCXP.ConsultarBancosCXPFletes(Me.oBancosCXP.FOLIO_BANCO.ToString) = True Then
                 If Me.oBancosCXP.CancelaBancosCxpFletes() = False Then
-                    MsgBox("Error al intentar cancelar el movimiento de salgo de fletes.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    MsgBox("Error al intentar cancelar el movimiento de salgo de fletes.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 End If
             End If
 
-            MsgBox("Movimiento de bancos cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+            MsgBox("Movimiento de bancos cancelado satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
 
             bResultado = True
+
         Catch ex As Exception
-            HandleError(Me.Name, "CancelaPagosCXP", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado

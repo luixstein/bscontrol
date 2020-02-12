@@ -571,6 +571,7 @@ Buscar:
             Me.LblPoliza.Text = ""
 
             Me.chkEsInventariable.Checked = True
+            Me.chkEsFiscal.Checked = False
 
             Me.dPorcentajeIVAGlobal = 0
 
@@ -886,6 +887,7 @@ Buscar:
             Me.btnAgregarTodasEntradasInventarios.Enabled = False
             Me.btnAgregarSeleccionadaEntradasInventarios.Enabled = False
             Me.btnBorrarTodasEntradasInventarios.Enabled = False
+            Me.chkEsFiscal.Visible = False
 
             Select Case Me.Estado
                 Case enumEstados.NUEVO
@@ -1063,6 +1065,8 @@ Buscar:
 
                         Me.tsbAgregarXML.Visible = True
                         Me.tsbAgregarPDF.Visible = True
+
+                        Me.chkEsFiscal.Visible = True
                     End If
 
                     Me.DtpFecha.Enabled = False
@@ -1122,6 +1126,7 @@ Buscar:
 
                         Me.tsbAgregarXML.Visible = True
                         Me.tsbAgregarPDF.Visible = True
+                        Me.chkEsFiscal.Visible = True
                     End If
 
                     Me.DtpFecha.Enabled = False
@@ -1365,6 +1370,8 @@ Buscar:
         End If
 
         Try
+            Dim oAlmacen As New Class_CatAlmacenes(Me.CboAlmacen.SelectedValue.ToString)
+
             With Me.oCompras
                 .FOLIO_COMPRA = Me.txtFolioCompra.Text
                 .CODIGO_DOCUMENTO = Me.CboDocumento.SelectedValue.ToString
@@ -1409,6 +1416,7 @@ Buscar:
                 .RETENCION_IVA_USD = valorNumerico(Me.txtRetencionIVA_USD.Text)
                 .RETENCION_ISR_USD = valorNumerico(Me.txtRetencionISR_USD.Text)
                 .ES_INVENTARIABLE = Me.chkEsInventariable.Checked
+                .ES_FISCAL = oAlmacen.ES_FISCAL
 
                 If .GrabaCompraGlobal() = False Then
                     MsgBox("Error al tratar de grabar el global de la compra, abortará el proceso.", MsgBoxStyle.Exclamation, sProcedure)
@@ -1523,18 +1531,20 @@ Buscar:
 
                 Dim sListaCuentas As String = ""
 
-                If IsNothing(Me.oFormaDetalleCuentas) = False Then 'Si no esta vacia(osea que si existe)
-                    Me.oFormaDetalleCuentas.FolioMovimientoInventario = Me.txtFolioCompra.Text 'Hasta aqui la forma auxiliar no tenia el folio
-                    sListaCuentas = Me.oFormaDetalleCuentas.ObtieneListaDetalleCuentas()
-                End If
+                If oAlmacen.ES_FISCAL = True Then
+                    If IsNothing(Me.oFormaDetalleCuentas) = False Then 'Si no esta vacia(osea que si existe)
+                        Me.oFormaDetalleCuentas.FolioMovimientoInventario = Me.txtFolioCompra.Text 'Hasta aqui la forma auxiliar no tenia el folio
+                        sListaCuentas = Me.oFormaDetalleCuentas.ObtieneListaDetalleCuentas()
+                    End If
 
-                If txtLEN(sListaCuentas) = True Then
-                    .oComprasDetalle.GrabaDetalleCentroCostos(sListaCuentas, Me.CboDocumento.SelectedValue.ToString, Me.DtpFecha.Value)
-                End If
+                    If txtLEN(sListaCuentas) = True Then
+                        .oComprasDetalle.GrabaDetalleCentroCostos(sListaCuentas, Me.CboDocumento.SelectedValue.ToString, Me.DtpFecha.Value)
+                    End If
 
-                If Me.oCompras.AfectaContabilidadCompra = False Then
-                    MsgBox("Error al tratar de afectar contabilidad.", MsgBoxStyle.Exclamation, sProcedure)
-                    Return False
+                    If Me.oCompras.AfectaContabilidadCompra = False Then
+                        MsgBox("Error al tratar de afectar contabilidad.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
                 End If
 
                 bResultado = True
@@ -1657,6 +1667,7 @@ Buscar:
             Me.txtPlazo.Text = Me.oCompras.PLAZO.ToString
             Me.dtpFechaVencimiento.Value = CDate(Me.oCompras.FECHA_VENCIMIENTO)
             Me.chkEsInventariable.Checked = Me.oCompras.ES_INVENTARIABLE
+            Me.chkEsFiscal.Checked = Me.oCompras.ES_FISCAL
 
             'Esto va antes de los totales, porque se va ejecutar el checked de los dolares
             'Me.cboMoneda.SelectedValue = Me.oCompras.CODIGO_MONEDA
@@ -1795,7 +1806,7 @@ Buscar:
         Dim oUtileriasCancela As New Class_UtileriasFirmaElectronicaCancelacion
         Dim oPoliza As New Class_Contabilidad_Poliza_Global
         Dim sConceptoCancelacion As String = ""
-        Dim CancelarEntradas As Boolean = False
+        Dim bCancelarEntradas As Boolean = False
 
         If MsgBox("Deseas cancelar el movimiento de " & Me.CboDocumento.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, sProcedure) = MsgBoxResult.No Then
             Return False
@@ -1822,7 +1833,7 @@ Buscar:
                 'Continua, no hay validación de existencias, porque el cancelar una compra del nuevo modo(con entradas de inventarios) no afecta existencias(pero si disponibles si es del modo anterior por eso continua y dentro
                 'del stored de cancelación la distingue para no afectar existencias sino solamente disponibles).
                 If MsgBox("La compra tiene ENTRADAS DE INVENTARIO POR RECEPCION, Desea cancelarlas ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, sProcedure) = MsgBoxResult.Yes Then
-                    CancelarEntradas = True
+                    bCancelarEntradas = True
                 End If
             End If
         End If
@@ -1892,33 +1903,33 @@ Buscar:
             End If
 
             'Cancelar entradas
-            If CancelarEntradas Then
+            If bCancelarEntradas = True Then
                 Dim oInventarios As Class_Inventarios_Global
-                Dim EntradaNoCancelada As Boolean = False
+                Dim bEntradaNoCancelada As Boolean = False
                 Dim foliosNoCancelados As String = ""
 
                 For i = 1 To Me.GridEntradas.Rows - 1
                     If txtLEN(Me.GridEntradas.Cell(i, Me.igyGridEFolioEntrada).Text) Then
                         oInventarios = New Class_Inventarios_Global(Me.GridEntradas.Cell(i, Me.igyGridEFolioEntrada).Text)
 
-                        If oInventarios.Existe Then
+                        If oInventarios.Existe = True Then
                             If oInventarios.ValidaExistencias() = False Then
                                 foliosNoCancelados = foliosNoCancelados & Me.GridEntradas.Cell(i, Me.igyGridEFolioEntrada).Text & ","
-                                EntradaNoCancelada = True
+                                bEntradaNoCancelada = True
                                 Continue For
                             End If
 
                             oInventarios.FECHA_CANCELACION = Me.oCompras.FECHA_CANCELACION
                             If oInventarios.Cancelar() = False Then
                                 foliosNoCancelados = foliosNoCancelados & Me.GridEntradas.Cell(i, Me.igyGridEFolioEntrada).Text & ","
-                                EntradaNoCancelada = True
+                                bEntradaNoCancelada = True
                             End If
                         End If
 
                     End If
                 Next
 
-                If EntradaNoCancelada Then
+                If bEntradaNoCancelada Then
                     foliosNoCancelados = foliosNoCancelados.Substring(0, foliosNoCancelados.Length - 1) 'Quita la ultima coma
                     MsgBox("Las entradas " & foliosNoCancelados & " no pudieron ser canceladas, debera hacerse manualmente.", MsgBoxStyle.Exclamation, sProcedure)
                 End If
@@ -2272,8 +2283,12 @@ Buscar:
                 End If
             End If
 
-            If Me.ValidaCuentasContables = False Then
-                Return False
+            Dim oAlmacen As New Class_CatAlmacenes(Me.CboAlmacen.SelectedValue.ToString)
+
+            If oAlmacen.ES_FISCAL = True Then
+                If Me.ValidaCuentasContables = False Then
+                    Return False
+                End If
             End If
 
             Return True
