@@ -24,6 +24,7 @@ Partial Class Compras_Movimientos
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Compras_Movimientos))
         Me.gbGlobal = New System.Windows.Forms.GroupBox()
+        Me.chkEsFiscal = New System.Windows.Forms.CheckBox()
         Me.chkEsInventariable = New System.Windows.Forms.CheckBox()
         Me.lblDisplayFechaEntrega = New System.Windows.Forms.Label()
         Me.dtpFechaEntrega = New System.Windows.Forms.DateTimePicker()
@@ -147,7 +148,6 @@ Partial Class Compras_Movimientos
         Me.lblDisplayRetencionISR = New System.Windows.Forms.Label()
         Me.lblDisplayRetencionIVA = New System.Windows.Forms.Label()
         Me.lblAyuda = New System.Windows.Forms.Label()
-        Me.chkEsFiscal = New System.Windows.Forms.CheckBox()
         Me.gbGlobal.SuspendLayout()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
@@ -216,6 +216,17 @@ Partial Class Compras_Movimientos
         Me.gbGlobal.Size = New System.Drawing.Size(1019, 211)
         Me.gbGlobal.TabIndex = 0
         Me.gbGlobal.TabStop = False
+        '
+        'chkEsFiscal
+        '
+        Me.chkEsFiscal.AutoSize = True
+        Me.chkEsFiscal.Enabled = False
+        Me.chkEsFiscal.Location = New System.Drawing.Point(196, 146)
+        Me.chkEsFiscal.Name = "chkEsFiscal"
+        Me.chkEsFiscal.Size = New System.Drawing.Size(74, 17)
+        Me.chkEsFiscal.TabIndex = 386
+        Me.chkEsFiscal.Text = "Es fiscal ?"
+        Me.chkEsFiscal.UseVisualStyleBackColor = True
         '
         'chkEsInventariable
         '
@@ -1188,13 +1199,13 @@ Partial Class Compras_Movimientos
         Me.GridEntradas.LockButton = True
         Me.GridEntradas.Name = "GridEntradas"
         Me.GridEntradas.Rows = 6
-        Me.GridEntradas.Size = New System.Drawing.Size(427, 148)
+        Me.GridEntradas.Size = New System.Drawing.Size(522, 148)
         Me.GridEntradas.TabIndex = 1
         Me.GridEntradas.UncheckedImage = CType(resources.GetObject("GridEntradas.UncheckedImage"), System.Drawing.Bitmap)
         '
         'btnBorrarTodasEntradasInventarios
         '
-        Me.btnBorrarTodasEntradasInventarios.Location = New System.Drawing.Point(756, 127)
+        Me.btnBorrarTodasEntradasInventarios.Location = New System.Drawing.Point(840, 127)
         Me.btnBorrarTodasEntradasInventarios.Name = "btnBorrarTodasEntradasInventarios"
         Me.btnBorrarTodasEntradasInventarios.Size = New System.Drawing.Size(127, 21)
         Me.btnBorrarTodasEntradasInventarios.TabIndex = 334
@@ -1203,7 +1214,7 @@ Partial Class Compras_Movimientos
         '
         'txtFolioOC_Inventarios
         '
-        Me.txtFolioOC_Inventarios.Location = New System.Drawing.Point(520, 13)
+        Me.txtFolioOC_Inventarios.Location = New System.Drawing.Point(604, 13)
         Me.txtFolioOC_Inventarios.MaxLength = 80
         Me.txtFolioOC_Inventarios.Name = "txtFolioOC_Inventarios"
         Me.txtFolioOC_Inventarios.Size = New System.Drawing.Size(120, 20)
@@ -1211,7 +1222,7 @@ Partial Class Compras_Movimientos
         '
         'btnTraerTodasEntradasInventarios
         '
-        Me.btnTraerTodasEntradasInventarios.Location = New System.Drawing.Point(659, 16)
+        Me.btnTraerTodasEntradasInventarios.Location = New System.Drawing.Point(743, 16)
         Me.btnTraerTodasEntradasInventarios.Name = "btnTraerTodasEntradasInventarios"
         Me.btnTraerTodasEntradasInventarios.Size = New System.Drawing.Size(127, 21)
         Me.btnTraerTodasEntradasInventarios.TabIndex = 333
@@ -1221,7 +1232,7 @@ Partial Class Compras_Movimientos
         'lblDisplayFolioOC_Inventarios
         '
         Me.lblDisplayFolioOC_Inventarios.AutoSize = True
-        Me.lblDisplayFolioOC_Inventarios.Location = New System.Drawing.Point(447, 16)
+        Me.lblDisplayFolioOC_Inventarios.Location = New System.Drawing.Point(531, 16)
         Me.lblDisplayFolioOC_Inventarios.Name = "lblDisplayFolioOC_Inventarios"
         Me.lblDisplayFolioOC_Inventarios.Size = New System.Drawing.Size(53, 13)
         Me.lblDisplayFolioOC_Inventarios.TabIndex = 279
@@ -1229,7 +1240,7 @@ Partial Class Compras_Movimientos
         '
         'btnAgregarSeleccionadaEntradasInventarios
         '
-        Me.btnAgregarSeleccionadaEntradasInventarios.Location = New System.Drawing.Point(756, 80)
+        Me.btnAgregarSeleccionadaEntradasInventarios.Location = New System.Drawing.Point(840, 80)
         Me.btnAgregarSeleccionadaEntradasInventarios.Name = "btnAgregarSeleccionadaEntradasInventarios"
         Me.btnAgregarSeleccionadaEntradasInventarios.Size = New System.Drawing.Size(127, 21)
         Me.btnAgregarSeleccionadaEntradasInventarios.TabIndex = 331
@@ -1239,7 +1250,7 @@ Partial Class Compras_Movimientos
         'lstEntradasInventarios
         '
         Me.lstEntradasInventarios.FormattingEnabled = True
-        Me.lstEntradasInventarios.Location = New System.Drawing.Point(520, 53)
+        Me.lstEntradasInventarios.Location = New System.Drawing.Point(604, 53)
         Me.lstEntradasInventarios.MultiColumn = True
         Me.lstEntradasInventarios.Name = "lstEntradasInventarios"
         Me.lstEntradasInventarios.Size = New System.Drawing.Size(230, 95)
@@ -1247,7 +1258,7 @@ Partial Class Compras_Movimientos
         '
         'btnAgregarTodasEntradasInventarios
         '
-        Me.btnAgregarTodasEntradasInventarios.Location = New System.Drawing.Point(756, 53)
+        Me.btnAgregarTodasEntradasInventarios.Location = New System.Drawing.Point(840, 53)
         Me.btnAgregarTodasEntradasInventarios.Name = "btnAgregarTodasEntradasInventarios"
         Me.btnAgregarTodasEntradasInventarios.Size = New System.Drawing.Size(127, 21)
         Me.btnAgregarTodasEntradasInventarios.TabIndex = 330
@@ -1256,7 +1267,7 @@ Partial Class Compras_Movimientos
         '
         'lblDisplayEntradasInventarios
         '
-        Me.lblDisplayEntradasInventarios.Location = New System.Drawing.Point(447, 53)
+        Me.lblDisplayEntradasInventarios.Location = New System.Drawing.Point(531, 53)
         Me.lblDisplayEntradasInventarios.Name = "lblDisplayEntradasInventarios"
         Me.lblDisplayEntradasInventarios.Size = New System.Drawing.Size(66, 54)
         Me.lblDisplayEntradasInventarios.TabIndex = 281
@@ -1409,17 +1420,6 @@ Partial Class Compras_Movimientos
         Me.lblAyuda.Size = New System.Drawing.Size(369, 13)
         Me.lblAyuda.TabIndex = 389
         Me.lblAyuda.Text = "*F4 para agregar comentarios, F8 para eliminar renglones, F6/F7 para buscar"
-        '
-        'chkEsFiscal
-        '
-        Me.chkEsFiscal.AutoSize = True
-        Me.chkEsFiscal.Enabled = False
-        Me.chkEsFiscal.Location = New System.Drawing.Point(196, 146)
-        Me.chkEsFiscal.Name = "chkEsFiscal"
-        Me.chkEsFiscal.Size = New System.Drawing.Size(74, 17)
-        Me.chkEsFiscal.TabIndex = 386
-        Me.chkEsFiscal.Text = "Es fiscal ?"
-        Me.chkEsFiscal.UseVisualStyleBackColor = True
         '
         'Compras_Movimientos
         '

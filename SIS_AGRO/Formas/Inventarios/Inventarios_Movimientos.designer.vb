@@ -671,7 +671,7 @@ Partial Class Inventarios_Movimientos
         Me.gbOrdenCompra.Controls.Add(Me.dtpFechaEntrega)
         Me.gbOrdenCompra.Controls.Add(Me.lblDisplayProveedor)
         Me.gbOrdenCompra.Controls.Add(Me.txtProveedor)
-        Me.gbOrdenCompra.Location = New System.Drawing.Point(3, 159)
+        Me.gbOrdenCompra.Location = New System.Drawing.Point(3, 160)
         Me.gbOrdenCompra.Name = "gbOrdenCompra"
         Me.gbOrdenCompra.Size = New System.Drawing.Size(1074, 69)
         Me.gbOrdenCompra.TabIndex = 395
