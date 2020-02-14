@@ -3374,7 +3374,8 @@ CANCELAR:
                 Me.CboTipoCredito.SelectedValue = Me.oVenta.CODIGO_TIPO_CREDITO
             End If
 
-            Me.lblUtilidad.Text = FormatImporteContable(0 - Me.oVenta.COSTO, False)
+            'Me.lblUtilidad.Text = FormatImporteContable(0 - Me.oVenta.COSTO, False)
+            Me.CalculaUtilidad()
 
             If bEsReferencia = False Then
                 Me.txtFolio.Text = Me.oVenta.FOLIO_VENTA.ToString.ToUpper
@@ -4798,7 +4799,7 @@ busca_serie:
                         dUtilidadTotal = dUtilidadUnitaria * dCantidad
 
                         If dImporte > 0 Then
-                            dUtilidadPorcentaje = dUtilidadTotal / dImporte
+                            dUtilidadPorcentaje = (dUtilidadTotal / dImporte) * CDec(100)
                         End If
 
                         .Cell(i, Me.igyUtilidadUnitaria).Text = dUtilidadUnitaria.ToString
@@ -4812,7 +4813,7 @@ busca_serie:
             End With
 
             If dtImporteTotal > 0 Then
-                dtUtilidadPorcentaje = dtUtilidadTotal / dtImporteTotal
+                dtUtilidadPorcentaje = (dtUtilidadTotal / dtImporteTotal) * CDec(100)
             End If
 
             Me.lblUtilidad.Text = FormatImporteContable(dtUtilidadTotal, False)
