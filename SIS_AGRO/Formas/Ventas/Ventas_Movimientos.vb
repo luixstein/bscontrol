@@ -755,12 +755,14 @@ Buscar:
         Me.CalculaUtilidad()
 
         If Me.ckbMostrarUtilidad.Checked = True Then
+            Me.gbUtilidad.Visible = True
             Me.Grid.Column(Me.igyCosto).Visible = True
             Me.Grid.Column(Me.igyUtilidadUnitaria).Visible = True
             Me.Grid.Column(Me.igyUtilidadTotal).Visible = True
             Me.Grid.Column(Me.igyUtilidadPorcentaje).Visible = True
             Me.Grid.Cell(1, Me.igyUtilidadTotal).SetFocus()
         Else
+            Me.gbUtilidad.Visible = False
             Me.Grid.Column(Me.igyCosto).Visible = False
             Me.Grid.Column(Me.igyUtilidadUnitaria).Visible = False
             Me.Grid.Column(Me.igyUtilidadTotal).Visible = False
@@ -892,6 +894,9 @@ Buscar:
 
             Me.InicializaGridFacturasVariasRemisiones()
             EsFacturaVariasRemisiones = False
+
+            Me.lblUtilidad.Text = "0.00"
+            Me.lblPorcentajeUtilidad.Text = "0.00"
 
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
@@ -1094,6 +1099,11 @@ Buscar:
             Me.Grid.Column(Me.igyUtilidadTotal).Mask = FlexCell.MaskEnum.Numeric
             Me.Grid.Column(Me.igyUtilidadTotal).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
             Me.Grid.Column(Me.igyUtilidadTotal).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Column(Me.igyUtilidadPorcentaje).FormatString = "###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.Grid.Column(Me.igyUtilidadPorcentaje).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.igyUtilidadPorcentaje).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+            Me.Grid.Column(Me.igyUtilidadPorcentaje).Alignment = FlexCell.AlignmentEnum.RightCenter
 
             Me.Grid.Column(Me.iGyDESCUENTO_UNITARIO).FormatString = "$ ###,###,##0." & StrDup(Me.iDecimalesPrecio, "0")
             Me.Grid.Column(Me.iGyDESCUENTO_UNITARIO).Mask = FlexCell.MaskEnum.Numeric
@@ -3100,7 +3110,7 @@ CANCELAR:
 
                 Else '''''''''''''''''''''''''''MXN
 
-                    'dImporte = RedondearD((dCantidad * dPrecioCapturado), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                    dImporte = RedondearD((dCantidad * dPrecioCapturado), Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
                     If dDESCUENTO_IMPORTE > 0 And dDESCUENTO_IMPORTE > dImporte Then
                         MsgBox("El descuento no puede ser mayor que el importe.", vbExclamation, sProcedure)
@@ -3363,6 +3373,9 @@ CANCELAR:
             If Me.oVenta.CODIGO_TIPO_CREDITO <> "NA" Then
                 Me.CboTipoCredito.SelectedValue = Me.oVenta.CODIGO_TIPO_CREDITO
             End If
+
+            'Me.lblUtilidad.Text = FormatImporteContable(0 - Me.oVenta.COSTO, False)
+            Me.CalculaUtilidad()
 
             If bEsReferencia = False Then
                 Me.txtFolio.Text = Me.oVenta.FOLIO_VENTA.ToString.ToUpper
@@ -4765,21 +4778,47 @@ busca_serie:
 
     Private Sub CalculaUtilidad()
         Try
-            Dim i As Integer
+            Dim i As Integer, dUtilidadTotal As Decimal = 0, dUtilidadUnitaria As Decimal = 0, dCantidad As Decimal = 0, dImporte As Decimal = 0, dUtilidadPorcentaje As Decimal = 0
+            Dim dtImporteTotal As Decimal = 0, dtUtilidadTotal As Decimal = 0, dtUtilidadPorcentaje As Decimal = 0
             'utilidad unitaria = precio - costo
             'utilidad total = importe - (costo * cantidad)
             '% utilidad = Utilidad total / importe
             With Me.Grid
                 For i = 1 To .Rows - 1
                     If txtLEN(.Cell(i, Me.igyCodigo).Text) = True AndAlso .Cell(i, Me.igyCodigo).Text <> "-" Then
-                        .Cell(i, Me.igyUtilidadUnitaria).Text = (valorNumerico(.Cell(i, Me.igyPrecio).Text) - valorNumerico(.Cell(i, Me.igyCosto).Text)).ToString
-                        .Cell(i, Me.igyUtilidadTotal).Text = (valorNumerico(.Cell(i, Me.igyImporte).Text) - (valorNumerico(.Cell(i, Me.igyCosto).Text) * valorNumerico(.Cell(i, Me.igyCantidad).Text))).ToString
-                        If valorNumerico(.Cell(i, Me.igyImporte).Text) > 0 Then
-                            .Cell(i, Me.igyUtilidadPorcentaje).Text = (valorNumerico(.Cell(i, Me.igyUtilidadTotal).Text) / valorNumerico(.Cell(i, Me.igyImporte).Text)).ToString
+                        '.Cell(i, Me.igyUtilidadUnitaria).Text = (valorNumerico(.Cell(i, Me.igyPrecio).Text) - valorNumerico(.Cell(i, Me.igyCosto).Text)).ToString
+                        '.Cell(i, Me.igyUtilidadTotal).Text = (valorNumerico(.Cell(i, Me.igyImporte).Text) - (valorNumerico(.Cell(i, Me.igyCosto).Text) * valorNumerico(.Cell(i, Me.igyCantidad).Text))).ToString
+                        'If valorNumerico(.Cell(i, Me.igyImporte).Text) > 0 Then
+                        '    .Cell(i, Me.igyUtilidadPorcentaje).Text = (valorNumerico(.Cell(i, Me.igyUtilidadTotal).Text) / valorNumerico(.Cell(i, Me.igyImporte).Text)).ToString
+                        'End If
+
+                        dCantidad = valorNumericoD(.Cell(i, Me.igyCantidad).Text)
+                        dImporte = dCantidad * valorNumericoD(.Cell(i, Me.iGyPRECIO_CON_DESCUENTO).Text)
+
+                        dUtilidadUnitaria = valorNumericoD(.Cell(i, Me.iGyPRECIO_CON_DESCUENTO).Text) - valorNumericoD(.Cell(i, Me.igyCosto).Text)
+                        dUtilidadTotal = dUtilidadUnitaria * dCantidad
+
+                        If dImporte > 0 Then
+                            dUtilidadPorcentaje = (dUtilidadTotal / dImporte) * CDec(100)
                         End If
+
+                        .Cell(i, Me.igyUtilidadUnitaria).Text = dUtilidadUnitaria.ToString
+                        .Cell(i, Me.igyUtilidadTotal).Text = dUtilidadTotal.ToString
+                        .Cell(i, Me.igyUtilidadPorcentaje).Text = dUtilidadPorcentaje.ToString
+
+                        dtImporteTotal = dtImporteTotal + dImporte
+                        dtUtilidadTotal = dtUtilidadTotal + dUtilidadTotal
                     End If
                 Next
             End With
+
+            If dtImporteTotal > 0 Then
+                dtUtilidadPorcentaje = (dtUtilidadTotal / dtImporteTotal) * CDec(100)
+            End If
+
+            Me.lblUtilidad.Text = FormatImporteContable(dtUtilidadTotal, False)
+            Me.lblPorcentajeUtilidad.Text = FormatImporteContable(dtUtilidadPorcentaje, False)
+
         Catch ex As Exception
             HandleError(Me.Name, "CalculaUtilidad", ex)
         End Try

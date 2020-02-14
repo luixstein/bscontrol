@@ -489,6 +489,7 @@ buscar:
             Me.btnProrratearFleteOrdenCompra.Enabled = False
             Me.btnNuevaOrdenCompra.Enabled = False
             Me.txtFolioOrdenCompra.Enabled = False
+            Me.txtFleteOrdenCompra.Enabled = False
 
             Select Case Me.Estado
                 Case enumEstados.NUEVO
@@ -1570,7 +1571,7 @@ BuscarCuentas:
 
             Me.txtTotalMasFlete.Text = FormatImporteContable(oInventarios.TOTAL)
 
-            If Me.CboDocumento.SelectedValue.ToString = "ER" Then
+            If Me.CboDocumento.SelectedValue.ToString = "ER" Or Me.CboDocumento.SelectedValue.ToString = "TRI" Then
                 Me.txtFolioOrdenCompra.Text = oInventarios.FOLIO_REFERENCIA
                 Me.txtFleteOrdenCompra.Text = FormatImporteContable(oInventarios.FLETE_TOTAL)
                 Me.txtTotalFlete.Text = FormatImporteContable(oInventarios.FLETE_TOTAL)
@@ -2070,7 +2071,12 @@ BuscarCuentas:
             Me.Grid1.Column(Me.iGyCostoMasFlete).Visible = False
             Me.Grid1.Column(Me.iGyImporteMasFlete).Visible = False
 
-            If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ER" Then
+            Me.btnConsultarOrdenCompra.Enabled = False
+            Me.btnProrratearFleteOrdenCompra.Enabled = False
+            Me.btnNuevaOrdenCompra.Enabled = False
+            Me.txtFolioOrdenCompra.Enabled = False
+
+            If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ER" Or Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "TRI" Then
                 Me.gbOrdenCompra.Visible = True
                 'Me.Grid1.Locked = True
                 'Me.Grid1.Column(Me.iGyCodigo).Locked = True
@@ -2078,10 +2084,14 @@ BuscarCuentas:
                 Me.Grid1.Column(Me.iGyCostoMasFlete).Visible = True
                 Me.Grid1.Column(Me.iGyImporteMasFlete).Visible = True
 
-                Me.btnConsultarOrdenCompra.Enabled = True
                 Me.btnProrratearFleteOrdenCompra.Enabled = True
-                Me.btnNuevaOrdenCompra.Enabled = True
-                Me.txtFolioOrdenCompra.Enabled = True
+                Me.txtFleteOrdenCompra.Enabled = True
+
+                If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ER" Then
+                    Me.btnConsultarOrdenCompra.Enabled = True
+                    Me.btnNuevaOrdenCompra.Enabled = True
+                    Me.txtFolioOrdenCompra.Enabled = True
+                End If
             End If
 
             'Revisar luego si lockear columnas, aqui es problemático hacerlo porque puede ser que desbloquee columnas o controles que deberian estar bloqueadas(que manipula el cambiar estado)
@@ -2861,7 +2871,7 @@ busca_serie:
     Private Function EstableceCuentaContableAlmacenDestino() As Boolean
         Const sProcedure As String = "EstableceCuentaContableAlmacenDestino"
         Try
-            Dim oAlmacenes As New Class_CatAlmacenes(Me.CboAlmacen.SelectedValue.ToString), i As Integer, sCuentaContable As String = "", oCuenta As Class_CatCuentas
+            Dim oAlmacenes As New Class_CatAlmacenes(Me.CboAlmacenDestino.SelectedValue.ToString), i As Integer, sCuentaContable As String = "", oCuenta As Class_CatCuentas
             Dim oArticulos As Class_CatArticulos
 
             For i = 1 To Me.Grid1.Rows - 1

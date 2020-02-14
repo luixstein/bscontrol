@@ -70,6 +70,8 @@ Public Class Compras_Movimientos
     Private igyGridEFolioEntrada As Short = 1
     Private igyGridEFechaEntrada As Short = 2
     Private igyGridEEstaCancelado As Short = 3
+    Private igyGridETotal As Short = 4
+    Private igyGridEFlete As Short = 5
 #End Region
 
 #Region "Propiedades"
@@ -831,7 +833,7 @@ Buscar:
                     .Column(Me.iGyBoton).Visible = False
                     .Column(Me.iGyNombreCuentaContable).Visible = False
                 End If
-                .Column(Me.iGyIDAdicional).Visible = True  'False
+                .Column(Me.iGyIDAdicional).Visible = False
 
                 .Column(Me.igyIEPS_PORCENTAJE).Visible = False
                 .Column(Me.igyIEPS_UNITARIO).Visible = False
@@ -2771,7 +2773,8 @@ BuscaArticulos:
                         Case Me.igyCodigo
                             If e.KeyCode = Keys.F6 Then
                                 oArticulo = New Class_CatArticulos
-                                StrCod = oArticulo.BusquedaVisualInventariables_PorDescripcion()
+                                'StrCod = oArticulo.BusquedaVisualInventariables_PorDescripcion()
+                                StrCod = oArticulo.BusquedaVisual_PorDescripcion_conExistencias(Me.CboAlmacen.SelectedValue.ToString, True)
                                 If txtLEN(StrCod) = True Then
                                     Me.Grid.Cell(Renglon, Me.igyCodigo).Text = StrCod
                                     GoTo LlenaLinea
@@ -3876,7 +3879,7 @@ BuscarCuentas:
             Me.GridEntradas.DataSource = Nothing
             FG_Grid_Limpiar(Me.GridEntradas)
             Me.GridEntradas.Rows = 2
-            Me.GridEntradas.Cols = 4
+            Me.GridEntradas.Cols = 6
             Me.FormateaGridEntradas()
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
@@ -3897,17 +3900,33 @@ BuscarCuentas:
                 .BorderStyle = FlexCell.BorderStyleEnum.FixedSingle
                 .FixedRowColStyle = FlexCell.FixedRowColStyleEnum.Flat
 
-                .Column(Me.igyGridEFolioEntrada).Width = 150
-                .Column(Me.igyGridEFechaEntrada).Width = 100
+                .Column(Me.igyGridEFolioEntrada).Width = 100
+                .Column(Me.igyGridEFechaEntrada).Width = 80
                 .Column(Me.igyGridEEstaCancelado).Width = 100
+                .Column(Me.igyGridETotal).Width = 80
+                .Column(Me.igyGridEFlete).Width = 80
 
                 .Cell(0, Me.igyGridEFolioEntrada).Text = "Entrada"
                 .Cell(0, Me.igyGridEFechaEntrada).Text = "Fecha"
                 .Cell(0, Me.igyGridEEstaCancelado).Text = "Estatus"
+                .Cell(0, Me.igyGridETotal).Text = "Total"
+                .Cell(0, Me.igyGridEFlete).Text = "Flete"
 
                 .Column(Me.igyGridEFolioEntrada).Locked = True
                 .Column(Me.igyGridEFechaEntrada).Locked = True
                 .Column(Me.igyGridEEstaCancelado).Locked = True
+                .Column(Me.igyGridETotal).Locked = True
+                .Column(Me.igyGridEFlete).Locked = True
+
+                .Column(Me.igyGridETotal).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.igyGridETotal).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.igyGridETotal).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.igyGridETotal).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.igyGridEFlete).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.igyGridEFlete).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.igyGridEFlete).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.igyGridEFlete).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .AutoRedraw = True
                 .Refresh()
@@ -3963,6 +3982,8 @@ BuscarCuentas:
                 Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEFolioEntrada).Text = sFolioEntrada
                 Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEFechaEntrada).Text = sFecha
                 Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEEstaCancelado).Text = IIf(oEntrada.ESTA_CANCELADO = "1", "CANCELADO", "ACTIVO").ToString
+                Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridETotal).Text = oEntrada.COSTO_TOTAL_BASE.ToString
+                Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEFlete).Text = oEntrada.FLETE_TOTAL.ToString
             Next
 
             If Me.GeneraGridArticulosEntradasInventarios() = True Then
@@ -4006,6 +4027,8 @@ BuscarCuentas:
             Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEFolioEntrada).Text = sFolioEntrada
             Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEFechaEntrada).Text = sFecha
             Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEEstaCancelado).Text = IIf(oEntrada.ESTA_CANCELADO = "1", "CANCELADO", "ACTIVO").ToString
+            Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridETotal).Text = oEntrada.COSTO_TOTAL_BASE.ToString
+            Me.GridEntradas.Cell(Me.GridEntradas.Rows - 2, Me.igyGridEFlete).Text = oEntrada.FLETE_TOTAL.ToString
 
             If Me.GeneraGridArticulosEntradasInventarios() = True Then
                 Me.lstEntradasInventarios.Items.RemoveAt(Me.lstEntradasInventarios.SelectedIndex)
