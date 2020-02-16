@@ -131,7 +131,7 @@ Public Class Compras_Movimientos
     End Sub
 
     Private Sub tsbRecepcionarEntrada_Click(sender As Object, e As EventArgs) Handles tsbRecepcionarEntrada.Click
-        Me.RecepcionarEntrada
+        Me.RecepcionarEntrada()
     End Sub
 
     Private Sub tsbSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSalir.Click
@@ -180,11 +180,11 @@ Public Class Compras_Movimientos
     End Sub
 
     Private Sub btnCopiarLote_Click(sender As Object, e As EventArgs) Handles btnCopiarLote.Click
-        Me.CopiarLote
+        Me.CopiarLote()
     End Sub
 
     Private Sub tsbAgregarXML_Click(sender As Object, e As EventArgs) Handles tsbAgregarXML.Click
-        Me.AgregarXML
+        Me.AgregarXML()
     End Sub
 
     Private Sub tsbAgregarPDF_Click(sender As Object, e As EventArgs) Handles tsbAgregarPDF.Click
