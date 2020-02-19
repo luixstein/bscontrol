@@ -71,7 +71,6 @@ Public Class Class_Ventas_Global
     Private _ID_SIS_CFD_CATALOGO_CERTIFICADOS As String
     Private _CODIGO_METODO_PAGO As String
     Private _NUMERO_CUENTA_PAGO As String
-    'Private _RETENCION As Double
     Private _ADDENDA As String
     Private _FOLIO_FISCAL_SAT As String
     Private _FECHA_TIMBRADO_SAT As String
@@ -92,20 +91,16 @@ Public Class Class_Ventas_Global
     Private _TIENE_IEPS_DESGLOSADO As Boolean
     Private _CODIGO_TIPO_RELACION_CFDI As String
     Private _LISTA_CFDIS_RELACIONADOS As String
-
-    'Ya existian
     Private _TOTAL_DOLARES As Double
     Private _SALDO_DOLARES As Double
     Private _SUBTOTAL_USD As Double
     Private _DESCUENTO_USD As Double
-
-    'Nuevos
     Private _IMPUESTO_USD As Double
     Private _TOTAL_SUSTITUCION_USD As Double
     Private _IEPS_TOTAL_DESGLOSADO_USD As Double
     Private _IEPS_TOTAL_YA_INCLUIDO_USD As Double
     Private _RETENCION_IVA_USD As Double
-
+    Private _ES_FISCAL As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -841,6 +836,14 @@ Public Class Class_Ventas_Global
         End Set
     End Property
 
+    Public Property ES_FISCAL() As Boolean
+        Get
+            Return Me._ES_FISCAL
+        End Get
+        Set(value As Boolean)
+            Me._ES_FISCAL = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -1009,13 +1012,12 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_RELACION_CFDI", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_TIPO_RELACION_CFDI
             sqlParametro = .Parameters.Add("@LISTA_CFDIS_RELACIONADOS", SqlDbType.NVarChar, -1) : sqlParametro.Value = Me._LISTA_CFDIS_RELACIONADOS
             sqlParametro = .Parameters.Add("@RETENCION_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA
-
             sqlParametro = .Parameters.Add("@IMPUESTO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_USD
             sqlParametro = .Parameters.Add("@TOTAL_SUSTITUCION_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_SUSTITUCION_USD
             sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO_USD
             sqlParametro = .Parameters.Add("@IEPS_TOTAL_YA_INCLUIDO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_YA_INCLUIDO_USD
             sqlParametro = .Parameters.Add("@RETENCION_IVA_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_USD
-
+            sqlParametro = .Parameters.Add("@ES_FISCAL", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._ES_FISCAL)
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = sAccion 'INSERTAR,ACTUALIZAR
 
             Try
@@ -1304,6 +1306,7 @@ Public Class Class_Ventas_Global
                     Me._IEPS_TOTAL_DESGLOSADO_USD = CDec(dReader("IEPS_TOTAL_DESGLOSADO_USD"))
                     Me._IEPS_TOTAL_YA_INCLUIDO_USD = CDec(dReader("IEPS_TOTAL_YA_INCLUIDO_USD"))
                     Me._RETENCION_IVA_USD = CDec(dReader("RETENCION_IVA_USD"))
+                    Me._ES_FISCAL = CBool(dReader("ES_FISCAL"))
 
                     bResultado = True
                 End If
@@ -1443,6 +1446,7 @@ Public Class Class_Ventas_Global
                     Me._IEPS_TOTAL_DESGLOSADO_USD = CDec(dReader("IEPS_TOTAL_DESGLOSADO_USD"))
                     Me._IEPS_TOTAL_YA_INCLUIDO_USD = CDec(dReader("IEPS_TOTAL_YA_INCLUIDO_USD"))
                     Me._RETENCION_IVA_USD = CDec(dReader("RETENCION_IVA_USD"))
+                    Me._ES_FISCAL = CBool(dReader("ES_FISCAL"))
 
                     bResultado = True
                 End If

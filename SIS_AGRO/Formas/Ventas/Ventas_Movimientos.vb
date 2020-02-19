@@ -1702,10 +1702,9 @@ Buscar:
                     MsgBox("Error al cancelar las remisiones que se quieren facturar.", MsgBoxStyle.Exclamation, Me.Name)
                     Return False
                 End If
-
-
             End If
 
+            Dim oAlmacen As New Class_CatAlmacenes(Me.CboAlmacen.SelectedValue.ToString)
 
             With Me.oVenta
                 .FOLIO_VENTA = Me.txtFolio.Text.ToUpper
@@ -1803,6 +1802,7 @@ Buscar:
                 .TIENE_IEPS_DESGLOSADO = Me.bClienteEsContribuyenteIEPS
                 .CODIGO_TIPO_RELACION_CFDI = sCodigoTipoRelacionCFDI
                 .LISTA_CFDIS_RELACIONADOS = sListaCFDIsRelacionados
+                .ES_FISCAL = oAlmacen.ES_FISCAL
 
                 If Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.SUSTITUYENDO Then
                     If .Grabar("INSERTAR") = False Then
@@ -2221,6 +2221,12 @@ CANCELAR:
                     If ValidacionesRFC(Me.oCliente.RFC) = False Then
                         Return False
                     End If
+                End If
+
+                Dim oAlmacen As New Class_CatAlmacenes(Me.CboAlmacen.SelectedValue.ToString)
+                If oAlmacen.ES_FISCAL = False Then
+                    MsgBox("Los documentos timbrados deben usar almaneces fiscales. Este almacén es no fiscal.", vbExclamation, sProcedure)
+                    Return False
                 End If
             End If
 
