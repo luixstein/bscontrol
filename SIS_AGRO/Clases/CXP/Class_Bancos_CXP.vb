@@ -646,7 +646,7 @@ Public Class Class_Bancos_CXP
     Public Function CargaComprasProveedorConSaldo(ByVal CodigoProveedor As String) As DataTable
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter ',IMPUESTO_PORCENTAJE
         Dim sSQL As String = ("SELECT FOLIO_PROVEEDOR,ISNULL(Convert(varchar(10),G.FECHA, 103),'') FECHA,G.FOLIO_COMPRA,M.ABREVIACION NOMBRE_MONEDA_CO,G.TIPO_DE_CAMBIO,G.SALDO_DOLARES,CONCEPTO, " & _
-                              "TOTAL,G.SALDO,SALDO_IMPUESTO,RETENCION_IVA,0 PAGAR_IMPUESTO,ISNULL(A.IMPORTE_AUTORIZADO,0) PAGAR,0 PAGOO_USD, " & _
+                              "TOTAL,G.SALDO,SALDO_IMPUESTO,RETENCION_IVA,0 PAGAR_IMPUESTO,ISNULL(A.IMPORTE_AUTORIZADO,0) PAGAR,0 PAGO_USD, " & _
                               "CASE WHEN G.SALDO=ISNULL(A.IMPORTE_AUTORIZADO,0) THEN 1 ELSE 0 END SELECCION, CODIGO_DOCUMENTO,ISNULL(Convert(varchar(10),A.FECHA_AUTORIZACION, 103),'') AUTORIZADO " & _
                               "FROM COMPRA_GLOBAL G " & _
                               "INNER JOIN CAT_PROVEEDORES P ON(G.CODIGO_PROVEEDOR=P.CODIGO_PROVEEDOR)  " & _

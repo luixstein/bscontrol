@@ -64,12 +64,13 @@ Public Class Frm_CXP_Pagos_Acreedores
     Private iGyPagoMXP As Integer = 13
     Private iGyPagoUSD As Integer = 14
 
-    Private iGyAbonarCXP1 As Integer = 15
-    Private iGyDiferencia1 As Integer = 15
-    Private iGySaldoUSDRestante As Integer = 15
-    Private iGySaldoMXPRestante As Integer = 15
-    Private iGyDiferencia2 As Integer = 15
-    Private iGyAbonarCXP2 As Integer = 15
+    'No se sabe para que se crearon estas columnas
+    'Private iGyAbonarCXP1 As Integer = 15
+    'Private iGyDiferencia1 As Integer = 15
+    'Private iGySaldoUSDRestante As Integer = 15
+    'Private iGySaldoMXPRestante As Integer = 15
+    'Private iGyDiferencia2 As Integer = 15
+    'Private iGyAbonarCXP2 As Integer = 15
 
     Private iGySeleccion As Integer = 15
     Private iGyCodigoDocumento As Integer = 16
@@ -1869,7 +1870,7 @@ buscar_acreedor:
             For Each dRow As DataRow In dTabla.Rows
                 Me.Grid1.AddItem(dRow("FOLIO_PROVEEDOR").ToString & Chr(9) & dRow("FECHA").ToString & Chr(9) & dRow("FOLIO_COMPRA").ToString & Chr(9) & dRow("NOMBRE_MONEDA_CO").ToString & Chr(9) & dRow("TIPO_DE_CAMBIO").ToString & Chr(9) & _
                                     dRow("SALDO_DOLARES").ToString & Chr(9) & dRow("CONCEPTO").ToString & Chr(9) & dRow("TOTAL").ToString & Chr(9) & dRow("SALDO").ToString & Chr(9) & dRow("SALDO_IMPUESTO").ToString & Chr(9) & _
-                                     dRow("RETENCION_IVA").ToString & Chr(9) & dRow("PAGAR_IMPUESTO").ToString & Chr(9) & dRow("PAGAR").ToString & Chr(9) & dRow("SELECCION").ToString & Chr(9) & dRow("CODIGO_DOCUMENTO").ToString & Chr(9) & _
+                                     dRow("RETENCION_IVA").ToString & Chr(9) & dRow("PAGAR_IMPUESTO").ToString & Chr(9) & dRow("PAGAR").ToString & Chr(9) & dRow("PAGO_USD") & Chr(9) & dRow("SELECCION").ToString & Chr(9) & dRow("CODIGO_DOCUMENTO").ToString & Chr(9) & _
                                       dRow("AUTORIZADO").ToString & Chr(9))
             Next
 
