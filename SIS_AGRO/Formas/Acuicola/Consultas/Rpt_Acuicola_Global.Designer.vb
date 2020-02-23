@@ -36,6 +36,7 @@ Partial Class Rpt_Acuicola_Global
         Me.tsbConsultar = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
+        Me.rbtParametros = New System.Windows.Forms.RadioButton()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
@@ -62,6 +63,7 @@ Partial Class Rpt_Acuicola_Global
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.rbtParametros)
         Me.GroupBox1.Controls.Add(Me.RbBiometrias)
         Me.GroupBox1.Controls.Add(Me.RbAlimentacion)
         Me.GroupBox1.Location = New System.Drawing.Point(3, 34)
@@ -179,6 +181,17 @@ Partial Class Rpt_Acuicola_Global
         Me.ToolStrip1.TabIndex = 312
         Me.ToolStrip1.Text = "ToolStrip1"
         '
+        'rbtParametros
+        '
+        Me.rbtParametros.AutoSize = True
+        Me.rbtParametros.Location = New System.Drawing.Point(8, 81)
+        Me.rbtParametros.Margin = New System.Windows.Forms.Padding(4)
+        Me.rbtParametros.Name = "rbtParametros"
+        Me.rbtParametros.Size = New System.Drawing.Size(102, 21)
+        Me.rbtParametros.TabIndex = 2
+        Me.rbtParametros.Text = "Parametros"
+        Me.rbtParametros.UseVisualStyleBackColor = True
+        '
         'Rpt_Acuicola_Global
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -217,4 +230,5 @@ Partial Class Rpt_Acuicola_Global
     Friend WithEvents tsbSalir As System.Windows.Forms.ToolStripButton
     Friend WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
     Friend WithEvents CboDivision As System.Windows.Forms.ComboBox
+    Friend WithEvents rbtParametros As System.Windows.Forms.RadioButton
 End Class

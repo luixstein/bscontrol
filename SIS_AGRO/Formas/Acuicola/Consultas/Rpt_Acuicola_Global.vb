@@ -69,6 +69,8 @@ Public Class Rpt_Acuicola_Global
                 oReporte = New Class_Reporte("RPT_ACUICOLA_FORMATO_DIARIO_ALIMENTACION", Rpt, True)
             ElseIf Me.RbBiometrias.Checked = True Then
                 oReporte = New Class_Reporte("RPT_ACUICOLA_BIOMETRIAS", Rpt, True)
+            ElseIf Me.rbtParametros.Checked = True Then
+                oReporte = New Class_Reporte("RPT_ACUICOLA_PARAMETROS", Rpt, True)
             Else
                 MsgBox("Formato no válido.", MsgBoxStyle.Exclamation, Me.Text)
                 Exit Sub
