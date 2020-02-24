@@ -49,6 +49,7 @@ Public Class Inventarios_Movimientos
     Private iGyCostoMasFlete As Integer = 11 'en db es COSTO
     Private iGyImporteMasFlete As Integer = 12 'en db es IMPORTE
     Private iGyIDCompraDetalle As Integer = 13
+    Private iGyDisponible As Integer = 14
 #End Region
 
 #Region "Columnas grid series"
@@ -1585,7 +1586,7 @@ BuscarCuentas:
             For Each dRow As DataRow In dTabla.Rows
                 Me.Grid1.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("CANTIDAD").ToString & Chr(9) & dRow("COSTO_DETALLE_BASE").ToString & Chr(9) & dRow("IMPORTE_BASE").ToString & Chr(9) &
                                 dRow("Boton").ToString & Chr(9) & dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("NOMBRE_CUENTA").ToString & Chr(9) & dRow("ID_ADICIONAL").ToString & Chr(9) &
-                                dRow("FLETE_DETALLE_IMPORTE").ToString & Chr(9) & dRow("COSTO_DETALLE").ToString & Chr(9) & dRow("IMPORTE_BASE").ToString & Chr(9) & dRow("ID_COMPRA_DETALLE").ToString & Chr(9))
+                                dRow("FLETE_DETALLE_IMPORTE").ToString & Chr(9) & dRow("COSTO_DETALLE").ToString & Chr(9) & dRow("IMPORTE_BASE").ToString & Chr(9) & dRow("ID_COMPRA_DETALLE").ToString & Chr(9) & dRow("DISPONIBLE").ToString & Chr(9))
             Next
 
             If Me.lblStatus.Text = "G" Then
@@ -1697,7 +1698,7 @@ BuscarCuentas:
         Try
             With Me.Grid1
                 .AutoRedraw = False
-                .Cols = 14
+                .Cols = 15
                 '.DefaultFont = New Font("Tahoma", 8)
                 .DisplayFocusRect = False
                 '.DisplayDateTimeMask = True
@@ -1727,10 +1728,15 @@ BuscarCuentas:
                 .Cell(0, Me.iGyFleteDetalleImporte).Text = "FleteImporte"
                 .Cell(0, Me.iGyImporteMasFlete).Text = "Importe+Flete"
                 .Cell(0, Me.iGyIDCompraDetalle).Text = "IDCompraDetalle"
+                .Cell(0, Me.iGyDisponible).Text = "Disponible"
 
                 .Column(Me.iGyCantidad).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyCantidad).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
                 .Column(Me.iGyCantidad).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyDisponible).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyDisponible).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
+                .Column(Me.iGyDisponible).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .Column(Me.iGyCosto).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyCosto).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
@@ -1775,6 +1781,7 @@ BuscarCuentas:
                 .Column(Me.iGyCostoMasFlete).Visible = False
                 .Column(Me.iGyImporteMasFlete).Visible = False
                 .Column(Me.iGyIDCompraDetalle).Visible = False
+                .Column(Me.iGyDisponible).Visible = True 'Ocultar despues
 
             End With
 

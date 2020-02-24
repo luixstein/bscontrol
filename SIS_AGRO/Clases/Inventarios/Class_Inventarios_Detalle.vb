@@ -20,6 +20,7 @@ Public Class Class_Inventarios_Detalle
     Private _COSTO_DETALLE_BASE As Decimal = 0
     Private _IMPORTE_BASE As Decimal = 0
     Private _ID_COMPRA_DETALLE As Integer = Nothing
+    Private _DISPONIBLE As Double
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -152,6 +153,15 @@ Public Class Class_Inventarios_Detalle
         End Get
         Set(ByVal Value As Integer)
             Me._ID_COMPRA_DETALLE = Value
+        End Set
+    End Property
+
+    Public Property DISPONIBLE() As Double
+        Get
+            Return Me._DISPONIBLE
+        End Get
+        Set(value As Double)
+            Me._DISPONIBLE = value
         End Set
     End Property
 
