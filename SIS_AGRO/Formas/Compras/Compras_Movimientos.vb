@@ -2774,7 +2774,7 @@ BuscaArticulos:
                             If e.KeyCode = Keys.F6 Then
                                 oArticulo = New Class_CatArticulos
                                 'StrCod = oArticulo.BusquedaVisualInventariables_PorDescripcion()
-                                StrCod = oArticulo.BusquedaVisual_PorDescripcion_conExistencias(Me.CboAlmacen.SelectedValue.ToString, True)
+                                StrCod = oArticulo.BusquedaVisual_PorDescripcion_conExistencias(Me.CboAlmacen.SelectedValue.ToString, False)
                                 If txtLEN(StrCod) = True Then
                                     Me.Grid.Cell(Renglon, Me.igyCodigo).Text = StrCod
                                     GoTo LlenaLinea

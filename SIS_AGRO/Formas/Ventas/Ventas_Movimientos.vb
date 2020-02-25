@@ -3949,7 +3949,13 @@ BuscaArticulos:
                             End If
 
                             oArticulo = New Class_CatArticulos
-                            StrCod = oArticulo.BusquedaVisual_PorDescripcion_conExistencias(Me.CboAlmacen.SelectedValue.ToString, True)
+
+                            If Me.oDocumento.AFECTA_INVENTARIOS = True Then
+                                StrCod = oArticulo.BusquedaVisual_PorDescripcion_conExistencias(Me.CboAlmacen.SelectedValue.ToString, True)
+                            Else
+                                StrCod = oArticulo.BusquedaVisual_PorDescripcion()
+                            End If
+
                             If txtLEN(StrCod) = True Then
                                 Me.Grid.Cell(Renglon, Me.igyCodigo).Text = StrCod
                                 GoTo LlenaLinea : Return
