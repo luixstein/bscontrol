@@ -1544,6 +1544,21 @@ Public Class Class_Compras_Global
         End Try
     End Function
 
+    Public Function ValidaCantidadDisponibleArticuloInventario(ByVal IDCompraDetalle As Integer, ByVal dCantidad As Double) As Boolean
+        Dim dDisponible As String = ""
+        Try
+            Dim sql As New Class_find("SELECT DISPONIBLE FROM INVENTARIO_MOVIMIENTOS_DETALLE WHERE ID_COMPRA_DETALLE=" & IDCompraDetalle)
+            If txtLEN(sql.Result1) = True Then
+                If dCantidad <= CDbl(sql.Result1) Then
+                    Return True
+                End If
+            End If
+            sql = Nothing
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ValidaCantidadDisponibleArticuloInventario", ex)
+        End Try
+    End Function
+
     Public Function ValidaExistaIDCompraDetalle(ByVal IDCompraDetalle As Integer) As Boolean
         Dim dDisponible As String = ""
         Try
@@ -1568,6 +1583,20 @@ Public Class Class_Compras_Global
             sql = Nothing
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "ObtenerDisponibleArticulo", ex)
+        End Try
+    End Function
+
+    Public Function ObtenerDisponibleArticuloInventario(ByVal sIdArticulo As Integer) As Double
+        Try
+            Dim sql As New Class_find("SELECT DISPONIBLE FROM INVENTARIO_MOVIMIENTOS_DETALLE WHERE ID_COMPRA_DETALLE=" & sIdArticulo)
+            If sql.Result1 <> "" Then
+                Return CDbl(sql.Result1)
+            Else
+                Return 0
+            End If
+            sql = Nothing
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtenerDisponibleArticuloInventario", ex)
         End Try
     End Function
 

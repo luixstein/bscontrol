@@ -1372,6 +1372,8 @@ Buscar:
         End If
 
         Try
+            Me.Totales()
+
             Dim oAlmacen As New Class_CatAlmacenes(Me.CboAlmacen.SelectedValue.ToString)
 
             With Me.oCompras
@@ -2689,12 +2691,22 @@ LlenaLinea:
                             End If
 
                             If Me.oDocumento.AFECTA_CXP = True Then
-                                If Me.oCompras.ValidaCantidadDisponibleArticulo(CInt(Me.Grid.Cell(Renglon, Me.igyIdArticulo).Text), dCantidad) = False Then
-                                    MsgBox("La cantidad debe de ser menor al disponible.", MsgBoxStyle.Exclamation, sProcedure)
-                                    Me.Grid.Cell(Renglon, Me.igyCantidad).Text = Me.oCompras.ObtenerDisponibleArticulo(CInt(Me.Grid.Cell(Renglon, Me.igyIdArticulo).Text)).ToString
-                                    Me.Grid.Refresh()
-                                    Return
+                                If Me.chkEsInventariable.Checked = True Then 'Valida disponible en la entrada por recepcion
+                                    If Me.oCompras.ValidaCantidadDisponibleArticuloInventario(CInt(Me.Grid.Cell(Renglon, Me.igyIdArticulo).Text), dCantidad) = False Then
+                                        MsgBox("La cantidad debe de ser menor al disponible.", MsgBoxStyle.Exclamation, sProcedure)
+                                        Me.Grid.Cell(Renglon, Me.igyCantidad).Text = Me.oCompras.ObtenerDisponibleArticuloInventario(CInt(Me.Grid.Cell(Renglon, Me.igyIdArticulo).Text)).ToString
+                                        Me.Grid.Refresh()
+                                        Return
+                                    End If
+                                Else 'Proceso normal de antes
+                                    If Me.oCompras.ValidaCantidadDisponibleArticulo(CInt(Me.Grid.Cell(Renglon, Me.igyIdArticulo).Text), dCantidad) = False Then
+                                        MsgBox("La cantidad debe de ser menor al disponible.", MsgBoxStyle.Exclamation, sProcedure)
+                                        Me.Grid.Cell(Renglon, Me.igyCantidad).Text = Me.oCompras.ObtenerDisponibleArticulo(CInt(Me.Grid.Cell(Renglon, Me.igyIdArticulo).Text)).ToString
+                                        Me.Grid.Refresh()
+                                        Return
+                                    End If
                                 End If
+                                
                             End If
 
                             If Me.cboMoneda.Text = "USD" Then
@@ -2852,6 +2864,7 @@ BuscarCuentas:
                         If IDAdicional > 0 Then
                             Me.EliminaDetalleCuentasContables(IDAdicional)
                         End If
+
                     End If
 
                 Case Keys.F4 'Comentarios
