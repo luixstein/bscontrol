@@ -2238,6 +2238,10 @@ Buscar:
                     Return False
                 End If
 
+                If Me.ValidaDisponiblesEntradaOC = False Then
+                    Return False
+                End If
+
                 'Ya no se validan series en ningún momento , porque estas ese llevan ahora en las entradas.
                 ''Nota aqui no se pregunta antes si hay rows en dtSeries, porque puede ser que no le hayan dado al botón, en la siguiente validación si.
                 'If Me.ValidaNumerosSerie = False Then
@@ -3810,6 +3814,26 @@ BuscarCuentas:
                 If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
                     If Me.oCompras.ValidaCantidadDisponibleArticulo(CInt(Me.Grid.Cell(i, Me.igyIdArticulo).Text), CDbl(Me.Grid.Cell(i, Me.igyCantidad).Text)) = False Then
                         MsgBox("La cantidad debe de ser menor al disponible de la orden de compra en el renglón #" & i.ToString, MsgBoxStyle.Exclamation, sProcedure)
+                        Me.Grid.Cell(i, Me.igyCantidad).SetFocus()
+                        Return False
+                    End If
+                End If
+            Next i
+
+            Return True
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Function
+
+    Private Function ValidaDisponiblesEntradaOC() As Boolean
+        Const sProcedure As String = "ValidaDisponiblesEntradaOC"
+        Try
+            Dim i As Integer
+            For i = 1 To Grid.Rows - 1
+                If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
+                    If Me.oCompras.ValidaCantidadDisponibleArticuloInventario(CInt(Me.Grid.Cell(i, Me.igyIdArticulo).Text), CDbl(Me.Grid.Cell(i, Me.igyCantidad).Text)) = False Then
+                        MsgBox("La cantidad debe de ser menor al disponible de la entrada por recepión en el renglón #" & i.ToString, MsgBoxStyle.Exclamation, sProcedure)
                         Me.Grid.Cell(i, Me.igyCantidad).SetFocus()
                         Return False
                     End If
