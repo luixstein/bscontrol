@@ -50,6 +50,7 @@ Partial Class AcuicolaCapturaParametria
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tsslEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tsslElaboro = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbParametros.SuspendLayout()
@@ -59,7 +60,7 @@ Partial Class AcuicolaCapturaParametria
         'tsMenu
         '
         Me.tsMenu.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbImprimir, Me.tsbSalir})
+        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimir, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(1059, 27)
@@ -90,6 +91,7 @@ Partial Class AcuicolaCapturaParametria
         Me.tsbImprimir.Size = New System.Drawing.Size(90, 24)
         Me.tsbImprimir.Text = "&Imprimir"
         Me.tsbImprimir.ToolTipText = "Imprimir"
+        Me.tsbImprimir.Visible = False
         '
         'tsbSalir
         '
@@ -346,6 +348,14 @@ Partial Class AcuicolaCapturaParametria
         Me.tsslElaboro.Size = New System.Drawing.Size(72, 24)
         Me.tsslElaboro.Text = "Elaboró :"
         '
+        'tsbCancelar
+        '
+        Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
+        Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbCancelar.Name = "tsbCancelar"
+        Me.tsbCancelar.Size = New System.Drawing.Size(94, 24)
+        Me.tsbCancelar.Text = " Cancelar"
+        '
         'AcuicolaCapturaParametria
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -399,4 +409,5 @@ Partial Class AcuicolaCapturaParametria
     Friend WithEvents lblEstatus As Label
     Friend WithEvents txtConcepto As TextBox
     Friend WithEvents Label1 As Label
+    Friend WithEvents tsbCancelar As System.Windows.Forms.ToolStripButton
 End Class

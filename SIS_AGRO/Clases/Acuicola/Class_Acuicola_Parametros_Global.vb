@@ -275,6 +275,36 @@ Public Class Class_Acuicola_Parametros_Global
         Return bResultado
     End Function
 
+    Public Function Cancelar() As Boolean
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = _Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_ACUICOLA_CANCELA_CAPTURA_GLOBAL"
+
+            Try
+                sqlParametro = .Parameters.Add("@FOLIO_CAPTURA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_PARAMETROS
+                sqlParametro = .Parameters.Add("@CODIGO_DOCUMENTO", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_DOCUMENTO
+
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+
+            Catch ex As Exception
+                HandleError(Me.Nombre_Clase, "Cancelar", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+
+        Return bResultado
+    End Function
+
     Public Function GeneraFolio() As String
         Dim sResultado As String = ""
         Try

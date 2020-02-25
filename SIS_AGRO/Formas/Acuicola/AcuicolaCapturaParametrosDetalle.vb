@@ -4,6 +4,7 @@
     Private Enum enumEstados
         NUEVO
         GRABADO
+        CANCELADO
     End Enum
 
     Private Estado As enumEstados
@@ -37,6 +38,12 @@
 
     Private Sub tsbImprimir_Click(sender As Object, e As EventArgs) Handles tsbImprimir.Click
         'FALTA
+    End Sub
+
+    Private Sub tsbCancelar_Click(sender As Object, e As EventArgs) Handles tsbCancelar.Click
+        If Me.Cancelar() Then
+            Me.Consultar()
+        End If
     End Sub
 
     Private Sub tsbSalir_Click(sender As Object, e As EventArgs) Handles tsbSalir.Click
@@ -121,7 +128,8 @@
             Exit Sub
         End If
 
-        Me.Grid.Locked = False
+        If Me.lblEstatus.Text <> "C" Then Me.Grid.Locked = False
+
     End Sub
 
 
@@ -246,10 +254,11 @@
                 Me.Cambia_Estado(enumEstados.NUEVO)
             Case "G"
                 Me.Cambia_Estado(enumEstados.GRABADO)
+            Case "C"
+                Me.Cambia_Estado(enumEstados.CANCELADO)
                 'Case "A"
                 '    Me.Cambia_Estado(enumEstados.APLICADO)
-                'Case "C"
-                '    Me.Cambia_Estado(enumEstados.CANCELADO)
+
         End Select
     End Sub
 
@@ -259,7 +268,8 @@
             Me.Estado = pEstado
             Select Case Me.Estado
                 Case enumEstados.NUEVO
-
+                    Me.tsbGrabar.Enabled = True
+                    Me.tsbCancelar.Enabled = False
                     Me.cboDivision.Enabled = True
                     Me.txtCiclo.Enabled = True
 
@@ -271,11 +281,22 @@
                     End If
 
                 Case enumEstados.GRABADO
-
+                    Me.tsbGrabar.Enabled = True
+                    Me.tsbCancelar.Enabled = True
                     Me.cboDivision.Enabled = False
                     Me.txtCiclo.Enabled = False
 
                     Me.tsslEstado.Text = "Estado: Consultando movimiento"
+                    Me.tsslElaboro.Visible = True
+
+                Case enumEstados.CANCELADO
+                    Me.tsbGrabar.Enabled = False
+                    Me.tsbCancelar.Enabled = False
+                    Me.cboDivision.Enabled = False
+                    Me.txtCiclo.Enabled = False
+                    Me.Grid.Locked = True
+
+                    Me.tsslEstado.Text = "Estado: Cancelado"
                     Me.tsslElaboro.Visible = True
 
             End Select
@@ -465,6 +486,47 @@
 
         Return bResultado
     End Function
+
+    Private Function Cancelar() As Boolean
+        Dim bResultado As Boolean = False
+
+        Try
+
+            If MsgBox("Desea cancelar la captura de parametros " & Me.txtFolio.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, Me.Text) = MsgBoxResult.No Then
+                Return False
+            End If
+
+            Select Case Me.Estado
+                Case enumEstados.GRABADO
+                    'Continua
+                Case Else
+                    MsgBox("Estatus no válido para cancelar.", MsgBoxStyle.Exclamation, Me.Name)
+                    Return False
+            End Select
+
+            Me.oParametros = New Class_Acuicola_Parametros_Global
+
+            With Me.oParametros
+                .FOLIO_PARAMETROS = Me.txtFolio.Text
+                .CODIGO_DOCUMENTO = "PAR_ACU" & Plaza.CODIGO_PLAZA.ToString
+
+                If .Cancelar() = False Then
+                    MsgBox("Error al tratar de cancelar los parametros.", MsgBoxStyle.Exclamation, Me.Name)
+                    Return False
+                End If
+
+            End With
+
+            bResultado = True
+            MsgBox("Parametros acuicola cancelada.", MsgBoxStyle.Information, Me.Name)
+
+        Catch ex As Exception
+            HandleError(Me.Name, "Cancelar", ex)
+        End Try
+
+        Return bResultado
+    End Function
+
 
     Private Function Validar() As Boolean
         Dim dResultado As Boolean = False

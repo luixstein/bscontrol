@@ -132,7 +132,8 @@
             Exit Sub
         End If
 
-        Me.Grid.Locked = False
+        If Me.lblEstatus.Text <> "C" Then Me.Grid.Locked = False
+
     End Sub
 
 #Region "Eventos Genericos"
@@ -318,6 +319,7 @@
                     Me.tsbCancelar.Enabled = False
                     Me.cboDivision.Enabled = False
                     Me.txtCiclo.Enabled = False
+                    Me.Grid.Locked = True
 
                     Me.tsslEstado.Text = "Estado: Cancelado"
                     Me.tsslElaboro.Visible = True
@@ -518,6 +520,11 @@
         Dim bResultado As Boolean = False
 
         Try
+
+            If MsgBox("Desea cancelar la captura de alimentación " & Me.txtFolio.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, Me.Text) = MsgBoxResult.No Then
+                Return False
+            End If
+
             Select Case Me.Estado
                 Case enumEstados.GRABADO
                     'Continua
@@ -536,7 +543,7 @@
                     MsgBox("Error al tratar de cancelar la alimentación.", MsgBoxStyle.Exclamation, Me.Name)
                     Return False
                 End If
-                
+
             End With
 
             bResultado = True
@@ -663,7 +670,7 @@
                                 GoTo Busqueda
                             End If
 
-                        Case Me.iGyTemperatura
+                        Case Me.iGyTipoAlimento
 
                             If Me.Grid.Rows - 1 = Renglon Then
                                 Me.Grid.Rows = Me.Grid.Rows + 1

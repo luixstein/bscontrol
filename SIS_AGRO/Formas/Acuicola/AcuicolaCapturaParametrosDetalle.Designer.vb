@@ -50,6 +50,7 @@ Partial Class AcuicolaCapturaParametrosDetalle
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tsslEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tsslElaboro = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbParametros.SuspendLayout()
@@ -59,7 +60,7 @@ Partial Class AcuicolaCapturaParametrosDetalle
         'tsMenu
         '
         Me.tsMenu.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbImprimir, Me.tsbSalir})
+        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimir, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(1059, 27)
@@ -90,6 +91,7 @@ Partial Class AcuicolaCapturaParametrosDetalle
         Me.tsbImprimir.Size = New System.Drawing.Size(90, 24)
         Me.tsbImprimir.Text = "&Imprimir"
         Me.tsbImprimir.ToolTipText = "Imprimir"
+        Me.tsbImprimir.Visible = False
         '
         'tsbSalir
         '
@@ -102,7 +104,7 @@ Partial Class AcuicolaCapturaParametrosDetalle
         'btnFolioSiguiente
         '
         Me.btnFolioSiguiente.Location = New System.Drawing.Point(353, 16)
-        Me.btnFolioSiguiente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnFolioSiguiente.Margin = New System.Windows.Forms.Padding(4)
         Me.btnFolioSiguiente.Name = "btnFolioSiguiente"
         Me.btnFolioSiguiente.Size = New System.Drawing.Size(72, 26)
         Me.btnFolioSiguiente.TabIndex = 2
@@ -112,7 +114,7 @@ Partial Class AcuicolaCapturaParametrosDetalle
         'btnFolioAnterior
         '
         Me.btnFolioAnterior.Location = New System.Drawing.Point(273, 16)
-        Me.btnFolioAnterior.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnFolioAnterior.Margin = New System.Windows.Forms.Padding(4)
         Me.btnFolioAnterior.Name = "btnFolioAnterior"
         Me.btnFolioAnterior.Size = New System.Drawing.Size(72, 26)
         Me.btnFolioAnterior.TabIndex = 1
@@ -132,7 +134,7 @@ Partial Class AcuicolaCapturaParametrosDetalle
         'txtFolio
         '
         Me.txtFolio.Location = New System.Drawing.Point(117, 16)
-        Me.txtFolio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFolio.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFolio.MaxLength = 15
         Me.txtFolio.Name = "txtFolio"
         Me.txtFolio.Size = New System.Drawing.Size(147, 22)
@@ -154,7 +156,7 @@ Partial Class AcuicolaCapturaParametrosDetalle
         Me.dtFecha.CustomFormat = "dd-MMM-yyyy hh:mm tt"
         Me.dtFecha.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.dtFecha.Location = New System.Drawing.Point(117, 48)
-        Me.dtFecha.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.dtFecha.Margin = New System.Windows.Forms.Padding(4)
         Me.dtFecha.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dtFecha.Name = "dtFecha"
         Me.dtFecha.Size = New System.Drawing.Size(196, 22)
@@ -179,9 +181,9 @@ Partial Class AcuicolaCapturaParametrosDetalle
         Me.gbGlobal.Controls.Add(Me.txtFolio)
         Me.gbGlobal.Controls.Add(Me.LblDisplayFolio)
         Me.gbGlobal.Location = New System.Drawing.Point(0, 34)
-        Me.gbGlobal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbGlobal.Margin = New System.Windows.Forms.Padding(4)
         Me.gbGlobal.Name = "gbGlobal"
-        Me.gbGlobal.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbGlobal.Padding = New System.Windows.Forms.Padding(4)
         Me.gbGlobal.Size = New System.Drawing.Size(1055, 181)
         Me.gbGlobal.TabIndex = 0
         Me.gbGlobal.TabStop = False
@@ -189,7 +191,7 @@ Partial Class AcuicolaCapturaParametrosDetalle
         'txtConcepto
         '
         Me.txtConcepto.Location = New System.Drawing.Point(273, 146)
-        Me.txtConcepto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtConcepto.Margin = New System.Windows.Forms.Padding(4)
         Me.txtConcepto.MaxLength = 100
         Me.txtConcepto.Name = "txtConcepto"
         Me.txtConcepto.Size = New System.Drawing.Size(772, 22)
@@ -229,7 +231,7 @@ Partial Class AcuicolaCapturaParametrosDetalle
         'txtCiclo
         '
         Me.txtCiclo.Location = New System.Drawing.Point(117, 146)
-        Me.txtCiclo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCiclo.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCiclo.MaxLength = 15
         Me.txtCiclo.Name = "txtCiclo"
         Me.txtCiclo.Size = New System.Drawing.Size(72, 22)
@@ -260,7 +262,7 @@ Partial Class AcuicolaCapturaParametrosDetalle
         Me.cboDivision.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboDivision.FormattingEnabled = True
         Me.cboDivision.Location = New System.Drawing.Point(117, 113)
-        Me.cboDivision.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboDivision.Margin = New System.Windows.Forms.Padding(4)
         Me.cboDivision.Name = "cboDivision"
         Me.cboDivision.Size = New System.Drawing.Size(227, 24)
         Me.cboDivision.TabIndex = 5
@@ -280,7 +282,7 @@ Partial Class AcuicolaCapturaParametrosDetalle
         Me.cboTurno.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboTurno.FormattingEnabled = True
         Me.cboTurno.Location = New System.Drawing.Point(117, 80)
-        Me.cboTurno.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboTurno.Margin = New System.Windows.Forms.Padding(4)
         Me.cboTurno.Name = "cboTurno"
         Me.cboTurno.Size = New System.Drawing.Size(147, 24)
         Me.cboTurno.TabIndex = 4
@@ -289,9 +291,9 @@ Partial Class AcuicolaCapturaParametrosDetalle
         '
         Me.gbParametros.Controls.Add(Me.Grid)
         Me.gbParametros.Location = New System.Drawing.Point(0, 223)
-        Me.gbParametros.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbParametros.Margin = New System.Windows.Forms.Padding(4)
         Me.gbParametros.Name = "gbParametros"
-        Me.gbParametros.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbParametros.Padding = New System.Windows.Forms.Padding(4)
         Me.gbParametros.Size = New System.Drawing.Size(1055, 422)
         Me.gbParametros.TabIndex = 1
         Me.gbParametros.TabStop = False
@@ -310,7 +312,7 @@ Partial Class AcuicolaCapturaParametrosDetalle
         Me.Grid.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.Grid.Location = New System.Drawing.Point(8, 23)
         Me.Grid.LockButton = True
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid.Name = "Grid"
         Me.Grid.Rows = 6
         Me.Grid.Size = New System.Drawing.Size(1039, 390)
@@ -346,6 +348,14 @@ Partial Class AcuicolaCapturaParametrosDetalle
         Me.tsslElaboro.Size = New System.Drawing.Size(72, 24)
         Me.tsslElaboro.Text = "Elaboró :"
         '
+        'tsbCancelar
+        '
+        Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
+        Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbCancelar.Name = "tsbCancelar"
+        Me.tsbCancelar.Size = New System.Drawing.Size(94, 24)
+        Me.tsbCancelar.Text = " Cancelar"
+        '
         'AcuicolaCapturaParametrosDetalle
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -356,7 +366,7 @@ Partial Class AcuicolaCapturaParametrosDetalle
         Me.Controls.Add(Me.gbGlobal)
         Me.Controls.Add(Me.tsMenu)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "AcuicolaCapturaParametrosDetalle"
         Me.Text = "Acuicola captura de parametros"
@@ -399,4 +409,5 @@ Partial Class AcuicolaCapturaParametrosDetalle
     Friend WithEvents lblEstatus As Label
     Friend WithEvents txtConcepto As TextBox
     Friend WithEvents Label1 As Label
+    Friend WithEvents tsbCancelar As System.Windows.Forms.ToolStripButton
 End Class
