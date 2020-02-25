@@ -275,6 +275,36 @@ Public Class Class_Acuicola_Alimentacion_Global
         Return bResultado
     End Function
 
+    Public Function Cancelar() As Boolean
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = _Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_ACUICOLA_CANCELA_CAPTURA_GLOBAL"
+
+            Try
+                sqlParametro = .Parameters.Add("@FOLIO_CAPTURA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_ALIMENTACION
+                sqlParametro = .Parameters.Add("@CODIGO_DOCUMENTO", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_DOCUMENTO
+
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+
+            Catch ex As Exception
+                HandleError(Me.Nombre_Clase, "Cancelar", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+
+        Return bResultado
+    End Function
+
     Public Function GeneraFolio() As String
         Dim sResultado As String = ""
         Try
@@ -335,7 +365,7 @@ Public Class Class_Acuicola_Alimentacion_Global
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
 
-        sSQL = "SELECT R.ID_ACUICOLA_ALIMENTACION_DETALLE,R.ID_PROYECTO_SIEMBRA,R.CODIGO_LOTE,L.NOMBRE_LOTE,R.ALIMENTO,R.CANASTAS,R.MUERTOS,R.OXIGENO,R.TEMPERATURA " &
+        sSQL = "SELECT R.ID_ACUICOLA_ALIMENTACION_DETALLE,R.ID_PROYECTO_SIEMBRA,R.CODIGO_LOTE,L.NOMBRE_LOTE,R.ALIMENTO,R.CANASTAS,R.MUERTOS,R.OXIGENO,R.TEMPERATURA,R.TIPO_ALIMENTO " &
             "FROM ACUICOLA_ALIMENTACION_DETALLE R " &
             "INNER JOIN CAT_LOTES L ON(R.CODIGO_LOTE=L.CODIGO_LOTE) " &
             "WHERE R.FOLIO_ALIMENTACION='" & sReplace(Me._FOLIO_ALIMENTACION) & "' " &

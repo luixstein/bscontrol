@@ -4,6 +4,7 @@
     Private Enum enumEstados
         NUEVO
         GRABADO
+        CANCELADO
     End Enum
 
     Private Estado As enumEstados
@@ -24,6 +25,7 @@
     Private iGyMuertos As Integer = 7
     Private iGyOxigeno As Integer = 8
     Private iGyTemperatura As Integer = 9
+    Private iGyTipoAlimento As Integer = 10
 #End Region
 
 #Region "Opciones"
@@ -40,6 +42,12 @@
 
     Private Sub tsbImprimir_Click(sender As Object, e As EventArgs) Handles tsbImprimir.Click
         'FALTA
+    End Sub
+
+    Private Sub tsbCancelar_Click(sender As Object, e As EventArgs) Handles tsbCancelar.Click
+        If Me.Cancelar() = True Then
+            Me.Consultar()
+        End If
     End Sub
 
     Private Sub tsbSalir_Click(sender As Object, e As EventArgs) Handles tsbSalir.Click
@@ -173,7 +181,7 @@
 
             'Creamos el Grid
             Me.Grid.Rows = 2
-            Me.Grid.Cols = 10
+            Me.Grid.Cols = 11
             Me.Grid.DisplayRowNumber = True
 
             Me.FormateaGrid()
@@ -188,7 +196,7 @@
         Try
             With Me.Grid
                 .AutoRedraw = False
-                .Cols = 10
+                .Cols = 11
 
                 .Column(Me.iGyIdCapturaAlimentacionDetalle).Width = 80
                 .Column(Me.iGyIDProyectoSiembra).Width = 80
@@ -199,6 +207,7 @@
                 .Column(Me.iGyMuertos).Width = 80
                 .Column(Me.iGyOxigeno).Width = 80
                 .Column(Me.iGyTemperatura).Width = 80
+                .Column(Me.iGyTipoAlimento).Width = 200
 
                 .Cell(0, Me.iGyIdCapturaAlimentacionDetalle).Text = "IdCapturaAlimentoDetalle"
                 .Cell(0, Me.iGyIDProyectoSiembra).Text = "IDProyectoSiembra"
@@ -209,6 +218,7 @@
                 .Cell(0, Me.iGyMuertos).Text = "Muertos"
                 .Cell(0, Me.iGyOxigeno).Text = "Oxígeno"
                 .Cell(0, Me.iGyTemperatura).Text = "Temperatura"
+                .Cell(0, Me.iGyTipoAlimento).Text = "Tipo de alimento"
 
                 .Column(Me.iGyIdCapturaAlimentacionDetalle).Locked = True
                 .Column(Me.iGyIDProyectoSiembra).Locked = True
@@ -265,10 +275,11 @@
                 Me.Cambia_Estado(enumEstados.NUEVO)
             Case "G"
                 Me.Cambia_Estado(enumEstados.GRABADO)
+            Case "C"
+                Me.Cambia_Estado(enumEstados.CANCELADO)
                 'Case "A"
                 '    Me.Cambia_Estado(enumEstados.APLICADO)
-                'Case "C"
-                '    Me.Cambia_Estado(enumEstados.CANCELADO)
+
         End Select
     End Sub
 
@@ -279,6 +290,8 @@
             Select Case Me.Estado
                 Case enumEstados.NUEVO
 
+                    Me.tsbGrabar.Enabled = True
+                    Me.tsbCancelar.Enabled = False
                     Me.cboDivision.Enabled = True
                     Me.txtCiclo.Enabled = True
 
@@ -291,10 +304,22 @@
 
                 Case enumEstados.GRABADO
 
+                    Me.tsbGrabar.Enabled = True
+                    Me.tsbCancelar.Enabled = True
                     Me.cboDivision.Enabled = False
                     Me.txtCiclo.Enabled = False
 
                     Me.tsslEstado.Text = "Estado: Consultando movimiento"
+                    Me.tsslElaboro.Visible = True
+
+                Case enumEstados.CANCELADO
+
+                    Me.tsbGrabar.Enabled = False
+                    Me.tsbCancelar.Enabled = False
+                    Me.cboDivision.Enabled = False
+                    Me.txtCiclo.Enabled = False
+
+                    Me.tsslEstado.Text = "Estado: Cancelado"
                     Me.tsslElaboro.Visible = True
 
             End Select
@@ -398,7 +423,7 @@
             For Each dRow As DataRow In dTabla.Rows
                 Me.Grid.AddItem(dRow("ID_ACUICOLA_ALIMENTACION_DETALLE").ToString & Chr(9) & dRow("ID_PROYECTO_SIEMBRA").ToString & Chr(9) & dRow("CODIGO_LOTE").ToString & Chr(9) & _
                                  dRow("NOMBRE_LOTE").ToString & Chr(9) & dRow("ALIMENTO").ToString & Chr(9) & dRow("CANASTAS").ToString & Chr(9) & dRow("MUERTOS").ToString & Chr(9) & _
-                                 dRow("OXIGENO").ToString & Chr(9) & dRow("TEMPERATURA").ToString & Chr(9))
+                                 dRow("OXIGENO").ToString & Chr(9) & dRow("TEMPERATURA").ToString & Chr(9) & dRow("TIPO_ALIMENTO").ToString & Chr(9))
             Next
             Me.FormateaGrid()
             Me.Grid.Rows = Me.Grid.Rows + 1
@@ -429,7 +454,6 @@
             End Select
 
             If Me.Validar = False Then
-
                 Return False
             End If
 
@@ -469,6 +493,7 @@
                         .oDetalle.MUERTOS = Me.Grid.Cell(i, Me.iGyMuertos).Text
                         .oDetalle.OXIGENO = Me.Grid.Cell(i, Me.iGyOxigeno).Text
                         .oDetalle.TEMPERATURA = Me.Grid.Cell(i, Me.iGyTemperatura).Text
+                        .oDetalle.TIPO_ALIMENTO = "" & Me.Grid.Cell(i, Me.iGyTipoAlimento).Text
 
                         If .oDetalle.GrabaRenglon() = False Then
                             MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Name)
@@ -484,6 +509,41 @@
 
         Catch ex As Exception
             HandleError(Me.Name, "Grabar", ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Private Function Cancelar() As Boolean
+        Dim bResultado As Boolean = False
+
+        Try
+            Select Case Me.Estado
+                Case enumEstados.GRABADO
+                    'Continua
+                Case Else
+                    MsgBox("Estatus no válido para cancelar.", MsgBoxStyle.Exclamation, Me.Name)
+                    Return False
+            End Select
+
+            Me.oAlimentacion = New Class_Acuicola_Alimentacion_Global
+
+            With Me.oAlimentacion
+                .FOLIO_ALIMENTACION = Me.txtFolio.Text
+                .CODIGO_DOCUMENTO = "ALI_ACU" & Plaza.CODIGO_PLAZA.ToString
+
+                If .Cancelar() = False Then
+                    MsgBox("Error al tratar de cancelar la alimentación.", MsgBoxStyle.Exclamation, Me.Name)
+                    Return False
+                End If
+                
+            End With
+
+            bResultado = True
+            MsgBox("Alimentación acuicola cancelada.", MsgBoxStyle.Information, Me.Name)
+
+        Catch ex As Exception
+            HandleError(Me.Name, "Cancelar", ex)
         End Try
 
         Return bResultado
