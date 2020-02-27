@@ -1,0 +1,73 @@
+﻿Imports CrystalDecisions.CrystalReports.Engine
+
+Public Class Rpt_Ventas_Comisiones
+
+#Region "Opciones"
+    Private Sub tsbConsultar_Click(sender As Object, e As EventArgs) Handles tsbConsultar.Click
+        Me.Consultar()
+    End Sub
+
+    Private Sub tsbSalir_Click(sender As Object, e As EventArgs) Handles tsbSalir.Click
+        Me.Close()
+    End Sub
+#End Region
+
+#Region "Eventos"
+    Private Sub Rpt_Ventas_Comisiones_Load(sender As Object, e As EventArgs) Handles Me.Load
+        Me.DtFechaDesde.Value = FechaActualINI()
+        Me.DtFechaHasta.Value = Date.Now
+
+        Me.DesplegarVendedores()
+    End Sub
+#End Region
+
+#Region "Eventos Genéricos"
+    Private Sub txt_KeyDown(sender As Object, e As KeyEventArgs) Handles DtFechaDesde.KeyDown, DtFechaHasta.KeyDown, cboVendedor.KeyDown, txtPtjeComision.KeyDown
+        txtTAB(e)
+    End Sub
+#End Region
+
+#Region "Métodos y procedimientos"
+    Private Sub DesplegarVendedores()
+        Dim oVendedores As New Class_CatVendedores
+        Try
+            With Me.cboVendedor
+                .DisplayMember = "NOMBRE_VENDEDOR"
+                .ValueMember = "CODIGO_VENDEDOR"
+                Dim dView As New Data.DataView(oVendedores.ObtenerVendedoresParaReportes())
+                dView.Sort = "NOMBRE_VENDEDOR"
+                .DataSource = dView
+                .SelectedValue = 0
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarVendedores", ex)
+        End Try
+    End Sub
+
+    Private Sub Consultar()
+        Dim FormatoDeReporte As String = ""
+        Dim Rpt As New ReportDocument
+        Dim oReporte As Class_Reporte
+        Try
+            FormatoDeReporte = "RPT_VENTAS_COMISIONES"
+
+            oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
+
+            Rpt.SetParameterValue("@FECHA1", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
+            Rpt.SetParameterValue("@FECHA2", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
+            Rpt.SetParameterValue("@CODIGO_VENDEDOR", Me.cboVendedor.SelectedValue)
+            Rpt.SetParameterValue("@PTAJE_COMISION", valorNumericoD(Me.txtPtjeComision.Text))
+
+            Dim frm As New Reporte(Rpt)
+            frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
+            frm.Show()
+        Catch ex As Exception
+            HandleError(Me.Name, "Consultar", ex)
+        Finally
+            oReporte = Nothing
+        End Try
+    End Sub
+
+#End Region
+
+End Class
