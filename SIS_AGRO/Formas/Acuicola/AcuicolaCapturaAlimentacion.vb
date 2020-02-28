@@ -216,7 +216,7 @@
                 .Cell(0, Me.iGyIDProyectoSiembra).Text = "IDProyectoSiembra"
                 .Cell(0, Me.iGyCodigoLote).Text = "CódigoLote"
                 .Cell(0, Me.iGyNombreLote).Text = "#Estanque"
-                .Cell(0, Me.iGyAlimento).Text = " Cantidad de alimento"
+                .Cell(0, Me.iGyAlimento).Text = " Cant. alimento"
                 .Cell(0, Me.iGyCanastas).Text = "Canastas"
                 .Cell(0, Me.iGyMuertos).Text = "Muertos"
                 .Cell(0, Me.iGyOxigeno).Text = "Oxígeno"
