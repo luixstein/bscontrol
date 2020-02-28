@@ -25,7 +25,8 @@
     Private iGyMuertos As Integer = 7
     Private iGyOxigeno As Integer = 8
     Private iGyTemperatura As Integer = 9
-    Private iGyTipoAlimento As Integer = 10
+    Private iGyCodigoTipoAlimento As Integer = 10
+    Private iGyNombreTipoAlimento As Integer = 11
 #End Region
 
 #Region "Opciones"
@@ -182,7 +183,7 @@
 
             'Creamos el Grid
             Me.Grid.Rows = 2
-            Me.Grid.Cols = 11
+            Me.Grid.Cols = 12
             Me.Grid.DisplayRowNumber = True
 
             Me.FormateaGrid()
@@ -197,7 +198,7 @@
         Try
             With Me.Grid
                 .AutoRedraw = False
-                .Cols = 11
+                .Cols = 12
 
                 .Column(Me.iGyIdCapturaAlimentacionDetalle).Width = 80
                 .Column(Me.iGyIDProyectoSiembra).Width = 80
@@ -208,18 +209,20 @@
                 .Column(Me.iGyMuertos).Width = 80
                 .Column(Me.iGyOxigeno).Width = 80
                 .Column(Me.iGyTemperatura).Width = 80
-                .Column(Me.iGyTipoAlimento).Width = 200
+                .Column(Me.iGyCodigoTipoAlimento).Width = 50
+                .Column(Me.iGyNombreTipoAlimento).Width = 250
 
                 .Cell(0, Me.iGyIdCapturaAlimentacionDetalle).Text = "IdCapturaAlimentoDetalle"
                 .Cell(0, Me.iGyIDProyectoSiembra).Text = "IDProyectoSiembra"
                 .Cell(0, Me.iGyCodigoLote).Text = "CódigoLote"
                 .Cell(0, Me.iGyNombreLote).Text = "#Estanque"
-                .Cell(0, Me.iGyAlimento).Text = "Alimento"
+                .Cell(0, Me.iGyAlimento).Text = " Cantidad de alimento"
                 .Cell(0, Me.iGyCanastas).Text = "Canastas"
                 .Cell(0, Me.iGyMuertos).Text = "Muertos"
                 .Cell(0, Me.iGyOxigeno).Text = "Oxígeno"
                 .Cell(0, Me.iGyTemperatura).Text = "Temperatura"
-                .Cell(0, Me.iGyTipoAlimento).Text = "Tipo de alimento"
+                .Cell(0, Me.iGyCodigoTipoAlimento).Text = "Codigo articulo"
+                .Cell(0, Me.iGyNombreTipoAlimento).Text = "Tipo de alimento"
 
                 .Column(Me.iGyIdCapturaAlimentacionDetalle).Locked = True
                 .Column(Me.iGyIDProyectoSiembra).Locked = True
@@ -248,6 +251,8 @@
                 .Column(Me.iGyTemperatura).FormatString = "##0.00"
                 .Column(Me.iGyTemperatura).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyTemperatura).DecimalLength = 2
+
+                .Column(Me.iGyCodigoTipoAlimento).Visible = False
 
                 .Locked = False
                 .AutoRedraw = True
@@ -425,7 +430,7 @@
             For Each dRow As DataRow In dTabla.Rows
                 Me.Grid.AddItem(dRow("ID_ACUICOLA_ALIMENTACION_DETALLE").ToString & Chr(9) & dRow("ID_PROYECTO_SIEMBRA").ToString & Chr(9) & dRow("CODIGO_LOTE").ToString & Chr(9) & _
                                  dRow("NOMBRE_LOTE").ToString & Chr(9) & dRow("ALIMENTO").ToString & Chr(9) & dRow("CANASTAS").ToString & Chr(9) & dRow("MUERTOS").ToString & Chr(9) & _
-                                 dRow("OXIGENO").ToString & Chr(9) & dRow("TEMPERATURA").ToString & Chr(9) & dRow("TIPO_ALIMENTO").ToString & Chr(9))
+                                 dRow("OXIGENO").ToString & Chr(9) & dRow("TEMPERATURA").ToString & Chr(9) & dRow("CODIGO_TIPO_ALIMENTO").ToString & Chr(9) & dRow("DESCRIPCION") & Chr(9))
             Next
             Me.FormateaGrid()
             Me.Grid.Rows = Me.Grid.Rows + 1
@@ -495,7 +500,7 @@
                         .oDetalle.MUERTOS = Me.Grid.Cell(i, Me.iGyMuertos).Text
                         .oDetalle.OXIGENO = Me.Grid.Cell(i, Me.iGyOxigeno).Text
                         .oDetalle.TEMPERATURA = Me.Grid.Cell(i, Me.iGyTemperatura).Text
-                        .oDetalle.TIPO_ALIMENTO = "" & Me.Grid.Cell(i, Me.iGyTipoAlimento).Text
+                        .oDetalle.CODIGO_TIPO_ALIMENTO = "" & Me.Grid.Cell(i, Me.iGyCodigoTipoAlimento).Text
 
                         If .oDetalle.GrabaRenglon() = False Then
                             MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Name)
@@ -657,6 +662,7 @@
         Try
 
             Dim sql As Class_find
+            Dim oArticulo As New Class_CatArticulos
             Dim Columna As Integer, Renglon As Integer, sCodigo As String
 
             Columna = Me.Grid.Selection.FirstCol
@@ -670,7 +676,10 @@
                                 GoTo Busqueda
                             End If
 
-                        Case Me.iGyTipoAlimento
+                        Case Me.iGyNombreTipoAlimento
+                            'If txtLEN(Me.Grid.Cell(Renglon, Me.iGyCodigoTipoAlimento).Text) = False Or txtLEN(Me.Grid.Cell(Renglon, Me.iGyNombreTipoAlimento).Text) = False Then
+                            '    GoTo BusquedaArticulo
+                            'End If
 
                             If Me.Grid.Rows - 1 = Renglon Then
                                 Me.Grid.Rows = Me.Grid.Rows + 1
@@ -706,13 +715,28 @@ Busqueda:
                                 Me.Grid.Cell(Renglon, Me.iGyIdCapturaAlimentacionDetalle).Text = CInt(Me.Grid.Cell(Renglon, Me.iGyIdCapturaAlimentacionDetalle).Text) + 1
                             End If
 
+                        Case Me.iGyNombreTipoAlimento
+BusquedaArticulo:
+
+                            sCodigo = oArticulo.BusquedaVisual_PorDescripcion
+                            Me.Grid.Cell(Renglon, Me.iGyCodigoTipoAlimento).Text = sCodigo
+
+                            oArticulo = New Class_CatArticulos(Me.Grid.Cell(Renglon, Me.iGyCodigoTipoAlimento).Text)
+
+                            If oArticulo.Existe Then
+                                Me.Grid.Cell(Renglon, Me.iGyNombreTipoAlimento).Text = oArticulo.DESCRIPCION
+                            End If
+
+
                     End Select
 
             End Select
 
+
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
+
     End Sub
 
     Private Sub Navegador(ByVal sTipoDeBusqueda As String)
@@ -753,6 +777,7 @@ Busqueda:
         Catch ex As Exception
             HandleError(Me.Name, "NavegadorNotas", ex)
         End Try
+
     End Sub
 #End Region
 

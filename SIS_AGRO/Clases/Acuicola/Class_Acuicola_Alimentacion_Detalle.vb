@@ -15,7 +15,7 @@ Public Class Class_Acuicola_Alimentacion_Detalle
     Private _MUERTOS As Decimal
     Private _OXIGENO As Decimal
     Private _TEMPERATURA As Decimal
-    Private _TIPO_ALIMENTO As String
+    Private _CODIGO_TIPO_ALIMENTO As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -111,12 +111,12 @@ Public Class Class_Acuicola_Alimentacion_Detalle
         End Set
     End Property
 
-    Public Property TIPO_ALIMENTO() As String
+    Public Property CODIGO_TIPO_ALIMENTO() As String
         Get
-            Return Me._TIPO_ALIMENTO
+            Return Me._CODIGO_TIPO_ALIMENTO
         End Get
         Set(value As String)
-            Me._TIPO_ALIMENTO = value
+            Me._CODIGO_TIPO_ALIMENTO = value
         End Set
     End Property
 
@@ -174,7 +174,7 @@ Public Class Class_Acuicola_Alimentacion_Detalle
             sqlParametro = .Parameters.Add("@MUERTOS", SqlDbType.Decimal) : sqlParametro.Value = Me._MUERTOS
             sqlParametro = .Parameters.Add("@OXIGENO", SqlDbType.Decimal) : sqlParametro.Value = Me._OXIGENO
             sqlParametro = .Parameters.Add("@TEMPERATURA", SqlDbType.Decimal) : sqlParametro.Value = Me._TEMPERATURA
-            sqlParametro = .Parameters.Add("@TIPO_ALIMENTO", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._TIPO_ALIMENTO.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_TIPO_ALIMENTO", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_TIPO_ALIMENTO
 
             Try
                 Me._Conexion.Open()
