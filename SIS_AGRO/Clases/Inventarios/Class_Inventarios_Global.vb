@@ -28,6 +28,7 @@ Public Class Class_Inventarios_Global
     Private _CODIGO_CONCEPTO_INVENTARIOS As Integer
     Private _COSTO_TOTAL_BASE As Decimal = 0
     Private _FLETE_TOTAL As Decimal = 0
+    Private _ESTATUS_MOVIMIENTO As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -244,6 +245,15 @@ Public Class Class_Inventarios_Global
         End Get
         Set(ByVal Value As Decimal)
             Me._FLETE_TOTAL = Value
+        End Set
+    End Property
+
+    Public Property ESTATUS_MOVIMIENTO() As String
+        Get
+            Return Me._ESTATUS_MOVIMIENTO
+        End Get
+        Set(value As String)
+            Me._ESTATUS_MOVIMIENTO = value
         End Set
     End Property
 #End Region
@@ -464,6 +474,7 @@ Public Class Class_Inventarios_Global
 
                     Me._COSTO_TOTAL_BASE = CDec(dReader("COSTO_TOTAL_BASE"))
                     Me._FLETE_TOTAL = CDec(dReader("FLETE_TOTAL"))
+                    Me._ESTATUS_MOVIMIENTO = "" & dReader("ESTATUS_MOVIMIENTO").ToString
 
                     bResultado = True
                 End If
