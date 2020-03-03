@@ -657,6 +657,8 @@ buscar:
             Me.dtpFechaEntrega.Value = Date.Now
             Me.cboEntradasAnterioresOrdenCompra.DataSource = Nothing
 
+            Me.cboAlmacenEntradaFinanciera.SelectedIndex = -1
+
             Me.TabControl1.SelectedIndex = 0
 
         Catch ex As Exception
@@ -1440,6 +1442,18 @@ BuscarCuentas:
                 .SelectedValue = Usuario.Codigo_Almacen
             End With
 
+            With Me.cboAlmacenEntradaFinanciera
+                .DisplayMember = "NOMBRE_ALMACEN"
+                .ValueMember = "CODIGO_ALMACEN"
+                Dim dView As New Data.DataView(oElementos.ObtenerAlmacenes)
+                dView.Sort = "NOMBRE_ALMACEN"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedIndex = 0
+                End If
+                .SelectedValue = Usuario.Codigo_Almacen
+            End With
+
             Me.GeneraFolio()
         Catch ex As Exception
             HandleError(Me.Name, "DesplegarAlmacenes", ex)
@@ -2035,9 +2049,12 @@ BuscarCuentas:
             End If
 
             If Me.oDocumentos.ES_TRANSFERENCIA = "1" Then
-                Me.CboAlmacenDestino.Visible = True
-                Me.lblAlmacenDestino.Visible = True
-                Me.lblCodigoAlmacen2.Visible = True
+                Me.CboAlmacenDestino.Visible = True : Me.lblDisplayAlmacenDestino.Visible = True : Me.lblCodigoAlmacenDestino.Visible = True
+                If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "TRF" Then 'TRF=TRANSFERENCIA_FINANCIERA 
+                    Me.cboAlmacenEntradaFinanciera.Visible = True : Me.lblDisplayAlmacenEntradaFinanciera.Visible = True
+                Else
+                    Me.cboAlmacenEntradaFinanciera.Visible = False : Me.lblDisplayAlmacenEntradaFinanciera.Visible = False
+                End If
                 If Me._LlamadoExteriorGenerarSalidaEmbarque = False And Me._ConsultaExteriorSalida = False Then
                     Me.Grid1.Column(Me.iGyCuentaContable).Locked = True
                     Me.Grid1.Column(Me.iGyImporte).Locked = True
@@ -2052,9 +2069,8 @@ BuscarCuentas:
                 Me.txtFolioEmbarque.Visible = True : Me.lblDisplayFolioEmbarque.Visible = True
                 'Me.GridSeries.Column(Me.igySerieNumeroSerie).Locked = True
             Else
-                Me.CboAlmacenDestino.Visible = False
-                Me.lblAlmacenDestino.Visible = False
-                Me.lblCodigoAlmacen2.Visible = False
+                Me.CboAlmacenDestino.Visible = False : Me.lblDisplayAlmacenDestino.Visible = False : Me.lblCodigoAlmacenDestino.Visible = False
+                Me.cboAlmacenEntradaFinanciera.Visible = False : Me.lblDisplayAlmacenEntradaFinanciera.Visible = False
                 If Me._LlamadoExteriorGenerarSalidaEmbarque = False And Me._ConsultaExteriorSalida = False Then
                     Me.Grid1.Column(Me.iGyCuentaContable).Locked = False
                 End If
