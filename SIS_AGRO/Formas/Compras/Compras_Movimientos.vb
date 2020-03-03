@@ -1372,6 +1372,8 @@ Buscar:
         End If
 
         Try
+            Me.Totales()
+
             Dim oAlmacen As New Class_CatAlmacenes(Me.CboAlmacen.SelectedValue.ToString)
 
             With Me.oCompras
@@ -2236,6 +2238,10 @@ Buscar:
                     Return False
                 End If
 
+                If Me.ValidaDisponiblesEntradaOC = False Then
+                    Return False
+                End If
+
                 'Ya no se validan series en ningún momento , porque estas ese llevan ahora en las entradas.
                 ''Nota aqui no se pregunta antes si hay rows en dtSeries, porque puede ser que no le hayan dado al botón, en la siguiente validación si.
                 'If Me.ValidaNumerosSerie = False Then
@@ -2689,12 +2695,22 @@ LlenaLinea:
                             End If
 
                             If Me.oDocumento.AFECTA_CXP = True Then
-                                If Me.oCompras.ValidaCantidadDisponibleArticulo(CInt(Me.Grid.Cell(Renglon, Me.igyIdArticulo).Text), dCantidad) = False Then
-                                    MsgBox("La cantidad debe de ser menor al disponible.", MsgBoxStyle.Exclamation, sProcedure)
-                                    Me.Grid.Cell(Renglon, Me.igyCantidad).Text = Me.oCompras.ObtenerDisponibleArticulo(CInt(Me.Grid.Cell(Renglon, Me.igyIdArticulo).Text)).ToString
-                                    Me.Grid.Refresh()
-                                    Return
+                                If Me.chkEsInventariable.Checked = True Then 'Valida disponible en la entrada por recepcion
+                                    If Me.oCompras.ValidaCantidadDisponibleArticuloInventario(CInt(Me.Grid.Cell(Renglon, Me.igyIdArticulo).Text), dCantidad) = False Then
+                                        MsgBox("La cantidad debe de ser menor al disponible.", MsgBoxStyle.Exclamation, sProcedure)
+                                        Me.Grid.Cell(Renglon, Me.igyCantidad).Text = Me.oCompras.ObtenerDisponibleArticuloInventario(CInt(Me.Grid.Cell(Renglon, Me.igyIdArticulo).Text)).ToString
+                                        Me.Grid.Refresh()
+                                        Return
+                                    End If
+                                Else 'Proceso normal de antes
+                                    If Me.oCompras.ValidaCantidadDisponibleArticulo(CInt(Me.Grid.Cell(Renglon, Me.igyIdArticulo).Text), dCantidad) = False Then
+                                        MsgBox("La cantidad debe de ser menor al disponible.", MsgBoxStyle.Exclamation, sProcedure)
+                                        Me.Grid.Cell(Renglon, Me.igyCantidad).Text = Me.oCompras.ObtenerDisponibleArticulo(CInt(Me.Grid.Cell(Renglon, Me.igyIdArticulo).Text)).ToString
+                                        Me.Grid.Refresh()
+                                        Return
+                                    End If
                                 End If
+                                
                             End If
 
                             If Me.cboMoneda.Text = "USD" Then
@@ -2852,6 +2868,7 @@ BuscarCuentas:
                         If IDAdicional > 0 Then
                             Me.EliminaDetalleCuentasContables(IDAdicional)
                         End If
+
                     End If
 
                 Case Keys.F4 'Comentarios
@@ -3797,6 +3814,26 @@ BuscarCuentas:
                 If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
                     If Me.oCompras.ValidaCantidadDisponibleArticulo(CInt(Me.Grid.Cell(i, Me.igyIdArticulo).Text), CDbl(Me.Grid.Cell(i, Me.igyCantidad).Text)) = False Then
                         MsgBox("La cantidad debe de ser menor al disponible de la orden de compra en el renglón #" & i.ToString, MsgBoxStyle.Exclamation, sProcedure)
+                        Me.Grid.Cell(i, Me.igyCantidad).SetFocus()
+                        Return False
+                    End If
+                End If
+            Next i
+
+            Return True
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Function
+
+    Private Function ValidaDisponiblesEntradaOC() As Boolean
+        Const sProcedure As String = "ValidaDisponiblesEntradaOC"
+        Try
+            Dim i As Integer
+            For i = 1 To Grid.Rows - 1
+                If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
+                    If Me.oCompras.ValidaCantidadDisponibleArticuloInventario(CInt(Me.Grid.Cell(i, Me.igyIdArticulo).Text), CDbl(Me.Grid.Cell(i, Me.igyCantidad).Text)) = False Then
+                        MsgBox("La cantidad debe de ser menor al disponible de la entrada por recepión en el renglón #" & i.ToString, MsgBoxStyle.Exclamation, sProcedure)
                         Me.Grid.Cell(i, Me.igyCantidad).SetFocus()
                         Return False
                     End If

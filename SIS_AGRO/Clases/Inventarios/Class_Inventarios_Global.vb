@@ -28,6 +28,7 @@ Public Class Class_Inventarios_Global
     Private _CODIGO_CONCEPTO_INVENTARIOS As Integer
     Private _COSTO_TOTAL_BASE As Decimal = 0
     Private _FLETE_TOTAL As Decimal = 0
+    Private _ESTATUS_MOVIMIENTO As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -244,6 +245,15 @@ Public Class Class_Inventarios_Global
         End Get
         Set(ByVal Value As Decimal)
             Me._FLETE_TOTAL = Value
+        End Set
+    End Property
+
+    Public Property ESTATUS_MOVIMIENTO() As String
+        Get
+            Return Me._ESTATUS_MOVIMIENTO
+        End Get
+        Set(value As String)
+            Me._ESTATUS_MOVIMIENTO = value
         End Set
     End Property
 #End Region
@@ -464,6 +474,7 @@ Public Class Class_Inventarios_Global
 
                     Me._COSTO_TOTAL_BASE = CDec(dReader("COSTO_TOTAL_BASE"))
                     Me._FLETE_TOTAL = CDec(dReader("FLETE_TOTAL"))
+                    Me._ESTATUS_MOVIMIENTO = "" & dReader("ESTATUS_MOVIMIENTO").ToString
 
                     bResultado = True
                 End If
@@ -496,7 +507,7 @@ Public Class Class_Inventarios_Global
                     "(SELECT ID_ADICIONAL,MAX(CUENTA_CONTABLE) FROM CENTRO_COSTOS_MOVIMIENTOS_DETALLE WHERE FOLIO_MOVIMIENTO=@FOLIO_MOVIMIENTO_INVENTARIO GROUP BY FOLIO_MOVIMIENTO,ID_ADICIONAL) " &
                     "SELECT I.CODIGO_ARTICULO,A.DESCRIPCION,I.CANTIDAD,I.COSTO_DETALLE,I.IMPORTE,I.CUENTA_CONTABLE,CASE WHEN DC.CUENTA_CONTABLE IS NOT NULL THEN 'Tiene detalle -->>' ELSE C.NOMBRE_CUENTA END NOMBRE_CUENTA, " &
                     "'' Boton,I.ID_ADICIONAL, " &
-                    "I.FLETE_DETALLE_IMPORTE,I.COSTO_DETALLE_BASE,I.IMPORTE_BASE,I.ID_COMPRA_DETALLE " &
+                    "I.FLETE_DETALLE_IMPORTE,I.COSTO_DETALLE_BASE,I.IMPORTE_BASE,I.ID_COMPRA_DETALLE, I.DISPONIBLE " &
                     "FROM INVENTARIO_MOVIMIENTOS_DETALLE I  " &
                     "INNER JOIN CAT_ARTICULOS A ON(A.CODIGO_ARTICULO=I.CODIGO_ARTICULO)  " &
                     "LEFT JOIN CON_CAT_CUENTAS C ON(I.CUENTA_CONTABLE=C.CUENTA_CONTABLE) " &

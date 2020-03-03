@@ -1444,11 +1444,15 @@ Public Class Class_Compras_Global
         f.sCampo = "FOLIO_COMPRA"
         f.sOrder = "FECHA ASC"
         f.sTable = "COMPRA_GLOBAL"
+
+        'Solo trae las OC que tienen entradas con disponible 
         f.sQl = "SELECT G.FOLIO_COMPRA FOLIO_COMPRA,P.NOMBRE_PROVEEDOR,G.FECHA,G.ESTATUS FROM COMPRA_GLOBAL G " &
         "INNER JOIN CAT_PROVEEDORES P ON(G.CODIGO_PROVEEDOR=P.CODIGO_PROVEEDOR) " &
         "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO T ON(G.CODIGO_DOCUMENTO=T.CODIGO_DOCUMENTO) " &
-        "WHERE T.CODIGO_DOCUMENTO LIKE 'OC%' AND T.AFECTA_CONTABILIDAD='0' AND G.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND " &
-        "G.ESTATUS IN('G','R') AND "
+        "WHERE G.FOLIO_COMPRA IN(SELECT G.FOLIO_COMPRA FROM COMPRA_GLOBAL G INNER JOIN COMPRA_DETALLE D ON(G.FOLIO_COMPRA=D.FOLIO_COMPRA) " &
+        "INNER JOIN INVENTARIO_MOVIMIENTOS_DETALLE I ON(D.ID_COMPRA_DETALLE=I.ID_COMPRA_DETALLE) WHERE I.DISPONIBLE>0 AND G.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " ) " &
+        "AND T.CODIGO_DOCUMENTO LIKE 'OC%' AND T.AFECTA_CONTABILIDAD='0' AND G.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND " &
+        "G.ESTATUS <> 'C' AND "
 
         f.Inicia("")
         f.ShowDialog()
@@ -1535,6 +1539,21 @@ Public Class Class_Compras_Global
         End Try
     End Function
 
+    Public Function ValidaCantidadDisponibleArticuloInventario(ByVal IDCompraDetalle As Integer, ByVal dCantidad As Double) As Boolean
+        Dim dDisponible As String = ""
+        Try
+            Dim sql As New Class_find("SELECT DISPONIBLE FROM INVENTARIO_MOVIMIENTOS_DETALLE WHERE ID_COMPRA_DETALLE=" & IDCompraDetalle)
+            If txtLEN(sql.Result1) = True Then
+                If dCantidad <= CDbl(sql.Result1) Then
+                    Return True
+                End If
+            End If
+            sql = Nothing
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ValidaCantidadDisponibleArticuloInventario", ex)
+        End Try
+    End Function
+
     Public Function ValidaExistaIDCompraDetalle(ByVal IDCompraDetalle As Integer) As Boolean
         Dim dDisponible As String = ""
         Try
@@ -1559,6 +1578,20 @@ Public Class Class_Compras_Global
             sql = Nothing
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "ObtenerDisponibleArticulo", ex)
+        End Try
+    End Function
+
+    Public Function ObtenerDisponibleArticuloInventario(ByVal sIdArticulo As Integer) As Double
+        Try
+            Dim sql As New Class_find("SELECT DISPONIBLE FROM INVENTARIO_MOVIMIENTOS_DETALLE WHERE ID_COMPRA_DETALLE=" & sIdArticulo)
+            If sql.Result1 <> "" Then
+                Return CDbl(sql.Result1)
+            Else
+                Return 0
+            End If
+            sql = Nothing
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtenerDisponibleArticuloInventario", ex)
         End Try
     End Function
 
@@ -1906,10 +1939,10 @@ Public Class Class_Compras_Global
 
     Public Function ObtieneEntradasOC(ByVal sFolioOrdenCompra As String) As DataTable
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
-        Dim sSQL As String = ("SELECT FOLIO_MOVIMIENTO_INVENTARIO,DBO.FN_FORMAT_FECHA_CORTO(FECHA)FECHA " &
-                              "FROM INVENTARIO_MOVIMIENTOS_GLOBAL " &
+        Dim sSQL As String = ("SELECT G.FOLIO_MOVIMIENTO_INVENTARIO,DBO.FN_FORMAT_FECHA_CORTO(MAX(FECHA))FECHA " &
+                              "FROM INVENTARIO_MOVIMIENTOS_GLOBAL G INNER JOIN INVENTARIO_MOVIMIENTOS_DETALLE D ON(G.FOLIO_MOVIMIENTO_INVENTARIO=D.FOLIO_MOVIMIENTO_INVENTARIO) " &
                               "WHERE CODIGO_TIPO_DOCUMENTO LIKE 'ER%' AND ESTA_CANCELADO='0' AND ESTATUS='A' AND FOLIO_REFERENCIA='" & sFolioOrdenCompra & "' " &
-                              "ORDER BY FECHA ")
+                              "AND D.DISPONIBLE > 0 GROUP BY G.FOLIO_MOVIMIENTO_INVENTARIO ORDER BY FECHA ")
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
