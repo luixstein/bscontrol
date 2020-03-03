@@ -1781,7 +1781,7 @@ BuscarCuentas:
                 .Column(Me.iGyCostoMasFlete).Visible = False
                 .Column(Me.iGyImporteMasFlete).Visible = False
                 .Column(Me.iGyIDCompraDetalle).Visible = False
-                .Column(Me.iGyDisponible).Visible = True 'Ocultar despues
+                .Column(Me.iGyDisponible).Visible = False
 
             End With
 
