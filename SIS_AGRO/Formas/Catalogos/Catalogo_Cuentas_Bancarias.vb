@@ -214,6 +214,7 @@ Public Class Catalogo_Cuentas_Bancarias
                     Me.TxtNombreCuenta.Enabled = True
                     Me.CboEstatus.Enabled = False
                     Me.txtCuentaContableDolares.Enabled = False
+                    Me.chkEsCuentaFiscal.Enabled = True
 
                     Me.InicializaElemento()
 
@@ -229,10 +230,10 @@ Public Class Catalogo_Cuentas_Bancarias
                     Me.txtCuentaContable.Enabled = False
                     Me.txtCuentaContableDolares.Enabled = False
 
-
                     Me.TxtIDCuenta.Enabled = False
                     Me.TxtNombreCuenta.Enabled = True
                     Me.CboEstatus.Enabled = True
+                    Me.chkEsCuentaFiscal.Enabled = False
 
                 Case enumEstados.CONSULTA
                     Me.gBoxInformacion.Enabled = False

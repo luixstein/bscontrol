@@ -51,7 +51,7 @@ Partial Class Inventarios_Movimientos
         Me.CboDocumento = New System.Windows.Forms.ComboBox()
         Me.lblDocumento = New System.Windows.Forms.Label()
         Me.CboAlmacenDestino = New System.Windows.Forms.ComboBox()
-        Me.lblAlmacenDestino = New System.Windows.Forms.Label()
+        Me.lblDisplayAlmacenDestino = New System.Windows.Forms.Label()
         Me.lblDisplayPoliza = New System.Windows.Forms.Label()
         Me.lblDisplayTotales = New System.Windows.Forms.Label()
         Me.txtTotalCantidad = New System.Windows.Forms.MaskedTextBox()
@@ -63,7 +63,7 @@ Partial Class Inventarios_Movimientos
         Me.btnDocumentoSiguiente = New System.Windows.Forms.Button()
         Me.btnDocumentoAnterior = New System.Windows.Forms.Button()
         Me.lblCodigoAlmacen1 = New System.Windows.Forms.Label()
-        Me.lblCodigoAlmacen2 = New System.Windows.Forms.Label()
+        Me.lblCodigoAlmacenDestino = New System.Windows.Forms.Label()
         Me.btnSeries = New System.Windows.Forms.Button()
         Me.CboConceptoInventario = New System.Windows.Forms.ComboBox()
         Me.lblConceptoInventario = New System.Windows.Forms.Label()
@@ -90,6 +90,10 @@ Partial Class Inventarios_Movimientos
         Me.txtTotalFlete = New System.Windows.Forms.MaskedTextBox()
         Me.btnSeleccionarArchivoSeries = New System.Windows.Forms.Button()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+        Me.lblDisplayAlmacenEntradaFinanciera = New System.Windows.Forms.Label()
+        Me.cboAlmacenEntradaFinanciera = New System.Windows.Forms.ComboBox()
+        Me.txtFolioEntradaFinanciera = New System.Windows.Forms.TextBox()
+        Me.lblDisplayFolioEntradaFinanciera = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.TpSeries.SuspendLayout()
@@ -238,7 +242,7 @@ Partial Class Inventarios_Movimientos
         'lblFecha
         '
         Me.lblFecha.AutoSize = True
-        Me.lblFecha.Location = New System.Drawing.Point(417, 54)
+        Me.lblFecha.Location = New System.Drawing.Point(430, 54)
         Me.lblFecha.Name = "lblFecha"
         Me.lblFecha.Size = New System.Drawing.Size(43, 13)
         Me.lblFecha.TabIndex = 261
@@ -274,7 +278,7 @@ Partial Class Inventarios_Movimientos
         'lblDisplayFolio
         '
         Me.lblDisplayFolio.AutoSize = True
-        Me.lblDisplayFolio.Location = New System.Drawing.Point(425, 32)
+        Me.lblDisplayFolio.Location = New System.Drawing.Point(438, 32)
         Me.lblDisplayFolio.Name = "lblDisplayFolio"
         Me.lblDisplayFolio.Size = New System.Drawing.Size(35, 13)
         Me.lblDisplayFolio.TabIndex = 258
@@ -344,14 +348,14 @@ Partial Class Inventarios_Movimientos
         Me.CboAlmacenDestino.Size = New System.Drawing.Size(211, 21)
         Me.CboAlmacenDestino.TabIndex = 4
         '
-        'lblAlmacenDestino
+        'lblDisplayAlmacenDestino
         '
-        Me.lblAlmacenDestino.AutoSize = True
-        Me.lblAlmacenDestino.Location = New System.Drawing.Point(369, 80)
-        Me.lblAlmacenDestino.Name = "lblAlmacenDestino"
-        Me.lblAlmacenDestino.Size = New System.Drawing.Size(91, 13)
-        Me.lblAlmacenDestino.TabIndex = 275
-        Me.lblAlmacenDestino.Text = "Almacén destino :"
+        Me.lblDisplayAlmacenDestino.AutoSize = True
+        Me.lblDisplayAlmacenDestino.Location = New System.Drawing.Point(382, 80)
+        Me.lblDisplayAlmacenDestino.Name = "lblDisplayAlmacenDestino"
+        Me.lblDisplayAlmacenDestino.Size = New System.Drawing.Size(91, 13)
+        Me.lblDisplayAlmacenDestino.TabIndex = 275
+        Me.lblDisplayAlmacenDestino.Text = "Almacén destino :"
         '
         'lblDisplayPoliza
         '
@@ -421,7 +425,7 @@ Partial Class Inventarios_Movimientos
         'lblDisplayCopiarRenglones
         '
         Me.lblDisplayCopiarRenglones.AutoSize = True
-        Me.lblDisplayCopiarRenglones.Location = New System.Drawing.Point(699, 31)
+        Me.lblDisplayCopiarRenglones.Location = New System.Drawing.Point(691, 31)
         Me.lblDisplayCopiarRenglones.Name = "lblDisplayCopiarRenglones"
         Me.lblDisplayCopiarRenglones.Size = New System.Drawing.Size(92, 13)
         Me.lblDisplayCopiarRenglones.TabIndex = 333
@@ -455,14 +459,14 @@ Partial Class Inventarios_Movimientos
         Me.lblCodigoAlmacen1.TabIndex = 383
         Me.lblCodigoAlmacen1.Text = "_"
         '
-        'lblCodigoAlmacen2
+        'lblCodigoAlmacenDestino
         '
-        Me.lblCodigoAlmacen2.AutoSize = True
-        Me.lblCodigoAlmacen2.Location = New System.Drawing.Point(696, 81)
-        Me.lblCodigoAlmacen2.Name = "lblCodigoAlmacen2"
-        Me.lblCodigoAlmacen2.Size = New System.Drawing.Size(13, 13)
-        Me.lblCodigoAlmacen2.TabIndex = 384
-        Me.lblCodigoAlmacen2.Text = "_"
+        Me.lblCodigoAlmacenDestino.AutoSize = True
+        Me.lblCodigoAlmacenDestino.Location = New System.Drawing.Point(696, 81)
+        Me.lblCodigoAlmacenDestino.Name = "lblCodigoAlmacenDestino"
+        Me.lblCodigoAlmacenDestino.Size = New System.Drawing.Size(13, 13)
+        Me.lblCodigoAlmacenDestino.TabIndex = 384
+        Me.lblCodigoAlmacenDestino.Text = "_"
         '
         'btnSeries
         '
@@ -740,11 +744,52 @@ Partial Class Inventarios_Movimientos
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
         '
+        'lblDisplayAlmacenEntradaFinanciera
+        '
+        Me.lblDisplayAlmacenEntradaFinanciera.AutoSize = True
+        Me.lblDisplayAlmacenEntradaFinanciera.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblDisplayAlmacenEntradaFinanciera.Location = New System.Drawing.Point(351, 105)
+        Me.lblDisplayAlmacenEntradaFinanciera.Name = "lblDisplayAlmacenEntradaFinanciera"
+        Me.lblDisplayAlmacenEntradaFinanciera.Size = New System.Drawing.Size(122, 12)
+        Me.lblDisplayAlmacenEntradaFinanciera.TabIndex = 399
+        Me.lblDisplayAlmacenEntradaFinanciera.Text = "Almacén entrada financiera :"
+        '
+        'cboAlmacenEntradaFinanciera
+        '
+        Me.cboAlmacenEntradaFinanciera.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboAlmacenEntradaFinanciera.FormattingEnabled = True
+        Me.cboAlmacenEntradaFinanciera.Location = New System.Drawing.Point(479, 102)
+        Me.cboAlmacenEntradaFinanciera.Name = "cboAlmacenEntradaFinanciera"
+        Me.cboAlmacenEntradaFinanciera.Size = New System.Drawing.Size(211, 21)
+        Me.cboAlmacenEntradaFinanciera.TabIndex = 400
+        '
+        'txtFolioEntradaFinanciera
+        '
+        Me.txtFolioEntradaFinanciera.Location = New System.Drawing.Point(789, 101)
+        Me.txtFolioEntradaFinanciera.MaxLength = 160
+        Me.txtFolioEntradaFinanciera.Name = "txtFolioEntradaFinanciera"
+        Me.txtFolioEntradaFinanciera.ReadOnly = True
+        Me.txtFolioEntradaFinanciera.Size = New System.Drawing.Size(135, 20)
+        Me.txtFolioEntradaFinanciera.TabIndex = 401
+        '
+        'lblDisplayFolioEntradaFinanciera
+        '
+        Me.lblDisplayFolioEntradaFinanciera.AutoSize = True
+        Me.lblDisplayFolioEntradaFinanciera.Location = New System.Drawing.Point(733, 104)
+        Me.lblDisplayFolioEntradaFinanciera.Name = "lblDisplayFolioEntradaFinanciera"
+        Me.lblDisplayFolioEntradaFinanciera.Size = New System.Drawing.Size(50, 13)
+        Me.lblDisplayFolioEntradaFinanciera.TabIndex = 402
+        Me.lblDisplayFolioEntradaFinanciera.Text = "Entrada :"
+        '
         'Inventarios_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1308, 587)
+        Me.Controls.Add(Me.txtFolioEntradaFinanciera)
+        Me.Controls.Add(Me.lblDisplayFolioEntradaFinanciera)
+        Me.Controls.Add(Me.cboAlmacenEntradaFinanciera)
+        Me.Controls.Add(Me.lblDisplayAlmacenEntradaFinanciera)
         Me.Controls.Add(Me.btnSeleccionarArchivoSeries)
         Me.Controls.Add(Me.txtTotalFlete)
         Me.Controls.Add(Me.txtTotalMasFlete)
@@ -753,7 +798,7 @@ Partial Class Inventarios_Movimientos
         Me.Controls.Add(Me.CboConceptoInventario)
         Me.Controls.Add(Me.btnSeries)
         Me.Controls.Add(Me.TabControl1)
-        Me.Controls.Add(Me.lblCodigoAlmacen2)
+        Me.Controls.Add(Me.lblCodigoAlmacenDestino)
         Me.Controls.Add(Me.lblCodigoAlmacen1)
         Me.Controls.Add(Me.btnDocumentoSiguiente)
         Me.Controls.Add(Me.btnDocumentoAnterior)
@@ -766,7 +811,7 @@ Partial Class Inventarios_Movimientos
         Me.Controls.Add(Me.txtTotalCantidad)
         Me.Controls.Add(Me.lblDisplayPoliza)
         Me.Controls.Add(Me.CboAlmacenDestino)
-        Me.Controls.Add(Me.lblAlmacenDestino)
+        Me.Controls.Add(Me.lblDisplayAlmacenDestino)
         Me.Controls.Add(Me.txtTotal)
         Me.Controls.Add(Me.CboAlmacen)
         Me.Controls.Add(Me.lblDisplayAlmacen)
@@ -823,7 +868,7 @@ Partial Class Inventarios_Movimientos
     Friend WithEvents CboDocumento As System.Windows.Forms.ComboBox
     Friend WithEvents lblDocumento As System.Windows.Forms.Label
     Friend WithEvents CboAlmacenDestino As System.Windows.Forms.ComboBox
-    Friend WithEvents lblAlmacenDestino As System.Windows.Forms.Label
+    Friend WithEvents lblDisplayAlmacenDestino As System.Windows.Forms.Label
     Friend WithEvents tsbImprimir As System.Windows.Forms.ToolStripButton
     Friend WithEvents tsbAplicar As System.Windows.Forms.ToolStripButton
     Friend WithEvents lblDisplayPoliza As System.Windows.Forms.Label
@@ -840,7 +885,7 @@ Partial Class Inventarios_Movimientos
     Friend WithEvents btnDocumentoSiguiente As System.Windows.Forms.Button
     Friend WithEvents btnDocumentoAnterior As System.Windows.Forms.Button
     Friend WithEvents lblCodigoAlmacen1 As System.Windows.Forms.Label
-    Friend WithEvents lblCodigoAlmacen2 As System.Windows.Forms.Label
+    Friend WithEvents lblCodigoAlmacenDestino As System.Windows.Forms.Label
     Friend WithEvents tsbEditarCostos As System.Windows.Forms.ToolStripButton
     Friend WithEvents btnSeries As System.Windows.Forms.Button
     Friend WithEvents CboConceptoInventario As System.Windows.Forms.ComboBox
@@ -868,4 +913,8 @@ Partial Class Inventarios_Movimientos
     Friend WithEvents txtTotalFlete As MaskedTextBox
     Friend WithEvents btnSeleccionarArchivoSeries As Button
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
+    Friend WithEvents lblDisplayAlmacenEntradaFinanciera As Label
+    Friend WithEvents cboAlmacenEntradaFinanciera As ComboBox
+    Friend WithEvents txtFolioEntradaFinanciera As TextBox
+    Friend WithEvents lblDisplayFolioEntradaFinanciera As Label
 End Class

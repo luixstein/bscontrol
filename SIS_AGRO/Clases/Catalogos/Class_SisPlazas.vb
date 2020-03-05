@@ -56,6 +56,8 @@ Public Class Class_SisPlazas
     Private _CODIGO_LOTE_EMPAQUE As String
     Private _CODIGO_LOTE_PLANTA As String
     Private _CODIGO_PUNTO_PAGO_EMPAQUE As String
+    Private _CODIGO_ALMACEN_FACTURACION As String
+    Private _CODIGO_ALMACEN_FINANCIERO As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -467,6 +469,17 @@ Public Class Class_SisPlazas
         End Set
     End Property
 
+    Public ReadOnly Property CODIGO_ALMACEN_FACTURACION As String
+        Get
+            Return Me._CODIGO_ALMACEN_FACTURACION
+        End Get
+    End Property
+
+    Public ReadOnly Property CODIGO_ALMACEN_FINANCIERO As String
+        Get
+            Return Me._CODIGO_ALMACEN_FINANCIERO
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -699,6 +712,9 @@ Public Class Class_SisPlazas
                     Me._CODIGO_LOTE_EMPAQUE = "" & dReader("CODIGO_LOTE_EMPAQUE").ToString
                     Me._CODIGO_LOTE_PLANTA = "" & dReader("CODIGO_LOTE_PLANTA").ToString
                     Me._CODIGO_PUNTO_PAGO_EMPAQUE = "" & dReader("CODIGO_PUNTO_PAGO_EMPAQUE").ToString
+
+                    Me._CODIGO_ALMACEN_FACTURACION = "" & dReader("CODIGO_ALMACEN_FACTURACION").ToString
+                    Me._CODIGO_ALMACEN_FINANCIERO = "" & dReader("CODIGO_ALMACEN_FINANCIERO").ToString
 
                     bResultado = True
                 End If

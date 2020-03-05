@@ -29,6 +29,8 @@ Public Class Class_Inventarios_Global
     Private _COSTO_TOTAL_BASE As Decimal = 0
     Private _FLETE_TOTAL As Decimal = 0
     Private _ESTATUS_MOVIMIENTO As String
+    Private _CODIGO_ALMACEN_ENTRADA_FINANCIERA As String
+    Private _FOLIO_ENTRADA_FINANCIERA As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -256,6 +258,24 @@ Public Class Class_Inventarios_Global
             Me._ESTATUS_MOVIMIENTO = value
         End Set
     End Property
+
+    Public Property CODIGO_ALMACEN_ENTRADA_FINANCIERA() As String
+        Get
+            Return Me._CODIGO_ALMACEN_ENTRADA_FINANCIERA
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_ALMACEN_ENTRADA_FINANCIERA = Value
+        End Set
+    End Property
+
+    Public Property FOLIO_ENTRADA_FINANCIERA() As String
+        Get
+            Return Me._FOLIO_ENTRADA_FINANCIERA
+        End Get
+        Set(ByVal Value As String)
+            Me._FOLIO_ENTRADA_FINANCIERA = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -356,6 +376,7 @@ Public Class Class_Inventarios_Global
             sqlParametro = .Parameters.Add("@CODIGO_CONCEPTO_INVENTARIOS", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CONCEPTO_INVENTARIOS
             sqlParametro = .Parameters.Add("@COSTO_TOTAL_BASE", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO_TOTAL_BASE
             sqlParametro = .Parameters.Add("@FLETE_TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._FLETE_TOTAL
+            sqlParametro = .Parameters.Add("@CODIGO_ALMACEN_ENTRADA_FINANCIERA", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_ALMACEN_ENTRADA_FINANCIERA
 
             Try
                 Me._Conexion.Open()
@@ -363,7 +384,7 @@ Public Class Class_Inventarios_Global
                 bResultado = True
                 Me._FOLIO_MOVIMIENTO_INVENTARIO = "" & .Parameters("@FOLIO_MOVIMIENTO_INVENTARIO").Value.ToString
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
+                HandleError(Me._Nombre_Catalogo, "Grabar", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -475,6 +496,8 @@ Public Class Class_Inventarios_Global
                     Me._COSTO_TOTAL_BASE = CDec(dReader("COSTO_TOTAL_BASE"))
                     Me._FLETE_TOTAL = CDec(dReader("FLETE_TOTAL"))
                     Me._ESTATUS_MOVIMIENTO = "" & dReader("ESTATUS_MOVIMIENTO").ToString
+                    Me._CODIGO_ALMACEN_ENTRADA_FINANCIERA = "" & dReader("CODIGO_ALMACEN_ENTRADA_FINANCIERA").ToString()
+                    Me._FOLIO_ENTRADA_FINANCIERA = "" & dReader("FOLIO_ENTRADA_FINANCIERA").ToString()
 
                     bResultado = True
                 End If

@@ -180,6 +180,7 @@ Public Class Catalogo_Almacenes
                     Me.TxtCodigoCategoria.Enabled = True
                     Me.CboEstatus.Enabled = False
                     Me.txtCuentaContable.Visible = False : Me.lblDisplayCuentaContable.Visible = False : Me.lblNombreCuenta.Visible = False
+                    Me.chkEsFiscal.Enabled = True
 
                     Me.InicializaElemento()
 
@@ -203,6 +204,7 @@ Public Class Catalogo_Almacenes
                     Me.txtCodigoZona.Enabled = True
                     Me.txtCuentaContable.Visible = True : Me.lblDisplayCuentaContable.Visible = True : Me.lblNombreCuenta.Visible = True
                     Me.txtCuentaContable.Enabled = False
+                    Me.chkEsFiscal.Enabled = False
 
                     Me.chkCrearCategoria.Visible = False : Me.chkCrearCategoria.Checked = True : Me.chkCrearCategoria.Checked = False
 
