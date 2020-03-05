@@ -1134,9 +1134,6 @@ buscar_acreedor:
                 .ID_CUENTA_BANCARIA = CInt(Me.TxtCuentaBancaria.Text)
                 ' Si la diferencia es positia hubo perdida y se le suma a los pesos
                 .TOTAL = valorNumerico(Me.TxtImporte.Text) + dDiferenciaCambiaria
-
-                'Exit Function
-
                 .CODIGO_DOCUMENTO = (Me.CmbDocumento.SelectedValue.ToString)
                 .FECHA = Me.dtFecha.Value
                 .CONCEPTO1 = Me.TxtConcepto.Text.ToUpper
@@ -1156,7 +1153,6 @@ buscar_acreedor:
                 Else
                     .ES_PAGO_VENTAS_NO_FISCALES = True 'Es no fiscal
                 End If
-
 
                 If .Inserta_Global = False Then
                     Return False

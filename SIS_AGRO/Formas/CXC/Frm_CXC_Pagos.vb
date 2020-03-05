@@ -1503,8 +1503,10 @@ Buscar:
 
     Private Function GestionaGrabar() As Boolean
         Dim bResultado As Boolean = False
-        Me.oPolizaGlobal = New Class_Contabilidad_Poliza_Global(Me.TxtFolio.Text)
+
         Try
+            Me.oPolizaGlobal = New Class_Contabilidad_Poliza_Global(Me.TxtFolio.Text) 'yo Jorgegc no identifico porque esta esto aqui?, revisar luego.
+
             If MsgBox("Deseas grabar el documento " & Me.CboDocumento.Text & " con el folio : " & Me.TxtFolio.Text & "?", CType(vbYesNo + vbQuestion, MsgBoxStyle), "Grabar") = MsgBoxResult.No Then
                 Return False
             End If
@@ -1989,8 +1991,10 @@ Buscar:
 
         Try
             If ExisteDocumento(Me.TxtFolio.Text) = True Then
-                MsgBox("El folio del documento : " & Me.CboDocumento.Text & " ya existe, verifíquelo.", MsgBoxStyle.Exclamation, "Contabilizar")
-                Exit Function
+                Me.GeneraFolio() 'No hay que generar folio nuevo porque se manda el folio del documento
+
+                'MsgBox("El folio del documento : " & Me.CboDocumento.Text & " ya existe, verifíquelo.", MsgBoxStyle.Exclamation, "ValidaPrePoliza")
+                'Exit Function
             End If
 
             'Me.GeneraFolio() 'No hay que generar folio nuevo porque se manda el folio del documento
@@ -2009,8 +2013,9 @@ Buscar:
             Me.oFormaPoliza.lblFolioOrigen.Text = Me.TxtFolio.Text
             Me.oFormaPoliza.TxtFolio.Text = Me.TxtFolio.Text
 
-            Me.oFormaPoliza.Grid1.Rows = 2
-            Me.oFormaPoliza.Grid1.Cols = 7
+            'Ya no se ocupan definir en el new de la forma se establecen con los iniaciliza grid.
+            'Me.oFormaPoliza.Grid1.Rows = 2
+            'Me.oFormaPoliza.Grid1.Cols = 7
 
             Dim i As Integer, R As Integer = 1, dPago As Double, ivaporpagar As Double = 0, dPerdidaGanancia As Double
             Dim oCuentasIVA As Class_find

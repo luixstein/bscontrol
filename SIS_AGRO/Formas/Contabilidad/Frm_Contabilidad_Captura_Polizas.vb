@@ -124,6 +124,9 @@ Public Class Frm_Contabilidad_Captura_Polizas
 
         'Termina de crear Grid
         ' Add any initialization after the InitializeComponent() call.
+        'No se puede llamar a me.inicaliza porque aun no estan definidos los documentos del combo y generará error, pero estos se ponen para no tener por fuera que crearle rows y cols(en caso de llamarse por fuera)
+        Me.InicializaGrid()
+        Me.InicializaGridXML()
     End Sub
 
     Protected Overrides Sub Finalize()
@@ -1069,38 +1072,39 @@ Public Class Frm_Contabilidad_Captura_Polizas
     End Function
 
     Public Function Aplicar(Optional ByVal bConfirmacion As Boolean = True, Optional ByVal bValidarEstatus As Boolean = True) As Boolean
+        Const sProcedure As String = "Aplicar"
         Dim bResultado As Boolean = False
         Try
             'Dim sContraPoliza As String
             If bConfirmacion = True Then
-                If MsgBox("Desea aplicar la póliza " & Me.TxtFolio.Text & " ?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Me.Text) = MsgBoxResult.No Then
-                    Exit Function
+                If MsgBox("Desea aplicar la póliza " & Me.TxtFolio.Text & " ?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
+                    Return False
                 End If
             End If
 
             If Me.Grabar(False) = False Then
-                Exit Function
+                Return False
             End If
 
             If Me.TxtTotalCargos.Text <> Me.TxtTotalAbonos.Text Then
-                MsgBox("La póliza que desea aplicar no cuadra.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
+                MsgBox("La póliza que desea aplicar no cuadra.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
             End If
 
             If bValidarEstatus = True Then
                 Select Case Me.LblCodigoEstatus.Text
                     Case "N"
-                        MsgBox("La póliza no existe.", MsgBoxStyle.Exclamation, Me.Text)
-                        Exit Function
+                        MsgBox("La póliza no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
                     Case "G"
                         'No hay restricciones
                         If txtLEN(Me.oPoliza.FOLIO_CONTRAPOLIZA) = True Then
-                            MsgBox("Las pólizas con contrapólizas no pueden aplicarse, pueden en cambio cancelarse.", MsgBoxStyle.Exclamation, Me.Text)
+                            MsgBox("Las pólizas con contrapólizas no pueden aplicarse, pueden en cambio cancelarse.", MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         End If
                         'If txtLEN(Me.oPoliza.FOLIO_CONTRAPOLIZA) = True Then
-                        '    If MsgBox("La póliza tiene una contrapoliza desea aplicar ambas polizas. " & Me.TxtFolio.Text & " y " & Me.oPoliza.FOLIO_CONTRAPOLIZA.ToString & " ?", vbYesNo Or vbQuestion, Me.Text) = MsgBoxResult.No Then
-                        '        Exit Function
+                        '    If MsgBox("La póliza tiene una contrapoliza desea aplicar ambas polizas. " & Me.TxtFolio.Text & " y " & Me.oPoliza.FOLIO_CONTRAPOLIZA.ToString & " ?", vbYesNo Or vbQuestion, sProcedure) = MsgBoxResult.No Then
+                        '        return false
                         '    End If
                         '    sContraPoliza = Me.oPoliza.FOLIO_CONTRAPOLIZA.ToString
                         '    Me.oPoliza = New Class_Contabilidad_Poliza_Global(sContraPoliza)
@@ -1110,23 +1114,23 @@ Public Class Frm_Contabilidad_Captura_Polizas
                             Me.oPoliza = New Class_Contabilidad_Poliza_Global(Me.TxtFolio.Text)
                             If Me.oPoliza.CODIGO_PLAZA = Usuario.Codigo_Plaza Then
                                 If Plaza.ValidarPeriodoTrabajo(Me.DtpFecha.Value) = False Then
-                                    Exit Function
+                                    Return False
                                 End If
                             Else
-                                MsgBox("La póliza es de otra plaza, no puede modificarse.", MsgBoxStyle.Exclamation, Me.Text)
-                                Exit Function
+                                MsgBox("La póliza es de otra plaza, no puede modificarse.", MsgBoxStyle.Exclamation, sProcedure)
+                                Return False
                             End If
                         Else
                             If Plaza.ValidarPeriodoTrabajo(Me.DtpFecha.Value) = False Then
-                                Exit Function
+                                Return False
                             End If
                         End If
                     Case "A"
-                        MsgBox("La pólizas aplicadas no se pueden aplicar de nuevo.", MsgBoxStyle.Exclamation, Me.Text)
-                        Exit Function
+                        MsgBox("La pólizas aplicadas no se pueden aplicar de nuevo.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
                     Case "C"
-                        MsgBox("La pólizas canceladas no se pueden aplicar.", MsgBoxStyle.Exclamation, Me.Text)
-                        Exit Function
+                        MsgBox("La pólizas canceladas no se pueden aplicar.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
                 End Select
             End If
 
@@ -1135,14 +1139,14 @@ Public Class Frm_Contabilidad_Captura_Polizas
 
             If bResultado = True Then
                 If bConfirmacion = True Then
-                    MsgBox("Póliza " & Me.TxtFolio.Text & " aplicada satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+                    MsgBox("Póliza " & Me.TxtFolio.Text & " aplicada satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
                 End If
                 If Me.oPoliza.ConsiderarParaControlIVAAcreditable = True Then
                     Me.GestionaIVAAcreditable()
                 End If
             End If
         Catch ex As Exception
-            HandleError(Me.Name, "Aplicar", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado
