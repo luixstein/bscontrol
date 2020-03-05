@@ -92,6 +92,8 @@ Partial Class Inventarios_Movimientos
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.lblDisplayAlmacenEntradaFinanciera = New System.Windows.Forms.Label()
         Me.cboAlmacenEntradaFinanciera = New System.Windows.Forms.ComboBox()
+        Me.txtFolioEntradaFinanciera = New System.Windows.Forms.TextBox()
+        Me.lblDisplayFolioEntradaFinanciera = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.TpSeries.SuspendLayout()
@@ -423,7 +425,7 @@ Partial Class Inventarios_Movimientos
         'lblDisplayCopiarRenglones
         '
         Me.lblDisplayCopiarRenglones.AutoSize = True
-        Me.lblDisplayCopiarRenglones.Location = New System.Drawing.Point(699, 31)
+        Me.lblDisplayCopiarRenglones.Location = New System.Drawing.Point(691, 31)
         Me.lblDisplayCopiarRenglones.Name = "lblDisplayCopiarRenglones"
         Me.lblDisplayCopiarRenglones.Size = New System.Drawing.Size(92, 13)
         Me.lblDisplayCopiarRenglones.TabIndex = 333
@@ -761,11 +763,31 @@ Partial Class Inventarios_Movimientos
         Me.cboAlmacenEntradaFinanciera.Size = New System.Drawing.Size(211, 21)
         Me.cboAlmacenEntradaFinanciera.TabIndex = 400
         '
+        'txtFolioEntradaFinanciera
+        '
+        Me.txtFolioEntradaFinanciera.Location = New System.Drawing.Point(789, 101)
+        Me.txtFolioEntradaFinanciera.MaxLength = 160
+        Me.txtFolioEntradaFinanciera.Name = "txtFolioEntradaFinanciera"
+        Me.txtFolioEntradaFinanciera.ReadOnly = True
+        Me.txtFolioEntradaFinanciera.Size = New System.Drawing.Size(135, 20)
+        Me.txtFolioEntradaFinanciera.TabIndex = 401
+        '
+        'lblDisplayFolioEntradaFinanciera
+        '
+        Me.lblDisplayFolioEntradaFinanciera.AutoSize = True
+        Me.lblDisplayFolioEntradaFinanciera.Location = New System.Drawing.Point(733, 104)
+        Me.lblDisplayFolioEntradaFinanciera.Name = "lblDisplayFolioEntradaFinanciera"
+        Me.lblDisplayFolioEntradaFinanciera.Size = New System.Drawing.Size(50, 13)
+        Me.lblDisplayFolioEntradaFinanciera.TabIndex = 402
+        Me.lblDisplayFolioEntradaFinanciera.Text = "Entrada :"
+        '
         'Inventarios_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1308, 587)
+        Me.Controls.Add(Me.txtFolioEntradaFinanciera)
+        Me.Controls.Add(Me.lblDisplayFolioEntradaFinanciera)
         Me.Controls.Add(Me.cboAlmacenEntradaFinanciera)
         Me.Controls.Add(Me.lblDisplayAlmacenEntradaFinanciera)
         Me.Controls.Add(Me.btnSeleccionarArchivoSeries)
@@ -893,4 +915,6 @@ Partial Class Inventarios_Movimientos
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
     Friend WithEvents lblDisplayAlmacenEntradaFinanciera As Label
     Friend WithEvents cboAlmacenEntradaFinanciera As ComboBox
+    Friend WithEvents txtFolioEntradaFinanciera As TextBox
+    Friend WithEvents lblDisplayFolioEntradaFinanciera As Label
 End Class
