@@ -163,7 +163,7 @@ Public Class Inventarios_Movimientos
             If Me.Cancelar() = True Then
                 Me.Consultar()
             End If
-        ElseIf Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "TRI" Then
+        ElseIf Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "TRI" Or Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "TRF" Then
             If Me.Estado <> enumEstados.GRABADO Then
                 MsgBox("Las transferencias son cancelables sólo si están en estatus de grabado. Si esta aplicada debe hacer una transferencia contraria.", vbExclamation, Me.Name)
                 Return
@@ -510,6 +510,7 @@ buscar:
                     Me.TxtConcepto.Enabled = True
                     Me.CboDocumento.Enabled = True
                     Me.CboAlmacenDestino.Enabled = True
+                    Me.cboAlmacenEntradaFinanciera.Enabled = True
                     Me.txtFolioEmbarque.Enabled = True
                     Me.Grid1.Locked = False
                     Me.GridSeries.Locked = False
@@ -581,6 +582,7 @@ buscar:
                     Me.TxtConcepto.Enabled = False
                     Me.CboDocumento.Enabled = False
                     Me.CboAlmacenDestino.Enabled = False
+                    Me.cboAlmacenEntradaFinanciera.Enabled = False
                     Me.txtFolioEmbarque.Enabled = False
                     Me.Grid1.Locked = True
                     Me.btnSeries.Enabled = False
@@ -605,6 +607,7 @@ buscar:
                     Me.TxtConcepto.Enabled = False
                     Me.CboDocumento.Enabled = False
                     Me.CboAlmacenDestino.Enabled = False
+                    Me.cboAlmacenEntradaFinanciera.Enabled = False
                     Me.txtFolioEmbarque.Enabled = False
                     Me.Grid1.Locked = True
                     Me.btnSeries.Enabled = False
@@ -658,6 +661,7 @@ buscar:
             Me.cboEntradasAnterioresOrdenCompra.DataSource = Nothing
 
             Me.cboAlmacenEntradaFinanciera.SelectedIndex = -1
+            Me.txtFolioEntradaFinanciera.Text = ""
 
             Me.TabControl1.SelectedIndex = 0
 
@@ -1038,7 +1042,11 @@ BuscarCuentas:
 
         Dim oAlmacenOrigen As New Class_CatAlmacenes(Me.CboAlmacen.SelectedValue.ToString)
         Dim oAlmacenDestino As New Class_CatAlmacenes(Me.CboAlmacenDestino.SelectedValue.ToString)
-        Dim oAlmacenEntradaFinanciera As New Class_CatAlmacenes(Me.cboAlmacenEntradaFinanciera.SelectedValue.ToString)
+        Dim oAlmacenEntradaFinanciera As New Class_CatAlmacenes 'No se le pasa el código todavia.
+
+        If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "TRF" Then
+            oAlmacenEntradaFinanciera = New Class_CatAlmacenes(Me.cboAlmacenEntradaFinanciera.SelectedValue.ToString)
+        End If
 
         If oAlmacenOrigen.ES_FISCAL <> oAlmacenDestino.ES_FISCAL Then
             MsgBox("El almacén origen y destino deben ser del mismo tipo(fiscales o financieros).", vbExclamation, sProcedure)
@@ -1091,6 +1099,11 @@ BuscarCuentas:
                         .CODIGO_CONCEPTO_INVENTARIOS = CInt(Me.CboConceptoInventario.SelectedValue)
                         .COSTO_TOTAL_BASE = valorNumericoD(Me.txtTotal.Text)
                         .FLETE_TOTAL = valorNumericoD(Me.txtTotalFlete.Text)
+                        If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "TRF" Then
+                            .CODIGO_ALMACEN_ENTRADA_FINANCIERA = Me.cboAlmacenEntradaFinanciera.SelectedValue.ToString
+                        Else
+                            .CODIGO_ALMACEN_ENTRADA_FINANCIERA = ""
+                        End If
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -1598,9 +1611,15 @@ BuscarCuentas:
             Me.lblStatus.Text = oInventarios.ESTATUS.ToUpper
             Me.CboAlmacen.SelectedValue = oInventarios.CODIGO_ALMACEN1.ToUpper
 
-            If oInventarios.CODIGO_TIPO_DOCUMENTO.ToString.ToUpper = "TRI" Then
+            If oInventarios.CODIGO_TIPO_DOCUMENTO.ToString.ToUpper = "TRI" Or oInventarios.CODIGO_TIPO_DOCUMENTO.ToString.ToUpper = "TRF" Then
                 Me.CboAlmacenDestino.SelectedValue = oInventarios.CODIGO_ALMACEN2.ToUpper
             End If
+
+            If oInventarios.CODIGO_TIPO_DOCUMENTO.ToString.ToUpper = "TRF" Then
+                Me.cboAlmacenEntradaFinanciera.SelectedValue = oInventarios.CODIGO_ALMACEN_ENTRADA_FINANCIERA
+                Me.txtFolioEntradaFinanciera.Text = oInventarios.FOLIO_ENTRADA_FINANCIERA
+            End If
+
             Me.TxtFolioReferencia.Text = oInventarios.FOLIO_REFERENCIA.ToUpper
             Me.TxtConcepto.Text = oInventarios.CONCEPTO.ToUpper
             Me.txtTotal.Text = FormatImporteContable(oInventarios.COSTO_TOTAL_BASE)
@@ -1611,7 +1630,7 @@ BuscarCuentas:
 
             Me.txtTotalMasFlete.Text = FormatImporteContable(oInventarios.TOTAL)
 
-            If Me.CboDocumento.SelectedValue.ToString = "ER" Or Me.CboDocumento.SelectedValue.ToString = "TRI" Then
+            If Me.CboDocumento.SelectedValue.ToString = "ER" Or Me.CboDocumento.SelectedValue.ToString = "TRI" Or oInventarios.CODIGO_TIPO_DOCUMENTO.ToString.ToUpper = "TRF" Then
                 Me.txtFolioOrdenCompra.Text = oInventarios.FOLIO_REFERENCIA
                 Me.txtFleteOrdenCompra.Text = FormatImporteContable(oInventarios.FLETE_TOTAL)
                 Me.txtTotalFlete.Text = FormatImporteContable(oInventarios.FLETE_TOTAL)
@@ -2101,6 +2120,7 @@ BuscarCuentas:
             Else
                 Me.CboAlmacenDestino.Visible = False : Me.lblDisplayAlmacenDestino.Visible = False : Me.lblCodigoAlmacenDestino.Visible = False
                 Me.cboAlmacenEntradaFinanciera.Visible = False : Me.lblDisplayAlmacenEntradaFinanciera.Visible = False
+                Me.txtFolioEntradaFinanciera.Visible = False : Me.lblDisplayFolioEntradaFinanciera.Visible = False
                 If Me._LlamadoExteriorGenerarSalidaEmbarque = False And Me._ConsultaExteriorSalida = False Then
                     Me.Grid1.Column(Me.iGyCuentaContable).Locked = False
                 End If
@@ -2122,7 +2142,7 @@ BuscarCuentas:
             Me.btnNuevaOrdenCompra.Enabled = False
             Me.txtFolioOrdenCompra.Enabled = False
 
-            If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ER" Or Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "TRI" Then
+            If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ER" Or Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "TRI" Or Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "TRF" Then
                 Me.gbOrdenCompra.Visible = True
                 'Me.Grid1.Locked = True
                 'Me.Grid1.Column(Me.iGyCodigo).Locked = True

@@ -368,7 +368,6 @@ Public Class Class_Inventarios_Global
             sqlParametro = .Parameters.Add("@COSTO_TOTAL_BASE", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO_TOTAL_BASE
             sqlParametro = .Parameters.Add("@FLETE_TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._FLETE_TOTAL
             sqlParametro = .Parameters.Add("@CODIGO_ALMACEN_ENTRADA_FINANCIERA", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_ALMACEN_ENTRADA_FINANCIERA
-            sqlParametro = .Parameters.Add("@FOLIO_ENTRADA_FINANCIERA", SqlDbType.NVarChar, 15) : sqlParametro.Value = "" & Me._FOLIO_ENTRADA_FINANCIERA
 
             Try
                 Me._Conexion.Open()
@@ -489,7 +488,7 @@ Public Class Class_Inventarios_Global
                     Me._FLETE_TOTAL = CDec(dReader("FLETE_TOTAL"))
 
                     Me._CODIGO_ALMACEN_ENTRADA_FINANCIERA = "" & dReader("CODIGO_ALMACEN_ENTRADA_FINANCIERA").ToString()
-                    Me._FOLIO_MOVIMIENTO_INVENTARIO = "" & dReader("FOLIO_MOVIMIENTO_INVENTARIO").ToString()
+                    Me._FOLIO_ENTRADA_FINANCIERA = "" & dReader("FOLIO_ENTRADA_FINANCIERA").ToString()
 
                     bResultado = True
                 End If
