@@ -3832,7 +3832,7 @@ BuscarCuentas:
             Dim i As Integer
             For i = 1 To Grid.Rows - 1
                 If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
-                    If Me.oCompras.ValidaCantidadDisponibleArticuloInventario(CInt(Me.Grid.Cell(i, Me.igyIdArticulo).Text), CDbl(Me.Grid.Cell(i, Me.igyCantidad).Text)) = False Then
+                    If Me.oCompras.ValidaCantidadDisponibleArticuloInventario(CInt(Me.Grid.Cell(i, Me.igyID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA).Text), CDbl(Me.Grid.Cell(i, Me.igyCantidad).Text)) = False Then
                         MsgBox("La cantidad debe de ser menor al disponible de la entrada por recepión en el renglón #" & i.ToString, MsgBoxStyle.Exclamation, sProcedure)
                         Me.Grid.Cell(i, Me.igyCantidad).SetFocus()
                         Return False

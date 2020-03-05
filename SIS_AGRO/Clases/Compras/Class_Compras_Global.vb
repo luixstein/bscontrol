@@ -1539,10 +1539,10 @@ Public Class Class_Compras_Global
         End Try
     End Function
 
-    Public Function ValidaCantidadDisponibleArticuloInventario(ByVal IDCompraDetalle As Integer, ByVal dCantidad As Double) As Boolean
+    Public Function ValidaCantidadDisponibleArticuloInventario(ByVal IdInventarioDetalle As Integer, ByVal dCantidad As Double) As Boolean
         Dim dDisponible As String = ""
         Try
-            Dim sql As New Class_find("SELECT DISPONIBLE FROM INVENTARIO_MOVIMIENTOS_DETALLE WHERE ID_COMPRA_DETALLE=" & IDCompraDetalle)
+            Dim sql As New Class_find("SELECT DISPONIBLE FROM INVENTARIO_MOVIMIENTOS_DETALLE WHERE ID_INVENTARIO_MOVIMIENTOS_DETALLE=" & IdInventarioDetalle)
             If txtLEN(sql.Result1) = True Then
                 If dCantidad <= CDbl(sql.Result1) Then
                     Return True
