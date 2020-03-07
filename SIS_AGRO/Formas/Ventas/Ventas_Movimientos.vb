@@ -81,10 +81,21 @@ Public Class Ventas_Movimientos
     Private iGyDESCUENTO_IMPORTE_USD As Short = 41
     Private iGyPRECIO_CON_DESCUENTO As Short = 42
     Private iGyPRECIO_CON_DESCUENTO_USD As Short = 43
-    Private iGyIdSisCatImpuestosFlete As Short = 44
-    Private iGyFletePorcentaje As Short = 45
-    Private iGyFleteImporte As Short = 46
-    Private iGyFleteImporte_USD As Short = 47
+
+    'Private  iGyIdSisCatImpuestosFlete As Short = 44
+    'Private  iGyFletePorcentaje As Short = 45
+    'Private  iGyFleteImporte As Short = 46
+    'Private  iGyFleteImporte_USD As Short = 47
+
+    Private iGyRETENCION_IVA_TIENE As Short = 44
+    Private iGyRETENCION_IVA_PORCENTAJE As Short = 45
+    Private iGyRETENCION_IVA_BASE As Short = 46
+    Private iGyRETENCION_IVA_IMPORTE As Short = 47
+
+    Private iGyRETENCION_ISR_TIENE As Short = 48
+    Private iGyRETENCION_ISR_PORCENTAJE As Short = 49
+    Private iGyRETENCION_ISR_BASE As Short = 50
+    Private iGyRETENCION_ISR_IMPORTE As Short = 51
 #End Region
 
 #Region "Columnas grid series"
@@ -917,7 +928,8 @@ Buscar:
     Private Sub FormateaGrid()
         Try
             Me.Grid.AutoRedraw = False
-            Me.Grid.Cols = 48
+            Me.Grid.Cols = 52
+
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Column(Me.igyCodigo).Width = 75
             Me.Grid.Column(Me.igyTipoControlInventariable).Width = 25
@@ -962,10 +974,22 @@ Buscar:
             Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE_USD).Width = 100
             Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO).Visible = False
             Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).Visible = False
-            Me.Grid.Column(Me.iGyIdSisCatImpuestosFlete).Visible = False
-            Me.Grid.Column(Me.iGyFletePorcentaje).Visible = False
-            Me.Grid.Column(Me.iGyFleteImporte).Visible = False
-            Me.Grid.Column(Me.iGyFleteImporte_USD).Visible = False
+
+            'Me.Grid.Column(Me.iGyIdSisCatImpuestosFlete).Visible = False
+            'Me.Grid.Column(Me.iGyFletePorcentaje).Visible = False
+            'Me.Grid.Column(Me.iGyFleteImporte).Visible = False
+            'Me.Grid.Column(Me.iGyFleteImporte_USD).Visible = False
+
+            'FALTA hacerlos invisibles.
+            Me.Grid.Column(Me.iGyRETENCION_IVA_TIENE).Visible = False
+            Me.Grid.Column(Me.iGyRETENCION_IVA_PORCENTAJE).Visible = False
+            Me.Grid.Column(Me.iGyRETENCION_IVA_BASE).Visible = False
+            Me.Grid.Column(Me.iGyRETENCION_IVA_IMPORTE).Visible = False
+            Me.Grid.Column(Me.iGyRETENCION_ISR_TIENE).Visible = False
+            Me.Grid.Column(Me.iGyRETENCION_ISR_PORCENTAJE).Visible = False
+            Me.Grid.Column(Me.iGyRETENCION_ISR_BASE).Visible = False
+            Me.Grid.Column(Me.iGyRETENCION_ISR_IMPORTE).Visible = False
+
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Cell(0, Me.igyCodigo).Text = "Código"
             Me.Grid.Cell(0, Me.igyTipoControlInventariable).Text = "Inv"
@@ -1010,10 +1034,21 @@ Buscar:
             Me.Grid.Cell(0, Me.iGyDESCUENTO_IMPORTE_USD).Text = "Descuento_USD"
             Me.Grid.Cell(0, Me.iGyPRECIO_CON_DESCUENTO).Text = "PrecioCDes"
             Me.Grid.Cell(0, Me.iGyPRECIO_CON_DESCUENTO_USD).Text = "PrecioCDes_USD"
-            Me.Grid.Cell(0, Me.iGyIdSisCatImpuestosFlete).Text = "ID ImpuestoFlete"
-            Me.Grid.Cell(0, Me.iGyFletePorcentaje).Text = "Flete porcentaje"
-            Me.Grid.Cell(0, Me.iGyFleteImporte).Text = "Flete importe"
-            Me.Grid.Cell(0, Me.iGyFleteImporte_USD).Text = "Flete importe_USD"
+
+            'Me.Grid.Cell(0, Me.iGyIdSisCatImpuestosFlete).Text = "ID ImpuestoFlete"
+            'Me.Grid.Cell(0, Me.iGyFletePorcentaje).Text = "Flete porcentaje"
+            'Me.Grid.Cell(0, Me.iGyFleteImporte).Text = "Flete importe"
+            ''e.Grid.Cell(0, Me.iGyFleteImporte_USD).Text = "Flete importe_USD"
+
+            Me.Grid.Cell(0, Me.iGyRETENCION_IVA_TIENE).Text = "TieneIVARet"
+            Me.Grid.Cell(0, Me.iGyRETENCION_IVA_PORCENTAJE).Text = "IVARet%"
+            Me.Grid.Cell(0, Me.iGyRETENCION_IVA_BASE).Text = "IVARetBase"
+            Me.Grid.Cell(0, Me.iGyRETENCION_IVA_IMPORTE).Text = "IVARetImp"
+            Me.Grid.Cell(0, Me.iGyRETENCION_ISR_TIENE).Text = "TieneISRRet"
+            Me.Grid.Cell(0, Me.iGyRETENCION_ISR_PORCENTAJE).Text = "ISRRet%"
+            Me.Grid.Cell(0, Me.iGyRETENCION_ISR_BASE).Text = "ISRRetBase"
+            Me.Grid.Cell(0, Me.iGyRETENCION_ISR_IMPORTE).Text = "ISRRetImp"
+
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Column(Me.igyNombreCentroCosto).Alignment = FlexCell.AlignmentEnum.LeftCenter
 
@@ -1124,12 +1159,27 @@ Buscar:
             Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).Mask = FlexCell.MaskEnum.Numeric
             Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).DecimalLength = Me.iDecimalesPrecio 'Empresa_Sistema.DECIMALES_PRECIO
             Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).FormatString = "$ ###,###,##0." & StrDup(Me.iDecimalesPrecio, "0")
+            Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).DecimalLength = Me.iDecimalesPrecio 'Empresa_Sistema.DECIMALES_PRECIO
+            Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Cell(0, Me.iGyRETENCION_IVA_TIENE).Text = "TieneIVARet"
+            Me.Grid.Cell(0, Me.iGyRETENCION_IVA_PORCENTAJE).Text = "IVARet%"
+            Me.Grid.Cell(0, Me.iGyRETENCION_IVA_BASE).Text = "IVARetBase"
+            Me.Grid.Cell(0, Me.iGyRETENCION_IVA_IMPORTE).Text = "IVARetImp"
+            Me.Grid.Cell(0, Me.iGyRETENCION_ISR_TIENE).Text = "TieneISRRet"
+            Me.Grid.Cell(0, Me.iGyRETENCION_ISR_PORCENTAJE).Text = "ISRRet%"
+            Me.Grid.Cell(0, Me.iGyRETENCION_ISR_BASE).Text = "ISRRetBase"
+            Me.Grid.Cell(0, Me.iGyRETENCION_ISR_IMPORTE).Text = "ISRRetImp"
+
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            Me.Grid.Column(igyCodigo).Locked = False
-            Me.Grid.Column(igyCantidad).Locked = False
-            Me.Grid.Column(igyCantidadKilos).Locked = False
-            Me.Grid.Column(igyCodigoCentroCosto).Locked = False
-            Me.Grid.Column(igyPrecio).Locked = False
+            Me.Grid.Column(Me.igyCodigo).Locked = False
+            Me.Grid.Column(Me.igyCantidad).Locked = False
+            Me.Grid.Column(Me.igyCantidadKilos).Locked = False
+            Me.Grid.Column(Me.igyCodigoCentroCosto).Locked = False
+            Me.Grid.Column(Me.igyPrecio).Locked = False
             Me.Grid.Column(Me.igyDescripcion).Locked = True
             Me.Grid.Column(Me.igyTipoControlInventariable).Locked = True
             Me.Grid.Column(Me.igyImporte).Locked = True
