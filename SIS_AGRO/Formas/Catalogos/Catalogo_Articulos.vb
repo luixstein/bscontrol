@@ -265,7 +265,12 @@ Public Class Catalogo_Articulos
             Me.txtFactorConversion.Text = "1.00"
             Me.txtCodigoProducto.Text = ""
             Me.lblNombreProducto.Text = ""
-            Me.cboImpuestoFlete.SelectedValue = "0" 'SIN FLETE
+            'Me.cboImpuestoFlete.SelectedValue = "0" 'SIN FLETE
+
+            Me.chkRetencionIVATiene.Checked = False
+            Me.cboRetencionIVAPorcentaje.SelectedIndex = -1
+            Me.chkRetencionISRTiene.Checked = False
+            Me.cboRetencionISRPorcentaje.SelectedIndex = -1
 
         Catch ex As Exception
             HandleError(Me.Name, "InicializaElemento", ex)
@@ -352,6 +357,30 @@ Public Class Catalogo_Articulos
         End Try
     End Sub
 
+    Private Sub DesplegarImpuestosRetenidos()
+        Try
+            Dim oTasas As New Class_SisCatTasaOCuotaSAT
+            With Me.cboRetencionIVAPorcentaje
+                .DisplayMember = "TASA_O_COUTA"
+                .ValueMember = "TASA_O_COUTA"
+                Dim dView As New Data.DataView(oTasas.ObtenerElementos)
+                dView.Sort = "TASA_O_COUTA"
+                .DataSource = dView
+                .SelectedIndex = -1
+            End With
+            With Me.cboRetencionISRPorcentaje
+                .DisplayMember = "TASA_O_COUTA"
+                .ValueMember = "TASA_O_COUTA"
+                Dim dView As New Data.DataView(oTasas.ObtenerElementos)
+                dView.Sort = "TASA_O_COUTA"
+                .DataSource = dView
+                .SelectedIndex = -1
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarImpuestosRetenidos", ex)
+        End Try
+    End Sub
+
     Private Sub LlenaElemento(ByVal iCodigo_Elemento As String)
         Try
             Dim oElemento As New Class_CatArticulos
@@ -396,7 +425,22 @@ Public Class Catalogo_Articulos
                         Me.lblNombreProducto.Text = oProducto.NOMBRE_PRODUCTO
                     End If
 
-                    Me.cboImpuestoFlete.SelectedValue = .ID_SIS_CAT_IMPUESTOS_FLETE.ToString
+                    'Me.cboImpuestoFlete.SelectedValue = .ID_SIS_CAT_IMPUESTOS_FLETE.ToString
+
+                    Me.chkRetencionIVATiene.Checked = .RETENCION_IVA_TIENE
+                    Me.chkRetencionISRTiene.Checked = .RETENCION_ISR_TIENE
+
+                    If Me.chkRetencionIVATiene.Checked = True Then
+                        Me.cboRetencionIVAPorcentaje.Text = Format(.RETENCION_IVA_PORCENTAJE, "0.000000")
+                    Else
+                        Me.cboRetencionIVAPorcentaje.SelectedIndex = -1
+                    End If
+
+                    If Me.chkRetencionISRTiene.Checked = True Then
+                        Me.cboRetencionISRPorcentaje.Text = Format(.RETENCION_ISR_PORCENTAJE, "0.000000")
+                    Else
+                        Me.cboRetencionISRPorcentaje.SelectedIndex = -1
+                    End If
 
                     oUnidad = Nothing
                     oProductoServicio = Nothing
@@ -409,6 +453,7 @@ Public Class Catalogo_Articulos
     End Sub
 
     Private Function Grabar_Elemento() As Boolean
+        Const sProcedure As String = "Grabar_Elemento"
         Dim bResultado As Boolean = False
         Dim oElemento As New Class_CatArticulos
 
@@ -442,7 +487,15 @@ Public Class Catalogo_Articulos
                         .CODIGO_PRODUCTO_SERVICIO = Me.txtClaveProductoSAT.Text
                         .FACTOR_CONVERSION = Convert.ToDecimal(Me.txtFactorConversion.Text)
                         .CODIGO_PRODUCTO = Me.txtCodigoProducto.Text
-                        .ID_SIS_CAT_IMPUESTOS_FLETE = Me.cboImpuestoFlete.SelectedValue.ToString
+                        '.ID_SIS_CAT_IMPUESTOS_FLETE = Me.cboImpuestoFlete.SelectedValue.ToString
+                        .RETENCION_IVA_TIENE = Me.chkRetencionIVATiene.Checked
+                        If Me.chkRetencionIVATiene.Checked = True Then
+                            .RETENCION_IVA_PORCENTAJE = valorNumericoD(Me.cboRetencionIVAPorcentaje.Text)
+                        End If
+                        .RETENCION_ISR_TIENE = Me.chkRetencionISRTiene.Checked
+                        If Me.chkRetencionISRTiene.Checked = True Then
+                            .RETENCION_ISR_PORCENTAJE = valorNumericoD(Me.cboRetencionISRPorcentaje.Text)
+                        End If
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -457,15 +510,15 @@ Public Class Catalogo_Articulos
                                 End If
                         End Select
 
-                        If bResultado Then
-                            MsgBox(Me.msgElemento & " grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
+                        If bResultado = True Then
+                            MsgBox(Me.msgElemento & " grabado satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
                             Me.Refrescar()
                             Me.Cambia_Estado()
                         End If
 
                     End With
                 Catch ex As Exception
-                    HandleError(Me.Name, "Grabar", ex)
+                    HandleError(Me.Name, sProcedure, ex)
                     Me.Estado = enumEstados.CONSULTA
                     Me.Cambia_Estado()
                 Finally
@@ -504,17 +557,18 @@ Public Class Catalogo_Articulos
     End Sub
 
     Private Function Validar() As Boolean
+        Const sProcedure As String = "Validar"
         Dim bResultado As Boolean = False
 
         Try
             If Empresa_Sistema.CODIGO_ARTICULO_AUTOMATICO = False AndAlso txtLEN(Me.TxtCodArticulo.Text) = False Then
-                MsgBox("Asígne un código de artículo.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("Asígne un código de artículo.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.TxtCodArticulo.Focus()
                 Return False
             End If
 
             If txtLEN(Me.TxtDescripcion.Text) = False Then
-                MsgBox("Asígne la descripción del artículo.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("Asígne la descripción del artículo.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.TxtDescripcion.Focus()
                 Return False
             End If
@@ -526,25 +580,25 @@ Public Class Catalogo_Articulos
             End If
 
             If Me.CboFamilia.SelectedIndex = -1 Then
-                MsgBox("Seleccione por favor una familia del artículo.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("Seleccione por favor una familia del artículo.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.CboFamilia.Focus()
                 Return False
             End If
 
             If Me.cboLinea.SelectedIndex = -1 Then
-                MsgBox("Seleccione por favor una linea del artículo.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("Seleccione por favor una linea del artículo.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.cboLinea.Focus()
                 Return False
             End If
 
             If txtLEN(Me.txtCodigoUnidadSAT.Text) = False Then
-                MsgBox("Seleccione la clave de unidad del SAT.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("Seleccione la clave de unidad del SAT.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.txtCodigoUnidadSAT.Focus()
                 Return False
             End If
 
             If txtLEN(Me.txtClaveProductoSAT.Text) = False Then
-                MsgBox("Seleccione la clave de producto/servicio del SAT.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("Seleccione la clave de producto/servicio del SAT.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.txtClaveProductoSAT.Focus()
                 Return False
             End If
@@ -552,7 +606,7 @@ Public Class Catalogo_Articulos
             Dim oUnidadSAT As New Class_CFD_CatUnidades(Me.txtCodigoUnidadSAT.Text)
 
             If oUnidadSAT.EXISTE = False Then
-                MsgBox("La clave de unidad del SAT no existe favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("La clave de unidad del SAT no existe favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.txtCodigoUnidadSAT.Focus()
                 Return False
             End If
@@ -560,21 +614,37 @@ Public Class Catalogo_Articulos
             Dim oProductoSAT As New Class_CFD_CatProductosServicios(Me.txtClaveProductoSAT.Text)
 
             If oProductoSAT.EXISTE = False Then
-                MsgBox("La clave de producto/servicio del SAT no existe favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("La clave de producto/servicio del SAT no existe favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.txtClaveProductoSAT.Focus()
                 Return False
             ElseIf oProductoSAT.NIVEL = "1" Or oProductoSAT.NIVEL = "2" Then
                 MsgBox("La clave de producto/servicio del SAT no es de las permitidas de usar." & vbCrLf &
                    "No puede terminar en 4 o 6 ceros." & vbCrLf &
-                   "Debe de ser de nivel 3(termina con 2 ceros) ó nivel 4(termina con 2 dígitos del 01 al 99)", MsgBoxStyle.Exclamation, Me.Text)
+                   "Debe de ser de nivel 3(termina con 2 ceros) ó nivel 4(termina con 2 dígitos del 01 al 99)", MsgBoxStyle.Exclamation, sProcedure)
                 Me.txtClaveProductoSAT.Focus()
                 Return False
+            End If
+
+            If Me.chkRetencionIVATiene.Checked = True Then
+                If Me.cboRetencionIVAPorcentaje.SelectedIndex = -1 Then
+                    MsgBox("Seleccione el % de retención de IVA.", vbExclamation, sProcedure)
+                    Me.cboRetencionIVAPorcentaje.Focus()
+                    Return False
+                End If
+            End If
+
+            If Me.chkRetencionISRTiene.Checked = True Then
+                If Me.cboRetencionISRPorcentaje.SelectedIndex = -1 Then
+                    MsgBox("Seleccione el % de retención de ISR.", vbExclamation, sProcedure)
+                    Me.cboRetencionISRPorcentaje.Focus()
+                    Return False
+                End If
             End If
 
             bResultado = True
 
         Catch ex As Exception
-            HandleError(Me.Name, "Validar", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado
@@ -672,7 +742,8 @@ Public Class Catalogo_Articulos
 #End Region
 
 #Region "Eventos Genericos"
-    Private Sub Controles_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboEstatus.KeyDown, CboFamilia.KeyDown, chkInventariable.KeyDown, chkEsSerializable.KeyDown, cboGradoToxicidad.KeyDown, cboLinea.KeyDown, TxtPrecio.KeyDown, cboImpuestoIVA.KeyDown
+    Private Sub Controles_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboEstatus.KeyDown, CboFamilia.KeyDown, chkInventariable.KeyDown, chkEsSerializable.KeyDown, cboGradoToxicidad.KeyDown,
+        cboLinea.KeyDown, TxtPrecio.KeyDown, cboImpuestoIVA.KeyDown, chkRetencionIVATiene.KeyDown, cboRetencionIVAPorcentaje.KeyDown, chkRetencionISRTiene.KeyDown, cboRetencionISRPorcentaje.KeyDown
         txtTAB(e)
     End Sub
 
@@ -720,7 +791,8 @@ Public Class Catalogo_Articulos
             Me.DesplegarElementos()
             Me.DesplegarGradosToxicidad()
             Me.DesplegarImpuestosIVA()
-            Me.DesplegarImpuestosFlete()
+            'Me.DesplegarImpuestosFlete()
+            Me.DesplegarImpuestosRetenidos()
         Catch ex As Exception
             HandleError(Me.Name, "Catalogo_Articulos_Load", ex)
         End Try

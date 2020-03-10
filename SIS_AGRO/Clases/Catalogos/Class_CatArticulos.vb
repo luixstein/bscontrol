@@ -40,7 +40,11 @@ Public Class Class_CatArticulos
     Private _ID_SIS_CAT_IMPUESTOS As String
     Private _FACTOR_CONVERSION As Decimal
     Private _CODIGO_PRODUCTO As String
-    Private _ID_SIS_CAT_IMPUESTOS_FLETE As String
+    'Private _ID_SIS_CAT_IMPUESTOS_FLETE As String
+    Private _RETENCION_IVA_TIENE As Boolean
+    Private _RETENCION_IVA_PORCENTAJE As Decimal
+    Private _RETENCION_ISR_TIENE As Boolean
+    Private _RETENCION_ISR_PORCENTAJE As Decimal
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -64,8 +68,6 @@ Public Class Class_CatArticulos
     Private _Nombre_Catalogo As String
     Private _Nombre_Reporte As String
     Private _Conexion As SqlConnection
-    Private _QuerySelect As String
-    Private _QueryOrder As String
 
 #End Region
 
@@ -348,14 +350,51 @@ Public Class Class_CatArticulos
         End Set
     End Property
 
-    Public Property ID_SIS_CAT_IMPUESTOS_FLETE() As String
+    'Public Property ID_SIS_CAT_IMPUESTOS_FLETE() As String
+    '    Get
+    '        Return Me._ID_SIS_CAT_IMPUESTOS_FLETE
+    '    End Get
+    '    Set(ByVal VALUE As String)
+    '        Me._ID_SIS_CAT_IMPUESTOS_FLETE = VALUE
+    '    End Set
+    'End Property
+
+    Public Property RETENCION_IVA_TIENE() As Boolean
         Get
-            Return Me._ID_SIS_CAT_IMPUESTOS_FLETE
+            Return Me._RETENCION_IVA_TIENE
         End Get
-        Set(ByVal VALUE As String)
-            Me._ID_SIS_CAT_IMPUESTOS_FLETE = VALUE
+        Set(ByVal VALUE As Boolean)
+            Me._RETENCION_IVA_TIENE = VALUE
         End Set
     End Property
+
+    Public Property RETENCION_IVA_PORCENTAJE() As Decimal
+        Get
+            Return Me._RETENCION_IVA_PORCENTAJE
+        End Get
+        Set(ByVal VALUE As Decimal)
+            Me._RETENCION_IVA_PORCENTAJE = VALUE
+        End Set
+    End Property
+
+    Public Property RETENCION_ISR_TIENE() As Boolean
+        Get
+            Return Me._RETENCION_ISR_TIENE
+        End Get
+        Set(ByVal VALUE As Boolean)
+            Me._RETENCION_ISR_TIENE = VALUE
+        End Set
+    End Property
+
+    Public Property RETENCION_ISR_PORCENTAJE() As Decimal
+        Get
+            Return Me._RETENCION_ISR_PORCENTAJE
+        End Get
+        Set(ByVal VALUE As Decimal)
+            Me._RETENCION_ISR_PORCENTAJE = VALUE
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -436,9 +475,6 @@ Public Class Class_CatArticulos
         Me._Nombre_Reporte = "RPT_CATALOGO_PRODUCTOS"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "SELECT * FROM vw_cat_articulos_extendido " & _
-                            " WHERE "
-        Me._QueryOrder = " Order by Descripcion"
     End Sub
 
     Public Sub New(ByVal sArticulo As String)
@@ -496,12 +532,16 @@ Public Class Class_CatArticulos
             sqlParametro = .Parameters.Add("@CODIGO_UNIDAD", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_UNIDAD
             sqlParametro = .Parameters.Add("@ID_SIS_CAT_IMPUESTOS", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._ID_SIS_CAT_IMPUESTOS
             sqlParametro = .Parameters.Add("@FACTOR_CONVERSION", SqlDbType.Decimal) : sqlParametro.Value = Me._FACTOR_CONVERSION
-            sqlParametro = .Parameters.Add("@ID_SIS_CAT_IMPUESTOS_FLETE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._ID_SIS_CAT_IMPUESTOS_FLETE
+            'sqlParametro = .Parameters.Add("@ID_SIS_CAT_IMPUESTOS_FLETE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._ID_SIS_CAT_IMPUESTOS_FLETE
             If txtLEN(Me._CODIGO_PRODUCTO) = True Then
                 sqlParametro = .Parameters.Add("@CODIGO_PRODUCTO", SqlDbType.Int) : sqlParametro.Value = CInt(Me._CODIGO_PRODUCTO)
             Else
                 sqlParametro = .Parameters.Add("@CODIGO_PRODUCTO", SqlDbType.Int) : sqlParametro.Value = DBNull.Value
             End If
+            sqlParametro = .Parameters.Add("@RETENCION_IVA_TIENE", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._RETENCION_IVA_TIENE)
+            sqlParametro = .Parameters.Add("@RETENCION_IVA_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_PORCENTAJE
+            sqlParametro = .Parameters.Add("@RETENCION_ISR_TIENE", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._RETENCION_ISR_TIENE)
+            sqlParametro = .Parameters.Add("@RETENCION_ISR_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_PORCENTAJE
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = sAccion
 
             Try
@@ -581,7 +621,7 @@ Public Class Class_CatArticulos
 
     Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand(Me._QuerySelect & " CODIGO_ARTICULO='" & Replace(Me._CODIGO_ARTICULO, "'", "''") & "'", Me._Conexion)
+        Dim cmd As New SqlCommand("SELECT * FROM VW_CAT_ARTICULOS_EXTENDIDO WHERE CODIGO_ARTICULO='" & Replace(Me._CODIGO_ARTICULO, "'", "''") & "' ORDER BY DESCRIPCION", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -637,8 +677,13 @@ Public Class Class_CatArticulos
                     Me._FACTOR_CONVERSION = Convert.ToDecimal("" & dReader("FACTOR_CONVERSION").ToString)
                     Me._CODIGO_PRODUCTO = "" & dReader("CODIGO_PRODUCTO").ToString
 
-                    Me._ID_SIS_CAT_IMPUESTOS_FLETE = "" & dReader("ID_SIS_CAT_IMPUESTOS_FLETE").ToString
-                    Me._IMPUESTO_FLETE_PORCENTAJE = CDec("" & dReader("IMPUESTO_FLETE_PORCENTAJE").ToString)
+                    'Me._ID_SIS_CAT_IMPUESTOS_FLETE = "" & dReader("ID_SIS_CAT_IMPUESTOS_FLETE").ToString
+                    'Me._IMPUESTO_FLETE_PORCENTAJE = CDec("" & dReader("IMPUESTO_FLETE_PORCENTAJE").ToString)
+
+                    Me._RETENCION_IVA_TIENE = CBool(dReader("RETENCION_IVA_TIENE").ToString)
+                    Me._RETENCION_IVA_PORCENTAJE = CDec(dReader("RETENCION_IVA_PORCENTAJE").ToString)
+                    Me._RETENCION_ISR_TIENE = CBool(dReader("RETENCION_ISR_TIENE").ToString)
+                    Me._RETENCION_ISR_PORCENTAJE = CDec(dReader("RETENCION_ISR_PORCENTAJE").ToString)
 
                     bResultado = True
                 End If

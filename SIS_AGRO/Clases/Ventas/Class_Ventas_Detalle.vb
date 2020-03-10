@@ -40,7 +40,7 @@ Public Class Class_Ventas_Detalle
     Private _DESCUENTO_UNITARIO As Decimal
     Private _DESCUENTO_IMPORTE As Decimal
     Private _PRECIO_SIN_DESCUENTO As Decimal
-    Private _ID_SIS_CAT_IMPUESTOS_FLETE As String
+    'Private _ID_SIS_CAT_IMPUESTOS_FLETE As String
     Private _RETENCION_IVA_IMPORTE As Decimal
 
     Private _COSTO_NUEVO As Double
@@ -383,14 +383,14 @@ Public Class Class_Ventas_Detalle
         End Set
     End Property
 
-    Public Property ID_SIS_CAT_IMPUESTOS_FLETE() As String
-        Get
-            Return Me._ID_SIS_CAT_IMPUESTOS_FLETE
-        End Get
-        Set(ByVal Value As String)
-            Me._ID_SIS_CAT_IMPUESTOS_FLETE = Value
-        End Set
-    End Property
+    'Public Property ID_SIS_CAT_IMPUESTOS_FLETE() As String
+    '    Get
+    '        Return Me._ID_SIS_CAT_IMPUESTOS_FLETE
+    '    End Get
+    '    Set(ByVal Value As String)
+    '        Me._ID_SIS_CAT_IMPUESTOS_FLETE = Value
+    '    End Set
+    'End Property
 
     Public Property RETENCION_IVA_IMPORTE() As Decimal
         Get
@@ -605,7 +605,7 @@ Public Class Class_Ventas_Detalle
             sqlParametro = .Parameters.Add("@DESCUENTO_UNITARIO", SqlDbType.Decimal) : sqlParametro.Value = Me._DESCUENTO_UNITARIO
             sqlParametro = .Parameters.Add("@DESCUENTO_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._DESCUENTO_IMPORTE
             sqlParametro = .Parameters.Add("@PRECIO_SIN_DESCUENTO", SqlDbType.Decimal) : sqlParametro.Value = Me._PRECIO_SIN_DESCUENTO
-            sqlParametro = .Parameters.Add("@ID_SIS_CAT_IMPUESTOS_FLETE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._ID_SIS_CAT_IMPUESTOS_FLETE.ToString
+            'sqlParametro = .Parameters.Add("@ID_SIS_CAT_IMPUESTOS_FLETE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._ID_SIS_CAT_IMPUESTOS_FLETE.ToString
             sqlParametro = .Parameters.Add("@RETENCION_IVA_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_IMPORTE
             sqlParametro = .Parameters.Add("@COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO 'Para el caso de inventariables este costo no es el real(luego se calcula), para los no inventariables si es costo real.
 
