@@ -314,11 +314,13 @@ Public Class Catalogo_Parametros_Acuicola_Detalle
                 Return False
             End If
 
-            oParametroDetalle = New Class_CatParametrosAcuicolaDetalle(Me.TxtCodigoDivision.Text, Me.TxtCodigoLote.Text)
-            If oParametroDetalle.Existe = True Then
-                MsgBox("Ya existe un parametro con la división " & Me.TxtCodigoDivision.Text & " " & Me.LblNombreDivision.Text & " y el lote " & Me.TxtCodigoLote.Text & " " & Me.lblNombreLote.Text, MsgBoxStyle.Exclamation, Me.Name)
-                Me.TxtCodigoLote.Focus()
-                Return False
+            If Me.Estado = enumEstados.NUEVO Then
+                oParametroDetalle = New Class_CatParametrosAcuicolaDetalle(Me.TxtCodigoDivision.Text, Me.TxtCodigoLote.Text)
+                If oParametroDetalle.Existe = True Then
+                    MsgBox("Ya existe un parametro con la división " & Me.TxtCodigoDivision.Text & " " & Me.LblNombreDivision.Text & " y el lote " & Me.TxtCodigoLote.Text & " " & Me.lblNombreLote.Text, MsgBoxStyle.Exclamation, Me.Name)
+                    Me.TxtCodigoLote.Focus()
+                    Return False
+                End If
             End If
 
             If txtLEN(Me.TxtNumeroCanastas.Text) = False Then
