@@ -820,7 +820,7 @@ Buscar:
     End Sub
 
     Private Sub btnAceptar_Click(sender As Object, e As EventArgs) Handles btnAceptar.Click
-        CargaDetalleRemisiones()
+        Me.CargaDetalleRemisiones()
     End Sub
 
 #End Region
@@ -978,20 +978,20 @@ Buscar:
             Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).Visible = False
             'Me.Grid.Column(Me.iGyIdSisCatImpuestosFlete).Visible = False
             'Me.Grid.Column(Me.iGyFletePorcentaje).Visible = False
-            'Me.Grid.Column(Me.iGyFleteImporte).Visible = False
+            'Me.Grid.Column(Me.iGyFleteImporte).Visible = False<
             'Me.Grid.Column(Me.iGyFleteImporte_USD).Visible = False
-            Me.Grid.Column(Me.iGyRETENCION_IVA_TIENE).Visible = True 'FALTA hacerlos invisibles.
-            Me.Grid.Column(Me.iGyRETENCION_IVA_PORCENTAJE).Visible = True 'FALTA hacerlos invisibles.
-            Me.Grid.Column(Me.iGyRETENCION_IVA_BASE).Visible = True 'FALTA hacerlos invisibles.
-            Me.Grid.Column(Me.iGyRETENCION_IVA_BASE_USD).Visible = True 'FALTA hacerlos invisibles.
-            Me.Grid.Column(Me.iGyRETENCION_IVA_IMPORTE).Visible = True 'FALTA hacerlos invisibles.
-            Me.Grid.Column(Me.iGyRETENCION_IVA_IMPORTE_USD).Visible = True 'FALTA hacerlos invisibles.
-            Me.Grid.Column(Me.iGyRETENCION_ISR_TIENE).Visible = True 'FALTA hacerlos invisibles.
-            Me.Grid.Column(Me.iGyRETENCION_ISR_PORCENTAJE).Visible = True 'FALTA hacerlos invisibles.
-            Me.Grid.Column(Me.iGyRETENCION_ISR_BASE).Visible = True 'FALTA hacerlos invisibles.
-            Me.Grid.Column(Me.iGyRETENCION_ISR_BASE_USD).Visible = True 'FALTA hacerlos invisibles.
-            Me.Grid.Column(Me.iGyRETENCION_ISR_IMPORTE).Visible = True 'FALTA hacerlos invisibles.
-            Me.Grid.Column(Me.iGyRETENCION_ISR_IMPORTE_USD).Visible = True 'FALTA hacerlos invisibles.
+            Me.Grid.Column(Me.iGyRETENCION_IVA_TIENE).Visible = False
+            Me.Grid.Column(Me.iGyRETENCION_IVA_PORCENTAJE).Visible = False
+            Me.Grid.Column(Me.iGyRETENCION_IVA_BASE).Visible = False
+            Me.Grid.Column(Me.iGyRETENCION_IVA_BASE_USD).Visible = False
+            Me.Grid.Column(Me.iGyRETENCION_IVA_IMPORTE).Visible = False
+            Me.Grid.Column(Me.iGyRETENCION_IVA_IMPORTE_USD).Visible = False
+            Me.Grid.Column(Me.iGyRETENCION_ISR_TIENE).Visible = False
+            Me.Grid.Column(Me.iGyRETENCION_ISR_PORCENTAJE).Visible = False
+            Me.Grid.Column(Me.iGyRETENCION_ISR_BASE).Visible = False
+            Me.Grid.Column(Me.iGyRETENCION_ISR_BASE_USD).Visible = False
+            Me.Grid.Column(Me.iGyRETENCION_ISR_IMPORTE).Visible = False
+            Me.Grid.Column(Me.iGyRETENCION_ISR_IMPORTE_USD).Visible = False
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Cell(0, Me.igyCodigo).Text = "Código"
             Me.Grid.Cell(0, Me.igyTipoControlInventariable).Text = "Inv"
@@ -1168,6 +1168,16 @@ Buscar:
             Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).Mask = FlexCell.MaskEnum.Numeric
             Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).DecimalLength = Me.iDecimalesPrecio 'Empresa_Sistema.DECIMALES_PRECIO
             Me.Grid.Column(Me.iGyPRECIO_CON_DESCUENTO_USD).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Column(Me.iGyRETENCION_IVA_PORCENTAJE).FormatString = "0." & StrDup(6, "0")
+            Me.Grid.Column(Me.iGyRETENCION_IVA_PORCENTAJE).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.iGyRETENCION_IVA_PORCENTAJE).DecimalLength = 6
+            Me.Grid.Column(Me.iGyRETENCION_IVA_PORCENTAJE).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Column(Me.iGyRETENCION_ISR_PORCENTAJE).FormatString = "0." & StrDup(6, "0")
+            Me.Grid.Column(Me.iGyRETENCION_ISR_PORCENTAJE).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.iGyRETENCION_ISR_PORCENTAJE).DecimalLength = 6
+            Me.Grid.Column(Me.iGyRETENCION_ISR_PORCENTAJE).Alignment = FlexCell.AlignmentEnum.RightCenter
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Column(Me.igyCodigo).Locked = False
@@ -1724,7 +1734,6 @@ Buscar:
                 End If
             End If
 
-
             If EsFacturaVariasRemisiones = True Then 'Primero se deben cancelar las remisiones que se quieren facturar
                 Dim FoliosRemisiones As String = ""
 
@@ -1743,10 +1752,7 @@ Buscar:
                     MsgBox("Error al cancelar las remisiones que se quieren facturar.", MsgBoxStyle.Exclamation, Me.Name)
                     Return False
                 End If
-
-
             End If
-
 
             With Me.oVenta
                 .FOLIO_VENTA = Me.txtFolio.Text.ToUpper
@@ -1761,7 +1767,8 @@ Buscar:
                 .IMPUESTO = valorNumerico(Me.lblImpuesto.Text)
                 .IEPS_TOTAL_DESGLOSADO = valorNumerico(Me.lblIEPS.Text)
                 .IEPS_TOTAL_YA_INCLUIDO = valorNumerico(Me.lblIEPSIncluido.Text)
-                .RETENCION_IVA = valorNumerico(Me.lblTotalRetencionIVA.Text)
+                .RETENCION_IVA = valorNumericoD(Me.lblTotalRetencionIVA.Text)
+                .RETENCION_ISR = valorNumericoD(Me.lblTotalRetencionISR.Text)
                 .TOTAL = valorNumerico(Me.lblTotal.Text)
                 .TOTAL_SUSTITUCION = 0 'Ahora se graba dentro del stored MP_VENTA_AFECTA_SUSTITUCION_REMISION
                 'If Me.sTipoVenta = "NM" Then
@@ -1790,7 +1797,8 @@ Buscar:
                     .IMPUESTO_USD = valorNumerico(Me.lblImpuesto_USD.Text)
                     .IEPS_TOTAL_DESGLOSADO_USD = valorNumerico(Me.lblIEPS_USD.Text)
                     .IEPS_TOTAL_YA_INCLUIDO_USD = valorNumerico(Me.lblIEPSIncluido_USD.Text)
-                    .RETENCION_IVA_USD = valorNumerico(Me.lblTotalRetencionIVA_USD.Text)
+                    .RETENCION_IVA_USD = valorNumericoD(Me.lblTotalRetencionIVA_USD.Text)
+                    .RETENCION_ISR_USD = valorNumericoD(Me.lblTotalRetencionISR_USD.Text)
                     .TOTAL_DOLARES = valorNumerico(Me.lblTotal_USD.Text)
                     .TOTAL_SUSTITUCION_USD = 0
                 Else
@@ -1801,6 +1809,7 @@ Buscar:
                     .IEPS_TOTAL_DESGLOSADO_USD = 0
                     .IEPS_TOTAL_YA_INCLUIDO_USD = 0
                     .RETENCION_IVA_USD = 0
+                    .RETENCION_ISR_USD = 0
                     .TOTAL_DOLARES = 0
                     '.TOTAL_SUSTITUCION = 0, ya esta más arriba
                 End If
@@ -1917,12 +1926,19 @@ Buscar:
                         '.oVentasDetalle.PRECIO = valorNumerico(Me.Grid.Cell(i, Me.igyPrecio).Text)
                         .oVentasDetalle.DESCUENTO_UNITARIO = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_UNITARIO).Text)
                         .oVentasDetalle.DESCUENTO_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE).Text)
-                        'FALTA If txtLEN(Me.Grid.Cell(i, Me.iGyIdSisCatImpuestosFlete).Text) = False Then
-                        'FALTA    .oVentasDetalle.ID_SIS_CAT_IMPUESTOS_FLETE = "0" 'Sin flete
-                        'FALTA Else
-                        'FALTA   .oVentasDetalle.ID_SIS_CAT_IMPUESTOS_FLETE = Me.Grid.Cell(i, Me.iGyIdSisCatImpuestosFlete).Text
-                        'FALTA End If
-                        'FALTA .oVentasDetalle.RETENCION_IVA_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.iGyFleteImporte).Text)
+
+                        'If txtLEN(Me.Grid.Cell(i, Me.iGyIdSisCatImpuestosFlete).Text) = False Then
+                        '   .oVentasDetalle.ID_SIS_CAT_IMPUESTOS_FLETE = "0" 'Sin flete
+                        'Else
+                        '  .oVentasDetalle.ID_SIS_CAT_IMPUESTOS_FLETE = Me.Grid.Cell(i, Me.iGyIdSisCatImpuestosFlete).Text
+                        'End If
+                        '.oVentasDetalle.RETENCION_IVA_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.iGyFleteImporte).Text)
+                        .oVentasDetalle.RETENCION_IVA_PORCENTAJE = valorNumericoD(Me.Grid.Cell(i, Me.iGyRETENCION_IVA_PORCENTAJE).Text)
+                        .oVentasDetalle.RETENCION_IVA_BASE = valorNumericoD(Me.Grid.Cell(i, Me.iGyRETENCION_IVA_BASE).Text)
+                        .oVentasDetalle.RETENCION_IVA_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.iGyRETENCION_IVA_IMPORTE).Text)
+                        .oVentasDetalle.RETENCION_ISR_PORCENTAJE = valorNumericoD(Me.Grid.Cell(i, Me.iGyRETENCION_ISR_PORCENTAJE).Text)
+                        .oVentasDetalle.RETENCION_ISR_BASE = valorNumericoD(Me.Grid.Cell(i, Me.iGyRETENCION_ISR_BASE).Text)
+                        .oVentasDetalle.RETENCION_ISR_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.iGyRETENCION_ISR_IMPORTE).Text)
 
                         If Me.Grid.Cell(i, Me.igyTipoControlInventariable).Text = "NIV" Then
                             .oVentasDetalle.COSTO = valorNumericoD(Me.Grid.Cell(i, Me.igyCosto).Text)
@@ -1940,7 +1956,12 @@ Buscar:
                         .oVentasDetalle.PRECIO_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyPRECIO_CON_DESCUENTO_USD).Text) 'Ver nota mas arriba de PRECIO(en MXN); Revisar por si se habilita nuevamente los embarques
                         .oVentasDetalle.DESCUENTO_UNITARIO_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_UNITARIO_USD).Text)
                         .oVentasDetalle.DESCUENTO_IMPORTE_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyDESCUENTO_IMPORTE_USD).Text)
-                        'FALTA .oVentasDetalle.RETENCION_IVA_IMPORTE_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyFleteImporte_USD).Text)
+                        '.oVentasDetalle.RETENCION_IVA_IMPORTE_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyFleteImporte_USD).Text)
+                        .oVentasDetalle.RETENCION_IVA_BASE_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyRETENCION_IVA_BASE_USD).Text)
+                        .oVentasDetalle.RETENCION_IVA_IMPORTE_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyRETENCION_IVA_IMPORTE_USD).Text)
+                        .oVentasDetalle.RETENCION_ISR_BASE_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyRETENCION_ISR_BASE_USD).Text)
+                        .oVentasDetalle.RETENCION_ISR_IMPORTE_USD = valorNumericoD(Me.Grid.Cell(i, Me.iGyRETENCION_ISR_IMPORTE_USD).Text)
+
                         ''''
 
                         If .oVentasDetalle.GrabaRenglon = False Then
@@ -3028,10 +3049,10 @@ CANCELAR:
                 dCantidad = 0 : dPrecioCapturado = 0 : dPrecioConDescuento = 0 : iIDOrigen = 0 : dPorcentajeIVA = 0 : dIEPS_PORCENTAJE = 0 : sID_SIS_CAT_IMPUESTOS = "" : sGRADO_TOXICIDAD = "" : dImporteConDescuento = 0
                 dBASE_IEPS = 0 : dIEPS_IMPORTE = 0 : dIEPS_UNITARIO = 0 : dBASE_IVA = 0 : dIVA_IMPORTE = 0 : dPRECIO_TOTAL = 0 : dPrecioOriginal = 0 : dImporte = 0 : dImporteTotal = 0 : dImporteSustitucion = 0
                 dDESCUENTO_UNITARIO = 0 : dDESCUENTO_IMPORTE = 0
+                dPrecioCapturado_USD = 0
                 'dFLETE_IMPORTE = 0 : sID_SIS_CAT_IMPUESTOS_FLETES = "" : dPorcentajeFlete = 0
                 dRETENCION_IVA_BASE = 0 : dRETENCION_IVA_PORCENTAJE = 0 : dRETENCION_IVA_IMPORTE = 0 : bRETENCION_IVA_TIENE = False
                 dRETENCION_ISR_BASE = 0 : dRETENCION_ISR_PORCENTAJE = 0 : dRETENCION_ISR_IMPORTE = 0 : bRETENCION_ISR_TIENE = False
-                dPrecioCapturado_USD = 0
                 dRETENCION_IVA_BASE_USD = 0 : dRETENCION_IVA_IMPORTE_USD = 0 : dtRetencionIVA_USD = 0
                 dRETENCION_ISR_BASE_USD = 0 : dRETENCION_ISR_IMPORTE_USD = 0 : dtRetencionISR_USD = 0
 
@@ -3145,13 +3166,12 @@ CANCELAR:
                     Me.Grid.Cell(i, Me.iGyDESCUENTO_UNITARIO_USD).Text = dDESCUENTO_UNITARIO_USD.ToString
                     Me.Grid.Cell(i, Me.iGyPRECIO_CON_DESCUENTO_USD).Text = dPrecioConDescuento_USD.ToString
                     Me.Grid.Cell(i, Me.igyImporte_USD).Text = dImporteTotal_USD.ToString
-                    'FALTA Me.Grid.Cell(i, Me.iGyFleteImporte_USD).Text = dFLETE_IMPORTE_USD.ToString
+                    'Me.Grid.Cell(i, Me.iGyFleteImporte_USD).Text = dFLETE_IMPORTE_USD.ToString
                     Me.Grid.Cell(i, Me.iGyRETENCION_IVA_BASE_USD).Text = dRETENCION_IVA_BASE_USD.ToString
                     Me.Grid.Cell(i, Me.iGyRETENCION_IVA_IMPORTE_USD).Text = dRETENCION_IVA_IMPORTE_USD.ToString
                     Me.Grid.Cell(i, Me.iGyRETENCION_ISR_BASE_USD).Text = dRETENCION_ISR_BASE_USD.ToString
                     Me.Grid.Cell(i, Me.iGyRETENCION_ISR_IMPORTE_USD).Text = dRETENCION_ISR_IMPORTE_USD.ToString
 
-                    falta convertir a mxn las 2 retenciones
                     ''''''''''''''''''''''''''''''MXN(Este cálculo se hace en para calcular los valores en MXN a partir de los USD,note que también en moneda en MXN direco hace el cálculo-parecido)
                     'Redondeando a la misma cifra que si hubiera sido en MXN directo
                     dImporte = RedondearD(dImporte_USD * dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
@@ -3193,8 +3213,8 @@ CANCELAR:
                                 Me.lblTotal.Text = "0.00"
                                 Exit Sub
                             End If
-                            dRETENCION_IVA_BASE = dImporteConDescuento_USD falta
-                            dRETENCION_IVA_IMPORTE = RedondearD(dRETENCION_IVA_BASE_USD * dRETENCION_IVA_PORCENTAJE, 2) falta
+                            dRETENCION_IVA_BASE = RedondearD(dRETENCION_IVA_BASE_USD * dTipoCambio, 6)
+                            dRETENCION_IVA_IMPORTE = RedondearD(dRETENCION_IVA_IMPORTE_USD * dTipoCambio, 2)
                         End If
 
                         If bRETENCION_ISR_TIENE = True Then 'Si tiene retención isr
@@ -3204,8 +3224,8 @@ CANCELAR:
                             '    Me.lblTotal.Text = "0.00"
                             '    Exit Sub
                             'End If
-                            dRETENCION_ISR_BASE = dImporteConDescuento_USD falta
-                            dRETENCION_ISR_IMPORTE = RedondearD(dRETENCION_ISR_BASE_USD * dRETENCION_ISR_PORCENTAJE, 2) falta
+                            dRETENCION_ISR_BASE = RedondearD(dRETENCION_ISR_BASE_USD * dTipoCambio, 6)
+                            dRETENCION_ISR_IMPORTE = RedondearD(dRETENCION_ISR_IMPORTE_USD * dTipoCambio, 2)
                         End If
                     End If
 
@@ -3474,6 +3494,7 @@ CANCELAR:
             Me.lblIEPS.Text = FormatImporteContable(Me.oVenta.IEPS_TOTAL_DESGLOSADO)
             Me.lblIEPSIncluido.Text = FormatImporteContable(Me.oVenta.IEPS_TOTAL_YA_INCLUIDO)
             Me.lblTotalRetencionIVA.Text = FormatImporteContable(Me.oVenta.RETENCION_IVA)
+            Me.lblTotalRetencionISR.Text = FormatImporteContable(Me.oVenta.RETENCION_ISR)
 
             Me.bClienteEsContribuyenteIEPS = CBool(Me.oCliente.ES_CONTRIBUYENTE_IEPS)
 
@@ -3492,6 +3513,7 @@ CANCELAR:
                 Me.lblIEPS_USD.Text = FormatImporteContable(Me.oVenta.IEPS_TOTAL_DESGLOSADO_USD)
                 Me.lblIEPSIncluido_USD.Text = FormatImporteContable(Me.oVenta.IEPS_TOTAL_YA_INCLUIDO_USD)
                 Me.lblTotalRetencionIVA_USD.Text = FormatImporteContable(Me.oVenta.RETENCION_IVA_USD)
+                Me.lblTotalRetencionISR_USD.Text = FormatImporteContable(Me.oVenta.RETENCION_ISR_USD)
             End If
 
             Me.cboTipoMercado.SelectedValue = Me.oVenta.CODIGO_TIPO_MERCADO
@@ -3614,10 +3636,23 @@ CANCELAR:
                                     dRow("DESCUENTO_IMPORTE_USD").ToString & Chr(9) &
                                     dRow("PRECIO").ToString & Chr(9) &
                                     dRow("PRECIO_USD").ToString & Chr(9) &
-                                    dRow("ID_SIS_CAT_IMPUESTOS_FLETE").ToString & Chr(9) &
+                                    IIf(valorNumericoD(dRow("RETENCION_IVA_PORCENTAJE").ToString) > 0, "1", "0").ToString & Chr(9) &
                                     dRow("RETENCION_IVA_PORCENTAJE").ToString & Chr(9) &
+                                    dRow("RETENCION_IVA_BASE").ToString & Chr(9) &
+                                    dRow("RETENCION_IVA_BASE_USD").ToString & Chr(9) &
                                     dRow("RETENCION_IVA_IMPORTE").ToString & Chr(9) &
-                                    dRow("RETENCION_IVA_IMPORTE_USD").ToString & Chr(9))
+                                    dRow("RETENCION_IVA_IMPORTE_USD").ToString & Chr(9) &
+                                    IIf(valorNumericoD(dRow("RETENCION_ISR_PORCENTAJE").ToString) > 0, "1", "0").ToString & Chr(9) &
+                                    dRow("RETENCION_ISR_PORCENTAJE").ToString & Chr(9) &
+                                    dRow("RETENCION_ISR_BASE").ToString & Chr(9) &
+                                    dRow("RETENCION_ISR_BASE_USD").ToString & Chr(9) &
+                                    dRow("RETENCION_ISR_IMPORTE").ToString & Chr(9) &
+                                    dRow("RETENCION_ISR_IMPORTE_USD").ToString & Chr(9))
+
+                    'dRow("ID_SIS_CAT_IMPUESTOS_FLETE").ToString & Chr(9) &
+                    'dRow("RETENCION_IVA_PORCENTAJE").ToString & Chr(9) &
+                    'dRow("RETENCION_IVA_IMPORTE").ToString & Chr(9) &
+                    'dRow("RETENCION_IVA_IMPORTE_USD").ToString & Chr(9) &
                 Next
 
                 Me.Grid.Rows = Me.Grid.Rows + 1
@@ -3931,8 +3966,8 @@ LlenaLinea:
                                 'If txtLEN(oArticulos.CODIGO_CULTIVO) = True Then
                                 'Dim Sql As New Class_find("SELECT CUENTA_CONTABLE_BASE FROM CAT_CULTIVOS Where CODIGO_CULTIVO='" & oArticulos.CODIGO_CULTIVO.ToString & "' AND CODIGO_PLAZA=" & Usuario.Codigo_Plaza)
 
-                                'Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + Sql.Result1 'En agr esta así, pero aquí la cuenta es general
-                                Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString
+                    'Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + Sql.Result1 'En agr esta así, pero aquí la cuenta es general
+                    Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString
                                 'Else
                                 ' Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = ""
                                 'End If
@@ -5211,44 +5246,51 @@ BuscaVentas:
     End Sub
 
     Private Sub CargaRemisionesCliente()
-        If txtLEN(Me.TxtCliente.Text) = False Then
-            MsgBox("Capture un código de cliente.", MsgBoxStyle.Exclamation, Me.Name)
-            Me.TxtCliente.Focus()
-            Exit Sub
-        End If
+        Try
+            If txtLEN(Me.TxtCliente.Text) = False Then
+                MsgBox("Capture un código de cliente.", MsgBoxStyle.Exclamation, Me.Name)
+                Me.TxtCliente.Focus()
+                Exit Sub
+            End If
 
-        Me.GridFacturasVariasRemisiones.DataSource = oVenta.ObtenerRemisionesCliente(Me.TxtCliente.Text)
-        Me.FormateaGridFacturasVariasRemisiones()
-
+            Me.GridFacturasVariasRemisiones.DataSource = oVenta.ObtenerRemisionesCliente(Me.TxtCliente.Text)
+            Me.FormateaGridFacturasVariasRemisiones()
+        Catch ex As Exception
+            HandleError(Me.Name, "CargaRemisionesCliente", ex)
+        End Try
     End Sub
 
     Private Sub CargaDetalleRemisiones()
         Dim i As Integer
         Dim FoliosRemisiones As String = ""
 
-        Me.GridFacturasVariasRemisiones.Locked = True
+        Try
+            Me.GridFacturasVariasRemisiones.Locked = True
 
-        For i = 1 To Me.GridFacturasVariasRemisiones.Rows - 1
-            FoliosRemisiones = FoliosRemisiones & "'" & Me.GridFacturasVariasRemisiones.Cell(i, Me.iGyFolio).Text & "',"
-        Next
+            For i = 1 To Me.GridFacturasVariasRemisiones.Rows - 1
+                FoliosRemisiones = FoliosRemisiones & "'" & Me.GridFacturasVariasRemisiones.Cell(i, Me.iGyFolio).Text & "',"
+            Next
 
-        FoliosRemisiones = Strings.Left(FoliosRemisiones, FoliosRemisiones.Length - 1) 'Quita la ultima coma
+            FoliosRemisiones = Strings.Left(FoliosRemisiones, FoliosRemisiones.Length - 1) 'Quita la ultima coma
 
-        Me.Grid.DataSource = oVenta.ObtenerDetalleVariasRemisiones(FoliosRemisiones)
-        Me.FormateaGrid()
+            Me.Grid.DataSource = oVenta.ObtenerDetalleVariasRemisiones(FoliosRemisiones)
+            Me.FormateaGrid()
 
-        Me.Totales()
-        Me.CalculaUtilidad()
+            Me.Totales()
+            Me.CalculaUtilidad()
 
-        With Me.Grid
-            .Column(igyCodigo).Locked = True
-            .Column(igyCantidad).Locked = True
-            .Column(igyCantidadKilos).Locked = True
-            .Column(igyCodigoCentroCosto).Locked = True
-        End With
-        Me.TabControl1.SelectTab(0) 'Muestra el tab de articulos
+            With Me.Grid
+                .Column(igyCodigo).Locked = True
+                .Column(igyCantidad).Locked = True
+                .Column(igyCantidadKilos).Locked = True
+                .Column(igyCodigoCentroCosto).Locked = True
+            End With
+            Me.TabControl1.SelectTab(0) 'Muestra el tab de articulos
 
-        EsFacturaVariasRemisiones = True
+            EsFacturaVariasRemisiones = True
+        Catch ex As Exception
+            HandleError(Me.Name, "CargaDetalleRemisiones", ex)
+        End Try
     End Sub
 
     Private Function ValidaDescuentos() As Boolean
