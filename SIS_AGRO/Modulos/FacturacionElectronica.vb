@@ -126,7 +126,7 @@ Module FacturacionElectronica
         Dim bResultado As Boolean = False, bMododemo As Boolean = False
 
         Try
-            If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "DANIEL-PC" Or Usuario.Codigo_Usuario = 1 Then
+            If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "PCSISTEMASJGC" Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "DANIEL-PC" Or Usuario.Codigo_Usuario = 1 Then
                 MsgBox("Las computadoras de sistemas no deben timbrar documentos." & vbCrLf & "Ni el dba(por protección de timbrar por error estando en pruebas).", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
@@ -135,7 +135,7 @@ Module FacturacionElectronica
             Dim sContraseñaWS As String = Empresa_Sistema.FELECTRONICA_PASS_WS
 
             'Note que aquí se sobreescribe el usuario a demo y en el new no se usan las propiedades de Empresa_Sistema
-            If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "DANIEL-PC" Or Usuario.Codigo_Usuario = 1 Then
+            If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "PCSISTEMASJGC" Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "DANIEL-PC" Or Usuario.Codigo_Usuario = 1 Then
                 bMododemo = True
                 sUserWS = "demo.demo"
                 sContraseñaWS = "R3FL?W9M7EX8" ' "demo", antes era demo

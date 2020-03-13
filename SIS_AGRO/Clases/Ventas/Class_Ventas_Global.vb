@@ -32,7 +32,6 @@ Public Class Class_Ventas_Global
     Private _IEPS_TOTAL_DESGLOSADO As Double
     Private _IEPS_TOTAL_YA_INCLUIDO As Double
     Private _IMPUESTO As Double
-    Private _RETENCION_IVA As Double
     Private _TOTAL As Double
     Private _SALDO As Double
     Private _COSTO As Double
@@ -92,20 +91,18 @@ Public Class Class_Ventas_Global
     Private _TIENE_IEPS_DESGLOSADO As Boolean
     Private _CODIGO_TIPO_RELACION_CFDI As String
     Private _LISTA_CFDIS_RELACIONADOS As String
-
-    'Ya existian
     Private _TOTAL_DOLARES As Double
     Private _SALDO_DOLARES As Double
     Private _SUBTOTAL_USD As Double
     Private _DESCUENTO_USD As Double
-
-    'Nuevos
     Private _IMPUESTO_USD As Double
     Private _TOTAL_SUSTITUCION_USD As Double
     Private _IEPS_TOTAL_DESGLOSADO_USD As Double
     Private _IEPS_TOTAL_YA_INCLUIDO_USD As Double
-    Private _RETENCION_IVA_USD As Double
-
+    Private _RETENCION_IVA As Decimal
+    Private _RETENCION_IVA_USD As Decimal
+    Private _RETENCION_ISR As Decimal
+    Private _RETENCION_ISR_USD As Decimal
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -273,15 +270,6 @@ Public Class Class_Ventas_Global
         End Set
     End Property
 
-    Public Property RETENCION_IVA() As Double
-        Get
-            Return Me._RETENCION_IVA
-        End Get
-        Set(ByVal Value As Double)
-            Me._RETENCION_IVA = Value
-        End Set
-    End Property
-
     Public Property TOTAL() As Double
         Get
             Return Me._TOTAL
@@ -290,8 +278,6 @@ Public Class Class_Ventas_Global
             Me._TOTAL = Value
         End Set
     End Property
-
-
 
     Public Property SALDO() As Double
         Get
@@ -832,15 +818,41 @@ Public Class Class_Ventas_Global
         End Set
     End Property
 
-    Public Property RETENCION_IVA_USD() As Double
+    Public Property RETENCION_IVA() As Decimal
+        Get
+            Return Me._RETENCION_IVA
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._RETENCION_IVA = Value
+        End Set
+    End Property
+
+    Public Property RETENCION_IVA_USD() As Decimal
         Get
             Return Me._RETENCION_IVA_USD
         End Get
-        Set(ByVal Value As Double)
+        Set(ByVal Value As Decimal)
             Me._RETENCION_IVA_USD = Value
         End Set
     End Property
 
+    Public Property RETENCION_ISR() As Decimal
+        Get
+            Return Me._RETENCION_ISR
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._RETENCION_ISR = Value
+        End Set
+    End Property
+
+    Public Property RETENCION_ISR_USD() As Decimal
+        Get
+            Return Me._RETENCION_ISR_USD
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._RETENCION_ISR_USD = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -1008,14 +1020,14 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@TIENE_IEPS_DESGLOSADO", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._TIENE_IEPS_DESGLOSADO)
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_RELACION_CFDI", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_TIPO_RELACION_CFDI
             sqlParametro = .Parameters.Add("@LISTA_CFDIS_RELACIONADOS", SqlDbType.NVarChar, -1) : sqlParametro.Value = Me._LISTA_CFDIS_RELACIONADOS
-            sqlParametro = .Parameters.Add("@RETENCION_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA
-
             sqlParametro = .Parameters.Add("@IMPUESTO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_USD
             sqlParametro = .Parameters.Add("@TOTAL_SUSTITUCION_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_SUSTITUCION_USD
             sqlParametro = .Parameters.Add("@IEPS_TOTAL_DESGLOSADO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_DESGLOSADO_USD
             sqlParametro = .Parameters.Add("@IEPS_TOTAL_YA_INCLUIDO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_TOTAL_YA_INCLUIDO_USD
+            sqlParametro = .Parameters.Add("@RETENCION_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA
             sqlParametro = .Parameters.Add("@RETENCION_IVA_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_USD
-
+            sqlParametro = .Parameters.Add("@RETENCION_ISR", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR
+            sqlParametro = .Parameters.Add("@RETENCION_ISR_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_USD
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = sAccion 'INSERTAR,ACTUALIZAR
 
             Try
@@ -1297,13 +1309,14 @@ Public Class Class_Ventas_Global
                     Me._CONCEPTO_CANCELACION = "" & dReader("CONCEPTO_CANCELACION").ToString
                     Me._TIENE_IEPS_DESGLOSADO = CBool(dReader("TIENE_IEPS_DESGLOSADO").ToString)
                     Me._CODIGO_TIPO_RELACION_CFDI = "" & dReader("CODIGO_TIPO_RELACION_CFDI").ToString
-                    Me._RETENCION_IVA = CDec(dReader("RETENCION_IVA"))
-
                     Me._IMPUESTO_USD = CDec(dReader("IMPUESTO_USD"))
                     Me._TOTAL_SUSTITUCION_USD = CDec(dReader("TOTAL_SUSTITUCION_USD"))
                     Me._IEPS_TOTAL_DESGLOSADO_USD = CDec(dReader("IEPS_TOTAL_DESGLOSADO_USD"))
                     Me._IEPS_TOTAL_YA_INCLUIDO_USD = CDec(dReader("IEPS_TOTAL_YA_INCLUIDO_USD"))
+                    Me._RETENCION_IVA = CDec(dReader("RETENCION_IVA"))
                     Me._RETENCION_IVA_USD = CDec(dReader("RETENCION_IVA_USD"))
+                    Me._RETENCION_ISR = CDec(dReader("RETENCION_ISR"))
+                    Me._RETENCION_ISR_USD = CDec(dReader("RETENCION_ISR_USD"))
 
                     bResultado = True
                 End If
@@ -1483,20 +1496,73 @@ Public Class Class_Ventas_Global
             'Campos en la tabla PRECIO=Es el precio tecleado con descuento
 
             sSQL = "SELECT R.CODIGO_ARTICULO, " &
-                "CASE WHEN A.ES_SERIALIZABLE = '1' THEN 'SER' WHEN A.INVENTARIABLE= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO, " &
-                "R.DESCRIPCION,R.CANTIDAD,R.PRECIO_SIN_DESCUENTO,R.PRECIO_SIN_DESCUENTO_USD,R.PRECIO_TOTAL,R.PRECIO_TOTAL_USD,R.UNIDAD_VENTA,ISNULL(R.CANTIDAD_KILOS,0) CANTIDAD_KILOS,ISNULL(R.PRECIO_KILOS,0) PRECIO_KILOS," &
-                "R.IMPUESTO_PORCENTAJE,R.IMPORTE,R.IMPORTE_USD,ISNULL(R.IMPORTE_KILOS,0) IMPORTE_KILOS,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.IMPUESTO_IMPORTE_USD,R.ID_VENTA_DETALLE,R.ES_PRODUCTO_KILOS,R.CODIGO_CENTRO_COSTO,CC.NOMBRE_CENTRO_COSTO," &
-                "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_UNITARIO_USD,R.IEPS_IMPORTE,R.IEPS_IMPORTE_USD,R.BASE_IEPS,R.BASE_IEPS_USD,R.BASE_IVA,R.BASE_IVA_USD," &
-                "R.COSTO,(R.PRECIO - R.COSTO) UTILIDAD_UNITARIA,((R.PRECIO-R.COSTO)*R.CANTIDAD) UTILIDAD_TOTAL,CASE WHEN R.PRECIO > 0 THEN (((R.PRECIO-R.COSTO)/R.PRECIO)*100) ELSE 0 END UTILIDAD_PORCENTAJE, " &
-                "R.ID_SIS_CAT_IMPUESTOS,R.GRADO_TOXICIDAD,R.DESCUENTO_UNITARIO,R.DESCUENTO_UNITARIO_USD,R.DESCUENTO_IMPORTE,R.DESCUENTO_IMPORTE_USD,R.PRECIO_SIN_DESCUENTO,R.PRECIO_SIN_DESCUENTO_USD, " &
-                "R.ID_SIS_CAT_IMPUESTOS_FLETE,F.PORCENTAJE RETENCION_IVA_PORCENTAJE,R.RETENCION_IVA_IMPORTE,R.RETENCION_IVA_IMPORTE_USD " &
+                "CASE WHEN A.ES_SERIALIZABLE = '1' THEN 'SER' WHEN A.INVENTARIABLE= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO," &
+                "R.DESCRIPCION," &
+                "R.CANTIDAD," &
+                "R.PRECIO_SIN_DESCUENTO," &
+                "R.PRECIO_SIN_DESCUENTO_USD," &
+                "R.PRECIO_TOTAL," &
+                "R.PRECIO_TOTAL_USD," &
+                "R.UNIDAD_VENTA," &
+                "ISNULL(R.CANTIDAD_KILOS,0) CANTIDAD_KILOS," &
+                "ISNULL(R.PRECIO_KILOS,0) PRECIO_KILOS," &
+                "R.IMPUESTO_PORCENTAJE," &
+                "R.IMPORTE," &
+                "R.IMPORTE_USD," &
+                "ISNULL(R.IMPORTE_KILOS,0) IMPORTE_KILOS," &
+                "R.CUENTA_CONTABLE," &
+                "R.IMPUESTO_IMPORTE," &
+                "R.IMPUESTO_IMPORTE_USD," &
+                "R.ID_VENTA_DETALLE," &
+                "R.ES_PRODUCTO_KILOS," &
+                "R.CODIGO_CENTRO_COSTO," &
+                "CC.NOMBRE_CENTRO_COSTO," &
+                "R.IEPS_PORCENTAJE," &
+                "R.IEPS_UNITARIO," &
+                "R.IEPS_UNITARIO_USD," &
+                "R.IEPS_IMPORTE," &
+                "R.IEPS_IMPORTE_USD," &
+                "R.BASE_IEPS," &
+                "R.BASE_IEPS_USD," &
+                "R.BASE_IVA," &
+                "R.BASE_IVA_USD," &
+                "R.COSTO," &
+                "(R.PRECIO - R.COSTO) UTILIDAD_UNITARIA," &
+                "((R.PRECIO-R.COSTO)*R.CANTIDAD) UTILIDAD_TOTAL," &
+                "CASE WHEN R.PRECIO > 0 THEN (((R.PRECIO-R.COSTO)/R.PRECIO)*100) ELSE 0 END UTILIDAD_PORCENTAJE, " &
+                "R.ID_SIS_CAT_IMPUESTOS," &
+                "R.GRADO_TOXICIDAD," &
+                "R.DESCUENTO_UNITARIO," &
+                "R.DESCUENTO_UNITARIO_USD," &
+                "R.DESCUENTO_IMPORTE," &
+                "R.DESCUENTO_IMPORTE_USD," &
+                "R.PRECIO_SIN_DESCUENTO," &
+                "R.PRECIO_SIN_DESCUENTO_USD, " &
+                "CASE WHEN R.RETENCION_IVA_PORCENTAJE>0 THEN '1' ELSE 0 END RETENCION_IVA_TIENE," &
+                "R.RETENCION_IVA_PORCENTAJE," &
+                "R.RETENCION_IVA_BASE," &
+                "R.RETENCION_IVA_BASE_USD," &
+                "R.RETENCION_IVA_IMPORTE," &
+                "R.RETENCION_IVA_IMPORTE_USD," &
+                "CASE WHEN R.RETENCION_ISR_PORCENTAJE>0 THEN '1' ELSE 0 END RETENCION_ISR_TIENE," &
+                "R.RETENCION_ISR_PORCENTAJE," &
+                "R.RETENCION_ISR_BASE," &
+                "R.RETENCION_ISR_BASE_USD," &
+                "R.RETENCION_ISR_IMPORTE," &
+                "R.RETENCION_ISR_IMPORTE_USD " &
                 "FROM VENTA_DETALLE R " &
                 "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
                 "INNER JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO=CC.CODIGO_CENTRO_COSTO) " &
-                "LEFT JOIN SIS_CAT_IMPUESTOS_FLETES F ON(R.ID_SIS_CAT_IMPUESTOS_FLETE=F.ID_SIS_CAT_IMPUESTOS_FLETE) " &
                 "WHERE R.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' " &
                 IIf(bSinComentarios = True, " AND R.CODIGO_ARTICULO<>'-' ", " ").ToString &
                 "ORDER BY R.ID_VENTA_DETALLE"
+
+            '"R.ID_SIS_CAT_IMPUESTOS_FLETE," &
+            '"F.PORCENTAJE RETENCION_IVA_PORCENTAJE," &
+            '"R.RETENCION_IVA_IMPORTE," &
+            '"R.RETENCION_IVA_IMPORTE_USD " &
+            '"LEFT JOIN SIS_CAT_IMPUESTOS_FLETES F ON(R.ID_SIS_CAT_IMPUESTOS_FLETE=F.ID_SIS_CAT_IMPUESTOS_FLETE) " &
+
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
             da.Dispose()
@@ -1515,13 +1581,17 @@ Public Class Class_Ventas_Global
             sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.CANTIDAD,R.PRECIO,R.PRECIO_TOTAL,R.PRECIO_TOTAL_USD,R.UNIDAD_VENTA,ISNULL(R.CANTIDAD_KILOS,0) CANTIDAD_KILOS,ISNULL(R.PRECIO_KILOS,0) PRECIO_KILOS,R.IMPUESTO_PORCENTAJE,R.IMPORTE," &
                 "ISNULL(R.IMPORTE_KILOS,0) IMPORTE_KILOS,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.IMPUESTO_IMPORTE_USD,R.ID_VENTA_DETALLE,R.ES_PRODUCTO_KILOS,R.PRECIO_USD,R.IMPORTE_USD," &
                 "A.CODIGO_PRODUCTO_SERVICIO,A.CODIGO_UNIDAD,R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.IEPS_IMPORTE_USD,R.BASE_IEPS,R.BASE_IEPS_USD,R.BASE_IVA,R.BASE_IVA_USD," &
-                "R.ID_SIS_CAT_IMPUESTOS,R.GRADO_TOXICIDAD,R.DESCUENTO_UNITARIO,R.DESCUENTO_IMPORTE,R.DESCUENTO_IMPORTE_USD,R.ID_SIS_CAT_IMPUESTOS_FLETE,R.RETENCION_IVA_IMPORTE,R.RETENCION_IVA_IMPORTE_USD,F.PORCENTAJE RETENCION_IVA_PORCENTAJE " &
+                "R.ID_SIS_CAT_IMPUESTOS,R.GRADO_TOXICIDAD,R.DESCUENTO_UNITARIO,R.DESCUENTO_IMPORTE,R.DESCUENTO_IMPORTE_USD," &
+                "R.RETENCION_IVA_PORCENTAJE,R.RETENCION_IVA_BASE,R.RETENCION_IVA_BASE_USD,R.RETENCION_IVA_IMPORTE,R.RETENCION_IVA_IMPORTE_USD," &
+                "R.RETENCION_ISR_PORCENTAJE,R.RETENCION_ISR_BASE,R.RETENCION_ISR_BASE_USD,R.RETENCION_ISR_IMPORTE,R.RETENCION_ISR_IMPORTE_USD " &
                 "FROM VENTA_DETALLE R " &
-                "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
-                "LEFT JOIN SIS_CAT_IMPUESTOS_FLETES F ON(R.ID_SIS_CAT_IMPUESTOS_FLETE=F.ID_SIS_CAT_IMPUESTOS_FLETE) " &
+                "INNER JOIN CAT_ARTICULOS A On(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
                 "WHERE R.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' " &
                 IIf(bSinComentarios = True, " AND R.CODIGO_ARTICULO<>'-' ", " ").ToString &
                 "ORDER BY R.ID_VENTA_DETALLE"
+
+            '"R.ID_SIS_CAT_IMPUESTOS_FLETE,R.RETENCION_IVA_IMPORTE,R.RETENCION_IVA_IMPORTE_USD,F.PORCENTAJE RETENCION_IVA_PORCENTAJE " &
+            '"LEFT JOIN SIS_CAT_IMPUESTOS_FLETES F ON(R.ID_SIS_CAT_IMPUESTOS_FLETE=F.ID_SIS_CAT_IMPUESTOS_FLETE) " &
 
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
@@ -1584,16 +1654,29 @@ Public Class Class_Ventas_Global
             "R.DESCUENTO_IMPORTE_USD," &
             "R.PRECIO," &
             "R.PRECIO_USD," &
-            "R.ID_SIS_CAT_IMPUESTOS_FLETE," &
-            "F.PORCENTAJE RETENCION_IVA_PORCENTAJE," &
+            "CASE WHEN R.RETENCION_IVA_PORCENTAJE>0 THEN '1' ELSE 0 END RETENCION_IVA_TIENE," &
+            "R.RETENCION_IVA_PORCENTAJE," &
+            "R.RETENCION_IVA_BASE," &
+            "R.RETENCION_IVA_BASE_USD," &
             "R.RETENCION_IVA_IMPORTE," &
-            "R.RETENCION_IVA_IMPORTE_USD " &
+            "R.RETENCION_IVA_IMPORTE_USD," &
+            "CASE WHEN R.RETENCION_ISR_PORCENTAJE>0 THEN '1' ELSE 0 END RETENCION_ISR_TIENE," &
+            "R.RETENCION_ISR_PORCENTAJE," &
+            "R.RETENCION_ISR_BASE," &
+            "R.RETENCION_ISR_BASE_USD," &
+            "R.RETENCION_ISR_IMPORTE," &
+            "R.RETENCION_ISR_IMPORTE_USD " &
             "FROM VENTA_DETALLE R " &
             "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
             "INNER JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO=CC.CODIGO_CENTRO_COSTO) " &
-            "LEFT JOIN SIS_CAT_IMPUESTOS_FLETES F ON(R.ID_SIS_CAT_IMPUESTOS_FLETE=F.ID_SIS_CAT_IMPUESTOS_FLETE) " &
             "WHERE R.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' AND R.DISPONIBLE>0 " &
             "ORDER BY R.ID_VENTA_DETALLE "
+
+            '"R.ID_SIS_CAT_IMPUESTOS_FLETE," &
+            '"F.PORCENTAJE RETENCION_IVA_PORCENTAJE," &
+            '"R.RETENCION_IVA_IMPORTE," &
+            '"R.RETENCION_IVA_IMPORTE_USD " &
+            '"LEFT JOIN SIS_CAT_IMPUESTOS_FLETES F ON(R.ID_SIS_CAT_IMPUESTOS_FLETE=F.ID_SIS_CAT_IMPUESTOS_FLETE) " &
 
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
@@ -1749,20 +1832,73 @@ Public Class Class_Ventas_Global
 
         Try
 
-            sSQL = "SELECT R.CODIGO_ARTICULO, " & _
-                   "CASE WHEN MAX(A.ES_SERIALIZABLE) = '1' THEN 'SER' WHEN MAX(A.INVENTARIABLE)= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO, " & _
-                   "MAX(R.DESCRIPCION) DESCRIPCION,SUM(R.CANTIDAD) CANTIDAD,MAX(R.PRECIO_SIN_DESCUENTO) PRECIO_SIN_DESCUENTO,MAX(R.PRECIO_SIN_DESCUENTO_USD) PRECIO_SIN_DESCUENTO_USD,MAX(R.PRECIO_TOTAL) PRECIO_TOTAL,MAX(R.PRECIO_TOTAL_USD) PRECIO_TOTAL_USD,MAX(R.UNIDAD_VENTA) UNIDAD_VENTA,ISNULL(SUM(R.CANTIDAD_KILOS),0) CANTIDAD_KILOS,ISNULL(MAX(R.PRECIO_KILOS),0) PRECIO_KILOS," & _
-                   "MAX(R.IMPUESTO_PORCENTAJE) IMPUESTO_PORCENTAJE,SUM(R.IMPORTE) IMPORTE,SUM(R.IMPORTE_USD) IMPORTE_USD,ISNULL(SUM(R.IMPORTE_KILOS),0) IMPORTE_KILOS,(SELECT CUENTA_CONTABLE_VENTAS FROM SIS_PLAZAS WHERE CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & ") CUENTA_CONTABLE,SUM(R.IMPUESTO_IMPORTE) IMPUESTO_IMPORTE,SUM(R.IMPUESTO_IMPORTE_USD) IMPUESTO_IMPORTE_USD,'' ID_VENTA_DETALLE,MAX(R.ES_PRODUCTO_KILOS) ES_PRODUCTO_KILOS,MAX(R.CODIGO_CENTRO_COSTO) CODIGO_CENTRO_COSTO,MAX(CC.NOMBRE_CENTRO_COSTO) NOMBRE_CENTRO_COSTO," & _
-                   "MAX(R.IEPS_PORCENTAJE) IEPS_PORCENTAJE,MAX(R.IEPS_UNITARIO) IEPS_UNITARIO,MAX(R.IEPS_UNITARIO_USD) IEPS_UNITARIO_USD,SUM(R.IEPS_IMPORTE) IEPS_IMPORTE,SUM(R.IEPS_IMPORTE_USD) IEPS_IMPORTE_USD,SUM(R.BASE_IEPS) BASE_IEPS,SUM(R.BASE_IEPS_USD) BASE_IEPS_USD,SUM(R.BASE_IVA) BASE_IVA,SUM(R.BASE_IVA_USD) BASE_IVA_USD," & _
-                   "MAX(R.COSTO) COSTO,(R.PRECIO - MAX(R.COSTO)) UTILIDAD_UNITARIA,((R.PRECIO-MAX(R.COSTO))*SUM(R.CANTIDAD)) UTILIDAD_TOTAL,CASE WHEN R.PRECIO > 0 THEN (((R.PRECIO-MAX(R.COSTO))/R.PRECIO)*100) ELSE 0 END UTILIDA_PORCENTAJE," & _
-                   "MAX(R.ID_SIS_CAT_IMPUESTOS) ID_SIS_CAT_IMPUESTOS,MAX(R.GRADO_TOXICIDAD) GRADO_TOXICIDAD,MAX(R.DESCUENTO_UNITARIO) DESCUENTO_UNITARIO,MAX(R.DESCUENTO_UNITARIO_USD) DESCUENTO_UNITARIO_USD,SUM(R.DESCUENTO_IMPORTE) DESCUENTO_IMPORTE,SUM(R.DESCUENTO_IMPORTE_USD) DESCUENTO_IMPORTE_USD,MAX(R.PRECIO_SIN_DESCUENTO) PRECIO_SIN_DESCUENTO,MAX(R.PRECIO_SIN_DESCUENTO_USD) PRECIO_SIN_DESCUENTO_USD, " & _
-                   "MAX(R.ID_SIS_CAT_IMPUESTOS_FLETE) ID_SIS_CAT_IMPUESTOS_FLETE,MAX(F.PORCENTAJE) RETENCION_IVA_PORCENTAJE,SUM(R.RETENCION_IVA_IMPORTE) RETENCION_IVA_IMPORTE,SUM(R.RETENCION_IVA_IMPORTE_USD) RETENCION_IVA_IMPORTE_USD " & _
-                   "FROM VENTA_DETALLE R " & _
-                   "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " & _
-                   "INNER JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO=CC.CODIGO_CENTRO_COSTO) " & _
-                   "LEFT JOIN SIS_CAT_IMPUESTOS_FLETES F ON(R.ID_SIS_CAT_IMPUESTOS_FLETE=F.ID_SIS_CAT_IMPUESTOS_FLETE) " & _
-                   "WHERE R.FOLIO_VENTA IN(" & sFoliosRemisiones & ") " & _
+            sSQL = "SELECT R.CODIGO_ARTICULO, " &
+                   "CASE WHEN MAX(A.ES_SERIALIZABLE) = '1' THEN 'SER' WHEN MAX(A.INVENTARIABLE)= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO," &
+                   "MAX(R.DESCRIPCION) DESCRIPCION," &
+                   "SUM(R.CANTIDAD) CANTIDAD," &
+                   "MAX(R.PRECIO_SIN_DESCUENTO) PRECIO_SIN_DESCUENTO," &
+                   "MAX(R.PRECIO_SIN_DESCUENTO_USD) PRECIO_SIN_DESCUENTO_USD," &
+                   "MAX(R.PRECIO_TOTAL) PRECIO_TOTAL," &
+                   "MAX(R.PRECIO_TOTAL_USD) PRECIO_TOTAL_USD," &
+                   "MAX(R.UNIDAD_VENTA) UNIDAD_VENTA," &
+                   "ISNULL(SUM(R.CANTIDAD_KILOS),0) CANTIDAD_KILOS," &
+                   "ISNULL(MAX(R.PRECIO_KILOS),0) PRECIO_KILOS," &
+                   "MAX(R.IMPUESTO_PORCENTAJE) IMPUESTO_PORCENTAJE," &
+                   "SUM(R.IMPORTE) IMPORTE," &
+                   "SUM(R.IMPORTE_USD) IMPORTE_USD," &
+                   "ISNULL(SUM(R.IMPORTE_KILOS),0) IMPORTE_KILOS," &
+                   "(SELECT CUENTA_CONTABLE_VENTAS FROM SIS_PLAZAS WHERE CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & ") CUENTA_CONTABLE," &
+                   "SUM(R.IMPUESTO_IMPORTE) IMPUESTO_IMPORTE," &
+                   "SUM(R.IMPUESTO_IMPORTE_USD) IMPUESTO_IMPORTE_USD," &
+                   "'' ID_VENTA_DETALLE," &
+                   "MAX(R.ES_PRODUCTO_KILOS) ES_PRODUCTO_KILOS," &
+                   "MAX(R.CODIGO_CENTRO_COSTO) CODIGO_CENTRO_COSTO," &
+                   "MAX(CC.NOMBRE_CENTRO_COSTO) NOMBRE_CENTRO_COSTO," &
+                   "MAX(R.IEPS_PORCENTAJE) IEPS_PORCENTAJE," &
+                   "MAX(R.IEPS_UNITARIO) IEPS_UNITARIO," &
+                   "MAX(R.IEPS_UNITARIO_USD) IEPS_UNITARIO_USD," &
+                   "SUM(R.IEPS_IMPORTE) IEPS_IMPORTE," &
+                   "SUM(R.IEPS_IMPORTE_USD) IEPS_IMPORTE_USD," &
+                   "SUM(R.BASE_IEPS) BASE_IEPS," &
+                   "SUM(R.BASE_IEPS_USD) BASE_IEPS_USD," &
+                   "SUM(R.BASE_IVA) BASE_IVA," &
+                   "SUM(R.BASE_IVA_USD) BASE_IVA_USD," &
+                   "MAX(R.COSTO) COSTO," &
+                   "(R.PRECIO - MAX(R.COSTO)) UTILIDAD_UNITARIA," &
+                   "((R.PRECIO-MAX(R.COSTO))*SUM(R.CANTIDAD)) UTILIDAD_TOTAL," &
+                   "CASE WHEN R.PRECIO > 0 THEN (((R.PRECIO-MAX(R.COSTO))/R.PRECIO)*100) ELSE 0 END UTILIDAD_PORCENTAJE," &
+                   "MAX(R.ID_SIS_CAT_IMPUESTOS) ID_SIS_CAT_IMPUESTOS," &
+                   "MAX(R.GRADO_TOXICIDAD) GRADO_TOXICIDAD," &
+                   "MAX(R.DESCUENTO_UNITARIO) DESCUENTO_UNITARIO," &
+                   "MAX(R.DESCUENTO_UNITARIO_USD) DESCUENTO_UNITARIO_USD," &
+                   "SUM(R.DESCUENTO_IMPORTE) DESCUENTO_IMPORTE," &
+                   "SUM(R.DESCUENTO_IMPORTE_USD) DESCUENTO_IMPORTE_USD," &
+                   "MAX(R.PRECIO_SIN_DESCUENTO) PRECIO_SIN_DESCUENTO," &
+                   "MAX(R.PRECIO_SIN_DESCUENTO_USD) PRECIO_SIN_DESCUENTO_USD, " &
+                   "CASE WHEN MAX(R.RETENCION_IVA_PORCENTAJE)>0 THEN '1' ELSE 0 END RETENCION_IVA_TIENE/*ESTE NO ES UN CAMPO DE VENTA_DETALLE POR ESO SE DETERMINA*/," &
+                   "MAX(R.RETENCION_IVA_PORCENTAJE) RETENCION_IVA_PORCENTAJE," &
+                   "SUM(R.RETENCION_IVA_BASE) RETENCION_IVA_BASE," &
+                   "SUM(R.RETENCION_IVA_BASE_USD) RETENCION_IVA_BASE_USD," &
+                   "SUM(R.RETENCION_IVA_IMPORTE) RETENCION_IVA_IMPORTE," &
+                   "SUM(R.RETENCION_IVA_IMPORTE_USD) RETENCION_IVA_IMPORTE_USD," &
+                   "CASE WHEN MAX(R.RETENCION_ISR_PORCENTAJE)>0 THEN '1' ELSE 0 END RETENCION_ISR_TIENE/*ESTE NO ES UN CAMPO DE VENTA_DETALLE POR ESO SE DETERMINA*/," &
+                   "MAX(R.RETENCION_ISR_PORCENTAJE) RETENCION_ISR_PORCENTAJE," &
+                   "SUM(R.RETENCION_ISR_BASE) RETENCION_ISR_BASE," &
+                   "SUM(R.RETENCION_ISR_BASE_USD) RETENCION_ISR_BASE_USD," &
+                   "SUM(R.RETENCION_ISR_IMPORTE) RETENCION_ISR_IMPORTE," &
+                   "SUM(R.RETENCION_ISR_IMPORTE_USD) RETENCION_ISR_IMPORTE_USD " &
+                   "FROM VENTA_DETALLE R " &
+                   "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
+                   "INNER JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO=CC.CODIGO_CENTRO_COSTO) " &
+                   "WHERE R.FOLIO_VENTA IN(" & sFoliosRemisiones & ") " &
                    "GROUP BY R.CODIGO_ARTICULO,R.PRECIO ORDER BY MAX(R.DESCRIPCION) "
+
+            '"MAX(R.ID_SIS_CAT_IMPUESTOS_FLETE) ID_SIS_CAT_IMPUESTOS_FLETE," &
+            '"MAX(F.PORCENTAJE) RETENCION_IVA_PORCENTAJE," &
+            '"SUM(R.RETENCION_IVA_IMPORTE) RETENCION_IVA_IMPORTE," &
+            '"SUM(R.RETENCION_IVA_IMPORTE_USD) RETENCION_IVA_IMPORTE_USD " &
+            '"LEFT JOIN SIS_CAT_IMPUESTOS_FLETES F ON(R.ID_SIS_CAT_IMPUESTOS_FLETE=F.ID_SIS_CAT_IMPUESTOS_FLETE) " &
+
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
             da.Dispose()

@@ -28,7 +28,6 @@ Public Class Class_Ventas_Detalle
     Private _ES_PRODUCTO_KILOS As String
     Private _CODIGO_CENTRO_COSTO As String
     Private _LISTA_SERIES As String
-
     Private _IEPS_PORCENTAJE As Double
     Private _IEPS_UNITARIO As Double
     Private _IEPS_IMPORTE As Double
@@ -40,14 +39,9 @@ Public Class Class_Ventas_Detalle
     Private _DESCUENTO_UNITARIO As Decimal
     Private _DESCUENTO_IMPORTE As Decimal
     Private _PRECIO_SIN_DESCUENTO As Decimal
-    Private _ID_SIS_CAT_IMPUESTOS_FLETE As String
-    Private _RETENCION_IVA_IMPORTE As Decimal
-
     Private _COSTO_NUEVO As Double
-
     Private _PRECIO_USD As Double
     Private _IMPORTE_USD As Double
-
     Private _IMPUESTO_IMPORTE_USD As Double
     Private _IEPS_UNITARIO_USD As Double
     Private _IEPS_IMPORTE_USD As Double
@@ -57,8 +51,17 @@ Public Class Class_Ventas_Detalle
     Private _DESCUENTO_UNITARIO_USD As Decimal
     Private _DESCUENTO_IMPORTE_USD As Decimal
     Private _PRECIO_SIN_DESCUENTO_USD As Decimal
+    'Private _ID_SIS_CAT_IMPUESTOS_FLETE As String
+    Private _RETENCION_IVA_PORCENTAJE As Decimal
+    Private _RETENCION_IVA_BASE As Decimal
+    Private _RETENCION_IVA_BASE_USD As Decimal
+    Private _RETENCION_IVA_IMPORTE As Decimal
     Private _RETENCION_IVA_IMPORTE_USD As Decimal
-
+    Private _RETENCION_ISR_PORCENTAJE As Decimal
+    Private _RETENCION_ISR_BASE As Decimal
+    Private _RETENCION_ISR_BASE_USD As Decimal
+    Private _RETENCION_ISR_IMPORTE As Decimal
+    Private _RETENCION_ISR_IMPORTE_USD As Decimal
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -383,24 +386,6 @@ Public Class Class_Ventas_Detalle
         End Set
     End Property
 
-    Public Property ID_SIS_CAT_IMPUESTOS_FLETE() As String
-        Get
-            Return Me._ID_SIS_CAT_IMPUESTOS_FLETE
-        End Get
-        Set(ByVal Value As String)
-            Me._ID_SIS_CAT_IMPUESTOS_FLETE = Value
-        End Set
-    End Property
-
-    Public Property RETENCION_IVA_IMPORTE() As Decimal
-        Get
-            Return Me._RETENCION_IVA_IMPORTE
-        End Get
-        Set(ByVal Value As Decimal)
-            Me._RETENCION_IVA_IMPORTE = Value
-        End Set
-    End Property
-
     Public Property COSTO_NUEVO() As Double
         Get
             Return Me._COSTO_NUEVO
@@ -510,12 +495,102 @@ Public Class Class_Ventas_Detalle
         End Set
     End Property
 
+    'Public Property ID_SIS_CAT_IMPUESTOS_FLETE() As String
+    '    Get
+    '        Return Me._ID_SIS_CAT_IMPUESTOS_FLETE
+    '    End Get
+    '    Set(ByVal Value As String)
+    '        Me._ID_SIS_CAT_IMPUESTOS_FLETE = Value
+    '    End Set
+    'End Property
+
+    Public Property RETENCION_IVA_PORCENTAJE() As Decimal
+        Get
+            Return Me._RETENCION_IVA_PORCENTAJE
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._RETENCION_IVA_PORCENTAJE = Value
+        End Set
+    End Property
+
+    Public Property RETENCION_IVA_BASE() As Decimal
+        Get
+            Return Me._RETENCION_IVA_BASE
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._RETENCION_IVA_BASE = Value
+        End Set
+    End Property
+
+    Public Property RETENCION_IVA_BASE_USD() As Decimal
+        Get
+            Return Me._RETENCION_IVA_BASE_USD
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._RETENCION_IVA_BASE_USD = Value
+        End Set
+    End Property
+
+    Public Property RETENCION_IVA_IMPORTE() As Decimal
+        Get
+            Return Me._RETENCION_IVA_IMPORTE
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._RETENCION_IVA_IMPORTE = Value
+        End Set
+    End Property
+
     Public Property RETENCION_IVA_IMPORTE_USD() As Decimal
         Get
             Return Me._RETENCION_IVA_IMPORTE_USD
         End Get
         Set(ByVal Value As Decimal)
             Me._RETENCION_IVA_IMPORTE_USD = Value
+        End Set
+    End Property
+
+    Public Property RETENCION_ISR_PORCENTAJE() As Decimal
+        Get
+            Return Me._RETENCION_ISR_PORCENTAJE
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._RETENCION_ISR_PORCENTAJE = Value
+        End Set
+    End Property
+
+    Public Property RETENCION_ISR_BASE() As Decimal
+        Get
+            Return Me._RETENCION_ISR_BASE
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._RETENCION_ISR_BASE = Value
+        End Set
+    End Property
+
+    Public Property RETENCION_ISR_BASE_USD() As Decimal
+        Get
+            Return Me._RETENCION_ISR_BASE_USD
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._RETENCION_ISR_BASE_USD = Value
+        End Set
+    End Property
+
+    Public Property RETENCION_ISR_IMPORTE() As Decimal
+        Get
+            Return Me._RETENCION_ISR_IMPORTE
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._RETENCION_ISR_IMPORTE = Value
+        End Set
+    End Property
+
+    Public Property RETENCION_ISR_IMPORTE_USD() As Decimal
+        Get
+            Return Me._RETENCION_ISR_IMPORTE_USD
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._RETENCION_ISR_IMPORTE_USD = Value
         End Set
     End Property
 
@@ -605,10 +680,7 @@ Public Class Class_Ventas_Detalle
             sqlParametro = .Parameters.Add("@DESCUENTO_UNITARIO", SqlDbType.Decimal) : sqlParametro.Value = Me._DESCUENTO_UNITARIO
             sqlParametro = .Parameters.Add("@DESCUENTO_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._DESCUENTO_IMPORTE
             sqlParametro = .Parameters.Add("@PRECIO_SIN_DESCUENTO", SqlDbType.Decimal) : sqlParametro.Value = Me._PRECIO_SIN_DESCUENTO
-            sqlParametro = .Parameters.Add("@ID_SIS_CAT_IMPUESTOS_FLETE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._ID_SIS_CAT_IMPUESTOS_FLETE.ToString
-            sqlParametro = .Parameters.Add("@RETENCION_IVA_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_IMPORTE
             sqlParametro = .Parameters.Add("@COSTO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO 'Para el caso de inventariables este costo no es el real(luego se calcula), para los no inventariables si es costo real.
-
             sqlParametro = .Parameters.Add("@IMPUESTO_IMPORTE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_IMPORTE_USD
             sqlParametro = .Parameters.Add("@IEPS_UNITARIO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_UNITARIO_USD
             sqlParametro = .Parameters.Add("@IEPS_IMPORTE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_IMPORTE_USD
@@ -618,7 +690,17 @@ Public Class Class_Ventas_Detalle
             sqlParametro = .Parameters.Add("@DESCUENTO_UNITARIO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._DESCUENTO_UNITARIO_USD
             sqlParametro = .Parameters.Add("@DESCUENTO_IMPORTE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._DESCUENTO_IMPORTE_USD
             sqlParametro = .Parameters.Add("@PRECIO_SIN_DESCUENTO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._PRECIO_SIN_DESCUENTO_USD
+            'sqlParametro = .Parameters.Add("@ID_SIS_CAT_IMPUESTOS_FLETE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._ID_SIS_CAT_IMPUESTOS_FLETE.ToString
+            sqlParametro = .Parameters.Add("@RETENCION_IVA_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_PORCENTAJE
+            sqlParametro = .Parameters.Add("@RETENCION_IVA_BASE", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_BASE
+            sqlParametro = .Parameters.Add("@RETENCION_IVA_BASE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_BASE_USD
+            sqlParametro = .Parameters.Add("@RETENCION_IVA_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_IMPORTE
             sqlParametro = .Parameters.Add("@RETENCION_IVA_IMPORTE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_IMPORTE_USD
+            sqlParametro = .Parameters.Add("@RETENCION_ISR_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_PORCENTAJE
+            sqlParametro = .Parameters.Add("@RETENCION_ISR_BASE", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_BASE
+            sqlParametro = .Parameters.Add("@RETENCION_ISR_BASE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_BASE_USD
+            sqlParametro = .Parameters.Add("@RETENCION_ISR_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_IMPORTE
+            sqlParametro = .Parameters.Add("@RETENCION_ISR_IMPORTE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_IMPORTE_USD
 
             Try
                 Me._Conexion.Open()
@@ -688,7 +770,7 @@ Public Class Class_Ventas_Detalle
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Clase, "ActualizaPrecioRemision", ex)
+                HandleError(Me._Nombre_Clase, "ActualizaCostoVenta", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
