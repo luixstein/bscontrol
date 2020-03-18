@@ -274,6 +274,19 @@ Public Class Class_CatParametrosAcuicolaDetalle
         Return dTable
     End Function
 
+    Public Function ObtenerEstanquesPorDivision(ByVal sCodigoDivision As String) As System.Data.DataTable
+        Dim dTable As New DataTable
+        Dim da As New SqlDataAdapter("SELECT P.CODIGO_LOTE CODIGO_LOTE,NOMBRE_LOTE FROM CAT_PARAMETROS_ACUICOLA_DETALLE P INNER JOIN CAT_LOTES L ON(L.CODIGO_LOTE=P.CODIGO_LOTE) WHERE CODIGO_DIVISION =" & sCodigoDivision, Me._Conexion)
+        Try
+            da.Fill(dTable)
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ObtenerEstanquesPorDivision", ex)
+        Finally
+            da.Dispose()
+        End Try
+        Return dTable
+    End Function
+
     Public Function ObtenerElementosFiltro(ByVal Filtro As String) As System.Data.DataTable
         Dim dTable As New DataTable
         Dim da As New SqlDataAdapter("SELECT P.CODIGO_DIVISION, D.NOMBRE_DIVISION,P.CODIGO_LOTE,L.NOMBRE_LOTE FROM CAT_PARAMETROS_ACUICOLA_DETALLE P INNER JOIN CAT_DIVISIONES_ACUICOLA D ON(P.CODIGO_DIVISION=D.CODIGO_DIVISION) " & _

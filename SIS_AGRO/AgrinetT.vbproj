@@ -432,6 +432,12 @@
     <Compile Include="Formas\Acuicola\AcuicolaProyectoSiembra.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\Acuicola\Consultas\Rpt_Acuicola_AlimentacionDetalle.Designer.vb">
+      <DependentUpon>Rpt_Acuicola_AlimentacionDetalle.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Acuicola\Consultas\Rpt_Acuicola_AlimentacionDetalle.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\Acuicola\Consultas\Rpt_Acuicola_Global.Designer.vb">
       <DependentUpon>Rpt_Acuicola_Global.vb</DependentUpon>
     </Compile>
@@ -1744,6 +1750,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Acuicola\AcuicolaProyectoSiembra.resx">
       <DependentUpon>AcuicolaProyectoSiembra.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Acuicola\Consultas\Rpt_Acuicola_AlimentacionDetalle.resx">
+      <DependentUpon>Rpt_Acuicola_AlimentacionDetalle.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Acuicola\Consultas\Rpt_Acuicola_Global.resx">
       <DependentUpon>Rpt_Acuicola_Global.vb</DependentUpon>

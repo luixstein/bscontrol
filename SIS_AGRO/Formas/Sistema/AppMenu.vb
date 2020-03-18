@@ -1677,4 +1677,12 @@ Public Class AppMenu
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
     End Sub
+
+    Private Sub AlimentaciónDetalleToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AlimentaciónDetalleToolStripMenuItem.Click
+        Dim Child As New Rpt_Acuicola_AlimentacionDetalle
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
 End Class
