@@ -147,6 +147,14 @@
         +QPmZ8OJHrju0gAAAABJRU5ErkJggg==
 </value>
   </data>
+  <data name="tsbCancelar.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAABSSURBVDhPzY1BCgAgCAT9/6eLIGHBdVPq0ECXdEb7igGv
+        QtjDgIrIOQbYUvYfYJGy7GCkLTvP5HaESeUIk51jRMlOOkNZBRZ0XpUlHfnq0MZsAlwyOcdS2Fx6AAAA
+        AElFTkSuQmCC
+</value>
+  </data>
   <data name="tsbImprimir.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -195,12 +203,4 @@
   <metadata name="StatusStripEstado.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>744, 54</value>
   </metadata>
-  <data name="tsbCancelar.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAABSSURBVDhPzY1BCgAgCAT9/6eLIGHBdVPq0ECXdEb7igGv
-        QtjDgIrIOQbYUvYfYJGy7GCkLTvP5HaESeUIk51jRMlOOkNZBRZ0XpUlHfnq0MZsAlwyOcdS2Fx6AAAA
-        AElFTkSuQmCC
-</value>
-  </data>
 </root>
