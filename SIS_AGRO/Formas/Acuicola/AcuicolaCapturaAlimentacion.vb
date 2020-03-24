@@ -231,6 +231,7 @@
                 .Column(Me.iGyIdCapturaAlimentacionDetalle).Visible = False
                 .Column(Me.iGyIDProyectoSiembra).Visible = False
                 .Column(Me.iGyCodigoLote).Visible = False
+                .Column(Me.iGyCodigoTipoAlimento).Visible = False
 
                 .Column(Me.iGyAlimento).FormatString = "##0.00"
                 .Column(Me.iGyAlimento).Mask = FlexCell.MaskEnum.Numeric
@@ -251,8 +252,6 @@
                 .Column(Me.iGyTemperatura).FormatString = "##0.00"
                 .Column(Me.iGyTemperatura).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyTemperatura).DecimalLength = 2
-
-                .Column(Me.iGyCodigoTipoAlimento).Visible = False
 
                 .Locked = False
                 .AutoRedraw = True
@@ -729,6 +728,9 @@ BusquedaArticulo:
 
 
                     End Select
+
+                Case Keys.F8, Keys.Delete
+                    Me.Grid.Selection.DeleteByRow()
 
             End Select
 

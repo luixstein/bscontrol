@@ -26,6 +26,7 @@ Partial Class AcuicolaCapturaAlimentacion
         Me.tsMenu = New System.Windows.Forms.ToolStrip()
         Me.tsbNuevo = New System.Windows.Forms.ToolStripButton()
         Me.tsbGrabar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.btnFolioSiguiente = New System.Windows.Forms.Button()
@@ -50,7 +51,7 @@ Partial Class AcuicolaCapturaAlimentacion
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tsslEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tsslElaboro = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbParametros.SuspendLayout()
@@ -82,6 +83,14 @@ Partial Class AcuicolaCapturaAlimentacion
         Me.tsbGrabar.Name = "tsbGrabar"
         Me.tsbGrabar.Size = New System.Drawing.Size(78, 24)
         Me.tsbGrabar.Text = "&Grabar"
+        '
+        'tsbCancelar
+        '
+        Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
+        Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbCancelar.Name = "tsbCancelar"
+        Me.tsbCancelar.Size = New System.Drawing.Size(94, 24)
+        Me.tsbCancelar.Text = " Cancelar"
         '
         'tsbImprimir
         '
@@ -164,6 +173,7 @@ Partial Class AcuicolaCapturaAlimentacion
         '
         'gbGlobal
         '
+        Me.gbGlobal.Controls.Add(Me.Label2)
         Me.gbGlobal.Controls.Add(Me.txtConcepto)
         Me.gbGlobal.Controls.Add(Me.Label1)
         Me.gbGlobal.Controls.Add(Me.lblDisplayStatus)
@@ -348,13 +358,15 @@ Partial Class AcuicolaCapturaAlimentacion
         Me.tsslElaboro.Size = New System.Drawing.Size(72, 24)
         Me.tsslElaboro.Text = "Elaboró :"
         '
-        'tsbCancelar
+        'Label2
         '
-        Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
-        Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbCancelar.Name = "tsbCancelar"
-        Me.tsbCancelar.Size = New System.Drawing.Size(94, 24)
-        Me.tsbCancelar.Text = " Cancelar"
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(859, 113)
+        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(186, 17)
+        Me.Label2.TabIndex = 392
+        Me.Label2.Text = "* F8 para eliminar renglones"
         '
         'AcuicolaCapturaAlimentacion
         '
@@ -410,4 +422,5 @@ Partial Class AcuicolaCapturaAlimentacion
     Friend WithEvents txtConcepto As TextBox
     Friend WithEvents Label1 As Label
     Friend WithEvents tsbCancelar As System.Windows.Forms.ToolStripButton
+    Friend WithEvents Label2 As System.Windows.Forms.Label
 End Class
