@@ -2064,8 +2064,8 @@ Buscar:
                     Return False
                 End If
 
-                If Not (valorNumericoD(Me.txtTipoCambio.Text) >= 15 And valorNumericoD(Me.txtTipoCambio.Text) <= 35) Then
-                    MsgBox("El tipo de cambio se sale del rango de 15 a 35.", MsgBoxStyle.Exclamation, sProcedure)
+                If Not (valorNumericoD(Me.txtTipoCambio.Text) >= 15 And valorNumericoD(Me.txtTipoCambio.Text) <= 40) Then
+                    MsgBox("El tipo de cambio se sale del rango de 15 a 40.", MsgBoxStyle.Exclamation, sProcedure)
                     If Me.txtTipoCambio.Enabled = True Then
                         Me.txtTipoCambio.Focus()
                     End If
