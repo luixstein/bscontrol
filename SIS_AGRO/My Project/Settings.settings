@@ -57,7 +57,7 @@
       <Value Profile="(Default)">AGRICONTROL_BIOLOGOS</Value>
     </Setting>
     <Setting Name="Servidor" Type="System.String" Scope="User">
-      <Value Profile="(Default)">PCSISTEMASJORGE\SQL14</Value>
+      <Value Profile="(Default)">PCSISTEMASJGC\SQL14</Value>
     </Setting>
     <Setting Name="Servidor4" Type="System.String" Scope="User">
       <Value Profile="(Default)">PCSISTEMASJORGE\SQL14</Value>
@@ -69,7 +69,7 @@
       <Value Profile="(Default)">COMER2</Value>
     </Setting>
     <Setting Name="Servidor1" Type="System.String" Scope="User">
-      <Value Profile="(Default)">PCSISTEMASJORGE\SQL14</Value>
+      <Value Profile="(Default)">PCSISTEMASJGC\SQL14</Value>
     </Setting>
     <Setting Name="ModoExeCarpetaUsuario" Type="System.String" Scope="User">
       <Value Profile="(Default)">0</Value>
