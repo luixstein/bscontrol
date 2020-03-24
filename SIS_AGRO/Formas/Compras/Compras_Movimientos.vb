@@ -398,9 +398,11 @@ Buscar:
 
     Private Sub DtpFecha_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DtpFecha.ValueChanged
         Me.dtpFechaVencimiento.Value = Me.DtpFecha.Value.AddDays(CDbl(Me.txtPlazo.Text))
+        Me.DtpFechaFacturaProveedor.Value = Me.DtpFecha.Value
 
         If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
             ObtenerTipoCambioDia()
+            Me.Totales()
         End If
     End Sub
 
@@ -564,14 +566,6 @@ Buscar:
             Me.txtPredio.Text = ""
             Me.txtConfirmo.Text = ""
 
-            Me.DtpFecha.Value = Date.Now
-            Me.DtpFechaFacturaProveedor.Value = Date.Now
-            Me.dtpFechaEntrega.Value = Date.Now
-            Me.txtPlazo.Text = "30"
-            Me.dtpFechaVencimiento.Value = Date.Now.AddDays(CDbl(Me.txtPlazo.Text))
-            Me.LblEstatus.Text = "NUEVO"
-            Me.LblPoliza.Text = ""
-
             Me.chkEsInventariable.Checked = True
             Me.chkEsFiscal.Checked = False
 
@@ -600,6 +594,15 @@ Buscar:
             Me.InicializaGrid()
             Me.InicializaGridSeries()
             Me.InicializaGridEntradas()
+
+            Me.DtpFecha.Value = Date.Now
+            Me.DtpFechaFacturaProveedor.Value = Date.Now
+            Me.DtpFechaFacturaProveedor.Enabled = False
+            Me.dtpFechaEntrega.Value = Date.Now
+            Me.txtPlazo.Text = "30"
+            Me.dtpFechaVencimiento.Value = Date.Now.AddDays(CDbl(Me.txtPlazo.Text))
+            Me.LblEstatus.Text = "NUEVO"
+            Me.LblPoliza.Text = ""
 
             Me.oCompras = New Class_Compras_Global(Me.CboDocumento.SelectedValue.ToString)
             Me.oProveedores = New Class_CatProveedores
@@ -930,7 +933,7 @@ Buscar:
                         Me.TxtConcepto.ReadOnly = False 'changed
                         Me.Grid.Locked = False
                         Me.GridSeries.Locked = False
-                        Me.DtpFechaFacturaProveedor.Enabled = True
+                        Me.DtpFechaFacturaProveedor.Enabled = False
                         Me.cboMoneda.Enabled = False
                         Me.BtnActualizaFolioProv.Visible = False
                         Me.btnActualizaConcepto.Visible = False
@@ -3712,7 +3715,6 @@ BuscarCuentas:
 
     Private Sub ObtenerTipoCambioDia()
         Dim oTipoCambio As New Class_CatTiposCambio(Me.DtpFecha.Value)
-        Me.txtTipoCambio.Enabled = False
         Me.txtTipoCambio.Text = "0"
 
         If oTipoCambio.Existe AndAlso oTipoCambio.TIPO_DE_CAMBIO > 0 Then
