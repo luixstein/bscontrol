@@ -3714,17 +3714,20 @@ BuscarCuentas:
     End Function
 
     Private Sub ObtenerTipoCambioDia()
-        Dim oTipoCambio As New Class_CatTiposCambio(Me.DtpFecha.Value)
-        Me.txtTipoCambio.Text = "0"
+        If Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.GRABADO Then
 
-        If oTipoCambio.Existe AndAlso oTipoCambio.TIPO_DE_CAMBIO > 0 Then
-            Me.txtTipoCambio.Text = oTipoCambio.TIPO_DE_CAMBIO.ToString
-        Else
-            If Me.cboMoneda.SelectedIndex = 1 Then
-                MsgBox("No se ha capturado el tipo de cambio del día.", MsgBoxStyle.Exclamation, Me.Text)
+            Dim oTipoCambio As New Class_CatTiposCambio(Me.DtpFecha.Value)
+            Me.txtTipoCambio.Text = "0"
+
+            If oTipoCambio.Existe AndAlso oTipoCambio.TIPO_DE_CAMBIO > 0 Then
+                Me.txtTipoCambio.Text = oTipoCambio.TIPO_DE_CAMBIO.ToString
+            Else
+                If Me.cboMoneda.SelectedIndex = 1 Then
+                    MsgBox("No se ha capturado el tipo de cambio del día.", MsgBoxStyle.Exclamation, Me.Text)
+                End If
             End If
-        End If
 
+        End If
     End Sub
 
     Private Sub GestionaMoneda(Optional ByVal bInicializa As Boolean = False) 'creado falta usar, la idea es que del consultar no inicializa, pero si del cambiar en el combo
@@ -3737,8 +3740,13 @@ BuscarCuentas:
             End If
 
             If Me.cboMoneda.Text = "USD" Then
-                Me.txtTipoCambio.Visible = True : Me.txtTipoCambio.Enabled = True : Me.LblDisplayTipoCambio.Visible = True
+                Me.txtTipoCambio.Visible = True : Me.LblDisplayTipoCambio.Visible = True
                 Me.gbUSD.Visible = True
+
+                If Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.GRABADO Then
+                    Me.txtTipoCambio.Enabled = True
+                End If
+
                 If Me.oDocumento.AFECTA_CXP = True Then
                     Me.txtSaldo_USD.Visible = True : Me.lblDisplaySaldo_USD.Visible = True
                     Me.txtSaldo_MXP.Visible = True : Me.lblDisplaySaldo_MXP.Visible = True
