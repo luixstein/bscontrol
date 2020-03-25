@@ -67,7 +67,7 @@ Module Mod_main
                 If Len(Dir(sCarpetaUsuario, FileAttribute.Directory)) = 0 Then
                     MkDir(sCarpetaUsuario)
                     If txtLEN(Dir(sCarpetaUsuario, FileAttribute.Directory)) = False Then
-                        MsgBox("No se logró crear la carpeta de trabajo local por usuario, avíse al depto. de sistemas.", vbExclamation, sProcedure)
+                        MsgBox("No se logró crear la carpeta de trabajo local por usuario, avíse al depto. de sistemas." & vbCrLf & "Carpeta=" & sCarpetaUsuario, vbExclamation, sProcedure)
                         Mod_main.Finaliza(False)
                         Exit Sub
                     End If
@@ -77,13 +77,13 @@ Module Mod_main
                 Copiar_Archivo(sOrigen & ".CONFIG", sDestinoConfig)
 
                 If Len(Dir(sDestino)) = 0 Then
-                    MsgBox("No se logró copiar el archivo del sistema local por usuario, avíse al depto. de sistemas.", vbExclamation, sProcedure)
+                    MsgBox("No se logró copiar el archivo del sistema local por usuario, avíse al depto. de sistemas." & vbCrLf & "Origen=" & sOrigen & vbCrLf & "Destino=" & sDestino, vbExclamation, sProcedure)
                     Mod_main.Finaliza(False)
                     Exit Sub
                 End If
 
                 If Len(Dir(sDestinoConfig)) = 0 Then
-                    MsgBox("No se logró copiar el archivo de configuración del sistema local por usuario, avíse al depto. de sistemas.", vbExclamation, sProcedure)
+                    MsgBox("No se logró copiar el archivo de configuración del sistema local por usuario, avíse al depto. de sistemas." & vbCrLf & "Origen=" & sOrigen & ".CONFIG" & vbCrLf & "Destino=" & sDestinoConfig, vbExclamation, sProcedure)
                     Mod_main.Finaliza(False)
                     Exit Sub
                 End If

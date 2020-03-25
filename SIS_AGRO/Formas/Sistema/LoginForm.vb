@@ -79,13 +79,13 @@ Public Class LoginForm
 #Region "Opciones"
     Private Sub btnIniciarSesion_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnIniciarSesion.Click
         Try
-            If My.Settings.ModoExeCarpetaUsuario = "1" Then
-                If txtLEN(Me.txtRFC.Text) = False Then
-                    MsgBox("Captúre el RFC de la empresa por favor.", MsgBoxStyle.Exclamation, Me.Text)
-                    Me.txtRFC.Focus()
-                    Return
-                End If
-            End If
+            'If My.Settings.ModoExeCarpetaUsuario = "1" Then
+            '    If txtLEN(Me.txtRFC.Text) = False Then
+            '        MsgBox("Captúre el RFC de la empresa por favor.", MsgBoxStyle.Exclamation, Me.Text)
+            '        Me.txtRFC.Focus()
+            '        Return
+            '    End If
+            'End If
 
             If txtLEN(Me.txtNombreUsuario.Text) = False Then
                 MsgBox("Captúre el nombre de usuario por favor.", MsgBoxStyle.Exclamation, Me.Text)
@@ -261,6 +261,8 @@ Public Class LoginForm
 
 #Region "Métodos y procedimientos"
     Private Sub Preinicio()
+        'MsgBox("My.Settings.BaseDatos=" & My.Settings.BaseDatos)
+
         Empresa_Sistema = New Class_sisEmpresa("Empresa", My.Settings.BaseDatos, My.Settings.Servidor, sCongif1, sCongif2)
         EmpresaParametros = New Class_SisContabilidadParametros
         Usuario = New Class_sisUsuarios
@@ -385,21 +387,24 @@ Public Class LoginForm
 
     Private Function GestionaInicioSesionModoRemoteAPP() As Boolean
         Try
-            If txtLEN(Me.txtRFC.Text) = False Then
-                MsgBox("Captúre el RFC de la empresa por favor.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.txtRFC.Focus()
-                Return False
-            End If
+            'If txtLEN(Me.txtRFC.Text) = False Then
+            '    MsgBox("Captúre el RFC de la empresa por favor.", MsgBoxStyle.Exclamation, Me.Text)
+            '    Me.txtRFC.Focus()
+            '    Return False
+            'End If
+            'MsgBox("haber")
+            'MsgBox("servidor " & My.Settings.Servidor)
 
-            Dim Empresas As New Class_sisEmpresas("BS_EMPRESAS", My.Settings.Servidor, Me.txtRFC.Text)
+            'Dim Empresas As New Class_sisEmpresas("BS_EMPRESAS", My.Settings.Servidor, Me.txtRFC.Text)
 
-            If Empresas.Existe = False Then
-                MsgBox("No se encontró el RFC de la empresa, verifique.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.txtRFC.Focus()
-                Return False
-            End If
+            'If Empresas.Existe = False Then
+            '    MsgBox("No se encontró el RFC de la empresa, verifique.", MsgBoxStyle.Exclamation, Me.Text)
+            '    Me.txtRFC.Focus()
+            '    Return False
+            'End If
 
-            My.Settings.BaseDatos = Empresas.NOMBRE_DB
+            'Esto si estaba cuando se trataba de usar el rfc,ahora que la quité va tomar la base principal del config.
+            'My.Settings.BaseDatos = Empresas.NOMBRE_DB
 
             Me.Preinicio()
 
