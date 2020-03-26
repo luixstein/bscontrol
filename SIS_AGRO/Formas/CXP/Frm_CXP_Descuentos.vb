@@ -210,7 +210,10 @@ Public Class Frm_CXP_Descuentos
     End Sub
 
     Private Sub dtFecha_ValueChanged(sender As Object, e As EventArgs) Handles dtFecha.ValueChanged
-        ObtenerTipoCambioDia()
+        If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
+            ObtenerTipoCambioDia()
+        End If
+
     End Sub
 
     Private Sub txtTipoCambio_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtTipoCambio.KeyDown
