@@ -374,7 +374,11 @@ Buscar:
             If Me.cboMoneda.Text = "USD" Then
                 Me.txtTipoCambio.Visible = True : Me.txtTipoCambio.Enabled = True : Me.lblDisplayTipoCambio.Visible = True 'El tipo de cambio siempre estará readonly true(aunque este enabled), se llenará automáticamente.
                 Me.gbDolares.Visible = True
-                ObtenerTipoCambioDia()
+
+                If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
+                    ObtenerTipoCambioDia()
+                End If
+
             Else
                 Me.txtTipoCambio.Visible = False : Me.txtTipoCambio.Enabled = False : Me.lblDisplayTipoCambio.Visible = False
                 Me.gbDolares.Visible = False
@@ -385,7 +389,9 @@ Buscar:
     End Sub
 
     Private Sub dtFecha_ValueChanged(sender As Object, e As EventArgs) Handles dtFecha.ValueChanged
-        ObtenerTipoCambioDia()
+        If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
+            ObtenerTipoCambioDia()
+        End If
     End Sub
 
 #End Region
