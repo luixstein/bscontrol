@@ -1009,7 +1009,7 @@ Module FacturacionElectronica33
                 .Total = Format(dTotal, "#0.00")
                 .Moneda = oDescuento.CODIGO_MONEDA_SAT
                 If oDescuento.TIPO_DE_CAMBIO > 0 Then
-                    .TipoCambio = FormatTipoCambio(oDescuento.TIPO_DE_CAMBIO)
+                    .TipoCambio = Format(oDescuento.TIPO_DE_CAMBIO, "#0.0000")
                 End If
                 .TipoDeComprobante = "E" 'Egreso
                 .MetodoPago = oDescuento.CODIGO_METODO_PAGO_EVENTO
@@ -1093,9 +1093,15 @@ Module FacturacionElectronica33
             drPrecio = CDec(oDescuento.SUBTOTAL)
             drImporte = CDec(oDescuento.SUBTOTAL)
 
+            If oDescuento.CODIGO_MONEDA_SAT = "USD" Then
+                drPrecio = RedondearD(drPrecio / dTIPO_DE_CAMBIO, 2)
+                drImporte = RedondearD(drImporte / dTIPO_DE_CAMBIO, 2)
+            End If
+
             drDESCUENTO_IMPORTE = CDec(0)
             drIMPUESTO_IMPORTE = CDec(oDescuento.IVA)
             drIMPUESTO_PORCENTAJE = CDec(oDescuento.IMPUESTO_PORCENTAJE) / 100
+
             If drIMPUESTO_PORCENTAJE > 0 Then
                 drBASE_IVA = RedondearD(drIMPUESTO_IMPORTE / drIMPUESTO_PORCENTAJE, 2) 'Se obtiene hacia atras para no tener complicaciones de calculos
             End If
