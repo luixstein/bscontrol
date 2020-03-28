@@ -64,6 +64,12 @@ Public Class Rpt_CXP_SaldosProveedores
 
             Rpt.SetParameterValue("@CODIGO_PROVEEDOR", "" & Me.txtCodicoProveedor.Text)
 
+            If Me.RdbDetalleCXP.Checked Then
+                Rpt.SetParameterValue("@ORDEN_FOLIO_PROVEEDOR", IIf(Me.rbtProveedor.Checked, "1", "0"))
+            Else
+                Rpt.SetParameterValue("@ORDEN_FOLIO_PROVEEDOR", "0")
+            End If
+
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
             frm.Show()
@@ -104,8 +110,12 @@ Buscar:
         End If
     End Sub
 
-    Private Sub Rdb_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles RdbGlobalCXP.CheckedChanged, RdbDetalleCXP.CheckedChanged
-        'Me.OcultarControles()
+    Private Sub Rdb_CheckedChanged(sender As Object, e As EventArgs) Handles RdbGlobalCXP.CheckedChanged
+        If Me.RdbDetalleCXP.Checked Then
+            Me.GbOrden.Visible = True
+        Else
+            Me.GbOrden.Visible = False
+        End If
     End Sub
 
 End Class
