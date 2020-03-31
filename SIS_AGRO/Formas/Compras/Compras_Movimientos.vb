@@ -1396,7 +1396,7 @@ Buscar:
                 .TOTAL = valorNumerico(Me.txtTotal.Text)
                 .RETENCION_IVA = valorNumerico(Me.txtRetencionIVA.Text)
                 .IMPUESTO_PORCENTAJE = dPorcentajeIVAGlobal
-                .TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text)
+                .TIPO_DE_CAMBIO = CDbl(IIf(Me.cboMoneda.SelectedIndex = 1, valorNumerico(Me.txtTipoCambio.Text), 0))
                 .ENTREGAR_A = Me.txtEntregarA.Text
                 .SOLICITO = Me.txtSolicito.Text
                 .CONCEPTO = Me.TxtConcepto.Text
