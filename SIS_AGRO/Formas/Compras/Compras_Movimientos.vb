@@ -2245,6 +2245,16 @@ Buscar:
                     Return False
                 End If
 
+                If Me.cboMoneda.Text = "USD" Then
+                    If valorNumericoD(Me.txtTipoCambio.Text) <= 0 Then
+                        MsgBox("Capture el tipo de cambio.", MsgBoxStyle.Exclamation, sProcedure)
+                        If Me.txtTipoCambio.Enabled = True Then
+                            Me.txtTipoCambio.Focus()
+                        End If
+                        Return False
+                    End If
+                End If
+
                 'Ya no se validan series en ningún momento , porque estas ese llevan ahora en las entradas.
                 ''Nota aqui no se pregunta antes si hay rows en dtSeries, porque puede ser que no le hayan dado al botón, en la siguiente validación si.
                 'If Me.ValidaNumerosSerie = False Then
@@ -2298,6 +2308,16 @@ Buscar:
 
             If oAlmacen.ES_FISCAL = True Then
                 If Me.ValidaCuentasContables = False Then
+                    Return False
+                End If
+            End If
+
+            If Me.cboMoneda.Text = "USD" Then
+                If valorNumericoD(Me.txtTipoCambio.Text) <= 0 Then
+                    MsgBox("Capture el tipo de cambio.", MsgBoxStyle.Exclamation, sProcedure)
+                    If Me.txtTipoCambio.Enabled = True Then
+                        Me.txtTipoCambio.Focus()
+                    End If
                     Return False
                 End If
             End If
