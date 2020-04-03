@@ -3146,6 +3146,20 @@ CANCELAR:
                             dRETENCION_ISR_BASE_USD = dImporteConDescuento_USD
                             dRETENCION_ISR_IMPORTE_USD = RedondearD(dRETENCION_ISR_BASE_USD * dRETENCION_ISR_PORCENTAJE, 2)
                         End If
+                    Else 'Es persona física
+                        If bRETENCION_IVA_TIENE = True Then 'Si tiene retención iva
+                            If dPorcentajeIVA = 0 Then
+                                MsgBox("No puede llevar retención de IVA si el artículo del renglón #" & i.ToString & " no tiene IVA.", vbExclamation, sProcedure)
+                                Me.lblTotal.Text = "0.00"
+                                Exit Sub
+                            ElseIf dPorcentajeIVA <> 0.06 Then
+                                MsgBox("A las personas fisicas sólo se les puede facturar con iva retenido del 6% y este artículo tiene el " & dRETENCION_IVA_PORCENTAJE * 100.0 & "%", vbExclamation, sProcedure)
+                                Me.lblTotal.Text = "0.00"
+                                Exit Sub
+                            End If
+                            dRETENCION_IVA_BASE_USD = dImporteConDescuento_USD
+                            dRETENCION_IVA_IMPORTE_USD = RedondearD(dRETENCION_IVA_BASE_USD * dRETENCION_IVA_PORCENTAJE, 2)
+                        End If
                     End If
 
                     dPRECIO_TOTAL_USD = dPrecioCapturado_USD
@@ -3227,6 +3241,17 @@ CANCELAR:
                             dRETENCION_ISR_BASE = RedondearD(dRETENCION_ISR_BASE_USD * dTipoCambio, 6)
                             dRETENCION_ISR_IMPORTE = RedondearD(dRETENCION_ISR_IMPORTE_USD * dTipoCambio, 2)
                         End If
+                    Else 'Es persona física
+                        'Note que ya no valida el 6% porque ya lo hizo mas arriba en la sección de dólares.
+                        If bRETENCION_IVA_TIENE = True Then 'Si tiene retención iva
+                            If dPorcentajeIVA = 0 Then
+                                MsgBox("No puede llevar retención de IVA si el artículo del renglón #" & i.ToString & " no tiene IVA.", vbExclamation, sProcedure)
+                                Me.lblTotal.Text = "0.00"
+                                Exit Sub
+                            End If
+                            dRETENCION_IVA_BASE = RedondearD(dRETENCION_IVA_BASE_USD * dTipoCambio, 6)
+                            dRETENCION_IVA_IMPORTE = RedondearD(dRETENCION_IVA_IMPORTE_USD * dTipoCambio, 2)
+                        End If
                     End If
 
                     dPRECIO_TOTAL = dPrecioCapturado
@@ -3294,6 +3319,21 @@ CANCELAR:
                             'End If
                             dRETENCION_ISR_BASE = dImporteConDescuento
                             dRETENCION_ISR_IMPORTE = RedondearD(dRETENCION_ISR_BASE * dRETENCION_ISR_PORCENTAJE, 2)
+                        End If
+                    Else 'Es persona física
+                        If bRETENCION_IVA_TIENE = True Then 'Si tiene retención iva
+                            If dPorcentajeIVA = 0 Then
+                                MsgBox("No puede llevar retención de IVA si el artículo del renglón #" & i.ToString & " no tiene IVA.", vbExclamation, sProcedure)
+                                Me.lblTotal.Text = "0.00"
+                                Exit Sub
+                            ElseIf dRETENCION_IVA_PORCENTAJE <> 0.06 Then
+                                MsgBox("A las personas fisicas sólo se les puede facturar con iva retenido del 6% y este artículo tiene el " & dRETENCION_IVA_PORCENTAJE * 100.00 & "%", vbExclamation, sProcedure)
+                                Me.lblTotal.Text = "0.00"
+                                Exit Sub
+                            End If
+
+                            dRETENCION_IVA_BASE = dImporteConDescuento
+                            dRETENCION_IVA_IMPORTE = RedondearD(dRETENCION_IVA_BASE * dRETENCION_IVA_PORCENTAJE, 2)
                         End If
                     End If
 
