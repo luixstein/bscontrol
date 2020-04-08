@@ -877,7 +877,7 @@ Public Class Class_CatClientes
         If Usuario.Codigo_Plaza = 1 Then 'Si inicio sesion en Matriz(plaza 1) debe poder ver todos los clientes
             sql = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES  WHERE NOMBRE_CLIENTE LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & Estatus & "' ORDER BY NOMBRE_CLIENTE"
         Else
-            sql = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES  WHERE CODIGO_ZONA='" & Usuario.Codigo_Plaza.ToString & "' AND NOMBRE_CLIENTE LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & Estatus & "' ORDER BY NOMBRE_CLIENTE"
+            sql = "SELECT CODIGO_CLIENTE,NOMBRE_CLIENTE FROM CAT_CLIENTES  WHERE PLAZA='" & Usuario.Codigo_Plaza.ToString & "' AND NOMBRE_CLIENTE LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & Estatus & "' ORDER BY NOMBRE_CLIENTE"
         End If
         Dim dA As New SqlDataAdapter(sql, Me._Conexion)
         Try

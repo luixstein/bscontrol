@@ -188,6 +188,10 @@ Public Class Frm_Contabilidad_Balanza_Analiticas_Mayor
                 Rpt.SetParameterValue("@FILTRO_CONTRAPOLIZAS", "0")
             End If
 
+            If RdbBalanzaComprobacion.Checked = True Then
+                Rpt.SetParameterValue("@FILTRAR_HASTA_NIVEL2", "0")
+            End If
+
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
             frm.Show()
