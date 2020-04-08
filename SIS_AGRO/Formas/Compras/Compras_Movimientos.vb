@@ -2194,6 +2194,8 @@ Buscar:
         Const sProcedure As String = "ValidarCompra"
         Try
             Dim bTieneRenglones As Boolean = False
+            Dim bPrimerIVAEncontrado As Boolean = False
+            Dim oArticulos As Class_CatArticulos
 
             If Plaza.ValidarPeriodoTrabajo(Me.DtpFecha.Value) = False Then
                 Return False
@@ -2254,6 +2256,50 @@ Buscar:
                         Return False
                     End If
                 End If
+
+
+                'Aqui se hacen algunas validaciones en el grid de articulos como en ValidarOrdenCompra()
+                Me.dPorcentajeIVAGlobal = 0
+
+                Dim i As Integer, sArticulo As String = ""
+                For i = 1 To Me.Grid.Rows - 1
+                    sArticulo = Me.Grid.Cell(i, Me.igyCodigo).Text
+
+                    If txtLEN(sArticulo) = True And sArticulo <> "-" Then ' "-" es para comentarios
+                        oArticulos = New Class_CatArticulos(sArticulo)
+
+                        If valorNumerico(Me.Grid.Cell(i, Me.igyCantidad).Text) <= 0 Then
+                            MsgBox("La cantidad del artículo debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
+                            Me.Grid.Cell(i, Me.igyCantidad).SetFocus()
+                            Return False
+                        End If
+
+                        If valorNumerico(Me.Grid.Cell(i, Me.igyPrecio).Text) <= 0 Then
+                            MsgBox("El precio del artículo debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
+                            Me.Grid.Cell(i, Me.igyPrecio).SetFocus()
+                            Return False
+                        End If
+
+                        If txtLEN(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text) = False Then
+                            MsgBox("El artículo no tiene un porcentaje de iva.", MsgBoxStyle.Exclamation, sProcedure)
+                            Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).SetFocus()
+                            Return False
+                        End If
+
+                        If valorNumerico(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text) > 0 Then
+                            If bPrimerIVAEncontrado = False Then
+                                Me.dPorcentajeIVAGlobal = valorNumerico(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text)
+                                bPrimerIVAEncontrado = True
+                            Else
+                                If dPorcentajeIVAGlobal <> valorNumerico(Me.Grid.Cell(i, Me.igyImpuestoPorcentaje).Text) Then
+                                    MsgBox("No se pueden tener diferentes porcentajes de IVA.", MsgBoxStyle.Exclamation, sProcedure)
+                                    Return False
+                                End If
+                            End If
+                        End If
+
+                    End If
+                Next i
 
                 'Ya no se validan series en ningún momento , porque estas ese llevan ahora en las entradas.
                 ''Nota aqui no se pregunta antes si hay rows en dtSeries, porque puede ser que no le hayan dado al botón, en la siguiente validación si.
