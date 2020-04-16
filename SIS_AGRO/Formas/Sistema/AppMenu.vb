@@ -1685,4 +1685,12 @@ Public Class AppMenu
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
     End Sub
+
+    Private Sub InventariosSugeridosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles InventariosSugeridosToolStripMenuItem.Click
+        Dim Child As New Inventarios_sugeridos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
 End Class
