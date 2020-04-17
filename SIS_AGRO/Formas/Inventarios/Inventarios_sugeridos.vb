@@ -37,10 +37,22 @@ Public Class Inventarios_sugeridos
 
     '#End Region
 
+#Region "Opciones"
+
+    Private Sub tsbNuevo_Click(sender As Object, e As EventArgs) Handles tsbNuevo.Click
+        Me.Inicializa()
+    End Sub
+
+#End Region
+
 #Region "Eventso genericos"
 
     Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoAlmacen.KeyPress, TxtFiltro.KeyPress
         txtNoBeep(e)
+    End Sub
+
+    Private Sub tsbSalir_Click(sender As Object, e As EventArgs) Handles tsbSalir.Click
+        Me.Close()
     End Sub
 
 #End Region
@@ -254,4 +266,6 @@ busca:
 
 #End Region
 
+    
+    
 End Class

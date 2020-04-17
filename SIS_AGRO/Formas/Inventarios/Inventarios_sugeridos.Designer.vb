@@ -33,6 +33,7 @@ Partial Class Inventarios_sugeridos
         Me.LblDisplayAlmacen = New System.Windows.Forms.Label()
         Me.LblNombreAlmacen = New System.Windows.Forms.Label()
         Me.GbArticulos = New System.Windows.Forms.GroupBox()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.GbArticulos.SuspendLayout()
         Me.SuspendLayout()
@@ -53,7 +54,8 @@ Partial Class Inventarios_sugeridos
         Me.GridArticulos.Margin = New System.Windows.Forms.Padding(4)
         Me.GridArticulos.Name = "GridArticulos"
         Me.GridArticulos.Rows = 6
-        Me.GridArticulos.Size = New System.Drawing.Size(838, 474)
+        Me.GridArticulos.ScrollBars = FlexCell.ScrollBarsEnum.Vertical
+        Me.GridArticulos.Size = New System.Drawing.Size(852, 474)
         Me.GridArticulos.TabIndex = 0
         Me.GridArticulos.UncheckedImage = CType(resources.GetObject("GridArticulos.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -63,7 +65,7 @@ Partial Class Inventarios_sugeridos
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(934, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(903, 27)
         Me.tsMenu.TabIndex = 224
         Me.tsMenu.Text = "tsMenu"
         '
@@ -129,16 +131,25 @@ Partial Class Inventarios_sugeridos
         Me.GbArticulos.Controls.Add(Me.GridArticulos)
         Me.GbArticulos.Location = New System.Drawing.Point(15, 134)
         Me.GbArticulos.Name = "GbArticulos"
-        Me.GbArticulos.Size = New System.Drawing.Size(876, 503)
+        Me.GbArticulos.Size = New System.Drawing.Size(878, 503)
         Me.GbArticulos.TabIndex = 2
         Me.GbArticulos.TabStop = False
         Me.GbArticulos.Text = "Articulos"
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(614, 32)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(276, 17)
+        Me.Label1.TabIndex = 228
+        Me.Label1.Text = "* Presione ENTER para grabar la cantidad"
         '
         'Inventarios_sugeridos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(934, 649)
+        Me.ClientSize = New System.Drawing.Size(903, 649)
         Me.Controls.Add(Me.GbArticulos)
         Me.Controls.Add(Me.LblNombreAlmacen)
         Me.Controls.Add(Me.TxtFiltro)
@@ -146,6 +157,7 @@ Partial Class Inventarios_sugeridos
         Me.Controls.Add(Me.TxtCodigoAlmacen)
         Me.Controls.Add(Me.LblDisplayAlmacen)
         Me.Controls.Add(Me.tsMenu)
+        Me.Controls.Add(Me.Label1)
         Me.Name = "Inventarios_sugeridos"
         Me.ShowIcon = False
         Me.Text = "Inventarios sugeridos"
@@ -166,4 +178,5 @@ Partial Class Inventarios_sugeridos
     Friend WithEvents LblDisplayAlmacen As System.Windows.Forms.Label
     Friend WithEvents LblNombreAlmacen As System.Windows.Forms.Label
     Friend WithEvents GbArticulos As System.Windows.Forms.GroupBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
 End Class
