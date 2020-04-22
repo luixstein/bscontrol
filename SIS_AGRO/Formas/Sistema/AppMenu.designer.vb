@@ -175,6 +175,7 @@ Partial Public Class AppMenu
         Me.MenuInventarios = New System.Windows.Forms.ToolStripMenuItem()
         Me.MovimientosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.TransformacionesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.InventariosSugeridosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MnuInvReportes = New System.Windows.Forms.ToolStripMenuItem()
         Me.MnuInvRepAuxiliar = New System.Windows.Forms.ToolStripMenuItem()
         Me.MnuInvRepExistencias = New System.Windows.Forms.ToolStripMenuItem()
@@ -243,7 +244,7 @@ Partial Public Class AppMenu
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
-        Me.InventariosSugeridosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EstanquesIntensivosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -1229,6 +1230,12 @@ Partial Public Class AppMenu
         Me.TransformacionesToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.TransformacionesToolStripMenuItem.Text = "Transformaciones"
         '
+        'InventariosSugeridosToolStripMenuItem
+        '
+        Me.InventariosSugeridosToolStripMenuItem.Name = "InventariosSugeridosToolStripMenuItem"
+        Me.InventariosSugeridosToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
+        Me.InventariosSugeridosToolStripMenuItem.Text = "Inventarios sugeridos"
+        '
         'MnuInvReportes
         '
         Me.MnuInvReportes.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MnuInvRepAuxiliar, Me.MnuInvRepExistencias, Me.InvRptGlobalDetalle, Me.LotesDeCostosToolStripMenuItem})
@@ -1527,7 +1534,7 @@ Partial Public Class AppMenu
         '
         'MenuAcuicola
         '
-        Me.MenuAcuicola.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CapturaParámetrosToolStripMenuItem, Me.CapturaAlimentaciónToolStripMenuItem, Me.CapturaParametríaToolStripMenuItem, Me.ConsultasToolStripMenuItem5})
+        Me.MenuAcuicola.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CapturaParámetrosToolStripMenuItem, Me.CapturaAlimentaciónToolStripMenuItem, Me.CapturaParametríaToolStripMenuItem, Me.EstanquesIntensivosToolStripMenuItem, Me.ConsultasToolStripMenuItem5})
         Me.MenuAcuicola.Name = "MenuAcuicola"
         Me.MenuAcuicola.Size = New System.Drawing.Size(78, 24)
         Me.MenuAcuicola.Text = "Acuicola"
@@ -1667,11 +1674,11 @@ Partial Public Class AppMenu
         Me.pbLogo.TabStop = False
         Me.pbLogo.Visible = False
         '
-        'InventariosSugeridosToolStripMenuItem
+        'EstanquesIntensivosToolStripMenuItem
         '
-        Me.InventariosSugeridosToolStripMenuItem.Name = "InventariosSugeridosToolStripMenuItem"
-        Me.InventariosSugeridosToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
-        Me.InventariosSugeridosToolStripMenuItem.Text = "Inventarios sugeridos"
+        Me.EstanquesIntensivosToolStripMenuItem.Name = "EstanquesIntensivosToolStripMenuItem"
+        Me.EstanquesIntensivosToolStripMenuItem.Size = New System.Drawing.Size(226, 26)
+        Me.EstanquesIntensivosToolStripMenuItem.Text = "Estanques intensivos"
         '
         'AppMenu
         '
@@ -1923,4 +1930,5 @@ Partial Public Class AppMenu
     Friend WithEvents ComisionesToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents AlimentaciónDetalleToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents InventariosSugeridosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents EstanquesIntensivosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

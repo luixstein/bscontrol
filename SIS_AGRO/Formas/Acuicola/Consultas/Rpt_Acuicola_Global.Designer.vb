@@ -26,6 +26,7 @@ Partial Class Rpt_Acuicola_Global
         Me.DtFecha = New System.Windows.Forms.DateTimePicker()
         Me.LblFecha = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.rbtParametros = New System.Windows.Forms.RadioButton()
         Me.RbBiometrias = New System.Windows.Forms.RadioButton()
         Me.RbAlimentacion = New System.Windows.Forms.RadioButton()
         Me.txtCiclo = New System.Windows.Forms.TextBox()
@@ -36,7 +37,7 @@ Partial Class Rpt_Acuicola_Global
         Me.tsbConsultar = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
-        Me.rbtParametros = New System.Windows.Forms.RadioButton()
+        Me.RbIntensivos = New System.Windows.Forms.RadioButton()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
@@ -63,6 +64,7 @@ Partial Class Rpt_Acuicola_Global
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.RbIntensivos)
         Me.GroupBox1.Controls.Add(Me.rbtParametros)
         Me.GroupBox1.Controls.Add(Me.RbBiometrias)
         Me.GroupBox1.Controls.Add(Me.RbAlimentacion)
@@ -70,10 +72,21 @@ Partial Class Rpt_Acuicola_Global
         Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox1.Size = New System.Drawing.Size(205, 135)
+        Me.GroupBox1.Size = New System.Drawing.Size(205, 155)
         Me.GroupBox1.TabIndex = 301
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Reportes"
+        '
+        'rbtParametros
+        '
+        Me.rbtParametros.AutoSize = True
+        Me.rbtParametros.Location = New System.Drawing.Point(8, 81)
+        Me.rbtParametros.Margin = New System.Windows.Forms.Padding(4)
+        Me.rbtParametros.Name = "rbtParametros"
+        Me.rbtParametros.Size = New System.Drawing.Size(102, 21)
+        Me.rbtParametros.TabIndex = 2
+        Me.rbtParametros.Text = "Parametros"
+        Me.rbtParametros.UseVisualStyleBackColor = True
         '
         'RbBiometrias
         '
@@ -181,16 +194,16 @@ Partial Class Rpt_Acuicola_Global
         Me.ToolStrip1.TabIndex = 312
         Me.ToolStrip1.Text = "ToolStrip1"
         '
-        'rbtParametros
+        'RbIntensivos
         '
-        Me.rbtParametros.AutoSize = True
-        Me.rbtParametros.Location = New System.Drawing.Point(8, 81)
-        Me.rbtParametros.Margin = New System.Windows.Forms.Padding(4)
-        Me.rbtParametros.Name = "rbtParametros"
-        Me.rbtParametros.Size = New System.Drawing.Size(102, 21)
-        Me.rbtParametros.TabIndex = 2
-        Me.rbtParametros.Text = "Parametros"
-        Me.rbtParametros.UseVisualStyleBackColor = True
+        Me.RbIntensivos.AutoSize = True
+        Me.RbIntensivos.Location = New System.Drawing.Point(8, 112)
+        Me.RbIntensivos.Margin = New System.Windows.Forms.Padding(4)
+        Me.RbIntensivos.Name = "RbIntensivos"
+        Me.RbIntensivos.Size = New System.Drawing.Size(126, 21)
+        Me.RbIntensivos.TabIndex = 3
+        Me.RbIntensivos.Text = "Hiperintensivos"
+        Me.RbIntensivos.UseVisualStyleBackColor = True
         '
         'Rpt_Acuicola_Global
         '
@@ -231,4 +244,5 @@ Partial Class Rpt_Acuicola_Global
     Friend WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
     Friend WithEvents CboDivision As System.Windows.Forms.ComboBox
     Friend WithEvents rbtParametros As System.Windows.Forms.RadioButton
+    Friend WithEvents RbIntensivos As System.Windows.Forms.RadioButton
 End Class

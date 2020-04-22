@@ -172,6 +172,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="Clases\Acuicola\Class_Acuicola_Intensivos_Detalle.vb" />
+    <Compile Include="Clases\Acuicola\Class_Acuicola_Intensivos_Global .vb" />
     <Compile Include="Clases\Acuicola\Class_Acuicola_Parametria_Detalle.vb" />
     <Compile Include="Clases\Acuicola\Class_Acuicola_Alimentacion_Detalle.vb" />
     <Compile Include="Clases\Acuicola\Class_Acuicola_Parametria_Global.vb" />
@@ -408,6 +410,12 @@
     </Compile>
     <Compile Include="dsTrabajadores.vb">
       <DependentUpon>dsTrabajadores.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Acuicola\AcuicolaCapturaIntensivos.Designer.vb">
+      <DependentUpon>AcuicolaCapturaIntensivos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Acuicola\AcuicolaCapturaIntensivos.vb">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Acuicola\AcuicolaCapturaParametria.Designer.vb">
       <DependentUpon>AcuicolaCapturaParametria.vb</DependentUpon>
@@ -1746,6 +1754,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Formas\Acuicola\AcuicolaCapturaIntensivos.resx">
+      <DependentUpon>AcuicolaCapturaIntensivos.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formas\Acuicola\AcuicolaCapturaParametria.resx">
       <DependentUpon>AcuicolaCapturaParametria.vb</DependentUpon>
     </EmbeddedResource>
