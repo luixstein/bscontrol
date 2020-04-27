@@ -27,8 +27,14 @@ Partial Class Rpt_Ventas_Comisiones
         Me.tsbConsultar = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.txtPtjeComision = New System.Windows.Forms.TextBox()
-        Me.lblDisplayPtjeComision = New System.Windows.Forms.Label()
+        Me.txtComisionMas60 = New System.Windows.Forms.TextBox()
+        Me.lblDisplayComisionMas60 = New System.Windows.Forms.Label()
+        Me.txtComision60 = New System.Windows.Forms.TextBox()
+        Me.lblDisplayComision60 = New System.Windows.Forms.Label()
+        Me.txtComision30 = New System.Windows.Forms.TextBox()
+        Me.lblDisplayComision30 = New System.Windows.Forms.Label()
+        Me.txtComision15 = New System.Windows.Forms.TextBox()
+        Me.lblDisplayComision15 = New System.Windows.Forms.Label()
         Me.lblVendedor = New System.Windows.Forms.Label()
         Me.cboVendedor = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -67,8 +73,14 @@ Partial Class Rpt_Ventas_Comisiones
         '
         'GroupBox2
         '
-        Me.GroupBox2.Controls.Add(Me.txtPtjeComision)
-        Me.GroupBox2.Controls.Add(Me.lblDisplayPtjeComision)
+        Me.GroupBox2.Controls.Add(Me.txtComisionMas60)
+        Me.GroupBox2.Controls.Add(Me.lblDisplayComisionMas60)
+        Me.GroupBox2.Controls.Add(Me.txtComision60)
+        Me.GroupBox2.Controls.Add(Me.lblDisplayComision60)
+        Me.GroupBox2.Controls.Add(Me.txtComision30)
+        Me.GroupBox2.Controls.Add(Me.lblDisplayComision30)
+        Me.GroupBox2.Controls.Add(Me.txtComision15)
+        Me.GroupBox2.Controls.Add(Me.lblDisplayComision15)
         Me.GroupBox2.Controls.Add(Me.lblVendedor)
         Me.GroupBox2.Controls.Add(Me.cboVendedor)
         Me.GroupBox2.Controls.Add(Me.Label1)
@@ -77,29 +89,86 @@ Partial Class Rpt_Ventas_Comisiones
         Me.GroupBox2.Controls.Add(Me.DtFechaDesde)
         Me.GroupBox2.Location = New System.Drawing.Point(12, 30)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(509, 143)
+        Me.GroupBox2.Size = New System.Drawing.Size(509, 223)
         Me.GroupBox2.TabIndex = 0
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Filtros"
         '
-        'txtPtjeComision
+        'txtComisionMas60
         '
-        Me.txtPtjeComision.Location = New System.Drawing.Point(102, 111)
-        Me.txtPtjeComision.MaxLength = 8
-        Me.txtPtjeComision.Name = "txtPtjeComision"
-        Me.txtPtjeComision.Size = New System.Drawing.Size(54, 20)
-        Me.txtPtjeComision.TabIndex = 3
-        Me.txtPtjeComision.Text = "10"
-        Me.txtPtjeComision.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.txtComisionMas60.Location = New System.Drawing.Point(141, 189)
+        Me.txtComisionMas60.MaxLength = 8
+        Me.txtComisionMas60.Name = "txtComisionMas60"
+        Me.txtComisionMas60.Size = New System.Drawing.Size(54, 20)
+        Me.txtComisionMas60.TabIndex = 6
+        Me.txtComisionMas60.Text = "5"
+        Me.txtComisionMas60.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
-        'lblDisplayPtjeComision
+        'lblDisplayComisionMas60
         '
-        Me.lblDisplayPtjeComision.AutoSize = True
-        Me.lblDisplayPtjeComision.Location = New System.Drawing.Point(11, 114)
-        Me.lblDisplayPtjeComision.Name = "lblDisplayPtjeComision"
-        Me.lblDisplayPtjeComision.Size = New System.Drawing.Size(60, 13)
-        Me.lblDisplayPtjeComision.TabIndex = 403
-        Me.lblDisplayPtjeComision.Text = "% Comision"
+        Me.lblDisplayComisionMas60.AutoSize = True
+        Me.lblDisplayComisionMas60.Location = New System.Drawing.Point(11, 192)
+        Me.lblDisplayComisionMas60.Name = "lblDisplayComisionMas60"
+        Me.lblDisplayComisionMas60.Size = New System.Drawing.Size(121, 13)
+        Me.lblDisplayComisionMas60.TabIndex = 409
+        Me.lblDisplayComisionMas60.Text = "% Comision más 60 días"
+        '
+        'txtComision60
+        '
+        Me.txtComision60.Location = New System.Drawing.Point(141, 163)
+        Me.txtComision60.MaxLength = 8
+        Me.txtComision60.Name = "txtComision60"
+        Me.txtComision60.Size = New System.Drawing.Size(54, 20)
+        Me.txtComision60.TabIndex = 5
+        Me.txtComision60.Text = "7.5"
+        Me.txtComision60.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'lblDisplayComision60
+        '
+        Me.lblDisplayComision60.AutoSize = True
+        Me.lblDisplayComision60.Location = New System.Drawing.Point(11, 166)
+        Me.lblDisplayComision60.Name = "lblDisplayComision60"
+        Me.lblDisplayComision60.Size = New System.Drawing.Size(114, 13)
+        Me.lblDisplayComision60.TabIndex = 407
+        Me.lblDisplayComision60.Text = "% Comision 31-60 días"
+        '
+        'txtComision30
+        '
+        Me.txtComision30.Location = New System.Drawing.Point(141, 137)
+        Me.txtComision30.MaxLength = 8
+        Me.txtComision30.Name = "txtComision30"
+        Me.txtComision30.Size = New System.Drawing.Size(54, 20)
+        Me.txtComision30.TabIndex = 4
+        Me.txtComision30.Text = "10"
+        Me.txtComision30.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'lblDisplayComision30
+        '
+        Me.lblDisplayComision30.AutoSize = True
+        Me.lblDisplayComision30.Location = New System.Drawing.Point(11, 140)
+        Me.lblDisplayComision30.Name = "lblDisplayComision30"
+        Me.lblDisplayComision30.Size = New System.Drawing.Size(114, 13)
+        Me.lblDisplayComision30.TabIndex = 405
+        Me.lblDisplayComision30.Text = "% Comision 16-30 días"
+        '
+        'txtComision15
+        '
+        Me.txtComision15.Location = New System.Drawing.Point(141, 111)
+        Me.txtComision15.MaxLength = 8
+        Me.txtComision15.Name = "txtComision15"
+        Me.txtComision15.Size = New System.Drawing.Size(54, 20)
+        Me.txtComision15.TabIndex = 3
+        Me.txtComision15.Text = "12.5"
+        Me.txtComision15.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'lblDisplayComision15
+        '
+        Me.lblDisplayComision15.AutoSize = True
+        Me.lblDisplayComision15.Location = New System.Drawing.Point(11, 114)
+        Me.lblDisplayComision15.Name = "lblDisplayComision15"
+        Me.lblDisplayComision15.Size = New System.Drawing.Size(108, 13)
+        Me.lblDisplayComision15.TabIndex = 403
+        Me.lblDisplayComision15.Text = "% Comision 0-15 días"
         '
         'lblVendedor
         '
@@ -163,7 +232,7 @@ Partial Class Rpt_Ventas_Comisiones
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(533, 190)
+        Me.ClientSize = New System.Drawing.Size(533, 286)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.ToolStrip1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
@@ -190,6 +259,12 @@ Partial Class Rpt_Ventas_Comisiones
     Friend WithEvents DtFechaHasta As DateTimePicker
     Friend WithEvents LblDisplayFechaNacimiento As Label
     Friend WithEvents DtFechaDesde As DateTimePicker
-    Friend WithEvents txtPtjeComision As TextBox
-    Friend WithEvents lblDisplayPtjeComision As Label
+    Friend WithEvents txtComision15 As TextBox
+    Friend WithEvents lblDisplayComision15 As Label
+    Friend WithEvents txtComisionMas60 As TextBox
+    Friend WithEvents lblDisplayComisionMas60 As Label
+    Friend WithEvents txtComision60 As TextBox
+    Friend WithEvents lblDisplayComision60 As Label
+    Friend WithEvents txtComision30 As TextBox
+    Friend WithEvents lblDisplayComision30 As Label
 End Class
