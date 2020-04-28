@@ -10,6 +10,7 @@ Public Class Class_Acuicola_Intensivos_Detalle
     Private _FOLIO_INTENSIVOS As String
     Private _ID_PROYECTO_SIEMBRA As Integer
     Private _CODIGO_LOTE As String
+    Private _HORA As String
     Private _RACION_ALIMENTO As Decimal
     Private _CODIGO_TIPO_ALIMENTO As String
     Private _CANASTAS As String
@@ -75,6 +76,15 @@ Public Class Class_Acuicola_Intensivos_Detalle
         End Get
         Set(ByVal value As String)
             Me._CODIGO_LOTE = value
+        End Set
+    End Property
+
+    Public Property HORA() As String
+        Get
+            Return Me._HORA
+        End Get
+        Set(ByVal value As String)
+            Me._HORA = value
         End Set
     End Property
 
@@ -280,6 +290,7 @@ Public Class Class_Acuicola_Intensivos_Detalle
             sqlParametro = .Parameters.Add("@FOLIO_INTENSIVOS", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_INTENSIVOS
             sqlParametro = .Parameters.Add("@ID_PROYECTO_SIEMBRA", SqlDbType.SmallInt) : sqlParametro.Value = Me._ID_PROYECTO_SIEMBRA
             sqlParametro = .Parameters.Add("@CODIGO_LOTE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_LOTE
+            sqlParametro = .Parameters.Add("@HORA", SqlDbType.Time) : sqlParametro.Value = Me._HORA
             sqlParametro = .Parameters.Add("@RACION_ALIMENTO", SqlDbType.Decimal) : sqlParametro.Value = Me._RACION_ALIMENTO
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_ALIMENTO", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_TIPO_ALIMENTO
             sqlParametro = .Parameters.Add("@CANASTAS", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CANASTAS

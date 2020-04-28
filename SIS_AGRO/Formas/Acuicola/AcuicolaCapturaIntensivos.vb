@@ -20,24 +20,25 @@
     Private iGyIDProyectoSiembra As Integer = 2
     Private iGyCodigoLote As Integer = 3
     Private iGyNombreLote As Integer = 4
-    Private iGyRacionAlimento As Integer = 5
-    Private iGyCodigoTipoAlimento As Integer = 6
-    Private iGyNombreTipoAlimento As Integer = 7
-    Private iGyCanastas As Integer = 8
-    Private iGyAlimentoEnSifon As Integer = 9
-    Private iGyVivos As Integer = 10
-    Private iGyMuertos As Integer = 11
-    Private iGyLastimados As Integer = 12
-    Private iGyOxigeno As Integer = 13
-    Private iGyTemperatura As Integer = 14
-    Private iGyPh As Integer = 15
-    Private iGySal As Integer = 16
-    Private iGyCalcio As Integer = 17
-    Private iGyPotasio As Integer = 18
-    Private iGyMagnesio As Integer = 19
-    Private iGyNitritos As Integer = 20
-    Private iGyAmonio As Integer = 21
-    Private iGyAlcalinidad As Integer = 22
+    Private iGyHora As Integer = 5
+    Private iGyRacionAlimento As Integer = 6
+    Private iGyCodigoTipoAlimento As Integer = 7
+    Private iGyNombreTipoAlimento As Integer = 8
+    Private iGyCanastas As Integer = 9
+    Private iGyAlimentoEnSifon As Integer = 10
+    Private iGyVivos As Integer = 11
+    Private iGyMuertos As Integer = 12
+    Private iGyLastimados As Integer = 13
+    Private iGyOxigeno As Integer = 14
+    Private iGyTemperatura As Integer = 15
+    Private iGyPh As Integer = 16
+    Private iGySal As Integer = 17
+    Private iGyCalcio As Integer = 18
+    Private iGyPotasio As Integer = 19
+    Private iGyMagnesio As Integer = 20
+    Private iGyNitritos As Integer = 21
+    Private iGyAmonio As Integer = 22
+    Private iGyAlcalinidad As Integer = 23
     
 #End Region
 
@@ -79,7 +80,6 @@
 #Region "Eventos de objetos"
     Private Sub AcuicolaCapturaIntensivos_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
-            'Me.DesplegarTurnos()
             Me.DesplegarDivisiones()
 
             Me.Inicializa()
@@ -172,7 +172,6 @@
         Try
             Me.txtFolio.Text = ""
             Me.dtFecha.Value = Date.Now
-            Me.dtHora.Value = Date.Now
             Me.cboDivision.SelectedIndex = -1
             Me.txtCiclo.Text = ""
             Me.lblEstatus.Text = "N"
@@ -194,7 +193,7 @@
 
             'Creamos el Grid
             Me.Grid.Rows = 2
-            Me.Grid.Cols = 23
+            Me.Grid.Cols = 24
             Me.Grid.DisplayRowNumber = True
 
             Me.FormateaGrid()
@@ -209,16 +208,17 @@
         Try
             With Me.Grid
                 .AutoRedraw = False
-                .Cols = 23
+                .Cols = 24
 
                 .Column(Me.iGyIdCapturaIntensivosDetalle).Width = 80
                 .Column(Me.iGyIDProyectoSiembra).Width = 80
                 .Column(Me.iGyCodigoLote).Width = 80
                 .Column(Me.iGyNombreLote).Width = 80
+                .Column(Me.iGyHora).Width = 65
                 .Column(Me.iGyRacionAlimento).Width = 80
                 .Column(Me.iGyCodigoTipoAlimento).Width = 50
-                .Column(Me.iGyNombreTipoAlimento).Width = 250
-                .Column(Me.iGyCanastas).Width = 80
+                .Column(Me.iGyNombreTipoAlimento).Width = 220
+                .Column(Me.iGyCanastas).Width = 110
                 .Column(Me.iGyAlimentoEnSifon).Width = 70
                 .Column(Me.iGyVivos).Width = 55
                 .Column(Me.iGyMuertos).Width = 55
@@ -238,6 +238,7 @@
                 .Cell(0, Me.iGyIDProyectoSiembra).Text = "IDProyectoSiembra"
                 .Cell(0, Me.iGyCodigoLote).Text = "CódigoLote"
                 .Cell(0, Me.iGyNombreLote).Text = "#Estanque"
+                .Cell(0, Me.iGyHora).Text = "Hora"
                 .Cell(0, Me.iGyRacionAlimento).Text = " Cant. alimento"
                 .Cell(0, Me.iGyCodigoTipoAlimento).Text = "Codigo articulo"
                 .Cell(0, Me.iGyNombreTipoAlimento).Text = "Tipo de alimento"
@@ -258,6 +259,8 @@
                 .Cell(0, Me.iGyAlcalinidad).Text = "Alcalinidad"
 
                 .Column(Me.iGyAlimentoEnSifon).CellType = FlexCell.CellTypeEnum.CheckBox
+
+                .Column(Me.iGyHora).CellType = FlexCell.CellTypeEnum.Time
 
                 .Column(Me.iGyIdCapturaIntensivosDetalle).Locked = True
                 .Column(Me.iGyIDProyectoSiembra).Locked = True
@@ -340,10 +343,9 @@
 
     Private Sub GeneraFolio()
         Try
-            'If Me.bDocumentosCargados = True Then
             Me.oIntensivos.CODIGO_DOCUMENTO = ("INT_ACU" & Plaza.CODIGO_PLAZA.ToString) 'Me.cboDocumento.SelectedValue.ToString
             Me.txtFolio.Text = Me.oIntensivos.GeneraFolio
-            'End If
+
         Catch ex As Exception
             HandleError(Me.Name, "GeneraFolio", ex)
         End Try
@@ -449,7 +451,6 @@
             With Me.oIntensivos
                 Me.txtFolio.Text = .FOLIO_INTENSIVOS
                 Me.dtFecha.Value = .FECHA
-                Me.dtHora.Value = CDate(Format(Date.Now, "yyyy-MM-dd " & .HORA))
                 Me.cboDivision.SelectedValue = .CODIGO_DIVISION.ToString
                 Me.txtCiclo.Text = .CICLO.ToString
                 Me.txtConcepto.Text = .CONCEPTO
@@ -462,7 +463,7 @@
             Me.Grid.Rows = 1
             For Each dRow As DataRow In dTabla.Rows
                 Me.Grid.AddItem(dRow("ID_ACUICOLA_INTENSIVOS_DETALLE").ToString & Chr(9) & dRow("ID_PROYECTO_SIEMBRA").ToString & Chr(9) & dRow("CODIGO_LOTE").ToString & Chr(9) & _
-                                 dRow("NOMBRE_LOTE").ToString & Chr(9) & dRow("RACION_ALIMENTO").ToString & Chr(9) & dRow("CODIGO_TIPO_ALIMENTO").ToString & Chr(9) & dRow("DESCRIPCION") & Chr(9) & _
+                                 dRow("NOMBRE_LOTE").ToString & Chr(9) & dRow("HORA").ToString & Chr(9) & dRow("RACION_ALIMENTO").ToString & Chr(9) & dRow("CODIGO_TIPO_ALIMENTO").ToString & Chr(9) & dRow("DESCRIPCION") & Chr(9) & _
                                  dRow("CANASTAS").ToString & Chr(9) & dRow("ALIMENTO_EN_SIFONEO").ToString & Chr(9) & dRow("VIVOS").ToString & Chr(9) & dRow("MUERTOS").ToString & Chr(9) & dRow("LASTIMADOS").ToString & Chr(9) & _
                                  dRow("OXIGENO").ToString & Chr(9) & dRow("TEMPERATURA").ToString & Chr(9) & dRow("PH").ToString & Chr(9) & dRow("SAL").ToString & Chr(9) & _
                                  dRow("CALCIO").ToString & Chr(9) & dRow("POTASIO").ToString & Chr(9) & dRow("MAGNESIO").ToString & Chr(9) & dRow("NITRITOS").ToString & Chr(9) & _
@@ -513,7 +514,6 @@
                 .CODIGO_DIVISION = CInt(Me.cboDivision.SelectedValue)
                 .FECHA = Me.dtFecha.Value
                 .CONCEPTO = Me.txtConcepto.Text.ToUpper.Trim
-                .HORA = Format(dtHora.Value, "HH:mm:ss")
 
                 If .GrabaAlimentacionGlobal(IIf(Me.Estado = enumEstados.NUEVO, "INSERTAR", "ACTUALIZAR").ToString) = False Then
                     MsgBox("Error al tratar de grabar los estanques intensivos.", MsgBoxStyle.Exclamation, Me.Name)
@@ -531,6 +531,7 @@
                         .oDetalle.ID_ACUICOLA_INTENSIVOS_DETALLE = Me.Grid.Cell(i, Me.iGyIdCapturaIntensivosDetalle).Text
                         .oDetalle.ID_PROYECTO_SIEMBRA = Me.Grid.Cell(i, Me.iGyIDProyectoSiembra).Text
                         .oDetalle.CODIGO_LOTE = Me.Grid.Cell(i, Me.iGyCodigoLote).Text
+                        .oDetalle.HORA = Me.Grid.Cell(i, Me.iGyHora).Text
                         .oDetalle.RACION_ALIMENTO = Me.Grid.Cell(i, Me.iGyRacionAlimento).Text
                         .oDetalle.CODIGO_TIPO_ALIMENTO = "" & Me.Grid.Cell(i, Me.iGyCodigoTipoAlimento).Text
                         .oDetalle.ALIMENTO_EN_SIFONEO = IIf(Me.Grid.Cell(i, Me.iGyAlimentoEnSifon).Text = "1", "1", "0")
@@ -641,6 +642,12 @@
 
             For i = 1 To Me.Grid.Rows - 1
                 If Me.Grid.Cell(i, Me.iGyIdCapturaIntensivosDetalle).Text <> "0" Then
+
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyHora).Text) = False Then
+                        MsgBox("Capture la hora del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                        Me.Grid.Cell(i, Me.iGyRacionAlimento).SetFocus()
+                        Return False
+                    End If
 
                     If txtLEN(Me.Grid.Cell(i, Me.iGyRacionAlimento).Text) = False Then
                         MsgBox("Capture el cantidad de alimento del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)

@@ -45,13 +45,11 @@ Partial Class AcuicolaCapturaIntensivos
         Me.lblDisplayCiclo = New System.Windows.Forms.Label()
         Me.lblDisplayDivision = New System.Windows.Forms.Label()
         Me.cboDivision = New System.Windows.Forms.ComboBox()
-        Me.lblDisplayHora = New System.Windows.Forms.Label()
         Me.gbParametros = New System.Windows.Forms.GroupBox()
         Me.Grid = New FlexCell.Grid()
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tsslEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tsslElaboro = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.dtHora = New System.Windows.Forms.DateTimePicker()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbParametros.SuspendLayout()
@@ -173,7 +171,6 @@ Partial Class AcuicolaCapturaIntensivos
         '
         'gbGlobal
         '
-        Me.gbGlobal.Controls.Add(Me.dtHora)
         Me.gbGlobal.Controls.Add(Me.Label2)
         Me.gbGlobal.Controls.Add(Me.txtConcepto)
         Me.gbGlobal.Controls.Add(Me.Label1)
@@ -183,7 +180,6 @@ Partial Class AcuicolaCapturaIntensivos
         Me.gbGlobal.Controls.Add(Me.lblDisplayCiclo)
         Me.gbGlobal.Controls.Add(Me.lblDisplayDivision)
         Me.gbGlobal.Controls.Add(Me.cboDivision)
-        Me.gbGlobal.Controls.Add(Me.lblDisplayHora)
         Me.gbGlobal.Controls.Add(Me.btnFolioSiguiente)
         Me.gbGlobal.Controls.Add(Me.dtFecha)
         Me.gbGlobal.Controls.Add(Me.btnFolioAnterior)
@@ -194,14 +190,14 @@ Partial Class AcuicolaCapturaIntensivos
         Me.gbGlobal.Margin = New System.Windows.Forms.Padding(4)
         Me.gbGlobal.Name = "gbGlobal"
         Me.gbGlobal.Padding = New System.Windows.Forms.Padding(4)
-        Me.gbGlobal.Size = New System.Drawing.Size(1055, 181)
+        Me.gbGlobal.Size = New System.Drawing.Size(1055, 149)
         Me.gbGlobal.TabIndex = 0
         Me.gbGlobal.TabStop = False
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(859, 113)
+        Me.Label2.Location = New System.Drawing.Point(859, 78)
         Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(186, 17)
@@ -210,7 +206,7 @@ Partial Class AcuicolaCapturaIntensivos
         '
         'txtConcepto
         '
-        Me.txtConcepto.Location = New System.Drawing.Point(273, 146)
+        Me.txtConcepto.Location = New System.Drawing.Point(273, 110)
         Me.txtConcepto.Margin = New System.Windows.Forms.Padding(4)
         Me.txtConcepto.MaxLength = 100
         Me.txtConcepto.Name = "txtConcepto"
@@ -220,7 +216,7 @@ Partial Class AcuicolaCapturaIntensivos
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(199, 150)
+        Me.Label1.Location = New System.Drawing.Point(199, 114)
         Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(76, 17)
@@ -250,7 +246,7 @@ Partial Class AcuicolaCapturaIntensivos
         '
         'txtCiclo
         '
-        Me.txtCiclo.Location = New System.Drawing.Point(117, 146)
+        Me.txtCiclo.Location = New System.Drawing.Point(117, 110)
         Me.txtCiclo.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCiclo.MaxLength = 15
         Me.txtCiclo.Name = "txtCiclo"
@@ -260,7 +256,7 @@ Partial Class AcuicolaCapturaIntensivos
         'lblDisplayCiclo
         '
         Me.lblDisplayCiclo.AutoSize = True
-        Me.lblDisplayCiclo.Location = New System.Drawing.Point(8, 150)
+        Me.lblDisplayCiclo.Location = New System.Drawing.Point(8, 114)
         Me.lblDisplayCiclo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayCiclo.Name = "lblDisplayCiclo"
         Me.lblDisplayCiclo.Size = New System.Drawing.Size(46, 17)
@@ -270,7 +266,7 @@ Partial Class AcuicolaCapturaIntensivos
         'lblDisplayDivision
         '
         Me.lblDisplayDivision.AutoSize = True
-        Me.lblDisplayDivision.Location = New System.Drawing.Point(8, 117)
+        Me.lblDisplayDivision.Location = New System.Drawing.Point(8, 81)
         Me.lblDisplayDivision.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayDivision.Name = "lblDisplayDivision"
         Me.lblDisplayDivision.Size = New System.Drawing.Size(65, 17)
@@ -281,30 +277,20 @@ Partial Class AcuicolaCapturaIntensivos
         '
         Me.cboDivision.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboDivision.FormattingEnabled = True
-        Me.cboDivision.Location = New System.Drawing.Point(117, 113)
+        Me.cboDivision.Location = New System.Drawing.Point(118, 78)
         Me.cboDivision.Margin = New System.Windows.Forms.Padding(4)
         Me.cboDivision.Name = "cboDivision"
         Me.cboDivision.Size = New System.Drawing.Size(227, 24)
         Me.cboDivision.TabIndex = 5
         '
-        'lblDisplayHora
-        '
-        Me.lblDisplayHora.AutoSize = True
-        Me.lblDisplayHora.Location = New System.Drawing.Point(8, 84)
-        Me.lblDisplayHora.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblDisplayHora.Name = "lblDisplayHora"
-        Me.lblDisplayHora.Size = New System.Drawing.Size(47, 17)
-        Me.lblDisplayHora.TabIndex = 383
-        Me.lblDisplayHora.Text = "Hora :"
-        '
         'gbParametros
         '
         Me.gbParametros.Controls.Add(Me.Grid)
-        Me.gbParametros.Location = New System.Drawing.Point(0, 223)
+        Me.gbParametros.Location = New System.Drawing.Point(0, 191)
         Me.gbParametros.Margin = New System.Windows.Forms.Padding(4)
         Me.gbParametros.Name = "gbParametros"
         Me.gbParametros.Padding = New System.Windows.Forms.Padding(4)
-        Me.gbParametros.Size = New System.Drawing.Size(1247, 422)
+        Me.gbParametros.Size = New System.Drawing.Size(1247, 454)
         Me.gbParametros.TabIndex = 1
         Me.gbParametros.TabStop = False
         Me.gbParametros.Text = "Parámetros :"
@@ -325,7 +311,7 @@ Partial Class AcuicolaCapturaIntensivos
         Me.Grid.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid.Name = "Grid"
         Me.Grid.Rows = 6
-        Me.Grid.Size = New System.Drawing.Size(1231, 390)
+        Me.Grid.Size = New System.Drawing.Size(1231, 423)
         Me.Grid.TabIndex = 1
         Me.Grid.UncheckedImage = CType(resources.GetObject("Grid.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -357,15 +343,6 @@ Partial Class AcuicolaCapturaIntensivos
         Me.tsslElaboro.Name = "tsslElaboro"
         Me.tsslElaboro.Size = New System.Drawing.Size(72, 24)
         Me.tsslElaboro.Text = "Elaboró :"
-        '
-        'dtHora
-        '
-        Me.dtHora.Format = System.Windows.Forms.DateTimePickerFormat.Time
-        Me.dtHora.Location = New System.Drawing.Point(117, 79)
-        Me.dtHora.Name = "dtHora"
-        Me.dtHora.ShowUpDown = True
-        Me.dtHora.Size = New System.Drawing.Size(147, 22)
-        Me.dtHora.TabIndex = 394
         '
         'AcuicolaCapturaIntensivos
         '
@@ -408,7 +385,6 @@ Partial Class AcuicolaCapturaIntensivos
     Friend WithEvents lblDisplayCiclo As Label
     Friend WithEvents lblDisplayDivision As Label
     Friend WithEvents cboDivision As ComboBox
-    Friend WithEvents lblDisplayHora As Label
     Friend WithEvents gbParametros As GroupBox
     Friend WithEvents Grid As FlexCell.Grid
     Friend WithEvents tsbGrabar As ToolStripButton
@@ -421,5 +397,4 @@ Partial Class AcuicolaCapturaIntensivos
     Friend WithEvents Label1 As Label
     Friend WithEvents tsbCancelar As System.Windows.Forms.ToolStripButton
     Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents dtHora As System.Windows.Forms.DateTimePicker
 End Class

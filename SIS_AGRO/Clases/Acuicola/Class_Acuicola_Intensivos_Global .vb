@@ -14,7 +14,6 @@ Public Class Class_Acuicola_Intensivos_Global
     Private _CICLO As Integer
     Private _CODIGO_DIVISION As Integer
     Private _FECHA As Date
-    Private _HORA As String
     Private _FECHA_SERVIDOR As Date
     Private _CODIGO_USUARIO_GRABO As Integer
     Private _ESTATUS As String
@@ -96,15 +95,6 @@ Public Class Class_Acuicola_Intensivos_Global
         End Get
         Set(ByVal value As Date)
             Me._FECHA = value
-        End Set
-    End Property
-
-    Public Property HORA() As String
-        Get
-            Return Me._HORA
-        End Get
-        Set(ByVal value As String)
-            Me._HORA = value
         End Set
     End Property
 
@@ -204,7 +194,6 @@ Public Class Class_Acuicola_Intensivos_Global
                 sqlParametro = .Parameters.Add("@CICLO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CICLO
                 sqlParametro = .Parameters.Add("@CODIGO_DIVISION", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_DIVISION
                 sqlParametro = .Parameters.Add("@FECHA", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA
-                sqlParametro = .Parameters.Add("@HORA", SqlDbType.Time) : sqlParametro.Value = Me._HORA
                 sqlParametro = .Parameters.Add("@CODIGO_USUARIO_GRABO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
                 sqlParametro = .Parameters.Add("@CONCEPTO", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._CONCEPTO
                 sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = sAccion
@@ -254,7 +243,6 @@ Public Class Class_Acuicola_Intensivos_Global
                     Me._CICLO = CInt(dReader("CICLO"))
                     Me._CODIGO_DIVISION = CInt(dReader("CODIGO_DIVISION"))
                     Me._FECHA = CDate(dReader("FECHA"))
-                    Me._HORA = "" & dReader("HORA").ToString()
                     Me._FECHA_SERVIDOR = CDate(dReader("FECHA_SERVIDOR"))
                     Me._CODIGO_USUARIO_GRABO = CInt(dReader("CODIGO_USUARIO_GRABO"))
                     Me._NOMBRE_USUARIO_GRABO = "" & dReader("NOMBRE_USUARIO_GRABO").ToString()
@@ -365,7 +353,7 @@ Public Class Class_Acuicola_Intensivos_Global
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
 
-        sSQL = "SELECT R.ID_ACUICOLA_INTENSIVOS_DETALLE,R.ID_PROYECTO_SIEMBRA,R.CODIGO_LOTE,L.NOMBRE_LOTE,R.RACION_ALIMENTO,R.CODIGO_TIPO_ALIMENTO,A.DESCRIPCION,R.CANASTAS, " & _
+        sSQL = "SELECT R.ID_ACUICOLA_INTENSIVOS_DETALLE,R.ID_PROYECTO_SIEMBRA,R.CODIGO_LOTE,L.NOMBRE_LOTE,R.HORA,R.RACION_ALIMENTO,R.CODIGO_TIPO_ALIMENTO,A.DESCRIPCION,R.CANASTAS, " & _
             "R.ALIMENTO_EN_SIFONEO,R.VIVOS,R.MUERTOS,R.LASTIMADOS,R.OXIGENO,R.TEMPERATURA,R.PH,R.SAL,R.CALCIO,R.POTASIO,R.MAGNESIO,R.NITRITOS,R.AMONIO,R.ALCALINIDAD " &
             "FROM ACUICOLA_INTENSIVOS_DETALLE R " &
             "INNER JOIN CAT_LOTES L ON(R.CODIGO_LOTE=L.CODIGO_LOTE) " &
