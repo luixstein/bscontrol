@@ -22,13 +22,14 @@ Public Class Rpt_Ventas_Comisiones
 #End Region
 
 #Region "Eventos Genéricos"
-    Private Sub txt_KeyDown(sender As Object, e As KeyEventArgs) Handles DtFechaDesde.KeyDown, DtFechaHasta.KeyDown, cboVendedor.KeyDown, txtComision15.KeyDown, txtComision30.KeyDown,
-            txtComision60.KeyDown, txtComisionMas60.KeyDown
+    Private Sub txt_KeyDown(sender As Object, e As KeyEventArgs) Handles DtFechaDesde.KeyDown, DtFechaHasta.KeyDown, cboVendedor.KeyDown, txtComision6.KeyDown, txtComision37.KeyDown,
+            txtComision60.KeyDown, txtComisionMas90.KeyDown
         txtTAB(e)
     End Sub
 
-    Private Sub txtSoloNumericos_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtComision15.KeyPress, txtComision30.KeyPress, txtComision60.KeyPress, txtComisionMas60.KeyPress
-        txtSoloNumerosDecimales(e, Me.txtComisionMas60.Text)
+    Private Sub txtSoloNumericos_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtComision6.KeyPress, txtComision37.KeyPress, txtComision60.KeyPress, txtComision75.KeyPress,
+    txtComision90.KeyPress, txtComisionMas90.KeyPress
+        txtSoloNumerosDecimales(e, Me.txtComisionMas90.Text)
     End Sub
 #End Region
 
@@ -61,10 +62,12 @@ Public Class Rpt_Ventas_Comisiones
             Rpt.SetParameterValue("@FECHA1", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
             Rpt.SetParameterValue("@FECHA2", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
             Rpt.SetParameterValue("@CODIGO_VENDEDOR", Me.cboVendedor.SelectedValue)
-            Rpt.SetParameterValue("@PTAJE_COMISION_15", valorNumericoD(Me.txtComision15.Text))
-            Rpt.SetParameterValue("@PTAJE_COMISION_30", valorNumericoD(Me.txtComision30.Text))
+            Rpt.SetParameterValue("@PTAJE_COMISION_6", valorNumericoD(Me.txtComision6.Text))
+            Rpt.SetParameterValue("@PTAJE_COMISION_37", valorNumericoD(Me.txtComision37.Text))
             Rpt.SetParameterValue("@PTAJE_COMISION_60", valorNumericoD(Me.txtComision60.Text))
-            Rpt.SetParameterValue("@PTAJE_COMISION_MAS60", valorNumericoD(Me.txtComisionMas60.Text))
+            Rpt.SetParameterValue("@PTAJE_COMISION_75", valorNumericoD(Me.txtComision75.Text))
+            Rpt.SetParameterValue("@PTAJE_COMISION_90", valorNumericoD(Me.txtComision90.Text))
+            Rpt.SetParameterValue("@PTAJE_COMISION_MAS90", valorNumericoD(Me.txtComisionMas90.Text))
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
