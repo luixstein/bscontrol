@@ -419,6 +419,7 @@ Public Class Catalogo_Lotes
     End Sub
 
     Private Sub Coordenadas_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtLatitud.KeyPress, TxtLongitud.KeyPress
+        'Numeros decimales y negativos
         Dim txt As TextBox = CType(sender, TextBox)
         Dim resultado As Boolean = False
 
