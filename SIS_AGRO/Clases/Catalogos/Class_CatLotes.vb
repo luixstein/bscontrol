@@ -11,7 +11,8 @@ Public Class Class_CatLotes
     Private _Nombre_Lote As String
     Private _Colindancia As String
     Private _Hectareas As String
-    Private _Coordenadas As String
+    Private _Latitud As String
+    Private _Longitud As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -76,12 +77,21 @@ Public Class Class_CatLotes
         End Set
     End Property
 
-    Public Property Coordenadas() As String
+    Public Property Latitud() As String
         Get
-            Return Me._Coordenadas
+            Return Me._Latitud
         End Get
         Set(ByVal Value As String)
-            Me._Coordenadas = Value
+            Me._Latitud = Value
+        End Set
+    End Property
+
+    Public Property Longitud() As String
+        Get
+            Return Me._Longitud
+        End Get
+        Set(ByVal Value As String)
+            Me._Longitud = Value
         End Set
     End Property
 #End Region
@@ -152,7 +162,8 @@ Public Class Class_CatLotes
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Plaza
             sqlParametro = .Parameters.Add("@COLINDANCIA", SqlDbType.NVarChar, 200) : sqlParametro.Value = Me._Colindancia.ToString.ToUpper
             sqlParametro = .Parameters.Add("@HECTAREAS", SqlDbType.Decimal) : sqlParametro.Value = Me._Hectareas.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@COORDENADAS", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._Coordenadas.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@LATITUD", SqlDbType.Decimal) : sqlParametro.Value = Me._Latitud.ToString.ToString
+            sqlParametro = .Parameters.Add("@LONGITUD", SqlDbType.Decimal) : sqlParametro.Value = Me._Longitud.ToString
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "1"
             Try
                 Me._Conexion.Open()
@@ -185,7 +196,8 @@ Public Class Class_CatLotes
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Plaza
             sqlParametro = .Parameters.Add("@COLINDANCIA", SqlDbType.NVarChar, 200) : sqlParametro.Value = Me._Colindancia.ToString.ToUpper
             sqlParametro = .Parameters.Add("@HECTAREAS", SqlDbType.Decimal) : sqlParametro.Value = Me._Hectareas.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@COORDENADAS", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._Coordenadas.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@LATITUD", SqlDbType.Decimal) : sqlParametro.Value = Me._Latitud.ToString.ToString
+            sqlParametro = .Parameters.Add("@LONGITUD", SqlDbType.Decimal) : sqlParametro.Value = Me._Longitud.ToString
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "0"
             Try
                 Me._Conexion.Open()
@@ -219,7 +231,8 @@ Public Class Class_CatLotes
                     Me.Estatus = "" & dReader("ESTATUS").ToString
                     Me._Colindancia = Trim("" & dReader("COLINDANCIA").ToString)
                     Me._Hectareas = "" & dReader("HECTAREAS")
-                    Me._Coordenadas = Trim("" & dReader("COORDENADAS").ToString)
+                    Me._Latitud = "" & dReader("LATITUD")
+                    Me._Longitud = "" & dReader("LONGITUD")
                     bResultado = True
                 End If
                 dReader.Close()

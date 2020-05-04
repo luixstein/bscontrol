@@ -40,8 +40,11 @@ Partial Class Catalogo_Lotes
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
-        Me.txtCoordenadas = New System.Windows.Forms.TextBox()
-        Me.lblCoordenadas = New System.Windows.Forms.Label()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.TxtLongitud = New System.Windows.Forms.TextBox()
+        Me.TxtLatitud = New System.Windows.Forms.TextBox()
+        Me.lblLongitud = New System.Windows.Forms.Label()
+        Me.lblLatitud = New System.Windows.Forms.Label()
         Me.txtHectareas = New System.Windows.Forms.TextBox()
         Me.LblHectareas = New System.Windows.Forms.Label()
         Me.txtColindancia = New System.Windows.Forms.TextBox()
@@ -59,6 +62,7 @@ Partial Class Catalogo_Lotes
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StatusStripEstado.SuspendLayout()
         Me.gBoxInformacion.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -207,8 +211,7 @@ Partial Class Catalogo_Lotes
         '
         'gBoxInformacion
         '
-        Me.gBoxInformacion.Controls.Add(Me.txtCoordenadas)
-        Me.gBoxInformacion.Controls.Add(Me.lblCoordenadas)
+        Me.gBoxInformacion.Controls.Add(Me.GroupBox1)
         Me.gBoxInformacion.Controls.Add(Me.txtHectareas)
         Me.gBoxInformacion.Controls.Add(Me.LblHectareas)
         Me.gBoxInformacion.Controls.Add(Me.txtColindancia)
@@ -229,24 +232,56 @@ Partial Class Catalogo_Lotes
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
         '
-        'txtCoordenadas
+        'GroupBox1
         '
-        Me.txtCoordenadas.Location = New System.Drawing.Point(117, 263)
-        Me.txtCoordenadas.Margin = New System.Windows.Forms.Padding(4)
-        Me.txtCoordenadas.MaxLength = 50
-        Me.txtCoordenadas.Name = "txtCoordenadas"
-        Me.txtCoordenadas.Size = New System.Drawing.Size(350, 22)
-        Me.txtCoordenadas.TabIndex = 4
+        Me.GroupBox1.Controls.Add(Me.TxtLongitud)
+        Me.GroupBox1.Controls.Add(Me.TxtLatitud)
+        Me.GroupBox1.Controls.Add(Me.lblLongitud)
+        Me.GroupBox1.Controls.Add(Me.lblLatitud)
+        Me.GroupBox1.Location = New System.Drawing.Point(11, 257)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(456, 65)
+        Me.GroupBox1.TabIndex = 4
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Coordenadas"
         '
-        'lblCoordenadas
+        'TxtLongitud
         '
-        Me.lblCoordenadas.AutoSize = True
-        Me.lblCoordenadas.Location = New System.Drawing.Point(8, 266)
-        Me.lblCoordenadas.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblCoordenadas.Name = "lblCoordenadas"
-        Me.lblCoordenadas.Size = New System.Drawing.Size(101, 17)
-        Me.lblCoordenadas.TabIndex = 96
-        Me.lblCoordenadas.Text = "Coordenadas :"
+        Me.TxtLongitud.Location = New System.Drawing.Point(316, 27)
+        Me.TxtLongitud.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtLongitud.MaxLength = 50
+        Me.TxtLongitud.Name = "TxtLongitud"
+        Me.TxtLongitud.Size = New System.Drawing.Size(133, 22)
+        Me.TxtLongitud.TabIndex = 1
+        '
+        'TxtLatitud
+        '
+        Me.TxtLatitud.Location = New System.Drawing.Point(90, 27)
+        Me.TxtLatitud.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtLatitud.MaxLength = 50
+        Me.TxtLatitud.Name = "TxtLatitud"
+        Me.TxtLatitud.Size = New System.Drawing.Size(119, 22)
+        Me.TxtLatitud.TabIndex = 0
+        '
+        'lblLongitud
+        '
+        Me.lblLongitud.AutoSize = True
+        Me.lblLongitud.Location = New System.Drawing.Point(237, 30)
+        Me.lblLongitud.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblLongitud.Name = "lblLongitud"
+        Me.lblLongitud.Size = New System.Drawing.Size(71, 17)
+        Me.lblLongitud.TabIndex = 99
+        Me.lblLongitud.Text = "Longitud :"
+        '
+        'lblLatitud
+        '
+        Me.lblLatitud.AutoSize = True
+        Me.lblLatitud.Location = New System.Drawing.Point(7, 30)
+        Me.lblLatitud.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblLatitud.Name = "lblLatitud"
+        Me.lblLatitud.Size = New System.Drawing.Size(59, 17)
+        Me.lblLatitud.TabIndex = 98
+        Me.lblLatitud.Text = "Latitud :"
         '
         'txtHectareas
         '
@@ -318,7 +353,7 @@ Partial Class Catalogo_Lotes
         'LblEstatus
         '
         Me.LblEstatus.AutoSize = True
-        Me.LblEstatus.Location = New System.Drawing.Point(8, 316)
+        Me.LblEstatus.Location = New System.Drawing.Point(8, 345)
         Me.LblEstatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblEstatus.Name = "LblEstatus"
         Me.LblEstatus.Size = New System.Drawing.Size(63, 17)
@@ -330,7 +365,7 @@ Partial Class Catalogo_Lotes
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
-        Me.CboEstatus.Location = New System.Drawing.Point(103, 313)
+        Me.CboEstatus.Location = New System.Drawing.Point(103, 342)
         Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
@@ -384,6 +419,8 @@ Partial Class Catalogo_Lotes
         Me.StatusStripEstado.PerformLayout()
         Me.gBoxInformacion.ResumeLayout(False)
         Me.gBoxInformacion.PerformLayout()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -413,10 +450,13 @@ Partial Class Catalogo_Lotes
     Friend WithEvents Grid As System.Windows.Forms.DataGridView
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents cboEstatusFiltro As System.Windows.Forms.ComboBox
-    Friend WithEvents txtCoordenadas As System.Windows.Forms.TextBox
-    Friend WithEvents lblCoordenadas As System.Windows.Forms.Label
     Friend WithEvents txtHectareas As System.Windows.Forms.TextBox
     Friend WithEvents LblHectareas As System.Windows.Forms.Label
     Friend WithEvents txtColindancia As System.Windows.Forms.TextBox
     Friend WithEvents LblColindancia As System.Windows.Forms.Label
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents TxtLongitud As System.Windows.Forms.TextBox
+    Friend WithEvents TxtLatitud As System.Windows.Forms.TextBox
+    Friend WithEvents lblLongitud As System.Windows.Forms.Label
+    Friend WithEvents lblLatitud As System.Windows.Forms.Label
 End Class

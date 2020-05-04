@@ -173,7 +173,8 @@ Public Class Catalogo_Lotes
                 Me.CboEstatus.Enabled = False
                 Me.txtColindancia.Enabled = True
                 Me.txtHectareas.Enabled = True
-                Me.txtCoordenadas.Enabled = True
+                Me.TxtLatitud.Enabled = True
+                Me.TxtLongitud.Enabled = True
 
                 Me.InicializaElemento()
                 Me.TxtNombre.Focus()
@@ -192,7 +193,8 @@ Public Class Catalogo_Lotes
                 Me.CboEstatus.Enabled = True
                 Me.txtColindancia.Enabled = True
                 Me.txtHectareas.Enabled = True
-                Me.txtCoordenadas.Enabled = True
+                Me.TxtLatitud.Enabled = True
+                Me.TxtLongitud.Enabled = True
 
                 Me.TxtNombre.Focus()
 
@@ -231,7 +233,8 @@ Public Class Catalogo_Lotes
                 Me.TxtNombre.Text = .Nombre_Lote.ToString
                 Me.txtColindancia.Text = .Colindancia.ToString
                 Me.txtHectareas.Text = .Hectareas.ToString
-                Me.txtCoordenadas.Text = .Coordenadas.ToString
+                Me.TxtLatitud.Text = .Latitud.ToString
+                Me.TxtLongitud.Text = .Longitud.ToString
                 If .Estatus = "A" Then
                     Me.CboEstatus.SelectedIndex = 0
                 Else
@@ -252,7 +255,8 @@ Public Class Catalogo_Lotes
                         .Nombre_Lote = Me.TxtNombre.Text
                         .Colindancia = Me.txtColindancia.Text
                         .Hectareas = Me.txtHectareas.Text
-                        .Coordenadas = Me.txtCoordenadas.Text
+                        .Latitud = Me.TxtLatitud.Text
+                        .Longitud = Me.TxtLongitud.Text
                         .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -388,7 +392,7 @@ Public Class Catalogo_Lotes
             tsbGrabar.PerformClick()
         End If
     End Sub
-    Private Sub txtCoordenadas_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCoordenadas.KeyDown
+    Private Sub txtLongitud_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtLongitud.KeyDown
         If e.KeyCode = Keys.Return Then
             Select Case Me.Estado
                 Case enumEstados.NUEVO
@@ -398,11 +402,11 @@ Public Class Catalogo_Lotes
             End Select
         End If
     End Sub
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombre.KeyPress, txtCoordenadas.KeyPress, txtColindancia.KeyPress
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombre.KeyPress, txtColindancia.KeyPress
         txtNoBeep(e)
     End Sub
 
-    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombre.KeyDown, txtColindancia.KeyDown, txtHectareas.KeyDown
+    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombre.KeyDown, txtColindancia.KeyDown, txtHectareas.KeyDown, TxtLatitud.KeyDown
         If e.KeyCode = Keys.Return Then
             SendKeys.Send("{TAB}")
         End If
@@ -412,6 +416,28 @@ Public Class Catalogo_Lotes
         Dim txt As TextBox = CType(sender, TextBox)
         txtSoloNumerosDecimales(e, txt.Text)
         txtNoBeep(e)
+    End Sub
+
+    Private Sub Coordenadas_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtLatitud.KeyPress, TxtLongitud.KeyPress
+        Dim txt As TextBox = CType(sender, TextBox)
+        Dim resultado As Boolean = False
+
+        If (Not (System.Char.IsDigit(e.KeyChar)) AndAlso Not (System.Char.IsControl(e.KeyChar)) AndAlso e.KeyChar <> "." AndAlso e.KeyChar <> "-") Then
+            resultado = True
+        End If
+
+        If e.KeyChar = "." AndAlso CBool(InStr(txt.Text, ".")) Then
+            resultado = True
+        End If
+
+        If e.KeyChar = "-" Then
+            If CBool(InStr(txt.Text, "-")) Or txtLEN(txt.Text) = True Then
+                resultado = True
+            End If
+
+        End If
+
+        e.Handled = resultado
     End Sub
 
     Private Sub txtNumericos_Validating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs)
@@ -440,5 +466,5 @@ Public Class Catalogo_Lotes
 
 #End Region
 
-    
+
 End Class
