@@ -3324,7 +3324,13 @@ Buscar:
                 dSaldoUSD = CDec(oVenta.SALDO_DOLARES) 'Ahora el saldo en usd ya no se calcula, ya esta definido en el campo, aunque falta revisar que lo afecte descuentos(y cancelacion) y devoluciones(y cancelación)
                 dSaldoMXN = RedondearD(dSaldoUSD * dTipoCambioPago, 2) 'Actualizamos el saldo en MXN a tipo de cambio actual(los pesos que nos debe ahora son otros)
                 dPagoUSD = RedondearD(dPesosNuevos / dTipoCambioPago, 2) 'Simulamos que fuimos al banco a cambiar los mxn por usd
-                dPesosViejos = RedondearD(dPagoUSD * CDec(oVenta.TIPO_DE_CAMBIO), 2) 'Esto es lo que realmente se va abonar en cxc
+
+                'Si esta pagando el equivalente a saldo en usd, se toma el saldo el mxn omo pesos viejos sin calcular porque piede dar diferencia de 1 centavo(ahoique el saldo en mxn no es multiplicacion directa de saldo en usd x tpcam)
+                If dPagoUSD = dSaldoUSD Then
+                    dPesosViejos = CDec(oVenta.SALDO)
+                Else
+                    dPesosViejos = RedondearD(dPagoUSD * CDec(oVenta.TIPO_DE_CAMBIO), 2) 'Esto es lo que realmente se va abonar en cxc
+                End If
 
                 dImporteMonedaVenta = dPagoUSD
                 dSaldoAnteriorMonedaVenta = dSaldoUSD
