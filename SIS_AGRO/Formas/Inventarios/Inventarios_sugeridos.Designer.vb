@@ -54,7 +54,7 @@ Partial Class Inventarios_sugeridos
         Me.GridArticulos.Margin = New System.Windows.Forms.Padding(4)
         Me.GridArticulos.Name = "GridArticulos"
         Me.GridArticulos.Rows = 6
-        Me.GridArticulos.Size = New System.Drawing.Size(1168, 533)
+        Me.GridArticulos.Size = New System.Drawing.Size(1226, 533)
         Me.GridArticulos.TabIndex = 0
         Me.GridArticulos.UncheckedImage = CType(resources.GetObject("GridArticulos.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -64,7 +64,7 @@ Partial Class Inventarios_sugeridos
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1209, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1267, 27)
         Me.tsMenu.TabIndex = 224
         Me.tsMenu.Text = "tsMenu"
         '
@@ -130,7 +130,7 @@ Partial Class Inventarios_sugeridos
         Me.GbArticulos.Controls.Add(Me.GridArticulos)
         Me.GbArticulos.Location = New System.Drawing.Point(15, 134)
         Me.GbArticulos.Name = "GbArticulos"
-        Me.GbArticulos.Size = New System.Drawing.Size(1182, 562)
+        Me.GbArticulos.Size = New System.Drawing.Size(1240, 562)
         Me.GbArticulos.TabIndex = 2
         Me.GbArticulos.TabStop = False
         Me.GbArticulos.Text = "Articulos"
@@ -138,7 +138,7 @@ Partial Class Inventarios_sugeridos
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(894, 47)
+        Me.Label1.Location = New System.Drawing.Point(951, 47)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(276, 17)
         Me.Label1.TabIndex = 228
@@ -148,7 +148,7 @@ Partial Class Inventarios_sugeridos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1209, 708)
+        Me.ClientSize = New System.Drawing.Size(1267, 708)
         Me.Controls.Add(Me.GbArticulos)
         Me.Controls.Add(Me.LblNombreAlmacen)
         Me.Controls.Add(Me.TxtFiltro)
