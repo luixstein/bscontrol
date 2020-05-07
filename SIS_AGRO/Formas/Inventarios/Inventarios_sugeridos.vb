@@ -5,37 +5,24 @@ Public Class Inventarios_sugeridos
     Dim oInventariosSugeridos As Class_Inventarios_Sugeridos
 
 #Region "Columnas grid"
-    Private iGyCodigoArticulo As Integer = 1
-    Private iGyDescripcion As Integer = 2
-    Private iGyMaximo As Integer = 3
-    Private iGyMinimo As Integer = 4
+    Private iGyClasificacionImportancia As Integer = 1
+    Private iGyCodigoArticulo As Integer = 2
+    Private iGyDescripcion As Integer = 3
+    Private iGyVentasMes1 As Integer = 4
+    Private iGyVentasMes2 As Integer = 5
+    Private iGyVentasMes3 As Integer = 6
+    Private iGyVentasMesPromedio As Integer = 7
+    Private iGyExistencia As Integer = 8
+    Private iGyTiempoEntregaDias As Integer = 9
+    Private iGyMinimo As Integer = 10
+    Private iGyReorden As Integer = 11
+    Private iGyMaximo As Integer = 12
+    Private iGyCoberturaActualDias As Integer = 13
+    Private iGyFechaOrdenar As Integer = 14
+    Private iGyPedidoSugerido As Integer = 15
+    Private iGyBalanceInventario As Integer = 16
+
 #End Region
-
-    '#Region "Constructor y destructor"
-    '    'Inicializa al objeto.
-    '    Sub New()
-
-    '        ' This call is required by the Windows Form Designer.
-    '        InitializeComponent()
-    '        ' Add any initialization after the InitializeComponent() call.
-
-    '        Try
-    '            Me.Run = False
-    '            'Me.InicializaElemento()
-    '            Me.Run = True
-    '        Catch ex As Exception
-    '            HandleError(Me.Name, "New", ex)
-    '        End Try
-
-    '    End Sub
-
-    '    Protected Overrides Sub Finalize()
-    '        'Me._Conexion.Dispose()
-    '        MyBase.Finalize()
-    '    End Sub
-
-
-    '#End Region
 
 #Region "Opciones"
 
@@ -45,9 +32,9 @@ Public Class Inventarios_sugeridos
 
 #End Region
 
-#Region "Eventso genericos"
+#Region "Eventos genericos"
 
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoAlmacen.KeyPress, TxtFiltro.KeyPress
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoAlmacen.KeyPress, TxtFiltro.KeyPress, GridArticulos.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -118,13 +105,27 @@ busca:
             Exit Sub
         End If
 
-
         Dim dTabla As DataTable = oInventariosSugeridos.ObtenerElementosFiltro(Me.TxtCodigoAlmacen.Text, sFiltro)
 
         Me.GridArticulos.AutoRedraw = False
         Me.GridArticulos.Rows = 1
         For Each dRow As DataRow In dTabla.Rows
-            Me.GridArticulos.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("MAXIMO").ToString & Chr(9) & dRow("MINIMO").ToString & Chr(9))
+            Me.GridArticulos.AddItem(dRow("CLASIFICACION_IMPORTANCIA").ToString & Chr(9) &
+                                     dRow("CODIGO_ARTICULO").ToString & Chr(9) &
+                                     dRow("DESCRIPCION").ToString & Chr(9) &
+                                     dRow("VENTAS_MES_1").ToString & Chr(9) &
+                                     dRow("VENTAS_MES_2").ToString & Chr(9) &
+                                     dRow("VENTAS_MES_3").ToString & Chr(9) &
+                                     dRow("VENTAS_MES_PROMEDIO").ToString & Chr(9) &
+                                     dRow("EXISTENCIA").ToString & Chr(9) &
+                                     dRow("TIEMPO_ENTREGA_DIAS").ToString & Chr(9) &
+                                     dRow("MINIMO").ToString & Chr(9) &
+                                     dRow("REORDEN").ToString & Chr(9) &
+                                     dRow("MAXIMO").ToString & Chr(9) &
+                                     dRow("COBERTUDA_DIAS_ACTUAL").ToString & Chr(9) &
+                                     Format(dRow("FECHA_ORDENAR"), "dd/mm/yyyy") & Chr(9) &
+                                     dRow("PEDIDO_SUGERIDO").ToString & Chr(9) &
+                                     dRow("BALANCE_INVENTARIO").ToString & Chr(9))
         Next
 
         Me.FormateaGrid()
@@ -132,7 +133,7 @@ busca:
         Me.GbArticulos.Enabled = True
     End Sub
 
-    Private Function Grabar(ByVal sCodigoArticulo As String, ByVal dMax As Double, ByVal dMin As Double) As Boolean
+    Private Function Grabar(ByVal sCodigoArticulo As String, ByVal sClasifiacionImportancia As String, ByVal iTiempoEntrega As Integer, ByVal dMax As Double, ByVal dReorden As Double, ByVal dMin As Double) As Boolean
         oInventariosSugeridos = New Class_Inventarios_Sugeridos
 
         If txtLEN(Me.TxtCodigoAlmacen.Text) = False Then
@@ -146,7 +147,7 @@ busca:
             Return False
         End If
 
-        If dMax < 0 Or dMin < 0 Then
+        If dMax < 0 Or dMin < 0 Or dReorden < 0 Or iTiempoEntrega < 0 Then
             MsgBox("No se pueden grabar cantidades negativas", MsgBoxStyle.Exclamation, Me.Text)
             Return False
         End If
@@ -156,7 +157,10 @@ busca:
             With oInventariosSugeridos
                 .CODIGO_ALMACEN = Me.TxtCodigoAlmacen.Text
                 .CODIGO_ARTICULO = sCodigoArticulo
+                .CLASIFICACION_IMPORTANCIA = sClasifiacionImportancia
+                .TIEMPO_ENTREGA_DIAS = iTiempoEntrega
                 .MAXIMO = CDec(dMax)
+                .REORDEN = CDec(dReorden)
                 .MINIMO = CDec(dMin)
 
                 If oInventariosSugeridos.Grabar() = False Then
@@ -173,12 +177,18 @@ busca:
     Private Sub GestionaGrid(ByVal e As System.Windows.Forms.KeyEventArgs)
         Try
             Dim Columna As Integer, Renglon As Integer
-            Dim sCodigoArticulo As String, dMaximo As Double, dMinimo As Double
+            Dim sCodigoArticulo, sClasificacionImportancia As String
+            Dim dMaximo, dMinimo, dReorden As Double
+            Dim iTiempoEntrega As Integer
 
             Columna = Me.GridArticulos.Selection.FirstCol
             Renglon = Me.GridArticulos.Selection.FirstRow
+
             sCodigoArticulo = Me.GridArticulos.Cell(Renglon, Me.iGyCodigoArticulo).Text
+            sClasificacionImportancia = Me.GridArticulos.Cell(Renglon, Me.iGyClasificacionImportancia).Text
+            iTiempoEntrega = CInt(Me.GridArticulos.Cell(Renglon, Me.iGyTiempoEntregaDias).Text)
             dMaximo = valorNumerico(Me.GridArticulos.Cell(Renglon, Me.iGyMaximo).Text)
+            dReorden = valorNumerico(Me.GridArticulos.Cell(Renglon, Me.iGyReorden).Text)
             dMinimo = valorNumerico(Me.GridArticulos.Cell(Renglon, Me.iGyMinimo).Text)
 
             oInventariosSugeridos = New Class_Inventarios_Sugeridos
@@ -187,14 +197,14 @@ busca:
                 Case Keys.Enter
 
                     Select Case Columna
-                        Case Me.iGyMaximo, Me.iGyMinimo
-                            Me.Grabar(sCodigoArticulo, dMaximo, dMinimo)
-                            Me.ConsultarArticulos(Me.TxtFiltro.Text)
+                        Case Me.iGyMaximo, Me.iGyMinimo, Me.iGyReorden, Me.iGyClasificacionImportancia, Me.iGyTiempoEntregaDias
 
-                            If Columna = Me.iGyMaximo Then
-                                Me.GridArticulos.Cell(Renglon, Me.iGyMaximo).SetFocus()
-                            Else
-                                Me.GridArticulos.Cell(Renglon + 1, Me.iGyDescripcion).SetFocus()
+                            Me.Grabar(sCodigoArticulo, sClasificacionImportancia, iTiempoEntrega, dMaximo, dReorden, dMinimo)
+
+                            If Columna = Me.iGyTiempoEntregaDias Or Columna = Me.iGyReorden Then
+                                Me.ConsultarArticulos(Me.TxtFiltro.Text)
+                            ElseIf Columna = Me.iGyBalanceInventario Then
+                                Me.GridArticulos.Cell(Renglon + 1, Me.iGyClasificacionImportancia).SetFocus()
                             End If
 
                     End Select
@@ -222,7 +232,7 @@ busca:
             With Me.GridArticulos
                 .AutoRedraw = False
 
-                .Cols = 5
+                .Cols = 17
 
                 .DisplayFocusRect = False
                 .DrawMode = FlexCell.DrawModeEnum.OwnerDraw
@@ -234,26 +244,88 @@ busca:
                 .CellBorderColorFixed = Color.Black
                 .GridColor = Color.FromArgb(148, 190, 231)
 
+                .Cell(0, Me.iGyClasificacionImportancia).Text = "Clasificación importancia"
                 .Cell(0, Me.iGyCodigoArticulo).Text = "Código"
                 .Cell(0, Me.iGyDescripcion).Text = "Descripción"
-                .Cell(0, Me.iGyMaximo).Text = "Maximo"
+                .Cell(0, Me.iGyVentasMes1).Text = "Ventas " & MonthName(Month(Date.Now) - 2)
+                .Cell(0, Me.iGyVentasMes2).Text = "Ventas " & MonthName(Month(Date.Now) - 1)
+                .Cell(0, Me.iGyVentasMes3).Text = "Ventas " & MonthName(Month(Date.Now))
+                .Cell(0, Me.iGyVentasMesPromedio).Text = "Venta promedio mensual"
+                .Cell(0, Me.iGyExistencia).Text = "Existencia"
+                .Cell(0, Me.iGyTiempoEntregaDias).Text = "Tiempo de entrega dias"
                 .Cell(0, Me.iGyMinimo).Text = "Minimo"
+                .Cell(0, Me.iGyReorden).Text = "Reorden"
+                .Cell(0, Me.iGyMaximo).Text = "Maximo"
+                .Cell(0, Me.iGyCoberturaActualDias).Text = "Cobertura dias actual"
+                .Cell(0, Me.iGyFechaOrdenar).Text = "Fecha a ordenar"
+                .Cell(0, Me.iGyPedidoSugerido).Text = "Pedido sugerido"
+                .Cell(0, Me.iGyBalanceInventario).Text = "Balance de inventarios"
+
+                .Column(Me.iGyClasificacionImportancia).Width = 90
+                .Column(Me.iGyCodigoArticulo).Width = 65
+                .Column(Me.iGyDescripcion).Width = 300
+                .Column(Me.iGyVentasMes1).Width = 80
+                .Column(Me.iGyVentasMes2).Width = 80
+                .Column(Me.iGyVentasMes3).Width = 80
+                .Column(Me.iGyVentasMesPromedio).Width = 100
+                .Column(Me.iGyExistencia).Width = 80
+                .Column(Me.iGyTiempoEntregaDias).Width = 100
+                .Column(Me.iGyMinimo).Width = 100
+                .Column(Me.iGyReorden).Width = 100
+                .Column(Me.iGyMaximo).Width = 100
+                .Column(Me.iGyCoberturaActualDias).Width = 80
+                .Column(Me.iGyFechaOrdenar).Width = 80
+                .Column(Me.iGyPedidoSugerido).Width = 80
+                .Column(Me.iGyBalanceInventario).Width = 100
 
                 .Column(Me.iGyMaximo).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyMaximo).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
                 .Column(Me.iGyMaximo).Alignment = FlexCell.AlignmentEnum.RightCenter
 
+                .Column(Me.iGyReorden).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyReorden).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
+                .Column(Me.iGyReorden).Alignment = FlexCell.AlignmentEnum.RightCenter
+
                 .Column(Me.iGyMinimo).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyMinimo).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
                 .Column(Me.iGyMinimo).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.iGyCodigoArticulo).Width = 70
-                .Column(Me.iGyDescripcion).Width = 300
-                .Column(Me.iGyMaximo).Width = 100
-                .Column(Me.iGyMinimo).Width = 100
+                .Column(Me.iGyTiempoEntregaDias).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyTiempoEntregaDias).DecimalLength = 0
+                .Column(Me.iGyTiempoEntregaDias).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyClasificacionImportancia).Alignment = FlexCell.AlignmentEnum.CenterCenter
+                .Column(Me.iGyVentasMes1).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyVentasMes2).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyVentasMes3).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyVentasMesPromedio).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyExistencia).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyCoberturaActualDias).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyPedidoSugerido).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyFechaOrdenar).Alignment = FlexCell.AlignmentEnum.CenterCenter
+                .Column(Me.iGyBalanceInventario).Alignment = FlexCell.AlignmentEnum.CenterCenter
+
+                .Cell(0, Me.iGyClasificacionImportancia).Alignment = FlexCell.AlignmentEnum.LeftCenter
+                .Cell(0, Me.iGyVentasMesPromedio).Alignment = FlexCell.AlignmentEnum.LeftCenter
+                .Cell(0, Me.iGyCoberturaActualDias).Alignment = FlexCell.AlignmentEnum.LeftCenter
+                .Cell(0, Me.iGyTiempoEntregaDias).Alignment = FlexCell.AlignmentEnum.LeftCenter
+                .Cell(0, Me.iGyFechaOrdenar).Alignment = FlexCell.AlignmentEnum.LeftCenter
+                .Cell(0, Me.iGyBalanceInventario).Alignment = FlexCell.AlignmentEnum.LeftCenter
+
+                .Column(Me.iGyClasificacionImportancia).CellType = FlexCell.CellTypeEnum.ComboBox
+                .ComboBox(Me.iGyClasificacionImportancia).DataSource = {"A", "B", "C"}
 
                 .Column(Me.iGyCodigoArticulo).Locked = True
                 .Column(Me.iGyDescripcion).Locked = True
+                .Column(Me.iGyVentasMes1).Locked = True
+                .Column(Me.iGyVentasMes2).Locked = True
+                .Column(Me.iGyVentasMes3).Locked = True
+                .Column(Me.iGyVentasMesPromedio).Locked = True
+                .Column(Me.iGyExistencia).Locked = True
+                .Column(Me.iGyCoberturaActualDias).Locked = True
+                .Column(Me.iGyFechaOrdenar).Locked = True
+                .Column(Me.iGyPedidoSugerido).Locked = True
+                .Column(Me.iGyBalanceInventario).Locked = True
 
                 .AutoRedraw = True
                 .Refresh()
@@ -266,6 +338,4 @@ busca:
 
 #End Region
 
-    
-    
 End Class
