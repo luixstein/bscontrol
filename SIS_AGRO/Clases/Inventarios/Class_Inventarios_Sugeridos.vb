@@ -9,7 +9,10 @@ Public Class Class_Inventarios_Sugeridos
     Private _ID_INVENTARIOS_SUGERIDOS As String
     Private _CODIGO_ALMACEN As String
     Private _CODIGO_ARTICULO As String
+    Private _CLASIFICACION_IMPORTANCIA As String
+    Private _TIEMPO_ENTREGA_DIAS As Integer
     Private _MAXIMO As Decimal
+    Private _REORDEN As Decimal
     Private _MINIMO As Decimal
 #End Region
 
@@ -66,12 +69,39 @@ Public Class Class_Inventarios_Sugeridos
         End Set
     End Property
 
+    Public Property CLASIFICACION_IMPORTANCIA() As String
+        Get
+            Return Me._CLASIFICACION_IMPORTANCIA
+        End Get
+        Set(ByVal Value As String)
+            Me._CLASIFICACION_IMPORTANCIA = Value
+        End Set
+    End Property
+
+    Public Property TIEMPO_ENTREGA_DIAS() As Integer
+        Get
+            Return Me._TIEMPO_ENTREGA_DIAS
+        End Get
+        Set(value As Integer)
+            Me._TIEMPO_ENTREGA_DIAS = value
+        End Set
+    End Property
+
     Public Property MAXIMO() As Decimal
         Get
             Return Me._MAXIMO
         End Get
         Set(value As Decimal)
             Me._MAXIMO = value
+        End Set
+    End Property
+
+    Public Property REORDEN() As Decimal
+        Get
+            Return Me._REORDEN
+        End Get
+        Set(value As Decimal)
+            Me._REORDEN = value
         End Set
     End Property
 
@@ -143,7 +173,6 @@ Public Class Class_Inventarios_Sugeridos
     End Sub
 
     Protected Overrides Sub Finalize()
-        'Me._Conexion.Dispose()
         MyBase.Finalize()
     End Sub
 
@@ -163,7 +192,10 @@ Public Class Class_Inventarios_Sugeridos
 
             sqlParametro = .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_ALMACEN
             sqlParametro = .Parameters.Add("@CODIGO_ARTICULO", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_ARTICULO
+            sqlParametro = .Parameters.Add("@CLASIFICACION_IMPORTANCIA", SqlDbType.Char, 1) : sqlParametro.Value = Me._CLASIFICACION_IMPORTANCIA
+            sqlParametro = .Parameters.Add("@TIEMPO_ENTREGA_DIAS", SqlDbType.SmallInt) : sqlParametro.Value = Me._TIEMPO_ENTREGA_DIAS
             sqlParametro = .Parameters.Add("@MAXIMO", SqlDbType.Decimal) : sqlParametro.Value = Me._MAXIMO
+            sqlParametro = .Parameters.Add("@REORDEN", SqlDbType.Decimal) : sqlParametro.Value = Me._REORDEN
             sqlParametro = .Parameters.Add("@MINIMO", SqlDbType.Decimal) : sqlParametro.Value = Me._MINIMO
 
             Try
@@ -183,9 +215,7 @@ Public Class Class_Inventarios_Sugeridos
 
     Public Function ObtenerElementos(ByVal sCodigoAlmacen As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dsArticulosInv As New SqlDataAdapter("SELECT A.CODIGO_ARTICULO, A.DESCRIPCION,ISNULL(S.MAXIMO,0) MAXIMO,ISNULL(S.MINIMO,0) MINIMO FROM CAT_ARTICULOS A " & _
-                                                 "LEFT JOIN INVENTARIOS_SUGERIDOS S ON(A.CODIGO_ARTICULO=S.CODIGO_ARTICULO AND S.CODIGO_ALMACEN='" & sCodigoAlmacen & "') " & _
-                                                 "WHERE A.PROTEGIDO = '0' AND A.INVENTARIABLE='1' ORDER BY A.DESCRIPCION ", Me._Conexion)
+        Dim dsArticulosInv As New SqlDataAdapter("EXEC MP_INVENTARIOS_SUGERIDOS_OBTIENE_DETALLE @CODIGO_ALMACEN='" & sCodigoAlmacen & "', @FILTRO='%' ", Me._Conexion)
         Try
             dsArticulosInv.Fill(dTable)
         Catch ex As Exception
@@ -198,9 +228,7 @@ Public Class Class_Inventarios_Sugeridos
 
     Public Function ObtenerElementosFiltro(ByVal sCodigoAlmacen As String, ByVal sFiltro As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dsArticulosInv As New SqlDataAdapter("SELECT A.CODIGO_ARTICULO, A.DESCRIPCION,ISNULL(S.MAXIMO,0) MAXIMO,ISNULL(S.MINIMO,0) MINIMO FROM CAT_ARTICULOS A " & _
-                                                 "LEFT JOIN INVENTARIOS_SUGERIDOS S ON(A.CODIGO_ARTICULO=S.CODIGO_ARTICULO AND S.CODIGO_ALMACEN='" & sCodigoAlmacen & "') " & _
-                                                 "WHERE A.PROTEGIDO = '0' AND A.INVENTARIABLE='1' AND A.DESCRIPCION LIKE '" & sFiltro & "%' ORDER BY A.DESCRIPCION ", Me._Conexion)
+        Dim dsArticulosInv As New SqlDataAdapter("EXEC MP_INVENTARIOS_SUGERIDOS_OBTIENE_DETALLE @CODIGO_ALMACEN='" & sCodigoAlmacen & "', @FILTRO='" & sFiltro & "' ", Me._Conexion)
         Try
             dsArticulosInv.Fill(dTable)
         Catch ex As Exception
