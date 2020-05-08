@@ -310,10 +310,13 @@ Public Class Class_CXC_Devoluciones_Global
         End Set
     End Property
 
-    Public ReadOnly Property CODIGO_REGIMEN_FISCAL() As String
+    Public Property CODIGO_REGIMEN_FISCAL() As String
         Get
             Return Me._CODIGO_REGIMEN_FISCAL
         End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_REGIMEN_FISCAL = Value
+        End Set
     End Property
 
     Public Property ES_COMPROBANTE_ELECTRONICO() As String
@@ -608,6 +611,7 @@ Public Class Class_CXC_Devoluciones_Global
                 sqlParametro = .Parameters.Add("@CODIGO_USO_CFDI", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_USO_CFDI
                 sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_MONEDA_SAT
                 sqlParametro = .Parameters.Add("@CODIGO_TIPO_RELACION_CFDI", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_TIPO_RELACION_CFDI
+                sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL
 
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
@@ -699,6 +703,7 @@ Public Class Class_CXC_Devoluciones_Global
                     Me._CODIGO_USO_CFDI = "" & dReader("CODIGO_USO_CFDI").ToString()
                     Me._CODIGO_MONEDA_SAT = "" & dReader("CODIGO_MONEDA_SAT").ToString()
                     Me._CODIGO_TIPO_RELACION_CFDI = "" & dReader("CODIGO_TIPO_RELACION_CFDI").ToString()
+                    Me._CODIGO_REGIMEN_FISCAL = "" & dReader("CODIGO_REGIMEN_FISCAL").ToString()
 
                     'Me._IDCATALOGO_FOLIO_FELECTRONICA = "" & dReader("IDCATALOGO_FOLIO_FELECTRONICA").ToString()
                     Me._ID_SIS_CFD_CATALOGO_CERTIFICADOS = "" & dReader("ID_SIS_CFD_CATALOGO_CERTIFICADOS").ToString()

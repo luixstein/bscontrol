@@ -120,6 +120,7 @@ Public Class Frm_CXC_Devoluciones
             Me.DesplegarFormasPago(False)
             Me.DesplegarUsoCFDIPersonasFisicas()
             Me.DesplegarTiposRelacionCFDI()
+            Me.DesplegarRegimenesFiscales()
 
             Me.Inicializa()
             Me.Cambia_Estado(enumEstados.NUEVO)
@@ -277,6 +278,7 @@ busca:
             Me.cboMetodoPago.SelectedValue = "PUE" ' "PUE-Pago en una sola exhibición"
             Me.cboUsoCFDI.SelectedValue = "G02" ' "G02-Devoluciones, descuentos o bonificaciones"
             Me.cboTipoRelacionCFDI.SelectedValue = "03" '03-Devolución de mercancía sobre facturas o traslados previos
+            Me.cboRegimenFiscal.SelectedValue = Empresa_Sistema.CODIGO_REGIMEN_FISCAL
             Me.lblVersionCFDI.Text = ""
 
             Me.TabControl1.SelectedIndex = 0
@@ -533,7 +535,7 @@ busca:
             Me.cboFormaPago.Enabled = False
             Me.cboMetodoPago.Enabled = False
             Me.cboTipoRelacionCFDI.Enabled = False
-
+            Me.cboRegimenFiscal.Enabled = False
             Me.chkVentaPublicoGeneral.Enabled = False
 
             Select Case Me.Estado
@@ -559,6 +561,7 @@ busca:
 
                     Me.cboFormaPago.Enabled = True
                     Me.cboTipoRelacionCFDI.Enabled = True
+                    Me.cboRegimenFiscal.Enabled = True
 
                     Me.tssEstado.Text = "Estado: Agregando nuevo movimiento"
 
@@ -631,6 +634,7 @@ busca:
 
             oCliente = New Class_CatClientes(Me.oVenta.CODIGO_CLIENTE)
             Dim oAlmacen As New Class_CatAlmacenes(Me.oVenta.CODIGO_ALMACEN)
+
             Me.txtCliente.Text = Me.oVenta.CODIGO_CLIENTE
             Me.lblCliente.Text = Me.oCliente.NOMBRE_CLIENTE
             Me.txtAlmacen.Text = Me.oVenta.CODIGO_ALMACEN
@@ -639,6 +643,7 @@ busca:
             Me.txtTipoCambio.Text = Me.oVenta.TIPO_DE_CAMBIO.ToString
             Me.chkVentaPublicoGeneral.Checked = CBool(Me.oVenta.ES_VENTA_PUBLICO_GENERAL)
             Me.txtSaldo.Text = FormatImporteContable(Me.oVenta.SALDO)
+            Me.cboRegimenFiscal.SelectedValue = Me.oVenta.CODIGO_REGIMEN_FISCAL
 
             Dim dTabla As DataTable = Me.oVenta.ObtenerDetalleDisponiblesParaDevolucion
             If dTabla.Rows.Count = 0 Then
@@ -756,6 +761,8 @@ busca:
                     Me.cboTipoRelacionCFDI.SelectedIndex = -1
                 End If
 
+                Me.cboRegimenFiscal.SelectedValue = .CODIGO_REGIMEN_FISCAL
+
                 Me.tssElaboro.Text = "Elaboró : " & .NOMBRE_USUARIO_GRABO & " el " & Format(.FECHA_SERVIDOR, "dd-MMM-yyyy hh:mm tt")
                 If .ESTATUS_DEVOLUCION = "C" Then
                     Me.tssCancelo.Text = "Canceló : " & .NOMBRE_USUARIO_CANCELO & " el : " & Format(.FECHA_CANCELACION, "dd-MMM-yyyy hh:mm tt")
@@ -856,6 +863,7 @@ busca:
                 .CODIGO_USO_CFDI = Me.cboUsoCFDI.SelectedValue.ToString
                 .CODIGO_MONEDA_SAT = Me.cboMoneda.Text
                 .CODIGO_TIPO_RELACION_CFDI = Me.cboTipoRelacionCFDI.SelectedValue.ToString
+                .CODIGO_REGIMEN_FISCAL = Me.cboRegimenFiscal.SelectedValue.ToString
 
                 If .GrabaDevolucionGlobal = False Then
                     Return False
@@ -1538,6 +1546,23 @@ busca_serie:
         End Try
     End Sub
 
+    Private Sub DesplegarRegimenesFiscales()
+        Try
+            Dim oRegimenes As New Class_CFDCatTiposRegimenesFiscales
+            With Me.cboRegimenFiscal
+                .DisplayMember = "NOMBRE_REGIMEN_FISCAL"
+                .ValueMember = "CODIGO_REGIMEN_FISCAL"
+                Dim dView As New Data.DataView(oRegimenes.ObtenerElementosSeleccionables)
+                dView.Sort = "NOMBRE_REGIMEN_FISCAL"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedValue = Empresa_Sistema.CODIGO_REGIMEN_FISCAL.ToString
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarRegimenesFiscales", ex)
+        End Try
+    End Sub
 #End Region
 
 End Class

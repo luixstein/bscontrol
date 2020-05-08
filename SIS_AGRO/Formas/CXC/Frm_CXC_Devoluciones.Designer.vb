@@ -101,6 +101,8 @@ Partial Class Frm_CXC_Devoluciones
         Me.lblDisplayFolioVenta = New System.Windows.Forms.Label()
         Me.txtFolioVenta = New System.Windows.Forms.TextBox()
         Me.lblDisplayAlmacen = New System.Windows.Forms.Label()
+        Me.lblDisplayRegimenFiscal = New System.Windows.Forms.Label()
+        Me.cboRegimenFiscal = New System.Windows.Forms.ComboBox()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -160,7 +162,7 @@ Partial Class Frm_CXC_Devoluciones
         Me.tsbTimbrar.Image = Global.BsControl.My.Resources.Resources._782
         Me.tsbTimbrar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbTimbrar.Name = "tsbTimbrar"
-        Me.tsbTimbrar.Size = New System.Drawing.Size(69, 22)
+        Me.tsbTimbrar.Size = New System.Drawing.Size(68, 22)
         Me.tsbTimbrar.Text = "Timbrar"
         '
         'tsbCancelarTimbre
@@ -176,7 +178,7 @@ Partial Class Frm_CXC_Devoluciones
         Me.tsbRecuperarXMLPDF.Image = Global.BsControl.My.Resources.Resources._782
         Me.tsbRecuperarXMLPDF.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbRecuperarXMLPDF.Name = "tsbRecuperarXMLPDF"
-        Me.tsbRecuperarXMLPDF.Size = New System.Drawing.Size(125, 22)
+        Me.tsbRecuperarXMLPDF.Size = New System.Drawing.Size(126, 22)
         Me.tsbRecuperarXMLPDF.Text = "Recuperar xml/pdf"
         '
         'tsbEnviarCorreo
@@ -578,6 +580,8 @@ Partial Class Frm_CXC_Devoluciones
         '
         'frmDatos
         '
+        Me.frmDatos.Controls.Add(Me.lblDisplayRegimenFiscal)
+        Me.frmDatos.Controls.Add(Me.cboRegimenFiscal)
         Me.frmDatos.Controls.Add(Me.cboTipoRelacionCFDI)
         Me.frmDatos.Controls.Add(Me.lblDisplayTipoRelacionCFDI)
         Me.frmDatos.Controls.Add(Me.lblVersionCFDI)
@@ -920,6 +924,25 @@ Partial Class Frm_CXC_Devoluciones
         Me.lblDisplayAlmacen.TabIndex = 239
         Me.lblDisplayAlmacen.Text = "Almacén :"
         '
+        'lblDisplayRegimenFiscal
+        '
+        Me.lblDisplayRegimenFiscal.AutoSize = True
+        Me.lblDisplayRegimenFiscal.Location = New System.Drawing.Point(573, 98)
+        Me.lblDisplayRegimenFiscal.Name = "lblDisplayRegimenFiscal"
+        Me.lblDisplayRegimenFiscal.Size = New System.Drawing.Size(82, 13)
+        Me.lblDisplayRegimenFiscal.TabIndex = 397
+        Me.lblDisplayRegimenFiscal.Text = "Régimen fiscal :"
+        '
+        'cboRegimenFiscal
+        '
+        Me.cboRegimenFiscal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboRegimenFiscal.FormattingEnabled = True
+        Me.cboRegimenFiscal.Location = New System.Drawing.Point(661, 95)
+        Me.cboRegimenFiscal.MaxLength = 1
+        Me.cboRegimenFiscal.Name = "cboRegimenFiscal"
+        Me.cboRegimenFiscal.Size = New System.Drawing.Size(281, 21)
+        Me.cboRegimenFiscal.TabIndex = 396
+        '
         'Frm_CXC_Devoluciones
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1032,4 +1055,6 @@ Partial Class Frm_CXC_Devoluciones
     Friend WithEvents lblVersionCFDI As Label
     Friend WithEvents cboTipoRelacionCFDI As ComboBox
     Friend WithEvents lblDisplayTipoRelacionCFDI As Label
+    Friend WithEvents lblDisplayRegimenFiscal As Label
+    Friend WithEvents cboRegimenFiscal As ComboBox
 End Class

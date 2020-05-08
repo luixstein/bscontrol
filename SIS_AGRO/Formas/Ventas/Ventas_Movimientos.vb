@@ -326,6 +326,7 @@ Public Class Ventas_Movimientos
             Me.DesplegarTiposNegociaciones()
             Me.DesplegarTiposCredito()
             Me.DesplegarTiposRelacionCFDI()
+            Me.DesplegarRegimenesFiscales()
 
             Me.DesplegarDocumentos()
 
@@ -343,6 +344,7 @@ Public Class Ventas_Movimientos
                 Me.txtNumeroCuentaPago.Visible = True : Me.lblDisplayNumeroCuentaPago.Visible = True
                 Me.cboUsoCFDI.Visible = False : Me.lblDisplayUsoCFDI.Visible = False
                 Me.cboMetodoPago.Visible = False : Me.lblDisplayMetodoPago.Visible = False
+                Me.cboRegimenFiscal.Visible = False : Me.lblDisplayRegimenFiscal.Visible = False
             Else '3.3 O Mayores
                 Me.txtNumeroCuentaPago.Visible = False : Me.lblDisplayNumeroCuentaPago.Visible = False
 
@@ -838,6 +840,7 @@ Buscar:
             Me.chkVentaPublicoGeneral.Checked = False
             Me.cboMoneda.Text = "MXN"
             Me.cboFormaPago.SelectedValue = "01" '01=Efectivo
+            Me.cboRegimenFiscal.SelectedValue = Empresa_Sistema.CODIGO_REGIMEN_FISCAL
 
             Me.lblCliente.Text = ""
             Me.LblEstatus.Text = "NUEVO"
@@ -1341,6 +1344,7 @@ Buscar:
                     Me.cboMoneda.Enabled = True
                     Me.cboUsoCFDI.Enabled = True
                     'Me.cboMetodoPago.Enabled = True
+                    Me.cboRegimenFiscal.Enabled = True
 
                     Me.cboTipoRelacionCFDI.Enabled = True
                     Me.GridCFDIsRelacionados.Locked = False
@@ -1463,6 +1467,7 @@ Buscar:
                         Me.cboMoneda.Enabled = False
                         Me.cboUsoCFDI.Enabled = False
                         'Me.cboMetodoPago.Enabled = False
+                        Me.cboRegimenFiscal.Enabled = False
                     ElseIf Me.oDocumento.AFECTA_INVENTARIOS = True Then
                         Me.tsbCotizacionFactura.Visible = False
                         Me.tsbCotizacionRemision.Visible = False
@@ -1586,6 +1591,7 @@ Buscar:
                     Me.llblAgregarSeguimiento.Enabled = False
                     Me.cboMoneda.Enabled = False
                     Me.cboUsoCFDI.Enabled = False
+                    Me.cboRegimenFiscal.Enabled = False
 
                     Me.lblConceptoCancelacion.Visible = True
                     Me.TxtConceptoCancelacion.Visible = True
@@ -1706,6 +1712,11 @@ Buscar:
 
                 If Me.cboUsoCFDI.SelectedIndex = -1 Then
                     MsgBox("Seleccione un uso del CFDI.", vbExclamation, sProcedure)
+                    Return False
+                End If
+
+                If Me.cboRegimenFiscal.SelectedIndex = -1 Then
+                    MsgBox("Seleccione un régimen fiscal.", vbExclamation, sProcedure)
                     Return False
                 End If
 
@@ -1846,13 +1857,13 @@ Buscar:
 
                 If .CODIGO_TIPO_NEGOCIACION = 1 Then ' CREDITO
                     .CODIGO_TIPO_CREDITO = Me.CboTipoCredito.SelectedValue.ToString
-
                 ElseIf .CODIGO_TIPO_NEGOCIACION = 2 Then ' CONTADO
                     .CODIGO_TIPO_CREDITO = "NA"
                 End If
                 .TIENE_IEPS_DESGLOSADO = Me.bClienteEsContribuyenteIEPS
                 .CODIGO_TIPO_RELACION_CFDI = sCodigoTipoRelacionCFDI
                 .LISTA_CFDIS_RELACIONADOS = sListaCFDIsRelacionados
+                .CODIGO_REGIMEN_FISCAL = Me.cboRegimenFiscal.SelectedValue.ToString
 
                 If Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.SUSTITUYENDO Then
                     If .Grabar("INSERTAR") = False Then
@@ -3574,6 +3585,8 @@ CANCELAR:
             Else
                 Me.cboMetodoPago.SelectedIndex = -1
             End If
+
+            Me.cboRegimenFiscal.SelectedValue = Me.oVenta.CODIGO_REGIMEN_FISCAL
 
             If Me.oVenta.ES_VENTA_PUBLICO_GENERAL = "1" Then
                 Me.chkVentaPublicoGeneral.Checked = True
@@ -5518,7 +5531,24 @@ BuscaVentas:
                 MsgBox("No se ha capturado el tipo de cambio del día.", MsgBoxStyle.Exclamation, Me.Text)
             End If
         End If
+    End Sub
 
+    Private Sub DesplegarRegimenesFiscales()
+        Try
+            Dim oRegimenes As New Class_CFDCatTiposRegimenesFiscales
+            With Me.cboRegimenFiscal
+                .DisplayMember = "NOMBRE_REGIMEN_FISCAL"
+                .ValueMember = "CODIGO_REGIMEN_FISCAL"
+                Dim dView As New Data.DataView(oRegimenes.ObtenerElementosSeleccionables)
+                dView.Sort = "NOMBRE_REGIMEN_FISCAL"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedValue = Empresa_Sistema.CODIGO_REGIMEN_FISCAL.ToString
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarRegimenesFiscales", ex)
+        End Try
     End Sub
 #End Region
 

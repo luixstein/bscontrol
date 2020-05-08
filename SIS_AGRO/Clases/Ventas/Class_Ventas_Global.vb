@@ -7,7 +7,6 @@ Imports System.Net.Mail
 Imports System.Net.Security
 Imports System.Security.Cryptography.X509Certificates
 Imports System.Net
-Imports CFDIXML
 
 Public Class tPrecioVenta
     Public Precio As Decimal = 0
@@ -670,10 +669,13 @@ Public Class Class_Ventas_Global
         End Get
     End Property
 
-    Public ReadOnly Property CODIGO_REGIMEN_FISCAL() As String
+    Public Property CODIGO_REGIMEN_FISCAL() As String
         Get
             Return Me._CODIGO_REGIMEN_FISCAL
         End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_REGIMEN_FISCAL = Value
+        End Set
     End Property
 
     Public Property CODIGO_METODO_PAGO_EVENTO() As String
@@ -1028,6 +1030,7 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@RETENCION_IVA_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_USD
             sqlParametro = .Parameters.Add("@RETENCION_ISR", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR
             sqlParametro = .Parameters.Add("@RETENCION_ISR_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_USD
+            sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = sAccion 'INSERTAR,ACTUALIZAR
 
             Try
@@ -1295,7 +1298,7 @@ Public Class Class_Ventas_Global
                     Me._VERSION_ESQUEMA_XML = "" & dReader("VERSION_ESQUEMA_XML").ToString
                     Me._SERIE = "" & Trim(dReader("SERIE").ToString)
                     Me._TIENE_COMPLEMENTO_COMERCIO_EXTERIOR = CBool(dReader("TIENE_COMPLEMENTO_COMERCIO_EXTERIOR").ToString)
-                    Me._CODIGO_REGIMEN_FISCAL = "" & Trim(dReader("CODIGO_REGIMEN_FISCAL").ToString)
+                    Me._CODIGO_REGIMEN_FISCAL = ("" & dReader("CODIGO_REGIMEN_FISCAL").ToString)
                     Me._ES_FACTURA_EMBARQUE_EXTRANJERO = CBool(dReader("ES_FACTURA_EMBARQUE_EXTRANJERO"))
                     Me._Nombre_Formato = "" & Trim(dReader("NOMBRE_FORMATO").ToString)
                     Me._IEPS_TOTAL_DESGLOSADO = CDbl(dReader("IEPS_TOTAL_DESGLOSADO"))

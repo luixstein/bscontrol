@@ -70,6 +70,8 @@ Partial Class Ventas_Movimientos
         Me.lblDisplayVendedor = New System.Windows.Forms.Label()
         Me.chkVentaPublicoGeneral = New System.Windows.Forms.CheckBox()
         Me.gbPesos = New System.Windows.Forms.GroupBox()
+        Me.lblDisplayRetencionISR = New System.Windows.Forms.Label()
+        Me.lblTotalRetencionISR = New System.Windows.Forms.Label()
         Me.lblDisplayRetencionIVA = New System.Windows.Forms.Label()
         Me.lblTotalRetencionIVA = New System.Windows.Forms.Label()
         Me.lblDisplayDescuento = New System.Windows.Forms.Label()
@@ -80,6 +82,8 @@ Partial Class Ventas_Movimientos
         Me.lblSubtotal = New System.Windows.Forms.Label()
         Me.lblImpuesto = New System.Windows.Forms.Label()
         Me.gbDolares = New System.Windows.Forms.GroupBox()
+        Me.lblDisplayTotalRetencionISR_USD = New System.Windows.Forms.Label()
+        Me.lblTotalRetencionISR_USD = New System.Windows.Forms.Label()
         Me.lblDisplayTotalRetencionIVA_USD = New System.Windows.Forms.Label()
         Me.lblTotalRetencionIVA_USD = New System.Windows.Forms.Label()
         Me.lblDisplayDescuento_USD = New System.Windows.Forms.Label()
@@ -153,10 +157,8 @@ Partial Class Ventas_Movimientos
         Me.btnAceptar = New System.Windows.Forms.Button()
         Me.btnCargarRemisiones = New System.Windows.Forms.Button()
         Me.GridFacturasVariasRemisiones = New FlexCell.Grid()
-        Me.lblTotalRetencionISR = New System.Windows.Forms.Label()
-        Me.lblDisplayRetencionISR = New System.Windows.Forms.Label()
-        Me.lblDisplayTotalRetencionISR_USD = New System.Windows.Forms.Label()
-        Me.lblTotalRetencionISR_USD = New System.Windows.Forms.Label()
+        Me.lblDisplayRegimenFiscal = New System.Windows.Forms.Label()
+        Me.cboRegimenFiscal = New System.Windows.Forms.ComboBox()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -607,6 +609,26 @@ Partial Class Ventas_Movimientos
         Me.gbPesos.TabStop = False
         Me.gbPesos.Text = "MXN :"
         '
+        'lblDisplayRetencionISR
+        '
+        Me.lblDisplayRetencionISR.AutoSize = True
+        Me.lblDisplayRetencionISR.Location = New System.Drawing.Point(6, 96)
+        Me.lblDisplayRetencionISR.Name = "lblDisplayRetencionISR"
+        Me.lblDisplayRetencionISR.Size = New System.Drawing.Size(54, 13)
+        Me.lblDisplayRetencionISR.TabIndex = 257
+        Me.lblDisplayRetencionISR.Text = "Ret. ISR :"
+        '
+        'lblTotalRetencionISR
+        '
+        Me.lblTotalRetencionISR.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblTotalRetencionISR.ForeColor = System.Drawing.Color.DarkBlue
+        Me.lblTotalRetencionISR.Location = New System.Drawing.Point(70, 96)
+        Me.lblTotalRetencionISR.Name = "lblTotalRetencionISR"
+        Me.lblTotalRetencionISR.Size = New System.Drawing.Size(107, 13)
+        Me.lblTotalRetencionISR.TabIndex = 256
+        Me.lblTotalRetencionISR.Text = "0.00"
+        Me.lblTotalRetencionISR.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
         'lblDisplayRetencionIVA
         '
         Me.lblDisplayRetencionIVA.AutoSize = True
@@ -723,6 +745,26 @@ Partial Class Ventas_Movimientos
         Me.gbDolares.TabStop = False
         Me.gbDolares.Text = "USD :"
         Me.gbDolares.Visible = False
+        '
+        'lblDisplayTotalRetencionISR_USD
+        '
+        Me.lblDisplayTotalRetencionISR_USD.AutoSize = True
+        Me.lblDisplayTotalRetencionISR_USD.Location = New System.Drawing.Point(1, 96)
+        Me.lblDisplayTotalRetencionISR_USD.Name = "lblDisplayTotalRetencionISR_USD"
+        Me.lblDisplayTotalRetencionISR_USD.Size = New System.Drawing.Size(54, 13)
+        Me.lblDisplayTotalRetencionISR_USD.TabIndex = 263
+        Me.lblDisplayTotalRetencionISR_USD.Text = "Ret. ISR :"
+        '
+        'lblTotalRetencionISR_USD
+        '
+        Me.lblTotalRetencionISR_USD.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblTotalRetencionISR_USD.ForeColor = System.Drawing.Color.DarkBlue
+        Me.lblTotalRetencionISR_USD.Location = New System.Drawing.Point(68, 96)
+        Me.lblTotalRetencionISR_USD.Name = "lblTotalRetencionISR_USD"
+        Me.lblTotalRetencionISR_USD.Size = New System.Drawing.Size(107, 13)
+        Me.lblTotalRetencionISR_USD.TabIndex = 262
+        Me.lblTotalRetencionISR_USD.Text = "0.00"
+        Me.lblTotalRetencionISR_USD.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'lblDisplayTotalRetencionIVA_USD
         '
@@ -1546,45 +1588,24 @@ Partial Class Ventas_Movimientos
         Me.GridFacturasVariasRemisiones.TabIndex = 3
         Me.GridFacturasVariasRemisiones.UncheckedImage = CType(resources.GetObject("GridFacturasVariasRemisiones.UncheckedImage"), System.Drawing.Bitmap)
         '
-        'lblTotalRetencionISR
+        'lblDisplayRegimenFiscal
         '
-        Me.lblTotalRetencionISR.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.lblTotalRetencionISR.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblTotalRetencionISR.Location = New System.Drawing.Point(70, 96)
-        Me.lblTotalRetencionISR.Name = "lblTotalRetencionISR"
-        Me.lblTotalRetencionISR.Size = New System.Drawing.Size(107, 13)
-        Me.lblTotalRetencionISR.TabIndex = 256
-        Me.lblTotalRetencionISR.Text = "0.00"
-        Me.lblTotalRetencionISR.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.lblDisplayRegimenFiscal.AutoSize = True
+        Me.lblDisplayRegimenFiscal.Location = New System.Drawing.Point(997, 230)
+        Me.lblDisplayRegimenFiscal.Name = "lblDisplayRegimenFiscal"
+        Me.lblDisplayRegimenFiscal.Size = New System.Drawing.Size(82, 13)
+        Me.lblDisplayRegimenFiscal.TabIndex = 384
+        Me.lblDisplayRegimenFiscal.Text = "Régimen fiscal :"
         '
-        'lblDisplayRetencionISR
+        'cboRegimenFiscal
         '
-        Me.lblDisplayRetencionISR.AutoSize = True
-        Me.lblDisplayRetencionISR.Location = New System.Drawing.Point(6, 96)
-        Me.lblDisplayRetencionISR.Name = "lblDisplayRetencionISR"
-        Me.lblDisplayRetencionISR.Size = New System.Drawing.Size(54, 13)
-        Me.lblDisplayRetencionISR.TabIndex = 257
-        Me.lblDisplayRetencionISR.Text = "Ret. ISR :"
-        '
-        'lblDisplayTotalRetencionISR_USD
-        '
-        Me.lblDisplayTotalRetencionISR_USD.AutoSize = True
-        Me.lblDisplayTotalRetencionISR_USD.Location = New System.Drawing.Point(1, 96)
-        Me.lblDisplayTotalRetencionISR_USD.Name = "lblDisplayTotalRetencionISR_USD"
-        Me.lblDisplayTotalRetencionISR_USD.Size = New System.Drawing.Size(54, 13)
-        Me.lblDisplayTotalRetencionISR_USD.TabIndex = 263
-        Me.lblDisplayTotalRetencionISR_USD.Text = "Ret. ISR :"
-        '
-        'lblTotalRetencionISR_USD
-        '
-        Me.lblTotalRetencionISR_USD.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.lblTotalRetencionISR_USD.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblTotalRetencionISR_USD.Location = New System.Drawing.Point(68, 96)
-        Me.lblTotalRetencionISR_USD.Name = "lblTotalRetencionISR_USD"
-        Me.lblTotalRetencionISR_USD.Size = New System.Drawing.Size(107, 13)
-        Me.lblTotalRetencionISR_USD.TabIndex = 262
-        Me.lblTotalRetencionISR_USD.Text = "0.00"
-        Me.lblTotalRetencionISR_USD.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.cboRegimenFiscal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboRegimenFiscal.FormattingEnabled = True
+        Me.cboRegimenFiscal.Location = New System.Drawing.Point(1000, 246)
+        Me.cboRegimenFiscal.MaxLength = 1
+        Me.cboRegimenFiscal.Name = "cboRegimenFiscal"
+        Me.cboRegimenFiscal.Size = New System.Drawing.Size(281, 21)
+        Me.cboRegimenFiscal.TabIndex = 383
         '
         'Ventas_Movimientos
         '
@@ -1592,6 +1613,8 @@ Partial Class Ventas_Movimientos
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
         Me.ClientSize = New System.Drawing.Size(1290, 678)
+        Me.Controls.Add(Me.lblDisplayRegimenFiscal)
+        Me.Controls.Add(Me.cboRegimenFiscal)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.gbTotales)
         Me.Controls.Add(Me.frmDatos)
@@ -1761,4 +1784,6 @@ Partial Class Ventas_Movimientos
     Friend WithEvents lblTotalRetencionISR As Label
     Friend WithEvents lblDisplayTotalRetencionISR_USD As Label
     Friend WithEvents lblTotalRetencionISR_USD As Label
+    Friend WithEvents lblDisplayRegimenFiscal As Label
+    Friend WithEvents cboRegimenFiscal As ComboBox
 End Class

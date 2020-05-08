@@ -92,6 +92,7 @@ Public NotInheritable Class Class_sisEmpresa
     Private _VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES As Double
     Private _VALIDAR_LIMITE_CREDITO_PROVEEDORES As Boolean
     Private _TIPO_CAMBIO_POR_DIA As Boolean
+    Private _TIENE_REGIMEN_FISCAL_MULTIPLE As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -686,6 +687,12 @@ Public NotInheritable Class Class_sisEmpresa
         End Get
     End Property
 
+    Public ReadOnly Property TIENE_REGIMEN_FISCAL_MULTIPLE As Boolean
+        Get
+            Return Me._TIENE_REGIMEN_FISCAL_MULTIPLE
+        End Get
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -1039,7 +1046,6 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._CUENTA_CONTABLE_COSTO_VENTAS = "" & dReader("CUENTA_CONTABLE_COSTO_VENTAS").ToString
                     Me._CORREO_EMPRESA = "" & dReader("CORREO_EMPRESA").ToString
                     Me._VALIDAR_CANCELACION_VENTAS = CBool(dReader("VALIDAR_CANCELACION_VENTAS").ToString)
-
                     Me._CONTAELECTRONICA_ACTIVA = CBool(dReader("CONTAELECTRONICA_ACTIVA"))
                     Me._CONTAELECTRONICA_CADENA_ORIGINAL_CATALOGO_CUENTAS = "" & dReader("CONTAELECTRONICA_CADENA_ORIGINAL_CATALOGO_CUENTAS").ToString
                     Me._CONTAELECTRONICA_CADENA_ORIGINAL_BALANZA_COMPROBACION = "" & dReader("CONTAELECTRONICA_CADENA_ORIGINAL_BALANZA_COMPROBACION").ToString
@@ -1049,6 +1055,7 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES = CDbl(dReader("VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES").ToString)
                     Me._VALIDAR_LIMITE_CREDITO_PROVEEDORES = CBool(dReader("VALIDAR_LIMITE_CREDITO_PROVEEDORES"))
                     Me._TIPO_CAMBIO_POR_DIA = CBool(dReader("TIPO_CAMBIO_POR_DIA"))
+                    Me._TIENE_REGIMEN_FISCAL_MULTIPLE = CBool(dReader("TIENE_REGIMEN_FISCAL_MULTIPLE"))
 
                     dReader.Close()
                     bResultado = True
