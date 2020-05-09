@@ -50,7 +50,7 @@ Public Class Class_CXC_Descuento
     Private _IMPUESTO_PORCENTAJE As Double
     Private _RETENCION As Double
     Private _CODIGO_METODO_PAGO As String
-    Private _CODIGO_REGIMEN_FISCAL As Integer
+    Private _CODIGO_REGIMEN_FISCAL As String
     Private _FOLIO_FISCAL_SAT As String
     Private _FECHA_TIMBRADO_SAT As String
     Private _NUMERO_SERIE_CERTIFICADO_SAT As String
@@ -387,10 +387,13 @@ Public Class Class_CXC_Descuento
         End Set
     End Property
 
-    Public ReadOnly Property CODIGO_REGIMEN_FISCAL() As Integer
+    Public Property CODIGO_REGIMEN_FISCAL() As String
         Get
             Return Me._CODIGO_REGIMEN_FISCAL
         End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_REGIMEN_FISCAL = Value
+        End Set
     End Property
 
     Public ReadOnly Property FOLIO_FISCAL_SAT() As String
@@ -633,6 +636,7 @@ Public Class Class_CXC_Descuento
             sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_MONEDA_SAT
             sqlParametro = .Parameters.Add("@IMPUESTO_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_PORCENTAJE
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_RELACION_CFDI", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_TIPO_RELACION_CFDI
+            sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL
 
             Try
                 Me._Conexion.Open()
@@ -764,7 +768,7 @@ Public Class Class_CXC_Descuento
                         Me._FECHA_CANCELACION_SERVIDOR = CType(dReader("FECHA_CANCELACION_SERVIDOR"), Date)
                     End If
                     Me._CODIGO_METODO_PAGO = dReader("CODIGO_METODO_PAGO").ToString
-                    Me._CODIGO_REGIMEN_FISCAL = CType(dReader("CODIGO_REGIMEN_FISCAL"), Integer)
+                    Me._CODIGO_REGIMEN_FISCAL = "" & dReader("CODIGO_REGIMEN_FISCAL").ToString
                     Me._NOMBRE_METODO_PAGO = "" & dReader("NOMBRE_METODO_PAGO").ToString
                     Me._NOMBRE_REGIMEN_FISCAL = "" & dReader("NOMBRE_REGIMEN_FISCAL").ToString
                     Me._FELECTRONICA_CER = "" & dReader("FELECTRONICA_CER").ToString

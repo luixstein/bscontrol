@@ -216,7 +216,7 @@ Partial Class Ventas_Movimientos
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(1290, 27)
-        Me.tsMenu.TabIndex = 3
+        Me.tsMenu.TabIndex = 4
         Me.tsMenu.Text = "tsMenu"
         '
         'tsbNuevo
@@ -1293,7 +1293,7 @@ Partial Class Ventas_Movimientos
         Me.gbTotales.Location = New System.Drawing.Point(9, 520)
         Me.gbTotales.Name = "gbTotales"
         Me.gbTotales.Size = New System.Drawing.Size(986, 132)
-        Me.gbTotales.TabIndex = 2
+        Me.gbTotales.TabIndex = 3
         Me.gbTotales.TabStop = False
         '
         'lblDisplayIEPSIncluido_USD
@@ -1423,7 +1423,7 @@ Partial Class Ventas_Movimientos
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(1279, 238)
-        Me.TabControl1.TabIndex = 1
+        Me.TabControl1.TabIndex = 2
         '
         'tpArticulos
         '
@@ -1605,7 +1605,7 @@ Partial Class Ventas_Movimientos
         Me.cboRegimenFiscal.MaxLength = 1
         Me.cboRegimenFiscal.Name = "cboRegimenFiscal"
         Me.cboRegimenFiscal.Size = New System.Drawing.Size(281, 21)
-        Me.cboRegimenFiscal.TabIndex = 383
+        Me.cboRegimenFiscal.TabIndex = 1
         '
         'Ventas_Movimientos
         '

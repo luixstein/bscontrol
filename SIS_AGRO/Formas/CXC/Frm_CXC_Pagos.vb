@@ -213,6 +213,7 @@ Public Class Frm_CXC_Pagos
             Me.DesplegarMedioDePagos()
             Me.DesplegarMetodosPago()
             Me.DesplegarMonedas()
+            Me.DesplegarRegimenesFiscales()
 
             Me.Inicializa()
 
@@ -718,6 +719,7 @@ Buscar:
             Me.cboMoneda.Text = sMonedaAnterior
             'Me.cboMoneda.Text = "MXN" no se debe inicializar por si dejaron seleccionada moneda en usd no debe perderse la moneda y demás datos de la cuenta
             Me.txtTipoCambio.Text = ""
+            Me.cboRegimenFiscal.SelectedValue = Empresa_Sistema.CODIGO_REGIMEN_FISCAL
 
             'Me.chkVentasNoFiscales.Checked = False'No se debe inicializar, cuando se consulta un doc, o cuando den enter a una cuenta se carga.
             'Me.lblEsCuentaFiscal.Text = "Sólo facturas'No se debe inicializar, cuando se consulta un doc, o cuando den enter a una cuenta se carga.
@@ -725,6 +727,7 @@ Buscar:
             Me.tssElaboro.Text = "Elaboró : "
             Me.tssCancelo.Text = "Canceló : "
             Me.tssFechaEmisionCFDI.Text = ""
+
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
         End Try
@@ -1622,6 +1625,7 @@ Buscar:
             End If
 
             oBancosCXC.ES_PAGO_VENTAS_NO_FISCALES = Me.chkVentasNoFiscales.Checked
+            oBancosCXC.CODIGO_REGIMEN_FISCAL = Me.cboRegimenFiscal.SelectedValue.ToString
 
             'Inserta en BANCOS_GLOBAL
             If oBancosCXC.Inserta_Global() = False Then '''''''''''''''''==========================Afectacion
@@ -2398,6 +2402,12 @@ Buscar:
                         Me.LblStatus.Text = "CANCELADO"
                 End Select
 
+                If txtLEN(oBancosCXC.CODIGO_REGIMEN_FISCAL) = True Then
+                    Me.cboRegimenFiscal.SelectedValue = oBancosCXC.CODIGO_REGIMEN_FISCAL
+                Else
+                    Me.cboRegimenFiscal.SelectedIndex = -1
+                End If
+
                 Me.tssElaboro.Text = "Elaboró : " & Me.oBancosCXC.NOMBRE_USUARIO_GRABO & " el " & Format(Me.oBancosCXC.FECHA_SERVIDOR, "dd-MMM-yyyy hh:mm tt")
                 If Me.oBancosCXC.ESTATUS = "C" Then
                     Me.tssCancelo.Text = "Canceló : " & Me.oBancosCXC.NOMBRE_USUARIO_CANCELO & " el : " & Format(Me.oBancosCXC.FECHA_DE_CANCELACION_SERVIDOR, "dd-MMM-yyyy hh:mm tt")
@@ -2622,6 +2632,7 @@ Buscar:
         Try
 
             Me.gbAgregaDocCliente.Enabled = False 'Se habilita hasta asignar una cuenta bancaria
+            Me.cboRegimenFiscal.Enabled = False
 
             Me.Estado = pEstado
             Select Case Me.Estado
@@ -2652,6 +2663,7 @@ Buscar:
                     Me.btnVerCFDIS.Enabled = False
                     Me.btnGenerarCFDIS.Enabled = False
                     Me.chkVentasNoFiscales.Enabled = False ' Antes estaba true, pero ahora como se llena sólo dependiendo de si la cuenta es o no fiscal, nunca se habilita
+                    Me.cboRegimenFiscal.Enabled = True
 
                     'Me.gbTotales.Enabled = True
 
@@ -3602,9 +3614,25 @@ Buscar:
                 MsgBox("No se ha capturado el tipo de cambio del día.", MsgBoxStyle.Exclamation, Me.Text)
             End If
         End If
-
     End Sub
 
+    Private Sub DesplegarRegimenesFiscales()
+        Try
+            Dim oRegimenes As New Class_CFDCatTiposRegimenesFiscales
+            With Me.cboRegimenFiscal
+                .DisplayMember = "NOMBRE_REGIMEN_FISCAL"
+                .ValueMember = "CODIGO_REGIMEN_FISCAL"
+                Dim dView As New Data.DataView(oRegimenes.ObtenerElementosSeleccionables)
+                dView.Sort = "NOMBRE_REGIMEN_FISCAL"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedValue = Empresa_Sistema.CODIGO_REGIMEN_FISCAL.ToString
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarRegimenesFiscales", ex)
+        End Try
+    End Sub
 #End Region
 
 End Class

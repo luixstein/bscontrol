@@ -138,6 +138,7 @@ Public Class Frm_CXC_Descuentos
             Me.DesplegarFormasPago(False)
             Me.DesplegarUsoCFDIPersonasFisicas() 'Finalmente sólo se usará el fijo G02 que sta en fisicas y morales
             Me.DesplegarTiposRelacionCFDI()
+            Me.DesplegarRegimenesFiscales()
 
             Me.Inicializa()
             Me.Cambia_Estado(enumEstados.NUEVO)
@@ -438,6 +439,7 @@ Buscar:
             Me.cboMetodoPago.SelectedValue = "PUE"
             Me.cboUsoCFDI.SelectedValue = "G02" 'G02=Devoluciones, descuentos o bonificaciones
             Me.cboTipoRelacionCFDI.SelectedValue = "01" '01-Nota de crédito de los documentos relacionados
+            Me.cboRegimenFiscal.SelectedValue = Empresa_Sistema.CODIGO_REGIMEN_FISCAL
 
             Me.lblVersionCFDI.Text = ""
 
@@ -727,6 +729,7 @@ Buscar:
                 .LISTA_DESCUENTOS = ListaDescuentos
                 .IMPUESTO_PORCENTAJE = valorNumerico(Me.lblImpuestoPorcentaje.Text)
                 .CODIGO_TIPO_RELACION_CFDI = sCodigoTipoRelacionCFDI
+                .CODIGO_REGIMEN_FISCAL = Me.cboRegimenFiscal.SelectedValue.ToString
 
                 If .Grabar() = True Then
                     bResultado = True
@@ -990,6 +993,8 @@ Buscar:
                     Me.cboTipoRelacionCFDI.SelectedIndex = -1
                 End If
 
+                Me.cboRegimenFiscal.SelectedValue = Me.oDescuentosCXC.CODIGO_REGIMEN_FISCAL
+
                 Me.tssElaboro.Text = "Elaboró : " & Me.oDescuentosCXC.NOMBRE_USUARIO_GRABO & " el " & Format(Me.oDescuentosCXC.FECHA_SERVIDOR, "dd-MMM-yyyy hh:mm tt")
                 If Me.oDescuentosCXC.ESTATUS_DESCUENTO = "C" Then
                     Me.tssCancelo.Text = "Canceló : " & Me.oDescuentosCXC.NOMBRE_USUARIO_CANCELO & " el : " & Format(Me.oDescuentosCXC.FECHA_CANCELACION, "dd-MMM-yyyy hh:mm tt")
@@ -1159,6 +1164,7 @@ Buscar:
             Me.cboMetodoPago.Enabled = False
             Me.cboUsoCFDI.Enabled = False
             Me.cboTipoRelacionCFDI.Enabled = False
+            Me.cboRegimenFiscal.Enabled = False
 
             Me.Estado = pEstado
             Select Case Me.Estado
@@ -1176,6 +1182,7 @@ Buscar:
                     Me.cboTipoRelacionCFDI.Enabled = True
                     Me.chkVentaPublicoGeneral.Enabled = True
                     Me.txtTipoCambio.Enabled = False
+                    Me.cboRegimenFiscal.Enabled = True
                     Me.tssEstado.Text = "Estado: agregando documento"
                     Me.tssElaboro.Visible = False
                     Me.tssCancelo.Visible = False
@@ -1493,9 +1500,25 @@ Buscar:
                 MsgBox("No se ha capturado el tipo de cambio del día.", MsgBoxStyle.Exclamation, Me.Text)
             End If
         End If
-
     End Sub
 
+    Private Sub DesplegarRegimenesFiscales()
+        Try
+            Dim oRegimenes As New Class_CFDCatTiposRegimenesFiscales
+            With Me.cboRegimenFiscal
+                .DisplayMember = "NOMBRE_REGIMEN_FISCAL"
+                .ValueMember = "CODIGO_REGIMEN_FISCAL"
+                Dim dView As New Data.DataView(oRegimenes.ObtenerElementosSeleccionables)
+                dView.Sort = "NOMBRE_REGIMEN_FISCAL"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedValue = Empresa_Sistema.CODIGO_REGIMEN_FISCAL.ToString
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarRegimenesFiscales", ex)
+        End Try
+    End Sub
 #End Region
 
 End Class

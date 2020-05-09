@@ -69,6 +69,8 @@ Partial Class Frm_CXC_Devoluciones
         Me.lblEstatus = New System.Windows.Forms.Label()
         Me.lblDisplayPoliza = New System.Windows.Forms.Label()
         Me.frmDatos = New System.Windows.Forms.GroupBox()
+        Me.lblDisplayRegimenFiscal = New System.Windows.Forms.Label()
+        Me.cboRegimenFiscal = New System.Windows.Forms.ComboBox()
         Me.cboTipoRelacionCFDI = New System.Windows.Forms.ComboBox()
         Me.lblDisplayTipoRelacionCFDI = New System.Windows.Forms.Label()
         Me.lblVersionCFDI = New System.Windows.Forms.Label()
@@ -101,8 +103,6 @@ Partial Class Frm_CXC_Devoluciones
         Me.lblDisplayFolioVenta = New System.Windows.Forms.Label()
         Me.txtFolioVenta = New System.Windows.Forms.TextBox()
         Me.lblDisplayAlmacen = New System.Windows.Forms.Label()
-        Me.lblDisplayRegimenFiscal = New System.Windows.Forms.Label()
-        Me.cboRegimenFiscal = New System.Windows.Forms.ComboBox()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -626,6 +626,25 @@ Partial Class Frm_CXC_Devoluciones
         Me.frmDatos.TabIndex = 0
         Me.frmDatos.TabStop = False
         '
+        'lblDisplayRegimenFiscal
+        '
+        Me.lblDisplayRegimenFiscal.AutoSize = True
+        Me.lblDisplayRegimenFiscal.Location = New System.Drawing.Point(573, 98)
+        Me.lblDisplayRegimenFiscal.Name = "lblDisplayRegimenFiscal"
+        Me.lblDisplayRegimenFiscal.Size = New System.Drawing.Size(82, 13)
+        Me.lblDisplayRegimenFiscal.TabIndex = 397
+        Me.lblDisplayRegimenFiscal.Text = "Régimen fiscal :"
+        '
+        'cboRegimenFiscal
+        '
+        Me.cboRegimenFiscal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboRegimenFiscal.FormattingEnabled = True
+        Me.cboRegimenFiscal.Location = New System.Drawing.Point(661, 95)
+        Me.cboRegimenFiscal.MaxLength = 1
+        Me.cboRegimenFiscal.Name = "cboRegimenFiscal"
+        Me.cboRegimenFiscal.Size = New System.Drawing.Size(281, 21)
+        Me.cboRegimenFiscal.TabIndex = 11
+        '
         'cboTipoRelacionCFDI
         '
         Me.cboTipoRelacionCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
@@ -923,25 +942,6 @@ Partial Class Frm_CXC_Devoluciones
         Me.lblDisplayAlmacen.Size = New System.Drawing.Size(54, 13)
         Me.lblDisplayAlmacen.TabIndex = 239
         Me.lblDisplayAlmacen.Text = "Almacén :"
-        '
-        'lblDisplayRegimenFiscal
-        '
-        Me.lblDisplayRegimenFiscal.AutoSize = True
-        Me.lblDisplayRegimenFiscal.Location = New System.Drawing.Point(573, 98)
-        Me.lblDisplayRegimenFiscal.Name = "lblDisplayRegimenFiscal"
-        Me.lblDisplayRegimenFiscal.Size = New System.Drawing.Size(82, 13)
-        Me.lblDisplayRegimenFiscal.TabIndex = 397
-        Me.lblDisplayRegimenFiscal.Text = "Régimen fiscal :"
-        '
-        'cboRegimenFiscal
-        '
-        Me.cboRegimenFiscal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboRegimenFiscal.FormattingEnabled = True
-        Me.cboRegimenFiscal.Location = New System.Drawing.Point(661, 95)
-        Me.cboRegimenFiscal.MaxLength = 1
-        Me.cboRegimenFiscal.Name = "cboRegimenFiscal"
-        Me.cboRegimenFiscal.Size = New System.Drawing.Size(281, 21)
-        Me.cboRegimenFiscal.TabIndex = 396
         '
         'Frm_CXC_Devoluciones
         '

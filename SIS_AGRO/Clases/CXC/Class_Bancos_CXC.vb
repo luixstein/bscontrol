@@ -58,6 +58,7 @@ Public Class Class_Bancos_CXC
     Private _CFDIS_GENERADOS As Boolean
     Private _FECHA_EMISION_CFDI As Date
     Private _ES_PAGO_VENTAS_NO_FISCALES As Boolean
+    Private _CODIGO_REGIMEN_FISCAL As String
 #End Region
 
 #Region "Campos de sistema"
@@ -436,6 +437,15 @@ Public Class Class_Bancos_CXC
         End Set
     End Property
 
+    Public Property CODIGO_REGIMEN_FISCAL() As String
+        Get
+            Return Me._CODIGO_REGIMEN_FISCAL
+        End Get
+        Set(ByVal value As String)
+            Me._CODIGO_REGIMEN_FISCAL = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedad Nombre de Clase"
@@ -513,6 +523,7 @@ Public Class Class_Bancos_CXC
             sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_MONEDA_SAT
             sqlParametro = .Parameters.Add("@FECHA_CHEQUE", SqlDbType.Date) : sqlParametro.Value = Me._FECHA_CHEQUE
             sqlParametro = .Parameters.Add("@ES_PAGO_VENTAS_NO_FISCALES", SqlDbType.Bit) : sqlParametro.Value = Convert.ToInt32(Me._ES_PAGO_VENTAS_NO_FISCALES)
+            sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL
 
             Try
                 Me._Conexion.Open()
@@ -592,6 +603,7 @@ Public Class Class_Bancos_CXC
                     Me._CFDIS_GENERADOS = CBool(dReader("CFDIS_GENERADOS"))
                     Me._FECHA_EMISION_CFDI = CType(dReader("BAN_FECHA_EMISION_CFDI"), Date)
                     Me._ES_PAGO_VENTAS_NO_FISCALES = CBool(dReader("BAN_ES_PAGO_VENTAS_NO_FISCALES"))
+                    Me._CODIGO_REGIMEN_FISCAL = "" & dReader("BAN_CODIGO_REGIMEN_FISCAL").ToString
 
                     bResultado = True
 

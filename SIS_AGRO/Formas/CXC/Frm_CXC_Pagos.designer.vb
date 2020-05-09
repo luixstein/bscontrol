@@ -63,10 +63,11 @@ Partial Class Frm_CXC_Pagos
         Me.CboMedioDePago = New System.Windows.Forms.ComboBox()
         Me.LblDisplayMedioPago = New System.Windows.Forms.Label()
         Me.gbAgregaDocCliente = New System.Windows.Forms.GroupBox()
-        Me.txtSPEI_cadenaCDA = New System.Windows.Forms.TextBox()
+        Me.lblDisplayTiposVentas = New System.Windows.Forms.Label()
+        Me.cboTipoVentas = New System.Windows.Forms.ComboBox()
         Me.cmdSeleccionaSPEI = New System.Windows.Forms.Button()
+        Me.txtSPEI_cadenaCDA = New System.Windows.Forms.TextBox()
         Me.txtSPEI_sello = New System.Windows.Forms.TextBox()
-        Me.chkEsBancoExtranjero = New System.Windows.Forms.CheckBox()
         Me.txtSPEI_numeroCertificado = New System.Windows.Forms.TextBox()
         Me.dtFechaCheque = New System.Windows.Forms.DateTimePicker()
         Me.lblDisplayFechaCheque = New System.Windows.Forms.Label()
@@ -98,6 +99,7 @@ Partial Class Frm_CXC_Pagos
         Me.LblCliente = New System.Windows.Forms.Label()
         Me.LblDisplayCliente = New System.Windows.Forms.Label()
         Me.TxtCodigoCliente = New System.Windows.Forms.TextBox()
+        Me.chkEsBancoExtranjero = New System.Windows.Forms.CheckBox()
         Me.gbVentas = New System.Windows.Forms.GroupBox()
         Me.GridVentas = New FlexCell.Grid()
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
@@ -110,8 +112,8 @@ Partial Class Frm_CXC_Pagos
         Me.GridDocumentosPago = New FlexCell.Grid()
         Me.btnVerCFDIS = New System.Windows.Forms.Button()
         Me.btnGenerarCFDIS = New System.Windows.Forms.Button()
-        Me.cboTipoVentas = New System.Windows.Forms.ComboBox()
-        Me.lblDisplayTiposVentas = New System.Windows.Forms.Label()
+        Me.cboRegimenFiscal = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayRegimenFiscal = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbAgregaDocCliente.SuspendLayout()
@@ -182,6 +184,8 @@ Partial Class Frm_CXC_Pagos
         '
         'gbGlobal
         '
+        Me.gbGlobal.Controls.Add(Me.cboRegimenFiscal)
+        Me.gbGlobal.Controls.Add(Me.lblDisplayRegimenFiscal)
         Me.gbGlobal.Controls.Add(Me.lblEsCuentaFiscal)
         Me.gbGlobal.Controls.Add(Me.chkVentasNoFiscales)
         Me.gbGlobal.Controls.Add(Me.cmdPruebaPagoCFDI)
@@ -538,14 +542,26 @@ Partial Class Frm_CXC_Pagos
         Me.gbAgregaDocCliente.TabStop = False
         Me.gbAgregaDocCliente.Text = "Documentos de pago :"
         '
-        'txtSPEI_cadenaCDA
+        'lblDisplayTiposVentas
         '
-        Me.txtSPEI_cadenaCDA.Location = New System.Drawing.Point(691, 119)
-        Me.txtSPEI_cadenaCDA.MaxLength = 0
-        Me.txtSPEI_cadenaCDA.Name = "txtSPEI_cadenaCDA"
-        Me.txtSPEI_cadenaCDA.Size = New System.Drawing.Size(103, 20)
-        Me.txtSPEI_cadenaCDA.TabIndex = 386
-        Me.txtSPEI_cadenaCDA.Visible = False
+        Me.lblDisplayTiposVentas.AutoSize = True
+        Me.lblDisplayTiposVentas.Location = New System.Drawing.Point(213, 121)
+        Me.lblDisplayTiposVentas.Name = "lblDisplayTiposVentas"
+        Me.lblDisplayTiposVentas.Size = New System.Drawing.Size(63, 13)
+        Me.lblDisplayTiposVentas.TabIndex = 389
+        Me.lblDisplayTiposVentas.Text = "Ventas del :"
+        '
+        'cboTipoVentas
+        '
+        Me.cboTipoVentas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboTipoVentas.Enabled = False
+        Me.cboTipoVentas.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cboTipoVentas.FormattingEnabled = True
+        Me.cboTipoVentas.Items.AddRange(New Object() {"MISMO RFC CLIENTE", "MISMO CODIGO CLIENTE"})
+        Me.cboTipoVentas.Location = New System.Drawing.Point(292, 117)
+        Me.cboTipoVentas.Name = "cboTipoVentas"
+        Me.cboTipoVentas.Size = New System.Drawing.Size(177, 21)
+        Me.cboTipoVentas.TabIndex = 388
         '
         'cmdSeleccionaSPEI
         '
@@ -557,6 +573,15 @@ Partial Class Frm_CXC_Pagos
         Me.cmdSeleccionaSPEI.UseVisualStyleBackColor = True
         Me.cmdSeleccionaSPEI.Visible = False
         '
+        'txtSPEI_cadenaCDA
+        '
+        Me.txtSPEI_cadenaCDA.Location = New System.Drawing.Point(691, 119)
+        Me.txtSPEI_cadenaCDA.MaxLength = 0
+        Me.txtSPEI_cadenaCDA.Name = "txtSPEI_cadenaCDA"
+        Me.txtSPEI_cadenaCDA.Size = New System.Drawing.Size(103, 20)
+        Me.txtSPEI_cadenaCDA.TabIndex = 386
+        Me.txtSPEI_cadenaCDA.Visible = False
+        '
         'txtSPEI_sello
         '
         Me.txtSPEI_sello.Location = New System.Drawing.Point(584, 119)
@@ -565,16 +590,6 @@ Partial Class Frm_CXC_Pagos
         Me.txtSPEI_sello.Size = New System.Drawing.Size(103, 20)
         Me.txtSPEI_sello.TabIndex = 385
         Me.txtSPEI_sello.Visible = False
-        '
-        'chkEsBancoExtranjero
-        '
-        Me.chkEsBancoExtranjero.Enabled = False
-        Me.chkEsBancoExtranjero.Location = New System.Drawing.Point(40, 118)
-        Me.chkEsBancoExtranjero.Name = "chkEsBancoExtranjero"
-        Me.chkEsBancoExtranjero.Size = New System.Drawing.Size(137, 21)
-        Me.chkEsBancoExtranjero.TabIndex = 385
-        Me.chkEsBancoExtranjero.Text = "Es banco extranjero ?"
-        Me.chkEsBancoExtranjero.UseVisualStyleBackColor = True
         '
         'txtSPEI_numeroCertificado
         '
@@ -853,6 +868,16 @@ Partial Class Frm_CXC_Pagos
         Me.TxtCodigoCliente.Size = New System.Drawing.Size(66, 20)
         Me.TxtCodigoCliente.TabIndex = 0
         '
+        'chkEsBancoExtranjero
+        '
+        Me.chkEsBancoExtranjero.Enabled = False
+        Me.chkEsBancoExtranjero.Location = New System.Drawing.Point(40, 118)
+        Me.chkEsBancoExtranjero.Name = "chkEsBancoExtranjero"
+        Me.chkEsBancoExtranjero.Size = New System.Drawing.Size(137, 21)
+        Me.chkEsBancoExtranjero.TabIndex = 385
+        Me.chkEsBancoExtranjero.Text = "Es banco extranjero ?"
+        Me.chkEsBancoExtranjero.UseVisualStyleBackColor = True
+        '
         'gbVentas
         '
         Me.gbVentas.Controls.Add(Me.GridVentas)
@@ -986,26 +1011,24 @@ Partial Class Frm_CXC_Pagos
         Me.btnGenerarCFDIS.Text = "Generar CFDI's"
         Me.btnGenerarCFDIS.UseVisualStyleBackColor = True
         '
-        'cboTipoVentas
+        'cboRegimenFiscal
         '
-        Me.cboTipoVentas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboTipoVentas.Enabled = False
-        Me.cboTipoVentas.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cboTipoVentas.FormattingEnabled = True
-        Me.cboTipoVentas.Items.AddRange(New Object() {"MISMO RFC CLIENTE", "MISMO CODIGO CLIENTE"})
-        Me.cboTipoVentas.Location = New System.Drawing.Point(292, 117)
-        Me.cboTipoVentas.Name = "cboTipoVentas"
-        Me.cboTipoVentas.Size = New System.Drawing.Size(177, 21)
-        Me.cboTipoVentas.TabIndex = 388
+        Me.cboRegimenFiscal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboRegimenFiscal.FormattingEnabled = True
+        Me.cboRegimenFiscal.Location = New System.Drawing.Point(378, 125)
+        Me.cboRegimenFiscal.MaxLength = 1
+        Me.cboRegimenFiscal.Name = "cboRegimenFiscal"
+        Me.cboRegimenFiscal.Size = New System.Drawing.Size(334, 21)
+        Me.cboRegimenFiscal.TabIndex = 400
         '
-        'lblDisplayTiposVentas
+        'lblDisplayRegimenFiscal
         '
-        Me.lblDisplayTiposVentas.AutoSize = True
-        Me.lblDisplayTiposVentas.Location = New System.Drawing.Point(213, 121)
-        Me.lblDisplayTiposVentas.Name = "lblDisplayTiposVentas"
-        Me.lblDisplayTiposVentas.Size = New System.Drawing.Size(63, 13)
-        Me.lblDisplayTiposVentas.TabIndex = 389
-        Me.lblDisplayTiposVentas.Text = "Ventas del :"
+        Me.lblDisplayRegimenFiscal.AutoSize = True
+        Me.lblDisplayRegimenFiscal.Location = New System.Drawing.Point(297, 129)
+        Me.lblDisplayRegimenFiscal.Name = "lblDisplayRegimenFiscal"
+        Me.lblDisplayRegimenFiscal.Size = New System.Drawing.Size(82, 13)
+        Me.lblDisplayRegimenFiscal.TabIndex = 401
+        Me.lblDisplayRegimenFiscal.Text = "Régimen fiscal :"
         '
         'Frm_CXC_Pagos
         '
@@ -1130,4 +1153,6 @@ Partial Class Frm_CXC_Pagos
     Friend WithEvents lblEsCuentaFiscal As Label
     Friend WithEvents lblDisplayTiposVentas As Label
     Friend WithEvents cboTipoVentas As ComboBox
+    Friend WithEvents cboRegimenFiscal As ComboBox
+    Friend WithEvents lblDisplayRegimenFiscal As Label
 End Class
