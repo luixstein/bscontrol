@@ -295,13 +295,8 @@ BuscarCuentas:
             End If
         End If
 
-        If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios("SAI", Me.CboAlmacen1.SelectedValue.ToString.ToString, "") = False Then
-            MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar salida de almacén.", MsgBoxStyle.Information, Me.Text)
-            Exit Function
-        End If
-
-        If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios("ENI", Me.cboAlmacen2.SelectedValue.ToString.ToString, "") = False Then
-            MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar entrada de almacén.", MsgBoxStyle.Information, Me.Text)
+        If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios("TRANS", Me.CboAlmacen1.SelectedValue.ToString, "") = False Then
+            MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar la transformacion.", MsgBoxStyle.Information, Me.Text)
             Exit Function
         End If
 
