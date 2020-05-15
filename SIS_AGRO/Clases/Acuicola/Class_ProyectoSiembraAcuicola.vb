@@ -17,6 +17,10 @@ Public Class Class_ProyectoSiembraAcuicola
     Private _ESTATUS As String
     Private _FECHA_SERVIDOR As Date
     Private _CODIGO_USUARIO_GRABO As Integer
+    Private _FECHA_CIERRE As Date
+    Private _KILOS_COSECHADOS As Decimal
+    Private _FOLIO_ENTRADA As String
+    Private _CODIGO_USUARIO_CERRO As Integer
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -114,6 +118,39 @@ Public Class Class_ProyectoSiembraAcuicola
             Return Me._CODIGO_USUARIO_GRABO
         End Get
     End Property
+
+    Public Property FECHA_CIERRE() As Date
+        Get
+            Return Me._FECHA_CIERRE
+        End Get
+        Set(value As Date)
+            Me._FECHA_CIERRE = value
+        End Set
+    End Property
+
+    Public Property KILOS_COSECHADOS() As Decimal
+        Get
+            Return Me._KILOS_COSECHADOS
+        End Get
+        Set(value As Decimal)
+            Me._KILOS_COSECHADOS = value
+        End Set
+    End Property
+
+    Public Property FOLIO_ENTRADA() As String
+        Get
+            Return Me._FOLIO_ENTRADA
+        End Get
+        Set(value As String)
+            Me._FOLIO_ENTRADA = value
+        End Set
+    End Property
+
+    Public ReadOnly Property CODIGO_USUARIO_CERRO() As Integer
+        Get
+            Return Me._CODIGO_USUARIO_CERRO
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -190,6 +227,10 @@ Public Class Class_ProyectoSiembraAcuicola
             sqlParametro = .Parameters.Add("@HA", SqlDbType.Decimal) : sqlParametro.Value = Me._HA
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_GRABO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
+            sqlParametro = .Parameters.Add("@FECHA_CIERRE", SqlDbType.DateTime) : sqlParametro.Value = IIf(Me._ESTATUS = "T", Me._FECHA_CIERRE, DBNull.Value)
+            sqlParametro = .Parameters.Add("@KILOS_COSECHADOS", SqlDbType.Decimal) : sqlParametro.Value = Me._KILOS_COSECHADOS
+            sqlParametro = .Parameters.Add("@FOLIO_ENTRADA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_ENTRADA.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_USUARIO_CERRO", SqlDbType.SmallInt) : sqlParametro.Value = IIf(Me._ESTATUS = "T", Usuario.Codigo_Usuario, 0)
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = sAccion
 
             Try
@@ -229,6 +270,14 @@ Public Class Class_ProyectoSiembraAcuicola
                     Me._HA = CDec(dReader("HA").ToString())
                     Me._ESTATUS = "" & dReader("ESTATUS").ToString()
                     Me._CODIGO_USUARIO_GRABO = CInt("" & dReader("CODIGO_USUARIO_GRABO").ToString())
+
+                    If Me._ESTATUS = "T" Then
+                        Me._FECHA_CIERRE = CDate("" & dReader("FECHA_CIERRE").ToString)
+                        Me._KILOS_COSECHADOS = CDec(dReader("KILOS_COSECHADOS").ToString)
+                        Me._FOLIO_ENTRADA = "" & dReader("FOLIO_ENTRADA").ToString
+                        Me._CODIGO_USUARIO_CERRO = CInt("" & dReader("CODIGO_USUARIO_CERRO").ToString)
+                    End If
+
 
                     bResultado = True
                 End If
