@@ -9,6 +9,7 @@ Public Class Transformaciones
     Private oFormula As New Class_CatFormulas
     Private oFormaDetalleCuentas As InventariosDetalleCuentasContables
     Private dtSeries As DataTable
+    Private sCodigoConceptoInventario As String = ""
 
 #Region "Columnas grid"
     Private iGyCodigo As Integer = 1
@@ -323,6 +324,9 @@ BuscarCuentas:
             Exit Function
         End If
 
+        Dim sql As New Class_find("SELECT CODIGO_CONCEPTO_INVENTARIOS FROM CAT_CONCEPTOS_INVENTARIOS WHERE NOMBRE_CONCEPTO_INVENTARIOS='MATERIA PRIMA'")
+        sCodigoConceptoInventario = sql.Result1
+
         Me.Totales()
 
         'Salida de ingredientes
@@ -375,6 +379,7 @@ BuscarCuentas:
                 .CODIGO_PLAZA = Usuario.Codigo_Plaza
                 .TOTAL = valorNumericoD(Me.TxtCostoTotal.Text)
                 .FOLIO_EMBARQUE = ""
+                .CODIGO_CONCEPTO_INVENTARIOS = CInt(sCodigoConceptoInventario)
 
                 If .Grabar("INSERTAR") = False Then
                     MsgBox("Error al tratar de insertar el movimiento de salida de inventario.", MsgBoxStyle.Exclamation, Me.Text)
@@ -479,6 +484,7 @@ BuscarCuentas:
                 .CODIGO_PLAZA = Usuario.Codigo_Plaza
                 .TOTAL = valorNumericoD(Me.TxtCostoTotal.Text)
                 .FOLIO_EMBARQUE = ""
+                .CODIGO_CONCEPTO_INVENTARIOS = CInt(sCodigoConceptoInventario)
 
                 If .Grabar("INSERTAR") = False Then
                     MsgBox("Error al tratar de insertar el movimiento de entrada de inventario.", MsgBoxStyle.Exclamation, Me.Text)
