@@ -463,6 +463,20 @@ buscar:
         End If
     End Sub
 
+    Private Sub CboConceptoInventario_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CboConceptoInventario.SelectedIndexChanged
+        If Empresa_Sistema.ES_ACUICOLA = True And (Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ENI" Or Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "SAI") Then
+            If Me.CboConceptoInventario.Text = "MATERIA PRIMA" Then
+                Me.LblFolioOrdenProduccion.Visible = True
+                Me.TxtFolioOrdenProduccion.Visible = True
+            Else
+                Me.LblFolioOrdenProduccion.Visible = False
+                Me.TxtFolioOrdenProduccion.Visible = False
+                Me.TxtFolioOrdenProduccion.Text = ""
+            End If
+
+        End If
+    End Sub
+
 #Region "Eventos Genericos"
     Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles DtpFecha.KeyPress, TxtConcepto.KeyPress, TxtFolio.KeyPress, TxtFolioReferencia.KeyPress, txtFolioEmbarque.KeyPress,
         txtFolioOrdenCompra.KeyPress
@@ -518,6 +532,7 @@ buscar:
                     Me.btnSeries.Enabled = True
                     Me.btnSeleccionarArchivoSeries.Enabled = True
                     Me.CboConceptoInventario.Enabled = True
+                    Me.TxtFolioOrdenProduccion.Enabled = True
 
                     Me.OcultaControles()
 
@@ -557,6 +572,7 @@ buscar:
                     Me.btnSeries.Enabled = True
                     Me.btnSeleccionarArchivoSeries.Enabled = True
                     Me.CboConceptoInventario.Enabled = False
+                    Me.TxtFolioOrdenProduccion.Enabled = True
 
                     Me.OcultaControles()
 
@@ -590,6 +606,7 @@ buscar:
                     Me.btnSeleccionarArchivoSeries.Enabled = False
                     Me.GridSeries.Locked = True
                     Me.CboConceptoInventario.Enabled = False
+                    Me.TxtFolioOrdenProduccion.Enabled = False
 
                     Me.tsbImprimir.Select()
 
@@ -615,6 +632,7 @@ buscar:
                     Me.btnSeleccionarArchivoSeries.Enabled = False
                     Me.GridSeries.Locked = False
                     Me.CboConceptoInventario.Enabled = False
+                    Me.TxtFolioOrdenProduccion.Enabled = False
 
                     Me.tsbImprimir.Select()
             End Select
@@ -646,6 +664,10 @@ buscar:
             Me.lblStatus.Text = ""
 
             Me.txtFolioEmbarque.Text = ""
+
+            Me.TxtFolioOrdenProduccion.Text = ""
+            Me.TxtFolioOrdenProduccion.Visible = False
+            Me.LblFolioOrdenProduccion.Visible = False
 
             Me.GeneraFolio()
 
@@ -1041,6 +1063,16 @@ BuscarCuentas:
             End If
         End If
 
+        If Empresa_Sistema.ES_ACUICOLA = True Then
+            If txtLEN(Me.TxtFolioOrdenProduccion.Text) = True Then
+                Dim sql As New Class_find("SELECT FOLIO_MOVIMIENTO_INVENTARIO FROM INVENTARIO_MOVIMIENTOS_GLOBAL WHERE ESTA_CANCELADO='0' AND ESTATUS='A' AND FOLIO_ORDEN_PRODUCCION='" & Me.TxtFolioOrdenProduccion.Text & "'")
+                If txtLEN(sql.Result1) Then
+                    MsgBox("El folio de orden de producción ya fue capturado en " & sql.Result1, MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+            End If
+        End If
+
         Dim oAlmacenOrigen As New Class_CatAlmacenes(Me.CboAlmacen.SelectedValue.ToString)
         Dim oAlmacenDestino As New Class_CatAlmacenes(Me.CboAlmacenDestino.SelectedValue.ToString)
         Dim oAlmacenEntradaFinanciera As New Class_CatAlmacenes 'No se le pasa el código todavia.
@@ -1105,6 +1137,7 @@ BuscarCuentas:
                         Else
                             .CODIGO_ALMACEN_ENTRADA_FINANCIERA = ""
                         End If
+                        .FOLIO_ORDEN_PRODUCCION = Me.TxtFolioOrdenProduccion.Text
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -1628,6 +1661,7 @@ BuscarCuentas:
             Me.DtpFecha.Value = CDate(oInventarios.FECHA)
             Me.txtFolioEmbarque.Text = oInventarios.FOLIO_EMBARQUE
             Me.CboConceptoInventario.SelectedValue = oInventarios.CODIGO_CONCEPTO_INVENTARIOS
+            Me.TxtFolioOrdenProduccion.Text = oInventarios.FOLIO_ORDEN_PRODUCCION
 
             Me.txtTotalMasFlete.Text = FormatImporteContable(oInventarios.TOTAL)
 
@@ -2164,6 +2198,17 @@ BuscarCuentas:
                     Me.btnConsultarOrdenCompra.Enabled = True
                     Me.btnNuevaOrdenCompra.Enabled = True
                     Me.txtFolioOrdenCompra.Enabled = True
+                End If
+            End If
+
+            If Empresa_Sistema.ES_ACUICOLA Then
+                If (Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ENI" Or Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "SAI") And Me.CboConceptoInventario.Text = "MATERIA PRIMA" Then
+                    Me.LblFolioOrdenProduccion.Visible = True
+                    Me.TxtFolioOrdenProduccion.Visible = True
+                Else
+                    Me.LblFolioOrdenProduccion.Visible = False
+                    Me.TxtFolioOrdenProduccion.Visible = False
+                    Me.TxtFolioOrdenProduccion.Text = ""
                 End If
             End If
 

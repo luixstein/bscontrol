@@ -114,6 +114,17 @@ Public Class AcuicolaProyectoSiembra
         'Me.DesplegarAños()
     End Sub
 
+    Private Sub CboEstatus_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CboEstatus.SelectedIndexChanged
+        If Me.CboEstatus.Text = "T" Then
+            Me.GbCierreCiclo.Visible = True
+        Else
+            Me.GbCierreCiclo.Visible = False
+            Me.DtFechaCierre.Value = Date.Now
+            Me.TxtFolioEntrada.Text = ""
+            Me.TxtKilosCosechados.Text = ""
+        End If
+    End Sub
+
 #Region "Eventos de la lista de elementos"
     Private Sub Grid_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles Grid.CellClick
         Me.LlenaElemento(Me.Grid.CurrentRow.Cells("ID_PROYECTO_SIEMBRA").Value.ToString)
@@ -205,12 +216,13 @@ Public Class AcuicolaProyectoSiembra
                     Me.tsbGrabar.Enabled = True
                     Me.tsbCancelar.Enabled = True
 
-                    Me.CboEstatus.Enabled = True
+                    Me.CboEstatus.Enabled = False 'Solo se puede agregar con estatus A
                     Me.cboDivision.Enabled = True
                     Me.txtCiclo.Enabled = True
                     Me.dtFecha.Enabled = True
                     Me.cboLote.Enabled = True
                     Me.txtHA.Enabled = True
+                    Me.GbCierreCiclo.Enabled = True
 
                     Me.InicializaElemento()
 
@@ -231,6 +243,7 @@ Public Class AcuicolaProyectoSiembra
                     Me.dtFecha.Enabled = True
                     Me.cboLote.Enabled = False
                     Me.txtHA.Enabled = True
+                    Me.GbCierreCiclo.Enabled = True
 
                     Me.txtHA.Focus()
 
@@ -243,6 +256,7 @@ Public Class AcuicolaProyectoSiembra
                     Me.tsbEditar.Enabled = False
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = False
+                    Me.GbCierreCiclo.Enabled = False
 
                     'Me.txtFiltro.Focus()
 
@@ -294,6 +308,13 @@ Public Class AcuicolaProyectoSiembra
                     Me.dtFecha.Value = .FECHA_INICIO
                     Me.cboLote.SelectedValue = .CODIGO_LOTE
                     Me.txtHA.Text = .HA.ToString
+
+                    If .ESTATUS = "T" Then
+                        Me.DtFechaCierre.Value = .FECHA_CIERRE
+                        Me.TxtKilosCosechados.Text = .KILOS_COSECHADOS.ToString
+                        Me.TxtFolioEntrada.Text = .FOLIO_ENTRADA
+                    End If
+
                 End With
             End If
         Catch ex As Exception
@@ -315,6 +336,9 @@ Public Class AcuicolaProyectoSiembra
                         .HA = valorNumericoD(Me.txtHA.Text)
                         .ESTATUS = Me.CboEstatus.Text
 
+                        .FECHA_CIERRE = Me.DtFechaCierre.Value
+                        .KILOS_COSECHADOS = valorNumericoD(Me.TxtKilosCosechados.Text)
+                        .FOLIO_ENTRADA = Me.TxtFolioEntrada.Text
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -367,6 +391,22 @@ Public Class AcuicolaProyectoSiembra
             If valorNumericoD(Me.txtHA.Text) <= 0 Then
                 MsgBox("Asíge las hectáreas.", MsgBoxStyle.Exclamation, Me.Text)
                 Return False
+            End If
+
+            If Me.CboEstatus.Text = "T" Then
+
+                If valorNumericoD(Me.TxtKilosCosechados.Text) <= 0 Then
+                    MsgBox("Asígne los kilos cosechados.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.TxtKilosCosechados.Focus()
+                    Return False
+                End If
+
+                If txtLEN(Me.TxtFolioEntrada.Text) = False Then
+                    MsgBox("Asígne el folio de entrada.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.TxtFolioEntrada.Focus()
+                    Return False
+                End If
+
             End If
 
             bResultado = True

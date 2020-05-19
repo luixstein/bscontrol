@@ -597,12 +597,19 @@
             End If
 
             Dim oParametroDetalle As Class_CatParametrosAcuicolaDetalle
+            Dim oProyectoSiembra As Class_ProyectoSiembraAcuicola
 
             For i = 1 To Me.Grid.Rows - 1
                 If Me.Grid.Cell(i, Me.iGyIdCapturaAlimentacionDetalle).Text <> "0" Then
 
+                    oProyectoSiembra = New Class_ProyectoSiembraAcuicola(Me.Grid.Cell(i, Me.iGyIDProyectoSiembra).Text)
+                    If oProyectoSiembra.ESTATUS = "T" Then
+                        MsgBox("El ciclo " & Me.txtCiclo.Text & " del estanque " & Me.Grid.Cell(i, Me.iGyNombreLote).Text & " ya esta cerrado.", MsgBoxStyle.Exclamation, Me.Name)
+                        Return False
+                    End If
+
                     If txtLEN(Me.Grid.Cell(i, Me.iGyAlimento).Text) = False Then
-                        MsgBox("Capture el alimento del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                        MsgBox("Capture la cantidad de alimento del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
                         Me.Grid.Cell(i, Me.iGyAlimento).SetFocus()
                         Return False
                     End If
@@ -623,6 +630,12 @@
                         End If
                     Else
                         MsgBox("Las canastas para el estanque #" & Me.Grid.Cell(i, Me.iGyNombreLote).Text & " de la división " & Me.cboDivision.Text & " no han sido definidas en el catalogo.", MsgBoxStyle.Exclamation, Me.Name)
+                        Return False
+                    End If
+
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyCodigoTipoAlimento).Text) = False Then
+                        MsgBox("Capture el tipo de alimento del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                        Me.Grid.Cell(i, Me.iGyNombreTipoAlimento).SetFocus()
                         Return False
                     End If
 

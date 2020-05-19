@@ -31,6 +31,7 @@ Public Class Class_Inventarios_Global
     Private _ESTATUS_MOVIMIENTO As String
     Private _CODIGO_ALMACEN_ENTRADA_FINANCIERA As String
     Private _FOLIO_ENTRADA_FINANCIERA As String
+    Private _FOLIO_ORDEN_PRODUCCION As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -276,6 +277,16 @@ Public Class Class_Inventarios_Global
             Me._FOLIO_ENTRADA_FINANCIERA = Value
         End Set
     End Property
+
+    Public Property FOLIO_ORDEN_PRODUCCION() As String
+        Get
+            Return Me._FOLIO_ORDEN_PRODUCCION
+        End Get
+        Set(Value As String)
+            Me._FOLIO_ORDEN_PRODUCCION = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -377,6 +388,7 @@ Public Class Class_Inventarios_Global
             sqlParametro = .Parameters.Add("@COSTO_TOTAL_BASE", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO_TOTAL_BASE
             sqlParametro = .Parameters.Add("@FLETE_TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._FLETE_TOTAL
             sqlParametro = .Parameters.Add("@CODIGO_ALMACEN_ENTRADA_FINANCIERA", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_ALMACEN_ENTRADA_FINANCIERA
+            sqlParametro = .Parameters.Add("@FOLIO_ORDEN_PRODUCCION", SqlDbType.NVarChar, 30) : sqlParametro.Value = "" & Me.FOLIO_ORDEN_PRODUCCION.ToUpper
 
             Try
                 Me._Conexion.Open()
@@ -498,6 +510,7 @@ Public Class Class_Inventarios_Global
                     Me._ESTATUS_MOVIMIENTO = "" & dReader("ESTATUS_MOVIMIENTO").ToString
                     Me._CODIGO_ALMACEN_ENTRADA_FINANCIERA = "" & dReader("CODIGO_ALMACEN_ENTRADA_FINANCIERA").ToString()
                     Me._FOLIO_ENTRADA_FINANCIERA = "" & dReader("FOLIO_ENTRADA_FINANCIERA").ToString()
+                    Me._FOLIO_ORDEN_PRODUCCION = "" & dReader("FOLIO_ORDEN_PRODUCCION").ToString
 
                     bResultado = True
                 End If
