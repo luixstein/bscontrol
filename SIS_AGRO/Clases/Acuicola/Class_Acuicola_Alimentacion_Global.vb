@@ -348,7 +348,7 @@ Public Class Class_Acuicola_Alimentacion_Global
         f.sOrder = "L.NOMBRE_LOTE"
         f.sTable = "P.PROYECTO_SIEMBRA_ACUICOLA"
         f.sQl = "SELECT P.ID_PROYECTO_SIEMBRA,P.CODIGO_LOTE,L.NOMBRE_LOTE AS ESTANQUE FROM PROYECTO_SIEMBRA_ACUICOLA P INNER JOIN CAT_LOTES L ON(P.CODIGO_LOTE=L.CODIGO_LOTE) " & _
-                "WHERE P.CODIGO_DIVISION = '" & sCodigoDivision & "' AND P.CICLO = '" & sCiclo & "' AND YEAR(P.FECHA_INICIO)=" & sAño & " AND "
+                "WHERE P.CODIGO_DIVISION = '" & sCodigoDivision & "' AND P.CICLO = '" & sCiclo & "' AND YEAR(P.FECHA_INICIO)=" & sAño & " AND P.ESTATUS='A' AND "
         f.Inicia("")
         f.ShowDialog()
         Try

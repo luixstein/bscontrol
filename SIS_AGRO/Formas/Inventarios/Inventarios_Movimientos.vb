@@ -464,13 +464,14 @@ buscar:
     End Sub
 
     Private Sub CboConceptoInventario_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CboConceptoInventario.SelectedIndexChanged
-        If Empresa_Sistema.ES_ACUICOLA = True Then
+        If Empresa_Sistema.ES_ACUICOLA = True And (Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ENI" Or Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "SAI") Then
             If Me.CboConceptoInventario.Text = "MATERIA PRIMA" Then
                 Me.LblFolioOrdenProduccion.Visible = True
                 Me.TxtFolioOrdenProduccion.Visible = True
             Else
                 Me.LblFolioOrdenProduccion.Visible = False
                 Me.TxtFolioOrdenProduccion.Visible = False
+                Me.TxtFolioOrdenProduccion.Text = ""
             End If
 
         End If
@@ -667,11 +668,6 @@ buscar:
             Me.TxtFolioOrdenProduccion.Text = ""
             Me.TxtFolioOrdenProduccion.Visible = False
             Me.LblFolioOrdenProduccion.Visible = False
-
-            If Empresa_Sistema.ES_ACUICOLA = True AndAlso Me.CboConceptoInventario.Text = "MATERIA PRIMA" Then
-                Me.TxtFolioOrdenProduccion.Visible = True
-                Me.LblFolioOrdenProduccion.Visible = True
-            End If
 
             Me.GeneraFolio()
 
@@ -1064,6 +1060,16 @@ BuscarCuentas:
         If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ER" Then
             If Me.ValidaOrdenCompra = False Then
                 Return False
+            End If
+        End If
+
+        If Empresa_Sistema.ES_ACUICOLA = True Then
+            If txtLEN(Me.TxtFolioOrdenProduccion.Text) = True Then
+                Dim sql As New Class_find("SELECT FOLIO_MOVIMIENTO_INVENTARIO FROM INVENTARIO_MOVIMIENTOS_GLOBAL WHERE ESTA_CANCELADO='0' AND ESTATUS='A' AND FOLIO_ORDEN_PRODUCCION='" & Me.TxtFolioOrdenProduccion.Text & "'")
+                If txtLEN(sql.Result1) Then
+                    MsgBox("El folio de orden de producción ya fue capturado en " & sql.Result1, MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
             End If
         End If
 
@@ -2192,6 +2198,17 @@ BuscarCuentas:
                     Me.btnConsultarOrdenCompra.Enabled = True
                     Me.btnNuevaOrdenCompra.Enabled = True
                     Me.txtFolioOrdenCompra.Enabled = True
+                End If
+            End If
+
+            If Empresa_Sistema.ES_ACUICOLA Then
+                If (Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ENI" Or Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "SAI") And Me.CboConceptoInventario.Text = "MATERIA PRIMA" Then
+                    Me.LblFolioOrdenProduccion.Visible = True
+                    Me.TxtFolioOrdenProduccion.Visible = True
+                Else
+                    Me.LblFolioOrdenProduccion.Visible = False
+                    Me.TxtFolioOrdenProduccion.Visible = False
+                    Me.TxtFolioOrdenProduccion.Text = ""
                 End If
             End If
 
