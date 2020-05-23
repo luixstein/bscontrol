@@ -388,7 +388,7 @@ Public Class Class_Inventarios_Global
             sqlParametro = .Parameters.Add("@COSTO_TOTAL_BASE", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO_TOTAL_BASE
             sqlParametro = .Parameters.Add("@FLETE_TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._FLETE_TOTAL
             sqlParametro = .Parameters.Add("@CODIGO_ALMACEN_ENTRADA_FINANCIERA", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_ALMACEN_ENTRADA_FINANCIERA
-            sqlParametro = .Parameters.Add("@FOLIO_ORDEN_PRODUCCION", SqlDbType.NVarChar, 30) : sqlParametro.Value = "" & Me.FOLIO_ORDEN_PRODUCCION.ToUpper
+            sqlParametro = .Parameters.Add("@FOLIO_ORDEN_PRODUCCION", SqlDbType.NVarChar, 30) : sqlParametro.Value = "" & Me.FOLIO_ORDEN_PRODUCCION
 
             Try
                 Me._Conexion.Open()

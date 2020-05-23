@@ -1137,7 +1137,7 @@ BuscarCuentas:
                         Else
                             .CODIGO_ALMACEN_ENTRADA_FINANCIERA = ""
                         End If
-                        .FOLIO_ORDEN_PRODUCCION = Me.TxtFolioOrdenProduccion.Text
+                        .FOLIO_ORDEN_PRODUCCION = Me.TxtFolioOrdenProduccion.Text.ToUpper
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
