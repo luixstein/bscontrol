@@ -123,7 +123,7 @@ busca:
                                      dRow("REORDEN").ToString & Chr(9) &
                                      dRow("MAXIMO").ToString & Chr(9) &
                                      dRow("COBERTUDA_DIAS_ACTUAL").ToString & Chr(9) &
-                                     Format(dRow("FECHA_ORDENAR"), "dd/mm/yyyy") & Chr(9) &
+                                     Format(dRow("FECHA_ORDENAR"), "dd/MM/yyyy") & Chr(9) &
                                      dRow("PEDIDO_SUGERIDO").ToString & Chr(9) &
                                      dRow("BALANCE_INVENTARIO").ToString & Chr(9))
         Next
