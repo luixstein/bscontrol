@@ -189,6 +189,7 @@
     <Compile Include="Clases\Catalogos\Class_Catalogos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatArticulos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatClientesCuentasBancarias.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatGirosClientes.vb" />
     <Compile Include="Clases\Catalogos\Class_CatConceptosInventarios.vb" />
     <Compile Include="Clases\Catalogos\Class_CatParametrosAcuicolaDetalle.vb" />
     <Compile Include="Clases\Catalogos\Class_CatDivisionesAcuicola.vb" />
