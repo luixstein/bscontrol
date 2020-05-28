@@ -1452,7 +1452,12 @@ BuscarCuentas:
         Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
         Try
-            FormatoDeReporte = "RPT_FORMATO_MOVIMIENTO_INVENTARIO"
+            If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "TRI" Or Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "TRF" Then
+                FormatoDeReporte = "RPT_FORMATO_INVENTARIO_TRANSFERENCIA"
+            Else
+                FormatoDeReporte = "RPT_FORMATO_MOVIMIENTO_INVENTARIO"
+            End If
+
             oReporte = New Class_Reporte(FormatoDeReporte, Rpt, False)
             If Not oReporte.RptCargado Then
                 Exit Sub
