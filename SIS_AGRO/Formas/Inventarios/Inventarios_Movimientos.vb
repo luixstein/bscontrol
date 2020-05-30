@@ -1318,6 +1318,12 @@ BuscarCuentas:
         End If
 
         If (Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "ENI" Or Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "ER") And Me.oInventarios.ESTATUS = "A" Then
+            If Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "ER" Then 'Valida que la entrada no tenga compras aplicadas
+                If Me.ValidaComprasEntradasRecepcion() = False Then
+                    Return False
+                End If
+            End If
+
             If oInventarios.ValidaExistencias() = False Then 'Esta funcion porque tambien valida series
                 Return False
             End If
@@ -3209,6 +3215,18 @@ busca_serie:
         End Try
 
         Return bResultado
+    End Function
+
+    Private Function ValidaComprasEntradasRecepcion() As Boolean
+        Dim sql As New Class_find("SELECT C.FOLIO_COMPRA FROM COMPRAS_RELACION_ENTRADAS_INVENTARIOS R INNER JOIN COMPRA_GLOBAL C ON(C.FOLIO_COMPRA=R.FOLIO_COMPRA) " &
+                                  "WHERE C.ESTATUS = 'A' AND R.FOLIO_MOVIMIENTO_INVENTARIO = '" & Me.TxtFolio.Text & "'")
+
+        If txtLEN(sql.Result1) Then
+            MsgBox("No se puede cancelar la entrada por recepción porque esta aplicada en la compra " & sql.Result1, MsgBoxStyle.Exclamation, Me.Text)
+            Return False
+        End If
+
+        Return True
     End Function
 
 #End Region
