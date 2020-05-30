@@ -133,7 +133,7 @@ busca:
         Me.GbArticulos.Enabled = True
     End Sub
 
-    Private Function Grabar(ByVal sCodigoArticulo As String, ByVal sClasifiacionImportancia As String, ByVal iTiempoEntrega As Integer, ByVal dMax As Double, ByVal dReorden As Double, ByVal dMin As Double) As Boolean
+    Private Function Grabar(ByVal sCodigoArticulo As String, ByVal sClasifiacionImportancia As String, ByVal iTiempoEntrega As Integer, ByVal dMax As Double, ByVal dMin As Double) As Boolean
         oInventariosSugeridos = New Class_Inventarios_Sugeridos
 
         If txtLEN(Me.TxtCodigoAlmacen.Text) = False Then
@@ -147,7 +147,7 @@ busca:
             Return False
         End If
 
-        If dMax < 0 Or dMin < 0 Or dReorden < 0 Or iTiempoEntrega < 0 Then
+        If dMax < 0 Or dMin < 0 Or iTiempoEntrega < 0 Then
             MsgBox("No se pueden grabar cantidades negativas", MsgBoxStyle.Exclamation, Me.Text)
             Return False
         End If
@@ -160,7 +160,7 @@ busca:
                 .CLASIFICACION_IMPORTANCIA = sClasifiacionImportancia
                 .TIEMPO_ENTREGA_DIAS = iTiempoEntrega
                 .MAXIMO = CDec(dMax)
-                .REORDEN = CDec(dReorden)
+                '.REORDEN = CDec(dReorden)
                 .MINIMO = CDec(dMin)
 
                 If oInventariosSugeridos.Grabar() = False Then
@@ -178,7 +178,7 @@ busca:
         Try
             Dim Columna As Integer, Renglon As Integer
             Dim sCodigoArticulo, sClasificacionImportancia As String
-            Dim dMaximo, dMinimo, dReorden As Double
+            Dim dMaximo, dMinimo As Double
             Dim iTiempoEntrega As Integer
 
             Columna = Me.GridArticulos.Selection.FirstCol
@@ -188,7 +188,7 @@ busca:
             sClasificacionImportancia = Me.GridArticulos.Cell(Renglon, Me.iGyClasificacionImportancia).Text
             iTiempoEntrega = CInt(Me.GridArticulos.Cell(Renglon, Me.iGyTiempoEntregaDias).Text)
             dMaximo = valorNumerico(Me.GridArticulos.Cell(Renglon, Me.iGyMaximo).Text)
-            dReorden = valorNumerico(Me.GridArticulos.Cell(Renglon, Me.iGyReorden).Text)
+            'dReorden = valorNumerico(Me.GridArticulos.Cell(Renglon, Me.iGyReorden).Text)
             dMinimo = valorNumerico(Me.GridArticulos.Cell(Renglon, Me.iGyMinimo).Text)
 
             oInventariosSugeridos = New Class_Inventarios_Sugeridos
@@ -197,13 +197,16 @@ busca:
                 Case Keys.Enter
 
                     Select Case Columna
-                        Case Me.iGyMaximo, Me.iGyMinimo, Me.iGyReorden, Me.iGyClasificacionImportancia, Me.iGyTiempoEntregaDias
+                        Case Me.iGyMaximo, Me.iGyMinimo, Me.iGyClasificacionImportancia, Me.iGyTiempoEntregaDias
 
-                            Me.Grabar(sCodigoArticulo, sClasificacionImportancia, iTiempoEntrega, dMaximo, dReorden, dMinimo)
+                            Me.Grabar(sCodigoArticulo, sClasificacionImportancia, iTiempoEntrega, dMaximo, dMinimo)
 
-                            If Columna = Me.iGyTiempoEntregaDias Or Columna = Me.iGyReorden Then
+                            'Estos campos se usan para calcular otras columnas por lo que se actualiza el grid
+                            If Columna = Me.iGyTiempoEntregaDias Or Columna = Me.iGyMinimo Then
                                 Me.ConsultarArticulos(Me.TxtFiltro.Text)
-                            ElseIf Columna = Me.iGyBalanceInventario Then
+
+
+                            ElseIf Columna = Me.iGyBalanceInventario Then 'Ultima columna del grid, salta al articulo del siguiente renglon
                                 Me.GridArticulos.Cell(Renglon + 1, Me.iGyClasificacionImportancia).SetFocus()
                             End If
 
@@ -326,6 +329,7 @@ busca:
                 .Column(Me.iGyFechaOrdenar).Locked = True
                 .Column(Me.iGyPedidoSugerido).Locked = True
                 .Column(Me.iGyBalanceInventario).Locked = True
+                .Column(Me.iGyReorden).Locked = True
 
                 .AutoRedraw = True
                 .Refresh()
