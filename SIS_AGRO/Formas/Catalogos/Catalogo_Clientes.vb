@@ -517,6 +517,7 @@ busca:
         Me.DesplegarElementos()
         Me.DesplegarFormasPago()
         Me.DesplegarFormasPagoDolares()
+        Me.DesplegarGirosClientes()
 
         If Empresa_Sistema.VERSION_ESQUEMA_CFD >= "3.3" Then
             'Me.gbMetodoPago.Visible = False
@@ -581,6 +582,7 @@ busca:
                     Me.chkPermitirVentaCredito.Enabled = True
                     Me.TxtCodigoAlmacen.Enabled = True
                     Me.cboUsoCFDI.Enabled = True
+                    Me.CboGiros.Enabled = True
 
                     Me.InicializaElemento()
 
@@ -648,6 +650,7 @@ busca:
                     End If
 
                     Me.cboUsoCFDI.Enabled = True
+                    Me.CboGiros.Enabled = True
 
                     Me.TxtNombreCliente.Focus()
 
@@ -701,6 +704,7 @@ busca:
                     Me.txtFiltro.Focus()
                     Me.CboEstatusFiltro.SelectedIndex = 0
                     Me.cboUsoCFDI.Enabled = False
+                    Me.CboGiros.Enabled = False
             End Select
             Application.DoEvents()
 
@@ -925,6 +929,7 @@ busca:
                         End If
 
                         .CODIGO_USO_CFDI = Me.cboUsoCFDI.SelectedValue.ToString
+                        .CODIGO_GIRO = Me.CboGiros.SelectedValue.ToString
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -1149,6 +1154,24 @@ busca:
         End Try
     End Sub
 
+    Private Sub DesplegarGirosClientes()
+        Try
+            Dim oElementos As New Class_CatGirosClientes
+            With Me.CboGiros
+                .DisplayMember = "Nombre_giro"
+                .ValueMember = "CODIGO_giro"
+                Dim dView As New Data.DataView(oElementos.ObtenerElementos)
+                dView.Sort = "Nombre_giro"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedValue = 0
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarGirosClientes", ex)
+        End Try
+    End Sub
+
     Private Function Consultar() As Boolean
         Dim bResultado As Boolean = False
 
@@ -1230,6 +1253,7 @@ busca:
                     Me.TxtCodigoAlmacen.Text = .CODIGO_ALMACEN
                     Me.chkEsContribuyenteIEPS.Checked = CBool(.ES_CONTRIBUYENTE_IEPS)
                     Me.cboUsoCFDI.SelectedValue = .CODIGO_USO_CFDI
+                    Me.CboGiros.SelectedValue = .CODIGO_GIRO
                 End With
 
                 Dim sql As New Class_find("SELECT R.ID,R.CODIGO_PROPIETARIO,P.NOMBRE_PROPIETARIO FROM CAT_PROPIETARIOS_RELACION_CLIENTES R INNER JOIN CAT_PROPIETARIOS P ON(R.CODIGO_PROPIETARIO=P.CODIGO_PROPIETARIO) " _

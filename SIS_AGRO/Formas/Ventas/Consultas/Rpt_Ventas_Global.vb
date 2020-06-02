@@ -181,35 +181,11 @@ Buscar:
         Me.DtFechaDesde.Value = FechaActualINI()
         Me.DtFechaHasta.Value = Date.Now
 
-        Me.CboVendedores.Visible = False
-        Me.LblVendedor.Visible = False
     End Sub
 
     Private Sub tsbConsultar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbConsultar.Click
         Me.Consultar()
     End Sub
-
-    'Private Sub Consultar()
-    '    Dim FormatoDeReporte As String = ""
-    '    Dim Rpt As ReportDocument
-    '    Rpt = New ReportDocument
-    '    Dim oReporte As Class_Reporte
-    '    Try
-
-    '        FormatoDeReporte = "RPT_VENTAS"
-
-    '        oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
-    '        Rpt.SetParameterValue("@CODIGO_CLIENTE", "CN0120")
-
-    '        Dim frm As New Reporte(Rpt)
-    '        frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
-    '        frm.Show()
-    '    Catch ex As Exception
-    '        HandleError(Me.Name, "Consultar", ex)
-    '    Finally
-    '        oReporte = Nothing
-    '    End Try
-    'End Sub
 
     Private Sub Consultar()
         Dim FormatoDeReporte As String = ""
@@ -278,17 +254,6 @@ Buscar:
 
     Private Sub tsbSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSalir.Click
         Me.Close()
-    End Sub
-
-    Private Sub RdnPorCliente_CheckedChanged(sender As Object, e As EventArgs) Handles RdnPorCliente.CheckedChanged
-        If Me.RdnPorCliente.Checked = True Then
-            Me.CboVendedores.Visible = True
-            Me.LblVendedor.Visible = True
-        Else
-            Me.CboVendedores.Visible = False
-            Me.LblVendedor.Visible = False
-        End If
-
     End Sub
 
 End Class

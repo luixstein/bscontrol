@@ -12,7 +12,7 @@ Public Class Class_Inventarios_Sugeridos
     Private _CLASIFICACION_IMPORTANCIA As String
     Private _TIEMPO_ENTREGA_DIAS As Integer
     Private _MAXIMO As Decimal
-    Private _REORDEN As Decimal
+    'Private _REORDEN As Decimal
     Private _MINIMO As Decimal
 #End Region
 
@@ -96,14 +96,14 @@ Public Class Class_Inventarios_Sugeridos
         End Set
     End Property
 
-    Public Property REORDEN() As Decimal
-        Get
-            Return Me._REORDEN
-        End Get
-        Set(value As Decimal)
-            Me._REORDEN = value
-        End Set
-    End Property
+    'Public Property REORDEN() As Decimal
+    '    Get
+    '        Return Me._REORDEN
+    '    End Get
+    '    Set(value As Decimal)
+    '        Me._REORDEN = value
+    '    End Set
+    'End Property
 
     Public Property MINIMO() As Decimal
         Get
@@ -195,7 +195,7 @@ Public Class Class_Inventarios_Sugeridos
             sqlParametro = .Parameters.Add("@CLASIFICACION_IMPORTANCIA", SqlDbType.Char, 1) : sqlParametro.Value = Me._CLASIFICACION_IMPORTANCIA
             sqlParametro = .Parameters.Add("@TIEMPO_ENTREGA_DIAS", SqlDbType.SmallInt) : sqlParametro.Value = Me._TIEMPO_ENTREGA_DIAS
             sqlParametro = .Parameters.Add("@MAXIMO", SqlDbType.Decimal) : sqlParametro.Value = Me._MAXIMO
-            sqlParametro = .Parameters.Add("@REORDEN", SqlDbType.Decimal) : sqlParametro.Value = Me._REORDEN
+            'sqlParametro = .Parameters.Add("@REORDEN", SqlDbType.Decimal) : sqlParametro.Value = Me._REORDEN
             sqlParametro = .Parameters.Add("@MINIMO", SqlDbType.Decimal) : sqlParametro.Value = Me._MINIMO
 
             Try
