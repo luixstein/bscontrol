@@ -1618,6 +1618,7 @@ Buscar:
 
             Me.cboMoneda.SelectedValue = Me.oCompras.CODIGO_MONEDA
             Me.txtTipoCambio.Text = Format(Me.oCompras.TIPO_DE_CAMBIO, "##0.0000")
+            Me.DtpFecha.Value = CDate(Me.oCompras.FECHA) 'Va aqui porque puede ejecutar el cambio de tpca y nos totalizaria
 
             If bEsReferencia = False Then
                 Me.txtFolioCompra.Text = Me.oCompras.FOLIO_COMPRA.ToString.ToUpper
@@ -1727,7 +1728,6 @@ Buscar:
             Me.txtFolioProveedor.Text = Me.oCompras.FOLIO_PROVEEDOR
             Me.TxtConceptoCancelacion.Text = Me.oCompras.CONCEPTO_CANCELACION
 
-            Me.DtpFecha.Value = CDate(Me.oCompras.FECHA)
             Me.dtpFechaVencimiento.Value = Me.DtpFecha.Value.AddDays(CDbl(Me.txtPlazo.Text))
             Me.dtpFechaEntrega.Value = CDate(Me.oCompras.FECHA_ENTREGA)
 
@@ -2366,6 +2366,11 @@ Buscar:
                     End If
                     Return False
                 End If
+            End If
+
+            If valorNumericoD(Me.txtTotal.Text) <= 0 Then
+                MsgBox("El total de la compra no puede ser cero.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
             End If
 
             Return True
