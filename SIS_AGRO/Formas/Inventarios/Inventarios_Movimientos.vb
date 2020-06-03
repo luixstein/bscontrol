@@ -1079,14 +1079,7 @@ BuscarCuentas:
 
         If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "TRF" Then
             oAlmacenEntradaFinanciera = New Class_CatAlmacenes(Me.cboAlmacenEntradaFinanciera.SelectedValue.ToString)
-        End If
 
-        If oAlmacenOrigen.ES_FISCAL <> oAlmacenDestino.ES_FISCAL Then
-            MsgBox("El almacén origen y destino deben ser del mismo tipo(fiscales o financieros).", vbExclamation, sProcedure)
-            Return False
-        End If
-
-        If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "TRF" Then
             If oAlmacenOrigen.ES_FISCAL = False Then
                 MsgBox("En una transferencia de este tipo el almacén origen debe ser de tipo fiscal.", vbExclamation, sProcedure)
                 Return False
@@ -1101,6 +1094,11 @@ BuscarCuentas:
                 MsgBox("En una transferencia de este tipo el almacén de entrada debe ser de tipo financiero.", vbExclamation, sProcedure)
                 Return False
             End If
+        End If
+
+        If Me.oDocumentos.ES_TRANSFERENCIA = "1" And oAlmacenOrigen.ES_FISCAL <> oAlmacenDestino.ES_FISCAL Then
+            MsgBox("El almacén origen y destino deben ser del mismo tipo(fiscales o financieros).", vbExclamation, sProcedure)
+            Return False
         End If
 
         'Me.oInventarios = New Class_Inventarios_Global
@@ -2150,7 +2148,7 @@ BuscarCuentas:
                 If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "TRF" Then 'TRF=TRANSFERENCIA_FINANCIERA 
                     Me.cboAlmacenEntradaFinanciera.Visible = True : Me.lblDisplayAlmacenEntradaFinanciera.Visible = True
                     Me.CboAlmacenDestino.SelectedValue = Plaza.CODIGO_ALMACEN_FACTURACION
-                    Me.cboAlmacenEntradaFinanciera.SelectedValue = Plaza.CODIGO_ALMACEN_FINANCIERO
+                    If Me.Estado = enumEstados.NUEVO Then Me.cboAlmacenEntradaFinanciera.SelectedValue = Plaza.CODIGO_ALMACEN_FINANCIERO
                     Me.txtFolioEntradaFinanciera.Visible = True : Me.lblDisplayFolioEntradaFinanciera.Visible = True
                 Else
                     Me.cboAlmacenEntradaFinanciera.Visible = False : Me.lblDisplayAlmacenEntradaFinanciera.Visible = False
