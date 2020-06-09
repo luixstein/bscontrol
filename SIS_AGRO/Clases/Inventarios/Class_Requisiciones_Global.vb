@@ -395,7 +395,7 @@ Public Class Class_Requisiciones_Global
                     Me._NOMBRE_USUARIO_GRABO = "" & dReader("NOMBRE_USUARIO_GRABO").ToString()
                     Me._CONCEPTO = "" & dReader("CONCEPTO").ToString()
 
-                    If Me._ESTATUS = "L" Or Me._ESTATUS = "R" Then
+                    If Me._ESTATUS = "L" Or Me._ESTATUS = "R" Or Me._ESTATUS = "A" Then
                         Me._FECHA_SOLICITO = CDate(dReader("FECHA_SOLICITO"))
                         Me._CODIGO_USUARIO_SOLICITO = CInt(dReader("CODIGO_USUARIO_SOLICITO"))
                         Me._NOMBRE_USUARIO_SOLICITO = "" & dReader("NOMBRE_USUARIO_SOLICITO").ToString()
