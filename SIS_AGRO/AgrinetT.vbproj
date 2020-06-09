@@ -390,6 +390,8 @@
     <Compile Include="Clases\Facturacion_Electronica\iImpuestosTraslado33.vb" />
     <Compile Include="Clases\Facturacion_Electronica\iImpuestosTraslados33.vb" />
     <Compile Include="Clases\Facturacion_Electronica\iReceptor33.vb" />
+    <Compile Include="Clases\Inventarios\Class_Requisiciones_Detalle.vb" />
+    <Compile Include="Clases\Inventarios\Class_Requisiciones_Global.vb" />
     <Compile Include="Clases\Inventarios\Class_Inventarios_Lotes_Series.vb" />
     <Compile Include="Clases\Inventarios\Class_Inventarios_Sugeridos.vb" />
     <Compile Include="Clases\Nomina\Class_NominaDeduccionesDetalle.vb" />
@@ -1047,6 +1049,12 @@
       <DependentUpon>ProyectoSiembra.vb</DependentUpon>
     </Compile>
     <Compile Include="Formas\Contabilidad\ProyectoSiembra.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Inventarios\Inventarios_Requisiciones.designer.vb">
+      <DependentUpon>Inventarios_Requisiciones.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Inventarios\Inventarios_Requisiciones.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Inventarios\Inventarios_sugeridos.Designer.vb">
@@ -2225,6 +2233,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\CentrosCostos\InventariosDetalleCuentasContables.resx">
       <DependentUpon>InventariosDetalleCuentasContables.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Inventarios\Inventarios_Requisiciones.resx">
+      <DependentUpon>Inventarios_Requisiciones.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Inventarios\Inventarios_Movimientos.resx">
       <DependentUpon>Inventarios_Movimientos.vb</DependentUpon>
