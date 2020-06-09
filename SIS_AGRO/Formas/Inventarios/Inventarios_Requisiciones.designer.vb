@@ -27,8 +27,9 @@ Partial Class Inventarios_Requisiciones
         Me.tsbNuevo = New System.Windows.Forms.ToolStripButton()
         Me.tsbGrabar = New System.Windows.Forms.ToolStripButton()
         Me.tsbSolicitar = New System.Windows.Forms.ToolStripButton()
-        Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
+        Me.tsbAnular = New System.Windows.Forms.ToolStripButton()
+        Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.CboAlmacen = New System.Windows.Forms.ComboBox()
         Me.lblDisplayAlmacen = New System.Windows.Forms.Label()
@@ -49,7 +50,7 @@ Partial Class Inventarios_Requisiciones
         Me.btnDocumentoAnterior = New System.Windows.Forms.Button()
         Me.Grid1 = New FlexCell.Grid()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
-        Me.tsbAnular = New System.Windows.Forms.ToolStripButton()
+        Me.LblNombreEstatus = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.SuspendLayout()
@@ -88,14 +89,6 @@ Partial Class Inventarios_Requisiciones
         Me.tsbSolicitar.Size = New System.Drawing.Size(87, 24)
         Me.tsbSolicitar.Text = "&Solicitar"
         '
-        'tsbCancelar
-        '
-        Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
-        Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbCancelar.Name = "tsbCancelar"
-        Me.tsbCancelar.Size = New System.Drawing.Size(94, 24)
-        Me.tsbCancelar.Text = " Cancelar"
-        '
         'tsbImprimir
         '
         Me.tsbImprimir.Image = CType(resources.GetObject("tsbImprimir.Image"), System.Drawing.Image)
@@ -104,6 +97,22 @@ Partial Class Inventarios_Requisiciones
         Me.tsbImprimir.Size = New System.Drawing.Size(90, 24)
         Me.tsbImprimir.Text = "&Imprimir"
         Me.tsbImprimir.ToolTipText = "Imprimir"
+        '
+        'tsbAnular
+        '
+        Me.tsbAnular.Image = CType(resources.GetObject("tsbAnular.Image"), System.Drawing.Image)
+        Me.tsbAnular.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbAnular.Name = "tsbAnular"
+        Me.tsbAnular.Size = New System.Drawing.Size(76, 24)
+        Me.tsbAnular.Text = "&Anular"
+        '
+        'tsbCancelar
+        '
+        Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
+        Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbCancelar.Name = "tsbCancelar"
+        Me.tsbCancelar.Size = New System.Drawing.Size(94, 24)
+        Me.tsbCancelar.Text = " Cancelar"
         '
         'tsbSalir
         '
@@ -303,19 +312,23 @@ Partial Class Inventarios_Requisiciones
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
         '
-        'tsbAnular
+        'LblNombreEstatus
         '
-        Me.tsbAnular.Image = CType(resources.GetObject("tsbAnular.Image"), System.Drawing.Image)
-        Me.tsbAnular.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbAnular.Name = "tsbAnular"
-        Me.tsbAnular.Size = New System.Drawing.Size(76, 24)
-        Me.tsbAnular.Text = "&Anular"
+        Me.LblNombreEstatus.AutoSize = True
+        Me.LblNombreEstatus.ForeColor = System.Drawing.SystemColors.ActiveCaption
+        Me.LblNombreEstatus.Location = New System.Drawing.Point(533, 75)
+        Me.LblNombreEstatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNombreEstatus.Name = "LblNombreEstatus"
+        Me.LblNombreEstatus.Size = New System.Drawing.Size(55, 17)
+        Me.LblNombreEstatus.TabIndex = 383
+        Me.LblNombreEstatus.Text = "Estatus"
         '
         'Inventarios_Requisiciones
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1059, 636)
+        Me.Controls.Add(Me.LblNombreEstatus)
         Me.Controls.Add(Me.Grid1)
         Me.Controls.Add(Me.btnDocumentoSiguiente)
         Me.Controls.Add(Me.btnDocumentoAnterior)
@@ -336,7 +349,7 @@ Partial Class Inventarios_Requisiciones
         Me.MaximizeBox = False
         Me.Name = "Inventarios_Requisiciones"
         Me.ShowIcon = False
-        Me.Text = "Requisiciones"
+        Me.Text = "Requisiciones de inventario"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()
         Me.StatusStripEstado.ResumeLayout(False)
@@ -372,4 +385,5 @@ Partial Class Inventarios_Requisiciones
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
     Friend WithEvents tsslSolicito As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents tsbAnular As System.Windows.Forms.ToolStripButton
+    Friend WithEvents LblNombreEstatus As System.Windows.Forms.Label
 End Class

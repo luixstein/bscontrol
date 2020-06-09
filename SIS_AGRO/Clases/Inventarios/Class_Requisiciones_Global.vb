@@ -239,7 +239,7 @@ Public Class Class_Requisiciones_Global
         Try
             Me.FOLIO_REQUISICION = sFolioRequisicion
             If Me.Consultar = False Then
-                Throw New Exception("El folio de requisición no existe.")
+                Throw New Exception("El folio de requisición de inventario no existe.")
             Else
                 Me._Existe = True
             End If
@@ -265,7 +265,7 @@ Public Class Class_Requisiciones_Global
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_REQUISICIONES_GLOBAL_GRABA"
 
-            sqlParametro = .Parameters.Add("@FOLIO_REQUISICIONES", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_REQUISICION.ToUpper : sqlParametro.Direction = ParameterDirection.InputOutput
+            sqlParametro = .Parameters.Add("@FOLIO_REQUISICION", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_REQUISICION.ToUpper : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@FECHA", SqlDbType.SmallDateTime) : sqlParametro.Value = "" & Me._FECHA
             sqlParametro = .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_ALMACEN
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PLAZA
@@ -301,7 +301,6 @@ Public Class Class_Requisiciones_Global
             .CommandText = "MP_REQUISICIONES_SOLICITA"
 
             sqlParametro = .Parameters.Add("@FOLIO_REQUISICION", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_REQUISICION.ToUpper
-            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_SOLICITO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
             sqlParametro = .Parameters.Add("@FECHA_SOLICITO", SqlDbType.SmallDateTime) : sqlParametro.Value = Me._FECHA_SOLICITO
             Try
@@ -357,7 +356,6 @@ Public Class Class_Requisiciones_Global
             .CommandText = "MP_REQUISICIONES_CANCELA"
 
             sqlParametro = .Parameters.Add("@FOLIO_REQUISICION", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_REQUISICION.ToUpper
-            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_CANCELO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
             sqlParametro = .Parameters.Add("@FECHA_CANCELACION", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_CANCELACION
             Try
@@ -377,7 +375,7 @@ Public Class Class_Requisiciones_Global
 
     Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand(Me._QuerySelect & " R:FOLIO_REQUISICION ='" & Replace(Me._FOLIO_REQUISICION, "'", "''") & "'", Me._Conexion)
+        Dim cmd As New SqlCommand(Me._QuerySelect & " R.FOLIO_REQUISICION ='" & Replace(Me._FOLIO_REQUISICION, "'", "''") & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -394,7 +392,7 @@ Public Class Class_Requisiciones_Global
                     Me._CODIGO_DOCUMENTO = "" & dReader("CODIGO_DOCUMENTO").ToString()
                     Me._ESTATUS = "" & dReader("ESTATUS").ToString()
                     Me._CODIGO_USUARIO_GRABO = CInt(dReader("CODIGO_USUARIO_GRABO"))
-                    Me._NOMBRE_USUARIO_GRABO = "" & dReader("NOMBRE_USUARIO").ToString()
+                    Me._NOMBRE_USUARIO_GRABO = "" & dReader("NOMBRE_USUARIO_GRABO").ToString()
                     Me._CONCEPTO = "" & dReader("CONCEPTO").ToString()
 
                     If Me._ESTATUS = "L" Or Me._ESTATUS = "R" Then
@@ -428,7 +426,7 @@ Public Class Class_Requisiciones_Global
         Dim sSQL As String
 
         Try
-            sSQL = "SELECT R.CODIGO_ARTICULO,A.DESCRIPCION,R.CANTIDAD,A.UNIDAD,R.DISPONIBLE,R.CANTIDAD_ANULADA FROM REQUISICIONES_DETALLE R " &
+            sSQL = "SELECT R.CODIGO_ARTICULO,A.DESCRIPCION,R.CANTIDAD,A.UNIDAD_VENTA,R.DISPONIBLE,R.CANTIDAD_ANULADA FROM REQUISICIONES_DETALLE R " &
                    "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
                    "WHERE R.FOLIO_REQUISICION='" & Me._FOLIO_REQUISICION & "' ORDER BY R.ID_REQUISICION_DETALLE "
 
@@ -450,125 +448,37 @@ Public Class Class_Requisiciones_Global
         Return dTabla
     End Function
 
-    Public Function ObtenerElementos() As System.Data.DataTable
-        Dim dTable As New DataTable
-        Dim dsCatArticulos As New SqlDataAdapter("SELECT CODIGO_ARTICULO, DESCRIPCION FROM CAT_Articulos ORDER BY DESCRIPCION", Me._Conexion)
-        Try
-            dsCatArticulos.Fill(dTable)
-        Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
-        Finally
-            dsCatArticulos.Dispose()
-        End Try
-        Return dTable
-    End Function
+    Public Function GeneraFolio() As String
+        Dim sResultado As String = ""
+        Dim Conexion As New SqlConnection(Empresa_Sistema.conexion)
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
 
-    Public Function BusquedaVisual_PorCodigo() As String
-        Dim f As New BusquedaVisual
-        Dim Resultado As String = ""
-        f.Text = "Búsqueda de Articulos por Código."
-        f.sCampo = "CODIGO_ARTICULO"
-        f.sOrder = "Descripcion"
-        f.sTable = "Cat_Articulos"
-        f.sQl = "Select CODIGO_ARTICULO,Descripcion From Cat_Articulos Where 1=1 And Protegido=0 AND "
-        f.Inicia("")
-        f.ShowDialog()
-        Try
-            If f.iRows > 0 Then
-                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
-            End If
-        Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorCodigo", ex)
-        End Try
-        Return Resultado
-    End Function
+        With cmd
+            .Connection = Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_UTILERIAS_GENERA_FOLIO_DOCUMENTO"
 
-    Public Function BusquedaVisual_PorDescripcion() As String
-        Dim f As New BusquedaVisual
-        Dim Resultado As String = ""
-        f.Text = "Búsqueda de Articulos por Descripción."
-        f.sCampo = "Descripcion"
-        f.sOrder = "Descripcion"
-        f.sTable = "Cat_Articulos"
-        f.sQl = "Select CODIGO_ARTICULO,Descripcion From Cat_Articulos Where 1=1 And Protegido=0 AND "
-        f.Inicia("")
-        f.ShowDialog()
-        Try
-            If f.iRows > 0 Then
-                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
-            End If
-        Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcion", ex)
-        End Try
-        Return Resultado
-    End Function
+            sqlParametro = .Parameters.Add("@CODIGO_DOCUMENTO", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_DOCUMENTO
+            sqlParametro = .Parameters.Add("@VFOLIO", SqlDbType.NVarChar, 15) : sqlParametro.Direction = ParameterDirection.Output
 
-    'Public Function GeneraFolioInventarios() As String
-    '    Dim sResultado As String = ""
-    '    Dim Conexion As New SqlConnection(Empresa_Sistema.conexion)
-    '    Dim cmd As New SqlCommand
-    '    Dim sqlParametro As SqlParameter
+            Try
+                Conexion.Open()
+                .ExecuteNonQuery()
 
-    '    With cmd
-    '        .Connection = Conexion
-    '        .CommandTimeout = 0
-    '        .CommandType = CommandType.StoredProcedure
-    '        .CommandText = "MP_UTILERIAS_GENERA_FOLIO_ALMACEN"
+                sResultado = "" & .Parameters("@VFOLIO").Value.ToString
 
-    '        sqlParametro = .Parameters.Add("@CODIGO_TIPO_DOCUMENTO", SqlDbType.NVarChar, 5) : sqlParametro.Value = Me._CODIGO_TIPO_DOCUMENTO
-    '        sqlParametro = .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_ALMACEN1
-    '        sqlParametro = .Parameters.Add("@FOLIO_INVENTARIO", SqlDbType.NVarChar, 15) : sqlParametro.Direction = ParameterDirection.Output
+            Catch ex As Exception
+                HandleError(Me.Nombre_Catalogo, "GeneraFolio", ex)
+            Finally
+                Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
 
-    '        Try
-    '            Conexion.Open()
-    '            .ExecuteNonQuery()
-
-    '            sResultado = "" & .Parameters("@FOLIO_INVENTARIO").Value.ToString
-
-    '        Catch ex As Exception
-    '            HandleError(Me.Nombre_Catalogo, "GeneraFolioInventarios", ex)
-    '        Finally
-    '            Conexion.Close()
-    '            cmd.Dispose()
-    '            sqlParametro = Nothing
-    '        End Try
-    '    End With
-
-    '    Return sResultado
-    'End Function
-
-    Public Function BusquedaVisualInventariables_PorDescripcion() As String
-        Dim f As New BusquedaVisual
-        Dim Resultado As String = ""
-        f.Text = "Búsqueda de Articulos por Descripción."
-        f.sCampo = "Descripcion"
-        f.sOrder = "Descripcion"
-        f.sTable = "Cat_Articulos"
-        f.sQl = "Select CODIGO_ARTICULO,Descripcion From Cat_Articulos Where 1=1 And Protegido=0 AND INVENTARIABLE='1' AND"
-        f.Inicia("")
-        f.ShowDialog()
-        Try
-            If f.iRows > 0 Then
-                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
-            End If
-        Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "BusquedaVisualInventariables_PorDescripcion", ex)
-        End Try
-        Return Resultado
-    End Function
-
-    Public Function BuscarNombreArticulo(ByVal sCodigoArticulo As String) As String
-        Dim Resultado As String = ""
-        Try
-            Dim sql As New Class_find("Select Descripcion From CAT_ARTICULOS Where CODIGO_Articulo='" & sCodigoArticulo & "' ")
-            If sql.Result1 <> "" Then
-                Resultado = sql.Result1
-            End If
-            sql = Nothing
-        Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "BuscarNombreArticulo", ex)
-        End Try
-        Return Resultado
+        Return sResultado
     End Function
 
     Public Sub NuevoRenglon()
