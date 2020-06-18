@@ -200,7 +200,8 @@ Buscar:
         End If
     End Sub
 
-    Private Sub Rdb_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles RdbGlobalCXC.CheckedChanged, RdbDetalleCXC.CheckedChanged, RdbDetalleDepositos.CheckedChanged, rdbGlobalCxcPropietario.CheckedChanged, rbtCobranzaAnticipo.CheckedChanged
+    Private Sub Rdb_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles RdbGlobalCXC.CheckedChanged, RdbDetalleCXC.CheckedChanged, RdbDetalleDepositos.CheckedChanged,
+        rdbGlobalCxcPropietario.CheckedChanged, rbtCobranzaAnticipo.CheckedChanged
         Me.OcultarControles()
     End Sub
 
@@ -339,7 +340,13 @@ Buscar:
         Dim oReporte As Class_Reporte
         Try
             If Me.RdbGlobalCXC.Checked = True Then
-                oReporte = New Class_Reporte("RPT_CXC_COBRANZA_GLOBAL", Rpt)
+
+                If Me.rbFormato1EdoCtaGlobal.Checked = True Then
+                    oReporte = New Class_Reporte("RPT_CXC_COBRANZA_GLOBAL", Rpt)
+                Else
+                    oReporte = New Class_Reporte("RPT_CXC_COBRANZA_GLOBAL_MES_CARTERA", Rpt)
+                End If
+
             ElseIf Me.RdbDetalleCXC.Checked = True Then
                 oReporte = New Class_Reporte("RPT_CXC_COBRANZA_DETALLE", Rpt)
             ElseIf Me.RdbDetalleDepositos.Checked = True Then
@@ -417,44 +424,56 @@ Buscar:
     End Sub
 
     Private Sub OcultarControles()
-        If RdbGlobalCXC.Checked = True Or RdbDetalleCXC.Checked = True Or rdbGlobalCxcPropietario.Checked = True Then
-            Me.lblDisplayFechaInicio.Visible = False : Me.dpFechaInicio.Visible = False
-            Me.LblDisplayFechaFinal.Visible = False : Me.dpFechaFinal.Visible = False
-            Me.lblDisplayEstatus.Visible = False : Me.CboEstatus.Visible = False
-            Me.lblDisplayCuentaBancaria.Visible = False : Me.txtCuentaBancaria.Visible = False : Me.lblCuentaBancaria.Visible = False
-            Me.lblDisplayVendedor.Visible = True : Me.txtCodigoVendedor.Visible = True : Me.lblNombreVendedor.Visible = True
-            Me.LblDisplayDocumento.Visible = True : Me.CboDocumentos.Visible = True
-            Me.LblDisplayTipoMercado.Visible = True : Me.CboTipoMercado.Visible = True
-            Me.LblDisplayPlaza.Visible = False : Me.cboPlaza.Visible = False
-            Me.gpFiltroFecha.Visible = False
-            Me.chkClientesSaldoVencido.Visible = True
-            Me.lblTipoCambio.Visible = False : Me.txtTipoCambio.Visible = False
-        ElseIf Me.rbtCobranzaAnticipo.Checked = True Or Me.rbtPropietariosConAnticipos.Checked = True Then
-            Me.lblDisplayFechaInicio.Visible = False : Me.dpFechaInicio.Visible = False
-            Me.LblDisplayFechaFinal.Visible = False : Me.dpFechaFinal.Visible = False
-            Me.lblDisplayEstatus.Visible = False : Me.CboEstatus.Visible = False
-            Me.lblDisplayCuentaBancaria.Visible = False : Me.txtCuentaBancaria.Visible = False : Me.lblCuentaBancaria.Visible = False
-            Me.lblDisplayVendedor.Visible = True : Me.txtCodigoVendedor.Visible = True : Me.lblNombreVendedor.Visible = True
-            Me.LblDisplayDocumento.Visible = True : Me.CboDocumentos.Visible = True
-            Me.LblDisplayTipoMercado.Visible = True : Me.CboTipoMercado.Visible = True
-            Me.LblDisplayPlaza.Visible = False : Me.cboPlaza.Visible = False
-            Me.gpFiltroFecha.Visible = False
-            Me.lblTipoCambio.Visible = True : Me.txtTipoCambio.Visible = True
-            Me.chkClientesSaldoVencido.Visible = False
-        Else
-            Me.lblDisplayFechaInicio.Visible = True : Me.dpFechaInicio.Visible = True ': Me.lblDisplayFechaInicio.Location = New Point(4, 54) :  : Me.dpFechaInicio.Location = New Point(88, 51)
-            Me.LblDisplayFechaFinal.Visible = True : Me.dpFechaFinal.Visible = True ': Me.LblDisplayFechaFinal.Location = New Point(215, 54)  : Me.dpFechaFinal.Location = New Point(265, 50)
-            Me.lblDisplayEstatus.Visible = True : Me.CboEstatus.Visible = True ': Me.lblDisplayEstatus.Location = New Point(4, 80) : Me.CboEstatus.Location = New Point(88, 80)
-            Me.lblDisplayCuentaBancaria.Visible = True : Me.txtCuentaBancaria.Visible = True ': Me.lblDisplayCuentaBancaria.Location = New Point(4, 140)  : Me.txtCuentaBancaria.Location = New Point(88, 140)
-            Me.lblCuentaBancaria.Visible = True ': Me.lblCuentaBancaria.Location = New Point(140, 142)
-            Me.lblDisplayVendedor.Visible = False : Me.txtCodigoVendedor.Visible = False : Me.lblNombreVendedor.Visible = False
-            Me.LblDisplayDocumento.Visible = False : Me.CboDocumentos.Visible = False
-            Me.LblDisplayTipoMercado.Visible = False : Me.CboTipoMercado.Visible = False
-            Me.LblDisplayPlaza.Visible = True : Me.cboPlaza.Visible = True
-            Me.gpFiltroFecha.Visible = True
-            Me.chkClientesSaldoVencido.Visible = False
-            Me.lblTipoCambio.Visible = False : Me.txtTipoCambio.Visible = False
-        End If
+        Try
+            Me.gbFormatoEdoCtaGlobal.Visible = False
+
+            If Me.RdbGlobalCXC.Checked = True Or Me.RdbDetalleCXC.Checked = True Or Me.rdbGlobalCxcPropietario.Checked = True Then
+                Me.lblDisplayFechaInicio.Visible = False : Me.dpFechaInicio.Visible = False
+                Me.LblDisplayFechaFinal.Visible = False : Me.dpFechaFinal.Visible = False
+                Me.lblDisplayEstatus.Visible = False : Me.CboEstatus.Visible = False
+                Me.lblDisplayCuentaBancaria.Visible = False : Me.txtCuentaBancaria.Visible = False : Me.lblCuentaBancaria.Visible = False
+                Me.lblDisplayVendedor.Visible = True : Me.txtCodigoVendedor.Visible = True : Me.lblNombreVendedor.Visible = True
+                Me.LblDisplayDocumento.Visible = True : Me.CboDocumentos.Visible = True
+                Me.LblDisplayTipoMercado.Visible = True : Me.CboTipoMercado.Visible = True
+                Me.LblDisplayPlaza.Visible = False : Me.cboPlaza.Visible = False
+                Me.gpFiltroFecha.Visible = False
+                Me.chkClientesSaldoVencido.Visible = True
+                Me.lblTipoCambio.Visible = False : Me.txtTipoCambio.Visible = False
+
+                If Me.RdbGlobalCXC.Checked = True Then
+                    Me.gbFormatoEdoCtaGlobal.Visible = True
+                End If
+
+            ElseIf Me.rbtCobranzaAnticipo.Checked = True Or Me.rbtPropietariosConAnticipos.Checked = True Then
+                Me.lblDisplayFechaInicio.Visible = False : Me.dpFechaInicio.Visible = False
+                Me.LblDisplayFechaFinal.Visible = False : Me.dpFechaFinal.Visible = False
+                Me.lblDisplayEstatus.Visible = False : Me.CboEstatus.Visible = False
+                Me.lblDisplayCuentaBancaria.Visible = False : Me.txtCuentaBancaria.Visible = False : Me.lblCuentaBancaria.Visible = False
+                Me.lblDisplayVendedor.Visible = True : Me.txtCodigoVendedor.Visible = True : Me.lblNombreVendedor.Visible = True
+                Me.LblDisplayDocumento.Visible = True : Me.CboDocumentos.Visible = True
+                Me.LblDisplayTipoMercado.Visible = True : Me.CboTipoMercado.Visible = True
+                Me.LblDisplayPlaza.Visible = False : Me.cboPlaza.Visible = False
+                Me.gpFiltroFecha.Visible = False
+                Me.lblTipoCambio.Visible = True : Me.txtTipoCambio.Visible = True
+                Me.chkClientesSaldoVencido.Visible = False
+            Else
+                Me.lblDisplayFechaInicio.Visible = True : Me.dpFechaInicio.Visible = True ': Me.lblDisplayFechaInicio.Location = New Point(4, 54) :  : Me.dpFechaInicio.Location = New Point(88, 51)
+                Me.LblDisplayFechaFinal.Visible = True : Me.dpFechaFinal.Visible = True ': Me.LblDisplayFechaFinal.Location = New Point(215, 54)  : Me.dpFechaFinal.Location = New Point(265, 50)
+                Me.lblDisplayEstatus.Visible = True : Me.CboEstatus.Visible = True ': Me.lblDisplayEstatus.Location = New Point(4, 80) : Me.CboEstatus.Location = New Point(88, 80)
+                Me.lblDisplayCuentaBancaria.Visible = True : Me.txtCuentaBancaria.Visible = True ': Me.lblDisplayCuentaBancaria.Location = New Point(4, 140)  : Me.txtCuentaBancaria.Location = New Point(88, 140)
+                Me.lblCuentaBancaria.Visible = True ': Me.lblCuentaBancaria.Location = New Point(140, 142)
+                Me.lblDisplayVendedor.Visible = False : Me.txtCodigoVendedor.Visible = False : Me.lblNombreVendedor.Visible = False
+                Me.LblDisplayDocumento.Visible = False : Me.CboDocumentos.Visible = False
+                Me.LblDisplayTipoMercado.Visible = False : Me.CboTipoMercado.Visible = False
+                Me.LblDisplayPlaza.Visible = True : Me.cboPlaza.Visible = True
+                Me.gpFiltroFecha.Visible = True
+                Me.chkClientesSaldoVencido.Visible = False
+                Me.lblTipoCambio.Visible = False : Me.txtTipoCambio.Visible = False
+            End If
+
+        Catch ex As Exception
+            HandleError(Me.Name, "OcultarControles", ex)
+        End Try
     End Sub
 
 #End Region
