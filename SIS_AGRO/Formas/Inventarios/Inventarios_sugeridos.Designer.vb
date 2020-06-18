@@ -43,18 +43,18 @@ Partial Class Inventarios_sugeridos
         Me.GridArticulos.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.GridArticulos.CheckedImage = CType(resources.GetObject("GridArticulos.CheckedImage"), System.Drawing.Bitmap)
         Me.GridArticulos.Cols = 1
-        Me.GridArticulos.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
+        Me.GridArticulos.DefaultFont = New System.Drawing.Font("Tahoma", 9.0!)
         Me.GridArticulos.DefaultRowHeight = CType(24, Short)
+        Me.GridArticulos.DisplayRowArrow = True
         Me.GridArticulos.DisplayRowNumber = True
         Me.GridArticulos.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
-        Me.GridArticulos.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GridArticulos.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GridArticulos.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.GridArticulos.Location = New System.Drawing.Point(7, 22)
+        Me.GridArticulos.Location = New System.Drawing.Point(5, 18)
         Me.GridArticulos.LockButton = True
-        Me.GridArticulos.Margin = New System.Windows.Forms.Padding(4)
         Me.GridArticulos.Name = "GridArticulos"
         Me.GridArticulos.Rows = 6
-        Me.GridArticulos.Size = New System.Drawing.Size(1226, 533)
+        Me.GridArticulos.Size = New System.Drawing.Size(1262, 433)
         Me.GridArticulos.TabIndex = 0
         Me.GridArticulos.UncheckedImage = CType(resources.GetObject("GridArticulos.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -64,7 +64,7 @@ Partial Class Inventarios_sugeridos
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1267, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1290, 27)
         Me.tsMenu.TabIndex = 224
         Me.tsMenu.Text = "tsMenu"
         '
@@ -73,7 +73,7 @@ Partial Class Inventarios_sugeridos
         Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
         Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbNuevo.Name = "tsbNuevo"
-        Me.tsbNuevo.Size = New System.Drawing.Size(76, 24)
+        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
         Me.tsbNuevo.Text = "&Nuevo"
         '
         'tsbSalir
@@ -81,74 +81,82 @@ Partial Class Inventarios_sugeridos
         Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
         Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
+        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
         Me.tsbSalir.Text = "&Salir"
         '
         'TxtCodigoAlmacen
         '
-        Me.TxtCodigoAlmacen.Location = New System.Drawing.Point(88, 47)
+        Me.TxtCodigoAlmacen.Location = New System.Drawing.Point(66, 38)
+        Me.TxtCodigoAlmacen.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.TxtCodigoAlmacen.Name = "TxtCodigoAlmacen"
-        Me.TxtCodigoAlmacen.Size = New System.Drawing.Size(100, 22)
+        Me.TxtCodigoAlmacen.Size = New System.Drawing.Size(76, 20)
         Me.TxtCodigoAlmacen.TabIndex = 0
         '
         'LblFiltro
         '
         Me.LblFiltro.AutoSize = True
-        Me.LblFiltro.Location = New System.Drawing.Point(12, 96)
+        Me.LblFiltro.Location = New System.Drawing.Point(9, 78)
+        Me.LblFiltro.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.LblFiltro.Name = "LblFiltro"
-        Me.LblFiltro.Size = New System.Drawing.Size(157, 17)
+        Me.LblFiltro.Size = New System.Drawing.Size(117, 13)
         Me.LblFiltro.TabIndex = 225
         Me.LblFiltro.Text = "Búsqueda por nombre :"
         '
         'TxtFiltro
         '
-        Me.TxtFiltro.Location = New System.Drawing.Point(175, 93)
+        Me.TxtFiltro.Location = New System.Drawing.Point(131, 76)
+        Me.TxtFiltro.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.TxtFiltro.Name = "TxtFiltro"
-        Me.TxtFiltro.Size = New System.Drawing.Size(605, 22)
+        Me.TxtFiltro.Size = New System.Drawing.Size(455, 20)
         Me.TxtFiltro.TabIndex = 1
         '
         'LblDisplayAlmacen
         '
         Me.LblDisplayAlmacen.AutoSize = True
-        Me.LblDisplayAlmacen.Location = New System.Drawing.Point(12, 50)
+        Me.LblDisplayAlmacen.Location = New System.Drawing.Point(9, 41)
+        Me.LblDisplayAlmacen.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.LblDisplayAlmacen.Name = "LblDisplayAlmacen"
-        Me.LblDisplayAlmacen.Size = New System.Drawing.Size(70, 17)
+        Me.LblDisplayAlmacen.Size = New System.Drawing.Size(54, 13)
         Me.LblDisplayAlmacen.TabIndex = 0
         Me.LblDisplayAlmacen.Text = "Almacén :"
         '
         'LblNombreAlmacen
         '
         Me.LblNombreAlmacen.AutoSize = True
-        Me.LblNombreAlmacen.Location = New System.Drawing.Point(203, 50)
+        Me.LblNombreAlmacen.Location = New System.Drawing.Point(152, 41)
+        Me.LblNombreAlmacen.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.LblNombreAlmacen.Name = "LblNombreAlmacen"
-        Me.LblNombreAlmacen.Size = New System.Drawing.Size(16, 17)
+        Me.LblNombreAlmacen.Size = New System.Drawing.Size(13, 13)
         Me.LblNombreAlmacen.TabIndex = 227
         Me.LblNombreAlmacen.Text = "_"
         '
         'GbArticulos
         '
         Me.GbArticulos.Controls.Add(Me.GridArticulos)
-        Me.GbArticulos.Location = New System.Drawing.Point(15, 134)
+        Me.GbArticulos.Location = New System.Drawing.Point(11, 109)
+        Me.GbArticulos.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.GbArticulos.Name = "GbArticulos"
-        Me.GbArticulos.Size = New System.Drawing.Size(1240, 562)
+        Me.GbArticulos.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.GbArticulos.Size = New System.Drawing.Size(1272, 457)
         Me.GbArticulos.TabIndex = 2
         Me.GbArticulos.TabStop = False
-        Me.GbArticulos.Text = "Articulos"
+        Me.GbArticulos.Text = "Artículos"
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(951, 47)
+        Me.Label1.Location = New System.Drawing.Point(713, 38)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(276, 17)
+        Me.Label1.Size = New System.Drawing.Size(207, 13)
         Me.Label1.TabIndex = 228
         Me.Label1.Text = "* Presione ENTER para grabar la cantidad"
         '
         'Inventarios_sugeridos
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1267, 708)
+        Me.ClientSize = New System.Drawing.Size(1290, 575)
         Me.Controls.Add(Me.GbArticulos)
         Me.Controls.Add(Me.LblNombreAlmacen)
         Me.Controls.Add(Me.TxtFiltro)
@@ -157,6 +165,7 @@ Partial Class Inventarios_sugeridos
         Me.Controls.Add(Me.LblDisplayAlmacen)
         Me.Controls.Add(Me.tsMenu)
         Me.Controls.Add(Me.Label1)
+        Me.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.Name = "Inventarios_sugeridos"
         Me.ShowIcon = False
         Me.Text = "Inventarios sugeridos"

@@ -21,7 +21,7 @@ Public Class Inventarios_sugeridos
     Private iGyFechaOrdenar As Integer = 14
     Private iGyPedidoSugerido As Integer = 15
     Private iGyBalanceInventario As Integer = 16
-
+    Private iGyVtasUltimos30Dias As Integer = 17
 #End Region
 
 #Region "Opciones"
@@ -125,7 +125,8 @@ busca:
                                      dRow("COBERTUDA_DIAS_ACTUAL").ToString & Chr(9) &
                                      Format(dRow("FECHA_ORDENAR"), "dd/MM/yyyy") & Chr(9) &
                                      dRow("PEDIDO_SUGERIDO").ToString & Chr(9) &
-                                     dRow("BALANCE_INVENTARIO").ToString & Chr(9))
+                                     dRow("BALANCE_INVENTARIO").ToString & Chr(9) &
+                                     dRow("VENTAS_ULTIMOS_30_DIAS").ToString & Chr(9))
         Next
 
         Me.FormateaGrid()
@@ -178,7 +179,7 @@ busca:
         Try
             Dim Columna As Integer, Renglon As Integer
             Dim sCodigoArticulo, sClasificacionImportancia As String
-            Dim dMaximo, dMinimo As Double
+            Dim dMaximo As Decimal, dMinimo As Decimal, dVtasUltimos30Dias As Decimal, dPedidoSugerido As Decimal = 0, sBalance As String = "", dReorden As Decimal = 0, dExistencia As Decimal = 0
             Dim iTiempoEntrega As Integer
 
             Columna = Me.GridArticulos.Selection.FirstCol
@@ -186,16 +187,17 @@ busca:
 
             sCodigoArticulo = Me.GridArticulos.Cell(Renglon, Me.iGyCodigoArticulo).Text
             sClasificacionImportancia = Me.GridArticulos.Cell(Renglon, Me.iGyClasificacionImportancia).Text
-            iTiempoEntrega = CInt(Me.GridArticulos.Cell(Renglon, Me.iGyTiempoEntregaDias).Text)
-            dMaximo = valorNumerico(Me.GridArticulos.Cell(Renglon, Me.iGyMaximo).Text)
+            iTiempoEntrega = CInt(valorNumerico(Me.GridArticulos.Cell(Renglon, Me.iGyTiempoEntregaDias).Text))
+            dMaximo = valorNumericoD(Me.GridArticulos.Cell(Renglon, Me.iGyMaximo).Text)
             'dReorden = valorNumerico(Me.GridArticulos.Cell(Renglon, Me.iGyReorden).Text)
-            dMinimo = valorNumerico(Me.GridArticulos.Cell(Renglon, Me.iGyMinimo).Text)
+            dMinimo = valorNumericoD(Me.GridArticulos.Cell(Renglon, Me.iGyMinimo).Text)
+            dVtasUltimos30Dias = valorNumericoD(Me.GridArticulos.Cell(Renglon, Me.iGyVtasUltimos30Dias).Text)
+            dExistencia = valorNumericoD(Me.GridArticulos.Cell(Renglon, Me.iGyExistencia).Text)
 
             oInventariosSugeridos = New Class_Inventarios_Sugeridos
 
             Select Case e.KeyCode
                 Case Keys.Enter
-
                     Select Case Columna
                         Case Me.iGyMaximo, Me.iGyMinimo, Me.iGyClasificacionImportancia, Me.iGyTiempoEntregaDias
 
@@ -203,15 +205,25 @@ busca:
 
                             'Estos campos se usan para calcular otras columnas por lo que se actualiza el grid
                             If Columna = Me.iGyTiempoEntregaDias Or Columna = Me.iGyMinimo Then
-                                Me.ConsultarArticulos(Me.TxtFiltro.Text)
+                                'Me.ConsultarArticulos(Me.TxtFiltro.Text)
 
+                                'REORDEN = (ISNULL(VENTAS_ULTIMOS_30_DIAS,0) / 24) + MINIMO 
+                                'PEDIDO_SUGERIDO = CASE WHEN (REORDEN - EXISTENCIA)>0 THEN REORDEN - EXISTENCIA ELSE 0 END,  
+                                'BALANCE_INVENTARIO = CASE WHEN (REORDEN - EXISTENCIA)<=0 THEN 'BALANCEADO' ELSE 'DESABASTO' END
+
+                                'Estos cálculos los hace el stored al consultar, para evitar consulta de nuevo se calculan aqui sólo del renglón trabajado,
+                                dReorden = RedondearD((dVtasUltimos30Dias / 24) + dMinimo, 3)
+                                dPedidoSugerido = RedondearD(CDec(IIf(dReorden - dExistencia > 0, dReorden - dExistencia, 0)), 3)
+                                sBalance = CType(IIf(dReorden - dExistencia <= 0, "BALANCEADO", "DESABASTO"), String)
+
+                                Me.GridArticulos.Cell(Renglon, Me.iGyReorden).Text = dReorden.ToString
+                                Me.GridArticulos.Cell(Renglon, Me.iGyPedidoSugerido).Text = dPedidoSugerido.ToString
+                                Me.GridArticulos.Cell(Renglon, Me.iGyBalanceInventario).Text = sBalance
 
                             ElseIf Columna = Me.iGyBalanceInventario Then 'Ultima columna del grid, salta al articulo del siguiente renglon
                                 Me.GridArticulos.Cell(Renglon + 1, Me.iGyClasificacionImportancia).SetFocus()
                             End If
-
                     End Select
-
             End Select
 
         Catch ex As Exception
@@ -235,7 +247,7 @@ busca:
             With Me.GridArticulos
                 .AutoRedraw = False
 
-                .Cols = 17
+                .Cols = 18
 
                 .DisplayFocusRect = False
                 .DrawMode = FlexCell.DrawModeEnum.OwnerDraw
@@ -247,43 +259,48 @@ busca:
                 .CellBorderColorFixed = Color.Black
                 .GridColor = Color.FromArgb(148, 190, 231)
 
-                .Cell(0, Me.iGyClasificacionImportancia).Text = "Clasificación importancia"
+                .Cell(0, Me.iGyClasificacionImportancia).Text = "Clasf."
                 .Cell(0, Me.iGyCodigoArticulo).Text = "Código"
                 .Cell(0, Me.iGyDescripcion).Text = "Descripción"
-                .Cell(0, Me.iGyVentasMes1).Text = "Ventas " & MonthName(Month(Date.Now) - 2)
-                .Cell(0, Me.iGyVentasMes2).Text = "Ventas " & MonthName(Month(Date.Now) - 1)
-                .Cell(0, Me.iGyVentasMes3).Text = "Ventas " & MonthName(Month(Date.Now))
-                .Cell(0, Me.iGyVentasMesPromedio).Text = "Venta promedio mensual"
+                .Cell(0, Me.iGyVentasMes1).Text = "Vtas " & MonthName(Month(Date.Now) - 2).Substring(0, 3)
+                .Cell(0, Me.iGyVentasMes2).Text = "Vtas " & MonthName(Month(Date.Now) - 1).Substring(0, 3)
+                .Cell(0, Me.iGyVentasMes3).Text = "Vtas " & MonthName(Month(Date.Now)).Substring(0, 3)
+                .Cell(0, Me.iGyVentasMesPromedio).Text = "Vta prom mes"
                 .Cell(0, Me.iGyExistencia).Text = "Existencia"
-                .Cell(0, Me.iGyTiempoEntregaDias).Text = "Tiempo de entrega dias"
-                .Cell(0, Me.iGyMinimo).Text = "Minimo"
+                .Cell(0, Me.iGyTiempoEntregaDias).Text = "Tpo ent días"
+                .Cell(0, Me.iGyMinimo).Text = "Mínimo"
                 .Cell(0, Me.iGyReorden).Text = "Reorden"
-                .Cell(0, Me.iGyMaximo).Text = "Maximo"
-                .Cell(0, Me.iGyCoberturaActualDias).Text = "Cobertura dias actual"
+                .Cell(0, Me.iGyMaximo).Text = "Máximo"
+                .Cell(0, Me.iGyCoberturaActualDias).Text = "Cob. días"
                 .Cell(0, Me.iGyFechaOrdenar).Text = "Fecha a ordenar"
-                .Cell(0, Me.iGyPedidoSugerido).Text = "Pedido sugerido"
-                .Cell(0, Me.iGyBalanceInventario).Text = "Balance de inventarios"
+                .Cell(0, Me.iGyPedidoSugerido).Text = "Ped sug."
+                .Cell(0, Me.iGyBalanceInventario).Text = "Balance inv."
 
-                .Column(Me.iGyClasificacionImportancia).Width = 90
-                .Column(Me.iGyCodigoArticulo).Width = 65
-                .Column(Me.iGyDescripcion).Width = 300
-                .Column(Me.iGyVentasMes1).Width = 80
-                .Column(Me.iGyVentasMes2).Width = 80
-                .Column(Me.iGyVentasMes3).Width = 80
-                .Column(Me.iGyVentasMesPromedio).Width = 100
-                .Column(Me.iGyExistencia).Width = 80
-                .Column(Me.iGyTiempoEntregaDias).Width = 100
-                .Column(Me.iGyMinimo).Width = 100
-                .Column(Me.iGyReorden).Width = 100
-                .Column(Me.iGyMaximo).Width = 100
+                .Column(0).Width = 25
+                .Column(Me.iGyClasificacionImportancia).Width = 35
+                .Column(Me.iGyCodigoArticulo).Width = 40
+                .Column(Me.iGyDescripcion).Width = 250
+                .Column(Me.iGyVentasMes1).Width = 70
+                .Column(Me.iGyVentasMes2).Width = 70
+                .Column(Me.iGyVentasMes3).Width = 70
+                .Column(Me.iGyVentasMesPromedio).Width = 70
+                .Column(Me.iGyExistencia).Width = 70
+                .Column(Me.iGyTiempoEntregaDias).Width = 60
+                .Column(Me.iGyMinimo).Width = 70
+                .Column(Me.iGyReorden).Width = 70
+                .Column(Me.iGyMaximo).Width = 70
                 .Column(Me.iGyCoberturaActualDias).Width = 80
-                .Column(Me.iGyFechaOrdenar).Width = 80
-                .Column(Me.iGyPedidoSugerido).Width = 80
-                .Column(Me.iGyBalanceInventario).Width = 100
+                .Column(Me.iGyFechaOrdenar).Width = 70
+                .Column(Me.iGyPedidoSugerido).Width = 70
+                .Column(Me.iGyBalanceInventario).Width = 90
 
-                .Column(Me.iGyMaximo).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyMaximo).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
-                .Column(Me.iGyMaximo).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyExistencia).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyExistencia).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
+                .Column(Me.iGyExistencia).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyTiempoEntregaDias).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyTiempoEntregaDias).DecimalLength = 0
+                .Column(Me.iGyTiempoEntregaDias).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .Column(Me.iGyReorden).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyReorden).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
@@ -293,9 +310,13 @@ busca:
                 .Column(Me.iGyMinimo).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
                 .Column(Me.iGyMinimo).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.iGyTiempoEntregaDias).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyTiempoEntregaDias).DecimalLength = 0
-                .Column(Me.iGyTiempoEntregaDias).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyMaximo).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyMaximo).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
+                .Column(Me.iGyMaximo).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyPedidoSugerido).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyPedidoSugerido).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
+                .Column(Me.iGyPedidoSugerido).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .Column(Me.iGyClasificacionImportancia).Alignment = FlexCell.AlignmentEnum.CenterCenter
                 .Column(Me.iGyVentasMes1).Alignment = FlexCell.AlignmentEnum.RightCenter
@@ -330,6 +351,7 @@ busca:
                 .Column(Me.iGyPedidoSugerido).Locked = True
                 .Column(Me.iGyBalanceInventario).Locked = True
                 .Column(Me.iGyReorden).Locked = True
+                .Column(Me.iGyVtasUltimos30Dias).Locked = True
 
                 .AutoRedraw = True
                 .Refresh()
