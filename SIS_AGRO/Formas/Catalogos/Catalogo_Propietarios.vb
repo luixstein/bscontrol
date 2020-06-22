@@ -241,7 +241,7 @@ Public Class Catalogo_Propietarios
             With Me.oPropietario
                 Me.TxtCodigo.Text = .CODIGO_PROPIETARIO.ToString
                 Me.TxtNombre.Text = .NOMBRE_PROPIETARIO.ToString
-                Me.TxtLimiteCredito.Text = .LIMITE_CREDITO.ToString
+                Me.TxtLimiteCredito.Text = FormatImporteContable(.LIMITE_CREDITO)
                 Me.TxtPlazo.Text = .PLAZO.ToString
             End With
 
@@ -259,7 +259,7 @@ Public Class Catalogo_Propietarios
                     With Me.oPropietario
                         .CODIGO_PROPIETARIO = CInt(Me.TxtCodigo.Text)
                         .NOMBRE_PROPIETARIO = Me.TxtNombre.Text
-                        .LIMITE_CREDITO = CDec(Me.TxtLimiteCredito.Text)
+                        .LIMITE_CREDITO = valorNumericoD(Me.TxtLimiteCredito.Text)
                         .PLAZO = CInt(Me.TxtPlazo.Text)
 
                         Select Case Me.Estado
@@ -275,7 +275,14 @@ Public Class Catalogo_Propietarios
                         End Select
 
                         Me.Estado = enumEstados.CONSULTA
-                        If Grabado Then
+                        If Grabado = True Then
+                            Dim sCliente As String = Me.GridClientes.Rows(0).Cells(0).Value.ToString 'Obtenemos la 1er razón social del cte.
+
+                            If txtLEN(sCliente) = True Then
+                                Dim oCliente As New Class_CatClientes(sCliente)
+                                oCliente.ActualizarLimiteCredito(CDec(Me.TxtLimiteCredito.Text)) 'Con un sólo código de cte se actualiza el lim crédito del propietario y de todas sus razones sociales.
+                            End If
+
                             MsgBox(Me.msgElemento & " Grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
                             Me.Refrescar()
                             Me.Cambia_Estado()
@@ -353,6 +360,7 @@ Public Class Catalogo_Propietarios
 
     Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombre.KeyDown, TxtLimiteCredito.KeyDown
         If e.KeyCode = Keys.Return Then
+            Me.TxtLimiteCredito.Text = FormatImporteContable(valorNumericoD(Me.TxtLimiteCredito.Text))
             txtTAB(e)
         End If
     End Sub

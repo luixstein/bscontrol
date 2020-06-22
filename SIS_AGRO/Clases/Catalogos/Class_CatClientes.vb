@@ -800,7 +800,7 @@ Public Class Class_CatClientes
         Return bResultado
     End Function
 
-    Public Function ActualizarLimiteCredito() As Boolean
+    Public Function ActualizarLimiteCredito(ByVal dLimiteCredito As Decimal) As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -811,7 +811,7 @@ Public Class Class_CatClientes
             .CommandText = "MP_CAT_CLIENTES_ACTUALIZA_LIMITE_CREDITO"
 
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._CODIGO_CLIENTE.ToUpper
-            sqlParametro = .Parameters.Add("@LIMITE_CREDITO", SqlDbType.Money) : sqlParametro.Value = Me._LIMITE_CREDITO
+            sqlParametro = .Parameters.Add("@LIMITE_CREDITO", SqlDbType.Money) : sqlParametro.Value = dLimiteCredito
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
 
             Try

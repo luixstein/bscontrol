@@ -88,10 +88,6 @@ Buscar:
         txtNoBeep(e)
     End Sub
 
-    Private Sub TxtCliente_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtCliente.TextChanged
-
-    End Sub
-
     Private Sub txtLimiteCredit_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtLimiteCredit.KeyDown
         Select Case e.KeyCode
             Case Keys.Enter
@@ -169,100 +165,119 @@ Buscar:
     End Sub
 
     Private Sub Inicializa()
-        Me.TxtCliente.Text = ""
-        Me.lblCliente.Text = ""
-        Me.lblDiasCarteraVentaAntigua.Text = ""
-        Me.lblDiasCarteraVentaReciente.Text = ""
-        Me.lblEmpresaVentaAntigua.Text = ""
-        Me.lblEmpresaVentaReciente.Text = ""
-        Me.lblFechaUltimoDeposito.Text = ""
-        Me.lblFechaVentaAntigua.Text = ""
-        Me.lblFechaVentaReciente.Text = ""
-        Me.lblFolioVentaAntigua.Text = ""
-        Me.lblFolioVentaReciente.Text = ""
-        Me.lblImporteAutorizado.Text = ""
-        Me.lblImporteUltimoDeposito.Text = ""
-        Me.lblPlazo.Text = ""
-        Me.lblSaldo.Text = ""
-        Me.lblSaldoVencido.Text = ""
-        Me.lblLimiteCredito.Text = ""
-        Me.lblCreditoRestante.Text = ""
-        Me.lblSaldoVentaAntigua.Text = ""
-        Me.lblsaldoVentaReciente.Text = ""
+        Try
+            Me.TxtCliente.Text = ""
+            Me.lblCliente.Text = ""
+            Me.lblDiasCarteraVentaAntigua.Text = ""
+            Me.lblDiasCarteraVentaReciente.Text = ""
+            Me.lblEmpresaVentaAntigua.Text = ""
+            Me.lblEmpresaVentaReciente.Text = ""
+            Me.lblFechaUltimoDeposito.Text = ""
+            Me.lblFechaVentaAntigua.Text = ""
+            Me.lblFechaVentaReciente.Text = ""
+            Me.lblFolioVentaAntigua.Text = ""
+            Me.lblFolioVentaReciente.Text = ""
+            Me.lblImporteAutorizado.Text = ""
+            Me.lblImporteUltimoDeposito.Text = ""
+            Me.lblPlazo.Text = ""
+            Me.lblSaldo.Text = ""
+            Me.lblSaldoVencido.Text = ""
+            Me.lblLimiteCredito.Text = ""
+            Me.lblCreditoRestante.Text = ""
+            Me.lblSaldoVentaAntigua.Text = ""
+            Me.lblsaldoVentaReciente.Text = ""
 
-        Me.InicializaGridReglasCXC()
-        Me.InicializaReglaCXC()
-        Me.InicializaObservaciones()
+            Me.InicializaGridReglasCXC()
+            Me.InicializaReglaCXC()
+            Me.InicializaObservaciones()
 
-        Me.tcPanel.SelectedIndex = 0
-        Me.tcPanel.TabPages(1).Enabled = False
-
+            Me.tcPanel.SelectedIndex = 0
+            Me.tcPanel.TabPages(1).Enabled = False
+        Catch ex As Exception
+            HandleError(Me.Text, "Inicializa", ex)
+        End Try
     End Sub
 
     Private Sub InicializaReglaCXC()
-        Me.ckbReglasActivas.Checked = True
-        Me.txtLimiteCredit.Text = ""
-        Me.TxtImport.Text = ""
-        Me.TxtConcept.Text = ""
-        Me.LblUltimaActualizacionLimiteCredit.Text = ""
-        Me.lblCXCImporteAutorizadoReglasCXC.Text = "$ 0.00"
-        Me.txtDiasPlazo.Text = ""
-        Me.ckbRecaularVencimientos.Checked = False
-        Me.ckbRangoFechas.Checked = False
-        Me.ckbRangoFechas.Enabled = False
-        Me.lblDisplayDesde.Enabled = False
-        Me.lblDisplayHasta.Enabled = False
-        Me.dpFechaDesde.Enabled = False
-        Me.dpFechaDesde.Value = Now
-        Me.dpFechaHasta.Enabled = False
-        Me.dpFechaHasta.Value = Now
-        Me.TxtFolio.Text = ""
+        Try
+            Me.ckbReglasActivas.Checked = True
+            Me.txtLimiteCredit.Text = ""
+            Me.TxtImport.Text = ""
+            Me.TxtConcept.Text = ""
+            Me.LblUltimaActualizacionLimiteCredit.Text = ""
+            Me.lblCXCImporteAutorizadoReglasCXC.Text = "$ 0.00"
+            Me.txtDiasPlazo.Text = ""
+            Me.ckbRecaularVencimientos.Checked = False
+            Me.ckbRangoFechas.Checked = False
+            Me.ckbRangoFechas.Enabled = False
+            Me.lblDisplayDesde.Enabled = False
+            Me.lblDisplayHasta.Enabled = False
+            Me.dpFechaDesde.Enabled = False
+            Me.dpFechaDesde.Value = Now
+            Me.dpFechaHasta.Enabled = False
+            Me.dpFechaHasta.Value = Now
+            Me.TxtFolio.Text = ""
+        Catch ex As Exception
+            HandleError(Me.Text, "InicializaReglaCXC", ex)
+        End Try
     End Sub
 
     Private Sub InicializaGridReglasCXC()
-        Me.GridReglasCXC.DataSource = Nothing
-        FG_Grid_Limpiar(Me.GridReglasCXC)
+        Try
+            Me.GridReglasCXC.DataSource = Nothing
+            FG_Grid_Limpiar(Me.GridReglasCXC)
 
-        Me.GridReglasCXC.Rows = 2
-        Me.GridReglasCXC.Cols = 6
+            Me.GridReglasCXC.Rows = 2
+            Me.GridReglasCXC.Cols = 6
 
-        Me.FormateaGrid()
+            Me.FormateaGrid()
+        Catch ex As Exception
+            HandleError(Me.Text, "InicializaGridReglasCXC", ex)
+        End Try
     End Sub
 
     Private Sub InicializaObservaciones()
-        Me.txtObservaciones.Text = ""
-        Me.lblFechaObservacion.Text = ""
-        Me.lblIDObservaciones.Text = ""
-        Me.txtObservaciones.Enabled = False
+        Try
+            Me.txtObservaciones.Text = ""
+            Me.lblFechaObservacion.Text = ""
+            Me.lblIDObservaciones.Text = ""
+            Me.txtObservaciones.Enabled = False
+        Catch ex As Exception
+            HandleError(Me.Text, "InicializaObservaciones", ex)
+        End Try
     End Sub
 
     Private Sub FormateaGrid()
-        Me.GridReglasCXC.Column(Me.igyIdRegla).Width = 80
-        Me.GridReglasCXC.Column(Me.igyEstatus).Width = 80
-        Me.GridReglasCXC.Column(Me.igyFecha).Width = 100
-        Me.GridReglasCXC.Column(Me.igyImporteAutorizado).Width = 100
-        Me.GridReglasCXC.Column(Me.igyImporteRestante).Width = 100
+        Try
+            Me.GridReglasCXC.Column(Me.igyIdRegla).Width = 80
+            Me.GridReglasCXC.Column(Me.igyEstatus).Width = 80
+            Me.GridReglasCXC.Column(Me.igyFecha).Width = 100
+            Me.GridReglasCXC.Column(Me.igyImporteAutorizado).Width = 100
+            Me.GridReglasCXC.Column(Me.igyImporteRestante).Width = 100
 
-        Me.GridReglasCXC.Cell(0, Me.igyIdRegla).Text = "ID Regla"
-        Me.GridReglasCXC.Cell(0, Me.igyEstatus).Text = "Estatus"
-        Me.GridReglasCXC.Cell(0, Me.igyFecha).Text = "Fecha"
-        Me.GridReglasCXC.Cell(0, Me.igyImporteAutorizado).Text = "Importe autorizado"
-        Me.GridReglasCXC.Cell(0, Me.igyImporteRestante).Text = "Importe restante"
+            Me.GridReglasCXC.Cell(0, Me.igyIdRegla).Text = "ID Regla"
+            Me.GridReglasCXC.Cell(0, Me.igyEstatus).Text = "Estatus"
+            Me.GridReglasCXC.Cell(0, Me.igyFecha).Text = "Fecha"
+            Me.GridReglasCXC.Cell(0, Me.igyImporteAutorizado).Text = "Importe autorizado"
+            Me.GridReglasCXC.Cell(0, Me.igyImporteRestante).Text = "Importe restante"
 
-        Me.GridReglasCXC.Column(Me.igyImporteAutorizado).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-        Me.GridReglasCXC.Column(Me.igyImporteAutorizado).Mask = FlexCell.MaskEnum.Numeric
-        'Me.GridReglasCXC.Column(Me.igyImporteAutorizado).DecimalLength = 2
-        Me.GridReglasCXC.Column(Me.igyImporteAutorizado).Alignment = FlexCell.AlignmentEnum.RightCenter
+            Me.GridReglasCXC.Column(Me.igyImporteAutorizado).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.GridReglasCXC.Column(Me.igyImporteAutorizado).Mask = FlexCell.MaskEnum.Numeric
+            'Me.GridReglasCXC.Column(Me.igyImporteAutorizado).DecimalLength = 2
+            Me.GridReglasCXC.Column(Me.igyImporteAutorizado).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-        Me.GridReglasCXC.Column(Me.igyImporteRestante).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-        Me.GridReglasCXC.Column(Me.igyImporteRestante).Mask = FlexCell.MaskEnum.Numeric
-        'Me.GridReglasCXC.Column(Me.igyImporteRestante).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
-        Me.GridReglasCXC.Column(Me.igyImporteRestante).Alignment = FlexCell.AlignmentEnum.RightCenter
+            Me.GridReglasCXC.Column(Me.igyImporteRestante).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.GridReglasCXC.Column(Me.igyImporteRestante).Mask = FlexCell.MaskEnum.Numeric
+            'Me.GridReglasCXC.Column(Me.igyImporteRestante).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+            Me.GridReglasCXC.Column(Me.igyImporteRestante).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-        Me.GridReglasCXC.Column(Me.igyFecha).CellType = FlexCell.CellTypeEnum.DateTime
-        Me.GridReglasCXC.Column(Me.igyFecha).FormatString = "dd-MMM-yyyy"
+            Me.GridReglasCXC.Column(Me.igyFecha).CellType = FlexCell.CellTypeEnum.DateTime
+            Me.GridReglasCXC.Column(Me.igyFecha).FormatString = "dd-MMM-yyyy"
 
-        Me.GridReglasCXC.Locked = True
+            Me.GridReglasCXC.Locked = True
+        Catch ex As Exception
+            HandleError(Me.Text, "FormateaGrid", ex)
+        End Try
     End Sub
 
     Private Function Consultar() As Boolean
@@ -377,7 +392,7 @@ Buscar:
             Me.RefrescarResumenCXC()
             'Me.ConsultarLimiteCredito()
 
-            Consultar = True
+            Return True
         Catch ex As Exception
             HandleError(Me.Text, "Consultar", ex)
         End Try
@@ -386,24 +401,24 @@ Buscar:
     Private Function ActualizaLimiteCreditoDirectamente() As Boolean
         Try
             If valorNumerico(Me.txtLimiteCredit.Text) < 0 Then
-                MsgBox("El limite de credito debe ser igual o mayor que 0 .", MsgBoxStyle.Information, Me.Text)
-                Exit Function
+                MsgBox("El límite de crédito debe ser igual o mayor que 0 .", MsgBoxStyle.Information, Me.Text)
+                Return False
             Else
 
                 If MsgBox("Desea actualizar directamente el límite de crédito del cliente por un importe de " & _
                           FormatImporteContable(CDbl(Me.txtLimiteCredit.Text), True) & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "ActualizaLimiteCreditoDirectamente") = MsgBoxResult.No Then
-                    Exit Function
+                    Return False
                 End If
             End If
 
             Me.oClientes = New Class_CatClientes(Me.TxtCliente.Text)
-            Me.oClientes.LIMITE_CREDITO = CDbl(Me.txtLimiteCredit.Text)
-            If Me.oClientes.ActualizarLimiteCredito = False Then
-                Exit Function
+            If Me.oClientes.ActualizarLimiteCredito(CDec(Me.txtLimiteCredit.Text)) = False Then
+                Return False
             End If
 
-            ActualizaLimiteCreditoDirectamente = True
-            MsgBox("El límite de crédito del cliente se a actualizado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+            MsgBox("El límite de crédito del cliente se ha actualizado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+
+            Return True
 
         Catch ex As Exception
             HandleError(Me.Name, "ActualizaLimiteCreditoDirectamente", ex)
