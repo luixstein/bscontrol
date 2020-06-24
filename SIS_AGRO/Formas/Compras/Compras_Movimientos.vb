@@ -8,6 +8,7 @@ Public Class Compras_Movimientos
     Private oCompras As New Class_Compras_Global
     Private oProveedores As New Class_CatProveedores
     Private oDocumento As New Class_CatDocumentos
+    Private oRequisicion As New Class_Requisiciones_Global
 
     Private bDocumentosCargados As Boolean
     Private bEsReferencia As Boolean
@@ -4309,6 +4310,27 @@ BuscarCuentas:
 
         Return bResultado
     End Function
+
+    Private Function ValidaDisponiblesRequisicion() As Boolean
+        Const sProcedure As String = "ValidaDisponiblesRequisicion"
+
+        Try
+            Dim i As Integer
+            For i = 1 To Me.Grid.Rows - 1
+                If oRequisicion.ValidaCantidadDisponible(Me.Grid.Cell(i, Me.igyCodigo).Text, valorNumerico(Me.Grid.Cell(i, Me.igyCantidad).Text), Me.CboAlmacen.SelectedValue.ToString) = False Then
+                    MsgBox("No hay suficiente disponible en requisiciones para el artículo " & Me.Grid.Cell(i, Me.igyDescripcion).Text & " en el renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, sProcedure)
+                    Me.Grid.Cell(i, Me.igyCantidad).SetFocus()
+                    Return False
+                End If
+            Next i
+
+            Return True
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+
+    End Function
+
 #End Region
 
 End Class

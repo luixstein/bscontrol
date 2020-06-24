@@ -448,6 +448,22 @@ Public Class Class_Requisiciones_Global
         Return dTabla
     End Function
 
+    Public Function ValidaCantidadDisponible(ByVal sCodigoArticulo As String, ByVal dCantidad As Double, ByVal sCodigoAlmacen As String) As Boolean
+        Try
+            Dim sql As New Class_find("SELECT ISNULL(SUM(DISPONIBLE),0) FROM REQUISICIONES_GLOBAL G INNER JOIN REQUISICIONES_DETALLE D ON(G.FOLIO_REQUISICION=D.FOLIO_REQUISICION) " &
+                                  "WHERE CODIGO_ALMACEN='" & sCodigoAlmacen & "' AND ESTATUS IN('L','R') AND CODIGO_ARTICULO='" & sCodigoArticulo & "' ")
+            If txtLEN(sql.Result1) Then
+                If dCantidad <= CDbl(sql.Result1) Then
+                    Return True
+                End If
+            End If
+
+            sql = Nothing
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ObtieneCantidadDisponible", ex)
+        End Try
+    End Function
+
     Public Function GeneraFolio() As String
         Dim sResultado As String = ""
         Dim Conexion As New SqlConnection(Empresa_Sistema.conexion)
