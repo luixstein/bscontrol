@@ -21,6 +21,7 @@ Public Class Compras_Movimientos
         NUEVO
         GRABADO
         PARCIALMENTE_RECEPCIONADO
+        PEDIDO
         APLICADO
         CANCELADO
     End Enum
@@ -131,6 +132,15 @@ Public Class Compras_Movimientos
         End If
     End Sub
 
+    Private Sub tsbPedir_Click(sender As Object, e As EventArgs) Handles tsbPedir.Click
+        If Me.PedirOrdenCompra() = False Then
+            MsgBox("No se pudo realizar el pedido.", MsgBoxStyle.Exclamation, Me.Name)
+            Exit Sub
+        End If
+
+        Me.Consultar()
+    End Sub
+
     Private Sub tsbRecepcionarEntrada_Click(sender As Object, e As EventArgs) Handles tsbRecepcionarEntrada.Click
         Me.RecepcionarEntrada()
     End Sub
@@ -235,6 +245,10 @@ Public Class Compras_Movimientos
             Me.txtLote.Visible = False : Me.btnCopiarLote.Visible = False : Me.lblDisplayLote.Visible = False
         Else
             Me.txtLote.Visible = True : Me.btnCopiarLote.Visible = True : Me.lblDisplayLote.Visible = True
+        End If
+
+        If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO = False Then
+            Me.tsbPedir.Visible = False
         End If
     End Sub
 
@@ -873,6 +887,8 @@ Buscar:
                 Me.Cambia_Estado(enumEstados.GRABADO)
             Case "PARCIALMENTE RECEPCIONADO"
                 Me.Cambia_Estado(enumEstados.PARCIALMENTE_RECEPCIONADO)
+            Case "PEDIDO"
+                Me.Cambia_Estado(enumEstados.PEDIDO)
             Case "APLICADO"
                 Me.Cambia_Estado(enumEstados.APLICADO)
             Case "CANCELADO"
@@ -902,6 +918,8 @@ Buscar:
                     Me.tsbImprimir.Enabled = False
                     Me.tsbPasarOrdenACompra.Visible = False
                     Me.tsbEditarCostos.Visible = False
+                    Me.tsbPedir.Visible = False
+
 
                     Me.chkEsInventariable.Enabled = True
 
@@ -1012,6 +1030,11 @@ Buscar:
                     Me.tsbPasarOrdenACompra.Visible = False
                     Me.tsbEditarCostos.Visible = False
 
+                    If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO Then
+                        Me.tsbPedir.Visible = True
+                        Me.tsbPedir.Enabled = True
+                    End If
+
                     Me.txtTipoCambio.Enabled = False
                     If Me.oDocumento.AFECTA_CXP = False Then 'Si no afecta, entonces es una oc y si se permite el botón.
                         Me.tsbPasarOrdenACompra.Visible = True
@@ -1058,13 +1081,18 @@ Buscar:
 
                     Me.TxtConcepto.Focus()
 
-                Case enumEstados.APLICADO, enumEstados.PARCIALMENTE_RECEPCIONADO
+                Case enumEstados.APLICADO, enumEstados.PARCIALMENTE_RECEPCIONADO, enumEstados.PEDIDO
                     Me.tsbNuevo.Enabled = True
                     Me.tsbGrabar.Enabled = False
                     Me.tsbAplicar.Enabled = False
                     Me.tsbCancelar.Enabled = True
                     Me.tsbImprimir.Enabled = True
                     Me.tsbPasarOrdenACompra.Visible = False
+                    Me.tsbPedir.Visible = False
+
+                    If Me.Estado = enumEstados.PEDIDO Then
+                        Me.tsbRecepcionarEntrada.Visible = True
+                    End If
 
                     If Me.Estado = enumEstados.APLICADO And Me.oDocumento.AFECTA_CXP = True Then
                         Me.tsbEditarCostos.Visible = True
@@ -1235,6 +1263,12 @@ Buscar:
                 Return False
             End If
         End If
+
+        If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO AndAlso Me.chkEsInventariable.Checked Then
+            'Valida pero dejara grabar aunque no haya disponible de requisicion
+            Me.ValidaDisponiblesRequisicion()
+        End If
+
 
         Try
             With Me.oCompras
@@ -1632,6 +1666,8 @@ Buscar:
                         Me.LblEstatus.Text = "GRABADO"
                     Case "R"
                         Me.LblEstatus.Text = "PARCIALMENTE RECEPCIONADO"
+                    Case "P"
+                        Me.LblEstatus.Text = "PEDIDO"
                     Case "A"
                         Me.LblEstatus.Text = "APLICADO"
                     Case "C"
@@ -1991,6 +2027,14 @@ Buscar:
 
             If Me.oCompras.CancelaOrdenCompra = False Then
                 Return False
+            End If
+
+            If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO Then
+                If Me.oCompras.AfectaRequisicionesOrdenCompra(True) = False Then 'Desafecta requisiciones
+                    MsgBox("Error al devolver el disponible a las requisiciones de inventario.", MsgBoxStyle.Exclamation, sProcedure)
+                    MsgBox("Avise al departamento de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
             End If
 
             MsgBox("Orden de compra cancelada satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
@@ -2777,6 +2821,7 @@ LlenaLinea:
                                         Me.Grid.Refresh()
                                         Return
                                     End If
+
                                 Else 'Proceso normal de antes
                                     If Me.oCompras.ValidaCantidadDisponibleArticulo(CInt(Me.Grid.Cell(Renglon, Me.igyIdArticulo).Text), dCantidad) = False Then
                                         MsgBox("La cantidad debe de ser menor al disponible.", MsgBoxStyle.Exclamation, sProcedure)
@@ -2785,7 +2830,15 @@ LlenaLinea:
                                         Return
                                     End If
                                 End If
-                                
+
+                            End If
+
+                            If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO AndAlso Me.chkEsInventariable.Checked Then
+                                'Valida el disponible de requisicion pero deja avanzar aunque no haya suficiente
+                                If Me.oRequisicion.ValidaCantidadDisponible(Me.Grid.Cell(Renglon, Me.igyCodigo).Text, valorNumerico(Me.Grid.Cell(Renglon, Me.igyCantidad).Text), Me.CboAlmacen.SelectedValue.ToString) = False Then
+                                    MsgBox("No hay suficiente disponible en requisiciones para el artículo " & Me.Grid.Cell(Renglon, Me.igyDescripcion).Text & " en el renglón " & Renglon.ToString & ". " &
+                                           "Para hacer el pedido debera solicitar una requisición de inventario.", MsgBoxStyle.Exclamation, sProcedure)
+                                End If
                             End If
 
                             If Me.cboMoneda.Text = "USD" Then
@@ -4242,6 +4295,11 @@ BuscarCuentas:
                 Return False
             End If
 
+            If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO AndAlso oCompras.ESTATUS <> "P" Then
+                MsgBox("La orden de compra debe estar pedida para poder recibir la entrada de almacén.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
             Dim oInventario As New Inventarios_Movimientos
             oInventario.StartPosition = FormStartPosition.CenterScreen
 
@@ -4274,6 +4332,39 @@ BuscarCuentas:
             oInventario.Dispose()
 
             Return True
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Function
+
+    Private Function PedirOrdenCompra() As Boolean
+        Const sProcedure As String = "PedirOrdenCompra"
+        Try
+            Dim sFolioOC As String = Me.txtFolioCompra.Text
+
+            If Me.chkEsInventariable.Checked = False Then
+                MsgBox("Esta orden no es inventariable.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If Me.oCompras.ESTATUS = "P" Then
+                MsgBox("La orden de compra ya esta pedida.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If Me.ValidaDisponiblesRequisicion() = False Then
+                Return False
+            End If
+
+            'Aqui afectar las requisiciones
+            If Me.oCompras.AfectaRequisicionesOrdenCompra() = False Then
+                MsgBox("Error al tratar de afectar el disponible de las requisiciones de inventario.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            MsgBox("Pedido realizado satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
+            Return True
+
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
@@ -4318,7 +4409,8 @@ BuscarCuentas:
             Dim i As Integer
             For i = 1 To Me.Grid.Rows - 1
                 If oRequisicion.ValidaCantidadDisponible(Me.Grid.Cell(i, Me.igyCodigo).Text, valorNumerico(Me.Grid.Cell(i, Me.igyCantidad).Text), Me.CboAlmacen.SelectedValue.ToString) = False Then
-                    MsgBox("No hay suficiente disponible en requisiciones para el artículo " & Me.Grid.Cell(i, Me.igyDescripcion).Text & " en el renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, sProcedure)
+                    MsgBox("No hay suficiente disponible en requisiciones para el artículo " & Me.Grid.Cell(i, Me.igyDescripcion).Text & " en el renglón " & i.ToString & ". " &
+                    "Para hacer el pedido debera solicitar una requisición de inventario.", MsgBoxStyle.Exclamation, sProcedure)
                     Me.Grid.Cell(i, Me.igyCantidad).SetFocus()
                     Return False
                 End If
@@ -4333,4 +4425,5 @@ BuscarCuentas:
 
 #End Region
 
+    
 End Class

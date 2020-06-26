@@ -2824,10 +2824,19 @@ busca_serie:
                 Return False
             End If
 
-            If Not (oOrdenCompra.ESTATUS = "G" Or oOrdenCompra.ESTATUS = "R") Then
-                MsgBox("La orden de compra no esta en estatus G(Grabada) o R(Parcialmente recepcionada).", MsgBoxStyle.Exclamation, sProcedure)
-                Return False
+            If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO Then
+                If Not (oOrdenCompra.ESTATUS = "P" Or oOrdenCompra.ESTATUS = "R") Then
+                    MsgBox("La orden de compra no esta en estatus P(Pedida) o R(Parcialmente recepcionada).", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+            Else
+                If Not (oOrdenCompra.ESTATUS = "G" Or oOrdenCompra.ESTATUS = "R") Then
+                    MsgBox("La orden de compra no esta en estatus G(Grabada) o R(Parcialmente recepcionada).", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
             End If
+            
 
             Dim oOC As New Class_find("SELECT OC.FOLIO_COMPRA FROM COMPRA_GLOBAL OC INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(OC.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
             "WHERE OC.FOLIO_COMPRA='" & sReplace(Me.txtFolioOrdenCompra.Text) & "' AND DOC.CODIGO_TIPO_DOCUMENTO='OC' ")
@@ -3184,9 +3193,17 @@ busca_serie:
                 Return False
             End If
 
-            If Not (oOrdenCompra.ESTATUS = "G" Or oOrdenCompra.ESTATUS = "R") Then
-                MsgBox("La orden de compra no esta en estatus G(Grabada) o R(Parcialmente recepcionada).", MsgBoxStyle.Exclamation, sProcedure)
-                Return False
+            If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO Then
+                If Not (oOrdenCompra.ESTATUS = "P" Or oOrdenCompra.ESTATUS = "R") Then
+                    MsgBox("La orden de compra no esta en estatus P(Pedida) o R(Parcialmente recepcionada).", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+            Else
+                If Not (oOrdenCompra.ESTATUS = "G" Or oOrdenCompra.ESTATUS = "R") Then
+                    MsgBox("La orden de compra no esta en estatus G(Grabada) o R(Parcialmente recepcionada).", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
             End If
 
             Dim oOC As New Class_find("SELECT OC.FOLIO_COMPRA FROM COMPRA_GLOBAL OC INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(OC.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &

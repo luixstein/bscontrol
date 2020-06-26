@@ -216,6 +216,10 @@ Public Class Inventarios_Requisiciones
                     Me.tsbCancelar.Enabled = False
                     Me.tsbImprimir.Enabled = True
 
+                    If Me.Estado = enumEstados.SOLICITADO Then
+                        Me.tsbCancelar.Enabled = True
+                    End If
+
                     Me.DtpFecha.Enabled = False
                     Me.CboAlmacen.Enabled = False
                     Me.TxtFolio.Enabled = False
@@ -561,11 +565,11 @@ BuscaArticulos:
         Dim oFirmaElectronica As New UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo
         Dim oUtileriasCancela As New Class_UtileriasFirmaElectronicaCancelacion
 
-
-        If Me.oRequisiciones.ESTATUS <> "G" Then
-            MsgBox("Este documento sólo se puede cancelar si esta en estatus GRABADO.", MsgBoxStyle.Exclamation, sProcedure)
-            Return False
-        End If
+        Select Case Me.oRequisiciones.ESTATUS
+            Case "C", "R", "A"
+                MsgBox("Este documento sólo se puede cancelar si esta en estatus GRABADO o SOLICITADO.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+        End Select
 
         'If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString, "") = False Then
         '    Return False
