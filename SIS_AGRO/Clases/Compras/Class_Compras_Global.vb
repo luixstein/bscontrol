@@ -1010,6 +1010,37 @@ Public Class Class_Compras_Global
         Return bResultado
     End Function
 
+    Public Function AfectaRequisicionesOrdenCompra(Optional ByVal bCancelar As Boolean = False) As Boolean
+        Const sProcedure As String = "AfectaRequisicionesOrdenCompra"
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_COMPRAS_ORDEN_COMPRA_AFECTA_CANTIDADES_PENDIENTES_REQUISICIONES"
+
+            sqlParametro = .Parameters.Add("@FOLIO_ORDEN_COMPRA", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me.FOLIO_COMPRA
+            sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Plaza.CODIGO_PLAZA
+            sqlParametro = .Parameters.Add("@CANCELA", SqlDbType.Char) : sqlParametro.Value = IIf(bCancelar, "1", "0")
+
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
+    End Function
+
     Public Function Consultar() As Boolean
         Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False

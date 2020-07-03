@@ -94,6 +94,7 @@ Public NotInheritable Class Class_sisEmpresa
     Private _TIPO_CAMBIO_POR_DIA As Boolean
     Private _TIENE_REGIMEN_FISCAL_MULTIPLE As Boolean
     Private _ES_ACUICOLA As Boolean
+    Private _MODO_REQUISICIONES_INVENTARIO As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -700,6 +701,12 @@ Public NotInheritable Class Class_sisEmpresa
         End Get
     End Property
 
+    Public ReadOnly Property MODO_REQUISICIONES_INVENTARIO As Boolean
+        Get
+            Return Me._MODO_REQUISICIONES_INVENTARIO
+        End Get
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -1064,6 +1071,7 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._TIPO_CAMBIO_POR_DIA = CBool(dReader("TIPO_CAMBIO_POR_DIA"))
                     Me._TIENE_REGIMEN_FISCAL_MULTIPLE = CBool(dReader("TIENE_REGIMEN_FISCAL_MULTIPLE"))
                     Me._ES_ACUICOLA = CBool(dReader("ES_ACUICOLA"))
+                    Me._MODO_REQUISICIONES_INVENTARIO = CBool(dReader("MODO_REQUISICIONES_INVENTARIO"))
 
                     dReader.Close()
                     bResultado = True
