@@ -405,10 +405,10 @@ BuscaArticulos:
         Dim bResultado As Boolean = False
         Dim i As Integer
 
-        'If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString, "") = False Then
-        '    'MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento de inventarios.", MsgBoxStyle.Information, sProcedure)
-        '    Return False
-        'End If
+        If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios("RQ" & Plaza.CODIGO_PLAZA.ToString) = False Then
+            MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso grabar la requisición de inventario.", MsgBoxStyle.Information, sProcedure)
+            Return False
+        End If
 
         If MsgBox("Deseas grabar la requisición de inventario ?", CType(vbYesNo + vbQuestion, MsgBoxStyle), sProcedure) = MsgBoxResult.No Then
             Return False
@@ -487,7 +487,14 @@ BuscaArticulos:
     Private Function Solicitar() As Boolean
         Const sProcedure As String = "Solicitar"
         Dim bResultado As Boolean = False
+
+        If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios("RQ" & Plaza.CODIGO_PLAZA.ToString) = False Then
+            MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso solicitar la requisición de inventario.", MsgBoxStyle.Information, sProcedure)
+            Return False
+        End If
+
         Try
+
 
             Me.oRequisiciones = New Class_Requisiciones_Global(Me.TxtFolio.Text)
             Me.oRequisiciones.FECHA_SOLICITO = Date.Now
@@ -510,6 +517,11 @@ BuscaArticulos:
     Private Function Anular() As Boolean
         Const sProcedure As String = "Anular"
         Dim bResultado As Boolean = False
+
+        If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios("RQ" & Plaza.CODIGO_PLAZA.ToString) = False Then
+            MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso anular la requisición de inventario.", MsgBoxStyle.Information, sProcedure)
+            Return False
+        End If
 
         If MsgBox("Deseas anular cantidades de la requisición de solicitada ?", CType(vbYesNo + vbQuestion, MsgBoxStyle), sProcedure) = MsgBoxResult.No Then
             Return False
@@ -571,9 +583,10 @@ BuscaArticulos:
                 Return False
         End Select
 
-        'If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString, "") = False Then
-        '    Return False
-        'End If
+        If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios("RQ" & Plaza.CODIGO_PLAZA.ToString) = False Then
+            MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso cancelar la requisición de inventario.", MsgBoxStyle.Information, sProcedure)
+            Return False
+        End If
 
         If MsgBox("Deseas cancelar la requisición de inventario ?", CType(vbYesNo + vbQuestion, MsgBoxStyle), sProcedure) = MsgBoxResult.No Then
             Return False

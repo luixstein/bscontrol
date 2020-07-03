@@ -4355,6 +4355,11 @@ BuscarCuentas:
                 Return False
             End If
 
+            If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString) = False Then
+                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
             If Me.ValidaDisponiblesRequisicion() = False Then
                 Return False
             End If
