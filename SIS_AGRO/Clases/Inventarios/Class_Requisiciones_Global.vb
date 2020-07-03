@@ -448,20 +448,20 @@ Public Class Class_Requisiciones_Global
         Return dTabla
     End Function
 
-    Public Function ValidaCantidadDisponible(ByVal sCodigoArticulo As String, ByVal dCantidad As Double, ByVal sCodigoAlmacen As String) As Boolean
+    Public Function CantidadDisponible(ByVal sCodigoArticulo As String, ByVal sCodigoAlmacen As String) As Decimal
+        Dim dResultado As Decimal = 0
         Try
-            Dim sql As New Class_find("SELECT ISNULL(SUM(DISPONIBLE),0) FROM REQUISICIONES_GLOBAL G INNER JOIN REQUISICIONES_DETALLE D ON(G.FOLIO_REQUISICION=D.FOLIO_REQUISICION) " &
-                                  "WHERE CODIGO_ALMACEN='" & sCodigoAlmacen & "' AND ESTATUS IN('L','R') AND CODIGO_ARTICULO='" & sCodigoArticulo & "' ")
-            If txtLEN(sql.Result1) Then
-                If dCantidad <= CDbl(sql.Result1) Then
-                    Return True
-                End If
-            End If
-
+            Dim sql As New Class_find("SELECT ISNULL(SUM(D.DISPONIBLE),0) " &
+                                      "FROM REQUISICIONES_GLOBAL G " &
+                                      "INNER JOIN REQUISICIONES_DETALLE D ON(G.FOLIO_REQUISICION=D.FOLIO_REQUISICION) " &
+                                      "WHERE D.CODIGO_ARTICULO='" & sCodigoArticulo & "' AND G.CODIGO_ALMACEN='" & sCodigoAlmacen & "' AND G.ESTATUS IN('L','R') ")
+            dResultado = valorNumericoD(sql.Result1)
             sql = Nothing
         Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtieneCantidadDisponible", ex)
+            HandleError(Me._Nombre_Catalogo, "CantidadDisponible", ex)
         End Try
+
+        Return dResultado
     End Function
 
     Public Function GeneraFolio() As String

@@ -2835,9 +2835,12 @@ LlenaLinea:
 
                             If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO AndAlso Me.chkEsInventariable.Checked Then
                                 'Valida el disponible de requisicion pero deja avanzar aunque no haya suficiente
-                                If Me.oRequisicion.ValidaCantidadDisponible(Me.Grid.Cell(Renglon, Me.igyCodigo).Text, valorNumerico(Me.Grid.Cell(Renglon, Me.igyCantidad).Text), Me.CboAlmacen.SelectedValue.ToString) = False Then
-                                    MsgBox("No hay suficiente disponible en requisiciones para el artículo " & Me.Grid.Cell(Renglon, Me.igyDescripcion).Text & " en el renglón " & Renglon.ToString & ". " &
-                                           "Para hacer el pedido debera solicitar una requisición de inventario.", MsgBoxStyle.Exclamation, sProcedure)
+                                Dim dCantidadDisponible As Decimal = Me.oRequisicion.CantidadDisponible(Me.Grid.Cell(Renglon, Me.igyCodigo).Text, Me.CboAlmacen.SelectedValue.ToString)
+                                Dim dCantidadPedir As Decimal = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyCantidad).Text)
+
+                                If dCantidadPedir > dCantidadDisponible Then
+                                    MsgBox("No hay cantidad suficiente requerida para el artículo " & Me.Grid.Cell(Renglon, Me.igyDescripcion).Text & " en el renglón " & Renglon.ToString & ". " &
+                                        "Hay requerida solamente la cantidad de " & dCantidadDisponible & " .", MsgBoxStyle.Exclamation, sProcedure)
                                 End If
                             End If
 
@@ -4408,9 +4411,11 @@ BuscarCuentas:
         Try
             Dim i As Integer
             For i = 1 To Me.Grid.Rows - 1
-                If oRequisicion.ValidaCantidadDisponible(Me.Grid.Cell(i, Me.igyCodigo).Text, valorNumerico(Me.Grid.Cell(i, Me.igyCantidad).Text), Me.CboAlmacen.SelectedValue.ToString) = False Then
-                    MsgBox("No hay suficiente disponible en requisiciones para el artículo " & Me.Grid.Cell(i, Me.igyDescripcion).Text & " en el renglón " & i.ToString & ". " &
-                    "Para hacer el pedido debera solicitar una requisición de inventario.", MsgBoxStyle.Exclamation, sProcedure)
+                Dim dCantidadDisponible As Decimal = oRequisicion.CantidadDisponible(Me.Grid.Cell(i, Me.igyCodigo).Text, Me.CboAlmacen.SelectedValue.ToString)
+                Dim dCantidadPedir As Decimal = valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text)
+                If dCantidadPedir > dCantidadDisponible Then
+                    MsgBox("No hay cantidad suficiente requerida para el artículo " & Me.Grid.Cell(i, Me.igyDescripcion).Text & " en el renglón " & i.ToString & ". " &
+                        "Hay requerida solamente la cantidad de " & dCantidadDisponible & " .", MsgBoxStyle.Exclamation, sProcedure)
                     Me.Grid.Cell(i, Me.igyCantidad).SetFocus()
                     Return False
                 End If
