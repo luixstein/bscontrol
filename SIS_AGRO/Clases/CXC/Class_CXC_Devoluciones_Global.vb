@@ -229,6 +229,15 @@ Public Class Class_CXC_Devoluciones_Global
         End Set
     End Property
 
+    Public Property TOTAL_USD() As Decimal
+        Get
+            Return Me._TOTAL_USD
+        End Get
+        Set(value As Decimal)
+            Me._TOTAL_USD = value
+        End Set
+    End Property
+
     Public Property IEPS_DESGLOSADO() As Decimal
         Get
             Return Me._IEPS_DESGLOSADO
@@ -600,6 +609,7 @@ Public Class Class_CXC_Devoluciones_Global
                 sqlParametro = .Parameters.Add("@SUBTOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL
                 sqlParametro = .Parameters.Add("@IMPUESTO", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO
                 sqlParametro = .Parameters.Add("@TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL
+                sqlParametro = .Parameters.Add("@TOTAL_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_USD
                 sqlParametro = .Parameters.Add("@IEPS_DESGLOSADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_DESGLOSADO
                 sqlParametro = .Parameters.Add("@IEPS_INCLUIDO", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_INCLUIDO
                 sqlParametro = .Parameters.Add("@IMPUESTO_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_PORCENTAJE
