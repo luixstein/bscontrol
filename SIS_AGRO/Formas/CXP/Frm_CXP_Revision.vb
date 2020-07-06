@@ -1132,15 +1132,23 @@ Buscar:
                 Case enumEstados.SINORDENCOMPRA
                     If Me.oCompras.Existe = True Then
                         Me.tsbGrabar.Enabled = False
+
+                        Me.txtFolioProveedor.Enabled = False
+                        Me.GridCuentas.Locked = True
+                        Me.GridActivos.Locked = True
                     Else
                         Me.tsbGrabar.Enabled = True
+
+                        Me.txtFolioProveedor.Enabled = True
+                        Me.GridCuentas.Locked = False
+                        Me.GridActivos.Locked = False
                     End If
 
                     Me.gbProveedor.Enabled = True 'False
                     Me.gbCompraProveedor.Enabled = True
                     Me.gbCompras.Enabled = True
                     Me.txtFolioCompra.Enabled = False
-                    Me.txtFolioProveedor.Enabled = True
+
                     Me.txtEmbarque.Enabled = False
                     Me.txtFolioProveedor.Focus()
                     Me.GridCuentas.Enabled = True

@@ -835,6 +835,7 @@ busca:
                 .SUBTOTAL = valorNumericoD(Me.lblSubtotal.Text)
                 .IMPUESTO = valorNumericoD(Me.lblImpuesto.Text)
                 .TOTAL = valorNumericoD(Me.lblTotal.Text)
+                .TOTAL_USD = valorNumericoD(Me.lblTotalDolares.Text)
                 .IEPS_DESGLOSADO = valorNumericoD(Me.lblIEPS.Text)
                 .IEPS_INCLUIDO = valorNumericoD(Me.lblIEPSIncluido.Text)
                 .IMPUESTO_PORCENTAJE = CDec(IIf(valorNumericoD(Me.lblImpuesto.Text) > 0, "16", "0"))

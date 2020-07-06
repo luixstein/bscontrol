@@ -227,6 +227,7 @@ Partial Public Class AppMenu
         Me.CapturaParámetrosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CapturaAlimentaciónToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CapturaParametríaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EstanquesIntensivosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConsultasToolStripMenuItem5 = New System.Windows.Forms.ToolStripMenuItem()
         Me.GlobalDeDocumentosToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.AlimentaciónDetalleToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -244,7 +245,7 @@ Partial Public Class AppMenu
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
-        Me.EstanquesIntensivosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.RequisicionesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -1211,7 +1212,7 @@ Partial Public Class AppMenu
         '
         'MenuInventarios
         '
-        Me.MenuInventarios.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MovimientosToolStripMenuItem, Me.TransformacionesToolStripMenuItem, Me.InventariosSugeridosToolStripMenuItem, Me.MnuInvReportes})
+        Me.MenuInventarios.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MovimientosToolStripMenuItem, Me.TransformacionesToolStripMenuItem, Me.InventariosSugeridosToolStripMenuItem, Me.RequisicionesToolStripMenuItem, Me.MnuInvReportes})
         Me.MenuInventarios.Name = "MenuInventarios"
         Me.MenuInventarios.Size = New System.Drawing.Size(93, 24)
         Me.MenuInventarios.Tag = "0006"
@@ -1557,6 +1558,12 @@ Partial Public Class AppMenu
         Me.CapturaParametríaToolStripMenuItem.Size = New System.Drawing.Size(226, 26)
         Me.CapturaParametríaToolStripMenuItem.Text = "Captura parametría"
         '
+        'EstanquesIntensivosToolStripMenuItem
+        '
+        Me.EstanquesIntensivosToolStripMenuItem.Name = "EstanquesIntensivosToolStripMenuItem"
+        Me.EstanquesIntensivosToolStripMenuItem.Size = New System.Drawing.Size(226, 26)
+        Me.EstanquesIntensivosToolStripMenuItem.Text = "Estanques intensivos"
+        '
         'ConsultasToolStripMenuItem5
         '
         Me.ConsultasToolStripMenuItem5.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.GlobalDeDocumentosToolStripMenuItem2, Me.AlimentaciónDetalleToolStripMenuItem})
@@ -1674,11 +1681,11 @@ Partial Public Class AppMenu
         Me.pbLogo.TabStop = False
         Me.pbLogo.Visible = False
         '
-        'EstanquesIntensivosToolStripMenuItem
+        'RequisicionesToolStripMenuItem
         '
-        Me.EstanquesIntensivosToolStripMenuItem.Name = "EstanquesIntensivosToolStripMenuItem"
-        Me.EstanquesIntensivosToolStripMenuItem.Size = New System.Drawing.Size(226, 26)
-        Me.EstanquesIntensivosToolStripMenuItem.Text = "Estanques intensivos"
+        Me.RequisicionesToolStripMenuItem.Name = "RequisicionesToolStripMenuItem"
+        Me.RequisicionesToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
+        Me.RequisicionesToolStripMenuItem.Text = "Requisiciones"
         '
         'AppMenu
         '
@@ -1931,4 +1938,5 @@ Partial Public Class AppMenu
     Friend WithEvents AlimentaciónDetalleToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents InventariosSugeridosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents EstanquesIntensivosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents RequisicionesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

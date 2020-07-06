@@ -888,7 +888,7 @@ busca:
                         .DIAS_PLAZO = valorNumerico(Me.txtDiasPlazo.Text)
                         .PERMITIR_VENTA_CREDITO = Convert.ToInt32(Me.chkPermitirVentaCredito.Checked).ToString
                         .FECHA_ALTA = Me.DpFecha.Value
-                        .PLAZA = Usuario.Codigo_Plaza.ToString
+                        .PLAZA = Plaza.CODIGO_PLAZA.ToString
                         .CORREO_CLIENTE = Me.txtCorreoCliente.Text
                         .CORREO_CLIENTE_PAGOS = Me.txtCorreoClientePagos.Text
                         .CODIGO_METODO_PAGO = Me.cboFormaPago.SelectedValue.ToString
