@@ -2570,6 +2570,9 @@ Buscar:
                 If bIva = False Then
                     'If valorNumerico(Me.lblIVAcalculado.Text) > 0 And valorNumerico(Me.txtIVA.Text) = 0 Then
                     Me.txtIVA_USD.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.Grid, Me.igyIMPUESTO_IMPORTE_USD), Empresa_Sistema.DECIMALES_CONTABILIDAD))
+
+                    'Nota si no se manipuló el iva en USD directamente, el iva en MXN si es la suma de los renglones(si no es la mult iva usd x tpcam), de lo contrario la póliza puede haber diferencias.
+                    dtImpuesto = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyImpuestoImporte)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
                 Else
                     Me.txtIVA_USD.Text = FormatImporteContable(RedondearD(valorNumericoD(Me.txtIVA_USD.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)) 'Es posible iva tecleado se deja aunque se redondea a 2 cifras decimales
                     'ElseIf valorNumerico(Me.lblIVAcalculado.Text) <> valorNumerico(Me.txtIVA.Text) Then
@@ -2580,12 +2583,13 @@ Buscar:
                         Return False
                     End If
                     'End If
+
+                    'Nota el impuesto en MXN va ser conversión directa de del usd por si lo editaron manualmente.
+                    dtImpuesto = RedondearD(dtImpuesto_USD * dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
                 End If
 
                 dtImpuesto_USD = valorNumericoD(Me.txtIVA_USD.Text) 'Sobreecribe el impuesto con que quedó finalmente(ya se manual o calculado).
 
-                'Nota el impuesto en MXN va ser conversión directa de del usd por si lo editaron manualmente.
-                dtImpuesto = RedondearD(dtImpuesto_USD * dTipoCambio, Empresa_Sistema.DECIMALES_CONTABILIDAD)
                 Me.txtIVA.Text = FormatImporteContable(dtImpuesto)
             End If
 
