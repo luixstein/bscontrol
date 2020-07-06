@@ -137,6 +137,10 @@ Public Class Inventarios_Requisiciones
         End Select
     End Sub
 
+    Private Sub BtnDesabastecidos_Click(sender As Object, e As EventArgs) Handles BtnDesabastecidos.Click
+        Me.InsertarArticulosDesabastecidos()
+    End Sub
+
 #Region "Eventos Genericos"
     Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles DtpFecha.KeyPress, TxtConcepto.KeyPress, TxtFolio.KeyPress, CboAlmacen.KeyPress
         txtNoBeep(e)
@@ -762,6 +766,32 @@ BuscaArticulos:
         Return bResultado
     End Function
 
+    Private Sub InsertarArticulosDesabastecidos()
+        Dim oInventariosSugeridos As New Class_Inventarios_Sugeridos
+
+        Try
+
+            'Obtiene el detalle de inventarios sugeridos de los articulos en desabasto
+            Dim dTabla As DataTable = oInventariosSugeridos.ObtenerElementosParaRequisicion(Me.CboAlmacen.SelectedValue.ToString)
+            Me.Grid1.AutoRedraw = False
+            Me.Grid1.Rows = 1 'Trae dos porque en docs nuevos se pone un row en blanco, y si se dejan aqui dos agrega a partir del 3 y queda un hueco
+            For Each dRow As DataRow In dTabla.Rows
+                Me.Grid1.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) &
+                                 dRow("DESCRIPCION").ToString & Chr(9) &
+                                 dRow("CANTIDAD").ToString & Chr(9) &
+                                 dRow("UNIDAD_VENTA").ToString & Chr(9) &
+                                 "0" & Chr(9) & "0" & Chr(9) & "0" & Chr(9)) 'Disponible, cantidad anulada, cantidad a anular
+            Next
+
+            Me.Grid1.AutoRedraw = True
+            Me.Grid1.Refresh()
+            Me.FormateaGrid()
+
+        Catch ex As Exception
+            HandleError(Me.Name, "InsertarArticulosDesabastecidos", ex)
+        End Try
+    End Sub
+
     Private Sub FormateaGrid()
         Try
             With Me.Grid1
@@ -789,7 +819,7 @@ BuscaArticulos:
                 .Column(Me.iGyCodigo).Width = 100
                 .Column(Me.iGyDescripcion).Width = 190
                 .Column(Me.iGyCantidad).Width = 80
-                .Column(Me.iGyUnidad).Width = 80
+                .Column(Me.iGyUnidad).Width = 70
                 .Column(Me.iGyDisponible).Width = 90
                 .Column(Me.iGyCantidadAnulada).Width = 90
                 .Column(Me.iGyCantidadAnular).Width = 100

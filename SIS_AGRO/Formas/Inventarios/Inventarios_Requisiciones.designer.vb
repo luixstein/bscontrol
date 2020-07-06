@@ -51,6 +51,7 @@ Partial Class Inventarios_Requisiciones
         Me.Grid1 = New FlexCell.Grid()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.LblNombreEstatus = New System.Windows.Forms.Label()
+        Me.BtnDesabastecidos = New System.Windows.Forms.Button()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.SuspendLayout()
@@ -61,7 +62,7 @@ Partial Class Inventarios_Requisiciones
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbSolicitar, Me.tsbImprimir, Me.tsbAnular, Me.tsbCancelar, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1059, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1070, 27)
         Me.tsMenu.TabIndex = 223
         Me.tsMenu.Text = "tsMenu"
         '
@@ -228,7 +229,7 @@ Partial Class Inventarios_Requisiciones
         Me.StatusStripEstado.Location = New System.Drawing.Point(0, 607)
         Me.StatusStripEstado.Name = "StatusStripEstado"
         Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1059, 29)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1070, 29)
         Me.StatusStripEstado.TabIndex = 257
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -304,7 +305,7 @@ Partial Class Inventarios_Requisiciones
         Me.Grid1.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid1.Name = "Grid1"
         Me.Grid1.Rows = 10
-        Me.Grid1.Size = New System.Drawing.Size(1036, 434)
+        Me.Grid1.Size = New System.Drawing.Size(1044, 434)
         Me.Grid1.TabIndex = 7
         Me.Grid1.UncheckedImage = CType(resources.GetObject("Grid1.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -323,11 +324,21 @@ Partial Class Inventarios_Requisiciones
         Me.LblNombreEstatus.TabIndex = 383
         Me.LblNombreEstatus.Text = "Estatus"
         '
+        'BtnDesabastecidos
+        '
+        Me.BtnDesabastecidos.Location = New System.Drawing.Point(818, 35)
+        Me.BtnDesabastecidos.Name = "BtnDesabastecidos"
+        Me.BtnDesabastecidos.Size = New System.Drawing.Size(229, 31)
+        Me.BtnDesabastecidos.TabIndex = 384
+        Me.BtnDesabastecidos.Text = "Insertar articulos desabastecidos"
+        Me.BtnDesabastecidos.UseVisualStyleBackColor = True
+        '
         'Inventarios_Requisiciones
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1059, 636)
+        Me.ClientSize = New System.Drawing.Size(1070, 636)
+        Me.Controls.Add(Me.BtnDesabastecidos)
         Me.Controls.Add(Me.LblNombreEstatus)
         Me.Controls.Add(Me.Grid1)
         Me.Controls.Add(Me.btnDocumentoSiguiente)
@@ -386,4 +397,5 @@ Partial Class Inventarios_Requisiciones
     Friend WithEvents tsslSolicito As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents tsbAnular As System.Windows.Forms.ToolStripButton
     Friend WithEvents LblNombreEstatus As System.Windows.Forms.Label
+    Friend WithEvents BtnDesabastecidos As System.Windows.Forms.Button
 End Class

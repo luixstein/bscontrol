@@ -239,6 +239,19 @@ Public Class Class_Inventarios_Sugeridos
         Return dTable
     End Function
 
+    Public Function ObtenerElementosParaRequisicion(ByVal sCodigoAlmacen As String) As System.Data.DataTable
+        Dim dTable As New DataTable
+        Dim dsArticulosInv As New SqlDataAdapter("EXEC MP_INVENTARIOS_SUGERIDOS_OBTIENE_DETALLE @CODIGO_ALMACEN='" & sCodigoAlmacen & "', @FILTRO='%', @PARA_REQUISICION='1' ", Me._Conexion)
+        Try
+            dsArticulosInv.Fill(dTable)
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ObtenerElementosFiltro", ex)
+        Finally
+            dsArticulosInv.Dispose()
+        End Try
+        Return dTable
+    End Function
+
 #End Region
 
 End Class
