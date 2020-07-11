@@ -3833,13 +3833,13 @@ CANCELAR:
             Me.Grid.AutoRedraw = False
 
             'Si el usuario no tiene acceso a ver costos borramos todos los costos de los que no sean no-inventariables(sólo estos podrá ver)
-            If Usuario.VER_COSTOS = False Then
-                For i = 1 To Me.Grid.Rows - 1
-                    If Me.Grid.Cell(i, Me.igyTipoControlInventariable).Text <> "NIV" Then 'NIV=No inventariables
-                        Me.Grid.Cell(i, Me.igyCosto).Text = ""
-                    End If
-                Next
-            End If
+            'If Usuario.VER_COSTOS = False Then
+            '    For i = 1 To Me.Grid.Rows - 1
+            '        If Me.Grid.Cell(i, Me.igyTipoControlInventariable).Text <> "NIV" Then 'NIV=No inventariables
+            '            Me.Grid.Cell(i, Me.igyCosto).Text = ""
+            '        End If
+            '    Next
+            'End If
 
             'Nota no se puede juntar con el anterior ciclo porque aquél sólo aplica si no se tiene acceso a costos
             For i = 1 To Me.Grid.Rows - 1
