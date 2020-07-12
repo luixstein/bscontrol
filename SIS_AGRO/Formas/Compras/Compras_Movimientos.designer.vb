@@ -81,6 +81,7 @@ Partial Class Compras_Movimientos
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.tsbPasarOrdenACompra = New System.Windows.Forms.ToolStripButton()
+        Me.tsbPedir = New System.Windows.Forms.ToolStripButton()
         Me.tsbRecepcionarEntrada = New System.Windows.Forms.ToolStripButton()
         Me.tsbEditarCostos = New System.Windows.Forms.ToolStripButton()
         Me.tsbAgregarXML = New System.Windows.Forms.ToolStripButton()
@@ -148,7 +149,9 @@ Partial Class Compras_Movimientos
         Me.lblDisplayRetencionISR = New System.Windows.Forms.Label()
         Me.lblDisplayRetencionIVA = New System.Windows.Forms.Label()
         Me.lblAyuda = New System.Windows.Forms.Label()
-        Me.tsbPedir = New System.Windows.Forms.ToolStripButton()
+        Me.TxtRequisicion = New System.Windows.Forms.TextBox()
+        Me.LblRequisicion = New System.Windows.Forms.Label()
+        Me.btnTraerDetalleRequisicion = New System.Windows.Forms.Button()
         Me.gbGlobal.SuspendLayout()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
@@ -163,6 +166,9 @@ Partial Class Compras_Movimientos
         '
         'gbGlobal
         '
+        Me.gbGlobal.Controls.Add(Me.btnTraerDetalleRequisicion)
+        Me.gbGlobal.Controls.Add(Me.LblRequisicion)
+        Me.gbGlobal.Controls.Add(Me.TxtRequisicion)
         Me.gbGlobal.Controls.Add(Me.chkEsFiscal)
         Me.gbGlobal.Controls.Add(Me.chkEsInventariable)
         Me.gbGlobal.Controls.Add(Me.lblDisplayFechaEntrega)
@@ -213,9 +219,9 @@ Partial Class Compras_Movimientos
         Me.gbGlobal.Controls.Add(Me.CboDocumento)
         Me.gbGlobal.Controls.Add(Me.LblDisplayDocumento)
         Me.gbGlobal.Location = New System.Drawing.Point(1, 34)
-        Me.gbGlobal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbGlobal.Margin = New System.Windows.Forms.Padding(4)
         Me.gbGlobal.Name = "gbGlobal"
-        Me.gbGlobal.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbGlobal.Padding = New System.Windows.Forms.Padding(4)
         Me.gbGlobal.Size = New System.Drawing.Size(1359, 260)
         Me.gbGlobal.TabIndex = 0
         Me.gbGlobal.TabStop = False
@@ -225,7 +231,7 @@ Partial Class Compras_Movimientos
         Me.chkEsFiscal.AutoSize = True
         Me.chkEsFiscal.Enabled = False
         Me.chkEsFiscal.Location = New System.Drawing.Point(261, 180)
-        Me.chkEsFiscal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.chkEsFiscal.Margin = New System.Windows.Forms.Padding(4)
         Me.chkEsFiscal.Name = "chkEsFiscal"
         Me.chkEsFiscal.Size = New System.Drawing.Size(94, 21)
         Me.chkEsFiscal.TabIndex = 386
@@ -236,7 +242,7 @@ Partial Class Compras_Movimientos
         '
         Me.chkEsInventariable.AutoSize = True
         Me.chkEsInventariable.Location = New System.Drawing.Point(107, 180)
-        Me.chkEsInventariable.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.chkEsInventariable.Margin = New System.Windows.Forms.Padding(4)
         Me.chkEsInventariable.Name = "chkEsInventariable"
         Me.chkEsInventariable.Size = New System.Drawing.Size(143, 21)
         Me.chkEsInventariable.TabIndex = 385
@@ -257,7 +263,7 @@ Partial Class Compras_Movimientos
         '
         Me.dtpFechaEntrega.Enabled = False
         Me.dtpFechaEntrega.Location = New System.Drawing.Point(989, 101)
-        Me.dtpFechaEntrega.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.dtpFechaEntrega.Margin = New System.Windows.Forms.Padding(4)
         Me.dtpFechaEntrega.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dtpFechaEntrega.Name = "dtpFechaEntrega"
         Me.dtpFechaEntrega.Size = New System.Drawing.Size(280, 22)
@@ -278,7 +284,7 @@ Partial Class Compras_Movimientos
         Me.cboMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboMoneda.FormattingEnabled = True
         Me.cboMoneda.Location = New System.Drawing.Point(107, 153)
-        Me.cboMoneda.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboMoneda.Margin = New System.Windows.Forms.Padding(4)
         Me.cboMoneda.Name = "cboMoneda"
         Me.cboMoneda.Size = New System.Drawing.Size(103, 24)
         Me.cboMoneda.TabIndex = 381
@@ -295,7 +301,7 @@ Partial Class Compras_Movimientos
         'btnActualizaConcepto
         '
         Me.btnActualizaConcepto.Location = New System.Drawing.Point(1205, 126)
-        Me.btnActualizaConcepto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnActualizaConcepto.Margin = New System.Windows.Forms.Padding(4)
         Me.btnActualizaConcepto.Name = "btnActualizaConcepto"
         Me.btnActualizaConcepto.Size = New System.Drawing.Size(144, 26)
         Me.btnActualizaConcepto.TabIndex = 379
@@ -305,7 +311,7 @@ Partial Class Compras_Movimientos
         'btnDocumentoSiguiente
         '
         Me.btnDocumentoSiguiente.Location = New System.Drawing.Point(292, 86)
-        Me.btnDocumentoSiguiente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnDocumentoSiguiente.Margin = New System.Windows.Forms.Padding(4)
         Me.btnDocumentoSiguiente.Name = "btnDocumentoSiguiente"
         Me.btnDocumentoSiguiente.Size = New System.Drawing.Size(33, 26)
         Me.btnDocumentoSiguiente.TabIndex = 378
@@ -315,7 +321,7 @@ Partial Class Compras_Movimientos
         'btnDocumentoAnterior
         '
         Me.btnDocumentoAnterior.Location = New System.Drawing.Point(251, 86)
-        Me.btnDocumentoAnterior.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnDocumentoAnterior.Margin = New System.Windows.Forms.Padding(4)
         Me.btnDocumentoAnterior.Name = "btnDocumentoAnterior"
         Me.btnDocumentoAnterior.Size = New System.Drawing.Size(33, 26)
         Me.btnDocumentoAnterior.TabIndex = 377
@@ -325,7 +331,7 @@ Partial Class Compras_Movimientos
         'BtnActualizaFolioProv
         '
         Me.BtnActualizaFolioProv.Location = New System.Drawing.Point(712, 54)
-        Me.BtnActualizaFolioProv.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.BtnActualizaFolioProv.Margin = New System.Windows.Forms.Padding(4)
         Me.BtnActualizaFolioProv.Name = "BtnActualizaFolioProv"
         Me.BtnActualizaFolioProv.Size = New System.Drawing.Size(145, 26)
         Me.BtnActualizaFolioProv.TabIndex = 329
@@ -346,7 +352,7 @@ Partial Class Compras_Movimientos
         'DtpFechaFacturaProveedor
         '
         Me.DtpFechaFacturaProveedor.Location = New System.Drawing.Point(559, 151)
-        Me.DtpFechaFacturaProveedor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.DtpFechaFacturaProveedor.Margin = New System.Windows.Forms.Padding(4)
         Me.DtpFechaFacturaProveedor.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.DtpFechaFacturaProveedor.Name = "DtpFechaFacturaProveedor"
         Me.DtpFechaFacturaProveedor.Size = New System.Drawing.Size(280, 22)
@@ -365,7 +371,7 @@ Partial Class Compras_Movimientos
         'txtConfirmo
         '
         Me.txtConfirmo.Location = New System.Drawing.Point(559, 225)
-        Me.txtConfirmo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtConfirmo.Margin = New System.Windows.Forms.Padding(4)
         Me.txtConfirmo.MaxLength = 80
         Me.txtConfirmo.Name = "txtConfirmo"
         Me.txtConfirmo.Size = New System.Drawing.Size(280, 22)
@@ -384,7 +390,7 @@ Partial Class Compras_Movimientos
         'txtPredio
         '
         Me.txtPredio.Location = New System.Drawing.Point(559, 201)
-        Me.txtPredio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtPredio.Margin = New System.Windows.Forms.Padding(4)
         Me.txtPredio.MaxLength = 80
         Me.txtPredio.Name = "txtPredio"
         Me.txtPredio.Size = New System.Drawing.Size(280, 22)
@@ -403,7 +409,7 @@ Partial Class Compras_Movimientos
         'txtConCargoA
         '
         Me.txtConCargoA.Location = New System.Drawing.Point(559, 176)
-        Me.txtConCargoA.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtConCargoA.Margin = New System.Windows.Forms.Padding(4)
         Me.txtConCargoA.MaxLength = 80
         Me.txtConCargoA.Name = "txtConCargoA"
         Me.txtConCargoA.Size = New System.Drawing.Size(280, 22)
@@ -422,7 +428,7 @@ Partial Class Compras_Movimientos
         'txtFolioCompra
         '
         Me.txtFolioCompra.Location = New System.Drawing.Point(107, 87)
-        Me.txtFolioCompra.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFolioCompra.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFolioCompra.MaxLength = 15
         Me.txtFolioCompra.Name = "txtFolioCompra"
         Me.txtFolioCompra.Size = New System.Drawing.Size(135, 22)
@@ -441,7 +447,7 @@ Partial Class Compras_Movimientos
         'txtTipoCambio
         '
         Me.txtTipoCambio.Location = New System.Drawing.Point(335, 151)
-        Me.txtTipoCambio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtTipoCambio.Margin = New System.Windows.Forms.Padding(4)
         Me.txtTipoCambio.MaxLength = 8
         Me.txtTipoCambio.Name = "txtTipoCambio"
         Me.txtTipoCambio.Size = New System.Drawing.Size(81, 22)
@@ -484,7 +490,7 @@ Partial Class Compras_Movimientos
         '
         Me.dtpFechaVencimiento.Enabled = False
         Me.dtpFechaVencimiento.Location = New System.Drawing.Point(989, 73)
-        Me.dtpFechaVencimiento.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.dtpFechaVencimiento.Margin = New System.Windows.Forms.Padding(4)
         Me.dtpFechaVencimiento.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dtpFechaVencimiento.Name = "dtpFechaVencimiento"
         Me.dtpFechaVencimiento.Size = New System.Drawing.Size(280, 22)
@@ -503,7 +509,7 @@ Partial Class Compras_Movimientos
         'LblDisplayConcepto
         '
         Me.LblDisplayConcepto.AutoSize = True
-        Me.LblDisplayConcepto.Location = New System.Drawing.Point(848, 133)
+        Me.LblDisplayConcepto.Location = New System.Drawing.Point(852, 133)
         Me.LblDisplayConcepto.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayConcepto.Name = "LblDisplayConcepto"
         Me.LblDisplayConcepto.Size = New System.Drawing.Size(76, 17)
@@ -513,7 +519,7 @@ Partial Class Compras_Movimientos
         'TxtConcepto
         '
         Me.TxtConcepto.Location = New System.Drawing.Point(852, 151)
-        Me.TxtConcepto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtConcepto.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtConcepto.MaxLength = 1000
         Me.TxtConcepto.Multiline = True
         Me.TxtConcepto.Name = "TxtConcepto"
@@ -524,7 +530,7 @@ Partial Class Compras_Movimientos
         'txtFolioProveedor
         '
         Me.txtFolioProveedor.Location = New System.Drawing.Point(559, 87)
-        Me.txtFolioProveedor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFolioProveedor.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFolioProveedor.MaxLength = 60
         Me.txtFolioProveedor.Name = "txtFolioProveedor"
         Me.txtFolioProveedor.Size = New System.Drawing.Size(297, 22)
@@ -543,7 +549,7 @@ Partial Class Compras_Movimientos
         'txtSolicito
         '
         Me.txtSolicito.Location = New System.Drawing.Point(107, 225)
-        Me.txtSolicito.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtSolicito.Margin = New System.Windows.Forms.Padding(4)
         Me.txtSolicito.MaxLength = 80
         Me.txtSolicito.Name = "txtSolicito"
         Me.txtSolicito.Size = New System.Drawing.Size(309, 22)
@@ -562,7 +568,7 @@ Partial Class Compras_Movimientos
         'txtEntregarA
         '
         Me.txtEntregarA.Location = New System.Drawing.Point(107, 201)
-        Me.txtEntregarA.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtEntregarA.Margin = New System.Windows.Forms.Padding(4)
         Me.txtEntregarA.MaxLength = 80
         Me.txtEntregarA.Name = "txtEntregarA"
         Me.txtEntregarA.Size = New System.Drawing.Size(309, 22)
@@ -581,7 +587,7 @@ Partial Class Compras_Movimientos
         'txtPlazo
         '
         Me.txtPlazo.Location = New System.Drawing.Point(989, 48)
-        Me.txtPlazo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtPlazo.Margin = New System.Windows.Forms.Padding(4)
         Me.txtPlazo.MaxLength = 3
         Me.txtPlazo.Name = "txtPlazo"
         Me.txtPlazo.Size = New System.Drawing.Size(36, 22)
@@ -602,7 +608,7 @@ Partial Class Compras_Movimientos
         'txtFolioOC
         '
         Me.txtFolioOC.Location = New System.Drawing.Point(420, 87)
-        Me.txtFolioOC.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFolioOC.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFolioOC.MaxLength = 15
         Me.txtFolioOC.Name = "txtFolioOC"
         Me.txtFolioOC.Size = New System.Drawing.Size(129, 22)
@@ -621,7 +627,7 @@ Partial Class Compras_Movimientos
         'txtProveedor
         '
         Me.txtProveedor.Location = New System.Drawing.Point(107, 119)
-        Me.txtProveedor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtProveedor.Margin = New System.Windows.Forms.Padding(4)
         Me.txtProveedor.MaxLength = 8
         Me.txtProveedor.Name = "txtProveedor"
         Me.txtProveedor.Size = New System.Drawing.Size(135, 22)
@@ -641,7 +647,7 @@ Partial Class Compras_Movimientos
         'DtpFecha
         '
         Me.DtpFecha.Location = New System.Drawing.Point(989, 23)
-        Me.DtpFecha.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.DtpFecha.Margin = New System.Windows.Forms.Padding(4)
         Me.DtpFecha.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.DtpFecha.Name = "DtpFecha"
         Me.DtpFecha.Size = New System.Drawing.Size(280, 22)
@@ -662,7 +668,7 @@ Partial Class Compras_Movimientos
         Me.CboAlmacen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboAlmacen.FormattingEnabled = True
         Me.CboAlmacen.Location = New System.Drawing.Point(107, 54)
-        Me.CboAlmacen.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboAlmacen.Margin = New System.Windows.Forms.Padding(4)
         Me.CboAlmacen.Name = "CboAlmacen"
         Me.CboAlmacen.Size = New System.Drawing.Size(280, 24)
         Me.CboAlmacen.TabIndex = 1
@@ -692,7 +698,7 @@ Partial Class Compras_Movimientos
         Me.CboDocumento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboDocumento.FormattingEnabled = True
         Me.CboDocumento.Location = New System.Drawing.Point(107, 23)
-        Me.CboDocumento.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboDocumento.Margin = New System.Windows.Forms.Padding(4)
         Me.CboDocumento.Name = "CboDocumento"
         Me.CboDocumento.Size = New System.Drawing.Size(280, 24)
         Me.CboDocumento.TabIndex = 0
@@ -774,6 +780,14 @@ Partial Class Compras_Movimientos
         Me.tsbPasarOrdenACompra.Size = New System.Drawing.Size(134, 24)
         Me.tsbPasarOrdenACompra.Text = "&Pasar a compra"
         '
+        'tsbPedir
+        '
+        Me.tsbPedir.Image = Global.BsControl.My.Resources.Resources._782
+        Me.tsbPedir.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbPedir.Name = "tsbPedir"
+        Me.tsbPedir.Size = New System.Drawing.Size(66, 24)
+        Me.tsbPedir.Text = "&Pedir"
+        '
         'tsbRecepcionarEntrada
         '
         Me.tsbRecepcionarEntrada.Image = Global.BsControl.My.Resources.Resources._096
@@ -809,7 +823,7 @@ Partial Class Compras_Movimientos
         'txtSaldo_MXP
         '
         Me.txtSaldo_MXP.Location = New System.Drawing.Point(1227, 657)
-        Me.txtSaldo_MXP.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtSaldo_MXP.Margin = New System.Windows.Forms.Padding(4)
         Me.txtSaldo_MXP.Name = "txtSaldo_MXP"
         Me.txtSaldo_MXP.ReadOnly = True
         Me.txtSaldo_MXP.Size = New System.Drawing.Size(132, 22)
@@ -841,7 +855,7 @@ Partial Class Compras_Movimientos
         '
         Me.txtRetencionIVA.Enabled = False
         Me.txtRetencionIVA.Location = New System.Drawing.Point(104, 124)
-        Me.txtRetencionIVA.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtRetencionIVA.Margin = New System.Windows.Forms.Padding(4)
         Me.txtRetencionIVA.MaxLength = 15
         Me.txtRetencionIVA.Name = "txtRetencionIVA"
         Me.txtRetencionIVA.ReadOnly = True
@@ -863,7 +877,7 @@ Partial Class Compras_Movimientos
         'txtTotal
         '
         Me.txtTotal.Location = New System.Drawing.Point(112, 97)
-        Me.txtTotal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtTotal.Margin = New System.Windows.Forms.Padding(4)
         Me.txtTotal.Name = "txtTotal"
         Me.txtTotal.ReadOnly = True
         Me.txtTotal.Size = New System.Drawing.Size(176, 22)
@@ -893,7 +907,7 @@ Partial Class Compras_Movimientos
         'TxtSubTotal
         '
         Me.TxtSubTotal.Location = New System.Drawing.Point(112, 16)
-        Me.TxtSubTotal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtSubTotal.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtSubTotal.Name = "TxtSubTotal"
         Me.TxtSubTotal.ReadOnly = True
         Me.TxtSubTotal.Size = New System.Drawing.Size(176, 22)
@@ -941,7 +955,7 @@ Partial Class Compras_Movimientos
         'txtIVA
         '
         Me.txtIVA.Location = New System.Drawing.Point(112, 70)
-        Me.txtIVA.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtIVA.Margin = New System.Windows.Forms.Padding(4)
         Me.txtIVA.MaxLength = 80
         Me.txtIVA.Name = "txtIVA"
         Me.txtIVA.Size = New System.Drawing.Size(176, 22)
@@ -962,7 +976,7 @@ Partial Class Compras_Movimientos
         'txtIVA_USD
         '
         Me.txtIVA_USD.Location = New System.Drawing.Point(111, 70)
-        Me.txtIVA_USD.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtIVA_USD.Margin = New System.Windows.Forms.Padding(4)
         Me.txtIVA_USD.MaxLength = 80
         Me.txtIVA_USD.Name = "txtIVA_USD"
         Me.txtIVA_USD.Size = New System.Drawing.Size(176, 22)
@@ -982,7 +996,7 @@ Partial Class Compras_Movimientos
         'txtTotal_USD
         '
         Me.txtTotal_USD.Location = New System.Drawing.Point(111, 97)
-        Me.txtTotal_USD.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtTotal_USD.Margin = New System.Windows.Forms.Padding(4)
         Me.txtTotal_USD.Name = "txtTotal_USD"
         Me.txtTotal_USD.ReadOnly = True
         Me.txtTotal_USD.Size = New System.Drawing.Size(176, 22)
@@ -1012,7 +1026,7 @@ Partial Class Compras_Movimientos
         'TxtSubTotal_USD
         '
         Me.TxtSubTotal_USD.Location = New System.Drawing.Point(111, 16)
-        Me.TxtSubTotal_USD.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtSubTotal_USD.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtSubTotal_USD.Name = "TxtSubTotal_USD"
         Me.TxtSubTotal_USD.ReadOnly = True
         Me.TxtSubTotal_USD.Size = New System.Drawing.Size(176, 22)
@@ -1036,9 +1050,9 @@ Partial Class Compras_Movimientos
         Me.gbUSD.Controls.Add(Me.lblDisplayTotal_USD)
         Me.gbUSD.Controls.Add(Me.txtTotal_USD)
         Me.gbUSD.Location = New System.Drawing.Point(500, 558)
-        Me.gbUSD.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbUSD.Margin = New System.Windows.Forms.Padding(4)
         Me.gbUSD.Name = "gbUSD"
-        Me.gbUSD.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbUSD.Padding = New System.Windows.Forms.Padding(4)
         Me.gbUSD.Size = New System.Drawing.Size(297, 155)
         Me.gbUSD.TabIndex = 340
         Me.gbUSD.TabStop = False
@@ -1060,7 +1074,7 @@ Partial Class Compras_Movimientos
         '
         Me.txtRetencionISR_USD.Enabled = False
         Me.txtRetencionISR_USD.Location = New System.Drawing.Point(216, 124)
-        Me.txtRetencionISR_USD.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtRetencionISR_USD.Margin = New System.Windows.Forms.Padding(4)
         Me.txtRetencionISR_USD.MaxLength = 15
         Me.txtRetencionISR_USD.Name = "txtRetencionISR_USD"
         Me.txtRetencionISR_USD.ReadOnly = True
@@ -1095,7 +1109,7 @@ Partial Class Compras_Movimientos
         '
         Me.txtRetencionIVA_USD.Enabled = False
         Me.txtRetencionIVA_USD.Location = New System.Drawing.Point(104, 124)
-        Me.txtRetencionIVA_USD.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtRetencionIVA_USD.Margin = New System.Windows.Forms.Padding(4)
         Me.txtRetencionIVA_USD.MaxLength = 15
         Me.txtRetencionIVA_USD.Name = "txtRetencionIVA_USD"
         Me.txtRetencionIVA_USD.ReadOnly = True
@@ -1118,7 +1132,7 @@ Partial Class Compras_Movimientos
         'txtIEPS_USD
         '
         Me.txtIEPS_USD.Location = New System.Drawing.Point(111, 43)
-        Me.txtIEPS_USD.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtIEPS_USD.Margin = New System.Windows.Forms.Padding(4)
         Me.txtIEPS_USD.MaxLength = 80
         Me.txtIEPS_USD.Name = "txtIEPS_USD"
         Me.txtIEPS_USD.ReadOnly = True
@@ -1142,7 +1156,7 @@ Partial Class Compras_Movimientos
         Me.TabControl1.Controls.Add(Me.tpSeries)
         Me.TabControl1.Controls.Add(Me.tpEntradas)
         Me.TabControl1.Location = New System.Drawing.Point(1, 302)
-        Me.TabControl1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TabControl1.Margin = New System.Windows.Forms.Padding(4)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(1359, 251)
@@ -1152,9 +1166,9 @@ Partial Class Compras_Movimientos
         '
         Me.tpArticulos.Controls.Add(Me.Grid)
         Me.tpArticulos.Location = New System.Drawing.Point(4, 25)
-        Me.tpArticulos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.tpArticulos.Margin = New System.Windows.Forms.Padding(4)
         Me.tpArticulos.Name = "tpArticulos"
-        Me.tpArticulos.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.tpArticulos.Padding = New System.Windows.Forms.Padding(4)
         Me.tpArticulos.Size = New System.Drawing.Size(1351, 222)
         Me.tpArticulos.TabIndex = 0
         Me.tpArticulos.Text = "Artículos"
@@ -1173,7 +1187,7 @@ Partial Class Compras_Movimientos
         Me.Grid.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.Grid.Location = New System.Drawing.Point(1, 7)
         Me.Grid.LockButton = True
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid.Name = "Grid"
         Me.Grid.Rows = 6
         Me.Grid.Size = New System.Drawing.Size(1331, 204)
@@ -1187,9 +1201,9 @@ Partial Class Compras_Movimientos
         Me.tpSeries.Controls.Add(Me.txtLote)
         Me.tpSeries.Controls.Add(Me.GridSeries)
         Me.tpSeries.Location = New System.Drawing.Point(4, 25)
-        Me.tpSeries.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.tpSeries.Margin = New System.Windows.Forms.Padding(4)
         Me.tpSeries.Name = "tpSeries"
-        Me.tpSeries.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.tpSeries.Padding = New System.Windows.Forms.Padding(4)
         Me.tpSeries.Size = New System.Drawing.Size(1351, 222)
         Me.tpSeries.TabIndex = 1
         Me.tpSeries.Text = "Series"
@@ -1208,7 +1222,7 @@ Partial Class Compras_Movimientos
         'btnCopiarLote
         '
         Me.btnCopiarLote.Location = New System.Drawing.Point(663, 190)
-        Me.btnCopiarLote.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnCopiarLote.Margin = New System.Windows.Forms.Padding(4)
         Me.btnCopiarLote.Name = "btnCopiarLote"
         Me.btnCopiarLote.Size = New System.Drawing.Size(145, 26)
         Me.btnCopiarLote.TabIndex = 330
@@ -1218,7 +1232,7 @@ Partial Class Compras_Movimientos
         'txtLote
         '
         Me.txtLote.Location = New System.Drawing.Point(512, 192)
-        Me.txtLote.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtLote.Margin = New System.Windows.Forms.Padding(4)
         Me.txtLote.MaxLength = 80
         Me.txtLote.Name = "txtLote"
         Me.txtLote.Size = New System.Drawing.Size(141, 22)
@@ -1237,7 +1251,7 @@ Partial Class Compras_Movimientos
         Me.GridSeries.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.GridSeries.Location = New System.Drawing.Point(4, 7)
         Me.GridSeries.LockButton = True
-        Me.GridSeries.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GridSeries.Margin = New System.Windows.Forms.Padding(4)
         Me.GridSeries.Name = "GridSeries"
         Me.GridSeries.Rows = 6
         Me.GridSeries.Size = New System.Drawing.Size(1332, 183)
@@ -1248,9 +1262,9 @@ Partial Class Compras_Movimientos
         '
         Me.tpEntradas.Controls.Add(Me.gbEntradas)
         Me.tpEntradas.Location = New System.Drawing.Point(4, 25)
-        Me.tpEntradas.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.tpEntradas.Margin = New System.Windows.Forms.Padding(4)
         Me.tpEntradas.Name = "tpEntradas"
-        Me.tpEntradas.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.tpEntradas.Padding = New System.Windows.Forms.Padding(4)
         Me.tpEntradas.Size = New System.Drawing.Size(1351, 222)
         Me.tpEntradas.TabIndex = 2
         Me.tpEntradas.Text = "Entradas inventario"
@@ -1268,9 +1282,9 @@ Partial Class Compras_Movimientos
         Me.gbEntradas.Controls.Add(Me.btnAgregarTodasEntradasInventarios)
         Me.gbEntradas.Controls.Add(Me.lblDisplayEntradasInventarios)
         Me.gbEntradas.Location = New System.Drawing.Point(4, 9)
-        Me.gbEntradas.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbEntradas.Margin = New System.Windows.Forms.Padding(4)
         Me.gbEntradas.Name = "gbEntradas"
-        Me.gbEntradas.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbEntradas.Padding = New System.Windows.Forms.Padding(4)
         Me.gbEntradas.Size = New System.Drawing.Size(1336, 207)
         Me.gbEntradas.TabIndex = 335
         Me.gbEntradas.TabStop = False
@@ -1288,7 +1302,7 @@ Partial Class Compras_Movimientos
         Me.GridEntradas.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.GridEntradas.Location = New System.Drawing.Point(8, 17)
         Me.GridEntradas.LockButton = True
-        Me.GridEntradas.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GridEntradas.Margin = New System.Windows.Forms.Padding(4)
         Me.GridEntradas.Name = "GridEntradas"
         Me.GridEntradas.Rows = 6
         Me.GridEntradas.Size = New System.Drawing.Size(696, 182)
@@ -1298,7 +1312,7 @@ Partial Class Compras_Movimientos
         'btnBorrarTodasEntradasInventarios
         '
         Me.btnBorrarTodasEntradasInventarios.Location = New System.Drawing.Point(1120, 156)
-        Me.btnBorrarTodasEntradasInventarios.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnBorrarTodasEntradasInventarios.Margin = New System.Windows.Forms.Padding(4)
         Me.btnBorrarTodasEntradasInventarios.Name = "btnBorrarTodasEntradasInventarios"
         Me.btnBorrarTodasEntradasInventarios.Size = New System.Drawing.Size(169, 26)
         Me.btnBorrarTodasEntradasInventarios.TabIndex = 334
@@ -1308,7 +1322,7 @@ Partial Class Compras_Movimientos
         'txtFolioOC_Inventarios
         '
         Me.txtFolioOC_Inventarios.Location = New System.Drawing.Point(805, 16)
-        Me.txtFolioOC_Inventarios.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFolioOC_Inventarios.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFolioOC_Inventarios.MaxLength = 80
         Me.txtFolioOC_Inventarios.Name = "txtFolioOC_Inventarios"
         Me.txtFolioOC_Inventarios.Size = New System.Drawing.Size(159, 22)
@@ -1317,7 +1331,7 @@ Partial Class Compras_Movimientos
         'btnTraerTodasEntradasInventarios
         '
         Me.btnTraerTodasEntradasInventarios.Location = New System.Drawing.Point(991, 20)
-        Me.btnTraerTodasEntradasInventarios.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnTraerTodasEntradasInventarios.Margin = New System.Windows.Forms.Padding(4)
         Me.btnTraerTodasEntradasInventarios.Name = "btnTraerTodasEntradasInventarios"
         Me.btnTraerTodasEntradasInventarios.Size = New System.Drawing.Size(169, 26)
         Me.btnTraerTodasEntradasInventarios.TabIndex = 333
@@ -1337,7 +1351,7 @@ Partial Class Compras_Movimientos
         'btnAgregarSeleccionadaEntradasInventarios
         '
         Me.btnAgregarSeleccionadaEntradasInventarios.Location = New System.Drawing.Point(1120, 98)
-        Me.btnAgregarSeleccionadaEntradasInventarios.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnAgregarSeleccionadaEntradasInventarios.Margin = New System.Windows.Forms.Padding(4)
         Me.btnAgregarSeleccionadaEntradasInventarios.Name = "btnAgregarSeleccionadaEntradasInventarios"
         Me.btnAgregarSeleccionadaEntradasInventarios.Size = New System.Drawing.Size(169, 26)
         Me.btnAgregarSeleccionadaEntradasInventarios.TabIndex = 331
@@ -1349,7 +1363,7 @@ Partial Class Compras_Movimientos
         Me.lstEntradasInventarios.FormattingEnabled = True
         Me.lstEntradasInventarios.ItemHeight = 16
         Me.lstEntradasInventarios.Location = New System.Drawing.Point(805, 65)
-        Me.lstEntradasInventarios.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.lstEntradasInventarios.Margin = New System.Windows.Forms.Padding(4)
         Me.lstEntradasInventarios.MultiColumn = True
         Me.lstEntradasInventarios.Name = "lstEntradasInventarios"
         Me.lstEntradasInventarios.Size = New System.Drawing.Size(305, 116)
@@ -1358,7 +1372,7 @@ Partial Class Compras_Movimientos
         'btnAgregarTodasEntradasInventarios
         '
         Me.btnAgregarTodasEntradasInventarios.Location = New System.Drawing.Point(1120, 65)
-        Me.btnAgregarTodasEntradasInventarios.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnAgregarTodasEntradasInventarios.Margin = New System.Windows.Forms.Padding(4)
         Me.btnAgregarTodasEntradasInventarios.Name = "btnAgregarTodasEntradasInventarios"
         Me.btnAgregarTodasEntradasInventarios.Size = New System.Drawing.Size(169, 26)
         Me.btnAgregarTodasEntradasInventarios.TabIndex = 330
@@ -1378,7 +1392,7 @@ Partial Class Compras_Movimientos
         '
         Me.btnSeries.Enabled = False
         Me.btnSeries.Location = New System.Drawing.Point(272, 577)
-        Me.btnSeries.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnSeries.Margin = New System.Windows.Forms.Padding(4)
         Me.btnSeries.Name = "btnSeries"
         Me.btnSeries.Size = New System.Drawing.Size(220, 39)
         Me.btnSeries.TabIndex = 380
@@ -1389,7 +1403,7 @@ Partial Class Compras_Movimientos
         'txtSaldo_USD
         '
         Me.txtSaldo_USD.Location = New System.Drawing.Point(1227, 686)
-        Me.txtSaldo_USD.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtSaldo_USD.Margin = New System.Windows.Forms.Padding(4)
         Me.txtSaldo_USD.Name = "txtSaldo_USD"
         Me.txtSaldo_USD.ReadOnly = True
         Me.txtSaldo_USD.Size = New System.Drawing.Size(132, 22)
@@ -1414,7 +1428,7 @@ Partial Class Compras_Movimientos
         '
         Me.btnSeleccionarArchivoSeries.Enabled = False
         Me.btnSeleccionarArchivoSeries.Location = New System.Drawing.Point(272, 624)
-        Me.btnSeleccionarArchivoSeries.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnSeleccionarArchivoSeries.Margin = New System.Windows.Forms.Padding(4)
         Me.btnSeleccionarArchivoSeries.Name = "btnSeleccionarArchivoSeries"
         Me.btnSeleccionarArchivoSeries.Size = New System.Drawing.Size(220, 39)
         Me.btnSeleccionarArchivoSeries.TabIndex = 383
@@ -1425,7 +1439,7 @@ Partial Class Compras_Movimientos
         'txtIEPS
         '
         Me.txtIEPS.Location = New System.Drawing.Point(112, 43)
-        Me.txtIEPS.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtIEPS.Margin = New System.Windows.Forms.Padding(4)
         Me.txtIEPS.MaxLength = 80
         Me.txtIEPS.Name = "txtIEPS"
         Me.txtIEPS.ReadOnly = True
@@ -1446,7 +1460,7 @@ Partial Class Compras_Movimientos
         'TxtConceptoCancelacion
         '
         Me.TxtConceptoCancelacion.Location = New System.Drawing.Point(5, 578)
-        Me.TxtConceptoCancelacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtConceptoCancelacion.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtConceptoCancelacion.MaxLength = 1000
         Me.TxtConceptoCancelacion.Multiline = True
         Me.TxtConceptoCancelacion.Name = "TxtConceptoCancelacion"
@@ -1483,9 +1497,9 @@ Partial Class Compras_Movimientos
         Me.gbMXN.Controls.Add(Me.lblDisplayRetenciones)
         Me.gbMXN.Controls.Add(Me.txtIVA)
         Me.gbMXN.Location = New System.Drawing.Point(820, 558)
-        Me.gbMXN.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbMXN.Margin = New System.Windows.Forms.Padding(4)
         Me.gbMXN.Name = "gbMXN"
-        Me.gbMXN.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbMXN.Padding = New System.Windows.Forms.Padding(4)
         Me.gbMXN.Size = New System.Drawing.Size(297, 155)
         Me.gbMXN.TabIndex = 388
         Me.gbMXN.TabStop = False
@@ -1495,7 +1509,7 @@ Partial Class Compras_Movimientos
         '
         Me.txtRetencionISR.Enabled = False
         Me.txtRetencionISR.Location = New System.Drawing.Point(217, 124)
-        Me.txtRetencionISR.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtRetencionISR.Margin = New System.Windows.Forms.Padding(4)
         Me.txtRetencionISR.MaxLength = 15
         Me.txtRetencionISR.Name = "txtRetencionISR"
         Me.txtRetencionISR.ReadOnly = True
@@ -1536,13 +1550,34 @@ Partial Class Compras_Movimientos
         Me.lblAyuda.TabIndex = 389
         Me.lblAyuda.Text = "*F4 para agregar comentarios, F8 para eliminar renglones, F6/F7 para buscar"
         '
-        'tsbPedir
+        'TxtRequisicion
         '
-        Me.tsbPedir.Image = Global.BsControl.My.Resources.Resources._782
-        Me.tsbPedir.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbPedir.Name = "tsbPedir"
-        Me.tsbPedir.Size = New System.Drawing.Size(66, 24)
-        Me.tsbPedir.Text = "&Pedir"
+        Me.TxtRequisicion.Location = New System.Drawing.Point(562, 115)
+        Me.TxtRequisicion.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtRequisicion.MaxLength = 15
+        Me.TxtRequisicion.Name = "TxtRequisicion"
+        Me.TxtRequisicion.Size = New System.Drawing.Size(167, 22)
+        Me.TxtRequisicion.TabIndex = 387
+        '
+        'LblRequisicion
+        '
+        Me.LblRequisicion.AutoSize = True
+        Me.LblRequisicion.Location = New System.Drawing.Point(466, 118)
+        Me.LblRequisicion.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblRequisicion.Name = "LblRequisicion"
+        Me.LblRequisicion.Size = New System.Drawing.Size(89, 17)
+        Me.LblRequisicion.TabIndex = 388
+        Me.LblRequisicion.Text = "Requisición :"
+        '
+        'btnTraerDetalleRequisicion
+        '
+        Me.btnTraerDetalleRequisicion.Location = New System.Drawing.Point(737, 114)
+        Me.btnTraerDetalleRequisicion.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnTraerDetalleRequisicion.Name = "btnTraerDetalleRequisicion"
+        Me.btnTraerDetalleRequisicion.Size = New System.Drawing.Size(102, 26)
+        Me.btnTraerDetalleRequisicion.TabIndex = 389
+        Me.btnTraerDetalleRequisicion.Text = "Traer detalle"
+        Me.btnTraerDetalleRequisicion.UseVisualStyleBackColor = True
         '
         'Compras_Movimientos
         '
@@ -1565,7 +1600,7 @@ Partial Class Compras_Movimientos
         Me.Controls.Add(Me.gbGlobal)
         Me.Controls.Add(Me.tsMenu)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Compras_Movimientos"
         Me.Text = "Compras"
@@ -1716,4 +1751,7 @@ Partial Class Compras_Movimientos
     Friend WithEvents lblAyuda As Label
     Friend WithEvents chkEsFiscal As CheckBox
     Friend WithEvents tsbPedir As System.Windows.Forms.ToolStripButton
+    Friend WithEvents LblRequisicion As System.Windows.Forms.Label
+    Friend WithEvents TxtRequisicion As System.Windows.Forms.TextBox
+    Friend WithEvents btnTraerDetalleRequisicion As System.Windows.Forms.Button
 End Class

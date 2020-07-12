@@ -249,6 +249,9 @@ Public Class Compras_Movimientos
 
         If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO = False Then
             Me.tsbPedir.Visible = False
+            Me.LblRequisicion.Visible = False
+            Me.TxtRequisicion.Visible = False
+            Me.btnTraerDetalleRequisicion.Visible = False
         End If
     End Sub
 
@@ -1013,6 +1016,9 @@ Buscar:
                         Me.DtpFechaFacturaProveedor.Visible = False : Me.lblDisplayFechaFacturaProveedor.Visible = False
                         Me.dtpFechaEntrega.Enabled = True
 
+                        Me.TxtRequisicion.Enabled = True
+                        Me.btnTraerDetalleRequisicion.Enabled = True
+
                         If Me.Visible = True Then
                             Me.txtFolioCompra.Focus()
                         End If
@@ -1078,6 +1084,9 @@ Buscar:
                     Me.LblConceptoCancelacion.Visible = False
                     Me.TxtConceptoCancelacion.Visible = False
                     Me.dtpFechaEntrega.Enabled = True
+
+                    Me.TxtRequisicion.Enabled = False
+                    Me.btnTraerDetalleRequisicion.Enabled = False
 
                     Me.TxtConcepto.Focus()
 
@@ -3085,6 +3094,13 @@ BuscarCuentas:
                 Me.tpSeries.Enabled = False
 
                 Me.TabControl1.TabPages(2).Enabled = False 'Entradas inventarios
+
+                If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO = False Then
+                    Me.LblRequisicion.Visible = False
+                    Me.TxtRequisicion.Visible = False
+                    Me.btnTraerDetalleRequisicion.Visible = False
+                End If
+
             End If
         Catch ex As Exception
             HandleError(Me.Name, "OcultarControles", ex)
