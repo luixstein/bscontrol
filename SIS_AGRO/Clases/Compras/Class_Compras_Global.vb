@@ -67,6 +67,8 @@ Public Class Class_Compras_Global
     Private _FECHA_ENTREGA As Date
     Private _ES_INVENTARIABLE As Boolean
     Private _ES_FISCAL As Boolean
+
+    Private _FOLIO_REQUISICION As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -566,6 +568,15 @@ Public Class Class_Compras_Global
         End Set
     End Property
 
+    Public Property FOLIO_REQUISICION() As String
+        Get
+            Return Me._FOLIO_REQUISICION
+        End Get
+        Set(value As String)
+            Me._FOLIO_REQUISICION = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -708,6 +719,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@RETENCION_IVA_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_USD
             sqlParametro = .Parameters.Add("@RETENCION_ISR_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_USD
             sqlParametro = .Parameters.Add("@ES_INVENTARIABLE", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._ES_INVENTARIABLE)
+            sqlParametro = .Parameters.Add("@FOLIO_REQUISICION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "" & Me._FOLIO_REQUISICION
 
             Try
                 Me._Conexion.Open()
@@ -1023,7 +1035,6 @@ Public Class Class_Compras_Global
             .CommandText = "MP_COMPRAS_ORDEN_COMPRA_AFECTA_CANTIDADES_PENDIENTES_REQUISICIONES"
 
             sqlParametro = .Parameters.Add("@FOLIO_ORDEN_COMPRA", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me.FOLIO_COMPRA
-            sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Plaza.CODIGO_PLAZA
             sqlParametro = .Parameters.Add("@CANCELA", SqlDbType.Char) : sqlParametro.Value = IIf(bCancelar, "1", "0")
 
             Try
@@ -1116,6 +1127,8 @@ Public Class Class_Compras_Global
                     Me._ES_INVENTARIABLE = CBool(dReader("ES_INVENTARIABLE"))
                     Me._ES_FISCAL = CBool(dReader("ES_FISCAL"))
 
+                    Me._FOLIO_REQUISICION = "" & dReader("FOLIO_REQUISICION").ToString
+
                     bResultado = True
                 End If
                 dReader.Close()
@@ -1141,7 +1154,7 @@ Public Class Class_Compras_Global
                 "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.CANTIDAD,R.PRECIO,R.PRECIO_USD,R.COSTO,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE,R.IMPORTE_USD,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.IMPUESTO_IMPORTE_USD,R.ID_COMPRA_DETALLE, " &
                 "CASE WHEN DC.CUENTA_CONTABLE IS NOT NULL THEN 'Tiene detalle -->>' ELSE C.NOMBRE_CUENTA END NOMBRE_CUENTA, " &
                 "'' Boton,R.ID_ADICIONAL, " &
-                "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_UNITARIO_USD,R.IEPS_IMPORTE,R.IEPS_IMPORTE_USD,R.BASE_IEPS,R.BASE_IEPS_USD,R.BASE_IVA,R.BASE_IVA_USD,R.ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA " &
+                "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_UNITARIO_USD,R.IEPS_IMPORTE,R.IEPS_IMPORTE_USD,R.BASE_IEPS,R.BASE_IEPS_USD,R.BASE_IVA,R.BASE_IVA_USD,R.ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA,R.ID_REQUISICION_DETALLE " &
                 "FROM COMPRA_DETALLE R " &
                 "LEFT JOIN CON_CAT_CUENTAS C ON(R.CUENTA_CONTABLE=C.CUENTA_CONTABLE) " &
                 "LEFT JOIN DC ON(R.ID_ADICIONAL=DC.ID_ADICIONAL) " &

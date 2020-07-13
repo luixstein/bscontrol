@@ -24,6 +24,9 @@ Partial Class Compras_Movimientos
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Compras_Movimientos))
         Me.gbGlobal = New System.Windows.Forms.GroupBox()
+        Me.btnTraerDetalleRequisicion = New System.Windows.Forms.Button()
+        Me.LblRequisicion = New System.Windows.Forms.Label()
+        Me.TxtRequisicion = New System.Windows.Forms.TextBox()
         Me.chkEsFiscal = New System.Windows.Forms.CheckBox()
         Me.chkEsInventariable = New System.Windows.Forms.CheckBox()
         Me.lblDisplayFechaEntrega = New System.Windows.Forms.Label()
@@ -149,9 +152,6 @@ Partial Class Compras_Movimientos
         Me.lblDisplayRetencionISR = New System.Windows.Forms.Label()
         Me.lblDisplayRetencionIVA = New System.Windows.Forms.Label()
         Me.lblAyuda = New System.Windows.Forms.Label()
-        Me.TxtRequisicion = New System.Windows.Forms.TextBox()
-        Me.LblRequisicion = New System.Windows.Forms.Label()
-        Me.btnTraerDetalleRequisicion = New System.Windows.Forms.Button()
         Me.gbGlobal.SuspendLayout()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
@@ -225,6 +225,35 @@ Partial Class Compras_Movimientos
         Me.gbGlobal.Size = New System.Drawing.Size(1359, 260)
         Me.gbGlobal.TabIndex = 0
         Me.gbGlobal.TabStop = False
+        '
+        'btnTraerDetalleRequisicion
+        '
+        Me.btnTraerDetalleRequisicion.Location = New System.Drawing.Point(750, 89)
+        Me.btnTraerDetalleRequisicion.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnTraerDetalleRequisicion.Name = "btnTraerDetalleRequisicion"
+        Me.btnTraerDetalleRequisicion.Size = New System.Drawing.Size(102, 26)
+        Me.btnTraerDetalleRequisicion.TabIndex = 389
+        Me.btnTraerDetalleRequisicion.Text = "Traer detalle"
+        Me.btnTraerDetalleRequisicion.UseVisualStyleBackColor = True
+        '
+        'LblRequisicion
+        '
+        Me.LblRequisicion.AutoSize = True
+        Me.LblRequisicion.Location = New System.Drawing.Point(478, 94)
+        Me.LblRequisicion.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblRequisicion.Name = "LblRequisicion"
+        Me.LblRequisicion.Size = New System.Drawing.Size(89, 17)
+        Me.LblRequisicion.TabIndex = 388
+        Me.LblRequisicion.Text = "Requisición :"
+        '
+        'TxtRequisicion
+        '
+        Me.TxtRequisicion.Location = New System.Drawing.Point(575, 91)
+        Me.TxtRequisicion.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtRequisicion.MaxLength = 15
+        Me.TxtRequisicion.Name = "TxtRequisicion"
+        Me.TxtRequisicion.Size = New System.Drawing.Size(167, 22)
+        Me.TxtRequisicion.TabIndex = 387
         '
         'chkEsFiscal
         '
@@ -1549,35 +1578,6 @@ Partial Class Compras_Movimientos
         Me.lblAyuda.Size = New System.Drawing.Size(498, 17)
         Me.lblAyuda.TabIndex = 389
         Me.lblAyuda.Text = "*F4 para agregar comentarios, F8 para eliminar renglones, F6/F7 para buscar"
-        '
-        'TxtRequisicion
-        '
-        Me.TxtRequisicion.Location = New System.Drawing.Point(562, 115)
-        Me.TxtRequisicion.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtRequisicion.MaxLength = 15
-        Me.TxtRequisicion.Name = "TxtRequisicion"
-        Me.TxtRequisicion.Size = New System.Drawing.Size(167, 22)
-        Me.TxtRequisicion.TabIndex = 387
-        '
-        'LblRequisicion
-        '
-        Me.LblRequisicion.AutoSize = True
-        Me.LblRequisicion.Location = New System.Drawing.Point(466, 118)
-        Me.LblRequisicion.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblRequisicion.Name = "LblRequisicion"
-        Me.LblRequisicion.Size = New System.Drawing.Size(89, 17)
-        Me.LblRequisicion.TabIndex = 388
-        Me.LblRequisicion.Text = "Requisición :"
-        '
-        'btnTraerDetalleRequisicion
-        '
-        Me.btnTraerDetalleRequisicion.Location = New System.Drawing.Point(737, 114)
-        Me.btnTraerDetalleRequisicion.Margin = New System.Windows.Forms.Padding(4)
-        Me.btnTraerDetalleRequisicion.Name = "btnTraerDetalleRequisicion"
-        Me.btnTraerDetalleRequisicion.Size = New System.Drawing.Size(102, 26)
-        Me.btnTraerDetalleRequisicion.TabIndex = 389
-        Me.btnTraerDetalleRequisicion.Text = "Traer detalle"
-        Me.btnTraerDetalleRequisicion.UseVisualStyleBackColor = True
         '
         'Compras_Movimientos
         '
