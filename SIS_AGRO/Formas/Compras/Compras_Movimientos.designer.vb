@@ -228,10 +228,10 @@ Partial Class Compras_Movimientos
         '
         'btnTraerDetalleRequisicion
         '
-        Me.btnTraerDetalleRequisicion.Location = New System.Drawing.Point(750, 89)
+        Me.btnTraerDetalleRequisicion.Location = New System.Drawing.Point(750, 87)
         Me.btnTraerDetalleRequisicion.Margin = New System.Windows.Forms.Padding(4)
         Me.btnTraerDetalleRequisicion.Name = "btnTraerDetalleRequisicion"
-        Me.btnTraerDetalleRequisicion.Size = New System.Drawing.Size(102, 26)
+        Me.btnTraerDetalleRequisicion.Size = New System.Drawing.Size(102, 28)
         Me.btnTraerDetalleRequisicion.TabIndex = 389
         Me.btnTraerDetalleRequisicion.Text = "Traer detalle"
         Me.btnTraerDetalleRequisicion.UseVisualStyleBackColor = True
