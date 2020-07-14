@@ -882,7 +882,7 @@ Buscar:
                     .Column(Me.iGyBoton).Visible = False
                     .Column(Me.iGyNombreCuentaContable).Visible = False
                 End If
-                .Column(Me.iGyIDAdicional).Visible = True 'False
+                .Column(Me.iGyIDAdicional).Visible = False
 
                 .Column(Me.igyIEPS_PORCENTAJE).Visible = False
                 .Column(Me.igyIEPS_UNITARIO).Visible = False
@@ -894,7 +894,7 @@ Buscar:
                 .Column(Me.igyBASE_IVA).Visible = False
                 .Column(Me.igyBASE_IVA_USD).Visible = False
                 .Column(Me.igyID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA).Visible = False
-                .Column(Me.igyIDRequisicionDetalle).Visible = True 'False
+                .Column(Me.igyIDRequisicionDetalle).Visible = False
 
                 If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = False Then
                     .Column(Me.igyCosto).Visible = False
@@ -4497,7 +4497,7 @@ BuscarCuentas:
     Private Sub TraerDetalleRequisicion()
         Const sProcedure As String = "TraerDetalleRequisicion"
         Try
-            'Me.InicializaGrid()
+            Me.InicializaGrid()
 
             If txtLEN(Me.TxtRequisicion.Text) = False Then
                 Exit Sub
@@ -4510,7 +4510,7 @@ BuscarCuentas:
                 Exit Sub
             End If
 
-            'Me.CboAlmacen.SelectedValue = oRequisicion.CODIGO_ALMACEN
+            Me.CboAlmacen.SelectedValue = oRequisicion.CODIGO_ALMACEN
 
             Dim dTable As DataTable = oRequisicion.ObtenerDetalleParaOrdenCompra()
             Dim i As Integer = 1
