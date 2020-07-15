@@ -67,6 +67,8 @@ Public Class Class_Compras_Global
     Private _FECHA_ENTREGA As Date
     Private _ES_INVENTARIABLE As Boolean
     Private _ES_FISCAL As Boolean
+
+    Private _FOLIO_REQUISICION As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -566,6 +568,15 @@ Public Class Class_Compras_Global
         End Set
     End Property
 
+    Public Property FOLIO_REQUISICION() As String
+        Get
+            Return Me._FOLIO_REQUISICION
+        End Get
+        Set(value As String)
+            Me._FOLIO_REQUISICION = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -708,6 +719,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@RETENCION_IVA_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_USD
             sqlParametro = .Parameters.Add("@RETENCION_ISR_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_USD
             sqlParametro = .Parameters.Add("@ES_INVENTARIABLE", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._ES_INVENTARIABLE)
+            sqlParametro = .Parameters.Add("@FOLIO_REQUISICION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "" & Me._FOLIO_REQUISICION
 
             Try
                 Me._Conexion.Open()
@@ -1023,7 +1035,6 @@ Public Class Class_Compras_Global
             .CommandText = "MP_COMPRAS_ORDEN_COMPRA_AFECTA_CANTIDADES_PENDIENTES_REQUISICIONES"
 
             sqlParametro = .Parameters.Add("@FOLIO_ORDEN_COMPRA", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me.FOLIO_COMPRA
-            sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Plaza.CODIGO_PLAZA
             sqlParametro = .Parameters.Add("@CANCELA", SqlDbType.Char) : sqlParametro.Value = IIf(bCancelar, "1", "0")
 
             Try
@@ -1116,6 +1127,8 @@ Public Class Class_Compras_Global
                     Me._ES_INVENTARIABLE = CBool(dReader("ES_INVENTARIABLE"))
                     Me._ES_FISCAL = CBool(dReader("ES_FISCAL"))
 
+                    Me._FOLIO_REQUISICION = "" & dReader("FOLIO_REQUISICION").ToString
+
                     bResultado = True
                 End If
                 dReader.Close()
@@ -1141,7 +1154,7 @@ Public Class Class_Compras_Global
                 "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,R.CANTIDAD,R.PRECIO,R.PRECIO_USD,R.COSTO,R.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE,R.IMPORTE_USD,R.CUENTA_CONTABLE,R.IMPUESTO_IMPORTE,R.IMPUESTO_IMPORTE_USD,R.ID_COMPRA_DETALLE, " &
                 "CASE WHEN DC.CUENTA_CONTABLE IS NOT NULL THEN 'Tiene detalle -->>' ELSE C.NOMBRE_CUENTA END NOMBRE_CUENTA, " &
                 "'' Boton,R.ID_ADICIONAL, " &
-                "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_UNITARIO_USD,R.IEPS_IMPORTE,R.IEPS_IMPORTE_USD,R.BASE_IEPS,R.BASE_IEPS_USD,R.BASE_IVA,R.BASE_IVA_USD,R.ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA " &
+                "R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_UNITARIO_USD,R.IEPS_IMPORTE,R.IEPS_IMPORTE_USD,R.BASE_IEPS,R.BASE_IEPS_USD,R.BASE_IVA,R.BASE_IVA_USD,R.ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA,R.ID_REQUISICION_DETALLE " &
                 "FROM COMPRA_DETALLE R " &
                 "LEFT JOIN CON_CAT_CUENTAS C ON(R.CUENTA_CONTABLE=C.CUENTA_CONTABLE) " &
                 "LEFT JOIN DC ON(R.ID_ADICIONAL=DC.ID_ADICIONAL) " &
@@ -1477,13 +1490,12 @@ Public Class Class_Compras_Global
         f.sTable = "COMPRA_GLOBAL"
 
         'Solo trae las OC que tienen entradas con disponible 
-        f.sQl = "SELECT G.FOLIO_COMPRA FOLIO_COMPRA,P.NOMBRE_PROVEEDOR,G.FECHA,G.ESTATUS FROM COMPRA_GLOBAL G " &
-        "INNER JOIN CAT_PROVEEDORES P ON(G.CODIGO_PROVEEDOR=P.CODIGO_PROVEEDOR) " &
-        "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO T ON(G.CODIGO_DOCUMENTO=T.CODIGO_DOCUMENTO) " &
-        "WHERE G.FOLIO_COMPRA IN(SELECT G.FOLIO_COMPRA FROM COMPRA_GLOBAL G INNER JOIN COMPRA_DETALLE D ON(G.FOLIO_COMPRA=D.FOLIO_COMPRA) " &
-        "INNER JOIN INVENTARIO_MOVIMIENTOS_DETALLE I ON(D.ID_COMPRA_DETALLE=I.ID_COMPRA_DETALLE) WHERE I.DISPONIBLE>0 AND G.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " ) " &
-        "AND T.CODIGO_DOCUMENTO LIKE 'OC%' AND T.AFECTA_CONTABILIDAD='0' AND G.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND " &
-        "G.ESTATUS <> 'C' AND "
+        f.sQl = "SELECT C.FOLIO_COMPRA FOLIO_COMPRA,P.NOMBRE_PROVEEDOR,C.FECHA,C.ESTATUS " &
+                "FROM COMPRA_GLOBAL C INNER JOIN CAT_PROVEEDORES P ON(C.CODIGO_PROVEEDOR=P.CODIGO_PROVEEDOR) " &
+                "WHERE C.FOLIO_COMPRA IN(SELECT FOLIO_REFERENCIA FROM INVENTARIO_MOVIMIENTOS_GLOBAL G " &
+                    "INNER JOIN INVENTARIO_MOVIMIENTOS_DETALLE D ON(G.FOLIO_MOVIMIENTO_INVENTARIO=D.FOLIO_MOVIMIENTO_INVENTARIO) " &
+                    "WHERE G.CODIGO_TIPO_DOCUMENTO='ER' AND G.ESTA_CANCELADO='0' AND D.DISPONIBLE>0) " &
+                "AND C.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND C.ESTATUS NOT IN('G','P','C') AND "
 
         f.Inicia("")
         f.ShowDialog()

@@ -38,6 +38,8 @@ Public Class Class_Compras_Detalle
     Private _IEPS_IMPORTE_USD As Decimal
     Private _BASE_IEPS_USD As Decimal
     Private _BASE_IVA_USD As Decimal
+
+    Private _ID_REQUISICION_DETALLE As Integer = 0
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -320,6 +322,15 @@ Public Class Class_Compras_Detalle
             Me._BASE_IVA_USD = value
         End Set
     End Property
+
+    Public Property ID_REQUISICION_DETALLE() As Integer
+        Get
+            Return Me._ID_REQUISICION_DETALLE
+        End Get
+        Set(value As Integer)
+            Me._ID_REQUISICION_DETALLE = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -402,6 +413,7 @@ Public Class Class_Compras_Detalle
             sqlParametro = .Parameters.Add("@IEPS_IMPORTE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_IMPORTE_USD
             sqlParametro = .Parameters.Add("@BASE_IEPS_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IEPS_USD
             sqlParametro = .Parameters.Add("@BASE_IVA_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IVA_USD
+            sqlParametro = .Parameters.Add("@ID_REQUISICION_DETALLE", SqlDbType.Int) : sqlParametro.Value = IIf(Me._ID_REQUISICION_DETALLE > 0, Me._ID_REQUISICION_DETALLE, DBNull.Value)
 
             Try
                 Me._Conexion.Open()
