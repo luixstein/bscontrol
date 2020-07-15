@@ -2827,7 +2827,7 @@ busca_serie:
             If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO And txtLEN(oOrdenCompra.FOLIO_REQUISICION) Then
                 'Solo validara estatus P para OC con requisicion
                 If Not (oOrdenCompra.ESTATUS = "P" Or oOrdenCompra.ESTATUS = "R") Then
-                    MsgBox("La orden de compra no esta en estatus P(Pedida) o R(Parcialmente recepcionada).", MsgBoxStyle.Exclamation, sProcedure)
+                    MsgBox("La orden de compra tiene requisición de inventario, debe estar en estatus P(Pedida) o R(Parcialmente recepcionada) para hacer la entrada.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
 
@@ -3197,7 +3197,7 @@ busca_serie:
             If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO AndAlso txtLEN(oOrdenCompra.FOLIO_REQUISICION) Then
                 'Solo validara estatus P para OC con requisicion
                 If Not (oOrdenCompra.ESTATUS = "P" Or oOrdenCompra.ESTATUS = "R") Then
-                    MsgBox("La orden de compra no esta en estatus P(Pedida) o R(Parcialmente recepcionada).", MsgBoxStyle.Exclamation, sProcedure)
+                    MsgBox("La orden de compra tiene requisición de inventario, debe estar en estatus P(Pedida) o R(Parcialmente recepcionada) para hacer la entrada.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
 

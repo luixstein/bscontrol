@@ -561,7 +561,7 @@ Buscar:
 #Region "Eventos Genericos"
     Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFolioCompra.KeyPress, txtFolioOC.KeyPress, txtProveedor.KeyPress, txtFolioProveedor.KeyPress,
     txtEntregarA.KeyPress, txtSolicito.KeyPress, TxtConcepto.KeyPress, txtConCargoA.KeyPress, txtPredio.KeyPress, txtConfirmo.KeyPress,
-    DtpFecha.KeyPress, dtpFechaVencimiento.KeyPress, txtFolioOC_Inventarios.KeyPress
+    DtpFecha.KeyPress, dtpFechaVencimiento.KeyPress, txtFolioOC_Inventarios.KeyPress, TxtRequisicion.KeyPress, btnTraerDetalleRequisicion.KeyPress
         txtNoBeep(e)
     End Sub
 
