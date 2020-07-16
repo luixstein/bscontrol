@@ -176,6 +176,7 @@ Partial Public Class AppMenu
         Me.MovimientosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.TransformacionesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.InventariosSugeridosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.RequisicionesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MnuInvReportes = New System.Windows.Forms.ToolStripMenuItem()
         Me.MnuInvRepAuxiliar = New System.Windows.Forms.ToolStripMenuItem()
         Me.MnuInvRepExistencias = New System.Windows.Forms.ToolStripMenuItem()
@@ -245,7 +246,7 @@ Partial Public Class AppMenu
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
-        Me.RequisicionesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.RequisicionesSolicitadasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -1237,9 +1238,15 @@ Partial Public Class AppMenu
         Me.InventariosSugeridosToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.InventariosSugeridosToolStripMenuItem.Text = "Inventarios sugeridos"
         '
+        'RequisicionesToolStripMenuItem
+        '
+        Me.RequisicionesToolStripMenuItem.Name = "RequisicionesToolStripMenuItem"
+        Me.RequisicionesToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
+        Me.RequisicionesToolStripMenuItem.Text = "Requisiciones"
+        '
         'MnuInvReportes
         '
-        Me.MnuInvReportes.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MnuInvRepAuxiliar, Me.MnuInvRepExistencias, Me.InvRptGlobalDetalle, Me.LotesDeCostosToolStripMenuItem})
+        Me.MnuInvReportes.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MnuInvRepAuxiliar, Me.MnuInvRepExistencias, Me.InvRptGlobalDetalle, Me.LotesDeCostosToolStripMenuItem, Me.RequisicionesSolicitadasToolStripMenuItem})
         Me.MnuInvReportes.Name = "MnuInvReportes"
         Me.MnuInvReportes.Size = New System.Drawing.Size(224, 26)
         Me.MnuInvReportes.Tag = "0069"
@@ -1248,28 +1255,28 @@ Partial Public Class AppMenu
         'MnuInvRepAuxiliar
         '
         Me.MnuInvRepAuxiliar.Name = "MnuInvRepAuxiliar"
-        Me.MnuInvRepAuxiliar.Size = New System.Drawing.Size(215, 26)
+        Me.MnuInvRepAuxiliar.Size = New System.Drawing.Size(248, 26)
         Me.MnuInvRepAuxiliar.Tag = "0075"
         Me.MnuInvRepAuxiliar.Text = "&Auxiliar de artículos"
         '
         'MnuInvRepExistencias
         '
         Me.MnuInvRepExistencias.Name = "MnuInvRepExistencias"
-        Me.MnuInvRepExistencias.Size = New System.Drawing.Size(215, 26)
+        Me.MnuInvRepExistencias.Size = New System.Drawing.Size(248, 26)
         Me.MnuInvRepExistencias.Tag = "0070"
         Me.MnuInvRepExistencias.Text = "&Existencias"
         '
         'InvRptGlobalDetalle
         '
         Me.InvRptGlobalDetalle.Name = "InvRptGlobalDetalle"
-        Me.InvRptGlobalDetalle.Size = New System.Drawing.Size(215, 26)
+        Me.InvRptGlobalDetalle.Size = New System.Drawing.Size(248, 26)
         Me.InvRptGlobalDetalle.Tag = "0071"
         Me.InvRptGlobalDetalle.Text = "Global y detalle"
         '
         'LotesDeCostosToolStripMenuItem
         '
         Me.LotesDeCostosToolStripMenuItem.Name = "LotesDeCostosToolStripMenuItem"
-        Me.LotesDeCostosToolStripMenuItem.Size = New System.Drawing.Size(215, 26)
+        Me.LotesDeCostosToolStripMenuItem.Size = New System.Drawing.Size(248, 26)
         Me.LotesDeCostosToolStripMenuItem.Text = "Lotes de costos"
         '
         'EmbarquesToolStripMenuItem1
@@ -1681,11 +1688,11 @@ Partial Public Class AppMenu
         Me.pbLogo.TabStop = False
         Me.pbLogo.Visible = False
         '
-        'RequisicionesToolStripMenuItem
+        'RequisicionesSolicitadasToolStripMenuItem
         '
-        Me.RequisicionesToolStripMenuItem.Name = "RequisicionesToolStripMenuItem"
-        Me.RequisicionesToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
-        Me.RequisicionesToolStripMenuItem.Text = "Requisiciones"
+        Me.RequisicionesSolicitadasToolStripMenuItem.Name = "RequisicionesSolicitadasToolStripMenuItem"
+        Me.RequisicionesSolicitadasToolStripMenuItem.Size = New System.Drawing.Size(248, 26)
+        Me.RequisicionesSolicitadasToolStripMenuItem.Text = "Requisiciones solicitadas"
         '
         'AppMenu
         '
@@ -1939,4 +1946,5 @@ Partial Public Class AppMenu
     Friend WithEvents InventariosSugeridosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents EstanquesIntensivosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RequisicionesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents RequisicionesSolicitadasToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class
