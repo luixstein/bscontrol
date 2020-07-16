@@ -1183,6 +1183,12 @@
     <Compile Include="Formas\Sistema\AppMenuReportes.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\Sistema\ConfiguracionEmpresa.Designer.vb">
+      <DependentUpon>ConfiguracionEmpresa.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Sistema\ConfiguracionEmpresa.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\Sistema\ConfiguracionUsuarios.designer.vb">
       <DependentUpon>ConfiguracionUsuarios.vb</DependentUpon>
     </Compile>
@@ -2326,6 +2332,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Sistema\BusquedaVisual.resx">
       <DependentUpon>BusquedaVisual.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Sistema\ConfiguracionEmpresa.resx">
+      <DependentUpon>ConfiguracionEmpresa.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Sistema\ConfiguracionUsuarios.resx">
       <DependentUpon>ConfiguracionUsuarios.vb</DependentUpon>

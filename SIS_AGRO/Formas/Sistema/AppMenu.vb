@@ -1709,4 +1709,13 @@ Public Class AppMenu
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
     End Sub
+
+    Private Sub DatosEmpresaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DatosEmpresaToolStripMenuItem.Click
+        Dim Child As New ConfiguracionEmpresa
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
 End Class

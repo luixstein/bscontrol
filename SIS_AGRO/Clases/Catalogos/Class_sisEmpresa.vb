@@ -1,7 +1,6 @@
 Imports System.Data.SqlClient
 
 Public NotInheritable Class Class_sisEmpresa
-    Inherits Class_Catalogos
 
 #Region "Campos"
 
@@ -95,6 +94,8 @@ Public NotInheritable Class Class_sisEmpresa
     Private _TIENE_REGIMEN_FISCAL_MULTIPLE As Boolean
     Private _ES_ACUICOLA As Boolean
     Private _MODO_REQUISICIONES_INVENTARIO As Boolean
+    Private _CONTRASEÑA_PERIODO_TRABAJO_CONTABLE As String
+    Private _CONTRASEÑA_PRECIO_MENOR_COSTO As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -707,6 +708,23 @@ Public NotInheritable Class Class_sisEmpresa
         End Get
     End Property
 
+    Public Property CONTRASEÑA_PERIODO_TRABAJO_CONTABLE As String
+        Get
+            Return Me._CONTRASEÑA_PERIODO_TRABAJO_CONTABLE
+        End Get
+        Set(value As String)
+            Me._CONTRASEÑA_PERIODO_TRABAJO_CONTABLE = value
+        End Set
+    End Property
+
+    Public Property CONTRASEÑA_PRECIO_MENOR_COSTO As String
+        Get
+            Return Me._CONTRASEÑA_PRECIO_MENOR_COSTO
+        End Get
+        Set(value As String)
+            Me._CONTRASEÑA_PRECIO_MENOR_COSTO = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -742,13 +760,13 @@ Public NotInheritable Class Class_sisEmpresa
 
 #Region "Propiedades Campos de sistema"
 
-    Public Overrides ReadOnly Property Nombre_Catalogo() As String
+    Public ReadOnly Property Nombre_Catalogo() As String
         Get
             Return Me._Nombre_Catalogo
         End Get
     End Property
 
-    Public Overrides Property Nombre_Reporte() As String
+    Public Property Nombre_Reporte() As String
         Get
             Return Me._Nombre_Reporte
         End Get
@@ -928,7 +946,7 @@ Public NotInheritable Class Class_sisEmpresa
 #End Region
 
 #Region "Métodos y procedimientos"
-    Public Overrides Function Actualizar() As Boolean
+    Public Function Grabar() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -937,20 +955,17 @@ Public NotInheritable Class Class_sisEmpresa
             .Connection = cn
             .CommandTimeout = 0
             .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_ACTUALIZA_EMPRESA"
-            sqlParametro = .Parameters.Add("@NOMBRE_EMP", SqlDbType.NVarChar, 120) : sqlParametro.Value = Me._Nombre_Empresa.ToUpper
-            sqlParametro = .Parameters.Add("@DOM", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._Domicilio.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_CIUDAD", SqlDbType.SmallInt) : sqlParametro.Value = Me._Ciudad
-            sqlParametro = .Parameters.Add("@RFC", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._Rfc.ToUpper
-            sqlParametro = .Parameters.Add("@TEL", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._Telefono.ToUpper
-            sqlParametro = .Parameters.Add("@VERSION", SqlDbType.SmallInt) : sqlParametro.Value = Me._VERSION_AGROCONTROL
+            .CommandText = "MP_SIS_EMPRESA_GRABA"
+
+            sqlParametro = .Parameters.Add("@CONTRASEÑA_PERIODO_TRABAJO_CONTABLE", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CONTRASEÑA_PERIODO_TRABAJO_CONTABLE
+            sqlParametro = .Parameters.Add("@CONTRASEÑA_PRECIO_MENOR_COSTO", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._CONTRASEÑA_PRECIO_MENOR_COSTO
 
             Try
                 cn.Open()
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
+                HandleError(Me._Nombre_Catalogo, "Grabar", ex)
             Finally
                 cn.Close()
                 cn.Dispose()
@@ -962,16 +977,12 @@ Public NotInheritable Class Class_sisEmpresa
         Return bResultado
     End Function
 
-    Public Overrides Function Insertar() As Boolean
-
-    End Function
-
-    Public Overrides Function Consultar() As Boolean
+    Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
         Dim cn As New SqlConnection(_Conexion)
-        Dim cmd As New SqlCommand("SELECT S.*,E.CODIGO_ESTADO_SAT,M.CODIGO_MUNICIPIO_SAT " & _
-                                  "FROM SIS_EMPRESA S " & _
-                                  "LEFT JOIN SIS_ESTADOS E ON(S.CODIGO_ESTADO=E.CODIGO_ESTADO) " & _
+        Dim cmd As New SqlCommand("SELECT S.*,E.CODIGO_ESTADO_SAT,M.CODIGO_MUNICIPIO_SAT " &
+                                  "FROM SIS_EMPRESA S " &
+                                  "LEFT JOIN SIS_ESTADOS E ON(S.CODIGO_ESTADO=E.CODIGO_ESTADO) " &
                                   "LEFT JOIN CAT_MUNICIPIOS M ON(S.CODIGO_MUNICIPIO=M.CODIGO_MUNICIPIO)", cn)
         Dim dReader As SqlDataReader
         With cmd
@@ -1072,6 +1083,8 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._TIENE_REGIMEN_FISCAL_MULTIPLE = CBool(dReader("TIENE_REGIMEN_FISCAL_MULTIPLE"))
                     Me._ES_ACUICOLA = CBool(dReader("ES_ACUICOLA"))
                     Me._MODO_REQUISICIONES_INVENTARIO = CBool(dReader("MODO_REQUISICIONES_INVENTARIO"))
+                    Me._CONTRASEÑA_PERIODO_TRABAJO_CONTABLE = "" & dReader("CONTRASEÑA_PERIODO_TRABAJO_CONTABLE").ToString
+                    Me._CONTRASEÑA_PRECIO_MENOR_COSTO = "" & dReader("CONTRASEÑA_PRECIO_MENOR_COSTO").ToString
 
                     dReader.Close()
                     bResultado = True
@@ -1089,7 +1102,7 @@ Public NotInheritable Class Class_sisEmpresa
         Return bResultado
     End Function
 
-    Public Overrides Function ObtenerElementos() As DataTable
+    Public Function ObtenerElementos() As DataTable
         Dim dTable As New DataTable
         Dim da As New SqlDataAdapter(Me._QuerySelect, Me._Conexion)
         Try
@@ -1102,12 +1115,12 @@ Public NotInheritable Class Class_sisEmpresa
         Return dTable
     End Function
 
-    Public Overrides Function BusquedaVisual_PorCodigo() As String
+    Public Function BusquedaVisual_PorCodigo() As String
         Dim Resultado As String = ""
         Return Resultado
     End Function
 
-    Public Overrides Function BusquedaVisual_PorDescripcion() As String
+    Public Function BusquedaVisual_PorDescripcion() As String
         Dim Resultado As String = ""
         Return Resultado
     End Function
