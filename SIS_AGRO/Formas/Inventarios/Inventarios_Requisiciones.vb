@@ -620,7 +620,7 @@ BuscaArticulos:
             
             FormatoDeReporte = "RPT_FORMATO_INVENTARIO_REQUISICION"
 
-            oReporte = New Class_Reporte(FormatoDeReporte, Rpt, False)
+            oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
             If Not oReporte.RptCargado Then
                 Exit Sub
             End If
