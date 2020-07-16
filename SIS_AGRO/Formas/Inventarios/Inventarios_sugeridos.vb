@@ -1,5 +1,8 @@
 ﻿Option Strict On
 
+Imports System.IO
+Imports CrystalDecisions.CrystalReports.Engine
+
 Public Class Inventarios_sugeridos
 
     Dim oInventariosSugeridos As Class_Inventarios_Sugeridos
@@ -30,16 +33,19 @@ Public Class Inventarios_sugeridos
         Me.Inicializa()
     End Sub
 
+    Private Sub tsbImprimir_Click(sender As Object, e As EventArgs) Handles tsbImprimir.Click
+        Me.Imprimir()
+    End Sub
+
+    Private Sub tsbSalir_Click(sender As Object, e As EventArgs) Handles tsbSalir.Click
+        Me.Close()
+    End Sub
 #End Region
 
 #Region "Eventos genericos"
 
     Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoAlmacen.KeyPress, TxtFiltro.KeyPress, GridArticulos.KeyPress
         txtNoBeep(e)
-    End Sub
-
-    Private Sub tsbSalir_Click(sender As Object, e As EventArgs) Handles tsbSalir.Click
-        Me.Close()
     End Sub
 
 #End Region
@@ -53,6 +59,7 @@ Public Class Inventarios_sugeridos
     Private Sub TxtCodigoAlmacen_TextChanged(sender As Object, e As EventArgs) Handles TxtCodigoAlmacen.TextChanged
         Me.InicializaGrid()
         Me.GbArticulos.Enabled = False
+        Me.tsbImprimir.Enabled = False
     End Sub
 
     Private Sub TxtCodigoAlmacen_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtCodigoAlmacen.KeyDown
@@ -132,6 +139,7 @@ busca:
         Me.FormateaGrid()
 
         Me.GbArticulos.Enabled = True
+        Me.tsbImprimir.Enabled = True
     End Sub
 
     Private Function Grabar(ByVal sCodigoArticulo As String, ByVal sClasifiacionImportancia As String, ByVal iTiempoEntrega As Integer, ByVal dMax As Double, ByVal dMin As Double) As Boolean
@@ -362,6 +370,34 @@ busca:
         End Try
     End Sub
 
+    Private Sub Imprimir()
+        Dim FormatoDeReporte As String
+        Dim Rpt As New ReportDocument
+        Dim oReporte As Class_Reporte
+        Try
+            If txtLEN(Me.TxtCodigoAlmacen.Text) = False Then
+                Exit Sub
+            End If
+
+            FormatoDeReporte = "RPT_INVENTARIOS_SUGERIDOS"
+
+            oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
+            If Not oReporte.RptCargado Then
+                Exit Sub
+            End If
+            Rpt.SetParameterValue("@CODIGO_ALMACEN", Me.TxtCodigoAlmacen.Text)
+
+            Dim frm As New Reporte(Rpt)
+            frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
+            frm.Show()
+        Catch ex As Exception
+            HandleError(Me.Name, "Imprimir", ex)
+        Finally
+            oReporte = Nothing
+        End Try
+    End Sub
+
 #End Region
 
+    
 End Class

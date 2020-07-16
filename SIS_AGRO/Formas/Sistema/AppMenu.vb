@@ -1,122 +1,1728 @@
-<!DOCTYPE html>
-<html lang="en">
-  
-  
-  
-  
-  
-  <head>
-    <meta id="bb-bootstrap" data-current-user="{&quot;displayName&quot;: &quot;luixstein&quot;, &quot;uuid&quot;: &quot;{62167f7e-fc60-470f-b614-ff4824952f62}&quot;, &quot;hasPremium&quot;: false, &quot;avatarUrl&quot;: &quot;https://secure.gravatar.com/avatar/f1c8a8f22c90a3b89ae4f8f3bd199687?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FL-2.png&quot;, &quot;isTeam&quot;: false, &quot;isSshEnabled&quot;: false, &quot;mention_id&quot;: &quot;557058:23d685e2-437a-4095-a8da-ea4d6fd47c73&quot;, &quot;isKbdShortcutsEnabled&quot;: true, &quot;avatarUrl2x&quot;: &quot;https://secure.gravatar.com/avatar/f1c8a8f22c90a3b89ae4f8f3bd199687?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FL-2.png&amp;s=64&quot;, &quot;nickname&quot;: &quot;luis rodriguez&quot;, &quot;id&quot;: 3422825, &quot;isAuthenticated&quot;: true}"
-data-atlassian-id="557058:23d685e2-437a-4095-a8da-ea4d6fd47c73" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bitbucket</title>
-    <script nonce="BQ5t1WLs0pj0P3vv" type="text/javascript">(window.NREUM||(NREUM={})).loader_config={licenseKey:"a2cef8c3d3",applicationID:"521597189"};window.NREUM||(NREUM={}),__nr_require=function(e,n,t){function r(t){if(!n[t]){var i=n[t]={exports:{}};e[t][0].call(i.exports,function(n){var i=e[t][1][n];return r(i||n)},i,i.exports)}return n[t].exports}if("function"==typeof __nr_require)return __nr_require;for(var i=0;i<t.length;i++)r(t[i]);return r}({1:[function(e,n,t){function r(){}function i(e,n,t){return function(){return o(e,[u.now()].concat(f(arguments)),n?null:this,t),n?void 0:this}}var o=e("handle"),a=e(4),f=e(5),c=e("ee").get("tracer"),u=e("loader"),s=NREUM;"undefined"==typeof window.newrelic&&(newrelic=s);var p=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],l="api-",d=l+"ixn-";a(p,function(e,n){s[n]=i(l+n,!0,"api")}),s.addPageAction=i(l+"addPageAction",!0),s.setCurrentRouteName=i(l+"routeName",!0),n.exports=newrelic,s.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(e,n){var t={},r=this,i="function"==typeof n;return o(d+"tracer",[u.now(),e,t],r),function(){if(c.emit((i?"":"no-")+"fn-start",[u.now(),r,i],t),i)try{return n.apply(this,arguments)}catch(e){throw c.emit("fn-err",[arguments,this,e],t),e}finally{c.emit("fn-end",[u.now()],t)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(e,n){m[n]=i(d+n)}),newrelic.noticeError=function(e,n){"string"==typeof e&&(e=new Error(e)),o("err",[e,u.now(),!1,n])}},{}],2:[function(e,n,t){function r(e,n){var t=e.getEntries();t.forEach(function(e){"first-paint"===e.name?c("timing",["fp",Math.floor(e.startTime)]):"first-contentful-paint"===e.name&&c("timing",["fcp",Math.floor(e.startTime)])})}function i(e,n){var t=e.getEntries();t.length>0&&c("lcp",[t[t.length-1]])}function o(e){if(e instanceof s&&!l){var n,t=Math.round(e.timeStamp);n=t>1e12?Date.now()-t:u.now()-t,l=!0,c("timing",["fi",t,{type:e.type,fid:n}])}}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var a,f,c=e("handle"),u=e("loader"),s=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){a=new PerformanceObserver(r),f=new PerformanceObserver(i);try{a.observe({entryTypes:["paint"]}),f.observe({entryTypes:["largest-contentful-paint"]})}catch(p){}}if("addEventListener"in document){var l=!1,d=["click","keydown","mousedown","pointerdown","touchstart"];d.forEach(function(e){document.addEventListener(e,o,!1)})}}},{}],3:[function(e,n,t){function r(e,n){if(!i)return!1;if(e!==i)return!1;if(!n)return!0;if(!o)return!1;for(var t=o.split("."),r=n.split("."),a=0;a<r.length;a++)if(r[a]!==t[a])return!1;return!0}var i=null,o=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var f=navigator.userAgent,c=f.match(a);c&&f.indexOf("Chrome")===-1&&f.indexOf("Chromium")===-1&&(i="Safari",o=c[1])}n.exports={agent:i,version:o,match:r}},{}],4:[function(e,n,t){function r(e,n){var t=[],r="",o=0;for(r in e)i.call(e,r)&&(t[o]=n(r,e[r]),o+=1);return t}var i=Object.prototype.hasOwnProperty;n.exports=r},{}],5:[function(e,n,t){function r(e,n,t){n||(n=0),"undefined"==typeof t&&(t=e?e.length:0);for(var r=-1,i=t-n||0,o=Array(i<0?0:i);++r<i;)o[r]=e[n+r];return o}n.exports=r},{}],6:[function(e,n,t){n.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(e,n,t){function r(){}function i(e){function n(e){return e&&e instanceof r?e:e?c(e,f,o):o()}function t(t,r,i,o){if(!l.aborted||o){e&&e(t,r,i);for(var a=n(i),f=v(t),c=f.length,u=0;u<c;u++)f[u].apply(a,r);var p=s[y[t]];return p&&p.push([b,t,r,a]),a}}function d(e,n){h[e]=v(e).concat(n)}function m(e,n){var t=h[e];if(t)for(var r=0;r<t.length;r++)t[r]===n&&t.splice(r,1)}function v(e){return h[e]||[]}function g(e){return p[e]=p[e]||i(t)}function w(e,n){u(e,function(e,t){n=n||"feature",y[t]=n,n in s||(s[n]=[])})}var h={},y={},b={on:d,addEventListener:d,removeEventListener:m,emit:t,get:g,listeners:v,context:n,buffer:w,abort:a,aborted:!1};return b}function o(){return new r}function a(){(s.api||s.feature)&&(l.aborted=!0,s=l.backlog={})}var f="nr@context",c=e("gos"),u=e(4),s={},p={},l=n.exports=i();l.backlog=s},{}],gos:[function(e,n,t){function r(e,n,t){if(i.call(e,n))return e[n];var r=t();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(e,n,{value:r,writable:!0,enumerable:!1}),r}catch(o){}return e[n]=r,r}var i=Object.prototype.hasOwnProperty;n.exports=r},{}],handle:[function(e,n,t){function r(e,n,t,r){i.buffer([e],r),i.emit(e,n,t)}var i=e("ee").get("handle");n.exports=r,r.ee=i},{}],id:[function(e,n,t){function r(e){var n=typeof e;return!e||"object"!==n&&"function"!==n?-1:e===window?0:a(e,o,function(){return i++})}var i=1,o="nr@id",a=e("gos");n.exports=r},{}],loader:[function(e,n,t){function r(){if(!x++){var e=E.info=NREUM.info,n=d.getElementsByTagName("script")[0];if(setTimeout(s.abort,3e4),!(e&&e.licenseKey&&e.applicationID&&n))return s.abort();u(y,function(n,t){e[n]||(e[n]=t)}),c("mark",["onload",a()+E.offset],null,"api");var t=d.createElement("script");t.src="https://"+e.agent,n.parentNode.insertBefore(t,n)}}function i(){"complete"===d.readyState&&o()}function o(){c("mark",["domContent",a()+E.offset],null,"api")}function a(){return O.exists&&performance.now?Math.round(performance.now()):(f=Math.max((new Date).getTime(),f))-E.offset}var f=(new Date).getTime(),c=e("handle"),u=e(4),s=e("ee"),p=e(3),l=window,d=l.document,m="addEventListener",v="attachEvent",g=l.XMLHttpRequest,w=g&&g.prototype;NREUM.o={ST:setTimeout,SI:l.setImmediate,CT:clearTimeout,XHR:g,REQ:l.Request,EV:l.Event,PR:l.Promise,MO:l.MutationObserver};var h=""+location,y={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1169.min.js"},b=g&&w&&w[m]&&!/CriOS/.test(navigator.userAgent),E=n.exports={offset:f,now:a,origin:h,features:{},xhrWrappable:b,userAgent:p};e(1),e(2),d[m]?(d[m]("DOMContentLoaded",o,!1),l[m]("load",r,!1)):(d[v]("onreadystatechange",i),l[v]("onload",r)),c("mark",["firstbyte",f],null,"api");var x=0,O=e(6)},{}],"wrap-function":[function(e,n,t){function r(e){return!(e&&e instanceof Function&&e.apply&&!e[a])}var i=e("ee"),o=e(5),a="nr@original",f=Object.prototype.hasOwnProperty,c=!1;n.exports=function(e,n){function t(e,n,t,i){function nrWrapper(){var r,a,f,c;try{a=this,r=o(arguments),f="function"==typeof t?t(r,a):t||{}}catch(u){l([u,"",[r,a,i],f])}s(n+"start",[r,a,i],f);try{return c=e.apply(a,r)}catch(p){throw s(n+"err",[r,a,p],f),p}finally{s(n+"end",[r,a,c],f)}}return r(e)?e:(n||(n=""),nrWrapper[a]=e,p(e,nrWrapper),nrWrapper)}function u(e,n,i,o){i||(i="");var a,f,c,u="-"===i.charAt(0);for(c=0;c<n.length;c++)f=n[c],a=e[f],r(a)||(e[f]=t(a,u?f+i:i,o,f))}function s(t,r,i){if(!c||n){var o=c;c=!0;try{e.emit(t,r,i,n)}catch(a){l([a,t,r,i])}c=o}}function p(e,n){if(Object.defineProperty&&Object.keys)try{var t=Object.keys(e);return t.forEach(function(t){Object.defineProperty(n,t,{get:function(){return e[t]},set:function(n){return e[t]=n,n}})}),n}catch(r){l([r])}for(var i in e)f.call(e,i)&&(n[i]=e[i]);return n}function l(n){try{e.emit("internal-error",n)}catch(t){}}return e||(e=i),t.inPlace=u,t.flag=a,t}},{}]},{},["loader"]);</script>
-    
+Imports System.Windows.Forms
+Imports System.Runtime.InteropServices
 
+Public Class AppMenu
 
-<meta name="bb-env" content="production" />
-<meta id="bb-canon-url" name="bb-canon-url" content="https://bitbucket.org">
-<meta name="bb-api-canon-url" content="https://api.bitbucket.org">
-<meta name="apitoken" content="{&quot;token&quot;: &quot;vVdVJa3P_uVxOcMHNZpUtFCmnzxuPI6bWvgpxDY-QuQHznAovLUkJYVwCYOZJPhbo4168y_Zc2ablVuoMkLNK2agWBx9H_kI2JdAksgRrmnlHqdEbo3pxjrcmbFzV7hFPKWqInazXChlr9y1hc38cxsOYRQ9uv8ZKwl3ZZ0lqHau_RU_&quot;, &quot;expires_in&quot;: 300, &quot;expiration&quot;: 1594922479.04002}">
+    Public oImpuesto_IVA_Actual As Class_find
+    Private m_ChildFormNumber As Integer = 0
+    Private dtMenus As DataTable
 
+    Dim Opcion_Menu As New Class_Menu
+    ' Public oImpuesto_IVA_Actual As Class_find
 
-<meta name="bitbucket-commit-hash" content="0a6bd24aed98">
-<meta name="bb-app-node" content="app-1127">
-<meta name="bb-dce-env" content="ASH1">
-<meta name="bb-view-name" content="bitbucket.apps.repo2.views.SourceView">
-<meta name="ignore-whitespace" content="False">
-<meta name="tab-size" content="None">
-<meta name="locale" content="en">
-<meta name="application-name" content="Bitbucket">
-<meta name="apple-mobile-web-app-title" content="Bitbucket">
-<meta name="slack-app-id" content="A8W8QLZD1">
-<meta name="statuspage-api-host" content="https://bqlf8qjztdtr.statuspage.io">
+#Region "Opciones de manejo de ventanas"
 
+    Private Sub ExitToolsStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs)
+        Global.System.Windows.Forms.Application.Exit()
+    End Sub
 
-<meta name="theme-color" content="#0049B0">
-<meta name="msapplication-TileColor" content="#0052CC">
-<meta name="msapplication-TileImage" content="https://d301sr5gafysq2.cloudfront.net/0a6bd24aed98/img/logos/bitbucket/mstile-150x150.png">
-<link rel="apple-touch-icon" sizes="180x180" type="image/png" href="https://d301sr5gafysq2.cloudfront.net/0a6bd24aed98/img/logos/bitbucket/apple-touch-icon.png">
-<link rel="icon" sizes="192x192" type="image/png" href="https://d301sr5gafysq2.cloudfront.net/0a6bd24aed98/img/logos/bitbucket/android-chrome-192x192.png">
+    Private Sub CutToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs)
+        ' Use My.Computer.Clipboard to insert the selected text or images into the clipboard
+    End Sub
 
-<link rel="icon" sizes="16x16 24x24 32x32 64x64" type="image/x-icon" href="/favicon.ico?v=2">
-<link rel="mask-icon" href="https://d301sr5gafysq2.cloudfront.net/0a6bd24aed98/img/logos/bitbucket/safari-pinned-tab.svg" color="#0052CC">
+    Private Sub CopyToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs)
+        ' Use My.Computer.Clipboard to insert the selected text or images into the clipboard
+    End Sub
 
-<link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="Bitbucket">
+    Private Sub PasteToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs)
+        'Use My.Computer.Clipboard.GetText() or My.Computer.Clipboard.GetData to retrieve information from the clipboard.
+    End Sub
 
-      <meta name="frontbucket-commit-hash" content="811fa779e050c95977fbe420f8efa2a92d36ad49">
-    <meta name="description" content="">
-    <meta name="bb-single-page-app" content="true">
-    
-    <script nonce="BQ5t1WLs0pj0P3vv">
+    Private Sub CascadeToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs)
+        Me.LayoutMdi(MdiLayout.Cascade)
+    End Sub
 
-if (window.performance) {
+    Private Sub TileVerticleToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs)
+        Me.LayoutMdi(MdiLayout.TileVertical)
+    End Sub
 
-  
-  window.performance.okayToSendMetrics = !document.hidden && 'onvisibilitychange' in document;
+    Private Sub TileHorizontalToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs)
+        Me.LayoutMdi(MdiLayout.TileHorizontal)
+    End Sub
 
-  if (window.performance.okayToSendMetrics) {
+    Private Sub ArrangeIconsToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs)
+        Me.LayoutMdi(MdiLayout.ArrangeIcons)
+    End Sub
 
-    
-    window.addEventListener('visibilitychange', function () {
-      if (document.hidden) {
-        window.performance.okayToSendMetrics = false;
-      }
-    });
-  }
+    Private Sub CloseAllToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs)
+        ' Close all child forms of the parent.
+        For Each ChildForm As Form In Me.MdiChildren
+            ChildForm.Close()
+        Next
+    End Sub
+#End Region
 
-  
-  
-}
-</script>
-    
-    
-      
-        
-          <link rel="stylesheet" href="https://d301sr5gafysq2.cloudfront.net/frontbucket/vendor.a5b8d604ccc6.css">
-        
-        
-      
-    
-    
-    
-    
-  </head>
-  <body>
-    <div id="root">
-    
-    <script nonce="BQ5t1WLs0pj0P3vv">
-      window.__webpack_public_path__ = "https://d301sr5gafysq2.cloudfront.net/frontbucket/";
-    </script>
-    
-    
-    
-    </div>
-    <script nonce="BQ5t1WLs0pj0P3vv">
-      window.__sentry__ = {"dsn": "https://2dcda83904474d8c86928ebbfa1ab294@sentry.io/1480772", "environment": "production", "tags": {"puppet_env": "production", "dc_location": "ash1", "service": "gu-bb"}};
-      
-        window.__initial_state__ = {"section": {"repository": {"connectActions": [], "cloneProtocol": "https", "currentRepository": {"scm": "git", "website": "", "uuid": "{2bd21d73-bfc7-42a1-b3df-b70f5211d89b}", "links": {"clone": [{"href": "https://luixstein@bitbucket.org/luixstein/bscontrol.git", "name": "https"}, {"href": "git@bitbucket.org:luixstein/bscontrol.git", "name": "ssh"}], "self": {"href": "https://bitbucket.org/!api/2.0/repositories/luixstein/bscontrol"}, "html": {"href": "https://bitbucket.org/luixstein/bscontrol"}, "avatar": {"href": "https://bytebucket.org/ravatar/%7B2bd21d73-bfc7-42a1-b3df-b70f5211d89b%7D?ts=dotnet"}}, "name": "BsControl", "project": {"description": "Project created by Bitbucket for luixstein", "links": {"self": {"href": "https://bitbucket.org/!api/2.0/workspaces/luixstein/projects/PROJ"}, "html": {"href": "https://bitbucket.org/luixstein/workspace/projects/PROJ"}, "avatar": {"href": "https://bitbucket.org/account/user/luixstein/projects/PROJ/avatar/32?ts=1543628872"}}, "name": "Untitled project", "created_on": "2018-12-01T01:47:52.425341+00:00", "key": "PROJ", "updated_on": "2018-12-01T01:47:52.425367+00:00", "owner": {"display_name": "luixstein", "uuid": "{62167f7e-fc60-470f-b614-ff4824952f62}", "links": {"self": {"href": "https://bitbucket.org/!api/2.0/users/%7B62167f7e-fc60-470f-b614-ff4824952f62%7D"}, "html": {"href": "https://bitbucket.org/%7B62167f7e-fc60-470f-b614-ff4824952f62%7D/"}, "avatar": {"href": "https://secure.gravatar.com/avatar/f1c8a8f22c90a3b89ae4f8f3bd199687?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FL-2.png"}}, "type": "user", "nickname": "luis rodriguez", "account_id": "557058:23d685e2-437a-4095-a8da-ea4d6fd47c73"}, "workspace": {"name": "luixstein", "type": "workspace", "uuid": "{62167f7e-fc60-470f-b614-ff4824952f62}", "links": {"self": {"href": "https://bitbucket.org/!api/2.0/workspaces/luixstein"}, "html": {"href": "https://bitbucket.org/luixstein/"}, "avatar": {"href": "https://bitbucket.org/workspaces/luixstein/avatar/?ts=1543628872"}}, "slug": "luixstein"}, "type": "project", "is_private": false, "uuid": "{504dfbad-45ee-4c8f-a5a5-dc98d6e50d6d}"}, "language": "vb.net", "mainbranch": {"name": "master"}, "full_name": "luixstein/bscontrol", "owner": {"has_2fa_enabled": null, "display_name": "luixstein", "uuid": "{62167f7e-fc60-470f-b614-ff4824952f62}", "links": {"self": {"href": "https://bitbucket.org/!api/2.0/users/%7B62167f7e-fc60-470f-b614-ff4824952f62%7D"}, "html": {"href": "https://bitbucket.org/%7B62167f7e-fc60-470f-b614-ff4824952f62%7D/"}, "avatar": {"href": "https://secure.gravatar.com/avatar/f1c8a8f22c90a3b89ae4f8f3bd199687?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FL-2.png"}}, "type": "user", "zoneinfo": null, "account_status": "active", "created_on": "2014-10-22T14:21:14.776232+00:00", "is_staff": false, "location": null, "department": null, "organization": "bi", "job_title": null, "nickname": "luis rodriguez", "properties": {}, "account_id": "557058:23d685e2-437a-4095-a8da-ea4d6fd47c73"}, "updated_on": "2020-07-16T03:38:59.193269+00:00", "type": "repository", "slug": "bscontrol", "is_private": true, "description": ""}, "mirrors": [], "menuItems": [{"analytics_label": "repository.source", "is_client_link": true, "icon_class": "icon-source", "badge_label": null, "weight": 200, "url": "/luixstein/bscontrol/src", "tab_name": "source", "can_display": true, "label": "Source", "type": "menu_item", "anchor": true, "analytics_payload": {}, "matching_url_prefixes": ["/diff", "/history-node"], "target": "_self", "id": "repo-source-link", "icon": "icon-source"}, {"analytics_label": "repository.commits", "is_client_link": true, "icon_class": "icon-commits", "badge_label": null, "weight": 300, "url": "/luixstein/bscontrol/commits/", "tab_name": "commits", "can_display": true, "label": "Commits", "type": "menu_item", "anchor": true, "analytics_payload": {}, "matching_url_prefixes": [], "target": "_self", "id": "repo-commits-link", "icon": "icon-commits"}, {"analytics_label": "repository.branches", "is_client_link": true, "icon_class": "icon-branches", "badge_label": null, "weight": 400, "url": "/luixstein/bscontrol/branches/", "tab_name": "branches", "can_display": true, "label": "Branches", "type": "menu_item", "anchor": true, "analytics_payload": {}, "matching_url_prefixes": [], "target": "_self", "id": "repo-branches-link", "icon": "icon-branches"}, {"analytics_label": "repository.pullrequests", "is_client_link": true, "icon_class": "icon-pull-requests", "badge_label": null, "weight": 500, "url": "/luixstein/bscontrol/pull-requests/", "tab_name": "pullrequests", "can_display": true, "label": "Pull requests", "type": "menu_item", "anchor": true, "analytics_payload": {}, "matching_url_prefixes": [], "target": "_self", "id": "repo-pullrequests-link", "icon": "icon-pull-requests"}, {"analytics_label": "user.addon", "is_client_link": true, "icon_class": "aui-iconfont-unfocus", "badge_label": null, "weight": 550, "url": "/luixstein/bscontrol/addon/pipelines/home", "tab_name": "repopage-oB98xE-add-on-link", "can_display": true, "label": "Pipelines", "icon_url": "https://bitbucket-connect-icons.s3.amazonaws.com/add-on/icons/62acf41d-386f-49fd-b823-4f86445390e2.svg?AWSAccessKeyId=AKIA6KOSE3BNJRRFUUX6&Expires=1594923978&Signature=HdzrLmo9oW65WznltDroFA416Jw%3D", "anchor": true, "analytics_payload": {}, "matching_url_prefixes": [], "type": "connect_menu_item", "id": "repopage-oB98xE-add-on-link", "target": "_self"}, {"analytics_label": "user.addon", "is_client_link": true, "icon_class": "aui-iconfont-unfocus", "badge_label": null, "weight": 560, "url": "/luixstein/bscontrol/addon/pipelines/deployments", "tab_name": "repopage-yaM899-add-on-link", "can_display": true, "label": "Deployments", "icon_url": "https://bitbucket-connect-icons.s3.amazonaws.com/add-on/icons/fca72d46-7e20-4dc4-b6a8-c83fb9665cc6.svg?AWSAccessKeyId=AKIA6KOSE3BNJRRFUUX6&Expires=1594923978&Signature=tsp%2FGaFnCqholh0%2FAr%2B4gIFwK50%3D", "anchor": true, "analytics_payload": {}, "matching_url_prefixes": [], "type": "connect_menu_item", "id": "repopage-yaM899-add-on-link", "target": "_self"}, {"analytics_label": "repository.jira", "is_client_link": true, "icon_class": "icon-jira", "badge_label": null, "weight": 600, "url": "/luixstein/bscontrol/jira", "tab_name": "jira", "can_display": true, "label": "Jira issues", "type": "menu_item", "anchor": true, "analytics_payload": {}, "matching_url_prefixes": [], "target": "_self", "id": "repo-jira-link", "icon": "icon-jira"}, {"analytics_label": "repository.downloads", "is_client_link": false, "icon_class": "icon-downloads", "badge_label": null, "weight": 800, "url": "/luixstein/bscontrol/downloads/", "tab_name": "downloads", "can_display": true, "label": "Downloads", "type": "menu_item", "anchor": true, "analytics_payload": {}, "matching_url_prefixes": [], "target": "_self", "id": "repo-downloads-link", "icon": "icon-downloads"}, {"analytics_label": "repository.settings", "is_client_link": false, "icon_class": "icon-settings", "badge_label": null, "weight": 100, "url": "/luixstein/bscontrol/admin", "tab_name": "admin", "can_display": true, "label": "Repository settings", "type": "menu_item", "anchor": true, "analytics_payload": {}, "matching_url_prefixes": [], "target": "_self", "id": "repo-settings-link", "icon": "icon-settings"}], "bitbucketActions": [{"analytics_label": "repository.clone", "is_client_link": false, "icon_class": "icon-clone", "badge_label": null, "weight": 100, "url": "#clone", "tab_name": "clone", "can_display": true, "label": "<strong>Clone<\/strong> this repository", "type": "menu_item", "anchor": true, "analytics_payload": {}, "matching_url_prefixes": [], "target": "_self", "id": "repo-clone-button", "icon": "icon-clone"}, {"analytics_label": "repository.create_branch", "is_client_link": true, "icon_class": "icon-create-branch", "badge_label": null, "weight": 200, "url": "/luixstein/bscontrol/branch", "tab_name": "create-branch", "can_display": true, "label": "Create a <strong>branch<\/strong>", "type": "menu_item", "anchor": true, "analytics_payload": {}, "matching_url_prefixes": [], "target": "_self", "id": "repo-create-branch-link", "icon": "icon-create-branch"}, {"analytics_label": "create_pullrequest", "is_client_link": false, "icon_class": "icon-create-pull-request", "badge_label": null, "weight": 300, "url": "/luixstein/bscontrol/pull-requests/new", "tab_name": "create-pullreqs", "can_display": true, "label": "Create a <strong>pull request<\/strong>", "type": "menu_item", "anchor": true, "analytics_payload": {}, "matching_url_prefixes": [], "target": "_self", "id": "repo-create-pull-request-link", "icon": "icon-create-pull-request"}, {"analytics_label": "repository.compare", "is_client_link": false, "icon_class": "aui-icon-small aui-iconfont-devtools-compare", "badge_label": null, "weight": 400, "url": "/luixstein/bscontrol/branches/compare", "tab_name": "compare", "can_display": true, "label": "<strong>Compare<\/strong> branches or tags", "type": "menu_item", "anchor": true, "analytics_payload": {}, "matching_url_prefixes": [], "target": "_self", "id": "repo-compare-link", "icon": "aui-icon-small aui-iconfont-devtools-compare"}, {"analytics_label": "repository.fork", "is_client_link": false, "icon_class": "icon-fork", "badge_label": null, "weight": 500, "url": "/luixstein/bscontrol/fork", "tab_name": "fork", "can_display": true, "label": "<strong>Fork<\/strong> this repository", "type": "menu_item", "anchor": true, "analytics_payload": {}, "matching_url_prefixes": [], "target": "_self", "id": "repo-fork-link", "icon": "icon-fork"}], "activeMenuItem": "source"}}, "global": {"theme": null, "isPullRequestSingleFileModeEnabled": false, "features": {"diffstat-api-escaped-file-paths": true, "lazy-resolve-commit-for-commit-status-url": true, "account-switcher": true, "show-guidance-message": true, "repo-nav-jira-tab-partial-rollout": true, "orochi-open-optimistic": true, "nav-add-file": false, "check-matching-cst-django-session-aid-id": true, "markdown-embedded-html": false, "invitations-fix-avatar": true, "prlinks-installer": true, "auto-prs-prime-fallback": true, "consenthub-config-endpoint-update": true, "diff-api-renames": true, "show-pr-update-activity-changes": true, "clone-in-xcode": true, "new-code-review": false, "atlassian-editor": true, "webhook-broker-post-allow-private-addresses": true, "new-ahead-behind-algorithm": true, "evolution": false, "disable-hg": true, "fd-new-code-review-word-wrap": true, "disable-prs-sidecar": true, "bypass-pr-diff-comparespec": true, "hg-deprecation-warning": true, "x-flow-integration-switch": true, "orochi-disable-hooks-with-lockid": true, "frontbucket-eager-dispatching-of-exited-code-review": true, "orochi-git-diff-refactor": true, "uninstall-dvcs-addon-only-when-jira-is-removed": true, "adg3-transfer-repository-flow": true, "hot-91446-verbose-logging": true, "orochi-retry-object-lookup": true, "adg3-two-step-verification": true, "fd-x-flow-integration-rollout": true, "restrict-commit-author-data": true, "log-wrapped-uuid-inconsistencies": true, "fd-undo-last-push": false, "VULN-161636-issue-update-requires-write-access": true, "show-banner-about-new-review-experience": true, "atlassian-switcher-migrate-to-aps-backend": true, "django_connect_tasks_use_run_worker": true, "enable-api-proxy-in-gu-bb": true, "fd-new-code-review-single-file-mode": true, "fd-new-code-review-single-file-mode-excluded-files-fix": true, "enable-merge-bases-api": true, "hide-deactivated-users": true, "disable-primary-pr-history": true, "supportadmin-pull-requests": true, "lazily-bulk-fetch-authors": true, "webhooks_requires_scopes": true, "exp-new-user-survey": true, "account-2fa-recovery-flow": true, "adg3-snippets-empty-state": true, "delete-sharded-pr-history": true, "use-sharded-pr-history": true, "provisioning-api-install-jira-addon": true, "allocate-with-regions": true, "markdown-attr-list": true, "exp-share-to-invite-variation": false, "log-repo-manager-getitem-access": true, "disable-social-auth-lookup": true, "adg3-confirmation-email": true, "resolvespec-respect-anchor-param": true, "allow-users-members-endpoint": true, "whitelisted_throttle_exemption": true, "lifecycle_outbound_proxy": true, "hide-deactivated-workspace": true, "fd-block-bot-emails": true, "workspaces-groups": true, "bbcs-367-log-session-invalidation": true, "clonebundles": true, "fd-ie-deprecation-phase-two": true, "lsn-based-db-routing": true, "svg-based-qr-code": true, "terms-and-conditions-2018": true, "provisioning-auto-login": true, "remove-fields-from-internal-commits-api": true, "block-bot-user-qs-permissions": true, "disallow-adding-groups-without-privilege": true, "frontbucket-leave-repository": true, "new-source-browser": true, "pr-annotations-from-pipelines": false, "new-code-review-onboarding-experience": true, "orochi-optimize-non-zero": true, "fd-overview-page-pr-filter-buttons": true, "new-analytics-cdn": true, "orochi-open-bare": true, "add-support-for-email-based-rtbf-requests": true, "disable-rtbf-delete-user-task-for-emails": true, "show-upgrade-plans-banner": true, "repo-nav-jira-tab-m2": true, "break-login-loop": true, "use-elasticache-lsn-storage": true, "workspaces-api-proxy": true, "connect-iframe-no-sub": true, "keep-pr-approvals-for-deleted-users": true, "rtbf-process-aid-deletion-email-fallback": true, "pr-activity-attachments": true, "large-pr-rendering-limits": true, "enable-fx3-client": true, "fd-jira-compatible-issue-export": true, "repositories-cards-view": true, "use-moneybucket": true, "pride-logo": false, "bitbucket-branded-identity-login": true, "bms-repository-no-finalize": true, "repo-nav-jira-tab": true, "merge-pull-requests-async": true, "use-new-available-products-endpoint": true, "spa-plans-page": true, "fd-ie-deprecation-phase-one": true, "new-code-review-merge-checklist": true, "rm-empty-ref-dirs-on-push": true, "lsn-lookups": true, "auth-flow-adg3": true, "fd-linkify-decline-messages": true, "hide-github-integration": true, "workspace-ui": true, "hot-91446-add-tracing-x-b3": true, "save-sharded-pr-history": true, "fd-show-mega-launch-flag": true, "workspaces-onboarding": true, "allow-cloud-session": true}, "locale": "en", "isCodeReviewWelcomeDialogOpen": true, "needsTermsAndConditions": false, "is_mobile_user_agent": false, "site_message": {"title": "Reminder: Bitbucket Upgrading TLS", "feature_slug": "", "text": "On August 1, 2020, Bitbucket will be upgrading our Transport Layer Security (TLS) configuration and ending support for some weaker cipher suites.", "appearance": "flag", "url": "https://bitbucket.org/blog/update-to-supported-cipher-suites-in-bitbucket-cloud", "id": 30334}, "codeReviewSidebarWidth": null, "isPullRequestIgnoreWhitespaceEnabled": false, "sourceBrowserSidebarWidth": null, "targetUser": {"has_2fa_enabled": null, "display_name": "luixstein", "uuid": "{62167f7e-fc60-470f-b614-ff4824952f62}", "links": {"self": {"href": "https://bitbucket.org/!api/2.0/users/%7B62167f7e-fc60-470f-b614-ff4824952f62%7D"}, "html": {"href": "https://bitbucket.org/%7B62167f7e-fc60-470f-b614-ff4824952f62%7D/"}, "avatar": {"href": "https://secure.gravatar.com/avatar/f1c8a8f22c90a3b89ae4f8f3bd199687?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FL-2.png"}}, "type": "user", "zoneinfo": null, "account_status": "active", "created_on": "2014-10-22T14:21:14.776232+00:00", "is_staff": false, "location": null, "department": null, "organization": "bi", "job_title": null, "nickname": "luis rodriguez", "properties": {}, "account_id": "557058:23d685e2-437a-4095-a8da-ea4d6fd47c73"}, "geoip_country": "MX", "isFocusedTask": false, "isCodeReviewSidebarOpen": true, "focusedTaskBackButtonUrl": "https://bitbucket.org/luixstein/bscontrol/src/master/SIS_AGRO/Formas/Sistema/", "importBitbucketActions": [{"analytics_label": null, "is_client_link": false, "icon_class": "", "badge_label": null, "weight": 100, "url": "/repo/import", "tab_name": null, "can_display": true, "label": "<strong>Repository<\/strong>", "type": "menu_item", "anchor": true, "analytics_payload": {}, "matching_url_prefixes": [], "target": "_self", "id": "repository-import-drawer-item", "icon": ""}], "isPullRequestAnnotationsEnabled": true, "browser_monitoring": true, "bitbucketActions": [{"analytics_label": null, "is_client_link": false, "icon_class": "", "badge_label": null, "weight": 100, "url": "/repo/create?owner=luixstein", "tab_name": null, "can_display": true, "label": "<strong>Repository<\/strong>", "type": "menu_item", "anchor": true, "analytics_payload": {}, "matching_url_prefixes": [], "target": "_self", "id": "repository-create-drawer-item", "icon": ""}, {"analytics_label": null, "is_client_link": false, "icon_class": "", "badge_label": null, "weight": 110, "url": "/workspace/create/", "tab_name": null, "can_display": true, "label": "<strong>Workspace<\/strong>", "type": "menu_item", "anchor": true, "analytics_payload": {}, "matching_url_prefixes": [], "target": "_self", "id": "workspace-create-drawer-item", "icon": ""}, {"analytics_label": null, "is_client_link": false, "icon_class": "", "badge_label": null, "weight": 120, "url": "/account/projects/create?workspace=luixstein", "tab_name": null, "can_display": true, "label": "<strong>Project<\/strong>", "type": "menu_item", "anchor": true, "analytics_payload": {}, "matching_url_prefixes": [], "target": "_self", "id": "project-create-drawer-item", "icon": ""}, {"analytics_label": null, "is_client_link": false, "icon_class": "", "badge_label": null, "weight": 130, "url": "/snippets/new?workspace=luixstein", "tab_name": null, "can_display": true, "label": "<strong>Snippet<\/strong>", "type": "menu_item", "anchor": true, "analytics_payload": {}, "matching_url_prefixes": [], "target": "_self", "id": "snippet-create-drawer-item", "icon": ""}], "isPullRequestColorBlindModeEnabled": false, "commitViewSidebarWidth": null, "path": "/luixstein/bscontrol/src/master/SIS_AGRO/Formas/Sistema/AppMenu.vb", "currentUser": {"has_2fa_enabled": null, "display_name": "luixstein", "uuid": "{62167f7e-fc60-470f-b614-ff4824952f62}", "links": {"self": {"href": "https://bitbucket.org/!api/2.0/users/%7B62167f7e-fc60-470f-b614-ff4824952f62%7D"}, "html": {"href": "https://bitbucket.org/%7B62167f7e-fc60-470f-b614-ff4824952f62%7D/"}, "avatar": {"href": "https://secure.gravatar.com/avatar/f1c8a8f22c90a3b89ae4f8f3bd199687?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FL-2.png"}}, "extra": {"has_ssh_key": false, "has_premium": false, "has_atlassian_account": true, "workspace_id": "luixstein"}, "type": "user", "zoneinfo": null, "account_status": "active", "created_on": "2014-10-22T14:21:14.776232+00:00", "is_staff": false, "location": null, "department": null, "organization": "bi", "job_title": null, "nickname": "luis rodriguez", "properties": {}, "account_id": "557058:23d685e2-437a-4095-a8da-ea4d6fd47c73"}, "isPullRequestWordDiffEnabled": true, "needs_marketing_consent": false, "isCommitViewSidebarOpen": true, "pullRequestDiffViewMode": null, "targetFeatures": {"diffstat-api-escaped-file-paths": true, "lazy-resolve-commit-for-commit-status-url": true, "account-switcher": true, "show-guidance-message": true, "repo-nav-jira-tab-partial-rollout": true, "orochi-open-optimistic": true, "nav-add-file": false, "check-matching-cst-django-session-aid-id": true, "markdown-embedded-html": false, "invitations-fix-avatar": true, "prlinks-installer": true, "auto-prs-prime-fallback": true, "consenthub-config-endpoint-update": true, "diff-api-renames": true, "show-pr-update-activity-changes": true, "clone-in-xcode": true, "new-code-review": false, "atlassian-editor": true, "webhook-broker-post-allow-private-addresses": true, "new-ahead-behind-algorithm": true, "evolution": false, "disable-hg": true, "fd-new-code-review-word-wrap": true, "disable-prs-sidecar": true, "bypass-pr-diff-comparespec": true, "hg-deprecation-warning": true, "x-flow-integration-switch": true, "orochi-disable-hooks-with-lockid": true, "frontbucket-eager-dispatching-of-exited-code-review": true, "orochi-git-diff-refactor": true, "uninstall-dvcs-addon-only-when-jira-is-removed": true, "adg3-transfer-repository-flow": true, "hot-91446-verbose-logging": true, "orochi-retry-object-lookup": true, "adg3-two-step-verification": true, "fd-x-flow-integration-rollout": true, "restrict-commit-author-data": true, "log-wrapped-uuid-inconsistencies": true, "fd-undo-last-push": false, "VULN-161636-issue-update-requires-write-access": true, "show-banner-about-new-review-experience": true, "atlassian-switcher-migrate-to-aps-backend": true, "django_connect_tasks_use_run_worker": true, "enable-api-proxy-in-gu-bb": true, "fd-new-code-review-single-file-mode": true, "fd-new-code-review-single-file-mode-excluded-files-fix": true, "enable-merge-bases-api": true, "hide-deactivated-users": true, "disable-primary-pr-history": true, "supportadmin-pull-requests": true, "lazily-bulk-fetch-authors": true, "webhooks_requires_scopes": true, "exp-new-user-survey": true, "account-2fa-recovery-flow": true, "adg3-snippets-empty-state": true, "delete-sharded-pr-history": true, "use-sharded-pr-history": true, "provisioning-api-install-jira-addon": true, "allocate-with-regions": true, "markdown-attr-list": true, "exp-share-to-invite-variation": false, "log-repo-manager-getitem-access": true, "disable-social-auth-lookup": true, "adg3-confirmation-email": true, "resolvespec-respect-anchor-param": true, "allow-users-members-endpoint": true, "whitelisted_throttle_exemption": true, "lifecycle_outbound_proxy": true, "hide-deactivated-workspace": true, "fd-block-bot-emails": true, "workspaces-groups": true, "bbcs-367-log-session-invalidation": true, "clonebundles": true, "fd-ie-deprecation-phase-two": true, "lsn-based-db-routing": true, "svg-based-qr-code": true, "terms-and-conditions-2018": true, "provisioning-auto-login": true, "remove-fields-from-internal-commits-api": true, "block-bot-user-qs-permissions": true, "disallow-adding-groups-without-privilege": true, "frontbucket-leave-repository": true, "new-source-browser": true, "pr-annotations-from-pipelines": false, "new-code-review-onboarding-experience": true, "orochi-optimize-non-zero": true, "fd-overview-page-pr-filter-buttons": true, "new-analytics-cdn": true, "orochi-open-bare": true, "add-support-for-email-based-rtbf-requests": true, "disable-rtbf-delete-user-task-for-emails": true, "show-upgrade-plans-banner": true, "repo-nav-jira-tab-m2": true, "break-login-loop": true, "use-elasticache-lsn-storage": true, "workspaces-api-proxy": true, "connect-iframe-no-sub": true, "keep-pr-approvals-for-deleted-users": true, "rtbf-process-aid-deletion-email-fallback": true, "pr-activity-attachments": true, "large-pr-rendering-limits": true, "enable-fx3-client": true, "fd-jira-compatible-issue-export": true, "repositories-cards-view": true, "use-moneybucket": true, "pride-logo": false, "bitbucket-branded-identity-login": true, "bms-repository-no-finalize": true, "repo-nav-jira-tab": true, "merge-pull-requests-async": true, "use-new-available-products-endpoint": true, "spa-plans-page": true, "fd-ie-deprecation-phase-one": true, "new-code-review-merge-checklist": true, "rm-empty-ref-dirs-on-push": true, "lsn-lookups": true, "auth-flow-adg3": true, "fd-linkify-decline-messages": true, "hide-github-integration": true, "workspace-ui": true, "hot-91446-add-tracing-x-b3": true, "save-sharded-pr-history": true, "fd-show-mega-launch-flag": true, "workspaces-onboarding": true, "allow-cloud-session": true}, "teams": [{"display_name": "Daniel Lopez", "name": "Daniel Lopez", "links": {"self": {"href": "https://bitbucket.org/!api/2.0/workspaces/daniel117"}, "html": {"href": "https://bitbucket.org/daniel117/"}, "avatar": {"href": "https://bitbucket.org/workspaces/daniel117/avatar/?ts=1543628872"}}, "type": "workspace", "slug": "daniel117", "uuid": "{55dfb5f8-2236-4463-9712-5ec72d4f24fc}"}, {"display_name": "Ian N\u00e1jar", "name": "Ian N\u00e1jar", "links": {"self": {"href": "https://bitbucket.org/!api/2.0/workspaces/Mr_LinDowsMac"}, "html": {"href": "https://bitbucket.org/Mr_LinDowsMac/"}, "avatar": {"href": "https://bitbucket.org/workspaces/Mr_LinDowsMac/avatar/?ts=1543470067"}}, "type": "workspace", "slug": "Mr_LinDowsMac", "uuid": "{e19c5d15-b455-4b4d-95ff-37237098095b}"}, {"display_name": "Luis Ernesto Aguado", "name": "Luis Ernesto Aguado", "links": {"self": {"href": "https://bitbucket.org/!api/2.0/workspaces/luiseaf"}, "html": {"href": "https://bitbucket.org/luiseaf/"}, "avatar": {"href": "https://bitbucket.org/workspaces/luiseaf/avatar/?ts=1543628872"}}, "type": "workspace", "slug": "luiseaf", "uuid": "{0cb0808e-a7e1-4bc9-a3c1-af67774ca8e6}"}, {"display_name": "luis fer", "name": "luis fer", "links": {"self": {"href": "https://bitbucket.org/!api/2.0/workspaces/elfer"}, "html": {"href": "https://bitbucket.org/elfer/"}, "avatar": {"href": "https://bitbucket.org/workspaces/elfer/avatar/?ts=1543628872"}}, "type": "workspace", "slug": "elfer", "uuid": "{8c6aba8b-52ba-49c7-bd34-8d7d082dfb21}"}, {"display_name": "luixstein", "name": "luixstein", "links": {"self": {"href": "https://bitbucket.org/!api/2.0/workspaces/luixstein"}, "html": {"href": "https://bitbucket.org/luixstein/"}, "avatar": {"href": "https://bitbucket.org/workspaces/luixstein/avatar/?ts=1543628872"}}, "type": "workspace", "slug": "luixstein", "uuid": "{62167f7e-fc60-470f-b614-ff4824952f62}"}, {"display_name": "paxxa", "name": "paxxa", "links": {"self": {"href": "https://bitbucket.org/!api/2.0/workspaces/paxxa"}, "html": {"href": "https://bitbucket.org/paxxa/"}, "avatar": {"href": "https://bitbucket.org/workspaces/paxxa/avatar/?ts=1543628872"}}, "type": "workspace", "slug": "paxxa", "uuid": "{465694e5-750d-4916-ad09-ae2f0024c379}"}], "pullRequestDiffTabSize": null, "flags": [], "isNavigationOpen": true, "isSourceBrowserSidebarOpen": true, "whats_new_feed": "https://bitbucket.org/blog/wp-json/wp/v2/posts?categories=196&context=embed&per_page=6&orderby=date&order=desc"}, "repository": {"source": {"section": {"hash": "d01667e50a3433bcec9302707cf431a9c7f1d85c", "atRef": null, "ref": {"name": "master", "links": {"self": {"href": "https://bitbucket.org/!api/2.0/repositories/luixstein/bscontrol/refs/branches/master"}, "html": {"href": "https://bitbucket.org/luixstein/bscontrol/branch/master"}}, "target": {"type": "commit", "hash": "d01667e50a3433bcec9302707cf431a9c7f1d85c", "links": {"self": {"href": "https://bitbucket.org/!api/2.0/repositories/luixstein/bscontrol/commit/d01667e50a3433bcec9302707cf431a9c7f1d85c"}, "html": {"href": "https://bitbucket.org/luixstein/bscontrol/commits/d01667e50a3433bcec9302707cf431a9c7f1d85c"}}}}, "showCloneGuidance": false}}}};
-      
-      window.__settings__ = {"MARKETPLACE_TERMS_OF_USE_URL": null, "JIRA_ISSUE_COLLECTORS": {"code-review-beta": {"url": "https://bitbucketfeedback.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-4bqv2z/b/20/a44af77267a987a660377e5c46e0fb64/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=bb066400", "id": "bb066400"}, "jira-software-repo-page": {"url": "https://jira.atlassian.com/s/1ce410db1c7e1b043ed91ab8e28352e2-T/yl6d1c/804001/619f60e5de428c2ed7545f16096c303d/3.1.0/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-UK&collectorId=064d6699", "id": "064d6699"}, "code-review-rollout": {"url": "https://bitbucketfeedback.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-4bqv2z/b/20/a44af77267a987a660377e5c46e0fb64/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=de003e2d", "id": "de003e2d"}, "source-browser": {"url": "https://bitbucketfeedback.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-tqnsjm/b/20/a44af77267a987a660377e5c46e0fb64/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=c19c2ff6", "id": "c19c2ff6"}}, "STATUSPAGE_URL": "https://bitbucket.status.atlassian.com/", "CANON_URL": "https://bitbucket.org", "CONSENT_HUB_FRONTEND_BASE_URL": "https://preferences.atlassian.com", "API_CANON_URL": "https://api.bitbucket.org", "SOCIAL_AUTH_ATLASSIANID_LOGOUT_URL": "https://id.atlassian.com/logout", "EMOJI_STANDARD_BASE_URL": "https://api-private.atlassian.com/emoji/"};
-      window.__webpack_nonce__ = 'BQ5t1WLs0pj0P3vv';
-      window.isInitialLoadApdex = true;
-      
-      
-    </script>
-    
-      <script nonce="BQ5t1WLs0pj0P3vv" src="https://d301sr5gafysq2.cloudfront.net/frontbucket/locales/en.7ae1067c.js"></script>
-      
-          <script nonce="BQ5t1WLs0pj0P3vv" src="https://d301sr5gafysq2.cloudfront.net/frontbucket/runtime.a8de9ec56e67cb87460a.js"></script>
-          <script nonce="BQ5t1WLs0pj0P3vv" src="https://d301sr5gafysq2.cloudfront.net/frontbucket/vendor.a3f6e496d37f130bcf80.js"></script>
-        <!-- NOTE: we need ajs to load before app.js otherwise connect may not work -->
-          <script nonce="BQ5t1WLs0pj0P3vv" src="https://d301sr5gafysq2.cloudfront.net/frontbucket/ajs.62f9d55649511a08f307.js"></script>
-        <script nonce="BQ5t1WLs0pj0P3vv" src="https://d301sr5gafysq2.cloudfront.net/frontbucket/app.a3bf87cba8dd6f7fe750.js"></script>
-          <script nonce="BQ5t1WLs0pj0P3vv" defer src="https://d301sr5gafysq2.cloudfront.net/frontbucket/performance-timing.10e25de385972c0b4167.js"></script>
-      
-    
+#Region "Propiedades"
+#End Region
 
-    <script nonce="BQ5t1WLs0pj0P3vv" type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","queueTime":0,"licenseKey":"a2cef8c3d3","agent":"","transactionName":"NFcGYEdUW0IAVE1QCw0dIkFbVkFYDlkWWw0XUBFXXlBBHwBHSUpKEVcUWwcbQ1gEQEoDAgpeAVZHWkJCBA==","applicationID":"521597189,1841284","errorBeacon":"bam.nr-data.net","applicationTime":232}</script>
-  </body>
-</html>
+    <DllImport("user32.dll", SetLastError:=True)>
+    Private Shared Function SetParent(ByVal child As IntPtr, ByVal newParent As IntPtr) As IntPtr
+    End Function
+
+    Private Sub AppMenu_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Try
+            'Dim imagen As New Drawing.Bitmap(PictureBox1.Image, Me.Width, Me.Height)
+            'If My.Settings.Mostrar_Imagen_de_Fondo <> "No" Then
+            '    Me.BackgroundImage = imagen
+            'End If
+
+            If Usuario.Nombre_Usuario = "ROSARIO" Then
+                Me.MenuStrip.Visible = False
+                Me.MenuStrip2.Visible = True
+            Else
+                Me.MenuStrip.Visible = True
+                Me.MenuStrip2.Visible = False
+            End If
+
+            EstableceDescripcionMenu()
+
+            Dim sLogo As String = "\logo_" & My.Settings.BaseDatos & ".jpg"
+
+            If My.Settings.Servidor = "PCSISTEMASJORGE\SQL14" Then
+                sLogo = "\logo_AGRINET_LAND.jpg"
+                Me.pbLogo.Visible = True
+            End If
+
+            Dim sRutaLogoServidor As String = "\\" & Split(My.Settings.Servidor, "\")(0) & "\" & Microsoft.VisualBasic.Strings.Right(My.Settings.Ruta, Len(My.Settings.Ruta) - InStrRev(My.Settings.Ruta, "\")) & sLogo
+            Dim sRutaLogoLocal As String = My.Settings.Ruta & sLogo
+
+            If Len(Dir(sRutaLogoLocal)) = 0 Then
+                If Len(Dir(sRutaLogoServidor)) > 0 Then
+                    Copiar_Archivo(sRutaLogoServidor, sRutaLogoLocal)
+                End If
+            End If
+
+            'If My.Computer.Name <> "PCSISTEMASJORGE" Then
+            Me.pbLogo.ImageLocation = sRutaLogoLocal
+            'End If
+
+            Dim clienteMDI As MdiClient
+            For Each control As Control In Me.Controls
+                Try
+                    clienteMDI = DirectCast(control, MdiClient)
+                    clienteMDI.BackColor = Color.White
+                    SetParent(pbLogo.Handle, clienteMDI.Handle)
+                Catch generatedExceptionName As InvalidCastException
+                    'MsgBox("Error en " & Me.Name & ":" & generatedExceptionName.Message.ToString, MsgBoxStyle.Critical)
+                End Try
+            Next
+            Me.DeshabilitaMenus()
+            Me.HabilitaMenus()
+
+            Me.tsslValidacionCSD.Text = GestionaFechaCertificadoCFD()
+
+        Catch ex As Exception
+            HandleError("Menu", "AppMenu_Load", ex)
+        End Try
+    End Sub
+
+    Private Sub AppMenu_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+        If Running Then
+            If Not Mod_main.Finaliza() Then
+                e.Cancel = True
+            End If
+        End If
+    End Sub
+
+    Private Sub SalirToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MenuSalir.Click, MenuSalir2.Click
+        Me.Close()
+        Mod_main.Finaliza()
+    End Sub
+
+    Public Sub New()
+        ' This call is required by the Windows Form Designer.
+        InitializeComponent()
+        ' Add any initialization after the InitializeComponent() call.
+    End Sub
+
+    Private Sub CuentasContablesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CuentasContablesToolStripMenuItem.Click
+        Dim Child As New Catalogo_Cuentas_Contables
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub MDICatConFoliosDocumentos_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MDICatConFoliosDocumentos.Click
+        Dim ChildCXC As New Catalogo_Folios_Documentos
+        ChildCXC.MdiParent = Me
+        m_ChildFormNumber += 1
+        ChildCXC.Show()
+    End Sub
+
+    Private Sub SelecciónDeEjerciciosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelecciónDeEjerciciosToolStripMenuItem.Click
+        Dim Child As New Contabilidad_Periodos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ReporteGlobalDePolizasToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ReporteGlobalDePolizasToolStripMenuItem.Click
+        Dim Child As New Frm_Contabilidad_Global_Polizas()
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub AuxiliarDeMayorToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AuxiliarDeMayorToolStripMenuItem.Click
+        Dim Child As New Frm_Contabilidad_Auxiliar_Mayor
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub MnuContabilidadEstadoResultados_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim f As New Frm_Contabilidad_Estado_Resultados
+        f.MdiParent = Me
+        m_ChildFormNumber += 1
+        f.Show()
+    End Sub
+
+    Private Sub PolizaDeEgresosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PolizaDeEgresosToolStripMenuItem.Click
+        Dim Child As New Frm_Contabilidad_Polizas_Egresos()
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub RelacionesAnaliticasToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RelacionesAnaliticasToolStripMenuItem.Click
+        Dim Child As New Frm_Contabilidad_Balanza_Analiticas_Mayor
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub SaldosDeCuentasToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaldosDeCuentasToolStripMenuItem.Click
+        Dim Child As New Frm_Contabilidad_Saldos_CUENTA_CONTABLE_PESOS
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub CapturaDePolizasToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CapturaDePolizasToolStripMenuItem.Click
+        Dim Child As New Frm_Contabilidad_Captura_Polizas
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub IVAAcreditableToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles IVAAcreditableToolStripMenuItem.Click
+        Dim Child As New Frm_Contabilidad_IVA_Acreditable_Global
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub ArticulosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ArticulosToolStripMenuItem.Click
+        Dim Child As New Catalogo_Articulos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub AlmacenesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AlmacenesToolStripMenuItem.Click
+        Dim ChildCXC As New Catalogo_Almacenes
+        ChildCXC.MdiParent = Me
+        m_ChildFormNumber += 1
+        ChildCXC.Show()
+    End Sub
+
+    Private Sub MnuCatInvLineas_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MnuCatInvLineas.Click
+        Dim Child As New Catalogo_Lineas
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub MovimientosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MovimientosToolStripMenuItem.Click
+        Dim Child As New Inventarios_Movimientos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ContraseñasToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ContraseñasToolStripMenuItem.Click
+        Dim Child As New UtileriasGeneraContraseñaCancelarMovimientosMesesPasados
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub MnuInvRepExistencias_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MnuInvRepExistencias.Click
+        Dim Child As New Rpt_Inventario_Existencias
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub MnuInvRepKardex_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MnuInvRepAuxiliar.Click
+        Dim Child As New RPT_INVENTARIOS_AUXILIAR_ARTICULOS
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub InvRptGlobalDetalle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles InvRptGlobalDetalle.Click
+        Dim Child As New Rpt_Inventarios_Global
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub FamiliasToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FamiliasToolStripMenuItem.Click
+        Dim Child As New Catalogo_Familias
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    'Private Sub CapturaDePagosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CapturaDePagosToolStripMenuItem.Click
+    '    Dim Child As New Frm_CXP_Pagos
+    '    Child.MdiParent = Me
+    '    m_ChildFormNumber += 1
+    '    Child.StartPosition = FormStartPosition.CenterScreen
+    '    Child.Show()
+    'End Sub
+
+    'Private Sub PagosAAcredoresToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PagosAAcredoresToolStripMenuItem.Click
+    '    Dim ChildCXC As New Frm_CXP_Pagos_Acreedores
+    '    ChildCXC.MdiParent = Me
+    '    m_ChildFormNumber += 1
+    '    ChildCXC.Show()
+    'End Sub
+
+    Private Sub BancosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BancosToolStripMenuItem.Click
+        Dim ChildCXC As New Catalogo_Bancos
+        ChildCXC.MdiParent = Me
+        m_ChildFormNumber += 1
+        ChildCXC.Show()
+    End Sub
+
+    Private Sub CuentasBancariasToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CuentasBancariasToolStripMenuItem.Click
+        Dim ChildCXC As New Catalogo_Cuentas_Bancarias
+        ChildCXC.MdiParent = Me
+        m_ChildFormNumber += 1
+        ChildCXC.Show()
+    End Sub
+
+    Private Sub ClientesToolStripMenuItem1_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ClientesToolStripMenuItem1.Click
+        Dim Child As New Catalogo_Clientes
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub VendedoresToolStripMenuItem1_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles VendedoresToolStripMenuItem1.Click
+        Dim Child As New Catalogo_Vendedores
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub ZonasToolStripMenuItem_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ZonasToolStripMenuItem.Click
+        Dim Child As New Catalogo_Zonas
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub ProveedoresToolStripMenuItem_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ProveedoresToolStripMenuItem.Click
+        Dim Child As New Catalogo_Proveedores
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub CapturaDePagosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CapturaDePagosToolStripMenuItem.Click
+        Dim Child As New Frm_CXP_Pagos_Acreedores
+        Child.ModoPago = Frm_CXP_Pagos_Acreedores.enumModoPago.PROVEEDOR
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub PagosAAcredoresToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PagosAAcredoresToolStripMenuItem.Click
+        Dim ChildCXP As New Frm_CXP_Pagos_Acreedores
+        ChildCXP.ModoPago = Frm_CXP_Pagos_Acreedores.enumModoPago.ACREEDOR
+        ChildCXP.MdiParent = Me
+        m_ChildFormNumber += 1
+        ChildCXP.Show()
+    End Sub
+
+    Private Sub MovimientosToolStripMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MovimientosToolStripMenuItem1.Click
+        Dim ChildCXC As New Compras_Movimientos
+        ChildCXC.MdiParent = Me
+        m_ChildFormNumber += 1
+        ChildCXC.Show()
+    End Sub
+
+    Private Sub GlobalDeDocumentosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GlobalDeDocumentosToolStripMenuItem.Click
+        Dim ChildCXC As New Rpt_Compras_Global
+        ChildCXC.MdiParent = Me
+        m_ChildFormNumber += 1
+        ChildCXC.Show()
+    End Sub
+
+    Private Sub IvaPorAcreditarToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles IvaPorAcreditarToolStripMenuItem.Click
+        Dim Child As New Frm_Contabilidad_IVA_Acreditable
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub CostoDeProduccionToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CostoDeProduccionToolStripMenuItem.Click, CostoDeProduccionToolStripMenuItem1.Click
+        Dim Child As New Frm_Contabilidad_Costos_Produccion
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub AplicaciónDeDocumentosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AplicaciónDeDocumentosToolStripMenuItem.Click
+        Dim ChildCXP As New Frm_CXP_Aplicacion_Documentos
+        ChildCXP.MdiParent = Me
+        m_ChildFormNumber += 1
+        ChildCXP.Show()
+    End Sub
+
+    Private Sub AuxliarDeProveedorToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AuxliarDeProveedorToolStripMenuItem.Click
+        Dim ChildCXP As New Rpt_Cxp_Auxiliar_proveedor
+        ChildCXP.MdiParent = Me
+        m_ChildFormNumber += 1
+        ChildCXP.Show()
+    End Sub
+
+    Private Sub TamañosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TamañosToolStripMenuItem.Click
+        Dim ChildCXP As New Catalogo_Tamaños
+        ChildCXP.MdiParent = Me
+        m_ChildFormNumber += 1
+        ChildCXP.Show()
+    End Sub
+
+    Private Sub EnvasesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EnvasesToolStripMenuItem.Click
+        Dim ChildCXP As New Catalogo_Envases
+        ChildCXP.MdiParent = Me
+        m_ChildFormNumber += 1
+        ChildCXP.Show()
+    End Sub
+
+    Private Sub EtiquetasToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EtiquetasToolStripMenuItem.Click
+        Dim ChildCXP As New Catalogo_Etiquetas
+        ChildCXP.MdiParent = Me
+        m_ChildFormNumber += 1
+        ChildCXP.Show()
+    End Sub
+
+    Private Sub DistribuidoresToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DistribuidoresToolStripMenuItem.Click
+        Dim ChildCXP As New Catalogo_Distribuidores
+        ChildCXP.MdiParent = Me
+        m_ChildFormNumber += 1
+        ChildCXP.Show()
+    End Sub
+
+    Private Sub ProductoresToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ProductoresToolStripMenuItem.Click
+        Dim ChildCXP As New Catalogo_Productores
+        ChildCXP.MdiParent = Me
+        m_ChildFormNumber += 1
+        ChildCXP.Show()
+    End Sub
+
+    Private Sub ProductosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ProductosToolStripMenuItem.Click
+        Dim ChildCXP As New Catalogo_Productos_Agricolas
+        ChildCXP.MdiParent = Me
+        m_ChildFormNumber += 1
+        ChildCXP.Show()
+    End Sub
+
+    Private Sub CajasDeTransportesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CajasDeTransportesToolStripMenuItem.Click
+        Dim ChildCXP As New Catalogo_CajasTransportes
+        ChildCXP.MdiParent = Me
+        m_ChildFormNumber += 1
+        ChildCXP.Show()
+    End Sub
+
+    Private Sub EmbarcadoresToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EmbarcadoresToolStripMenuItem.Click
+        Dim ChildCXP As New Catalogo_Embarcadores
+        ChildCXP.MdiParent = Me
+        m_ChildFormNumber += 1
+        ChildCXP.Show()
+    End Sub
+
+    Private Sub EmpaquesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EmpaquesToolStripMenuItem.Click
+        Dim ChildCXP As New Catalogo_Empaques
+        ChildCXP.MdiParent = Me
+        m_ChildFormNumber += 1
+        ChildCXP.Show()
+    End Sub
+
+    Private Sub EstadosFinancierosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EstadosFinancierosToolStripMenuItem.Click
+        Dim ChildCXP As New Frm_contabilidad_Estados_Financieros
+        ChildCXP.MdiParent = Me
+        m_ChildFormNumber += 1
+        ChildCXP.Show()
+    End Sub
+
+    Private Sub PagosAProveedoresToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PagosAProveedoresToolStripMenuItem.Click
+        Dim ChildCXP As New Rpt_Cxp_Detalle_Cheques_Transferencias
+        ChildCXP.MdiParent = Me
+        m_ChildFormNumber += 1
+        ChildCXP.Show()
+    End Sub
+
+    Private Sub ArmadoDePaletsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ArmadoDePaletsToolStripMenuItem.Click
+        Dim Child As New Frm_Embarques_ArmadoPalets
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub EntradaSobranteProductoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EntradaSobranteProductoToolStripMenuItem.Click
+        Dim Child As New Frm_Embarques_EntradaSobrante
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub LineasDeTransporteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles LineasDeTransporteToolStripMenuItem.Click
+        Dim Child As New Catalogo_Lineas_Transportes
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ChoferesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ChoferesToolStripMenuItem.Click
+        Dim Child As New Catalogo_Choferes
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub AgenciasAdunalesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim Child As New Catalogo_AgenciaAduanas
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub MarcasDeTransporteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MarcasDeTransporteToolStripMenuItem.Click
+        Dim Child As New Catalogo_Marcas_Transportes
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub TransportesToolStripMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TransportesToolStripMenuItem1.Click
+        Dim Child As New Catalogo_transportes
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub CompruebaSaldosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CompruebaSaldosToolStripMenuItem.Click
+        Dim Child As New Rpt_Cxp_Comprueba_Saldos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub AplicaciónDeAnticiposToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim Child As New Frm_CXC_AplicacionDocumentos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub PagosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PagosToolStripMenuItem.Click
+        Dim Child As New Frm_CXC_Pagos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub CapturaDeEmbarqueToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CapturaDeEmbarqueToolStripMenuItem.Click
+        Dim Child As New Frm_Embarques_Captura_Embarque
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub CambioDePrecioRemisionToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim Child As New Ventas_Modifica_Precios
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub DocumentosDeVentasToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim Child As New Ventas_Movimientos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub CambioDePrecioRemisionToolStripMenuItem_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CambioDePrecioRemisionToolStripMenuItem.Click
+        Dim Child As New Ventas_Modifica_Precios
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub AgenciasAduanalesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AgenciasAduanalesToolStripMenuItem.Click
+        Dim Child As New Catalogo_AgenciaAduanas
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub EtiquetasToolStripMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EtiquetasToolStripMenuItem1.Click
+        Dim Child As New Frm_Embarques_Etiquetas
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ConsultaToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConsultaToolStripMenuItem.Click
+        'Dim Child As New Rpt_CXC_Documentos
+        'Child.MdiParent = Me
+        'm_ChildFormNumber += 1
+        'Child.StartPosition = FormStartPosition.CenterScreen
+        'Child.Show()
+    End Sub
+
+    Private Sub EmpaqueYEmbarqueToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EmpaqueYEmbarqueToolStripMenuItem.Click
+        Dim Child As New Rpt_Embarques_Empaque_Y_Embarque
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub LugaresEntregaToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles LugaresEntregaToolStripMenuItem.Click
+        Dim Child As New Catalogo_Lugares_Entrega
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub EmbarqueToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EmbarqueToolStripMenuItem.Click
+        Dim Child As New Rpt_Embarques_Embarque
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub CostosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CostosToolStripMenuItem.Click
+        Dim Child As New Frm_Contabilidad_Costo_corte_acarreo_empaque_embarque
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ConceptosCostosProduccionToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim Child As New Catalogo_Concepto_Costos_Produccion
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub TiposEnvaseToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TiposEnvaseToolStripMenuItem.Click
+        Dim Child As New Catalogo_TiposEnvases
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub TiposTamañoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TiposTamañoToolStripMenuItem.Click
+        Dim Child As New Catalogo_TiposTamaños
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ConfiguraciónEquivalenciasEnvasesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConfiguraciónEquivalenciasEnvasesToolStripMenuItem.Click
+        Dim Child As New Frm_Embarques_ConfiguracionEquivalenciasEnvases
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ConfiguraciónPesoEnvaseToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConfiguraciónPesoEnvaseToolStripMenuItem.Click
+        Dim Child As New Frm_Embarques_ConfiguracionPesoEnvase
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub CapturaDiariaProduccionToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim Child As New Frm_Embarques_CapturaDiariaProduccion
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub GlobalToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GlobalToolStripMenuItem.Click
+        Dim Child As New Rpt_Ventas_Global
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ProductosVendidosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ProductosVendidosToolStripMenuItem.Click
+        Dim Child As New Rpt_Ventas_ProductosVendidos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub DocumentosDeVentaToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DocumentosDeVentaToolStripMenuItem.Click
+        Dim Child As New Ventas_Movimientos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ClientesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ClientesToolStripMenuItem.Click
+        Dim Child As New Sis_administracion_clientes
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub DescuentosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DescuentosToolStripMenuItem.Click
+        Dim Child As New Frm_CXC_Descuentos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub AdministracionToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AdministracionToolStripMenuItem.Click
+
+    End Sub
+
+    Private Sub SaldoFleteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaldoFleteToolStripMenuItem.Click
+        Dim Child As New Rpt_Embarques_Saldo_Flete
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub CostoCorteAcarreoEmpaqueYEmbarqueToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CostoCorteAcarreoEmpaqueYEmbarqueToolStripMenuItem.Click
+        Dim Child As New Frm_Contabilidad_Costo_corte_acarreo_empaque_embarque
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ProducciónEstimadaToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ProducciónEstimadaToolStripMenuItem.Click
+        Dim Child As New Rpt_Embarques_Produccion_Estimada
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ConsultasToolStripMenuItem3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConsultasToolStripMenuItem3.Click
+
+    End Sub
+
+    Private Sub VentasPorCultivoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles VentasEstimadasPorCultivoToolStripMenuItem.Click
+        My.Forms.Rpt_VentasNetasPorCultivo.MdiParent = Me
+        My.Forms.Rpt_VentasNetasPorCultivo.StartPosition = FormStartPosition.CenterScreen
+        My.Forms.Rpt_VentasNetasPorCultivo.Show()
+        My.Forms.Rpt_VentasNetasPorCultivo.Focus()
+    End Sub
+
+    Private Sub ResumenEmpaqueYEmbarqueToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ResumenEmpaqueYEmbarqueToolStripMenuItem.Click
+        My.Forms.Rpt_Resumen_Empaque_y_Embarque.MdiParent = Me
+        My.Forms.Rpt_Resumen_Empaque_y_Embarque.StartPosition = FormStartPosition.CenterScreen
+        My.Forms.Rpt_Resumen_Empaque_y_Embarque.Show()
+        My.Forms.Rpt_Resumen_Empaque_y_Embarque.Focus()
+    End Sub
+
+    Private Sub ÁreasToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ÁreasToolStripMenuItem.Click
+        Dim Child As New Cat_Nomina_Areas
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ActividadesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim Child As New Cat_Nomina_Actividades
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub PuestosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PuestosToolStripMenuItem.Click
+        Dim Child As New Cat_NominaPuestos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub PuntosDePagoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PuntosDePagoToolStripMenuItem.Click
+        Dim Child As New Cat_Nomina_PuntoPago
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub TiposDeDeduccionesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TiposDeDeduccionesToolStripMenuItem.Click
+        Dim Child As New Cat_Nomina_TipoDeducciones
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub TiposDePercepcionesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TiposDePercepcionesToolStripMenuItem.Click
+        Dim Child As New Cat_Nomina_TipoPercepcion
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub OtroTipoDePercepciónToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OtroTipoDePercepciónToolStripMenuItem.Click
+        Dim Child As New Cat_Nomina_CatPercepciones
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub CambioDePrecioToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CambioDePrecioToolStripMenuItem.Click
+        Dim Child As New Frm_Embarques_CambiaPrecios
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub UnidadMedicaFamiliarToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles UnidadMedicaFamiliarToolStripMenuItem.Click
+        Dim Child As New Cat_Nomina_UnidadMedicaFamiliar
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub TrabajadoresToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrabajadoresToolStripMenuItem.Click
+        Dim Child As New Cat_Nomina_Trabajadores
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub CapturaNominaToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CapturaNominaToolStripMenuItem.Click
+        Dim Child As New Frm_Nomina_CapturaPercepciones
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub PorArtículoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PorArtículoToolStripMenuItem.Click
+        Dim Child As New Rpt_Embarques_AgrupadoArticulo
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub VentasNacionalesEstimadasPorCultivoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles VentasNacionalesEstimadasPorCultivoToolStripMenuItem.Click
+        Dim Child As New Rpt_Embarques_VentasNacionalesEstimadas
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ResumenDeVentasExtranjerasYNacionalesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ResumenDeVentasExtranjerasYNacionalesToolStripMenuItem.Click
+        Dim Child As New Rpt_Embarques_ResumenVentas
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub VentasEstimadasPorArticuloToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles VentasEstimadasPorArticuloToolStripMenuItem.Click
+        Dim Child As New Rpt_Embarques_VentasEstimadaArticulo
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub SaldosProveedoresToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaldosProveedoresToolStripMenuItem.Click
+        Dim Child As New Rpt_CXP_SaldosProveedores
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub SincronizaXMLNominaToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SincronizaXMLNominaToolStripMenuItem.Click
+        Dim Child As New SincronizaXMLNomina
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ConceptosDeGastosDeEmbarqueYEmpaqueToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim Child As New Catalogo_Conceptos_GastosEmbarqueEmpaque
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub EmbarquesSinSalidaDeEmpaqueToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EmbarquesSinSalidaDeEmpaqueToolStripMenuItem.Click
+        Dim Child As New Rpt_Embarques_SinSalidaEmpaque
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ConfiguraciónDeUsuariosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConfiguraciónDeUsuariosToolStripMenuItem.Click
+        Dim Child As New ConfiguracionUsuarios
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ConceptosDeINEGIToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConceptosDeINEGIToolStripMenuItem.Click
+        Dim Child As New Frm_Contabilidad_ConceptosINEGI
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub DescuentosToolStripMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DescuentosToolStripMenuItem1.Click
+        Dim Child As New Frm_CXP_Descuentos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+#Region "Metodos y procedimientos"
+
+    Private Sub DeshabilitaMenus()
+        Try
+            For Each tsmi As ToolStripMenuItem In Me.MenuStrip.Items
+                tsmi.Enabled = False
+                DeshabilitaSubMenus(tsmi.DropDownItems)
+            Next
+        Catch ex As Exception
+            HandleError(Me.Name, "DeshabilitaMenus", ex)
+        End Try
+    End Sub
+
+    Private Sub DeshabilitaSubMenus(ByVal items As ToolStripItemCollection)
+        Try
+            For Each item As ToolStripItem In items
+                If item.GetType().ToString <> "System.Windows.Forms.ToolStripSeparator" Then
+                    Me.DeshabilitaSubMenus(DirectCast(item, ToolStripMenuItem).DropDownItems)
+                    item.Enabled = False
+                End If
+            Next
+
+        Catch ex As Exception
+            HandleError(Me.Name, "DeshabilitaSubMenus", ex)
+        End Try
+    End Sub
+
+    Private Sub HabilitaMenus()
+        Try
+            Me.dtMenus = Usuario.ObtenerDetallePermisosMenus()
+
+            For Each tsmi As ToolStripMenuItem In Me.MenuStrip.Items
+                For Each dRow As DataRow In dtMenus.Rows
+                    If tsmi.Name = dRow("NOMBRE_MENU") Then
+                        tsmi.Enabled = True
+                    End If
+                Next
+                Me.HabilitaSubMenus(tsmi.DropDownItems)
+            Next
+        Catch ex As Exception
+            HandleError(Me.Name, "HabilitaMenus", ex)
+        End Try
+    End Sub
+
+    Private Sub HabilitaSubMenus(ByVal items As ToolStripItemCollection)
+        Try
+            For Each item As ToolStripItem In items
+                If item.GetType().ToString <> "System.Windows.Forms.ToolStripSeparator" Then
+                    For Each dRow As DataRow In dtMenus.Rows
+                        If item.Name = dRow("NOMBRE_MENU").ToString Then
+                            item.Enabled = True
+                        End If
+                    Next
+                    Me.HabilitaSubMenus(DirectCast(item, ToolStripMenuItem).DropDownItems)
+                End If
+            Next
+        Catch ex As Exception
+            HandleError(Me.Name, "HabilitaSubMenus", ex)
+        End Try
+    End Sub
+#End Region
+
+    Private Sub CostoDeMaterialDeEmpaqueToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CostoDeMaterialDeEmpaqueToolStripMenuItem.Click
+        Dim Child As New Rpt_Embarques_CostoEmpaque
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub EstadoFinancieroToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EstadoFinancieroToolStripMenuItem.Click
+        Dim Child As New Frm_contabilidad_Estados_Financieros
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub EnvioDeFacturasElectronicasToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EnvioDeFacturasElectronicasToolStripMenuItem.Click
+        Dim Child As New Frm_EnviaFacturaElectronicas
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub GlobalDeDocumentosToolStripMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GlobalDeDocumentosToolStripMenuItem1.Click
+        Dim Child As New Rpt_CXC_Documentos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub AuxiliarDeClientesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AuxiliarDeClientesToolStripMenuItem.Click
+        Dim Child As New Rpt_CXC_AuxClientes
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub TopTenClientesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TopTenClientesToolStripMenuItem.Click
+        Dim Child As New Rpt_Ventas_TopTenProductos
+        Child.ModoAgrupado = Rpt_Ventas_TopTenProductos.enumModoAgrupado.CLIENTES
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub TopTenProductosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TopTenProductosToolStripMenuItem.Click
+        Dim Child As New Rpt_Ventas_TopTenProductos
+        Child.ModoAgrupado = Rpt_Ventas_TopTenProductos.enumModoAgrupado.PRODUCTOS
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub CantidadToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CantidadToolStripMenuItem.Click
+        Dim Child As New Rpt_Q_ComparativosVenta
+        Child.ModoAgrupado = Rpt_Q_ComparativosVenta.enumComparativo.CANTIDAD
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub PrecioPromedioToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PrecioPromedioToolStripMenuItem.Click
+        Dim Child As New Rpt_Q_ComparativosVenta
+        Child.ModoAgrupado = Rpt_Q_ComparativosVenta.enumComparativo.PRECIO_PROMEDIO
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub VentaToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles VentaToolStripMenuItem.Click
+        Dim Child As New Rpt_Q_ComparativosVenta
+        Child.ModoAgrupado = Rpt_Q_ComparativosVenta.enumComparativo.VENTA
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub AplicaciónDeAnticiposToolStripMenuItem_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AplicaciónDeAnticiposToolStripMenuItem.Click
+        Dim Child As New Frm_CXC_AplicacionDocumentos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ConfiguraciónToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConfiguraciónToolStripMenuItem.Click
+        Dim Child As New Frm_Nomina_Configuracion
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub AltasBajasIntegraciónSUAToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AltasBajasIntegraciónSUAToolStripMenuItem.Click
+        Dim Child As New Frm_Nomina_AltaBajaIntegracionSUA
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub EdiciónSUAToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EdiciónSUAToolStripMenuItem.Click
+        Dim Child As New Frm_Nomina_EdicionSUA
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub SUAControlToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SUAControlToolStripMenuItem.Click
+        Dim Child As New Frm_Nomina_ControlSUA
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub DeduccionesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeduccionesToolStripMenuItem.Click
+        Dim Child As New Frm_Nomina_Deducciones
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub CredencialesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CredencialesToolStripMenuItem.Click
+        Dim Child As New Frm_Nomina_Credenciales
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub CultivosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CultivosToolStripMenuItem.Click
+        Dim Child As New Catalogo_Cultivos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub CapturaDeCajasProducidasToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CapturaDeCajasProducidasToolStripMenuItem.Click
+        Dim Child As New Frm_Embarques_CapturaCajasProducidas
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub AbrircerrarEjerciciosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AbrircerrarEjerciciosToolStripMenuItem.Click
+        Dim Child As New Frm_AbrirCerrar_Ejercicio
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub AgunaldosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AgunaldosToolStripMenuItem.Click
+        Dim Child As New Frm_Nomina_Aguinaldos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub EmbarquesSinFleteGeneradoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EmbarquesSinFleteGeneradoToolStripMenuItem.Click
+        Dim Child As New Rpt_Embarques_FletesNoGenerados
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ControlDePagosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ControlDePagosToolStripMenuItem.Click
+        Dim Child As New Frm_CXP_ControlPagos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ComparativosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim Child As New Frm_Contabilidad_Comparativas_Financieras
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ConceptosDeFletesYEquipoPropioToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim Child As New Catalogo_Conceptos_Fletes_Equipo
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub PresupuestoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PresupuestoToolStripMenuItem.Click
+        Dim Child As New Frm_Proyecto_presupuesto
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub NavegadorDePresupuestosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NavegadorDePresupuestosToolStripMenuItem.Click
+        Dim Child As New Frm_Contabilidad_NavegadorPresupuestos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ConceptosDeActividadesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConceptosDeActividadesToolStripMenuItem.Click
+        Dim Child As New Cat_Nomina_ConceptosActividades
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub AfiliaciónToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AfiliaciónToolStripMenuItem.Click
+        Dim Child As New Frm_NumeroSeguro
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub EmpaqueContraProducciónToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EmpaqueContraProducciónToolStripMenuItem.Click
+        Dim Child As New Rpt_Embarques_EmpaqueVsProduccion
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub MonitoDeTimbradosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MonitoDeTimbradosToolStripMenuItem.Click
+        Dim Child As New Frm_Monitor_CFDi
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub CapturaVentassemanalesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CapturaVentassemanalesToolStripMenuItem.Click
+        Dim Child As New Ventas_Semanales
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub PagosCobradosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PagosCobradosToolStripMenuItem.Click
+        Dim Child As New Frm_CXP_PagosCobrados
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub DetalleNóminaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DetalleNóminaToolStripMenuItem.Click
+        Dim Child As New Rpt_Nomina_Detalle
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub NavegadorToolStripMenuItemToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NavegadorToolStripMenuItem.Click
+        Dim Child As New Frm_Nomina_NavegadorCostosPresupuesto
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub EmbarquesMasivosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EmbarquesMasivosToolStripMenuItem.Click
+        Dim Child As New frmEmbarquesMasivos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub RevisiónDeCXPToolStripMenuItem_Click_1(sender As Object, e As EventArgs) Handles RevisiónDeCXPToolStripMenuItem.Click
+        Dim Child As New Frm_CXP_Revision
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ActividadesToolStripMenuItem_Click_1(sender As Object, e As EventArgs)
+        Dim Child As New Cat_Nomina_Actividades
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub NavegadorDeCostosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NavegadorDeCostosToolStripMenuItem.Click
+        Dim Child As New RptCentrosCostosNavegador
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub ReporteDeCostosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ReporteDeCostosToolStripMenuItem.Click
+        Dim Child As New Rpt_CentroCostos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub PólizasDeCostosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PólizasDeCostosToolStripMenuItem.Click
+        Dim Child As New FrmPolizaCostos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub TiposProveedoresToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TiposProveedoresToolStripMenuItem.Click
+        Dim Child As New Sis_Tipos_Proveedores
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub SincronizaXMLListadoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SincronizaXMLListadoToolStripMenuItem.Click
+        Dim Child As New SincronizaXMLAsistencia
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub ListadoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ListadoToolStripMenuItem.Click
+        Dim Child As New Rpt_Nomina_Listado
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub LotesDeCostosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LotesDeCostosToolStripMenuItem.Click
+        Dim Child As New Rpt_Inventario_Lotes_Costos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub LotesToolStripMenuItem_Click_1(sender As Object, e As EventArgs) Handles LotesToolStripMenuItem.Click
+        Dim ChildCXP As New Catalogo_Lotes
+        ChildCXP.MdiParent = Me
+        m_ChildFormNumber += 1
+        ChildCXP.Show()
+    End Sub
+
+    Private Sub EmbarqueDetalleToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EmbarqueDetalleToolStripMenuItem.Click
+        Dim Child As New Rpt_Embarques_GlobalDetalle
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub UnidadesDeVentaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UnidadesDeVentaToolStripMenuItem.Click
+        Dim Child As New Catalogo_UnidadesVenta
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub TipoDeCategoriasToolStripMenuItem_Click_1(sender As Object, e As EventArgs) Handles TipoDeCategoriasToolStripMenuItem.Click
+        Dim Child As New Catalogo_Tipos_Categorias
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub ProyectoSiembraToolStripMenuItem_Click_1(sender As Object, e As EventArgs) Handles ProyectoSiembraToolStripMenuItem.Click
+        Dim Child As New ProyectoSiembra
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub VehículosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles VehículosToolStripMenuItem.Click
+        Dim Child As New Catalogo_Vehiculos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub CategoriasToolStripMenuItem_Click_1(sender As Object, e As EventArgs) Handles CategoriasToolStripMenuItem.Click
+        Dim Child As New Catalogo_Categorias
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub ConceptosToolStripMenuItem_Click_1(sender As Object, e As EventArgs) Handles ConceptosToolStripMenuItem.Click
+        Dim Child As New Catalogo_Conceptos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.Show()
+    End Sub
+
+    Private Sub CentrosDeCostosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CentrosDeCostosToolStripMenuItem.Click
+        Dim Child As New Cat_Nomina_CentroCosto
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub PlazasToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PlazasToolStripMenuItem.Click
+        Dim Child As New SIS_Plazas
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ListaDePreciosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ListaDePreciosToolStripMenuItem.Click
+        Dim Child As New Catalogo_Precios_Venta
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ConceptosDePagosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConceptosDePagosToolStripMenuItem.Click
+        Dim Child As New Catalogo_Conceptos_Pagos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub DocumentosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DocumentosToolStripMenuItem.Click
+        Dim Child As New Sis_Documentos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub DevolucionesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DevolucionesToolStripMenuItem.Click
+        Dim Child As New Frm_CXC_Devoluciones
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub PropietariosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PropietariosToolStripMenuItem.Click
+        Dim Child As New Catalogo_Propietarios
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ImportarClienteSucursalToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImportarClienteSucursalToolStripMenuItem.Click
+        Dim Child As New ImportarClientes
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub DevolucionesToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles DevolucionesToolStripMenuItem1.Click
+        Dim Child As New Frm_CXP_Devoluciones
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub LotesCostosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LotesCostosToolStripMenuItem.Click
+        Dim Child As New Rpt_Ventas_LotesCostos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub SaldosPropietariosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaldosPropietariosToolStripMenuItem.Click
+        Dim Child As New Rpt_Cxp_Analisis_saldos_propietarios
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub CalificaPropietarioToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CalificaPropietarioToolStripMenuItem.Click
+        Dim Child As New Rpt_CXC_CalificaPropietario
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+
+    End Sub
+
+    Private Sub FormulasToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FormulasToolStripMenuItem.Click
+        Dim Child As New Catalogo_Formulas
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub TransformacionesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TransformacionesToolStripMenuItem.Click
+        Dim Child As New Transformaciones
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ProductosToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ProductosToolStripMenuItem1.Click
+        Dim Child As New Catalogo_Productos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ElectrónicaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ElectrónicaToolStripMenuItem.Click
+        Dim Child As New ContabilidadElectronicaGeneraXMLs
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub GrabaImagenQRToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles GrabaImagenQRToolStripMenuItem.Click
+        Dim Child As New Frm_CFDI_GrabaImagenQR
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ModificaCostoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ModificaCostoToolStripMenuItem.Click
+        Dim Child As New Ventas_Modifica_Costos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub DivisionesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DivisionesToolStripMenuItem.Click
+        Dim Child As New Catalogo_Divisiones_Acuicola
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ParametrosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ParametrosToolStripMenuItem.Click
+        Dim Child As New Catalogo_Parametros_Acuicola
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub RelacionParametrosDocumentosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RelacionParametrosDocumentosToolStripMenuItem.Click
+        Dim Child As New Catalogo_Relacion_Parametros_Acuicola_Documentos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ParametrosDetalleToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ParametrosDetalleToolStripMenuItem.Click
+        Dim Child As New Catalogo_Parametros_Acuicola_Detalle
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub CapturaParámetrosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CapturaParámetrosToolStripMenuItem.Click
+        Dim Child As New AcuicolaCapturaParametrosDetalle
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub CapturaAlimentaciónToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CapturaAlimentaciónToolStripMenuItem.Click
+        Dim Child As New AcuicolaCapturaAlimentacion
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub CapturaParametríaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CapturaParametríaToolStripMenuItem.Click
+        Dim Child As New AcuicolaCapturaParametria
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ProyectoSiembraAcuícolaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ProyectoSiembraAcuícolaToolStripMenuItem.Click
+        Dim Child As New AcuicolaProyectoSiembra
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ConceptosInventariosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConceptosInventariosToolStripMenuItem.Click
+        Dim Child As New Catalogo_Conceptos_Inventarios
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub TipoCambioDelDiaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TipoCambioDelDiaToolStripMenuItem.Click
+        Dim Child As New TipoCambioDia
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub GlobalDeDocumentosToolStripMenuItem2_Click(sender As Object, e As EventArgs) Handles GlobalDeDocumentosToolStripMenuItem2.Click
+        Dim Child As New Rpt_Acuicola_Global
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub ComisionesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ComisionesToolStripMenuItem.Click
+        Dim Child As New Rpt_Ventas_Comisiones
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub AlimentaciónDetalleToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AlimentaciónDetalleToolStripMenuItem.Click
+        Dim Child As New Rpt_Acuicola_AlimentacionDetalle
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub InventariosSugeridosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles InventariosSugeridosToolStripMenuItem.Click
+        Dim Child As New Inventarios_sugeridos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub EstanquesIntensivosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EstanquesIntensivosToolStripMenuItem.Click
+        Dim Child As New AcuicolaCapturaIntensivos
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub RequisicionesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RequisicionesToolStripMenuItem.Click
+        Dim Child As New Inventarios_Requisiciones
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub RequisicionesSolicitadasToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RequisicionesSolicitadasToolStripMenuItem.Click
+        Dim Child As New Rpt_Inventario_Requisiciones_Solicitadas
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub DatosDeEmpresaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DatosDeEmpresaToolStripMenuItem.Click
+        Dim Child As New ConfiguracionEmpresa
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+End Class
