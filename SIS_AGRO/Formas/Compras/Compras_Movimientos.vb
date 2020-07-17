@@ -2070,6 +2070,7 @@ Buscar:
         Const sProcedure As String = "CancelaOrdenCompra"
         Dim bResultado As Boolean = False
         Dim sConceptoCancelacion As String = ""
+        Dim bAfectarRequisicion As Boolean = False
 
         Try
             If MsgBox("Deseas Cancelar el documento " & CboDocumento.Text & "  con el Folio: " & txtFolioCompra.Text & "?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, sProcedure) = MsgBoxResult.No Then
@@ -2098,6 +2099,11 @@ Buscar:
                     Return False
             End Select
 
+            If Me.oCompras.ESTATUS = "P" Then
+                'Evita que se afecten requisiciones de oc grabadas pero no pedidas
+                bAfectarRequisicion = True
+            End If
+
             sConceptoCancelacion = InputBox("Ingrese un concepto de cancelación :", "Concepto de cancelación")
             Me.oCompras.CONCEPTO_CANCELACION = sConceptoCancelacion
 
@@ -2105,7 +2111,7 @@ Buscar:
                 Return False
             End If
 
-            If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO Then
+            If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO AndAlso bAfectarRequisicion Then
                 If Me.oCompras.AfectaRequisicionesOrdenCompra(True) = False Then 'Desafecta requisiciones
                     MsgBox("Error al devolver el disponible a las requisiciones de inventario.", MsgBoxStyle.Exclamation, sProcedure)
                     MsgBox("Avise al departamento de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
