@@ -16,6 +16,7 @@ Public Class ConfiguracionEmpresa
     Private Sub ConfiguracionEmpresa_Load(sender As Object, e As EventArgs) Handles Me.Load
         Me.txtContraseñaPeriodos.Text = Empresa_Sistema.CONTRASEÑA_PERIODO_TRABAJO_CONTABLE
         Me.txtContraseñaPrecios.Text = Empresa_Sistema.CONTRASEÑA_PRECIO_MENOR_COSTO
+        Me.TxtPorcentajeUtilidadMinima.Text = Empresa_Sistema.PORCENTAJE_UTLIDAD_VENTA_MINIMO.ToString
     End Sub
 
 #Region "Eventos Genericos"
@@ -23,11 +24,18 @@ Public Class ConfiguracionEmpresa
         txtNoBeep(e)
     End Sub
 
-    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtContraseñaPeriodos.KeyDown, txtContraseñaPrecios.KeyDown
+    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtContraseñaPeriodos.KeyDown, txtContraseñaPrecios.KeyDown, TxtPorcentajeUtilidadMinima.KeyDown
         If e.KeyCode = Keys.Return Then
             txtTAB(e)
         End If
     End Sub
+
+    Private Sub txtNumericos_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TxtPorcentajeUtilidadMinima.KeyPress
+        Dim txt As TextBox = CType(sender, TextBox)
+        txtSoloNumerosDecimales(e, txt.Text)
+        txtNoBeep(e)
+    End Sub
+
 #End Region
 
 #End Region
@@ -50,8 +58,13 @@ Public Class ConfiguracionEmpresa
                 Return False
             End If
 
+            If txtLEN(Me.TxtPorcentajeUtilidadMinima.Text) = False Then
+                Me.TxtPorcentajeUtilidadMinima.Text = "0"
+            End If
+
             Empresa_Sistema.CONTRASEÑA_PERIODO_TRABAJO_CONTABLE = Me.txtContraseñaPeriodos.Text
             Empresa_Sistema.CONTRASEÑA_PRECIO_MENOR_COSTO = Me.txtContraseñaPrecios.Text
+            Empresa_Sistema.PORCENTAJE_UTLIDAD_VENTA_MINIMO = valorNumerico(Me.TxtPorcentajeUtilidadMinima.Text)
             bResultado = Empresa_Sistema.Grabar
 
             If bResultado = True Then
@@ -65,4 +78,5 @@ Public Class ConfiguracionEmpresa
         Return bResultado
     End Function
 #End Region
+
 End Class

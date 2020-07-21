@@ -96,6 +96,7 @@ Public NotInheritable Class Class_sisEmpresa
     Private _MODO_REQUISICIONES_INVENTARIO As Boolean
     Private _CONTRASEÑA_PERIODO_TRABAJO_CONTABLE As String
     Private _CONTRASEÑA_PRECIO_MENOR_COSTO As String
+    Private _PORCENTAJE_UTLIDAD_VENTA_MINIMO As Double
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -725,6 +726,16 @@ Public NotInheritable Class Class_sisEmpresa
             Me._CONTRASEÑA_PRECIO_MENOR_COSTO = value
         End Set
     End Property
+
+    Public Property PORCENTAJE_UTLIDAD_VENTA_MINIMO As Double
+        Get
+            Return Me._PORCENTAJE_UTLIDAD_VENTA_MINIMO
+        End Get
+        Set(value As Double)
+            Me._PORCENTAJE_UTLIDAD_VENTA_MINIMO = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -959,6 +970,7 @@ Public NotInheritable Class Class_sisEmpresa
 
             sqlParametro = .Parameters.Add("@CONTRASEÑA_PERIODO_TRABAJO_CONTABLE", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CONTRASEÑA_PERIODO_TRABAJO_CONTABLE
             sqlParametro = .Parameters.Add("@CONTRASEÑA_PRECIO_MENOR_COSTO", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._CONTRASEÑA_PRECIO_MENOR_COSTO
+            sqlParametro = .Parameters.Add("@PORCENTAJE_UTLIDAD_VENTA_MINIMO", SqlDbType.Decimal) : sqlParametro.Value = Me._PORCENTAJE_UTLIDAD_VENTA_MINIMO
 
             Try
                 cn.Open()
@@ -1085,6 +1097,7 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._MODO_REQUISICIONES_INVENTARIO = CBool(dReader("MODO_REQUISICIONES_INVENTARIO"))
                     Me._CONTRASEÑA_PERIODO_TRABAJO_CONTABLE = "" & dReader("CONTRASEÑA_PERIODO_TRABAJO_CONTABLE").ToString
                     Me._CONTRASEÑA_PRECIO_MENOR_COSTO = "" & dReader("CONTRASEÑA_PRECIO_MENOR_COSTO").ToString
+                    Me._PORCENTAJE_UTLIDAD_VENTA_MINIMO = CDbl(dReader("PORCENTAJE_UTLIDAD_VENTA_MINIMO"))
 
                     dReader.Close()
                     bResultado = True

@@ -5416,23 +5416,41 @@ BuscaVentas:
     Private Function ValidaPrecios() As Boolean
         Const sProcedure As String = "ValidaPrecios"
         Try
-            Dim i As Integer, dPrecio As Decimal = 0, dCosto As Decimal = 0
+            Dim i As Integer, dPrecio As Decimal = 0, dCosto As Decimal = 0, dUtilidadPorcentaje As Decimal = 0
             With Me.Grid
                 For i = 1 To .Rows - 1
                     If txtLEN(.Cell(i, Me.igyCodigo).Text) = True AndAlso Me.Grid.Cell(i, Me.igyCodigo).Text <> "-" Then
                         dPrecio = valorNumericoD(.Cell(i, Me.igyPrecio).Text)
                         dCosto = valorNumericoD(.Cell(i, Me.igyCosto).Text)
+                        dUtilidadPorcentaje = valorNumericoD(.Cell(i, Me.igyUtilidadPorcentaje).Text)
 
-                        If dPrecio < dCosto Then
-                            Dim validaPass As New Frm_Contraseña_Cambio_Periodo
-                            validaPass.Mensaje = "El precio del artículo " & .Cell(i, Me.igyDescripcion).Text & " es menor que el costo."
-                            validaPass.TipoContraseña = Frm_Contraseña_Cambio_Periodo.eTipoContraseña.PrecioMenorCosto
-                            validaPass.ShowDialog()
+                        If Empresa_Sistema.PORCENTAJE_UTLIDAD_VENTA_MINIMO > 0 Then 'Valida el porcentaje de utilidad minimo
 
-                            If validaPass.bContraseñaValida = False Then
-                                Return False
+                            If dUtilidadPorcentaje < Empresa_Sistema.PORCENTAJE_UTLIDAD_VENTA_MINIMO Then
+                                Dim validaPass As New Frm_Contraseña_Cambio_Periodo
+                                validaPass.Mensaje = "El porcentaje de utilidad del artículo " & .Cell(i, Me.igyDescripcion).Text & " es menor que la utilidad minima configurada (" & Empresa_Sistema.PORCENTAJE_UTLIDAD_VENTA_MINIMO.ToString & "%)."
+                                validaPass.TipoContraseña = Frm_Contraseña_Cambio_Periodo.eTipoContraseña.PrecioMenorCosto
+                                validaPass.ShowDialog()
+
+                                If validaPass.bContraseñaValida = False Then
+                                    Return False
+                                End If
+                                validaPass.Dispose()
                             End If
-                            validaPass.Dispose()
+
+                        Else 'Validacion normal
+
+                            If dPrecio < dCosto Then
+                                Dim validaPass As New Frm_Contraseña_Cambio_Periodo
+                                validaPass.Mensaje = "El precio del artículo " & .Cell(i, Me.igyDescripcion).Text & " es menor que el costo."
+                                validaPass.TipoContraseña = Frm_Contraseña_Cambio_Periodo.eTipoContraseña.PrecioMenorCosto
+                                validaPass.ShowDialog()
+
+                                If validaPass.bContraseñaValida = False Then
+                                    Return False
+                                End If
+                                validaPass.Dispose()
+                            End If
 
                         End If
 
