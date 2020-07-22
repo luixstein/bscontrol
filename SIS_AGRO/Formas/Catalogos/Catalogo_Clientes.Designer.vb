@@ -33,6 +33,8 @@ Partial Class Catalogo_Clientes
         Me.tsbImprimirListado = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.LblGiro = New System.Windows.Forms.Label()
+        Me.CboGiros = New System.Windows.Forms.ComboBox()
         Me.txtNumeroRegistroIdentificadorExtranjero = New System.Windows.Forms.MaskedTextBox()
         Me.lblDisplayUsoCFDI = New System.Windows.Forms.Label()
         Me.cboUsoCFDI = New System.Windows.Forms.ComboBox()
@@ -129,8 +131,6 @@ Partial Class Catalogo_Clientes
         Me.lblDisplayNumCuenta = New System.Windows.Forms.Label()
         Me.txtNumeroCuenta = New System.Windows.Forms.TextBox()
         Me.lblDisplayFormaPago = New System.Windows.Forms.Label()
-        Me.CboGiros = New System.Windows.Forms.ComboBox()
-        Me.LblGiro = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gBoxInformacion.SuspendLayout()
         Me.gbDatosVentas.SuspendLayout()
@@ -244,18 +244,40 @@ Partial Class Catalogo_Clientes
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayCodigo)
         Me.gBoxInformacion.Controls.Add(Me.txtCodigoCliente)
         Me.gBoxInformacion.Location = New System.Drawing.Point(16, 34)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Size = New System.Drawing.Size(527, 455)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Datos generales"
         '
+        'LblGiro
+        '
+        Me.LblGiro.AutoSize = True
+        Me.LblGiro.Location = New System.Drawing.Point(8, 416)
+        Me.LblGiro.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblGiro.Name = "LblGiro"
+        Me.LblGiro.Size = New System.Drawing.Size(111, 17)
+        Me.LblGiro.TabIndex = 134
+        Me.LblGiro.Text = "Giro del cliente :"
+        '
+        'CboGiros
+        '
+        Me.CboGiros.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboGiros.FormattingEnabled = True
+        Me.CboGiros.Items.AddRange(New Object() {"MORAL", "FISICA"})
+        Me.CboGiros.Location = New System.Drawing.Point(127, 413)
+        Me.CboGiros.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboGiros.MaxLength = 1
+        Me.CboGiros.Name = "CboGiros"
+        Me.CboGiros.Size = New System.Drawing.Size(316, 24)
+        Me.CboGiros.TabIndex = 133
+        '
         'txtNumeroRegistroIdentificadorExtranjero
         '
         Me.txtNumeroRegistroIdentificadorExtranjero.Location = New System.Drawing.Point(141, 332)
-        Me.txtNumeroRegistroIdentificadorExtranjero.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtNumeroRegistroIdentificadorExtranjero.Margin = New System.Windows.Forms.Padding(4)
         Me.txtNumeroRegistroIdentificadorExtranjero.Mask = "000000000"
         Me.txtNumeroRegistroIdentificadorExtranjero.Name = "txtNumeroRegistroIdentificadorExtranjero"
         Me.txtNumeroRegistroIdentificadorExtranjero.Size = New System.Drawing.Size(132, 22)
@@ -277,7 +299,7 @@ Partial Class Catalogo_Clientes
         Me.cboUsoCFDI.FormattingEnabled = True
         Me.cboUsoCFDI.Items.AddRange(New Object() {"MORAL", "FISICA"})
         Me.cboUsoCFDI.Location = New System.Drawing.Point(116, 295)
-        Me.cboUsoCFDI.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboUsoCFDI.Margin = New System.Windows.Forms.Padding(4)
         Me.cboUsoCFDI.MaxLength = 1
         Me.cboUsoCFDI.Name = "cboUsoCFDI"
         Me.cboUsoCFDI.Size = New System.Drawing.Size(400, 24)
@@ -286,7 +308,7 @@ Partial Class Catalogo_Clientes
         'TxtIdRelacion
         '
         Me.TxtIdRelacion.Location = New System.Drawing.Point(279, 55)
-        Me.TxtIdRelacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtIdRelacion.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtIdRelacion.MaxLength = 6
         Me.TxtIdRelacion.Name = "TxtIdRelacion"
         Me.TxtIdRelacion.Size = New System.Drawing.Size(121, 22)
@@ -315,7 +337,7 @@ Partial Class Catalogo_Clientes
         'TxtCodigoPropietario
         '
         Me.TxtCodigoPropietario.Location = New System.Drawing.Point(101, 55)
-        Me.TxtCodigoPropietario.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodigoPropietario.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigoPropietario.MaxLength = 6
         Me.TxtCodigoPropietario.Name = "TxtCodigoPropietario"
         Me.TxtCodigoPropietario.Size = New System.Drawing.Size(151, 22)
@@ -324,7 +346,7 @@ Partial Class Catalogo_Clientes
         'chkEsContribuyenteIEPS
         '
         Me.chkEsContribuyenteIEPS.Location = New System.Drawing.Point(156, 367)
-        Me.chkEsContribuyenteIEPS.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.chkEsContribuyenteIEPS.Margin = New System.Windows.Forms.Padding(4)
         Me.chkEsContribuyenteIEPS.Name = "chkEsContribuyenteIEPS"
         Me.chkEsContribuyenteIEPS.Size = New System.Drawing.Size(344, 38)
         Me.chkEsContribuyenteIEPS.TabIndex = 12
@@ -345,7 +367,7 @@ Partial Class Catalogo_Clientes
         Me.cboTipoMercado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboTipoMercado.FormattingEnabled = True
         Me.cboTipoMercado.Location = New System.Drawing.Point(103, 23)
-        Me.cboTipoMercado.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboTipoMercado.Margin = New System.Windows.Forms.Padding(4)
         Me.cboTipoMercado.Name = "cboTipoMercado"
         Me.cboTipoMercado.Size = New System.Drawing.Size(280, 24)
         Me.cboTipoMercado.TabIndex = 0
@@ -376,7 +398,7 @@ Partial Class Catalogo_Clientes
         Me.cboTipoPersona.FormattingEnabled = True
         Me.cboTipoPersona.Items.AddRange(New Object() {"MORAL", "FISICA"})
         Me.cboTipoPersona.Location = New System.Drawing.Point(400, 167)
-        Me.cboTipoPersona.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboTipoPersona.Margin = New System.Windows.Forms.Padding(4)
         Me.cboTipoPersona.MaxLength = 1
         Me.cboTipoPersona.Name = "cboTipoPersona"
         Me.cboTipoPersona.Size = New System.Drawing.Size(117, 24)
@@ -395,7 +417,7 @@ Partial Class Catalogo_Clientes
         'txtNumeroCelular
         '
         Me.txtNumeroCelular.Location = New System.Drawing.Point(103, 265)
-        Me.txtNumeroCelular.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtNumeroCelular.Margin = New System.Windows.Forms.Padding(4)
         Me.txtNumeroCelular.MaxLength = 15
         Me.txtNumeroCelular.Name = "txtNumeroCelular"
         Me.txtNumeroCelular.Size = New System.Drawing.Size(171, 22)
@@ -414,7 +436,7 @@ Partial Class Catalogo_Clientes
         'txtNumeroTelefono
         '
         Me.txtNumeroTelefono.Location = New System.Drawing.Point(101, 233)
-        Me.txtNumeroTelefono.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtNumeroTelefono.Margin = New System.Windows.Forms.Padding(4)
         Me.txtNumeroTelefono.MaxLength = 15
         Me.txtNumeroTelefono.Name = "txtNumeroTelefono"
         Me.txtNumeroTelefono.Size = New System.Drawing.Size(172, 22)
@@ -433,7 +455,7 @@ Partial Class Catalogo_Clientes
         'txtCurp
         '
         Me.txtCurp.Location = New System.Drawing.Point(101, 201)
-        Me.txtCurp.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCurp.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCurp.MaxLength = 18
         Me.txtCurp.Name = "txtCurp"
         Me.txtCurp.Size = New System.Drawing.Size(172, 22)
@@ -452,7 +474,7 @@ Partial Class Catalogo_Clientes
         'txtRfc
         '
         Me.txtRfc.Location = New System.Drawing.Point(103, 169)
-        Me.txtRfc.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtRfc.Margin = New System.Windows.Forms.Padding(4)
         Me.txtRfc.MaxLength = 13
         Me.txtRfc.Name = "txtRfc"
         Me.txtRfc.Size = New System.Drawing.Size(171, 22)
@@ -471,7 +493,7 @@ Partial Class Catalogo_Clientes
         'TxtNombreCliente
         '
         Me.TxtNombreCliente.Location = New System.Drawing.Point(103, 137)
-        Me.TxtNombreCliente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtNombreCliente.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNombreCliente.MaxLength = 120
         Me.TxtNombreCliente.Name = "TxtNombreCliente"
         Me.TxtNombreCliente.Size = New System.Drawing.Size(415, 22)
@@ -493,7 +515,7 @@ Partial Class Catalogo_Clientes
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.CboEstatus.Location = New System.Drawing.Point(433, 103)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(84, 24)
@@ -512,7 +534,7 @@ Partial Class Catalogo_Clientes
         'txtCodigoCliente
         '
         Me.txtCodigoCliente.Location = New System.Drawing.Point(103, 105)
-        Me.txtCodigoCliente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCodigoCliente.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCodigoCliente.MaxLength = 6
         Me.txtCodigoCliente.Name = "txtCodigoCliente"
         Me.txtCodigoCliente.Size = New System.Drawing.Size(171, 22)
@@ -531,7 +553,7 @@ Partial Class Catalogo_Clientes
         'txtCalle
         '
         Me.txtCalle.Location = New System.Drawing.Point(101, 121)
-        Me.txtCalle.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCalle.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCalle.MaxLength = 100
         Me.txtCalle.Name = "txtCalle"
         Me.txtCalle.Size = New System.Drawing.Size(415, 22)
@@ -550,7 +572,7 @@ Partial Class Catalogo_Clientes
         'txtNumeroExterior
         '
         Me.txtNumeroExterior.Location = New System.Drawing.Point(101, 153)
-        Me.txtNumeroExterior.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtNumeroExterior.Margin = New System.Windows.Forms.Padding(4)
         Me.txtNumeroExterior.MaxLength = 20
         Me.txtNumeroExterior.Name = "txtNumeroExterior"
         Me.txtNumeroExterior.Size = New System.Drawing.Size(135, 22)
@@ -569,7 +591,7 @@ Partial Class Catalogo_Clientes
         'txtNumeroInterior
         '
         Me.txtNumeroInterior.Location = New System.Drawing.Point(381, 153)
-        Me.txtNumeroInterior.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtNumeroInterior.Margin = New System.Windows.Forms.Padding(4)
         Me.txtNumeroInterior.MaxLength = 20
         Me.txtNumeroInterior.Name = "txtNumeroInterior"
         Me.txtNumeroInterior.Size = New System.Drawing.Size(135, 22)
@@ -588,7 +610,7 @@ Partial Class Catalogo_Clientes
         'txtColonia
         '
         Me.txtColonia.Location = New System.Drawing.Point(101, 185)
-        Me.txtColonia.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtColonia.Margin = New System.Windows.Forms.Padding(4)
         Me.txtColonia.MaxLength = 50
         Me.txtColonia.Name = "txtColonia"
         Me.txtColonia.Size = New System.Drawing.Size(415, 22)
@@ -607,7 +629,7 @@ Partial Class Catalogo_Clientes
         'txtLocalidad
         '
         Me.txtLocalidad.Location = New System.Drawing.Point(101, 217)
-        Me.txtLocalidad.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtLocalidad.Margin = New System.Windows.Forms.Padding(4)
         Me.txtLocalidad.MaxLength = 50
         Me.txtLocalidad.Name = "txtLocalidad"
         Me.txtLocalidad.Size = New System.Drawing.Size(415, 22)
@@ -629,7 +651,7 @@ Partial Class Catalogo_Clientes
         Me.cboEstado.FormattingEnabled = True
         Me.cboEstado.Items.AddRange(New Object() {"A", "B"})
         Me.cboEstado.Location = New System.Drawing.Point(103, 55)
-        Me.cboEstado.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboEstado.Margin = New System.Windows.Forms.Padding(4)
         Me.cboEstado.MaxLength = 80
         Me.cboEstado.Name = "cboEstado"
         Me.cboEstado.Size = New System.Drawing.Size(416, 24)
@@ -658,7 +680,7 @@ Partial Class Catalogo_Clientes
         'txtCodigoPostal
         '
         Me.txtCodigoPostal.Location = New System.Drawing.Point(116, 249)
-        Me.txtCodigoPostal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCodigoPostal.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCodigoPostal.MaxLength = 10
         Me.txtCodigoPostal.Name = "txtCodigoPostal"
         Me.txtCodigoPostal.Size = New System.Drawing.Size(172, 22)
@@ -674,9 +696,9 @@ Partial Class Catalogo_Clientes
         Me.gbDatosVentas.Controls.Add(Me.lblDisplayVendedor)
         Me.gbDatosVentas.Controls.Add(Me.lblDisplayZona)
         Me.gbDatosVentas.Location = New System.Drawing.Point(552, 34)
-        Me.gbDatosVentas.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbDatosVentas.Margin = New System.Windows.Forms.Padding(4)
         Me.gbDatosVentas.Name = "gbDatosVentas"
-        Me.gbDatosVentas.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbDatosVentas.Padding = New System.Windows.Forms.Padding(4)
         Me.gbDatosVentas.Size = New System.Drawing.Size(465, 143)
         Me.gbDatosVentas.TabIndex = 2
         Me.gbDatosVentas.TabStop = False
@@ -685,7 +707,7 @@ Partial Class Catalogo_Clientes
         'TxtCodigoAlmacen
         '
         Me.TxtCodigoAlmacen.Location = New System.Drawing.Point(153, 105)
-        Me.TxtCodigoAlmacen.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodigoAlmacen.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigoAlmacen.MaxLength = 15
         Me.TxtCodigoAlmacen.Name = "TxtCodigoAlmacen"
         Me.TxtCodigoAlmacen.Size = New System.Drawing.Size(185, 22)
@@ -705,7 +727,7 @@ Partial Class Catalogo_Clientes
         '
         Me.chkPermitirVentaCredito.AutoSize = True
         Me.chkPermitirVentaCredito.Location = New System.Drawing.Point(153, 76)
-        Me.chkPermitirVentaCredito.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.chkPermitirVentaCredito.Margin = New System.Windows.Forms.Padding(4)
         Me.chkPermitirVentaCredito.Name = "chkPermitirVentaCredito"
         Me.chkPermitirVentaCredito.Size = New System.Drawing.Size(184, 21)
         Me.chkPermitirVentaCredito.TabIndex = 2
@@ -718,7 +740,7 @@ Partial Class Catalogo_Clientes
         Me.cboVendedor.FormattingEnabled = True
         Me.cboVendedor.Items.AddRange(New Object() {"A", "B"})
         Me.cboVendedor.Location = New System.Drawing.Point(153, 47)
-        Me.cboVendedor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboVendedor.Margin = New System.Windows.Forms.Padding(4)
         Me.cboVendedor.MaxLength = 1
         Me.cboVendedor.Name = "cboVendedor"
         Me.cboVendedor.Size = New System.Drawing.Size(185, 24)
@@ -731,7 +753,7 @@ Partial Class Catalogo_Clientes
         Me.cboZona.FormattingEnabled = True
         Me.cboZona.Items.AddRange(New Object() {"A", "B"})
         Me.cboZona.Location = New System.Drawing.Point(153, 17)
-        Me.cboZona.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboZona.Margin = New System.Windows.Forms.Padding(4)
         Me.cboZona.MaxLength = 1
         Me.cboZona.Name = "cboZona"
         Me.cboZona.Size = New System.Drawing.Size(185, 24)
@@ -765,9 +787,9 @@ Partial Class Catalogo_Clientes
         Me.gbCuentasContables.Controls.Add(Me.lblCuentaContable)
         Me.gbCuentasContables.Controls.Add(Me.txtCuentaContable)
         Me.gbCuentasContables.Location = New System.Drawing.Point(552, 185)
-        Me.gbCuentasContables.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbCuentasContables.Margin = New System.Windows.Forms.Padding(4)
         Me.gbCuentasContables.Name = "gbCuentasContables"
-        Me.gbCuentasContables.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbCuentasContables.Padding = New System.Windows.Forms.Padding(4)
         Me.gbCuentasContables.Size = New System.Drawing.Size(465, 121)
         Me.gbCuentasContables.TabIndex = 3
         Me.gbCuentasContables.TabStop = False
@@ -796,7 +818,7 @@ Partial Class Catalogo_Clientes
         'txtCuentaContableDolares
         '
         Me.txtCuentaContableDolares.Location = New System.Drawing.Point(153, 50)
-        Me.txtCuentaContableDolares.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCuentaContableDolares.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCuentaContableDolares.MaxLength = 20
         Me.txtCuentaContableDolares.Name = "txtCuentaContableDolares"
         Me.txtCuentaContableDolares.Size = New System.Drawing.Size(267, 22)
@@ -816,7 +838,7 @@ Partial Class Catalogo_Clientes
         '
         Me.txtCuentaContable.Enabled = False
         Me.txtCuentaContable.Location = New System.Drawing.Point(153, 18)
-        Me.txtCuentaContable.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCuentaContable.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCuentaContable.MaxLength = 20
         Me.txtCuentaContable.Name = "txtCuentaContable"
         Me.txtCuentaContable.Size = New System.Drawing.Size(267, 22)
@@ -844,9 +866,9 @@ Partial Class Catalogo_Clientes
         Me.gbDomicilio.Controls.Add(Me.lblDisplayLocalidad)
         Me.gbDomicilio.Controls.Add(Me.lblDisplayEstado)
         Me.gbDomicilio.Location = New System.Drawing.Point(17, 497)
-        Me.gbDomicilio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbDomicilio.Margin = New System.Windows.Forms.Padding(4)
         Me.gbDomicilio.Name = "gbDomicilio"
-        Me.gbDomicilio.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbDomicilio.Padding = New System.Windows.Forms.Padding(4)
         Me.gbDomicilio.Size = New System.Drawing.Size(527, 288)
         Me.gbDomicilio.TabIndex = 1
         Me.gbDomicilio.TabStop = False
@@ -858,7 +880,7 @@ Partial Class Catalogo_Clientes
         Me.cboPais.FormattingEnabled = True
         Me.cboPais.Items.AddRange(New Object() {"A", "B"})
         Me.cboPais.Location = New System.Drawing.Point(104, 22)
-        Me.cboPais.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboPais.Margin = New System.Windows.Forms.Padding(4)
         Me.cboPais.MaxLength = 80
         Me.cboPais.Name = "cboPais"
         Me.cboPais.Size = New System.Drawing.Size(195, 24)
@@ -870,7 +892,7 @@ Partial Class Catalogo_Clientes
         Me.cboMunicipio.FormattingEnabled = True
         Me.cboMunicipio.Items.AddRange(New Object() {"A", "B"})
         Me.cboMunicipio.Location = New System.Drawing.Point(103, 87)
-        Me.cboMunicipio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboMunicipio.Margin = New System.Windows.Forms.Padding(4)
         Me.cboMunicipio.MaxLength = 80
         Me.cboMunicipio.Name = "cboMunicipio"
         Me.cboMunicipio.Size = New System.Drawing.Size(232, 24)
@@ -879,7 +901,7 @@ Partial Class Catalogo_Clientes
         'txtCiudad
         '
         Me.txtCiudad.Location = New System.Drawing.Point(344, 87)
-        Me.txtCiudad.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCiudad.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCiudad.MaxLength = 50
         Me.txtCiudad.Name = "txtCiudad"
         Me.txtCiudad.ReadOnly = True
@@ -903,9 +925,9 @@ Partial Class Catalogo_Clientes
         Me.gbCxc.Controls.Add(Me.lblDisplayDiasPlazo)
         Me.gbCxc.Controls.Add(Me.txtDiasPlazo)
         Me.gbCxc.Location = New System.Drawing.Point(552, 313)
-        Me.gbCxc.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbCxc.Margin = New System.Windows.Forms.Padding(4)
         Me.gbCxc.Name = "gbCxc"
-        Me.gbCxc.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbCxc.Padding = New System.Windows.Forms.Padding(4)
         Me.gbCxc.Size = New System.Drawing.Size(465, 80)
         Me.gbCxc.TabIndex = 4
         Me.gbCxc.TabStop = False
@@ -924,7 +946,7 @@ Partial Class Catalogo_Clientes
         'txtLimiteCredito
         '
         Me.txtLimiteCredito.Location = New System.Drawing.Point(153, 50)
-        Me.txtLimiteCredito.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtLimiteCredito.Margin = New System.Windows.Forms.Padding(4)
         Me.txtLimiteCredito.MaxLength = 10
         Me.txtLimiteCredito.Name = "txtLimiteCredito"
         Me.txtLimiteCredito.Size = New System.Drawing.Size(107, 22)
@@ -944,7 +966,7 @@ Partial Class Catalogo_Clientes
         'txtDiasPlazo
         '
         Me.txtDiasPlazo.Location = New System.Drawing.Point(153, 18)
-        Me.txtDiasPlazo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtDiasPlazo.Margin = New System.Windows.Forms.Padding(4)
         Me.txtDiasPlazo.MaxLength = 3
         Me.txtDiasPlazo.Name = "txtDiasPlazo"
         Me.txtDiasPlazo.Size = New System.Drawing.Size(107, 22)
@@ -982,9 +1004,9 @@ Partial Class Catalogo_Clientes
         Me.gbFechaAlta.Controls.Add(Me.DpFecha)
         Me.gbFechaAlta.Controls.Add(Me.lblDisplayFechaAlta)
         Me.gbFechaAlta.Location = New System.Drawing.Point(552, 401)
-        Me.gbFechaAlta.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbFechaAlta.Margin = New System.Windows.Forms.Padding(4)
         Me.gbFechaAlta.Name = "gbFechaAlta"
-        Me.gbFechaAlta.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbFechaAlta.Padding = New System.Windows.Forms.Padding(4)
         Me.gbFechaAlta.Size = New System.Drawing.Size(465, 53)
         Me.gbFechaAlta.TabIndex = 5
         Me.gbFechaAlta.TabStop = False
@@ -994,7 +1016,7 @@ Partial Class Catalogo_Clientes
         '
         Me.DpFecha.Enabled = False
         Me.DpFecha.Location = New System.Drawing.Point(153, 15)
-        Me.DpFecha.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.DpFecha.Margin = New System.Windows.Forms.Padding(4)
         Me.DpFecha.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.DpFecha.Name = "DpFecha"
         Me.DpFecha.Size = New System.Drawing.Size(267, 22)
@@ -1019,9 +1041,9 @@ Partial Class Catalogo_Clientes
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(1025, 34)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(512, 726)
         Me.gBoxBusquedaRapida.TabIndex = 7
         Me.gBoxBusquedaRapida.TabStop = False
@@ -1033,7 +1055,7 @@ Partial Class Catalogo_Clientes
         Me.CboEstatusFiltro.FormattingEnabled = True
         Me.CboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
         Me.CboEstatusFiltro.Location = New System.Drawing.Point(453, 46)
-        Me.CboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatusFiltro.MaxLength = 1
         Me.CboEstatusFiltro.Name = "CboEstatusFiltro"
         Me.CboEstatusFiltro.Size = New System.Drawing.Size(49, 24)
@@ -1081,7 +1103,7 @@ Partial Class Catalogo_Clientes
         Me.Grid.AllowUserToResizeRows = False
         Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.Grid.Location = New System.Drawing.Point(8, 78)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid.Name = "Grid"
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
@@ -1094,7 +1116,7 @@ Partial Class Catalogo_Clientes
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFiltro.Location = New System.Drawing.Point(8, 47)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.Name = "txtFiltro"
         Me.txtFiltro.Size = New System.Drawing.Size(367, 22)
         Me.txtFiltro.TabIndex = 0
@@ -1108,9 +1130,9 @@ Partial Class Catalogo_Clientes
         Me.gbCorreo.Controls.Add(Me.lblDisplayCorreoCliente)
         Me.gbCorreo.Controls.Add(Me.txtCorreoCliente)
         Me.gbCorreo.Location = New System.Drawing.Point(552, 462)
-        Me.gbCorreo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbCorreo.Margin = New System.Windows.Forms.Padding(4)
         Me.gbCorreo.Name = "gbCorreo"
-        Me.gbCorreo.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbCorreo.Padding = New System.Windows.Forms.Padding(4)
         Me.gbCorreo.Size = New System.Drawing.Size(465, 172)
         Me.gbCorreo.TabIndex = 6
         Me.gbCorreo.TabStop = False
@@ -1129,7 +1151,7 @@ Partial Class Catalogo_Clientes
         'txtCorreoClientePagos
         '
         Me.txtCorreoClientePagos.Location = New System.Drawing.Point(187, 78)
-        Me.txtCorreoClientePagos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCorreoClientePagos.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCorreoClientePagos.MaxLength = 500
         Me.txtCorreoClientePagos.Multiline = True
         Me.txtCorreoClientePagos.Name = "txtCorreoClientePagos"
@@ -1142,7 +1164,7 @@ Partial Class Catalogo_Clientes
         Me.cboNombreXML.FormattingEnabled = True
         Me.cboNombreXML.Items.AddRange(New Object() {"RFCemisor-Serie-FolioNumerico", "RFCemisor-Fecha-SerieFolio", ""})
         Me.cboNombreXML.Location = New System.Drawing.Point(187, 139)
-        Me.cboNombreXML.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboNombreXML.Margin = New System.Windows.Forms.Padding(4)
         Me.cboNombreXML.MaxLength = 1
         Me.cboNombreXML.Name = "cboNombreXML"
         Me.cboNombreXML.Size = New System.Drawing.Size(267, 24)
@@ -1171,7 +1193,7 @@ Partial Class Catalogo_Clientes
         'txtCorreoCliente
         '
         Me.txtCorreoCliente.Location = New System.Drawing.Point(187, 16)
-        Me.txtCorreoCliente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCorreoCliente.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCorreoCliente.MaxLength = 500
         Me.txtCorreoCliente.Multiline = True
         Me.txtCorreoCliente.Name = "txtCorreoCliente"
@@ -1189,9 +1211,9 @@ Partial Class Catalogo_Clientes
         Me.gbMetodoPago.Controls.Add(Me.txtNumeroCuenta)
         Me.gbMetodoPago.Controls.Add(Me.lblDisplayFormaPago)
         Me.gbMetodoPago.Location = New System.Drawing.Point(552, 642)
-        Me.gbMetodoPago.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbMetodoPago.Margin = New System.Windows.Forms.Padding(4)
         Me.gbMetodoPago.Name = "gbMetodoPago"
-        Me.gbMetodoPago.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbMetodoPago.Padding = New System.Windows.Forms.Padding(4)
         Me.gbMetodoPago.Size = New System.Drawing.Size(465, 143)
         Me.gbMetodoPago.TabIndex = 7
         Me.gbMetodoPago.TabStop = False
@@ -1203,7 +1225,7 @@ Partial Class Catalogo_Clientes
         Me.cboFormaPagoUSD.FormattingEnabled = True
         Me.cboFormaPagoUSD.Items.AddRange(New Object() {"A", "B"})
         Me.cboFormaPagoUSD.Location = New System.Drawing.Point(153, 79)
-        Me.cboFormaPagoUSD.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboFormaPagoUSD.Margin = New System.Windows.Forms.Padding(4)
         Me.cboFormaPagoUSD.MaxLength = 1
         Me.cboFormaPagoUSD.Name = "cboFormaPagoUSD"
         Me.cboFormaPagoUSD.Size = New System.Drawing.Size(271, 24)
@@ -1222,7 +1244,7 @@ Partial Class Catalogo_Clientes
         'txtNumeroCuentaDolares
         '
         Me.txtNumeroCuentaDolares.Location = New System.Drawing.Point(153, 108)
-        Me.txtNumeroCuentaDolares.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtNumeroCuentaDolares.Margin = New System.Windows.Forms.Padding(4)
         Me.txtNumeroCuentaDolares.MaxLength = 4
         Me.txtNumeroCuentaDolares.Name = "txtNumeroCuentaDolares"
         Me.txtNumeroCuentaDolares.Size = New System.Drawing.Size(107, 22)
@@ -1245,7 +1267,7 @@ Partial Class Catalogo_Clientes
         Me.cboFormaPago.FormattingEnabled = True
         Me.cboFormaPago.Items.AddRange(New Object() {"A", "B"})
         Me.cboFormaPago.Location = New System.Drawing.Point(153, 21)
-        Me.cboFormaPago.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboFormaPago.Margin = New System.Windows.Forms.Padding(4)
         Me.cboFormaPago.MaxLength = 1
         Me.cboFormaPago.Name = "cboFormaPago"
         Me.cboFormaPago.Size = New System.Drawing.Size(271, 24)
@@ -1264,7 +1286,7 @@ Partial Class Catalogo_Clientes
         'txtNumeroCuenta
         '
         Me.txtNumeroCuenta.Location = New System.Drawing.Point(153, 50)
-        Me.txtNumeroCuenta.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtNumeroCuenta.Margin = New System.Windows.Forms.Padding(4)
         Me.txtNumeroCuenta.MaxLength = 4
         Me.txtNumeroCuenta.Name = "txtNumeroCuenta"
         Me.txtNumeroCuenta.Size = New System.Drawing.Size(107, 22)
@@ -1281,32 +1303,11 @@ Partial Class Catalogo_Clientes
         Me.lblDisplayFormaPago.TabIndex = 8
         Me.lblDisplayFormaPago.Text = "Forma de pago MXN :"
         '
-        'CboGiros
-        '
-        Me.CboGiros.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CboGiros.FormattingEnabled = True
-        Me.CboGiros.Items.AddRange(New Object() {"MORAL", "FISICA"})
-        Me.CboGiros.Location = New System.Drawing.Point(127, 413)
-        Me.CboGiros.Margin = New System.Windows.Forms.Padding(4)
-        Me.CboGiros.MaxLength = 1
-        Me.CboGiros.Name = "CboGiros"
-        Me.CboGiros.Size = New System.Drawing.Size(316, 24)
-        Me.CboGiros.TabIndex = 133
-        '
-        'LblGiro
-        '
-        Me.LblGiro.AutoSize = True
-        Me.LblGiro.Location = New System.Drawing.Point(8, 416)
-        Me.LblGiro.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblGiro.Name = "LblGiro"
-        Me.LblGiro.Size = New System.Drawing.Size(111, 17)
-        Me.LblGiro.TabIndex = 134
-        Me.LblGiro.Text = "Giro del cliente :"
-        '
         'Catalogo_Clientes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScroll = True
         Me.ClientSize = New System.Drawing.Size(1549, 822)
         Me.Controls.Add(Me.gbMetodoPago)
         Me.Controls.Add(Me.gbCorreo)
@@ -1321,7 +1322,7 @@ Partial Class Catalogo_Clientes
         Me.Controls.Add(Me.tsMenu)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Clientes"
         Me.ShowIcon = False
