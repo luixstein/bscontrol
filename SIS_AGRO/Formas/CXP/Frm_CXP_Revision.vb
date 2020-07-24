@@ -56,14 +56,29 @@ Public Class Frm_CXP_Revision
     Private iGyNombreCategoria As Integer = 5
     Private iGyCodigoConcepto As Integer = 6
     Private iGyNombreConcepto As Integer = 7
-    Private iGyImporte As Integer = 8
-    Private iGyCuentaContable As Integer = 9
+    Private iGyCtasImporte As Integer = 8
+    Private iGyCtasIVA As Integer = 9
+    Private iGyCtasTotal As Integer = 10
+    Private iGyCuentaContable As Integer = 11
+    Private iGyCtasUUID As Integer = 12
+    Private iGyCtasXML As Integer = 13
+    Private iGyCtasPDF As Integer = 14
+    Private iGyCtasRutaXML As Integer = 15
+    Private iGyCtasRutaPDF As Integer = 16
 #End Region
 
 #Region "Columnas grid activos"
     Private iGyActivoCuentaContable As Integer = 1
     Private iGyActivoNombreCuenta As Integer = 2
     Private iGyActivoImporte As Integer = 3
+    Private iGyActivoIVA As Integer = 4
+    Private iGyActivoTotal As Integer = 5
+    Private iGyActivoUUID As Integer = 6
+    'Private iGyActivoNombrePDF As Integer = 7
+    Private iGyActivoXML As Integer = 7
+    Private iGyActivoPDF As Integer = 8
+    Private iGyActivoRutaXML As Integer = 9
+    Private iGyActivoRutaPDF As Integer = 10
 #End Region
 
 #Region "Columnas grid facturas relacionadas"
@@ -282,7 +297,7 @@ Public Class Frm_CXP_Revision
     End Sub
 
     Private Sub tsbAgregarXML_Click(sender As Object, e As EventArgs) Handles tsbAgregarXML.Click
-        Me.AgregarXML
+        Me.AgregarXML()
     End Sub
 
     Private Sub tsbAgregarPDF_Click(sender As Object, e As EventArgs) Handles tsbAgregarPDF.Click
@@ -430,15 +445,26 @@ Buscar:
     End Sub
 
     Private Sub GridCuentas_KeyDown(ByVal Sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles GridCuentas.KeyDown
-        Me.GestionaGrid(e)
+        Try
+            Me.GestionaGridCuentas(e)
 
-        'If e.KeyCode = Keys.Return Then
-        '    Dim Renglon As Integer = GridCuentas.Selection.FirstRow
-        '    Me.GridCuentas.Cell(Renglon, Me.iGyNombreConcepto).SetFocus()
-        'End If
+            Dim iRenglon As Integer = Me.GridCuentas.Rows - 1
+
+            'Esto es por si quedaron renglones nuevos tengan la frase de una vez de agregar xml y pdf
+            If Me.GridCuentas.Cell(iRenglon, Me.iGyCtasXML).Text = "" Then
+                Me.GridCuentas.Cell(iRenglon, Me.iGyCtasXML).Text = "Agregar"
+                Me.GridCuentas.Cell(iRenglon, Me.iGyCtasPDF).Text = "Agregar"
+            End If
+
+            'If e.KeyCode = Keys.Return Then
+            '    Me.GridCuentas.Cell(iRenglon, Me.iGyNombreConcepto).SetFocus()
+            'End If
+        Catch ex As Exception
+            HandleError(Me.Name, "GridCuentas_KeyDown", ex)
+        End Try
     End Sub
 
-    Private Sub Grid1_Click(ByVal Sender As Object, ByVal e As System.EventArgs) Handles GridCompras.Click
+    Private Sub GridCompras_Click(ByVal Sender As Object, ByVal e As System.EventArgs) Handles GridCompras.Click
         Dim Renglon As Integer, vdg As String
 
         Renglon = Me.GridCompras.Selection.FirstRow
@@ -452,7 +478,7 @@ Buscar:
         End If
     End Sub
 
-    Private Sub Grid1_DoubleClick(ByVal Sender As Object, ByVal e As System.EventArgs) Handles GridCompras.DoubleClick
+    Private Sub GridCompras_DoubleClick(ByVal Sender As Object, ByVal e As System.EventArgs) Handles GridCompras.DoubleClick
         Dim Columna As Integer, Renglon As Integer, vdg As String
         'Dim dTabla As DataTable
 
@@ -485,12 +511,24 @@ Buscar:
             End If
 
         Catch ex As Exception
-            HandleError(Me.Name, "Grid1_DoubleClick", ex)
+            HandleError(Me.Name, "GridCompras_DoubleClick", ex)
         End Try
     End Sub
 
     Private Sub GridActivos_KeyDown(ByVal Sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles GridActivos.KeyDown
-        Me.GestionaGridActivos(e)
+        Try
+            Me.GestionaGridActivos(e)
+
+            Dim iRenglon As Integer = Me.GridActivos.Rows - 1
+
+            'Esto es por si quedaron renglones nuevos tengan la frase de una vez de agregar xml y pdf
+            If Me.GridActivos.Cell(iRenglon, Me.iGyActivoXML).Text = "" Then
+                Me.GridActivos.Cell(iRenglon, Me.iGyActivoXML).Text = "Agregar"
+                Me.GridActivos.Cell(iRenglon, Me.iGyActivoPDF).Text = "Agregar"
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, "GridActivos_KeyDown", ex)
+        End Try
     End Sub
 
     Private Sub txtTipoCambio_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtTipoCambio.KeyDown
@@ -536,6 +574,13 @@ Buscar:
         Me.GestionaGridFacturasRelacionadas(e)
     End Sub
 
+    Private Sub GridCuentas_ButtonClick(ByVal Sender As System.Object, ByVal e As FlexCell.Grid.ButtonClickEventArgs) Handles GridCuentas.ButtonClick
+        Me.ClickBotonGridCuentas()
+    End Sub
+
+    Private Sub GridActivos_ButtonClick(ByVal Sender As System.Object, ByVal e As FlexCell.Grid.ButtonClickEventArgs) Handles GridActivos.ButtonClick
+        Me.ClickBotonGridActivos()
+    End Sub
 #Region "Eventos Genericos"
     Private Sub txt_Enter(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim oTexBox As TextBox = CType(sender, TextBox)
@@ -783,8 +828,11 @@ Buscar:
 
             'Creamos el Grid
             Me.GridCuentas.Rows = 2
-            Me.GridCuentas.Cols = 10
+            Me.GridCuentas.Cols = 17
             Me.GridCuentas.DisplayRowNumber = True
+
+            Me.GridCuentas.Cell(1, Me.iGyCtasXML).Text = "Agregar"
+            Me.GridCuentas.Cell(1, Me.iGyCtasPDF).Text = "Agregar"
 
             Me.FormateaGridCuentas()
         Catch ex As Exception
@@ -799,8 +847,11 @@ Buscar:
 
             'Creamos el Grid
             Me.GridActivos.Rows = 2
-            Me.GridActivos.Cols = 4
+            Me.GridActivos.Cols = 11
             Me.GridActivos.DisplayRowNumber = True
+
+            Me.GridActivos.Cell(1, Me.iGyActivoXML).Text = "Agregar"
+            Me.GridActivos.Cell(1, Me.iGyActivoPDF).Text = "Agregar"
 
             Me.FormateaGridActivos()
         Catch ex As Exception
@@ -907,59 +958,139 @@ Buscar:
 
     Private Sub FormateaGridCuentas()
         Try
-            Me.GridCuentas.Column(Me.iGyTipo).Visible = False
-            Me.GridCuentas.Column(Me.iGyCodigoCentroCosto).Visible = False
-            Me.GridCuentas.Column(Me.iGyNombreCentroCosto).Width = 220
-            Me.GridCuentas.Column(Me.iGyCodigoCategoria).Visible = False
-            Me.GridCuentas.Column(Me.iGyNombreCategoria).Width = 220
-            Me.GridCuentas.Column(Me.iGyCodigoConcepto).Visible = False
-            Me.GridCuentas.Column(Me.iGyNombreConcepto).Width = 220
-            Me.GridCuentas.Column(Me.iGyImporte).Width = 100
-            Me.GridCuentas.Column(Me.iGyCuentaContable).Width = 100
+            With Me.GridCuentas
+                .AutoRedraw = False
 
-            Me.GridCuentas.Cell(0, Me.iGyCodigoCentroCosto).Text = "CCos"
-            Me.GridCuentas.Cell(0, Me.iGyNombreCentroCosto).Text = "C.costo"
-            Me.GridCuentas.Cell(0, Me.iGyCodigoCategoria).Text = "CCat"
-            Me.GridCuentas.Cell(0, Me.iGyNombreCategoria).Text = "Categoria"
-            Me.GridCuentas.Cell(0, Me.iGyCodigoConcepto).Text = "CCon"
-            Me.GridCuentas.Cell(0, Me.iGyNombreConcepto).Text = "Concepto"
-            Me.GridCuentas.Cell(0, Me.iGyImporte).Text = "Importe(MXP)"
-            Me.GridCuentas.Cell(0, Me.iGyCuentaContable).Text = "Cuenta contable"
+                .DisplayFocusRect = False
+                '.DisplayDateTimeMask = True
+                '.ExtendLastCol = True
+                .DrawMode = FlexCell.DrawModeEnum.OwnerDraw
+                .BorderStyle = FlexCell.BorderStyleEnum.FixedSingle
+                .FixedRowColStyle = FlexCell.FixedRowColStyleEnum.Flat
 
-            Me.GridCuentas.Column(Me.iGyImporte).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            Me.GridCuentas.Column(Me.iGyImporte).Mask = FlexCell.MaskEnum.Numeric
-            Me.GridCuentas.Column(Me.iGyImporte).DecimalLength = 2
-            Me.GridCuentas.Column(Me.iGyImporte).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyTipo).Visible = False
+                .Column(Me.iGyCodigoCentroCosto).Visible = False
+                .Column(Me.iGyNombreCentroCosto).Width = 210
+                .Column(Me.iGyCodigoCategoria).Visible = False
+                .Column(Me.iGyNombreCategoria).Width = 210
+                .Column(Me.iGyCodigoConcepto).Visible = False
+                .Column(Me.iGyNombreConcepto).Width = 210
+                .Column(Me.iGyCtasImporte).Width = 80
+                .Column(Me.iGyCtasIVA).Width = 70
+                .Column(Me.iGyCtasTotal).Width = 80
+                .Column(Me.iGyCuentaContable).Width = 100
+                .Column(Me.iGyCtasUUID).Width = 50
+                '.Column(Me.iGyCtasNombrePDF).Width = 30
+                .Column(Me.iGyCtasXML).Width = 60
+                .Column(Me.iGyCtasPDF).Width = 60
 
-            Me.GridCuentas.Column(Me.iGyImporte).Locked = False 'Se habilita el importe
-            Me.GridCuentas.Column(Me.iGyCuentaContable).Locked = True 'Se bloquea la cuenta
+                .Cell(0, Me.iGyCodigoCentroCosto).Text = "CCos"
+                .Cell(0, Me.iGyNombreCentroCosto).Text = "C.costo"
+                .Cell(0, Me.iGyCodigoCategoria).Text = "CCat"
+                .Cell(0, Me.iGyNombreCategoria).Text = "Categoria"
+                .Cell(0, Me.iGyCodigoConcepto).Text = "CCon"
+                .Cell(0, Me.iGyNombreConcepto).Text = "Concepto"
+                .Cell(0, Me.iGyCtasImporte).Text = "Subtotal(MXP)"
+                .Cell(0, Me.iGyCtasIVA).Text = "IVA(MXP)"
+                .Cell(0, Me.iGyCtasTotal).Text = "Total(MXP)"
+                .Cell(0, Me.iGyCuentaContable).Text = "Cuenta contable"
+                .Cell(0, Me.iGyCtasUUID).Text = "UUID"
+                '.Cell(0, Me.iGyCtasNombrePDF).Text = "NombrePDF"
+                .Cell(0, Me.iGyCtasXML).Text = "XML"
+                .Cell(0, Me.iGyCtasPDF).Text = "PDF"
+                .Cell(0, Me.iGyCtasRutaXML).Text = "RutaXML"
+                .Cell(0, Me.iGyCtasRutaXML).Text = "RutaPDF"
+
+                .Column(Me.iGyCtasImporte).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyCtasImporte).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyCtasImporte).DecimalLength = 2
+                .Column(Me.iGyCtasImporte).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyCtasImporte).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyCtasImporte).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyCtasImporte).DecimalLength = 2
+                .Column(Me.iGyCtasImporte).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyCtasIVA).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyCtasIVA).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyCtasIVA).DecimalLength = 2
+                .Column(Me.iGyCtasIVA).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyCtasTotal).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyCtasTotal).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyCtasTotal).DecimalLength = 2
+                .Column(Me.iGyCtasTotal).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyCtasImporte).Locked = False 'Se habilita el importe
+                .Column(Me.iGyCuentaContable).Locked = True 'Se bloquea la cuenta
+
+                .Column(Me.iGyCtasXML).CellType = FlexCell.CellTypeEnum.Button
+                .Column(Me.iGyCtasPDF).CellType = FlexCell.CellTypeEnum.Button
+            End With
 
         Catch ex As Exception
             HandleError(Me.Name, "FormateaGridCuentas", ex)
+        Finally
+            Me.GridCuentas.AutoRedraw = True
+            Me.GridCuentas.Refresh()
         End Try
     End Sub
 
     Private Sub FormateaGridActivos()
         Try
             With Me.GridActivos
+                .AutoRedraw = False
+
+                .DisplayFocusRect = False
+                '.DisplayDateTimeMask = True
+                '.ExtendLastCol = True
+                .DrawMode = FlexCell.DrawModeEnum.OwnerDraw
+                .BorderStyle = FlexCell.BorderStyleEnum.FixedSingle
+                .FixedRowColStyle = FlexCell.FixedRowColStyleEnum.Flat
+
                 .Column(Me.iGyActivoCuentaContable).Width = 100
-                .Column(Me.iGyActivoNombreCuenta).Width = 600
-                .Column(Me.iGyActivoImporte).Width = 100
+                .Column(Me.iGyActivoNombreCuenta).Width = 500
+                .Column(Me.iGyActivoImporte).Width = 80
 
                 .Cell(0, Me.iGyActivoCuentaContable).Text = "Cuenta contable"
                 .Cell(0, Me.iGyActivoNombreCuenta).Text = "Nombre cuenta"
-                .Cell(0, Me.iGyActivoImporte).Text = "Importe(MXP)"
+                .Cell(0, Me.iGyActivoImporte).Text = "Subtotal(MXP)"
+
+                .Cell(0, Me.iGyActivoIVA).Text = "IVA(MXP)"
+                .Cell(0, Me.iGyActivoTotal).Text = "Total(MXP)"
+                .Cell(0, Me.iGyActivoUUID).Text = "UUID"
+                '.Cell(0, Me.iGyActivoNombrePDF).Text = "NombrePDF"
+                .Cell(0, Me.iGyActivoXML).Text = "XML"
+                .Cell(0, Me.iGyActivoPDF).Text = "PDF"
+                .Cell(0, Me.iGyActivoRutaXML).Text = "RutaXML"
+                .Cell(0, Me.iGyActivoRutaPDF).Text = "RutaPDF"
 
                 .Column(Me.iGyActivoImporte).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
                 .Column(Me.iGyActivoImporte).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyActivoImporte).DecimalLength = 2
                 .Column(Me.iGyActivoImporte).Alignment = FlexCell.AlignmentEnum.RightCenter
 
+                .Column(Me.iGyActivoIVA).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyActivoIVA).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyActivoIVA).DecimalLength = 2
+                .Column(Me.iGyActivoIVA).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyActivoTotal).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyActivoTotal).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyActivoTotal).DecimalLength = 2
+                .Column(Me.iGyActivoTotal).Alignment = FlexCell.AlignmentEnum.RightCenter
+
                 .Column(Me.iGyActivoImporte).Locked = False 'Se habilita 
                 .Column(Me.iGyActivoNombreCuenta).Locked = True 'Se bloquea 
+
+                .Column(Me.iGyActivoXML).CellType = FlexCell.CellTypeEnum.Button
+                .Column(Me.iGyActivoPDF).CellType = FlexCell.CellTypeEnum.Button
             End With
         Catch ex As Exception
             HandleError(Me.Name, "FormateaGridActivos", ex)
+        Finally
+            Me.GridActivos.AutoRedraw = True
+            Me.GridActivos.Refresh()
         End Try
     End Sub
 
@@ -1228,8 +1359,12 @@ Buscar:
     End Function
 
     Private Sub Totales()
-        Me.txtSaldo.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridCompras, CShort(Me.iGySaldo)))
-        Me.txtTotal.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridCompras, CShort(Me.iGyTotal)))
+        Try
+            Me.txtSaldo.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridCompras, CShort(Me.iGySaldo)))
+            Me.txtTotal.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridCompras, CShort(Me.iGyTotal)))
+        Catch ex As Exception
+            HandleError(Me.Name, "Totales", ex)
+        End Try
     End Sub
 
     Private Sub InicializaRenglonGridCuentas(ByVal iRenglon As Integer)
@@ -1252,7 +1387,8 @@ Buscar:
         End Try
     End Sub
 
-    Private Sub GestionaGrid(ByVal e As System.Windows.Forms.KeyEventArgs)
+    Private Sub GestionaGridCuentas(ByVal e As System.Windows.Forms.KeyEventArgs)
+        Const sProcedure As String = "GestionaGridCuentas"
 
         Dim Columna As Integer, Renglon As Integer
         Dim StrCod As String = "" ', oCuenta As Class_CatCuentas
@@ -1380,8 +1516,8 @@ Buscar:
                                 Return
                             End If
 
-                        Case Me.iGyImporte
-                            If valorNumerico(Me.GridCuentas.Cell(Renglon, Me.iGyImporte).Text) = 0 Then
+                        Case Me.iGyCtasImporte
+                            If valorNumerico(Me.GridCuentas.Cell(Renglon, Me.iGyCtasImporte).Text) = 0 Then
                                 e.Handled = True 'Con esto el importe si es 0 no se brinca a la siguiente columna, se queda el foco en el importe.
                                 Return
                             End If
@@ -1531,12 +1667,13 @@ busca_concepto:
             Me.TotalizaGridCentrosCostosyActivos()
 
         Catch ex As Exception
-            HandleError(Me.Name, "GestionaGrid", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub GestionaGridActivos(ByVal e As System.Windows.Forms.KeyEventArgs)
-        Dim sProcedure As String = "GestionaGridActivos"
+        Const sProcedure As String = "GestionaGridActivos"
+
         Dim Columna As Integer, Renglon As Integer
         Dim sCuentaContable As String = "", oCuenta As Class_CatCuentas
 
@@ -1628,14 +1765,15 @@ busca_cuenta_contable:
                 Me.TotalizaGridCentrosCostosyActivos()
 
             Catch ex As Exception
-                HandleError(Me.Name, "GestionaGridActivos", ex)
+                HandleError(Me.Name, sProcedure, ex)
             End Try
 
         End With
     End Sub
 
     Private Sub GestionaGridFacturasRelacionadas(ByVal e As System.Windows.Forms.KeyEventArgs)
-        Dim sProcedure As String = "GestionaGridFacturasRelacionadas"
+        Const sProcedure As String = "GestionaGridFacturasRelacionadas"
+
         Dim Columna As Integer, Renglon As Integer
         Dim StrCod As String = ""
         Dim sCodigo As String = "", sTipo As String = ""
@@ -1793,8 +1931,12 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
 
     Private Sub TotalizaGridCentrosCostosyActivos()
         Try
-            Me.TxtSubTotal.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridCuentas, CShort(Me.iGyImporte)) + FG_Grid_SumaCol(Me.GridActivos, CShort(Me.iGyActivoImporte)))
+            Me.TxtSubTotal.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridCuentas, CShort(Me.iGyCtasImporte)) + FG_Grid_SumaCol(Me.GridActivos, CShort(Me.iGyActivoImporte)))
+
+            Me.TxtIVA.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridCuentas, CShort(Me.iGyCtasIVA)) + FG_Grid_SumaCol(Me.GridActivos, CShort(Me.iGyActivoIVA)))
+
             Me.txtTotalCompra.Text = FormatImporteContable(valorNumerico(Me.TxtSubTotal.Text) + valorNumerico(Me.TxtIVA.Text) - valorNumerico(Me.TxtRetencionIVA.Text) - valorNumerico(Me.txtRetencionISR.Text))
+
             Me.CalculaImporteDolares()
         Catch ex As Exception
             HandleError(Me.Name, "TotalizaGridCentrosCostosyActivos", ex)
@@ -1867,12 +2009,12 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
     End Function
 
     Private Sub SaltoColumnas(ByVal Renglon As Integer, ByVal Columna As Integer, ByVal KeyCode As System.Windows.Forms.Keys, ByVal sTipo As String)
-        If Me.GridCuentas.Rows = Renglon + 1 And Me.GridCuentas.Cell(Renglon, Me.iGyImporte).Locked = False Then
+        If Me.GridCuentas.Rows = Renglon + 1 And Me.GridCuentas.Cell(Renglon, Me.iGyCtasImporte).Locked = False Then
             Me.GridCuentas.Rows = Me.GridCuentas.Rows + 1
         End If
 
         Select Case Columna
-            Case Me.iGyImporte
+            Case Me.iGyCtasImporte
                 Me.GridCuentas.Cell(Renglon + 1, Me.iGyCodigoCentroCosto).SetFocus()
             Case Else
                 Select Case sTipo
@@ -1881,7 +2023,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                             Case Keys.Return
                                 Me.GridCuentas.Cell(Renglon, Me.iGyNombreConcepto).SetFocus() 'Se pone una antes para quese vaya al importe, porque el enter por si mismo va forzar brincar otra vez
                             Case Keys.F6
-                                Me.GridCuentas.Cell(Renglon, Me.iGyImporte).SetFocus()
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCtasImporte).SetFocus()
                         End Select
                     Case Else
                         If KeyCode = Keys.F6 Then
@@ -1943,15 +2085,17 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                     .FECHA_PROGRAMACION = Me.dtpFechaVencimiento.Value
 
                     For i = 1 To Me.GridCuentas.Rows - 1
-                        If Me.GridCuentas.Cell(i, Me.iGyCuentaContable).Text <> "" And valorNumerico(Me.GridCuentas.Cell(i, Me.iGyImporte).Text) > 0 Then
+                        If Me.GridCuentas.Cell(i, Me.iGyCuentaContable).Text <> "" And valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasImporte).Text) > 0 Then
                             sCuentas = sCuentas & i & "," & Me.GridCuentas.Cell(i, Me.iGyTipo).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCodigoCentroCosto).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCodigoCategoria).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCodigoConcepto).Text & "," &
-                            valorNumerico(Me.GridCuentas.Cell(i, Me.iGyImporte).Text).ToString & "," & Me.GridCuentas.Cell(i, Me.iGyCuentaContable).Text & "|"
+                            valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasImporte).Text).ToString & "," & Me.GridCuentas.Cell(i, Me.iGyCuentaContable).Text & "," &
+                            valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasIVA).Text).ToString & "," & valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasTotal).Text).ToString & "," & Me.GridCuentas.Cell(i, Me.iGyCtasUUID).Text & "|"
                         End If
                     Next i
 
                     For i = 1 To Me.GridActivos.Rows - 1
                         If Me.GridActivos.Cell(i, Me.iGyActivoCuentaContable).Text <> "" And valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoImporte).Text) > 0 Then
-                            sListaActivos = sListaActivos & i & "," & Me.GridActivos.Cell(i, Me.iGyActivoCuentaContable).Text & "," & Me.GridActivos.Cell(i, Me.iGyActivoImporte).Text & "|"
+                            sListaActivos = sListaActivos & i & "," & Me.GridActivos.Cell(i, Me.iGyActivoCuentaContable).Text & "," & Me.GridActivos.Cell(i, Me.iGyActivoImporte).Text & "," &
+                            valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoIVA).Text).ToString & "," & valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoTotal).Text).ToString & "," & Me.GridActivos.Cell(i, Me.iGyActivoUUID).Text & "|"
                         End If
                     Next i
 
@@ -2160,7 +2304,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                     MsgBox("Captúre los renglones.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
-                Dim dSumaGridCuentas As Double = Redondear(FG_Grid_SumaCol(Me.GridCuentas, CShort(Me.iGyImporte)), 2)
+                Dim dSumaGridCuentas As Double = Redondear(FG_Grid_SumaCol(Me.GridCuentas, CShort(Me.iGyCtasImporte)), 2)
                 Dim dSumaGridActivos As Double = Redondear(FG_Grid_SumaCol(Me.GridActivos, CShort(Me.iGyActivoImporte)), 2)
                 Dim dSumaRenglones As Double = Redondear(dSumaGridCuentas + dSumaGridActivos, 2)
 
@@ -2261,9 +2405,9 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                                 MsgBox("La cuenta contable del renglón: " & i & " es 1 mil , y el tipo no es deudor diverso.", MsgBoxStyle.Exclamation, sProcedure)
                                 Return False
                             End If
-                        ElseIf valorNumerico(.Cell(i, Me.iGyImporte).Text) = 0 Then
+                        ElseIf valorNumerico(.Cell(i, Me.iGyCtasImporte).Text) = 0 Then
                             MsgBox("Falta introducir el importe del renglón: " & i & ".", MsgBoxStyle.Exclamation, sProcedure)
-                            .Cell(i, Me.iGyImporte).SetFocus()
+                            .Cell(i, Me.iGyCtasImporte).SetFocus()
                             Return False
                         End If
                         bHayCuentasContables = True
@@ -2271,7 +2415,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                 Next i
 
                 For i = 1 To .Rows - 1
-                    If valorNumerico(.Cell(i, Me.iGyImporte).Text) <> 0 Then 'Si capturaron algún importe.
+                    If valorNumerico(.Cell(i, Me.iGyCtasImporte).Text) <> 0 Then 'Si capturaron algún importe.
                         If Len(.Cell(i, Me.iGyCuentaContable).Text) = 0 Then
                             MsgBox("Falta introducir la cuenta contrable del renglón: " & i & ".", MsgBoxStyle.Exclamation, sProcedure)
                             .Cell(i, Me.iGyCuentaContable).SetFocus()
@@ -2752,6 +2896,145 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
 
         Return bResultado
     End Function
+
+    Private Sub ClickBotonGridCuentas()
+        Dim bResultado As Boolean = False
+        Dim sProcedure As String = "ClickBotonGridCuentas"
+        Try
+            Dim iRenglon As Integer = 0, iColumna As Integer = 0, sUUID As String = "", sRutaXML As String = "", sRutaPDF As String = ""
+            Dim oPoliza As New Class_Contabilidad_Poliza_Global()
+
+            iRenglon = Me.GridCuentas.ActiveCell.Row
+            iColumna = Me.GridCuentas.ActiveCell.Col
+            sUUID = Me.GridCuentas.Cell(iRenglon, Me.iGyCtasUUID).Text
+
+            Select Case iColumna
+                Case Me.iGyCtasXML
+                    Select Case Me.GridCuentas.Cell(iRenglon, Me.iGyCtasXML).Text
+                        Case "Agregar"
+                            sRutaXML = oPoliza.BuscarXML("", True) 'Aún no tenemos la póliza por eso lo pasamos sin folio de póliza
+
+                            'If txtLEN(sRutaXML) = True Then
+                            ' bResultado = oPoliza.AgregarXMLPDF(sRutaXML, "") 'Mandamos sin pdf
+                            ' End If
+
+                            If txtLEN(sRutaXML) = True Then
+                                Dim oCFDI As New CFDIXML.ClassCFDI(sRutaXML, True) 'Internamente: ya se valida que este timbrado
+
+                                If oCFDI.XMLCargado = False Then
+                                    Return 'False
+                                End If
+
+                                Me.GridCuentas.Cell(iRenglon, Me.iGyCtasUUID).Text = oCFDI.ComplementoTFD.UUID
+                                Me.GridCuentas.Cell(iRenglon, Me.iGyCtasImporte).Text = oCFDI.Comprobante.SubTotal.ToString
+                                Me.GridCuentas.Cell(iRenglon, Me.iGyCtasIVA).Text = oCFDI.Impuestos.totalImpuestosTrasladadosIVA.ToString
+                                Me.GridCuentas.Cell(iRenglon, Me.iGyCtasTotal).Text = Redondear(oCFDI.Comprobante.SubTotal + oCFDI.Impuestos.totalImpuestosTrasladadosIVA, 2).ToString
+                                Me.GridCuentas.Cell(iRenglon, Me.iGyCtasXML).Text = "Ver"
+                                Me.GridCuentas.Cell(iRenglon, Me.iGyCtasRutaXML).Text = sRutaXML
+
+                            End If
+
+                        Case "Ver"
+                            Process.Start(Me.GridCuentas.Cell(iRenglon, Me.iGyCtasRutaXML).Text) 'Para abrir el xml
+
+                    End Select
+
+                Case Me.iGyCtasPDF
+                    If txtLEN(sUUID) = False Then
+                        MsgBox("Debe primero subir el XML.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return
+                    End If
+
+                    Select Case Me.GridCuentas.Cell(iRenglon, Me.iGyCtasPDF).Text
+                        Case "Agregar"
+                            sRutaPDF = oPoliza.BuscarPDF() 'Note que aún no tenemos la póliza 
+
+                            If txtLEN(sRutaPDF) = True Then
+                                Me.GridCuentas.Cell(iRenglon, Me.iGyCtasPDF).Text = "Ver"
+                                Me.GridCuentas.Cell(iRenglon, Me.iGyCtasRutaPDF).Text = sRutaPDF
+                            End If
+
+                        Case "Ver"
+                            Process.Start(Me.GridCuentas.Cell(iRenglon, Me.iGyCtasRutaPDF).Text) 'Para abrir el pdf
+                    End Select
+
+            End Select
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
+
+    Private Sub ClickBotonGridActivos()
+        Dim bResultado As Boolean = False
+        Dim sProcedure As String = "ClickBotonGridActivos"
+
+        Try
+            Dim iRenglon As Integer = 0, iColumna As Integer = 0, sUUID As String = "", sRutaXML As String = "", sRutaPDF As String = ""
+            Dim oPoliza As New Class_Contabilidad_Poliza_Global()
+
+            iRenglon = Me.GridActivos.ActiveCell.Row
+            iColumna = Me.GridActivos.ActiveCell.Col
+            sUUID = Me.GridActivos.Cell(iRenglon, Me.iGyActivoUUID).Text
+
+            Select Case iColumna
+                Case Me.iGyActivoXML
+                    Select Case Me.GridActivos.Cell(iRenglon, Me.iGyActivoXML).Text
+                        Case "Agregar"
+
+                            sRutaXML = oPoliza.BuscarXML("", True) 'Aún no tenemos la póliza por eso lo pasamos sin folio de póliza
+
+                            'If txtLEN(sRutaXML) = True Then
+                            ' bResultado = oPoliza.AgregarXMLPDF(sRutaXML, "") 'Mandamos sin pdf
+                            ' End If
+
+                            If txtLEN(sRutaXML) = True Then
+                                Dim oCFDI As New CFDIXML.ClassCFDI(sRutaXML, True) 'Internamente: ya se valida que este timbrado
+
+                                If oCFDI.XMLCargado = False Then
+                                    Return 'False
+                                End If
+
+                                Me.GridActivos.Cell(iRenglon, Me.iGyActivoUUID).Text = oCFDI.ComplementoTFD.UUID
+                                Me.GridActivos.Cell(iRenglon, Me.iGyActivoImporte).Text = oCFDI.Comprobante.SubTotal.ToString
+                                Me.GridActivos.Cell(iRenglon, Me.iGyActivoIVA).Text = oCFDI.Impuestos.totalImpuestosTrasladadosIVA.ToString
+                                Me.GridActivos.Cell(iRenglon, Me.iGyActivoTotal).Text = Redondear(oCFDI.Comprobante.SubTotal + oCFDI.Impuestos.totalImpuestosTrasladadosIVA, 2).ToString
+                                Me.GridActivos.Cell(iRenglon, Me.iGyActivoXML).Text = "Ver"
+                                Me.GridActivos.Cell(iRenglon, Me.iGyActivoRutaXML).Text = sRutaXML
+
+                            End If
+
+                        Case "Ver"
+                            Process.Start(Me.GridActivos.Cell(iRenglon, Me.iGyActivoRutaXML).Text) 'Para abrir el xml
+
+                    End Select
+
+                Case Me.iGyActivoPDF
+                    If txtLEN(sUUID) = False Then
+                        MsgBox("Debe primero subir el XML.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return
+                    End If
+
+                    Select Case Me.GridActivos.Cell(iRenglon, Me.iGyActivoPDF).Text
+                        Case "Agregar"
+                            sRutaPDF = oPoliza.BuscarPDF() 'Note que aún no tenemos la póliza 
+
+                            If txtLEN(sRutaPDF) = True Then
+                                Me.GridActivos.Cell(iRenglon, Me.iGyActivoPDF).Text = "Ver"
+                                Me.GridActivos.Cell(iRenglon, Me.iGyActivoRutaPDF).Text = sRutaPDF
+                            End If
+
+                        Case "Ver"
+                            Process.Start(Me.GridActivos.Cell(iRenglon, Me.iGyActivoRutaPDF).Text) 'Para abrir el pdf
+                    End Select
+
+            End Select
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
+
 #End Region
 
 End Class

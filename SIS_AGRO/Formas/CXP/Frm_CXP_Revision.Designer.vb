@@ -49,6 +49,7 @@ Partial Class Frm_CXP_Revision
         Me.lblDisplayTotales = New System.Windows.Forms.Label()
         Me.txtSaldo = New System.Windows.Forms.TextBox()
         Me.txtTotal = New System.Windows.Forms.TextBox()
+        Me.GridCompras = New FlexCell.Grid()
         Me.lblDisplayPorciento = New System.Windows.Forms.Label()
         Me.DtpFechaFacturaProveedor = New System.Windows.Forms.DateTimePicker()
         Me.LblDisplayRetencion = New System.Windows.Forms.Label()
@@ -68,11 +69,13 @@ Partial Class Frm_CXP_Revision
         Me.btnActualizaConcepto = New System.Windows.Forms.Button()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
+        Me.GridActivos = New FlexCell.Grid()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.ckbDolares = New System.Windows.Forms.CheckBox()
         Me.txtImporteDolares = New System.Windows.Forms.TextBox()
         Me.txtTipoCambio = New System.Windows.Forms.TextBox()
         Me.lblDisplayTipoCambio = New System.Windows.Forms.Label()
+        Me.GridCuentas = New FlexCell.Grid()
         Me.btnRegresar = New System.Windows.Forms.Button()
         Me.txtPorciento = New System.Windows.Forms.TextBox()
         Me.txtTotalCompra = New System.Windows.Forms.TextBox()
@@ -82,19 +85,6 @@ Partial Class Frm_CXP_Revision
         Me.lblDisplayFolioProveedor = New System.Windows.Forms.Label()
         Me.txtFolioProveedor = New System.Windows.Forms.TextBox()
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
-        Me.TabControl1 = New System.Windows.Forms.TabControl()
-        Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.TabPage2 = New System.Windows.Forms.TabPage()
-        Me.gbFacturasRelacionadas = New System.Windows.Forms.GroupBox()
-        Me.btnGrabaDetalleVenta = New System.Windows.Forms.Button()
-        Me.lblTotalFacturasRelacionadas = New System.Windows.Forms.Label()
-        Me.LblDisplayTotalGasto = New System.Windows.Forms.Label()
-        Me.chkPromediarGasto = New System.Windows.Forms.CheckBox()
-        Me.StatusStripEstatus = New System.Windows.Forms.StatusStrip()
-        Me.tsslElaboro = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.tsslCancelo = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.GridCompras = New FlexCell.Grid()
-        Me.GridFacturasRelacionadas = New FlexCell.Grid()
         Me.tsbNuevo = New System.Windows.Forms.ToolStripButton()
         Me.tsbGrabar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
@@ -103,8 +93,18 @@ Partial Class Frm_CXP_Revision
         Me.tsbAgregarXML = New System.Windows.Forms.ToolStripButton()
         Me.tsbAgregarPDF = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
-        Me.GridActivos = New FlexCell.Grid()
-        Me.GridCuentas = New FlexCell.Grid()
+        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.gbFacturasRelacionadas = New System.Windows.Forms.GroupBox()
+        Me.btnGrabaDetalleVenta = New System.Windows.Forms.Button()
+        Me.lblTotalFacturasRelacionadas = New System.Windows.Forms.Label()
+        Me.LblDisplayTotalGasto = New System.Windows.Forms.Label()
+        Me.chkPromediarGasto = New System.Windows.Forms.CheckBox()
+        Me.GridFacturasRelacionadas = New FlexCell.Grid()
+        Me.StatusStripEstatus = New System.Windows.Forms.StatusStrip()
+        Me.tsslElaboro = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.tsslCancelo = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gbProveedor.SuspendLayout()
         Me.gbCompras.SuspendLayout()
         Me.gbCompraProveedor.SuspendLayout()
@@ -375,6 +375,26 @@ Partial Class Frm_CXP_Revision
         Me.txtTotal.TabIndex = 210
         Me.txtTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
+        'GridCompras
+        '
+        Me.GridCompras.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.GridCompras.CheckedImage = CType(resources.GetObject("GridCompras.CheckedImage"), System.Drawing.Bitmap)
+        Me.GridCompras.Cols = 1
+        Me.GridCompras.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
+        Me.GridCompras.DefaultRowHeight = CType(24, Short)
+        Me.GridCompras.DisplayRowNumber = True
+        Me.GridCompras.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
+        Me.GridCompras.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GridCompras.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.GridCompras.Location = New System.Drawing.Point(9, 19)
+        Me.GridCompras.LockButton = True
+        Me.GridCompras.Name = "GridCompras"
+        Me.GridCompras.Rows = 2
+        Me.GridCompras.SelectionMode = FlexCell.SelectionModeEnum.ByRow
+        Me.GridCompras.Size = New System.Drawing.Size(805, 122)
+        Me.GridCompras.TabIndex = 1
+        Me.GridCompras.UncheckedImage = CType(resources.GetObject("GridCompras.UncheckedImage"), System.Drawing.Bitmap)
+        '
         'lblDisplayPorciento
         '
         Me.lblDisplayPorciento.AutoSize = True
@@ -531,7 +551,7 @@ Partial Class Frm_CXP_Revision
         Me.gbCompraProveedor.Controls.Add(Me.LblDisplaySubTotal)
         Me.gbCompraProveedor.Location = New System.Drawing.Point(12, 89)
         Me.gbCompraProveedor.Name = "gbCompraProveedor"
-        Me.gbCompraProveedor.Size = New System.Drawing.Size(998, 389)
+        Me.gbCompraProveedor.Size = New System.Drawing.Size(1247, 389)
         Me.gbCompraProveedor.TabIndex = 2
         Me.gbCompraProveedor.TabStop = False
         '
@@ -581,6 +601,26 @@ Partial Class Frm_CXP_Revision
         Me.Label2.TabIndex = 359
         Me.Label2.Text = "Activos y deudores diversos  :"
         '
+        'GridActivos
+        '
+        Me.GridActivos.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.GridActivos.CheckedImage = CType(resources.GetObject("GridActivos.CheckedImage"), System.Drawing.Bitmap)
+        Me.GridActivos.Cols = 1
+        Me.GridActivos.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
+        Me.GridActivos.DefaultRowHeight = CType(24, Short)
+        Me.GridActivos.DisplayRowNumber = True
+        Me.GridActivos.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
+        Me.GridActivos.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GridActivos.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.GridActivos.Location = New System.Drawing.Point(9, 217)
+        Me.GridActivos.LockButton = True
+        Me.GridActivos.Name = "GridActivos"
+        Me.GridActivos.Rows = 2
+        Me.GridActivos.SelectionMode = FlexCell.SelectionModeEnum.ByCell
+        Me.GridActivos.Size = New System.Drawing.Size(1232, 130)
+        Me.GridActivos.TabIndex = 358
+        Me.GridActivos.UncheckedImage = CType(resources.GetObject("GridActivos.UncheckedImage"), System.Drawing.Bitmap)
+        '
         'Label1
         '
         Me.Label1.AutoSize = True
@@ -628,6 +668,26 @@ Partial Class Frm_CXP_Revision
         Me.lblDisplayTipoCambio.Size = New System.Drawing.Size(86, 13)
         Me.lblDisplayTipoCambio.TabIndex = 356
         Me.lblDisplayTipoCambio.Text = "Tipo de cambio :"
+        '
+        'GridCuentas
+        '
+        Me.GridCuentas.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.GridCuentas.CheckedImage = CType(resources.GetObject("GridCuentas.CheckedImage"), System.Drawing.Bitmap)
+        Me.GridCuentas.Cols = 1
+        Me.GridCuentas.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
+        Me.GridCuentas.DefaultRowHeight = CType(24, Short)
+        Me.GridCuentas.DisplayRowNumber = True
+        Me.GridCuentas.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
+        Me.GridCuentas.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GridCuentas.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.GridCuentas.Location = New System.Drawing.Point(9, 72)
+        Me.GridCuentas.LockButton = True
+        Me.GridCuentas.Name = "GridCuentas"
+        Me.GridCuentas.Rows = 2
+        Me.GridCuentas.SelectionMode = FlexCell.SelectionModeEnum.ByCell
+        Me.GridCuentas.Size = New System.Drawing.Size(1232, 126)
+        Me.GridCuentas.TabIndex = 6
+        Me.GridCuentas.UncheckedImage = CType(resources.GetObject("GridCuentas.UncheckedImage"), System.Drawing.Bitmap)
         '
         'btnRegresar
         '
@@ -710,9 +770,74 @@ Partial Class Frm_CXP_Revision
         Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbImprimir, Me.tsbEditarCostos, Me.tsbCancelar, Me.tsbAgregarXML, Me.tsbAgregarPDF, Me.tsbSalir})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
-        Me.ToolStrip1.Size = New System.Drawing.Size(1016, 27)
+        Me.ToolStrip1.Size = New System.Drawing.Size(1271, 27)
         Me.ToolStrip1.TabIndex = 0
         Me.ToolStrip1.Text = "ToolStrip1"
+        '
+        'tsbNuevo
+        '
+        Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
+        Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbNuevo.Name = "tsbNuevo"
+        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
+        Me.tsbNuevo.Text = "&Nuevo"
+        '
+        'tsbGrabar
+        '
+        Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
+        Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbGrabar.Name = "tsbGrabar"
+        Me.tsbGrabar.Size = New System.Drawing.Size(66, 24)
+        Me.tsbGrabar.Text = "&Grabar"
+        '
+        'tsbImprimir
+        '
+        Me.tsbImprimir.Image = CType(resources.GetObject("tsbImprimir.Image"), System.Drawing.Image)
+        Me.tsbImprimir.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbImprimir.Name = "tsbImprimir"
+        Me.tsbImprimir.Size = New System.Drawing.Size(77, 24)
+        Me.tsbImprimir.Text = "&Imprimir"
+        Me.tsbImprimir.ToolTipText = "Imprimir"
+        '
+        'tsbEditarCostos
+        '
+        Me.tsbEditarCostos.Image = Global.BsControl.My.Resources.Resources._782
+        Me.tsbEditarCostos.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbEditarCostos.Name = "tsbEditarCostos"
+        Me.tsbEditarCostos.Size = New System.Drawing.Size(98, 24)
+        Me.tsbEditarCostos.Text = "&Editar costos"
+        '
+        'tsbCancelar
+        '
+        Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
+        Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbCancelar.Name = "tsbCancelar"
+        Me.tsbCancelar.Size = New System.Drawing.Size(80, 24)
+        Me.tsbCancelar.Text = " Cancelar"
+        '
+        'tsbAgregarXML
+        '
+        Me.tsbAgregarXML.Image = Global.BsControl.My.Resources.Resources.xml1
+        Me.tsbAgregarXML.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbAgregarXML.Name = "tsbAgregarXML"
+        Me.tsbAgregarXML.Size = New System.Drawing.Size(100, 24)
+        Me.tsbAgregarXML.Text = "Agregar &XML"
+        '
+        'tsbAgregarPDF
+        '
+        Me.tsbAgregarPDF.Image = Global.BsControl.My.Resources.Resources.pdf11
+        Me.tsbAgregarPDF.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbAgregarPDF.Name = "tsbAgregarPDF"
+        Me.tsbAgregarPDF.Size = New System.Drawing.Size(97, 24)
+        Me.tsbAgregarPDF.Text = "Agregar PD&F"
+        '
+        'tsbSalir
+        '
+        Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
+        Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbSalir.Name = "tsbSalir"
+        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
+        Me.tsbSalir.Text = "&Salir"
         '
         'TabControl1
         '
@@ -809,49 +934,6 @@ Partial Class Frm_CXP_Revision
         Me.chkPromediarGasto.Text = "Promediar gasto"
         Me.chkPromediarGasto.UseVisualStyleBackColor = True
         '
-        'StatusStripEstatus
-        '
-        Me.StatusStripEstatus.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.StatusStripEstatus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsslElaboro, Me.tsslCancelo})
-        Me.StatusStripEstatus.Location = New System.Drawing.Point(0, 674)
-        Me.StatusStripEstatus.Name = "StatusStripEstatus"
-        Me.StatusStripEstatus.Padding = New System.Windows.Forms.Padding(1, 0, 10, 0)
-        Me.StatusStripEstatus.Size = New System.Drawing.Size(1016, 22)
-        Me.StatusStripEstatus.TabIndex = 4
-        Me.StatusStripEstatus.Text = "StatusStrip1"
-        '
-        'tsslElaboro
-        '
-        Me.tsslElaboro.Name = "tsslElaboro"
-        Me.tsslElaboro.Size = New System.Drawing.Size(53, 17)
-        Me.tsslElaboro.Text = "Elaboró :"
-        '
-        'tsslCancelo
-        '
-        Me.tsslCancelo.Name = "tsslCancelo"
-        Me.tsslCancelo.Size = New System.Drawing.Size(56, 17)
-        Me.tsslCancelo.Text = "Canceló :"
-        '
-        'GridCompras
-        '
-        Me.GridCompras.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.GridCompras.CheckedImage = CType(resources.GetObject("GridCompras.CheckedImage"), System.Drawing.Bitmap)
-        Me.GridCompras.Cols = 1
-        Me.GridCompras.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
-        Me.GridCompras.DefaultRowHeight = CType(24, Short)
-        Me.GridCompras.DisplayRowNumber = True
-        Me.GridCompras.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
-        Me.GridCompras.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GridCompras.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.GridCompras.Location = New System.Drawing.Point(9, 19)
-        Me.GridCompras.LockButton = True
-        Me.GridCompras.Name = "GridCompras"
-        Me.GridCompras.Rows = 2
-        Me.GridCompras.SelectionMode = FlexCell.SelectionModeEnum.ByRow
-        Me.GridCompras.Size = New System.Drawing.Size(805, 122)
-        Me.GridCompras.TabIndex = 1
-        Me.GridCompras.UncheckedImage = CType(resources.GetObject("GridCompras.UncheckedImage"), System.Drawing.Bitmap)
-        '
         'GridFacturasRelacionadas
         '
         Me.GridFacturasRelacionadas.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
@@ -871,117 +953,35 @@ Partial Class Frm_CXP_Revision
         Me.GridFacturasRelacionadas.TabIndex = 381
         Me.GridFacturasRelacionadas.UncheckedImage = CType(resources.GetObject("GridFacturasRelacionadas.UncheckedImage"), System.Drawing.Bitmap)
         '
-        'tsbNuevo
+        'StatusStripEstatus
         '
-        Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
-        Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbNuevo.Name = "tsbNuevo"
-        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
-        Me.tsbNuevo.Text = "&Nuevo"
+        Me.StatusStripEstatus.ImageScalingSize = New System.Drawing.Size(20, 20)
+        Me.StatusStripEstatus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsslElaboro, Me.tsslCancelo})
+        Me.StatusStripEstatus.Location = New System.Drawing.Point(0, 674)
+        Me.StatusStripEstatus.Name = "StatusStripEstatus"
+        Me.StatusStripEstatus.Padding = New System.Windows.Forms.Padding(1, 0, 10, 0)
+        Me.StatusStripEstatus.Size = New System.Drawing.Size(1271, 22)
+        Me.StatusStripEstatus.TabIndex = 4
+        Me.StatusStripEstatus.Text = "StatusStrip1"
         '
-        'tsbGrabar
+        'tsslElaboro
         '
-        Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
-        Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbGrabar.Name = "tsbGrabar"
-        Me.tsbGrabar.Size = New System.Drawing.Size(66, 24)
-        Me.tsbGrabar.Text = "&Grabar"
+        Me.tsslElaboro.Name = "tsslElaboro"
+        Me.tsslElaboro.Size = New System.Drawing.Size(53, 17)
+        Me.tsslElaboro.Text = "Elaboró :"
         '
-        'tsbImprimir
+        'tsslCancelo
         '
-        Me.tsbImprimir.Image = CType(resources.GetObject("tsbImprimir.Image"), System.Drawing.Image)
-        Me.tsbImprimir.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbImprimir.Name = "tsbImprimir"
-        Me.tsbImprimir.Size = New System.Drawing.Size(77, 24)
-        Me.tsbImprimir.Text = "&Imprimir"
-        Me.tsbImprimir.ToolTipText = "Imprimir"
-        '
-        'tsbEditarCostos
-        '
-        Me.tsbEditarCostos.Image = Global.BsControl.My.Resources.Resources._782
-        Me.tsbEditarCostos.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbEditarCostos.Name = "tsbEditarCostos"
-        Me.tsbEditarCostos.Size = New System.Drawing.Size(98, 24)
-        Me.tsbEditarCostos.Text = "&Editar costos"
-        '
-        'tsbCancelar
-        '
-        Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
-        Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbCancelar.Name = "tsbCancelar"
-        Me.tsbCancelar.Size = New System.Drawing.Size(80, 24)
-        Me.tsbCancelar.Text = " Cancelar"
-        '
-        'tsbAgregarXML
-        '
-        Me.tsbAgregarXML.Image = Global.BsControl.My.Resources.Resources.xml1
-        Me.tsbAgregarXML.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbAgregarXML.Name = "tsbAgregarXML"
-        Me.tsbAgregarXML.Size = New System.Drawing.Size(100, 24)
-        Me.tsbAgregarXML.Text = "Agregar &XML"
-        '
-        'tsbAgregarPDF
-        '
-        Me.tsbAgregarPDF.Image = Global.BsControl.My.Resources.Resources.pdf11
-        Me.tsbAgregarPDF.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbAgregarPDF.Name = "tsbAgregarPDF"
-        Me.tsbAgregarPDF.Size = New System.Drawing.Size(97, 24)
-        Me.tsbAgregarPDF.Text = "Agregar PD&F"
-        '
-        'tsbSalir
-        '
-        Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
-        Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
-        Me.tsbSalir.Text = "&Salir"
-        '
-        'GridActivos
-        '
-        Me.GridActivos.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.GridActivos.CheckedImage = CType(resources.GetObject("GridActivos.CheckedImage"), System.Drawing.Bitmap)
-        Me.GridActivos.Cols = 1
-        Me.GridActivos.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
-        Me.GridActivos.DefaultRowHeight = CType(24, Short)
-        Me.GridActivos.DisplayRowNumber = True
-        Me.GridActivos.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
-        Me.GridActivos.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GridActivos.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.GridActivos.Location = New System.Drawing.Point(9, 217)
-        Me.GridActivos.LockButton = True
-        Me.GridActivos.Name = "GridActivos"
-        Me.GridActivos.Rows = 2
-        Me.GridActivos.SelectionMode = FlexCell.SelectionModeEnum.ByCell
-        Me.GridActivos.Size = New System.Drawing.Size(970, 130)
-        Me.GridActivos.TabIndex = 358
-        Me.GridActivos.UncheckedImage = CType(resources.GetObject("GridActivos.UncheckedImage"), System.Drawing.Bitmap)
-        '
-        'GridCuentas
-        '
-        Me.GridCuentas.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.GridCuentas.CheckedImage = CType(resources.GetObject("GridCuentas.CheckedImage"), System.Drawing.Bitmap)
-        Me.GridCuentas.Cols = 1
-        Me.GridCuentas.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
-        Me.GridCuentas.DefaultRowHeight = CType(24, Short)
-        Me.GridCuentas.DisplayRowNumber = True
-        Me.GridCuentas.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
-        Me.GridCuentas.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GridCuentas.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.GridCuentas.Location = New System.Drawing.Point(9, 72)
-        Me.GridCuentas.LockButton = True
-        Me.GridCuentas.Name = "GridCuentas"
-        Me.GridCuentas.Rows = 2
-        Me.GridCuentas.SelectionMode = FlexCell.SelectionModeEnum.ByCell
-        Me.GridCuentas.Size = New System.Drawing.Size(970, 126)
-        Me.GridCuentas.TabIndex = 6
-        Me.GridCuentas.UncheckedImage = CType(resources.GetObject("GridCuentas.UncheckedImage"), System.Drawing.Bitmap)
+        Me.tsslCancelo.Name = "tsslCancelo"
+        Me.tsslCancelo.Size = New System.Drawing.Size(56, 17)
+        Me.tsslCancelo.Text = "Canceló :"
         '
         'Frm_CXP_Revision
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
-        Me.ClientSize = New System.Drawing.Size(1016, 696)
+        Me.ClientSize = New System.Drawing.Size(1271, 696)
         Me.Controls.Add(Me.StatusStripEstatus)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.ToolStrip1)
