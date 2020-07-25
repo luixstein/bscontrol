@@ -1938,6 +1938,14 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
 
     Private Sub TotalizaGridCentrosCostosyActivos()
         Try
+            For i = 1 To Me.GridCuentas.Rows - 1
+                Me.GridCuentas.Cell(i, Me.iGyCtasTotal).Text = RedondearD(valorNumericoD(Me.GridCuentas.Cell(i, Me.iGyCtasImporte).Text) + valorNumericoD(Me.GridCuentas.Cell(i, Me.iGyCtasIVA).Text), 2).ToString
+            Next
+
+            For i = 1 To Me.GridActivos.Rows - 1
+                Me.GridActivos.Cell(i, Me.iGyActivoTotal).Text = RedondearD(valorNumericoD(Me.GridActivos.Cell(i, Me.iGyActivoImporte).Text) + valorNumericoD(Me.GridCuentas.Cell(i, Me.iGyActivoIVA).Text), 2).ToString
+            Next
+
             Me.TxtSubTotal.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridCuentas, CShort(Me.iGyCtasImporte)) + FG_Grid_SumaCol(Me.GridActivos, CShort(Me.iGyActivoImporte)))
 
             Me.TxtIVA.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridCuentas, CShort(Me.iGyCtasIVA)) + FG_Grid_SumaCol(Me.GridActivos, CShort(Me.iGyActivoIVA)))
@@ -2349,6 +2357,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                     MsgBox("Captúre los renglones.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
+
                 Dim dSumaGridCuentas As Double = Redondear(FG_Grid_SumaCol(Me.GridCuentas, CShort(Me.iGyCtasImporte)), 2)
                 Dim dSumaGridActivos As Double = Redondear(FG_Grid_SumaCol(Me.GridActivos, CShort(Me.iGyActivoImporte)), 2)
                 Dim dSumaRenglones As Double = Redondear(dSumaGridCuentas + dSumaGridActivos, 2)
@@ -3005,6 +3014,8 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
 
             End Select
 
+            Me.TotalizaGridCentrosCostosyActivos()
+
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
@@ -3074,6 +3085,8 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                     End Select
 
             End Select
+
+            Me.TotalizaGridCentrosCostosyActivos()
 
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
