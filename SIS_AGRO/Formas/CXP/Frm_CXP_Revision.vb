@@ -979,10 +979,12 @@ Buscar:
                 .Column(Me.iGyCtasIVA).Width = 70
                 .Column(Me.iGyCtasTotal).Width = 80
                 .Column(Me.iGyCuentaContable).Width = 100
-                .Column(Me.iGyCtasUUID).Width = 50
+                .Column(Me.iGyCtasUUID).Width = 60
                 '.Column(Me.iGyCtasNombrePDF).Width = 30
                 .Column(Me.iGyCtasXML).Width = 60
                 .Column(Me.iGyCtasPDF).Width = 60
+                .Column(Me.iGyCtasRutaXML).Visible = False
+                .Column(Me.iGyCtasRutaPDF).Visible = False
 
                 .Cell(0, Me.iGyCodigoCentroCosto).Text = "CCos"
                 .Cell(0, Me.iGyNombreCentroCosto).Text = "C.costo"
@@ -1051,6 +1053,11 @@ Buscar:
                 .Column(Me.iGyActivoCuentaContable).Width = 100
                 .Column(Me.iGyActivoNombreCuenta).Width = 500
                 .Column(Me.iGyActivoImporte).Width = 80
+                .Column(Me.iGyActivoIVA).Width = 50
+                .Column(Me.iGyActivoTotal).Width = 50
+                .Column(Me.iGyActivoUUID).Width = 60
+                .Column(Me.iGyActivoRutaXML).Visible = False
+                .Column(Me.iGyActivoRutaPDF).Visible = False
 
                 .Cell(0, Me.iGyActivoCuentaContable).Text = "Cuenta contable"
                 .Cell(0, Me.iGyActivoNombreCuenta).Text = "Nombre cuenta"
@@ -2144,6 +2151,44 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                             MsgBox("Error al tratar de grabar facturas relacionadas.", MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         End If
+                    End If
+
+                    Dim oPoliza As New Class_Contabilidad_Poliza_Global(Me.txtFolioCompra.Text)
+
+                    If oPoliza.Existe = True Then
+                        Dim sUUID As String = "", sRutaXML As String = "", sRutaPDF As String = ""
+
+                        For i = 1 To Me.GridCuentas.Rows - 1
+                            sUUID = Me.GridCuentas.Cell(i, Me.iGyCtasUUID).Text
+                            sRutaXML = Me.GridCuentas.Cell(i, Me.iGyCtasRutaXML).Text
+                            sRutaPDF = Me.GridCuentas.Cell(i, Me.iGyCtasRutaPDF).Text
+
+                            If txtLEN(sUUID) = False Then
+                                Continue For
+                            End If
+
+                            If txtLEN(sRutaXML) = True Then
+                                If oPoliza.TieneRelacionadoUUID(sUUID) = False Then 'Si la póliza no tiene relacionado todavia el uuid si se relaciona, si ya lo tiene no porque marcaria error(el xml ya existirá en el repositorio y relacionado).
+                                    bResultado = oPoliza.AgregarXMLPDF(sRutaXML, sRutaPDF) 'sRutaPDF pudiera venir vacio y no grabará el pdf
+                                End If
+                            End If
+                        Next
+
+                        For i = 1 To Me.GridActivos.Rows - 1
+                            sUUID = Me.GridActivos.Cell(i, Me.iGyActivoUUID).Text
+                            sRutaXML = Me.GridActivos.Cell(i, Me.iGyActivoRutaXML).Text
+                            sRutaPDF = Me.GridActivos.Cell(i, Me.iGyActivoRutaPDF).Text
+
+                            If txtLEN(sUUID) = False Then
+                                Continue For
+                            End If
+
+                            If txtLEN(sRutaXML) = True Then
+                                If oPoliza.TieneRelacionadoUUID(sUUID) = False Then 'Si la póliza no tiene relacionado todavia el uuid si se relaciona, si ya lo tiene no porque marcaria error(el xml ya existirá en el repositorio y relacionado).
+                                    bResultado = oPoliza.AgregarXMLPDF(sRutaXML, sRutaPDF) 'sRutaPDF pudiera venir vacio y no grabará el pdf
+                                End If
+                            End If
+                        Next
                     End If
 
                     MsgBox("Movimiento de gasto grabado satisfactoriamente.", MsgBoxStyle.Information, sProcedure)

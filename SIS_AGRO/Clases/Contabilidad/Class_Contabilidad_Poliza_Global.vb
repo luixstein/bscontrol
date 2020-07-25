@@ -1274,6 +1274,20 @@ Public Class Class_Contabilidad_Poliza_Global
         Return bResultado
     End Function
 
+    Public Function TieneRelacionadoUUID(ByVal sUUID As String) As Boolean
+        Const sProcedure As String = "TieneRelacionadoUUID"
+        Dim bResultado As Boolean = False
+
+        Try
+            If txtLEN(New Class_find("SELECT 1 FROM CONTABILIDAD_POLIZA_RELACION_XML WHERE FOLIO_POLIZA='" & Me._FOLIO_POLIZA & "' AND UUID='" & sReplace(sUUID) & "'").Result1) = True Then
+                bResultado = True
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
 #End Region
 
 End Class
