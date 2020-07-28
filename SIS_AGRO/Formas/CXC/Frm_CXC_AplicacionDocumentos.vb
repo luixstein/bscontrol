@@ -97,7 +97,7 @@ busca:
                 sText = BusquedaVisualDocumentosVentas()
                 If txtLEN(sText) = True Then
                     Me.txtReferencia.Text = sText
-                    oVenta = New Class_Ventas_Global(sText)
+                    oVenta = New Class_Ventas_Global(sText, False)
                     Me.txtSaldo.Text = FormatImporteContable(oVenta.SALDO)
                     Me.dtpFechaVenta.Value = oVenta.FECHA
                 End If
@@ -199,7 +199,7 @@ busca:
             'Me.tssElaboro.Text = oBancosCXC.NOMBRE_USUARIO_GRABO
 
             If txtLEN(oBancosCXC.FOLIO_REFERENCIA) = True Then
-                Dim oVenta = New Class_Ventas_Global(oBancosCXC.FOLIO_REFERENCIA)
+                Dim oVenta = New Class_Ventas_Global(oBancosCXC.FOLIO_REFERENCIA, False)
                 Me.txtSaldo.Text = FormatImporteContable(oVenta.SALDO).ToString
                 Me.dtpFechaVenta.Value = oVenta.FECHA
             End If
@@ -247,7 +247,7 @@ busca:
                 Me.tssElaboro.Text = .NOMBRE_USUARIO_GRABO
 
                 If txtLEN(oBancosCXC.FOLIO_REFERENCIA) = True Then
-                    Dim oVenta = New Class_Ventas_Global(.FOLIO_REFERENCIA)
+                    Dim oVenta = New Class_Ventas_Global(.FOLIO_REFERENCIA, False)
                     Me.txtSaldo.Text = FormatImporteContable(oVenta.SALDO).ToString
                     Me.dtpFechaVenta.Value = oVenta.FECHA
                 End If

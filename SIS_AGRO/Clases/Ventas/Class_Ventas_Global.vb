@@ -951,11 +951,11 @@ Public Class Class_Ventas_Global
         oVentasDetalle = New Class_Ventas_Detalle
     End Sub
 
-    Public Sub New(ByVal sfolioVenta As String)
+    Public Sub New(ByVal sfolioVenta As String, Optional ByVal bFiltrarPlaza As Boolean = True)
         Me.New()
         Try
             Me._FOLIO_VENTA = sfolioVenta
-            If Me.Consultar = False Then
+            If Me.Consultar(bFiltrarPlaza) = False Then
                 'Throw New Exception("El documento de venta no existe.")
             Else
                 Me._Existe = True
@@ -1195,7 +1195,7 @@ Public Class Class_Ventas_Global
         Return bResultado
     End Function
 
-    Public Function Consultar() As Boolean
+    Public Function Consultar(Optional ByVal bFiltrarPlaza As Boolean = True) As Boolean
         Dim bResultado As Boolean = False
 
         Dim sSQL As String = ""
@@ -1212,7 +1212,11 @@ Public Class Class_Ventas_Global
             "LEFT JOIN SIS_USUARIOS U2 ON(G.CODIGO_USUARIO_CANCELO=U2.CODIGO_USUARIO) " &
             "LEFT JOIN SIS_CFD_CATALOGO_CERTIFICADOS CFD ON(G.ID_SIS_CFD_CATALOGO_CERTIFICADOS=CFD.ID_SIS_CFD_CATALOGO_CERTIFICADOS) " &
             "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(G.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
-            "WHERE G.FOLIO_VENTA='" & Replace(Me._FOLIO_VENTA, "'", "''") & "' AND G.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " "
+            "WHERE G.FOLIO_VENTA='" & Replace(Me._FOLIO_VENTA, "'", "''") & "' "
+
+        If bFiltrarPlaza Then
+            sSQL = sSQL & "AND G.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " "
+        End If
 
         Dim cmd As New SqlCommand(sSQL, Me._Conexion)
         Dim dReader As SqlDataReader
