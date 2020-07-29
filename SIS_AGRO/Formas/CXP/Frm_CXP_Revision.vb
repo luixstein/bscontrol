@@ -1943,7 +1943,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
             Next
 
             For i = 1 To Me.GridActivos.Rows - 1
-                Me.GridActivos.Cell(i, Me.iGyActivoTotal).Text = RedondearD(valorNumericoD(Me.GridActivos.Cell(i, Me.iGyActivoImporte).Text) + valorNumericoD(Me.GridCuentas.Cell(i, Me.iGyActivoIVA).Text), 2).ToString
+                Me.GridActivos.Cell(i, Me.iGyActivoTotal).Text = RedondearD(valorNumericoD(Me.GridActivos.Cell(i, Me.iGyActivoImporte).Text) + valorNumericoD(Me.GridActivos.Cell(i, Me.iGyActivoIVA).Text), 2).ToString
             Next
 
             Me.TxtSubTotal.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridCuentas, CShort(Me.iGyCtasImporte)) + FG_Grid_SumaCol(Me.GridActivos, CShort(Me.iGyActivoImporte)))
