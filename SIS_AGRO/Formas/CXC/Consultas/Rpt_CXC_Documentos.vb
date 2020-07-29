@@ -238,6 +238,7 @@ Buscar:
             Me.DesplegarDocumentos()
             Me.DesplegarZona()
             Me.DesplegarPlaza()
+            Me.DesplegarMonedas()
             ' Me.DesplegarEstatus()
             Me.CboTipoMercado.SelectedValue = "T"
             Me.CboDocumentos.SelectedValue = "T"
@@ -320,6 +321,15 @@ Buscar:
         End Try
     End Sub
 
+    Private Sub DesplegarMonedas()
+        With Me.CboMoneda
+            .Items.Add("MXN")
+            .Items.Add("USD")
+            .Items.Add("TODAS")
+            .SelectedItem = "TODAS"
+        End With
+    End Sub
+
     'Private Sub DesplegarEstatus()
     '    Dim oElementos As New Class_CatEstatus
     '    With Me.CboEstatus
@@ -374,6 +384,8 @@ Buscar:
                 Rpt.SetParameterValue("@CODIGO_PROPIETARIO", valorNumerico(Me.txtPropietario.Text))
                 Rpt.SetParameterValue("@CODIGO_USUARIO_GRABO", IIf(txtLEN(Me.txtCodigoUsuario.Text) = True, Me.txtCodigoUsuario.Text, 0))
                 Rpt.SetParameterValue("@SOLO_CON_SALDO_VENCIDO", IIf(Me.chkClientesSaldoVencido.Checked = True, "1", "0"))
+                Rpt.SetParameterValue("@CODIGO_MONEDA", Me.CboMoneda.Text)
+
             ElseIf Me.RdbDetalleDepositos.Checked = True Then
                 Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.txtCodigoCliente.Text)
                 Rpt.SetParameterValue("@FECHA1", Format(Me.dpFechaInicio.Value, "yyyy-dd-MM"))
@@ -439,7 +451,7 @@ Buscar:
                 Me.gpFiltroFecha.Visible = False
                 Me.chkClientesSaldoVencido.Visible = True
                 Me.lblTipoCambio.Visible = False : Me.txtTipoCambio.Visible = False
-
+                Me.LblMoneda.Visible = True : Me.CboMoneda.Visible = True
                 If Me.RdbGlobalCXC.Checked = True Then
                     Me.gbFormatoEdoCtaGlobal.Visible = True
                 End If
@@ -456,6 +468,8 @@ Buscar:
                 Me.gpFiltroFecha.Visible = False
                 Me.lblTipoCambio.Visible = True : Me.txtTipoCambio.Visible = True
                 Me.chkClientesSaldoVencido.Visible = False
+                Me.LblMoneda.Visible = False : Me.CboMoneda.Visible = False
+
             Else
                 Me.lblDisplayFechaInicio.Visible = True : Me.dpFechaInicio.Visible = True ': Me.lblDisplayFechaInicio.Location = New Point(4, 54) :  : Me.dpFechaInicio.Location = New Point(88, 51)
                 Me.LblDisplayFechaFinal.Visible = True : Me.dpFechaFinal.Visible = True ': Me.LblDisplayFechaFinal.Location = New Point(215, 54)  : Me.dpFechaFinal.Location = New Point(265, 50)
@@ -469,6 +483,7 @@ Buscar:
                 Me.gpFiltroFecha.Visible = True
                 Me.chkClientesSaldoVencido.Visible = False
                 Me.lblTipoCambio.Visible = False : Me.txtTipoCambio.Visible = False
+                Me.LblMoneda.Visible = False : Me.CboMoneda.Visible = False
             End If
 
         Catch ex As Exception
