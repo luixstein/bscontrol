@@ -399,6 +399,8 @@ Buscar:
                 Rpt.SetParameterValue("@FILTRAR_POR_FECHA_SERVIDOR", IIf(Me.rbtFechaServidor.Checked = True, "1", "0"))
                 Rpt.SetParameterValue("@CODIGO_USUARIO_GRABO", IIf(txtLEN(Me.txtCodigoUsuario.Text) = True, Me.txtCodigoUsuario.Text, 0))
                 Rpt.SetParameterValue("@FILTRAR_POR_FECHA_VENTA", IIf(Me.rbtDocumentoVenta.Checked = True, "1", "0"))
+                Rpt.SetParameterValue("@CODIGO_VENDEDOR", Me.txtCodigoVendedor.Text)
+                Rpt.SetParameterValue("@CODIGO_TIPO_DOCUMENTO_VENTA", Me.CboDocumentos.SelectedValue.ToString)
             ElseIf Me.rbtCobranzaAnticipo.Checked = True Or Me.rbtPropietariosConAnticipos.Checked Then
                 Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.txtCodigoCliente.Text)
                 Rpt.SetParameterValue("@CODIGO_VENDEDOR", Me.txtCodigoVendedor.Text)
@@ -476,8 +478,8 @@ Buscar:
                 Me.lblDisplayEstatus.Visible = True : Me.CboEstatus.Visible = True ': Me.lblDisplayEstatus.Location = New Point(4, 80) : Me.CboEstatus.Location = New Point(88, 80)
                 Me.lblDisplayCuentaBancaria.Visible = True : Me.txtCuentaBancaria.Visible = True ': Me.lblDisplayCuentaBancaria.Location = New Point(4, 140)  : Me.txtCuentaBancaria.Location = New Point(88, 140)
                 Me.lblCuentaBancaria.Visible = True ': Me.lblCuentaBancaria.Location = New Point(140, 142)
-                Me.lblDisplayVendedor.Visible = False : Me.txtCodigoVendedor.Visible = False : Me.lblNombreVendedor.Visible = False
-                Me.LblDisplayDocumento.Visible = False : Me.CboDocumentos.Visible = False
+                Me.lblDisplayVendedor.Visible = True : Me.txtCodigoVendedor.Visible = True : Me.lblNombreVendedor.Visible = True
+                Me.LblDisplayDocumento.Visible = True : Me.CboDocumentos.Visible = True
                 Me.LblDisplayTipoMercado.Visible = False : Me.CboTipoMercado.Visible = False
                 Me.LblDisplayPlaza.Visible = True : Me.cboPlaza.Visible = True
                 Me.gpFiltroFecha.Visible = True
