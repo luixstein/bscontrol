@@ -2125,16 +2125,18 @@ Buscar:
         End If
 
         If Me.oDocumento.AFECTA_INVENTARIOS = True Then
-            If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
-                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Exclamation, sProcedure)
-                Return False
-            End If
-
-            If Empresa_Sistema.VALIDAR_CANCELACION_VENTAS = True Then
+            If Empresa_Sistema.VALIDAR_CANCELACION_VENTAS = True Then 'Si el parametro es True valida que tenga el permiso de cancelación de ventas
                 If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios("CV_VTA" & Usuario.Codigo_Plaza.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
                     MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para cancelar el documento.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
+
+            Else
+                If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
+                    MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
             End If
         Else
             If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString) = False Then
