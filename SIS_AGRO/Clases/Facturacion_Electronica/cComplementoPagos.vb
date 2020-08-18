@@ -444,14 +444,24 @@ Friend Class cComplementoPagos
                 MsgBox("Monto : Debe ser mayor a cero.", vbExclamation, sProcedure) : Exit Function
             End If
 
+            Dim dPagoDR As Decimal = 0
             For i = 1 To Me.DoctoRelacionados.Count
-                dSumaPagado = dSumaPagado + valorNumerico(Me.DoctoRelacionados.Item(i).ImpPagado)
+                'dSumaPagado = dSumaPagado + valorNumerico(Me.DoctoRelacionados.Item(i).ImpPagado)
+
+                If Me.DoctoRelacionados.Item(i).MonedaDR <> Me.MonedaP Then
+                    dPagoDR = RedondearD(valorNumericoD(Me.DoctoRelacionados.Item(i).ImpPagado) / valorNumericoD(Me.DoctoRelacionados.Item(i).TipoCambioDR), 2)
+                Else
+                    dPagoDR = valorNumericoD(Me.DoctoRelacionados.Item(i).ImpPagado)
+                End If
+
+                dSumaPagado = dSumaPagado + dPagoDR
                 dSumaPagado = Redondear(dSumaPagado, 2)
             Next
 
             'MsgBox ("duda: NumOperacion , validar que la lleve si es spei ?, no esta claro si deba ser obligatorio a llevar la clave de rastreo en caso de ser SPEI(Dice en la guia NumOperacion)"
 
-            If dSumaPagado <> valorNumerico(Me.Monto) Then
+            'If dSumaPagado <> valorNumerico(Me.Monto) Then
+            If Math.Abs(dSumaPagado - valorNumericoD(Me.Monto)) > 10 Then 'El sat permite una variación que calcula, de momento validamos 10 pesos fijos.
                 'If dSumaPagado > valorNumerico(Me.Monto) Then
                 'MsgBox("Monto : La suma de los valores registrados en el nodo DoctoRelacionados, atributo ImpPagado, sea menor o igual que el valor de este atributo." & vbCrLf &
                 MsgBox("Monto : La suma de los valores registrados en el nodo DoctoRelacionados, atributo ImpPagado, sea igual que el valor de este atributo." & vbCrLf &

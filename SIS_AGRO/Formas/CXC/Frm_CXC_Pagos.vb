@@ -1237,7 +1237,6 @@ Buscar:
             .CommandType = CommandType.Text
             Try
 
-
                 sql = New Class_find("SELECT NOMBRE_MEDIO_PAGO FROM SIS_MEDIOS_PAGO WHERE ID_MEDIO_PAGO=" & sReplace(Me.CboMedioDePago.SelectedValue.ToString) & " AND ESTATUS='A'")
                 sMedioPago = sql.Result1
 
@@ -1610,12 +1609,12 @@ Buscar:
             oBancosCXC.CONCEPTO1 = Me.TxtConcepto.Text.ToUpper
             oBancosCXC.CODIGO_PLAZA = Usuario.Codigo_Plaza
             If Me.cboMoneda.Text = "USD" Then
-                oBancosCXC.TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text)
                 oBancosCXC.TOTAL_DOLARES = valorNumerico(Me.TxtTotal.Text)
                 oBancosCXC.TOTAL = valorNumerico(Me.TxtTotal.Text) * valorNumerico(Me.txtTipoCambio.Text)
             Else
                 oBancosCXC.TOTAL = valorNumerico(Me.TxtTotal.Text)
             End If
+            oBancosCXC.TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text) 'Puede ser un pago en mxn de factura en usd y se necesita este tipo de cambios poara el campo TipoCambioDr en el complemento de pago.
             oBancosCXC.CODIGO_MONEDA_SAT = Me.cboMoneda.Text
 
             If Me.GridDocumentosPago.Cell(1, Me.iGyDocCODIGO_FORMA_PAGO).Text = "02" Then '02=Cheque

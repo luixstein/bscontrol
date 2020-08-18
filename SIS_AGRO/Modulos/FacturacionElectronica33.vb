@@ -603,14 +603,14 @@ Module FacturacionElectronica33
         Return arr
     End Function
 
-    Public Function FormatTipoCambio(ByVal dTipoCambio As Double, Optional ByVal bConSignoMoneda As Boolean = True) As String
+    Public Function FormatTipoCambio(ByVal dTipoCambio As Double, Optional ByVal bConSignoMoneda As Boolean = True, Optional ByVal dDecimales As Integer = 4) As String
         Const sProcedure As String = "FormatTipoCambio"
         Dim sResultado As String = ""
         Try
             If bConSignoMoneda = True Then
-                sResultado = Format(dTipoCambio, "$ ##0." & CerosEnCadena(4))
+                sResultado = Format(dTipoCambio, "$ ##0." & CerosEnCadena(dDecimales))
             Else
-                sResultado = Format(dTipoCambio, "##0." & CerosEnCadena(4))
+                sResultado = Format(dTipoCambio, "##0." & CerosEnCadena(dDecimales))
             End If
 
         Catch ex As Exception
@@ -925,9 +925,15 @@ Module FacturacionElectronica33
                         Return False
                     End If
 
+                    '.DoctoRelacionados.Add(oPagoDetalle.FACTURA_FOLIO_FISCAL_SAT, oPagoDetalle.FACTURA_SERIE, oPagoDetalle.FACTURA_FOLIO_NUMERICO,
+                    '                       "USD",
+                    '                       FormatTipoCambio(0.043244, False, 6).ToString,
+                    '                       oPagoDetalle.CODIGO_METODO_PAGO_EVENTO_DR, oPagoDetalle.NUMERO_PARCIALIDAD,
+                    '                       Format(487.44, "#0.00"), Format(487.44, "#0.00"), Format(oPagoDetalle.IMPORTE_SALDO_INSOLUTO, "#0.00"))
+
                     .DoctoRelacionados.Add(oPagoDetalle.FACTURA_FOLIO_FISCAL_SAT, oPagoDetalle.FACTURA_SERIE, oPagoDetalle.FACTURA_FOLIO_NUMERICO,
                                            oPagoDetalle.CODIGO_MONEDA_SAT_DR,
-                                           IIf(oPagoDetalle.CODIGO_MONEDA_SAT_DR <> complementoPagos.MonedaP, FormatTipoCambio(oPagoDetalle.TIPO_CAMBIO_DR, False), "").ToString,
+                                           IIf(oPagoDetalle.CODIGO_MONEDA_SAT_DR <> complementoPagos.MonedaP, FormatTipoCambio(oPagoDetalle.TIPO_CAMBIO_DR, False, 6), "").ToString,
                                            oPagoDetalle.CODIGO_METODO_PAGO_EVENTO_DR, oPagoDetalle.NUMERO_PARCIALIDAD,
                                            Format(oPagoDetalle.IMPORTE_SALDO_ANTERIOR, "#0.00"), Format(oPagoDetalle.IMPORTE_PAGADO, "#0.00"), Format(oPagoDetalle.IMPORTE_SALDO_INSOLUTO, "#0.00"))
                 Next
