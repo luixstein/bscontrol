@@ -4412,6 +4412,8 @@ buscaCentrosCostos:
 
             Me.bClienteEsContribuyenteIEPS = CBool(Me.oCliente.ES_CONTRIBUYENTE_IEPS)
 
+            Me.cboTipoNegociacion.SelectedValue = Me.oCliente.CODIGO_TIPO_NEGOCIACION
+
             Return True
         Catch ex As Exception
             HandleError(Me.Name, "ConsultarCliente", ex)

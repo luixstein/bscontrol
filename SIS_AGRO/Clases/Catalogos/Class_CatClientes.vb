@@ -52,6 +52,7 @@ Public Class Class_CatClientes
     Private _CODIGO_USO_CFDI As String
     Private _CORREO_CLIENTE_PAGOS As String
     Private _CODIGO_GIRO As String
+    Private _CODIGO_TIPO_NEGOCIACION As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -463,6 +464,15 @@ Public Class Class_CatClientes
         End Set
     End Property
 
+    Public Property CODIGO_TIPO_NEGOCIACION() As String
+        Get
+            Return Me._CODIGO_TIPO_NEGOCIACION
+        End Get
+        Set(value As String)
+            Me._CODIGO_TIPO_NEGOCIACION = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -565,7 +575,7 @@ Public Class Class_CatClientes
         "C.CODIGO_VENDEDOR,C.CUENTA_CONTABLE,C.CUENTA_CONTABLE_DOLARES,C.LIMITE_CREDITO,C.DIAS_PLAZO,C.SALDO,C.PERMITIR_VENTA_CREDITO, " &
         "C.FECHA_ALTA,C.PLAZA,C.CORREO_CLIENTE,C.CODIGO_METODO_PAGO,C.NUMERO_CUENTA_PAGO,C.CODIGO_METODO_PAGO_DOLARES,C.NUMERO_CUENTA_PAGO_DOLARES,C.CODIGO_TIPO_MERCADO,C.FORMATO_NOMBRE_XML," &
         "C.CODIGO_ALMACEN, " &
-        "C.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO,C.CODIGO_MUNICIPIO,C.CODIGO_ESTADO,E.CODIGO_ESTADO_SAT,C.CODIGO_PAIS_SAT,M.NOMBRE_MUNICIPIO,E.NOMBRE_ESTADO,P.NOMBRE_PAIS,C.ES_CONTRIBUYENTE_IEPS,C.CODIGO_USO_CFDI,C.CODIGO_PROPIETARIO,C.CORREO_CLIENTE_PAGOS,C.CODIGO_GIRO " &
+        "C.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO,C.CODIGO_MUNICIPIO,C.CODIGO_ESTADO,E.CODIGO_ESTADO_SAT,C.CODIGO_PAIS_SAT,M.NOMBRE_MUNICIPIO,E.NOMBRE_ESTADO,P.NOMBRE_PAIS,C.ES_CONTRIBUYENTE_IEPS,C.CODIGO_USO_CFDI,C.CODIGO_PROPIETARIO,C.CORREO_CLIENTE_PAGOS,C.CODIGO_GIRO,C.CODIGO_TIPO_NEGOCIACION " &
         "FROM CAT_CLIENTES C " &
         "LEFT JOIN CAT_MUNICIPIOS M ON(C.CODIGO_MUNICIPIO=M.CODIGO_MUNICIPIO) " &
         "LEFT JOIN SIS_ESTADOS E ON(C.CODIGO_ESTADO=E.CODIGO_ESTADO) " &
@@ -646,6 +656,7 @@ Public Class Class_CatClientes
             sqlParametro = .Parameters.Add("@CODIGO_USO_CFDI", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_USO_CFDI.ToString
             sqlParametro = .Parameters.Add("@CORREO_CLIENTE_PAGOS", SqlDbType.NVarChar, 500) : sqlParametro.Value = Me._CORREO_CLIENTE_PAGOS.ToString
             sqlParametro = .Parameters.Add("@CODIGO_GIRO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_GIRO)
+            sqlParametro = .Parameters.Add("@CODIGO_TIPO_NEGOCIACION", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_TIPO_NEGOCIACION)
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._AGREGAR.ToString
             Try
                 Me._Conexion.Open()
@@ -730,6 +741,7 @@ Public Class Class_CatClientes
 
                     Me._CORREO_CLIENTE_PAGOS = Trim("" & dReader("CORREO_CLIENTE_PAGOS").ToString)
                     Me._CODIGO_GIRO = "" & dReader("CODIGO_GIRO").ToString
+                    Me._CODIGO_TIPO_NEGOCIACION = "" & dReader("CODIGO_TIPO_NEGOCIACION").ToString
 
                     bResultado = True
                 End If

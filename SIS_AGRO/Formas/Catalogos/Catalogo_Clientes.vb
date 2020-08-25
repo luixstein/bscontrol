@@ -518,6 +518,7 @@ busca:
         Me.DesplegarFormasPago()
         Me.DesplegarFormasPagoDolares()
         Me.DesplegarGirosClientes()
+        Me.DesplegarTiposNegociaciones()
 
         If Empresa_Sistema.VERSION_ESQUEMA_CFD >= "3.3" Then
             'Me.gbMetodoPago.Visible = False
@@ -583,6 +584,7 @@ busca:
                     Me.TxtCodigoAlmacen.Enabled = True
                     Me.cboUsoCFDI.Enabled = True
                     Me.CboGiros.Enabled = True
+                    Me.CboTipoNegociacion.Enabled = True
 
                     Me.InicializaElemento()
 
@@ -651,6 +653,7 @@ busca:
 
                     Me.cboUsoCFDI.Enabled = True
                     Me.CboGiros.Enabled = True
+                    Me.CboTipoNegociacion.Enabled = True
 
                     Me.TxtNombreCliente.Focus()
 
@@ -705,6 +708,7 @@ busca:
                     Me.CboEstatusFiltro.SelectedIndex = 0
                     Me.cboUsoCFDI.Enabled = False
                     Me.CboGiros.Enabled = False
+                    Me.CboTipoNegociacion.Enabled = False
             End Select
             Application.DoEvents()
 
@@ -757,6 +761,7 @@ busca:
             Me.txtNumeroRegistroIdentificadorExtranjero.Text = ""
             Me.TxtCodigoAlmacen.Text = ""
             Me.chkEsContribuyenteIEPS.Checked = False
+            Me.CboTipoNegociacion.SelectedValue = 1 'Credito
         Catch ex As Exception
             HandleError(Me.Name, "InicializaElemento", ex)
         End Try
@@ -930,6 +935,7 @@ busca:
 
                         .CODIGO_USO_CFDI = Me.cboUsoCFDI.SelectedValue.ToString
                         .CODIGO_GIRO = Me.CboGiros.SelectedValue.ToString
+                        .CODIGO_TIPO_NEGOCIACION = Me.CboTipoNegociacion.SelectedValue.ToString
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -1254,6 +1260,7 @@ busca:
                     Me.chkEsContribuyenteIEPS.Checked = CBool(.ES_CONTRIBUYENTE_IEPS)
                     Me.cboUsoCFDI.SelectedValue = .CODIGO_USO_CFDI
                     Me.CboGiros.SelectedValue = .CODIGO_GIRO
+                    Me.CboTipoNegociacion.SelectedValue = .CODIGO_TIPO_NEGOCIACION
                 End With
 
                 Dim sql As New Class_find("SELECT R.ID,R.CODIGO_PROPIETARIO,P.NOMBRE_PROPIETARIO FROM CAT_PROPIETARIOS_RELACION_CLIENTES R INNER JOIN CAT_PROPIETARIOS P ON(R.CODIGO_PROPIETARIO=P.CODIGO_PROPIETARIO) " _
@@ -1393,6 +1400,24 @@ busca:
             End If
         Catch ex As Exception
             HandleError(Me.Name, "DesplegarMunicipios", ex)
+        End Try
+    End Sub
+
+    Private Sub DesplegarTiposNegociaciones()
+        Try
+            Dim oElementos As New Class_CatTiposNegociaciones
+            With Me.cboTipoNegociacion
+                .DisplayMember = "NOMBRE_TIPO_NEGOCIACION"
+                .ValueMember = "CODIGO_TIPO_NEGOCIACION"
+                Dim dView As New Data.DataView(oElementos.ObtenerElementos)
+                dView.Sort = "NOMBRE_TIPO_NEGOCIACION"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedValue = 1 '1=CREDITO
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarTiposNegociaciones", ex)
         End Try
     End Sub
 

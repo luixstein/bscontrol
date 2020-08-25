@@ -131,6 +131,8 @@ Partial Class Catalogo_Clientes
         Me.lblDisplayNumCuenta = New System.Windows.Forms.Label()
         Me.txtNumeroCuenta = New System.Windows.Forms.TextBox()
         Me.lblDisplayFormaPago = New System.Windows.Forms.Label()
+        Me.CboTipoNegociacion = New System.Windows.Forms.ComboBox()
+        Me.LblTipoNegociacion = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gBoxInformacion.SuspendLayout()
         Me.gbDatosVentas.SuspendLayout()
@@ -869,7 +871,7 @@ Partial Class Catalogo_Clientes
         Me.gbDomicilio.Margin = New System.Windows.Forms.Padding(4)
         Me.gbDomicilio.Name = "gbDomicilio"
         Me.gbDomicilio.Padding = New System.Windows.Forms.Padding(4)
-        Me.gbDomicilio.Size = New System.Drawing.Size(527, 288)
+        Me.gbDomicilio.Size = New System.Drawing.Size(527, 319)
         Me.gbDomicilio.TabIndex = 1
         Me.gbDomicilio.TabStop = False
         Me.gbDomicilio.Text = "Domicilio :"
@@ -977,7 +979,7 @@ Partial Class Catalogo_Clientes
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssLabel, Me.tssLabelEstado})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 797)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 820)
         Me.StatusStripEstado.Name = "StatusStripEstado"
         Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
         Me.StatusStripEstado.Size = New System.Drawing.Size(1549, 25)
@@ -1044,7 +1046,7 @@ Partial Class Catalogo_Clientes
         Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
         Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
-        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(512, 726)
+        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(512, 782)
         Me.gBoxBusquedaRapida.TabIndex = 7
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
@@ -1108,7 +1110,7 @@ Partial Class Catalogo_Clientes
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
         Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(493, 638)
+        Me.Grid.Size = New System.Drawing.Size(493, 696)
         Me.Grid.TabIndex = 114
         '
         'txtFiltro
@@ -1202,6 +1204,8 @@ Partial Class Catalogo_Clientes
         '
         'gbMetodoPago
         '
+        Me.gbMetodoPago.Controls.Add(Me.LblTipoNegociacion)
+        Me.gbMetodoPago.Controls.Add(Me.CboTipoNegociacion)
         Me.gbMetodoPago.Controls.Add(Me.cboFormaPagoUSD)
         Me.gbMetodoPago.Controls.Add(Me.lblDisplayNCuentaDlls)
         Me.gbMetodoPago.Controls.Add(Me.txtNumeroCuentaDolares)
@@ -1214,7 +1218,7 @@ Partial Class Catalogo_Clientes
         Me.gbMetodoPago.Margin = New System.Windows.Forms.Padding(4)
         Me.gbMetodoPago.Name = "gbMetodoPago"
         Me.gbMetodoPago.Padding = New System.Windows.Forms.Padding(4)
-        Me.gbMetodoPago.Size = New System.Drawing.Size(465, 143)
+        Me.gbMetodoPago.Size = New System.Drawing.Size(465, 174)
         Me.gbMetodoPago.TabIndex = 7
         Me.gbMetodoPago.TabStop = False
         Me.gbMetodoPago.Text = "Forma de pago :"
@@ -1303,12 +1307,34 @@ Partial Class Catalogo_Clientes
         Me.lblDisplayFormaPago.TabIndex = 8
         Me.lblDisplayFormaPago.Text = "Forma de pago MXN :"
         '
+        'CboTipoNegociacion
+        '
+        Me.CboTipoNegociacion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboTipoNegociacion.FormattingEnabled = True
+        Me.CboTipoNegociacion.Items.AddRange(New Object() {"A", "B"})
+        Me.CboTipoNegociacion.Location = New System.Drawing.Point(153, 138)
+        Me.CboTipoNegociacion.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboTipoNegociacion.MaxLength = 1
+        Me.CboTipoNegociacion.Name = "CboTipoNegociacion"
+        Me.CboTipoNegociacion.Size = New System.Drawing.Size(271, 24)
+        Me.CboTipoNegociacion.TabIndex = 79
+        '
+        'LblTipoNegociacion
+        '
+        Me.LblTipoNegociacion.AutoSize = True
+        Me.LblTipoNegociacion.Location = New System.Drawing.Point(12, 141)
+        Me.LblTipoNegociacion.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblTipoNegociacion.Name = "LblTipoNegociacion"
+        Me.LblTipoNegociacion.Size = New System.Drawing.Size(124, 17)
+        Me.LblTipoNegociacion.TabIndex = 80
+        Me.LblTipoNegociacion.Text = "Tipo negociación :"
+        '
         'Catalogo_Clientes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
-        Me.ClientSize = New System.Drawing.Size(1549, 822)
+        Me.ClientSize = New System.Drawing.Size(1549, 845)
         Me.Controls.Add(Me.gbMetodoPago)
         Me.Controls.Add(Me.gbCorreo)
         Me.Controls.Add(Me.gBoxBusquedaRapida)
@@ -1462,4 +1488,6 @@ Partial Class Catalogo_Clientes
     Friend WithEvents txtCorreoClientePagos As System.Windows.Forms.TextBox
     Friend WithEvents LblGiro As System.Windows.Forms.Label
     Friend WithEvents CboGiros As System.Windows.Forms.ComboBox
+    Friend WithEvents LblTipoNegociacion As System.Windows.Forms.Label
+    Friend WithEvents CboTipoNegociacion As System.Windows.Forms.ComboBox
 End Class
