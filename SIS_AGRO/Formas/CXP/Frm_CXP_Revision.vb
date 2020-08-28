@@ -1528,7 +1528,11 @@ Buscar:
                                 e.Handled = True 'Con esto el importe si es 0 no se brinca a la siguiente columna, se queda el foco en el importe.
                                 Return
                             End If
+                            'Me.SaltoColumnas(Renglon, Columna, Keys.KeyCode, sTipo)
+
+                        Case Me.iGyCtasIVA
                             Me.SaltoColumnas(Renglon, Columna, Keys.KeyCode, sTipo)
+
                     End Select
 
 salto_columna:
@@ -1731,7 +1735,7 @@ salto_columna:
                         End If
 
                         Select Case Columna
-                            Case Me.iGyActivoImporte
+                            Case Me.iGyActivoIVA
                                 .Cell(Renglon + 1, 0).SetFocus()
                             Case Else
                                 .Cell(Renglon, Columna).SetFocus()
@@ -2029,7 +2033,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
         End If
 
         Select Case Columna
-            Case Me.iGyCtasImporte
+            Case Me.iGyCtasImporte, Me.iGyCtasIVA
                 Me.GridCuentas.Cell(Renglon + 1, Me.iGyCodigoCentroCosto).SetFocus()
             Case Else
                 Select Case sTipo
