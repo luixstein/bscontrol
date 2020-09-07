@@ -239,6 +239,7 @@ Buscar:
             Me.DesplegarZona()
             Me.DesplegarPlaza()
             Me.DesplegarMonedas()
+            Me.DesplegarGirosClientes()
             ' Me.DesplegarEstatus()
             Me.CboTipoMercado.SelectedValue = "T"
             Me.CboDocumentos.SelectedValue = "T"
@@ -330,6 +331,24 @@ Buscar:
         End With
     End Sub
 
+    Private Sub DesplegarGirosClientes()
+        Try
+            Dim oElementos As New Class_CatGirosClientes
+            With Me.CboGiroCliente
+                .DisplayMember = "NOMBRE_GIRO"
+                .ValueMember = "CODIGO_GIRO"
+                Dim dView As New Data.DataView(oElementos.ObtenerElementosParaReportes)
+                dView.Sort = "NOMBRE_GIRO"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedValue = -1 'Todos
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarGirosClientes", ex)
+        End Try
+    End Sub
+
     'Private Sub DesplegarEstatus()
     '    Dim oElementos As New Class_CatEstatus
     '    With Me.CboEstatus
@@ -385,6 +404,10 @@ Buscar:
                 Rpt.SetParameterValue("@CODIGO_USUARIO_GRABO", IIf(txtLEN(Me.txtCodigoUsuario.Text) = True, Me.txtCodigoUsuario.Text, 0))
                 Rpt.SetParameterValue("@SOLO_CON_SALDO_VENCIDO", IIf(Me.chkClientesSaldoVencido.Checked = True, "1", "0"))
                 Rpt.SetParameterValue("@CODIGO_MONEDA", Me.CboMoneda.Text)
+
+                If Me.rdbGlobalCxcPropietario.Checked = False Then
+                    Rpt.SetParameterValue("@CODIGO_GIRO", Me.CboGiroCliente.SelectedValue)
+                End If
 
             ElseIf Me.RdbDetalleDepositos.Checked = True Then
                 Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.txtCodigoCliente.Text)
@@ -454,8 +477,14 @@ Buscar:
                 Me.chkClientesSaldoVencido.Visible = True
                 Me.lblTipoCambio.Visible = False : Me.txtTipoCambio.Visible = False
                 Me.LblMoneda.Visible = True : Me.CboMoneda.Visible = True
+                Me.LblGiroCliente.Visible = True : Me.CboGiroCliente.Visible = True
+
                 If Me.RdbGlobalCXC.Checked = True Then
                     Me.gbFormatoEdoCtaGlobal.Visible = True
+                End If
+
+                If Me.rdbGlobalCxcPropietario.Checked = True Then
+                    Me.LblGiroCliente.Visible = False : Me.CboGiroCliente.Visible = False
                 End If
 
             ElseIf Me.rbtCobranzaAnticipo.Checked = True Or Me.rbtPropietariosConAnticipos.Checked = True Then
@@ -471,6 +500,7 @@ Buscar:
                 Me.lblTipoCambio.Visible = True : Me.txtTipoCambio.Visible = True
                 Me.chkClientesSaldoVencido.Visible = False
                 Me.LblMoneda.Visible = False : Me.CboMoneda.Visible = False
+                Me.LblGiroCliente.Visible = False : Me.CboGiroCliente.Visible = False
 
             Else
                 Me.lblDisplayFechaInicio.Visible = True : Me.dpFechaInicio.Visible = True ': Me.lblDisplayFechaInicio.Location = New Point(4, 54) :  : Me.dpFechaInicio.Location = New Point(88, 51)
@@ -486,6 +516,7 @@ Buscar:
                 Me.chkClientesSaldoVencido.Visible = False
                 Me.lblTipoCambio.Visible = False : Me.txtTipoCambio.Visible = False
                 Me.LblMoneda.Visible = False : Me.CboMoneda.Visible = False
+                Me.LblGiroCliente.Visible = False : Me.CboGiroCliente.Visible = False
             End If
 
         Catch ex As Exception

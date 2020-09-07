@@ -35,6 +35,8 @@ Partial Class Rpt_CXC_Documentos
         Me.LblDisplayDocumento = New System.Windows.Forms.Label()
         Me.CboDocumentos = New System.Windows.Forms.ComboBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.LblMoneda = New System.Windows.Forms.Label()
+        Me.CboMoneda = New System.Windows.Forms.ComboBox()
         Me.gbFormatoEdoCtaGlobal = New System.Windows.Forms.GroupBox()
         Me.rbFormato2EdoCtaGlobal = New System.Windows.Forms.RadioButton()
         Me.rbFormato1EdoCtaGlobal = New System.Windows.Forms.RadioButton()
@@ -74,8 +76,8 @@ Partial Class Rpt_CXC_Documentos
         Me.RdbDetalleCXC = New System.Windows.Forms.RadioButton()
         Me.RdbGlobalCXC = New System.Windows.Forms.RadioButton()
         Me.rdbGlobalCxcPropietario = New System.Windows.Forms.RadioButton()
-        Me.CboMoneda = New System.Windows.Forms.ComboBox()
-        Me.LblMoneda = New System.Windows.Forms.Label()
+        Me.CboGiroCliente = New System.Windows.Forms.ComboBox()
+        Me.LblGiroCliente = New System.Windows.Forms.Label()
         Me.ToolStrip1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.gbFormatoEdoCtaGlobal.SuspendLayout()
@@ -132,7 +134,7 @@ Partial Class Rpt_CXC_Documentos
         'txtCodigoVendedor
         '
         Me.txtCodigoVendedor.Location = New System.Drawing.Point(117, 92)
-        Me.txtCodigoVendedor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCodigoVendedor.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCodigoVendedor.MaxLength = 15
         Me.txtCodigoVendedor.Name = "txtCodigoVendedor"
         Me.txtCodigoVendedor.Size = New System.Drawing.Size(64, 22)
@@ -162,7 +164,7 @@ Partial Class Rpt_CXC_Documentos
         'txtCodigoCliente
         '
         Me.txtCodigoCliente.Location = New System.Drawing.Point(117, 28)
-        Me.txtCodigoCliente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCodigoCliente.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCodigoCliente.MaxLength = 15
         Me.txtCodigoCliente.Name = "txtCodigoCliente"
         Me.txtCodigoCliente.Size = New System.Drawing.Size(64, 22)
@@ -184,7 +186,7 @@ Partial Class Rpt_CXC_Documentos
         Me.CboDocumentos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboDocumentos.FormattingEnabled = True
         Me.CboDocumentos.Location = New System.Drawing.Point(117, 128)
-        Me.CboDocumentos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboDocumentos.Margin = New System.Windows.Forms.Padding(4)
         Me.CboDocumentos.MaxLength = 1
         Me.CboDocumentos.Name = "CboDocumentos"
         Me.CboDocumentos.Size = New System.Drawing.Size(235, 24)
@@ -192,6 +194,8 @@ Partial Class Rpt_CXC_Documentos
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.LblGiroCliente)
+        Me.GroupBox1.Controls.Add(Me.CboGiroCliente)
         Me.GroupBox1.Controls.Add(Me.LblMoneda)
         Me.GroupBox1.Controls.Add(Me.CboMoneda)
         Me.GroupBox1.Controls.Add(Me.gbFormatoEdoCtaGlobal)
@@ -229,22 +233,42 @@ Partial Class Rpt_CXC_Documentos
         Me.GroupBox1.Controls.Add(Me.txtCodigoVendedor)
         Me.GroupBox1.Controls.Add(Me.lblDisplayVendedor)
         Me.GroupBox1.Location = New System.Drawing.Point(215, 34)
-        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Size = New System.Drawing.Size(671, 464)
         Me.GroupBox1.TabIndex = 1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Filtros"
+        '
+        'LblMoneda
+        '
+        Me.LblMoneda.AutoSize = True
+        Me.LblMoneda.Location = New System.Drawing.Point(413, 242)
+        Me.LblMoneda.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblMoneda.Name = "LblMoneda"
+        Me.LblMoneda.Size = New System.Drawing.Size(67, 17)
+        Me.LblMoneda.TabIndex = 391
+        Me.LblMoneda.Text = "Moneda :"
+        '
+        'CboMoneda
+        '
+        Me.CboMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboMoneda.FormattingEnabled = True
+        Me.CboMoneda.Location = New System.Drawing.Point(488, 239)
+        Me.CboMoneda.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboMoneda.Name = "CboMoneda"
+        Me.CboMoneda.Size = New System.Drawing.Size(107, 24)
+        Me.CboMoneda.TabIndex = 390
         '
         'gbFormatoEdoCtaGlobal
         '
         Me.gbFormatoEdoCtaGlobal.Controls.Add(Me.rbFormato2EdoCtaGlobal)
         Me.gbFormatoEdoCtaGlobal.Controls.Add(Me.rbFormato1EdoCtaGlobal)
         Me.gbFormatoEdoCtaGlobal.Location = New System.Drawing.Point(288, 383)
-        Me.gbFormatoEdoCtaGlobal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbFormatoEdoCtaGlobal.Margin = New System.Windows.Forms.Padding(4)
         Me.gbFormatoEdoCtaGlobal.Name = "gbFormatoEdoCtaGlobal"
-        Me.gbFormatoEdoCtaGlobal.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbFormatoEdoCtaGlobal.Padding = New System.Windows.Forms.Padding(4)
         Me.gbFormatoEdoCtaGlobal.Size = New System.Drawing.Size(373, 66)
         Me.gbFormatoEdoCtaGlobal.TabIndex = 389
         Me.gbFormatoEdoCtaGlobal.TabStop = False
@@ -255,7 +279,7 @@ Partial Class Rpt_CXC_Documentos
         '
         Me.rbFormato2EdoCtaGlobal.AutoSize = True
         Me.rbFormato2EdoCtaGlobal.Location = New System.Drawing.Point(137, 23)
-        Me.rbFormato2EdoCtaGlobal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.rbFormato2EdoCtaGlobal.Margin = New System.Windows.Forms.Padding(4)
         Me.rbFormato2EdoCtaGlobal.Name = "rbFormato2EdoCtaGlobal"
         Me.rbFormato2EdoCtaGlobal.Size = New System.Drawing.Size(106, 21)
         Me.rbFormato2EdoCtaGlobal.TabIndex = 1
@@ -267,7 +291,7 @@ Partial Class Rpt_CXC_Documentos
         Me.rbFormato1EdoCtaGlobal.AutoSize = True
         Me.rbFormato1EdoCtaGlobal.Checked = True
         Me.rbFormato1EdoCtaGlobal.Location = New System.Drawing.Point(7, 23)
-        Me.rbFormato1EdoCtaGlobal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.rbFormato1EdoCtaGlobal.Margin = New System.Windows.Forms.Padding(4)
         Me.rbFormato1EdoCtaGlobal.Name = "rbFormato1EdoCtaGlobal"
         Me.rbFormato1EdoCtaGlobal.Size = New System.Drawing.Size(117, 21)
         Me.rbFormato1EdoCtaGlobal.TabIndex = 0
@@ -278,7 +302,7 @@ Partial Class Rpt_CXC_Documentos
         'lblTipoCambio
         '
         Me.lblTipoCambio.AutoSize = True
-        Me.lblTipoCambio.Location = New System.Drawing.Point(413, 130)
+        Me.lblTipoCambio.Location = New System.Drawing.Point(370, 206)
         Me.lblTipoCambio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblTipoCambio.Name = "lblTipoCambio"
         Me.lblTipoCambio.Size = New System.Drawing.Size(113, 17)
@@ -287,8 +311,8 @@ Partial Class Rpt_CXC_Documentos
         '
         'txtTipoCambio
         '
-        Me.txtTipoCambio.Location = New System.Drawing.Point(531, 127)
-        Me.txtTipoCambio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtTipoCambio.Location = New System.Drawing.Point(488, 203)
+        Me.txtTipoCambio.Margin = New System.Windows.Forms.Padding(4)
         Me.txtTipoCambio.MaxLength = 15
         Me.txtTipoCambio.Name = "txtTipoCambio"
         Me.txtTipoCambio.Size = New System.Drawing.Size(64, 22)
@@ -320,7 +344,7 @@ Partial Class Rpt_CXC_Documentos
         'txtCodigoUsuario
         '
         Me.txtCodigoUsuario.Location = New System.Drawing.Point(117, 399)
-        Me.txtCodigoUsuario.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCodigoUsuario.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCodigoUsuario.MaxLength = 8
         Me.txtCodigoUsuario.Name = "txtCodigoUsuario"
         Me.txtCodigoUsuario.Size = New System.Drawing.Size(64, 22)
@@ -391,7 +415,7 @@ Partial Class Rpt_CXC_Documentos
         Me.cboPlaza.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboPlaza.FormattingEnabled = True
         Me.cboPlaza.Location = New System.Drawing.Point(117, 166)
-        Me.cboPlaza.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboPlaza.Margin = New System.Windows.Forms.Padding(4)
         Me.cboPlaza.Name = "cboPlaza"
         Me.cboPlaza.Size = New System.Drawing.Size(235, 24)
         Me.cboPlaza.TabIndex = 380
@@ -419,7 +443,7 @@ Partial Class Rpt_CXC_Documentos
         'txtPropietario
         '
         Me.txtPropietario.Location = New System.Drawing.Point(117, 60)
-        Me.txtPropietario.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtPropietario.Margin = New System.Windows.Forms.Padding(4)
         Me.txtPropietario.MaxLength = 15
         Me.txtPropietario.Name = "txtPropietario"
         Me.txtPropietario.Size = New System.Drawing.Size(64, 22)
@@ -441,7 +465,7 @@ Partial Class Rpt_CXC_Documentos
         Me.CboZona.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboZona.FormattingEnabled = True
         Me.CboZona.Location = New System.Drawing.Point(117, 202)
-        Me.CboZona.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboZona.Margin = New System.Windows.Forms.Padding(4)
         Me.CboZona.Name = "CboZona"
         Me.CboZona.Size = New System.Drawing.Size(235, 24)
         Me.CboZona.TabIndex = 4
@@ -469,7 +493,7 @@ Partial Class Rpt_CXC_Documentos
         'txtCuentaBancaria
         '
         Me.txtCuentaBancaria.Location = New System.Drawing.Point(117, 369)
-        Me.txtCuentaBancaria.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCuentaBancaria.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCuentaBancaria.MaxLength = 8
         Me.txtCuentaBancaria.Name = "txtCuentaBancaria"
         Me.txtCuentaBancaria.Size = New System.Drawing.Size(64, 22)
@@ -522,7 +546,7 @@ Partial Class Rpt_CXC_Documentos
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"TODOS", "APLICADOS", "CANCELADOS"})
         Me.CboEstatus.Location = New System.Drawing.Point(117, 336)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(235, 24)
@@ -533,7 +557,7 @@ Partial Class Rpt_CXC_Documentos
         Me.dpFechaFinal.CustomFormat = "dd-MM-yyyy"
         Me.dpFechaFinal.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.dpFechaFinal.Location = New System.Drawing.Point(117, 304)
-        Me.dpFechaFinal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.dpFechaFinal.Margin = New System.Windows.Forms.Padding(4)
         Me.dpFechaFinal.Name = "dpFechaFinal"
         Me.dpFechaFinal.Size = New System.Drawing.Size(164, 22)
         Me.dpFechaFinal.TabIndex = 7
@@ -543,7 +567,7 @@ Partial Class Rpt_CXC_Documentos
         Me.dpFechaInicio.CustomFormat = "dd-MM-yyyy"
         Me.dpFechaInicio.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.dpFechaInicio.Location = New System.Drawing.Point(117, 272)
-        Me.dpFechaInicio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.dpFechaInicio.Margin = New System.Windows.Forms.Padding(4)
         Me.dpFechaInicio.Name = "dpFechaInicio"
         Me.dpFechaInicio.Size = New System.Drawing.Size(164, 22)
         Me.dpFechaInicio.TabIndex = 6
@@ -563,7 +587,7 @@ Partial Class Rpt_CXC_Documentos
         Me.CboTipoMercado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboTipoMercado.FormattingEnabled = True
         Me.CboTipoMercado.Location = New System.Drawing.Point(117, 239)
-        Me.CboTipoMercado.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboTipoMercado.Margin = New System.Windows.Forms.Padding(4)
         Me.CboTipoMercado.MaxLength = 1
         Me.CboTipoMercado.Name = "CboTipoMercado"
         Me.CboTipoMercado.Size = New System.Drawing.Size(235, 24)
@@ -579,9 +603,9 @@ Partial Class Rpt_CXC_Documentos
         Me.GroupBox2.Controls.Add(Me.RdbGlobalCXC)
         Me.GroupBox2.Controls.Add(Me.rdbGlobalCxcPropietario)
         Me.GroupBox2.Location = New System.Drawing.Point(9, 34)
-        Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4)
         Me.GroupBox2.Size = New System.Drawing.Size(200, 258)
         Me.GroupBox2.TabIndex = 0
         Me.GroupBox2.TabStop = False
@@ -591,7 +615,7 @@ Partial Class Rpt_CXC_Documentos
         '
         Me.rbtPropietariosConAnticipos.AutoSize = True
         Me.rbtPropietariosConAnticipos.Location = New System.Drawing.Point(17, 166)
-        Me.rbtPropietariosConAnticipos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.rbtPropietariosConAnticipos.Margin = New System.Windows.Forms.Padding(4)
         Me.rbtPropietariosConAnticipos.Name = "rbtPropietariosConAnticipos"
         Me.rbtPropietariosConAnticipos.Size = New System.Drawing.Size(156, 38)
         Me.rbtPropietariosConAnticipos.TabIndex = 270
@@ -602,7 +626,7 @@ Partial Class Rpt_CXC_Documentos
         '
         Me.rbtCobranzaAnticipo.AutoSize = True
         Me.rbtCobranzaAnticipo.Location = New System.Drawing.Point(17, 138)
-        Me.rbtCobranzaAnticipo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.rbtCobranzaAnticipo.Margin = New System.Windows.Forms.Padding(4)
         Me.rbtCobranzaAnticipo.Name = "rbtCobranzaAnticipo"
         Me.rbtCobranzaAnticipo.Size = New System.Drawing.Size(167, 21)
         Me.rbtCobranzaAnticipo.TabIndex = 269
@@ -613,7 +637,7 @@ Partial Class Rpt_CXC_Documentos
         '
         Me.rdbDetalleBultos.AutoSize = True
         Me.rdbDetalleBultos.Location = New System.Drawing.Point(17, 212)
-        Me.rdbDetalleBultos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.rdbDetalleBultos.Margin = New System.Windows.Forms.Padding(4)
         Me.rdbDetalleBultos.Name = "rdbDetalleBultos"
         Me.rdbDetalleBultos.Size = New System.Drawing.Size(122, 21)
         Me.rdbDetalleBultos.TabIndex = 267
@@ -625,7 +649,7 @@ Partial Class Rpt_CXC_Documentos
         '
         Me.RdbDetalleDepositos.AutoSize = True
         Me.RdbDetalleDepositos.Location = New System.Drawing.Point(17, 80)
-        Me.RdbDetalleDepositos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RdbDetalleDepositos.Margin = New System.Windows.Forms.Padding(4)
         Me.RdbDetalleDepositos.Name = "RdbDetalleDepositos"
         Me.RdbDetalleDepositos.Size = New System.Drawing.Size(138, 21)
         Me.RdbDetalleDepositos.TabIndex = 265
@@ -637,7 +661,7 @@ Partial Class Rpt_CXC_Documentos
         Me.RdbDetalleCXC.AutoSize = True
         Me.RdbDetalleCXC.Checked = True
         Me.RdbDetalleCXC.Location = New System.Drawing.Point(17, 52)
-        Me.RdbDetalleCXC.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RdbDetalleCXC.Margin = New System.Windows.Forms.Padding(4)
         Me.RdbDetalleCXC.Name = "RdbDetalleCXC"
         Me.RdbDetalleCXC.Size = New System.Drawing.Size(166, 21)
         Me.RdbDetalleCXC.TabIndex = 266
@@ -649,7 +673,7 @@ Partial Class Rpt_CXC_Documentos
         '
         Me.RdbGlobalCXC.AutoSize = True
         Me.RdbGlobalCXC.Location = New System.Drawing.Point(17, 23)
-        Me.RdbGlobalCXC.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RdbGlobalCXC.Margin = New System.Windows.Forms.Padding(4)
         Me.RdbGlobalCXC.Name = "RdbGlobalCXC"
         Me.RdbGlobalCXC.Size = New System.Drawing.Size(162, 21)
         Me.RdbGlobalCXC.TabIndex = 265
@@ -660,32 +684,32 @@ Partial Class Rpt_CXC_Documentos
         '
         Me.rdbGlobalCxcPropietario.AutoSize = True
         Me.rdbGlobalCxcPropietario.Location = New System.Drawing.Point(17, 110)
-        Me.rdbGlobalCxcPropietario.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.rdbGlobalCxcPropietario.Margin = New System.Windows.Forms.Padding(4)
         Me.rdbGlobalCxcPropietario.Name = "rdbGlobalCxcPropietario"
         Me.rdbGlobalCxcPropietario.Size = New System.Drawing.Size(183, 21)
         Me.rdbGlobalCxcPropietario.TabIndex = 268
         Me.rdbGlobalCxcPropietario.Text = "Est. cta. glob propietario"
         Me.rdbGlobalCxcPropietario.UseVisualStyleBackColor = True
         '
-        'CboMoneda
+        'CboGiroCliente
         '
-        Me.CboMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CboMoneda.FormattingEnabled = True
-        Me.CboMoneda.Location = New System.Drawing.Point(488, 239)
-        Me.CboMoneda.Margin = New System.Windows.Forms.Padding(4)
-        Me.CboMoneda.Name = "CboMoneda"
-        Me.CboMoneda.Size = New System.Drawing.Size(107, 24)
-        Me.CboMoneda.TabIndex = 390
+        Me.CboGiroCliente.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboGiroCliente.FormattingEnabled = True
+        Me.CboGiroCliente.Location = New System.Drawing.Point(488, 128)
+        Me.CboGiroCliente.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboGiroCliente.Name = "CboGiroCliente"
+        Me.CboGiroCliente.Size = New System.Drawing.Size(167, 24)
+        Me.CboGiroCliente.TabIndex = 392
         '
-        'LblMoneda
+        'LblGiroCliente
         '
-        Me.LblMoneda.AutoSize = True
-        Me.LblMoneda.Location = New System.Drawing.Point(413, 242)
-        Me.LblMoneda.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblMoneda.Name = "LblMoneda"
-        Me.LblMoneda.Size = New System.Drawing.Size(67, 17)
-        Me.LblMoneda.TabIndex = 391
-        Me.LblMoneda.Text = "Moneda :"
+        Me.LblGiroCliente.AutoSize = True
+        Me.LblGiroCliente.Location = New System.Drawing.Point(367, 131)
+        Me.LblGiroCliente.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblGiroCliente.Name = "LblGiroCliente"
+        Me.LblGiroCliente.Size = New System.Drawing.Size(111, 17)
+        Me.LblGiroCliente.TabIndex = 393
+        Me.LblGiroCliente.Text = "Giro del cliente :"
         '
         'Rpt_CXC_Documentos
         '
@@ -697,7 +721,7 @@ Partial Class Rpt_CXC_Documentos
         Me.Controls.Add(Me.ToolStrip1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Rpt_CXC_Documentos"
         Me.Text = "Reporte de documentos de CXC."
@@ -768,4 +792,6 @@ Partial Class Rpt_CXC_Documentos
     Friend WithEvents rbFormato1EdoCtaGlobal As RadioButton
     Friend WithEvents LblMoneda As System.Windows.Forms.Label
     Friend WithEvents CboMoneda As System.Windows.Forms.ComboBox
+    Friend WithEvents LblGiroCliente As System.Windows.Forms.Label
+    Friend WithEvents CboGiroCliente As System.Windows.Forms.ComboBox
 End Class
