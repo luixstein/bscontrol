@@ -119,11 +119,15 @@ Public Class Catalogo_Clientes
     End Sub
 
     Private Sub tsbImprimirListado_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbImprimirListado.Click
-        Dim oElementos As New Class_CatClientes
+        'Dim oElementos As New Class_CatClientes
+        'oElementos.Imprimir_Listado()
+        'oElementos = Nothing
 
-        oElementos.Imprimir_Listado()
-
-        oElementos = Nothing
+        'Ahora se usara la forma de impresion
+        Dim impresion As New Cat_Clientes_Impresion
+        impresion.StartPosition = FormStartPosition.CenterScreen
+        impresion.ShowDialog()
+        impresion.Dispose()
     End Sub
 
     Private Sub tsbEliminar_Click(sender As Object, e As EventArgs) Handles tsbEliminar.Click

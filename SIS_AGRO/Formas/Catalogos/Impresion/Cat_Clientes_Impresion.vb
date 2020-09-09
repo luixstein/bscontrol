@@ -5,11 +5,12 @@ Imports System.Data.SqlClient
 Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Cat_Clientes_Impresion
-
+    Private oClientes As New Class_CatClientes
 
 #Region "Constructor y destructor"
     Public Sub New()
         InitializeComponent()
+        DesplegarPlazas()
         Inicializa()
     End Sub
 
@@ -31,7 +32,12 @@ Public Class Cat_Clientes_Impresion
 
 #Region "Eventos Genericos"
 
-    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCodicoProveedor.KeyPress
+    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, CboPlazas.KeyPress
+        txtNoBeep(e)
+    End Sub
+
+    Private Sub txtCodigoVendedorKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCodigoVendedor.KeyPress
+        txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
 
@@ -40,8 +46,10 @@ Public Class Cat_Clientes_Impresion
 #Region "Métodos y procedimientos"
 
     Private Sub Inicializa()
-        Me.RdbGlobalCXP.Checked = True
-        Me.txtCodicoProveedor.Focus()
+        Me.RdbAgrupadoVendedor.Checked = True
+        Me.txtCodigoVendedor.Text = ""
+        Me.lblNombreVendedor.Text = ""
+        Me.CboEstatus.SelectedIndex = 0
     End Sub
 
     Private Sub Imprimir()
@@ -51,23 +59,19 @@ Public Class Cat_Clientes_Impresion
         Dim oReporte As Class_Reporte
 
         Try
-            If Me.RdbGlobalCXP.Checked = True Then
-                FormatoDeReporte = "RPT_CXP_SALDOS_PROVEEDORES_GLOBAL"
+            If Me.RdbNormal.Checked = True Then
+                FormatoDeReporte = "RPT_CATALOGO_CLIENTES"
             Else
-                FormatoDeReporte = "RPT_CXP_SALDOS_PROVEEDORES_DETALLE"
+                FormatoDeReporte = "RPT_CATALOGO_CLIENTES_AGRUPADO_VENDEDOR"
             End If
 
-            'If Not oReporte.RptCargado Then
-            '    Exit Sub
-            'End If
             oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
 
-            Rpt.SetParameterValue("@CODIGO_PROVEEDOR", "" & Me.txtCodicoProveedor.Text)
+            Rpt.SetParameterValue("@ESTATUS", Strings.Left(Me.CboEstatus.Text, 1))
+            Rpt.SetParameterValue("@CODIGO_PLAZA", Me.CboPlazas.SelectedValue.ToString)
 
-            If Me.RdbDetalleCXP.Checked Then
-                Rpt.SetParameterValue("@ORDEN_FOLIO_PROVEEDOR", IIf(Me.rbtProveedor.Checked, "1", "0"))
-            Else
-                Rpt.SetParameterValue("@ORDEN_FOLIO_PROVEEDOR", "0")
+            If Me.RdbAgrupadoVendedor.Checked Then
+                Rpt.SetParameterValue("@CODIGO_VENDEDOR", Me.txtCodigoVendedor.Text)
             End If
 
             Dim frm As New Reporte(Rpt)
@@ -79,43 +83,55 @@ Public Class Cat_Clientes_Impresion
             oReporte = Nothing
         End Try
     End Sub
+
+    Private Sub DesplegarPlazas()
+        Dim oElemento As New Class_SisPlazas
+
+        With Me.CboPlazas
+            .DisplayMember = "NOMBRE_PLAZA"
+            .ValueMember = "CODIGO_PLAZA"
+            Dim dView As New Data.DataView(oElemento.ObtenerElementosParaReporte())
+            dView.Sort = "NOMBRE_PLAZA"
+            .DataSource = dView
+            .SelectedValue = 0
+        End With
+    End Sub
+
 #End Region
 
-    Private Sub txtCodicoCliente_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodicoProveedor.KeyDown
+    Private Sub txtCodigoVendedor_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodigoVendedor.KeyDown
         Dim sText As String
+        Dim oVendedor As New Class_CatVendedores
+
         Select Case e.KeyCode
             Case Keys.F6
 Buscar:
-                sText = Me.oProveedores.BusquedaVisual_PorDescripcion
-                If txtLEN(sText) = True Then Me.txtCodicoProveedor.Text = sText
+                sText = oVendedor.BusquedaVisual_PorDescripcion
+                If txtLEN(sText) = True Then Me.txtCodigoVendedor.Text = sText
             Case Keys.Enter
-                If txtLEN(Me.txtCodicoProveedor.Text) = False Then
-                    Me.lblNombreProveedor.Text = ""
+                If txtLEN(Me.txtCodigoVendedor.Text) = False Then
+                    Me.lblNombreVendedor.Text = ""
                     Exit Sub
                 End If
 
-                oProveedores = New Class_CatProveedores(Me.txtCodicoProveedor.Text)
-                If Me.oProveedores.Existe = False Then
-                    Me.lblNombreProveedor.Text = "" : GoTo Buscar : Exit Sub
+                oVendedor = New Class_CatVendedores(Me.txtCodigoVendedor.Text)
+                If oVendedor.Existe = False Then
+                    Me.lblNombreVendedor.Text = "" : GoTo Buscar : Exit Sub
                 End If
 
-                Me.lblNombreProveedor.Text = Me.oProveedores.Nombre_Proveedor
+                Me.lblNombreVendedor.Text = oVendedor.NOMBRE_VENDEDOR
                 Me.tsbImprimir.PerformClick()
         End Select
     End Sub
 
-    Private Sub CboDocumentos_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
-        If e.KeyCode = Keys.Return Then
-            Me.tsbImprimir.PerformClick()
-        End If
-    End Sub
-
-    Private Sub Rdb_CheckedChanged(sender As Object, e As EventArgs) Handles RdbGlobalCXP.CheckedChanged
-        If Me.RdbDetalleCXP.Checked Then
-            Me.GbOrden.Visible = True
+    Private Sub Rdb_CheckedChanged(sender As Object, e As EventArgs) Handles RdbNormal.CheckedChanged, RdbAgrupadoVendedor.CheckedChanged
+        If Me.RdbAgrupadoVendedor.Checked Then
+            Me.lblDisplayVendedor.Visible = True : Me.txtCodigoVendedor.Visible = True : Me.lblNombreVendedor.Visible = True
+            Me.txtCodigoVendedor.Text = "" : lblNombreVendedor.Text = ""
         Else
-            Me.GbOrden.Visible = False
+            Me.lblDisplayVendedor.Visible = False : Me.txtCodigoVendedor.Visible = False : Me.lblNombreVendedor.Visible = False
         End If
+
     End Sub
 
 End Class
