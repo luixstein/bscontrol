@@ -138,62 +138,60 @@ Public Class Class_CatGirosClientes
 #Region "Métodos y procedimientos"
 
     Public Overrides Function Insertar() As Boolean
-        'Dim bResultado As Boolean = False
-        'Dim cmd As New SqlCommand
-        'Dim sqlParametro As SqlParameter
-        'With cmd
-        '    .Connection = Me._Conexion
-        '    .CommandTimeout = 0
-        '    .CommandType = CommandType.StoredProcedure
-        '    .CommandText = "MP_CAT_CONCEPTOS_GRABA"
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_CAT_GIROS_CLIENTES_GRABA"
 
-        '    sqlParametro = .Parameters.Add("@CODIGO_CONCEPTO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Concepto) : sqlParametro.Direction = ParameterDirection.InputOutput
-        '    sqlParametro = .Parameters.Add("@NOMBRE_CONCEPTO", SqlDbType.NVarChar, 200) : sqlParametro.Value = Me._Nombre_Concepto.ToString.ToUpper
-        '    sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToString.ToUpper
-        '    sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "INSERTAR"
-        '    Try
-        '        Me._Conexion.Open()
-        '        .ExecuteNonQuery()
-        '        Me._Codigo_Concepto = .Parameters("@CODIGO_CONCEPTO").Value.ToString
-        '        bResultado = True
-        '    Catch ex As Exception
-        '        HandleError(Me._Nombre_Catalogo, "Insertar", ex)
-        '    Finally
-        '        Me._Conexion.Close()
-        '        cmd.Dispose()
-        '        sqlParametro = Nothing
-        '    End Try
-        'End With
-        'Return bResultado
+            sqlParametro = .Parameters.Add("@CODIGO_GIRO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_GIRO : sqlParametro.Direction = ParameterDirection.InputOutput
+            sqlParametro = .Parameters.Add("@NOMBRE_GIRO", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._NOMBRE_GIRO.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "INSERTAR"
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                Me._CODIGO_GIRO = .Parameters("@CODIGO_GIRO").Value.ToString
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, "Insertar", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
     End Function
 
     Public Overrides Function Actualizar() As Boolean
-        'Dim bResultado As Boolean = False
-        'Dim cmd As New SqlCommand
-        'Dim sqlParametro As SqlParameter
-        'With cmd
-        '    .Connection = Me._Conexion
-        '    .CommandTimeout = 0
-        '    .CommandType = CommandType.StoredProcedure
-        '    .CommandText = "MP_CAT_CONCEPTOS_GRABA"
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_CAT_GIROS_CLIENTES_GRABA"
 
-        '    sqlParametro = .Parameters.Add("@CODIGO_CONCEPTO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._Codigo_Concepto)
-        '    sqlParametro = .Parameters.Add("@NOMBRE_CONCEPTO", SqlDbType.NVarChar, 200) : sqlParametro.Value = Me._Nombre_Concepto.ToString.ToUpper
-        '    sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToString.ToUpper
-        '    sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "ACTUALIZAR"
-        '    Try
-        '        Me._Conexion.Open()
-        '        .ExecuteNonQuery()
-        '        bResultado = True
-        '    Catch ex As Exception
-        '        HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
-        '    Finally
-        '        Me._Conexion.Close()
-        '        cmd.Dispose()
-        '        sqlParametro = Nothing
-        '    End Try
-        'End With
-        'Return bResultado
+            sqlParametro = .Parameters.Add("@CODIGO_GIRO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_GIRO
+            sqlParametro = .Parameters.Add("@NOMBRE_GIRO", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._NOMBRE_GIRO.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "ACTUALIZAR"
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
     End Function
 
     Public Overrides Function Consultar() As Boolean

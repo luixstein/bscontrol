@@ -1725,4 +1725,12 @@ Public Class AppMenu
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
     End Sub
+
+    Private Sub GirosDeClientesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles GirosDeClientesToolStripMenuItem.Click
+        Dim Child As New Catalogo_GirosClientes
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
 End Class
