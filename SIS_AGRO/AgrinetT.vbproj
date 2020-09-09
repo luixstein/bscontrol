@@ -523,6 +523,12 @@
     <Compile Include="Formas\Catalogos\Catalogo_Propietarios.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\Catalogos\Impresion\Cat_Clientes_Impresion.designer.vb">
+      <DependentUpon>Cat_Clientes_Impresion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Impresion\Cat_Clientes_Impresion.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\Catalogos\Sis_Documentos.Designer.vb">
       <DependentUpon>Sis_Documentos.vb</DependentUpon>
     </Compile>
@@ -1841,6 +1847,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_Propietarios.resx">
       <DependentUpon>Catalogo_Propietarios.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Impresion\Cat_Clientes_Impresion.resx">
+      <DependentUpon>Cat_Clientes_Impresion.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Sis_Documentos.resx">
       <DependentUpon>Sis_Documentos.vb</DependentUpon>
