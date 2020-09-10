@@ -164,7 +164,7 @@ Public Class Inventarios_Movimientos
             If Me.Cancelar() = True Then
                 Me.Consultar()
             End If
-        ElseIf Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "TRI" Or Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "TRF" Then
+        ElseIf Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "TRI" Or Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "TRF" Or Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "TRLT" Then
             If Me.Estado <> enumEstados.GRABADO Then
                 MsgBox("Las transferencias son cancelables sólo si están en estatus de grabado. Si esta aplicada debe hacer una transferencia contraria.", vbExclamation, Me.Name)
                 Return
@@ -998,6 +998,16 @@ BuscarCuentas:
         Dim sListaSeries As String = ""
 
         If Me.oDocumentos.ES_TRANSFERENCIA = "1" Then
+            If Me.CboAlmacenDestino.SelectedIndex = -1 Then
+                MsgBox("Seleccione el almacén destino.", vbExclamation, sProcedure)
+                Return False
+            End If
+
+            If Me.CboAlmacen.SelectedValue.ToString = Me.CboAlmacenDestino.SelectedValue.ToString Then
+                MsgBox("El almacén origen y destino deben ser diferentes en las transferencias.", vbExclamation, sProcedure)
+                Return False
+            End If
+
             If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString, Me.CboAlmacenDestino.SelectedValue.ToString) = False Then
                 'MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar la transferencia.", MsgBoxStyle.Information, sProcedure)
                 Return False
@@ -1654,7 +1664,7 @@ BuscarCuentas:
             Me.lblStatus.Text = oInventarios.ESTATUS.ToUpper
             Me.CboAlmacen.SelectedValue = oInventarios.CODIGO_ALMACEN1.ToUpper
 
-            If oInventarios.CODIGO_TIPO_DOCUMENTO.ToString.ToUpper = "TRI" Or oInventarios.CODIGO_TIPO_DOCUMENTO.ToString.ToUpper = "TRF" Then
+            If oInventarios.CODIGO_TIPO_DOCUMENTO.ToString.ToUpper = "TRI" Or oInventarios.CODIGO_TIPO_DOCUMENTO.ToString.ToUpper = "TRF" Or oInventarios.CODIGO_TIPO_DOCUMENTO.ToString.ToUpper = "TRLT" Then
                 Me.CboAlmacenDestino.SelectedValue = oInventarios.CODIGO_ALMACEN2.ToUpper
             End If
 
@@ -1674,7 +1684,7 @@ BuscarCuentas:
 
             Me.txtTotalMasFlete.Text = FormatImporteContable(oInventarios.TOTAL)
 
-            If Me.CboDocumento.SelectedValue.ToString = "ER" Or Me.CboDocumento.SelectedValue.ToString = "TRI" Or oInventarios.CODIGO_TIPO_DOCUMENTO.ToString.ToUpper = "TRF" Then
+            If Me.CboDocumento.SelectedValue.ToString = "ER" Or Me.CboDocumento.SelectedValue.ToString = "TRI" Or oInventarios.CODIGO_TIPO_DOCUMENTO.ToString.ToUpper = "TRF" Or oInventarios.CODIGO_TIPO_DOCUMENTO.ToString.ToUpper = "TRLT" Then
                 Me.txtFolioOrdenCompra.Text = oInventarios.FOLIO_REFERENCIA
                 Me.txtFleteOrdenCompra.Text = FormatImporteContable(oInventarios.FLETE_TOTAL)
                 Me.txtTotalFlete.Text = FormatImporteContable(oInventarios.FLETE_TOTAL)
@@ -2192,7 +2202,7 @@ BuscarCuentas:
             Me.btnNuevaOrdenCompra.Enabled = False
             Me.txtFolioOrdenCompra.Enabled = False
 
-            If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ER" Or Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "TRI" Or Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "TRF" Then
+            If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ER" Or Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "TRI" Or Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "TRF" Or Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "TRLT" Then
                 Me.gbOrdenCompra.Visible = True
                 'Me.Grid1.Locked = True
                 'Me.Grid1.Column(Me.iGyCodigo).Locked = True
