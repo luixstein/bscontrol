@@ -543,7 +543,7 @@ Public Class Class_Inventarios_Global
                     "(SELECT ID_ADICIONAL,MAX(CUENTA_CONTABLE) FROM CENTRO_COSTOS_MOVIMIENTOS_DETALLE WHERE FOLIO_MOVIMIENTO=@FOLIO_MOVIMIENTO_INVENTARIO GROUP BY FOLIO_MOVIMIENTO,ID_ADICIONAL) " &
                     "SELECT I.CODIGO_ARTICULO,A.DESCRIPCION,I.CANTIDAD,I.COSTO_DETALLE,I.IMPORTE,I.CUENTA_CONTABLE,CASE WHEN DC.CUENTA_CONTABLE IS NOT NULL THEN 'Tiene detalle -->>' ELSE C.NOMBRE_CUENTA END NOMBRE_CUENTA, " &
                     "'' Boton,I.ID_ADICIONAL, " &
-                    "I.FLETE_DETALLE_IMPORTE,I.COSTO_DETALLE_BASE,I.IMPORTE_BASE,I.ID_COMPRA_DETALLE, I.DISPONIBLE " &
+                    "I.FLETE_DETALLE_IMPORTE,I.COSTO_DETALLE_BASE,I.IMPORTE_BASE,I.ID_COMPRA_DETALLE,I.DISPONIBLE,I.ID_INVENTARIO_LOTES_COSTOS " &
                     "FROM INVENTARIO_MOVIMIENTOS_DETALLE I  " &
                     "INNER JOIN CAT_ARTICULOS A ON(A.CODIGO_ARTICULO=I.CODIGO_ARTICULO)  " &
                     "LEFT JOIN CON_CAT_CUENTAS C ON(I.CUENTA_CONTABLE=C.CUENTA_CONTABLE) " &
@@ -892,6 +892,38 @@ Public Class Class_Inventarios_Global
         Return bResultado
     End Function
 
+    Public Structure tBusquedaLotes
+        Dim CodigoArticulo As String
+        Dim Costo As Decimal
+        Dim ID_INVENTARIO_LOTES_COSTOS As String
+    End Structure
+
+    Public Function BusquedaVisual_Lotes(ByVal sCodigoAlmacen As String) As tBusquedaLotes
+        Dim b As New tBusquedaLotes
+
+        Dim f As New BusquedaVisual
+        f.Text = "Búsqueda de lotes."
+        f.sCampo = "C.DESCRIPCION"
+        f.sOrder = "C.DESCRIPCION,C.CODIGO_ARTICULO,C.FECHA"
+        f.sTable = "VW_INVENTARIO_LOTES_COSTOS_EXTENDIDO"
+        f.sQl = "SELECT C.CODIGO_ARTICULO,C.DESCRIPCION,C.FECHA,C.CANTIDAD_DISPONIBLE DISPONIBLE,C.COSTO,C.ID_INVENTARIO_LOTES_COSTOS ID_LOTE
+                 FROM VW_INVENTARIO_LOTES_COSTOS_EXTENDIDO C 
+                 WHERE C.CODIGO_ALMACEN1='" & sReplace(sCodigoAlmacen) & "' AND C.CANTIDAD_DISPONIBLE>0 AND "
+        f.arrayWidthColumns = New Integer() {100, 300, 100, 100, 100, 0}
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                b.CodigoArticulo = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+                b.Costo = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 4), Decimal)
+                b.ID_INVENTARIO_LOTES_COSTOS = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 5), String) 'Nota, cuidado con el índice si se agregan mas columnas este podria necesitar cambiarse.
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_Lotes", ex)
+        End Try
+
+        Return b
+    End Function
 #End Region
 
 End Class

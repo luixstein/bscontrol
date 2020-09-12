@@ -21,6 +21,7 @@ Public Class Class_Inventarios_Detalle
     Private _IMPORTE_BASE As Decimal = 0
     Private _ID_COMPRA_DETALLE As Integer = Nothing
     Private _DISPONIBLE As Double
+    Private _ID_INVENTARIO_LOTES_COSTOS As Integer = Nothing
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -165,6 +166,12 @@ Public Class Class_Inventarios_Detalle
         End Set
     End Property
 
+    Public WriteOnly Property ID_INVENTARIO_LOTES_COSTOS() As Integer
+        Set(ByVal Value As Integer)
+            Me._ID_INVENTARIO_LOTES_COSTOS = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -243,6 +250,7 @@ Public Class Class_Inventarios_Detalle
             sqlParametro = .Parameters.Add("@COSTO_DETALLE_BASE", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO_DETALLE_BASE
             sqlParametro = .Parameters.Add("@IMPORTE_BASE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPORTE_BASE
             sqlParametro = .Parameters.Add("@ID_COMPRA_DETALLE", SqlDbType.Int) : sqlParametro.Value = Me._ID_COMPRA_DETALLE
+            sqlParametro = .Parameters.Add("@ID_INVENTARIO_LOTES_COSTOS", SqlDbType.Int) : sqlParametro.Value = Me._ID_INVENTARIO_LOTES_COSTOS
 
             Try
                 Me._Conexion.Open()

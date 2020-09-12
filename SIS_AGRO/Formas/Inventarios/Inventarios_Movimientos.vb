@@ -50,6 +50,7 @@ Public Class Inventarios_Movimientos
     Private iGyImporteMasFlete As Integer = 12 'en db es IMPORTE
     Private iGyIDCompraDetalle As Integer = 13
     Private iGyDisponible As Integer = 14
+    Private iGyID_INVENTARIO_LOTES_COSTOS As Integer = 15
 #End Region
 
 #Region "Columnas grid series"
@@ -234,7 +235,7 @@ Public Class Inventarios_Movimientos
 
             Return
 
-            'Este era el código que estba cuando se hacia una salida por cada palet.
+            'Este era el código que estaba cuando se hacia una salida por cada palet.
             'Me.InicializaExterno()
             'Dim oPalet = New Class_Embarques_PaletsGlobal(Me.TxtFolioReferencia.Text)
 
@@ -755,11 +756,35 @@ buscar:
         End Try
     End Sub
 
+    Private Sub InicializaRenglonGrid(ByVal iRenglon As Integer)
+        Try
+            With Me.Grid1
+                .Cell(iRenglon, Me.iGyCodigo).Text = ""
+                .Cell(iRenglon, Me.iGyDescripcion).Text = ""
+                .Cell(iRenglon, Me.iGyCantidad).Text = "0"
+                .Cell(iRenglon, Me.iGyCosto).Text = ""
+                .Cell(iRenglon, Me.iGyImporte).Text = ""
+                .Cell(iRenglon, Me.iGyBoton).Text = ""
+                .Cell(iRenglon, Me.iGyCuentaContable).Text = ""
+                .Cell(iRenglon, Me.iGyNombreCuentaContable).Text = ""
+                '.Cell(iRenglon, Me.iGyIDAdicional).Text = "" 'Para que no se borre el id que ya tenga calculado
+                .Cell(iRenglon, Me.iGyCostoMasFlete).Text = ""
+                .Cell(iRenglon, Me.iGyFleteDetalleImporte).Text = ""
+                .Cell(iRenglon, Me.iGyImporteMasFlete).Text = ""
+                .Cell(iRenglon, Me.iGyIDCompraDetalle).Text = ""
+                .Cell(iRenglon, Me.iGyDisponible).Text = ""
+                .Cell(iRenglon, Me.iGyID_INVENTARIO_LOTES_COSTOS).Text = ""
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "InicializaRenglonGrid", ex)
+        End Try
+    End Sub
+
     Private Sub GestionaGrid(ByVal e As System.Windows.Forms.KeyEventArgs)
         Const sProcedure As String = "GestionaGrid"
         Try
             Dim Columna As Integer, Renglon As Integer
-            Dim StrCod As String, DCosto As Double, sCuentaContable As String, sCodArticulo As String, sNaturalezaInventarios As String, dExistencia As Double, sCantidad As String
+            Dim StrCod As String, DCosto As Double, sCuentaContable As String, sCodArticulo As String = "", sNaturalezaInventarios As String, dExistencia As Double, dCantidad As Double, iID_INVENTARIO_LOTES_COSTOS As Integer = 0
             Dim oCuentas As New Class_CatCuentas 'Class_VWCatDeudoresDiversos
 
             Me.oArticulos = New Class_CatArticulos
@@ -770,45 +795,70 @@ buscar:
 
             Select Case e.KeyCode
                 Case Keys.Enter
-                    sCantidad = Me.Grid1.Cell(Renglon, iGyCantidad).Text
+                    dCantidad = valorNumerico(Me.Grid1.Cell(Renglon, iGyCantidad).Text)
+                    iID_INVENTARIO_LOTES_COSTOS = CInt(valorNumerico(Me.Grid1.Cell(Renglon, Me.iGyID_INVENTARIO_LOTES_COSTOS).Text))
 
-                    Me.oArticulos.CODIGO_ARTICULO = StrCod
-                    If Me.oArticulos.Consultar() = False Then
-                        Me.Grid1.Cell(Renglon, iGyCodigo).Text = ""
-                        GoTo BuscaArticulos
+                    If txtLEN(StrCod) = False Then
+                        GoTo ArticuloEnBlanco
+                    End If
+
+                    Me.oArticulos = New Class_CatArticulos(StrCod)
+
+                    If Me.oArticulos.Existe = False Then
+ArticuloEnBlanco:
+                        Me.InicializaRenglonGrid(Renglon)
+
+                        If Me.oDocumentos.AFECTA_LOTES_SELECCIONADOS = True Then
+                            GoTo BuscaArticulosPorLotes
+                        Else
+                            GoTo BuscaArticulos
+                        End If
+
                         Return
                     End If
 
                     If oArticulos.ESTATUS = "B" Then
                         MsgBox("Este artículo esta dado de baja.", vbExclamation, sProcedure)
-                        oArticulos.CODIGO_ARTICULO = ""
-                        oArticulos.DESCRIPCION = ""
+                        Me.InicializaRenglonGrid(Renglon)
+                        Return
                     End If
+
                     sNaturalezaInventarios = oInventarios.NaturalezaInventarios(Me.CboDocumento.SelectedValue.ToString)
 
                     Select Case Columna
                         Case Me.iGyCodigo
-                            If Me.oArticulos.DESCRIPCION = "" Then
-                                MsgBox("El código de artículo que intenta buscar no existe o esta dado de baja, favor de intentar con otro código.", MsgBoxStyle.Exclamation, sProcedure)
-                                Me.Grid1.Cell(Renglon, iGyCodigo).SetFocus()
-                                Return
-                            Else
-                                DCosto = 0
-                                If sNaturalezaInventarios = "SA" Then
-                                    Me.Grid1.Column(Me.iGyCosto).Locked = True
-                                    DCosto = Me.oInventarios.oInventariosDetalle.Obtener_Costo(StrCod, Me.CboAlmacen.SelectedValue.ToString, 1)
+
+                            If Me.oDocumentos.AFECTA_LOTES_SELECCIONADOS = True Then
+                                If iID_INVENTARIO_LOTES_COSTOS <= 0 Then
+                                    Me.InicializaRenglonGrid(Renglon)
+                                    GoTo BuscaArticulosPorLotes
+                                    Return
                                 Else
-                                    Me.Grid1.Column(Me.iGyCosto).Locked = False
+                                    'No hace nada, no es necesario recargar los valores ya que no pueden cambiar excepto la cantidad(el costo hay que bloquearlo).
                                 End If
-                                Me.Grid1.Cell(Renglon, Me.iGyDescripcion).Text = Me.oArticulos.DESCRIPCION
-                                Me.Grid1.Cell(Renglon, Me.iGyCosto).Text = DCosto.ToString
-                                If Me._LlamadoExteriorGenerarSalidaEmbarque = False Then
-                                    Me.Grid1.Cell(Renglon, Me.iGyImporte).Text = "0"
-                                    Me.Grid1.Cell(Renglon, Me.iGyCantidad).Text = "0"
-                                    Me.Grid1.Cell(Renglon, Me.iGyImporte).Text = "0"
-                                    Me.Grid1.Cell(Renglon, Me.iGyCantidad).Text = "0"
+
+                            Else
+                                If Me.oArticulos.DESCRIPCION = "" Then
+                                    MsgBox("El código de artículo que intenta buscar no existe o esta dado de baja, favor de intentar con otro código.", MsgBoxStyle.Exclamation, sProcedure)
+                                    Me.Grid1.Cell(Renglon, iGyCodigo).SetFocus()
+                                    Return
+                                Else
+                                    DCosto = 0
+                                    If sNaturalezaInventarios = "SA" Then
+                                        Me.Grid1.Column(Me.iGyCosto).Locked = True
+                                        DCosto = Me.oInventarios.oInventariosDetalle.Obtener_Costo(StrCod, Me.CboAlmacen.SelectedValue.ToString, 1)
+                                    Else
+                                        Me.Grid1.Column(Me.iGyCosto).Locked = False
+                                    End If
+                                    Me.Grid1.Cell(Renglon, Me.iGyDescripcion).Text = Me.oArticulos.DESCRIPCION
+                                    Me.Grid1.Cell(Renglon, Me.iGyCosto).Text = DCosto.ToString
+                                    If Me._LlamadoExteriorGenerarSalidaEmbarque = False Then
+                                        Me.Grid1.Cell(Renglon, Me.iGyCantidad).Text = "0"
+                                        Me.Grid1.Cell(Renglon, Me.iGyImporte).Text = "0"
+                                    End If
                                 End If
                             End If
+
                             Me.oArticulos = Nothing
 
                         Case Me.iGyCantidad
@@ -816,9 +866,15 @@ buscar:
                                 'Dim sql3 As New Class_find("Select Existencia From INVENTARIO_EXISTENCIA_ARTICULOS Where CODIGO_Articulo='" & Grid1.Cell(Renglon, iGyCodigo).Text & "' and Codigo_Almacen='" & CboAlmacen.SelectedValue.ToString & "'")
                                 'If valorNumerico(sql3.Result1) < valorNumerico(StrCod) Then
                                 If Me.oArticulos.INVENTARIABLE <> "0" Then
-                                    dExistencia = oInventarios.Existencia(Me.Grid1.Cell(Renglon, Me.iGyCodigo).Text, Me.CboAlmacen.SelectedValue.ToString)
-                                    If valorNumerico(sCantidad) > valorNumerico(dExistencia.ToString) Then 'if capturaron>existencia
-                                        Dim dDiferencia As Double = valorNumerico(sCantidad) - dExistencia
+
+                                    If Me.oDocumentos.AFECTA_LOTES_SELECCIONADOS = True Then
+                                        dExistencia = oInventarios.ExistenciaLoteSerie(Me.Grid1.Cell(Renglon, Me.iGyID_INVENTARIO_LOTES_COSTOS).Text)
+                                    Else
+                                        dExistencia = oInventarios.Existencia(Me.Grid1.Cell(Renglon, Me.iGyCodigo).Text, Me.CboAlmacen.SelectedValue.ToString)
+                                    End If
+
+                                    If dCantidad > dExistencia Then 'if capturaron>existencia
+                                        Dim dDiferencia As Double = dCantidad - dExistencia
                                         MsgBox("El artículo que intenta agregar no tiene suficiente existencia." & vbCrLf &
                                                 "Existencia " & Format(dExistencia, "###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CANTIDAD)) & ", faltan " & Format(dDiferencia, "###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CANTIDAD)), MsgBoxStyle.Exclamation, "Validación de existencias")
                                         'Me.Grid1.Cell(Renglon, Me.iGyCantidad).Text = "0"
@@ -828,7 +884,7 @@ buscar:
                                 End If
                             End If
 
-                            If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO <> "ER" Then 'Para las entradas por recepción de compras no se sobreescribe ni pierde el precio.
+                            If Not (Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ER" Or Me.oDocumentos.AFECTA_LOTES_SELECCIONADOS = True) Then 'Para las entradas por recepción de compras o documentos que afectan lotes selecionados no se sobreescribe ni pierde el costp.
                                 DCosto = valorNumerico(Me.oInventarios.oInventariosDetalle.Obtener_Costo(Me.Grid1.Cell(Renglon, Me.iGyCodigo).Text, Me.CboAlmacen.SelectedValue.ToString, valorNumerico(Me.Grid1.Cell(Renglon, Me.iGyCantidad).Text)).ToString)
                                 Me.Grid1.Cell(Renglon, Me.iGyCosto).Text = DCosto.ToString
                             End If
@@ -883,10 +939,35 @@ buscar:
 
                     Select Case Columna
                         Case Me.iGyCodigo
-                            If e.KeyCode = Keys.F6 Then
+                            If Me.oDocumentos.AFECTA_LOTES_SELECCIONADOS = True Then
+BuscaArticulosPorLotes:
+                                Dim tLote As New Class_Inventarios_Global.tBusquedaLotes
+                                tLote = Me.oInventarios.BusquedaVisual_Lotes(Me.CboAlmacen.SelectedValue.ToString)
+
+                                If txtLEN(tLote.CodigoArticulo) = True Then
+                                    If Me.RepiteLote(Renglon, tLote.ID_INVENTARIO_LOTES_COSTOS) = True Then
+                                        Return
+                                    End If
+
+                                    Me.oArticulos = New Class_CatArticulos(tLote.CodigoArticulo)
+
+                                    Me.InicializaRenglonGrid(Renglon)
+
+                                    Me.Grid1.Cell(Renglon, Me.iGyCodigo).Text = tLote.CodigoArticulo
+                                    Me.Grid1.Cell(Renglon, Me.iGyDescripcion).Text = Me.oArticulos.DESCRIPCION
+                                    Me.Grid1.Cell(Renglon, Me.iGyCosto).Text = tLote.Costo.ToString
+                                    Me.Grid1.Cell(Renglon, Me.iGyID_INVENTARIO_LOTES_COSTOS).Text = tLote.ID_INVENTARIO_LOTES_COSTOS
+                                End If
+
+                            Else
+                                If e.KeyCode = Keys.F6 Then
 BuscaArticulos:
-                                sCodArticulo = Me.oArticulos.BusquedaVisualInventariablesConExistencia_PorDescripcion(Me.CboAlmacen.SelectedValue.ToString)
-                                If Len(sCodArticulo) > 0 Then
+                                    sCodArticulo = Me.oArticulos.BusquedaVisualInventariablesConExistencia_PorDescripcion(Me.CboAlmacen.SelectedValue.ToString)
+                                ElseIf e.KeyCode = Keys.F7 Then
+                                    sCodArticulo = Me.oArticulos.BusquedaVisualInventariablesConExistencia_PorCodigo(Me.CboAlmacen.SelectedValue.ToString)
+                                End If
+
+                                If txtLEN(sCodArticulo) = True Then
                                     Me.Grid1.Cell(Renglon, Me.iGyDescripcion).Text = Me.oArticulos.BuscarNombreArticulo(sCodArticulo)
                                     Me.Grid1.Cell(Renglon, Me.iGyCodigo).Text = sCodArticulo
                                     Me.Grid1.Cell(Renglon, Me.iGyCosto).Text = DCosto.ToString
@@ -896,21 +977,6 @@ BuscaArticulos:
                                     End If
                                 End If
                                 Me.Grid1.Cell(Renglon, iGyCodigo).SetFocus()
-
-                            ElseIf e.KeyCode = Keys.F7 Then
-
-                                sCodArticulo = Me.oArticulos.BusquedaVisualInventariablesConExistencia_PorCodigo(Me.CboAlmacen.SelectedValue.ToString)
-                                If Len(sCodArticulo) > 0 Then
-                                    Me.Grid1.Cell(Renglon, Me.iGyDescripcion).Text = Me.oArticulos.BuscarNombreArticulo(sCodArticulo)
-                                    Me.Grid1.Cell(Renglon, Me.iGyCodigo).Text = sCodArticulo
-                                    Me.Grid1.Cell(Renglon, Me.iGyCosto).Text = DCosto.ToString
-                                    If Me._LlamadoExteriorGenerarSalidaEmbarque = False Then
-                                        Me.Grid1.Cell(Renglon, Me.iGyImporte).Text = "0"
-                                        Me.Grid1.Cell(Renglon, Me.iGyCantidad).Text = "0"
-                                    End If
-                                End If
-                                Me.Grid1.Cell(Renglon, iGyCodigo).SetFocus()
-
                             End If
 
                         Case Me.iGyCuentaContable
@@ -1190,6 +1256,7 @@ BuscarCuentas:
                                 .oInventariosDetalle.COSTO_DETALLE_BASE = valorNumericoD(Me.Grid1.Cell(i, Me.iGyCosto).Text.ToString)
                                 .oInventariosDetalle.IMPORTE_BASE = valorNumericoD(Me.Grid1.Cell(i, Me.iGyImporte).Text.ToString)
                                 .oInventariosDetalle.ID_COMPRA_DETALLE = CInt("0" & Me.Grid1.Cell(i, Me.iGyIDCompraDetalle).Text)
+                                .oInventariosDetalle.ID_INVENTARIO_LOTES_COSTOS = CInt("0" & Me.Grid1.Cell(i, Me.iGyID_INVENTARIO_LOTES_COSTOS).Text)
 
                                 If .oInventariosDetalle.GrabaRenglon() = False Then
                                     MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, sProcedure)
@@ -1412,7 +1479,7 @@ BuscarCuentas:
         Const sProcedure As String = "ValidarExistencias"
         Dim bResultado As Boolean = False
 
-        Dim dCantidadSumadaPorArticulos As Double, dExistencia As Double
+        Dim dCantidadSumadaPorArticulos As Double, dExistencia As Double, dCantidad As Decimal = 0, dDiferencia As Double = 0
         Dim i As Integer, sCodigoArticulo As String = ""
 
         Try
@@ -1426,27 +1493,52 @@ BuscarCuentas:
 
             For i = 1 To Me.Grid1.Rows - 1
                 sCodigoArticulo = Me.Grid1.Cell(i, Me.iGyCodigo).Text
+                dCantidad = valorNumericoD(Me.Grid1.Cell(i, Me.iGyCantidad).Text)
+
                 If txtLEN(sCodigoArticulo) = True Then
                     Me.oArticulos = New Class_CatArticulos(sCodigoArticulo)
                     If Me.oArticulos.INVENTARIABLE <> "0" Then
-                        dExistencia = oInventarios.Existencia(sCodigoArticulo, Me.CboAlmacen.SelectedValue.ToString)
+
+                        If Me.oDocumentos.AFECTA_LOTES_SELECCIONADOS = True Then
+                            dExistencia = oInventarios.ExistenciaLoteSerie(Me.Grid1.Cell(i, Me.iGyID_INVENTARIO_LOTES_COSTOS).Text)
+                        Else
+                            dExistencia = oInventarios.Existencia(sCodigoArticulo, Me.CboAlmacen.SelectedValue.ToString)
+                        End If
+
                         If dExistencia <= 0 Then
                             Me.Show()
-                            MsgBox("El artículo " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " que intenta agregar no tiene existencia. ", MsgBoxStyle.Exclamation, sProcedure)
+                            MsgBox("El artículo " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " del renglón #" & i.ToString & " no tiene existencia. ", MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         Else
-                            If Me._LlamadoExteriorGenerarSalidaEmbarque = False Then
-                                'dCantidadSumadaPorArticulos = CDbl(dt.Compute("sum(CANTIDAD)", "CODIGO_ARTICULO='" & Me.Grid1.Cell(i, Me.iGyCodigo).Text & "'"))
-                                dCantidadSumadaPorArticulos = FG_Grid_ComputeCol(Me.Grid1, sCodigoArticulo, Me.iGyCodigo, Me.iGyCantidad)
+                            If Me.oDocumentos.AFECTA_LOTES_SELECCIONADOS = True Then
+                                'Aqui no es necesario computar o agrupar por artículo porque al ser un lote especifico se evalua el disponible del mismo.
+
+                                If dCantidad > valorNumerico(dExistencia.ToString) Then 'if capturaron>existencia
+                                    dDiferencia = Redondear(dCantidad - dExistencia, Empresa_Sistema.DECIMALES_CANTIDAD)
+                                    MsgBox("El artículo " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " del renglón #" & i.ToString & " no tiene suficiente existencia." & vbCrLf &
+                                            "Existencia " & Format(dExistencia, "###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CANTIDAD)) &
+                                            ", faltan " & Format(dDiferencia, "###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CANTIDAD)), MsgBoxStyle.Exclamation, sProcedure)
+                                End If
+
                             Else
-                                dCantidadSumadaPorArticulos = CDbl(Me.Grid1.Cell(i, Me.iGyCantidad).Text)
+                                If Me._LlamadoExteriorGenerarSalidaEmbarque = False Then
+                                    'dCantidadSumadaPorArticulos = CDbl(dt.Compute("sum(CANTIDAD)", "CODIGO_ARTICULO='" & Me.Grid1.Cell(i, Me.iGyCodigo).Text & "'"))
+                                    dCantidadSumadaPorArticulos = FG_Grid_ComputeCol(Me.Grid1, sCodigoArticulo, Me.iGyCodigo, Me.iGyCantidad)
+                                Else
+                                    dCantidadSumadaPorArticulos = CDbl(Me.Grid1.Cell(i, Me.iGyCantidad).Text)
+                                End If
+
+                                If dCantidadSumadaPorArticulos > dExistencia Then
+                                    dDiferencia = Redondear(dCantidadSumadaPorArticulos - dExistencia, Empresa_Sistema.DECIMALES_CANTIDAD)
+
+                                    Me.Show()
+                                    MsgBox("El artículo " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " del renglón #" & i.ToString & " no tiene suficiente existencia." & vbCrLf &
+                                            "Existencia " & Format(dExistencia, "###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CANTIDAD)) &
+                                            ", faltan " & Format(dDiferencia, "###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CANTIDAD)), MsgBoxStyle.Exclamation, sProcedure)
+                                    Return False
+                                End If
                             End If
 
-                            If valorNumerico(dCantidadSumadaPorArticulos.ToString) > valorNumerico(dExistencia.ToString) Then
-                                Me.Show()
-                                MsgBox("El Artículo " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " no tiene suficiente existencia.", MsgBoxStyle.Exclamation, sProcedure)
-                                Return False
-                            End If
                         End If
                     End If
                 End If
@@ -1698,7 +1790,8 @@ BuscarCuentas:
             For Each dRow As DataRow In dTabla.Rows
                 Me.Grid1.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("CANTIDAD").ToString & Chr(9) & dRow("COSTO_DETALLE_BASE").ToString & Chr(9) & dRow("IMPORTE_BASE").ToString & Chr(9) &
                                 dRow("Boton").ToString & Chr(9) & dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("NOMBRE_CUENTA").ToString & Chr(9) & dRow("ID_ADICIONAL").ToString & Chr(9) &
-                                dRow("FLETE_DETALLE_IMPORTE").ToString & Chr(9) & dRow("COSTO_DETALLE").ToString & Chr(9) & dRow("IMPORTE_BASE").ToString & Chr(9) & dRow("ID_COMPRA_DETALLE").ToString & Chr(9) & dRow("DISPONIBLE").ToString & Chr(9))
+                                dRow("FLETE_DETALLE_IMPORTE").ToString & Chr(9) & dRow("COSTO_DETALLE").ToString & Chr(9) & dRow("IMPORTE_BASE").ToString & Chr(9) & dRow("ID_COMPRA_DETALLE").ToString & Chr(9) & dRow("DISPONIBLE").ToString & Chr(9) &
+                                dRow("ID_INVENTARIO_LOTES_COSTOS").ToString & Chr(9))
             Next
 
             If Me.lblStatus.Text = "G" Then
@@ -1810,7 +1903,7 @@ BuscarCuentas:
         Try
             With Me.Grid1
                 .AutoRedraw = False
-                .Cols = 15
+                .Cols = 16
                 '.DefaultFont = New Font("Tahoma", 8)
                 .DisplayFocusRect = False
                 '.DisplayDateTimeMask = True
@@ -1841,6 +1934,7 @@ BuscarCuentas:
                 .Cell(0, Me.iGyImporteMasFlete).Text = "Importe+Flete"
                 .Cell(0, Me.iGyIDCompraDetalle).Text = "IDCompraDetalle"
                 .Cell(0, Me.iGyDisponible).Text = "Disponible"
+                .Cell(0, Me.iGyID_INVENTARIO_LOTES_COSTOS).Text = "ID_INVENTARIO_LOTES_COSTOS"
 
                 .Column(Me.iGyCantidad).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyCantidad).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
@@ -1894,6 +1988,7 @@ BuscarCuentas:
                 .Column(Me.iGyImporteMasFlete).Visible = False
                 .Column(Me.iGyIDCompraDetalle).Visible = False
                 .Column(Me.iGyDisponible).Visible = False
+                .Column(Me.iGyID_INVENTARIO_LOTES_COSTOS).Visible = Visible  ' False
 
             End With
 
@@ -2147,10 +2242,15 @@ BuscarCuentas:
         Try
             Me.oDocumentos = New Class_Cat_tiposDocumentos(Me.CboDocumento.SelectedValue.ToString)
 
+            Me.Grid1.Column(Me.iGyCosto).Locked = False
+            Me.Grid1.Column(Me.iGyCodigo).Locked = False
+
             If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ER" Or Me.oDocumentos.NATURALEZA_INVENTARIOS = "SA" Then
                 Me.Grid1.Column(Me.iGyCosto).Locked = True
-            Else
-                Me.Grid1.Column(Me.iGyCosto).Locked = False
+            End If
+
+            If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "SALT" Or Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "TRLT" Then
+                Me.Grid1.Column(Me.iGyCodigo).Locked = True
             End If
 
             If Me.oDocumentos.ES_TRANSFERENCIA = "1" Then
@@ -2375,7 +2475,7 @@ BuscarCuentas:
             'Me.oDocumentos = New Class_Cat_tiposDocumentos(Me.CboDocumento.SelectedValue.ToString)
             If Me.oDocumentos.ES_TRANSFERENCIA = "1" Then
                 If Me.EstableceCuentaContableAlmacenDestino() = False Then
-                    MsgBox("Error al tratar de asígnar la cuenta contable del almacen destino.", MsgBoxStyle.Exclamation, sProcedure)
+                    MsgBox("Error al tratar de asígnar la cuenta contable del almacén destino.", MsgBoxStyle.Exclamation, sProcedure)
                     Return
                 End If
             End If
@@ -3254,6 +3354,30 @@ busca_serie:
         End If
 
         Return True
+    End Function
+
+    Private Function RepiteLote(ByVal Renglon As Integer, ByVal ID_INVENTARIO_LOTES_COSTOS As String) As Boolean
+        Const sProcedure As String = "RepiteLote"
+        Dim RenglonRepetido As Integer
+        Try
+            For i = 1 To Me.Grid1.Rows - 1
+                If i <> Renglon Then
+                    If txtLEN(Me.Grid1.Cell(i, Me.iGyID_INVENTARIO_LOTES_COSTOS).Text) = True Then
+                        If ID_INVENTARIO_LOTES_COSTOS = Me.Grid1.Cell(i, Me.iGyID_INVENTARIO_LOTES_COSTOS).Text Then
+                            RenglonRepetido = i
+
+                            MsgBox("El lote del artículo " & Me.Grid1.Cell(RenglonRepetido, iGyCodigo).Text & " esta repetido en el renglón " & RenglonRepetido & "." & vbCrLf &
+                                   "No es válido repetir lotes.", MsgBoxStyle.Exclamation, sProcedure)
+                            Me.Grid1.Cell(RenglonRepetido, Me.iGyCodigo).SetFocus()
+
+                            Return True
+                        End If
+                    End If
+                End If
+            Next
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Function
 
 #End Region

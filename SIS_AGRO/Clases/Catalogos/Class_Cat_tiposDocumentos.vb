@@ -1,5 +1,5 @@
 ﻿Option Strict On
-Imports System.Data
+
 Imports System.Data.SqlClient
 
 Public Class Class_Cat_tiposDocumentos
@@ -19,7 +19,7 @@ Public Class Class_Cat_tiposDocumentos
     Private _NATURALEZA_CXP As String
     Private _ES_CANCELABLE As String
     Private _ES_TRANSFERENCIA As String
-
+    Private _AFECTA_LOTES_SELECCIONADOS As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -29,7 +29,6 @@ Public Class Class_Cat_tiposDocumentos
 #Region "Campos públicos"
 
 #End Region
-
 
 #Region "Campos privados"
 
@@ -49,7 +48,6 @@ Public Class Class_Cat_tiposDocumentos
 #Region "Propiedades"
 
 #Region "Propiedades Campos de la tabla"
-
     Public Property CODIGO_TIPO_DOCUMENTO() As String
         Get
             Return Me._CODIGO_TIPO_DOCUMENTO
@@ -158,6 +156,12 @@ Public Class Class_Cat_tiposDocumentos
         End Set
     End Property
 
+    Public ReadOnly Property AFECTA_LOTES_SELECCIONADOS() As Boolean
+        Get
+            Return Me._AFECTA_LOTES_SELECCIONADOS
+        End Get
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -171,6 +175,7 @@ Public Class Class_Cat_tiposDocumentos
 #Region "Propiedades de campos privados"
 
 #End Region
+
 #Region "Propiedades de campos de sistema"
     Public ReadOnly Property Nombre_Catalogo() As String
         Get
@@ -219,16 +224,9 @@ Public Class Class_Cat_tiposDocumentos
     End Sub
 #End Region
 
-#Region "Opciones"
-
-#End Region
-
 #Region "Métodos y procedimientos"
-
-    ''' <summary>
-    ''' Consulta y refresca los campos del almacén.
-    ''' </summary>
     Public Function Consultar() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand(Me._QuerySelect & " CODIGO_TIPO_DOCUMENTO='" & Replace(Me.CODIGO_TIPO_DOCUMENTO, "'", "''") & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
@@ -239,19 +237,20 @@ Public Class Class_Cat_tiposDocumentos
                 dReader = .ExecuteReader()
 
                 If dReader.Read Then
-                    Me.NOMBRE_TIPO_DOCUMENTO = "" & dReader("NOMBRE_TIPO_DOCUMENTO").ToString()
-                    Me.CODIGO_MODULO = Trim("" & dReader("CODIGO_MODULO").ToString())
-                    Me.AFECTA_CXC = Trim("" & dReader("AFECTA_CXC").ToString())
-                    Me.NATURALEZA_CXC = "" & dReader("NATURALEZA_CXC").ToString()
-                    Me.AFECTA_CONTABILIDAD = "" & dReader("AFECTA_CONTABILIDAD").ToString()
-                    Me.AFECTA_INVENTARIOS = "" & dReader("AFECTA_INVENTARIOS").ToString()
-                    Me.NATURALEZA_INVENTARIOS = "" & dReader("NATURALEZA_INVENTARIOS").ToString()
-                    Me.AFECTA_CXP = "" & dReader("AFECTA_CXP").ToString()
-                    Me.NATURALEZA_CXP = "" & dReader("NATURALEZA_CXP").ToString()
-                    Me.ES_CANCELABLE = "" & dReader("ES_CANCELABLE").ToString()
-                    Me.ES_TRANSFERENCIA = "" & dReader("ES_TRANSFERENCIA").ToString()
+                    Me._NOMBRE_TIPO_DOCUMENTO = "" & dReader("NOMBRE_TIPO_DOCUMENTO").ToString()
+                    Me._CODIGO_MODULO = Trim("" & dReader("CODIGO_MODULO").ToString())
+                    Me._AFECTA_CXC = Trim("" & dReader("AFECTA_CXC").ToString())
+                    Me._NATURALEZA_CXC = "" & dReader("NATURALEZA_CXC").ToString()
+                    Me._AFECTA_CONTABILIDAD = "" & dReader("AFECTA_CONTABILIDAD").ToString()
+                    Me._AFECTA_INVENTARIOS = "" & dReader("AFECTA_INVENTARIOS").ToString()
+                    Me._NATURALEZA_INVENTARIOS = "" & dReader("NATURALEZA_INVENTARIOS").ToString()
+                    Me._AFECTA_CXP = "" & dReader("AFECTA_CXP").ToString()
+                    Me._NATURALEZA_CXP = "" & dReader("NATURALEZA_CXP").ToString()
+                    Me._ES_CANCELABLE = "" & dReader("ES_CANCELABLE").ToString()
+                    Me._ES_TRANSFERENCIA = "" & dReader("ES_TRANSFERENCIA").ToString()
+                    Me._AFECTA_LOTES_SELECCIONADOS = CBool(dReader("AFECTA_LOTES_SELECCIONADOS").ToString())
 
-                    Consultar = True
+                    bResultado = True
                 End If
                 dReader.Close()
             Catch ex As Exception
@@ -262,63 +261,9 @@ Public Class Class_Cat_tiposDocumentos
             End Try
         End With
 
-    End Function        'Consulta un elemento del catálogo.
-
-
-    ''' <summary>
-    ''' Despliega la búsqueda visual por descripción.
-    ''' </summary>
-    Public Function BusquedaVisual_PorDescripcion() As String
-        Dim f As New BusquedaVisual
-        Dim Resultado As String = ""
-        f.Text = "Búsqueda de Articulos por Descripción."
-        f.sCampo = "Descripcion"
-        f.sOrder = "Descripcion"
-        f.sTable = "Cat_Articulos"
-        f.sQl = "Select CODIGO_ARTICULO,Descripcion From Cat_Articulos Where 1=1 And Protegido=0 AND "
-        f.Inicia("")
-        f.ShowDialog()
-        Try
-            If f.iRows > 0 Then
-                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
-            End If
-        Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcion", ex)
-        End Try
-        Return Resultado
+        Return bResultado
     End Function
 
-
 #End Region
-
-#Region "Eventos de objetos"
-
-
-#Region "Eventos de la lista de elementos"
-
-#End Region
-
-#Region " Eventos de TxtFiltro"
-
-#End Region
-
-#Region "Eventos Genericos"
-
-#End Region
-
-
-#Region "Keydown específicos"
-
-
-#End Region
-
-#Region "Validating específicos"
-
-#End Region
-
-
-
-#End Region
-
 
 End Class
