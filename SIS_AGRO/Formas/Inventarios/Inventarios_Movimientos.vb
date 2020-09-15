@@ -505,7 +505,9 @@ Buscar:
 
                 Me.lblCliente.Text = oCliente.NOMBRE_CLIENTE
 
-                SendKeys.Send("{TAB}")
+                If Me.TxtConcepto.Enabled = True Then
+                    Me.TxtConcepto.Focus()
+                End If
         End Select
     End Sub
 
@@ -1164,7 +1166,7 @@ BuscarCuentas:
             Return False
         End If
 
-        If Me.oDocumentos.AFECTA_INVENTARIOS = "SA" AndAlso txtLEN(Me.txtCliente.Text) = True Then
+        If Me.oDocumentos.AFECTA_INVENTARIOS = "1" AndAlso txtLEN(Me.txtCliente.Text) = True Then
             Dim oCliente As New Class_CatClientes(Me.txtCliente.Text)
             If oCliente.Existe = False Then
                 MsgBox("El cliente asignado no existe.", MsgBoxStyle.Exclamation, sProcedure)
