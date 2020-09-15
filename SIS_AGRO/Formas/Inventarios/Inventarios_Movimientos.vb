@@ -478,6 +478,37 @@ buscar:
         End If
     End Sub
 
+    Private Sub txtCliente_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCliente.KeyDown
+        Dim sText As String = ""
+        Dim oCliente As Class_CatClientes
+        Select Case e.KeyCode
+            Case Keys.F6
+Buscar:
+                oCliente = New Class_CatClientes
+                If Empresa_Sistema.PERMITE_CLIENTES_MULTIPLAZA = True Then
+                    sText = oCliente.BusquedaVisual_PorDescripcionSinFiltroZona
+                Else
+                    sText = oCliente.BusquedaVisualPlaza
+                End If
+
+                If txtLEN(sText) = True Then Me.txtCliente.Text = sText
+            Case Keys.Enter
+                If txtLEN(Me.txtCliente.Text) = False Then
+                    Me.lblCliente.Text = "" : Exit Sub
+                End If
+
+                oCliente = New Class_CatClientes(Me.txtCliente.Text)
+
+                If oCliente.Existe = False Then
+                    Me.lblCliente.Text = "" : GoTo Buscar : Exit Sub
+                End If
+
+                Me.lblCliente.Text = oCliente.NOMBRE_CLIENTE
+
+                SendKeys.Send("{TAB}")
+        End Select
+    End Sub
+
 #Region "Eventos Genericos"
     Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles DtpFecha.KeyPress, TxtConcepto.KeyPress, TxtFolio.KeyPress, TxtFolioReferencia.KeyPress, txtFolioEmbarque.KeyPress,
         txtFolioOrdenCompra.KeyPress
@@ -534,6 +565,7 @@ buscar:
                     Me.btnSeleccionarArchivoSeries.Enabled = True
                     Me.CboConceptoInventario.Enabled = True
                     Me.TxtFolioOrdenProduccion.Enabled = True
+                    Me.txtCliente.Enabled = True
 
                     Me.OcultaControles()
 
@@ -574,6 +606,7 @@ buscar:
                     Me.btnSeleccionarArchivoSeries.Enabled = True
                     Me.CboConceptoInventario.Enabled = False
                     Me.TxtFolioOrdenProduccion.Enabled = True
+                    Me.txtCliente.Enabled = True
 
                     Me.OcultaControles()
 
@@ -608,6 +641,7 @@ buscar:
                     Me.GridSeries.Locked = True
                     Me.CboConceptoInventario.Enabled = False
                     Me.TxtFolioOrdenProduccion.Enabled = False
+                    Me.txtCliente.Enabled = False
 
                     Me.tsbImprimir.Select()
 
@@ -634,6 +668,7 @@ buscar:
                     Me.GridSeries.Locked = False
                     Me.CboConceptoInventario.Enabled = False
                     Me.TxtFolioOrdenProduccion.Enabled = False
+                    Me.txtCliente.Enabled = False
 
                     Me.tsbImprimir.Select()
             End Select
@@ -669,6 +704,8 @@ buscar:
             Me.TxtFolioOrdenProduccion.Text = ""
             Me.TxtFolioOrdenProduccion.Visible = False
             Me.LblFolioOrdenProduccion.Visible = False
+
+            Me.txtCliente.Text = "" : Me.lblCliente.Text = ""
 
             Me.GeneraFolio()
 
@@ -1127,6 +1164,16 @@ BuscarCuentas:
             Return False
         End If
 
+        If Me.oDocumentos.AFECTA_INVENTARIOS = "SA" AndAlso txtLEN(Me.txtCliente.Text) = True Then
+            Dim oCliente As New Class_CatClientes(Me.txtCliente.Text)
+            If oCliente.Existe = False Then
+                MsgBox("El cliente asignado no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+        Else
+            Me.txtCliente.Text = "" 'Sólo aplica para movimientos de inventario tipo salidas.
+        End If
+
         Me.Totales()
 
         If Me.ValidaFlete() = False Then
@@ -1212,6 +1259,7 @@ BuscarCuentas:
                             .CODIGO_ALMACEN_ENTRADA_FINANCIERA = ""
                         End If
                         .FOLIO_ORDEN_PRODUCCION = Me.TxtFolioOrdenProduccion.Text.ToUpper
+                        .CODIGO_CLIENTE = Me.txtCliente.Text
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -1513,11 +1561,13 @@ BuscarCuentas:
                             If Me.oDocumentos.AFECTA_LOTES_SELECCIONADOS = True Then
                                 'Aqui no es necesario computar o agrupar por artículo porque al ser un lote especifico se evalua el disponible del mismo.
 
-                                If dCantidad > valorNumerico(dExistencia.ToString) Then 'if capturaron>existencia
+                                If dCantidad > dExistencia Then 'if capturaron>existencia
                                     dDiferencia = Redondear(dCantidad - dExistencia, Empresa_Sistema.DECIMALES_CANTIDAD)
                                     MsgBox("El artículo " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " del renglón #" & i.ToString & " no tiene suficiente existencia." & vbCrLf &
-                                            "Existencia " & Format(dExistencia, "###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CANTIDAD)) &
+                                            "Existencia ''del lote'' " & Format(dExistencia, "###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CANTIDAD)) &
                                             ", faltan " & Format(dDiferencia, "###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CANTIDAD)), MsgBoxStyle.Exclamation, sProcedure)
+
+                                    Return False
                                 End If
 
                             Else
@@ -1782,6 +1832,14 @@ BuscarCuentas:
                 Me.txtTotalFlete.Text = FormatImporteContable(oInventarios.FLETE_TOTAL)
             End If
 
+            Me.txtCliente.Text = oInventarios.CODIGO_CLIENTE
+
+            If txtLEN(oInventarios.CODIGO_CLIENTE) = True Then
+                Dim oCliente As New Class_CatClientes(oInventarios.CODIGO_CLIENTE)
+                Me.lblCliente.Text = oCliente.NOMBRE_CLIENTE
+                oCliente = Nothing
+            End If
+
             'Consulta datos detalle
             'Me.Grid1.DataSource = Me.oInventarios.ObtenerDetalle
             Dim dTabla As DataTable = Me.oInventarios.ObtenerDetalle
@@ -1988,7 +2046,7 @@ BuscarCuentas:
                 .Column(Me.iGyImporteMasFlete).Visible = False
                 .Column(Me.iGyIDCompraDetalle).Visible = False
                 .Column(Me.iGyDisponible).Visible = False
-                .Column(Me.iGyID_INVENTARIO_LOTES_COSTOS).Visible = Visible  ' False
+                .Column(Me.iGyID_INVENTARIO_LOTES_COSTOS).Visible = False
 
             End With
 
@@ -2329,6 +2387,12 @@ BuscarCuentas:
                     Me.TxtFolioOrdenProduccion.Visible = False
                     Me.TxtFolioOrdenProduccion.Text = ""
                 End If
+            End If
+
+            If Me.oDocumentos.NATURALEZA_INVENTARIOS = "SA" Then
+                Me.txtCliente.Visible = True : Me.lblCliente.Visible = True : Me.lblDisplayCliente.Visible = True
+            Else
+                Me.txtCliente.Visible = False : Me.lblCliente.Visible = False : Me.lblDisplayCliente.Visible = False
             End If
 
             'Revisar luego si lockear columnas, aqui es problemático hacerlo porque puede ser que desbloquee columnas o controles que deberian estar bloqueadas(que manipula el cambiar estado)
@@ -3379,6 +3443,8 @@ busca_serie:
             HandleError(Me.Name, sProcedure, ex)
         End Try
     End Function
+
+
 
 #End Region
 

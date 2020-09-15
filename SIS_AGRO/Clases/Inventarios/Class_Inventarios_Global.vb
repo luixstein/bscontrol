@@ -32,6 +32,7 @@ Public Class Class_Inventarios_Global
     Private _CODIGO_ALMACEN_ENTRADA_FINANCIERA As String
     Private _FOLIO_ENTRADA_FINANCIERA As String
     Private _FOLIO_ORDEN_PRODUCCION As String
+    Private _CODIGO_CLIENTE As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -287,6 +288,16 @@ Public Class Class_Inventarios_Global
         End Set
     End Property
 
+
+    Public Property CODIGO_CLIENTE() As String
+        Get
+            Return Me._CODIGO_CLIENTE
+        End Get
+        Set(Value As String)
+            Me._CODIGO_CLIENTE = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -388,7 +399,8 @@ Public Class Class_Inventarios_Global
             sqlParametro = .Parameters.Add("@COSTO_TOTAL_BASE", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO_TOTAL_BASE
             sqlParametro = .Parameters.Add("@FLETE_TOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._FLETE_TOTAL
             sqlParametro = .Parameters.Add("@CODIGO_ALMACEN_ENTRADA_FINANCIERA", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_ALMACEN_ENTRADA_FINANCIERA
-            sqlParametro = .Parameters.Add("@FOLIO_ORDEN_PRODUCCION", SqlDbType.NVarChar, 30) : sqlParametro.Value = "" & Me.FOLIO_ORDEN_PRODUCCION
+            sqlParametro = .Parameters.Add("@FOLIO_ORDEN_PRODUCCION", SqlDbType.NVarChar, 30) : sqlParametro.Value = "" & Me._FOLIO_ORDEN_PRODUCCION
+            sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8) : sqlParametro.Value = "" & Me._CODIGO_CLIENTE
 
             Try
                 Me._Conexion.Open()
@@ -511,6 +523,7 @@ Public Class Class_Inventarios_Global
                     Me._CODIGO_ALMACEN_ENTRADA_FINANCIERA = "" & dReader("CODIGO_ALMACEN_ENTRADA_FINANCIERA").ToString()
                     Me._FOLIO_ENTRADA_FINANCIERA = "" & dReader("FOLIO_ENTRADA_FINANCIERA").ToString()
                     Me._FOLIO_ORDEN_PRODUCCION = "" & dReader("FOLIO_ORDEN_PRODUCCION").ToString
+                    Me._CODIGO_CLIENTE = "" & dReader("CODIGO_CLIENTE").ToString
 
                     bResultado = True
                 End If
