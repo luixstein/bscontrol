@@ -31,6 +31,8 @@ Partial Class Rpt_Ventas_Global
         Me.RdnListadoDesagrupado = New System.Windows.Forms.RadioButton()
         Me.RdnPorCliente = New System.Windows.Forms.RadioButton()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.lblPlaza = New System.Windows.Forms.Label()
+        Me.cboPlaza = New System.Windows.Forms.ComboBox()
         Me.CboVendedores = New System.Windows.Forms.ComboBox()
         Me.LblVendedor = New System.Windows.Forms.Label()
         Me.LblDisplayZona = New System.Windows.Forms.Label()
@@ -53,8 +55,8 @@ Partial Class Rpt_Ventas_Global
         Me.DtFechaDesde = New System.Windows.Forms.DateTimePicker()
         Me.LblEstatus = New System.Windows.Forms.Label()
         Me.CboEstatus = New System.Windows.Forms.ComboBox()
-        Me.cboPlaza = New System.Windows.Forms.ComboBox()
-        Me.lblPlaza = New System.Windows.Forms.Label()
+        Me.CboIva = New System.Windows.Forms.ComboBox()
+        Me.LblIva = New System.Windows.Forms.Label()
         Me.ToolStrip1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -137,6 +139,8 @@ Partial Class Rpt_Ventas_Global
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.LblIva)
+        Me.GroupBox2.Controls.Add(Me.CboIva)
         Me.GroupBox2.Controls.Add(Me.lblPlaza)
         Me.GroupBox2.Controls.Add(Me.cboPlaza)
         Me.GroupBox2.Controls.Add(Me.CboVendedores)
@@ -165,10 +169,32 @@ Partial Class Rpt_Ventas_Global
         Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox2.Size = New System.Drawing.Size(679, 420)
+        Me.GroupBox2.Size = New System.Drawing.Size(679, 446)
         Me.GroupBox2.TabIndex = 4
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Filtros"
+        '
+        'lblPlaza
+        '
+        Me.lblPlaza.AutoSize = True
+        Me.lblPlaza.Location = New System.Drawing.Point(15, 284)
+        Me.lblPlaza.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblPlaza.Name = "lblPlaza"
+        Me.lblPlaza.Size = New System.Drawing.Size(51, 17)
+        Me.lblPlaza.TabIndex = 397
+        Me.lblPlaza.Text = "Plaza :"
+        '
+        'cboPlaza
+        '
+        Me.cboPlaza.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboPlaza.FormattingEnabled = True
+        Me.cboPlaza.Items.AddRange(New Object() {"A", "B"})
+        Me.cboPlaza.Location = New System.Drawing.Point(136, 281)
+        Me.cboPlaza.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboPlaza.MaxLength = 1
+        Me.cboPlaza.Name = "cboPlaza"
+        Me.cboPlaza.Size = New System.Drawing.Size(408, 24)
+        Me.cboPlaza.TabIndex = 396
         '
         'CboVendedores
         '
@@ -395,33 +421,32 @@ Partial Class Rpt_Ventas_Global
         Me.CboEstatus.Size = New System.Drawing.Size(408, 24)
         Me.CboEstatus.TabIndex = 374
         '
-        'cboPlaza
+        'CboIva
         '
-        Me.cboPlaza.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboPlaza.FormattingEnabled = True
-        Me.cboPlaza.Items.AddRange(New Object() {"A", "B"})
-        Me.cboPlaza.Location = New System.Drawing.Point(136, 281)
-        Me.cboPlaza.Margin = New System.Windows.Forms.Padding(4)
-        Me.cboPlaza.MaxLength = 1
-        Me.cboPlaza.Name = "cboPlaza"
-        Me.cboPlaza.Size = New System.Drawing.Size(408, 24)
-        Me.cboPlaza.TabIndex = 396
+        Me.CboIva.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboIva.FormattingEnabled = True
+        Me.CboIva.Location = New System.Drawing.Point(136, 412)
+        Me.CboIva.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboIva.MaxLength = 1
+        Me.CboIva.Name = "CboIva"
+        Me.CboIva.Size = New System.Drawing.Size(165, 24)
+        Me.CboIva.TabIndex = 398
         '
-        'lblPlaza
+        'LblIva
         '
-        Me.lblPlaza.AutoSize = True
-        Me.lblPlaza.Location = New System.Drawing.Point(15, 284)
-        Me.lblPlaza.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblPlaza.Name = "lblPlaza"
-        Me.lblPlaza.Size = New System.Drawing.Size(51, 17)
-        Me.lblPlaza.TabIndex = 397
-        Me.lblPlaza.Text = "Plaza :"
+        Me.LblIva.AutoSize = True
+        Me.LblIva.Location = New System.Drawing.Point(15, 415)
+        Me.LblIva.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblIva.Name = "LblIva"
+        Me.LblIva.Size = New System.Drawing.Size(37, 17)
+        Me.LblIva.TabIndex = 399
+        Me.LblIva.Text = "IVA :"
         '
         'Rpt_Ventas_Global
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(983, 461)
+        Me.ClientSize = New System.Drawing.Size(983, 488)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.ToolStrip1)
@@ -472,4 +497,6 @@ Partial Class Rpt_Ventas_Global
     Friend WithEvents LblVendedor As System.Windows.Forms.Label
     Friend WithEvents lblPlaza As System.Windows.Forms.Label
     Friend WithEvents cboPlaza As System.Windows.Forms.ComboBox
+    Friend WithEvents LblIva As System.Windows.Forms.Label
+    Friend WithEvents CboIva As System.Windows.Forms.ComboBox
 End Class

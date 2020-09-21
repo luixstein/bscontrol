@@ -167,6 +167,24 @@ Buscar:
         End Try
     End Sub
 
+    Private Sub DesplegarIvaPorcentajes()
+        Dim oImpuestos As New Class_SisCatImpuestos
+
+        Try
+            With Me.CboIva
+                .DisplayMember = "NOMBRE_IMPUESTO"
+                .ValueMember = "ID_SIS_CAT_IMPUESTOS"
+
+                Dim dView As New Data.DataView(oImpuestos.ObtenerElementosParaReportes)
+                dView.Sort = "NOMBRE_IMPUESTO"
+                .DataSource = dView
+                .SelectedValue = "T"
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarIvaPorcentajes", ex)
+        End Try
+    End Sub
+
     Private Sub Rpt_Embarques_Empaque_Y_Embarque_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.DesplegarAlmacen()
         Me.DesplegarEstatusVentas()
@@ -176,6 +194,7 @@ Buscar:
         Me.DesplegarZonas()
         Me.DesplegarVendedores()
         Me.DesplegarPlazas()
+        Me.DesplegarIvaPorcentajes()
 
         Me.CboEstatus.SelectedValue = "A"
         Me.DtFechaDesde.Value = FechaActualINI()
@@ -218,6 +237,7 @@ Buscar:
             Rpt.SetParameterValue("@MOSTAR_CON_SALDO", IIf(Me.CkbSaldo.Checked = True, "1", "0"))
             Rpt.SetParameterValue("@CODIGO_VENDEDOR", Me.CboVendedores.SelectedValue)
             Rpt.SetParameterValue("@CODIGO_PLAZA", Me.cboPlaza.SelectedValue)
+            Rpt.SetParameterValue("@ID_SIS_CAT_IMPUESTOS", Me.CboIva.SelectedValue.ToString)
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None

@@ -163,6 +163,20 @@ Public Class Class_SisCatImpuestos
         End Try
         Return dTable
     End Function
+
+    Public Function ObtenerElementosParaReportes() As System.Data.DataTable
+        Dim dTable As New DataTable
+        Dim da As New SqlDataAdapter("SELECT ID_SIS_CAT_IMPUESTOS,NOMBRE_IMPUESTO FROM SIS_CAT_IMPUESTOS WHERE ESTATUS='A'", Me._Conexion)
+        Try
+            da.Fill(dTable)
+            dTable.Rows.Add("T", "TODOS")
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ObtenerElementosParaReportes", ex)
+        Finally
+            da.Dispose()
+        End Try
+        Return dTable
+    End Function
 #End Region
 
 End Class
