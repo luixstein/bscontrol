@@ -10,6 +10,7 @@ Public Class Rpt_Inventarios_Global
     Private Sub Inventario_Existencias_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         DesplegarAlmacenes()
         DesplegarDocumentos()
+        DesplegarConceptosInventarios()
         DtFechaDesde.Value = Format(Date.Now, "01-MM-yyyy")
         DtFechaHasta.Value = Date.Now
         LlenaComboEstatus()
@@ -55,6 +56,8 @@ Public Class Rpt_Inventarios_Global
             Rpt.SetParameterValue("@CODIGO_ARTICULO", Me.TxtCodArticulo.Text.ToUpper)
             Rpt.SetParameterValue("@CODIGO_USUARIO", Usuario.Codigo_Usuario)
             Rpt.SetParameterValue("@NATURALEZA_INVENTARIOS", "T")
+            Rpt.SetParameterValue("@CODIGO_CONCEPTO_INVENTARIOS", IIf(Me.CboConceptoInventario.SelectedValue = -1, "T", Me.CboConceptoInventario.SelectedValue.ToString))
+            Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.TxtCodigoCliente.Text)
 
             If Me.RdbTotalesCultivo.Checked = True Or Me.RdbDetalleCultivo.Checked = True Then
                 Rpt.SetParameterValue("@CODIGO_CULTIVO", "T")
@@ -129,6 +132,19 @@ Public Class Rpt_Inventarios_Global
         End With
     End Sub
 
+    Private Sub DesplegarConceptosInventarios()
+        Dim oElementos As New Class_CatConceptosInventarios
+        With Me.CboConceptoInventario
+            .DisplayMember = "NOMBRE_CONCEPTO_INVENTARIOS"
+            .ValueMember = "CODIGO_CONCEPTO_INVENTARIOS"
+
+            Dim dView As New Data.DataView(oElementos.ObtenerElementosParaReportes)
+            dView.Sort = "NOMBRE_CONCEPTO_INVENTARIOS"
+            .DataSource = dView
+            .SelectedValue = -1 'TODOS
+        End With
+    End Sub
+
     Private Function ValidarPeriodo() As Boolean
         Me.DtFechaDesde.Enabled = False
         Me.DtFechaHasta.Enabled = False
@@ -156,7 +172,7 @@ Public Class Rpt_Inventarios_Global
         End If
     End Sub
 
-    Private Sub txtKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
+    Private Sub txtKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodArticulo.KeyPress, TxtCodigoCliente.KeyPress
         txtNoBeep(e)
     End Sub
 #End Region
@@ -195,6 +211,40 @@ Public Class Rpt_Inventarios_Global
                 End If
             Case Keys.Escape
         End Select
+    End Sub
+
+    Private Sub TxtCodigoArticulo_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoCliente.KeyDown
+        Try
+            Dim sText As String
+            Dim oClientes As New Class_CatClientes
+
+            Select Case e.KeyCode
+                Case Keys.F6
+Buscar:
+
+                    If Empresa_Sistema.PERMITE_CLIENTES_MULTIPLAZA = True Then
+                        sText = oClientes.BusquedaVisual_PorDescripcionSinFiltroZona
+                    Else
+                        sText = oClientes.BusquedaVisual_PorDescripcion
+                    End If
+
+                    If txtLEN(sText) = True Then Me.TxtCodigoCliente.Text = sText
+                Case Keys.Enter
+                    If txtLEN(Me.TxtCodigoCliente.Text) = False Then
+                        Me.LblNombreCliente.Text = ""
+                        txtTAB(e)
+                        Return
+                    End If
+                    oClientes = New Class_CatClientes(Me.TxtCodigoCliente.Text)
+                    If oClientes.Existe = False Then
+                        Me.LblNombreCliente.Text = "" : GoTo Buscar : Exit Sub
+                    End If
+                    Me.LblNombreCliente.Text = oClientes.NOMBRE_CLIENTE
+                    txtTAB(e)
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Name, "txtCodigoCliente_KeyDown", ex)
+        End Try
     End Sub
 
     Private Sub CmbDocumento_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CmbDocumento.KeyDown
