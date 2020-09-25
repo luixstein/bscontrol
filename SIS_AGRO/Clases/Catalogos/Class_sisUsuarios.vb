@@ -717,13 +717,13 @@ Public Class Class_sisUsuarios
             Doc.CODIGO_TIPO_DOCUMENTO = sCodigoTipoDocumento
 
             If Not Doc.ConsultarTipoDocumento() Then
-                MsgBox("El tipo de documento " & sCodigoTipoDocumento & " no fue encontrado en el catálogo de documentos.", MsgBoxStyle.Critical, "Validación de permisos de usuarios sobre documentos")
+                MsgBox("El tipo de documento " & sCodigoTipoDocumento & " no fue encontrado en el catálogo de documentos.", MsgBoxStyle.Exclamation, "Validación de permisos de usuarios sobre documentos")
                 Return False
             End If
 
             If txtLEN(sCodigoAlmacen2) = True Then
                 sQuery = "SELECT 1 FROM SIS_PERMISOS_USUARIOS_TIPOS_DOCUMENTOS_CON_AFECTACION_INVENTARIOS " &
-                "WHERE CODIGO_TIPO_DOCUMENTO='" & sCodigoTipoDocumento & "' AND CODIGO_USUARIO='" & Usuario.Codigo_Usuario & "' AND CODIGO_ALMACEN='" & sCodigoAlmacen & "' AND CODIGO_ALMACEN2='" & sCodigoAlmacen2 & "' "
+               "WHERE CODIGO_TIPO_DOCUMENTO='" & sCodigoTipoDocumento & "' AND CODIGO_USUARIO='" & Usuario.Codigo_Usuario & "' AND CODIGO_ALMACEN='" & sCodigoAlmacen & "' AND CODIGO_ALMACEN2='" & sCodigoAlmacen2 & "' "
             Else
                 sQuery = "SELECT 1 FROM SIS_PERMISOS_USUARIOS_TIPOS_DOCUMENTOS_CON_AFECTACION_INVENTARIOS " &
                 "WHERE CODIGO_TIPO_DOCUMENTO='" & sCodigoTipoDocumento & "' AND CODIGO_USUARIO='" & Usuario.Codigo_Usuario & "' AND CODIGO_ALMACEN='" & sCodigoAlmacen & "' "
@@ -731,7 +731,14 @@ Public Class Class_sisUsuarios
 
             Dim sql As New Class_find(sQuery)
             If sql.Result1 = "" Or Len(sql.Result1) < 1 Then
-                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para utilizar el documento " & Doc.NOMBRE_DOCUMENTO & ".", MsgBoxStyle.Information, "Validación de permisos de usuarios sobre documentos")
+                Dim oAlmacen1 As New Class_CatAlmacenes(sCodigoAlmacen)
+                Dim oAlmacen2 As New Class_CatAlmacenes
+                If txtLEN(sCodigoAlmacen2) = True Then
+                    oAlmacen2 = New Class_CatAlmacenes(sCodigoAlmacen2)
+                End If
+                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para utilizar el documento " & Doc.NOMBRE_DOCUMENTO & vbCrLf &
+                       "del almacén " & sCodigoAlmacen & "-" & oAlmacen1.NOMBRE_ALMACEN &
+                    IIf(sCodigoAlmacen2.Length > 0, " al almacén " & sCodigoAlmacen2 & "-" & oAlmacen2.NOMBRE_ALMACEN, "").ToString & ".", MsgBoxStyle.Exclamation, "Validación de permisos de usuarios sobre documentos")
                 Return False
             End If
 
@@ -739,7 +746,6 @@ Public Class Class_sisUsuarios
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios", ex)
         End Try
-
     End Function
 
     Public Function CodigoSiguiente() As String

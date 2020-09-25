@@ -161,22 +161,30 @@ Public Class Inventarios_Movimientos
     End Sub
 
     Private Sub tsbCancelar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbCancelar.Click
-        If Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "ENI" Or Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "SAI" Or Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "ER" Then
-            If Me.Cancelar() = True Then
-                Me.Consultar()
-            End If
-        ElseIf Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "TRI" Or Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "TRF" Or Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "TRLT" Then
-            If Me.Estado <> enumEstados.GRABADO Then
-                MsgBox("Las transferencias son cancelables sólo si están en estatus de grabado. Si esta aplicada debe hacer una transferencia contraria.", vbExclamation, Me.Name)
-                Return
-            Else
-                If Me.Cancelar() = True Then
-                    Me.Consultar()
-                End If
-            End If
-        Else
-            MsgBox("Este documento no es cancelable.", vbExclamation, Me.Name)
+
+        'Nota, ahora estas validaciones se hacen en base al campo es_cancelable que se validan dentro del cancelar.
+
+        'If Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "ENI" Or Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "SAI" Or Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "ER" Then 'ENI=ENTRADA,SAI=SALIDA,ER=ENTRADA RECEPCION COMPRA
+        '    If Me.Cancelar() = True Then
+        '        Me.Consultar()
+        '    End If
+        'ElseIf Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "TRI" Or Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "TRF" Or Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "TRLT" Then
+        '    If Me.Estado <> enumEstados.GRABADO Then
+        '        MsgBox("Las transferencias son cancelables sólo si están en estatus de grabado. Si esta aplicada debe hacer una transferencia contraria.", vbExclamation, Me.Name)
+        '        Return
+        '    Else
+        '        If Me.Cancelar() = True Then
+        '            Me.Consultar()
+        '        End If
+        '    End If
+        'Else
+        '    MsgBox("Este documento no es cancelable.", vbExclamation, Me.Name)
+        'End If
+
+        If Me.Cancelar() = True Then
+            Me.Consultar()
         End If
+
     End Sub
 
     Private Sub tsbSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSalir.Click
@@ -1420,23 +1428,27 @@ BuscarCuentas:
         Dim oUtileriasCancela As New Class_UtileriasFirmaElectronicaCancelacion
         Dim oPoliza As New Class_Contabilidad_Poliza_Global
 
+        'Posibles valores de ES_CANCELABLE, 0=No es cancelable de ningún modo, 1=Cancelación que generará en automático un movimiento contrario, 2=Cancelable sólo si está en estatus=G
+
         If Me.oDocumentos.ES_CANCELABLE = "0" Then
             MsgBox("Este documento no se puede cancelar directamente por el usuario.", MsgBoxStyle.Exclamation, sProcedure)
             Return False
-        ElseIf Me.oDocumentos.ES_CANCELABLE = "2" Then
+        ElseIf Me.oDocumentos.ES_CANCELABLE = "2" Then '2=Cancelable sólo si está en estatus=G
             If Me.oInventarios.ESTATUS <> "G" Then
-                MsgBox("Este documento sólo se puede cancelar si esta en estatus de GRABADO.", MsgBoxStyle.Exclamation, sProcedure)
+                MsgBox("Este documento sólo se puede cancelar si esta en estatus de (G)Grabado.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
         End If
 
         If Me.oDocumentos.ES_TRANSFERENCIA = "1" Then
             If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString, Me.CboAlmacenDestino.SelectedValue.ToString) = False Then
-                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar la transferencia.", MsgBoxStyle.Exclamation, sProcedure)
+                'Nota, la propia validación ya regresa mensaje
+                'MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar la transferencia.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
         Else
             If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString, "") = False Then
+                'Nota, la propia validación ya regresa mensaje
                 'MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento de inventarios.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
@@ -1454,7 +1466,7 @@ BuscarCuentas:
             End If
         End If
 
-        If MsgBox("Deseas cancelar el movimiento de " & CboDocumento.Text & "?", CType(vbYesNo + vbQuestion, MsgBoxStyle), sProcedure) = MsgBoxResult.No Then
+        If MsgBox("Deseas cancelar el movimiento de " & Me.CboDocumento.Text & "?", CType(vbYesNo + vbQuestion, MsgBoxStyle), sProcedure) = MsgBoxResult.No Then
             Return False
         End If
 
