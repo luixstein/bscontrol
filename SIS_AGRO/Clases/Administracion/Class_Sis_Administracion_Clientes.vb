@@ -503,6 +503,7 @@ Public Class Class_Sis_Administracion_Clientes
 
 #Region "Métodos y procedimientos"
     Public Function Consultar() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim dReader As SqlDataReader
         Dim sqlParametro As SqlParameter
@@ -513,13 +514,13 @@ Public Class Class_Sis_Administracion_Clientes
             .CommandText = "MP_CXC_UTILERIAS_OBTIENE_RESUMEN_CLIENTE"
 
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CodigoCliente
-            sqlParametro = .Parameters.Add("@VENTA", SqlDbType.NVarChar, 80) : sqlParametro.Value = 0 'Me._TOTAL_VENTA
+            sqlParametro = .Parameters.Add("@VENTA", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._TOTAL_VENTA
             sqlParametro = .Parameters.Add("@COSTO", SqlDbType.Char, 1) : sqlParametro.Value = 0
             Try
                 Me._Conexion.Open()
                 dReader = .ExecuteReader()
 
-                If dReader.Read Then
+                If dReader.Read = True Then
                     Me._CodigoCliente = "" & dReader("CODIGO_CLIENTE")
                     Me._NombreCliente = "" & dReader("NOMBRE_CLIENTE")
                     Me._DiasCarteraVentaAntigua = "" & dReader("DIAS_CARTERA")
@@ -558,7 +559,8 @@ Public Class Class_Sis_Administracion_Clientes
 
                     Me._DIAS_CARTERA = "" & dReader("DIAS_CARTERA")
                     Me._TIENE_CREDITO_SUFICIENTE = "" & dReader("TIENE_CREDITO_SUFICIENTE")
-                    Consultar = True
+
+                    bResultado = True
                 End If
                 dReader.Close()
             Catch ex As Exception
@@ -569,6 +571,7 @@ Public Class Class_Sis_Administracion_Clientes
             End Try
         End With
 
+        Return bResultado
     End Function        'Consulta un elemento del catálogo.
 
     Public Function InsertarReglaCXC() As Boolean

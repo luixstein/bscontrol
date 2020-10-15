@@ -1669,8 +1669,18 @@ Buscar:
                 Return False
             End If
 
-            If Me.sTipoVenta <> "SR" And Me.oDocumento.AFECTA_CXC = True Then
-                If Me._EsPorEmbarqueExtranjero = False AndAlso Me.ValidarReglasCreditoplazo(True) = False Then
+            'If Me.sTipoVenta <> "SR" And Me.oDocumento.AFECTA_CXC = True Then 'SR=SUSTITUCION DE REMISION
+            '    If Me._EsPorEmbarqueExtranjero = False AndAlso Me.ValidarReglasCreditoplazo(True) = False Then
+            '        Return False
+            '    End If
+            'End If
+
+            If Me._EsPorEmbarqueExtranjero = True Or Me.sTipoVenta = "SR" Then 'SR=SUSTITUCION DE REMISION
+                'Continúa si es embarque extranjero porque no afecta saldos, o si es sust de remisión porque la venta ya se realizó de todas formas.
+            ElseIf Me.oDocumento.AFECTA_CXC = False Then 'Si el documento no afecta como pudiera ser una cotización
+                Me.ValidarReglasCreditoplazo(True) 'Sólo entra en modo de advertencia pero dejará continuar grabar.
+            ElseIf Me.oDocumento.AFECTA_CXC = True Then 'Si el documento si afecta
+                If Me.ValidarReglasCreditoplazo(True) = False Then 'Si se validan las reglas de crédito.
                     Return False
                 End If
             End If
@@ -2513,9 +2523,9 @@ CANCELAR:
 
     Private Function ValidarReglasCreditoplazo(ByVal bMostrarMensajes As Boolean) As Boolean
         Try
-            If Me.oDocumento.AFECTA_CXC = False Then
-                Return True
-            End If
+            'If Me.oDocumento.AFECTA_CXC = False Then
+            '    Return True
+            'End If
 
             Dim oSisAdministracionClientes = New Class_Sis_Administracion_Clientes
             oSisAdministracionClientes.CodigoCliente = Me.TxtCliente.Text
@@ -2550,15 +2560,15 @@ CANCELAR:
                 End Select
             End If
 
-            If Me.oDocumento.AFECTA_INVENTARIOS = True Then
-                If Me.sTipoVenta <> "SR" Then
-                    'SUSTITUCION DE COTIZACION A REMISION O FACTURA Y DE VENTA NORMAL
-                    If oSisAdministracionClientes.TIENE_CREDITO_SUFICIENTE = "0" And Me.cboTipoNegociacion.Text = "CREDITO" Then
-                        MsgBox("La venta que intenta realizar supera el limite de credito del cliente. No es posible realizar este movimiento.", MsgBoxStyle.Exclamation, Me.Text)
-                        Return False
-                    End If
-                End If
+            'If Me.oDocumento.AFECTA_INVENTARIOS = True Then
+            '    If Me.sTipoVenta <> "SR" Then
+            'SUSTITUCION DE COTIZACION A REMISION O FACTURA Y DE VENTA NORMAL
+            If oSisAdministracionClientes.TIENE_CREDITO_SUFICIENTE = "0" And (Me.cboTipoNegociacion.Text = "CREDITO" Or Me.oDocumento.AFECTA_CXC = False) Then 'Si fuera cotización también avisará si no tiene crédito suficiente
+                MsgBox("La venta que intenta realizar supera el límite de crédito del cliente. No es posible realizar este movimiento.", MsgBoxStyle.Exclamation, Me.Text)
+                Return False
             End If
+            '    End If
+            'End If
 
             Return True
         Catch ex As Exception
@@ -4197,7 +4207,8 @@ BuscaArticulos:
                             If Me.oDocumento.AFECTA_INVENTARIOS = True Then
                                 StrCod = oArticulo.BusquedaVisual_PorDescripcion_conExistencias(Me.CboAlmacen.SelectedValue.ToString, True)
                             Else
-                                StrCod = oArticulo.BusquedaVisual_PorDescripcion()
+                                'StrCod = oArticulo.BusquedaVisual_PorDescripcion()'jorge quito, no encontr razón de porqué no mostrar existencias,y (aunque no tengan)
+                                StrCod = oArticulo.BusquedaVisual_PorDescripcion_conExistencias(Me.CboAlmacen.SelectedValue.ToString, False)
                             End If
 
                             If txtLEN(StrCod) = True Then
