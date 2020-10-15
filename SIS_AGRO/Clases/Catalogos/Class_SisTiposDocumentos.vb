@@ -12,7 +12,6 @@ Public Class Class_SisTiposDocumentos
     Private _CONSECUTIVO As String
     Private _CODIGO_ASIENTO_REPETITIVO As Integer
     Private _NOMBRE_FORMATO As String
-
 #End Region
 
 #Region "Campos de sistema"

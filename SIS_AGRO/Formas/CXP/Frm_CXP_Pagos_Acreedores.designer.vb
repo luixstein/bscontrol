@@ -25,13 +25,14 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Frm_CXP_Pagos_Acreedores))
         Me.dtFecha = New System.Windows.Forms.DateTimePicker()
         Me.LblFecha = New System.Windows.Forms.Label()
-        Me.CmbDocumento = New System.Windows.Forms.ComboBox()
+        Me.cboDocumento = New System.Windows.Forms.ComboBox()
         Me.LblDocumento = New System.Windows.Forms.Label()
         Me.tsMenu = New System.Windows.Forms.ToolStrip()
         Me.tsbNuevo = New System.Windows.Forms.ToolStripButton()
         Me.tsbGrabar = New System.Windows.Forms.ToolStripButton()
         Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
+        Me.tsbIvaAcreditable = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.LblDisplayConcepto = New System.Windows.Forms.Label()
         Me.TxtConcepto = New System.Windows.Forms.TextBox()
@@ -40,9 +41,9 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.LblDisplayFolio = New System.Windows.Forms.Label()
         Me.LblStatus = New System.Windows.Forms.Label()
         Me.lblDisplayStatus = New System.Windows.Forms.Label()
-        Me.LblCuentaBancaria = New System.Windows.Forms.Label()
-        Me.LblDisplayCuentaBancaria = New System.Windows.Forms.Label()
-        Me.TxtCuentaBancaria = New System.Windows.Forms.TextBox()
+        Me.lblCuentaBancaria = New System.Windows.Forms.Label()
+        Me.lblDisplayCuentaBancaria = New System.Windows.Forms.Label()
+        Me.txtCuentaBancaria = New System.Windows.Forms.TextBox()
         Me.LblProveedor = New System.Windows.Forms.Label()
         Me.LblDisplayProveedor = New System.Windows.Forms.Label()
         Me.TxtCodigoProveedor = New System.Windows.Forms.TextBox()
@@ -80,7 +81,9 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.Grid1 = New FlexCell.Grid()
         Me.gbFleteEmbarques = New System.Windows.Forms.GroupBox()
         Me.Grid2 = New FlexCell.Grid()
-        Me.tsbIvaAcreditable = New System.Windows.Forms.ToolStripButton()
+        Me.txtCuentaContableOrigenRecursos = New System.Windows.Forms.TextBox()
+        Me.lblDisplayCuentaContableOrigenRecursos = New System.Windows.Forms.Label()
+        Me.lblCuentaContableOrigenRecursos = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbPagosAutorizados.SuspendLayout()
@@ -106,14 +109,14 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.LblFecha.TabIndex = 175
         Me.LblFecha.Text = "Fecha :"
         '
-        'CmbDocumento
+        'cboDocumento
         '
-        Me.CmbDocumento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CmbDocumento.FormattingEnabled = True
-        Me.CmbDocumento.Location = New System.Drawing.Point(103, 19)
-        Me.CmbDocumento.Name = "CmbDocumento"
-        Me.CmbDocumento.Size = New System.Drawing.Size(211, 21)
-        Me.CmbDocumento.TabIndex = 0
+        Me.cboDocumento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboDocumento.FormattingEnabled = True
+        Me.cboDocumento.Location = New System.Drawing.Point(103, 19)
+        Me.cboDocumento.Name = "cboDocumento"
+        Me.cboDocumento.Size = New System.Drawing.Size(211, 21)
+        Me.cboDocumento.TabIndex = 0
         '
         'LblDocumento
         '
@@ -166,6 +169,14 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.tsbImprimir.Size = New System.Drawing.Size(77, 24)
         Me.tsbImprimir.Text = "&Imprimir"
         Me.tsbImprimir.ToolTipText = "Imprimir"
+        '
+        'tsbIvaAcreditable
+        '
+        Me.tsbIvaAcreditable.Image = CType(resources.GetObject("tsbIvaAcreditable.Image"), System.Drawing.Image)
+        Me.tsbIvaAcreditable.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbIvaAcreditable.Name = "tsbIvaAcreditable"
+        Me.tsbIvaAcreditable.Size = New System.Drawing.Size(107, 24)
+        Me.tsbIvaAcreditable.Text = "Iva acreditable"
         '
         'tsbSalir
         '
@@ -237,31 +248,31 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.lblDisplayStatus.TabIndex = 217
         Me.lblDisplayStatus.Text = "Estatus :"
         '
-        'LblCuentaBancaria
+        'lblCuentaBancaria
         '
-        Me.LblCuentaBancaria.BackColor = System.Drawing.SystemColors.ControlLight
-        Me.LblCuentaBancaria.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.LblCuentaBancaria.Location = New System.Drawing.Point(150, 49)
-        Me.LblCuentaBancaria.Name = "LblCuentaBancaria"
-        Me.LblCuentaBancaria.Size = New System.Drawing.Size(238, 13)
-        Me.LblCuentaBancaria.TabIndex = 223
+        Me.lblCuentaBancaria.BackColor = System.Drawing.SystemColors.ControlLight
+        Me.lblCuentaBancaria.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.lblCuentaBancaria.Location = New System.Drawing.Point(150, 49)
+        Me.lblCuentaBancaria.Name = "lblCuentaBancaria"
+        Me.lblCuentaBancaria.Size = New System.Drawing.Size(238, 13)
+        Me.lblCuentaBancaria.TabIndex = 223
         '
-        'LblDisplayCuentaBancaria
+        'lblDisplayCuentaBancaria
         '
-        Me.LblDisplayCuentaBancaria.AutoSize = True
-        Me.LblDisplayCuentaBancaria.Location = New System.Drawing.Point(5, 48)
-        Me.LblDisplayCuentaBancaria.Name = "LblDisplayCuentaBancaria"
-        Me.LblDisplayCuentaBancaria.Size = New System.Drawing.Size(91, 13)
-        Me.LblDisplayCuentaBancaria.TabIndex = 222
-        Me.LblDisplayCuentaBancaria.Text = "Cuenta bancaria :"
+        Me.lblDisplayCuentaBancaria.AutoSize = True
+        Me.lblDisplayCuentaBancaria.Location = New System.Drawing.Point(5, 48)
+        Me.lblDisplayCuentaBancaria.Name = "lblDisplayCuentaBancaria"
+        Me.lblDisplayCuentaBancaria.Size = New System.Drawing.Size(91, 13)
+        Me.lblDisplayCuentaBancaria.TabIndex = 222
+        Me.lblDisplayCuentaBancaria.Text = "Cuenta bancaria :"
         '
-        'TxtCuentaBancaria
+        'txtCuentaBancaria
         '
-        Me.TxtCuentaBancaria.Location = New System.Drawing.Point(103, 45)
-        Me.TxtCuentaBancaria.MaxLength = 6
-        Me.TxtCuentaBancaria.Name = "TxtCuentaBancaria"
-        Me.TxtCuentaBancaria.Size = New System.Drawing.Size(41, 20)
-        Me.TxtCuentaBancaria.TabIndex = 1
+        Me.txtCuentaBancaria.Location = New System.Drawing.Point(103, 45)
+        Me.txtCuentaBancaria.MaxLength = 6
+        Me.txtCuentaBancaria.Name = "txtCuentaBancaria"
+        Me.txtCuentaBancaria.Size = New System.Drawing.Size(41, 20)
+        Me.txtCuentaBancaria.TabIndex = 1
         '
         'LblProveedor
         '
@@ -319,6 +330,10 @@ Partial Class Frm_CXP_Pagos_Acreedores
         '
         'gbGlobal
         '
+        Me.gbGlobal.Controls.Add(Me.lblCuentaContableOrigenRecursos)
+        Me.gbGlobal.Controls.Add(Me.lblDisplayCuentaContableOrigenRecursos)
+        Me.gbGlobal.Controls.Add(Me.ckbAbonoCuentaBeneficiario)
+        Me.gbGlobal.Controls.Add(Me.txtCuentaContableOrigenRecursos)
         Me.gbGlobal.Controls.Add(Me.lblMoneda)
         Me.gbGlobal.Controls.Add(Me.cboMoneda)
         Me.gbGlobal.Controls.Add(Me.TxtImporte)
@@ -338,9 +353,8 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.gbGlobal.Controls.Add(Me.txtImporteDolares)
         Me.gbGlobal.Controls.Add(Me.txtTipoCambio)
         Me.gbGlobal.Controls.Add(Me.lblTotalDolares)
-        Me.gbGlobal.Controls.Add(Me.ckbAbonoCuentaBeneficiario)
         Me.gbGlobal.Controls.Add(Me.LblPoliza)
-        Me.gbGlobal.Controls.Add(Me.CmbDocumento)
+        Me.gbGlobal.Controls.Add(Me.cboDocumento)
         Me.gbGlobal.Controls.Add(Me.LblFecha)
         Me.gbGlobal.Controls.Add(Me.Label8)
         Me.gbGlobal.Controls.Add(Me.dtFecha)
@@ -354,10 +368,10 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.gbGlobal.Controls.Add(Me.TxtCodigoProveedor)
         Me.gbGlobal.Controls.Add(Me.TxtFolio)
         Me.gbGlobal.Controls.Add(Me.lblDisplayStatus)
-        Me.gbGlobal.Controls.Add(Me.LblCuentaBancaria)
+        Me.gbGlobal.Controls.Add(Me.lblCuentaBancaria)
         Me.gbGlobal.Controls.Add(Me.LblStatus)
-        Me.gbGlobal.Controls.Add(Me.LblDisplayCuentaBancaria)
-        Me.gbGlobal.Controls.Add(Me.TxtCuentaBancaria)
+        Me.gbGlobal.Controls.Add(Me.lblDisplayCuentaBancaria)
+        Me.gbGlobal.Controls.Add(Me.txtCuentaBancaria)
         Me.gbGlobal.Location = New System.Drawing.Point(6, 28)
         Me.gbGlobal.Name = "gbGlobal"
         Me.gbGlobal.Size = New System.Drawing.Size(1071, 226)
@@ -565,7 +579,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.ckbAbonoCuentaBeneficiario.AutoSize = True
         Me.ckbAbonoCuentaBeneficiario.Checked = True
         Me.ckbAbonoCuentaBeneficiario.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.ckbAbonoCuentaBeneficiario.Location = New System.Drawing.Point(605, 25)
+        Me.ckbAbonoCuentaBeneficiario.Location = New System.Drawing.Point(789, 42)
         Me.ckbAbonoCuentaBeneficiario.Name = "ckbAbonoCuentaBeneficiario"
         Me.ckbAbonoCuentaBeneficiario.Size = New System.Drawing.Size(211, 17)
         Me.ckbAbonoCuentaBeneficiario.TabIndex = 13
@@ -676,13 +690,34 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.Grid2.TabIndex = 210
         Me.Grid2.UncheckedImage = CType(resources.GetObject("Grid2.UncheckedImage"), System.Drawing.Bitmap)
         '
-        'tsbIvaAcreditable
+        'txtCuentaContableOrigenRecursos
         '
-        Me.tsbIvaAcreditable.Image = CType(resources.GetObject("tsbIvaAcreditable.Image"), System.Drawing.Image)
-        Me.tsbIvaAcreditable.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbIvaAcreditable.Name = "tsbIvaAcreditable"
-        Me.tsbIvaAcreditable.Size = New System.Drawing.Size(107, 24)
-        Me.tsbIvaAcreditable.Text = "Iva acreditable"
+        Me.txtCuentaContableOrigenRecursos.Location = New System.Drawing.Point(418, 20)
+        Me.txtCuentaContableOrigenRecursos.MaxLength = 6
+        Me.txtCuentaContableOrigenRecursos.Name = "txtCuentaContableOrigenRecursos"
+        Me.txtCuentaContableOrigenRecursos.Size = New System.Drawing.Size(83, 20)
+        Me.txtCuentaContableOrigenRecursos.TabIndex = 383
+        Me.txtCuentaContableOrigenRecursos.Visible = False
+        '
+        'lblDisplayCuentaContableOrigenRecursos
+        '
+        Me.lblDisplayCuentaContableOrigenRecursos.AutoSize = True
+        Me.lblDisplayCuentaContableOrigenRecursos.Location = New System.Drawing.Point(330, 22)
+        Me.lblDisplayCuentaContableOrigenRecursos.Name = "lblDisplayCuentaContableOrigenRecursos"
+        Me.lblDisplayCuentaContableOrigenRecursos.Size = New System.Drawing.Size(82, 13)
+        Me.lblDisplayCuentaContableOrigenRecursos.TabIndex = 384
+        Me.lblDisplayCuentaContableOrigenRecursos.Text = "Cuenta origen : "
+        Me.lblDisplayCuentaContableOrigenRecursos.Visible = False
+        '
+        'lblCuentaContableOrigenRecursos
+        '
+        Me.lblCuentaContableOrigenRecursos.BackColor = System.Drawing.SystemColors.ControlLight
+        Me.lblCuentaContableOrigenRecursos.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.lblCuentaContableOrigenRecursos.Location = New System.Drawing.Point(507, 23)
+        Me.lblCuentaContableOrigenRecursos.Name = "lblCuentaContableOrigenRecursos"
+        Me.lblCuentaContableOrigenRecursos.Size = New System.Drawing.Size(238, 13)
+        Me.lblCuentaContableOrigenRecursos.TabIndex = 385
+        Me.lblCuentaContableOrigenRecursos.Visible = False
         '
         'Frm_CXP_Pagos_Acreedores
         '
@@ -716,7 +751,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
     End Sub
     Friend WithEvents dtFecha As System.Windows.Forms.DateTimePicker
     Friend WithEvents LblFecha As System.Windows.Forms.Label
-    Friend WithEvents CmbDocumento As System.Windows.Forms.ComboBox
+    Friend WithEvents cboDocumento As System.Windows.Forms.ComboBox
     Friend WithEvents LblDocumento As System.Windows.Forms.Label
     Friend WithEvents tsMenu As System.Windows.Forms.ToolStrip
     Friend WithEvents tsbNuevo As System.Windows.Forms.ToolStripButton
@@ -730,9 +765,9 @@ Partial Class Frm_CXP_Pagos_Acreedores
     Friend WithEvents LblStatus As System.Windows.Forms.Label
     Friend WithEvents lblDisplayStatus As System.Windows.Forms.Label
     Friend WithEvents tsbImprimir As System.Windows.Forms.ToolStripButton
-    Friend WithEvents LblCuentaBancaria As System.Windows.Forms.Label
-    Friend WithEvents LblDisplayCuentaBancaria As System.Windows.Forms.Label
-    Friend WithEvents TxtCuentaBancaria As System.Windows.Forms.TextBox
+    Friend WithEvents lblCuentaBancaria As System.Windows.Forms.Label
+    Friend WithEvents lblDisplayCuentaBancaria As System.Windows.Forms.Label
+    Friend WithEvents txtCuentaBancaria As System.Windows.Forms.TextBox
     Friend WithEvents LblProveedor As System.Windows.Forms.Label
     Friend WithEvents LblDisplayProveedor As System.Windows.Forms.Label
     Friend WithEvents TxtCodigoProveedor As System.Windows.Forms.TextBox
@@ -772,4 +807,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
     Friend WithEvents cboMoneda As System.Windows.Forms.ComboBox
     Friend WithEvents lblMoneda As System.Windows.Forms.Label
     Friend WithEvents tsbIvaAcreditable As ToolStripButton
+    Friend WithEvents txtCuentaContableOrigenRecursos As TextBox
+    Friend WithEvents lblCuentaContableOrigenRecursos As Label
+    Friend WithEvents lblDisplayCuentaContableOrigenRecursos As Label
 End Class

@@ -2,7 +2,6 @@ Imports System.Data
 Imports System.Data.SqlClient
 
 Public Class Class_CatDocumentos
-    Inherits Class_Catalogos
 
 #Region "Campos"
 
@@ -16,10 +15,10 @@ Public Class Class_CatDocumentos
     Private _CONSECUTIVO_DE_FOLIO As String
     Private _CODIGO_ASIENTO_REPETITIVO As String
     Private _NOMBRE_FORMATO As String
-    Private _NATURALEZA_INVENTARIOS As String
 #End Region
 
 #Region "Campos ligados a la tabla"
+    Private _NATURALEZA_INVENTARIOS As String
     Private _AFECTA_INVENTARIOS As Boolean
     Private _AFECTA_CONTABILIDAD As Boolean
     Private _AFECTA_CXC As Boolean
@@ -28,6 +27,7 @@ Public Class Class_CatDocumentos
     Private _CODIGO_MERCADO As String
     Private _TIMBRA_DOCUMENTO As Boolean
     Private _ACCESIBLE_USUARIO As String
+    Private _SOLICITA_CUENTA_ORIGEN_RECURSOS As Boolean
 #End Region
 
 #Region "Campos públicos"
@@ -125,14 +125,15 @@ Public Class Class_CatDocumentos
             Me._NOMBRE_FORMATO = Value
         End Set
     End Property
+#End Region
+
+#Region "Propiedades de campos ligados a la tabla"
     Public ReadOnly Property NATURALEZA_INVENTARIOS() As String
         Get
             Return Me._NATURALEZA_INVENTARIOS
         End Get
     End Property
-#End Region
 
-#Region "Propiedades de campos ligados a la tabla"
     Public Property AFECTA_INVENTARIOS() As Boolean
         Get
             Return Me._AFECTA_INVENTARIOS
@@ -201,6 +202,13 @@ Public Class Class_CatDocumentos
             Return Me._ACCESIBLE_USUARIO
         End Get
     End Property
+
+    Public ReadOnly Property SOLICITA_CUENTA_ORIGEN_RECURSOS() As Boolean
+        Get
+            Return Me._SOLICITA_CUENTA_ORIGEN_RECURSOS
+        End Get
+    End Property
+
 #End Region
 
 #Region "Propiedades públicos"
@@ -212,13 +220,13 @@ Public Class Class_CatDocumentos
 #End Region
 
 #Region "Propiedades de campos de sistema"
-    Public Overrides ReadOnly Property Nombre_Catalogo() As String
+    Public ReadOnly Property Nombre_Catalogo() As String
         Get
             Return Me._Nombre_Catalogo
         End Get
     End Property
 
-    Public Overrides Property Nombre_Reporte() As String
+    Public Property Nombre_Reporte() As String
         Get
             Return Me._Nombre_Reporte
         End Get
@@ -253,7 +261,7 @@ Public Class Class_CatDocumentos
 #End Region
 
 #Region "Métodos y procedimientos"
-    Public Overrides Function Actualizar() As Boolean
+    Public Function Actualizar() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -292,9 +300,9 @@ Public Class Class_CatDocumentos
         Return bResultado
     End Function
 
-    Public Overrides Function Consultar() As Boolean
+    Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand(Me._QuerySelect & " Where CODIGO_DOCUMENTO='" & Replace(Me._CODIGO_DOCUMENTO, "'", "''") & "'", Me._Conexion)
+        Dim cmd As New SqlCommand(Me._QuerySelect & " WHERE CODIGO_DOCUMENTO='" & sReplace(Me._CODIGO_DOCUMENTO) & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -303,7 +311,7 @@ Public Class Class_CatDocumentos
                 Me._Conexion.Open()
                 dReader = .ExecuteReader()
 
-                If dReader.Read Then
+                If dReader.Read = True Then
                     Me._CODIGO_DOCUMENTO = "" & dReader("CODIGO_DOCUMENTO").ToString
                     Me._CODIGO_TIPO_DOCUMENTO = "" & dReader("CODIGO_TIPO_DOCUMENTO").ToString
                     Me._Nombre_Reporte = "" & dReader("NOMBRE_FORMATO").ToString
@@ -316,6 +324,7 @@ Public Class Class_CatDocumentos
                     Me._CODIGO_MERCADO = dReader("CODIGO_MERCADO")
                     Me._TIMBRA_DOCUMENTO = CBool(dReader("TIMBRA_DOCUMENTO"))
                     Me._ACCESIBLE_USUARIO = CBool(dReader("ACCESIBLE_USUARIO"))
+                    Me._SOLICITA_CUENTA_ORIGEN_RECURSOS = CBool(dReader("SOLICITA_CUENTA_ORIGEN_RECURSOS"))
 
                     bResultado = True
                 End If
@@ -333,7 +342,7 @@ Public Class Class_CatDocumentos
 
     Public Function ConsultarTipoDocumento() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand(Me._QuerySelect & " Where CODIGO_TIPO_DOCUMENTO='" & Replace(Me._CODIGO_TIPO_DOCUMENTO, "'", "''") & "'", Me._Conexion)
+        Dim cmd As New SqlCommand(Me._QuerySelect & " WHERE CODIGO_TIPO_DOCUMENTO='" & sReplace(Me._CODIGO_TIPO_DOCUMENTO) & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -368,44 +377,44 @@ Public Class Class_CatDocumentos
         Return bResultado
     End Function
 
-    Public Overrides Function Insertar() As Boolean
-        MsgBox("Función no disponible. Contácte a su administrador de sistemas.", MsgBoxStyle.Exclamation)
-        'Dim cmd As New SqlCommand
-        'Dim sqlParametro As SqlParameter
-        'With cmd
-        ' .Connection = Me._Conexion
-        ' .CommandTimeout = 0
-        ' .CommandType = CommandType.StoredProcedure
-        ' .CommandText = "MP_INSERTA_DOCUMENTOS"
+    'Public Function Insertar() As Boolean
+    'MsgBox("Función no disponible. Contácte a su administrador de sistemas.", MsgBoxStyle.Exclamation)
+    'Dim cmd As New SqlCommand
+    'Dim sqlParametro As SqlParameter
+    'With cmd
+    ' .Connection = Me._Conexion
+    ' .CommandTimeout = 0
+    ' .CommandType = CommandType.StoredProcedure
+    ' .CommandText = "MP_INSERTA_DOCUMENTOS"
 
-        'sqlParametro = .Parameters.Add("@CODIGO_DOCUMENTO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_DOCUMENTO.ToUpper
-        'sqlParametro = .Parameters.Add("@NOMBRE_DOCUMENTO", SqlDbType.Char, 30) : sqlParametro.Value = Me._NOMBRE_DOCUMENTO.ToString.ToUpper
-        'sqlParametro = .Parameters.Add("@CODIGO_MODULO", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_MODULO.ToUpper
-        'sqlParametro = .Parameters.Add("@CONSECUTIVO_DE_FOLIO", SqlDbType.Char, 1) : sqlParametro.Value = Me._CONSECUTIVO_DE_FOLIO.ToString.ToUpper
-        'sqlParametro = .Parameters.Add("@FOLIO", SqlDbType.NVarChar, 12) : sqlParametro.Value = Me._FOLIO.ToUpper
-        'sqlParametro = .Parameters.Add("@TIPOINV", SqlDbType.Char, 2) : sqlParametro.Value = Me._TIPOINV.ToString.ToUpper
-        'sqlParametro = .Parameters.Add("@FORMATO_REPORTE", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._FORMATO_REPORTE.ToUpper
-        'sqlParametro = .Parameters.Add("@IMPUESTOS", SqlDbType.Char, 1) : sqlParametro.Value = Me._IMPUESTOS.ToString.ToUpper
-        'sqlParametro = .Parameters.Add("@AFECTA", SqlDbType.Char, 1) : sqlParametro.Value = Me._AFECTA.ToString.ToUpper
-        'sqlParametro = .Parameters.Add("@TIPOCARGO", SqlDbType.Char, 1) : sqlParametro.Value = Me._TIPOCARGO.ToString.ToUpper
-        'sqlParametro = .Parameters.Add("@PANTALLA", SqlDbType.Char, 1) : sqlParametro.Value = Me._PANTALLA.ToString.ToUpper
+    'sqlParametro = .Parameters.Add("@CODIGO_DOCUMENTO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_DOCUMENTO.ToUpper
+    'sqlParametro = .Parameters.Add("@NOMBRE_DOCUMENTO", SqlDbType.Char, 30) : sqlParametro.Value = Me._NOMBRE_DOCUMENTO.ToString.ToUpper
+    'sqlParametro = .Parameters.Add("@CODIGO_MODULO", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_MODULO.ToUpper
+    'sqlParametro = .Parameters.Add("@CONSECUTIVO_DE_FOLIO", SqlDbType.Char, 1) : sqlParametro.Value = Me._CONSECUTIVO_DE_FOLIO.ToString.ToUpper
+    'sqlParametro = .Parameters.Add("@FOLIO", SqlDbType.NVarChar, 12) : sqlParametro.Value = Me._FOLIO.ToUpper
+    'sqlParametro = .Parameters.Add("@TIPOINV", SqlDbType.Char, 2) : sqlParametro.Value = Me._TIPOINV.ToString.ToUpper
+    'sqlParametro = .Parameters.Add("@FORMATO_REPORTE", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._FORMATO_REPORTE.ToUpper
+    'sqlParametro = .Parameters.Add("@IMPUESTOS", SqlDbType.Char, 1) : sqlParametro.Value = Me._IMPUESTOS.ToString.ToUpper
+    'sqlParametro = .Parameters.Add("@AFECTA", SqlDbType.Char, 1) : sqlParametro.Value = Me._AFECTA.ToString.ToUpper
+    'sqlParametro = .Parameters.Add("@TIPOCARGO", SqlDbType.Char, 1) : sqlParametro.Value = Me._TIPOCARGO.ToString.ToUpper
+    'sqlParametro = .Parameters.Add("@PANTALLA", SqlDbType.Char, 1) : sqlParametro.Value = Me._PANTALLA.ToString.ToUpper
 
-        'Try
-        ' Me._Conexion.Open()
-        ' .ExecuteNonQuery()
-        ' Insertar= True
-        ' Catch ex As Exception
-        ' HandleError(Me._Nombre_Catalogo, "Insertar", ex)
-        ' Finally
-        'Me._Conexion.Close()
-        'cmd.Dispose()
-        'sqlParametro = Nothing
-        'End Try
+    'Try
+    ' Me._Conexion.Open()
+    ' .ExecuteNonQuery()
+    ' Insertar= True
+    ' Catch ex As Exception
+    ' HandleError(Me._Nombre_Catalogo, "Insertar", ex)
+    ' Finally
+    'Me._Conexion.Close()
+    'cmd.Dispose()
+    'sqlParametro = Nothing
+    'End Try
 
-        'End With
-    End Function
+    'End With
+    'End Function
 
-    Public Overrides Function ObtenerElementos() As System.Data.DataTable
+    Public Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
         Dim dsCaDocumentos As New SqlDataAdapter("SELECT CODIGO_TIPO_DOCUMENTO,NOMBRE_TIPO_DOCUMENTO FROM SIS_TIPOS_DOCUMENTOS", Me._Conexion)
         Try
@@ -527,7 +536,7 @@ Public Class Class_CatDocumentos
         Return dTable
     End Function
 
-    Public Overrides Function BusquedaVisual_PorCodigo() As String
+    Public Function BusquedaVisual_PorCodigo() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de Documentos por Código."
@@ -547,7 +556,7 @@ Public Class Class_CatDocumentos
         Return Resultado
     End Function
 
-    Public Overrides Function BusquedaVisual_PorDescripcion() As String
+    Public Function BusquedaVisual_PorDescripcion() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de Documentos por Descripción."

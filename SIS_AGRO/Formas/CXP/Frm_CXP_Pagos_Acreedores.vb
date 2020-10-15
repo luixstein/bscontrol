@@ -2,6 +2,10 @@
 
 Public Class Frm_CXP_Pagos_Acreedores
 
+#Region "Campos privados"
+    Private oDocumento As New Class_CatDocumentos
+#End Region
+
 #Region "Propiedades"
     Public ReadOnly Property Nombre_Modulo() As String
         Get
@@ -192,7 +196,7 @@ Public Class Frm_CXP_Pagos_Acreedores
                     Me.Grid1.Height = 70
                     Me.Grid1.Rows = 1
 
-                    Me.CmbDocumento.SelectedValue = "TRB" & Usuario.Codigo_Plaza.ToString
+                    Me.cboDocumento.SelectedValue = "TRB" & Usuario.Codigo_Plaza.ToString
                     Me.cboTipoPago.SelectedValue = 26 '26=T. INTERBANCARIAS
             End Select
 
@@ -206,8 +210,8 @@ Public Class Frm_CXP_Pagos_Acreedores
     End Sub
 
     Private Sub Frm_CXP_Pagos_Acreedores_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        If Me.Estado = enumEstados.NUEVO And Me.TxtCuentaBancaria.Enabled = True Then
-            Me.TxtCuentaBancaria.Focus()
+        If Me.Estado = enumEstados.NUEVO And Me.txtCuentaBancaria.Enabled = True Then
+            Me.txtCuentaBancaria.Focus()
         End If
     End Sub
 
@@ -228,16 +232,25 @@ Public Class Frm_CXP_Pagos_Acreedores
         End Try
     End Sub
 
-    Private Sub CmbDocumento_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles CmbDocumento.SelectedIndexChanged
+    Private Sub CmbDocumento_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboDocumento.SelectedIndexChanged
+        Me.oDocumento = New Class_CatDocumentos(Me.cboDocumento.SelectedValue.ToString)
         Me.Inicializa()
         Me.Cambia_Estado(enumEstados.NUEVO)
+
+        If Me.oDocumento.SOLICITA_CUENTA_ORIGEN_RECURSOS = True Then
+            Me.txtCuentaContableOrigenRecursos.Visible = True : Me.lblCuentaContableOrigenRecursos.Visible = True : Me.lblDisplayCuentaContableOrigenRecursos.Visible = True
+            Me.txtCuentaBancaria.Visible = False : Me.lblCuentaBancaria.Visible = False : Me.lblDisplayCuentaBancaria.Visible = False
+        Else
+            Me.txtCuentaContableOrigenRecursos.Visible = False : Me.lblCuentaContableOrigenRecursos.Visible = False : Me.lblDisplayCuentaContableOrigenRecursos.Visible = False
+            Me.txtCuentaBancaria.Visible = True : Me.lblCuentaBancaria.Visible = True : Me.lblDisplayCuentaBancaria.Visible = True
+        End If
     End Sub
 
     Private Sub Grid2_KeyDown(ByVal Sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Grid2.KeyDown
         Me.GestionaGrid(e)
     End Sub
 
-    Private Sub TxtCuentaBancaria_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCuentaBancaria.KeyDown
+    Private Sub TxtCuentaBancaria_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCuentaBancaria.KeyDown
         Dim oCuentaBancaria As Class_CatCuentasBancarias
 
         Try
@@ -248,25 +261,25 @@ busqueda_Visual:
                     Dim sIdCodigoBanco As String = oCuentaBancaria.BusquedaVisual_PorDescripcionSoloActivos
 
                     If txtLEN(sIdCodigoBanco) = True Then
-                        Me.TxtCuentaBancaria.Text = sIdCodigoBanco
+                        Me.txtCuentaBancaria.Text = sIdCodigoBanco
                         GoTo enter : Exit Sub
                     End If
 
                 Case Keys.Return
-                    If txtLEN(Me.TxtCuentaBancaria.Text) = False Then
-                        Me.LblCuentaBancaria.Text = ""
+                    If txtLEN(Me.txtCuentaBancaria.Text) = False Then
+                        Me.lblCuentaBancaria.Text = ""
                         Me.lblNombreMonedaOrigen.Text = ""
                         GoTo busqueda_Visual : Exit Sub
                     End If
 enter:
-                    oCuentaBancaria = New Class_CatCuentasBancarias(Me.TxtCuentaBancaria.Text)
+                    oCuentaBancaria = New Class_CatCuentasBancarias(Me.txtCuentaBancaria.Text)
 
                     If oCuentaBancaria.Existe = False Then
                         GoTo busqueda_Visual : Exit Sub
                     End If
 
-                    Me.TxtCuentaBancaria.Text = oCuentaBancaria.ID_CUENTA_BANCARIA
-                    Me.LblCuentaBancaria.Text = oCuentaBancaria.NOMBRE_CUENTA_BANCARIA
+                    Me.txtCuentaBancaria.Text = oCuentaBancaria.ID_CUENTA_BANCARIA
+                    Me.lblCuentaBancaria.Text = oCuentaBancaria.NOMBRE_CUENTA_BANCARIA
                     Me.lblNombreMonedaOrigen.Text = oCuentaBancaria.NOMBRE_MONEDA
                     If oCuentaBancaria.CODIGO_MONEDA <> "1" Then '1=pesos
                         Me.cboMoneda.SelectedValue = 2 'USD 'Nota, aqui es SelectedValue y no SelectedIndex
@@ -277,7 +290,7 @@ enter:
                     Me.GeneraFolio()
 
                 Case Keys.Escape
-                    Me.CmbDocumento.Focus()
+                    Me.cboDocumento.Focus()
             End Select
 
         Catch ex As Exception
@@ -649,13 +662,13 @@ buscar_acreedor:
         oTexBox.SelectAll()
     End Sub
 
-    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CmbDocumento.KeyDown, dtFecha.KeyDown
+    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboDocumento.KeyDown, dtFecha.KeyDown
         If e.KeyCode = Keys.Return Then
             SendKeys.Send("{TAB}")
         End If
     End Sub
 
-    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCuentaBancaria.KeyPress
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCuentaBancaria.KeyPress
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
@@ -666,7 +679,7 @@ buscar_acreedor:
         txtNoBeep(e)
     End Sub
 
-    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CmbDocumento.KeyPress, TxtFolio.KeyPress, _
+    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles cboDocumento.KeyPress, TxtFolio.KeyPress,
     dtFecha.KeyPress, TxtCodigoProveedor.KeyPress, TxtConcepto.KeyPress
         txtNoBeep(e)
     End Sub
@@ -1055,7 +1068,7 @@ buscar_acreedor:
         Dim bResultado As Boolean = False
 
         Try
-            If MsgBox("Deseas grabar el documento " & Me.CmbDocumento.Text & " con el folio : " & Me.TxtFolio.Text & "?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "Grabar") = MsgBoxResult.No Then
+            If MsgBox("Deseas grabar el documento " & Me.cboDocumento.Text & " con el folio : " & Me.TxtFolio.Text & "?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "Grabar") = MsgBoxResult.No Then
                 Return False
             End If
 
@@ -1127,14 +1140,14 @@ buscar_acreedor:
             '    Exit Function
             'End If
 
-            Dim oCuentaOrigen As New Class_CatCuentasBancarias(Me.TxtCuentaBancaria.Text)
+            Dim oCuentaOrigen As New Class_CatCuentasBancarias(Me.txtCuentaBancaria.Text)
 
             With oBancosCXP
                 .FOLIO_BANCO = Me.TxtFolio.Text
-                .ID_CUENTA_BANCARIA = CInt(Me.TxtCuentaBancaria.Text)
+                .ID_CUENTA_BANCARIA = CInt(Me.txtCuentaBancaria.Text)
                 ' Si la diferencia es positia hubo perdida y se le suma a los pesos
                 .TOTAL = valorNumerico(Me.TxtImporte.Text) + dDiferenciaCambiaria
-                .CODIGO_DOCUMENTO = (Me.CmbDocumento.SelectedValue.ToString)
+                .CODIGO_DOCUMENTO = (Me.cboDocumento.SelectedValue.ToString)
                 .FECHA = Me.dtFecha.Value
                 .CONCEPTO1 = Me.TxtConcepto.Text.ToUpper
                 .CODIGO_PLAZA = Usuario.Codigo_Plaza
@@ -1161,7 +1174,7 @@ buscar_acreedor:
                 Me.TxtFolio.Text = .FOLIO_BANCO
             End With
 
-            Dim oCuentaBancaria As New Class_CatCuentasBancarias(Me.TxtCuentaBancaria.Text)
+            Dim oCuentaBancaria As New Class_CatCuentasBancarias(Me.txtCuentaBancaria.Text)
 
             Me.oCxpAfectaDocumentos = New Class_CXP_Afecta_Documentos
             If Me.ModoPago = enumModoPago.PROVEEDOR Then
@@ -1267,14 +1280,14 @@ buscar_acreedor:
                 Exit Function
             End If
 
-            If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CmbDocumento.SelectedValue.ToString) = False Then
+            If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.cboDocumento.SelectedValue.ToString) = False Then
                 MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, sProcedure)
                 Exit Function
             End If
 
-            If txtLEN(Me.TxtCuentaBancaria.Text) = False Then
+            If txtLEN(Me.txtCuentaBancaria.Text) = False Then
                 MsgBox("Asígne la cuenta origen.", MsgBoxStyle.Exclamation, sProcedure)
-                Me.TxtCuentaBancaria.Focus()
+                Me.txtCuentaBancaria.Focus()
                 Return False
             End If
 
@@ -1288,10 +1301,10 @@ buscar_acreedor:
                 Return False
             End If
 
-            oCuentaOrigen = New Class_CatCuentasBancarias(Me.TxtCuentaBancaria.Text)
+            oCuentaOrigen = New Class_CatCuentasBancarias(Me.txtCuentaBancaria.Text)
             If oCuentaOrigen.Existe = False Then
                 MsgBox("La cuenta origen no existe.", MsgBoxStyle.Exclamation, sProcedure)
-                Me.TxtCuentaBancaria.Focus()
+                Me.txtCuentaBancaria.Focus()
                 Return False
             End If
 
@@ -1304,7 +1317,7 @@ buscar_acreedor:
 
             If txtLEN(oCuentaOrigen.CUENTA_CONTABLE_PESOS) = False Then
                 MsgBox("La cuenta origen no tiene cuenta contable en MXP.", MsgBoxStyle.Exclamation, sProcedure)
-                Me.TxtCuentaBancaria.Focus()
+                Me.txtCuentaBancaria.Focus()
                 Return False
             End If
 
@@ -1433,7 +1446,7 @@ buscar_acreedor:
     Private Sub DesplegarDocumentos()
         Try
             Dim oElementos As New Class_CatDocumentos
-            With Me.CmbDocumento
+            With Me.cboDocumento
                 .DisplayMember = "NOMBRE_TIPO_DOCUMENTO"
                 .ValueMember = "CODIGO_DOCUMENTO"
                 Dim dView As New Data.DataView(oElementos.ObtenerCodigosDocumentos("BAN", Usuario.Codigo_Plaza.ToString, " ESTATUS_DOCUMENTO='A' AND AFECTA_CXP=1"))
@@ -1745,15 +1758,15 @@ buscar_acreedor:
             If Me.oBancosCXP.Existe = False Then
                 Me.GeneraFolio()
                 Me.Cambia_Estado(enumEstados.NUEVO)
-                Me.TxtCuentaBancaria.Enabled = False
+                Me.txtCuentaBancaria.Enabled = False
                 Me.TxtFolio.Enabled = False
                 Return False
             Else
                 Me.TxtFolio.Text = Me.oBancosCXP.FOLIO_BANCO
-                Me.TxtCuentaBancaria.Enabled = False
+                Me.txtCuentaBancaria.Enabled = False
                 Me.TxtFolio.Enabled = False
 
-                Me.CmbDocumento.SelectedValue = oBancosCXP.CODIGO_DOCUMENTO
+                Me.cboDocumento.SelectedValue = oBancosCXP.CODIGO_DOCUMENTO
                 Me.dtFecha.Value = oBancosCXP.FECHA
                 Me.LblPoliza.Text = oBancosCXP.FOLIO_POLIZA
                 Me.TxtConcepto.Text = oBancosCXP.CONCEPTO1
@@ -1765,8 +1778,8 @@ buscar_acreedor:
                         Me.LblStatus.Text = "CANCELADO"
                 End Select
 
-                Me.TxtCuentaBancaria.Text = oBancosCXP.ID_CUENTA_BANCARIA.ToString
-                Me.LblCuentaBancaria.Text = oBancosCXP.NOMBRE_CUENTA_BANCARIA
+                Me.txtCuentaBancaria.Text = oBancosCXP.ID_CUENTA_BANCARIA.ToString
+                Me.lblCuentaBancaria.Text = oBancosCXP.NOMBRE_CUENTA_BANCARIA
                 Me.lblNombreMonedaOrigen.Text = oBancosCXP.NOMBRE_MONEDA
 
                 Dim oProveedor As New Class_CatProveedores(oBancosCXP.CODIGO_PROVEEDOR)
@@ -1864,9 +1877,9 @@ buscar_acreedor:
             Me.Grid1.AutoRedraw = False
             Me.Grid1.Rows = 1
             For Each dRow As DataRow In dTabla.Rows
-                Me.Grid1.AddItem(dRow("FOLIO_PROVEEDOR").ToString & Chr(9) & dRow("FECHA").ToString & Chr(9) & dRow("FOLIO_COMPRA").ToString & Chr(9) & dRow("NOMBRE_MONEDA_CO").ToString & Chr(9) & dRow("TIPO_DE_CAMBIO").ToString & Chr(9) & _
-                                    dRow("SALDO_DOLARES").ToString & Chr(9) & dRow("CONCEPTO").ToString & Chr(9) & dRow("TOTAL").ToString & Chr(9) & dRow("SALDO").ToString & Chr(9) & dRow("SALDO_IMPUESTO").ToString & Chr(9) & _
-                                     dRow("RETENCION_IVA").ToString & Chr(9) & dRow("PAGAR_IMPUESTO").ToString & Chr(9) & dRow("PAGAR").ToString & Chr(9) & dRow("PAGO_USD") & Chr(9) & dRow("SELECCION").ToString & Chr(9) & dRow("CODIGO_DOCUMENTO").ToString & Chr(9) & _
+                Me.Grid1.AddItem(dRow("FOLIO_PROVEEDOR").ToString & Chr(9) & dRow("FECHA").ToString & Chr(9) & dRow("FOLIO_COMPRA").ToString & Chr(9) & dRow("NOMBRE_MONEDA_CO").ToString & Chr(9) & dRow("TIPO_DE_CAMBIO").ToString & Chr(9) &
+                                    dRow("SALDO_DOLARES").ToString & Chr(9) & dRow("CONCEPTO").ToString & Chr(9) & dRow("TOTAL").ToString & Chr(9) & dRow("SALDO").ToString & Chr(9) & dRow("SALDO_IMPUESTO").ToString & Chr(9) &
+                                     dRow("RETENCION_IVA").ToString & Chr(9) & dRow("PAGAR_IMPUESTO").ToString & Chr(9) & dRow("PAGAR").ToString & Chr(9) & dRow("PAGO_USD") & Chr(9) & dRow("SELECCION").ToString & Chr(9) & dRow("CODIGO_DOCUMENTO").ToString & Chr(9) &
                                       dRow("AUTORIZADO").ToString & Chr(9))
             Next
 
@@ -1945,11 +1958,11 @@ buscar_acreedor:
 
         'Me.oBancosCXP = New Class_Bancos_CXP(sFolio)
 
-        If MsgBox("Deseas cancelar el movimiento de " & Me.CmbDocumento.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, sProcedure) = MsgBoxResult.No Then
+        If MsgBox("Deseas cancelar el movimiento de " & Me.cboDocumento.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, sProcedure) = MsgBoxResult.No Then
             Return False
         End If
 
-        If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CmbDocumento.SelectedValue.ToString) = False Then
+        If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.cboDocumento.SelectedValue.ToString) = False Then
             MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento de inventarios.", MsgBoxStyle.Exclamation, sProcedure)
             Return False
         End If
@@ -1988,7 +2001,7 @@ buscar_acreedor:
                 oUtileriasCancela = New Class_UtileriasFirmaElectronicaCancelacion
                 oUtileriasCancela.FOLIO_DOCUMENTO = Me.TxtFolio.Text
                 oUtileriasCancela.FOLIO_POLIZA = Me.oBancosCXP.FOLIO_POLIZA
-                oUtileriasCancela.CODIGO_DOCUMENTO = Me.CmbDocumento.SelectedValue.ToString
+                oUtileriasCancela.CODIGO_DOCUMENTO = Me.cboDocumento.SelectedValue.ToString
                 oUtileriasCancela.CODIGO_PLAZA = Usuario.Codigo_Plaza
                 oUtileriasCancela.MODULO = Me.oBancosCXP.CODIGO_MODULO
 
@@ -2069,14 +2082,14 @@ buscar_acreedor:
             If FormaCargada = False Then Exit Function
             Me.TxtFolio.Text = ""
 
-            If TxtCuentaBancaria.TextLength = 0 Then
-                Me.TxtCuentaBancaria.Enabled = True
-                Me.TxtCuentaBancaria.Focus()
+            If txtCuentaBancaria.TextLength = 0 Then
+                Me.txtCuentaBancaria.Enabled = True
+                Me.txtCuentaBancaria.Focus()
                 Exit Function
             Else
-                Dim oCuentaBancaria As New Class_CatCuentasBancarias(CInt(Me.TxtCuentaBancaria.Text))
+                Dim oCuentaBancaria As New Class_CatCuentasBancarias(CInt(Me.txtCuentaBancaria.Text))
                 If oCuentaBancaria.Existe = False Then
-                    If Me.TxtCuentaBancaria.Enabled = True Then Me.TxtCuentaBancaria.Focus()
+                    If Me.txtCuentaBancaria.Enabled = True Then Me.txtCuentaBancaria.Focus()
                     MsgBox("La cuenta bancaria capturada no existe, verifíquela.", MsgBoxStyle.Exclamation, Me.Nombre_Modulo)
                     oCuentaBancaria = Nothing
                     Exit Function
@@ -2084,12 +2097,12 @@ buscar_acreedor:
                 oCuentaBancaria = Nothing
             End If
 
-            Me.TxtCuentaBancaria.Enabled = False
-            Me.oBancosCXP.CODIGO_DOCUMENTO = Me.CmbDocumento.SelectedValue.ToString
+            Me.txtCuentaBancaria.Enabled = False
+            Me.oBancosCXP.CODIGO_DOCUMENTO = Me.cboDocumento.SelectedValue.ToString
 
             Select Case Microsoft.VisualBasic.Left(Me.oBancosCXP.CODIGO_DOCUMENTO, 3)
                 Case "CHB"
-                    Me.TxtFolio.Text = Me.oBancosCXP.GeneraFolioCheque(CInt(valorNumerico(Me.TxtCuentaBancaria.Text)))
+                    Me.TxtFolio.Text = Me.oBancosCXP.GeneraFolioCheque(CInt(valorNumerico(Me.txtCuentaBancaria.Text)))
                 Case Else
                     Me.TxtFolio.Text = Me.oBancosCXP.GeneraFolio()
             End Select
@@ -2120,11 +2133,11 @@ buscar_acreedor:
 
                     Select Case Me.ModoPago
                         Case enumModoPago.PROVEEDOR
-                            Me.CmbDocumento.Enabled = True
+                            Me.cboDocumento.Enabled = True
                             Me.cboTipoPago.Enabled = True
                             Me.lblDisplayTipoPago.Enabled = True
                         Case enumModoPago.ACREEDOR
-                            Me.CmbDocumento.Enabled = True ' False
+                            Me.cboDocumento.Enabled = True ' False
                             Me.cboTipoPago.Visible = False
                             Me.lblDisplayTipoPago.Enabled = False
                     End Select
@@ -2141,12 +2154,12 @@ buscar_acreedor:
                     Else
                         Me.TxtImporte.Enabled = True
                     End If
-                    Me.tssEstado.Text = "Estado: agregando documento " & Me.CmbDocumento.Text
+                    Me.tssEstado.Text = "Estado: agregando documento " & Me.cboDocumento.Text
                     Me.tssElaboro.Visible = False
                     Me.tssCancelo.Visible = False
                     Me.Grid1.Locked = False
                     Me.TxtFolio.Enabled = True
-                    Me.TxtCuentaBancaria.Enabled = True
+                    Me.txtCuentaBancaria.Enabled = True
                     'Me.ckbDolares.Enabled = False
                     Me.cboMoneda.Enabled = False
 
@@ -2161,7 +2174,7 @@ buscar_acreedor:
                     Me.lblFacturasRecibidas.Enabled = True
 
                     If Me.Visible = True Then
-                        Me.TxtCuentaBancaria.Focus()
+                        Me.txtCuentaBancaria.Focus()
                     End If
                     Me.Grid2.Locked = False
 
@@ -2171,7 +2184,7 @@ buscar_acreedor:
                     Me.tsbImprimir.Enabled = True
                     Me.tsbIvaAcreditable.Enabled = True
 
-                    Me.CmbDocumento.Enabled = False
+                    Me.cboDocumento.Enabled = False
                     Me.dtFecha.Enabled = False
                     'Me.ckbDolares.Enabled = False
                     Me.cboMoneda.Enabled = False
@@ -2184,7 +2197,7 @@ buscar_acreedor:
                     Me.lblFacturasRecibidas.Enabled = False
                     Me.cboTipoPago.Enabled = False
                     Me.lblDisplayTipoPago.Enabled = False
-                    Me.tssEstado.Text = "Estado: Consulta de " & Me.CmbDocumento.Text
+                    Me.tssEstado.Text = "Estado: Consulta de " & Me.cboDocumento.Text
                     Me.tssElaboro.Visible = True
                     Me.tssCancelo.Visible = False
                     Me.Grid1.Locked = True
@@ -2203,7 +2216,7 @@ buscar_acreedor:
                     Me.tsbImprimir.Enabled = True
                     Me.tsbIvaAcreditable.Enabled = False
 
-                    Me.CmbDocumento.Enabled = False
+                    Me.cboDocumento.Enabled = False
                     Me.dtFecha.Enabled = False
                     'Me.ckbDolares.Enabled = False
                     Me.cboMoneda.Enabled = False
@@ -2216,7 +2229,7 @@ buscar_acreedor:
                     Me.lblFacturasRecibidas.Enabled = False
                     Me.cboTipoPago.Enabled = False
                     Me.lblDisplayTipoPago.Enabled = False
-                    Me.tssEstado.Text = "Estado: Consulta de " & Me.CmbDocumento.Text
+                    Me.tssEstado.Text = "Estado: Consulta de " & Me.cboDocumento.Text
                     Me.tssElaboro.Visible = True
                     Me.tssCancelo.Visible = True
                     Me.Grid1.Locked = True
@@ -2441,12 +2454,12 @@ BuscaEmbarque:
         Try
             Dim oCuentaBancaria As Class_CatCuentasBancarias, oTipoProveedor As Class_SisTiposProveedores, oProveedor As Class_CatProveedores
 
-            If txtLEN(Me.TxtCuentaBancaria.Text) = False Then
+            If txtLEN(Me.txtCuentaBancaria.Text) = False Then
                 MsgBox("Falta que asígne la cuenta bancaria.", MsgBoxStyle.Exclamation, Me.Text)
                 Return False
             End If
 
-            oCuentaBancaria = New Class_CatCuentasBancarias(Me.TxtCuentaBancaria.Text)
+            oCuentaBancaria = New Class_CatCuentasBancarias(Me.txtCuentaBancaria.Text)
             If oCuentaBancaria.Existe = False Then
                 MsgBox("No existe la cuenta bancaria asignada.", MsgBoxStyle.Exclamation, Me.Text)
                 Return False
