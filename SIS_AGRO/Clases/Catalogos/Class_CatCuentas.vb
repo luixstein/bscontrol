@@ -562,7 +562,7 @@ Public Class Class_CatCuentas
             Dim sql As New Class_find("SELECT CUENTA_CONTABLE FROM CON_CAT_CUENTAS WHERE CUENTA_CONTABLE='" & Resultado & "' " & sFiltro)
             If sql.Result1 = "" Then
                 Resultado = ""
-                MsgBox("La cuenta contable que intenta buscar es de mayor, favor de intentar con otro codigo", MsgBoxStyle.Information, "Validación de Cuentas Contables")
+                MsgBox("La cuenta contable que intenta buscar es de mayor, favor de intentar con otro código.", MsgBoxStyle.Exclamation, "Validación de Cuentas Contables")
             End If
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorCodigoFiltrandoTipoOperacion", ex)
@@ -597,7 +597,7 @@ Public Class Class_CatCuentas
             Dim sql As New Class_find("SELECT CUENTA_CONTABLE FROM CON_CAT_CUENTAS WHERE CUENTA_CONTABLE='" & Resultado & "' " & sFiltro)
             If sql.Result1 = "" Then
                 Resultado = ""
-                MsgBox("La cuenta contable que intenta buscar es de mayor, favor de intentar con otro codigo", MsgBoxStyle.Information, "Validación de Cuentas Contables")
+                MsgBox("La cuenta contable que intenta buscar es de mayor, favor de intentar con otro código.", MsgBoxStyle.Exclamation, "Validación de Cuentas Contables")
             End If
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorNombreFiltrandoTipoOperacion", ex)

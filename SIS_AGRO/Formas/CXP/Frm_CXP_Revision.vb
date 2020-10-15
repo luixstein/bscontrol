@@ -1705,16 +1705,18 @@ busca_concepto:
                                 If txtLEN(sCuentaContable) = False Then
                                     GoTo busca_cuenta_contable
                                     Return
-                                ElseIf sCuentaContable.StartsWith("1") = False Then
-                                    .Cell(Renglon, Me.iGyActivoCuentaContable).Text = ""
-                                    .Cell(Renglon, Me.iGyActivoNombreCuenta).Text = ""
-                                    MsgBox("La cuenta contable del renglón : " & Renglon & " debe ser del rango de las miles(que empiezen con 1).", MsgBoxStyle.Exclamation, sProcedure)
-                                    Return
+
+                                    'Antes sólo se permitian cuentas tipo 1(activos)
+                                    'ElseIf sCuentaContable.StartsWith("1") = False Then
+                                    '    .Cell(Renglon, Me.iGyActivoCuentaContable).Text = ""
+                                    '    .Cell(Renglon, Me.iGyActivoNombreCuenta).Text = ""
+                                    '    MsgBox("La cuenta contable del renglón : " & Renglon & " debe ser del rango de las miles(que empiezen con 1).", MsgBoxStyle.Exclamation, sProcedure)
+                                    '    Return
                                 End If
 
                                 oCuenta = New Class_CatCuentas(sCuentaContable)
                                 If oCuenta._Existe = False Then
-                                    MsgBox("La cuenta contable que intenta buscar no existe, favor de intentar con otro código.", MsgBoxStyle.Critical, sProcedure)
+                                    MsgBox("La cuenta contable que intenta buscar no existe, favor de intentar con otro código.", MsgBoxStyle.Exclamation, sProcedure)
                                     Me.InicializaRenglonGridActivos(Renglon)
                                     Return
                                 Else
@@ -1746,7 +1748,8 @@ salto_columna:
                             Case Me.iGyActivoCuentaContable
 busca_cuenta_contable:
                                 oCuenta = New Class_CatCuentas()
-                                Dim sCuenta As String = oCuenta.BusquedaVisual_PorCodigoConLike("1")
+                                'Dim sCuenta As String = oCuenta.BusquedaVisual_PorCodigoConLike("1")'Antes sólo se permitian cuentas tipo 1(activos)
+                                Dim sCuenta As String = oCuenta.BusquedaVisual_PorCodigoFiltrandoTipoOperacion()
                                 If txtLEN(sCuenta) = True Then
                                     oCuenta = New Class_CatCuentas(sCuenta)
                                     .Cell(Renglon, Me.iGyActivoCuentaContable).Text = oCuenta.CUENTA_CONTABLE
@@ -1759,7 +1762,8 @@ busca_cuenta_contable:
                         Select Case Columna
                             Case Me.iGyActivoCuentaContable
                                 oCuenta = New Class_CatCuentas()
-                                Dim sCuenta As String = oCuenta.BusquedaVisual_PorDescripcionConLike("1")
+                                'Dim sCuenta As String = oCuenta.BusquedaVisual_PorDescripcionConLike("1")'Antes sólo se permitian cuentas tipo 1(activos)
+                                Dim sCuenta As String = oCuenta.BusquedaVisual_PorNombreFiltrandoTipoOperacion
                                 If txtLEN(sCuenta) = True Then
                                     oCuenta = New Class_CatCuentas(sCuenta)
                                     .Cell(Renglon, Me.iGyActivoCuentaContable).Text = oCuenta.CUENTA_CONTABLE
@@ -2499,9 +2503,9 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                             MsgBox("La cuenta contable(de los activos) del renglón: " & i & " es de mayor, favor de intentar con otro código.", MsgBoxStyle.Exclamation, sProcedure)
                             .Cell(i, Me.iGyActivoCuentaContable).SetFocus()
                             Return False
-                        ElseIf sCuentaContable.StartsWith("1") = False Then 'Si no empieza con 1
-                            MsgBox("La cuenta contable del renglón : " & i & " debe ser del rango de las miles(que empiezen con 1).", MsgBoxStyle.Exclamation, sProcedure)
-                            Return False
+                            'ElseIf sCuentaContable.StartsWith("1") = False Then 'Si no empieza con 1 'Antes sólo se permitian cuentas tipo 1(activos)
+                            '    MsgBox("La cuenta contable del renglón : " & i & " debe ser del rango de las miles(que empiezen con 1).", MsgBoxStyle.Exclamation, sProcedure)
+                            '    Return False
                         End If
                         bHayCuentasContables = True
                     End If
