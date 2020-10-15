@@ -11,6 +11,7 @@ Public Class Cat_Clientes_Impresion
     Public Sub New()
         InitializeComponent()
         DesplegarPlazas()
+        DesplegarGirosClientes()
         Inicializa()
     End Sub
 
@@ -32,7 +33,7 @@ Public Class Cat_Clientes_Impresion
 
 #Region "Eventos Genericos"
 
-    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, CboPlazas.KeyPress
+    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, CboPlazas.KeyPress, CboGiroCliente.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -69,6 +70,7 @@ Public Class Cat_Clientes_Impresion
 
             Rpt.SetParameterValue("@ESTATUS", Strings.Left(Me.CboEstatus.Text, 1))
             Rpt.SetParameterValue("@CODIGO_PLAZA", Me.CboPlazas.SelectedValue.ToString)
+            Rpt.SetParameterValue("@CODIGO_GIRO", Me.CboGiroCliente.SelectedValue.ToString)
 
             If Me.RdbAgrupadoVendedor.Checked Then
                 Rpt.SetParameterValue("@CODIGO_VENDEDOR", Me.txtCodigoVendedor.Text)
@@ -97,6 +99,18 @@ Public Class Cat_Clientes_Impresion
         End With
     End Sub
 
+    Private Sub DesplegarGirosClientes()
+        Dim oElemento As New Class_CatGirosClientes
+
+        With Me.CboGiroCliente
+            .DisplayMember = "NOMBRE_GIRO"
+            .ValueMember = "CODIGO_GIRO"
+            Dim dView As New Data.DataView(oElemento.ObtenerElementosParaReportes())
+            dView.Sort = "NOMBRE_GIRO"
+            .DataSource = dView
+            .SelectedValue = -1
+        End With
+    End Sub
 #End Region
 
     Private Sub txtCodigoVendedor_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodigoVendedor.KeyDown

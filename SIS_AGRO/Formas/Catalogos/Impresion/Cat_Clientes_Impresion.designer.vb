@@ -37,6 +37,8 @@ Partial Class Cat_Clientes_Impresion
         Me.lblDisplayVendedor = New System.Windows.Forms.Label()
         Me.txtCodigoVendedor = New System.Windows.Forms.TextBox()
         Me.lblNombreVendedor = New System.Windows.Forms.Label()
+        Me.CboGiroCliente = New System.Windows.Forms.ComboBox()
+        Me.LblGiro = New System.Windows.Forms.Label()
         Me.ToolStrip1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -107,6 +109,8 @@ Partial Class Cat_Clientes_Impresion
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.LblGiro)
+        Me.GroupBox1.Controls.Add(Me.CboGiroCliente)
         Me.GroupBox1.Controls.Add(Me.CboPlazas)
         Me.GroupBox1.Controls.Add(Me.LblPlaza)
         Me.GroupBox1.Controls.Add(Me.LblEstatus)
@@ -118,7 +122,7 @@ Partial Class Cat_Clientes_Impresion
         Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox1.Size = New System.Drawing.Size(485, 129)
+        Me.GroupBox1.Size = New System.Drawing.Size(485, 145)
         Me.GroupBox1.TabIndex = 266
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Filtros"
@@ -128,15 +132,15 @@ Partial Class Cat_Clientes_Impresion
         Me.CboPlazas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboPlazas.FormattingEnabled = True
         Me.CboPlazas.Items.AddRange(New Object() {"ACTIVO", "BAJA", "TODOS"})
-        Me.CboPlazas.Location = New System.Drawing.Point(321, 26)
+        Me.CboPlazas.Location = New System.Drawing.Point(300, 26)
         Me.CboPlazas.Name = "CboPlazas"
-        Me.CboPlazas.Size = New System.Drawing.Size(121, 24)
+        Me.CboPlazas.Size = New System.Drawing.Size(160, 24)
         Me.CboPlazas.TabIndex = 259
         '
         'LblPlaza
         '
         Me.LblPlaza.AutoSize = True
-        Me.LblPlaza.Location = New System.Drawing.Point(265, 29)
+        Me.LblPlaza.Location = New System.Drawing.Point(242, 29)
         Me.LblPlaza.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblPlaza.Name = "LblPlaza"
         Me.LblPlaza.Size = New System.Drawing.Size(51, 17)
@@ -166,7 +170,7 @@ Partial Class Cat_Clientes_Impresion
         'lblDisplayVendedor
         '
         Me.lblDisplayVendedor.AutoSize = True
-        Me.lblDisplayVendedor.Location = New System.Drawing.Point(7, 78)
+        Me.lblDisplayVendedor.Location = New System.Drawing.Point(7, 112)
         Me.lblDisplayVendedor.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayVendedor.Name = "lblDisplayVendedor"
         Me.lblDisplayVendedor.Size = New System.Drawing.Size(78, 17)
@@ -175,7 +179,7 @@ Partial Class Cat_Clientes_Impresion
         '
         'txtCodigoVendedor
         '
-        Me.txtCodigoVendedor.Location = New System.Drawing.Point(93, 75)
+        Me.txtCodigoVendedor.Location = New System.Drawing.Point(93, 109)
         Me.txtCodigoVendedor.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCodigoVendedor.MaxLength = 15
         Me.txtCodigoVendedor.Name = "txtCodigoVendedor"
@@ -186,18 +190,38 @@ Partial Class Cat_Clientes_Impresion
         'lblNombreVendedor
         '
         Me.lblNombreVendedor.AutoSize = True
-        Me.lblNombreVendedor.Location = New System.Drawing.Point(219, 80)
+        Me.lblNombreVendedor.Location = New System.Drawing.Point(204, 112)
         Me.lblNombreVendedor.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblNombreVendedor.Name = "lblNombreVendedor"
         Me.lblNombreVendedor.Size = New System.Drawing.Size(12, 17)
         Me.lblNombreVendedor.TabIndex = 255
         Me.lblNombreVendedor.Text = "."
         '
+        'CboGiroCliente
+        '
+        Me.CboGiroCliente.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboGiroCliente.FormattingEnabled = True
+        Me.CboGiroCliente.Items.AddRange(New Object() {"ACTIVO", "BAJA", "TODOS"})
+        Me.CboGiroCliente.Location = New System.Drawing.Point(93, 67)
+        Me.CboGiroCliente.Name = "CboGiroCliente"
+        Me.CboGiroCliente.Size = New System.Drawing.Size(289, 24)
+        Me.CboGiroCliente.TabIndex = 260
+        '
+        'LblGiro
+        '
+        Me.LblGiro.AutoSize = True
+        Me.LblGiro.Location = New System.Drawing.Point(34, 70)
+        Me.LblGiro.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblGiro.Name = "LblGiro"
+        Me.LblGiro.Size = New System.Drawing.Size(43, 17)
+        Me.LblGiro.TabIndex = 261
+        Me.LblGiro.Text = "Giro :"
+        '
         'Cat_Clientes_Impresion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(502, 245)
+        Me.ClientSize = New System.Drawing.Size(502, 256)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.ToolStrip1)
@@ -232,4 +256,6 @@ Partial Class Cat_Clientes_Impresion
     Friend WithEvents LblPlaza As System.Windows.Forms.Label
     Friend WithEvents LblEstatus As System.Windows.Forms.Label
     Friend WithEvents CboEstatus As System.Windows.Forms.ComboBox
+    Friend WithEvents LblGiro As System.Windows.Forms.Label
+    Friend WithEvents CboGiroCliente As System.Windows.Forms.ComboBox
 End Class
