@@ -55,6 +55,7 @@ Public Class Class_Bancos_CXP
     Private _CODIGO_CONCEPTO_PAGO_CXP As String
 
     Private _ES_PAGO_VENTAS_NO_FISCALES As Boolean
+    Private _CUENTA_CONTABLE_ORIGEN_RECURSOS As String
 
 #End Region
 
@@ -73,6 +74,7 @@ Public Class Class_Bancos_CXP
     Private _NOMBRE_CUENTA_BANCARIA As String
     Private _CODIGO_MONEDA_SAT As String
     Private _NOMBRE_MONEDA As String
+    Private _NOMBRE_CUENTA_CONTABLE_ORIGEN_RECURSOS As String
 #End Region
 
 #Region "Campos privados"
@@ -413,6 +415,16 @@ Public Class Class_Bancos_CXP
             Me._ES_PAGO_VENTAS_NO_FISCALES = value
         End Set
     End Property
+
+    Public Property CUENTA_CONTABLE_ORIGEN_RECURSOS() As String
+        Get
+            Return Me._CUENTA_CONTABLE_ORIGEN_RECURSOS
+        End Get
+        Set(ByVal value As String)
+            Me._CUENTA_CONTABLE_ORIGEN_RECURSOS = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedad Nombre de Clase"
@@ -453,6 +465,13 @@ Public Class Class_Bancos_CXP
             Return _NOMBRE_MONEDA
         End Get
     End Property
+
+    Public ReadOnly Property NOMBRE_CUENTA_CONTABLE_ORIGEN_RECURSOS() As String
+        Get
+            Return _NOMBRE_CUENTA_CONTABLE_ORIGEN_RECURSOS
+        End Get
+    End Property
+
 #End Region
 
 #End Region
@@ -508,6 +527,7 @@ Public Class Class_Bancos_CXP
             sqlParametro = .Parameters.Add("@ABONO_CUENTA_BENEFICIARIO", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._ABONO_CUENTA_BENEFICIARIO
             sqlParametro = .Parameters.Add("@CODIGO_CONCEPTO_PAGO_CXP", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CONCEPTO_PAGO_CXP
             sqlParametro = .Parameters.Add("@ES_PAGO_VENTAS_NO_FISCALES", SqlDbType.Bit) : sqlParametro.Value = Convert.ToInt32(Me._ES_PAGO_VENTAS_NO_FISCALES)
+            sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_ORIGEN_RECURSOS", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_ORIGEN_RECURSOS
 
             Try
                 Me._Conexion.Open()
@@ -528,7 +548,7 @@ Public Class Class_Bancos_CXP
     Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
         'VW_BANCOS_GLOBAL_CON_CXP_GLOBAL Where FOLIO_BANCO=
-        Dim cmd As New SqlCommand("SELECT V.*, CD.NOMBRE_FORMATO AS NOMBRE_FORMATO_DOCUMENTO,CB.NOMBRE_FORMATO AS NOMBRE_FORMATO_CHEQUE, S.CODIGO_MODULO " &
+        Dim cmd As New SqlCommand("SELECT V.*, CD.NOMBRE_FORMATO AS NOMBRE_FORMATO_DOCUMENTO,CB.NOMBRE_FORMATO AS NOMBRE_FORMATO_CHEQUE,S.CODIGO_MODULO " &
                                   "FROM VW_BANCOS_GLOBAL_CON_CXP_GLOBAL V " &
                                   "INNER JOIN SIS_CAT_DOCUMENTOS CD ON (V.CODIGO_DOCUMENTO=CD.CODIGO_DOCUMENTO) " &
                                   "INNER JOIN SIS_TIPOS_DOCUMENTOS S on(CD.CODIGO_TIPO_DOCUMENTO=S.CODIGO_TIPO_DOCUMENTO) " &
@@ -543,10 +563,12 @@ Public Class Class_Bancos_CXP
                 Me._Conexion.Open()
                 dReader = .ExecuteReader()
 
-                If dReader.Read Then
+                If dReader.Read = True Then
                     Me._FOLIO_BANCO = CType(dReader("FOLIO_BANCO"), String)
                     Me._ID_CUENTA_BANCARIA = CType(dReader("ID_CUENTA_BANCARIA"), Integer)
                     Me._NOMBRE_CUENTA_BANCARIA = CType(dReader("NOMBRE_CUENTA_BANCARIA"), String)
+                    Me._CUENTA_CONTABLE_ORIGEN_RECURSOS = "" & dReader("CUENTA_CONTABLE_ORIGEN_RECURSOS").ToString 'Este campo se creó en oct/20, los movs anteriores tendrán la cuenta en null
+                    Me._NOMBRE_CUENTA_CONTABLE_ORIGEN_RECURSOS = "" & dReader("NOMBRE_CUENTA_CONTABLE_ORIGEN_RECURSOS").ToString
                     Me._CODIGO_BANCO = CType(dReader("CODIGO_BANCO"), String)
                     Me._CUENTA_BANCARIA_PESOS = CType(dReader("CUENTA_BANCARIA_PESOS"), String)
                     Me._CUENTA_BANCARIA_DOLARES = "" & dReader("CUENTA_BANCARIA_DOLARES").ToString
@@ -756,7 +778,7 @@ Public Class Class_Bancos_CXP
                 End If
                 dReader.Close()
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "Consultar", ex)
+                HandleError(Me.Nombre_Clase, "ConsultarCxp", ex)
             Finally
                 Conexion.Close()
                 cmd.Dispose()
