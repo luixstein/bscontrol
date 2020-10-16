@@ -51,6 +51,10 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.TxtImporte = New System.Windows.Forms.TextBox()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.gbGlobal = New System.Windows.Forms.GroupBox()
+        Me.lblCuentaContableOrigenRecursos = New System.Windows.Forms.Label()
+        Me.lblDisplayCuentaContableOrigenRecursos = New System.Windows.Forms.Label()
+        Me.ckbAbonoCuentaBeneficiario = New System.Windows.Forms.CheckBox()
+        Me.txtCuentaContableOrigenRecursos = New System.Windows.Forms.TextBox()
         Me.lblMoneda = New System.Windows.Forms.Label()
         Me.cboMoneda = New System.Windows.Forms.ComboBox()
         Me.lblNombreMonedaDestino = New System.Windows.Forms.Label()
@@ -71,7 +75,6 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.txtImporteDolares = New System.Windows.Forms.TextBox()
         Me.txtTipoCambio = New System.Windows.Forms.TextBox()
         Me.lblTotalDolares = New System.Windows.Forms.Label()
-        Me.ckbAbonoCuentaBeneficiario = New System.Windows.Forms.CheckBox()
         Me.LblPoliza = New System.Windows.Forms.LinkLabel()
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssEstado = New System.Windows.Forms.ToolStripStatusLabel()
@@ -81,9 +84,6 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.Grid1 = New FlexCell.Grid()
         Me.gbFleteEmbarques = New System.Windows.Forms.GroupBox()
         Me.Grid2 = New FlexCell.Grid()
-        Me.txtCuentaContableOrigenRecursos = New System.Windows.Forms.TextBox()
-        Me.lblDisplayCuentaContableOrigenRecursos = New System.Windows.Forms.Label()
-        Me.lblCuentaContableOrigenRecursos = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbPagosAutorizados.SuspendLayout()
@@ -330,10 +330,10 @@ Partial Class Frm_CXP_Pagos_Acreedores
         '
         'gbGlobal
         '
+        Me.gbGlobal.Controls.Add(Me.txtCuentaContableOrigenRecursos)
         Me.gbGlobal.Controls.Add(Me.lblCuentaContableOrigenRecursos)
         Me.gbGlobal.Controls.Add(Me.lblDisplayCuentaContableOrigenRecursos)
         Me.gbGlobal.Controls.Add(Me.ckbAbonoCuentaBeneficiario)
-        Me.gbGlobal.Controls.Add(Me.txtCuentaContableOrigenRecursos)
         Me.gbGlobal.Controls.Add(Me.lblMoneda)
         Me.gbGlobal.Controls.Add(Me.cboMoneda)
         Me.gbGlobal.Controls.Add(Me.TxtImporte)
@@ -378,6 +378,44 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.gbGlobal.TabIndex = 0
         Me.gbGlobal.TabStop = False
         Me.gbGlobal.Text = "Datos"
+        '
+        'lblCuentaContableOrigenRecursos
+        '
+        Me.lblCuentaContableOrigenRecursos.BackColor = System.Drawing.SystemColors.ControlLight
+        Me.lblCuentaContableOrigenRecursos.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.lblCuentaContableOrigenRecursos.Location = New System.Drawing.Point(531, 23)
+        Me.lblCuentaContableOrigenRecursos.Name = "lblCuentaContableOrigenRecursos"
+        Me.lblCuentaContableOrigenRecursos.Size = New System.Drawing.Size(238, 13)
+        Me.lblCuentaContableOrigenRecursos.TabIndex = 385
+        '
+        'lblDisplayCuentaContableOrigenRecursos
+        '
+        Me.lblDisplayCuentaContableOrigenRecursos.AutoSize = True
+        Me.lblDisplayCuentaContableOrigenRecursos.Location = New System.Drawing.Point(321, 22)
+        Me.lblDisplayCuentaContableOrigenRecursos.Name = "lblDisplayCuentaContableOrigenRecursos"
+        Me.lblDisplayCuentaContableOrigenRecursos.Size = New System.Drawing.Size(126, 13)
+        Me.lblDisplayCuentaContableOrigenRecursos.TabIndex = 384
+        Me.lblDisplayCuentaContableOrigenRecursos.Text = "Cuenta contable origen : "
+        '
+        'ckbAbonoCuentaBeneficiario
+        '
+        Me.ckbAbonoCuentaBeneficiario.AutoSize = True
+        Me.ckbAbonoCuentaBeneficiario.Checked = True
+        Me.ckbAbonoCuentaBeneficiario.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.ckbAbonoCuentaBeneficiario.Location = New System.Drawing.Point(789, 42)
+        Me.ckbAbonoCuentaBeneficiario.Name = "ckbAbonoCuentaBeneficiario"
+        Me.ckbAbonoCuentaBeneficiario.Size = New System.Drawing.Size(211, 17)
+        Me.ckbAbonoCuentaBeneficiario.TabIndex = 13
+        Me.ckbAbonoCuentaBeneficiario.Text = "Para abono a la cuenta del beneficiario"
+        Me.ckbAbonoCuentaBeneficiario.UseVisualStyleBackColor = True
+        '
+        'txtCuentaContableOrigenRecursos
+        '
+        Me.txtCuentaContableOrigenRecursos.Location = New System.Drawing.Point(443, 20)
+        Me.txtCuentaContableOrigenRecursos.MaxLength = 20
+        Me.txtCuentaContableOrigenRecursos.Name = "txtCuentaContableOrigenRecursos"
+        Me.txtCuentaContableOrigenRecursos.Size = New System.Drawing.Size(83, 20)
+        Me.txtCuentaContableOrigenRecursos.TabIndex = 383
         '
         'lblMoneda
         '
@@ -574,18 +612,6 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.lblTotalDolares.TabIndex = 294
         Me.lblTotalDolares.Text = "Total en dólares :"
         '
-        'ckbAbonoCuentaBeneficiario
-        '
-        Me.ckbAbonoCuentaBeneficiario.AutoSize = True
-        Me.ckbAbonoCuentaBeneficiario.Checked = True
-        Me.ckbAbonoCuentaBeneficiario.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.ckbAbonoCuentaBeneficiario.Location = New System.Drawing.Point(789, 42)
-        Me.ckbAbonoCuentaBeneficiario.Name = "ckbAbonoCuentaBeneficiario"
-        Me.ckbAbonoCuentaBeneficiario.Size = New System.Drawing.Size(211, 17)
-        Me.ckbAbonoCuentaBeneficiario.TabIndex = 13
-        Me.ckbAbonoCuentaBeneficiario.Text = "Para abono a la cuenta del beneficiario"
-        Me.ckbAbonoCuentaBeneficiario.UseVisualStyleBackColor = True
-        '
         'LblPoliza
         '
         Me.LblPoliza.BackColor = System.Drawing.SystemColors.ControlLight
@@ -689,35 +715,6 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.Grid2.Size = New System.Drawing.Size(960, 240)
         Me.Grid2.TabIndex = 210
         Me.Grid2.UncheckedImage = CType(resources.GetObject("Grid2.UncheckedImage"), System.Drawing.Bitmap)
-        '
-        'txtCuentaContableOrigenRecursos
-        '
-        Me.txtCuentaContableOrigenRecursos.Location = New System.Drawing.Point(418, 20)
-        Me.txtCuentaContableOrigenRecursos.MaxLength = 6
-        Me.txtCuentaContableOrigenRecursos.Name = "txtCuentaContableOrigenRecursos"
-        Me.txtCuentaContableOrigenRecursos.Size = New System.Drawing.Size(83, 20)
-        Me.txtCuentaContableOrigenRecursos.TabIndex = 383
-        Me.txtCuentaContableOrigenRecursos.Visible = False
-        '
-        'lblDisplayCuentaContableOrigenRecursos
-        '
-        Me.lblDisplayCuentaContableOrigenRecursos.AutoSize = True
-        Me.lblDisplayCuentaContableOrigenRecursos.Location = New System.Drawing.Point(330, 22)
-        Me.lblDisplayCuentaContableOrigenRecursos.Name = "lblDisplayCuentaContableOrigenRecursos"
-        Me.lblDisplayCuentaContableOrigenRecursos.Size = New System.Drawing.Size(82, 13)
-        Me.lblDisplayCuentaContableOrigenRecursos.TabIndex = 384
-        Me.lblDisplayCuentaContableOrigenRecursos.Text = "Cuenta origen : "
-        Me.lblDisplayCuentaContableOrigenRecursos.Visible = False
-        '
-        'lblCuentaContableOrigenRecursos
-        '
-        Me.lblCuentaContableOrigenRecursos.BackColor = System.Drawing.SystemColors.ControlLight
-        Me.lblCuentaContableOrigenRecursos.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.lblCuentaContableOrigenRecursos.Location = New System.Drawing.Point(507, 23)
-        Me.lblCuentaContableOrigenRecursos.Name = "lblCuentaContableOrigenRecursos"
-        Me.lblCuentaContableOrigenRecursos.Size = New System.Drawing.Size(238, 13)
-        Me.lblCuentaContableOrigenRecursos.TabIndex = 385
-        Me.lblCuentaContableOrigenRecursos.Visible = False
         '
         'Frm_CXP_Pagos_Acreedores
         '

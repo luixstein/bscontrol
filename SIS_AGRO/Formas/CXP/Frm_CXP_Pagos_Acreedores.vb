@@ -103,6 +103,11 @@ Public Class Frm_CXP_Pagos_Acreedores
     Private Sub tsbNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbNuevo.Click
         Me.Inicializa()
         Me.Cambia_Estado(enumEstados.NUEVO)
+
+        'If Me.oDocumento.SOLICITA_CUENTA_ORIGEN_RECURSOS = True Then
+        '    Me.txtCuentaBancaria.Text = "0" '0=Cuenta protegida para estos casos donde no aplica una cuenta bancaria
+        '    TxtCuentaBancaria_KeyDown(sender, New KeyEventArgs(Keys.Return))
+        'End If
     End Sub
 
     Private Sub tsbGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbGrabar.Click
@@ -232,18 +237,23 @@ Public Class Frm_CXP_Pagos_Acreedores
         End Try
     End Sub
 
-    Private Sub CmbDocumento_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboDocumento.SelectedIndexChanged
+    Private Sub cboDocumento_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboDocumento.SelectedIndexChanged
         Me.oDocumento = New Class_CatDocumentos(Me.cboDocumento.SelectedValue.ToString)
         Me.Inicializa()
         Me.Cambia_Estado(enumEstados.NUEVO)
 
-        If Me.oDocumento.SOLICITA_CUENTA_ORIGEN_RECURSOS = True Then
-            Me.txtCuentaContableOrigenRecursos.Visible = True : Me.lblCuentaContableOrigenRecursos.Visible = True : Me.lblDisplayCuentaContableOrigenRecursos.Visible = True
-            Me.txtCuentaBancaria.Visible = False : Me.lblCuentaBancaria.Visible = False : Me.lblDisplayCuentaBancaria.Visible = False
-        Else
-            Me.txtCuentaContableOrigenRecursos.Visible = False : Me.lblCuentaContableOrigenRecursos.Visible = False : Me.lblDisplayCuentaContableOrigenRecursos.Visible = False
-            Me.txtCuentaBancaria.Visible = True : Me.lblCuentaBancaria.Visible = True : Me.lblDisplayCuentaBancaria.Visible = True
-        End If
+        'If Me.oDocumento.SOLICITA_CUENTA_ORIGEN_RECURSOS = True Then
+        '    Me.txtCuentaContableOrigenRecursos.Visible = True : Me.lblCuentaContableOrigenRecursos.Visible = True : Me.lblDisplayCuentaContableOrigenRecursos.Visible = True
+        '    'Me.txtCuentaBancaria.Visible = False : Me.lblCuentaBancaria.Visible = False : Me.lblDisplayCuentaBancaria.Visible = False
+        '    Me.txtCuentaBancaria.Enabled = False : Me.lblCuentaBancaria.Enabled = False : Me.lblDisplayCuentaBancaria.Enabled = False
+
+        '    Me.txtCuentaBancaria.Text = "0" '0=Cuenta protegida para estos casos donde no aplica una cuenta bancaria
+        '    TxtCuentaBancaria_KeyDown(sender, New KeyEventArgs(Keys.Return))
+        'Else
+        '    Me.txtCuentaContableOrigenRecursos.Visible = False : Me.lblCuentaContableOrigenRecursos.Visible = False : Me.lblDisplayCuentaContableOrigenRecursos.Visible = False
+        '    'Me.txtCuentaBancaria.Visible = True : Me.lblCuentaBancaria.Visible = True : Me.lblDisplayCuentaBancaria.Visible = True
+        '    Me.txtCuentaBancaria.Enabled = True : Me.lblCuentaBancaria.Enabled = True : Me.lblDisplayCuentaBancaria.Enabled = True
+        'End If
     End Sub
 
     Private Sub Grid2_KeyDown(ByVal Sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Grid2.KeyDown
@@ -286,6 +296,13 @@ enter:
                     Else 'MXN
                         Me.cboMoneda.SelectedValue = 1 'MXN
                     End If
+
+                    Me.txtCuentaContableOrigenRecursos.Text = oCuentaBancaria.CUENTA_CONTABLE_PESOS
+                    Dim oCuentaContable As New Class_CatCuentas(Me.txtCuentaContableOrigenRecursos.Text)
+                    If oCuentaContable.EXISTE = True Then
+                        Me.lblCuentaContableOrigenRecursos.Text = oCuentaContable.NOMBRE_CUENTA
+                    End If
+                    oCuentaContable = Nothing
 
                     Me.GeneraFolio()
 
@@ -656,6 +673,60 @@ buscar_acreedor:
         End If
     End Sub
 
+    Private Sub txtCuentaContableOrigenRecursos_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCuentaContableOrigenRecursos.KeyDown
+        Dim oCuenta As New Class_CatCuentas
+
+        Try
+            Select Case e.KeyCode
+                Case Keys.F6
+busqueda_visual:
+                    oCuenta = New Class_CatCuentas
+                    Dim sCuenta As String = oCuenta.BusquedaVisual_PorCodigoFiltrandoTipoOperacion()
+
+                    If txtLEN(sCuenta) = True Then
+                        Me.txtCuentaContableOrigenRecursos.Text = sCuenta
+                        GoTo enter : Return
+                    End If
+
+                Case Keys.F7
+                    oCuenta = New Class_CatCuentas
+                    Dim sCuenta As String = oCuenta.BusquedaVisual_PorNombreFiltrandoTipoOperacion()
+
+                    If txtLEN(sCuenta) = True Then
+                        Me.txtCuentaContableOrigenRecursos.Text = sCuenta
+                        GoTo enter : Return
+                    End If
+
+                Case Keys.Return
+                    If txtLEN(Me.txtCuentaContableOrigenRecursos.Text) = False Then
+                        Me.lblCuentaContableOrigenRecursos.Text = ""
+                        GoTo busqueda_visual : Return
+                    End If
+enter:
+                    oCuenta = New Class_CatCuentas(Me.txtCuentaContableOrigenRecursos.Text)
+
+                    If oCuenta.EXISTE = False Then
+                        GoTo busqueda_visual : Return
+                    ElseIf oCuenta.ESMAYOR = "1" Then
+                        MsgBox("La cuenta contable indicada es de mayor, debe seleccionar cuenta de operación.", MsgBoxStyle.Exclamation, Me.Text)
+                        Me.txtCuentaContableOrigenRecursos.Text = ""
+                        Me.lblCuentaContableOrigenRecursos.Text = ""
+                        GoTo busqueda_visual : Return
+                    End If
+
+                    Me.txtCuentaContableOrigenRecursos.Text = oCuenta.CUENTA_CONTABLE
+                    Me.lblCuentaContableOrigenRecursos.Text = oCuenta.NOMBRE_CUENTA
+
+                    Me.dtFecha.Focus()
+            End Select
+
+        Catch ex As Exception
+            HandleError(Me.Name, "txtCuentaContableOrigenRecursos_KeyDown", ex)
+        End Try
+    End Sub
+
+#End Region
+
 #Region "Eventos Genericos"
     Private Sub txt_Enter(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim oTexBox As TextBox = CType(sender, TextBox)
@@ -668,7 +739,7 @@ buscar_acreedor:
         End If
     End Sub
 
-    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCuentaBancaria.KeyPress
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCuentaBancaria.KeyPress, txtCuentaContableOrigenRecursos.KeyPress
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
@@ -683,8 +754,6 @@ buscar_acreedor:
     dtFecha.KeyPress, TxtCodigoProveedor.KeyPress, TxtConcepto.KeyPress
         txtNoBeep(e)
     End Sub
-#End Region
-
 #End Region
 
 #Region "Métodos y procedimientos"
@@ -713,6 +782,9 @@ buscar_acreedor:
             Else
                 Me.cboTipoPago.SelectedIndex = -1
             End If
+
+            Me.txtCuentaContableOrigenRecursos.Text = ""
+            Me.lblCuentaContableOrigenRecursos.Text = ""
 
             'No se inicializa nada que tenga que ver con la cuenta bancaria para simular que se va seguir usando la misma
             'Me.ckbDolares.Checked = False
@@ -1167,6 +1239,12 @@ buscar_acreedor:
                     .ES_PAGO_VENTAS_NO_FISCALES = True 'Es no fiscal
                 End If
 
+                'If Me.oDocumento.SOLICITA_CUENTA_ORIGEN_RECURSOS = True Then
+                .CUENTA_CONTABLE_ORIGEN_RECURSOS = Me.txtCuentaContableOrigenRecursos.Text
+                'Else
+                '.CUENTA_CONTABLE_ORIGEN_RECURSOS = ""
+                'End If
+
                 If .Inserta_Global = False Then
                     Return False
                 End If
@@ -1277,12 +1355,12 @@ buscar_acreedor:
 
         Try
             If Plaza.ValidarPeriodoTrabajo(Me.dtFecha.Value) = False Then
-                Exit Function
+                Return False
             End If
 
             If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.cboDocumento.SelectedValue.ToString) = False Then
-                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, sProcedure)
-                Exit Function
+                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
             End If
 
             If txtLEN(Me.txtCuentaBancaria.Text) = False Then
@@ -1306,6 +1384,22 @@ buscar_acreedor:
                 MsgBox("La cuenta origen no existe.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.txtCuentaBancaria.Focus()
                 Return False
+            End If
+
+            'If Me.oDocumento.SOLICITA_CUENTA_ORIGEN_RECURSOS = True Then
+            If oCuentaOrigen.ES_CUENTA_FISCAL = True Then
+                If txtLEN(Me.txtCuentaContableOrigenRecursos.Text) = False Then
+                    MsgBox("Asígne la cuenta contable origen de los recursos.", MsgBoxStyle.Exclamation, Me.Text)
+                    Return False
+                End If
+                Dim oCuentaContable As New Class_CatCuentas(Me.txtCuentaContableOrigenRecursos.Text)
+                If oCuentaContable.EXISTE = False Then
+                    MsgBox("La cuenta contable origen de los recursos no existe.", MsgBoxStyle.Exclamation, Me.Text)
+                    Return False
+                ElseIf oCuentaContable.ESMAYOR = "1" Then
+                    MsgBox("La cuenta contable origen de los recursos es una cuenta de mayor, cambiela por una cuenta de operaciones.", MsgBoxStyle.Exclamation, Me.Text)
+                    Return False
+                End If
             End If
 
             oProveedor = New Class_CatProveedores(Me.TxtCodigoProveedor.Text)
@@ -1749,7 +1843,15 @@ buscar_acreedor:
         Dim sFolio As String = Me.TxtFolio.Text
 
         Try
+            'Respaldamos la cuenta contable y su nombre porque se perderán en el inicializa
+            Dim sCuentaContable As String = Me.txtCuentaContableOrigenRecursos.Text, sNombreCuentaContable As String = Me.lblCuentaContableOrigenRecursos.Text
+
             Me.Inicializa()
+
+            'Reestablecemos los datos perdidos
+            Me.txtCuentaContableOrigenRecursos.Text = sCuentaContable
+            Me.lblCuentaContableOrigenRecursos.Text = sNombreCuentaContable
+
             Me.oBancosCXP = New Class_Bancos_CXP(sFolio)
             If txtLEN(Me.oBancosCXP.FOLIO_POLIZA) = True Then
                 Me.oPolizaGlobal = New Class_Contabilidad_Poliza_Global(sFolio)
@@ -1764,6 +1866,7 @@ buscar_acreedor:
             Else
                 Me.TxtFolio.Text = Me.oBancosCXP.FOLIO_BANCO
                 Me.txtCuentaBancaria.Enabled = False
+                Me.txtCuentaContableOrigenRecursos.Enabled = False
                 Me.TxtFolio.Enabled = False
 
                 Me.cboDocumento.SelectedValue = oBancosCXP.CODIGO_DOCUMENTO
@@ -1781,6 +1884,9 @@ buscar_acreedor:
                 Me.txtCuentaBancaria.Text = oBancosCXP.ID_CUENTA_BANCARIA.ToString
                 Me.lblCuentaBancaria.Text = oBancosCXP.NOMBRE_CUENTA_BANCARIA
                 Me.lblNombreMonedaOrigen.Text = oBancosCXP.NOMBRE_MONEDA
+
+                Me.txtCuentaContableOrigenRecursos.Text = oBancosCXP.CUENTA_CONTABLE_ORIGEN_RECURSOS
+                Me.lblCuentaContableOrigenRecursos.Text = oBancosCXP.NOMBRE_CUENTA_CONTABLE_ORIGEN_RECURSOS
 
                 Dim oProveedor As New Class_CatProveedores(oBancosCXP.CODIGO_PROVEEDOR)
 
@@ -2160,6 +2266,7 @@ buscar_acreedor:
                     Me.Grid1.Locked = False
                     Me.TxtFolio.Enabled = True
                     Me.txtCuentaBancaria.Enabled = True
+                    Me.txtCuentaContableOrigenRecursos.Enabled = True
                     'Me.ckbDolares.Enabled = False
                     Me.cboMoneda.Enabled = False
 
@@ -2686,6 +2793,8 @@ BuscaEmbarque:
             HandleError(Me.Name, "ObtieneTipoCambioDia", ex)
         End Try
     End Sub
+
+
 
 #End Region
 

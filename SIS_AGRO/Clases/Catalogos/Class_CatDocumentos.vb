@@ -27,7 +27,7 @@ Public Class Class_CatDocumentos
     Private _CODIGO_MERCADO As String
     Private _TIMBRA_DOCUMENTO As Boolean
     Private _ACCESIBLE_USUARIO As String
-    Private _SOLICITA_CUENTA_ORIGEN_RECURSOS As Boolean
+    'Private _SOLICITA_CUENTA_ORIGEN_RECURSOS As Boolean
 #End Region
 
 #Region "Campos públicos"
@@ -203,11 +203,11 @@ Public Class Class_CatDocumentos
         End Get
     End Property
 
-    Public ReadOnly Property SOLICITA_CUENTA_ORIGEN_RECURSOS() As Boolean
-        Get
-            Return Me._SOLICITA_CUENTA_ORIGEN_RECURSOS
-        End Get
-    End Property
+    'Public ReadOnly Property SOLICITA_CUENTA_ORIGEN_RECURSOS() As Boolean
+    '    Get
+    '        Return Me._SOLICITA_CUENTA_ORIGEN_RECURSOS
+    '    End Get
+    'End Property
 
 #End Region
 
@@ -324,7 +324,7 @@ Public Class Class_CatDocumentos
                     Me._CODIGO_MERCADO = dReader("CODIGO_MERCADO")
                     Me._TIMBRA_DOCUMENTO = CBool(dReader("TIMBRA_DOCUMENTO"))
                     Me._ACCESIBLE_USUARIO = CBool(dReader("ACCESIBLE_USUARIO"))
-                    Me._SOLICITA_CUENTA_ORIGEN_RECURSOS = CBool(dReader("SOLICITA_CUENTA_ORIGEN_RECURSOS"))
+                    'Me._SOLICITA_CUENTA_ORIGEN_RECURSOS = CBool(dReader("SOLICITA_CUENTA_ORIGEN_RECURSOS"))
 
                     bResultado = True
                 End If
