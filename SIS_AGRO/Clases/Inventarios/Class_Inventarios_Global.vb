@@ -445,6 +445,34 @@ Public Class Class_Inventarios_Global
         Return bResultado
     End Function
 
+    Public Function GrabarRegistroTransformacion(ByVal sEntrada As String, ByVal sSalida As String, iUsuario As Integer) As Boolean
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "INVENTARIOS_TRANSFORMACIONES_RELACION_ENTRADAS_SALIDAS_GRABA"
+
+            sqlParametro = .Parameters.Add("@FOLIO_ENTRADA_TRANSFORMACION", SqlDbType.NVarChar, 15) : sqlParametro.Value = sEntrada.ToUpper
+            sqlParametro = .Parameters.Add("@FOLIO_SALIDA_TRANSFORMACION", SqlDbType.NVarChar, 15) : sqlParametro.Value = sSalida.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_USUARIO_GRABO", SqlDbType.SmallInt) : sqlParametro.Value = iUsuario
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, "GrabarRegistroTransformacion", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
+    End Function
+
     Public Function Cancelar() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
@@ -465,6 +493,35 @@ Public Class Class_Inventarios_Global
                 bResultado = True
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "Cancelar", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
+    End Function
+
+    Public Function CancelarTransformacion() As Boolean
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_INVENTARIOS_MOVIMIENTOS_CANCELA_TRANSFORMACION"
+
+            sqlParametro = .Parameters.Add("@FOLIO_MOVIMIENTO_INVENTARIO", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_MOVIMIENTO_INVENTARIO.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_USUARIO_CANCELO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
+            sqlParametro = .Parameters.Add("@FECHA_CANCELACION", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_CANCELACION
+            sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Plaza
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, "CancelarTransformacion", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()

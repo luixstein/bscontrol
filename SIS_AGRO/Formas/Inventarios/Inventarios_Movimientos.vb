@@ -1423,6 +1423,7 @@ BuscarCuentas:
     Private Function Cancelar() As Boolean
         Const sProcedure As String = "Cancelar"
         Dim bResultado As Boolean = False
+        Dim EsTransformacion As Boolean = False
 
         Dim oFirmaElectronica As New UtileriasFirmaElectronicaCancelacionMovimientosFueraPeriodo
         Dim oUtileriasCancela As New Class_UtileriasFirmaElectronicaCancelacion
@@ -1450,6 +1451,17 @@ BuscarCuentas:
             If Usuario.ValidaPermisoUsuarioTiposDocumentosConAfectaInventarios(Me.CboDocumento.SelectedValue.ToString, Me.CboAlmacen.SelectedValue.ToString, "") = False Then
                 'Nota, la propia validación ya regresa mensaje
                 'MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento de inventarios.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+        End If
+
+        If Me.ValidaEsTransformacion(Me.TxtFolio.Text, Me.oInventarios.CODIGO_TIPO_DOCUMENTO) Then
+            EsTransformacion = True
+
+            'La salida de transformacion no se puede cancelar directamente
+            If Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "SAI" Then
+                Dim sql As New Class_find("SELECT FOLIO_ENTRADA_TRANSFORMACION FROM INVENTARIOS_TRANSFORMACIONES_RELACION_ENTRADAS_SALIDAS WHERE FOLIO_SALIDA_TRANSFORMACION='" & Me.TxtFolio.Text & "' ")
+                MsgBox("Las salidas por transformación no se pueden cancelar directamente, debe cancelarse desde la entrada " & sql.Result1 & " para que se cancele la salida automaticamente.", MsgBoxStyle.Exclamation, Me.Text)
                 Return False
             End If
         End If
@@ -1486,8 +1498,15 @@ BuscarCuentas:
             If oUtileriasCancela.CANCELA_DIRECTO = True Then
                 Me.oInventarios.FECHA_CANCELACION = Date.Now
 
-                If Me.oInventarios.Cancelar() = False Then
-                    Return False
+                If EsTransformacion = False Then
+                    If Me.oInventarios.Cancelar() = False Then
+                        Return False
+                    End If
+                Else
+                    'Si es una entrada por transformacion usara otro metodo que cancelara la salida de materia prima tambien
+                    If Me.oInventarios.CancelarTransformacion() = False Then
+                        Return False
+                    End If
                 End If
             Else
                 oUtileriasCancela = New Class_UtileriasFirmaElectronicaCancelacion
@@ -1520,10 +1539,19 @@ BuscarCuentas:
                     Me.oInventarios.FECHA_CANCELACION = oUtileriasCancela.FECHA_CANCELACION  'CDate(Format(oUtileriasCancela.CANCELACION_NUEVA_FECHA_CANCELACION, "dd/MM/yyyy")) + " " + CDate(Format(Now, "hh:mm"))
                     'oPoliza.ID_CON_PERIODO = oUtileriasCancela.PERIODO_CANCELACION_INTERFAZ
 
-                    If Me.oInventarios.Cancelar() = False Then
-                        MsgBox("Error al intentar cancelar el movimiento de inventario.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
+                    If EsTransformacion = False Then
+                        If Me.oInventarios.Cancelar() = False Then
+                            MsgBox("Error al intentar cancelar el movimiento de inventario.", MsgBoxStyle.Exclamation, sProcedure)
+                            Return False
+                        End If
+                    Else
+                        'Si es una entrada por transformacion usara otro metodo que cancelara la salida de materia prima tambien
+                        If Me.oInventarios.CancelarTransformacion() = False Then
+                            MsgBox("Error al intentar cancelar el movimiento de inventario.", MsgBoxStyle.Exclamation, sProcedure)
+                            Return False
+                        End If
                     End If
+
                 End If
             End If
 
@@ -3432,6 +3460,25 @@ busca_serie:
         End If
 
         Return True
+    End Function
+
+    Private Function ValidaEsTransformacion(ByVal sFolio As String, ByVal sCodigoTipoDocumento As String) As Boolean
+        Dim tipoFolio As String = "", resultado As String = ""
+
+        'Los movimientos de las transformacione son entradas y salidas normales
+        If sCodigoTipoDocumento = "ENI" Then
+            tipoFolio = "FOLIO_ENTRADA_TRANSFORMACION"
+        ElseIf sCodigoTipoDocumento = "SAI" Then
+            tipoFolio = "FOLIO_SALIDA_TRANSFORMACION"
+        End If
+
+        If txtLEN(tipoFolio) Then
+            Dim sql As New Class_find("SELECT " & tipoFolio & " FROM INVENTARIOS_TRANSFORMACIONES_RELACION_ENTRADAS_SALIDAS WHERE " & tipoFolio & "='" & sFolio & "' ")
+            resultado = sql.Result1
+        End If
+
+        Return txtLEN(resultado)
+
     End Function
 
     Private Function RepiteLote(ByVal Renglon As Integer, ByVal ID_INVENTARIO_LOTES_COSTOS As String) As Boolean

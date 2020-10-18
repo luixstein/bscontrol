@@ -10,6 +10,8 @@ Public Class Transformaciones
     Private oFormaDetalleCuentas As InventariosDetalleCuentasContables
     Private dtSeries As DataTable
     Private sCodigoConceptoInventario As String = ""
+    Private Entrada As String = ""
+    Private Salida As String = ""
 
 #Region "Columnas grid"
     Private iGyCodigo As Integer = 1
@@ -339,6 +341,12 @@ BuscarCuentas:
             Exit Function
         End If
 
+        'Graba la relación del folio de entrada y salida de la transformación
+        Me.oInventarios = New Class_Inventarios_Global
+        If Me.oInventarios.GrabarRegistroTransformacion(Entrada, Salida, Usuario.Codigo_Usuario) = False Then
+            MsgBox("No se grabó el registro de la transformación, avise al departamento de sistemas.", MsgBoxStyle.Exclamation, Me.Text)
+        End If
+
         bResultado = True
 
         MsgBox("Transformación realizada exitosamente.", MsgBoxStyle.Information, Me.Text)
@@ -386,6 +394,7 @@ BuscarCuentas:
                     Exit Function
                 End If
                 folioSalida = .FOLIO_MOVIMIENTO_INVENTARIO
+                Salida = folioSalida
 
                 'se graba el detalle
                 For i = 1 To Me.Grid1.Rows - 1
@@ -491,6 +500,7 @@ BuscarCuentas:
                     Exit Function
                 End If
                 folioEntrada = .FOLIO_MOVIMIENTO_INVENTARIO
+                Entrada = folioEntrada
 
                 'se graba el detalle
                 .NuevoRenglon()
