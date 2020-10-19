@@ -173,7 +173,7 @@ Public Class LoginForm
 #Region "Eventos de objetos"
 
     Private Sub LoginForm_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        If My.Computer.Name = "PCSISTEMASJORGE" Then
+        If My.Computer.Name = "PCSISTEMASJGC" Then
             Me.txtPassword.Text = Decrypt("¦¡¨", "871")
             Me.LogoPictureBox.Image = Nothing
             Me.Label1.Text = ""

@@ -219,6 +219,35 @@ Public Class Class_Centros_Costos_Global
         End Try
         Return dt
     End Function
+
+    Public Function ActualizaUUID_Detalle(ByVal iID_CENTRO_COSTOS_MOVIMIENTOS_DETALLE As Integer, ByVal sUUID As String) As Boolean
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_CENTRO_COSTOS_DETALLE_ACTUALIZA_UUID"
+
+            sqlParametro = .Parameters.Add("@ID_CENTRO_COSTOS_MOVIMIENTOS_DETALLE", SqlDbType.Int) : sqlParametro.Value = iID_CENTRO_COSTOS_MOVIMIENTOS_DETALLE
+            sqlParametro = .Parameters.Add("@UUID", SqlDbType.NVarChar, 36) : sqlParametro.Value = sUUID
+
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me.Nombre_Clase, "ActualizaUUID_Detalle", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
+    End Function
+
 #End Region
 
 End Class
