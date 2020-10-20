@@ -49,13 +49,13 @@ Public Class Frm_CXP_Revision
 #End Region
 
 #Region "Columnas grid cuentas"
-    Private iGyTipo As Integer = 1
-    Private iGyCodigoCentroCosto As Integer = 2
-    Private iGyNombreCentroCosto As Integer = 3
-    Private iGyCodigoCategoria As Integer = 4
-    Private iGyNombreCategoria As Integer = 5
-    Private iGyCodigoConcepto As Integer = 6
-    Private iGyNombreConcepto As Integer = 7
+    Private iGyCtasTipo As Integer = 1
+    Private iGyCtasCodigoCentroCosto As Integer = 2
+    Private iGyCtasNombreCentroCosto As Integer = 3
+    Private iGyCtasCodigoCategoria As Integer = 4
+    Private iGyCtasNombreCategoria As Integer = 5
+    Private iGyCtasCodigoConcepto As Integer = 6
+    Private iGyCtasNombreConcepto As Integer = 7
     Private iGyCtasImporte As Integer = 8
     Private iGyCtasIVA As Integer = 9
     Private iGyCtasTotal As Integer = 10
@@ -65,6 +65,7 @@ Public Class Frm_CXP_Revision
     Private iGyCtasPDF As Integer = 14
     Private iGyCtasRutaXML As Integer = 15
     Private iGyCtasRutaPDF As Integer = 16
+    Private iGyCtasIDCentroCostoDetalle As Integer = 17
 #End Region
 
 #Region "Columnas grid activos"
@@ -79,6 +80,7 @@ Public Class Frm_CXP_Revision
     Private iGyActivoPDF As Integer = 8
     Private iGyActivoRutaXML As Integer = 9
     Private iGyActivoRutaPDF As Integer = 10
+    Private iGyActivoIDGastoDetalle As Integer = 11
 #End Region
 
 #Region "Columnas grid facturas relacionadas"
@@ -613,7 +615,7 @@ Buscar:
     Private Sub dtpFechaVencimiento_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dtpFechaVencimiento.KeyDown
         If e.KeyCode = Keys.Return Then
             'SendKeys.Send("{TAB}")
-            Me.GridCuentas.Cell(1, Me.iGyNombreCentroCosto).SetFocus()
+            Me.GridCuentas.Cell(1, Me.iGyCtasNombreCentroCosto).SetFocus()
         End If
     End Sub
 
@@ -828,7 +830,7 @@ Buscar:
 
             'Creamos el Grid
             Me.GridCuentas.Rows = 2
-            Me.GridCuentas.Cols = 17
+            Me.GridCuentas.Cols = 18
             Me.GridCuentas.DisplayRowNumber = True
 
             Me.GridCuentas.Cell(1, Me.iGyCtasXML).Text = "Agregar"
@@ -847,7 +849,7 @@ Buscar:
 
             'Creamos el Grid
             Me.GridActivos.Rows = 2
-            Me.GridActivos.Cols = 11
+            Me.GridActivos.Cols = 12
             Me.GridActivos.DisplayRowNumber = True
 
             Me.GridActivos.Cell(1, Me.iGyActivoXML).Text = "Agregar"
@@ -968,13 +970,13 @@ Buscar:
                 .BorderStyle = FlexCell.BorderStyleEnum.FixedSingle
                 .FixedRowColStyle = FlexCell.FixedRowColStyleEnum.Flat
 
-                .Column(Me.iGyTipo).Visible = False
-                .Column(Me.iGyCodigoCentroCosto).Visible = False
-                .Column(Me.iGyNombreCentroCosto).Width = 210
-                .Column(Me.iGyCodigoCategoria).Visible = False
-                .Column(Me.iGyNombreCategoria).Width = 210
-                .Column(Me.iGyCodigoConcepto).Visible = False
-                .Column(Me.iGyNombreConcepto).Width = 210
+                .Column(Me.iGyCtasTipo).Visible = False
+                .Column(Me.iGyCtasCodigoCentroCosto).Visible = False
+                .Column(Me.iGyCtasNombreCentroCosto).Width = 210
+                .Column(Me.iGyCtasCodigoCategoria).Visible = False
+                .Column(Me.iGyCtasNombreCategoria).Width = 210
+                .Column(Me.iGyCtasCodigoConcepto).Visible = False
+                .Column(Me.iGyCtasNombreConcepto).Width = 210
                 .Column(Me.iGyCtasImporte).Width = 80
                 .Column(Me.iGyCtasIVA).Width = 70
                 .Column(Me.iGyCtasTotal).Width = 80
@@ -985,13 +987,14 @@ Buscar:
                 .Column(Me.iGyCtasPDF).Width = 60
                 .Column(Me.iGyCtasRutaXML).Visible = False
                 .Column(Me.iGyCtasRutaPDF).Visible = False
+                .Column(Me.iGyCtasIDCentroCostoDetalle).Visible = False
 
-                .Cell(0, Me.iGyCodigoCentroCosto).Text = "CCos"
-                .Cell(0, Me.iGyNombreCentroCosto).Text = "C.costo"
-                .Cell(0, Me.iGyCodigoCategoria).Text = "CCat"
-                .Cell(0, Me.iGyNombreCategoria).Text = "Categoria"
-                .Cell(0, Me.iGyCodigoConcepto).Text = "CCon"
-                .Cell(0, Me.iGyNombreConcepto).Text = "Concepto"
+                .Cell(0, Me.iGyCtasCodigoCentroCosto).Text = "CCos"
+                .Cell(0, Me.iGyCtasNombreCentroCosto).Text = "C.costo"
+                .Cell(0, Me.iGyCtasCodigoCategoria).Text = "CCat"
+                .Cell(0, Me.iGyCtasNombreCategoria).Text = "Categoria"
+                .Cell(0, Me.iGyCtasCodigoConcepto).Text = "CCon"
+                .Cell(0, Me.iGyCtasNombreConcepto).Text = "Concepto"
                 .Cell(0, Me.iGyCtasImporte).Text = "Subtotal(MXP)"
                 .Cell(0, Me.iGyCtasIVA).Text = "IVA(MXP)"
                 .Cell(0, Me.iGyCtasTotal).Text = "Total(MXP)"
@@ -1002,6 +1005,7 @@ Buscar:
                 .Cell(0, Me.iGyCtasPDF).Text = "PDF"
                 .Cell(0, Me.iGyCtasRutaXML).Text = "RutaXML"
                 .Cell(0, Me.iGyCtasRutaXML).Text = "RutaPDF"
+                .Cell(0, Me.iGyCtasIDCentroCostoDetalle).Text = "IDCentroCostoDetalle"
 
                 .Column(Me.iGyCtasImporte).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
                 .Column(Me.iGyCtasImporte).Mask = FlexCell.MaskEnum.Numeric
@@ -1058,6 +1062,7 @@ Buscar:
                 .Column(Me.iGyActivoUUID).Width = 60
                 .Column(Me.iGyActivoRutaXML).Visible = False
                 .Column(Me.iGyActivoRutaPDF).Visible = False
+                .Column(Me.iGyActivoIDGastoDetalle).Visible = False
 
                 .Cell(0, Me.iGyActivoCuentaContable).Text = "Cuenta contable"
                 .Cell(0, Me.iGyActivoNombreCuenta).Text = "Nombre cuenta"
@@ -1071,6 +1076,7 @@ Buscar:
                 .Cell(0, Me.iGyActivoPDF).Text = "PDF"
                 .Cell(0, Me.iGyActivoRutaXML).Text = "RutaXML"
                 .Cell(0, Me.iGyActivoRutaPDF).Text = "RutaPDF"
+                .Cell(0, Me.iGyActivoIDGastoDetalle).Text = "IDGastoDetalle"
 
                 .Column(Me.iGyActivoImporte).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
                 .Column(Me.iGyActivoImporte).Mask = FlexCell.MaskEnum.Numeric
@@ -1185,6 +1191,9 @@ Buscar:
                     Me.btnActualizaConcepto.Visible = False
                     Me.btnGrabaDetalleVenta.Enabled = True
 
+                    'Me.GridCuentas.Locked = False
+                    'Me.GridCuentas.Column(Me.iGyCtasNombreCentroCosto).Locked = True
+
                     Me.tsslElaboro.Visible = True : Me.tsslElaboro.Text = "Elaboró : " + Me.oCompras.NOMBRE_USUARIO_GRABO.ToString + " el " + Format(Me.DtpFechaFacturaProveedor.Value, "dd/MMM/yy").ToUpper
 
                     If Me.oCompras.ESTATUS = "C" Then
@@ -1195,8 +1204,8 @@ Buscar:
                         Me.tsbCancelar.Enabled = True
                     End If
 
-                    Me.tsbAgregarXML.Visible = True
-                    Me.tsbAgregarPDF.Visible = True
+                    'Me.tsbAgregarXML.Visible = True
+                    'Me.tsbAgregarPDF.Visible = True
 
                 Case enumEstados.PAGODIRECTO
                     Me.tsbGrabar.Enabled = False
@@ -1272,8 +1281,22 @@ Buscar:
                         Me.tsbGrabar.Enabled = False
 
                         Me.txtFolioProveedor.Enabled = False
-                        Me.GridCuentas.Locked = True
-                        Me.GridActivos.Locked = True
+                        'Me.GridCuentas.Locked = True
+                        'Me.GridActivos.Locked = True
+
+                        'Ahora se permite en la consulta agregar xml/pdf de doctos ya grabados por eso bloqueamos las demás no editables en ambos grids.
+                        Me.GridCuentas.Locked = False
+                        Me.GridActivos.Locked = False
+                        For i = 1 To Me.GridCuentas.Cols - 1
+                            Me.GridCuentas.Column(i).Locked = True
+                        Next
+                        For i = 1 To Me.GridActivos.Cols - 1
+                            Me.GridActivos.Column(i).Locked = True
+                        Next
+                        Me.GridCuentas.Column(Me.iGyCtasXML).Locked = False
+                        Me.GridCuentas.Column(Me.iGyCtasPDF).Locked = False
+                        Me.GridActivos.Column(Me.iGyActivoXML).Locked = False
+                        Me.GridActivos.Column(Me.iGyActivoPDF).Locked = False
                     Else
                         Me.tsbGrabar.Enabled = True
 
@@ -1440,15 +1463,15 @@ Buscar:
                         '    End If
                         '    oCuenta = Nothing
 
-                        Case Me.iGyNombreCentroCosto
+                        Case Me.iGyCtasNombreCentroCosto
                             If txtLEN(Me.GridCuentas.Cell(Renglon, Columna).Text) = False Then
                                 GoTo busca_centro_costo
                                 Return
                             End If
 
                             ''oCentroCosto = New Class_CatCentroCostos(CInt(Me.GridCuentas.Cell(Renglon, Me.iGyCodigoCentroCosto).Text))
-                            sTipo = Me.GridCuentas.Cell(Renglon, Me.iGyTipo).Text
-                            sCodigo = Me.GridCuentas.Cell(Renglon, Me.iGyCodigoCentroCosto).Text
+                            sTipo = Me.GridCuentas.Cell(Renglon, Me.iGyCtasTipo).Text
+                            sCodigo = Me.GridCuentas.Cell(Renglon, Me.iGyCtasCodigoCentroCosto).Text
                             If Me.EstableceCentroCosto(Renglon, Columna, e.KeyCode, sTipo, sCodigo) = False Then
                                 GoTo busca_centro_costo
                                 Return
@@ -1487,38 +1510,38 @@ Buscar:
                             '    Return
                             'End If
 
-                        Case Me.iGyNombreCategoria
+                        Case Me.iGyCtasNombreCategoria
                             If txtLEN(Me.GridCuentas.Cell(Renglon, Columna).Text) = False Then
                                 GoTo busca_categoria
                                 Return
                             End If
 
-                            oCategoria = New Class_CatCategorias(Me.GridCuentas.Cell(Renglon, Me.iGyCodigoCategoria).Text)
+                            oCategoria = New Class_CatCategorias(Me.GridCuentas.Cell(Renglon, Me.iGyCtasCodigoCategoria).Text)
                             If oCategoria.Existe = True Then
-                                Me.GridCuentas.Cell(Renglon, Me.iGyCodigoCategoria).Text = oCategoria.CODIGO_CATEGORIA
-                                Me.GridCuentas.Cell(Renglon, Me.iGyNombreCategoria).Text = oCategoria.NOMBRE_CATEGORIA
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCtasCodigoCategoria).Text = oCategoria.CODIGO_CATEGORIA
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCtasNombreCategoria).Text = oCategoria.NOMBRE_CATEGORIA
                                 Me.GridCuentas.Cell(Renglon, Me.iGyCuentaContable).Text = oCategoria.CODIGO_TIPO_CATEGORIA
                             Else
-                                Me.GridCuentas.Cell(Renglon, Me.iGyCodigoCategoria).Text = ""
-                                Me.GridCuentas.Cell(Renglon, Me.iGyNombreCategoria).Text = ""
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCtasCodigoCategoria).Text = ""
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCtasNombreCategoria).Text = ""
                                 Me.GridCuentas.Cell(Renglon, Me.iGyCuentaContable).Text = ""
                                 GoTo busca_categoria
                                 Return
                             End If
 
-                        Case Me.iGyNombreConcepto
+                        Case Me.iGyCtasNombreConcepto
                             If txtLEN(Me.GridCuentas.Cell(Renglon, Columna).Text) = False Then
                                 GoTo busca_concepto
                                 Return
                             End If
 
-                            oConcepto = New Class_CatConceptos(Me.GridCuentas.Cell(Renglon, Me.iGyCodigoConcepto).Text)
+                            oConcepto = New Class_CatConceptos(Me.GridCuentas.Cell(Renglon, Me.iGyCtasCodigoConcepto).Text)
                             If oConcepto.Existe = True Then
-                                Me.GridCuentas.Cell(Renglon, Me.iGyCodigoConcepto).Text = oConcepto.Codigo_Concepto
-                                Me.GridCuentas.Cell(Renglon, Me.iGyNombreConcepto).Text = oConcepto.Nombre_Concepto
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCtasCodigoConcepto).Text = oConcepto.Codigo_Concepto
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCtasNombreConcepto).Text = oConcepto.Nombre_Concepto
                             Else
-                                Me.GridCuentas.Cell(Renglon, Me.iGyCodigoConcepto).Text = ""
-                                Me.GridCuentas.Cell(Renglon, Me.iGyNombreConcepto).Text = ""
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCtasCodigoConcepto).Text = ""
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCtasNombreConcepto).Text = ""
                                 GoTo busca_concepto
                                 Return
                             End If
@@ -1570,7 +1593,7 @@ salto_columna:
                         '                            End If
                         '                            oCuenta = Nothing
 
-                        Case Me.iGyNombreCentroCosto
+                        Case Me.iGyCtasNombreCentroCosto
 busca_centro_costo:
                             'oCentroCosto = New Class_CatCentroCostos
                             'sCodigo = oCentroCosto.BusquedaVisual_PorDescripcion
@@ -1603,30 +1626,30 @@ busca_centro_costo:
                                 Me.EstableceCentroCosto(Renglon, Columna, e.KeyCode, "CENTRO_COSTO", sCodigo)
                             End If
 
-                        Case Me.iGyNombreCategoria
+                        Case Me.iGyCtasNombreCategoria
 busca_categoria:
                             oCategoria = New Class_CatCategorias
                             sCodigo = oCategoria.BusquedaVisual_PorDescripcion
 
                             If txtLEN(sCodigo) = True Then
                                 oCategoria = New Class_CatCategorias(sCodigo)
-                                Me.GridCuentas.Cell(Renglon, Me.iGyCodigoCategoria).Text = oCategoria.CODIGO_CATEGORIA.ToString
-                                Me.GridCuentas.Cell(Renglon, Me.iGyNombreCategoria).Text = oCategoria.NOMBRE_CATEGORIA
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCtasCodigoCategoria).Text = oCategoria.CODIGO_CATEGORIA.ToString
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCtasNombreCategoria).Text = oCategoria.NOMBRE_CATEGORIA
                                 Me.GridCuentas.Cell(Renglon, Me.iGyCuentaContable).Text = oCategoria.CODIGO_TIPO_CATEGORIA
                                 'Else
                                 '    GoTo busca_categoria
                                 '    Return
                             End If
 
-                        Case Me.iGyNombreConcepto
+                        Case Me.iGyCtasNombreConcepto
 busca_concepto:
                             oConcepto = New Class_CatConceptos
                             sCodigo = oConcepto.BusquedaVisual_PorDescripcion
 
                             If txtLEN(sCodigo) = True Then
                                 oConcepto = New Class_CatConceptos(sCodigo)
-                                Me.GridCuentas.Cell(Renglon, Me.iGyCodigoConcepto).Text = oConcepto.Codigo_Concepto.ToString
-                                Me.GridCuentas.Cell(Renglon, Me.iGyNombreConcepto).Text = oConcepto.Nombre_Concepto
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCtasCodigoConcepto).Text = oConcepto.Codigo_Concepto.ToString
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCtasNombreConcepto).Text = oConcepto.Nombre_Concepto
                                 'Else
                                 '    GoTo busca_concepto
                                 '    Return
@@ -2005,15 +2028,15 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
             Dim oCentroCosto As New Class_VwCatCentrosCostosyDeudoresDiversos(sTipo, sCodigo)
 
             If oCentroCosto.EXISTE = True Then
-                Me.GridCuentas.Cell(Renglon, Me.iGyTipo).Text = oCentroCosto.TIPO
-                Me.GridCuentas.Cell(Renglon, Me.iGyCodigoCentroCosto).Text = oCentroCosto.CODIGO
-                Me.GridCuentas.Cell(Renglon, Me.iGyNombreCentroCosto).Text = oCentroCosto.NOMBRE
+                Me.GridCuentas.Cell(Renglon, Me.iGyCtasTipo).Text = oCentroCosto.TIPO
+                Me.GridCuentas.Cell(Renglon, Me.iGyCtasCodigoCentroCosto).Text = oCentroCosto.CODIGO
+                Me.GridCuentas.Cell(Renglon, Me.iGyCtasNombreCentroCosto).Text = oCentroCosto.NOMBRE
                 Select Case sTipo
                     Case "DEUDOR_DIVERSO"
-                        Me.GridCuentas.Cell(Renglon, Me.iGyCodigoCategoria).Text = ""
-                        Me.GridCuentas.Cell(Renglon, Me.iGyNombreCategoria).Text = "NO APLICA"
-                        Me.GridCuentas.Cell(Renglon, Me.iGyCodigoConcepto).Text = ""
-                        Me.GridCuentas.Cell(Renglon, Me.iGyNombreConcepto).Text = "NO APLICA"
+                        Me.GridCuentas.Cell(Renglon, Me.iGyCtasCodigoCategoria).Text = ""
+                        Me.GridCuentas.Cell(Renglon, Me.iGyCtasNombreCategoria).Text = "NO APLICA"
+                        Me.GridCuentas.Cell(Renglon, Me.iGyCtasCodigoConcepto).Text = ""
+                        Me.GridCuentas.Cell(Renglon, Me.iGyCtasNombreConcepto).Text = "NO APLICA"
                         Me.GridCuentas.Cell(Renglon, Me.iGyCuentaContable).Text = oCentroCosto.CUENTA_CONTABLE
                 End Select
                 bResultado = True
@@ -2038,21 +2061,21 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
 
         Select Case Columna
             Case Me.iGyCtasImporte, Me.iGyCtasIVA
-                Me.GridCuentas.Cell(Renglon + 1, Me.iGyCodigoCentroCosto).SetFocus()
+                Me.GridCuentas.Cell(Renglon + 1, Me.iGyCtasCodigoCentroCosto).SetFocus()
             Case Else
                 Select Case sTipo
                     Case "DEUDOR_DIVERSO"
                         Select Case KeyCode
                             Case Keys.Return
-                                Me.GridCuentas.Cell(Renglon, Me.iGyNombreConcepto).SetFocus() 'Se pone una antes para quese vaya al importe, porque el enter por si mismo va forzar brincar otra vez
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCtasNombreConcepto).SetFocus() 'Se pone una antes para quese vaya al importe, porque el enter por si mismo va forzar brincar otra vez
                             Case Keys.F6
                                 Me.GridCuentas.Cell(Renglon, Me.iGyCtasImporte).SetFocus()
                         End Select
                     Case Else
                         If KeyCode = Keys.F6 Then
                             Select Case Columna
-                                Case Me.iGyNombreCentroCosto
-                                    Columna = Me.iGyNombreCategoria
+                                Case Me.iGyCtasNombreCentroCosto
+                                    Columna = Me.iGyCtasNombreCategoria
                             End Select
                         End If
                         Me.GridCuentas.Cell(Renglon, Columna).SetFocus()
@@ -2109,7 +2132,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
 
                     For i = 1 To Me.GridCuentas.Rows - 1
                         If Me.GridCuentas.Cell(i, Me.iGyCuentaContable).Text <> "" And valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasImporte).Text) > 0 Then
-                            sCuentas = sCuentas & i & "," & Me.GridCuentas.Cell(i, Me.iGyTipo).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCodigoCentroCosto).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCodigoCategoria).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCodigoConcepto).Text & "," &
+                            sCuentas = sCuentas & i & "," & Me.GridCuentas.Cell(i, Me.iGyCtasTipo).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCtasCodigoCentroCosto).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCtasCodigoCategoria).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCtasCodigoConcepto).Text & "," &
                             valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasImporte).Text).ToString & "," & Me.GridCuentas.Cell(i, Me.iGyCuentaContable).Text & "," &
                             valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasIVA).Text).ToString & "," & valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasTotal).Text).ToString & "," & Me.GridCuentas.Cell(i, Me.iGyCtasUUID).Text & "|"
                         End If
@@ -2453,17 +2476,17 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                             .Cell(i, Me.iGyCuentaContable).SetFocus()
                             Return False
                         ElseIf Microsoft.VisualBasic.Left(sCuentaContable, 1) = "5" Then
-                            If .Cell(i, Me.iGyTipo).Text <> "CENTRO_COSTO" Then
+                            If .Cell(i, Me.iGyCtasTipo).Text <> "CENTRO_COSTO" Then
                                 MsgBox("La cuenta contable del renglón: " & i & " es 5 mil , y el tipo no es centro de costos.", MsgBoxStyle.Exclamation, sProcedure)
                                 Return False
                             End If
-                            If txtLEN(.Cell(i, Me.iGyCodigoCentroCosto).Text) = False Or .Cell(i, Me.iGyCodigoCentroCosto).Text = "0" Then
+                            If txtLEN(.Cell(i, Me.iGyCtasCodigoCentroCosto).Text) = False Or .Cell(i, Me.iGyCtasCodigoCentroCosto).Text = "0" Then
                                 MsgBox("La cuenta contable  del renglón: " & i & " es 5 mil , favor de asignar un centro de costo.", MsgBoxStyle.Exclamation, sProcedure)
-                                .Cell(i, Me.iGyCodigoCentroCosto).SetFocus()
+                                .Cell(i, Me.iGyCtasCodigoCentroCosto).SetFocus()
                                 Return False
                             End If
                         ElseIf Microsoft.VisualBasic.Left(sCuentaContable, 1) = "1" Then
-                            If .Cell(i, Me.iGyTipo).Text <> "DEUDOR_DIVERSO" Then
+                            If .Cell(i, Me.iGyCtasTipo).Text <> "DEUDOR_DIVERSO" Then
                                 MsgBox("La cuenta contable del renglón: " & i & " es 1 mil , y el tipo no es deudor diverso.", MsgBoxStyle.Exclamation, sProcedure)
                                 Return False
                             End If
@@ -2743,7 +2766,6 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
             Me.tsbEditarCostos.Enabled = True
             Me.Cambia_Estado(enumEstados.CONSULTA)
 
-
             bResultado = True
         Catch ex As Exception
             HandleError(Me.Name, "Navegador", ex)
@@ -2965,36 +2987,66 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
         Try
             Dim iRenglon As Integer = 0, iColumna As Integer = 0, sUUID As String = "", sRutaXML As String = "", sRutaPDF As String = ""
             Dim oPoliza As New Class_Contabilidad_Poliza_Global()
+            Dim iIDCentroCostoDetalle As Integer = 0
 
             iRenglon = Me.GridCuentas.ActiveCell.Row
             iColumna = Me.GridCuentas.ActiveCell.Col
             sUUID = Me.GridCuentas.Cell(iRenglon, Me.iGyCtasUUID).Text
+            iIDCentroCostoDetalle = CInt(valorNumerico(Me.GridCuentas.Cell(iRenglon, Me.iGyCtasIDCentroCostoDetalle).Text))
 
             Select Case iColumna
                 Case Me.iGyCtasXML
                     Select Case Me.GridCuentas.Cell(iRenglon, Me.iGyCtasXML).Text
-                        Case "Agregar"
+                        Case "Agregar", "" 'Nota1 Si esta en blanco significa que es un docto que ya existe y se esta consultando y se le quiere ya sea agregar un xml que nunca se le puso, o quieren sobreescribirlo.
+
+                            'Ver Nota1, debe existir el renglón para poder actualizarle el xml/pdf
+                            If txtLEN(Me.GridCuentas.Cell(iRenglon, Me.iGyCtasXML).Text) = False Then
+                                If iIDCentroCostoDetalle = 0 Then
+                                    MsgBox("Este renglón no tiene permitido agregar xml/pdf porque se esta consultando un documento y deberia tener IDCentroCostoDetalle.", MsgBoxStyle.Exclamation, Me.Text)
+                                    Return
+                                End If
+                            End If
+
                             sRutaXML = oPoliza.BuscarXML("", True) 'Aún no tenemos la póliza por eso lo pasamos sin folio de póliza
 
                             'If txtLEN(sRutaXML) = True Then
                             ' bResultado = oPoliza.AgregarXMLPDF(sRutaXML, "") 'Mandamos sin pdf
                             ' End If
 
-                            If txtLEN(sRutaXML) = True Then
-                                Dim oCFDI As New CFDIXML.ClassCFDI(sRutaXML, True) 'Internamente: ya se valida que este timbrado
+                            If txtLEN(sRutaXML) = False Then
+                                Return
+                            End If
 
-                                If oCFDI.XMLCargado = False Then
-                                    Return 'False
-                                End If
+                            Dim oCFDI As New CFDIXML.ClassCFDI(sRutaXML, True) 'Internamente: ya se valida que este timbrado
 
-                                Me.GridCuentas.Cell(iRenglon, Me.iGyCtasUUID).Text = oCFDI.ComplementoTFD.UUID
+                            If oCFDI.XMLCargado = False Then
+                                Return
+                            End If
+
+                            'Sólo cuando es un renglón nuevo se cargan los valores, cuando ya existe no porque sólo liga el xml aunque los valores no correspondan porque de momento si se permite.
+                            If iIDCentroCostoDetalle = 0 Then
                                 Me.GridCuentas.Cell(iRenglon, Me.iGyCtasImporte).Text = oCFDI.Comprobante.SubTotal.ToString
                                 Me.GridCuentas.Cell(iRenglon, Me.iGyCtasIVA).Text = oCFDI.Impuestos.totalImpuestosTrasladadosIVA.ToString
                                 Me.GridCuentas.Cell(iRenglon, Me.iGyCtasTotal).Text = Redondear(oCFDI.Comprobante.SubTotal + oCFDI.Impuestos.totalImpuestosTrasladadosIVA, 2).ToString
-                                Me.GridCuentas.Cell(iRenglon, Me.iGyCtasXML).Text = "Ver"
-                                Me.GridCuentas.Cell(iRenglon, Me.iGyCtasRutaXML).Text = sRutaXML
+                            Else
+                                Dim oCentroCosto As New Class_Centros_Costos_Global
+
+                                If oCentroCosto.ActualizaUUID_Detalle(iIDCentroCostoDetalle, oCFDI.ComplementoTFD.UUID) = True Then
+                                    oPoliza = New Class_Contabilidad_Poliza_Global(Me.txtFolioCompra.Text)
+                                    If oPoliza.Existe = True Then
+                                        If txtLEN(sRutaXML) = True Then
+                                            If oPoliza.TieneRelacionadoUUID(oCFDI.ComplementoTFD.UUID) = False Then 'Si la póliza no tiene relacionado todavia el uuid si se relaciona, si ya lo tiene no porque marcaria error(el xml ya existirá en el repositorio y relacionado).
+                                                bResultado = oPoliza.AgregarXMLPDF(sRutaXML, sRutaPDF) 'sRutaPDF pudiera venir vacio y no grabará el pdf
+                                            End If
+                                        End If
+                                    End If
+                                End If
 
                             End If
+
+                            Me.GridCuentas.Cell(iRenglon, Me.iGyCtasUUID).Text = oCFDI.ComplementoTFD.UUID
+                            Me.GridCuentas.Cell(iRenglon, Me.iGyCtasXML).Text = "Ver"
+                            Me.GridCuentas.Cell(iRenglon, Me.iGyCtasRutaXML).Text = sRutaXML
 
                         Case "Ver"
                             Process.Start(Me.GridCuentas.Cell(iRenglon, Me.iGyCtasRutaXML).Text) 'Para abrir el xml
@@ -3008,8 +3060,19 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                     End If
 
                     Select Case Me.GridCuentas.Cell(iRenglon, Me.iGyCtasPDF).Text
-                        Case "Agregar"
+                        Case "Agregar", "" 'Nota1 Si esta en blanco significa que es un docto que ya existe y se esta consultando y se le quiere ya sea agregar un xml que nunca se le puso, o quieren sobreescribirlo.
                             sRutaPDF = oPoliza.BuscarPDF() 'Note que aún no tenemos la póliza 
+
+                            'Ver Nota1, debe existir el renglón para poder actualizarle el xml/pdf
+                            If txtLEN(Me.GridCuentas.Cell(iRenglon, Me.iGyCtasPDF).Text) = False Then
+                                If iIDCentroCostoDetalle = 0 Then
+                                    MsgBox("Este renglón no tiene permitido agregar xml/pdf porque se esta consultando un documento y deberia tener IDCentroCostoDetalle.", MsgBoxStyle.Exclamation, Me.Text)
+                                    Return
+                                End If
+
+                                'Estamos dentro un docto ya grabado por eso este código va aqui y afuera no porque cuando es nuevo la propia función grabar graba los xml/pdf
+                                bResultado = oPoliza.AgregarPDF(sUUID, sRutaPDF) 'sRutaPDF pudiera venir vacio y no grabará el pdf
+                            End If
 
                             If txtLEN(sRutaPDF) = True Then
                                 Me.GridCuentas.Cell(iRenglon, Me.iGyCtasPDF).Text = "Ver"
@@ -3034,17 +3097,26 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
         Dim sProcedure As String = "ClickBotonGridActivos"
 
         Try
-            Dim iRenglon As Integer = 0, iColumna As Integer = 0, sUUID As String = "", sRutaXML As String = "", sRutaPDF As String = ""
+            Dim iRenglon As Integer = 0, iColumna As Integer = 0, sUUID As String = "", sRutaXML As String = "", sRutaPDF As String = "", iIDGastoDetalle As Integer = 0
             Dim oPoliza As New Class_Contabilidad_Poliza_Global()
 
             iRenglon = Me.GridActivos.ActiveCell.Row
             iColumna = Me.GridActivos.ActiveCell.Col
             sUUID = Me.GridActivos.Cell(iRenglon, Me.iGyActivoUUID).Text
+            iIDGastoDetalle = CInt(valorNumerico(Me.GridActivos.Cell(iRenglon, Me.iGyActivoIDGastoDetalle).Text))
 
             Select Case iColumna
                 Case Me.iGyActivoXML
                     Select Case Me.GridActivos.Cell(iRenglon, Me.iGyActivoXML).Text
-                        Case "Agregar"
+                        Case "Agregar", "" 'Nota1 Si esta en blanco significa que es un docto que ya existe y se esta consultando y se le quiere ya sea agregar un xml que nunca se le puso, o quieren sobreescribirlo.
+
+                            'Ver Nota1, debe existir el renglón para poder actualizarle el xml/pdf
+                            If txtLEN(Me.GridActivos.Cell(iRenglon, Me.iGyActivoXML).Text) = False Then
+                                If iIDGastoDetalle = 0 Then
+                                    MsgBox("Este renglón no tiene permitido agregar xml/pdf porque se esta consultando un documento y deberia tener IDCentroCostoDetalle.", MsgBoxStyle.Exclamation, Me.Text)
+                                    Return
+                                End If
+                            End If
 
                             sRutaXML = oPoliza.BuscarXML("", True) 'Aún no tenemos la póliza por eso lo pasamos sin folio de póliza
 
@@ -3056,13 +3128,31 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                                 Dim oCFDI As New CFDIXML.ClassCFDI(sRutaXML, True) 'Internamente: ya se valida que este timbrado
 
                                 If oCFDI.XMLCargado = False Then
-                                    Return 'False
+                                    Return
+                                End If
+
+                                'Sólo cuando es un renglón nuevo se cargan los valores, cuando ya existe no porque sólo liga el xml aunque los valores no correspondan porque de momento si se permite.
+                                If iIDGastoDetalle = 0 Then
+                                    Me.GridActivos.Cell(iRenglon, Me.iGyActivoImporte).Text = oCFDI.Comprobante.SubTotal.ToString
+                                    Me.GridActivos.Cell(iRenglon, Me.iGyActivoIVA).Text = oCFDI.Impuestos.totalImpuestosTrasladadosIVA.ToString
+                                    Me.GridActivos.Cell(iRenglon, Me.iGyActivoTotal).Text = Redondear(oCFDI.Comprobante.SubTotal + oCFDI.Impuestos.totalImpuestosTrasladadosIVA, 2).ToString
+                                Else
+                                    Dim oActivo As New Class_Gastos_Detalle
+
+                                    If oActivo.ActualizaUUID_Detalle(iIDGastoDetalle, oCFDI.ComplementoTFD.UUID) = True Then
+                                        oPoliza = New Class_Contabilidad_Poliza_Global(Me.txtFolioCompra.Text)
+                                        If oPoliza.Existe = True Then
+                                            If txtLEN(sRutaXML) = True Then
+                                                If oPoliza.TieneRelacionadoUUID(oCFDI.ComplementoTFD.UUID) = False Then 'Si la póliza no tiene relacionado todavia el uuid si se relaciona, si ya lo tiene no porque marcaria error(el xml ya existirá en el repositorio y relacionado).
+                                                    bResultado = oPoliza.AgregarXMLPDF(sRutaXML, sRutaPDF) 'sRutaPDF pudiera venir vacio y no grabará el pdf
+                                                End If
+                                            End If
+                                        End If
+                                    End If
+
                                 End If
 
                                 Me.GridActivos.Cell(iRenglon, Me.iGyActivoUUID).Text = oCFDI.ComplementoTFD.UUID
-                                Me.GridActivos.Cell(iRenglon, Me.iGyActivoImporte).Text = oCFDI.Comprobante.SubTotal.ToString
-                                Me.GridActivos.Cell(iRenglon, Me.iGyActivoIVA).Text = oCFDI.Impuestos.totalImpuestosTrasladadosIVA.ToString
-                                Me.GridActivos.Cell(iRenglon, Me.iGyActivoTotal).Text = Redondear(oCFDI.Comprobante.SubTotal + oCFDI.Impuestos.totalImpuestosTrasladadosIVA, 2).ToString
                                 Me.GridActivos.Cell(iRenglon, Me.iGyActivoXML).Text = "Ver"
                                 Me.GridActivos.Cell(iRenglon, Me.iGyActivoRutaXML).Text = sRutaXML
 
@@ -3080,8 +3170,19 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                     End If
 
                     Select Case Me.GridActivos.Cell(iRenglon, Me.iGyActivoPDF).Text
-                        Case "Agregar"
+                        Case "Agregar", "" 'Nota1 Si esta en blanco significa que es un docto que ya existe y se esta consultando y se le quiere ya sea agregar un xml que nunca se le puso, o quieren sobreescribirlo.
                             sRutaPDF = oPoliza.BuscarPDF() 'Note que aún no tenemos la póliza 
+
+                            'Ver Nota1, debe existir el renglón para poder actualizarle el xml/pdf
+                            If txtLEN(Me.GridActivos.Cell(iRenglon, Me.iGyActivoPDF).Text) = False Then
+                                If iIDGastoDetalle = 0 Then
+                                    MsgBox("Este renglón no tiene permitido agregar xml/pdf porque se esta consultando un documento y deberia tener IDGastoDetalle.", MsgBoxStyle.Exclamation, Me.Text)
+                                    Return
+                                End If
+
+                                'Estamos dentro un docto ya grabado por eso este código va aqui y afuera no porque cuando es nuevo la propia función grabar graba los xml/pdf
+                                bResultado = oPoliza.AgregarPDF(sUUID, sRutaPDF) 'sRutaPDF pudiera venir vacio y no grabará el pdf
+                            End If
 
                             If txtLEN(sRutaPDF) = True Then
                                 Me.GridActivos.Cell(iRenglon, Me.iGyActivoPDF).Text = "Ver"
