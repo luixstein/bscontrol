@@ -1204,8 +1204,8 @@ Buscar:
                         Me.tsbCancelar.Enabled = True
                     End If
 
-                    Me.tsbAgregarXML.Visible = True
-                    Me.tsbAgregarPDF.Visible = True
+                    'Me.tsbAgregarXML.Visible = True
+                    'Me.tsbAgregarPDF.Visible = True
 
                 Case enumEstados.PAGODIRECTO
                     Me.tsbGrabar.Enabled = False
@@ -2992,6 +2992,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
             iRenglon = Me.GridCuentas.ActiveCell.Row
             iColumna = Me.GridCuentas.ActiveCell.Col
             sUUID = Me.GridCuentas.Cell(iRenglon, Me.iGyCtasUUID).Text
+            iIDCentroCostoDetalle = CInt(valorNumerico(Me.GridCuentas.Cell(iRenglon, Me.iGyCtasIDCentroCostoDetalle).Text))
 
             Select Case iColumna
                 Case Me.iGyCtasXML
@@ -3000,7 +3001,6 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
 
                             'Ver Nota1, debe existir el renglón para poder actualizarle el xml/pdf
                             If txtLEN(Me.GridCuentas.Cell(iRenglon, Me.iGyCtasXML).Text) = False Then
-                                iIDCentroCostoDetalle = CInt(valorNumerico(Me.GridCuentas.Cell(iRenglon, Me.iGyCtasIDCentroCostoDetalle).Text))
                                 If iIDCentroCostoDetalle = 0 Then
                                     MsgBox("Este renglón no tiene permitido agregar xml/pdf porque se esta consultando un documento y deberia tener IDCentroCostoDetalle.", MsgBoxStyle.Exclamation, Me.Text)
                                     Return
@@ -3013,39 +3013,40 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                             ' bResultado = oPoliza.AgregarXMLPDF(sRutaXML, "") 'Mandamos sin pdf
                             ' End If
 
-                            If txtLEN(sRutaXML) = True Then
-                                Dim oCFDI As New CFDIXML.ClassCFDI(sRutaXML, True) 'Internamente: ya se valida que este timbrado
+                            If txtLEN(sRutaXML) = False Then
+                                Return
+                            End If
 
-                                If oCFDI.XMLCargado = False Then
-                                    Return
-                                End If
+                            Dim oCFDI As New CFDIXML.ClassCFDI(sRutaXML, True) 'Internamente: ya se valida que este timbrado
 
-                                'Sólo cuando es un renglón nuevo se cargan los valores, cuando ya existe no porque sólo liga el xml aunque los valores no correspondan porque de momento si se permite.
-                                If iIDCentroCostoDetalle = 0 Then
-                                    Me.GridCuentas.Cell(iRenglon, Me.iGyCtasImporte).Text = oCFDI.Comprobante.SubTotal.ToString
-                                    Me.GridCuentas.Cell(iRenglon, Me.iGyCtasIVA).Text = oCFDI.Impuestos.totalImpuestosTrasladadosIVA.ToString
-                                    Me.GridCuentas.Cell(iRenglon, Me.iGyCtasTotal).Text = Redondear(oCFDI.Comprobante.SubTotal + oCFDI.Impuestos.totalImpuestosTrasladadosIVA, 2).ToString
-                                Else
-                                    Dim oCentroCosto As New Class_Centros_Costos_Global
+                            If oCFDI.XMLCargado = False Then
+                                Return
+                            End If
 
-                                    If oCentroCosto.ActualizaUUID_Detalle(iIDCentroCostoDetalle, oCFDI.ComplementoTFD.UUID) = True Then
-                                        oPoliza = New Class_Contabilidad_Poliza_Global(Me.txtFolioCompra.Text)
-                                        If oPoliza.Existe = True Then
-                                            If txtLEN(sRutaXML) = True Then
-                                                If oPoliza.TieneRelacionadoUUID(oCFDI.ComplementoTFD.UUID) = False Then 'Si la póliza no tiene relacionado todavia el uuid si se relaciona, si ya lo tiene no porque marcaria error(el xml ya existirá en el repositorio y relacionado).
-                                                    bResultado = oPoliza.AgregarXMLPDF(sRutaXML, sRutaPDF) 'sRutaPDF pudiera venir vacio y no grabará el pdf
-                                                End If
+                            'Sólo cuando es un renglón nuevo se cargan los valores, cuando ya existe no porque sólo liga el xml aunque los valores no correspondan porque de momento si se permite.
+                            If iIDCentroCostoDetalle = 0 Then
+                                Me.GridCuentas.Cell(iRenglon, Me.iGyCtasImporte).Text = oCFDI.Comprobante.SubTotal.ToString
+                                Me.GridCuentas.Cell(iRenglon, Me.iGyCtasIVA).Text = oCFDI.Impuestos.totalImpuestosTrasladadosIVA.ToString
+                                Me.GridCuentas.Cell(iRenglon, Me.iGyCtasTotal).Text = Redondear(oCFDI.Comprobante.SubTotal + oCFDI.Impuestos.totalImpuestosTrasladadosIVA, 2).ToString
+                            Else
+                                Dim oCentroCosto As New Class_Centros_Costos_Global
+
+                                If oCentroCosto.ActualizaUUID_Detalle(iIDCentroCostoDetalle, oCFDI.ComplementoTFD.UUID) = True Then
+                                    oPoliza = New Class_Contabilidad_Poliza_Global(Me.txtFolioCompra.Text)
+                                    If oPoliza.Existe = True Then
+                                        If txtLEN(sRutaXML) = True Then
+                                            If oPoliza.TieneRelacionadoUUID(oCFDI.ComplementoTFD.UUID) = False Then 'Si la póliza no tiene relacionado todavia el uuid si se relaciona, si ya lo tiene no porque marcaria error(el xml ya existirá en el repositorio y relacionado).
+                                                bResultado = oPoliza.AgregarXMLPDF(sRutaXML, sRutaPDF) 'sRutaPDF pudiera venir vacio y no grabará el pdf
                                             End If
                                         End If
                                     End If
-
                                 End If
 
-                                Me.GridCuentas.Cell(iRenglon, Me.iGyCtasUUID).Text = oCFDI.ComplementoTFD.UUID
-                                Me.GridCuentas.Cell(iRenglon, Me.iGyCtasXML).Text = "Ver"
-                                Me.GridCuentas.Cell(iRenglon, Me.iGyCtasRutaXML).Text = sRutaXML
-
                             End If
+
+                            Me.GridCuentas.Cell(iRenglon, Me.iGyCtasUUID).Text = oCFDI.ComplementoTFD.UUID
+                            Me.GridCuentas.Cell(iRenglon, Me.iGyCtasXML).Text = "Ver"
+                            Me.GridCuentas.Cell(iRenglon, Me.iGyCtasRutaXML).Text = sRutaXML
 
                         Case "Ver"
                             Process.Start(Me.GridCuentas.Cell(iRenglon, Me.iGyCtasRutaXML).Text) 'Para abrir el xml
@@ -3059,8 +3060,19 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                     End If
 
                     Select Case Me.GridCuentas.Cell(iRenglon, Me.iGyCtasPDF).Text
-                        Case "Agregar"
+                        Case "Agregar", "" 'Nota1 Si esta en blanco significa que es un docto que ya existe y se esta consultando y se le quiere ya sea agregar un xml que nunca se le puso, o quieren sobreescribirlo.
                             sRutaPDF = oPoliza.BuscarPDF() 'Note que aún no tenemos la póliza 
+
+                            'Ver Nota1, debe existir el renglón para poder actualizarle el xml/pdf
+                            If txtLEN(Me.GridCuentas.Cell(iRenglon, Me.iGyCtasPDF).Text) = False Then
+                                If iIDCentroCostoDetalle = 0 Then
+                                    MsgBox("Este renglón no tiene permitido agregar xml/pdf porque se esta consultando un documento y deberia tener IDCentroCostoDetalle.", MsgBoxStyle.Exclamation, Me.Text)
+                                    Return
+                                End If
+
+                                'Estamos dentro un docto ya grabado por eso este código va aqui y afuera no porque cuando es nuevo la propia función grabar graba los xml/pdf
+                                bResultado = oPoliza.AgregarPDF(sUUID, sRutaPDF) 'sRutaPDF pudiera venir vacio y no grabará el pdf
+                            End If
 
                             If txtLEN(sRutaPDF) = True Then
                                 Me.GridCuentas.Cell(iRenglon, Me.iGyCtasPDF).Text = "Ver"
@@ -3091,6 +3103,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
             iRenglon = Me.GridActivos.ActiveCell.Row
             iColumna = Me.GridActivos.ActiveCell.Col
             sUUID = Me.GridActivos.Cell(iRenglon, Me.iGyActivoUUID).Text
+            iIDGastoDetalle = CInt(valorNumerico(Me.GridActivos.Cell(iRenglon, Me.iGyActivoIDGastoDetalle).Text))
 
             Select Case iColumna
                 Case Me.iGyActivoXML
@@ -3099,7 +3112,6 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
 
                             'Ver Nota1, debe existir el renglón para poder actualizarle el xml/pdf
                             If txtLEN(Me.GridActivos.Cell(iRenglon, Me.iGyActivoXML).Text) = False Then
-                                iIDGastoDetalle = CInt(valorNumerico(Me.GridActivos.Cell(iRenglon, Me.iGyActivoIDGastoDetalle).Text))
                                 If iIDGastoDetalle = 0 Then
                                     MsgBox("Este renglón no tiene permitido agregar xml/pdf porque se esta consultando un documento y deberia tener IDCentroCostoDetalle.", MsgBoxStyle.Exclamation, Me.Text)
                                     Return
@@ -3158,8 +3170,19 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                     End If
 
                     Select Case Me.GridActivos.Cell(iRenglon, Me.iGyActivoPDF).Text
-                        Case "Agregar"
+                        Case "Agregar", "" 'Nota1 Si esta en blanco significa que es un docto que ya existe y se esta consultando y se le quiere ya sea agregar un xml que nunca se le puso, o quieren sobreescribirlo.
                             sRutaPDF = oPoliza.BuscarPDF() 'Note que aún no tenemos la póliza 
+
+                            'Ver Nota1, debe existir el renglón para poder actualizarle el xml/pdf
+                            If txtLEN(Me.GridActivos.Cell(iRenglon, Me.iGyActivoPDF).Text) = False Then
+                                If iIDGastoDetalle = 0 Then
+                                    MsgBox("Este renglón no tiene permitido agregar xml/pdf porque se esta consultando un documento y deberia tener IDGastoDetalle.", MsgBoxStyle.Exclamation, Me.Text)
+                                    Return
+                                End If
+
+                                'Estamos dentro un docto ya grabado por eso este código va aqui y afuera no porque cuando es nuevo la propia función grabar graba los xml/pdf
+                                bResultado = oPoliza.AgregarPDF(sUUID, sRutaPDF) 'sRutaPDF pudiera venir vacio y no grabará el pdf
+                            End If
 
                             If txtLEN(sRutaPDF) = True Then
                                 Me.GridActivos.Cell(iRenglon, Me.iGyActivoPDF).Text = "Ver"
