@@ -763,6 +763,35 @@ Public Class Class_CatCuentas
             MsgBox("El nombre del reporte no ha sido especificado.", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
         End If
     End Sub
+
+    Public Function ActualizaCodigo(ByVal sAccion As String) As Boolean
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_CAT_CUENTAS_GRABA"
+
+            sqlParametro = .Parameters.Add("@NIVEL1", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._NIVEL1
+            sqlParametro = .Parameters.Add("@CODIGO_AGRUPADOR", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_AGRUPADOR
+            sqlParametro = .Parameters.Add("@CLONAR_CODIGO_AGRUPADOR_MISMO_NIVEL", SqlDbType.Char, 1) : sqlParametro.Value = Me._CLONAR_CODIGO_AGRUPADOR_MISMO_NIVEL
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, "Grabar", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+
+        Return bResultado
+    End Function
 #End Region
 
 End Class

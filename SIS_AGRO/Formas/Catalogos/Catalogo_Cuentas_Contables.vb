@@ -182,6 +182,10 @@ Public Class Catalogo_Cuentas_Contables
         oElementos.Imprimir_Listado()
         oElementos = Nothing
     End Sub
+
+    Private Sub btnActualizarCodigoAgrupador_Click(sender As Object, e As EventArgs) Handles btnActualizarCodigoAgrupador.Click
+        Me.ActualizaCodigoAgrupador
+    End Sub
 #End Region
 
 #Region "Eventos de objetos"
@@ -414,6 +418,7 @@ Buscar:
                     Me.tsbGrabar.Enabled = True
                     Me.tsbEliminar.Enabled = False
                     Me.tsbCancelar.Enabled = True
+                    Me.btnActualizarCodigoAgrupador.Enabled = False
 
                     Me.TxtNivel1.Enabled = True
                     Me.TxtNivel2.Enabled = True
@@ -437,6 +442,7 @@ Buscar:
                     Me.tsbGrabar.Enabled = True
                     Me.tsbEliminar.Enabled = True
                     Me.tsbCancelar.Enabled = True
+                    Me.btnActualizarCodigoAgrupador.Enabled = True
 
                     Me.TxtNivel1.Enabled = False
                     Me.TxtNivel2.Enabled = False
@@ -456,6 +462,7 @@ Buscar:
                     Me.tsbGrabar.Enabled = False
                     Me.tsbEliminar.Enabled = False
                     Me.tsbCancelar.Enabled = False
+                    Me.btnActualizarCodigoAgrupador.Enabled = False
 
                     Me.txtFiltro.Focus()
 
@@ -705,15 +712,14 @@ Buscar:
             With Me.cboPlaza
                 .DisplayMember = "NOMBRE_PLAZA"
                 .ValueMember = "CODIGO_PLAZA"
-
                 Dim dView As New Data.DataView(oElementos.ObtenerElementosParaReporte)
                 dView.Sort = "NOMBRE_PLAZA"
                 .DataSource = dView
             End With
+
             With Me.cboPlazaParaFiltro
                 .DisplayMember = "NOMBRE_PLAZA"
                 .ValueMember = "CODIGO_PLAZA"
-
                 Dim dView As New Data.DataView(oElementos.ObtenerElementosParaReporte)
                 dView.Sort = "NOMBRE_PLAZA"
                 .DataSource = dView
@@ -723,6 +729,14 @@ Buscar:
             HandleError(Me.Name, "DesplegaPlazas", ex)
         End Try
     End Sub
+
+    Private Function ActualizaCodigoAgrupador() As Boolean
+        Try
+
+        Catch ex As Exception
+            HandleError(Me.Name, "ActualizaCodigoAgrupador", ex)
+        End Try
+    End Function
 
 #End Region
 
