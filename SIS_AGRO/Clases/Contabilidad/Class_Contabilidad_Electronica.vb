@@ -95,13 +95,13 @@ Public Class Class_Contabilidad_Electronica
             Me.Consultar(iCodigoTipoArchivo, dFecha)
             If Me._EXISTE = True Then
                 If MsgBox("Este archivo ya se generó, seguro desea genearlo otra vez?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
-                    Exit Function
+                    Return False
                 End If
             End If
             '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Dim oTipo As New Class_Contabilidad_Electronica_CatalogoTiposArchivos(iCodigoTipoArchivo.ToString)
             If oTipo.EXISTE = False Then
-                Exit Function
+                Return False
             End If
             '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             sCarpeta = sContabilidadElectronicaCarpeta & "\" & Year(dFecha) & "." & Format(dFecha, "MM").ToUpper
@@ -163,13 +163,13 @@ Public Class Class_Contabilidad_Electronica
                     sValidaciones += x & vbCrLf
                 Next
 
-                MsgBox("Hay validaciones que no se cumplieron y son : " & vbCrLf & _
+                MsgBox("Hay validaciones que no se cumplieron y son : " & vbCrLf &
                          sValidaciones, vbExclamation, sProcedure)
 
                 Dim Rpt As New ReportDocument
                 Dim oReporte As New Class_Reporte("RPT_CONTABILIDAD_ELECTRONICA_CATALOGO_CUENTAS", Rpt, True)
                 If Not oReporte.RptCargado Then
-                    Exit Function
+                    Return False
                 End If
                 Rpt.SetParameterValue("@FECHA_ENVIO", Format(dFecha, "yyyy-dd-MM"))
                 Rpt.SetParameterValue("@CODIGO_TIPO_ARCHIVO", iCodigoTipoArchivo)
@@ -181,7 +181,7 @@ Public Class Class_Contabilidad_Electronica
                 frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
                 frm.ShowDialog()
                 frm.Dispose()
-                Exit Function
+                Return False
             End If
 
             '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -209,7 +209,7 @@ Public Class Class_Contabilidad_Electronica
 
             Dim Cert As Certificado = GestionaCertificado(Date.Now) 'intencionalmente se le pasa cualquier fecha con el fin de validar si está vigente el certificado, este xml no tiene fecha, tiene mes y año y no es necesario crear una fecha.
             If Cert.CertificadoValido = False Then
-                Exit Function
+                Return False
             End If
 
             oXML.Item("catalogocuentas:Catalogo").Attributes("noCertificado").Value = Cert.noCertificado
@@ -256,7 +256,7 @@ Public Class Class_Contabilidad_Electronica
             '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             If ConvierteUTF8(sRutaXML) = False Then
                 MsgBox("Error al intentar convertir el archivo a utf8.", MsgBoxStyle.Exclamation, sProcedure)
-                Exit Function
+                Return False
             End If
             '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             'Comprime
@@ -282,6 +282,10 @@ Public Class Class_Contabilidad_Electronica
             Else
                 bResultado = True
             End If
+
+            Dim proceso As New ProcessStartInfo()
+            proceso.FileName = sCarpeta
+            Process.Start(proceso)
 
         Catch ex As Exception
             HandleError(Me.NombreClase, sProcedure, ex)
@@ -440,6 +444,10 @@ Public Class Class_Contabilidad_Electronica
             Else
                 bResultado = True
             End If
+
+            Dim proceso As New ProcessStartInfo()
+            proceso.FileName = sCarpeta
+            Process.Start(proceso)
 
             'En la balanza ese muestra el reporte al final siempre.
             Me.ReporteBalanzaComprobacion(dFecha, iCodigoTipoArchivo, iCodigoEjercicio, iPruebas)

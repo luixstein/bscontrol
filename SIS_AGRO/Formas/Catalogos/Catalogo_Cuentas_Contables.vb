@@ -753,9 +753,10 @@ Buscar:
             oCuenta = Nothing
             oCuentaSAT = Nothing
 
-            MsgBox("Código agrupador SAT actualizado correctamente.", MsgBoxStyle.Information, sProcedure)
-
-            Me.Refrescar()
+            If bResultado = True Then
+                MsgBox("Código agrupador SAT actualizado correctamente.", MsgBoxStyle.Information, sProcedure)
+                Me.Refrescar()
+            End If
 
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
