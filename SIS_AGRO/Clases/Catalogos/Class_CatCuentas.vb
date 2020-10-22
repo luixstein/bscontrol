@@ -764,7 +764,7 @@ Public Class Class_CatCuentas
         End If
     End Sub
 
-    Public Function ActualizaCodigo(ByVal sAccion As String) As Boolean
+    Public Function ActualizaCodigoAgrupador() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -772,9 +772,9 @@ Public Class Class_CatCuentas
             .Connection = Me._Conexion
             .CommandTimeout = 0
             .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_CAT_CUENTAS_GRABA"
+            .CommandText = "MP_CAT_CUENTAS_ACTUALIZA_CODIGO_AGRUPADOR"
 
-            sqlParametro = .Parameters.Add("@NIVEL1", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._NIVEL1
+            sqlParametro = .Parameters.Add("@CUENTA_CONTABLE", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE
             sqlParametro = .Parameters.Add("@CODIGO_AGRUPADOR", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_AGRUPADOR
             sqlParametro = .Parameters.Add("@CLONAR_CODIGO_AGRUPADOR_MISMO_NIVEL", SqlDbType.Char, 1) : sqlParametro.Value = Me._CLONAR_CODIGO_AGRUPADOR_MISMO_NIVEL
             Try
@@ -782,7 +782,7 @@ Public Class Class_CatCuentas
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Grabar", ex)
+                HandleError(Me._Nombre_Catalogo, "ActualizaCodigoAgrupador", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()

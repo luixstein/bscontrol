@@ -316,7 +316,6 @@ Partial Class Catalogo_Cuentas_Contables
         Me.btnActualizarCodigoAgrupador.TabIndex = 12
         Me.btnActualizarCodigoAgrupador.Text = "Actualizar código agrupador"
         Me.btnActualizarCodigoAgrupador.UseVisualStyleBackColor = True
-        Me.btnActualizarCodigoAgrupador.Visible = False
         '
         'lblDisplayPlaza
         '

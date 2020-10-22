@@ -731,11 +731,37 @@ Buscar:
     End Sub
 
     Private Function ActualizaCodigoAgrupador() As Boolean
+        Const sProcedure As String = "ActualizaCodigoAgrupador"
+        Dim bResultado As Boolean = False
         Try
+            If txtLEN(Me.txtCodigoAgrupador.Text) = False Then
+                MsgBox("Asígne el código agrupador SAT.", vbExclamation, sProcedure)
+                Return False
+            End If
+
+            Dim oCuentaSAT As New Class_CatCuentasSAT(Me.txtCodigoAgrupador.Text)
+            If oCuentaSAT.Existe = False Then
+                MsgBox("El código agrupador SAT no existe.", vbExclamation, sProcedure)
+                Return False
+            End If
+
+            Dim oCuenta As New Class_CatCuentas(Me.LblCuenta.Text)
+            oCuenta.CODIGO_AGRUPADOR = Me.txtCodigoAgrupador.Text
+            oCuenta.CLONAR_CODIGO_AGRUPADOR_MISMO_NIVEL = Convert.ToInt32(Me.chkClonarCodigoAgrupador.Checked).ToString
+            bResultado = oCuenta.ActualizaCodigoAgrupador()
+
+            oCuenta = Nothing
+            oCuentaSAT = Nothing
+
+            MsgBox("Código agrupador SAT actualizado correctamente.", MsgBoxStyle.Information, sProcedure)
+
+            Me.Refrescar()
 
         Catch ex As Exception
-            HandleError(Me.Name, "ActualizaCodigoAgrupador", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
+
+        Return bResultado
     End Function
 
 #End Region
