@@ -877,6 +877,7 @@ enter:
                 .Cell(0, Me.iGyPagoMXP).Text = "Pagar MXP"
                 .Cell(0, Me.iGyPagoUSD).Text = "Pagar USD"
                 .Cell(0, Me.iGySeleccion).Text = "Seleccion"
+                .Cell(0, Me.iGyCodigoDocumento).Text = "CodigoDocumento "
                 .Cell(0, Me.iGyAutorizado).Text = "Autorizado"
 
                 '.Cell(0, Me.iGyTotalDlls).Text = "Total Dlls"
@@ -1982,9 +1983,12 @@ enter:
 
             Me.Grid1.AutoRedraw = False
             Me.Grid1.Rows = 1
+
+            'Nota, para el concepto se usó  Replace(dRow("CONCEPTO").ToString, vbTab, " ").ToString  porque puede hacer conceptos que tengan incrustados tabs y este método ocupa los tabs para separar campos
+
             For Each dRow As DataRow In dTabla.Rows
                 Me.Grid1.AddItem(dRow("FOLIO_PROVEEDOR").ToString & Chr(9) & dRow("FECHA").ToString & Chr(9) & dRow("FOLIO_COMPRA").ToString & Chr(9) & dRow("NOMBRE_MONEDA_CO").ToString & Chr(9) & dRow("TIPO_DE_CAMBIO").ToString & Chr(9) &
-                                    dRow("SALDO_DOLARES").ToString & Chr(9) & dRow("CONCEPTO").ToString & Chr(9) & dRow("TOTAL").ToString & Chr(9) & dRow("SALDO").ToString & Chr(9) & dRow("SALDO_IMPUESTO").ToString & Chr(9) &
+                                    dRow("SALDO_DOLARES").ToString & Chr(9) & Replace(dRow("CONCEPTO").ToString, vbTab, " ").ToString & Chr(9) & dRow("TOTAL").ToString & Chr(9) & dRow("SALDO").ToString & Chr(9) & dRow("SALDO_IMPUESTO").ToString & Chr(9) &
                                      dRow("RETENCION_IVA").ToString & Chr(9) & dRow("PAGAR_IMPUESTO").ToString & Chr(9) & dRow("PAGAR").ToString & Chr(9) & dRow("PAGO_USD") & Chr(9) & dRow("SELECCION").ToString & Chr(9) & dRow("CODIGO_DOCUMENTO").ToString & Chr(9) &
                                       dRow("AUTORIZADO").ToString & Chr(9))
             Next
@@ -2370,7 +2374,6 @@ enter:
             StrCod = Me.Grid2.Cell(Renglon, Me.iGyFolioEmbarque).Text
             'iBultos = valorNumerico(Me.Grid2.Cell(Renglon, Me.igyBultos).Text)
             dImporte = valorNumerico(Me.Grid2.Cell(Renglon, Me.iGySaldoFlete).Text)
-
 
             Select Case e.KeyCode
                 Case Keys.Enter
