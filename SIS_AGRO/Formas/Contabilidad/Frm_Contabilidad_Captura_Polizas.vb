@@ -1439,7 +1439,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
             dTabla = Me.oPoliza.ObtenerDetalle '.Rows.Count
             Me.Grid1.Rows = 1
             For Each dRow As DataRow In dTabla.Rows
-                Me.Grid1.AddItem(dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("NOMBRE_CUENTA").ToString & Chr(9) & dRow("CONCEPTO").ToString & Chr(9) & dRow("NATURALEZA_CONTABLE").ToString & Chr(9) & dRow("CARGO").ToString & Chr(9) &
+                Me.Grid1.AddItem(dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("NOMBRE_CUENTA").ToString & Chr(9) & Replace(dRow("CONCEPTO").ToString, vbTab, " ") & Chr(9) & dRow("NATURALEZA_CONTABLE").ToString & Chr(9) & dRow("CARGO").ToString & Chr(9) &
                             dRow("ABONO").ToString & Chr(9)) ' & dRow("CODIGO_CENTRO_COSTO").ToString & Chr(9) & dRow("NOMBRE_CENTRO_COSTO").ToString & Chr(9))
             Next
 
@@ -1956,7 +1956,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
             dTabla = Me.oPoliza.ObtenerDetalle '.Rows.Count
             Me.Grid1.Rows = 1
             For Each dRow As DataRow In dTabla.Rows
-                Me.Grid1.AddItem(dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("NOMBRE_CUENTA").ToString & Chr(9) & dRow("CONCEPTO").ToString & Chr(9) & dRow("NATURALEZA_CONTABLE").ToString & Chr(9) & dRow("CARGO").ToString & Chr(9) &
+                Me.Grid1.AddItem(dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("NOMBRE_CUENTA").ToString & Chr(9) & Replace(dRow("CONCEPTO").ToString, vbTab, " ") & Chr(9) & dRow("NATURALEZA_CONTABLE").ToString & Chr(9) & dRow("CARGO").ToString & Chr(9) &
                     dRow("ABONO").ToString & Chr(9) & dRow("CODIGO_CENTRO_COSTO").ToString & Chr(9) & dRow("NOMBRE_CENTRO_COSTO").ToString & Chr(9))
             Next
 
