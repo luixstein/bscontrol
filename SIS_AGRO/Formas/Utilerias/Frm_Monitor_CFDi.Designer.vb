@@ -23,12 +23,12 @@ Partial Class Frm_Monitor_CFDi
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Frm_Monitor_CFDi))
-        Me.Grid1 = New FlexCell.Grid
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.Grid2 = New FlexCell.Grid
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.LblDocumentosSinTimbrar = New System.Windows.Forms.Label
+        Me.Grid1 = New FlexCell.Grid()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.Grid2 = New FlexCell.Grid()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.LblDocumentosSinTimbrar = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
@@ -47,7 +47,7 @@ Partial Class Frm_Monitor_CFDi
         Me.Grid1.LockButton = True
         Me.Grid1.Name = "Grid1"
         Me.Grid1.Rows = 8
-        Me.Grid1.Size = New System.Drawing.Size(654, 205)
+        Me.Grid1.Size = New System.Drawing.Size(719, 205)
         Me.Grid1.TabIndex = 1
         Me.Grid1.UncheckedImage = CType(resources.GetObject("Grid1.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -56,7 +56,7 @@ Partial Class Frm_Monitor_CFDi
         Me.GroupBox1.Controls.Add(Me.Grid1)
         Me.GroupBox1.Location = New System.Drawing.Point(10, 52)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(674, 239)
+        Me.GroupBox1.Size = New System.Drawing.Size(735, 239)
         Me.GroupBox1.TabIndex = 2
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Documentos sin timbrar"
@@ -84,7 +84,7 @@ Partial Class Frm_Monitor_CFDi
         Me.Grid2.LockButton = True
         Me.Grid2.Name = "Grid2"
         Me.Grid2.Rows = 8
-        Me.Grid2.Size = New System.Drawing.Size(654, 205)
+        Me.Grid2.Size = New System.Drawing.Size(719, 205)
         Me.Grid2.TabIndex = 3
         Me.Grid2.UncheckedImage = CType(resources.GetObject("Grid2.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -93,7 +93,7 @@ Partial Class Frm_Monitor_CFDi
         Me.GroupBox2.Controls.Add(Me.Grid2)
         Me.GroupBox2.Location = New System.Drawing.Point(10, 300)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(674, 239)
+        Me.GroupBox2.Size = New System.Drawing.Size(735, 239)
         Me.GroupBox2.TabIndex = 4
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Documentos cancelados sin timbrar"
@@ -111,7 +111,7 @@ Partial Class Frm_Monitor_CFDi
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(696, 543)
+        Me.ClientSize = New System.Drawing.Size(757, 543)
         Me.Controls.Add(Me.LblDocumentosSinTimbrar)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.GroupBox2)
