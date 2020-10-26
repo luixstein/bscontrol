@@ -98,9 +98,8 @@ Public Class Frm_CXP_Revision
     Private Sub tsbNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbNuevo.Click
         Me.Inicializa()
         Me.Cambia_Estado(enumEstados.NUEVO)
-        Me.CboAlmacen.Focus()
+        Me.TxtCodigoAlmacen.Focus()
         _Fecha = ""
-        Me.TxtCodigoProveedor.Focus()
     End Sub
 
     Private Sub tsbGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbGrabar.Click
@@ -196,6 +195,22 @@ Public Class Frm_CXP_Revision
     End Sub
 
     Private Sub btnContinuar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnContinuar.Click
+        Dim oAlmacen As New Class_CatAlmacenes
+
+        If txtLEN(Me.TxtCodigoAlmacen.Text) = False Then
+            MsgBox("Asigne un almacén.", MsgBoxStyle.Exclamation, "Validación de almacén")
+            Me.TxtCodigoAlmacen.Focus()
+            Exit Sub
+        End If
+
+        oAlmacen.CODIGO_ALMACEN = Me.TxtCodigoAlmacen.Text
+
+        If oAlmacen.Consultar() = False Then
+            MsgBox("El código de almacén no existe.", MsgBoxStyle.Exclamation, "Validación de almacén")
+            Me.TxtCodigoAlmacen.Focus()
+            Exit Sub
+        End If
+
         If txtLEN(Me.TxtCodigoProveedor.Text) = False Then
             MsgBox("Asigne un proveedor.", MsgBoxStyle.Exclamation, "Validación de Proveedores")
             Me.TxtCodigoProveedor.Focus()
@@ -315,7 +330,6 @@ Public Class Frm_CXP_Revision
     End Sub
 
     Private Sub Frm_CXP_Revision_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.DesplegarAlmacenes()
         Me.DesplegarTipoGasto()
         Me.cboTipoGasto.Visible = False
         Me.Inicializa()
@@ -378,6 +392,37 @@ Buscar:
             End Select
         Catch ex As Exception
             HandleError(Me.Name, "TxtCodigoProveedor_KeyDown", ex)
+        End Try
+    End Sub
+
+    Private Sub TxtCodigoAlmacen_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtCodigoAlmacen.KeyDown
+        Dim oAlmacen As New Class_CatAlmacenes
+        Try
+            Select Case e.KeyCode
+                Case Keys.F6
+Buscar:
+                    Me.TxtCodigoAlmacen.Text = oAlmacen.BusquedaVisual_PorDescripcion()
+
+                    oAlmacen = New Class_CatAlmacenes(Me.TxtCodigoAlmacen.Text)
+                    Me.LblNombreAlmacen.Text = oAlmacen.NOMBRE_ALMACEN
+
+                Case Keys.Enter
+                    If txtLEN(Me.TxtCodigoAlmacen.Text) Then
+                        oAlmacen.CODIGO_ALMACEN = Me.TxtCodigoAlmacen.Text
+
+                        If oAlmacen.Consultar() = False Then
+                            GoTo Buscar
+                        End If
+
+                        Me.LblNombreAlmacen.Text = oAlmacen.NOMBRE_ALMACEN
+
+                    End If
+
+                    txtTAB(e)
+            End Select
+
+        Catch ex As Exception
+            HandleError(Me.Name, "TxtCodigoAlmacen_KeyDown", ex)
         End Try
     End Sub
 
@@ -627,7 +672,7 @@ Buscar:
     End Sub
 
     Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtConcepto.KeyPress, TxtCodigoProveedor.KeyPress, txtEmbarque.KeyPress, txtFolioProveedor.KeyPress,
-        DtpFechaFacturaProveedor.KeyPress, dtpFechaVencimiento.KeyPress, ckbDolares.KeyPress
+        DtpFechaFacturaProveedor.KeyPress, dtpFechaVencimiento.KeyPress, ckbDolares.KeyPress, TxtCodigoAlmacen.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -714,23 +759,23 @@ Buscar:
 #End Region
 
 #Region "Métodos y procedimientos"
-    Private Sub DesplegarAlmacenes()
-        Try
-            Dim oAlmacenes As New Class_CatAlmacenes
-            With Me.CboAlmacen
-                .DisplayMember = "NOMBRE_ALMACEN"
-                .ValueMember = "CODIGO_ALMACEN"
-                Dim dView As New Data.DataView(oAlmacenes.ObtenerAlmacenes)
-                dView.Sort = "NOMBRE_ALMACEN"
-                .DataSource = dView
-                If dView.Count > 0 Then
-                    .SelectedValue = Plaza.CODIGO_ALMACEN_PRINCIPAL 'Usuario.Codigo_Almacen
-                End If
-            End With
-        Catch ex As Exception
-            HandleError(Me.Name, "DesplegarAlmacenes", ex)
-        End Try
-    End Sub
+    'Private Sub DesplegarAlmacenes()
+    '    Try
+    '        Dim oAlmacenes As New Class_CatAlmacenes
+    '        With Me.CboAlmacen
+    '            .DisplayMember = "NOMBRE_ALMACEN"
+    '            .ValueMember = "CODIGO_ALMACEN"
+    '            Dim dView As New Data.DataView(oAlmacenes.ObtenerAlmacenes)
+    '            dView.Sort = "NOMBRE_ALMACEN"
+    '            .DataSource = dView
+    '            If dView.Count > 0 Then
+    '                .SelectedValue = Plaza.CODIGO_ALMACEN_PRINCIPAL 'Usuario.Codigo_Almacen
+    '            End If
+    '        End With
+    '    Catch ex As Exception
+    '        HandleError(Me.Name, "DesplegarAlmacenes", ex)
+    '    End Try
+    'End Sub
 
     Private Sub DesplegarTipoGasto()
         Try
@@ -758,6 +803,8 @@ Buscar:
             Me.txtFolioCompra.Text = ""
             Me.LblPoliza.Text = ""
             Me.DtpFechaFacturaProveedor.Value = Date.Now
+            Me.TxtCodigoAlmacen.Text = ""
+            Me.LblNombreAlmacen.Text = ""
 
             If Now.DayOfWeek = DayOfWeek.Friday Then
                 Me.dtpFechaVencimiento.Value = Now
@@ -1341,7 +1388,7 @@ Buscar:
         Dim bResultado As Boolean = False
         Dim dTabla As DataTable
         Try
-            dTabla = oCompras.CargaComprashechasProveedor(Me.TxtCodigoProveedor.Text, CInt(Me.cboTipoGasto.SelectedValue.ToString), Me.CboAlmacen.SelectedValue.ToString, Me.ckbSaldos.Checked)
+            dTabla = oCompras.CargaComprashechasProveedor(Me.TxtCodigoProveedor.Text, CInt(Me.cboTipoGasto.SelectedValue.ToString), Me.TxtCodigoAlmacen.Text, Me.ckbSaldos.Checked)
 
             Me.GridCompras.AutoRedraw = False
 
@@ -2104,13 +2151,13 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
         End If
 
         Try
-            Dim oAlmacen As New Class_CatAlmacenes(Me.CboAlmacen.SelectedValue.ToString)
+            Dim oAlmacen As New Class_CatAlmacenes(Me.TxtCodigoAlmacen.Text)
 
             If Estado = enumEstados.SINORDENCOMPRA Then
                 With Me.oCompras
                     .FOLIO_COMPRA = Me.txtFolioCompra.Text
                     .CODIGO_DOCUMENTO = sCodigoTipoDocumento & Usuario.Codigo_Plaza.ToString
-                    .CODIGO_ALMACEN = Me.CboAlmacen.SelectedValue.ToString
+                    .CODIGO_ALMACEN = Me.TxtCodigoAlmacen.Text
                     .CODIGO_PLAZA = Plaza.CODIGO_PLAZA
                     '.FECHA = Me.DtpFecha.Value
                     .FECHA_FACTURA_PROVEEDOR = Me.DtpFechaFacturaProveedor.Value
@@ -2334,6 +2381,14 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
 
         Try
             If Plaza.ValidarPeriodoTrabajo(Me.dtpFechaVencimiento.Value) = False Then
+                Return False
+            End If
+
+            Dim oAlmacen As New Class_CatAlmacenes
+            oAlmacen.CODIGO_ALMACEN = Me.TxtCodigoAlmacen.Text
+
+            If oAlmacen.Consultar() = False Then
+                MsgBox("El código de almacén no existe.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
 
@@ -2680,7 +2735,10 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
             Me.txtFolioCompra.Text = Me.oCompras.FOLIO_COMPRA
             Me.LblPoliza.Text = Me.oCompras.FOLIO_POLIZA
 
-            Me.CboAlmacen.SelectedValue = Me.oCompras.CODIGO_ALMACEN
+            Me.TxtCodigoAlmacen.Text = Me.oCompras.CODIGO_ALMACEN
+            Dim sql As New Class_find("SELECT NOMBRE_ALMACEN FROM CAT_ALMACENES WHERE CODIGO_ALMACEN='" & Me.TxtCodigoAlmacen.Text & "' ")
+            Me.LblNombreAlmacen.Text = sql.Result1
+
             Me.TxtCodigoProveedor.Text = Me.oCompras.CODIGO_PROVEEDOR
 
             Dim oProveedor As New Class_CatProveedores(Me.TxtCodigoProveedor.Text)
@@ -2806,7 +2864,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
             Return False
         End If
 
-        If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios("CO" & Plaza.CODIGO_PLAZA.ToString, Me.CboAlmacen.SelectedValue.ToString) = False Then
+        If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios("CO" & Plaza.CODIGO_PLAZA.ToString, Me.TxtCodigoAlmacen.Text) = False Then
             MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento de inventarios.", MsgBoxStyle.Exclamation, sProcedure)
             Return False
         End If
