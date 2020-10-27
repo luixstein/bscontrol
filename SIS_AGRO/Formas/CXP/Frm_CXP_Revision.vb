@@ -211,6 +211,11 @@ Public Class Frm_CXP_Revision
             Exit Sub
         End If
 
+        If oAlmacen.ESTATUS = "B" Then
+            MsgBox("El almacén " & Me.TxtCodigoAlmacen.Text & " está dado de BAJA.", MsgBoxStyle.Exclamation, "Validación de almacén")
+            Exit Sub
+        End If
+
         If txtLEN(Me.TxtCodigoProveedor.Text) = False Then
             MsgBox("Asigne un proveedor.", MsgBoxStyle.Exclamation, "Validación de Proveedores")
             Me.TxtCodigoProveedor.Focus()
@@ -325,7 +330,7 @@ Public Class Frm_CXP_Revision
 #Region "Eventos"
     Private Sub Frm_CXP_Revision_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
         If Me.Estado = enumEstados.NUEVO And Me.TxtCodigoProveedor.Enabled = True Then
-            Me.TxtCodigoProveedor.Focus()
+            Me.TxtCodigoAlmacen.Focus()
         End If
     End Sub
 
@@ -401,7 +406,7 @@ Buscar:
             Select Case e.KeyCode
                 Case Keys.F6
 Buscar:
-                    Me.TxtCodigoAlmacen.Text = oAlmacen.BusquedaVisual_PorDescripcion()
+                    Me.TxtCodigoAlmacen.Text = oAlmacen.BusquedaVisual_PorDescripcionSoloActivos()
 
                     oAlmacen = New Class_CatAlmacenes(Me.TxtCodigoAlmacen.Text)
                     Me.LblNombreAlmacen.Text = oAlmacen.NOMBRE_ALMACEN
@@ -411,6 +416,9 @@ Buscar:
                         oAlmacen.CODIGO_ALMACEN = Me.TxtCodigoAlmacen.Text
 
                         If oAlmacen.Consultar() = False Then
+                            GoTo Buscar
+                        ElseIf oAlmacen.ESTATUS = "B" Then
+                            MsgBox("El almacén " & Me.TxtCodigoAlmacen.Text & " está dado de BAJA.", MsgBoxStyle.Exclamation, Me.Text)
                             GoTo Buscar
                         End If
 
@@ -2389,6 +2397,11 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
 
             If oAlmacen.Consultar() = False Then
                 MsgBox("El código de almacén no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If oAlmacen.ESTATUS = "B" Then
+                MsgBox("El almacén " & Me.TxtCodigoAlmacen.Text & " está dado de BAJA.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
 

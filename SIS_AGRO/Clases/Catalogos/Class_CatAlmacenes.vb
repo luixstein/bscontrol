@@ -375,6 +375,26 @@ Public Class Class_CatAlmacenes
         Return Resultado
     End Function
 
+    Public Function BusquedaVisual_PorDescripcionSoloActivos() As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de almacenes por descripción."
+        f.sCampo = "NOMBRE_ALMACEN"
+        f.sOrder = "NOMBRE_ALMACEN"
+        f.sTable = "CAT_ALMACENES"
+        f.sQl = "SELECT CODIGO_ALMACEN,NOMBRE_ALMACEN FROM CAT_ALMACENES WHERE 1=1 AND ESTATUS='A' And"
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcion", ex)
+        End Try
+        Return Resultado
+    End Function
+
     Public Sub Imprimir_Listado()   'Función para ver la búsqueda visual por descripción.
         If Len(Nombre_Reporte) > 0 Then
             Dim Rpt As New ReportDocument
