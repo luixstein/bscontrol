@@ -17,16 +17,19 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
     Private _NOMBRE_USUARIO_GRABO As String
     Private _CONCEPTO As String
     Private _TOTAL_ACTOS_AL_0 As Double
+    Private _TOTAL_ACTOS_AL_8 As Double
     Private _TOTAL_ACTOS_AL_10 As Double
     Private _TOTAL_ACTOS_AL_15 As Double
     Private _TOTAL_ACTOS_AL_11 As Double
     Private _TOTAL_ACTOS_AL_16 As Double
     Private _TOTAL_ACTOS As Double
+    Private _TOTAL_IVA_ACREDITABLE_AL_8 As Double
     Private _TOTAL_IVA_ACREDITABLE_AL_10 As Double
     Private _TOTAL_IVA_ACREDITABLE_AL_15 As Double
     Private _TOTAL_IVA_ACREDITABLE_AL_11 As Double
     Private _TOTAL_IVA_ACREDITABLE_AL_16 As Double
     Private _TOTAL_IVA_RETENIDO_AL_4 As Double
+    Private _TOTAL_IVA_RETENIDO_AL_6 As Double
     Private _TOTAL_IVA_RETENIDO_AL_10 As Double
 #End Region
 
@@ -111,6 +114,15 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
         End Set
     End Property
 
+    Public Property TOTAL_ACTOS_AL_8() As Double
+        Get
+            Return Me._TOTAL_ACTOS_AL_8
+        End Get
+        Set(ByVal value As Double)
+            Me._TOTAL_ACTOS_AL_8 = value
+        End Set
+    End Property
+
     Public Property TOTAL_ACTOS_AL_10() As Double
         Get
             Return Me._TOTAL_ACTOS_AL_10
@@ -156,6 +168,15 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
         End Set
     End Property
 
+    Public Property TOTAL_IVA_ACREDITABLE_AL_8() As Double
+        Get
+            Return Me._TOTAL_IVA_ACREDITABLE_AL_8
+        End Get
+        Set(ByVal value As Double)
+            Me._TOTAL_IVA_ACREDITABLE_AL_8 = value
+        End Set
+    End Property
+
     Public Property TOTAL_IVA_ACREDITABLE_AL_10() As Double
         Get
             Return Me._TOTAL_IVA_ACREDITABLE_AL_10
@@ -198,6 +219,15 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
         End Get
         Set(ByVal value As Double)
             Me._TOTAL_IVA_RETENIDO_AL_4 = value
+        End Set
+    End Property
+
+    Public Property TOTAL_IVA_RETENIDO_AL_6() As Double
+        Get
+            Return Me._TOTAL_IVA_RETENIDO_AL_6
+        End Get
+        Set(ByVal value As Double)
+            Me._TOTAL_IVA_RETENIDO_AL_6 = value
         End Set
     End Property
 
