@@ -36,6 +36,8 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.gbDatosGenerales = New System.Windows.Forms.GroupBox()
         Me.dtFechaControl = New System.Windows.Forms.DateTimePicker()
         Me.lblDisplayFechaControl = New System.Windows.Forms.Label()
+        Me.lblDisplayIvaAcreditableACubrir11 = New System.Windows.Forms.Label()
+        Me.lblIvaAcreditableACubrir11 = New System.Windows.Forms.Label()
         Me.txtFolio = New System.Windows.Forms.TextBox()
         Me.LblDisplayFolio = New System.Windows.Forms.Label()
         Me.lblEstatus = New System.Windows.Forms.Label()
@@ -45,23 +47,29 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.dtFechaCaptura = New System.Windows.Forms.DateTimePicker()
         Me.lblDisplayFechaCaptura = New System.Windows.Forms.Label()
         Me.gbIVAsACubrir = New System.Windows.Forms.GroupBox()
+        Me.lblDisplayTotalIvaAcreditableACubrir8 = New System.Windows.Forms.Label()
+        Me.lblIvaAcreditableACubrir8 = New System.Windows.Forms.Label()
         Me.lblDisplayIvaAcreditableACubrir16 = New System.Windows.Forms.Label()
         Me.lblIvaAcreditableACubrir16 = New System.Windows.Forms.Label()
-        Me.lblIvaAcreditableACubrir11 = New System.Windows.Forms.Label()
-        Me.lblDisplayIvaAcreditableACubrir11 = New System.Windows.Forms.Label()
         Me.chkOcultarIVA11 = New System.Windows.Forms.CheckBox()
         Me.gbTotalesActos = New System.Windows.Forms.GroupBox()
-        Me.lblDisplayTotalActos11 = New System.Windows.Forms.Label()
+        Me.LblDisplayTotalActos8 = New System.Windows.Forms.Label()
+        Me.lblTotalActos8 = New System.Windows.Forms.Label()
         Me.lblTotalActos = New System.Windows.Forms.Label()
         Me.lblTotalActos16 = New System.Windows.Forms.Label()
-        Me.lblTotalActos11 = New System.Windows.Forms.Label()
         Me.lblDisplayTotalActos = New System.Windows.Forms.Label()
         Me.lblDisplayTotalActos16 = New System.Windows.Forms.Label()
         Me.lblTotalActos0 = New System.Windows.Forms.Label()
         Me.lblDisplayTotalActos0 = New System.Windows.Forms.Label()
+        Me.lblDisplayTotalActos11 = New System.Windows.Forms.Label()
+        Me.lblTotalActos11 = New System.Windows.Forms.Label()
         Me.gbGrid = New System.Windows.Forms.GroupBox()
         Me.Grid = New FlexCell.Grid()
         Me.gbTotalesIVAS = New System.Windows.Forms.GroupBox()
+        Me.lblDisplayTotalIvaRetenido6 = New System.Windows.Forms.Label()
+        Me.lblTotalIvaRetenido6 = New System.Windows.Forms.Label()
+        Me.LblDisplayTotalIvaAcreditable8 = New System.Windows.Forms.Label()
+        Me.lblTotalIvaAcreditable8 = New System.Windows.Forms.Label()
         Me.lblDisplayTotalIvaAcreditable16 = New System.Windows.Forms.Label()
         Me.lblTotalIvaRetenido10 = New System.Windows.Forms.Label()
         Me.lblTotalIvaRetenido4 = New System.Windows.Forms.Label()
@@ -71,14 +79,6 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.lblTotalIvaAcreditable11 = New System.Windows.Forms.Label()
         Me.lblDisplayTotalIvaAcreditable11 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.lblTotalActos8 = New System.Windows.Forms.Label()
-        Me.lblTotalIvaAcreditable8 = New System.Windows.Forms.Label()
-        Me.LblDisplayTotalIvaAcreditable8 = New System.Windows.Forms.Label()
-        Me.LblDisplayTotalActos8 = New System.Windows.Forms.Label()
-        Me.lblTotalIvaRetenido6 = New System.Windows.Forms.Label()
-        Me.lblDisplayTotalIvaRetenido6 = New System.Windows.Forms.Label()
-        Me.lblIvaAcreditableACubrir8 = New System.Windows.Forms.Label()
-        Me.lblDisplayTotalIvaAcreditableACubrir8 = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.gbDatosGenerales.SuspendLayout()
@@ -191,9 +191,9 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.gbDatosGenerales.Controls.Add(Me.lblDisplayFechaCaptura)
         Me.gbDatosGenerales.Controls.Add(Me.gbIVAsACubrir)
         Me.gbDatosGenerales.Location = New System.Drawing.Point(0, 34)
-        Me.gbDatosGenerales.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbDatosGenerales.Margin = New System.Windows.Forms.Padding(4)
         Me.gbDatosGenerales.Name = "gbDatosGenerales"
-        Me.gbDatosGenerales.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbDatosGenerales.Padding = New System.Windows.Forms.Padding(4)
         Me.gbDatosGenerales.Size = New System.Drawing.Size(1408, 116)
         Me.gbDatosGenerales.TabIndex = 0
         Me.gbDatosGenerales.TabStop = False
@@ -203,7 +203,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         '
         Me.dtFechaControl.Enabled = False
         Me.dtFechaControl.Location = New System.Drawing.Point(613, 46)
-        Me.dtFechaControl.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.dtFechaControl.Margin = New System.Windows.Forms.Padding(4)
         Me.dtFechaControl.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dtFechaControl.Name = "dtFechaControl"
         Me.dtFechaControl.Size = New System.Drawing.Size(268, 22)
@@ -219,10 +219,35 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.lblDisplayFechaControl.TabIndex = 229
         Me.lblDisplayFechaControl.Text = "Fecha  :"
         '
+        'lblDisplayIvaAcreditableACubrir11
+        '
+        Me.lblDisplayIvaAcreditableACubrir11.AutoSize = True
+        Me.lblDisplayIvaAcreditableACubrir11.Location = New System.Drawing.Point(1246, 19)
+        Me.lblDisplayIvaAcreditableACubrir11.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayIvaAcreditableACubrir11.Name = "lblDisplayIvaAcreditableACubrir11"
+        Me.lblDisplayIvaAcreditableACubrir11.Size = New System.Drawing.Size(52, 17)
+        Me.lblDisplayIvaAcreditableACubrir11.TabIndex = 4
+        Me.lblDisplayIvaAcreditableACubrir11.Text = "Al 11%"
+        Me.lblDisplayIvaAcreditableACubrir11.Visible = False
+        '
+        'lblIvaAcreditableACubrir11
+        '
+        Me.lblIvaAcreditableACubrir11.BackColor = System.Drawing.Color.White
+        Me.lblIvaAcreditableACubrir11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblIvaAcreditableACubrir11.ForeColor = System.Drawing.Color.Red
+        Me.lblIvaAcreditableACubrir11.Location = New System.Drawing.Point(1249, 50)
+        Me.lblIvaAcreditableACubrir11.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblIvaAcreditableACubrir11.Name = "lblIvaAcreditableACubrir11"
+        Me.lblIvaAcreditableACubrir11.Size = New System.Drawing.Size(138, 20)
+        Me.lblIvaAcreditableACubrir11.TabIndex = 5
+        Me.lblIvaAcreditableACubrir11.Text = "0.00"
+        Me.lblIvaAcreditableACubrir11.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblIvaAcreditableACubrir11.Visible = False
+        '
         'txtFolio
         '
         Me.txtFolio.Location = New System.Drawing.Point(97, 46)
-        Me.txtFolio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFolio.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFolio.MaxLength = 15
         Me.txtFolio.Name = "txtFolio"
         Me.txtFolio.Size = New System.Drawing.Size(179, 22)
@@ -272,7 +297,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         'txtConcepto
         '
         Me.txtConcepto.Location = New System.Drawing.Point(97, 84)
-        Me.txtConcepto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtConcepto.Margin = New System.Windows.Forms.Padding(4)
         Me.txtConcepto.MaxLength = 80
         Me.txtConcepto.Name = "txtConcepto"
         Me.txtConcepto.Size = New System.Drawing.Size(645, 22)
@@ -282,7 +307,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         '
         Me.dtFechaCaptura.Enabled = False
         Me.dtFechaCaptura.Location = New System.Drawing.Point(613, 14)
-        Me.dtFechaCaptura.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.dtFechaCaptura.Margin = New System.Windows.Forms.Padding(4)
         Me.dtFechaCaptura.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dtFechaCaptura.Name = "dtFechaCaptura"
         Me.dtFechaCaptura.Size = New System.Drawing.Size(268, 22)
@@ -307,13 +332,36 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.gbIVAsACubrir.Controls.Add(Me.lblDisplayIvaAcreditableACubrir16)
         Me.gbIVAsACubrir.Controls.Add(Me.lblIvaAcreditableACubrir16)
         Me.gbIVAsACubrir.Location = New System.Drawing.Point(965, 16)
-        Me.gbIVAsACubrir.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbIVAsACubrir.Margin = New System.Windows.Forms.Padding(4)
         Me.gbIVAsACubrir.Name = "gbIVAsACubrir"
-        Me.gbIVAsACubrir.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbIVAsACubrir.Padding = New System.Windows.Forms.Padding(4)
         Me.gbIVAsACubrir.Size = New System.Drawing.Size(253, 89)
         Me.gbIVAsACubrir.TabIndex = 191
         Me.gbIVAsACubrir.TabStop = False
         Me.gbIVAsACubrir.Text = "Iva a cubir :"
+        '
+        'lblDisplayTotalIvaAcreditableACubrir8
+        '
+        Me.lblDisplayTotalIvaAcreditableACubrir8.AutoSize = True
+        Me.lblDisplayTotalIvaAcreditableACubrir8.Location = New System.Drawing.Point(9, 21)
+        Me.lblDisplayTotalIvaAcreditableACubrir8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayTotalIvaAcreditableACubrir8.Name = "lblDisplayTotalIvaAcreditableACubrir8"
+        Me.lblDisplayTotalIvaAcreditableACubrir8.Size = New System.Drawing.Size(44, 17)
+        Me.lblDisplayTotalIvaAcreditableACubrir8.TabIndex = 230
+        Me.lblDisplayTotalIvaAcreditableACubrir8.Text = "Al 8%"
+        '
+        'lblIvaAcreditableACubrir8
+        '
+        Me.lblIvaAcreditableACubrir8.BackColor = System.Drawing.Color.White
+        Me.lblIvaAcreditableACubrir8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblIvaAcreditableACubrir8.ForeColor = System.Drawing.Color.Red
+        Me.lblIvaAcreditableACubrir8.Location = New System.Drawing.Point(107, 19)
+        Me.lblIvaAcreditableACubrir8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblIvaAcreditableACubrir8.Name = "lblIvaAcreditableACubrir8"
+        Me.lblIvaAcreditableACubrir8.Size = New System.Drawing.Size(138, 20)
+        Me.lblIvaAcreditableACubrir8.TabIndex = 230
+        Me.lblIvaAcreditableACubrir8.Text = "0.00"
+        Me.lblIvaAcreditableACubrir8.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'lblDisplayIvaAcreditableACubrir16
         '
@@ -338,38 +386,13 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.lblIvaAcreditableACubrir16.Text = "0.00"
         Me.lblIvaAcreditableACubrir16.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'lblIvaAcreditableACubrir11
-        '
-        Me.lblIvaAcreditableACubrir11.BackColor = System.Drawing.Color.White
-        Me.lblIvaAcreditableACubrir11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblIvaAcreditableACubrir11.ForeColor = System.Drawing.Color.Red
-        Me.lblIvaAcreditableACubrir11.Location = New System.Drawing.Point(1249, 50)
-        Me.lblIvaAcreditableACubrir11.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblIvaAcreditableACubrir11.Name = "lblIvaAcreditableACubrir11"
-        Me.lblIvaAcreditableACubrir11.Size = New System.Drawing.Size(138, 20)
-        Me.lblIvaAcreditableACubrir11.TabIndex = 5
-        Me.lblIvaAcreditableACubrir11.Text = "0.00"
-        Me.lblIvaAcreditableACubrir11.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.lblIvaAcreditableACubrir11.Visible = False
-        '
-        'lblDisplayIvaAcreditableACubrir11
-        '
-        Me.lblDisplayIvaAcreditableACubrir11.AutoSize = True
-        Me.lblDisplayIvaAcreditableACubrir11.Location = New System.Drawing.Point(1246, 19)
-        Me.lblDisplayIvaAcreditableACubrir11.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblDisplayIvaAcreditableACubrir11.Name = "lblDisplayIvaAcreditableACubrir11"
-        Me.lblDisplayIvaAcreditableACubrir11.Size = New System.Drawing.Size(52, 17)
-        Me.lblDisplayIvaAcreditableACubrir11.TabIndex = 4
-        Me.lblDisplayIvaAcreditableACubrir11.Text = "Al 11%"
-        Me.lblDisplayIvaAcreditableACubrir11.Visible = False
-        '
         'chkOcultarIVA11
         '
         Me.chkOcultarIVA11.AutoSize = True
         Me.chkOcultarIVA11.Checked = True
         Me.chkOcultarIVA11.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkOcultarIVA11.Location = New System.Drawing.Point(505, 538)
-        Me.chkOcultarIVA11.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.chkOcultarIVA11.Margin = New System.Windows.Forms.Padding(4)
         Me.chkOcultarIVA11.Name = "chkOcultarIVA11"
         Me.chkOcultarIVA11.Size = New System.Drawing.Size(121, 21)
         Me.chkOcultarIVA11.TabIndex = 230
@@ -388,24 +411,36 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.gbTotalesActos.Controls.Add(Me.lblTotalActos0)
         Me.gbTotalesActos.Controls.Add(Me.lblDisplayTotalActos0)
         Me.gbTotalesActos.Location = New System.Drawing.Point(699, 512)
-        Me.gbTotalesActos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbTotalesActos.Margin = New System.Windows.Forms.Padding(4)
         Me.gbTotalesActos.Name = "gbTotalesActos"
-        Me.gbTotalesActos.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbTotalesActos.Padding = New System.Windows.Forms.Padding(4)
         Me.gbTotalesActos.Size = New System.Drawing.Size(253, 134)
         Me.gbTotalesActos.TabIndex = 190
         Me.gbTotalesActos.TabStop = False
         Me.gbTotalesActos.Text = "Totales actos :"
         '
-        'lblDisplayTotalActos11
+        'LblDisplayTotalActos8
         '
-        Me.lblDisplayTotalActos11.AutoSize = True
-        Me.lblDisplayTotalActos11.Location = New System.Drawing.Point(206, 593)
-        Me.lblDisplayTotalActos11.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblDisplayTotalActos11.Name = "lblDisplayTotalActos11"
-        Me.lblDisplayTotalActos11.Size = New System.Drawing.Size(52, 17)
-        Me.lblDisplayTotalActos11.TabIndex = 11
-        Me.lblDisplayTotalActos11.Text = "Al 11%"
-        Me.lblDisplayTotalActos11.Visible = False
+        Me.LblDisplayTotalActos8.AutoSize = True
+        Me.LblDisplayTotalActos8.Location = New System.Drawing.Point(9, 54)
+        Me.LblDisplayTotalActos8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayTotalActos8.Name = "LblDisplayTotalActos8"
+        Me.LblDisplayTotalActos8.Size = New System.Drawing.Size(44, 17)
+        Me.LblDisplayTotalActos8.TabIndex = 231
+        Me.LblDisplayTotalActos8.Text = "Al 8%"
+        '
+        'lblTotalActos8
+        '
+        Me.lblTotalActos8.BackColor = System.Drawing.Color.White
+        Me.lblTotalActos8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblTotalActos8.ForeColor = System.Drawing.Color.Blue
+        Me.lblTotalActos8.Location = New System.Drawing.Point(108, 54)
+        Me.lblTotalActos8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblTotalActos8.Name = "lblTotalActos8"
+        Me.lblTotalActos8.Size = New System.Drawing.Size(138, 20)
+        Me.lblTotalActos8.TabIndex = 231
+        Me.lblTotalActos8.Text = "0.00"
+        Me.lblTotalActos8.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'lblTotalActos
         '
@@ -432,20 +467,6 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.lblTotalActos16.TabIndex = 9
         Me.lblTotalActos16.Text = "0.00"
         Me.lblTotalActos16.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'lblTotalActos11
-        '
-        Me.lblTotalActos11.BackColor = System.Drawing.Color.White
-        Me.lblTotalActos11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblTotalActos11.ForeColor = System.Drawing.Color.Blue
-        Me.lblTotalActos11.Location = New System.Drawing.Point(266, 593)
-        Me.lblTotalActos11.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblTotalActos11.Name = "lblTotalActos11"
-        Me.lblTotalActos11.Size = New System.Drawing.Size(138, 20)
-        Me.lblTotalActos11.TabIndex = 8
-        Me.lblTotalActos11.Text = "0.00"
-        Me.lblTotalActos11.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.lblTotalActos11.Visible = False
         '
         'lblDisplayTotalActos
         '
@@ -490,13 +511,38 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.lblDisplayTotalActos0.TabIndex = 4
         Me.lblDisplayTotalActos0.Text = "Al 0%"
         '
+        'lblDisplayTotalActos11
+        '
+        Me.lblDisplayTotalActos11.AutoSize = True
+        Me.lblDisplayTotalActos11.Location = New System.Drawing.Point(206, 593)
+        Me.lblDisplayTotalActos11.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayTotalActos11.Name = "lblDisplayTotalActos11"
+        Me.lblDisplayTotalActos11.Size = New System.Drawing.Size(52, 17)
+        Me.lblDisplayTotalActos11.TabIndex = 11
+        Me.lblDisplayTotalActos11.Text = "Al 11%"
+        Me.lblDisplayTotalActos11.Visible = False
+        '
+        'lblTotalActos11
+        '
+        Me.lblTotalActos11.BackColor = System.Drawing.Color.White
+        Me.lblTotalActos11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblTotalActos11.ForeColor = System.Drawing.Color.Blue
+        Me.lblTotalActos11.Location = New System.Drawing.Point(266, 593)
+        Me.lblTotalActos11.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblTotalActos11.Name = "lblTotalActos11"
+        Me.lblTotalActos11.Size = New System.Drawing.Size(138, 20)
+        Me.lblTotalActos11.TabIndex = 8
+        Me.lblTotalActos11.Text = "0.00"
+        Me.lblTotalActos11.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblTotalActos11.Visible = False
+        '
         'gbGrid
         '
         Me.gbGrid.Controls.Add(Me.Grid)
         Me.gbGrid.Location = New System.Drawing.Point(0, 158)
-        Me.gbGrid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbGrid.Margin = New System.Windows.Forms.Padding(4)
         Me.gbGrid.Name = "gbGrid"
-        Me.gbGrid.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbGrid.Padding = New System.Windows.Forms.Padding(4)
         Me.gbGrid.Size = New System.Drawing.Size(1408, 347)
         Me.gbGrid.TabIndex = 1
         Me.gbGrid.TabStop = False
@@ -515,7 +561,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.Grid.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.Grid.Location = New System.Drawing.Point(8, 23)
         Me.Grid.LockButton = True
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid.Name = "Grid"
         Me.Grid.Rows = 2
         Me.Grid.Size = New System.Drawing.Size(1392, 316)
@@ -535,13 +581,59 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.gbTotalesIVAS.Controls.Add(Me.lblDisplayTotalIvaRetenido10)
         Me.gbTotalesIVAS.Controls.Add(Me.lblDisplayTotalIvaRetenido4)
         Me.gbTotalesIVAS.Location = New System.Drawing.Point(965, 512)
-        Me.gbTotalesIVAS.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbTotalesIVAS.Margin = New System.Windows.Forms.Padding(4)
         Me.gbTotalesIVAS.Name = "gbTotalesIVAS"
-        Me.gbTotalesIVAS.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbTotalesIVAS.Padding = New System.Windows.Forms.Padding(4)
         Me.gbTotalesIVAS.Size = New System.Drawing.Size(328, 165)
         Me.gbTotalesIVAS.TabIndex = 192
         Me.gbTotalesIVAS.TabStop = False
         Me.gbTotalesIVAS.Text = "Totales IVAs"
+        '
+        'lblDisplayTotalIvaRetenido6
+        '
+        Me.lblDisplayTotalIvaRetenido6.AutoSize = True
+        Me.lblDisplayTotalIvaRetenido6.Location = New System.Drawing.Point(9, 108)
+        Me.lblDisplayTotalIvaRetenido6.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayTotalIvaRetenido6.Name = "lblDisplayTotalIvaRetenido6"
+        Me.lblDisplayTotalIvaRetenido6.Size = New System.Drawing.Size(112, 17)
+        Me.lblDisplayTotalIvaRetenido6.TabIndex = 233
+        Me.lblDisplayTotalIvaRetenido6.Text = "Retenido al 6% :"
+        '
+        'lblTotalIvaRetenido6
+        '
+        Me.lblTotalIvaRetenido6.BackColor = System.Drawing.Color.White
+        Me.lblTotalIvaRetenido6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblTotalIvaRetenido6.ForeColor = System.Drawing.Color.Blue
+        Me.lblTotalIvaRetenido6.Location = New System.Drawing.Point(181, 106)
+        Me.lblTotalIvaRetenido6.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblTotalIvaRetenido6.Name = "lblTotalIvaRetenido6"
+        Me.lblTotalIvaRetenido6.Size = New System.Drawing.Size(138, 20)
+        Me.lblTotalIvaRetenido6.TabIndex = 232
+        Me.lblTotalIvaRetenido6.Text = "0.00"
+        Me.lblTotalIvaRetenido6.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'LblDisplayTotalIvaAcreditable8
+        '
+        Me.LblDisplayTotalIvaAcreditable8.AutoSize = True
+        Me.LblDisplayTotalIvaAcreditable8.Location = New System.Drawing.Point(9, 29)
+        Me.LblDisplayTotalIvaAcreditable8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayTotalIvaAcreditable8.Name = "LblDisplayTotalIvaAcreditable8"
+        Me.LblDisplayTotalIvaAcreditable8.Size = New System.Drawing.Size(126, 17)
+        Me.LblDisplayTotalIvaAcreditable8.TabIndex = 231
+        Me.LblDisplayTotalIvaAcreditable8.Text = "Acreditable al 8% :"
+        '
+        'lblTotalIvaAcreditable8
+        '
+        Me.lblTotalIvaAcreditable8.BackColor = System.Drawing.Color.White
+        Me.lblTotalIvaAcreditable8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblTotalIvaAcreditable8.ForeColor = System.Drawing.Color.Blue
+        Me.lblTotalIvaAcreditable8.Location = New System.Drawing.Point(181, 27)
+        Me.lblTotalIvaAcreditable8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblTotalIvaAcreditable8.Name = "lblTotalIvaAcreditable8"
+        Me.lblTotalIvaAcreditable8.Size = New System.Drawing.Size(138, 20)
+        Me.lblTotalIvaAcreditable8.TabIndex = 231
+        Me.lblTotalIvaAcreditable8.Text = "0.00"
+        Me.lblTotalIvaAcreditable8.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'lblDisplayTotalIvaAcreditable16
         '
@@ -647,98 +739,6 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.Label1.TabIndex = 193
         Me.Label1.Text = "* Para agregar/modificar el detalle utilize F6 en los renglones"
         '
-        'lblTotalActos8
-        '
-        Me.lblTotalActos8.BackColor = System.Drawing.Color.White
-        Me.lblTotalActos8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblTotalActos8.ForeColor = System.Drawing.Color.Blue
-        Me.lblTotalActos8.Location = New System.Drawing.Point(108, 54)
-        Me.lblTotalActos8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblTotalActos8.Name = "lblTotalActos8"
-        Me.lblTotalActos8.Size = New System.Drawing.Size(138, 20)
-        Me.lblTotalActos8.TabIndex = 231
-        Me.lblTotalActos8.Text = "0.00"
-        Me.lblTotalActos8.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'lblTotalIvaAcreditable8
-        '
-        Me.lblTotalIvaAcreditable8.BackColor = System.Drawing.Color.White
-        Me.lblTotalIvaAcreditable8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblTotalIvaAcreditable8.ForeColor = System.Drawing.Color.Blue
-        Me.lblTotalIvaAcreditable8.Location = New System.Drawing.Point(181, 27)
-        Me.lblTotalIvaAcreditable8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblTotalIvaAcreditable8.Name = "lblTotalIvaAcreditable8"
-        Me.lblTotalIvaAcreditable8.Size = New System.Drawing.Size(138, 20)
-        Me.lblTotalIvaAcreditable8.TabIndex = 231
-        Me.lblTotalIvaAcreditable8.Text = "0.00"
-        Me.lblTotalIvaAcreditable8.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'LblDisplayTotalIvaAcreditable8
-        '
-        Me.LblDisplayTotalIvaAcreditable8.AutoSize = True
-        Me.LblDisplayTotalIvaAcreditable8.Location = New System.Drawing.Point(9, 29)
-        Me.LblDisplayTotalIvaAcreditable8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblDisplayTotalIvaAcreditable8.Name = "LblDisplayTotalIvaAcreditable8"
-        Me.LblDisplayTotalIvaAcreditable8.Size = New System.Drawing.Size(134, 17)
-        Me.LblDisplayTotalIvaAcreditable8.TabIndex = 231
-        Me.LblDisplayTotalIvaAcreditable8.Text = "Acreditable al 11% :"
-        '
-        'LblDisplayTotalActos8
-        '
-        Me.LblDisplayTotalActos8.AutoSize = True
-        Me.LblDisplayTotalActos8.Location = New System.Drawing.Point(9, 54)
-        Me.LblDisplayTotalActos8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblDisplayTotalActos8.Name = "LblDisplayTotalActos8"
-        Me.LblDisplayTotalActos8.Size = New System.Drawing.Size(44, 17)
-        Me.LblDisplayTotalActos8.TabIndex = 231
-        Me.LblDisplayTotalActos8.Text = "Al 8%"
-        '
-        'lblTotalIvaRetenido6
-        '
-        Me.lblTotalIvaRetenido6.BackColor = System.Drawing.Color.White
-        Me.lblTotalIvaRetenido6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblTotalIvaRetenido6.ForeColor = System.Drawing.Color.Blue
-        Me.lblTotalIvaRetenido6.Location = New System.Drawing.Point(181, 106)
-        Me.lblTotalIvaRetenido6.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblTotalIvaRetenido6.Name = "lblTotalIvaRetenido6"
-        Me.lblTotalIvaRetenido6.Size = New System.Drawing.Size(138, 20)
-        Me.lblTotalIvaRetenido6.TabIndex = 232
-        Me.lblTotalIvaRetenido6.Text = "0.00"
-        Me.lblTotalIvaRetenido6.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'lblDisplayTotalIvaRetenido6
-        '
-        Me.lblDisplayTotalIvaRetenido6.AutoSize = True
-        Me.lblDisplayTotalIvaRetenido6.Location = New System.Drawing.Point(9, 108)
-        Me.lblDisplayTotalIvaRetenido6.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblDisplayTotalIvaRetenido6.Name = "lblDisplayTotalIvaRetenido6"
-        Me.lblDisplayTotalIvaRetenido6.Size = New System.Drawing.Size(112, 17)
-        Me.lblDisplayTotalIvaRetenido6.TabIndex = 233
-        Me.lblDisplayTotalIvaRetenido6.Text = "Retenido al 6% :"
-        '
-        'lblIvaAcreditableACubrir8
-        '
-        Me.lblIvaAcreditableACubrir8.BackColor = System.Drawing.Color.White
-        Me.lblIvaAcreditableACubrir8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblIvaAcreditableACubrir8.ForeColor = System.Drawing.Color.Red
-        Me.lblIvaAcreditableACubrir8.Location = New System.Drawing.Point(107, 19)
-        Me.lblIvaAcreditableACubrir8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblIvaAcreditableACubrir8.Name = "lblIvaAcreditableACubrir8"
-        Me.lblIvaAcreditableACubrir8.Size = New System.Drawing.Size(138, 20)
-        Me.lblIvaAcreditableACubrir8.TabIndex = 230
-        Me.lblIvaAcreditableACubrir8.Text = "0.00"
-        Me.lblIvaAcreditableACubrir8.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'lblDisplayTotalIvaAcreditableACubrir8
-        '
-        Me.lblDisplayTotalIvaAcreditableACubrir8.AutoSize = True
-        Me.lblDisplayTotalIvaAcreditableACubrir8.Location = New System.Drawing.Point(9, 21)
-        Me.lblDisplayTotalIvaAcreditableACubrir8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblDisplayTotalIvaAcreditableACubrir8.Name = "lblDisplayTotalIvaAcreditableACubrir8"
-        Me.lblDisplayTotalIvaAcreditableACubrir8.Size = New System.Drawing.Size(44, 17)
-        Me.lblDisplayTotalIvaAcreditableACubrir8.TabIndex = 230
-        Me.lblDisplayTotalIvaAcreditableACubrir8.Text = "Al 8%"
-        '
         'Frm_Contabilidad_IVA_Acreditable_Global
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -757,7 +757,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.Controls.Add(Me.tsMenu)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Frm_Contabilidad_IVA_Acreditable_Global"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

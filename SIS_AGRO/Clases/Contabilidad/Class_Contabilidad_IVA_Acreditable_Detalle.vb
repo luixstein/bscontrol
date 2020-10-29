@@ -14,16 +14,19 @@ Public Class Class_Contabilidad_IVA_Acreditable_Detalle
     Private _ANIO As Integer
     Private _OPERACIONES As Integer
     Private _ACTOS_AL_0 As Double
+    Private _ACTOS_AL_8 As Double
     Private _ACTOS_AL_10 As Double
     Private _ACTOS_AL_15 As Double
     Private _ACTOS_AL_11 As Double
     Private _ACTOS_AL_16 As Double
     Private _SUBTOTAL_ACTOS As Double
+    Private _IVA_ACREDITABLE_AL_8 As Double
     Private _IVA_ACREDITABLE_AL_10 As Double
     Private _IVA_ACREDITABLE_AL_15 As Double
     Private _IVA_ACREDITABLE_AL_11 As Double
     Private _IVA_ACREDITABLE_AL_16 As Double
     Private _IVA_RETENIDO_AL_4 As Double
+    Private _IVA_RETENIDO_AL_6 As Double
     Private _IVA_RETENIDO_AL_10 As Double
     Private _FOLIO_COMPRA As String
     Private _FECHA_FACTURA_PROVEEDOR As Date
@@ -109,6 +112,15 @@ Public Class Class_Contabilidad_IVA_Acreditable_Detalle
         End Set
     End Property
 
+    Public Property ACTOS_AL_8() As Double
+        Get
+            Return Me._ACTOS_AL_8
+        End Get
+        Set(ByVal value As Double)
+            Me._ACTOS_AL_8 = value
+        End Set
+    End Property
+
     Public Property ACTOS_AL_10() As Double
         Get
             Return Me._ACTOS_AL_10
@@ -154,6 +166,15 @@ Public Class Class_Contabilidad_IVA_Acreditable_Detalle
         End Set
     End Property
 
+    Public Property IVA_ACREDITABLE_AL_8() As Double
+        Get
+            Return Me._IVA_ACREDITABLE_AL_8
+        End Get
+        Set(ByVal value As Double)
+            Me._IVA_ACREDITABLE_AL_8 = value
+        End Set
+    End Property
+
     Public Property IVA_ACREDITABLE_AL_10() As Double
         Get
             Return Me._IVA_ACREDITABLE_AL_10
@@ -196,6 +217,15 @@ Public Class Class_Contabilidad_IVA_Acreditable_Detalle
         End Get
         Set(ByVal value As Double)
             Me._IVA_RETENIDO_AL_4 = value
+        End Set
+    End Property
+
+    Public Property IVA_RETENIDO_AL_6() As Double
+        Get
+            Return Me._IVA_RETENIDO_AL_6
+        End Get
+        Set(ByVal value As Double)
+            Me._IVA_RETENIDO_AL_6 = value
         End Set
     End Property
 
@@ -282,16 +312,19 @@ Public Class Class_Contabilidad_IVA_Acreditable_Detalle
             sqlParametro = .Parameters.Add("@ANIO", SqlDbType.SmallInt) : sqlParametro.Value = Me._ANIO
             sqlParametro = .Parameters.Add("@OPERACIONES", SqlDbType.SmallInt) : sqlParametro.Value = Me._OPERACIONES
             sqlParametro = .Parameters.Add("@ACTOS_AL_0", SqlDbType.Money) : sqlParametro.Value = Me._ACTOS_AL_0
+            sqlParametro = .Parameters.Add("@ACTOS_AL_8", SqlDbType.Money) : sqlParametro.Value = Me._ACTOS_AL_8
             sqlParametro = .Parameters.Add("@ACTOS_AL_10", SqlDbType.Money) : sqlParametro.Value = Me._ACTOS_AL_10
             sqlParametro = .Parameters.Add("@ACTOS_AL_15", SqlDbType.Money) : sqlParametro.Value = Me._ACTOS_AL_15
             sqlParametro = .Parameters.Add("@ACTOS_AL_11", SqlDbType.Money) : sqlParametro.Value = Me._ACTOS_AL_11
             sqlParametro = .Parameters.Add("@ACTOS_AL_16", SqlDbType.Money) : sqlParametro.Value = Me._ACTOS_AL_16
             sqlParametro = .Parameters.Add("@SUBTOTAL_ACTOS", SqlDbType.Money) : sqlParametro.Value = Me._SUBTOTAL_ACTOS
+            sqlParametro = .Parameters.Add("@IVA_ACREDITABLE_AL_8", SqlDbType.Money) : sqlParametro.Value = Me._IVA_ACREDITABLE_AL_8
             sqlParametro = .Parameters.Add("@IVA_ACREDITABLE_AL_10", SqlDbType.Money) : sqlParametro.Value = Me._IVA_ACREDITABLE_AL_10
             sqlParametro = .Parameters.Add("@IVA_ACREDITABLE_AL_15", SqlDbType.Money) : sqlParametro.Value = Me._IVA_ACREDITABLE_AL_15
             sqlParametro = .Parameters.Add("@IVA_ACREDITABLE_AL_11", SqlDbType.Money) : sqlParametro.Value = Me._IVA_ACREDITABLE_AL_11
             sqlParametro = .Parameters.Add("@IVA_ACREDITABLE_AL_16", SqlDbType.Money) : sqlParametro.Value = Me._IVA_ACREDITABLE_AL_16
             sqlParametro = .Parameters.Add("@IVA_RETENIDO_AL_4", SqlDbType.Money) : sqlParametro.Value = Me._IVA_RETENIDO_AL_4
+            sqlParametro = .Parameters.Add("@IVA_RETENIDO_AL_6", SqlDbType.Money) : sqlParametro.Value = Me._IVA_RETENIDO_AL_6
             sqlParametro = .Parameters.Add("@IVA_RETENIDO_AL_10", SqlDbType.Money) : sqlParametro.Value = Me._IVA_RETENIDO_AL_10
             sqlParametro = .Parameters.Add("@FOLIO_COMPRA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_COMPRA
             sqlParametro = .Parameters.Add("@FECHA_FACTURA_PROVEEDOR", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_FACTURA_PROVEEDOR
