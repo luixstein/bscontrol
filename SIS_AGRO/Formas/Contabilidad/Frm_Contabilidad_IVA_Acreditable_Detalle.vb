@@ -226,7 +226,7 @@ Buscar:
         drActos11 = Redondear(valorNumerico(Me.txtActos11.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
         drActos16 = Redondear(valorNumerico(Me.txtActos16.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
-        Me.lblActosTotal.Text = FormatImporteContable(drActos0 + drActos11 + drActos16)
+        Me.lblActosTotal.Text = FormatImporteContable(drActos0 + drActos11 + drActos16 + drActos8)
     End Sub
 
     Private Function CalcularIVAS(ByVal bRecalcularIVAS As Boolean) As Boolean
@@ -243,23 +243,23 @@ Buscar:
         drIvaRetenido6 = Redondear(valorNumerico(Me.txtIvaRetenido6.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
         drIvaRetenido10 = Redondear(valorNumerico(Me.txtIvaRetenido10.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
-        drActos = drActos0 + drActos11 + drActos16
+        drActos = drActos0 + drActos11 + drActos16 + drActos8
 
         If drActos <= 0 Then
             MsgBox("No capturaron los actos del movimiento.", vbExclamation, Me.Text)
             Exit Function
         End If
 
-        If _
-        (drActos11 > 0 And (drActos16 > 0)) Or _
-        (drActos16 > 0 And (drActos11 > 0)) Or _
-        (drActos8 > 0 And (drActos11 > 0)) Or _
-        (drActos11 > 0 And (drActos8 > 0)) Or _
-        (drActos8 > 0 And (drActos16 > 0)) Or _
-        (drActos16 > 0 And (drActos8 > 0)) Then
-            MsgBox("No esta permitido agregar actos de diferentes impuestos en un mismo movimiento.", vbExclamation, Me.Text)
-            Exit Function
-        End If
+        'If _
+        '(drActos11 > 0 And (drActos16 > 0)) Or _
+        '(drActos16 > 0 And (drActos11 > 0)) Or _
+        '(drActos8 > 0 And (drActos11 > 0)) Or _
+        '(drActos11 > 0 And (drActos8 > 0)) Or _
+        '(drActos8 > 0 And (drActos16 > 0)) Or _
+        '(drActos16 > 0 And (drActos8 > 0)) Then
+        '    MsgBox("No esta permitido agregar actos de diferentes impuestos en un mismo movimiento.", vbExclamation, Me.Text)
+        '    Exit Function
+        'End If
 
         If bRecalcularIVAS = True Then
             'Si se capturaron actos al 10%, se calcula el iva acreditable al 10%.
