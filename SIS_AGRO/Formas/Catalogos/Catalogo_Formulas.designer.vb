@@ -46,6 +46,7 @@ Partial Public Class Catalogo_Formulas
         Me.TxtNombreFormula = New System.Windows.Forms.TextBox()
         Me.LblDisplayNombreFormula = New System.Windows.Forms.Label()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.ckbEsConfidencial = New System.Windows.Forms.CheckBox()
         Me.txtCostoProduccion = New System.Windows.Forms.TextBox()
         Me.lblPorcentajeCostoProduccion = New System.Windows.Forms.Label()
         Me.LblDisplayIngredientes = New System.Windows.Forms.Label()
@@ -286,6 +287,7 @@ Partial Public Class Catalogo_Formulas
         '
         'gBoxInformacion
         '
+        Me.gBoxInformacion.Controls.Add(Me.ckbEsConfidencial)
         Me.gBoxInformacion.Controls.Add(Me.txtCostoProduccion)
         Me.gBoxInformacion.Controls.Add(Me.lblPorcentajeCostoProduccion)
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayIngredientes)
@@ -308,6 +310,17 @@ Partial Public Class Catalogo_Formulas
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
+        '
+        'ckbEsConfidencial
+        '
+        Me.ckbEsConfidencial.AutoSize = True
+        Me.ckbEsConfidencial.Location = New System.Drawing.Point(419, 130)
+        Me.ckbEsConfidencial.Name = "ckbEsConfidencial"
+        Me.ckbEsConfidencial.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.ckbEsConfidencial.Size = New System.Drawing.Size(129, 21)
+        Me.ckbEsConfidencial.TabIndex = 4
+        Me.ckbEsConfidencial.Text = "Es confidencial "
+        Me.ckbEsConfidencial.UseVisualStyleBackColor = True
         '
         'txtCostoProduccion
         '
@@ -355,7 +368,7 @@ Partial Public Class Catalogo_Formulas
         Me.Grid1.Name = "Grid1"
         Me.Grid1.Rows = 6
         Me.Grid1.Size = New System.Drawing.Size(767, 283)
-        Me.Grid1.TabIndex = 4
+        Me.Grid1.TabIndex = 5
         Me.Grid1.UncheckedImage = CType(resources.GetObject("Grid1.UncheckedImage"), System.Drawing.Bitmap)
         '
         'LblNombreProductoFinal
@@ -460,4 +473,5 @@ Partial Public Class Catalogo_Formulas
     Friend WithEvents LblDisplayIngredientes As System.Windows.Forms.Label
     Friend WithEvents txtCostoProduccion As System.Windows.Forms.TextBox
     Friend WithEvents lblPorcentajeCostoProduccion As System.Windows.Forms.Label
+    Friend WithEvents ckbEsConfidencial As System.Windows.Forms.CheckBox
 End Class

@@ -238,6 +238,7 @@ BuscarCuentas:
             Me.InicializaGrid()
             Me.InicializaGridSeries()
 
+            Me.Grid1.Visible = True
             Me.Grid1.Locked = True
             'Me.GridSeries.Locked = True
 
@@ -610,6 +611,15 @@ BuscarCuentas:
             Next
             Me.FormateaGrid()
 
+            oFormula.CODIGO_FORMULA = Me.TxtCodigoFormula.Text
+            oFormula.Consultar()
+
+            If oFormula.ES_CONFIDENCIAL Then
+                Me.Grid1.Visible = False
+            Else
+                Me.Grid1.Visible = True
+            End If
+
         Catch ex As Exception
             HandleError(Me.Text, "ConsultarIngredientes", ex)
         End Try
@@ -829,6 +839,7 @@ BuscarCuentas:
         Dim dCantidadSumadaPorArticulos As Double, dExistencia As Double
         Dim i As Integer, sCodigoArticulo As String = ""
         Me.oInventarios = New Class_Inventarios_Global
+        Me.oFormula = New Class_CatFormulas(Me.TxtCodigoFormula.Text)
 
         Try
             For i = 1 To Me.Grid1.Rows - 1
@@ -839,15 +850,27 @@ BuscarCuentas:
                         dExistencia = Me.oInventarios.Existencia(sCodigoArticulo, Me.CboAlmacen1.SelectedValue.ToString)
                         If dExistencia <= 0 Then
                             Me.Show()
-                            MsgBox("El artículo " & Me.Grid1.Cell(i, Me.iGyCodigo).Text & " " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " no tiene existencia. ", MsgBoxStyle.Exclamation, sProcedure)
+                            If Me.oFormula.ES_CONFIDENCIAL Then
+                                MsgBox("No hay suficiente existencia de materias primas.", MsgBoxStyle.Exclamation, sProcedure)
+                            Else
+                                MsgBox("El artículo " & Me.Grid1.Cell(i, Me.iGyCodigo).Text & " " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " no tiene existencia. ", MsgBoxStyle.Exclamation, sProcedure)
+                            End If
+
                             Exit Function
+
                         Else
                             dCantidadSumadaPorArticulos = CDbl(Me.Grid1.Cell(i, Me.iGyCantidadTotal).Text)
 
                             If valorNumerico(dCantidadSumadaPorArticulos.ToString) > valorNumerico(dExistencia.ToString) Then
                                 Me.Show()
-                                MsgBox("El Artículo " & Me.Grid1.Cell(i, Me.iGyCodigo).Text & " " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " no tiene suficiente existencia.", MsgBoxStyle.Exclamation, sProcedure)
+                                If Me.oFormula.ES_CONFIDENCIAL Then
+                                    MsgBox("No hay suficiente existencia de materias primas.", MsgBoxStyle.Exclamation, sProcedure)
+                                Else
+                                    MsgBox("El Artículo " & Me.Grid1.Cell(i, Me.iGyCodigo).Text & " " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " no tiene suficiente existencia.", MsgBoxStyle.Exclamation, sProcedure)
+                                End If
+
                                 Exit Function
+
                             End If
                         End If
                     End If

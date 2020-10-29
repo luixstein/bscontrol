@@ -11,6 +11,7 @@ Public Class Class_CatFormulas
     Private _NOMBRE_FORMULA As String
     Private _CODIGO_ARTICULO As String
     Private _PORCENTAJE_COSTO_PRODUCCION As Decimal
+    Private _ES_CONFIDENCIAL As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -75,6 +76,15 @@ Public Class Class_CatFormulas
         End Set
     End Property
 
+    Public Property ES_CONFIDENCIAL() As Boolean
+        Get
+            Return Me._ES_CONFIDENCIAL
+        End Get
+        Set(value As Boolean)
+            Me._ES_CONFIDENCIAL = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -123,7 +133,7 @@ Public Class Class_CatFormulas
         Me._Nombre_Reporte = "RPT_CATALOGO_FORMULAS"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySELECT = "SELECT CODIGO_FORMULA,NOMBRE_FORMULA,CODIGO_ARTICULO,ESTATUS,PORCENTAJE_COSTO_PRODUCCION FROM CAT_FORMULAS"
+        Me._QuerySELECT = "SELECT CODIGO_FORMULA,NOMBRE_FORMULA,CODIGO_ARTICULO,ESTATUS,PORCENTAJE_COSTO_PRODUCCION,ES_CONFIDENCIAL FROM CAT_FORMULAS"
         Me._QueryOrder = " Order by NOMBRE_FORMULA"
     End Sub
 
@@ -167,6 +177,7 @@ Public Class Class_CatFormulas
             sqlParametro = .Parameters.Add("@CODIGO_ARTICULO", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_ARTICULO.ToString
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToString.ToUpper
             sqlParametro = .Parameters.Add("@PORCENTAJE_COSTO_PRODUCCION", SqlDbType.Decimal) : sqlParametro.Value = Me._PORCENTAJE_COSTO_PRODUCCION
+            sqlParametro = .Parameters.Add("@ES_CONFIDENCIAL", SqlDbType.Char) : sqlParametro.Value = Convert.ToInt32(ES_CONFIDENCIAL).ToString
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "1"
 
             Try
@@ -201,6 +212,7 @@ Public Class Class_CatFormulas
             sqlParametro = .Parameters.Add("@CODIGO_ARTICULO", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_ARTICULO.ToString
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToString.ToUpper
             sqlParametro = .Parameters.Add("@PORCENTAJE_COSTO_PRODUCCION", SqlDbType.Decimal) : sqlParametro.Value = Me._PORCENTAJE_COSTO_PRODUCCION
+            sqlParametro = .Parameters.Add("@ES_CONFIDENCIAL", SqlDbType.Char) : sqlParametro.Value = Convert.ToInt32(ES_CONFIDENCIAL).ToString
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "0"
 
             Try
@@ -235,6 +247,7 @@ Public Class Class_CatFormulas
                     Me._CODIGO_ARTICULO = "" & dReader("CODIGO_ARTICULO").ToString
                     Me.Estatus = "" & dReader("ESTATUS").ToString
                     Me._PORCENTAJE_COSTO_PRODUCCION = dReader("PORCENTAJE_COSTO_PRODUCCION")
+                    Me._ES_CONFIDENCIAL = CBool(dReader("ES_CONFIDENCIAL"))
                     bResultado = True
                 End If
                 dReader.Close()

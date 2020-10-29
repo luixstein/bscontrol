@@ -183,6 +183,7 @@ Public Class Catalogo_Formulas
                     Me.TxtNombreFormula.Enabled = True
                     Me.TxtCodigoArticulo.Enabled = True
                     Me.txtCostoProduccion.Enabled = True
+                    Me.ckbEsConfidencial.Enabled = True
                     Me.Grid1.Locked = False
 
                     Me.InicializaElemento()
@@ -205,6 +206,7 @@ Public Class Catalogo_Formulas
                     Me.CboEstatus.Enabled = True
                     Me.TxtCodigoArticulo.Enabled = True
                     Me.txtCostoProduccion.Enabled = True
+                    Me.ckbEsConfidencial.Enabled = True
                     Me.Grid1.Locked = False
                     Me.Grid1.Rows = Me.Grid1.Rows + 1
 
@@ -237,6 +239,7 @@ Public Class Catalogo_Formulas
         Me.TxtCodigoArticulo.Text = ""
         Me.LblNombreProductoFinal.Text = ""
         Me.txtCostoProduccion.Text = "0.00"
+        Me.ckbEsConfidencial.Checked = False
 
         Me.InicializaGrid()
 
@@ -263,6 +266,7 @@ Public Class Catalogo_Formulas
                     Me.TxtNombreFormula.Text = .NOMBRE_FORMULA.ToString
                     Me.TxtCodigoArticulo.Text = .CODIGO_ARTICULO.ToString
                     Me.txtCostoProduccion.Text = .PORCENTAJE_COSTO_PRODUCCION.ToString
+                    Me.ckbEsConfidencial.Checked = .ES_CONFIDENCIAL
 
                     Dim sql As New Class_find("SELECT DESCRIPCION FROM CAT_ARTICULOS WHERE CODIGO_ARTICULO='" & Me.TxtCodigoArticulo.Text & "'")
                     Me.LblNombreProductoFinal.Text = sql.Result1.ToString
@@ -308,6 +312,7 @@ Public Class Catalogo_Formulas
                         .CODIGO_ARTICULO = Me.TxtCodigoArticulo.Text
                         .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         .PORCENTAJE_COSTO_PRODUCCION = CDec(Me.txtCostoProduccion.Text)
+                        .ES_CONFIDENCIAL = Me.ckbEsConfidencial.Checked
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -703,7 +708,7 @@ BuscaArticulos:
 
 #Region "Eventos Genericos"
 
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtNombreFormula.KeyPress, CboEstatus.KeyPress, TxtCodigoArticulo.KeyPress
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtNombreFormula.KeyPress, CboEstatus.KeyPress, TxtCodigoArticulo.KeyPress, ckbEsConfidencial.KeyPress
         txtNoBeep(e)
     End Sub
 
