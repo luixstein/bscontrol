@@ -29,14 +29,17 @@ Public Class Frm_Contabilidad_IVA_Acreditable_Global
     Private iGyAño As Integer = 8
     Private iGyOperaciones As Integer = 9
     Private iGyActos0 As Integer = 10
-    Private iGyActos11 As Integer = 11
-    Private iGyActos16 As Integer = 12
-    Private iGySubtotalActos As Integer = 13
-    Private iGyIvaAcreditable11 As Integer = 14
-    Private iGyIvaAcreditable16 As Integer = 15
-    Private iGyIvaRetenido4 As Integer = 16
-    Private iGyIvaRetenido10 As Integer = 17
-    Private iGyIDDetalle As Integer = 18
+    Private iGyActos8 As Integer = 11
+    Private iGyActos11 As Integer = 12
+    Private iGyActos16 As Integer = 13
+    Private iGySubtotalActos As Integer = 14
+    Private iGyIvaAcreditable8 As Integer = 15
+    Private iGyIvaAcreditable11 As Integer = 16
+    Private iGyIvaAcreditable16 As Integer = 17
+    Private iGyIvaRetenido4 As Integer = 18
+    Private iGyIvaRetenido6 As Integer = 19
+    Private iGyIvaRetenido10 As Integer = 20
+    Private iGyIDDetalle As Integer = 21
 #End Region
 
 #Region "Propiedades"
@@ -170,17 +173,21 @@ busca:
             Me.lblEstatus.Text = "N"
             Me.txtConcepto.Text = ""
 
+            Me.lblIvaAcreditableACubrir8.Text = FormatImporteContable(0)
             Me.lblIvaAcreditableACubrir11.Text = FormatImporteContable(0)
             Me.lblIvaAcreditableACubrir16.Text = FormatImporteContable(0)
 
             Me.lblTotalActos0.Text = FormatImporteContable(0)
+            Me.lblTotalActos8.Text = FormatImporteContable(0)
             Me.lblTotalActos11.Text = FormatImporteContable(0)
             Me.lblTotalActos16.Text = FormatImporteContable(0)
             Me.lblTotalActos.Text = FormatImporteContable(0)
 
+            Me.lblTotalIvaAcreditable8.Text = FormatImporteContable(0)
             Me.lblTotalIvaAcreditable11.Text = FormatImporteContable(0)
             Me.lblTotalIvaAcreditable16.Text = FormatImporteContable(0)
             Me.lblTotalIvaRetenido4.Text = FormatImporteContable(0)
+            Me.lblTotalIvaRetenido6.Text = FormatImporteContable(0)
             Me.lblTotalIvaRetenido10.Text = FormatImporteContable(0)
 
             Me.InicializaGrid()
@@ -194,7 +201,7 @@ busca:
         FG_Grid_Limpiar(Grid)
 
         Me.Grid.Rows = 2
-        Me.Grid.Cols = 19
+        Me.Grid.Cols = 22
 
         Me.FormateaGrid()
     End Sub
@@ -215,12 +222,15 @@ busca:
         Me.Grid.Column(Me.iGyAño).Width = 30
         Me.Grid.Column(Me.iGyOperaciones).Width = 30
         Me.Grid.Column(Me.iGyActos0).Width = 80
+        Me.Grid.Column(Me.iGyActos8).Width = 80
         Me.Grid.Column(Me.iGyActos11).Width = 80
         Me.Grid.Column(Me.iGyActos16).Width = 80
         Me.Grid.Column(Me.iGySubtotalActos).Width = 80
+        Me.Grid.Column(Me.iGyIvaAcreditable8).Width = 80
         Me.Grid.Column(Me.iGyIvaAcreditable11).Width = 80
         Me.Grid.Column(Me.iGyIvaAcreditable16).Width = 80
         Me.Grid.Column(Me.iGyIvaRetenido4).Width = 80
+        Me.Grid.Column(Me.iGyIvaRetenido6).Width = 80
         Me.Grid.Column(Me.iGyIvaRetenido10).Width = 80
         Me.Grid.Column(Me.iGyIDDetalle).Visible = False
 
@@ -234,12 +244,15 @@ busca:
         Me.Grid.Cell(0, Me.iGyAño).Text = "Año"
         Me.Grid.Cell(0, Me.iGyOperaciones).Text = "Ops"
         Me.Grid.Cell(0, Me.iGyActos0).Text = "Actos al 0%"
+        Me.Grid.Cell(0, Me.iGyActos8).Text = "Actos al 8%"
         Me.Grid.Cell(0, Me.iGyActos11).Text = "Actos al 11%"
         Me.Grid.Cell(0, Me.iGyActos16).Text = "Actos al 16%"
         Me.Grid.Cell(0, Me.iGySubtotalActos).Text = "Actos Total"
+        Me.Grid.Cell(0, Me.iGyIvaAcreditable8).Text = "IVA acred.8%"
         Me.Grid.Cell(0, Me.iGyIvaAcreditable11).Text = "IVA acred.11%"
         Me.Grid.Cell(0, Me.iGyIvaAcreditable16).Text = "IVA acred.16%"
         Me.Grid.Cell(0, Me.iGyIvaRetenido4).Text = "IVA ret.4%"
+        Me.Grid.Cell(0, Me.iGyIvaRetenido6).Text = "IVA ret.6%"
         Me.Grid.Cell(0, Me.iGyIvaRetenido10).Text = "IVA ret.10%"
         Me.Grid.Cell(0, Me.iGyIDDetalle).Text = "IDDetalle"
 
@@ -257,6 +270,11 @@ busca:
         Me.Grid.Column(Me.iGyActos0).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
         Me.Grid.Column(Me.iGyActos0).Alignment = FlexCell.AlignmentEnum.RightCenter
 
+        Me.Grid.Column(Me.iGyActos8).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+        Me.Grid.Column(Me.iGyActos8).Mask = FlexCell.MaskEnum.Numeric
+        Me.Grid.Column(Me.iGyActos8).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+        Me.Grid.Column(Me.iGyActos8).Alignment = FlexCell.AlignmentEnum.RightCenter
+
         Me.Grid.Column(Me.iGyActos11).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
         Me.Grid.Column(Me.iGyActos11).Mask = FlexCell.MaskEnum.Numeric
         Me.Grid.Column(Me.iGyActos11).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
@@ -271,6 +289,11 @@ busca:
         Me.Grid.Column(Me.iGySubtotalActos).Mask = FlexCell.MaskEnum.Numeric
         Me.Grid.Column(Me.iGySubtotalActos).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
         Me.Grid.Column(Me.iGySubtotalActos).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+        Me.Grid.Column(Me.iGyIvaAcreditable8).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+        Me.Grid.Column(Me.iGyIvaAcreditable8).Mask = FlexCell.MaskEnum.Numeric
+        Me.Grid.Column(Me.iGyIvaAcreditable8).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+        Me.Grid.Column(Me.iGyIvaAcreditable8).Alignment = FlexCell.AlignmentEnum.RightCenter
 
         Me.Grid.Column(Me.iGyIvaAcreditable11).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
         Me.Grid.Column(Me.iGyIvaAcreditable11).Mask = FlexCell.MaskEnum.Numeric
@@ -287,10 +310,18 @@ busca:
         Me.Grid.Column(Me.iGyIvaRetenido4).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
         Me.Grid.Column(Me.iGyIvaRetenido4).Alignment = FlexCell.AlignmentEnum.RightCenter
 
+        Me.Grid.Column(Me.iGyIvaRetenido6).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+        Me.Grid.Column(Me.iGyIvaRetenido6).Mask = FlexCell.MaskEnum.Numeric
+        Me.Grid.Column(Me.iGyIvaRetenido6).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+        Me.Grid.Column(Me.iGyIvaRetenido6).Alignment = FlexCell.AlignmentEnum.RightCenter
+
         Me.Grid.Column(Me.iGyIvaRetenido10).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
         Me.Grid.Column(Me.iGyIvaRetenido10).Mask = FlexCell.MaskEnum.Numeric
         Me.Grid.Column(Me.iGyIvaRetenido10).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
         Me.Grid.Column(Me.iGyIvaRetenido10).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+        Me.Grid.Column(Me.iGyActos11).Visible = False
+        Me.Grid.Column(Me.iGyIvaAcreditable11).Visible = False
 
         Me.Grid.Locked = True
 
@@ -415,7 +446,7 @@ busca:
             Me.Inicializa()
             Me.oIVA = New Class_Contabilidad_IVA_Acreditable_Global(sFolio)
 
-            Me.OcultaIVA11()
+            'Me.OcultaIVA11()
 
             If Me.oIVA.ExisteDocumentoPoliza = False Then
                 Me.txtFolio.Text = sFolio
@@ -429,6 +460,7 @@ busca:
             With Me.oIVA
                 Me.txtFolio.Text = .FOLIO_POLIZA
                 Me.dtFechaControl.Value = Me._FechaPolizaConsultaExterior
+                Me.lblIvaAcreditableACubrir8.Text = FormatImporteContable(.IVAACubrirAl8)
                 Me.lblIvaAcreditableACubrir11.Text = FormatImporteContable(.IVAACubrirAl11)
                 Me.lblIvaAcreditableACubrir16.Text = FormatImporteContable(.IVAACubrirAl16)
             End With
@@ -442,7 +474,8 @@ busca:
                         Me.Grid.AddItem(dRow(0).ToString & Chr(9) & dRow(1).ToString & Chr(9) & dRow(2).ToString & Chr(9) & dRow(3).ToString & Chr(9) & dRow(4).ToString & Chr(9) & _
                                         dRow(5).ToString & Chr(9) & dRow(6).ToString & Chr(9) & dRow(7).ToString & Chr(9) & dRow(8).ToString & Chr(9) & dRow(9).ToString & Chr(9) & _
                                         dRow(10).ToString & Chr(9) & dRow(11).ToString & Chr(9) & dRow(12).ToString & Chr(9) & dRow(13).ToString & Chr(9) & dRow(14).ToString & Chr(9) & _
-                                        dRow(15).ToString & Chr(9) & dRow(16).ToString & Chr(9) & dRow(17).ToString & Chr(9))
+                                        dRow(15).ToString & Chr(9) & dRow(16).ToString & Chr(9) & dRow(17).ToString & Chr(9) & dRow(18).ToString & Chr(9) & dRow(19).ToString & Chr(9) & _
+                                        dRow(20).ToString & Chr(9))
                     Next
                 End With
 
@@ -463,13 +496,16 @@ busca:
                 Me.txtConcepto.Text = .CONCEPTO
 
                 Me.lblTotalActos0.Text = FormatImporteContable(.TOTAL_ACTOS_AL_0)
+                Me.lblTotalActos8.Text = FormatImporteContable(.TOTAL_ACTOS_AL_8)
                 Me.lblTotalActos11.Text = FormatImporteContable(.TOTAL_ACTOS_AL_11)
                 Me.lblTotalActos16.Text = FormatImporteContable(.TOTAL_ACTOS_AL_16)
                 Me.lblTotalActos.Text = FormatImporteContable(.TOTAL_ACTOS)
 
+                Me.lblTotalIvaAcreditable8.Text = FormatImporteContable(.TOTAL_IVA_ACREDITABLE_AL_8)
                 Me.lblTotalIvaAcreditable11.Text = FormatImporteContable(.TOTAL_IVA_ACREDITABLE_AL_11)
                 Me.lblTotalIvaAcreditable16.Text = FormatImporteContable(.TOTAL_IVA_ACREDITABLE_AL_16)
                 Me.lblTotalIvaRetenido4.Text = FormatImporteContable(.TOTAL_IVA_RETENIDO_AL_4)
+                Me.lblTotalIvaRetenido6.Text = FormatImporteContable(.TOTAL_IVA_RETENIDO_AL_6)
                 Me.lblTotalIvaRetenido10.Text = FormatImporteContable(.TOTAL_IVA_RETENIDO_AL_10)
 
                 dTabla = .ObtenerDetalle
@@ -478,7 +514,8 @@ busca:
                     Me.Grid.AddItem(dRow(0).ToString & Chr(9) & dRow(1).ToString & Chr(9) & dRow(2).ToString & Chr(9) & dRow(3).ToString & Chr(9) & dRow(4).ToString & Chr(9) & _
                                     dRow(5).ToString & Chr(9) & dRow(6).ToString & Chr(9) & dRow(7).ToString & Chr(9) & dRow(8).ToString & Chr(9) & dRow(9).ToString & Chr(9) & _
                                     dRow(10).ToString & Chr(9) & dRow(11).ToString & Chr(9) & dRow(12).ToString & Chr(9) & dRow(13).ToString & Chr(9) & dRow(14).ToString & Chr(9) & _
-                                    dRow(15).ToString & Chr(9) & dRow(16).ToString & Chr(9) & dRow(17).ToString & Chr(9))
+                                    dRow(15).ToString & Chr(9) & dRow(16).ToString & Chr(9) & dRow(17).ToString & Chr(9) & dRow(18).ToString & Chr(9) & dRow(19).ToString & Chr(9) & _
+                                    dRow(20).ToString & Chr(9))
                 Next
 
                 'No es posible hace un datasource y luego intentar cambiar datos de celdas con codigo, no marca error pero no hace el cambio, por eso
@@ -551,12 +588,15 @@ busca:
                 .CODIGO_USUARIO_GRABO = Usuario.Codigo_Usuario
                 .CONCEPTO = Me.txtConcepto.Text.ToUpper
                 .TOTAL_ACTOS_AL_0 = valorNumerico(Me.lblTotalActos0.Text)
+                .TOTAL_ACTOS_AL_8 = valorNumerico(Me.lblTotalActos8.Text)
                 .TOTAL_ACTOS_AL_11 = valorNumerico(Me.lblTotalActos11.Text)
                 .TOTAL_ACTOS_AL_16 = valorNumerico(Me.lblTotalActos16.Text)
                 .TOTAL_ACTOS = valorNumerico(Me.lblTotalActos.Text)
+                .TOTAL_IVA_ACREDITABLE_AL_8 = valorNumerico(Me.lblTotalIvaAcreditable8.Text)
                 .TOTAL_IVA_ACREDITABLE_AL_11 = valorNumerico(Me.lblTotalIvaAcreditable11.Text)
                 .TOTAL_IVA_ACREDITABLE_AL_16 = valorNumerico(Me.lblTotalIvaAcreditable16.Text)
                 .TOTAL_IVA_RETENIDO_AL_4 = valorNumerico(Me.lblTotalIvaRetenido4.Text)
+                .TOTAL_IVA_RETENIDO_AL_6 = valorNumerico(Me.lblTotalIvaRetenido6.Text)
                 .TOTAL_IVA_RETENIDO_AL_10 = valorNumerico(Me.lblTotalIvaRetenido10.Text)
 
                 bGraboGlobal = .GrabaIVAAcreditableGlobal
@@ -575,16 +615,19 @@ busca:
                         .oIVADetalle.ANIO = CInt(Me.Grid.Cell(i, Me.iGyAño).Text)
                         .oIVADetalle.OPERACIONES = CInt(Me.Grid.Cell(i, Me.iGyOperaciones).Text)
                         .oIVADetalle.ACTOS_AL_0 = valorNumerico(Me.Grid.Cell(i, Me.iGyActos0).Text)
+                        .oIVADetalle.ACTOS_AL_8 = valorNumerico(Me.Grid.Cell(i, Me.iGyActos8).Text)
                         .oIVADetalle.ACTOS_AL_10 = 0
                         .oIVADetalle.ACTOS_AL_15 = 0
                         .oIVADetalle.ACTOS_AL_11 = valorNumerico(Me.Grid.Cell(i, Me.iGyActos11).Text)
                         .oIVADetalle.ACTOS_AL_16 = valorNumerico(Me.Grid.Cell(i, Me.iGyActos16).Text)
                         .oIVADetalle.SUBTOTAL_ACTOS = valorNumerico(Me.Grid.Cell(i, Me.iGySubtotalActos).Text)
+                        .oIVADetalle.IVA_ACREDITABLE_AL_8 = valorNumerico(Me.Grid.Cell(i, Me.iGyIvaAcreditable8).Text)
                         .oIVADetalle.IVA_ACREDITABLE_AL_10 = 0
                         .oIVADetalle.IVA_ACREDITABLE_AL_15 = 0
                         .oIVADetalle.IVA_ACREDITABLE_AL_11 = valorNumerico(Me.Grid.Cell(i, Me.iGyIvaAcreditable11).Text)
                         .oIVADetalle.IVA_ACREDITABLE_AL_16 = valorNumerico(Me.Grid.Cell(i, Me.iGyIvaAcreditable16).Text)
                         .oIVADetalle.IVA_RETENIDO_AL_4 = valorNumerico(Me.Grid.Cell(i, Me.iGyIvaRetenido4).Text)
+                        .oIVADetalle.IVA_RETENIDO_AL_6 = valorNumerico(Me.Grid.Cell(i, Me.iGyIvaRetenido6).Text)
                         .oIVADetalle.IVA_RETENIDO_AL_10 = valorNumerico(Me.Grid.Cell(i, Me.iGyIvaRetenido10).Text)
                         .oIVADetalle.FOLIO_COMPRA = Me.Grid.Cell(i, Me.IGyFolioCompra).Text.ToUpper
                         .oIVADetalle.FECHA_FACTURA_PROVEEDOR = CDate(Me.Grid.Cell(i, Me.iGyFechaProveedor).Text)
@@ -738,8 +781,10 @@ busca:
             With f
                 .Inicializa()
 
+                f.lblIvaAcreditableACubrir8.Text = Me.lblIvaAcreditableACubrir8.Text
                 f.lblIvaAcreditableACubrir11.Text = Me.lblIvaAcreditableACubrir11.Text
                 f.lblIvaAcreditableACubrir16.Text = Me.lblIvaAcreditableACubrir16.Text
+                f.lblIvaAcreditableAcumulado8.Text = Me.lblTotalIvaAcreditable8.Text
                 f.lblIvaAcreditableAcumulado11.Text = Me.lblTotalIvaAcreditable11.Text
                 f.lblIvaAcreditableAcumulado16.Text = Me.lblTotalIvaAcreditable16.Text
 
@@ -771,12 +816,15 @@ busca:
                     End If
 
                     .txtActos0.Text = FormatImporteContable(CDbl(Me.Grid.Cell(iRenglon, Me.iGyActos0).Text))
+                    .txtActos8.Text = FormatImporteContable(CDbl(Me.Grid.Cell(iRenglon, Me.iGyActos8).Text))
                     .txtActos11.Text = FormatImporteContable(CDbl(Me.Grid.Cell(iRenglon, Me.iGyActos11).Text))
                     .txtActos16.Text = FormatImporteContable(CDbl(Me.Grid.Cell(iRenglon, Me.iGyActos16).Text))
                     .lblActosTotal.Text = FormatImporteContable(CDbl(Me.Grid.Cell(iRenglon, Me.iGySubtotalActos).Text))
+                    .txtIvaAcreditable8.Text = FormatImporteContable(CDbl(Me.Grid.Cell(iRenglon, Me.iGyIvaAcreditable8).Text))
                     .txtIvaAcreditable11.Text = FormatImporteContable(CDbl(Me.Grid.Cell(iRenglon, Me.iGyIvaAcreditable11).Text))
                     .txtIvaAcreditable16.Text = FormatImporteContable(CDbl(Me.Grid.Cell(iRenglon, Me.iGyIvaAcreditable16).Text))
                     .txtIvaRetenido4.Text = FormatImporteContable(CDbl(Me.Grid.Cell(iRenglon, Me.iGyIvaRetenido4).Text))
+                    .txtIvaRetenido6.Text = FormatImporteContable(CDbl(Me.Grid.Cell(iRenglon, Me.iGyIvaRetenido6).Text))
                     .txtIvaRetenido10.Text = FormatImporteContable(CDbl(Me.Grid.Cell(iRenglon, Me.iGyIvaRetenido10).Text))
                 Else
                     bNuevoRenglon = True
@@ -796,12 +844,15 @@ busca:
                     Me.Grid.Cell(iRenglon, Me.iGyOperaciones).Text = .txtNumeroOperaciones.Text
 
                     Me.Grid.Cell(iRenglon, Me.iGyActos0).Text = .txtActos0.Text
+                    Me.Grid.Cell(iRenglon, Me.iGyActos8).Text = .txtActos8.Text
                     Me.Grid.Cell(iRenglon, Me.iGyActos11).Text = .txtActos11.Text
                     Me.Grid.Cell(iRenglon, Me.iGyActos16).Text = .txtActos16.Text
                     Me.Grid.Cell(iRenglon, Me.iGySubtotalActos).Text = .lblActosTotal.Text
+                    Me.Grid.Cell(iRenglon, Me.iGyIvaAcreditable8).Text = .txtIvaAcreditable8.Text
                     Me.Grid.Cell(iRenglon, Me.iGyIvaAcreditable11).Text = .txtIvaAcreditable11.Text
                     Me.Grid.Cell(iRenglon, Me.iGyIvaAcreditable16).Text = .txtIvaAcreditable16.Text
                     Me.Grid.Cell(iRenglon, Me.iGyIvaRetenido4).Text = .txtIvaRetenido4.Text
+                    Me.Grid.Cell(iRenglon, Me.iGyIvaRetenido6).Text = .txtIvaRetenido6.Text
                     Me.Grid.Cell(iRenglon, Me.iGyIvaRetenido10).Text = .txtIvaRetenido10.Text
 
                     If bNuevoRenglon = True Then
@@ -825,12 +876,15 @@ busca:
     Private Sub Totaliza()
 
         Me.lblTotalActos0.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyActos0)))
+        Me.lblTotalActos8.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyActos8)))
         Me.lblTotalActos11.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyActos11)))
         Me.lblTotalActos16.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyActos16)))
         Me.lblTotalActos.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGySubtotalActos)))
+        Me.lblTotalIvaAcreditable8.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyIvaAcreditable8)))
         Me.lblTotalIvaAcreditable11.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyIvaAcreditable11)))
         Me.lblTotalIvaAcreditable16.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyIvaAcreditable16)))
         Me.lblTotalIvaRetenido4.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyIvaRetenido4)))
+        Me.lblTotalIvaRetenido6.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyIvaRetenido6)))
         Me.lblTotalIvaRetenido10.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyIvaRetenido10)))
 
     End Sub
