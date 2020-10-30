@@ -1662,6 +1662,10 @@ BuscarCuentas:
             End If
             Rpt.SetParameterValue("@FOLIO_MOVIMIENTO_INVENTARIO", Me.TxtFolio.Text)
 
+            If FormatoDeReporte = "RPT_FORMATO_MOVIMIENTO_INVENTARIO" Then
+                Rpt.SetParameterValue("@CODIGO_USUARIO", Usuario.Codigo_Usuario)
+            End If
+
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
             frm.Show()
