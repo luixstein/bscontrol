@@ -33,6 +33,9 @@ Partial Class ConfiguracionUsuarios
         Me.txtFiltro = New System.Windows.Forms.TextBox()
         Me.lstbElementos = New System.Windows.Forms.ListBox()
         Me.gbInformacion = New System.Windows.Forms.GroupBox()
+        Me.txtDepartamento = New System.Windows.Forms.TextBox()
+        Me.lblDisplayDepartamento = New System.Windows.Forms.Label()
+        Me.lblDepartamento = New System.Windows.Forms.Label()
         Me.gpVendedor = New System.Windows.Forms.GroupBox()
         Me.txtCodigoVendedor = New System.Windows.Forms.TextBox()
         Me.lblNombreVendedor = New System.Windows.Forms.Label()
@@ -42,6 +45,8 @@ Partial Class ConfiguracionUsuarios
         Me.txtClaveCorreo = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.txtCorreoUsuario = New System.Windows.Forms.TextBox()
+        Me.LblEstatus = New System.Windows.Forms.Label()
+        Me.CboEstatus = New System.Windows.Forms.ComboBox()
         Me.tcPanelPermisos = New System.Windows.Forms.TabControl()
         Me.TpPermisosMenus = New System.Windows.Forms.TabPage()
         Me.gbControlMenus = New System.Windows.Forms.GroupBox()
@@ -101,16 +106,11 @@ Partial Class ConfiguracionUsuarios
         Me.cboPlazas = New System.Windows.Forms.ComboBox()
         Me.LblNombreUsuario = New System.Windows.Forms.Label()
         Me.TxtNombreUsuario = New System.Windows.Forms.TextBox()
-        Me.LblEstatus = New System.Windows.Forms.Label()
-        Me.CboEstatus = New System.Windows.Forms.ComboBox()
         Me.LblDisplayCodUsuario = New System.Windows.Forms.Label()
         Me.TxtCodigoUsuario = New System.Windows.Forms.TextBox()
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.txtDepartamento = New System.Windows.Forms.TextBox()
-        Me.lblDepartamento = New System.Windows.Forms.Label()
-        Me.lblDisplayDepartamento = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
         Me.gbInformacion.SuspendLayout()
@@ -235,6 +235,32 @@ Partial Class ConfiguracionUsuarios
         Me.gbInformacion.TabStop = False
         Me.gbInformacion.Text = "Usuario"
         '
+        'txtDepartamento
+        '
+        Me.txtDepartamento.Location = New System.Drawing.Point(84, 128)
+        Me.txtDepartamento.MaxLength = 60
+        Me.txtDepartamento.Name = "txtDepartamento"
+        Me.txtDepartamento.Size = New System.Drawing.Size(60, 20)
+        Me.txtDepartamento.TabIndex = 4
+        '
+        'lblDisplayDepartamento
+        '
+        Me.lblDisplayDepartamento.AutoSize = True
+        Me.lblDisplayDepartamento.Location = New System.Drawing.Point(6, 131)
+        Me.lblDisplayDepartamento.Name = "lblDisplayDepartamento"
+        Me.lblDisplayDepartamento.Size = New System.Drawing.Size(80, 13)
+        Me.lblDisplayDepartamento.TabIndex = 119
+        Me.lblDisplayDepartamento.Text = "Departamento :"
+        '
+        'lblDepartamento
+        '
+        Me.lblDepartamento.AutoSize = True
+        Me.lblDepartamento.Location = New System.Drawing.Point(148, 131)
+        Me.lblDepartamento.Name = "lblDepartamento"
+        Me.lblDepartamento.Size = New System.Drawing.Size(10, 13)
+        Me.lblDepartamento.TabIndex = 117
+        Me.lblDepartamento.Text = "."
+        '
         'gpVendedor
         '
         Me.gpVendedor.Controls.Add(Me.txtCodigoVendedor)
@@ -322,6 +348,26 @@ Partial Class ConfiguracionUsuarios
         Me.txtCorreoUsuario.Name = "txtCorreoUsuario"
         Me.txtCorreoUsuario.Size = New System.Drawing.Size(172, 20)
         Me.txtCorreoUsuario.TabIndex = 0
+        '
+        'LblEstatus
+        '
+        Me.LblEstatus.AutoSize = True
+        Me.LblEstatus.Location = New System.Drawing.Point(6, 157)
+        Me.LblEstatus.Name = "LblEstatus"
+        Me.LblEstatus.Size = New System.Drawing.Size(48, 13)
+        Me.LblEstatus.TabIndex = 102
+        Me.LblEstatus.Text = "Estatus :"
+        '
+        'CboEstatus
+        '
+        Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboEstatus.FormattingEnabled = True
+        Me.CboEstatus.Items.AddRange(New Object() {"A", "B"})
+        Me.CboEstatus.Location = New System.Drawing.Point(84, 154)
+        Me.CboEstatus.MaxLength = 1
+        Me.CboEstatus.Name = "CboEstatus"
+        Me.CboEstatus.Size = New System.Drawing.Size(60, 21)
+        Me.CboEstatus.TabIndex = 5
         '
         'tcPanelPermisos
         '
@@ -911,26 +957,6 @@ Partial Class ConfiguracionUsuarios
         Me.TxtNombreUsuario.Size = New System.Drawing.Size(179, 20)
         Me.TxtNombreUsuario.TabIndex = 1
         '
-        'LblEstatus
-        '
-        Me.LblEstatus.AutoSize = True
-        Me.LblEstatus.Location = New System.Drawing.Point(6, 157)
-        Me.LblEstatus.Name = "LblEstatus"
-        Me.LblEstatus.Size = New System.Drawing.Size(48, 13)
-        Me.LblEstatus.TabIndex = 102
-        Me.LblEstatus.Text = "Estatus :"
-        '
-        'CboEstatus
-        '
-        Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CboEstatus.FormattingEnabled = True
-        Me.CboEstatus.Items.AddRange(New Object() {"A", "B"})
-        Me.CboEstatus.Location = New System.Drawing.Point(84, 154)
-        Me.CboEstatus.MaxLength = 1
-        Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(60, 21)
-        Me.CboEstatus.TabIndex = 5
-        '
         'LblDisplayCodUsuario
         '
         Me.LblDisplayCodUsuario.AutoSize = True
@@ -968,32 +994,6 @@ Partial Class ConfiguracionUsuarios
         '
         Me.tssLabelEstado.Name = "tssLabelEstado"
         Me.tssLabelEstado.Size = New System.Drawing.Size(0, 17)
-        '
-        'txtDepartamento
-        '
-        Me.txtDepartamento.Location = New System.Drawing.Point(84, 128)
-        Me.txtDepartamento.MaxLength = 60
-        Me.txtDepartamento.Name = "txtDepartamento"
-        Me.txtDepartamento.Size = New System.Drawing.Size(75, 20)
-        Me.txtDepartamento.TabIndex = 4
-        '
-        'lblDepartamento
-        '
-        Me.lblDepartamento.AutoSize = True
-        Me.lblDepartamento.Location = New System.Drawing.Point(165, 131)
-        Me.lblDepartamento.Name = "lblDepartamento"
-        Me.lblDepartamento.Size = New System.Drawing.Size(10, 13)
-        Me.lblDepartamento.TabIndex = 117
-        Me.lblDepartamento.Text = "."
-        '
-        'lblDisplayDepartamento
-        '
-        Me.lblDisplayDepartamento.AutoSize = True
-        Me.lblDisplayDepartamento.Location = New System.Drawing.Point(6, 131)
-        Me.lblDisplayDepartamento.Name = "lblDisplayDepartamento"
-        Me.lblDisplayDepartamento.Size = New System.Drawing.Size(80, 13)
-        Me.lblDisplayDepartamento.TabIndex = 119
-        Me.lblDisplayDepartamento.Text = "Departamento :"
         '
         'ConfiguracionUsuarios
         '

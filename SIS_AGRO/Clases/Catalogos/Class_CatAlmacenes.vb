@@ -16,6 +16,7 @@ Public Class Class_CatAlmacenes
 #End Region
 
 #Region "Campos ligados a la tabla"
+    Private _Existe As Boolean 'lectura
     Private _GENERAR_CATEGORIA As Boolean
     Private _CODIGO_TIPO_CATEGORIA As String
 #End Region
@@ -105,6 +106,12 @@ Public Class Class_CatAlmacenes
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
+    Public ReadOnly Property Existe() As Boolean
+        Get
+            Return Me._Existe
+        End Get
+    End Property
+
     Public WriteOnly Property GENERAR_CATEGORIA() As Boolean
         Set(ByVal Value As Boolean)
             Me._GENERAR_CATEGORIA = Value
@@ -167,8 +174,8 @@ Public Class Class_CatAlmacenes
         Me.New()
         Try
             Me.CODIGO_ALMACEN = sAlmacen
-            If Me.Consultar = False Then
-                Throw New Exception("El almacén no existe.")
+            If Me.Consultar = True Then
+                Me._Existe = True
             End If
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "New", ex)
@@ -324,7 +331,7 @@ Public Class Class_CatAlmacenes
 
     Public Function ObtenerElementosFiltro(ByVal Filtro As String, ByVal Estatus As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("SELECT CODIGO_ALMACEN,NOMBRE_ALMACEN FROM CAT_ALMACENES WHERE NOMBRE_ALMACEN LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & Estatus & "' ORDER BY NOMBRE_ALMACEN", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_ALMACEN,NOMBRE_ALMACEN FROM CAT_ALMACENES WHERE NOMBRE_ALMACEN LIKE '" & sReplace(Filtro) & "%' AND ESTATUS='" & Estatus & "' ORDER BY NOMBRE_ALMACEN", Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception

@@ -245,6 +245,7 @@ Public Class Class_CatAgenciaAduanales
         End Try
         Return dTable
     End Function    'Obtiene una lita completa de los elementos del catalogo en un datatable.
+
     Public Function ObtenerElementosFiltro(ByVal Filtro As String) As System.Data.DataTable
         Dim dTable As New DataTable
         Dim dA As New SqlDataAdapter("Select * from CAT_AGENCIAS_ADUANALES WHERE NOMBRE_AGENCIA_ADUANA LIKE '" & Filtro.ToString & "%' ORDER BY NOMBRE_AGENCIA_ADUANA", Me._Conexion)

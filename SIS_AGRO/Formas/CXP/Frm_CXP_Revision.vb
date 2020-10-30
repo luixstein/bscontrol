@@ -423,7 +423,6 @@ Buscar:
                         End If
 
                         Me.LblNombreAlmacen.Text = oAlmacen.NOMBRE_ALMACEN
-
                     End If
 
                     txtTAB(e)
@@ -636,18 +635,6 @@ Buscar:
     Private Sub GridActivos_ButtonClick(ByVal Sender As System.Object, ByVal e As FlexCell.Grid.ButtonClickEventArgs) Handles GridActivos.ButtonClick
         Me.ClickBotonGridActivos()
     End Sub
-#Region "Eventos Genericos"
-    Private Sub txt_Enter(ByVal sender As Object, ByVal e As System.EventArgs)
-        Dim oTexBox As TextBox = CType(sender, TextBox)
-        oTexBox.SelectAll()
-    End Sub
-
-    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoProveedor.KeyDown, txtFolioProveedor.KeyDown, DtpFechaFacturaProveedor.KeyDown,
-        TxtSubTotal.KeyDown, txtTotalCompra.KeyDown
-        If e.KeyCode = Keys.Return Then
-            SendKeys.Send("{TAB}")
-        End If
-    End Sub
 
     Private Sub ckbDolares_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles ckbDolares.KeyDown
         If e.KeyCode = Keys.Return Then
@@ -670,23 +657,6 @@ Buscar:
             'SendKeys.Send("{TAB}")
             Me.GridCuentas.Cell(1, Me.iGyCtasNombreCentroCosto).SetFocus()
         End If
-    End Sub
-
-    Private Sub txtNumerosDecimalKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtRetencionIVA.KeyPress, TxtSubTotal.KeyPress, TxtIVA.KeyPress, txtTotalCompra.KeyPress, txtPorciento.KeyPress,
-        txtTipoCambio.KeyPress, txtRetencionISR.KeyPress
-        Dim txt As TextBox = CType(sender, TextBox)
-        txtSoloNumerosDecimales(e, txt.Text)
-        txtNoBeep(e)
-    End Sub
-
-    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtConcepto.KeyPress, TxtCodigoProveedor.KeyPress, txtEmbarque.KeyPress, txtFolioProveedor.KeyPress,
-        DtpFechaFacturaProveedor.KeyPress, dtpFechaVencimiento.KeyPress, ckbDolares.KeyPress, TxtCodigoAlmacen.KeyPress
-        txtNoBeep(e)
-    End Sub
-
-    Private Sub txtKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) ' Handles txtCuenta.KeyPress
-        txtNoBeep(e)
-        txtSoloNumerosEnteros(e)
     End Sub
 
     Private Sub TxtSubTotal_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtSubTotal.KeyDown
@@ -762,8 +732,34 @@ Buscar:
                 Me.tsbGrabar.Select()
         End Select
     End Sub
+
+
 #End Region
 
+#Region "Eventos Genericos"
+    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoProveedor.KeyDown, txtFolioProveedor.KeyDown, DtpFechaFacturaProveedor.KeyDown,
+        TxtSubTotal.KeyDown, txtTotalCompra.KeyDown
+        If e.KeyCode = Keys.Return Then
+            SendKeys.Send("{TAB}")
+        End If
+    End Sub
+
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoAlmacen.KeyPress
+        txtSoloNumerosEnteros(e)
+        txtNoBeep(e)
+    End Sub
+
+    Private Sub txtNumerosDecimalKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtRetencionIVA.KeyPress, TxtSubTotal.KeyPress, TxtIVA.KeyPress, txtTotalCompra.KeyPress, txtPorciento.KeyPress,
+        txtTipoCambio.KeyPress, txtRetencionISR.KeyPress
+        Dim txt As TextBox = CType(sender, TextBox)
+        txtSoloNumerosDecimales(e, txt.Text)
+        txtNoBeep(e)
+    End Sub
+
+    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtConcepto.KeyPress, TxtCodigoProveedor.KeyPress, txtEmbarque.KeyPress, txtFolioProveedor.KeyPress,
+        DtpFechaFacturaProveedor.KeyPress, dtpFechaVencimiento.KeyPress, ckbDolares.KeyPress, TxtCodigoAlmacen.KeyPress
+        txtNoBeep(e)
+    End Sub
 #End Region
 
 #Region "Métodos y procedimientos"
@@ -3271,6 +3267,10 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
+    End Sub
+
+    Private Sub TxtCodigoAlmacen_TextChanged(sender As Object, e As EventArgs) Handles TxtCodigoAlmacen.TextChanged
+
     End Sub
 
 #End Region

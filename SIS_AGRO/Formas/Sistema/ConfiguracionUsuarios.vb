@@ -160,7 +160,7 @@ Public Class ConfiguracionUsuarios
     End Sub
 
     Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoUsuario.KeyPress,
-    TxtNombreUsuario.KeyPress, txtClave.KeyPress, TxtConfirmaClave.KeyPress, txtDepartamento.KeyPress
+    TxtNombreUsuario.KeyPress, txtClave.KeyPress, TxtConfirmaClave.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -185,7 +185,7 @@ Buscar:
         End Select
     End Sub
 
-    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoUsuarioImporta.KeyPress, txtCodigoVendedor.KeyPress
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoUsuarioImporta.KeyPress, txtCodigoVendedor.KeyPress, txtDepartamento.KeyPress
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
@@ -478,16 +478,16 @@ Buscar:
 Busqueda:
                 sDepartamento = oDepartamento.BusquedaVisual_PorDescripcion()
                 If txtLEN(sDepartamento) = True Then
+                    Me.txtDepartamento.Text = sDepartamento
                     GoTo Enter : Return
                 End If
 
             Case Keys.Return
-Enter:
                 If txtLEN(Me.txtDepartamento.Text) = False Then
                     Me.lblDepartamento.Text = ""
                     GoTo Busqueda : Return
                 End If
-
+Enter:
                 oDepartamento = New Class_CatDepartamentos(Me.txtDepartamento.Text)
                 If oDepartamento.Existe = False Then
                     Me.lblDepartamento.Text = ""
@@ -590,27 +590,30 @@ Enter:
     End Sub
 
     Private Sub InicializaElemento()
-        Me.TxtCodigoUsuario.Text = ""
-        Me.TxtNombreUsuario.Text = ""
-        Me.txtClave.Text = ""
-        Me.TxtConfirmaClave.Text = ""
+        Try
+            Me.TxtCodigoUsuario.Text = ""
+            Me.TxtNombreUsuario.Text = ""
+            Me.txtClave.Text = ""
+            Me.TxtConfirmaClave.Text = ""
 
-        Me.CboEstatus.Text = "A"
-        Me.ckbCuentas.Checked = False
-        Me.ckbArticulos.Checked = False
-        Me.CkbAdministrador.Checked = False
-        Me.CkbClientes.Checked = False
-        Me.CkbArmadoPalet.Checked = False
+            Me.CboEstatus.Text = "A"
+            Me.ckbCuentas.Checked = False
+            Me.ckbArticulos.Checked = False
+            Me.CkbAdministrador.Checked = False
+            Me.CkbClientes.Checked = False
+            Me.CkbArmadoPalet.Checked = False
 
-        Me.txtCodigoVendedor.Text = ""
-        Me.lblNombreVendedor.Text = ""
+            Me.txtCodigoVendedor.Text = "" : Me.lblNombreVendedor.Text = ""
+            Me.txtDepartamento.Text = "" : Me.lblDepartamento.Text = ""
 
-        If Empresa_Sistema.CODIGO_VENDEDOR_POR_USUARIO = True Then
-            Me.gpVendedor.Visible = True
-        Else
-            Me.gpVendedor.Visible = False
-        End If
-
+            If Empresa_Sistema.CODIGO_VENDEDOR_POR_USUARIO = True Then
+                Me.gpVendedor.Visible = True
+            Else
+                Me.gpVendedor.Visible = False
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, "InicializaElemento", ex)
+        End Try
     End Sub
 
     Private Sub DesplegarElementos()
@@ -813,60 +816,78 @@ Enter:
     '    End Try
     'End Sub
 
-    Private Function LlenaComboEstatus() As Boolean
-        Me.CboEstatus.Items.Add("A")
-        Me.CboEstatus.Items.Add("B")
-
-        Me.CboEstatus.SelectedItem = "A"
-    End Function
-
     Private Sub LlenaElemento(ByVal iCodigo_Elemento As Integer)
-        Dim oElemento As New Class_sisUsuarios
-        oElemento.Codigo_Usuario = iCodigo_Elemento
-        If oElemento.Consultar Then
-            With oElemento
-                Me.TxtCodigoUsuario.Text = .Codigo_Usuario.ToString
-                Me.TxtNombreUsuario.Text = .Nombre_Usuario.ToString
-                Me.txtClave.Text = .Clave.ToString
-                Me.TxtConfirmaClave.Text = .Clave.ToString
-                Me.cboPlazas.SelectedValue = .Codigo_Plaza
-                Me.CboAlmacen.SelectedValue = .Codigo_Almacen
-                Me.CboEstatus.Text = .Estatus.ToString
-                Me.ckbArticulos.Checked = CBool(.PERMISO_CAT_ARTICULOS)
-                Me.CkbAdministrador.Checked = CBool(.PERMISO_ADMINISTRADOR)
-                Me.CkbArmadoPalet.Checked = CBool(.PERMISO_ARMADO_PALET)
-                Me.CkbClientes.Checked = CBool(.PERMISO_CAT_CLIENTES)
-                Me.ckbCuentas.Checked = CBool(.PERMISO_CON_CAT_CUENTAS)
-                Me.txtCorreoUsuario.Text = .CORREO_USUARIO.ToString
-                Me.txtClaveCorreo.Text = .CLAVE_CORREO.ToString
-                Me.CkbAdmonCreditos.Checked = CBool(.ADMON_CREDITOS)
-                Me.ckbVerCostos.Checked = CBool(.VER_COSTOS)
-                Me.txtCodigoVendedor.Text = .CODIGO_VENDEDOR
+        Try
+            Dim oElemento As New Class_sisUsuarios
+            oElemento.Codigo_Usuario = iCodigo_Elemento
+            If oElemento.Consultar = True Then
+                With oElemento
+                    Me.TxtCodigoUsuario.Text = .Codigo_Usuario.ToString
+                    Me.TxtNombreUsuario.Text = .Nombre_Usuario.ToString
+                    Me.txtClave.Text = .Clave.ToString
+                    Me.TxtConfirmaClave.Text = .Clave.ToString
+                    Me.cboPlazas.SelectedValue = .Codigo_Plaza
+                    Me.CboAlmacen.SelectedValue = .Codigo_Almacen
+                    Me.CboEstatus.Text = .Estatus.ToString
+                    Me.ckbArticulos.Checked = CBool(.PERMISO_CAT_ARTICULOS)
+                    Me.CkbAdministrador.Checked = CBool(.PERMISO_ADMINISTRADOR)
+                    Me.CkbArmadoPalet.Checked = CBool(.PERMISO_ARMADO_PALET)
+                    Me.CkbClientes.Checked = CBool(.PERMISO_CAT_CLIENTES)
+                    Me.ckbCuentas.Checked = CBool(.PERMISO_CON_CAT_CUENTAS)
+                    Me.txtCorreoUsuario.Text = .CORREO_USUARIO.ToString
+                    Me.txtClaveCorreo.Text = .CLAVE_CORREO.ToString
+                    Me.CkbAdmonCreditos.Checked = CBool(.ADMON_CREDITOS)
+                    Me.ckbVerCostos.Checked = CBool(.VER_COSTOS)
+                    Me.txtCodigoVendedor.Text = .CODIGO_VENDEDOR
 
-                If txtLEN(Me.txtCodigoVendedor.Text) = True Then
-                    Dim oVendedor As New Class_CatVendedores(Me.txtCodigoVendedor.Text)
-                    If oVendedor.Existe = True Then Me.lblNombreVendedor.Text = oVendedor.NOMBRE_VENDEDOR
-                Else
-                    Me.lblNombreVendedor.Text = ""
-                End If
+                    Me.txtDepartamento.Text = .CODIGO_DEPARTAMENTO
+                    Dim oDepartamento As New Class_CatDepartamentos(.CODIGO_DEPARTAMENTO)
+                    Me.lblDepartamento.Text = oDepartamento.NOMBRE_DEPARTAMENTO
+                    oDepartamento = Nothing
 
-            End With
-        End If
-        Me.TreeMenus()
-        Me.ConsultaPermisos()
-        Me.ConsultaPermisosMenus()
-        oElemento = Nothing
+                    If txtLEN(Me.txtCodigoVendedor.Text) = True Then
+                        Dim oVendedor As New Class_CatVendedores(Me.txtCodigoVendedor.Text)
+                        If oVendedor.Existe = True Then Me.lblNombreVendedor.Text = oVendedor.NOMBRE_VENDEDOR
+                    Else
+                        Me.lblNombreVendedor.Text = ""
+                    End If
+
+                End With
+            End If
+            Me.TreeMenus()
+            Me.ConsultaPermisos()
+            Me.ConsultaPermisosMenus()
+            oElemento = Nothing
+
+        Catch ex As Exception
+            HandleError(Me.Name, "LlenaElemento", ex)
+        End Try
     End Sub
 
-    Private Sub Grabar_Elemento()
+    Private Function Grabar_Elemento() As Boolean
+        Dim bResultado As Boolean = False
         Dim oElemento As New Class_sisUsuarios
-        Dim Grabado As Boolean = False
         Dim iIndex As Integer = Me.lstbElementos.SelectedIndex
 
         If txtLEN(Me.TxtNombreUsuario.Text) = False Then
-            MsgBox("Asígne el nombre del usuario", MsgBoxStyle.Exclamation, Me.Text)
+            MsgBox("Asígne el nombre del usuario.", MsgBoxStyle.Exclamation, Me.Text)
             Me.TxtNombreUsuario.Focus()
-            Exit Sub
+            Return False
+        End If
+
+        If txtLEN(Me.txtDepartamento.Text) = False Then
+            MsgBox("Asígne el departamento del usuario.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.lblDepartamento.Text = ""
+            Me.txtDepartamento.Focus()
+            Return False
+        End If
+
+        Dim oDepartamento As New Class_CatDepartamentos(Me.txtDepartamento.Text)
+        If oDepartamento.Existe = False Then
+            MsgBox("El departamento no existe, revíse por favor.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.lblDepartamento.Text = ""
+            Me.txtDepartamento.Focus()
+            Return False
         End If
 
         Select Case Me.Estado
@@ -884,28 +905,29 @@ Enter:
                         .PERMISO_CAT_ARTICULOS = Convert.ToInt32(Me.ckbArticulos.Checked).ToString
                         .PERMISO_CAT_CLIENTES = Convert.ToInt32(Me.CkbClientes.Checked).ToString
                         .PERMISO_CON_CAT_CUENTAS = Convert.ToInt32(Me.ckbCuentas.Checked).ToString
-                        .Estatus = Me.CboEstatus.Text
+                        .ESTATUS = Me.CboEstatus.Text
                         .CORREO_USUARIO = Me.txtCorreoUsuario.Text
                         .CLAVE_CORREO = Me.txtClaveCorreo.Text
                         .ADMON_CREDITOS = Convert.ToInt32(Me.CkbAdmonCreditos.Checked)
                         .VER_COSTOS = ckbVerCostos.Checked
                         .CODIGO_VENDEDOR = Me.txtCodigoVendedor.Text
+                        .CODIGO_DEPARTAMENTO = Me.txtDepartamento.Text
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
-                                If .Insertar() Then
-                                    Grabado = True
+                                If .Grabar("INSERTAR") Then
+                                    bResultado = True
                                     Me.Estado = enumEstados.CONSULTA
                                 End If
                             Case enumEstados.EDICION
-                                If .Actualizar() Then
-                                    Grabado = True
+                                If .Grabar("ACTUALIZAR") Then
+                                    bResultado = True
                                     Me.Estado = enumEstados.CONSULTA
                                 End If
                         End Select
                         .EliminaPermisoDocumentos()
 
-                        If Grabado Then
+                        If bResultado = True Then
                             Me.GrabaPermisosMenus()
                             Me.GrabaPermisosDocumentos()
                             Me.GrabaPermisosTipoDocumentos()
@@ -926,7 +948,9 @@ Enter:
                     oElemento = Nothing
                 End Try
         End Select
-    End Sub
+
+        Return bResultado
+    End Function
 
     Private Sub GrabaPermisosMenus()
         Dim oElementos As New Class_sisUsuarios(CInt(Me.TxtCodigoUsuario.Text))

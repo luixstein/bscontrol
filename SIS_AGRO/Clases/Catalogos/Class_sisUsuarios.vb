@@ -1,8 +1,6 @@
-﻿Imports System.Data
-Imports System.Data.SqlClient
+﻿Imports System.Data.SqlClient
 
 Public Class Class_sisUsuarios
-    Inherits Class_Catalogos
 
 #Region "Campos"
 
@@ -17,6 +15,7 @@ Public Class Class_sisUsuarios
     Private _PERMISO_CAT_CLIENTES As String
     Private _PERMISO_ADMINISTRADOR As String
     Private _PERMISO_ARMADO_PALET As String
+    Private _ESTATUS As String
     Private _CORREO_USUARIO As String
     Private _CLAVE_CORREO As String
     Private _SERVIDOR_CORREO_REMITENTE As String
@@ -26,6 +25,7 @@ Public Class Class_sisUsuarios
     Private _ADMON_CREDITOS As Integer
     Private _VER_COSTOS As Boolean
     Private _CODIGO_VENDEDOR As String
+    Private _CODIGO_DEPARTAMENTO As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -142,6 +142,15 @@ Public Class Class_sisUsuarios
         End Set
     End Property
 
+    Public Property ESTATUS() As String
+        Get
+            Return Me._ESTATUS
+        End Get
+        Set(ByVal Value As String)
+            Me._ESTATUS = Value
+        End Set
+    End Property
+
     Public Property CORREO_USUARIO() As String
         Get
             Return Me._CORREO_USUARIO
@@ -222,16 +231,25 @@ Public Class Class_sisUsuarios
             Me._CODIGO_VENDEDOR = Value
         End Set
     End Property
+
+    Public Property CODIGO_DEPARTAMENTO() As String
+        Get
+            Return Me._CODIGO_DEPARTAMENTO
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_DEPARTAMENTO = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos de sistema"
-    Public Overrides ReadOnly Property Nombre_Catalogo() As String
+    Public ReadOnly Property Nombre_Catalogo() As String
         Get
             Return Me._Nombre_Catalogo
         End Get
     End Property
 
-    Public Overrides Property Nombre_Reporte() As String
+    Public Property Nombre_Reporte() As String
         Get
             Return Me._Nombre_Reporte
         End Get
@@ -264,8 +282,7 @@ Public Class Class_sisUsuarios
 
     Public Sub New(ByVal bAbrirConexion As Boolean, ByVal bLogin As Boolean)
         Me._Nombre_Catalogo = "SIS_USUARIOS"
-
-    End Sub   'Inicializa al objeto.
+    End Sub
 
     Public Sub New(ByVal iCodigoUsuario As Integer)
         Me.New()
@@ -286,7 +303,7 @@ Public Class Class_sisUsuarios
 #End Region
 
 #Region "Métodos y procedimientos"
-    Public Overrides Function Actualizar() As Boolean
+    Public Function Grabar(ByVal sAccion As String) As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -296,7 +313,7 @@ Public Class Class_sisUsuarios
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_UTILERIAS_USUARIO_GRABA"
 
-            sqlParametro = .Parameters.Add("@CODIGO_USUARIO", SqlDbType.SmallInt) : sqlParametro.Value = Me._Codigo_Usuario
+            sqlParametro = .Parameters.Add("@CODIGO_USUARIO", SqlDbType.SmallInt) : sqlParametro.Value = Me._Codigo_Usuario : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@NOMBRE_USUARIO", SqlDbType.NVarChar, 60) : sqlParametro.Value = Me._Nombre_Usuario.ToUpper
             sqlParametro = .Parameters.Add("@CLAVE", SqlDbType.NVarChar, 12) : sqlParametro.Value = Me._Clave
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._Codigo_Plaza
@@ -306,7 +323,7 @@ Public Class Class_sisUsuarios
             sqlParametro = .Parameters.Add("@PERMISO_CAT_CLIENTES", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._PERMISO_CAT_CLIENTES
             sqlParametro = .Parameters.Add("@PERMISO_ADMINISTRADOR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._PERMISO_ADMINISTRADOR
             sqlParametro = .Parameters.Add("@PERMISO_ARMADO_PALET", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._PERMISO_ARMADO_PALET
-            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me.Estatus
+            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._ESTATUS
             sqlParametro = .Parameters.Add("@CORREO_USUARIO", SqlDbType.NVarChar, 120) : sqlParametro.Value = Me._CORREO_USUARIO
             sqlParametro = .Parameters.Add("@CLAVE_CORREO", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CLAVE_CORREO
             sqlParametro = .Parameters.Add("@ADMON_CREDITOS", SqlDbType.SmallInt) : sqlParametro.Value = Me._ADMON_CREDITOS
@@ -316,15 +333,16 @@ Public Class Class_sisUsuarios
             Else
                 sqlParametro = .Parameters.Add("@CODIGO_VENDEDOR", SqlDbType.SmallInt) : sqlParametro.Value = DBNull.Value
             End If
-            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "ACTUALIZAR"
+            sqlParametro = .Parameters.Add("@CODIGO_DEPARTAMENTO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_DEPARTAMENTO
+            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = sAccion '"ACTUALIZAR" 'INSERTAR
 
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-
+                Me._Codigo_Usuario = .Parameters("@CODIGO_USUARIO").Value.ToString
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
+                HandleError(Me._Nombre_Catalogo, "Grabar", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -346,7 +364,7 @@ Public Class Class_sisUsuarios
                 Me._Conexion.Open()
                 dReader = .ExecuteReader()
 
-                If dReader.Read Then
+                If dReader.Read = True Then
                     Me._Codigo_Usuario = dReader("CODIGO_USUARIO")
                     Me._Nombre_Usuario = "" & dReader("NOMBRE_USUARIO").ToString
                     Me._Codigo_Plaza = "" & dReader("Codigo_Plaza").ToString
@@ -357,7 +375,7 @@ Public Class Class_sisUsuarios
                     Me._PERMISO_CAT_CLIENTES = "" & dReader("PERMISO_CAT_CLIENTES").ToString
                     Me._PERMISO_ADMINISTRADOR = "" & dReader("PERMISO_ADMINISTRADOR").ToString
                     Me._PERMISO_ARMADO_PALET = "" & dReader("PERMISO_ARMADO_PALET").ToString
-                    Me.Estatus = "" & dReader("ESTATUS").ToString
+                    Me._ESTATUS = "" & dReader("ESTATUS").ToString
                     Me._CORREO_USUARIO = Trim("" & dReader("CORREO_USUARIO").ToString)
                     Me._CLAVE_CORREO = Trim("" & dReader("CLAVE_CORREO").ToString)
                     Me._SERVIDOR_CORREO_REMITENTE = Trim("" & dReader("SERVIDOR_CORREO_REMITENTE").ToString)
@@ -367,6 +385,7 @@ Public Class Class_sisUsuarios
                     Me._ADMON_CREDITOS = CInt(dReader("ADMON_CREDITOS"))
                     Me._VER_COSTOS = CBool(dReader("VER_COSTOS").ToString)
                     Me._CODIGO_VENDEDOR = "" & dReader("CODIGO_VENDEDOR").ToString
+                    Me._CODIGO_DEPARTAMENTO = dReader("CODIGO_DEPARTAMENTO").ToString
 
                     bResultado = True
                 End If
@@ -381,17 +400,17 @@ Public Class Class_sisUsuarios
         Return bResultado
     End Function
 
-    Public Overrides Function Consultar() As Boolean
+    Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
         Try
-            bResultado = Me.ConsultarUnico(Me._QuerySelect & " Where CODIGO_USUARIO=" & sReplace(Me._Codigo_Usuario))
+            bResultado = Me.ConsultarUnico(Me._QuerySelect & " Where CODIGO_USUARIO=" & Me._Codigo_Usuario.ToString)
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "Consultar", ex)
         End Try
         Return bResultado
     End Function
 
-    Public Overloads Function Consultar(ByVal sNombre As String) As Boolean
+    Public Function Consultar(ByVal sNombre As String) As Boolean
         Dim bResultado As Boolean = False
         Try
             bResultado = Me.ConsultarUnico(Me._QuerySelect & " Where NOMBRE_USUARIO='" & sReplace(sNombre) & "'")
@@ -401,55 +420,7 @@ Public Class Class_sisUsuarios
         Return bResultado
     End Function
 
-    Public Overrides Function Insertar() As Boolean
-        Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand
-        Dim sqlParametro As SqlParameter
-        With cmd
-            .Connection = Me._Conexion
-            .CommandTimeout = 0
-            .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_UTILERIAS_USUARIO_GRABA"
-
-            sqlParametro = .Parameters.Add("@CODIGO_USUARIO", SqlDbType.SmallInt) : sqlParametro.Value = Me._Codigo_Usuario
-            sqlParametro = .Parameters.Add("@NOMBRE_USUARIO", SqlDbType.NVarChar, 60) : sqlParametro.Value = Me._Nombre_Usuario.ToUpper
-            sqlParametro = .Parameters.Add("@CLAVE", SqlDbType.NVarChar, 12) : sqlParametro.Value = Me._Clave
-            sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._Codigo_Plaza
-            sqlParametro = .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._Codigo_Almacen
-            sqlParametro = .Parameters.Add("@PERMISO_CON_CAT_CUENTAS", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._PERMISO_CON_CAT_CUENTAS
-            sqlParametro = .Parameters.Add("@PERMISO_CAT_ARTICULOS", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._PERMISO_CAT_ARTICULOS
-            sqlParametro = .Parameters.Add("@PERMISO_CAT_CLIENTES", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._PERMISO_CAT_CLIENTES
-            sqlParametro = .Parameters.Add("@PERMISO_ADMINISTRADOR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._PERMISO_ADMINISTRADOR
-            sqlParametro = .Parameters.Add("@PERMISO_ARMADO_PALET", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._PERMISO_ARMADO_PALET
-            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me.Estatus
-            sqlParametro = .Parameters.Add("@CORREO_USUARIO", SqlDbType.NVarChar, 120) : sqlParametro.Value = Me._CORREO_USUARIO
-            sqlParametro = .Parameters.Add("@CLAVE_CORREO", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CLAVE_CORREO
-            sqlParametro = .Parameters.Add("@ADMON_CREDITOS", SqlDbType.SmallInt) : sqlParametro.Value = Me._ADMON_CREDITOS
-            sqlParametro = .Parameters.Add("@VER_COSTOS", SqlDbType.NVarChar, 1) : sqlParametro.Value = Convert.ToInt32(Me._VER_COSTOS).ToString
-            If txtLEN(Me._CODIGO_VENDEDOR) = True Then
-                sqlParametro = .Parameters.Add("@CODIGO_VENDEDOR", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_VENDEDOR)
-            Else
-                sqlParametro = .Parameters.Add("@CODIGO_VENDEDOR", SqlDbType.SmallInt) : sqlParametro.Value = DBNull.Value
-            End If
-            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "INSERTAR"
-
-            Try
-                Me._Conexion.Open()
-                .ExecuteNonQuery()
-                bResultado = True
-            Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Insertar", ex)
-            Finally
-                Me._Conexion.Close()
-                'Me._Conexion.Dispose()
-                cmd.Dispose()
-                sqlParametro = Nothing
-            End Try
-        End With
-        Return bResultado
-    End Function
-
-    Public Overrides Function ObtenerElementos() As System.Data.DataTable
+    Public Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
         Dim da As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
         Try
@@ -550,7 +521,7 @@ Public Class Class_sisUsuarios
 
     '    End Sub
 
-    Public Overrides Function BusquedaVisual_PorCodigo() As String
+    Public Function BusquedaVisual_PorCodigo() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de Usuarios por Código."
@@ -570,14 +541,14 @@ Public Class Class_sisUsuarios
         Return Resultado
     End Function
 
-    Public Overrides Function BusquedaVisual_PorDescripcion() As String
+    Public Function BusquedaVisual_PorDescripcion() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de Usuarios por Descripción."
         f.sCampo = "NOMBRE_USUARIO"
         f.sOrder = "NOMBRE_USUARIO"
         f.sTable = "SIS_USUARIOS"
-        f.sQl = "Select CODIGO_USUARIO,NOMBRE_USUARIO From SIS_USUARIOS Where 1=1 And"
+        f.sQl = "SELECT CODIGO_USUARIO,NOMBRE_USUARIO FROM SIS_USUARIOS WHERE 1=1 AND ESTATUS='A' AND "
         f.Inicia("")
         f.ShowDialog()
         Try

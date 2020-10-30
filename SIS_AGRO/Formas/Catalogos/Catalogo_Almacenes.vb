@@ -268,7 +268,7 @@ Public Class Catalogo_Almacenes
     Private Sub LlenaElemento(ByVal iCodigo_Elemento As String)
         Try
             Me.oAlmacenes.CODIGO_ALMACEN = iCodigo_Elemento
-            If Me.oAlmacenes.Consultar Then
+            If Me.oAlmacenes.Consultar = True Then
                 With Me.oAlmacenes
                     Me.TxtCodigoAlmacen.Text = .CODIGO_ALMACEN.ToString
                     Me.TxtNombreAlmacen.Text = .NOMBRE_ALMACEN.ToString
@@ -296,7 +296,7 @@ Public Class Catalogo_Almacenes
                     End If
                     sql = Nothing
 
-                    If .Estatus = "A" Then
+                    If .ESTATUS = "A" Then
                         Me.CboEstatus.SelectedIndex = 0
                     Else
                         Me.CboEstatus.SelectedIndex = 1

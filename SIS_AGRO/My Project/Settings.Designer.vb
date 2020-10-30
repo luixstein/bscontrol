@@ -257,7 +257,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("AGRICONTROL_BIOLOGOS")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("AGRINET_BSQP")>  _
         Public Property BaseDatos() As String
             Get
                 Return CType(Me("BaseDatos"),String)

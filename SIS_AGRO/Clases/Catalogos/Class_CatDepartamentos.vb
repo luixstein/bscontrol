@@ -35,10 +35,13 @@ Public Class Class_CatDepartamentos
 #Region "Propiedades"
 
 #Region "Propiedades Campos de la tabla"
-    Public ReadOnly Property CODIGO_DEPARTAMENTO() As Integer
+    Public Property CODIGO_DEPARTAMENTO() As Integer
         Get
             Return Me._CODIGO_DEPARTAMENTO
         End Get
+        Set(value As Integer)
+            Me._CODIGO_DEPARTAMENTO = value
+        End Set
     End Property
 
     Public Property NOMBRE_DEPARTAMENTO() As String
@@ -102,8 +105,8 @@ Public Class Class_CatDepartamentos
         Me._Nombre_Reporte = "RPT_CAT_DEPARTAMENTOS"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "Select Codigo_DEPARTAMENTO,Nombre_DEPARTAMENTO From CAT_DEPARTAMENTOS"
-        Me._QueryOrder = " Order by Nombre_DEPARTAMENTO"
+        Me._QuerySelect = "SELECT CODIGO_DEPARTAMENTO,NOMBRE_DEPARTAMENTO FROM CAT_DEPARTAMENTOS "
+        Me._QueryOrder = " ORDER BY NOMBRE_DEPARTAMENTO"
     End Sub
 
     Public Sub New(ByVal sCodigo As String)
@@ -125,7 +128,7 @@ Public Class Class_CatDepartamentos
 #End Region
 
 #Region "Métodos y procedimientos"
-    Public Function Grabar() As Boolean
+    Public Function Grabar(ByVal sAccion As String) As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -136,8 +139,9 @@ Public Class Class_CatDepartamentos
             .CommandText = "MP_CAT_DEPARTAMENTOS_GRABA"
 
             sqlParametro = .Parameters.Add("@CODIGO_DEPARTAMENTO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_DEPARTAMENTO : sqlParametro.Direction = ParameterDirection.InputOutput
-            sqlParametro = .Parameters.Add("@NOMBRE_DEPARTAMENTO", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._NOMBRE_DEPARTAMENTO.Trim.ToUpper
-            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "INSERTAR"
+            sqlParametro = .Parameters.Add("@NOMBRE_DEPARTAMENTO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_DEPARTAMENTO.Trim.ToUpper
+            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS
+            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = sAccion
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
@@ -208,6 +212,19 @@ Public Class Class_CatDepartamentos
     '    End Try
     '    Return dTable
     'End Function
+
+    Public Function ObtenerElementosFiltro(ByVal Filtro As String) As System.Data.DataTable
+        Dim dTable As New DataTable
+        Dim dA As New SqlDataAdapter("SELECT * FROM CAT_DEPARTAMENTOS WHERE NOMBRE_DEPARTAMENTO LIKE '" & Filtro.ToString & "%' ORDER BY NOMBRE_DEPARTAMENTO", Me._Conexion)
+        Try
+            dA.Fill(dTable)
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ObtenerElementosFiltro", ex)
+        Finally
+            dA.Dispose()
+        End Try
+        Return dTable
+    End Function
 
     Public Function BusquedaVisual_PorDescripcion() As String
         Dim f As New BusquedaVisual
