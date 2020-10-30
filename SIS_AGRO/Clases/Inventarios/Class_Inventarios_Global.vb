@@ -445,7 +445,7 @@ Public Class Class_Inventarios_Global
         Return bResultado
     End Function
 
-    Public Function GrabarRegistroTransformacion(ByVal sEntrada As String, ByVal sSalida As String, iUsuario As Integer) As Boolean
+    Public Function GrabarRegistroTransformacion(ByVal sEntrada As String, ByVal sSalida As String, ByVal iCodigoFormula As Integer, iUsuario As Integer) As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -453,10 +453,11 @@ Public Class Class_Inventarios_Global
             .Connection = Me._Conexion
             .CommandTimeout = 0
             .CommandType = CommandType.StoredProcedure
-            .CommandText = "INVENTARIOS_TRANSFORMACIONES_RELACION_ENTRADAS_SALIDAS_GRABA"
+            .CommandText = "MP_INVENTARIOS_TRANSFORMACIONES_RELACION_ENTRADAS_SALIDAS_GRABA"
 
             sqlParametro = .Parameters.Add("@FOLIO_ENTRADA_TRANSFORMACION", SqlDbType.NVarChar, 15) : sqlParametro.Value = sEntrada.ToUpper
             sqlParametro = .Parameters.Add("@FOLIO_SALIDA_TRANSFORMACION", SqlDbType.NVarChar, 15) : sqlParametro.Value = sSalida.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_FORMULA", SqlDbType.Int) : sqlParametro.Value = iCodigoFormula
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_GRABO", SqlDbType.SmallInt) : sqlParametro.Value = iUsuario
             Try
                 Me._Conexion.Open()

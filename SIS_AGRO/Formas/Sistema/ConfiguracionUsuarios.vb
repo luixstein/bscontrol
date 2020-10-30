@@ -202,6 +202,7 @@ Public Class ConfiguracionUsuarios
         Me.CkbAdministrador.Checked = False
         Me.CkbClientes.Checked = False
         Me.CkbArmadoPalet.Checked = False
+        Me.ckbVerFormulasConfidenciales.Checked = False
 
         Me.txtCodigoVendedor.Text = ""
         Me.lblNombreVendedor.Text = ""
@@ -443,6 +444,7 @@ Public Class ConfiguracionUsuarios
                 Me.CkbAdmonCreditos.Checked = CBool(.ADMON_CREDITOS)
                 Me.ckbVerCostos.Checked = CBool(.VER_COSTOS)
                 Me.txtCodigoVendedor.Text = .CODIGO_VENDEDOR
+                Me.ckbVerFormulasConfidenciales.Checked = .PERMISOS_FORMULAS_CONFIDENCIALES
 
                 If txtLEN(Me.txtCodigoVendedor.Text) = True Then
                     Dim oVendedor As New Class_CatVendedores(Me.txtCodigoVendedor.Text)
@@ -491,6 +493,7 @@ Public Class ConfiguracionUsuarios
                         .ADMON_CREDITOS = Convert.ToInt32(Me.CkbAdmonCreditos.Checked)
                         .VER_COSTOS = ckbVerCostos.Checked
                         .CODIGO_VENDEDOR = Me.txtCodigoVendedor.Text
+                        .PERMISOS_FORMULAS_CONFIDENCIALES = ckbVerFormulasConfidenciales.Checked
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO

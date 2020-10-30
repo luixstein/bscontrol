@@ -26,6 +26,7 @@ Public Class Class_sisUsuarios
     Private _ADMON_CREDITOS As Integer
     Private _VER_COSTOS As Boolean
     Private _CODIGO_VENDEDOR As String
+    Private _PERMISO_FORMULAS_CONFIDENCIALES As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -222,6 +223,15 @@ Public Class Class_sisUsuarios
             Me._CODIGO_VENDEDOR = Value
         End Set
     End Property
+
+    Public Property PERMISOS_FORMULAS_CONFIDENCIALES() As Boolean
+        Get
+            Return Me._PERMISO_FORMULAS_CONFIDENCIALES
+        End Get
+        Set(value As Boolean)
+            Me._PERMISO_FORMULAS_CONFIDENCIALES = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos de sistema"
@@ -316,6 +326,7 @@ Public Class Class_sisUsuarios
             Else
                 sqlParametro = .Parameters.Add("@CODIGO_VENDEDOR", SqlDbType.SmallInt) : sqlParametro.Value = DBNull.Value
             End If
+            sqlParametro = .Parameters.Add("@PERMISO_FORMULAS_CONFIDENCIALES", SqlDbType.NVarChar, 1) : sqlParametro.Value = Convert.ToInt32(Me._PERMISO_FORMULAS_CONFIDENCIALES).ToString
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "ACTUALIZAR"
 
             Try
@@ -367,6 +378,7 @@ Public Class Class_sisUsuarios
                     Me._ADMON_CREDITOS = CInt(dReader("ADMON_CREDITOS"))
                     Me._VER_COSTOS = CBool(dReader("VER_COSTOS").ToString)
                     Me._CODIGO_VENDEDOR = "" & dReader("CODIGO_VENDEDOR").ToString
+                    Me._PERMISO_FORMULAS_CONFIDENCIALES = CBool(dReader("PERMISO_FORMULAS_CONFIDENCIALES"))
 
                     bResultado = True
                 End If
@@ -431,6 +443,7 @@ Public Class Class_sisUsuarios
             Else
                 sqlParametro = .Parameters.Add("@CODIGO_VENDEDOR", SqlDbType.SmallInt) : sqlParametro.Value = DBNull.Value
             End If
+            sqlParametro = .Parameters.Add("@PERMISO_FORMULAS_CONFIDENCIALES", SqlDbType.NVarChar, 1) : sqlParametro.Value = Convert.ToInt32(Me._PERMISO_FORMULAS_CONFIDENCIALES).ToString
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "INSERTAR"
 
             Try

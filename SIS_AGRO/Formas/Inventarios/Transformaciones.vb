@@ -344,7 +344,7 @@ BuscarCuentas:
 
         'Graba la relación del folio de entrada y salida de la transformación
         Me.oInventarios = New Class_Inventarios_Global
-        If Me.oInventarios.GrabarRegistroTransformacion(Entrada, Salida, Usuario.Codigo_Usuario) = False Then
+        If Me.oInventarios.GrabarRegistroTransformacion(Entrada, Salida, CInt(Me.TxtCodigoFormula.Text), Usuario.Codigo_Usuario) = False Then
             MsgBox("No se grabó el registro de la transformación, avise al departamento de sistemas.", MsgBoxStyle.Exclamation, Me.Text)
         End If
 
@@ -614,7 +614,7 @@ BuscarCuentas:
             oFormula.CODIGO_FORMULA = Me.TxtCodigoFormula.Text
             oFormula.Consultar()
 
-            If oFormula.ES_CONFIDENCIAL Then
+            If oFormula.ES_CONFIDENCIAL And Usuario.PERMISOS_FORMULAS_CONFIDENCIALES = False Then
                 Me.Grid1.Visible = False
             Else
                 Me.Grid1.Visible = True
@@ -850,7 +850,7 @@ BuscarCuentas:
                         dExistencia = Me.oInventarios.Existencia(sCodigoArticulo, Me.CboAlmacen1.SelectedValue.ToString)
                         If dExistencia <= 0 Then
                             Me.Show()
-                            If Me.oFormula.ES_CONFIDENCIAL Then
+                            If Me.oFormula.ES_CONFIDENCIAL And Usuario.PERMISOS_FORMULAS_CONFIDENCIALES = False Then
                                 MsgBox("No hay suficiente existencia de materias primas.", MsgBoxStyle.Exclamation, sProcedure)
                             Else
                                 MsgBox("El artículo " & Me.Grid1.Cell(i, Me.iGyCodigo).Text & " " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " no tiene existencia. ", MsgBoxStyle.Exclamation, sProcedure)
@@ -863,7 +863,7 @@ BuscarCuentas:
 
                             If valorNumerico(dCantidadSumadaPorArticulos.ToString) > valorNumerico(dExistencia.ToString) Then
                                 Me.Show()
-                                If Me.oFormula.ES_CONFIDENCIAL Then
+                                If Me.oFormula.ES_CONFIDENCIAL And Usuario.PERMISOS_FORMULAS_CONFIDENCIALES = False Then
                                     MsgBox("No hay suficiente existencia de materias primas.", MsgBoxStyle.Exclamation, sProcedure)
                                 Else
                                     MsgBox("El Artículo " & Me.Grid1.Cell(i, Me.iGyCodigo).Text & " " & Me.Grid1.Cell(i, Me.iGyDescripcion).Text & " no tiene suficiente existencia.", MsgBoxStyle.Exclamation, sProcedure)

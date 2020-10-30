@@ -1882,6 +1882,22 @@ BuscarCuentas:
                 oCliente = Nothing
             End If
 
+            Me.Grid1.Visible = True
+
+            'Si es una salida por transformación y tiene formula confidencial oculta el grid si el usuario no tiene permiso de verla
+            If Me.oInventarios.CODIGO_TIPO_DOCUMENTO = "SAI" Then
+                If Me.ValidaEsTransformacion(Me.TxtFolio.Text, Me.oInventarios.CODIGO_TIPO_DOCUMENTO) Then
+
+                    Dim sql As New Class_find("SELECT CODIGO_FORMULA FROM INVENTARIOS_TRANSFORMACIONES_RELACION_ENTRADAS_SALIDAS WHERE FOLIO_SALIDA_TRANSFORMACION='" & Me.TxtFolio.Text & "'")
+                    Dim oFormula As New Class_CatFormulas(sql.Result1)
+
+                    If oFormula.ES_CONFIDENCIAL And Usuario.PERMISOS_FORMULAS_CONFIDENCIALES = False Then
+                        Me.Grid1.Visible = False
+                    End If
+
+                End If
+            End If
+
             'Consulta datos detalle
             'Me.Grid1.DataSource = Me.oInventarios.ObtenerDetalle
             Dim dTabla As DataTable = Me.oInventarios.ObtenerDetalle
