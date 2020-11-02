@@ -1216,6 +1216,7 @@ Buscar:
                     Me.tsbEditarCostos.Enabled = False
                     Me.btnActualizaConcepto.Visible = False
                     Me.btnGrabaDetalleVenta.Enabled = False
+                    Me.TxtCodigoAlmacen.Enabled = True
                     Me.TxtCodigoProveedor.Enabled = True
                     Me.lblEstatus.Text = "NUEVO"
 
@@ -1227,6 +1228,7 @@ Buscar:
 
                     Me.gbProveedor.Enabled = True
                     Me.txtFolioCompra.Enabled = False
+                    Me.TxtCodigoAlmacen.Enabled = False
                     Me.TxtCodigoProveedor.Enabled = False
                     Me.cboTipoGasto.Enabled = False
 

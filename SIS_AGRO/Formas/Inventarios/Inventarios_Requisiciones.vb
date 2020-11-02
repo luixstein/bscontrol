@@ -171,7 +171,7 @@ Enter:
             Select Case e.KeyCode
                 Case Keys.F6
 Buscar:
-                    Dim sUsuario As String = oUsuario.BusquedaVisual_PorDescripcion
+                    Dim sUsuario As String = oUsuario.BusquedaVisual_PorDescripcion("2") '2=COMPRAS, ESTE DEPARTAMENTO ES FIJO Y PROTEJIDO
                     If txtLEN(sUsuario) = True Then
                         Me.txtComprador.Text = sUsuario
                         GoTo Enter : Return

@@ -154,10 +154,9 @@ Partial Class Frm_CXP_Revision
         '
         'LblNombreAlmacen
         '
-        Me.LblNombreAlmacen.AutoSize = True
-        Me.LblNombreAlmacen.Location = New System.Drawing.Point(106, 16)
+        Me.LblNombreAlmacen.Location = New System.Drawing.Point(112, 16)
         Me.LblNombreAlmacen.Name = "LblNombreAlmacen"
-        Me.LblNombreAlmacen.Size = New System.Drawing.Size(13, 13)
+        Me.LblNombreAlmacen.Size = New System.Drawing.Size(175, 13)
         Me.LblNombreAlmacen.TabIndex = 386
         Me.LblNombreAlmacen.Text = "_"
         '
@@ -166,7 +165,7 @@ Partial Class Frm_CXP_Revision
         Me.TxtCodigoAlmacen.Location = New System.Drawing.Point(68, 14)
         Me.TxtCodigoAlmacen.MaxLength = 4
         Me.TxtCodigoAlmacen.Name = "TxtCodigoAlmacen"
-        Me.TxtCodigoAlmacen.Size = New System.Drawing.Size(32, 20)
+        Me.TxtCodigoAlmacen.Size = New System.Drawing.Size(43, 20)
         Me.TxtCodigoAlmacen.TabIndex = 1
         '
         'lblEstatus

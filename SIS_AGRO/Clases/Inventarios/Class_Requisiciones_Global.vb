@@ -526,7 +526,7 @@ Public Class Class_Requisiciones_Global
         Dim Resultado As String = ""
         f.Text = "Búsqueda de requisiciones pendientes de OC por folio."
         f.sCampo = "FOLIO_REQUISICION"
-        f.sOrder = "FECHA DESC"
+        f.sOrder = "FECHA_ENTREGA DESC"
         f.sTable = "REQUISICIONES_GLOBAL"
         f.sQl = "SELECT G.FOLIO_REQUISICION,A.NOMBRE_ALMACEN,G.ESTATUS,G.FECHA_ENTREGA,G.FECHA_SERVIDOR,UC.NOMBRE_USUARIO COMPRADOR " &
                 "FROM REQUISICIONES_GLOBAL G " &

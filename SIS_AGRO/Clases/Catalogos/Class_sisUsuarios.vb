@@ -561,6 +561,26 @@ Public Class Class_sisUsuarios
         Return Resultado
     End Function
 
+    Public Function BusquedaVisual_PorDescripcion(ByVal sCodigoDepartamento As String) As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de Usuarios por Descripción."
+        f.sCampo = "NOMBRE_USUARIO"
+        f.sOrder = "NOMBRE_USUARIO"
+        f.sTable = "SIS_USUARIOS"
+        f.sQl = "SELECT CODIGO_USUARIO,NOMBRE_USUARIO FROM SIS_USUARIOS WHERE 1=1 AND ESTATUS='A' AND CODIGO_DEPARTAMENTO=" & sCodigoDepartamento & " AND "
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcion", ex)
+        End Try
+        Return Resultado
+    End Function
+
     Public Function ValidaContraseña(ByVal sContraseña As String) As Boolean
         sContraseña = "" & Replace(sContraseña, "'", "''")
         If sContraseña = Usuario.Clave Then 'Then 'Decrypt(Me._Clave, Me.Codigo_Usuario) Then
