@@ -134,12 +134,17 @@ Public Class Compras_Movimientos
     End Sub
 
     Private Sub tsbPedir_Click(sender As Object, e As EventArgs) Handles tsbPedir.Click
-        If Me.PedirOrdenCompra() = False Then
+        If Me.PedirOrdenCompra() = True Then
+            Me.Consultar()
+        Else
             MsgBox("No se pudo realizar el pedido.", MsgBoxStyle.Exclamation, Me.Name)
-            Exit Sub
         End If
+    End Sub
 
-        Me.Consultar()
+    Private Sub tsbEditarOC_Click(sender As Object, e As EventArgs) Handles tsbEditarOC.Click
+        If Me.EditarOrdenCompra() = True Then
+            Me.Consultar()
+        End If
     End Sub
 
     Private Sub tsbRecepcionarEntrada_Click(sender As Object, e As EventArgs) Handles tsbRecepcionarEntrada.Click
@@ -250,6 +255,7 @@ Public Class Compras_Movimientos
 
         If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO = False Then
             Me.tsbPedir.Visible = False
+            Me.tsbEditarOC.Visible = False
             Me.LblRequisicion.Visible = False
             Me.TxtRequisicion.Visible = False
             Me.btnTraerDetalleRequisicion.Visible = False
@@ -951,8 +957,7 @@ Buscar:
                     Me.tsbPasarOrdenACompra.Visible = False
                     Me.tsbEditarCostos.Visible = False
                     Me.tsbPedir.Visible = False
-
-
+                    Me.tsbEditarOC.Visible = False
                     Me.chkEsInventariable.Enabled = True
 
                     If Me.oDocumento.AFECTA_CXP = True Then
@@ -1075,7 +1080,7 @@ Buscar:
                     Me.tsbPasarOrdenACompra.Visible = False
                     Me.tsbEditarCostos.Visible = False
 
-                    If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO Then
+                    If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO = True Then
                         'Me.tsbPedir.Visible = True la visibilidad se controlara desde consultar
                         Me.tsbPedir.Enabled = True
                     End If
@@ -1752,6 +1757,11 @@ Buscar:
                     Me.tsbPedir.Visible = True
                 End If
 
+                Me.tsbEditarOC.Visible = False
+                If Me.oDocumento.AFECTA_CXP = False AndAlso txtLEN(Me.TxtRequisicion.Text) = True Then
+                    Me.tsbEditarOC.Visible = True
+                End If
+
                 Me.Grid.DataSource = Me.oCompras.ObtenerDetalle
 
                 For i = 1 To Me.Grid.Rows - 1
@@ -2112,7 +2122,8 @@ Buscar:
             End If
 
             If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO AndAlso bAfectarRequisicion Then
-                If Me.oCompras.AfectaRequisicionesOrdenCompra(True) = False Then 'Desafecta requisiciones
+                'If Me.oCompras.AfectaRequisicionesOrdenCompra(True) = False Then 'Desafecta requisiciones
+                If Me.oCompras.AfectaRequisicionesOrdenCompra("CANCELAR_OC") = False Then 'Desafecta requisiciones
                     MsgBox("Error al devolver el disponible a las requisiciones de inventario.", MsgBoxStyle.Exclamation, sProcedure)
                     MsgBox("Avise al departamento de sistemas.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
@@ -4487,12 +4498,58 @@ BuscarCuentas:
             End If
 
             'Aqui afectar las requisiciones
-            If Me.oCompras.AfectaRequisicionesOrdenCompra() = False Then
+            'If Me.oCompras.AfectaRequisicionesOrdenCompra() = False Then
+            If Me.oCompras.AfectaRequisicionesOrdenCompra("PEDIR_OC") = False Then
                 MsgBox("Error al tratar de afectar el disponible de las requisiciones de inventario.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
 
             MsgBox("Pedido realizado satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
+            Return True
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Function
+
+    Private Function EditarOrdenCompra() As Boolean
+        Const sProcedure As String = "EditarOrdenCompra"
+        Try
+            Dim sFolioOC As String = Me.txtFolioCompra.Text
+
+            If txtLEN(Me.TxtRequisicion.Text) = False Then
+                MsgBox("La orden de compra no tiene requisición.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If Me.chkEsInventariable.Checked = False Then
+                MsgBox("Esta orden no es inventariable.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If Me.oCompras.ESTATUS = "G" Then
+                MsgBox("La orden de compra ya esta editable.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CboDocumento.SelectedValue.ToString) = False Then
+                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            'De momento sólo dejará editar la oc si todos los renglones tiene intacto su disponible.
+            If Me.oCompras.TieneDisponiblesIncompletos() = True Then
+                MsgBox("Esta orden de compra no tiene completas sus cantidades disponibles, no podrá editarla.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            'Aqui afectar las requisiciones
+            If Me.oCompras.AfectaRequisicionesOrdenCompra("EDITAR_OC") = False Then
+                MsgBox("Error al tratar de afectar el disponible de las requisiciones de inventario.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            MsgBox("OC lista para ser editada.", MsgBoxStyle.Information, sProcedure)
             Return True
 
         Catch ex As Exception
@@ -4628,6 +4685,8 @@ BuscarCuentas:
         End Try
 
     End Function
+
+
 
 #End Region
 

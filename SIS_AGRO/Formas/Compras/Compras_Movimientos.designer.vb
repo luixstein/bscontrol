@@ -85,6 +85,7 @@ Partial Class Compras_Movimientos
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.tsbPasarOrdenACompra = New System.Windows.Forms.ToolStripButton()
         Me.tsbPedir = New System.Windows.Forms.ToolStripButton()
+        Me.tsbEditarOC = New System.Windows.Forms.ToolStripButton()
         Me.tsbRecepcionarEntrada = New System.Windows.Forms.ToolStripButton()
         Me.tsbEditarCostos = New System.Windows.Forms.ToolStripButton()
         Me.tsbAgregarXML = New System.Windows.Forms.ToolStripButton()
@@ -218,20 +219,17 @@ Partial Class Compras_Movimientos
         Me.gbGlobal.Controls.Add(Me.LblDisplayFolio)
         Me.gbGlobal.Controls.Add(Me.CboDocumento)
         Me.gbGlobal.Controls.Add(Me.LblDisplayDocumento)
-        Me.gbGlobal.Location = New System.Drawing.Point(1, 34)
-        Me.gbGlobal.Margin = New System.Windows.Forms.Padding(4)
+        Me.gbGlobal.Location = New System.Drawing.Point(1, 28)
         Me.gbGlobal.Name = "gbGlobal"
-        Me.gbGlobal.Padding = New System.Windows.Forms.Padding(4)
-        Me.gbGlobal.Size = New System.Drawing.Size(1359, 260)
+        Me.gbGlobal.Size = New System.Drawing.Size(1019, 211)
         Me.gbGlobal.TabIndex = 0
         Me.gbGlobal.TabStop = False
         '
         'btnTraerDetalleRequisicion
         '
-        Me.btnTraerDetalleRequisicion.Location = New System.Drawing.Point(750, 87)
-        Me.btnTraerDetalleRequisicion.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnTraerDetalleRequisicion.Location = New System.Drawing.Point(562, 71)
         Me.btnTraerDetalleRequisicion.Name = "btnTraerDetalleRequisicion"
-        Me.btnTraerDetalleRequisicion.Size = New System.Drawing.Size(102, 28)
+        Me.btnTraerDetalleRequisicion.Size = New System.Drawing.Size(76, 23)
         Me.btnTraerDetalleRequisicion.TabIndex = 389
         Me.btnTraerDetalleRequisicion.Text = "Traer detalle"
         Me.btnTraerDetalleRequisicion.UseVisualStyleBackColor = True
@@ -239,30 +237,27 @@ Partial Class Compras_Movimientos
         'LblRequisicion
         '
         Me.LblRequisicion.AutoSize = True
-        Me.LblRequisicion.Location = New System.Drawing.Point(478, 94)
-        Me.LblRequisicion.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblRequisicion.Location = New System.Drawing.Point(358, 76)
         Me.LblRequisicion.Name = "LblRequisicion"
-        Me.LblRequisicion.Size = New System.Drawing.Size(89, 17)
+        Me.LblRequisicion.Size = New System.Drawing.Size(68, 13)
         Me.LblRequisicion.TabIndex = 388
         Me.LblRequisicion.Text = "Requisición :"
         '
         'TxtRequisicion
         '
-        Me.TxtRequisicion.Location = New System.Drawing.Point(575, 91)
-        Me.TxtRequisicion.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtRequisicion.Location = New System.Drawing.Point(431, 74)
         Me.TxtRequisicion.MaxLength = 15
         Me.TxtRequisicion.Name = "TxtRequisicion"
-        Me.TxtRequisicion.Size = New System.Drawing.Size(167, 22)
+        Me.TxtRequisicion.Size = New System.Drawing.Size(126, 20)
         Me.TxtRequisicion.TabIndex = 387
         '
         'chkEsFiscal
         '
         Me.chkEsFiscal.AutoSize = True
         Me.chkEsFiscal.Enabled = False
-        Me.chkEsFiscal.Location = New System.Drawing.Point(261, 180)
-        Me.chkEsFiscal.Margin = New System.Windows.Forms.Padding(4)
+        Me.chkEsFiscal.Location = New System.Drawing.Point(196, 146)
         Me.chkEsFiscal.Name = "chkEsFiscal"
-        Me.chkEsFiscal.Size = New System.Drawing.Size(94, 21)
+        Me.chkEsFiscal.Size = New System.Drawing.Size(74, 17)
         Me.chkEsFiscal.TabIndex = 386
         Me.chkEsFiscal.Text = "Es fiscal ?"
         Me.chkEsFiscal.UseVisualStyleBackColor = True
@@ -270,10 +265,9 @@ Partial Class Compras_Movimientos
         'chkEsInventariable
         '
         Me.chkEsInventariable.AutoSize = True
-        Me.chkEsInventariable.Location = New System.Drawing.Point(107, 180)
-        Me.chkEsInventariable.Margin = New System.Windows.Forms.Padding(4)
+        Me.chkEsInventariable.Location = New System.Drawing.Point(80, 146)
         Me.chkEsInventariable.Name = "chkEsInventariable"
-        Me.chkEsInventariable.Size = New System.Drawing.Size(143, 21)
+        Me.chkEsInventariable.Size = New System.Drawing.Size(110, 17)
         Me.chkEsInventariable.TabIndex = 385
         Me.chkEsInventariable.Text = "Es inventariable ?"
         Me.chkEsInventariable.UseVisualStyleBackColor = True
@@ -281,30 +275,27 @@ Partial Class Compras_Movimientos
         'lblDisplayFechaEntrega
         '
         Me.lblDisplayFechaEntrega.AutoSize = True
-        Me.lblDisplayFechaEntrega.Location = New System.Drawing.Point(875, 105)
-        Me.lblDisplayFechaEntrega.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayFechaEntrega.Location = New System.Drawing.Point(656, 85)
         Me.lblDisplayFechaEntrega.Name = "lblDisplayFechaEntrega"
-        Me.lblDisplayFechaEntrega.Size = New System.Drawing.Size(108, 17)
+        Me.lblDisplayFechaEntrega.Size = New System.Drawing.Size(82, 13)
         Me.lblDisplayFechaEntrega.TabIndex = 384
         Me.lblDisplayFechaEntrega.Text = "Fecha entrega :"
         '
         'dtpFechaEntrega
         '
         Me.dtpFechaEntrega.Enabled = False
-        Me.dtpFechaEntrega.Location = New System.Drawing.Point(989, 101)
-        Me.dtpFechaEntrega.Margin = New System.Windows.Forms.Padding(4)
+        Me.dtpFechaEntrega.Location = New System.Drawing.Point(742, 82)
         Me.dtpFechaEntrega.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dtpFechaEntrega.Name = "dtpFechaEntrega"
-        Me.dtpFechaEntrega.Size = New System.Drawing.Size(280, 22)
+        Me.dtpFechaEntrega.Size = New System.Drawing.Size(211, 20)
         Me.dtpFechaEntrega.TabIndex = 383
         '
         'LblDisplayMoneda
         '
         Me.LblDisplayMoneda.AutoSize = True
-        Me.LblDisplayMoneda.Location = New System.Drawing.Point(8, 155)
-        Me.LblDisplayMoneda.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayMoneda.Location = New System.Drawing.Point(6, 126)
         Me.LblDisplayMoneda.Name = "LblDisplayMoneda"
-        Me.LblDisplayMoneda.Size = New System.Drawing.Size(67, 17)
+        Me.LblDisplayMoneda.Size = New System.Drawing.Size(52, 13)
         Me.LblDisplayMoneda.TabIndex = 382
         Me.LblDisplayMoneda.Text = "Moneda :"
         '
@@ -312,57 +303,51 @@ Partial Class Compras_Movimientos
         '
         Me.cboMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboMoneda.FormattingEnabled = True
-        Me.cboMoneda.Location = New System.Drawing.Point(107, 153)
-        Me.cboMoneda.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboMoneda.Location = New System.Drawing.Point(80, 124)
         Me.cboMoneda.Name = "cboMoneda"
-        Me.cboMoneda.Size = New System.Drawing.Size(103, 24)
+        Me.cboMoneda.Size = New System.Drawing.Size(78, 21)
         Me.cboMoneda.TabIndex = 381
         '
         'lblProveedor
         '
-        Me.lblProveedor.Location = New System.Drawing.Point(251, 123)
-        Me.lblProveedor.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblProveedor.Location = New System.Drawing.Point(188, 100)
         Me.lblProveedor.Name = "lblProveedor"
-        Me.lblProveedor.Size = New System.Drawing.Size(589, 16)
+        Me.lblProveedor.Size = New System.Drawing.Size(442, 13)
         Me.lblProveedor.TabIndex = 380
         Me.lblProveedor.Text = "_"
         '
         'btnActualizaConcepto
         '
-        Me.btnActualizaConcepto.Location = New System.Drawing.Point(1205, 126)
-        Me.btnActualizaConcepto.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnActualizaConcepto.Location = New System.Drawing.Point(904, 102)
         Me.btnActualizaConcepto.Name = "btnActualizaConcepto"
-        Me.btnActualizaConcepto.Size = New System.Drawing.Size(144, 26)
+        Me.btnActualizaConcepto.Size = New System.Drawing.Size(108, 21)
         Me.btnActualizaConcepto.TabIndex = 379
         Me.btnActualizaConcepto.Text = "Actualiza concepto"
         Me.btnActualizaConcepto.UseVisualStyleBackColor = True
         '
         'btnDocumentoSiguiente
         '
-        Me.btnDocumentoSiguiente.Location = New System.Drawing.Point(292, 86)
-        Me.btnDocumentoSiguiente.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnDocumentoSiguiente.Location = New System.Drawing.Point(219, 70)
         Me.btnDocumentoSiguiente.Name = "btnDocumentoSiguiente"
-        Me.btnDocumentoSiguiente.Size = New System.Drawing.Size(33, 26)
+        Me.btnDocumentoSiguiente.Size = New System.Drawing.Size(25, 21)
         Me.btnDocumentoSiguiente.TabIndex = 378
         Me.btnDocumentoSiguiente.Text = ">"
         Me.btnDocumentoSiguiente.UseVisualStyleBackColor = True
         '
         'btnDocumentoAnterior
         '
-        Me.btnDocumentoAnterior.Location = New System.Drawing.Point(251, 86)
-        Me.btnDocumentoAnterior.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnDocumentoAnterior.Location = New System.Drawing.Point(188, 70)
         Me.btnDocumentoAnterior.Name = "btnDocumentoAnterior"
-        Me.btnDocumentoAnterior.Size = New System.Drawing.Size(33, 26)
+        Me.btnDocumentoAnterior.Size = New System.Drawing.Size(25, 21)
         Me.btnDocumentoAnterior.TabIndex = 377
         Me.btnDocumentoAnterior.Text = "<"
         Me.btnDocumentoAnterior.UseVisualStyleBackColor = True
         '
         'BtnActualizaFolioProv
         '
-        Me.BtnActualizaFolioProv.Location = New System.Drawing.Point(712, 54)
-        Me.BtnActualizaFolioProv.Margin = New System.Windows.Forms.Padding(4)
+        Me.BtnActualizaFolioProv.Location = New System.Drawing.Point(534, 44)
         Me.BtnActualizaFolioProv.Name = "BtnActualizaFolioProv"
-        Me.BtnActualizaFolioProv.Size = New System.Drawing.Size(145, 26)
+        Me.BtnActualizaFolioProv.Size = New System.Drawing.Size(109, 21)
         Me.BtnActualizaFolioProv.TabIndex = 329
         Me.BtnActualizaFolioProv.Text = "Actualiza folio prov"
         Me.BtnActualizaFolioProv.UseVisualStyleBackColor = True
@@ -370,116 +355,104 @@ Partial Class Compras_Movimientos
         'LblPoliza
         '
         Me.LblPoliza.AutoSize = True
-        Me.LblPoliza.Location = New System.Drawing.Point(704, 20)
-        Me.LblPoliza.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblPoliza.Location = New System.Drawing.Point(528, 16)
         Me.LblPoliza.Name = "LblPoliza"
-        Me.LblPoliza.Size = New System.Drawing.Size(16, 17)
+        Me.LblPoliza.Size = New System.Drawing.Size(13, 13)
         Me.LblPoliza.TabIndex = 328
         Me.LblPoliza.TabStop = True
         Me.LblPoliza.Text = "_"
         '
         'DtpFechaFacturaProveedor
         '
-        Me.DtpFechaFacturaProveedor.Location = New System.Drawing.Point(559, 151)
-        Me.DtpFechaFacturaProveedor.Margin = New System.Windows.Forms.Padding(4)
+        Me.DtpFechaFacturaProveedor.Location = New System.Drawing.Point(419, 123)
         Me.DtpFechaFacturaProveedor.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.DtpFechaFacturaProveedor.Name = "DtpFechaFacturaProveedor"
-        Me.DtpFechaFacturaProveedor.Size = New System.Drawing.Size(280, 22)
+        Me.DtpFechaFacturaProveedor.Size = New System.Drawing.Size(211, 20)
         Me.DtpFechaFacturaProveedor.TabIndex = 326
         '
         'lblDisplayFechaFacturaProveedor
         '
         Me.lblDisplayFechaFacturaProveedor.AutoSize = True
-        Me.lblDisplayFechaFacturaProveedor.Location = New System.Drawing.Point(431, 155)
-        Me.lblDisplayFechaFacturaProveedor.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayFechaFacturaProveedor.Location = New System.Drawing.Point(323, 126)
         Me.lblDisplayFechaFacturaProveedor.Name = "lblDisplayFechaFacturaProveedor"
-        Me.lblDisplayFechaFacturaProveedor.Size = New System.Drawing.Size(116, 17)
+        Me.lblDisplayFechaFacturaProveedor.Size = New System.Drawing.Size(88, 13)
         Me.lblDisplayFechaFacturaProveedor.TabIndex = 327
         Me.lblDisplayFechaFacturaProveedor.Text = "Fac. proveedor  :"
         '
         'txtConfirmo
         '
-        Me.txtConfirmo.Location = New System.Drawing.Point(559, 225)
-        Me.txtConfirmo.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtConfirmo.Location = New System.Drawing.Point(419, 183)
         Me.txtConfirmo.MaxLength = 80
         Me.txtConfirmo.Name = "txtConfirmo"
-        Me.txtConfirmo.Size = New System.Drawing.Size(280, 22)
+        Me.txtConfirmo.Size = New System.Drawing.Size(211, 20)
         Me.txtConfirmo.TabIndex = 12
         '
         'lblDisplayConfirmo
         '
         Me.lblDisplayConfirmo.AutoSize = True
-        Me.lblDisplayConfirmo.Location = New System.Drawing.Point(431, 229)
-        Me.lblDisplayConfirmo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayConfirmo.Location = New System.Drawing.Point(323, 186)
         Me.lblDisplayConfirmo.Name = "lblDisplayConfirmo"
-        Me.lblDisplayConfirmo.Size = New System.Drawing.Size(72, 17)
+        Me.lblDisplayConfirmo.Size = New System.Drawing.Size(54, 13)
         Me.lblDisplayConfirmo.TabIndex = 325
         Me.lblDisplayConfirmo.Text = "Confirmó :"
         '
         'txtPredio
         '
-        Me.txtPredio.Location = New System.Drawing.Point(559, 201)
-        Me.txtPredio.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtPredio.Location = New System.Drawing.Point(419, 163)
         Me.txtPredio.MaxLength = 80
         Me.txtPredio.Name = "txtPredio"
-        Me.txtPredio.Size = New System.Drawing.Size(280, 22)
+        Me.txtPredio.Size = New System.Drawing.Size(211, 20)
         Me.txtPredio.TabIndex = 11
         '
         'lblDisplayPredio
         '
         Me.lblDisplayPredio.AutoSize = True
-        Me.lblDisplayPredio.Location = New System.Drawing.Point(431, 204)
-        Me.lblDisplayPredio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayPredio.Location = New System.Drawing.Point(323, 166)
         Me.lblDisplayPredio.Name = "lblDisplayPredio"
-        Me.lblDisplayPredio.Size = New System.Drawing.Size(57, 17)
+        Me.lblDisplayPredio.Size = New System.Drawing.Size(43, 13)
         Me.lblDisplayPredio.TabIndex = 321
         Me.lblDisplayPredio.Text = "Predio :"
         '
         'txtConCargoA
         '
-        Me.txtConCargoA.Location = New System.Drawing.Point(559, 176)
-        Me.txtConCargoA.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtConCargoA.Location = New System.Drawing.Point(419, 143)
         Me.txtConCargoA.MaxLength = 80
         Me.txtConCargoA.Name = "txtConCargoA"
-        Me.txtConCargoA.Size = New System.Drawing.Size(280, 22)
+        Me.txtConCargoA.Size = New System.Drawing.Size(211, 20)
         Me.txtConCargoA.TabIndex = 10
         '
         'lblDisplayConCargoA
         '
         Me.lblDisplayConCargoA.AutoSize = True
-        Me.lblDisplayConCargoA.Location = New System.Drawing.Point(431, 180)
-        Me.lblDisplayConCargoA.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayConCargoA.Location = New System.Drawing.Point(323, 146)
         Me.lblDisplayConCargoA.Name = "lblDisplayConCargoA"
-        Me.lblDisplayConCargoA.Size = New System.Drawing.Size(93, 17)
+        Me.lblDisplayConCargoA.Size = New System.Drawing.Size(71, 13)
         Me.lblDisplayConCargoA.TabIndex = 320
         Me.lblDisplayConCargoA.Text = "Con cargo a :"
         '
         'txtFolioCompra
         '
-        Me.txtFolioCompra.Location = New System.Drawing.Point(107, 87)
-        Me.txtFolioCompra.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtFolioCompra.Location = New System.Drawing.Point(80, 71)
         Me.txtFolioCompra.MaxLength = 15
         Me.txtFolioCompra.Name = "txtFolioCompra"
-        Me.txtFolioCompra.Size = New System.Drawing.Size(135, 22)
+        Me.txtFolioCompra.Size = New System.Drawing.Size(102, 20)
         Me.txtFolioCompra.TabIndex = 2
         '
         'LblDisplayTipoCambio
         '
         Me.LblDisplayTipoCambio.AutoSize = True
-        Me.LblDisplayTipoCambio.Location = New System.Drawing.Point(217, 155)
-        Me.LblDisplayTipoCambio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayTipoCambio.Location = New System.Drawing.Point(163, 126)
         Me.LblDisplayTipoCambio.Name = "LblDisplayTipoCambio"
-        Me.LblDisplayTipoCambio.Size = New System.Drawing.Size(113, 17)
+        Me.LblDisplayTipoCambio.Size = New System.Drawing.Size(86, 13)
         Me.LblDisplayTipoCambio.TabIndex = 317
         Me.LblDisplayTipoCambio.Text = "Tipo de cambio :"
         '
         'txtTipoCambio
         '
-        Me.txtTipoCambio.Location = New System.Drawing.Point(335, 151)
-        Me.txtTipoCambio.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtTipoCambio.Location = New System.Drawing.Point(251, 123)
         Me.txtTipoCambio.MaxLength = 8
         Me.txtTipoCambio.Name = "txtTipoCambio"
-        Me.txtTipoCambio.Size = New System.Drawing.Size(81, 22)
+        Me.txtTipoCambio.Size = New System.Drawing.Size(62, 20)
         Me.txtTipoCambio.TabIndex = 7
         Me.txtTipoCambio.Text = "0"
         Me.txtTipoCambio.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
@@ -487,10 +460,9 @@ Partial Class Compras_Movimientos
         'lblDilplayPoliza
         '
         Me.lblDilplayPoliza.AutoSize = True
-        Me.lblDilplayPoliza.Location = New System.Drawing.Point(605, 20)
-        Me.lblDilplayPoliza.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDilplayPoliza.Location = New System.Drawing.Point(454, 16)
         Me.lblDilplayPoliza.Name = "lblDilplayPoliza"
-        Me.lblDilplayPoliza.Size = New System.Drawing.Size(54, 17)
+        Me.lblDilplayPoliza.Size = New System.Drawing.Size(41, 13)
         Me.lblDilplayPoliza.TabIndex = 299
         Me.lblDilplayPoliza.Text = "Póliza :"
         '
@@ -498,128 +470,115 @@ Partial Class Compras_Movimientos
         '
         Me.LblEstatus.AutoSize = True
         Me.LblEstatus.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.LblEstatus.Location = New System.Drawing.Point(1116, 52)
-        Me.LblEstatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblEstatus.Location = New System.Drawing.Point(837, 42)
         Me.LblEstatus.Name = "LblEstatus"
-        Me.LblEstatus.Size = New System.Drawing.Size(16, 17)
+        Me.LblEstatus.Size = New System.Drawing.Size(13, 13)
         Me.LblEstatus.TabIndex = 298
         Me.LblEstatus.Text = "_"
         '
         'lblDisplayStatus
         '
         Me.lblDisplayStatus.AutoSize = True
-        Me.lblDisplayStatus.Location = New System.Drawing.Point(1044, 52)
-        Me.lblDisplayStatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayStatus.Location = New System.Drawing.Point(783, 42)
         Me.lblDisplayStatus.Name = "lblDisplayStatus"
-        Me.lblDisplayStatus.Size = New System.Drawing.Size(63, 17)
+        Me.lblDisplayStatus.Size = New System.Drawing.Size(48, 13)
         Me.lblDisplayStatus.TabIndex = 297
         Me.lblDisplayStatus.Text = "Estatus :"
         '
         'dtpFechaVencimiento
         '
         Me.dtpFechaVencimiento.Enabled = False
-        Me.dtpFechaVencimiento.Location = New System.Drawing.Point(989, 73)
-        Me.dtpFechaVencimiento.Margin = New System.Windows.Forms.Padding(4)
+        Me.dtpFechaVencimiento.Location = New System.Drawing.Point(742, 59)
         Me.dtpFechaVencimiento.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dtpFechaVencimiento.Name = "dtpFechaVencimiento"
-        Me.dtpFechaVencimiento.Size = New System.Drawing.Size(280, 22)
+        Me.dtpFechaVencimiento.Size = New System.Drawing.Size(211, 20)
         Me.dtpFechaVencimiento.TabIndex = 16
         '
         'LblDisplayVencimiento
         '
         Me.LblDisplayVencimiento.AutoSize = True
-        Me.LblDisplayVencimiento.Location = New System.Drawing.Point(889, 80)
-        Me.LblDisplayVencimiento.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayVencimiento.Location = New System.Drawing.Point(667, 65)
         Me.LblDisplayVencimiento.Name = "LblDisplayVencimiento"
-        Me.LblDisplayVencimiento.Size = New System.Drawing.Size(93, 17)
+        Me.LblDisplayVencimiento.Size = New System.Drawing.Size(71, 13)
         Me.LblDisplayVencimiento.TabIndex = 296
         Me.LblDisplayVencimiento.Text = "Vencimiento :"
         '
         'LblDisplayConcepto
         '
         Me.LblDisplayConcepto.AutoSize = True
-        Me.LblDisplayConcepto.Location = New System.Drawing.Point(852, 133)
-        Me.LblDisplayConcepto.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayConcepto.Location = New System.Drawing.Point(639, 108)
         Me.LblDisplayConcepto.Name = "LblDisplayConcepto"
-        Me.LblDisplayConcepto.Size = New System.Drawing.Size(76, 17)
+        Me.LblDisplayConcepto.Size = New System.Drawing.Size(59, 13)
         Me.LblDisplayConcepto.TabIndex = 294
         Me.LblDisplayConcepto.Text = "Concepto :"
         '
         'TxtConcepto
         '
-        Me.TxtConcepto.Location = New System.Drawing.Point(852, 151)
-        Me.TxtConcepto.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtConcepto.Location = New System.Drawing.Point(639, 123)
         Me.TxtConcepto.MaxLength = 1000
         Me.TxtConcepto.Multiline = True
         Me.TxtConcepto.Name = "TxtConcepto"
         Me.TxtConcepto.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TxtConcepto.Size = New System.Drawing.Size(497, 100)
+        Me.TxtConcepto.Size = New System.Drawing.Size(374, 82)
         Me.TxtConcepto.TabIndex = 13
         '
         'txtFolioProveedor
         '
-        Me.txtFolioProveedor.Location = New System.Drawing.Point(559, 87)
-        Me.txtFolioProveedor.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtFolioProveedor.Location = New System.Drawing.Point(419, 71)
         Me.txtFolioProveedor.MaxLength = 60
         Me.txtFolioProveedor.Name = "txtFolioProveedor"
-        Me.txtFolioProveedor.Size = New System.Drawing.Size(297, 22)
+        Me.txtFolioProveedor.Size = New System.Drawing.Size(224, 20)
         Me.txtFolioProveedor.TabIndex = 4
         '
         'lblDisplayFolioProveedor
         '
         Me.lblDisplayFolioProveedor.AutoSize = True
-        Me.lblDisplayFolioProveedor.Location = New System.Drawing.Point(555, 68)
-        Me.lblDisplayFolioProveedor.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayFolioProveedor.Location = New System.Drawing.Point(416, 55)
         Me.lblDisplayFolioProveedor.Name = "lblDisplayFolioProveedor"
-        Me.lblDisplayFolioProveedor.Size = New System.Drawing.Size(82, 17)
+        Me.lblDisplayFolioProveedor.Size = New System.Drawing.Size(62, 13)
         Me.lblDisplayFolioProveedor.TabIndex = 292
         Me.lblDisplayFolioProveedor.Text = "Folio prov. :"
         '
         'txtSolicito
         '
-        Me.txtSolicito.Location = New System.Drawing.Point(107, 225)
-        Me.txtSolicito.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtSolicito.Location = New System.Drawing.Point(80, 183)
         Me.txtSolicito.MaxLength = 80
         Me.txtSolicito.Name = "txtSolicito"
-        Me.txtSolicito.Size = New System.Drawing.Size(309, 22)
+        Me.txtSolicito.Size = New System.Drawing.Size(233, 20)
         Me.txtSolicito.TabIndex = 9
         '
         'LblDisplaySolicito
         '
         Me.LblDisplaySolicito.AutoSize = True
-        Me.LblDisplaySolicito.Location = New System.Drawing.Point(8, 229)
-        Me.LblDisplaySolicito.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplaySolicito.Location = New System.Drawing.Point(6, 186)
         Me.LblDisplaySolicito.Name = "LblDisplaySolicito"
-        Me.LblDisplaySolicito.Size = New System.Drawing.Size(61, 17)
+        Me.LblDisplaySolicito.Size = New System.Drawing.Size(47, 13)
         Me.LblDisplaySolicito.TabIndex = 290
         Me.LblDisplaySolicito.Text = "Solicitó :"
         '
         'txtEntregarA
         '
-        Me.txtEntregarA.Location = New System.Drawing.Point(107, 201)
-        Me.txtEntregarA.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtEntregarA.Location = New System.Drawing.Point(80, 163)
         Me.txtEntregarA.MaxLength = 80
         Me.txtEntregarA.Name = "txtEntregarA"
-        Me.txtEntregarA.Size = New System.Drawing.Size(309, 22)
+        Me.txtEntregarA.Size = New System.Drawing.Size(233, 20)
         Me.txtEntregarA.TabIndex = 8
         '
         'LblDisplayEntregarA
         '
         Me.LblDisplayEntregarA.AutoSize = True
-        Me.LblDisplayEntregarA.Location = New System.Drawing.Point(8, 204)
-        Me.LblDisplayEntregarA.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayEntregarA.Location = New System.Drawing.Point(6, 166)
         Me.LblDisplayEntregarA.Name = "LblDisplayEntregarA"
-        Me.LblDisplayEntregarA.Size = New System.Drawing.Size(83, 17)
+        Me.LblDisplayEntregarA.Size = New System.Drawing.Size(62, 13)
         Me.LblDisplayEntregarA.TabIndex = 280
         Me.LblDisplayEntregarA.Text = "Entregar a :"
         '
         'txtPlazo
         '
-        Me.txtPlazo.Location = New System.Drawing.Point(989, 48)
-        Me.txtPlazo.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtPlazo.Location = New System.Drawing.Point(742, 39)
         Me.txtPlazo.MaxLength = 3
         Me.txtPlazo.Name = "txtPlazo"
-        Me.txtPlazo.Size = New System.Drawing.Size(36, 22)
+        Me.txtPlazo.Size = New System.Drawing.Size(28, 20)
         Me.txtPlazo.TabIndex = 15
         Me.txtPlazo.Text = "0"
         Me.txtPlazo.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
@@ -627,68 +586,61 @@ Partial Class Compras_Movimientos
         'LblDisplayPlazo
         '
         Me.LblDisplayPlazo.AutoSize = True
-        Me.LblDisplayPlazo.Location = New System.Drawing.Point(932, 52)
-        Me.LblDisplayPlazo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayPlazo.Location = New System.Drawing.Point(699, 42)
         Me.LblDisplayPlazo.Name = "LblDisplayPlazo"
-        Me.LblDisplayPlazo.Size = New System.Drawing.Size(51, 17)
+        Me.LblDisplayPlazo.Size = New System.Drawing.Size(39, 13)
         Me.LblDisplayPlazo.TabIndex = 288
         Me.LblDisplayPlazo.Text = "Plazo :"
         '
         'txtFolioOC
         '
-        Me.txtFolioOC.Location = New System.Drawing.Point(420, 87)
-        Me.txtFolioOC.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtFolioOC.Location = New System.Drawing.Point(315, 71)
         Me.txtFolioOC.MaxLength = 15
         Me.txtFolioOC.Name = "txtFolioOC"
-        Me.txtFolioOC.Size = New System.Drawing.Size(129, 22)
+        Me.txtFolioOC.Size = New System.Drawing.Size(98, 20)
         Me.txtFolioOC.TabIndex = 3
         '
         'lblDisplayFolioOC
         '
         Me.lblDisplayFolioOC.AutoSize = True
-        Me.lblDisplayFolioOC.Location = New System.Drawing.Point(341, 91)
-        Me.lblDisplayFolioOC.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayFolioOC.Location = New System.Drawing.Point(256, 74)
         Me.lblDisplayFolioOC.Name = "lblDisplayFolioOC"
-        Me.lblDisplayFolioOC.Size = New System.Drawing.Size(70, 17)
+        Me.lblDisplayFolioOC.Size = New System.Drawing.Size(53, 13)
         Me.lblDisplayFolioOC.TabIndex = 286
         Me.lblDisplayFolioOC.Text = "Folio OC :"
         '
         'txtProveedor
         '
-        Me.txtProveedor.Location = New System.Drawing.Point(107, 119)
-        Me.txtProveedor.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtProveedor.Location = New System.Drawing.Point(80, 97)
         Me.txtProveedor.MaxLength = 8
         Me.txtProveedor.Name = "txtProveedor"
-        Me.txtProveedor.Size = New System.Drawing.Size(135, 22)
+        Me.txtProveedor.Size = New System.Drawing.Size(102, 20)
         Me.txtProveedor.TabIndex = 5
         Me.txtProveedor.Text = "  "
         '
         'LblDisplayProveedor
         '
         Me.LblDisplayProveedor.AutoSize = True
-        Me.LblDisplayProveedor.Location = New System.Drawing.Point(8, 123)
-        Me.LblDisplayProveedor.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayProveedor.Location = New System.Drawing.Point(6, 100)
         Me.LblDisplayProveedor.Name = "LblDisplayProveedor"
-        Me.LblDisplayProveedor.Size = New System.Drawing.Size(82, 17)
+        Me.LblDisplayProveedor.Size = New System.Drawing.Size(62, 13)
         Me.LblDisplayProveedor.TabIndex = 283
         Me.LblDisplayProveedor.Text = "Proveedor :"
         '
         'DtpFecha
         '
-        Me.DtpFecha.Location = New System.Drawing.Point(989, 23)
-        Me.DtpFecha.Margin = New System.Windows.Forms.Padding(4)
+        Me.DtpFecha.Location = New System.Drawing.Point(742, 19)
         Me.DtpFecha.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.DtpFecha.Name = "DtpFecha"
-        Me.DtpFecha.Size = New System.Drawing.Size(280, 22)
+        Me.DtpFecha.Size = New System.Drawing.Size(211, 20)
         Me.DtpFecha.TabIndex = 14
         '
         'LblDisplayFecha
         '
         Me.LblDisplayFecha.AutoSize = True
-        Me.LblDisplayFecha.Location = New System.Drawing.Point(927, 23)
-        Me.LblDisplayFecha.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayFecha.Location = New System.Drawing.Point(695, 19)
         Me.LblDisplayFecha.Name = "LblDisplayFecha"
-        Me.LblDisplayFecha.Size = New System.Drawing.Size(55, 17)
+        Me.LblDisplayFecha.Size = New System.Drawing.Size(43, 13)
         Me.LblDisplayFecha.TabIndex = 281
         Me.LblDisplayFecha.Text = "Fecha :"
         '
@@ -696,29 +648,26 @@ Partial Class Compras_Movimientos
         '
         Me.CboAlmacen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboAlmacen.FormattingEnabled = True
-        Me.CboAlmacen.Location = New System.Drawing.Point(107, 54)
-        Me.CboAlmacen.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboAlmacen.Location = New System.Drawing.Point(80, 44)
         Me.CboAlmacen.Name = "CboAlmacen"
-        Me.CboAlmacen.Size = New System.Drawing.Size(280, 24)
+        Me.CboAlmacen.Size = New System.Drawing.Size(211, 21)
         Me.CboAlmacen.TabIndex = 1
         '
         'LblDisplayAlmacen
         '
         Me.LblDisplayAlmacen.AutoSize = True
-        Me.LblDisplayAlmacen.Location = New System.Drawing.Point(8, 58)
-        Me.LblDisplayAlmacen.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayAlmacen.Location = New System.Drawing.Point(6, 47)
         Me.LblDisplayAlmacen.Name = "LblDisplayAlmacen"
-        Me.LblDisplayAlmacen.Size = New System.Drawing.Size(70, 17)
+        Me.LblDisplayAlmacen.Size = New System.Drawing.Size(54, 13)
         Me.LblDisplayAlmacen.TabIndex = 279
         Me.LblDisplayAlmacen.Text = "Almacén :"
         '
         'LblDisplayFolio
         '
         Me.LblDisplayFolio.AutoSize = True
-        Me.LblDisplayFolio.Location = New System.Drawing.Point(8, 91)
-        Me.LblDisplayFolio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayFolio.Location = New System.Drawing.Point(6, 74)
         Me.LblDisplayFolio.Name = "LblDisplayFolio"
-        Me.LblDisplayFolio.Size = New System.Drawing.Size(46, 17)
+        Me.LblDisplayFolio.Size = New System.Drawing.Size(35, 13)
         Me.LblDisplayFolio.TabIndex = 278
         Me.LblDisplayFolio.Text = "Folio :"
         '
@@ -726,29 +675,27 @@ Partial Class Compras_Movimientos
         '
         Me.CboDocumento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboDocumento.FormattingEnabled = True
-        Me.CboDocumento.Location = New System.Drawing.Point(107, 23)
-        Me.CboDocumento.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboDocumento.Location = New System.Drawing.Point(80, 19)
         Me.CboDocumento.Name = "CboDocumento"
-        Me.CboDocumento.Size = New System.Drawing.Size(280, 24)
+        Me.CboDocumento.Size = New System.Drawing.Size(211, 21)
         Me.CboDocumento.TabIndex = 0
         '
         'LblDisplayDocumento
         '
         Me.LblDisplayDocumento.AutoSize = True
-        Me.LblDisplayDocumento.Location = New System.Drawing.Point(8, 27)
-        Me.LblDisplayDocumento.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayDocumento.Location = New System.Drawing.Point(6, 22)
         Me.LblDisplayDocumento.Name = "LblDisplayDocumento"
-        Me.LblDisplayDocumento.Size = New System.Drawing.Size(88, 17)
+        Me.LblDisplayDocumento.Size = New System.Drawing.Size(68, 13)
         Me.LblDisplayDocumento.TabIndex = 277
         Me.LblDisplayDocumento.Text = "Documento :"
         '
         'tsMenu
         '
         Me.tsMenu.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbAplicar, Me.tsbCancelar, Me.tsbImprimir, Me.tsbSalir, Me.tsbPasarOrdenACompra, Me.tsbPedir, Me.tsbRecepcionarEntrada, Me.tsbEditarCostos, Me.tsbAgregarXML, Me.tsbAgregarPDF})
+        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbAplicar, Me.tsbCancelar, Me.tsbImprimir, Me.tsbSalir, Me.tsbPasarOrdenACompra, Me.tsbPedir, Me.tsbEditarOC, Me.tsbRecepcionarEntrada, Me.tsbEditarCostos, Me.tsbAgregarXML, Me.tsbAgregarPDF})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1372, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1029, 27)
         Me.tsMenu.TabIndex = 3
         Me.tsMenu.Text = "tsMenu"
         '
@@ -757,7 +704,7 @@ Partial Class Compras_Movimientos
         Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
         Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbNuevo.Name = "tsbNuevo"
-        Me.tsbNuevo.Size = New System.Drawing.Size(76, 24)
+        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
         Me.tsbNuevo.Text = "&Nuevo"
         '
         'tsbGrabar
@@ -765,7 +712,7 @@ Partial Class Compras_Movimientos
         Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
         Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbGrabar.Name = "tsbGrabar"
-        Me.tsbGrabar.Size = New System.Drawing.Size(78, 24)
+        Me.tsbGrabar.Size = New System.Drawing.Size(66, 24)
         Me.tsbGrabar.Text = "&Grabar"
         '
         'tsbAplicar
@@ -773,7 +720,7 @@ Partial Class Compras_Movimientos
         Me.tsbAplicar.Image = Global.BsControl.My.Resources.Resources._782
         Me.tsbAplicar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbAplicar.Name = "tsbAplicar"
-        Me.tsbAplicar.Size = New System.Drawing.Size(80, 24)
+        Me.tsbAplicar.Size = New System.Drawing.Size(68, 24)
         Me.tsbAplicar.Text = "&Aplicar"
         '
         'tsbCancelar
@@ -781,7 +728,7 @@ Partial Class Compras_Movimientos
         Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
         Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbCancelar.Name = "tsbCancelar"
-        Me.tsbCancelar.Size = New System.Drawing.Size(90, 24)
+        Me.tsbCancelar.Size = New System.Drawing.Size(77, 24)
         Me.tsbCancelar.Text = "&Cancelar"
         '
         'tsbImprimir
@@ -789,7 +736,7 @@ Partial Class Compras_Movimientos
         Me.tsbImprimir.Image = CType(resources.GetObject("tsbImprimir.Image"), System.Drawing.Image)
         Me.tsbImprimir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbImprimir.Name = "tsbImprimir"
-        Me.tsbImprimir.Size = New System.Drawing.Size(90, 24)
+        Me.tsbImprimir.Size = New System.Drawing.Size(77, 24)
         Me.tsbImprimir.Text = "&Imprimir"
         Me.tsbImprimir.ToolTipText = "Imprimir"
         '
@@ -798,7 +745,7 @@ Partial Class Compras_Movimientos
         Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
         Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
+        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
         Me.tsbSalir.Text = "&Salir"
         '
         'tsbPasarOrdenACompra
@@ -806,7 +753,7 @@ Partial Class Compras_Movimientos
         Me.tsbPasarOrdenACompra.Image = Global.BsControl.My.Resources.Resources._096
         Me.tsbPasarOrdenACompra.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbPasarOrdenACompra.Name = "tsbPasarOrdenACompra"
-        Me.tsbPasarOrdenACompra.Size = New System.Drawing.Size(134, 24)
+        Me.tsbPasarOrdenACompra.Size = New System.Drawing.Size(112, 24)
         Me.tsbPasarOrdenACompra.Text = "&Pasar a compra"
         '
         'tsbPedir
@@ -814,15 +761,24 @@ Partial Class Compras_Movimientos
         Me.tsbPedir.Image = Global.BsControl.My.Resources.Resources._782
         Me.tsbPedir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbPedir.Name = "tsbPedir"
-        Me.tsbPedir.Size = New System.Drawing.Size(66, 24)
-        Me.tsbPedir.Text = "&Pedir"
+        Me.tsbPedir.Size = New System.Drawing.Size(78, 24)
+        Me.tsbPedir.Text = "&Pedir OC"
+        Me.tsbPedir.ToolTipText = "Pedir"
+        '
+        'tsbEditarOC
+        '
+        Me.tsbEditarOC.Image = Global.BsControl.My.Resources.Resources._782
+        Me.tsbEditarOC.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbEditarOC.Name = "tsbEditarOC"
+        Me.tsbEditarOC.Size = New System.Drawing.Size(81, 24)
+        Me.tsbEditarOC.Text = "Editar OC"
         '
         'tsbRecepcionarEntrada
         '
         Me.tsbRecepcionarEntrada.Image = Global.BsControl.My.Resources.Resources._096
         Me.tsbRecepcionarEntrada.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbRecepcionarEntrada.Name = "tsbRecepcionarEntrada"
-        Me.tsbRecepcionarEntrada.Size = New System.Drawing.Size(170, 24)
+        Me.tsbRecepcionarEntrada.Size = New System.Drawing.Size(139, 24)
         Me.tsbRecepcionarEntrada.Text = "&Recepcionar entrada"
         '
         'tsbEditarCostos
@@ -830,7 +786,7 @@ Partial Class Compras_Movimientos
         Me.tsbEditarCostos.Image = Global.BsControl.My.Resources.Resources._782
         Me.tsbEditarCostos.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbEditarCostos.Name = "tsbEditarCostos"
-        Me.tsbEditarCostos.Size = New System.Drawing.Size(118, 24)
+        Me.tsbEditarCostos.Size = New System.Drawing.Size(98, 24)
         Me.tsbEditarCostos.Text = "&Editar costos"
         '
         'tsbAgregarXML
@@ -838,7 +794,7 @@ Partial Class Compras_Movimientos
         Me.tsbAgregarXML.Image = Global.BsControl.My.Resources.Resources.xml1
         Me.tsbAgregarXML.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbAgregarXML.Name = "tsbAgregarXML"
-        Me.tsbAgregarXML.Size = New System.Drawing.Size(120, 24)
+        Me.tsbAgregarXML.Size = New System.Drawing.Size(100, 24)
         Me.tsbAgregarXML.Text = "Agregar &XML"
         '
         'tsbAgregarPDF
@@ -846,36 +802,33 @@ Partial Class Compras_Movimientos
         Me.tsbAgregarPDF.Image = Global.BsControl.My.Resources.Resources.pdf11
         Me.tsbAgregarPDF.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbAgregarPDF.Name = "tsbAgregarPDF"
-        Me.tsbAgregarPDF.Size = New System.Drawing.Size(117, 24)
+        Me.tsbAgregarPDF.Size = New System.Drawing.Size(97, 24)
         Me.tsbAgregarPDF.Text = "Agregar PD&F"
         '
         'txtSaldo_MXP
         '
-        Me.txtSaldo_MXP.Location = New System.Drawing.Point(1227, 657)
-        Me.txtSaldo_MXP.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtSaldo_MXP.Location = New System.Drawing.Point(920, 534)
         Me.txtSaldo_MXP.Name = "txtSaldo_MXP"
         Me.txtSaldo_MXP.ReadOnly = True
-        Me.txtSaldo_MXP.Size = New System.Drawing.Size(132, 22)
+        Me.txtSaldo_MXP.Size = New System.Drawing.Size(100, 20)
         Me.txtSaldo_MXP.TabIndex = 19
         Me.txtSaldo_MXP.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'lblDisplaySaldo_MXP
         '
         Me.lblDisplaySaldo_MXP.AutoSize = True
-        Me.lblDisplaySaldo_MXP.Location = New System.Drawing.Point(1141, 662)
-        Me.lblDisplaySaldo_MXP.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplaySaldo_MXP.Location = New System.Drawing.Point(856, 538)
         Me.lblDisplaySaldo_MXP.Name = "lblDisplaySaldo_MXP"
-        Me.lblDisplaySaldo_MXP.Size = New System.Drawing.Size(85, 17)
+        Me.lblDisplaySaldo_MXP.Size = New System.Drawing.Size(66, 13)
         Me.lblDisplaySaldo_MXP.TabIndex = 313
         Me.lblDisplaySaldo_MXP.Text = "Saldo MXP :"
         '
         'lblDisplayRetenciones
         '
         Me.lblDisplayRetenciones.AutoSize = True
-        Me.lblDisplayRetenciones.Location = New System.Drawing.Point(4, 129)
-        Me.lblDisplayRetenciones.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayRetenciones.Location = New System.Drawing.Point(3, 105)
         Me.lblDisplayRetenciones.Name = "lblDisplayRetenciones"
-        Me.lblDisplayRetenciones.Size = New System.Drawing.Size(50, 17)
+        Me.lblDisplayRetenciones.Size = New System.Drawing.Size(39, 13)
         Me.lblDisplayRetenciones.TabIndex = 312
         Me.lblDisplayRetenciones.Text = "Reten."
         Me.lblDisplayRetenciones.Visible = False
@@ -883,12 +836,11 @@ Partial Class Compras_Movimientos
         'txtRetencionIVA
         '
         Me.txtRetencionIVA.Enabled = False
-        Me.txtRetencionIVA.Location = New System.Drawing.Point(104, 124)
-        Me.txtRetencionIVA.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtRetencionIVA.Location = New System.Drawing.Point(78, 101)
         Me.txtRetencionIVA.MaxLength = 15
         Me.txtRetencionIVA.Name = "txtRetencionIVA"
         Me.txtRetencionIVA.ReadOnly = True
-        Me.txtRetencionIVA.Size = New System.Drawing.Size(71, 22)
+        Me.txtRetencionIVA.Size = New System.Drawing.Size(54, 20)
         Me.txtRetencionIVA.TabIndex = 2
         Me.txtRetencionIVA.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.txtRetencionIVA.Visible = False
@@ -896,50 +848,45 @@ Partial Class Compras_Movimientos
         'lblDisplayTotal
         '
         Me.lblDisplayTotal.AutoSize = True
-        Me.lblDisplayTotal.Location = New System.Drawing.Point(55, 101)
-        Me.lblDisplayTotal.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayTotal.Location = New System.Drawing.Point(41, 82)
         Me.lblDisplayTotal.Name = "lblDisplayTotal"
-        Me.lblDisplayTotal.Size = New System.Drawing.Size(48, 17)
+        Me.lblDisplayTotal.Size = New System.Drawing.Size(37, 13)
         Me.lblDisplayTotal.TabIndex = 309
         Me.lblDisplayTotal.Text = "Total :"
         '
         'txtTotal
         '
-        Me.txtTotal.Location = New System.Drawing.Point(112, 97)
-        Me.txtTotal.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtTotal.Location = New System.Drawing.Point(84, 79)
         Me.txtTotal.Name = "txtTotal"
         Me.txtTotal.ReadOnly = True
-        Me.txtTotal.Size = New System.Drawing.Size(176, 22)
+        Me.txtTotal.Size = New System.Drawing.Size(133, 20)
         Me.txtTotal.TabIndex = 18
         Me.txtTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'lblDisplayIVA
         '
         Me.lblDisplayIVA.AutoSize = True
-        Me.lblDisplayIVA.Location = New System.Drawing.Point(64, 74)
-        Me.lblDisplayIVA.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayIVA.Location = New System.Drawing.Point(48, 60)
         Me.lblDisplayIVA.Name = "lblDisplayIVA"
-        Me.lblDisplayIVA.Size = New System.Drawing.Size(37, 17)
+        Me.lblDisplayIVA.Size = New System.Drawing.Size(30, 13)
         Me.lblDisplayIVA.TabIndex = 307
         Me.lblDisplayIVA.Text = "IVA :"
         '
         'lblDisplaySubTotal
         '
         Me.lblDisplaySubTotal.AutoSize = True
-        Me.lblDisplaySubTotal.Location = New System.Drawing.Point(29, 21)
-        Me.lblDisplaySubTotal.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplaySubTotal.Location = New System.Drawing.Point(22, 17)
         Me.lblDisplaySubTotal.Name = "lblDisplaySubTotal"
-        Me.lblDisplaySubTotal.Size = New System.Drawing.Size(73, 17)
+        Me.lblDisplaySubTotal.Size = New System.Drawing.Size(56, 13)
         Me.lblDisplaySubTotal.TabIndex = 305
         Me.lblDisplaySubTotal.Text = "SubTotal :"
         '
         'TxtSubTotal
         '
-        Me.TxtSubTotal.Location = New System.Drawing.Point(112, 16)
-        Me.TxtSubTotal.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtSubTotal.Location = New System.Drawing.Point(84, 13)
         Me.TxtSubTotal.Name = "TxtSubTotal"
         Me.TxtSubTotal.ReadOnly = True
-        Me.TxtSubTotal.Size = New System.Drawing.Size(176, 22)
+        Me.TxtSubTotal.Size = New System.Drawing.Size(133, 20)
         Me.TxtSubTotal.TabIndex = 15
         Me.TxtSubTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
@@ -947,10 +894,9 @@ Partial Class Compras_Movimientos
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsslEstado, Me.tsslElaboro, Me.tsslCancelo})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 723)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 587)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1372, 29)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1029, 24)
         Me.StatusStripEstado.TabIndex = 314
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -960,7 +906,7 @@ Partial Class Compras_Movimientos
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
         Me.tsslEstado.Name = "tsslEstado"
-        Me.tsslEstado.Size = New System.Drawing.Size(58, 24)
+        Me.tsslEstado.Size = New System.Drawing.Size(46, 19)
         Me.tsslEstado.Text = "Estado"
         '
         'tsslElaboro
@@ -969,7 +915,7 @@ Partial Class Compras_Movimientos
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
         Me.tsslElaboro.Name = "tsslElaboro"
-        Me.tsslElaboro.Size = New System.Drawing.Size(72, 24)
+        Me.tsslElaboro.Size = New System.Drawing.Size(57, 19)
         Me.tsslElaboro.Text = "Elaboró :"
         '
         'tsslCancelo
@@ -978,16 +924,15 @@ Partial Class Compras_Movimientos
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
         Me.tsslCancelo.Name = "tsslCancelo"
-        Me.tsslCancelo.Size = New System.Drawing.Size(73, 24)
+        Me.tsslCancelo.Size = New System.Drawing.Size(60, 19)
         Me.tsslCancelo.Text = "Canceló :"
         '
         'txtIVA
         '
-        Me.txtIVA.Location = New System.Drawing.Point(112, 70)
-        Me.txtIVA.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtIVA.Location = New System.Drawing.Point(84, 57)
         Me.txtIVA.MaxLength = 80
         Me.txtIVA.Name = "txtIVA"
-        Me.txtIVA.Size = New System.Drawing.Size(176, 22)
+        Me.txtIVA.Size = New System.Drawing.Size(133, 20)
         Me.txtIVA.TabIndex = 330
         Me.txtIVA.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
@@ -995,70 +940,63 @@ Partial Class Compras_Movimientos
         '
         Me.lblIVAcalculado.AutoSize = True
         Me.lblIVAcalculado.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblIVAcalculado.Location = New System.Drawing.Point(5, 74)
-        Me.lblIVAcalculado.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblIVAcalculado.Location = New System.Drawing.Point(4, 60)
         Me.lblIVAcalculado.Name = "lblIVAcalculado"
-        Me.lblIVAcalculado.Size = New System.Drawing.Size(22, 13)
+        Me.lblIVAcalculado.Size = New System.Drawing.Size(15, 9)
         Me.lblIVAcalculado.TabIndex = 331
         Me.lblIVAcalculado.Text = "0.0"
         '
         'txtIVA_USD
         '
-        Me.txtIVA_USD.Location = New System.Drawing.Point(111, 70)
-        Me.txtIVA_USD.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtIVA_USD.Location = New System.Drawing.Point(83, 57)
         Me.txtIVA_USD.MaxLength = 80
         Me.txtIVA_USD.Name = "txtIVA_USD"
-        Me.txtIVA_USD.Size = New System.Drawing.Size(176, 22)
+        Me.txtIVA_USD.Size = New System.Drawing.Size(133, 20)
         Me.txtIVA_USD.TabIndex = 337
         Me.txtIVA_USD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'lblDisplayTotal_USD
         '
         Me.lblDisplayTotal_USD.AutoSize = True
-        Me.lblDisplayTotal_USD.Location = New System.Drawing.Point(55, 101)
-        Me.lblDisplayTotal_USD.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayTotal_USD.Location = New System.Drawing.Point(41, 82)
         Me.lblDisplayTotal_USD.Name = "lblDisplayTotal_USD"
-        Me.lblDisplayTotal_USD.Size = New System.Drawing.Size(48, 17)
+        Me.lblDisplayTotal_USD.Size = New System.Drawing.Size(37, 13)
         Me.lblDisplayTotal_USD.TabIndex = 336
         Me.lblDisplayTotal_USD.Text = "Total :"
         '
         'txtTotal_USD
         '
-        Me.txtTotal_USD.Location = New System.Drawing.Point(111, 97)
-        Me.txtTotal_USD.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtTotal_USD.Location = New System.Drawing.Point(83, 79)
         Me.txtTotal_USD.Name = "txtTotal_USD"
         Me.txtTotal_USD.ReadOnly = True
-        Me.txtTotal_USD.Size = New System.Drawing.Size(176, 22)
+        Me.txtTotal_USD.Size = New System.Drawing.Size(133, 20)
         Me.txtTotal_USD.TabIndex = 333
         Me.txtTotal_USD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'lblDisplayIVA_USD
         '
         Me.lblDisplayIVA_USD.AutoSize = True
-        Me.lblDisplayIVA_USD.Location = New System.Drawing.Point(64, 74)
-        Me.lblDisplayIVA_USD.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayIVA_USD.Location = New System.Drawing.Point(48, 60)
         Me.lblDisplayIVA_USD.Name = "lblDisplayIVA_USD"
-        Me.lblDisplayIVA_USD.Size = New System.Drawing.Size(37, 17)
+        Me.lblDisplayIVA_USD.Size = New System.Drawing.Size(30, 13)
         Me.lblDisplayIVA_USD.TabIndex = 335
         Me.lblDisplayIVA_USD.Text = "IVA :"
         '
         'lblDisplaySubTotal_USD
         '
         Me.lblDisplaySubTotal_USD.AutoSize = True
-        Me.lblDisplaySubTotal_USD.Location = New System.Drawing.Point(29, 20)
-        Me.lblDisplaySubTotal_USD.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplaySubTotal_USD.Location = New System.Drawing.Point(22, 16)
         Me.lblDisplaySubTotal_USD.Name = "lblDisplaySubTotal_USD"
-        Me.lblDisplaySubTotal_USD.Size = New System.Drawing.Size(73, 17)
+        Me.lblDisplaySubTotal_USD.Size = New System.Drawing.Size(56, 13)
         Me.lblDisplaySubTotal_USD.TabIndex = 334
         Me.lblDisplaySubTotal_USD.Text = "SubTotal :"
         '
         'TxtSubTotal_USD
         '
-        Me.TxtSubTotal_USD.Location = New System.Drawing.Point(111, 16)
-        Me.TxtSubTotal_USD.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtSubTotal_USD.Location = New System.Drawing.Point(83, 13)
         Me.TxtSubTotal_USD.Name = "TxtSubTotal_USD"
         Me.TxtSubTotal_USD.ReadOnly = True
-        Me.TxtSubTotal_USD.Size = New System.Drawing.Size(176, 22)
+        Me.TxtSubTotal_USD.Size = New System.Drawing.Size(133, 20)
         Me.TxtSubTotal_USD.TabIndex = 332
         Me.TxtSubTotal_USD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
@@ -1078,11 +1016,9 @@ Partial Class Compras_Movimientos
         Me.gbUSD.Controls.Add(Me.lblDisplayIVA_USD)
         Me.gbUSD.Controls.Add(Me.lblDisplayTotal_USD)
         Me.gbUSD.Controls.Add(Me.txtTotal_USD)
-        Me.gbUSD.Location = New System.Drawing.Point(500, 558)
-        Me.gbUSD.Margin = New System.Windows.Forms.Padding(4)
+        Me.gbUSD.Location = New System.Drawing.Point(375, 453)
         Me.gbUSD.Name = "gbUSD"
-        Me.gbUSD.Padding = New System.Windows.Forms.Padding(4)
-        Me.gbUSD.Size = New System.Drawing.Size(297, 155)
+        Me.gbUSD.Size = New System.Drawing.Size(223, 126)
         Me.gbUSD.TabIndex = 340
         Me.gbUSD.TabStop = False
         Me.gbUSD.Text = "Totales USD :"
@@ -1092,22 +1028,20 @@ Partial Class Compras_Movimientos
         '
         Me.lblIVAcalculado_USD.AutoSize = True
         Me.lblIVAcalculado_USD.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblIVAcalculado_USD.Location = New System.Drawing.Point(5, 74)
-        Me.lblIVAcalculado_USD.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblIVAcalculado_USD.Location = New System.Drawing.Point(4, 60)
         Me.lblIVAcalculado_USD.Name = "lblIVAcalculado_USD"
-        Me.lblIVAcalculado_USD.Size = New System.Drawing.Size(22, 13)
+        Me.lblIVAcalculado_USD.Size = New System.Drawing.Size(15, 9)
         Me.lblIVAcalculado_USD.TabIndex = 394
         Me.lblIVAcalculado_USD.Text = "0.0"
         '
         'txtRetencionISR_USD
         '
         Me.txtRetencionISR_USD.Enabled = False
-        Me.txtRetencionISR_USD.Location = New System.Drawing.Point(216, 124)
-        Me.txtRetencionISR_USD.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtRetencionISR_USD.Location = New System.Drawing.Point(162, 101)
         Me.txtRetencionISR_USD.MaxLength = 15
         Me.txtRetencionISR_USD.Name = "txtRetencionISR_USD"
         Me.txtRetencionISR_USD.ReadOnly = True
-        Me.txtRetencionISR_USD.Size = New System.Drawing.Size(71, 22)
+        Me.txtRetencionISR_USD.Size = New System.Drawing.Size(54, 20)
         Me.txtRetencionISR_USD.TabIndex = 392
         Me.txtRetencionISR_USD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.txtRetencionISR_USD.Visible = False
@@ -1115,10 +1049,9 @@ Partial Class Compras_Movimientos
         'lblDisplayRetencionISR_USD
         '
         Me.lblDisplayRetencionISR_USD.AutoSize = True
-        Me.lblDisplayRetencionISR_USD.Location = New System.Drawing.Point(176, 128)
-        Me.lblDisplayRetencionISR_USD.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayRetencionISR_USD.Location = New System.Drawing.Point(132, 104)
         Me.lblDisplayRetencionISR_USD.Name = "lblDisplayRetencionISR_USD"
-        Me.lblDisplayRetencionISR_USD.Size = New System.Drawing.Size(38, 17)
+        Me.lblDisplayRetencionISR_USD.Size = New System.Drawing.Size(31, 13)
         Me.lblDisplayRetencionISR_USD.TabIndex = 393
         Me.lblDisplayRetencionISR_USD.Text = "ISR :"
         Me.lblDisplayRetencionISR_USD.Visible = False
@@ -1126,10 +1059,9 @@ Partial Class Compras_Movimientos
         'lblDisplayRetencionIVA_USD
         '
         Me.lblDisplayRetencionIVA_USD.AutoSize = True
-        Me.lblDisplayRetencionIVA_USD.Location = New System.Drawing.Point(64, 128)
-        Me.lblDisplayRetencionIVA_USD.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayRetencionIVA_USD.Location = New System.Drawing.Point(48, 104)
         Me.lblDisplayRetencionIVA_USD.Name = "lblDisplayRetencionIVA_USD"
-        Me.lblDisplayRetencionIVA_USD.Size = New System.Drawing.Size(37, 17)
+        Me.lblDisplayRetencionIVA_USD.Size = New System.Drawing.Size(30, 13)
         Me.lblDisplayRetencionIVA_USD.TabIndex = 391
         Me.lblDisplayRetencionIVA_USD.Text = "IVA :"
         Me.lblDisplayRetencionIVA_USD.Visible = False
@@ -1137,12 +1069,11 @@ Partial Class Compras_Movimientos
         'txtRetencionIVA_USD
         '
         Me.txtRetencionIVA_USD.Enabled = False
-        Me.txtRetencionIVA_USD.Location = New System.Drawing.Point(104, 124)
-        Me.txtRetencionIVA_USD.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtRetencionIVA_USD.Location = New System.Drawing.Point(78, 101)
         Me.txtRetencionIVA_USD.MaxLength = 15
         Me.txtRetencionIVA_USD.Name = "txtRetencionIVA_USD"
         Me.txtRetencionIVA_USD.ReadOnly = True
-        Me.txtRetencionIVA_USD.Size = New System.Drawing.Size(71, 22)
+        Me.txtRetencionIVA_USD.Size = New System.Drawing.Size(54, 20)
         Me.txtRetencionIVA_USD.TabIndex = 389
         Me.txtRetencionIVA_USD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.txtRetencionIVA_USD.Visible = False
@@ -1150,32 +1081,29 @@ Partial Class Compras_Movimientos
         'lblDisplayRetenciones_USD
         '
         Me.lblDisplayRetenciones_USD.AutoSize = True
-        Me.lblDisplayRetenciones_USD.Location = New System.Drawing.Point(4, 128)
-        Me.lblDisplayRetenciones_USD.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayRetenciones_USD.Location = New System.Drawing.Point(3, 104)
         Me.lblDisplayRetenciones_USD.Name = "lblDisplayRetenciones_USD"
-        Me.lblDisplayRetenciones_USD.Size = New System.Drawing.Size(50, 17)
+        Me.lblDisplayRetenciones_USD.Size = New System.Drawing.Size(39, 13)
         Me.lblDisplayRetenciones_USD.TabIndex = 390
         Me.lblDisplayRetenciones_USD.Text = "Reten."
         Me.lblDisplayRetenciones_USD.Visible = False
         '
         'txtIEPS_USD
         '
-        Me.txtIEPS_USD.Location = New System.Drawing.Point(111, 43)
-        Me.txtIEPS_USD.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtIEPS_USD.Location = New System.Drawing.Point(83, 35)
         Me.txtIEPS_USD.MaxLength = 80
         Me.txtIEPS_USD.Name = "txtIEPS_USD"
         Me.txtIEPS_USD.ReadOnly = True
-        Me.txtIEPS_USD.Size = New System.Drawing.Size(176, 22)
+        Me.txtIEPS_USD.Size = New System.Drawing.Size(133, 20)
         Me.txtIEPS_USD.TabIndex = 387
         Me.txtIEPS_USD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'lblDisplayIEPS_USD
         '
         Me.lblDisplayIEPS_USD.AutoSize = True
-        Me.lblDisplayIEPS_USD.Location = New System.Drawing.Point(55, 44)
-        Me.lblDisplayIEPS_USD.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayIEPS_USD.Location = New System.Drawing.Point(41, 36)
         Me.lblDisplayIEPS_USD.Name = "lblDisplayIEPS_USD"
-        Me.lblDisplayIEPS_USD.Size = New System.Drawing.Size(46, 17)
+        Me.lblDisplayIEPS_USD.Size = New System.Drawing.Size(37, 13)
         Me.lblDisplayIEPS_USD.TabIndex = 386
         Me.lblDisplayIEPS_USD.Text = "IEPS :"
         '
@@ -1184,21 +1112,19 @@ Partial Class Compras_Movimientos
         Me.TabControl1.Controls.Add(Me.tpArticulos)
         Me.TabControl1.Controls.Add(Me.tpSeries)
         Me.TabControl1.Controls.Add(Me.tpEntradas)
-        Me.TabControl1.Location = New System.Drawing.Point(1, 302)
-        Me.TabControl1.Margin = New System.Windows.Forms.Padding(4)
+        Me.TabControl1.Location = New System.Drawing.Point(1, 245)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(1359, 251)
+        Me.TabControl1.Size = New System.Drawing.Size(1019, 204)
         Me.TabControl1.TabIndex = 1
         '
         'tpArticulos
         '
         Me.tpArticulos.Controls.Add(Me.Grid)
-        Me.tpArticulos.Location = New System.Drawing.Point(4, 25)
-        Me.tpArticulos.Margin = New System.Windows.Forms.Padding(4)
+        Me.tpArticulos.Location = New System.Drawing.Point(4, 22)
         Me.tpArticulos.Name = "tpArticulos"
-        Me.tpArticulos.Padding = New System.Windows.Forms.Padding(4)
-        Me.tpArticulos.Size = New System.Drawing.Size(1351, 222)
+        Me.tpArticulos.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpArticulos.Size = New System.Drawing.Size(1011, 178)
         Me.tpArticulos.TabIndex = 0
         Me.tpArticulos.Text = "Artículos"
         Me.tpArticulos.UseVisualStyleBackColor = True
@@ -1212,14 +1138,13 @@ Partial Class Compras_Movimientos
         Me.Grid.DefaultRowHeight = CType(24, Short)
         Me.Grid.DisplayRowNumber = True
         Me.Grid.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
-        Me.Grid.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Grid.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Grid.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Grid.Location = New System.Drawing.Point(1, 7)
+        Me.Grid.Location = New System.Drawing.Point(1, 6)
         Me.Grid.LockButton = True
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid.Name = "Grid"
         Me.Grid.Rows = 6
-        Me.Grid.Size = New System.Drawing.Size(1331, 204)
+        Me.Grid.Size = New System.Drawing.Size(998, 166)
         Me.Grid.TabIndex = 0
         Me.Grid.UncheckedImage = CType(resources.GetObject("Grid.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -1229,11 +1154,10 @@ Partial Class Compras_Movimientos
         Me.tpSeries.Controls.Add(Me.btnCopiarLote)
         Me.tpSeries.Controls.Add(Me.txtLote)
         Me.tpSeries.Controls.Add(Me.GridSeries)
-        Me.tpSeries.Location = New System.Drawing.Point(4, 25)
-        Me.tpSeries.Margin = New System.Windows.Forms.Padding(4)
+        Me.tpSeries.Location = New System.Drawing.Point(4, 22)
         Me.tpSeries.Name = "tpSeries"
-        Me.tpSeries.Padding = New System.Windows.Forms.Padding(4)
-        Me.tpSeries.Size = New System.Drawing.Size(1351, 222)
+        Me.tpSeries.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpSeries.Size = New System.Drawing.Size(1011, 178)
         Me.tpSeries.TabIndex = 1
         Me.tpSeries.Text = "Series"
         Me.tpSeries.UseVisualStyleBackColor = True
@@ -1241,30 +1165,27 @@ Partial Class Compras_Movimientos
         'lblDisplayLote
         '
         Me.lblDisplayLote.AutoSize = True
-        Me.lblDisplayLote.Location = New System.Drawing.Point(433, 194)
-        Me.lblDisplayLote.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayLote.Location = New System.Drawing.Point(325, 158)
         Me.lblDisplayLote.Name = "lblDisplayLote"
-        Me.lblDisplayLote.Size = New System.Drawing.Size(44, 17)
+        Me.lblDisplayLote.Size = New System.Drawing.Size(34, 13)
         Me.lblDisplayLote.TabIndex = 331
         Me.lblDisplayLote.Text = "Lote :"
         '
         'btnCopiarLote
         '
-        Me.btnCopiarLote.Location = New System.Drawing.Point(663, 190)
-        Me.btnCopiarLote.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnCopiarLote.Location = New System.Drawing.Point(497, 154)
         Me.btnCopiarLote.Name = "btnCopiarLote"
-        Me.btnCopiarLote.Size = New System.Drawing.Size(145, 26)
+        Me.btnCopiarLote.Size = New System.Drawing.Size(109, 21)
         Me.btnCopiarLote.TabIndex = 330
         Me.btnCopiarLote.Text = "Copiar"
         Me.btnCopiarLote.UseVisualStyleBackColor = True
         '
         'txtLote
         '
-        Me.txtLote.Location = New System.Drawing.Point(512, 192)
-        Me.txtLote.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtLote.Location = New System.Drawing.Point(384, 156)
         Me.txtLote.MaxLength = 80
         Me.txtLote.Name = "txtLote"
-        Me.txtLote.Size = New System.Drawing.Size(141, 22)
+        Me.txtLote.Size = New System.Drawing.Size(107, 20)
         Me.txtLote.TabIndex = 10
         '
         'GridSeries
@@ -1276,25 +1197,23 @@ Partial Class Compras_Movimientos
         Me.GridSeries.DefaultRowHeight = CType(24, Short)
         Me.GridSeries.DisplayRowNumber = True
         Me.GridSeries.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
-        Me.GridSeries.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GridSeries.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GridSeries.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.GridSeries.Location = New System.Drawing.Point(4, 7)
+        Me.GridSeries.Location = New System.Drawing.Point(3, 6)
         Me.GridSeries.LockButton = True
-        Me.GridSeries.Margin = New System.Windows.Forms.Padding(4)
         Me.GridSeries.Name = "GridSeries"
         Me.GridSeries.Rows = 6
-        Me.GridSeries.Size = New System.Drawing.Size(1332, 183)
+        Me.GridSeries.Size = New System.Drawing.Size(999, 149)
         Me.GridSeries.TabIndex = 1
         Me.GridSeries.UncheckedImage = CType(resources.GetObject("GridSeries.UncheckedImage"), System.Drawing.Bitmap)
         '
         'tpEntradas
         '
         Me.tpEntradas.Controls.Add(Me.gbEntradas)
-        Me.tpEntradas.Location = New System.Drawing.Point(4, 25)
-        Me.tpEntradas.Margin = New System.Windows.Forms.Padding(4)
+        Me.tpEntradas.Location = New System.Drawing.Point(4, 22)
         Me.tpEntradas.Name = "tpEntradas"
-        Me.tpEntradas.Padding = New System.Windows.Forms.Padding(4)
-        Me.tpEntradas.Size = New System.Drawing.Size(1351, 222)
+        Me.tpEntradas.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpEntradas.Size = New System.Drawing.Size(1011, 178)
         Me.tpEntradas.TabIndex = 2
         Me.tpEntradas.Text = "Entradas inventario"
         Me.tpEntradas.UseVisualStyleBackColor = True
@@ -1310,11 +1229,9 @@ Partial Class Compras_Movimientos
         Me.gbEntradas.Controls.Add(Me.lstEntradasInventarios)
         Me.gbEntradas.Controls.Add(Me.btnAgregarTodasEntradasInventarios)
         Me.gbEntradas.Controls.Add(Me.lblDisplayEntradasInventarios)
-        Me.gbEntradas.Location = New System.Drawing.Point(4, 9)
-        Me.gbEntradas.Margin = New System.Windows.Forms.Padding(4)
+        Me.gbEntradas.Location = New System.Drawing.Point(3, 7)
         Me.gbEntradas.Name = "gbEntradas"
-        Me.gbEntradas.Padding = New System.Windows.Forms.Padding(4)
-        Me.gbEntradas.Size = New System.Drawing.Size(1336, 207)
+        Me.gbEntradas.Size = New System.Drawing.Size(1002, 168)
         Me.gbEntradas.TabIndex = 335
         Me.gbEntradas.TabStop = False
         '
@@ -1327,42 +1244,38 @@ Partial Class Compras_Movimientos
         Me.GridEntradas.DefaultRowHeight = CType(24, Short)
         Me.GridEntradas.DisplayRowNumber = True
         Me.GridEntradas.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
-        Me.GridEntradas.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GridEntradas.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GridEntradas.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.GridEntradas.Location = New System.Drawing.Point(8, 17)
+        Me.GridEntradas.Location = New System.Drawing.Point(6, 14)
         Me.GridEntradas.LockButton = True
-        Me.GridEntradas.Margin = New System.Windows.Forms.Padding(4)
         Me.GridEntradas.Name = "GridEntradas"
         Me.GridEntradas.Rows = 6
-        Me.GridEntradas.Size = New System.Drawing.Size(696, 182)
+        Me.GridEntradas.Size = New System.Drawing.Size(522, 148)
         Me.GridEntradas.TabIndex = 1
         Me.GridEntradas.UncheckedImage = CType(resources.GetObject("GridEntradas.UncheckedImage"), System.Drawing.Bitmap)
         '
         'btnBorrarTodasEntradasInventarios
         '
-        Me.btnBorrarTodasEntradasInventarios.Location = New System.Drawing.Point(1120, 156)
-        Me.btnBorrarTodasEntradasInventarios.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnBorrarTodasEntradasInventarios.Location = New System.Drawing.Point(840, 127)
         Me.btnBorrarTodasEntradasInventarios.Name = "btnBorrarTodasEntradasInventarios"
-        Me.btnBorrarTodasEntradasInventarios.Size = New System.Drawing.Size(169, 26)
+        Me.btnBorrarTodasEntradasInventarios.Size = New System.Drawing.Size(127, 21)
         Me.btnBorrarTodasEntradasInventarios.TabIndex = 334
         Me.btnBorrarTodasEntradasInventarios.Text = "Borrar todas"
         Me.btnBorrarTodasEntradasInventarios.UseVisualStyleBackColor = True
         '
         'txtFolioOC_Inventarios
         '
-        Me.txtFolioOC_Inventarios.Location = New System.Drawing.Point(805, 16)
-        Me.txtFolioOC_Inventarios.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtFolioOC_Inventarios.Location = New System.Drawing.Point(604, 13)
         Me.txtFolioOC_Inventarios.MaxLength = 80
         Me.txtFolioOC_Inventarios.Name = "txtFolioOC_Inventarios"
-        Me.txtFolioOC_Inventarios.Size = New System.Drawing.Size(159, 22)
+        Me.txtFolioOC_Inventarios.Size = New System.Drawing.Size(120, 20)
         Me.txtFolioOC_Inventarios.TabIndex = 9
         '
         'btnTraerTodasEntradasInventarios
         '
-        Me.btnTraerTodasEntradasInventarios.Location = New System.Drawing.Point(991, 20)
-        Me.btnTraerTodasEntradasInventarios.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnTraerTodasEntradasInventarios.Location = New System.Drawing.Point(743, 16)
         Me.btnTraerTodasEntradasInventarios.Name = "btnTraerTodasEntradasInventarios"
-        Me.btnTraerTodasEntradasInventarios.Size = New System.Drawing.Size(169, 26)
+        Me.btnTraerTodasEntradasInventarios.Size = New System.Drawing.Size(127, 21)
         Me.btnTraerTodasEntradasInventarios.TabIndex = 333
         Me.btnTraerTodasEntradasInventarios.Text = "Traer entradas"
         Me.btnTraerTodasEntradasInventarios.UseVisualStyleBackColor = True
@@ -1370,19 +1283,17 @@ Partial Class Compras_Movimientos
         'lblDisplayFolioOC_Inventarios
         '
         Me.lblDisplayFolioOC_Inventarios.AutoSize = True
-        Me.lblDisplayFolioOC_Inventarios.Location = New System.Drawing.Point(708, 20)
-        Me.lblDisplayFolioOC_Inventarios.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayFolioOC_Inventarios.Location = New System.Drawing.Point(531, 16)
         Me.lblDisplayFolioOC_Inventarios.Name = "lblDisplayFolioOC_Inventarios"
-        Me.lblDisplayFolioOC_Inventarios.Size = New System.Drawing.Size(70, 17)
+        Me.lblDisplayFolioOC_Inventarios.Size = New System.Drawing.Size(53, 13)
         Me.lblDisplayFolioOC_Inventarios.TabIndex = 279
         Me.lblDisplayFolioOC_Inventarios.Text = "Folio OC :"
         '
         'btnAgregarSeleccionadaEntradasInventarios
         '
-        Me.btnAgregarSeleccionadaEntradasInventarios.Location = New System.Drawing.Point(1120, 98)
-        Me.btnAgregarSeleccionadaEntradasInventarios.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnAgregarSeleccionadaEntradasInventarios.Location = New System.Drawing.Point(840, 80)
         Me.btnAgregarSeleccionadaEntradasInventarios.Name = "btnAgregarSeleccionadaEntradasInventarios"
-        Me.btnAgregarSeleccionadaEntradasInventarios.Size = New System.Drawing.Size(169, 26)
+        Me.btnAgregarSeleccionadaEntradasInventarios.Size = New System.Drawing.Size(127, 21)
         Me.btnAgregarSeleccionadaEntradasInventarios.TabIndex = 331
         Me.btnAgregarSeleccionadaEntradasInventarios.Text = "Agregar seleccionada"
         Me.btnAgregarSeleccionadaEntradasInventarios.UseVisualStyleBackColor = True
@@ -1390,40 +1301,35 @@ Partial Class Compras_Movimientos
         'lstEntradasInventarios
         '
         Me.lstEntradasInventarios.FormattingEnabled = True
-        Me.lstEntradasInventarios.ItemHeight = 16
-        Me.lstEntradasInventarios.Location = New System.Drawing.Point(805, 65)
-        Me.lstEntradasInventarios.Margin = New System.Windows.Forms.Padding(4)
+        Me.lstEntradasInventarios.Location = New System.Drawing.Point(604, 53)
         Me.lstEntradasInventarios.MultiColumn = True
         Me.lstEntradasInventarios.Name = "lstEntradasInventarios"
-        Me.lstEntradasInventarios.Size = New System.Drawing.Size(305, 116)
+        Me.lstEntradasInventarios.Size = New System.Drawing.Size(230, 95)
         Me.lstEntradasInventarios.TabIndex = 280
         '
         'btnAgregarTodasEntradasInventarios
         '
-        Me.btnAgregarTodasEntradasInventarios.Location = New System.Drawing.Point(1120, 65)
-        Me.btnAgregarTodasEntradasInventarios.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnAgregarTodasEntradasInventarios.Location = New System.Drawing.Point(840, 53)
         Me.btnAgregarTodasEntradasInventarios.Name = "btnAgregarTodasEntradasInventarios"
-        Me.btnAgregarTodasEntradasInventarios.Size = New System.Drawing.Size(169, 26)
+        Me.btnAgregarTodasEntradasInventarios.Size = New System.Drawing.Size(127, 21)
         Me.btnAgregarTodasEntradasInventarios.TabIndex = 330
         Me.btnAgregarTodasEntradasInventarios.Text = "Agregar todas"
         Me.btnAgregarTodasEntradasInventarios.UseVisualStyleBackColor = True
         '
         'lblDisplayEntradasInventarios
         '
-        Me.lblDisplayEntradasInventarios.Location = New System.Drawing.Point(708, 65)
-        Me.lblDisplayEntradasInventarios.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayEntradasInventarios.Location = New System.Drawing.Point(531, 53)
         Me.lblDisplayEntradasInventarios.Name = "lblDisplayEntradasInventarios"
-        Me.lblDisplayEntradasInventarios.Size = New System.Drawing.Size(88, 66)
+        Me.lblDisplayEntradasInventarios.Size = New System.Drawing.Size(66, 54)
         Me.lblDisplayEntradasInventarios.TabIndex = 281
         Me.lblDisplayEntradasInventarios.Text = "Entradas inventarios:"
         '
         'btnSeries
         '
         Me.btnSeries.Enabled = False
-        Me.btnSeries.Location = New System.Drawing.Point(272, 577)
-        Me.btnSeries.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnSeries.Location = New System.Drawing.Point(204, 469)
         Me.btnSeries.Name = "btnSeries"
-        Me.btnSeries.Size = New System.Drawing.Size(220, 39)
+        Me.btnSeries.Size = New System.Drawing.Size(165, 32)
         Me.btnSeries.TabIndex = 380
         Me.btnSeries.Text = "Detallar series"
         Me.btnSeries.UseVisualStyleBackColor = True
@@ -1431,21 +1337,19 @@ Partial Class Compras_Movimientos
         '
         'txtSaldo_USD
         '
-        Me.txtSaldo_USD.Location = New System.Drawing.Point(1227, 686)
-        Me.txtSaldo_USD.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtSaldo_USD.Location = New System.Drawing.Point(920, 557)
         Me.txtSaldo_USD.Name = "txtSaldo_USD"
         Me.txtSaldo_USD.ReadOnly = True
-        Me.txtSaldo_USD.Size = New System.Drawing.Size(132, 22)
+        Me.txtSaldo_USD.Size = New System.Drawing.Size(100, 20)
         Me.txtSaldo_USD.TabIndex = 381
         Me.txtSaldo_USD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'lblDisplaySaldo_USD
         '
         Me.lblDisplaySaldo_USD.AutoSize = True
-        Me.lblDisplaySaldo_USD.Location = New System.Drawing.Point(1141, 688)
-        Me.lblDisplaySaldo_USD.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplaySaldo_USD.Location = New System.Drawing.Point(856, 559)
         Me.lblDisplaySaldo_USD.Name = "lblDisplaySaldo_USD"
-        Me.lblDisplaySaldo_USD.Size = New System.Drawing.Size(85, 17)
+        Me.lblDisplaySaldo_USD.Size = New System.Drawing.Size(66, 13)
         Me.lblDisplaySaldo_USD.TabIndex = 382
         Me.lblDisplaySaldo_USD.Text = "Saldo USD :"
         '
@@ -1456,10 +1360,9 @@ Partial Class Compras_Movimientos
         'btnSeleccionarArchivoSeries
         '
         Me.btnSeleccionarArchivoSeries.Enabled = False
-        Me.btnSeleccionarArchivoSeries.Location = New System.Drawing.Point(272, 624)
-        Me.btnSeleccionarArchivoSeries.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnSeleccionarArchivoSeries.Location = New System.Drawing.Point(204, 507)
         Me.btnSeleccionarArchivoSeries.Name = "btnSeleccionarArchivoSeries"
-        Me.btnSeleccionarArchivoSeries.Size = New System.Drawing.Size(220, 39)
+        Me.btnSeleccionarArchivoSeries.Size = New System.Drawing.Size(165, 32)
         Me.btnSeleccionarArchivoSeries.TabIndex = 383
         Me.btnSeleccionarArchivoSeries.Text = "Seleccionar archivo con series"
         Me.btnSeleccionarArchivoSeries.UseVisualStyleBackColor = True
@@ -1467,44 +1370,40 @@ Partial Class Compras_Movimientos
         '
         'txtIEPS
         '
-        Me.txtIEPS.Location = New System.Drawing.Point(112, 43)
-        Me.txtIEPS.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtIEPS.Location = New System.Drawing.Point(84, 35)
         Me.txtIEPS.MaxLength = 80
         Me.txtIEPS.Name = "txtIEPS"
         Me.txtIEPS.ReadOnly = True
-        Me.txtIEPS.Size = New System.Drawing.Size(176, 22)
+        Me.txtIEPS.Size = New System.Drawing.Size(133, 20)
         Me.txtIEPS.TabIndex = 385
         Me.txtIEPS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'lblDisplayIEPS
         '
         Me.lblDisplayIEPS.AutoSize = True
-        Me.lblDisplayIEPS.Location = New System.Drawing.Point(55, 47)
-        Me.lblDisplayIEPS.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayIEPS.Location = New System.Drawing.Point(41, 38)
         Me.lblDisplayIEPS.Name = "lblDisplayIEPS"
-        Me.lblDisplayIEPS.Size = New System.Drawing.Size(46, 17)
+        Me.lblDisplayIEPS.Size = New System.Drawing.Size(37, 13)
         Me.lblDisplayIEPS.TabIndex = 384
         Me.lblDisplayIEPS.Text = "IEPS :"
         '
         'TxtConceptoCancelacion
         '
-        Me.TxtConceptoCancelacion.Location = New System.Drawing.Point(5, 578)
-        Me.TxtConceptoCancelacion.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtConceptoCancelacion.Location = New System.Drawing.Point(4, 470)
         Me.TxtConceptoCancelacion.MaxLength = 1000
         Me.TxtConceptoCancelacion.Multiline = True
         Me.TxtConceptoCancelacion.Name = "TxtConceptoCancelacion"
         Me.TxtConceptoCancelacion.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TxtConceptoCancelacion.Size = New System.Drawing.Size(257, 83)
+        Me.TxtConceptoCancelacion.Size = New System.Drawing.Size(194, 68)
         Me.TxtConceptoCancelacion.TabIndex = 386
         Me.TxtConceptoCancelacion.Visible = False
         '
         'LblConceptoCancelacion
         '
         Me.LblConceptoCancelacion.AutoSize = True
-        Me.LblConceptoCancelacion.Location = New System.Drawing.Point(3, 556)
-        Me.LblConceptoCancelacion.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblConceptoCancelacion.Location = New System.Drawing.Point(2, 452)
         Me.LblConceptoCancelacion.Name = "LblConceptoCancelacion"
-        Me.LblConceptoCancelacion.Size = New System.Drawing.Size(155, 17)
+        Me.LblConceptoCancelacion.Size = New System.Drawing.Size(120, 13)
         Me.LblConceptoCancelacion.TabIndex = 387
         Me.LblConceptoCancelacion.Text = "Concepto cancelación :"
         Me.LblConceptoCancelacion.Visible = False
@@ -1525,11 +1424,9 @@ Partial Class Compras_Movimientos
         Me.gbMXN.Controls.Add(Me.txtRetencionIVA)
         Me.gbMXN.Controls.Add(Me.lblDisplayRetenciones)
         Me.gbMXN.Controls.Add(Me.txtIVA)
-        Me.gbMXN.Location = New System.Drawing.Point(820, 558)
-        Me.gbMXN.Margin = New System.Windows.Forms.Padding(4)
+        Me.gbMXN.Location = New System.Drawing.Point(615, 453)
         Me.gbMXN.Name = "gbMXN"
-        Me.gbMXN.Padding = New System.Windows.Forms.Padding(4)
-        Me.gbMXN.Size = New System.Drawing.Size(297, 155)
+        Me.gbMXN.Size = New System.Drawing.Size(223, 126)
         Me.gbMXN.TabIndex = 388
         Me.gbMXN.TabStop = False
         Me.gbMXN.Text = "Totales MXN :"
@@ -1537,12 +1434,11 @@ Partial Class Compras_Movimientos
         'txtRetencionISR
         '
         Me.txtRetencionISR.Enabled = False
-        Me.txtRetencionISR.Location = New System.Drawing.Point(217, 124)
-        Me.txtRetencionISR.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtRetencionISR.Location = New System.Drawing.Point(163, 101)
         Me.txtRetencionISR.MaxLength = 15
         Me.txtRetencionISR.Name = "txtRetencionISR"
         Me.txtRetencionISR.ReadOnly = True
-        Me.txtRetencionISR.Size = New System.Drawing.Size(71, 22)
+        Me.txtRetencionISR.Size = New System.Drawing.Size(54, 20)
         Me.txtRetencionISR.TabIndex = 387
         Me.txtRetencionISR.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.txtRetencionISR.Visible = False
@@ -1550,10 +1446,9 @@ Partial Class Compras_Movimientos
         'lblDisplayRetencionISR
         '
         Me.lblDisplayRetencionISR.AutoSize = True
-        Me.lblDisplayRetencionISR.Location = New System.Drawing.Point(176, 129)
-        Me.lblDisplayRetencionISR.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayRetencionISR.Location = New System.Drawing.Point(132, 105)
         Me.lblDisplayRetencionISR.Name = "lblDisplayRetencionISR"
-        Me.lblDisplayRetencionISR.Size = New System.Drawing.Size(38, 17)
+        Me.lblDisplayRetencionISR.Size = New System.Drawing.Size(31, 13)
         Me.lblDisplayRetencionISR.TabIndex = 388
         Me.lblDisplayRetencionISR.Text = "ISR :"
         Me.lblDisplayRetencionISR.Visible = False
@@ -1561,10 +1456,9 @@ Partial Class Compras_Movimientos
         'lblDisplayRetencionIVA
         '
         Me.lblDisplayRetencionIVA.AutoSize = True
-        Me.lblDisplayRetencionIVA.Location = New System.Drawing.Point(64, 129)
-        Me.lblDisplayRetencionIVA.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayRetencionIVA.Location = New System.Drawing.Point(48, 105)
         Me.lblDisplayRetencionIVA.Name = "lblDisplayRetencionIVA"
-        Me.lblDisplayRetencionIVA.Size = New System.Drawing.Size(37, 17)
+        Me.lblDisplayRetencionIVA.Size = New System.Drawing.Size(30, 13)
         Me.lblDisplayRetencionIVA.TabIndex = 386
         Me.lblDisplayRetencionIVA.Text = "IVA :"
         Me.lblDisplayRetencionIVA.Visible = False
@@ -1572,18 +1466,17 @@ Partial Class Compras_Movimientos
         'lblAyuda
         '
         Me.lblAyuda.AutoSize = True
-        Me.lblAyuda.Location = New System.Drawing.Point(4, 682)
-        Me.lblAyuda.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblAyuda.Location = New System.Drawing.Point(3, 554)
         Me.lblAyuda.Name = "lblAyuda"
-        Me.lblAyuda.Size = New System.Drawing.Size(498, 17)
+        Me.lblAyuda.Size = New System.Drawing.Size(369, 13)
         Me.lblAyuda.TabIndex = 389
         Me.lblAyuda.Text = "*F4 para agregar comentarios, F8 para eliminar renglones, F6/F7 para buscar"
         '
         'Compras_Movimientos
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1372, 752)
+        Me.ClientSize = New System.Drawing.Size(1029, 611)
         Me.Controls.Add(Me.lblAyuda)
         Me.Controls.Add(Me.gbMXN)
         Me.Controls.Add(Me.LblConceptoCancelacion)
@@ -1600,7 +1493,6 @@ Partial Class Compras_Movimientos
         Me.Controls.Add(Me.gbGlobal)
         Me.Controls.Add(Me.tsMenu)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Compras_Movimientos"
         Me.Text = "Compras"
@@ -1754,4 +1646,5 @@ Partial Class Compras_Movimientos
     Friend WithEvents LblRequisicion As System.Windows.Forms.Label
     Friend WithEvents TxtRequisicion As System.Windows.Forms.TextBox
     Friend WithEvents btnTraerDetalleRequisicion As System.Windows.Forms.Button
+    Friend WithEvents tsbEditarOC As ToolStripButton
 End Class
