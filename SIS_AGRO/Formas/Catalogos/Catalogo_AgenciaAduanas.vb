@@ -1,7 +1,4 @@
 ﻿Option Strict On
-Imports System.Data
-Imports System.Data.SqlClient
-Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Catalogo_AgenciaAduanas
     Private oAgenciaAduanales As New Class_CatAgenciaAduanales
@@ -247,14 +244,12 @@ Public Class Catalogo_AgenciaAduanas
     Private Function LlenaComboNacionalidad() As Boolean
         Me.cboNacionalidad.Items.Add("MEXICANA")
         Me.cboNacionalidad.Items.Add("ESTADOUNIDENSE")
-
         Me.cboNacionalidad.SelectedItem = "MEXICANA"
     End Function
 
     Private Function LlenaComboEstatus() As Boolean
         Me.CboEstatus.Items.Add("A")
         Me.CboEstatus.Items.Add("B")
-
         Me.CboEstatus.SelectedItem = "A"
     End Function
 
@@ -292,10 +287,6 @@ Public Class Catalogo_AgenciaAduanas
 #End Region
 
 #Region "Eventos de objetos"
-    Private Sub CboFiltroHoja_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Refrescar()
-    End Sub
-
     Private Sub CboEstatus_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboEstatus.KeyDown
         If e.KeyCode = Keys.Return Then
             tsbGrabar.PerformClick()

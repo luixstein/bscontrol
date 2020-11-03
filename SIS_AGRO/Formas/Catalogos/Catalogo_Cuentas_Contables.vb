@@ -566,51 +566,56 @@ Buscar:
     End Sub
 
     Private Function ValidaLongitudNiveles() As Boolean
-        If Me.TxtNivel1.TextLength > 0 Then
-            If Me.TxtNivel1.TextLength < EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL1 Then
-                MsgBox("El 1er nivel debe de ser de " & EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL1 & " caracteres.", vbExclamation, Me.Text)
+        Try
+            If Me.TxtNivel1.TextLength > 0 Then
+                If Me.TxtNivel1.TextLength < EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL1 Then
+                    MsgBox("El 1er nivel debe de ser de " & EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL1 & " caracteres.", vbExclamation, Me.Text)
+                    Me.TxtNivel1.Focus()
+                    Return False
+                End If
+            End If
+            If Me.TxtNivel2.TextLength > 0 Then
+                If Me.TxtNivel2.TextLength < EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL1 Then
+                    MsgBox("El 2do nivel debe de ser de " & EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL2 & " caracteres.", vbExclamation, Me.Text)
+                    Me.TxtNivel2.Focus()
+                    Return False
+                End If
+            End If
+            If Me.TxtNivel3.TextLength > 0 Then
+                If Me.TxtNivel3.TextLength < EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL2 Then
+                    MsgBox("El 3er nivel debe de ser de " & EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL3 & " caracteres.", vbExclamation, Me.Text)
+                    Me.TxtNivel3.Focus()
+                    Return False
+                End If
+            End If
+            If Me.TxtNivel4.TextLength > 0 Then
+                If Me.TxtNivel4.TextLength < EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL3 Then
+                    MsgBox("El 4to nivel debe de ser de " & EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL4 & " caracteres.", vbExclamation, Me.Text)
+                    Me.TxtNivel4.Focus()
+                    Return False
+                End If
+            End If
+            If Me.TxtNivel5.TextLength > 0 Then
+                If Me.TxtNivel5.TextLength < EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL4 Then
+                    MsgBox("El 5to nivel debe de ser de " & EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL5 & " caracteres.", vbExclamation, Me.Text)
+                    Me.TxtNivel5.Focus()
+                    Return False
+                End If
+            End If
+            If (Me.TxtNivel2.TextLength > 0 Or Me.TxtNivel3.TextLength > 0) And Me.TxtNivel1.TextLength = 0 Then
+                MsgBox("Formato inválido, no capturó la cuenta de mayor.", vbExclamation, Me.Text)
                 Me.TxtNivel1.Focus()
                 Return False
             End If
-        End If
-        If Me.TxtNivel2.TextLength > 0 Then
-            If Me.TxtNivel2.TextLength < EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL1 Then
-                MsgBox("El 2do nivel debe de ser de " & EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL2 & " caracteres.", vbExclamation, Me.Text)
+            If Me.TxtNivel3.TextLength > 0 And Me.TxtNivel2.TextLength = 0 Then
+                MsgBox("Formato inválido, no capturó la subcuenta.", vbExclamation, Me.Text)
                 Me.TxtNivel2.Focus()
                 Return False
             End If
-        End If
-        If Me.TxtNivel3.TextLength > 0 Then
-            If Me.TxtNivel3.TextLength < EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL2 Then
-                MsgBox("El 3er nivel debe de ser de " & EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL3 & " caracteres.", vbExclamation, Me.Text)
-                Me.TxtNivel3.Focus()
-                Return False
-            End If
-        End If
-        If Me.TxtNivel4.TextLength > 0 Then
-            If Me.TxtNivel4.TextLength < EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL3 Then
-                MsgBox("El 4to nivel debe de ser de " & EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL4 & " caracteres.", vbExclamation, Me.Text)
-                Me.TxtNivel4.Focus()
-                Return False
-            End If
-        End If
-        If Me.TxtNivel5.TextLength > 0 Then
-            If Me.TxtNivel5.TextLength < EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL4 Then
-                MsgBox("El 5to nivel debe de ser de " & EmpresaParametros.LEN_CUENTA_CONTABLE_NIVEL5 & " caracteres.", vbExclamation, Me.Text)
-                Me.TxtNivel5.Focus()
-                Return False
-            End If
-        End If
-        If (Me.TxtNivel2.TextLength > 0 Or Me.TxtNivel3.TextLength > 0) And Me.TxtNivel1.TextLength = 0 Then
-            MsgBox("Formato inválido, no capturó la cuenta de mayor.", vbExclamation, Me.Text)
-            Me.TxtNivel1.Focus()
-            Return False
-        End If
-        If Me.TxtNivel3.TextLength > 0 And Me.TxtNivel2.TextLength = 0 Then
-            MsgBox("Formato inválido, no capturó la subcuenta.", vbExclamation, Me.Text)
-            Me.TxtNivel2.Focus()
-            Return False
-        End If
+
+        Catch ex As Exception
+            HandleError(Me.Name, "ValidaLongitudNiveles", ex)
+        End Try
 
         Return True
     End Function

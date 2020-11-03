@@ -1,4 +1,5 @@
 ﻿Option Strict On
+
 Imports System.Data.SqlClient
 Imports CrystalDecisions.CrystalReports.Engine
 
@@ -301,9 +302,6 @@ Public Class Class_CatCuentas
         Return bResultado
     End Function
 
-    ''' <summary>
-    ''' Carga al objeto con todos los datos del registro.
-    ''' </summary>
     Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand(Me._QuerySelect & " WHERE CUENTA_CONTABLE='" & Me._CUENTA_CONTABLE & "' ", Me._Conexion)
@@ -375,23 +373,20 @@ Public Class Class_CatCuentas
         Return bResultado
     End Function
 
-    ''' <summary>
-    ''' Devuelve un datatable con todos los registros de la tabla
-    ''' </summary>
     Public Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
 
         'Dim DSCAT As New SqlDataAdapter("SELECT CUENTA_CONTABLE,(LEFT(CAST(CUENTA_CONTABLE AS NVARCHAR(20)) + '                   ',20) + ' ' + NOMBRE_CUENTA) AS NOMBRE_CUENTA FROM CON_CAT_CUENTAS ORDER BY CUENTA_CONTABLE", Me._Conexion)
-        Dim dA As New SqlDataAdapter("SELECT C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA " &
+        Dim da As New SqlDataAdapter("SELECT C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA " &
                                      "FROM CON_CAT_CUENTAS C INNER JOIN SIS_PLAZAS P ON(C.CODIGO_PLAZA=P.CODIGO_PLAZA) " &
                                      "" &
                                      "ORDER BY C.CUENTA_CONTABLE", Me._Conexion)
         Try
-            dA.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
         Finally
-            dA.Dispose()
+            da.Dispose()
         End Try
         Return dTable
     End Function
@@ -422,45 +417,46 @@ Public Class Class_CatCuentas
             sWhere = sWhere & " AND C.CODIGO_PLAZA=" & sReplace(sPlaza) & " "
         End If
 
-        Dim dA As New SqlDataAdapter("SELECT C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA,C.CODIGO_AGRUPADOR,S.NOMBRE_CUENTA_SAT " &
+        Dim da As New SqlDataAdapter("SELECT C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA,C.CODIGO_AGRUPADOR,S.NOMBRE_CUENTA_SAT " &
                                      "FROM CON_CAT_CUENTAS C INNER JOIN SIS_PLAZAS P ON(C.CODIGO_PLAZA=P.CODIGO_PLAZA) " &
                                      "LEFT JOIN CAT_CUENTAS_SAT S ON(C.CODIGO_AGRUPADOR=S.CODIGO_AGRUPADOR)" &
                                      "WHERE 1=1 " & sWhere &
                                      "ORDER BY C.CUENTA_CONTABLE", Me._Conexion)
         Try
-            dA.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementosN", ex)
         Finally
-            dA.Dispose()
+            da.Dispose()
         End Try
         Return dTable
     End Function
 
     Public Function ObtenerElementosFiltro(ByVal Filtro As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dA As New SqlDataAdapter("SELECT CUENTA_CONTABLE,NOMBRE_CUENTA FROM CON_CAT_CUENTAS where NOMBRE_CUENTA LIKE '%" & Filtro.ToString & "%' ORDER BY CUENTA_CONTABLE", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CUENTA_CONTABLE,NOMBRE_CUENTA FROM CON_CAT_CUENTAS where NOMBRE_CUENTA LIKE '%" & Filtro.ToString & "%' ORDER BY CUENTA_CONTABLE", Me._Conexion)
         Try
-            dA.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementosFiltro", ex)
         Finally
-            dA.Dispose()
+            da.Dispose()
         End Try
         Return dTable
     End Function
 
     Public Function BusquedaVisual_PorCodigo() As String
-        Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de Cuenta Contable por Código."
-        f.sCampo = "C.CUENTA_CONTABLE"
-        f.sOrder = "C.CUENTA_CONTABLE"
-        f.sTable = "CON_CAT_CUENTAS"
-        f.sQl = "Select C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA FROM CON_CAT_CUENTAS C INNER JOIN SIS_PLAZAS P ON(C.CODIGO_PLAZA=P.CODIGO_PLAZA) WHERE 1=1 AND "
-        f.Inicia("")
-        f.ShowDialog()
+        Dim f As New BusquedaVisual
         Try
+            f.Text = "Búsqueda de Cuentas Contables por Código."
+            f.sCampo = "C.CUENTA_CONTABLE"
+            f.sOrder = "C.CUENTA_CONTABLE"
+            f.sTable = "CON_CAT_CUENTAS"
+            f.sQl = "Select C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA FROM CON_CAT_CUENTAS C INNER JOIN SIS_PLAZAS P ON(C.CODIGO_PLAZA=P.CODIGO_PLAZA) WHERE 1=1 AND "
+            f.Inicia("")
+            f.ShowDialog()
+
             If f.iRows > 0 Then
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             End If
@@ -471,17 +467,17 @@ Public Class Class_CatCuentas
     End Function
 
     Public Function BusquedaVisual_PorCodigoConLike(ByVal sLike As String) As String
-        Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de Cuentas Contables por Código."
-        f.sCampo = "C.CUENTA_CONTABLE"
-        f.sOrder = "C.CUENTA_CONTABLE"
-        f.sTable = "CON_CAT_CUENTAS"
-        f.sQl = "SELECT C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA FROM CON_CAT_CUENTAS C INNER JOIN SIS_PLAZAS P ON(C.CODIGO_PLAZA=P.CODIGO_PLAZA) " & _
-            "WHERE C.CUENTA_CONTABLE LIKE '" & sReplace(sLike) & "%' AND "
-        f.Inicia("")
-        f.ShowDialog()
+        Dim f As New BusquedaVisual
         Try
+            f.Text = "Búsqueda de Cuentas Contables por Código."
+            f.sCampo = "C.CUENTA_CONTABLE"
+            f.sOrder = "C.CUENTA_CONTABLE"
+            f.sTable = "CON_CAT_CUENTAS"
+            f.sQl = "SELECT C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA FROM CON_CAT_CUENTAS C INNER JOIN SIS_PLAZAS P ON(C.CODIGO_PLAZA=P.CODIGO_PLAZA) " &
+            "WHERE C.CUENTA_CONTABLE LIKE '" & sReplace(sLike) & "%' AND "
+            f.Inicia("")
+            f.ShowDialog()
             If f.iRows > 0 Then
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             End If
@@ -491,20 +487,17 @@ Public Class Class_CatCuentas
         Return Resultado
     End Function
 
-    ''' <summary>
-    ''' Despliega la búsqueda visual por descripción.
-    ''' </summary>
     Public Function BusquedaVisual_PorDescripcion() As String
-        Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de Cuentas Contables por Descripción."
-        f.sCampo = "C.NOMBRE_CUENTA"
-        f.sOrder = "C.CUENTA_CONTABLE"
-        f.sTable = "CON_CAT_CUENTAS"
-        f.sQl = "Select C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA FROM CON_CAT_CUENTAS C INNER JOIN SIS_PLAZAS P ON(C.CODIGO_PLAZA=P.CODIGO_PLAZA) WHERE 1=1 AND "
-        f.Inicia("")
-        f.ShowDialog()
+        Dim f As New BusquedaVisual
         Try
+            f.Text = "Búsqueda de Cuentas Contables por Descripción."
+            f.sCampo = "C.NOMBRE_CUENTA"
+            f.sOrder = "C.CUENTA_CONTABLE"
+            f.sTable = "CON_CAT_CUENTAS"
+            f.sQl = "Select C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA FROM CON_CAT_CUENTAS C INNER JOIN SIS_PLAZAS P ON(C.CODIGO_PLAZA=P.CODIGO_PLAZA) WHERE 1=1 AND "
+            f.Inicia("")
+            f.ShowDialog()
             If f.iRows > 0 Then
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             End If
@@ -515,17 +508,18 @@ Public Class Class_CatCuentas
     End Function
 
     Public Function BusquedaVisual_PorDescripcionConLike(ByVal sLike As String) As String
-        Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de Cuentas Contables por Descripción."
-        f.sCampo = "C.NOMBRE_CUENTA"
-        f.sOrder = "C.CUENTA_CONTABLE"
-        f.sTable = "CON_CAT_CUENTAS"
-        f.sQl = "SELECT C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA FROM CON_CAT_CUENTAS C INNER JOIN SIS_PLAZAS P ON(C.CODIGO_PLAZA=P.CODIGO_PLAZA) " & _
-            "WHERE C.CUENTA_CONTABLE LIKE '" & sReplace(sLike) & "%' AND "
-        f.Inicia("")
-        f.ShowDialog()
+        Dim f As New BusquedaVisual
         Try
+            f.Text = "Búsqueda de Cuentas Contables por Descripción."
+            f.sCampo = "C.NOMBRE_CUENTA"
+            f.sOrder = "C.CUENTA_CONTABLE"
+            f.sTable = "CON_CAT_CUENTAS"
+            f.sQl = "SELECT C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA FROM CON_CAT_CUENTAS C INNER JOIN SIS_PLAZAS P ON(C.CODIGO_PLAZA=P.CODIGO_PLAZA) " &
+            "WHERE C.CUENTA_CONTABLE LIKE '" & sReplace(sLike) & "%' AND "
+            f.Inicia("")
+            f.ShowDialog()
+
             If f.iRows > 0 Then
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             End If
@@ -536,16 +530,18 @@ Public Class Class_CatCuentas
     End Function
 
     Public Function BusquedaVisual_PorCodigoFiltrandoTipoOperacion(Optional ByVal bFiltraCuentasOperacion As Boolean = True, Optional ByVal sDefault As String = "") As String
-        Dim f As New BusquedaVisual
         Dim Resultado As String = "", sFiltro As String
-        f.Text = "Búsqueda de cuenta contable por Código."
-        f.sCampo = "C.CUENTA_CONTABLE"
-        f.sOrder = "C.CUENTA_CONTABLE"
-        f.sTable = "CON_CAT_CUENTAS"
-        f.sQl = "Select C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA FROM CON_CAT_CUENTAS C INNER JOIN SIS_PLAZAS P ON(C.CODIGO_PLAZA=P.CODIGO_PLAZA) WHERE 1=1 AND "
-        f.Inicia(sDefault)
-        f.ShowDialog()
+        Dim f As New BusquedaVisual
+
         Try
+            f.Text = "Búsqueda de Cuentas Contables por Código."
+            f.sCampo = "C.CUENTA_CONTABLE"
+            f.sOrder = "C.CUENTA_CONTABLE"
+            f.sTable = "CON_CAT_CUENTAS"
+            f.sQl = "Select C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA FROM CON_CAT_CUENTAS C INNER JOIN SIS_PLAZAS P ON(C.CODIGO_PLAZA=P.CODIGO_PLAZA) WHERE 1=1 AND "
+            f.Inicia(sDefault)
+            f.ShowDialog()
+
             If f.iRows > 0 Then
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             Else
@@ -567,20 +563,23 @@ Public Class Class_CatCuentas
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorCodigoFiltrandoTipoOperacion", ex)
         End Try
+
         Return Resultado
     End Function
 
     Public Function BusquedaVisual_PorNombreFiltrandoTipoOperacion(Optional ByVal bFiltraCuentasOperacion As Boolean = True) As String
-        Dim f As New BusquedaVisual
         Dim Resultado As String = "", sFiltro As String
-        f.Text = "Búsqueda de cuenta contable por Nombre."
-        f.sCampo = "C.NOMBRE_CUENTA"
-        f.sOrder = "C.CUENTA_CONTABLE"
-        f.sTable = "CON_CAT_CUENTAS"
-        f.sQl = "Select C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA FROM CON_CAT_CUENTAS C INNER JOIN SIS_PLAZAS P ON(C.CODIGO_PLAZA=P.CODIGO_PLAZA) WHERE 1=1 AND "
-        f.Inicia("")
-        f.ShowDialog()
+        Dim f As New BusquedaVisual
+
         Try
+            f.Text = "Búsqueda de Cuentas Contables por Nombre."
+            f.sCampo = "C.NOMBRE_CUENTA"
+            f.sOrder = "C.CUENTA_CONTABLE"
+            f.sTable = "CON_CAT_CUENTAS"
+            f.sQl = "Select C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA FROM CON_CAT_CUENTAS C INNER JOIN SIS_PLAZAS P ON(C.CODIGO_PLAZA=P.CODIGO_PLAZA) WHERE 1=1 AND "
+            f.Inicia("")
+            f.ShowDialog()
+
             If f.iRows > 0 Then
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             Else
@@ -602,20 +601,23 @@ Public Class Class_CatCuentas
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorNombreFiltrandoTipoOperacion", ex)
         End Try
+
         Return Resultado
     End Function
 
     Public Function BusquedaVisual_PorCodigoFiltrandoTipoOperacionMayor(Optional ByVal bFiltraCuentasOperacion As Boolean = True) As String
-        Dim f As New BusquedaVisual
         Dim Resultado As String = "", sFiltro As String
-        f.Text = "Búsqueda de PLAZAS por Código."
-        f.sCampo = "C.CUENTA_CONTABLE"
-        f.sOrder = "C.CUENTA_CONTABLE"
-        f.sTable = "CON_CAT_CUENTAS"
-        f.sQl = "Select C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA FROM CON_CAT_CUENTAS C INNER JOIN SIS_PLAZAS P ON(C.CODIGO_PLAZA=P.CODIGO_PLAZA) WHERE 1=1 AND "
-        f.Inicia("")
-        f.ShowDialog()
+        Dim f As New BusquedaVisual
+
         Try
+            f.Text = "Búsqueda de Cuentas Contables por Código."
+            f.sCampo = "C.CUENTA_CONTABLE"
+            f.sOrder = "C.CUENTA_CONTABLE"
+            f.sTable = "CON_CAT_CUENTAS"
+            f.sQl = "Select C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA FROM CON_CAT_CUENTAS C INNER JOIN SIS_PLAZAS P ON(C.CODIGO_PLAZA=P.CODIGO_PLAZA) WHERE 1=1 AND "
+            f.Inicia("")
+            f.ShowDialog()
+
             If f.iRows > 0 Then
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             Else
@@ -636,20 +638,23 @@ Public Class Class_CatCuentas
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorCodigoFiltrandoTipoOperacionMayor", ex)
         End Try
+
         Return Resultado
     End Function
 
     Public Function BusquedaVisual_PorNombreFiltrandoTipoOperacionMayor(Optional ByVal bFiltraCuentasOperacion As Boolean = True) As String
-        Dim f As New BusquedaVisual
         Dim Resultado As String = "", sFiltro As String
-        f.Text = "Búsqueda de PLAZAS por Nombre."
-        f.sCampo = "C.NOMBRE_CUENTA"
-        f.sOrder = "C.NOMBRE_CUENTA"
-        f.sTable = "CON_CAT_CUENTAS"
-        f.sQl = "Select C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA FROM CON_CAT_CUENTAS C INNER JOIN SIS_PLAZAS P ON(C.CODIGO_PLAZA=P.CODIGO_PLAZA) WHERE 1=1 AND "
-        f.Inicia("")
-        f.ShowDialog()
+        Dim f As New BusquedaVisual
+
         Try
+            f.Text = "Búsqueda de Cuentas Contables por Nombre."
+            f.sCampo = "C.NOMBRE_CUENTA"
+            f.sOrder = "C.NOMBRE_CUENTA"
+            f.sTable = "CON_CAT_CUENTAS"
+            f.sQl = "Select C.CUENTA_CONTABLE,C.NOMBRE_CUENTA,P.NOMBRE_PLAZA FROM CON_CAT_CUENTAS C INNER JOIN SIS_PLAZAS P ON(C.CODIGO_PLAZA=P.CODIGO_PLAZA) WHERE 1=1 AND "
+            f.Inicia("")
+            f.ShowDialog()
+
             If f.iRows > 0 Then
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             Else
@@ -670,20 +675,23 @@ Public Class Class_CatCuentas
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorNombreFiltrandoTipoOperacionMayor", ex)
         End Try
+
         Return Resultado
     End Function
 
     Public Function BusquedaVisual_PorCodigoFiltro(ByVal Filtro As String) As String
-        Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de Cuenta Contable por Código."
-        f.sCampo = "CUENTA_CONTABLE"
-        f.sOrder = "CUENTA_CONTABLE"
-        f.sTable = "CON_CAT_CUENTAS"
-        f.sQl = "Select CUENTA_CONTABLE,NOMBRE_CUENTA From CON_CAT_CUENTAS Where CUENTA_CONTABLE LIKE '" & Filtro.ToString & "%' AND "
-        f.Inicia("")
-        f.ShowDialog()
+        Dim f As New BusquedaVisual
+
         Try
+            f.Text = "Búsqueda de Cuentas Contables por Código."
+            f.sCampo = "CUENTA_CONTABLE"
+            f.sOrder = "CUENTA_CONTABLE"
+            f.sTable = "CON_CAT_CUENTAS"
+            f.sQl = "Select CUENTA_CONTABLE,NOMBRE_CUENTA From CON_CAT_CUENTAS Where CUENTA_CONTABLE LIKE '" & Filtro.ToString & "%' AND "
+            f.Inicia("")
+            f.ShowDialog()
+
             If f.iRows > 0 Then
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             End If
@@ -719,26 +727,26 @@ Public Class Class_CatCuentas
 
     Public Function ObtenerElementosFiltroCuenta(ByVal Filtro As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dA As New SqlDataAdapter("SELECT CUENTA_CONTABLE,NOMBRE_CUENTA FROM CON_CAT_CUENTAS WHERE CUENTA_CONTABLE LIKE '" & Filtro.ToString & "%' ORDER BY CUENTA_CONTABLE", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CUENTA_CONTABLE,NOMBRE_CUENTA FROM CON_CAT_CUENTAS WHERE CUENTA_CONTABLE LIKE '" & Filtro.ToString & "%' ORDER BY CUENTA_CONTABLE", Me._Conexion)
         Try
-            dA.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementosFiltroCuenta", ex)
         Finally
-            dA.Dispose()
+            da.Dispose()
         End Try
         Return dTable
     End Function
 
     Public Function ObtenerElementosFiltroNombreCuenta(ByVal Filtro As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dA As New SqlDataAdapter("SELECT CUENTA_CONTABLE,NOMBRE_CUENTA FROM CON_CAT_CUENTAS WHERE NOMBRE_CUENTA LIKE '%" & Filtro.ToString & "%' ORDER BY CUENTA_CONTABLE", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CUENTA_CONTABLE,NOMBRE_CUENTA FROM CON_CAT_CUENTAS WHERE NOMBRE_CUENTA LIKE '%" & Filtro.ToString & "%' ORDER BY CUENTA_CONTABLE", Me._Conexion)
         Try
-            dA.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementosFiltroNombreCuenta", ex)
         Finally
-            dA.Dispose()
+            da.Dispose()
         End Try
         Return dTable
     End Function

@@ -54,7 +54,7 @@
       <Value Profile="(Default)">DANIEL</Value>
     </Setting>
     <Setting Name="BaseDatos" Type="System.String" Scope="User">
-      <Value Profile="(Default)">AGRICONTROL_BIOLOGOS</Value>
+      <Value Profile="(Default)">AGRINET_BSQP</Value>
     </Setting>
     <Setting Name="Servidor" Type="System.String" Scope="User">
       <Value Profile="(Default)">PCSISTEMASJGC\SQL14</Value>

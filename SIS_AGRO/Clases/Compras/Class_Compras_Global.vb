@@ -1022,7 +1022,8 @@ Public Class Class_Compras_Global
         Return bResultado
     End Function
 
-    Public Function AfectaRequisicionesOrdenCompra(Optional ByVal bCancelar As Boolean = False) As Boolean
+    'Public Function AfectaRequisicionesOrdenCompra(Optional ByVal bCancelar As Boolean = False) As Boolean
+    Public Function AfectaRequisicionesOrdenCompra(ByVal sAccion As String) As Boolean
         Const sProcedure As String = "AfectaRequisicionesOrdenCompra"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
@@ -1035,7 +1036,8 @@ Public Class Class_Compras_Global
             .CommandText = "MP_COMPRAS_ORDEN_COMPRA_AFECTA_CANTIDADES_PENDIENTES_REQUISICIONES"
 
             sqlParametro = .Parameters.Add("@FOLIO_ORDEN_COMPRA", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me.FOLIO_COMPRA
-            sqlParametro = .Parameters.Add("@CANCELA", SqlDbType.Char) : sqlParametro.Value = IIf(bCancelar, "1", "0")
+            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = sAccion
+            'sqlParametro = .Parameters.Add("@CANCELA", SqlDbType.Char) : sqlParametro.Value = IIf(bCancelar, "1", "0")
 
             Try
                 Me._Conexion.Open()
@@ -2112,6 +2114,21 @@ Public Class Class_Compras_Global
                 sqlParametro = Nothing
             End Try
         End With
+        Return bResultado
+    End Function
+
+    Public Function TieneDisponiblesIncompletos() As Boolean
+        Const sProcedure As String = "TieneDisponiblesIncompletos"
+        Dim bResultado As Boolean = False
+        Try
+            'Si tiene al menos un renglón donde su cantidad es diferentes al disponible, entonces esta incompleto.
+            Dim oSQL As New Class_find("SELECT TOP 1 1 FROM COMPRA_DETALLE WHERE FOLIO_COMPRA='" & sReplace(Me._FOLIO_COMPRA) & "' AND CANTIDAD<>DISPONIBLE")
+            If oSQL.Result1 = "1" Then
+                bResultado = True
+            End If
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, sProcedure, ex)
+        End Try
         Return bResultado
     End Function
 #End Region

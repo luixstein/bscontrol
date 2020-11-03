@@ -1,6 +1,5 @@
 ﻿Option Strict On
 
-Imports System.IO
 Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Inventarios_Requisiciones
@@ -43,7 +42,7 @@ Public Class Inventarios_Requisiciones
     End Sub
 
     Private Sub tsbGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbGrabar.Click
-        If txtLEN(Me.TxtFolio.Text) = True Then
+        If txtLEN(Me.txtFolio.Text) = True Then
             If Me.Grabar() = True Then
                 Me.Consultar()
             End If
@@ -89,7 +88,6 @@ Public Class Inventarios_Requisiciones
 #Region "Eventos"
     Private Sub Requisiciones_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.Inicializa()
-        Me.DesplegarAlmacenes()
         Me.Cambia_Estado(enumEstados.NUEVO)
     End Sub
 
@@ -97,57 +95,128 @@ Public Class Inventarios_Requisiciones
         Me.GestionaGrid(e)
     End Sub
 
-    Private Sub CmbAlmacen_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboAlmacen.KeyDown
+    Private Sub DtpFecha_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dtFechaEntrega.KeyDown
         Select Case e.KeyCode
             Case Keys.Enter
                 SendKeys.Send("{TAB}")
         End Select
     End Sub
 
-    Private Sub CmbAlmacen_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboAlmacen.SelectedIndexChanged
-        Me.GeneraFolio()
-    End Sub
-
-    Private Sub DtpFecha_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles DtpFecha.KeyDown
-        Select Case e.KeyCode
-            Case Keys.Enter
-                SendKeys.Send("{TAB}")
-            Case Keys.Escape
-                Me.CboAlmacen.Focus()
-        End Select
-    End Sub
-
-    Private Sub TxtConcepto_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtConcepto.KeyDown
+    Private Sub TxtConcepto_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtConcepto.KeyDown
         Select Case e.KeyCode
             Case Keys.Enter
                 Me.Grid1.Cell(1, 1).SetFocus()
         End Select
     End Sub
 
-    Private Sub TxtFolio_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtFolio.KeyDown
+    Private Sub TxtFolio_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtFolio.KeyDown
         Select Case e.KeyCode
             Case Keys.F6
-                Me.TxtFolio.Text = BusquedaVisual_PorDescripcion()
+                Dim oRequisicion As New Class_Requisiciones_Global
+                Dim sFolio As String = oRequisicion.BusquedaVisual_PorDescripcion()
+                If txtLEN(sFolio) = True Then
+                    Me.txtFolio.Text = sFolio
+                    GoTo Enter : Return
+                End If
+
             Case Keys.Enter
-                If Consultar() = False Then
+Enter:
+                If Me.Consultar() = False Then
                     Me.GeneraFolio()
                 End If
-            Case Keys.Escape
-                Me.CboAlmacen.Focus()
         End Select
     End Sub
 
-#Region "Eventos Genericos"
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles DtpFecha.KeyPress, TxtConcepto.KeyPress, TxtFolio.KeyPress, CboAlmacen.KeyPress
-        txtNoBeep(e)
+    Private Sub txtAlmacen_KeyDown(sender As Object, e As KeyEventArgs) Handles txtAlmacen.KeyDown
+        Dim oAlmacen As New Class_CatAlmacenes
+        Try
+            Select Case e.KeyCode
+                Case Keys.F6
+Buscar:
+                    Dim sAlmacen As String = oAlmacen.BusquedaVisual_PorDescripcionSoloActivos()
+                    If txtLEN(sAlmacen) = True Then
+                        Me.txtAlmacen.Text = sAlmacen
+                        GoTo Enter : Return
+                    End If
+
+                Case Keys.Enter
+                    If txtLEN(Me.txtAlmacen.Text) = False Then
+                        Me.lblAlmacen.Text = ""
+                        GoTo Buscar : Return
+                    End If
+Enter:
+                    oAlmacen = New Class_CatAlmacenes(Me.txtAlmacen.Text)
+
+                    If oAlmacen.Existe = False Then
+                        Me.lblAlmacen.Text = ""
+                        GoTo Buscar : Return
+                    ElseIf oAlmacen.ESTATUS = "B" Then
+                        MsgBox("El almacén " & Me.txtAlmacen.Text & " está dado de baja.", MsgBoxStyle.Exclamation, Me.Text)
+                        GoTo Buscar : Return
+                    End If
+
+                    Me.lblAlmacen.Text = oAlmacen.NOMBRE_ALMACEN
+
+                    txtTAB(e)
+            End Select
+
+        Catch ex As Exception
+            HandleError(Me.Name, "txtAlmacen_KeyDown", ex)
+        End Try
+    End Sub
+
+    Private Sub txtComprador_KeyDown(sender As Object, e As KeyEventArgs) Handles txtComprador.KeyDown
+        Dim oUsuario As New Class_sisUsuarios
+        Try
+            Select Case e.KeyCode
+                Case Keys.F6
+Buscar:
+                    Dim sUsuario As String = oUsuario.BusquedaVisual_PorDescripcion("2") '2=COMPRAS, ESTE DEPARTAMENTO ES FIJO Y PROTEJIDO
+                    If txtLEN(sUsuario) = True Then
+                        Me.txtComprador.Text = sUsuario
+                        GoTo Enter : Return
+                    End If
+
+                Case Keys.Enter
+                    If txtLEN(Me.txtComprador.Text) = False Then
+                        Me.lblComprador.Text = ""
+                        GoTo Buscar : Return
+                    End If
+Enter:
+                    oUsuario = New Class_sisUsuarios(CInt(valorNumerico(Me.txtComprador.Text)))
+
+                    If oUsuario.Existe = False Then
+                        Me.lblComprador.Text = ""
+                        GoTo Buscar : Return
+                    ElseIf oUsuario.ESTATUS = "B" Then
+                        MsgBox("El usuario " & Me.txtComprador.Text & " está dado de baja.", MsgBoxStyle.Exclamation, Me.Text)
+                        GoTo Buscar : Return
+                    End If
+
+                    Me.lblComprador.Text = oUsuario.Nombre_Usuario
+
+                    txtTAB(e)
+            End Select
+
+        Catch ex As Exception
+            HandleError(Me.Name, "txtComprador_KeyDown", ex)
+        End Try
     End Sub
 
 #End Region
 
+#Region "Eventos Genericos"
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dtFechaEntrega.KeyPress, txtConcepto.KeyPress, txtFolio.KeyPress
+        txtNoBeep(e)
+    End Sub
+
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtAlmacen.KeyPress, txtComprador.KeyPress
+        txtSoloNumerosEnteros(e)
+        txtNoBeep(e)
+    End Sub
 #End Region
 
 #Region "Métodos y procedimientos"
-
     Private Sub Cambia_Estado(ByVal pEstado As enumEstados)
         Const sProcedure As String = "Cambia_Estado"
         Try
@@ -167,18 +236,19 @@ Public Class Inventarios_Requisiciones
                     Me.tsbCancelar.Enabled = False
                     Me.tsbImprimir.Enabled = False
 
-                    Me.DtpFecha.Enabled = True
-                    Me.CboAlmacen.Enabled = True
-                    Me.TxtFolio.Enabled = True
-                    Me.TxtConcepto.Enabled = True
+                    Me.dtFechaEntrega.Enabled = True
+                    Me.txtAlmacen.Enabled = True
+                    Me.txtComprador.Enabled = True
+                    Me.txtFolio.Enabled = True
+                    Me.txtConcepto.Enabled = True
                     Me.Grid1.Locked = False
                     Me.Grid1.Column(Me.iGyCodigo).Locked = False
                     Me.Grid1.Column(Me.iGyCantidad).Locked = False
                     Me.Grid1.Column(Me.iGyCantidadAnular).Locked = True
-                    Me.LblNombreEstatus.Text = "NUEVO"
+                    Me.lblNombreEstatus.Text = "NUEVO"
 
                     If Me.Visible = True Then
-                        Me.TxtFolio.Focus()
+                        Me.txtFolio.Focus()
                     End If
 
                 Case enumEstados.GRABADO
@@ -193,17 +263,18 @@ Public Class Inventarios_Requisiciones
                     Me.tsbCancelar.Enabled = True
                     Me.tsbImprimir.Enabled = True
 
-                    Me.DtpFecha.Enabled = False
-                    Me.CboAlmacen.Enabled = False
-                    Me.TxtFolio.Enabled = False
-                    Me.TxtConcepto.Enabled = True
+                    Me.dtFechaEntrega.Enabled = False
+                    Me.txtAlmacen.Enabled = False
+                    Me.txtComprador.Enabled = False
+                    Me.txtFolio.Enabled = False
+                    Me.txtConcepto.Enabled = True
                     Me.Grid1.Locked = False
                     Me.Grid1.Column(Me.iGyCodigo).Locked = False
                     Me.Grid1.Column(Me.iGyCantidad).Locked = False
                     Me.Grid1.Column(Me.iGyCantidadAnular).Locked = True
-                    Me.LblNombreEstatus.Text = "GRABADO"
+                    Me.lblNombreEstatus.Text = "GRABADO"
 
-                    Me.TxtConcepto.Focus()
+                    Me.txtConcepto.Focus()
 
                 Case enumEstados.SOLICITADO, enumEstados.PARCIALMENTE_SOLICITADO
                     Me.tsslEstado.Text = "ESTADO: CONSULTANDO MOVIMIENTO"
@@ -220,19 +291,20 @@ Public Class Inventarios_Requisiciones
                         Me.tsbCancelar.Enabled = True
                     End If
 
-                    Me.DtpFecha.Enabled = False
-                    Me.CboAlmacen.Enabled = False
-                    Me.TxtFolio.Enabled = False
-                    Me.TxtConcepto.Enabled = False
+                    Me.dtFechaEntrega.Enabled = False
+                    Me.txtAlmacen.Enabled = False
+                    Me.txtComprador.Enabled = False
+                    Me.txtFolio.Enabled = False
+                    Me.txtConcepto.Enabled = False
                     Me.Grid1.Locked = False
                     Me.Grid1.Column(Me.iGyCodigo).Locked = True
                     Me.Grid1.Column(Me.iGyCantidad).Locked = True
                     Me.Grid1.Column(Me.iGyCantidadAnular).Locked = False
 
                     If Me.Estado = enumEstados.SOLICITADO Then
-                        Me.LblNombreEstatus.Text = "SOLICITADO"
+                        Me.lblNombreEstatus.Text = "SOLICITADO"
                     Else
-                        Me.LblNombreEstatus.Text = "PARCIALMENTE PEDIDO"
+                        Me.lblNombreEstatus.Text = "PARCIALMENTE PEDIDO"
                     End If
 
                 Case enumEstados.APLICADO
@@ -246,12 +318,13 @@ Public Class Inventarios_Requisiciones
                     Me.tsbCancelar.Enabled = False
                     Me.tsbImprimir.Enabled = True
 
-                    Me.DtpFecha.Enabled = False
-                    Me.CboAlmacen.Enabled = False
-                    Me.TxtFolio.Enabled = False
-                    Me.TxtConcepto.Enabled = False
+                    Me.dtFechaEntrega.Enabled = False
+                    Me.txtAlmacen.Enabled = False
+                    Me.txtComprador.Enabled = False
+                    Me.txtFolio.Enabled = False
+                    Me.txtConcepto.Enabled = False
                     Me.Grid1.Locked = True
-                    Me.LblNombreEstatus.Text = "APLICADO"
+                    Me.lblNombreEstatus.Text = "APLICADO"
 
                 Case enumEstados.CANCELADO
                     Me.tsslEstado.Text = "ESTADO: CONSULTANDO MOVIMIENTO"
@@ -264,12 +337,13 @@ Public Class Inventarios_Requisiciones
                     Me.tsbCancelar.Enabled = False
                     Me.tsbImprimir.Enabled = True
 
-                    Me.DtpFecha.Enabled = False
-                    Me.CboAlmacen.Enabled = False
-                    Me.TxtFolio.Enabled = False
-                    Me.TxtConcepto.Enabled = False
+                    Me.dtFechaEntrega.Enabled = False
+                    Me.txtAlmacen.Enabled = False
+                    Me.txtComprador.Enabled = False
+                    Me.txtFolio.Enabled = False
+                    Me.txtConcepto.Enabled = False
                     Me.Grid1.Locked = True
-                    Me.LblNombreEstatus.Text = "CANCELADO"
+                    Me.lblNombreEstatus.Text = "CANCELADO"
 
             End Select
             Application.DoEvents()
@@ -282,11 +356,13 @@ Public Class Inventarios_Requisiciones
     Private Sub Inicializa()
         Const sProcedure As String = "Inicializa"
         Try
-            Me.TxtFolio.Text = ""
-            Me.TxtConcepto.Text = ""
-            Me.DtpFecha.Value = Date.Now
-            Me.TxtConcepto.Text = ""
+            Me.txtFolio.Text = ""
+            Me.txtConcepto.Text = ""
+            Me.dtFechaEntrega.Value = Date.Now
+            Me.txtConcepto.Text = ""
             Me.lblStatus.Text = ""
+            'Me.txtAlmacen.Text ="":Me.lblAlmacen.Text =""
+            'Me.txtComprador.Text ="":Me.lblComprador.Text =""
 
             Me.Grid1.DataSource = Nothing
             Me.InicializaGrid()
@@ -364,10 +440,9 @@ Public Class Inventarios_Requisiciones
                             Case Me.iGyCodigo
                                 If e.KeyCode = Keys.F6 Then
 BuscaArticulos:
-                                    sCodArticulo = Me.oArticulos.BusquedaVisualInventariablesConExistencia_PorDescripcion(Me.CboAlmacen.SelectedValue.ToString)
-
+                                    sCodArticulo = Me.oArticulos.BusquedaVisualInventariablesConExistencia_PorDescripcion(Me.txtAlmacen.Text)
                                 ElseIf e.KeyCode = Keys.F7 Then
-                                    sCodArticulo = Me.oArticulos.BusquedaVisualInventariablesConExistencia_PorCodigo(Me.CboAlmacen.SelectedValue.ToString)
+                                    sCodArticulo = Me.oArticulos.BusquedaVisualInventariablesConExistencia_PorCodigo(Me.txtAlmacen.Text)
                                 End If
 
                                 If Len(sCodArticulo) > 0 Then
@@ -414,6 +489,40 @@ BuscaArticulos:
             Return False
         End If
 
+        ''''''''''''''''Valida almacén
+        If txtLEN(Me.txtAlmacen.Text) = False Then
+            MsgBox("Asígne el almacén por favor.", MsgBoxStyle.Exclamation, Me.Text)
+            Return False
+        End If
+
+        Dim oAlmacen As New Class_CatAlmacenes(Me.txtAlmacen.Text)
+
+        If oAlmacen.Existe = False Then
+            MsgBox("El almacén asignado no existe.", MsgBoxStyle.Exclamation, Me.Text)
+            Return False
+        ElseIf oAlmacen.ESTATUS = "B" Then
+            MsgBox("El almacén asignado esta dado de baja.", MsgBoxStyle.Exclamation, Me.Text)
+            Return False
+        End If
+        ''''''''''''''''''''''''''''''''
+
+        ''''''''''''''''Valida comprador
+        If txtLEN(Me.txtComprador.Text) = False Then
+            MsgBox("Asígne el comprador por favor.", MsgBoxStyle.Exclamation, Me.Text)
+            Return False
+        End If
+
+        Dim oComprador As New Class_sisUsuarios(CInt(valorNumerico(Me.txtComprador.Text)))
+
+        If oComprador.Existe = False Then
+            MsgBox("El comprador asignado no existe.", MsgBoxStyle.Exclamation, Me.Text)
+            Return False
+        ElseIf oComprador.ESTATUS = "B" Then
+            MsgBox("El comprador asignado esta dado de baja.", MsgBoxStyle.Exclamation, Me.Text)
+            Return False
+        End If
+        ''''''''''''''''''''''''''''''''
+
         If Me.SiTieneRenglones() = False Then
             MsgBox("Asígne los artículos del movimiento.", MsgBoxStyle.Exclamation, sProcedure)
             Return False
@@ -429,12 +538,13 @@ BuscaArticulos:
                 Me.oRequisiciones = New Class_Requisiciones_Global
                 Try
                     With oRequisiciones
-                        .FOLIO_REQUISICION = Me.TxtFolio.Text.ToUpper
-                        .FECHA = Me.DtpFecha.Value
-                        .CODIGO_ALMACEN = "" & Me.CboAlmacen.SelectedValue.ToString()
+                        .FOLIO_REQUISICION = Me.txtFolio.Text.ToUpper
+                        .FECHA_ENTREGA = Me.dtFechaEntrega.Value
+                        .CODIGO_ALMACEN = Me.txtAlmacen.Text
+                        .CODIGO_USUARIO_COMPRADOR = Me.txtComprador.Text
                         .CODIGO_PLAZA = Usuario.Codigo_Plaza
                         .CODIGO_DOCUMENTO = "RQ" & Plaza.CODIGO_PLAZA.ToString
-                        .CONCEPTO = "" & Me.TxtConcepto.Text
+                        .CONCEPTO = "" & Me.txtConcepto.Text
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -442,7 +552,7 @@ BuscaArticulos:
                                     MsgBox("Error al tratar de agregar la requisición de inventario.", MsgBoxStyle.Exclamation, sProcedure)
                                     Return False
                                 End If
-                                Me.TxtFolio.Text = .FOLIO_REQUISICION
+                                Me.txtFolio.Text = .FOLIO_REQUISICION
 
                             Case enumEstados.GRABADO
                                 If .Grabar("ACTUALIZAR") = False Then
@@ -494,9 +604,7 @@ BuscaArticulos:
         End If
 
         Try
-
-
-            Me.oRequisiciones = New Class_Requisiciones_Global(Me.TxtFolio.Text)
+            Me.oRequisiciones = New Class_Requisiciones_Global(Me.txtFolio.Text)
             Me.oRequisiciones.FECHA_SOLICITO = Date.Now
 
             If Me.oRequisiciones.Solicita() = False Then
@@ -533,7 +641,7 @@ BuscaArticulos:
 
         Try
             With oRequisiciones
-                .FOLIO_REQUISICION = Me.TxtFolio.Text
+                .FOLIO_REQUISICION = Me.txtFolio.Text
 
                 'se graba el detalle
                 For i = 1 To Me.Grid1.Rows - 1
@@ -593,7 +701,6 @@ BuscaArticulos:
         End If
 
         Try
-
             Me.oRequisiciones.FECHA_CANCELACION = Date.Now
 
             If Me.oRequisiciones.Cancelar() = False Then
@@ -617,14 +724,13 @@ BuscaArticulos:
         Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
         Try
-            
             FormatoDeReporte = "RPT_FORMATO_INVENTARIO_REQUISICION"
 
             oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
             If Not oReporte.RptCargado Then
                 Exit Sub
             End If
-            Rpt.SetParameterValue("@FOLIO_REQUISICION", Me.TxtFolio.Text)
+            Rpt.SetParameterValue("@FOLIO_REQUISICION", Me.txtFolio.Text)
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
@@ -636,51 +742,11 @@ BuscaArticulos:
         End Try
     End Sub
 
-    Private Sub DesplegarAlmacenes()
-        Try
-            Dim oElementos As New Class_CatAlmacenes
-            With Me.CboAlmacen
-                .DisplayMember = "NOMBRE_ALMACEN"
-                .ValueMember = "CODIGO_ALMACEN"
-                Dim dView As New Data.DataView(oElementos.ObtenerAlmacenes)
-                dView.Sort = "NOMBRE_ALMACEN"
-                .DataSource = dView
-                If dView.Count > 0 Then
-                    .SelectedIndex = 0
-                End If
-                .SelectedValue = Usuario.Codigo_Almacen
-            End With
-
-        Catch ex As Exception
-            HandleError(Me.Name, "DesplegarAlmacenes", ex)
-        End Try
-    End Sub
-
-    Private Function BusquedaVisual_PorDescripcion() As String
-        Dim f As New BusquedaVisual
-        Dim Resultado As String = ""
-        f.Text = "Búsqueda de requisiciones de inventario."
-        f.sCampo = "FOLIO_REQUISICION"
-        f.sOrder = "FOLIO_REQUISICION"
-        f.sTable = "REQUISICIONES_GLOBAL"
-        f.sQl = "SELECT FOLIO_REQUISICION AS FOLIO,CODIGO_DOCUMENTO AS DOCUMENTO FROM REQUISICIONES_GLOBAL Where 1=1 AND "
-        f.Inicia("")
-        f.ShowDialog()
-        Try
-            If f.iRows > 0 Then
-                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
-            End If
-        Catch ex As Exception
-            HandleError(Me.Name, "BusquedaVisual_PorDescripcion", ex)
-        End Try
-        Return Resultado
-    End Function
-
     Private Function GeneraFolio() As Boolean
         Try
             Me.oRequisiciones = New Class_Requisiciones_Global
             Me.oRequisiciones.CODIGO_DOCUMENTO = "RQ" & Plaza.CODIGO_PLAZA.ToString
-            Me.TxtFolio.Text = Me.oRequisiciones.GeneraFolio()
+            Me.txtFolio.Text = Me.oRequisiciones.GeneraFolio()
 
         Catch ex As Exception
             HandleError(Me.Name, "GeneraFolio", ex)
@@ -690,9 +756,8 @@ BuscaArticulos:
     Private Function Consultar() As Boolean
         Dim bResultado As Boolean = False
         Try
-
             Me.oRequisiciones = New Class_Requisiciones_Global()
-            Dim sFolio As String = Me.TxtFolio.Text
+            Dim sFolio As String = Me.txtFolio.Text
 
             Me.Inicializa()
 
@@ -700,14 +765,18 @@ BuscaArticulos:
 
             If Me.oRequisiciones.Consultar = False Then
                 Me.Cambia_Estado(enumEstados.NUEVO)
+                Me.txtFolio.Enabled = False
                 Return False
             End If
 
-            Me.TxtFolio.Text = oRequisiciones.FOLIO_REQUISICION.ToUpper
-            Me.lblStatus.Text = oRequisiciones.ESTATUS.ToUpper
-            Me.CboAlmacen.SelectedValue = oRequisiciones.CODIGO_ALMACEN.ToUpper
-            Me.TxtConcepto.Text = oRequisiciones.CONCEPTO.ToUpper
-            Me.DtpFecha.Value = CDate(oRequisiciones.FECHA)
+            Me.txtFolio.Text = oRequisiciones.FOLIO_REQUISICION
+            Me.lblStatus.Text = oRequisiciones.ESTATUS
+            Me.txtAlmacen.Text = oRequisiciones.CODIGO_ALMACEN
+            Me.lblAlmacen.Text = New Class_CatAlmacenes(Me.txtAlmacen.Text).NOMBRE_ALMACEN
+            Me.txtComprador.Text = oRequisiciones.CODIGO_USUARIO_COMPRADOR
+            Me.lblComprador.Text = oRequisiciones.NOMBRE_COMPRADOR
+            Me.txtConcepto.Text = oRequisiciones.CONCEPTO
+            Me.dtFechaEntrega.Value = oRequisiciones.FECHA_ENTREGA
 
             'Consulta datos detalle
             Dim dTabla As DataTable = Me.oRequisiciones.ObtenerDetalle
@@ -745,7 +814,7 @@ BuscaArticulos:
 
             Me.Cambia_Estado(Me.Estado)
 
-            Me.tsslElaboro.Text = "ELABORO: " + Me.oRequisiciones.NOMBRE_USUARIO_GRABO.ToUpper + " EL " + Format(Me.DtpFecha.Value, "dd/MMM/yy")
+            Me.tsslElaboro.Text = "ELABORO: " + Me.oRequisiciones.NOMBRE_USUARIO_GRABO.ToUpper + " EL " + Format(Me.dtFechaEntrega.Value, "dd/MMM/yy")
 
             If Me.lblStatus.Text = "L" Or Me.lblStatus.Text = "R" Or Me.lblStatus.Text = "A" Then
                 Me.tsslSolicito.Text = "SOLICITO: " + Me.oRequisiciones.NOMBRE_USUARIO_SOLICITO.ToUpper + " EL " + Format(Me.oRequisiciones.FECHA_SOLICITO, "dd/MMM/yy")
@@ -893,20 +962,20 @@ BuscaArticulos:
         Const sProcedure As String = "Navegador"
         Try
             Dim iFolio As Integer, sFolio As String, iPosicion As Integer, sFolioParte2 As String
-            If txtLEN(Me.TxtFolio.Text) = False Then
-                If GeneraFolio() = False OrElse txtLEN(Me.TxtFolio.Text) = False Then
+            If txtLEN(Me.txtFolio.Text) = False Then
+                If GeneraFolio() = False OrElse txtLEN(Me.txtFolio.Text) = False Then
                     Exit Sub
                 End If
             End If
 
             If sTipoDeBusqueda = "Anterior" Then
-                iPosicion = Me.TxtFolio.Text.IndexOf("-")
-                sFolio = Me.TxtFolio.Text.Substring(0, iPosicion)
-                iFolio = CInt(Strings.Right(Me.TxtFolio.Text, Len(Me.TxtFolio.Text) - (Len(sFolio) + 1))) ' Me.oVenta.FOLIO_NUMERICO
+                iPosicion = Me.txtFolio.Text.IndexOf("-")
+                sFolio = Me.txtFolio.Text.Substring(0, iPosicion)
+                iFolio = CInt(Strings.Right(Me.txtFolio.Text, Len(Me.txtFolio.Text) - (Len(sFolio) + 1))) ' Me.oVenta.FOLIO_NUMERICO
                 iFolio = iFolio - 1
-                sFolioParte2 = Format(iFolio, New String(CChar("0"), Me.TxtFolio.Text.Substring(3, Me.TxtFolio.TextLength - iPosicion - 1).Length))
+                sFolioParte2 = Format(iFolio, New String(CChar("0"), Me.txtFolio.Text.Substring(3, Me.txtFolio.TextLength - iPosicion - 1).Length))
                 sFolio = sFolio + "-" + sFolioParte2 'sFolio + "-" + iFolio.ToString
-                Me.TxtFolio.Text = sFolio
+                Me.txtFolio.Text = sFolio
 
                 If txtLEN(sFolio) = True Then
                     Me.Consultar()
@@ -914,17 +983,17 @@ BuscaArticulos:
                     Me.Inicializa()
                     Me.Cambia_Estado(enumEstados.NUEVO)
                     Me.GeneraFolio()
-                    Me.TxtFolio.Focus()
+                    Me.txtFolio.Focus()
                 End If
 
             ElseIf sTipoDeBusqueda = "Siguiente" Then
-                iPosicion = Me.TxtFolio.Text.IndexOf("-")
-                sFolio = Me.TxtFolio.Text.Substring(0, iPosicion)
-                iFolio = CInt(Strings.Right(Me.TxtFolio.Text, Len(Me.TxtFolio.Text) - (Len(sFolio) + 1))) ' Me.oVenta.FOLIO_NUMERICO
+                iPosicion = Me.txtFolio.Text.IndexOf("-")
+                sFolio = Me.txtFolio.Text.Substring(0, iPosicion)
+                iFolio = CInt(Strings.Right(Me.txtFolio.Text, Len(Me.txtFolio.Text) - (Len(sFolio) + 1))) ' Me.oVenta.FOLIO_NUMERICO
                 iFolio = iFolio + 1
-                sFolioParte2 = Format(iFolio, New String(CChar("0"), Me.TxtFolio.Text.Substring(3, Me.TxtFolio.TextLength - iPosicion - 1).Length))
+                sFolioParte2 = Format(iFolio, New String(CChar("0"), Me.txtFolio.Text.Substring(3, Me.txtFolio.TextLength - iPosicion - 1).Length))
                 sFolio = sFolio + "-" + sFolioParte2 'sFolio + "-" + iFolio.ToString
-                Me.TxtFolio.Text = sFolio
+                Me.txtFolio.Text = sFolio
 
                 If txtLEN(sFolio) = True Then
                     Me.Consultar()
@@ -932,7 +1001,7 @@ BuscaArticulos:
                     Me.Inicializa()
                     Me.Cambia_Estado(enumEstados.NUEVO)
                     Me.GeneraFolio()
-                    Me.TxtFolio.Focus()
+                    Me.txtFolio.Focus()
                 End If
             End If
         Catch ex As Exception

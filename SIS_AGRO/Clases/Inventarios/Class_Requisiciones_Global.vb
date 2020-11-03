@@ -1,4 +1,5 @@
 ﻿Option Strict On
+
 Imports System.Data.SqlClient
 
 Public Class Class_Requisiciones_Global
@@ -7,8 +8,9 @@ Public Class Class_Requisiciones_Global
 
 #Region "Campos de la tabla"
     Private _FOLIO_REQUISICION As String
-    Private _FECHA As Date
+    Private _FECHA_ENTREGA As Date
     Private _CODIGO_ALMACEN As String
+    Private _CODIGO_USUARIO_COMPRADOR As String
     Private _CODIGO_PLAZA As Integer
     Private _CODIGO_DOCUMENTO As String
     Private _ESTATUS As String
@@ -18,13 +20,14 @@ Public Class Class_Requisiciones_Global
     Private _FECHA_SOLICITO As Date
     Private _FECHA_CANCELACION As Date
     Private _CONCEPTO As String
-    Private _NOMBRE_USUARIO_GRABO As String
-    Private _NOMBRE_USUARIO_SOLICITO As String
-    Private _NOMBRE_USUARIO_CANCELO As String
 #End Region
 
 #Region "Campos ligados a la tabla"
     Private _Existe As Boolean 'lectura
+    Private _NOMBRE_USUARIO_GRABO As String
+    Private _NOMBRE_USUARIO_SOLICITO As String
+    Private _NOMBRE_USUARIO_CANCELO As String
+    Private _NOMBRE_USUARIO_COMPRADOR As String
 #End Region
 
 #Region "Campos públicos"
@@ -60,12 +63,12 @@ Public Class Class_Requisiciones_Global
         End Set
     End Property
 
-    Public Property FECHA() As Date
+    Public Property FECHA_ENTREGA() As Date
         Get
-            Return Me._FECHA
+            Return Me._FECHA_ENTREGA
         End Get
         Set(ByVal Value As Date)
-            Me._FECHA = Value
+            Me._FECHA_ENTREGA = Value
         End Set
     End Property
 
@@ -75,6 +78,15 @@ Public Class Class_Requisiciones_Global
         End Get
         Set(ByVal Value As String)
             Me._CODIGO_ALMACEN = Value
+        End Set
+    End Property
+
+    Public Property CODIGO_USUARIO_COMPRADOR() As String
+        Get
+            Return Me._CODIGO_USUARIO_COMPRADOR
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_USUARIO_COMPRADOR = Value
         End Set
     End Property
 
@@ -158,7 +170,20 @@ Public Class Class_Requisiciones_Global
             Me._CONCEPTO = Value
         End Set
     End Property
-    
+#End Region
+
+#Region "Propiedades de campos ligados a la tabla"
+    Public ReadOnly Property Existe() As Boolean
+        Get
+            Return Me._Existe
+        End Get
+    End Property
+    Public ReadOnly Property CODIGO_MODULO() As String
+        Get
+            Return "INV"
+        End Get
+    End Property
+
     Public ReadOnly Property NOMBRE_USUARIO_GRABO() As String
         Get
             Return Me._NOMBRE_USUARIO_GRABO
@@ -177,17 +202,9 @@ Public Class Class_Requisiciones_Global
         End Get
     End Property
 
-#End Region
-
-#Region "Propiedades de campos ligados a la tabla"
-    Public ReadOnly Property Existe() As Boolean
+    Public ReadOnly Property NOMBRE_COMPRADOR() As String
         Get
-            Return Me._Existe
-        End Get
-    End Property
-    Public ReadOnly Property CODIGO_MODULO() As String
-        Get
-            Return "INV"
+            Return Me._NOMBRE_USUARIO_COMPRADOR
         End Get
     End Property
 #End Region
@@ -226,11 +243,14 @@ Public Class Class_Requisiciones_Global
         Me._Nombre_Reporte = "RPT_REQUISICIONES_GLOBAL.rpt"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "SELECT R.*,U.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO,U2.NOMBRE_USUARIO NOMBRE_USUARIO_SOLICITO, U3.NOMBRE_USUARIO NOMBRE_USUARIO_CANCELO FROM REQUISICIONES_GLOBAL R " &
-                          "INNER JOIN SIS_USUARIOS U ON (U.CODIGO_USUARIO=R.CODIGO_USUARIO_GRABO) " &
-                          "LEFT JOIN SIS_USUARIOS U2 ON (U2.CODIGO_USUARIO=R.CODIGO_USUARIO_SOLICITO) " &
-                          "LEFT JOIN SIS_USUARIOS U3 ON (U2.CODIGO_USUARIO=R.CODIGO_USUARIO_CANCELO) WHERE "
-        Me._QueryOrder = " Order by R.FOLIO_REQUISICION"
+        Me._QuerySelect = "SELECT R.*,U.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO,U2.NOMBRE_USUARIO NOMBRE_USUARIO_SOLICITO,U3.NOMBRE_USUARIO NOMBRE_USUARIO_CANCELO,U4.NOMBRE_USUARIO NOMBRE_COMPRADOR " &
+                          "FROM REQUISICIONES_GLOBAL R " &
+                          "INNER JOIN SIS_USUARIOS U ON(R.CODIGO_USUARIO_GRABO=U.CODIGO_USUARIO) " &
+                          "LEFT JOIN SIS_USUARIOS U2 ON(R.CODIGO_USUARIO_SOLICITO=U2.CODIGO_USUARIO) " &
+                          "LEFT JOIN SIS_USUARIOS U3 ON(R.CODIGO_USUARIO_CANCELO=U3.CODIGO_USUARIO) " &
+                          "LEFT JOIN SIS_USUARIOS U4 ON(R.CODIGO_USUARIO_COMPRADOR=U4.CODIGO_USUARIO) " &
+                          "WHERE "
+        Me._QueryOrder = " ORDER BY R.FOLIO_REQUISICION"
         oRequisicionDetalle = New Class_Requisiciones_Detalle
     End Sub
 
@@ -266,8 +286,9 @@ Public Class Class_Requisiciones_Global
             .CommandText = "MP_REQUISICIONES_GLOBAL_GRABA"
 
             sqlParametro = .Parameters.Add("@FOLIO_REQUISICION", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_REQUISICION.ToUpper : sqlParametro.Direction = ParameterDirection.InputOutput
-            sqlParametro = .Parameters.Add("@FECHA", SqlDbType.SmallDateTime) : sqlParametro.Value = "" & Me._FECHA
+            sqlParametro = .Parameters.Add("@FECHA_ENTREGA", SqlDbType.SmallDateTime) : sqlParametro.Value = "" & Me._FECHA_ENTREGA
             sqlParametro = .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_ALMACEN
+            sqlParametro = .Parameters.Add("@CODIGO_USUARIO_COMPRADOR", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_USUARIO_COMPRADOR
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PLAZA
             sqlParametro = .Parameters.Add("@CODIGO_DOCUMENTO", SqlDbType.NVarChar, 10) : sqlParametro.Value = "" & Me._CODIGO_DOCUMENTO
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_GRABO", SqlDbType.SmallInt) : sqlParametro.Value = "" & Usuario.Codigo_Usuario
@@ -287,6 +308,7 @@ Public Class Class_Requisiciones_Global
                 sqlParametro = Nothing
             End Try
         End With
+
         Return bResultado
     End Function
 
@@ -315,6 +337,7 @@ Public Class Class_Requisiciones_Global
                 sqlParametro = Nothing
             End Try
         End With
+
         Return bResultado
     End Function
 
@@ -342,6 +365,7 @@ Public Class Class_Requisiciones_Global
                 sqlParametro = Nothing
             End Try
         End With
+
         Return bResultado
     End Function
 
@@ -370,6 +394,7 @@ Public Class Class_Requisiciones_Global
                 sqlParametro = Nothing
             End Try
         End With
+
         Return bResultado
     End Function
 
@@ -384,10 +409,11 @@ Public Class Class_Requisiciones_Global
                 Me._Conexion.Open()
                 dReader = .ExecuteReader()
 
-                If dReader.Read Then
+                If dReader.Read = True Then
                     Me._FOLIO_REQUISICION = "" & dReader("FOLIO_REQUISICION").ToString()
-                    Me._FECHA = CDate(dReader("FECHA"))
+                    Me._FECHA_ENTREGA = CDate(dReader("FECHA_ENTREGA"))
                     Me._CODIGO_ALMACEN = "" & dReader("CODIGO_ALMACEN").ToString()
+                    Me._CODIGO_USUARIO_COMPRADOR = "" & dReader("CODIGO_USUARIO_COMPRADOR").ToString()
                     Me._CODIGO_PLAZA = Convert.ToInt32(dReader("CODIGO_PLAZA"))
                     Me._CODIGO_DOCUMENTO = "" & dReader("CODIGO_DOCUMENTO").ToString()
                     Me._ESTATUS = "" & dReader("ESTATUS").ToString()
@@ -406,6 +432,8 @@ Public Class Class_Requisiciones_Global
                         Me._CODIGO_USUARIO_CANCELO = CInt(dReader("CODIGO_USUARIO_CANCELO"))
                         Me._NOMBRE_USUARIO_CANCELO = "" & dReader("NOMBRE_USUARIO_CANCELO").ToString()
                     End If
+
+                    Me._NOMBRE_USUARIO_COMPRADOR = "" & dReader("NOMBRE_COMPRADOR").ToString()
 
                     bResultado = True
                 End If
@@ -496,15 +524,15 @@ Public Class Class_Requisiciones_Global
     Public Function BusquedaVisual_Requisiciones() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de requisiciones de inventario por folio."
+        f.Text = "Búsqueda de requisiciones pendientes de OC por folio."
         f.sCampo = "FOLIO_REQUISICION"
-        f.sOrder = "FECHA DESC"
+        f.sOrder = "FECHA_ENTREGA DESC"
         f.sTable = "REQUISICIONES_GLOBAL"
-        f.sQl = "SELECT G.FOLIO_REQUISICION,A.NOMBRE_ALMACEN,G.ESTATUS,G.FECHA " &
+        f.sQl = "SELECT G.FOLIO_REQUISICION,A.NOMBRE_ALMACEN,G.ESTATUS,G.FECHA_ENTREGA,G.FECHA_SERVIDOR,UC.NOMBRE_USUARIO COMPRADOR " &
                 "FROM REQUISICIONES_GLOBAL G " &
                 "INNER JOIN CAT_ALMACENES A ON(G.CODIGO_ALMACEN=A.CODIGO_ALMACEN) " &
+                "LEFT JOIN SIS_USUARIOS UC ON(G.CODIGO_USUARIO_COMPRADOR=UC.CODIGO_USUARIO) " &
                 "WHERE G.ESTATUS IN('L','R') AND "
-
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -513,6 +541,29 @@ Public Class Class_Requisiciones_Global
             End If
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "BusquedaVisual_Requisiciones", ex)
+        End Try
+        Return Resultado
+    End Function
+
+    Public Function BusquedaVisual_PorDescripcion() As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de requisiciones de inventario."
+        f.sCampo = "FOLIO_REQUISICION"
+        f.sOrder = "FOLIO_REQUISICION"
+        f.sTable = "REQUISICIONES_GLOBAL"
+        f.sQl = "SELECT G.FOLIO_REQUISICION,A.NOMBRE_ALMACEN,G.ESTATUS,G.FECHA " &
+                "FROM REQUISICIONES_GLOBAL G " &
+                "INNER JOIN CAT_ALMACENES A ON(G.CODIGO_ALMACEN=A.CODIGO_ALMACEN) " &
+                "WHERE "
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcion", ex)
         End Try
         Return Resultado
     End Function

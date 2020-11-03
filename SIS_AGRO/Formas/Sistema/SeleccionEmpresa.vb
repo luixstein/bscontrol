@@ -45,18 +45,23 @@ Public Class SeleccionEmpresa
         'MsgBox("SERVER = " & My.Settings.Servidor & vbCrLf & "USER = " & sCongif1 & vbCrLf & "PASS = " & sCongif2)
 
         Dim dTable As New DataTable
-        Dim ds As New SqlDataAdapter("SELECT ALIAS_EMPRESA,NOMBRE_DB FROM SIS_CAT_EMPRESAS ORDER BY ID_SIS_CAT_EMPRESAS", Conexion)
+        Dim da As New SqlDataAdapter("SELECT ALIAS_EMPRESA,NOMBRE_DB FROM SIS_CAT_EMPRESAS ORDER BY ID_SIS_CAT_EMPRESAS", Conexion)
         Try
-            ds.Fill(dTable)
+            da.Fill(dTable)
             With Me.cboEmpresa
                 .DisplayMember = "ALIAS_EMPRESA"
                 .ValueMember = "NOMBRE_DB"
                 .DataSource = dTable
             End With
+
+            'If dTable.Select("NOMBRE_DB='" & My.Settings.BaseDatos & "'").Count > 0 Then
+            '    Me.cboEmpresa.SelectedValue = My.Settings.BaseDatos
+            'End If
+
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, "CargaEmpresas", ex)
         Finally
-            ds.Dispose()
+            da.Dispose()
         End Try
     End Sub
 End Class

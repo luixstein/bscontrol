@@ -1,8 +1,5 @@
 ﻿Option Explicit On
 Option Strict On
-Imports System.Data
-Imports System.Data.SqlClient
-Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class ConfiguracionUsuarios
     Private oUsuarios As New Class_sisUsuarios
@@ -102,6 +99,408 @@ Public Class ConfiguracionUsuarios
     End Sub
 #End Region
 
+#Region "Eventos de objetos"
+
+#Region "Eventos de la lista de elementos"
+    Private Sub lstbElementos_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstbElementos.DoubleClick
+        Me.Estado = enumEstados.EDICION
+        Me.Cambia_Estado()
+    End Sub
+
+    Private Sub lstbElementos_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstbElementos.Enter
+        If Me.lstbElementos.Items.Count > 0 Then
+            Me.tsbEditar.Enabled = True
+        End If
+    End Sub
+
+    Private Sub lstbElementos_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstbElementos.LostFocus
+        Me.tsbEditar.Enabled = False
+    End Sub
+
+    Private Sub lstbElementos_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstbElementos.SelectedIndexChanged
+        If Me.lstbElementos.SelectedIndex >= 0 Then
+            Me.LlenaElemento(CInt(Me.lstbElementos.SelectedValue))
+        End If
+    End Sub
+#End Region
+
+#Region "Eventos de TxtFiltro"
+    Private Sub txtFiltro_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFiltro.TextChanged
+        Dim sFiltro As String = Replace(txtFiltro.Text, "'", "''")
+        Dim i As Short
+        i = CType(Me.lstbElementos.FindString(sFiltro), Short)
+        If i >= 0 Then Me.lstbElementos.SelectedIndex = i
+    End Sub
+    Private Sub txtFiltro_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFiltro.KeyPress
+        txtNoBeep(e)
+        txtNoComilla(e)
+    End Sub
+    Private Sub txtFiltro_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtFiltro.KeyDown
+        If e.KeyCode = Keys.Down Or e.KeyCode = Keys.Return Then
+            If Me.lstbElementos.Items.Count > 0 Then
+                Me.lstbElementos.SelectedIndex = 0
+                Me.lstbElementos.Focus()
+            End If
+        End If
+    End Sub
+#End Region
+
+#Region "Eventos Genericos"
+
+    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombreUsuario.KeyDown, txtClave.KeyDown, _
+    CboAlmacen.KeyDown, cboPlazas.KeyDown, CboEstatus.KeyDown, CkbAdministrador.KeyDown, CkbArmadoPalet.KeyDown, ckbArticulos.KeyDown, CkbClientes.KeyDown, ckbCuentas.KeyDown, TxtCodigoUsuarioImporta.KeyDown
+        If e.KeyCode = Keys.Return Then
+            Select Case Me.Estado
+                Case enumEstados.EDICION
+                    SendKeys.Send("{TAB}")
+                Case enumEstados.NUEVO
+                    SendKeys.Send("{TAB}")
+            End Select
+        End If
+    End Sub
+
+    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoUsuario.KeyPress,
+    TxtNombreUsuario.KeyPress, txtClave.KeyPress, TxtConfirmaClave.KeyPress
+        txtNoBeep(e)
+    End Sub
+
+    Private Sub TxtCodigoUsuarioImporta_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoUsuarioImporta.KeyDown
+        Dim sText As String
+        Select Case e.KeyCode
+            Case Keys.F6
+Buscar:
+                sText = Me.oUsuarios.BusquedaVisual_PorDescripcion()
+                If txtLEN(sText) = True Then Me.TxtCodigoUsuarioImporta.Text = sText
+            Case Keys.Enter
+                If txtLEN(Me.TxtCodigoUsuarioImporta.Text) = False Then
+                    Me.LblNombreUsuario.Text = "" : GoTo Buscar : Exit Sub
+                End If
+
+                Me.oUsuarios = New Class_sisUsuarios(CInt(Me.TxtCodigoUsuarioImporta.Text))
+                If Me.oUsuarios.Existe = False Then 
+                    Me.LblNombreUsuario.Text = "" : GoTo Buscar : Exit Sub
+                End If
+
+                Me.TxtNombreUsuarioImportar.Text = Me.oUsuarios.Nombre_Usuario.ToString
+        End Select
+    End Sub
+
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoUsuarioImporta.KeyPress, txtCodigoVendedor.KeyPress, txtDepartamento.KeyPress
+        txtSoloNumerosEnteros(e)
+        txtNoBeep(e)
+    End Sub
+
+#End Region
+
+    Private Sub ConfiguracionUsuarios_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+        Me.HabilitaMenus()
+    End Sub
+
+    Private Sub ConfiguracionUsuarios_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Me.TreeMenus()
+    End Sub
+
+    Private Sub TxtCodigoVendedor_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodigoVendedor.KeyDown
+        Dim sText As String
+        Dim oVendedor As New Class_CatVendedores
+        Select Case e.KeyCode
+            Case Keys.F6
+Buscar:
+                sText = oVendedor.BusquedaVisual_PorDescripcion
+                If txtLEN(sText) = True Then Me.txtCodigoVendedor.Text = sText
+            Case Keys.Enter
+                If txtLEN(Me.txtCodigoVendedor.Text) = False Then
+                    Me.lblNombreVendedor.Text = "" : GoTo Buscar : Exit Sub
+                End If
+
+                oVendedor = New Class_CatVendedores(Me.txtCodigoVendedor.Text)
+                If oVendedor.Existe = False Then
+                    Me.lblNombreVendedor.Text = "" : GoTo Buscar : Exit Sub
+                End If
+
+                Me.lblNombreVendedor.Text = oVendedor.NOMBRE_VENDEDOR
+        End Select
+    End Sub
+
+    Private Sub CboModulos_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles CboModulos.SelectedIndexChanged
+        If Me.Visible = True Then
+            Me.llenalistview()
+            Me.llenalistview3()
+        End If
+    End Sub
+
+    Private Sub CboModulos2_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles CboModulos2.SelectedIndexChanged
+        If Me.Visible = True Then
+            Me.llenalistview5()
+        End If
+    End Sub
+
+    Private Sub CboPlazasPermiso_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboPlazasPermiso.SelectedIndexChanged
+        If Me.Visible = True Then
+            Me.llenalistview()
+            Me.llenalistview3()
+        End If
+    End Sub
+
+    Private Sub BtnRecurperar_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnRecurperar.Click
+        Try
+            Dim oElemento As New Class_sisUsuarios
+            oElemento.Codigo_Usuario = CInt(Me.TxtCodigoUsuario.Text)
+            If oElemento.Consultar Then
+                MsgBox(oElemento.Clave.ToString, MsgBoxStyle.Information, Me.Text)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, "BtnRecurperar", ex)
+        End Try
+    End Sub
+
+    Private Sub BtnActualizar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnActualizar.Click
+        Me.CambiarContraseña()
+    End Sub
+
+    Private Sub TreeViewMenus_AfterCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewMenus.AfterCheck
+        Dim oNodo As TreeNode
+
+        If Me.Estado = enumEstados.CONSULTA Then
+            Exit Sub
+        End If
+
+        If Me.bPadre = True Then
+            Exit Sub
+        End If
+
+        'Esto chequea o deschequea los hijos del nodo marcado
+        For Each oNodo In e.Node.Nodes
+            oNodo.Checked = e.Node.Checked
+        Next
+
+        ''Si un nodo es marcado, marca al padre y al abuelo 
+        ''solo funciona hasta con 3 niveles
+        If Not e.Node.Parent Is Nothing Then
+            If sParent <> e.Node.Parent.Tag.ToString Then
+                sParent = e.Node.Parent.Tag.ToString
+                If e.Node.Checked = True Then
+                    Me.bPadre = True
+                    e.Node.Parent.Checked = True
+                    If Not e.Node.Parent.Parent Is Nothing Then
+                        Me.bPadre = True
+                        e.Node.Parent.Parent.Checked = True
+                    End If
+                    Me.bPadre = False
+                End If
+            End If
+        End If
+    End Sub
+
+    'Botón 1 para copiar los elementos desde el listview 1 hacia el listview 2  
+    Private Sub BtnAgregar1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnAgregar1.Click
+        Dim R2 As Integer
+        Dim bEncuentra As Boolean, bSeleccionado As Boolean
+        Try
+            If (Me.LstVDocumentos2.Items.Count) >= 0 Then
+                If (Me.LstVDocumentos1.Items.Count) = 0 Then
+                    Exit Sub
+                Else
+                    Dim i As Integer
+                    For i = 0 To (Me.LstVDocumentos1.Items.Count - 1)
+                        If Me.LstVDocumentos1.Items(i).Selected = False Then
+                            bSeleccionado = False
+                        Else
+                            bSeleccionado = True
+                            Exit For
+                        End If
+                    Next
+                End If
+
+                If bSeleccionado = False Then
+                    Exit Sub
+                End If
+
+                For R2 = 0 To (Me.LstVDocumentos2.Items.Count - 1)
+                    Me.LstVDocumentos2.Items(R2).Selected = True
+                    Me.LstVDocumentos2.Select()
+                    If Me.LstVDocumentos1.SelectedItems(0).SubItems(0).Text = Me.LstVDocumentos2.SelectedItems(0).SubItems(0).Text And Me.CboAlmacen2.SelectedValue.ToString = Me.LstVDocumentos2.SelectedItems(0).SubItems(2).Text Then
+                        bEncuentra = True
+                        Exit For
+                    Else
+                        bEncuentra = False
+                    End If
+                Next R2
+
+                If bEncuentra = False Then
+                    Me.LstVDocumentos2.Items.Add(New ListViewItem(New String() {Me.LstVDocumentos1.SelectedItems(0).SubItems(0).Text, Me.LstVDocumentos1.SelectedItems(0).SubItems(1).Text, Me.CboAlmacen2.SelectedValue.ToString}))
+                End If
+                bEncuentra = False
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, "BtnAgregar1", ex)
+        End Try
+    End Sub
+
+    'Botón 2 para copiar los elementos desde el listview 3 hacia el listview 4  
+    Private Sub BtnAgregar2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnAgregar2.Click
+        Dim R2 As Integer
+        Dim bEncuentra As Boolean, bSeleccionado As Boolean
+        Try
+            If (Me.LstVDocumentos4.Items.Count) >= 0 Then
+                If (Me.LstVDocumentos3.Items.Count) = 0 Then
+                    Exit Sub
+                Else
+                    Dim i As Integer
+                    For i = 0 To (Me.LstVDocumentos3.Items.Count - 1)
+                        If Me.LstVDocumentos3.Items(i).Selected = False Then
+                            bSeleccionado = False
+                        Else
+                            bSeleccionado = True
+                            Exit For
+                        End If
+                    Next
+                End If
+
+                If bSeleccionado = False Then
+                    Exit Sub
+                End If
+
+                For R2 = 0 To (Me.LstVDocumentos4.Items.Count - 1)
+                    Me.LstVDocumentos4.Items(R2).Selected = True
+                    Me.LstVDocumentos4.Select()
+                    If Me.LstVDocumentos3.SelectedItems(0).SubItems(0).Text = Me.LstVDocumentos4.SelectedItems(0).SubItems(0).Text Then
+                        bEncuentra = True
+                        Exit For
+                    Else
+                        bEncuentra = False
+                    End If
+                Next R2
+
+                If bEncuentra = False Then
+                    Me.LstVDocumentos4.Items.Add(New ListViewItem(New String() {Me.LstVDocumentos3.SelectedItems(0).SubItems(0).Text, Me.LstVDocumentos3.SelectedItems(0).SubItems(1).Text}))
+                End If
+                bEncuentra = False
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, "BtnAgregar2", ex)
+        End Try
+    End Sub
+
+    'Botón 1 para copiar los elementos desde el listview 3 hacia el listview 4  
+    Private Sub BtnAgregar3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnAgregar3.Click
+        Dim R2 As Integer
+        Dim Bencuentra As Boolean, bSeleccionado As Boolean
+
+        Try
+            If (Me.LstVDocumentos6.Items.Count) >= 0 Then
+                If (Me.LstVDocumentos5.Items.Count) = 0 Then
+                    Exit Sub
+                Else
+                    Dim i As Integer
+                    For i = 0 To (Me.LstVDocumentos5.Items.Count - 1)
+                        If Me.LstVDocumentos5.Items(i).Selected = False Then
+                            bSeleccionado = False
+                        Else
+                            bSeleccionado = True
+                            Exit For
+                        End If
+                    Next
+                End If
+
+                If bSeleccionado = False Then
+                    Exit Sub
+                End If
+
+                For R2 = 0 To (Me.LstVDocumentos6.Items.Count - 1)
+                    Me.LstVDocumentos6.Items(R2).Selected = True
+                    Me.LstVDocumentos6.Select()
+                    If Me.LstVDocumentos5.SelectedItems(0).SubItems(0).Text = Me.LstVDocumentos6.SelectedItems(0).SubItems(0).Text And Me.LstVDocumentos6.SelectedItems(0).SubItems(2).Text = Me.CboAlmacen4.SelectedValue.ToString And Me.LstVDocumentos6.SelectedItems(0).SubItems(3).Text = Me.CboAlmacen3.SelectedValue.ToString Then
+                        Bencuentra = True
+                        Exit For
+                    Else
+                        Bencuentra = False
+                    End If
+                Next R2
+
+                If Bencuentra = False Then
+                    Me.LstVDocumentos6.Items.Add(New ListViewItem(New String() {Me.LstVDocumentos5.SelectedItems(0).SubItems(0).Text, Me.LstVDocumentos5.SelectedItems(0).SubItems(1).Text, Me.CboAlmacen4.SelectedValue.ToString, Me.CboAlmacen3.SelectedValue.ToString}))
+                End If
+
+                Bencuentra = False
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, "BtnAgregar3", ex)
+        End Try
+    End Sub
+
+    Private Sub BtnQuitar1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnQuitar1.Click
+        For i As Integer = Me.LstVDocumentos2.SelectedItems.Count - 1 To 0 Step -1
+            Me.LstVDocumentos2.SelectedItems(i).Remove()
+        Next
+    End Sub
+
+    Private Sub BtnQuitar2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnQuitar2.Click
+        For i As Integer = Me.LstVDocumentos4.SelectedItems.Count - 1 To 0 Step -1
+            Me.LstVDocumentos4.SelectedItems(i).Remove()
+        Next
+    End Sub
+
+    Private Sub BtnQuitar3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnQuitar3.Click
+        For i As Integer = Me.LstVDocumentos6.SelectedItems.Count - 1 To 0 Step -1
+            Me.LstVDocumentos6.SelectedItems(i).Remove()
+        Next
+    End Sub
+
+    Private Sub btnActualizarCorreo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActualizarCorreo.Click
+        Dim oUsuario As New Class_sisUsuarios
+        If txtLEN(Me.txtCorreoUsuario.Text) = False Then
+            MsgBox("Favor de capturar un correo. ", MsgBoxStyle.Information, Me.Text)
+            Me.txtCorreoUsuario.Focus()
+            Exit Sub
+        End If
+
+        If IsEmailSyntaxValid(Me.txtCorreoUsuario.Text) = False Then
+            MsgBox("El correo no es valido, favor de verificar.", MsgBoxStyle.Exclamation, "Validación")
+            Exit Sub
+        End If
+
+        oUsuario.Codigo_Usuario = CInt(Me.TxtCodigoUsuario.Text)
+        oUsuario.CORREO_USUARIO = Me.txtCorreoUsuario.Text
+        oUsuario.CLAVE_CORREO = Me.txtClaveCorreo.Text
+
+        If oUsuario.ActualizarCorreo() = True Then
+            MsgBox("El correo del usuario se a actualizado correctamente. ", MsgBoxStyle.Information, Me.Text)
+        End If
+    End Sub
+
+    Private Sub txtDepartamento_KeyDown(sender As Object, e As KeyEventArgs) Handles txtDepartamento.KeyDown
+        Dim oDepartamento As New Class_CatDepartamentos
+        Dim sDepartamento As String = ""
+
+        Select Case e.KeyCode
+            Case Keys.F6
+Busqueda:
+                sDepartamento = oDepartamento.BusquedaVisual_PorDescripcion()
+                If txtLEN(sDepartamento) = True Then
+                    Me.txtDepartamento.Text = sDepartamento
+                    GoTo Enter : Return
+                End If
+
+            Case Keys.Return
+                If txtLEN(Me.txtDepartamento.Text) = False Then
+                    Me.lblDepartamento.Text = ""
+                    GoTo Busqueda : Return
+                End If
+Enter:
+                oDepartamento = New Class_CatDepartamentos(Me.txtDepartamento.Text)
+                If oDepartamento.Existe = False Then
+                    Me.lblDepartamento.Text = ""
+                    GoTo Busqueda : Return
+                End If
+
+                Me.lblDepartamento.Text = oDepartamento.NOMBRE_DEPARTAMENTO
+                txtTAB(e)
+
+        End Select
+    End Sub
+#End Region
+
 #Region "Métodos y procedimientos"
     Private Sub Refrescar()
         Me.DesplegarElementos()
@@ -191,28 +590,30 @@ Public Class ConfiguracionUsuarios
     End Sub
 
     Private Sub InicializaElemento()
-        Me.TxtCodigoUsuario.Text = ""
-        Me.TxtNombreUsuario.Text = ""
-        Me.txtClave.Text = ""
-        Me.TxtConfirmaClave.Text = ""
+        Try
+            Me.TxtCodigoUsuario.Text = ""
+            Me.TxtNombreUsuario.Text = ""
+            Me.txtClave.Text = ""
+            Me.TxtConfirmaClave.Text = ""
 
-        Me.CboEstatus.Text = "A"
-        Me.ckbCuentas.Checked = False
-        Me.ckbArticulos.Checked = False
-        Me.CkbAdministrador.Checked = False
-        Me.CkbClientes.Checked = False
-        Me.CkbArmadoPalet.Checked = False
-        Me.ckbVerFormulasConfidenciales.Checked = False
+            Me.CboEstatus.Text = "A"
+            Me.ckbCuentas.Checked = False
+            Me.ckbArticulos.Checked = False
+            Me.CkbAdministrador.Checked = False
+            Me.CkbClientes.Checked = False
+            Me.CkbArmadoPalet.Checked = False
 
-        Me.txtCodigoVendedor.Text = ""
-        Me.lblNombreVendedor.Text = ""
+            Me.txtCodigoVendedor.Text = "" : Me.lblNombreVendedor.Text = ""
+            Me.txtDepartamento.Text = "" : Me.lblDepartamento.Text = ""
 
-        If Empresa_Sistema.CODIGO_VENDEDOR_POR_USUARIO = True Then
-            Me.gpVendedor.Visible = True
-        Else
-            Me.gpVendedor.Visible = False
-        End If
-
+            If Empresa_Sistema.CODIGO_VENDEDOR_POR_USUARIO = True Then
+                Me.gpVendedor.Visible = True
+            Else
+                Me.gpVendedor.Visible = False
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, "InicializaElemento", ex)
+        End Try
     End Sub
 
     Private Sub DesplegarElementos()
@@ -415,61 +816,78 @@ Public Class ConfiguracionUsuarios
     '    End Try
     'End Sub
 
-    Private Function LlenaComboEstatus() As Boolean
-        Me.CboEstatus.Items.Add("A")
-        Me.CboEstatus.Items.Add("B")
-
-        Me.CboEstatus.SelectedItem = "A"
-    End Function
-
     Private Sub LlenaElemento(ByVal iCodigo_Elemento As Integer)
-        Dim oElemento As New Class_sisUsuarios
-        oElemento.Codigo_Usuario = iCodigo_Elemento
-        If oElemento.Consultar Then
-            With oElemento
-                Me.TxtCodigoUsuario.Text = .Codigo_Usuario.ToString
-                Me.TxtNombreUsuario.Text = .Nombre_Usuario.ToString
-                Me.txtClave.Text = .Clave.ToString
-                Me.TxtConfirmaClave.Text = .Clave.ToString
-                Me.cboPlazas.SelectedValue = .Codigo_Plaza
-                Me.CboAlmacen.SelectedValue = .Codigo_Almacen
-                Me.CboEstatus.Text = .Estatus.ToString
-                Me.ckbArticulos.Checked = CBool(.PERMISO_CAT_ARTICULOS)
-                Me.CkbAdministrador.Checked = CBool(.PERMISO_ADMINISTRADOR)
-                Me.CkbArmadoPalet.Checked = CBool(.PERMISO_ARMADO_PALET)
-                Me.CkbClientes.Checked = CBool(.PERMISO_CAT_CLIENTES)
-                Me.ckbCuentas.Checked = CBool(.PERMISO_CON_CAT_CUENTAS)
-                Me.txtCorreoUsuario.Text = .CORREO_USUARIO.ToString
-                Me.txtClaveCorreo.Text = .CLAVE_CORREO.ToString
-                Me.CkbAdmonCreditos.Checked = CBool(.ADMON_CREDITOS)
-                Me.ckbVerCostos.Checked = CBool(.VER_COSTOS)
-                Me.txtCodigoVendedor.Text = .CODIGO_VENDEDOR
-                Me.ckbVerFormulasConfidenciales.Checked = .PERMISOS_FORMULAS_CONFIDENCIALES
+        Try
+            Dim oElemento As New Class_sisUsuarios
+            oElemento.Codigo_Usuario = iCodigo_Elemento
+            If oElemento.Consultar = True Then
+                With oElemento
+                    Me.TxtCodigoUsuario.Text = .Codigo_Usuario.ToString
+                    Me.TxtNombreUsuario.Text = .Nombre_Usuario.ToString
+                    Me.txtClave.Text = .Clave.ToString
+                    Me.TxtConfirmaClave.Text = .Clave.ToString
+                    Me.cboPlazas.SelectedValue = .Codigo_Plaza
+                    Me.CboAlmacen.SelectedValue = .Codigo_Almacen
+                    Me.CboEstatus.Text = .Estatus.ToString
+                    Me.ckbArticulos.Checked = CBool(.PERMISO_CAT_ARTICULOS)
+                    Me.CkbAdministrador.Checked = CBool(.PERMISO_ADMINISTRADOR)
+                    Me.CkbArmadoPalet.Checked = CBool(.PERMISO_ARMADO_PALET)
+                    Me.CkbClientes.Checked = CBool(.PERMISO_CAT_CLIENTES)
+                    Me.ckbCuentas.Checked = CBool(.PERMISO_CON_CAT_CUENTAS)
+                    Me.txtCorreoUsuario.Text = .CORREO_USUARIO.ToString
+                    Me.txtClaveCorreo.Text = .CLAVE_CORREO.ToString
+                    Me.CkbAdmonCreditos.Checked = CBool(.ADMON_CREDITOS)
+                    Me.ckbVerCostos.Checked = CBool(.VER_COSTOS)
+                    Me.txtCodigoVendedor.Text = .CODIGO_VENDEDOR
 
-                If txtLEN(Me.txtCodigoVendedor.Text) = True Then
-                    Dim oVendedor As New Class_CatVendedores(Me.txtCodigoVendedor.Text)
-                    If oVendedor.Existe = True Then Me.lblNombreVendedor.Text = oVendedor.NOMBRE_VENDEDOR
-                Else
-                    Me.lblNombreVendedor.Text = ""
-                End If
+                    Me.txtDepartamento.Text = .CODIGO_DEPARTAMENTO
+                    Dim oDepartamento As New Class_CatDepartamentos(.CODIGO_DEPARTAMENTO)
+                    Me.lblDepartamento.Text = oDepartamento.NOMBRE_DEPARTAMENTO
+                    oDepartamento = Nothing
 
-            End With
-        End If
-        Me.TreeMenus()
-        Me.ConsultaPermisos()
-        Me.ConsultaPermisosMenus()
-        oElemento = Nothing
+                    If txtLEN(Me.txtCodigoVendedor.Text) = True Then
+                        Dim oVendedor As New Class_CatVendedores(Me.txtCodigoVendedor.Text)
+                        If oVendedor.Existe = True Then Me.lblNombreVendedor.Text = oVendedor.NOMBRE_VENDEDOR
+                    Else
+                        Me.lblNombreVendedor.Text = ""
+                    End If
+
+                End With
+            End If
+            Me.TreeMenus()
+            Me.ConsultaPermisos()
+            Me.ConsultaPermisosMenus()
+            oElemento = Nothing
+
+        Catch ex As Exception
+            HandleError(Me.Name, "LlenaElemento", ex)
+        End Try
     End Sub
 
-    Private Sub Grabar_Elemento()
+    Private Function Grabar_Elemento() As Boolean
+        Dim bResultado As Boolean = False
         Dim oElemento As New Class_sisUsuarios
-        Dim Grabado As Boolean = False
         Dim iIndex As Integer = Me.lstbElementos.SelectedIndex
 
         If txtLEN(Me.TxtNombreUsuario.Text) = False Then
-            MsgBox("Asígne el nombre del usuario", MsgBoxStyle.Exclamation, Me.Text)
+            MsgBox("Asígne el nombre del usuario.", MsgBoxStyle.Exclamation, Me.Text)
             Me.TxtNombreUsuario.Focus()
-            Exit Sub
+            Return False
+        End If
+
+        If txtLEN(Me.txtDepartamento.Text) = False Then
+            MsgBox("Asígne el departamento del usuario.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.lblDepartamento.Text = ""
+            Me.txtDepartamento.Focus()
+            Return False
+        End If
+
+        Dim oDepartamento As New Class_CatDepartamentos(Me.txtDepartamento.Text)
+        If oDepartamento.Existe = False Then
+            MsgBox("El departamento no existe, revíse por favor.", MsgBoxStyle.Exclamation, Me.Text)
+            Me.lblDepartamento.Text = ""
+            Me.txtDepartamento.Focus()
+            Return False
         End If
 
         Select Case Me.Estado
@@ -487,29 +905,29 @@ Public Class ConfiguracionUsuarios
                         .PERMISO_CAT_ARTICULOS = Convert.ToInt32(Me.ckbArticulos.Checked).ToString
                         .PERMISO_CAT_CLIENTES = Convert.ToInt32(Me.CkbClientes.Checked).ToString
                         .PERMISO_CON_CAT_CUENTAS = Convert.ToInt32(Me.ckbCuentas.Checked).ToString
-                        .Estatus = Me.CboEstatus.Text
+                        .ESTATUS = Me.CboEstatus.Text
                         .CORREO_USUARIO = Me.txtCorreoUsuario.Text
                         .CLAVE_CORREO = Me.txtClaveCorreo.Text
                         .ADMON_CREDITOS = Convert.ToInt32(Me.CkbAdmonCreditos.Checked)
                         .VER_COSTOS = ckbVerCostos.Checked
                         .CODIGO_VENDEDOR = Me.txtCodigoVendedor.Text
-                        .PERMISOS_FORMULAS_CONFIDENCIALES = ckbVerFormulasConfidenciales.Checked
+                        .CODIGO_DEPARTAMENTO = Me.txtDepartamento.Text
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
-                                If .Insertar() Then
-                                    Grabado = True
+                                If .Grabar("INSERTAR") Then
+                                    bResultado = True
                                     Me.Estado = enumEstados.CONSULTA
                                 End If
                             Case enumEstados.EDICION
-                                If .Actualizar() Then
-                                    Grabado = True
+                                If .Grabar("ACTUALIZAR") Then
+                                    bResultado = True
                                     Me.Estado = enumEstados.CONSULTA
                                 End If
                         End Select
                         .EliminaPermisoDocumentos()
 
-                        If Grabado Then
+                        If bResultado = True Then
                             Me.GrabaPermisosMenus()
                             Me.GrabaPermisosDocumentos()
                             Me.GrabaPermisosTipoDocumentos()
@@ -530,7 +948,9 @@ Public Class ConfiguracionUsuarios
                     oElemento = Nothing
                 End Try
         End Select
-    End Sub
+
+        Return bResultado
+    End Function
 
     Private Sub GrabaPermisosMenus()
         Dim oElementos As New Class_sisUsuarios(CInt(Me.TxtCodigoUsuario.Text))
@@ -775,382 +1195,37 @@ Public Class ConfiguracionUsuarios
             HandleError(Me.Name, "HabilitaSubMenus", ex)
         End Try
     End Sub
-#End Region
 
-#Region "Eventos de objetos"
-
-#Region "Eventos de la lista de elementos"
-    Private Sub lstbElementos_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstbElementos.DoubleClick
-        Me.Estado = enumEstados.EDICION
-        Me.Cambia_Estado()
-    End Sub
-
-    Private Sub lstbElementos_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstbElementos.Enter
-        If Me.lstbElementos.Items.Count > 0 Then
-            Me.tsbEditar.Enabled = True
-        End If
-    End Sub
-
-    Private Sub lstbElementos_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstbElementos.LostFocus
-        Me.tsbEditar.Enabled = False
-    End Sub
-
-    Private Sub lstbElementos_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstbElementos.SelectedIndexChanged
-        If Me.lstbElementos.SelectedIndex >= 0 Then
-            Me.LlenaElemento(CInt(Me.lstbElementos.SelectedValue))
-        End If
-    End Sub
-#End Region
-
-#Region " Eventos de TxtFiltro"
-    Private Sub txtFiltro_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFiltro.TextChanged
-        Dim sFiltro As String = Replace(txtFiltro.Text, "'", "''")
-        Dim i As Short
-        i = CType(Me.lstbElementos.FindString(sFiltro), Short)
-        If i >= 0 Then Me.lstbElementos.SelectedIndex = i
-    End Sub
-    Private Sub txtFiltro_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFiltro.KeyPress
-        txtNoBeep(e)
-        txtNoComilla(e)
-    End Sub
-    Private Sub txtFiltro_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtFiltro.KeyDown
-        If e.KeyCode = Keys.Down Or e.KeyCode = Keys.Return Then
-            If Me.lstbElementos.Items.Count > 0 Then
-                Me.lstbElementos.SelectedIndex = 0
-                Me.lstbElementos.Focus()
-            End If
-        End If
-    End Sub
-#End Region
-
-#Region "Eventos Genericos"
-
-    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombreUsuario.KeyDown, txtClave.KeyDown, _
-    CboAlmacen.KeyDown, cboPlazas.KeyDown, CboEstatus.KeyDown, CkbAdministrador.KeyDown, CkbArmadoPalet.KeyDown, ckbArticulos.KeyDown, CkbClientes.KeyDown, ckbCuentas.KeyDown, TxtCodigoUsuarioImporta.KeyDown
-        If e.KeyCode = Keys.Return Then
-            Select Case Me.Estado
-                Case enumEstados.EDICION
-                    SendKeys.Send("{TAB}")
-                Case enumEstados.NUEVO
-                    SendKeys.Send("{TAB}")
-            End Select
-        End If
-    End Sub
-
-    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoUsuario.KeyPress, _
-    TxtNombreUsuario.KeyPress, txtClave.KeyPress, TxtConfirmaClave.KeyPress
-        txtNoBeep(e)
-    End Sub
-
-    Private Sub TxtCodigoUsuarioImporta_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoUsuarioImporta.KeyDown
-        Dim sText As String
-        Select Case e.KeyCode
-            Case Keys.F6
-Buscar:
-                sText = Me.oUsuarios.BusquedaVisual_PorDescripcion()
-                If txtLEN(sText) = True Then Me.TxtCodigoUsuarioImporta.Text = sText
-            Case Keys.Enter
-                If txtLEN(Me.TxtCodigoUsuarioImporta.Text) = False Then
-                    Me.LblNombreUsuario.Text = "" : GoTo Buscar : Exit Sub
-                End If
-
-                Me.oUsuarios = New Class_sisUsuarios(CInt(Me.TxtCodigoUsuarioImporta.Text))
-                If Me.oUsuarios.Existe = False Then 
-                    Me.LblNombreUsuario.Text = "" : GoTo Buscar : Exit Sub
-                End If
-
-                Me.TxtNombreUsuarioImportar.Text = Me.oUsuarios.Nombre_Usuario.ToString
-        End Select
-    End Sub
-
-    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoUsuarioImporta.KeyPress, txtCodigoVendedor.KeyPress
-        txtSoloNumerosEnteros(e)
-        txtNoBeep(e)
-    End Sub
-
-#End Region
-
-    Private Sub TxtCodigoVendedor_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodigoVendedor.KeyDown
-        Dim sText As String
-        Dim oVendedor As New Class_CatVendedores
-        Select Case e.KeyCode
-            Case Keys.F6
-Buscar:
-                sText = oVendedor.BusquedaVisual_PorDescripcion
-                If txtLEN(sText) = True Then Me.txtCodigoVendedor.Text = sText
-            Case Keys.Enter
-                If txtLEN(Me.txtCodigoVendedor.Text) = False Then
-                    Me.lblNombreVendedor.Text = "" : GoTo Buscar : Exit Sub
-                End If
-
-                oVendedor = New Class_CatVendedores(Me.txtCodigoVendedor.Text)
-                If oVendedor.Existe = False Then
-                    Me.lblNombreVendedor.Text = "" : GoTo Buscar : Exit Sub
-                End If
-
-                Me.lblNombreVendedor.Text = oVendedor.NOMBRE_VENDEDOR
-        End Select
-    End Sub
-    Private Sub CboModulos_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles CboModulos.SelectedIndexChanged
-        If Me.Visible = True Then
-            Me.llenalistview()
-            Me.llenalistview3()
-        End If
-    End Sub
-
-    Private Sub CboModulos2_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles CboModulos2.SelectedIndexChanged
-        If Me.Visible = True Then
-            Me.llenalistview5()
-        End If
-    End Sub
-
-    Private Sub CboPlazasPermiso_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboPlazasPermiso.SelectedIndexChanged
-        If Me.Visible = True Then
-            Me.llenalistview()
-            Me.llenalistview3()
-        End If
-    End Sub
-
-    Private Sub BtnRecurperar_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnRecurperar.Click
+    Public Sub ImportarPermisos()
         Try
-            Dim oElemento As New Class_sisUsuarios
-            oElemento.Codigo_Usuario = CInt(Me.TxtCodigoUsuario.Text)
-            If oElemento.Consultar Then
-                MsgBox(oElemento.Clave.ToString, MsgBoxStyle.Information, Me.Text)
+            If txtLEN(Me.TxtCodigoUsuarioImporta.Text) = False Then
+                MsgBox("Asígne un usuario válido del que desea importar los permisos.", MsgBoxStyle.Information, Me.Name)
+                Return
             End If
+
+            Dim oUsuario As New Class_sisUsuarios
+            oUsuario.Codigo_Usuario = CInt(Me.TxtCodigoUsuarioImporta.Text)
+            If oUsuario.Consultar = True Then
+                With oUsuario
+                    'Me.cboPlazas.SelectedValue = .Codigo_Plaza
+                    Me.CboAlmacen.SelectedValue = .Codigo_Almacen
+                    'Me.CboEstatus.Text = .Estatus.ToString
+                    Me.ckbArticulos.Checked = CBool(.PERMISO_CAT_ARTICULOS)
+                    Me.CkbAdministrador.Checked = CBool(.PERMISO_ADMINISTRADOR)
+                    Me.CkbArmadoPalet.Checked = CBool(.PERMISO_ARMADO_PALET)
+                    Me.CkbClientes.Checked = CBool(.PERMISO_CAT_CLIENTES)
+                    Me.ckbCuentas.Checked = CBool(.PERMISO_CON_CAT_CUENTAS)
+                End With
+            End If
+
+            Me.TreeMenus()
+            Me.ConsultaPermisos(CInt(Me.TxtCodigoUsuarioImporta.Text))
+            Me.ConsultaPermisosMenus(CInt(Me.TxtCodigoUsuarioImporta.Text))
+            oUsuario = Nothing
+
         Catch ex As Exception
-            HandleError(Me.Name, "BtnRecurperar", ex)
+            HandleError(Me.Name, "ImportarPermisos", ex)
         End Try
-    End Sub
-
-    Private Sub BtnActualizar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnActualizar.Click
-        Me.CambiarContraseña()
-    End Sub
-
-    Private Sub TreeViewMenus_AfterCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewMenus.AfterCheck
-        Dim oNodo As TreeNode
-
-        If Me.Estado = enumEstados.CONSULTA Then
-            Exit Sub
-        End If
-
-        If Me.bPadre = True Then
-            Exit Sub
-        End If
-
-        'Esto chequea o deschequea los hijos del nodo marcado
-        For Each oNodo In e.Node.Nodes
-            oNodo.Checked = e.Node.Checked
-        Next
-
-        ''Si un nodo es marcado, marca al padre y al abuelo 
-        ''solo funciona hasta con 3 niveles
-        If Not e.Node.Parent Is Nothing Then
-            If sParent <> e.Node.Parent.Tag.ToString Then
-                sParent = e.Node.Parent.Tag.ToString
-                If e.Node.Checked = True Then
-                    Me.bPadre = True
-                    e.Node.Parent.Checked = True
-                    If Not e.Node.Parent.Parent Is Nothing Then
-                        Me.bPadre = True
-                        e.Node.Parent.Parent.Checked = True
-                    End If
-                    Me.bPadre = False
-                End If
-            End If
-        End If
-    End Sub
-
-#End Region
-
-    Private Sub ConfiguracionUsuarios_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
-        Me.HabilitaMenus()
-    End Sub
-
-    Private Sub ConfiguracionUsuarios_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.TreeMenus()
-    End Sub
-
-    Public Function ImportarPermisos() As Boolean
-
-        If txtLEN(Me.TxtCodigoUsuarioImporta.Text) = False Then
-            MsgBox("Asígne un usuario válido del que desea importar los permisos.", MsgBoxStyle.Information, Me.Name)
-            Exit Function
-        End If
-
-        Dim oElemento As New Class_sisUsuarios
-        oElemento.Codigo_Usuario = CInt(Me.TxtCodigoUsuarioImporta.Text)
-        If oElemento.Consultar Then
-            With oElemento
-                'Me.cboPlazas.SelectedValue = .Codigo_Plaza
-                Me.CboAlmacen.SelectedValue = .Codigo_Almacen
-                'Me.CboEstatus.Text = .Estatus.ToString
-                Me.ckbArticulos.Checked = CBool(.PERMISO_CAT_ARTICULOS)
-                Me.CkbAdministrador.Checked = CBool(.PERMISO_ADMINISTRADOR)
-                Me.CkbArmadoPalet.Checked = CBool(.PERMISO_ARMADO_PALET)
-                Me.CkbClientes.Checked = CBool(.PERMISO_CAT_CLIENTES)
-                Me.ckbCuentas.Checked = CBool(.PERMISO_CON_CAT_CUENTAS)
-            End With
-        End If
-        Me.TreeMenus()
-        Me.ConsultaPermisos(CInt(Me.TxtCodigoUsuarioImporta.Text))
-        Me.ConsultaPermisosMenus(CInt(Me.TxtCodigoUsuarioImporta.Text))
-        oElemento = Nothing
-    End Function
-
-    'Botón 1 para copiar los elementos desde el listview 1 hacia el listview 2  
-    Private Sub BtnAgregar1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnAgregar1.Click
-        Dim R2 As Integer
-        Dim bEncuentra As Boolean, bSeleccionado As Boolean
-        Try
-            If (Me.LstVDocumentos2.Items.Count) >= 0 Then
-                If (Me.LstVDocumentos1.Items.Count) = 0 Then
-                    Exit Sub
-                Else
-                    Dim i As Integer
-                    For i = 0 To (Me.LstVDocumentos1.Items.Count - 1)
-                        If Me.LstVDocumentos1.Items(i).Selected = False Then
-                            bSeleccionado = False
-                        Else
-                            bSeleccionado = True
-                            Exit For
-                        End If
-                    Next
-                End If
-
-                If bSeleccionado = False Then
-                    Exit Sub
-                End If
-
-                For R2 = 0 To (Me.LstVDocumentos2.Items.Count - 1)
-                    Me.LstVDocumentos2.Items(R2).Selected = True
-                    Me.LstVDocumentos2.Select()
-                    If Me.LstVDocumentos1.SelectedItems(0).SubItems(0).Text = Me.LstVDocumentos2.SelectedItems(0).SubItems(0).Text And Me.CboAlmacen2.SelectedValue.ToString = Me.LstVDocumentos2.SelectedItems(0).SubItems(2).Text Then
-                        Bencuentra = True
-                        Exit For
-                    Else
-                        Bencuentra = False
-                    End If
-                Next R2
-
-                If Bencuentra = False Then
-                    Me.LstVDocumentos2.Items.Add(New ListViewItem(New String() {Me.LstVDocumentos1.SelectedItems(0).SubItems(0).Text, Me.LstVDocumentos1.SelectedItems(0).SubItems(1).Text, Me.CboAlmacen2.SelectedValue.ToString}))
-                End If
-                Bencuentra = False
-            End If
-        Catch ex As Exception
-            HandleError(Me.Name, "BtnAgregar1", ex)
-        End Try
-    End Sub
-
-    'Botón 2 para copiar los elementos desde el listview 3 hacia el listview 4  
-    Private Sub BtnAgregar2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnAgregar2.Click
-        Dim R2 As Integer
-        Dim bEncuentra As Boolean, bSeleccionado As Boolean
-        Try
-            If (Me.LstVDocumentos4.Items.Count) >= 0 Then
-                If (Me.LstVDocumentos3.Items.Count) = 0 Then
-                    Exit Sub
-                Else
-                    Dim i As Integer
-                    For i = 0 To (Me.LstVDocumentos3.Items.Count - 1)
-                        If Me.LstVDocumentos3.Items(i).Selected = False Then
-                            bSeleccionado = False
-                        Else
-                            bSeleccionado = True
-                            Exit For
-                        End If
-                    Next
-                End If
-
-                If bSeleccionado = False Then
-                    Exit Sub
-                End If
-
-                For R2 = 0 To (Me.LstVDocumentos4.Items.Count - 1)
-                    Me.LstVDocumentos4.Items(R2).Selected = True
-                    Me.LstVDocumentos4.Select()
-                    If Me.LstVDocumentos3.SelectedItems(0).SubItems(0).Text = Me.LstVDocumentos4.SelectedItems(0).SubItems(0).Text Then
-                        Bencuentra = True
-                        Exit For
-                    Else
-                        Bencuentra = False
-                    End If
-                Next R2
-
-                If Bencuentra = False Then
-                    Me.LstVDocumentos4.Items.Add(New ListViewItem(New String() {Me.LstVDocumentos3.SelectedItems(0).SubItems(0).Text, Me.LstVDocumentos3.SelectedItems(0).SubItems(1).Text}))
-                End If
-                bEncuentra = False
-            End If
-        Catch ex As Exception
-            HandleError(Me.Name, "BtnAgregar2", ex)
-        End Try
-    End Sub
-
-    'Botón 1 para copiar los elementos desde el listview 3 hacia el listview 4  
-    Private Sub BtnAgregar3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnAgregar3.Click
-        Dim R2 As Integer
-        Dim Bencuentra As Boolean, bSeleccionado As Boolean
-
-        Try
-            If (Me.LstVDocumentos6.Items.Count) >= 0 Then
-                If (Me.LstVDocumentos5.Items.Count) = 0 Then
-                    Exit Sub
-                Else
-                    Dim i As Integer
-                    For i = 0 To (Me.LstVDocumentos5.Items.Count - 1)
-                        If Me.LstVDocumentos5.Items(i).Selected = False Then
-                            bSeleccionado = False
-                        Else
-                            bSeleccionado = True
-                            Exit For
-                        End If
-                    Next
-                End If
-
-                If bSeleccionado = False Then
-                    Exit Sub
-                End If
-
-                For R2 = 0 To (Me.LstVDocumentos6.Items.Count - 1)
-                    Me.LstVDocumentos6.Items(R2).Selected = True
-                    Me.LstVDocumentos6.Select()
-                    If Me.LstVDocumentos5.SelectedItems(0).SubItems(0).Text = Me.LstVDocumentos6.SelectedItems(0).SubItems(0).Text And Me.LstVDocumentos6.SelectedItems(0).SubItems(2).Text = Me.CboAlmacen4.SelectedValue.ToString And Me.LstVDocumentos6.SelectedItems(0).SubItems(3).Text = Me.CboAlmacen3.SelectedValue.ToString Then
-                        Bencuentra = True
-                        Exit For
-                    Else
-                        Bencuentra = False
-                    End If
-                Next R2
-
-                If Bencuentra = False Then
-                    Me.LstVDocumentos6.Items.Add(New ListViewItem(New String() {Me.LstVDocumentos5.SelectedItems(0).SubItems(0).Text, Me.LstVDocumentos5.SelectedItems(0).SubItems(1).Text, Me.CboAlmacen4.SelectedValue.ToString, Me.CboAlmacen3.SelectedValue.ToString}))
-                End If
-
-                Bencuentra = False
-            End If
-        Catch ex As Exception
-            HandleError(Me.Name, "BtnAgregar3", ex)
-        End Try
-    End Sub
-
-    Private Sub BtnQuitar1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnQuitar1.Click
-        For i As Integer = Me.LstVDocumentos2.SelectedItems.Count - 1 To 0 Step -1
-            Me.LstVDocumentos2.SelectedItems(i).Remove()
-        Next
-    End Sub
-
-    Private Sub BtnQuitar2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnQuitar2.Click
-        For i As Integer = Me.LstVDocumentos4.SelectedItems.Count - 1 To 0 Step -1
-            Me.LstVDocumentos4.SelectedItems(i).Remove()
-        Next
-    End Sub
-
-    Private Sub BtnQuitar3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnQuitar3.Click
-        For i As Integer = Me.LstVDocumentos6.SelectedItems.Count - 1 To 0 Step -1
-            Me.LstVDocumentos6.SelectedItems(i).Remove()
-        Next
     End Sub
 
     Private Sub llenalistview()
@@ -1237,7 +1312,7 @@ Buscar:
             End With
 
             For Each dRow As DataRow In dt.Rows
-                 Me.LstVDocumentos3.Items.Add(New ListViewItem(New String() {dRow(0).ToString, dRow(1).ToString}))
+                Me.LstVDocumentos3.Items.Add(New ListViewItem(New String() {dRow(0).ToString, dRow(1).ToString}))
             Next
 
             If (Me.LstVDocumentos3.Items.Count) = 0 Then
@@ -1256,7 +1331,7 @@ Buscar:
         Dim oElementos As New Class_sisUsuarios(CInt(Me.TxtCodigoUsuario.Text))
         Try
             dt = oElementos.ObtenerDetallePermisosUsuarioDocumentosSinAfectaInventarios(CInt(Me.CboPlazasPermiso.SelectedValue))
-           
+
             ' Propiedades del ListView  
             With Me.LstVDocumentos4
                 .Items.Clear()
@@ -1347,26 +1422,6 @@ Buscar:
     Private Function IsEmailSyntaxValid(ByVal emailToValidate As String) As Boolean
         Return System.Text.RegularExpressions.Regex.IsMatch(emailToValidate, "^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$")
     End Function
+#End Region
 
-    Private Sub btnActualizarCorreo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActualizarCorreo.Click
-        Dim oUsuario As New Class_sisUsuarios
-        If txtLEN(Me.txtCorreoUsuario.Text) = False Then
-            MsgBox("Favor de capturar un correo. ", MsgBoxStyle.Information, Me.Text)
-            Me.txtCorreoUsuario.Focus()
-            Exit Sub
-        End If
-
-        If IsEmailSyntaxValid(Me.txtCorreoUsuario.Text) = False Then
-            MsgBox("El correo no es valido, favor de verificar.", MsgBoxStyle.Exclamation, "Validación")
-            Exit Sub
-        End If
-
-        oUsuario.Codigo_Usuario = CInt(Me.TxtCodigoUsuario.Text)
-        oUsuario.CORREO_USUARIO = Me.txtCorreoUsuario.Text
-        oUsuario.CLAVE_CORREO = Me.txtClaveCorreo.Text
-
-        If oUsuario.ActualizarCorreo() = True Then
-            MsgBox("El correo del usuario se a actualizado correctamente. ", MsgBoxStyle.Information, Me.Text)
-        End If
-    End Sub
 End Class

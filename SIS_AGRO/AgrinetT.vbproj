@@ -189,6 +189,7 @@
     <Compile Include="Clases\Catalogos\Class_Catalogos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatArticulos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatClientesCuentasBancarias.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatDepartamentos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatGirosClientes.vb" />
     <Compile Include="Clases\Catalogos\Class_CatConceptosInventarios.vb" />
     <Compile Include="Clases\Catalogos\Class_CatParametrosAcuicolaDetalle.vb" />
@@ -468,6 +469,12 @@
       <DependentUpon>Catalogo_ClientesCuentasBancarias.vb</DependentUpon>
     </Compile>
     <Compile Include="Formas\Catalogos\Catalogo_ClientesCuentasBancarias.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Departamentos.designer.vb">
+      <DependentUpon>Catalogo_Departamentos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Departamentos.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Catalogos\Catalogo_GirosClientes.Designer.vb">
@@ -1827,6 +1834,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_ClientesCuentasBancarias.resx">
       <DependentUpon>Catalogo_ClientesCuentasBancarias.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Departamentos.resx">
+      <DependentUpon>Catalogo_Departamentos.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_GirosClientes.resx">
       <DependentUpon>Catalogo_GirosClientes.vb</DependentUpon>
