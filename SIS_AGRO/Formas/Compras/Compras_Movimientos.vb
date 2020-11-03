@@ -1142,6 +1142,9 @@ Buscar:
                     Me.tsbImprimir.Enabled = True
                     Me.tsbPasarOrdenACompra.Visible = False
                     Me.tsbPedir.Visible = False
+                    If Me.Estado <> enumEstados.PEDIDO Then
+                        Me.tsbEditarOC.Visible = False
+                    End If
 
                     If Me.Estado = enumEstados.PEDIDO Then
                         Me.tsbRecepcionarEntrada.Visible = True
@@ -1216,6 +1219,7 @@ Buscar:
                     Me.tsbImprimir.Enabled = True
                     Me.tsbEditarCostos.Visible = False
                     Me.tsbPedir.Visible = False
+                    Me.tsbEditarOC.Visible = False
 
                     If Me.oDocumento.AFECTA_CXP = True Then
                         Me.tsbEditarCostos.Visible = True
@@ -1758,7 +1762,7 @@ Buscar:
                 End If
 
                 Me.tsbEditarOC.Visible = False
-                If Me.oDocumento.AFECTA_CXP = False AndAlso txtLEN(Me.TxtRequisicion.Text) = True Then
+                If Me.oDocumento.AFECTA_CXP = False And txtLEN(Me.TxtRequisicion.Text) = True And Me.LblEstatus.Text = "PEDIDO" Then
                     Me.tsbEditarOC.Visible = True
                 End If
 
@@ -4545,7 +4549,6 @@ BuscarCuentas:
 
             'Aqui afectar las requisiciones
             If Me.oCompras.AfectaRequisicionesOrdenCompra("EDITAR_OC") = False Then
-                MsgBox("Error al tratar de afectar el disponible de las requisiciones de inventario.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
 
