@@ -602,6 +602,7 @@ Enter:
             Me.CkbAdministrador.Checked = False
             Me.CkbClientes.Checked = False
             Me.CkbArmadoPalet.Checked = False
+            Me.ckbVerFormulasConfidenciales.Checked = False
 
             Me.txtCodigoVendedor.Text = "" : Me.lblNombreVendedor.Text = ""
             Me.txtDepartamento.Text = "" : Me.lblDepartamento.Text = ""
@@ -839,6 +840,7 @@ Enter:
                     Me.CkbAdmonCreditos.Checked = CBool(.ADMON_CREDITOS)
                     Me.ckbVerCostos.Checked = CBool(.VER_COSTOS)
                     Me.txtCodigoVendedor.Text = .CODIGO_VENDEDOR
+                    Me.ckbVerFormulasConfidenciales.Checked = CBool(.PERMISOS_FORMULAS_CONFIDENCIALES)
 
                     Me.txtDepartamento.Text = .CODIGO_DEPARTAMENTO
                     Dim oDepartamento As New Class_CatDepartamentos(.CODIGO_DEPARTAMENTO)
@@ -911,6 +913,7 @@ Enter:
                         .ADMON_CREDITOS = Convert.ToInt32(Me.CkbAdmonCreditos.Checked)
                         .VER_COSTOS = ckbVerCostos.Checked
                         .CODIGO_VENDEDOR = Me.txtCodigoVendedor.Text
+                        .PERMISOS_FORMULAS_CONFIDENCIALES = Me.ckbVerFormulasConfidenciales.Checked
                         .CODIGO_DEPARTAMENTO = Me.txtDepartamento.Text
 
                         Select Case Me.Estado

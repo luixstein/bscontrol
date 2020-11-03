@@ -111,6 +111,7 @@ Partial Class ConfiguracionUsuarios
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.ckbVerFormulasConfidenciales = New System.Windows.Forms.CheckBox()
         Me.tsMenu.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
         Me.gbInformacion.SuspendLayout()
@@ -705,6 +706,7 @@ Partial Class ConfiguracionUsuarios
         '
         'TpPermisosControl
         '
+        Me.TpPermisosControl.Controls.Add(Me.ckbVerFormulasConfidenciales)
         Me.TpPermisosControl.Controls.Add(Me.ckbVerCostos)
         Me.TpPermisosControl.Controls.Add(Me.CkbAdmonCreditos)
         Me.TpPermisosControl.Controls.Add(Me.CkbAdministrador)
@@ -995,6 +997,16 @@ Partial Class ConfiguracionUsuarios
         Me.tssLabelEstado.Name = "tssLabelEstado"
         Me.tssLabelEstado.Size = New System.Drawing.Size(0, 17)
         '
+        'ckbVerFormulasConfidenciales
+        '
+        Me.ckbVerFormulasConfidenciales.AutoSize = True
+        Me.ckbVerFormulasConfidenciales.Location = New System.Drawing.Point(15, 238)
+        Me.ckbVerFormulasConfidenciales.Name = "ckbVerFormulasConfidenciales"
+        Me.ckbVerFormulasConfidenciales.Size = New System.Drawing.Size(137, 17)
+        Me.ckbVerFormulasConfidenciales.TabIndex = 7
+        Me.ckbVerFormulasConfidenciales.Text = "Ver fórmulas especiales"
+        Me.ckbVerFormulasConfidenciales.UseVisualStyleBackColor = True
+        '
         'ConfiguracionUsuarios
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1131,4 +1143,5 @@ Partial Class ConfiguracionUsuarios
     Friend WithEvents txtDepartamento As TextBox
     Friend WithEvents lblDisplayDepartamento As Label
     Friend WithEvents lblDepartamento As Label
+    Friend WithEvents ckbVerFormulasConfidenciales As CheckBox
 End Class

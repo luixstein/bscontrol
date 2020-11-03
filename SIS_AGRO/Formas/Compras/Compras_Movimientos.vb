@@ -136,8 +136,6 @@ Public Class Compras_Movimientos
     Private Sub tsbPedir_Click(sender As Object, e As EventArgs) Handles tsbPedir.Click
         If Me.PedirOrdenCompra() = True Then
             Me.Consultar()
-        Else
-            MsgBox("No se pudo realizar el pedido.", MsgBoxStyle.Exclamation, Me.Name)
         End If
     End Sub
 
@@ -1337,11 +1335,10 @@ Buscar:
         End If
 
         If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO AndAlso Me.chkEsInventariable.Checked And txtLEN(Me.TxtRequisicion.Text) Then
-            'Valida pero dejara grabar aunque no haya disponible de requisicion
-            Me.ValidaDisponiblesRequisicion()
+            'Valida pero dejará grabar aunque no haya disponible de requisición, por eso no pregunta por true/false
+            Me.ValidaDisponiblesRequisicion(False)
         End If
-
-
+        
         Try
             With Me.oCompras
                 .FOLIO_COMPRA = Me.txtFolioCompra.Text
@@ -1369,11 +1366,9 @@ Buscar:
 
                 If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = True Then
                     Dim CostoTotal As Double = 0, z As Integer
-
                     For z = 1 To Me.Grid.Rows - 1
                         CostoTotal = CostoTotal + (valorNumerico(Me.Grid.Cell(z, Me.igyCantidad).Text) * valorNumerico(Me.Grid.Cell(z, Me.igyCosto).Text))
                     Next
-
                     .COSTO = CostoTotal
                 End If
 
@@ -1384,9 +1379,7 @@ Buscar:
                 .TOTAL_DOLARES = valorNumerico(Me.txtTotal_USD.Text)
                 .RETENCION_IVA_USD = valorNumerico(Me.txtRetencionIVA_USD.Text)
                 .RETENCION_ISR_USD = valorNumerico(Me.txtRetencionISR_USD.Text)
-
                 .ES_INVENTARIABLE = Me.chkEsInventariable.Checked
-
                 .FOLIO_REQUISICION = Me.TxtRequisicion.Text
 
                 If Me.Estado = enumEstados.NUEVO Then
@@ -2944,7 +2937,7 @@ LlenaLinea:
 
                             End If
 
-                            If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO AndAlso Me.chkEsInventariable.Checked AndAlso txtLEN(Me.TxtRequisicion.Text) Then
+                            If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO = True AndAlso Me.chkEsInventariable.Checked = True AndAlso txtLEN(Me.TxtRequisicion.Text) = True Then
                                 'Solo validara los renglones de la requisición
                                 If valorNumerico(Me.Grid.Cell(Renglon, Me.igyIDRequisicionDetalle).Text) = 0 Then
                                     Return
@@ -2952,11 +2945,10 @@ LlenaLinea:
 
                                 'Valida el disponible de requisicion pero deja avanzar aunque no haya suficiente
                                 Dim dCantidadDisponible As Decimal = Me.oRequisicion.CantidadDisponible(Me.Grid.Cell(Renglon, Me.igyCodigo).Text, Me.TxtRequisicion.Text)
-                                Dim dCantidadPedir As Decimal = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyCantidad).Text)
 
-                                If dCantidadPedir > dCantidadDisponible Then
-                                    MsgBox("La cantidad requerida disponible para el artículo " & Me.Grid.Cell(Renglon, Me.igyDescripcion).Text & " en el renglón " & Renglon.ToString & " es menor a la capturada. " &
-                                        "Hay requerida solamente la cantidad de " & dCantidadDisponible & " .", MsgBoxStyle.Exclamation, sProcedure)
+                                If dCantidad > dCantidadDisponible Then
+                                    MsgBox("La cantidad capturada del artículo " & Me.Grid.Cell(Renglon, Me.igyDescripcion).Text & " en el renglón " & Renglon.ToString & " es mayor a la requerida pendiente de pedir que es de " &
+                                         dCantidadDisponible.ToString & " .", MsgBoxStyle.Exclamation, "Advertencia")
                                 End If
                             End If
 
@@ -4496,9 +4488,9 @@ BuscarCuentas:
                 End If
             End If
 
-            'Dejara pedir la oc aunque no haya disponible suficiente
-            If Me.ValidaDisponiblesRequisicion() = False Then
-                'Return False
+            'Preguntará si quieren continuar y pedir la oc aunque no haya disponible suficiente
+            If Me.ValidaDisponiblesRequisicion(True) = False Then
+                Return False
             End If
 
             'Aqui afectar las requisiciones
@@ -4647,21 +4639,16 @@ BuscarCuentas:
         Return bResultado
     End Function
 
-    Private Function ValidaDisponiblesRequisicion() As Boolean
+    Private Function ValidaDisponiblesRequisicion(ByVal bPreguntarSiAvanzar As Boolean) As Boolean
         Const sProcedure As String = "ValidaDisponiblesRequisicion"
         Dim msgArticulos As String = "", mostrarMsgArticulos As Boolean = False
         Try
             Dim i As Integer
             For i = 1 To Me.Grid.Rows - 1
                 If valorNumerico(Me.Grid.Cell(i, Me.igyIDRequisicionDetalle).Text) > 0 Then 'Solo validara renglones de la requisición
-
                     Dim dCantidadDisponible As Decimal = oRequisicion.CantidadDisponible(Me.Grid.Cell(i, Me.igyCodigo).Text, Me.TxtRequisicion.Text)
                     Dim dCantidadPedir As Decimal = valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text)
                     If dCantidadPedir > dCantidadDisponible Then
-                        If mostrarMsgArticulos = False Then
-                            msgArticulos = "La cantidad requerida disponible de los siguientes artículos es menor a la capturada :"
-                        End If
-
                         msgArticulos = msgArticulos & " " & Me.Grid.Cell(i, Me.igyDescripcion).Text & " (Disponible en requisición " & dCantidadDisponible.ToString & "),"
 
                         mostrarMsgArticulos = True
@@ -4670,16 +4657,22 @@ BuscarCuentas:
                         'Me.Grid.Cell(i, Me.igyCantidad).SetFocus()
                         'Return False
                     End If
-
                 End If
             Next i
 
-            If mostrarMsgArticulos Then
-                msgArticulos = msgArticulos.Substring(0, msgArticulos.Length - 1) 'Quita la ultima coma
-                msgArticulos = msgArticulos & "."
+            If mostrarMsgArticulos = True Then
+                msgArticulos = Trim(msgArticulos.Substring(0, msgArticulos.Length - 1)) 'Quita la ultima coma
+                msgArticulos = "Las cantidades capturadas de los siguientes artículos son mayores a las requeridas pendientes por pedir :" & vbCrLf & msgArticulos & " ."
 
-                MsgBox(msgArticulos, MsgBoxStyle.Exclamation, sProcedure)
-                Return False
+                If bPreguntarSiAvanzar = True Then
+                    msgArticulos = msgArticulos & vbCrLf & "Quiere continuar de todas formas ?"
+                    If MsgBox(msgArticulos, MsgBoxStyle.Question Or vbYesNo, sProcedure) = MsgBoxResult.No Then
+                        Return False
+                    End If
+                Else
+                    MsgBox(msgArticulos, MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
             End If
 
             Return True
@@ -4688,8 +4681,6 @@ BuscarCuentas:
         End Try
 
     End Function
-
-
 
 #End Region
 
