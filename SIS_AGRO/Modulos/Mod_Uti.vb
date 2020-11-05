@@ -855,13 +855,43 @@ Module Mod_Uti
     End Function
 
     Public Function ConvierteXMLUTF8(ByVal sRutaXML As String) As Boolean
+        'Nota este es un exe separado pero en ciertos equipos parece que deja bloqueado al archivo xml y el paso que sigue de sellar que vuelve a grabar el xml en disco falla porque esta en uso.
+        Const sProcedure As String = "ConvierteXMLUTF8"
         Dim bResultado As Boolean = False
         Try
             Dim Var As Object
-            Var = Shell(sFelectronicaConvierteUTF8Local & " """ & sRutaXML & """", AppWinStyle.MinimizedFocus)
+            'Var = Shell(sFelectronicaConvierteUTF8Local & " """ & sRutaXML & """", AppWinStyle.MinimizedFocus) 'Antes estaba asi y no se esperaba a finalizar, ahora con el true sii
+            Var = Shell(sFelectronicaConvierteUTF8Local & " """ & sRutaXML & """", AppWinStyle.MinimizedFocus, True)
             bResultado = True
         Catch ex As Exception
-            HandleError("Mod_Uti", "ConvierteXMLUTF8", ex)
+            HandleError(nombreModulo, sProcedure, ex)
+        End Try
+        Return bResultado
+    End Function
+
+    Public Function ConvierteXMLUTF8_DirectoSinExe(ByVal sRutaXML As String) As Boolean
+        'Esta función es lo mismo que hace el exe de ConvierteXMLUTF8, y se podria usar si se siguieran bloqueando los archivos xmls.
+        Const sProcedure As String = "ConvierteXMLUTF8_DirectoSinExe"
+        Dim bResultado As Boolean = False
+        Try
+            Dim rAutomatico As StreamReader, sTexto As String
+
+            rAutomatico = New StreamReader(sRutaXML, True)
+
+            'Se tiene que leer, si no, no da el encode que realmente tiene.
+            sTexto = rAutomatico.ReadToEnd
+            rAutomatico.Close()
+            rAutomatico.Dispose()
+
+            Dim sw As New StreamWriter(sRutaXML, False, System.Text.Encoding.UTF8) 'MyEncoding)
+            sw.Write(sTexto)
+
+            sw.Close()
+            sw.Dispose()
+
+            bResultado = True
+        Catch ex As Exception
+            HandleError(nombreModulo, sProcedure, ex)
         End Try
         Return bResultado
     End Function
