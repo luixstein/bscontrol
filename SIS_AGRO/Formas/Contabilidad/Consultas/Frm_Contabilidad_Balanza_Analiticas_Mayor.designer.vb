@@ -23,28 +23,29 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Frm_Contabilidad_Balanza_Analiticas_Mayor))
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.lblCuenta2 = New System.Windows.Forms.Label
-        Me.lblCuenta1 = New System.Windows.Forms.Label
-        Me.CmbEjercicio = New System.Windows.Forms.ComboBox
-        Me.LblEjercicio = New System.Windows.Forms.Label
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.TxtCuenta2 = New System.Windows.Forms.TextBox
-        Me.LblDisplayNombreSocio = New System.Windows.Forms.Label
-        Me.TxtCuenta1 = New System.Windows.Forms.TextBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.DtFechaHasta = New System.Windows.Forms.DateTimePicker
-        Me.LblDisplayFechaNacimiento = New System.Windows.Forms.Label
-        Me.DtFechaDesde = New System.Windows.Forms.DateTimePicker
-        Me.ChCuentasAfectacion = New System.Windows.Forms.CheckBox
-        Me.ChCuentasSaldo = New System.Windows.Forms.CheckBox
-        Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
-        Me.tsbImprimir = New System.Windows.Forms.ToolStripButton
-        Me.tsbSalir = New System.Windows.Forms.ToolStripButton
-        Me.gbFiltros = New System.Windows.Forms.GroupBox
-        Me.RdbAuxiliarMayor = New System.Windows.Forms.RadioButton
-        Me.RdbBalanzaComprobacion = New System.Windows.Forms.RadioButton
-        Me.RdbRelacionAnalitica = New System.Windows.Forms.RadioButton
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.lblCuenta2 = New System.Windows.Forms.Label()
+        Me.lblCuenta1 = New System.Windows.Forms.Label()
+        Me.CmbEjercicio = New System.Windows.Forms.ComboBox()
+        Me.LblEjercicio = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.TxtCuenta2 = New System.Windows.Forms.TextBox()
+        Me.LblDisplayNombreSocio = New System.Windows.Forms.Label()
+        Me.TxtCuenta1 = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.DtFechaHasta = New System.Windows.Forms.DateTimePicker()
+        Me.LblDisplayFechaNacimiento = New System.Windows.Forms.Label()
+        Me.DtFechaDesde = New System.Windows.Forms.DateTimePicker()
+        Me.ChCuentasAfectacion = New System.Windows.Forms.CheckBox()
+        Me.ChCuentasSaldo = New System.Windows.Forms.CheckBox()
+        Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
+        Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
+        Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
+        Me.gbFiltros = New System.Windows.Forms.GroupBox()
+        Me.RdbAuxiliarMayor = New System.Windows.Forms.RadioButton()
+        Me.RdbBalanzaComprobacion = New System.Windows.Forms.RadioButton()
+        Me.RdbRelacionAnalitica = New System.Windows.Forms.RadioButton()
+        Me.RdbBalanzaComprobacion2doNivel = New System.Windows.Forms.RadioButton()
         Me.GroupBox1.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         Me.gbFiltros.SuspendLayout()
@@ -228,6 +229,7 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
         '
         'gbFiltros
         '
+        Me.gbFiltros.Controls.Add(Me.RdbBalanzaComprobacion2doNivel)
         Me.gbFiltros.Controls.Add(Me.RdbAuxiliarMayor)
         Me.gbFiltros.Controls.Add(Me.RdbBalanzaComprobacion)
         Me.gbFiltros.Controls.Add(Me.RdbRelacionAnalitica)
@@ -241,7 +243,7 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
         'RdbAuxiliarMayor
         '
         Me.RdbAuxiliarMayor.AutoSize = True
-        Me.RdbAuxiliarMayor.Location = New System.Drawing.Point(444, 19)
+        Me.RdbAuxiliarMayor.Location = New System.Drawing.Point(497, 19)
         Me.RdbAuxiliarMayor.Name = "RdbAuxiliarMayor"
         Me.RdbAuxiliarMayor.Size = New System.Drawing.Size(104, 17)
         Me.RdbAuxiliarMayor.TabIndex = 2
@@ -251,7 +253,7 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
         'RdbBalanzaComprobacion
         '
         Me.RdbBalanzaComprobacion.AutoSize = True
-        Me.RdbBalanzaComprobacion.Location = New System.Drawing.Point(217, 19)
+        Me.RdbBalanzaComprobacion.Location = New System.Drawing.Point(139, 19)
         Me.RdbBalanzaComprobacion.Name = "RdbBalanzaComprobacion"
         Me.RdbBalanzaComprobacion.Size = New System.Drawing.Size(148, 17)
         Me.RdbBalanzaComprobacion.TabIndex = 1
@@ -262,13 +264,23 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
         '
         Me.RdbRelacionAnalitica.AutoSize = True
         Me.RdbRelacionAnalitica.Checked = True
-        Me.RdbRelacionAnalitica.Location = New System.Drawing.Point(26, 19)
+        Me.RdbRelacionAnalitica.Location = New System.Drawing.Point(6, 19)
         Me.RdbRelacionAnalitica.Name = "RdbRelacionAnalitica"
         Me.RdbRelacionAnalitica.Size = New System.Drawing.Size(125, 17)
         Me.RdbRelacionAnalitica.TabIndex = 0
         Me.RdbRelacionAnalitica.TabStop = True
         Me.RdbRelacionAnalitica.Text = "&Relaciones analiticas"
         Me.RdbRelacionAnalitica.UseVisualStyleBackColor = True
+        '
+        'RdbBalanzaComprobacion2doNivel
+        '
+        Me.RdbBalanzaComprobacion2doNivel.AutoSize = True
+        Me.RdbBalanzaComprobacion2doNivel.Location = New System.Drawing.Point(295, 19)
+        Me.RdbBalanzaComprobacion2doNivel.Name = "RdbBalanzaComprobacion2doNivel"
+        Me.RdbBalanzaComprobacion2doNivel.Size = New System.Drawing.Size(194, 17)
+        Me.RdbBalanzaComprobacion2doNivel.TabIndex = 3
+        Me.RdbBalanzaComprobacion2doNivel.Text = "&Balanza de comprobación 2do nivel"
+        Me.RdbBalanzaComprobacion2doNivel.UseVisualStyleBackColor = True
         '
         'Frm_Contabilidad_Balanza_Analiticas_Mayor
         '
@@ -315,4 +327,5 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
     Friend WithEvents lblCuenta1 As System.Windows.Forms.Label
     Friend WithEvents lblCuenta2 As System.Windows.Forms.Label
     Friend WithEvents tsbImprimir As System.Windows.Forms.ToolStripButton
+    Friend WithEvents RdbBalanzaComprobacion2doNivel As RadioButton
 End Class
