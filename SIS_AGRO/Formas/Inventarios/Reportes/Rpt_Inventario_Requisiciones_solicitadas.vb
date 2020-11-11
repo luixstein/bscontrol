@@ -19,6 +19,7 @@ Public Class Rpt_Inventario_Requisiciones_Solicitadas
             oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
             Rpt.SetParameterValue("@CODIGO_ALMACEN", Me.CmbAlmacen.SelectedValue.ToString())
             Rpt.SetParameterValue("@CODIGO_ARTICULO", Me.TxtCodArticulo.Text.ToUpper)
+            Rpt.SetParameterValue("@CODIGO_USUARIO_COMPRADOR", Me.TxtCodigoUsuarioComprador.Text)
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
@@ -60,7 +61,12 @@ Public Class Rpt_Inventario_Requisiciones_Solicitadas
         End If
     End Sub
 
-    Private Sub txtKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
+    Private Sub txtKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodArticulo.KeyPress
+        txtNoBeep(e)
+    End Sub
+
+    Private Sub txtCodigoUsuarioCompradorKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoUsuarioComprador.KeyPress
+        txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
 #End Region
@@ -100,9 +106,47 @@ Public Class Rpt_Inventario_Requisiciones_Solicitadas
                     txtTAB(e)
                     Exit Sub
                 Else
-                    txtTAB(e)
+                    Me.tsbConsultar.PerformClick()
                 End If
             Case Keys.Escape
         End Select
+    End Sub
+
+    Private Sub TxtCodigoUsuarioComprador_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtCodigoUsuarioComprador.KeyDown
+        Dim oUsuario As New Class_sisUsuarios
+        Try
+            Select Case e.KeyCode
+                Case Keys.F6
+Buscar:
+                    Dim sUsuario As String = oUsuario.BusquedaVisual_PorDescripcion("2") '2=COMPRAS, ESTE DEPARTAMENTO ES FIJO Y PROTEJIDO
+                    If txtLEN(sUsuario) = True Then
+                        Me.TxtCodigoUsuarioComprador.Text = sUsuario
+                        GoTo Enter : Return
+                    End If
+
+                Case Keys.Enter
+                    If txtLEN(Me.TxtCodigoUsuarioComprador.Text) = False Then
+                        Me.LblNombreComprador.Text = ""
+                        GoTo Buscar : Return
+                    End If
+Enter:
+                    oUsuario = New Class_sisUsuarios(CInt(valorNumerico(Me.TxtCodigoUsuarioComprador.Text)))
+
+                    If oUsuario.Existe = False Then
+                        Me.LblNombreComprador.Text = ""
+                        GoTo Buscar : Return
+                    ElseIf oUsuario.ESTATUS = "B" Then
+                        MsgBox("El usuario " & Me.TxtCodigoUsuarioComprador.Text & " está dado de baja.", MsgBoxStyle.Exclamation, Me.Text)
+                        GoTo Buscar : Return
+                    End If
+
+                    Me.LblNombreComprador.Text = oUsuario.Nombre_Usuario
+
+                    txtTAB(e)
+            End Select
+
+        Catch ex As Exception
+            HandleError(Me.Name, "TxtCodigoUsuarioComprador_KeyDown", ex)
+        End Try
     End Sub
 End Class
