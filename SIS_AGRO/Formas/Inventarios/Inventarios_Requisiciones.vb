@@ -961,7 +961,7 @@ BuscaArticulos:
     Private Sub Navegador(ByVal sTipoDeBusqueda As String)
         Const sProcedure As String = "Navegador"
         Try
-            Dim iFolio As Integer, sFolio As String, iPosicion As Integer, sFolioParte2 As String
+            Dim iFolio As Integer, sFolio As String, iPosicion As Integer
             If txtLEN(Me.txtFolio.Text) = False Then
                 If GeneraFolio() = False OrElse txtLEN(Me.txtFolio.Text) = False Then
                     Exit Sub
@@ -973,8 +973,7 @@ BuscaArticulos:
                 sFolio = Me.txtFolio.Text.Substring(0, iPosicion)
                 iFolio = CInt(Strings.Right(Me.txtFolio.Text, Len(Me.txtFolio.Text) - (Len(sFolio) + 1))) ' Me.oVenta.FOLIO_NUMERICO
                 iFolio = iFolio - 1
-                sFolioParte2 = Format(iFolio, New String(CChar("0"), Me.txtFolio.Text.Substring(3, Me.txtFolio.TextLength - iPosicion - 1).Length))
-                sFolio = sFolio + "-" + sFolioParte2 'sFolio + "-" + iFolio.ToString
+                sFolio = sFolio + "-" + iFolio.ToString
                 Me.txtFolio.Text = sFolio
 
                 If txtLEN(sFolio) = True Then
@@ -991,8 +990,7 @@ BuscaArticulos:
                 sFolio = Me.txtFolio.Text.Substring(0, iPosicion)
                 iFolio = CInt(Strings.Right(Me.txtFolio.Text, Len(Me.txtFolio.Text) - (Len(sFolio) + 1))) ' Me.oVenta.FOLIO_NUMERICO
                 iFolio = iFolio + 1
-                sFolioParte2 = Format(iFolio, New String(CChar("0"), Me.txtFolio.Text.Substring(3, Me.txtFolio.TextLength - iPosicion - 1).Length))
-                sFolio = sFolio + "-" + sFolioParte2 'sFolio + "-" + iFolio.ToString
+                sFolio = sFolio + "-" + iFolio.ToString
                 Me.txtFolio.Text = sFolio
 
                 If txtLEN(sFolio) = True Then
