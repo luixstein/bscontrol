@@ -84,17 +84,20 @@ BuscaFormula:
                 Me.oFormula = New Class_CatFormulas
                 sText = Me.oFormula.BusquedaVisual_PorDescripcion
                 Me.TxtCodigoFormula.Text = sText
-                GoTo nombreFormula
+                GoTo nombreFormula : Exit Sub
 
             Case Keys.Enter
 nombreFormula:
                 If txtLEN(Me.TxtCodigoFormula.Text) = False Then
-                    Exit Sub
+                    Exit Sub 
                 End If
 
                 Me.oFormula = New Class_CatFormulas(Me.TxtCodigoFormula.Text)
                 If Me.oFormula.Existe = False Then
                     Me.LblNombreProductoFinal.Text = "" : Me.LblCodigoArticulo.Text = "" : Me.txtPorcentajeCosto.Text = "0" : GoTo BuscaFormula : Exit Sub
+                ElseIf Me.oFormula.Estatus = "B" Then
+                    MsgBox("La fórmula " & Me.oFormula.NOMBRE_FORMULA & " está dada de baja.", MsgBoxStyle.Exclamation, Me.Text)
+                    GoTo BuscaFormula : Exit Sub
                 End If
 
                 LblNombreProductoFinal.Text = oFormula.NOMBRE_FORMULA

@@ -308,7 +308,7 @@ Public Class Class_CatFormulas
         f.sCampo = "CODIGO_FORMULA"
         f.sOrder = "NOMBRE_FORMULA"
         f.sTable = "CAT_FORMULAS"
-        f.sQl = "SELECT CODIGO_FORMULA,NOMBRE_FORMULA FROM CAT_FORMULAS WHERE 1=1 And"
+        f.sQl = "SELECT CODIGO_FORMULA,NOMBRE_FORMULA FROM CAT_FORMULAS WHERE ESTATUS='A' And"
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -328,7 +328,7 @@ Public Class Class_CatFormulas
         f.sCampo = "NOMBRE_FORMULA"
         f.sOrder = "NOMBRE_FORMULA"
         f.sTable = "CAT_FORMULAS"
-        f.sQl = "SELECT CODIGO_FORMULA,NOMBRE_FORMULA FROM CAT_FORMULAS WHERE 1=1 And"
+        f.sQl = "SELECT CODIGO_FORMULA,NOMBRE_FORMULA FROM CAT_FORMULAS WHERE ESTATUS='A' And"
         f.Inicia("")
         f.ShowDialog()
         Try
