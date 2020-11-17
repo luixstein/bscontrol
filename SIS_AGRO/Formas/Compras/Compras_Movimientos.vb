@@ -231,6 +231,7 @@ Public Class Compras_Movimientos
             Me.DesplegarDocumentos(False)
             Me.DesplegarAlmacenes()
             Me.DesplegarMonedas()
+            Me.DesplegarTiposEnvio()
             Me.Consultar()
             Me.GestionaCambioEstado()
             Me.txtFolioCompra.Enabled = False
@@ -239,6 +240,7 @@ Public Class Compras_Movimientos
             Me.DesplegarDocumentos()
             Me.DesplegarAlmacenes()
             Me.DesplegarMonedas()
+            Me.DesplegarTiposEnvio()
             Me.Inicializa()
             Me.bCrearonColumnas = True
 
@@ -565,7 +567,7 @@ Buscar:
 #Region "Eventos Genericos"
     Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFolioCompra.KeyPress, txtFolioOC.KeyPress, txtProveedor.KeyPress, txtFolioProveedor.KeyPress,
     txtEntregarA.KeyPress, txtSolicito.KeyPress, TxtConcepto.KeyPress, txtConCargoA.KeyPress, txtPredio.KeyPress, txtConfirmo.KeyPress,
-    DtpFecha.KeyPress, dtpFechaVencimiento.KeyPress, txtFolioOC_Inventarios.KeyPress, TxtRequisicion.KeyPress, btnTraerDetalleRequisicion.KeyPress
+    DtpFecha.KeyPress, dtpFechaVencimiento.KeyPress, txtFolioOC_Inventarios.KeyPress, TxtRequisicion.KeyPress, btnTraerDetalleRequisicion.KeyPress, TxtNombreTransporte.KeyPress, CboTipoEnvio.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -665,6 +667,9 @@ Buscar:
             Me.lstEntradasInventarios.Items.Clear()
 
             Me.TxtRequisicion.Text = ""
+
+            Me.CboTipoEnvio.SelectedIndex = -1
+            Me.TxtNombreTransporte.Text = ""
 
             Me.TabControl1.SelectedIndex = 0
         Catch ex As Exception
@@ -1061,6 +1066,9 @@ Buscar:
                         Me.TxtRequisicion.Enabled = True
                         Me.btnTraerDetalleRequisicion.Enabled = True
 
+                        Me.CboTipoEnvio.Enabled = True
+                        Me.TxtNombreTransporte.Enabled = True
+
                         If Me.Visible = True Then
                             Me.txtFolioCompra.Focus()
                         End If
@@ -1130,6 +1138,9 @@ Buscar:
                     Me.TxtRequisicion.Enabled = False
                     Me.btnTraerDetalleRequisicion.Enabled = False
 
+                    Me.CboTipoEnvio.Enabled = True
+                    Me.TxtNombreTransporte.Enabled = True
+
                     Me.TxtConcepto.Focus()
 
                 Case enumEstados.APLICADO, enumEstados.PARCIALMENTE_RECEPCIONADO, enumEstados.PEDIDO
@@ -1177,6 +1188,9 @@ Buscar:
 
                     Me.TxtRequisicion.Enabled = False
                     Me.btnTraerDetalleRequisicion.Enabled = False
+
+                    Me.CboTipoEnvio.Enabled = False
+                    Me.TxtNombreTransporte.Enabled = False
 
                     Me.Grid.Locked = True
                     Me.GridSeries.Locked = True
@@ -1257,6 +1271,9 @@ Buscar:
 
                     Me.TxtRequisicion.Enabled = False
                     Me.btnTraerDetalleRequisicion.Enabled = False
+
+                    Me.CboTipoEnvio.Enabled = False
+                    Me.TxtNombreTransporte.Enabled = False
 
                     Me.tsslEstado.Text = "Estado: Consultando movimiento"
                     Me.tsslElaboro.Visible = True : Me.tsslElaboro.Text = "Elaboró: " + Me.oCompras.NOMBRE_USUARIO_GRABO.ToUpper + " el " + Format(Me.DtpFecha.Value, "dd/MMM/yy").ToUpper
@@ -1381,6 +1398,11 @@ Buscar:
                 .RETENCION_ISR_USD = valorNumerico(Me.txtRetencionISR_USD.Text)
                 .ES_INVENTARIABLE = Me.chkEsInventariable.Checked
                 .FOLIO_REQUISICION = Me.TxtRequisicion.Text
+                .NOMBRE_TRANSPORTE = Me.TxtNombreTransporte.Text
+
+                If CInt(Me.CboTipoEnvio.SelectedValue) > 0 Then
+                    .CODIGO_TIPO_ENVIO = CInt(Me.CboTipoEnvio.SelectedValue)
+                End If
 
                 If Me.Estado = enumEstados.NUEVO Then
                     If .GrabarOrdenCompraGlobal("INSERTAR") = False Then
@@ -1758,6 +1780,12 @@ Buscar:
                 If Me.oDocumento.AFECTA_CXP = False And txtLEN(Me.TxtRequisicion.Text) = True And Me.LblEstatus.Text = "PEDIDO" Then
                     Me.tsbEditarOC.Visible = True
                 End If
+
+                If Me.oCompras.CODIGO_TIPO_ENVIO > 0 Then
+                    Me.CboTipoEnvio.SelectedValue = Me.oCompras.CODIGO_TIPO_ENVIO
+                End If
+
+                Me.TxtNombreTransporte.Text = Me.oCompras.NOMBRE_TRANSPORTE
 
                 Me.Grid.DataSource = Me.oCompras.ObtenerDetalle
 
@@ -2584,6 +2612,23 @@ Buscar:
         End Try
     End Sub
 
+    Private Sub DesplegarTiposEnvio()
+        Try
+            Dim oTipoEnvio As New Class_CatTiposEnvios
+
+            With Me.CboTipoEnvio
+                .DisplayMember = "NOMBRE_TIPO_ENVIO"
+                .ValueMember = "CODIGO_TIPO_ENVIO"
+                Dim dView As New Data.DataView(oTipoEnvio.ObtenerElementos)
+                dView.Sort = "NOMBRE_TIPO_ENVIO"
+                .DataSource = dView
+                .SelectedIndex = -1
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarTiposEnvio", ex)
+        End Try
+    End Sub
+
     Private Function Totales(Optional ByVal bIva As Boolean = False) As Boolean
         Const sProcedure As String = "Totales"
         Dim bResultado As Boolean = False
@@ -3164,6 +3209,7 @@ BuscarCuentas:
                 Me.txtSaldo_USD.Visible = True : Me.lblDisplaySaldo_USD.Visible = True
                 Me.BtnActualizaFolioProv.Visible = True
                 Me.btnActualizaConcepto.Visible = True
+                Me.LblPoliza.Visible = True : Me.lblDilplayPoliza.Visible = True
 
                 If Me.Grid.Cols > 1 Then
                     Me.Grid.Column(Me.igyCuentaContable).Visible = True
@@ -3171,6 +3217,9 @@ BuscarCuentas:
                 Me.tsbGrabar.Visible = False
                 Me.tsbAplicar.Visible = True
                 Me.tpSeries.Enabled = True
+
+                Me.LblDisplayTipoEnvio.Visible = False : Me.CboTipoEnvio.Visible = False
+                Me.LblDisplayTransporte.Visible = False : Me.TxtNombreTransporte.Visible = False
 
                 Me.TabControl1.TabPages(2).Enabled = True 'Entradas inventarios
             Else
@@ -3180,6 +3229,7 @@ BuscarCuentas:
                 Me.txtSaldo_USD.Visible = False : Me.lblDisplaySaldo_USD.Visible = False
                 Me.BtnActualizaFolioProv.Visible = False
                 Me.btnActualizaConcepto.Visible = False
+                Me.LblPoliza.Visible = False : Me.lblDilplayPoliza.Visible = False
 
                 If Me.Grid.Cols > 1 Then
                     Me.Grid.Column(Me.igyCuentaContable).Visible = False
@@ -3187,6 +3237,9 @@ BuscarCuentas:
                 Me.tsbGrabar.Visible = True
                 Me.tsbAplicar.Visible = False
                 Me.tpSeries.Enabled = False
+
+                Me.LblDisplayTipoEnvio.Visible = True : Me.CboTipoEnvio.Visible = True
+                Me.LblDisplayTransporte.Visible = True : Me.TxtNombreTransporte.Visible = True
 
                 Me.TabControl1.TabPages(2).Enabled = False 'Entradas inventarios
 

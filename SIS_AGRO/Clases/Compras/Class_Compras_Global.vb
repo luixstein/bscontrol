@@ -69,6 +69,9 @@ Public Class Class_Compras_Global
     Private _ES_FISCAL As Boolean
 
     Private _FOLIO_REQUISICION As String
+
+    Private _CODIGO_TIPO_ENVIO As Integer
+    Private _NOMBRE_TRANSPORTE As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -577,6 +580,24 @@ Public Class Class_Compras_Global
         End Set
     End Property
 
+    Public Property CODIGO_TIPO_ENVIO() As Integer
+        Get
+            Return Me._CODIGO_TIPO_ENVIO
+        End Get
+        Set(value As Integer)
+            Me._CODIGO_TIPO_ENVIO = value
+        End Set
+    End Property
+
+    Public Property NOMBRE_TRANSPORTE() As String
+        Get
+            Return Me._NOMBRE_TRANSPORTE
+        End Get
+        Set(value As String)
+            Me._NOMBRE_TRANSPORTE = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -720,6 +741,8 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@RETENCION_ISR_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_USD
             sqlParametro = .Parameters.Add("@ES_INVENTARIABLE", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._ES_INVENTARIABLE)
             sqlParametro = .Parameters.Add("@FOLIO_REQUISICION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "" & Me._FOLIO_REQUISICION
+            sqlParametro = .Parameters.Add("@CODIGO_TIPO_ENVIO", SqlDbType.Int) : sqlParametro.Value = IIf(Me._CODIGO_TIPO_ENVIO > 0, Me._CODIGO_TIPO_ENVIO, DBNull.Value)
+            sqlParametro = .Parameters.Add("@NOMBRE_TRANSPORTE", SqlDbType.NVarChar, 200) : sqlParametro.Value = "" & Me._NOMBRE_TRANSPORTE.ToUpper
 
             Try
                 Me._Conexion.Open()
@@ -1130,6 +1153,12 @@ Public Class Class_Compras_Global
                     Me._ES_FISCAL = CBool(dReader("ES_FISCAL"))
 
                     Me._FOLIO_REQUISICION = "" & dReader("FOLIO_REQUISICION").ToString
+
+                    If txtLEN(dReader("CODIGO_TIPO_ENVIO").ToString) Then
+                        Me._CODIGO_TIPO_ENVIO = CInt(dReader("CODIGO_TIPO_ENVIO"))
+                    End If
+
+                    Me._NOMBRE_TRANSPORTE = "" & dReader("NOMBRE_TRANSPORTE").ToString
 
                     bResultado = True
                 End If
