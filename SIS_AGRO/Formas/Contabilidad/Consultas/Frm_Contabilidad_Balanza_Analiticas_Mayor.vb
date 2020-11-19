@@ -186,18 +186,28 @@ BusquedaVisual:
     Private Sub RdbRelacionAnalitica_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RdbRelacionAnalitica.CheckedChanged
         If Me.RdbRelacionAnalitica.Checked = True Then
             Me.ChCuentasAfectacion.Visible = True
+            Me.chkFiltrarSoloCuentasConMovimientos.Visible = False
         End If
     End Sub
 
     Private Sub RdbBalanzaComprobacion_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RdbBalanzaComprobacion.CheckedChanged
         If Me.RdbBalanzaComprobacion.Checked = True Then
             Me.ChCuentasAfectacion.Visible = False
+            Me.chkFiltrarSoloCuentasConMovimientos.Visible = True
+        End If
+    End Sub
+
+    Private Sub RdbBalanzaComprobacion2doNivel_CheckedChanged(sender As Object, e As EventArgs) Handles RdbBalanzaComprobacion2doNivel.CheckedChanged
+        If Me.RdbBalanzaComprobacion2doNivel.Checked = True Then
+            Me.ChCuentasAfectacion.Visible = False
+            Me.chkFiltrarSoloCuentasConMovimientos.Visible = True
         End If
     End Sub
 
     Private Sub RdbAuxiliarMayor_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RdbAuxiliarMayor.CheckedChanged
         If Me.RdbAuxiliarMayor.Checked = True Then
             Me.ChCuentasAfectacion.Visible = False
+            Me.chkFiltrarSoloCuentasConMovimientos.Visible = False
         End If
     End Sub
 #End Region
@@ -354,12 +364,14 @@ BusquedaVisual:
             If Me.RdbRelacionAnalitica.Checked = True Then
                 Rpt.SetParameterValue("@MOSTRAR_SOLO_CUENTAS_DE_AFECTACION", Convert.ToInt32(Me.ChCuentasAfectacion.Checked))
                 Rpt.SetParameterValue("@FORMATO_PARA_COMPARATIVO", "0")
-            ElseIf Me.RdbAuxiliarMayor.Checked = True Then
-                Rpt.SetParameterValue("@FILTRO_CONTRAPOLIZAS", "0")
             ElseIf RdbBalanzaComprobacion.Checked = True Then
                 Rpt.SetParameterValue("@FILTRAR_HASTA_NIVEL2", "0")
+                Rpt.SetParameterValue("@FILTRAR_SOLO_CUENTAS_CON_MOVIMIENTOS", Convert.ToInt32(Me.chkFiltrarSoloCuentasConMovimientos.Checked))
             ElseIf RdbBalanzaComprobacion2doNivel.Checked = True Then
-                Rpt.SetParameterValue("@FILTRAR_HASTA_NIVEL2", "1")
+                Rpt.SetParameterValue("@FILTRAR_HASTA_NIVEL2", "1") 'Aquí intencionalmente se le pasa 1 para que si nos muestre las cuentas de 2do nivel.
+                Rpt.SetParameterValue("@FILTRAR_SOLO_CUENTAS_CON_MOVIMIENTOS", Convert.ToInt32(Me.chkFiltrarSoloCuentasConMovimientos.Checked))
+            ElseIf Me.RdbAuxiliarMayor.Checked = True Then
+                Rpt.SetParameterValue("@FILTRO_CONTRAPOLIZAS", "0")
             End If
 
             Dim frm As New Reporte(Rpt)
@@ -385,6 +397,7 @@ BusquedaVisual:
             HandleError(Me.Name, "Inicializa", ex)
         End Try
     End Sub
+
 #End Region
 
 End Class

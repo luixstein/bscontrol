@@ -24,6 +24,7 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Frm_Contabilidad_Balanza_Analiticas_Mayor))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.chkFiltrarSoloCuentasConMovimientos = New System.Windows.Forms.CheckBox()
         Me.lblCuenta2 = New System.Windows.Forms.Label()
         Me.lblCuenta1 = New System.Windows.Forms.Label()
         Me.CmbEjercicio = New System.Windows.Forms.ComboBox()
@@ -42,10 +43,10 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.gbFiltros = New System.Windows.Forms.GroupBox()
+        Me.RdbBalanzaComprobacion2doNivel = New System.Windows.Forms.RadioButton()
         Me.RdbAuxiliarMayor = New System.Windows.Forms.RadioButton()
         Me.RdbBalanzaComprobacion = New System.Windows.Forms.RadioButton()
         Me.RdbRelacionAnalitica = New System.Windows.Forms.RadioButton()
-        Me.RdbBalanzaComprobacion2doNivel = New System.Windows.Forms.RadioButton()
         Me.GroupBox1.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         Me.gbFiltros.SuspendLayout()
@@ -53,6 +54,7 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.chkFiltrarSoloCuentasConMovimientos)
         Me.GroupBox1.Controls.Add(Me.lblCuenta2)
         Me.GroupBox1.Controls.Add(Me.lblCuenta1)
         Me.GroupBox1.Controls.Add(Me.CmbEjercicio)
@@ -74,9 +76,20 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Filtros"
         '
+        'chkFiltrarSoloCuentasConMovimientos
+        '
+        Me.chkFiltrarSoloCuentasConMovimientos.AutoSize = True
+        Me.chkFiltrarSoloCuentasConMovimientos.Location = New System.Drawing.Point(165, 114)
+        Me.chkFiltrarSoloCuentasConMovimientos.Name = "chkFiltrarSoloCuentasConMovimientos"
+        Me.chkFiltrarSoloCuentasConMovimientos.Size = New System.Drawing.Size(196, 17)
+        Me.chkFiltrarSoloCuentasConMovimientos.TabIndex = 219
+        Me.chkFiltrarSoloCuentasConMovimientos.Text = "Filtrar sólo cuentas con movimientos"
+        Me.chkFiltrarSoloCuentasConMovimientos.UseVisualStyleBackColor = True
+        Me.chkFiltrarSoloCuentasConMovimientos.Visible = False
+        '
         'lblCuenta2
         '
-        Me.lblCuenta2.Location = New System.Drawing.Point(319, 153)
+        Me.lblCuenta2.Location = New System.Drawing.Point(319, 160)
         Me.lblCuenta2.Name = "lblCuenta2"
         Me.lblCuenta2.Size = New System.Drawing.Size(283, 13)
         Me.lblCuenta2.TabIndex = 218
@@ -84,7 +97,7 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
         '
         'lblCuenta1
         '
-        Me.lblCuenta1.Location = New System.Drawing.Point(15, 153)
+        Me.lblCuenta1.Location = New System.Drawing.Point(15, 160)
         Me.lblCuenta1.Name = "lblCuenta1"
         Me.lblCuenta1.Size = New System.Drawing.Size(249, 13)
         Me.lblCuenta1.TabIndex = 217
@@ -112,7 +125,7 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(248, 134)
+        Me.Label2.Location = New System.Drawing.Point(249, 140)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(67, 13)
         Me.Label2.TabIndex = 138
@@ -120,7 +133,7 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
         '
         'TxtCuenta2
         '
-        Me.TxtCuenta2.Location = New System.Drawing.Point(322, 130)
+        Me.TxtCuenta2.Location = New System.Drawing.Point(322, 137)
         Me.TxtCuenta2.MaxLength = 20
         Me.TxtCuenta2.Name = "TxtCuenta2"
         Me.TxtCuenta2.Size = New System.Drawing.Size(133, 20)
@@ -129,7 +142,7 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
         'LblDisplayNombreSocio
         '
         Me.LblDisplayNombreSocio.AutoSize = True
-        Me.LblDisplayNombreSocio.Location = New System.Drawing.Point(15, 134)
+        Me.LblDisplayNombreSocio.Location = New System.Drawing.Point(15, 140)
         Me.LblDisplayNombreSocio.Name = "LblDisplayNombreSocio"
         Me.LblDisplayNombreSocio.Size = New System.Drawing.Size(74, 13)
         Me.LblDisplayNombreSocio.TabIndex = 136
@@ -137,7 +150,7 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
         '
         'TxtCuenta1
         '
-        Me.TxtCuenta1.Location = New System.Drawing.Point(92, 130)
+        Me.TxtCuenta1.Location = New System.Drawing.Point(92, 137)
         Me.TxtCuenta1.MaxLength = 20
         Me.TxtCuenta1.Name = "TxtCuenta1"
         Me.TxtCuenta1.Size = New System.Drawing.Size(133, 20)
@@ -188,7 +201,7 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
         Me.ChCuentasAfectacion.Name = "ChCuentasAfectacion"
         Me.ChCuentasAfectacion.Size = New System.Drawing.Size(182, 17)
         Me.ChCuentasAfectacion.TabIndex = 6
-        Me.ChCuentasAfectacion.Text = "Filtrar solo cuentas de afectación"
+        Me.ChCuentasAfectacion.Text = "Filtrar sólo cuentas de afectación"
         Me.ChCuentasAfectacion.UseVisualStyleBackColor = True
         Me.ChCuentasAfectacion.Visible = False
         '
@@ -240,6 +253,16 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
         Me.gbFiltros.TabStop = False
         Me.gbFiltros.Text = "Tipo de reporte"
         '
+        'RdbBalanzaComprobacion2doNivel
+        '
+        Me.RdbBalanzaComprobacion2doNivel.AutoSize = True
+        Me.RdbBalanzaComprobacion2doNivel.Location = New System.Drawing.Point(295, 19)
+        Me.RdbBalanzaComprobacion2doNivel.Name = "RdbBalanzaComprobacion2doNivel"
+        Me.RdbBalanzaComprobacion2doNivel.Size = New System.Drawing.Size(194, 17)
+        Me.RdbBalanzaComprobacion2doNivel.TabIndex = 3
+        Me.RdbBalanzaComprobacion2doNivel.Text = "&Balanza de comprobación 2do nivel"
+        Me.RdbBalanzaComprobacion2doNivel.UseVisualStyleBackColor = True
+        '
         'RdbAuxiliarMayor
         '
         Me.RdbAuxiliarMayor.AutoSize = True
@@ -271,16 +294,6 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
         Me.RdbRelacionAnalitica.TabStop = True
         Me.RdbRelacionAnalitica.Text = "&Relaciones analiticas"
         Me.RdbRelacionAnalitica.UseVisualStyleBackColor = True
-        '
-        'RdbBalanzaComprobacion2doNivel
-        '
-        Me.RdbBalanzaComprobacion2doNivel.AutoSize = True
-        Me.RdbBalanzaComprobacion2doNivel.Location = New System.Drawing.Point(295, 19)
-        Me.RdbBalanzaComprobacion2doNivel.Name = "RdbBalanzaComprobacion2doNivel"
-        Me.RdbBalanzaComprobacion2doNivel.Size = New System.Drawing.Size(194, 17)
-        Me.RdbBalanzaComprobacion2doNivel.TabIndex = 3
-        Me.RdbBalanzaComprobacion2doNivel.Text = "&Balanza de comprobación 2do nivel"
-        Me.RdbBalanzaComprobacion2doNivel.UseVisualStyleBackColor = True
         '
         'Frm_Contabilidad_Balanza_Analiticas_Mayor
         '
@@ -328,4 +341,5 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
     Friend WithEvents lblCuenta2 As System.Windows.Forms.Label
     Friend WithEvents tsbImprimir As System.Windows.Forms.ToolStripButton
     Friend WithEvents RdbBalanzaComprobacion2doNivel As RadioButton
+    Friend WithEvents chkFiltrarSoloCuentasConMovimientos As CheckBox
 End Class
