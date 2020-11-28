@@ -505,13 +505,17 @@ Public Class Class_Requisiciones_Global
         Return dTabla
     End Function
 
-    Public Function CantidadDisponible(ByVal sCodigoArticulo As String, ByVal sFolioRequisicion As String) As Decimal
+    'Public Function CantidadDisponible(ByVal sCodigoArticulo As String, ByVal sFolioRequisicion As String) As Decimal
+
+    Public Function CantidadDisponible(ByVal sCodigoArticulo As String, ByVal sCodigoAlmacen As String) As Decimal
         Dim dResultado As Decimal = 0
         Try
             Dim sql As New Class_find("SELECT ISNULL(SUM(D.DISPONIBLE),0) " &
                                       "FROM REQUISICIONES_GLOBAL G " &
                                       "INNER JOIN REQUISICIONES_DETALLE D ON(G.FOLIO_REQUISICION=D.FOLIO_REQUISICION) " &
-                                      "WHERE D.CODIGO_ARTICULO='" & sCodigoArticulo & "' AND G.FOLIO_REQUISICION='" & sFolioRequisicion & "' ")
+                                      "WHERE D.CODIGO_ARTICULO='" & sCodigoArticulo & "' AND G.ESTATUS IN('L','R') AND G.CODIGO_ALMACEN='" & sCodigoAlmacen & "' ")
+            '                         "WHERE D.CODIGO_ARTICULO='" & sCodigoArticulo & "' AND G.FOLIO_REQUISICION='" & sFolioRequisicion & "' ")
+
             dResultado = valorNumericoD(sql.Result1)
             sql = Nothing
         Catch ex As Exception

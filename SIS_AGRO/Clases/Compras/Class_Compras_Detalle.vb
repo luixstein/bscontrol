@@ -413,7 +413,7 @@ Public Class Class_Compras_Detalle
             sqlParametro = .Parameters.Add("@IEPS_IMPORTE_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS_IMPORTE_USD
             sqlParametro = .Parameters.Add("@BASE_IEPS_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IEPS_USD
             sqlParametro = .Parameters.Add("@BASE_IVA_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IVA_USD
-            sqlParametro = .Parameters.Add("@ID_REQUISICION_DETALLE", SqlDbType.Int) : sqlParametro.Value = IIf(Me._ID_REQUISICION_DETALLE > 0, Me._ID_REQUISICION_DETALLE, DBNull.Value)
+            'sqlParametro = .Parameters.Add("@ID_REQUISICION_DETALLE", SqlDbType.Int) : sqlParametro.Value = IIf(Me._ID_REQUISICION_DETALLE > 0, Me._ID_REQUISICION_DETALLE, DBNull.Value)
 
             Try
                 Me._Conexion.Open()
