@@ -3251,7 +3251,7 @@ busca_serie:
                 If txtLEN(Me.Grid1.Cell(i, Me.iGyCodigo).Text) = True Then
                     oArticulos = New Class_CatArticulos(Me.Grid1.Cell(i, Me.iGyCodigo).Text)
                     If oArticulos.INVENTARIABLE = "1" Then
-                        sCuentaContable = oAlmacenes.CUENTA_CONTABLE.ToString + oArticulos.ObtenerFamiliaArticulo(Me.Grid1.Cell(i, Me.iGyCodigo).Text).ToString
+                        sCuentaContable = oAlmacenes.CUENTA_CONTABLE.ToString '+ oArticulos.ObtenerFamiliaArticulo(Me.Grid1.Cell(i, Me.iGyCodigo).Text).ToString 'Se quitó el nivel familia dentro de las cuentas de almacén. NOV/2020
                         oCuenta = New Class_CatCuentas(sCuentaContable)
 
                         Me.Grid1.Cell(i, Me.iGyCuentaContable).Text = sCuentaContable
