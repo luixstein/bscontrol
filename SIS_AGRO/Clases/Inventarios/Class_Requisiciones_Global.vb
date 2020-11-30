@@ -525,6 +525,37 @@ Public Class Class_Requisiciones_Global
         Return dResultado
     End Function
 
+    Public Function ObtieneArticulosRequeridos(ByVal sCodigoAlmacen As String) As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String = ("SELECT MAX(D.CODIGO_ARTICULO) CODIGO_ARTICULO,MAX(A.DESCRIPCION) DESCRIPCION,ISNULL(SUM(D.DISPONIBLE),0) DISPONIBLE,0 CANTIDAD,MAX(A.UNIDAD_VENTA) UNIDAD,0 SELECCION " &
+                              "FROM REQUISICIONES_GLOBAL G " &
+                              "INNER JOIN REQUISICIONES_DETALLE D ON(G.FOLIO_REQUISICION=D.FOLIO_REQUISICION) INNER JOIN CAT_ARTICULOS A ON(D.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
+                              "WHERE G.ESTATUS IN('L','R') AND G.CODIGO_ALMACEN='" & sReplace(sCodigoAlmacen) & "' GROUP BY D.CODIGO_ARTICULO ORDER BY MAX(A.DESCRIPCION) ")
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtieneArticulosRequeridos", ex)
+            End Try
+        Return dTabla
+    End Function
+
+    Public Function ObtieneArticulosMultiplesRequisiciones(ByVal sArticulos As String) As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String = ("EXEC MP_COMPRAS_OBTIENE_DETALLE_MULTIPLES_REQUISICIONES_PARA_AGREGAR_ORDEN_COMPRA @ARTICULOS_REQUERIDOS='" & sArticulos & "'")
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtieneArticulosMultiplesRequisiciones", ex)
+        End Try
+        Return dTabla
+    End Function
+
     Public Function BusquedaVisual_Requisiciones() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""

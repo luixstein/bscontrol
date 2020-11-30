@@ -16,6 +16,7 @@ Public Class Inventarios_Movimientos
     Private _LlamadoExteriorRecepcionarEntradaOrdenCompra As Boolean
     Private _FolioOrdenCompra As String
     Private _CodigoAlmacenOrdenCompra As String
+    Private _TieneRequisicion As Boolean
 
     Private Estado As enumEstados
     Private oInventarios As New Class_Inventarios_Global
@@ -116,6 +117,15 @@ Public Class Inventarios_Movimientos
         End Get
         Set(ByVal value As String)
             Me._CodigoAlmacenOrdenCompra = value
+        End Set
+    End Property
+
+    Public Property TieneRequisicion() As Boolean
+        Get
+            Return Me._TieneRequisicion
+        End Get
+        Set(value As Boolean)
+            Me._TieneRequisicion = value
         End Set
     End Property
 
@@ -3060,7 +3070,7 @@ busca_serie:
                 Return False
             End If
 
-            If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO And txtLEN(oOrdenCompra.FOLIO_REQUISICION) Then
+            If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO And Me._TieneRequisicion Then    'If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO And txtLEN(oOrdenCompra.FOLIO_REQUISICION) Then
                 'Solo validara estatus P para OC con requisicion
                 If Not (oOrdenCompra.ESTATUS = "P" Or oOrdenCompra.ESTATUS = "R") Then
                     MsgBox("La orden de compra tiene requisición de inventario, debe estar en estatus P(Pedida) o R(Parcialmente recepcionada) para hacer la entrada.", MsgBoxStyle.Exclamation, sProcedure)
@@ -3430,7 +3440,7 @@ busca_serie:
                 Return False
             End If
 
-            If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO AndAlso txtLEN(oOrdenCompra.FOLIO_REQUISICION) Then
+            If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO AndAlso Me._TieneRequisicion Then    'If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO AndAlso txtLEN(oOrdenCompra.FOLIO_REQUISICION) Then
                 'Solo validara estatus P para OC con requisicion
                 If Not (oOrdenCompra.ESTATUS = "P" Or oOrdenCompra.ESTATUS = "R") Then
                     MsgBox("La orden de compra tiene requisición de inventario, debe estar en estatus P(Pedida) o R(Parcialmente recepcionada) para hacer la entrada.", MsgBoxStyle.Exclamation, sProcedure)

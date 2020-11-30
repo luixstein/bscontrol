@@ -754,6 +754,12 @@
     <Compile Include="Formas\Compras\Compras_Movimientos.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\Compras\RequisicionesDetalleOrdenCompra.Designer.vb">
+      <DependentUpon>RequisicionesDetalleOrdenCompra.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Compras\RequisicionesDetalleOrdenCompra.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Comparativas_Financieras.Designer.vb">
       <DependentUpon>Frm_Contabilidad_Comparativas_Financieras.vb</DependentUpon>
     </Compile>
@@ -2049,6 +2055,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Compras\Consultas\Rpt_Compras_Global.resx">
       <DependentUpon>Rpt_Compras_Global.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Compras\RequisicionesDetalleOrdenCompra.resx">
+      <DependentUpon>RequisicionesDetalleOrdenCompra.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Contabilidad\Consultas\Frm_Contabilidad_Auxiliar_Mayor.resx">
       <DependentUpon>Frm_Contabilidad_Auxiliar_Mayor.vb</DependentUpon>

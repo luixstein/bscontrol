@@ -24,7 +24,9 @@ Partial Class Compras_Movimientos
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Compras_Movimientos))
         Me.gbGlobal = New System.Windows.Forms.GroupBox()
+        Me.LblDisplayTransporte = New System.Windows.Forms.Label()
         Me.LblDisplayTipoEnvio = New System.Windows.Forms.Label()
+        Me.TxtNombreTransporte = New System.Windows.Forms.TextBox()
         Me.CboTipoEnvio = New System.Windows.Forms.ComboBox()
         Me.btnTraerDetalleRequisicion = New System.Windows.Forms.Button()
         Me.LblRequisicion = New System.Windows.Forms.Label()
@@ -155,8 +157,7 @@ Partial Class Compras_Movimientos
         Me.lblDisplayRetencionISR = New System.Windows.Forms.Label()
         Me.lblDisplayRetencionIVA = New System.Windows.Forms.Label()
         Me.lblAyuda = New System.Windows.Forms.Label()
-        Me.TxtNombreTransporte = New System.Windows.Forms.TextBox()
-        Me.LblDisplayTransporte = New System.Windows.Forms.Label()
+        Me.btnMultiplesRequisiciones = New System.Windows.Forms.Button()
         Me.gbGlobal.SuspendLayout()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
@@ -171,6 +172,7 @@ Partial Class Compras_Movimientos
         '
         'gbGlobal
         '
+        Me.gbGlobal.Controls.Add(Me.btnMultiplesRequisiciones)
         Me.gbGlobal.Controls.Add(Me.LblDisplayTransporte)
         Me.gbGlobal.Controls.Add(Me.LblDisplayTipoEnvio)
         Me.gbGlobal.Controls.Add(Me.TxtNombreTransporte)
@@ -235,6 +237,16 @@ Partial Class Compras_Movimientos
         Me.gbGlobal.TabIndex = 0
         Me.gbGlobal.TabStop = False
         '
+        'LblDisplayTransporte
+        '
+        Me.LblDisplayTransporte.AutoSize = True
+        Me.LblDisplayTransporte.Location = New System.Drawing.Point(461, 92)
+        Me.LblDisplayTransporte.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayTransporte.Name = "LblDisplayTransporte"
+        Me.LblDisplayTransporte.Size = New System.Drawing.Size(86, 17)
+        Me.LblDisplayTransporte.TabIndex = 392
+        Me.LblDisplayTransporte.Text = "Transporte :"
+        '
         'LblDisplayTipoEnvio
         '
         Me.LblDisplayTipoEnvio.AutoSize = True
@@ -244,6 +256,15 @@ Partial Class Compras_Movimientos
         Me.LblDisplayTipoEnvio.Size = New System.Drawing.Size(82, 17)
         Me.LblDisplayTipoEnvio.TabIndex = 391
         Me.LblDisplayTipoEnvio.Text = "Tipo envio :"
+        '
+        'TxtNombreTransporte
+        '
+        Me.TxtNombreTransporte.Location = New System.Drawing.Point(566, 91)
+        Me.TxtNombreTransporte.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtNombreTransporte.MaxLength = 200
+        Me.TxtNombreTransporte.Name = "TxtNombreTransporte"
+        Me.TxtNombreTransporte.Size = New System.Drawing.Size(301, 22)
+        Me.TxtNombreTransporte.TabIndex = 392
         '
         'CboTipoEnvio
         '
@@ -257,7 +278,7 @@ Partial Class Compras_Movimientos
         '
         'btnTraerDetalleRequisicion
         '
-        Me.btnTraerDetalleRequisicion.Location = New System.Drawing.Point(740, 22)
+        Me.btnTraerDetalleRequisicion.Location = New System.Drawing.Point(610, 20)
         Me.btnTraerDetalleRequisicion.Margin = New System.Windows.Forms.Padding(4)
         Me.btnTraerDetalleRequisicion.Name = "btnTraerDetalleRequisicion"
         Me.btnTraerDetalleRequisicion.Size = New System.Drawing.Size(101, 28)
@@ -268,7 +289,7 @@ Partial Class Compras_Movimientos
         'LblRequisicion
         '
         Me.LblRequisicion.AutoSize = True
-        Me.LblRequisicion.Location = New System.Drawing.Point(468, 29)
+        Me.LblRequisicion.Location = New System.Drawing.Point(412, 27)
         Me.LblRequisicion.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblRequisicion.Name = "LblRequisicion"
         Me.LblRequisicion.Size = New System.Drawing.Size(89, 17)
@@ -277,11 +298,11 @@ Partial Class Compras_Movimientos
         '
         'TxtRequisicion
         '
-        Me.TxtRequisicion.Location = New System.Drawing.Point(566, 26)
+        Me.TxtRequisicion.Location = New System.Drawing.Point(510, 24)
         Me.TxtRequisicion.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtRequisicion.MaxLength = 15
         Me.TxtRequisicion.Name = "TxtRequisicion"
-        Me.TxtRequisicion.Size = New System.Drawing.Size(167, 22)
+        Me.TxtRequisicion.Size = New System.Drawing.Size(92, 22)
         Me.TxtRequisicion.TabIndex = 387
         '
         'chkEsFiscal
@@ -1617,24 +1638,15 @@ Partial Class Compras_Movimientos
         Me.lblAyuda.TabIndex = 389
         Me.lblAyuda.Text = "*F4 para agregar comentarios, F8 para eliminar renglones, F6/F7 para buscar"
         '
-        'TxtNombreTransporte
+        'btnMultiplesRequisiciones
         '
-        Me.TxtNombreTransporte.Location = New System.Drawing.Point(566, 91)
-        Me.TxtNombreTransporte.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtNombreTransporte.MaxLength = 200
-        Me.TxtNombreTransporte.Name = "TxtNombreTransporte"
-        Me.TxtNombreTransporte.Size = New System.Drawing.Size(301, 22)
-        Me.TxtNombreTransporte.TabIndex = 392
-        '
-        'LblDisplayTransporte
-        '
-        Me.LblDisplayTransporte.AutoSize = True
-        Me.LblDisplayTransporte.Location = New System.Drawing.Point(461, 92)
-        Me.LblDisplayTransporte.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblDisplayTransporte.Name = "LblDisplayTransporte"
-        Me.LblDisplayTransporte.Size = New System.Drawing.Size(86, 17)
-        Me.LblDisplayTransporte.TabIndex = 392
-        Me.LblDisplayTransporte.Text = "Transporte :"
+        Me.btnMultiplesRequisiciones.Location = New System.Drawing.Point(719, 21)
+        Me.btnMultiplesRequisiciones.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnMultiplesRequisiciones.Name = "btnMultiplesRequisiciones"
+        Me.btnMultiplesRequisiciones.Size = New System.Drawing.Size(166, 27)
+        Me.btnMultiplesRequisiciones.TabIndex = 393
+        Me.btnMultiplesRequisiciones.Text = "Multiples requisiciones"
+        Me.btnMultiplesRequisiciones.UseVisualStyleBackColor = True
         '
         'Compras_Movimientos
         '
@@ -1816,4 +1828,5 @@ Partial Class Compras_Movimientos
     Friend WithEvents CboTipoEnvio As System.Windows.Forms.ComboBox
     Friend WithEvents TxtNombreTransporte As System.Windows.Forms.TextBox
     Friend WithEvents LblDisplayTransporte As System.Windows.Forms.Label
+    Friend WithEvents btnMultiplesRequisiciones As System.Windows.Forms.Button
 End Class
