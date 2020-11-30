@@ -2,7 +2,7 @@
 
 Imports CrystalDecisions.CrystalReports.Engine
 
-Public Class Frm_CXP_Revision
+Public Class Frm_CXP_Gastos
     Private oDocumento As New Class_CatDocumentos
     Private oBancosCXP As New Class_Bancos_CXP
     Private oCompras As New Class_Compras_Global

@@ -1315,7 +1315,7 @@ Public Class AppMenu
     End Sub
 
     Private Sub RevisiónDeCXPToolStripMenuItem_Click_1(sender As Object, e As EventArgs) Handles RevisiónDeCXPToolStripMenuItem.Click
-        Dim Child As New Frm_CXP_Revision
+        Dim Child As New Frm_CXP_Gastos
         Child.MdiParent = Me
         m_ChildFormNumber += 1
         Child.StartPosition = FormStartPosition.CenterScreen

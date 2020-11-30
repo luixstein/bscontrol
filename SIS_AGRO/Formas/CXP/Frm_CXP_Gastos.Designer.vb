@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class Frm_CXP_Revision
+Partial Class Frm_CXP_Gastos
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -22,7 +22,7 @@ Partial Class Frm_CXP_Revision
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Frm_CXP_Revision))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Frm_CXP_Gastos))
         Me.LblDisplayAlmacen = New System.Windows.Forms.Label()
         Me.gbProveedor = New System.Windows.Forms.GroupBox()
         Me.LblNombreAlmacen = New System.Windows.Forms.Label()
@@ -985,7 +985,7 @@ Partial Class Frm_CXP_Revision
         Me.tsslCancelo.Size = New System.Drawing.Size(56, 17)
         Me.tsslCancelo.Text = "Canceló :"
         '
-        'Frm_CXP_Revision
+        'Frm_CXP_Gastos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -998,7 +998,7 @@ Partial Class Frm_CXP_Revision
         Me.Controls.Add(Me.gbProveedor)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.MaximizeBox = False
-        Me.Name = "Frm_CXP_Revision"
+        Me.Name = "Frm_CXP_Gastos"
         Me.Text = "Gastos"
         Me.gbProveedor.ResumeLayout(False)
         Me.gbProveedor.PerformLayout()

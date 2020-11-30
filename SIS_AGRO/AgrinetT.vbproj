@@ -898,10 +898,10 @@
     <Compile Include="Formas\CXP\Frm_CXP_PagosCobrados.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Formas\CXP\Frm_CXP_Revision.Designer.vb">
-      <DependentUpon>Frm_CXP_Revision.vb</DependentUpon>
+    <Compile Include="Formas\CXP\Frm_CXP_Gastos.Designer.vb">
+      <DependentUpon>Frm_CXP_Gastos.vb</DependentUpon>
     </Compile>
-    <Compile Include="Formas\CXP\Frm_CXP_Revision.vb">
+    <Compile Include="Formas\CXP\Frm_CXP_Gastos.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Embarques\Frm_Embarques_CambiaPrecios.designer.vb">
@@ -2186,8 +2186,8 @@
     <EmbeddedResource Include="Formas\CXP\Frm_CXP_Pagos_Acreedores.resx">
       <DependentUpon>Frm_CXP_Pagos_Acreedores.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Formas\CXP\Frm_CXP_Revision.resx">
-      <DependentUpon>Frm_CXP_Revision.vb</DependentUpon>
+    <EmbeddedResource Include="Formas\CXP\Frm_CXP_Gastos.resx">
+      <DependentUpon>Frm_CXP_Gastos.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Embarques\Frm_Embarques_ArmadoPalets.resx">
       <DependentUpon>Frm_Embarques_ArmadoPalets.vb</DependentUpon>
