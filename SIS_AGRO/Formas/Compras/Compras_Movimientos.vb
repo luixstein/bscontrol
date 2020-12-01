@@ -375,7 +375,7 @@ Buscar:
         Select Case e.KeyCode
             Case Keys.F6
 Buscar:
-                Me.TxtRequisicion.Text = Me.oRequisicion.BusquedaVisual_Requisiciones()
+                Me.TxtRequisicion.Text = Me.oRequisicion.BusquedaVisual_RequisicionesPorAlmacen(Me.CboAlmacen.SelectedValue.ToString)
             Case Keys.Enter
                 oRequisicion = New Class_Requisiciones_Global(Me.TxtRequisicion.Text)
                 If oRequisicion.Existe = False Then

@@ -580,6 +580,30 @@ Public Class Class_Requisiciones_Global
         Return Resultado
     End Function
 
+    Public Function BusquedaVisual_RequisicionesPorAlmacen(ByVal sCodigoAlmacen As String) As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de requisiciones pendientes de OC por folio."
+        f.sCampo = "FOLIO_REQUISICION"
+        f.sOrder = "FECHA_ENTREGA DESC"
+        f.sTable = "REQUISICIONES_GLOBAL"
+        f.sQl = "SELECT G.FOLIO_REQUISICION,A.NOMBRE_ALMACEN,G.ESTATUS,G.FECHA_ENTREGA,G.FECHA_SERVIDOR,UC.NOMBRE_USUARIO COMPRADOR " &
+                "FROM REQUISICIONES_GLOBAL G " &
+                "INNER JOIN CAT_ALMACENES A ON(G.CODIGO_ALMACEN=A.CODIGO_ALMACEN) " &
+                "LEFT JOIN SIS_USUARIOS UC ON(G.CODIGO_USUARIO_COMPRADOR=UC.CODIGO_USUARIO) " &
+                "WHERE G.ESTATUS IN('L','R') AND G.CODIGO_ALMACEN='" & sCodigoAlmacen & "' AND "
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_Requisiciones", ex)
+        End Try
+        Return Resultado
+    End Function
+
     Public Function BusquedaVisual_PorDescripcion() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
