@@ -24,6 +24,16 @@ Partial Class Frm_Contabilidad_Captura_Polizas
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Frm_Contabilidad_Captura_Polizas))
         Me.tsMenu = New System.Windows.Forms.ToolStrip()
+        Me.tsbNuevo = New System.Windows.Forms.ToolStripButton()
+        Me.tsbGrabar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbValidarGrabadoLlamadoExterior = New System.Windows.Forms.ToolStripButton()
+        Me.tsbDesaplicar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbAplicar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbReactivar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbRecalcularImporte = New System.Windows.Forms.ToolStripButton()
+        Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
+        Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssElaboro = New System.Windows.Forms.ToolStripStatusLabel()
@@ -61,34 +71,25 @@ Partial Class Frm_Contabilidad_Captura_Polizas
         Me.txtTotalDiferenciaCargosAbonos = New System.Windows.Forms.MaskedTextBox()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.Grid1 = New FlexCell.Grid()
+        Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.lblXMLPDFMsg = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.txtXMLsTotal = New System.Windows.Forms.MaskedTextBox()
+        Me.txtXMLsImpuestosRetenidos = New System.Windows.Forms.MaskedTextBox()
+        Me.txtXMLsImpuestosTrasladados = New System.Windows.Forms.MaskedTextBox()
+        Me.txtXMLsSubtotal = New System.Windows.Forms.MaskedTextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.btnEliminarXML = New System.Windows.Forms.Button()
+        Me.btnVerPDF = New System.Windows.Forms.Button()
+        Me.btnVerXML = New System.Windows.Forms.Button()
         Me.btnAgregarPDF = New System.Windows.Forms.Button()
         Me.btnAgregarXML = New System.Windows.Forms.Button()
         Me.GridXMLs = New FlexCell.Grid()
-        Me.tsbNuevo = New System.Windows.Forms.ToolStripButton()
-        Me.tsbGrabar = New System.Windows.Forms.ToolStripButton()
-        Me.tsbValidarGrabadoLlamadoExterior = New System.Windows.Forms.ToolStripButton()
-        Me.tsbDesaplicar = New System.Windows.Forms.ToolStripButton()
-        Me.tsbAplicar = New System.Windows.Forms.ToolStripButton()
-        Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
-        Me.tsbReactivar = New System.Windows.Forms.ToolStripButton()
-        Me.tsbRecalcularImporte = New System.Windows.Forms.ToolStripButton()
-        Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
-        Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
-        Me.btnVerXML = New System.Windows.Forms.Button()
-        Me.btnVerPDF = New System.Windows.Forms.Button()
-        Me.btnEliminarXML = New System.Windows.Forms.Button()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.txtXMLsSubtotal = New System.Windows.Forms.MaskedTextBox()
-        Me.txtXMLsImpuestosTrasladados = New System.Windows.Forms.MaskedTextBox()
-        Me.txtXMLsImpuestosRetenidos = New System.Windows.Forms.MaskedTextBox()
-        Me.txtXMLsTotal = New System.Windows.Forms.MaskedTextBox()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.Label5 = New System.Windows.Forms.Label()
-        Me.lblXMLPDFMsg = New System.Windows.Forms.Label()
+        Me.chkDetallarGastos = New System.Windows.Forms.CheckBox()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.GbPolizaGlogal.SuspendLayout()
@@ -108,6 +109,88 @@ Partial Class Frm_Contabilidad_Captura_Polizas
         Me.tsMenu.Size = New System.Drawing.Size(1119, 27)
         Me.tsMenu.TabIndex = 2
         Me.tsMenu.Text = "tsMenu"
+        '
+        'tsbNuevo
+        '
+        Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
+        Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbNuevo.Name = "tsbNuevo"
+        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
+        Me.tsbNuevo.Text = "&Nuevo"
+        '
+        'tsbGrabar
+        '
+        Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
+        Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbGrabar.Name = "tsbGrabar"
+        Me.tsbGrabar.Size = New System.Drawing.Size(66, 24)
+        Me.tsbGrabar.Text = "&Grabar"
+        '
+        'tsbValidarGrabadoLlamadoExterior
+        '
+        Me.tsbValidarGrabadoLlamadoExterior.Image = CType(resources.GetObject("tsbValidarGrabadoLlamadoExterior.Image"), System.Drawing.Image)
+        Me.tsbValidarGrabadoLlamadoExterior.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbValidarGrabadoLlamadoExterior.Name = "tsbValidarGrabadoLlamadoExterior"
+        Me.tsbValidarGrabadoLlamadoExterior.Size = New System.Drawing.Size(66, 24)
+        Me.tsbValidarGrabadoLlamadoExterior.Text = "&Grabar"
+        Me.tsbValidarGrabadoLlamadoExterior.Visible = False
+        '
+        'tsbDesaplicar
+        '
+        Me.tsbDesaplicar.Image = CType(resources.GetObject("tsbDesaplicar.Image"), System.Drawing.Image)
+        Me.tsbDesaplicar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbDesaplicar.Name = "tsbDesaplicar"
+        Me.tsbDesaplicar.Size = New System.Drawing.Size(85, 24)
+        Me.tsbDesaplicar.Text = "&Desaplicar"
+        '
+        'tsbAplicar
+        '
+        Me.tsbAplicar.Image = Global.BsControl.My.Resources.Resources._782
+        Me.tsbAplicar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbAplicar.Name = "tsbAplicar"
+        Me.tsbAplicar.Size = New System.Drawing.Size(68, 24)
+        Me.tsbAplicar.Text = "&Aplicar"
+        '
+        'tsbCancelar
+        '
+        Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
+        Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbCancelar.Name = "tsbCancelar"
+        Me.tsbCancelar.Size = New System.Drawing.Size(77, 24)
+        Me.tsbCancelar.Text = "&Cancelar"
+        '
+        'tsbReactivar
+        '
+        Me.tsbReactivar.Image = Global.BsControl.My.Resources.Resources._096
+        Me.tsbReactivar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbReactivar.Name = "tsbReactivar"
+        Me.tsbReactivar.Size = New System.Drawing.Size(79, 24)
+        Me.tsbReactivar.Text = "&Reactivar"
+        '
+        'tsbRecalcularImporte
+        '
+        Me.tsbRecalcularImporte.Image = CType(resources.GetObject("tsbRecalcularImporte.Image"), System.Drawing.Image)
+        Me.tsbRecalcularImporte.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbRecalcularImporte.Name = "tsbRecalcularImporte"
+        Me.tsbRecalcularImporte.Size = New System.Drawing.Size(130, 24)
+        Me.tsbRecalcularImporte.Text = "&Recalcular importe"
+        Me.tsbRecalcularImporte.Visible = False
+        '
+        'tsbImprimir
+        '
+        Me.tsbImprimir.Image = CType(resources.GetObject("tsbImprimir.Image"), System.Drawing.Image)
+        Me.tsbImprimir.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbImprimir.Name = "tsbImprimir"
+        Me.tsbImprimir.Size = New System.Drawing.Size(77, 24)
+        Me.tsbImprimir.Text = "&Imprimir"
+        '
+        'tsbSalir
+        '
+        Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
+        Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbSalir.Name = "tsbSalir"
+        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
+        Me.tsbSalir.Text = "&Salir"
         '
         'StatusStripEstado
         '
@@ -176,6 +259,7 @@ Partial Class Frm_Contabilidad_Captura_Polizas
         '
         'GbPolizaGlogal
         '
+        Me.GbPolizaGlogal.Controls.Add(Me.chkDetallarGastos)
         Me.GbPolizaGlogal.Controls.Add(Me.btnDocumentoSiguiente)
         Me.GbPolizaGlogal.Controls.Add(Me.btnDocumentoAnterior)
         Me.GbPolizaGlogal.Controls.Add(Me.btnNombreCompleto)
@@ -474,6 +558,26 @@ Partial Class Frm_Contabilidad_Captura_Polizas
         Me.TabPage1.Text = "Renglones póliza"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
+        'Grid1
+        '
+        Me.Grid1.AllowUserResizing = FlexCell.ResizeEnum.Rows
+        Me.Grid1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.Grid1.CheckedImage = CType(resources.GetObject("Grid1.CheckedImage"), System.Drawing.Bitmap)
+        Me.Grid1.Cols = 1
+        Me.Grid1.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
+        Me.Grid1.DefaultRowHeight = CType(24, Short)
+        Me.Grid1.DisplayRowNumber = True
+        Me.Grid1.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
+        Me.Grid1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Grid1.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.Grid1.Location = New System.Drawing.Point(8, 6)
+        Me.Grid1.LockButton = True
+        Me.Grid1.Name = "Grid1"
+        Me.Grid1.Rows = 10
+        Me.Grid1.Size = New System.Drawing.Size(1081, 299)
+        Me.Grid1.TabIndex = 1
+        Me.Grid1.UncheckedImage = CType(resources.GetObject("Grid1.UncheckedImage"), System.Drawing.Bitmap)
+        '
         'TabPage2
         '
         Me.TabPage2.Controls.Add(Me.lblXMLPDFMsg)
@@ -500,25 +604,135 @@ Partial Class Frm_Contabilidad_Captura_Polizas
         Me.TabPage2.Text = "XML's"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
-        'Grid1
+        'lblXMLPDFMsg
         '
-        Me.Grid1.AllowUserResizing = FlexCell.ResizeEnum.Rows
-        Me.Grid1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.Grid1.CheckedImage = CType(resources.GetObject("Grid1.CheckedImage"), System.Drawing.Bitmap)
-        Me.Grid1.Cols = 1
-        Me.Grid1.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
-        Me.Grid1.DefaultRowHeight = CType(24, Short)
-        Me.Grid1.DisplayRowNumber = True
-        Me.Grid1.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
-        Me.Grid1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Grid1.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Grid1.Location = New System.Drawing.Point(8, 6)
-        Me.Grid1.LockButton = True
-        Me.Grid1.Name = "Grid1"
-        Me.Grid1.Rows = 10
-        Me.Grid1.Size = New System.Drawing.Size(1081, 299)
-        Me.Grid1.TabIndex = 1
-        Me.Grid1.UncheckedImage = CType(resources.GetObject("Grid1.UncheckedImage"), System.Drawing.Bitmap)
+        Me.lblXMLPDFMsg.AutoSize = True
+        Me.lblXMLPDFMsg.BackColor = System.Drawing.SystemColors.HotTrack
+        Me.lblXMLPDFMsg.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblXMLPDFMsg.ForeColor = System.Drawing.SystemColors.Window
+        Me.lblXMLPDFMsg.Location = New System.Drawing.Point(55, 269)
+        Me.lblXMLPDFMsg.Name = "lblXMLPDFMsg"
+        Me.lblXMLPDFMsg.Size = New System.Drawing.Size(214, 15)
+        Me.lblXMLPDFMsg.TabIndex = 242
+        Me.lblXMLPDFMsg.Text = "PDF relacionado correctamente."
+        Me.lblXMLPDFMsg.Visible = False
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(940, 292)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(31, 13)
+        Me.Label5.TabIndex = 241
+        Me.Label5.Text = "Total"
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(855, 292)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(73, 13)
+        Me.Label4.TabIndex = 240
+        Me.Label4.Text = "Imp. retenidos"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(770, 292)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(84, 13)
+        Me.Label3.TabIndex = 239
+        Me.Label3.Text = "Imp. trasladados"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(685, 292)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(46, 13)
+        Me.Label2.TabIndex = 238
+        Me.Label2.Text = "Subtotal"
+        '
+        'txtXMLsTotal
+        '
+        Me.txtXMLsTotal.Location = New System.Drawing.Point(943, 308)
+        Me.txtXMLsTotal.Name = "txtXMLsTotal"
+        Me.txtXMLsTotal.ReadOnly = True
+        Me.txtXMLsTotal.Size = New System.Drawing.Size(79, 20)
+        Me.txtXMLsTotal.TabIndex = 237
+        Me.txtXMLsTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'txtXMLsImpuestosRetenidos
+        '
+        Me.txtXMLsImpuestosRetenidos.Location = New System.Drawing.Point(858, 308)
+        Me.txtXMLsImpuestosRetenidos.Name = "txtXMLsImpuestosRetenidos"
+        Me.txtXMLsImpuestosRetenidos.ReadOnly = True
+        Me.txtXMLsImpuestosRetenidos.Size = New System.Drawing.Size(79, 20)
+        Me.txtXMLsImpuestosRetenidos.TabIndex = 236
+        Me.txtXMLsImpuestosRetenidos.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'txtXMLsImpuestosTrasladados
+        '
+        Me.txtXMLsImpuestosTrasladados.Location = New System.Drawing.Point(773, 308)
+        Me.txtXMLsImpuestosTrasladados.Name = "txtXMLsImpuestosTrasladados"
+        Me.txtXMLsImpuestosTrasladados.ReadOnly = True
+        Me.txtXMLsImpuestosTrasladados.Size = New System.Drawing.Size(79, 20)
+        Me.txtXMLsImpuestosTrasladados.TabIndex = 235
+        Me.txtXMLsImpuestosTrasladados.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'txtXMLsSubtotal
+        '
+        Me.txtXMLsSubtotal.Location = New System.Drawing.Point(688, 308)
+        Me.txtXMLsSubtotal.Name = "txtXMLsSubtotal"
+        Me.txtXMLsSubtotal.ReadOnly = True
+        Me.txtXMLsSubtotal.Size = New System.Drawing.Size(79, 20)
+        Me.txtXMLsSubtotal.TabIndex = 234
+        Me.txtXMLsSubtotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(611, 311)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(48, 13)
+        Me.Label1.TabIndex = 233
+        Me.Label1.Text = "Totales :"
+        '
+        'btnEliminarXML
+        '
+        Me.btnEliminarXML.Image = Global.BsControl.My.Resources.Resources.xml1
+        Me.btnEliminarXML.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnEliminarXML.Location = New System.Drawing.Point(600, 227)
+        Me.btnEliminarXML.Name = "btnEliminarXML"
+        Me.btnEliminarXML.Size = New System.Drawing.Size(76, 36)
+        Me.btnEliminarXML.TabIndex = 232
+        Me.btnEliminarXML.Text = "Eliminar"
+        Me.btnEliminarXML.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnEliminarXML.UseVisualStyleBackColor = True
+        '
+        'btnVerPDF
+        '
+        Me.btnVerPDF.Image = Global.BsControl.My.Resources.Resources.pdf11
+        Me.btnVerPDF.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnVerPDF.Location = New System.Drawing.Point(518, 269)
+        Me.btnVerPDF.Name = "btnVerPDF"
+        Me.btnVerPDF.Size = New System.Drawing.Size(76, 36)
+        Me.btnVerPDF.TabIndex = 231
+        Me.btnVerPDF.Text = "Ver"
+        Me.btnVerPDF.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnVerPDF.UseVisualStyleBackColor = True
+        '
+        'btnVerXML
+        '
+        Me.btnVerXML.Image = Global.BsControl.My.Resources.Resources.xml1
+        Me.btnVerXML.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnVerXML.Location = New System.Drawing.Point(518, 227)
+        Me.btnVerXML.Name = "btnVerXML"
+        Me.btnVerXML.Size = New System.Drawing.Size(76, 36)
+        Me.btnVerXML.TabIndex = 230
+        Me.btnVerXML.Text = "Ver"
+        Me.btnVerXML.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnVerXML.UseVisualStyleBackColor = True
         '
         'btnAgregarPDF
         '
@@ -564,217 +778,15 @@ Partial Class Frm_Contabilidad_Captura_Polizas
         Me.GridXMLs.TabIndex = 2
         Me.GridXMLs.UncheckedImage = CType(resources.GetObject("GridXMLs.UncheckedImage"), System.Drawing.Bitmap)
         '
-        'tsbNuevo
+        'chkDetallarGastos
         '
-        Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
-        Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbNuevo.Name = "tsbNuevo"
-        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
-        Me.tsbNuevo.Text = "&Nuevo"
-        '
-        'tsbGrabar
-        '
-        Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
-        Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbGrabar.Name = "tsbGrabar"
-        Me.tsbGrabar.Size = New System.Drawing.Size(66, 24)
-        Me.tsbGrabar.Text = "&Grabar"
-        '
-        'tsbValidarGrabadoLlamadoExterior
-        '
-        Me.tsbValidarGrabadoLlamadoExterior.Image = CType(resources.GetObject("tsbValidarGrabadoLlamadoExterior.Image"), System.Drawing.Image)
-        Me.tsbValidarGrabadoLlamadoExterior.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbValidarGrabadoLlamadoExterior.Name = "tsbValidarGrabadoLlamadoExterior"
-        Me.tsbValidarGrabadoLlamadoExterior.Size = New System.Drawing.Size(66, 24)
-        Me.tsbValidarGrabadoLlamadoExterior.Text = "&Grabar"
-        Me.tsbValidarGrabadoLlamadoExterior.Visible = False
-        '
-        'tsbDesaplicar
-        '
-        Me.tsbDesaplicar.Image = CType(resources.GetObject("tsbDesaplicar.Image"), System.Drawing.Image)
-        Me.tsbDesaplicar.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbDesaplicar.Name = "tsbDesaplicar"
-        Me.tsbDesaplicar.Size = New System.Drawing.Size(85, 24)
-        Me.tsbDesaplicar.Text = "&Desaplicar"
-        '
-        'tsbAplicar
-        '
-        Me.tsbAplicar.Image = Global.BsControl.My.Resources.Resources._782
-        Me.tsbAplicar.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbAplicar.Name = "tsbAplicar"
-        Me.tsbAplicar.Size = New System.Drawing.Size(68, 24)
-        Me.tsbAplicar.Text = "&Aplicar"
-        '
-        'tsbCancelar
-        '
-        Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
-        Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbCancelar.Name = "tsbCancelar"
-        Me.tsbCancelar.Size = New System.Drawing.Size(77, 24)
-        Me.tsbCancelar.Text = "&Cancelar"
-        '
-        'tsbReactivar
-        '
-        Me.tsbReactivar.Image = Global.BsControl.My.Resources.Resources._096
-        Me.tsbReactivar.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbReactivar.Name = "tsbReactivar"
-        Me.tsbReactivar.Size = New System.Drawing.Size(79, 24)
-        Me.tsbReactivar.Text = "&Reactivar"
-        '
-        'tsbRecalcularImporte
-        '
-        Me.tsbRecalcularImporte.Image = CType(resources.GetObject("tsbRecalcularImporte.Image"), System.Drawing.Image)
-        Me.tsbRecalcularImporte.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbRecalcularImporte.Name = "tsbRecalcularImporte"
-        Me.tsbRecalcularImporte.Size = New System.Drawing.Size(130, 24)
-        Me.tsbRecalcularImporte.Text = "&Recalcular importe"
-        Me.tsbRecalcularImporte.Visible = False
-        '
-        'tsbImprimir
-        '
-        Me.tsbImprimir.Image = CType(resources.GetObject("tsbImprimir.Image"), System.Drawing.Image)
-        Me.tsbImprimir.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbImprimir.Name = "tsbImprimir"
-        Me.tsbImprimir.Size = New System.Drawing.Size(77, 24)
-        Me.tsbImprimir.Text = "&Imprimir"
-        '
-        'tsbSalir
-        '
-        Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
-        Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
-        Me.tsbSalir.Text = "&Salir"
-        '
-        'btnVerXML
-        '
-        Me.btnVerXML.Image = Global.BsControl.My.Resources.Resources.xml1
-        Me.btnVerXML.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnVerXML.Location = New System.Drawing.Point(518, 227)
-        Me.btnVerXML.Name = "btnVerXML"
-        Me.btnVerXML.Size = New System.Drawing.Size(76, 36)
-        Me.btnVerXML.TabIndex = 230
-        Me.btnVerXML.Text = "Ver"
-        Me.btnVerXML.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnVerXML.UseVisualStyleBackColor = True
-        '
-        'btnVerPDF
-        '
-        Me.btnVerPDF.Image = Global.BsControl.My.Resources.Resources.pdf11
-        Me.btnVerPDF.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnVerPDF.Location = New System.Drawing.Point(518, 269)
-        Me.btnVerPDF.Name = "btnVerPDF"
-        Me.btnVerPDF.Size = New System.Drawing.Size(76, 36)
-        Me.btnVerPDF.TabIndex = 231
-        Me.btnVerPDF.Text = "Ver"
-        Me.btnVerPDF.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnVerPDF.UseVisualStyleBackColor = True
-        '
-        'btnEliminarXML
-        '
-        Me.btnEliminarXML.Image = Global.BsControl.My.Resources.Resources.xml1
-        Me.btnEliminarXML.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnEliminarXML.Location = New System.Drawing.Point(600, 227)
-        Me.btnEliminarXML.Name = "btnEliminarXML"
-        Me.btnEliminarXML.Size = New System.Drawing.Size(76, 36)
-        Me.btnEliminarXML.TabIndex = 232
-        Me.btnEliminarXML.Text = "Eliminar"
-        Me.btnEliminarXML.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEliminarXML.UseVisualStyleBackColor = True
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(611, 311)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(48, 13)
-        Me.Label1.TabIndex = 233
-        Me.Label1.Text = "Totales :"
-        '
-        'txtXMLsSubtotal
-        '
-        Me.txtXMLsSubtotal.Location = New System.Drawing.Point(688, 308)
-        Me.txtXMLsSubtotal.Name = "txtXMLsSubtotal"
-        Me.txtXMLsSubtotal.ReadOnly = True
-        Me.txtXMLsSubtotal.Size = New System.Drawing.Size(79, 20)
-        Me.txtXMLsSubtotal.TabIndex = 234
-        Me.txtXMLsSubtotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
-        'txtXMLsImpuestosTrasladados
-        '
-        Me.txtXMLsImpuestosTrasladados.Location = New System.Drawing.Point(773, 308)
-        Me.txtXMLsImpuestosTrasladados.Name = "txtXMLsImpuestosTrasladados"
-        Me.txtXMLsImpuestosTrasladados.ReadOnly = True
-        Me.txtXMLsImpuestosTrasladados.Size = New System.Drawing.Size(79, 20)
-        Me.txtXMLsImpuestosTrasladados.TabIndex = 235
-        Me.txtXMLsImpuestosTrasladados.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
-        'txtXMLsImpuestosRetenidos
-        '
-        Me.txtXMLsImpuestosRetenidos.Location = New System.Drawing.Point(858, 308)
-        Me.txtXMLsImpuestosRetenidos.Name = "txtXMLsImpuestosRetenidos"
-        Me.txtXMLsImpuestosRetenidos.ReadOnly = True
-        Me.txtXMLsImpuestosRetenidos.Size = New System.Drawing.Size(79, 20)
-        Me.txtXMLsImpuestosRetenidos.TabIndex = 236
-        Me.txtXMLsImpuestosRetenidos.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
-        'txtXMLsTotal
-        '
-        Me.txtXMLsTotal.Location = New System.Drawing.Point(943, 308)
-        Me.txtXMLsTotal.Name = "txtXMLsTotal"
-        Me.txtXMLsTotal.ReadOnly = True
-        Me.txtXMLsTotal.Size = New System.Drawing.Size(79, 20)
-        Me.txtXMLsTotal.TabIndex = 237
-        Me.txtXMLsTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(685, 292)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(46, 13)
-        Me.Label2.TabIndex = 238
-        Me.Label2.Text = "Subtotal"
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(770, 292)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(84, 13)
-        Me.Label3.TabIndex = 239
-        Me.Label3.Text = "Imp. trasladados"
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(855, 292)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(73, 13)
-        Me.Label4.TabIndex = 240
-        Me.Label4.Text = "Imp. retenidos"
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(940, 292)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(31, 13)
-        Me.Label5.TabIndex = 241
-        Me.Label5.Text = "Total"
-        '
-        'lblXMLPDFMsg
-        '
-        Me.lblXMLPDFMsg.AutoSize = True
-        Me.lblXMLPDFMsg.BackColor = System.Drawing.SystemColors.HotTrack
-        Me.lblXMLPDFMsg.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblXMLPDFMsg.ForeColor = System.Drawing.SystemColors.Window
-        Me.lblXMLPDFMsg.Location = New System.Drawing.Point(55, 269)
-        Me.lblXMLPDFMsg.Name = "lblXMLPDFMsg"
-        Me.lblXMLPDFMsg.Size = New System.Drawing.Size(214, 15)
-        Me.lblXMLPDFMsg.TabIndex = 242
-        Me.lblXMLPDFMsg.Text = "PDF relacionado correctamente."
-        Me.lblXMLPDFMsg.Visible = False
+        Me.chkDetallarGastos.AutoSize = True
+        Me.chkDetallarGastos.Location = New System.Drawing.Point(874, 101)
+        Me.chkDetallarGastos.Name = "chkDetallarGastos"
+        Me.chkDetallarGastos.Size = New System.Drawing.Size(96, 17)
+        Me.chkDetallarGastos.TabIndex = 381
+        Me.chkDetallarGastos.Text = "Detallar gastos"
+        Me.chkDetallarGastos.UseVisualStyleBackColor = True
         '
         'Frm_Contabilidad_Captura_Polizas
         '
@@ -874,4 +886,5 @@ Partial Class Frm_Contabilidad_Captura_Polizas
     Friend WithEvents Label3 As Label
     Friend WithEvents Label2 As Label
     Friend WithEvents lblXMLPDFMsg As Label
+    Friend WithEvents chkDetallarGastos As CheckBox
 End Class

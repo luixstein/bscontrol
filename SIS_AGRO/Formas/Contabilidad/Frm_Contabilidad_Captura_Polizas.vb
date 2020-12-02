@@ -5,6 +5,8 @@ Imports System.IO
 Imports CFDIXML
 
 Public Class Frm_Contabilidad_Captura_Polizas
+
+#Region "Campos privados grid"
     Private _ChildParaGrabar As Boolean
     Private _FolioPolizaConsultaExterior As String = ""
     Private _CodigoDocumentoParaGrabarLlamadoExterior As String
@@ -25,6 +27,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
 
     Private Estado As enumEstados
     Private oPoliza As New Class_Contabilidad_Poliza_Global
+#End Region
 
 #Region "Columnas grid"
     Private iGyCUENTA_CONTABLE_PESOS As Integer = 1
@@ -33,8 +36,12 @@ Public Class Frm_Contabilidad_Captura_Polizas
     Private iGyNaturaleza As Integer = 4
     Private iGyCargo As Integer = 5
     Private iGyAbono As Integer = 6
-    'Private iGyCodigoCentroCosto As Integer = 7
-    'Private iGyNombreCentroCosto As Integer = 8
+    Private iGyCodigoCentroCosto As Integer = 7
+    Private iGyNombreCentroCosto As Integer = 8
+    Private iGyCodigoCategoria As Integer = 9
+    Private iGyNombreCategoria As Integer = 10
+    Private iGyCodigoConcepto As Integer = 11
+    Private iGyNombreConcepto As Integer = 12
 #End Region
 
 #Region "Columnas grid xmls"
@@ -213,11 +220,11 @@ Public Class Frm_Contabilidad_Captura_Polizas
     End Sub
 
     Private Sub btnAgregarXML_Click(sender As Object, e As EventArgs) Handles btnAgregarXML.Click
-        Me.AgregarXML
+        Me.AgregarXML()
     End Sub
 
     Private Sub btnAgregarPDF_Click(sender As Object, e As EventArgs) Handles btnAgregarPDF.Click
-        Me.AgregarPDF
+        Me.AgregarPDF()
     End Sub
 
     Private Sub btnVerXML_Click(sender As Object, e As EventArgs) Handles btnVerXML.Click
@@ -229,7 +236,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
     End Sub
 
     Private Sub btnEliminarXML_Click(sender As Object, e As EventArgs) Handles btnEliminarXML.Click
-        Me.EliminarXML
+        Me.EliminarXML()
     End Sub
 #End Region
 
@@ -244,8 +251,8 @@ Public Class Frm_Contabilidad_Captura_Polizas
                 'InicializaGrid()
                 For i = 1 To Me.Grid1.Rows - 1
                     If txtLEN(Me.Grid1.Cell(i, Me.iGyNombreCuenta).Text) = True Then
-                        Dim sql As New Class_find("Select DBO.FN_CONTABILIDAD_NOMBRE_CUENTA_NIVELES_COMPLETOS(CUENTA_CONTABLE) NOMBRE_CUENTA,NATURALEZA_CONTABLE,ESMAYOR " & _
-                                                  "FROM CON_CAT_CUENTAS Where CUENTA_CONTABLE='" & Me.Grid1.Cell(i, Me.iGyCUENTA_CONTABLE_PESOS).Text & "'")
+                        Dim sql As New Class_find("SELECT DBO.FN_CONTABILIDAD_NOMBRE_CUENTA_NIVELES_COMPLETOS(CUENTA_CONTABLE) NOMBRE_CUENTA,NATURALEZA_CONTABLE,ESMAYOR " &
+                                                  "FROM CON_CAT_CUENTAS WHERE CUENTA_CONTABLE='" & Me.Grid1.Cell(i, Me.iGyCUENTA_CONTABLE_PESOS).Text & "'")
                         If sql.Result1 <> "" Then
                             Me.Grid1.Cell(i, Me.iGyNombreCuenta).Text = sql.Result1
                             Me.Grid1.Cell(i, Me.iGyNaturaleza).Text = sql.Result2
@@ -411,6 +418,20 @@ Public Class Frm_Contabilidad_Captura_Polizas
             Me.DtpFecha.Value = Now
         End If
     End Sub
+
+    Private Sub chkDetallarGastos_CheckedChanged(sender As Object, e As EventArgs) Handles chkDetallarGastos.CheckedChanged
+        Me.Grid1.Column(Me.iGyNombreCentroCosto).Visible = Me.chkDetallarGastos.Checked
+        Me.Grid1.Column(Me.iGyNombreCategoria).Visible = Me.chkDetallarGastos.Checked
+        Me.Grid1.Column(Me.iGyNombreConcepto).Visible = Me.chkDetallarGastos.Checked
+
+        If Me.chkDetallarGastos.Checked = True Then
+            Me.Grid1.Column(Me.iGyNombreCuenta).Width = 200
+            Me.Grid1.Column(Me.iGyConcepto).Width = 100
+        Else 'Valores originales
+            Me.Grid1.Column(Me.iGyNombreCuenta).Width = 400
+            Me.Grid1.Column(Me.iGyConcepto).Width = 200
+        End If
+    End Sub
 #End Region
 
 #Region "Eventos Genericos"
@@ -517,7 +538,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
             Me.txtXMLsImpuestosTrasladados.Text = ""
             Me.txtXMLsImpuestosRetenidos.Text = ""
             Me.txtXMLsTotal.Text = ""
-
+            Me.chkDetallarGastos.Checked = False
             'Me.CboFacturasRecibidas.SelectedValue = "N"
 
             Me.InicializaGrid()
@@ -541,7 +562,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
 
             'Creamos el Grid
             Me.Grid1.Rows = 2
-            Me.Grid1.Cols = 7 ' 9
+            Me.Grid1.Cols = 13
             Me.Grid1.DisplayRowNumber = True
 
             Me.FormateaGrid()
@@ -562,45 +583,65 @@ Public Class Frm_Contabilidad_Captura_Polizas
 
     Private Sub FormateaGrid()
         Try
-            'Dim X As New Drawing.Font("Tahoma", 7.0, FontStyle.Regular)
-            'Me.Grid1.Cell(1, Me.iGyNombreCuenta).Font = X
-            Me.Grid1.AllowUserResizing = FlexCell.ResizeEnum.Columns
-            Me.Grid1.Column(0).Width = 25
-            Me.Grid1.Column(Me.iGyCUENTA_CONTABLE_PESOS).Width = 105
-            Me.Grid1.Column(Me.iGyNombreCuenta).Width = 400 'Relacionado tambien con NombreCompleto, porque se aumenta el len se
-            Me.Grid1.Column(Me.iGyConcepto).Width = 205
-            Me.Grid1.Column(Me.iGyNaturaleza).Width = 15
-            Me.Grid1.Column(Me.iGyCargo).Width = 80
-            Me.Grid1.Column(Me.iGyAbono).Width = 80
-            'Me.Grid1.Column(Me.iGyCodigoCentroCosto).Width = 20
-            'Me.Grid1.Column(Me.iGyNombreCentroCosto).Width = 120
+            With Me.Grid1
+                .AutoRedraw = False
 
-            Me.Grid1.Cell(0, Me.iGyCUENTA_CONTABLE_PESOS).Text = "Cuenta"
-            Me.Grid1.Cell(0, Me.iGyNombreCuenta).Text = "Nombre"
-            Me.Grid1.Cell(0, Me.iGyConcepto).Text = "Concepto"
-            Me.Grid1.Cell(0, Me.iGyNaturaleza).Text = "N"
-            Me.Grid1.Cell(0, Me.iGyCargo).Text = "Cargo"
-            Me.Grid1.Cell(0, Me.iGyAbono).Text = "Abono"
-            'Me.Grid1.Cell(0, Me.iGyCodigoCentroCosto).Text = "CC"
-            'Me.Grid1.Cell(0, Me.iGyNombreCentroCosto).Text = "C.costo"
+                'Dim X As New Drawing.Font("Tahoma", 7.0, FontStyle.Regular)
+                '.Cell(1, Me.iGyNombreCuenta).Font = X
+                .AllowUserResizing = FlexCell.ResizeEnum.Columns
+                .Column(0).Width = 25
+                .Column(Me.iGyCUENTA_CONTABLE_PESOS).Width = 105
+                .Column(Me.iGyNombreCuenta).Width = 400 'Relacionado tambien con NombreCompleto, porque se aumenta el len se
+                .Column(Me.iGyConcepto).Width = 200
+                .Column(Me.iGyNaturaleza).Width = 15
+                .Column(Me.iGyCargo).Width = 80
+                .Column(Me.iGyAbono).Width = 80
+                .Column(Me.iGyCodigoCentroCosto).Visible = False
+                .Column(Me.iGyNombreCentroCosto).Width = 130 : .Column(Me.iGyNombreCentroCosto).Visible = False
+                .Column(Me.iGyCodigoCategoria).Visible = False
+                .Column(Me.iGyNombreCategoria).Width = 130 : .Column(Me.iGyNombreCategoria).Visible = False
+                .Column(Me.iGyCodigoConcepto).Visible = False
+                .Column(Me.iGyNombreConcepto).Width = 150 : .Column(Me.iGyNombreConcepto).Visible = False
 
-            Me.Grid1.Column(Me.iGyCargo).Mask = FlexCell.MaskEnum.Numeric
-            Me.Grid1.Column(Me.iGyCargo).DecimalLength = 2
-            Me.Grid1.Column(Me.iGyCargo).Alignment = FlexCell.AlignmentEnum.RightCenter
-            Me.Grid1.Column(Me.iGyAbono).Mask = FlexCell.MaskEnum.Numeric
-            Me.Grid1.Column(Me.iGyAbono).DecimalLength = 2
-            Me.Grid1.Column(Me.iGyAbono).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Cell(0, Me.iGyCUENTA_CONTABLE_PESOS).Text = "Cuenta"
+                .Cell(0, Me.iGyNombreCuenta).Text = "Nombre"
+                .Cell(0, Me.iGyConcepto).Text = "Concepto"
+                .Cell(0, Me.iGyNaturaleza).Text = "N"
+                .Cell(0, Me.iGyCargo).Text = "Cargo"
+                .Cell(0, Me.iGyAbono).Text = "Abono"
+                .Cell(0, Me.iGyCodigoCentroCosto).Text = "CCos"
+                .Cell(0, Me.iGyNombreCentroCosto).Text = "C.costo"
+                .Cell(0, Me.iGyCodigoCategoria).Text = "CCat"
+                .Cell(0, Me.iGyNombreCategoria).Text = "Categoria"
+                .Cell(0, Me.iGyCodigoConcepto).Text = "CCon"
+                .Cell(0, Me.iGyNombreConcepto).Text = "Concepto"
 
-            Me.Grid1.Column(Me.iGyNombreCuenta).Locked = True
-            Me.Grid1.Column(Me.iGyNaturaleza).Locked = True
-            'Me.Grid1.Column(Me.iGyNombreCentroCosto).Locked = True
+                .Column(Me.iGyCargo).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyCargo).DecimalLength = 2
+                .Column(Me.iGyCargo).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyAbono).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyAbono).DecimalLength = 2
+                .Column(Me.iGyAbono).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid1.Column(Me.iGyConcepto).MaxLength = 80
+                .Column(Me.iGyNombreCuenta).Locked = True
+                .Column(Me.iGyNaturaleza).Locked = True
+
+                'No las podemos lockear porque si no el f6 no va funcionar, de modo que si va dejar editar aunque de todas ese dato no se graba, se graban los códigos que sólo se ingresan con f6
+                '.Column(Me.iGyNombreCentroCosto).Locked = True
+                '.Column(Me.iGyNombreCategoria).Locked = True
+                '.Column(Me.iGyNombreConcepto).Locked = True
+
+                .Column(Me.iGyConcepto).MaxLength = 80
+
+            End With
 
             Me.FormateaColoresGrid()
 
         Catch ex As Exception
             HandleError(Me.Name, "FormateaGrid", ex)
+        Finally
+            Me.Grid1.AutoRedraw = True
+            Me.Grid1.Refresh()
         End Try
     End Sub
 
@@ -709,11 +750,13 @@ Public Class Frm_Contabilidad_Captura_Polizas
     End Function
 
     Private Sub GestionaGrid(ByVal e As System.Windows.Forms.KeyEventArgs)
+        Const sProcedure As String = "GestionaGrid"
         Try
             Dim Columna As Integer, Renglon As Integer
             Dim StrCod As String
             Dim sql As Class_find
-            Dim oCentroCosto As New Class_CatCentroCostos
+            Dim oCentroCosto As New Class_CatCentroCostos, oCategoria As Class_CatCategorias, oConcepto As Class_CatConceptos
+            Dim sCodigo As String = ""
 
             Columna = Me.Grid1.Selection.FirstCol
             Renglon = Me.Grid1.Selection.FirstRow
@@ -729,10 +772,10 @@ Public Class Frm_Contabilidad_Captura_Polizas
                         Case Me.iGyCUENTA_CONTABLE_PESOS 'Columna Cuenta Contable
                             sql = New Class_find("SELECT NOMBRE_CUENTA,NATURALEZA_CONTABLE,CODIGO_PLAZA,DBO.FN_CONTABILIDAD_NOMBRE_CUENTA_NIVELES_COMPLETOS(CUENTA_CONTABLE) FROM CON_CAT_CUENTAS WHERE CUENTA_CONTABLE='" & StrCod & "'")
                             If sql.Result1 = "" Then
-                                MsgBox("La cuenta contable que intenta buscar no existe, favor de intentar con otro código.", MsgBoxStyle.Critical, "Validación de Cuentas Contables")
+                                MsgBox("La cuenta contable no existe, favor de intentar con otro código.", MsgBoxStyle.Exclamation, "Validación de Cuentas Contables")
                                 Me.Grid1.Cell(Renglon, Me.iGyCUENTA_CONTABLE_PESOS).Text = ""
                                 Me.Grid1.Cell(Renglon, 0).SetFocus()
-                                Exit Sub
+                                Return
                             Else
                                 If Renglon = 1 Then
                                     Me.Grid1.Cell(Renglon, Me.iGyConcepto).Text = Me.TxtConcepto1.Text
@@ -766,7 +809,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
                         Case Me.iGyCargo, Me.iGyAbono
                             sql = New Class_find("SELECT ESMAYOR FROM CON_CAT_CUENTAS WHERE CUENTA_CONTABLE='" & StrCod & "' ")
                             If sql.Result1 = "1" Or sql.Result1.ToString = "" Then
-                                MsgBox("La cuenta contable es una cuenta madre y no acepta cargos o abonos.", MsgBoxStyle.Critical, "Validación de Cuentas Contables")
+                                MsgBox("La cuenta contable es una cuenta madre y no acepta cargos o abonos.", MsgBoxStyle.Exclamation, "Validación de Cuentas Contables")
                                 Me.Grid1.Cell(Renglon, Me.iGyCUENTA_CONTABLE_PESOS).Text = "" '4
                                 Me.Grid1.Cell(Renglon, Me.iGyNombreCuenta).Text = ""
                                 Me.Grid1.Cell(Renglon, Me.iGyConcepto).Text = ""
@@ -776,7 +819,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
                                 'Me.Grid1.Cell(Renglon, Me.iGyCodigoCentroCosto).Text = ""
                                 'Me.Grid1.Cell(Renglon, Me.iGyNombreCentroCosto).Text = ""
                                 Me.Grid1.Cell(Renglon, 0).SetFocus()
-                                Exit Sub
+                                Return
                             End If
 
                             'Case Me.iGyCodigoCentroCosto
@@ -804,6 +847,58 @@ Public Class Frm_Contabilidad_Captura_Polizas
                             '        End If
 
                             '    End If
+
+                        Case Me.iGyNombreCentroCosto
+                            If txtLEN(Me.Grid1.Cell(Renglon, Columna).Text) = False Then
+                                GoTo busca_centro_costo
+                                Return
+                            End If
+
+                            oCentroCosto = New Class_CatCentroCostos(CInt(Me.Grid1.Cell(Renglon, Me.iGyCodigoCentroCosto).Text))
+                            If oCentroCosto.EXISTE = True Then
+                                Me.Grid1.Cell(Renglon, Me.iGyCodigoCentroCosto).Text = oCentroCosto.CODIGO_CENTRO_COSTO.ToString
+                                Me.Grid1.Cell(Renglon, Me.iGyNombreCentroCosto).Text = oCentroCosto.NOMBRE_CENTRO_COSTO
+                            Else
+                                Me.Grid1.Cell(Renglon, Me.iGyCodigoCentroCosto).Text = ""
+                                Me.Grid1.Cell(Renglon, Me.iGyNombreCentroCosto).Text = ""
+                                GoTo busca_centro_costo
+                                Return
+                            End If
+
+                        Case Me.iGyNombreCategoria
+                            If txtLEN(Me.Grid1.Cell(Renglon, Columna).Text) = False Then
+                                GoTo busca_categoria
+                                Return
+                            End If
+
+                            oCategoria = New Class_CatCategorias(Me.Grid1.Cell(Renglon, Me.iGyCodigoCategoria).Text)
+                            If oCategoria.Existe = True Then
+                                Me.Grid1.Cell(Renglon, Me.iGyCodigoCategoria).Text = oCategoria.CODIGO_CATEGORIA
+                                Me.Grid1.Cell(Renglon, Me.iGyNombreCategoria).Text = oCategoria.NOMBRE_CATEGORIA
+                            Else
+                                Me.Grid1.Cell(Renglon, Me.iGyCodigoCategoria).Text = ""
+                                Me.Grid1.Cell(Renglon, Me.iGyNombreCategoria).Text = ""
+                                GoTo busca_categoria
+                                Return
+                            End If
+
+                        Case Me.iGyNombreConcepto
+                            If txtLEN(Me.Grid1.Cell(Renglon, Columna).Text) = False Then
+                                GoTo busca_concepto
+                                Return
+                            End If
+
+                            oConcepto = New Class_CatConceptos(Me.Grid1.Cell(Renglon, Me.iGyCodigoConcepto).Text)
+                            If oConcepto.Existe = True Then
+                                Me.Grid1.Cell(Renglon, Me.iGyCodigoConcepto).Text = oConcepto.Codigo_Concepto
+                                Me.Grid1.Cell(Renglon, Me.iGyNombreConcepto).Text = oConcepto.Nombre_Concepto
+                            Else
+                                Me.Grid1.Cell(Renglon, Me.iGyCodigoConcepto).Text = ""
+                                Me.Grid1.Cell(Renglon, Me.iGyNombreConcepto).Text = ""
+                                GoTo busca_concepto
+                                Return
+                            End If
+
                     End Select
 
                     sql = Nothing
@@ -879,6 +974,50 @@ Public Class Frm_Contabilidad_Captura_Polizas
                             '                                    Return
                             '                                End If
                             '                            End If
+                        Case Me.iGyNombreCentroCosto
+busca_centro_costo:
+                            If Me.Grid1.Cell(Renglon, Me.iGyCUENTA_CONTABLE_PESOS).Text.StartsWith("5") Then
+                                oCentroCosto = New Class_CatCentroCostos
+                                sCodigo = oCentroCosto.BusquedaVisual_PorDescripcion
+                                If txtLEN(sCodigo) = True Then
+                                    oCentroCosto = New Class_CatCentroCostos(CInt(sCodigo))
+                                    Me.Grid1.Cell(Renglon, Me.iGyCodigoCentroCosto).Text = oCentroCosto.CODIGO_CENTRO_COSTO.ToString
+                                    Me.Grid1.Cell(Renglon, Me.iGyNombreCentroCosto).Text = oCentroCosto.NOMBRE_CENTRO_COSTO
+                                End If
+                            Else
+                                MsgBox("Sólo a las cuentas de gastos 5x se les puede detallar el centro de costo, categoria y concepto.", MsgBoxStyle.Exclamation, sProcedure)
+                            End If
+
+                        Case Me.iGyNombreCategoria
+busca_categoria:
+                            If Me.Grid1.Cell(Renglon, Me.iGyCUENTA_CONTABLE_PESOS).Text.StartsWith("5") Then
+                                oCategoria = New Class_CatCategorias
+                                sCodigo = oCategoria.BusquedaVisual_PorDescripcion
+
+                                If txtLEN(sCodigo) = True Then
+                                    oCategoria = New Class_CatCategorias(sCodigo)
+                                    Me.Grid1.Cell(Renglon, Me.iGyCodigoCategoria).Text = oCategoria.CODIGO_CATEGORIA.ToString
+                                    Me.Grid1.Cell(Renglon, Me.iGyNombreCategoria).Text = oCategoria.NOMBRE_CATEGORIA
+                                End If
+                            Else
+                                MsgBox("Sólo a las cuentas de gastos 5x se les puede detallar el centro de costo, categoria y concepto.", MsgBoxStyle.Exclamation, sProcedure)
+                            End If
+
+                        Case Me.iGyNombreConcepto
+busca_concepto:
+                            If Me.Grid1.Cell(Renglon, Me.iGyCUENTA_CONTABLE_PESOS).Text.StartsWith("5") Then
+                                oConcepto = New Class_CatConceptos
+                                sCodigo = oConcepto.BusquedaVisual_PorDescripcion
+
+                                If txtLEN(sCodigo) = True Then
+                                    oConcepto = New Class_CatConceptos(sCodigo)
+                                    Me.Grid1.Cell(Renglon, Me.iGyCodigoConcepto).Text = oConcepto.Codigo_Concepto.ToString
+                                    Me.Grid1.Cell(Renglon, Me.iGyNombreConcepto).Text = oConcepto.Nombre_Concepto
+                                End If
+                            Else
+                                MsgBox("Sólo a las cuentas de gastos 5x se les puede detallar el centro de costo, categoria y concepto.", MsgBoxStyle.Exclamation, sProcedure)
+                            End If
+
                     End Select
 
                 Case Keys.F7
@@ -996,15 +1135,16 @@ Public Class Frm_Contabilidad_Captura_Polizas
                         .ABONO = CType(Me.TxtTotalAbonos.Text, Double)
                         .FOLIO_ORIGEN = "" & Me.lblFolioOrigen.Text
                         .TIPO_CONTABILIDAD = "NM"
+                        .TIENE_DETALLE_GASTOS = Me.chkDetallarGastos.Checked
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 Me.GeneraFolio()
                                 .FOLIO_POLIZA = Me.TxtFolio.Text
-                                bResultado = .Insertar(CBool(IIf(Me._ChildParaGrabar = True, False, True)))
+                                bResultado = .Grabar("INSERTAR", CBool(IIf(Me._ChildParaGrabar = True, False, True)))
                                 Me.TxtFolio.Text = Me.oPoliza.FOLIO_POLIZA
                             Case enumEstados.GRABADO
-                                bResultado = .Actualizar()
+                                bResultado = .Grabar("ACTUALIZAR", False)
                         End Select
 
                         If bResultado = False Then
@@ -1020,7 +1160,13 @@ Public Class Frm_Contabilidad_Captura_Polizas
                                 .oPolizaDetalle.CARGO = valorNumerico(Me.Grid1.Cell(i, Me.iGyCargo).Text)
                                 .oPolizaDetalle.ABONO = valorNumerico(Me.Grid1.Cell(i, Me.iGyAbono).Text)
                                 .oPolizaDetalle.CONCEPTO = "" & Me.Grid1.Cell(i, Me.iGyConcepto).Text
-                                '.oPolizaDetalle.CODIGO_CENTRO_COSTO = CInt("0" & Me.Grid1.Cell(i, Me.iGyCodigoCentroCosto).Text)
+
+                                If Me.chkDetallarGastos.Checked = True Then
+                                    .oPolizaDetalle.CODIGO_CENTRO_COSTO = CInt("0" & Me.Grid1.Cell(i, Me.iGyCodigoCentroCosto).Text)
+                                    .oPolizaDetalle.CODIGO_CATEGORIA = CInt("0" & Me.Grid1.Cell(i, Me.iGyCodigoCategoria).Text)
+                                    .oPolizaDetalle.CODIGO_CONCEPTO = CInt("0" & Me.Grid1.Cell(i, Me.iGyCodigoConcepto).Text)
+                                End If
+
                                 .oPolizaDetalle.GrabaDetallePoliza()
                             End If
                         Next i
@@ -1434,13 +1580,19 @@ Public Class Frm_Contabilidad_Captura_Polizas
                 Me.CboFacturasRecibidas.SelectedValue = oPoliza.CODIGO_LISTA_FACTURAS_RECIBIDAS.ToString
             End If
 
+            'Este lo puse luego del formatea porque se ocultarian las columnas.
+            'Me.chkDetallarGastos.Checked = oPoliza.TIENE_DETALLE_GASTOS
+
             Me.Grid1.AutoRedraw = False
 
             dTabla = Me.oPoliza.ObtenerDetalle '.Rows.Count
             Me.Grid1.Rows = 1
             For Each dRow As DataRow In dTabla.Rows
-                Me.Grid1.AddItem(dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("NOMBRE_CUENTA").ToString & Chr(9) & dRow("CONCEPTO").ToString.Replace(vbTab, " ").ToString & Chr(9) & dRow("NATURALEZA_CONTABLE").ToString & Chr(9) & dRow("CARGO").ToString & Chr(9) &
-                            dRow("ABONO").ToString & Chr(9)) ' & dRow("CODIGO_CENTRO_COSTO").ToString & Chr(9) & dRow("NOMBRE_CENTRO_COSTO").ToString & Chr(9))
+                Me.Grid1.AddItem(dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("NOMBRE_CUENTA").ToString & Chr(9) & dRow("CONCEPTO").ToString.Replace(vbTab, " ").ToString & Chr(9) & dRow("NATURALEZA_CONTABLE").ToString & Chr(9) &
+                                 dRow("CARGO").ToString & Chr(9) & dRow("ABONO").ToString & Chr(9) &
+                                  dRow("CODIGO_CENTRO_COSTO").ToString & Chr(9) & dRow("NOMBRE_CENTRO_COSTO").ToString & Chr(9) &
+                                  dRow("CODIGO_CATEGORIA").ToString & Chr(9) & dRow("NOMBRE_CATEGORIA").ToString & Chr(9) &
+                                  dRow("CODIGO_CONCEPTO").ToString & Chr(9) & dRow("NOMBRE_CONCEPTO").ToString & Chr(9))
             Next
 
             Me.FormateaGrid()
@@ -1501,6 +1653,9 @@ Public Class Frm_Contabilidad_Captura_Polizas
             Next
             dtXMLs.Dispose()
             Me.TotalizaGridXMLs()
+
+            'Ver nota 1, aqui va para que no se oculten las columnas por otros eventos.
+            Me.chkDetallarGastos.Checked = oPoliza.TIENE_DETALLE_GASTOS
 
             bResultado = True
 
@@ -1655,6 +1810,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
                     Me.DtpFecha.Enabled = True
                     Me.TxtConcepto1.Enabled = True
                     Me.TxtConcepto2.Enabled = True
+                    Me.chkDetallarGastos.Enabled = True
                     Me.Grid1.Locked = False
                     Me.gpbFacturasRecibidas.Enabled = False
                     Me.CboFacturasRecibidas.SelectedValue = "N"
@@ -1684,8 +1840,9 @@ Public Class Frm_Contabilidad_Captura_Polizas
                     Me.tsbImprimir.Enabled = True
                     Me.CmbDocumento.Enabled = False
                     Me.DtpFecha.Enabled = False
-                    Me.TxtConcepto1.Enabled = False
+                    Me.TxtConcepto1.Enabled = True
                     Me.TxtConcepto2.Enabled = False
+                    Me.chkDetallarGastos.Enabled = True
                     Me.Grid1.Locked = False
                     Me.gpbFacturasRecibidas.Enabled = False
                     Me.LblEsContraPoliza.Visible = False
@@ -1713,6 +1870,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
                     Me.DtpFecha.Enabled = False
                     Me.TxtConcepto1.Enabled = False
                     Me.TxtConcepto2.Enabled = False
+                    Me.chkDetallarGastos.Enabled = False
                     Me.Grid1.Locked = True
                     Me.gpbFacturasRecibidas.Enabled = True
                     Me.LblEsContraPoliza.Visible = False
@@ -1740,6 +1898,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
                     Me.DtpFecha.Enabled = False
                     Me.TxtConcepto1.Enabled = False
                     Me.TxtConcepto2.Enabled = False
+                    Me.chkDetallarGastos.Enabled = False
                     Me.Grid1.Locked = True
                     Me.gpbFacturasRecibidas.Enabled = False
                     Me.LblEsContraPoliza.Visible = False
@@ -1766,6 +1925,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
                     Me.DtpFecha.Enabled = False
                     Me.TxtConcepto1.Enabled = False
                     Me.TxtConcepto2.Enabled = False
+                    Me.chkDetallarGastos.Enabled = False
                     Me.Grid1.Locked = True
                     Me.gpbFacturasRecibidas.Enabled = False
                     Me.LnkContrapoliza.Visible = False
@@ -2294,6 +2454,7 @@ Public Class Frm_Contabilidad_Captura_Polizas
 
         Return bResultado
     End Function
+
 
 #End Region
 

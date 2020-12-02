@@ -1,5 +1,5 @@
 ﻿Option Strict On
-Imports System.Data
+
 Imports System.Data.SqlClient
 
 Public Class Class_Contabilidad_Poliza_Detalle
@@ -13,6 +13,8 @@ Public Class Class_Contabilidad_Poliza_Detalle
     Private _CARGO As Double
     Private _ABONO As Double
     Private _CODIGO_CENTRO_COSTO As Integer = 0
+    Private _CODIGO_CATEGORIA As Integer = 0
+    Private _CODIGO_CONCEPTO As Integer = 0
 #End Region
 
 #Region "Campos de sistema"
@@ -79,6 +81,24 @@ Public Class Class_Contabilidad_Poliza_Detalle
             Me._CODIGO_CENTRO_COSTO = value
         End Set
     End Property
+
+    Public Property CODIGO_CATEGORIA() As Integer
+        Get
+            Return Me._CODIGO_CATEGORIA
+        End Get
+        Set(ByVal value As Integer)
+            Me._CODIGO_CATEGORIA = value
+        End Set
+    End Property
+
+    Public Property CODIGO_CONCEPTO() As Integer
+        Get
+            Return Me._CODIGO_CONCEPTO
+        End Get
+        Set(ByVal value As Integer)
+            Me._CODIGO_CONCEPTO = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedad Nombre de Clase"
@@ -105,10 +125,6 @@ Public Class Class_Contabilidad_Poliza_Detalle
 #End Region
 
 #Region "Métodos y procedimientos"
-    Public Function Inicializa() As Boolean
-
-    End Function
-
     Public Function GrabaDetallePoliza() As Boolean
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
@@ -125,6 +141,8 @@ Public Class Class_Contabilidad_Poliza_Detalle
             sqlParametro = .Parameters.Add("@ABONO", SqlDbType.Money) : sqlParametro.Value = Me._ABONO
             sqlParametro = .Parameters.Add("@CONCEPTO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONCEPTO
             sqlParametro = .Parameters.Add("@CODIGO_CENTRO_COSTO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CENTRO_COSTO
+            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CATEGORIA
+            sqlParametro = .Parameters.Add("@CODIGO_CONCEPTO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CONCEPTO
 
             Try
                 Me._Conexion.Open()

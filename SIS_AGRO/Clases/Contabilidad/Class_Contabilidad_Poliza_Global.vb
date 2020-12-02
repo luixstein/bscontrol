@@ -1,5 +1,5 @@
 ﻿Option Strict On
-Imports System.Data
+
 Imports System.Data.SqlClient
 Imports System.IO
 
@@ -32,6 +32,7 @@ Public Class Class_Contabilidad_Poliza_Global
     Private _FECHA_REACTIVACION_SERVIDOR As Date
     Private _CODIGO_LISTA_FACTURAS_RECIBIDAS As String
     Private _FOLIO_CONTRAPOLIZA As String
+    Private _TIENE_DETALLE_GASTOS As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -254,6 +255,15 @@ Public Class Class_Contabilidad_Poliza_Global
         End Set
     End Property
 
+    Public Property TIENE_DETALLE_GASTOS() As Boolean
+        Get
+            Return Me._TIENE_DETALLE_GASTOS
+        End Get
+        Set(ByVal value As Boolean)
+            Me._TIENE_DETALLE_GASTOS = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -312,6 +322,7 @@ Public Class Class_Contabilidad_Poliza_Global
 
 #Region "Métodos y procedimientos"
     Public Function Consultar() As Boolean
+        Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand(Me._QuerySelect & " WHERE G.FOLIO_POLIZA='" & Me._FOLIO_POLIZA & "' ", Me._Conexion)
         Dim dReader As SqlDataReader
@@ -323,7 +334,7 @@ Public Class Class_Contabilidad_Poliza_Global
                 Me._Conexion.Open()
 
                 dReader = .ExecuteReader()
-                If dReader.Read Then
+                If dReader.Read = True Then
 
                     Me._FOLIO_POLIZA = CType(dReader("FOLIO_POLIZA"), String)
                     Me._CODIGO_PLAZA = CType(dReader("CODIGO_PLAZA"), Integer)
@@ -335,12 +346,12 @@ Public Class Class_Contabilidad_Poliza_Global
                     Me._CONCEPTO1 = Trim("" & dReader("CONCEPTO1").ToString)
                     Me._CONCEPTO2 = Trim("" & dReader("CONCEPTO2").ToString)
                     Me._TIPO_CONTABILIDAD = Trim("" & dReader("TIPO_CONTABILIDAD").ToString)
-
                     Me._CARGO = valorNumerico(dReader("CARGO").ToString)
                     Me._ABONO = valorNumerico(dReader("ABONO").ToString)
                     Me._FOLIO_ORIGEN = Trim("" & dReader("FOLIO_ORIGEN").ToString)
                     Me._ESTATUS_POLIZA = CType(dReader("ESTATUS_POLIZA"), String)
                     Me._ESTATUS = CType(dReader("ESTATUS"), String)
+                    Me._TIENE_DETALLE_GASTOS = CType(dReader("TIENE_DETALLE_GASTOS").ToString, Boolean)
 
                     Select Case Me._ESTATUS_POLIZA
                         Case "G"
@@ -364,7 +375,7 @@ Public Class Class_Contabilidad_Poliza_Global
                 End If
                 dReader.Close()
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "Consultar", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -374,7 +385,8 @@ Public Class Class_Contabilidad_Poliza_Global
         Return bResultado
     End Function
 
-    Public Function Insertar(Optional ByVal bRegenera As Boolean = True) As Boolean
+    Public Function Grabar(ByVal sAccion As String, ByVal bRegenera As Boolean) As Boolean 'sAccion=INSERTAR,ACTUALIZAR
+        Const sProcedure As String = "Grabar"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -395,58 +407,19 @@ Public Class Class_Contabilidad_Poliza_Global
             sqlParametro = .Parameters.Add("@ABONO", SqlDbType.Money) : sqlParametro.Value = Me._ABONO
             sqlParametro = .Parameters.Add("@FOLIO_ORIGEN", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_ORIGEN
             sqlParametro = .Parameters.Add("@TIPO_CONTABILIDAD", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._TIPO_CONTABILIDAD
-            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "INSERTAR"
-            sqlParametro = .Parameters.Add("@REGENERA_FOLIO", SqlDbType.NVarChar, 1) : sqlParametro.Value = Convert.ToInt32(bRegenera)
+            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = sAccion  ' "INSERTAR","ACTUALIZAR"
+            sqlParametro = .Parameters.Add("@REGENERA_FOLIO", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(bRegenera)
+            sqlParametro = .Parameters.Add("@TIENE_DETALLE_GASTOS", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._TIENE_DETALLE_GASTOS)
 
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                Me._FOLIO_POLIZA = "" & .Parameters("@FOLIO_POLIZA").Value.ToString
+                If sAccion = "INSERTAR" Then
+                    Me._FOLIO_POLIZA = "" & .Parameters("@FOLIO_POLIZA").Value.ToString
+                End If
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "Insertar", ex)
-            Finally
-                Me._Conexion.Close()
-                cmd.Dispose()
-                sqlParametro = Nothing
-            End Try
-        End With
-
-        Return bResultado
-    End Function
-
-    Public Function Actualizar() As Boolean
-        Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand
-        Dim sqlParametro As SqlParameter
-        With cmd
-            .Connection = Me._Conexion
-            .CommandTimeout = 0
-            .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_CONTABILIDAD_GRABA_GLOBAL"
-
-            sqlParametro = .Parameters.Add("@FOLIO_POLIZA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_POLIZA
-
-            sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.Int) : sqlParametro.Value = Me._CODIGO_PLAZA
-            sqlParametro = .Parameters.Add("@CODIGO_USUARIO_GRABO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_USUARIO_GRABO
-            sqlParametro = .Parameters.Add("@CODIGO_TIPO_DOCUMENTO", SqlDbType.NVarChar, 5) : sqlParametro.Value = Me._CODIGO_TIPO_DOCUMENTO
-            sqlParametro = .Parameters.Add("@FECHA", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA
-            sqlParametro = .Parameters.Add("@CONCEPTO1", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONCEPTO1
-            sqlParametro = .Parameters.Add("@CONCEPTO2", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONCEPTO2
-            sqlParametro = .Parameters.Add("@CARGO", SqlDbType.Money) : sqlParametro.Value = Me._CARGO
-            sqlParametro = .Parameters.Add("@ABONO", SqlDbType.Money) : sqlParametro.Value = Me._ABONO
-            sqlParametro = .Parameters.Add("@FOLIO_ORIGEN", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_ORIGEN
-            sqlParametro = .Parameters.Add("@TIPO_CONTABILIDAD", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._TIPO_CONTABILIDAD
-            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = "ACTUALIZAR"
-            sqlParametro = .Parameters.Add("@REGENERA_FOLIO", SqlDbType.NVarChar, 1) : sqlParametro.Value = "0"
-
-            Try
-                Me._Conexion.Open()
-                .ExecuteNonQuery()
-                Me._FOLIO_POLIZA = "" & .Parameters("@FOLIO_POLIZA").Value.ToString
-                bResultado = True
-            Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "Actualizar", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -458,6 +431,7 @@ Public Class Class_Contabilidad_Poliza_Global
     End Function
 
     Public Function Aplicar() As Boolean
+        Const sProcedure As String = "Aplicar"
         Dim bResultado As Boolean = False
         Dim Conexion As New SqlConnection
         Dim cmd As New SqlCommand
@@ -478,7 +452,7 @@ Public Class Class_Contabilidad_Poliza_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "Aplicar", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -490,6 +464,7 @@ Public Class Class_Contabilidad_Poliza_Global
     End Function
 
     Public Function Desaplicar() As Boolean
+        Const sProcedure As String = "Desaplicar"
         Dim bResultado As Boolean = False
         Dim Conexion As New SqlConnection
         Dim cmd As New SqlCommand
@@ -509,7 +484,7 @@ Public Class Class_Contabilidad_Poliza_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "Desaplicar", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -521,6 +496,7 @@ Public Class Class_Contabilidad_Poliza_Global
     End Function
 
     Public Function Cancelar() As Boolean
+        Const sProcedure As String = "Cancelar"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -539,7 +515,7 @@ Public Class Class_Contabilidad_Poliza_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "Cancelar", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -551,6 +527,7 @@ Public Class Class_Contabilidad_Poliza_Global
     End Function
 
     Public Function GestionaCancelar() As Boolean
+        Const sProcedure As String = "GestionaCancelar"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -569,7 +546,7 @@ Public Class Class_Contabilidad_Poliza_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "GestionaCancelar", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -581,6 +558,7 @@ Public Class Class_Contabilidad_Poliza_Global
     End Function
 
     Public Function Reactiva() As Boolean
+        Const sProcedure As String = "Reactiva"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -598,7 +576,7 @@ Public Class Class_Contabilidad_Poliza_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "Reactiva", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -610,6 +588,7 @@ Public Class Class_Contabilidad_Poliza_Global
     End Function
 
     Public Function GeneraNuevoFolioPoliza() As String
+        Const sProcedure As String = "GeneraNuevoFolioPoliza"
         Dim sResultado As String = ""
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -629,7 +608,7 @@ Public Class Class_Contabilidad_Poliza_Global
                 Me._FOLIO_POLIZA = "" & .Parameters("@FOLIO_POLIZA").Value.ToString
                 sResultado = "" & .Parameters("@FOLIO_POLIZA").Value.ToString
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "GeneraNuevoFolioPoliza", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -641,21 +620,24 @@ Public Class Class_Contabilidad_Poliza_Global
     End Function
 
     Public Function ObtenerDetalle() As DataTable
+        Const sProcedure As String = "ObtenerDetalle"
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
-        ',R.CODIGO_CENTRO_COSTO,CC.NOMBRE_CENTRO_COSTO " & _
-        sSQL = "SELECT C.CUENTA_CONTABLE,DBO.FN_CONTABILIDAD_NOMBRE_CUENTA_NIVELES_COMPLETOS(C.CUENTA_CONTABLE) NOMBRE_CUENTA,R.CONCEPTO,C.NATURALEZA_CONTABLE,R.CARGO,R.ABONO " & _
-               "FROM CON_POLIZAS_DETALLE R " & _
-               "INNER JOIN CON_CAT_CUENTAS C ON(R.CUENTA_CONTABLE=C.CUENTA_CONTABLE) " & _
-               "LEFT JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO=CC.CODIGO_CENTRO_COSTO) " & _
-               "WHERE R.FOLIO_POLIZA='" & Me._FOLIO_POLIZA & "' " & _
+        sSQL = "SELECT C.CUENTA_CONTABLE,DBO.FN_CONTABILIDAD_NOMBRE_CUENTA_NIVELES_COMPLETOS(C.CUENTA_CONTABLE) NOMBRE_CUENTA,R.CONCEPTO,C.NATURALEZA_CONTABLE,R.CARGO,R.ABONO, " &
+               "R.CODIGO_CENTRO_COSTO,CC.NOMBRE_CENTRO_COSTO,R.CODIGO_CATEGORIA,CCA.NOMBRE_CATEGORIA,R.CODIGO_CONCEPTO,CCO.NOMBRE_CONCEPTO " &
+               "FROM CON_POLIZAS_DETALLE R " &
+               "INNER JOIN CON_CAT_CUENTAS C ON(R.CUENTA_CONTABLE=C.CUENTA_CONTABLE) " &
+               "LEFT JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO=CC.CODIGO_CENTRO_COSTO) " &
+               "LEFT JOIN CAT_CATEGORIAS CCA ON(R.CODIGO_CATEGORIA=CCA.CODIGO_CATEGORIA) " &
+               "LEFT JOIN CAT_CONCEPTOS CCO ON(R.CODIGO_CONCEPTO=CCO.CODIGO_CONCEPTO) " &
+               "WHERE R.FOLIO_POLIZA='" & Me._FOLIO_POLIZA & "' " &
                "ORDER BY R.ID_CON_POLIZAS_DETALLE"
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
             da.Dispose()
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ObtenerDetalle", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
         Return dTabla
     End Function
@@ -665,6 +647,7 @@ Public Class Class_Contabilidad_Poliza_Global
     End Sub
 
     Public Function ConsiderarParaControlIVAAcreditable() As Boolean
+        Const sProcedure As String = "ConsiderarParaControlIVAAcreditable"
         Dim bResultado As Boolean = False
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String = "EXEC DBO.MP_CONTABILIDAD_IVA_ACREDITABLE_OBTIENE_TOTALES_IVA_ACREDITABLE_POLIZA @FOLIO_POLIZA='" & Me._FOLIO_POLIZA & "'"
@@ -675,7 +658,7 @@ Public Class Class_Contabilidad_Poliza_Global
 
             '1-Busca si la póliza tiene alguna cuenta de iva acreditable.
             If dTabla.Rows.Count > 0 Then
-                If CDbl(dTabla.Rows(0)("IVA_10")) > 0 Or CDbl(dTabla.Rows(0)("IVA_15")) > 0 Or _
+                If CDbl(dTabla.Rows(0)("IVA_10")) > 0 Or CDbl(dTabla.Rows(0)("IVA_15")) > 0 Or
                    CDbl(dTabla.Rows(0)("IVA_11")) > 0 Or CDbl(dTabla.Rows(0)("IVA_16")) > 0 Then
                     bResultado = True
                 End If
@@ -693,13 +676,14 @@ Public Class Class_Contabilidad_Poliza_Global
             End If
 
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ConsiderarParaControlIVAAcreditable", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
 
         Return bResultado
     End Function
 
     Public Function AsignaFacturasPoliza() As Boolean
+        Const sProcedure As String = "AsignaFacturasPoliza"
         Dim bResultado As Boolean = False
         Dim Conexion As New SqlConnection
         Dim cmd As New SqlCommand
@@ -720,7 +704,7 @@ Public Class Class_Contabilidad_Poliza_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "AsignaFacturasPoliza", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -732,46 +716,49 @@ Public Class Class_Contabilidad_Poliza_Global
     End Function
 
     Public Function ObtenerDetalleCostos() As DataTable
+        Const sProcedure As String = "ObtenerDetalleCostos"
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
 
-        sSQL = "SELECT R.CODIGO_CENTRO_COSTO,CC.NOMBRE_CENTRO_COSTO,R.CODIGO_CATEGORIA,CA.NOMBRE_CATEGORIA,R.CODIGO_CONCEPTO,CO.NOMBRE_CONCEPTO,R.IMPORTE,R.CUENTA_CONTABLE " & _
-                "FROM CENTRO_COSTOS_MOVIMIENTOS_DETALLE R " & _
-                "INNER JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO=CC.CODIGO_CENTRO_COSTO) " & _
-                "INNER JOIN CAT_CATEGORIAS CA ON(R.CODIGO_CATEGORIA=CA.CODIGO_CATEGORIA) " & _
-                "INNER JOIN CAT_CONCEPTOS CO ON(R.CODIGO_CONCEPTO=CO.CODIGO_CONCEPTO) " & _
-                "WHERE R.FOLIO_MOVIMIENTO = '" & Me._FOLIO_POLIZA & "' " & _
+        sSQL = "SELECT R.CODIGO_CENTRO_COSTO,CC.NOMBRE_CENTRO_COSTO,R.CODIGO_CATEGORIA,CA.NOMBRE_CATEGORIA,R.CODIGO_CONCEPTO,CO.NOMBRE_CONCEPTO,R.IMPORTE,R.CUENTA_CONTABLE " &
+                "FROM CENTRO_COSTOS_MOVIMIENTOS_DETALLE R " &
+                "INNER JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO=CC.CODIGO_CENTRO_COSTO) " &
+                "INNER JOIN CAT_CATEGORIAS CA ON(R.CODIGO_CATEGORIA=CA.CODIGO_CATEGORIA) " &
+                "INNER JOIN CAT_CONCEPTOS CO ON(R.CODIGO_CONCEPTO=CO.CODIGO_CONCEPTO) " &
+                "WHERE R.FOLIO_MOVIMIENTO = '" & Me._FOLIO_POLIZA & "' " &
                 "ORDER BY R.ID_CENTRO_COSTOS_MOVIMIENTOS_DETALLE "
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
             da.Dispose()
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ObtenerDetalleCostos", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
         Return dTabla
     End Function
 
     Public Function ObtenerDetalleGastosActivos() As DataTable
+        Const sProcedure As String = "ObtenerDetalleGastosActivos"
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
 
-        sSQL = "SELECT R.CUENTA_CONTABLE,DBO.FN_CONTABILIDAD_NOMBRE_CUENTA_NIVELES_COMPLETOS(R.CUENTA_CONTABLE) NOMBRE_CUENTA_NIVELES_COMPLETOS,R.IMPORTE " & _
-                "FROM GASTOS_DETALLE R " & _
-                "LEFT JOIN CON_CAT_CUENTAS C ON(R.CUENTA_CONTABLE=C.CUENTA_CONTABLE) " & _
-                "WHERE R.FOLIO_MOVIMIENTO = '" & Me._FOLIO_POLIZA & "' " & _
+        sSQL = "SELECT R.CUENTA_CONTABLE,DBO.FN_CONTABILIDAD_NOMBRE_CUENTA_NIVELES_COMPLETOS(R.CUENTA_CONTABLE) NOMBRE_CUENTA_NIVELES_COMPLETOS,R.IMPORTE " &
+                "FROM GASTOS_DETALLE R " &
+                "LEFT JOIN CON_CAT_CUENTAS C ON(R.CUENTA_CONTABLE=C.CUENTA_CONTABLE) " &
+                "WHERE R.FOLIO_MOVIMIENTO = '" & Me._FOLIO_POLIZA & "' " &
                 "ORDER BY R.ID_GASTOS_DETALLE "
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
             da.Dispose()
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ObtenerDetalleGastosActivos", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
         Return dTabla
     End Function
 
     Public Function GrabarPolizaCosto(ByVal sListaActivos As String, ByVal sListaCostos As String, ByVal sAccion As String) As Boolean
+        Const sProcedure As String = "GrabarPolizaCosto"
         Dim bResultado As Boolean = False
         Try
             Dim cmd As New SqlCommand
@@ -806,13 +793,14 @@ Public Class Class_Contabilidad_Poliza_Global
                 End Try
             End With
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "GrabarPolizaCosto", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
 
         Return bResultado
     End Function
 
     Public Function CancelarPolizaCosto() As Boolean
+        Dim sProcedure As String = "CancelarPolizaCosto"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -833,7 +821,7 @@ Public Class Class_Contabilidad_Poliza_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "CancelarPolizaCosto", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
