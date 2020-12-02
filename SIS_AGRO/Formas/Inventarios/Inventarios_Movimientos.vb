@@ -1165,7 +1165,11 @@ BuscarCuentas:
             End If
         End If
 
-        If Me.oDocumentos.ES_TRANSFERENCIA <> "1" Then
+        Dim oAlmacenOrigen As New Class_CatAlmacenes(Me.CboAlmacen.SelectedValue.ToString)
+        Dim oAlmacenDestino As New Class_CatAlmacenes(Me.CboAlmacenDestino.SelectedValue.ToString)
+        Dim oAlmacenEntradaFinanciera As New Class_CatAlmacenes 'No se le pasa el código todavia.
+
+        If Me.oDocumentos.ES_TRANSFERENCIA <> "1" AndAlso oAlmacenOrigen.ES_FISCAL = True Then 'Sólo si es almacén es fiscal se afecta a la contabilidad
             If Me.ValidaCuentasContable = False Then
                 Return False
             End If
@@ -1215,10 +1219,6 @@ BuscarCuentas:
                 End If
             End If
         End If
-
-        Dim oAlmacenOrigen As New Class_CatAlmacenes(Me.CboAlmacen.SelectedValue.ToString)
-        Dim oAlmacenDestino As New Class_CatAlmacenes(Me.CboAlmacenDestino.SelectedValue.ToString)
-        Dim oAlmacenEntradaFinanciera As New Class_CatAlmacenes 'No se le pasa el código todavia.
 
         If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "TRF" Then
             oAlmacenEntradaFinanciera = New Class_CatAlmacenes(Me.cboAlmacenEntradaFinanciera.SelectedValue.ToString)
@@ -1383,8 +1383,13 @@ BuscarCuentas:
             '    return false
             'End If
 
-            If Me.ValidaCuentasContable = False Then
-                Return False
+            Dim oAlmacenOrigen As New Class_CatAlmacenes(Me.CboAlmacen.SelectedValue.ToString)
+
+            'Me.oDocumentos = New Class_Cat_tiposDocumentos(Me.CboDocumento.SelectedValue.ToString)
+            If Me.oDocumentos.ES_TRANSFERENCIA <> "1" AndAlso oAlmacenOrigen.ES_FISCAL = True Then 'Sólo si es almacén es fiscal se afecta a la contabilidad
+                If Me.ValidaCuentasContable = False Then
+                    Return False
+                End If
             End If
 
             'If Me.SiTieneImporte() = False Then
@@ -1416,7 +1421,7 @@ BuscarCuentas:
 
             bResultado = Me.oInventarios.Aplicar()
             If bResultado = True Then
-                If Me.oDocumentos.AFECTA_CONTABILIDAD = "1" Then
+                If Me.oDocumentos.AFECTA_CONTABILIDAD = "1" AndAlso oAlmacenOrigen.ES_FISCAL = True Then 'Sólo si el almacén es fiscal genera la póliza.
                     If Me.oInventarios.AplicarPoliza() = False Then
                         MsgBox("Error al intentar aplicar la póliza.", MsgBoxStyle.Exclamation, sProcedure)
                     End If
@@ -2608,8 +2613,10 @@ BuscarCuentas:
                 End If
             End If
 
+            Dim oAlmacenOrigen As New Class_CatAlmacenes(Me.CboAlmacen.SelectedValue.ToString)
+
             'Me.oDocumentos = New Class_Cat_tiposDocumentos(Me.CboDocumento.SelectedValue.ToString)
-            If Me.oDocumentos.ES_TRANSFERENCIA = "1" Then
+            If Me.oDocumentos.ES_TRANSFERENCIA <> "1" AndAlso oAlmacenOrigen.ES_FISCAL = True Then 'Sólo si es almacén es fiscal se afecta a la contabilidad
                 If Me.EstableceCuentaContableAlmacenDestino() = False Then
                     MsgBox("Error al tratar de asígnar la cuenta contable del almacén destino.", MsgBoxStyle.Exclamation, sProcedure)
                     Return
