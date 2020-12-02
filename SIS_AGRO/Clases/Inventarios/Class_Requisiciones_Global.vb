@@ -505,13 +505,17 @@ Public Class Class_Requisiciones_Global
         Return dTabla
     End Function
 
-    Public Function CantidadDisponible(ByVal sCodigoArticulo As String, ByVal sFolioRequisicion As String) As Decimal
+    'Public Function CantidadDisponible(ByVal sCodigoArticulo As String, ByVal sFolioRequisicion As String) As Decimal
+
+    Public Function CantidadDisponible(ByVal sCodigoArticulo As String, ByVal sCodigoAlmacen As String) As Decimal
         Dim dResultado As Decimal = 0
         Try
             Dim sql As New Class_find("SELECT ISNULL(SUM(D.DISPONIBLE),0) " &
                                       "FROM REQUISICIONES_GLOBAL G " &
                                       "INNER JOIN REQUISICIONES_DETALLE D ON(G.FOLIO_REQUISICION=D.FOLIO_REQUISICION) " &
-                                      "WHERE D.CODIGO_ARTICULO='" & sCodigoArticulo & "' AND G.FOLIO_REQUISICION='" & sFolioRequisicion & "' ")
+                                      "WHERE D.CODIGO_ARTICULO='" & sCodigoArticulo & "' AND G.ESTATUS IN('L','R') AND G.CODIGO_ALMACEN='" & sCodigoAlmacen & "' ")
+            '                         "WHERE D.CODIGO_ARTICULO='" & sCodigoArticulo & "' AND G.FOLIO_REQUISICION='" & sFolioRequisicion & "' ")
+
             dResultado = valorNumericoD(sql.Result1)
             sql = Nothing
         Catch ex As Exception
@@ -519,6 +523,37 @@ Public Class Class_Requisiciones_Global
         End Try
 
         Return dResultado
+    End Function
+
+    Public Function ObtieneArticulosRequeridos(ByVal sCodigoAlmacen As String) As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String = ("SELECT MAX(D.CODIGO_ARTICULO) CODIGO_ARTICULO,MAX(A.DESCRIPCION) DESCRIPCION,ISNULL(SUM(D.DISPONIBLE),0) DISPONIBLE,0 CANTIDAD,MAX(A.UNIDAD_VENTA) UNIDAD,0 SELECCION " &
+                              "FROM REQUISICIONES_GLOBAL G " &
+                              "INNER JOIN REQUISICIONES_DETALLE D ON(G.FOLIO_REQUISICION=D.FOLIO_REQUISICION) INNER JOIN CAT_ARTICULOS A ON(D.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
+                              "WHERE G.ESTATUS IN('L','R') AND G.CODIGO_ALMACEN='" & sReplace(sCodigoAlmacen) & "' GROUP BY D.CODIGO_ARTICULO ORDER BY MAX(A.DESCRIPCION) ")
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtieneArticulosRequeridos", ex)
+            End Try
+        Return dTabla
+    End Function
+
+    Public Function ObtieneArticulosMultiplesRequisiciones(ByVal sArticulos As String) As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String = ("EXEC MP_COMPRAS_OBTIENE_DETALLE_MULTIPLES_REQUISICIONES_PARA_AGREGAR_ORDEN_COMPRA @ARTICULOS_REQUERIDOS='" & sArticulos & "'")
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtieneArticulosMultiplesRequisiciones", ex)
+        End Try
+        Return dTabla
     End Function
 
     Public Function BusquedaVisual_Requisiciones() As String
@@ -533,6 +568,30 @@ Public Class Class_Requisiciones_Global
                 "INNER JOIN CAT_ALMACENES A ON(G.CODIGO_ALMACEN=A.CODIGO_ALMACEN) " &
                 "LEFT JOIN SIS_USUARIOS UC ON(G.CODIGO_USUARIO_COMPRADOR=UC.CODIGO_USUARIO) " &
                 "WHERE G.ESTATUS IN('L','R') AND "
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_Requisiciones", ex)
+        End Try
+        Return Resultado
+    End Function
+
+    Public Function BusquedaVisual_RequisicionesPorAlmacen(ByVal sCodigoAlmacen As String) As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de requisiciones pendientes de OC por folio."
+        f.sCampo = "FOLIO_REQUISICION"
+        f.sOrder = "FECHA_ENTREGA DESC"
+        f.sTable = "REQUISICIONES_GLOBAL"
+        f.sQl = "SELECT G.FOLIO_REQUISICION,A.NOMBRE_ALMACEN,G.ESTATUS,G.FECHA_ENTREGA,G.FECHA_SERVIDOR,UC.NOMBRE_USUARIO COMPRADOR " &
+                "FROM REQUISICIONES_GLOBAL G " &
+                "INNER JOIN CAT_ALMACENES A ON(G.CODIGO_ALMACEN=A.CODIGO_ALMACEN) " &
+                "LEFT JOIN SIS_USUARIOS UC ON(G.CODIGO_USUARIO_COMPRADOR=UC.CODIGO_USUARIO) " &
+                "WHERE G.ESTATUS IN('L','R') AND G.CODIGO_ALMACEN='" & sCodigoAlmacen & "' AND "
         f.Inicia("")
         f.ShowDialog()
         Try

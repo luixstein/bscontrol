@@ -59,7 +59,8 @@ Public Class Compras_Movimientos
     Private igyBASE_IVA As Short = 25
     Private igyBASE_IVA_USD As Short = 26
     Private igyID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA As Short = 27
-    Private igyIDRequisicionDetalle As Short = 28
+    Private igyIDRequisicionDetalle As Short = 28 'Eliminar despues
+    Private igyEsRequisicion As Short = 29
 #End Region
 
 #Region "Columnas grid series"
@@ -259,6 +260,7 @@ Public Class Compras_Movimientos
             Me.LblRequisicion.Visible = False
             Me.TxtRequisicion.Visible = False
             Me.btnTraerDetalleRequisicion.Visible = False
+            Me.btnMultiplesRequisiciones.Visible = False
         End If
     End Sub
 
@@ -373,7 +375,7 @@ Buscar:
         Select Case e.KeyCode
             Case Keys.F6
 Buscar:
-                Me.TxtRequisicion.Text = Me.oRequisicion.BusquedaVisual_Requisiciones()
+                Me.TxtRequisicion.Text = Me.oRequisicion.BusquedaVisual_RequisicionesPorAlmacen(Me.CboAlmacen.SelectedValue.ToString)
             Case Keys.Enter
                 oRequisicion = New Class_Requisiciones_Global(Me.TxtRequisicion.Text)
                 If oRequisicion.Existe = False Then
@@ -388,6 +390,10 @@ Buscar:
     Private Sub btnTraerDetalleRequisicion_Click(sender As Object, e As EventArgs) Handles btnTraerDetalleRequisicion.Click
         Me.TraerDetalleRequisicion()
         Me.TxtRequisicion.Enabled = False
+    End Sub
+
+    Private Sub btnMultiplesRequisiciones_Click(sender As Object, e As EventArgs) Handles btnMultiplesRequisiciones.Click
+        Me.TraerDetalleMultiplesRequisiciones()
     End Sub
 
     Private Sub txtEntregarA_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtEntregarA.KeyDown
@@ -567,7 +573,7 @@ Buscar:
 #Region "Eventos Genericos"
     Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFolioCompra.KeyPress, txtFolioOC.KeyPress, txtProveedor.KeyPress, txtFolioProveedor.KeyPress,
     txtEntregarA.KeyPress, txtSolicito.KeyPress, TxtConcepto.KeyPress, txtConCargoA.KeyPress, txtPredio.KeyPress, txtConfirmo.KeyPress,
-    DtpFecha.KeyPress, dtpFechaVencimiento.KeyPress, txtFolioOC_Inventarios.KeyPress, TxtRequisicion.KeyPress, btnTraerDetalleRequisicion.KeyPress, TxtNombreTransporte.KeyPress, CboTipoEnvio.KeyPress
+    DtpFecha.KeyPress, dtpFechaVencimiento.KeyPress, txtFolioOC_Inventarios.KeyPress, TxtRequisicion.KeyPress, btnTraerDetalleRequisicion.KeyPress, btnMultiplesRequisiciones.KeyPress, TxtNombreTransporte.KeyPress, CboTipoEnvio.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -745,7 +751,7 @@ Buscar:
                 .FixedRowColStyle = FlexCell.FixedRowColStyleEnum.Flat
 
                 .Rows = 2
-                .Cols = 29
+                .Cols = 30
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
                 .Column(Me.igyCodigo).Width = 75
@@ -776,6 +782,7 @@ Buscar:
                 .Column(Me.igyBASE_IVA_USD).Width = 100
                 .Column(Me.igyID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA).Width = 100
                 .Column(Me.igyIDRequisicionDetalle).Width = 80
+                .Column(Me.igyEsRequisicion).Width = 40
 
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 .Cell(0, Me.igyCodigo).Text = "Código"
@@ -805,7 +812,8 @@ Buscar:
                 .Cell(0, Me.igyBASE_IVA).Text = "BASE_IVA"
                 .Cell(0, Me.igyBASE_IVA_USD).Text = "BASE_IVA_USD"
                 .Cell(0, Me.igyID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA).Text = "ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA"
-                .Cell(0, Me.igyIDRequisicionDetalle).Text = "ID_REQUISICION_DETALLE"
+                .Cell(0, Me.igyIDRequisicionDetalle).Text = "ID_REQUISICION_DETALLE" 'ELIMINAR ESTA COLUMNA DESPUES, YA NO SE UTILIZARA
+                .Cell(0, Me.igyEsRequisicion).Text = "Es requisicion"
 
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 .Column(Me.igyCantidad).Mask = FlexCell.MaskEnum.Numeric
@@ -878,6 +886,7 @@ Buscar:
                 .Column(Me.iGyIDAdicional).Locked = True
                 .Column(Me.igyID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA).Locked = True
                 .Column(Me.igyIDRequisicionDetalle).Locked = True
+                .Column(Me.igyEsRequisicion).Locked = True
 
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 .Column(Me.igyImpuestoImporte).Visible = False
@@ -904,6 +913,7 @@ Buscar:
                 .Column(Me.igyBASE_IVA_USD).Visible = False
                 .Column(Me.igyID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA).Visible = False
                 .Column(Me.igyIDRequisicionDetalle).Visible = False
+                .Column(Me.igyEsRequisicion).Visible = False
 
                 If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = False Then
                     .Column(Me.igyCosto).Visible = False
@@ -1009,6 +1019,7 @@ Buscar:
                         Me.LblRequisicion.Visible = False
                         Me.TxtRequisicion.Visible = False
                         Me.btnTraerDetalleRequisicion.Visible = False
+                        Me.btnMultiplesRequisiciones.Visible = False
 
                         If Me.Visible = True Then
                             If Me.bEsReferencia = False Then
@@ -1061,10 +1072,12 @@ Buscar:
                             Me.LblRequisicion.Visible = True
                             Me.TxtRequisicion.Visible = True
                             Me.btnTraerDetalleRequisicion.Visible = True
+                            Me.btnMultiplesRequisiciones.Visible = True
                         End If
 
                         Me.TxtRequisicion.Enabled = True
                         Me.btnTraerDetalleRequisicion.Enabled = True
+                        Me.btnMultiplesRequisiciones.Enabled = True
 
                         Me.CboTipoEnvio.Enabled = True
                         Me.TxtNombreTransporte.Enabled = True
@@ -1137,6 +1150,7 @@ Buscar:
 
                     Me.TxtRequisicion.Enabled = False
                     Me.btnTraerDetalleRequisicion.Enabled = False
+                    Me.btnMultiplesRequisiciones.Enabled = False
 
                     Me.CboTipoEnvio.Enabled = True
                     Me.TxtNombreTransporte.Enabled = True
@@ -1188,6 +1202,7 @@ Buscar:
 
                     Me.TxtRequisicion.Enabled = False
                     Me.btnTraerDetalleRequisicion.Enabled = False
+                    Me.btnMultiplesRequisiciones.Enabled = False
 
                     Me.CboTipoEnvio.Enabled = False
                     Me.TxtNombreTransporte.Enabled = False
@@ -1271,6 +1286,7 @@ Buscar:
 
                     Me.TxtRequisicion.Enabled = False
                     Me.btnTraerDetalleRequisicion.Enabled = False
+                    Me.btnMultiplesRequisiciones.Enabled = False
 
                     Me.CboTipoEnvio.Enabled = False
                     Me.TxtNombreTransporte.Enabled = False
@@ -1436,7 +1452,9 @@ Buscar:
                         .oComprasDetalle.IEPS_IMPORTE = valorNumerico(Me.Grid.Cell(i, Me.igyIEPS_IMPORTE).Text)
                         .oComprasDetalle.BASE_IEPS = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IEPS).Text)
                         .oComprasDetalle.BASE_IVA = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IVA).Text)
-                        .oComprasDetalle.ID_REQUISICION_DETALLE = CInt(valorNumerico(Me.Grid.Cell(i, Me.igyIDRequisicionDetalle).Text))
+                        .oComprasDetalle.ES_REQUISICION = CInt(valorNumerico(Me.Grid.Cell(i, Me.igyEsRequisicion).Text))
+                        'Ya no se grabara el id de requisicion
+                        '.oComprasDetalle.ID_REQUISICION_DETALLE = CInt(valorNumerico(Me.Grid.Cell(i, Me.igyIDRequisicionDetalle).Text))
 
                         If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = True Then
                             .oComprasDetalle.COSTO = valorNumerico(Me.Grid.Cell(i, Me.igyCosto).Text)
@@ -1768,14 +1786,6 @@ Buscar:
 
                 Me.TxtRequisicion.Text = Me.oCompras.FOLIO_REQUISICION
 
-                If txtLEN(Me.TxtRequisicion.Text) = False Then
-                    Me.TxtRequisicion.Visible = False : Me.LblRequisicion.Visible = False : Me.btnTraerDetalleRequisicion.Visible = False
-                    Me.tsbPedir.Visible = False
-                Else
-                    Me.TxtRequisicion.Visible = True : Me.LblRequisicion.Visible = True : Me.btnTraerDetalleRequisicion.Visible = True
-                    Me.tsbPedir.Visible = True
-                End If
-
                 Me.tsbEditarOC.Visible = False
                 If Me.oDocumento.AFECTA_CXP = False And txtLEN(Me.TxtRequisicion.Text) = True And Me.LblEstatus.Text = "PEDIDO" Then
                     Me.tsbEditarOC.Visible = True
@@ -1886,6 +1896,14 @@ Buscar:
             End If
 
             Me.FormateaGrid()
+
+            If Me.ValidaEsRequisicion() = False Then
+                Me.TxtRequisicion.Visible = False : Me.LblRequisicion.Visible = False : Me.btnTraerDetalleRequisicion.Visible = False : Me.btnMultiplesRequisiciones.Visible = False
+                Me.tsbPedir.Visible = False
+            Else
+                Me.TxtRequisicion.Visible = True : Me.LblRequisicion.Visible = True : Me.btnTraerDetalleRequisicion.Visible = True : Me.btnMultiplesRequisiciones.Visible = True
+                Me.tsbPedir.Visible = True
+            End If
 
             If Me.oDocumento.AFECTA_CXP = True Then
                 Me.Grid.Row(Me.Grid.Rows - 1).Locked = True
@@ -2326,7 +2344,7 @@ Buscar:
                         End If
                     End If
 
-                    If valorNumerico(Me.Grid.Cell(i, Me.igyIDRequisicionDetalle).Text) > 0 Then
+                    If valorNumerico(Me.Grid.Cell(i, Me.igyEsRequisicion).Text) > 0 Then 'If valorNumerico(Me.Grid.Cell(i, Me.igyIDRequisicionDetalle).Text) > 0 Then
                         bHayArticulosRequeridos = True
                     End If
 
@@ -2984,16 +3002,16 @@ LlenaLinea:
 
                             If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO = True AndAlso Me.chkEsInventariable.Checked = True AndAlso txtLEN(Me.TxtRequisicion.Text) = True Then
                                 'Solo validara los renglones de la requisición
-                                If valorNumerico(Me.Grid.Cell(Renglon, Me.igyIDRequisicionDetalle).Text) = 0 Then
+                                If valorNumerico(Me.Grid.Cell(Renglon, Me.igyEsRequisicion).Text) = 0 Then   'If valorNumerico(Me.Grid.Cell(Renglon, Me.igyIDRequisicionDetalle).Text) = 0 Then
                                     Return
                                 End If
 
                                 'Valida el disponible de requisicion pero deja avanzar aunque no haya suficiente
-                                Dim dCantidadDisponible As Decimal = Me.oRequisicion.CantidadDisponible(Me.Grid.Cell(Renglon, Me.igyCodigo).Text, Me.TxtRequisicion.Text)
+                                Dim dCantidadDisponible As Decimal = Me.oRequisicion.CantidadDisponible(Me.Grid.Cell(Renglon, Me.igyCodigo).Text, Me.CboAlmacen.SelectedValue.ToString) 'Me.oRequisicion.CantidadDisponible(Me.Grid.Cell(Renglon, Me.igyCodigo).Text, Me.TxtRequisicion.Text)
 
                                 If dCantidad > dCantidadDisponible Then
                                     MsgBox("La cantidad capturada del artículo " & Me.Grid.Cell(Renglon, Me.igyDescripcion).Text & " en el renglón " & Renglon.ToString & " es mayor a la requerida pendiente de pedir que es de " &
-                                         dCantidadDisponible.ToString & " .", MsgBoxStyle.Exclamation, "Advertencia")
+                                         dCantidadDisponible.ToString & " en el almacén " & Me.CboAlmacen.Text & ".", MsgBoxStyle.Exclamation, "Advertencia")
                                 End If
                             End If
 
@@ -3247,6 +3265,7 @@ BuscarCuentas:
                     Me.LblRequisicion.Visible = False
                     Me.TxtRequisicion.Visible = False
                     Me.btnTraerDetalleRequisicion.Visible = False
+                    Me.btnMultiplesRequisiciones.Visible = False
                 End If
 
             End If
@@ -4478,6 +4497,7 @@ BuscarCuentas:
             oInventario.CodigoDocumentoParaGrabar = "ER" 'ER=ENTRADA RECEPCION COMPRA
             oInventario.FolioOrdenCompra = Me.txtFolioCompra.Text
             oInventario.CodigoAlmacenOrdenCompra = Me.CboAlmacen.SelectedValue.ToString
+            oInventario.TieneRequisicion = Me.ValidaEsRequisicion()
 
             oInventario.ShowDialog()
             oInventario.Visible = False
@@ -4513,8 +4533,13 @@ BuscarCuentas:
         Try
             Dim sFolioOC As String = Me.txtFolioCompra.Text
 
-            If txtLEN(Me.TxtRequisicion.Text) = False Then
-                MsgBox("La orden de compra no tiene requisición.", MsgBoxStyle.Exclamation, sProcedure)
+            'If txtLEN(Me.TxtRequisicion.Text) = False Then
+            '    MsgBox("La orden de compra no tiene requisición.", MsgBoxStyle.Exclamation, sProcedure)
+            '    Return False
+            'End If
+
+            If Me.ValidaEsRequisicion() = False Then
+                MsgBox("La orden de compra no tiene requisción.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
 
@@ -4533,13 +4558,14 @@ BuscarCuentas:
                 Return False
             End If
 
-            Me.oRequisicion = New Class_Requisiciones_Global(Me.TxtRequisicion.Text)
+            'Me.oRequisicion = New Class_Requisiciones_Global(Me.TxtRequisicion.Text)
 
-            If oRequisicion.ESTATUS = "A" Then
-                If MsgBox("La requisición " & Me.TxtRequisicion.Text & " ya no tiene disponible, desea pedir la orden de compra ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Pedir orden de compra") = MsgBoxResult.No Then
-                    Return False
-                End If
-            End If
+            '***Ya no se necesitara preguntar por el estatus de la requisicion, porque descontara de las requisiciones disponibles, se preguntara en el ValidaDisponiblesRequisicion() ***
+            'If oRequisicion.ESTATUS = "A" Then
+            '    If MsgBox("La requisición " & Me.TxtRequisicion.Text & " ya no tiene disponible, desea pedir la orden de compra ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Pedir orden de compra") = MsgBoxResult.No Then
+            '        Return False
+            '    End If
+            'End If
 
             'Preguntará si quieren continuar y pedir la oc aunque no haya disponible suficiente
             If Me.ValidaDisponiblesRequisicion(True) = False Then
@@ -4635,8 +4661,66 @@ BuscarCuentas:
                     .Cell(i, Me.igyUnidad).Text = dRow("UNIDAD_VENTA").ToString
                     .Cell(i, Me.igyImpuestoPorcentaje).Text = dRow("IMPUESTO_PORCENTAJE").ToString
                     .Cell(i, Me.igyIEPS_PORCENTAJE).Text = dRow("IEPS_PORCENTAJE").ToString
-                    .Cell(i, Me.igyIDRequisicionDetalle).Text = dRow("ID_REQUISICION_DETALLE").ToString
+                    '.Cell(i, Me.igyIDRequisicionDetalle).Text = dRow("ID_REQUISICION_DETALLE").ToString 
                     .Cell(i, Me.iGyIDAdicional).Text = i.ToString
+                    .Cell(i, Me.igyEsRequisicion).Text = "1"
+                End With
+
+                Me.Grid.Rows += 1
+                i += 1
+            Next
+
+            Me.Grid.Column(Me.igyDescripcion).Locked = True
+            Me.Grid.Column(Me.igyUnidad).Locked = True
+
+            Me.Totales()
+
+            If Me.cboMoneda.Text = "USD" Then
+                Me.Grid.Column(Me.igyPrecio).Locked = True
+                Me.Grid.Cell(1, Me.igyPRECIO_USD).SetFocus()
+            Else
+                Me.Grid.Cell(1, Me.igyPrecio).SetFocus()
+            End If
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
+
+    Private Sub TraerDetalleMultiplesRequisiciones()
+        Const sProcedure As String = "TraerDetalleMultiplesRequisiciones"
+        Dim dTable As DataTable
+        Try
+            'Primero abrir forma de articulos requeridos
+            Dim R As New RequisicionesDetalleOrdenCompra
+
+            R.CodigoAlmacen = Me.CboAlmacen.SelectedValue.ToString
+            R.ShowDialog()
+
+            If R.Agregado = False Then
+                Exit Sub
+            End If
+
+            dTable = R.dArticulosRequeridos
+
+            R.Dispose()
+
+            Me.InicializaGrid()
+
+            Dim i As Integer = 1
+            For Each dRow As DataRow In dTable.Rows
+                With Me.Grid
+                    .Cell(i, Me.igyCodigo).Text = dRow("CODIGO_ARTICULO").ToString
+                    .Cell(i, Me.igyDescripcion).Text = dRow("DESCRIPCION").ToString
+                    .Cell(i, Me.igyCantidad).Text = dRow("CANTIDAD").ToString
+                    .Cell(i, Me.igyPrecio).Text = "0"
+                    .Cell(i, Me.igyPRECIO_USD).Text = "0"
+                    .Cell(i, Me.igyUnidad).Text = dRow("UNIDAD_VENTA").ToString
+                    .Cell(i, Me.igyImpuestoPorcentaje).Text = dRow("IMPUESTO_PORCENTAJE").ToString
+                    .Cell(i, Me.igyIEPS_PORCENTAJE).Text = dRow("IEPS_PORCENTAJE").ToString
+                    '.Cell(i, Me.igyIDRequisicionDetalle).Text = dRow("ID_REQUISICION_DETALLE").ToString 
+                    .Cell(i, Me.iGyIDAdicional).Text = i.ToString
+                    .Cell(i, Me.igyEsRequisicion).Text = "1"
                 End With
 
                 Me.Grid.Rows += 1
@@ -4698,8 +4782,9 @@ BuscarCuentas:
         Try
             Dim i As Integer
             For i = 1 To Me.Grid.Rows - 1
-                If valorNumerico(Me.Grid.Cell(i, Me.igyIDRequisicionDetalle).Text) > 0 Then 'Solo validara renglones de la requisición
-                    Dim dCantidadDisponible As Decimal = oRequisicion.CantidadDisponible(Me.Grid.Cell(i, Me.igyCodigo).Text, Me.TxtRequisicion.Text)
+                'Solo validara renglones de la requisición
+                If valorNumerico(Me.Grid.Cell(i, Me.igyEsRequisicion).Text) > 0 Then    'If valorNumerico(Me.Grid.Cell(i, Me.igyIDRequisicionDetalle).Text) > 0 Then
+                    Dim dCantidadDisponible As Decimal = oRequisicion.CantidadDisponible(Me.Grid.Cell(i, Me.igyCodigo).Text, Me.CboAlmacen.SelectedValue.ToString)    'oRequisicion.CantidadDisponible(Me.Grid.Cell(i, Me.igyCodigo).Text, Me.TxtRequisicion.Text)
                     Dim dCantidadPedir As Decimal = valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text)
                     If dCantidadPedir > dCantidadDisponible Then
                         msgArticulos = msgArticulos & " " & Me.Grid.Cell(i, Me.igyDescripcion).Text & " (Disponible en requisición " & dCantidadDisponible.ToString & "),"
@@ -4715,7 +4800,7 @@ BuscarCuentas:
 
             If mostrarMsgArticulos = True Then
                 msgArticulos = Trim(msgArticulos.Substring(0, msgArticulos.Length - 1)) 'Quita la ultima coma
-                msgArticulos = "Las cantidades capturadas de los siguientes artículos son mayores a las requeridas pendientes por pedir :" & vbCrLf & msgArticulos & " ."
+                msgArticulos = "Las cantidades capturadas de los siguientes artículos son mayores a las requeridas pendientes por pedir en el almacén " & Me.CboAlmacen.Text & " :" & vbCrLf & msgArticulos & " ."
 
                 If bPreguntarSiAvanzar = True Then
                     msgArticulos = msgArticulos & vbCrLf & "Quiere continuar de todas formas ?"
@@ -4733,6 +4818,22 @@ BuscarCuentas:
             HandleError(Me.Name, sProcedure, ex)
         End Try
 
+    End Function
+
+    Private Function ValidaEsRequisicion() As Boolean
+        'Si una OC se puede pedir solo si tiene un folio requisicion, o articulos con EsRequisicion=1 (cuando es de multiples requisiciones)
+
+        If txtLEN(Me.TxtRequisicion.Text) Then
+            Return True
+        End If
+
+        For i As Integer = 1 To Me.Grid.Rows - 1
+            If Me.Grid.Cell(i, Me.igyEsRequisicion).Text = "1" Then
+                Return True
+            End If
+        Next
+
+        Return False
     End Function
 
 #End Region
