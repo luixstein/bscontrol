@@ -2616,7 +2616,7 @@ BuscarCuentas:
             Dim oAlmacenOrigen As New Class_CatAlmacenes(Me.CboAlmacen.SelectedValue.ToString)
 
             'Me.oDocumentos = New Class_Cat_tiposDocumentos(Me.CboDocumento.SelectedValue.ToString)
-            If Me.oDocumentos.ES_TRANSFERENCIA <> "1" AndAlso oAlmacenOrigen.ES_FISCAL = True Then 'Sólo si es almacén es fiscal se afecta a la contabilidad
+            If Me.oDocumentos.ES_TRANSFERENCIA = "1" AndAlso oAlmacenOrigen.ES_FISCAL = True Then 'Sólo si es almacén es fiscal se afecta a la contabilidad
                 If Me.EstableceCuentaContableAlmacenDestino() = False Then
                     MsgBox("Error al tratar de asígnar la cuenta contable del almacén destino.", MsgBoxStyle.Exclamation, sProcedure)
                     Return
