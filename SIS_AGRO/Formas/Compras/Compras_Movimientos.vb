@@ -4497,7 +4497,6 @@ BuscarCuentas:
             oInventario.CodigoDocumentoParaGrabar = "ER" 'ER=ENTRADA RECEPCION COMPRA
             oInventario.FolioOrdenCompra = Me.txtFolioCompra.Text
             oInventario.CodigoAlmacenOrdenCompra = Me.CboAlmacen.SelectedValue.ToString
-            oInventario.TieneRequisicion = Me.ValidaEsRequisicion()
 
             oInventario.ShowDialog()
             oInventario.Visible = False

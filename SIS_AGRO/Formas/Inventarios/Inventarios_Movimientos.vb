@@ -16,7 +16,7 @@ Public Class Inventarios_Movimientos
     Private _LlamadoExteriorRecepcionarEntradaOrdenCompra As Boolean
     Private _FolioOrdenCompra As String
     Private _CodigoAlmacenOrdenCompra As String
-    Private _TieneRequisicion As Boolean
+    Private OcTieneRequisicion As Boolean
 
     Private Estado As enumEstados
     Private oInventarios As New Class_Inventarios_Global
@@ -117,15 +117,6 @@ Public Class Inventarios_Movimientos
         End Get
         Set(ByVal value As String)
             Me._CodigoAlmacenOrdenCompra = value
-        End Set
-    End Property
-
-    Public Property TieneRequisicion() As Boolean
-        Get
-            Return Me._TieneRequisicion
-        End Get
-        Set(value As Boolean)
-            Me._TieneRequisicion = value
         End Set
     End Property
 
@@ -3077,7 +3068,9 @@ busca_serie:
                 Return False
             End If
 
-            If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO And Me._TieneRequisicion Then    'If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO And txtLEN(oOrdenCompra.FOLIO_REQUISICION) Then
+            Me.OcTieneRequisicion = ValidaOcTieneRequisicion(oOrdenCompra.FOLIO_COMPRA)
+
+            If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO And Me.OcTieneRequisicion Then    'If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO And txtLEN(oOrdenCompra.FOLIO_REQUISICION) Then
                 'Solo validara estatus P para OC con requisicion
                 If Not (oOrdenCompra.ESTATUS = "P" Or oOrdenCompra.ESTATUS = "R") Then
                     MsgBox("La orden de compra tiene requisición de inventario, debe estar en estatus P(Pedida) o R(Parcialmente recepcionada) para hacer la entrada.", MsgBoxStyle.Exclamation, sProcedure)
@@ -3447,7 +3440,9 @@ busca_serie:
                 Return False
             End If
 
-            If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO AndAlso Me._TieneRequisicion Then    'If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO AndAlso txtLEN(oOrdenCompra.FOLIO_REQUISICION) Then
+            Me.OcTieneRequisicion = ValidaOcTieneRequisicion(Me.txtFolioOrdenCompra.Text)
+
+            If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO AndAlso Me.OcTieneRequisicion Then    'If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO AndAlso txtLEN(oOrdenCompra.FOLIO_REQUISICION) Then
                 'Solo validara estatus P para OC con requisicion
                 If Not (oOrdenCompra.ESTATUS = "P" Or oOrdenCompra.ESTATUS = "R") Then
                     MsgBox("La orden de compra tiene requisición de inventario, debe estar en estatus P(Pedida) o R(Parcialmente recepcionada) para hacer la entrada.", MsgBoxStyle.Exclamation, sProcedure)
@@ -3516,6 +3511,30 @@ busca_serie:
 
         Return txtLEN(resultado)
 
+    End Function
+
+    Private Function ValidaOcTieneRequisicion(ByVal sFolioOc As String) As Boolean
+        Dim oCompras As Class_Compras_Global
+
+        Try
+            oCompras = New Class_Compras_Global(sFolioOc, "OC" & Plaza.CODIGO_PLAZA.ToString)
+
+            'Para que una OC se tenga requsicion debe tener folio de requisicion o al menos un renglon que sea ES_REQUISICION=1
+            If txtLEN(oCompras.FOLIO_REQUISICION) Then
+                Return True
+            End If
+
+            Dim sql As New Class_find("SELECT ES_REQUISICION FROM COMPRA_DETALLE WHERE ES_REQUISICION IS NOT NULL AND FOLIO_COMPRA='" & sFolioOc & "'")
+
+            If sql.Result1 = "1" Then
+                Return True
+            End If
+
+            Return False
+
+        Catch ex As Exception
+            HandleError(Me.Name, "ValidaOcTieneRequisicion", ex)
+        End Try
     End Function
 
     Private Function RepiteLote(ByVal Renglon As Integer, ByVal ID_INVENTARIO_LOTES_COSTOS As String) As Boolean
