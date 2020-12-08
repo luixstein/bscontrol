@@ -25,6 +25,7 @@ Public Class Inventarios_Movimientos
     Private dtSeries As DataTable
 
     'Private bAplicando As Boolean
+    Private Consultando As Boolean = False
     Private oPalet As Class_Embarques_PaletsGlobal
     Private oFormaDetalleCuentas As InventariosDetalleCuentasContables
 
@@ -358,10 +359,12 @@ Public Class Inventarios_Movimientos
     End Sub
 
     Private Sub CmbDocumento_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboDocumento.SelectedIndexChanged
-        Me.GeneraFolio()
+        If Me.Consultando = False Then
+            Me.GeneraFolio()
 
-        Me.InicializaGrid()
-        Me.InicializaGridSeries()
+            Me.InicializaGrid()
+            Me.InicializaGridSeries()
+        End If
 
         Me.OcultaControles()
     End Sub
@@ -1789,6 +1792,10 @@ BuscarCuentas:
 
     Private Function GeneraFolio() As Boolean
         Try
+            If Me.Consultando = True Then
+                Return False
+            End If
+
             Dim sFolio As String = ""
             If Me.CboAlmacen.Items.Count = 0 Or Me.CboDocumento.Items.Count = 0 Then
                 Exit Function
@@ -1846,6 +1853,8 @@ BuscarCuentas:
                 Me.Cambia_Estado(enumEstados.NUEVO)
                 Return False
             End If
+
+            Me.Consultando = True
 
             If Me.CboDocumento.SelectedValue.ToString <> oInventarios.CODIGO_TIPO_DOCUMENTO Then
                 Me.GeneraFolio()
@@ -1979,6 +1988,8 @@ BuscarCuentas:
 
         Catch ex As Exception
             HandleError(Me.Name, "Consultar", ex)
+        Finally
+            Me.Consultando = False
         End Try
 
         Return bResultado
