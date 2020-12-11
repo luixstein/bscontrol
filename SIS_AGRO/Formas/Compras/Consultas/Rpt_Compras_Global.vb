@@ -1,25 +1,12 @@
 ﻿Option Strict On
+
 Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Rpt_Compras_Global
     Private oCompras As New Class_Compras_Global
     Private oProveedores As New Class_CatProveedores
 
-    Private Sub Rpt_Compras_Global_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.DesplegarAlmacenes()
-        Me.DesplegarDocumentos()
-        Me.DesplegarFamilias()
-        Me.DesplegarInventariables()
-        Me.DesplegarMonedas()
-        Me.DesplegarLineas()
-
-        Me.DtFechaDesde.Value = CDate(Format(Me.DtFechaDesde.Value, "01/MMM/yy"))
-        Me.DtFechaHasta.Value = Date.Now
-        Me.CboEstatus.SelectedItem = "APLICADO"
-        Me.lblArticulo.Text = ""
-        Me.lblProveedor.Text = ""
-    End Sub
-
+#Region "Opciones"
     Private Sub tsbConsultar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbConsultar.Click
         Imprimir()
     End Sub
@@ -27,50 +14,80 @@ Public Class Rpt_Compras_Global
     Private Sub tsbSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSalir.Click
         Me.Close()
     End Sub
+#End Region
+
+#Region "Eventos"
+    Private Sub Rpt_Compras_Global_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Try
+            Me.DesplegarAlmacenes()
+            Me.DesplegarDocumentos()
+            Me.DesplegarFamilias()
+            Me.DesplegarInventariables()
+            Me.DesplegarMonedas()
+            Me.DesplegarLineas()
+            Me.DesplegarEsFiscal()
+
+            Me.DtFechaDesde.Value = CDate(Format(Me.DtFechaDesde.Value, "01/MMM/yy"))
+            Me.DtFechaHasta.Value = Date.Now
+            Me.CboEstatus.SelectedItem = "APLICADO"
+            Me.lblArticulo.Text = ""
+            Me.lblProveedor.Text = ""
+        Catch ex As Exception
+            HandleError(Me.Name, "Rpt_Compras_Global_Load", ex)
+        End Try
+    End Sub
 
     Private Sub txtCodigoProveedor_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodigoProveedor.KeyDown
-        Dim sText As String
-        Select Case e.KeyCode
-            Case Keys.F6
+        Try
+            Dim sText As String
+            Select Case e.KeyCode
+                Case Keys.F6
 Buscar:
-                sText = Me.oProveedores.BusquedaVisual_PorDescripcion
-                If txtLEN(sText) = True Then Me.txtCodigoProveedor.Text = sText
-            Case Keys.Enter
-                If txtLEN(Me.txtCodigoProveedor.Text) = False Then
-                    Me.lblProveedor.Text = "" : txtTAB(e) : Exit Sub
-                End If
+                    sText = Me.oProveedores.BusquedaVisual_PorDescripcion
+                    If txtLEN(sText) = True Then Me.txtCodigoProveedor.Text = sText
+                Case Keys.Enter
+                    If txtLEN(Me.txtCodigoProveedor.Text) = False Then
+                        Me.lblProveedor.Text = "" : txtTAB(e) : Exit Sub
+                    End If
 
-                Me.oProveedores = New Class_CatProveedores(Me.txtCodigoProveedor.Text)
-                If Me.oProveedores.Existe = False Then
-                    Me.lblProveedor.Text = "" : GoTo Buscar : Exit Sub
-                End If
+                    Me.oProveedores = New Class_CatProveedores(Me.txtCodigoProveedor.Text)
+                    If Me.oProveedores.Existe = False Then
+                        Me.lblProveedor.Text = "" : GoTo Buscar : Exit Sub
+                    End If
 
-                Me.lblProveedor.Text = Me.oProveedores.Nombre_Proveedor
-                txtTAB(e)
-        End Select
+                    Me.lblProveedor.Text = Me.oProveedores.Nombre_Proveedor
+                    txtTAB(e)
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Name, "txtCodigoProveedor_KeyDown", ex)
+        End Try
     End Sub
 
     Private Sub TxtCodigoArticulo_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoArticulo.KeyDown
-        Dim oArticulos As New Class_CatArticulos
-        Select Case e.KeyCode
-            Case Keys.F6
+        Try
+            Dim oArticulos As New Class_CatArticulos
+            Select Case e.KeyCode
+                Case Keys.F6
 buscar:
-                Dim sArticulo As String = oArticulos.BusquedaVisual_PorDescripcion
-                If sArticulo.Length > 0 Then
-                    Me.TxtCodigoArticulo.Text = sArticulo
-                    Me.lblArticulo.Text = oArticulos.BuscarNombreArticulo(sArticulo)
-                End If
-            Case Keys.Enter
-                Me.lblArticulo.Text = oArticulos.BuscarNombreArticulo(Me.TxtCodigoArticulo.Text)
-                If txtLEN(Me.lblArticulo.Text) = False Then
-                    Me.lblArticulo.Text = ""
-                    txtTAB(e)
-                    Exit Sub
-                Else
-                    txtTAB(e)
-                End If
-            Case Keys.Escape
-        End Select
+                    Dim sArticulo As String = oArticulos.BusquedaVisual_PorDescripcion
+                    If sArticulo.Length > 0 Then
+                        Me.TxtCodigoArticulo.Text = sArticulo
+                        Me.lblArticulo.Text = oArticulos.BuscarNombreArticulo(sArticulo)
+                    End If
+                Case Keys.Enter
+                    Me.lblArticulo.Text = oArticulos.BuscarNombreArticulo(Me.TxtCodigoArticulo.Text)
+                    If txtLEN(Me.lblArticulo.Text) = False Then
+                        Me.lblArticulo.Text = ""
+                        txtTAB(e)
+                        Exit Sub
+                    Else
+                        txtTAB(e)
+                    End If
+                Case Keys.Escape
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Name, "TxtCodigoArticulo_KeyDown", ex)
+        End Try
     End Sub
 
     Private Sub CboDocumento_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles DtFechaHasta.KeyDown, DtFechaDesde.KeyDown, chkMostrarSoloDocumentosSaldoMayorCero.KeyDown, CboEstatus.KeyDown, CboDocumento.KeyDown, CboAlmacen.KeyDown, CboFamilia.KeyDown
@@ -81,6 +98,24 @@ buscar:
         txtNoBeep(e)
     End Sub
 
+    'Private Sub RbAgrupadoFamilia_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RbAgrupadoFamilia.CheckedChanged
+    'If Me.RbAgrupadoFamilia.Checked = True Then
+    '    Me.lblDisplayFamilia.Visible = True
+    '    Me.CboFamilia.Visible = True
+
+    '    Me.LblDisplayLinea.Visible = True
+    '    Me.cboLineas.Visible = True
+    'Else
+    '    Me.lblDisplayFamilia.Visible = False
+    '    Me.CboFamilia.Visible = False
+
+    '    Me.LblDisplayLinea.Visible = False
+    '    Me.cboLineas.Visible = False
+    'End If
+    'End Sub
+#End Region
+
+#Region "Métodos y procedimientos"
     Private Sub DesplegarDocumentos()
         Try
             Dim oDocumento As New Class_CatDocumentos
@@ -118,63 +153,90 @@ buscar:
     End Sub
 
     Private Sub DesplegarFamilias()
-        Dim oElementos As New Class_CatFamilias
-        With Me.CboFamilia
-            .DisplayMember = "Nombre_Familia"
-
-            .ValueMember = "codigo_Familia"
-
-            Dim dView As New Data.DataView(oElementos.ObtenerElementosParaReportes)
-            dView.Sort = "Nombre_Familia"
-            .DataSource = dView
-            If dView.Count > 0 Then
-                .SelectedValue = "T"
-            End If
-        End With
+        Try
+            Dim oElementos As New Class_CatFamilias
+            With Me.CboFamilia
+                .DisplayMember = "Nombre_Familia"
+                .ValueMember = "codigo_Familia"
+                Dim dView As New Data.DataView(oElementos.ObtenerElementosParaReportes)
+                dView.Sort = "Nombre_Familia"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedValue = "T"
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarFamilias", ex)
+        End Try
     End Sub
 
     Private Sub DesplegarInventariables()
-        With Me.cboInventariables
-            .Items.Add("INVENTARIABLES")
-            .Items.Add("NO INVENTARIABLES")
-            .Items.Add("TODOS")
-            .SelectedItem = "TODOS"
-        End With
+        Try
+            With Me.cboInventariables
+                .Items.Clear()
+                .Items.Add("INVENTARIABLES")
+                .Items.Add("NO INVENTARIABLES")
+                .Items.Add("TODOS")
+                .SelectedItem = "TODOS"
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarInventariables", ex)
+        End Try
     End Sub
 
     Private Sub DesplegarMonedas()
-        With Me.cboMoneda
-            .Items.Add("NACIONAL")
-            .Items.Add("EXTRANJERA")
-            .Items.Add("TODAS")
-            .SelectedItem = "TODAS"
-        End With
+        Try
+            With Me.cboMoneda
+                .Items.Clear()
+                .Items.Add("NACIONAL")
+                .Items.Add("EXTRANJERA")
+                .Items.Add("TODAS")
+                .SelectedItem = "TODAS"
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarMonedas", ex)
+        End Try
     End Sub
 
     Private Sub DesplegarLineas()
-        Dim oLineas As New Class_CatLineas
-        With Me.cboLineas
-            .DisplayMember = "Nombre_Linea"
+        Try
+            Dim oLineas As New Class_CatLineas
+            With Me.cboLineas
+                .DisplayMember = "Nombre_Linea"
+                .ValueMember = "codigo_linea"
+                Dim dView As New Data.DataView(oLineas.ObtenerElementosParaReportes)
+                dView.Sort = "Nombre_linea"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedValue = "T"
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarLineas", ex)
+        End Try
+    End Sub
 
-            .ValueMember = "codigo_linea"
-
-            Dim dView As New Data.DataView(oLineas.ObtenerElementosParaReportes)
-            dView.Sort = "Nombre_linea"
-            .DataSource = dView
-            If dView.Count > 0 Then
-                .SelectedValue = "T"
-            End If
-        End With
+    Private Sub DesplegarEsFiscal()
+        Try
+            With Me.cboEsFiscal
+                .Items.Clear()
+                .Items.Add("0-NO FISCAL")
+                .Items.Add("1-FISCAL")
+                .Items.Add("T-TODAS")
+                .SelectedItem = "T-TODAS"
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarEsFiscal", ex)
+        End Try
     End Sub
 
     Private Sub Imprimir()
         Dim FormatoDeReporte As String = ""
-        Dim Rpt As ReportDocument
-        Rpt = New ReportDocument
+        Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
         Try
             If Me.ValidarPeriodo = False Then
-                Exit Sub
+                Return
             End If
 
             If Me.RbGlobal.Checked = True Then
@@ -187,11 +249,11 @@ buscar:
                 oReporte = New Class_Reporte("RPT_COMPRA_LISTADO", Rpt, True)
             Else
                 MsgBox("Formato no válido.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Sub
+                Return
             End If
 
-            If Not oReporte.RptCargado Then
-                Exit Sub
+            If Not oReporte.RptCargado = True Then
+                Return
             End If
 
             Rpt.SetParameterValue("@CODIGO_PROVEEDOR", Me.txtCodigoProveedor.Text.ToUpper)
@@ -204,9 +266,10 @@ buscar:
             Rpt.SetParameterValue("@FECHA1", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
             Rpt.SetParameterValue("@FECHA2", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
             Rpt.SetParameterValue("@CODIGO_FAMILIA", Me.CboFamilia.SelectedValue.ToString)
-            Rpt.SetParameterValue("@INVENTARIABLES", Me.cboInventariables.SelectedItem)
-            Rpt.SetParameterValue("@MONEDA", Me.cboMoneda.SelectedItem)
+            Rpt.SetParameterValue("@INVENTARIABLES", Me.cboInventariables.Text)
+            Rpt.SetParameterValue("@MONEDA", Me.cboMoneda.Text)
             Rpt.SetParameterValue("@CODIGO_LINEA", Me.cboLineas.SelectedValue.ToString)
+            Rpt.SetParameterValue("@ES_FISCAL", Me.cboEsFiscal.Text.Substring(0, 1))
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
@@ -228,24 +291,11 @@ buscar:
         If Me.DtFechaDesde.Value > Me.DtFechaHasta.Value Then
             MsgBox("Rango de fechas inválidas.", MsgBoxStyle.Exclamation, Me.Name)
             Me.DtFechaDesde.Focus()
-            Exit Function
+            Return False
         End If
-        ValidarPeriodo = True
+
+        Return True
     End Function
+#End Region
 
-    'Private Sub RbAgrupadoFamilia_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RbAgrupadoFamilia.CheckedChanged
-    'If Me.RbAgrupadoFamilia.Checked = True Then
-    '    Me.lblDisplayFamilia.Visible = True
-    '    Me.CboFamilia.Visible = True
-
-    '    Me.LblDisplayLinea.Visible = True
-    '    Me.cboLineas.Visible = True
-    'Else
-    '    Me.lblDisplayFamilia.Visible = False
-    '    Me.CboFamilia.Visible = False
-
-    '    Me.LblDisplayLinea.Visible = False
-    '    Me.cboLineas.Visible = False
-    'End If
-    'End Sub
 End Class
