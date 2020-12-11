@@ -88,9 +88,10 @@ Public Class Frm_Contabilidad_Auxiliar_Mayor
         vdg = Me.Grid.Cell(Renglon, Me.iGyFolioPoliza).Text 'Grid.Rows(Renglon).Cell("FOLIO_POLIZA")
         Dim Child As New Frm_Contabilidad_Captura_Polizas()
         Child.FolioPolizaConsultaExterior = vdg.ToString
-        Child.ShowDialog()
-        Child.Dispose()
-        Me.tsbConsultar.PerformClick()
+        Child.Show()
+        'Child.ShowDialog()
+        'Child.Dispose()
+        'Me.tsbConsultar.PerformClick()
     End Sub
 
     Private Sub Grid_ComboClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.ComboClick
