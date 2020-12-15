@@ -369,13 +369,11 @@ Buscar:
         Dim oReporte As Class_Reporte
         Try
             If Me.RdbGlobalCXC.Checked = True Then
-
                 If Me.rbFormato1EdoCtaGlobal.Checked = True Then
                     oReporte = New Class_Reporte("RPT_CXC_COBRANZA_GLOBAL", Rpt)
                 Else
                     oReporte = New Class_Reporte("RPT_CXC_COBRANZA_GLOBAL_MES_CARTERA", Rpt)
                 End If
-
             ElseIf Me.RdbDetalleCXC.Checked = True Then
                 oReporte = New Class_Reporte("RPT_CXC_COBRANZA_DETALLE", Rpt)
             ElseIf Me.RdbDetalleDepositos.Checked = True Then
@@ -390,8 +388,8 @@ Buscar:
                 oReporte = New Class_Reporte("RPT_CXC_COBRANZA_PROPIETARIOS_CON_ANTICIPOS", Rpt)
             End If
 
-            If Not oReporte.RptCargado Then
-                Exit Sub
+            If Not oReporte.RptCargado = True Then
+                Return
             End If
 
             If Me.RdbGlobalCXC.Checked = True Or Me.RdbDetalleCXC.Checked = True Or Me.rdbGlobalCxcPropietario.Checked = True Then
@@ -424,6 +422,8 @@ Buscar:
                 Rpt.SetParameterValue("@FILTRAR_POR_FECHA_VENTA", IIf(Me.rbtDocumentoVenta.Checked = True, "1", "0"))
                 Rpt.SetParameterValue("@CODIGO_VENDEDOR", Me.txtCodigoVendedor.Text)
                 Rpt.SetParameterValue("@CODIGO_TIPO_DOCUMENTO_VENTA", Me.CboDocumentos.SelectedValue.ToString)
+                Rpt.SetParameterValue("@CODIGO_MONEDA_PAGO", Me.CboMoneda.Text)
+
             ElseIf Me.rbtCobranzaAnticipo.Checked = True Or Me.rbtPropietariosConAnticipos.Checked Then
                 Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.txtCodigoCliente.Text)
                 Rpt.SetParameterValue("@CODIGO_VENDEDOR", Me.txtCodigoVendedor.Text)
@@ -437,10 +437,10 @@ Buscar:
                 Else
                     MsgBox("Capture un tipo de cambio", MsgBoxStyle.Exclamation, Me.Text)
                     Me.txtTipoCambio.Focus()
-                    Exit Sub
+                    Return
                 End If
 
-            Else 'Depositos x bulto
+            ElseIf Me.rdbDetalleBultos.Checked = True Then
                 Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.txtCodigoCliente.Text)
                 Rpt.SetParameterValue("@FECHA1", Format(Me.dpFechaInicio.Value, "yyyy-dd-MM"))
                 Rpt.SetParameterValue("@FECHA2", Format(Me.dpFechaFinal.Value, "yyyy-dd-MM"))
@@ -448,11 +448,15 @@ Buscar:
                 Rpt.SetParameterValue("@CUENTA_BANCARIA", Me.txtCuentaBancaria.Text)
                 Rpt.SetParameterValue("@CODIGO_ZONA", Me.CboZona.SelectedValue.ToString)
                 Rpt.SetParameterValue("@MOSTRAR_BULTOS", "1")
+
+            Else
+                MsgBox("Formato no existente.", MsgBoxStyle.Exclamation, Me.Text)
             End If
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
             frm.Show()
+
         Catch ex As Exception
             HandleError(Me.Name, "Imprimir", ex)
         Finally
@@ -515,7 +519,13 @@ Buscar:
                 Me.gpFiltroFecha.Visible = True
                 Me.chkClientesSaldoVencido.Visible = False
                 Me.lblTipoCambio.Visible = False : Me.txtTipoCambio.Visible = False
-                Me.LblMoneda.Visible = False : Me.CboMoneda.Visible = False
+
+                If Me.RdbDetalleDepositos.Checked = True Then
+                    Me.LblMoneda.Visible = True : Me.CboMoneda.Visible = True
+                Else
+                    Me.LblMoneda.Visible = False : Me.CboMoneda.Visible = False
+                End If
+
                 Me.LblGiroCliente.Visible = False : Me.CboGiroCliente.Visible = False
             End If
 
