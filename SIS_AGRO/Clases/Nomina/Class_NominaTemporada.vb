@@ -325,6 +325,19 @@ Public Class Class_NominaTemporada
         Return Resultado
     End Function
 
+    Public Function ObtenerTemporadas() As System.Data.DataTable
+        Dim dTable As New DataTable
+        'Dim dsCat_Estados As New SqlDataAdapter("SELECT ID_NOMINA_TEMPORADA,NOMBRE_TEMPORADA FROM NOMINA_TEMPORADAS T INNER JOIN SIS_EMPRESA_NOMINA P ON(T.CODIGO_PLAZA=P.CODIGO_PLAZA) WHERE T.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND T.CODIGO_TEMPORADA=P.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA ", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT ID_NOMINA_TEMPORADA,NOMBRE_TEMPORADA FROM NOMINA_TEMPORADAS ORDER BY CODIGO_TEMPORADA DESC ", Me._Conexion)
+        Try
+            da.Fill(dTable)
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ObtenerTemporadas", ex)
+        Finally
+            da.Dispose()
+        End Try
+        Return dTable
+    End Function
 #End Region
 
 End Class
