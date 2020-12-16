@@ -754,6 +754,12 @@
     <Compile Include="Formas\Compras\Compras_Movimientos.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\Compras\Consultas\Rpt_Lista_Articulos_Comprados.designer.vb">
+      <DependentUpon>Rpt_Lista_Articulos_Comprados.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Compras\Consultas\Rpt_Lista_Articulos_Comprados.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\Compras\RequisicionesDetalleOrdenCompra.Designer.vb">
       <DependentUpon>RequisicionesDetalleOrdenCompra.vb</DependentUpon>
     </Compile>
@@ -2055,6 +2061,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Compras\Consultas\Rpt_Compras_Global.resx">
       <DependentUpon>Rpt_Compras_Global.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Compras\Consultas\Rpt_Lista_Articulos_Comprados.resx">
+      <DependentUpon>Rpt_Lista_Articulos_Comprados.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Compras\RequisicionesDetalleOrdenCompra.resx">
       <DependentUpon>RequisicionesDetalleOrdenCompra.vb</DependentUpon>

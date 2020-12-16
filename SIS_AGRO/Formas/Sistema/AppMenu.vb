@@ -1741,4 +1741,12 @@ Public Class AppMenu
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
     End Sub
+
+    Private Sub ListaArtículosCompradosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ListaArtículosCompradosToolStripMenuItem.Click
+        Dim Child As New Rpt_Lista_Articulos_Comprados
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
 End Class
