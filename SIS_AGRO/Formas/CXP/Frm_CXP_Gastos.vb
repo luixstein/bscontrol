@@ -412,14 +412,17 @@ Buscar:
                     Me.LblNombreAlmacen.Text = oAlmacen.NOMBRE_ALMACEN
 
                 Case Keys.Enter
-                    If txtLEN(Me.TxtCodigoAlmacen.Text) Then
+                    If txtLEN(Me.TxtCodigoAlmacen.Text) = False Then
+                        Me.LblNombreAlmacen.Text = ""
+                        GoTo Buscar : Return
+                    Else
                         oAlmacen.CODIGO_ALMACEN = Me.TxtCodigoAlmacen.Text
 
                         If oAlmacen.Consultar() = False Then
-                            GoTo Buscar
+                            GoTo Buscar : Return
                         ElseIf oAlmacen.ESTATUS = "B" Then
                             MsgBox("El almacén " & Me.TxtCodigoAlmacen.Text & " está dado de BAJA.", MsgBoxStyle.Exclamation, Me.Text)
-                            GoTo Buscar
+                            GoTo Buscar : Return
                         End If
 
                         Me.LblNombreAlmacen.Text = oAlmacen.NOMBRE_ALMACEN
@@ -587,8 +590,8 @@ Buscar:
 
     Private Sub txtTipoCambio_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtTipoCambio.KeyDown
         If e.KeyCode = Keys.Return Then
-            If valorNumerico(Me.txtTipoCambio.Text) < 0 Or valorNumerico(Me.txtTipoCambio.Text) > 20 Then
-                MsgBox("Tipo de cambio incorrecto", MsgBoxStyle.Information, "Validación de tipo de cambio")
+            If valorNumerico(Me.txtTipoCambio.Text) < 0 Or valorNumerico(Me.txtTipoCambio.Text) > 30 Then
+                MsgBox("Tipo de cambio incorrecto", MsgBoxStyle.Exclamation, "Validación de tipo de cambio")
                 Me.txtTipoCambio.Focus()
                 Exit Sub
             Else
@@ -3269,10 +3272,6 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
-    End Sub
-
-    Private Sub TxtCodigoAlmacen_TextChanged(sender As Object, e As EventArgs) Handles TxtCodigoAlmacen.TextChanged
-
     End Sub
 
 #End Region
