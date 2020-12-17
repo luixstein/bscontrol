@@ -336,9 +336,14 @@ Public Class Frm_CXP_Gastos
 
     Private Sub Frm_CXP_Revision_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.DesplegarTipoGasto()
+        Me.DesplegarTemporadas()
         Me.cboTipoGasto.Visible = False
         Me.Inicializa()
         Me.Cambia_Estado(enumEstados.NUEVO)
+
+        If Empresa_Sistema.ES_ACUICOLA = False Then
+            Me.cboTemporada.Visible = False
+        End If
     End Sub
 
     Private Sub txtFolioCompra_KeyDown(sender As Object, e As KeyEventArgs) Handles txtFolioCompra.KeyDown
@@ -799,6 +804,24 @@ Buscar:
         End Try
     End Sub
 
+    Private Sub DesplegarTemporadas()
+        Dim oTemporada As New Class_NominaTemporada
+        Try
+            With Me.cboTemporada
+                .DisplayMember = "NOMBRE_TEMPORADA"
+                .ValueMember = "ID_NOMINA_TEMPORADA"
+                Dim dView As New Data.DataView(oTemporada.ObtenerTemporadas)
+                dView.Sort = "NOMBRE_TEMPORADA"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedValue = Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarTemporadas", ex)
+        End Try
+    End Sub
+
     Private Sub Inicializa()
         Try
             Me.TxtCodigoProveedor.Text = ""
@@ -1218,6 +1241,7 @@ Buscar:
                     Me.btnGrabaDetalleVenta.Enabled = False
                     Me.TxtCodigoAlmacen.Enabled = True
                     Me.TxtCodigoProveedor.Enabled = True
+                    Me.cboTemporada.Enabled = True
                     Me.lblEstatus.Text = "NUEVO"
 
                     Me.tsslElaboro.Visible = False : Me.tsslElaboro.Text = ""
@@ -1243,6 +1267,7 @@ Buscar:
                     Me.tsbEditarCostos.Enabled = False
                     Me.btnActualizaConcepto.Visible = False
                     Me.btnGrabaDetalleVenta.Enabled = True
+                    Me.cboTemporada.Enabled = False
 
                     'Me.GridCuentas.Locked = False
                     'Me.GridCuentas.Column(Me.iGyCtasNombreCentroCosto).Locked = True
@@ -1383,6 +1408,7 @@ Buscar:
                     Me.gbCompras.Enabled = True
                     Me.btnImprimirPoliza.Visible = True
                     Me.btnActualizaConcepto.Visible = True
+                    Me.cboTemporada.Enabled = True
 
             End Select
         Catch ex As Exception
@@ -2182,6 +2208,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                     .CONCEPTO = Me.TxtConcepto.Text
                     .FOLIO_EMBARQUE = Me.txtEmbarque.Text
                     .FECHA_PROGRAMACION = Me.dtpFechaVencimiento.Value
+                    .ID_NOMINA_TEMPORADA = CInt(Me.cboTemporada.SelectedValue)
 
                     For i = 1 To Me.GridCuentas.Rows - 1
                         If Me.GridCuentas.Cell(i, Me.iGyCuentaContable).Text <> "" And valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasImporte).Text) > 0 Then
@@ -2784,6 +2811,8 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
             Me.txtRetencionISR.Text = FormatImporteContable(Me.oCompras.RETENCION_ISR)
             Me.txtTotalCompra.Text = FormatImporteContable(Me.oCompras.TOTAL)
             Me.txtImporteDolares.Text = FormatImporteContable(Me.oCompras.TOTAL_DOLARES)
+
+            Me.cboTemporada.SelectedValue = Me.oCompras.ID_NOMINA_TEMPORADA
 
             'Renglones centros costos
             Me.GridCuentas.DataSource = Me.oCompras.ObtenerDetalleCostos

@@ -36,6 +36,7 @@ Partial Class AcuicolaCapturaAlimentacion
         Me.LblFecha = New System.Windows.Forms.Label()
         Me.dtFecha = New System.Windows.Forms.DateTimePicker()
         Me.gbGlobal = New System.Windows.Forms.GroupBox()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.txtConcepto = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.lblDisplayStatus = New System.Windows.Forms.Label()
@@ -51,7 +52,8 @@ Partial Class AcuicolaCapturaAlimentacion
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tsslEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tsslElaboro = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.Label2 = New System.Windows.Forms.Label()
+        Me.lblDisplayTemporada = New System.Windows.Forms.Label()
+        Me.cboTemporada = New System.Windows.Forms.ComboBox()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbParametros.SuspendLayout()
@@ -173,6 +175,8 @@ Partial Class AcuicolaCapturaAlimentacion
         '
         'gbGlobal
         '
+        Me.gbGlobal.Controls.Add(Me.lblDisplayTemporada)
+        Me.gbGlobal.Controls.Add(Me.cboTemporada)
         Me.gbGlobal.Controls.Add(Me.Label2)
         Me.gbGlobal.Controls.Add(Me.txtConcepto)
         Me.gbGlobal.Controls.Add(Me.Label1)
@@ -197,6 +201,16 @@ Partial Class AcuicolaCapturaAlimentacion
         Me.gbGlobal.Size = New System.Drawing.Size(1055, 181)
         Me.gbGlobal.TabIndex = 0
         Me.gbGlobal.TabStop = False
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(859, 113)
+        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(186, 17)
+        Me.Label2.TabIndex = 392
+        Me.Label2.Text = "* F8 para eliminar renglones"
         '
         'txtConcepto
         '
@@ -358,15 +372,25 @@ Partial Class AcuicolaCapturaAlimentacion
         Me.tsslElaboro.Size = New System.Drawing.Size(72, 24)
         Me.tsslElaboro.Text = "Elaboró :"
         '
-        'Label2
+        'lblDisplayTemporada
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(859, 113)
-        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(186, 17)
-        Me.Label2.TabIndex = 392
-        Me.Label2.Text = "* F8 para eliminar renglones"
+        Me.lblDisplayTemporada.AutoSize = True
+        Me.lblDisplayTemporada.Location = New System.Drawing.Point(352, 117)
+        Me.lblDisplayTemporada.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayTemporada.Name = "lblDisplayTemporada"
+        Me.lblDisplayTemporada.Size = New System.Drawing.Size(89, 17)
+        Me.lblDisplayTemporada.TabIndex = 396
+        Me.lblDisplayTemporada.Text = "Temporada :"
+        '
+        'cboTemporada
+        '
+        Me.cboTemporada.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboTemporada.FormattingEnabled = True
+        Me.cboTemporada.Location = New System.Drawing.Point(449, 114)
+        Me.cboTemporada.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboTemporada.Name = "cboTemporada"
+        Me.cboTemporada.Size = New System.Drawing.Size(88, 24)
+        Me.cboTemporada.TabIndex = 395
         '
         'AcuicolaCapturaAlimentacion
         '
@@ -423,4 +447,6 @@ Partial Class AcuicolaCapturaAlimentacion
     Friend WithEvents Label1 As Label
     Friend WithEvents tsbCancelar As System.Windows.Forms.ToolStripButton
     Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents lblDisplayTemporada As System.Windows.Forms.Label
+    Friend WithEvents cboTemporada As System.Windows.Forms.ComboBox
 End Class

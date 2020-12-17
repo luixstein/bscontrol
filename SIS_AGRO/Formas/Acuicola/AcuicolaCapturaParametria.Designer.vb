@@ -26,6 +26,7 @@ Partial Class AcuicolaCapturaParametria
         Me.tsMenu = New System.Windows.Forms.ToolStrip()
         Me.tsbNuevo = New System.Windows.Forms.ToolStripButton()
         Me.tsbGrabar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.btnFolioSiguiente = New System.Windows.Forms.Button()
@@ -50,7 +51,8 @@ Partial Class AcuicolaCapturaParametria
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tsslEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tsslElaboro = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
+        Me.lblDisplayTemporada = New System.Windows.Forms.Label()
+        Me.cboTemporada = New System.Windows.Forms.ComboBox()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbParametros.SuspendLayout()
@@ -82,6 +84,14 @@ Partial Class AcuicolaCapturaParametria
         Me.tsbGrabar.Name = "tsbGrabar"
         Me.tsbGrabar.Size = New System.Drawing.Size(78, 24)
         Me.tsbGrabar.Text = "&Grabar"
+        '
+        'tsbCancelar
+        '
+        Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
+        Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbCancelar.Name = "tsbCancelar"
+        Me.tsbCancelar.Size = New System.Drawing.Size(94, 24)
+        Me.tsbCancelar.Text = " Cancelar"
         '
         'tsbImprimir
         '
@@ -164,6 +174,8 @@ Partial Class AcuicolaCapturaParametria
         '
         'gbGlobal
         '
+        Me.gbGlobal.Controls.Add(Me.lblDisplayTemporada)
+        Me.gbGlobal.Controls.Add(Me.cboTemporada)
         Me.gbGlobal.Controls.Add(Me.txtConcepto)
         Me.gbGlobal.Controls.Add(Me.Label1)
         Me.gbGlobal.Controls.Add(Me.lblDisplayStatus)
@@ -348,13 +360,25 @@ Partial Class AcuicolaCapturaParametria
         Me.tsslElaboro.Size = New System.Drawing.Size(72, 24)
         Me.tsslElaboro.Text = "Elaboró :"
         '
-        'tsbCancelar
+        'lblDisplayTemporada
         '
-        Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
-        Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbCancelar.Name = "tsbCancelar"
-        Me.tsbCancelar.Size = New System.Drawing.Size(94, 24)
-        Me.tsbCancelar.Text = " Cancelar"
+        Me.lblDisplayTemporada.AutoSize = True
+        Me.lblDisplayTemporada.Location = New System.Drawing.Point(375, 117)
+        Me.lblDisplayTemporada.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayTemporada.Name = "lblDisplayTemporada"
+        Me.lblDisplayTemporada.Size = New System.Drawing.Size(89, 17)
+        Me.lblDisplayTemporada.TabIndex = 396
+        Me.lblDisplayTemporada.Text = "Temporada :"
+        '
+        'cboTemporada
+        '
+        Me.cboTemporada.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboTemporada.FormattingEnabled = True
+        Me.cboTemporada.Location = New System.Drawing.Point(471, 114)
+        Me.cboTemporada.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboTemporada.Name = "cboTemporada"
+        Me.cboTemporada.Size = New System.Drawing.Size(88, 24)
+        Me.cboTemporada.TabIndex = 395
         '
         'AcuicolaCapturaParametria
         '
@@ -410,4 +434,6 @@ Partial Class AcuicolaCapturaParametria
     Friend WithEvents txtConcepto As TextBox
     Friend WithEvents Label1 As Label
     Friend WithEvents tsbCancelar As System.Windows.Forms.ToolStripButton
+    Friend WithEvents lblDisplayTemporada As System.Windows.Forms.Label
+    Friend WithEvents cboTemporada As System.Windows.Forms.ComboBox
 End Class

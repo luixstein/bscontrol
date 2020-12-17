@@ -72,6 +72,8 @@ Public Class Class_Compras_Global
 
     Private _CODIGO_TIPO_ENVIO As Integer
     Private _NOMBRE_TRANSPORTE As String
+
+    Private _ID_NOMINA_TEMPORADA As Integer
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -598,6 +600,15 @@ Public Class Class_Compras_Global
         End Set
     End Property
 
+    Public Property ID_NOMINA_TEMPORADA() As Integer
+        Get
+            Return Me._ID_NOMINA_TEMPORADA
+        End Get
+        Set(value As Integer)
+            Me._ID_NOMINA_TEMPORADA = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -861,6 +872,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@LISTA_CENTROS_COSTOS", SqlDbType.NVarChar, 4000) : sqlParametro.Value = sListaCentrosCostos
             sqlParametro = .Parameters.Add("@LISTA_ACTIVOS", SqlDbType.NVarChar, 4000) : sqlParametro.Value = sListaActivos
             sqlParametro = .Parameters.Add("@ES_FISCAL", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._ES_FISCAL)
+            sqlParametro = .Parameters.Add("@ID_NOMINA_TEMPORADA", SqlDbType.SmallInt) : sqlParametro.Value = Me._ID_NOMINA_TEMPORADA
 
             Try
                 Me._Conexion.Open()
@@ -1160,6 +1172,8 @@ Public Class Class_Compras_Global
                     End If
 
                     Me._NOMBRE_TRANSPORTE = "" & dReader("NOMBRE_TRANSPORTE").ToString
+
+                    Me._ID_NOMINA_TEMPORADA = CInt(dReader("ID_NOMINA_TEMPORADA"))
 
                     bResultado = True
                 End If

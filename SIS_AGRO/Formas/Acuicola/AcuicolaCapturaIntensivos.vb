@@ -81,6 +81,7 @@
     Private Sub AcuicolaCapturaIntensivos_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
             Me.DesplegarDivisiones()
+            Me.DesplegarTemporadas()
 
             Me.Inicializa()
             Me.Cambia_Estado(enumEstados.NUEVO)
@@ -376,6 +377,7 @@
                     Me.tsbCancelar.Enabled = False
                     Me.cboDivision.Enabled = True
                     Me.txtCiclo.Enabled = True
+                    Me.cboTemporada.Enabled = True
 
                     Me.tsslEstado.Text = "Estado: Agregando nuevo movimiento"
                     Me.tsslElaboro.Visible = False
@@ -390,6 +392,7 @@
                     Me.tsbCancelar.Enabled = True
                     Me.cboDivision.Enabled = False
                     Me.txtCiclo.Enabled = False
+                    Me.cboTemporada.Enabled = False
 
                     Me.tsslEstado.Text = "Estado: Consultando movimiento"
                     Me.tsslElaboro.Visible = True
@@ -400,6 +403,7 @@
                     Me.tsbCancelar.Enabled = False
                     Me.cboDivision.Enabled = False
                     Me.txtCiclo.Enabled = False
+                    Me.cboTemporada.SelectedValue = False
                     Me.Grid.Locked = True
 
                     Me.tsslEstado.Text = "Estado: Cancelado"
@@ -430,6 +434,24 @@
         End Try
     End Sub
 
+    Private Sub DesplegarTemporadas()
+        Dim oTemporada As New Class_NominaTemporada
+        Try
+            With Me.cboTemporada
+                .DisplayMember = "NOMBRE_TEMPORADA"
+                .ValueMember = "ID_NOMINA_TEMPORADA"
+                Dim dView As New Data.DataView(oTemporada.ObtenerTemporadas)
+                dView.Sort = "NOMBRE_TEMPORADA"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedValue = Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarTemporadas", ex)
+        End Try
+    End Sub
+
     Private Function Consultar() As Boolean
         Dim bResultado As Boolean = False
 
@@ -455,6 +477,7 @@
                 Me.txtCiclo.Text = .CICLO.ToString
                 Me.txtConcepto.Text = .CONCEPTO
                 Me.lblEstatus.Text = .ESTATUS
+                Me.cboTemporada.SelectedValue = .ID_NOMINA_TEMPORADA
                 Me.tsslElaboro.Text = "Elaboró: " + .NOMBRE_USUARIO_GRABO.ToUpper + " el " + Format(.FECHA_SERVIDOR, "dd/MMM/yy hh:mm tt").ToUpper
             End With
 
@@ -514,6 +537,7 @@
                 .CODIGO_DIVISION = CInt(Me.cboDivision.SelectedValue)
                 .FECHA = Me.dtFecha.Value
                 .CONCEPTO = Me.txtConcepto.Text.ToUpper.Trim
+                .ID_NOMINA_TEMPORADA = Me.cboTemporada.SelectedValue
 
                 If .GrabaAlimentacionGlobal(IIf(Me.Estado = enumEstados.NUEVO, "INSERTAR", "ACTUALIZAR").ToString) = False Then
                     MsgBox("Error al tratar de grabar los estanques intensivos.", MsgBoxStyle.Exclamation, Me.Name)
@@ -802,7 +826,7 @@
                         Case Me.iGyNombreLote
 
 Busqueda:
-                            sCodigo = oIntensivos.BusquedaVisual_Lote_ProyectoSiembra_PorNombre(Me.cboDivision.SelectedValue.ToString, Me.txtCiclo.Text, Me.dtFecha.Value.Year.ToString)
+                            sCodigo = oIntensivos.BusquedaVisual_Lote_ProyectoSiembra_PorNombre(Me.cboDivision.SelectedValue.ToString, Me.txtCiclo.Text, Me.cboTemporada.SelectedValue.ToString)
                             Me.Grid.Cell(Renglon, Me.iGyIDProyectoSiembra).Text = sCodigo
 
                             For i = Renglon + 1 To Me.Grid.Rows - 1
