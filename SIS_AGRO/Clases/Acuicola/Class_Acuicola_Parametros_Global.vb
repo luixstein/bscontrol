@@ -8,6 +8,7 @@ Public Class Class_Acuicola_Parametros_Global
 #Region "Campos"
 #Region "Campos de la tabla"
     Private _ID_ACUICOLA_PARAMETROS_GLOBAL As Integer = 0
+    Private _ID_NOMINA_TEMPORADA As Integer
     Private _FOLIO_PARAMETROS As String
     Private _CODIGO_DOCUMENTO As String
     Private _CODIGO_PLAZA As Integer
@@ -43,6 +44,15 @@ Public Class Class_Acuicola_Parametros_Global
         Get
             Return Me._ID_ACUICOLA_PARAMETROS_GLOBAL
         End Get
+    End Property
+
+    Public Property ID_NOMINA_TEMPORADA() As Integer
+        Get
+            Return Me._ID_NOMINA_TEMPORADA
+        End Get
+        Set(value As Integer)
+            Me._ID_NOMINA_TEMPORADA = value
+        End Set
     End Property
 
     Public Property FOLIO_PARAMETROS() As String
@@ -198,6 +208,7 @@ Public Class Class_Acuicola_Parametros_Global
 
             Try
                 sqlParametro = .Parameters.Add("@ID_ACUICOLA_PARAMETROS_GLOBAL", SqlDbType.Int) : sqlParametro.Value = Me._ID_ACUICOLA_PARAMETROS_GLOBAL : sqlParametro.Direction = ParameterDirection.InputOutput
+                sqlParametro = .Parameters.Add("@ID_NOMINA_TEMPORADA", SqlDbType.Int) : sqlParametro.Value = Me._ID_NOMINA_TEMPORADA
                 sqlParametro = .Parameters.Add("@FOLIO_PARAMETROS", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_PARAMETROS : sqlParametro.Direction = ParameterDirection.InputOutput
                 sqlParametro = .Parameters.Add("@CODIGO_DOCUMENTO", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_DOCUMENTO
                 sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Plaza
@@ -248,6 +259,7 @@ Public Class Class_Acuicola_Parametros_Global
 
                 If dReader.Read = True Then
                     Me._ID_ACUICOLA_PARAMETROS_GLOBAL = CInt(dReader("ID_ACUICOLA_PARAMETROS_GLOBAL"))
+                    Me._ID_NOMINA_TEMPORADA = CInt(dReader("ID_NOMINA_TEMPORADA"))
                     Me._FOLIO_PARAMETROS = "" & dReader("FOLIO_PARAMETROS").ToString()
                     Me._CODIGO_DOCUMENTO = "" & dReader("CODIGO_DOCUMENTO").ToString()
                     Me._CODIGO_PLAZA = CInt(dReader("CODIGO_PLAZA"))
@@ -340,7 +352,7 @@ Public Class Class_Acuicola_Parametros_Global
         Return Resultado
     End Function
 
-    Public Function BusquedaVisual_Lote_ParametrosDetalle_PorNombre(sCodigoDivision As String, sCiclo As String, sAño As String) As String
+    Public Function BusquedaVisual_Lote_ParametrosDetalle_PorNombre(sCodigoDivision As String, sCiclo As String, sTemporada As String) As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de estanques por nombre."
@@ -348,7 +360,7 @@ Public Class Class_Acuicola_Parametros_Global
         f.sOrder = "L.NOMBRE_LOTE"
         f.sTable = "ACUICOLA_PARAMETROS_GLOBAL"
         f.sQl = "SELECT P.ID_PROYECTO_SIEMBRA,P.CODIGO_LOTE,L.NOMBRE_LOTE AS ESTANQUE FROM PROYECTO_SIEMBRA_ACUICOLA P INNER JOIN CAT_LOTES L ON(P.CODIGO_LOTE=L.CODIGO_LOTE) " & _
-                "WHERE P.CODIGO_DIVISION = '" & sCodigoDivision & "' AND P.CICLO = '" & sCiclo & "' AND YEAR(P.FECHA_INICIO)=" & sAño & " AND "
+                "WHERE P.CODIGO_DIVISION = '" & sCodigoDivision & "' AND P.CICLO = '" & sCiclo & "' AND P.ID_NOMINA_TEMPORADA=" & sTemporada & " AND "
         f.Inicia("")
         f.ShowDialog()
         Try

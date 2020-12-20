@@ -68,6 +68,7 @@
         Try
             Me.DesplegarTurnos()
             Me.DesplegarDivisiones()
+            Me.DesplegarTemporadas()
 
             Me.Inicializa()
             Me.Cambia_Estado(enumEstados.NUEVO)
@@ -299,6 +300,7 @@
                     Me.tsbCancelar.Enabled = False
                     Me.cboDivision.Enabled = True
                     Me.txtCiclo.Enabled = True
+                    Me.cboTemporada.Enabled = True
 
                     Me.tsslEstado.Text = "Estado: Agregando nuevo movimiento"
                     Me.tsslElaboro.Visible = False
@@ -312,6 +314,7 @@
                     Me.tsbCancelar.Enabled = True
                     Me.cboDivision.Enabled = False
                     Me.txtCiclo.Enabled = False
+                    Me.cboTemporada.Enabled = False
 
                     Me.tsslEstado.Text = "Estado: Consultando movimiento"
                     Me.tsslElaboro.Visible = True
@@ -321,6 +324,7 @@
                     Me.tsbCancelar.Enabled = True
                     Me.cboDivision.Enabled = False
                     Me.txtCiclo.Enabled = False
+                    Me.cboTemporada.Enabled = False
                     Me.Grid.Locked = True
 
                     Me.tsslEstado.Text = "Estado: Cancelado"
@@ -382,6 +386,24 @@
         End Try
     End Sub
 
+    Private Sub DesplegarTemporadas()
+        Dim oTemporada As New Class_NominaTemporada
+        Try
+            With Me.cboTemporada
+                .DisplayMember = "NOMBRE_TEMPORADA"
+                .ValueMember = "ID_NOMINA_TEMPORADA"
+                Dim dView As New Data.DataView(oTemporada.ObtenerTemporadas)
+                dView.Sort = "NOMBRE_TEMPORADA"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedValue = Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarTemporadas", ex)
+        End Try
+    End Sub
+
     Private Function Consultar() As Boolean
         Dim bResultado As Boolean = False
 
@@ -403,6 +425,7 @@
             With Me.oParametria
                 Me.txtFolio.Text = .FOLIO_PARAMETRIA
                 Me.dtFecha.Value = .FECHA
+                Me.cboTemporada.SelectedValue = .ID_NOMINA_TEMPORADA
 
                 Select Case .TURNO
                     Case "M"
@@ -476,6 +499,7 @@
                 .FECHA = Me.dtFecha.Value
                 .CONCEPTO = Me.txtConcepto.Text.ToUpper.Trim
                 .TURNO = Me.cboTurno.Text.Substring(0, 1)
+                .ID_NOMINA_TEMPORADA = Me.cboTemporada.SelectedValue
 
                 If .GrabaParametriaGlobal(IIf(Me.Estado = enumEstados.NUEVO, "INSERTAR", "ACTUALIZAR").ToString) = False Then
                     MsgBox("Error al tratar de grabar la parametria.", MsgBoxStyle.Exclamation, Me.Name)
@@ -683,7 +707,7 @@
                         Case Me.iGyNombreLote
 
 Busqueda:
-                            sCodigo = oParametria.BusquedaVisual_Lote_ProyectoSiembra_PorNombre(Me.cboDivision.SelectedValue.ToString, Me.txtCiclo.Text, Me.dtFecha.Value.Year.ToString)
+                            sCodigo = oParametria.BusquedaVisual_Lote_ProyectoSiembra_PorNombre(Me.cboDivision.SelectedValue.ToString, Me.txtCiclo.Text, Me.cboTemporada.SelectedValue.ToString)
                             Me.Grid.Cell(Renglon, Me.iGyIDProyectoSiembra).Text = sCodigo
 
                             For i = Renglon + 1 To Me.Grid.Rows - 1

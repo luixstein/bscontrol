@@ -50,6 +50,8 @@ Partial Class AcuicolaCapturaIntensivos
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tsslEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tsslElaboro = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.lblDisplayTemporada = New System.Windows.Forms.Label()
+        Me.cboTemporada = New System.Windows.Forms.ComboBox()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbParametros.SuspendLayout()
@@ -171,6 +173,8 @@ Partial Class AcuicolaCapturaIntensivos
         '
         'gbGlobal
         '
+        Me.gbGlobal.Controls.Add(Me.lblDisplayTemporada)
+        Me.gbGlobal.Controls.Add(Me.cboTemporada)
         Me.gbGlobal.Controls.Add(Me.Label2)
         Me.gbGlobal.Controls.Add(Me.txtConcepto)
         Me.gbGlobal.Controls.Add(Me.Label1)
@@ -344,6 +348,26 @@ Partial Class AcuicolaCapturaIntensivos
         Me.tsslElaboro.Size = New System.Drawing.Size(72, 24)
         Me.tsslElaboro.Text = "Elaboró :"
         '
+        'lblDisplayTemporada
+        '
+        Me.lblDisplayTemporada.AutoSize = True
+        Me.lblDisplayTemporada.Location = New System.Drawing.Point(362, 81)
+        Me.lblDisplayTemporada.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayTemporada.Name = "lblDisplayTemporada"
+        Me.lblDisplayTemporada.Size = New System.Drawing.Size(89, 17)
+        Me.lblDisplayTemporada.TabIndex = 396
+        Me.lblDisplayTemporada.Text = "Temporada :"
+        '
+        'cboTemporada
+        '
+        Me.cboTemporada.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboTemporada.FormattingEnabled = True
+        Me.cboTemporada.Location = New System.Drawing.Point(459, 78)
+        Me.cboTemporada.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboTemporada.Name = "cboTemporada"
+        Me.cboTemporada.Size = New System.Drawing.Size(88, 24)
+        Me.cboTemporada.TabIndex = 395
+        '
         'AcuicolaCapturaIntensivos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -397,4 +421,6 @@ Partial Class AcuicolaCapturaIntensivos
     Friend WithEvents Label1 As Label
     Friend WithEvents tsbCancelar As System.Windows.Forms.ToolStripButton
     Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents lblDisplayTemporada As System.Windows.Forms.Label
+    Friend WithEvents cboTemporada As System.Windows.Forms.ComboBox
 End Class

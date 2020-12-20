@@ -1,7 +1,6 @@
 ﻿Option Strict On
 
 Imports System.Data.SqlClient
-'Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Class_ProyectoSiembraAcuicola
 
@@ -9,6 +8,7 @@ Public Class Class_ProyectoSiembraAcuicola
 
 #Region "Campos de la tabla"
     Private _ID_PROYECTO_SIEMBRA As Integer
+    Private _ID_NOMINA_TEMPORADA As Integer
     Private _CICLO As Integer
     Private _FECHA_INICIO As Date
     Private _CODIGO_DIVISION As Integer
@@ -50,6 +50,15 @@ Public Class Class_ProyectoSiembraAcuicola
         End Get
         Set(ByVal VALUE As Integer)
             Me._ID_PROYECTO_SIEMBRA = VALUE
+        End Set
+    End Property
+
+    Public Property ID_NOMINA_TEMPORADA() As Integer
+        Get
+            Return Me._ID_NOMINA_TEMPORADA
+        End Get
+        Set(ByVal VALUE As Integer)
+            Me._ID_NOMINA_TEMPORADA = VALUE
         End Set
     End Property
 
@@ -220,6 +229,7 @@ Public Class Class_ProyectoSiembraAcuicola
             .CommandText = "MP_ACUICOLA_PROYECTO_SIEMBRA_GRABA"
 
             sqlParametro = .Parameters.Add("@ID_PROYECTO_SIEMBRA", SqlDbType.SmallInt) : sqlParametro.Value = Me._ID_PROYECTO_SIEMBRA : sqlParametro.Direction = ParameterDirection.InputOutput
+            sqlParametro = .Parameters.Add("@ID_NOMINA_TEMPORADA", SqlDbType.SmallInt) : sqlParametro.Value = Me._ID_NOMINA_TEMPORADA
             sqlParametro = .Parameters.Add("@CICLO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CICLO
             sqlParametro = .Parameters.Add("@FECHA_INICIO", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_INICIO
             sqlParametro = .Parameters.Add("@CODIGO_DIVISION", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_DIVISION
@@ -236,7 +246,9 @@ Public Class Class_ProyectoSiembraAcuicola
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                Me._ID_PROYECTO_SIEMBRA = CInt("" & .Parameters("@ID_PROYECTO_SIEMBRA").Value.ToString)
+                If sAccion = "INSERTAR" Then
+                    Me._ID_PROYECTO_SIEMBRA = CInt("" & .Parameters("@ID_PROYECTO_SIEMBRA").Value.ToString)
+                End If
                 bResultado = True
             Catch ex As Exception
                 HandleError(Me.Nombre_Clase, "Grabar", ex)
@@ -261,8 +273,9 @@ Public Class Class_ProyectoSiembraAcuicola
                 Me._Conexion.Open()
                 dReader = .ExecuteReader()
 
-                If dReader.Read Then
+                If dReader.Read = True Then
                     Me._ID_PROYECTO_SIEMBRA = CInt("" & dReader("ID_PROYECTO_SIEMBRA").ToString())
+                    Me._ID_NOMINA_TEMPORADA = CInt("" & dReader("ID_PROYECTO_SIEMBRA").ToString())
                     Me._CICLO = CInt("" & dReader("CICLO").ToString())
                     Me._FECHA_INICIO = CDate("" & dReader("FECHA_INICIO").ToString())
                     Me._CODIGO_DIVISION = CInt("" & dReader("CODIGO_DIVISION").ToString())
@@ -293,14 +306,31 @@ Public Class Class_ProyectoSiembraAcuicola
         Return bResultado
     End Function
 
+    'Public Function ObtenerElementosFiltro(ByVal Estatus As String, ByVal Año As String) As System.Data.DataTable
+    '    Dim dTable As New DataTable
+    '    Dim dA As New SqlDataAdapter("SELECT P.ID_PROYECTO_SIEMBRA,P.CICLO Ciclo,DBO.FN_FORMAT_FECHA_CORTO(P.FECHA_INICIO) [Fecha inicio],CD.NOMBRE_DIVISION División,CL.NOMBRE_LOTE Lote,P.HA " &
+    '                                 "FROM PROYECTO_SIEMBRA_ACUICOLA P " &
+    '                                 "INNER JOIN CAT_DIVISIONES_ACUICOLA CD ON(P.CODIGO_DIVISION=CD.CODIGO_DIVISION) " &
+    '                                 "INNER JOIN CAT_LOTES CL ON(P.CODIGO_LOTE=CL.CODIGO_LOTE) " &
+    '                                 "WHERE P.ESTATUS='" & Estatus & "' AND YEAR(P.FECHA_INICIO)=" & Año.ToString & " " &
+    '                                 "ORDER BY P.FECHA_INICIO,P.CODIGO_DIVISION,P.CICLO,P.CODIGO_LOTE", Me._Conexion)
+    '    Try
+    '        dA.Fill(dTable)
+    '    Catch ex As Exception
+    '        HandleError(Me.Nombre_Clase, "ObtenerElementosFiltro", ex)
+    '    Finally
+    '        dA.Dispose()
+    '    End Try
+    '    Return dTable
+    'End Function
 
-    Public Function ObtenerElementosFiltro(ByVal Estatus As String, ByVal Año As String) As System.Data.DataTable
+    Public Function ObtenerElementosFiltro(ByVal Estatus As String, ByVal IDTemporada As String) As System.Data.DataTable
         Dim dTable As New DataTable
         Dim dA As New SqlDataAdapter("SELECT P.ID_PROYECTO_SIEMBRA,P.CICLO Ciclo,DBO.FN_FORMAT_FECHA_CORTO(P.FECHA_INICIO) [Fecha inicio],CD.NOMBRE_DIVISION División,CL.NOMBRE_LOTE Lote,P.HA " &
                                      "FROM PROYECTO_SIEMBRA_ACUICOLA P " &
                                      "INNER JOIN CAT_DIVISIONES_ACUICOLA CD ON(P.CODIGO_DIVISION=CD.CODIGO_DIVISION) " &
                                      "INNER JOIN CAT_LOTES CL ON(P.CODIGO_LOTE=CL.CODIGO_LOTE) " &
-                                     "WHERE P.ESTATUS='" & Estatus & "' AND YEAR(P.FECHA_INICIO)=" & Año.ToString & " " &
+                                     "WHERE P.ESTATUS='" & Estatus & "' AND P.ID_NOMINA_TEMPORADA=" & IDTemporada & " " &
                                      "ORDER BY P.FECHA_INICIO,P.CODIGO_DIVISION,P.CICLO,P.CODIGO_LOTE", Me._Conexion)
         Try
             dA.Fill(dTable)
@@ -311,7 +341,6 @@ Public Class Class_ProyectoSiembraAcuicola
         End Try
         Return dTable
     End Function
-
 #End Region
 
 End Class

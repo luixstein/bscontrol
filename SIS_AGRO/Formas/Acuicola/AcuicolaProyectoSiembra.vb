@@ -37,7 +37,8 @@ Public Class AcuicolaProyectoSiembra
         Try
             Me.DesplegarDivisiones()
             Me.DesplegarLotes()
-            Me.DesplegarAños()
+            'Me.DesplegarAños()
+            Me.DesplegarTemporadas()
 
             Me.msgElemento = "proyecto de siembra"
             Me.Run = False
@@ -159,7 +160,7 @@ Public Class AcuicolaProyectoSiembra
         Me.DesplegarElementos()
     End Sub
 
-    Private Sub cboAñoFiltro_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboAñoFiltro.SelectedIndexChanged
+    Private Sub cboAñoFiltro_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboTemporada.SelectedIndexChanged
         Me.Grid.DataSource = Nothing
         Me.DesplegarElementos()
     End Sub
@@ -283,7 +284,8 @@ Public Class AcuicolaProyectoSiembra
     Private Sub DesplegarElementos()
         Try
             With Me.Grid
-                .DataSource = oProyecto.ObtenerElementosFiltro(Me.cboEstatusFiltro.Text, Me.cboAñoFiltro.Text)
+                '.DataSource = oProyecto.ObtenerElementosFiltro(Me.cboEstatusFiltro.Text, Me.cboTemporada.Text)
+                .DataSource = oProyecto.ObtenerElementosFiltro(Me.cboEstatusFiltro.Text, Me.cboTemporada.SelectedValue.ToString)
                 .Columns("ID_PROYECTO_SIEMBRA").Width = 50
                 .Columns("Ciclo").Width = 100
                 .Columns("Fecha inicio").Width = 110
@@ -328,6 +330,7 @@ Public Class AcuicolaProyectoSiembra
             Case enumEstados.NUEVO, enumEstados.EDICION
                 Try
                     With Me.oProyecto
+                        .ID_NOMINA_TEMPORADA = CInt(Me.cboTemporada.SelectedValue)
                         .ID_PROYECTO_SIEMBRA = CInt("0" & Me.txtIDProyectoSiembra.Text)
                         .CICLO = CInt(Me.txtCiclo.Text)
                         .FECHA_INICIO = Me.dtFecha.Value
@@ -335,7 +338,6 @@ Public Class AcuicolaProyectoSiembra
                         .CODIGO_LOTE = Me.cboLote.SelectedValue.ToString
                         .HA = valorNumericoD(Me.txtHA.Text)
                         .ESTATUS = Me.CboEstatus.Text
-
                         .FECHA_CIERRE = Me.DtFechaCierre.Value
                         .KILOS_COSECHADOS = valorNumericoD(Me.TxtKilosCosechados.Text)
                         .FOLIO_ENTRADA = Me.TxtFolioEntrada.Text
@@ -454,17 +456,34 @@ Public Class AcuicolaProyectoSiembra
         End Try
     End Sub
 
-    Private Sub DesplegarAños()
+    'Private Sub DesplegarAños()
+    '    Try
+    '        For i = 2000 To 2200
+    '            Me.cboTemporada.Items.Add(i.ToString)
+    '        Next
+    '        Me.cboTemporada.Text = Date.Now.Year.ToString
+    '    Catch ex As Exception
+    '        HandleError(Me.Name, "DesplegarLotes", ex)
+    '    End Try
+    'End Sub
+
+    Private Sub DesplegarTemporadas()
+        Dim oTemporada As New Class_NominaTemporada
         Try
-            For i = 2000 To 2200
-                Me.cboAñoFiltro.Items.Add(i.ToString)
-            Next
-            Me.cboAñoFiltro.Text = Date.Now.Year.ToString
+            With Me.cboTemporada
+                .DisplayMember = "NOMBRE_TEMPORADA"
+                .ValueMember = "ID_NOMINA_TEMPORADA"
+                Dim dView As New Data.DataView(oTemporada.ObtenerTemporadas)
+                dView.Sort = "NOMBRE_TEMPORADA"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedValue = Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA
+                End If
+            End With
         Catch ex As Exception
-            HandleError(Me.Name, "DesplegarLotes", ex)
+            HandleError(Me.Name, "DesplegarTemporadas", ex)
         End Try
     End Sub
-
 #End Region
 
 End Class
