@@ -342,6 +342,7 @@ Public Class Frm_CXP_Gastos
         Me.Cambia_Estado(enumEstados.NUEVO)
 
         If Empresa_Sistema.ES_ACUICOLA = False Then
+            Me.lblDisplayTemporada.Visible = False
             Me.cboTemporada.Visible = False
         End If
     End Sub
