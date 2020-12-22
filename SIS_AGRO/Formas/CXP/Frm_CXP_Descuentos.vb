@@ -1133,7 +1133,7 @@ Public Class Frm_CXP_Descuentos
             Me.oFormaPoliza.TxtFolio.Text = Me.TxtFolio.Text
 
             Me.oFormaPoliza.Grid1.Rows = 2
-            Me.oFormaPoliza.Grid1.Cols = 9
+            Me.oFormaPoliza.Grid1.Cols = 13
 
             oProveedor = New Class_CatProveedores(Me.TxtCodigoProveedor.Text)
             oCuenta = New Class_CatCuentas(oProveedor.CUENTA_CONTABLE)
