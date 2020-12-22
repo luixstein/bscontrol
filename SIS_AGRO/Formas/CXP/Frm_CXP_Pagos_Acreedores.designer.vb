@@ -133,7 +133,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimir, Me.tsbIvaAcreditable, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1109, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1228, 27)
         Me.tsMenu.TabIndex = 1
         Me.tsMenu.Text = "tsMenu"
         '
@@ -374,7 +374,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.gbGlobal.Controls.Add(Me.txtCuentaBancaria)
         Me.gbGlobal.Location = New System.Drawing.Point(6, 28)
         Me.gbGlobal.Name = "gbGlobal"
-        Me.gbGlobal.Size = New System.Drawing.Size(1088, 226)
+        Me.gbGlobal.Size = New System.Drawing.Size(1219, 226)
         Me.gbGlobal.TabIndex = 0
         Me.gbGlobal.TabStop = False
         Me.gbGlobal.Text = "Datos"
@@ -626,7 +626,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssEstado, Me.tssElaboro, Me.tssCancelo})
         Me.StatusStripEstado.Location = New System.Drawing.Point(0, 555)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1109, 24)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1228, 24)
         Me.StatusStripEstado.TabIndex = 2
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -662,7 +662,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.gbCompras.Controls.Add(Me.Grid1)
         Me.gbCompras.Location = New System.Drawing.Point(6, 223)
         Me.gbCompras.Name = "gbCompras"
-        Me.gbCompras.Size = New System.Drawing.Size(1088, 329)
+        Me.gbCompras.Size = New System.Drawing.Size(1219, 329)
         Me.gbCompras.TabIndex = 210
         Me.gbCompras.TabStop = False
         Me.gbCompras.Text = "Compras "
@@ -682,14 +682,14 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.Grid1.LockButton = True
         Me.Grid1.Name = "Grid1"
         Me.Grid1.Rows = 20
-        Me.Grid1.Size = New System.Drawing.Size(1078, 258)
+        Me.Grid1.Size = New System.Drawing.Size(1207, 263)
         Me.Grid1.TabIndex = 0
         Me.Grid1.UncheckedImage = CType(resources.GetObject("Grid1.UncheckedImage"), System.Drawing.Bitmap)
         '
         'gbFleteEmbarques
         '
         Me.gbFleteEmbarques.Controls.Add(Me.Grid2)
-        Me.gbFleteEmbarques.Location = New System.Drawing.Point(1099, 253)
+        Me.gbFleteEmbarques.Location = New System.Drawing.Point(1236, 253)
         Me.gbFleteEmbarques.Name = "gbFleteEmbarques"
         Me.gbFleteEmbarques.Size = New System.Drawing.Size(978, 265)
         Me.gbFleteEmbarques.TabIndex = 211
@@ -721,7 +721,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSize = True
-        Me.ClientSize = New System.Drawing.Size(1109, 579)
+        Me.ClientSize = New System.Drawing.Size(1228, 579)
         Me.Controls.Add(Me.gbGlobal)
         Me.Controls.Add(Me.gbFleteEmbarques)
         Me.Controls.Add(Me.gbCompras)

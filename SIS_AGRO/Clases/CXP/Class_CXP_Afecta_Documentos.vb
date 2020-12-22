@@ -241,6 +241,7 @@ Public Class Class_CXP_Afecta_Documentos
             sqlParametro = .Parameters.Add("@ES_PROVEEDOR", SqlDbType.Char, 1) : sqlParametro.Value = IIf(Me.ModoPago = enumModoPago.PROVEEDOR, "1", "0")
             sqlParametro = .Parameters.Add("@CODIGO_MONEDA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_MONEDA
             sqlParametro = .Parameters.Add("@TOTAL_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_USD
+            sqlParametro = .Parameters.Add("@IMPUESTO", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO
 
             Try
                 Me._Conexion.Open()
