@@ -127,7 +127,7 @@ Public Class Class_CXPCatalogoConceptosPagos
 #Region "Métodos y procedimientos"
     Public Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim ds As New SqlDataAdapter("SELECT CODIGO_CONCEPTO_PAGO_CXP,NOMBRE_CONCEPTO_PAGO_CXP FROM CXP_CATALOGO_CONCEPTOS_PAGOS ORDER BY NOMBRE_CONCEPTO_PAGO_CXP", Empresa_Sistema.conexion)
+        Dim ds As New SqlDataAdapter("SELECT CODIGO_CONCEPTO_PAGO_CXP,NOMBRE_CONCEPTO_PAGO_CXP FROM CXP_CATALOGO_CONCEPTOS_PAGOS WHERE ESTATUS='A' ORDER BY NOMBRE_CONCEPTO_PAGO_CXP", Empresa_Sistema.conexion)
         Try
             ds.Fill(dTable)
         Catch ex As Exception
