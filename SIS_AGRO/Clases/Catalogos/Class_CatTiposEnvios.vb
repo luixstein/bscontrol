@@ -230,7 +230,7 @@ Public Class Class_CatTiposEnvios
         Dim da As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
         Try
             da.Fill(dTable)
-            dTable.Rows.Add(-1, "NINGUNO")
+            dTable.Rows.Add(-1, "") 'Renglon en blanco para dejar null el tipo de envio al grabar
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
         Finally
