@@ -1,8 +1,7 @@
-﻿Imports System.Data
-Imports System.Data.SqlClient
+﻿Imports System.Data.SqlClient
 
 Public Class Class_CatMonedas
-    'Inherits Class_Catalogos
+
 #Region "Campos"
 
 #Region "Campos de la tabla"
@@ -156,16 +155,16 @@ Public Class Class_CatMonedas
 #Region "Métodos y procedimientos"
     Public Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim dsCat_Monedas As New SqlDataAdapter("Select CODIGO_MONEDA,NOMBRE,ABREVIACION,TPCAM,ESTATUS,CODIGO_FORMATO_LETRA,CODIGO_MONEDA_SAT from CATALOGO_MONEDAS order by CODIGO_MONEDA", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_MONEDA,NOMBRE,ABREVIACION,TPCAM,ESTATUS,CODIGO_FORMATO_LETRA,CODIGO_MONEDA_SAT from CATALOGO_MONEDAS ORDER BY CODIGO_MONEDA", Me._Conexion)
         Try
-            dsCat_Monedas.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
         Finally
-            dsCat_Monedas.Dispose()
+            da.Dispose()
         End Try
         Return dTable
-    End Function    'Obtiene una lita completa de los elementos del catalogo en un datatable.
+    End Function
 #End Region
 
 End Class

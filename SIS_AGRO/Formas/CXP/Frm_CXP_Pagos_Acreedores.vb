@@ -704,7 +704,7 @@ buscar_acreedor:
     Private Sub cboMoneda_SelectedValueChanged(sender As Object, e As EventArgs) Handles cboMoneda.SelectedValueChanged
         If Me.cboMoneda.SelectedValue = 2 Then
             If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
-                ObtieneTipoCambioDia()
+                Me.ObtieneTipoCambioDia()
             End If
         End If
     End Sub
@@ -787,7 +787,7 @@ enter:
     End Sub
 
     Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles cboDocumento.KeyPress, TxtFolio.KeyPress,
-    dtFecha.KeyPress, TxtCodigoProveedor.KeyPress, TxtConcepto.KeyPress
+                                dtFecha.KeyPress, TxtCodigoProveedor.KeyPress, TxtConcepto.KeyPress
         txtNoBeep(e)
     End Sub
 #End Region
@@ -855,6 +855,7 @@ enter:
             Me.FormateaGrid()
         Catch ex As Exception
             HandleError(Me.Name, "InicializaGrid", ex)
+        Finally
             Me.Grid1.AutoRedraw = True
             Me.Grid1.Refresh()
         End Try
@@ -884,19 +885,19 @@ enter:
                 .Column(Me.iGyFacturaProveedor).Width = 60
                 .Column(Me.iGyFecha).Width = 70
                 .Column(Me.iGyFolio).Width = 70
-                .Column(Me.iGyMoneda).Width = 43
+                .Column(Me.iGyMoneda).Width = 30
                 .Column(Me.iGyTipoCambio).Width = 50
                 .Column(Me.iGyTotalUSD).Width = 70
                 .Column(Me.iGySaldoUSD).Width = 70
-                .Column(Me.iGyImpuestoUSD).Width = 60
+                .Column(Me.iGyImpuestoUSD).Width = 70
                 .Column(Me.iGyConcepto).Width = 100 '200
-                .Column(Me.iGyTotalMXN).Width = 70
-                .Column(Me.iGySaldoMXN).Width = 70
+                .Column(Me.iGyTotalMXN).Width = 80
+                .Column(Me.iGySaldoMXN).Width = 80
                 .Column(Me.iGySaldoImpuesto).Visible = False '.Column(Me.iGySaldoImpuesto).Width = 60
-                .Column(Me.iGyImpuestoMXN).Width = 60
+                .Column(Me.iGyImpuestoMXN).Width = 70
                 .Column(Me.iGyRetencion).Width = 60
                 .Column(Me.iGyPagarImpuesto).Width = 80
-                .Column(Me.iGyPagoMXN).Width = 70
+                .Column(Me.iGyPagoMXN).Width = 80
                 .Column(Me.iGyPagoUSD).Width = 70
                 .Column(Me.iGySeleccion).Width = 55
                 .Column(Me.iGyCodigoDocumento).Visible = False
@@ -910,7 +911,7 @@ enter:
                 .Cell(0, Me.iGyFacturaProveedor).Text = "Fac. Prov."
                 .Cell(0, Me.iGyFecha).Text = "Fecha"
                 .Cell(0, Me.iGyFolio).Text = "Folio"
-                .Cell(0, Me.iGyMoneda).Text = "Moneda"
+                .Cell(0, Me.iGyMoneda).Text = "Mon"
                 .Cell(0, Me.iGyTipoCambio).Text = "TpCam"
                 .Cell(0, Me.iGyTotalUSD).Text = "Total USD"
                 .Cell(0, Me.iGySaldoUSD).Text = "Saldo USD"
@@ -924,7 +925,7 @@ enter:
                 .Cell(0, Me.iGyPagarImpuesto).Text = "IVA Pagar MXN"
                 .Cell(0, Me.iGyPagoMXN).Text = "Pagar MXN"
                 .Cell(0, Me.iGyPagoUSD).Text = "Pagar USD"
-                .Cell(0, Me.iGySeleccion).Text = "Seleccion"
+                .Cell(0, Me.iGySeleccion).Text = "Selección"
                 .Cell(0, Me.iGyCodigoDocumento).Text = "CodigoDocumento "
                 .Cell(0, Me.iGyAutorizado).Text = "Autorizado"
 
@@ -1118,7 +1119,6 @@ enter:
     Private Sub SetRowVisible(ByVal Row1 As Integer, ByVal Row2 As Integer, ByVal Value As Boolean)
         Try
             Dim i As Integer
-
             Me.Grid1.AutoRedraw = False
             For i = Row1 To Row2
                 Me.Grid1.Row(i).Visible = Value
@@ -1185,7 +1185,6 @@ enter:
                     Me.txtImporteDolares.Text = FormatImporteContable(dTotalUSD)
 
                 Case enumModoPago.ACREEDOR
-
                     Me.txtTipoCambio.Text = Format(dTipoCambio, "###,##0.0000")
                     dTotalMXN = valorNumerico(Me.TxtImporte.Text)
 
@@ -1236,9 +1235,7 @@ enter:
             'End If
 
             If Me.Grabar() = True Then
-
                 Me.oPolizaGlobal = New Class_Contabilidad_Poliza_Global(Me.TxtFolio.Text)
-
                 Me.oPolizaGlobal.CODIGO_LISTA_FACTURAS_RECIBIDAS = "N"
 
                 'se elimina por que ahora se hace desde MP_CONTABILIDAD_ASIENTO_REPETITIVO_BANCOS_PAGOS
@@ -1251,7 +1248,6 @@ enter:
                 'End If
 
                 bResultado = True
-
             End If
 
         Catch ex As Exception
@@ -1518,7 +1514,6 @@ enter:
                         End If
 
                     End If
-
                 Next i
             End If
 
@@ -1658,17 +1653,20 @@ enter:
     End Sub
 
     Private Sub DesplegarMonedas()
-        Dim oMoneda As New Class_CatMonedas
-        Dim dTable As New DataTable
-
-        With Me.cboMoneda
-            .DisplayMember = "NOMBRE"
-            .ValueMember = "CODIGO_MONEDA"
-            dTable = oMoneda.ObtenerElementos
-            dTable.Rows(2).Delete() 'Quita Euros del DataTable
-            .DataSource = dTable
-            .SelectedValue = 1
-        End With
+        Try
+            Dim oMoneda As New Class_CatMonedas
+            Dim dTable As New DataTable
+            With Me.cboMoneda
+                .DisplayMember = "NOMBRE"
+                .ValueMember = "CODIGO_MONEDA"
+                dTable = oMoneda.ObtenerElementos
+                dTable.Rows(2).Delete() 'Quita Euros del DataTable
+                .DataSource = dTable
+                .SelectedValue = 1 '1=MXN,2=USD
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarMonedas", ex)
+        End Try
     End Sub
 
     'Private Function ValidaPrePoliza() As Boolean
@@ -1964,13 +1962,15 @@ enter:
 
                 Me.ckbAbonoCuentaBeneficiario.Checked = CBool(Convert.ToInt32(Me.oBancosCXP.ABONO_CUENTA_BENEFICIARIO).ToString)
 
+                'Esto debe ir antes de establecer el tpcambio porque al cambiar entre monedas pudiera cambiarse en automático al del dia seleccionado.
+                If Me.oBancosCXP.CODIGO_MONEDA_SAT = "MXN" Then
+                    Me.cboMoneda.SelectedValue = 1 '1=MXN
+                Else
+                    Me.cboMoneda.SelectedValue = 2 '2=USD
+                End If
+
                 Me.txtTipoCambio.Text = Format(oBancosCXP.TIPO_DE_CAMBIO, "###,##0.0000")
                 Me.txtImporteDolares.Text = FormatImporteContable(oBancosCXP.TOTAL_DOLARES)
-
-                If Me.oBancosCXP.CODIGO_MONEDA_SAT <> "MXN" Then '1=pesos
-                    'Me.ckbDolares.Checked = True
-                    Me.cboMoneda.SelectedValue = 2
-                End If
 
                 Me.txtRetencion.Text = FormatImporteContable(oBancosCXP.RETENCION)
                 Me.oBancosCXP.Consultar() 'No identificado porque esta consultado nuevamente porque ya consultó en Me.oBancosCXP = New Class_Bancos_CXP(sFolio), será porque se pierde/inicializa información al cambiar la moneda?
@@ -2558,14 +2558,14 @@ BuscaEmbarque:
                     Dim sql As New Class_find("SELECT 1 FROM EMB_EMBARQUE_GLOBAL WHERE FOLIO_EMBARQUE='" & Me.Grid2.Cell(i, Me.iGyFolioEmbarque).Text & "' AND ESTATUS_EMBARQUE='A'")
                     If sql.Result1 = "" Then
                         MsgBox("El embarque que intenta introducir en el renglón: " & i & " no existe ó esta cancelado, favor de intentar con otro embarque.", MsgBoxStyle.Exclamation, "Validación de embarques")
-                        Exit Function
+                        Return False
                     ElseIf sql.Result1 = "1" Then
                         Dim sql1 As New Class_find("SELECT SALDO_FLETE FROM EMB_EMBARQUE_GLOBAL WHERE FOLIO_EMBARQUE='" & Me.Grid2.Cell(i, Me.iGyFolioEmbarque).Text & "'")
                         If valorNumerico(sql1.Result1) < valorNumerico(Me.Grid2.Cell(i, Me.iGyPagoFlete).Text) Then
                             MsgBox("El pago en el renglón: " & i & " es mayor al saldo del flete favor de revisar.", MsgBoxStyle.Exclamation, "Validación de Importes de CXP")
                             Me.Grid2.Cell(i, Me.iGyPagoFlete).Text = ""
                             Me.Grid2.Cell(i, Me.iGyPagoFlete).SetFocus()
-                            Exit Function
+                            Return False
                         End If
                     End If
                 End If
@@ -2579,7 +2579,7 @@ BuscaEmbarque:
                             If sCodigoEmbarque = Me.Grid2.Cell(j, Me.iGyFolioEmbarque).Text And Me.Grid2.Rows > 2 Then
                                 MsgBox("El embarque que intenta introducir en el renglón:  " & i & " ya existe en el renglon " & j.ToString & ", favor de intentar con otro código.", MsgBoxStyle.Exclamation, "Validación de embarques")
                                 Me.Grid2.Cell(i, Me.iGyFolioEmbarque).SetFocus()
-                                Exit Function
+                                Return False
                             End If
                         End If
                     Next j
@@ -2598,7 +2598,7 @@ BuscaEmbarque:
                             Me.Grid2.Cell(Renglon, Me.iGySaldoFlete).Text = ""
                             Me.Grid2.Cell(Renglon, Me.iGyPagoFlete).Text = ""
                             Me.Grid2.Cell(Renglon, Me.iGyFolioEmbarque).SetFocus()
-                            Exit Function
+                            Return False
                         End If
                     End If
                 Next j
@@ -2613,7 +2613,7 @@ BuscaEmbarque:
                             Me.Grid2.Cell(Renglon, Me.iGySaldoFlete).Text = ""
                             Me.Grid2.Cell(Renglon, Me.iGyPagoFlete).Text = ""
                             Me.Grid2.Cell(Renglon, Me.iGyFolioEmbarque).SetFocus()
-                            Exit Function
+                            Return False
                         End If
                     End If
                 Next j
@@ -2763,6 +2763,7 @@ BuscaEmbarque:
                 Me.LblProveedor.Text = Child.Grid1.Cell(Child.iRenglonSeleccionado + 1, 2).Text
                 Me.CargaComprasConSaldo()
             End If
+
         Catch ex As Exception
             HandleError(Me.Name, "SiguienteProveedor", ex)
         End Try
@@ -2851,7 +2852,6 @@ BuscaEmbarque:
                         MsgBox("No se ha capturado el tipo de cambio del día.", MsgBoxStyle.Exclamation, Me.Text)
                     End If
                 End If
-
             Else
                 If oTipoCambio.Existe = True Then
                     Me.txtTipoCambio.Text = Format(oTipoCambio.TIPO_DE_CAMBIO, "###,##0.0000")
@@ -2863,8 +2863,6 @@ BuscaEmbarque:
             HandleError(Me.Name, "ObtieneTipoCambioDia", ex)
         End Try
     End Sub
-
-
 
 #End Region
 

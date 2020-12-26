@@ -572,7 +572,7 @@ Public Class Class_Bancos_CXP
                     Me._CODIGO_BANCO = CType(dReader("CODIGO_BANCO"), String)
                     Me._CUENTA_BANCARIA_PESOS = CType(dReader("CUENTA_BANCARIA_PESOS"), String)
                     Me._CUENTA_BANCARIA_DOLARES = "" & dReader("CUENTA_BANCARIA_DOLARES").ToString
-                    Me._TOTAL = CType(dReader("TOTAL"), Double)
+                    Me._TOTAL = CType(dReader("TOTAL_PAGO"), Double) 'NOTA, ANTES AQUI USABA EL CAMPO TOTAL LO CUAL ES INCORRECTO PORQUE SE REFIERE A CXP Y NO BANCOS GLOBAL. 
                     Me._CODIGO_DOCUMENTO = CType(dReader("CODIGO_DOCUMENTO"), String)
                     Me._CONCEPTO1 = CType(dReader("CONCEPTO"), String)
                     Me._FOLIO_POLIZA = "" & dReader("FOLIO_POLIZA").ToString
