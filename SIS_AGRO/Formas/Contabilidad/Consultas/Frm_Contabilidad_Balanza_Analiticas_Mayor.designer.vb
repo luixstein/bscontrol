@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,10 +20,12 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Frm_Contabilidad_Balanza_Analiticas_Mayor))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.lblDisplayNivel = New System.Windows.Forms.Label()
+        Me.cboNivel = New System.Windows.Forms.ComboBox()
         Me.chkFiltrarSoloCuentasConMovimientos = New System.Windows.Forms.CheckBox()
         Me.lblCuenta2 = New System.Windows.Forms.Label()
         Me.lblCuenta1 = New System.Windows.Forms.Label()
@@ -43,7 +45,6 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.gbFiltros = New System.Windows.Forms.GroupBox()
-        Me.RdbBalanzaComprobacion2doNivel = New System.Windows.Forms.RadioButton()
         Me.RdbAuxiliarMayor = New System.Windows.Forms.RadioButton()
         Me.RdbBalanzaComprobacion = New System.Windows.Forms.RadioButton()
         Me.RdbRelacionAnalitica = New System.Windows.Forms.RadioButton()
@@ -54,6 +55,8 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.lblDisplayNivel)
+        Me.GroupBox1.Controls.Add(Me.cboNivel)
         Me.GroupBox1.Controls.Add(Me.chkFiltrarSoloCuentasConMovimientos)
         Me.GroupBox1.Controls.Add(Me.lblCuenta2)
         Me.GroupBox1.Controls.Add(Me.lblCuenta1)
@@ -75,6 +78,28 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
         Me.GroupBox1.TabIndex = 8
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Filtros"
+        '
+        'lblDisplayNivel
+        '
+        Me.lblDisplayNivel.AutoSize = True
+        Me.lblDisplayNivel.Location = New System.Drawing.Point(276, 16)
+        Me.lblDisplayNivel.Name = "lblDisplayNivel"
+        Me.lblDisplayNivel.Size = New System.Drawing.Size(37, 13)
+        Me.lblDisplayNivel.TabIndex = 221
+        Me.lblDisplayNivel.Text = "Nivel :"
+        Me.lblDisplayNivel.Visible = False
+        '
+        'cboNivel
+        '
+        Me.cboNivel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboNivel.FormattingEnabled = True
+        Me.cboNivel.Items.AddRange(New Object() {"1", "2", "3", "4", "5"})
+        Me.cboNivel.Location = New System.Drawing.Point(322, 13)
+        Me.cboNivel.MaxLength = 1
+        Me.cboNivel.Name = "cboNivel"
+        Me.cboNivel.Size = New System.Drawing.Size(39, 21)
+        Me.cboNivel.TabIndex = 220
+        Me.cboNivel.Visible = False
         '
         'chkFiltrarSoloCuentasConMovimientos
         '
@@ -242,7 +267,6 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
         '
         'gbFiltros
         '
-        Me.gbFiltros.Controls.Add(Me.RdbBalanzaComprobacion2doNivel)
         Me.gbFiltros.Controls.Add(Me.RdbAuxiliarMayor)
         Me.gbFiltros.Controls.Add(Me.RdbBalanzaComprobacion)
         Me.gbFiltros.Controls.Add(Me.RdbRelacionAnalitica)
@@ -253,20 +277,10 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
         Me.gbFiltros.TabStop = False
         Me.gbFiltros.Text = "Tipo de reporte"
         '
-        'RdbBalanzaComprobacion2doNivel
-        '
-        Me.RdbBalanzaComprobacion2doNivel.AutoSize = True
-        Me.RdbBalanzaComprobacion2doNivel.Location = New System.Drawing.Point(295, 19)
-        Me.RdbBalanzaComprobacion2doNivel.Name = "RdbBalanzaComprobacion2doNivel"
-        Me.RdbBalanzaComprobacion2doNivel.Size = New System.Drawing.Size(194, 17)
-        Me.RdbBalanzaComprobacion2doNivel.TabIndex = 3
-        Me.RdbBalanzaComprobacion2doNivel.Text = "&Balanza de comprobación 2do nivel"
-        Me.RdbBalanzaComprobacion2doNivel.UseVisualStyleBackColor = True
-        '
         'RdbAuxiliarMayor
         '
         Me.RdbAuxiliarMayor.AutoSize = True
-        Me.RdbAuxiliarMayor.Location = New System.Drawing.Point(497, 19)
+        Me.RdbAuxiliarMayor.Location = New System.Drawing.Point(293, 19)
         Me.RdbAuxiliarMayor.Name = "RdbAuxiliarMayor"
         Me.RdbAuxiliarMayor.Size = New System.Drawing.Size(104, 17)
         Me.RdbAuxiliarMayor.TabIndex = 2
@@ -340,6 +354,7 @@ Partial Class Frm_Contabilidad_Balanza_Analiticas_Mayor
     Friend WithEvents lblCuenta1 As System.Windows.Forms.Label
     Friend WithEvents lblCuenta2 As System.Windows.Forms.Label
     Friend WithEvents tsbImprimir As System.Windows.Forms.ToolStripButton
-    Friend WithEvents RdbBalanzaComprobacion2doNivel As RadioButton
     Friend WithEvents chkFiltrarSoloCuentasConMovimientos As CheckBox
+    Friend WithEvents lblDisplayNivel As Label
+    Friend WithEvents cboNivel As ComboBox
 End Class

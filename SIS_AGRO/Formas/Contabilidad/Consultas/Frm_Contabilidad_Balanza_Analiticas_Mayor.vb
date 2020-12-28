@@ -1,4 +1,5 @@
 ﻿Option Strict On
+
 Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Frm_Contabilidad_Balanza_Analiticas_Mayor
@@ -52,10 +53,10 @@ Public Class Frm_Contabilidad_Balanza_Analiticas_Mayor
 
 #Region "Eventos de objetos"
     Private Sub Frm_Contabilidad_Balanza_Analiticas_Mayor_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Dim sql As Class_find
-        sql = New Class_find("SELECT FECHA_INICIO,FECHA_FINAL FROM CON_EJERCICIOS WHERE ID_CON_EJERCICIO=" & Me.CmbEjercicio.SelectedValue.ToString)
+        Dim sql As New Class_find("SELECT FECHA_INICIO,FECHA_FINAL FROM CON_EJERCICIOS WHERE ID_CON_EJERCICIO=" & Me.CmbEjercicio.SelectedValue.ToString)
         Me.DtFechaDesde.Value = CDate(sql.Result1)
         Me.DtFechaHasta.Value = CDate(sql.Result2)
+        Me.cboNivel.Text = "1"
     End Sub
 
 #Region "Eventos Genericos"
@@ -187,6 +188,7 @@ BusquedaVisual:
         If Me.RdbRelacionAnalitica.Checked = True Then
             Me.ChCuentasAfectacion.Visible = True
             Me.chkFiltrarSoloCuentasConMovimientos.Visible = False
+            Me.cboNivel.Visible = False : Me.lblDisplayNivel.Visible = False
         End If
     End Sub
 
@@ -194,13 +196,7 @@ BusquedaVisual:
         If Me.RdbBalanzaComprobacion.Checked = True Then
             Me.ChCuentasAfectacion.Visible = False
             Me.chkFiltrarSoloCuentasConMovimientos.Visible = True
-        End If
-    End Sub
-
-    Private Sub RdbBalanzaComprobacion2doNivel_CheckedChanged(sender As Object, e As EventArgs) Handles RdbBalanzaComprobacion2doNivel.CheckedChanged
-        If Me.RdbBalanzaComprobacion2doNivel.Checked = True Then
-            Me.ChCuentasAfectacion.Visible = False
-            Me.chkFiltrarSoloCuentasConMovimientos.Visible = True
+            Me.cboNivel.Visible = True : Me.lblDisplayNivel.Visible = True
         End If
     End Sub
 
@@ -208,6 +204,7 @@ BusquedaVisual:
         If Me.RdbAuxiliarMayor.Checked = True Then
             Me.ChCuentasAfectacion.Visible = False
             Me.chkFiltrarSoloCuentasConMovimientos.Visible = False
+            Me.cboNivel.Visible = False : Me.lblDisplayNivel.Visible = False
         End If
     End Sub
 #End Region
@@ -346,7 +343,7 @@ BusquedaVisual:
         Try
             If Me.RdbRelacionAnalitica.Checked = True Then
                 FormatoDeReporte = "RPT_CONTABILIDAD_RELACIONES_ANALITICAS"
-            ElseIf Me.RdbBalanzaComprobacion.Checked = True Or Me.RdbBalanzaComprobacion2doNivel.Checked = True Then
+            ElseIf Me.RdbBalanzaComprobacion.Checked = True Then
                 FormatoDeReporte = "RPT_CONTABILIDAD_BALANZA_COMPROBACION"
             ElseIf Me.RdbAuxiliarMayor.Checked = True Then
                 FormatoDeReporte = "RPT_CONTABILIDAD_AUXILIAR_DE_MAYOR"
@@ -365,10 +362,7 @@ BusquedaVisual:
                 Rpt.SetParameterValue("@MOSTRAR_SOLO_CUENTAS_DE_AFECTACION", Convert.ToInt32(Me.ChCuentasAfectacion.Checked))
                 Rpt.SetParameterValue("@FORMATO_PARA_COMPARATIVO", "0")
             ElseIf RdbBalanzaComprobacion.Checked = True Then
-                Rpt.SetParameterValue("@FILTRAR_HASTA_NIVEL2", "0")
-                Rpt.SetParameterValue("@FILTRAR_SOLO_CUENTAS_CON_MOVIMIENTOS", Convert.ToInt32(Me.chkFiltrarSoloCuentasConMovimientos.Checked))
-            ElseIf RdbBalanzaComprobacion2doNivel.Checked = True Then
-                Rpt.SetParameterValue("@FILTRAR_HASTA_NIVEL2", "1") 'Aquí intencionalmente se le pasa 1 para que si nos muestre las cuentas de 2do nivel.
+                Rpt.SetParameterValue("@FILTRAR_HASTA_NIVEL", Me.cboNivel.Text) 'Desde el nivel 2 mostrará los gastos(que no salen de la contabilidad pero se simulan como si fueran cuentas contables nivel 2 dentro de las cuentas 5x)
                 Rpt.SetParameterValue("@FILTRAR_SOLO_CUENTAS_CON_MOVIMIENTOS", Convert.ToInt32(Me.chkFiltrarSoloCuentasConMovimientos.Checked))
             ElseIf Me.RdbAuxiliarMayor.Checked = True Then
                 Rpt.SetParameterValue("@FILTRO_CONTRAPOLIZAS", "0")
