@@ -2512,6 +2512,28 @@ CANCELAR:
                 Return False
             End If
 
+            If Me.oDocumento.ES_FACTURA_ANTICIPO = True Then
+                If Me.oDocumento.AFECTA_CONTABILIDAD = True Then
+                    If txtLEN(Me.oCliente.CUENTA_CONTABLE_ANTICIPO) = False Then
+                        MsgBox("El cliente no tiene una cuenta contable de anticipos.", MsgBoxStyle.Exclamation, sProcedure)
+                        Me.TxtCliente.Focus()
+                        Return False
+                    End If
+                End If
+
+                If Me.cboMetodoPago.SelectedValue.ToString <> "PUE" Then
+                    MsgBox("El método de pago para anticipos debe ser PUE según el SAT.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                Dim sResultado As String = Me.TieneArticulosInventariables
+
+                If txtLEN(sResultado) = True Then
+                    MsgBox("En los anticipos no se permiten artículos inventariables los cuales son " & vbCrLf & sResultado, MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+            End If
+
             bResultado = True
 
         Catch ex As Exception
@@ -5583,6 +5605,26 @@ BuscaVentas:
             HandleError(Me.Name, "DesplegarRegimenesFiscales", ex)
         End Try
     End Sub
+
+    Private Function TieneArticulosInventariables() As String
+        Const sProcedure As String = "TieneArticulosInventariables"
+        Dim sResultado As String = ""
+        Dim oArticulos As Class_CatArticulos
+        Try
+            For i = 1 To Me.Grid.Rows - 1
+                If Len(Me.Grid.Cell(i, Me.igyCodigo).Text) > 0 Then
+                    oArticulos = New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
+                    If oArticulos.INVENTARIABLE = "1" Then
+                        sResultado = sResultado & Me.Grid.Cell(i, Me.igyCodigo).Text & "-" & Me.Grid.Cell(i, Me.igyDescripcion).Text & vbCrLf
+                    End If
+                End If
+            Next i
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+
+        Return sResultado
+    End Function
 #End Region
 
 End Class

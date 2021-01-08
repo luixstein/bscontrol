@@ -1,4 +1,3 @@
-Imports System.Data
 Imports System.Data.SqlClient
 
 Public Class Class_CatDocumentos
@@ -27,6 +26,7 @@ Public Class Class_CatDocumentos
     Private _CODIGO_MERCADO As String
     Private _TIMBRA_DOCUMENTO As Boolean
     Private _ACCESIBLE_USUARIO As String
+    Private _ES_FACTURA_ANTICIPO As Boolean
     'Private _SOLICITA_CUENTA_ORIGEN_RECURSOS As Boolean
 #End Region
 
@@ -203,6 +203,12 @@ Public Class Class_CatDocumentos
         End Get
     End Property
 
+    Public ReadOnly Property ES_FACTURA_ANTICIPO() As Boolean
+        Get
+            Return Me._ES_FACTURA_ANTICIPO
+        End Get
+    End Property
+
     'Public ReadOnly Property SOLICITA_CUENTA_ORIGEN_RECURSOS() As Boolean
     '    Get
     '        Return Me._SOLICITA_CUENTA_ORIGEN_RECURSOS
@@ -324,6 +330,7 @@ Public Class Class_CatDocumentos
                     Me._CODIGO_MERCADO = dReader("CODIGO_MERCADO")
                     Me._TIMBRA_DOCUMENTO = CBool(dReader("TIMBRA_DOCUMENTO"))
                     Me._ACCESIBLE_USUARIO = CBool(dReader("ACCESIBLE_USUARIO"))
+                    Me._ES_FACTURA_ANTICIPO = CBool(dReader("ES_FACTURA_ANTICIPO"))
                     'Me._SOLICITA_CUENTA_ORIGEN_RECURSOS = CBool(dReader("SOLICITA_CUENTA_ORIGEN_RECURSOS"))
 
                     bResultado = True
@@ -351,7 +358,7 @@ Public Class Class_CatDocumentos
                 Me._Conexion.Open()
                 dReader = .ExecuteReader()
 
-                If dReader.Read Then
+                If dReader.Read = True Then
                     Me._CODIGO_DOCUMENTO = "" & dReader("CODIGO_DOCUMENTO").ToString
                     Me._CODIGO_TIPO_DOCUMENTO = "" & dReader("CODIGO_TIPO_DOCUMENTO").ToString
                     Me._Nombre_Reporte = "" & dReader("NOMBRE_FORMATO").ToString
@@ -362,6 +369,8 @@ Public Class Class_CatDocumentos
                     Me._AFECTA_CXP = dReader("AFECTA_CXP")
                     Me._CODIGO_MERCADO = dReader("CODIGO_MERCADO")
                     Me._TIMBRA_DOCUMENTO = CBool(dReader("TIMBRA_DOCUMENTO"))
+                    Me._ACCESIBLE_USUARIO = CBool(dReader("ACCESIBLE_USUARIO"))
+                    Me._ES_FACTURA_ANTICIPO = CBool(dReader("ES_FACTURA_ANTICIPO"))
 
                     bResultado = True
                 End If
