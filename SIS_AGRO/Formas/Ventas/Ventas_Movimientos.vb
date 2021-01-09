@@ -2513,23 +2513,32 @@ CANCELAR:
             End If
 
             If Me.oDocumento.ES_FACTURA_ANTICIPO = True Then
-                If Me.oDocumento.AFECTA_CONTABILIDAD = True Then
-                    If txtLEN(Me.oCliente.CUENTA_CONTABLE_ANTICIPO) = False Then
+                'If Me.oDocumento.AFECTA_CONTABILIDAD = True Then
+                'Esta factura no va afectar contabilidad, la póliza se afecta al momento del pago, pero sin embargo de una vez obligamos a que tenga cuenta contable anticipos.
+                If txtLEN(Me.oCliente.CUENTA_CONTABLE_ANTICIPO) = False Then
                         MsgBox("El cliente no tiene una cuenta contable de anticipos.", MsgBoxStyle.Exclamation, sProcedure)
                         Me.TxtCliente.Focus()
                         Return False
                     End If
-                End If
+                'End If
 
                 If Me.cboMetodoPago.SelectedValue.ToString <> "PUE" Then
                     MsgBox("El método de pago para anticipos debe ser PUE según el SAT.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
 
+                If Me.cboFormaPago.SelectedValue.ToString = "99" Then
+                    MsgBox("La forma de pago no puede ser " & Me.cboFormaPago.Text & " porque éste es un anticipo y ya se sabe como se pagó, el SAT así lo indica.", vbExclamation, sProcedure)
+                    If Me.cboFormaPago.Enabled = True Then
+                        Me.cboFormaPago.Focus()
+                    End If
+                    Return False
+                End If
+
                 Dim sResultado As String = Me.TieneArticulosInventariables
 
                 If txtLEN(sResultado) = True Then
-                    MsgBox("En los anticipos no se permiten artículos inventariables los cuales son " & vbCrLf & sResultado, MsgBoxStyle.Exclamation, sProcedure)
+                    MsgBox("En los anticipos no se permiten artículos inventariables los cuales son : " & vbCrLf & sResultado, MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
             End If
@@ -4445,7 +4454,12 @@ buscaCentrosCostos:
 
             Me.bClienteEsContribuyenteIEPS = CBool(Me.oCliente.ES_CONTRIBUYENTE_IEPS)
 
-            Me.cboTipoNegociacion.SelectedValue = Me.oCliente.CODIGO_TIPO_NEGOCIACION
+            If Me.oDocumento.ES_FACTURA_ANTICIPO = True Then
+                Me.cboTipoNegociacion.SelectedValue = "2" '1=Credito, 2=Contado , forzamos a contado porque al ser anticipo es contado-PUE según el SAT.
+                Me.cboMetodoPago.SelectedValue = "PUE"
+            Else
+                Me.cboTipoNegociacion.SelectedValue = Me.oCliente.CODIGO_TIPO_NEGOCIACION
+            End If
 
             Return True
         Catch ex As Exception
