@@ -217,6 +217,10 @@ Public Class Catalogo_Clientes
         Me.GeneraCuentaContableDolares()
     End Sub
 
+    Private Sub BtnGeneraCuentaContableAnticipos_Click(sender As Object, e As EventArgs) Handles BtnGeneraCuentaContableAnticipos.Click
+        Me.GeneraCuentaContableAnticipos()
+    End Sub
+
     Private Sub cboPais_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPais.SelectedIndexChanged
         Me.DesplegarEstados()
     End Sub
@@ -568,6 +572,8 @@ busca:
                     'Me.txtCuentaContable.Enabled = True
                     Me.txtCuentaContableDolares.Enabled = False
                     Me.BtnGeneraCuentaContableDolares.Enabled = False
+                    Me.TxtCuentaContableAnticipos.Enabled = False
+                    Me.BtnGeneraCuentaContableAnticipos.Enabled = False
                     Me.txtDiasPlazo.Enabled = True
                     Me.txtLimiteCredito.Enabled = True
                     Me.txtCorreoCliente.Enabled = True
@@ -624,6 +630,8 @@ busca:
                     Me.cboMunicipio.Enabled = True
                     Me.txtCuentaContableDolares.Enabled = False
                     Me.BtnGeneraCuentaContableDolares.Enabled = False
+                    Me.TxtCuentaContableAnticipos.Enabled = False
+                    Me.BtnGeneraCuentaContableAnticipos.Enabled = False
                     Me.txtDiasPlazo.Enabled = True
                     Me.txtLimiteCredito.Enabled = True
                     Me.chkPermitirVentaCredito.Enabled = True
@@ -653,6 +661,10 @@ busca:
 
                     If txtLEN(Me.txtCuentaContableDolares.Text) = False Then
                         Me.BtnGeneraCuentaContableDolares.Enabled = True
+                    End If
+
+                    If txtLEN(Me.TxtCuentaContableAnticipos.Text) = False Then
+                        Me.BtnGeneraCuentaContableAnticipos.Enabled = True
                     End If
 
                     Me.cboUsoCFDI.Enabled = True
@@ -689,6 +701,8 @@ busca:
                     Me.cboMunicipio.Enabled = False
                     Me.txtCuentaContableDolares.Enabled = False
                     Me.BtnGeneraCuentaContableDolares.Enabled = False
+                    Me.TxtCuentaContableAnticipos.Enabled = False
+                    Me.BtnGeneraCuentaContableAnticipos.Enabled = False
                     Me.txtDiasPlazo.Enabled = False
                     Me.txtLimiteCredito.Enabled = False
                     Me.tssLabelEstado.Text = "Consultando"
@@ -741,6 +755,7 @@ busca:
             Me.txtLocalidad.Text = ""
             Me.txtCuentaContable.Text = ""
             Me.txtCuentaContableDolares.Text = ""
+            Me.TxtCuentaContableAnticipos.Text = ""
             Me.txtDiasPlazo.Text = ""
             Me.txtLimiteCredito.Text = ""
             Me.txtCorreoCliente.Text = ""
@@ -1002,6 +1017,34 @@ busca:
         End Try
     End Sub
 
+    Private Sub GeneraCuentaContableAnticipos()
+        Dim generado As Boolean = False
+        Try
+            With oClientes
+                .CODIGO_CLIENTE = Me.txtCodigoCliente.Text
+                .NOMBRE_CLIENTE = Me.TxtNombreCliente.Text
+
+                If .EstablecerCuentaContableAnticipos() Then
+                    generado = True
+                End If
+
+                If generado Then
+                    MsgBox("Cuenta contable de anticipos creada satisfactoriamente.", MsgBoxStyle.Information)
+                    Me.Estado = enumEstados.CONSULTA
+                    Me.Cambia_Estado()
+                    DesplegarElementos()
+                End If
+            End With
+
+        Catch ex As Exception
+            HandleError(Me.Name, "GeneraCuentaContableAnticipos", ex)
+            Me.Estado = enumEstados.CONSULTA
+            Me.Cambia_Estado()
+        Finally
+            oClientes = Nothing
+        End Try
+    End Sub
+
     Private Sub Elimina_Elemento()
         Dim oElemento As New Class_CatClientes
         Dim Eliminado As Boolean = False
@@ -1010,6 +1053,7 @@ busca:
                 .CODIGO_CLIENTE = Me.txtCodigoCliente.Text
                 .CUENTA_CONTABLE = Me.txtCuentaContable.Text
                 .CUENTA_CONTABLE_DOLARES = Me.txtCuentaContableDolares.Text
+                .CUENTA_CONTABLE_ANTICIPOS = Me.TxtCuentaContableAnticipos.Text
 
                 If Me.ValidaMovimientosCliente = False Then
                     Exit Sub
@@ -1225,6 +1269,7 @@ busca:
                     End If
                     Me.txtCuentaContable.Text = .CUENTA_CONTABLE
                     Me.txtCuentaContableDolares.Text = .CUENTA_CONTABLE_DOLARES
+                    Me.TxtCuentaContableAnticipos.Text = .CUENTA_CONTABLE_ANTICIPOS
                     Me.txtDiasPlazo.Text = .DIAS_PLAZO.ToString
                     Me.txtLimiteCredito.Text = FormatImporteContable(CDbl(.LIMITE_CREDITO.ToString), True)
 

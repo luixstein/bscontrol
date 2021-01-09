@@ -53,6 +53,7 @@ Public Class Class_CatClientes
     Private _CORREO_CLIENTE_PAGOS As String
     Private _CODIGO_GIRO As String
     Private _CODIGO_TIPO_NEGOCIACION As String
+    Private _CUENTA_CONTABLE_ANTICIPOS As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -473,6 +474,15 @@ Public Class Class_CatClientes
         End Set
     End Property
 
+    Public Property CUENTA_CONTABLE_ANTICIPOS() As String
+        Get
+            Return Me._CUENTA_CONTABLE_ANTICIPOS
+        End Get
+        Set(ByVal Value As String)
+            Me._CUENTA_CONTABLE_ANTICIPOS = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -742,6 +752,7 @@ Public Class Class_CatClientes
                     Me._CORREO_CLIENTE_PAGOS = Trim("" & dReader("CORREO_CLIENTE_PAGOS").ToString)
                     Me._CODIGO_GIRO = "" & dReader("CODIGO_GIRO").ToString
                     Me._CODIGO_TIPO_NEGOCIACION = "" & dReader("CODIGO_TIPO_NEGOCIACION").ToString
+                    Me._CUENTA_CONTABLE_ANTICIPOS = "" & dReader("CUENTA_CONTABLE_ANTICIPOS").ToString
 
                     bResultado = True
                 End If
@@ -769,6 +780,7 @@ Public Class Class_CatClientes
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_CLIENTE.ToUpper
             sqlParametro = .Parameters.Add("@CUENTA_CONTABLE", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_DOLARES", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_DOLARES.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_ANTICIPOS", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_ANTICIPOS.ToString.ToUpper
 
             Try
                 Me._Conexion.Open()
@@ -1191,6 +1203,36 @@ Public Class Class_CatClientes
                 bResultado = True
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "EstablecerCuentaContableDolares", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
+    End Function
+
+    Public Function EstablecerCuentaContableAnticipos() As Boolean
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_CAT_CUENTAS_GENERA_CUENTA_CONTABLE_CLIENTE_ANTICIPOS"
+
+            sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_CLIENTE.ToUpper
+            sqlParametro = .Parameters.Add("@NOMBRE_CLIENTE", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._NOMBRE_CLIENTE.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._PLAZA.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CUENTA_CONTABLE", SqlDbType.NVarChar, 20) : sqlParametro.Value = ""
+
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, "EstablecerCuentaContableAnticipos", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
