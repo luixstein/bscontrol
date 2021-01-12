@@ -120,7 +120,7 @@ Public Class Cat_Clientes_Impresion
             With Me.cboTipoNegociacion
                 .DisplayMember = "NOMBRE_TIPO_NEGOCIACION"
                 .ValueMember = "CODIGO_TIPO_NEGOCIACION"
-                Dim dView As New Data.DataView(oElementos.ObtenerElementos)
+                Dim dView As New Data.DataView(oElementos.ObtenerTiposNegociacionesParaReportes)
                 dView.Sort = "NOMBRE_TIPO_NEGOCIACION"
                 .DataSource = dView
                     .SelectedValue = "T"
