@@ -30,6 +30,7 @@ Partial Class Cat_Clientes_Impresion
         Me.RdbAgrupadoVendedor = New System.Windows.Forms.RadioButton()
         Me.RdbNormal = New System.Windows.Forms.RadioButton()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.CboGiroCliente = New System.Windows.Forms.ComboBox()
         Me.CboPlazas = New System.Windows.Forms.ComboBox()
         Me.LblPlaza = New System.Windows.Forms.Label()
         Me.LblEstatus = New System.Windows.Forms.Label()
@@ -37,8 +38,8 @@ Partial Class Cat_Clientes_Impresion
         Me.lblDisplayVendedor = New System.Windows.Forms.Label()
         Me.txtCodigoVendedor = New System.Windows.Forms.TextBox()
         Me.lblNombreVendedor = New System.Windows.Forms.Label()
-        Me.CboGiroCliente = New System.Windows.Forms.ComboBox()
-        Me.LblGiro = New System.Windows.Forms.Label()
+        Me.CboTipoNegociacion = New System.Windows.Forms.ComboBox()
+        Me.LblTipoNegociacion = New System.Windows.Forms.Label()
         Me.ToolStrip1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -50,7 +51,7 @@ Partial Class Cat_Clientes_Impresion
         Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbImprimir, Me.tsbSalir})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
-        Me.ToolStrip1.Size = New System.Drawing.Size(502, 27)
+        Me.ToolStrip1.Size = New System.Drawing.Size(376, 27)
         Me.ToolStrip1.TabIndex = 17
         Me.ToolStrip1.Text = "ToolStrip1"
         '
@@ -59,7 +60,7 @@ Partial Class Cat_Clientes_Impresion
         Me.tsbImprimir.Image = CType(resources.GetObject("tsbImprimir.Image"), System.Drawing.Image)
         Me.tsbImprimir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbImprimir.Name = "tsbImprimir"
-        Me.tsbImprimir.Size = New System.Drawing.Size(90, 24)
+        Me.tsbImprimir.Size = New System.Drawing.Size(77, 24)
         Me.tsbImprimir.Text = "&Imprimir"
         '
         'tsbSalir
@@ -67,18 +68,16 @@ Partial Class Cat_Clientes_Impresion
         Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
         Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
+        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
         Me.tsbSalir.Text = "&Salir"
         '
         'GroupBox2
         '
         Me.GroupBox2.Controls.Add(Me.RdbAgrupadoVendedor)
         Me.GroupBox2.Controls.Add(Me.RdbNormal)
-        Me.GroupBox2.Location = New System.Drawing.Point(8, 34)
-        Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4)
+        Me.GroupBox2.Location = New System.Drawing.Point(6, 28)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox2.Size = New System.Drawing.Size(485, 61)
+        Me.GroupBox2.Size = New System.Drawing.Size(364, 50)
         Me.GroupBox2.TabIndex = 267
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Formato"
@@ -87,10 +86,9 @@ Partial Class Cat_Clientes_Impresion
         '
         Me.RdbAgrupadoVendedor.AutoSize = True
         Me.RdbAgrupadoVendedor.Checked = True
-        Me.RdbAgrupadoVendedor.Location = New System.Drawing.Point(166, 23)
-        Me.RdbAgrupadoVendedor.Margin = New System.Windows.Forms.Padding(4)
+        Me.RdbAgrupadoVendedor.Location = New System.Drawing.Point(124, 19)
         Me.RdbAgrupadoVendedor.Name = "RdbAgrupadoVendedor"
-        Me.RdbAgrupadoVendedor.Size = New System.Drawing.Size(180, 21)
+        Me.RdbAgrupadoVendedor.Size = New System.Drawing.Size(137, 17)
         Me.RdbAgrupadoVendedor.TabIndex = 266
         Me.RdbAgrupadoVendedor.TabStop = True
         Me.RdbAgrupadoVendedor.Text = "Agrupado por vendedor"
@@ -99,17 +97,17 @@ Partial Class Cat_Clientes_Impresion
         'RdbNormal
         '
         Me.RdbNormal.AutoSize = True
-        Me.RdbNormal.Location = New System.Drawing.Point(17, 23)
-        Me.RdbNormal.Margin = New System.Windows.Forms.Padding(4)
+        Me.RdbNormal.Location = New System.Drawing.Point(13, 19)
         Me.RdbNormal.Name = "RdbNormal"
-        Me.RdbNormal.Size = New System.Drawing.Size(106, 21)
+        Me.RdbNormal.Size = New System.Drawing.Size(81, 17)
         Me.RdbNormal.TabIndex = 265
         Me.RdbNormal.Text = "Lista normal"
         Me.RdbNormal.UseVisualStyleBackColor = True
         '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.LblGiro)
+        Me.GroupBox1.Controls.Add(Me.LblTipoNegociacion)
+        Me.GroupBox1.Controls.Add(Me.CboTipoNegociacion)
         Me.GroupBox1.Controls.Add(Me.CboGiroCliente)
         Me.GroupBox1.Controls.Add(Me.CboPlazas)
         Me.GroupBox1.Controls.Add(Me.LblPlaza)
@@ -118,42 +116,50 @@ Partial Class Cat_Clientes_Impresion
         Me.GroupBox1.Controls.Add(Me.lblDisplayVendedor)
         Me.GroupBox1.Controls.Add(Me.txtCodigoVendedor)
         Me.GroupBox1.Controls.Add(Me.lblNombreVendedor)
-        Me.GroupBox1.Location = New System.Drawing.Point(8, 103)
-        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
+        Me.GroupBox1.Location = New System.Drawing.Point(6, 84)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox1.Size = New System.Drawing.Size(485, 145)
+        Me.GroupBox1.Size = New System.Drawing.Size(364, 158)
         Me.GroupBox1.TabIndex = 266
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Filtros"
+        '
+        'CboGiroCliente
+        '
+        Me.CboGiroCliente.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboGiroCliente.FormattingEnabled = True
+        Me.CboGiroCliente.Items.AddRange(New Object() {"ACTIVO", "BAJA", "TODOS"})
+        Me.CboGiroCliente.Location = New System.Drawing.Point(70, 54)
+        Me.CboGiroCliente.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.CboGiroCliente.Name = "CboGiroCliente"
+        Me.CboGiroCliente.Size = New System.Drawing.Size(218, 21)
+        Me.CboGiroCliente.TabIndex = 260
         '
         'CboPlazas
         '
         Me.CboPlazas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboPlazas.FormattingEnabled = True
         Me.CboPlazas.Items.AddRange(New Object() {"ACTIVO", "BAJA", "TODOS"})
-        Me.CboPlazas.Location = New System.Drawing.Point(300, 26)
+        Me.CboPlazas.Location = New System.Drawing.Point(225, 21)
+        Me.CboPlazas.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.CboPlazas.Name = "CboPlazas"
-        Me.CboPlazas.Size = New System.Drawing.Size(160, 24)
+        Me.CboPlazas.Size = New System.Drawing.Size(121, 21)
         Me.CboPlazas.TabIndex = 259
         '
         'LblPlaza
         '
         Me.LblPlaza.AutoSize = True
-        Me.LblPlaza.Location = New System.Drawing.Point(242, 29)
-        Me.LblPlaza.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblPlaza.Location = New System.Drawing.Point(182, 24)
         Me.LblPlaza.Name = "LblPlaza"
-        Me.LblPlaza.Size = New System.Drawing.Size(51, 17)
+        Me.LblPlaza.Size = New System.Drawing.Size(39, 13)
         Me.LblPlaza.TabIndex = 258
         Me.LblPlaza.Text = "Plaza :"
         '
         'LblEstatus
         '
         Me.LblEstatus.AutoSize = True
-        Me.LblEstatus.Location = New System.Drawing.Point(14, 29)
-        Me.LblEstatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblEstatus.Location = New System.Drawing.Point(10, 24)
         Me.LblEstatus.Name = "LblEstatus"
-        Me.LblEstatus.Size = New System.Drawing.Size(63, 17)
+        Me.LblEstatus.Size = New System.Drawing.Size(48, 13)
         Me.LblEstatus.TabIndex = 257
         Me.LblEstatus.Text = "Estatus :"
         '
@@ -162,72 +168,69 @@ Partial Class Cat_Clientes_Impresion
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA", "TODOS"})
-        Me.CboEstatus.Location = New System.Drawing.Point(93, 26)
+        Me.CboEstatus.Location = New System.Drawing.Point(70, 21)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(121, 24)
+        Me.CboEstatus.Size = New System.Drawing.Size(92, 21)
         Me.CboEstatus.TabIndex = 256
         '
         'lblDisplayVendedor
         '
         Me.lblDisplayVendedor.AutoSize = True
-        Me.lblDisplayVendedor.Location = New System.Drawing.Point(7, 112)
-        Me.lblDisplayVendedor.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayVendedor.Location = New System.Drawing.Point(10, 91)
         Me.lblDisplayVendedor.Name = "lblDisplayVendedor"
-        Me.lblDisplayVendedor.Size = New System.Drawing.Size(78, 17)
+        Me.lblDisplayVendedor.Size = New System.Drawing.Size(59, 13)
         Me.lblDisplayVendedor.TabIndex = 254
         Me.lblDisplayVendedor.Text = "Vendedor :"
         '
         'txtCodigoVendedor
         '
-        Me.txtCodigoVendedor.Location = New System.Drawing.Point(93, 109)
-        Me.txtCodigoVendedor.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtCodigoVendedor.Location = New System.Drawing.Point(70, 89)
         Me.txtCodigoVendedor.MaxLength = 15
         Me.txtCodigoVendedor.Name = "txtCodigoVendedor"
-        Me.txtCodigoVendedor.Size = New System.Drawing.Size(103, 22)
+        Me.txtCodigoVendedor.Size = New System.Drawing.Size(78, 20)
         Me.txtCodigoVendedor.TabIndex = 252
         Me.txtCodigoVendedor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'lblNombreVendedor
         '
         Me.lblNombreVendedor.AutoSize = True
-        Me.lblNombreVendedor.Location = New System.Drawing.Point(204, 112)
-        Me.lblNombreVendedor.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblNombreVendedor.Location = New System.Drawing.Point(153, 91)
         Me.lblNombreVendedor.Name = "lblNombreVendedor"
-        Me.lblNombreVendedor.Size = New System.Drawing.Size(12, 17)
+        Me.lblNombreVendedor.Size = New System.Drawing.Size(10, 13)
         Me.lblNombreVendedor.TabIndex = 255
         Me.lblNombreVendedor.Text = "."
         '
-        'CboGiroCliente
+        'CboTipoNegociacion
         '
-        Me.CboGiroCliente.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CboGiroCliente.FormattingEnabled = True
-        Me.CboGiroCliente.Items.AddRange(New Object() {"ACTIVO", "BAJA", "TODOS"})
-        Me.CboGiroCliente.Location = New System.Drawing.Point(93, 67)
-        Me.CboGiroCliente.Name = "CboGiroCliente"
-        Me.CboGiroCliente.Size = New System.Drawing.Size(289, 24)
-        Me.CboGiroCliente.TabIndex = 260
+        Me.CboTipoNegociacion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboTipoNegociacion.FormattingEnabled = True
+        Me.CboTipoNegociacion.Items.AddRange(New Object() {"ACTIVO", "BAJA", "TODOS"})
+        Me.CboTipoNegociacion.Location = New System.Drawing.Point(156, 120)
+        Me.CboTipoNegociacion.Margin = New System.Windows.Forms.Padding(2)
+        Me.CboTipoNegociacion.Name = "CboTipoNegociacion"
+        Me.CboTipoNegociacion.Size = New System.Drawing.Size(145, 21)
+        Me.CboTipoNegociacion.TabIndex = 262
         '
-        'LblGiro
+        'LblTipoNegociacion
         '
-        Me.LblGiro.AutoSize = True
-        Me.LblGiro.Location = New System.Drawing.Point(34, 70)
-        Me.LblGiro.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblGiro.Name = "LblGiro"
-        Me.LblGiro.Size = New System.Drawing.Size(43, 17)
-        Me.LblGiro.TabIndex = 261
-        Me.LblGiro.Text = "Giro :"
+        Me.LblTipoNegociacion.AutoSize = True
+        Me.LblTipoNegociacion.Location = New System.Drawing.Point(10, 123)
+        Me.LblTipoNegociacion.Name = "LblTipoNegociacion"
+        Me.LblTipoNegociacion.Size = New System.Drawing.Size(146, 13)
+        Me.LblTipoNegociacion.TabIndex = 263
+        Me.LblTipoNegociacion.Text = "Tipo negociación del cliente :"
         '
         'Cat_Clientes_Impresion
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(502, 256)
+        Me.ClientSize = New System.Drawing.Size(376, 245)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.ToolStrip1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Cat_Clientes_Impresion"
         Me.ShowIcon = False
@@ -256,6 +259,7 @@ Partial Class Cat_Clientes_Impresion
     Friend WithEvents LblPlaza As System.Windows.Forms.Label
     Friend WithEvents LblEstatus As System.Windows.Forms.Label
     Friend WithEvents CboEstatus As System.Windows.Forms.ComboBox
-    Friend WithEvents LblGiro As System.Windows.Forms.Label
     Friend WithEvents CboGiroCliente As System.Windows.Forms.ComboBox
+    Friend WithEvents LblTipoNegociacion As System.Windows.Forms.Label
+    Friend WithEvents CboTipoNegociacion As System.Windows.Forms.ComboBox
 End Class

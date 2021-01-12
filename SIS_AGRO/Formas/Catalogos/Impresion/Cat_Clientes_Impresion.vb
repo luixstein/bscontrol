@@ -12,6 +12,7 @@ Public Class Cat_Clientes_Impresion
         InitializeComponent()
         DesplegarPlazas()
         DesplegarGirosClientes()
+        DesplegarTiposNegociaciones()
         Inicializa()
     End Sub
 
@@ -33,7 +34,7 @@ Public Class Cat_Clientes_Impresion
 
 #Region "Eventos Genericos"
 
-    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, CboPlazas.KeyPress, CboGiroCliente.KeyPress
+    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, CboPlazas.KeyPress, CboGiroCliente.KeyPress, CboTipoNegociacion.KeyPress
         txtNoBeep(e)
     End Sub
 
@@ -71,6 +72,7 @@ Public Class Cat_Clientes_Impresion
             Rpt.SetParameterValue("@ESTATUS", Strings.Left(Me.CboEstatus.Text, 1))
             Rpt.SetParameterValue("@CODIGO_PLAZA", Me.CboPlazas.SelectedValue.ToString)
             Rpt.SetParameterValue("@CODIGO_GIRO", Me.CboGiroCliente.SelectedValue.ToString)
+            Rpt.SetParameterValue("@CODIGO_TIPO_NEGOCIACION", Me.CboTipoNegociacion.SelectedValue.ToString)
 
             If Me.RdbAgrupadoVendedor.Checked Then
                 Rpt.SetParameterValue("@CODIGO_VENDEDOR", Me.txtCodigoVendedor.Text)
@@ -111,6 +113,23 @@ Public Class Cat_Clientes_Impresion
             .SelectedValue = -1
         End With
     End Sub
+
+    Private Sub DesplegarTiposNegociaciones()
+        Try
+            Dim oElementos As New Class_CatTiposNegociaciones
+            With Me.cboTipoNegociacion
+                .DisplayMember = "NOMBRE_TIPO_NEGOCIACION"
+                .ValueMember = "CODIGO_TIPO_NEGOCIACION"
+                Dim dView As New Data.DataView(oElementos.ObtenerElementos)
+                dView.Sort = "NOMBRE_TIPO_NEGOCIACION"
+                .DataSource = dView
+                    .SelectedValue = "T"
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarTiposNegociaciones", ex)
+        End Try
+    End Sub
+
 #End Region
 
     Private Sub txtCodigoVendedor_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodigoVendedor.KeyDown
