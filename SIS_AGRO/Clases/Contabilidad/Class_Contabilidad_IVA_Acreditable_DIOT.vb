@@ -1,5 +1,5 @@
 ﻿Option Strict On
-Imports System.Data
+
 Imports System.Data.SqlClient
 Imports System.IO
 
@@ -7,8 +7,8 @@ Public Class Class_Contabilidad_IVA_Acreditable_DIOT
 
 #Region "Campos"
 #Region "Campos de la tabla"
-    Private _TotalActos0 As Double = 0, _TotalActos16 As Double = 0, _TotalActos15 As Double = 0, _TotalActos11 As Double = 0, _TotalActos10 As Double = 0, _TotalActos As Double = 0
-    Private _TotalIVAAcreditable16 As Double = 0, _TotalIVARetenido4 As Double = 0
+    Private _TotalActos0 As Double = 0, _TotalActos16 As Double = 0, _TotalActos8 As Double = 0, _TotalActos15 As Double = 0, _TotalActos11 As Double = 0, _TotalActos10 As Double = 0, _TotalActos As Double = 0
+    Private _TotalIVAAcreditable16 As Double = 0, _TotalIVAAcreditable8 As Double = 0, _TotalIVARetenido4 As Double = 0, _TotalIVARetenido6 As Double = 0, _TotalIVARetenido10 As Double = 0
 #End Region
 
 #Region "Campos de sistema"
@@ -23,39 +23,70 @@ Public Class Class_Contabilidad_IVA_Acreditable_DIOT
             Return Me._TotalActos0
         End Get
     End Property
+
     Public ReadOnly Property TotalActos16 As Double
         Get
             Return Me._TotalActos16
         End Get
     End Property
+
+    Public ReadOnly Property TotalActos8 As Double
+        Get
+            Return Me._TotalActos8
+        End Get
+    End Property
+
     Public ReadOnly Property TotalActos15 As Double
         Get
             Return Me._TotalActos15
         End Get
     End Property
+
     Public ReadOnly Property TotalActos11 As Double
         Get
             Return Me._TotalActos11
         End Get
     End Property
+
     Public ReadOnly Property TotalActos10 As Double
         Get
             Return Me._TotalActos10
         End Get
     End Property
+
     Public ReadOnly Property TotalActos As Double
         Get
             Return Me._TotalActos
         End Get
     End Property
+
     Public ReadOnly Property TotalIVAAcreditable16 As Double
         Get
             Return Me._TotalIVAAcreditable16
         End Get
     End Property
+
+    Public ReadOnly Property TotalIVAAcreditable8 As Double
+        Get
+            Return Me._TotalIVAAcreditable8
+        End Get
+    End Property
+
     Public ReadOnly Property TotalIVARetenido4 As Double
         Get
             Return Me._TotalIVARetenido4
+        End Get
+    End Property
+
+    Public ReadOnly Property TotalIVARetenido6 As Double
+        Get
+            Return Me._TotalIVARetenido6
+        End Get
+    End Property
+
+    Public ReadOnly Property TotalIVARetenido10 As Double
+        Get
+            Return Me._TotalIVARetenido10
         End Get
     End Property
 #End Region
@@ -67,6 +98,7 @@ Public Class Class_Contabilidad_IVA_Acreditable_DIOT
         End Get
     End Property
 #End Region
+
 #End Region
 
 #Region "Constructor y destructor"
@@ -101,7 +133,7 @@ Public Class Class_Contabilidad_IVA_Acreditable_DIOT
             If isExisteArchivo(sArchivo) = True Then
                 If MsgBox("El archivo " & sArchivo & " ya existe, desea sobreescribirlo?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, Me.Nombre_Clase) = vbNo Then
                     MsgBox("No se generó el archivo.", vbExclamation, Me.Nombre_Clase)
-                    Exit Function
+                    Return False
                 Else
                     File.Delete(sArchivo)
                 End If
@@ -128,12 +160,20 @@ Public Class Class_Contabilidad_IVA_Acreditable_DIOT
 
                         Me._TotalActos0 += valorNumerico("" & dReader("TOTAL_ACTOS_AL_0").ToString)
                         Me._TotalActos16 += valorNumerico("" & dReader("TOTAL_ACTOS_AL_16").ToString)
+                        Me._TotalActos8 += valorNumerico("" & dReader("TOTAL_ACTOS_AL_8").ToString)
                         Me._TotalActos15 += valorNumerico("" & dReader("TOTAL_ACTOS_AL_15").ToString)
                         Me._TotalActos11 += valorNumerico("" & dReader("TOTAL_ACTOS_AL_11").ToString)
                         Me._TotalActos10 += valorNumerico("" & dReader("TOTAL_ACTOS_AL_10").ToString)
+
+                        Me._TotalActos = Me._TotalActos0 + Me._TotalActos16 + Me._TotalActos8 + Me._TotalActos15 + Me._TotalActos11 + Me._TotalActos10
+
                         Me._TotalIVAAcreditable16 += valorNumerico("" & dReader("TOTAL_IVA_ACREDITABLE_AL_16").ToString)
+                        Me._TotalIVAAcreditable8 += valorNumerico("" & dReader("TOTAL_IVA_ACREDITABLE_AL_8").ToString)
+
                         Me._TotalIVARetenido4 += valorNumerico("" & dReader("TOTAL_IVA_RETENIDO_AL_4").ToString)
-                        Me._TotalActos = Me._TotalActos0 + Me._TotalActos16 + Me._TotalActos15 + Me._TotalActos11 + Me._TotalActos10
+                        Me._TotalIVARetenido6 += valorNumerico("" & dReader("TOTAL_IVA_RETENIDO_AL_6").ToString)
+                        Me._TotalIVARetenido10 += valorNumerico("" & dReader("TOTAL_IVA_RETENIDO_AL_10").ToString)
+
                     End While
 
                     'Me._CodigoCliente = "" & dReader("CODIGO_CLIENTE")

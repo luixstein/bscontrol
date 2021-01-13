@@ -211,9 +211,12 @@ Buscar:
 
             Me.lblTotalActos0.Text = FormatImporteContable(oIVA.TotalActos0)
             Me.lblTotalActos16.Text = FormatImporteContable(oIVA.TotalActos16)
+            Me.lblTotalActos8.Text = FormatImporteContable(oIVA.TotalActos8)
             Me.lblTotalActos.Text = FormatImporteContable(oIVA.TotalActos)
             Me.lblTotalIVAAcreditable16.Text = FormatImporteContable(oIVA.TotalIVAAcreditable16)
             Me.lblTotalIVARetenido4.Text = FormatImporteContable(oIVA.TotalIVARetenido4)
+            Me.lblTotalIVARetenido6.Text = FormatImporteContable(oIVA.TotalIVARetenido6)
+            Me.lblTotalIVARetenido10.Text = FormatImporteContable(oIVA.TotalIVARetenido10)
 
             oIVA = Nothing
         Catch ex As Exception
@@ -222,6 +225,5 @@ Buscar:
         Return bResultado
     End Function
 #End Region
-
 
 End Class
