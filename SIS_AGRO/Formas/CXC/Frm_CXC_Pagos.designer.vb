@@ -31,6 +31,8 @@ Partial Class Frm_CXC_Pagos
         Me.tsbImprimirComprobante = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.gbGlobal = New System.Windows.Forms.GroupBox()
+        Me.cboRegimenFiscal = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayRegimenFiscal = New System.Windows.Forms.Label()
         Me.lblEsCuentaFiscal = New System.Windows.Forms.Label()
         Me.chkVentasNoFiscales = New System.Windows.Forms.CheckBox()
         Me.cmdPruebaPagoCFDI = New System.Windows.Forms.Button()
@@ -89,7 +91,7 @@ Partial Class Frm_CXC_Pagos
         Me.lblDisplayCuentaEmisor = New System.Windows.Forms.Label()
         Me.lblDisplayFolioDetalle = New System.Windows.Forms.Label()
         Me.cboFormaPago = New System.Windows.Forms.ComboBox()
-        Me.cboMoneda = New System.Windows.Forms.ComboBox()
+        Me.cboMonedaPago = New System.Windows.Forms.ComboBox()
         Me.lblDisplayFormaPago = New System.Windows.Forms.Label()
         Me.chkAnticipo = New System.Windows.Forms.CheckBox()
         Me.btnAgregarDocumentosClientes = New System.Windows.Forms.Button()
@@ -112,8 +114,6 @@ Partial Class Frm_CXC_Pagos
         Me.GridDocumentosPago = New FlexCell.Grid()
         Me.btnVerCFDIS = New System.Windows.Forms.Button()
         Me.btnGenerarCFDIS = New System.Windows.Forms.Button()
-        Me.cboRegimenFiscal = New System.Windows.Forms.ComboBox()
-        Me.lblDisplayRegimenFiscal = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbAgregaDocCliente.SuspendLayout()
@@ -218,6 +218,25 @@ Partial Class Frm_CXC_Pagos
         Me.gbGlobal.TabIndex = 0
         Me.gbGlobal.TabStop = False
         Me.gbGlobal.Text = "Datos"
+        '
+        'cboRegimenFiscal
+        '
+        Me.cboRegimenFiscal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboRegimenFiscal.FormattingEnabled = True
+        Me.cboRegimenFiscal.Location = New System.Drawing.Point(378, 125)
+        Me.cboRegimenFiscal.MaxLength = 1
+        Me.cboRegimenFiscal.Name = "cboRegimenFiscal"
+        Me.cboRegimenFiscal.Size = New System.Drawing.Size(334, 21)
+        Me.cboRegimenFiscal.TabIndex = 400
+        '
+        'lblDisplayRegimenFiscal
+        '
+        Me.lblDisplayRegimenFiscal.AutoSize = True
+        Me.lblDisplayRegimenFiscal.Location = New System.Drawing.Point(297, 129)
+        Me.lblDisplayRegimenFiscal.Name = "lblDisplayRegimenFiscal"
+        Me.lblDisplayRegimenFiscal.Size = New System.Drawing.Size(82, 13)
+        Me.lblDisplayRegimenFiscal.TabIndex = 401
+        Me.lblDisplayRegimenFiscal.Text = "Régimen fiscal :"
         '
         'lblEsCuentaFiscal
         '
@@ -524,7 +543,7 @@ Partial Class Frm_CXC_Pagos
         Me.gbAgregaDocCliente.Controls.Add(Me.lblDisplayCuentaEmisor)
         Me.gbAgregaDocCliente.Controls.Add(Me.lblDisplayFolioDetalle)
         Me.gbAgregaDocCliente.Controls.Add(Me.cboFormaPago)
-        Me.gbAgregaDocCliente.Controls.Add(Me.cboMoneda)
+        Me.gbAgregaDocCliente.Controls.Add(Me.cboMonedaPago)
         Me.gbAgregaDocCliente.Controls.Add(Me.lblDisplayFormaPago)
         Me.gbAgregaDocCliente.Controls.Add(Me.chkAnticipo)
         Me.gbAgregaDocCliente.Controls.Add(Me.btnAgregarDocumentosClientes)
@@ -777,16 +796,16 @@ Partial Class Frm_CXC_Pagos
         Me.cboFormaPago.Size = New System.Drawing.Size(229, 21)
         Me.cboFormaPago.TabIndex = 2
         '
-        'cboMoneda
+        'cboMonedaPago
         '
-        Me.cboMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboMoneda.Enabled = False
-        Me.cboMoneda.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cboMoneda.FormattingEnabled = True
-        Me.cboMoneda.Location = New System.Drawing.Point(213, 93)
-        Me.cboMoneda.Name = "cboMoneda"
-        Me.cboMoneda.Size = New System.Drawing.Size(73, 21)
-        Me.cboMoneda.TabIndex = 4
+        Me.cboMonedaPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboMonedaPago.Enabled = False
+        Me.cboMonedaPago.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cboMonedaPago.FormattingEnabled = True
+        Me.cboMonedaPago.Location = New System.Drawing.Point(213, 93)
+        Me.cboMonedaPago.Name = "cboMonedaPago"
+        Me.cboMonedaPago.Size = New System.Drawing.Size(73, 21)
+        Me.cboMonedaPago.TabIndex = 4
         '
         'lblDisplayFormaPago
         '
@@ -1011,25 +1030,6 @@ Partial Class Frm_CXC_Pagos
         Me.btnGenerarCFDIS.Text = "Generar CFDI's"
         Me.btnGenerarCFDIS.UseVisualStyleBackColor = True
         '
-        'cboRegimenFiscal
-        '
-        Me.cboRegimenFiscal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboRegimenFiscal.FormattingEnabled = True
-        Me.cboRegimenFiscal.Location = New System.Drawing.Point(378, 125)
-        Me.cboRegimenFiscal.MaxLength = 1
-        Me.cboRegimenFiscal.Name = "cboRegimenFiscal"
-        Me.cboRegimenFiscal.Size = New System.Drawing.Size(334, 21)
-        Me.cboRegimenFiscal.TabIndex = 400
-        '
-        'lblDisplayRegimenFiscal
-        '
-        Me.lblDisplayRegimenFiscal.AutoSize = True
-        Me.lblDisplayRegimenFiscal.Location = New System.Drawing.Point(297, 129)
-        Me.lblDisplayRegimenFiscal.Name = "lblDisplayRegimenFiscal"
-        Me.lblDisplayRegimenFiscal.Size = New System.Drawing.Size(82, 13)
-        Me.lblDisplayRegimenFiscal.TabIndex = 401
-        Me.lblDisplayRegimenFiscal.Text = "Régimen fiscal :"
-        '
         'Frm_CXC_Pagos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1109,7 +1109,7 @@ Partial Class Frm_CXC_Pagos
     Friend WithEvents txtTipoCambio As System.Windows.Forms.TextBox
     Friend WithEvents btnDepositosSiguiente As System.Windows.Forms.Button
     Friend WithEvents btnDepositosAnterior As System.Windows.Forms.Button
-    Friend WithEvents cboMoneda As System.Windows.Forms.ComboBox
+    Friend WithEvents cboMonedaPago As System.Windows.Forms.ComboBox
     Friend WithEvents dtFechaPagoCliente As System.Windows.Forms.DateTimePicker
     Friend WithEvents txtCuentaEmisor As System.Windows.Forms.TextBox
     Friend WithEvents txtFolioDetalle As System.Windows.Forms.TextBox

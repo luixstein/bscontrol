@@ -54,8 +54,8 @@ Public Class Frm_CXC_Pagos
     Private iGyVentaBanco As Integer = 8
     Private iGyVentaTotal As Integer = 9
     Private iGyVentaSaldo As Integer = 10
-    Private iGyVentaTotalDlls As Integer = 11
-    Private iGyVentaSaldoDlls As Integer = 12
+    Private iGyVentaTotalUSD As Integer = 11
+    Private iGyVentaSaldoUSD As Integer = 12
     Private iGyVentaPago As Integer = 13
     Private iGyVentaPagoPesos As Integer = 14
     Private iGyVentaSeleccion As Integer = 15
@@ -287,8 +287,8 @@ enter:
                     Me.TxtCuentaBancaria.Text = oCuentaBancaria.ID_CUENTA_BANCARIA.ToString
                     Me.LblCuentaBancaria.Text = oCuentaBancaria.NOMBRE_CUENTA_BANCARIA.ToString
                     Me.LblCuentaContableCuentaBancaria.Text = oCuentaBancaria.CUENTA_CONTABLE_PESOS
-                    Me.cboMoneda.SelectedIndex = -1
-                    Me.cboMoneda.Text = oCuentaBancaria.CODIGO_MONEDA_SAT
+                    Me.cboMonedaPago.SelectedIndex = -1
+                    Me.cboMonedaPago.Text = oCuentaBancaria.CODIGO_MONEDA_SAT
 
                     Me.chkVentasNoFiscales.Enabled = False 'Siempre va estar deshabilitado, se va marcar sólo dependiendo de si la cuenta es o no fiscal. En el cambiar estado no cambia este valor
                     If oCuentaBancaria.ES_CUENTA_FISCAL = True Then 'Si es cuenta fiscal, sólo va permitir pagos de remisiones
@@ -393,9 +393,9 @@ Buscar:
         End If
     End Sub
 
-    Private Sub cboMoneda_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboMoneda.SelectedIndexChanged
+    Private Sub cboMoneda_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboMonedaPago.SelectedIndexChanged
         Try
-            If Me.cboMoneda.Text = "USD" Then
+            If Me.cboMonedaPago.Text = "USD" Then
                 Me.txtTipoCambio.Enabled = True
                 'Me.txtTotalDolares.Enabled = True
                 Me.lblTipoCambio.Enabled = True
@@ -495,7 +495,7 @@ Buscar:
     End Sub
 
     Private Sub Grid_KeyDown(ByVal Sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles GridVentas.KeyDown
-        GestionaGrid(e)
+        Me.GestionaGrid(e)
     End Sub
 
     Private Sub txtRFCEmisor_KeyDown(sender As Object, e As KeyEventArgs) Handles txtRFCEmisor.KeyDown
@@ -598,21 +598,21 @@ Buscar:
             If e.Col = Me.iGyVentaSeleccion And e.Row > 0 Then
                 If Me.GridVentas.Cell(Renglon, Me.iGyVentaSeleccion).Text = "1" And Me.ClickSinEjecutar = False Then
 
-                    If Me.GridVentas.Cell(Renglon, Me.iGyVentaEsFacturaAnticipo).Text = "1" AndAlso sMonedaVenta <> Me.cboMoneda.Text Then
+                    If Me.GridVentas.Cell(Renglon, Me.iGyVentaEsFacturaAnticipo).Text = "1" AndAlso sMonedaVenta <> Me.cboMonedaPago.Text Then
                         MsgBox("El pago en el renglón: " & Renglon & " es de un anticipo hecho en " & sMonedaVenta & ", debe de pagarlo en esa misma moneda y al 100%.", MsgBoxStyle.Exclamation, sProcedure)
                         Me.GridVentas.Cell(Renglon, Me.iGyVentaPago).Text = "0.00"
                         Me.BorraPago(Renglon)
                         Exit Sub
                     End If
 
-                    If Me.cboMoneda.Text = "USD" Then
+                    If Me.cboMonedaPago.Text = "USD" Then
                         If valorNumerico(Me.txtTipoCambio.Text) <= 0 Or valorNumerico(Me.txtTipoCambio.Text) > 30 Then
                             MsgBox("Tipo de cambio incorrecto.", MsgBoxStyle.Exclamation, sProcedure)
                             Me.txtTipoCambio.Focus()
                             Exit Sub
                         End If
 
-                        dPago = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldoDlls).Text)
+                        dPago = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldoUSD).Text)
                         If dPago > 0 Then
                             Me.ClickSinEjecutar = True
                             Me.GridVentas.Cell(Renglon, Me.iGyVentaPago).Text = dPago.ToString
@@ -715,9 +715,9 @@ Buscar:
 
             Me.GeneraFolio()
 
-            Dim sMonedaAnterior As String = Me.cboMoneda.Text
-            Me.cboMoneda.SelectedIndex = -1
-            Me.cboMoneda.Text = sMonedaAnterior
+            Dim sMonedaAnterior As String = Me.cboMonedaPago.Text
+            Me.cboMonedaPago.SelectedIndex = -1
+            Me.cboMonedaPago.Text = sMonedaAnterior
             'Me.cboMoneda.Text = "MXN" no se debe inicializar por si dejaron seleccionada moneda en usd no debe perderse la moneda y demás datos de la cuenta
             Me.txtTipoCambio.Text = ""
             Me.cboRegimenFiscal.SelectedValue = Empresa_Sistema.CODIGO_REGIMEN_FISCAL
@@ -781,8 +781,8 @@ Buscar:
                 .Column(Me.iGyVentaReferencia).Visible = False
                 .Column(Me.iGyVentaTotal).Width = 80
                 .Column(Me.iGyVentaSaldo).Width = 80
-                .Column(Me.iGyVentaTotalDlls).Width = 80
-                .Column(Me.iGyVentaSaldoDlls).Width = 80
+                .Column(Me.iGyVentaTotalUSD).Width = 80
+                .Column(Me.iGyVentaSaldoUSD).Width = 80
                 .Column(Me.iGyVentaPago).Width = 80
                 .Column(Me.iGyVentaPagoPesos).Width = 80
                 .Column(Me.iGyVentaSeleccion).Width = 60
@@ -808,21 +808,21 @@ Buscar:
                 .Cell(0, Me.iGyVentaBanco).Text = "Banco"
                 .Cell(0, Me.iGyVentaTotal).Text = "Total"
                 .Cell(0, Me.iGyVentaSaldo).Text = "Saldo"
-                .Cell(0, Me.iGyVentaTotalDlls).Text = "Total USD"
-                .Cell(0, Me.iGyVentaSaldoDlls).Text = "Saldo USD"
+                .Cell(0, Me.iGyVentaTotalUSD).Text = "Total USD"
+                .Cell(0, Me.iGyVentaSaldoUSD).Text = "Saldo USD"
                 .Cell(0, Me.iGyVentaPago).Text = "Pagar"
                 .Cell(0, Me.iGyVentaPagoPesos).Text = "Pagar Pesos"
                 .Cell(0, Me.iGyVentaSeleccion).Text = "Selección"
                 .Cell(0, Me.iGyVentaReferencia).Text = "Referencia"
-                .Cell(0, Me.iGyVentaDiferencia).Text = "Diferencia"
-                .Cell(0, Me.iGyVentaIvaPorPagar).Text = "IvaXPagar"
                 .Cell(0, Me.iGyVentaFechaPago).Text = "Fecha pago"
+                .Cell(0, Me.iGyVentaIvaPorPagar).Text = "IvaXPagar"
+                .Cell(0, Me.iGyVentaDiferencia).Text = "Diferencia"
                 .Cell(0, Me.iGyVentaVersionCFDI).Text = "V.CFDI"
                 .Cell(0, Me.iGyVentaFormaPago).Text = "F. Pago"
                 .Cell(0, Me.iGyVentaMetodoPago).Text = "M. Pago"
                 .Cell(0, Me.iGyVentaImporteMonedaVenta).Text = "ImporteMonedaVenta"
-                .Cell(0, Me.iGyVentaSaldoAnteriorMonedaPago).Text = "SaldoAnteriorMonedaPago"
                 .Cell(0, Me.iGyVentaSaldoAnteriorMonedaVenta).Text = "SaldoAnteriorMonedaVenta"
+                .Cell(0, Me.iGyVentaSaldoAnteriorMonedaPago).Text = "SaldoAnteriorMonedaPago"
                 .Cell(0, Me.iGyVentaEsFacturaElectronica).Text = "FacElec"
                 .Cell(0, Me.iGyVentaEsFacturaAnticipo).Text = "FacAnt"
 
@@ -851,15 +851,15 @@ Buscar:
                 .Column(Me.iGyVentaPagoPesos).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
                 .Column(Me.iGyVentaPagoPesos).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.iGyVentaTotalDlls).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                .Column(Me.iGyVentaTotalDlls).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyVentaTotalDlls).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-                .Column(Me.iGyVentaTotalDlls).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyVentaTotalUSD).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyVentaTotalUSD).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyVentaTotalUSD).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyVentaTotalUSD).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.iGyVentaSaldoDlls).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                .Column(Me.iGyVentaSaldoDlls).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyVentaSaldoDlls).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-                .Column(Me.iGyVentaSaldoDlls).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyVentaSaldoUSD).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyVentaSaldoUSD).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyVentaSaldoUSD).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyVentaSaldoUSD).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .Column(Me.iGyVentaDiferencia).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
                 .Column(Me.iGyVentaDiferencia).Mask = FlexCell.MaskEnum.Numeric
@@ -887,14 +887,14 @@ Buscar:
                 .Column(Me.iGyVentaBanco).Locked = False
                 .Column(Me.iGyVentaTotal).Locked = True
                 .Column(Me.iGyVentaSaldo).Locked = True
-                .Column(Me.iGyVentaTotalDlls).Locked = True
-                .Column(Me.iGyVentaSaldoDlls).Locked = True
+                .Column(Me.iGyVentaTotalUSD).Locked = True
+                .Column(Me.iGyVentaSaldoUSD).Locked = True
                 .Column(Me.iGyVentaPago).Locked = False
                 .Column(Me.iGyVentaPagoPesos).Locked = True
                 .Column(Me.iGyVentaReferencia).Locked = False
                 .Column(Me.iGyVentaDiferencia).Locked = True
-                .Column(Me.iGyVentaTotalDlls).Visible = False
-                .Column(Me.iGyVentaSaldoDlls).Visible = False
+                .Column(Me.iGyVentaTotalUSD).Visible = False
+                .Column(Me.iGyVentaSaldoUSD).Visible = False
                 .Column(Me.iGyVentaPagoPesos).Visible = False
                 .Column(Me.iGyVentaDiferencia).Visible = False
                 .Column(Me.iGyVentaIvaPorPagar).Visible = True
@@ -1130,8 +1130,8 @@ Buscar:
                 Return False
             End If
 
-            If Me.cboMoneda.Text = "MXN" Then
-                'Si el pago es en MXN y hay facturas en USD, se necesita el tipo de cambio(aunque la cuenta bancaria este en MXN)
+            If Me.cboMonedaPago.Text = "MXN" Then
+                'Si el pago es en MXN y hay facturas USD con saldo, se necesita el tipo de cambio(aunque la cuenta bancaria este en MXN) para calcular un saldoMXN a tp pago.
 
                 'sSQL = "SELECT TOP 1 '1' HAY_VENTAS_EN_USD " &
                 '                     "FROM VENTA_GLOBAL V WHERE V.CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' AND SALDO>0 " & sSaldoDlls & " AND CODIGO_MONEDA_SAT='USD'"
@@ -1177,9 +1177,8 @@ Buscar:
 
                     Me.txtTipoCambio.Text = FormatTipoCambio(dTipoCambio)
 
-                    Me.GridVentas.Column(Me.iGyVentaDiferencia).Visible = True
+                    Me.GridVentas.Column(Me.iGyVentaDiferencia).Visible = True 'Recordemos que si la ventaMoneda=USD si hay diferencia cambiaria.
                     Me.GridVentas.Column(Me.iGyVentaPagoPesos).Visible = True
-
                 End If
 
                 dReader.Close()
@@ -1187,7 +1186,6 @@ Buscar:
         Catch ex As Exception
             HandleError(Me.Text, "CargaFacturas", ex)
         End Try
-
 
         'If Me.cboMoneda.Text = "USD" Then
         'sSaldoDlls = " AND SALDO_DOLARES>0 "
@@ -1326,8 +1324,8 @@ Buscar:
                             Me.GridVentas.Cell(i, Me.iGyVentaBanco).Text = oBanco.NOMBRE_BANCO  ' Me.CboBancos.Text
                             Me.GridVentas.Cell(i, Me.iGyVentaTotal).Text = dReader("TOTAL").ToString
                             Me.GridVentas.Cell(i, Me.iGyVentaSaldo).Text = dReader("SALDO_MXN").ToString
-                            Me.GridVentas.Cell(i, Me.iGyVentaTotalDlls).Text = dReader("TOTAL_DOLARES").ToString
-                            Me.GridVentas.Cell(i, Me.iGyVentaSaldoDlls).Text = dReader("SALDO_DOLARES").ToString
+                            Me.GridVentas.Cell(i, Me.iGyVentaTotalUSD).Text = dReader("TOTAL_DOLARES").ToString
+                            Me.GridVentas.Cell(i, Me.iGyVentaSaldoUSD).Text = dReader("SALDO_DOLARES").ToString
                             Me.GridVentas.Cell(i, Me.iGyVentaPago).Text = CStr(0)
                             Me.GridVentas.Cell(i, Me.iGyVentaPagoPesos).Text = CStr(0)
                             Me.GridVentas.Cell(i, Me.iGyVentaDiferencia).Text = CStr(0)
@@ -1588,7 +1586,7 @@ Buscar:
 
                     Me.GridVentas.Cell(1, Me.iGyVentaPago).Text = dAnticipo.ToString 'Para establecer el valor del anticipo como si fuera un pago
                     Me.GridVentas.Cell(1, Me.iGyVentaPagoPesos).Text = dAnticipo.ToString
-                    If Me.cboMoneda.Text = "USD" Then
+                    If Me.cboMonedaPago.Text = "USD" Then
                         MsgBox("De momento no es compatible los anticipos en moneda USD.", vbExclamation, sProcedure)
 
                         'Me.GridVentas.Cell(1, Me.iGyVentaPago).Text = "QUE IRIA??"
@@ -1613,14 +1611,14 @@ Buscar:
             oBancosCXC.FECHA = Me.dtFecha.Value
             oBancosCXC.CONCEPTO1 = Me.TxtConcepto.Text.ToUpper
             oBancosCXC.CODIGO_PLAZA = Usuario.Codigo_Plaza
-            If Me.cboMoneda.Text = "USD" Then
+            If Me.cboMonedaPago.Text = "USD" Then
                 oBancosCXC.TOTAL_DOLARES = valorNumerico(Me.TxtTotal.Text)
                 oBancosCXC.TOTAL = valorNumerico(Me.TxtTotal.Text) * valorNumerico(Me.txtTipoCambio.Text)
             Else
                 oBancosCXC.TOTAL = valorNumerico(Me.TxtTotal.Text)
             End If
             oBancosCXC.TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text) 'Puede ser un pago en mxn de factura en usd y se necesita este tipo de cambios poara el campo TipoCambioDr en el complemento de pago.
-            oBancosCXC.CODIGO_MONEDA_SAT = Me.cboMoneda.Text
+            oBancosCXC.CODIGO_MONEDA_SAT = Me.cboMonedaPago.Text
 
             If Me.GridDocumentosPago.Cell(1, Me.iGyDocCODIGO_FORMA_PAGO).Text = "02" Then '02=Cheque
                 oBancosCXC.FECHA_CHEQUE = Me.dtFechaCheque.Value
@@ -1680,7 +1678,7 @@ Buscar:
                     oCxcAfectaDocumentos.CONCEPTO1 = Me.TxtConcepto.Text
                     oCxcAfectaDocumentos.CONCEPTO2 = ""
                     oCxcAfectaDocumentos.CODIGO_PLAZA = Usuario.Codigo_Plaza
-                    If Me.cboMoneda.Text = "USD" Then
+                    If Me.cboMonedaPago.Text = "USD" Then
                         oCxcAfectaDocumentos.TOTAL_DOLARES = dPago
 
                         'If valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaTotalDlls).Text) <> valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) And valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaSaldoDlls).Text) <> valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) Then
@@ -1753,7 +1751,7 @@ Buscar:
                 Return False
             End If
 
-            If Me.cboMoneda.Text = "USD" Then
+            If Me.cboMonedaPago.Text = "USD" Then
                 If dTipoCambio <= 0 Or dTipoCambio > 30 Then
                     MsgBox("Tipo de cambio incorrecto.", MsgBoxStyle.Exclamation, sProcedure)
                     Me.txtTipoCambio.Focus()
@@ -1785,7 +1783,7 @@ Buscar:
                 Return False
             End If
 
-            If Me.cboMoneda.Text = "USD" Then
+            If Me.cboMonedaPago.Text = "USD" Then
                 If txtLEN(oCuentaBancaria.CUENTA_CONTABLE_DOLARES.ToString) = False Then
                     MsgBox("La cuenta bancaria que intenta debe tener cuenta contable en dólares.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
@@ -1825,7 +1823,7 @@ Buscar:
                         Return False
                     End If
 
-                    If sMonedaVenta <> Me.cboMoneda.Text Then
+                    If sMonedaVenta <> Me.cboMonedaPago.Text Then
                         MsgBox("El pago en el renglón: " & i & " es de un anticipo hecho en " & sMonedaVenta & ", debe de pagarlo en esa misma moneda y al 100%.", MsgBoxStyle.Exclamation, sProcedure)
                         Me.GridVentas.Cell(i, Me.iGyVentaPago).Text = "0.00"
                         Me.GridVentas.Cell(i, Me.iGyVentaPago).SetFocus()
@@ -1834,20 +1832,20 @@ Buscar:
                     End If
                 End If
 
-                If Me.cboMoneda.Text = "USD" Then 'Pago en USD
+                If Me.cboMonedaPago.Text = "USD" Then 'Pago en USD
                     Me.CalculaImportesPagoUSD(i)
 
                     'sql = New Class_find("SELECT CASE WHEN CODIGO_MONEDA_SAT='USD' THEN ROUND(SALDO/TIPO_DE_CAMBIO,2) ELSE ROUND(SALDO/" & dTipoCambio.ToString & ",2) END SALDO_DOLARES FROM VENTA_GLOBAL " &
                     '                     "WHERE FOLIO_VENTA='" & Me.GridVentas.Cell(i, Me.iGyVentaFolio).Text & "'")
                     'Me.GridVentas.Cell(i, Me.iGyVentaSaldoDlls).Text = sql.Result1
 
-                    If valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) > valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaSaldoDlls).Text) Then
+                    If valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) > valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaSaldoUSD).Text) Then
                         MsgBox("El pago en el renglón: " & i & " es mayor al saldo del documento favor de revisar.", MsgBoxStyle.Exclamation, sProcedure)
                         Return False
                     End If
 
                     If Me.GridVentas.Cell(i, Me.iGyVentaEsFacturaAnticipo).Text = "1" Then
-                        If Not (valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaSaldoDlls).Text)) Then
+                        If Not (valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaSaldoUSD).Text)) Then
                             MsgBox("El pago en el renglón: " & i & " es de un anticipo y debe de pagarlo al 100%.", MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         End If
@@ -1871,7 +1869,7 @@ Buscar:
 
             Next
 
-            If Me.cboMoneda.Text = "USD" Then
+            If Me.cboMonedaPago.Text = "USD" Then
                 Me.CalculaImporteDolares()
             End If
 
@@ -2014,7 +2012,7 @@ Buscar:
     Private Sub DesplegarMonedas()
         Dim dView As New Data.DataView
         Try
-            With Me.cboMoneda
+            With Me.cboMonedaPago
                 .Items.Add("MXN")
                 .Items.Add("USD")
             End With
@@ -2062,7 +2060,7 @@ Buscar:
 
             oCuentaBancaria = New Class_CatCuentasBancarias(CInt(Me.TxtCuentaBancaria.Text))
 
-            If Me.cboMoneda.Text = "USD" Then
+            If Me.cboMonedaPago.Text = "USD" Then
                 oContaCuenta = New Class_CatCuentas(oCuentaBancaria.CUENTA_CONTABLE_PESOS.ToString)
                 Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
 
@@ -2078,8 +2076,8 @@ Buscar:
                     dPago = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text)
 
                     If dPago > 0 Then
-                        If valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaTotalDlls).Text) <> valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) And
-                            valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaSaldoDlls).Text) <> valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) Then
+                        If valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaTotalUSD).Text) <> valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) And
+                            valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaSaldoUSD).Text) <> valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) Then
                             MsgBox("El sistema a detectado un abono en dólares a una venta, favor de terminar de llenar la poliza.", MsgBoxStyle.Information, Me.Text)
                             Exit For
                         End If
@@ -2087,7 +2085,7 @@ Buscar:
                         dPerdidaGanancia = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaDiferencia).Text)
                         Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
 
-                        If valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaSaldoDlls).Text) Then
+                        If valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaSaldoUSD).Text) Then
                             ivaporpagar = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaIvaPorPagar).Text)
                         Else
                             ivaporpagar = 0
@@ -2465,7 +2463,7 @@ Buscar:
                 Me.FormateaGridDocumentosPago()
 
                 'Para que haga el cambio de las columnas que se van a mostrar
-                Me.cboMoneda.Text = oBancosCXC.CODIGO_MONEDA_SAT
+                Me.cboMonedaPago.Text = oBancosCXC.CODIGO_MONEDA_SAT
                 Me.chkVentasNoFiscales.Checked = oBancosCXC.ES_PAGO_VENTAS_NO_FISCALES
 
                 If Me.chkVentasNoFiscales.Checked = False Then 'Si es cuenta fiscal(si no esta marcado el check)
@@ -2685,7 +2683,7 @@ Buscar:
                     Me.tsbImprimirComprobante.Enabled = False
                     Me.CboDocumento.Enabled = True
                     Me.dtFecha.Enabled = True
-                    Me.cboMoneda.Enabled = False
+                    Me.cboMonedaPago.Enabled = False
                     'Me.txtTipoCambio.Enabled = False'No se cambia para dejar el último estado
                     Me.TxtConcepto.Enabled = True
                     Me.TxtTotal.Enabled = False
@@ -2716,7 +2714,7 @@ Buscar:
                     Me.tsbImprimirComprobante.Enabled = True
                     Me.CboDocumento.Enabled = False
                     Me.dtFecha.Enabled = False
-                    Me.cboMoneda.Enabled = False
+                    Me.cboMonedaPago.Enabled = False
                     Me.txtTipoCambio.Enabled = False
                     Me.TxtConcepto.Enabled = False
                     Me.TxtTotal.Enabled = False
@@ -2750,7 +2748,7 @@ Buscar:
                     Me.tsbImprimirComprobante.Enabled = True
                     Me.CboDocumento.Enabled = False
                     Me.dtFecha.Enabled = False
-                    Me.cboMoneda.Enabled = False
+                    Me.cboMonedaPago.Enabled = False
                     Me.txtTipoCambio.Enabled = False
                     Me.TxtConcepto.Enabled = False
                     Me.TxtTotal.Enabled = False
@@ -2929,7 +2927,7 @@ Buscar:
                 Return False
             End If
 
-            If Me.cboMoneda.SelectedIndex = -1 Then
+            If Me.cboMonedaPago.SelectedIndex = -1 Then
                 MsgBox("Asígne el tipo de moneda.", MsgBoxStyle.Exclamation, sProcedure)
                 'aqui no hay focus porque esta enabled false.
                 Return False
@@ -3030,7 +3028,7 @@ Buscar:
                 Return False
             End If
 
-            If Me.cboMoneda.Text = "USD" Then
+            If Me.cboMonedaPago.Text = "USD" Then
                 If valorNumerico(Me.txtTipoCambio.Text) = 0 Then
                     MsgBox("Asigne el tipo de cambio del documento de pago.", vbExclamation, sProcedure)
                     Me.txtTipoCambio.Focus()
@@ -3073,7 +3071,7 @@ Buscar:
                 .Cell(r, Me.iGyDocFECHA).Text = Me.dtFechaPagoCliente.Value.ToString
                 .Cell(r, Me.iGyDocRFC_EMISOR).Text = Me.txtRFCEmisor.Text.ToUpper
                 .Cell(r, Me.iGyDocMONTO).Text = valorNumerico(Me.txtMonto.Text).ToString
-                .Cell(r, Me.iGyDocCODIGO_MONEDA_SAT).Text = Me.cboMoneda.Text
+                .Cell(r, Me.iGyDocCODIGO_MONEDA_SAT).Text = Me.cboMonedaPago.Text
 
             End With
 
@@ -3350,7 +3348,7 @@ Buscar:
             dDiferencia = dPesosNuevos - dPesosViejos
 
             'Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldo).Text'No se necesita refrescar porque este dato no importa al ser un pago en USD el que importa es el saldo en MXN
-            Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldoDlls).Text = dSaldoUSD.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldoUSD).Text = dSaldoUSD.ToString
             Me.GridVentas.Cell(Renglon, Me.iGyVentaPagoPesos).Text = dPesosViejos.ToString
             Me.GridVentas.Cell(Renglon, Me.iGyVentaDiferencia).Text = dDiferencia.ToString
             Me.GridVentas.Cell(Renglon, Me.iGyVentaImporteMonedaVenta).Text = dImporteMonedaVenta.ToString
@@ -3436,7 +3434,7 @@ Buscar:
 
                             If dPago > 0 And txtLEN(Me.GridVentas.Cell(Renglon, Me.iGyVentaFolio).Text) = True Then
 
-                                If Me.GridVentas.Cell(Renglon, Me.iGyVentaEsFacturaAnticipo).Text = "1" AndAlso sMonedaVenta <> Me.cboMoneda.Text Then
+                                If Me.GridVentas.Cell(Renglon, Me.iGyVentaEsFacturaAnticipo).Text = "1" AndAlso sMonedaVenta <> Me.cboMonedaPago.Text Then
                                     MsgBox("El pago en el renglón: " & Renglon & " es de un anticipo hecho en " & sMonedaVenta & ", debe de pagarlo en esa misma moneda y al 100%.", MsgBoxStyle.Exclamation, sProcedure)
                                     Me.GridVentas.Cell(Renglon, Me.iGyVentaPago).Text = "0.00"
                                     Me.GridVentas.Cell(Renglon, Me.iGyVentaPago).SetFocus()
@@ -3444,8 +3442,8 @@ Buscar:
                                     Exit Sub
                                 End If
 
-                                If Me.cboMoneda.Text = "USD" Then 'Pago USD
-                                    If dPago > valorNumerico(Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldoDlls).Text) And Me.GridVentas.Locked = False Then
+                                If Me.cboMonedaPago.Text = "USD" Then 'Pago USD
+                                    If dPago > valorNumerico(Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldoUSD).Text) And Me.GridVentas.Locked = False Then
                                         MsgBox("El pago en el renglón: " & Renglon & " es mayor al saldo del documento favor de revisar.", MsgBoxStyle.Exclamation, sProcedure)
                                         Me.GridVentas.Cell(Renglon, Me.iGyVentaPago).Text = "0.00"
                                         Me.GridVentas.Cell(Renglon, Me.iGyVentaPago).SetFocus()
@@ -3661,7 +3659,7 @@ Buscar:
         If oTipoCambio.Existe AndAlso oTipoCambio.TIPO_DE_CAMBIO > 0 Then
             Me.txtTipoCambio.Text = oTipoCambio.TIPO_DE_CAMBIO.ToString
         Else
-            If Me.cboMoneda.Text = "USD" Then
+            If Me.cboMonedaPago.Text = "USD" Then
                 MsgBox("No se ha capturado el tipo de cambio del día.", MsgBoxStyle.Exclamation, Me.Text)
             End If
         End If
@@ -3687,18 +3685,18 @@ Buscar:
 
     Private Sub VisibilidadColumnasGridVentas()
         Try
-            If Me.cboMoneda.Text = "USD" Then
+            If Me.cboMonedaPago.Text = "USD" Then
                 Me.GridVentas.Column(Me.iGyVentaTotal).Visible = False
                 Me.GridVentas.Column(Me.iGyVentaSaldo).Visible = False
-                Me.GridVentas.Column(Me.iGyVentaTotalDlls).Visible = True
-                Me.GridVentas.Column(Me.iGyVentaSaldoDlls).Visible = True
+                Me.GridVentas.Column(Me.iGyVentaTotalUSD).Visible = True
+                Me.GridVentas.Column(Me.iGyVentaSaldoUSD).Visible = True
                 Me.GridVentas.Column(Me.iGyVentaDiferencia).Visible = True
                 Me.GridVentas.Column(Me.iGyVentaPagoPesos).Visible = True
-            Else
+            Else 'Pago MXN
                 Me.GridVentas.Column(Me.iGyVentaTotal).Visible = True
                 Me.GridVentas.Column(Me.iGyVentaSaldo).Visible = True
-                Me.GridVentas.Column(Me.iGyVentaTotalDlls).Visible = False
-                Me.GridVentas.Column(Me.iGyVentaSaldoDlls).Visible = False
+                Me.GridVentas.Column(Me.iGyVentaTotalUSD).Visible = False
+                Me.GridVentas.Column(Me.iGyVentaSaldoUSD).Visible = False
                 Me.GridVentas.Column(Me.iGyVentaDiferencia).Visible = False
                 Me.GridVentas.Column(Me.iGyVentaPagoPesos).Visible = False
             End If
