@@ -654,23 +654,39 @@ Public Class Class_Bancos_CXC
         Dim sSQL As String
 
         'CargaFacturasPagadas()---FOLIO_REFERENCIA_USUARIO no va
+
+        'sSQL = "SELECT D.FOLIO_DETALLE,D.CODIGO_CLIENTE,C.NOMBRE_CLIENTE,D.FECHA,CASE WHEN D.ESTATUS_CXC='G' THEN 'ANTICIPO' ELSE D.FOLIO_REFERENCIA END FOLIO_REFERENCIA,V.CODIGO_MONEDA_SAT,D.NOMBRE_MEDIO_PAGO,D.NOMBRE_BANCO,TOTAL_VENTA,SALDO_VENTA, " &
+        '       "TOTAL_VENTA_DOLARES,SALDO_VENTA_DOLARES,IMPORTE_CAPTURADO PAGADO,TOTAL_DETALLE PAGADO_PESOS,0 SELECCION,D.FOLIO_REFERENCIA_USUARIO,D.FECHA_PAGO,0 IVAXPAGAR,0 DIFERENCIA, " &
+        '       "V.VERSION_ESQUEMA_XML,V.CODIGO_METODO_PAGO,V.CODIGO_METODO_PAGO_EVENTO, " &
+        '       "D.IMPORTE_MONEDA_VENTA,D.SALDO_ANTERIOR_MONEDA_VENTA,D.SALDO_ANTERIOR_MONEDA_PAGO,V.ES_FACTURA_ELECTRONICA " &
+        '       "FROM VW_BANCOS_CXC_DETALLE D " &
+        '       "INNER JOIN CAT_CLIENTES C ON (D.CODIGO_CLIENTE=C.CODIGO_CLIENTE) " &
+        '       "LEFT JOIN VENTA_GLOBAL V ON(D.FOLIO_REFERENCIA=V.FOLIO_VENTA) " &
+        '       "WHERE D.FOLIO_BANCO='" & Me._FOLIO_BANCO & "' ORDER BY V.FECHA"
+
+
+        'CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN ROUND(V.SALDO_DOLARES*" & dTipoCambioPago.ToString & ",2) ELSE V.SALDO END SALDO_MXN_TP_PAGO
+
         sSQL = "SELECT * INTO #VW_SIS_CAT_DOCUMENTOS_EXTENDIDO FROM VW_SIS_CAT_DOCUMENTOS_EXTENDIDO " &
-               "SELECT D.FOLIO_DETALLE,D.CODIGO_CLIENTE,C.NOMBRE_CLIENTE,D.FECHA,CASE WHEN D.ESTATUS_CXC='G' THEN 'ANTICIPO' ELSE D.FOLIO_REFERENCIA END FOLIO_REFERENCIA,V.CODIGO_MONEDA_SAT,D.NOMBRE_MEDIO_PAGO,D.NOMBRE_BANCO,TOTAL_VENTA,SALDO_VENTA, " &
-               "TOTAL_VENTA_DOLARES,SALDO_VENTA_DOLARES,IMPORTE_CAPTURADO PAGADO,TOTAL_DETALLE PAGADO_PESOS,0 SELECCION,D.FOLIO_REFERENCIA_USUARIO,D.FECHA_PAGO,0 IVAXPAGAR,0 DIFERENCIA, " &
+               "SELECT D.FOLIO_DETALLE,D.CODIGO_CLIENTE,C.NOMBRE_CLIENTE,D.FECHA,CASE WHEN D.ESTATUS_CXC='G' THEN 'ANTICIPO' ELSE D.FOLIO_REFERENCIA END FOLIO_REFERENCIA,V.CODIGO_MONEDA_SAT,D.NOMBRE_MEDIO_PAGO,D.NOMBRE_BANCO," &
+               "V.IMPUESTO,V.TOTAL,CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN ROUND(V.SALDO_DOLARES*D.TIPO_DE_CAMBIO_PAGO,2) ELSE V.SALDO END SALDO_MXN_TP_PAGO,V.SALDO SALDO_CXC," &
+               "V.TIPO_DE_CAMBIO,V.V.TIPO_DE_CAMBIO,V.SUBTOTAL_USD,V.IMPUESTO_USD,V.TOTAL_DOLARES," &
+               "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN V.SALDO_DOLARES ELSE ROUND(V.SALDO/D.TIPO_DE_CAMBIO_PAGO,2) END SALDO_DOLARES," &
+               "D.IMPORTE_CAPTURADO PAGADO,TOTAL_DETALLE PAGADO_PESOS,0 SELECCION,D.FOLIO_REFERENCIA_USUARIO,D.FECHA_PAGO,0 IVAXPAGAR,D.DIFERENCIA_CAMBIARIA," &
                "V.VERSION_ESQUEMA_XML,V.CODIGO_METODO_PAGO,V.CODIGO_METODO_PAGO_EVENTO, " &
                "D.IMPORTE_MONEDA_VENTA,D.SALDO_ANTERIOR_MONEDA_VENTA,D.SALDO_ANTERIOR_MONEDA_PAGO,V.ES_FACTURA_ELECTRONICA,DOCVTA.ES_FACTURA_ANTICIPO " &
                "FROM VW_BANCOS_CXC_DETALLE D " &
-               "INNER JOIN CAT_CLIENTES C ON (D.CODIGO_CLIENTE=C.CODIGO_CLIENTE) " &
+               "INNER JOIN CAT_CLIENTES C ON(D.CODIGO_CLIENTE=C.CODIGO_CLIENTE) " &
                "LEFT JOIN VENTA_GLOBAL V ON(D.FOLIO_REFERENCIA=V.FOLIO_VENTA) " &
                "INNER JOIN #VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOCVTA ON(D.CODIGO_DOCUMENTO=DOCVTA.CODIGO_DOCUMENTO) " &
-               "WHERE D.FOLIO_BANCO='" & Me._FOLIO_BANCO & "' ORDER BY V.FECHA"
+               "WHERE D.FOLIO_BANCO='" & Me._FOLIO_BANCO & "' " &
+               "ORDER BY V.FECHA"
 
         '"TOTAL_VENTA_DOLARES,SALDO_VENTA_DOLARES,CASE WHEN(TOTAL_DETALLE_DOLARES>0) THEN TOTAL_DETALLE_DOLARES ELSE TOTAL_DETALLE END PAGADO,0 PAGADO_PESOS,0 SELECCION,D.FOLIO_REFERENCIA_USUARIO,D.FECHA_PAGO,0 IVAXPAGAR,0 DIFERENCIA, " &
 
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
-
             da.Dispose()
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, "ObtenerDetalle", ex)
@@ -711,7 +727,6 @@ Public Class Class_Bancos_CXC
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
-
             da.Dispose()
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, "CargaFacturaClienteConSaldo", ex)
@@ -734,7 +749,6 @@ Public Class Class_Bancos_CXC
                 "WHERE SALDO>0 AND CODIGO_CLIENTE='" & sCodigoCliente.ToString & "'  AND D.AFECTA_CONTABILIDAD='1' and V.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND "
 
         f.arrayWidthColumns = New Integer() {150, 140, 140, 140, 140}
-
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -758,7 +772,6 @@ Public Class Class_Bancos_CXC
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
-
             da.Dispose()
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, "CargaFacturasPagadas", ex)
@@ -816,11 +829,10 @@ Public Class Class_Bancos_CXC
                     Me._NOMBRE_USUARIO_GRABO = CType(dReader("BAN_NOMBRE_USUARIO_GRABO"), String)
 
                     bResultado = True
-
                 End If
                 dReader.Close()
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "Consultar", ex)
+                HandleError(Me.Nombre_Clase, "ConsultarCXC", ex)
             Finally
                 Conexion.Close()
                 cmd.Dispose()
@@ -1005,7 +1017,7 @@ Public Class Class_Bancos_CXC
     End Function
 
     Public Function GeneraPagosElectronicos() As Boolean
-        Dim sProcedure As String = Me.Nombre_Clase & "- GeneraPagosElectronicos"
+        Const sProcedure As String = "GeneraPagosElectronicos"
         Dim bResultado As Boolean = False
         Try
             Dim bTimbresNoRealizados As Boolean = False, dTabla As New DataTable
@@ -1042,7 +1054,7 @@ Public Class Class_Bancos_CXC
     End Function
 
     Public Function CancelaPagosElectronicos() As Boolean
-        Dim sProcedure As String = Me.Nombre_Clase & "- CancelaPagosElectronicos"
+        Const sProcedure As String = "CancelaPagosElectronicos"
         Dim bResultado As Boolean = False
         Try
             Dim bTimbresNoCancelados As Boolean = False, dTabla As New DataTable
@@ -1082,10 +1094,10 @@ Public Class Class_Bancos_CXC
         Dim dTabla As New DataTable, da As SqlDataAdapter
         Dim sSQL As String
 
-        sSQL = "SELECT P.FOLIO_PAGO,P.FECHA_PAGO,P.MONTO,B.CODIGO_MONEDA_SAT,P.CODIGO_CLIENTE,CTE.NOMBRE_CLIENTE,P.TIMBRADO_CFDI,P.ESTATUS_PAGO,P.ESTATUS_CANCELACION_CFDI " &
+        sSQL = "Select P.FOLIO_PAGO,P.FECHA_PAGO,P.MONTO,B.CODIGO_MONEDA_SAT,P.CODIGO_CLIENTE,CTE.NOMBRE_CLIENTE,P.TIMBRADO_CFDI,P.ESTATUS_PAGO,P.ESTATUS_CANCELACION_CFDI " &
             "FROM CFDI_PAGOS_CXC_GLOBAL P " &
-            "INNER JOIN BANCOS_GLOBAL B ON(P.FOLIO_BANCO=B.FOLIO_BANCO) " &
-            "INNER JOIN CAT_CLIENTES CTE ON(P.CODIGO_CLIENTE=CTE.CODIGO_CLIENTE) " &
+            "INNER JOIN BANCOS_GLOBAL B On(P.FOLIO_BANCO=B.FOLIO_BANCO) " &
+            "INNER JOIN CAT_CLIENTES CTE On(P.CODIGO_CLIENTE=CTE.CODIGO_CLIENTE) " &
             "WHERE P.FOLIO_BANCO='" & Me._FOLIO_BANCO & "'" &
             "ORDER BY P.ID_CFDI_PAGOS_CXC_GLOBAL"
 
