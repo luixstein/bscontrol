@@ -774,19 +774,19 @@ Buscar:
     Private Sub FormateaGridVentas()
         Try
             With Me.GridVentas
-                .Column(Me.iGyB_PagoFolioDetalle).Width = 80
+                .Column(Me.iGyB_PagoFolioDetalle).Width = 0 '80
                 .Column(Me.iGyB_VtaCodigoCliente).Width = 45
                 .Column(Me.iGyB_VtaNombreCliente).Width = 120
-                .Column(Me.iGyB_VtaFecha).Width = 65
+                .Column(Me.iGyB_VtaFecha).Width = 60
                 .Column(Me.iGyB_VtaFolio).Width = 80
-                .Column(Me.iGyB_VtaMoneda).Width = 50
+                .Column(Me.iGyB_VtaMoneda).Width = 40
                 .Column(Me.iGyB_PagoMedioPago).Width = 0 'Abajo se hace visible false
                 .Column(Me.iGyB_PagoBanco).Width = 0 'Abajo se hace visible false
                 .Column(Me.iGyB_VtaIvaMXN).Width = 80 'new
                 .Column(Me.iGyB_VtaTotalMXN).Width = 80
                 .Column(Me.iGyB_VtaSaldoMXN_TpPago).Width = 80
                 .Column(Me.iGyB_VtaSaldoMXN_CXC).Width = 80 'new
-                .Column(Me.iGyB_VtaTipoCambio).Width = 80 'new
+                .Column(Me.iGyB_VtaTipoCambio).Width = 50 'new
                 .Column(Me.iGyB_VtaSubtotalUSD).Width = 80 'new
                 .Column(Me.iGyB_VtaIvaUSD).Width = 80 'new
                 .Column(Me.iGyB_VtaTotalUSD).Width = 80
@@ -814,18 +814,18 @@ Buscar:
                 .Cell(0, Me.iGyB_VtaNombreCliente).Text = "Nombre"
                 .Cell(0, Me.iGyB_VtaFecha).Text = "Fecha"
                 .Cell(0, Me.iGyB_VtaFolio).Text = "Folio"
-                .Cell(0, Me.iGyB_VtaMoneda).Text = "MonVta"
+                .Cell(0, Me.iGyB_VtaMoneda).Text = "V.Mon"
                 .Cell(0, Me.iGyB_PagoMedioPago).Text = "Medio de pago"
                 .Cell(0, Me.iGyB_PagoBanco).Text = "Banco"
-                .Cell(0, Me.iGyB_VtaIvaMXN).Text = "V. IVA"
-                .Cell(0, Me.iGyB_VtaTotalMXN).Text = "Total"
-                .Cell(0, Me.iGyB_VtaSaldoMXN_TpPago).Text = "SaldoTpP" '"Saldo"
+                .Cell(0, Me.iGyB_VtaIvaMXN).Text = "V.IVA"
+                .Cell(0, Me.iGyB_VtaTotalMXN).Text = "V.Total"
+                .Cell(0, Me.iGyB_VtaSaldoMXN_TpPago).Text = "SaldoMXN TpP" '"Saldo"
                 .Cell(0, Me.iGyB_VtaSaldoMXN_CXC).Text = "SaldoCXC"
-                .Cell(0, Me.iGyB_VtaTipoCambio).Text = "V. Tpc"
-                .Cell(0, Me.iGyB_VtaSubtotalUSD).Text = "V. SubUSD"
-                .Cell(0, Me.iGyB_VtaIvaUSD).Text = "V. IvaUSD"
-                .Cell(0, Me.iGyB_VtaTotalUSD).Text = "Total USD"
-                .Cell(0, Me.iGyB_VtaSaldoUSD).Text = "Saldo USD"
+                .Cell(0, Me.iGyB_VtaTipoCambio).Text = "V.Tp"
+                .Cell(0, Me.iGyB_VtaSubtotalUSD).Text = "V.SubUSD"
+                .Cell(0, Me.iGyB_VtaIvaUSD).Text = "V.IvaUSD"
+                .Cell(0, Me.iGyB_VtaTotalUSD).Text = "V.TotalUSD"
+                .Cell(0, Me.iGyB_VtaSaldoUSD).Text = "SaldoUSD"
                 .Cell(0, Me.iGyB_CxcPagoMXNCapturado).Text = "Pago MXN" ' "Pagar"
                 .Cell(0, Me.iGyB_CxcTotal).Text = "AbonoCXC" '"Pagar Pesos"
                 .Cell(0, Me.iGyB_CxcPagoUSDCapturado).Text = "Pago USD"
@@ -868,6 +868,11 @@ Buscar:
                 .Column(Me.iGyB_VtaSaldoMXN_CXC).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyB_VtaSaldoMXN_CXC).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
                 .Column(Me.iGyB_VtaSaldoMXN_CXC).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyB_VtaTipoCambio).FormatString = "###,###,##0.0000"
+                .Column(Me.iGyB_VtaTipoCambio).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_VtaTipoCambio).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_VtaTipoCambio).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .Column(Me.iGyB_VtaSubtotalUSD).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
                 .Column(Me.iGyB_VtaSubtotalUSD).Mask = FlexCell.MaskEnum.Numeric
@@ -941,6 +946,7 @@ Buscar:
 
                 .Refresh()
 
+                .Column(Me.iGyB_PagoMedioPago).Visible = False
                 .Column(Me.iGyB_VtaCodigoCliente).Locked = True
                 .Column(Me.iGyB_VtaNombreCliente).Locked = True
                 .Column(Me.iGyB_VtaFecha).Locked = True
@@ -953,7 +959,7 @@ Buscar:
                 .Column(Me.iGyB_VtaSaldoMXN_TpPago).Locked = True
                 .Column(Me.iGyB_VtaSaldoMXN_CXC).Locked = True
                 .Column(Me.iGyB_VtaTipoCambio).Locked = True
-                .Column(Me.iGyB_VtaSubtotalUSD).Locked = True
+                .Column(Me.iGyB_VtaSubtotalUSD).Locked = True : .Column(Me.iGyB_VtaSubtotalUSD).Visible = False
                 .Column(Me.iGyB_VtaIvaUSD).Locked = True
                 .Column(Me.iGyB_VtaTotalUSD).Locked = True : .Column(Me.iGyB_VtaTotalUSD).Visible = False
                 .Column(Me.iGyB_VtaSaldoUSD).Locked = True : .Column(Me.iGyB_VtaSaldoUSD).Visible = False
@@ -967,7 +973,7 @@ Buscar:
                 .Column(Me.iGyB_CxcIvaPendienteCobro).Visible = True
                 .Column(Me.iGyB_CxcDiferenciaCambiaria).Locked = True : .Column(Me.iGyB_CxcDiferenciaCambiaria).Visible = False
                 .Column(Me.iGyB_VtaVersionCFDI).Locked = True : .Column(Me.iGyB_VtaVersionCFDI).Visible = False
-                .Column(Me.iGyB_VtaFormaPago).Locked = True : .Column(Me.iGyB_VtaFormaPago).Visible = True
+                .Column(Me.iGyB_VtaFormaPago).Locked = True : .Column(Me.iGyB_VtaFormaPago).Visible = False
                 .Column(Me.iGyB_VtaMetodoPago).Locked = True : .Column(Me.iGyB_VtaMetodoPago).Visible = True
                 .Column(Me.iGyB_CxcImporteMonedaVenta).Visible = False
                 .Column(Me.iGyB_CxcSaldoAnteriorMonedaVenta).Visible = False
@@ -2553,6 +2559,7 @@ Buscar:
                 'Para que haga el cambio de las columnas que se van a mostrar
                 Me.cboMonedaPago.Text = oBancosCXC.CODIGO_MONEDA_SAT
                 Me.chkVentasNoFiscales.Checked = oBancosCXC.ES_PAGO_VENTAS_NO_FISCALES
+                Me.VisibilidadColumnasGridVentas()
 
                 If Me.chkVentasNoFiscales.Checked = False Then 'Si es cuenta fiscal(si no esta marcado el check)
                     Me.lblEsCuentaFiscal.Text = "Sólo facturas"
@@ -2811,7 +2818,7 @@ Buscar:
                     Me.tssCancelo.Visible = False
                     Me.tssFechaEmisionCFDI.Visible = True
                     Me.GridVentas.Locked = True
-                    Me.GridVentas.Cell(0, Me.iGyB_CxcPagoMXNCapturado).Text = "Pagado"
+                    'Me.GridVentas.Cell(0, Me.iGyB_CxcPagoMXNCapturado).Text = "Pagado"
                     Me.GridVentas.Column(Me.iGyB_PagoSeleccion).Visible = False
                     Me.gbAgregaDocCliente.Enabled = False
                     Me.gbVentas.Enabled = True 'Para que lo puedan recorrer
@@ -2845,7 +2852,7 @@ Buscar:
                     Me.tssCancelo.Visible = True
                     Me.tssFechaEmisionCFDI.Visible = True
                     Me.GridVentas.Locked = True
-                    Me.GridVentas.Cell(0, Me.iGyB_CxcPagoMXNCapturado).Text = "Pagado"
+                    'Me.GridVentas.Cell(0, Me.iGyB_CxcPagoMXNCapturado).Text = "Pagado"
                     Me.GridVentas.Column(Me.iGyB_PagoSeleccion).Visible = False
                     Me.gbAgregaDocCliente.Enabled = False
                     Me.gbVentas.Enabled = True 'Para que lo puedan recorrer
@@ -3776,6 +3783,7 @@ Buscar:
             If Me.cboMonedaPago.Text = "USD" Then
                 Me.GridVentas.Column(Me.iGyB_VtaTotalMXN).Visible = False
                 Me.GridVentas.Column(Me.iGyB_VtaSaldoMXN_TpPago).Visible = False
+                Me.GridVentas.Column(Me.iGyB_VtaIvaUSD).Visible = True
                 Me.GridVentas.Column(Me.iGyB_VtaTotalUSD).Visible = True
                 Me.GridVentas.Column(Me.iGyB_VtaSaldoUSD).Visible = True
                 Me.GridVentas.Column(Me.iGyB_CxcDiferenciaCambiaria).Visible = True
@@ -3783,10 +3791,11 @@ Buscar:
             Else 'Pago MXN
                 Me.GridVentas.Column(Me.iGyB_VtaTotalMXN).Visible = True
                 Me.GridVentas.Column(Me.iGyB_VtaSaldoMXN_TpPago).Visible = True
+                Me.GridVentas.Column(Me.iGyB_VtaIvaUSD).Visible = False
                 Me.GridVentas.Column(Me.iGyB_VtaTotalUSD).Visible = False
                 Me.GridVentas.Column(Me.iGyB_VtaSaldoUSD).Visible = False
                 Me.GridVentas.Column(Me.iGyB_CxcDiferenciaCambiaria).Visible = False
-                Me.GridVentas.Column(Me.iGyB_CxcTotal).Visible = False
+                Me.GridVentas.Column(Me.iGyB_CxcTotal).Visible = True ' False
             End If
 
             'Recordemos también este código al cargar facturas estando en un pago en mxn, y existiera alguna factura en usd
