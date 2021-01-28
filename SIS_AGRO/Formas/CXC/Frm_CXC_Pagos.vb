@@ -3403,7 +3403,7 @@ Buscar:
         End Try
     End Sub
 
-    Private Sub CalculaImportesPagoUSD(ByVal Renglon As Integer)
+    Private Sub CalculaImportesPagoUSD_old(ByVal Renglon As Integer)
         Try
             Dim oVenta As New Class_Ventas_Global '(Me.GridVentas.Cell(Renglon, Me.iGyVentaFolio).Text)
             oVenta.FOLIO_VENTA = Me.GridVentas.Cell(Renglon, Me.iGyB_VtaFolio).Text
@@ -3455,7 +3455,92 @@ Buscar:
         End Try
     End Sub
 
-    Private Sub CalculaImportesPagoMXN(ByVal Renglon As Integer)
+    Private Sub CalculaImportesPagoUSD(ByVal Renglon As Integer)
+        Try
+            Dim dPagoTipoCambio As Decimal
+            Dim dPagoUSD As Decimal, dPagoUSD_IVA As Decimal, dPagoUSD_Subtotal As Decimal
+            Dim dVtaIvaMXN As Decimal, dVtaTotalMXN As Decimal, dVtaTotalUSD As Decimal, dVtaIvaUSD As Decimal, dVtaTipoCambio As Decimal, sVtaMoneda As String, dVtaSaldoMXN_TpPago As Decimal, dVtaSaldoMXN_CXC As Decimal, dVtaSaldoUSD As Decimal
+            Dim dCxcPagoMXNCapturado As Decimal, dCxcTotal As Decimal, dDiferenciaCambiaria As Decimal, dCxcIvaCobrado As Decimal, dCxcIvaPendienteCobro As Decimal
+            Dim dImporteMonedaVenta As Decimal, dSaldoAnteriorMonedaVenta As Decimal, dSaldoAnteriorMonedaPago As Decimal
+
+            sVtaMoneda = Me.GridVentas.Cell(Renglon, Me.iGyB_VtaMoneda).Text
+            dPagoTipoCambio = valorNumericoD(Me.txtTipoCambio.Text)
+
+            dVtaTotalMXN = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaTotalMXN).Text)
+            dVtaIvaMXN = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaIvaMXN).Text)
+            dVtaIvaUSD = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaIvaUSD).Text)
+            dVtaTotalUSD = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaTotalUSD).Text)
+            dVtaTipoCambio = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaTipoCambio).Text)
+
+            Select Case sVtaMoneda
+                Case "USD"
+                    dPagoUSD_IVA = RedondearD((dPagoUSD / dVtaTotalUSD) * dVtaIvaUSD, 2) 'Se obtiene el iva en usd por proporción
+                    dPagoUSD_Subtotal = RedondearD(dPagoUSD - dPagoUSD_IVA, 2)
+                    'MsgBox(RedondearD(dPagoTipoCambio - dVtaTipoCambio, 4).ToString)
+                    'MsgBox((RedondearD(dPagoTipoCambio - dVtaTipoCambio, 4) * dPagoUSD_Subtotal).ToString)
+                    dDiferenciaCambiaria = Math.Round((dPagoTipoCambio - dVtaTipoCambio) * dPagoUSD_Subtotal, 2) 'Nota no se usa la función redondear porque cuando son negativos no redondea bien.
+
+                    dCxcIvaCobrado = RedondearD(dPagoUSD_IVA * dPagoTipoCambio, 2)
+
+                    If dPagoUSD = dVtaSaldoUSD Then 'Si están saldando los usd entonces se toma directo el saldo en mxn para evitar queden decimales
+                        dCxcTotal = dVtaSaldoMXN_CXC
+                        dCxcIvaPendienteCobro = RedondearD(dPagoUSD_IVA * dVtaTipoCambio, 2)
+                    Else
+                        dCxcTotal = RedondearD(dPagoUSD * dVtaTipoCambio, 2)
+                        dCxcIvaPendienteCobro = RedondearD(dPagoUSD_IVA * dVtaTipoCambio, 2)
+                    End If
+
+                    'Como plus si estan pagando los usd originales de la venta entonces el iva viejo lo tomamos directo de la venta para evitar diferencias.
+                    If dPagoUSD = dVtaTotalUSD Then
+                        dCxcIvaPendienteCobro = dVtaIvaMXN
+                    End If
+
+                    dCxcPagoMXNCapturado = RedondearD(dPagoUSD * dPagoTipoCambio, 2) 'Pesos Nuevos
+
+                    dImporteMonedaVenta = dPagoUSD
+                    dSaldoAnteriorMonedaVenta = dVtaSaldoUSD
+                    dSaldoAnteriorMonedaPago = dVtaSaldoUSD
+
+                Case "MXN" '->MonedaVta
+                    dPagoUSD_IVA = 0
+                    dPagoUSD_Subtotal = 0
+                    dDiferenciaCambiaria = 0
+
+                    'Si están saldando los usd(virtuales) entonces se toma directo el saldo en mxn para evitar queden decimales
+                    If dPagoUSD = dVtaSaldoUSD Then 'Si están saldando los usd entonces se toma directo el saldo en mxn para evitar queden decimales
+                        dCxcTotal = dVtaSaldoMXN_CXC
+                    Else
+                        dCxcTotal = RedondearD(dPagoUSD * dPagoTipoCambio, 2) 'nota aqui los usd que pagan por el tppago llegamos a los pesos abonar(aqui no hay nuevos pesos)
+                    End If
+
+                    dCxcIvaCobrado = RedondearD((dCxcTotal / dVtaTotalMXN) * dVtaIvaMXN, 2)
+
+                    dCxcIvaPendienteCobro = dCxcIvaCobrado
+
+                    dCxcPagoMXNCapturado = dCxcTotal
+
+                    dImporteMonedaVenta = dCxcTotal
+                    dSaldoAnteriorMonedaVenta = dVtaSaldoMXN_CXC
+                    dSaldoAnteriorMonedaPago = dVtaSaldoUSD
+
+            End Select
+
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).Text = dCxcPagoMXNCapturado.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcTotal).Text = dCxcTotal.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcIvaCobrado).Text = dCxcIvaCobrado.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcIvaPendienteCobro).Text = dCxcIvaPendienteCobro.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcDiferenciaCambiaria).Text = dDiferenciaCambiaria.ToString
+
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcImporteMonedaVenta).Text = dImporteMonedaVenta.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcSaldoAnteriorMonedaVenta).Text = dSaldoAnteriorMonedaVenta.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcSaldoAnteriorMonedaPago).Text = dSaldoAnteriorMonedaPago.ToString
+
+        Catch ex As Exception
+            HandleError(Me.Name, "CalculaImportesPagoUSD", ex)
+        End Try
+    End Sub
+
+    Private Sub CalculaImportesPagoMXN_old(ByVal Renglon As Integer)
         Try
             Dim oVenta As New Class_Ventas_Global '(Me.GridVentas.Cell(Renglon, Me.iGyVentaFolio).Text)
             oVenta.FOLIO_VENTA = Me.GridVentas.Cell(Renglon, Me.iGyB_VtaFolio).Text
@@ -3506,14 +3591,26 @@ Buscar:
         End Try
     End Sub
 
+    Private Sub CalculaImportesPagoMXN(ByVal Renglon As Integer)
+        Try
+
+        Catch ex As Exception
+            HandleError(Me.Name, "CalculaImportesPagoMXN", ex)
+        End Try
+    End Sub
+
     Private Sub GestionaGrid(ByVal e As System.Windows.Forms.KeyEventArgs)
         Const sProcedure As String = "GestionaGrid"
         Try
             Dim Columna As Integer = Me.GridVentas.Selection.FirstCol, Renglon As Integer = Me.GridVentas.Selection.FirstRow
             Dim StrCod As String = Me.GridVentas.Cell(Renglon, Columna).Text
-            Dim dTipoCambioPago As Decimal ', dPesosViejos As Decimal, dPesosNuevos As Decimal, dDiferencia As Decimal
-            Dim dPago As Double
-            Dim sMonedaVenta As String = Me.GridVentas.Cell(Renglon, Me.iGyB_VtaMoneda).Text
+            Dim dPagoTipoCambio As Decimal ', dPesosViejos As Decimal, dPesosNuevos As Decimal, dDiferencia As Decimal
+            Dim dCxcPagoMXNCapturado As Decimal
+            Dim dPagoUSD As Decimal
+            Dim sVtaMoneda As String, dVtaSaldoMXN_TpPago As Decimal, dVtaSaldoMXN_CXC As Decimal, dVtaSaldoUSD As Decimal
+
+            sVtaMoneda = Me.GridVentas.Cell(Renglon, Me.iGyB_VtaMoneda).Text
+            dPagoTipoCambio = valorNumericoD(Me.txtTipoCambio.Text)
 
             Select Case e.KeyCode
                 Case Keys.Enter
@@ -3524,49 +3621,111 @@ Buscar:
                         '    Me.Grid1.Cell(Renglon, 6).SetFocus()
 
                         Case Me.iGyB_CxcPagoMXNCapturado
-                            dPago = valorNumerico(Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).Text)
-                            dTipoCambioPago = valorNumericoD(Me.txtTipoCambio.Text)
+                            If Me.cboMonedaPago.Text <> "MXN" Then 'Pago MXN
+                                MsgBox("Este dato sólo es capturable si esta pagando pesos.", MsgBoxStyle.Exclamation, sProcedure)
+                                Return
+                            End If
 
-                            If dPago > 0 And txtLEN(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaFolio).Text) = True Then
+                            If txtLEN(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaFolio).Text) = False Then
+                                Return
+                            End If
 
-                                If Me.GridVentas.Cell(Renglon, Me.iGyB_VtaEsFacturaAnticipo).Text = "1" AndAlso sMonedaVenta <> Me.cboMonedaPago.Text Then
-                                    MsgBox("El pago en el renglón: " & Renglon & " es de un anticipo hecho en " & sMonedaVenta & ", debe de pagarlo en esa misma moneda y al 100%.", MsgBoxStyle.Exclamation, sProcedure)
-                                    Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).Text = "0.00"
+
+                            MsgBox("ojo ver si aunque sea en el validar refrescar saldos antes de grabar")
+                            'Mejor refrescar los datos que tienen que ver con saldos para tener los saldos correctos en cada instante.
+                            Dim tSaldos As New Class_find("SELECT " &
+                            "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN ROUND(V.SALDO_DOLARES*" & dPagoTipoCambio.ToString & ",2) ELSE V.SALDO END SALDO_MXN_TP_PAGO," &
+                            "V.SALDO SALDO_CXC," &
+                            "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN V.SALDO_DOLARES ELSE 0 END SALDO_DOLARES " &
+                            "FROM VENTA_GLOBAL V WHERE V.FOLIO_VENTA='" & Me.GridVentas.Cell(Renglon, Me.iGyB_VtaFolio).Text & "'") ' al ser pago mxn vta mxn la vta nunca mostrará saldo en usd
+
+                            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoMXN_TpPago).Text = tSaldos.Result1
+                            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoMXN_CXC).Text = tSaldos.Result2
+                            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoUSD).Text = tSaldos.Result3
+
+                            dVtaSaldoMXN_TpPago = CDec(tSaldos.Result1)
+                            dVtaSaldoMXN_CXC = CDec(tSaldos.Result2)
+                            dVtaSaldoUSD = CDec(tSaldos.Result3)
+
+                            dCxcPagoMXNCapturado = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).Text)
+
+                            If dCxcPagoMXNCapturado > 0 Then
+
+                                If Me.GridVentas.Cell(Renglon, Me.iGyB_VtaEsFacturaAnticipo).Text = "1" AndAlso sVtaMoneda <> Me.cboMonedaPago.Text Then
+                                    MsgBox("El pago en el renglón: " & Renglon & " es de un anticipo hecho en " & sVtaMoneda & ", debe de pagarlo en esa misma moneda y al 100%.", MsgBoxStyle.Exclamation, sProcedure)
                                     Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).SetFocus()
                                     Me.BorraPago(Renglon)
                                     Exit Sub
                                 End If
 
-                                If Me.cboMonedaPago.Text = "USD" Then 'Pago USD
-                                    If dPago > valorNumerico(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoUSD).Text) And Me.GridVentas.Locked = False Then
-                                        MsgBox("El pago en el renglón: " & Renglon & " es mayor al saldo del documento favor de revisar.", MsgBoxStyle.Exclamation, sProcedure)
-                                        Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).Text = "0.00"
-                                        Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).SetFocus()
-                                        Me.BorraPago(Renglon)
-                                        Exit Sub
-                                    End If
-
-                                    Me.CalculaImportesPagoUSD(Renglon)
-
-                                Else 'Pago MXN
-                                    If dPago > valorNumerico(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoMXN_TpPago).Text) And Me.GridVentas.Locked = False Then
-                                        MsgBox("El pago en el renglón: " & Renglon & " es mayor al saldo del documento favor de revisar.", MsgBoxStyle.Exclamation, sProcedure)
-                                        Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).Text = "0.00"
-                                        Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).SetFocus()
-                                        Me.BorraPago(Renglon)
-                                        Exit Sub
-                                    End If
-
-                                    Me.CalculaImportesPagoMXN(Renglon)
-
+                                If dCxcPagoMXNCapturado > dVtaSaldoMXN_TpPago And Me.GridVentas.Locked = False Then
+                                    MsgBox("El pago en el renglón: " & Renglon & " es mayor al saldo del documento favor de revisar.", MsgBoxStyle.Exclamation, sProcedure)
+                                    Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).SetFocus()
+                                    Me.BorraPago(Renglon)
+                                    Exit Sub
                                 End If
 
-                            ElseIf dPago > 0 And Me.GridVentas.Rows = Renglon Then
-                                Me.GridVentas.Rows = Me.GridVentas.Rows + 1
+                                Me.CalculaImportesPagoMXN(Renglon)
 
-                            ElseIf dPago = 0 Then
+                                'ElseIf dCxcPagoMXNCapturado > 0 And Me.GridVentas.Rows = Renglon Then
+                                'Me.GridVentas.Rows = Me.GridVentas.Rows + 1
+
+                            ElseIf dCxcPagoMXNCapturado = 0 Then
                                 Me.BorraPago(Renglon)
                             End If
+
+                        Case Me.iGyB_CxcPagoUSDCapturado
+                            If Me.cboMonedaPago.Text <> "USD" Then 'Pago USD
+                                MsgBox("Este dato sólo es capturable si esta pagando dólares.", MsgBoxStyle.Exclamation, sProcedure)
+                                Return
+                            End If
+
+                            If txtLEN(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaFolio).Text) = False Then
+                                Return
+                            End If
+
+                            If dPagoTipoCambio <= 0 Then
+                                MsgBox("Debe primero asignar un tipo de cambio para el pago.", MsgBoxStyle.Exclamation, sProcedure)
+                                Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoUSDCapturado).SetFocus()
+                                Me.BorraPago(Renglon)
+                                Return
+                            End If
+
+                            MsgBox("ojo ver si aunque sea en el validar refrescar saldos antes de grabar")
+                            'Mejor refrescar los datos que tienen que ver con saldos para tener los saldos correctos en cada instante.
+                            Dim tSaldos As New Class_find("SELECT " &
+                            "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN ROUND(V.SALDO_DOLARES*" & dPagoTipoCambio.ToString & ",2) ELSE V.SALDO END SALDO_MXN_TP_PAGO," &
+                            "V.SALDO SALDO_CXC," &
+                            "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN V.SALDO_DOLARES ELSE ROUND(V.SALDO/" & dPagoTipoCambio.ToString & ",2) END SALDO_DOLARES " &
+                            "FROM VENTA_GLOBAL V WHERE V.FOLIO_VENTA='" & Me.GridVentas.Cell(Renglon, Me.iGyB_VtaFolio).Text & "'")
+
+                            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoMXN_TpPago).Text = tSaldos.Result1
+                            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoMXN_CXC).Text = tSaldos.Result2
+                            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoUSD).Text = tSaldos.Result3
+
+                            dVtaSaldoMXN_TpPago = CDec(tSaldos.Result1)
+                            dVtaSaldoMXN_CXC = CDec(tSaldos.Result2)
+                            dVtaSaldoUSD = CDec(tSaldos.Result3)
+
+                            dPagoUSD = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoUSDCapturado).Text)
+
+                            If dPagoUSD > 0 Then
+                                If dPagoUSD > dVtaSaldoUSD And Me.GridVentas.Locked = False Then
+                                    MsgBox("El pago en el renglón: " & Renglon & " es mayor al saldo del documento favor de revisar.", MsgBoxStyle.Exclamation, sProcedure)
+                                    Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoUSDCapturado).SetFocus()
+                                    Me.BorraPago(Renglon)
+                                    Return
+                                End If
+
+                                Me.CalculaImportesPagoUSD(Renglon)
+
+                                'ElseIf dPagoUSD > 0 And Me.GridVentas.Rows = Renglon Then
+                                'Me.GridVentas.Rows = Me.GridVentas.Rows + 1
+
+                            ElseIf dPagoUSD = 0 Then
+                                Me.BorraPago(Renglon)
+                            End If
+
                     End Select
 
                 Case Keys.F8
@@ -3587,7 +3746,10 @@ Buscar:
     Private Sub BorraPago(ByVal Renglon As Integer)
         Try
             Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).Text = "0"
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoUSDCapturado).Text = "0"
             Me.GridVentas.Cell(Renglon, Me.iGyB_CxcTotal).Text = "0"
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcIvaCobrado).Text = "0"
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcIvaPendienteCobro).Text = "0"
             Me.GridVentas.Cell(Renglon, Me.iGyB_CxcDiferenciaCambiaria).Text = "0"
             Me.GridVentas.Cell(Renglon, Me.iGyB_CxcImporteMonedaVenta).Text = "0"
             Me.GridVentas.Cell(Renglon, Me.iGyB_CxcSaldoAnteriorMonedaVenta).Text = "0"
