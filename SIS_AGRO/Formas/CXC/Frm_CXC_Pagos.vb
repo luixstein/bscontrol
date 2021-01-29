@@ -405,27 +405,30 @@ Buscar:
 
     Private Sub cboMoneda_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboMonedaPago.SelectedIndexChanged
         Try
-            If Me.cboMonedaPago.Text = "USD" Then
-                Me.txtTipoCambio.Enabled = True
-                'Me.txtTotalDolares.Enabled = True
-                Me.lblTipoCambio.Enabled = True
-                ' Me.lblTotalDolares.Enabled = True
-                Me.txtTipoCambio.Focus()
+            Select Case Me.cboMonedaPago.Text
+                Case "USD"
+                    Me.txtTipoCambio.Enabled = True
+                    'Me.txtTotalDolares.Enabled = True
+                    Me.lblTipoCambio.Enabled = True
+                    ' Me.lblTotalDolares.Enabled = True
+                    Me.txtTipoCambio.Focus()
 
-                'Me.Grid.Column(Me.iGyFolio).Width = 50
-                'Me.Grid.Column(Me.iGyFecha).Width = 60
+                    'Me.Grid.Column(Me.iGyFolio).Width = 50
+                    'Me.Grid.Column(Me.iGyFecha).Width = 60
 
-                If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
-                    Me.ObtenerTipoCambioDia()
-                End If
-            Else
-                Me.txtTipoCambio.Enabled = False : Me.txtTipoCambio.Text = ""
-                'Me.txtTotalDolares.Enabled = False
-                Me.lblTipoCambio.Enabled = False
-                'Me.lblTotalDolares.Enabled = False : Me.txtImporteDolares.Text = ""
-                'Me.Grid.Column(Me.iGyFolio).Width = 95
-                'Me.Grid.Column(Me.iGyFecha).Width = 90
-            End If
+                    If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
+                        Me.ObtenerTipoCambioDia()
+                    End If
+
+                Case "MXN"
+                    Me.txtTipoCambio.Enabled = False : Me.txtTipoCambio.Text = ""
+                    'Me.txtTotalDolares.Enabled = False
+                    Me.lblTipoCambio.Enabled = False
+                    'Me.lblTotalDolares.Enabled = False : Me.txtImporteDolares.Text = ""
+                    'Me.Grid.Column(Me.iGyFolio).Width = 95
+                    'Me.Grid.Column(Me.iGyFecha).Width = 90
+
+            End Select
 
             Me.VisibilidadColumnasGridVentas()
 
@@ -1226,59 +1229,65 @@ Buscar:
                 Return False
             End If
 
-            If Me.cboMonedaPago.Text = "MXN" Then
-                'Si el pago es en MXN y hay facturas USD con saldo, se necesita el tipo de cambio(aunque la cuenta bancaria este en MXN) para calcular un saldoMXN a tp pago.
+            Select Case Me.cboMonedaPago.Text
+                Case "MXN"
+                    'Si el pago es en MXN y hay facturas USD con saldo, se necesita el tipo de cambio(aunque la cuenta bancaria este en MXN) para calcular un saldoMXN a tp pago.
 
-                'sSQL = "SELECT TOP 1 '1' HAY_VENTAS_EN_USD " &
-                '                     "FROM VENTA_GLOBAL V WHERE V.CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' AND SALDO>0 " & sSaldoDlls & " AND CODIGO_MONEDA_SAT='USD'"
+                    'sSQL = "SELECT TOP 1 '1' HAY_VENTAS_EN_USD " &
+                    '                     "FROM VENTA_GLOBAL V WHERE V.CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' AND SALDO>0 " & sSaldoDlls & " AND CODIGO_MONEDA_SAT='USD'"
 
-                sSQL = "SELECT TOP 1 '1' HAY_VENTAS_EN_USD " &
-                            "FROM VENTA_GLOBAL V " &
-                            "LEFT JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(V.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
-                            "WHERE 1=1 "
+                    sSQL = "SELECT TOP 1 '1' HAY_VENTAS_EN_USD " &
+                                "FROM VENTA_GLOBAL V " &
+                                "LEFT JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(V.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
+                                "WHERE 1=1 "
 
-                Select Case Me.cboTipoVentas.Text
-                    Case "MISMO RFC CLIENTE"
-                        sSQL = sSQL & " AND V.RFC_RECEPTOR='" & oCliente.RFC & "' "
-                    Case "MISMO CODIGO CLIENTE"
-                        sSQL = sSQL & " AND V.CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' "
-                End Select
+                    Select Case Me.cboTipoVentas.Text
+                        Case "MISMO RFC CLIENTE"
+                            sSQL = sSQL & " AND V.RFC_RECEPTOR='" & oCliente.RFC & "' "
+                        Case "MISMO CODIGO CLIENTE"
+                            sSQL = sSQL & " AND V.CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' "
+                    End Select
 
-                sSQL = sSQL & " AND V.SALDO>0 AND V.CODIGO_MONEDA_SAT='USD' " ' & " AND V.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA
+                    sSQL = sSQL & " AND V.SALDO>0 AND V.CODIGO_MONEDA_SAT='USD' " ' & " AND V.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA
 
-                If Me.chkVentasNoFiscales.Checked = True Then
-                    sSQL = sSQL & " AND DOC.AFECTA_CONTABILIDAD='0' " 'Para mostrar sólo remisiones, las cot no salen porque también se busca saldo>0 .
-                Else
-                    sSQL = sSQL & " AND DOC.CODIGO_DOCUMENTO LIKE 'F%' "
-                End If
-
-                cmd = New SqlCommand(sSQL, Conexion)
-
-                With cmd
-                    .CommandTimeout = 0
-                    .CommandType = CommandType.Text
-                    dReader = .ExecuteReader()
-                    If dReader.HasRows = True Then
-                        bHayVentasEnUSD = True
-                    End If
-                End With
-
-                If bHayVentasEnUSD = True Then
-                    dTipoCambioPago = CDec(valorNumericoD(InputBox("Capture aquí el tipo de cambio del pago (es un pago en MXN y hay facturas en USD)")))
-
-                    If dTipoCambioPago <= 0 Or dTipoCambioPago > 30 Then
-                        MsgBox("Tipo de cambio incorrecto.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
+                    If Me.chkVentasNoFiscales.Checked = True Then
+                        sSQL = sSQL & " AND DOC.AFECTA_CONTABILIDAD='0' " 'Para mostrar sólo remisiones, las cot no salen porque también se busca saldo>0 .
+                    Else
+                        sSQL = sSQL & " AND DOC.CODIGO_DOCUMENTO LIKE 'F%' "
                     End If
 
-                    Me.txtTipoCambio.Text = FormatTipoCambio(dTipoCambioPago)
+                    cmd = New SqlCommand(sSQL, Conexion)
 
-                    Me.GridVentas.Column(Me.iGyB_CxcDiferenciaCambiaria).Visible = True 'Recordemos que si la ventaMoneda=USD si hay diferencia cambiaria.
-                    Me.GridVentas.Column(Me.iGyB_CxcTotal).Visible = True
-                End If
+                    With cmd
+                        .CommandTimeout = 0
+                        .CommandType = CommandType.Text
+                        dReader = .ExecuteReader()
+                        If dReader.HasRows = True Then
+                            bHayVentasEnUSD = True
+                        End If
+                    End With
 
-                dReader.Close()
-            End If
+                    If bHayVentasEnUSD = True Then
+                        dTipoCambioPago = CDec(valorNumericoD(InputBox("Capture aquí el tipo de cambio del pago (es un pago en MXN y hay facturas en USD)")))
+
+                        If dTipoCambioPago <= 0 Or dTipoCambioPago > 30 Then
+                            MsgBox("Tipo de cambio incorrecto.", MsgBoxStyle.Exclamation, sProcedure)
+                            Return False
+                        End If
+
+                        Me.txtTipoCambio.Text = FormatTipoCambio(dTipoCambioPago)
+
+                        Me.GridVentas.Column(Me.iGyB_CxcDiferenciaCambiaria).Visible = True 'Recordemos que si la ventaMoneda=USD si hay diferencia cambiaria.
+                        Me.GridVentas.Column(Me.iGyB_CxcTotal).Visible = True
+                    End If
+
+                    dReader.Close()
+
+                Case "USD"
+                    'Nada, esta sección es para saber si estan pagando en mxn y se hay facturas en usd y entonces pedir tipo de cambio aunque sea pago en mxn, por eso aqui no se hace nada
+
+            End Select
+
         Catch ex As Exception
             HandleError(Me.Text, "CargaFacturas", ex)
         End Try
@@ -1470,6 +1479,15 @@ Buscar:
                     bResultado = True
                 End If
                 dReader.Close()
+
+                Select Case Me.cboMonedaPago.Text
+                    Case "MXN"
+                        Me.GridVentas.Column(Me.iGyB_CxcPagoMXNCapturado).Locked = False
+                        Me.GridVentas.Column(Me.iGyB_CxcPagoUSDCapturado).Locked = True
+                    Case "USD"
+                        Me.GridVentas.Column(Me.iGyB_CxcPagoMXNCapturado).Locked = True
+                        Me.GridVentas.Column(Me.iGyB_CxcPagoUSDCapturado).Locked = False
+                End Select
 
             Catch ex As Exception
                 HandleError(Me.Text, sProcedure, ex)
