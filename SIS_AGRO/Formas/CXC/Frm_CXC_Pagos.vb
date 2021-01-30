@@ -2216,15 +2216,14 @@ Buscar:
             oCuentaBancaria = New Class_CatCuentasBancarias(CInt(Me.TxtCuentaBancaria.Text))
 
             oContaCuenta = New Class_CatCuentas(oCuentaBancaria.CUENTA_CONTABLE_PESOS.ToString)
-            Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
 
+            Me.oFormaPoliza.Grid1.Rows = 2 'Empezamos con el encabezado y un renglón en blanco en la póliza
             Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oCuentaBancaria.CUENTA_CONTABLE_PESOS
             Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oCuentaBancaria.NOMBRE_CUENTA_BANCARIA
             Me.oFormaPoliza.Grid1.Cell(R, 3).Text = ""
             Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
             Me.oFormaPoliza.Grid1.Cell(R, 5).Text = dBancosMXN.ToString
             Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
-            R = R + 1
 
             Select Case Me.cboMonedaPago.Text
                 Case "USD"
@@ -2247,6 +2246,7 @@ Buscar:
                             oContaCuenta = New Class_CatCuentas(oCliente.CUENTA_CONTABLE.ToString)
                         End If
 
+                        R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
                         Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE 'oCliente.CUENTA_CONTABLE.ToString
                         Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA 'oCliente.NOMBRE_CLIENTE
                         Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
@@ -2254,16 +2254,16 @@ Buscar:
                         Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
                         Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dCxcTotal.ToString
 
-                        R = R + 1 : Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                         'Perdida/Ganancia cambiaria
                         dPerdidaGanancia = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcDiferenciaCambiaria).Text)
 
                         If Math.Abs(dPerdidaGanancia) > 0 Then
+
                             MsgBox("falta ver si son 2 cuentas diferentes")
                             oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_PERDIDA_GANACIA_CAMBIARIA)
 
+                            R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
                             Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE 'oCliente.CUENTA_CONTABLE.ToString
                             Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA 'oCliente.NOMBRE_CLIENTE
                             Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
@@ -2277,7 +2277,7 @@ Buscar:
                                 Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dPerdidaGanancia.ToString 'Si es positiva es ganancia
                             End If
 
-                            R = R + 1 : Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
+                            'R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
                         End If
 
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -2291,14 +2291,14 @@ Buscar:
 
                         If dIVAPendienteCobro > 0 Then
                             oContaCuenta = New Class_CatCuentas(oCuentasIVA.Result2) '"20400002"
+
+                            R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
                             Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE
                             Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
                             Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
                             Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
                             Me.oFormaPoliza.Grid1.Cell(R, 5).Text = dIVAPendienteCobro.ToString
                             Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
-
-                            R = R + 1 : Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
                         End If
 
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -2307,6 +2307,152 @@ Buscar:
 
                         If dIVACobrado > 0 Then
                             oContaCuenta = New Class_CatCuentas(oCuentasIVA.Result1) '"20400015"
+
+                            R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                            Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE
+                            Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
+                            Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
+                            Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+                            Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
+                            Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dIVACobrado.ToString
+                        End If
+
+                        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                        'Cliente USD
+                        Select Case Me.GridVentas.Cell(i, Me.iGyB_VtaMoneda).Text
+                            Case "USD" 'PagoUSD , VentaUSD
+
+                                oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES.ToString)
+
+                                R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                                Me.oFormaPoliza.Grid1.Cell(R, 1).Text = Empresa_Sistema.CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
+                                Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
+                                Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = dPagoUSD.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
+
+                                R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                                Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oCliente.CUENTA_CONTABLE_DOLARES.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oCliente.NOMBRE_CLIENTE
+                                Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
+                                Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
+                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dPagoUSD.ToString
+
+                            Case "MXN" 'PagoUSD , VentaMXN
+                                'No deben ir cuentas de clientes en usd porque al ser la vta en MXN su póliza no tuvo cuentas de cte en usd
+                        End Select
+                        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                    Next i
+
+                    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                    'Bancos USD(Nota, estas cuentas van fuera del ciclo porque estariamos mal al repetirlas porque son sumarizadas una vez por banco)
+                    oContaCuenta = New Class_CatCuentas(oCuentaBancaria.CUENTA_CONTABLE_DOLARES)
+
+                    R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                    Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oCuentaBancaria.CUENTA_CONTABLE_DOLARES.ToString
+                    Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oCuentaBancaria.NOMBRE_CUENTA_BANCARIA
+                    Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i - 1, Me.iGyB_PagoReferencia).Text 'Se resta i porque ya se aumentó con el último next i y nos da un valor invalido
+                    Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+                    Me.oFormaPoliza.Grid1.Cell(R, 5).Text = dBancosUSD.ToString
+                    Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
+
+                    oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES.ToString)
+
+                    R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                    Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE.ToString
+                    Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
+                    Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i - 1, Me.iGyB_PagoReferencia).Textt 'Se resta i porque ya se aumentó con el último next i y nos da un valor invalido
+                    Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+                    Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
+                    Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dBancosUSD.ToString
+
+                    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+                Case "MXN"
+                    For i = 1 To Me.GridVentas.Rows - 1
+                        dCxcPagoMXNCapturado = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text)
+                        dPagoUSD = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoUSDCapturado).Text)
+
+                        If dCxcPagoMXNCapturado <= 0 Then
+                            Continue For
+                        End If
+
+                        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                        'Clientes
+                        dCxcTotal = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcTotal).Text)
+
+                        oCliente = New Class_CatClientes(Me.GridVentas.Cell(i, Me.iGyB_VtaCodigoCliente).Text)
+
+                        If Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaAnticipo).Text = "1" Then
+                            oContaCuenta = New Class_CatCuentas(oCliente.CUENTA_CONTABLE_ANTICIPO.ToString)
+                        Else
+                            oContaCuenta = New Class_CatCuentas(oCliente.CUENTA_CONTABLE.ToString)
+                        End If
+
+                        R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                        Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE 'oCliente.CUENTA_CONTABLE.ToString
+                        Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA 'oCliente.NOMBRE_CLIENTE
+                        Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
+                        Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+                        Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
+                        Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dCxcTotal.ToString
+
+                        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                        'Perdida/Ganancia cambiaria
+                        dPerdidaGanancia = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcDiferenciaCambiaria).Text)
+
+                        If Math.Abs(dPerdidaGanancia) > 0 Then
+                            MsgBox("falta ver si son 2 cuentas diferentes")
+                            oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_PERDIDA_GANACIA_CAMBIARIA)
+
+                            R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                            Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE 'oCliente.CUENTA_CONTABLE.ToString
+                            Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA 'oCliente.NOMBRE_CLIENTE
+                            Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
+                            Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+
+                            If dPerdidaGanancia < 0 Then
+                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = Math.Abs(dPerdidaGanancia).ToString 'Si es negativa es perdida
+                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
+                            Else
+                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
+                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dPerdidaGanancia.ToString 'Si es positiva es ganancia
+                            End If
+
+                        End If
+
+                        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                        oCuentasIVA = New Class_find("SELECT I.CUENTA_CONTABLE_IVA_POR_PAGAR,I.CUENTA_CONTABLE_IVA_PENDIENTE_TRASLADAR " &
+                                                    "FROM CON_IVA_POR_PAGAR_CATALOGO_CUENTAS I " &
+                                                    "INNER JOIN VENTA_GLOBAL V ON(I.PORCENTAJE=V.IMPUESTO_PORCENTAJE) " &
+                                                    "WHERE V.FOLIO_VENTA='" & Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text & "'")
+
+                        'IVA pendiente de cobro
+                        dIVAPendienteCobro = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcIvaPendienteCobro).Text)
+
+                        If dIVAPendienteCobro > 0 Then
+                            oContaCuenta = New Class_CatCuentas(oCuentasIVA.Result2) '"20400002"
+
+                            R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                            Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE
+                            Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
+                            Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
+                            Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+                            Me.oFormaPoliza.Grid1.Cell(R, 5).Text = dIVAPendienteCobro.ToString
+                            Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
+
+                        End If
+
+                        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                        'IVA cobrado
+                        dIVACobrado = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcIvaCobrado).Text)
+
+                        If dIVACobrado > 0 Then
+                            oContaCuenta = New Class_CatCuentas(oCuentasIVA.Result1) '"20400015"
+
+                            R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
                             Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE
                             Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
                             Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
@@ -2314,128 +2460,41 @@ Buscar:
                             Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
                             Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dIVACobrado.ToString
 
-                            R = R + 1 : Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
                         End If
 
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                         'Cliente USD
-                        Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-                        oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES.ToString)
-                        Me.oFormaPoliza.Grid1.Cell(R, 1).Text = Empresa_Sistema.CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
-                        Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
-                        Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 5).Text = dPagoUSD.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
+                        Select Case Me.GridVentas.Cell(i, Me.iGyB_VtaMoneda).Text
+                            Case "USD" 'PagoMXN , VentaUSD
+                                oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES.ToString)
 
-                        R = R + 1 : Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
+                                R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                                Me.oFormaPoliza.Grid1.Cell(R, 1).Text = Empresa_Sistema.CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
+                                Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
+                                Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = dPagoUSD.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
 
-                        Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-                        Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oCliente.CUENTA_CONTABLE_DOLARES.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oCliente.NOMBRE_CLIENTE
-                        Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
-                        Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
-                        Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dPagoUSD.ToString
+                                R = R + 1 : Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
+                                Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oCliente.CUENTA_CONTABLE_DOLARES.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oCliente.NOMBRE_CLIENTE
+                                Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
+                                Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
+                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dPagoUSD.ToString
 
-                        R = R + 1 : Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-                        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                        'Bancos USD
-                        oContaCuenta = New Class_CatCuentas(oCuentaBancaria.CUENTA_CONTABLE_DOLARES)
-                        Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oCuentaBancaria.CUENTA_CONTABLE_DOLARES.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oCuentaBancaria.NOMBRE_CUENTA_BANCARIA
-                        Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
-                        Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 5).Text = dBancosUSD.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
-
-                        R = R + 1 : Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-
-                        oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES.ToString)
-                        Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
-                        Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
-                        Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
-                        Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dBancosUSD.ToString
-
-                        R = R + 1 : Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
+                            Case "MXN" 'PagoMXN , VentaMXN
+                                'No deben ir cuentas de clientes en usd porque al ser la vta en MXN su póliza no tuvo cuentas de cte en usd
+                        End Select
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                     Next i
 
-                Case "MXN"
-                    For i = 1 To Me.GridVentas.Rows - 1
-                        dCxcPagoMXNCapturado = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text)
+                    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                    'Bancos USD(Nota, estas cuentas van fuera del ciclo porque estariamos mal al repetirlas porque son sumarizadas una vez por banco)
 
-                        If dCxcPagoMXNCapturado <= 0 Then
-                            Continue For
-                        End If
-
-                        If valorNumerico(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text) = valorNumerico(Me.GridVentas.Cell(i, Me.iGyB_VtaSaldoMXN_TpPago).Text) Then
-                            dIVACobrado = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcIvaCobrado).Text)
-                        Else
-                            dIVACobrado = 0
-                        End If
-
-                        If dCxcPagoMXNCapturado > 0 Then
-                            Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-
-                            oCliente = New Class_CatClientes(Me.GridVentas.Cell(i, Me.iGyB_VtaCodigoCliente).Text)
-
-                            If Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaAnticipo).Text = "1" Then
-                                oContaCuenta = New Class_CatCuentas(oCliente.CUENTA_CONTABLE_ANTICIPO.ToString)
-                            Else
-                                oContaCuenta = New Class_CatCuentas(oCliente.CUENTA_CONTABLE.ToString)
-                            End If
-
-                            Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE  'oCliente.CUENTA_CONTABLE.ToString
-                            Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA 'oCliente.NOMBRE_CLIENTE
-                            Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
-                            Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
-                            Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
-                            Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dCxcPagoMXNCapturado.ToString
-                            R = R + 1
-                        End If
-
-                        If dIVACobrado > 0 Then
-                            Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-
-                            oCuentasIVA = New Class_find("SELECT I.CUENTA_CONTABLE_IVA_POR_PAGAR,I.CUENTA_CONTABLE_IVA_PENDIENTE_TRASLADAR " &
-                                                       "FROM CON_IVA_POR_PAGAR_CATALOGO_CUENTAS I INNER JOIN VENTA_GLOBAL V ON(I.PORCENTAJE=V.IMPUESTO_PORCENTAJE) " &
-                                                       "WHERE V.FOLIO_VENTA='" & Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text & "'")
-
-                            Dim oContaCuenta1 As New Class_CatCuentas(oCuentasIVA.Result1) '"20400015"
-                            Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta1.CUENTA_CONTABLE
-                            Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta1.NOMBRE_CUENTA
-                            Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
-                            Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta1.NATURALEZA_CONTABLE.ToString
-                            Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
-                            Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dIVACobrado.ToString
-                            R = R + 1
-
-                            Dim oContaCuenta2 As New Class_CatCuentas(oCuentasIVA.Result2) '"20400002"
-                            Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-                            Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta2.CUENTA_CONTABLE
-                            Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta2.NOMBRE_CUENTA
-                            Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
-                            Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta2.NATURALEZA_CONTABLE.ToString
-                            Me.oFormaPoliza.Grid1.Cell(R, 5).Text = dIVACobrado.ToString
-                            Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
-                            R = R + 1
-
-                            oCuentasIVA = Nothing
-                        End If
-                    Next i
-
-                    oContaCuenta = New Class_CatCuentas(oCuentaBancaria.CUENTA_CONTABLE_PESOS.ToString)
-                    Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-                    Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oCuentaBancaria.CUENTA_CONTABLE_PESOS
-                    Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oCuentaBancaria.NOMBRE_CUENTA_BANCARIA
-                    Me.oFormaPoliza.Grid1.Cell(R, 3).Text = "" 'oCliente.NOMBRE_CLIENTE
-                    Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
-                    Me.oFormaPoliza.Grid1.Cell(R, 5).Text = Me.TxtTotal.Text
-                    Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
-
+                    'Nota al ser pago en MXN no importa la moneda de la venta, nunca entraron USD al banco.
+                    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             End Select
 
             'Me.AgregaPrepolizaIVAAcreditable()
