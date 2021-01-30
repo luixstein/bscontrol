@@ -1706,18 +1706,20 @@ Buscar:
     Private Function Grabar() As Boolean
         Const sProcedure As String = "Grabar"
         Dim bResultado As Boolean = False
-        Dim i As Integer, dPago As Decimal, sFolioPago As String = ""
-        Dim dTotalPago As Decimal = 0, dSumaPagos As Decimal = 0, dAnticipo As Decimal = 0
+        Dim i As Integer, dPagoMXN As Decimal, sFolioPago As String = "", dPagoTipoCambio As Decimal = 0
+        Dim dTotalPago As Decimal = 0, dSumaPagos As Decimal = 0, dAnticipo As Decimal = 0, dPagoUSD As Decimal = 0, dDiferenciaCambiaria As Decimal = 0, dImporteCapturado As Decimal = 0
+        Dim dCxcTotal As Decimal = 0, dIVACobrado As Decimal = 0, dIVAPendienteCobro As Decimal = 0, dSubtotaMXNViejos As Decimal = 0, dSubtotaMXNNuevos As Decimal = 0
 
         Try
             dTotalPago = valorNumericoD(Me.GridDocumentosPago.Cell(1, Me.iGyDocMONTO).Text)
+            dPagoTipoCambio = valorNumericoD(Me.txtTipoCambio.Text)
 
             For i = 1 To Me.GridVentas.Rows - 1
                 dSumaPagos += valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text)
             Next
 
             If Me.chkVentasNoFiscales.Checked = True Then
-                dAnticipo = dTotalPago - dSumaPagos
+                dAnticipo = RedondearD(dTotalPago - dSumaPagos, 2)
 
                 If dAnticipo > 0 Then
                     'NOTA: se indica el renglón 1 y no la variable i fijo porque en ese renglón se documenta el anticipo
@@ -1749,13 +1751,9 @@ Buscar:
             oBancosCXC.FECHA = Me.dtFecha.Value
             oBancosCXC.CONCEPTO1 = Me.TxtConcepto.Text.ToUpper
             oBancosCXC.CODIGO_PLAZA = Usuario.Codigo_Plaza
-            If Me.cboMonedaPago.Text = "USD" Then
-                oBancosCXC.TOTAL_DOLARES = valorNumerico(Me.TxtTotal.Text)
-                oBancosCXC.TOTAL = valorNumerico(Me.TxtTotal.Text) * valorNumerico(Me.txtTipoCambio.Text)
-            Else
-                oBancosCXC.TOTAL = valorNumerico(Me.TxtTotal.Text)
-            End If
-            oBancosCXC.TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text) 'Puede ser un pago en mxn de factura en usd y se necesita este tipo de cambios poara el campo TipoCambioDr en el complemento de pago.
+            oBancosCXC.TOTAL_DOLARES = valorNumericoD(Me.txtTotalUSD.Text)
+            oBancosCXC.TOTAL = valorNumericoD(Me.TxtTotal.Text)
+            oBancosCXC.TIPO_DE_CAMBIO = dPagoTipoCambio 'Puede ser un pago en mxn de factura en usd y se necesita este tipo de cambios poara el campo TipoCambioDr en el complemento de pago.
             oBancosCXC.CODIGO_MONEDA_SAT = Me.cboMonedaPago.Text
 
             If Me.GridDocumentosPago.Cell(1, Me.iGyDocCODIGO_FORMA_PAGO).Text = "02" Then '02=Cheque
@@ -1785,7 +1783,7 @@ Buscar:
                         lID_BANCOS_DETALLE = oBancosCXC.AgregaDocumentoPago(Me.TxtFolio.Text, .Cell(i, Me.iGyDocCODIGO_FORMA_PAGO).Text, .Cell(i, Me.iGyDocFOLIO_DETALLE).Text,
                                   .Cell(i, Me.iGyDocCODIGO_BANCO_EMISOR_NACIONAL).Text, .Cell(i, Me.iGyDocCUENTA_EMISOR).Text,
                                   CDate(.Cell(i, Me.iGyDocFECHA).Text), .Cell(i, Me.iGyDocRFC_EMISOR).Text, valorNumerico(.Cell(i, Me.iGyDocMONTO).Text),
-                                 .Cell(i, Me.iGyDocCODIGO_MONEDA_SAT).Text, valorNumerico(txtTipoCambio.Text),
+                                 .Cell(i, Me.iGyDocCODIGO_MONEDA_SAT).Text, dPagoTipoCambio,
                                  .Cell(i, Me.iGyDocCUENTA_BENEFICIARIO).Text, .Cell(i, Me.iGyDocCODIGO_BANCO_DESTINO_NACIONAL).Text,
                                  IIf(.Cell(i, Me.iGyDocES_BANCO_EXTRANJERO).Text = "1", .Cell(i, Me.iGyDocNOMBRE_BANCO_EMISOR_NACIONAL).Text, "").ToString
                         ) 'El beneficiario es la empresa propia, el store lo llenará internamente
@@ -1796,7 +1794,6 @@ Buscar:
 
                         .Cell(i, Me.iGyDocID_BANCOS_DETALLE).Text = lID_BANCOS_DETALLE.ToString
                     End If
-
                 Next
             End With
             sFolioPago = ""
@@ -1804,9 +1801,28 @@ Buscar:
             'Graba pagos
             Me.oCxcAfectaDocumentos = New Class_CXC_Afecta_Documentos
             For i = 1 To Me.GridVentas.Rows - 1
-                dPago = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text)
-                dSumaPagos += dPago
-                If dPago > 0 Or (dAnticipo > 0 And i = 1) Then
+                dPagoMXN = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text)
+                dPagoUSD = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoUSDCapturado).Text)
+                dCxcTotal = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcTotal).Text)
+
+                dIVACobrado = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcIvaCobrado).Text)
+                dIVAPendienteCobro = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcIvaPendienteCobro).Text)
+                dSubtotaMXNViejos = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoSubtotaMXNViejos).Text)
+                dSubtotaMXNNuevos = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoSubtotaMXNNuevos).Text)
+                dDiferenciaCambiaria = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcDiferenciaCambiaria).Text)
+
+                Select Case Me.cboMonedaPago.Text
+                    Case "MXN"
+                        dImporteCapturado = dPagoMXN
+                    Case "USD"
+                        dImporteCapturado = dPagoUSD
+                End Select
+
+                'dSubtotalCobrado As Decimal = 0, dSubtotal As Decimal = 0
+
+                dSumaPagos += dPagoMXN
+
+                If dPagoMXN > 0 Or (dAnticipo > 0 And i = 1) Then
 
                     oCxcAfectaDocumentos.FOLIO_CXC = "" 'Me.TxtFolio.Text
                     oCxcAfectaDocumentos.CODIGO_CLIENTE = Me.GridVentas.Cell(i, Me.iGyB_VtaCodigoCliente).Text
@@ -1816,32 +1832,22 @@ Buscar:
                     oCxcAfectaDocumentos.CONCEPTO1 = Me.TxtConcepto.Text
                     oCxcAfectaDocumentos.CONCEPTO2 = ""
                     oCxcAfectaDocumentos.CODIGO_PLAZA = Usuario.Codigo_Plaza
-                    If Me.cboMonedaPago.Text = "USD" Then
-                        oCxcAfectaDocumentos.TOTAL_DOLARES = dPago
 
-                        'If valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaTotalDlls).Text) <> valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) And valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaSaldoDlls).Text) <> valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) Then
-                        '    'Si solo es un pago parcial el abono en pesos sera segun al tipo de cambio de la venta
-                        '    Dim oVenta As New Class_Ventas_Global(Me.GridVentas.Cell(i, Me.iGyVentaFolio).Text)
-                        '    oCxcAfectaDocumentos.TOTAL = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) * oVenta.TIPO_DE_CAMBIO
-                        'Else
-                        '    oCxcAfectaDocumentos.TOTAL = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPagoPesos).Text) + valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaDiferencia).Text) 'dPago
-                        'End If
+                    oCxcAfectaDocumentos.TOTAL = dCxcTotal
+                    oCxcAfectaDocumentos.PAGO_MXN_BANCOS = dPagoMXN
+                    oCxcAfectaDocumentos.TOTAL_DOLARES = dPagoUSD
+                    oCxcAfectaDocumentos.IMPORTE_CAPTURADO = dImporteCapturado
 
-                        '    oCxcAfectaDocumentos.TOTAL = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPagoPesos).Text)
-
-                        'Else
-                        '    oCxcAfectaDocumentos.TOTAL = dPago
-                    Else 'MXN
-                        If Me.GridVentas.Cell(i, Me.iGyB_VtaMoneda).Text = "USD" Then 'Si estan pagando en MXN una venta en USD, falta establecer el total_dolares para poder restarlo directamente en saldo_dolares de la misma
-                            oCxcAfectaDocumentos.TOTAL_DOLARES = CDec(Me.GridVentas.Cell(i, Me.iGyB_CxcImporteMonedaVenta).Text)
-                        End If
-                    End If
-
-                    oCxcAfectaDocumentos.TOTAL = valorNumerico(Me.GridVentas.Cell(i, Me.iGyB_CxcTotal).Text)
-                    oCxcAfectaDocumentos.IMPORTE_CAPTURADO = dPago
-
-                    oCxcAfectaDocumentos.TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text)
+                    oCxcAfectaDocumentos.TIPO_DE_CAMBIO = dPagoTipoCambio
                     oCxcAfectaDocumentos.FOLIO_BANCO = Me.TxtFolio.Text 'Se tiene que poner el del texbox porque se regreso el folio al Inserta_Global
+
+                    oCxcAfectaDocumentos.SUBTOTAL = dSubtotaMXNViejos
+                    oCxcAfectaDocumentos.SUBTOTAL_COBRADO = dSubtotaMXNNuevos
+                    oCxcAfectaDocumentos.DIFERENCIA_CAMBIARIA = dDiferenciaCambiaria
+
+                    oCxcAfectaDocumentos.IVA = dIVAPendienteCobro 'IVA pesos viejos
+                    oCxcAfectaDocumentos.IVA_COBRADO = dIVACobrado 'IVA pesos nuevos
+
                     Dim sql As New Class_find("SELECT ID_MEDIO_PAGO FROM SIS_MEDIOS_PAGO WHERE NOMBRE_MEDIO_PAGO='" & Me.GridVentas.Cell(i, Me.iGyB_PagoMedioPago).Text & "'")
                     If txtLEN(sql.Result1) = True Then
                         oCxcAfectaDocumentos.ID_MEDIO_PAGO = CInt(sql.Result1)
@@ -2363,7 +2369,7 @@ Buscar:
                     R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
                     Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE.ToString
                     Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
-                    Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i - 1, Me.iGyB_PagoReferencia).Textt 'Se resta i porque ya se aumentó con el último next i y nos da un valor invalido
+                    Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i - 1, Me.iGyB_PagoReferencia).Text 'Se resta i porque ya se aumentó con el último next i y nos da un valor invalido
                     Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
                     Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
                     Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dBancosUSD.ToString
