@@ -1996,7 +1996,7 @@ Buscar:
                 oCliente = New Class_CatClientes(Me.GridVentas.Cell(i, Me.iGyB_VtaCodigoCliente).Text)
 
                 If Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaAnticipo).Text = "1" Then
-                    If txtLEN(oCliente.CUENTA_CONTABLE_ANTICIPO) = False Then
+                    If txtLEN(oCliente.CUENTA_CONTABLE_ANTICIPOS) = False Then
                         MsgBox("El cliente debe tener cuenta contable de anticipo.", MsgBoxStyle.Exclamation, sProcedure)
                         Return False
                     End If
@@ -2285,9 +2285,9 @@ Buscar:
                         oCliente = New Class_CatClientes(Me.GridVentas.Cell(i, Me.iGyB_VtaCodigoCliente).Text)
 
                         If Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaAnticipo).Text = "1" Then
-                            oContaCuenta = New Class_CatCuentas(oCliente.CUENTA_CONTABLE_ANTICIPO.ToString)
+                            oContaCuenta = New Class_CatCuentas(oCliente.CUENTA_CONTABLE_ANTICIPOS)
                         Else
-                            oContaCuenta = New Class_CatCuentas(oCliente.CUENTA_CONTABLE.ToString)
+                            oContaCuenta = New Class_CatCuentas(oCliente.CUENTA_CONTABLE)
                         End If
 
                         R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
@@ -2442,9 +2442,9 @@ Buscar:
                         oCliente = New Class_CatClientes(Me.GridVentas.Cell(i, Me.iGyB_VtaCodigoCliente).Text)
 
                         If Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaAnticipo).Text = "1" Then
-                            oContaCuenta = New Class_CatCuentas(oCliente.CUENTA_CONTABLE_ANTICIPO.ToString)
+                            oContaCuenta = New Class_CatCuentas(oCliente.CUENTA_CONTABLE_ANTICIPOS)
                         Else
-                            oContaCuenta = New Class_CatCuentas(oCliente.CUENTA_CONTABLE.ToString)
+                            oContaCuenta = New Class_CatCuentas(oCliente.CUENTA_CONTABLE)
                         End If
 
                         R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
