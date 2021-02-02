@@ -2515,11 +2515,11 @@ CANCELAR:
             If Me.oDocumento.ES_FACTURA_ANTICIPO = True Then
                 'If Me.oDocumento.AFECTA_CONTABILIDAD = True Then
                 'Esta factura no va afectar contabilidad, la póliza se afecta al momento del pago, pero sin embargo de una vez obligamos a que tenga cuenta contable anticipos.
-                If txtLEN(Me.oCliente.CUENTA_CONTABLE_ANTICIPO) = False Then
-                        MsgBox("El cliente no tiene una cuenta contable de anticipos.", MsgBoxStyle.Exclamation, sProcedure)
-                        Me.TxtCliente.Focus()
-                        Return False
-                    End If
+                If txtLEN(Me.oCliente.CUENTA_CONTABLE_ANTICIPOS) = False Then
+                    MsgBox("El cliente no tiene una cuenta contable de anticipos.", MsgBoxStyle.Exclamation, sProcedure)
+                    Me.TxtCliente.Focus()
+                    Return False
+                End If
                 'End If
 
                 If Me.cboMetodoPago.SelectedValue.ToString <> "PUE" Then

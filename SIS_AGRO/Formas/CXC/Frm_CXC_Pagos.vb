@@ -2013,7 +2013,7 @@ Buscar:
                     Case "USD" 'Pago en USD
                         Me.CalculaImportesPagoUSD(i)
 
-                        'Estas declaraciones van aqui porque el CalculaImportesPagoUSD recordemos refresca saldos.
+                        'Estas declaraciones van aqui porque el CalculaImportesPagoUSD recordemos que refresca los saldos.
                         Dim dVtaSaldoUSD As Decimal = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_VtaSaldoUSD).Text)
                         Dim dPagoUSD As Decimal = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoUSDCapturado).Text)
 
@@ -2022,14 +2022,14 @@ Buscar:
                         'Me.GridVentas.Cell(i, Me.iGyVentaSaldoDlls).Text = sql.Result1
 
                         If dPagoUSD > dVtaSaldoUSD Then
-                            MsgBox("El pago por " & FormatImporteContable(dPagoUSD) & " USD en el renglón: " & i.ToString & " es mayor al saldo del documento de " & FormatImporteContable(dVtaSaldoUSD) & " favor de revisar.",
+                            MsgBox("El pago por " & FormatImporteContable(dPagoUSD) & " USD en el renglón " & i.ToString & " es mayor al saldo del documento de " & FormatImporteContable(dVtaSaldoUSD) & " USD, favor de revisar.",
                                    MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         End If
 
                         If Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaAnticipo).Text = "1" Then
                             If Not (valorNumerico(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text) = valorNumerico(Me.GridVentas.Cell(i, Me.iGyB_VtaSaldoUSD).Text)) Then
-                                MsgBox("El pago en el renglón: " & i & " es de un anticipo y debe de pagarlo al 100%.", MsgBoxStyle.Exclamation, sProcedure)
+                                MsgBox("El pago en el renglón " & i.ToString & " es de un anticipo y debe de pagarlo al 100%.", MsgBoxStyle.Exclamation, sProcedure)
                                 Return False
                             End If
                         End If
@@ -2037,19 +2037,19 @@ Buscar:
                     Case "MXN" 'Pago en MXN
                         Me.CalculaImportesPagoMXN(i)
 
-                        'Estas declaraciones van aqui porque el CalculaImportesPagoMXN recordemos refresca saldos.
+                        'Estas declaraciones van aqui porque el CalculaImportesPagoMXN recordemos que refresca los saldos.
                         Dim dVtaSaldoMXN_TpPago As Decimal = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_VtaSaldoMXN_TpPago).Text)
                         Dim dCxcPagoMXNCapturado As Decimal = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text)
 
                         If dCxcPagoMXNCapturado > dVtaSaldoMXN_TpPago Then
-                            MsgBox("El pago por " & FormatImporteContable(dCxcPagoMXNCapturado) & " MXN en el renglón: " & i.ToString & " es mayor al saldo del documento de " & FormatImporteContable(dVtaSaldoMXN_TpPago) & " favor de revisar.",
+                            MsgBox("El pago por " & FormatImporteContable(dCxcPagoMXNCapturado) & " MXN en el renglón " & i.ToString & " es mayor al saldo del documento de " & FormatImporteContable(dVtaSaldoMXN_TpPago) & " MXN, favor de revisar.",
                                    MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         End If
 
                         If Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaAnticipo).Text = "1" Then
                             If Not (valorNumerico(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text) = valorNumerico(Me.GridVentas.Cell(i, Me.iGyB_VtaSaldoMXN_TpPago).Text)) Then
-                                MsgBox("El pago en el renglón: " & i & " es de un anticipo y debe de pagarlo al 100%.", MsgBoxStyle.Exclamation, sProcedure)
+                                MsgBox("El pago en el renglón " & i.ToString & " es de un anticipo y debe de pagarlo al 100%.", MsgBoxStyle.Exclamation, sProcedure)
                                 Return False
                             End If
                         End If
@@ -4156,7 +4156,6 @@ Buscar:
                             dCxcPagoMXNCapturado = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).Text)
 
                             If dCxcPagoMXNCapturado > 0 Then
-
                                 If Me.GridVentas.Cell(Renglon, Me.iGyB_VtaEsFacturaAnticipo).Text = "1" AndAlso sVtaMoneda <> Me.cboMonedaPago.Text Then
                                     MsgBox("El pago en el renglón: " & Renglon.ToString & " es de un anticipo hecho en " & sVtaMoneda & ", debe de pagarlo en esa misma moneda y al 100%.", MsgBoxStyle.Exclamation, sProcedure)
                                     Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).SetFocus()
@@ -4165,7 +4164,7 @@ Buscar:
                                 End If
 
                                 If dCxcPagoMXNCapturado > dVtaSaldoMXN_TpPago And Me.GridVentas.Locked = False Then
-                                    MsgBox("El pago por " & FormatImporteContable(dCxcPagoMXNCapturado) & " MXN en el renglón: " & Renglon.ToString & " es mayor al saldo del documento de " & FormatImporteContable(dVtaSaldoMXN_TpPago) & " favor de revisar.",
+                                    MsgBox("El pago por " & FormatImporteContable(dCxcPagoMXNCapturado) & " MXN en el renglón " & Renglon.ToString & " es mayor al saldo del documento de " & FormatImporteContable(dVtaSaldoMXN_TpPago) & " MXN, favor de revisar.",
                                            MsgBoxStyle.Exclamation, sProcedure)
                                     Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).SetFocus()
                                     Me.BorraPago(Renglon)
@@ -4224,7 +4223,7 @@ Buscar:
                                 End If
 
                                 If dPagoUSD > dVtaSaldoUSD And Me.GridVentas.Locked = False Then
-                                    MsgBox("El pago por " & FormatImporteContable(dPagoUSD) & " USD en el renglón: " & Renglon.ToString & " es mayor al saldo del documento de " & FormatImporteContable(dVtaSaldoUSD) & " favor de revisar.",
+                                    MsgBox("El pago por " & FormatImporteContable(dPagoUSD) & " USD en el renglón " & Renglon.ToString & " es mayor al saldo del documento de " & FormatImporteContable(dVtaSaldoUSD) & " USD, favor de revisar.",
                                            MsgBoxStyle.Exclamation, sProcedure)
                                     Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoUSDCapturado).SetFocus()
                                     Me.BorraPago(Renglon)
@@ -4470,7 +4469,7 @@ Buscar:
                 Me.GridVentas.Column(Me.iGyB_VtaSaldoMXN_TpPago).Visible = True
                 Me.GridVentas.Column(Me.iGyB_VtaIvaUSD).Visible = False
                 Me.GridVentas.Column(Me.iGyB_VtaTotalUSD).Visible = False
-                Me.GridVentas.Column(Me.iGyB_VtaSaldoUSD).Visible = False
+                Me.GridVentas.Column(Me.iGyB_VtaSaldoUSD).Visible = True ' False
                 Me.GridVentas.Column(Me.iGyB_CxcDiferenciaCambiaria).Visible = True 'False
                 Me.GridVentas.Column(Me.iGyB_CxcTotal).Visible = True ' False
             End If
