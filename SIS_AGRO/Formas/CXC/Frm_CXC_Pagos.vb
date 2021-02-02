@@ -44,32 +44,45 @@ Public Class Frm_CXC_Pagos
 #End Region
 
 #Region "Columnas grid venta"
-    Private iGyVentaFOLIO_DETALLE As Integer = 1
-    Private iGyVentaCodigoCliente As Integer = 2
-    Private iGyVentaNombreCliente As Integer = 3
-    Private iGyVentaFecha As Integer = 4
-    Private iGyVentaFolio As Integer = 5
-    Private iGyVentaMoneda As Integer = 6
-    Private iGyVentaMedioPago As Integer = 7
-    Private iGyVentaBanco As Integer = 8
-    Private iGyVentaTotal As Integer = 9
-    Private iGyVentaSaldo As Integer = 10
-    Private iGyVentaTotalDlls As Integer = 11
-    Private iGyVentaSaldoDlls As Integer = 12
-    Private iGyVentaPago As Integer = 13
-    Private iGyVentaPagoPesos As Integer = 14
-    Private iGyVentaSeleccion As Integer = 15
-    Private iGyVentaReferencia As Integer = 16
-    Private iGyVentaFechaPago As Integer = 17
-    Private iGyVentaIvaPorPagar As Integer = 18
-    Private iGyVentaDiferencia As Integer = 19
-    Private iGyVentaVersionCFDI As Integer = 20
-    Private iGyVentaFormaPago As Integer = 21
-    Private iGyVentaMetodoPago As Integer = 22
-    Private iGyVentaImporteMonedaVenta As Integer = 23
-    Private iGyVentaSaldoAnteriorMonedaVenta As Integer = 24
-    Private iGyVentaSaldoAnteriorMonedaPago As Integer = 25
-    Private iGyVentaEsFacturaElectronica As Integer = 26
+    Private iGyB_PagoFolioDetalle As Integer = 1
+    Private iGyB_VtaCodigoCliente As Integer = 2
+    Private iGyB_VtaNombreCliente As Integer = 3
+    Private iGyB_VtaFecha As Integer = 4
+    Private iGyB_VtaFolio As Integer = 5
+    Private iGyB_VtaMoneda As Integer = 6
+    Private iGyB_PagoMedioPago As Integer = 7
+    Private iGyB_PagoBanco As Integer = 8
+    Private iGyB_VtaIvaMXN As Integer = 9 'new
+    Private iGyB_VtaTotalMXN As Integer = 10
+    Private iGyB_VtaSaldoMXN_TpPago As Integer = 11
+    Private iGyB_VtaSaldoMXN_CXC As Integer = 12 'new
+    Private iGyB_VtaTipoCambio As Integer = 13 'new
+    Private iGyB_VtaSubtotalUSD As Integer = 14 'new
+    Private iGyB_VtaIvaUSD As Integer = 15 'new
+    Private iGyB_VtaTotalUSD As Integer = 16
+    Private iGyB_VtaSaldoUSD As Integer = 17
+    Private iGyB_CxcPagoMXNCapturado As Integer = 18
+    Private iGyB_CxcTotal As Integer = 19
+    Private iGyB_CxcPagoUSDCapturado As Integer = 20 'new
+    Private iGyB_PagoSeleccion As Integer = 21
+    Private iGyB_PagoReferencia As Integer = 22
+    Private iGyB_CxcFechaPago As Integer = 23
+    Private iGyB_CxcIvaCobrado As Integer = 24
+    Private iGyB_CxcIvaPendienteCobro As Integer = 25 'new
+    Private iGyB_CxcDiferenciaCambiaria As Integer = 26
+    Private iGyB_VtaVersionCFDI As Integer = 27
+    Private iGyB_VtaFormaPago As Integer = 28
+    Private iGyB_VtaMetodoPago As Integer = 29
+    Private iGyB_CxcImporteMonedaVenta As Integer = 30
+    Private iGyB_CxcSaldoAnteriorMonedaVenta As Integer = 31
+    Private iGyB_CxcSaldoAnteriorMonedaPago As Integer = 32
+    Private iGyB_VtaEsFacturaElectronica As Integer = 33
+    Private iGyB_VtaEsFacturaAnticipo As Integer = 34
+    Private iGyB_CxcPagoSubtotaMXNViejos As Integer = 35
+    Private iGyB_CxcPagoSubtotaMXNNuevos As Integer = 36
+    Private iGyB_VtaRetencionIvaMXN As Integer = 37
+    Private iGyB_VtaRetencionISRMXN As Integer = 38
+    Private iGyB_VtaIEPSDesglosadoEIncluidoMXN As Integer = 39
 #End Region
 
 #Region "Opciones"
@@ -286,8 +299,8 @@ enter:
                     Me.TxtCuentaBancaria.Text = oCuentaBancaria.ID_CUENTA_BANCARIA.ToString
                     Me.LblCuentaBancaria.Text = oCuentaBancaria.NOMBRE_CUENTA_BANCARIA.ToString
                     Me.LblCuentaContableCuentaBancaria.Text = oCuentaBancaria.CUENTA_CONTABLE_PESOS
-                    Me.cboMoneda.SelectedIndex = -1
-                    Me.cboMoneda.Text = oCuentaBancaria.CODIGO_MONEDA_SAT
+                    Me.cboMonedaPago.SelectedIndex = -1
+                    Me.cboMonedaPago.Text = oCuentaBancaria.CODIGO_MONEDA_SAT
 
                     Me.chkVentasNoFiscales.Enabled = False 'Siempre va estar deshabilitado, se va marcar sólo dependiendo de si la cuenta es o no fiscal. En el cambiar estado no cambia este valor
                     If oCuentaBancaria.ES_CUENTA_FISCAL = True Then 'Si es cuenta fiscal, sólo va permitir pagos de remisiones
@@ -392,41 +405,35 @@ Buscar:
         End If
     End Sub
 
-    Private Sub cboMoneda_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboMoneda.SelectedIndexChanged
+    Private Sub cboMoneda_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboMonedaPago.SelectedIndexChanged
         Try
-            If Me.cboMoneda.Text = "USD" Then
-                Me.txtTipoCambio.Enabled = True
-                'Me.txtTotalDolares.Enabled = True
-                Me.lblTipoCambio.Enabled = True
-                ' Me.lblTotalDolares.Enabled = True
-                Me.txtTipoCambio.Focus()
+            Select Case Me.cboMonedaPago.Text
+                Case "USD"
+                    Me.txtTipoCambio.Enabled = True
+                    'Me.txtTotalDolares.Enabled = True
+                    Me.lblTipoCambio.Enabled = True
+                    ' Me.lblTotalDolares.Enabled = True
+                    Me.txtTipoCambio.Focus()
 
-                'Me.Grid.Column(Me.iGyFolio).Width = 50
-                'Me.Grid.Column(Me.iGyFecha).Width = 60
-                Me.GridVentas.Column(Me.iGyVentaTotal).Visible = False
-                Me.GridVentas.Column(Me.iGyVentaSaldo).Visible = False
-                Me.GridVentas.Column(Me.iGyVentaTotalDlls).Visible = True
-                Me.GridVentas.Column(Me.iGyVentaSaldoDlls).Visible = True
-                Me.GridVentas.Column(Me.iGyVentaDiferencia).Visible = True
-                Me.GridVentas.Column(Me.iGyVentaPagoPesos).Visible = True
+                    'Me.Grid.Column(Me.iGyFolio).Width = 50
+                    'Me.Grid.Column(Me.iGyFecha).Width = 60
 
-                If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
-                    ObtenerTipoCambioDia()
-                End If
-            Else
-                Me.txtTipoCambio.Enabled = False : Me.txtTipoCambio.Text = ""
-                'Me.txtTotalDolares.Enabled = False
-                Me.lblTipoCambio.Enabled = False
-                'Me.lblTotalDolares.Enabled = False : Me.txtImporteDolares.Text = ""
-                'Me.Grid.Column(Me.iGyFolio).Width = 95
-                'Me.Grid.Column(Me.iGyFecha).Width = 90
-                Me.GridVentas.Column(Me.iGyVentaTotal).Visible = True
-                Me.GridVentas.Column(Me.iGyVentaSaldo).Visible = True
-                Me.GridVentas.Column(Me.iGyVentaTotalDlls).Visible = False
-                Me.GridVentas.Column(Me.iGyVentaSaldoDlls).Visible = False
-                Me.GridVentas.Column(Me.iGyVentaDiferencia).Visible = False
-                Me.GridVentas.Column(Me.iGyVentaPagoPesos).Visible = False
-            End If
+                    If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
+                        Me.ObtenerTipoCambioDia()
+                    End If
+
+                Case "MXN"
+                    Me.txtTipoCambio.Enabled = False : Me.txtTipoCambio.Text = ""
+                    'Me.txtTotalDolares.Enabled = False
+                    Me.lblTipoCambio.Enabled = False
+                    'Me.lblTotalDolares.Enabled = False : Me.txtImporteDolares.Text = ""
+                    'Me.Grid.Column(Me.iGyFolio).Width = 95
+                    'Me.Grid.Column(Me.iGyFecha).Width = 90
+
+            End Select
+
+            Me.VisibilidadColumnasGridVentas()
+
         Catch ex As Exception
             HandleError(Me.Name, "cboMoneda_SelectedIndexChanged", ex)
         End Try
@@ -434,7 +441,7 @@ Buscar:
 
     Private Sub dtFecha_ValueChanged(sender As Object, e As EventArgs) Handles dtFecha.ValueChanged
         If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
-            ObtenerTipoCambioDia()
+            Me.ObtenerTipoCambioDia()
         End If
     End Sub
 
@@ -500,10 +507,6 @@ Buscar:
         Child.FolioPolizaConsultaExterior = Me.LblPoliza.Text
         Child.ShowDialog()
         Child.Dispose()
-    End Sub
-
-    Private Sub Grid_KeyDown(ByVal Sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles GridVentas.KeyDown
-        GestionaGrid(e)
     End Sub
 
     Private Sub txtRFCEmisor_KeyDown(sender As Object, e As KeyEventArgs) Handles txtRFCEmisor.KeyDown
@@ -597,36 +600,47 @@ Buscar:
         End If
     End Sub
 
-
     Private Sub Grid1_CellChanging(ByVal Sender As Object, ByVal e As FlexCell.Grid.CellChangingEventArgs) Handles GridVentas.CellChanging
+        Const sProcedure As String = "Grid1_CellChanging"
         Try
-            Dim Columna As Integer = e.Col, Renglon As Integer = e.Row
-            Dim dPago As Double
-            If e.Col = Me.iGyVentaSeleccion And e.Row > 0 Then
-                If Me.GridVentas.Cell(Renglon, Me.iGyVentaSeleccion).Text = "1" And Me.ClickSinEjecutar = False Then
-                    If Me.cboMoneda.Text = "USD" Then
-                        If valorNumerico(Me.txtTipoCambio.Text) <= 0 Or valorNumerico(Me.txtTipoCambio.Text) > 30 Then
-                            MsgBox("Tipo de cambio incorrecto.", MsgBoxStyle.Exclamation, "Validación de tipo de cambio.")
-                            Me.txtTipoCambio.Focus()
-                            Exit Sub
-                        End If
+            Dim Columna As Integer = e.Col, Renglon As Integer = e.Row, dPagoMXN As Decimal, dPagoUSD As Decimal
+            Dim sMonedaVenta As String = Me.GridVentas.Cell(Renglon, Me.iGyB_VtaMoneda).Text
 
-                        dPago = valorNumerico(Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldoDlls).Text)
-                        If dPago > 0 Then
-                            Me.ClickSinEjecutar = True
-                            Me.GridVentas.Cell(Renglon, Me.iGyVentaPago).Text = dPago.ToString
-                            CalculaImportesPagoUSD(Renglon)
-                            Me.ClickSinEjecutar = False
-                        End If
-                    Else
-                        dPago = valorNumerico(Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldo).Text)
-                        If dPago > 0 Then
-                            Me.ClickSinEjecutar = True
-                            Me.GridVentas.Cell(Renglon, Me.iGyVentaPago).Text = dPago.ToString
-                            CalculaImportesPagoMXN(Renglon)
-                            Me.ClickSinEjecutar = False
-                        End If
+            If e.Col = Me.iGyB_PagoSeleccion And e.Row > 0 Then
+                If Me.GridVentas.Cell(Renglon, Me.iGyB_PagoSeleccion).Text = "1" And Me.ClickSinEjecutar = False Then
+
+                    If Me.GridVentas.Cell(Renglon, Me.iGyB_VtaEsFacturaAnticipo).Text = "1" AndAlso sMonedaVenta <> Me.cboMonedaPago.Text Then
+                        MsgBox("El pago en el renglón: " & Renglon & " es de un anticipo hecho en " & sMonedaVenta & ", debe de pagarlo en esa misma moneda y al 100%.", MsgBoxStyle.Exclamation, sProcedure)
+                        Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).Text = "0.00"
+                        Me.BorraPago(Renglon)
+                        Exit Sub
                     End If
+
+                    Select Case Me.cboMonedaPago.Text
+                        Case "USD"
+                            If valorNumerico(Me.txtTipoCambio.Text) <= 0 Or valorNumerico(Me.txtTipoCambio.Text) > 30 Then
+                                MsgBox("Tipo de cambio incorrecto.", MsgBoxStyle.Exclamation, sProcedure)
+                                Me.txtTipoCambio.Focus()
+                                Exit Sub
+                            End If
+
+                            dPagoUSD = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoUSD).Text)
+                            If dPagoUSD > 0 Then
+                                Me.ClickSinEjecutar = True
+                                Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoUSDCapturado).Text = dPagoUSD.ToString
+                                Me.CalculaImportesPagoUSD(Renglon)
+                                Me.ClickSinEjecutar = False
+                            End If
+
+                        Case "MXN"
+                            dPagoMXN = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoMXN_TpPago).Text)
+                            If dPagoMXN > 0 Then
+                                Me.ClickSinEjecutar = True
+                                Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).Text = dPagoMXN.ToString
+                                Me.CalculaImportesPagoMXN(Renglon)
+                                Me.ClickSinEjecutar = False
+                            End If
+                    End Select
 
                 Else
                     Me.BorraPago(Renglon)
@@ -638,8 +652,12 @@ Buscar:
             End If
 
         Catch ex As Exception
-            HandleError(Me.Name, "Grid1_CellChanging", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
+    End Sub
+
+    Private Sub Grid_KeyDown(ByVal Sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles GridVentas.KeyDown
+        Me.GestionaGrid(e)
     End Sub
 
     Private Sub chkVentasNoFiscales_CheckedChanged(sender As Object, e As EventArgs) Handles chkVentasNoFiscales.CheckedChanged
@@ -705,6 +723,7 @@ Buscar:
             Me.txtMonto.Text = "" : Me.chkAnticipo.Checked = False
 
             Me.TxtTotal.Text = ""
+            Me.txtTotalUSD.Text = ""
 
             Me.InicializaGridVentas()
             Me.lstClientesAgregados.Items.Clear()
@@ -714,9 +733,9 @@ Buscar:
 
             Me.GeneraFolio()
 
-            Dim sMonedaAnterior As String = Me.cboMoneda.Text
-            Me.cboMoneda.SelectedIndex = -1
-            Me.cboMoneda.Text = sMonedaAnterior
+            Dim sMonedaAnterior As String = Me.cboMonedaPago.Text
+            Me.cboMonedaPago.SelectedIndex = -1
+            Me.cboMonedaPago.Text = sMonedaAnterior
             'Me.cboMoneda.Text = "MXN" no se debe inicializar por si dejaron seleccionada moneda en usd no debe perderse la moneda y demás datos de la cuenta
             Me.txtTipoCambio.Text = ""
             Me.cboRegimenFiscal.SelectedValue = Empresa_Sistema.CODIGO_REGIMEN_FISCAL
@@ -735,17 +754,16 @@ Buscar:
 
     Private Sub InicializaGridVentas()
         Try
-            Me.GridVentas.DataSource = Nothing
-            FG_Grid_Limpiar(GridVentas)
-
-            'Creamos el Grid
-            Me.GridVentas.Rows = 2
-            Me.GridVentas.Cols = 27
-            Me.GridVentas.DisplayRowNumber = True
-
-            Me.FormateaGridVentas()
+            With Me.GridVentas
+                .DataSource = Nothing
+                FG_Grid_Limpiar(Me.GridVentas)
+                .Rows = 2
+                .Cols = 40
+                .DisplayRowNumber = True
+                Me.FormateaGridVentas()
+            End With
         Catch ex As Exception
-            HandleError(Me.Name, "InicializaGrid", ex)
+            HandleError(Me.Name, "InicializaGridVentas", ex)
         End Try
     End Sub
 
@@ -766,150 +784,257 @@ Buscar:
 
     Private Sub FormateaGridVentas()
         Try
-            'Me.Grid.Visible = False
+            With Me.GridVentas
+                .Column(Me.iGyB_PagoFolioDetalle).Width = 0 '80
+                .Column(Me.iGyB_VtaCodigoCliente).Width = 45
+                .Column(Me.iGyB_VtaNombreCliente).Width = 120
+                .Column(Me.iGyB_VtaFecha).Width = 60
+                .Column(Me.iGyB_VtaFolio).Width = 80
+                .Column(Me.iGyB_VtaMoneda).Width = 40
+                .Column(Me.iGyB_PagoMedioPago).Width = 0 'Abajo se hace visible false
+                .Column(Me.iGyB_PagoBanco).Width = 0 'Abajo se hace visible false
+                .Column(Me.iGyB_VtaIvaMXN).Width = 80 'new
+                .Column(Me.iGyB_VtaTotalMXN).Width = 80
+                .Column(Me.iGyB_VtaSaldoMXN_TpPago).Width = 80
+                .Column(Me.iGyB_VtaSaldoMXN_CXC).Width = 80 'new
+                .Column(Me.iGyB_VtaTipoCambio).Width = 50 'new
+                .Column(Me.iGyB_VtaSubtotalUSD).Width = 80 'new
+                .Column(Me.iGyB_VtaIvaUSD).Width = 80 'new
+                .Column(Me.iGyB_VtaTotalUSD).Width = 80
+                .Column(Me.iGyB_VtaSaldoUSD).Width = 80
+                .Column(Me.iGyB_CxcPagoMXNCapturado).Width = 80
+                .Column(Me.iGyB_CxcTotal).Width = 80
+                .Column(Me.iGyB_CxcPagoUSDCapturado).Width = 80 'new
+                .Column(Me.iGyB_PagoSeleccion).Width = 60
+                .Column(Me.iGyB_PagoReferencia).Width = 0 'Abajo se hace visible false
+                .Column(Me.iGyB_CxcFechaPago).Width = 65
+                .Column(Me.iGyB_CxcIvaCobrado).Width = 65
+                .Column(Me.iGyB_CxcIvaPendienteCobro).Width = 65 'new
+                .Column(Me.iGyB_CxcDiferenciaCambiaria).Width = 80
+                .Column(Me.iGyB_VtaVersionCFDI).Width = 50
+                .Column(Me.iGyB_VtaFormaPago).Width = 60
+                .Column(Me.iGyB_VtaMetodoPago).Width = 60
+                .Column(Me.iGyB_CxcImporteMonedaVenta).Width = 60
+                .Column(Me.iGyB_CxcSaldoAnteriorMonedaVenta).Width = 60
+                .Column(Me.iGyB_CxcSaldoAnteriorMonedaPago).Width = 60
+                .Column(Me.iGyB_VtaEsFacturaElectronica).Width = 60
+                .Column(Me.iGyB_VtaEsFacturaAnticipo).Width = 60
+                .Column(Me.iGyB_CxcPagoSubtotaMXNViejos).Width = 60
+                .Column(Me.iGyB_CxcPagoSubtotaMXNNuevos).Width = 60
+                .Column(Me.iGyB_VtaRetencionIvaMXN).Width = 60
+                .Column(Me.iGyB_VtaRetencionISRMXN).Width = 60
+                .Column(Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Width = 60
 
-            Me.GridVentas.Column(Me.iGyVentaFOLIO_DETALLE).Width = 80
-            Me.GridVentas.Column(Me.iGyVentaCodigoCliente).Width = 45
-            Me.GridVentas.Column(Me.iGyVentaNombreCliente).Width = 120
-            Me.GridVentas.Column(Me.iGyVentaFecha).Width = 65
-            Me.GridVentas.Column(Me.iGyVentaFolio).Width = 80
-            Me.GridVentas.Column(Me.iGyVentaMoneda).Width = 50
-            'Me.Grid.Column(Me.iGyMedioPago).Width = 95
-            'Me.Grid.Column(Me.iGyBanco).Width = 80
-            'Me.Grid.Column(Me.iGyReferencia).Width = 95
-            Me.GridVentas.Column(Me.iGyVentaMedioPago).Visible = False
-            Me.GridVentas.Column(Me.iGyVentaBanco).Visible = False
-            Me.GridVentas.Column(Me.iGyVentaReferencia).Visible = False
-            Me.GridVentas.Column(Me.iGyVentaTotal).Width = 80
-            Me.GridVentas.Column(Me.iGyVentaSaldo).Width = 80
-            Me.GridVentas.Column(Me.iGyVentaTotalDlls).Width = 80
-            Me.GridVentas.Column(Me.iGyVentaSaldoDlls).Width = 80
-            Me.GridVentas.Column(Me.iGyVentaPago).Width = 80
-            Me.GridVentas.Column(Me.iGyVentaPagoPesos).Width = 80
-            Me.GridVentas.Column(Me.iGyVentaSeleccion).Width = 60
-            Me.GridVentas.Column(Me.iGyVentaDiferencia).Width = 80
-            Me.GridVentas.Column(Me.iGyVentaIvaPorPagar).Width = 60
-            Me.GridVentas.Column(Me.iGyVentaFechaPago).Width = 65
-            Me.GridVentas.Column(Me.iGyVentaVersionCFDI).Width = 50
-            Me.GridVentas.Column(Me.iGyVentaFormaPago).Width = 60
-            Me.GridVentas.Column(Me.iGyVentaMetodoPago).Width = 60
-            Me.GridVentas.Column(Me.iGyVentaImporteMonedaVenta).Width = 60
-            Me.GridVentas.Column(Me.iGyVentaSaldoAnteriorMonedaPago).Width = 60
-            Me.GridVentas.Column(Me.iGyVentaSaldoAnteriorMonedaVenta).Width = 60
-            Me.GridVentas.Column(Me.iGyVentaEsFacturaElectronica).Width = 60
+                .Cell(0, Me.iGyB_PagoFolioDetalle).Text = "Folio pago"
+                .Cell(0, Me.iGyB_VtaCodigoCliente).Text = "CodCte"
+                .Cell(0, Me.iGyB_VtaNombreCliente).Text = "Nombre"
+                .Cell(0, Me.iGyB_VtaFecha).Text = "Fecha"
+                .Cell(0, Me.iGyB_VtaFolio).Text = "Folio"
+                .Cell(0, Me.iGyB_VtaMoneda).Text = "V.Mon"
+                .Cell(0, Me.iGyB_PagoMedioPago).Text = "Medio de pago"
+                .Cell(0, Me.iGyB_PagoBanco).Text = "Banco"
+                .Cell(0, Me.iGyB_VtaIvaMXN).Text = "V.IVA"
+                .Cell(0, Me.iGyB_VtaTotalMXN).Text = "V.Total"
+                .Cell(0, Me.iGyB_VtaSaldoMXN_TpPago).Text = "SaldoMXN TpP" '"Saldo"
+                .Cell(0, Me.iGyB_VtaSaldoMXN_CXC).Text = "SaldoCXC"
+                .Cell(0, Me.iGyB_VtaTipoCambio).Text = "V.Tpcam"
+                .Cell(0, Me.iGyB_VtaSubtotalUSD).Text = "V.SubUSD"
+                .Cell(0, Me.iGyB_VtaIvaUSD).Text = "V.IvaUSD"
+                .Cell(0, Me.iGyB_VtaTotalUSD).Text = "V.TotalUSD"
+                .Cell(0, Me.iGyB_VtaSaldoUSD).Text = "SaldoUSD"
+                .Cell(0, Me.iGyB_CxcPagoMXNCapturado).Text = "Pago MXN" ' "Pagar"
+                .Cell(0, Me.iGyB_CxcTotal).Text = "CXCTotal" '"Pagar Pesos"
+                .Cell(0, Me.iGyB_CxcPagoUSDCapturado).Text = "Pago USD"
+                .Cell(0, Me.iGyB_PagoSeleccion).Text = "Selección"
+                .Cell(0, Me.iGyB_PagoReferencia).Text = "Referencia"
+                .Cell(0, Me.iGyB_CxcFechaPago).Text = "Fecha pago"
+                .Cell(0, Me.iGyB_CxcIvaCobrado).Text = "IVACobrado" '"IvaXPagar"
+                .Cell(0, Me.iGyB_CxcIvaPendienteCobro).Text = "IVAPendCob"
+                .Cell(0, Me.iGyB_CxcDiferenciaCambiaria).Text = "Diferen.camb."
+                .Cell(0, Me.iGyB_VtaVersionCFDI).Text = "V.CFDI"
+                .Cell(0, Me.iGyB_VtaFormaPago).Text = "F. Pago"
+                .Cell(0, Me.iGyB_VtaMetodoPago).Text = "M. Pago"
+                .Cell(0, Me.iGyB_CxcImporteMonedaVenta).Text = "ImporteMonedaVenta"
+                .Cell(0, Me.iGyB_CxcSaldoAnteriorMonedaVenta).Text = "SaldoAnteriorMonedaVenta"
+                .Cell(0, Me.iGyB_CxcSaldoAnteriorMonedaPago).Text = "SaldoAnteriorMonedaPago"
+                .Cell(0, Me.iGyB_VtaEsFacturaElectronica).Text = "FacElec"
+                .Cell(0, Me.iGyB_VtaEsFacturaAnticipo).Text = "FacAnt"
+                .Cell(0, Me.iGyB_CxcPagoSubtotaMXNViejos).Text = "CXCSubTotal"
+                .Cell(0, Me.iGyB_CxcPagoSubtotaMXNNuevos).Text = "CXCSubTotalMXNNuevos"
+                .Cell(0, Me.iGyB_VtaRetencionIvaMXN).Text = "V.RetIVA"
+                .Cell(0, Me.iGyB_VtaRetencionISRMXN).Text = "V.RetISR"
+                .Cell(0, Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Text = "V.RetIEPS"
 
-            Me.GridVentas.Cell(0, Me.iGyVentaFOLIO_DETALLE).Text = "Folio pago"
-            Me.GridVentas.Cell(0, Me.iGyVentaCodigoCliente).Text = "Código"
-            Me.GridVentas.Cell(0, Me.iGyVentaNombreCliente).Text = "Nombre"
-            Me.GridVentas.Cell(0, Me.iGyVentaFecha).Text = "Fecha"
-            Me.GridVentas.Cell(0, Me.iGyVentaFolio).Text = "Folio"
-            Me.GridVentas.Cell(0, Me.iGyVentaMoneda).Text = "Moneda"
-            Me.GridVentas.Cell(0, Me.iGyVentaMedioPago).Text = "Medio de pago"
-            Me.GridVentas.Cell(0, Me.iGyVentaBanco).Text = "Banco"
-            Me.GridVentas.Cell(0, Me.iGyVentaTotal).Text = "Total"
-            Me.GridVentas.Cell(0, Me.iGyVentaSaldo).Text = "Saldo"
-            Me.GridVentas.Cell(0, Me.iGyVentaTotalDlls).Text = "Total Dlls"
-            Me.GridVentas.Cell(0, Me.iGyVentaSaldoDlls).Text = "Saldo Dlls"
-            Me.GridVentas.Cell(0, Me.iGyVentaPago).Text = "Pagar"
-            Me.GridVentas.Cell(0, Me.iGyVentaPagoPesos).Text = "Pagar Pesos"
-            Me.GridVentas.Cell(0, Me.iGyVentaSeleccion).Text = "Selección"
-            Me.GridVentas.Cell(0, Me.iGyVentaReferencia).Text = "Referencia"
-            Me.GridVentas.Cell(0, Me.iGyVentaDiferencia).Text = "Diferencia"
-            Me.GridVentas.Cell(0, Me.iGyVentaIvaPorPagar).Text = "IvaXPagar"
-            Me.GridVentas.Cell(0, Me.iGyVentaFechaPago).Text = "Fecha pago"
-            Me.GridVentas.Cell(0, Me.iGyVentaVersionCFDI).Text = "V.CFDI"
-            Me.GridVentas.Cell(0, Me.iGyVentaFormaPago).Text = "F. Pago"
-            Me.GridVentas.Cell(0, Me.iGyVentaMetodoPago).Text = "M. Pago"
-            Me.GridVentas.Cell(0, Me.iGyVentaImporteMonedaVenta).Text = "ImporteMonedaVenta"
-            Me.GridVentas.Cell(0, Me.iGyVentaSaldoAnteriorMonedaPago).Text = "SaldoAnteriorMonedaPago"
-            Me.GridVentas.Cell(0, Me.iGyVentaSaldoAnteriorMonedaVenta).Text = "SaldoAnteriorMonedaVenta"
-            Me.GridVentas.Cell(0, Me.iGyVentaEsFacturaElectronica).Text = "FacElec"
+                Me.DespliegaCombosGrid()
 
-            Me.DespliegaCombosGrid()
+                .Column(Me.iGyB_VtaFecha).CellType = FlexCell.CellTypeEnum.DateTime
+                .Column(Me.iGyB_VtaFecha).FormatString = "dd-MMM-yy"
 
-            Me.GridVentas.Column(Me.iGyVentaFecha).CellType = FlexCell.CellTypeEnum.DateTime
-            Me.GridVentas.Column(Me.iGyVentaFecha).FormatString = "dd-MMM-yy"
+                .Column(Me.iGyB_VtaIvaMXN).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_VtaIvaMXN).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_VtaIvaMXN).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_VtaIvaMXN).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.GridVentas.Column(Me.iGyVentaTotal).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            Me.GridVentas.Column(Me.iGyVentaTotal).Mask = FlexCell.MaskEnum.Numeric
-            Me.GridVentas.Column(Me.iGyVentaTotal).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-            Me.GridVentas.Column(Me.iGyVentaTotal).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyB_VtaTotalMXN).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_VtaTotalMXN).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_VtaTotalMXN).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_VtaTotalMXN).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.GridVentas.Column(Me.iGyVentaSaldo).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            Me.GridVentas.Column(Me.iGyVentaSaldo).Mask = FlexCell.MaskEnum.Numeric
-            Me.GridVentas.Column(Me.iGyVentaSaldo).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-            Me.GridVentas.Column(Me.iGyVentaSaldo).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyB_VtaSaldoMXN_TpPago).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_VtaSaldoMXN_TpPago).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_VtaSaldoMXN_TpPago).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_VtaSaldoMXN_TpPago).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.GridVentas.Column(Me.iGyVentaPago).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            Me.GridVentas.Column(Me.iGyVentaPago).Mask = FlexCell.MaskEnum.Numeric
-            Me.GridVentas.Column(Me.iGyVentaPago).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-            Me.GridVentas.Column(Me.iGyVentaPago).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyB_VtaSaldoMXN_CXC).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_VtaSaldoMXN_CXC).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_VtaSaldoMXN_CXC).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_VtaSaldoMXN_CXC).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.GridVentas.Column(Me.iGyVentaPagoPesos).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            Me.GridVentas.Column(Me.iGyVentaPagoPesos).Mask = FlexCell.MaskEnum.Numeric
-            Me.GridVentas.Column(Me.iGyVentaPagoPesos).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-            Me.GridVentas.Column(Me.iGyVentaPagoPesos).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyB_VtaTipoCambio).FormatString = "###,###,##0.0000"
+                .Column(Me.iGyB_VtaTipoCambio).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_VtaTipoCambio).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_VtaTipoCambio).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.GridVentas.Column(Me.iGyVentaTotalDlls).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            Me.GridVentas.Column(Me.iGyVentaTotalDlls).Mask = FlexCell.MaskEnum.Numeric
-            Me.GridVentas.Column(Me.iGyVentaTotalDlls).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-            Me.GridVentas.Column(Me.iGyVentaTotalDlls).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyB_VtaSubtotalUSD).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_VtaSubtotalUSD).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_VtaSubtotalUSD).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_VtaSubtotalUSD).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.GridVentas.Column(Me.iGyVentaSaldoDlls).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            Me.GridVentas.Column(Me.iGyVentaSaldoDlls).Mask = FlexCell.MaskEnum.Numeric
-            Me.GridVentas.Column(Me.iGyVentaSaldoDlls).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-            Me.GridVentas.Column(Me.iGyVentaSaldoDlls).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyB_VtaIvaUSD).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_VtaIvaUSD).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_VtaIvaUSD).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_VtaIvaUSD).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.GridVentas.Column(Me.iGyVentaDiferencia).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            Me.GridVentas.Column(Me.iGyVentaDiferencia).Mask = FlexCell.MaskEnum.Numeric
-            Me.GridVentas.Column(Me.iGyVentaDiferencia).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-            Me.GridVentas.Column(Me.iGyVentaDiferencia).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyB_VtaTotalUSD).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_VtaTotalUSD).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_VtaTotalUSD).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_VtaTotalUSD).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.GridVentas.Column(Me.iGyVentaIvaPorPagar).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            Me.GridVentas.Column(Me.iGyVentaIvaPorPagar).Mask = FlexCell.MaskEnum.Numeric
-            Me.GridVentas.Column(Me.iGyVentaIvaPorPagar).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-            Me.GridVentas.Column(Me.iGyVentaIvaPorPagar).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyB_VtaSaldoUSD).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_VtaSaldoUSD).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_VtaSaldoUSD).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_VtaSaldoUSD).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.GridVentas.Column(Me.iGyVentaSeleccion).CellType = FlexCell.CellTypeEnum.CheckBox
+                .Column(Me.iGyB_CxcPagoMXNCapturado).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_CxcPagoMXNCapturado).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_CxcPagoMXNCapturado).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_CxcPagoMXNCapturado).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.GridVentas.Column(Me.iGyVentaFechaPago).CellType = FlexCell.CellTypeEnum.DateTime
-            Me.GridVentas.Column(Me.iGyVentaFechaPago).FormatString = "dd-MMM-yy"
+                .Column(Me.iGyB_CxcTotal).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_CxcTotal).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_CxcTotal).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_CxcTotal).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.GridVentas.Refresh()
+                .Column(Me.iGyB_CxcPagoUSDCapturado).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_CxcPagoUSDCapturado).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_CxcPagoUSDCapturado).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_CxcPagoUSDCapturado).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.GridVentas.Column(Me.iGyVentaCodigoCliente).Locked = True
-            Me.GridVentas.Column(Me.iGyVentaNombreCliente).Locked = True
-            Me.GridVentas.Column(Me.iGyVentaFecha).Locked = True
-            Me.GridVentas.Column(Me.iGyVentaFolio).Locked = True
-            Me.GridVentas.Column(Me.iGyVentaMoneda).Locked = True
-            Me.GridVentas.Column(Me.iGyVentaMedioPago).Locked = False
-            Me.GridVentas.Column(Me.iGyVentaBanco).Locked = False
-            Me.GridVentas.Column(Me.iGyVentaTotal).Locked = True
-            Me.GridVentas.Column(Me.iGyVentaSaldo).Locked = True
-            Me.GridVentas.Column(Me.iGyVentaTotalDlls).Locked = True
-            Me.GridVentas.Column(Me.iGyVentaSaldoDlls).Locked = True
-            Me.GridVentas.Column(Me.iGyVentaPago).Locked = False
-            Me.GridVentas.Column(Me.iGyVentaPagoPesos).Locked = True
-            Me.GridVentas.Column(Me.iGyVentaReferencia).Locked = False
-            Me.GridVentas.Column(Me.iGyVentaDiferencia).Locked = True
-            Me.GridVentas.Column(Me.iGyVentaTotalDlls).Visible = False
-            Me.GridVentas.Column(Me.iGyVentaSaldoDlls).Visible = False
-            Me.GridVentas.Column(Me.iGyVentaPagoPesos).Visible = False
-            Me.GridVentas.Column(Me.iGyVentaDiferencia).Visible = False
-            Me.GridVentas.Column(Me.iGyVentaIvaPorPagar).Visible = True
-            Me.GridVentas.Column(Me.iGyVentaFechaPago).Visible = True
-            Me.GridVentas.Column(Me.iGyVentaVersionCFDI).Visible = True
-            Me.GridVentas.Column(Me.iGyVentaFormaPago).Visible = True
-            Me.GridVentas.Column(Me.iGyVentaMetodoPago).Visible = True
-            Me.GridVentas.Column(Me.iGyVentaImporteMonedaVenta).Visible = False
-            Me.GridVentas.Column(Me.iGyVentaSaldoAnteriorMonedaPago).Visible = False
-            Me.GridVentas.Column(Me.iGyVentaSaldoAnteriorMonedaVenta).Visible = False
-            Me.GridVentas.Column(Me.iGyVentaEsFacturaElectronica).Visible = False
+                .Column(Me.iGyB_CxcIvaCobrado).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_CxcIvaCobrado).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_CxcIvaCobrado).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_CxcIvaCobrado).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            'Me.Grid.Visible = True
+                .Column(Me.iGyB_CxcIvaPendienteCobro).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_CxcIvaPendienteCobro).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_CxcIvaPendienteCobro).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_CxcIvaPendienteCobro).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyB_CxcDiferenciaCambiaria).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_CxcDiferenciaCambiaria).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_CxcDiferenciaCambiaria).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_CxcDiferenciaCambiaria).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyB_CxcImporteMonedaVenta).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_CxcImporteMonedaVenta).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_CxcImporteMonedaVenta).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_CxcImporteMonedaVenta).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyB_CxcSaldoAnteriorMonedaVenta).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_CxcSaldoAnteriorMonedaVenta).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_CxcSaldoAnteriorMonedaVenta).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_CxcSaldoAnteriorMonedaVenta).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyB_CxcSaldoAnteriorMonedaPago).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_CxcSaldoAnteriorMonedaPago).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_CxcSaldoAnteriorMonedaPago).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_CxcSaldoAnteriorMonedaPago).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyB_CxcPagoSubtotaMXNViejos).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_CxcPagoSubtotaMXNViejos).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_CxcPagoSubtotaMXNViejos).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_CxcPagoSubtotaMXNViejos).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyB_CxcPagoSubtotaMXNNuevos).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_CxcPagoSubtotaMXNNuevos).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_CxcPagoSubtotaMXNNuevos).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_CxcPagoSubtotaMXNNuevos).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyB_VtaRetencionIvaMXN).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_VtaRetencionIvaMXN).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_VtaRetencionIvaMXN).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_VtaRetencionIvaMXN).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyB_VtaRetencionISRMXN).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_VtaRetencionISRMXN).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_VtaRetencionISRMXN).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_VtaRetencionISRMXN).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyB_PagoSeleccion).CellType = FlexCell.CellTypeEnum.CheckBox
+
+                .Column(Me.iGyB_CxcFechaPago).CellType = FlexCell.CellTypeEnum.DateTime
+                .Column(Me.iGyB_CxcFechaPago).FormatString = "dd-MMM-yy"
+
+                .Refresh()
+
+                .Column(Me.iGyB_PagoMedioPago).Visible = False
+                .Column(Me.iGyB_VtaCodigoCliente).Locked = True
+                .Column(Me.iGyB_VtaNombreCliente).Locked = True
+                .Column(Me.iGyB_VtaFecha).Locked = True
+                .Column(Me.iGyB_VtaFolio).Locked = True
+                .Column(Me.iGyB_VtaMoneda).Locked = True
+                .Column(Me.iGyB_PagoMedioPago).Locked = False : .Column(Me.iGyB_PagoMedioPago).Visible = False
+                .Column(Me.iGyB_PagoBanco).Locked = False : .Column(Me.iGyB_PagoBanco).Visible = False
+                .Column(Me.iGyB_VtaIvaMXN).Locked = True
+                .Column(Me.iGyB_VtaTotalMXN).Locked = True
+                .Column(Me.iGyB_VtaSaldoMXN_TpPago).Locked = True
+                .Column(Me.iGyB_VtaSaldoMXN_CXC).Locked = True
+                .Column(Me.iGyB_VtaTipoCambio).Locked = True
+                .Column(Me.iGyB_VtaSubtotalUSD).Locked = True : .Column(Me.iGyB_VtaSubtotalUSD).Visible = False
+                .Column(Me.iGyB_VtaIvaUSD).Locked = True
+                .Column(Me.iGyB_VtaTotalUSD).Locked = True : .Column(Me.iGyB_VtaTotalUSD).Visible = False
+                .Column(Me.iGyB_VtaSaldoUSD).Locked = True : .Column(Me.iGyB_VtaSaldoUSD).Visible = False
+                .Column(Me.iGyB_CxcPagoMXNCapturado).Locked = False
+                .Column(Me.iGyB_CxcTotal).Locked = True : .Column(Me.iGyB_CxcTotal).Visible = False
+                .Column(Me.iGyB_CxcPagoUSDCapturado).Locked = False
+                .Column(Me.iGyB_PagoSeleccion).Locked = False
+                .Column(Me.iGyB_PagoReferencia).Locked = False : .Column(Me.iGyB_PagoReferencia).Visible = False
+                .Column(Me.iGyB_CxcFechaPago).Visible = True
+                .Column(Me.iGyB_CxcIvaCobrado).Visible = True
+                .Column(Me.iGyB_CxcIvaPendienteCobro).Visible = True
+                .Column(Me.iGyB_CxcDiferenciaCambiaria).Locked = True : .Column(Me.iGyB_CxcDiferenciaCambiaria).Visible = False
+                .Column(Me.iGyB_VtaVersionCFDI).Locked = True : .Column(Me.iGyB_VtaVersionCFDI).Visible = False
+                .Column(Me.iGyB_VtaFormaPago).Locked = True : .Column(Me.iGyB_VtaFormaPago).Visible = False
+                .Column(Me.iGyB_VtaMetodoPago).Locked = True : .Column(Me.iGyB_VtaMetodoPago).Visible = True
+                .Column(Me.iGyB_CxcImporteMonedaVenta).Visible = False
+                .Column(Me.iGyB_CxcSaldoAnteriorMonedaVenta).Visible = False
+                .Column(Me.iGyB_CxcSaldoAnteriorMonedaPago).Visible = False
+                .Column(Me.iGyB_VtaEsFacturaElectronica).Visible = False
+                .Column(Me.iGyB_VtaEsFacturaAnticipo).Locked = True
+                .Column(Me.iGyB_CxcPagoSubtotaMXNViejos).Locked = True : .Column(Me.iGyB_CxcPagoSubtotaMXNViejos).Visible = False
+                .Column(Me.iGyB_CxcPagoSubtotaMXNNuevos).Locked = True : .Column(Me.iGyB_CxcPagoSubtotaMXNNuevos).Visible = False
+                .Column(Me.iGyB_VtaRetencionIvaMXN).Locked = True : .Column(Me.iGyB_VtaRetencionIvaMXN).Visible = False
+                .Column(Me.iGyB_VtaRetencionISRMXN).Locked = True : .Column(Me.iGyB_VtaRetencionISRMXN).Visible = False
+                .Column(Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Locked = True : .Column(Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Visible = False
+            End With
+
         Catch ex As Exception
             HandleError(Me.Name, "FormateaGridVentas", ex)
-            'Me.Grid.Visible = True
         End Try
     End Sub
 
@@ -971,10 +1096,10 @@ Buscar:
             da.Fill(dTabla)
             da.Dispose()
 
-            Me.GridVentas.Column(Me.iGyVentaMedioPago).CellType = FlexCell.CellTypeEnum.ComboBox
-            Me.GridVentas.ComboBox(Me.iGyVentaMedioPago).DataSource = dTabla
-            Me.GridVentas.ComboBox(Me.iGyVentaMedioPago).DisplayMember = "NOMBRE_MEDIO_PAGO"
-            Me.GridVentas.ComboBox(Me.iGyVentaMedioPago).ValueMember = "ID_MEDIO_PAGO"
+            Me.GridVentas.Column(Me.iGyB_PagoMedioPago).CellType = FlexCell.CellTypeEnum.ComboBox
+            Me.GridVentas.ComboBox(Me.iGyB_PagoMedioPago).DataSource = dTabla
+            Me.GridVentas.ComboBox(Me.iGyB_PagoMedioPago).DisplayMember = "NOMBRE_MEDIO_PAGO"
+            Me.GridVentas.ComboBox(Me.iGyB_PagoMedioPago).ValueMember = "ID_MEDIO_PAGO"
 
             Dim dTabla1 As New DataTable("detalle1"), da1 As SqlDataAdapter
             Dim sSQL1 As String = ("SELECT CODIGO_BANCO,NOMBRE_BANCO FROM CAT_BANCOS ORDER BY NOMBRE_BANCO")
@@ -983,10 +1108,10 @@ Buscar:
             da1.Fill(dTabla1)
             da1.Dispose()
 
-            Me.GridVentas.Column(Me.iGyVentaBanco).CellType = FlexCell.CellTypeEnum.ComboBox
-            Me.GridVentas.ComboBox(Me.iGyVentaBanco).DataSource = dTabla1
-            Me.GridVentas.ComboBox(Me.iGyVentaBanco).DisplayMember = "NOMBRE_BANCO"
-            Me.GridVentas.ComboBox(Me.iGyVentaBanco).ValueMember = "CODIGO_BANCO"
+            Me.GridVentas.Column(Me.iGyB_PagoBanco).CellType = FlexCell.CellTypeEnum.ComboBox
+            Me.GridVentas.ComboBox(Me.iGyB_PagoBanco).DataSource = dTabla1
+            Me.GridVentas.ComboBox(Me.iGyB_PagoBanco).DisplayMember = "NOMBRE_BANCO"
+            Me.GridVentas.ComboBox(Me.iGyB_PagoBanco).ValueMember = "CODIGO_BANCO"
 
         Catch ex As Exception
             HandleError(Me.Name, "DespliegaCombosGrid", ex)
@@ -1033,7 +1158,7 @@ Buscar:
             Me.BorraDocumentosSinPago()
 
             For iRow = 1 To Me.GridVentas.Rows - 1
-                If Me.GridVentas.Cell(iRow, Me.iGyVentaCodigoCliente).Text.Length > 0 AndAlso Me.TxtCodigoCliente.Text = Me.GridVentas.Cell(iRow, Me.iGyVentaCodigoCliente).Text Then
+                If Me.GridVentas.Cell(iRow, Me.iGyB_VtaCodigoCliente).Text.Length > 0 AndAlso Me.TxtCodigoCliente.Text = Me.GridVentas.Cell(iRow, Me.iGyB_VtaCodigoCliente).Text Then
                     If MsgBox("Ya asignó al cliente " & Me.TxtCodigoCliente.Text & " a la lista de pagos, esta seguro de volver agregarlo?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
                         Return False
                     Else
@@ -1110,14 +1235,14 @@ Buscar:
 
         Dim Conexion As New SqlConnection(Empresa_Sistema.conexion)
         Dim i As Integer = 1, oCliente As New Class_CatClientes, sMedioPago As String, oBanco As Class_CatBancos, sSaldoDlls As String = "", dFechaPagoDefault As Date
-        Dim sql As Class_find, dTipoCambio As Decimal = valorNumericoD(Me.txtTipoCambio.Text)
+        Dim sql As Class_find, dTipoCambioPago As Decimal = valorNumericoD(Me.txtTipoCambio.Text)
         Dim cmd As SqlCommand, dReader As SqlDataReader, bHayVentasEnUSD As Boolean = False
         Dim sSQL As String = ""
 
         dFechaPagoDefault = CDate(Me.GridDocumentosPago.Cell(1, Me.iGyDocFECHA).Text)
 
-        If dTipoCambio <= 0 Then
-            dTipoCambio = 1
+        If dTipoCambioPago <= 0 Then
+            dTipoCambioPago = 1
         End If
 
         Try
@@ -1129,87 +1254,105 @@ Buscar:
                 Return False
             End If
 
-            If Me.cboMoneda.Text = "MXN" Then
-                'Si el pago es en MXN y hay facturas en USD, se necesita el tipo de cambio(aunque la cuenta bancaria este en MXN)
+            Select Case Me.cboMonedaPago.Text
+                Case "MXN"
+                    'Si el pago es en MXN y hay facturas USD con saldo, se necesita el tipo de cambio(aunque la cuenta bancaria este en MXN) para calcular un saldoMXN a tp pago.
 
-                'sSQL = "SELECT TOP 1 '1' HAY_VENTAS_EN_USD " &
-                '                     "FROM VENTA_GLOBAL V WHERE V.CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' AND SALDO>0 " & sSaldoDlls & " AND CODIGO_MONEDA_SAT='USD'"
+                    'sSQL = "SELECT TOP 1 '1' HAY_VENTAS_EN_USD " &
+                    '                     "FROM VENTA_GLOBAL V WHERE V.CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' AND SALDO>0 " & sSaldoDlls & " AND CODIGO_MONEDA_SAT='USD'"
 
-                sSQL = "SELECT TOP 1 '1' HAY_VENTAS_EN_USD " &
-                            "FROM VENTA_GLOBAL V " &
-                            "LEFT JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(V.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
-                            "WHERE 1=1 "
+                    sSQL = "SELECT TOP 1 '1' HAY_VENTAS_EN_USD " &
+                                "FROM VENTA_GLOBAL V " &
+                                "LEFT JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(V.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
+                                "WHERE 1=1 "
 
-                Select Case Me.cboTipoVentas.Text
-                    Case "MISMO RFC CLIENTE"
-                        sSQL = sSQL & " AND V.RFC_RECEPTOR='" & oCliente.RFC & "' "
-                    Case "MISMO CODIGO CLIENTE"
-                        sSQL = sSQL & " AND V.CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' "
-                End Select
+                    Select Case Me.cboTipoVentas.Text
+                        Case "MISMO RFC CLIENTE"
+                            sSQL = sSQL & " AND V.RFC_RECEPTOR='" & oCliente.RFC & "' "
+                        Case "MISMO CODIGO CLIENTE"
+                            sSQL = sSQL & " AND V.CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' "
+                    End Select
 
-                sSQL = sSQL & " AND V.SALDO>0 AND V.CODIGO_MONEDA_SAT='USD' " ' & " AND V.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA
+                    sSQL = sSQL & " AND V.SALDO>0 AND V.CODIGO_MONEDA_SAT='USD' " ' & " AND V.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA
 
-                If Me.chkVentasNoFiscales.Checked = True Then
-                    sSQL = sSQL & " AND DOC.AFECTA_CONTABILIDAD='0' " 'Para mostrar sólo remisiones, las cot no salen porque también se busca saldo>0 .
-                Else
-                    sSQL = sSQL & " AND DOC.CODIGO_DOCUMENTO LIKE 'F%' "
-                End If
-
-                cmd = New SqlCommand(sSQL, Conexion)
-
-                With cmd
-                    .CommandTimeout = 0
-                    .CommandType = CommandType.Text
-                    dReader = .ExecuteReader()
-                    If dReader.HasRows = True Then
-                        bHayVentasEnUSD = True
-                    End If
-                End With
-
-                If bHayVentasEnUSD = True Then
-                    dTipoCambio = CDec(valorNumericoD(InputBox("Capture aquí el tipo de cambio del pago (es un pago en MXN y hay facturas en USD)")))
-
-                    If dTipoCambio <= 0 Or dTipoCambio > 30 Then
-                        MsgBox("Tipo de cambio incorrecto.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
+                    If Me.chkVentasNoFiscales.Checked = True Then
+                        sSQL = sSQL & " AND DOC.AFECTA_CONTABILIDAD='0' " 'Para mostrar sólo remisiones, las cot no salen porque también se busca saldo>0 .
+                    Else
+                        sSQL = sSQL & " AND DOC.CODIGO_DOCUMENTO LIKE 'F%' "
                     End If
 
-                    Me.txtTipoCambio.Text = FormatTipoCambio(dTipoCambio)
+                    cmd = New SqlCommand(sSQL, Conexion)
 
-                    Me.GridVentas.Column(Me.iGyVentaDiferencia).Visible = True
-                    Me.GridVentas.Column(Me.iGyVentaPagoPesos).Visible = True
+                    With cmd
+                        .CommandTimeout = 0
+                        .CommandType = CommandType.Text
+                        dReader = .ExecuteReader()
+                        If dReader.HasRows = True Then
+                            bHayVentasEnUSD = True
+                        End If
+                    End With
 
-                End If
+                    If bHayVentasEnUSD = True Then
+                        dTipoCambioPago = CDec(valorNumericoD(InputBox("Capture aquí el tipo de cambio del pago (es un pago en MXN y hay facturas en USD)")))
 
-                dReader.Close()
-            End If
+                        If dTipoCambioPago <= 0 Or dTipoCambioPago > 30 Then
+                            MsgBox("Tipo de cambio incorrecto.", MsgBoxStyle.Exclamation, sProcedure)
+                            Return False
+                        End If
+
+                        Me.txtTipoCambio.Text = FormatTipoCambio(dTipoCambioPago)
+
+                        Me.GridVentas.Column(Me.iGyB_CxcDiferenciaCambiaria).Visible = True 'Recordemos que si la ventaMoneda=USD si hay diferencia cambiaria.
+                        Me.GridVentas.Column(Me.iGyB_CxcTotal).Visible = True
+                    End If
+
+                    dReader.Close()
+
+                Case "USD"
+                    'Nada, esta sección es para saber si estan pagando en mxn y se hay facturas en usd y entonces pedir tipo de cambio aunque sea pago en mxn, por eso aqui no se hace nada
+
+            End Select
+
         Catch ex As Exception
             HandleError(Me.Text, "CargaFacturas", ex)
         End Try
-
 
         'If Me.cboMoneda.Text = "USD" Then
         'sSaldoDlls = " AND SALDO_DOLARES>0 "
         'End If
 
-        Dim sSQLSaldoMXN As String = ""
+        '''''''''''''Código anterior
+        'Dim sSQLSaldoMXN As String = ""
 
-        If bHayVentasEnUSD = True Then
-            sSQLSaldoMXN = "CASE WHEN CODIGO_MONEDA_SAT='USD' THEN ROUND((ROUND(V.SALDO/V.TIPO_DE_CAMBIO,2))*" & dTipoCambio.ToString & ",2) ELSE V.SALDO END SALDO_MXN,"
-        Else
-            sSQLSaldoMXN = "V.SALDO SALDO_MXN,"
-        End If
+        'If bHayVentasEnUSD = True Then
+        '    sSQLSaldoMXN = "CASE WHEN CODIGO_MONEDA_SAT='USD' THEN ROUND((ROUND(V.SALDO/V.TIPO_DE_CAMBIO,2))*" & dTipoCambio.ToString & ",2) ELSE V.SALDO END SALDO_MXN,"
+        'Else
+        '    sSQLSaldoMXN = "V.SALDO SALDO_MXN,"
+        'End If
+
+        'sSQL = "SELECT V.CODIGO_CLIENTE,CTE.NOMBRE_CLIENTE,V.FECHA,V.FOLIO_VENTA,V.CODIGO_MONEDA_SAT,V.TOTAL," &
+        '                    sSQLSaldoMXN &
+        '                    "V.TOTAL_DOLARES," &
+        '                    "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN ROUND(V.SALDO/V.TIPO_DE_CAMBIO,2) ELSE ROUND(V.SALDO/" & dTipoCambio.ToString & ",2) END SALDO_DOLARES," &
+        '                    "CASE WHEN V.TOTAL=V.SALDO THEN V.IMPUESTO ELSE 0 END IVA, " &
+        '                    "V.VERSION_ESQUEMA_XML,V.CODIGO_METODO_PAGO,V.CODIGO_METODO_PAGO_EVENTO,V.ES_FACTURA_ELECTRONICA " &
+        '                    "FROM VENTA_GLOBAL V " &
+        '                    "INNER JOIN CAT_CLIENTES CTE ON(V.CODIGO_CLIENTE=CTE.CODIGO_CLIENTE)" &
+        '                    "LEFT JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(V.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
+        '                    "WHERE 1=1 "
+        '''''''''''''Código anterior
 
         sSQL = "SELECT V.CODIGO_CLIENTE,CTE.NOMBRE_CLIENTE,V.FECHA,V.FOLIO_VENTA,V.CODIGO_MONEDA_SAT,V.TOTAL," &
-                            sSQLSaldoMXN &
-                            "V.TOTAL_DOLARES," &
-                            "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN ROUND(V.SALDO/V.TIPO_DE_CAMBIO,2) ELSE ROUND(V.SALDO/" & dTipoCambio.ToString & ",2) END SALDO_DOLARES," &
-                            "CASE WHEN V.TOTAL=V.SALDO THEN V.IMPUESTO ELSE 0 END IVA, " &
-                            "V.VERSION_ESQUEMA_XML,V.CODIGO_METODO_PAGO,V.CODIGO_METODO_PAGO_EVENTO,V.ES_FACTURA_ELECTRONICA " &
+                            "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN ROUND(V.SALDO_DOLARES*" & dTipoCambioPago.ToString & ",2) ELSE V.SALDO END SALDO_MXN_TP_PAGO,V.SALDO SALDO_CXC," &
+                            "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN V.SALDO_DOLARES ELSE ROUND(V.SALDO/" & dTipoCambioPago.ToString & ",2) END SALDO_DOLARES," &
+                            "V.VERSION_ESQUEMA_XML,V.CODIGO_METODO_PAGO,V.CODIGO_METODO_PAGO_EVENTO,V.ES_FACTURA_ELECTRONICA,DOC.ES_FACTURA_ANTICIPO, " &
+                            "V.IMPUESTO IVA_MXN,V.TIPO_DE_CAMBIO,V.SUBTOTAL_USD,V.IMPUESTO_USD,V.TOTAL_DOLARES," &
+                            "V.RETENCION_IVA,V.RETENCION_ISR,V.IEPS_TOTAL_DESGLOSADO+V.IEPS_TOTAL_YA_INCLUIDO IEPS_TOTAL " &
                             "FROM VENTA_GLOBAL V " &
                             "INNER JOIN CAT_CLIENTES CTE ON(V.CODIGO_CLIENTE=CTE.CODIGO_CLIENTE)" &
                             "LEFT JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(V.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
                             "WHERE 1=1 "
+
         '"WHERE V.RFC_RECEPTOR='" & oCliente.RFC & "' AND V.SALDO>0 " & sSaldoDlls ' & " AND V.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA
         '"WHERE V.CODIGO_CLIENTE='" & sReplace(Me.TxtCodigoCliente.Text) & "' AND V.SALDO>0 " & sSaldoDlls ' & " AND V.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA
 
@@ -1228,7 +1371,7 @@ Buscar:
             sSQL = sSQL & " AND DOC.CODIGO_DOCUMENTO LIKE 'F%' "
         End If
 
-        sSQL = sSQL & " ORDER BY V.FECHA"
+        sSQL = sSQL & " ORDER BY V.FECHA,V.ID_VENTA_GLOBAL"
 
         cmd = New SqlCommand(sSQL, Conexion)
 
@@ -1255,39 +1398,47 @@ Buscar:
                 Me.GridVentas.AutoRedraw = False
 
                 Me.InicializaGridVentas()
+                Me.VisibilidadColumnasGridVentas() 'Al inicializarse con el método anterior se pierde la visibilidad de las columnas según la moneda de pago
+
                 i = Me.GridVentas.Rows - 1
 
                 'Prepara un "posible" anticipo porque estos datos se pierden al darle al botón agregar, y si el cliente no tiene ventas con saldo no cargaria el grid y luego no se sabria de que cliente es el anticipo.
                 If Me.chkVentasNoFiscales.Checked = True Then
                     'Evita cargar algunas columnas innesarias
 
-                    Me.GridVentas.Cell(i, Me.iGyVentaFOLIO_DETALLE).Text = Me.txtFolioDetalle.Text.ToUpper
-                    Me.GridVentas.Cell(i, Me.iGyVentaCodigoCliente).Text = oCliente.CODIGO_CLIENTE
-                    Me.GridVentas.Cell(i, Me.iGyVentaNombreCliente).Text = oCliente.NOMBRE_CLIENTE
+                    Me.GridVentas.Cell(i, Me.iGyB_PagoFolioDetalle).Text = Me.txtFolioDetalle.Text.ToUpper
+                    Me.GridVentas.Cell(i, Me.iGyB_VtaCodigoCliente).Text = oCliente.CODIGO_CLIENTE
+                    Me.GridVentas.Cell(i, Me.iGyB_VtaNombreCliente).Text = oCliente.NOMBRE_CLIENTE
                     'Me.GridVentas.Cell(i, Me.iGyVentaFecha).Text = "?"
-                    Me.GridVentas.Cell(i, Me.iGyVentaFolio).Text = "" 'No se indica ningún folio
+                    Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text = "" 'No se indica ningún folio
                     'Me.GridVentas.Cell(i, Me.iGyVentaMoneda).Text ="?"
-                    Me.GridVentas.Cell(i, Me.iGyVentaMedioPago).Text = Me.CboMedioDePago.Text
-                    Me.GridVentas.Cell(i, Me.iGyVentaBanco).Text = oBanco.NOMBRE_BANCO  ' Me.CboBancos.Text
+                    Me.GridVentas.Cell(i, Me.iGyB_PagoMedioPago).Text = Me.CboMedioDePago.Text
+                    Me.GridVentas.Cell(i, Me.iGyB_PagoBanco).Text = oBanco.NOMBRE_BANCO  ' Me.CboBancos.Text
                     'Me.GridVentas.Cell(i, Me.iGyVentaTotal).Text = "?"
                     'Me.GridVentas.Cell(i, Me.iGyVentaSaldo).Text = "?"
                     'Me.GridVentas.Cell(i, Me.iGyVentaTotalDlls).Text = "?"
                     'Me.GridVentas.Cell(i, Me.iGyVentaSaldoDlls).Text = "?"
-                    Me.GridVentas.Cell(i, Me.iGyVentaPago).Text = "0" 'No se sabe de momento cuanto va ser de anticipo hasta grabar y sacar la suma de lo no aplicado
-                    Me.GridVentas.Cell(i, Me.iGyVentaPagoPesos).Text = "0"
-                    Me.GridVentas.Cell(i, Me.iGyVentaDiferencia).Text = CStr(0)
-                    Me.GridVentas.Cell(i, Me.iGyVentaSeleccion).Text = "0"
-                    Me.GridVentas.Cell(i, Me.iGyVentaReferencia).Text = Me.TxtReferencia.Text
-                    Me.GridVentas.Cell(i, Me.iGyVentaIvaPorPagar).Text = CStr(0)
+                    Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text = "0" 'No se sabe de momento cuanto va ser de anticipo hasta grabar y sacar la suma de lo no aplicado
+                    Me.GridVentas.Cell(i, Me.iGyB_CxcTotal).Text = "0"
+                    Me.GridVentas.Cell(i, Me.iGyB_CxcDiferenciaCambiaria).Text = CStr(0)
+                    Me.GridVentas.Cell(i, Me.iGyB_PagoSeleccion).Text = "0"
+                    Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text = Me.TxtReferencia.Text
+                    Me.GridVentas.Cell(i, Me.iGyB_CxcIvaCobrado).Text = CStr(0)
 
-                    Me.GridVentas.Cell(i, Me.iGyVentaFechaPago).Text = FormatFechaCorta(dFechaPagoDefault)  'CType(dFechaPagoDefault, String)
+                    Me.GridVentas.Cell(i, Me.iGyB_CxcFechaPago).Text = FormatFechaCorta(dFechaPagoDefault)  'CType(dFechaPagoDefault, String)
                     'Me.GridVentas.Cell(i, Me.iGyVentaVersionCFDI).Text = "?"
                     'Me.GridVentas.Cell(i, Me.iGyVentaFormaPago).Text = "?"
                     'Me.GridVentas.Cell(i, Me.iGyVentaMetodoPago).Text = "?"
-                    Me.GridVentas.Cell(i, Me.iGyVentaImporteMonedaVenta).Text = "0"
-                    Me.GridVentas.Cell(i, Me.iGyVentaSaldoAnteriorMonedaVenta).Text = "0"
-                    Me.GridVentas.Cell(i, Me.iGyVentaSaldoAnteriorMonedaPago).Text = "0"
-                    Me.GridVentas.Cell(i, Me.iGyVentaEsFacturaElectronica).Text = "0"
+                    Me.GridVentas.Cell(i, Me.iGyB_CxcImporteMonedaVenta).Text = "0"
+                    Me.GridVentas.Cell(i, Me.iGyB_CxcSaldoAnteriorMonedaVenta).Text = "0"
+                    Me.GridVentas.Cell(i, Me.iGyB_CxcSaldoAnteriorMonedaPago).Text = "0"
+                    Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaElectronica).Text = "0"
+                    Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaAnticipo).Text = "0"
+                    Me.GridVentas.Cell(i, Me.iGyB_CxcPagoSubtotaMXNViejos).Text = "0"
+                    Me.GridVentas.Cell(i, Me.iGyB_CxcPagoSubtotaMXNNuevos).Text = "0"
+                    Me.GridVentas.Cell(i, Me.iGyB_VtaRetencionIvaMXN).Text = "0"
+                    Me.GridVentas.Cell(i, Me.iGyB_VtaRetencionISRMXN).Text = "0"
+                    Me.GridVentas.Cell(i, Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Text = "0"
 
                     Me.GridVentas.Row(i).Locked = True 'No podrán editar este renglón, y además recuerde
                     Me.GridVentas.Row(i).Visible = False 'No se muestra al usuario cuando se esta haciendo el anticipo, no debe usarse para grabar un pago normal, sólo si hay anticipo
@@ -1305,40 +1456,54 @@ Buscar:
                     'End If
 
                     'Aquí carga ventas con saldo
-                    While dReader.Read()
+                    While dReader.Read() = True
 
                         If ExisteYaDocumentoVenta(dReader("FOLIO_VENTA").ToString) = True Then
                             MsgBox("El folio de venta " & dReader("FOLIO_VENTA").ToString & " ya existe, no se volverá a agregar.", MsgBoxStyle.Exclamation, Me.Text)
                         Else
                             Me.GridVentas.Rows = Me.GridVentas.Rows + 1
 
-                            Me.GridVentas.Cell(i, Me.iGyVentaFOLIO_DETALLE).Text = Me.txtFolioDetalle.Text.ToUpper
-                            Me.GridVentas.Cell(i, Me.iGyVentaCodigoCliente).Text = dReader("CODIGO_CLIENTE").ToString 'oCliente.CODIGO_CLIENTE
-                            Me.GridVentas.Cell(i, Me.iGyVentaNombreCliente).Text = dReader("NOMBRE_CLIENTE").ToString 'oCliente.NOMBRE_CLIENTE
-                            Me.GridVentas.Cell(i, Me.iGyVentaFecha).Text = dReader("FECHA").ToString
-                            Me.GridVentas.Cell(i, Me.iGyVentaFolio).Text = dReader("FOLIO_VENTA").ToString
-                            Me.GridVentas.Cell(i, Me.iGyVentaMoneda).Text = dReader("CODIGO_MONEDA_SAT").ToString
-                            Me.GridVentas.Cell(i, Me.iGyVentaMedioPago).Text = Me.CboMedioDePago.Text
-                            Me.GridVentas.Cell(i, Me.iGyVentaBanco).Text = oBanco.NOMBRE_BANCO  ' Me.CboBancos.Text
-                            Me.GridVentas.Cell(i, Me.iGyVentaTotal).Text = dReader("TOTAL").ToString
-                            Me.GridVentas.Cell(i, Me.iGyVentaSaldo).Text = dReader("SALDO_MXN").ToString
-                            Me.GridVentas.Cell(i, Me.iGyVentaTotalDlls).Text = dReader("TOTAL_DOLARES").ToString
-                            Me.GridVentas.Cell(i, Me.iGyVentaSaldoDlls).Text = dReader("SALDO_DOLARES").ToString
-                            Me.GridVentas.Cell(i, Me.iGyVentaPago).Text = CStr(0)
-                            Me.GridVentas.Cell(i, Me.iGyVentaPagoPesos).Text = CStr(0)
-                            Me.GridVentas.Cell(i, Me.iGyVentaDiferencia).Text = CStr(0)
-                            Me.GridVentas.Cell(i, Me.iGyVentaSeleccion).Text = "0"
-                            Me.GridVentas.Cell(i, Me.iGyVentaReferencia).Text = Me.TxtReferencia.Text
-                            Me.GridVentas.Cell(i, Me.iGyVentaIvaPorPagar).Text = dReader("IVA").ToString
+                            Me.GridVentas.Cell(i, Me.iGyB_PagoFolioDetalle).Text = Me.txtFolioDetalle.Text.ToUpper
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaCodigoCliente).Text = dReader("CODIGO_CLIENTE").ToString 'oCliente.CODIGO_CLIENTE
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaNombreCliente).Text = dReader("NOMBRE_CLIENTE").ToString 'oCliente.NOMBRE_CLIENTE
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaFecha).Text = dReader("FECHA").ToString
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text = dReader("FOLIO_VENTA").ToString
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaMoneda).Text = dReader("CODIGO_MONEDA_SAT").ToString
+                            Me.GridVentas.Cell(i, Me.iGyB_PagoMedioPago).Text = Me.CboMedioDePago.Text
+                            Me.GridVentas.Cell(i, Me.iGyB_PagoBanco).Text = oBanco.NOMBRE_BANCO  ' Me.CboBancos.Text
 
-                            Me.GridVentas.Cell(i, Me.iGyVentaFechaPago).Text = FormatFechaCorta(dFechaPagoDefault)  'CType(dFechaPagoDefault, String)
-                            Me.GridVentas.Cell(i, Me.iGyVentaVersionCFDI).Text = dReader("VERSION_ESQUEMA_XML").ToString
-                            Me.GridVentas.Cell(i, Me.iGyVentaFormaPago).Text = dReader("CODIGO_METODO_PAGO").ToString
-                            Me.GridVentas.Cell(i, Me.iGyVentaMetodoPago).Text = "" & dReader("CODIGO_METODO_PAGO_EVENTO").ToString
-                            Me.GridVentas.Cell(i, Me.iGyVentaImporteMonedaVenta).Text = "0"
-                            Me.GridVentas.Cell(i, Me.iGyVentaSaldoAnteriorMonedaVenta).Text = "0"
-                            Me.GridVentas.Cell(i, Me.iGyVentaSaldoAnteriorMonedaPago).Text = "0"
-                            Me.GridVentas.Cell(i, Me.iGyVentaEsFacturaElectronica).Text = dReader("ES_FACTURA_ELECTRONICA").ToString
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaIvaMXN).Text = dReader("IVA_MXN").ToString
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaTotalMXN).Text = dReader("TOTAL").ToString
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaSaldoMXN_TpPago).Text = dReader("SALDO_MXN_TP_PAGO").ToString
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaSaldoMXN_CXC).Text = dReader("SALDO_CXC").ToString
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaTipoCambio).Text = dReader("TIPO_DE_CAMBIO").ToString
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaSubtotalUSD).Text = dReader("SUBTOTAL_USD").ToString
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaIvaUSD).Text = dReader("IMPUESTO_USD").ToString
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaTotalUSD).Text = dReader("TOTAL_DOLARES").ToString
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaSaldoUSD).Text = dReader("SALDO_DOLARES").ToString
+
+                            Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text = "0"
+                            Me.GridVentas.Cell(i, Me.iGyB_CxcTotal).Text = "0"
+                            Me.GridVentas.Cell(i, Me.iGyB_CxcPagoUSDCapturado).Text = "0"
+                            Me.GridVentas.Cell(i, Me.iGyB_PagoSeleccion).Text = "0"
+                            Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text = Me.TxtReferencia.Text
+                            Me.GridVentas.Cell(i, Me.iGyB_CxcFechaPago).Text = FormatFechaCorta(dFechaPagoDefault)  'CType(dFechaPagoDefault, String)
+                            Me.GridVentas.Cell(i, Me.iGyB_CxcIvaCobrado).Text = "0" 'dReader("IVA").ToString
+                            Me.GridVentas.Cell(i, Me.iGyB_CxcIvaPendienteCobro).Text = "0"
+                            Me.GridVentas.Cell(i, Me.iGyB_CxcDiferenciaCambiaria).Text = "0"
+
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaVersionCFDI).Text = dReader("VERSION_ESQUEMA_XML").ToString
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaFormaPago).Text = dReader("CODIGO_METODO_PAGO").ToString
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaMetodoPago).Text = "" & dReader("CODIGO_METODO_PAGO_EVENTO").ToString
+                            Me.GridVentas.Cell(i, Me.iGyB_CxcImporteMonedaVenta).Text = "0"
+                            Me.GridVentas.Cell(i, Me.iGyB_CxcSaldoAnteriorMonedaVenta).Text = "0"
+                            Me.GridVentas.Cell(i, Me.iGyB_CxcSaldoAnteriorMonedaPago).Text = "0"
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaElectronica).Text = dReader("ES_FACTURA_ELECTRONICA").ToString
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaAnticipo).Text = dReader("ES_FACTURA_ANTICIPO").ToString
+
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaRetencionIvaMXN).Text = dReader("RETENCION_IVA").ToString
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaRetencionISRMXN).Text = dReader("RETENCION_ISR").ToString
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Text = dReader("IEPS_TOTAL").ToString
 
                             i = i + 1
                         End If
@@ -1347,6 +1512,15 @@ Buscar:
                     bResultado = True
                 End If
                 dReader.Close()
+
+                Select Case Me.cboMonedaPago.Text
+                    Case "MXN"
+                        Me.GridVentas.Column(Me.iGyB_CxcPagoMXNCapturado).Locked = False
+                        Me.GridVentas.Column(Me.iGyB_CxcPagoUSDCapturado).Locked = True
+                    Case "USD"
+                        Me.GridVentas.Column(Me.iGyB_CxcPagoMXNCapturado).Locked = True
+                        Me.GridVentas.Column(Me.iGyB_CxcPagoUSDCapturado).Locked = False
+                End Select
 
             Catch ex As Exception
                 HandleError(Me.Text, sProcedure, ex)
@@ -1361,7 +1535,6 @@ Buscar:
         Me.Totales()
 
         Return bResultado
-
     End Function
 
     'Private Sub CargaAnticipo()
@@ -1455,8 +1628,8 @@ Buscar:
     Private Function ExisteYaDocumentoVenta(ByVal sFolioVenta As String) As Boolean
         Dim iRow As Integer
         For iRow = 1 To Me.GridVentas.Rows - 1
-            If Me.GridVentas.Cell(iRow, Me.iGyVentaCodigoCliente).Text.Length > 0 Then
-                If sFolioVenta = Me.GridVentas.Cell(iRow, Me.iGyVentaFolio).Text Then
+            If Me.GridVentas.Cell(iRow, Me.iGyB_VtaCodigoCliente).Text.Length > 0 Then
+                If sFolioVenta = Me.GridVentas.Cell(iRow, Me.iGyB_VtaFolio).Text Then
                     ExisteYaDocumentoVenta = True
                     Exit Function
                 End If
@@ -1467,12 +1640,12 @@ Buscar:
     Private Sub BorraDocumentosSinPago()
         Dim iRow As Integer = 1
         'Si solo ahy un renglon grid y esta en blanco no ahy nada que borrar
-        If Me.GridVentas.Rows = 2 AndAlso Me.GridVentas.Cell(iRow, Me.iGyVentaCodigoCliente).Text.Length = 0 Then
+        If Me.GridVentas.Rows = 2 AndAlso Me.GridVentas.Cell(iRow, Me.iGyB_VtaCodigoCliente).Text.Length = 0 Then
             Exit Sub
         End If
 
         While iRow <= Me.GridVentas.Rows - 1
-            If Me.GridVentas.Cell(iRow, Me.iGyVentaCodigoCliente).Text.Length > 0 AndAlso valorNumerico(Me.GridVentas.Cell(iRow, Me.iGyVentaPago).Text) = 0 Then
+            If Me.GridVentas.Cell(iRow, Me.iGyB_VtaCodigoCliente).Text.Length > 0 AndAlso valorNumerico(Me.GridVentas.Cell(iRow, Me.iGyB_CxcPagoMXNCapturado).Text) = 0 Then
                 Me.GridVentas.RemoveItem(iRow)
             Else
                 iRow += 1
@@ -1485,7 +1658,8 @@ Buscar:
 
     Private Sub Totales()
         Try
-            Me.TxtTotal.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridVentas, CShort(Me.iGyVentaPago)))
+            Me.TxtTotal.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridVentas, CShort(Me.iGyB_CxcPagoMXNCapturado)))
+            Me.txtTotalUSD.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridVentas, CShort(Me.iGyB_CxcPagoUSDCapturado)))
 
             'Me.CalculaImporteDolares()
             Me.TotalesLista()
@@ -1526,7 +1700,7 @@ Buscar:
                 End If
 
                 If Me.Grabar() = True Then
-                    'sobreescibir texbox folio y folio oringen de oFormaPoliza, aplicar la poliza, y actualizar folio_poliza en bancos global
+                    'sobreescibir textbox folio y folio origen de oFormaPoliza, aplicar la póliza, y actualizar folio_poliza en bancos global
                     Me.oFormaPoliza.TxtFolio.Text = Me.TxtFolio.Text
                     Me.oFormaPoliza.lblFolioOrigen.Text = Me.TxtFolio.Text
                     If Me.oFormaPoliza.Aplicar(False, False) = True Then
@@ -1565,25 +1739,27 @@ Buscar:
     Private Function Grabar() As Boolean
         Const sProcedure As String = "Grabar"
         Dim bResultado As Boolean = False
-        Dim i As Integer, dPago As Decimal, sFolioPago As String = ""
-        Dim dTotalPago As Decimal = 0, dSumaPagos As Decimal = 0, dAnticipo As Decimal = 0
+        Dim i As Integer, dPagoMXN As Decimal, sFolioPago As String = "", dPagoTipoCambio As Decimal = 0
+        Dim dTotalPago As Decimal = 0, dSumaPagos As Decimal = 0, dAnticipo As Decimal = 0, dPagoUSD As Decimal = 0, dDiferenciaCambiaria As Decimal = 0, dImporteCapturado As Decimal = 0
+        Dim dCxcTotal As Decimal = 0, dIVACobrado As Decimal = 0, dIVAPendienteCobro As Decimal = 0, dSubtotaMXNViejos As Decimal = 0, dSubtotaMXNNuevos As Decimal = 0
 
         Try
             dTotalPago = valorNumericoD(Me.GridDocumentosPago.Cell(1, Me.iGyDocMONTO).Text)
+            dPagoTipoCambio = valorNumericoD(Me.txtTipoCambio.Text)
 
             For i = 1 To Me.GridVentas.Rows - 1
-                dSumaPagos += valorNumericoD(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text)
+                dSumaPagos += valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text)
             Next
 
             If Me.chkVentasNoFiscales.Checked = True Then
-                dAnticipo = dTotalPago - dSumaPagos
+                dAnticipo = RedondearD(dTotalPago - dSumaPagos, 2)
 
                 If dAnticipo > 0 Then
                     'NOTA: se indica el renglón 1 y no la variable i fijo porque en ese renglón se documenta el anticipo
 
-                    Me.GridVentas.Cell(1, Me.iGyVentaPago).Text = dAnticipo.ToString 'Para establecer el valor del anticipo como si fuera un pago
-                    Me.GridVentas.Cell(1, Me.iGyVentaPagoPesos).Text = dAnticipo.ToString
-                    If Me.cboMoneda.Text = "USD" Then
+                    Me.GridVentas.Cell(1, Me.iGyB_CxcPagoMXNCapturado).Text = dAnticipo.ToString 'Para establecer el valor del anticipo como si fuera un pago
+                    Me.GridVentas.Cell(1, Me.iGyB_CxcTotal).Text = dAnticipo.ToString
+                    If Me.cboMonedaPago.Text = "USD" Then
                         MsgBox("De momento no es compatible los anticipos en moneda USD.", vbExclamation, sProcedure)
 
                         'Me.GridVentas.Cell(1, Me.iGyVentaPago).Text = "QUE IRIA??"
@@ -1608,14 +1784,10 @@ Buscar:
             oBancosCXC.FECHA = Me.dtFecha.Value
             oBancosCXC.CONCEPTO1 = Me.TxtConcepto.Text.ToUpper
             oBancosCXC.CODIGO_PLAZA = Usuario.Codigo_Plaza
-            If Me.cboMoneda.Text = "USD" Then
-                oBancosCXC.TOTAL_DOLARES = valorNumerico(Me.TxtTotal.Text)
-                oBancosCXC.TOTAL = valorNumerico(Me.TxtTotal.Text) * valorNumerico(Me.txtTipoCambio.Text)
-            Else
-                oBancosCXC.TOTAL = valorNumerico(Me.TxtTotal.Text)
-            End If
-            oBancosCXC.TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text) 'Puede ser un pago en mxn de factura en usd y se necesita este tipo de cambios poara el campo TipoCambioDr en el complemento de pago.
-            oBancosCXC.CODIGO_MONEDA_SAT = Me.cboMoneda.Text
+            oBancosCXC.TOTAL_DOLARES = valorNumericoD(Me.txtTotalUSD.Text)
+            oBancosCXC.TOTAL = valorNumericoD(Me.TxtTotal.Text)
+            oBancosCXC.TIPO_DE_CAMBIO = dPagoTipoCambio 'Puede ser un pago en mxn de factura en usd y se necesita este tipo de cambios poara el campo TipoCambioDr en el complemento de pago.
+            oBancosCXC.CODIGO_MONEDA_SAT = Me.cboMonedaPago.Text
 
             If Me.GridDocumentosPago.Cell(1, Me.iGyDocCODIGO_FORMA_PAGO).Text = "02" Then '02=Cheque
                 oBancosCXC.FECHA_CHEQUE = Me.dtFechaCheque.Value
@@ -1644,7 +1816,7 @@ Buscar:
                         lID_BANCOS_DETALLE = oBancosCXC.AgregaDocumentoPago(Me.TxtFolio.Text, .Cell(i, Me.iGyDocCODIGO_FORMA_PAGO).Text, .Cell(i, Me.iGyDocFOLIO_DETALLE).Text,
                                   .Cell(i, Me.iGyDocCODIGO_BANCO_EMISOR_NACIONAL).Text, .Cell(i, Me.iGyDocCUENTA_EMISOR).Text,
                                   CDate(.Cell(i, Me.iGyDocFECHA).Text), .Cell(i, Me.iGyDocRFC_EMISOR).Text, valorNumerico(.Cell(i, Me.iGyDocMONTO).Text),
-                                 .Cell(i, Me.iGyDocCODIGO_MONEDA_SAT).Text, valorNumerico(txtTipoCambio.Text),
+                                 .Cell(i, Me.iGyDocCODIGO_MONEDA_SAT).Text, dPagoTipoCambio,
                                  .Cell(i, Me.iGyDocCUENTA_BENEFICIARIO).Text, .Cell(i, Me.iGyDocCODIGO_BANCO_DESTINO_NACIONAL).Text,
                                  IIf(.Cell(i, Me.iGyDocES_BANCO_EXTRANJERO).Text = "1", .Cell(i, Me.iGyDocNOMBRE_BANCO_EMISOR_NACIONAL).Text, "").ToString
                         ) 'El beneficiario es la empresa propia, el store lo llenará internamente
@@ -1655,7 +1827,6 @@ Buscar:
 
                         .Cell(i, Me.iGyDocID_BANCOS_DETALLE).Text = lID_BANCOS_DETALLE.ToString
                     End If
-
                 Next
             End With
             sFolioPago = ""
@@ -1663,60 +1834,69 @@ Buscar:
             'Graba pagos
             Me.oCxcAfectaDocumentos = New Class_CXC_Afecta_Documentos
             For i = 1 To Me.GridVentas.Rows - 1
-                dPago = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text)
-                dSumaPagos += dPago
-                If dPago > 0 Or (dAnticipo > 0 And i = 1) Then
+                dPagoMXN = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text)
+                dPagoUSD = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoUSDCapturado).Text)
+                dCxcTotal = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcTotal).Text)
+
+                dIVACobrado = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcIvaCobrado).Text)
+                dIVAPendienteCobro = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcIvaPendienteCobro).Text)
+                dSubtotaMXNViejos = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoSubtotaMXNViejos).Text)
+                dSubtotaMXNNuevos = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoSubtotaMXNNuevos).Text)
+                dDiferenciaCambiaria = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcDiferenciaCambiaria).Text)
+
+                Select Case Me.cboMonedaPago.Text
+                    Case "MXN"
+                        dImporteCapturado = dPagoMXN
+                    Case "USD"
+                        dImporteCapturado = dPagoUSD
+                End Select
+
+                'dSubtotalCobrado As Decimal = 0, dSubtotal As Decimal = 0
+
+                dSumaPagos += dPagoMXN
+
+                If dPagoMXN > 0 Or (dAnticipo > 0 And i = 1) Then
 
                     oCxcAfectaDocumentos.FOLIO_CXC = "" 'Me.TxtFolio.Text
-                    oCxcAfectaDocumentos.CODIGO_CLIENTE = Me.GridVentas.Cell(i, Me.iGyVentaCodigoCliente).Text
+                    oCxcAfectaDocumentos.CODIGO_CLIENTE = Me.GridVentas.Cell(i, Me.iGyB_VtaCodigoCliente).Text
                     oCxcAfectaDocumentos.FECHA = Me.dtFecha.Value
-                    oCxcAfectaDocumentos.FOLIO_REFERENCIA = Me.GridVentas.Cell(i, Me.iGyVentaFolio).Text 'folio de la compra
-                    oCxcAfectaDocumentos.FOLIO_REFERENCIA_USUARIO = Me.GridVentas.Cell(i, Me.iGyVentaReferencia).Text 'Folio factura Cliente de la venta, no tenemos
+                    oCxcAfectaDocumentos.FOLIO_REFERENCIA = Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text 'folio de la compra
+                    oCxcAfectaDocumentos.FOLIO_REFERENCIA_USUARIO = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text 'Folio factura Cliente de la venta, no tenemos
                     oCxcAfectaDocumentos.CONCEPTO1 = Me.TxtConcepto.Text
                     oCxcAfectaDocumentos.CONCEPTO2 = ""
                     oCxcAfectaDocumentos.CODIGO_PLAZA = Usuario.Codigo_Plaza
-                    If Me.cboMoneda.Text = "USD" Then
-                        oCxcAfectaDocumentos.TOTAL_DOLARES = dPago
 
-                        'If valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaTotalDlls).Text) <> valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) And valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaSaldoDlls).Text) <> valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) Then
-                        '    'Si solo es un pago parcial el abono en pesos sera segun al tipo de cambio de la venta
-                        '    Dim oVenta As New Class_Ventas_Global(Me.GridVentas.Cell(i, Me.iGyVentaFolio).Text)
-                        '    oCxcAfectaDocumentos.TOTAL = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) * oVenta.TIPO_DE_CAMBIO
-                        'Else
-                        '    oCxcAfectaDocumentos.TOTAL = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPagoPesos).Text) + valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaDiferencia).Text) 'dPago
-                        'End If
+                    oCxcAfectaDocumentos.TOTAL = dCxcTotal
+                    oCxcAfectaDocumentos.PAGO_MXN_BANCOS = dPagoMXN
+                    oCxcAfectaDocumentos.TOTAL_DOLARES = dPagoUSD
+                    oCxcAfectaDocumentos.IMPORTE_CAPTURADO = dImporteCapturado
 
-                        '    oCxcAfectaDocumentos.TOTAL = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPagoPesos).Text)
-
-                        'Else
-                        '    oCxcAfectaDocumentos.TOTAL = dPago
-                    Else 'MXN
-                        If Me.GridVentas.Cell(i, Me.iGyVentaMoneda).Text = "USD" Then 'Si estan pagando en MXN una venta en USD, falta establecer el total_dolares para poder restarlo directamente en saldo_dolares de la misma
-                            oCxcAfectaDocumentos.TOTAL_DOLARES = CDec(Me.GridVentas.Cell(i, Me.iGyVentaImporteMonedaVenta).Text)
-                        End If
-                    End If
-
-                    oCxcAfectaDocumentos.TOTAL = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPagoPesos).Text)
-                    oCxcAfectaDocumentos.IMPORTE_CAPTURADO = dPago
-
-                    oCxcAfectaDocumentos.TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text)
+                    oCxcAfectaDocumentos.TIPO_DE_CAMBIO = dPagoTipoCambio
                     oCxcAfectaDocumentos.FOLIO_BANCO = Me.TxtFolio.Text 'Se tiene que poner el del texbox porque se regreso el folio al Inserta_Global
-                    Dim sql As New Class_find("SELECT ID_MEDIO_PAGO FROM SIS_MEDIOS_PAGO WHERE NOMBRE_MEDIO_PAGO='" & Me.GridVentas.Cell(i, Me.iGyVentaMedioPago).Text & "'")
+
+                    oCxcAfectaDocumentos.SUBTOTAL = dSubtotaMXNViejos
+                    oCxcAfectaDocumentos.SUBTOTAL_COBRADO = dSubtotaMXNNuevos
+                    oCxcAfectaDocumentos.DIFERENCIA_CAMBIARIA = dDiferenciaCambiaria
+
+                    oCxcAfectaDocumentos.IVA = dIVAPendienteCobro 'IVA pesos viejos
+                    oCxcAfectaDocumentos.IVA_COBRADO = dIVACobrado 'IVA pesos nuevos
+
+                    Dim sql As New Class_find("SELECT ID_MEDIO_PAGO FROM SIS_MEDIOS_PAGO WHERE NOMBRE_MEDIO_PAGO='" & Me.GridVentas.Cell(i, Me.iGyB_PagoMedioPago).Text & "'")
                     If txtLEN(sql.Result1) = True Then
                         oCxcAfectaDocumentos.ID_MEDIO_PAGO = CInt(sql.Result1)
                     End If
-                    sql = New Class_find("SELECT CODIGO_BANCO FROM CAT_BANCOS WHERE NOMBRE_BANCO='" & Me.GridVentas.Cell(i, Me.iGyVentaBanco).Text & "'")
+                    sql = New Class_find("SELECT CODIGO_BANCO FROM CAT_BANCOS WHERE NOMBRE_BANCO='" & Me.GridVentas.Cell(i, Me.iGyB_PagoBanco).Text & "'")
                     If txtLEN(sql.Result1) = True Then
                         oCxcAfectaDocumentos.CODIGO_BANCO = sql.Result1
                     End If
 
-                    sFolioPago = Me.GridVentas.Cell(i, Me.iGyVentaFOLIO_DETALLE).Text.ToUpper
+                    sFolioPago = Me.GridVentas.Cell(i, Me.iGyB_PagoFolioDetalle).Text.ToUpper
                     oCxcAfectaDocumentos.ID_BANCOS_DETALLE = ObtieneIDBancosDetalle(sFolioPago)
 
-                    oCxcAfectaDocumentos.FECHA_PAGO = CDate(Me.GridVentas.Cell(i, Me.iGyVentaFechaPago).Text)
-                    oCxcAfectaDocumentos.IMPORTE_MONEDA_VENTA = CDec(Me.GridVentas.Cell(i, Me.iGyVentaImporteMonedaVenta).Text)
-                    oCxcAfectaDocumentos.SALDO_ANTERIOR_MONEDA_VENTA = CDec(Me.GridVentas.Cell(i, Me.iGyVentaSaldoAnteriorMonedaVenta).Text)
-                    oCxcAfectaDocumentos.SALDO_ANTERIOR_MONEDA_PAGO = CDec(Me.GridVentas.Cell(i, Me.iGyVentaSaldoAnteriorMonedaPago).Text)
+                    oCxcAfectaDocumentos.FECHA_PAGO = CDate(Me.GridVentas.Cell(i, Me.iGyB_CxcFechaPago).Text)
+                    oCxcAfectaDocumentos.IMPORTE_MONEDA_VENTA = CDec(Me.GridVentas.Cell(i, Me.iGyB_CxcImporteMonedaVenta).Text)
+                    oCxcAfectaDocumentos.SALDO_ANTERIOR_MONEDA_VENTA = CDec(Me.GridVentas.Cell(i, Me.iGyB_CxcSaldoAnteriorMonedaVenta).Text)
+                    oCxcAfectaDocumentos.SALDO_ANTERIOR_MONEDA_PAGO = CDec(Me.GridVentas.Cell(i, Me.iGyB_CxcSaldoAnteriorMonedaPago).Text)
 
                     bResultado = oCxcAfectaDocumentos.InsertarPagosClientes() '''''''''''''''''==========================Afectacion
                 End If
@@ -1736,7 +1916,8 @@ Buscar:
         Const sProcedure As String = "Validar"
         Dim bResultado As Boolean = False
         Try
-            Dim i As Integer, dTipoCambio As Decimal = valorNumericoD(Me.txtTipoCambio.Text)
+            Dim i As Integer, dTipoCambio As Decimal = valorNumericoD(Me.txtTipoCambio.Text), sMonedaVenta As String = ""
+            Dim oCliente As New Class_CatClientes()
 
             If Plaza.ValidarPeriodoTrabajo(Me.dtFecha.Value) = False Then
                 Return False
@@ -1747,9 +1928,9 @@ Buscar:
                 Return False
             End If
 
-            If Me.cboMoneda.Text = "USD" Then
-                If dTipoCambio <= 0 Or dTipoCambio > 30 Then
-                    MsgBox("Tipo de cambio incorrecto.", MsgBoxStyle.Exclamation, sProcedure)
+            If Me.cboMonedaPago.Text = "USD" Then
+                If dTipoCambio <= 15 Or dTipoCambio > 30 Then
+                    MsgBox("Tipo de cambio incorrecto(no está en el rango de 15-30 pesos).", MsgBoxStyle.Exclamation, sProcedure)
                     Me.txtTipoCambio.Focus()
                     Return False
                 End If
@@ -1779,7 +1960,7 @@ Buscar:
                 Return False
             End If
 
-            If Me.cboMoneda.Text = "USD" Then
+            If Me.cboMonedaPago.Text = "USD" Then
                 If txtLEN(oCuentaBancaria.CUENTA_CONTABLE_DOLARES.ToString) = False Then
                     MsgBox("La cuenta bancaria que intenta debe tener cuenta contable en dólares.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
@@ -1799,42 +1980,83 @@ Buscar:
             'End If
 
             If valorNumerico(Me.TxtTotal.Text) <= 0 AndAlso Me.chkVentasNoFiscales.Checked = False Then
-                MsgBox("No asignó los documentos a pagar. El total a pagar debe ser mayor que cero.", MsgBoxStyle.Exclamation, sProcedure)
+                MsgBox("No asignó los documentos a pagar. El total a pagar debe ser mayor que cero." & vbCrLf &
+                       "Recuerde dar enter al teclear algún pago.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
 
-            For i = 1 To GridVentas.Rows - 1
-                If Me.cboMoneda.Text = "USD" Then
-                    If valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) > 0 And txtLEN(Me.GridVentas.Cell(i, Me.iGyVentaFolio).Text) = True Then
+            For i = 1 To Me.GridVentas.Rows - 1
+                sMonedaVenta = Me.GridVentas.Cell(i, Me.iGyB_VtaMoneda).Text
 
-                        CalculaImportesPagoUSD(i)
+                'Si no estan pagando algo omitimos validar este renglón y con el continue for se salta al siguiente.
+                If Not (valorNumerico(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text) > 0 And txtLEN(Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text) = True) Then
+                    Continue For 'Se hace así para no agregar todo el código aqui dentro en un subnivel más(osea recorriendolo con otro tab).
+                End If
+
+                oCliente = New Class_CatClientes(Me.GridVentas.Cell(i, Me.iGyB_VtaCodigoCliente).Text)
+
+                If Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaAnticipo).Text = "1" Then
+                    If txtLEN(oCliente.CUENTA_CONTABLE_ANTICIPO) = False Then
+                        MsgBox("El cliente debe tener cuenta contable de anticipo.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+
+                    If sMonedaVenta <> Me.cboMonedaPago.Text Then
+                        MsgBox("El pago en el renglón: " & i & " es de un anticipo hecho en " & sMonedaVenta & ", debe de pagarlo en esa misma moneda y al 100%.", MsgBoxStyle.Exclamation, sProcedure)
+                        Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).SetFocus()
+                        Me.BorraPago(i)
+                        Return False
+                    End If
+                End If
+
+                Select Case Me.cboMonedaPago.Text
+                    Case "USD" 'Pago en USD
+                        Me.CalculaImportesPagoUSD(i)
+
+                        'Estas declaraciones van aqui porque el CalculaImportesPagoUSD recordemos refresca saldos.
+                        Dim dVtaSaldoUSD As Decimal = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_VtaSaldoUSD).Text)
+                        Dim dPagoUSD As Decimal = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoUSDCapturado).Text)
 
                         'sql = New Class_find("SELECT CASE WHEN CODIGO_MONEDA_SAT='USD' THEN ROUND(SALDO/TIPO_DE_CAMBIO,2) ELSE ROUND(SALDO/" & dTipoCambio.ToString & ",2) END SALDO_DOLARES FROM VENTA_GLOBAL " &
                         '                     "WHERE FOLIO_VENTA='" & Me.GridVentas.Cell(i, Me.iGyVentaFolio).Text & "'")
                         'Me.GridVentas.Cell(i, Me.iGyVentaSaldoDlls).Text = sql.Result1
 
-                        If valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) > valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaSaldoDlls).Text) Then
-                            MsgBox("El pago en el renglón: " & i & " es mayor al saldo del documento favor de revisar.", MsgBoxStyle.Exclamation, sProcedure)
+                        If dPagoUSD > dVtaSaldoUSD Then
+                            MsgBox("El pago por " & FormatImporteContable(dPagoUSD) & " USD en el renglón: " & i.ToString & " es mayor al saldo del documento de " & FormatImporteContable(dVtaSaldoUSD) & " favor de revisar.",
+                                   MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         End If
-                    End If
 
-                Else 'MXN
-                    If valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) > 0 And txtLEN(Me.GridVentas.Cell(i, Me.iGyVentaFolio).Text) = True Then
-                        'sql = New Class_find("SELECT SALDO FROM VENTA_GLOBAL WHERE FOLIO_VENTA='" & Me.GridVentas.Cell(i, Me.iGyVentaFolio).Text & "'")
-                        'Me.GridVentas.Cell(i, Me.iGyVentaSaldo).Text = sql.Result1
+                        If Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaAnticipo).Text = "1" Then
+                            If Not (valorNumerico(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text) = valorNumerico(Me.GridVentas.Cell(i, Me.iGyB_VtaSaldoUSD).Text)) Then
+                                MsgBox("El pago en el renglón: " & i & " es de un anticipo y debe de pagarlo al 100%.", MsgBoxStyle.Exclamation, sProcedure)
+                                Return False
+                            End If
+                        End If
 
-                        CalculaImportesPagoMXN(i)
+                    Case "MXN" 'Pago en MXN
+                        Me.CalculaImportesPagoMXN(i)
 
-                        If valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) > valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaSaldo).Text) Then
-                            MsgBox("El pago en el renglón: " & i & " es mayor al saldo del documento favor de revisar.", MsgBoxStyle.Exclamation, sProcedure)
+                        'Estas declaraciones van aqui porque el CalculaImportesPagoMXN recordemos refresca saldos.
+                        Dim dVtaSaldoMXN_TpPago As Decimal = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_VtaSaldoMXN_TpPago).Text)
+                        Dim dCxcPagoMXNCapturado As Decimal = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text)
+
+                        If dCxcPagoMXNCapturado > dVtaSaldoMXN_TpPago Then
+                            MsgBox("El pago por " & FormatImporteContable(dCxcPagoMXNCapturado) & " MXN en el renglón: " & i.ToString & " es mayor al saldo del documento de " & FormatImporteContable(dVtaSaldoMXN_TpPago) & " favor de revisar.",
+                                   MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         End If
-                    End If
-                End If
-            Next i
 
-            If Me.cboMoneda.Text = "USD" Then
+                        If Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaAnticipo).Text = "1" Then
+                            If Not (valorNumerico(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text) = valorNumerico(Me.GridVentas.Cell(i, Me.iGyB_VtaSaldoMXN_TpPago).Text)) Then
+                                MsgBox("El pago en el renglón: " & i & " es de un anticipo y debe de pagarlo al 100%.", MsgBoxStyle.Exclamation, sProcedure)
+                                Return False
+                            End If
+                        End If
+                End Select
+            Next
+
+            If Me.cboMonedaPago.Text = "USD" Then
                 Me.CalculaImporteDolares()
             End If
 
@@ -1856,7 +2078,7 @@ Buscar:
 
             'Valida que se haya agregado el documento de pago al grid
             If Me.GridDocumentosPago.Cell(1, Me.iGyDocCODIGO_FORMA_PAGO).Text = "" Then 'Si no hay codigo de forma de pago no se agrego
-                MsgBox("Agregue los datos del documento de pago.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("Agregue los datos del documento de pago.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.btnAgregarDocumentosClientes.Focus()
                 Return False
             End If
@@ -1977,7 +2199,7 @@ Buscar:
     Private Sub DesplegarMonedas()
         Dim dView As New Data.DataView
         Try
-            With Me.cboMoneda
+            With Me.cboMonedaPago
                 .Items.Add("MXN")
                 .Items.Add("USD")
             End With
@@ -1987,13 +2209,14 @@ Buscar:
     End Sub
 
     Private Function ValidaPrePoliza() As Boolean
+        Const sProcedure As String = "ValidaPrePoliza"
         Dim bResultado As Boolean = False
         Dim oCuentaBancaria As Class_CatCuentasBancarias
         Dim oCliente As Class_CatClientes
         Dim oContaCuenta As Class_CatCuentas
 
         Try
-            If ExisteDocumento(Me.TxtFolio.Text) = True Then
+            If Me.ExisteDocumento(Me.TxtFolio.Text) = True Then
                 Me.GeneraFolio() 'No hay que generar folio nuevo porque se manda el folio del documento
 
                 'MsgBox("El folio del documento : " & Me.CboDocumento.Text & " ya existe, verifíquelo.", MsgBoxStyle.Exclamation, "ValidaPrePoliza")
@@ -2020,215 +2243,315 @@ Buscar:
             'Me.oFormaPoliza.Grid1.Rows = 2
             'Me.oFormaPoliza.Grid1.Cols = 7
 
-            Dim i As Integer, R As Integer = 1, dPago As Double, ivaporpagar As Double = 0, dPerdidaGanancia As Double
+            Dim i As Integer, R As Integer = 1, dCxcPagoMXNCapturado As Decimal = 0, dPagoUSD As Decimal = 0, dCxcTotal As Decimal = 0, dIVACobrado As Decimal = 0, dIVAPendienteCobro As Decimal = 0, dPerdidaGanancia As Decimal = 0
+            Dim dVtaRetencionIvaMXN As Decimal = 0, dVtaRetencionISRMXN As Decimal = 0, dVtaIEPSDesglosadoEIncluidoMXN As Decimal = 0
             Dim oCuentasIVA As Class_find
 
+            Dim dBancosMXN As Decimal = CDec(FG_Grid_SumaCol(Me.GridVentas, CShort(Me.iGyB_CxcPagoMXNCapturado)))
+
+            Dim dBancosUSD As Decimal = CDec(FG_Grid_SumaCol(Me.GridVentas, CShort(Me.iGyB_CxcPagoUSDCapturado)))
+
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            'Bancos
             oCuentaBancaria = New Class_CatCuentasBancarias(CInt(Me.TxtCuentaBancaria.Text))
 
-            If Me.cboMoneda.Text = "USD" Then
+            oContaCuenta = New Class_CatCuentas(oCuentaBancaria.CUENTA_CONTABLE_PESOS.ToString)
 
-                oContaCuenta = New Class_CatCuentas(oCuentaBancaria.CUENTA_CONTABLE_PESOS.ToString)
-                Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
+            Me.oFormaPoliza.Grid1.Rows = 2 'Empezamos con el encabezado y un renglón en blanco en la póliza
+            Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oCuentaBancaria.CUENTA_CONTABLE_PESOS
+            Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oCuentaBancaria.NOMBRE_CUENTA_BANCARIA
+            Me.oFormaPoliza.Grid1.Cell(R, 3).Text = ""
+            Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+            Me.oFormaPoliza.Grid1.Cell(R, 5).Text = dBancosMXN.ToString
+            Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
 
-                Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oCuentaBancaria.CUENTA_CONTABLE_PESOS
-                Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oCuentaBancaria.NOMBRE_CUENTA_BANCARIA
-                Me.oFormaPoliza.Grid1.Cell(R, 3).Text = "" 'oCliente.NOMBRE_CLIENTE
-                Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
-                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = (valorNumerico(Me.TxtTotal.Text) * valorNumerico(Me.txtTipoCambio.Text)).ToString
-                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
-                R = R + 1
+            Select Case Me.cboMonedaPago.Text
+                Case "USD"
+                    For i = 1 To Me.GridVentas.Rows - 1
+                        dPagoUSD = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoUSDCapturado).Text)
 
-                For i = 1 To Me.GridVentas.Rows - 1
-                    dPago = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text)
-
-                    If dPago > 0 Then
-                        If valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaTotalDlls).Text) <> valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) And valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaSaldoDlls).Text) <> valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) Then
-                            MsgBox("El sistema a detectado un abono en dolares a una venta, favor de terminar de llenar la poliza.", MsgBoxStyle.Information, Me.Text)
-                            Exit For
+                        If dPagoUSD <= 0 Then
+                            Continue For
                         End If
-                        dPerdidaGanancia = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaDiferencia).Text)
-                        Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
 
-                        If valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaSaldoDlls).Text) Then
-                            ivaporpagar = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaIvaPorPagar).Text)
+                        dVtaRetencionIvaMXN = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_VtaRetencionIvaMXN).Text)
+                        dVtaRetencionISRMXN = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_VtaRetencionISRMXN).Text)
+                        dVtaIEPSDesglosadoEIncluidoMXN = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Text)
+
+                        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                        'Clientes
+                        dCxcTotal = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcTotal).Text)
+
+                        oCliente = New Class_CatClientes(Me.GridVentas.Cell(i, Me.iGyB_VtaCodigoCliente).Text)
+
+                        If Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaAnticipo).Text = "1" Then
+                            oContaCuenta = New Class_CatCuentas(oCliente.CUENTA_CONTABLE_ANTICIPO.ToString)
                         Else
-                            ivaporpagar = 0
+                            oContaCuenta = New Class_CatCuentas(oCliente.CUENTA_CONTABLE.ToString)
                         End If
 
-                        oCliente = New Class_CatClientes(Me.GridVentas.Cell(i, Me.iGyVentaCodigoCliente).Text)
-                        oContaCuenta = New Class_CatCuentas(oCliente.CUENTA_CONTABLE.ToString)
-
-                        Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oCliente.CUENTA_CONTABLE.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oCliente.NOMBRE_CLIENTE
-                        Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyVentaReferencia).Text
+                        R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                        Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE 'oCliente.CUENTA_CONTABLE.ToString
+                        Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA 'oCliente.NOMBRE_CLIENTE
+                        Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
                         Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
                         Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
-                        Me.oFormaPoliza.Grid1.Cell(R, 6).Text = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaSaldo).Text).ToString '(valorNumerico(Me.Grid.Cell(i, Me.iGySaldo).Text) + dPerdidaGanancia).ToString
-                        R = R + 1
+                        Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dCxcTotal.ToString
 
-                        Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-                        Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oCliente.CUENTA_CONTABLE_DOLARES.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oCliente.NOMBRE_CLIENTE
-                        Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyVentaReferencia).Text
-                        Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
-                        Me.oFormaPoliza.Grid1.Cell(R, 6).Text = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text).ToString '(valorNumerico(Me.Grid.Cell(i, Me.iGySaldo).Text) + dPerdidaGanancia).ToString
-                        R = R + 1
+                        If dVtaRetencionIvaMXN > 0 Or dVtaRetencionISRMXN > 0 Or dVtaIEPSDesglosadoEIncluidoMXN > 0 Then
+                            MsgBox("La venta " & Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text & " tiene ya sea retención de IVA,ISR o IEPS. " & vbCrLf &
+                                   "Usted debe contabilizar manualmente estos impuestos por el momento, y revisar toda la póliza debido a estos impuestos y como afectaria en el iva pend trasladar y trasladado.", MsgBoxStyle.Exclamation, sProcedure)
+                        End If
+                        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                        'Perdida/Ganancia cambiaria
+                        dPerdidaGanancia = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcDiferenciaCambiaria).Text)
 
-                        Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-                        oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES.ToString)
-                        Me.oFormaPoliza.Grid1.Cell(R, 1).Text = Empresa_Sistema.CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
-                        Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyVentaReferencia).Text
-                        Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 5).Text = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text).ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
-                        R = R + 1
-
-                        If valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaDiferencia).Text) <> 0 Then
-                            Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-
+                        If Math.Abs(dPerdidaGanancia) > 0 Then
+                            'MsgBox("falta ver si son 2 cuentas diferentes")
                             oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_PERDIDA_GANACIA_CAMBIARIA)
-                            Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE.ToString
-                            Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
-                            Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyVentaReferencia).Text
+
+                            R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                            Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE 'oCliente.CUENTA_CONTABLE.ToString
+                            Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA 'oCliente.NOMBRE_CLIENTE
+                            Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
                             Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
 
-                            'If valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaDiferencia).Text) < 0 Then
-                            '    Me.oFormaPoliza.Grid1.Cell(R, 5).Text = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaDiferencia).Text).ToString
-                            '    Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
-                            'Else
-                            '    Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
-                            '    Me.oFormaPoliza.Grid1.Cell(R, 6).Text = (valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaDiferencia).Text) * -1).ToString
-                            'End If
+                            If dPerdidaGanancia < 0 Then
+                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = Math.Abs(dPerdidaGanancia).ToString 'Si es negativa es perdida
+                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
+                            Else
+                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
+                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dPerdidaGanancia.ToString 'Si es positiva es ganancia
+                            End If
 
-                            Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
-                            Me.oFormaPoliza.Grid1.Cell(R, 6).Text = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaDiferencia).Text).ToString
-
-                            R = R + 1
+                            'R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
                         End If
 
-                        If ivaporpagar > 0 Then
-                            Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-
-                            oCuentasIVA = New Class_find("SELECT I.CUENTA_CONTABLE_IVA_POR_PAGAR,I.CUENTA_CONTABLE_IVA_PENDIENTE_TRASLADAR " &
-                           "FROM CON_IVA_POR_PAGAR_CATALOGO_CUENTAS I INNER JOIN VENTA_GLOBAL V ON(I.PORCENTAJE=V.IMPUESTO_PORCENTAJE) " &
-                           "WHERE V.FOLIO_VENTA='" & Me.GridVentas.Cell(i, Me.iGyVentaFolio).Text & "'")
-
-                            Dim oContaCuenta1 As New Class_CatCuentas
-                            oContaCuenta1 = New Class_CatCuentas(oCuentasIVA.Result1) '"20400015"
-                            Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta1.CUENTA_CONTABLE
-                            Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta1.NOMBRE_CUENTA
-                            Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyVentaReferencia).Text
-                            Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta1.NATURALEZA_CONTABLE.ToString
-                            Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
-                            Me.oFormaPoliza.Grid1.Cell(R, 6).Text = ivaporpagar.ToString
-                            R = R + 1
-
-                            Dim oContaCuenta2 As New Class_CatCuentas
-                            oContaCuenta2 = New Class_CatCuentas(oCuentasIVA.Result2) '"20400002"
-                            Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-                            Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta2.CUENTA_CONTABLE
-                            Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta2.NOMBRE_CUENTA
-                            Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyVentaReferencia).Text
-                            Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta2.NATURALEZA_CONTABLE.ToString
-                            Me.oFormaPoliza.Grid1.Cell(R, 5).Text = ivaporpagar.ToString
-                            Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
-                            R = R + 1
-
-                            oCuentasIVA = Nothing
-                        End If
-
-                        Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-                        oContaCuenta = New Class_CatCuentas(oCuentaBancaria.CUENTA_CONTABLE_DOLARES)
-                        Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oCuentaBancaria.CUENTA_CONTABLE_DOLARES.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oCuentaBancaria.NOMBRE_CUENTA_BANCARIA
-                        Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyVentaReferencia).Text
-                        Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 5).Text = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text).ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
-                        R = R + 1
-
-                        Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-                        oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES.ToString)
-                        Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
-                        Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyVentaReferencia).Text
-                        Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
-                        Me.oFormaPoliza.Grid1.Cell(R, 6).Text = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text).ToString
-                        R = R + 1
-                    End If
-                Next i
-
-            Else 'MXN
-
-                For i = 1 To Me.GridVentas.Rows - 1
-                    If valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text) = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaSaldo).Text) Then
-                        dPago = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text)
-                        ivaporpagar = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaIvaPorPagar).Text)
-                    Else
-                        dPago = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text)
-                        ivaporpagar = 0
-                    End If
-
-                    If dPago > 0 Then
-                        Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-
-                        oCliente = New Class_CatClientes(Me.GridVentas.Cell(i, Me.iGyVentaCodigoCliente).Text)
-                        oContaCuenta = New Class_CatCuentas(oCliente.CUENTA_CONTABLE.ToString)
-
-                        Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oCliente.CUENTA_CONTABLE.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oCliente.NOMBRE_CLIENTE
-                        Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyVentaReferencia).Text
-                        Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
-                        Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dPago.ToString
-                        R = R + 1
-                    End If
-
-                    If ivaporpagar > 0 Then
-                        Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-
+                        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                         oCuentasIVA = New Class_find("SELECT I.CUENTA_CONTABLE_IVA_POR_PAGAR,I.CUENTA_CONTABLE_IVA_PENDIENTE_TRASLADAR " &
-                                                   "FROM CON_IVA_POR_PAGAR_CATALOGO_CUENTAS I INNER JOIN VENTA_GLOBAL V ON(I.PORCENTAJE=V.IMPUESTO_PORCENTAJE) " &
-                                                   "WHERE V.FOLIO_VENTA='" & Me.GridVentas.Cell(i, Me.iGyVentaFolio).Text & "'")
+                                                    "FROM CON_IVA_POR_PAGAR_CATALOGO_CUENTAS I " &
+                                                    "INNER JOIN VENTA_GLOBAL V ON(I.PORCENTAJE=V.IMPUESTO_PORCENTAJE) " &
+                                                    "WHERE V.FOLIO_VENTA='" & Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text & "'")
 
-                        Dim oContaCuenta1 As New Class_CatCuentas
-                        oContaCuenta1 = New Class_CatCuentas(oCuentasIVA.Result1) '"20400015"
-                        Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta1.CUENTA_CONTABLE
-                        Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta1.NOMBRE_CUENTA
-                        Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyVentaReferencia).Text
-                        Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta1.NATURALEZA_CONTABLE.ToString
+                        'IVA pendiente de cobro
+                        dIVAPendienteCobro = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcIvaPendienteCobro).Text)
+
+                        If dIVAPendienteCobro > 0 Then
+                            oContaCuenta = New Class_CatCuentas(oCuentasIVA.Result2) '"20400002"
+
+                            R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                            Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE
+                            Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
+                            Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
+                            Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+                            Me.oFormaPoliza.Grid1.Cell(R, 5).Text = dIVAPendienteCobro.ToString
+                            Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
+                        End If
+
+                        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                        'IVA cobrado
+                        dIVACobrado = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcIvaCobrado).Text)
+
+                        If dIVACobrado > 0 Then
+                            oContaCuenta = New Class_CatCuentas(oCuentasIVA.Result1) '"20400015"
+
+                            R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                            Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE
+                            Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
+                            Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
+                            Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+                            Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
+                            Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dIVACobrado.ToString
+                        End If
+
+                        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                        'Cliente USD
+                        Select Case Me.GridVentas.Cell(i, Me.iGyB_VtaMoneda).Text
+                            Case "USD" 'PagoUSD , VentaUSD
+
+                                oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES.ToString)
+
+                                R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                                Me.oFormaPoliza.Grid1.Cell(R, 1).Text = Empresa_Sistema.CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
+                                Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
+                                Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = dPagoUSD.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
+
+                                R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                                Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oCliente.CUENTA_CONTABLE_DOLARES.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oCliente.NOMBRE_CLIENTE
+                                Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
+                                Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
+                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dPagoUSD.ToString
+
+                            Case "MXN" 'PagoUSD , VentaMXN
+                                'No deben ir cuentas de clientes en usd porque al ser la vta en MXN su póliza no tuvo cuentas de cte en usd
+                        End Select
+                        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                    Next i
+
+                    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                    'Bancos USD(Nota, estas cuentas van fuera del ciclo porque estariamos mal al repetirlas porque son sumarizadas una vez por banco)
+                    oContaCuenta = New Class_CatCuentas(oCuentaBancaria.CUENTA_CONTABLE_DOLARES)
+
+                    R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                    Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oCuentaBancaria.CUENTA_CONTABLE_DOLARES.ToString
+                    Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oCuentaBancaria.NOMBRE_CUENTA_BANCARIA
+                    Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i - 1, Me.iGyB_PagoReferencia).Text 'Se resta i porque ya se aumentó con el último next i y nos da un valor invalido
+                    Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+                    Me.oFormaPoliza.Grid1.Cell(R, 5).Text = dBancosUSD.ToString
+                    Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
+
+                    oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES.ToString)
+
+                    R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                    Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE.ToString
+                    Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
+                    Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i - 1, Me.iGyB_PagoReferencia).Text 'Se resta i porque ya se aumentó con el último next i y nos da un valor invalido
+                    Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+                    Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
+                    Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dBancosUSD.ToString
+
+                    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+                Case "MXN"
+                    For i = 1 To Me.GridVentas.Rows - 1
+                        dCxcPagoMXNCapturado = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text)
+                        dPagoUSD = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoUSDCapturado).Text)
+
+                        If dCxcPagoMXNCapturado <= 0 Then
+                            Continue For
+                        End If
+
+                        dVtaRetencionIvaMXN = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_VtaRetencionIvaMXN).Text)
+                        dVtaRetencionISRMXN = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_VtaRetencionISRMXN).Text)
+                        dVtaIEPSDesglosadoEIncluidoMXN = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Text)
+
+                        If dVtaRetencionIvaMXN > 0 Or dVtaRetencionISRMXN > 0 Or dVtaIEPSDesglosadoEIncluidoMXN > 0 Then
+                            MsgBox("La venta " & Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text & " tiene ya sea retención de IVA,ISR o IEPS. " & vbCrLf &
+                                   "Usted debe contabilizar manualmente estos impuestos por el momento, y revisar toda la póliza debido a estos impuestos y como afectaria en el iva pend trasladar y trasladado.", MsgBoxStyle.Exclamation, sProcedure)
+                        End If
+
+                        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                        'Clientes
+                        dCxcTotal = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcTotal).Text)
+
+                        oCliente = New Class_CatClientes(Me.GridVentas.Cell(i, Me.iGyB_VtaCodigoCliente).Text)
+
+                        If Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaAnticipo).Text = "1" Then
+                            oContaCuenta = New Class_CatCuentas(oCliente.CUENTA_CONTABLE_ANTICIPO.ToString)
+                        Else
+                            oContaCuenta = New Class_CatCuentas(oCliente.CUENTA_CONTABLE.ToString)
+                        End If
+
+                        R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                        Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE 'oCliente.CUENTA_CONTABLE.ToString
+                        Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA 'oCliente.NOMBRE_CLIENTE
+                        Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
+                        Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
                         Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
-                        Me.oFormaPoliza.Grid1.Cell(R, 6).Text = ivaporpagar.ToString
-                        R = R + 1
+                        Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dCxcTotal.ToString
 
-                        Dim oContaCuenta2 As New Class_CatCuentas
-                        oContaCuenta2 = New Class_CatCuentas(oCuentasIVA.Result2) '"20400002"
-                        Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-                        Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta2.CUENTA_CONTABLE
-                        Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta2.NOMBRE_CUENTA
-                        Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyVentaReferencia).Text
-                        Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta2.NATURALEZA_CONTABLE.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 5).Text = ivaporpagar.ToString
-                        Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
-                        R = R + 1
+                        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                        'Perdida/Ganancia cambiaria
+                        dPerdidaGanancia = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcDiferenciaCambiaria).Text)
 
-                        oCuentasIVA = Nothing
-                    End If
-                Next i
+                        If Math.Abs(dPerdidaGanancia) > 0 Then
+                            'MsgBox("falta ver si son 2 cuentas diferentes")
+                            oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_PERDIDA_GANACIA_CAMBIARIA)
 
-                oContaCuenta = New Class_CatCuentas(oCuentaBancaria.CUENTA_CONTABLE_PESOS.ToString)
-                Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
-                Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oCuentaBancaria.CUENTA_CONTABLE_PESOS
-                Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oCuentaBancaria.NOMBRE_CUENTA_BANCARIA
-                Me.oFormaPoliza.Grid1.Cell(R, 3).Text = "" 'oCliente.NOMBRE_CLIENTE
-                Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
-                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = Me.TxtTotal.Text
-                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
+                            R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                            Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE 'oCliente.CUENTA_CONTABLE.ToString
+                            Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA 'oCliente.NOMBRE_CLIENTE
+                            Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
+                            Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
 
-            End If
+                            If dPerdidaGanancia < 0 Then
+                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = Math.Abs(dPerdidaGanancia).ToString 'Si es negativa es perdida
+                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
+                            Else
+                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
+                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dPerdidaGanancia.ToString 'Si es positiva es ganancia
+                            End If
+
+                        End If
+
+                        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                        oCuentasIVA = New Class_find("SELECT I.CUENTA_CONTABLE_IVA_POR_PAGAR,I.CUENTA_CONTABLE_IVA_PENDIENTE_TRASLADAR " &
+                                                    "FROM CON_IVA_POR_PAGAR_CATALOGO_CUENTAS I " &
+                                                    "INNER JOIN VENTA_GLOBAL V ON(I.PORCENTAJE=V.IMPUESTO_PORCENTAJE) " &
+                                                    "WHERE V.FOLIO_VENTA='" & Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text & "'")
+
+                        'IVA pendiente de cobro
+                        dIVAPendienteCobro = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcIvaPendienteCobro).Text)
+
+                        If dIVAPendienteCobro > 0 Then
+                            oContaCuenta = New Class_CatCuentas(oCuentasIVA.Result2) '"20400002"
+
+                            R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                            Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE
+                            Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
+                            Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
+                            Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+                            Me.oFormaPoliza.Grid1.Cell(R, 5).Text = dIVAPendienteCobro.ToString
+                            Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
+
+                        End If
+
+                        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                        'IVA cobrado
+                        dIVACobrado = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcIvaCobrado).Text)
+
+                        If dIVACobrado > 0 Then
+                            oContaCuenta = New Class_CatCuentas(oCuentasIVA.Result1) '"20400015"
+
+                            R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                            Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE
+                            Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
+                            Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
+                            Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+                            Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
+                            Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dIVACobrado.ToString
+
+                        End If
+
+                        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                        'Cliente USD
+                        Select Case Me.GridVentas.Cell(i, Me.iGyB_VtaMoneda).Text
+                            Case "USD" 'PagoMXN , VentaUSD
+                                oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES.ToString)
+
+                                R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                                Me.oFormaPoliza.Grid1.Cell(R, 1).Text = Empresa_Sistema.CUENTA_CONTABLE_CLIENTES_CONTRA_CUENTA_DOLARES.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
+                                Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
+                                Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = dPagoUSD.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
+
+                                R = R + 1 : Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
+                                Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oCliente.CUENTA_CONTABLE_DOLARES.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oCliente.NOMBRE_CLIENTE
+                                Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
+                                Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
+                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dPagoUSD.ToString
+
+                            Case "MXN" 'PagoMXN , VentaMXN
+                                'No deben ir cuentas de clientes en usd porque al ser la vta en MXN su póliza no tuvo cuentas de cte en usd
+                        End Select
+                        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                    Next i
+
+                    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                    'Bancos USD(Nota, estas cuentas van fuera del ciclo porque estariamos mal al repetirlas porque son sumarizadas una vez por banco)
+
+                    'Nota al ser pago en MXN no importa la moneda de la venta, nunca entraron USD al banco.
+                    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            End Select
 
             'Me.AgregaPrepolizaIVAAcreditable()
 
@@ -2239,7 +2562,7 @@ Buscar:
             bResultado = Me.oFormaPoliza.FormaValidaParaGrabarLlamadoExterior
 
         Catch ex As Exception
-            HandleError(Me.Text, "ValidaPrePoliza", ex)
+            HandleError(Me.Text, sProcedure, ex)
         Finally
             oCuentaBancaria = Nothing
             oCliente = Nothing
@@ -2274,9 +2597,9 @@ Buscar:
             dA.Dispose()
 
             For i = 1 To Me.GridVentas.Rows - 1
-                sFolio = Me.GridVentas.Cell(i, Me.iGyVentaFolio).Text
-                sCodigoDocumento = Me.GridVentas.Cell(i, Me.iGyVentaCodigoCliente).Text
-                dPago = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text)
+                sFolio = Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text
+                sCodigoDocumento = Me.GridVentas.Cell(i, Me.iGyB_VtaCodigoCliente).Text
+                dPago = valorNumerico(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text)
                 If txtLEN(sFolio) = True And dPago > 0 Then
                     oCompra = New Class_Compras_Global(sFolio, sCodigoDocumento)
                     If oCompra.IMPUESTO > 0 AndAlso (dPago - oCompra.SALDO) = 0 Then 'Si es el último pago(si quedará con saldo cero)
@@ -2393,6 +2716,7 @@ Buscar:
                 'Me.LblCliente.Text = oBancosCXC.NOMBRE_Cliente
                 Me.txtTipoCambio.Text = Format(oBancosCXC.TIPO_DE_CAMBIO, "##0.0000")
                 Me.TxtTotal.Text = FormatImporteContable(oBancosCXC.TOTAL)
+                Me.txtTotalUSD.Text = FormatImporteContable(oBancosCXC.TOTAL_DOLARES)
 
                 Select Case oBancosCXC.ESTATUS
                     Case "A"
@@ -2422,8 +2746,9 @@ Buscar:
                 Me.FormateaGridDocumentosPago()
 
                 'Para que haga el cambio de las columnas que se van a mostrar
-                Me.cboMoneda.Text = oBancosCXC.CODIGO_MONEDA_SAT
+                Me.cboMonedaPago.Text = oBancosCXC.CODIGO_MONEDA_SAT
                 Me.chkVentasNoFiscales.Checked = oBancosCXC.ES_PAGO_VENTAS_NO_FISCALES
+                Me.VisibilidadColumnasGridVentas()
 
                 If Me.chkVentasNoFiscales.Checked = False Then 'Si es cuenta fiscal(si no esta marcado el check)
                     Me.lblEsCuentaFiscal.Text = "Sólo facturas"
@@ -2642,7 +2967,7 @@ Buscar:
                     Me.tsbImprimirComprobante.Enabled = False
                     Me.CboDocumento.Enabled = True
                     Me.dtFecha.Enabled = True
-                    Me.cboMoneda.Enabled = False
+                    Me.cboMonedaPago.Enabled = False
                     'Me.txtTipoCambio.Enabled = False'No se cambia para dejar el último estado
                     Me.TxtConcepto.Enabled = True
                     Me.TxtTotal.Enabled = False
@@ -2673,7 +2998,7 @@ Buscar:
                     Me.tsbImprimirComprobante.Enabled = True
                     Me.CboDocumento.Enabled = False
                     Me.dtFecha.Enabled = False
-                    Me.cboMoneda.Enabled = False
+                    Me.cboMonedaPago.Enabled = False
                     Me.txtTipoCambio.Enabled = False
                     Me.TxtConcepto.Enabled = False
                     Me.TxtTotal.Enabled = False
@@ -2682,8 +3007,8 @@ Buscar:
                     Me.tssCancelo.Visible = False
                     Me.tssFechaEmisionCFDI.Visible = True
                     Me.GridVentas.Locked = True
-                    Me.GridVentas.Cell(0, Me.iGyVentaPago).Text = "Pagado"
-                    Me.GridVentas.Column(Me.iGyVentaSeleccion).Visible = False
+                    'Me.GridVentas.Cell(0, Me.iGyB_CxcPagoMXNCapturado).Text = "Pagado"
+                    Me.GridVentas.Column(Me.iGyB_PagoSeleccion).Visible = False
                     Me.gbAgregaDocCliente.Enabled = False
                     Me.gbVentas.Enabled = True 'Para que lo puedan recorrer
                     'Me.gbTotales.Enabled = False
@@ -2707,7 +3032,7 @@ Buscar:
                     Me.tsbImprimirComprobante.Enabled = True
                     Me.CboDocumento.Enabled = False
                     Me.dtFecha.Enabled = False
-                    Me.cboMoneda.Enabled = False
+                    Me.cboMonedaPago.Enabled = False
                     Me.txtTipoCambio.Enabled = False
                     Me.TxtConcepto.Enabled = False
                     Me.TxtTotal.Enabled = False
@@ -2716,8 +3041,8 @@ Buscar:
                     Me.tssCancelo.Visible = True
                     Me.tssFechaEmisionCFDI.Visible = True
                     Me.GridVentas.Locked = True
-                    Me.GridVentas.Cell(0, Me.iGyVentaPago).Text = "Pagado"
-                    Me.GridVentas.Column(Me.iGyVentaSeleccion).Visible = False
+                    'Me.GridVentas.Cell(0, Me.iGyB_CxcPagoMXNCapturado).Text = "Pagado"
+                    Me.GridVentas.Column(Me.iGyB_PagoSeleccion).Visible = False
                     Me.gbAgregaDocCliente.Enabled = False
                     Me.gbVentas.Enabled = True 'Para que lo puedan recorrer
                     'Me.gbTotales.Enabled = False
@@ -2804,8 +3129,8 @@ Buscar:
         Me.lstClientesAgregados.Items.Clear()
 
         For i = 1 To Me.GridVentas.Rows - 1
-            sCodigoClientes = Me.GridVentas.Cell(i, Me.iGyVentaCodigoCliente).Text
-            dPago = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text)
+            sCodigoClientes = Me.GridVentas.Cell(i, Me.iGyB_VtaCodigoCliente).Text
+            dPago = valorNumerico(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text)
             If sCodigoClientes.Length > 0 AndAlso dPago > 0 Then
                 Dim item As ListViewItem = Me.lstClientesAgregados.FindItemWithText(sCodigoClientes)
 
@@ -2886,7 +3211,7 @@ Buscar:
                 Return False
             End If
 
-            If Me.cboMoneda.SelectedIndex = -1 Then
+            If Me.cboMonedaPago.SelectedIndex = -1 Then
                 MsgBox("Asígne el tipo de moneda.", MsgBoxStyle.Exclamation, sProcedure)
                 'aqui no hay focus porque esta enabled false.
                 Return False
@@ -2987,7 +3312,7 @@ Buscar:
                 Return False
             End If
 
-            If Me.cboMoneda.Text = "USD" Then
+            If Me.cboMonedaPago.Text = "USD" Then
                 If valorNumerico(Me.txtTipoCambio.Text) = 0 Then
                     MsgBox("Asigne el tipo de cambio del documento de pago.", vbExclamation, sProcedure)
                     Me.txtTipoCambio.Focus()
@@ -3030,7 +3355,7 @@ Buscar:
                 .Cell(r, Me.iGyDocFECHA).Text = Me.dtFechaPagoCliente.Value.ToString
                 .Cell(r, Me.iGyDocRFC_EMISOR).Text = Me.txtRFCEmisor.Text.ToUpper
                 .Cell(r, Me.iGyDocMONTO).Text = valorNumerico(Me.txtMonto.Text).ToString
-                .Cell(r, Me.iGyDocCODIGO_MONEDA_SAT).Text = Me.cboMoneda.Text
+                .Cell(r, Me.iGyDocCODIGO_MONEDA_SAT).Text = Me.cboMonedaPago.Text
 
             End With
 
@@ -3095,7 +3420,7 @@ Buscar:
 
                     'Eliminar facturas
                     While iRow <= Me.GridVentas.Rows - 1
-                        If Me.GridVentas.Cell(iRow, Me.iGyVentaFOLIO_DETALLE).Text.ToUpper = sFolioPago.ToUpper Then
+                        If Me.GridVentas.Cell(iRow, Me.iGyB_PagoFolioDetalle).Text.ToUpper = sFolioPago.ToUpper Then
                             Me.GridVentas.RemoveItem(iRow)
                         Else
                             iRow += 1
@@ -3118,45 +3443,55 @@ Buscar:
     End Function
 
     Private Function ValidaVentasTenganDocumentoPago() As Boolean
+        Const sProcedure As String = "ValidaVentasTenganDocumentoPago"
         Dim bResultado As Boolean = False, sFolioPago As String, dPago As Double
         Try
             For i = 1 To Me.GridVentas.Rows - 1
-                sFolioPago = Me.GridVentas.Cell(i, Me.iGyVentaFOLIO_DETALLE).Text.ToUpper
-                dPago = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text)
+                sFolioPago = Me.GridVentas.Cell(i, Me.iGyB_PagoFolioDetalle).Text.ToUpper
+                dPago = valorNumerico(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text)
                 If dPago > 0 AndAlso txtLEN(sFolioPago) = False Then
-                    MsgBox("La factura del renglón #" & i & " no le capturó el folio del pago(cheque/transferencia/ficha).", MsgBoxStyle.Exclamation, Me.Text)
+                    MsgBox("La factura del renglón #" & i & " no le capturó el folio del pago(cheque/transferencia/ficha).", MsgBoxStyle.Exclamation, sProcedure)
                     Exit For
                 End If
 
                 If Me.ExisteFolioPago(sFolioPago) = False Then
-                    MsgBox("El folio de pago de la factura del renglón #" & i & "  no existe.", MsgBoxStyle.Exclamation, Me.Text)
+                    MsgBox("El folio de pago de la factura del renglón #" & i & " no existe.", MsgBoxStyle.Exclamation, sProcedure)
                     Exit For
                 End If
             Next
             bResultado = True
         Catch ex As Exception
-            HandleError(Me.Name, "ValidaVentasTenganDocumentoPago", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
         Return bResultado
     End Function
 
     Private Function ValidaSumasDocumentoPagos() As Boolean
+        Const sProcedure As String = "ValidaSumasDocumentoPagos"
         Dim bResultado As Boolean = False, sFolioPago As String, iPago As Integer = 1, iFact As Integer = 1, dTotalPago As Decimal = 0, dDetallePago As Decimal = 0
         Try
             For iPago = 1 To Me.GridDocumentosPago.Rows - 1
                 sFolioPago = Me.GridDocumentosPago.Cell(iPago, Me.iGyDocFOLIO_DETALLE).Text.ToUpper
                 If txtLEN(sFolioPago) = True Then
                     dTotalPago = valorNumericoD(Me.GridDocumentosPago.Cell(iPago, Me.iGyDocMONTO).Text)
+
                     'Recorre las facturas y acumula el pago de los abonos de un pago.
                     For iFact = 1 To Me.GridVentas.Rows - 1
-                        If sFolioPago = Me.GridVentas.Cell(iFact, Me.iGyVentaFOLIO_DETALLE).Text.ToUpper Then
-                            dDetallePago += valorNumericoD(Me.GridVentas.Cell(iFact, Me.iGyVentaPago).Text)
+                        If sFolioPago = Me.GridVentas.Cell(iFact, Me.iGyB_PagoFolioDetalle).Text.ToUpper Then
+                            Select Case Me.cboMonedaPago.Text
+                                Case "MXN"
+                                    dDetallePago += valorNumericoD(Me.GridVentas.Cell(iFact, Me.iGyB_CxcPagoMXNCapturado).Text)
+                                Case "USD"
+                                    dDetallePago += valorNumericoD(Me.GridVentas.Cell(iFact, Me.iGyB_CxcPagoUSDCapturado).Text)
+                            End Select
                         End If
                     Next
+
                     dDetallePago = RedondearD(dDetallePago, Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
                     If dDetallePago > dTotalPago Then
-                        MsgBox("El total de los abonos del pago " & sFolioPago & " es mayor al total del pago.", MsgBoxStyle.Exclamation, Me.Text)
+                        MsgBox("El total de los abonos del pago " & sFolioPago & " por " & FormatImporteContable(dDetallePago) & " " & Me.cboMonedaPago.Text & " es mayor al total del pago de " & FormatImporteContable(dTotalPago) & " .",
+                               MsgBoxStyle.Exclamation, sProcedure)
                         Return False
                     End If
 
@@ -3165,12 +3500,12 @@ Buscar:
                             Dim dAnticipo As Decimal = 0
                             dAnticipo = RedondearD(dTotalPago - dDetallePago, 2)
 
-                            If MsgBox("Le falta aplicar " & FormatImporteContable(dAnticipo, True) & " quiere generarlo como anticipo ?", vbQuestion Or MsgBoxStyle.YesNo, Me.Text) = MsgBoxResult.No Then
+                            If MsgBox("Le falta aplicar " & FormatImporteContable(dAnticipo, True) & " quiere generarlo como anticipo ?", vbQuestion Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
                                 Return False
                             End If
-
                         Else
-                            MsgBox("El total de los abonos del pago " & sFolioPago & " es menor que el total del pago.", MsgBoxStyle.Exclamation, Me.Text)
+                            MsgBox("El total de los abonos del pago " & sFolioPago & " por " & FormatImporteContable(dDetallePago) & " " & Me.cboMonedaPago.Text & " es menor que el total del pago de " & FormatImporteContable(dTotalPago) & " .",
+                                   MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         End If
 
@@ -3181,8 +3516,9 @@ Buscar:
             Next
             bResultado = True
         Catch ex As Exception
-            HandleError(Me.Name, "ValidaSumasDocumentoPagos", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
+
         Return bResultado
     End Function
 
@@ -3257,7 +3593,7 @@ Buscar:
         Try
             Dim i As Integer, dPago As Double
             For i = 1 To Me.GridVentas.Rows - 1
-                dPago = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text)
+                dPago = valorNumerico(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text)
                 If dPago > 0 Then
                     Me.CalculaImportesPagoUSD(i)
                 End If
@@ -3267,15 +3603,15 @@ Buscar:
         End Try
     End Sub
 
-    Private Sub CalculaImportesPagoUSD(ByVal Renglon As Integer)
+    Private Sub CalculaImportesPagoUSD_old(ByVal Renglon As Integer)
         Try
             Dim oVenta As New Class_Ventas_Global '(Me.GridVentas.Cell(Renglon, Me.iGyVentaFolio).Text)
-            oVenta.FOLIO_VENTA = Me.GridVentas.Cell(Renglon, Me.iGyVentaFolio).Text
+            oVenta.FOLIO_VENTA = Me.GridVentas.Cell(Renglon, Me.iGyB_VtaFolio).Text
             oVenta.ConsultarSinFiltrarPlaza()
             Dim dTipoCambioPago As Decimal, dPesosViejos As Decimal, dPesosNuevos As Decimal, dDiferencia As Decimal, dImporteMonedaVenta As Decimal, dSaldoAnteriorMonedaVenta As Decimal, dSaldoAnteriorMonedaPago As Decimal
             Dim dSaldoUSD As Decimal, dPagoUSD As Decimal
 
-            dPagoUSD = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyVentaPago).Text)
+            dPagoUSD = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).Text)
             dTipoCambioPago = valorNumericoD(Me.txtTipoCambio.Text)
             dPesosNuevos = RedondearD(CDec(dPagoUSD * dTipoCambioPago), 2)
 
@@ -3307,27 +3643,235 @@ Buscar:
             dDiferencia = dPesosNuevos - dPesosViejos
 
             'Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldo).Text'No se necesita refrescar porque este dato no importa al ser un pago en USD el que importa es el saldo en MXN
-            Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldoDlls).Text = dSaldoUSD.ToString
-            Me.GridVentas.Cell(Renglon, Me.iGyVentaPagoPesos).Text = dPesosViejos.ToString
-            Me.GridVentas.Cell(Renglon, Me.iGyVentaDiferencia).Text = dDiferencia.ToString
-            Me.GridVentas.Cell(Renglon, Me.iGyVentaImporteMonedaVenta).Text = dImporteMonedaVenta.ToString
-            Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldoAnteriorMonedaVenta).Text = dSaldoAnteriorMonedaVenta.ToString
-            Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldoAnteriorMonedaPago).Text = dSaldoAnteriorMonedaPago.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoUSD).Text = dSaldoUSD.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcTotal).Text = dPesosViejos.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcDiferenciaCambiaria).Text = dDiferencia.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcImporteMonedaVenta).Text = dImporteMonedaVenta.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcSaldoAnteriorMonedaVenta).Text = dSaldoAnteriorMonedaVenta.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcSaldoAnteriorMonedaPago).Text = dSaldoAnteriorMonedaPago.ToString
+
+        Catch ex As Exception
+            HandleError(Me.Name, "CalculaImportesPagoUSD_old", ex)
+        End Try
+    End Sub
+
+    Private Sub CalculaImportesPagoUSD(ByVal Renglon As Integer)
+        Try
+            Dim dPagoTipoCambio As Decimal, dPagoUSD As Decimal
+            Dim dVtaIvaMXN As Decimal, dVtaTotalMXN As Decimal, dVtaTotalUSD As Decimal, dVtaTipoCambio As Decimal, sVtaMoneda As String, dVtaSaldoMXN_TpPago As Decimal, dVtaSaldoMXN_CXC As Decimal, dVtaSaldoUSD As Decimal
+            Dim dCxcPagoMXNCapturado As Decimal, dCxcTotal As Decimal, dDiferenciaCambiaria As Decimal, dCxcIvaCobrado As Decimal, dCxcIvaPendienteCobro As Decimal, dCxcPagoSubtotaMXNViejos As Decimal, dCxcPagoSubtotaMXNNuevos As Decimal
+            Dim dImporteMonedaVenta As Decimal, dSaldoAnteriorMonedaVenta As Decimal, dSaldoAnteriorMonedaPago As Decimal
+
+            dPagoTipoCambio = valorNumericoD(Me.txtTipoCambio.Text)
+
+            'Mejor refrescar los datos que tienen que ver con saldos para tener los saldos correctos en cada instante.
+            Dim tSaldos As New Class_find("SELECT " &
+                            "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN ROUND(V.SALDO_DOLARES*" & dPagoTipoCambio.ToString & ",2) ELSE V.SALDO END SALDO_MXN_TP_PAGO," &
+                            "V.SALDO SALDO_CXC," &
+                            "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN V.SALDO_DOLARES ELSE ROUND(V.SALDO/" & dPagoTipoCambio.ToString & ",2) END SALDO_DOLARES " &
+                            "FROM VENTA_GLOBAL V WHERE V.FOLIO_VENTA='" & Me.GridVentas.Cell(Renglon, Me.iGyB_VtaFolio).Text & "'")
+
+            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoMXN_TpPago).Text = tSaldos.Result1
+            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoMXN_CXC).Text = tSaldos.Result2
+            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoUSD).Text = tSaldos.Result3
+
+            dVtaSaldoMXN_TpPago = CDec(tSaldos.Result1)
+            dVtaSaldoMXN_CXC = CDec(tSaldos.Result2)
+            dVtaSaldoUSD = CDec(tSaldos.Result3)
+
+            dPagoUSD = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoUSDCapturado).Text)
+            sVtaMoneda = Me.GridVentas.Cell(Renglon, Me.iGyB_VtaMoneda).Text
+
+            dVtaTotalMXN = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaTotalMXN).Text)
+            dVtaIvaMXN = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaIvaMXN).Text)
+            dVtaTotalUSD = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaTotalUSD).Text)
+            dVtaTipoCambio = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaTipoCambio).Text)
+
+            Select Case sVtaMoneda
+                Case "USD" 'PagoUSD,VtaUSD
+                    If dPagoUSD = dVtaSaldoUSD Then 'Si están saldando los usd entonces se toma directo el saldo en mxn para evitar queden decimales
+                        dCxcTotal = dVtaSaldoMXN_CXC
+                    Else
+                        dCxcTotal = RedondearD(dPagoUSD * dVtaTipoCambio, 2)
+                    End If
+                    'dCxcTotal es Pesos Viejos
+
+                    dCxcPagoMXNCapturado = RedondearD(dPagoUSD * dPagoTipoCambio, 2) 'Pesos Nuevos
+
+                    'Como plus si estan pagando los usd originales de la venta entonces el iva pendiente de cobro(también llamado iva viejo) lo tomamos directo de la venta para evitar diferencias.
+                    If dPagoUSD = dVtaTotalUSD Then
+                        dCxcIvaPendienteCobro = dVtaIvaMXN
+                    Else
+                        dCxcIvaPendienteCobro = RedondearD((dCxcTotal / dVtaTotalMXN) * dVtaIvaMXN, 2)
+                    End If
+
+                    dCxcIvaCobrado = RedondearD((dCxcPagoMXNCapturado / dVtaTotalMXN) * dVtaIvaMXN, 2)
+
+                    dCxcPagoSubtotaMXNViejos = RedondearD(dCxcTotal - dCxcIvaPendienteCobro, 2)
+                    dCxcPagoSubtotaMXNNuevos = RedondearD(dCxcPagoMXNCapturado - dCxcIvaCobrado, 2)
+
+                    dDiferenciaCambiaria = Math.Round(dCxcPagoSubtotaMXNNuevos - dCxcPagoSubtotaMXNViejos, 2) 'Nota no se usa la función redondear porque cuando son negativos no redondea bien.
+
+                    dImporteMonedaVenta = dPagoUSD
+                    dSaldoAnteriorMonedaVenta = dVtaSaldoUSD
+                    dSaldoAnteriorMonedaPago = dVtaSaldoUSD
+
+                Case "MXN" 'PagoUSD,VtaMXN
+                    'Si están saldando los usd(virtuales) entonces se toma directo el saldo en mxn para evitar queden decimales
+                    If dPagoUSD = dVtaSaldoUSD Then 'Si están saldando los usd entonces se toma directo el saldo en mxn para evitar queden decimales
+                        dCxcTotal = dVtaSaldoMXN_CXC
+                    Else
+                        dCxcTotal = RedondearD(dPagoUSD * dPagoTipoCambio, 2) 'nota aqui los usd que pagan por el tppago llegamos a los pesos abonar(aqui no hay nuevos pesos)
+                    End If
+
+                    dCxcPagoMXNCapturado = dCxcTotal 'Pesos Nuevos(aunque no son nuevos como tal)
+
+                    'Como plus si estan pagando los usd originales de la venta entonces el iva pendiente de cobro(también llamado iva viejo) lo tomamos directo de la venta para evitar diferencias.
+                    If dPagoUSD = dVtaTotalUSD Then
+                        dCxcIvaPendienteCobro = dVtaIvaMXN
+                    Else
+                        dCxcIvaPendienteCobro = RedondearD((dCxcTotal / dVtaTotalMXN) * dVtaIvaMXN, 2)
+                    End If
+
+                    dCxcIvaCobrado = RedondearD((dCxcPagoMXNCapturado / dVtaTotalMXN) * dVtaIvaMXN, 2)
+
+                    dCxcPagoSubtotaMXNViejos = RedondearD(dCxcTotal - dCxcIvaPendienteCobro, 2)
+                    dCxcPagoSubtotaMXNNuevos = RedondearD(dCxcPagoMXNCapturado - dCxcIvaCobrado, 2)
+
+                    dDiferenciaCambiaria = 0 'Cuando la venta es en mxn sin importar la moneda de pago no hay diferencia cambiaria.
+
+                    dImporteMonedaVenta = dCxcTotal
+                    dSaldoAnteriorMonedaVenta = dVtaSaldoMXN_CXC
+                    dSaldoAnteriorMonedaPago = dVtaSaldoUSD
+
+            End Select
+
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).Text = dCxcPagoMXNCapturado.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcTotal).Text = dCxcTotal.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcIvaCobrado).Text = dCxcIvaCobrado.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcIvaPendienteCobro).Text = dCxcIvaPendienteCobro.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcDiferenciaCambiaria).Text = dDiferenciaCambiaria.ToString
+
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcImporteMonedaVenta).Text = dImporteMonedaVenta.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcSaldoAnteriorMonedaVenta).Text = dSaldoAnteriorMonedaVenta.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcSaldoAnteriorMonedaPago).Text = dSaldoAnteriorMonedaPago.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoSubtotaMXNViejos).Text = dCxcPagoSubtotaMXNViejos.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoSubtotaMXNNuevos).Text = dCxcPagoSubtotaMXNNuevos.ToString
 
         Catch ex As Exception
             HandleError(Me.Name, "CalculaImportesPagoUSD", ex)
         End Try
     End Sub
 
-    Private Sub CalculaImportesPagoMXN(ByVal Renglon As Integer)
+    Private Sub CalculaImportesPagoUSD_intento1(ByVal Renglon As Integer)
+        Try
+            Dim dPagoTipoCambio As Decimal, dPagoUSD As Decimal, dPagoUSD_IVA As Decimal, dPagoUSD_Subtotal As Decimal
+            Dim dVtaIvaMXN As Decimal, dVtaTotalMXN As Decimal, dVtaTotalUSD As Decimal, dVtaIvaUSD As Decimal, dVtaTipoCambio As Decimal, sVtaMoneda As String, dVtaSaldoMXN_TpPago As Decimal, dVtaSaldoMXN_CXC As Decimal, dVtaSaldoUSD As Decimal
+            Dim dCxcPagoMXNCapturado As Decimal, dCxcTotal As Decimal, dDiferenciaCambiaria As Decimal, dCxcIvaCobrado As Decimal, dCxcIvaPendienteCobro As Decimal, dCxcPagoSubtotaMXNViejos As Decimal, dCxcPagoSubtotaMXNNuevos As Decimal
+            Dim dImporteMonedaVenta As Decimal, dSaldoAnteriorMonedaVenta As Decimal, dSaldoAnteriorMonedaPago As Decimal
+
+            'Mejor refrescar los datos que tienen que ver con saldos para tener los saldos correctos en cada instante.
+            Dim tSaldos As New Class_find("SELECT " &
+                            "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN ROUND(V.SALDO_DOLARES*" & dPagoTipoCambio.ToString & ",2) ELSE V.SALDO END SALDO_MXN_TP_PAGO," &
+                            "V.SALDO SALDO_CXC," &
+                            "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN V.SALDO_DOLARES ELSE ROUND(V.SALDO/" & dPagoTipoCambio.ToString & ",2) END SALDO_DOLARES " &
+                            "FROM VENTA_GLOBAL V WHERE V.FOLIO_VENTA='" & Me.GridVentas.Cell(Renglon, Me.iGyB_VtaFolio).Text & "'")
+
+            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoMXN_TpPago).Text = tSaldos.Result1
+            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoMXN_CXC).Text = tSaldos.Result2
+            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoUSD).Text = tSaldos.Result3
+
+            dVtaSaldoMXN_TpPago = CDec(tSaldos.Result1)
+            dVtaSaldoMXN_CXC = CDec(tSaldos.Result2)
+            dVtaSaldoUSD = CDec(tSaldos.Result3)
+
+            dPagoUSD = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoUSDCapturado).Text)
+            sVtaMoneda = Me.GridVentas.Cell(Renglon, Me.iGyB_VtaMoneda).Text
+            dPagoTipoCambio = valorNumericoD(Me.txtTipoCambio.Text)
+
+            dVtaTotalMXN = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaTotalMXN).Text)
+            dVtaIvaMXN = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaIvaMXN).Text)
+            dVtaIvaUSD = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaIvaUSD).Text)
+            dVtaTotalUSD = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaTotalUSD).Text)
+            dVtaTipoCambio = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaTipoCambio).Text)
+
+            Select Case sVtaMoneda
+                Case "USD" 'PagoUSD,VtaUSD
+                    dPagoUSD_IVA = RedondearD((dPagoUSD / dVtaTotalUSD) * dVtaIvaUSD, 2) 'Se obtiene el iva en usd por proporción
+                    dPagoUSD_Subtotal = RedondearD(dPagoUSD - dPagoUSD_IVA, 2)
+                    'MsgBox(RedondearD(dPagoTipoCambio - dVtaTipoCambio, 4).ToString)
+                    'MsgBox((RedondearD(dPagoTipoCambio - dVtaTipoCambio, 4) * dPagoUSD_Subtotal).ToString)
+                    dDiferenciaCambiaria = Math.Round((dPagoTipoCambio - dVtaTipoCambio) * dPagoUSD_Subtotal, 2) 'Nota no se usa la función redondear porque cuando son negativos no redondea bien.
+
+                    dCxcIvaCobrado = RedondearD(dPagoUSD_IVA * dPagoTipoCambio, 2)
+
+                    If dPagoUSD = dVtaSaldoUSD Then 'Si están saldando los usd entonces se toma directo el saldo en mxn para evitar queden decimales
+                        dCxcTotal = dVtaSaldoMXN_CXC
+                    Else
+                        dCxcTotal = RedondearD(dPagoUSD * dVtaTipoCambio, 2)
+                    End If
+
+                    'Como plus si estan pagando los usd originales de la venta entonces el iva pendiente de cobro(también llamado iva viejo) lo tomamos directo de la venta para evitar diferencias.
+                    If dPagoUSD = dVtaTotalUSD Then
+                        dCxcIvaPendienteCobro = dVtaIvaMXN
+                    Else
+                        dCxcIvaPendienteCobro = RedondearD(dPagoUSD_IVA * dVtaTipoCambio, 2)
+                    End If
+
+                    dCxcPagoMXNCapturado = RedondearD(dPagoUSD * dPagoTipoCambio, 2) 'Pesos Nuevos
+
+                    dImporteMonedaVenta = dPagoUSD
+                    dSaldoAnteriorMonedaVenta = dVtaSaldoUSD
+                    dSaldoAnteriorMonedaPago = dVtaSaldoUSD
+
+                Case "MXN" 'PagoUSD,VtaMXN
+                    dPagoUSD_IVA = 0
+                    dPagoUSD_Subtotal = 0
+                    dDiferenciaCambiaria = 0
+
+                    'Si están saldando los usd(virtuales) entonces se toma directo el saldo en mxn para evitar queden decimales
+                    If dPagoUSD = dVtaSaldoUSD Then 'Si están saldando los usd entonces se toma directo el saldo en mxn para evitar queden decimales
+                        dCxcTotal = dVtaSaldoMXN_CXC
+                    Else
+                        dCxcTotal = RedondearD(dPagoUSD * dPagoTipoCambio, 2) 'nota aqui los usd que pagan por el tppago llegamos a los pesos abonar(aqui no hay nuevos pesos)
+                    End If
+
+                    dCxcIvaCobrado = RedondearD((dCxcTotal / dVtaTotalMXN) * dVtaIvaMXN, 2)
+
+                    dCxcIvaPendienteCobro = dCxcIvaCobrado
+
+                    dCxcPagoMXNCapturado = dCxcTotal
+
+                    dImporteMonedaVenta = dCxcTotal
+                    dSaldoAnteriorMonedaVenta = dVtaSaldoMXN_CXC
+                    dSaldoAnteriorMonedaPago = dVtaSaldoUSD
+
+            End Select
+
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).Text = dCxcPagoMXNCapturado.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcTotal).Text = dCxcTotal.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcIvaCobrado).Text = dCxcIvaCobrado.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcIvaPendienteCobro).Text = dCxcIvaPendienteCobro.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcDiferenciaCambiaria).Text = dDiferenciaCambiaria.ToString
+
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcImporteMonedaVenta).Text = dImporteMonedaVenta.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcSaldoAnteriorMonedaVenta).Text = dSaldoAnteriorMonedaVenta.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcSaldoAnteriorMonedaPago).Text = dSaldoAnteriorMonedaPago.ToString
+
+        Catch ex As Exception
+            HandleError(Me.Name, "CalculaImportesPagoUSD_intento1", ex)
+        End Try
+    End Sub
+
+    Private Sub CalculaImportesPagoMXN_old(ByVal Renglon As Integer)
         Try
             Dim oVenta As New Class_Ventas_Global '(Me.GridVentas.Cell(Renglon, Me.iGyVentaFolio).Text)
-            oVenta.FOLIO_VENTA = Me.GridVentas.Cell(Renglon, Me.iGyVentaFolio).Text
+            oVenta.FOLIO_VENTA = Me.GridVentas.Cell(Renglon, Me.iGyB_VtaFolio).Text
             oVenta.ConsultarSinFiltrarPlaza()
             Dim dTipoCambioPago As Decimal, dPesosViejos As Decimal, dPesosNuevos As Decimal, dDiferencia As Decimal, dImporteMonedaVenta As Decimal, dSaldoAnteriorMonedaVenta As Decimal, dSaldoAnteriorMonedaPago As Decimal
             Dim dSaldoUSD As Decimal, dPagoUSD As Decimal, dSaldoMXN As Decimal
 
-            dPesosNuevos = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyVentaPago).Text)
+            dPesosNuevos = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).Text)
             dTipoCambioPago = valorNumericoD(Me.txtTipoCambio.Text)
 
             If oVenta.CODIGO_MONEDA_SAT = "USD" Then
@@ -3358,15 +3902,208 @@ Buscar:
 
             dDiferencia = dPesosNuevos - dPesosViejos
 
-            Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldo).Text = dSaldoMXN.ToString 'Actualizamos el saldo de la venta por si esta variando mientras capturan
-            Me.GridVentas.Cell(Renglon, Me.iGyVentaPagoPesos).Text = dPesosViejos.ToString
-            Me.GridVentas.Cell(Renglon, Me.iGyVentaDiferencia).Text = dDiferencia.ToString
-            Me.GridVentas.Cell(Renglon, Me.iGyVentaImporteMonedaVenta).Text = dImporteMonedaVenta.ToString
-            Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldoAnteriorMonedaVenta).Text = dSaldoAnteriorMonedaVenta.ToString
-            Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldoAnteriorMonedaPago).Text = dSaldoAnteriorMonedaPago.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoMXN_TpPago).Text = dSaldoMXN.ToString 'Actualizamos el saldo de la venta por si esta variando mientras capturan
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcTotal).Text = dPesosViejos.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcDiferenciaCambiaria).Text = dDiferencia.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcImporteMonedaVenta).Text = dImporteMonedaVenta.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcSaldoAnteriorMonedaVenta).Text = dSaldoAnteriorMonedaVenta.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcSaldoAnteriorMonedaPago).Text = dSaldoAnteriorMonedaPago.ToString
+
+        Catch ex As Exception
+            HandleError(Me.Name, "CalculaImportesPagoMXN_old", ex)
+        End Try
+    End Sub
+
+    Private Sub CalculaImportesPagoMXN(ByVal Renglon As Integer)
+        Try
+            Dim dPagoTipoCambio As Decimal, dPagoUSD As Decimal
+            Dim dVtaIvaMXN As Decimal, dVtaTotalMXN As Decimal, dVtaTotalUSD As Decimal, dVtaTipoCambio As Decimal, sVtaMoneda As String, dVtaSaldoMXN_TpPago As Decimal, dVtaSaldoMXN_CXC As Decimal, dVtaSaldoUSD As Decimal
+            Dim dCxcPagoMXNCapturado As Decimal, dCxcTotal As Decimal, dDiferenciaCambiaria As Decimal, dCxcIvaCobrado As Decimal, dCxcIvaPendienteCobro As Decimal, dCxcPagoSubtotaMXNViejos As Decimal, dCxcPagoSubtotaMXNNuevos As Decimal
+            Dim dImporteMonedaVenta As Decimal, dSaldoAnteriorMonedaVenta As Decimal, dSaldoAnteriorMonedaPago As Decimal
+
+            dPagoTipoCambio = valorNumericoD(Me.txtTipoCambio.Text)
+
+            'Mejor refrescar los datos que tienen que ver con saldos para tener los saldos correctos en cada instante.
+            Dim tSaldos As New Class_find("SELECT " &
+                            "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN ROUND(V.SALDO_DOLARES*" & dPagoTipoCambio.ToString & ",2) ELSE V.SALDO END SALDO_MXN_TP_PAGO," &
+                            "V.SALDO SALDO_CXC," &
+                            "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN V.SALDO_DOLARES ELSE 0 END SALDO_DOLARES " &
+                            "FROM VENTA_GLOBAL V WHERE V.FOLIO_VENTA='" & Me.GridVentas.Cell(Renglon, Me.iGyB_VtaFolio).Text & "'") ' al ser pago_mxn y vta_mxn la vta nunca mostrará saldo en usd
+
+            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoMXN_TpPago).Text = tSaldos.Result1
+            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoMXN_CXC).Text = tSaldos.Result2
+            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoUSD).Text = tSaldos.Result3
+
+            dVtaSaldoMXN_TpPago = CDec(tSaldos.Result1)
+            dVtaSaldoMXN_CXC = CDec(tSaldos.Result2)
+            dVtaSaldoUSD = CDec(tSaldos.Result3)
+
+            dCxcPagoMXNCapturado = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).Text)
+            sVtaMoneda = Me.GridVentas.Cell(Renglon, Me.iGyB_VtaMoneda).Text
+
+            dVtaTotalMXN = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaTotalMXN).Text)
+            dVtaIvaMXN = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaIvaMXN).Text)
+            dVtaTotalUSD = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaTotalUSD).Text)
+            dVtaTipoCambio = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaTipoCambio).Text)
+
+            Select Case sVtaMoneda
+                Case "MXN" 'PagoMXN,VtaMXN
+                    dPagoUSD = 0
+
+                    dCxcTotal = dCxcPagoMXNCapturado
+
+                    dCxcIvaCobrado = RedondearD((dCxcPagoMXNCapturado / dVtaTotalMXN) * dVtaIvaMXN, 2)
+
+                    dCxcIvaPendienteCobro = dCxcIvaCobrado
+
+                    dCxcPagoSubtotaMXNViejos = RedondearD(dCxcTotal - dCxcIvaPendienteCobro, 2)
+                    dCxcPagoSubtotaMXNNuevos = RedondearD(dCxcPagoMXNCapturado - dCxcIvaCobrado, 2)
+
+                    dDiferenciaCambiaria = 0 'Cuando la venta es en mxn sin importar la moneda de pago no hay diferencia cambiaria.
+
+                    dImporteMonedaVenta = dCxcTotal
+                    dSaldoAnteriorMonedaVenta = dVtaSaldoMXN_CXC
+                    dSaldoAnteriorMonedaPago = dVtaSaldoMXN_CXC
+
+                Case "USD" 'PagoMXN,VtaUSD
+
+                    'Si están saldando los mxn a tipo de cambio pago(no venta.saldo porque es a tpventa) entonces se toma directo el saldo en mxn para evitar queden decimales, y también se toma el saldo_usd por lo mismo.
+                    If dCxcPagoMXNCapturado = dVtaSaldoMXN_TpPago Then
+                        dPagoUSD = dVtaSaldoUSD
+                        dCxcTotal = dVtaSaldoMXN_CXC
+                    Else
+                        dPagoUSD = RedondearD(dCxcPagoMXNCapturado / dPagoTipoCambio, 2)
+                        dCxcTotal = RedondearD(dPagoUSD * dVtaTipoCambio, 2)
+                    End If
+
+                    'Como plus si estan pagando los usd originales de la venta entonces el iva pendiente de cobro(también llamado iva viejo) lo tomamos directo de la venta para evitar diferencias.
+                    If dPagoUSD = dVtaTotalUSD Then
+                        dCxcIvaPendienteCobro = dVtaIvaMXN
+                    Else
+                        dCxcIvaPendienteCobro = RedondearD((dCxcTotal / dVtaTotalMXN) * dVtaIvaMXN, 2)
+                    End If
+
+                    dCxcIvaCobrado = RedondearD((dCxcPagoMXNCapturado / dVtaTotalMXN) * dVtaIvaMXN, 2)
+
+                    dCxcPagoSubtotaMXNViejos = RedondearD(dCxcTotal - dCxcIvaPendienteCobro, 2)
+                    dCxcPagoSubtotaMXNNuevos = RedondearD(dCxcPagoMXNCapturado - dCxcIvaCobrado, 2)
+
+                    dDiferenciaCambiaria = Math.Round(dCxcPagoSubtotaMXNNuevos - dCxcPagoSubtotaMXNViejos, 2) 'Nota no se usa la función redondear porque cuando son negativos no redondea bien.
+
+                    dImporteMonedaVenta = dPagoUSD
+                    dSaldoAnteriorMonedaVenta = dVtaSaldoUSD
+                    dSaldoAnteriorMonedaPago = dVtaSaldoMXN_TpPago
+            End Select
+
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoUSDCapturado).Text = dPagoUSD.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcTotal).Text = dCxcTotal.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcIvaCobrado).Text = dCxcIvaCobrado.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcIvaPendienteCobro).Text = dCxcIvaPendienteCobro.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcDiferenciaCambiaria).Text = dDiferenciaCambiaria.ToString
+
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcImporteMonedaVenta).Text = dImporteMonedaVenta.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcSaldoAnteriorMonedaVenta).Text = dSaldoAnteriorMonedaVenta.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcSaldoAnteriorMonedaPago).Text = dSaldoAnteriorMonedaPago.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoSubtotaMXNViejos).Text = dCxcPagoSubtotaMXNViejos.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoSubtotaMXNNuevos).Text = dCxcPagoSubtotaMXNNuevos.ToString
 
         Catch ex As Exception
             HandleError(Me.Name, "CalculaImportesPagoMXN", ex)
+        End Try
+    End Sub
+
+    Private Sub CalculaImportesPagoMXN_intento1(ByVal Renglon As Integer)
+        Try
+            Dim dPagoTipoCambio As Decimal, dPagoUSD As Decimal, dPagoUSD_IVA As Decimal, dPagoUSD_Subtotal As Decimal
+            Dim dVtaIvaMXN As Decimal, dVtaTotalMXN As Decimal, dVtaTotalUSD As Decimal, dVtaIvaUSD As Decimal, dVtaTipoCambio As Decimal, sVtaMoneda As String, dVtaSaldoMXN_TpPago As Decimal, dVtaSaldoMXN_CXC As Decimal, dVtaSaldoUSD As Decimal
+            Dim dCxcPagoMXNCapturado As Decimal, dCxcTotal As Decimal, dDiferenciaCambiaria As Decimal, dCxcIvaCobrado As Decimal, dCxcIvaPendienteCobro As Decimal
+            Dim dImporteMonedaVenta As Decimal, dSaldoAnteriorMonedaVenta As Decimal, dSaldoAnteriorMonedaPago As Decimal
+
+            'Mejor refrescar los datos que tienen que ver con saldos para tener los saldos correctos en cada instante.
+            Dim tSaldos As New Class_find("SELECT " &
+                            "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN ROUND(V.SALDO_DOLARES*" & dPagoTipoCambio.ToString & ",2) ELSE V.SALDO END SALDO_MXN_TP_PAGO," &
+                            "V.SALDO SALDO_CXC," &
+                            "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN V.SALDO_DOLARES ELSE 0 END SALDO_DOLARES " &
+                            "FROM VENTA_GLOBAL V WHERE V.FOLIO_VENTA='" & Me.GridVentas.Cell(Renglon, Me.iGyB_VtaFolio).Text & "'") ' al ser pago_mxn y vta_mxn la vta nunca mostrará saldo en usd
+
+            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoMXN_TpPago).Text = tSaldos.Result1
+            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoMXN_CXC).Text = tSaldos.Result2
+            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoUSD).Text = tSaldos.Result3
+
+            dVtaSaldoMXN_TpPago = CDec(tSaldos.Result1)
+            dVtaSaldoMXN_CXC = CDec(tSaldos.Result2)
+            dVtaSaldoUSD = CDec(tSaldos.Result3)
+
+            dCxcPagoMXNCapturado = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).Text)
+            sVtaMoneda = Me.GridVentas.Cell(Renglon, Me.iGyB_VtaMoneda).Text
+            dPagoTipoCambio = valorNumericoD(Me.txtTipoCambio.Text)
+
+            dVtaTotalMXN = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaTotalMXN).Text)
+            dVtaIvaMXN = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaIvaMXN).Text)
+            dVtaIvaUSD = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaIvaUSD).Text)
+            dVtaTotalUSD = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaTotalUSD).Text)
+            dVtaTipoCambio = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaTipoCambio).Text)
+
+            Select Case sVtaMoneda
+                Case "MXN" 'PagoMXN,VtaMXN
+                    dPagoUSD = 0
+                    dPagoUSD_IVA = 0
+                    dPagoUSD_Subtotal = 0
+                    dDiferenciaCambiaria = 0
+
+                    dCxcTotal = dCxcPagoMXNCapturado
+
+                    dCxcIvaCobrado = RedondearD((dCxcPagoMXNCapturado / dVtaTotalMXN) * dVtaIvaMXN, 2)
+
+                    dCxcIvaPendienteCobro = dCxcIvaCobrado
+
+                    dImporteMonedaVenta = dCxcTotal
+                    dSaldoAnteriorMonedaVenta = dVtaSaldoMXN_CXC
+                    dSaldoAnteriorMonedaPago = dVtaSaldoMXN_CXC
+
+                Case "USD" 'PagoMXN,VtaUSD
+
+                    'Si están saldando los mxn a tipo de cambio pago(no venta.saldo porque es a tpventa) entonces se toma directo el saldo en mxn para evitar queden decimales, y también se toma el saldo_usd por lo mismo.
+                    If dCxcPagoMXNCapturado = dVtaSaldoMXN_TpPago Then
+                        dPagoUSD = dVtaSaldoUSD
+                        dCxcTotal = dVtaSaldoMXN_CXC
+                    Else
+                        dPagoUSD = RedondearD(dCxcPagoMXNCapturado / dPagoTipoCambio, 2)
+                        dCxcTotal = RedondearD(dPagoUSD * dVtaTipoCambio, 2)
+                    End If
+
+                    dPagoUSD_IVA = RedondearD((dPagoUSD / dVtaTotalUSD) * dVtaIvaUSD, 2) 'Se obtiene el iva en usd por proporción
+                    dPagoUSD_Subtotal = RedondearD(dPagoUSD - dPagoUSD_IVA, 2)
+                    'MsgBox(RedondearD(dPagoTipoCambio - dVtaTipoCambio, 4).ToString)
+                    'MsgBox((RedondearD(dPagoTipoCambio - dVtaTipoCambio, 4) * dPagoUSD_Subtotal).ToString)
+                    dDiferenciaCambiaria = Math.Round((dPagoTipoCambio - dVtaTipoCambio) * dPagoUSD_Subtotal, 2) 'Nota no se usa la función redondear porque cuando son negativos no redondea bien.
+
+                    dCxcIvaCobrado = RedondearD(dPagoUSD_IVA * dPagoTipoCambio, 2)
+
+                    'Como plus si estan pagando los usd originales de la venta entonces el iva pendiente de cobro(también llamado iva viejo) lo tomamos directo de la venta para evitar diferencias.
+                    If dPagoUSD = dVtaTotalUSD Then
+                        dCxcIvaPendienteCobro = dVtaIvaMXN
+                    Else
+                        dCxcIvaPendienteCobro = RedondearD(dPagoUSD_IVA * dVtaTipoCambio, 2)
+                    End If
+
+                    dImporteMonedaVenta = dPagoUSD
+                    dSaldoAnteriorMonedaVenta = dVtaSaldoUSD
+                    dSaldoAnteriorMonedaPago = dVtaSaldoMXN_TpPago
+            End Select
+
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoUSDCapturado).Text = dPagoUSD.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcTotal).Text = dCxcTotal.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcIvaCobrado).Text = dCxcIvaCobrado.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcIvaPendienteCobro).Text = dCxcIvaPendienteCobro.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcDiferenciaCambiaria).Text = dDiferenciaCambiaria.ToString
+
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcImporteMonedaVenta).Text = dImporteMonedaVenta.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcSaldoAnteriorMonedaVenta).Text = dSaldoAnteriorMonedaVenta.ToString
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcSaldoAnteriorMonedaPago).Text = dSaldoAnteriorMonedaPago.ToString
+
+        Catch ex As Exception
+            HandleError(Me.Name, "CalculaImportesPagoMXN_intento1", ex)
         End Try
     End Sub
 
@@ -3375,9 +4112,13 @@ Buscar:
         Try
             Dim Columna As Integer = Me.GridVentas.Selection.FirstCol, Renglon As Integer = Me.GridVentas.Selection.FirstRow
             Dim StrCod As String = Me.GridVentas.Cell(Renglon, Columna).Text
-            Dim dTipoCambioPago As Decimal ', dPesosViejos As Decimal, dPesosNuevos As Decimal, dDiferencia As Decimal
+            Dim dPagoTipoCambio As Decimal ', dPesosViejos As Decimal, dPesosNuevos As Decimal, dDiferencia As Decimal
+            Dim dCxcPagoMXNCapturado As Decimal
+            Dim dPagoUSD As Decimal
+            Dim sVtaMoneda As String, dVtaSaldoMXN_TpPago As Decimal, dVtaSaldoMXN_CXC As Decimal, dVtaSaldoUSD As Decimal
 
-            Dim dPago As Double
+            sVtaMoneda = Me.GridVentas.Cell(Renglon, Me.iGyB_VtaMoneda).Text
+            dPagoTipoCambio = valorNumericoD(Me.txtTipoCambio.Text)
 
             Select Case e.KeyCode
                 Case Keys.Enter
@@ -3387,41 +4128,118 @@ Buscar:
                         'Case 6
                         '    Me.Grid1.Cell(Renglon, 6).SetFocus()
 
-                        Case Me.iGyVentaPago
-                            dPago = valorNumerico(Me.GridVentas.Cell(Renglon, Me.iGyVentaPago).Text)
-                            dTipoCambioPago = valorNumericoD(Me.txtTipoCambio.Text)
+                        Case Me.iGyB_CxcPagoMXNCapturado
+                            If Me.cboMonedaPago.Text <> "MXN" Then 'Pago MXN
+                                MsgBox("Este dato sólo es capturable si esta pagando pesos.", MsgBoxStyle.Exclamation, sProcedure)
+                                Return
+                            End If
 
-                            If dPago > 0 And txtLEN(Me.GridVentas.Cell(Renglon, Me.iGyVentaFolio).Text) = True Then
-                                If Me.cboMoneda.Text = "USD" Then
-                                    If dPago > valorNumerico(Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldoDlls).Text) And Me.GridVentas.Locked = False Then
-                                        MsgBox("El pago en el renglón: " & Renglon & " es mayor al saldo del documento favor de revisar.", MsgBoxStyle.Exclamation, sProcedure)
-                                        Me.GridVentas.Cell(Renglon, Me.iGyVentaPago).Text = "0.00"
-                                        Me.GridVentas.Cell(Renglon, Me.iGyVentaPago).SetFocus()
-                                        Me.BorraPago(Renglon)
-                                        Exit Sub
-                                    End If
+                            If txtLEN(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaFolio).Text) = False Then
+                                Return
+                            End If
 
-                                    Me.CalculaImportesPagoUSD(Renglon)
+                            'Mejor refrescar los datos que tienen que ver con saldos para tener los saldos correctos en cada instante.
+                            Dim tSaldos As New Class_find("SELECT " &
+                            "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN ROUND(V.SALDO_DOLARES*" & dPagoTipoCambio.ToString & ",2) ELSE V.SALDO END SALDO_MXN_TP_PAGO," &
+                            "V.SALDO SALDO_CXC," &
+                            "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN V.SALDO_DOLARES ELSE 0 END SALDO_DOLARES " &
+                            "FROM VENTA_GLOBAL V WHERE V.FOLIO_VENTA='" & Me.GridVentas.Cell(Renglon, Me.iGyB_VtaFolio).Text & "'") ' al ser pago_mxn y vta_mxn la vta nunca mostrará saldo en usd
 
-                                Else 'MXN
-                                    If dPago > valorNumerico(Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldo).Text) And Me.GridVentas.Locked = False Then
-                                        MsgBox("El pago en el renglón: " & Renglon & " es mayor al saldo del documento favor de revisar.", MsgBoxStyle.Exclamation, sProcedure)
-                                        Me.GridVentas.Cell(Renglon, Me.iGyVentaPago).Text = "0.00"
-                                        Me.GridVentas.Cell(Renglon, Me.iGyVentaPago).SetFocus()
-                                        Me.BorraPago(Renglon)
-                                        Exit Sub
-                                    End If
+                            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoMXN_TpPago).Text = tSaldos.Result1
+                            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoMXN_CXC).Text = tSaldos.Result2
+                            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoUSD).Text = tSaldos.Result3
 
-                                    Me.CalculaImportesPagoMXN(Renglon)
+                            dVtaSaldoMXN_TpPago = CDec(tSaldos.Result1)
+                            dVtaSaldoMXN_CXC = CDec(tSaldos.Result2)
+                            dVtaSaldoUSD = CDec(tSaldos.Result3)
 
+                            dCxcPagoMXNCapturado = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).Text)
+
+                            If dCxcPagoMXNCapturado > 0 Then
+
+                                If Me.GridVentas.Cell(Renglon, Me.iGyB_VtaEsFacturaAnticipo).Text = "1" AndAlso sVtaMoneda <> Me.cboMonedaPago.Text Then
+                                    MsgBox("El pago en el renglón: " & Renglon.ToString & " es de un anticipo hecho en " & sVtaMoneda & ", debe de pagarlo en esa misma moneda y al 100%.", MsgBoxStyle.Exclamation, sProcedure)
+                                    Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).SetFocus()
+                                    Me.BorraPago(Renglon)
+                                    Exit Sub
                                 End If
 
-                            ElseIf dPago > 0 And Me.GridVentas.Rows = Renglon Then
-                                Me.GridVentas.Rows = Me.GridVentas.Rows + 1
+                                If dCxcPagoMXNCapturado > dVtaSaldoMXN_TpPago And Me.GridVentas.Locked = False Then
+                                    MsgBox("El pago por " & FormatImporteContable(dCxcPagoMXNCapturado) & " MXN en el renglón: " & Renglon.ToString & " es mayor al saldo del documento de " & FormatImporteContable(dVtaSaldoMXN_TpPago) & " favor de revisar.",
+                                           MsgBoxStyle.Exclamation, sProcedure)
+                                    Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).SetFocus()
+                                    Me.BorraPago(Renglon)
+                                    Exit Sub
+                                End If
 
-                            ElseIf dPago = 0 Then
+                                Me.CalculaImportesPagoMXN(Renglon)
+
+                                'ElseIf dCxcPagoMXNCapturado > 0 And Me.GridVentas.Rows = Renglon Then
+                                'Me.GridVentas.Rows = Me.GridVentas.Rows + 1
+
+                            ElseIf dCxcPagoMXNCapturado = 0 Then
                                 Me.BorraPago(Renglon)
                             End If
+
+                        Case Me.iGyB_CxcPagoUSDCapturado
+                            If Me.cboMonedaPago.Text <> "USD" Then 'Pago USD
+                                MsgBox("Este dato sólo es capturable si esta pagando dólares.", MsgBoxStyle.Exclamation, sProcedure)
+                                Return
+                            End If
+
+                            If txtLEN(Me.GridVentas.Cell(Renglon, Me.iGyB_VtaFolio).Text) = False Then
+                                Return
+                            End If
+
+                            If dPagoTipoCambio <= 0 Then
+                                MsgBox("Debe primero asignar un tipo de cambio para el pago.", MsgBoxStyle.Exclamation, sProcedure)
+                                Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoUSDCapturado).SetFocus()
+                                Me.BorraPago(Renglon)
+                                Return
+                            End If
+
+                            'Mejor refrescar los datos que tienen que ver con saldos para tener los saldos correctos en cada instante.
+                            Dim tSaldos As New Class_find("SELECT " &
+                            "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN ROUND(V.SALDO_DOLARES*" & dPagoTipoCambio.ToString & ",2) ELSE V.SALDO END SALDO_MXN_TP_PAGO," &
+                            "V.SALDO SALDO_CXC," &
+                            "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN V.SALDO_DOLARES ELSE ROUND(V.SALDO/" & dPagoTipoCambio.ToString & ",2) END SALDO_DOLARES " &
+                            "FROM VENTA_GLOBAL V WHERE V.FOLIO_VENTA='" & Me.GridVentas.Cell(Renglon, Me.iGyB_VtaFolio).Text & "'")
+
+                            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoMXN_TpPago).Text = tSaldos.Result1
+                            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoMXN_CXC).Text = tSaldos.Result2
+                            Me.GridVentas.Cell(Renglon, Me.iGyB_VtaSaldoUSD).Text = tSaldos.Result3
+
+                            dVtaSaldoMXN_TpPago = CDec(tSaldos.Result1)
+                            dVtaSaldoMXN_CXC = CDec(tSaldos.Result2)
+                            dVtaSaldoUSD = CDec(tSaldos.Result3)
+
+                            dPagoUSD = valorNumericoD(Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoUSDCapturado).Text)
+
+                            If dPagoUSD > 0 Then
+                                If Me.GridVentas.Cell(Renglon, Me.iGyB_VtaEsFacturaAnticipo).Text = "1" AndAlso sVtaMoneda <> Me.cboMonedaPago.Text Then
+                                    MsgBox("El pago en el renglón: " & Renglon.ToString & " es de un anticipo hecho en " & sVtaMoneda & ", debe de pagarlo en esa misma moneda y al 100%.", MsgBoxStyle.Exclamation, sProcedure)
+                                    Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).SetFocus()
+                                    Me.BorraPago(Renglon)
+                                    Exit Sub
+                                End If
+
+                                If dPagoUSD > dVtaSaldoUSD And Me.GridVentas.Locked = False Then
+                                    MsgBox("El pago por " & FormatImporteContable(dPagoUSD) & " USD en el renglón: " & Renglon.ToString & " es mayor al saldo del documento de " & FormatImporteContable(dVtaSaldoUSD) & " favor de revisar.",
+                                           MsgBoxStyle.Exclamation, sProcedure)
+                                    Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoUSDCapturado).SetFocus()
+                                    Me.BorraPago(Renglon)
+                                    Return
+                                End If
+
+                                Me.CalculaImportesPagoUSD(Renglon)
+
+                                'ElseIf dPagoUSD > 0 And Me.GridVentas.Rows = Renglon Then
+                                'Me.GridVentas.Rows = Me.GridVentas.Rows + 1
+
+                            ElseIf dPagoUSD = 0 Then
+                                Me.BorraPago(Renglon)
+                            End If
+
                     End Select
 
                 Case Keys.F8
@@ -3441,12 +4259,17 @@ Buscar:
 
     Private Sub BorraPago(ByVal Renglon As Integer)
         Try
-            Me.GridVentas.Cell(Renglon, Me.iGyVentaPago).Text = "0"
-            Me.GridVentas.Cell(Renglon, Me.iGyVentaPagoPesos).Text = "0"
-            Me.GridVentas.Cell(Renglon, Me.iGyVentaDiferencia).Text = "0"
-            Me.GridVentas.Cell(Renglon, Me.iGyVentaImporteMonedaVenta).Text = "0"
-            Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldoAnteriorMonedaVenta).Text = "0"
-            Me.GridVentas.Cell(Renglon, Me.iGyVentaSaldoAnteriorMonedaPago).Text = "0"
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).Text = "0"
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoUSDCapturado).Text = "0"
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcTotal).Text = "0"
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcIvaCobrado).Text = "0"
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcIvaPendienteCobro).Text = "0"
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcDiferenciaCambiaria).Text = "0"
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcImporteMonedaVenta).Text = "0"
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcSaldoAnteriorMonedaVenta).Text = "0"
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcSaldoAnteriorMonedaPago).Text = "0"
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoSubtotaMXNViejos).Text = "0"
+            Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoSubtotaMXNNuevos).Text = "0"
         Catch ex As Exception
             HandleError(Me.Name, "BorraPago", ex)
         End Try
@@ -3552,14 +4375,13 @@ Buscar:
         Dim bResultado As Boolean = False, dPago As Double, sFacturas As String = ""
         Try
             For i = 1 To Me.GridVentas.Rows - 1
-                dPago = valorNumerico(Me.GridVentas.Cell(i, Me.iGyVentaPago).Text)
+                dPago = valorNumerico(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text)
                 If dPago > 0 Then
-
                     'Si es una factura electrónica de crédito y no esta timbrada
-                    If Me.GridVentas.Cell(i, Me.iGyVentaEsFacturaElectronica).Text = "1" And Me.GridVentas.Cell(i, Me.iGyVentaFormaPago).Text = "99" And Me.GridVentas.Cell(i, Me.iGyVentaMetodoPago).Text = "PPD" And
-                        txtLEN(Me.GridVentas.Cell(i, Me.iGyVentaVersionCFDI).Text) = False Then
+                    If Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaElectronica).Text = "1" And Me.GridVentas.Cell(i, Me.iGyB_VtaFormaPago).Text = "99" And Me.GridVentas.Cell(i, Me.iGyB_VtaMetodoPago).Text = "PPD" And
+                        txtLEN(Me.GridVentas.Cell(i, Me.iGyB_VtaVersionCFDI).Text) = False Then
 
-                        sFacturas = sFacturas & Me.GridVentas.Cell(i, Me.iGyVentaFolio).Text & ","
+                        sFacturas = sFacturas & Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text & ","
                     End If
                 End If
             Next
@@ -3609,7 +4431,7 @@ Buscar:
         If oTipoCambio.Existe AndAlso oTipoCambio.TIPO_DE_CAMBIO > 0 Then
             Me.txtTipoCambio.Text = oTipoCambio.TIPO_DE_CAMBIO.ToString
         Else
-            If Me.cboMoneda.Text = "USD" Then
+            If Me.cboMonedaPago.Text = "USD" Then
                 MsgBox("No se ha capturado el tipo de cambio del día.", MsgBoxStyle.Exclamation, Me.Text)
             End If
         End If
@@ -3632,6 +4454,36 @@ Buscar:
             HandleError(Me.Name, "DesplegarRegimenesFiscales", ex)
         End Try
     End Sub
+
+    Private Sub VisibilidadColumnasGridVentas()
+        Try
+            If Me.cboMonedaPago.Text = "USD" Then
+                Me.GridVentas.Column(Me.iGyB_VtaTotalMXN).Visible = False
+                Me.GridVentas.Column(Me.iGyB_VtaSaldoMXN_TpPago).Visible = False
+                Me.GridVentas.Column(Me.iGyB_VtaIvaUSD).Visible = False
+                Me.GridVentas.Column(Me.iGyB_VtaTotalUSD).Visible = True
+                Me.GridVentas.Column(Me.iGyB_VtaSaldoUSD).Visible = True
+                Me.GridVentas.Column(Me.iGyB_CxcDiferenciaCambiaria).Visible = True
+                Me.GridVentas.Column(Me.iGyB_CxcTotal).Visible = True
+            Else 'Pago MXN
+                Me.GridVentas.Column(Me.iGyB_VtaTotalMXN).Visible = True
+                Me.GridVentas.Column(Me.iGyB_VtaSaldoMXN_TpPago).Visible = True
+                Me.GridVentas.Column(Me.iGyB_VtaIvaUSD).Visible = False
+                Me.GridVentas.Column(Me.iGyB_VtaTotalUSD).Visible = False
+                Me.GridVentas.Column(Me.iGyB_VtaSaldoUSD).Visible = False
+                Me.GridVentas.Column(Me.iGyB_CxcDiferenciaCambiaria).Visible = True 'False
+                Me.GridVentas.Column(Me.iGyB_CxcTotal).Visible = True ' False
+            End If
+
+            'Recordemos también este código al cargar facturas estando en un pago en mxn, y existiera alguna factura en usd
+            'Me.GridVentas.Column(Me.iGyB_CxcDiferenciaCambiaria).Visible = True 'Recordemos que si la ventaMoneda=USD si hay diferencia cambiaria.
+            'Me.GridVentas.Column(Me.iGyB_CxcTotal).Visible = True
+
+        Catch ex As Exception
+            HandleError(Me.Name, "VisibilidadColumnasGridVentas", ex)
+        End Try
+    End Sub
+
 #End Region
 
 End Class

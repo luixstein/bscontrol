@@ -30,6 +30,12 @@ Public Class Class_CXC_Afecta_Documentos
     Private _IMPORTE_MONEDA_VENTA As Double
     Private _SALDO_ANTERIOR_MONEDA_VENTA As Double
     Private _SALDO_ANTERIOR_MONEDA_PAGO As Double
+    Private _PAGO_MXN_BANCOS As Decimal
+    Private _SUBTOTAL As Decimal
+    Private _SUBTOTAL_COBRADO As Decimal
+    Private _DIFERENCIA_CAMBIARIA As Decimal
+    Private _IVA_COBRADO As Decimal
+    Private _IVA As Decimal
 #End Region
 
 #Region "Campos de control"
@@ -127,6 +133,7 @@ Public Class Class_CXC_Afecta_Documentos
     '        Me._ID_CUENTA_BANCARIA = value
     '    End Set
     'End Property
+
     Public WriteOnly Property FOLIO_POLIZA() As String
         Set(ByVal value As String)
             Me._FOLIO_POLIZA = value
@@ -241,7 +248,41 @@ Public Class Class_CXC_Afecta_Documentos
         End Set
     End Property
 
+    Public WriteOnly Property PAGO_MXN_BANCOS() As Decimal
+        Set(ByVal value As Decimal)
+            Me._PAGO_MXN_BANCOS = value
+        End Set
+    End Property
 
+    Public WriteOnly Property SUBTOTAL() As Decimal
+        Set(ByVal value As Decimal)
+            Me._SUBTOTAL = value
+        End Set
+    End Property
+
+    Public WriteOnly Property SUBTOTAL_COBRADO() As Decimal
+        Set(ByVal value As Decimal)
+            Me._SUBTOTAL_COBRADO = value
+        End Set
+    End Property
+
+    Public WriteOnly Property DIFERENCIA_CAMBIARIA() As Decimal
+        Set(ByVal value As Decimal)
+            Me._DIFERENCIA_CAMBIARIA = value
+        End Set
+    End Property
+
+    Public WriteOnly Property IVA_COBRADO() As Decimal
+        Set(ByVal value As Decimal)
+            Me._IVA_COBRADO = value
+        End Set
+    End Property
+
+    Public WriteOnly Property IVA() As Decimal
+        Set(ByVal value As Decimal)
+            Me._IVA = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedad Nombre de Clase"
@@ -299,6 +340,12 @@ Public Class Class_CXC_Afecta_Documentos
             sqlParametro = .Parameters.Add("@IMPORTE_MONEDA_VENTA", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPORTE_MONEDA_VENTA
             sqlParametro = .Parameters.Add("@SALDO_ANTERIOR_MONEDA_VENTA", SqlDbType.Decimal) : sqlParametro.Value = Me._SALDO_ANTERIOR_MONEDA_VENTA
             sqlParametro = .Parameters.Add("@SALDO_ANTERIOR_MONEDA_PAGO", SqlDbType.Decimal) : sqlParametro.Value = Me._SALDO_ANTERIOR_MONEDA_PAGO
+            sqlParametro = .Parameters.Add("@DIFERENCIA_CAMBIARIA", SqlDbType.Decimal) : sqlParametro.Value = Me._DIFERENCIA_CAMBIARIA
+            sqlParametro = .Parameters.Add("@PAGO_MXN_BANCOS", SqlDbType.Decimal) : sqlParametro.Value = Me._PAGO_MXN_BANCOS
+            sqlParametro = .Parameters.Add("@SUBTOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL
+            sqlParametro = .Parameters.Add("@SUBTOTAL_COBRADO", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL_COBRADO
+            sqlParametro = .Parameters.Add("@IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._IVA
+            sqlParametro = .Parameters.Add("@IVA_COBRADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IVA_COBRADO
 
             Try
                 Me._Conexion.Open()
