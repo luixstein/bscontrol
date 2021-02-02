@@ -80,7 +80,9 @@ Public Class Frm_CXC_Pagos
     Private iGyB_VtaEsFacturaAnticipo As Integer = 34
     Private iGyB_CxcPagoSubtotaMXNViejos As Integer = 35
     Private iGyB_CxcPagoSubtotaMXNNuevos As Integer = 36
-
+    Private iGyB_VtaRetencionIvaMXN As Integer = 37
+    Private iGyB_VtaRetencionISRMXN As Integer = 38
+    Private iGyB_VtaIEPSDesglosadoEIncluidoMXN As Integer = 39
 #End Region
 
 #Region "Opciones"
@@ -756,7 +758,7 @@ Buscar:
                 .DataSource = Nothing
                 FG_Grid_Limpiar(Me.GridVentas)
                 .Rows = 2
-                .Cols = 37
+                .Cols = 40
                 .DisplayRowNumber = True
                 Me.FormateaGridVentas()
             End With
@@ -819,6 +821,9 @@ Buscar:
                 .Column(Me.iGyB_VtaEsFacturaAnticipo).Width = 60
                 .Column(Me.iGyB_CxcPagoSubtotaMXNViejos).Width = 60
                 .Column(Me.iGyB_CxcPagoSubtotaMXNNuevos).Width = 60
+                .Column(Me.iGyB_VtaRetencionIvaMXN).Width = 60
+                .Column(Me.iGyB_VtaRetencionISRMXN).Width = 60
+                .Column(Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Width = 60
 
                 .Cell(0, Me.iGyB_PagoFolioDetalle).Text = "Folio pago"
                 .Cell(0, Me.iGyB_VtaCodigoCliente).Text = "CodCte"
@@ -844,7 +849,7 @@ Buscar:
                 .Cell(0, Me.iGyB_PagoReferencia).Text = "Referencia"
                 .Cell(0, Me.iGyB_CxcFechaPago).Text = "Fecha pago"
                 .Cell(0, Me.iGyB_CxcIvaCobrado).Text = "IVACobrado" '"IvaXPagar"
-                .Cell(0, Me.iGyB_CxcIvaPendienteCobro).Text = "IVAPndCobro"
+                .Cell(0, Me.iGyB_CxcIvaPendienteCobro).Text = "IVAPendCob"
                 .Cell(0, Me.iGyB_CxcDiferenciaCambiaria).Text = "Diferen.camb."
                 .Cell(0, Me.iGyB_VtaVersionCFDI).Text = "V.CFDI"
                 .Cell(0, Me.iGyB_VtaFormaPago).Text = "F. Pago"
@@ -856,6 +861,9 @@ Buscar:
                 .Cell(0, Me.iGyB_VtaEsFacturaAnticipo).Text = "FacAnt"
                 .Cell(0, Me.iGyB_CxcPagoSubtotaMXNViejos).Text = "CXCSubTotal"
                 .Cell(0, Me.iGyB_CxcPagoSubtotaMXNNuevos).Text = "CXCSubTotalMXNNuevos"
+                .Cell(0, Me.iGyB_VtaRetencionIvaMXN).Text = "V.RetIVA"
+                .Cell(0, Me.iGyB_VtaRetencionISRMXN).Text = "V.RetISR"
+                .Cell(0, Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Text = "V.RetIEPS"
 
                 Me.DespliegaCombosGrid()
 
@@ -962,6 +970,21 @@ Buscar:
                 .Column(Me.iGyB_CxcPagoSubtotaMXNNuevos).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
                 .Column(Me.iGyB_CxcPagoSubtotaMXNNuevos).Alignment = FlexCell.AlignmentEnum.RightCenter
 
+                .Column(Me.iGyB_VtaRetencionIvaMXN).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_VtaRetencionIvaMXN).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_VtaRetencionIvaMXN).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_VtaRetencionIvaMXN).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyB_VtaRetencionISRMXN).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_VtaRetencionISRMXN).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_VtaRetencionISRMXN).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_VtaRetencionISRMXN).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Alignment = FlexCell.AlignmentEnum.RightCenter
+
                 .Column(Me.iGyB_PagoSeleccion).CellType = FlexCell.CellTypeEnum.CheckBox
 
                 .Column(Me.iGyB_CxcFechaPago).CellType = FlexCell.CellTypeEnum.DateTime
@@ -1005,7 +1028,9 @@ Buscar:
                 .Column(Me.iGyB_VtaEsFacturaAnticipo).Locked = True
                 .Column(Me.iGyB_CxcPagoSubtotaMXNViejos).Locked = True : .Column(Me.iGyB_CxcPagoSubtotaMXNViejos).Visible = False
                 .Column(Me.iGyB_CxcPagoSubtotaMXNNuevos).Locked = True : .Column(Me.iGyB_CxcPagoSubtotaMXNNuevos).Visible = False
-
+                .Column(Me.iGyB_VtaRetencionIvaMXN).Locked = True : .Column(Me.iGyB_VtaRetencionIvaMXN).Visible = False
+                .Column(Me.iGyB_VtaRetencionISRMXN).Locked = True : .Column(Me.iGyB_VtaRetencionISRMXN).Visible = False
+                .Column(Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Locked = True : .Column(Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Visible = False
             End With
 
         Catch ex As Exception
@@ -1321,7 +1346,8 @@ Buscar:
                             "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN ROUND(V.SALDO_DOLARES*" & dTipoCambioPago.ToString & ",2) ELSE V.SALDO END SALDO_MXN_TP_PAGO,V.SALDO SALDO_CXC," &
                             "CASE WHEN V.CODIGO_MONEDA_SAT='USD' THEN V.SALDO_DOLARES ELSE ROUND(V.SALDO/" & dTipoCambioPago.ToString & ",2) END SALDO_DOLARES," &
                             "V.VERSION_ESQUEMA_XML,V.CODIGO_METODO_PAGO,V.CODIGO_METODO_PAGO_EVENTO,V.ES_FACTURA_ELECTRONICA,DOC.ES_FACTURA_ANTICIPO, " &
-                            "V.IMPUESTO IVA_MXN,V.TIPO_DE_CAMBIO,V.SUBTOTAL_USD,V.IMPUESTO_USD,V.TOTAL_DOLARES " &
+                            "V.IMPUESTO IVA_MXN,V.TIPO_DE_CAMBIO,V.SUBTOTAL_USD,V.IMPUESTO_USD,V.TOTAL_DOLARES," &
+                            "V.RETENCION_IVA,V.RETENCION_ISR,V.IEPS_TOTAL_DESGLOSADO+V.IEPS_TOTAL_YA_INCLUIDO IEPS_TOTAL " &
                             "FROM VENTA_GLOBAL V " &
                             "INNER JOIN CAT_CLIENTES CTE ON(V.CODIGO_CLIENTE=CTE.CODIGO_CLIENTE)" &
                             "LEFT JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(V.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
@@ -1345,7 +1371,7 @@ Buscar:
             sSQL = sSQL & " AND DOC.CODIGO_DOCUMENTO LIKE 'F%' "
         End If
 
-        sSQL = sSQL & " ORDER BY V.FECHA"
+        sSQL = sSQL & " ORDER BY V.FECHA,V.ID_VENTA_GLOBAL"
 
         cmd = New SqlCommand(sSQL, Conexion)
 
@@ -1410,6 +1436,9 @@ Buscar:
                     Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaAnticipo).Text = "0"
                     Me.GridVentas.Cell(i, Me.iGyB_CxcPagoSubtotaMXNViejos).Text = "0"
                     Me.GridVentas.Cell(i, Me.iGyB_CxcPagoSubtotaMXNNuevos).Text = "0"
+                    Me.GridVentas.Cell(i, Me.iGyB_VtaRetencionIvaMXN).Text = "0"
+                    Me.GridVentas.Cell(i, Me.iGyB_VtaRetencionISRMXN).Text = "0"
+                    Me.GridVentas.Cell(i, Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Text = "0"
 
                     Me.GridVentas.Row(i).Locked = True 'No podrán editar este renglón, y además recuerde
                     Me.GridVentas.Row(i).Visible = False 'No se muestra al usuario cuando se esta haciendo el anticipo, no debe usarse para grabar un pago normal, sólo si hay anticipo
@@ -1471,6 +1500,10 @@ Buscar:
                             Me.GridVentas.Cell(i, Me.iGyB_CxcSaldoAnteriorMonedaPago).Text = "0"
                             Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaElectronica).Text = dReader("ES_FACTURA_ELECTRONICA").ToString
                             Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaAnticipo).Text = dReader("ES_FACTURA_ANTICIPO").ToString
+
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaRetencionIvaMXN).Text = dReader("RETENCION_IVA").ToString
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaRetencionISRMXN).Text = dReader("RETENCION_ISR").ToString
+                            Me.GridVentas.Cell(i, Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Text = dReader("IEPS_TOTAL").ToString
 
                             i = i + 1
                         End If
@@ -2211,6 +2244,7 @@ Buscar:
             'Me.oFormaPoliza.Grid1.Cols = 7
 
             Dim i As Integer, R As Integer = 1, dCxcPagoMXNCapturado As Decimal = 0, dPagoUSD As Decimal = 0, dCxcTotal As Decimal = 0, dIVACobrado As Decimal = 0, dIVAPendienteCobro As Decimal = 0, dPerdidaGanancia As Decimal = 0
+            Dim dVtaRetencionIvaMXN As Decimal = 0, dVtaRetencionISRMXN As Decimal = 0, dVtaIEPSDesglosadoEIncluidoMXN As Decimal = 0
             Dim oCuentasIVA As Class_find
 
             Dim dBancosMXN As Decimal = CDec(FG_Grid_SumaCol(Me.GridVentas, CShort(Me.iGyB_CxcPagoMXNCapturado)))
@@ -2240,6 +2274,10 @@ Buscar:
                             Continue For
                         End If
 
+                        dVtaRetencionIvaMXN = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_VtaRetencionIvaMXN).Text)
+                        dVtaRetencionISRMXN = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_VtaRetencionISRMXN).Text)
+                        dVtaIEPSDesglosadoEIncluidoMXN = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Text)
+
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                         'Clientes
                         dCxcTotal = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcTotal).Text)
@@ -2260,13 +2298,16 @@ Buscar:
                         Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
                         Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dCxcTotal.ToString
 
+                        If dVtaRetencionIvaMXN > 0 Or dVtaRetencionISRMXN > 0 Or dVtaIEPSDesglosadoEIncluidoMXN > 0 Then
+                            MsgBox("La venta " & Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text & " tiene ya sea retención de IVA,ISR o IEPS. " & vbCrLf &
+                                   "Usted debe contabilizar manualmente estos impuestos por el momento, y revisar toda la póliza debido a estos impuestos y como afectaria en el iva pend trasladar y trasladado.", MsgBoxStyle.Exclamation, sProcedure)
+                        End If
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                         'Perdida/Ganancia cambiaria
                         dPerdidaGanancia = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcDiferenciaCambiaria).Text)
 
                         If Math.Abs(dPerdidaGanancia) > 0 Then
-
-                            MsgBox("falta ver si son 2 cuentas diferentes")
+                            'MsgBox("falta ver si son 2 cuentas diferentes")
                             oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_PERDIDA_GANACIA_CAMBIARIA)
 
                             R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
@@ -2385,6 +2426,15 @@ Buscar:
                             Continue For
                         End If
 
+                        dVtaRetencionIvaMXN = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_VtaRetencionIvaMXN).Text)
+                        dVtaRetencionISRMXN = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_VtaRetencionISRMXN).Text)
+                        dVtaIEPSDesglosadoEIncluidoMXN = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Text)
+
+                        If dVtaRetencionIvaMXN > 0 Or dVtaRetencionISRMXN > 0 Or dVtaIEPSDesglosadoEIncluidoMXN > 0 Then
+                            MsgBox("La venta " & Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text & " tiene ya sea retención de IVA,ISR o IEPS. " & vbCrLf &
+                                   "Usted debe contabilizar manualmente estos impuestos por el momento, y revisar toda la póliza debido a estos impuestos y como afectaria en el iva pend trasladar y trasladado.", MsgBoxStyle.Exclamation, sProcedure)
+                        End If
+
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                         'Clientes
                         dCxcTotal = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcTotal).Text)
@@ -2410,7 +2460,7 @@ Buscar:
                         dPerdidaGanancia = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcDiferenciaCambiaria).Text)
 
                         If Math.Abs(dPerdidaGanancia) > 0 Then
-                            MsgBox("falta ver si son 2 cuentas diferentes")
+                            'MsgBox("falta ver si son 2 cuentas diferentes")
                             oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_PERDIDA_GANACIA_CAMBIARIA)
 
                             R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
@@ -4327,7 +4377,6 @@ Buscar:
             For i = 1 To Me.GridVentas.Rows - 1
                 dPago = valorNumerico(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text)
                 If dPago > 0 Then
-
                     'Si es una factura electrónica de crédito y no esta timbrada
                     If Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaElectronica).Text = "1" And Me.GridVentas.Cell(i, Me.iGyB_VtaFormaPago).Text = "99" And Me.GridVentas.Cell(i, Me.iGyB_VtaMetodoPago).Text = "PPD" And
                         txtLEN(Me.GridVentas.Cell(i, Me.iGyB_VtaVersionCFDI).Text) = False Then

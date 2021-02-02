@@ -130,7 +130,7 @@ Partial Class Frm_CXC_Pagos
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimirPoliza, Me.tsbImprimirComprobante, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1573, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1156, 27)
         Me.tsMenu.TabIndex = 5
         Me.tsMenu.Text = "tsMenu"
         '
@@ -906,7 +906,7 @@ Partial Class Frm_CXC_Pagos
         Me.gbVentas.Controls.Add(Me.GridVentas)
         Me.gbVentas.Location = New System.Drawing.Point(8, 430)
         Me.gbVentas.Name = "gbVentas"
-        Me.gbVentas.Size = New System.Drawing.Size(1560, 225)
+        Me.gbVentas.Size = New System.Drawing.Size(1144, 225)
         Me.gbVentas.TabIndex = 2
         Me.gbVentas.TabStop = False
         Me.gbVentas.Text = "Ventas"
@@ -926,7 +926,7 @@ Partial Class Frm_CXC_Pagos
         Me.GridVentas.LockButton = True
         Me.GridVentas.Name = "GridVentas"
         Me.GridVentas.Rows = 7
-        Me.GridVentas.Size = New System.Drawing.Size(1544, 200)
+        Me.GridVentas.Size = New System.Drawing.Size(1131, 200)
         Me.GridVentas.TabIndex = 0
         Me.GridVentas.UncheckedImage = CType(resources.GetObject("GridVentas.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -936,7 +936,7 @@ Partial Class Frm_CXC_Pagos
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssEstado, Me.tssElaboro, Me.tssCancelo, Me.tssFechaEmisionCFDI})
         Me.StatusStripEstado.Location = New System.Drawing.Point(0, 658)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1573, 24)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1156, 24)
         Me.StatusStripEstado.TabIndex = 240
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -1059,7 +1059,7 @@ Partial Class Frm_CXC_Pagos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1573, 682)
+        Me.ClientSize = New System.Drawing.Size(1156, 682)
         Me.Controls.Add(Me.btnGenerarCFDIS)
         Me.Controls.Add(Me.btnVerCFDIS)
         Me.Controls.Add(Me.gbDocumentosPago)
