@@ -2340,7 +2340,7 @@ Buscar:
                                                     "INNER JOIN VENTA_GLOBAL V ON(I.PORCENTAJE=V.IMPUESTO_PORCENTAJE) " &
                                                     "WHERE V.FOLIO_VENTA='" & Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text & "'")
 
-                        If bEsVentaAnticipo = False Then 'Sólo si es venta normal se contabiliza el iva pendiente de cobro, cuando es anticipo no se contabiliza esta pero si la del iva cobrado.
+                        If bEsVentaAnticipo = False Then 'Sólo si es venta normal se contabiliza el iva pendiente de cobro.
                             dIVAPendienteCobro = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcIvaPendienteCobro).Text)
 
                             If dIVAPendienteCobro > 0 Then
@@ -2354,6 +2354,9 @@ Buscar:
                                 Me.oFormaPoliza.Grid1.Cell(R, 5).Text = dIVAPendienteCobro.ToString
                                 Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
                             End If
+
+                        Else 'Es venta de anticipo
+                            'Cuando es anticipo no se contabiliza el iva pendiente de cobro pero si el iva cobrado. 
                         End If
 
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -2500,7 +2503,7 @@ Buscar:
                                                     "INNER JOIN VENTA_GLOBAL V ON(I.PORCENTAJE=V.IMPUESTO_PORCENTAJE) " &
                                                     "WHERE V.FOLIO_VENTA='" & Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text & "'")
 
-                        If bEsVentaAnticipo = False Then 'Sólo si es venta normal se contabiliza el iva pendiente de cobro, cuando es anticipo no se contabiliza esta pero si la del iva cobrado.
+                        If bEsVentaAnticipo = False Then 'Sólo si es venta normal se contabiliza el iva pendiente de cobro. 
                             dIVAPendienteCobro = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcIvaPendienteCobro).Text)
 
                             If dIVAPendienteCobro > 0 Then
@@ -2514,6 +2517,9 @@ Buscar:
                                 Me.oFormaPoliza.Grid1.Cell(R, 5).Text = dIVAPendienteCobro.ToString
                                 Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
                             End If
+
+                        Else 'Es venta de anticipo
+                            'Cuando es anticipo no se contabiliza el iva pendiente de cobro pero si el iva cobrado. 
                         End If
 
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
