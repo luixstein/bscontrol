@@ -2244,7 +2244,7 @@ Buscar:
             'Me.oFormaPoliza.Grid1.Cols = 7
 
             Dim i As Integer, R As Integer = 1, dCxcPagoMXNCapturado As Decimal = 0, dPagoUSD As Decimal = 0, dCxcTotal As Decimal = 0, dIVACobrado As Decimal = 0, dIVAPendienteCobro As Decimal = 0, dPerdidaGanancia As Decimal = 0
-            Dim dVtaRetencionIvaMXN As Decimal = 0, dVtaRetencionISRMXN As Decimal = 0, dVtaIEPSDesglosadoEIncluidoMXN As Decimal = 0
+            Dim dVtaRetencionIvaMXN As Decimal = 0, dVtaRetencionISRMXN As Decimal = 0, dVtaIEPSDesglosadoEIncluidoMXN As Decimal = 0, dCxcPagoSubtotaMXNViejos As Decimal = 0, bEsVentaAnticipo As Boolean = False
             Dim oCuentasIVA As Class_find
 
             Dim dBancosMXN As Decimal = CDec(FG_Grid_SumaCol(Me.GridVentas, CShort(Me.iGyB_CxcPagoMXNCapturado)))
@@ -2277,6 +2277,7 @@ Buscar:
                         dVtaRetencionIvaMXN = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_VtaRetencionIvaMXN).Text)
                         dVtaRetencionISRMXN = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_VtaRetencionISRMXN).Text)
                         dVtaIEPSDesglosadoEIncluidoMXN = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Text)
+                        bEsVentaAnticipo = CBool(Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaAnticipo).Text)
 
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                         'Clientes
@@ -2296,7 +2297,12 @@ Buscar:
                         Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
                         Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
                         Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
-                        Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dCxcTotal.ToString
+
+                        If bEsVentaAnticipo = True Then
+                            Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dCxcPagoSubtotaMXNViejos.ToString 'Cuando son anticipos el valor que se usa es antes de impuestos.
+                        Else
+                            Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dCxcTotal.ToString
+                        End If
 
                         If dVtaRetencionIvaMXN > 0 Or dVtaRetencionISRMXN > 0 Or dVtaIEPSDesglosadoEIncluidoMXN > 0 Then
                             MsgBox("La venta " & Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text & " tiene ya sea retención de IVA,ISR o IEPS. " & vbCrLf &
@@ -2328,24 +2334,26 @@ Buscar:
                         End If
 
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                        'IVA pendiente de cobro
                         oCuentasIVA = New Class_find("SELECT I.CUENTA_CONTABLE_IVA_POR_PAGAR,I.CUENTA_CONTABLE_IVA_PENDIENTE_TRASLADAR " &
                                                     "FROM CON_IVA_POR_PAGAR_CATALOGO_CUENTAS I " &
                                                     "INNER JOIN VENTA_GLOBAL V ON(I.PORCENTAJE=V.IMPUESTO_PORCENTAJE) " &
                                                     "WHERE V.FOLIO_VENTA='" & Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text & "'")
 
-                        'IVA pendiente de cobro
-                        dIVAPendienteCobro = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcIvaPendienteCobro).Text)
+                        If bEsVentaAnticipo = False Then 'Sólo si es venta normal se contabiliza el iva pendiente de cobro, cuando es anticipo no se contabiliza esta pero si la del iva cobrado.
+                            dIVAPendienteCobro = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcIvaPendienteCobro).Text)
 
-                        If dIVAPendienteCobro > 0 Then
-                            oContaCuenta = New Class_CatCuentas(oCuentasIVA.Result2) '"20400002"
+                            If dIVAPendienteCobro > 0 Then
+                                oContaCuenta = New Class_CatCuentas(oCuentasIVA.Result2) '"20400002"
 
-                            R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
-                            Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE
-                            Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
-                            Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
-                            Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
-                            Me.oFormaPoliza.Grid1.Cell(R, 5).Text = dIVAPendienteCobro.ToString
-                            Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
+                                R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                                Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE
+                                Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
+                                Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
+                                Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = dIVAPendienteCobro.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
+                            End If
                         End If
 
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -2429,6 +2437,8 @@ Buscar:
                         dVtaRetencionIvaMXN = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_VtaRetencionIvaMXN).Text)
                         dVtaRetencionISRMXN = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_VtaRetencionISRMXN).Text)
                         dVtaIEPSDesglosadoEIncluidoMXN = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Text)
+                        dCxcPagoSubtotaMXNViejos = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoSubtotaMXNViejos).Text)
+                        bEsVentaAnticipo = CBool(Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaAnticipo).Text)
 
                         If dVtaRetencionIvaMXN > 0 Or dVtaRetencionISRMXN > 0 Or dVtaIEPSDesglosadoEIncluidoMXN > 0 Then
                             MsgBox("La venta " & Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text & " tiene ya sea retención de IVA,ISR o IEPS. " & vbCrLf &
@@ -2441,7 +2451,7 @@ Buscar:
 
                         oCliente = New Class_CatClientes(Me.GridVentas.Cell(i, Me.iGyB_VtaCodigoCliente).Text)
 
-                        If Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaAnticipo).Text = "1" Then
+                        If bEsVentaAnticipo = True Then
                             oContaCuenta = New Class_CatCuentas(oCliente.CUENTA_CONTABLE_ANTICIPOS)
                         Else
                             oContaCuenta = New Class_CatCuentas(oCliente.CUENTA_CONTABLE)
@@ -2453,7 +2463,12 @@ Buscar:
                         Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
                         Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
                         Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
-                        Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dCxcTotal.ToString
+
+                        If bEsVentaAnticipo = True Then
+                            Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dCxcPagoSubtotaMXNViejos.ToString 'Cuando son anticipos el valor que se usa es antes de impuestos.
+                        Else
+                            Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dCxcTotal.ToString
+                        End If
 
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                         'Perdida/Ganancia cambiaria
@@ -2476,29 +2491,29 @@ Buscar:
                                 Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
                                 Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dPerdidaGanancia.ToString 'Si es positiva es ganancia
                             End If
-
                         End If
 
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                        'IVA pendiente de cobro
                         oCuentasIVA = New Class_find("SELECT I.CUENTA_CONTABLE_IVA_POR_PAGAR,I.CUENTA_CONTABLE_IVA_PENDIENTE_TRASLADAR " &
                                                     "FROM CON_IVA_POR_PAGAR_CATALOGO_CUENTAS I " &
                                                     "INNER JOIN VENTA_GLOBAL V ON(I.PORCENTAJE=V.IMPUESTO_PORCENTAJE) " &
                                                     "WHERE V.FOLIO_VENTA='" & Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text & "'")
 
-                        'IVA pendiente de cobro
-                        dIVAPendienteCobro = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcIvaPendienteCobro).Text)
+                        If bEsVentaAnticipo = False Then 'Sólo si es venta normal se contabiliza el iva pendiente de cobro, cuando es anticipo no se contabiliza esta pero si la del iva cobrado.
+                            dIVAPendienteCobro = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcIvaPendienteCobro).Text)
 
-                        If dIVAPendienteCobro > 0 Then
-                            oContaCuenta = New Class_CatCuentas(oCuentasIVA.Result2) '"20400002"
+                            If dIVAPendienteCobro > 0 Then
+                                oContaCuenta = New Class_CatCuentas(oCuentasIVA.Result2) '"20400002"
 
-                            R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
-                            Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE
-                            Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
-                            Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
-                            Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
-                            Me.oFormaPoliza.Grid1.Cell(R, 5).Text = dIVAPendienteCobro.ToString
-                            Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
-
+                                R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+                                Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE
+                                Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
+                                Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
+                                Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = dIVAPendienteCobro.ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
+                            End If
                         End If
 
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -2515,7 +2530,6 @@ Buscar:
                             Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
                             Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
                             Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dIVACobrado.ToString
-
                         End If
 
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
