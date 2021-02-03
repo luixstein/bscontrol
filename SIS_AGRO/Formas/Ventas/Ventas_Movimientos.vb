@@ -1961,7 +1961,7 @@ Buscar:
                         .oVentasDetalle.RETENCION_ISR_BASE = valorNumericoD(Me.Grid.Cell(i, Me.iGyRETENCION_ISR_BASE).Text)
                         .oVentasDetalle.RETENCION_ISR_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.iGyRETENCION_ISR_IMPORTE).Text)
 
-                        If Me.Grid.Cell(i, Me.igyTipoControlInventariable).Text = "NIV" Then
+                        If Me.Grid.Cell(i, Me.igyTipoControlInventariable).Text = "NIV" Or Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "CTZ" Then 'En cotizaciones se grabara el costo para poder calcular la utilidad en las consultas y al pasar de cotizacion a remision
                             .oVentasDetalle.COSTO = valorNumericoD(Me.Grid.Cell(i, Me.igyCosto).Text)
                         End If
 
@@ -3381,7 +3381,7 @@ CANCELAR:
                                 Me.lblTotal.Text = "0.00"
                                 Exit Sub
                             ElseIf dRETENCION_IVA_PORCENTAJE <> 0.06 Then
-                                MsgBox("A las personas fisicas sólo se les puede facturar con iva retenido del 6% y este artículo tiene el " & dRETENCION_IVA_PORCENTAJE * 100.00 & "%", vbExclamation, sProcedure)
+                                MsgBox("A las personas fisicas sólo se les puede facturar con iva retenido del 6% y este artículo tiene el " & dRETENCION_IVA_PORCENTAJE * 100.0 & "%", vbExclamation, sProcedure)
                                 Me.lblTotal.Text = "0.00"
                                 Exit Sub
                             End If
@@ -3641,9 +3641,6 @@ CANCELAR:
                 Me.CboTipoCredito.SelectedValue = Me.oVenta.CODIGO_TIPO_CREDITO
             End If
 
-            'Me.lblUtilidad.Text = FormatImporteContable(0 - Me.oVenta.COSTO, False)
-            Me.CalculaUtilidad()
-
             If bEsReferencia = False Then
                 Me.txtFolio.Text = Me.oVenta.FOLIO_VENTA.ToString.ToUpper
                 Me.TxtReferencia.Text = Me.oVenta.FOLIO_REFERENCIA.ToString.ToUpper
@@ -3669,6 +3666,9 @@ CANCELAR:
 
                 Me.GridSeries.DataSource = Me.oVenta.ObtenerDetalleSeries
                 Me.FormateaGridSeries()
+
+                'Me.lblUtilidad.Text = FormatImporteContable(0 - Me.oVenta.COSTO, False)
+                Me.CalculaUtilidad()
 
             Else 'Si se esta jalando una referencia
                 Me.TxtReferencia.Text = Me.oVenta.FOLIO_VENTA.ToString.ToUpper
@@ -4062,8 +4062,8 @@ LlenaLinea:
                                 'If txtLEN(oArticulos.CODIGO_CULTIVO) = True Then
                                 'Dim Sql As New Class_find("SELECT CUENTA_CONTABLE_BASE FROM CAT_CULTIVOS Where CODIGO_CULTIVO='" & oArticulos.CODIGO_CULTIVO.ToString & "' AND CODIGO_PLAZA=" & Usuario.Codigo_Plaza)
 
-                    'Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + Sql.Result1 'En agr esta así, pero aquí la cuenta es general
-                    Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString
+                                'Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + Sql.Result1 'En agr esta así, pero aquí la cuenta es general
+                                Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString
                                 'Else
                                 ' Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = ""
                                 'End If
@@ -4300,8 +4300,8 @@ buscaCentrosCostos:
                         Me.Totales()
                     End If
 
-                'Case Keys.Delete 'Borrar renglón
-                'Return
+                    'Case Keys.Delete 'Borrar renglón
+                    'Return
 
                 Case Keys.F4 'Comentarios
 
@@ -5547,9 +5547,9 @@ BuscaVentas:
                     Me.Grid.Column(Me.iGyDESCUENTO_IMPORTE).Visible = False
                 End If
 
-            If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
-                ObtenerTipoCambioDia()
-            End If
+                If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
+                    ObtenerTipoCambioDia()
+                End If
             Else 'Es moneda en MXN o esta en blanco
                 Me.txtTipoCambio.Text = "0"
                 Me.txtTipoCambio.Visible = False : Me.txtTipoCambio.Enabled = False : Me.lblDisplayTipoCambio.Visible = False
