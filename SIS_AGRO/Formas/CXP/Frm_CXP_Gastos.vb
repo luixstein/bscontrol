@@ -71,9 +71,8 @@ Public Class Frm_CXP_Gastos
     Private iGyCtasIDCentroCostoDetalle As Integer = 20
     Private iGyCtasCuentaContableRetencionIVA As Integer = 21
     Private iGyCtasCuentaContableRetencionISR As Integer = 22
-    Private iGyCtasCuentaContableRetencionIEPS As Integer = 23
-    Private iGyCtasNombreEmisor As Integer = 24
-    Private iGyCtasRFCEmisor As Integer = 25
+    Private iGyCtasNombreEmisor As Integer = 23
+    Private iGyCtasRFCEmisor As Integer = 24
 #End Region
 
 #Region "Columnas grid activos"
@@ -92,8 +91,10 @@ Public Class Frm_CXP_Gastos
     Private iGyActivoRutaXML As Integer = 12
     Private iGyActivoRutaPDF As Integer = 13
     Private iGyActivoIDGastoDetalle As Integer = 14
-    Private iGyActivoNombreEmisor As Integer = 15
-    Private iGyActivoRFCEmisor As Integer = 16
+    Private iGyActivoCuentaContableRetencionIVA As Integer = 15
+    Private iGyActivoCuentaContableRetencionISR As Integer = 16
+    Private iGyActivoNombreEmisor As Integer = 17
+    Private iGyActivoRFCEmisor As Integer = 18
 #End Region
 
 #Region "Columnas grid facturas relacionadas"
@@ -898,22 +899,6 @@ Buscar:
         End Try
     End Sub
 
-    Private Sub InicializaGridCompras()
-        Try
-            Me.GridCompras.DataSource = Nothing
-            FG_Grid_Limpiar(Me.GridCompras)
-
-            'Creamos el Grid
-            Me.GridCompras.Rows = 2
-            Me.GridCompras.Cols = 18
-            Me.GridCompras.DisplayRowNumber = True
-
-            Me.FormateaGridCompras()
-        Catch ex As Exception
-            HandleError(Me.Name, "InicializaGridCompras", ex)
-        End Try
-    End Sub
-
     Private Sub InicializaGridCuentas()
         Try
             Me.GridCuentas.DataSource = Nothing
@@ -921,7 +906,7 @@ Buscar:
 
             'Creamos el Grid
             Me.GridCuentas.Rows = 2
-            Me.GridCuentas.Cols = 26
+            Me.GridCuentas.Cols = 25
             Me.GridCuentas.DisplayRowNumber = True
 
             Me.GridCuentas.Cell(1, Me.iGyCtasXML).Text = "Agregar"
@@ -940,7 +925,7 @@ Buscar:
 
             'Creamos el Grid
             Me.GridActivos.Rows = 2
-            Me.GridActivos.Cols = 15
+            Me.GridActivos.Cols = 19
             Me.GridActivos.DisplayRowNumber = True
 
             Me.GridActivos.Cell(1, Me.iGyActivoXML).Text = "Agregar"
@@ -949,6 +934,22 @@ Buscar:
             Me.FormateaGridActivos()
         Catch ex As Exception
             HandleError(Me.Name, "InicializaGridActivos", ex)
+        End Try
+    End Sub
+
+    Private Sub InicializaGridCompras()
+        Try
+            Me.GridCompras.DataSource = Nothing
+            FG_Grid_Limpiar(Me.GridCompras)
+
+            'Creamos el Grid
+            Me.GridCompras.Rows = 2
+            Me.GridCompras.Cols = 18
+            Me.GridCompras.DisplayRowNumber = True
+
+            Me.FormateaGridCompras()
+        Catch ex As Exception
+            HandleError(Me.Name, "InicializaGridCompras", ex)
         End Try
     End Sub
 
@@ -963,89 +964,6 @@ Buscar:
 
         Catch ex As Exception
             HandleError(Me.Name, "InicializaGridFacturasRelacionadas", ex)
-        End Try
-    End Sub
-
-    Private Sub FormateaGridCompras()
-        Try
-            Me.GridCompras.Column(Me.iGyFolioCO).Width = 70
-            Me.GridCompras.Column(Me.iGyFolioOC).Width = 70
-            Me.GridCompras.Column(Me.iGyEmbarque).Width = 70
-            Me.GridCompras.Column(Me.iGyFecha).Width = 70
-            Me.GridCompras.Column(Me.iGyFechaContraRecibo).Width = 100
-            Me.GridCompras.Column(Me.iGyFechaProgamacion).Width = 70
-            Me.GridCompras.Column(Me.iGyFacturaProveedor).Width = 70
-            Me.GridCompras.Column(Me.iGyFechaProveedor).Width = 70
-            Me.GridCompras.Column(Me.iGySubtotal).Width = 70
-            Me.GridCompras.Column(Me.iGyIVA).Width = 70
-            Me.GridCompras.Column(Me.iGyRetencion).Width = 70
-            Me.GridCompras.Column(Me.iGyTotal).Width = 70
-            Me.GridCompras.Column(Me.iGyConcepto).Width = 70
-            Me.GridCompras.Column(Me.iGySaldo).Width = 70
-            Me.GridCompras.Column(Me.iGyTipoPago).Width = 70
-            Me.GridCompras.Column(Me.iGyContraRecibo).Width = 70
-
-            Me.GridCompras.Cell(0, Me.iGyFolioCO).Text = "Folio(CO)"
-            Me.GridCompras.Cell(0, Me.iGyFolioOC).Text = "Folio(OC)"
-            Me.GridCompras.Cell(0, Me.iGyEmbarque).Text = "Embarque"
-            Me.GridCompras.Cell(0, Me.iGyFecha).Text = "Fecha"
-            Me.GridCompras.Cell(0, Me.iGyFechaContraRecibo).Text = "Fec.Contrarecibo"
-            Me.GridCompras.Cell(0, Me.iGyFechaProgamacion).Text = "Fec.Prog."
-            Me.GridCompras.Cell(0, Me.iGyFacturaProveedor).Text = "Fac. Prov. "
-            Me.GridCompras.Cell(0, Me.iGyFechaProveedor).Text = "Fec.Prov."
-            Me.GridCompras.Cell(0, Me.iGyTotal).Text = "Total"
-            Me.GridCompras.Cell(0, Me.iGySaldo).Text = "Saldo"
-            Me.GridCompras.Cell(0, Me.iGyTipoPago).Text = "TipoPago"
-            Me.GridCompras.Cell(0, Me.iGyContraRecibo).Text = "ContraRecibo"
-
-            Me.GridCompras.Column(Me.iGyFecha).CellType = FlexCell.CellTypeEnum.DateTime
-            Me.GridCompras.Column(Me.iGyFecha).FormatString = "dd-MMM-yy"
-
-            Me.GridCompras.Column(Me.iGyFechaContraRecibo).CellType = FlexCell.CellTypeEnum.DateTime
-            Me.GridCompras.Column(Me.iGyFechaContraRecibo).FormatString = "dd-MMM-yy"
-
-            Me.GridCompras.Column(Me.iGyFechaProgamacion).CellType = FlexCell.CellTypeEnum.DateTime
-            Me.GridCompras.Column(Me.iGyFechaProgamacion).FormatString = "dd-MMM-yy"
-
-            Me.GridCompras.Column(Me.iGyFechaProveedor).CellType = FlexCell.CellTypeEnum.DateTime
-            Me.GridCompras.Column(Me.iGyFechaProveedor).FormatString = "dd-MMM-yy"
-
-
-            Me.GridCompras.Column(Me.iGyTotal).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            Me.GridCompras.Column(Me.iGyTotal).Mask = FlexCell.MaskEnum.Numeric
-            Me.GridCompras.Column(Me.iGyTotal).DecimalLength = 2
-            Me.GridCompras.Column(Me.iGyTotal).Alignment = FlexCell.AlignmentEnum.RightCenter
-
-            Me.GridCompras.Column(Me.iGySaldo).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            Me.GridCompras.Column(Me.iGySaldo).Mask = FlexCell.MaskEnum.Numeric
-            Me.GridCompras.Column(Me.iGySaldo).DecimalLength = 2
-            Me.GridCompras.Column(Me.iGySaldo).Alignment = FlexCell.AlignmentEnum.RightCenter
-
-            Me.GridCompras.Refresh()
-
-            Me.GridCompras.Column(Me.iGyFolioCO).Locked = True
-            Me.GridCompras.Column(Me.iGyFolioOC).Locked = True
-            Me.GridCompras.Column(Me.iGyEmbarque).Locked = True
-            Me.GridCompras.Column(Me.iGyFecha).Locked = True
-            Me.GridCompras.Column(Me.iGyFechaContraRecibo).Locked = True
-            Me.GridCompras.Column(Me.iGyFechaProgamacion).Locked = True
-            Me.GridCompras.Column(Me.iGyFacturaProveedor).Locked = True
-            Me.GridCompras.Column(Me.iGyFechaProveedor).Locked = True
-            Me.GridCompras.Column(Me.iGyTotal).Locked = True
-            Me.GridCompras.Column(Me.iGySaldo).Locked = True
-            Me.GridCompras.Column(Me.iGyTipoPago).Locked = True
-            Me.GridCompras.Column(Me.iGyContraRecibo).Locked = True
-
-            Me.GridCompras.Column(Me.iGyTipoPago).Visible = False
-            Me.GridCompras.Column(Me.iGyContraRecibo).Visible = False
-            Me.GridCompras.Column(Me.iGySubtotal).Visible = False
-            Me.GridCompras.Column(Me.iGyIVA).Visible = False
-            Me.GridCompras.Column(Me.iGyRetencion).Visible = False
-            Me.GridCompras.Column(Me.iGyConcepto).Visible = False
-            Me.GridCompras.Column(Me.iGyPorcentaje).Visible = False
-
-        Catch ex As Exception
-            HandleError(Me.Name, "FormateaGridCompras", ex)
         End Try
     End Sub
 
@@ -1082,12 +1000,11 @@ Buscar:
                 .Column(Me.iGyCtasRutaXML).Visible = False
                 .Column(Me.iGyCtasRutaPDF).Visible = False
                 .Column(Me.iGyCtasIDCentroCostoDetalle).Visible = False
-
                 .Column(Me.iGyCtasCuentaContableRetencionIVA).Width = 60
                 .Column(Me.iGyCtasCuentaContableRetencionISR).Width = 60
-                .Column(Me.iGyCtasCuentaContableRetencionIEPS).Width = 60
-                .Column(Me.iGyCtasNombreEmisor).Width = 60
-                .Column(Me.iGyCtasRFCEmisor).Width = 60
+                '.Column(Me.iGyCtasCuentaContableRetencionIEPS).Width = 60
+                .Column(Me.iGyCtasNombreEmisor).Width = 130
+                .Column(Me.iGyCtasRFCEmisor).Width = 100
 
                 .Cell(0, Me.iGyCtasCodigoCentroCosto).Text = "CCos"
                 .Cell(0, Me.iGyCtasNombreCentroCosto).Text = "C.costo"
@@ -1109,12 +1026,11 @@ Buscar:
                 .Cell(0, Me.iGyCtasRutaXML).Text = "RutaXML"
                 .Cell(0, Me.iGyCtasRutaXML).Text = "RutaPDF"
                 .Cell(0, Me.iGyCtasIDCentroCostoDetalle).Text = "IDCentroCostoDetalle"
-
-                .Cell(0, Me.iGyCtasCuentaContableRetencionIVA).Text = "CuentaIVARet"
-                .Cell(0, Me.iGyCtasCuentaContableRetencionISR).Text = "CuentaISRRet"
-                .Cell(0, Me.iGyCtasCuentaContableRetencionIEPS).Text = "CuentaIEPS"
-                .Cell(0, Me.iGyCtasNombreEmisor).Text = "NombreEmisor"
-                .Cell(0, Me.iGyCtasRFCEmisor).Text = "RFCEmisor"
+                .Cell(0, Me.iGyCtasCuentaContableRetencionIVA).Text = "CtaIVARet"
+                .Cell(0, Me.iGyCtasCuentaContableRetencionISR).Text = "CtaISRRet"
+                '.Cell(0, Me.iGyCtasCuentaContableRetencionIEPS).Text = "CtaIEPS"
+                .Cell(0, Me.iGyCtasNombreEmisor).Text = "Nombre Emisor"
+                .Cell(0, Me.iGyCtasRFCEmisor).Text = "RFC Emisor"
 
                 .Column(Me.iGyCtasImporte).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
                 .Column(Me.iGyCtasImporte).Mask = FlexCell.MaskEnum.Numeric
@@ -1185,6 +1101,11 @@ Buscar:
                 .Column(Me.iGyActivoRutaXML).Visible = False
                 .Column(Me.iGyActivoRutaPDF).Visible = False
                 .Column(Me.iGyActivoIDGastoDetalle).Visible = False
+                .Column(Me.iGyActivoCuentaContableRetencionIVA).Width = 60
+                .Column(Me.iGyActivoCuentaContableRetencionISR).Width = 60
+                '.Column(Me.iGyActivoCuentaContableRetencionIEPS).Width = 60
+                .Column(Me.iGyActivoNombreEmisor).Width = 130
+                .Column(Me.iGyActivoRFCEmisor).Width = 100
 
                 .Cell(0, Me.iGyActivoCuentaContable).Text = "Cuenta contable"
                 .Cell(0, Me.iGyActivoNombreCuenta).Text = "Nombre cuenta"
@@ -1201,6 +1122,11 @@ Buscar:
                 .Cell(0, Me.iGyActivoRutaXML).Text = "RutaXML"
                 .Cell(0, Me.iGyActivoRutaPDF).Text = "RutaPDF"
                 .Cell(0, Me.iGyActivoIDGastoDetalle).Text = "IDGastoDetalle"
+                .Cell(0, Me.iGyActivoCuentaContableRetencionIVA).Text = "CtaIVARet"
+                .Cell(0, Me.iGyActivoCuentaContableRetencionISR).Text = "CtaISRRet"
+                '.Cell(0, Me.iGyActivoCuentaContableRetencionIEPS).Text = "CtaIEPS"
+                .Cell(0, Me.iGyActivoNombreEmisor).Text = "Nombre Emisor"
+                .Cell(0, Me.iGyActivoRFCEmisor).Text = "RFC Emisor"
 
                 .Column(Me.iGyActivoImporte).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
                 .Column(Me.iGyActivoImporte).Mask = FlexCell.MaskEnum.Numeric
@@ -1243,6 +1169,88 @@ Buscar:
         Finally
             Me.GridActivos.AutoRedraw = True
             Me.GridActivos.Refresh()
+        End Try
+    End Sub
+
+    Private Sub FormateaGridCompras()
+        Try
+            Me.GridCompras.Column(Me.iGyFolioCO).Width = 70
+            Me.GridCompras.Column(Me.iGyFolioOC).Width = 70
+            Me.GridCompras.Column(Me.iGyEmbarque).Width = 70
+            Me.GridCompras.Column(Me.iGyFecha).Width = 70
+            Me.GridCompras.Column(Me.iGyFechaContraRecibo).Width = 100
+            Me.GridCompras.Column(Me.iGyFechaProgamacion).Width = 70
+            Me.GridCompras.Column(Me.iGyFacturaProveedor).Width = 70
+            Me.GridCompras.Column(Me.iGyFechaProveedor).Width = 70
+            Me.GridCompras.Column(Me.iGySubtotal).Width = 70
+            Me.GridCompras.Column(Me.iGyIVA).Width = 70
+            Me.GridCompras.Column(Me.iGyRetencion).Width = 70
+            Me.GridCompras.Column(Me.iGyTotal).Width = 70
+            Me.GridCompras.Column(Me.iGyConcepto).Width = 70
+            Me.GridCompras.Column(Me.iGySaldo).Width = 70
+            Me.GridCompras.Column(Me.iGyTipoPago).Width = 70
+            Me.GridCompras.Column(Me.iGyContraRecibo).Width = 70
+
+            Me.GridCompras.Cell(0, Me.iGyFolioCO).Text = "Folio(CO)"
+            Me.GridCompras.Cell(0, Me.iGyFolioOC).Text = "Folio(OC)"
+            Me.GridCompras.Cell(0, Me.iGyEmbarque).Text = "Embarque"
+            Me.GridCompras.Cell(0, Me.iGyFecha).Text = "Fecha"
+            Me.GridCompras.Cell(0, Me.iGyFechaContraRecibo).Text = "Fec.Contrarecibo"
+            Me.GridCompras.Cell(0, Me.iGyFechaProgamacion).Text = "Fec.Prog."
+            Me.GridCompras.Cell(0, Me.iGyFacturaProveedor).Text = "Fac. Prov. "
+            Me.GridCompras.Cell(0, Me.iGyFechaProveedor).Text = "Fec.Prov."
+            Me.GridCompras.Cell(0, Me.iGyTotal).Text = "Total"
+            Me.GridCompras.Cell(0, Me.iGySaldo).Text = "Saldo"
+            Me.GridCompras.Cell(0, Me.iGyTipoPago).Text = "TipoPago"
+            Me.GridCompras.Cell(0, Me.iGyContraRecibo).Text = "ContraRecibo"
+
+            Me.GridCompras.Column(Me.iGyFecha).CellType = FlexCell.CellTypeEnum.DateTime
+            Me.GridCompras.Column(Me.iGyFecha).FormatString = "dd-MMM-yy"
+
+            Me.GridCompras.Column(Me.iGyFechaContraRecibo).CellType = FlexCell.CellTypeEnum.DateTime
+            Me.GridCompras.Column(Me.iGyFechaContraRecibo).FormatString = "dd-MMM-yy"
+
+            Me.GridCompras.Column(Me.iGyFechaProgamacion).CellType = FlexCell.CellTypeEnum.DateTime
+            Me.GridCompras.Column(Me.iGyFechaProgamacion).FormatString = "dd-MMM-yy"
+
+            Me.GridCompras.Column(Me.iGyFechaProveedor).CellType = FlexCell.CellTypeEnum.DateTime
+            Me.GridCompras.Column(Me.iGyFechaProveedor).FormatString = "dd-MMM-yy"
+
+            Me.GridCompras.Column(Me.iGyTotal).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.GridCompras.Column(Me.iGyTotal).Mask = FlexCell.MaskEnum.Numeric
+            Me.GridCompras.Column(Me.iGyTotal).DecimalLength = 2
+            Me.GridCompras.Column(Me.iGyTotal).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.GridCompras.Column(Me.iGySaldo).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.GridCompras.Column(Me.iGySaldo).Mask = FlexCell.MaskEnum.Numeric
+            Me.GridCompras.Column(Me.iGySaldo).DecimalLength = 2
+            Me.GridCompras.Column(Me.iGySaldo).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.GridCompras.Refresh()
+
+            Me.GridCompras.Column(Me.iGyFolioCO).Locked = True
+            Me.GridCompras.Column(Me.iGyFolioOC).Locked = True
+            Me.GridCompras.Column(Me.iGyEmbarque).Locked = True
+            Me.GridCompras.Column(Me.iGyFecha).Locked = True
+            Me.GridCompras.Column(Me.iGyFechaContraRecibo).Locked = True
+            Me.GridCompras.Column(Me.iGyFechaProgamacion).Locked = True
+            Me.GridCompras.Column(Me.iGyFacturaProveedor).Locked = True
+            Me.GridCompras.Column(Me.iGyFechaProveedor).Locked = True
+            Me.GridCompras.Column(Me.iGyTotal).Locked = True
+            Me.GridCompras.Column(Me.iGySaldo).Locked = True
+            Me.GridCompras.Column(Me.iGyTipoPago).Locked = True
+            Me.GridCompras.Column(Me.iGyContraRecibo).Locked = True
+
+            Me.GridCompras.Column(Me.iGyTipoPago).Visible = False
+            Me.GridCompras.Column(Me.iGyContraRecibo).Visible = False
+            Me.GridCompras.Column(Me.iGySubtotal).Visible = False
+            Me.GridCompras.Column(Me.iGyIVA).Visible = False
+            Me.GridCompras.Column(Me.iGyRetencion).Visible = False
+            Me.GridCompras.Column(Me.iGyConcepto).Visible = False
+            Me.GridCompras.Column(Me.iGyPorcentaje).Visible = False
+
+        Catch ex As Exception
+            HandleError(Me.Name, "FormateaGridCompras", ex)
         End Try
     End Sub
 
@@ -1819,7 +1827,16 @@ busca_concepto:
                     '    End Select
 
                 Case Keys.F8
-                    Me.GridCuentas.Selection.DeleteByRow()
+                    If Renglon = 1 Then
+                        For i = 1 To Me.GridCuentas.Cols - 1
+                            Me.GridCuentas.Cell(Renglon, i).Text = ""
+                        Next
+
+                        Me.GridCuentas.Cell(Renglon, Me.iGyCtasXML).Text = "Agregar"
+                        Me.GridCuentas.Cell(Renglon, Me.iGyCtasPDF).Text = "Agregar"
+                    Else
+                        Me.GridCuentas.Selection.DeleteByRow()
+                    End If
 
                     'Case Keys.Insert
                     '    If Columna = Me.iGyCuentaContable Then 'Columna de cuenta contable
@@ -1939,7 +1956,16 @@ busca_cuenta_contable:
                         End Select
 
                     Case Keys.F8
-                        .Selection.DeleteByRow()
+                        If Renglon = 1 Then
+                            For i = 1 To .Cols - 1
+                                .Cell(Renglon, i).Text = ""
+                            Next
+
+                            .Cell(Renglon, Me.iGyActivoXML).Text = "Agregar"
+                            .Cell(Renglon, Me.iGyActivoPDF).Text = "Agregar"
+                        Else
+                            .Selection.DeleteByRow()
+                        End If
 
                 End Select
 
@@ -3197,6 +3223,10 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                                 Return
                             End If
 
+                            If oCFDI.Comprobante.Moneda <> "MXN" Then
+                                MsgBox("Aviso, este xml está en USD, cada uno los valores que el sistema muestra de momento usted debe modificarlos a MXN o quedarian incorrectos al mostrar cifras en USD.", vbExclamation, sProcedure)
+                            End If
+
                             'Sólo cuando es un renglón nuevo se cargan los valores, cuando ya existe no porque sólo liga el xml aunque los valores no correspondan porque de momento si se permite.
                             If iIDCentroCostoDetalle = 0 Then
                                 Dim index As Integer = 0, dISR_Retenido As Decimal = 0, dIVA_Retenido As Decimal = 0, dIEPS As Decimal = 0
@@ -3338,9 +3368,42 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
 
                                 'Sólo cuando es un renglón nuevo se cargan los valores, cuando ya existe no porque sólo liga el xml aunque los valores no correspondan porque de momento si se permite.
                                 If iIDGastoDetalle = 0 Then
+
+                                    Dim index As Integer = 0, dISR_Retenido As Decimal = 0, dIVA_Retenido As Decimal = 0, dIEPS As Decimal = 0
+                                    If IsNothing(oCFDI.Impuestos.Retenciones) = False Then
+                                        While index < oCFDI.Impuestos.Retenciones.Count
+                                            Select Case oCFDI.Impuestos.Retenciones(index).impuesto
+                                                Case "001"  'ISR
+                                                    dISR_Retenido += CDec(oCFDI.Impuestos.Retenciones(index).importe)
+                                                Case "002" 'IVA
+                                                    dIVA_Retenido += CDec(oCFDI.Impuestos.Retenciones(index).importe)
+                                            End Select
+
+                                            index += 1
+                                        End While
+                                    End If
+
+                                    If IsNothing(oCFDI.Impuestos.Traslados) = False Then
+                                        While index < oCFDI.Impuestos.Traslados.Count
+                                            If oCFDI.Impuestos.Traslados(index).impuesto = "003" Then 'IEPS
+                                                dIEPS += CDec(oCFDI.Impuestos.Traslados(index).importe)
+                                            End If
+
+                                            index += 1
+                                        End While
+                                    End If
+
+                                    'Debug.Print("Total Ret " & oCFDI.Impuestos.totalImpuestosRetenidos.ToString & vbCrLf & "ISR Ret " & dISR_Retenido.ToString & vbCrLf & "IVA Ret " & dIVA_Retenido.ToString & vbCrLf & "IEPS " & dIEPS.ToString)
+
                                     Me.GridActivos.Cell(iRenglon, Me.iGyActivoImporte).Text = oCFDI.Comprobante.SubTotal.ToString
                                     Me.GridActivos.Cell(iRenglon, Me.iGyActivoIVA).Text = oCFDI.Impuestos.totalImpuestosTrasladadosIVA.ToString
-                                    Me.GridActivos.Cell(iRenglon, Me.iGyActivoTotal).Text = Redondear(oCFDI.Comprobante.SubTotal + oCFDI.Impuestos.totalImpuestosTrasladadosIVA, 2).ToString
+                                    Me.GridActivos.Cell(iRenglon, Me.iGyActivoRetencionIVA).Text = dIVA_Retenido.ToString
+                                    Me.GridActivos.Cell(iRenglon, Me.iGyActivoRetencionISR).Text = dISR_Retenido.ToString
+                                    Me.GridActivos.Cell(iRenglon, Me.iGyActivoIEPS).Text = dIEPS.ToString
+                                    Me.GridActivos.Cell(iRenglon, Me.iGyActivoTotal).Text = Redondear(oCFDI.Comprobante.SubTotal + oCFDI.Impuestos.totalImpuestosTrasladadosIVA - dIVA_Retenido - dISR_Retenido + dIEPS, 2).ToString
+                                    Me.GridActivos.Cell(iRenglon, Me.iGyActivoNombreEmisor).Text = oCFDI.Emisor.nombre
+                                    Me.GridActivos.Cell(iRenglon, Me.iGyActivoRFCEmisor).Text = oCFDI.Emisor.rfc
+
                                 Else
                                     Dim oActivo As New Class_Gastos_Detalle
 

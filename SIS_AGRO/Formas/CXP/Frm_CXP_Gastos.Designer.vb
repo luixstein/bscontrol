@@ -65,6 +65,8 @@ Partial Class Frm_CXP_Gastos
         Me.TxtConcepto = New System.Windows.Forms.TextBox()
         Me.lblDisplayEmbarque = New System.Windows.Forms.Label()
         Me.gbCompraProveedor = New System.Windows.Forms.GroupBox()
+        Me.lblDisplayIEPS = New System.Windows.Forms.Label()
+        Me.txtIEPS = New System.Windows.Forms.TextBox()
         Me.lblDisplayTemporada = New System.Windows.Forms.Label()
         Me.cboTemporada = New System.Windows.Forms.ComboBox()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -108,8 +110,6 @@ Partial Class Frm_CXP_Gastos
         Me.StatusStripEstatus = New System.Windows.Forms.StatusStrip()
         Me.tsslElaboro = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tsslCancelo = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.lblDisplayIEPS = New System.Windows.Forms.Label()
-        Me.txtIEPS = New System.Windows.Forms.TextBox()
         Me.gbProveedor.SuspendLayout()
         Me.gbCompras.SuspendLayout()
         Me.gbCompraProveedor.SuspendLayout()
@@ -441,6 +441,7 @@ Partial Class Frm_CXP_Gastos
         Me.txtRetencionIVA.Location = New System.Drawing.Point(606, 366)
         Me.txtRetencionIVA.MaxLength = 15
         Me.txtRetencionIVA.Name = "txtRetencionIVA"
+        Me.txtRetencionIVA.ReadOnly = True
         Me.txtRetencionIVA.Size = New System.Drawing.Size(76, 20)
         Me.txtRetencionIVA.TabIndex = 12
         Me.txtRetencionIVA.Text = "0"
@@ -572,6 +573,26 @@ Partial Class Frm_CXP_Gastos
         Me.gbCompraProveedor.TabIndex = 2
         Me.gbCompraProveedor.TabStop = False
         '
+        'lblDisplayIEPS
+        '
+        Me.lblDisplayIEPS.AutoSize = True
+        Me.lblDisplayIEPS.Location = New System.Drawing.Point(817, 348)
+        Me.lblDisplayIEPS.Name = "lblDisplayIEPS"
+        Me.lblDisplayIEPS.Size = New System.Drawing.Size(31, 13)
+        Me.lblDisplayIEPS.TabIndex = 400
+        Me.lblDisplayIEPS.Text = "IEPS"
+        '
+        'txtIEPS
+        '
+        Me.txtIEPS.Location = New System.Drawing.Point(772, 366)
+        Me.txtIEPS.MaxLength = 15
+        Me.txtIEPS.Name = "txtIEPS"
+        Me.txtIEPS.ReadOnly = True
+        Me.txtIEPS.Size = New System.Drawing.Size(76, 20)
+        Me.txtIEPS.TabIndex = 399
+        Me.txtIEPS.Text = "0"
+        Me.txtIEPS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
         'lblDisplayTemporada
         '
         Me.lblDisplayTemporada.AutoSize = True
@@ -604,6 +625,7 @@ Partial Class Frm_CXP_Gastos
         Me.txtRetencionISR.Location = New System.Drawing.Point(689, 366)
         Me.txtRetencionISR.MaxLength = 15
         Me.txtRetencionISR.Name = "txtRetencionISR"
+        Me.txtRetencionISR.ReadOnly = True
         Me.txtRetencionISR.Size = New System.Drawing.Size(76, 20)
         Me.txtRetencionISR.TabIndex = 13
         Me.txtRetencionISR.Text = "0"
@@ -752,6 +774,7 @@ Partial Class Frm_CXP_Gastos
         Me.txtTotalCompra.ReadOnly = True
         Me.txtTotalCompra.Size = New System.Drawing.Size(92, 20)
         Me.txtTotalCompra.TabIndex = 14
+        Me.txtTotalCompra.Text = "0"
         Me.txtTotalCompra.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'txtIVA
@@ -760,8 +783,10 @@ Partial Class Frm_CXP_Gastos
         Me.txtIVA.Location = New System.Drawing.Point(445, 366)
         Me.txtIVA.MaxLength = 15
         Me.txtIVA.Name = "txtIVA"
+        Me.txtIVA.ReadOnly = True
         Me.txtIVA.Size = New System.Drawing.Size(92, 20)
         Me.txtIVA.TabIndex = 10
+        Me.txtIVA.Text = "0"
         Me.txtIVA.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'txtSubTotal
@@ -770,8 +795,10 @@ Partial Class Frm_CXP_Gastos
         Me.txtSubTotal.Location = New System.Drawing.Point(346, 366)
         Me.txtSubTotal.MaxLength = 15
         Me.txtSubTotal.Name = "txtSubTotal"
+        Me.txtSubTotal.ReadOnly = True
         Me.txtSubTotal.Size = New System.Drawing.Size(92, 20)
         Me.txtSubTotal.TabIndex = 9
+        Me.txtSubTotal.Text = "0"
         Me.txtSubTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'txtEmbarque
@@ -879,7 +906,7 @@ Partial Class Frm_CXP_Gastos
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Location = New System.Drawing.Point(12, 484)
-        Me.TabControl1.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabControl1.Margin = New System.Windows.Forms.Padding(2)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(978, 188)
@@ -889,9 +916,9 @@ Partial Class Frm_CXP_Gastos
         '
         Me.TabPage1.Controls.Add(Me.gbCompras)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage1.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage1.Margin = New System.Windows.Forms.Padding(2)
         Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(2)
         Me.TabPage1.Size = New System.Drawing.Size(970, 162)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Compras"
@@ -901,9 +928,9 @@ Partial Class Frm_CXP_Gastos
         '
         Me.TabPage2.Controls.Add(Me.gbFacturasRelacionadas)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage2.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage2.Margin = New System.Windows.Forms.Padding(2)
         Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(2)
         Me.TabPage2.Size = New System.Drawing.Size(970, 162)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Ventas"
@@ -918,9 +945,9 @@ Partial Class Frm_CXP_Gastos
         Me.gbFacturasRelacionadas.Controls.Add(Me.chkPromediarGasto)
         Me.gbFacturasRelacionadas.Controls.Add(Me.GridFacturasRelacionadas)
         Me.gbFacturasRelacionadas.Location = New System.Drawing.Point(0, 0)
-        Me.gbFacturasRelacionadas.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.gbFacturasRelacionadas.Margin = New System.Windows.Forms.Padding(2)
         Me.gbFacturasRelacionadas.Name = "gbFacturasRelacionadas"
-        Me.gbFacturasRelacionadas.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.gbFacturasRelacionadas.Padding = New System.Windows.Forms.Padding(2)
         Me.gbFacturasRelacionadas.Size = New System.Drawing.Size(975, 167)
         Me.gbFacturasRelacionadas.TabIndex = 0
         Me.gbFacturasRelacionadas.TabStop = False
@@ -929,7 +956,7 @@ Partial Class Frm_CXP_Gastos
         'btnGrabaDetalleVenta
         '
         Me.btnGrabaDetalleVenta.Location = New System.Drawing.Point(816, 88)
-        Me.btnGrabaDetalleVenta.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.btnGrabaDetalleVenta.Margin = New System.Windows.Forms.Padding(2)
         Me.btnGrabaDetalleVenta.Name = "btnGrabaDetalleVenta"
         Me.btnGrabaDetalleVenta.Size = New System.Drawing.Size(109, 32)
         Me.btnGrabaDetalleVenta.TabIndex = 385
@@ -962,7 +989,7 @@ Partial Class Frm_CXP_Gastos
         Me.chkPromediarGasto.Checked = True
         Me.chkPromediarGasto.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkPromediarGasto.Location = New System.Drawing.Point(788, 18)
-        Me.chkPromediarGasto.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.chkPromediarGasto.Margin = New System.Windows.Forms.Padding(2)
         Me.chkPromediarGasto.Name = "chkPromediarGasto"
         Me.chkPromediarGasto.Size = New System.Drawing.Size(102, 17)
         Me.chkPromediarGasto.TabIndex = 382
@@ -1010,25 +1037,6 @@ Partial Class Frm_CXP_Gastos
         Me.tsslCancelo.Name = "tsslCancelo"
         Me.tsslCancelo.Size = New System.Drawing.Size(56, 17)
         Me.tsslCancelo.Text = "Canceló :"
-        '
-        'lblDisplayIEPS
-        '
-        Me.lblDisplayIEPS.AutoSize = True
-        Me.lblDisplayIEPS.Location = New System.Drawing.Point(817, 348)
-        Me.lblDisplayIEPS.Name = "lblDisplayIEPS"
-        Me.lblDisplayIEPS.Size = New System.Drawing.Size(31, 13)
-        Me.lblDisplayIEPS.TabIndex = 400
-        Me.lblDisplayIEPS.Text = "IEPS"
-        '
-        'txtIEPS
-        '
-        Me.txtIEPS.Location = New System.Drawing.Point(772, 366)
-        Me.txtIEPS.MaxLength = 15
-        Me.txtIEPS.Name = "txtIEPS"
-        Me.txtIEPS.Size = New System.Drawing.Size(76, 20)
-        Me.txtIEPS.TabIndex = 399
-        Me.txtIEPS.Text = "0"
-        Me.txtIEPS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Frm_CXP_Gastos
         '
