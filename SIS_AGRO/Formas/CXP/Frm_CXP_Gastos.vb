@@ -3,19 +3,13 @@
 Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Frm_CXP_Gastos
+
+#Region "Campos privados"
     Private oDocumento As New Class_CatDocumentos
     Private oBancosCXP As New Class_Bancos_CXP
     Private oCompras As New Class_Compras_Global
 
     Dim _Fecha As String
-
-#Region "Propiedades"
-    Public ReadOnly Property Nombre_Modulo() As String
-        Get
-            Return "Revisión a Proveedores."
-        End Get
-    End Property
-#End Region
 
     Private Estado As enumEstados
 
@@ -27,6 +21,17 @@ Public Class Frm_CXP_Gastos
         PAGODIRECTO
         CONSULTA
     End Enum
+
+    Private sCodigoTipoDocumento As String = ""
+#End Region
+
+#Region "Propiedades"
+    Public ReadOnly Property Nombre_Modulo() As String
+        Get
+            Return "Revisión a Proveedores."
+        End Get
+    End Property
+#End Region
 
 #Region "Columnas grid compras"
     Private iGyFolioCO As Integer = 1
@@ -105,8 +110,6 @@ Public Class Frm_CXP_Gastos
     Private iGyFechaVenta As Integer = 5
     Private iGyGasto As Integer = 6
 #End Region
-
-    Private sCodigoTipoDocumento As String = ""
 
 #Region "Opciones"
     Private Sub tsbNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbNuevo.Click
@@ -786,24 +789,6 @@ Buscar:
 #End Region
 
 #Region "Métodos y procedimientos"
-    'Private Sub DesplegarAlmacenes()
-    '    Try
-    '        Dim oAlmacenes As New Class_CatAlmacenes
-    '        With Me.CboAlmacen
-    '            .DisplayMember = "NOMBRE_ALMACEN"
-    '            .ValueMember = "CODIGO_ALMACEN"
-    '            Dim dView As New Data.DataView(oAlmacenes.ObtenerAlmacenes)
-    '            dView.Sort = "NOMBRE_ALMACEN"
-    '            .DataSource = dView
-    '            If dView.Count > 0 Then
-    '                .SelectedValue = Plaza.CODIGO_ALMACEN_PRINCIPAL 'Usuario.Codigo_Almacen
-    '            End If
-    '        End With
-    '    Catch ex As Exception
-    '        HandleError(Me.Name, "DesplegarAlmacenes", ex)
-    '    End Try
-    'End Sub
-
     Private Sub DesplegarTipoGasto()
         Try
             Dim oGastos As New Class_Compras_Global
@@ -2316,14 +2301,18 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                         If Me.GridCuentas.Cell(i, Me.iGyCuentaContable).Text <> "" And valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasImporte).Text) > 0 Then
                             sCuentas = sCuentas & i & "," & Me.GridCuentas.Cell(i, Me.iGyCtasTipo).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCtasCodigoCentroCosto).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCtasCodigoCategoria).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCtasCodigoConcepto).Text & "," &
                             valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasImporte).Text).ToString & "," & Me.GridCuentas.Cell(i, Me.iGyCuentaContable).Text & "," &
-                            valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasIVA).Text).ToString & "," & valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasTotal).Text).ToString & "," & Me.GridCuentas.Cell(i, Me.iGyCtasUUID).Text & "|"
+                            valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasIVA).Text).ToString & "," & valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasTotal).Text).ToString & "," & Me.GridCuentas.Cell(i, Me.iGyCtasUUID).Text & "," &
+                            valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasCuentaContableRetencionIVA).Text).ToString & "," & valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasCuentaContableRetencionISR).Text).ToString &
+                            Me.GridCuentas.Cell(i, Me.iGyCtasNombreEmisor).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCtasRFCEmisor).Text & "|"
                         End If
                     Next i
 
                     For i = 1 To Me.GridActivos.Rows - 1
                         If Me.GridActivos.Cell(i, Me.iGyActivoCuentaContable).Text <> "" And valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoImporte).Text) > 0 Then
                             sListaActivos = sListaActivos & i & "," & Me.GridActivos.Cell(i, Me.iGyActivoCuentaContable).Text & "," & Me.GridActivos.Cell(i, Me.iGyActivoImporte).Text & "," &
-                            valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoIVA).Text).ToString & "," & valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoTotal).Text).ToString & "," & Me.GridActivos.Cell(i, Me.iGyActivoUUID).Text & "|"
+                            valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoIVA).Text).ToString & "," & valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoTotal).Text).ToString & "," & Me.GridActivos.Cell(i, Me.iGyActivoUUID).Text & "," &
+                            valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoCuentaContableRetencionIVA).Text).ToString & "," & valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoCuentaContableRetencionISR).Text).ToString &
+                            Me.GridActivos.Cell(i, Me.iGyActivoNombreEmisor).Text & "," & Me.GridActivos.Cell(i, Me.iGyActivoRFCEmisor).Text & "|"
                         End If
                     Next i
 
