@@ -2671,7 +2671,7 @@ Buscar:
             Me.Inicializa()
 
             If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
-                ObtenerTipoCambioDia()
+                Me.ObtenerTipoCambioDia()
             End If
 
             Me.oBancosCXC = New Class_Bancos_CXC(sFolio)
