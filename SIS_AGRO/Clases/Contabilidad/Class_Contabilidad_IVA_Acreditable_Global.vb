@@ -16,6 +16,7 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
     Private _CODIGO_USUARIO_GRABO As Integer
     Private _NOMBRE_USUARIO_GRABO As String
     Private _CONCEPTO As String
+    Private _TOTAL_ACTOS_IVA_EXENTO As Double
     Private _TOTAL_ACTOS_AL_0 As Double
     Private _TOTAL_ACTOS_AL_8 As Double
     Private _TOTAL_ACTOS_AL_10 As Double
@@ -103,6 +104,15 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
         End Get
         Set(ByVal value As String)
             Me._CONCEPTO = value
+        End Set
+    End Property
+
+    Public Property TOTAL_ACTOS_IVA_EXENTO() As Double
+        Get
+            Return Me._TOTAL_ACTOS_IVA_EXENTO
+        End Get
+        Set(ByVal value As Double)
+            Me._TOTAL_ACTOS_IVA_EXENTO = value
         End Set
     End Property
 
@@ -361,6 +371,7 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
                     Me._CODIGO_USUARIO_GRABO = CType(dReader("CODIGO_USUARIO_GRABO"), Integer)
                     Me._NOMBRE_USUARIO_GRABO = dReader("NOMBRE_USUARIO_GRABO").ToString
                     Me._CONCEPTO = dReader("CONCEPTO").ToString
+                    Me._TOTAL_ACTOS_IVA_EXENTO = valorNumerico(dReader("TOTAL_ACTOS_IVA_EXENTO").ToString)
                     Me._TOTAL_ACTOS_AL_0 = valorNumerico(dReader("TOTAL_ACTOS_AL_0").ToString)
                     Me._TOTAL_ACTOS_AL_8 = valorNumerico(dReader("TOTAL_ACTOS_AL_8").ToString)
                     Me._TOTAL_ACTOS_AL_10 = valorNumerico(dReader("TOTAL_ACTOS_AL_10").ToString)
@@ -442,6 +453,7 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
             sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_15", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_15
             sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_11", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_11
             sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_16", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_16
+            sqlParametro = .Parameters.Add("@TOTAL_ACTOS_IVA_EXENTO", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_ACTOS_IVA_EXENTO
             sqlParametro = .Parameters.Add("@TOTAL_ACTOS", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_ACTOS
             sqlParametro = .Parameters.Add("@TOTAL_IVA_ACREDITABLE_AL_8", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_IVA_ACREDITABLE_AL_8
             sqlParametro = .Parameters.Add("@TOTAL_IVA_ACREDITABLE_AL_10", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_IVA_ACREDITABLE_AL_10
