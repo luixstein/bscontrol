@@ -13,6 +13,7 @@ Public Class Class_Contabilidad_IVA_Acreditable_Detalle
     Private _PERIODO As Integer
     Private _ANIO As Integer
     Private _OPERACIONES As Integer
+    Private _ACTOS_IVA_EXENTO As Double
     Private _ACTOS_AL_0 As Double
     Private _ACTOS_AL_8 As Double
     Private _ACTOS_AL_10 As Double
@@ -100,6 +101,15 @@ Public Class Class_Contabilidad_IVA_Acreditable_Detalle
         End Get
         Set(ByVal value As Integer)
             Me._OPERACIONES = value
+        End Set
+    End Property
+
+    Public Property ACTOS_IVA_EXENTO() As Double
+        Get
+            Return Me._ACTOS_IVA_EXENTO
+        End Get
+        Set(ByVal value As Double)
+            Me._ACTOS_IVA_EXENTO = value
         End Set
     End Property
 
@@ -317,6 +327,7 @@ Public Class Class_Contabilidad_IVA_Acreditable_Detalle
             sqlParametro = .Parameters.Add("@ACTOS_AL_15", SqlDbType.Money) : sqlParametro.Value = Me._ACTOS_AL_15
             sqlParametro = .Parameters.Add("@ACTOS_AL_11", SqlDbType.Money) : sqlParametro.Value = Me._ACTOS_AL_11
             sqlParametro = .Parameters.Add("@ACTOS_AL_16", SqlDbType.Money) : sqlParametro.Value = Me._ACTOS_AL_16
+            sqlParametro = .Parameters.Add("@ACTOS_IVA_EXENTO", SqlDbType.Money) : sqlParametro.Value = Me._ACTOS_IVA_EXENTO
             sqlParametro = .Parameters.Add("@SUBTOTAL_ACTOS", SqlDbType.Money) : sqlParametro.Value = Me._SUBTOTAL_ACTOS
             sqlParametro = .Parameters.Add("@IVA_ACREDITABLE_AL_8", SqlDbType.Money) : sqlParametro.Value = Me._IVA_ACREDITABLE_AL_8
             sqlParametro = .Parameters.Add("@IVA_ACREDITABLE_AL_10", SqlDbType.Money) : sqlParametro.Value = Me._IVA_ACREDITABLE_AL_10

@@ -101,14 +101,14 @@ Buscar:
 
 #Region "Eventos Genericos"
     Private Sub txt_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtProveedor.Enter, txtFolio.Enter, txtAño.Enter, txtNumeroOperaciones.Enter, _
-    txtActos0.Enter, txtActos11.Enter, txtActos16.Enter, txtIvaAcreditable11.Enter, txtIvaAcreditable16.Enter, txtIvaRetenido4.Enter, txtIvaRetenido10.Enter, txtConcepto.Enter, txtActos8.Enter, txtIvaRetenido6.Enter
+    txtActos0.Enter, txtActos11.Enter, txtActos16.Enter, txtIvaAcreditable11.Enter, txtIvaAcreditable16.Enter, txtIvaRetenido4.Enter, txtIvaRetenido10.Enter, txtConcepto.Enter, txtActos8.Enter, txtIvaRetenido6.Enter, txtActosExento.Enter
         Dim oTexBox As TextBox = CType(sender, TextBox)
         oTexBox.SelectAll()
     End Sub
 
     Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboMes.KeyDown, txtAño.KeyDown, txtNumeroOperaciones.KeyDown, _
     cboTipoProveedor.KeyDown, txtActos0.KeyDown, txtActos11.KeyDown, txtActos16.KeyDown, txtIvaAcreditable11.KeyDown, txtIvaAcreditable16.KeyDown, _
-    txtIvaRetenido4.KeyDown, dtFechaFacturaProveedor.KeyDown, txtConcepto.KeyDown, txtIvaRetenido6.KeyDown, txtActos8.KeyDown
+    txtIvaRetenido4.KeyDown, dtFechaFacturaProveedor.KeyDown, txtConcepto.KeyDown, txtIvaRetenido6.KeyDown, txtActos8.KeyDown, txtActosExento.KeyDown
         If e.KeyCode = Keys.Return Then
             SendKeys.Send("{TAB}")
         End If
@@ -121,7 +121,7 @@ Buscar:
 
     Private Sub txtNumerosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtAño.KeyPress, txtNumeroOperaciones.KeyPress, _
     txtActos0.KeyPress, txtActos11.KeyPress, txtActos16.KeyPress, txtIvaAcreditable11.KeyPress, txtIvaAcreditable16.KeyPress, txtIvaRetenido4.KeyPress, txtIvaRetenido10.KeyPress,
-    txtIvaRetenido6.KeyPress, txtActos8.KeyPress
+    txtIvaRetenido6.KeyPress, txtActos8.KeyPress, txtActosExento.KeyPress
         Dim txt As TextBox = CType(sender, TextBox)
         txtSoloNumerosDecimales(e, txt.Text)
         txtNoBeep(e)
@@ -151,6 +151,7 @@ Buscar:
             Me.txtActos8.Text = FormatImporteContable(0)
             Me.txtActos11.Text = FormatImporteContable(0)
             Me.txtActos16.Text = FormatImporteContable(0)
+            Me.txtActosExento.Text = FormatImporteContable(0)
             Me.lblActosTotal.Text = FormatImporteContable(0)
             Me.txtIvaAcreditable8.Text = FormatImporteContable(0)
             Me.txtIvaAcreditable11.Text = FormatImporteContable(0)
@@ -219,18 +220,19 @@ Buscar:
     End Function
 
     Private Sub TotalizaActos()
-        Dim drActos0 As Double, drActos11 As Double, drActos16 As Double, drActos8 As Double
+        Dim drActos0 As Double, drActos11 As Double, drActos16 As Double, drActos8 As Double, drActosExento As Double
 
         drActos0 = Redondear(valorNumerico(Me.txtActos0.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
         drActos8 = Redondear(valorNumerico(Me.txtActos8.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
         drActos11 = Redondear(valorNumerico(Me.txtActos11.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
         drActos16 = Redondear(valorNumerico(Me.txtActos16.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+        drActosExento = Redondear(valorNumerico(Me.txtActosExento.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
-        Me.lblActosTotal.Text = FormatImporteContable(drActos0 + drActos11 + drActos16 + drActos8)
+        Me.lblActosTotal.Text = FormatImporteContable(drActos0 + drActos11 + drActos16 + drActos8 + drActosExento)
     End Sub
 
     Private Function CalcularIVAS(ByVal bRecalcularIVAS As Boolean) As Boolean
-        Dim drActos0 As Double, drActos11 As Double, drActos16 As Double, drActos As Double, drActos8 As Double
+        Dim drActos0 As Double, drActos11 As Double, drActos16 As Double, drActos As Double, drActos8 As Double, drActosExento As Double
         Dim drIvaAcreditable11 As Double, drIvaAcreditable16 As Double, drIvaAcreditable8 As Double
         Dim drIvaRetenido4 As Double, drIvaRetenido10 As Double, drIvaRetenido6 As Double
 
@@ -238,12 +240,13 @@ Buscar:
         drActos8 = Redondear(valorNumerico(Me.txtActos8.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
         drActos11 = Redondear(valorNumerico(Me.txtActos11.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
         drActos16 = Redondear(valorNumerico(Me.txtActos16.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+        drActosExento = Redondear(valorNumerico(Me.txtActosExento.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
         drIvaRetenido4 = Redondear(valorNumerico(Me.txtIvaRetenido4.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
         drIvaRetenido6 = Redondear(valorNumerico(Me.txtIvaRetenido6.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
         drIvaRetenido10 = Redondear(valorNumerico(Me.txtIvaRetenido10.Text), Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
-        drActos = drActos0 + drActos11 + drActos16 + drActos8
+        drActos = drActos0 + drActos11 + drActos16 + drActos8 + drActosExento
 
         If drActos <= 0 Then
             MsgBox("No capturaron los actos del movimiento.", vbExclamation, Me.Text)
@@ -280,6 +283,7 @@ Buscar:
         Me.txtActos8.Text = FormatImporteContable(drActos8)
         Me.txtActos11.Text = FormatImporteContable(drActos11)
         Me.txtActos16.Text = FormatImporteContable(drActos16)
+        Me.txtActosExento.Text = FormatImporteContable(drActosExento)
         Me.lblActosTotal.Text = FormatImporteContable(drActos)
 
         Me.txtIvaAcreditable8.Text = FormatImporteContable(drIvaAcreditable8)
