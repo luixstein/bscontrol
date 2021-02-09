@@ -33,26 +33,6 @@ Public Class Frm_CXP_Gastos
     End Property
 #End Region
 
-#Region "Columnas grid compras"
-    Private iGyFolioCO As Integer = 1
-    Private iGyFolioOC As Integer = 2
-    Private iGyEmbarque As Integer = 3
-    Private iGyFecha As Integer = 4
-    Private iGyFechaContraRecibo As Integer = 5
-    Private iGyFechaProgamacion As Integer = 6
-    Private iGyFacturaProveedor As Integer = 7
-    Private iGyFechaProveedor As Integer = 8
-    Private iGySaldo As Integer = 9
-    Private iGySubtotal As Integer = 10
-    Private iGyIVA As Integer = 11
-    Private iGyRetencion As Integer = 12
-    Private iGyTotal As Integer = 13
-    Private iGyConcepto As Integer = 14
-    Private iGyTipoPago As Integer = 15
-    Private iGyContraRecibo As Integer = 16
-    Private iGyPorcentaje As Integer = 17
-#End Region
-
 #Region "Columnas grid cuentas"
     Private iGyCtasTipo As Integer = 1
     Private iGyCtasCodigoCentroCosto As Integer = 2
@@ -76,8 +56,9 @@ Public Class Frm_CXP_Gastos
     Private iGyCtasIDCentroCostoDetalle As Integer = 20
     Private iGyCtasCuentaContableRetencionIVA As Integer = 21
     Private iGyCtasCuentaContableRetencionISR As Integer = 22
-    Private iGyCtasNombreEmisor As Integer = 23
-    Private iGyCtasRFCEmisor As Integer = 24
+    Private iGyCtasCuentaContableIEPS As Integer = 23
+    Private iGyCtasNombreEmisor As Integer = 24
+    Private iGyCtasRFCEmisor As Integer = 25
 #End Region
 
 #Region "Columnas grid activos"
@@ -98,8 +79,29 @@ Public Class Frm_CXP_Gastos
     Private iGyActivoIDGastoDetalle As Integer = 14
     Private iGyActivoCuentaContableRetencionIVA As Integer = 15
     Private iGyActivoCuentaContableRetencionISR As Integer = 16
-    Private iGyActivoNombreEmisor As Integer = 17
-    Private iGyActivoRFCEmisor As Integer = 18
+    Private iGyActivoCuentaContableIEPS As Integer = 17
+    Private iGyActivoNombreEmisor As Integer = 18
+    Private iGyActivoRFCEmisor As Integer = 19
+#End Region
+
+#Region "Columnas grid compras"
+    Private iGyFolioCO As Integer = 1
+    Private iGyFolioOC As Integer = 2
+    Private iGyEmbarque As Integer = 3
+    Private iGyFecha As Integer = 4
+    Private iGyFechaContraRecibo As Integer = 5
+    Private iGyFechaProgamacion As Integer = 6
+    Private iGyFacturaProveedor As Integer = 7
+    Private iGyFechaProveedor As Integer = 8
+    Private iGySaldo As Integer = 9
+    Private iGySubtotal As Integer = 10
+    Private iGyIVA As Integer = 11
+    Private iGyRetencion As Integer = 12
+    Private iGyTotal As Integer = 13
+    Private iGyConcepto As Integer = 14
+    Private iGyTipoPago As Integer = 15
+    Private iGyContraRecibo As Integer = 16
+    Private iGyPorcentaje As Integer = 17
 #End Region
 
 #Region "Columnas grid facturas relacionadas"
@@ -891,7 +893,7 @@ Buscar:
 
             'Creamos el Grid
             Me.GridCuentas.Rows = 2
-            Me.GridCuentas.Cols = 25
+            Me.GridCuentas.Cols = 26
             Me.GridCuentas.DisplayRowNumber = True
 
             Me.GridCuentas.Cell(1, Me.iGyCtasXML).Text = "Agregar"
@@ -910,7 +912,7 @@ Buscar:
 
             'Creamos el Grid
             Me.GridActivos.Rows = 2
-            Me.GridActivos.Cols = 19
+            Me.GridActivos.Cols = 20
             Me.GridActivos.DisplayRowNumber = True
 
             Me.GridActivos.Cell(1, Me.iGyActivoXML).Text = "Agregar"
@@ -987,7 +989,7 @@ Buscar:
                 .Column(Me.iGyCtasIDCentroCostoDetalle).Visible = False
                 .Column(Me.iGyCtasCuentaContableRetencionIVA).Width = 60
                 .Column(Me.iGyCtasCuentaContableRetencionISR).Width = 60
-                '.Column(Me.iGyCtasCuentaContableRetencionIEPS).Width = 60
+                .Column(Me.iGyCtasCuentaContableIEPS).Width = 60
                 .Column(Me.iGyCtasNombreEmisor).Width = 130
                 .Column(Me.iGyCtasRFCEmisor).Width = 100
 
@@ -1013,7 +1015,7 @@ Buscar:
                 .Cell(0, Me.iGyCtasIDCentroCostoDetalle).Text = "IDCentroCostoDetalle"
                 .Cell(0, Me.iGyCtasCuentaContableRetencionIVA).Text = "CtaIVARet"
                 .Cell(0, Me.iGyCtasCuentaContableRetencionISR).Text = "CtaISRRet"
-                '.Cell(0, Me.iGyCtasCuentaContableRetencionIEPS).Text = "CtaIEPS"
+                .Cell(0, Me.iGyCtasCuentaContableIEPS).Text = "CtaIEPS"
                 .Cell(0, Me.iGyCtasNombreEmisor).Text = "Nombre Emisor"
                 .Cell(0, Me.iGyCtasRFCEmisor).Text = "RFC Emisor"
 
@@ -1088,7 +1090,7 @@ Buscar:
                 .Column(Me.iGyActivoIDGastoDetalle).Visible = False
                 .Column(Me.iGyActivoCuentaContableRetencionIVA).Width = 60
                 .Column(Me.iGyActivoCuentaContableRetencionISR).Width = 60
-                '.Column(Me.iGyActivoCuentaContableRetencionIEPS).Width = 60
+                .Column(Me.iGyActivoCuentaContableIEPS).Width = 60
                 .Column(Me.iGyActivoNombreEmisor).Width = 130
                 .Column(Me.iGyActivoRFCEmisor).Width = 100
 
@@ -1109,7 +1111,7 @@ Buscar:
                 .Cell(0, Me.iGyActivoIDGastoDetalle).Text = "IDGastoDetalle"
                 .Cell(0, Me.iGyActivoCuentaContableRetencionIVA).Text = "CtaIVARet"
                 .Cell(0, Me.iGyActivoCuentaContableRetencionISR).Text = "CtaISRRet"
-                '.Cell(0, Me.iGyActivoCuentaContableRetencionIEPS).Text = "CtaIEPS"
+                .Cell(0, Me.iGyActivoCuentaContableIEPS).Text = "CtaIEPS"
                 .Cell(0, Me.iGyActivoNombreEmisor).Text = "Nombre Emisor"
                 .Cell(0, Me.iGyActivoRFCEmisor).Text = "RFC Emisor"
 
@@ -2290,6 +2292,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                     .TOTAL = valorNumerico(Me.txtTotalCompra.Text)
                     .RETENCION_IVA = valorNumerico(Me.txtRetencionIVA.Text)
                     .RETENCION_ISR = valorNumerico(Me.txtRetencionISR.Text)
+                    .IEPS_TOTAL_DESGLOSADO = valorNumerico(Me.txtIEPS.Text)
                     .IMPUESTO_PORCENTAJE = CDbl(Me.txtPorciento.Text)
                     .TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text)
                     .CONCEPTO = Me.TxtConcepto.Text
@@ -2299,10 +2302,12 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
 
                     For i = 1 To Me.GridCuentas.Rows - 1
                         If Me.GridCuentas.Cell(i, Me.iGyCuentaContable).Text <> "" And valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasImporte).Text) > 0 Then
-                            sCuentas = sCuentas & i & "," & Me.GridCuentas.Cell(i, Me.iGyCtasTipo).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCtasCodigoCentroCosto).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCtasCodigoCategoria).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCtasCodigoConcepto).Text & "," &
+                            sCuentas = sCuentas & i & "," & Me.GridCuentas.Cell(i, Me.iGyCtasTipo).Text & "," &
+                            Me.GridCuentas.Cell(i, Me.iGyCtasCodigoCentroCosto).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCtasCodigoCategoria).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCtasCodigoConcepto).Text & "," &
                             valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasImporte).Text).ToString & "," & Me.GridCuentas.Cell(i, Me.iGyCuentaContable).Text & "," &
                             valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasIVA).Text).ToString & "," & valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasTotal).Text).ToString & "," & Me.GridCuentas.Cell(i, Me.iGyCtasUUID).Text & "," &
-                            valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasCuentaContableRetencionIVA).Text).ToString & "," & valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasCuentaContableRetencionISR).Text).ToString &
+                            valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasRetencionIVA).Text).ToString & "," & valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasRetencionISR).Text).ToString & "," & valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasIEPS).Text).ToString & "," &
+                            Me.GridCuentas.Cell(i, Me.iGyCtasCuentaContableRetencionIVA).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCtasCuentaContableRetencionISR).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCtasCuentaContableIEPS).Text & "," &
                             Me.GridCuentas.Cell(i, Me.iGyCtasNombreEmisor).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCtasRFCEmisor).Text & "|"
                         End If
                     Next i
@@ -2311,7 +2316,8 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                         If Me.GridActivos.Cell(i, Me.iGyActivoCuentaContable).Text <> "" And valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoImporte).Text) > 0 Then
                             sListaActivos = sListaActivos & i & "," & Me.GridActivos.Cell(i, Me.iGyActivoCuentaContable).Text & "," & Me.GridActivos.Cell(i, Me.iGyActivoImporte).Text & "," &
                             valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoIVA).Text).ToString & "," & valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoTotal).Text).ToString & "," & Me.GridActivos.Cell(i, Me.iGyActivoUUID).Text & "," &
-                            valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoCuentaContableRetencionIVA).Text).ToString & "," & valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoCuentaContableRetencionISR).Text).ToString &
+                            valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoRetencionIVA).Text).ToString & "," & valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoRetencionISR).Text).ToString & "," & valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoIEPS).Text).ToString & "," &
+                            Me.GridActivos.Cell(i, Me.iGyActivoCuentaContableRetencionIVA).Text & "," & Me.GridActivos.Cell(i, Me.iGyActivoCuentaContableRetencionISR).Text & "," & Me.GridActivos.Cell(i, Me.iGyActivoCuentaContableIEPS).Text & "," &
                             Me.GridActivos.Cell(i, Me.iGyActivoNombreEmisor).Text & "," & Me.GridActivos.Cell(i, Me.iGyActivoRFCEmisor).Text & "|"
                         End If
                     Next i
