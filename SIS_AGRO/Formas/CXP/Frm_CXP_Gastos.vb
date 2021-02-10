@@ -25,14 +25,6 @@ Public Class Frm_CXP_Gastos
     Private sCodigoTipoDocumento As String = ""
 #End Region
 
-#Region "Propiedades"
-    Public ReadOnly Property Nombre_Modulo() As String
-        Get
-            Return "Revisión a Proveedores."
-        End Get
-    End Property
-#End Region
-
 #Region "Columnas grid cuentas"
     Private iGyCtasTipo As Integer = 1
     Private iGyCtasCodigoCentroCosto As Integer = 2
