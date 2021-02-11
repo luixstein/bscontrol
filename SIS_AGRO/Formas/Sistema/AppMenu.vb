@@ -1749,4 +1749,12 @@ Public Class AppMenu
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
     End Sub
+
+    Private Sub RequisicionesGlobalToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RequisicionesGlobalToolStripMenuItem.Click
+        Dim Child As New Rpt_Inventario_Requisiciones_Global
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
 End Class

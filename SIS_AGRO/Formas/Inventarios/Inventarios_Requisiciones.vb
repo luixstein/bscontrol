@@ -814,7 +814,7 @@ BuscaArticulos:
 
             Me.Cambia_Estado(Me.Estado)
 
-            Me.tsslElaboro.Text = "ELABORO: " + Me.oRequisiciones.NOMBRE_USUARIO_GRABO.ToUpper + " EL " + Format(Me.dtFechaEntrega.Value, "dd/MMM/yy")
+            Me.tsslElaboro.Text = "ELABORO: " + Me.oRequisiciones.NOMBRE_USUARIO_GRABO.ToUpper + " EL " + Format(oRequisiciones.FECHA_SERVIDOR, "dd/MMM/yy")
 
             If Me.lblStatus.Text = "L" Or Me.lblStatus.Text = "R" Or Me.lblStatus.Text = "A" Then
                 Me.tsslSolicito.Text = "SOLICITO: " + Me.oRequisiciones.NOMBRE_USUARIO_SOLICITO.ToUpper + " EL " + Format(Me.oRequisiciones.FECHA_SOLICITO, "dd/MMM/yy")

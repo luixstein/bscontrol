@@ -9,6 +9,7 @@ Public Class Class_Requisiciones_Global
 #Region "Campos de la tabla"
     Private _FOLIO_REQUISICION As String
     Private _FECHA_ENTREGA As Date
+    Private _FECHA_SERVIDOR As Date
     Private _CODIGO_ALMACEN As String
     Private _CODIGO_USUARIO_COMPRADOR As String
     Private _CODIGO_PLAZA As Integer
@@ -70,6 +71,12 @@ Public Class Class_Requisiciones_Global
         Set(ByVal Value As Date)
             Me._FECHA_ENTREGA = Value
         End Set
+    End Property
+
+    Public ReadOnly Property FECHA_SERVIDOR() As Date
+        Get
+            Return Me._FECHA_SERVIDOR
+        End Get
     End Property
 
     Public Property CODIGO_ALMACEN() As String
@@ -412,6 +419,7 @@ Public Class Class_Requisiciones_Global
                 If dReader.Read = True Then
                     Me._FOLIO_REQUISICION = "" & dReader("FOLIO_REQUISICION").ToString()
                     Me._FECHA_ENTREGA = CDate(dReader("FECHA_ENTREGA"))
+                    Me._FECHA_SERVIDOR = CDate(dReader("FECHA_SERVIDOR"))
                     Me._CODIGO_ALMACEN = "" & dReader("CODIGO_ALMACEN").ToString()
                     Me._CODIGO_USUARIO_COMPRADOR = "" & dReader("CODIGO_USUARIO_COMPRADOR").ToString()
                     Me._CODIGO_PLAZA = Convert.ToInt32(dReader("CODIGO_PLAZA"))

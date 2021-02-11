@@ -1096,6 +1096,12 @@
     <Compile Include="Formas\Inventarios\Inventarios_sugeridos.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\Inventarios\Reportes\Rpt_Inventario_Requisiciones_Global.Designer.vb">
+      <DependentUpon>Rpt_Inventario_Requisiciones_Global.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Inventarios\Reportes\Rpt_Inventario_Requisiciones_Global.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\Inventarios\Reportes\Rpt_Inventario_Requisiciones_solicitadas.Designer.vb">
       <DependentUpon>Rpt_Inventario_Requisiciones_solicitadas.vb</DependentUpon>
     </Compile>
@@ -2311,6 +2317,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Inventarios\Reportes\Rpt_Inventario_Existencias.resx">
       <DependentUpon>Rpt_Inventario_Existencias.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Inventarios\Reportes\Rpt_Inventario_Requisiciones_Global.resx">
+      <DependentUpon>Rpt_Inventario_Requisiciones_Global.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Inventarios\Reportes\Rpt_Inventario_Requisiciones_solicitadas.resx">
       <DependentUpon>Rpt_Inventario_Requisiciones_solicitadas.vb</DependentUpon>
