@@ -5,6 +5,7 @@ Public Class Rpt_Acuicola_Global
 
     Private Sub Rpt_Compras_Global_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.DesplegarDivisiones()
+        Me.DesplegarTemporadas()
         Me.DtFecha.Value = Date.Now
     End Sub
 
@@ -55,6 +56,24 @@ Public Class Rpt_Acuicola_Global
         End Try
     End Sub
 
+    Private Sub DesplegarTemporadas()
+        Dim oTemporada As New Class_NominaTemporada
+        Try
+            With Me.cboTemporada
+                .DisplayMember = "NOMBRE_TEMPORADA"
+                .ValueMember = "ID_NOMINA_TEMPORADA"
+                Dim dView As New Data.DataView(oTemporada.ObtenerTemporadas)
+                dView.Sort = "NOMBRE_TEMPORADA"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedValue = Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarTemporadas", ex)
+        End Try
+    End Sub
+
     Private Sub Imprimir()
         Dim FormatoDeReporte As String = ""
         Dim Rpt As ReportDocument
@@ -85,6 +104,10 @@ Public Class Rpt_Acuicola_Global
             Rpt.SetParameterValue("@CODIGO_DIVISION", Me.CboDivision.SelectedValue)
             Rpt.SetParameterValue("@FECHA", Format(Me.DtFecha.Value, "yyyy-dd-MM"))
             Rpt.SetParameterValue("@CICLO", Me.txtCiclo.Text)
+
+            If Me.rbtParametros.Checked = False Then
+                Rpt.SetParameterValue("@ID_NOMINA_TEMPORADA", Me.cboTemporada.SelectedValue)
+            End If
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None

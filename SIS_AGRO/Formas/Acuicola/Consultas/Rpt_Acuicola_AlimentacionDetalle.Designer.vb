@@ -38,6 +38,8 @@ Partial Class Rpt_Acuicola_AlimentacionDetalle
         Me.tsbConsultar = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
+        Me.lblDisplayTemporada = New System.Windows.Forms.Label()
+        Me.cboTemporada = New System.Windows.Forms.ComboBox()
         Me.GroupBox2.SuspendLayout()
         Me.gbCiclo.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
@@ -83,6 +85,8 @@ Partial Class Rpt_Acuicola_AlimentacionDetalle
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.lblDisplayTemporada)
+        Me.GroupBox2.Controls.Add(Me.cboTemporada)
         Me.GroupBox2.Controls.Add(Me.DtFecha2)
         Me.GroupBox2.Controls.Add(Me.LblFecha2)
         Me.GroupBox2.Controls.Add(Me.CkbCiclo)
@@ -198,6 +202,26 @@ Partial Class Rpt_Acuicola_AlimentacionDetalle
         Me.ToolStrip1.TabIndex = 312
         Me.ToolStrip1.Text = "ToolStrip1"
         '
+        'lblDisplayTemporada
+        '
+        Me.lblDisplayTemporada.AutoSize = True
+        Me.lblDisplayTemporada.Location = New System.Drawing.Point(379, 135)
+        Me.lblDisplayTemporada.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayTemporada.Name = "lblDisplayTemporada"
+        Me.lblDisplayTemporada.Size = New System.Drawing.Size(89, 17)
+        Me.lblDisplayTemporada.TabIndex = 396
+        Me.lblDisplayTemporada.Text = "Temporada :"
+        '
+        'cboTemporada
+        '
+        Me.cboTemporada.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboTemporada.FormattingEnabled = True
+        Me.cboTemporada.Location = New System.Drawing.Point(476, 132)
+        Me.cboTemporada.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboTemporada.Name = "cboTemporada"
+        Me.cboTemporada.Size = New System.Drawing.Size(88, 24)
+        Me.cboTemporada.TabIndex = 395
+        '
         'Rpt_Acuicola_AlimentacionDetalle
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -237,4 +261,6 @@ Partial Class Rpt_Acuicola_AlimentacionDetalle
     Friend WithEvents LblEstanque As System.Windows.Forms.Label
     Friend WithEvents LblFecha2 As System.Windows.Forms.Label
     Friend WithEvents DtFecha2 As System.Windows.Forms.DateTimePicker
+    Friend WithEvents lblDisplayTemporada As System.Windows.Forms.Label
+    Friend WithEvents cboTemporada As System.Windows.Forms.ComboBox
 End Class

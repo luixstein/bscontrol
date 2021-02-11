@@ -5,6 +5,7 @@ Public Class Rpt_Acuicola_AlimentacionDetalle
 
     Private Sub Rpt_Acuicola_AlimentacionDetalle_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.DesplegarDivisiones()
+        Me.DesplegarTemporadas()
         Me.DtFecha1.Value = CDate(Format(Me.DtFecha1.Value, "01/01/" & Date.Now.Year))
         Me.DtFecha2.Value = Date.Now
         Me.CboLote.Enabled = False
@@ -90,6 +91,24 @@ Public Class Rpt_Acuicola_AlimentacionDetalle
         End Try
     End Sub
 
+    Private Sub DesplegarTemporadas()
+        Dim oTemporada As New Class_NominaTemporada
+        Try
+            With Me.cboTemporada
+                .DisplayMember = "NOMBRE_TEMPORADA"
+                .ValueMember = "ID_NOMINA_TEMPORADA"
+                Dim dView As New Data.DataView(oTemporada.ObtenerTemporadas)
+                dView.Sort = "NOMBRE_TEMPORADA"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedValue = Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarTemporadas", ex)
+        End Try
+    End Sub
+
     Private Sub Imprimir()
         Dim FormatoDeReporte As String = ""
         Dim Rpt As ReportDocument
@@ -111,6 +130,7 @@ Public Class Rpt_Acuicola_AlimentacionDetalle
             Rpt.SetParameterValue("@FECHA1", Format(Me.DtFecha1.Value, "yyyy-dd-MM"))
             Rpt.SetParameterValue("@FECHA2", Format(Me.DtFecha2.Value, "yyyy-dd-MM"))
             Rpt.SetParameterValue("@CICLO", IIf(Me.CkbCiclo.Checked, Me.txtCiclo.Text, 0))
+            Rpt.SetParameterValue("@ID_NOMINA_TEMPORADA", Me.cboTemporada.SelectedValue)
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None

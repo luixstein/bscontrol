@@ -26,6 +26,7 @@ Partial Class Rpt_Acuicola_Global
         Me.DtFecha = New System.Windows.Forms.DateTimePicker()
         Me.LblFecha = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.RbIntensivos = New System.Windows.Forms.RadioButton()
         Me.rbtParametros = New System.Windows.Forms.RadioButton()
         Me.RbBiometrias = New System.Windows.Forms.RadioButton()
         Me.RbAlimentacion = New System.Windows.Forms.RadioButton()
@@ -37,7 +38,8 @@ Partial Class Rpt_Acuicola_Global
         Me.tsbConsultar = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
-        Me.RbIntensivos = New System.Windows.Forms.RadioButton()
+        Me.lblDisplayTemporada = New System.Windows.Forms.Label()
+        Me.cboTemporada = New System.Windows.Forms.ComboBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
@@ -76,6 +78,17 @@ Partial Class Rpt_Acuicola_Global
         Me.GroupBox1.TabIndex = 301
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Reportes"
+        '
+        'RbIntensivos
+        '
+        Me.RbIntensivos.AutoSize = True
+        Me.RbIntensivos.Location = New System.Drawing.Point(8, 112)
+        Me.RbIntensivos.Margin = New System.Windows.Forms.Padding(4)
+        Me.RbIntensivos.Name = "RbIntensivos"
+        Me.RbIntensivos.Size = New System.Drawing.Size(126, 21)
+        Me.RbIntensivos.TabIndex = 3
+        Me.RbIntensivos.Text = "Hiperintensivos"
+        Me.RbIntensivos.UseVisualStyleBackColor = True
         '
         'rbtParametros
         '
@@ -143,6 +156,8 @@ Partial Class Rpt_Acuicola_Global
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.lblDisplayTemporada)
+        Me.GroupBox2.Controls.Add(Me.cboTemporada)
         Me.GroupBox2.Controls.Add(Me.CboDivision)
         Me.GroupBox2.Controls.Add(Me.LblFecha)
         Me.GroupBox2.Controls.Add(Me.DtFecha)
@@ -194,16 +209,25 @@ Partial Class Rpt_Acuicola_Global
         Me.ToolStrip1.TabIndex = 312
         Me.ToolStrip1.Text = "ToolStrip1"
         '
-        'RbIntensivos
+        'lblDisplayTemporada
         '
-        Me.RbIntensivos.AutoSize = True
-        Me.RbIntensivos.Location = New System.Drawing.Point(8, 112)
-        Me.RbIntensivos.Margin = New System.Windows.Forms.Padding(4)
-        Me.RbIntensivos.Name = "RbIntensivos"
-        Me.RbIntensivos.Size = New System.Drawing.Size(126, 21)
-        Me.RbIntensivos.TabIndex = 3
-        Me.RbIntensivos.Text = "Hiperintensivos"
-        Me.RbIntensivos.UseVisualStyleBackColor = True
+        Me.lblDisplayTemporada.AutoSize = True
+        Me.lblDisplayTemporada.Location = New System.Drawing.Point(11, 163)
+        Me.lblDisplayTemporada.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayTemporada.Name = "lblDisplayTemporada"
+        Me.lblDisplayTemporada.Size = New System.Drawing.Size(89, 17)
+        Me.lblDisplayTemporada.TabIndex = 394
+        Me.lblDisplayTemporada.Text = "Temporada :"
+        '
+        'cboTemporada
+        '
+        Me.cboTemporada.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboTemporada.FormattingEnabled = True
+        Me.cboTemporada.Location = New System.Drawing.Point(108, 160)
+        Me.cboTemporada.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboTemporada.Name = "cboTemporada"
+        Me.cboTemporada.Size = New System.Drawing.Size(88, 24)
+        Me.cboTemporada.TabIndex = 393
         '
         'Rpt_Acuicola_Global
         '
@@ -245,4 +269,6 @@ Partial Class Rpt_Acuicola_Global
     Friend WithEvents CboDivision As System.Windows.Forms.ComboBox
     Friend WithEvents rbtParametros As System.Windows.Forms.RadioButton
     Friend WithEvents RbIntensivos As System.Windows.Forms.RadioButton
+    Friend WithEvents lblDisplayTemporada As System.Windows.Forms.Label
+    Friend WithEvents cboTemporada As System.Windows.Forms.ComboBox
 End Class
