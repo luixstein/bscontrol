@@ -310,8 +310,7 @@ BusquedaVisual:
 
     Private Sub Imprimir()
         Dim StrFiltros As String = ""
-        Dim Rpt As ReportDocument
-        Rpt = New ReportDocument
+        Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
         Try
             If Me.ValidarPeriodo = False Then
@@ -320,21 +319,50 @@ BusquedaVisual:
 
             If Me.rdbEstadoResultados.Checked = True Then
                 Me.FormatoDeReporte = "RPT_CONTABILIDAD_ESTADO_RESULTADOS"
-            ElseIf Me.rdbTotales.Checked = True Then
-                Me.FormatoDeReporte = "RPT_CONTABILIDAD_ESTADO_RESULTADOS_TOTALES"
-            ElseIf Me.RdbSocioTarriba.Checked = True Then
-                Me.FormatoDeReporte = "RPT_CONTABILIDAD_ESTADO_RESULTADOS_TARRIBA_" & Me.CmbEjercicio.Text
+                'ElseIf Me.rdbTotales.Checked = True Then
+                '    Me.FormatoDeReporte = "RPT_CONTABILIDAD_ESTADO_RESULTADOS_TOTALES"
             ElseIf Me.RdnBalanceGeneral.Checked = True Then
                 Me.FormatoDeReporte = "RPT_CONTABILIDAD_BALANCE_GENERAL"
-            ElseIf Me.RdbRelacionAnalitica.Checked = True Then
-                Me.FormatoDeReporte = "RPT_CONTABILIDAD_RELACIONES_ANALITICAS_COMPARATIVAS"
-            ElseIf RdbEstadoSituacion.Checked = True Then
-                Me.FormatoDeReporte = "RPT_CONTABILIDAD_ESTADO_CAMBIOS_SITUACION_FINANCIERA"
+                'ElseIf Me.RdbRelacionAnalitica.Checked = True Then
+                '    Me.FormatoDeReporte = "RPT_CONTABILIDAD_RELACIONES_ANALITICAS_COMPARATIVAS"
+                'ElseIf RdbEstadoSituacion.Checked = True Then
+                '    Me.FormatoDeReporte = "RPT_CONTABILIDAD_ESTADO_CAMBIOS_SITUACION_FINANCIERA"
             End If
 
             oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
 
-            If Me.rdbEstadoResultados.Checked = True Or Me.RdbSocioTarriba.Checked = True Or Me.RdnBalanceGeneral.Checked = True Or Me.rdbTotales.Checked = True Then
+            'If Me.rdbEstadoResultados.Checked = True Or Me.RdnBalanceGeneral.Checked = True Or Me.rdbTotales.Checked = True Then
+            '    Rpt.SetParameterValue("@ID_CON_EJERCICIO", Me.CmbEjercicio.SelectedValue)
+            '    Rpt.SetParameterValue("@FECHA1", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
+            '    Rpt.SetParameterValue("@FECHA2", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
+            '    If Me.RdnBalanceGeneral.Checked = True Then
+            '        Rpt.SetParameterValue("@FORMATO_PARA_COMPARATIVO", "0")
+            '    End If
+
+            '    If Me.rdbEstadoResultados.Checked = True Then
+            '        Rpt.SetParameterValue("@TIPO_CAMBIO", 0)
+            '        Rpt.SetParameterValue("@ID_PROYECTO", 0)
+            '    End If
+
+            'Else
+            '    Rpt.SetParameterValue("@FECHA1_A", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
+            '    Rpt.SetParameterValue("@FECHA2_A", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
+            '    Rpt.SetParameterValue("@ID_CON_EJERCICIO_A", Me.CmbEjercicio.SelectedValue)
+            '    Rpt.SetParameterValue("@FECHA1_B", Format(Me.DtFechaDesde2.Value, "yyyy-dd-MM"))
+            '    Rpt.SetParameterValue("@FECHA2_B", Format(Me.DtFechaHasta2.Value, "yyyy-dd-MM"))
+            '    Rpt.SetParameterValue("@ID_CON_EJERCICIO_B", Me.CmbEjercicio2.SelectedValue)
+
+            '    If RdbRelacionAnalitica.Checked = True Then
+            '        Rpt.SetParameterValue("@CUENTA_CONTABLE1", "" & Me.TxtCuenta1.Text)
+            '        Rpt.SetParameterValue("@CUENTA_CONTABLE2", "" & Me.TxtCuenta2.Text)
+            '    End If
+            'End If
+
+            If Me.rdbEstadoResultados.Checked = True Then
+                Rpt.SetParameterValue("@FECHA1", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
+                Rpt.SetParameterValue("@FECHA2", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
+
+            ElseIf Me.RdnBalanceGeneral.Checked = True Then
                 Rpt.SetParameterValue("@ID_CON_EJERCICIO", Me.CmbEjercicio.SelectedValue)
                 Rpt.SetParameterValue("@FECHA1", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
                 Rpt.SetParameterValue("@FECHA2", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
@@ -346,26 +374,13 @@ BusquedaVisual:
                     Rpt.SetParameterValue("@TIPO_CAMBIO", 0)
                     Rpt.SetParameterValue("@ID_PROYECTO", 0)
                 End If
-
-            Else
-                Rpt.SetParameterValue("@FECHA1_A", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
-                Rpt.SetParameterValue("@FECHA2_A", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
-                Rpt.SetParameterValue("@ID_CON_EJERCICIO_A", Me.CmbEjercicio.SelectedValue)
-                Rpt.SetParameterValue("@FECHA1_B", Format(Me.DtFechaDesde2.Value, "yyyy-dd-MM"))
-                Rpt.SetParameterValue("@FECHA2_B", Format(Me.DtFechaHasta2.Value, "yyyy-dd-MM"))
-                Rpt.SetParameterValue("@ID_CON_EJERCICIO_B", Me.CmbEjercicio2.SelectedValue)
-
-                If RdbRelacionAnalitica.Checked = True Then
-                    Rpt.SetParameterValue("@CUENTA_CONTABLE1", "" & Me.TxtCuenta1.Text)
-                    Rpt.SetParameterValue("@CUENTA_CONTABLE2", "" & Me.TxtCuenta2.Text)
-                End If
             End If
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
             frm.Show()
         Catch ex As Exception
-            HandleError(Me.Name, "Reporte de Costos de Produccion", ex)
+            HandleError(Me.Name, "Imprimir", ex)
         Finally
             oReporte = Nothing
         End Try
@@ -411,25 +426,16 @@ BusquedaVisual:
     End Sub
 
     Private Sub Frm_Contabilidad_Costos_Produccion_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Dim sql As Class_find
-        sql = New Class_find("SELECT FECHA_INICIO,FECHA_FINAL FROM CON_EJERCICIOS WHERE ID_CON_EJERCICIO=" & Me.CmbEjercicio.SelectedValue.ToString)
+        Dim sql As New Class_find("SELECT FECHA_INICIO,FECHA_FINAL FROM CON_EJERCICIOS WHERE ID_CON_EJERCICIO=" & Me.CmbEjercicio.SelectedValue.ToString)
         Me.DtFechaDesde.Value = CDate(sql.Result1)
         Me.DtFechaHasta.Value = CDate(sql.Result2)
-        If Usuario.Nombre_Usuario = "ROSARIO" Then
-            Me.RdbSocioTarriba.Checked = True
-            Me.RdnBalanceGeneral.Visible = False
-            Me.rdbEstadoResultados.Visible = False
-            'Me.RdbEstadoSituacion.Visible = False
-            'Me.RdbRelacionAnalitica.Visible = False
-            'Me.rdbTotales.Visible = False
-        Else
-            Me.rdbEstadoResultados.Checked = True
-            Me.RdnBalanceGeneral.Visible = True
-            Me.rdbEstadoResultados.Visible = True
-            'Me.RdbEstadoSituacion.Visible = True
-            'Me.RdbRelacionAnalitica.Visible = True
-            'Me.rdbTotales.Visible = True
-        End If
+
+        Me.rdbEstadoResultados.Checked = True
+        Me.RdnBalanceGeneral.Visible = True
+        Me.rdbEstadoResultados.Visible = True
+        'Me.RdbEstadoSituacion.Visible = True
+        'Me.RdbRelacionAnalitica.Visible = True
+        'Me.rdbTotales.Visible = True
     End Sub
 
     Private Sub RdbRelacionAnalitica_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RdbRelacionAnalitica.CheckedChanged

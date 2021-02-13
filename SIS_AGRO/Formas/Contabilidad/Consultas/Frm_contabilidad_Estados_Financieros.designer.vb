@@ -38,7 +38,6 @@ Partial Class Frm_contabilidad_Estados_Financieros
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.rdbTotales = New System.Windows.Forms.RadioButton()
         Me.RdbEstadoSituacion = New System.Windows.Forms.RadioButton()
-        Me.RdbSocioTarriba = New System.Windows.Forms.RadioButton()
         Me.RdbRelacionAnalitica = New System.Windows.Forms.RadioButton()
         Me.RdnBalanceGeneral = New System.Windows.Forms.RadioButton()
         Me.rdbEstadoResultados = New System.Windows.Forms.RadioButton()
@@ -163,7 +162,7 @@ Partial Class Frm_contabilidad_Estados_Financieros
         Me.LblNota.Name = "LblNota"
         Me.LblNota.Size = New System.Drawing.Size(610, 18)
         Me.LblNota.TabIndex = 12
-        Me.LblNota.Text = "* El ejercicio seleccionado esta abierto y su póliza de cierre está aplicada, se " & _
+        Me.LblNota.Text = "* El ejercicio seleccionado esta abierto y su póliza de cierre está aplicada, se " &
     "le sugiere cerrar el ejercicio"
         Me.LblNota.Visible = False
         '
@@ -181,7 +180,6 @@ Partial Class Frm_contabilidad_Estados_Financieros
         '
         Me.GroupBox2.Controls.Add(Me.rdbTotales)
         Me.GroupBox2.Controls.Add(Me.RdbEstadoSituacion)
-        Me.GroupBox2.Controls.Add(Me.RdbSocioTarriba)
         Me.GroupBox2.Controls.Add(Me.RdbRelacionAnalitica)
         Me.GroupBox2.Controls.Add(Me.RdnBalanceGeneral)
         Me.GroupBox2.Controls.Add(Me.rdbEstadoResultados)
@@ -212,17 +210,6 @@ Partial Class Frm_contabilidad_Estados_Financieros
         Me.RdbEstadoSituacion.Text = "&Estado de cambios de la situación financiera"
         Me.RdbEstadoSituacion.UseVisualStyleBackColor = True
         Me.RdbEstadoSituacion.Visible = False
-        '
-        'RdbSocioTarriba
-        '
-        Me.RdbSocioTarriba.AutoSize = True
-        Me.RdbSocioTarriba.Location = New System.Drawing.Point(500, 13)
-        Me.RdbSocioTarriba.Name = "RdbSocioTarriba"
-        Me.RdbSocioTarriba.Size = New System.Drawing.Size(85, 17)
-        Me.RdbSocioTarriba.TabIndex = 2
-        Me.RdbSocioTarriba.Text = "SocioTarriba"
-        Me.RdbSocioTarriba.UseVisualStyleBackColor = True
-        Me.RdbSocioTarriba.Visible = False
         '
         'RdbRelacionAnalitica
         '
@@ -430,7 +417,6 @@ Partial Class Frm_contabilidad_Estados_Financieros
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
     Friend WithEvents rdbEstadoResultados As System.Windows.Forms.RadioButton
     Friend WithEvents RdnBalanceGeneral As System.Windows.Forms.RadioButton
-    Friend WithEvents RdbSocioTarriba As System.Windows.Forms.RadioButton
     Friend WithEvents btnPolizaNoCuadra As System.Windows.Forms.Button
     Friend WithEvents LblNota As System.Windows.Forms.Label
     Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
