@@ -7,17 +7,19 @@ Public Class Catalogo_Precios_Venta
 #Region "Columnas grid"
     Private igyCodigo As Short = 1
     Private igyDescripcion As Short = 2
-    Private igyIEPSPtje As Short = 3
-    Private igyPrecio1 As Short = 4
-    Private igyPrecio1Ieps As Short = 5
-    Private igyPrecio2 As Short = 6
-    Private igyPrecio2Ieps As Short = 7
-    Private igyPrecio3 As Short = 8
-    Private igyPrecio3Ieps As Short = 9
-    Private igyPrecio4 As Short = 10
-    Private igyPrecio4Ieps As Short = 11
-    Private igyPrecio5 As Short = 12
-    Private igyPrecio5Ieps As Short = 13
+    Private igyMargenUtilidad As Short = 3
+    Private igyIEPSPtje As Short = 4
+    Private igyPrecio1 As Short = 5
+    Private igyPrecio1Ieps As Short = 6
+    Private igyPrecio2 As Short = 7
+    Private igyPrecio2Ieps As Short = 8
+    Private igyPrecio3 As Short = 9
+    Private igyPrecio3Ieps As Short = 10
+    Private igyPrecio4 As Short = 11
+    Private igyPrecio4Ieps As Short = 12
+    Private igyPrecio5 As Short = 13
+    Private igyPrecio5Ieps As Short = 14
+
 #End Region
 
 #Region "Eventos de objetos"
@@ -25,6 +27,7 @@ Public Class Catalogo_Precios_Venta
     Private Sub Catalogo_Precios_Venta_Load(sender As Object, e As EventArgs) Handles Me.Load
         Me.DesplegarLineas()
         Me.DesplegarFamilias()
+        Me.DesplegarPlazas()
         Me.Inicializa()
         Me.Running = True
     End Sub
@@ -70,6 +73,10 @@ buscar:
         Me.DesplegarElementos()
     End Sub
 
+    Private Sub cboPlaza_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPlaza.SelectedIndexChanged
+        Me.DesplegarElementos()
+    End Sub
+
     Private Sub Grid_KeyDown(Sender As Object, e As KeyEventArgs) Handles Grid.KeyDown
         Dim Renglon As Integer = Me.Grid.Selection.FirstRow
         Dim Columna As Integer = Me.Grid.Selection.FirstCol
@@ -85,7 +92,7 @@ buscar:
 #End Region
 
 #Region "Eventos Genericos"
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCodigoArticulo.KeyPress, cboLinea.KeyPress, cboFamilia.KeyPress
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCodigoArticulo.KeyPress, cboLinea.KeyPress, cboFamilia.KeyPress, cboPlaza.KeyPress
         txtNoBeep(e)
     End Sub
 #End Region
@@ -114,6 +121,7 @@ buscar:
             Me.lblArticulo.Text = ""
             Me.cboLinea.SelectedValue = "T"
             Me.cboFamilia.SelectedValue = "T"
+            Me.cboPlaza.SelectedValue = Plaza.CODIGO_PLAZA
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
         End Try
@@ -123,6 +131,7 @@ buscar:
         Try
             Me.Grid.Cell(0, Me.igyCodigo).Text = "Código"
             Me.Grid.Cell(0, Me.igyDescripcion).Text = "Descripción"
+            Me.Grid.Cell(0, Me.igyMargenUtilidad).Text = "% Utilidad min."
             Me.Grid.Cell(0, Me.igyIEPSPtje).Text = "ieps%"
             Me.Grid.Cell(0, Me.igyPrecio1).Text = "1"
             Me.Grid.Cell(0, Me.igyPrecio1Ieps).Text = "1 c/ieps"
@@ -137,6 +146,7 @@ buscar:
 
             Me.Grid.Column(Me.igyCodigo).Width = 70
             Me.Grid.Column(Me.igyDescripcion).Width = 280
+            Me.Grid.Column(Me.igyMargenUtilidad).Width = 75
             Me.Grid.Column(Me.igyIEPSPtje).Width = 40
             Me.Grid.Column(Me.igyPrecio1).Width = 75
             Me.Grid.Column(Me.igyPrecio2).Width = 75
@@ -199,6 +209,10 @@ buscar:
             Me.Grid.Column(Me.igyPrecio5Ieps).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
             Me.Grid.Column(Me.igyPrecio5Ieps).Alignment = FlexCell.AlignmentEnum.RightCenter
 
+            Me.Grid.Column(Me.igyMargenUtilidad).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.igyMargenUtilidad).DecimalLength = 2
+            Me.Grid.Column(Me.igyMargenUtilidad).Alignment = FlexCell.AlignmentEnum.RightCenter
+
             Me.Grid.Column(Me.igyCodigo).Locked = True
             Me.Grid.Column(Me.igyDescripcion).Locked = True
             Me.Grid.Column(Me.igyIEPSPtje).Locked = True
@@ -254,11 +268,29 @@ buscar:
         End Try
     End Sub
 
+    Private Sub DesplegarPlazas()
+        Try
+            Dim oElementos As New Class_SisPlazas
+            With Me.cboPlaza
+                .DisplayMember = "NOMBRE_PLAZA"
+                .ValueMember = "CODIGO_PLAZA"
+                Dim dView As New Data.DataView(oElementos.ObtenerElementos)
+                dView.Sort = "NOMBRE_PLAZA"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedValue = Plaza.CODIGO_PLAZA
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarPlazas", ex)
+        End Try
+    End Sub
+
     Private Function DesplegarElementos() As Boolean
         Try
             If Me.Running = True Then
                 Me.Grid.AutoRedraw = False
-                Me.Grid.DataSource = Me.oPrecios.ObtenerElementos(Me.txtCodigoArticulo.Text, Me.cboLinea.SelectedValue.ToString, Me.cboFamilia.SelectedValue.ToString)
+                Me.Grid.DataSource = Me.oPrecios.ObtenerElementos(Me.txtCodigoArticulo.Text, Me.cboLinea.SelectedValue.ToString, Me.cboFamilia.SelectedValue.ToString, CInt(Me.cboPlaza.SelectedValue))
                 Me.FormateaGrid()
             End If
         Catch ex As Exception
@@ -277,7 +309,7 @@ buscar:
             Renglon = Me.Grid.Selection.FirstRow
             sArticulo = Me.Grid.Cell(Renglon, Me.igyCodigo).Text
 
-            If Not (Columna = igyPrecio1 Or Columna = igyPrecio2 Or Columna = igyPrecio3 Or Columna = igyPrecio4 Or Columna = igyPrecio5) Then
+            If Not (Columna = igyPrecio1 Or Columna = igyPrecio2 Or Columna = igyPrecio3 Or Columna = igyPrecio4 Or Columna = igyPrecio5 Or Columna = igyMargenUtilidad) Then
                 Return False
             End If
 
@@ -286,12 +318,13 @@ buscar:
                 Return False
             End If
 
-            Me.oPrecios = New Class_CatPreciosVenta(sArticulo)
+            Me.oPrecios = New Class_CatPreciosVenta(sArticulo, CInt(Me.cboPlaza.SelectedValue))
             Me.oPrecios.PRECIO1 = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPrecio1).Text)
             Me.oPrecios.PRECIO2 = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPrecio2).Text)
             Me.oPrecios.PRECIO3 = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPrecio3).Text)
             Me.oPrecios.PRECIO4 = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPrecio4).Text)
             Me.oPrecios.PRECIO5 = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPrecio5).Text)
+            Me.oPrecios.PORCENTAJE_MARGEN_UTILIDAD = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyMargenUtilidad).Text)
             Me.oPrecios.GrabarCambioPrecio()
             bResultado = True
         Catch ex As Exception
