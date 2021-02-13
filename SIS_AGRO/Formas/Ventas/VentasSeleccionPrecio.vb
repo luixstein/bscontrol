@@ -66,7 +66,7 @@ Public Class VentasSeleccionPrecio
 #Region "Métodos y procedimientos"
     Private Function Consultar() As Boolean
         Try
-            Me.oPrecio = New Class_CatPreciosVenta(Me._CodigoArticulo)
+            Me.oPrecio = New Class_CatPreciosVenta(Me._CodigoArticulo, Plaza.CODIGO_PLAZA)
             If Me.oPrecio.Existe = True Then
                 Me.txtPrecio1.Text = FormatPrecio(Me.oPrecio.PRECIO1)
                 Me.txtPrecio2.Text = FormatPrecio(Me.oPrecio.PRECIO2)
