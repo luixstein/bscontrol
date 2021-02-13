@@ -1551,7 +1551,7 @@ Buscar:
         Const sProcedure As String = "GestionaGridCuentas"
 
         Dim Columna As Integer, Renglon As Integer
-        Dim StrCod As String = "" ', oCuenta As Class_CatCuentas
+        Dim StrCod As String = "", oCuenta As Class_CatCuentas, sCuentaContable As String = ""
         Dim oCentroCosto As Class_CatCentroCostos 'Class_VwCatCentrosCostosyDeudoresDiversos
         Dim oCategoria As Class_CatCategorias, oConcepto As Class_CatConceptos
         Dim sCodigo As String = "", sTipo As String = ""
@@ -1785,27 +1785,83 @@ busca_concepto:
                                 '    Return
                             End If
 
+                        Case Me.iGyCtasCuentaContableRetencionIVA
+                            oCuenta = New Class_CatCuentas()
+                            sCuentaContable = oCuenta.BusquedaVisual_PorCodigoFiltrandoTipoOperacion()
+                            If txtLEN(sCuentaContable) = True Then
+                                oCuenta = New Class_CatCuentas(sCuentaContable)
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCtasCuentaContableRetencionIVA).Text = oCuenta.CUENTA_CONTABLE
+                            End If
+                            oCuenta = Nothing
+
+                        Case Me.iGyCtasCuentaContableRetencionISR
+                            oCuenta = New Class_CatCuentas()
+                            sCuentaContable = oCuenta.BusquedaVisual_PorCodigoFiltrandoTipoOperacion()
+                            If txtLEN(sCuentaContable) = True Then
+                                oCuenta = New Class_CatCuentas(sCuentaContable)
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCtasCuentaContableRetencionISR).Text = oCuenta.CUENTA_CONTABLE
+                            End If
+                            oCuenta = Nothing
+
+                        Case Me.iGyCtasCuentaContableIEPS
+                            oCuenta = New Class_CatCuentas()
+                            sCuentaContable = oCuenta.BusquedaVisual_PorCodigoFiltrandoTipoOperacion()
+                            If txtLEN(sCuentaContable) = True Then
+                                oCuenta = New Class_CatCuentas(sCuentaContable)
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCtasCuentaContableIEPS).Text = oCuenta.CUENTA_CONTABLE
+                            End If
+                            oCuenta = Nothing
+
                     End Select
 
-                    'Case Keys.F7
-                    '    Select Case Columna
-                    '        Case Me.iGyCuentaContable
-                    '            oCuenta = New Class_CatCuentas()
-                    '            Dim sCuenta As String = oCuenta.BusquedaVisual_PorCodigoFiltrandoTipoOperacion()
-                    '            If txtLEN(sCuenta) = True Then
-                    '                GridCuentas.Cell(Renglon, Me.iGyCuentaContable).Text = sCuenta
-                    '                Me.GridCuentas.Cell(Renglon, Me.iGyCuentaContable).Text = oCuenta.CUENTA_CONTABLE
-                    '                Me.GridCuentas.Cell(Renglon, Me.iGyNombreCuenta).Text = oCuenta.NOMBRE_CUENTA_NIVELES_COMPLETOS
-                    '                'If Renglon = 1 Then
-                    '                '    Me.GridCuentas.Cell(Renglon, Me.iGyConcepto).Text = Me.TxtConcepto.Text
-                    '                'Else
-                    '                '    Me.GridCuentas.Cell(Renglon, Me.iGyConcepto).Text = Me.TxtConcepto.Text
-                    '                'End If
-                    '            End If
-                    '            oCuenta = Nothing
-                    '    End Select
+                Case Keys.F7
+                    Select Case Columna
+                        '        Case Me.iGyCuentaContable
+                        '            oCuenta = New Class_CatCuentas()
+                        '            Dim sCuenta As String = oCuenta.BusquedaVisual_PorCodigoFiltrandoTipoOperacion()
+                        '            If txtLEN(sCuenta) = True Then
+                        '                GridCuentas.Cell(Renglon, Me.iGyCuentaContable).Text = sCuenta
+                        '                Me.GridCuentas.Cell(Renglon, Me.iGyCuentaContable).Text = oCuenta.CUENTA_CONTABLE
+                        '                Me.GridCuentas.Cell(Renglon, Me.iGyNombreCuenta).Text = oCuenta.NOMBRE_CUENTA_NIVELES_COMPLETOS
+                        '                'If Renglon = 1 Then
+                        '                '    Me.GridCuentas.Cell(Renglon, Me.iGyConcepto).Text = Me.TxtConcepto.Text
+                        '                'Else
+                        '                '    Me.GridCuentas.Cell(Renglon, Me.iGyConcepto).Text = Me.TxtConcepto.Text
+                        '                'End If
+                        '            End If
+                        '            oCuenta = Nothing
+
+                        Case Me.iGyCtasCuentaContableRetencionIVA
+                            oCuenta = New Class_CatCuentas()
+                            sCuentaContable = oCuenta.BusquedaVisual_PorNombreFiltrandoTipoOperacion()
+                            If txtLEN(sCuentaContable) = True Then
+                                oCuenta = New Class_CatCuentas(sCuentaContable)
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCtasCuentaContableRetencionIVA).Text = oCuenta.CUENTA_CONTABLE
+                            End If
+                            oCuenta = Nothing
+
+                        Case Me.iGyCtasCuentaContableRetencionISR
+                            oCuenta = New Class_CatCuentas()
+                            sCuentaContable = oCuenta.BusquedaVisual_PorNombreFiltrandoTipoOperacion()
+                            If txtLEN(sCuentaContable) = True Then
+                                oCuenta = New Class_CatCuentas(sCuentaContable)
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCtasCuentaContableRetencionISR).Text = oCuenta.CUENTA_CONTABLE
+                            End If
+                            oCuenta = Nothing
+
+                        Case Me.iGyCtasCuentaContableIEPS
+                            oCuenta = New Class_CatCuentas()
+                            sCuentaContable = oCuenta.BusquedaVisual_PorNombreFiltrandoTipoOperacion()
+                            If txtLEN(sCuentaContable) = True Then
+                                oCuenta = New Class_CatCuentas(sCuentaContable)
+                                Me.GridCuentas.Cell(Renglon, Me.iGyCtasCuentaContableIEPS).Text = oCuenta.CUENTA_CONTABLE
+                            End If
+                            oCuenta = Nothing
+
+                    End Select
 
                 Case Keys.F8
+
                     If Renglon = 1 Then
                         For i = 1 To Me.GridCuentas.Cols - 1
                             Me.GridCuentas.Cell(Renglon, i).Text = ""
@@ -1835,6 +1891,7 @@ busca_concepto:
                     '            iRow = iRow - 1
                     '        Next
                     '    End If
+
             End Select
 
             Me.TotalizaGridCentrosCostosyActivos()
@@ -1918,6 +1975,34 @@ busca_cuenta_contable:
                                     .Cell(Renglon, Me.iGyActivoNombreCuenta).Text = oCuenta.NOMBRE_CUENTA_NIVELES_COMPLETOS
                                 End If
                                 oCuenta = Nothing
+
+                            Case Me.iGyActivoCuentaContableRetencionIVA
+                                oCuenta = New Class_CatCuentas()
+                                Dim sCuenta As String = oCuenta.BusquedaVisual_PorCodigoFiltrandoTipoOperacion()
+                                If txtLEN(sCuenta) = True Then
+                                    oCuenta = New Class_CatCuentas(sCuenta)
+                                    .Cell(Renglon, Me.iGyActivoCuentaContableRetencionIVA).Text = oCuenta.CUENTA_CONTABLE
+                                End If
+                                oCuenta = Nothing
+
+                            Case Me.iGyActivoCuentaContableRetencionISR
+                                oCuenta = New Class_CatCuentas()
+                                Dim sCuenta As String = oCuenta.BusquedaVisual_PorCodigoFiltrandoTipoOperacion()
+                                If txtLEN(sCuenta) = True Then
+                                    oCuenta = New Class_CatCuentas(sCuenta)
+                                    .Cell(Renglon, Me.iGyActivoCuentaContableRetencionISR).Text = oCuenta.CUENTA_CONTABLE
+                                End If
+                                oCuenta = Nothing
+
+                            Case Me.iGyActivoCuentaContableIEPS
+                                oCuenta = New Class_CatCuentas()
+                                Dim sCuenta As String = oCuenta.BusquedaVisual_PorCodigoFiltrandoTipoOperacion()
+                                If txtLEN(sCuenta) = True Then
+                                    oCuenta = New Class_CatCuentas(sCuenta)
+                                    .Cell(Renglon, Me.iGyActivoCuentaContableIEPS).Text = oCuenta.CUENTA_CONTABLE
+                                End If
+                                oCuenta = Nothing
+
                         End Select
 
                     Case Keys.F7
@@ -1932,6 +2017,34 @@ busca_cuenta_contable:
                                     .Cell(Renglon, Me.iGyActivoNombreCuenta).Text = oCuenta.NOMBRE_CUENTA_NIVELES_COMPLETOS
                                 End If
                                 oCuenta = Nothing
+
+                            Case Me.iGyActivoCuentaContableRetencionIVA
+                                oCuenta = New Class_CatCuentas()
+                                Dim sCuenta As String = oCuenta.BusquedaVisual_PorNombreFiltrandoTipoOperacion()
+                                If txtLEN(sCuenta) = True Then
+                                    oCuenta = New Class_CatCuentas(sCuenta)
+                                    .Cell(Renglon, Me.iGyActivoCuentaContableRetencionIVA).Text = oCuenta.CUENTA_CONTABLE
+                                End If
+                                oCuenta = Nothing
+
+                            Case Me.iGyActivoCuentaContableRetencionISR
+                                oCuenta = New Class_CatCuentas()
+                                Dim sCuenta As String = oCuenta.BusquedaVisual_PorNombreFiltrandoTipoOperacion()
+                                If txtLEN(sCuenta) = True Then
+                                    oCuenta = New Class_CatCuentas(sCuenta)
+                                    .Cell(Renglon, Me.iGyActivoCuentaContableRetencionISR).Text = oCuenta.CUENTA_CONTABLE
+                                End If
+                                oCuenta = Nothing
+
+                            Case Me.iGyActivoCuentaContableIEPS
+                                oCuenta = New Class_CatCuentas()
+                                Dim sCuenta As String = oCuenta.BusquedaVisual_PorNombreFiltrandoTipoOperacion()
+                                If txtLEN(sCuenta) = True Then
+                                    oCuenta = New Class_CatCuentas(sCuenta)
+                                    .Cell(Renglon, Me.iGyActivoCuentaContableIEPS).Text = oCuenta.CUENTA_CONTABLE
+                                End If
+                                oCuenta = Nothing
+
                         End Select
 
                     Case Keys.F8
@@ -2300,7 +2413,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                             valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasIVA).Text).ToString & "," & valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasTotal).Text).ToString & "," & Me.GridCuentas.Cell(i, Me.iGyCtasUUID).Text & "," &
                             valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasRetencionIVA).Text).ToString & "," & valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasRetencionISR).Text).ToString & "," & valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasIEPS).Text).ToString & "," &
                             Me.GridCuentas.Cell(i, Me.iGyCtasCuentaContableRetencionIVA).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCtasCuentaContableRetencionISR).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCtasCuentaContableIEPS).Text & "," &
-                            Me.GridCuentas.Cell(i, Me.iGyCtasNombreEmisor).Text & "," & Me.GridCuentas.Cell(i, Me.iGyCtasRFCEmisor).Text & "|"
+                             Me.GridCuentas.Cell(i, Me.iGyCtasNombreEmisor).Text.Replace(",", ".") & "," & Me.GridCuentas.Cell(i, Me.iGyCtasRFCEmisor).Text & "|"
                         End If
                     Next i
 
@@ -2310,7 +2423,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                             valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoIVA).Text).ToString & "," & valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoTotal).Text).ToString & "," & Me.GridActivos.Cell(i, Me.iGyActivoUUID).Text & "," &
                             valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoRetencionIVA).Text).ToString & "," & valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoRetencionISR).Text).ToString & "," & valorNumerico(Me.GridActivos.Cell(i, Me.iGyActivoIEPS).Text).ToString & "," &
                             Me.GridActivos.Cell(i, Me.iGyActivoCuentaContableRetencionIVA).Text & "," & Me.GridActivos.Cell(i, Me.iGyActivoCuentaContableRetencionISR).Text & "," & Me.GridActivos.Cell(i, Me.iGyActivoCuentaContableIEPS).Text & "," &
-                            Me.GridActivos.Cell(i, Me.iGyActivoNombreEmisor).Text & "," & Me.GridActivos.Cell(i, Me.iGyActivoRFCEmisor).Text & "|"
+                            Me.GridActivos.Cell(i, Me.iGyActivoNombreEmisor).Text.Replace(",", ".") & "," & Me.GridActivos.Cell(i, Me.iGyActivoRFCEmisor).Text & "|"
                         End If
                     Next i
 
@@ -2580,7 +2693,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                     Return False
                 End If
 
-                If valorNumerico(Me.txtTotalCompra.Text) <> CDbl(FormatNumber((valorNumerico(Me.txtSubTotal.Text) + valorNumerico(Me.txtIVA.Text) - valorNumerico(Me.txtRetencionIVA.Text) - valorNumerico(Me.txtRetencionISR.Text)), 2)) Then
+                If valorNumerico(Me.txtTotalCompra.Text) <> CDbl(FormatNumber((valorNumerico(Me.txtSubTotal.Text) + valorNumerico(Me.txtIVA.Text) - valorNumerico(Me.txtRetencionIVA.Text) - valorNumerico(Me.txtRetencionISR.Text) + valorNumericoD(Me.txtIEPS.Text)), 2)) Then
                     MsgBox("El total no esta correcto, favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
@@ -2640,21 +2753,38 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
         Dim bResultado As Boolean = False
         Dim sProcedure As String = "ValidaCuentasContables"
         Dim i As Integer, bHayCuentasContables As Boolean = False
-        Dim sCuentaContable As String = "", oCuenta As New Class_CatCuentas
+        Dim sCuentaContable As String = "", oCuenta As New Class_CatCuentas, sCuentaContableRetencionIVA As String = "", sCuentaContableRetencionISR As String = "", sCuentaContableIEPS As String = ""
+        Dim dRetencionIVA As Decimal = 0, dRetencionISR As Decimal = 0, dIEPS As Decimal = 0
 
         Try
             ''''''''''''''''''''''''''''''''''''''''''''''''
             With Me.GridCuentas
                 For i = 1 To .Rows - 1
+
                     sCuentaContable = .Cell(i, Me.iGyCuentaContable).Text
+                    sCuentaContableRetencionIVA = .Cell(i, Me.iGyCtasCuentaContableRetencionIVA).Text
+                    sCuentaContableRetencionISR = .Cell(i, Me.iGyCtasCuentaContableRetencionISR).Text
+                    sCuentaContableIEPS = .Cell(i, Me.iGyCtasCuentaContableIEPS).Text
+                    dRetencionIVA = valorNumericoD(.Cell(i, Me.iGyCtasRetencionIVA).Text)
+                    dRetencionISR = valorNumericoD(.Cell(i, Me.iGyCtasRetencionISR).Text)
+                    dIEPS = valorNumericoD(.Cell(i, Me.iGyCtasIEPS).Text)
+
+                    If valorNumerico(.Cell(i, Me.iGyCtasImporte).Text) <> 0 Then 'Si capturaron algún importe.
+                        If txtLEN(sCuentaContable) = False Then
+                            MsgBox("Falta introducir la cuenta contable del renglón: " & i & ".", MsgBoxStyle.Exclamation, sProcedure)
+                            .Cell(i, Me.iGyCuentaContable).SetFocus()
+                            Return False
+                        End If
+                    End If
+
                     If txtLEN(sCuentaContable) = True Then
                         oCuenta = New Class_CatCuentas(sCuentaContable)
                         If oCuenta._Existe = False Then
-                            MsgBox("La cuenta contable del renglón: " & i & " no existe, favor de intentar con otro código.", MsgBoxStyle.Exclamation, sProcedure)
+                            MsgBox("La cuenta contable del renglón: " & i & " no existe, favor de intentar con otra.", MsgBoxStyle.Exclamation, sProcedure)
                             .Cell(i, Me.iGyCuentaContable).SetFocus()
                             Return False
                         ElseIf oCuenta.ESMAYOR = "1" Then
-                            MsgBox("La cuenta contable del renglón: " & i & " es de mayor, favor de intentar con otro código.", MsgBoxStyle.Exclamation, sProcedure)
+                            MsgBox("La cuenta contable del renglón: " & i & " es de mayor, favor de intentar con otra.", MsgBoxStyle.Exclamation, sProcedure)
                             .Cell(i, Me.iGyCuentaContable).SetFocus()
                             Return False
                         ElseIf Microsoft.VisualBasic.Left(sCuentaContable, 1) = "5" Then
@@ -2679,12 +2809,69 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                         End If
                         bHayCuentasContables = True
                     End If
+
+                    If dRetencionIVA > 0 Then
+                        If txtLEN(sCuentaContableRetencionIVA) = False Then
+                            MsgBox("Falta introducir la cuenta contable del IVA retenido del renglón: " & i & ".", MsgBoxStyle.Exclamation, sProcedure)
+                            .Cell(i, Me.iGyCtasCuentaContableRetencionIVA).SetFocus()
+                            Return False
+                        End If
+
+                        oCuenta = New Class_CatCuentas(sCuentaContableRetencionIVA)
+                        If oCuenta._Existe = False Then
+                            MsgBox("La cuenta contable del IVA retenido del renglón: " & i & " no existe, favor de intentar con otra.", MsgBoxStyle.Exclamation, sProcedure)
+                            .Cell(i, Me.iGyCtasCuentaContableRetencionIVA).SetFocus()
+                            Return False
+                        ElseIf oCuenta.ESMAYOR = "1" Then
+                            MsgBox("La cuenta contable del IVA retenido del renglón: " & i & " es de mayor, favor de intentar con otra.", MsgBoxStyle.Exclamation, sProcedure)
+                            .Cell(i, Me.iGyCtasCuentaContableRetencionIVA).SetFocus()
+                            Return False
+                        End If
+                    End If
+
+                    If dRetencionISR > 0 Then
+                        If txtLEN(sCuentaContableRetencionISR) = False Then
+                            MsgBox("Falta introducir la cuenta contable del ISR retenido del renglón: " & i & ".", MsgBoxStyle.Exclamation, sProcedure)
+                            .Cell(i, Me.iGyCtasCuentaContableRetencionISR).SetFocus()
+                            Return False
+                        End If
+
+                        oCuenta = New Class_CatCuentas(sCuentaContableRetencionISR)
+                        If oCuenta._Existe = False Then
+                            MsgBox("La cuenta contable del ISR retenido del renglón: " & i & " no existe, favor de intentar con otra.", MsgBoxStyle.Exclamation, sProcedure)
+                            .Cell(i, Me.iGyCtasCuentaContableRetencionISR).SetFocus()
+                            Return False
+                        ElseIf oCuenta.ESMAYOR = "1" Then
+                            MsgBox("La cuenta contable del ISR retenido del renglón: " & i & " es de mayor, favor de intentar con otra.", MsgBoxStyle.Exclamation, sProcedure)
+                            .Cell(i, Me.iGyCtasCuentaContableRetencionISR).SetFocus()
+                            Return False
+                        End If
+                    End If
+
+                    If dIEPS > 0 Then
+                        If txtLEN(sCuentaContableIEPS) = False Then
+                            MsgBox("Falta introducir la cuenta contable del IEPS del renglón: " & i & ".", MsgBoxStyle.Exclamation, sProcedure)
+                            .Cell(i, Me.iGyCtasCuentaContableIEPS).SetFocus()
+                            Return False
+                        End If
+
+                        oCuenta = New Class_CatCuentas(sCuentaContableIEPS)
+                        If oCuenta._Existe = False Then
+                            MsgBox("La cuenta contable del IEPS del renglón: " & i & " no existe, favor de intentar con otra.", MsgBoxStyle.Exclamation, sProcedure)
+                            .Cell(i, Me.iGyCtasCuentaContableIEPS).SetFocus()
+                            Return False
+                        ElseIf oCuenta.ESMAYOR = "1" Then
+                            MsgBox("La cuenta contable del IEPS del renglón: " & i & " es de mayor, favor de intentar con otra.", MsgBoxStyle.Exclamation, sProcedure)
+                            .Cell(i, Me.iGyCtasCuentaContableIEPS).SetFocus()
+                            Return False
+                        End If
+                    End If
                 Next i
 
                 For i = 1 To .Rows - 1
                     If valorNumerico(.Cell(i, Me.iGyCtasImporte).Text) <> 0 Then 'Si capturaron algún importe.
                         If Len(.Cell(i, Me.iGyCuentaContable).Text) = 0 Then
-                            MsgBox("Falta introducir la cuenta contrable del renglón: " & i & ".", MsgBoxStyle.Exclamation, sProcedure)
+                            MsgBox("Falta introducir la cuenta contable del renglón: " & i & ".", MsgBoxStyle.Exclamation, sProcedure)
                             .Cell(i, Me.iGyCuentaContable).SetFocus()
                             Return False
                         End If
@@ -2697,15 +2884,30 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
             With Me.GridActivos
                 For i = 1 To .Rows - 1
                     sCuentaContable = .Cell(i, Me.iGyActivoCuentaContable).Text
+                    sCuentaContableRetencionIVA = .Cell(i, Me.iGyActivoCuentaContableRetencionIVA).Text
+                    sCuentaContableRetencionISR = .Cell(i, Me.iGyActivoCuentaContableRetencionISR).Text
+                    sCuentaContableIEPS = .Cell(i, Me.iGyActivoCuentaContableIEPS).Text
+                    dRetencionIVA = valorNumericoD(.Cell(i, Me.iGyActivoRetencionIVA).Text)
+                    dRetencionISR = valorNumericoD(.Cell(i, Me.iGyActivoRetencionISR).Text)
+                    dIEPS = valorNumericoD(.Cell(i, Me.iGyActivoIEPS).Text)
+
+                    If valorNumerico(.Cell(i, Me.iGyActivoImporte).Text) <> 0 Then 'Si capturaron algún importe.
+                        If txtLEN(sCuentaContable) = False Then
+                            MsgBox("Falta introducir la cuenta contable del renglón: " & i & ".", MsgBoxStyle.Exclamation, sProcedure)
+                            .Cell(i, Me.iGyActivoCuentaContable).SetFocus()
+                            Return False
+                        End If
+                    End If
+
                     If txtLEN(sCuentaContable) = True Then
                         oCuenta = New Class_CatCuentas(sCuentaContable)
 
                         If oCuenta._Existe = False Then
-                            MsgBox("La cuenta contable(de los activos) del renglón: " & i & " no existe, favor de intentar con otro código.", MsgBoxStyle.Exclamation, sProcedure)
+                            MsgBox("La cuenta contable(de los activos) del renglón: " & i & " no existe, favor de intentar con otra.", MsgBoxStyle.Exclamation, sProcedure)
                             .Cell(i, Me.iGyActivoCuentaContable).SetFocus()
                             Return False
                         ElseIf oCuenta.ESMAYOR = "1" Then
-                            MsgBox("La cuenta contable(de los activos) del renglón: " & i & " es de mayor, favor de intentar con otro código.", MsgBoxStyle.Exclamation, sProcedure)
+                            MsgBox("La cuenta contable(de los activos) del renglón: " & i & " es de mayor, favor de intentar con otra.", MsgBoxStyle.Exclamation, sProcedure)
                             .Cell(i, Me.iGyActivoCuentaContable).SetFocus()
                             Return False
                             'ElseIf sCuentaContable.StartsWith("1") = False Then 'Si no empieza con 1 'Antes sólo se permitian cuentas tipo 1(activos)
@@ -2713,6 +2915,63 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                             '    Return False
                         End If
                         bHayCuentasContables = True
+                    End If
+
+                    If dRetencionIVA > 0 Then
+                        If txtLEN(sCuentaContableRetencionIVA) = False Then
+                            MsgBox("Falta introducir la cuenta contable(de los activos) del IVA retenido del renglón: " & i & ".", MsgBoxStyle.Exclamation, sProcedure)
+                            .Cell(i, Me.iGyActivoCuentaContableRetencionIVA).SetFocus()
+                            Return False
+                        End If
+
+                        oCuenta = New Class_CatCuentas(sCuentaContableRetencionIVA)
+                        If oCuenta._Existe = False Then
+                            MsgBox("La cuenta contable(de los activos) del IVA retenido del renglón: " & i & " no existe, favor de intentar con otra.", MsgBoxStyle.Exclamation, sProcedure)
+                            .Cell(i, Me.iGyActivoCuentaContableRetencionIVA).SetFocus()
+                            Return False
+                        ElseIf oCuenta.ESMAYOR = "1" Then
+                            MsgBox("La cuenta contable(de los activos) del IVA retenido del renglón: " & i & " es de mayor, favor de intentar con otra.", MsgBoxStyle.Exclamation, sProcedure)
+                            .Cell(i, Me.iGyActivoCuentaContableRetencionIVA).SetFocus()
+                            Return False
+                        End If
+                    End If
+
+                    If dRetencionISR > 0 Then
+                        If txtLEN(sCuentaContableRetencionISR) = False Then
+                            MsgBox("Falta introducir la cuenta contable(de los activos) del ISR retenido del renglón: " & i & ".", MsgBoxStyle.Exclamation, sProcedure)
+                            .Cell(i, Me.iGyActivoCuentaContableRetencionISR).SetFocus()
+                            Return False
+                        End If
+
+                        oCuenta = New Class_CatCuentas(sCuentaContableRetencionISR)
+                        If oCuenta._Existe = False Then
+                            MsgBox("La cuenta contable del ISR retenido del renglón: " & i & " no existe, favor de intentar con otra.", MsgBoxStyle.Exclamation, sProcedure)
+                            .Cell(i, Me.iGyActivoCuentaContableRetencionISR).SetFocus()
+                            Return False
+                        ElseIf oCuenta.ESMAYOR = "1" Then
+                            MsgBox("La cuenta contable del ISR retenido del renglón: " & i & " es de mayor, favor de intentar con otra.", MsgBoxStyle.Exclamation, sProcedure)
+                            .Cell(i, Me.iGyActivoCuentaContableRetencionISR).SetFocus()
+                            Return False
+                        End If
+                    End If
+
+                    If dIEPS > 0 Then
+                        If txtLEN(sCuentaContableIEPS) = False Then
+                            MsgBox("Falta introducir la cuenta contable del IEPS del renglón: " & i & ".", MsgBoxStyle.Exclamation, sProcedure)
+                            .Cell(i, Me.iGyActivoCuentaContableIEPS).SetFocus()
+                            Return False
+                        End If
+
+                        oCuenta = New Class_CatCuentas(sCuentaContableIEPS)
+                        If oCuenta._Existe = False Then
+                            MsgBox("La cuenta contable del IEPS del renglón: " & i & " no existe, favor de intentar con otra.", MsgBoxStyle.Exclamation, sProcedure)
+                            .Cell(i, Me.iGyActivoCuentaContableIEPS).SetFocus()
+                            Return False
+                        ElseIf oCuenta.ESMAYOR = "1" Then
+                            MsgBox("La cuenta contable del IEPS del renglón: " & i & " es de mayor, favor de intentar con otra.", MsgBoxStyle.Exclamation, sProcedure)
+                            .Cell(i, Me.iGyActivoCuentaContableIEPS).SetFocus()
+                            Return False
+                        End If
                     End If
                 Next i
             End With
@@ -2738,7 +2997,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
         Try
             For i = 1 To row - 1
                 If Me.GridFacturasRelacionadas.Cell(i, Me.iGyFolioVenta).Text = sFolio Then
-                    MsgBox("El folio " & sFolio & " ya está capturado en el renglón " & i, MsgBoxStyle.Exclamation, Me.Name)
+                    MsgBox("El folio " & sFolio & " ya está capturado en el renglón " & i.ToString, MsgBoxStyle.Exclamation, Me.Name)
                     Return bResultado
                 End If
             Next
@@ -2852,7 +3111,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
 
             Me.Inicializa()
 
-            Me.oCompras = New Class_Compras_Global(sFolio, "CA" & Usuario.Codigo_Plaza)
+            Me.oCompras = New Class_Compras_Global(sFolio, "CA" & Usuario.Codigo_Plaza.ToString)
 
             If Me.oCompras.Existe = False Then
                 Me.Cambia_Estado(enumEstados.NUEVO)
