@@ -5468,7 +5468,7 @@ BuscaVentas:
         Const sProcedure As String = "ValidaPrecios"
         Try
             Dim i As Integer, dPrecio As Decimal = 0, dCosto As Decimal = 0, dUtilidadPorcentaje As Decimal = 0
-            Dim oPrecio As Class_CatPreciosVenta
+            Dim oPrecio As Class_CatPreciosVenta, oPrecioMatriz As Class_CatPreciosVenta
 
             With Me.Grid
                 For i = 1 To .Rows - 1
@@ -5479,6 +5479,7 @@ BuscaVentas:
 
                         If Empresa_Sistema.PORCENTAJE_UTLIDAD_VENTA_MINIMO > 0 Then 'Valida por porcentaje de utilidad
                             oPrecio = New Class_CatPreciosVenta(Me.Grid.Cell(i, Me.igyCodigo).Text, Plaza.CODIGO_PLAZA)
+                            oPrecioMatriz = New Class_CatPreciosVenta(Me.Grid.Cell(i, Me.igyCodigo).Text, 1)
 
                             'Si el articulo existe en el catalogo se valida el porcentaje de ahi si no el de la empresa
                             If oPrecio.Existe Then
@@ -5493,6 +5494,20 @@ BuscaVentas:
                                     End If
                                     validaPass.Dispose()
                                 End If
+
+                            ElseIf oPrecioMatriz.Existe Then
+                                If dUtilidadPorcentaje < oPrecioMatriz.PORCENTAJE_MARGEN_UTILIDAD Then
+                                    Dim validaPass As New Frm_Contraseña_Cambio_Periodo
+                                    validaPass.Mensaje = "El porcentaje de utilidad del artículo " & .Cell(i, Me.igyDescripcion).Text & " es menor que la utilidad minima configurada para el artículo (" & oPrecioMatriz.PORCENTAJE_MARGEN_UTILIDAD.ToString & "%)."
+                                    validaPass.TipoContraseña = Frm_Contraseña_Cambio_Periodo.eTipoContraseña.PrecioMenorCosto
+                                    validaPass.ShowDialog()
+
+                                    If validaPass.bContraseñaValida = False Then
+                                        Return False
+                                    End If
+                                    validaPass.Dispose()
+                                End If
+
                             Else
                                 If dUtilidadPorcentaje < Empresa_Sistema.PORCENTAJE_UTLIDAD_VENTA_MINIMO Then
                                     Dim validaPass As New Frm_Contraseña_Cambio_Periodo
@@ -5508,6 +5523,7 @@ BuscaVentas:
                             End If
 
                             oPrecio = Nothing
+                            oPrecioMatriz = Nothing
 
                         Else 'Validacion normal
 
