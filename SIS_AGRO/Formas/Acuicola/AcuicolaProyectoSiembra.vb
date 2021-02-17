@@ -178,12 +178,12 @@ Public Class AcuicolaProyectoSiembra
         End If
     End Sub
 
-    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCiclo.KeyPress
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCiclo.KeyPress, TxtCantidadOrganismos.KeyPress
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
 
-    Private Sub txtNumerosDecimalKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtHA.KeyPress
+    Private Sub txtNumerosDecimalKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtHA.KeyPress, TxtPesoOrganismos.KeyPress
         Dim txt As TextBox = CType(sender, TextBox)
         txtSoloNumerosDecimales(e, txt.Text)
         txtNoBeep(e)
@@ -224,6 +224,7 @@ Public Class AcuicolaProyectoSiembra
                     Me.cboLote.Enabled = True
                     Me.txtHA.Enabled = True
                     Me.GbCierreCiclo.Enabled = True
+                    Me.GbOrganismos.Enabled = True
 
                     Me.InicializaElemento()
 
@@ -245,6 +246,7 @@ Public Class AcuicolaProyectoSiembra
                     Me.cboLote.Enabled = False
                     Me.txtHA.Enabled = True
                     Me.GbCierreCiclo.Enabled = True
+                    Me.GbOrganismos.Enabled = True
 
                     Me.txtHA.Focus()
 
@@ -258,6 +260,7 @@ Public Class AcuicolaProyectoSiembra
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = False
                     Me.GbCierreCiclo.Enabled = False
+                    Me.GbOrganismos.Enabled = False
 
                     'Me.txtFiltro.Focus()
 
@@ -276,6 +279,9 @@ Public Class AcuicolaProyectoSiembra
             Me.dtFecha.Value = Date.Now
             Me.cboLote.SelectedIndex = -1
             Me.txtHA.Text = ""
+            Me.TxtCantidadOrganismos.Text = ""
+            Me.TxtPesoOrganismos.Text = ""
+
         Catch ex As Exception
             HandleError(Me.Name, "InicializaElemento", ex)
         End Try
@@ -310,6 +316,8 @@ Public Class AcuicolaProyectoSiembra
                     Me.dtFecha.Value = .FECHA_INICIO
                     Me.cboLote.SelectedValue = .CODIGO_LOTE
                     Me.txtHA.Text = .HA.ToString
+                    Me.TxtCantidadOrganismos.Text = FormatNumber(.CANTIDAD_ORGANISMOS)
+                    Me.TxtPesoOrganismos.Text = .PESO_ORGANISMOS.ToString
 
                     If .ESTATUS = "T" Then
                         Me.DtFechaCierre.Value = .FECHA_CIERRE
@@ -341,6 +349,8 @@ Public Class AcuicolaProyectoSiembra
                         .FECHA_CIERRE = Me.DtFechaCierre.Value
                         .KILOS_COSECHADOS = valorNumericoD(Me.TxtKilosCosechados.Text)
                         .FOLIO_ENTRADA = Me.TxtFolioEntrada.Text
+                        .CANTIDAD_ORGANISMOS = CInt(valorNumerico(Me.TxtCantidadOrganismos.Text))
+                        .PESO_ORGANISMOS = valorNumericoD(Me.TxtPesoOrganismos.Text)
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -392,6 +402,16 @@ Public Class AcuicolaProyectoSiembra
 
             If valorNumericoD(Me.txtHA.Text) <= 0 Then
                 MsgBox("Asíge las hectáreas.", MsgBoxStyle.Exclamation, Me.Text)
+                Return False
+            End If
+
+            If valorNumerico(Me.TxtCantidadOrganismos.Text) = 0 Then
+                MsgBox("Capture la cantidad de organismos sembrados.", MsgBoxStyle.Exclamation, Me.Text)
+                Return False
+            End If
+
+            If valorNumerico(Me.TxtPesoOrganismos.Text) = 0 Then
+                MsgBox("Capture el peso de los organismos sembrados.", MsgBoxStyle.Exclamation, Me.Text)
                 Return False
             End If
 
