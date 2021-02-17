@@ -21,6 +21,8 @@ Public Class Class_ProyectoSiembraAcuicola
     Private _KILOS_COSECHADOS As Decimal
     Private _FOLIO_ENTRADA As String
     Private _CODIGO_USUARIO_CERRO As Integer
+    Private _CANTIDAD_ORGANISMOS As Integer
+    Private _PESO_ORGANISMOS As Decimal
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -160,6 +162,24 @@ Public Class Class_ProyectoSiembraAcuicola
             Return Me._CODIGO_USUARIO_CERRO
         End Get
     End Property
+
+    Public Property CANTIDAD_ORGANISMOS() As Integer
+        Get
+            Return Me._CANTIDAD_ORGANISMOS
+        End Get
+        Set(value As Integer)
+            Me._CANTIDAD_ORGANISMOS = value
+        End Set
+    End Property
+
+    Public Property PESO_ORGANISMOS() As Decimal
+        Get
+            Return Me._PESO_ORGANISMOS
+        End Get
+        Set(value As Decimal)
+            Me._PESO_ORGANISMOS = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -241,6 +261,8 @@ Public Class Class_ProyectoSiembraAcuicola
             sqlParametro = .Parameters.Add("@KILOS_COSECHADOS", SqlDbType.Decimal) : sqlParametro.Value = Me._KILOS_COSECHADOS
             sqlParametro = .Parameters.Add("@FOLIO_ENTRADA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_ENTRADA.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_CERRO", SqlDbType.SmallInt) : sqlParametro.Value = IIf(Me._ESTATUS = "T", Usuario.Codigo_Usuario, 0)
+            sqlParametro = .Parameters.Add("@CANTIDAD_ORGANISMOS", SqlDbType.Int) : sqlParametro.Value = Me._CANTIDAD_ORGANISMOS
+            sqlParametro = .Parameters.Add("PESO_ORGANISMOS", SqlDbType.Decimal) : sqlParametro.Value = Me._PESO_ORGANISMOS
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = sAccion
 
             Try
@@ -283,6 +305,8 @@ Public Class Class_ProyectoSiembraAcuicola
                     Me._HA = CDec(dReader("HA").ToString())
                     Me._ESTATUS = "" & dReader("ESTATUS").ToString()
                     Me._CODIGO_USUARIO_GRABO = CInt("" & dReader("CODIGO_USUARIO_GRABO").ToString())
+                    Me._CANTIDAD_ORGANISMOS = CInt("" & dReader("CANTIDAD_ORGANISMOS").ToString())
+                    Me._PESO_ORGANISMOS = CDec("" & dReader("PESO_ORGANISMOS").ToString())
 
                     If Me._ESTATUS = "T" Then
                         Me._FECHA_CIERRE = CDate("" & dReader("FECHA_CIERRE").ToString)

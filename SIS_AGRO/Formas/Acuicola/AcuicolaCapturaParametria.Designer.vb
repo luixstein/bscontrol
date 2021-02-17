@@ -36,6 +36,8 @@ Partial Class AcuicolaCapturaParametria
         Me.LblFecha = New System.Windows.Forms.Label()
         Me.dtFecha = New System.Windows.Forms.DateTimePicker()
         Me.gbGlobal = New System.Windows.Forms.GroupBox()
+        Me.lblDisplayTemporada = New System.Windows.Forms.Label()
+        Me.cboTemporada = New System.Windows.Forms.ComboBox()
         Me.txtConcepto = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.lblDisplayStatus = New System.Windows.Forms.Label()
@@ -51,8 +53,6 @@ Partial Class AcuicolaCapturaParametria
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tsslEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tsslElaboro = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.lblDisplayTemporada = New System.Windows.Forms.Label()
-        Me.cboTemporada = New System.Windows.Forms.ComboBox()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbParametros.SuspendLayout()
@@ -199,6 +199,26 @@ Partial Class AcuicolaCapturaParametria
         Me.gbGlobal.Size = New System.Drawing.Size(1055, 181)
         Me.gbGlobal.TabIndex = 0
         Me.gbGlobal.TabStop = False
+        '
+        'lblDisplayTemporada
+        '
+        Me.lblDisplayTemporada.AutoSize = True
+        Me.lblDisplayTemporada.Location = New System.Drawing.Point(375, 117)
+        Me.lblDisplayTemporada.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayTemporada.Name = "lblDisplayTemporada"
+        Me.lblDisplayTemporada.Size = New System.Drawing.Size(89, 17)
+        Me.lblDisplayTemporada.TabIndex = 396
+        Me.lblDisplayTemporada.Text = "Temporada :"
+        '
+        'cboTemporada
+        '
+        Me.cboTemporada.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboTemporada.FormattingEnabled = True
+        Me.cboTemporada.Location = New System.Drawing.Point(471, 114)
+        Me.cboTemporada.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboTemporada.Name = "cboTemporada"
+        Me.cboTemporada.Size = New System.Drawing.Size(88, 24)
+        Me.cboTemporada.TabIndex = 395
         '
         'txtConcepto
         '
@@ -360,26 +380,6 @@ Partial Class AcuicolaCapturaParametria
         Me.tsslElaboro.Size = New System.Drawing.Size(72, 24)
         Me.tsslElaboro.Text = "Elaboró :"
         '
-        'lblDisplayTemporada
-        '
-        Me.lblDisplayTemporada.AutoSize = True
-        Me.lblDisplayTemporada.Location = New System.Drawing.Point(375, 117)
-        Me.lblDisplayTemporada.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblDisplayTemporada.Name = "lblDisplayTemporada"
-        Me.lblDisplayTemporada.Size = New System.Drawing.Size(89, 17)
-        Me.lblDisplayTemporada.TabIndex = 396
-        Me.lblDisplayTemporada.Text = "Temporada :"
-        '
-        'cboTemporada
-        '
-        Me.cboTemporada.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboTemporada.FormattingEnabled = True
-        Me.cboTemporada.Location = New System.Drawing.Point(471, 114)
-        Me.cboTemporada.Margin = New System.Windows.Forms.Padding(4)
-        Me.cboTemporada.Name = "cboTemporada"
-        Me.cboTemporada.Size = New System.Drawing.Size(88, 24)
-        Me.cboTemporada.TabIndex = 395
-        '
         'AcuicolaCapturaParametria
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -393,7 +393,7 @@ Partial Class AcuicolaCapturaParametria
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "AcuicolaCapturaParametria"
-        Me.Text = "Acuicola captura de parametría"
+        Me.Text = "Acuicola captura de biometría"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()
         Me.gbGlobal.ResumeLayout(False)

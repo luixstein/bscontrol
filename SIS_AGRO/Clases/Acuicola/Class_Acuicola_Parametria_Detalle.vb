@@ -16,6 +16,7 @@ Public Class Class_Acuicola_Parametria_Detalle
     Private _INCREMENTO As Decimal
     Private _TARRALLAZOS As Decimal
     Private _MUERTOS As Decimal
+    Private _PORCENTAJE_SUPERVIVENCIA_ESTIMADO As Decimal
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -120,6 +121,15 @@ Public Class Class_Acuicola_Parametria_Detalle
         End Set
     End Property
 
+    Public Property PORCENTAJE_SUPERVIVENCIA_ESTIMADO() As Decimal
+        Get
+            Return Me._PORCENTAJE_SUPERVIVENCIA_ESTIMADO
+        End Get
+        Set(value As Decimal)
+            Me._PORCENTAJE_SUPERVIVENCIA_ESTIMADO = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -171,10 +181,11 @@ Public Class Class_Acuicola_Parametria_Detalle
             sqlParametro = .Parameters.Add("@CODIGO_LOTE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_LOTE
             sqlParametro = .Parameters.Add("@PESO", SqlDbType.Decimal) : sqlParametro.Value = Me._PESO
             sqlParametro = .Parameters.Add("@ORGANISMOS", SqlDbType.Decimal) : sqlParametro.Value = Me._ORGANISMOS
-            sqlParametro = .Parameters.Add("@GRAMAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._GRAMAJE
-            sqlParametro = .Parameters.Add("@INCREMENTO", SqlDbType.Decimal) : sqlParametro.Value = Me._INCREMENTO
+            'sqlParametro = .Parameters.Add("@GRAMAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._GRAMAJE
+            'sqlParametro = .Parameters.Add("@INCREMENTO", SqlDbType.Decimal) : sqlParametro.Value = Me._INCREMENTO
             sqlParametro = .Parameters.Add("@TARRALLAZOS", SqlDbType.Decimal) : sqlParametro.Value = Me._TARRALLAZOS
             sqlParametro = .Parameters.Add("@MUERTOS", SqlDbType.Decimal) : sqlParametro.Value = Me._MUERTOS
+            sqlParametro = .Parameters.Add("@PORCENTAJE_SUPERVIVENCIA_ESTIMADO", SqlDbType.Decimal) : sqlParametro.Value = Me._PORCENTAJE_SUPERVIVENCIA_ESTIMADO
 
             Try
                 Me._Conexion.Open()

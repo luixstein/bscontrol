@@ -26,6 +26,8 @@
     Private iGyIncremento As Integer = 8
     Private iGyTarrallazos As Integer = 9
     Private iGyMuertos As Integer = 10
+    Private iGyPorcentajeSupervivenciaCalculado As Integer = 11
+    Private iGyPorcentajeSupervivenciaEstimado As Integer = 12
 #End Region
 
 #Region "Opciones"
@@ -184,7 +186,7 @@
 
             'Creamos el Grid
             Me.Grid.Rows = 2
-            Me.Grid.Cols = 11
+            'Me.Grid.Cols = 13
             Me.Grid.DisplayRowNumber = True
 
             Me.FormateaGrid()
@@ -199,61 +201,77 @@
         Try
             With Me.Grid
                 .AutoRedraw = False
-                .Cols = 11
+                .Cols = 13
 
                 .Column(Me.iGyIdCapturaParametriaDetalle).Width = 80
                 .Column(Me.iGyIDProyectoSiembra).Width = 80
                 .Column(Me.iGyCodigoLote).Width = 80
                 .Column(Me.iGyNombreLote).Width = 80
                 .Column(Me.iGyPeso).Width = 80
-                .Column(Me.iGyOrganismos).Width = 80
+                .Column(Me.iGyOrganismos).Width = 90
                 .Column(Me.iGyGramaje).Width = 80
                 .Column(Me.iGyIncremento).Width = 80
                 .Column(Me.iGyTarrallazos).Width = 80
                 .Column(Me.iGyMuertos).Width = 80
+                .Column(Me.iGyPorcentajeSupervivenciaCalculado).Width = 80
+                .Column(Me.iGyPorcentajeSupervivenciaEstimado).Width = 80
 
                 .Cell(0, Me.iGyIdCapturaParametriaDetalle).Text = "IdCapturaParametroDetalle"
                 .Cell(0, Me.iGyIDProyectoSiembra).Text = "IDProyectoSiembra"
                 .Cell(0, Me.iGyCodigoLote).Text = "CódigoLote"
                 .Cell(0, Me.iGyNombreLote).Text = "#Estanque"
-                .Cell(0, Me.iGyPeso).Text = "Peso"
-                .Cell(0, Me.iGyOrganismos).Text = "Organismos"
+                .Cell(0, Me.iGyPeso).Text = "Peso muestra"
+                .Cell(0, Me.iGyOrganismos).Text = "Org. muestra"
                 .Cell(0, Me.iGyGramaje).Text = "Gramaje"
                 .Cell(0, Me.iGyIncremento).Text = "Incremento"
-                .Cell(0, Me.iGyTarrallazos).Text = "Tarrallazos"
+                .Cell(0, Me.iGyTarrallazos).Text = "Lances"
                 .Cell(0, Me.iGyMuertos).Text = "Muertos"
+                .Cell(0, Me.iGyPorcentajeSupervivenciaCalculado).Text = "% SV calculado"
+                .Cell(0, Me.iGyPorcentajeSupervivenciaEstimado).Text = "% SV estimado"
 
                 .Column(Me.iGyIdCapturaParametriaDetalle).Locked = True
                 .Column(Me.iGyIDProyectoSiembra).Locked = True
                 .Column(Me.iGyCodigoLote).Locked = True
+                .Column(Me.iGyGramaje).Locked = True
+                .Column(Me.iGyIncremento).Locked = True
+                .Column(Me.iGyPorcentajeSupervivenciaCalculado).Locked = True
 
                 .Column(Me.iGyIdCapturaParametriaDetalle).Visible = False
                 .Column(Me.iGyIDProyectoSiembra).Visible = False
                 .Column(Me.iGyCodigoLote).Visible = False
+                .Column(Me.iGyIncremento).Visible = False 'Este campo solo se usara en los reportes
 
-                .Column(Me.iGyPeso).FormatString = "##0.00"
+                .Column(Me.iGyPeso).FormatString = "##0.000"
                 .Column(Me.iGyPeso).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyPeso).DecimalLength = 2
+                .Column(Me.iGyPeso).DecimalLength = 3
 
-                .Column(Me.iGyOrganismos).FormatString = "##0.00"
+                .Column(Me.iGyOrganismos).FormatString = "##0"
                 .Column(Me.iGyOrganismos).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyOrganismos).DecimalLength = 2
+                .Column(Me.iGyOrganismos).DecimalLength = 0
 
-                .Column(Me.iGyGramaje).FormatString = "##0.00"
+                .Column(Me.iGyGramaje).FormatString = "##0.000"
                 .Column(Me.iGyGramaje).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyGramaje).DecimalLength = 2
+                .Column(Me.iGyGramaje).DecimalLength = 3
 
                 .Column(Me.iGyIncremento).FormatString = "##0.00"
                 .Column(Me.iGyIncremento).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyIncremento).DecimalLength = 2
 
-                .Column(Me.iGyTarrallazos).FormatString = "##0.00"
+                .Column(Me.iGyTarrallazos).FormatString = "##0"
                 .Column(Me.iGyTarrallazos).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyTarrallazos).DecimalLength = 2
+                .Column(Me.iGyTarrallazos).DecimalLength = 0
 
                 .Column(Me.iGyMuertos).FormatString = "##0"
                 .Column(Me.iGyMuertos).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyMuertos).DecimalLength = 0
+
+                .Column(Me.iGyPorcentajeSupervivenciaCalculado).FormatString = "##0.00"
+                .Column(Me.iGyPorcentajeSupervivenciaCalculado).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyPorcentajeSupervivenciaCalculado).DecimalLength = 2
+
+                .Column(Me.iGyPorcentajeSupervivenciaEstimado).FormatString = "##0.00"
+                .Column(Me.iGyPorcentajeSupervivenciaEstimado).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyPorcentajeSupervivenciaEstimado).DecimalLength = 2
 
                 .Locked = False
                 .AutoRedraw = True
@@ -450,7 +468,8 @@
             For Each dRow As DataRow In dTabla.Rows
                 Me.Grid.AddItem(dRow("ID_ACUICOLA_PARAMETRIA_DETALLE").ToString & Chr(9) & dRow("ID_PROYECTO_SIEMBRA").ToString & Chr(9) & dRow("CODIGO_LOTE").ToString & Chr(9) & _
                                  dRow("NOMBRE_LOTE").ToString & Chr(9) & dRow("PESO").ToString & Chr(9) & dRow("ORGANISMOS").ToString & Chr(9) & dRow("GRAMAJE").ToString & Chr(9) & _
-                                 dRow("INCREMENTO").ToString & Chr(9) & dRow("TARRALLAZOS").ToString & Chr(9) & dRow("MUERTOS").ToString & Chr(9))
+                                 dRow("INCREMENTO").ToString & Chr(9) & dRow("TARRALLAZOS").ToString & Chr(9) & dRow("MUERTOS").ToString & Chr(9) &
+                                 dRow("PORCENTAJE_SUPERVIVENCIA_CALCULADO").ToString & Chr(9) & dRow("PORCENTAJE_SUPERVIVENCIA_ESTIMADO").ToString & Chr(9))
             Next
             Me.FormateaGrid()
             Me.Grid.Rows = Me.Grid.Rows + 1
@@ -519,10 +538,11 @@
                         .oDetalle.CODIGO_LOTE = Me.Grid.Cell(i, Me.iGyCodigoLote).Text
                         .oDetalle.PESO = Me.Grid.Cell(i, Me.iGyPeso).Text
                         .oDetalle.ORGANISMOS = Me.Grid.Cell(i, Me.iGyOrganismos).Text
-                        .oDetalle.GRAMAJE = Me.Grid.Cell(i, Me.iGyGramaje).Text
-                        .oDetalle.INCREMENTO = Me.Grid.Cell(i, Me.iGyIncremento).Text
+                        '.oDetalle.GRAMAJE = Me.Grid.Cell(i, Me.iGyGramaje).Text
+                        '.oDetalle.INCREMENTO = Me.Grid.Cell(i, Me.iGyIncremento).Text
                         .oDetalle.TARRALLAZOS = Me.Grid.Cell(i, Me.iGyTarrallazos).Text
                         .oDetalle.MUERTOS = Me.Grid.Cell(i, Me.iGyMuertos).Text
+                        .oDetalle.PORCENTAJE_SUPERVIVENCIA_ESTIMADO = Me.Grid.Cell(i, Me.iGyPorcentajeSupervivenciaEstimado).Text
 
                         If .oDetalle.GrabaRenglon() = False Then
                             MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Name)
@@ -641,17 +661,18 @@
                         Return False
                     End If
 
-                    If txtLEN(Me.Grid.Cell(i, Me.iGyGramaje).Text) = False Then
-                        MsgBox("Capture el gramaje del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
-                        Me.Grid.Cell(i, Me.iGyGramaje).SetFocus()
-                        Return False
-                    End If
+                    'Estos campos son calculados
+                    'If txtLEN(Me.Grid.Cell(i, Me.iGyGramaje).Text) = False Then
+                    '    MsgBox("Capture el gramaje del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                    '    Me.Grid.Cell(i, Me.iGyGramaje).SetFocus()
+                    '    Return False
+                    'End If
 
-                    If txtLEN(Me.Grid.Cell(i, Me.iGyIncremento).Text) = False Then
-                        MsgBox("Capture el incremento del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
-                        Me.Grid.Cell(i, Me.iGyIncremento).SetFocus()
-                        Return False
-                    End If
+                    'If txtLEN(Me.Grid.Cell(i, Me.iGyIncremento).Text) = False Then
+                    '    MsgBox("Capture el incremento del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                    '    Me.Grid.Cell(i, Me.iGyIncremento).SetFocus()
+                    '    Return False
+                    'End If
 
                     If txtLEN(Me.Grid.Cell(i, Me.iGyTarrallazos).Text) = False Then
                         MsgBox("Capture los tarrallazos del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
@@ -662,6 +683,12 @@
                     If txtLEN(Me.Grid.Cell(i, Me.iGyMuertos).Text) = False Then
                         MsgBox("Capture los muertos del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
                         Me.Grid.Cell(i, Me.iGyMuertos).SetFocus()
+                        Return False
+                    End If
+
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyPorcentajeSupervivenciaEstimado).Text) = False Then
+                        MsgBox("Capture el % de supervivencia estimado.", MsgBoxStyle.Exclamation, Me.Name)
+                        Me.Grid.Cell(i, Me.iGyPorcentajeSupervivenciaEstimado).SetFocus()
                         Return False
                     End If
                 End If
@@ -694,11 +721,32 @@
                                 GoTo Busqueda
                             End If
 
-                        Case Me.iGyMuertos
+                        Case Me.iGyPorcentajeSupervivenciaEstimado
                             If Me.Grid.Rows - 1 = Renglon Then
                                 Me.Grid.Rows = Me.Grid.Rows + 1
                                 Me.Grid.Cell(Renglon + 1, Me.iGyIdCapturaParametriaDetalle).Text = "0"
                             End If
+
+                        Case Me.iGyPeso
+                            GoTo CALCULA_GRAMAJE
+
+                        Case Me.iGyOrganismos
+CALCULA_GRAMAJE:
+                            If valorNumericoD(Me.Grid.Cell(Renglon, Me.iGyOrganismos).Text) > 0 Then
+                                Me.Grid.Cell(Renglon, Me.iGyGramaje).Text = (valorNumericoD(Me.Grid.Cell(Renglon, Me.iGyPeso).Text) / valorNumericoD(Me.Grid.Cell(Renglon, Me.iGyOrganismos).Text)).ToString
+                            Else
+                                Me.Grid.Cell(Renglon, Me.iGyGramaje).Text = "0"
+                            End If
+
+CALCULA_SUPERVIVENCIA:
+                            If valorNumericoD(Me.Grid.Cell(Renglon, Me.iGyTarrallazos).Text) > 0 Then
+                                Me.Grid.Cell(Renglon, Me.iGyPorcentajeSupervivenciaCalculado).Text = ((valorNumericoD(Me.Grid.Cell(Renglon, Me.iGyOrganismos).Text) / valorNumericoD(Me.Grid.Cell(Renglon, Me.iGyTarrallazos).Text)) / 6).ToString '6 es el largo de la tarralla para la muestra
+                            Else
+                                Me.Grid.Cell(Renglon, Me.iGyPorcentajeSupervivenciaCalculado).Text = "0"
+                            End If
+
+                        Case Me.iGyTarrallazos
+                            GoTo CALCULA_SUPERVIVENCIA
 
                     End Select
 
