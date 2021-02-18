@@ -18,16 +18,18 @@
 #Region "Columnas grid"
     Private iGyIdCapturaParametriaDetalle As Integer = 1
     Private iGyIDProyectoSiembra As Integer = 2
-    Private iGyCodigoLote As Integer = 3
-    Private iGyNombreLote As Integer = 4
-    Private iGyPeso As Integer = 5
-    Private iGyOrganismos As Integer = 6
-    Private iGyGramaje As Integer = 7
-    Private iGyIncremento As Integer = 8
-    Private iGyTarrallazos As Integer = 9
-    Private iGyMuertos As Integer = 10
-    Private iGyPorcentajeSupervivenciaCalculado As Integer = 11
-    Private iGyPorcentajeSupervivenciaEstimado As Integer = 12
+    Private iGyOrganismosSembrados As Integer = 3
+    Private iGyHA As Integer = 4
+    Private iGyCodigoLote As Integer = 5
+    Private iGyNombreLote As Integer = 6
+    Private iGyTarrallazos As Integer = 7
+    Private iGyPeso As Integer = 8
+    Private iGyOrganismos As Integer = 9
+    Private iGyGramaje As Integer = 10
+    Private iGyIncremento As Integer = 11
+    Private iGyMuertos As Integer = 12
+    Private iGyPorcentajeSupervivenciaCalculado As Integer = 13
+    Private iGyPorcentajeSupervivenciaEstimado As Integer = 14
 #End Region
 
 #Region "Opciones"
@@ -186,7 +188,6 @@
 
             'Creamos el Grid
             Me.Grid.Rows = 2
-            'Me.Grid.Cols = 13
             Me.Grid.DisplayRowNumber = True
 
             Me.FormateaGrid()
@@ -201,7 +202,7 @@
         Try
             With Me.Grid
                 .AutoRedraw = False
-                .Cols = 13
+                .Cols = 15
 
                 .Column(Me.iGyIdCapturaParametriaDetalle).Width = 80
                 .Column(Me.iGyIDProyectoSiembra).Width = 80
@@ -218,19 +219,23 @@
 
                 .Cell(0, Me.iGyIdCapturaParametriaDetalle).Text = "IdCapturaParametroDetalle"
                 .Cell(0, Me.iGyIDProyectoSiembra).Text = "IDProyectoSiembra"
+                .Cell(0, Me.iGyOrganismosSembrados).Text = "Org. sembrados"
+                .Cell(0, Me.iGyHA).Text = "HA"
                 .Cell(0, Me.iGyCodigoLote).Text = "CódigoLote"
                 .Cell(0, Me.iGyNombreLote).Text = "#Estanque"
-                .Cell(0, Me.iGyPeso).Text = "Peso muestra"
-                .Cell(0, Me.iGyOrganismos).Text = "Org. muestra"
+                .Cell(0, Me.iGyTarrallazos).Text = "Lances"
+                .Cell(0, Me.iGyPeso).Text = "Peso total"
+                .Cell(0, Me.iGyOrganismos).Text = "Org. totales"
                 .Cell(0, Me.iGyGramaje).Text = "Gramaje"
                 .Cell(0, Me.iGyIncremento).Text = "Incremento"
-                .Cell(0, Me.iGyTarrallazos).Text = "Lances"
                 .Cell(0, Me.iGyMuertos).Text = "Muertos"
                 .Cell(0, Me.iGyPorcentajeSupervivenciaCalculado).Text = "% SV calculado"
                 .Cell(0, Me.iGyPorcentajeSupervivenciaEstimado).Text = "% SV estimado"
 
                 .Column(Me.iGyIdCapturaParametriaDetalle).Locked = True
                 .Column(Me.iGyIDProyectoSiembra).Locked = True
+                .Column(Me.iGyOrganismosSembrados).Locked = True
+                .Column(Me.iGyHA).Locked = True
                 .Column(Me.iGyCodigoLote).Locked = True
                 .Column(Me.iGyGramaje).Locked = True
                 .Column(Me.iGyIncremento).Locked = True
@@ -238,8 +243,18 @@
 
                 .Column(Me.iGyIdCapturaParametriaDetalle).Visible = False
                 .Column(Me.iGyIDProyectoSiembra).Visible = False
+                .Column(Me.iGyOrganismosSembrados).Visible = False
+                .Column(Me.iGyHA).Visible = False
                 .Column(Me.iGyCodigoLote).Visible = False
                 .Column(Me.iGyIncremento).Visible = False 'Este campo solo se usara en los reportes
+
+                .Column(Me.iGyOrganismosSembrados).FormatString = "##0.00"
+                .Column(Me.iGyOrganismosSembrados).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyOrganismosSembrados).DecimalLength = 2
+
+                .Column(Me.iGyHA).FormatString = "##0.00"
+                .Column(Me.iGyHA).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyHA).DecimalLength = 2
 
                 .Column(Me.iGyPeso).FormatString = "##0.000"
                 .Column(Me.iGyPeso).Mask = FlexCell.MaskEnum.Numeric
@@ -466,9 +481,10 @@
             Dim dTabla As DataTable = Me.oParametria.ObtenerDetalle
             Me.Grid.Rows = 1
             For Each dRow As DataRow In dTabla.Rows
-                Me.Grid.AddItem(dRow("ID_ACUICOLA_PARAMETRIA_DETALLE").ToString & Chr(9) & dRow("ID_PROYECTO_SIEMBRA").ToString & Chr(9) & dRow("CODIGO_LOTE").ToString & Chr(9) & _
-                                 dRow("NOMBRE_LOTE").ToString & Chr(9) & dRow("PESO").ToString & Chr(9) & dRow("ORGANISMOS").ToString & Chr(9) & dRow("GRAMAJE").ToString & Chr(9) & _
-                                 dRow("INCREMENTO").ToString & Chr(9) & dRow("TARRALLAZOS").ToString & Chr(9) & dRow("MUERTOS").ToString & Chr(9) &
+                Me.Grid.AddItem(dRow("ID_ACUICOLA_PARAMETRIA_DETALLE").ToString & Chr(9) & dRow("ID_PROYECTO_SIEMBRA").ToString & Chr(9) & dRow("CANTIDAD_ORGANISMOS").ToString & Chr(9) & _
+                                 dRow("HA").ToString & Chr(9) & dRow("CODIGO_LOTE").ToString & Chr(9) & _
+                                 dRow("NOMBRE_LOTE").ToString & Chr(9) & dRow("TARRALLAZOS").ToString & Chr(9) & dRow("PESO").ToString & Chr(9) & dRow("ORGANISMOS").ToString & Chr(9) & _
+                                 dRow("GRAMAJE").ToString & Chr(9) & dRow("INCREMENTO").ToString & Chr(9) & dRow("MUERTOS").ToString & Chr(9) & _
                                  dRow("PORCENTAJE_SUPERVIVENCIA_CALCULADO").ToString & Chr(9) & dRow("PORCENTAJE_SUPERVIVENCIA_ESTIMADO").ToString & Chr(9))
             Next
             Me.FormateaGrid()
@@ -709,6 +725,7 @@
         Try
 
             Dim Columna As Integer, Renglon As Integer, sCodigo As String
+            Dim densidadPoblacionInicial As Decimal = 0, OrganismosPorTarrallazo As Decimal = 0
 
             Columna = Me.Grid.Selection.FirstCol
             Renglon = Me.Grid.Selection.FirstRow
@@ -740,7 +757,11 @@ CALCULA_GRAMAJE:
 
 CALCULA_SUPERVIVENCIA:
                             If valorNumericoD(Me.Grid.Cell(Renglon, Me.iGyTarrallazos).Text) > 0 Then
-                                Me.Grid.Cell(Renglon, Me.iGyPorcentajeSupervivenciaCalculado).Text = ((valorNumericoD(Me.Grid.Cell(Renglon, Me.iGyOrganismos).Text) / valorNumericoD(Me.Grid.Cell(Renglon, Me.iGyTarrallazos).Text)) / 6).ToString '6 es el largo de la tarralla para la muestra
+                                densidadPoblacionInicial = valorNumericoD(Me.Grid.Cell(Renglon, Me.iGyOrganismosSembrados).Text) / (valorNumericoD(Me.Grid.Cell(Renglon, Me.iGyHA).Text) * 10000)
+                                OrganismosPorTarrallazo = valorNumericoD(Me.Grid.Cell(Renglon, Me.iGyOrganismos).Text) / valorNumericoD(Me.Grid.Cell(Renglon, Me.iGyTarrallazos).Text)
+
+                                Me.Grid.Cell(Renglon, Me.iGyPorcentajeSupervivenciaCalculado).Text = ((OrganismosPorTarrallazo / 6) / densidadPoblacionInicial) * 100 '6 es el largo de la tarralla para la muestra
+
                             Else
                                 Me.Grid.Cell(Renglon, Me.iGyPorcentajeSupervivenciaCalculado).Text = "0"
                             End If
@@ -767,9 +788,11 @@ Busqueda:
                                 End If
                             Next
 
-                            Dim sql As New Class_find("SELECT P.CODIGO_LOTE,L.NOMBRE_LOTE FROM PROYECTO_SIEMBRA_ACUICOLA P INNER JOIN CAT_LOTES L ON(P.CODIGO_LOTE=L.CODIGO_LOTE) WHERE P.ID_PROYECTO_SIEMBRA =" & sCodigo)
+                            Dim sql As New Class_find("SELECT P.CODIGO_LOTE,L.NOMBRE_LOTE,P.CANTIDAD_ORGANISMOS,P.HA FROM PROYECTO_SIEMBRA_ACUICOLA P INNER JOIN CAT_LOTES L ON(P.CODIGO_LOTE=L.CODIGO_LOTE) WHERE P.ID_PROYECTO_SIEMBRA =" & sCodigo)
                             Me.Grid.Cell(Renglon, Me.iGyCodigoLote).Text = sql.Result1
                             Me.Grid.Cell(Renglon, Me.iGyNombreLote).Text = sql.Result2
+                            Me.Grid.Cell(Renglon, Me.iGyOrganismosSembrados).Text = sql.Result3
+                            Me.Grid.Cell(Renglon, Me.iGyHA).Text = sql.Result4
 
                             If Me.Grid.Rows > 2 Then
                                 Me.Grid.Cell(Renglon, Me.iGyIdCapturaParametriaDetalle).Text = CInt(Me.Grid.Cell(Renglon - 1, Me.iGyIdCapturaParametriaDetalle).Text) + 1
