@@ -229,7 +229,7 @@
                 .Cell(0, Me.iGyGramaje).Text = "Gramaje"
                 .Cell(0, Me.iGyIncremento).Text = "Incremento"
                 .Cell(0, Me.iGyMuertos).Text = "Muertos"
-                .Cell(0, Me.iGyPorcentajeSupervivenciaCalculado).Text = "% SV calculado"
+                .Cell(0, Me.iGyPorcentajeSupervivenciaCalculado).Text = "% SV lances"
                 .Cell(0, Me.iGyPorcentajeSupervivenciaEstimado).Text = "% SV estimado"
 
                 .Column(Me.iGyIdCapturaParametriaDetalle).Locked = True
