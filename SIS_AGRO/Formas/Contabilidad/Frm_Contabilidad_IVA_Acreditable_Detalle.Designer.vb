@@ -85,6 +85,8 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         Me.txtIvaAcreditable11 = New System.Windows.Forms.TextBox()
         Me.lblFolio = New System.Windows.Forms.Label()
         Me.txtFolio = New System.Windows.Forms.TextBox()
+        Me.lblDisplayActosExento = New System.Windows.Forms.Label()
+        Me.txtActosExento = New System.Windows.Forms.TextBox()
         Me.tsMenu.SuspendLayout()
         Me.gbPeriodoUltimaOperacion.SuspendLayout()
         Me.gbNumeroOperaciones.SuspendLayout()
@@ -279,6 +281,8 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         '
         'gbActos
         '
+        Me.gbActos.Controls.Add(Me.lblDisplayActosExento)
+        Me.gbActos.Controls.Add(Me.txtActosExento)
         Me.gbActos.Controls.Add(Me.lblDisplayActos8)
         Me.gbActos.Controls.Add(Me.txtActos8)
         Me.gbActos.Controls.Add(Me.lblDisplayActosTotal)
@@ -291,7 +295,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         Me.gbActos.Margin = New System.Windows.Forms.Padding(4)
         Me.gbActos.Name = "gbActos"
         Me.gbActos.Padding = New System.Windows.Forms.Padding(4)
-        Me.gbActos.Size = New System.Drawing.Size(241, 170)
+        Me.gbActos.Size = New System.Drawing.Size(241, 199)
         Me.gbActos.TabIndex = 3
         Me.gbActos.TabStop = False
         Me.gbActos.Text = "Actos "
@@ -319,7 +323,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         'lblDisplayActosTotal
         '
         Me.lblDisplayActosTotal.AutoSize = True
-        Me.lblDisplayActosTotal.Location = New System.Drawing.Point(9, 140)
+        Me.lblDisplayActosTotal.Location = New System.Drawing.Point(9, 168)
         Me.lblDisplayActosTotal.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayActosTotal.Name = "lblDisplayActosTotal"
         Me.lblDisplayActosTotal.Size = New System.Drawing.Size(44, 17)
@@ -331,7 +335,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         Me.lblActosTotal.BackColor = System.Drawing.Color.White
         Me.lblActosTotal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblActosTotal.ForeColor = System.Drawing.Color.Blue
-        Me.lblActosTotal.Location = New System.Drawing.Point(92, 137)
+        Me.lblActosTotal.Location = New System.Drawing.Point(92, 165)
         Me.lblActosTotal.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblActosTotal.Name = "lblActosTotal"
         Me.lblActosTotal.Size = New System.Drawing.Size(133, 23)
@@ -382,7 +386,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         'lblDisplayActos11
         '
         Me.lblDisplayActos11.AutoSize = True
-        Me.lblDisplayActos11.Location = New System.Drawing.Point(17, 318)
+        Me.lblDisplayActos11.Location = New System.Drawing.Point(17, 116)
         Me.lblDisplayActos11.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayActos11.Name = "lblDisplayActos11"
         Me.lblDisplayActos11.Size = New System.Drawing.Size(52, 17)
@@ -392,7 +396,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         '
         'txtActos11
         '
-        Me.txtActos11.Location = New System.Drawing.Point(101, 315)
+        Me.txtActos11.Location = New System.Drawing.Point(101, 113)
         Me.txtActos11.Margin = New System.Windows.Forms.Padding(4)
         Me.txtActos11.MaxLength = 12
         Me.txtActos11.Name = "txtActos11"
@@ -798,6 +802,26 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         Me.txtFolio.Size = New System.Drawing.Size(144, 22)
         Me.txtFolio.TabIndex = 0
         '
+        'lblDisplayActosExento
+        '
+        Me.lblDisplayActosExento.AutoSize = True
+        Me.lblDisplayActosExento.Location = New System.Drawing.Point(9, 138)
+        Me.lblDisplayActosExento.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayActosExento.Name = "lblDisplayActosExento"
+        Me.lblDisplayActosExento.Size = New System.Drawing.Size(51, 17)
+        Me.lblDisplayActosExento.TabIndex = 26
+        Me.lblDisplayActosExento.Text = "Exento"
+        '
+        'txtActosExento
+        '
+        Me.txtActosExento.Location = New System.Drawing.Point(92, 135)
+        Me.txtActosExento.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtActosExento.MaxLength = 12
+        Me.txtActosExento.Name = "txtActosExento"
+        Me.txtActosExento.Size = New System.Drawing.Size(132, 22)
+        Me.txtActosExento.TabIndex = 25
+        Me.txtActosExento.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
         'Frm_Contabilidad_IVA_Acreditable_Detalle
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -894,4 +918,6 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
     Friend WithEvents lblIvaAcreditableAcumulado8 As System.Windows.Forms.Label
     Friend WithEvents lblDisplayIvaRetenido6 As System.Windows.Forms.Label
     Friend WithEvents txtIvaRetenido6 As System.Windows.Forms.TextBox
+    Friend WithEvents lblDisplayActosExento As System.Windows.Forms.Label
+    Friend WithEvents txtActosExento As System.Windows.Forms.TextBox
 End Class
