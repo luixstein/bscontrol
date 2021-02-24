@@ -186,6 +186,7 @@ Partial Public Class AppMenu
         Me.InvRptGlobalDetalle = New System.Windows.Forms.ToolStripMenuItem()
         Me.LotesDeCostosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.RequisicionesSolicitadasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.RequisicionesGlobalToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.EmbarquesToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ArmadoDePaletsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CapturaDeEmbarqueToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -251,7 +252,6 @@ Partial Public Class AppMenu
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
-        Me.RequisicionesGlobalToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -1308,6 +1308,12 @@ Partial Public Class AppMenu
         Me.RequisicionesSolicitadasToolStripMenuItem.Size = New System.Drawing.Size(248, 26)
         Me.RequisicionesSolicitadasToolStripMenuItem.Text = "Requisiciones solicitadas"
         '
+        'RequisicionesGlobalToolStripMenuItem
+        '
+        Me.RequisicionesGlobalToolStripMenuItem.Name = "RequisicionesGlobalToolStripMenuItem"
+        Me.RequisicionesGlobalToolStripMenuItem.Size = New System.Drawing.Size(248, 26)
+        Me.RequisicionesGlobalToolStripMenuItem.Text = "Requisiciones global"
+        '
         'EmbarquesToolStripMenuItem1
         '
         Me.EmbarquesToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ArmadoDePaletsToolStripMenuItem, Me.CapturaDeEmbarqueToolStripMenuItem, Me.EntradaSobranteProductoToolStripMenuItem, Me.CapturaDeCajasProducidasToolStripMenuItem, Me.EtiquetasToolStripMenuItem1, Me.ConsultasToolStripMenuItem3, Me.ConfiguraciónEquivalenciasEnvasesToolStripMenuItem, Me.ConfiguraciónPesoEnvaseToolStripMenuItem, Me.CambioDePrecioToolStripMenuItem})
@@ -1592,7 +1598,7 @@ Partial Public Class AppMenu
         '
         Me.CapturaParametríaToolStripMenuItem.Name = "CapturaParametríaToolStripMenuItem"
         Me.CapturaParametríaToolStripMenuItem.Size = New System.Drawing.Size(226, 26)
-        Me.CapturaParametríaToolStripMenuItem.Text = "Captura parametría"
+        Me.CapturaParametríaToolStripMenuItem.Text = "Captura biometrías"
         '
         'EstanquesIntensivosToolStripMenuItem
         '
@@ -1722,12 +1728,6 @@ Partial Public Class AppMenu
         Me.pbLogo.TabIndex = 17
         Me.pbLogo.TabStop = False
         Me.pbLogo.Visible = False
-        '
-        'RequisicionesGlobalToolStripMenuItem
-        '
-        Me.RequisicionesGlobalToolStripMenuItem.Name = "RequisicionesGlobalToolStripMenuItem"
-        Me.RequisicionesGlobalToolStripMenuItem.Size = New System.Drawing.Size(248, 26)
-        Me.RequisicionesGlobalToolStripMenuItem.Text = "Requisiciones global"
         '
         'AppMenu
         '
