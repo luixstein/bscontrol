@@ -660,7 +660,7 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
     Public Function PrecargarIVAAcreditable() As DataTable
         Dim dt As New DataTable
         Try
-            Using da As New SqlDataAdapter("MP_CONTABILIDAD_PRECARGAR_IVA_ACREDITABLE_PAGOS_CXP", Me._Conexion)
+            Using da As New SqlDataAdapter("MP_CONTABILIDAD_IVA_ACREDITABLE_PRECARGAR_DESDE_PAGOS_CXP", Me._Conexion)
                 da.SelectCommand.CommandType = CommandType.StoredProcedure
 
                 With da.SelectCommand

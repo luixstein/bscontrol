@@ -84,10 +84,10 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.lblTotalXML = New System.Windows.Forms.Label()
         Me.lblDisplayTotalXML = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.lblTotalISRRetenido = New System.Windows.Forms.Label()
-        Me.lblDisplayTotalISRRetenido = New System.Windows.Forms.Label()
         Me.lblTotalIEPS = New System.Windows.Forms.Label()
         Me.lblDisplayTotalIEPS = New System.Windows.Forms.Label()
+        Me.lblTotalISRRetenido = New System.Windows.Forms.Label()
+        Me.lblDisplayTotalISRRetenido = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.gbDatosGenerales.SuspendLayout()
@@ -749,40 +749,19 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.GroupBox1.Controls.Add(Me.lblDisplayTotalISRRetenido)
         Me.GroupBox1.Controls.Add(Me.lblTotalXML)
         Me.GroupBox1.Controls.Add(Me.lblDisplayTotalXML)
-        Me.GroupBox1.Location = New System.Drawing.Point(437, 418)
+        Me.GroupBox1.Location = New System.Drawing.Point(446, 416)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(190, 134)
         Me.GroupBox1.TabIndex = 233
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Extras :"
         '
-        'lblTotalISRRetenido
-        '
-        Me.lblTotalISRRetenido.BackColor = System.Drawing.Color.White
-        Me.lblTotalISRRetenido.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblTotalISRRetenido.ForeColor = System.Drawing.Color.Blue
-        Me.lblTotalISRRetenido.Location = New System.Drawing.Point(78, 84)
-        Me.lblTotalISRRetenido.Name = "lblTotalISRRetenido"
-        Me.lblTotalISRRetenido.Size = New System.Drawing.Size(104, 17)
-        Me.lblTotalISRRetenido.TabIndex = 234
-        Me.lblTotalISRRetenido.Text = "0.00"
-        Me.lblTotalISRRetenido.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'lblDisplayTotalISRRetenido
-        '
-        Me.lblDisplayTotalISRRetenido.AutoSize = True
-        Me.lblDisplayTotalISRRetenido.Location = New System.Drawing.Point(5, 85)
-        Me.lblDisplayTotalISRRetenido.Name = "lblDisplayTotalISRRetenido"
-        Me.lblDisplayTotalISRRetenido.Size = New System.Drawing.Size(66, 13)
-        Me.lblDisplayTotalISRRetenido.TabIndex = 233
-        Me.lblDisplayTotalISRRetenido.Text = "ISR retenido"
-        '
         'lblTotalIEPS
         '
         Me.lblTotalIEPS.BackColor = System.Drawing.Color.White
         Me.lblTotalIEPS.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblTotalIEPS.ForeColor = System.Drawing.Color.Blue
-        Me.lblTotalIEPS.Location = New System.Drawing.Point(78, 59)
+        Me.lblTotalIEPS.Location = New System.Drawing.Point(78, 64)
         Me.lblTotalIEPS.Name = "lblTotalIEPS"
         Me.lblTotalIEPS.Size = New System.Drawing.Size(104, 17)
         Me.lblTotalIEPS.TabIndex = 236
@@ -792,11 +771,32 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         'lblDisplayTotalIEPS
         '
         Me.lblDisplayTotalIEPS.AutoSize = True
-        Me.lblDisplayTotalIEPS.Location = New System.Drawing.Point(5, 60)
+        Me.lblDisplayTotalIEPS.Location = New System.Drawing.Point(5, 66)
         Me.lblDisplayTotalIEPS.Name = "lblDisplayTotalIEPS"
         Me.lblDisplayTotalIEPS.Size = New System.Drawing.Size(31, 13)
         Me.lblDisplayTotalIEPS.TabIndex = 235
         Me.lblDisplayTotalIEPS.Text = "IEPS"
+        '
+        'lblTotalISRRetenido
+        '
+        Me.lblTotalISRRetenido.BackColor = System.Drawing.Color.White
+        Me.lblTotalISRRetenido.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblTotalISRRetenido.ForeColor = System.Drawing.Color.Blue
+        Me.lblTotalISRRetenido.Location = New System.Drawing.Point(78, 86)
+        Me.lblTotalISRRetenido.Name = "lblTotalISRRetenido"
+        Me.lblTotalISRRetenido.Size = New System.Drawing.Size(104, 17)
+        Me.lblTotalISRRetenido.TabIndex = 234
+        Me.lblTotalISRRetenido.Text = "0.00"
+        Me.lblTotalISRRetenido.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'lblDisplayTotalISRRetenido
+        '
+        Me.lblDisplayTotalISRRetenido.AutoSize = True
+        Me.lblDisplayTotalISRRetenido.Location = New System.Drawing.Point(5, 88)
+        Me.lblDisplayTotalISRRetenido.Name = "lblDisplayTotalISRRetenido"
+        Me.lblDisplayTotalISRRetenido.Size = New System.Drawing.Size(66, 13)
+        Me.lblDisplayTotalISRRetenido.TabIndex = 233
+        Me.lblDisplayTotalISRRetenido.Text = "ISR retenido"
         '
         'Frm_Contabilidad_IVA_Acreditable_Global
         '
