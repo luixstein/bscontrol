@@ -239,9 +239,9 @@ busca:
             Me.Grid.Column(Me.iGyFolioProveedor).Width = 75
             Me.Grid.Column(Me.iGyFechaProveedor).Width = 70
             Me.Grid.Column(Me.iGyConcepto).Width = 80
-            Me.Grid.Column(Me.iGyPeriodo).Width = 40
-            Me.Grid.Column(Me.iGyAño).Width = 30
-            Me.Grid.Column(Me.iGyOperaciones).Width = 30
+            Me.Grid.Column(Me.iGyPeriodo).Visible = False  'Me.Grid.Column(Me.iGyPeriodo).Width = 40
+            Me.Grid.Column(Me.iGyAño).Visible = False 'Me.Grid.Column(Me.iGyAño).Width = 30
+            Me.Grid.Column(Me.iGyOperaciones).Visible = False  'Me.Grid.Column(Me.iGyOperaciones).Width = 30
             Me.Grid.Column(Me.iGyActosExento).Width = 80
             Me.Grid.Column(Me.iGyActos0).Width = 80
             Me.Grid.Column(Me.iGyActos8).Width = 80
@@ -255,8 +255,8 @@ busca:
             Me.Grid.Column(Me.iGyIvaRetenido6).Width = 80
             Me.Grid.Column(Me.iGyIvaRetenido10).Width = 80
             Me.Grid.Column(Me.iGyIDDetalle).Visible = False
-            Me.Grid.Column(Me.iGyEMISOR_NOMBRE).Width = 80
-            Me.Grid.Column(Me.iGyEMISOR_RFC).Width = 80
+            Me.Grid.Column(Me.iGyEMISOR_NOMBRE).Width = 130
+            Me.Grid.Column(Me.iGyEMISOR_RFC).Width = 90
             Me.Grid.Column(Me.iGyUUID).Width = 80
             Me.Grid.Column(Me.iGyIEPS).Width = 80
             Me.Grid.Column(Me.iGyIMPUESTO_HOTEL).Width = 80
@@ -272,7 +272,7 @@ busca:
             Me.Grid.Cell(0, Me.iGyPeriodo).Text = "Periodo"
             Me.Grid.Cell(0, Me.iGyAño).Text = "Año"
             Me.Grid.Cell(0, Me.iGyOperaciones).Text = "Ops"
-            Me.Grid.Cell(0, Me.iGyActosExento).Text = "Actos exento"
+            Me.Grid.Cell(0, Me.iGyActosExento).Text = "Actos exentos"
             Me.Grid.Cell(0, Me.iGyActos0).Text = "Actos al 0%"
             Me.Grid.Cell(0, Me.iGyActos8).Text = "Actos al 8%"
             Me.Grid.Cell(0, Me.iGyActos11).Text = "Actos al 11%"
