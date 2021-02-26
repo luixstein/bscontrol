@@ -951,6 +951,12 @@ ArticuloEnBlanco:
                                 '    Return
                                 'End If
 
+                                If sCuentaContable = "0" Then
+                                    MsgBox("No se puede utilizar la cuenta contable 0 en movimientos de inventario.", MsgBoxStyle.Exclamation, sProcedure)
+                                    Me.Grid1.Cell(Renglon, Me.iGyCuentaContable).Text = ""
+                                    Exit Sub
+                                End If
+
                                 oCuentas = New Class_CatCuentas(sCuentaContable) 'Class_VWCatDeudoresDiversos(sCuentaContable) 
 
                                 If oCuentas._Existe = True Then
@@ -2290,6 +2296,12 @@ BuscarCuentas:
                     'End If
 
                     sCuentaContable = Me.Grid1.Cell(i, Me.iGyCuentaContable).Text
+
+                    If sCuentaContable = "0" Then
+                        MsgBox("No se puede utilizar la cuenta contable 0 en movimientos de inventario.", MsgBoxStyle.Exclamation, sProcedure)
+                        Me.Grid1.Cell(i, Me.iGyCuentaContable).SetFocus()
+                        Exit Function
+                    End If
 
                     If IsNothing(Me.oFormaDetalleCuentas) = False AndAlso Me.oFormaDetalleCuentas.ValidaCuentaTengaDetalle(CInt(Me.Grid1.Cell(i, Me.iGyIDAdicional).Text)) = True Then 'Si es que tiene detalle de cuenta en la otra forma
 
