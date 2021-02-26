@@ -498,24 +498,28 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
 
             sqlParametro = .Parameters.Add("@FOLIO_POLIZA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_POLIZA
             sqlParametro = .Parameters.Add("@FECHA", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA
-            sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_0", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_0
-            sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_8", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_8
-            sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_10", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_10
-            sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_15", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_15
-            sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_11", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_11
-            sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_16", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_16
-            sqlParametro = .Parameters.Add("@TOTAL_ACTOS_IVA_EXENTO", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_ACTOS_IVA_EXENTO
-            sqlParametro = .Parameters.Add("@TOTAL_ACTOS", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_ACTOS
-            sqlParametro = .Parameters.Add("@TOTAL_IVA_ACREDITABLE_AL_8", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_IVA_ACREDITABLE_AL_8
-            sqlParametro = .Parameters.Add("@TOTAL_IVA_ACREDITABLE_AL_10", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_IVA_ACREDITABLE_AL_10
-            sqlParametro = .Parameters.Add("@TOTAL_IVA_ACREDITABLE_AL_15", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_IVA_ACREDITABLE_AL_15
-            sqlParametro = .Parameters.Add("@TOTAL_IVA_ACREDITABLE_AL_11", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_IVA_ACREDITABLE_AL_11
-            sqlParametro = .Parameters.Add("@TOTAL_IVA_ACREDITABLE_AL_16", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_IVA_ACREDITABLE_AL_16
-            sqlParametro = .Parameters.Add("@TOTAL_IVA_RETENIDO_AL_4", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_IVA_RETENIDO_AL_4
-            sqlParametro = .Parameters.Add("@TOTAL_IVA_RETENIDO_AL_6", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_IVA_RETENIDO_AL_6
-            sqlParametro = .Parameters.Add("@TOTAL_IVA_RETENIDO_AL_10", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_IVA_RETENIDO_AL_10
+            sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_0", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_0
+            sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_8", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_8
+            sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_10", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_10
+            sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_15", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_15
+            sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_11", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_11
+            sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_16", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_16
+            sqlParametro = .Parameters.Add("@TOTAL_ACTOS_IVA_EXENTO", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_ACTOS_IVA_EXENTO
+            sqlParametro = .Parameters.Add("@TOTAL_ACTOS", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_ACTOS
+            sqlParametro = .Parameters.Add("@TOTAL_IVA_ACREDITABLE_AL_8", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_IVA_ACREDITABLE_AL_8
+            sqlParametro = .Parameters.Add("@TOTAL_IVA_ACREDITABLE_AL_10", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_IVA_ACREDITABLE_AL_10
+            sqlParametro = .Parameters.Add("@TOTAL_IVA_ACREDITABLE_AL_15", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_IVA_ACREDITABLE_AL_15
+            sqlParametro = .Parameters.Add("@TOTAL_IVA_ACREDITABLE_AL_11", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_IVA_ACREDITABLE_AL_11
+            sqlParametro = .Parameters.Add("@TOTAL_IVA_ACREDITABLE_AL_16", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_IVA_ACREDITABLE_AL_16
+            sqlParametro = .Parameters.Add("@TOTAL_IVA_RETENIDO_AL_4", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_IVA_RETENIDO_AL_4
+            sqlParametro = .Parameters.Add("@TOTAL_IVA_RETENIDO_AL_6", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_IVA_RETENIDO_AL_6
+            sqlParametro = .Parameters.Add("@TOTAL_IVA_RETENIDO_AL_10", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_IVA_RETENIDO_AL_10
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_GRABO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_USUARIO_GRABO
             sqlParametro = .Parameters.Add("@CONCEPTO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONCEPTO.ToUpper
+            sqlParametro = .Parameters.Add("@IEPS", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS
+            sqlParametro = .Parameters.Add("@IMPUESTO_HOTEL", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_HOTEL
+            sqlParametro = .Parameters.Add("@ISR_RETENIDO", SqlDbType.Decimal) : sqlParametro.Value = Me._ISR_RETENIDO
+            sqlParametro = .Parameters.Add("@TOTAL_XML", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_XML
 
             Try
                 Me._Conexion.Open()

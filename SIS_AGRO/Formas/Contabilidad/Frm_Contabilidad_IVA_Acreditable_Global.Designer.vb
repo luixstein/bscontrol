@@ -88,6 +88,8 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.lblDisplayTotalIEPS = New System.Windows.Forms.Label()
         Me.lblTotalISRRetenido = New System.Windows.Forms.Label()
         Me.lblDisplayTotalISRRetenido = New System.Windows.Forms.Label()
+        Me.lblTotalIMPUESTO_HOTEL = New System.Windows.Forms.Label()
+        Me.lblDisplayTotalIMPUESTO_HOTEL = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.gbDatosGenerales.SuspendLayout()
@@ -743,6 +745,8 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.lblTotalIMPUESTO_HOTEL)
+        Me.GroupBox1.Controls.Add(Me.lblDisplayTotalIMPUESTO_HOTEL)
         Me.GroupBox1.Controls.Add(Me.lblTotalIEPS)
         Me.GroupBox1.Controls.Add(Me.lblDisplayTotalIEPS)
         Me.GroupBox1.Controls.Add(Me.lblTotalISRRetenido)
@@ -797,6 +801,27 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.lblDisplayTotalISRRetenido.Size = New System.Drawing.Size(66, 13)
         Me.lblDisplayTotalISRRetenido.TabIndex = 233
         Me.lblDisplayTotalISRRetenido.Text = "ISR retenido"
+        '
+        'lblTotalIMPUESTO_HOTEL
+        '
+        Me.lblTotalIMPUESTO_HOTEL.BackColor = System.Drawing.Color.White
+        Me.lblTotalIMPUESTO_HOTEL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblTotalIMPUESTO_HOTEL.ForeColor = System.Drawing.Color.Blue
+        Me.lblTotalIMPUESTO_HOTEL.Location = New System.Drawing.Point(78, 40)
+        Me.lblTotalIMPUESTO_HOTEL.Name = "lblTotalIMPUESTO_HOTEL"
+        Me.lblTotalIMPUESTO_HOTEL.Size = New System.Drawing.Size(104, 17)
+        Me.lblTotalIMPUESTO_HOTEL.TabIndex = 238
+        Me.lblTotalIMPUESTO_HOTEL.Text = "0.00"
+        Me.lblTotalIMPUESTO_HOTEL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'lblDisplayTotalIMPUESTO_HOTEL
+        '
+        Me.lblDisplayTotalIMPUESTO_HOTEL.AutoSize = True
+        Me.lblDisplayTotalIMPUESTO_HOTEL.Location = New System.Drawing.Point(5, 42)
+        Me.lblDisplayTotalIMPUESTO_HOTEL.Name = "lblDisplayTotalIMPUESTO_HOTEL"
+        Me.lblDisplayTotalIMPUESTO_HOTEL.Size = New System.Drawing.Size(25, 13)
+        Me.lblDisplayTotalIMPUESTO_HOTEL.TabIndex = 237
+        Me.lblDisplayTotalIMPUESTO_HOTEL.Text = "ISH"
         '
         'Frm_Contabilidad_IVA_Acreditable_Global
         '
@@ -905,4 +930,6 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
     Friend WithEvents lblDisplayTotalIEPS As Label
     Friend WithEvents lblTotalISRRetenido As Label
     Friend WithEvents lblDisplayTotalISRRetenido As Label
+    Friend WithEvents lblTotalIMPUESTO_HOTEL As Label
+    Friend WithEvents lblDisplayTotalIMPUESTO_HOTEL As Label
 End Class

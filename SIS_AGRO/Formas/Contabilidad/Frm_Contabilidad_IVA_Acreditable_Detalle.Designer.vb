@@ -87,13 +87,21 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         Me.txtIvaAcreditable11 = New System.Windows.Forms.TextBox()
         Me.lblFolio = New System.Windows.Forms.Label()
         Me.txtFolio = New System.Windows.Forms.TextBox()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.gbOtros = New System.Windows.Forms.GroupBox()
         Me.lblDisplayISRRetenido = New System.Windows.Forms.Label()
         Me.txtISRRetenido = New System.Windows.Forms.TextBox()
         Me.lblDisplayTotalXML = New System.Windows.Forms.Label()
-        Me.txtTotalXML = New System.Windows.Forms.Label()
         Me.lblDisplayIEPS = New System.Windows.Forms.Label()
         Me.txtIEPS = New System.Windows.Forms.TextBox()
+        Me.lblDisplaylMPUESTO_HOTEL = New System.Windows.Forms.Label()
+        Me.txtIMPUESTO_HOTEL = New System.Windows.Forms.TextBox()
+        Me.lblDisplayUUID = New System.Windows.Forms.Label()
+        Me.txtUUID = New System.Windows.Forms.TextBox()
+        Me.lblDisplayEmisorRFC = New System.Windows.Forms.Label()
+        Me.txtEmisorRFC = New System.Windows.Forms.TextBox()
+        Me.lblDisplayEmisorNombre = New System.Windows.Forms.Label()
+        Me.txtEmisorNombre = New System.Windows.Forms.TextBox()
+        Me.txtTotalXML = New System.Windows.Forms.TextBox()
         Me.tsMenu.SuspendLayout()
         Me.gbPeriodoUltimaOperacion.SuspendLayout()
         Me.gbNumeroOperaciones.SuspendLayout()
@@ -101,7 +109,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         Me.gbActos.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.gbIva.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
+        Me.gbOtros.SuspendLayout()
         Me.SuspendLayout()
         '
         'tsMenu
@@ -144,7 +152,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         Me.gbPeriodoUltimaOperacion.Controls.Add(Me.lblDisplayAño)
         Me.gbPeriodoUltimaOperacion.Controls.Add(Me.txtAño)
         Me.gbPeriodoUltimaOperacion.Controls.Add(Me.cboMes)
-        Me.gbPeriodoUltimaOperacion.Location = New System.Drawing.Point(332, 28)
+        Me.gbPeriodoUltimaOperacion.Location = New System.Drawing.Point(497, 12)
         Me.gbPeriodoUltimaOperacion.Name = "gbPeriodoUltimaOperacion"
         Me.gbPeriodoUltimaOperacion.Size = New System.Drawing.Size(194, 46)
         Me.gbPeriodoUltimaOperacion.TabIndex = 1
@@ -191,7 +199,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         'gbNumeroOperaciones
         '
         Me.gbNumeroOperaciones.Controls.Add(Me.txtNumeroOperaciones)
-        Me.gbNumeroOperaciones.Location = New System.Drawing.Point(532, 28)
+        Me.gbNumeroOperaciones.Location = New System.Drawing.Point(694, 12)
         Me.gbNumeroOperaciones.Name = "gbNumeroOperaciones"
         Me.gbNumeroOperaciones.Size = New System.Drawing.Size(126, 46)
         Me.gbNumeroOperaciones.TabIndex = 2
@@ -209,15 +217,19 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         '
         'gbProveedor
         '
+        Me.gbProveedor.Controls.Add(Me.lblDisplayEmisorNombre)
+        Me.gbProveedor.Controls.Add(Me.txtEmisorNombre)
+        Me.gbProveedor.Controls.Add(Me.lblDisplayEmisorRFC)
+        Me.gbProveedor.Controls.Add(Me.txtEmisorRFC)
         Me.gbProveedor.Controls.Add(Me.cboTipoProveedor)
         Me.gbProveedor.Controls.Add(Me.lblDisplayTipoProveedor)
         Me.gbProveedor.Controls.Add(Me.lblDisplayProveedor)
         Me.gbProveedor.Controls.Add(Me.txtProveedor)
         Me.gbProveedor.Controls.Add(Me.lblProveedorNombre)
         Me.gbProveedor.Controls.Add(Me.lblProveedorRFC)
-        Me.gbProveedor.Location = New System.Drawing.Point(0, 80)
+        Me.gbProveedor.Location = New System.Drawing.Point(0, 57)
         Me.gbProveedor.Name = "gbProveedor"
-        Me.gbProveedor.Size = New System.Drawing.Size(820, 70)
+        Me.gbProveedor.Size = New System.Drawing.Size(820, 102)
         Me.gbProveedor.TabIndex = 0
         Me.gbProveedor.TabStop = False
         '
@@ -228,12 +240,12 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         Me.cboTipoProveedor.Location = New System.Drawing.Point(103, 39)
         Me.cboTipoProveedor.Name = "cboTipoProveedor"
         Me.cboTipoProveedor.Size = New System.Drawing.Size(197, 21)
-        Me.cboTipoProveedor.TabIndex = 2
+        Me.cboTipoProveedor.TabIndex = 1
         '
         'lblDisplayTipoProveedor
         '
         Me.lblDisplayTipoProveedor.AutoSize = True
-        Me.lblDisplayTipoProveedor.Location = New System.Drawing.Point(12, 42)
+        Me.lblDisplayTipoProveedor.Location = New System.Drawing.Point(7, 42)
         Me.lblDisplayTipoProveedor.Name = "lblDisplayTipoProveedor"
         Me.lblDisplayTipoProveedor.Size = New System.Drawing.Size(85, 13)
         Me.lblDisplayTipoProveedor.TabIndex = 132
@@ -242,7 +254,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         'lblDisplayProveedor
         '
         Me.lblDisplayProveedor.AutoSize = True
-        Me.lblDisplayProveedor.Location = New System.Drawing.Point(12, 16)
+        Me.lblDisplayProveedor.Location = New System.Drawing.Point(7, 16)
         Me.lblDisplayProveedor.Name = "lblDisplayProveedor"
         Me.lblDisplayProveedor.Size = New System.Drawing.Size(62, 13)
         Me.lblDisplayProveedor.TabIndex = 4
@@ -254,7 +266,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         Me.txtProveedor.MaxLength = 8
         Me.txtProveedor.Name = "txtProveedor"
         Me.txtProveedor.Size = New System.Drawing.Size(100, 20)
-        Me.txtProveedor.TabIndex = 1
+        Me.txtProveedor.TabIndex = 0
         '
         'lblProveedorNombre
         '
@@ -287,7 +299,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         Me.gbActos.Location = New System.Drawing.Point(6, 112)
         Me.gbActos.Name = "gbActos"
         Me.gbActos.Size = New System.Drawing.Size(157, 162)
-        Me.gbActos.TabIndex = 3
+        Me.gbActos.TabIndex = 6
         Me.gbActos.TabStop = False
         Me.gbActos.Text = "Actos "
         '
@@ -400,13 +412,15 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         Me.txtActos11.MaxLength = 12
         Me.txtActos11.Name = "txtActos11"
         Me.txtActos11.Size = New System.Drawing.Size(100, 20)
-        Me.txtActos11.TabIndex = 1
+        Me.txtActos11.TabIndex = 4
         Me.txtActos11.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.txtActos11.Visible = False
         '
         'GroupBox2
         '
-        Me.GroupBox2.Controls.Add(Me.GroupBox1)
+        Me.GroupBox2.Controls.Add(Me.lblDisplayUUID)
+        Me.GroupBox2.Controls.Add(Me.txtUUID)
+        Me.GroupBox2.Controls.Add(Me.gbOtros)
         Me.GroupBox2.Controls.Add(Me.Label2)
         Me.GroupBox2.Controls.Add(Me.dtFechaFacturaProveedor)
         Me.GroupBox2.Controls.Add(Me.Label1)
@@ -427,7 +441,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(13, 35)
+        Me.Label2.Location = New System.Drawing.Point(228, 12)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(85, 13)
         Me.Label2.TabIndex = 8
@@ -437,7 +451,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         '
         Me.dtFechaFacturaProveedor.CustomFormat = "dd/MMM/yyyy"
         Me.dtFechaFacturaProveedor.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.dtFechaFacturaProveedor.Location = New System.Drawing.Point(103, 35)
+        Me.dtFechaFacturaProveedor.Location = New System.Drawing.Point(324, 12)
         Me.dtFechaFacturaProveedor.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dtFechaFacturaProveedor.Name = "dtFechaFacturaProveedor"
         Me.dtFechaFacturaProveedor.Size = New System.Drawing.Size(109, 20)
@@ -446,7 +460,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(12, 64)
+        Me.Label1.Location = New System.Drawing.Point(7, 64)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(59, 13)
         Me.Label1.TabIndex = 6
@@ -454,18 +468,18 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         '
         'txtConcepto
         '
-        Me.txtConcepto.Location = New System.Drawing.Point(103, 61)
+        Me.txtConcepto.Location = New System.Drawing.Point(103, 66)
         Me.txtConcepto.MaxLength = 200
         Me.txtConcepto.Name = "txtConcepto"
         Me.txtConcepto.Size = New System.Drawing.Size(530, 20)
-        Me.txtConcepto.TabIndex = 2
+        Me.txtConcepto.TabIndex = 3
         '
         'btnCalcularIVAS
         '
         Me.btnCalcularIVAS.Location = New System.Drawing.Point(271, 87)
         Me.btnCalcularIVAS.Name = "btnCalcularIVAS"
         Me.btnCalcularIVAS.Size = New System.Drawing.Size(100, 28)
-        Me.btnCalcularIVAS.TabIndex = 4
+        Me.btnCalcularIVAS.TabIndex = 5
         Me.btnCalcularIVAS.Text = "Calcula IVAS"
         Me.btnCalcularIVAS.UseVisualStyleBackColor = True
         '
@@ -498,7 +512,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         Me.gbIva.Location = New System.Drawing.Point(170, 112)
         Me.gbIva.Name = "gbIva"
         Me.gbIva.Size = New System.Drawing.Size(452, 162)
-        Me.gbIva.TabIndex = 5
+        Me.gbIva.TabIndex = 7
         Me.gbIva.TabStop = False
         Me.gbIva.Text = "IVA"
         '
@@ -753,7 +767,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         'lblFolio
         '
         Me.lblFolio.AutoSize = True
-        Me.lblFolio.Location = New System.Drawing.Point(12, 12)
+        Me.lblFolio.Location = New System.Drawing.Point(7, 12)
         Me.lblFolio.Name = "lblFolio"
         Me.lblFolio.Size = New System.Drawing.Size(77, 13)
         Me.lblFolio.TabIndex = 3
@@ -761,26 +775,28 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         '
         'txtFolio
         '
-        Me.txtFolio.Location = New System.Drawing.Point(103, 9)
+        Me.txtFolio.Location = New System.Drawing.Point(103, 12)
         Me.txtFolio.MaxLength = 15
         Me.txtFolio.Name = "txtFolio"
         Me.txtFolio.Size = New System.Drawing.Size(109, 20)
         Me.txtFolio.TabIndex = 0
         '
-        'GroupBox1
+        'gbOtros
         '
-        Me.GroupBox1.Controls.Add(Me.lblDisplayISRRetenido)
-        Me.GroupBox1.Controls.Add(Me.txtISRRetenido)
-        Me.GroupBox1.Controls.Add(Me.lblDisplayTotalXML)
-        Me.GroupBox1.Controls.Add(Me.txtTotalXML)
-        Me.GroupBox1.Controls.Add(Me.lblDisplayIEPS)
-        Me.GroupBox1.Controls.Add(Me.txtIEPS)
-        Me.GroupBox1.Location = New System.Drawing.Point(628, 112)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(186, 162)
-        Me.GroupBox1.TabIndex = 9
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Otros"
+        Me.gbOtros.Controls.Add(Me.txtTotalXML)
+        Me.gbOtros.Controls.Add(Me.lblDisplaylMPUESTO_HOTEL)
+        Me.gbOtros.Controls.Add(Me.txtIMPUESTO_HOTEL)
+        Me.gbOtros.Controls.Add(Me.lblDisplayISRRetenido)
+        Me.gbOtros.Controls.Add(Me.txtISRRetenido)
+        Me.gbOtros.Controls.Add(Me.lblDisplayTotalXML)
+        Me.gbOtros.Controls.Add(Me.lblDisplayIEPS)
+        Me.gbOtros.Controls.Add(Me.txtIEPS)
+        Me.gbOtros.Location = New System.Drawing.Point(628, 112)
+        Me.gbOtros.Name = "gbOtros"
+        Me.gbOtros.Size = New System.Drawing.Size(186, 162)
+        Me.gbOtros.TabIndex = 8
+        Me.gbOtros.TabStop = False
+        Me.gbOtros.Text = "Otros"
         '
         'lblDisplayISRRetenido
         '
@@ -796,6 +812,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         Me.txtISRRetenido.Location = New System.Drawing.Point(78, 107)
         Me.txtISRRetenido.MaxLength = 12
         Me.txtISRRetenido.Name = "txtISRRetenido"
+        Me.txtISRRetenido.ReadOnly = True
         Me.txtISRRetenido.Size = New System.Drawing.Size(100, 20)
         Me.txtISRRetenido.TabIndex = 25
         Me.txtISRRetenido.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
@@ -808,18 +825,6 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         Me.lblDisplayTotalXML.Size = New System.Drawing.Size(56, 13)
         Me.lblDisplayTotalXML.TabIndex = 24
         Me.lblDisplayTotalXML.Text = "Total XML"
-        '
-        'txtTotalXML
-        '
-        Me.txtTotalXML.BackColor = System.Drawing.Color.White
-        Me.txtTotalXML.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtTotalXML.ForeColor = System.Drawing.Color.Blue
-        Me.txtTotalXML.Location = New System.Drawing.Point(78, 133)
-        Me.txtTotalXML.Name = "txtTotalXML"
-        Me.txtTotalXML.Size = New System.Drawing.Size(100, 19)
-        Me.txtTotalXML.TabIndex = 23
-        Me.txtTotalXML.Text = "0.00"
-        Me.txtTotalXML.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'lblDisplayIEPS
         '
@@ -835,9 +840,91 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         Me.txtIEPS.Location = New System.Drawing.Point(78, 82)
         Me.txtIEPS.MaxLength = 12
         Me.txtIEPS.Name = "txtIEPS"
+        Me.txtIEPS.ReadOnly = True
         Me.txtIEPS.Size = New System.Drawing.Size(100, 20)
         Me.txtIEPS.TabIndex = 2
         Me.txtIEPS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'lblDisplaylMPUESTO_HOTEL
+        '
+        Me.lblDisplaylMPUESTO_HOTEL.AutoSize = True
+        Me.lblDisplaylMPUESTO_HOTEL.Location = New System.Drawing.Point(7, 57)
+        Me.lblDisplaylMPUESTO_HOTEL.Name = "lblDisplaylMPUESTO_HOTEL"
+        Me.lblDisplaylMPUESTO_HOTEL.Size = New System.Drawing.Size(25, 13)
+        Me.lblDisplaylMPUESTO_HOTEL.TabIndex = 28
+        Me.lblDisplaylMPUESTO_HOTEL.Text = "ISH"
+        '
+        'txtIMPUESTO_HOTEL
+        '
+        Me.txtIMPUESTO_HOTEL.Location = New System.Drawing.Point(78, 57)
+        Me.txtIMPUESTO_HOTEL.MaxLength = 12
+        Me.txtIMPUESTO_HOTEL.Name = "txtIMPUESTO_HOTEL"
+        Me.txtIMPUESTO_HOTEL.ReadOnly = True
+        Me.txtIMPUESTO_HOTEL.Size = New System.Drawing.Size(100, 20)
+        Me.txtIMPUESTO_HOTEL.TabIndex = 27
+        Me.txtIMPUESTO_HOTEL.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'lblDisplayUUID
+        '
+        Me.lblDisplayUUID.AutoSize = True
+        Me.lblDisplayUUID.Location = New System.Drawing.Point(7, 42)
+        Me.lblDisplayUUID.Name = "lblDisplayUUID"
+        Me.lblDisplayUUID.Size = New System.Drawing.Size(40, 13)
+        Me.lblDisplayUUID.TabIndex = 11
+        Me.lblDisplayUUID.Text = "UUID :"
+        '
+        'txtUUID
+        '
+        Me.txtUUID.Location = New System.Drawing.Point(103, 39)
+        Me.txtUUID.MaxLength = 36
+        Me.txtUUID.Name = "txtUUID"
+        Me.txtUUID.Size = New System.Drawing.Size(330, 20)
+        Me.txtUUID.TabIndex = 2
+        '
+        'lblDisplayEmisorRFC
+        '
+        Me.lblDisplayEmisorRFC.AutoSize = True
+        Me.lblDisplayEmisorRFC.Location = New System.Drawing.Point(7, 69)
+        Me.lblDisplayEmisorRFC.Name = "lblDisplayEmisorRFC"
+        Me.lblDisplayEmisorRFC.Size = New System.Drawing.Size(68, 13)
+        Me.lblDisplayEmisorRFC.TabIndex = 134
+        Me.lblDisplayEmisorRFC.Text = "Emisor RFC :"
+        '
+        'txtEmisorRFC
+        '
+        Me.txtEmisorRFC.Location = New System.Drawing.Point(103, 66)
+        Me.txtEmisorRFC.MaxLength = 8
+        Me.txtEmisorRFC.Name = "txtEmisorRFC"
+        Me.txtEmisorRFC.Size = New System.Drawing.Size(100, 20)
+        Me.txtEmisorRFC.TabIndex = 2
+        '
+        'lblDisplayEmisorNombre
+        '
+        Me.lblDisplayEmisorNombre.AutoSize = True
+        Me.lblDisplayEmisorNombre.Location = New System.Drawing.Point(213, 69)
+        Me.lblDisplayEmisorNombre.Name = "lblDisplayEmisorNombre"
+        Me.lblDisplayEmisorNombre.Size = New System.Drawing.Size(84, 13)
+        Me.lblDisplayEmisorNombre.TabIndex = 136
+        Me.lblDisplayEmisorNombre.Text = "Emisor Nombre :"
+        '
+        'txtEmisorNombre
+        '
+        Me.txtEmisorNombre.Location = New System.Drawing.Point(309, 66)
+        Me.txtEmisorNombre.MaxLength = 8
+        Me.txtEmisorNombre.Name = "txtEmisorNombre"
+        Me.txtEmisorNombre.Size = New System.Drawing.Size(324, 20)
+        Me.txtEmisorNombre.TabIndex = 3
+        '
+        'txtTotalXML
+        '
+        Me.txtTotalXML.Location = New System.Drawing.Point(78, 133)
+        Me.txtTotalXML.MaxLength = 12
+        Me.txtTotalXML.Name = "txtTotalXML"
+        Me.txtTotalXML.ReadOnly = True
+        Me.txtTotalXML.Size = New System.Drawing.Size(100, 20)
+        Me.txtTotalXML.TabIndex = 29
+        Me.txtTotalXML.Text = "0.00"
+        Me.txtTotalXML.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Frm_Contabilidad_IVA_Acreditable_Detalle
         '
@@ -868,8 +955,8 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         Me.GroupBox2.PerformLayout()
         Me.gbIva.ResumeLayout(False)
         Me.gbIva.PerformLayout()
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
+        Me.gbOtros.ResumeLayout(False)
+        Me.gbOtros.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -938,11 +1025,19 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
     Friend WithEvents txtIvaRetenido6 As System.Windows.Forms.TextBox
     Friend WithEvents lblDisplayActosExento As System.Windows.Forms.Label
     Friend WithEvents txtActosExento As System.Windows.Forms.TextBox
-    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents gbOtros As GroupBox
     Friend WithEvents lblDisplayISRRetenido As Label
     Friend WithEvents txtISRRetenido As TextBox
     Friend WithEvents lblDisplayTotalXML As Label
-    Friend WithEvents txtTotalXML As Label
     Friend WithEvents lblDisplayIEPS As Label
     Friend WithEvents txtIEPS As TextBox
+    Friend WithEvents lblDisplaylMPUESTO_HOTEL As Label
+    Friend WithEvents txtIMPUESTO_HOTEL As TextBox
+    Friend WithEvents lblDisplayUUID As Label
+    Friend WithEvents txtUUID As TextBox
+    Friend WithEvents lblDisplayEmisorNombre As Label
+    Friend WithEvents txtEmisorNombre As TextBox
+    Friend WithEvents lblDisplayEmisorRFC As Label
+    Friend WithEvents txtEmisorRFC As TextBox
+    Friend WithEvents txtTotalXML As TextBox
 End Class
