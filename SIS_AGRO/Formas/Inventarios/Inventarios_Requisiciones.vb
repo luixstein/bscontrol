@@ -264,8 +264,8 @@ Enter:
                     Me.tsbImprimir.Enabled = True
 
                     Me.dtFechaEntrega.Enabled = False
-                    Me.txtAlmacen.Enabled = False
-                    Me.txtComprador.Enabled = False
+                    Me.txtAlmacen.Enabled = True
+                    Me.txtComprador.Enabled = True
                     Me.txtFolio.Enabled = False
                     Me.txtConcepto.Enabled = True
                     Me.Grid1.Locked = False
