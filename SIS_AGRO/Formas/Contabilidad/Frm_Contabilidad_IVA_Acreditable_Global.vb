@@ -524,7 +524,7 @@ busca:
                 Me.txtFolio.Text = sFolio
                 MsgBox("La póliza no existe.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.Cambia_Estado(enumEstados.NUEVO)
-                Exit Function
+                Return False
             End If
 
             Me.txtFolio.Enabled = False
@@ -547,6 +547,8 @@ busca:
             'iGyIDDetalle As Integer = 22
             'iGyEMISOR_NOMBRE As Integer = 23	    iGyEMISOR_RFC As Integer = 24
             'iGyUUID As Integer = 25			    iGyIEPS As Integer = 26                 iGyIMPUESTO_HOTEL As Integer = 27	    iGyISR_RETENIDO As Integer = 28         iGyTOTAL_XML As Integer = 29
+
+            Me.Grid.AutoRedraw = False
 
             'Si no existe el iva acreditable.
             If Me.oIVA.ExisteDocumentoIVA = False Then
@@ -579,9 +581,11 @@ busca:
                 Me.Totaliza()
 
                 Me.Cambia_Estado(enumEstados.NUEVO_CON_POLIZA_QUE_SI_EXISTE)
-                Exit Function
+
+                Return False 'Se saldrá ya que es un iva acreditable que no existe y se habrá precargado.
             End If
 
+            'Si llegó acá es que si existe el iva acreditable y va cargarlo tal cual esta grabado.
             Me.Grid.Rows = 1
 
             With Me.oIVA
@@ -649,6 +653,9 @@ busca:
             bResultado = True
         Catch ex As Exception
             HandleError(Me.Name, "Consultar", ex)
+        Finally
+            Me.Grid.AutoRedraw = True
+            Me.Grid.Refresh()
         End Try
 
         Return bResultado
@@ -689,6 +696,7 @@ busca:
 
             For i = 1 To Me.Grid.Rows - 1
                 If txtLEN(Me.Grid.Cell(i, Me.iGyCodigoProveedor).Text) = True Then
+                    Dim sUUID As String = Me.Grid.Cell(i, iGyUUID).Text
                     If Me.Grid.Cell(i, iGyUUID).Text.Length <> 36 Then 'La longitud de todos los uuids es de 36 carateres
                         MsgBox("El UUID del renglón #" & i - 1 & " no es de 36 caracteres(debe llevar guiones). Favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
                         Return False
@@ -701,13 +709,25 @@ busca:
                             MsgBox("El UUID del renglón #" & i - 1 & " no tiene el formato correcto de 8-4-4-4-12 digitos. Favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         End If
+
+                        If sUUID <> "11111111-1111-1111-1111-111111111111" Then
+                            'Validar que no se repita
+                            For j = i + 1 To Me.Grid.Rows - 1
+                                If sUUID = Me.Grid.Cell(j, Me.iGyCodigoProveedor).Text Then
+                                    MsgBox("El UUID esta repetido en el renglón #" + j.ToString + " no esta permitido repetirlos. Favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
+                                    Return False
+                                End If
+                            Next
+                        End If
+
                     End If
                 End If
             Next
 
             'Podriamos validar las bases como en abaco, es decir, sacar la cuenta de iva_acred_16/.16 <> Actos16 por mas de .5
 
-            'Podriamos validar los totales calculados por renglón, llegar a un total calculado para ver si es diferente del totalXml y preguntar si quieren continuar.
+            'Podriamos validar los totales calculados por renglón, llegar a un total calculado para ver si es diferente del totalXml y preguntar si quieren continuar por cada renglón con el problema.
+            'o pintar el renglón de color rojo cuando no cuadre y sólo preguntar/advertir una única vez
 
             bResultado = True
 
