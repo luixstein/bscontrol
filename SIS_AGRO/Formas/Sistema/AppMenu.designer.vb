@@ -252,6 +252,7 @@ Partial Public Class AppMenu
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
+        Me.CapturaDeCanastasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -1577,7 +1578,7 @@ Partial Public Class AppMenu
         '
         'MenuAcuicola
         '
-        Me.MenuAcuicola.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CapturaParámetrosToolStripMenuItem, Me.CapturaAlimentaciónToolStripMenuItem, Me.CapturaParametríaToolStripMenuItem, Me.EstanquesIntensivosToolStripMenuItem, Me.ConsultasToolStripMenuItem5})
+        Me.MenuAcuicola.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CapturaParámetrosToolStripMenuItem, Me.CapturaAlimentaciónToolStripMenuItem, Me.CapturaDeCanastasToolStripMenuItem, Me.CapturaParametríaToolStripMenuItem, Me.EstanquesIntensivosToolStripMenuItem, Me.ConsultasToolStripMenuItem5})
         Me.MenuAcuicola.Name = "MenuAcuicola"
         Me.MenuAcuicola.Size = New System.Drawing.Size(78, 24)
         Me.MenuAcuicola.Text = "Acuicola"
@@ -1728,6 +1729,12 @@ Partial Public Class AppMenu
         Me.pbLogo.TabIndex = 17
         Me.pbLogo.TabStop = False
         Me.pbLogo.Visible = False
+        '
+        'CapturaDeCanastasToolStripMenuItem
+        '
+        Me.CapturaDeCanastasToolStripMenuItem.Name = "CapturaDeCanastasToolStripMenuItem"
+        Me.CapturaDeCanastasToolStripMenuItem.Size = New System.Drawing.Size(226, 26)
+        Me.CapturaDeCanastasToolStripMenuItem.Text = "Captura de canastas"
         '
         'AppMenu
         '
@@ -1987,4 +1994,5 @@ Partial Public Class AppMenu
     Friend WithEvents DepartamentosToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ListaArtículosCompradosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RequisicionesGlobalToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents CapturaDeCanastasToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class
