@@ -204,14 +204,14 @@
                 .Column(Me.iGyIdCapturaAlimentacionDetalle).Width = 80
                 .Column(Me.iGyIDProyectoSiembra).Width = 80
                 .Column(Me.iGyCodigoLote).Width = 80
-                .Column(Me.iGyNombreLote).Width = 80
+                .Column(Me.iGyNombreLote).Width = 100
                 .Column(Me.iGyAlimento).Width = 80
-                .Column(Me.iGyCanastas).Width = 80
+                .Column(Me.iGyCanastas).Width = 100
                 .Column(Me.iGyMuertos).Width = 80
                 .Column(Me.iGyOxigeno).Width = 80
                 .Column(Me.iGyTemperatura).Width = 80
                 .Column(Me.iGyCodigoTipoAlimento).Width = 50
-                .Column(Me.iGyNombreTipoAlimento).Width = 250
+                .Column(Me.iGyNombreTipoAlimento).Width = 400
 
                 .Cell(0, Me.iGyIdCapturaAlimentacionDetalle).Text = "IdCapturaAlimentoDetalle"
                 .Cell(0, Me.iGyIDProyectoSiembra).Text = "IDProyectoSiembra"
@@ -233,6 +233,12 @@
                 .Column(Me.iGyIDProyectoSiembra).Visible = False
                 .Column(Me.iGyCodigoLote).Visible = False
                 .Column(Me.iGyCodigoTipoAlimento).Visible = False
+
+                'Estos campos ya no se utilizaran en esta forma
+                .Column(Me.iGyCanastas).Visible = False
+                .Column(Me.iGyMuertos).Visible = False
+                .Column(Me.iGyOxigeno).Visible = False
+                .Column(Me.iGyTemperatura).Visible = False
 
                 .Column(Me.iGyAlimento).FormatString = "##0.00"
                 .Column(Me.iGyAlimento).Mask = FlexCell.MaskEnum.Numeric
@@ -519,10 +525,10 @@
                         .oDetalle.ID_PROYECTO_SIEMBRA = Me.Grid.Cell(i, Me.iGyIDProyectoSiembra).Text
                         .oDetalle.CODIGO_LOTE = Me.Grid.Cell(i, Me.iGyCodigoLote).Text
                         .oDetalle.ALIMENTO = Me.Grid.Cell(i, Me.iGyAlimento).Text
-                        .oDetalle.CANASTAS = Me.Grid.Cell(i, Me.iGyCanastas).Text
-                        .oDetalle.MUERTOS = Me.Grid.Cell(i, Me.iGyMuertos).Text
-                        .oDetalle.OXIGENO = Me.Grid.Cell(i, Me.iGyOxigeno).Text
-                        .oDetalle.TEMPERATURA = Me.Grid.Cell(i, Me.iGyTemperatura).Text
+                        '.oDetalle.CANASTAS = Me.Grid.Cell(i, Me.iGyCanastas).Text
+                        '.oDetalle.MUERTOS = Me.Grid.Cell(i, Me.iGyMuertos).Text
+                        '.oDetalle.OXIGENO = Me.Grid.Cell(i, Me.iGyOxigeno).Text
+                        '.oDetalle.TEMPERATURA = Me.Grid.Cell(i, Me.iGyTemperatura).Text
                         .oDetalle.CODIGO_TIPO_ALIMENTO = "" & Me.Grid.Cell(i, Me.iGyCodigoTipoAlimento).Text
 
                         If .oDetalle.GrabaRenglon() = False Then
@@ -620,7 +626,7 @@
                 Return False
             End If
 
-            Dim oParametroDetalle As Class_CatParametrosAcuicolaDetalle
+            'Dim oParametroDetalle As Class_CatParametrosAcuicolaDetalle
             Dim oProyectoSiembra As Class_ProyectoSiembraAcuicola
 
             For i = 1 To Me.Grid.Rows - 1
@@ -638,24 +644,24 @@
                         Return False
                     End If
 
-                    If txtLEN(Me.Grid.Cell(i, Me.iGyCanastas).Text) = False Then
-                        MsgBox("Capture las canastas del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
-                        Me.Grid.Cell(i, Me.iGyCanastas).SetFocus()
-                        Return False
-                    End If
+                    'If txtLEN(Me.Grid.Cell(i, Me.iGyCanastas).Text) = False Then
+                    '    MsgBox("Capture las canastas del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                    '    Me.Grid.Cell(i, Me.iGyCanastas).SetFocus()
+                    '    Return False
+                    'End If
 
-                    oParametroDetalle = New Class_CatParametrosAcuicolaDetalle(Me.cboDivision.SelectedValue, Me.Grid.Cell(i, Me.iGyCodigoLote).Text)
+                    'oParametroDetalle = New Class_CatParametrosAcuicolaDetalle(Me.cboDivision.SelectedValue, Me.Grid.Cell(i, Me.iGyCodigoLote).Text)
 
-                    If oParametroDetalle.Existe = True Then
-                        If Len(Me.Grid.Cell(i, Me.iGyCanastas).Text) <> oParametroDetalle.Numero_Canastas Then
-                            MsgBox("Las canastas permitidas para el estanque #" & Me.Grid.Cell(i, Me.iGyNombreLote).Text & " debe ser " & oParametroDetalle.Numero_Canastas, MsgBoxStyle.Exclamation, Me.Name)
-                            Me.Grid.Cell(i, Me.iGyCanastas).SetFocus()
-                            Return False
-                        End If
-                    Else
-                        MsgBox("Las canastas para el estanque #" & Me.Grid.Cell(i, Me.iGyNombreLote).Text & " de la división " & Me.cboDivision.Text & " no han sido definidas en el catalogo.", MsgBoxStyle.Exclamation, Me.Name)
-                        Return False
-                    End If
+                    'If oParametroDetalle.Existe = True Then
+                    '    If Len(Me.Grid.Cell(i, Me.iGyCanastas).Text) <> oParametroDetalle.Numero_Canastas Then
+                    '        MsgBox("Las canastas permitidas para el estanque #" & Me.Grid.Cell(i, Me.iGyNombreLote).Text & " debe ser " & oParametroDetalle.Numero_Canastas, MsgBoxStyle.Exclamation, Me.Name)
+                    '        Me.Grid.Cell(i, Me.iGyCanastas).SetFocus()
+                    '        Return False
+                    '    End If
+                    'Else
+                    '    MsgBox("Las canastas para el estanque #" & Me.Grid.Cell(i, Me.iGyNombreLote).Text & " de la división " & Me.cboDivision.Text & " no han sido definidas en el catalogo.", MsgBoxStyle.Exclamation, Me.Name)
+                    '    Return False
+                    'End If
 
                     If txtLEN(Me.Grid.Cell(i, Me.iGyCodigoTipoAlimento).Text) = False Then
                         MsgBox("Capture el tipo de alimento del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
@@ -663,23 +669,23 @@
                         Return False
                     End If
 
-                    If txtLEN(Me.Grid.Cell(i, Me.iGyMuertos).Text) = False Then
-                        MsgBox("Capture los muertos del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
-                        Me.Grid.Cell(i, Me.iGyMuertos).SetFocus()
-                        Return False
-                    End If
+                    'If txtLEN(Me.Grid.Cell(i, Me.iGyMuertos).Text) = False Then
+                    '    MsgBox("Capture los muertos del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                    '    Me.Grid.Cell(i, Me.iGyMuertos).SetFocus()
+                    '    Return False
+                    'End If
 
-                    If txtLEN(Me.Grid.Cell(i, Me.iGyOxigeno).Text) = False Then
-                        MsgBox("Capture el oxígeno del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
-                        Me.Grid.Cell(i, Me.iGyOxigeno).SetFocus()
-                        Return False
-                    End If
+                    'If txtLEN(Me.Grid.Cell(i, Me.iGyOxigeno).Text) = False Then
+                    '    MsgBox("Capture el oxígeno del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                    '    Me.Grid.Cell(i, Me.iGyOxigeno).SetFocus()
+                    '    Return False
+                    'End If
 
-                    If txtLEN(Me.Grid.Cell(i, Me.iGyTemperatura).Text) = False Then
-                        MsgBox("Capture la temperatura del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
-                        Me.Grid.Cell(i, Me.iGyOxigeno).SetFocus()
-                        Return False
-                    End If
+                    'If txtLEN(Me.Grid.Cell(i, Me.iGyTemperatura).Text) = False Then
+                    '    MsgBox("Capture la temperatura del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                    '    Me.Grid.Cell(i, Me.iGyOxigeno).SetFocus()
+                    '    Return False
+                    'End If
 
                 End If
             Next

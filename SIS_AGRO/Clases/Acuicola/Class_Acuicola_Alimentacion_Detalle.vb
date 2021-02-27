@@ -170,10 +170,10 @@ Public Class Class_Acuicola_Alimentacion_Detalle
             sqlParametro = .Parameters.Add("@ID_PROYECTO_SIEMBRA", SqlDbType.SmallInt) : sqlParametro.Value = Me._ID_PROYECTO_SIEMBRA
             sqlParametro = .Parameters.Add("@CODIGO_LOTE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_LOTE
             sqlParametro = .Parameters.Add("@ALIMENTO", SqlDbType.Decimal) : sqlParametro.Value = Me._ALIMENTO
-            sqlParametro = .Parameters.Add("@CANASTAS", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CANASTAS
-            sqlParametro = .Parameters.Add("@MUERTOS", SqlDbType.Decimal) : sqlParametro.Value = Me._MUERTOS
-            sqlParametro = .Parameters.Add("@OXIGENO", SqlDbType.Decimal) : sqlParametro.Value = Me._OXIGENO
-            sqlParametro = .Parameters.Add("@TEMPERATURA", SqlDbType.Decimal) : sqlParametro.Value = Me._TEMPERATURA
+            'sqlParametro = .Parameters.Add("@CANASTAS", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CANASTAS
+            'sqlParametro = .Parameters.Add("@MUERTOS", SqlDbType.Decimal) : sqlParametro.Value = Me._MUERTOS
+            'sqlParametro = .Parameters.Add("@OXIGENO", SqlDbType.Decimal) : sqlParametro.Value = Me._OXIGENO
+            'sqlParametro = .Parameters.Add("@TEMPERATURA", SqlDbType.Decimal) : sqlParametro.Value = Me._TEMPERATURA
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_ALIMENTO", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_TIPO_ALIMENTO
 
             Try

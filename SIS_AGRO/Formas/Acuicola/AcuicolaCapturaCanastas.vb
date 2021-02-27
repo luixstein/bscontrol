@@ -196,9 +196,9 @@
                 .Column(Me.iGyIdCapturaCanastasDetalle).Width = 80
                 .Column(Me.iGyIDProyectoSiembra).Width = 80
                 .Column(Me.iGyCodigoLote).Width = 80
-                .Column(Me.iGyNombreLote).Width = 80
-                .Column(Me.iGyCanastas).Width = 100
-                .Column(Me.iGyMuertos).Width = 80
+                .Column(Me.iGyNombreLote).Width = 150
+                .Column(Me.iGyCanastas).Width = 150
+                .Column(Me.iGyMuertos).Width = 100
 
                 .Cell(0, Me.iGyIdCapturaCanastasDetalle).Text = "IdCapturaCanastasDetalle"
                 .Cell(0, Me.iGyIDProyectoSiembra).Text = "IDProyectoSiembra"
