@@ -697,6 +697,7 @@ busca:
             For i = 1 To Me.Grid.Rows - 1
                 If txtLEN(Me.Grid.Cell(i, Me.iGyCodigoProveedor).Text) = True Then
                     Dim sUUID As String = Me.Grid.Cell(i, iGyUUID).Text
+
                     If Me.Grid.Cell(i, iGyUUID).Text.Length <> 36 Then 'La longitud de todos los uuids es de 36 carateres
                         MsgBox("El UUID del renglón #" & i - 1 & " no es de 36 caracteres(debe llevar guiones). Favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
                         Return False
@@ -710,8 +711,8 @@ busca:
                             Return False
                         End If
 
+                        'Validar que no se repita(excepto el uuid genérico si permite repetirlo)
                         If sUUID <> "11111111-1111-1111-1111-111111111111" Then
-                            'Validar que no se repita
                             For j = i + 1 To Me.Grid.Rows - 1
                                 If sUUID = Me.Grid.Cell(j, Me.iGyCodigoProveedor).Text Then
                                     MsgBox("El UUID esta repetido en el renglón #" + j.ToString + " no esta permitido repetirlos. Favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
@@ -719,7 +720,11 @@ busca:
                                 End If
                             Next
                         End If
+                    End If
 
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyEMISOR_RFC).Text) Then
+                        MsgBox("Al renglón #" & i - 1 & " le falta especificar el RFC del emisor. Favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
                     End If
                 End If
             Next
