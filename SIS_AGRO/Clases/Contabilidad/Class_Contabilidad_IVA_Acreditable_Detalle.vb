@@ -32,6 +32,13 @@ Public Class Class_Contabilidad_IVA_Acreditable_Detalle
     Private _FOLIO_COMPRA As String
     Private _FECHA_FACTURA_PROVEEDOR As Date
     Private _CONCEPTO As String
+    Private _EMISOR_NOMBRE As String
+    Private _EMISOR_RFC As String
+    Private _UUID As String
+    Private _IEPS As Decimal
+    Private _IMPUESTO_HOTEL As Decimal
+    Private _ISR_RETENIDO As Decimal
+    Private _TOTAL_XML As Decimal
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -274,6 +281,69 @@ Public Class Class_Contabilidad_IVA_Acreditable_Detalle
             Me._CONCEPTO = value
         End Set
     End Property
+
+    Public Property EMISOR_NOMBRE() As String
+        Get
+            Return Me._EMISOR_NOMBRE
+        End Get
+        Set(ByVal value As String)
+            Me._EMISOR_NOMBRE = value
+        End Set
+    End Property
+
+    Public Property EMISOR_RFC() As String
+        Get
+            Return Me._EMISOR_RFC
+        End Get
+        Set(ByVal value As String)
+            Me._EMISOR_RFC = value
+        End Set
+    End Property
+
+    Public Property UUID() As String
+        Get
+            Return Me._UUID
+        End Get
+        Set(ByVal value As String)
+            Me._UUID = value
+        End Set
+    End Property
+
+    Public Property IEPS() As Decimal
+        Get
+            Return Me._IEPS
+        End Get
+        Set(ByVal value As Decimal)
+            Me._IEPS = value
+        End Set
+    End Property
+
+    Public Property IMPUESTO_HOTEL() As Decimal
+        Get
+            Return Me._IMPUESTO_HOTEL
+        End Get
+        Set(ByVal value As Decimal)
+            Me._IMPUESTO_HOTEL = value
+        End Set
+    End Property
+
+    Public Property ISR_RETENIDO() As Decimal
+        Get
+            Return Me._ISR_RETENIDO
+        End Get
+        Set(ByVal value As Decimal)
+            Me._ISR_RETENIDO = value
+        End Set
+    End Property
+
+    Public Property TOTAL_XML() As Decimal
+        Get
+            Return Me._TOTAL_XML
+        End Get
+        Set(ByVal value As Decimal)
+            Me._TOTAL_XML = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -307,6 +377,7 @@ Public Class Class_Contabilidad_IVA_Acreditable_Detalle
 
 #Region "Métodos y procedimientos"
     Public Function GrabaIVAAcreditableDetalle() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -321,6 +392,7 @@ Public Class Class_Contabilidad_IVA_Acreditable_Detalle
             sqlParametro = .Parameters.Add("@PERIODO", SqlDbType.SmallInt) : sqlParametro.Value = Me._PERIODO
             sqlParametro = .Parameters.Add("@ANIO", SqlDbType.SmallInt) : sqlParametro.Value = Me._ANIO
             sqlParametro = .Parameters.Add("@OPERACIONES", SqlDbType.SmallInt) : sqlParametro.Value = Me._OPERACIONES
+<<<<<<< HEAD
             sqlParametro = .Parameters.Add("@ACTOS_AL_0", SqlDbType.Money) : sqlParametro.Value = Me._ACTOS_AL_0
             sqlParametro = .Parameters.Add("@ACTOS_AL_8", SqlDbType.Money) : sqlParametro.Value = Me._ACTOS_AL_8
             sqlParametro = .Parameters.Add("@ACTOS_AL_10", SqlDbType.Money) : sqlParametro.Value = Me._ACTOS_AL_10
@@ -337,14 +409,39 @@ Public Class Class_Contabilidad_IVA_Acreditable_Detalle
             sqlParametro = .Parameters.Add("@IVA_RETENIDO_AL_4", SqlDbType.Money) : sqlParametro.Value = Me._IVA_RETENIDO_AL_4
             sqlParametro = .Parameters.Add("@IVA_RETENIDO_AL_6", SqlDbType.Money) : sqlParametro.Value = Me._IVA_RETENIDO_AL_6
             sqlParametro = .Parameters.Add("@IVA_RETENIDO_AL_10", SqlDbType.Money) : sqlParametro.Value = Me._IVA_RETENIDO_AL_10
+=======
+            sqlParametro = .Parameters.Add("@ACTOS_AL_0", SqlDbType.Decimal) : sqlParametro.Value = Me._ACTOS_AL_0
+            sqlParametro = .Parameters.Add("@ACTOS_AL_8", SqlDbType.Decimal) : sqlParametro.Value = Me._ACTOS_AL_8
+            sqlParametro = .Parameters.Add("@ACTOS_AL_10", SqlDbType.Decimal) : sqlParametro.Value = Me._ACTOS_AL_10
+            sqlParametro = .Parameters.Add("@ACTOS_AL_15", SqlDbType.Decimal) : sqlParametro.Value = Me._ACTOS_AL_15
+            sqlParametro = .Parameters.Add("@ACTOS_AL_11", SqlDbType.Decimal) : sqlParametro.Value = Me._ACTOS_AL_11
+            sqlParametro = .Parameters.Add("@ACTOS_AL_16", SqlDbType.Decimal) : sqlParametro.Value = Me._ACTOS_AL_16
+            sqlParametro = .Parameters.Add("@ACTOS_IVA_EXENTO", SqlDbType.Decimal) : sqlParametro.Value = Me._ACTOS_IVA_EXENTO
+            sqlParametro = .Parameters.Add("@SUBTOTAL_ACTOS", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL_ACTOS
+            sqlParametro = .Parameters.Add("@IVA_ACREDITABLE_AL_8", SqlDbType.Decimal) : sqlParametro.Value = Me._IVA_ACREDITABLE_AL_8
+            sqlParametro = .Parameters.Add("@IVA_ACREDITABLE_AL_10", SqlDbType.Decimal) : sqlParametro.Value = Me._IVA_ACREDITABLE_AL_10
+            sqlParametro = .Parameters.Add("@IVA_ACREDITABLE_AL_15", SqlDbType.Decimal) : sqlParametro.Value = Me._IVA_ACREDITABLE_AL_15
+            sqlParametro = .Parameters.Add("@IVA_ACREDITABLE_AL_11", SqlDbType.Decimal) : sqlParametro.Value = Me._IVA_ACREDITABLE_AL_11
+            sqlParametro = .Parameters.Add("@IVA_ACREDITABLE_AL_16", SqlDbType.Decimal) : sqlParametro.Value = Me._IVA_ACREDITABLE_AL_16
+            sqlParametro = .Parameters.Add("@IVA_RETENIDO_AL_4", SqlDbType.Decimal) : sqlParametro.Value = Me._IVA_RETENIDO_AL_4
+            sqlParametro = .Parameters.Add("@IVA_RETENIDO_AL_6", SqlDbType.Decimal) : sqlParametro.Value = Me._IVA_RETENIDO_AL_6
+            sqlParametro = .Parameters.Add("@IVA_RETENIDO_AL_10", SqlDbType.Decimal) : sqlParametro.Value = Me._IVA_RETENIDO_AL_10
+>>>>>>> GastosRetenciones
             sqlParametro = .Parameters.Add("@FOLIO_COMPRA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_COMPRA
             sqlParametro = .Parameters.Add("@FECHA_FACTURA_PROVEEDOR", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_FACTURA_PROVEEDOR
             sqlParametro = .Parameters.Add("@CONCEPTO", SqlDbType.NVarChar, 200) : sqlParametro.Value = Me._CONCEPTO
+            sqlParametro = .Parameters.Add("@EMISOR_NOMBRE", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._EMISOR_NOMBRE
+            sqlParametro = .Parameters.Add("@EMISOR_RFC", SqlDbType.NVarChar, 13) : sqlParametro.Value = Me._EMISOR_RFC
+            sqlParametro = .Parameters.Add("@UUID", SqlDbType.NVarChar, 36) : sqlParametro.Value = Me._UUID
+            sqlParametro = .Parameters.Add("@IEPS", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS
+            sqlParametro = .Parameters.Add("@IMPUESTO_HOTEL", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_HOTEL
+            sqlParametro = .Parameters.Add("@ISR_RETENIDO", SqlDbType.Decimal) : sqlParametro.Value = Me._ISR_RETENIDO
+            sqlParametro = .Parameters.Add("@TOTAL_XML", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_XML
 
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                GrabaIVAAcreditableDetalle = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me.Nombre_Clase, "GrabaIVAAcreditableDetalle", ex)
             Finally
@@ -353,6 +450,8 @@ Public Class Class_Contabilidad_IVA_Acreditable_Detalle
                 sqlParametro = Nothing
             End Try
         End With
+
+        Return bResultado
     End Function
 
 #End Region

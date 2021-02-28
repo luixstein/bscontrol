@@ -2864,6 +2864,11 @@ BuscaEmbarque:
         End Try
     End Sub
 
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Dim oVisorXML As New Frm_CFDI_VisorXML("81259726-bbea-4271-80a6-4c83f1e25d63")
+        oVisorXML.Show()
+    End Sub
+
 #End Region
 
 End Class

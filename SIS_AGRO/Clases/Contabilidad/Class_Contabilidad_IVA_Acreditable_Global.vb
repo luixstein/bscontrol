@@ -1,5 +1,5 @@
 ﻿Option Strict On
-Imports System.Data
+
 Imports System.Data.SqlClient
 
 Public Class Class_Contabilidad_IVA_Acreditable_Global
@@ -32,6 +32,10 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
     Private _TOTAL_IVA_RETENIDO_AL_4 As Double
     Private _TOTAL_IVA_RETENIDO_AL_6 As Double
     Private _TOTAL_IVA_RETENIDO_AL_10 As Double
+    Private _IEPS As Decimal
+    Private _IMPUESTO_HOTEL As Decimal
+    Private _ISR_RETENIDO As Decimal
+    Private _TOTAL_XML As Decimal
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -260,6 +264,42 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
         End Set
     End Property
 
+    Public Property IEPS() As Decimal
+        Get
+            Return Me._IEPS
+        End Get
+        Set(ByVal value As Decimal)
+            Me._IEPS = value
+        End Set
+    End Property
+
+    Public Property IMPUESTO_HOTEL() As Decimal
+        Get
+            Return Me._IMPUESTO_HOTEL
+        End Get
+        Set(ByVal value As Decimal)
+            Me._IMPUESTO_HOTEL = value
+        End Set
+    End Property
+
+    Public Property ISR_RETENIDO() As Decimal
+        Get
+            Return Me._ISR_RETENIDO
+        End Get
+        Set(ByVal value As Decimal)
+            Me._ISR_RETENIDO = value
+        End Set
+    End Property
+
+    Public Property TOTAL_XML() As Decimal
+        Get
+            Return Me._TOTAL_XML
+        End Get
+        Set(ByVal value As Decimal)
+            Me._TOTAL_XML = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -352,6 +392,7 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
 
 #Region "Métodos y procedimientos"
     Public Function Consultar() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand(Me._QuerySelect & " WHERE G.FOLIO_POLIZA='" & Me._FOLIO_POLIZA & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
@@ -361,7 +402,7 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
                 Me._Conexion.Open()
 
                 dReader = .ExecuteReader()
-                If dReader.Read Then
+                If dReader.Read = True Then
                     Me._ID_CON_IVA_ACREDITABLE_GLOBAL = CType(dReader("ID_CON_IVA_ACREDITABLE_GLOBAL"), Integer)
                     Me._FOLIO_POLIZA = dReader("FOLIO_POLIZA").ToString
                     Me._FECHA_POLIZA = CDate(dReader("FECHA_POLIZA"))
@@ -387,8 +428,12 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
                     Me._TOTAL_IVA_RETENIDO_AL_4 = valorNumerico(dReader("TOTAL_IVA_RETENIDO_AL_4").ToString)
                     Me._TOTAL_IVA_RETENIDO_AL_6 = valorNumerico(dReader("TOTAL_IVA_RETENIDO_AL_6").ToString)
                     Me._TOTAL_IVA_RETENIDO_AL_10 = valorNumerico(dReader("TOTAL_IVA_RETENIDO_AL_10").ToString)
+                    Me._IEPS = valorNumericoD(dReader("IEPS").ToString)
+                    Me._IMPUESTO_HOTEL = valorNumericoD(dReader("IMPUESTO_HOTEL").ToString)
+                    Me._ISR_RETENIDO = valorNumericoD(dReader("ISR_RETENIDO").ToString)
+                    Me._TOTAL_XML = valorNumericoD(dReader("TOTAL_XML").ToString)
 
-                    Consultar = True
+                    bResultado = True
                 End If
                 dReader.Close()
 
@@ -410,9 +455,12 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
                 cmd.Dispose()
             End Try
         End With
+
+        Return bResultado
     End Function
 
     Private Function ObtieneTotalesIvaAcreditablePoliza() As Boolean
+        Dim bResultado As Boolean = False
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String = "EXEC DBO.MP_CONTABILIDAD_IVA_ACREDITABLE_OBTIENE_TOTALES_IVA_ACREDITABLE_POLIZA @FOLIO_POLIZA='" & Me._FOLIO_POLIZA & "'"
         Try
@@ -426,7 +474,7 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
                 Me._IVAACubrirAl11 = CDbl(dTabla.Rows(0)("IVA_11"))
                 Me._IVAACubrirAl16 = CDbl(dTabla.Rows(0)("IVA_16"))
                 Me._IVAACubrirAl8 = CDbl(dTabla.Rows(0)("IVA_8"))
-                ObtieneTotalesIvaAcreditablePoliza = True
+                bResultado = True
             End If
 
             dTabla.Dispose()
@@ -434,9 +482,12 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, "ObtieneTotalesIvaAcreditablePoliza", ex)
         End Try
+
+        Return bResultado
     End Function
 
     Public Function GrabaIVAAcreditableGlobal() As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -447,6 +498,7 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
 
             sqlParametro = .Parameters.Add("@FOLIO_POLIZA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_POLIZA
             sqlParametro = .Parameters.Add("@FECHA", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA
+<<<<<<< HEAD
             sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_0", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_0
             sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_8", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_8
             sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_10", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_10
@@ -463,13 +515,35 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
             sqlParametro = .Parameters.Add("@TOTAL_IVA_RETENIDO_AL_4", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_IVA_RETENIDO_AL_4
             sqlParametro = .Parameters.Add("@TOTAL_IVA_RETENIDO_AL_6", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_IVA_RETENIDO_AL_6
             sqlParametro = .Parameters.Add("@TOTAL_IVA_RETENIDO_AL_10", SqlDbType.Money) : sqlParametro.Value = Me._TOTAL_IVA_RETENIDO_AL_10
+=======
+            sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_0", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_0
+            sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_8", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_8
+            sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_10", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_10
+            sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_15", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_15
+            sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_11", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_11
+            sqlParametro = .Parameters.Add("@TOTAL_ACTOS_AL_16", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_ACTOS_AL_16
+            sqlParametro = .Parameters.Add("@TOTAL_ACTOS_IVA_EXENTO", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_ACTOS_IVA_EXENTO
+            sqlParametro = .Parameters.Add("@TOTAL_ACTOS", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_ACTOS
+            sqlParametro = .Parameters.Add("@TOTAL_IVA_ACREDITABLE_AL_8", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_IVA_ACREDITABLE_AL_8
+            sqlParametro = .Parameters.Add("@TOTAL_IVA_ACREDITABLE_AL_10", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_IVA_ACREDITABLE_AL_10
+            sqlParametro = .Parameters.Add("@TOTAL_IVA_ACREDITABLE_AL_15", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_IVA_ACREDITABLE_AL_15
+            sqlParametro = .Parameters.Add("@TOTAL_IVA_ACREDITABLE_AL_11", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_IVA_ACREDITABLE_AL_11
+            sqlParametro = .Parameters.Add("@TOTAL_IVA_ACREDITABLE_AL_16", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_IVA_ACREDITABLE_AL_16
+            sqlParametro = .Parameters.Add("@TOTAL_IVA_RETENIDO_AL_4", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_IVA_RETENIDO_AL_4
+            sqlParametro = .Parameters.Add("@TOTAL_IVA_RETENIDO_AL_6", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_IVA_RETENIDO_AL_6
+            sqlParametro = .Parameters.Add("@TOTAL_IVA_RETENIDO_AL_10", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_IVA_RETENIDO_AL_10
+>>>>>>> GastosRetenciones
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_GRABO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_USUARIO_GRABO
             sqlParametro = .Parameters.Add("@CONCEPTO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONCEPTO.ToUpper
+            sqlParametro = .Parameters.Add("@IEPS", SqlDbType.Decimal) : sqlParametro.Value = Me._IEPS
+            sqlParametro = .Parameters.Add("@IMPUESTO_HOTEL", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_HOTEL
+            sqlParametro = .Parameters.Add("@ISR_RETENIDO", SqlDbType.Decimal) : sqlParametro.Value = Me._ISR_RETENIDO
+            sqlParametro = .Parameters.Add("@TOTAL_XML", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_XML
 
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                GrabaIVAAcreditableGlobal = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me.Nombre_Clase, "GrabaIVAAcreditableGlobal", ex)
             Finally
@@ -478,9 +552,12 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
                 sqlParametro = Nothing
             End Try
         End With
+
+        Return bResultado
     End Function
 
     Public Function AplicaIVAAcreditable(Optional ByVal bRegenera As Boolean = True) As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -494,7 +571,7 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                AplicaIVAAcreditable = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me.Nombre_Clase, "AplicaIVAAcreditable", ex)
             Finally
@@ -503,9 +580,12 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
                 sqlParametro = Nothing
             End Try
         End With
+
+        Return bResultado
     End Function
 
     Public Function CancelaIVAAcreditable(Optional ByVal bRegenera As Boolean = True) As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -519,7 +599,7 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                CancelaIVAAcreditable = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me.Nombre_Clase, "CancelaIVAAcreditable", ex)
             Finally
@@ -528,9 +608,12 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
                 sqlParametro = Nothing
             End Try
         End With
+
+        Return bResultado
     End Function
 
     Public Function ReactivaIVAAcreditable(Optional ByVal bRegenera As Boolean = True) As Boolean
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -544,7 +627,7 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                ReactivaIVAAcreditable = True
+                bResultado = True
             Catch ex As Exception
                 HandleError(Me.Nombre_Clase, "ReactivaIVAAcreditable", ex)
             Finally
@@ -553,6 +636,8 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
                 sqlParametro = Nothing
             End Try
         End With
+
+        Return bResultado
     End Function
 
     Public Function ObtenerDetalle() As DataTable
@@ -590,11 +675,29 @@ Public Class Class_Contabilidad_IVA_Acreditable_Global
 
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, "ObtenerDetalle", ex)
-        Finally
-
         End Try
-        ObtenerDetalle = dt
 
+        Return dt
+    End Function
+
+    Public Function PrecargarIVAAcreditable() As DataTable
+        Dim dt As New DataTable
+        Try
+            Using da As New SqlDataAdapter("MP_CONTABILIDAD_IVA_ACREDITABLE_PRECARGAR_DESDE_PAGOS_CXP", Me._Conexion)
+                da.SelectCommand.CommandType = CommandType.StoredProcedure
+
+                With da.SelectCommand
+                    .Parameters.Add("@FOLIO_BANCO", SqlDbType.NVarChar, 15).Value = Me._FOLIO_POLIZA
+                End With
+
+                da.Fill(dt)
+            End Using
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, "PrecargarIVAAcreditable", ex)
+        End Try
+
+        Return dt
     End Function
 
     Public Sub NuevoRenglon()

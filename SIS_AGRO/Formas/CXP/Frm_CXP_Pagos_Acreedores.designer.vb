@@ -84,6 +84,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.Grid1 = New FlexCell.Grid()
         Me.gbFleteEmbarques = New System.Windows.Forms.GroupBox()
         Me.Grid2 = New FlexCell.Grid()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbPagosAutorizados.SuspendLayout()
@@ -330,6 +331,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
         '
         'gbGlobal
         '
+        Me.gbGlobal.Controls.Add(Me.Button1)
         Me.gbGlobal.Controls.Add(Me.txtCuentaContableOrigenRecursos)
         Me.gbGlobal.Controls.Add(Me.lblCuentaContableOrigenRecursos)
         Me.gbGlobal.Controls.Add(Me.lblDisplayCuentaContableOrigenRecursos)
@@ -718,6 +720,16 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.Grid2.TabIndex = 210
         Me.Grid2.UncheckedImage = CType(resources.GetObject("Grid2.UncheckedImage"), System.Drawing.Bitmap)
         '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(1120, 99)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 386
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
+        Me.Button1.Visible = False
+        '
         'Frm_CXP_Pagos_Acreedores
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -809,4 +821,5 @@ Partial Class Frm_CXP_Pagos_Acreedores
     Friend WithEvents lblCuentaContableOrigenRecursos As Label
     Friend WithEvents lblDisplayCuentaContableOrigenRecursos As Label
     Friend WithEvents CboFacturasRecibidas As System.Windows.Forms.ComboBox
+    Friend WithEvents Button1 As Button
 End Class
