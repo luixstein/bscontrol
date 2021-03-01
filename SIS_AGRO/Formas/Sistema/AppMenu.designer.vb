@@ -232,6 +232,7 @@ Partial Public Class AppMenu
         Me.MenuAcuicola = New System.Windows.Forms.ToolStripMenuItem()
         Me.CapturaParámetrosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CapturaAlimentaciónToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CapturaDeCanastasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CapturaParametríaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.EstanquesIntensivosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConsultasToolStripMenuItem5 = New System.Windows.Forms.ToolStripMenuItem()
@@ -252,7 +253,7 @@ Partial Public Class AppMenu
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
-        Me.CapturaDeCanastasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AlimentaciónAnteriorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -1578,7 +1579,7 @@ Partial Public Class AppMenu
         '
         'MenuAcuicola
         '
-        Me.MenuAcuicola.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CapturaParámetrosToolStripMenuItem, Me.CapturaAlimentaciónToolStripMenuItem, Me.CapturaDeCanastasToolStripMenuItem, Me.CapturaParametríaToolStripMenuItem, Me.EstanquesIntensivosToolStripMenuItem, Me.ConsultasToolStripMenuItem5})
+        Me.MenuAcuicola.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CapturaParámetrosToolStripMenuItem, Me.CapturaAlimentaciónToolStripMenuItem, Me.CapturaDeCanastasToolStripMenuItem, Me.CapturaParametríaToolStripMenuItem, Me.EstanquesIntensivosToolStripMenuItem, Me.ConsultasToolStripMenuItem5, Me.AlimentaciónAnteriorToolStripMenuItem})
         Me.MenuAcuicola.Name = "MenuAcuicola"
         Me.MenuAcuicola.Size = New System.Drawing.Size(78, 24)
         Me.MenuAcuicola.Text = "Acuicola"
@@ -1586,32 +1587,38 @@ Partial Public Class AppMenu
         'CapturaParámetrosToolStripMenuItem
         '
         Me.CapturaParámetrosToolStripMenuItem.Name = "CapturaParámetrosToolStripMenuItem"
-        Me.CapturaParámetrosToolStripMenuItem.Size = New System.Drawing.Size(226, 26)
+        Me.CapturaParámetrosToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
         Me.CapturaParámetrosToolStripMenuItem.Text = "Captura parámetros"
         '
         'CapturaAlimentaciónToolStripMenuItem
         '
         Me.CapturaAlimentaciónToolStripMenuItem.Name = "CapturaAlimentaciónToolStripMenuItem"
-        Me.CapturaAlimentaciónToolStripMenuItem.Size = New System.Drawing.Size(226, 26)
+        Me.CapturaAlimentaciónToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
         Me.CapturaAlimentaciónToolStripMenuItem.Text = "Captura alimentación"
+        '
+        'CapturaDeCanastasToolStripMenuItem
+        '
+        Me.CapturaDeCanastasToolStripMenuItem.Name = "CapturaDeCanastasToolStripMenuItem"
+        Me.CapturaDeCanastasToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
+        Me.CapturaDeCanastasToolStripMenuItem.Text = "Captura de canastas"
         '
         'CapturaParametríaToolStripMenuItem
         '
         Me.CapturaParametríaToolStripMenuItem.Name = "CapturaParametríaToolStripMenuItem"
-        Me.CapturaParametríaToolStripMenuItem.Size = New System.Drawing.Size(226, 26)
+        Me.CapturaParametríaToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
         Me.CapturaParametríaToolStripMenuItem.Text = "Captura biometrías"
         '
         'EstanquesIntensivosToolStripMenuItem
         '
         Me.EstanquesIntensivosToolStripMenuItem.Name = "EstanquesIntensivosToolStripMenuItem"
-        Me.EstanquesIntensivosToolStripMenuItem.Size = New System.Drawing.Size(226, 26)
+        Me.EstanquesIntensivosToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
         Me.EstanquesIntensivosToolStripMenuItem.Text = "Estanques intensivos"
         '
         'ConsultasToolStripMenuItem5
         '
         Me.ConsultasToolStripMenuItem5.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.GlobalDeDocumentosToolStripMenuItem2, Me.AlimentaciónDetalleToolStripMenuItem})
         Me.ConsultasToolStripMenuItem5.Name = "ConsultasToolStripMenuItem5"
-        Me.ConsultasToolStripMenuItem5.Size = New System.Drawing.Size(226, 26)
+        Me.ConsultasToolStripMenuItem5.Size = New System.Drawing.Size(240, 26)
         Me.ConsultasToolStripMenuItem5.Text = "Consultas"
         '
         'GlobalDeDocumentosToolStripMenuItem2
@@ -1730,11 +1737,11 @@ Partial Public Class AppMenu
         Me.pbLogo.TabStop = False
         Me.pbLogo.Visible = False
         '
-        'CapturaDeCanastasToolStripMenuItem
+        'AlimentaciónAnteriorToolStripMenuItem
         '
-        Me.CapturaDeCanastasToolStripMenuItem.Name = "CapturaDeCanastasToolStripMenuItem"
-        Me.CapturaDeCanastasToolStripMenuItem.Size = New System.Drawing.Size(226, 26)
-        Me.CapturaDeCanastasToolStripMenuItem.Text = "Captura de canastas"
+        Me.AlimentaciónAnteriorToolStripMenuItem.Name = "AlimentaciónAnteriorToolStripMenuItem"
+        Me.AlimentaciónAnteriorToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
+        Me.AlimentaciónAnteriorToolStripMenuItem.Text = "Alimentación (Anterior)"
         '
         'AppMenu
         '
@@ -1995,4 +2002,5 @@ Partial Public Class AppMenu
     Friend WithEvents ListaArtículosCompradosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RequisicionesGlobalToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents CapturaDeCanastasToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents AlimentaciónAnteriorToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

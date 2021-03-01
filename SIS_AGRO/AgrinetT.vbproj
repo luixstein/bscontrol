@@ -420,6 +420,12 @@
     <Compile Include="dsTrabajadores.vb">
       <DependentUpon>dsTrabajadores.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Formas\Acuicola\AcuicolaAlimentacionOld.Designer.vb">
+      <DependentUpon>AcuicolaAlimentacionOld.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Acuicola\AcuicolaAlimentacionOld.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\Acuicola\AcuicolaCapturaCanastas.Designer.vb">
       <DependentUpon>AcuicolaCapturaCanastas.vb</DependentUpon>
     </Compile>
@@ -1823,6 +1829,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Formas\Acuicola\AcuicolaAlimentacionOld.resx">
+      <DependentUpon>AcuicolaAlimentacionOld.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formas\Acuicola\AcuicolaCapturaCanastas.resx">
       <DependentUpon>AcuicolaCapturaCanastas.vb</DependentUpon>
     </EmbeddedResource>
