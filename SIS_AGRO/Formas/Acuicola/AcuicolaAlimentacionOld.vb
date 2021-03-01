@@ -1,4 +1,4 @@
-﻿Public Class AcuicolaCapturaAlimentacion
+﻿Public Class AcuicolaAlimentacionOld
 
 #Region "Campos privados"
     Private Enum enumEstados
@@ -235,10 +235,10 @@
                 .Column(Me.iGyCodigoTipoAlimento).Visible = False
 
                 'Estos campos ya no se utilizaran en esta forma
-                .Column(Me.iGyCanastas).Visible = False
-                .Column(Me.iGyMuertos).Visible = False
-                .Column(Me.iGyOxigeno).Visible = False
-                .Column(Me.iGyTemperatura).Visible = False
+                '.Column(Me.iGyCanastas).Visible = False
+                '.Column(Me.iGyMuertos).Visible = False
+                '.Column(Me.iGyOxigeno).Visible = False
+                '.Column(Me.iGyTemperatura).Visible = False
 
                 .Column(Me.iGyAlimento).FormatString = "##0.00"
                 .Column(Me.iGyAlimento).Mask = FlexCell.MaskEnum.Numeric
@@ -260,7 +260,7 @@
                 .Column(Me.iGyTemperatura).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyTemperatura).DecimalLength = 2
 
-                .Locked = False
+                .Locked = True
                 .AutoRedraw = True
                 .Refresh()
             End With
@@ -302,11 +302,12 @@
             Select Case Me.Estado
                 Case enumEstados.NUEVO
 
-                    Me.tsbGrabar.Enabled = True
+                    Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = False
-                    Me.cboDivision.Enabled = True
-                    Me.txtCiclo.Enabled = True
-                    Me.cboTemporada.Enabled = True
+                    Me.cboDivision.Enabled = False
+                    Me.txtCiclo.Enabled = False
+                    Me.cboTemporada.Enabled = False
+                    Me.Grid.Locked = True
 
                     Me.tsslEstado.Text = "Estado: Agregando nuevo movimiento"
                     Me.tsslElaboro.Visible = False
@@ -317,11 +318,12 @@
 
                 Case enumEstados.GRABADO
 
-                    Me.tsbGrabar.Enabled = True
-                    Me.tsbCancelar.Enabled = True
+                    Me.tsbGrabar.Enabled = False
+                    Me.tsbCancelar.Enabled = False
                     Me.cboDivision.Enabled = False
                     Me.txtCiclo.Enabled = False
                     Me.cboTemporada.Enabled = False
+                    Me.Grid.Locked = True
 
                     Me.tsslEstado.Text = "Estado: Consultando movimiento"
                     Me.tsslElaboro.Visible = True

@@ -1,4 +1,4 @@
-﻿Public Class AcuicolaCapturaAlimentacion
+﻿Public Class AcuicolaCapturaCanastas
 
 #Region "Campos privados"
     Private Enum enumEstados
@@ -9,24 +9,19 @@
 
     Private Estado As enumEstados
 
-    Private oAlimentacion As New Class_Acuicola_Alimentacion_Global
+    Private oCanastas As New Class_Acuicola_Canastas_Global
     Private oDocumento As Class_CatDocumentos
 
     Private bDocumentosCargados As Boolean = False
 #End Region
 
 #Region "Columnas grid"
-    Private iGyIdCapturaAlimentacionDetalle As Integer = 1
+    Private iGyIdCapturaCanastasDetalle As Integer = 1
     Private iGyIDProyectoSiembra As Integer = 2
     Private iGyCodigoLote As Integer = 3
     Private iGyNombreLote As Integer = 4
-    Private iGyAlimento As Integer = 5
-    Private iGyCanastas As Integer = 6
-    Private iGyMuertos As Integer = 7
-    Private iGyOxigeno As Integer = 8
-    Private iGyTemperatura As Integer = 9
-    Private iGyCodigoTipoAlimento As Integer = 10
-    Private iGyNombreTipoAlimento As Integer = 11
+    Private iGyCanastas As Integer = 5
+    Private iGyMuertos As Integer = 6
 #End Region
 
 #Region "Opciones"
@@ -65,9 +60,8 @@
 #End Region
 
 #Region "Eventos de objetos"
-    Private Sub AcuicolaCapturaAlimentacion_Load(sender As Object, e As EventArgs) Handles Me.Load
+    Private Sub AcuicolaCapturaCanastas_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
-            Me.DesplegarTurnos()
             Me.DesplegarDivisiones()
             Me.DesplegarTemporadas()
 
@@ -75,14 +69,13 @@
             Me.Cambia_Estado(enumEstados.NUEVO)
 
         Catch ex As Exception
-            HandleError(Me.Name, "AcuicolaCapturaAlimentacion_Load", ex)
+            HandleError(Me.Name, "AcuicolaCapturaCanastas_Load", ex)
         End Try
     End Sub
 
     Private Sub CboDocumento_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
         Try
-            'Me.oDocumento = New Class_CatDocumentos(Me.cboDocumento.SelectedValue.ToString)
-            Me.oDocumento = New Class_CatDocumentos("ALI_ACU" & Plaza.CODIGO_PLAZA.ToString)
+            Me.oDocumento = New Class_CatDocumentos("CAN_ACU" & Plaza.CODIGO_PLAZA.ToString)
             Me.Inicializa()
             Me.Cambia_Estado(enumEstados.NUEVO)
         Catch ex As Exception
@@ -103,7 +96,7 @@
         Dim sText As String
         Select Case e.KeyCode
             Case Keys.F6
-                sText = Me.oAlimentacion.BusquedaVisual_PorFolio()
+                sText = Me.oCanastas.BusquedaVisual_PorFolio()
                 If txtLEN(sText) = True Then
                     Me.txtFolio.Text = sText
                     Me.Consultar()
@@ -139,7 +132,7 @@
     End Sub
 
 #Region "Eventos Genericos"
-    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dtFecha.KeyDown, cboTurno.KeyDown, cboDivision.KeyDown
+    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dtFecha.KeyDown, cboDivision.KeyDown
         If e.KeyCode = Keys.Return Then
             SendKeys.Send("{TAB}")
         End If
@@ -162,11 +155,10 @@
         Try
             Me.txtFolio.Text = ""
             Me.dtFecha.Value = Date.Now
-            Me.cboTurno.SelectedIndex = 0
             Me.cboDivision.SelectedIndex = -1
             Me.txtCiclo.Text = ""
             Me.lblEstatus.Text = "N"
-            Me.oDocumento = New Class_CatDocumentos("ALI_ACU" & Plaza.CODIGO_PLAZA.ToString)
+            Me.oDocumento = New Class_CatDocumentos("CAN_ACU" & Plaza.CODIGO_PLAZA.ToString)
 
             Me.InicializaGrid()
 
@@ -184,12 +176,12 @@
 
             'Creamos el Grid
             Me.Grid.Rows = 2
-            Me.Grid.Cols = 12
+            'Me.Grid.Cols = 7
             Me.Grid.DisplayRowNumber = True
 
             Me.FormateaGrid()
             Me.Grid.Locked = True
-            Me.Grid.Cell(1, Me.iGyIdCapturaAlimentacionDetalle).Text = "0"
+            Me.Grid.Cell(1, Me.iGyIdCapturaCanastasDetalle).Text = "0"
         Catch ex As Exception
             HandleError(Me.Name, "InicializaGrid", ex)
         End Try
@@ -199,50 +191,29 @@
         Try
             With Me.Grid
                 .AutoRedraw = False
-                .Cols = 12
+                .Cols = 7
 
-                .Column(Me.iGyIdCapturaAlimentacionDetalle).Width = 80
+                .Column(Me.iGyIdCapturaCanastasDetalle).Width = 80
                 .Column(Me.iGyIDProyectoSiembra).Width = 80
                 .Column(Me.iGyCodigoLote).Width = 80
-                .Column(Me.iGyNombreLote).Width = 100
-                .Column(Me.iGyAlimento).Width = 80
-                .Column(Me.iGyCanastas).Width = 100
-                .Column(Me.iGyMuertos).Width = 80
-                .Column(Me.iGyOxigeno).Width = 80
-                .Column(Me.iGyTemperatura).Width = 80
-                .Column(Me.iGyCodigoTipoAlimento).Width = 50
-                .Column(Me.iGyNombreTipoAlimento).Width = 400
+                .Column(Me.iGyNombreLote).Width = 150
+                .Column(Me.iGyCanastas).Width = 150
+                .Column(Me.iGyMuertos).Width = 100
 
-                .Cell(0, Me.iGyIdCapturaAlimentacionDetalle).Text = "IdCapturaAlimentoDetalle"
+                .Cell(0, Me.iGyIdCapturaCanastasDetalle).Text = "IdCapturaCanastasDetalle"
                 .Cell(0, Me.iGyIDProyectoSiembra).Text = "IDProyectoSiembra"
                 .Cell(0, Me.iGyCodigoLote).Text = "CódigoLote"
                 .Cell(0, Me.iGyNombreLote).Text = "#Estanque"
-                .Cell(0, Me.iGyAlimento).Text = " Cant. alimento"
                 .Cell(0, Me.iGyCanastas).Text = "Canastas"
                 .Cell(0, Me.iGyMuertos).Text = "Muertos"
-                .Cell(0, Me.iGyOxigeno).Text = "Oxígeno"
-                .Cell(0, Me.iGyTemperatura).Text = "Temperatura"
-                .Cell(0, Me.iGyCodigoTipoAlimento).Text = "Codigo articulo"
-                .Cell(0, Me.iGyNombreTipoAlimento).Text = "Tipo de alimento"
 
-                .Column(Me.iGyIdCapturaAlimentacionDetalle).Locked = True
+                .Column(Me.iGyIdCapturaCanastasDetalle).Locked = True
                 .Column(Me.iGyIDProyectoSiembra).Locked = True
                 .Column(Me.iGyCodigoLote).Locked = True
 
-                .Column(Me.iGyIdCapturaAlimentacionDetalle).Visible = False
+                .Column(Me.iGyIdCapturaCanastasDetalle).Visible = False
                 .Column(Me.iGyIDProyectoSiembra).Visible = False
                 .Column(Me.iGyCodigoLote).Visible = False
-                .Column(Me.iGyCodigoTipoAlimento).Visible = False
-
-                'Estos campos ya no se utilizaran en esta forma
-                .Column(Me.iGyCanastas).Visible = False
-                .Column(Me.iGyMuertos).Visible = False
-                .Column(Me.iGyOxigeno).Visible = False
-                .Column(Me.iGyTemperatura).Visible = False
-
-                .Column(Me.iGyAlimento).FormatString = "##0.00"
-                .Column(Me.iGyAlimento).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyAlimento).DecimalLength = 2
 
                 .Column(Me.iGyCanastas).Mask = FlexCell.MaskEnum.Digital
                 .Column(Me.iGyCanastas).DecimalLength = 0
@@ -250,15 +221,6 @@
                 .Column(Me.iGyMuertos).FormatString = "##0"
                 .Column(Me.iGyMuertos).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyMuertos).DecimalLength = 0
-
-                .Column(Me.iGyOxigeno).FormatString = "##0.00"
-                .Column(Me.iGyOxigeno).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyOxigeno).DecimalLength = 2
-                .Column(Me.iGyOxigeno).Alignment = FlexCell.AlignmentEnum.RightCenter
-
-                .Column(Me.iGyTemperatura).FormatString = "##0.00"
-                .Column(Me.iGyTemperatura).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyTemperatura).DecimalLength = 2
 
                 .Locked = False
                 .AutoRedraw = True
@@ -272,10 +234,8 @@
 
     Private Sub GeneraFolio()
         Try
-            'If Me.bDocumentosCargados = True Then
-            Me.oAlimentacion.CODIGO_DOCUMENTO = ("ALI_ACU" & Plaza.CODIGO_PLAZA.ToString) 'Me.cboDocumento.SelectedValue.ToString
-            Me.txtFolio.Text = Me.oAlimentacion.GeneraFolio
-            'End If
+            Me.oCanastas.CODIGO_DOCUMENTO = ("CAN_ACU" & Plaza.CODIGO_PLAZA.ToString)
+            Me.txtFolio.Text = Me.oCanastas.GeneraFolio
         Catch ex As Exception
             HandleError(Me.Name, "GeneraFolio", ex)
         End Try
@@ -289,8 +249,6 @@
                 Me.Cambia_Estado(enumEstados.GRABADO)
             Case "C"
                 Me.Cambia_Estado(enumEstados.CANCELADO)
-                'Case "A"
-                '    Me.Cambia_Estado(enumEstados.APLICADO)
 
         End Select
     End Sub
@@ -345,37 +303,6 @@
         End Try
     End Sub
 
-    'Private Sub DesplegarDocumentos()
-    '    Try
-    '        Dim oElementos As New Class_CatDocumentos
-    '        With Me.cboDocumento
-    '            .DisplayMember = "NOMBRE_TIPO_DOCUMENTO"
-    '            .ValueMember = "CODIGO_DOCUMENTO"
-    '            Dim dView As New Data.DataView(oElementos.ObtenerCodigosDocumentos("ACU", Usuario.Codigo_Plaza.ToString, " ESTATUS_DOCUMENTO='A'"))
-    '            dView.Sort = "NOMBRE_TIPO_DOCUMENTO"
-    '            .DataSource = dView
-    '            If dView.Count > 0 Then
-    '                .SelectedIndex = 0
-    '                Me.bDocumentosCargados = True
-    '            End If
-    '        End With
-    '    Catch ex As Exception
-    '        HandleError(Me.Name, "DesplegarDocumentos", ex)
-    '    End Try
-    'End Sub
-
-    Private Sub DesplegarTurnos()
-        Try
-            Me.cboTurno.Items.Clear()
-            Me.cboTurno.Items.Add("M-Mañana")
-            Me.cboTurno.Items.Add("T-Tarde")
-            Me.cboTurno.Items.Add("N-Noche")
-            Me.cboTurno.SelectedIndex = 0
-        Catch ex As Exception
-            HandleError(Me.Name, "DesplegarTurnos", ex)
-        End Try
-    End Sub
-
     Private Sub DesplegarDivisiones()
         Dim oDivisiones As New Class_CatDivisionesAcuicola
         Try
@@ -420,29 +347,20 @@
         Try
             Me.Inicializa()
 
-            Me.oAlimentacion = New Class_Acuicola_Alimentacion_Global(sFolio)
+            Me.oCanastas = New Class_Acuicola_Canastas_Global(sFolio)
 
             Me.txtFolio.Enabled = False
 
-            If Me.oAlimentacion.Existe = False Then
+            If Me.oCanastas.Existe = False Then
                 Me.GeneraFolio()
                 Me.Cambia_Estado(enumEstados.NUEVO)
                 Return False
             End If
 
-            With Me.oAlimentacion
-                Me.txtFolio.Text = .FOLIO_ALIMENTACION
+            With Me.oCanastas
+                Me.txtFolio.Text = .FOLIO_CANASTAS
                 Me.dtFecha.Value = .FECHA
                 Me.cboTemporada.SelectedValue = .ID_NOMINA_TEMPORADA
-
-                Select Case .TURNO
-                    Case "M"
-                        Me.cboTurno.SelectedIndex = 0 'Mañana
-                    Case "T"
-                        Me.cboTurno.SelectedIndex = 1 'Tarde
-                    Case "N"
-                        Me.cboTurno.SelectedIndex = 2 'Noche
-                End Select
 
                 Me.cboDivision.SelectedValue = .CODIGO_DIVISION.ToString
                 Me.txtCiclo.Text = .CICLO.ToString
@@ -452,17 +370,16 @@
             End With
 
             'LLENAR GRID
-            'Me.Grid.DataSource = Me.oAlimentacion.ObtenerDetalle
-            Dim dTabla As DataTable = Me.oAlimentacion.ObtenerDetalle
+            Dim dTabla As DataTable = Me.oCanastas.ObtenerDetalle
             Me.Grid.Rows = 1
             For Each dRow As DataRow In dTabla.Rows
-                Me.Grid.AddItem(dRow("ID_ACUICOLA_ALIMENTACION_DETALLE").ToString & Chr(9) & dRow("ID_PROYECTO_SIEMBRA").ToString & Chr(9) & dRow("CODIGO_LOTE").ToString & Chr(9) & _
-                                 dRow("NOMBRE_LOTE").ToString & Chr(9) & dRow("ALIMENTO").ToString & Chr(9) & dRow("CANASTAS").ToString & Chr(9) & dRow("MUERTOS").ToString & Chr(9) & _
-                                 dRow("OXIGENO").ToString & Chr(9) & dRow("TEMPERATURA").ToString & Chr(9) & dRow("CODIGO_TIPO_ALIMENTO").ToString & Chr(9) & dRow("DESCRIPCION") & Chr(9))
+                Me.Grid.AddItem(dRow("ID_ACUICOLA_CANASTAS_DETALLE").ToString & Chr(9) & dRow("ID_PROYECTO_SIEMBRA").ToString & Chr(9) & dRow("CODIGO_LOTE").ToString & Chr(9) & _
+                                 dRow("NOMBRE_LOTE").ToString & Chr(9) & dRow("CANASTAS").ToString & Chr(9) & dRow("MUERTOS").ToString & Chr(9))
             Next
+
             Me.FormateaGrid()
             Me.Grid.Rows = Me.Grid.Rows + 1
-            Me.Grid.Cell(Me.Grid.Rows - 1, Me.iGyIdCapturaAlimentacionDetalle).Text = "0"
+            Me.Grid.Cell(Me.Grid.Rows - 1, Me.iGyIdCapturaCanastasDetalle).Text = "0"
 
             bResultado = True
 
@@ -496,40 +413,35 @@
                 Me.GeneraFolio()
             End If
 
-            Me.oAlimentacion = New Class_Acuicola_Alimentacion_Global
+            Me.oCanastas = New Class_Acuicola_Canastas_Global
 
-            With Me.oAlimentacion
-                .FOLIO_ALIMENTACION = Me.txtFolio.Text
+            With Me.oCanastas
+                .FOLIO_CANASTAS = Me.txtFolio.Text
                 .CODIGO_DOCUMENTO = Me.oDocumento.CODIGO_DOCUMENTO
                 .CICLO = Me.txtCiclo.Text
                 .CODIGO_DIVISION = CInt(Me.cboDivision.SelectedValue)
                 .FECHA = Me.dtFecha.Value
                 .CONCEPTO = Me.txtConcepto.Text.ToUpper.Trim
-                .TURNO = Me.cboTurno.Text.Substring(0, 1)
                 .ID_NOMINA_TEMPORADA = Me.cboTemporada.SelectedValue
 
-                If .GrabaAlimentacionGlobal(IIf(Me.Estado = enumEstados.NUEVO, "INSERTAR", "ACTUALIZAR").ToString) = False Then
-                    MsgBox("Error al tratar de grabar la alimentación.", MsgBoxStyle.Exclamation, Me.Name)
+                If .GrabaCanastasGlobal(IIf(Me.Estado = enumEstados.NUEVO, "INSERTAR", "ACTUALIZAR").ToString) = False Then
+                    MsgBox("Error al tratar de grabar las canastas.", MsgBoxStyle.Exclamation, Me.Name)
                     Return False
                 End If
 
-                Me.txtFolio.Text = .FOLIO_ALIMENTACION
+                Me.txtFolio.Text = .FOLIO_CANASTAS
 
                 Dim i As Integer = 0
 
                 For i = 1 To Me.Grid.Rows - 1
-                    If Me.Grid.Cell(i, Me.iGyIdCapturaAlimentacionDetalle).Text <> "0" Then
+                    If Me.Grid.Cell(i, Me.iGyIdCapturaCanastasDetalle).Text <> "0" Then
                         .NuevoRenglon()
-                        .oDetalle.FOLIO_ALIMENTACION = Me.txtFolio.Text
-                        .oDetalle.ID_ACUICOLA_ALIMENTACION_DETALLE = Me.Grid.Cell(i, Me.iGyIdCapturaAlimentacionDetalle).Text
+                        .oDetalle.FOLIO_CANASTAS = Me.txtFolio.Text
+                        .oDetalle.ID_ACUICOLA_CANASTAS_DETALLE = Me.Grid.Cell(i, Me.iGyIdCapturaCanastasDetalle).Text
                         .oDetalle.ID_PROYECTO_SIEMBRA = Me.Grid.Cell(i, Me.iGyIDProyectoSiembra).Text
                         .oDetalle.CODIGO_LOTE = Me.Grid.Cell(i, Me.iGyCodigoLote).Text
-                        .oDetalle.ALIMENTO = Me.Grid.Cell(i, Me.iGyAlimento).Text
-                        '.oDetalle.CANASTAS = Me.Grid.Cell(i, Me.iGyCanastas).Text
-                        '.oDetalle.MUERTOS = Me.Grid.Cell(i, Me.iGyMuertos).Text
-                        '.oDetalle.OXIGENO = Me.Grid.Cell(i, Me.iGyOxigeno).Text
-                        '.oDetalle.TEMPERATURA = Me.Grid.Cell(i, Me.iGyTemperatura).Text
-                        .oDetalle.CODIGO_TIPO_ALIMENTO = "" & Me.Grid.Cell(i, Me.iGyCodigoTipoAlimento).Text
+                        .oDetalle.CANASTAS = Me.Grid.Cell(i, Me.iGyCanastas).Text
+                        .oDetalle.MUERTOS = Me.Grid.Cell(i, Me.iGyMuertos).Text
 
                         If .oDetalle.GrabaRenglon() = False Then
                             MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Name)
@@ -541,7 +453,7 @@
             End With
 
             bResultado = True
-            MsgBox("Alimentación acuicola grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
+            MsgBox("Captura de canastas grabada satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
 
         Catch ex As Exception
             HandleError(Me.Name, "Grabar", ex)
@@ -555,7 +467,7 @@
 
         Try
 
-            If MsgBox("Desea cancelar la captura de alimentación " & Me.txtFolio.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, Me.Text) = MsgBoxResult.No Then
+            If MsgBox("Desea cancelar la captura de canastas " & Me.txtFolio.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, Me.Text) = MsgBoxResult.No Then
                 Return False
             End If
 
@@ -567,21 +479,21 @@
                     Return False
             End Select
 
-            Me.oAlimentacion = New Class_Acuicola_Alimentacion_Global
+            Me.oCanastas = New Class_Acuicola_Canastas_Global
 
-            With Me.oAlimentacion
-                .FOLIO_ALIMENTACION = Me.txtFolio.Text
-                .CODIGO_DOCUMENTO = "ALI_ACU" & Plaza.CODIGO_PLAZA.ToString
+            With Me.oCanastas
+                .FOLIO_CANASTAS = Me.txtFolio.Text
+                .CODIGO_DOCUMENTO = "CAN_ACU" & Plaza.CODIGO_PLAZA.ToString
 
                 If .Cancelar() = False Then
-                    MsgBox("Error al tratar de cancelar la alimentación.", MsgBoxStyle.Exclamation, Me.Name)
+                    MsgBox("Error al tratar de cancelar la captura de canastas.", MsgBoxStyle.Exclamation, Me.Name)
                     Return False
                 End If
 
             End With
 
             bResultado = True
-            MsgBox("Alimentación acuicola cancelada.", MsgBoxStyle.Information, Me.Name)
+            MsgBox("Captura de canastas cancelada.", MsgBoxStyle.Information, Me.Name)
 
         Catch ex As Exception
             HandleError(Me.Name, "Cancelar", ex)
@@ -596,13 +508,6 @@
         Dim i As Integer
 
         Try
-            If Me.cboTurno.SelectedIndex = -1 Then
-                MsgBox("Seleccione el turno.", vbExclamation, sProcedure)
-                If Me.cboTurno.Enabled = True Then
-                    Me.cboTurno.Focus()
-                End If
-                Return False
-            End If
 
             If Me.cboDivision.SelectedIndex = -1 Then
                 MsgBox("Seleccione la división.", vbExclamation, sProcedure)
@@ -620,17 +525,17 @@
                 Return False
             End If
 
-            If Me.Grid.Rows = 2 And Me.Grid.Cell(1, Me.iGyIdCapturaAlimentacionDetalle).Text = "0" Then
-                MsgBox("Capture el detalle de la alimentación.", MsgBoxStyle.Exclamation, Me.Name)
+            If Me.Grid.Rows = 2 And Me.Grid.Cell(1, Me.iGyIdCapturaCanastasDetalle).Text = "0" Then
+                MsgBox("Capture el detalle de las canastas.", MsgBoxStyle.Exclamation, Me.Name)
                 Me.Grid.Cell(1, Me.iGyNombreLote).SetFocus()
                 Return False
             End If
 
-            'Dim oParametroDetalle As Class_CatParametrosAcuicolaDetalle
+            Dim oParametroDetalle As Class_CatParametrosAcuicolaDetalle
             Dim oProyectoSiembra As Class_ProyectoSiembraAcuicola
 
             For i = 1 To Me.Grid.Rows - 1
-                If Me.Grid.Cell(i, Me.iGyIdCapturaAlimentacionDetalle).Text <> "0" Then
+                If Me.Grid.Cell(i, Me.iGyIdCapturaCanastasDetalle).Text <> "0" Then
 
                     oProyectoSiembra = New Class_ProyectoSiembraAcuicola(Me.Grid.Cell(i, Me.iGyIDProyectoSiembra).Text)
                     If oProyectoSiembra.ESTATUS = "T" Then
@@ -638,54 +543,30 @@
                         Return False
                     End If
 
-                    If txtLEN(Me.Grid.Cell(i, Me.iGyAlimento).Text) = False Then
-                        MsgBox("Capture la cantidad de alimento del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
-                        Me.Grid.Cell(i, Me.iGyAlimento).SetFocus()
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyCanastas).Text) = False Then
+                        MsgBox("Capture las canastas del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                        Me.Grid.Cell(i, Me.iGyCanastas).SetFocus()
                         Return False
                     End If
 
-                    'If txtLEN(Me.Grid.Cell(i, Me.iGyCanastas).Text) = False Then
-                    '    MsgBox("Capture las canastas del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
-                    '    Me.Grid.Cell(i, Me.iGyCanastas).SetFocus()
-                    '    Return False
-                    'End If
+                    oParametroDetalle = New Class_CatParametrosAcuicolaDetalle(Me.cboDivision.SelectedValue, Me.Grid.Cell(i, Me.iGyCodigoLote).Text)
 
-                    'oParametroDetalle = New Class_CatParametrosAcuicolaDetalle(Me.cboDivision.SelectedValue, Me.Grid.Cell(i, Me.iGyCodigoLote).Text)
-
-                    'If oParametroDetalle.Existe = True Then
-                    '    If Len(Me.Grid.Cell(i, Me.iGyCanastas).Text) <> oParametroDetalle.Numero_Canastas Then
-                    '        MsgBox("Las canastas permitidas para el estanque #" & Me.Grid.Cell(i, Me.iGyNombreLote).Text & " debe ser " & oParametroDetalle.Numero_Canastas, MsgBoxStyle.Exclamation, Me.Name)
-                    '        Me.Grid.Cell(i, Me.iGyCanastas).SetFocus()
-                    '        Return False
-                    '    End If
-                    'Else
-                    '    MsgBox("Las canastas para el estanque #" & Me.Grid.Cell(i, Me.iGyNombreLote).Text & " de la división " & Me.cboDivision.Text & " no han sido definidas en el catalogo.", MsgBoxStyle.Exclamation, Me.Name)
-                    '    Return False
-                    'End If
-
-                    If txtLEN(Me.Grid.Cell(i, Me.iGyCodigoTipoAlimento).Text) = False Then
-                        MsgBox("Capture el tipo de alimento del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
-                        Me.Grid.Cell(i, Me.iGyNombreTipoAlimento).SetFocus()
+                    If oParametroDetalle.Existe = True Then
+                        If Len(Me.Grid.Cell(i, Me.iGyCanastas).Text) <> oParametroDetalle.Numero_Canastas Then
+                            MsgBox("Las canastas permitidas para el estanque #" & Me.Grid.Cell(i, Me.iGyNombreLote).Text & " debe ser " & oParametroDetalle.Numero_Canastas, MsgBoxStyle.Exclamation, Me.Name)
+                            Me.Grid.Cell(i, Me.iGyCanastas).SetFocus()
+                            Return False
+                        End If
+                    Else
+                        MsgBox("Las canastas para el estanque #" & Me.Grid.Cell(i, Me.iGyNombreLote).Text & " de la división " & Me.cboDivision.Text & " no han sido definidas en el catalogo.", MsgBoxStyle.Exclamation, Me.Name)
                         Return False
                     End If
 
-                    'If txtLEN(Me.Grid.Cell(i, Me.iGyMuertos).Text) = False Then
-                    '    MsgBox("Capture los muertos del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
-                    '    Me.Grid.Cell(i, Me.iGyMuertos).SetFocus()
-                    '    Return False
-                    'End If
-
-                    'If txtLEN(Me.Grid.Cell(i, Me.iGyOxigeno).Text) = False Then
-                    '    MsgBox("Capture el oxígeno del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
-                    '    Me.Grid.Cell(i, Me.iGyOxigeno).SetFocus()
-                    '    Return False
-                    'End If
-
-                    'If txtLEN(Me.Grid.Cell(i, Me.iGyTemperatura).Text) = False Then
-                    '    MsgBox("Capture la temperatura del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
-                    '    Me.Grid.Cell(i, Me.iGyOxigeno).SetFocus()
-                    '    Return False
-                    'End If
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyMuertos).Text) = False Then
+                        MsgBox("Capture los muertos del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                        Me.Grid.Cell(i, Me.iGyMuertos).SetFocus()
+                        Return False
+                    End If
 
                 End If
             Next
@@ -718,16 +599,6 @@
                                 GoTo Busqueda
                             End If
 
-                        Case Me.iGyNombreTipoAlimento
-                            'If txtLEN(Me.Grid.Cell(Renglon, Me.iGyCodigoTipoAlimento).Text) = False Or txtLEN(Me.Grid.Cell(Renglon, Me.iGyNombreTipoAlimento).Text) = False Then
-                            '    GoTo BusquedaArticulo
-                            'End If
-
-                            If Me.Grid.Rows - 1 = Renglon Then
-                                Me.Grid.Rows = Me.Grid.Rows + 1
-                                Me.Grid.Cell(Renglon + 1, Me.iGyIdCapturaAlimentacionDetalle).Text = "0"
-                            End If
-
                     End Select
 
                 Case Keys.F6
@@ -735,7 +606,7 @@
                         Case Me.iGyNombreLote
 
 Busqueda:
-                            sCodigo = oAlimentacion.BusquedaVisual_Lote_ProyectoSiembra_PorNombre(Me.cboDivision.SelectedValue.ToString, Me.txtCiclo.Text, Me.cboTemporada.SelectedValue.ToString)
+                            sCodigo = oCanastas.BusquedaVisual_Lote_ProyectoSiembra_PorNombre(Me.cboDivision.SelectedValue.ToString, Me.txtCiclo.Text, Me.cboTemporada.SelectedValue.ToString)
                             Me.Grid.Cell(Renglon, Me.iGyIDProyectoSiembra).Text = sCodigo
 
                             For i = Renglon + 1 To Me.Grid.Rows - 1
@@ -752,23 +623,10 @@ Busqueda:
                             Me.Grid.Cell(Renglon, Me.iGyNombreLote).Text = sql.Result2
 
                             If Me.Grid.Rows > 2 Then
-                                Me.Grid.Cell(Renglon, Me.iGyIdCapturaAlimentacionDetalle).Text = CInt(Me.Grid.Cell(Renglon - 1, Me.iGyIdCapturaAlimentacionDetalle).Text) + 1
+                                Me.Grid.Cell(Renglon, Me.iGyIdCapturaCanastasDetalle).Text = CInt(Me.Grid.Cell(Renglon - 1, Me.iGyIdCapturaCanastasDetalle).Text) + 1
                             Else
-                                Me.Grid.Cell(Renglon, Me.iGyIdCapturaAlimentacionDetalle).Text = CInt(Me.Grid.Cell(Renglon, Me.iGyIdCapturaAlimentacionDetalle).Text) + 1
+                                Me.Grid.Cell(Renglon, Me.iGyIdCapturaCanastasDetalle).Text = CInt(Me.Grid.Cell(Renglon, Me.iGyIdCapturaCanastasDetalle).Text) + 1
                             End If
-
-                        Case Me.iGyNombreTipoAlimento
-BusquedaArticulo:
-
-                            sCodigo = oArticulo.BusquedaVisual_PorDescripcion
-                            Me.Grid.Cell(Renglon, Me.iGyCodigoTipoAlimento).Text = sCodigo
-
-                            oArticulo = New Class_CatArticulos(Me.Grid.Cell(Renglon, Me.iGyCodigoTipoAlimento).Text)
-
-                            If oArticulo.Existe Then
-                                Me.Grid.Cell(Renglon, Me.iGyNombreTipoAlimento).Text = oArticulo.DESCRIPCION
-                            End If
-
 
                     End Select
 
@@ -776,7 +634,6 @@ BusquedaArticulo:
                     Me.Grid.Selection.DeleteByRow()
 
             End Select
-
 
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)

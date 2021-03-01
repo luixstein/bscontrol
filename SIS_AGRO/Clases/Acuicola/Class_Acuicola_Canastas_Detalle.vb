@@ -2,20 +2,16 @@
 
 Imports System.Data.SqlClient
 
-Public Class Class_Acuicola_Alimentacion_Detalle
+Public Class Class_Acuicola_Canastas_Detalle
 
 #Region "Campos"
 #Region "Campos de la tabla"
-    Private _ID_ACUICOLA_ALIMENTACION_DETALLE As Integer
-    Private _FOLIO_ALIMENTACION As String
+    Private _ID_ACUICOLA_CANASTAS_DETALLE As Integer
+    Private _FOLIO_CANASTAS As String
     Private _ID_PROYECTO_SIEMBRA As Integer
     Private _CODIGO_LOTE As String
-    Private _ALIMENTO As Decimal
     Private _CANASTAS As String
     Private _MUERTOS As Decimal
-    Private _OXIGENO As Decimal
-    Private _TEMPERATURA As Decimal
-    Private _CODIGO_TIPO_ALIMENTO As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -30,21 +26,21 @@ Public Class Class_Acuicola_Alimentacion_Detalle
 
 #Region "Propiedades"
 #Region "Propiedades Campos de la tabla"
-    Public Property ID_ACUICOLA_ALIMENTACION_DETALLE() As Integer
+    Public Property ID_ACUICOLA_CANASTAS_DETALLE() As Integer
         Get
-            Return Me._ID_ACUICOLA_ALIMENTACION_DETALLE
+            Return Me._ID_ACUICOLA_CANASTAS_DETALLE
         End Get
         Set(ByVal value As Integer)
-            Me._ID_ACUICOLA_ALIMENTACION_DETALLE = value
+            Me._ID_ACUICOLA_CANASTAS_DETALLE = value
         End Set
     End Property
 
-    Public Property FOLIO_ALIMENTACION() As String
+    Public Property FOLIO_CANASTAS() As String
         Get
-            Return Me._FOLIO_ALIMENTACION
+            Return Me._FOLIO_CANASTAS
         End Get
         Set(ByVal value As String)
-            Me._FOLIO_ALIMENTACION = value
+            Me._FOLIO_CANASTAS = value
         End Set
     End Property
 
@@ -66,15 +62,6 @@ Public Class Class_Acuicola_Alimentacion_Detalle
         End Set
     End Property
 
-    Public Property ALIMENTO() As Decimal
-        Get
-            Return Me._ALIMENTO
-        End Get
-        Set(ByVal value As Decimal)
-            Me._ALIMENTO = value
-        End Set
-    End Property
-
     Public Property CANASTAS() As String
         Get
             Return Me._CANASTAS
@@ -93,33 +80,6 @@ Public Class Class_Acuicola_Alimentacion_Detalle
         End Set
     End Property
 
-    Public Property OXIGENO() As Decimal
-        Get
-            Return Me._OXIGENO
-        End Get
-        Set(ByVal value As Decimal)
-            Me._OXIGENO = value
-        End Set
-    End Property
-
-    Public Property TEMPERATURA() As Decimal
-        Get
-            Return Me._TEMPERATURA
-        End Get
-        Set(ByVal value As Decimal)
-            Me._TEMPERATURA = value
-        End Set
-    End Property
-
-    Public Property CODIGO_TIPO_ALIMENTO() As String
-        Get
-            Return Me._CODIGO_TIPO_ALIMENTO
-        End Get
-        Set(value As String)
-            Me._CODIGO_TIPO_ALIMENTO = value
-        End Set
-    End Property
-
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -133,7 +93,7 @@ Public Class Class_Acuicola_Alimentacion_Detalle
 #Region "Propiedades de campos de sistema"
     Public ReadOnly Property Nombre_Clase() As String
         Get
-            Return "Class_Acuicola_Alimentacion_Detalle"
+            Return "Class_Acuicola_Canastas_Detalle"
         End Get
     End Property
 
@@ -163,25 +123,21 @@ Public Class Class_Acuicola_Alimentacion_Detalle
             .Connection = Me._Conexion
             .CommandTimeout = 0
             .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_ACUICOLA_ALIMENTACION_DETALLE_GRABA"
+            .CommandText = "MP_ACUICOLA_CANASTAS_DETALLE_GRABA"
 
-            sqlParametro = .Parameters.Add("@ID_ACUICOLA_ALIMENTACION_DETALLE", SqlDbType.Int) : sqlParametro.Value = 0 : sqlParametro.Direction = ParameterDirection.InputOutput
-            sqlParametro = .Parameters.Add("@FOLIO_ALIMENTACION", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_ALIMENTACION
+            sqlParametro = .Parameters.Add("@ID_ACUICOLA_CANASTAS_DETALLE", SqlDbType.Int) : sqlParametro.Value = 0 : sqlParametro.Direction = ParameterDirection.InputOutput
+            sqlParametro = .Parameters.Add("@FOLIO_CANASTAS", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_CANASTAS
             sqlParametro = .Parameters.Add("@ID_PROYECTO_SIEMBRA", SqlDbType.SmallInt) : sqlParametro.Value = Me._ID_PROYECTO_SIEMBRA
             sqlParametro = .Parameters.Add("@CODIGO_LOTE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_LOTE
-            sqlParametro = .Parameters.Add("@ALIMENTO", SqlDbType.Decimal) : sqlParametro.Value = Me._ALIMENTO
-            'sqlParametro = .Parameters.Add("@CANASTAS", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CANASTAS
-            'sqlParametro = .Parameters.Add("@MUERTOS", SqlDbType.Decimal) : sqlParametro.Value = Me._MUERTOS
-            'sqlParametro = .Parameters.Add("@OXIGENO", SqlDbType.Decimal) : sqlParametro.Value = Me._OXIGENO
-            'sqlParametro = .Parameters.Add("@TEMPERATURA", SqlDbType.Decimal) : sqlParametro.Value = Me._TEMPERATURA
-            sqlParametro = .Parameters.Add("@CODIGO_TIPO_ALIMENTO", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_TIPO_ALIMENTO
+            sqlParametro = .Parameters.Add("@CANASTAS", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CANASTAS
+            sqlParametro = .Parameters.Add("@MUERTOS", SqlDbType.Decimal) : sqlParametro.Value = Me._MUERTOS
 
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
                 bResultado = True
 
-                Me._ID_ACUICOLA_ALIMENTACION_DETALLE = CInt("" & .Parameters("@ID_ACUICOLA_ALIMENTACION_DETALLE").Value.ToString)
+                Me._ID_ACUICOLA_CANASTAS_DETALLE = CInt("" & .Parameters("@ID_ACUICOLA_CANASTAS_DETALLE").Value.ToString)
 
             Catch ex As Exception
                 HandleError(Me.Nombre_Clase, "GrabaRenglon", ex)

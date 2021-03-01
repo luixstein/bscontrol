@@ -1757,4 +1757,20 @@ Public Class AppMenu
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
     End Sub
+
+    Private Sub CapturaDeCanastasToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CapturaDeCanastasToolStripMenuItem.Click
+        Dim Child As New AcuicolaCapturaCanastas
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub AlimentaciónAnteriorToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AlimentaciónAnteriorToolStripMenuItem.Click
+        Dim Child As New AcuicolaAlimentacionOld
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
 End Class
