@@ -41,6 +41,13 @@ Public Class Frm_Contabilidad_IVA_Acreditable_Global
     Private iGyIvaRetenido6 As Integer = 20
     Private iGyIvaRetenido10 As Integer = 21
     Private iGyIDDetalle As Integer = 22
+    Private iGyEMISOR_NOMBRE As Integer = 23
+    Private iGyEMISOR_RFC As Integer = 24
+    Private iGyUUID As Integer = 25
+    Private iGyIEPS As Integer = 26
+    Private iGyIMPUESTO_HOTEL As Integer = 27
+    Private iGyISR_RETENIDO As Integer = 28
+    Private iGyTOTAL_XML As Integer = 29
 #End Region
 
 #Region "Propiedades"
@@ -128,17 +135,21 @@ busca:
     End Sub
 
     Private Sub Grid_KeyDown(ByVal Sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Grid.KeyDown
-        Select Case e.KeyCode
-            Case Keys.F6
-                If (Me.Estado = enumEstados.NUEVO_CON_POLIZA_QUE_SI_EXISTE Or Me.Estado = enumEstados.GRABADO) And Me.Grid.ActiveCell.Row > 0 Then
-                    GestionaDetalle()
-                End If
-            Case Keys.Delete, Keys.F8
-                If (Me.Estado = enumEstados.NUEVO_CON_POLIZA_QUE_SI_EXISTE Or Me.Estado = enumEstados.GRABADO) And Me.Grid.ActiveCell.Row > 0 And txtLEN(Me.Grid.Cell(Me.Grid.ActiveCell.Row, Me.iGyCodigoProveedor).Text) = True Then
-                    Me.Grid.RemoveItem(Me.Grid.ActiveCell.Row)
-                    Me.Totaliza()
-                End If
-        End Select
+        Try
+            Select Case e.KeyCode
+                Case Keys.F6
+                    If (Me.Estado = enumEstados.NUEVO_CON_POLIZA_QUE_SI_EXISTE Or Me.Estado = enumEstados.GRABADO) And Me.Grid.ActiveCell.Row > 0 Then
+                        Me.GestionaDetalle()
+                    End If
+                Case Keys.Delete, Keys.F8
+                    If (Me.Estado = enumEstados.NUEVO_CON_POLIZA_QUE_SI_EXISTE Or Me.Estado = enumEstados.GRABADO) And Me.Grid.ActiveCell.Row > 0 And txtLEN(Me.Grid.Cell(Me.Grid.ActiveCell.Row, Me.iGyCodigoProveedor).Text) = True Then
+                        Me.Grid.RemoveItem(Me.Grid.ActiveCell.Row)
+                        Me.Totaliza()
+                    End If
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Text, "Grid_KeyDown", ex)
+        End Try
     End Sub
 
     Private Sub chkOcultarIVA11_Click(sender As Object, e As EventArgs) Handles chkOcultarIVA11.Click
@@ -191,6 +202,11 @@ busca:
             Me.lblTotalIvaRetenido6.Text = FormatImporteContable(0)
             Me.lblTotalIvaRetenido10.Text = FormatImporteContable(0)
 
+            Me.lblTotalIMPUESTO_HOTEL.Text = FormatImporteContable(0)
+            Me.lblTotalIEPS.Text = FormatImporteContable(0)
+            Me.lblTotalISRRetenido.Text = FormatImporteContable(0)
+            Me.lblTotalXML.Text = FormatImporteContable(0)
+
             Me.InicializaGrid()
         Catch ex As Exception
             HandleError(Me.Text, "Inicializa", ex)
@@ -198,140 +214,182 @@ busca:
     End Sub
 
     Private Sub InicializaGrid()
-        Me.Grid.DataSource = Nothing
-        FG_Grid_Limpiar(Grid)
+        Try
+            Me.Grid.DataSource = Nothing
+            FG_Grid_Limpiar(Grid)
 
-        Me.Grid.Rows = 2
-        Me.Grid.Cols = 23
+            Me.Grid.Rows = 2
+            Me.Grid.Cols = 30
 
-        Me.FormateaGrid()
+            Me.FormateaGrid()
+        Catch ex As Exception
+            HandleError(Me.Text, "InicializaGrid", ex)
+        End Try
     End Sub
 
     Private Sub FormateaGrid()
+        Try
 
-        'Me.Grid1.Column(3).CellType = FlexCell.CellTypeEnum.Calendar
-        'Me.Grid1.DisplayDateTimeMask = True
-        'Me.Grid1.Column(3).FormatString = "dd/MMM/yy"
+            'Me.Grid1.Column(3).CellType = FlexCell.CellTypeEnum.Calendar
+            'Me.Grid1.DisplayDateTimeMask = True
+            'Me.Grid1.Column(3).FormatString = "dd/MMM/yy"
 
-        Me.Grid.Column(Me.IGyFolioCompra).Width = 75
-        Me.Grid.Column(Me.iGyCodigoProveedor).Width = 60
-        Me.Grid.Column(Me.iGyNombreProveedor).Width = 120
-        Me.Grid.Column(Me.iGyFolioProveedor).Width = 75
-        Me.Grid.Column(Me.iGyFechaProveedor).Width = 70
-        Me.Grid.Column(Me.iGyConcepto).Width = 80
-        Me.Grid.Column(Me.iGyPeriodo).Width = 40
-        Me.Grid.Column(Me.iGyAño).Width = 30
-        Me.Grid.Column(Me.iGyOperaciones).Width = 30
-        Me.Grid.Column(Me.iGyActosExento).Width = 80
-        Me.Grid.Column(Me.iGyActos0).Width = 80
-        Me.Grid.Column(Me.iGyActos8).Width = 80
-        Me.Grid.Column(Me.iGyActos11).Width = 80
-        Me.Grid.Column(Me.iGyActos16).Width = 80
-        Me.Grid.Column(Me.iGySubtotalActos).Width = 80
-        Me.Grid.Column(Me.iGyIvaAcreditable8).Width = 80
-        Me.Grid.Column(Me.iGyIvaAcreditable11).Width = 80
-        Me.Grid.Column(Me.iGyIvaAcreditable16).Width = 80
-        Me.Grid.Column(Me.iGyIvaRetenido4).Width = 80
-        Me.Grid.Column(Me.iGyIvaRetenido6).Width = 80
-        Me.Grid.Column(Me.iGyIvaRetenido10).Width = 80
-        Me.Grid.Column(Me.iGyIDDetalle).Visible = False
+            Me.Grid.Column(Me.IGyFolioCompra).Width = 75
+            Me.Grid.Column(Me.iGyCodigoProveedor).Width = 60
+            Me.Grid.Column(Me.iGyNombreProveedor).Width = 120
+            Me.Grid.Column(Me.iGyFolioProveedor).Width = 75
+            Me.Grid.Column(Me.iGyFechaProveedor).Width = 70
+            Me.Grid.Column(Me.iGyConcepto).Width = 80
+            Me.Grid.Column(Me.iGyPeriodo).Visible = False  'Me.Grid.Column(Me.iGyPeriodo).Width = 40
+            Me.Grid.Column(Me.iGyAño).Visible = False 'Me.Grid.Column(Me.iGyAño).Width = 30
+            Me.Grid.Column(Me.iGyOperaciones).Visible = False  'Me.Grid.Column(Me.iGyOperaciones).Width = 30
+            Me.Grid.Column(Me.iGyActosExento).Width = 80
+            Me.Grid.Column(Me.iGyActos0).Width = 80
+            Me.Grid.Column(Me.iGyActos8).Width = 80
+            Me.Grid.Column(Me.iGyActos11).Width = 80
+            Me.Grid.Column(Me.iGyActos16).Width = 80
+            Me.Grid.Column(Me.iGySubtotalActos).Width = 80
+            Me.Grid.Column(Me.iGyIvaAcreditable8).Width = 80
+            Me.Grid.Column(Me.iGyIvaAcreditable11).Width = 80
+            Me.Grid.Column(Me.iGyIvaAcreditable16).Width = 80
+            Me.Grid.Column(Me.iGyIvaRetenido4).Width = 80
+            Me.Grid.Column(Me.iGyIvaRetenido6).Width = 80
+            Me.Grid.Column(Me.iGyIvaRetenido10).Width = 80
+            Me.Grid.Column(Me.iGyIDDetalle).Visible = False
+            Me.Grid.Column(Me.iGyEMISOR_NOMBRE).Width = 130
+            Me.Grid.Column(Me.iGyEMISOR_RFC).Width = 90
+            Me.Grid.Column(Me.iGyUUID).Width = 80
+            Me.Grid.Column(Me.iGyIEPS).Width = 80
+            Me.Grid.Column(Me.iGyIMPUESTO_HOTEL).Width = 80
+            Me.Grid.Column(Me.iGyISR_RETENIDO).Width = 80
+            Me.Grid.Column(Me.iGyTOTAL_XML).Width = 80
 
-        Me.Grid.Cell(0, Me.IGyFolioCompra).Text = "Folio CO/CA"
-        Me.Grid.Cell(0, Me.iGyCodigoProveedor).Text = "Cod Prov"
-        Me.Grid.Cell(0, Me.iGyNombreProveedor).Text = "Proveedor"
-        Me.Grid.Cell(0, Me.iGyFolioProveedor).Text = "Folio Prov"
-        Me.Grid.Cell(0, Me.iGyFechaProveedor).Text = "Fecha Prov"
-        Me.Grid.Cell(0, Me.iGyConcepto).Text = "Concepto"
-        Me.Grid.Cell(0, Me.iGyPeriodo).Text = "Periodo"
-        Me.Grid.Cell(0, Me.iGyAño).Text = "Año"
-        Me.Grid.Cell(0, Me.iGyOperaciones).Text = "Ops"
-        Me.Grid.Cell(0, Me.iGyActosExento).Text = "Actos exento"
-        Me.Grid.Cell(0, Me.iGyActos0).Text = "Actos al 0%"
-        Me.Grid.Cell(0, Me.iGyActos8).Text = "Actos al 8%"
-        Me.Grid.Cell(0, Me.iGyActos11).Text = "Actos al 11%"
-        Me.Grid.Cell(0, Me.iGyActos16).Text = "Actos al 16%"
-        Me.Grid.Cell(0, Me.iGySubtotalActos).Text = "Actos Total"
-        Me.Grid.Cell(0, Me.iGyIvaAcreditable8).Text = "IVA acred.8%"
-        Me.Grid.Cell(0, Me.iGyIvaAcreditable11).Text = "IVA acred.11%"
-        Me.Grid.Cell(0, Me.iGyIvaAcreditable16).Text = "IVA acred.16%"
-        Me.Grid.Cell(0, Me.iGyIvaRetenido4).Text = "IVA ret.4%"
-        Me.Grid.Cell(0, Me.iGyIvaRetenido6).Text = "IVA ret.6%"
-        Me.Grid.Cell(0, Me.iGyIvaRetenido10).Text = "IVA ret.10%"
-        Me.Grid.Cell(0, Me.iGyIDDetalle).Text = "IDDetalle"
+            Me.Grid.Cell(0, Me.IGyFolioCompra).Text = "Folio CO/CA"
+            Me.Grid.Cell(0, Me.iGyCodigoProveedor).Text = "Cod Prov"
+            Me.Grid.Cell(0, Me.iGyNombreProveedor).Text = "Proveedor"
+            Me.Grid.Cell(0, Me.iGyFolioProveedor).Text = "Folio Prov"
+            Me.Grid.Cell(0, Me.iGyFechaProveedor).Text = "Fecha Prov"
+            Me.Grid.Cell(0, Me.iGyConcepto).Text = "Concepto"
+            Me.Grid.Cell(0, Me.iGyPeriodo).Text = "Periodo"
+            Me.Grid.Cell(0, Me.iGyAño).Text = "Año"
+            Me.Grid.Cell(0, Me.iGyOperaciones).Text = "Ops"
+            Me.Grid.Cell(0, Me.iGyActosExento).Text = "Actos exentos"
+            Me.Grid.Cell(0, Me.iGyActos0).Text = "Actos al 0%"
+            Me.Grid.Cell(0, Me.iGyActos8).Text = "Actos al 8%"
+            Me.Grid.Cell(0, Me.iGyActos11).Text = "Actos al 11%"
+            Me.Grid.Cell(0, Me.iGyActos16).Text = "Actos al 16%"
+            Me.Grid.Cell(0, Me.iGySubtotalActos).Text = "Actos Total"
+            Me.Grid.Cell(0, Me.iGyIvaAcreditable8).Text = "IVA acred.8%"
+            Me.Grid.Cell(0, Me.iGyIvaAcreditable11).Text = "IVA acred.11%"
+            Me.Grid.Cell(0, Me.iGyIvaAcreditable16).Text = "IVA acred.16%"
+            Me.Grid.Cell(0, Me.iGyIvaRetenido4).Text = "IVA ret.4%"
+            Me.Grid.Cell(0, Me.iGyIvaRetenido6).Text = "IVA ret.6%"
+            Me.Grid.Cell(0, Me.iGyIvaRetenido10).Text = "IVA ret.10%"
+            Me.Grid.Cell(0, Me.iGyIDDetalle).Text = "IDDetalle"
+            Me.Grid.Cell(0, Me.iGyEMISOR_NOMBRE).Text = "Emisor"
+            Me.Grid.Cell(0, Me.iGyEMISOR_RFC).Text = "RFC"
+            Me.Grid.Cell(0, Me.iGyUUID).Text = "UUID"
+            Me.Grid.Cell(0, Me.iGyIEPS).Text = "IEPS"
+            Me.Grid.Cell(0, Me.iGyIMPUESTO_HOTEL).Text = "ISH"
+            Me.Grid.Cell(0, Me.iGyISR_RETENIDO).Text = "ISR Ret"
+            Me.Grid.Cell(0, Me.iGyTOTAL_XML).Text = "Total XML"
 
-        Me.Grid.Column(Me.iGyFechaProveedor).CellType = FlexCell.CellTypeEnum.Calendar
-        Me.Grid.Column(Me.iGyFechaProveedor).FormatString = "dd/MMM/yy"
-        'Me.Grid.DisplayDateTimeMask = True
+            Me.Grid.Column(Me.iGyFechaProveedor).CellType = FlexCell.CellTypeEnum.Calendar
+            Me.Grid.Column(Me.iGyFechaProveedor).FormatString = "dd/MMM/yy"
+            'Me.Grid.DisplayDateTimeMask = True
 
+            Me.Grid.Column(Me.iGyPeriodo).Alignment = FlexCell.AlignmentEnum.RightCenter
+            Me.Grid.Column(Me.iGyAño).Alignment = FlexCell.AlignmentEnum.RightCenter
+            Me.Grid.Column(Me.iGyOperaciones).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-        Me.Grid.Column(Me.iGyPeriodo).Alignment = FlexCell.AlignmentEnum.RightCenter
-        Me.Grid.Column(Me.iGyAño).Alignment = FlexCell.AlignmentEnum.RightCenter
-        Me.Grid.Column(Me.iGyOperaciones).Alignment = FlexCell.AlignmentEnum.RightCenter
+            Me.Grid.Column(Me.iGyActosExento).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.Grid.Column(Me.iGyActosExento).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.iGyActosExento).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+            Me.Grid.Column(Me.iGyActosExento).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-        Me.Grid.Column(Me.iGyActosExento).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-        Me.Grid.Column(Me.iGyActosExento).Mask = FlexCell.MaskEnum.Numeric
-        Me.Grid.Column(Me.iGyActosExento).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-        Me.Grid.Column(Me.iGyActosExento).Alignment = FlexCell.AlignmentEnum.RightCenter
+            Me.Grid.Column(Me.iGyActos0).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.Grid.Column(Me.iGyActos0).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.iGyActos0).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+            Me.Grid.Column(Me.iGyActos0).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-        Me.Grid.Column(Me.iGyActos0).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-        Me.Grid.Column(Me.iGyActos0).Mask = FlexCell.MaskEnum.Numeric
-        Me.Grid.Column(Me.iGyActos0).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-        Me.Grid.Column(Me.iGyActos0).Alignment = FlexCell.AlignmentEnum.RightCenter
+            Me.Grid.Column(Me.iGyActos8).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.Grid.Column(Me.iGyActos8).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.iGyActos8).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+            Me.Grid.Column(Me.iGyActos8).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-        Me.Grid.Column(Me.iGyActos8).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-        Me.Grid.Column(Me.iGyActos8).Mask = FlexCell.MaskEnum.Numeric
-        Me.Grid.Column(Me.iGyActos8).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-        Me.Grid.Column(Me.iGyActos8).Alignment = FlexCell.AlignmentEnum.RightCenter
+            Me.Grid.Column(Me.iGyActos11).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.Grid.Column(Me.iGyActos11).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.iGyActos11).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+            Me.Grid.Column(Me.iGyActos11).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-        Me.Grid.Column(Me.iGyActos11).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-        Me.Grid.Column(Me.iGyActos11).Mask = FlexCell.MaskEnum.Numeric
-        Me.Grid.Column(Me.iGyActos11).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-        Me.Grid.Column(Me.iGyActos11).Alignment = FlexCell.AlignmentEnum.RightCenter
+            Me.Grid.Column(Me.iGyActos16).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.Grid.Column(Me.iGyActos16).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.iGyActos16).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+            Me.Grid.Column(Me.iGyActos16).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-        Me.Grid.Column(Me.iGyActos16).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-        Me.Grid.Column(Me.iGyActos16).Mask = FlexCell.MaskEnum.Numeric
-        Me.Grid.Column(Me.iGyActos16).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-        Me.Grid.Column(Me.iGyActos16).Alignment = FlexCell.AlignmentEnum.RightCenter
+            Me.Grid.Column(Me.iGySubtotalActos).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.Grid.Column(Me.iGySubtotalActos).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.iGySubtotalActos).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+            Me.Grid.Column(Me.iGySubtotalActos).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-        Me.Grid.Column(Me.iGySubtotalActos).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-        Me.Grid.Column(Me.iGySubtotalActos).Mask = FlexCell.MaskEnum.Numeric
-        Me.Grid.Column(Me.iGySubtotalActos).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-        Me.Grid.Column(Me.iGySubtotalActos).Alignment = FlexCell.AlignmentEnum.RightCenter
+            Me.Grid.Column(Me.iGyIvaAcreditable8).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.Grid.Column(Me.iGyIvaAcreditable8).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.iGyIvaAcreditable8).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+            Me.Grid.Column(Me.iGyIvaAcreditable8).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-        Me.Grid.Column(Me.iGyIvaAcreditable8).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-        Me.Grid.Column(Me.iGyIvaAcreditable8).Mask = FlexCell.MaskEnum.Numeric
-        Me.Grid.Column(Me.iGyIvaAcreditable8).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-        Me.Grid.Column(Me.iGyIvaAcreditable8).Alignment = FlexCell.AlignmentEnum.RightCenter
+            Me.Grid.Column(Me.iGyIvaAcreditable11).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.Grid.Column(Me.iGyIvaAcreditable11).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.iGyIvaAcreditable11).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+            Me.Grid.Column(Me.iGyIvaAcreditable11).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-        Me.Grid.Column(Me.iGyIvaAcreditable11).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-        Me.Grid.Column(Me.iGyIvaAcreditable11).Mask = FlexCell.MaskEnum.Numeric
-        Me.Grid.Column(Me.iGyIvaAcreditable11).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-        Me.Grid.Column(Me.iGyIvaAcreditable11).Alignment = FlexCell.AlignmentEnum.RightCenter
+            Me.Grid.Column(Me.iGyIvaAcreditable16).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.Grid.Column(Me.iGyIvaAcreditable16).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.iGyIvaAcreditable16).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+            Me.Grid.Column(Me.iGyIvaAcreditable16).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-        Me.Grid.Column(Me.iGyIvaAcreditable16).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-        Me.Grid.Column(Me.iGyIvaAcreditable16).Mask = FlexCell.MaskEnum.Numeric
-        Me.Grid.Column(Me.iGyIvaAcreditable16).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-        Me.Grid.Column(Me.iGyIvaAcreditable16).Alignment = FlexCell.AlignmentEnum.RightCenter
+            Me.Grid.Column(Me.iGyIvaRetenido4).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.Grid.Column(Me.iGyIvaRetenido4).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.iGyIvaRetenido4).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+            Me.Grid.Column(Me.iGyIvaRetenido4).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-        Me.Grid.Column(Me.iGyIvaRetenido4).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-        Me.Grid.Column(Me.iGyIvaRetenido4).Mask = FlexCell.MaskEnum.Numeric
-        Me.Grid.Column(Me.iGyIvaRetenido4).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-        Me.Grid.Column(Me.iGyIvaRetenido4).Alignment = FlexCell.AlignmentEnum.RightCenter
+            Me.Grid.Column(Me.iGyIvaRetenido6).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.Grid.Column(Me.iGyIvaRetenido6).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.iGyIvaRetenido6).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+            Me.Grid.Column(Me.iGyIvaRetenido6).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-        Me.Grid.Column(Me.iGyIvaRetenido6).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-        Me.Grid.Column(Me.iGyIvaRetenido6).Mask = FlexCell.MaskEnum.Numeric
-        Me.Grid.Column(Me.iGyIvaRetenido6).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-        Me.Grid.Column(Me.iGyIvaRetenido6).Alignment = FlexCell.AlignmentEnum.RightCenter
+            Me.Grid.Column(Me.iGyIvaRetenido10).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.Grid.Column(Me.iGyIvaRetenido10).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.iGyIvaRetenido10).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+            Me.Grid.Column(Me.iGyIvaRetenido10).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-        Me.Grid.Column(Me.iGyIvaRetenido10).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-        Me.Grid.Column(Me.iGyIvaRetenido10).Mask = FlexCell.MaskEnum.Numeric
-        Me.Grid.Column(Me.iGyIvaRetenido10).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
-        Me.Grid.Column(Me.iGyIvaRetenido10).Alignment = FlexCell.AlignmentEnum.RightCenter
+            Me.Grid.Column(Me.iGyIEPS).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.Grid.Column(Me.iGyIEPS).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.iGyIEPS).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+            Me.Grid.Column(Me.iGyIEPS).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-        Me.Grid.Column(Me.iGyActos11).Visible = False
-        Me.Grid.Column(Me.iGyIvaAcreditable11).Visible = False
+            Me.Grid.Column(Me.iGyIMPUESTO_HOTEL).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.Grid.Column(Me.iGyIMPUESTO_HOTEL).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.iGyIMPUESTO_HOTEL).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+            Me.Grid.Column(Me.iGyIMPUESTO_HOTEL).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-        Me.Grid.Locked = True
+            Me.Grid.Column(Me.iGyISR_RETENIDO).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.Grid.Column(Me.iGyISR_RETENIDO).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.iGyISR_RETENIDO).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+            Me.Grid.Column(Me.iGyISR_RETENIDO).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Column(Me.iGyTOTAL_XML).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            Me.Grid.Column(Me.iGyTOTAL_XML).Mask = FlexCell.MaskEnum.Numeric
+            Me.Grid.Column(Me.iGyTOTAL_XML).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+            Me.Grid.Column(Me.iGyTOTAL_XML).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+            Me.Grid.Column(Me.iGyActos11).Visible = False
+            Me.Grid.Column(Me.iGyIvaAcreditable11).Visible = False
+
+            Me.Grid.Locked = True
+
+        Catch ex As Exception
+            HandleError(Me.Text, "FormateaGrid", ex)
+        End Try
 
     End Sub
 
@@ -347,108 +405,114 @@ busca:
     End Sub
 
     Private Sub Cambia_Estado(ByVal pEstado As enumEstados)
-        Me.Estado = pEstado
-        Select Case Me.Estado
-            Case enumEstados.NUEVO
-                Me.tsbNuevo.Enabled = True
-                Me.tsbGrabar.Enabled = False
-                Me.tsbAplicar.Enabled = False
-                Me.tsbCancelar.Enabled = False
-                Me.tsbReactivar.Enabled = False
+        Try
+            Me.Estado = pEstado
+            Select Case Me.Estado
+                Case enumEstados.NUEVO
+                    Me.tsbNuevo.Enabled = True
+                    Me.tsbGrabar.Enabled = False
+                    Me.tsbAplicar.Enabled = False
+                    Me.tsbCancelar.Enabled = False
+                    Me.tsbReactivar.Enabled = False
 
-                Me.txtFolio.Enabled = True
-                Me.gbDatosGenerales.Enabled = True
-                Me.dtFechaControl.Enabled = True
+                    Me.txtFolio.Enabled = True
+                    Me.gbDatosGenerales.Enabled = True
+                    Me.dtFechaControl.Enabled = True
 
-                Me.tssElaboro.Visible = False
+                    Me.tssElaboro.Visible = False
 
-                Me.tssEstado.Text = "Estado: agregando IVA acreditable"
+                    Me.tssEstado.Text = "Estado: agregando IVA acreditable"
 
-                If Me.Visible = True Then
-                    Me.txtFolio.Focus()
-                End If
+                    If Me.Visible = True Then
+                        Me.txtFolio.Focus()
+                    End If
 
-            Case enumEstados.NUEVO_CON_POLIZA_QUE_SI_EXISTE
-                Me.tsbNuevo.Enabled = True
-                Me.tsbGrabar.Enabled = True
-                Me.tsbAplicar.Enabled = True
-                Me.tsbCancelar.Enabled = False
-                Me.tsbReactivar.Enabled = False
+                Case enumEstados.NUEVO_CON_POLIZA_QUE_SI_EXISTE
+                    Me.tsbNuevo.Enabled = True
+                    Me.tsbGrabar.Enabled = True
+                    Me.tsbAplicar.Enabled = True
+                    Me.tsbCancelar.Enabled = False
+                    Me.tsbReactivar.Enabled = False
 
-                Me.txtFolio.Enabled = False
-                Me.gbDatosGenerales.Enabled = True
-                Me.dtFechaControl.Enabled = True
+                    Me.txtFolio.Enabled = False
+                    Me.gbDatosGenerales.Enabled = True
+                    Me.dtFechaControl.Enabled = True
 
-                Me.tssElaboro.Visible = False
+                    Me.tssElaboro.Visible = False
 
-                Me.tssEstado.Text = "Estado: agregando IVA acreditable"
+                    Me.tssEstado.Text = "Estado: agregando IVA acreditable"
 
-                If Me.Visible = True Then
-                    Me.txtConcepto.Focus()
-                End If
+                    If Me.Visible = True Then
+                        Me.txtConcepto.Focus()
+                    End If
 
-            Case enumEstados.GRABADO
-                Me.tsbNuevo.Enabled = True
-                Me.tsbGrabar.Enabled = True
-                Me.tsbAplicar.Enabled = True
-                Me.tsbCancelar.Enabled = True
-                Me.tsbReactivar.Enabled = False
+                Case enumEstados.GRABADO
+                    Me.tsbNuevo.Enabled = True
+                    Me.tsbGrabar.Enabled = True
+                    Me.tsbAplicar.Enabled = True
+                    Me.tsbCancelar.Enabled = True
+                    Me.tsbReactivar.Enabled = False
 
-                Me.txtFolio.Enabled = False
-                Me.gbDatosGenerales.Enabled = True
-                Me.dtFechaControl.Enabled = True
+                    Me.txtFolio.Enabled = False
+                    Me.gbDatosGenerales.Enabled = True
+                    Me.dtFechaControl.Enabled = True
 
-                Me.tssElaboro.Visible = True
+                    Me.tssElaboro.Visible = True
 
-                Me.tssEstado.Text = "Estado: consultando IVA acreditable"
+                    Me.tssEstado.Text = "Estado: consultando IVA acreditable"
 
-                If Me.Visible = True Then
-                    Me.tsbNuevo.Select()
-                End If
+                    If Me.Visible = True Then
+                        Me.tsbNuevo.Select()
+                    End If
 
-            Case enumEstados.APLICADO
-                Me.tsbNuevo.Enabled = True
-                Me.tsbGrabar.Enabled = False
-                Me.tsbAplicar.Enabled = False
-                Me.tsbCancelar.Enabled = True
-                Me.tsbReactivar.Enabled = False
+                Case enumEstados.APLICADO
+                    Me.tsbNuevo.Enabled = True
+                    Me.tsbGrabar.Enabled = False
+                    Me.tsbAplicar.Enabled = False
+                    Me.tsbCancelar.Enabled = True
+                    Me.tsbReactivar.Enabled = False
 
-                Me.txtFolio.Enabled = False
-                Me.gbDatosGenerales.Enabled = False
-                Me.dtFechaControl.Enabled = False
+                    Me.txtFolio.Enabled = False
+                    Me.gbDatosGenerales.Enabled = False
+                    Me.dtFechaControl.Enabled = False
 
-                Me.tssElaboro.Visible = True
+                    Me.tssElaboro.Visible = True
 
-                Me.tssEstado.Text = "Estado: consultando IVA acreditable"
+                    Me.tssEstado.Text = "Estado: consultando IVA acreditable"
 
-                If Me.Visible = True Then
-                    Me.tsbNuevo.Select()
-                End If
+                    If Me.Visible = True Then
+                        Me.tsbNuevo.Select()
+                    End If
 
-            Case enumEstados.CANCELADO
-                Me.tsbNuevo.Enabled = True
-                Me.tsbGrabar.Enabled = False
-                Me.tsbAplicar.Enabled = False
-                Me.tsbCancelar.Enabled = False
-                Me.tsbReactivar.Enabled = True
+                Case enumEstados.CANCELADO
+                    Me.tsbNuevo.Enabled = True
+                    Me.tsbGrabar.Enabled = False
+                    Me.tsbAplicar.Enabled = False
+                    Me.tsbCancelar.Enabled = False
+                    Me.tsbReactivar.Enabled = True
 
-                Me.txtFolio.Enabled = False
-                Me.gbDatosGenerales.Enabled = False
-                Me.dtFechaControl.Enabled = False
+                    Me.txtFolio.Enabled = False
+                    Me.gbDatosGenerales.Enabled = False
+                    Me.dtFechaControl.Enabled = False
 
-                Me.tssElaboro.Visible = True
+                    Me.tssElaboro.Visible = True
 
-                Me.tssEstado.Text = "Estado: consultando IVA acreditable"
+                    Me.tssEstado.Text = "Estado: consultando IVA acreditable"
 
-                If Me.Visible = True Then
-                    Me.tsbNuevo.Select()
-                End If
+                    If Me.Visible = True Then
+                        Me.tsbNuevo.Select()
+                    End If
 
-        End Select
-        Application.DoEvents()
+            End Select
+            Application.DoEvents()
+
+        Catch ex As Exception
+            HandleError(Me.Text, "Cambia_Estado", ex)
+        End Try
     End Sub
 
     Private Function Consultar() As Boolean
+        Dim bResultado As Boolean = False
         Dim sFolio As String = Me.txtFolio.Text, dTabla As DataTable
         Try
             Me.Inicializa()
@@ -460,7 +524,7 @@ busca:
                 Me.txtFolio.Text = sFolio
                 MsgBox("La póliza no existe.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.Cambia_Estado(enumEstados.NUEVO)
-                Exit Function
+                Return False
             End If
 
             Me.txtFolio.Enabled = False
@@ -473,19 +537,40 @@ busca:
                 Me.lblIvaAcreditableACubrir16.Text = FormatImporteContable(.IVAACubrirAl16)
             End With
 
+            'iGyFolioCompra As Integer = 1		    iGyCodigoProveedor As Integer = 2       iGyNombreProveedor As Integer = 3	    
+            'iGyFolioProveedor As Integer = 4       iGyFechaProveedor As Integer = 5	    iGyConcepto As Integer = 6              
+            'iGyPeriodo As Integer = 7		        iGyAño As Integer = 8                   iGyOperaciones As Integer = 9		    
+            'iGyActosExento As Integer = 10         iGyActos0 As Integer = 11		        iGyActos8 As Integer = 12               iGyActos11 As Integer = 13		        iGyActos16 As Integer = 14
+            'iGySubtotalActos As Integer = 15	    
+            'iGyIvaAcreditable8 As Integer = 16     iGyIvaAcreditable11 As Integer = 17     iGyIvaAcreditable16 As Integer = 18
+            'iGyIvaRetenido4 As Integer = 19		iGyIvaRetenido6 As Integer = 20         iGyIvaRetenido10 As Integer = 21	    
+            'iGyIDDetalle As Integer = 22
+            'iGyEMISOR_NOMBRE As Integer = 23	    iGyEMISOR_RFC As Integer = 24
+            'iGyUUID As Integer = 25			    iGyIEPS As Integer = 26                 iGyIMPUESTO_HOTEL As Integer = 27	    iGyISR_RETENIDO As Integer = 28         iGyTOTAL_XML As Integer = 29
+
+            Me.Grid.AutoRedraw = False
+
+            'Si no existe el iva acreditable.
             If Me.oIVA.ExisteDocumentoIVA = False Then
                 Me.Grid.Rows = 1
                 With Me.oIVA
-                    dTabla = .ObtenerDetalle 'Al no existir el detalle tratará de traer los mismos renglones que el pago, y si no ningun renglon(que seria una póliza directa)
+                    'dTabla = .ObtenerDetalle 'Al no existir el detalle tratará de traer los mismos renglones que el pago, y si no ningun renglon(que seria una póliza directa)
+                    dTabla = .PrecargarIVAAcreditable
+
+                    'dRow("PERIODO").ToString & Chr(9) & dRow("ANIO").ToString & Chr(9) & dRow("OPERACIONES").ToString & Chr(9) & 
 
                     'dRow(5) Es el concepto del documento de CXP que se pagó
                     For Each dRow As DataRow In dTabla.Rows
-                        Me.Grid.AddItem(dRow(0).ToString & Chr(9) & dRow(1).ToString & Chr(9) & dRow(2).ToString & Chr(9) & dRow(3).ToString & Chr(9) & dRow(4).ToString & Chr(9) & _
-                                        dRow(5).ToString.Replace(vbTab, " ").ToString & Chr(9) & _
-                                        dRow(6).ToString & Chr(9) & dRow(7).ToString & Chr(9) & dRow(8).ToString & Chr(9) & dRow(9).ToString & Chr(9) & _
-                                        dRow(10).ToString & Chr(9) & dRow(11).ToString & Chr(9) & dRow(12).ToString & Chr(9) & dRow(13).ToString & Chr(9) & dRow(14).ToString & Chr(9) & _
-                                        dRow(15).ToString & Chr(9) & dRow(16).ToString & Chr(9) & dRow(17).ToString & Chr(9) & dRow(18).ToString & Chr(9) & dRow(19).ToString & Chr(9) & _
-                                        dRow(20).ToString & Chr(9))
+                        Me.Grid.AddItem(dRow("FOLIO_MOVIMIENTO").ToString & Chr(9) & dRow("CODIGO_PROVEEDOR").ToString & Chr(9) & dRow("NOMBRE_PROVEEDOR").ToString & Chr(9) &
+                                        dRow("FOLIO").ToString & Chr(9) & dRow("FECHA_FACTURA_PROVEEDOR").ToString & Chr(9) & dRow("CONCEPTO").ToString.Replace(vbTab, " ").ToString & Chr(9) &
+                                        "0" & Chr(9) & "0" & Chr(9) & "0" & Chr(9) &
+                                        dRow("ACTOS_EXENTOS").ToString & Chr(9) & dRow("ACTOS_AL_0").ToString & Chr(9) & dRow("ACTOS_AL_8").ToString & Chr(9) & "0" & Chr(9) & dRow("ACTOS_AL_16").ToString & Chr(9) &
+                                        dRow("SUBTOTAL_ACTOS").ToString & Chr(9) &
+                                        dRow("IVA_ACREDITABLE_AL_8").ToString & Chr(9) & "0" & Chr(9) & dRow("IVA_ACREDITABLE_AL_16").ToString & Chr(9) &
+                                        dRow("IVA_RETENIDO_AL_4").ToString & Chr(9) & dRow("IVA_RETENIDO_AL_6").ToString & Chr(9) & dRow("IVA_RETENIDO_AL_10").ToString & Chr(9) &
+                                        "0" & Chr(9) &
+                                        dRow("EMISOR_NOMBRE").ToString & Chr(9) & dRow("EMISOR_RFC").ToString & Chr(9) &
+                                        dRow("UUID").ToString & Chr(9) & dRow("IEPS").ToString & Chr(9) & dRow("IMPUESTO_HOTEL").ToString & Chr(9) & dRow("ISR_RETENIDO").ToString & Chr(9) & dRow("TOTAL").ToString & Chr(9))
                     Next
                 End With
 
@@ -493,10 +578,14 @@ busca:
                 Me.Grid.Rows += 1
                 'End If
 
+                Me.Totaliza()
+
                 Me.Cambia_Estado(enumEstados.NUEVO_CON_POLIZA_QUE_SI_EXISTE)
-                Exit Function
+
+                Return False 'Se saldrá ya que es un iva acreditable que no existe y se habrá precargado.
             End If
 
+            'Si llegó acá es que si existe el iva acreditable y va cargarlo tal cual esta grabado.
             Me.Grid.Rows = 1
 
             With Me.oIVA
@@ -519,15 +608,35 @@ busca:
                 Me.lblTotalIvaRetenido6.Text = FormatImporteContable(.TOTAL_IVA_RETENIDO_AL_6)
                 Me.lblTotalIvaRetenido10.Text = FormatImporteContable(.TOTAL_IVA_RETENIDO_AL_10)
 
+                Me.lblTotalIMPUESTO_HOTEL.Text = FormatImporteContable(.IMPUESTO_HOTEL)
+                Me.lblTotalIEPS.Text = FormatImporteContable(.IEPS)
+                Me.lblTotalISRRetenido.Text = FormatImporteContable(.ISR_RETENIDO)
+                Me.lblTotalXML.Text = FormatImporteContable(.TOTAL_XML)
+
                 dTabla = .ObtenerDetalle
 
+                'iGyFolioCompra As Integer = 1		    iGyCodigoProveedor As Integer = 2       iGyNombreProveedor As Integer = 3	    
+                'iGyFolioProveedor As Integer = 4       iGyFechaProveedor As Integer = 5	    iGyConcepto As Integer = 6              
+                'iGyPeriodo As Integer = 7		        iGyAño As Integer = 8                   iGyOperaciones As Integer = 9		    
+                'iGyActosExento As Integer = 10         iGyActos0 As Integer = 11		        iGyActos8 As Integer = 12               iGyActos11 As Integer = 13		        iGyActos16 As Integer = 14
+                'iGySubtotalActos As Integer = 15	    
+                'iGyIvaAcreditable8 As Integer = 16     iGyIvaAcreditable11 As Integer = 17     iGyIvaAcreditable16 As Integer = 18
+                'iGyIvaRetenido4 As Integer = 19		iGyIvaRetenido6 As Integer = 20         iGyIvaRetenido10 As Integer = 21	    
+                'iGyIDDetalle As Integer = 22
+                'iGyEMISOR_NOMBRE As Integer = 23	    iGyEMISOR_RFC As Integer = 24
+                'iGyUUID As Integer = 25			    iGyIEPS As Integer = 26                 iGyIMPUESTO_HOTEL As Integer = 27	    iGyISR_RETENIDO As Integer = 28         iGyTOTAL_XML As Integer = 29
+
                 For Each dRow As DataRow In dTabla.Rows
-                    Me.Grid.AddItem(dRow(0).ToString & Chr(9) & dRow(1).ToString & Chr(9) & dRow(2).ToString & Chr(9) & dRow(3).ToString & Chr(9) & dRow(4).ToString & Chr(9) & _
-                                    dRow(5).ToString.Replace(vbTab, " ").ToString & Chr(9) & _
-                                    dRow(6).ToString & Chr(9) & dRow(7).ToString & Chr(9) & dRow(8).ToString & Chr(9) & dRow(9).ToString & Chr(9) & _
-                                    dRow(10).ToString & Chr(9) & dRow(11).ToString & Chr(9) & dRow(12).ToString & Chr(9) & dRow(13).ToString & Chr(9) & dRow(14).ToString & Chr(9) & _
-                                    dRow(15).ToString & Chr(9) & dRow(16).ToString & Chr(9) & dRow(17).ToString & Chr(9) & dRow(18).ToString & Chr(9) & dRow(19).ToString & Chr(9) & _
-                                    dRow(20).ToString & Chr(9) & dRow(21).ToString & Chr(9))
+                    Me.Grid.AddItem(dRow("FOLIO_COMPRA").ToString & Chr(9) & dRow("CODIGO_PROVEEDOR").ToString & Chr(9) & dRow("NOMBRE_PROVEEDOR").ToString & Chr(9) &
+                                    dRow("FOLIO_PROVEEDOR").ToString & Chr(9) & dRow("FECHA_FACTURA_PROVEEDOR").ToString & Chr(9) & dRow("CONCEPTO").ToString.Replace(vbTab, " ").ToString & Chr(9) &
+                                    dRow("PERIODO").ToString & Chr(9) & dRow("ANIO").ToString & Chr(9) & dRow("OPERACIONES").ToString & Chr(9) &
+                                    dRow("ACTOS_IVA_EXENTO").ToString & Chr(9) & dRow("ACTOS_AL_0").ToString & Chr(9) & dRow("ACTOS_AL_8").ToString & Chr(9) & dRow("ACTOS_AL_11").ToString & Chr(9) & dRow("ACTOS_AL_16").ToString & Chr(9) &
+                                    dRow("SUBTOTAL_ACTOS").ToString & Chr(9) &
+                                    dRow("IVA_ACREDITABLE_AL_8").ToString & Chr(9) & dRow("IVA_ACREDITABLE_AL_11").ToString & Chr(9) & dRow("IVA_ACREDITABLE_AL_16").ToString & Chr(9) &
+                                    dRow("IVA_RETENIDO_AL_4").ToString & Chr(9) & dRow("IVA_RETENIDO_AL_6").ToString & Chr(9) & dRow("IVA_RETENIDO_AL_10").ToString & Chr(9) &
+                                    dRow("ID_CON_IVA_ACREDITABLE_DETALLE").ToString & Chr(9) &
+                                    dRow("EMISOR_NOMBRE").ToString & Chr(9) & dRow("EMISOR_RFC").ToString & Chr(9) &
+                                    dRow("UUID").ToString & Chr(9) & dRow("IEPS").ToString & Chr(9) & dRow("IMPUESTO_HOTEL").ToString & Chr(9) & dRow("ISR_RETENIDO").ToString & Chr(9) & dRow("TOTAL_XML").ToString & Chr(9))
                 Next
 
                 'No es posible hace un datasource y luego intentar cambiar datos de celdas con codigo, no marca error pero no hace el cambio, por eso
@@ -541,58 +650,112 @@ busca:
             End With
 
             Me.GestionaCambioEstado()
-            Consultar = True
+            bResultado = True
         Catch ex As Exception
             HandleError(Me.Name, "Consultar", ex)
+        Finally
+            Me.Grid.AutoRedraw = True
+            Me.Grid.Refresh()
         End Try
+
+        Return bResultado
     End Function
 
     Private Function Validar(Optional ByVal bValidarPermisoUsuario As Boolean = True) As Boolean
+        Const sProcedure As String = "Validar"
+        Dim bResultado As Boolean = False
+        Dim i As Integer
 
-        If Plaza.ValidarPeriodoTrabajo(Me.oIVA.FECHA_POLIZA) = False Then
-            Exit Function
-        End If
+        Try
+            If Plaza.ValidarPeriodoTrabajo(Me.oIVA.FECHA_POLIZA) = False Then
+                Return False
+            End If
 
-        'If bValidarPermisoUsuario = True Then
-        '    If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CmbDocumento.SelectedValue.ToString) = False Then
-        '        MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, Me.Text)
-        '        Exit Function
-        '    End If
-        'End If
+            'If bValidarPermisoUsuario = True Then
+            '    If Usuario.ValidaPermisoUsuarioDocumentoSinAfectacionInventarios(Me.CmbDocumento.SelectedValue.ToString) = False Then
+            '        MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, sProcedure)
+            '        Exit Function
+            '    End If
+            'End If
 
-        Select Case Me.lblEstatus.Text
-            Case "N", "G"
+            Select Case Me.lblEstatus.Text
+                Case "N", "G"
                 'No hay restricciones
-            Case "A"
-                MsgBox("Las pólias aplicadas no pueden modificarse.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
-            Case "C"
-                MsgBox("Las pólizas canceladas no pueden modificarse.", MsgBoxStyle.Exclamation, Me.Text)
-                Exit Function
-        End Select
+                Case "A"
+                    MsgBox("Las pólizas aplicadas no pueden modificarse.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                Case "C"
+                    MsgBox("Las pólizas canceladas no pueden modificarse.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+            End Select
 
-        If valorNumerico(Me.lblTotalActos.Text) <= 0 Then
-            MsgBox("No ha agregado registros del IVA acreditable.", vbExclamation, Me.Text)
-            Exit Function
-        End If
+            If valorNumerico(Me.lblTotalActos.Text) <= 0 Then
+                MsgBox("No ha agregado registros del IVA acreditable.", vbExclamation, sProcedure)
+                Return False
+            End If
 
-        Validar = True
+            For i = 1 To Me.Grid.Rows - 1
+                If txtLEN(Me.Grid.Cell(i, Me.iGyCodigoProveedor).Text) = True Then
+                    Dim sUUID As String = Me.Grid.Cell(i, iGyUUID).Text
 
+                    If Me.Grid.Cell(i, iGyUUID).Text.Length <> 36 Then 'La longitud de todos los uuids es de 36 carateres
+                        MsgBox("El UUID del renglón #" & i - 1 & " no es de 36 caracteres(debe llevar guiones). Favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    Else 'Si es de 36
+                        If Me.Grid.Cell(i, iGyUUID).Text.Substring(8, 1) <> "-" Or Me.Grid.Cell(i, iGyUUID).Text.Substring(13, 1) <> "-" Or Me.Grid.Cell(i, iGyUUID).Text.Substring(18, 1) <> "-" Or
+                            Me.Grid.Cell(i, iGyUUID).Text.Substring(23, 1) <> "-" Then
+                            MsgBox("El UUID del renglón #" & i - 1 & " no tiene el formato correcto de 8-4-4-4-12 digitos. Favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
+                            Return False
+                        ElseIf Me.Grid.Cell(i, iGyUUID).Text.Length - Replace(Me.Grid.Cell(i, iGyUUID).Text, "-", "").Length <> 4 Then 'Valida que tenga 4 guiones solamente
+                            MsgBox("El UUID del renglón #" & i - 1 & " no tiene el formato correcto de 8-4-4-4-12 digitos. Favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
+                            Return False
+                        End If
+
+                        'Validar que no se repita(excepto el uuid genérico si permite repetirlo)
+                        If sUUID <> "11111111-1111-1111-1111-111111111111" Then
+                            For j = i + 1 To Me.Grid.Rows - 1
+                                If sUUID = Me.Grid.Cell(j, Me.iGyCodigoProveedor).Text Then
+                                    MsgBox("El UUID esta repetido en el renglón #" + j.ToString + " no esta permitido repetirlos. Favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
+                                    Return False
+                                End If
+                            Next
+                        End If
+                    End If
+
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyEMISOR_RFC).Text) Then
+                        MsgBox("Al renglón #" & i - 1 & " le falta especificar el RFC del emisor. Favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+                End If
+            Next
+
+            'Podriamos validar las bases como en abaco, es decir, sacar la cuenta de iva_acred_16/.16 <> Actos16 por mas de .5
+
+            'Podriamos validar los totales calculados por renglón, llegar a un total calculado para ver si es diferente del totalXml y preguntar si quieren continuar por cada renglón con el problema.
+            'o pintar el renglón de color rojo cuando no cuadre y sólo preguntar/advertir una única vez
+
+            bResultado = True
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+
+        Return bResultado
     End Function
 
     Private Function Grabar(Optional ByVal bConfirmacion As Boolean = True) As Boolean
-        Dim i As Integer = 0, bGraboGlobal As Boolean = False
+        Dim i As Integer = 0, bGraboGlobal As Boolean = False, bResultado As Boolean = False
 
         If bConfirmacion = True Then
             If MsgBox("¿Desea grabar el IVA acreditable de la póliza " & Me.txtFolio.Text & " ?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Me.Text) = MsgBoxResult.No Then
-                Exit Function
+                Return False
             End If
         End If
 
         Try
             'If Validar(CBool(IIf(Me._ChildParaGrabar = True, False, True))) = False Then
-            If Validar() = False Then
-                Exit Function
+            If Me.Validar() = False Then
+                Return False
             End If
 
             With Me.oIVA
@@ -611,11 +774,15 @@ busca:
                 .TOTAL_IVA_RETENIDO_AL_4 = valorNumerico(Me.lblTotalIvaRetenido4.Text)
                 .TOTAL_IVA_RETENIDO_AL_6 = valorNumerico(Me.lblTotalIvaRetenido6.Text)
                 .TOTAL_IVA_RETENIDO_AL_10 = valorNumerico(Me.lblTotalIvaRetenido10.Text)
+                .IMPUESTO_HOTEL = valorNumericoD(Me.lblTotalIMPUESTO_HOTEL.Text)
+                .IEPS = valorNumericoD(Me.lblTotalIEPS.Text)
+                .ISR_RETENIDO = valorNumericoD(Me.lblTotalISRRetenido.Text)
+                .TOTAL_XML = valorNumericoD(Me.lblTotalXML.Text)
 
                 bGraboGlobal = .GrabaIVAAcreditableGlobal
 
                 If bGraboGlobal = False Then
-                    Exit Function
+                    Return False
                 End If
 
                 'Graba el detalle
@@ -646,13 +813,20 @@ busca:
                         .oIVADetalle.FOLIO_COMPRA = Me.Grid.Cell(i, Me.IGyFolioCompra).Text.ToUpper
                         .oIVADetalle.FECHA_FACTURA_PROVEEDOR = CDate(Me.Grid.Cell(i, Me.iGyFechaProveedor).Text)
                         .oIVADetalle.CONCEPTO = Me.Grid.Cell(i, Me.iGyConcepto).Text.ToUpper
+                        .oIVADetalle.EMISOR_NOMBRE = Me.Grid.Cell(i, Me.iGyEMISOR_NOMBRE).Text.ToUpper
+                        .oIVADetalle.EMISOR_RFC = Me.Grid.Cell(i, Me.iGyEMISOR_RFC).Text.ToUpper
+                        .oIVADetalle.UUID = Me.Grid.Cell(i, Me.iGyUUID).Text.ToUpper
+                        .oIVADetalle.IEPS = valorNumericoD(Me.Grid.Cell(i, Me.iGyIEPS).Text)
+                        .oIVADetalle.IMPUESTO_HOTEL = valorNumericoD(Me.Grid.Cell(i, Me.iGyIMPUESTO_HOTEL).Text)
+                        .oIVADetalle.ISR_RETENIDO = valorNumericoD(Me.Grid.Cell(i, Me.iGyISR_RETENIDO).Text)
+                        .oIVADetalle.TOTAL_XML = valorNumericoD(Me.Grid.Cell(i, Me.iGyTOTAL_XML).Text)
 
                         .oIVADetalle.GrabaIVAAcreditableDetalle()
                     End If
                 Next i
 
                 Me.lblEstatus.Text = "G"
-                Grabar = True
+                bResultado = True
 
                 If bConfirmacion = True Then
                     MsgBox("IVA acreditable de la póliza " & Me.txtFolio.Text & " grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
@@ -664,51 +838,57 @@ busca:
             HandleError(Me.Name, "Grabar", ex)
         End Try
 
+        Return bResultado
     End Function
 
     Private Function Aplicar() As Boolean
+        Dim bResultado As Boolean = False
+
         If MsgBox("¿Desea grabar y aplicar el IVA acreditable de la póliza " & Me.txtFolio.Text & " ?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Me.Text) = MsgBoxResult.No Then
-            Exit Function
+            Return False
         End If
 
         Try
             If Me.Grabar(False) = False Then
-                Exit Function
+                Return False
             End If
 
             Select Case Me.lblEstatus.Text
                 Case "N"
                     MsgBox("El movimiento del IVA acreditable no existe.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    Return False
                 Case "G"
                     'No hay restricciones
                 Case "A"
                     MsgBox("El movimiento del IVA acreditable no se puede aplicar de nuevo.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    Return False
                 Case "C"
                     MsgBox("El movimiento del IVA acreditable esta cancelado, no se pueden aplicar.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    Return False
             End Select
 
+            bResultado = Me.oIVA.AplicaIVAAcreditable
 
-            Aplicar = Me.oIVA.AplicaIVAAcreditable
-
-            If Aplicar = True Then
+            If bResultado = True Then
                 MsgBox("IVA acreditable de la póliza " & Me.txtFolio.Text & " aplicado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
             End If
 
         Catch ex As Exception
             HandleError(Me.Name, "Aplicar", ex)
         End Try
+
+        Return bResultado
     End Function
 
     Private Function Cancelar() As Boolean
+        Dim bResultado As Boolean = False
+
         If MsgBox("¿Desea cancelar el IVA acreditable de la póliza " & Me.txtFolio.Text & " ?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Me.Text) = MsgBoxResult.No Then
-            Exit Function
+            Return False
         End If
 
         If Plaza.ValidarPeriodoTrabajo(Me.oIVA.FECHA_POLIZA) = False Then
-            Exit Function
+            Return False
         End If
 
         'If bValidarPermisoUsuario = True Then
@@ -722,34 +902,38 @@ busca:
             Select Case Me.lblEstatus.Text
                 Case "N"
                     MsgBox("El movimiento del IVA acreditable no existe.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    Return False
                 Case "G"
                     'No hay restricciones
                 Case "A"
                     'No hay restricciones
                 Case "C"
                     MsgBox("El movimiento del IVA acreditable ya esta cancelado, no se puede cancella nuevamente.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    Return False
             End Select
 
-            Cancelar = Me.oIVA.CancelaIVAAcreditable
+            bResultado = Me.oIVA.CancelaIVAAcreditable
 
-            If Cancelar = True Then
+            If bResultado = True Then
                 MsgBox("IVA acreditable de la póliza " & Me.txtFolio.Text & " cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
             End If
 
         Catch ex As Exception
             HandleError(Me.Name, "Cancelar", ex)
         End Try
+
+        Return bResultado
     End Function
 
     Private Function Reactivar() As Boolean
+        Dim bResultado As Boolean = False
+
         If MsgBox("¿Desea reactivar el IVA acreditable de la póliza " & Me.txtFolio.Text & " ?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Me.Text) = MsgBoxResult.No Then
-            Exit Function
+            Return False
         End If
 
         If Plaza.ValidarPeriodoTrabajo(Me.oIVA.FECHA_POLIZA) = False Then
-            Exit Function
+            Return False
         End If
 
         'If bValidarPermisoUsuario = True Then
@@ -763,18 +947,18 @@ busca:
             Select Case Me.lblEstatus.Text
                 Case "N"
                     MsgBox("El movimiento del IVA acreditable no existe.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    Return False
                 Case "G"
                     MsgBox("Sólo movimientos de IVA acreditable cancelados se pueden reactivar.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    Return False
                 Case "A"
                     MsgBox("Sólo movimientos de IVA acreditable cancelados se pueden reactivar.", MsgBoxStyle.Exclamation, Me.Text)
-                    Exit Function
+                    Return False
                 Case "C"
                     'No hay restricciones
             End Select
 
-            Reactivar = Me.oIVA.ReactivaIVAAcreditable
+            bResultado = Me.oIVA.ReactivaIVAAcreditable
 
             If Reactivar = True Then
                 MsgBox("IVA acreditable de la póliza " & Me.txtFolio.Text & " reactivado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
@@ -783,6 +967,8 @@ busca:
         Catch ex As Exception
             HandleError(Me.Name, "Reactivar", ex)
         End Try
+
+        Return bResultado
     End Function
 
     Private Function GestionaDetalle() As Boolean
@@ -841,6 +1027,14 @@ busca:
                     .txtIvaRetenido4.Text = FormatImporteContable(CDbl(Me.Grid.Cell(iRenglon, Me.iGyIvaRetenido4).Text))
                     .txtIvaRetenido6.Text = FormatImporteContable(CDbl(Me.Grid.Cell(iRenglon, Me.iGyIvaRetenido6).Text))
                     .txtIvaRetenido10.Text = FormatImporteContable(CDbl(Me.Grid.Cell(iRenglon, Me.iGyIvaRetenido10).Text))
+
+                    .txtEmisorRFC.Text = Me.Grid.Cell(iRenglon, Me.iGyEMISOR_RFC).Text
+                    .txtEmisorNombre.Text = Me.Grid.Cell(iRenglon, Me.iGyEMISOR_NOMBRE).Text
+                    .txtUUID.Text = Me.Grid.Cell(iRenglon, Me.iGyUUID).Text
+                    .txtIMPUESTO_HOTEL.Text = FormatImporteContable(CDbl(Me.Grid.Cell(iRenglon, Me.iGyIMPUESTO_HOTEL).Text))
+                    .txtIEPS.Text = FormatImporteContable(CDbl(Me.Grid.Cell(iRenglon, Me.iGyIEPS).Text))
+                    .txtISRRetenido.Text = FormatImporteContable(CDbl(Me.Grid.Cell(iRenglon, Me.iGyISR_RETENIDO).Text))
+                    .txtTotalXML.Text = FormatImporteContable(CDbl(Me.Grid.Cell(iRenglon, Me.iGyTOTAL_XML).Text))
                 Else
                     bNuevoRenglon = True
                 End If
@@ -890,20 +1084,27 @@ busca:
     End Function
 
     Private Sub Totaliza()
+        Try
+            Me.lblTotalActos0.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyActos0)))
+            Me.lblTotalActos8.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyActos8)))
+            Me.lblTotalActos11.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyActos11)))
+            Me.lblTotalActos16.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyActos16)))
+            Me.lblTotalActosExento.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyActosExento)))
+            Me.lblTotalActos.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGySubtotalActos)))
+            Me.lblTotalIvaAcreditable8.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyIvaAcreditable8)))
+            Me.lblTotalIvaAcreditable11.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyIvaAcreditable11)))
+            Me.lblTotalIvaAcreditable16.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyIvaAcreditable16)))
+            Me.lblTotalIvaRetenido4.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyIvaRetenido4)))
+            Me.lblTotalIvaRetenido6.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyIvaRetenido6)))
+            Me.lblTotalIvaRetenido10.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyIvaRetenido10)))
 
-        Me.lblTotalActos0.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyActos0)))
-        Me.lblTotalActos8.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyActos8)))
-        Me.lblTotalActos11.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyActos11)))
-        Me.lblTotalActos16.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyActos16)))
-        Me.lblTotalActosExento.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyActosExento)))
-        Me.lblTotalActos.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGySubtotalActos)))
-        Me.lblTotalIvaAcreditable8.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyIvaAcreditable8)))
-        Me.lblTotalIvaAcreditable11.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyIvaAcreditable11)))
-        Me.lblTotalIvaAcreditable16.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyIvaAcreditable16)))
-        Me.lblTotalIvaRetenido4.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyIvaRetenido4)))
-        Me.lblTotalIvaRetenido6.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyIvaRetenido6)))
-        Me.lblTotalIvaRetenido10.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyIvaRetenido10)))
-
+            Me.lblTotalIMPUESTO_HOTEL.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyIMPUESTO_HOTEL)))
+            Me.lblTotalIEPS.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyIEPS)))
+            Me.lblTotalISRRetenido.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyISR_RETENIDO)))
+            Me.lblTotalXML.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.iGyTOTAL_XML)))
+        Catch ex As Exception
+            HandleError(Me.Name, "Totaliza", ex)
+        End Try
     End Sub
 
     Private Sub OcultaIVA11()
