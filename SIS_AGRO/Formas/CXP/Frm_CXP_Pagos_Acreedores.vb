@@ -2865,7 +2865,7 @@ BuscaEmbarque:
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Dim oVisorXML As New Frm_CFDI_VisorXML("81259726-bbea-4271-80a6-4c83f1e25d63")
+        Dim oVisorXML As New Frm_CFDI_VisorXML("575a10b3-5402-4e7a-babb-e32b5b7a1213") '81259726-bbea-4271-80a6-4c83f1e25d63 575a10b3-5402-4e7a-babb-e32b5b7a1213-Hotel
         oVisorXML.Show()
     End Sub
 

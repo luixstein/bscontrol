@@ -44,7 +44,7 @@ Partial Class Frm_CFDI_VisorXML
         Me.txtReceptorNombre = New System.Windows.Forms.TextBox()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.txtFolio = New System.Windows.Forms.TextBox()
-        Me.dtFechaCaptura = New System.Windows.Forms.DateTimePicker()
+        Me.dtFecha = New System.Windows.Forms.DateTimePicker()
         Me.lblDisplayFechaCaptura = New System.Windows.Forms.Label()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.txtTotal = New System.Windows.Forms.TextBox()
@@ -61,7 +61,7 @@ Partial Class Frm_CFDI_VisorXML
         Me.txtMetodoPago = New System.Windows.Forms.TextBox()
         Me.Label17 = New System.Windows.Forms.Label()
         Me.txtTipoDeComprobante = New System.Windows.Forms.TextBox()
-        Me.txtAvisoUSD = New System.Windows.Forms.TextBox()
+        Me.lblAvisoMonedaNoMXN = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -75,14 +75,16 @@ Partial Class Frm_CFDI_VisorXML
         Me.GridConceptos.DefaultRowHeight = CType(21, Short)
         Me.GridConceptos.DisplayRowNumber = True
         Me.GridConceptos.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
+        Me.GridConceptos.FixedRows = 2
         Me.GridConceptos.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GridConceptos.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.GridConceptos.Location = New System.Drawing.Point(12, 228)
         Me.GridConceptos.LockButton = True
         Me.GridConceptos.Name = "GridConceptos"
-        Me.GridConceptos.Rows = 16
+        Me.GridConceptos.Rows = 3
         Me.GridConceptos.Size = New System.Drawing.Size(1055, 368)
         Me.GridConceptos.TabIndex = 1
+        Me.GridConceptos.TopRow = 2
         Me.GridConceptos.UncheckedImage = CType(resources.GetObject("GridConceptos.UncheckedImage"), System.Drawing.Bitmap)
         '
         'GridImpuestos
@@ -99,7 +101,7 @@ Partial Class Frm_CFDI_VisorXML
         Me.GridImpuestos.Location = New System.Drawing.Point(600, 62)
         Me.GridImpuestos.LockButton = True
         Me.GridImpuestos.Name = "GridImpuestos"
-        Me.GridImpuestos.Rows = 6
+        Me.GridImpuestos.Rows = 2
         Me.GridImpuestos.Size = New System.Drawing.Size(467, 134)
         Me.GridImpuestos.TabIndex = 2
         Me.GridImpuestos.UncheckedImage = CType(resources.GetObject("GridImpuestos.UncheckedImage"), System.Drawing.Bitmap)
@@ -268,16 +270,16 @@ Partial Class Frm_CFDI_VisorXML
         Me.txtFolio.Size = New System.Drawing.Size(100, 20)
         Me.txtFolio.TabIndex = 20
         '
-        'dtFechaCaptura
+        'dtFecha
         '
-        Me.dtFechaCaptura.Enabled = False
-        Me.dtFechaCaptura.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtFechaCaptura.Location = New System.Drawing.Point(286, 36)
-        Me.dtFechaCaptura.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
-        Me.dtFechaCaptura.Name = "dtFechaCaptura"
-        Me.dtFechaCaptura.Size = New System.Drawing.Size(100, 20)
-        Me.dtFechaCaptura.TabIndex = 222
-        Me.dtFechaCaptura.Visible = False
+        Me.dtFecha.Enabled = False
+        Me.dtFecha.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.dtFecha.Location = New System.Drawing.Point(286, 36)
+        Me.dtFecha.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
+        Me.dtFecha.Name = "dtFecha"
+        Me.dtFecha.Size = New System.Drawing.Size(100, 20)
+        Me.dtFecha.TabIndex = 222
+        Me.dtFecha.Visible = False
         '
         'lblDisplayFechaCaptura
         '
@@ -421,23 +423,24 @@ Partial Class Frm_CFDI_VisorXML
         Me.txtTipoDeComprobante.Size = New System.Drawing.Size(85, 20)
         Me.txtTipoDeComprobante.TabIndex = 236
         '
-        'txtAvisoUSD
+        'lblAvisoMonedaNoMXN
         '
-        Me.txtAvisoUSD.Enabled = False
-        Me.txtAvisoUSD.ForeColor = System.Drawing.Color.Red
-        Me.txtAvisoUSD.Location = New System.Drawing.Point(559, 23)
-        Me.txtAvisoUSD.Name = "txtAvisoUSD"
-        Me.txtAvisoUSD.Size = New System.Drawing.Size(508, 20)
-        Me.txtAvisoUSD.TabIndex = 239
-        Me.txtAvisoUSD.Text = "*Nota, este xml está en USD, cada uno los valores que el sistema muestra de momen" &
-    "to son cifras en USD"
+        Me.lblAvisoMonedaNoMXN.AutoSize = True
+        Me.lblAvisoMonedaNoMXN.ForeColor = System.Drawing.Color.Red
+        Me.lblAvisoMonedaNoMXN.Location = New System.Drawing.Point(418, 27)
+        Me.lblAvisoMonedaNoMXN.Name = "lblAvisoMonedaNoMXN"
+        Me.lblAvisoMonedaNoMXN.Size = New System.Drawing.Size(649, 13)
+        Me.lblAvisoMonedaNoMXN.TabIndex = 240
+        Me.lblAvisoMonedaNoMXN.Text = "*Nota, este xml no está en MXN, cada uno los valores que el sistema muestra de mo" &
+    "mento están expresadas están sin coversión a MXN"
+        Me.lblAvisoMonedaNoMXN.Visible = False
         '
         'Frm_CFDI_VisorXML
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1074, 605)
-        Me.Controls.Add(Me.txtAvisoUSD)
+        Me.Controls.Add(Me.lblAvisoMonedaNoMXN)
         Me.Controls.Add(Me.Label17)
         Me.Controls.Add(Me.txtTipoDeComprobante)
         Me.Controls.Add(Me.Label16)
@@ -452,7 +455,7 @@ Partial Class Frm_CFDI_VisorXML
         Me.Controls.Add(Me.txtMoneda)
         Me.Controls.Add(Me.Label11)
         Me.Controls.Add(Me.txtTotal)
-        Me.Controls.Add(Me.dtFechaCaptura)
+        Me.Controls.Add(Me.dtFecha)
         Me.Controls.Add(Me.lblDisplayFechaCaptura)
         Me.Controls.Add(Me.Label10)
         Me.Controls.Add(Me.txtFolio)
@@ -475,7 +478,10 @@ Partial Class Frm_CFDI_VisorXML
         Me.Controls.Add(Me.txtUUID)
         Me.Controls.Add(Me.GridImpuestos)
         Me.Controls.Add(Me.GridConceptos)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.MaximizeBox = False
         Me.Name = "Frm_CFDI_VisorXML"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Visor XML"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()
@@ -505,7 +511,7 @@ Partial Class Frm_CFDI_VisorXML
     Friend WithEvents txtReceptorNombre As TextBox
     Friend WithEvents Label10 As Label
     Friend WithEvents txtFolio As TextBox
-    Friend WithEvents dtFechaCaptura As DateTimePicker
+    Friend WithEvents dtFecha As DateTimePicker
     Friend WithEvents lblDisplayFechaCaptura As Label
     Friend WithEvents Label11 As Label
     Friend WithEvents txtTotal As TextBox
@@ -522,5 +528,5 @@ Partial Class Frm_CFDI_VisorXML
     Friend WithEvents txtMetodoPago As TextBox
     Friend WithEvents Label17 As Label
     Friend WithEvents txtTipoDeComprobante As TextBox
-    Friend WithEvents txtAvisoUSD As TextBox
+    Friend WithEvents lblAvisoMonedaNoMXN As Label
 End Class

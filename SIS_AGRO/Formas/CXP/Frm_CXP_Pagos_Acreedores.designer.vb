@@ -51,6 +51,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.TxtImporte = New System.Windows.Forms.TextBox()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.gbGlobal = New System.Windows.Forms.GroupBox()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.txtCuentaContableOrigenRecursos = New System.Windows.Forms.TextBox()
         Me.lblCuentaContableOrigenRecursos = New System.Windows.Forms.Label()
         Me.lblDisplayCuentaContableOrigenRecursos = New System.Windows.Forms.Label()
@@ -84,7 +85,6 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.Grid1 = New FlexCell.Grid()
         Me.gbFleteEmbarques = New System.Windows.Forms.GroupBox()
         Me.Grid2 = New FlexCell.Grid()
-        Me.Button1 = New System.Windows.Forms.Button()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbPagosAutorizados.SuspendLayout()
@@ -380,6 +380,16 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.gbGlobal.TabIndex = 0
         Me.gbGlobal.TabStop = False
         Me.gbGlobal.Text = "Datos"
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(1120, 99)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 386
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
+        Me.Button1.Visible = False
         '
         'txtCuentaContableOrigenRecursos
         '
@@ -719,16 +729,6 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.Grid2.Size = New System.Drawing.Size(960, 240)
         Me.Grid2.TabIndex = 210
         Me.Grid2.UncheckedImage = CType(resources.GetObject("Grid2.UncheckedImage"), System.Drawing.Bitmap)
-        '
-        'Button1
-        '
-        Me.Button1.Location = New System.Drawing.Point(1120, 99)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 386
-        Me.Button1.Text = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
-        Me.Button1.Visible = False
         '
         'Frm_CXP_Pagos_Acreedores
         '

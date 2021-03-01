@@ -1,4 +1,5 @@
 ﻿Imports System.Xml
+Imports CFDIXML
 
 Public Class Frm_CFDI_VisorXML
 
@@ -14,11 +15,11 @@ Public Class Frm_CFDI_VisorXML
     Private iGyConValorUnitario As Integer = 5
     Private iGyConImporte As Integer = 6
     Private iGyConDescuento As Integer = 7
-
+    'De aqui empieza la sección de impuestos.
     Private iGyConImpTraslado_o_Retencion As Integer = 8
-    Private iGyConImpBase As Integer = 9
-    Private iGyConImpImpuesto As Integer = 10
-    Private iGyConImpTipoFactor As Integer = 11
+    Private iGyConImpImpuesto As Integer = 9
+    Private iGyConImpTipoFactor As Integer = 10
+    Private iGyConImpBase As Integer = 11
     Private iGyConImpTasaOCuota As Integer = 12
     Private iGyConImpImporte As Integer = 13
 #End Region
@@ -32,15 +33,17 @@ Public Class Frm_CFDI_VisorXML
 #End Region
 
 #Region "Propiedades"
-    Public WriteOnly Property UUID() As String
-        Set(ByVal Value As String)
-            Me._UUID = Value
-        End Set
-    End Property
+    'Public WriteOnly Property UUID() As String
+    '    Set(ByVal Value As String)
+    '        Me._UUID = Value
+    '    End Set
+    'End Property
 #End Region
 
 #Region "Opciones"
-
+    Private Sub tsbSalir_Click(sender As Object, e As EventArgs) Handles tsbSalir.Click
+        Me.Close()
+    End Sub
 #End Region
 
 #Region "Eventos de objetos"
@@ -61,6 +64,8 @@ Public Class Frm_CFDI_VisorXML
         ' This call is required by the designer.
         InitializeComponent()
 
+        Me._UUID = sUUID
+
         ' Add any initialization after the InitializeComponent() call.
         Me.Consultar()
     End Sub
@@ -69,9 +74,13 @@ Public Class Frm_CFDI_VisorXML
         Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
         Try
-            'Dim oXML As New XmlDocument()
-            'oXML.Load()
             Dim sXML As String = New Class_find("SELECT CADENA_XML FROM EXPEDIENTES_BS..XML_REPOSITORIO_GLOBAL WHERE UUID='" + sReplace(Me._UUID) + "'").Result1
+
+            'Dim sRutaXML As String = "C:\Users\jorgegc\Dropbox\Frestyle\_Actualizaciones\Bs\400-GastosRetenciones\Ejemplos XMLs\Hotel_2_traslados.xml"
+            'sRutaXML = "C:\Users\jorgegc\Google Drive\_Documentacion\_Sellos digitales fact ele PASSA\CFDI 3.3 y complemento pagos\Ejemplos varios\ImpuestosRetenidosLocalesSEVY8402138B4_479_FPP170927MHA.xml"
+            'Dim quitarXmlDoc As New XmlDocument
+            'quitarXmlDoc.Load(sRutaXML)
+            'sXML = quitarXmlDoc.InnerXml
 
             If txtLEN(sXML) = False Then
                 MsgBox("El UUID " + Me._UUID + " no existe en la base de datos de XML. Favor de verificar", MsgBoxStyle.Exclamation, sProcedure)
@@ -84,26 +93,412 @@ Public Class Frm_CFDI_VisorXML
                 Return False
             End If
 
-            If oCFDI.Comprobante.Moneda <> "MXN" Then
-                Me.txtAvisoUSD.Visible = True
-            End If
-
+            Me.txtTipoDeComprobante.Text = oCFDI.Comprobante.TipoDeComprobante
+            Me.dtFecha.Value = oCFDI.Comprobante.Fecha
             Me.txtUUID.Text = oCFDI.ComplementoTFD.UUID
             Me.txtFolio.Text = oCFDI.Comprobante.Folio
             Me.txtSerie.Text = oCFDI.Comprobante.Serie
+            Me.txtFormaPago.Text = oCFDI.Comprobante.FormaPago
+            Me.txtMetodoPago.Text = oCFDI.Comprobante.MetodoPago
             Me.txtEmisorRFC.Text = oCFDI.Emisor.rfc
             Me.txtEmisorNombre.Text = oCFDI.Emisor.nombre
             Me.txtReceptorRFC.Text = oCFDI.Receptor.rfc
             Me.txtReceptorNombre.Text = oCFDI.Receptor.nombre
+            Me.txtSubtotal.Text = FormatImporteContable(oCFDI.Comprobante.SubTotal)
+            Me.txtDescuento.Text = FormatImporteContable(oCFDI.Comprobante.Descuento)
+            Me.txtTotal.Text = FormatImporteContable(oCFDI.Comprobante.Total)
+            Me.txtMoneda.Text = oCFDI.Comprobante.Moneda
+            Me.txtTipoCambio.Text = Format(valorNumericoD(oCFDI.Comprobante.TipoCambio), "0.###0")
+
+            If oCFDI.Comprobante.Moneda <> "MXN" Then
+                Me.lblAvisoMonedaNoMXN.Visible = True
+            End If
+
+            Dim xmlDoc As New XmlDocument()
+            xmlDoc.LoadXml(sXML) 'Leemos el xml como cadena
+
+            Dim iRenglonConcepto As Integer = 2 'Al tener dos encabezados empezamos en el 2do renglón en vez del 1ero.
+
+            Dim sImpuesto As String = "", iOrdenImpuesto As Integer = 0, sTipoImpuesto As String = ""
+
+            Me.GridConceptos.AutoRedraw = False
+            Me.GridImpuestos.AutoRedraw = False
+
+            If xmlDoc.DocumentElement.Name = "cfdi:Comprobante" OrElse xmlDoc.DocumentElement.Name = "Comprobante" Then
+                For i As Integer = 0 To xmlDoc.DocumentElement.ChildNodes.Count - 1
+                    If xmlDoc.DocumentElement.ChildNodes(i).Name = "cfdi:Conceptos" OrElse xmlDoc.DocumentElement.ChildNodes(i).Name = "Conceptos" Then
+
+                        For j As Integer = 0 To xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes.Count - 1 'Recorre los conceptos
+                            If xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).Name = "cfdi:Concepto" OrElse xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).Name = "Concepto" Then
+                                'Dim concepto As New clsConcepto()'No se usa este porque agarra otra clase diferente.
+                                Dim concepto As New CFDIXML.clsConcepto
+
+                                Select Case oCFDI.Comprobante.Version
+
+                                    Case "3.3"
+                                        concepto.ClaveProdServ = xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).Attributes("ClaveProdServ").Value
+
+                                        Try 'Es opcional
+                                            concepto.NoIdentificacion = xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).Attributes("NoIdentificacion").Value
+                                        Catch ex As Exception
+                                            concepto.NoIdentificacion = ""
+                                        End Try
+
+                                        concepto.Cantidad = System.Convert.ToDouble(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).Attributes("Cantidad").Value)
+                                        concepto.ClaveUnidad = xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).Attributes("ClaveUnidad").Value
+
+                                        Try 'Es opcional
+                                            concepto.Unidad = xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).Attributes("Unidad").Value
+                                        Catch msgx As System.Exception
+                                            concepto.Unidad = ""
+                                        End Try
+
+                                        concepto.Descripcion = xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).Attributes("Descripcion").Value.Replace(vbLf, "")
+                                        concepto.ValorUnitario = System.Convert.ToDouble(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).Attributes("ValorUnitario").Value)
+                                        concepto.Importe = System.Convert.ToDouble(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).Attributes("Importe").Value)
+
+                                        Try 'Es opcional
+                                            concepto.Descuento = System.Convert.ToDouble(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).Attributes("Descuento").Value)
+                                        Catch ex As Exception
+                                            concepto.Descuento = 0
+                                        End Try
+
+                                        Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConCantidad).Text = concepto.Cantidad
+                                        Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConClaveProdServ).Text = concepto.ClaveProdServ
+                                        Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConClaveUnidad).Text = concepto.ClaveUnidad
+                                        Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConDescripcion).Text = concepto.Descripcion
+                                        Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConValorUnitario).Text = concepto.ValorUnitario
+                                        Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImporte).Text = concepto.Importe
+                                        Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConDescuento).Text = concepto.Descuento
 
 
+                                        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                                        'Conceptos
+
+                                        iOrdenImpuesto = 0
+
+                                        For k As Integer = 0 To xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes.Count - 1 'RECORRE LOS DIFERENTES NODOS DENTRO DE CONCEPTOS
+                                            If xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).Name = "cfdi:Impuestos" Then
+                                                For l As Integer = 0 To xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes.Count - 1 'RECORRE LOS DIFERENTES NODOS DENTRO DE IMPUESTOS
+
+                                                    sTipoImpuesto = xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).Name
+
+                                                    If xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).Name = "cfdi:Traslados" Then
+                                                        For m As Integer = 0 To xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes.Count - 1 'RECORRE LOS DIFERENTES NODOS DENTRO DE TRASLADOS
+                                                            If xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Name = "cfdi:Traslado" Then
+
+                                                                sImpuesto = NombreImpuesto(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Attributes("Impuesto").Value)
+
+                                                                If iOrdenImpuesto > 0 Then
+                                                                    Me.GridConceptos.Rows += 1 : iRenglonConcepto += 1
+                                                                End If
+                                                                iOrdenImpuesto += 1
+
+                                                                Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpTraslado_o_Retencion).Text = "Traslado"
+                                                                Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpImpuesto).Text = sImpuesto
+                                                                Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpTipoFactor).Text = xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Attributes("TipoFactor").Value
+                                                                Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpBase).Text = System.Convert.ToDouble(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Attributes("Base").Value)
+                                                                Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpTasaOCuota).Text = System.Convert.ToDouble(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Attributes("TasaOCuota").Value)
+                                                                Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpImporte).Text = System.Convert.ToDouble(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Attributes("Importe").Value)
+                                                            End If
+
+                                                        Next
+                                                    ElseIf xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).Name = "cfdi:Retenciones" Then
+                                                        For m As Integer = 0 To xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes.Count - 1 'RECORRE LOS DIFERENTES NODOS DENTRO DE RETENCIONES
+                                                            If xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Name = "cfdi:Retencion" Then
+
+                                                                sImpuesto = NombreImpuesto(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Attributes("Impuesto").Value)
+
+                                                                If iOrdenImpuesto > 0 Then
+                                                                    Me.GridConceptos.Rows += 1 : iRenglonConcepto += 1
+                                                                End If
+                                                                iOrdenImpuesto += 1
+
+                                                                Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpTraslado_o_Retencion).Text = "Traslado"
+                                                                Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpImpuesto).Text = sImpuesto
+                                                                Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpTipoFactor).Text = xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Attributes("TipoFactor").Value
+                                                                Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpBase).Text = System.Convert.ToDouble(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Attributes("Base").Value)
+                                                                Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpTasaOCuota).Text = System.Convert.ToDouble(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Attributes("TasaOCuota").Value)
+                                                                Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpImporte).Text = System.Convert.ToDouble(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Attributes("Importe").Value)
+
+                                                            End If
+
+                                                        Next
+                                                    End If
+                                                Next
+                                            End If
+                                        Next
+
+                                        'De momento no leemos anda si es 3.2
+                                        'Case "3.2"
+
+                                        '    concepto.Cantidad = System.Convert.ToDouble(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).Attributes("cantidad").Value)
+                                        '    Try
+                                        '        concepto.Unidad = xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).Attributes("unidad").Value
+                                        '    Catch msgx As System.Exception
+                                        '        concepto.Unidad = ""
+                                        '    End Try
+                                        '    concepto.Descripcion = xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).Attributes("descripcion").Value.Replace(vbLf, "")
+                                        '    concepto.ValorUnitario = System.Convert.ToDouble(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).Attributes("valorUnitario").Value)
+                                        '    concepto.Importe = System.Convert.ToDouble(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).Attributes("importe").Value)
+
+                                End Select
+
+                                'list.Add(concepto)
+
+                                Me.GridConceptos.Rows += 1 : iRenglonConcepto += 1
+
+                            End If
+
+                        Next
+                    End If
+                Next
+            End If
+            'Hasta aquí terminan de consultarse los conceptos
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            'Impuestos
+
+            Dim NodoImpuestos As XmlNode = xmlDoc.Item("cfdi:Comprobante").Item("cfdi:Impuestos")
+            Dim iRenglonImpuesto As Integer = 1
+
+            If TieneValorXML(NodoImpuestos) = True Then
+                If NodoImpuestos.HasChildNodes = True Then 'Se pregunta si tiene hijos porque hay xmls que tienen ivas exentos en los conceptos y en el total de impuestos acumulan el exento(lo cual no deberian pero lo hacen) 
+                    'y no tendria los hijos de Traslados y fallaria tratar de leerlos
+                    With NodoImpuestos
+                        'Dim TotalImpuestosRetenidos As Decimal = valorNumerico(LeeValorXML(.Attributes("TotalImpuestosRetenidos")))
+                        'Dim TotalImpuestosTrasladados As Decimal = valorNumerico(LeeValorXML(.Attributes("TotalImpuestosTrasladados")))
+
+                        If TieneValorXML(.Item("cfdi:Traslados")) = True Then
+                            For Each x As XmlNode In .Item("cfdi:Traslados").ChildNodes
+                                sImpuesto = NombreImpuesto(LeeValorXML(x.Attributes("Impuesto")))
+
+                                Me.GridImpuestos.Cell(iRenglonImpuesto, Me.iGyImpTipo).Text = "Traslado"
+                                Me.GridImpuestos.Cell(iRenglonImpuesto, Me.iGyImpImpuesto).Text = sImpuesto
+                                Me.GridImpuestos.Cell(iRenglonImpuesto, Me.iGyImpTipoFactor).Text = LeeValorXML(x.Attributes("TipoFactor"))
+                                Me.GridImpuestos.Cell(iRenglonImpuesto, Me.iGyImpTasaOCuota).Text = LeeValorXML(x.Attributes("TasaOCuota"))
+                                Me.GridImpuestos.Cell(iRenglonImpuesto, Me.iGyImpImporte).Text = LeeValorXML(x.Attributes("Importe"))
+
+                                Me.GridImpuestos.Rows += 1 : iRenglonImpuesto += 1
+                            Next
+                        End If
+
+                        If TieneValorXML(.Item("cfdi:Retenciones")) Then
+                            For Each x As XmlNode In .Item("cfdi:Retenciones").ChildNodes
+                                sImpuesto = NombreImpuesto(LeeValorXML(x.Attributes("Impuesto")))
+
+                                Me.GridImpuestos.Cell(iRenglonImpuesto, Me.iGyImpTipo).Text = "Retencion"
+                                Me.GridImpuestos.Cell(iRenglonImpuesto, Me.iGyImpImpuesto).Text = sImpuesto
+                                Me.GridImpuestos.Cell(iRenglonImpuesto, Me.iGyImpTipoFactor).Text = LeeValorXML(x.Attributes("TipoFactor"))
+                                Me.GridImpuestos.Cell(iRenglonImpuesto, Me.iGyImpTasaOCuota).Text = LeeValorXML(x.Attributes("TasaOCuota"))
+                                Me.GridImpuestos.Cell(iRenglonImpuesto, Me.iGyImpImporte).Text = LeeValorXML(x.Attributes("Importe"))
+
+                                Me.GridImpuestos.Rows += 1 : iRenglonImpuesto += 1
+                            Next
+                        End If
+                    End With
+                End If
+            End If
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            'Impuestos locales, estos impuestos los juntamos con los impuestos normales(debajo)
+
+            Dim NodoImpuestosLocales As XmlNode = xmlDoc.Item("cfdi:Comprobante").Item("cfdi:Complemento").Item("implocal:ImpuestosLocales")
+            If TieneValorXML(NodoImpuestosLocales) = True Then
+                With NodoImpuestosLocales
+                    Dim ImpuestosLocalesTotaldeRetenciones As Decimal = valorNumerico(LeeValorXML(.Attributes("TotaldeRetenciones")))
+                    Dim ImpuestosLocalesTotaldeTraslados As Decimal = valorNumerico(LeeValorXML(.Attributes("TotaldeTraslados")))
+                End With
+            End If
+
+            If TieneValorXML(NodoImpuestosLocales) = True Then
+                If NodoImpuestosLocales.HasChildNodes = True Then
+                    With NodoImpuestosLocales
+                        For Each x As XmlNode In NodoImpuestosLocales
+                            Select Case x.Name
+                                Case "implocal:TrasladosLocales"
+                                    Me.GridImpuestos.Cell(iRenglonImpuesto, Me.iGyImpTipo).Text = "TrasladosLocales"
+                                    Me.GridImpuestos.Cell(iRenglonImpuesto, Me.iGyImpImpuesto).Text = LeeValorXML(x.Attributes("ImpLocTrasladado"))
+                                    Me.GridImpuestos.Cell(iRenglonImpuesto, Me.iGyImpTipoFactor).Text = "" 'Este campo no aplica para impuesto locales.
+                                    Me.GridImpuestos.Cell(iRenglonImpuesto, Me.iGyImpTasaOCuota).Text = LeeValorXML(x.Attributes("TasadeTraslado"))
+                                    Me.GridImpuestos.Cell(iRenglonImpuesto, Me.iGyImpImporte).Text = LeeValorXML(x.Attributes("Importe"))
+
+                                    Me.GridImpuestos.Rows += 1 : iRenglonImpuesto += 1
+
+                                Case "implocal:RetencionesLocales"
+                                    Me.GridImpuestos.Cell(iRenglonImpuesto, Me.iGyImpTipo).Text = "RetencionesLocales"
+                                    Me.GridImpuestos.Cell(iRenglonImpuesto, Me.iGyImpImpuesto).Text = LeeValorXML(x.Attributes("ImpLocRetenido"))
+                                    Me.GridImpuestos.Cell(iRenglonImpuesto, Me.iGyImpTipoFactor).Text = "" 'Este campo no aplica para impuesto locales.
+                                    Me.GridImpuestos.Cell(iRenglonImpuesto, Me.iGyImpTasaOCuota).Text = LeeValorXML(x.Attributes("TasadeRetencion"))
+                                    Me.GridImpuestos.Cell(iRenglonImpuesto, Me.iGyImpImporte).Text = LeeValorXML(x.Attributes("Importe"))
+
+                                    Me.GridImpuestos.Rows += 1 : iRenglonImpuesto += 1
+                            End Select
+                        Next
+                    End With
+                End If
+            End If
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
         Catch ex As Exception
             HandleError(Me.Text, "Consultar", ex)
+        Finally
+            Me.FormateaGridConceptos()
+            Me.GridConceptos.AutoRedraw = True
+            Me.GridConceptos.Refresh()
+
+            Me.FormateaGridImpuestos()
+            Me.GridImpuestos.AutoRedraw = True
+            Me.GridImpuestos.Refresh()
         End Try
+
+        'Me.GridConceptos.ExportToExcel("c:\Temp\haber.xls", True, False)
 
         Return bResultado
     End Function
+
+    Private Function NombreImpuesto(ByVal sCodigoImpuesto As String) As String
+        Dim sResultado As String = ""
+        Try
+            Select Case sCodigoImpuesto
+                Case "001"
+                    sResultado = "ISR"
+                Case "002"
+                    sResultado = "IVA"
+                Case "003"
+                    sResultado = "IEPS"
+                Case Else
+                    sResultado = sCodigoImpuesto 'Quedará con el número
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Text, "NombreImpuesto", ex)
+        End Try
+
+        Return sResultado
+    End Function
+
+    Private Sub FormateaGridConceptos()
+        Try
+            With Me.GridConceptos
+                .AutoRedraw = False
+
+                .DisplayFocusRect = False
+                '.DisplayDateTimeMask = True
+                '.ExtendLastCol = True
+                .DrawMode = FlexCell.DrawModeEnum.OwnerDraw
+                .BorderStyle = FlexCell.BorderStyleEnum.FixedSingle
+                .FixedRowColStyle = FlexCell.FixedRowColStyleEnum.Flat
+
+                .Column(Me.iGyConCantidad).Width = 80
+                .Column(Me.iGyConClaveProdServ).Width = 70
+                .Column(Me.iGyConClaveUnidad).Width = 70
+                .Column(Me.iGyConDescripcion).Width = 140
+                .Column(Me.iGyConValorUnitario).Width = 80
+                .Column(Me.iGyConImporte).Width = 80
+                .Column(Me.iGyConDescuento).Width = 80
+                .Column(Me.iGyConImpTraslado_o_Retencion).Width = 50
+                .Column(Me.iGyConImpBase).Width = 80
+                .Column(Me.iGyConImpImpuesto).Width = 50
+                .Column(Me.iGyConImpTipoFactor).Width = 60
+                .Column(Me.iGyConImpTasaOCuota).Width = 60
+                .Column(Me.iGyConImpImporte).Width = 80
+
+                .Cell(1, Me.iGyConCantidad).Text = "Cantidad"
+                .Cell(1, Me.iGyConClaveProdServ).Text = "ClaveProdServ"
+                .Cell(1, Me.iGyConClaveUnidad).Text = "ClaveUnidad"
+                .Cell(1, Me.iGyConDescripcion).Text = "Descripcion"
+                .Cell(1, Me.iGyConValorUnitario).Text = "ValorUnitario"
+                .Cell(1, Me.iGyConImporte).Text = "Importe"
+                .Cell(1, Me.iGyConDescuento).Text = "Descuento"
+
+                .Cell(1, Me.iGyConImpTraslado_o_Retencion).Text = "Tipo"
+                .Cell(1, Me.iGyConImpImpuesto).Text = "Impuesto"
+                .Cell(1, Me.iGyConImpTipoFactor).Text = "TipoFactor"
+                .Cell(1, Me.iGyConImpBase).Text = "Base"
+                .Cell(1, Me.iGyConImpTasaOCuota).Text = "TasaOCuota"
+                .Cell(1, Me.iGyConImpImporte).Text = "Importe"
+
+                .Cell(0, Me.iGyConImpTraslado_o_Retencion).Text = "Impuestos"
+                .Range(0, Me.iGyConImpTraslado_o_Retencion, 0, Me.iGyConImpImporte).Merge()
+
+                .Column(Me.iGyConCantidad).FormatString = "###,###,##0.#####0" '& CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyConCantidad).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyConCantidad).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyConValorUnitario).FormatString = "###,###,##0.#####0" '& CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyConValorUnitario).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyConValorUnitario).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyConImporte).FormatString = "###,###,##0.#####0" '& CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyConImporte).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyConImporte).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyConDescuento).FormatString = "###,###,##0.#####0" '& CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyConDescuento).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyConDescuento).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyConImpBase).FormatString = "###,###,##0.#####0" '& CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyConImpBase).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyConImpBase).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyConImpTasaOCuota).FormatString = "###,###,##0.#####0" '& CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyConImpTasaOCuota).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyConImpTasaOCuota).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyConImpImporte).FormatString = "###,###,##0.#####0" '& CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyConImpImporte).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyConImpImporte).Alignment = FlexCell.AlignmentEnum.RightCenter
+            End With
+
+        Catch ex As Exception
+            HandleError(Me.Name, "FormateaGridConceptos", ex)
+        Finally
+            Me.GridConceptos.AutoRedraw = True
+            Me.GridConceptos.Refresh()
+        End Try
+    End Sub
+
+    Private Sub FormateaGridImpuestos()
+        Try
+            With Me.GridImpuestos
+                .AutoRedraw = False
+
+                .DisplayFocusRect = False
+                '.DisplayDateTimeMask = True
+                '.ExtendLastCol = True
+                .DrawMode = FlexCell.DrawModeEnum.OwnerDraw
+                .BorderStyle = FlexCell.BorderStyleEnum.FixedSingle
+                .FixedRowColStyle = FlexCell.FixedRowColStyleEnum.Flat
+
+                .Column(Me.iGyImpTipo).Width = 80
+                .Column(Me.iGyImpImpuesto).Width = 80
+                .Column(Me.iGyImpTipoFactor).Width = 80
+                .Column(Me.iGyImpTasaOCuota).Width = 80
+                .Column(Me.iGyImpImporte).Width = 80
+
+                .Cell(0, Me.iGyImpTipo).Text = "Tipo"
+                .Cell(0, Me.iGyImpImpuesto).Text = "Impuesto"
+                .Cell(0, Me.iGyImpTipoFactor).Text = "TipoFactor"
+                .Cell(0, Me.iGyImpTasaOCuota).Text = "TasaOCuota"
+                .Cell(0, Me.iGyImpImporte).Text = "Importe"
+
+                .Column(Me.iGyImpTasaOCuota).FormatString = "###,###,##0.#####0" '& CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyImpTasaOCuota).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyImpTasaOCuota).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.iGyImpImporte).FormatString = "###,###,##0.#####0" '& CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyImpImporte).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyImpImporte).Alignment = FlexCell.AlignmentEnum.RightCenter
+            End With
+
+        Catch ex As Exception
+            HandleError(Me.Name, "FormateaGridImpuestos", ex)
+        Finally
+            Me.GridImpuestos.AutoRedraw = True
+            Me.GridImpuestos.Refresh()
+        End Try
+    End Sub
+
 #End Region
 
 End Class
