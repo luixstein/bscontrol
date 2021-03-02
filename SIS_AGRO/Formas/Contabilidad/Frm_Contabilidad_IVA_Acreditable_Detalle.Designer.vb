@@ -245,7 +245,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         'txtEmisorNombre
         '
         Me.txtEmisorNombre.Location = New System.Drawing.Point(309, 66)
-        Me.txtEmisorNombre.MaxLength = 8
+        Me.txtEmisorNombre.MaxLength = 100
         Me.txtEmisorNombre.Name = "txtEmisorNombre"
         Me.txtEmisorNombre.Size = New System.Drawing.Size(324, 20)
         Me.txtEmisorNombre.TabIndex = 3
@@ -262,7 +262,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         'txtEmisorRFC
         '
         Me.txtEmisorRFC.Location = New System.Drawing.Point(103, 66)
-        Me.txtEmisorRFC.MaxLength = 8
+        Me.txtEmisorRFC.MaxLength = 13
         Me.txtEmisorRFC.Name = "txtEmisorRFC"
         Me.txtEmisorRFC.Size = New System.Drawing.Size(100, 20)
         Me.txtEmisorRFC.TabIndex = 2

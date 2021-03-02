@@ -217,6 +217,9 @@ Buscar:
             If txtLEN(Me.txtEmisorRFC.Text) = False Then
                 MsgBox("Asigne el RFC del emisor.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.txtEmisorRFC.Focus() : Return False
+            ElseIf Me.txtEmisorRFC.TextLength < 12 Then
+                MsgBox("El RFC del emisor es inválido debe ser de 12 o 13 caracteres.", MsgBoxStyle.Exclamation, sProcedure)
+                Me.txtEmisorRFC.Focus() : Return False
             End If
 
             If txtLEN(Me.txtEmisorNombre.Text) = False Then

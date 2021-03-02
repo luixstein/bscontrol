@@ -91,6 +91,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.lblTotalISRRetenido = New System.Windows.Forms.Label()
         Me.lblDisplayTotalISRRetenido = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.gbDatosGenerales.SuspendLayout()
@@ -518,7 +519,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         'lblDisplayTotalActos11
         '
         Me.lblDisplayTotalActos11.AutoSize = True
-        Me.lblDisplayTotalActos11.Location = New System.Drawing.Point(14, 478)
+        Me.lblDisplayTotalActos11.Location = New System.Drawing.Point(15, 460)
         Me.lblDisplayTotalActos11.Name = "lblDisplayTotalActos11"
         Me.lblDisplayTotalActos11.Size = New System.Drawing.Size(39, 13)
         Me.lblDisplayTotalActos11.TabIndex = 11
@@ -530,7 +531,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.lblTotalActos11.BackColor = System.Drawing.Color.White
         Me.lblTotalActos11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblTotalActos11.ForeColor = System.Drawing.Color.Blue
-        Me.lblTotalActos11.Location = New System.Drawing.Point(60, 478)
+        Me.lblTotalActos11.Location = New System.Drawing.Point(61, 460)
         Me.lblTotalActos11.Name = "lblTotalActos11"
         Me.lblTotalActos11.Size = New System.Drawing.Size(104, 17)
         Me.lblTotalActos11.TabIndex = 8
@@ -696,7 +697,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.lblTotalIvaAcreditable11.BackColor = System.Drawing.Color.White
         Me.lblTotalIvaAcreditable11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblTotalIvaAcreditable11.ForeColor = System.Drawing.Color.Blue
-        Me.lblTotalIvaAcreditable11.Location = New System.Drawing.Point(60, 502)
+        Me.lblTotalIvaAcreditable11.Location = New System.Drawing.Point(61, 484)
         Me.lblTotalIvaAcreditable11.Name = "lblTotalIvaAcreditable11"
         Me.lblTotalIvaAcreditable11.Size = New System.Drawing.Size(104, 17)
         Me.lblTotalIvaAcreditable11.TabIndex = 5
@@ -707,7 +708,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         'lblDisplayTotalIvaAcreditable11
         '
         Me.lblDisplayTotalIvaAcreditable11.AutoSize = True
-        Me.lblDisplayTotalIvaAcreditable11.Location = New System.Drawing.Point(14, 502)
+        Me.lblDisplayTotalIvaAcreditable11.Location = New System.Drawing.Point(15, 484)
         Me.lblDisplayTotalIvaAcreditable11.Name = "lblDisplayTotalIvaAcreditable11"
         Me.lblDisplayTotalIvaAcreditable11.Size = New System.Drawing.Size(100, 13)
         Me.lblDisplayTotalIvaAcreditable11.TabIndex = 4
@@ -829,17 +830,30 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label2.ForeColor = System.Drawing.Color.Red
-        Me.Label2.Location = New System.Drawing.Point(9, 529)
+        Me.Label2.Location = New System.Drawing.Point(3, 504)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(288, 13)
         Me.Label2.TabIndex = 234
         Me.Label2.Text = "*Nota, cada renglón representa a una sola factura/xml/uuid"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.ForeColor = System.Drawing.Color.Red
+        Me.Label3.Location = New System.Drawing.Point(3, 525)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(451, 12)
+        Me.Label3.TabIndex = 235
+        Me.Label3.Text = "*Nota, si es un abono usted edite cada campo porque en un prinicipio se leen las " &
+    "cantidades completas del xml"
         '
         'Frm_Contabilidad_IVA_Acreditable_Global
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1068, 577)
+        Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.lblDisplayTotalActos11)
@@ -946,4 +960,5 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
     Friend WithEvents lblTotalIMPUESTO_HOTEL As Label
     Friend WithEvents lblDisplayTotalIMPUESTO_HOTEL As Label
     Friend WithEvents Label2 As Label
+    Friend WithEvents Label3 As Label
 End Class

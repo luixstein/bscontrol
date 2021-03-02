@@ -699,15 +699,15 @@ busca:
                     Dim sUUID As String = Me.Grid.Cell(i, iGyUUID).Text
 
                     If Me.Grid.Cell(i, iGyUUID).Text.Length <> 36 Then 'La longitud de todos los uuids es de 36 carateres
-                        MsgBox("El UUID del renglón #" & i - 1 & " no es de 36 caracteres(debe llevar guiones). Favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
+                        MsgBox("El UUID del renglón #" & i.ToString & " no es de 36 caracteres(debe llevar guiones). Favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
                         Return False
                     Else 'Si es de 36
                         If Me.Grid.Cell(i, iGyUUID).Text.Substring(8, 1) <> "-" Or Me.Grid.Cell(i, iGyUUID).Text.Substring(13, 1) <> "-" Or Me.Grid.Cell(i, iGyUUID).Text.Substring(18, 1) <> "-" Or
                             Me.Grid.Cell(i, iGyUUID).Text.Substring(23, 1) <> "-" Then
-                            MsgBox("El UUID del renglón #" & i - 1 & " no tiene el formato correcto de 8-4-4-4-12 digitos. Favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
+                            MsgBox("El UUID del renglón #" & i.ToString & " no tiene el formato correcto de 8-4-4-4-12 digitos. Favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         ElseIf Me.Grid.Cell(i, iGyUUID).Text.Length - Replace(Me.Grid.Cell(i, iGyUUID).Text, "-", "").Length <> 4 Then 'Valida que tenga 4 guiones solamente
-                            MsgBox("El UUID del renglón #" & i - 1 & " no tiene el formato correcto de 8-4-4-4-12 digitos. Favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
+                            MsgBox("El UUID del renglón #" & i & " no tiene el formato correcto de 8-4-4-4-12 digitos. Favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         End If
 
@@ -722,8 +722,11 @@ busca:
                         End If
                     End If
 
-                    If txtLEN(Me.Grid.Cell(i, Me.iGyEMISOR_RFC).Text) Then
-                        MsgBox("Al renglón #" & i - 1 & " le falta especificar el RFC del emisor. Favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
+                    If txtLEN(Me.Grid.Cell(i, Me.iGyEMISOR_RFC).Text) = False Then
+                        MsgBox("Al renglón #" & i.ToString & " le falta especificar el RFC del emisor. Favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    ElseIf Me.Grid.Cell(i, Me.iGyEMISOR_RFC).Text.Length < 12 Then
+                        MsgBox("Al renglón #" & i.ToString & " tiene un el RFC de emisor inválido debe de ser de 12 o 13 caracteres. Favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
                         Return False
                     End If
                 End If
