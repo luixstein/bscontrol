@@ -141,9 +141,9 @@ Public Class Frm_CFDI_VisorXML
                 Return False
             End If
 
-            Me.txtTipoDeComprobante.Text = oCFDI.Comprobante.TipoDeComprobante
+            Me.txtTipoDeComprobante.Text = NombreTipoComprobante(oCFDI.Comprobante.TipoDeComprobante)
             Me.dtFecha.Value = oCFDI.Comprobante.Fecha
-            Me.txtUUID.Text = oCFDI.ComplementoTFD.UUID
+            Me.txtUUID.Text = oCFDI.ComplementoTFD.UUID.ToUpper
             Me.txtFolio.Text = oCFDI.Comprobante.Folio
             Me.txtSerie.Text = oCFDI.Comprobante.Serie
             Me.txtFormaPago.Text = oCFDI.Comprobante.FormaPago
@@ -547,6 +547,20 @@ Public Class Frm_CFDI_VisorXML
         End Try
     End Sub
 
+    Private Function NombreTipoComprobante(ByVal TipoDeComprobante As String) As String
+        Select Case TipoDeComprobante
+            Case "I"
+                Return "I-Ingreso"
+            Case "E"
+                Return "E-Egreso"
+            Case "P"
+                Return "P-Pago"
+            Case "N"
+                Return "N-Nomina"
+            Case Else
+                Return TipoDeComprobante
+        End Select
+    End Function
 #End Region
 
 End Class
