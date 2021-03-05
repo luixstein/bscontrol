@@ -94,6 +94,19 @@ Public Class Frm_Contabilidad_IVA_Acreditable_Global
         End If
     End Sub
 
+    Private Sub tsbVisorXML_Click(sender As Object, e As EventArgs) Handles tsbVisorXML.Click
+        Dim iRenglon As Integer = Me.Grid.ActiveCell.Row, sUUID As String = ""
+        If iRenglon > 0 AndAlso txtLEN(Me.Grid.Cell(iRenglon, Me.iGyCodigoProveedor).Text) = True Then
+            sUUID = Me.Grid.Cell(iRenglon, Me.iGyUUID).Text
+            If txtLEN(sUUID) = True Then
+                Dim oVisorXML As New Frm_CFDI_VisorXML(sUUID)
+                oVisorXML.Show()
+            Else
+                MsgBox("Asígne por favor el UUID.", MsgBoxStyle.Exclamation, Me.Name)
+            End If
+        End If
+    End Sub
+
     Private Sub tsbSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSalir.Click
         Me.Close()
     End Sub
@@ -1114,6 +1127,7 @@ busca:
         Me.Grid.Column(Me.iGyIvaAcreditable11).Visible = Not (Me.chkOcultarIVA11.Checked)
         Me.Grid.Column(Me.iGyActos11).Visible = Not (Me.chkOcultarIVA11.Checked)
     End Sub
+
 #End Region
 
 End Class

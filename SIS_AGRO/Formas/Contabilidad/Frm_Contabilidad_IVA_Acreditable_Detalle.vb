@@ -28,6 +28,15 @@ Public Class Frm_Contabilidad_IVA_Acreditable_Detalle
         End If
     End Sub
 
+    Private Sub tsbVisorXML_Click(sender As Object, e As EventArgs) Handles tsbVisorXML.Click
+        If txtLEN(Me.txtUUID.Text) = True Then
+            Dim oVisorXML As New Frm_CFDI_VisorXML(Me.txtUUID.Text)
+            oVisorXML.Show()
+        Else
+            MsgBox("Asígne por favor el UUID.", MsgBoxStyle.Exclamation, Me.Name)
+        End If
+    End Sub
+
     Private Sub tsbSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSalir.Click
         Me.Close()
     End Sub
@@ -360,6 +369,7 @@ Buscar:
 
         Return bResultado
     End Function
+
 #End Region
 
 End Class

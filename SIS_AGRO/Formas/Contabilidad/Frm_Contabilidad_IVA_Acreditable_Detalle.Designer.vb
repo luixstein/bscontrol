@@ -24,9 +24,6 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Frm_Contabilidad_IVA_Acreditable_Detalle))
         Me.tsMenu = New System.Windows.Forms.ToolStrip()
-        Me.tsbNuevo = New System.Windows.Forms.ToolStripButton()
-        Me.tsbAgregar = New System.Windows.Forms.ToolStripButton()
-        Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.gbPeriodoUltimaOperacion = New System.Windows.Forms.GroupBox()
         Me.lblDisplayMes = New System.Windows.Forms.Label()
         Me.lblDisplayAño = New System.Windows.Forms.Label()
@@ -102,6 +99,10 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         Me.txtIvaAcreditable11 = New System.Windows.Forms.TextBox()
         Me.lblFolio = New System.Windows.Forms.Label()
         Me.txtFolio = New System.Windows.Forms.TextBox()
+        Me.tsbNuevo = New System.Windows.Forms.ToolStripButton()
+        Me.tsbAgregar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbVisorXML = New System.Windows.Forms.ToolStripButton()
+        Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.tsMenu.SuspendLayout()
         Me.gbPeriodoUltimaOperacion.SuspendLayout()
         Me.gbNumeroOperaciones.SuspendLayout()
@@ -115,36 +116,12 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         'tsMenu
         '
         Me.tsMenu.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbAgregar, Me.tsbSalir})
+        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbAgregar, Me.tsbVisorXML, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(825, 27)
         Me.tsMenu.TabIndex = 4
         Me.tsMenu.Text = "tsMenu"
-        '
-        'tsbNuevo
-        '
-        Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
-        Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbNuevo.Name = "tsbNuevo"
-        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
-        Me.tsbNuevo.Text = "&Nuevo"
-        '
-        'tsbAgregar
-        '
-        Me.tsbAgregar.Image = Global.BsControl.My.Resources.Resources._782
-        Me.tsbAgregar.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbAgregar.Name = "tsbAgregar"
-        Me.tsbAgregar.Size = New System.Drawing.Size(73, 24)
-        Me.tsbAgregar.Text = "&Agregar"
-        '
-        'tsbSalir
-        '
-        Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
-        Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
-        Me.tsbSalir.Text = "&Salir"
         '
         'gbPeriodoUltimaOperacion
         '
@@ -926,6 +903,38 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
         Me.txtFolio.Size = New System.Drawing.Size(109, 20)
         Me.txtFolio.TabIndex = 0
         '
+        'tsbNuevo
+        '
+        Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
+        Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbNuevo.Name = "tsbNuevo"
+        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
+        Me.tsbNuevo.Text = "&Nuevo"
+        '
+        'tsbAgregar
+        '
+        Me.tsbAgregar.Image = Global.BsControl.My.Resources.Resources._782
+        Me.tsbAgregar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbAgregar.Name = "tsbAgregar"
+        Me.tsbAgregar.Size = New System.Drawing.Size(73, 24)
+        Me.tsbAgregar.Text = "&Agregar"
+        '
+        'tsbVisorXML
+        '
+        Me.tsbVisorXML.Image = Global.BsControl.My.Resources.Resources.xml_file
+        Me.tsbVisorXML.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbVisorXML.Name = "tsbVisorXML"
+        Me.tsbVisorXML.Size = New System.Drawing.Size(84, 24)
+        Me.tsbVisorXML.Text = "&Visor XML"
+        '
+        'tsbSalir
+        '
+        Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
+        Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbSalir.Name = "tsbSalir"
+        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
+        Me.tsbSalir.Text = "&Salir"
+        '
         'Frm_Contabilidad_IVA_Acreditable_Detalle
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1040,4 +1049,5 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Detalle
     Friend WithEvents lblDisplayEmisorRFC As Label
     Friend WithEvents txtEmisorRFC As TextBox
     Friend WithEvents txtTotalXML As TextBox
+    Friend WithEvents tsbVisorXML As ToolStripButton
 End Class

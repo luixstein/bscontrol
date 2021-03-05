@@ -92,6 +92,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.lblDisplayTotalISRRetenido = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
+        Me.tsbVisorXML = New System.Windows.Forms.ToolStripButton()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.gbDatosGenerales.SuspendLayout()
@@ -105,7 +106,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         'tsMenu
         '
         Me.tsMenu.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbAplicar, Me.tsbReactivar, Me.tsbCancelar, Me.tsbSalir})
+        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbAplicar, Me.tsbReactivar, Me.tsbCancelar, Me.tsbVisorXML, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(1068, 27)
@@ -848,6 +849,14 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
         Me.Label3.Text = "*Nota, si es un abono usted edite cada campo porque en un prinicipio se leen las " &
     "cantidades completas del xml"
         '
+        'tsbVisorXML
+        '
+        Me.tsbVisorXML.Image = Global.BsControl.My.Resources.Resources.xml_file
+        Me.tsbVisorXML.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbVisorXML.Name = "tsbVisorXML"
+        Me.tsbVisorXML.Size = New System.Drawing.Size(84, 24)
+        Me.tsbVisorXML.Text = "&Visor XML"
+        '
         'Frm_Contabilidad_IVA_Acreditable_Global
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -961,4 +970,5 @@ Partial Class Frm_Contabilidad_IVA_Acreditable_Global
     Friend WithEvents lblDisplayTotalIMPUESTO_HOTEL As Label
     Friend WithEvents Label2 As Label
     Friend WithEvents Label3 As Label
+    Friend WithEvents tsbVisorXML As ToolStripButton
 End Class

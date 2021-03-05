@@ -2668,6 +2668,7 @@
   <ItemGroup>
     <Content Include="IconoPral.ico" />
     <Content Include="icono.ico" />
+    <None Include="Resources\xml-file.png" />
     <None Include="Resources\pdf11.png" />
     <None Include="Resources\pdf2.png" />
     <None Include="Resources\pdf1 - copia.png" />

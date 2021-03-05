@@ -62,6 +62,7 @@ Partial Class Frm_CFDI_VisorXML
         Me.Label17 = New System.Windows.Forms.Label()
         Me.txtTipoDeComprobante = New System.Windows.Forms.TextBox()
         Me.lblAvisoMonedaNoMXN = New System.Windows.Forms.Label()
+        Me.tsbAbrirArchivoXML = New System.Windows.Forms.ToolStripButton()
         Me.tsMenu.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -279,7 +280,6 @@ Partial Class Frm_CFDI_VisorXML
         Me.dtFecha.Name = "dtFecha"
         Me.dtFecha.Size = New System.Drawing.Size(100, 20)
         Me.dtFecha.TabIndex = 222
-        Me.dtFecha.Visible = False
         '
         'lblDisplayFechaCaptura
         '
@@ -289,7 +289,6 @@ Partial Class Frm_CFDI_VisorXML
         Me.lblDisplayFechaCaptura.Size = New System.Drawing.Size(43, 13)
         Me.lblDisplayFechaCaptura.TabIndex = 223
         Me.lblDisplayFechaCaptura.Text = "Fecha :"
-        Me.lblDisplayFechaCaptura.Visible = False
         '
         'Label11
         '
@@ -348,7 +347,7 @@ Partial Class Frm_CFDI_VisorXML
         'tsMenu
         '
         Me.tsMenu.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbSalir})
+        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbAbrirArchivoXML, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(1074, 27)
@@ -427,13 +426,21 @@ Partial Class Frm_CFDI_VisorXML
         '
         Me.lblAvisoMonedaNoMXN.AutoSize = True
         Me.lblAvisoMonedaNoMXN.ForeColor = System.Drawing.Color.Red
-        Me.lblAvisoMonedaNoMXN.Location = New System.Drawing.Point(418, 27)
+        Me.lblAvisoMonedaNoMXN.Location = New System.Drawing.Point(404, 27)
         Me.lblAvisoMonedaNoMXN.Name = "lblAvisoMonedaNoMXN"
-        Me.lblAvisoMonedaNoMXN.Size = New System.Drawing.Size(649, 13)
+        Me.lblAvisoMonedaNoMXN.Size = New System.Drawing.Size(666, 13)
         Me.lblAvisoMonedaNoMXN.TabIndex = 240
-        Me.lblAvisoMonedaNoMXN.Text = "*Nota, este xml no está en MXN, cada uno los valores que el sistema muestra de mo" &
-    "mento están expresadas están sin coversión a MXN"
+        Me.lblAvisoMonedaNoMXN.Text = "*Este xml no está en MXN, cada uno los valores que el sistema muestra de momento " &
+    "están expresadas están en la moneda del  documento."
         Me.lblAvisoMonedaNoMXN.Visible = False
+        '
+        'tsbAbrirArchivoXML
+        '
+        Me.tsbAbrirArchivoXML.Image = Global.BsControl.My.Resources.Resources.xml_file
+        Me.tsbAbrirArchivoXML.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbAbrirArchivoXML.Name = "tsbAbrirArchivoXML"
+        Me.tsbAbrirArchivoXML.Size = New System.Drawing.Size(126, 24)
+        Me.tsbAbrirArchivoXML.Text = "&Abrir archivo XML"
         '
         'Frm_CFDI_VisorXML
         '
@@ -529,4 +536,5 @@ Partial Class Frm_CFDI_VisorXML
     Friend WithEvents Label17 As Label
     Friend WithEvents txtTipoDeComprobante As TextBox
     Friend WithEvents lblAvisoMonedaNoMXN As Label
+    Friend WithEvents tsbAbrirArchivoXML As ToolStripButton
 End Class

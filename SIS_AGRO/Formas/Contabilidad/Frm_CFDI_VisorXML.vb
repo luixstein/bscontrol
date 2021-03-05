@@ -1,4 +1,5 @@
-﻿Imports System.Xml
+﻿Imports System.IO
+Imports System.Xml
 Imports CFDIXML
 
 Public Class Frm_CFDI_VisorXML
@@ -41,6 +42,10 @@ Public Class Frm_CFDI_VisorXML
 #End Region
 
 #Region "Opciones"
+    Private Sub tsbAbrirArchivoXML_Click(sender As Object, e As EventArgs) Handles tsbAbrirArchivoXML.Click
+        Me.AbrirArchivoXML
+    End Sub
+
     Private Sub tsbSalir_Click(sender As Object, e As EventArgs) Handles tsbSalir.Click
         Me.Close()
     End Sub
@@ -69,6 +74,49 @@ Public Class Frm_CFDI_VisorXML
         ' Add any initialization after the InitializeComponent() call.
         Me.Consultar()
     End Sub
+
+    Private Function AbrirArchivoXML() As Boolean
+        Const sProcedure As String = "AbrirArchivoXML"
+        Dim bResultado As Boolean = False
+        Try
+            Dim sXML As String = New Class_find("SELECT CADENA_XML FROM EXPEDIENTES_BS..XML_REPOSITORIO_GLOBAL WHERE UUID='" + sReplace(Me._UUID) + "'").Result1
+
+            If txtLEN(sXML) = False Then
+                MsgBox("El UUID " + Me._UUID + " no existe en la base de datos de XML. Favor de verificar", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            Dim XmlDoc As New XmlDocument, sRutaXML As String
+
+            sRutaXML = Path.ChangeExtension(Path.GetTempFileName, "xml")
+
+            XmlDoc.LoadXml(sXML)
+
+            'Crea el nodo principal o primera linea <?xml version="1.0"?>
+            Dim Nodo As Xml.XmlDeclaration
+            Nodo = XmlDoc.CreateXmlDeclaration("1.0", "utf-8", Nothing)
+            'Agrega el nodo al documento
+            Dim root As Xml.XmlElement = XmlDoc.DocumentElement
+            XmlDoc.InsertBefore(Nodo, root)
+
+            XmlDoc.Save(sRutaXML)
+
+            If ConvierteUTF8(sRutaXML) = False Then
+                MsgBox("Error al intentar convertir el archivo a utf8.", MsgBoxStyle.Exclamation, sProcedure)
+            End If
+
+            Process.Start(sRutaXML)
+
+            bResultado = True
+
+        Catch ex As Exception
+            HandleError(Me.Text, "AbrirArchivoXML", ex)
+        Finally
+
+        End Try
+
+        Return bResultado
+    End Function
 
     Private Function Consultar() As Boolean
         Const sProcedure As String = "Consultar"
