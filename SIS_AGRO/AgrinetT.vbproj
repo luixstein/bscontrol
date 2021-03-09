@@ -822,10 +822,10 @@
     <Compile Include="Formas\Contabilidad\Frm_AbrirCerrar_Ejercicio.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Formas\Contabilidad\Frm_CFDI_VisorXML.Designer.vb">
+    <Compile Include="Formas\Factura_Electronica\Frm_CFDI_VisorXML.Designer.vb">
       <DependentUpon>Frm_CFDI_VisorXML.vb</DependentUpon>
     </Compile>
-    <Compile Include="Formas\Contabilidad\Frm_CFDI_VisorXML.vb">
+    <Compile Include="Formas\Factura_Electronica\Frm_CFDI_VisorXML.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Contabilidad\Frm_Contabilidad_Captura_Polizas.designer.vb">
@@ -2155,7 +2155,7 @@
     <EmbeddedResource Include="Formas\Contabilidad\Frm_AbrirCerrar_Ejercicio.resx">
       <DependentUpon>Frm_AbrirCerrar_Ejercicio.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Formas\Contabilidad\Frm_CFDI_VisorXML.resx">
+    <EmbeddedResource Include="Formas\Factura_Electronica\Frm_CFDI_VisorXML.resx">
       <DependentUpon>Frm_CFDI_VisorXML.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Contabilidad\Frm_Contabilidad_Captura_Polizas.resx">
