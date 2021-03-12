@@ -3767,7 +3767,7 @@ Buscar:
         Try
             Dim dPagoTipoCambio As Decimal, dPagoUSD As Decimal, dPagoUSD_IVA As Decimal, dPagoUSD_Subtotal As Decimal
             Dim dVtaIvaMXN As Decimal, dVtaTotalMXN As Decimal, dVtaTotalUSD As Decimal, dVtaIvaUSD As Decimal, dVtaTipoCambio As Decimal, sVtaMoneda As String, dVtaSaldoMXN_TpPago As Decimal, dVtaSaldoMXN_CXC As Decimal, dVtaSaldoUSD As Decimal
-            Dim dCxcPagoMXNCapturado As Decimal, dCxcTotal As Decimal, dDiferenciaCambiaria As Decimal, dCxcIvaCobrado As Decimal, dCxcIvaPendienteCobro As Decimal, dCxcPagoSubtotaMXNViejos As Decimal, dCxcPagoSubtotaMXNNuevos As Decimal
+            Dim dCxcPagoMXNCapturado As Decimal, dCxcTotal As Decimal, dDiferenciaCambiaria As Decimal, dCxcIvaCobrado As Decimal, dCxcIvaPendienteCobro As Decimal, dCxcPagoSubtotaMXNViejos As Decimal = 0, dCxcPagoSubtotaMXNNuevos As Decimal = 0
             Dim dImporteMonedaVenta As Decimal, dSaldoAnteriorMonedaVenta As Decimal, dSaldoAnteriorMonedaPago As Decimal
 
             'Mejor refrescar los datos que tienen que ver con saldos para tener los saldos correctos en cada instante.
