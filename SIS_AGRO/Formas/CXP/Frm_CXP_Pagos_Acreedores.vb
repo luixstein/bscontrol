@@ -67,7 +67,8 @@ Public Class Frm_CXP_Pagos_Acreedores
     Private iGySaldoMXN As Integer = 12
     Private iGySaldoImpuesto As Integer = 13
     Private iGyRetencion As Integer = 14
-    Private iGyPagarImpuesto As Integer = 15
+    Private iGyIVAPagado As Integer = 15
+    'Private iGyIEPSPagado As Integer =16
     Private iGyPagoMXN As Integer = 16
     Private iGyPagoUSD As Integer = 17
     Private iGySeleccion As Integer = 18
@@ -545,7 +546,7 @@ buscar_acreedor:
                             dPagoImpuesto = RedondearD((dPago / dTotalMXN) * dImpuesto, 2)
 
                             Me.Grid1.Cell(Renglon, Me.iGyPagoMXN).Text = dPago.ToString
-                            Me.Grid1.Cell(Renglon, Me.iGyPagarImpuesto).Text = dPagoImpuesto
+                            Me.Grid1.Cell(Renglon, Me.iGyIVAPagado).Text = dPagoImpuesto
 
                             dTipoCambioCO = valorNumerico(Me.Grid1.Cell(Renglon, Me.iGyTipoCambio).Text)
 
@@ -558,7 +559,7 @@ buscar_acreedor:
                     Else
                         Me.Grid1.Cell(Renglon, Me.iGyPagoMXN).Text = "0"
                         Me.Grid1.Cell(Renglon, Me.iGyPagoUSD).Text = "0"
-                        Me.Grid1.Cell(Renglon, Me.iGyPagarImpuesto).Text = "0"
+                        Me.Grid1.Cell(Renglon, Me.iGyIVAPagado).Text = "0"
                     End If
                 End If
 
@@ -617,8 +618,8 @@ buscar_acreedor:
                                     Return
                                 End If
 
-                                dIvaPagoMXN = RedondearD((dPagoMXN / dTotalMXN) * dImpuestoMXN, 2)
-                                Me.Grid1.Cell(Renglon, Me.iGyPagarImpuesto).Text = dIvaPagoMXN.ToString
+                                dIvaPagoMXN = RedondearD((dPagoMXN / dTotalMXN) * dImpuestoMXN, 2) 'Proporción de iva
+                                Me.Grid1.Cell(Renglon, Me.iGyIVAPagado).Text = dIvaPagoMXN.ToString
 
                                 If dTipoCambioCO > 0 Then
                                     Me.Grid1.Cell(Renglon, Me.iGyPagoUSD).Text = Redondear(dPagoMXN / dTipoCambioCO, 2) 'En base al tipo de cambio de la compra
@@ -640,7 +641,7 @@ buscar_acreedor:
                             If Me.cboMoneda.Text = "DOLARES" Then
                                 If sMonedaCompra = "USD" Then
                                     dIvaPagoMXN = RedondearD((dPagoUSD / dTotalUSD) * dImpuestoUSD, 2) * dTipoCambioPago
-                                    Me.Grid1.Cell(Renglon, Me.iGyPagarImpuesto).Text = dIvaPagoMXN.ToString
+                                    Me.Grid1.Cell(Renglon, Me.iGyIVAPagado).Text = dIvaPagoMXN.ToString
                                 Else
                                     MsgBox("Esta pagando en USD una venta en MXN, de momento usted calcule y capture manualmente el IVA a pagar en MXN por favor y comuníque a sistemas cómo hace el cálculo.", MsgBoxStyle.Exclamation, Me.Text)
                                 End If
@@ -896,7 +897,7 @@ enter:
                 .Column(Me.iGySaldoImpuesto).Visible = False '.Column(Me.iGySaldoImpuesto).Width = 60
                 .Column(Me.iGyImpuestoMXN).Width = 70
                 .Column(Me.iGyRetencion).Width = 60
-                .Column(Me.iGyPagarImpuesto).Width = 80
+                .Column(Me.iGyIVAPagado).Width = 80
                 .Column(Me.iGyPagoMXN).Width = 80
                 .Column(Me.iGyPagoUSD).Width = 70
                 .Column(Me.iGySeleccion).Width = 55
@@ -922,7 +923,7 @@ enter:
                 .Cell(0, Me.iGySaldoImpuesto).Text = "Saldo Imp."
                 .Cell(0, Me.iGyImpuestoMXN).Text = "IVA MXN"
                 .Cell(0, Me.iGyRetencion).Text = "Retencion"
-                .Cell(0, Me.iGyPagarImpuesto).Text = "IVA Pagar MXN"
+                .Cell(0, Me.iGyIVAPagado).Text = "IVA Pagar MXN"
                 .Cell(0, Me.iGyPagoMXN).Text = "Pagar MXN"
                 .Cell(0, Me.iGyPagoUSD).Text = "Pagar USD"
                 .Cell(0, Me.iGySeleccion).Text = "Selección"
@@ -982,10 +983,10 @@ enter:
                 .Column(Me.iGyRetencion).DecimalLength = 2
                 .Column(Me.iGyRetencion).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.iGyPagarImpuesto).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                .Column(Me.iGyPagarImpuesto).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyPagarImpuesto).DecimalLength = 2
-                .Column(Me.iGyPagarImpuesto).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyIVAPagado).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyIVAPagado).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyIVAPagado).DecimalLength = 2
+                .Column(Me.iGyIVAPagado).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .Column(Me.iGyPagoMXN).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
                 .Column(Me.iGyPagoMXN).Mask = FlexCell.MaskEnum.Numeric
@@ -1334,7 +1335,7 @@ enter:
                             .MODULO = "CXP"
                             .CODIGO_MONEDA = oCuentaBancaria.CODIGO_MONEDA
                             .TOTAL_USD = valorNumerico(Me.Grid1.Cell(i, Me.iGyPagoUSD).Text)
-                            .IMPUESTO = valorNumerico(Me.Grid1.Cell(i, Me.iGyPagarImpuesto).Text)
+                            .IMPUESTO = valorNumerico(Me.Grid1.Cell(i, Me.iGyIVAPagado).Text)
 
                             bResultadoParcial = .InsertarPagosProveedoresAcreedores(Class_CXP_Afecta_Documentos.enumModoPago.PROVEEDOR)
                         End With

@@ -1084,6 +1084,14 @@ busca:
                     Me.Grid.Cell(iRenglon, Me.iGyIvaRetenido6).Text = .txtIvaRetenido6.Text
                     Me.Grid.Cell(iRenglon, Me.iGyIvaRetenido10).Text = .txtIvaRetenido10.Text
 
+                    Me.Grid.Cell(iRenglon, Me.iGyEMISOR_RFC).Text = .txtEmisorRFC.Text
+                    Me.Grid.Cell(iRenglon, Me.iGyEMISOR_NOMBRE).Text = .txtEmisorNombre.Text
+                    Me.Grid.Cell(iRenglon, Me.iGyUUID).Text = .txtUUID.Text
+                    Me.Grid.Cell(iRenglon, Me.iGyIMPUESTO_HOTEL).Text = .txtIMPUESTO_HOTEL.Text
+                    Me.Grid.Cell(iRenglon, Me.iGyIEPS).Text = .txtIEPS.Text
+                    Me.Grid.Cell(iRenglon, Me.iGyISR_RETENIDO).Text = .txtISRRetenido.Text
+                    Me.Grid.Cell(iRenglon, Me.iGyTOTAL_XML).Text = .txtTotalXML.Text
+
                     If bNuevoRenglon = True Then
                         Me.Grid.Rows += 1
                     End If

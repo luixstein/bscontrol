@@ -91,20 +91,86 @@ Buscar:
     End Sub
 
     Private Sub btnCalcularIVAS_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCalcularIVAS.Click
-        CalcularIVAS(True)
+        Me.CalcularIVAS(True)
     End Sub
 
-    Private Sub txtIvaRetenido10_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtIvaRetenido10.KeyDown
-        If e.KeyCode = Keys.Return Then
-            Me.tsbAgregar.PerformClick()
-        End If
-    End Sub
-
-    Private Sub txtActos_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtActos0.KeyDown, txtActos11.KeyDown, txtActos16.KeyDown, txtActos8.KeyDown
+    Private Sub txtActos_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtActos0.KeyDown, txtActos11.KeyDown, txtActos16.KeyDown, txtActos8.KeyDown, txtActosExento.KeyDown
         If e.KeyCode = Keys.Return Then
             Me.TotalizaActos()
         End If
     End Sub
+
+    Private Sub txtActos0_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtActos0.KeyDown
+        If e.KeyCode = Keys.Return Then
+            Me.txtActos0.Text = FormatImporteContable(valorNumericoD(Me.txtActos0.Text))
+        End If
+    End Sub
+
+    Private Sub txtActos8_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtActos8.KeyDown
+        If e.KeyCode = Keys.Return Then
+            Me.txtActos8.Text = FormatImporteContable(valorNumericoD(Me.txtActos8.Text))
+        End If
+    End Sub
+
+    Private Sub txtActos16_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtActos16.KeyDown
+        If e.KeyCode = Keys.Return Then
+            Me.txtActos16.Text = FormatImporteContable(valorNumericoD(Me.txtActos16.Text))
+        End If
+    End Sub
+
+    Private Sub txtActosExento_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtActosExento.KeyDown
+        If e.KeyCode = Keys.Return Then
+            Me.txtActosExento.Text = FormatImporteContable(valorNumericoD(Me.txtActosExento.Text))
+        End If
+    End Sub
+
+    Private Sub txtIvaAcreditable8_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtIvaAcreditable8.KeyDown
+        If e.KeyCode = Keys.Return Then
+            Me.txtIvaAcreditable8.Text = FormatImporteContable(valorNumericoD(Me.txtIvaAcreditable8.Text))
+        End If
+    End Sub
+
+    Private Sub txtIvaAcreditable16_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtIvaAcreditable16.KeyDown
+        If e.KeyCode = Keys.Return Then
+            Me.txtIvaAcreditable16.Text = FormatImporteContable(valorNumericoD(Me.txtIvaAcreditable16.Text))
+        End If
+    End Sub
+
+    Private Sub txtIvaRetenido4_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtIvaRetenido4.KeyDown
+        If e.KeyCode = Keys.Return Then
+            Me.txtIvaRetenido4.Text = FormatImporteContable(valorNumericoD(Me.txtIvaRetenido4.Text))
+        End If
+    End Sub
+
+    Private Sub txtIvaRetenido6_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtIvaRetenido6.KeyDown
+        If e.KeyCode = Keys.Return Then
+            Me.txtIvaRetenido6.Text = FormatImporteContable(valorNumericoD(Me.txtIvaRetenido6.Text))
+        End If
+    End Sub
+
+    Private Sub txtIvaRetenido10_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtIvaRetenido10.KeyDown
+        If e.KeyCode = Keys.Return Then
+            Me.txtIvaRetenido10.Text = FormatImporteContable(valorNumericoD(Me.txtIvaRetenido10.Text))
+            Me.tsbAgregar.PerformClick()
+        End If
+    End Sub
+
+    Private Sub txtIMPUESTO_HOTEL_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtIMPUESTO_HOTEL.KeyDown
+        Me.txtIMPUESTO_HOTEL.Text = FormatImporteContable(valorNumericoD(Me.txtIMPUESTO_HOTEL.Text))
+    End Sub
+
+    Private Sub txtIEPS_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtIEPS.KeyDown
+        Me.txtIEPS.Text = FormatImporteContable(valorNumericoD(Me.txtIEPS.Text))
+    End Sub
+
+    Private Sub txtISRRetenido_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtISRRetenido.KeyDown
+        Me.txtISRRetenido.Text = FormatImporteContable(valorNumericoD(Me.txtISRRetenido.Text))
+    End Sub
+
+    Private Sub txtTotalXML_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtTotalXML.KeyDown
+        Me.txtTotalXML.Text = FormatImporteContable(valorNumericoD(Me.txtTotalXML.Text))
+    End Sub
+
 
 #End Region
 
