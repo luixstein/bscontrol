@@ -48,6 +48,9 @@ Public Class Frm_Contabilidad_IVA_Acreditable_Global
     Private iGyIMPUESTO_HOTEL As Integer = 27
     Private iGyISR_RETENIDO As Integer = 28
     Private iGyTOTAL_XML As Integer = 29
+    'Ver si luego agregar estos para convertir a mxn los xml en usd, ojo falta saber si deben convertirse a tp del xml o tp del pago
+    'Private iGyMoneda As Integer = 30
+    'Private iGyTipoCambio As Integer = 31
 #End Region
 
 #Region "Propiedades"
@@ -99,7 +102,7 @@ Public Class Frm_Contabilidad_IVA_Acreditable_Global
         If iRenglon > 0 AndAlso txtLEN(Me.Grid.Cell(iRenglon, Me.iGyCodigoProveedor).Text) = True Then
             sUUID = Me.Grid.Cell(iRenglon, Me.iGyUUID).Text
             If txtLEN(sUUID) = True Then
-                Dim oVisorXML As New Frm_CFDI_VisorXML(sUUID)
+                Dim oVisorXML As New Frm_CFDI_VisorXML(sUUID, False)
                 oVisorXML.Show()
             Else
                 MsgBox("Asígne por favor el UUID.", MsgBoxStyle.Exclamation, Me.Name)

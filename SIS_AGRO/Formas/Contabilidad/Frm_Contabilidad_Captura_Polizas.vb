@@ -238,6 +238,10 @@ Public Class Frm_Contabilidad_Captura_Polizas
     Private Sub btnEliminarXML_Click(sender As Object, e As EventArgs) Handles btnEliminarXML.Click
         Me.EliminarXML()
     End Sub
+
+    Private Sub btnVisorXML_Click(sender As Object, e As EventArgs) Handles btnVisorXML.Click
+        Me.VisorXML()
+    End Sub
 #End Region
 
 #Region "Eventos de objetos"
@@ -488,7 +492,6 @@ Public Class Frm_Contabilidad_Captura_Polizas
             With Me.CmbDocumento  'Strings.Left(Me.CmbDocumento.Text, 1)
                 .DisplayMember = "NOMBRE_TIPO_DOCUMENTO"
                 .ValueMember = "CODIGO_TIPO_DOCUMENTO"
-
                 Dim dView As New Data.DataView(oElementos.ObtenerTiposDocumentosContabilida)
                 dView.Sort = "NOMBRE_TIPO_DOCUMENTO"
                 .DataSource = dView
@@ -2321,6 +2324,35 @@ busca_concepto:
         Return bResultado
     End Function
 
+    Private Sub VisorXML()
+        Const sProcedure As String = "VerXML"
+
+        Try
+            Dim Renglon As Integer = Me.GridXMLs.Selection.FirstRow
+            Dim sUUID As String = Me.GridXMLs.Cell(Renglon, Me.iGyGridXMLUUID).Text
+            Dim sRutaXML As String = Me.GridXMLs.Cell(Renglon, Me.iGyGridXMLRutaXML).Text
+
+            If Renglon = 0 Then
+                MsgBox("No ha seleccionado un renglón.", MsgBoxStyle.Exclamation, sProcedure)
+            End If
+
+            If txtLEN(sUUID) = False Then
+                MsgBox("No hay agregado un XML en este renglón.", MsgBoxStyle.Exclamation, sProcedure)
+            End If
+
+            If txtLEN(sRutaXML) = True Then
+                Dim oVisorXML As New Frm_CFDI_VisorXML(sRutaXML)
+                oVisorXML.Show()
+            Else 'Es un XML que ya fue grabado y recordemos que en la consulta no hay ruta porque este dato no se graba(porque lo pueden mover los usuarios físicamente)
+                Dim oVisorXML As New Frm_CFDI_VisorXML(sUUID, False)
+                oVisorXML.Show()
+            End If
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
+
     Private Function AgregarPDF() As Boolean
         Const sProcedure As String = "AgregarPDF"
         Dim bResultado As Boolean = False
@@ -2454,7 +2486,6 @@ busca_concepto:
 
         Return bResultado
     End Function
-
 
 #End Region
 

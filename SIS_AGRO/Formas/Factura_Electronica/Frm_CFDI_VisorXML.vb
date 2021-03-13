@@ -7,8 +7,10 @@ Public Class Frm_CFDI_VisorXML
     Private _BaseDatosXML As String = "EXPEDIENTES_BS..XML_REPOSITORIO_GLOBAL"
 
 #Region "Variables de control"
-    Private _UUID As String
+    Private _UUID As String = ""
     Private _LlamadoDesdeCFDIRelacionado As Boolean = False
+    Private _RutaXML As String = ""
+    Private _EsRutaXML As Boolean = False
 #End Region
 
 #Region "Campos grid conceptos"
@@ -67,7 +69,7 @@ Public Class Frm_CFDI_VisorXML
 
 #Region "Opciones"
     Private Sub tsbAbrirArchivoXML_Click(sender As Object, e As EventArgs) Handles tsbAbrirArchivoXML.Click
-        Me.AbrirArchivoXML
+        Me.AbrirArchivoXML()
     End Sub
 
     Private Sub tsbSalir_Click(sender As Object, e As EventArgs) Handles tsbSalir.Click
@@ -84,7 +86,7 @@ Public Class Frm_CFDI_VisorXML
         Dim sUUID As String = ""
         If iColumna = Me.iGyCFDIRelUUID Then
             sUUID = Me.GridCfdiRelacionados.Cell(iRenglon, Me.iGyCFDIRelUUID).Text
-            Dim oVisorXML As New Frm_CFDI_VisorXML(sUUID)
+            Dim oVisorXML As New Frm_CFDI_VisorXML(sUUID, True)
             oVisorXML.ShowDialog()
         End If
     End Sub
@@ -95,7 +97,7 @@ Public Class Frm_CFDI_VisorXML
         Dim sUUID As String = ""
         If iColumna = Me.iGyCPIdDocumento Then
             sUUID = Me.GridCP.Cell(iRenglon, Me.iGyCPIdDocumento).Text
-            Dim oVisorXML As New Frm_CFDI_VisorXML(sUUID)
+            Dim oVisorXML As New Frm_CFDI_VisorXML(sUUID, True)
             oVisorXML.ShowDialog()
         End If
     End Sub
@@ -108,7 +110,7 @@ Public Class Frm_CFDI_VisorXML
 #End Region
 
 #Region "Métodos y procedimientos"
-    Public Sub New(ByVal sUUID As String, Optional ByVal bLlamadoDesdeCFDIRelacionado As Boolean = False)
+    Public Sub New(ByVal sUUID As String, ByVal bLlamadoDesdeCFDIRelacionado As Boolean)
 
         ' This call is required by the designer.
         InitializeComponent()
@@ -118,9 +120,18 @@ Public Class Frm_CFDI_VisorXML
 
         ' Add any initialization after the InitializeComponent() call.
         Me.Consultar()
+    End Sub
 
-        Me.Top += 50
-        Me.Left += 50
+    Public Sub New(ByVal sRutaXML As String)
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        Me._RutaXML = sRutaXML
+        Me._EsRutaXML = True
+
+        Me.Consultar()
     End Sub
 
     Private Function AbrirArchivoXML() As Boolean
@@ -170,20 +181,29 @@ Public Class Frm_CFDI_VisorXML
         Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
         Try
-            Dim sXML As String = New Class_find("SELECT CADENA_XML FROM " + Me._BaseDatosXML + " WHERE UUID='" + sReplace(Me._UUID) + "'").Result1
+            Dim sXML As String = "", xmlDoc As New XmlDocument()
+            Dim oCFDI As New CFDIXML.ClassCFDI
 
-            'Dim sRutaXML As String = "C:\Users\jorgegc\Dropbox\Frestyle\_Actualizaciones\Bs\400-GastosRetenciones\Ejemplos XMLs\Hotel_2_traslados.xml"
-            'sRutaXML = "C:\Users\jorgegc\Google Drive\_Documentacion\_Sellos digitales fact ele PASSA\CFDI 3.3 y complemento pagos\Ejemplos varios\ImpuestosRetenidosLocalesSEVY8402138B4_479_FPP170927MHA.xml"
-            'Dim quitarXmlDoc As New XmlDocument
-            'quitarXmlDoc.Load(sRutaXML)
-            'sXML = quitarXmlDoc.InnerXml
+            Select Case Me._EsRutaXML
+                Case True
+                    'Me._RutaXML = "C:\Users\jorgegc\Dropbox\Frestyle\_Actualizaciones\Bs\400-GastosRetenciones\Ejemplos XMLs\Hotel_2_traslados.xml"
+                    'Me._RutaXML = "C:\Users\jorgegc\Google Drive\_Documentacion\_Sellos digitales fact ele PASSA\CFDI 3.3 y complemento pagos\Ejemplos varios\ImpuestosRetenidosLocalesSEVY8402138B4_479_FPP170927MHA.xml"
+                    'xmlDoc.Load(Me._RutaXML)
+                    'sXML = XmlDoc.InnerXml
 
-            If txtLEN(sXML) = False Then
-                MsgBox("El UUID " + Me._UUID + " no existe en la base de datos de XML. Favor de verificar", MsgBoxStyle.Exclamation, sProcedure)
-                Return False
-            End If
+                    oCFDI = New CFDIXML.ClassCFDI(Me._RutaXML, True) 'Internamente: ya se valida que este timbrado
+                    sXML = oCFDI.XMLConDeclaracion
+                    Me.lblEsRuta.Visible = True
+                Case False
+                    sXML = New Class_find("SELECT CADENA_XML FROM " + Me._BaseDatosXML + " WHERE UUID='" + sReplace(Me._UUID) + "'").Result1
 
-            Dim oCFDI As New CFDIXML.ClassCFDI(sXML, False) 'Internamente: ya se valida que este timbrado
+                    If txtLEN(sXML) = False Then
+                        MsgBox("El UUID " + Me._UUID + " no existe en la base de datos de XML. Favor de verificar", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+
+                    oCFDI = New CFDIXML.ClassCFDI(sXML, False) 'Internamente: ya se valida que este timbrado
+            End Select
 
             If oCFDI.XMLCargado = False Then
                 Return False
@@ -221,7 +241,6 @@ Public Class Frm_CFDI_VisorXML
                 Me.lblAvisoMonedaNoMXN.Visible = True
             End If
 
-            Dim xmlDoc As New XmlDocument()
             xmlDoc.LoadXml(sXML) 'Leemos el xml como cadena
 
             Dim iRenglonConcepto As Integer = 2 'Al tener dos encabezados empezamos en el 2do renglón en vez del 1ero.

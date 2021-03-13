@@ -98,6 +98,7 @@ Partial Class Frm_CFDI_VisorXML
         Me.lblDisplayCPFecha = New System.Windows.Forms.Label()
         Me.lblDisplayUsoCFDI = New System.Windows.Forms.Label()
         Me.txtUsoCFDI = New System.Windows.Forms.TextBox()
+        Me.lblEsRuta = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gbComplementoPago.SuspendLayout()
         Me.SuspendLayout()
@@ -829,11 +830,22 @@ Partial Class Frm_CFDI_VisorXML
         Me.txtUsoCFDI.TabIndex = 252
         Me.txtUsoCFDI.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
+        'lblEsRuta
+        '
+        Me.lblEsRuta.AutoSize = True
+        Me.lblEsRuta.Location = New System.Drawing.Point(1048, 592)
+        Me.lblEsRuta.Name = "lblEsRuta"
+        Me.lblEsRuta.Size = New System.Drawing.Size(19, 13)
+        Me.lblEsRuta.TabIndex = 256
+        Me.lblEsRuta.Text = "*R"
+        Me.lblEsRuta.Visible = False
+        '
         'Frm_CFDI_VisorXML
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1074, 605)
+        Me.Controls.Add(Me.lblEsRuta)
         Me.Controls.Add(Me.lblDisplayUsoCFDI)
         Me.Controls.Add(Me.txtUsoCFDI)
         Me.Controls.Add(Me.gbComplementoPago)
@@ -974,4 +986,5 @@ Partial Class Frm_CFDI_VisorXML
     Friend WithEvents txtCPNomBancoOrdExt As TextBox
     Friend WithEvents lblDisplayUsoCFDI As Label
     Friend WithEvents txtUsoCFDI As TextBox
+    Friend WithEvents lblEsRuta As Label
 End Class

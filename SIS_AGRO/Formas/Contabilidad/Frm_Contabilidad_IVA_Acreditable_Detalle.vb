@@ -30,7 +30,7 @@ Public Class Frm_Contabilidad_IVA_Acreditable_Detalle
 
     Private Sub tsbVisorXML_Click(sender As Object, e As EventArgs) Handles tsbVisorXML.Click
         If txtLEN(Me.txtUUID.Text) = True Then
-            Dim oVisorXML As New Frm_CFDI_VisorXML(Me.txtUUID.Text)
+            Dim oVisorXML As New Frm_CFDI_VisorXML(Me.txtUUID.Text, False)
             oVisorXML.Show()
         Else
             MsgBox("Asígne por favor el UUID.", MsgBoxStyle.Exclamation, Me.Name)
@@ -118,7 +118,8 @@ Buscar:
 
     Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboMes.KeyDown, txtAño.KeyDown, txtNumeroOperaciones.KeyDown,
     cboTipoProveedor.KeyDown, txtActos0.KeyDown, txtActos11.KeyDown, txtActos16.KeyDown, txtIvaAcreditable11.KeyDown, txtIvaAcreditable16.KeyDown,
-    txtIvaRetenido4.KeyDown, dtFechaFacturaProveedor.KeyDown, txtConcepto.KeyDown, txtIvaRetenido6.KeyDown, txtActos8.KeyDown, txtActosExento.KeyDown, txtEmisorRFC.KeyDown, txtEmisorNombre.KeyDown, txtUUID.KeyDown
+    txtIvaRetenido4.KeyDown, dtFechaFacturaProveedor.KeyDown, txtConcepto.KeyDown, txtIvaRetenido6.KeyDown, txtActos8.KeyDown, txtActosExento.KeyDown, txtEmisorRFC.KeyDown, txtEmisorNombre.KeyDown, txtUUID.KeyDown,
+    txtIMPUESTO_HOTEL.KeyDown, txtIEPS.KeyDown, txtISRRetenido.KeyDown, txtTotalXML.KeyDown
         If e.KeyCode = Keys.Return Then
             SendKeys.Send("{TAB}")
         End If

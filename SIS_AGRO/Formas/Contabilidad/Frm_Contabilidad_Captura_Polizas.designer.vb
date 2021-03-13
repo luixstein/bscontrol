@@ -42,6 +42,7 @@ Partial Class Frm_Contabilidad_Captura_Polizas
         Me.TxtTotalAbonos = New System.Windows.Forms.MaskedTextBox()
         Me.LblDisplayTotales = New System.Windows.Forms.Label()
         Me.GbPolizaGlogal = New System.Windows.Forms.GroupBox()
+        Me.chkDetallarGastos = New System.Windows.Forms.CheckBox()
         Me.btnDocumentoSiguiente = New System.Windows.Forms.Button()
         Me.btnDocumentoAnterior = New System.Windows.Forms.Button()
         Me.btnNombreCompleto = New System.Windows.Forms.Button()
@@ -73,6 +74,7 @@ Partial Class Frm_Contabilidad_Captura_Polizas
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.Grid1 = New FlexCell.Grid()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.btnVisorXML = New System.Windows.Forms.Button()
         Me.lblXMLPDFMsg = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -89,7 +91,6 @@ Partial Class Frm_Contabilidad_Captura_Polizas
         Me.btnAgregarPDF = New System.Windows.Forms.Button()
         Me.btnAgregarXML = New System.Windows.Forms.Button()
         Me.GridXMLs = New FlexCell.Grid()
-        Me.chkDetallarGastos = New System.Windows.Forms.CheckBox()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.GbPolizaGlogal.SuspendLayout()
@@ -288,6 +289,16 @@ Partial Class Frm_Contabilidad_Captura_Polizas
         Me.GbPolizaGlogal.Size = New System.Drawing.Size(1103, 125)
         Me.GbPolizaGlogal.TabIndex = 0
         Me.GbPolizaGlogal.TabStop = False
+        '
+        'chkDetallarGastos
+        '
+        Me.chkDetallarGastos.AutoSize = True
+        Me.chkDetallarGastos.Location = New System.Drawing.Point(874, 101)
+        Me.chkDetallarGastos.Name = "chkDetallarGastos"
+        Me.chkDetallarGastos.Size = New System.Drawing.Size(96, 17)
+        Me.chkDetallarGastos.TabIndex = 381
+        Me.chkDetallarGastos.Text = "Detallar gastos"
+        Me.chkDetallarGastos.UseVisualStyleBackColor = True
         '
         'btnDocumentoSiguiente
         '
@@ -580,6 +591,7 @@ Partial Class Frm_Contabilidad_Captura_Polizas
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.btnVisorXML)
         Me.TabPage2.Controls.Add(Me.lblXMLPDFMsg)
         Me.TabPage2.Controls.Add(Me.Label5)
         Me.TabPage2.Controls.Add(Me.Label4)
@@ -603,6 +615,18 @@ Partial Class Frm_Contabilidad_Captura_Polizas
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "XML's"
         Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'btnVisorXML
+        '
+        Me.btnVisorXML.Image = Global.BsControl.My.Resources.Resources.xml1
+        Me.btnVisorXML.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnVisorXML.Location = New System.Drawing.Point(600, 227)
+        Me.btnVisorXML.Name = "btnVisorXML"
+        Me.btnVisorXML.Size = New System.Drawing.Size(76, 36)
+        Me.btnVisorXML.TabIndex = 243
+        Me.btnVisorXML.Text = "Visor"
+        Me.btnVisorXML.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnVisorXML.UseVisualStyleBackColor = True
         '
         'lblXMLPDFMsg
         '
@@ -702,7 +726,7 @@ Partial Class Frm_Contabilidad_Captura_Polizas
         '
         Me.btnEliminarXML.Image = Global.BsControl.My.Resources.Resources.xml1
         Me.btnEliminarXML.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnEliminarXML.Location = New System.Drawing.Point(600, 227)
+        Me.btnEliminarXML.Location = New System.Drawing.Point(682, 227)
         Me.btnEliminarXML.Name = "btnEliminarXML"
         Me.btnEliminarXML.Size = New System.Drawing.Size(76, 36)
         Me.btnEliminarXML.TabIndex = 232
@@ -718,7 +742,7 @@ Partial Class Frm_Contabilidad_Captura_Polizas
         Me.btnVerPDF.Name = "btnVerPDF"
         Me.btnVerPDF.Size = New System.Drawing.Size(76, 36)
         Me.btnVerPDF.TabIndex = 231
-        Me.btnVerPDF.Text = "Ver"
+        Me.btnVerPDF.Text = "Abrir"
         Me.btnVerPDF.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnVerPDF.UseVisualStyleBackColor = True
         '
@@ -730,7 +754,7 @@ Partial Class Frm_Contabilidad_Captura_Polizas
         Me.btnVerXML.Name = "btnVerXML"
         Me.btnVerXML.Size = New System.Drawing.Size(76, 36)
         Me.btnVerXML.TabIndex = 230
-        Me.btnVerXML.Text = "Ver"
+        Me.btnVerXML.Text = "Abrir"
         Me.btnVerXML.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnVerXML.UseVisualStyleBackColor = True
         '
@@ -777,16 +801,6 @@ Partial Class Frm_Contabilidad_Captura_Polizas
         Me.GridXMLs.Size = New System.Drawing.Size(1081, 213)
         Me.GridXMLs.TabIndex = 2
         Me.GridXMLs.UncheckedImage = CType(resources.GetObject("GridXMLs.UncheckedImage"), System.Drawing.Bitmap)
-        '
-        'chkDetallarGastos
-        '
-        Me.chkDetallarGastos.AutoSize = True
-        Me.chkDetallarGastos.Location = New System.Drawing.Point(874, 101)
-        Me.chkDetallarGastos.Name = "chkDetallarGastos"
-        Me.chkDetallarGastos.Size = New System.Drawing.Size(96, 17)
-        Me.chkDetallarGastos.TabIndex = 381
-        Me.chkDetallarGastos.Text = "Detallar gastos"
-        Me.chkDetallarGastos.UseVisualStyleBackColor = True
         '
         'Frm_Contabilidad_Captura_Polizas
         '
@@ -887,4 +901,5 @@ Partial Class Frm_Contabilidad_Captura_Polizas
     Friend WithEvents Label2 As Label
     Friend WithEvents lblXMLPDFMsg As Label
     Friend WithEvents chkDetallarGastos As CheckBox
+    Friend WithEvents btnVisorXML As Button
 End Class
