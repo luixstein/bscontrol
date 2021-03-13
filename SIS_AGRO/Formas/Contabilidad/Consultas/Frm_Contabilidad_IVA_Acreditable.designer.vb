@@ -49,6 +49,14 @@ Partial Class Frm_Contabilidad_IVA_Acreditable
         Me.Label1 = New System.Windows.Forms.Label()
         Me.DtFechaHasta = New System.Windows.Forms.DateTimePicker()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.lblTotalIVAAcreditable8 = New System.Windows.Forms.Label()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.lblTotalActos8 = New System.Windows.Forms.Label()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.lblTotalIVARetenido10 = New System.Windows.Forms.Label()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.lblTotalIVARetenido6 = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
         Me.lblTotalIVAAcreditable16 = New System.Windows.Forms.Label()
         Me.lblTotalIVARetenido4 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
@@ -60,14 +68,8 @@ Partial Class Frm_Contabilidad_IVA_Acreditable
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.cmdGeneraArchivoBatch = New System.Windows.Forms.Button()
-        Me.lblTotalIVARetenido6 = New System.Windows.Forms.Label()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.lblTotalIVARetenido10 = New System.Windows.Forms.Label()
-        Me.Label12 = New System.Windows.Forms.Label()
-        Me.lblTotalActos8 = New System.Windows.Forms.Label()
-        Me.Label11 = New System.Windows.Forms.Label()
-        Me.lblTotalIVAAcreditable8 = New System.Windows.Forms.Label()
-        Me.Label13 = New System.Windows.Forms.Label()
+        Me.lblTotalActosExentos = New System.Windows.Forms.Label()
+        Me.lbls = New System.Windows.Forms.Label()
         Me.ToolStrip1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.gbAgrupado.SuspendLayout()
@@ -331,6 +333,8 @@ Partial Class Frm_Contabilidad_IVA_Acreditable
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.lblTotalActosExentos)
+        Me.GroupBox3.Controls.Add(Me.lbls)
         Me.GroupBox3.Controls.Add(Me.lblTotalIVAAcreditable8)
         Me.GroupBox3.Controls.Add(Me.Label13)
         Me.GroupBox3.Controls.Add(Me.lblTotalActos8)
@@ -356,11 +360,91 @@ Partial Class Frm_Contabilidad_IVA_Acreditable
         Me.GroupBox3.TabIndex = 4
         Me.GroupBox3.TabStop = False
         '
+        'lblTotalIVAAcreditable8
+        '
+        Me.lblTotalIVAAcreditable8.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblTotalIVAAcreditable8.ForeColor = System.Drawing.Color.DarkBlue
+        Me.lblTotalIVAAcreditable8.Location = New System.Drawing.Point(91, 197)
+        Me.lblTotalIVAAcreditable8.Name = "lblTotalIVAAcreditable8"
+        Me.lblTotalIVAAcreditable8.Size = New System.Drawing.Size(102, 13)
+        Me.lblTotalIVAAcreditable8.TabIndex = 264
+        Me.lblTotalIVAAcreditable8.Text = "0.00"
+        Me.lblTotalIVAAcreditable8.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(6, 197)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(77, 13)
+        Me.Label13.TabIndex = 263
+        Me.Label13.Text = "IVA acred 8% :"
+        '
+        'lblTotalActos8
+        '
+        Me.lblTotalActos8.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblTotalActos8.ForeColor = System.Drawing.Color.DarkBlue
+        Me.lblTotalActos8.Location = New System.Drawing.Point(91, 96)
+        Me.lblTotalActos8.Name = "lblTotalActos8"
+        Me.lblTotalActos8.Size = New System.Drawing.Size(102, 13)
+        Me.lblTotalActos8.TabIndex = 262
+        Me.lblTotalActos8.Text = "0.00"
+        Me.lblTotalActos8.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Location = New System.Drawing.Point(6, 96)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(39, 13)
+        Me.Label11.TabIndex = 261
+        Me.Label11.Text = "Al 8% :"
+        '
+        'lblTotalIVARetenido10
+        '
+        Me.lblTotalIVARetenido10.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblTotalIVARetenido10.ForeColor = System.Drawing.Color.DarkBlue
+        Me.lblTotalIVARetenido10.Location = New System.Drawing.Point(91, 257)
+        Me.lblTotalIVARetenido10.Name = "lblTotalIVARetenido10"
+        Me.lblTotalIVARetenido10.Size = New System.Drawing.Size(102, 13)
+        Me.lblTotalIVARetenido10.TabIndex = 260
+        Me.lblTotalIVARetenido10.Text = "0.00"
+        Me.lblTotalIVARetenido10.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(6, 257)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(86, 13)
+        Me.Label12.TabIndex = 259
+        Me.Label12.Text = "IVA retenido 10 :"
+        '
+        'lblTotalIVARetenido6
+        '
+        Me.lblTotalIVARetenido6.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblTotalIVARetenido6.ForeColor = System.Drawing.Color.DarkBlue
+        Me.lblTotalIVARetenido6.Location = New System.Drawing.Point(91, 237)
+        Me.lblTotalIVARetenido6.Name = "lblTotalIVARetenido6"
+        Me.lblTotalIVARetenido6.Size = New System.Drawing.Size(102, 13)
+        Me.lblTotalIVARetenido6.TabIndex = 258
+        Me.lblTotalIVARetenido6.Text = "0.00"
+        Me.lblTotalIVARetenido6.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(6, 237)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(80, 13)
+        Me.Label6.TabIndex = 257
+        Me.Label6.Text = "IVA retenido 6 :"
+        '
         'lblTotalIVAAcreditable16
         '
         Me.lblTotalIVAAcreditable16.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblTotalIVAAcreditable16.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblTotalIVAAcreditable16.Location = New System.Drawing.Point(91, 156)
+        Me.lblTotalIVAAcreditable16.Location = New System.Drawing.Point(91, 177)
         Me.lblTotalIVAAcreditable16.Name = "lblTotalIVAAcreditable16"
         Me.lblTotalIVAAcreditable16.Size = New System.Drawing.Size(102, 13)
         Me.lblTotalIVAAcreditable16.TabIndex = 255
@@ -371,7 +455,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable
         '
         Me.lblTotalIVARetenido4.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblTotalIVARetenido4.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblTotalIVARetenido4.Location = New System.Drawing.Point(91, 196)
+        Me.lblTotalIVARetenido4.Location = New System.Drawing.Point(91, 217)
         Me.lblTotalIVARetenido4.Name = "lblTotalIVARetenido4"
         Me.lblTotalIVARetenido4.Size = New System.Drawing.Size(102, 13)
         Me.lblTotalIVARetenido4.TabIndex = 256
@@ -381,7 +465,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(6, 156)
+        Me.Label7.Location = New System.Drawing.Point(6, 177)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(83, 13)
         Me.Label7.TabIndex = 254
@@ -390,7 +474,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(6, 196)
+        Me.Label9.Location = New System.Drawing.Point(6, 217)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(80, 13)
         Me.Label9.TabIndex = 253
@@ -400,7 +484,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable
         '
         Me.lblTotalActos.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblTotalActos.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblTotalActos.Location = New System.Drawing.Point(91, 136)
+        Me.lblTotalActos.Location = New System.Drawing.Point(91, 157)
         Me.lblTotalActos.Name = "lblTotalActos"
         Me.lblTotalActos.Size = New System.Drawing.Size(102, 13)
         Me.lblTotalActos.TabIndex = 252
@@ -432,7 +516,7 @@ Partial Class Frm_Contabilidad_IVA_Acreditable
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(6, 136)
+        Me.Label4.Location = New System.Drawing.Point(6, 157)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(63, 13)
         Me.Label4.TabIndex = 3
@@ -465,85 +549,25 @@ Partial Class Frm_Contabilidad_IVA_Acreditable
         Me.cmdGeneraArchivoBatch.Text = "Genera archivo para carga batch"
         Me.cmdGeneraArchivoBatch.UseVisualStyleBackColor = True
         '
-        'lblTotalIVARetenido6
+        'lblTotalActosExentos
         '
-        Me.lblTotalIVARetenido6.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.lblTotalIVARetenido6.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblTotalIVARetenido6.Location = New System.Drawing.Point(91, 216)
-        Me.lblTotalIVARetenido6.Name = "lblTotalIVARetenido6"
-        Me.lblTotalIVARetenido6.Size = New System.Drawing.Size(102, 13)
-        Me.lblTotalIVARetenido6.TabIndex = 258
-        Me.lblTotalIVARetenido6.Text = "0.00"
-        Me.lblTotalIVARetenido6.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.lblTotalActosExentos.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblTotalActosExentos.ForeColor = System.Drawing.Color.DarkBlue
+        Me.lblTotalActosExentos.Location = New System.Drawing.Point(91, 136)
+        Me.lblTotalActosExentos.Name = "lblTotalActosExentos"
+        Me.lblTotalActosExentos.Size = New System.Drawing.Size(102, 13)
+        Me.lblTotalActosExentos.TabIndex = 266
+        Me.lblTotalActosExentos.Text = "0.00"
+        Me.lblTotalActosExentos.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'Label6
+        'lbls
         '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(6, 216)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(80, 13)
-        Me.Label6.TabIndex = 257
-        Me.Label6.Text = "IVA retenido 6 :"
-        '
-        'lblTotalIVARetenido10
-        '
-        Me.lblTotalIVARetenido10.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.lblTotalIVARetenido10.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblTotalIVARetenido10.Location = New System.Drawing.Point(91, 236)
-        Me.lblTotalIVARetenido10.Name = "lblTotalIVARetenido10"
-        Me.lblTotalIVARetenido10.Size = New System.Drawing.Size(102, 13)
-        Me.lblTotalIVARetenido10.TabIndex = 260
-        Me.lblTotalIVARetenido10.Text = "0.00"
-        Me.lblTotalIVARetenido10.TextAlign = System.Drawing.ContentAlignment.TopRight
-        '
-        'Label12
-        '
-        Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(6, 236)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(86, 13)
-        Me.Label12.TabIndex = 259
-        Me.Label12.Text = "IVA retenido 10 :"
-        '
-        'lblTotalActos8
-        '
-        Me.lblTotalActos8.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.lblTotalActos8.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblTotalActos8.Location = New System.Drawing.Point(91, 96)
-        Me.lblTotalActos8.Name = "lblTotalActos8"
-        Me.lblTotalActos8.Size = New System.Drawing.Size(102, 13)
-        Me.lblTotalActos8.TabIndex = 262
-        Me.lblTotalActos8.Text = "0.00"
-        Me.lblTotalActos8.TextAlign = System.Drawing.ContentAlignment.TopRight
-        '
-        'Label11
-        '
-        Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(6, 96)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(39, 13)
-        Me.Label11.TabIndex = 261
-        Me.Label11.Text = "Al 8% :"
-        '
-        'lblTotalIVAAcreditable8
-        '
-        Me.lblTotalIVAAcreditable8.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.lblTotalIVAAcreditable8.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblTotalIVAAcreditable8.Location = New System.Drawing.Point(91, 176)
-        Me.lblTotalIVAAcreditable8.Name = "lblTotalIVAAcreditable8"
-        Me.lblTotalIVAAcreditable8.Size = New System.Drawing.Size(102, 13)
-        Me.lblTotalIVAAcreditable8.TabIndex = 264
-        Me.lblTotalIVAAcreditable8.Text = "0.00"
-        Me.lblTotalIVAAcreditable8.TextAlign = System.Drawing.ContentAlignment.TopRight
-        '
-        'Label13
-        '
-        Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(6, 176)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(77, 13)
-        Me.Label13.TabIndex = 263
-        Me.Label13.Text = "IVA acred 8% :"
+        Me.lbls.AutoSize = True
+        Me.lbls.Location = New System.Drawing.Point(6, 136)
+        Me.lbls.Name = "lbls"
+        Me.lbls.Size = New System.Drawing.Size(51, 13)
+        Me.lbls.TabIndex = 265
+        Me.lbls.Text = "Exentos :"
         '
         'Frm_Contabilidad_IVA_Acreditable
         '
@@ -615,4 +639,6 @@ Partial Class Frm_Contabilidad_IVA_Acreditable
     Friend WithEvents Label11 As Label
     Friend WithEvents lblTotalIVAAcreditable8 As Label
     Friend WithEvents Label13 As Label
+    Friend WithEvents lblTotalActosExentos As Label
+    Friend WithEvents lbls As Label
 End Class

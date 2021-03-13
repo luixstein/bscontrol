@@ -7,7 +7,7 @@ Public Class Class_Contabilidad_IVA_Acreditable_DIOT
 
 #Region "Campos"
 #Region "Campos de la tabla"
-    Private _TotalActos0 As Double = 0, _TotalActos16 As Double = 0, _TotalActos8 As Double = 0, _TotalActos15 As Double = 0, _TotalActos11 As Double = 0, _TotalActos10 As Double = 0, _TotalActos As Double = 0
+    Private _TotalActos0 As Double = 0, _TotalActosExentos As Double = 0, _TotalActos16 As Double = 0, _TotalActos8 As Double = 0, _TotalActos15 As Double = 0, _TotalActos11 As Double = 0, _TotalActos10 As Double = 0, _TotalActos As Double = 0
     Private _TotalIVAAcreditable16 As Double = 0, _TotalIVAAcreditable8 As Double = 0, _TotalIVARetenido4 As Double = 0, _TotalIVARetenido6 As Double = 0, _TotalIVARetenido10 As Double = 0
 #End Region
 
@@ -21,6 +21,12 @@ Public Class Class_Contabilidad_IVA_Acreditable_DIOT
     Public ReadOnly Property TotalActos0 As Double
         Get
             Return Me._TotalActos0
+        End Get
+    End Property
+
+    Public ReadOnly Property TotalActosExentos As Double
+        Get
+            Return Me._TotalActosExentos
         End Get
     End Property
 
@@ -120,7 +126,7 @@ Public Class Class_Contabilidad_IVA_Acreditable_DIOT
         Dim cmd As New SqlCommand, dReader As SqlDataReader, sqlParametro As SqlParameter
         Dim strStreamW As Stream = Nothing, strStreamWriter As StreamWriter = Nothing
 
-        Me._TotalActos0 = 0 : Me._TotalActos16 = 0 : Me._TotalActos15 = 0 : Me._TotalActos11 = 0 : Me._TotalActos10 = 0
+        Me._TotalActos0 = 0 : Me._TotalActosExentos = 0 : Me._TotalActos16 = 0 : Me._TotalActos15 = 0 : Me._TotalActos11 = 0 : Me._TotalActos10 = 0
 
         Try
             sCarpeta = My.Settings.Ruta & "\Iva acreditable"
@@ -159,13 +165,14 @@ Public Class Class_Contabilidad_IVA_Acreditable_DIOT
                         strStreamWriter.WriteLine("" & dReader("CADENA_BATCH").ToString)
 
                         Me._TotalActos0 += valorNumerico("" & dReader("TOTAL_ACTOS_AL_0").ToString)
+                        Me._TotalActosExentos += valorNumerico("" & dReader("TOTAL_ACTOS_EXENTOS").ToString)
                         Me._TotalActos16 += valorNumerico("" & dReader("TOTAL_ACTOS_AL_16").ToString)
                         Me._TotalActos8 += valorNumerico("" & dReader("TOTAL_ACTOS_AL_8").ToString)
                         Me._TotalActos15 += valorNumerico("" & dReader("TOTAL_ACTOS_AL_15").ToString)
                         Me._TotalActos11 += valorNumerico("" & dReader("TOTAL_ACTOS_AL_11").ToString)
                         Me._TotalActos10 += valorNumerico("" & dReader("TOTAL_ACTOS_AL_10").ToString)
 
-                        Me._TotalActos = Me._TotalActos0 + Me._TotalActos16 + Me._TotalActos8 + Me._TotalActos15 + Me._TotalActos11 + Me._TotalActos10
+                        Me._TotalActos = Me._TotalActos0 + Me._TotalActosExentos + Me._TotalActos16 + Me._TotalActos8 + Me._TotalActos15 + Me._TotalActos11 + Me._TotalActos10
 
                         Me._TotalIVAAcreditable16 += valorNumerico("" & dReader("TOTAL_IVA_ACREDITABLE_AL_16").ToString)
                         Me._TotalIVAAcreditable8 += valorNumerico("" & dReader("TOTAL_IVA_ACREDITABLE_AL_8").ToString)
@@ -182,7 +189,7 @@ Public Class Class_Contabilidad_IVA_Acreditable_DIOT
 
                     bResultado = True
                 Catch ex As Exception
-                    HandleError(Me.Nombre_Clase, "Consultar", ex)
+                    HandleError(Me.Nombre_Clase, "GeneraArchivoBatch", ex)
                 Finally
                     Me._Conexion.Close()
                     cmd.Dispose()
