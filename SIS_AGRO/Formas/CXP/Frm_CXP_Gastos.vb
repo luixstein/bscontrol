@@ -453,6 +453,31 @@ Buscar:
         End Try
     End Sub
 
+    Private Sub TxtCodigoArticulo_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoArticulo.KeyDown
+        Dim oArticulos As New Class_CatArticulos
+
+        Select Case e.KeyCode
+            Case Keys.F6
+                oArticulos = New Class_CatArticulos
+                Dim sArticulo As String = oArticulos.BusquedaVisual_PorDescripcion
+                If sArticulo.Length > 0 Then
+                    Me.TxtCodigoArticulo.Text = sArticulo
+                    Me.lblNombreArticulo.Text = oArticulos.BuscarNombreArticulo(sArticulo)
+                End If
+            Case Keys.Enter
+                Me.lblNombreArticulo.Text = oArticulos.BuscarNombreArticulo(Me.TxtCodigoArticulo.Text)
+                If txtLEN(Me.lblNombreArticulo.Text) = False Then
+                    lblNombreArticulo.Text = ""
+                    txtTAB(e)
+                    Exit Sub
+                End If
+
+            Case Keys.Escape
+        End Select
+
+        oArticulos = Nothing
+    End Sub
+
     Private Sub ckbSaldos_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ckbSaldos.CheckedChanged
         If txtLEN(Me.TxtCodigoProveedor.Text) = True Then
             Me.CargaComprasConSaldo()
@@ -829,6 +854,8 @@ Buscar:
             Me.DtpFechaFacturaProveedor.Value = Date.Now
             Me.TxtCodigoAlmacen.Text = ""
             Me.LblNombreAlmacen.Text = ""
+            Me.TxtCodigoArticulo.Text = ""
+            Me.lblNombreArticulo.Text = ""
 
             If Now.DayOfWeek = DayOfWeek.Friday Then
                 Me.dtpFechaVencimiento.Value = Now
@@ -1306,6 +1333,7 @@ Buscar:
                     Me.TxtCodigoAlmacen.Enabled = False
                     Me.TxtCodigoProveedor.Enabled = False
                     Me.cboTipoGasto.Enabled = False
+                    Me.TxtCodigoArticulo.Enabled = False
 
                     Me.gbCompraProveedor.Enabled = False
                     Me.gbCompras.Enabled = False
@@ -2404,6 +2432,7 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                     .FOLIO_EMBARQUE = Me.txtEmbarque.Text
                     .FECHA_PROGRAMACION = Me.dtpFechaVencimiento.Value
                     .ID_NOMINA_TEMPORADA = CInt(Me.cboTemporada.SelectedValue)
+                    .CODIGO_ARTICULO_GASTOS = Me.TxtCodigoArticulo.Text
 
                     For i = 1 To Me.GridCuentas.Rows - 1
                         If Me.GridCuentas.Cell(i, Me.iGyCuentaContable).Text <> "" And valorNumerico(Me.GridCuentas.Cell(i, Me.iGyCtasImporte).Text) > 0 Then
@@ -2718,6 +2747,22 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
                     Me.txtFolioProveedor.Focus()
                     Return False
                 End If
+
+                If txtLEN(Me.TxtCodigoArticulo.Text) Then
+                    Dim oArticulo As New Class_CatArticulos(Me.TxtCodigoArticulo.Text)
+
+                    If oArticulo.Existe = False Then
+                        MsgBox("El artículo no existe en el catalogo.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    ElseIf oArticulo.ESTATUS = "B" Then
+                        MsgBox("El artículo esta dado de baja en el catalogo.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+
+                    oArticulo = Nothing
+                End If
+
+
             End If
 
             If Me.ckbDolares.Checked = True Then
@@ -3130,6 +3175,13 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
             Dim oProveedor As New Class_CatProveedores(Me.TxtCodigoProveedor.Text)
             Me.LblProveedor.Text = oProveedor.Nombre_Proveedor.ToUpper
             Me.LblCuentaContableProveedor.Text = oProveedor.CUENTA_CONTABLE
+
+            Me.TxtCodigoArticulo.Text = Me.oCompras.CODIGO_ARTICULO_GASTOS
+
+            If txtLEN(Me.TxtCodigoArticulo.Text) Then
+                sql = New Class_find("SELECT DESCRIPCION FROM CAT_ARTICULOS WHERE CODIGO_ARTICULO='" & Me.TxtCodigoArticulo.Text & "' ")
+                Me.lblNombreArticulo.Text = sql.Result1
+            End If
 
             Select Case oCompras.ESTATUS
                 Case "A"
