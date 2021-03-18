@@ -1060,7 +1060,7 @@ enter:
         Catch ex As Exception
             HandleError(Me.Name, "FormateaGrid", ex)
         Finally
-            Me.Grid1.AutoRedraw = False
+            Me.Grid1.AutoRedraw = True
             Me.Grid1.Refresh()
         End Try
     End Sub
