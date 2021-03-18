@@ -1450,7 +1450,8 @@ Buscar:
                         If valorNumerico(Me.Grid.Cell(i, Me.iGyDiferencia).Text) <> 0 Then
                             Me.oFormaPoliza.Grid1.Rows = Me.oFormaPoliza.Grid1.Rows + 1
 
-                            oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_PERDIDA_GANACIA_CAMBIARIA)
+                            'se comentario porque ahora hay dos cuentas, y este código al ser old no se le da mantemiento.
+                            'oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_PERDIDA_GANACIA_CAMBIARIA)
                             Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE.ToString
                             Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA
                             Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.Grid.Cell(i, Me.iGyReferencia).Text

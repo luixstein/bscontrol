@@ -46,7 +46,8 @@ Public NotInheritable Class Class_sisEmpresa
     Private _NUMERO_CLIENTE_BANCO As String
     Private _SUCURSAL_BANCO As String
     Private _NUMERO_CUENTA_BANCO As String
-    Private _CUENTA_CONTABLE_PERDIDA_GANACIA_CAMBIARIA As String
+    Private _CUENTA_CONTABLE_PERDIDA_CAMBIARIA As String
+    Private _CUENTA_CONTABLE_GANANCIA_CAMBIARIA As String
     Private _CUENTA_CONTABLE_CONTRA_CUENTA_DOLARES As String
     Private _CUENTA_CONTABLE_PROVEEDORES_CONTRA_CUENTA_DOLARES As String
     Private _CODIGO_TAMAÑO_REZAGA As String
@@ -398,9 +399,15 @@ Public NotInheritable Class Class_sisEmpresa
         End Get
     End Property
 
-    Public ReadOnly Property CUENTA_CONTABLE_PERDIDA_GANACIA_CAMBIARIA() As String
+    Public ReadOnly Property CUENTA_CONTABLE_PERDIDA_CAMBIARIA() As String
         Get
-            Return Me._CUENTA_CONTABLE_PERDIDA_GANACIA_CAMBIARIA
+            Return Me._CUENTA_CONTABLE_PERDIDA_CAMBIARIA
+        End Get
+    End Property
+
+    Public ReadOnly Property CUENTA_CONTABLE_GANANCIA_CAMBIARIA() As String
+        Get
+            Return Me._CUENTA_CONTABLE_GANANCIA_CAMBIARIA
         End Get
     End Property
 
@@ -933,7 +940,7 @@ Public NotInheritable Class Class_sisEmpresa
             Finaliza(False)
         End If
 
-#If Not Debug Then
+#If Not DEBUG Then
         'If Me._VERSION_AGRINET <> My.Application.Info.Version.Revision Then
         '    MsgBox("La versión no esta actualizada.", MsgBoxStyle.Exclamation, Me.Nombre_Catalogo)
         '    Finaliza(False)
@@ -1046,7 +1053,8 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._CODIGO_FAMILIA_MATERIA_EMPAQUE = "" & dReader("CODIGO_FAMILIA_MATERIA_EMPAQUE").ToString
                     'Me._CUENTA_CONTABLE_MATERIA_EMPAQUE = "0002" & dReader("CUENTA_CONTABLE_MATERIA_EMPAQUE").ToString
                     Me._CUENTA_CONTABLE_COSTOS_DIRECTOS_PRODUCCION = "" & dReader("CUENTA_CONTABLE_COSTOS_DIRECTOS_PRODUCCION").ToString
-                    Me._CUENTA_CONTABLE_PERDIDA_GANACIA_CAMBIARIA = "" & dReader("CUENTA_CONTABLE_PERDIDA_GANACIA_CAMBIARIA").ToString
+                    Me._CUENTA_CONTABLE_PERDIDA_CAMBIARIA = "" & dReader("CUENTA_CONTABLE_PERDIDA_CAMBIARIA").ToString
+                    Me._CUENTA_CONTABLE_GANANCIA_CAMBIARIA = "" & dReader("CUENTA_CONTABLE_GANANCIA_CAMBIARIA").ToString
                     Me._CUENTA_CONTABLE_CONTRA_CUENTA_DOLARES = "" & dReader("CUENTA_CONTABLE_CONTRA_CUENTA_DOLARES").ToString
                     Me._CUENTA_CONTABLE_PROVEEDORES_CONTRA_CUENTA_DOLARES = "" & dReader("CUENTA_CONTABLE_PROVEEDORES_CONTRA_CUENTA_DOLARES").ToString
                     Me._CODIGO_REGIMEN_FISCAL = CInt(dReader("CODIGO_REGIMEN_FISCAL"))
