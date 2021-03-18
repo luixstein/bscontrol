@@ -2307,24 +2307,24 @@ Buscar:
                         dPerdidaGanancia = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcDiferenciaCambiaria).Text)
 
                         If Math.Abs(dPerdidaGanancia) > 0 Then
-                            'MsgBox("falta ver si son 2 cuentas diferentes")
-                            oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_PERDIDA_GANACIA_CAMBIARIA)
-
                             R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+
+                            If dPerdidaGanancia < 0 Then 'Si es negativa es perdida
+                                oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_PERDIDA_CAMBIARIA)
+
+                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = Math.Abs(dPerdidaGanancia).ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
+                            Else 'Si es positiva es ganancia
+                                oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_GANANCIA_CAMBIARIA)
+
+                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
+                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dPerdidaGanancia.ToString
+                            End If
+
                             Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE 'oCliente.CUENTA_CONTABLE.ToString
                             Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA 'oCliente.NOMBRE_CLIENTE
                             Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
                             Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
-
-                            If dPerdidaGanancia < 0 Then
-                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = Math.Abs(dPerdidaGanancia).ToString 'Si es negativa es perdida
-                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
-                            Else
-                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
-                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dPerdidaGanancia.ToString 'Si es positiva es ganancia
-                            End If
-
-                            'R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
                         End If
 
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -2460,23 +2460,24 @@ Buscar:
                         dPerdidaGanancia = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcDiferenciaCambiaria).Text)
 
                         If Math.Abs(dPerdidaGanancia) > 0 Then
-                            'MsgBox("falta ver si son 2 cuentas diferentes")
-                            oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_PERDIDA_GANACIA_CAMBIARIA)
-
                             R = R + 1 : Me.oFormaPoliza.Grid1.Rows += 1
+
+                            If dPerdidaGanancia < 0 Then 'Si es negativa es perdida
+                                oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_PERDIDA_CAMBIARIA)
+
+                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = Math.Abs(dPerdidaGanancia).ToString
+                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
+                            Else 'Si es positiva es ganancia
+                                oContaCuenta = New Class_CatCuentas(Empresa_Sistema.CUENTA_CONTABLE_GANANCIA_CAMBIARIA)
+
+                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
+                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dPerdidaGanancia.ToString
+                            End If
+
                             Me.oFormaPoliza.Grid1.Cell(R, 1).Text = oContaCuenta.CUENTA_CONTABLE 'oCliente.CUENTA_CONTABLE.ToString
                             Me.oFormaPoliza.Grid1.Cell(R, 2).Text = oContaCuenta.NOMBRE_CUENTA 'oCliente.NOMBRE_CLIENTE
                             Me.oFormaPoliza.Grid1.Cell(R, 3).Text = Me.GridVentas.Cell(i, Me.iGyB_PagoReferencia).Text
                             Me.oFormaPoliza.Grid1.Cell(R, 4).Text = oContaCuenta.NATURALEZA_CONTABLE.ToString
-
-                            If dPerdidaGanancia < 0 Then
-                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = Math.Abs(dPerdidaGanancia).ToString 'Si es negativa es perdida
-                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = "0"
-                            Else
-                                Me.oFormaPoliza.Grid1.Cell(R, 5).Text = "0"
-                                Me.oFormaPoliza.Grid1.Cell(R, 6).Text = dPerdidaGanancia.ToString 'Si es positiva es ganancia
-                            End If
-
                         End If
 
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
