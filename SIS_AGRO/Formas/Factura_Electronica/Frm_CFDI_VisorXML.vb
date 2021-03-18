@@ -323,8 +323,8 @@ Public Class Frm_CFDI_VisorXML
                                                                 Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpImpuesto).Text = sImpuesto
                                                                 Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpTipoFactor).Text = xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Attributes("TipoFactor").Value
                                                                 Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpBase).Text = System.Convert.ToDouble(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Attributes("Base").Value)
-                                                                Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpTasaOCuota).Text = System.Convert.ToDouble(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Attributes("TasaOCuota").Value)
-                                                                Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpImporte).Text = System.Convert.ToDouble(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Attributes("Importe").Value)
+                                                                Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpTasaOCuota).Text = LeeValorXML(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Attributes("TasaOCuota")) 'Usa LeeValorXML orque es opcional
+                                                                Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpImporte).Text = LeeValorXML(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Attributes("Importe")) 'Usa LeeValorXML orque es opcional
                                                             End If
                                                         Next
                                                     ElseIf xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).Name = "cfdi:Retenciones" Then
@@ -341,8 +341,8 @@ Public Class Frm_CFDI_VisorXML
                                                                 Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpImpuesto).Text = sImpuesto
                                                                 Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpTipoFactor).Text = xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Attributes("TipoFactor").Value
                                                                 Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpBase).Text = System.Convert.ToDouble(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Attributes("Base").Value)
-                                                                Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpTasaOCuota).Text = System.Convert.ToDouble(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Attributes("TasaOCuota").Value)
-                                                                Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpImporte).Text = System.Convert.ToDouble(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Attributes("Importe").Value)
+                                                                Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpTasaOCuota).Text = LeeValorXML(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Attributes("TasaOCuota")) 'Usa LeeValorXML orque es opcional
+                                                                Me.GridConceptos.Cell(iRenglonConcepto, Me.iGyConImpImporte).Text = LeeValorXML(xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).ChildNodes(k).ChildNodes(l).ChildNodes(m).Attributes("Importe")) 'Usa LeeValorXML orque es opcional
                                                             End If
                                                         Next
                                                     End If
