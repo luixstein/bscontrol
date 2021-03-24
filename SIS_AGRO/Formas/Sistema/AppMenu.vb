@@ -1773,4 +1773,12 @@ Public Class AppMenu
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
     End Sub
+
+    Private Sub EmbarquesToolStripMenuItem2_Click(sender As Object, e As EventArgs) Handles EmbarquesToolStripMenuItem2.Click
+        Dim Child As New Catalogo_Participacion_Socios
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
 End Class

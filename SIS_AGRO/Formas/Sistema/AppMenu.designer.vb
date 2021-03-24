@@ -238,6 +238,7 @@ Partial Public Class AppMenu
         Me.ConsultasToolStripMenuItem5 = New System.Windows.Forms.ToolStripMenuItem()
         Me.GlobalDeDocumentosToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.AlimentaciónDetalleToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AlimentaciónAnteriorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UtileriasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AdministracionToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ClientesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -253,7 +254,7 @@ Partial Public Class AppMenu
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
-        Me.AlimentaciónAnteriorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EmbarquesToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -657,7 +658,7 @@ Partial Public Class AppMenu
         '
         'VentasToolStripMenuItem
         '
-        Me.VentasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ClientesToolStripMenuItem1, Me.ImportarClienteSucursalToolStripMenuItem, Me.ListaDePreciosToolStripMenuItem, Me.VendedoresToolStripMenuItem1, Me.ZonasToolStripMenuItem, Me.PropietariosToolStripMenuItem, Me.GirosDeClientesToolStripMenuItem})
+        Me.VentasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ClientesToolStripMenuItem1, Me.ImportarClienteSucursalToolStripMenuItem, Me.ListaDePreciosToolStripMenuItem, Me.VendedoresToolStripMenuItem1, Me.ZonasToolStripMenuItem, Me.PropietariosToolStripMenuItem, Me.GirosDeClientesToolStripMenuItem, Me.EmbarquesToolStripMenuItem2})
         Me.VentasToolStripMenuItem.Name = "VentasToolStripMenuItem"
         Me.VentasToolStripMenuItem.Size = New System.Drawing.Size(214, 26)
         Me.VentasToolStripMenuItem.Text = "&Ventas"
@@ -1633,6 +1634,12 @@ Partial Public Class AppMenu
         Me.AlimentaciónDetalleToolStripMenuItem.Size = New System.Drawing.Size(235, 26)
         Me.AlimentaciónDetalleToolStripMenuItem.Text = "Alimentación detalle"
         '
+        'AlimentaciónAnteriorToolStripMenuItem
+        '
+        Me.AlimentaciónAnteriorToolStripMenuItem.Name = "AlimentaciónAnteriorToolStripMenuItem"
+        Me.AlimentaciónAnteriorToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
+        Me.AlimentaciónAnteriorToolStripMenuItem.Text = "Alimentación (Anterior)"
+        '
         'UtileriasToolStripMenuItem
         '
         Me.UtileriasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AdministracionToolStripMenuItem, Me.ConfiguraciónDeUsuariosToolStripMenuItem, Me.MonitoDeTimbradosToolStripMenuItem, Me.EmbarquesMasivosToolStripMenuItem, Me.GrabaImagenQRToolStripMenuItem, Me.TipoCambioDelDiaToolStripMenuItem})
@@ -1737,11 +1744,11 @@ Partial Public Class AppMenu
         Me.pbLogo.TabStop = False
         Me.pbLogo.Visible = False
         '
-        'AlimentaciónAnteriorToolStripMenuItem
+        'EmbarquesToolStripMenuItem2
         '
-        Me.AlimentaciónAnteriorToolStripMenuItem.Name = "AlimentaciónAnteriorToolStripMenuItem"
-        Me.AlimentaciónAnteriorToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
-        Me.AlimentaciónAnteriorToolStripMenuItem.Text = "Alimentación (Anterior)"
+        Me.EmbarquesToolStripMenuItem2.Name = "EmbarquesToolStripMenuItem2"
+        Me.EmbarquesToolStripMenuItem2.Size = New System.Drawing.Size(246, 26)
+        Me.EmbarquesToolStripMenuItem2.Text = "Embarques"
         '
         'AppMenu
         '
@@ -2003,4 +2010,5 @@ Partial Public Class AppMenu
     Friend WithEvents RequisicionesGlobalToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents CapturaDeCanastasToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents AlimentaciónAnteriorToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents EmbarquesToolStripMenuItem2 As System.Windows.Forms.ToolStripMenuItem
 End Class
