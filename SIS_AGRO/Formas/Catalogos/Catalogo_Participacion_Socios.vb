@@ -77,8 +77,9 @@ Public Class Catalogo_Participacion_Socios
 #Region "Columnas Grid"
     Private iGyCodigoUsuarioSocio As Integer = 1
     Private iGyNombreSocio As Integer = 2
-    Private iGyPorcentajeParticipacion As Integer = 3
-    Private iGyBorrar As Integer = 4
+    Private iGyCantidad As Integer = 3
+    Private iGyPorcentajeParticipacion As Integer = 4
+    Private iGyBorrar As Integer = 5
 #End Region
 
 #Region "Constructor y destructor"
@@ -122,6 +123,10 @@ Public Class Catalogo_Participacion_Socios
     End Sub
 
     Private Sub tsbGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbGrabar.Click
+        If Me.CalculaPorcentajes() = False Then
+            Return
+        End If
+
         If Me.Validar() = False Then
             Return
         End If
@@ -154,6 +159,7 @@ Public Class Catalogo_Participacion_Socios
                     Me.tsbGrabar.Enabled = True
 
                     Me.TxtCodigoArticulo.Enabled = True
+                    Me.TxtCantidad.Enabled = True
                     Me.Grid1.Locked = False
 
                     Me.InicializaElemento()
@@ -164,6 +170,7 @@ Public Class Catalogo_Participacion_Socios
                     Me.tsbGrabar.Enabled = True
 
                     Me.TxtCodigoArticulo.Enabled = True
+                    Me.TxtCantidad.Enabled = True
                     Me.Grid1.Locked = False
                     Me.Grid1.Rows = Me.Grid1.Rows + 1
 
@@ -177,6 +184,7 @@ Public Class Catalogo_Participacion_Socios
     Private Sub InicializaElemento()
         Me.TxtCodigoArticulo.Text = ""
         Me.LblNombreArticulo.Text = ""
+        Me.TxtCantidad.Text = ""
         Me.InicializaGrid()
     End Sub
 
@@ -192,9 +200,11 @@ Public Class Catalogo_Participacion_Socios
                 Me.Grid1.AutoRedraw = False
                 Me.Grid1.Rows = 1 'Trae dos porque en docs nuevos se pone un row en blanco, y si se dejan aqui dos agrega a partir del 3 y queda un hueco
                 For Each dRow As DataRow In dTabla.Rows
-                    Me.Grid1.AddItem(dRow("CODIGO_USUARIO_SOCIO").ToString & Chr(9) & dRow("NOMBRE_SOCIO").ToString & Chr(9) & dRow("PORCENTAJE_PARTICIPACION").ToString & Chr(9) & _
-                                     "0" & Chr(9)) '0 es para la columna Borrar
+                    Me.Grid1.AddItem(dRow("CODIGO_USUARIO_SOCIO").ToString & Chr(9) & dRow("NOMBRE_SOCIO").ToString & Chr(9) & dRow("CANTIDAD").ToString & Chr(9) & _
+                                     dRow("PORCENTAJE_PARTICIPACION").ToString & Chr(9) & "0" & Chr(9)) '0 es para la columna borrar
                 Next
+
+                Me.TxtCantidad.Text = FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyCantidad)).ToString
 
                 If Me.Grid1.Rows = 1 Then
                     Me.Estado = enumEstados.NUEVO
@@ -216,43 +226,43 @@ Public Class Catalogo_Participacion_Socios
         Dim Grabado As Boolean = False
         Dim i As Integer, msg As String = ""
 
-                Try
-                    With Me.oParticipacion
+        Try
+            With Me.oParticipacion
 
-                        .CODIGO_ARTICULO = Me.TxtCodigoArticulo.Text
+                .CODIGO_ARTICULO = Me.TxtCodigoArticulo.Text
 
-                        'Graba los socios
-                        For i = 1 To Me.Grid1.Rows - 1
-                            If txtLEN(Me.Grid1.Cell(i, Me.iGyCodigoUsuarioSocio).Text) = True Then
-                                oParticipacion = New Class_CatParticipacionSocios
+                'Graba los socios
+                For i = 1 To Me.Grid1.Rows - 1
+                    If txtLEN(Me.Grid1.Cell(i, Me.iGyCodigoUsuarioSocio).Text) = True Then
+                        oParticipacion = New Class_CatParticipacionSocios
 
-                                .CODIGO_USUARIO_SOCIO = CInt(Me.Grid1.Cell(i, Me.iGyCodigoUsuarioSocio).Text)
-                                .PORCENTAJE_PARTICIPACION = valorNumericoD(Me.Grid1.Cell(i, Me.iGyPorcentajeParticipacion).Text)
+                        .CODIGO_USUARIO_SOCIO = CInt(Me.Grid1.Cell(i, Me.iGyCodigoUsuarioSocio).Text)
+                        .CANTIDAD = valorNumericoD(Me.Grid1.Cell(i, Me.iGyCantidad).Text)
+                        .PORCENTAJE_PARTICIPACION = valorNumericoD(Me.Grid1.Cell(i, Me.iGyPorcentajeParticipacion).Text)
 
-                                If .Grabar(Me.Grid1.Cell(i, Me.iGyBorrar).Text) = False Then
-                                    MsgBox("Error al tratar de grabar el socio ", MsgBoxStyle.Exclamation, Me.Text)
-                                    Exit Sub
-                                End If
-
-                            End If
-                        Next
-
-                        If Grabado = True Then
-                            MsgBox(Me.msgElemento & " grabada satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
-                            Me.Estado = enumEstados.EDICION
-                            Me.Cambia_Estado()
+                        If .Grabar(Me.Grid1.Cell(i, Me.iGyBorrar).Text) = False Then
+                            MsgBox("Error al tratar de grabar el socio ", MsgBoxStyle.Exclamation, Me.Text)
+                            Exit Sub
                         End If
 
-                    End With
-                Catch ex As Exception
-                    HandleError(Me.Name, "Grabar", ex)
-                    Me.Cambia_Estado()
-                End Try
+                    End If
+                Next
+
+                MsgBox("Embarques grabados satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
+                Me.Estado = enumEstados.EDICION
+                Me.Cambia_Estado()
+
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "Grabar", ex)
+            Me.Cambia_Estado()
+        End Try
     End Sub
 
     Private Function Validar() As Boolean
         Dim bResultado As Boolean = False
         Dim sinElementos As Boolean
+        Dim TotalCantidad As Decimal = 0
         Dim TotalPorcentaje As Decimal = 0
 
         Try
@@ -263,6 +273,11 @@ Public Class Catalogo_Participacion_Socios
                 Return bResultado
             End If
 
+            If valorNumericoD(Me.TxtCantidad.Text) = 0 Then
+                MsgBox("Capture una cantidad total de artículo para repartir.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.TxtCantidad.Focus()
+                Return bResultado
+            End If
 
             If Me.Grid1.Rows < 2 Then 'No deberia entrar a esta condicion
                 MsgBox("El artículo debe tener al menos un socio.", MsgBoxStyle.Exclamation, Me.Text)
@@ -294,15 +309,21 @@ Public Class Catalogo_Participacion_Socios
                         End If
                     Next
 
-                    If valorNumericoD(Me.Grid1.Cell(i, Me.iGyPorcentajeParticipacion).Text) = 0 Then
-                        MsgBox("El porcentaje de participación del socio del renglón " & i & " debe ser mayor a 0.", MsgBoxStyle.Exclamation, Me.Text)
+                    If valorNumericoD(Me.Grid1.Cell(i, Me.iGyCantidad).Text) = 0 Then
+                        MsgBox("La cantdad de participación del socio del renglón " & i & " debe ser mayor a 0.", MsgBoxStyle.Exclamation, Me.Text)
                         Return bResultado
                     End If
 
-                    TotalPorcentaje = TotalPorcentaje + valorNumericoD(Me.Grid1.Cell(i, Me.iGyPorcentajeParticipacion).Text)
+                    TotalCantidad = TotalCantidad + valorNumericoD(Me.Grid1.Cell(i, Me.iGyCantidad).Text)
+                    TotalPorcentaje = TotalPorcentaje + CDec(Me.Grid1.Cell(i, Me.iGyPorcentajeParticipacion).Text)
 
                 End If
             Next
+
+            If TotalCantidad <> valorNumericoD(Me.TxtCantidad.Text) Then
+                MsgBox("La suma de las cantidades de los socios debe ser igual a la caputada para el artículo.", MsgBoxStyle.Exclamation, Me.Text)
+                Return bResultado
+            End If
 
             If TotalPorcentaje <> 100 Then
                 MsgBox("La suma de los porcentajes de participación de los socios debe ser igual a 100.", MsgBoxStyle.Exclamation, Me.Text)
@@ -330,7 +351,7 @@ Public Class Catalogo_Participacion_Socios
     Private Sub FormateaGrid()
         With Me.Grid1
             .AutoRedraw = False
-            .Cols = 5
+            .Cols = 6
             .DisplayFocusRect = False
             .DrawMode = FlexCell.DrawModeEnum.OwnerDraw
             .BorderStyle = FlexCell.BorderStyleEnum.FixedSingle
@@ -339,19 +360,26 @@ Public Class Catalogo_Participacion_Socios
 
             .Cell(0, Me.iGyCodigoUsuarioSocio).Text = "Cod usuario socio"
             .Cell(0, Me.iGyNombreSocio).Text = "Nombre socio"
+            .Cell(0, Me.iGyCantidad).Text = "Cantidad"
             .Cell(0, Me.iGyPorcentajeParticipacion).Text = "% participación"
             .Cell(0, Me.iGyBorrar).Text = "Borrar"
 
             .Column(Me.iGyPorcentajeParticipacion).Mask = FlexCell.MaskEnum.Numeric
-            .Column(Me.iGyPorcentajeParticipacion).DecimalLength = 5 'Empresa_Sistema.DECIMALES_CANTIDAD
+            .Column(Me.iGyPorcentajeParticipacion).DecimalLength = 2
             .Column(Me.iGyPorcentajeParticipacion).Alignment = FlexCell.AlignmentEnum.RightCenter
 
+            .Column(Me.iGyCantidad).Mask = FlexCell.MaskEnum.Numeric
+            .Column(Me.iGyCantidad).DecimalLength = 4
+            .Column(Me.iGyCantidad).Alignment = FlexCell.AlignmentEnum.RightCenter
+
             .Column(Me.iGyNombreSocio).Locked = True
+            .Column(Me.iGyPorcentajeParticipacion).Locked = True
             .Column(Me.iGyBorrar).Locked = True
 
             .Column(Me.iGyCodigoUsuarioSocio).Width = 50
-            .Column(Me.iGyNombreSocio).Width = 400
-            .Column(Me.iGyPorcentajeParticipacion).Width = 100
+            .Column(Me.iGyNombreSocio).Width = 350
+            .Column(Me.iGyCantidad).Width = 100
+            .Column(Me.iGyPorcentajeParticipacion).Width = 50
 
             .Column(Me.iGyCodigoUsuarioSocio).Visible = False
             .Column(Me.iGyBorrar).Visible = False
@@ -364,14 +392,14 @@ Public Class Catalogo_Participacion_Socios
     Private Sub GestionaGrid(ByVal e As System.Windows.Forms.KeyEventArgs)
         Try
             Dim Columna As Integer, Renglon As Integer
-            Dim sCodigoUsuario As String, dPorcentajeParticipacion As Double
+            Dim sCodigoUsuario As String, dCantidad As Double
             Dim oUsuarios As Class_sisUsuarios
             Dim i As Integer
 
             Columna = Me.Grid1.Selection.FirstCol
             Renglon = Me.Grid1.Selection.FirstRow
             sCodigoUsuario = Me.Grid1.Cell(Renglon, Me.iGyCodigoUsuarioSocio).Text
-            dPorcentajeParticipacion = valorNumerico(Me.Grid1.Cell(Renglon, Me.iGyPorcentajeParticipacion).Text)
+            dCantidad = valorNumerico(Me.Grid1.Cell(Renglon, Me.iGyCantidad).Text)
 
             Select Case e.KeyCode
                 Case Keys.Enter
@@ -398,12 +426,20 @@ LlenaLinea:
 
                             Me.Grid1.Cell(Renglon, iGyBorrar).Text = "0"
 
-                        Case Me.iGyPorcentajeParticipacion
-                            If dPorcentajeParticipacion <= 0 Then
-                                MsgBox("El porcentaje de participación debe de ser mayor a 0.", MsgBoxStyle.Exclamation, Me.Text)
-                                Me.Grid1.Cell(Renglon, Me.iGyPorcentajeParticipacion).SetFocus()
+                        Case Me.iGyCantidad
+                            If dCantidad <= 0 Then
+                                MsgBox("La cantidad de participación debe de ser mayor a 0.", MsgBoxStyle.Exclamation, Me.Text)
+                                Me.Grid1.Cell(Renglon, Me.iGyCantidad).SetFocus()
                                 Exit Sub
                             End If
+
+                            If valorNumericoD(Me.TxtCantidad.Text) = 0 Then
+                                MsgBox("Capture la cantidad total del artículo.", MsgBoxStyle.Exclamation, Me.Text)
+                                Me.TxtCantidad.Focus()
+                                Exit Sub
+                            End If
+
+                            Me.Grid1.Cell(Renglon, Me.iGyPorcentajeParticipacion).Text = ((dCantidad / valorNumericoD(Me.TxtCantidad.Text)) * 100).ToString
 
                             If txtLEN(Me.Grid1.Cell(Me.Grid1.Rows - 1, Me.iGyCodigoUsuarioSocio).Text) Then
                                 Me.Grid1.Rows = Me.Grid1.Rows + 1
@@ -452,12 +488,34 @@ BuscaUsuario:
                         If Me.Grid1.Rows = 1 Then Me.Grid1.Rows = 2
                     End If
 
+                    Me.CalculaPorcentajes()
+
             End Select
 
         Catch ex As Exception
             HandleError(Me.Name, "GestionaGrid", ex)
         End Try
     End Sub
+
+    Private Function CalculaPorcentajes() As Boolean
+        Try
+            If valorNumerico(Me.TxtCantidad.Text) = 0 Then
+                MsgBox("Capture la cantidad de artículo total.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.TxtCantidad.Focus()
+                Return False
+            End If
+
+            For i As Integer = 1 To Me.Grid1.Rows - 1
+                If txtLEN(Me.Grid1.Cell(i, Me.iGyCodigoUsuarioSocio).Text) Then
+                    Me.Grid1.Cell(i, Me.iGyPorcentajeParticipacion).Text = ((valorNumerico(Me.Grid1.Cell(i, Me.iGyCantidad).Text) / valorNumerico(Me.TxtCantidad.Text)) * 100).ToString
+                End If
+            Next
+
+            Return True
+        Catch ex As Exception
+            HandleError(Me.Name, "CalculaPorcentajes", ex)
+        End Try
+    End Function
 
 #End Region
 
@@ -524,4 +582,5 @@ Buscar:
 #End Region
 
 #End Region
+
 End Class

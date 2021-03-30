@@ -29,13 +29,15 @@ Partial Public Class Catalogo_Participacion_Socios
         Me.tStripMenuItemEditar = New System.Windows.Forms.ToolStripMenuItem()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.TxtCantidad = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.LblDisplaySocios = New System.Windows.Forms.Label()
         Me.Grid1 = New FlexCell.Grid()
         Me.LblNombreArticulo = New System.Windows.Forms.Label()
         Me.LblDisplayCodArticulo = New System.Windows.Forms.Label()
         Me.TxtCodigoArticulo = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.lblDisplayCantidad = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.cMenuStripAccion.SuspendLayout()
         CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -96,6 +98,8 @@ Partial Public Class Catalogo_Participacion_Socios
         '
         'gBoxInformacion
         '
+        Me.gBoxInformacion.Controls.Add(Me.lblDisplayCantidad)
+        Me.gBoxInformacion.Controls.Add(Me.TxtCantidad)
         Me.gBoxInformacion.Controls.Add(Me.Label1)
         Me.gBoxInformacion.Controls.Add(Me.LblDisplaySocios)
         Me.gBoxInformacion.Controls.Add(Me.Grid1)
@@ -107,15 +111,34 @@ Partial Public Class Catalogo_Participacion_Socios
         Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
         Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
-        Me.gBoxInformacion.Size = New System.Drawing.Size(814, 515)
+        Me.gBoxInformacion.Size = New System.Drawing.Size(814, 538)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
         '
+        'TxtCantidad
+        '
+        Me.TxtCantidad.Location = New System.Drawing.Point(126, 68)
+        Me.TxtCantidad.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtCantidad.MaxLength = 50
+        Me.TxtCantidad.Name = "TxtCantidad"
+        Me.TxtCantidad.Size = New System.Drawing.Size(104, 22)
+        Me.TxtCantidad.TabIndex = 99
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(631, 94)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(162, 17)
+        Me.Label1.TabIndex = 98
+        Me.Label1.Text = "F8 para eliminar renglón"
+        '
         'LblDisplaySocios
         '
         Me.LblDisplaySocios.AutoSize = True
-        Me.LblDisplaySocios.Location = New System.Drawing.Point(8, 92)
+        Me.LblDisplaySocios.Location = New System.Drawing.Point(8, 103)
         Me.LblDisplaySocios.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplaySocios.Name = "LblDisplaySocios"
         Me.LblDisplaySocios.Size = New System.Drawing.Size(58, 17)
@@ -133,12 +156,12 @@ Partial Public Class Catalogo_Participacion_Socios
         Me.Grid1.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
         Me.Grid1.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Grid1.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Grid1.Location = New System.Drawing.Point(11, 113)
+        Me.Grid1.Location = New System.Drawing.Point(11, 124)
         Me.Grid1.LockButton = True
         Me.Grid1.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid1.Name = "Grid1"
         Me.Grid1.Rows = 6
-        Me.Grid1.Size = New System.Drawing.Size(795, 394)
+        Me.Grid1.Size = New System.Drawing.Size(795, 406)
         Me.Grid1.TabIndex = 5
         Me.Grid1.UncheckedImage = CType(resources.GetObject("Grid1.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -180,21 +203,21 @@ Partial Public Class Catalogo_Participacion_Socios
         Me.Label2.TabIndex = 91
         Me.Label2.Text = ".."
         '
-        'Label1
+        'lblDisplayCantidad
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(631, 83)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(162, 17)
-        Me.Label1.TabIndex = 98
-        Me.Label1.Text = "F8 para eliminar renglón"
+        Me.lblDisplayCantidad.AutoSize = True
+        Me.lblDisplayCantidad.Location = New System.Drawing.Point(8, 71)
+        Me.lblDisplayCantidad.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayCantidad.Name = "lblDisplayCantidad"
+        Me.lblDisplayCantidad.Size = New System.Drawing.Size(72, 17)
+        Me.lblDisplayCantidad.TabIndex = 100
+        Me.lblDisplayCantidad.Text = "Cantidad :"
         '
         'Catalogo_Participacion_Socios
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(843, 562)
+        Me.ClientSize = New System.Drawing.Size(843, 585)
         Me.Controls.Add(Me.tsMenu)
         Me.Controls.Add(Me.gBoxInformacion)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
@@ -229,4 +252,6 @@ Partial Public Class Catalogo_Participacion_Socios
     Friend WithEvents Grid1 As FlexCell.Grid
     Friend WithEvents LblDisplaySocios As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents TxtCantidad As System.Windows.Forms.TextBox
+    Friend WithEvents lblDisplayCantidad As System.Windows.Forms.Label
 End Class

@@ -9,6 +9,7 @@ Public Class Class_CatParticipacionSocios
 #Region "Campos de la tabla"
     Private _CODIGO_ARTICULO As String
     Private _CODIGO_USUARIO_SOCIO As Integer
+    Private _CANTIDAD As Decimal
     Private _PORCENTAJE_PARTICIPACION As Decimal
 #End Region
 
@@ -56,12 +57,21 @@ Public Class Class_CatParticipacionSocios
         End Set
     End Property
 
+    Public Property CANTIDAD() As Decimal
+        Get
+            Return Me._CANTIDAD
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._CANTIDAD = Value
+        End Set
+    End Property
+
     Public Property PORCENTAJE_PARTICIPACION() As Decimal
         Get
             Return Me._PORCENTAJE_PARTICIPACION
         End Get
-        Set(ByVal Value As Decimal)
-            Me._PORCENTAJE_PARTICIPACION = Value
+        Set(value As Decimal)
+            Me._PORCENTAJE_PARTICIPACION = value
         End Set
     End Property
 
@@ -113,7 +123,7 @@ Public Class Class_CatParticipacionSocios
         Me._Nombre_Reporte = "RPT_CATALOGO_PARTICIPACION_SOCIOS"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySELECT = "SELECT CODIGO_ARTICULO,CODIGO_USUARIO_SOCIO,PORCENTAJE_PARTICIPACION FROM CAT_PARTICIPACION_SOCIOS"
+        Me._QuerySELECT = "SELECT CODIGO_ARTICULO,CODIGO_USUARIO_SOCIO,CANTIDAD,PORCENTAJE_PARTICIPACION FROM CAT_PARTICIPACION_SOCIOS"
         Me._QueryOrder = " Order by CODIGO_ARTICULO"
     End Sub
 
@@ -154,6 +164,7 @@ Public Class Class_CatParticipacionSocios
 
             sqlParametro = .Parameters.Add("@CODIGO_ARTICULO", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_ARTICULO.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_SOCIO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_USUARIO_SOCIO
+            sqlParametro = .Parameters.Add("@CANTIDAD", SqlDbType.Decimal) : sqlParametro.Value = Me._CANTIDAD
             sqlParametro = .Parameters.Add("@PORCENTAJE_PARTICIPACION", SqlDbType.Decimal) : sqlParametro.Value = Me._PORCENTAJE_PARTICIPACION
             sqlParametro = .Parameters.Add("@ELIMINA", SqlDbType.Char, 1) : sqlParametro.Value = sEliminar
 
@@ -163,7 +174,7 @@ Public Class Class_CatParticipacionSocios
                 bResultado = True
 
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Insertar", ex)
+                HandleError(Me._Nombre_Catalogo, "Grabar", ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -267,7 +278,7 @@ Public Class Class_CatParticipacionSocios
     Public Function ObtenerDetalle(ByVal sCodigoArticulo As String) As System.Data.DataTable
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
-        sSQL = "SELECT P.CODIGO_USUARIO_SOCIO,U.NOMBRE_USUARIO NOMBRE_SOCIO,P.PORCENTAJE_PARTICIPACION FROM CAT_PARTICIPACION_SOCIOS P INNER JOIN SIS_USUARIOS U ON(P.CODIGO_USUARIO_SOCIO=U.CODIGO_USUARIO) " & _
+        sSQL = "SELECT P.CODIGO_USUARIO_SOCIO,U.NOMBRE_USUARIO NOMBRE_SOCIO,P.CANTIDAD,P.PORCENTAJE_PARTICIPACION FROM CAT_PARTICIPACION_SOCIOS P INNER JOIN SIS_USUARIOS U ON(P.CODIGO_USUARIO_SOCIO=U.CODIGO_USUARIO) " & _
                "WHERE P.CODIGO_ARTICULO='" & sCodigoArticulo & "' ORDER BY U.NOMBRE_USUARIO "
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
