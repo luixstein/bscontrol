@@ -55,7 +55,12 @@ Public Class Rpt_Ventas_Comisiones
         Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
         Try
-            FormatoDeReporte = "RPT_VENTAS_COMISIONES"
+            If Me.RbtFormatoGlobal.Checked Then
+                FormatoDeReporte = "RPT_VENTAS_COMISIONES"
+            Else
+                FormatoDeReporte = "RPT_VENTAS_COMISIONES_DETALLADO"
+            End If
+
 
             oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
 
