@@ -19,10 +19,18 @@
                 Me.TxtTipoCambio.Text = oTipoCambioDia.TIPO_DE_CAMBIO.ToString
                 Me.tsbGrabar.Enabled = False
                 Me.TxtTipoCambio.Enabled = False
+                Me.tsslCapturo.Text = "Capturo :"
+
+                If oTipoCambioDia.CODIGO_USUARIO_CAPTURO > 0 Then
+                    Dim oUsuario As New Class_sisUsuarios(oTipoCambioDia.CODIGO_USUARIO_CAPTURO)
+                    Me.tsslCapturo.Text = "Capturo : " & oUsuario.Nombre_Usuario
+                End If
+
             Else
                 Me.TxtTipoCambio.Text = "0"
                 Me.tsbGrabar.Enabled = True
                 Me.TxtTipoCambio.Enabled = True
+                Me.tsslCapturo.Text = "Capturo :"
             End If
         End If
 
@@ -48,6 +56,7 @@
             With Me.oTipoCambioDia
                 .FECHA = Me.dpFecha.Value
                 .TIPO_DE_CAMBIO = CDec(Me.TxtTipoCambio.Text)
+                .CODIGO_USUARIO_CAPTURO = Usuario.Codigo_Usuario
 
                 If .GrabarTipoCambio() = False Then
                     MsgBox("Error al intentar grabar el tipo de cambio del día.", MsgBoxStyle.Exclamation, Me.Text)

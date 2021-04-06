@@ -27,6 +27,8 @@ Partial Class Rpt_Ventas_Comisiones
         Me.tsbConsultar = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.RbtFormatoDetallado = New System.Windows.Forms.RadioButton()
+        Me.RbtFormatoGlobal = New System.Windows.Forms.RadioButton()
         Me.txtComision90 = New System.Windows.Forms.TextBox()
         Me.lblDisplayComision90 = New System.Windows.Forms.Label()
         Me.txtComision75 = New System.Windows.Forms.TextBox()
@@ -45,8 +47,6 @@ Partial Class Rpt_Ventas_Comisiones
         Me.DtFechaHasta = New System.Windows.Forms.DateTimePicker()
         Me.LblDisplayFechaNacimiento = New System.Windows.Forms.Label()
         Me.DtFechaDesde = New System.Windows.Forms.DateTimePicker()
-        Me.RbtFormatoGlobal = New System.Windows.Forms.RadioButton()
-        Me.RbtFormatoDetallado = New System.Windows.Forms.RadioButton()
         Me.ToolStrip1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
@@ -100,18 +100,42 @@ Partial Class Rpt_Ventas_Comisiones
         Me.GroupBox2.Controls.Add(Me.LblDisplayFechaNacimiento)
         Me.GroupBox2.Controls.Add(Me.DtFechaDesde)
         Me.GroupBox2.Location = New System.Drawing.Point(16, 37)
-        Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4)
         Me.GroupBox2.Size = New System.Drawing.Size(679, 274)
         Me.GroupBox2.TabIndex = 0
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Filtros"
         '
+        'RbtFormatoDetallado
+        '
+        Me.RbtFormatoDetallado.AutoSize = True
+        Me.RbtFormatoDetallado.Location = New System.Drawing.Point(188, 27)
+        Me.RbtFormatoDetallado.Name = "RbtFormatoDetallado"
+        Me.RbtFormatoDetallado.Size = New System.Drawing.Size(147, 21)
+        Me.RbtFormatoDetallado.TabIndex = 415
+        Me.RbtFormatoDetallado.Text = "Detalle de artítulos"
+        Me.RbtFormatoDetallado.UseVisualStyleBackColor = True
+        Me.RbtFormatoDetallado.Visible = False
+        '
+        'RbtFormatoGlobal
+        '
+        Me.RbtFormatoGlobal.AutoSize = True
+        Me.RbtFormatoGlobal.Checked = True
+        Me.RbtFormatoGlobal.Location = New System.Drawing.Point(52, 27)
+        Me.RbtFormatoGlobal.Name = "RbtFormatoGlobal"
+        Me.RbtFormatoGlobal.Size = New System.Drawing.Size(70, 21)
+        Me.RbtFormatoGlobal.TabIndex = 414
+        Me.RbtFormatoGlobal.TabStop = True
+        Me.RbtFormatoGlobal.Text = "Global"
+        Me.RbtFormatoGlobal.UseVisualStyleBackColor = True
+        Me.RbtFormatoGlobal.Visible = False
+        '
         'txtComision90
         '
         Me.txtComision90.Location = New System.Drawing.Point(473, 172)
-        Me.txtComision90.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtComision90.Margin = New System.Windows.Forms.Padding(4)
         Me.txtComision90.MaxLength = 8
         Me.txtComision90.Name = "txtComision90"
         Me.txtComision90.Size = New System.Drawing.Size(71, 22)
@@ -132,7 +156,7 @@ Partial Class Rpt_Ventas_Comisiones
         'txtComision75
         '
         Me.txtComision75.Location = New System.Drawing.Point(473, 140)
-        Me.txtComision75.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtComision75.Margin = New System.Windows.Forms.Padding(4)
         Me.txtComision75.MaxLength = 8
         Me.txtComision75.Name = "txtComision75"
         Me.txtComision75.Size = New System.Drawing.Size(71, 22)
@@ -153,7 +177,7 @@ Partial Class Rpt_Ventas_Comisiones
         'txtComisionMas90
         '
         Me.txtComisionMas90.Location = New System.Drawing.Point(473, 204)
-        Me.txtComisionMas90.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtComisionMas90.Margin = New System.Windows.Forms.Padding(4)
         Me.txtComisionMas90.MaxLength = 8
         Me.txtComisionMas90.Name = "txtComisionMas90"
         Me.txtComisionMas90.Size = New System.Drawing.Size(71, 22)
@@ -174,7 +198,7 @@ Partial Class Rpt_Ventas_Comisiones
         'txtComision60
         '
         Me.txtComision60.Location = New System.Drawing.Point(188, 201)
-        Me.txtComision60.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtComision60.Margin = New System.Windows.Forms.Padding(4)
         Me.txtComision60.MaxLength = 8
         Me.txtComision60.Name = "txtComision60"
         Me.txtComision60.Size = New System.Drawing.Size(71, 22)
@@ -195,7 +219,7 @@ Partial Class Rpt_Ventas_Comisiones
         'txtComision37
         '
         Me.txtComision37.Location = New System.Drawing.Point(188, 169)
-        Me.txtComision37.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtComision37.Margin = New System.Windows.Forms.Padding(4)
         Me.txtComision37.MaxLength = 8
         Me.txtComision37.Name = "txtComision37"
         Me.txtComision37.Size = New System.Drawing.Size(71, 22)
@@ -216,7 +240,7 @@ Partial Class Rpt_Ventas_Comisiones
         'txtComision6
         '
         Me.txtComision6.Location = New System.Drawing.Point(188, 137)
-        Me.txtComision6.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtComision6.Margin = New System.Windows.Forms.Padding(4)
         Me.txtComision6.MaxLength = 8
         Me.txtComision6.Name = "txtComision6"
         Me.txtComision6.Size = New System.Drawing.Size(71, 22)
@@ -250,7 +274,7 @@ Partial Class Rpt_Ventas_Comisiones
         Me.cboVendedor.FormattingEnabled = True
         Me.cboVendedor.Items.AddRange(New Object() {"A", "B"})
         Me.cboVendedor.Location = New System.Drawing.Point(136, 103)
-        Me.cboVendedor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboVendedor.Margin = New System.Windows.Forms.Padding(4)
         Me.cboVendedor.MaxLength = 1
         Me.cboVendedor.Name = "cboVendedor"
         Me.cboVendedor.Size = New System.Drawing.Size(289, 24)
@@ -270,7 +294,7 @@ Partial Class Rpt_Ventas_Comisiones
         '
         Me.DtFechaHasta.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.DtFechaHasta.Location = New System.Drawing.Point(553, 53)
-        Me.DtFechaHasta.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.DtFechaHasta.Margin = New System.Windows.Forms.Padding(4)
         Me.DtFechaHasta.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.DtFechaHasta.Name = "DtFechaHasta"
         Me.DtFechaHasta.Size = New System.Drawing.Size(116, 22)
@@ -291,34 +315,12 @@ Partial Class Rpt_Ventas_Comisiones
         '
         Me.DtFechaDesde.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.DtFechaDesde.Location = New System.Drawing.Point(553, 22)
-        Me.DtFechaDesde.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.DtFechaDesde.Margin = New System.Windows.Forms.Padding(4)
         Me.DtFechaDesde.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.DtFechaDesde.Name = "DtFechaDesde"
         Me.DtFechaDesde.Size = New System.Drawing.Size(116, 22)
         Me.DtFechaDesde.TabIndex = 0
         Me.DtFechaDesde.Value = New Date(2009, 9, 26, 0, 0, 0, 0)
-        '
-        'RbtFormatoGlobal
-        '
-        Me.RbtFormatoGlobal.AutoSize = True
-        Me.RbtFormatoGlobal.Checked = True
-        Me.RbtFormatoGlobal.Location = New System.Drawing.Point(52, 27)
-        Me.RbtFormatoGlobal.Name = "RbtFormatoGlobal"
-        Me.RbtFormatoGlobal.Size = New System.Drawing.Size(70, 21)
-        Me.RbtFormatoGlobal.TabIndex = 414
-        Me.RbtFormatoGlobal.TabStop = True
-        Me.RbtFormatoGlobal.Text = "Global"
-        Me.RbtFormatoGlobal.UseVisualStyleBackColor = True
-        '
-        'RbtFormatoDetallado
-        '
-        Me.RbtFormatoDetallado.AutoSize = True
-        Me.RbtFormatoDetallado.Location = New System.Drawing.Point(188, 27)
-        Me.RbtFormatoDetallado.Name = "RbtFormatoDetallado"
-        Me.RbtFormatoDetallado.Size = New System.Drawing.Size(147, 21)
-        Me.RbtFormatoDetallado.TabIndex = 415
-        Me.RbtFormatoDetallado.Text = "Detalle de artítulos"
-        Me.RbtFormatoDetallado.UseVisualStyleBackColor = True
         '
         'Rpt_Ventas_Comisiones
         '
@@ -328,7 +330,7 @@ Partial Class Rpt_Ventas_Comisiones
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.ToolStrip1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Rpt_Ventas_Comisiones"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent

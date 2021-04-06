@@ -28,7 +28,10 @@ Partial Class TipoCambioDia
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TxtTipoCambio = New System.Windows.Forms.TextBox()
         Me.dpFecha = New System.Windows.Forms.DateTimePicker()
+        Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
+        Me.tsslCapturo = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tsMenu.SuspendLayout()
+        Me.StatusStripEstado.SuspendLayout()
         Me.SuspendLayout()
         '
         'tsMenu
@@ -81,11 +84,32 @@ Partial Class TipoCambioDia
         Me.dpFecha.Size = New System.Drawing.Size(136, 22)
         Me.dpFecha.TabIndex = 25
         '
+        'StatusStripEstado
+        '
+        Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
+        Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsslCapturo})
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 134)
+        Me.StatusStripEstado.Name = "StatusStripEstado"
+        Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(323, 29)
+        Me.StatusStripEstado.TabIndex = 258
+        Me.StatusStripEstado.Text = "StatusStrip1"
+        '
+        'tsslCapturo
+        '
+        Me.tsslCapturo.BorderSides = CType((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
+        Me.tsslCapturo.Name = "tsslCapturo"
+        Me.tsslCapturo.Size = New System.Drawing.Size(73, 24)
+        Me.tsslCapturo.Text = "Capturo :"
+        '
         'TipoCambioDia
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(323, 163)
+        Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.dpFecha)
         Me.Controls.Add(Me.TxtTipoCambio)
         Me.Controls.Add(Me.Label1)
@@ -94,6 +118,8 @@ Partial Class TipoCambioDia
         Me.Text = "TipoCambioDia"
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()
+        Me.StatusStripEstado.ResumeLayout(False)
+        Me.StatusStripEstado.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -103,4 +129,6 @@ Partial Class TipoCambioDia
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents TxtTipoCambio As System.Windows.Forms.TextBox
     Friend WithEvents dpFecha As System.Windows.Forms.DateTimePicker
+    Friend WithEvents StatusStripEstado As System.Windows.Forms.StatusStrip
+    Friend WithEvents tsslCapturo As System.Windows.Forms.ToolStripStatusLabel
 End Class

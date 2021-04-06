@@ -10,6 +10,7 @@ Public Class Class_CatTiposCambio
 #Region "Campos de la tabla"
     Private _FECHA As Date
     Private _TIPO_DE_CAMBIO As Double
+    Private _CODIGO_USUARIO_CAPTURO As Integer
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -53,6 +54,15 @@ Public Class Class_CatTiposCambio
             Me._TIPO_DE_CAMBIO = Value
         End Set
     End Property
+
+    Public Property CODIGO_USUARIO_CAPTURO() As Integer
+        Get
+            Return Me._CODIGO_USUARIO_CAPTURO
+        End Get
+        Set(value As Integer)
+            Me._CODIGO_USUARIO_CAPTURO = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -85,7 +95,7 @@ Public Class Class_CatTiposCambio
         Me._Nombre_Catalogo = "CAT_TIPOS_CAMBIO"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "SELECT FECHA,TIPO_DE_CAMBIO FROM CAT_TIPOS_CAMBIO"
+        Me._QuerySelect = "SELECT FECHA,TIPO_DE_CAMBIO,CODIGO_USUARIO_CAPTURO FROM CAT_TIPOS_CAMBIO"
         Me._QueryOrder = " ORDER BY FECHA DESC"
     End Sub
 
@@ -122,6 +132,11 @@ Public Class Class_CatTiposCambio
                 If dReader.Read Then
                     Me._FECHA = CDate(dReader("FECHA").ToString)
                     Me._TIPO_DE_CAMBIO = CDbl(dReader("TIPO_DE_CAMBIO").ToString)
+
+                    If txtLEN(dReader("CODIGO_USUARIO_CAPTURO").ToString) Then
+                        Me._CODIGO_USUARIO_CAPTURO = CInt(dReader("CODIGO_USUARIO_CAPTURO").ToString)
+                    End If
+
                     bResultado = True
                 End If
                 dReader.Close()
@@ -147,6 +162,7 @@ Public Class Class_CatTiposCambio
 
             sqlParametro = .Parameters.Add("@FECHA", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA
             sqlParametro = .Parameters.Add("@TIPO_DE_CAMBIO", SqlDbType.Decimal) : sqlParametro.Value = Me._TIPO_DE_CAMBIO
+            sqlParametro = .Parameters.Add("@CODIGO_USUARIO_CAPTURO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_USUARIO_CAPTURO
 
             Try
                 Me._Conexion.Open()
