@@ -117,7 +117,6 @@ Partial Class Rpt_Ventas_Comisiones
         Me.RbtFormatoDetallado.TabIndex = 415
         Me.RbtFormatoDetallado.Text = "Detalle de artítulos"
         Me.RbtFormatoDetallado.UseVisualStyleBackColor = True
-        Me.RbtFormatoDetallado.Visible = False
         '
         'RbtFormatoGlobal
         '
@@ -130,7 +129,6 @@ Partial Class Rpt_Ventas_Comisiones
         Me.RbtFormatoGlobal.TabStop = True
         Me.RbtFormatoGlobal.Text = "Global"
         Me.RbtFormatoGlobal.UseVisualStyleBackColor = True
-        Me.RbtFormatoGlobal.Visible = False
         '
         'txtComision90
         '
