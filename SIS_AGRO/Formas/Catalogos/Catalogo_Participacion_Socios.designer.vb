@@ -29,6 +29,11 @@ Partial Public Class Catalogo_Participacion_Socios
         Me.tStripMenuItemEditar = New System.Windows.Forms.ToolStripMenuItem()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.LblPorcentajeTotal = New System.Windows.Forms.Label()
+        Me.LblCantidadTotal = New System.Windows.Forms.Label()
+        Me.lblDisplayPorcentajeTotal = New System.Windows.Forms.Label()
+        Me.lblDisplayCantidadTotal = New System.Windows.Forms.Label()
+        Me.lblDisplayCantidad = New System.Windows.Forms.Label()
         Me.TxtCantidad = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.LblDisplaySocios = New System.Windows.Forms.Label()
@@ -37,7 +42,6 @@ Partial Public Class Catalogo_Participacion_Socios
         Me.LblDisplayCodArticulo = New System.Windows.Forms.Label()
         Me.TxtCodigoArticulo = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.lblDisplayCantidad = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.cMenuStripAccion.SuspendLayout()
         CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -98,6 +102,10 @@ Partial Public Class Catalogo_Participacion_Socios
         '
         'gBoxInformacion
         '
+        Me.gBoxInformacion.Controls.Add(Me.LblPorcentajeTotal)
+        Me.gBoxInformacion.Controls.Add(Me.LblCantidadTotal)
+        Me.gBoxInformacion.Controls.Add(Me.lblDisplayPorcentajeTotal)
+        Me.gBoxInformacion.Controls.Add(Me.lblDisplayCantidadTotal)
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayCantidad)
         Me.gBoxInformacion.Controls.Add(Me.TxtCantidad)
         Me.gBoxInformacion.Controls.Add(Me.Label1)
@@ -116,6 +124,60 @@ Partial Public Class Catalogo_Participacion_Socios
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
         '
+        'LblPorcentajeTotal
+        '
+        Me.LblPorcentajeTotal.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.LblPorcentajeTotal.ForeColor = System.Drawing.Color.DarkBlue
+        Me.LblPorcentajeTotal.Location = New System.Drawing.Point(665, 504)
+        Me.LblPorcentajeTotal.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblPorcentajeTotal.Name = "LblPorcentajeTotal"
+        Me.LblPorcentajeTotal.Size = New System.Drawing.Size(117, 17)
+        Me.LblPorcentajeTotal.TabIndex = 249
+        Me.LblPorcentajeTotal.Text = "0.00"
+        Me.LblPorcentajeTotal.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'LblCantidadTotal
+        '
+        Me.LblCantidadTotal.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.LblCantidadTotal.ForeColor = System.Drawing.Color.DarkBlue
+        Me.LblCantidadTotal.Location = New System.Drawing.Point(665, 474)
+        Me.LblCantidadTotal.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblCantidadTotal.Name = "LblCantidadTotal"
+        Me.LblCantidadTotal.Size = New System.Drawing.Size(117, 17)
+        Me.LblCantidadTotal.TabIndex = 248
+        Me.LblCantidadTotal.Text = "0.00"
+        Me.LblCantidadTotal.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'lblDisplayPorcentajeTotal
+        '
+        Me.lblDisplayPorcentajeTotal.AutoSize = True
+        Me.lblDisplayPorcentajeTotal.Location = New System.Drawing.Point(542, 504)
+        Me.lblDisplayPorcentajeTotal.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayPorcentajeTotal.Name = "lblDisplayPorcentajeTotal"
+        Me.lblDisplayPorcentajeTotal.Size = New System.Drawing.Size(115, 17)
+        Me.lblDisplayPorcentajeTotal.TabIndex = 105
+        Me.lblDisplayPorcentajeTotal.Text = "Porcentaje total :"
+        '
+        'lblDisplayCantidadTotal
+        '
+        Me.lblDisplayCantidadTotal.AutoSize = True
+        Me.lblDisplayCantidadTotal.Location = New System.Drawing.Point(554, 474)
+        Me.lblDisplayCantidadTotal.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayCantidadTotal.Name = "lblDisplayCantidadTotal"
+        Me.lblDisplayCantidadTotal.Size = New System.Drawing.Size(103, 17)
+        Me.lblDisplayCantidadTotal.TabIndex = 103
+        Me.lblDisplayCantidadTotal.Text = "Cantidad total :"
+        '
+        'lblDisplayCantidad
+        '
+        Me.lblDisplayCantidad.AutoSize = True
+        Me.lblDisplayCantidad.Location = New System.Drawing.Point(8, 71)
+        Me.lblDisplayCantidad.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayCantidad.Name = "lblDisplayCantidad"
+        Me.lblDisplayCantidad.Size = New System.Drawing.Size(72, 17)
+        Me.lblDisplayCantidad.TabIndex = 100
+        Me.lblDisplayCantidad.Text = "Cantidad :"
+        '
         'TxtCantidad
         '
         Me.TxtCantidad.Location = New System.Drawing.Point(126, 68)
@@ -123,7 +185,7 @@ Partial Public Class Catalogo_Participacion_Socios
         Me.TxtCantidad.MaxLength = 50
         Me.TxtCantidad.Name = "TxtCantidad"
         Me.TxtCantidad.Size = New System.Drawing.Size(104, 22)
-        Me.TxtCantidad.TabIndex = 99
+        Me.TxtCantidad.TabIndex = 1
         '
         'Label1
         '
@@ -161,7 +223,7 @@ Partial Public Class Catalogo_Participacion_Socios
         Me.Grid1.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid1.Name = "Grid1"
         Me.Grid1.Rows = 6
-        Me.Grid1.Size = New System.Drawing.Size(795, 406)
+        Me.Grid1.Size = New System.Drawing.Size(795, 335)
         Me.Grid1.TabIndex = 5
         Me.Grid1.UncheckedImage = CType(resources.GetObject("Grid1.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -192,7 +254,7 @@ Partial Public Class Catalogo_Participacion_Socios
         Me.TxtCodigoArticulo.MaxLength = 50
         Me.TxtCodigoArticulo.Name = "TxtCodigoArticulo"
         Me.TxtCodigoArticulo.Size = New System.Drawing.Size(104, 22)
-        Me.TxtCodigoArticulo.TabIndex = 3
+        Me.TxtCodigoArticulo.TabIndex = 0
         '
         'Label2
         '
@@ -202,16 +264,6 @@ Partial Public Class Catalogo_Participacion_Socios
         Me.Label2.Size = New System.Drawing.Size(241, 16)
         Me.Label2.TabIndex = 91
         Me.Label2.Text = ".."
-        '
-        'lblDisplayCantidad
-        '
-        Me.lblDisplayCantidad.AutoSize = True
-        Me.lblDisplayCantidad.Location = New System.Drawing.Point(8, 71)
-        Me.lblDisplayCantidad.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblDisplayCantidad.Name = "lblDisplayCantidad"
-        Me.lblDisplayCantidad.Size = New System.Drawing.Size(72, 17)
-        Me.lblDisplayCantidad.TabIndex = 100
-        Me.lblDisplayCantidad.Text = "Cantidad :"
         '
         'Catalogo_Participacion_Socios
         '
@@ -254,4 +306,8 @@ Partial Public Class Catalogo_Participacion_Socios
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents TxtCantidad As System.Windows.Forms.TextBox
     Friend WithEvents lblDisplayCantidad As System.Windows.Forms.Label
+    Friend WithEvents lblDisplayPorcentajeTotal As System.Windows.Forms.Label
+    Friend WithEvents lblDisplayCantidadTotal As System.Windows.Forms.Label
+    Friend WithEvents LblPorcentajeTotal As System.Windows.Forms.Label
+    Friend WithEvents LblCantidadTotal As System.Windows.Forms.Label
 End Class

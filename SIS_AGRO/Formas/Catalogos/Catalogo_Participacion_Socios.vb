@@ -127,6 +127,8 @@ Public Class Catalogo_Participacion_Socios
             Return
         End If
 
+        Me.Totales()
+
         If Me.Validar() = False Then
             Return
         End If
@@ -314,18 +316,23 @@ Public Class Catalogo_Participacion_Socios
                         Return bResultado
                     End If
 
-                    TotalCantidad = TotalCantidad + valorNumericoD(Me.Grid1.Cell(i, Me.iGyCantidad).Text)
-                    TotalPorcentaje = TotalPorcentaje + CDec(Me.Grid1.Cell(i, Me.iGyPorcentajeParticipacion).Text)
+                    If valorNumericoD(Me.Grid1.Cell(i, Me.iGyPorcentajeParticipacion).Text) = 0 Then
+                        MsgBox("El porcentaje de participación del socio del renglón " & i & " debe ser mayor a 0.", MsgBoxStyle.Exclamation, Me.Text)
+                        Return bResultado
+                    End If
+
+                    'TotalCantidad = TotalCantidad + valorNumericoD(Me.Grid1.Cell(i, Me.iGyCantidad).Text)
+                    'TotalPorcentaje = TotalPorcentaje + Math.Round(CDec(Me.Grid1.Cell(i, Me.iGyPorcentajeParticipacion).Text), 2, MidpointRounding.ToEven) 'CDec(Me.Grid1.Cell(i, Me.iGyPorcentajeParticipacion).Text) 
 
                 End If
             Next
 
-            If TotalCantidad <> valorNumericoD(Me.TxtCantidad.Text) Then
+            If Math.Round(valorNumericoD(Me.LblCantidadTotal.Text), 2, MidpointRounding.ToEven) <> Math.Round(valorNumericoD(Me.TxtCantidad.Text), 2, MidpointRounding.ToEven) Then 'If TotalCantidad <> valorNumericoD(Me.TxtCantidad.Text) Then
                 MsgBox("La suma de las cantidades de los socios debe ser igual a la caputada para el artículo.", MsgBoxStyle.Exclamation, Me.Text)
                 Return bResultado
             End If
 
-            If TotalPorcentaje <> 100 Then
+            If Math.Round(valorNumericoD(Me.LblPorcentajeTotal.Text), 2, MidpointRounding.ToEven) <> 100 Then 'If TotalPorcentaje <> 100 Then
                 MsgBox("La suma de los porcentajes de participación de los socios debe ser igual a 100.", MsgBoxStyle.Exclamation, Me.Text)
                 Return bResultado
             End If
@@ -440,6 +447,7 @@ LlenaLinea:
                             End If
 
                             Me.Grid1.Cell(Renglon, Me.iGyPorcentajeParticipacion).Text = ((dCantidad / valorNumericoD(Me.TxtCantidad.Text)) * 100).ToString
+                            Me.Totales()
 
                             If txtLEN(Me.Grid1.Cell(Me.Grid1.Rows - 1, Me.iGyCodigoUsuarioSocio).Text) Then
                                 Me.Grid1.Rows = Me.Grid1.Rows + 1
@@ -489,6 +497,7 @@ BuscaUsuario:
                     End If
 
                     Me.CalculaPorcentajes()
+                    Me.Totales()
 
             End Select
 
@@ -517,6 +526,30 @@ BuscaUsuario:
         End Try
     End Function
 
+    Private Sub Totales()
+        Dim TotalCantidad As Decimal = 0, TotalPorcentaje As Decimal = 0
+        Try
+            'Total cantidad
+            For i As Integer = 1 To Me.Grid1.Rows - 1
+                If txtLEN(Me.Grid1.Cell(i, Me.iGyCodigoUsuarioSocio).Text) = True And Me.Grid1.Cell(i, Me.iGyBorrar).Text = "0" Then
+                    TotalCantidad = TotalCantidad + valorNumericoD(Me.Grid1.Cell(i, Me.iGyCantidad).Text)
+                End If
+            Next
+
+            'Total porcentaje
+            For i As Integer = 1 To Me.Grid1.Rows - 1
+                If txtLEN(Me.Grid1.Cell(i, Me.iGyCodigoUsuarioSocio).Text) = True And Me.Grid1.Cell(i, Me.iGyBorrar).Text = "0" Then
+                    TotalPorcentaje = TotalPorcentaje + valorNumericoD(Me.Grid1.Cell(i, Me.iGyPorcentajeParticipacion).Text) 'Math.Round(valorNumericoD(Me.Grid1.Cell(i, Me.iGyPorcentajeParticipacion).Text), 2, MidpointRounding.ToEven)
+                End If
+            Next
+
+            Me.LblCantidadTotal.Text = Math.Round(TotalCantidad, 2, MidpointRounding.ToEven).ToString
+            Me.LblPorcentajeTotal.Text = Math.Round(TotalPorcentaje, 2, MidpointRounding.ToEven).ToString
+
+        Catch ex As Exception
+            HandleError(Me.Name, "Totales", ex)
+        End Try
+    End Sub
 #End Region
 
 #Region "Eventos de objetos"
@@ -530,9 +563,20 @@ BuscaUsuario:
         txtNoBeep(e)
     End Sub
 
-    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
+    Private Sub TxtCantidad_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TxtCantidad.KeyPress
+        txtSoloNumerosDecimales(e, Me.TxtCantidad.Text)
+        txtNoBeep(e)
+    End Sub
+
+    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoArticulo.KeyDown
         If e.KeyCode = Keys.Return Then
             txtTAB(e)
+        End If
+    End Sub
+
+    Private Sub txtCantidad_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCantidad.KeyDown
+        If e.KeyCode = Keys.Return Then
+            Me.Grid1.Cell(1, Me.iGyNombreSocio).SetFocus()
         End If
     End Sub
 
