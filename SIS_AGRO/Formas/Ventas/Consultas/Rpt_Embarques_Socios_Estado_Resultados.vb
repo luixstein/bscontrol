@@ -1,6 +1,7 @@
 ﻿Imports CrystalDecisions.CrystalReports.Engine
 
-Public Class RPT_INVENTARIOS_AUXILIAR_ARTICULOS
+Public Class Rpt_Embarques_Socios_Estado_Resultados
+
     Private oArticulos As New Class_CatArticulos
 
 #Region "Opciones"
@@ -21,12 +22,6 @@ Public Class RPT_INVENTARIOS_AUXILIAR_ARTICULOS
 #End Region
 
 #Region "Eventos"
-    Private Sub Inventario_Existencias_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.DesplegarAlmacenes()
-        Me.DtFechaDesde.Value = Format(Date.Now, "01-MM-yyyy")
-        Me.DtFechaHasta.Value = Date.Now
-    End Sub
-
     Private Sub TxtCodArticulo_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodArticulo.KeyDown
         Select Case e.KeyCode
             Case Keys.F6, Keys.F7
@@ -58,11 +53,11 @@ buscar:
                     GoTo buscar : Exit Sub
                 End If
 
-                txtTAB(e)
+                Me.tsbConsultar.PerformClick()
         End Select
     End Sub
-
 #End Region
+
 
 #Region "Eventos genéricos"
     Private Sub txt_Enter(ByVal sender As Object, ByVal e As System.EventArgs)
@@ -70,34 +65,30 @@ buscar:
         oTexBox.SelectAll()
     End Sub
 
-    Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles DtFechaHasta.KeyDown, DtFechaDesde.KeyDown, CmbAlmacen.KeyDown
-        txtTAB(e)
-    End Sub
+    'Private Sub txt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles 
+    'txtTAB(e)
+    'End Sub
 
-    Private Sub txtKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodArticulo.KeyPress, DtFechaDesde.KeyPress, DtFechaHasta.KeyPress
+    Private Sub txtKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodArticulo.KeyPress
         txtNoBeep(e)
     End Sub
 #End Region
 
 #Region "Métodos y procedimientos"
-
     Private Sub Consultar()
         Dim StrFiltros As String = ""
         Dim FormatoDeReporte As String = ""
         Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
         Try
-            If Me.ValidarPeriodo = False Then
-                Exit Sub
-            End If
-
-            FormatoDeReporte = "RPT_INVENTARIOS_AUXILIAR_ARTICULOS"
+            FormatoDeReporte = "RPT_EMBARQUES_SOCIOS_ESTADO_RESULTADOS"
             oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
+
             Rpt.SetParameterValue("@CODIGO_ARTICULO", Me.TxtCodArticulo.Text)
-            Rpt.SetParameterValue("@CODIGO_ALMACEN", Me.CmbAlmacen.SelectedValue.ToString())
-            Rpt.SetParameterValue("@FECHA_INICIO", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
-            Rpt.SetParameterValue("@FECHA_FIN", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
-            Rpt.SetParameterValue("@CODIGO_USUARIO", Usuario.Codigo_Usuario)
+            Rpt.SetParameterValue("@FORMATO", "SOCIOS")
+            Rpt.SetParameterValue("FORMATO_SUBREPORTE", "DETALLE")
+
+            'Rpt.Subreports(0).SetParameterValue("@FORMATO", "DETALLE")
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
@@ -108,37 +99,6 @@ buscar:
             oReporte = Nothing
         End Try
     End Sub
-
-    Private Sub DesplegarAlmacenes()
-        Dim oElementos As New Class_CatAlmacenes
-        With Me.CmbAlmacen
-            .DisplayMember = "NOMBRE_ALMACEN"
-
-            .ValueMember = "CODIGO_ALMACEN"
-
-            Dim dView As New Data.DataView(oElementos.ObtenerAlmacenesParaReportes)
-            dView.Sort = "NOMBRE_ALMACEN"
-            .DataSource = dView
-            If dView.Count > 0 Then
-                .SelectedIndex = 0
-            End If
-            .SelectedValue = Usuario.Codigo_Almacen
-        End With
-    End Sub
-
-    Private Function ValidarPeriodo() As Boolean
-        Me.DtFechaDesde.Enabled = False
-        Me.DtFechaHasta.Enabled = False
-        Me.DtFechaDesde.Enabled = True
-        Me.DtFechaHasta.Enabled = True
-
-        If Me.DtFechaDesde.Value > Me.DtFechaHasta.Value Then
-            MsgBox("Rango de fechas inválidas.", MsgBoxStyle.Exclamation, Me.Name)
-            Me.DtFechaDesde.Focus()
-            Exit Function
-        End If
-        ValidarPeriodo = True
-    End Function
 #End Region
 
 End Class
