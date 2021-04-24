@@ -83,6 +83,7 @@ Partial Class Sis_administracion_clientes
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.tcPanel = New System.Windows.Forms.TabControl()
         Me.tpGeneral = New System.Windows.Forms.TabPage()
+        Me.LlblCobranzaDetalle = New System.Windows.Forms.LinkLabel()
         Me.GbObservacionesCXC = New System.Windows.Forms.GroupBox()
         Me.lblEstadoObservacion = New System.Windows.Forms.Label()
         Me.lblIDObservaciones = New System.Windows.Forms.Label()
@@ -161,7 +162,9 @@ Partial Class Sis_administracion_clientes
         Me.BtnAgregar = New System.Windows.Forms.Button()
         Me.txtConcepto = New System.Windows.Forms.TextBox()
         Me.lblDisplayConcepto = New System.Windows.Forms.Label()
-        Me.LlblCobranzaDetalle = New System.Windows.Forms.LinkLabel()
+        Me.lblDisplayFactorRiesgo = New System.Windows.Forms.Label()
+        Me.lblFactorRiesgoDinero = New System.Windows.Forms.Label()
+        Me.lblFactorRiesgoPorcentaje = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         CType(Me.GridListaClientes, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GbResumenCXC.SuspendLayout()
@@ -864,6 +867,9 @@ Partial Class Sis_administracion_clientes
         '
         'tpGeneral
         '
+        Me.tpGeneral.Controls.Add(Me.lblFactorRiesgoPorcentaje)
+        Me.tpGeneral.Controls.Add(Me.lblFactorRiesgoDinero)
+        Me.tpGeneral.Controls.Add(Me.lblDisplayFactorRiesgo)
         Me.tpGeneral.Controls.Add(Me.LlblCobranzaDetalle)
         Me.tpGeneral.Controls.Add(Me.GbObservacionesCXC)
         Me.tpGeneral.Controls.Add(Me.GroupBox2)
@@ -877,6 +883,16 @@ Partial Class Sis_administracion_clientes
         Me.tpGeneral.TabIndex = 0
         Me.tpGeneral.Text = "General"
         Me.tpGeneral.UseVisualStyleBackColor = True
+        '
+        'LlblCobranzaDetalle
+        '
+        Me.LlblCobranzaDetalle.AutoSize = True
+        Me.LlblCobranzaDetalle.Location = New System.Drawing.Point(629, 464)
+        Me.LlblCobranzaDetalle.Name = "LlblCobranzaDetalle"
+        Me.LlblCobranzaDetalle.Size = New System.Drawing.Size(115, 17)
+        Me.LlblCobranzaDetalle.TabIndex = 241
+        Me.LlblCobranzaDetalle.TabStop = True
+        Me.LlblCobranzaDetalle.Text = "Cobranza detalle"
         '
         'GbObservacionesCXC
         '
@@ -1737,15 +1753,36 @@ Partial Class Sis_administracion_clientes
         Me.lblDisplayConcepto.TabIndex = 288
         Me.lblDisplayConcepto.Text = "Concepto :"
         '
-        'LlblCobranzaDetalle
+        'lblDisplayFactorRiesgo
         '
-        Me.LlblCobranzaDetalle.AutoSize = True
-        Me.LlblCobranzaDetalle.Location = New System.Drawing.Point(629, 464)
-        Me.LlblCobranzaDetalle.Name = "LlblCobranzaDetalle"
-        Me.LlblCobranzaDetalle.Size = New System.Drawing.Size(115, 17)
-        Me.LlblCobranzaDetalle.TabIndex = 241
-        Me.LlblCobranzaDetalle.TabStop = True
-        Me.LlblCobranzaDetalle.Text = "Cobranza detalle"
+        Me.lblDisplayFactorRiesgo.AutoSize = True
+        Me.lblDisplayFactorRiesgo.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblDisplayFactorRiesgo.Location = New System.Drawing.Point(635, 513)
+        Me.lblDisplayFactorRiesgo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayFactorRiesgo.Name = "lblDisplayFactorRiesgo"
+        Me.lblDisplayFactorRiesgo.Size = New System.Drawing.Size(137, 17)
+        Me.lblDisplayFactorRiesgo.TabIndex = 242
+        Me.lblDisplayFactorRiesgo.Text = "Factor de riesgo :"
+        '
+        'lblFactorRiesgoDinero
+        '
+        Me.lblFactorRiesgoDinero.AutoSize = True
+        Me.lblFactorRiesgoDinero.Location = New System.Drawing.Point(780, 513)
+        Me.lblFactorRiesgoDinero.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblFactorRiesgoDinero.Name = "lblFactorRiesgoDinero"
+        Me.lblFactorRiesgoDinero.Size = New System.Drawing.Size(48, 17)
+        Me.lblFactorRiesgoDinero.TabIndex = 243
+        Me.lblFactorRiesgoDinero.Text = "$ 0.00"
+        '
+        'lblFactorRiesgoPorcentaje
+        '
+        Me.lblFactorRiesgoPorcentaje.AutoSize = True
+        Me.lblFactorRiesgoPorcentaje.Location = New System.Drawing.Point(940, 513)
+        Me.lblFactorRiesgoPorcentaje.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblFactorRiesgoPorcentaje.Name = "lblFactorRiesgoPorcentaje"
+        Me.lblFactorRiesgoPorcentaje.Size = New System.Drawing.Size(52, 17)
+        Me.lblFactorRiesgoPorcentaje.TabIndex = 244
+        Me.lblFactorRiesgoPorcentaje.Text = "0.00 %"
         '
         'Sis_administracion_clientes
         '
@@ -1944,4 +1981,7 @@ Partial Class Sis_administracion_clientes
     Friend WithEvents LblListaClientes As System.Windows.Forms.Label
     Friend WithEvents GridListaClientes As System.Windows.Forms.DataGridView
     Friend WithEvents LlblCobranzaDetalle As System.Windows.Forms.LinkLabel
+    Friend WithEvents lblFactorRiesgoPorcentaje As System.Windows.Forms.Label
+    Friend WithEvents lblFactorRiesgoDinero As System.Windows.Forms.Label
+    Friend WithEvents lblDisplayFactorRiesgo As System.Windows.Forms.Label
 End Class

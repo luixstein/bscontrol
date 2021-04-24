@@ -186,6 +186,8 @@ Buscar:
             Me.lblCreditoRestante.Text = ""
             Me.lblSaldoVentaAntigua.Text = ""
             Me.lblsaldoVentaReciente.Text = ""
+            Me.lblFactorRiesgoDinero.Text = "$ 0.00"
+            Me.lblFactorRiesgoPorcentaje.Text = "0.00 %"
 
             Me.InicializaGridReglasCXC()
             Me.InicializaReglaCXC()
@@ -319,6 +321,9 @@ Buscar:
                     Me.lblFechaVentaReciente.Text = "" & Me.oSisAdministracionClientes.FechaVentaReciente
                     Me.lblFolioVentaAntigua.Text = "" & Me.oSisAdministracionClientes.FolioVentaAntigua
                     Me.lblFolioVentaReciente.Text = "" & Me.oSisAdministracionClientes.FolioVentaReciente
+
+                    Me.lblFactorRiesgoDinero.Text = FormatImporteContable(Me.oSisAdministracionClientes.FACTOR_RIESGO_PESOS)
+                    Me.lblFactorRiesgoPorcentaje.Text = Me.oSisAdministracionClientes.FACTOR_RIESGO_PORCENTAJE & " %"
 
 
                     Me.lblPlazo.Text = "" & Me.oSisAdministracionClientes.PLAZO

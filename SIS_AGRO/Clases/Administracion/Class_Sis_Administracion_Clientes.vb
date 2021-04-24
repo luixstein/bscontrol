@@ -256,20 +256,20 @@ Public Class Class_Sis_Administracion_Clientes
         End Set
     End Property
 
-    Public Property FACTOR_RIESGO_PORCENTAJE() As String
+    Public Property FACTOR_RIESGO_PORCENTAJE() As Double
         Get
             Return Me._FACTOR_RIESGO_PORCENTAJE
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal Value As Double)
             Me._FACTOR_RIESGO_PORCENTAJE = Value
         End Set
     End Property
 
-    Public Property FACTOR_RIESGO_PESOS() As String
+    Public Property FACTOR_RIESGO_PESOS() As Double
         Get
             Return Me._FACTOR_RIESGO_PESOS
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal Value As Double)
             Me._FACTOR_RIESGO_PESOS = Value
         End Set
     End Property
