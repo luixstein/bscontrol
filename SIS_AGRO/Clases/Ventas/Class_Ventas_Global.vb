@@ -102,6 +102,7 @@ Public Class Class_Ventas_Global
     Private _RETENCION_IVA_USD As Decimal
     Private _RETENCION_ISR As Decimal
     Private _RETENCION_ISR_USD As Decimal
+    Private _FOLIO_DESCUENTO_ANTICIPO As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -855,6 +856,16 @@ Public Class Class_Ventas_Global
             Me._RETENCION_ISR_USD = Value
         End Set
     End Property
+
+    Public Property FOLIO_DESCUENTO_ANTICIPO() As String
+        Get
+            Return Me._FOLIO_DESCUENTO_ANTICIPO
+        End Get
+        Set(ByVal Value As String)
+            Me._FOLIO_DESCUENTO_ANTICIPO = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -1324,6 +1335,7 @@ Public Class Class_Ventas_Global
                     Me._RETENCION_IVA_USD = CDec(dReader("RETENCION_IVA_USD"))
                     Me._RETENCION_ISR = CDec(dReader("RETENCION_ISR"))
                     Me._RETENCION_ISR_USD = CDec(dReader("RETENCION_ISR_USD"))
+                    Me._FOLIO_DESCUENTO_ANTICIPO = "" & dReader("FOLIO_DESCUENTO_ANTICIPO").ToString
 
                     bResultado = True
                 End If
@@ -2256,7 +2268,7 @@ Public Class Class_Ventas_Global
         Return Resultado
     End Function
 
-    Public Function BusquedaVisualFacturasClienteParaRelacionarCFDIs(ByVal sCodigoCliente As String) As String
+    Public Function BusquedaVisualFacturasCliente(ByVal sCodigoCliente As String) As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de ventas del cliente."
@@ -2265,6 +2277,29 @@ Public Class Class_Ventas_Global
         f.sTable = "VENTA_GLOBAL"
         f.sQl = "SELECT V.FOLIO_VENTA,V.ESTATUS_VENTA,DBO.FN_FORMAT_FECHA_CORTO(V.FECHA)FECHA,V.CONCEPTO,DBO.fn_FormatoNum(V.TOTAL,1,2) TOTAL,V.FOLIO_FISCAL_SAT FROM VENTA_GLOBAL V " &
         "WHERE V.CODIGO_CLIENTE='" & sCodigoCliente.ToString & "' AND "
+        f.arrayWidthColumns = New Integer() {100, 60, 70, 250, 100, 300}
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "BusquedaVisualFacturasCliente", ex)
+        End Try
+        Return Resultado
+    End Function
+
+    Public Function BusquedaVisualFacturasClienteParaRelacionarCFDIs(ByVal sCodigoCliente As String) As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de ventas del cliente."
+        f.sCampo = "V.FOLIO_VENTA"
+        f.sOrder = "V.FECHA DESC"
+        f.sTable = "VENTA_GLOBAL"
+        f.sQl = "SELECT V.FOLIO_VENTA,V.ESTATUS_VENTA,DBO.FN_FORMAT_FECHA_CORTO(V.FECHA)FECHA,V.CONCEPTO,DBO.fn_FormatoNum(V.TOTAL,1,2) TOTAL,V.FOLIO_FISCAL_SAT " +
+        "FROM VENTA_GLOBAL V " +
+        "WHERE V.CODIGO_CLIENTE='" & sCodigoCliente.ToString & "' AND LEN(V.FOLIO_FISCAL_SAT)>0 AND V.ESTATUS_VENTA='A' AND " 'Busca sólo ventas timbradas.
         f.arrayWidthColumns = New Integer() {100, 60, 70, 250, 100, 300}
         f.Inicia("")
         f.ShowDialog()
@@ -3344,8 +3379,8 @@ Public Class Class_Ventas_Global
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_VENTAS_RELACION_FACTURAS_REMISIONES_GRABA"
 
-            sqlParametro = .Parameters.Add("@FOLIO_FACTURA", SqlDbType.NVarChar) : sqlParametro.Value = Me._FOLIO_VENTA
-            sqlParametro = .Parameters.Add("@FOLIO_REMISION", SqlDbType.NVarChar) : sqlParametro.Value = sFolioRemision
+            sqlParametro = .Parameters.Add("@FOLIO_FACTURA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_VENTA
+            sqlParametro = .Parameters.Add("@FOLIO_REMISION", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolioRemision
 
             Try
                 Me._Conexion.Open()
@@ -3362,6 +3397,38 @@ Public Class Class_Ventas_Global
         Return bResultado
     End Function
 
+    Public Function GrabaNotaCreditoPorAnticipo(ByVal sFolioFacturaAnticipo As String) As Boolean
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_CXC_DESCUENTO_ANTICIPO_GRABA_GLOBAL"
+
+            sqlParametro = .Parameters.Add("@FOLIO_VENTA_FINAL", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_VENTA
+            sqlParametro = .Parameters.Add("@FOLIO_VENTA_ANTICIPO", SqlDbType.NVarChar, 15) : sqlParametro.Value = sFolioFacturaAnticipo
+            sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Plaza
+            sqlParametro = .Parameters.Add("@FOLIO_DESCUENTO", SqlDbType.NVarChar, 15) : sqlParametro.Value = "" : sqlParametro.Direction = ParameterDirection.InputOutput
+
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+
+                Me._FOLIO_DESCUENTO_ANTICIPO = "" & .Parameters("@FOLIO_DESCUENTO").Value.ToString 'Se asegura el cambio del folio
+
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, "GrabaNotaCreditoPorAnticipo", ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+        Return bResultado
+    End Function
 #End Region
 
 End Class

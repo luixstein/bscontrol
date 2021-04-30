@@ -2069,7 +2069,35 @@ Buscar:
 
                 EsFacturaVariasRemisiones = False
 
+                If Me.cboTipoRelacionCFDI.SelectedIndex <> -1 AndAlso Me.cboTipoRelacionCFDI.SelectedValue.ToString = "07" Then '07=CFDI por aplicación de anticipo
+                    Dim sFolioVentaAnticipo As String = "", iVentasRelacionadas As Integer = 0
+
+                    For i = 1 To Me.GridCFDIsRelacionados.Rows - 1
+                        If txtLEN(Me.GridCFDIsRelacionados.Cell(i, Me.iGyGRFolio).Text) = True Then
+                            iVentasRelacionadas += 1
+                            sFolioVentaAnticipo = Me.GridCFDIsRelacionados.Cell(i, iGyGRFolio).Text
+                            Continue For 'De momento sólo se permite relacionar una sóla factura de anticipo.
+                        End If
+                    Next
+
+                    If txtLEN(sFolioVentaAnticipo) = True Then
+                        'Grabar nota de crédito por anticipo automática.
+                        If .GrabaNotaCreditoPorAnticipo(sFolioVentaAnticipo) = True Then
+
+                            If Empresa_Sistema.FELECTRONICA_ACTIVA = True AndAlso Me.oDocumento.TIMBRA_DOCUMENTO = True Then
+                                Dim oDescuentosCXC As New Class_CXC_Descuento(oVenta.FOLIO_DESCUENTO_ANTICIPO)
+                                oDescuentosCXC.GeneraNotaCreditoElectronica(True, True)
+                            End If
+
+                            MsgBox("FALTA timbrar la nota de crédito por anticipo y ofrecer mecanismo de impresión, quizás llamar a pantalla de descuentos precargada")
+
+                        End If
+                    End If
+
+                End If
+
             End With
+
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
@@ -2554,6 +2582,99 @@ CANCELAR:
 
                 If valorNumericoD(Me.lblTotalRetencionISR.Text) > 0 Then
                     MsgBox("En los anticipos no se permite de momento la retención de ISR.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+            End If
+
+            If Me.cboTipoRelacionCFDI.SelectedIndex <> -1 AndAlso Me.cboTipoRelacionCFDI.SelectedValue.ToString = "07" Then '07=CFDI por aplicación de anticipo
+                Dim sFolioVentaAnticipo As String = "", iVentasRelacionadas As Integer = 0
+
+                For i = 1 To Me.GridCFDIsRelacionados.Rows - 1
+                    If txtLEN(Me.GridCFDIsRelacionados.Cell(i, Me.iGyGRFolio).Text) = True Then
+                        iVentasRelacionadas += 1
+                        sFolioVentaAnticipo = Me.GridCFDIsRelacionados.Cell(i, iGyGRFolio).Text
+                    End If
+                Next
+
+                If iVentasRelacionadas > 1 Then
+                    MsgBox("De momento sólo puede relacionarse una sola factura por anticipo.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                Dim Conexion As New SqlClient.SqlConnection(Empresa_Sistema.conexion)
+
+                Dim sSQL As String =
+                        "SELECT * INTO #VW_SIS_CAT_DOCUMENTOS_EXTENDIDO FROM VW_SIS_CAT_DOCUMENTOS_EXTENDIDO " +
+                        "SELECT DOC.ES_FACTURA_ANTICIPO,ANT.CODIGO_MONEDA_SAT,ANT.ES_VENTA_PUBLICO_GENERAL,ANT.TOTAL TOTAL_MXN,ANT.TOTAL_DOLARES TOTAL_USD,ANT.IMPUESTO  " +
+                        "FROM VENTA_GLOBAL ANT " +
+                        "INNER JOIN #VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(ANT.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " +
+                        "WHERE ANT.FOLIO_VENTA='" + sFolioVentaAnticipo + "' "
+
+                Dim dt As New DataTable
+                Dim da As New SqlClient.SqlDataAdapter(sSQL, Conexion)
+                da.Fill(dt)
+
+                If dt.Rows.Count = 0 Then
+                    MsgBox("No se encontró información de la venta " + sFolioVentaAnticipo, MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                If dt(0)("ES_FACTURA_ANTICIPO").ToString <> "1" Then
+                    MsgBox("La factura " + sFolioVentaAnticipo + " no es de tipo anticipo.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                If dt(0)("CODIGO_MONEDA_SAT").ToString <> Me.cboMoneda.Text Then
+                    MsgBox("La factura de anticipo(" + dt(0)("CODIGO_MONEDA_SAT").ToString + ") y esta factura(" + Me.cboMoneda.Text + ") deben tener la misma moneda.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                If dt(0)("ES_VENTA_PUBLICO_GENERAL").ToString <> Convert.ToInt32(Me.chkVentaPublicoGeneral.Checked).ToString Then
+                    MsgBox("La factura de anticipo y esta factura deben ser ambas ventas normales, o ambas a público general.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                Select Case dt(0)("CODIGO_MONEDA_SAT").ToString
+                    Case "MXN"
+                        If valorNumericoD(dt(0)("TOTAL_MXN").ToString) > valorNumericoD(Me.lblTotal.Text) Then
+                            MsgBox("El total MXN de la factura de anticipo de ser menor o igual que el total de la factura final." + vbCrLf +
+                                       "Anticipo.Total=" + FormatImporteContable(valorNumericoD(dt(0)("TOTAL_MXN").ToString)) + " MXN" + vbCrLf +
+                                       "FacturaFinal.Total=" + FormatImporteContable(valorNumericoD(Me.lblTotal.Text)) + " MXN" + vbCrLf, MsgBoxStyle.Exclamation, sProcedure)
+                            Return False
+                        End If
+                    Case "USD"
+                        If valorNumericoD(dt(0)("TOTAL_USD").ToString) > valorNumericoD(Me.lblTotal_USD.Text) Then
+                            MsgBox("El total USD de la factura de anticipo de ser menor o igual que el total de la factura final." + vbCrLf +
+                                       "Anticipo.Total=" + FormatImporteContable(valorNumericoD(dt(0)("TOTAL_USD").ToString)) + " USD" + vbCrLf +
+                                       "FacturaFinal.Total=" + FormatImporteContable(valorNumericoD(Me.lblTotal_USD.Text)) + " USD" + vbCrLf, MsgBoxStyle.Exclamation, sProcedure)
+                            Return False
+                        End If
+                End Select
+
+                If valorNumericoD(dt(0)("IMPUESTO").ToString) = 0 And valorNumericoD(Me.lblImpuesto.Text) > 0 Then
+                    MsgBox("La factura de anticipo no tiene IVA y esta factura si tiene, de momento esto no es posible.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                ElseIf valorNumericoD(dt(0)("IMPUESTO").ToString) > 0 Then
+                    If valorNumericoD(Me.lblImpuesto.Text) = 0 Then
+                        MsgBox("La factura de anticipo si tiene IVA y esta factura no tiene, de momento esto no es posible.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+
+                    If valorNumericoD(dt(0)("IMPUESTO").ToString) > valorNumericoD(Me.lblImpuesto.Text) Then
+                        MsgBox("La factura de anticipo tiene un IVA mayor que esta factura, de momento esto no es posible.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+                End If
+
+                sSQL = "SELECT VTA.FOLIO_VENTA FROM VENTAS_CFDI_RELACIONADOS R " +
+                            "INNER JOIN VENTA_GLOBAL VTA ON(R.FOLIO_VENTA=VTA.FOLIO_VENTA) " +
+                            "WHERE R.FOLIO_VENTA_RELACIONADA='" + sFolioVentaAnticipo + "' " +
+                            "AND VTA.ESTATUS_VENTA='A' "
+
+                Dim oFind As New Class_find(sSQL)
+                If txtLEN(oFind.Result1) = True Then
+                    MsgBox("La factura de anticipo " + sFolioVentaAnticipo + " ya fue utilizada en la factura " + oFind.Result1 + " que actualmente esta activa.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
 

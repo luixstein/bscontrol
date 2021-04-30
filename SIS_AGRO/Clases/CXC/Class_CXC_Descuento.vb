@@ -37,7 +37,6 @@ Public Class Class_CXC_Descuento
     Private _IEPS_DESGLOSADO As Double
     Private _IEPS_INCLUIDO As Double
     Private _TOTAL As Double
-
     Private _ES_COMPROBANTE_ELECTRONICO As String
     Private _FOLIO_NUMERICO As Integer
     Private _SERIE As String
@@ -65,9 +64,13 @@ Public Class Class_CXC_Descuento
     Private _CODIGO_USO_CFDI As String
     Private _CODIGO_MONEDA_SAT As String
     Private _CODIGO_TIPO_RELACION_CFDI As String
-
     Private _RETENCION_IVA As Double
     Private _RETENCION_IVA_PORCENTAJE As Double
+    Private _DIFERENCIA_CAMBIARIA As Decimal
+    Private _SUBTOTAL_USD As Decimal
+    Private _IVA_USD As Decimal
+    Private _TOTAL_USD As Decimal
+    Private _SUBTOTAL_MXN_ANTICIPO As Decimal
 #End Region
 
 #Region "Campos de control"
@@ -509,6 +512,52 @@ Public Class Class_CXC_Descuento
             Me._RETENCION_IVA_PORCENTAJE = Value
         End Set
     End Property
+
+    Public Property DIFERENCIA_CAMBIARIA() As Decimal
+        Get
+            Return Me._DIFERENCIA_CAMBIARIA
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._DIFERENCIA_CAMBIARIA = Value
+        End Set
+    End Property
+
+    Public Property SUBTOTAL_USD() As Decimal
+        Get
+            Return Me._SUBTOTAL_USD
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._SUBTOTAL_USD = Value
+        End Set
+    End Property
+
+    Public Property IVA_USD() As Decimal
+        Get
+            Return Me._IVA_USD
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._IVA_USD = Value
+        End Set
+    End Property
+
+    Public Property TOTAL_USD() As Decimal
+        Get
+            Return Me._TOTAL_USD
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._TOTAL_USD = Value
+        End Set
+    End Property
+
+    Public Property SUBTOTAL_MXN_ANTICIPO() As Decimal
+        Get
+            Return Me._SUBTOTAL_MXN_ANTICIPO
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._SUBTOTAL_MXN_ANTICIPO = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedad Nombre de Clase"
@@ -728,7 +777,6 @@ Public Class Class_CXC_Descuento
                 dReader = .ExecuteReader()
 
                 If dReader.Read = True Then
-
                     Me._ID_CXC_DESCUENTOS_GLOBAL = CType(dReader("ID_CXC_DESCUENTOS_GLOBAL"), Integer)
                     Me._FOLIO_DESCUENTO = CType(dReader("FOLIO_DESCUENTO"), String)
                     Me._CODIGO_PLAZA = CType(dReader("CODIGO_PLAZA"), Integer)
@@ -760,7 +808,6 @@ Public Class Class_CXC_Descuento
                     'Me._SELLO_DIGITAL = CType(dReader("SELLO_DIGITAL"), String)
                     Me._ES_VENTA_PUBLICO_GENERAL = "" & dReader("ES_VENTA_PUBLICO_GENERAL").ToString
                     Me._ES_POR_DEVOLUCION = CType(dReader("ES_POR_DEVOLUCION"), String)
-
                     If Me._ESTATUS_DESCUENTO = "C" Then
                         Me._CODIGO_USUARIO_CANCELO = CType(dReader("CODIGO_USUARIO_CANCELO"), Integer)
                         Me._NOMBRE_USUARIO_CANCELO = CType(dReader("NOMBRE_USUARIO_CANCELO"), String)
@@ -787,15 +834,20 @@ Public Class Class_CXC_Descuento
                     Me._ESTATUS_CANCELACION_CFDI = dReader("ESTATUS_CANCELACION_CFDI").ToString
                     Me._TIMBRADO_DESCARTADO = dReader("TIMBRADO_DESCARTADO").ToString
                     Me._VERSION_ESQUEMA_XML = "" & dReader("VERSION_ESQUEMA_XML").ToString
-
                     Me._Nombre_Formato = "" & Trim(dReader("NOMBRE_FORMATO").ToString)
                     Me._CODIGO_METODO_PAGO_EVENTO = "" & dReader("CODIGO_METODO_PAGO_EVENTO").ToString
                     Me._CODIGO_USO_CFDI = "" & dReader("CODIGO_USO_CFDI").ToString
                     Me._CODIGO_MONEDA_SAT = "" & dReader("CODIGO_MONEDA_SAT").ToString
                     Me._CODIGO_TIPO_RELACION_CFDI = "" & dReader("CODIGO_TIPO_RELACION_CFDI").ToString
-
                     Me._RETENCION_IVA = CType(dReader("RETENCION_IVA"), Double)
                     Me._RETENCION_IVA_PORCENTAJE = CType(dReader("RETENCION_IVA_PORCENTAJE"), Double)
+                    Me._DIFERENCIA_CAMBIARIA = CType(dReader("DIFERENCIA_CAMBIARIA"), Decimal)
+                    'Nota estos 3 campos siguientes en usd sólo estan grabados si es un descuento por anticipo en usd
+                    'Si fuera un descuento normal en usd están en 0 y se calculan manualmente a la hora de timbrar o imprimir formatos.
+                    Me._SUBTOTAL_USD = CType(dReader("SUBTOTAL_USD"), Decimal)
+                    Me._IVA_USD = CType(dReader("IVA_USD"), Decimal)
+                    Me._TOTAL_USD = CType(dReader("TOTAL_USD"), Decimal)
+                    Me._SUBTOTAL_MXN_ANTICIPO = CType(dReader("SUBTOTAL_MXN_ANTICIPO"), Decimal)
 
                     bResultado = True
 

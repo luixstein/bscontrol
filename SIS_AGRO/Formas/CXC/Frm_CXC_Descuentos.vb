@@ -1360,7 +1360,7 @@ Buscar:
             With Me.CboDocumento
                 .DisplayMember = "NOMBRE_TIPO_DOCUMENTO"
                 .ValueMember = "CODIGO_DOCUMENTO"
-                Dim dView As New Data.DataView(Me.oDocumento.ObtenerCodigosDocumentos("CXC", Usuario.Codigo_Plaza.ToString, " ESTATUS_DOCUMENTO='A' AND CODIGO_TIPO_DOCUMENTO IN('NCG_CXC','NRG_CXC')"))
+                Dim dView As New Data.DataView(Me.oDocumento.ObtenerCodigosDocumentos("CXC", Usuario.Codigo_Plaza.ToString, " ESTATUS_DOCUMENTO='A' AND CODIGO_TIPO_DOCUMENTO IN('NCG_CXC','NRG_CXC','NAG')"))
                 dView.Sort = "ORDEN ASC"
                 .DataSource = dView
                 If dView.Count > 0 Then

@@ -989,14 +989,24 @@ Module FacturacionElectronica33
 
             dTIPO_DE_CAMBIO = CDec(oDescuento.TIPO_DE_CAMBIO)
 
+            'Dim oDocumento As New Class_CatDocumentos(oDescuento.CODIGO_DOCUMENTO)
+            'If oDocumento.
+
             dSubTotal = CDec(oDescuento.SUBTOTAL)
             dDescuento = CDec(0)
             dTotal = CDec(oDescuento.TOTAL)
 
             If oDescuento.CODIGO_MONEDA_SAT = "USD" Then
-                dSubTotal = RedondearD(dSubTotal / dTIPO_DE_CAMBIO, 2)
-                dDescuento = RedondearD(dDescuento / dTIPO_DE_CAMBIO, 2)
-                dTotal = RedondearD(dTotal / dTIPO_DE_CAMBIO, 2)
+                'Si es un descuento por anticipo en usd los valores en dólares salen directamente de campos de descuentos.
+                If oDescuento.SUBTOTAL_MXN_ANTICIPO > 0 Then
+                    dSubTotal = oDescuento.SUBTOTAL_USD
+                    dDescuento = 0
+                    dTotal = oDescuento.TOTAL_USD
+                Else
+                    dSubTotal = RedondearD(dSubTotal / dTIPO_DE_CAMBIO, 2)
+                    dDescuento = RedondearD(dDescuento / dTIPO_DE_CAMBIO, 2)
+                    dTotal = RedondearD(dTotal / dTIPO_DE_CAMBIO, 2)
+                End If
             End If
 
             With Cfd
@@ -1100,17 +1110,30 @@ Module FacturacionElectronica33
             drImporte = CDec(oDescuento.SUBTOTAL)
 
             If oDescuento.CODIGO_MONEDA_SAT = "USD" Then
-                drPrecio = RedondearD(drPrecio / dTIPO_DE_CAMBIO, 2)
-                drImporte = RedondearD(drImporte / dTIPO_DE_CAMBIO, 2)
+                'Si es un descuento por anticipo en usd los valores en dólares salen directamente de campos de descuentos.
+                If oDescuento.SUBTOTAL_MXN_ANTICIPO > 0 Then
+                    drPrecio = oDescuento.SUBTOTAL_USD
+                    drImporte = oDescuento.SUBTOTAL_USD
+                Else
+                    drPrecio = RedondearD(drPrecio / dTIPO_DE_CAMBIO, 2)
+                    drImporte = RedondearD(drImporte / dTIPO_DE_CAMBIO, 2)
+                End If
             End If
 
             drDESCUENTO_IMPORTE = CDec(0)
-            drIMPUESTO_IMPORTE = CDec(oDescuento.IVA)
             drIMPUESTO_PORCENTAJE = CDec(oDescuento.IMPUESTO_PORCENTAJE) / 100
+
+            If oDescuento.CODIGO_MONEDA_SAT = "USD" AndAlso oDescuento.SUBTOTAL_MXN_ANTICIPO > 0 Then
+                drIMPUESTO_IMPORTE = oDescuento.IVA_USD
+            Else
+                drIMPUESTO_IMPORTE = CDec(oDescuento.IVA)
+            End If
 
             If drIMPUESTO_PORCENTAJE > 0 Then
                 drBASE_IVA = RedondearD(drIMPUESTO_IMPORTE / drIMPUESTO_PORCENTAJE, 2) 'Se obtiene hacia atras para no tener complicaciones de calculos
             End If
+
+            'De momento se permiten descuentos por antipo con retenciones.
             drRetencionIVA = CDec(oDescuento.RETENCION_IVA)
             drRetencionPorcentaje = CDec(oDescuento.RETENCION_IVA_PORCENTAJE) / 100
 
@@ -1138,8 +1161,14 @@ Module FacturacionElectronica33
 
             If drIMPUESTO_IMPORTE > 0 Then 'IVA
                 If oDescuento.CODIGO_MONEDA_SAT = "USD" Then
-                    drBASE_IVA = RedondearD(drBASE_IVA / dTIPO_DE_CAMBIO, 2)
-                    drIMPUESTO_IMPORTE = RedondearD(drIMPUESTO_IMPORTE / dTIPO_DE_CAMBIO, 2)
+
+                    If oDescuento.SUBTOTAL_MXN_ANTICIPO > 0 Then
+                        'drBASE_IVA y drIMPUESTO_IMPORTE ya vienen un usd
+                    Else
+                        drBASE_IVA = RedondearD(drBASE_IVA / dTIPO_DE_CAMBIO, 2)
+                        drIMPUESTO_IMPORTE = RedondearD(drIMPUESTO_IMPORTE / dTIPO_DE_CAMBIO, 2)
+                    End If
+
                     If drRetencionIVA > 0 Then
                         drRetencionIVA = RedondearD(drRetencionIVA / dTIPO_DE_CAMBIO, 2)
                     End If
@@ -1187,7 +1216,11 @@ Module FacturacionElectronica33
                 dImpuestoIVAImporte = CDec(oDescuento.IVA)
 
                 If oDescuento.CODIGO_MONEDA_SAT = "USD" Then
-                    dImpuestoIVAImporte = RedondearD(dImpuestoIVAImporte / dTIPO_DE_CAMBIO, 2)
+                    If oDescuento.SUBTOTAL_MXN_ANTICIPO > 0 Then
+                        dImpuestoIVAImporte = oDescuento.IVA_USD
+                    Else
+                        dImpuestoIVAImporte = RedondearD(dImpuestoIVAImporte / dTIPO_DE_CAMBIO, 2)
+                    End If
                 End If
 
                 Cfd.Impuestos.Traslados.Add("002", "Tasa", Format(oDescuento.IMPUESTO_PORCENTAJE / CDec("100.00"), "0.#00000"), Format(dImpuestoIVAImporte, "#0.00"))

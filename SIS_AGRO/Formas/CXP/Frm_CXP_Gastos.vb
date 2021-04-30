@@ -2216,7 +2216,7 @@ BuscaCliente:
                                 If txtLEN(.Cell(Renglon, Me.iGyCodigoCliente).Text) = True Then
 
 BuscaVenta:                         'Se usa esta busqueda visual porque trae las facturas de un cliente especifico y deja buscarlas por codigo
-                                    sCodigo = oVenta.BusquedaVisualFacturasClienteParaRelacionarCFDIs(.Cell(Renglon, Me.iGyCodigoCliente).Text)
+                                    sCodigo = oVenta.BusquedaVisualFacturasCliente(.Cell(Renglon, Me.iGyCodigoCliente).Text)
 
                                     If txtLEN(sCodigo) = True Then
                                         If Me.ValidaFolioVenta(sCodigo, Renglon) = False Then
