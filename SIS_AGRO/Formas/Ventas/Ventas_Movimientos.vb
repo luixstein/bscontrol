@@ -2541,6 +2541,22 @@ CANCELAR:
                     MsgBox("En los anticipos no se permiten artículos inventariables los cuales son : " & vbCrLf & sResultado, MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
+
+                If valorNumericoD(Me.lblIEPS.Text) > 0 Or valorNumericoD(Me.lblIEPSIncluido.Text) > 0 Then
+                    MsgBox("En los anticipos no se permite de momento el impuesto IEPS.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                If valorNumericoD(Me.lblTotalRetencionIVA.Text) > 0 Then
+                    MsgBox("En los anticipos no se permite de momento la retención de IVA.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                If valorNumericoD(Me.lblTotalRetencionISR.Text) > 0 Then
+                    MsgBox("En los anticipos no se permite de momento la retención de ISR.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
             End If
 
             bResultado = True
